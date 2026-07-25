@@ -7,17 +7,16 @@ the (b′) `PencilPair`, wired by the successor `pencil_conjecture_of_arms_pair`
 `hcontract`/`hsplit`/`hcutPendant3` remain open hypotheses — *Decisions made* carries the full
 per-leaf landing history, L5-cut-i through the dispatch shell). **L5-cut-v** (the `hcutPendant3`
 discharge route): assessed GO, route PINNED (2026-07-25 recon); **v-a landed**
-(`not_pencilNondegFeasible_of_triangle_two_hubs`, the triangle-`≥2`-hub infeasibility lemma);
-**v-b construction recipe derived** (docs-only, 2026-07-25), its bridging/computational infra
-**landed** (`Graph.neighbor_eq_of_degree_eq_three`, `Graph.not_adj_of_ne_of_mem_of_cutEdges_le_one`
-in `Motive.lean`; `linearIndependent_pi_single_triple`, `exists_smul_cross₃_pi_single`,
-`exists_fin3_rank_injOn` in `Engine.lean`) — the last of these fixes a genuine padding-collision
-gap the recipe's first slice missed; next: the `fin_cases`-per-vertex assembly (*Hand-off*). L6/L8
-are parallel
+(`not_pencilNondegFeasible_of_triangle_two_hubs`); **v-b LANDED** (2026-07-25,
+`exists_coord_linearIndependent_pencilChartPoint_of_pendant_deg3` — the somewhere-witness on
+`G`'s chart, new file `Molecule/Pencil/Witness.lean`, closed via the abstract padding lemma
+`exists_injective_extension_of_isFin3SelectorOf` superseding the `fin_cases`-per-vertex plan;
+canonical record design doc "v-b construction recipe" sub-bullet); next: **v-c**, witness (ii)
+on `H`'s chart (*Hand-off*). L6/L8 are parallel
 combinatorial tracks buildable now; L7 (the research core) is
 last; W4 after W5 (phase opened 2026-07-23, recon-first). `Molecule/Pencil.lean` split into
 `Molecule/Pencil/{Statement,Arms,Motive,Chart,Engine,Reseed,Pair,Pair2}.lean` (2026-07-24/25
-housekeeping).
+housekeeping; `Witness.lean` added 2026-07-25).
 
 ## Current state
 
@@ -114,10 +113,11 @@ Full record, grounding, and the W0–W5 decomposition:
   `H`'s charts) is ASSESSED GO (numerics + a composition spike, 2026-07-25); its gating lemma
   `not_pencilNondegFeasible_of_triangle_two_hubs` (`Motive.lean`, any field) is now **landed** —
   full leaf list v-a…v-g and composition findings: design doc L5 "Cut-arm route verdict"
-  **L5-cut-v bullet**. **v-b's construction recipe (docs-only) plus its bridging + computational
-  infra is landed**, including a same-session correction (a real padding-collision gap the
-  recipe's first slice missed, now fixed by `exists_fin3_rank_injOn`) — design doc's "v-b
-  construction recipe" sub-bullet; **next: the `fin_cases`-per-vertex assembly** (*Hand-off*).
+  **L5-cut-v bullet**. **v-b is LANDED** (the somewhere-witness on `G`'s chart,
+  `Molecule/Pencil/Witness.lean`; the abstract padding lemma there superseded both the flat
+  `index` formula and the `fin_cases`-per-vertex plan, and `exists_fin3_rank_injOn` went
+  unconsumed — retirement decision deferred to v-c/v-d, design doc's "v-b construction recipe"
+  sub-bullet); **next: v-c, witness (ii) on `H`'s chart** (*Hand-off*).
   Feasibility propagation *as a proposition* stays open but bounded: the triangle-hub mechanism
   refutes any purely combinatorial (`≤ 3`-closedHubNbhd) feasibility criterion, while leaving L6's
   habitat claim untouched (no triangles in the no-proper-rigid habitat at `|V| ≥ 4`).
@@ -153,26 +153,19 @@ Full record, grounding, and the W0–W5 decomposition:
 `thm:pencil-conditional-realization-pair` green; `hcontract`/`hsplit`/`hcutPendant3` remain open
 hypotheses — full detail in *Decisions made*, below).
 
-**Next: the L5-cut-v-b main assembly, `fin_cases`-per-vertex shaped.** L5-cut-v-a is landed; v-b's
-construction recipe (design doc L5-cut-v "v-b construction recipe" sub-bullet) has its bridging +
-computational infra landed (2026-07-25, `Motive.lean`/`Engine.lean`, *Decisions made*): the
-`Graph.degree`/`Simple` neighbour-exhaustiveness and non-adjacency facts, the `cross₃`-of-
-standard-basis-vectors computation, and (this session) `exists_fin3_rank_injOn`, fixing a real
-gap the first-slice recipe missed — a *single fixed* padding value collides whenever a body needs
-two `none` slots at once (as few as one real member is common at `u_c`/`w1`/`w2`), and no fixed
-function of the slot index alone can dodge every possible placement of the real member (a
-pigeonhole fact, checked by exhaustion). **What remains** (design doc's revised "What remains"
-under the same sub-bullet): for each of `u_c, w1, w2`, `obtain` the slot index of the
-always-present real member (itself for `u_c`, `u_c` for `w1`/`w2`) via `(hHubSel _).2.1`, then
-`fin_cases` it (3 branches pinning the literal slot layout); the hub-status case split (7
-non-impossible combinations, using the landed neighbour-exhaustiveness + cardinality-exclusion +
-v-a adjacency facts) determines which indices are already "real" per branch, hence the two safe
-fill values `exists_fin3_rank_injOn` assigns collision-free to the (≤ 2) `none` slots; close via
-`exists_smul_cross₃_pi_single` (arity 3) or a direct orthogonality argument on the concrete
-positional triple (arity 1/2 — no separate permutation-invariance lemma needed, since
-`exists_smul_cross₃_eq_of_linearIndependent` already takes its 3 arguments in whatever order the
-branch pins down). Then **v-c**…**v-g** per the design doc's L5-cut-v leaf list (the last leaf
-rewires the
+**Next: L5-cut-v-c — witness (ii), the somewhere-witness on `H := G.induce V₁`'s chart.** v-a and
+v-b are landed (v-b: `exists_coord_linearIndependent_pencilChartPoint_of_pendant_deg3`, new file
+`Molecule/Pencil/Witness.lean`, 2026-07-25 — *Decisions made*; canonical construction record
+design doc L5-cut-v "v-b construction recipe" sub-bullet). v-c is the pinned witness-(ii)
+statement (design doc, "The two pinned witness statements"): on `H`'s chart, under the same
+configuration and any WF-correct `hubSel`/`nbrSel` pair for `H`, some seed coordinate makes the
+promoted families `LinearIndepOn` at each of `u_c, w1, w2` — the family function needs no
+by-cases (at `H`-hubs `pencilChartNormal` reads the free seed normal; at the demoted `u_c` its
+non-hub branch IS the forced `cross₃` of the demoted triple). The v-b toolkit is built to be
+reused: the padding lemma `exists_injective_extension_of_isFin3SelectorOf` (`Witness.lean`) is
+body-agnostic, and the per-body `InjOn`/`≠ d` derivation pattern (neighbour exhaustiveness +
+cardinality exclusion + v-a adjacency exclusions) transfers — home v-c in `Witness.lean` too.
+Then **v-d**…**v-g** per the design doc's L5-cut-v leaf list (the last leaf rewires the
 shell/successor — deleting `hcutPendant3`, adding `[Infinite K]` — and restates the blueprint
 node). **L6/L8 are parallel combinatorial tracks** buildable now (L6: habitat feasibility, the
 `≤ 3` closed-hub-neighbourhood lemma + witness-seed construction + the `G′.Simple` sub-obligation,
@@ -193,6 +186,15 @@ neighbor — is `notes/IdeaBacklog.md`.
 
 ## Decisions made during this phase
 
+- **L5-cut-v-b LANDED — the somewhere-witness on `G`'s chart** (2026-07-25,
+  `exists_coord_linearIndependent_pencilChartPoint_of_pendant_deg3`, new file
+  `Molecule/Pencil/Witness.lean` + aggregator import; canonical construction record design doc
+  L5-cut-v "v-b construction recipe" sub-bullet, "the main assembly, landed"): the pinned witness
+  (i) exactly. Construction deviation from the mapped plan (F9 re-derivation): one abstract padding
+  lemma (`exists_injective_extension_of_isFin3SelectorOf`, 8-shape selector split) replaces the
+  `fin_cases`-per-vertex skeleton; `exists_fin3_rank_injOn` unconsumed (retirement deferred).
+  One new FRICTION `[idiom]` → TACTICS-QUIRKS § 101 (quantified `decide` whnf blow-up). Gates
+  green (build warning-clean + lint); axioms clean (`propext`/`Classical.choice`/`Quot.sound`).
 - **L5-cut-v-b bridging/computational infra landed, incl. a same-session padding-collision fix**
   (2026-07-25, `Motive.lean` + `Engine.lean`; canonical record design doc L5-cut-v "v-b
   construction recipe" sub-bullet, both the original text and the "correction found assembling

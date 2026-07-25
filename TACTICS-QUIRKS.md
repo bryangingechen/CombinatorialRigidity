@@ -103,6 +103,7 @@ failing pattern and the working fix.
   index in the goal; drop the `rw`s and hand the raw equalities straight to `omega`)
 - *"failed to create binder due to failure when reverting variable dependencies"* on `fun i => h ▸ hyp i` where `h`'s equation mentions a `set`/`let`-bound local → § 73 (hoist the transport out of the binder: prove the `∀`-form once by `rw [h]; exact hyp` and pass the family whole)
 - `decide` on a goal containing `Nat.card (Fin n)` fails at real `lake build` time (*"its `Decidable` instance … did not reduce to `isTrue` or `isFalse`"*), even if it appeared to succeed in an isolated MCP `lean_run_code` snippet → § 74 (`Nat.card` doesn't kernel-reduce through `Cardinal.mk`/`Classical.choice`; `simp only [Nat.card_fin]` first to turn every `Nat.card (Fin n)` into the literal `n`, then `decide`/`norm_num` closes the rest)
+- *"(deterministic) timeout at `whnf`"* pointing at a `by decide` declaration whose statement has a `∀`/`∃` prefix over a small `Fin` type (and possibly opaque tactic timeouts in *downstream* proofs of the same file) → § 101 (the quantifier prefix chains `Fintype.decidableForall/ExistsFintype` instances the elaborator can't whnf in budget; replace with a `Finset.card` counting argument, or `fin_cases` the variables first so `decide` only ever sees closed instances)
 - *"Unknown constant `Ns.lemma.mp"`/`"…mpr"`* on a bare `Iff` lemma (no local hypothesis, no explicit application) → § 75 (the lemma's structure argument, e.g. `(G : SimpleGraph V)`, is bound *explicitly* in the enclosing `variable`; dot-projection on the bare name can't skip past it — dot-call on the argument instead, `G.lemma.mpr …`, or supply it named, `(lemma (G := G)).mpr …`)
 - *"unexpected token 'omit'; expected 'lemma'"* → § 76 (`omit […] in` must sit *before* the declaration's doc comment, not after)
 - *"Tactic `rcases` failed: `… : ∀ …, …` is not an inductive datatype"* on an `obtain ⟨…, _, …⟩` right after narrowing a producer's `∃`-conjunct count → § 78 (a stale sibling call site still destructures the *old*, wider tuple shape; grep every call site of the touched producer *name*, not just the ones already mid-edit)
@@ -3701,3 +3702,34 @@ positional slots for underscore-counting purposes, even though it reads as one c
 **Worked case:** Phase 39 (PENCIL) W5-L4 piece 3,
 `exists_nbrSel_fillNbr_of_isNondegPencilRealization` (`Molecular/Molecule/Pencil/Engine.lean`),
 closing the normal-reproduction conjunct via `pencilChartNormal_of_not_pencilHub`.
+
+## 101. `decide` on a *quantified* statement over a small `Fin` type — `(deterministic) timeout at whnf` — replace the quantifier prefix with a counting argument (or split to literal instances first)
+
+**Symptom.** `theorem pick : ∀ a b : Fin 4, ∃ x y : Fin 4, x ≠ y ∧ x ≠ a ∧ … := by decide`
+fails at build time with *"(deterministic) timeout at `whnf`, maximum number of heartbeats
+(200000) has been reached"* — pointing at the declaration itself, not any tactic inside it. The
+search space is tiny (a few hundred cases), so the timeout is counter-intuitive; worse, the
+half-elaborated declaration can poison *downstream* proofs in the same file with their own
+opaque `simp`/tactic timeouts (cf. § 99), so the root-cause error is easy to misattribute.
+
+**Cause.** `decide` must reduce the whole statement's `Decidable` instance to `isTrue` in the
+*elaborator* (whnf) before the kernel ever sees it, and a quantifier prefix chains
+`Fintype.decidableForallFintype` / `Fintype.decidableExistsFintype` instances whose unfolding
+blows the heartbeat budget long before the actual case enumeration would — `Fin 4` with two
+nested quantifier blocks is already enough. This is distinct from § 74 (an instance that is
+*semantically* stuck on `Classical.choice`): here the instance would reduce eventually; it is
+just far too slow through the instance-chain indirection.
+
+**Fix.** Don't hand `decide` the quantifier prefix. Either (a) restate with the quantified
+variables as ordinary binders and prove the body by a *counting argument* — for "∃ x avoiding
+`a b c` in `Fin 4`", `by_contra` + `push Not`, then `Finset.univ ⊆ {a, b, c}` +
+`Finset.card_le_card` + `Finset.card_insert_le` + `omega` (the Phase-39 route, cheap and
+instance-free); or (b) keep `decide` but only on *closed* instances — `fin_cases a <;>
+fin_cases b <;> decide` — so each `decide` call sees literals only. Derive the larger pick
+facts from a single base pick by iteration instead of re-deciding each
+(`exists_fin4_pair_ne_ne` from `exists_fin4_ne_ne_ne` applied twice), keeping the counting
+argument in one place.
+
+**Worked case:** Phase 39 (PENCIL) W5-L5 L5-cut-v-b, the `Fin 4` padding-slot pick facts
+(`Molecular/Molecule/Pencil/Witness.lean`, `exists_fin4_ne_ne_ne` and its two iterates feeding
+`exists_injective_extension_of_isFin3SelectorOf`).

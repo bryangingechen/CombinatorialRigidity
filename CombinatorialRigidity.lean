@@ -39,6 +39,7 @@ import CombinatorialRigidity.Molecular.Molecule.GeneralPosition4
 import CombinatorialRigidity.Molecular.Molecule.Modelling
 import CombinatorialRigidity.Molecular.Molecule.Pencil.Pair2
 import CombinatorialRigidity.Molecular.Molecule.Pencil.Reseed
+import CombinatorialRigidity.Molecular.Molecule.Pencil.Witness
 import CombinatorialRigidity.Molecular.Molecule.ProjectiveInvariance
 import CombinatorialRigidity.Molecular.Molecule.ScrewVelocity
 import CombinatorialRigidity.Molecular.Molecule.Theorem56

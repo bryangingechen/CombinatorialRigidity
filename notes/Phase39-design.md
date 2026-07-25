@@ -1814,7 +1814,7 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
       spans are invariant under per-edge nonzero extensor scaling; equality at the steered
       seed = an LI `pencilRow` subfamily of target size (`≥`) + the landed
       `finrank_span_rigidityRows_add_deficiency_le` (`≤`).
-    - *Leaf decomposition (build order; v-b is the next commit).*
+    - *Leaf decomposition (build order; v-c is the next commit).*
       **v-a LANDED (2026-07-25)**: `not_pencilNondegFeasible_of_triangle_two_hubs`
       (`Motive.lean`, any field) — the triangle-`≥2`-hub infeasibility finding as a lemma
       (conjunct-3 LI at two adjacent hubs `y, z`, then the 2- and 3-member perp squeezes in
@@ -1826,9 +1826,11 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
       L5-cut-i re-home): `linearIndependent_triple_of_linearIndepOn` (the `Fin 3` triple
       transfer, W5-L4's own arity-3 glue) and `finrank_toDualPerp_triple_eq` (the `1`-dim
       triple-perp dimension count) — both fully general, no chart-stack dependency, so the
-      move was available. **v-b**: witness (i) (statement above; construction: hub normals chosen LI
-      per closed-hub-neighbourhood + the v-a exclusions, points hit by the landed arity
-      sweeps). **v-c**: witness (ii) (same toolkit on `H`'s chart). **v-d**: steering
+      move was available. **v-b LANDED (2026-07-25)**: witness (i),
+      `exists_coord_linearIndependent_pencilChartPoint_of_pendant_deg3` (new file
+      `Molecule/Pencil/Witness.lean` — `Engine.lean` was at the LoC cap; imports `Pencil.Engine`,
+      aggregator wired) — full landing record in the "v-b construction recipe" sub-bullet below.
+      **v-c**: witness (ii) (same toolkit on `H`'s chart). **v-d**: steering
       bookkeeping — the "LI `≤3`-family of polynomial vectors at a witness ⟹ one
       somewhere-nonzero polynomial whose non-roots keep it LI" extraction gadget (pair-minor
       + `cross₃Poly` cases), the WF-conditions-at-the-flattening witnesses, and the
@@ -1842,8 +1844,8 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
       from the steered promoted families, `hlb₂ = 0` rank verbatim) + the shell/successor
       rewire + the blueprint restatement.
 
-    **v-b construction recipe (derived 2026-07-25, docs-only — de-risks the Lean landing, not
-    yet attempted in Lean).** Re-deriving witness (i) against the CURRENT `Chart.lean`/
+    **v-b construction recipe (derived 2026-07-25; the witness LANDED same day — see "the main
+    assembly, landed" below).** Re-deriving witness (i) against the CURRENT `Chart.lean`/
     `Motive.lean` definitions (F9) found the naive route (steer via the abstract arity-sweep
     lemmas `exists_cross₃_eq_of_ne_zero_of_dotProduct_eq_zero`/
     `exists_cross₃_eq_of_linearIndependent_pair_of_dotProduct_eq_zero`, chaining their ABSTRACT
@@ -1925,28 +1927,36 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
     on the marked slots, so assigning the *first* marked slot one fill vector and any *second*
     marked slot another never collides, however `hubSel` places the real member.
 
-    **What remains (the main assembly — now a `fin_cases`-shaped construction, not a blind
-    formula):** for each of `u_c, w₁, w₂` in turn, `obtain ⟨i₀, hi₀⟩ := (hHubSel _).2.1 <the
-    always-present member> ⟨...⟩` (the always-present member is the body itself for `u_c`, and
-    `u_c` for `w₁`/`w₂`, since `u_c` is a hub adjacent to both), then `fin_cases i₀` (three
-    branches pinning exactly which literal slot holds the real member). In each branch the other
-    two (named) slots are forced `none` whenever the body's `closedHubNbhd` has no other member
-    (the arity-`1` case) — from `hHubSel _`'s selector injectivity, no *other* slot can also read
-    `some` of the same singleton set — and get the two designated fill vectors via
-    `exists_fin3_rank_injOn` (or, when exactly one other member IS present — arity `2` — the
-    single remaining `none` slot needs only one fill vector, no collision risk at all). The
-    `u_c`/`w₁`/`w₂` hub-status case split (7 non-impossible combinations, `Graph.
-    neighbor_eq_of_degree_eq_three` + the `ncard ≤ 3` cardinality exclusion + v-a's adjacency
-    exclusion, all as recorded in the previous version of this note and still valid) determines,
-    per branch, WHICH indices are already "real" (hence off-limits for fill) and hence what the
-    two safe fill values are for that branch. The closing step in each leaf is unchanged:
-    `exists_smul_cross₃_pi_single` (arity `3`, no fill) or a direct `cross₃`-orthogonality
-    argument (arity `1`/`2`, using the *actual* positional triple `hubSlotNormal 0/1/2` — no
-    separate "permutation invariance of `LinearIndependent`" lemma is needed, since
-    `exists_smul_cross₃_eq_of_linearIndependent` already takes the three arguments in whatever
-    concrete order the branch pins down). **Next: attempt this fresh**, building outward from the
-    `fin_cases`-per-vertex skeleton rather than the flat `index` formula (which stays correct for
-    the arity-`3`, no-padding branches only).
+    **The main assembly, LANDED (2026-07-25):**
+    `exists_coord_linearIndependent_pencilChartPoint_of_pendant_deg3`, new file
+    `Molecule/Pencil/Witness.lean` (imports `Pencil.Engine`; `Engine.lean` was one assembly away
+    from the ~1500-LoC cap). Statement = the pinned witness (i) exactly (the `∃ q :
+    α × Fin 4 × Fin 4 → K` shape, `[Finite α] [Finite β]`, any field). The landed construction
+    **supersedes the `fin_cases`-per-vertex skeleton** (and, before it, the flat `index`
+    formula): instead of per-vertex slot pinning inside a 7-way hub-status split, ONE abstract
+    padding lemma `exists_injective_extension_of_isFin3SelectorOf` does the single `some`/`none`
+    shape split (8 cases, `Fin 4` pick facts by a `4 > 3` counting argument) — given any
+    `IsFin3SelectorOf` whose selected members carry distinct basis indices avoiding a target
+    `d` (`InjOn` + `≠ d` on the neighbourhood), it produces an *injective* `σ : Fin 3 → Fin 4`
+    avoiding `d` and matching the selector, so every body's slot triple becomes three distinct
+    `Pi.single`s and `exists_smul_cross₃_pi_single` closes ALL arities uniformly (no separate
+    arity-`1`/`2` orthogonality argument, no `exists_fin3_rank_injOn` consumption — that lemma
+    stays landed in `Engine.lean` as the recorded pigeonhole fact but is now unconsumed;
+    retirement decision deferred until v-c/v-d settle whether they want it). The 7-way
+    hub-status split dissolves into the three per-body `InjOn`/`≠ d` proofs, fed by exactly the
+    recipe's facts: `Graph.neighbor_eq_of_degree_eq_three` (u_c's neighbours exhausted), the
+    `ncard ≤ 3` bound (not-all-three-hubs + at-most-one-third-party at a hub `w₁`/`w₂`), the
+    `degree ≤ 2` bound (at-most-one-third-party at a non-hub `w₁`/`w₂`), v-a's triangle
+    exclusion (`w₁ ~ w₂` barred when either is a hub — note: *either*, sharper than the
+    recipe's "both", since `u_c` is always the second adjacent hub), and the `≤ 1`-cut
+    non-adjacency of `v_c`. Global index map exactly as the recipe: `u_c ↦ e₀, w₁ ↦ e₁,
+    w₂ ↦ e₂`, hub-`v_c ↦` the unclaimed one of `e₁`/`e₂`, third parties `↦ e₃`; targets
+    `±e₃/±e₂/±e₁`, LI via `linearIndependent_pi_single_triple` + `units_smul`. Build frictions:
+    the `∀∃`-quantified `decide` pick facts hit the whnf heartbeat budget (new
+    TACTICS-QUIRKS § 101), `Pi.single`/`Fin.cases` needed the § 49-style ascriptions.
+    Gates green (build warning-clean + lint); axioms clean. **Next: v-c** (witness (ii), the
+    same toolkit on `H := G.induce V₁`'s chart — the extension lemma is body-agnostic and
+    should be reused as-is).
 
 - **W5-L6**: habitat feasibility (verdict 4) — the ≤ 3 closed-hub-neighbourhood lemma
   on 2EC/no-proper-rigid graphs + the witness-seed construction discharging
