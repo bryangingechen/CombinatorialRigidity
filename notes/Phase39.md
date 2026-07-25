@@ -3,11 +3,10 @@
 **Status:** in progress — **W0–W3 all COMPLETE**; **W5 design settled**; **W5-L0 through W5-L4 all
 COMPLETE** (2026-07-24); **W5-L5 in progress**: loop arm and base arm landed against the (b′)
 `PencilPair` (the parallel-class blocker found, user-adjudicated to route (b′), and repaired, all
-2026-07-24 — *Decisions made*); **the cut arm's generic half is BLOCKED at design level** (the
-2026-07-24 cut-arm finding: both sides of the side-IH consumption are gapped at a hub-status-changing
-cut endpoint; route-neutral restriction infra landed, candidate repair recorded — *Blockers*).
-Next: a recon verdict on the cut-arm route (*Hand-off*); W4 after W5 (phase opened 2026-07-23,
-recon-first). `Molecule/Pencil.lean` split into
+2026-07-24 — *Decisions made*); **the cut arm's generic-half route is PINNED** (the 2026-07-24
+recon verdict on the `Gᵢ⁺` repair: three of four sub-cases buildable as leaves L5-cut-i…iv, the
+pendant-deg-3 residual open — *Blockers*). Next: build L5-cut-i (*Hand-off*); W4 after W5 (phase
+opened 2026-07-23, recon-first). `Molecule/Pencil.lean` split into
 `Molecule/Pencil/{Statement,Arms,Motive,Chart,Engine,Reseed,Pair}.lean` (2026-07-24 housekeeping).
 
 ## Current state
@@ -93,27 +92,26 @@ Full record, grounding, and the W0–W5 decomposition:
 
 ## Blockers / open questions
 
-- **W5-L5 cut arm (generic half): OPEN at design level** (2026-07-24 finding, this session;
-  canonical record with the explicit `K_{1,3}` scenario and the candidate repair:
-  `notes/Phase39-design.md` §"W5 leaf decomposition" L5 "Cut-arm finding"). Confronting the
-  recorded route-neutral sharpening head-on: the side-IH consumption is gapped on **both** sides,
-  and both gaps localize to a cut endpoint of `G`-degree exactly `3` changing hub status between
-  `G` and its side. (i) *Input (demotion, the recorded wrinkle — confirmed)*: `G`'s feasibility
-  witness does not restrict to `G.induce Vᵢ` at a demoted endpoint — the witness may legitimately
-  place the endpoint's two side hinges on one common line, so the side's fourth conjunct has no
-  source; whether side feasibility holds *as a proposition* is open. (ii) *Output (promotion —
-  NEW)*: the glued realization owes `G`'s third conjunct at the promoted endpoint, which the side
-  witness never constrains (its fourth conjunct constrains *points* there, and the endpoint's
-  normal is forced by the side's own hinges, so no transport repairs a dependent choice).
-  **Landed this session (route-neutral)**: the restriction infra `Graph.PencilHub.of_le`,
-  `Graph.closedHubNbhd_mono`, `Graph.closedNbhd_mono`, `IsNondegPencilRealization.mono` (all
-  conjuncts restrict along `H ≤ G` except the fourth at demoted hubs — explicit `hdemote`
-  residual), `PencilNondegFeasible.mono` (feasibility descends when every demotion lands at
-  `H`-degree `≤ 1`; the bound is sharp) — `Molecule/Pencil/Motive.lean`. **Candidate repair
-  recorded, UNVERIFIED**: consume the IH at the *edge-closed* sides `Gᵢ⁺` (side + cut edge + far
-  endpoint) — no hub-status change on `Vᵢ`, far endpoint demotes to degree `1` where the landed
-  `.mono` bridges — at the cost of a shared-edge (not disjoint-sides) rank/deficiency assembly and
-  a matching transport; needs a recon verdict before building (*Hand-off*).
+- **W5-L5 cut arm (generic half): route PINNED, one residual sub-case OPEN** (2026-07-24 recon
+  verdict; canonical record — sub-case split, spike-proved drop brick, leaf list L5-cut-i…v,
+  the two refuted dodges, and the new triangle-hub infeasibility finding:
+  `notes/Phase39-design.md` §"W5 leaf decomposition" L5 "Cut-arm route verdict"). The `Gᵢ⁺ =
+  G.induce (Vᵢ ∪ {far endpoint})` repair is CONFIRMED wherever it applies: the feared
+  shared-edge rank assembly dissolves by regrouping (consume the IH rank at `Gᵢ⁺`, drop the cut
+  edge's rows — a new small brick, proved sorry-free in the recon's spike — and the landed
+  `finrank_span_rigidityRows_cutEdge_eq` closes verbatim), and the matching transport decomposes
+  per crossing-endpoint hub status (point matches at non-hub ends, `∉ span` steering at hub
+  ends; one strengthened repositioning lemma, plausibly `[Infinite K]`, is the risk-carrying
+  leaf). Sub-cases `|C| = 0`, two-sided `|C| = 1`, and pendant with `deg_G u_c ≠ 3` are
+  buildable now. **OPEN residual: the pendant sub-case at `deg_G u_c = 3`** (`G = H + pendant`
+  at a degree-3 hub — exactly the `K_{1,3}` configuration; not vacuous, `K₃ + pendant` is simple
+  + feasible): no IH consumption can close its output gap (sharpened this recon), motive option
+  (c) is REFUTED as a full repair (input half only), and the candidate is a chart-steering route
+  (engine on both `G`'s and `H`'s charts) whose two somewhere-witness constructions need a
+  numerics-first assessment before building. Feasibility propagation *as a proposition* stays
+  open but bounded: the new **triangle-`≥2`-hub infeasibility** mechanism refutes any purely
+  combinatorial (`≤ 3`-closedHubNbhd) criterion, while leaving L6's habitat claim untouched (no
+  triangles in the no-proper-rigid habitat at `|V| ≥ 4`).
 - ~~W5-L5 base-arm parallel-class blocker~~ **resolved** (2026-07-24; canonical record
   `notes/Phase39-design.md` §"W5 leaf decomposition" L5 "Blocker verdict" + "Long-run comparison").
   Rank cap real (`PencilPair` as first landed was FALSE at parallel pairs); **user adjudication
@@ -141,15 +139,16 @@ Full record, grounding, and the W0–W5 decomposition:
 
 **The phase stays OPEN** (the two superseding 2026-07-24 adjudications — no phase-close).
 
-**Next: a recon on the cut arm's generic-half route** — the 2026-07-24 cut-arm finding
-(*Blockers*; full record design doc L5 "Cut-arm finding") leaves the arm without a buildable
-route: the recon should verdict (a) the candidate `Gᵢ⁺` edge-closed-sides repair (its shared-edge
-rank/deficiency assembly and matching transport are the unassessed costs), against (b) proving
-feasibility propagates to induce-sides as a proposition (non-restriction argument), against
-(c) a motive-level repair (e.g. extending the fourth conjunct to degree-3 hubs — arity-4 LI is
-satisfiable in `K⁴`, but the chart tower and the L4 restatement wave would be re-opened). Until
-that verdict, do not build the arm; the restriction infra (`Motive.lean`, this session) is
-route-neutral under (a)/(b) and partially reusable under (c).
+**Next: build L5-cut-i** (the first cut-arm leaf, one commit; full leaf list and exact shapes:
+design doc L5 "Cut-arm route verdict"): the `Gᵢ⁺` structure layer — the two degree lemmas for
+`G.induce (Vᵢ ∪ {far})` under `≤ 1` crossing, the feasibility corollary through the landed
+`PencilNondegFeasible.mono`, the deficiency bookkeeping `def(Gᵢ⁺) = def(G[Vᵢ]) + 1`, and the
+spike-proved single-edge rank-drop brick (`Bricks.lean` §CutEdgeBrick; statement transcribed in
+the design doc). Then L5-cut-ii (transport/transfer bookkeeping), L5-cut-iii (the strengthened
+repositioning lemma — the risk-carrying leaf, spike-first), L5-cut-iv (the arm assembly, with
+the open pendant-deg-3 sub-case carried as an explicit hypothesis). **Do not build L5-cut-v**
+(the pendant-deg-3 residual) until its two chart-steering somewhere-witnesses get a
+numerics-first assessment (a separate small recon/numerics dispatch — design doc, sub-case 4).
 
 **After the cut arm**: the successor assembly `pencil_conjecture_of_arms_pair` (mirrors
 `pencil_conjecture_of_arms`, W3-L7, wiring `pencilPair_of_isLoopAt` + `pencilPair_of_ncard_le_two`
@@ -174,6 +173,15 @@ neighbor — is `notes/IdeaBacklog.md`.
 
 ## Decisions made during this phase
 
+- **W5-L5 cut-arm route recon** (2026-07-24, docs-only; canonical record design doc L5 "Cut-arm
+  route verdict"): `Gᵢ⁺ = G.induce (Vᵢ ∪ {far})` CONFIRMED as the IH-consumption shape; the
+  shared-edge rank fear dissolved by regrouping (one new drop brick, proved sorry-free in the
+  scratch spike, + the landed cut assembly verbatim); transport decomposed per endpoint hub
+  status; leaves L5-cut-i…v pinned. Residual: pendant-deg-3 sub-case open (no IH consumption can
+  close its output gap; option (c) refuted as a full repair; chart-steering candidate recorded).
+  New finding: triangle-`≥2`-hub infeasibility (refutes any `≤3`-closedHubNbhd feasibility
+  criterion; L6's habitat claim untouched). Successor demand confirmed: `hcut` needed at full
+  conditioned strength.
 - **W5-L5 cut-arm finding + restriction infra landed** (2026-07-24, this session;
   `Molecule/Pencil/Motive.lean`, canonical finding record design doc L5 "Cut-arm finding"):
   the cut arm's generic half is gapped both ways at a `G`-degree-3 cut endpoint (input: witness

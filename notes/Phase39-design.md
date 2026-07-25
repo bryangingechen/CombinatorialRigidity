@@ -1206,9 +1206,12 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
   below, **resolved same day** by the user's (b′) `Simple`-conditioning adjudication (below), after
   which **the base arm CLOSED** (`pencilPair_of_ncard_le_two`: edgeless/single-edge genuine
   producers + the parallel case vacuous via `not_simple_of_parallel`, `notes/Phase39.md` *Decisions
-  made*). Cut arm's generic half (moderate — mirrors the landed
-  `case_cut_edge_realization_gp_gen`; the W3-L4 transport/nondegeneracy/rank infra is reusable) and
-  the successor assembly remain open.
+  made*). Cut arm's generic half: the original "moderate — mirrors the landed
+  `case_cut_edge_realization_gp_gen`" framing was refuted by the cut-arm finding below (the pencil
+  chart is non-local in hub structure, so the panel GP arm's seed/polynomial proof does not mirror
+  wholesale); its route is now PINNED by the "Cut-arm route verdict" block below (leaves
+  L5-cut-i…v; the W3-L4 transport/nondegeneracy/rank infra IS reused there). The successor
+  assembly remains open.
 
   **Finding (2026-07-24, compiler-checked): a `≥ 2`-fold parallel class is nondegeneracy-FEASIBLE,
   even at the base arm's own minimal instance (a parallel pair, no hub involved).** The design
@@ -1446,26 +1449,208 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
      a dependent choice, and transports of the demoted side preserve its dependencies. The side
      IH's motive simply does not supply what the glue needs at a promoted endpoint.
 
-  **Candidate repair observed (UNVERIFIED — needs a recon verdict before building).** Consume the
-  IH at the *edge-closed* sides `Gᵢ⁺` (the subgraph on `Vᵢ ∪ {far endpoint}` with the side's
-  edges plus the cut edge) instead of `G.induce Vᵢ`: every `Vᵢ`-vertex then keeps its full
-  `G`-degree (no demotion and no promotion at `u_c` — both gaps vanish), and the far endpoint
-  drops to degree `1`, exactly where the landed `PencilNondegFeasible.mono` bridges the residual.
-  `Gᵢ⁺ ≤ G` gives simplicity; `|V(Gᵢ⁺)| = |Vᵢ| + 1 < |V(G)|` needs `|V₃₋ᵢ| ≥ 2` (the `|V₂| = 1`
-  edge case needs its own arm — the far endpoint then has `G`-degree `≤ 1`). Open costs, all
-  unassessed: a shared-edge (not vertex-disjoint) rank/deficiency assembly — the landed cut
-  bricks (`le_finrank_span_rigidityRows_of_cut`, `deficiency_eq_of_cutEdges_ncard_le_one`) are
-  disjoint-sides-plus-crossing-term shaped, and the two `Gᵢ⁺` overlap in the shared hinge and
-  both its endpoints; a matching transport (reposition side 2 so the shared hinge and both
-  endpoint points agree projectively — two point-matching conditions, `exists_linearEquiv_
-  basisFun_pair`-shaped) with enough residual freedom for the glued realization's cross-side LI
-  conjuncts (plausibly `[Infinite K]`, as the panel sibling `case_cut_edge_realization_gp_gen`);
-  and the `|C| = 0` sub-case separately (disjoint union — needs only a degree-preservation lemma
-  for induce sides with no incident crossing edges, then the landed `.mono` at blanket hub
-  preservation plus a nondegeneracy-aware disjoint glue). Whether feasibility propagates to
-  induce-sides *as a proposition* (making the original route viable by a non-restriction
-  argument) is likewise open — `K4` shows feasibility is not universal, and no
-  feasible-`G`-with-infeasible-side example is known.
+  **Cut-arm route verdict (2026-07-24 recon; supersedes the earlier UNVERIFIED candidate-repair
+  paragraph; the load-bearing compositions compiler-checked in a scratch spike, deleted — the
+  drop brick below was proved sorry-free in the spike, not merely typechecked).** The `Gᵢ⁺`
+  edge-closed-sides repair is CONFIRMED as the IH-consumption shape wherever it applies, and its
+  two feared costs dissolve (1a/1b below). The arm splits into four sub-cases; three are
+  buildable now (leaf list below), and one sharply-scoped residual — the **degree-3 pendant
+  sub-case (4)** — stays design-open, with a candidate chart route and two refuted dodges
+  recorded. `Gᵢ⁺` is simply **`G.induce (Vᵢ ∪ {far endpoint})`**: with `≤ 1` crossing edge this
+  graph has exactly the side's edges plus the cut edge, so every `Vᵢ`-vertex keeps its full
+  `G`-degree and the far endpoint drops to degree `1`.
+
+  1. ***`|C| = 1`, both `|Vᵢ| ≥ 2` (the generic sub-case): CONFIRMED on `Gᵢ⁺`.*** IH inputs:
+     feasibility descends by the landed `PencilNondegFeasible.mono` (composition spike-checked;
+     the only obligations are two small degree lemmas — `Vᵢ`-degrees preserved, far endpoint
+     degree `= 1`, both from `(G.cutEdges V₁).ncard ≤ 1` + looplessness); simplicity by
+     `Simple.mono (G.induce_le …)` (the panel sibling's own move); measure
+     `|V(Gᵢ⁺)| = |Vᵢ| + 1 < |V(G)|` exactly from `2 ≤ |V₃₋ᵢ|` (spike-checked); and the
+     reduction's `hcut` IH shape (`∀ G', V(G').Nonempty → V(G').ncard < V(G).ncard → P G'`,
+     `Induction/ForestSurgery/Reduction.lean`) hands the IH at *arbitrary* smaller graphs, so
+     consuming it at `Gᵢ⁺` is already permitted — no reduction change.
+     - *(1a) Rank/deficiency: NO shared-edge assembly exists or is needed — regrouping closes it
+       with the landed disjoint-sides bricks plus ONE new small brick.* Consume the IH rank at
+       `Gᵢ⁺` (target `6|Vᵢ| − def(G[Vᵢ]) − 1`, via the bookkeeping `def(Gᵢ⁺) = def(G[Vᵢ]) + 1`
+       — `deficiency_eq_of_cutEdges_ncard_le_one` applied *inside* `Gᵢ⁺` at its singleton far
+       side, whose induced side is edgeless with deficiency `0`), then **drop the cut edge's
+       rows** to get exactly the induce-side lower bound `6(|Vᵢ|−1) − def(G[Vᵢ]) ≤ finrank Sᵢ`
+       the landed `finrank_span_rigidityRows_cutEdge_eq` wants as `hlbᵢ`; that landed assembly
+       then closes the glued rank verbatim — its `(D−1)|C|` crossing term recovers the dropped
+       `5` and the arithmetic balances exactly. The drop step is the one new rank brick,
+       **proved sorry-free in the spike** (≈40 lines: rows of the larger graph = rows of the
+       smaller ∪ the extra edge's block image; a swapped-orientation row is the image of the
+       negated block row, `hingeRow v u r = hingeRow u v (−r)`; then `Submodule.span_union` +
+       `span_image` + `finrank_sup_add_finrank_inf_eq` + `Submodule.finrank_map_le` +
+       `finrank_hingeRowBlock`):
+
+       ```lean
+       theorem finrank_span_rigidityRows_le_add_of_links_subset {k : ℕ} [Finite α]
+           {G' Gs : Graph α β} (ext : β → ScrewSpace K k) {e₀ : β} {u₀ v₀ : α}
+           (hl₀ : G'.IsLink e₀ u₀ v₀) (hext₀ : ext e₀ ≠ 0)
+           (hlinks : ∀ e u v, G'.IsLink e u v → Gs.IsLink e u v ∨ e = e₀) :
+           Module.finrank K (Submodule.span K
+               (⟨G', ext⟩ : BodyHingeFramework K k α β).rigidityRows)
+             ≤ Module.finrank K (Submodule.span K
+               (⟨Gs, ext⟩ : BodyHingeFramework K k α β).rigidityRows) + (screwDim k - 1)
+       ```
+     - *(1b) Matching transport: decomposes by the crossing endpoints' `G`-hub statuses; the
+       matches and steerings needed are complementary, never simultaneous at one endpoint.*
+       Since endpoint degrees are preserved in the own side, "hub in `G`" = "hub in the own
+       side" at `u_c`/`v_c`. Keep side 1 fixed, transport side 2 by a contragredient pair
+       `(g, h)` (the landed `exists_contragredient_linearEquiv` /
+       `hasPencilPanelRealization_mapSupport_screwEquivOfLinearEquiv` infra). Per endpoint,
+       exactly one of two obligations arises: at a **non-hub** endpoint, a *projective point
+       match* (e.g. `g (point₂ v_c) = b • point₁ v_c`) — it makes the own-side fourth conjunct
+       at the *other* endpoint transfer by unit-rescaling congruence, makes the two sides'
+       cut-edge hinges projectively equal (each side's hinge is forced onto
+       `extensor ![point u_c, point v_c]` by the two through-points + pair-LI, the Meet.lean
+       forcing), and makes the needed cross-incidence *automatic* (via the side's own
+       `dotProduct_point_eq_zero_of_mem_closedNbhd` at the far endpoint, transported through
+       the match). At a **hub** endpoint (say `v_c` a `G`-hub), the glued **third** conjunct at
+       `u_c` gains the member `normal v_c` — the finding's output gap — and the transport must
+       instead *steer*: `h (normal₂ v_c) ∉ span(side-1 normals on G₁⁺.closedHubNbhd u_c)`, an
+       open condition with genuine freedom because the glued far-point line is itself movable;
+       satisfiability is fed by `G`'s own feasibility (its witness +
+       `ncard_closedHubNbhd_le_three_of_isNondegPencilRealization` bound `|G.closedHubNbhd u_c|
+       ≤ 3`, so the side family has `≤ 2` members), and unmatched ends owe their cross-incidence
+       explicitly (the landed `exists_reposition_cross_incidences` shape). So the new geometric
+       core is a **strengthened repositioning lemma** — the landed repositioning extended by up
+       to two `∉ span` open conditions — plausibly `[Infinite K]` (the panel sibling
+       `case_cut_edge_realization_gp_gen` is `[Infinite K]` for its analogous genericity step;
+       its polynomial method is available here as a proof technique). This is the one
+       risk-carrying leaf of the sub-case; everything else is transfer bookkeeping.
+       *(Why not mirror the panel GP arm's seed/polynomial proof wholesale: the pencil chart is
+       non-local in hub structure — `closedHubNbhd_{G}(u_c)` gains `v_c` over
+       `closedHubNbhd_{G₁⁺}(u_c)` exactly when `v_c` is a `G`-hub, so side-chart row polynomials
+       do not literally embed in `G`'s chart; the realization-level transport glue, mirroring
+       the landed bare cut arm, avoids that mismatch uniformly.)*
+  2. ***`|C| = 0`: buildable now, easy.*** No demotion anywhere (no crossing edges ⟹ induce
+     sides preserve degrees), so feasibility restricts by `.mono` with blanket hub preservation;
+     both `closedHubNbhd`/`closedNbhd` localize to the own side, so all four glued conjuncts
+     transfer wholesale with no transport, no steering, no `[Infinite K]`; rank exactly as the
+     landed bare `|C| = 0` branch with the generic side ranks.
+  3. ***`|V₃₋ᵢ| = 1` (pendant/isolated far side) with `deg_G u_c ≠ 3`: buildable.*** Here
+     `G = H + pendant v_c at u_c` (or `+ isolated v_c`, which case 2 covers), `H := G.induce V₁`,
+     and `G₁⁺ = G` makes the `Gᵢ⁺` trick inapplicable — but there is no hub-status change:
+     `deg_G u_c ≥ 4` keeps `u_c` a hub of `H` (feasibility restricts by blanket `.mono`; every
+     closed-hub-neighbourhood is *unchanged* between `H` and `G`, so the IH witness's third
+     conjunct covers all promoted-looking families verbatim), and `deg_G u_c ≤ 2` keeps it a
+     non-hub (the one new obligation, the glued fourth conjunct at `u_c` gaining `point v_c`, is
+     discharged by *choosing* the fresh pendant data: pick the hinge plane
+     `P ∋ point u_c` inside `normal u_c ^⊥` with `P ⊄ span(H-family)` — always possible,
+     `3`-dim vs `≤ 2`-dim — then `point v_c ∈ P` off the bad span and `normal v_c ⊥ P`). Rank:
+     the landed `finrank_span_rigidityRows_cutEdge_eq` applies **verbatim** with the singleton
+     side (its induced side is edgeless: span `⊥`, `hlb₂ = 0 ≤ 0`), so the pendant adds exactly
+     `5` — no new rank work at all.
+  4. ***`|V₃₋ᵢ| = 1` with `deg_G u_c = 3`: OPEN — the arm's residual core, and exactly the
+     finding's `K_{1,3}` configuration.*** Not vacuous: `K₃ + pendant` is simple, feasible
+     (hand-checked witness: `normal ≡ e₃`-style with points `e₀, e₁, e₂, e₀+e₁+…` — a routine
+     assignment), ¬2EC, and its only `≤ 1`-crossing cuts are the singleton ones. Both gaps
+     concentrate here irreducibly, and **a sharpening beyond the original finding: NO
+     IH-consumption can close the output gap in this sub-case.** The promoted normal
+     `normal u_c` is *forced* (up to scale) to `cross₃` of the point triple at `u_c` by the
+     side's own two hinges (whose distinctness the side's fourth conjunct itself guarantees),
+     and its independence from the neighbours' hub families is constrained by *no* conjunct of
+     any witness in which `u_c` is a non-hub; but every `|V|`-smaller graph containing `H`'s
+     content has `u_c` a non-hub — the only way to keep `deg u_c ≥ 3` on `≤ |V(G)| − 1` vertices
+     is to add an `H`-internal edge at `u_c`, and that variant fails on *both* sides (its new
+     edge's incidences are constraints `G`'s witness does not satisfy, so input feasibility
+     breaks; and its deficiency drop is not controlled, so the rank arithmetic can fall short by
+     up to `5`). Consequences for the recorded options:
+     - *(option (c) — extend the fourth conjunct to degree-3 hubs — REFUTED as a full repair.*
+       It closes the *input* gap only (the demoted body's triple-LI would restrict); the
+       *output* gap — the glued third conjunct at `u_c` and its neighbours gaining the forced
+       `normal u_c` — survives it untouched, so the L4-wave restatement it costs buys only half
+       a repair. Do not take this route for the cut arm.)
+     - *(a uniform motive strengthening that would close the output gap — carrying conjunct-3
+       LI over all degree-`≥ 2` neighbours, whose normals are equally forced — is REFUTED by
+       cardinality: at a hub with three degree-`≥ 2` neighbours it demands `4` LI normals inside
+       the `3`-dim `point^⊥`, making exactly the cubic 2EC habitats W5 lives on infeasible.)*
+     - **Candidate route (the one workable shape found): steer both witnesses on their own
+       charts via the landed engine.** (i) *Input:* re-seed `G`'s feasibility witness
+       (`exists_pencilSeed_of_nondeg`) and steer it on `G`'s chart
+       (`exists_common_seed_pencilRow_and_polynomials`, `[Infinite K]`) so the triple
+       `{point u_c, point w₁, point w₂}` becomes LI — a polynomial condition in the seed; then
+       the steered witness *restricts* to `H` (the landed `.mono`'s `hdemote` residual is
+       exactly that triple), giving `PencilNondegFeasible K H` and firing the IH's generic
+       half. (ii) *Output:* re-seed the IH's `H`-witness and steer it on `H`'s chart so the
+       `≤ 3` promoted-family conditions (`cross₃`-forced `normal u_c` off each neighbour
+       family's span — all polynomial in `H`-seeds, since `closedHubNbhd` members are hubs
+       whose chart normals are free seeds) hold alongside the rank rows (rank transfers along
+       re-seeding because row blocks depend only on extensor *lines*, and the chart hinges
+       reproduce the witness's hinges projectively). (iii) Extend the pendant as in sub-case 3.
+       The residual obligations are the two *somewhere-witness* constructions (a seed of `G`
+       with the triple LI; a seed of `H` with the promoted families LI) — bounded geometric
+       constructions of the same flavor as L6's witness-seed charter, NOT rank certificates
+       (not L7-hard), but genuinely new; and the route pulls the chart stack
+       (`Chart`/`Engine`/`Reseed`) into the arm's import cone. **Do not build sub-case 4 until
+       these two somewhere-witnesses are assessed (a small recon or numerics-first dispatch);
+       sub-cases 1–3 are buildable now and do not depend on it.**
+
+  **Feasibility propagation as a proposition (the finding's open alternative — now bounded, not
+  settled).** A NEW obstruction mechanism found this recon (derivation-checked against the
+  landed incidence lemmas `dotProduct_point_eq_zero_of_mem_closedNbhd` /
+  `dotProduct_normal_eq_zero_of_mem_closedNbhd` and the motive conjuncts; the linear-algebra
+  cores are 2- and 3-member perp squeezes in `K⁴`): **a triangle with `≥ 2` pencil-hub vertices
+  is infeasible.** With two adjacent hubs `y, z`, conjunct 3 at `y` forces `normal y, normal z`
+  LI; all three triangle points are orthogonal to both (each vertex is in both closed
+  neighbourhoods), hence lie in the `2`-dim common perp — if the third vertex `x` has degree
+  exactly `2` its fourth conjunct (a `3`-member `closedNbhd` triple in a `2`-dim space) fails;
+  if all three are hubs the three points are squeezed into the `1`-dim common perp of three LI
+  normals and even conjunct 2 fails. Consequences: (a) "every `closedHubNbhd` has `≤ 3` members
+  ⟹ feasible" is FALSE in general (the "net" graph — a triangle with a pendant at each vertex —
+  has all closed hub-neighbourhoods of size `≤ 3` yet is infeasible), so a purely combinatorial
+  feasibility criterion cannot rescue the original induce-side route; L6's *habitat-restricted*
+  claim is untouched (its 2EC/no-proper-rigid habitat has no triangles at all for `|V| ≥ 4` — a
+  triangle is a proper rigid subgraph there, the same fact the (b′) `G′.Simple` bullet uses).
+  (b) No counterexample to downward propagation itself is known: this mechanism is
+  upward-monotone (hubs stay hubs and links persist upward, so a side exhibiting it makes `G`
+  infeasible too), and a demotion-activated infeasibility needs a forcing structure that so far
+  always promotes into `G`. Proving propagation in general would require classifying all forcing
+  mechanisms — open research, NOT a bounded leaf; it is also *insufficient alone* for sub-case 4
+  (the output gap stands regardless), which is why the chart-steering candidate above carries
+  both halves.
+
+  **Successor demand check (is the full arm needed?).** `Graph.pencil_reduction` dispatches
+  *every* loopless ¬2EC graph on `≥ 3` vertices to `hcut`, and the spiked
+  `pencil_conjecture_of_arms_pair` instantiates `P := PencilPair` — whose generic half the
+  contract/split arms will consume at arbitrary smaller graphs (which may be ¬2EC). So the cut
+  arm is needed at the full conditioned strength (`G.Simple → PencilNondegFeasible → generic`);
+  the only conceivable weakening — conditioning the *motive's* generic half away from the
+  residual sub-case — would re-open the settled (b′) motive and silently drop honest instances
+  (`K₃ + pendant` is simple + feasible), so it is not on the table without user adjudication.
+
+  **Leaf decomposition (build order; sub-cases 1–3 buildable now).**
+  - **L5-cut-i** (one commit, `Motive.lean` + `RigidityMatrix/Bricks.lean`): the `Gᵢ⁺` structure
+    layer — the two degree lemmas for `G.induce (Vᵢ ∪ {far})` under `≤ 1` crossing; the
+    feasibility corollary (the spike's composition through `.mono`); the deficiency bookkeeping
+    `def(Gᵢ⁺) = def(G[Vᵢ]) + 1` (needs induce-idempotence `(G.induce S).induce T = G.induce T`
+    for `T ⊆ S` — mint if the graph library lacks it); and the spike-proved drop brick
+    (statement above; home `Bricks.lean` §CutEdgeBrick). Also move (or re-home pointers to)
+    `ncard_closedHubNbhd_le_three_of_isNondegPencilRealization` +
+    `dotProduct_{point,normal}_eq_zero_of_mem_closedNbhd` so `Pair.lean` can consume them
+    without importing the chart stack — they are motive-consequence lemmas, currently homed in
+    `Engine.lean` (import-cone decision for the builder: move to `Motive.lean` if their
+    `finrank_toDualPerp_single_eq` dependency allows, else `Pair.lean` imports `Engine`).
+  - **L5-cut-ii**: transport + transfer bookkeeping — `IsNondegPencilRealization` transport
+    along a contragredient pair (conjuncts 2–4 over the landed conjunct-1 transport); the
+    forced-hinge lemma (`C ≠ 0` through an LI pair ⟹ `∃ c ≠ 0, C = c • extensor ![p, q]`, a
+    Meet.lean composition already derived in the L5 blocker verdict item 1); scale-invariance
+    helpers for `ExtensorInPanel`/`ExtensorThroughPoint` in both slots (check
+    `Statement.lean`/`Meet.lean`, mint what is missing); a `LinearIndepOn` unit-rescaling
+    congruence; and the boundary identities (`closedHubNbhd`/`closedNbhd` of `Gᵢ⁺` vs `G` on
+    `Vᵢ`, with the single `u_c` exception).
+  - **L5-cut-iii** (the risk-carrying leaf): the strengthened repositioning lemma — the landed
+    `exists_reposition_cross_incidences` extended by the per-hub-status obligations of (1b)
+    (point matches at non-hub ends; `∉ span` steering at hub ends; `[Infinite K]` permitted).
+    Spike-first recommended.
+  - **L5-cut-iv**: the arm assembly `pencilPair_of_not_twoEdgeConnected` — generic half wiring
+    sub-cases 1–3 (bare half = the landed W3-L4 `hasPencilRealization_of_not_twoEdgeConnected`),
+    with sub-case 4 carried as an explicit hypothesis until its route lands (the standing
+    no-`sorry` idiom).
+  - **L5-cut-v** (design-open, do not build yet): sub-case 4 — first a somewhere-witness
+    assessment (recon/numerics), then the chart-steering route above if positive.
 
 - **W5-L6**: habitat feasibility (verdict 4) — the ≤ 3 closed-hub-neighbourhood lemma
   on 2EC/no-proper-rigid graphs + the witness-seed construction discharging
