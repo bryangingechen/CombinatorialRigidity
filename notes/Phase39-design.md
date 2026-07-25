@@ -1814,12 +1814,19 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
       spans are invariant under per-edge nonzero extensor scaling; equality at the steered
       seed = an LI `pencilRow` subfamily of target size (`≥`) + the landed
       `finrank_span_rigidityRows_add_deficiency_le` (`≤`).
-    - *Leaf decomposition (build order; v-a is the next commit).*
-      **v-a**: `not_pencilNondegFeasible_of_triangle_two_hubs` (`Motive.lean`, any field) —
-      the triangle-`≥2`-hub infeasibility finding as a lemma (derivation already pinned in
-      the "Feasibility propagation" block above: conjunct-3 LI at two adjacent hubs, then 2-
-      and 3-member perp squeezes in `K⁴`); it gates both witness constructions' coincidence
-      exclusions. **v-b**: witness (i) (statement above; construction: hub normals chosen LI
+    - *Leaf decomposition (build order; v-b is the next commit).*
+      **v-a LANDED (2026-07-25)**: `not_pencilNondegFeasible_of_triangle_two_hubs`
+      (`Motive.lean`, any field) — the triangle-`≥2`-hub infeasibility finding as a lemma
+      (conjunct-3 LI at two adjacent hubs `y, z`, then the 2- and 3-member perp squeezes in
+      `K⁴`, case-split on the third vertex `x`'s own hub status); it gates both witness
+      constructions' coincidence exclusions. Statement shape: `x y z : α` pairwise distinct,
+      three edges `e₁ : x–y`, `e₂ : y–z`, `e₃ : z–x`, `y z` the two ADJACENT hubs (`hy hz :
+      G.PencilHub _`); conclusion `¬ PencilNondegFeasible K G`. Two supporting lemmas moved
+      `Engine.lean → Motive.lean` alongside it (same L5-cut-v-a import-cone reason as the
+      L5-cut-i re-home): `linearIndependent_triple_of_linearIndepOn` (the `Fin 3` triple
+      transfer, W5-L4's own arity-3 glue) and `finrank_toDualPerp_triple_eq` (the `1`-dim
+      triple-perp dimension count) — both fully general, no chart-stack dependency, so the
+      move was available. **v-b**: witness (i) (statement above; construction: hub normals chosen LI
       per closed-hub-neighbourhood + the v-a exclusions, points hit by the landed arity
       sweeps). **v-c**: witness (ii) (same toolkit on `H`'s chart). **v-d**: steering
       bookkeeping — the "LI `≤3`-family of polynomial vectors at a witness ⟹ one

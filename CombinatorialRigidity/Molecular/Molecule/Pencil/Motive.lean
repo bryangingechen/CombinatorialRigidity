@@ -472,6 +472,200 @@ theorem ncard_closedNbhd_le_three_of_not_pencilHub [Finite β] {G : Graph α β}
     _ ≤ 2 + 1 := Nat.add_le_add_right hNcard 1
     _ = 3 := by norm_num
 
+/-! ## The triple-independence transfer lemma (Phase 39, moved from `Engine.lean` 2026-07-25)
+
+`linearIndependent_triple_of_linearIndepOn` was landed at W5-L4 for the re-seeding sweep's
+arity-`3` case; **moved here 2026-07-25** for the same import-cone reason as the cross-incidence
+and cardinality lemmas above (its only dependency is `LinearIndependent.comp` on a `Fin 3 →
+↥{x,y,z}` map, general Mathlib — no chart-stack content), since the L5-cut-v-a triangle-hub
+finding below needs it in `Pair.lean`'s import cone, which excludes `Chart`/`Engine`/`Reseed`. -/
+
+/-- **`LinearIndepOn` on an explicit `3`-element set transfers to the literal `Fin 3` triple**
+(Phase 39 W5-L4 piece 3, moved here 2026-07-25 — see the section note above): the `n = 3` analogue
+of mathlib's own `LinearIndepOn.pair_iff` (`n = 2`), which has no `n`-ary generalization upstream.
+Built directly: the pairwise-distinct witnesses give an (injective, since pairwise distinct) map
+`Fin 3 → ↥{x, y, z}`, and `LinearIndepOn` transports along it (`LinearIndependent.comp`) to exactly
+`![f x, f y, f z]`. Kept project-internal rather than mirrored upstream (`notes/FRICTION.md`
+[mirror-candidate]): a fully general `n`-ary version needs its own `Fintype.equivFin`-based
+infrastructure this project's fixed arities (`0`–`3`) don't otherwise need. -/
+theorem linearIndependent_triple_of_linearIndepOn (f : α → Fin 4 → K) {x y z : α}
+    (hxy : x ≠ y) (hxz : x ≠ z) (hyz : y ≠ z) (hLI : LinearIndepOn K f {x, y, z}) :
+    LinearIndependent K ![f x, f y, f z] := by
+  have hx : x ∈ ({x, y, z} : Set α) := by simp
+  have hy : y ∈ ({x, y, z} : Set α) := by simp
+  have hz : z ∈ ({x, y, z} : Set α) := by simp
+  set e : Fin 3 → ↥({x, y, z} : Set α) := ![⟨x, hx⟩, ⟨y, hy⟩, ⟨z, hz⟩]
+  have heinj : Function.Injective e := by
+    intro i j hij
+    fin_cases i <;> fin_cases j <;> simp_all [e, Subtype.ext_iff]
+  have hcomp : LinearIndependent K ((fun w : ↥({x,y,z} : Set α) => f w) ∘ e) :=
+    (hLI : LinearIndependent K (fun w : ↥({x,y,z} : Set α) => f w)).comp e heinj
+  have heq : (fun w : ↥({x,y,z} : Set α) => f w) ∘ e = ![f x, f y, f z] := by
+    funext i; fin_cases i <;> rfl
+  rwa [heq] at hcomp
+
+/-- **The `⬝ᵥ`-perp of a linearly independent triple in `K⁴` has dimension `1`** (Phase 39 W5-L4,
+the arity-`3` companion of `finrank_toDualPerp_single_eq`/`Meet.lean`'s
+`finrank_toDualPerp_pair_eq`; **moved here 2026-07-25 from `Engine.lean`** — the same L5-cut-v-a
+import-cone reason as `linearIndependent_triple_of_linearIndepOn` above, and the new triangle-hub
+finding below needs it too): the same `toDualEquiv`/dual-annihilator proof pattern, specialized to
+an independent `Fin 3`-indexed family in `K⁴` (perp dimension `4 − 3 = 1`). -/
+theorem finrank_toDualPerp_triple_eq {n : Fin 3 → Fin 4 → K} (hn : LinearIndependent K n) :
+    Module.finrank K
+        (⨅ j : Fin 3, LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip (n j))
+          : Submodule K (Fin 4 → K)) = 1 := by
+  classical
+  set b := Pi.basisFun K (Fin 4) with hb
+  set S : Submodule K (Fin 4 → K) := Submodule.span K (Set.range n) with hS
+  have hQ : (⨅ j : Fin 3, LinearMap.ker (b.toDual.flip (n j)))
+      = Submodule.comap b.toDualEquiv.toLinearMap S.dualAnnihilator := by
+    ext w
+    simp only [Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.flip_apply,
+      Submodule.mem_comap, LinearEquiv.coe_coe, Module.Basis.toDualEquiv_apply,
+      Submodule.mem_dualAnnihilator]
+    constructor
+    · intro h v hv
+      have hle : S ≤ LinearMap.ker (b.toDual w) := by
+        rw [hS, Submodule.span_le]
+        rintro _ ⟨j, rfl⟩
+        simpa using h j
+      simpa using hle hv
+    · intro h j
+      exact h (n j) (Submodule.subset_span ⟨j, rfl⟩)
+  rw [hQ, Submodule.comap_equiv_eq_map_symm, LinearEquiv.finrank_map_eq]
+  have h1 := Subspace.finrank_add_finrank_dualAnnihilator_eq S
+  have h2 : Module.finrank K S = 3 := by
+    rw [hS, finrank_span_eq_card hn, Fintype.card_fin]
+  have h3 : Module.finrank K (Fin 4 → K) = 4 := Module.finrank_fin_fun K
+  omega
+
+/-! ## Triangle infeasibility (Phase 39 W5-L5, L5-cut-v-a)
+
+The new obstruction mechanism the L5-cut-v assessment recon found
+(`notes/Phase39-design.md` §"W5 leaf decomposition" L5 "Feasibility propagation"): a triangle with
+two adjacent pencil hubs is nondegeneracy-infeasible, regardless of the third vertex's own hub
+status. This is exactly what the L5-cut-v chart-steering discharge excludes via `hcutPendant3`'s
+`PencilNondegFeasible K G` antecedent at the adversarial "net" configuration (a triangle with two
+hubs), and gates both of that leaf's somewhere-witness constructions (v-b, v-c). -/
+
+/-- **A triangle with two adjacent pencil hubs is nondegeneracy-infeasible** (Phase 39 W5-L5,
+L5-cut-v-a; derivation pinned in `notes/Phase39-design.md`'s "Feasibility propagation" finding).
+With `y, z` adjacent hubs (the edge `e₂`) and `x` the triangle's third vertex: conjunct 3 at `y`
+forces `normal y, normal z` independent, so their `2`-dimensional common perp
+(`finrank_toDualPerp_pair_eq`) contains all three triangle points (`dotProduct_point_eq_zero_of_
+mem_closedNbhd`, own-panel/cross incidence at every triangle edge). If `x` is not itself a hub,
+conjunct 4 forces `point x, point y, point z` independent — three vectors do not fit in a
+`2`-dimensional space. If `x` is also a hub, conjunct 3 at `x` forces `normal x, normal y, normal z`
+independent too, squeezing `point x, point y` into their `1`-dimensional common perp
+(`finrank_toDualPerp_triple_eq`) — but conjunct 2 (the `x`–`y` edge) forces them independent, and
+two vectors do not fit in a `1`-dimensional space. -/
+theorem not_pencilNondegFeasible_of_triangle_two_hubs {G : Graph α β}
+    {e₁ e₂ e₃ : β} {x y z : α} (hxy : x ≠ y) (hyz : y ≠ z) (hxz : x ≠ z)
+    (h₁ : G.IsLink e₁ x y) (h₂ : G.IsLink e₂ y z) (h₃ : G.IsLink e₃ z x)
+    (hy : G.PencilHub y) (hz : G.PencilHub z) :
+    ¬ PencilNondegFeasible K G := by
+  rintro ⟨F, normal, point, hnd⟩
+  -- `normal y, normal z` are independent (conjunct 3 at `y`, the adjacent hub `z`).
+  have hsubyz : ({y, z} : Set α) ⊆ G.closedHubNbhd y := by
+    rintro w (rfl | rfl)
+    · exact ⟨hy, Or.inl rfl⟩
+    · exact ⟨hz, Or.inr ⟨e₂, h₂⟩⟩
+  have hLIyz : LinearIndependent K ![normal y, normal z] :=
+    LinearIndependent.pair_iff.2
+      ((LinearIndepOn.pair_iff normal hyz).1 ((hnd.2.2.1 y hy.1).mono hsubyz))
+  set Vyz : Submodule K (Fin 4 → K) :=
+    ⨅ j : Fin 2, LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip (![normal y, normal z] j))
+    with hVyz
+  have hVyzdim : Module.finrank K Vyz = 2 := finrank_toDualPerp_pair_eq hLIyz
+  have hmemyz : ∀ w : Fin 4 → K, w ∈ Vyz ↔ ∀ j, w ⬝ᵥ (![normal y, normal z] j) = 0 := by
+    intro w
+    simp only [hVyz, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.flip_apply,
+      piBasisFun_toDual_eq_dotProduct]
+  -- Every triangle point is orthogonal to both `normal y, normal z` (own-panel/cross incidence at
+  -- the triangle's three edges), hence lies in the `2`-dimensional perp `Vyz`.
+  have hxV : point x ∈ Vyz := by
+    rw [hmemyz]; intro j; fin_cases j
+    · simpa using dotProduct_point_eq_zero_of_mem_closedNbhd hnd h₁.left_mem (Or.inr ⟨e₁, h₁⟩)
+    · simpa using dotProduct_point_eq_zero_of_mem_closedNbhd hnd h₁.left_mem (Or.inr ⟨e₃, h₃.symm⟩)
+  have hyV : point y ∈ Vyz := by
+    rw [hmemyz]; intro j; fin_cases j
+    · simpa using dotProduct_point_eq_zero_of_mem_closedNbhd hnd h₁.right_mem (Or.inl rfl)
+    · simpa using dotProduct_point_eq_zero_of_mem_closedNbhd hnd h₁.right_mem (Or.inr ⟨e₂, h₂⟩)
+  have hzV : point z ∈ Vyz := by
+    rw [hmemyz]; intro j; fin_cases j
+    · simpa using
+        dotProduct_point_eq_zero_of_mem_closedNbhd hnd h₂.right_mem (Or.inr ⟨e₂, h₂.symm⟩)
+    · simpa using dotProduct_point_eq_zero_of_mem_closedNbhd hnd h₂.right_mem (Or.inl rfl)
+  by_cases hx : G.PencilHub x
+  · -- `x` is also a hub: `normal x, normal y, normal z` independent (conjunct 3 at `x`), squeezing
+    -- `point x, point y` into the `1`-dimensional triple perp — yet conjunct 2 forces them
+    -- independent, and `2 > 1`.
+    have hsubxyz : ({x, y, z} : Set α) ⊆ G.closedHubNbhd x := by
+      rintro w (rfl | rfl | rfl)
+      · exact ⟨hx, Or.inl rfl⟩
+      · exact ⟨hy, Or.inr ⟨e₁, h₁⟩⟩
+      · exact ⟨hz, Or.inr ⟨e₃, h₃.symm⟩⟩
+    have hLI3n : LinearIndepOn K normal {x, y, z} := (hnd.2.2.1 x h₁.left_mem).mono hsubxyz
+    have hLItriple : LinearIndependent K ![normal x, normal y, normal z] :=
+      linearIndependent_triple_of_linearIndepOn normal hxy hxz hyz hLI3n
+    set Vxyz : Submodule K (Fin 4 → K) :=
+      ⨅ j : Fin 3, LinearMap.ker
+        ((Pi.basisFun K (Fin 4)).toDual.flip (![normal x, normal y, normal z] j))
+      with hVxyz
+    have hVxyzdim : Module.finrank K Vxyz = 1 := finrank_toDualPerp_triple_eq hLItriple
+    have hmemxyz : ∀ w : Fin 4 → K, w ∈ Vxyz ↔
+        ∀ j, w ⬝ᵥ (![normal x, normal y, normal z] j) = 0 := by
+      intro w
+      simp only [hVxyz, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.flip_apply,
+        piBasisFun_toDual_eq_dotProduct]
+    have hxV3 : point x ∈ Vxyz := by
+      rw [hmemxyz]; intro j; fin_cases j
+      · simpa using dotProduct_point_eq_zero_of_mem_closedNbhd hnd h₁.left_mem (Or.inl rfl)
+      · simpa using dotProduct_point_eq_zero_of_mem_closedNbhd hnd h₁.left_mem (Or.inr ⟨e₁, h₁⟩)
+      · simpa using
+          dotProduct_point_eq_zero_of_mem_closedNbhd hnd h₁.left_mem (Or.inr ⟨e₃, h₃.symm⟩)
+    have hyV3 : point y ∈ Vxyz := by
+      rw [hmemxyz]; intro j; fin_cases j
+      · simpa using
+          dotProduct_point_eq_zero_of_mem_closedNbhd hnd h₁.right_mem (Or.inr ⟨e₁, h₁.symm⟩)
+      · simpa using dotProduct_point_eq_zero_of_mem_closedNbhd hnd h₁.right_mem (Or.inl rfl)
+      · simpa using dotProduct_point_eq_zero_of_mem_closedNbhd hnd h₁.right_mem (Or.inr ⟨e₂, h₂⟩)
+    have hLIxy : LinearIndependent K ![point x, point y] := hnd.2.1 e₁ x y h₁
+    have hsub2 : Submodule.span K (Set.range ![point x, point y]) ≤ Vxyz := by
+      rw [Submodule.span_le]
+      rintro _ ⟨j, rfl⟩
+      fin_cases j
+      · exact hxV3
+      · exact hyV3
+    have hdim2 : Module.finrank K (Submodule.span K (Set.range ![point x, point y])) = 2 := by
+      rw [finrank_span_eq_card hLIxy]; simp
+    have hmono := Submodule.finrank_mono hsub2
+    rw [hdim2, hVxyzdim] at hmono
+    omega
+  · -- `x` is not a hub: conjunct 4 forces `point x, point y, point z` independent, three vectors
+    -- that do not fit in the `2`-dimensional perp `Vyz`.
+    have hsubpts : ({x, y, z} : Set α) ⊆ G.closedNbhd x := by
+      rintro w (rfl | rfl | rfl)
+      · exact Or.inl rfl
+      · exact Or.inr ⟨e₁, h₁⟩
+      · exact Or.inr ⟨e₃, h₃.symm⟩
+    have hLI3p : LinearIndepOn K point {x, y, z} := (hnd.2.2.2 x h₁.left_mem hx).mono hsubpts
+    have hLItriple : LinearIndependent K ![point x, point y, point z] :=
+      linearIndependent_triple_of_linearIndepOn point hxy hxz hyz hLI3p
+    have hsub3 : Submodule.span K (Set.range ![point x, point y, point z]) ≤ Vyz := by
+      rw [Submodule.span_le]
+      rintro _ ⟨j, rfl⟩
+      fin_cases j
+      · exact hxV
+      · exact hyV
+      · exact hzV
+    have hdim3 :
+        Module.finrank K (Submodule.span K (Set.range ![point x, point y, point z])) = 3 := by
+      rw [finrank_span_eq_card hLItriple]; simp
+    have hmono := Submodule.finrank_mono hsub3
+    rw [hdim3, hVyzdim] at hmono
+    omega
+
 /-! ## W5-L5 cut-arm structure layer: the edge-closed side `Gᵢ⁺` (Phase 39)
 
 The cut-arm route verdict (`notes/Phase39-design.md` §"W5 leaf decomposition" L5 "Cut-arm route

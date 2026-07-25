@@ -388,9 +388,10 @@ asymmetry the design doc's "reproduces" phrasing does not spell out:
 * **Arity `3`** (`exists_smul_cross₃_eq_of_linearIndependent`): with **no** fill slots free — all
   three `cross₃` arguments are prescribed real normals — there is no freedom left to correct a
   scalar mismatch. `cross₃` of the triple and the target are both nonzero elements of the
-  `1`-dimensional common perp (the new `finrank_toDualPerp_triple_eq`, the arity-`3` companion of
-  `finrank_toDualPerp_single_eq`/`Meet.lean`'s `finrank_toDualPerp_pair_eq`), hence *proportional*
-  by a nonzero scalar — not necessarily equal on the nose.
+  `1`-dimensional common perp (`finrank_toDualPerp_triple_eq`, the arity-`3` companion of
+  `finrank_toDualPerp_single_eq`/`Meet.lean`'s `finrank_toDualPerp_pair_eq` — **moved 2026-07-25 to
+  `Motive.lean`**, the same L5-cut-v-a import-cone reason as the cardinality bound moved there at
+  L5-cut-i), hence *proportional* by a nonzero scalar — not necessarily equal on the nose.
 
 **Consequence for `exists_pencilSeed_of_nondeg`'s eventual statement:** the re-seeding lemma's
 reproduction contract cannot be literal equality of the chart's constructed point against the given
@@ -407,39 +408,6 @@ The remaining assembly for `exists_pencilSeed_of_nondeg` itself — the `≤ 3`-
 neighbourhood cardinality bound (from nondegeneracy: a `4`-member LI family forces the point to
 `0`), the explicit `IsFin3SelectorOf` witnesses built from that bound, and the global choice
 assembling a single `PencilSeed` over all of `V(G)` — is deferred; `notes/Phase39.md` *Hand-off*. -/
-
-/-- **The `⬝ᵥ`-perp of a linearly independent triple in `K⁴` has dimension `1`** (Phase 39 W5-L4,
-the arity-`3` companion of `finrank_toDualPerp_single_eq`/`Meet.lean`'s
-`finrank_toDualPerp_pair_eq`): the same `toDualEquiv`/dual-annihilator proof pattern, specialized to
-an independent `Fin 3`-indexed family in `K⁴` (perp dimension `4 − 3 = 1`). -/
-theorem finrank_toDualPerp_triple_eq {n : Fin 3 → Fin 4 → K} (hn : LinearIndependent K n) :
-    Module.finrank K
-        (⨅ j : Fin 3, LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip (n j))
-          : Submodule K (Fin 4 → K)) = 1 := by
-  classical
-  set b := Pi.basisFun K (Fin 4) with hb
-  set S : Submodule K (Fin 4 → K) := Submodule.span K (Set.range n) with hS
-  have hQ : (⨅ j : Fin 3, LinearMap.ker (b.toDual.flip (n j)))
-      = Submodule.comap b.toDualEquiv.toLinearMap S.dualAnnihilator := by
-    ext w
-    simp only [Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.flip_apply,
-      Submodule.mem_comap, LinearEquiv.coe_coe, Module.Basis.toDualEquiv_apply,
-      Submodule.mem_dualAnnihilator]
-    constructor
-    · intro h v hv
-      have hle : S ≤ LinearMap.ker (b.toDual w) := by
-        rw [hS, Submodule.span_le]
-        rintro _ ⟨j, rfl⟩
-        simpa using h j
-      simpa using hle hv
-    · intro h j
-      exact h (n j) (Submodule.subset_span ⟨j, rfl⟩)
-  rw [hQ, Submodule.comap_equiv_eq_map_symm, LinearEquiv.finrank_map_eq]
-  have h1 := Subspace.finrank_add_finrank_dualAnnihilator_eq S
-  have h2 : Module.finrank K S = 3 := by
-    rw [hS, finrank_span_eq_card hn, Fintype.card_fin]
-  have h3 : Module.finrank K (Fin 4 → K) = 4 := Module.finrank_fin_fun K
-  omega
 
 /-- **The arity-`3` perp-sweep, proportional form** (Phase 39 W5-L4, D6 infrastructure): with all
 three `cross₃` slots pinned to an independent triple `n₁, n₂, n₃`, `cross₃ n₁ n₂ n₃` and any nonzero
@@ -697,7 +665,12 @@ vacuously.
 existence into total functions `hubSel`/`fillHub`, and the two `PencilChartWF` conjuncts plus the
 point-reproduction fact drop out immediately — `hubSlotNormal ⟨normal, fillHub, fillNbr⟩ hubSel v i`
 and `hubSlotOf normal (hubSel v) (fillHub v) i` agree by `rfl` (`fillNbr` never enters either side),
-so no further bridging is needed. -/
+so no further bridging is needed.
+
+The arity-`3` case's `LinearIndepOn`-on-a-`3`-element-set transfer lemma
+(`linearIndependent_triple_of_linearIndepOn`) **moved 2026-07-25 to `Motive.lean`** — the L5-cut-v-a
+triangle-hub finding needs it without this file's chart stack in the import cone, the same reason
+the cardinality bound and its cross-incidence feeders moved there at L5-cut-i. -/
 
 /-- **The raw per-vertex hub-slot combinator** (Phase 39 W5-L4 piece 3): `hubSlotNormal` restricted
 to a single body's selector/fill data, without needing a full `PencilSeed`/global `hubSel` — the
@@ -710,30 +683,6 @@ noncomputable def hubSlotOf (normal : α → Fin 4 → K) (sel : Fin 3 → Optio
   match sel i with
   | some w => normal w
   | none => fill i
-
-/-- **`LinearIndepOn` on an explicit `3`-element set transfers to the literal `Fin 3` triple**
-(Phase 39 W5-L4 piece 3, technical glue for the arity-`3` case below): the `n = 3` analogue of
-mathlib's own `LinearIndepOn.pair_iff` (`n = 2`), which has no `n`-ary generalization upstream.
-Built directly: the pairwise-distinct witnesses give an (injective, since pairwise distinct) map
-`Fin 3 → ↥{x, y, z}`, and `LinearIndepOn` transports along it (`LinearIndependent.comp`) to exactly
-`![f x, f y, f z]`. Kept project-internal rather than mirrored upstream (`notes/FRICTION.md`
-[mirror-candidate]): a fully general `n`-ary version needs its own `Fintype.equivFin`-based
-infrastructure this file's three fixed arities (`0`–`3`) don't otherwise need. -/
-theorem linearIndependent_triple_of_linearIndepOn (f : α → Fin 4 → K) {x y z : α}
-    (hxy : x ≠ y) (hxz : x ≠ z) (hyz : y ≠ z) (hLI : LinearIndepOn K f {x, y, z}) :
-    LinearIndependent K ![f x, f y, f z] := by
-  have hx : x ∈ ({x, y, z} : Set α) := by simp
-  have hy : y ∈ ({x, y, z} : Set α) := by simp
-  have hz : z ∈ ({x, y, z} : Set α) := by simp
-  set e : Fin 3 → ↥({x, y, z} : Set α) := ![⟨x, hx⟩, ⟨y, hy⟩, ⟨z, hz⟩]
-  have heinj : Function.Injective e := by
-    intro i j hij
-    fin_cases i <;> fin_cases j <;> simp_all [e, Subtype.ext_iff]
-  have hcomp : LinearIndependent K ((fun w : ↥({x,y,z} : Set α) => f w) ∘ e) :=
-    (hLI : LinearIndependent K (fun w : ↥({x,y,z} : Set α) => f w)).comp e heinj
-  have heq : (fun w : ↥({x,y,z} : Set α) => f w) ∘ e = ![f x, f y, f z] := by
-    funext i; fin_cases i <;> rfl
-  rwa [heq] at hcomp
 
 /-- **Piece 3 (point side), per vertex** (Phase 39 W5-L4): given an arbitrary nondegenerate
 realization, every body `v` admits a hub-selector `sel` and fill triple `fill` whose `hubSlotOf`

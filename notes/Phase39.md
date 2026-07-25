@@ -1,29 +1,15 @@
 # Phase 39 — PENCIL: the hinge-pencil molecular conjecture (work log)
 
 **Status:** in progress — **W0–W3 all COMPLETE**; **W5 design settled**; **W5-L0 through W5-L4 all
-COMPLETE** (2026-07-24); **W5-L5 in progress**: loop arm and base arm landed against the (b′)
-`PencilPair` (the parallel-class blocker found, user-adjudicated to route (b′), and repaired, all
-2026-07-24 — *Decisions made*); **the cut arm's generic-half route is PINNED** (the 2026-07-24
-recon verdict on the `Gᵢ⁺` repair: three of four sub-cases buildable as leaves L5-cut-i…iv, the
-pendant-deg-3 residual open — *Blockers*); **L5-cut-i, L5-cut-ii, and L5-cut-iii all landed**
-(2026-07-25: the `Gᵢ⁺` structure layer, the transport/transfer-bookkeeping infra, and the
-strengthened repositioning lemma — the risk leaf closed match-free over any field, *Decisions
-made*); **L5-cut-iv COMPLETE** (2026-07-25: sub-case 2, the disjoint-union generic producer,
-landed standalone first — the full four-sub-case assembly did not fit one sitting, *Decisions
-made*; **sub-case 1's two halves both landed** the same day as further standalone pieces — the
-`Gᵢ⁺` IH-rank/drop-brick composition, then the repositioning/gluing producer, both *Decisions
-made*; **sub-case 3 (pendant, `deg_G u_c ≠ 3`) landed standalone too** (`Pencil/Pair2.lean` — new
-file, `Pair.lean` at the ~1500-LoC cap — plus three structure-layer lemmas in `Motive.lean`,
-*Decisions made*); **the dispatch shell `pencilPair_of_not_twoEdgeConnected` landed** (`Pair2.lean`,
-wiring all three buildable sub-cases + sub-case 4 carried as the explicit hypothesis
-`hcutPendant3`, *Decisions made*)). **L5-cut-v assessed GO — route PINNED** (2026-07-25 recon:
-numerics + composition spike; leaves v-a…v-g, *Blockers*). **The successor assembly
-`pencil_conjecture_of_arms_pair` landed** (2026-07-25,
-`Pair2.lean`, node `thm:pencil-conditional-realization-pair` green) — **W5-L5 is now closed modulo
-the carried family** (`hcontract`/`hsplit`/`hcutPendant3` remain open hypotheses, *Decisions
-made*). Next: the L5-cut-v build (v-a first) + L6/L8 parallel tracks, then L7 (*Hand-off*); W4
-after W5
-(phase opened 2026-07-23, recon-first). `Molecule/Pencil.lean` split into
+COMPLETE**; **W5-L5 COMPLETE modulo the carried family** (loop/base/cut arms all landed against
+the (b′) `PencilPair`, wired by the successor `pencil_conjecture_of_arms_pair`
+(`Pair2.lean`, node `thm:pencil-conditional-realization-pair` green);
+`hcontract`/`hsplit`/`hcutPendant3` remain open hypotheses — *Decisions made* carries the full
+per-leaf landing history, L5-cut-i through the dispatch shell). **L5-cut-v** (the `hcutPendant3`
+discharge route): assessed GO, route PINNED (2026-07-25 recon); **v-a landed**
+(`not_pencilNondegFeasible_of_triangle_two_hubs`, the triangle-`≥2`-hub infeasibility lemma); next:
+v-b (*Hand-off*). L6/L8 are parallel combinatorial tracks buildable now; L7 (the research core) is
+last; W4 after W5 (phase opened 2026-07-23, recon-first). `Molecule/Pencil.lean` split into
 `Molecule/Pencil/{Statement,Arms,Motive,Chart,Engine,Reseed,Pair,Pair2}.lean` (2026-07-24/25
 housekeeping).
 
@@ -52,8 +38,8 @@ leaves L0–L7 (all landed). **W5's device** (design pass, `notes/Phase39-design
 pass"): final motive = the conditioned pair `PencilPair` (further `Simple`-conditioned 2026-07-24,
 route (b′)); device = the grade-0 molecular chart (`Molecule/Pencil/Chart.lean`) + the
 rows-polynomial engine (`Molecule/Pencil/Engine.lean`) + the D6 re-seeding lemma
-(`Molecule/Pencil/Reseed.lean`), leaves **L0–L8** (L0–L4 complete; L5 mid-stream; L6/L8 parallel
-combinatorial tracks; L7, the research core, last).
+(`Molecule/Pencil/Reseed.lean`), leaves **L0–L8** (L0–L4 complete; L5 closed modulo the carried
+family, L5-cut-v in progress; L6/L8 parallel combinatorial tracks; L7, the research core, last).
 
 The opening recon ran 2026-07-23; verdicts (R1–R3) below in *Opening recon verdicts*.
 
@@ -113,43 +99,19 @@ Full record, grounding, and the W0–W5 decomposition:
 
 ## Blockers / open questions
 
-- **W5-L5 cut arm (generic half): L5-cut-iv COMPLETE, L5-cut-v OPEN** (2026-07-24 recon
-  verdict; canonical record — sub-case split, spike-proved drop brick, leaf list L5-cut-i…v,
-  the two refuted dodges, and the new triangle-hub infeasibility finding:
-  `notes/Phase39-design.md` §"W5 leaf decomposition" L5 "Cut-arm route verdict"). The `Gᵢ⁺ =
-  G.induce (Vᵢ ∪ {far endpoint})` repair is CONFIRMED wherever it applies: the feared
-  shared-edge rank assembly dissolves by regrouping (consume the IH rank at `Gᵢ⁺`, drop the cut
-  edge's rows — a new small brick, proved sorry-free in the recon's spike — and the landed
-  `finrank_span_rigidityRows_cutEdge_eq` closes verbatim), and the matching transport decomposes
-  per crossing-endpoint hub status. **The risk-carrying leaf is CLOSED** (L5-cut-iii, 2026-07-25):
-  the strengthened repositioning lemma landed in a *match-free avoidance form* — the recon's
-  point-match mechanism proved unnecessary, and the uniform statement holds over **any** field
-  (no `[Infinite K]`; *Decisions made*). **L5-cut-iv is now COMPLETE** (2026-07-25): sub-cases
-  `|C| = 0`, two-sided `|C| = 1`, and pendant with `deg_G u_c ≠ 3` each landed as a standalone
-  producer (sub-case `|C| = 0`; sub-case 1's two halves — the generic `Gᵢ⁺` IH-rank/drop-brick
-  composition, then the repositioning/gluing producer
-  `hasGenericPencilRealization_of_isNondegPencilRealization_induce_union_singleton`; sub-case 3
-  (pendant) the producer `hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant`,
-  `Pencil/Pair2.lean`), then wired together by the dispatch shell
-  `pencilPair_of_not_twoEdgeConnected` (`Pair2.lean`) — all *Decisions made*. **Residual
-  (L5-cut-v, the pendant sub-case at `deg_G u_c = 3`, carried as `hcutPendant3`): ASSESSED GO,
-  route PINNED (2026-07-25 recon)** — the chart-steering route (engine on both `G`'s and `H`'s
-  charts) is viable end-to-end: exact-rational numerics on three instances + one adversarial
-  refutation instance, then a typechecked composition spike; canonical record (pinned witness
-  statements, composition findings, leaf list v-a…v-g): design doc L5 "Cut-arm route verdict"
-  **L5-cut-v bullet**. Key findings: the discharge **rewires the dispatch shell** (the producer
-  needs `hIH`, so `hcutPendant3` gets deleted from the shell + successor, not proved standalone);
-  **`[Infinite K]` propagates** to the arm, successor, and blueprint node (expected — the W5
-  engine frame; restate blueprint in the rewire commit); the `ofCoord` `fillNbr`-coupling is
-  harmless (all steering conditions 4-role; `fillNbr` re-chosen post hoc). The promoted-family
-  obstruction exists exactly at the configurations `PencilNondegFeasible K G` excludes
-  (triangle-`≥2`-hub — 40/40 forced dependence at the adversarial instance), so the
-  conditioning does real work. **Next commit: L5-cut-v-a**, the triangle-`≥2`-hub infeasibility
-  lemma (`not_pencilNondegFeasible_of_triangle_two_hubs`, `Motive.lean`, any field) — it gates
-  both witness constructions. Feasibility propagation *as a proposition* stays
-  open but bounded: the new **triangle-`≥2`-hub infeasibility** mechanism refutes any purely
-  combinatorial (`≤ 3`-closedHubNbhd) criterion, while leaving L6's habitat claim untouched (no
-  triangles in the no-proper-rigid habitat at `|V| ≥ 4`).
+- **W5-L5 cut arm: L5-cut-iv COMPLETE; L5-cut-v route PINNED, v-a LANDED** (canonical record:
+  `notes/Phase39-design.md` §"W5 leaf decomposition" L5 "Cut-arm route verdict" for the `Gᵢ⁺`
+  repair + sub-case split, L5 "Feasibility propagation" for the triangle-`≥2`-hub infeasibility
+  finding — full per-leaf landing history in *Decisions made* below). L5-cut-iv's dispatch shell
+  `pencilPair_of_not_twoEdgeConnected` carries the residual sub-case (`deg_G u_c = 3`) as the
+  explicit hypothesis `hcutPendant3`. L5-cut-v's chart-steering route (engine on both `G`'s and
+  `H`'s charts) is ASSESSED GO (numerics + a composition spike, 2026-07-25); its gating lemma
+  `not_pencilNondegFeasible_of_triangle_two_hubs` (`Motive.lean`, any field) is now **landed** —
+  full leaf list v-a…v-g and composition findings: design doc L5 "Cut-arm route verdict"
+  **L5-cut-v bullet**. **Next: v-b** (a somewhere-witness construction on `G`'s chart, *Hand-off*).
+  Feasibility propagation *as a proposition* stays open but bounded: the triangle-hub mechanism
+  refutes any purely combinatorial (`≤ 3`-closedHubNbhd) feasibility criterion, while leaving L6's
+  habitat claim untouched (no triangles in the no-proper-rigid habitat at `|V| ≥ 4`).
 - ~~W5-L5 base-arm parallel-class blocker~~ **resolved** (2026-07-24; canonical record
   `notes/Phase39-design.md` §"W5 leaf decomposition" L5 "Blocker verdict" + "Long-run comparison").
   Rank cap real (`PencilPair` as first landed was FALSE at parallel pairs); **user adjudication
@@ -177,39 +139,23 @@ Full record, grounding, and the W0–W5 decomposition:
 
 **The phase stays OPEN** (the two superseding 2026-07-24 adjudications — no phase-close).
 
-**L5-cut-iv COMPLETE and the successor assembly landed — W5-L5 is now closed modulo the carried
-family.** `L5-cut-iv`'s dispatch shell `pencilPair_of_not_twoEdgeConnected` (`Pencil/Pair2.lean`,
-prior session) wires all three buildable sub-cases with the residual sub-case 4 carried as the
-explicit, `G.Simple`/`PencilNondegFeasible K G`-conditioned hypothesis `hcutPendant3` — full detail
-in *Decisions made*, below. On top: **the successor `pencil_conjecture_of_arms_pair` landed**
-(2026-07-25, `Pencil/Pair2.lean`), instantiating `Graph.pencil_reduction` at `P := PencilPair K 3`
-exactly as W3-L7 does at the bare motive — loop/base/cut arms discharged internally from the three
-landed leaves (`pencilPair_of_isLoopAt`, `pencilPair_of_ncard_le_two`,
-`pencilPair_of_not_twoEdgeConnected`), concluding `PencilPair K 3 G` directly (no `RankHypothesis`
-bridge needed, unlike W3-L7: the blueprint prose already asks for "satisfies the conditioned
-pair", which `PencilPair` already *is*). Three explicit hypotheses stay open: `hcontract`/`hsplit`
-(the contraction/split arms restated against `PencilPair`, not yet built — same status as W3-L7's,
-now discharged by W4/W5-L6–L8 respectively per the *Current state* pointer) and `hcutPendant3`
-(now universally quantified over the invoking graph, `∀ (G : Graph α β) {V₁ e_c u_c v_c}, …` — the
-L5-cut-v residual). Blueprint node `thm:pencil-conditional-realization-pair` flipped green
-(`\lean{}` + `\leanok`), its prose restated to add the pendant-degree-3 antecedent (hypothesis
-(ii)) the cut-arm findings surfaced, since the prior red-node prose predated them. Gates green
-(build + lint + blueprint verify/lint); axioms clean (`propext`/`Classical.choice`/`Quot.sound`
-only, `#print axioms`-checked).
+**W5-L5 is closed modulo the carried family** (loop/base/cut arms + the successor
+`pencil_conjecture_of_arms_pair`, `Pencil/Pair2.lean`, node
+`thm:pencil-conditional-realization-pair` green; `hcontract`/`hsplit`/`hcutPendant3` remain open
+hypotheses — full detail in *Decisions made*, below).
 
-**Next: build L5-cut-v** (assessed GO 2026-07-25, route pinned — *Blockers*): the first commit is
-**L5-cut-v-a**, the triangle-`≥2`-hub infeasibility lemma
-(`not_pencilNondegFeasible_of_triangle_two_hubs`, `Motive.lean`, any field; derivation pinned in
-the design doc's "Feasibility propagation" block — conjunct-3 LI at two adjacent hubs + 2-/3-member
-perp squeezes in `K⁴`), which gates both somewhere-witness constructions; then v-b…v-g per the
-design doc's L5-cut-v leaf list (the last leaf rewires the shell/successor — deleting
-`hcutPendant3`, adding `[Infinite K]` — and restates the blueprint node). **L6/L8 are parallel
-combinatorial tracks** buildable now (L6: habitat feasibility, the `≤ 3` closed-hub-neighbourhood
-lemma + witness-seed construction + the `G′.Simple` sub-obligation, design-doc L6 bullet; L8: the
-`k = 0` residue, emptiness route recommended). **L7 (the research core) is last** — the uniform
-escape certificate `r ⬝ Λ²Π̂(a) ≢ 0`; N2 witnesses one instance. Full leaf detail:
-`notes/Phase39-design.md` §"W5 leaf decomposition". Then W4 (constrained-family Claim-6.4
-analogue, G′-block witness confirmed by N3) after W5.
+**Next: L5-cut-v-b.** L5-cut-v-a (`not_pencilNondegFeasible_of_triangle_two_hubs`, the
+triangle-`≥2`-hub infeasibility lemma) is landed (*Decisions made*). **v-b** is the first
+somewhere-witness construction — on `G`'s chart: hub normals chosen LI per closed-hub-neighbourhood
++ the v-a exclusions, points hit by the landed arity sweeps (design doc's pinned statement (i)) —
+then **v-c**…**v-g** per the design doc's L5-cut-v leaf list (the last leaf rewires the
+shell/successor — deleting `hcutPendant3`, adding `[Infinite K]` — and restates the blueprint
+node). **L6/L8 are parallel combinatorial tracks** buildable now (L6: habitat feasibility, the
+`≤ 3` closed-hub-neighbourhood lemma + witness-seed construction + the `G′.Simple` sub-obligation,
+design-doc L6 bullet; L8: the `k = 0` residue, emptiness route recommended). **L7 (the research
+core) is last** — the uniform escape certificate `r ⬝ Λ²Π̂(a) ≢ 0`; N2 witnesses one instance. Full
+leaf detail: `notes/Phase39-design.md` §"W5 leaf decomposition". Then W4 (constrained-family
+Claim-6.4 analogue, G′-block witness confirmed by N3) after W5.
 
 Gates for any continuation: `lake build` (warning-clean) + `lake lint` when `.lean` is touched;
 `blueprint/verify.sh` + `blueprint/lint.sh` (vocabulary gate bans "stratum"/"strata") when `.tex`
@@ -223,6 +169,19 @@ neighbor — is `notes/IdeaBacklog.md`.
 
 ## Decisions made during this phase
 
+- **L5-cut-v-a landed** (2026-07-25, `not_pencilNondegFeasible_of_triangle_two_hubs`,
+  `Motive.lean`, any field): the triangle-`≥2`-hub infeasibility finding as a lemma — `y, z`
+  adjacent hubs (edge `e₂`), `x` the triangle's third vertex, conclusion
+  `¬ PencilNondegFeasible K G`. Conjunct 3 at `y` forces `normal y, normal z` LI, putting all three
+  triangle points in their `2`-dim common perp (`finrank_toDualPerp_pair_eq`); if `x` is not a hub,
+  conjunct 4 forces the three points LI (`3 > 2`, contradiction); if `x` is also a hub, conjunct 3
+  at `x` forces `normal x, normal y, normal z` LI, squeezing `point x, point y` into the `1`-dim
+  triple perp (`finrank_toDualPerp_triple_eq`) — yet conjunct 2 forces them LI (`2 > 1`). Two
+  supporting lemmas moved `Engine.lean → Motive.lean` alongside it (same import-cone reason as
+  L5-cut-i): `linearIndependent_triple_of_linearIndepOn`, `finrank_toDualPerp_triple_eq` — both
+  fully general, no chart-stack dependency. No new FRICTION (clean first-try build). No blueprint
+  node (unnamed technical infra, as the sibling L5-cut leaves). Gates green (build warning-clean +
+  lint); axioms clean (`propext`/`Classical.choice`/`Quot.sound` only, `#print axioms`-checked).
 - **L5-cut-v assessment recon — GO, route PINNED** (2026-07-25, docs-only; canonical record
   design doc L5 "Cut-arm route verdict" L5-cut-v bullet): exact-rational numerics (`K₃+pendant`,
   `C₄+pendant`, a double-star tree with a genuine 2-member promoted family; + one adversarial
