@@ -1686,9 +1686,9 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
     `hasGenericPencilRealization_of_cutEdges_eq_empty` (`Pair.lean`): glues the two sides' IH
     generic realizations exactly like the bare arm's own `|C| = 0` branch, with the three
     nondegeneracy conjuncts transferred wholesale via `LinearIndepOn.congr` composed with the new
-    structure lemmas. **Remaining for L5-cut-iv:** sub-case 1 (`|C| = 1`, both sides `≥ 2`) and
-    sub-case 3 (pendant, `deg_G u_c ≠ 3`), then the dispatch shell wiring all four sub-cases
-    together (sub-case 4 as the carried hypothesis).
+    structure lemmas. **Remaining for L5-cut-iv:** sub-case 3 (pendant, `deg_G u_c ≠ 3`), then the dispatch shell
+    wiring all four sub-cases together (sub-case 4 as the carried hypothesis; sub-case 1's shell
+    work is only the IH consumption feeding the landed glue below).
 
     **Sub-case 1's rank half landed (2026-07-25)**, a second standalone piece (the full sub-case
     re-derived at F9-contact confirmed it is much larger than sub-case 2 — a 2×2 hub-status split
@@ -1713,27 +1713,22 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
     same import-cone reason as its `closedHubNbhd` sibling, L5-cut-i) since the repositioning half
     needs it chart-free too.
 
-    **Concrete guidance for the repositioning/gluing half (the hard part, not yet attempted):**
-    case-split `by_cases hu_hub : G.PencilHub u_c` / `by_cases hv_hub : G.PencilHub v_c` (2×2,
-    matching the "complementary, never simultaneous" verdict) to pick the
-    `exists_reposition_cross_incidences_avoiding` args per branch. For the `s₁,s₂`/`t₁,t₂`
-    closed-hub-neighbourhood targets (steering 1/2, needed only in the hub branch): apply
-    `exists_subset_pair_of_ncard_le_two` to `G.closedHubNbhd u_c \ {v_c}` (resp. `v_c`'s), bounded
-    `≤ 2` via `ncard_closedHubNbhd_le_three_of_isNondegPencilRealization` on `G`'s own feasibility
-    witness combined with `Set.ncard_diff_singleton_lt_of_mem` (since `v_c` is a genuine member
-    exactly when it's a hub); junk `(0, 0)` in the non-hub branch (steering unused there). For the
-    `q₁,q₂`/`w₁,w₂` closed-neighbourhood targets (avoidance 3/4): **no need to force `q₁ := point₁⁺
-    u_c` literally** — apply the SAME cover helper to `G.closedNbhd u_c \ {v_c}` (bounded via
-    `ncard_closedNbhd_le_three_of_not_pencilHub`, needed only in the non-hub branch; junk in the
-    hub branch), and separately note `u_c` is ALWAYS a member of that covered set (regardless of
-    hub status, since it's only the *bound* that needs non-hub, not the membership fact), so
-    `point₁⁺ u_c ∈ span {q₁, q₂}` derives unconditionally from whichever cover was chosen — feeding
-    `LinearIndependent.pair_iff'` for the cut edge's own second-conjunct pair-LI in EVERY branch,
-    hub or not. Transport side 2 by `IsNondegPencilRealization.mapSupport_screwEquivOfLinearEquiv`;
-    take the fresh cut hinge from `exists_extensor_two_pencils`; assemble `hlinks` + the three
-    nondegeneracy conjuncts mirroring the bare arm's `|C| = 1` branch (`Arms.lean`) and sub-case 2's
-    conjunct pattern (`Pair.lean`), converting `(G.induce Vᵢ).IsLink` witnesses to `Gᵢ⁺.IsLink` ones
-    (a strict superset) wherever the IH's `HasPencilPanelRealization` conjuncts are consumed.
+    **Sub-case 1's repositioning/gluing half landed (2026-07-25)**, closing sub-case 1's
+    construction:
+    `hasGenericPencilRealization_of_isNondegPencilRealization_induce_union_singleton`
+    (`Pair.lean`) — a standalone producer taking the two `Gᵢ⁺` side witnesses (nondegeneracy +
+    target rank) plus `G`'s own feasibility witness, delivering `HasGenericPencilRealization K n G`
+    outright; the IH consumption (deriving the `Gᵢ⁺` inputs and firing the IH twice, where the
+    both-sides-`≥ 2` condition enters) is the dispatch shell's remaining sub-case-1 work
+    (`notes/Phase39.md` *Hand-off*). Built exactly as this bullet's guidance pinned, with one
+    structuring refinement: the 2×2 hub-status split lives in four up-front slot-choice `obtain`s
+    (conditional covers via `exists_subset_pair_of_ncard_le_two` + the
+    `≤ 3`-minus-crossing-endpoint bounds; the q-slot pads with `point₁ u_c` itself in the hub
+    branch, so `point₁ u_c ∈ span {q₁, q₂}` holds unconditionally and
+    `LinearIndependent.pair_iff'` closes the cut pair-LI in every branch — the recorded
+    no-forced-match insight), the repositioning lemma is called ONCE, and each glued conjunct does
+    a local insert-vs-`congr` split at the crossing endpoint (`LinearIndepOn.insert` off the
+    covered span, one avoidance conclusion each, over the `Gᵢ⁺` boundary identities).
   - **L5-cut-v** (design-open, do not build yet): sub-case 4 — first a somewhere-witness
     assessment (recon/numerics), then the chart-steering route above if positive.
 
