@@ -1686,9 +1686,10 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
     `hasGenericPencilRealization_of_cutEdges_eq_empty` (`Pair.lean`): glues the two sides' IH
     generic realizations exactly like the bare arm's own `|C| = 0` branch, with the three
     nondegeneracy conjuncts transferred wholesale via `LinearIndepOn.congr` composed with the new
-    structure lemmas. **Remaining for L5-cut-iv:** sub-case 3 (pendant, `deg_G u_c ≠ 3`), then the dispatch shell
-    wiring all four sub-cases together (sub-case 4 as the carried hypothesis; sub-case 1's shell
-    work is only the IH consumption feeding the landed glue below).
+    structure lemmas. **All three buildable sub-cases (2, 1, 3) are now landed** (2026-07-25);
+    **remaining for L5-cut-iv:** the dispatch shell wiring all four sub-cases together (sub-case 4
+    as the carried hypothesis; sub-cases 1 and 3's shell work is only the IH consumption feeding
+    each landed glue below).
 
     **Sub-case 1's rank half landed (2026-07-25)**, a second standalone piece (the full sub-case
     re-derived at F9-contact confirmed it is much larger than sub-case 2 — a 2×2 hub-status split
@@ -1729,6 +1730,22 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
     no-forced-match insight), the repositioning lemma is called ONCE, and each glued conjunct does
     a local insert-vs-`congr` split at the crossing endpoint (`LinearIndepOn.insert` off the
     covered span, one avoidance conclusion each, over the `Gᵢ⁺` boundary identities).
+
+    **Sub-case 3 landed (2026-07-25)**, a third standalone producer (new file `Pencil/Pair2.lean`
+    — `Pair.lean` was at the `~1500`-LoC cap):
+    `hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant` takes `H := G.induce
+    V₁`'s IH-supplied witness directly (no `Gᵢ⁺`, since the pendant IS the far side, so the closure
+    trick degenerates to `Gᵢ⁺ = G`). Confirms this bullet's own guidance: `u_c`'s hub status never
+    changes under `deg_G u_c ≠ 3`, landed as the general (no pendant-configuration hypothesis)
+    `Graph.pencilHub_iff_induce_of_degree_ne` plus its two degree-lemma inputs
+    (`Graph.degree_induce_eq_of_ne` / `Graph.degree_eq_degree_induce_succ`, `Motive.lean`) — so
+    unlike sub-case 1 there is no hub-status case split anywhere in the construction. The fresh
+    pendant data (`normal v_c`/`point v_c`) is chosen by a dimension-count generalizing
+    `exists_perp_linearIndependent` from a single vector to a small span
+    (`SetLike.not_le_iff_exists` against a `≤ 2`-generator cover of `H.closedNbhd u_c`, then
+    `le_finrank_toDualPerp_inf` for the joint perp); rank closes by
+    `finrank_span_rigidityRows_cutEdge_eq` verbatim (`hlb₂ = 0`, pendant side edgeless). No new
+    rank work, confirming the "no new rank work at all" prediction below.
   - **L5-cut-v** (design-open, do not build yet): sub-case 4 — first a somewhere-witness
     assessment (recon/numerics), then the chart-steering route above if positive.
 

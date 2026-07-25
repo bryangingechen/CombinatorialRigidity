@@ -842,4 +842,109 @@ theorem _root_.Graph.closedNbhd_induce_of_forall_isLink_mem [Finite β] {G : Gra
     · exact Or.inl rfl
     · exact Or.inr ⟨e, (Graph.induce_isLink G S e v w).mpr ⟨hl, hv, hS e v w hl hv⟩⟩
 
+/-! ## W5-L5 cut-arm structure layer: the pendant side (Phase 39, L5-cut-iv sub-case 3)
+
+The `|V₃₋ᵢ| = 1` sub-case of the cut-arm route verdict (`notes/Phase39-design.md` §"W5 leaf
+decomposition" L5 "Cut-arm route verdict", item 3): the far side is a single pendant vertex, so
+`Gᵢ⁺ = G` and the edge-closed-side trick (L5-cut-i) is inapplicable — the induction hypothesis
+fires directly at the *bare* induced side `H := G.induce V₁`, one vertex smaller than `G`. Unlike
+the `Gᵢ⁺` structure layer, the two lemmas below need no far-vertex membership hypothesis on `G` at
+all: they are the same "at most one crossing edge" fact, read for the bare induced side rather than
+its edge-closure, so they hold regardless of how large the complementary side is (the pendant
+configuration only enters once the far vertex's own degree/hub-status needs pinning, which the
+sub-case-3 producer, `Pencil/Pair.lean`, does locally). The crossing endpoint `u₀`'s hub status is
+the one place degree actually differs between `H` and `G` (by exactly one, the dropped crossing
+edge); `Graph.pencilHub_iff_induce_of_degree_ne` shows it does not change at all when `G.degree u₀`
+avoids exactly `3` — the sharp value where a single dropped edge can flip pencil-hub status. -/
+
+/-- **The bare induced side keeps the ambient degree away from the crossing endpoint**
+(Phase 39 W5-L5 cut-arm structure layer, L5-cut-iv sub-case 3; dual to
+`Graph.degree_induce_union_singleton_of_mem`, read for the bare induced side instead of its
+edge-closure). With at most one crossing edge `e₀ = u₀w₀`, every `v ∈ V₁` other than `u₀` keeps the
+same degree in `G.induce V₁` as in `G`: any `G`-edge at `v` crossing out of `V₁` would, by
+uniqueness of the crossing edge, have to be `e₀` itself, forcing `v = u₀` — contradicting
+`v ≠ u₀`. -/
+theorem _root_.Graph.degree_induce_eq_of_ne [Finite β] {G : Graph α β} {V₁ : Set α}
+    {e₀ : β} {u₀ w₀ : α} (hl₀ : G.IsLink e₀ u₀ w₀) (hu₀ : u₀ ∈ V₁) (hw₀ : w₀ ∉ V₁)
+    (hcut : (G.cutEdges V₁).ncard ≤ 1) {v : α} (hv : v ∈ V₁) (hvne : v ≠ u₀) :
+    (G.induce V₁).degree v = G.degree v := by
+  have hloops : {e | (G.induce V₁).IsLoopAt e v} = {e | G.IsLoopAt e v} := by
+    ext e
+    exact ⟨fun h => ((Graph.induce_isLink G V₁ e v v).mp h).1,
+      fun h => (Graph.induce_isLink G V₁ e v v).mpr ⟨h, hv, hv⟩⟩
+  have hnonloops : {e | (G.induce V₁).IsNonloopAt e v} = {e | G.IsNonloopAt e v} := by
+    ext e
+    constructor
+    · rintro ⟨y, hyv, hl⟩
+      exact ⟨y, hyv, ((Graph.induce_isLink G V₁ e v y).mp hl).1⟩
+    · rintro ⟨y, hyv, hl⟩
+      refine ⟨y, hyv, (Graph.induce_isLink G V₁ e v y).mpr ⟨hl, hv, ?_⟩⟩
+      by_cases hy₁ : y ∈ V₁
+      · exact hy₁
+      · exfalso
+        obtain rfl := Graph.eq_cutEdge_of_isLink_crossing hl₀ hu₀ hw₀ hcut hl hv hy₁
+        rcases hl.eq_and_eq_or_eq_and_eq hl₀ with ⟨hveq, -⟩ | ⟨hveq, -⟩
+        · exact hvne hveq
+        · rw [hveq] at hv; exact hw₀ hv
+  rw [Graph.degree_eq_ncard_add_ncard, Graph.degree_eq_ncard_add_ncard, hloops, hnonloops]
+
+/-- **The crossing endpoint loses exactly the crossing edge's degree on the bare induced side**
+(Phase 39 W5-L5 cut-arm structure layer, L5-cut-iv sub-case 3): `G.degree u₀ = (G.induce
+V₁).degree u₀ + 1` — the nonloop edges at `u₀` are exactly the bare induced side's, plus `e₀`
+itself (any other crossing edge at `u₀` would duplicate `e₀` by crossing-edge uniqueness, and no
+`H`-internal edge is `e₀`, whose far endpoint `w₀` sits outside `V₁`). -/
+theorem _root_.Graph.degree_eq_degree_induce_succ [Finite β] {G : Graph α β} [G.Loopless]
+    {V₁ : Set α} {e₀ : β} {u₀ w₀ : α} (hl₀ : G.IsLink e₀ u₀ w₀) (hu₀ : u₀ ∈ V₁) (hw₀ : w₀ ∉ V₁)
+    (hcut : (G.cutEdges V₁).ncard ≤ 1) :
+    G.degree u₀ = (G.induce V₁).degree u₀ + 1 := by
+  have hloopG : {e | G.IsLoopAt e u₀} = ∅ := by
+    ext e
+    simp only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]
+    exact G.not_isLoopAt e u₀
+  have hloopH : {e | (G.induce V₁).IsLoopAt e u₀} = ∅ := by
+    ext e
+    simp only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]
+    intro h
+    exact G.not_isLoopAt e u₀ ((Graph.induce_isLink G V₁ e u₀ u₀).mp h).1
+  have hwu : w₀ ≠ u₀ := fun h => hw₀ (h ▸ hu₀)
+  have hec_notmem : e₀ ∉ {e | (G.induce V₁).IsNonloopAt e u₀} := by
+    rintro ⟨y, -, hl⟩
+    obtain ⟨hlG, -, hyV₁⟩ := (Graph.induce_isLink G V₁ e₀ u₀ y).mp hl
+    obtain rfl := hlG.right_unique hl₀
+    exact hw₀ hyV₁
+  have hnonloop_eq :
+      {e | G.IsNonloopAt e u₀} = insert e₀ {e | (G.induce V₁).IsNonloopAt e u₀} := by
+    ext e
+    simp only [Set.mem_setOf_eq, Set.mem_insert_iff]
+    constructor
+    · rintro ⟨y, hyu, hl⟩
+      by_cases hy₁ : y ∈ V₁
+      · exact Or.inr ⟨y, hyu, (Graph.induce_isLink G V₁ e u₀ y).mpr ⟨hl, hu₀, hy₁⟩⟩
+      · have he := Graph.eq_cutEdge_of_isLink_crossing hl₀ hu₀ hw₀ hcut hl hu₀ hy₁
+        exact Or.inl he
+    · rintro (rfl | ⟨y, hyu, hl⟩)
+      · exact ⟨w₀, hwu, hl₀⟩
+      · exact ⟨y, hyu, ((Graph.induce_isLink G V₁ e u₀ y).mp hl).1⟩
+  rw [Graph.degree_eq_ncard_add_ncard, Graph.degree_eq_ncard_add_ncard, hloopG, hloopH,
+    hnonloop_eq, Set.ncard_insert_of_notMem hec_notmem (Set.toFinite _)]
+  omega
+
+/-- **The crossing endpoint's pencil-hub status is unchanged whenever its `G`-degree avoids `3`**
+(Phase 39 W5-L5 cut-arm structure layer, L5-cut-iv sub-case 3): combining the degree-succ fact
+above with `G.degree u₀ ≠ 3`, either `G.degree u₀ ≥ 4` (so both sides are hubs, the dropped edge
+still leaving `≥ 3`) or `G.degree u₀ ≤ 2` (so neither side is, `G.PencilHub u₀` already failing).
+This is the sub-case-3 producer's key structural fact: at `deg = 3` exactly, the dropped edge can
+flip hub status (`H`-degree `2 < 3`) while `G`-degree stays `≥ 3` — the arm's residual sub-case
+(L5-cut-v). -/
+theorem _root_.Graph.pencilHub_iff_induce_of_degree_ne [Finite β] {G : Graph α β} [G.Loopless]
+    {V₁ : Set α} {e₀ : β} {u₀ w₀ : α} (hl₀ : G.IsLink e₀ u₀ w₀) (hu₀ : u₀ ∈ V₁) (hw₀ : w₀ ∉ V₁)
+    (hcut : (G.cutEdges V₁).ncard ≤ 1) (hdeg3 : G.degree u₀ ≠ 3) :
+    G.PencilHub u₀ ↔ (G.induce V₁).PencilHub u₀ := by
+  have hsucc := Graph.degree_eq_degree_induce_succ hl₀ hu₀ hw₀ hcut
+  constructor
+  · intro h
+    exact ⟨hu₀, by have := h.2; omega⟩
+  · intro h
+    exact ⟨hl₀.left_mem, by have := h.2; omega⟩
+
 end CombinatorialRigidity.Molecular
