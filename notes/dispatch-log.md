@@ -71,6 +71,8 @@ keeps only what git cannot show.
 | 2026-07-24 | Phase39 W3-L2a simplicity sibling (`b2e34aae`) | sonnet | pipe-wrapped gate builds recurred DESPITE explicit in-prompt ban, self-reported; recovery correct | Second same-day `\| tail` recurrence — the dispatch prompt explicitly named and banned the exact anti-pattern and the agent still piped its first two gate builds (auto-backgrounded, exit masked). Recovery was right this time: waited for both stray builds (no third concurrent build), then one clean unwrapped rebuild; all gates honestly green, coordinator re-verified. Mitigation escalated from prompt to CORE: `agents-core/phase-builder.md` now bans shell `timeout`/`tail` wraps on gates and mandates wait-then-rerun (this commit). Prompt-level wording demonstrably does not hold — watch whether the core edit does. |
 | 2026-07-24 | Phase39 W3-L4 transport slice (`0a9dac92`) | opus | recon-pin defects ×2 caught by the builder's derivation guard | The accepted fable route recon's W3-L4 leaf note mis-pinned two bricks: it named "the landed ProjectiveInvariance transport" (actually ℝ-only, `supportExtensor`-only — inapplicable; the K-level transport had to be built on `GenericLift/HingeGeneric.lean`'s `screwEquivOfLinearEquiv`/`mapSupport`) and called `exists_cut_decomposition_of_not_twoEdgeConnected` minimality-free (it takes `IsMinimalKDof`; only the deficiency lemma is free). The in-prompt derivation guard ("read the landed signatures before writing the statement") caught both pre-build; coordinator re-verified both against the source. Scope-to-fit landed the transport half honestly; L4 remainder retargeted. Lesson: even a top-rung recon's *leaf-list* brick attributions are unverified pins — the per-dispatch derivation guard is the check that fires. |
 | 2026-07-24 | Phase39 W5-L4 assembly continuation (`a969a0e4`) | sonnet | unsatisfiable WF-predicate conjunct in landed W5-L2 code, caught 2 slices later; second conjunct gap surfaced as honest blocker | `PencilChartWF`'s `closedNbhd` selector conjunct was unconditional — unsatisfiable at any ≥4-distinct-neighbour body (incl. the design doc's own N4–N6 test graphs). Rode through two landed slices because the by-construction membership theorem only CONSUMES WF, never instantiates it; caught when the D6 assembly first instantiated WF at real graphs. Same-commit fix (relativized to non-hubs; all consumers compile unchanged). The 4th conjunct has an analogous gap (triple-LI at degree-2 non-hubs) that is a genuine open design question, recorded as the hand-off blocker with a numerics-first route. See Findings F8. |
+| 2026-07-24 | Phase39 W5-L5 base arm (`58d0bb37`) → recon chain → (b′) restatement (`63e47c8b`) | sonnet→fable | design-premise refutation return, escalated to recon + user adjudication | The sonnet builder, prompted to re-derive the spiked plan against CURRENT definition bodies, refuted the design doc's "parallel classes nondegeneracy-infeasible, hence vacuous" premise with a compiler-checked witness instead of building on it (the L5 bullet had dropped verdict 1's "between two hubs" qualifier). Fable recon confirmed the rank cap (`PencilPair` as landed FALSE at parallel classes), a user-commissioned second recon projected both repairs long-run (key: the two conditionings are logically equivalent graph-by-graph), user adjudicated (b′). See F9. |
+| 2026-07-24 | Phase39 W5-L5 cut arm (`6dd9e0e9`) | opus (pinned) → ran fable | rung up-drift on a pinned variant; design-blocked return with honest slice | The `phase-builder-opus` variant's environment identified the model as Fable 5 — first observed pin-not-honored on a FRESH dispatch (F5 covered resumes of base-type dispatches); up-drift, safe direction, trailer correctly named the actual model per the environment-wins rule. The task itself returned design-blocked: it confirmed the recon-recorded input gap AND found a new output gap (promotion side), landed route-neutral `.mono` infra + the owed note rebalance, and commissioned the cut-arm route recon rather than forcing a construction. See F9. |
 
 ## Findings
 
@@ -220,3 +222,23 @@ At phase close, promote stable entries into the coordinator command's
   concrete instance satisfies this?" — a one-`lake env lean` witness
   or even a prose trace at K4/C4 would have caught both conjunct gaps
   at W5-L2.
+- **F9 — a design pass's per-arm obligation verdicts ("free",
+  "vacuous", "mirrors landed X") are unverified until a builder
+  confronts them; prompt the confrontation explicitly (Phase 39 W5).**
+  Three consecutive W5 leaves each carried a spiked design-pass verdict
+  that failed at first contact: L4's WF conjuncts (F8), L5's
+  "parallel classes vacuous" (a dropped qualifier turned a hub-scoped
+  refutation into a false general claim), and L5's cut arm ("mirrors
+  the landed panel sibling" — gapped on both sides of the IH
+  consumption, one gap unknown to the recon that sharpened it). What
+  worked, twice in one day: an in-prompt line telling the builder to
+  *re-derive the spiked plan against the CURRENT definition bodies and
+  return the refutation instead of building on it* — both builders
+  converted silent wrong-building into compiler-checked refutation
+  returns with honest route-neutral slices. This is the derivation
+  guard (coordinator step 2) aimed at *arm-obligation verdicts* rather
+  than statements; cheap, and it composes with F8's
+  what-instance-satisfies-this check. Corollary for rating: an arm
+  re-derivation against a conditioned motive is P≥2 even when the
+  design doc calls it "small"/"free" — reserve P=1 for arms whose
+  vacuity guard is already landed and named.
