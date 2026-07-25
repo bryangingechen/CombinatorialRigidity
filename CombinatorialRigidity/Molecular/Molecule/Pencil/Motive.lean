@@ -3,6 +3,7 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
+import CombinatorialRigidity.Mathlib.Combinatorics.Graph.Delete
 import CombinatorialRigidity.Molecular.Molecule.Pencil.Arms
 
 /-!
@@ -300,5 +301,281 @@ theorem PencilNondegFeasible.mono {G H : Graph α β} [G.LocallyFinite]
       · exact absurd ⟨e', u, hl'⟩ hinc
     exact (LinearIndepOn.singleton (i := v)
       (hpnz v (Graph.vertexSet_mono hle hv))).mono hsub
+
+/-! ## Motive-consequence incidence and cardinality lemmas (Phase 39 W5-L4, re-homed W5-L5)
+
+The cross-incidence orthogonality facts and the closed-hub-neighbourhood cardinality bound an
+*arbitrary* nondegenerate realization satisfies. Landed with W5-L4 in
+`Molecule/Pencil/Engine.lean`; **moved here 2026-07-24** (the W5-L5 cut-arm import-cone re-home,
+`notes/Phase39-design.md` §"W5 leaf decomposition" L5-cut-i): they are consequences of the motive
+alone — their only nontrivial inputs are `Molecule/Pencil/Statement.lean`'s W2 necessity engine
+(`dotProduct_eq_zero_of_extensorInPanel_of_extensorThroughPoint`) and perp-dimension count
+(`finrank_toDualPerp_single_eq`), both already in this file's import cone — and the cut arm's
+consumers (`Molecule/Pencil/Pair.lean`, which imports only this leaf) need them without pulling
+in the chart stack (`Chart`/`Engine`/`Reseed`). -/
+
+/-- **A nondegenerate realization's point is orthogonal to every selected closed-neighbour's
+normal** (Phase 39 W5-L4, the general form feeding both the cardinality bound below and the piece-3
+assembly): for `w ∈ closedNbhd v`, `point v ⬝ᵥ normal w = 0` — own-panel incidence when `w = v`; the
+W2 necessity cross-incidence (`dotProduct_eq_zero_of_extensorInPanel_of_extensorThroughPoint`, via
+the linking edge's own-panel membership of `normal w` and through-point membership of `point v`)
+otherwise. The proof never uses a hub hypothesis on `w`, so this generalizes what used to be stated
+only for `closedHubNbhd` (`dotProduct_point_eq_zero_of_mem_closedHubNbhd` below is now a one-line
+corollary); this generalizes the chart's by-construction fact
+(`dotProduct_pencilChartPoint_hubNormal_of_mem_closedHubNbhd`, `Molecule/Pencil/Chart.lean`) from
+the chart's own constructed data to an *arbitrary* nondegenerate realization. -/
+theorem dotProduct_point_eq_zero_of_mem_closedNbhd
+    {G : Graph α β} {F : BodyHingeFramework K 2 α β}
+    {normal point : α → Fin 4 → K} (h : IsNondegPencilRealization G F normal point)
+    {v w : α} (hv : v ∈ V(G)) (hw : w ∈ G.closedNbhd v) :
+    point v ⬝ᵥ normal w = 0 := by
+  obtain ⟨hcop, _, hself, hthru⟩ := h.1
+  obtain ⟨_, _, hCne, hpanel⟩ := hcop
+  rcases hw with rfl | ⟨e, hlink⟩
+  · exact hself w hv
+  · exact dotProduct_eq_zero_of_extensorInPanel_of_extensorThroughPoint (hCne e)
+      (hpanel e v w hlink).2 (hthru e v w hlink).1
+
+/-- **The `closedHubNbhd` specialization** (Phase 39 W5-L4): immediate from the general
+`closedNbhd` form above, forgetting the hub conjunct on `w` (`closedHubNbhd v ⊆ closedNbhd v`
+pointwise, `hw.2`). -/
+theorem dotProduct_point_eq_zero_of_mem_closedHubNbhd
+    {G : Graph α β} {F : BodyHingeFramework K 2 α β}
+    {normal point : α → Fin 4 → K} (h : IsNondegPencilRealization G F normal point)
+    {v w : α} (hv : v ∈ V(G)) (hw : w ∈ G.closedHubNbhd v) :
+    point v ⬝ᵥ normal w = 0 :=
+  dotProduct_point_eq_zero_of_mem_closedNbhd h hv hw.2
+
+/-- **The symmetric form: a nondegenerate realization's normal is orthogonal to every selected
+closed-neighbour's point** (Phase 39 W5-L4, feeding the piece-3 assembly's non-hub chart-normal
+reproduction): for `w ∈ closedNbhd v`, `point w ⬝ᵥ normal v = 0`. Applies the general fact above at
+`(w, v)` in place of `(v, w)`: the `w = v` case reduces to itself; the linked case transports `w`'s
+own graph membership via `hlink.right_mem` and rewrites `v ∈ closedNbhd w` from
+`w ∈ closedNbhd v` by symmetrizing the link (`hlink.symm`). -/
+theorem dotProduct_normal_eq_zero_of_mem_closedNbhd
+    {G : Graph α β} {F : BodyHingeFramework K 2 α β}
+    {normal point : α → Fin 4 → K} (h : IsNondegPencilRealization G F normal point)
+    {v w : α} (hv : v ∈ V(G)) (hw : w ∈ G.closedNbhd v) :
+    point w ⬝ᵥ normal v = 0 := by
+  rcases hw with rfl | ⟨e, hlink⟩
+  · exact dotProduct_point_eq_zero_of_mem_closedNbhd h hv (Or.inl rfl)
+  · exact dotProduct_point_eq_zero_of_mem_closedNbhd h hlink.right_mem (Or.inr ⟨e, hlink.symm⟩)
+
+/-- **A nondegenerate realization's closed hub-neighbourhoods have `≤ 3` members**
+(Phase 39 W5-L4, the re-seeding assembly's cardinality bound — the same argument as the design
+doc's K4 refutation, `notes/Phase39-design.md` §"W5 design pass" verdict 1). Any `4`-member
+sub-family of an independent `normal` assignment on `closedHubNbhd v` would span all of `K⁴` (the
+ambient rank), forcing `point v` — orthogonal to every member (the cross-incidence lemma above) —
+to vanish, contradicting nondegeneracy. Concretely: the span of `normal '' closedHubNbhd v` sits
+inside `point v`'s `3`-dimensional perp (`finrank_toDualPerp_single_eq`), so its rank is `≤ 3`; the
+independence conjunct makes that rank exactly `(closedHubNbhd v).ncard` (`finrank_span_eq_card`,
+`[Finite α]` supplying the `Fintype` instance the plain `Set` needs). -/
+theorem ncard_closedHubNbhd_le_three_of_isNondegPencilRealization
+    [Finite α] {G : Graph α β} {F : BodyHingeFramework K 2 α β} {normal point : α → Fin 4 → K}
+    (h : IsNondegPencilRealization G F normal point) {v : α} (hv : v ∈ V(G)) :
+    (G.closedHubNbhd v).ncard ≤ 3 := by
+  classical
+  have hpt_ne : point v ≠ 0 := h.1.2.1 v hv
+  have hLI : LinearIndepOn K normal (G.closedHubNbhd v) := h.2.2.1 v hv
+  set Vperp : Submodule K (Fin 4 → K) :=
+    LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip (point v)) with hVperp
+  have hVdim : Module.finrank K Vperp = 3 := finrank_toDualPerp_single_eq hpt_ne
+  have hsub : Submodule.span K (normal '' G.closedHubNbhd v) ≤ Vperp := by
+    rw [Submodule.span_le]
+    rintro _ ⟨w, hw, rfl⟩
+    simp only [SetLike.mem_coe, hVperp, LinearMap.mem_ker, LinearMap.flip_apply,
+      piBasisFun_toDual_eq_dotProduct]
+    rw [dotProduct_comm]
+    exact dotProduct_point_eq_zero_of_mem_closedHubNbhd h hv hw
+  have hspan_le : Module.finrank K (Submodule.span K (normal '' G.closedHubNbhd v)) ≤ 3 := by
+    have hmono := Submodule.finrank_mono hsub
+    rwa [hVdim] at hmono
+  haveI : Fintype (G.closedHubNbhd v) := Fintype.ofFinite _
+  have hspan_eq : Module.finrank K
+      (Submodule.span K (Set.range (fun x : G.closedHubNbhd v => normal x)))
+      = Fintype.card (G.closedHubNbhd v) := finrank_span_eq_card hLI
+  have himg : Set.range (fun x : G.closedHubNbhd v => normal x) = normal '' G.closedHubNbhd v :=
+    (Set.image_eq_range normal (G.closedHubNbhd v)).symm
+  rw [himg] at hspan_eq
+  have hcard : (G.closedHubNbhd v).ncard = Fintype.card (G.closedHubNbhd v) := by
+    rw [Set.ncard_eq_toFinset_card', Set.toFinset_card]
+  rw [hcard, ← hspan_eq]
+  exact hspan_le
+
+/-! ## W5-L5 cut-arm structure layer: the edge-closed side `Gᵢ⁺` (Phase 39)
+
+The cut-arm route verdict (`notes/Phase39-design.md` §"W5 leaf decomposition" L5 "Cut-arm route
+verdict") pinned the IH-consumption shape for the generic half: not the bare induced side
+`G.induce Vᵢ` (whose demoted-hub restriction gap is the recorded cut-arm finding) but the
+**edge-closed side** `Gᵢ⁺ = G.induce (Vᵢ ∪ {far})`, where `far` is the single crossing edge's
+endpoint on the other side. With at most one crossing edge and a loopless `G`, this graph carries
+exactly the side's edges plus the cut edge, so every `Vᵢ`-vertex keeps its full `G`-degree (no
+demotion — the fourth conjunct restricts wholesale) and the far endpoint drops to degree `1`
+(a demotion `PencilNondegFeasible.mono` already bridges). This section lands that structure
+layer: the two degree lemmas, the feasibility corollary through `.mono`, and the deficiency
+bookkeeping `def(Gᵢ⁺) = def(G.induce Vᵢ) + 1` (the split `deficiency_eq_of_cutEdges_ncard_le_one`
+applied *inside* `Gᵢ⁺` at its singleton far side, whose induced side is edgeless; the re-induce
+collapses by the mirrored `Graph.induce_induce_of_subset`). The rank-side companion — dropping
+the cut edge's rows costs at most `screwDim k − 1` — is the new brick
+`BodyHingeFramework.finrank_span_rigidityRows_le_add_of_links_subset`
+(`RigidityMatrix/Bricks.lean` §CutEdgeBrick). -/
+
+/-- **Under `≤ 1` crossing edge, every crossing link is the pinned cut edge** (Phase 39 W5-L5
+cut-arm structure layer, the dispatch fact all three `Gᵢ⁺` lemmas below share): a link `e = xy`
+with `x ∈ V₁` and `y ∉ V₁` is a member of `G.cutEdges V₁`, which contains the pinned `e₀` and has
+at most one member. -/
+theorem _root_.Graph.eq_cutEdge_of_isLink_crossing [Finite β] {G : Graph α β} {V₁ : Set α}
+    {e₀ : β} {u₀ w₀ : α} (hl₀ : G.IsLink e₀ u₀ w₀) (hu₀ : u₀ ∈ V₁) (hw₀ : w₀ ∉ V₁)
+    (hcut : (G.cutEdges V₁).ncard ≤ 1) {e : β} {x y : α}
+    (hl : G.IsLink e x y) (hx : x ∈ V₁) (hy : y ∉ V₁) : e = e₀ := by
+  have he : e ∈ G.cutEdges V₁ := ⟨hl.edge_mem, x, y, hl, hx, hy⟩
+  have he₀ : e₀ ∈ G.cutEdges V₁ := ⟨hl₀.edge_mem, u₀, w₀, hl₀, hu₀, hw₀⟩
+  exact (Set.ncard_le_one (Set.toFinite _)).mp hcut e he e₀ he₀
+
+/-- **The edge-closed side preserves own-side degrees** (Phase 39 W5-L5 cut-arm structure layer,
+degree lemma 1): with at most one crossing edge `e₀ = u₀w₀`, every `v ∈ V₁` has the same degree in
+`Gᵢ⁺ = G.induce (V₁ ∪ {w₀})` as in `G` — an edge at `v` is either `V₁`-internal or the crossing
+`e₀` itself, and both survive the induce (`w₀` is exactly the vertex the closure adds). Hence no
+pencil hub of `G` on `V₁` is demoted in `Gᵢ⁺` — the gap the cut-arm finding exhibited for the bare
+side `G.induce V₁` closes structurally. -/
+theorem _root_.Graph.degree_induce_union_singleton_of_mem [Finite β] {G : Graph α β}
+    {V₁ : Set α} {e₀ : β} {u₀ w₀ : α}
+    (hl₀ : G.IsLink e₀ u₀ w₀) (hu₀ : u₀ ∈ V₁) (hw₀ : w₀ ∉ V₁)
+    (hcut : (G.cutEdges V₁).ncard ≤ 1) {v : α} (hv : v ∈ V₁) :
+    (G.induce (V₁ ∪ {w₀})).degree v = G.degree v := by
+  have hloops : {e | (G.induce (V₁ ∪ {w₀})).IsLoopAt e v} = {e | G.IsLoopAt e v} := by
+    ext e
+    exact ⟨fun h => ((Graph.induce_isLink G (V₁ ∪ {w₀}) e v v).mp h).1,
+      fun h => (Graph.induce_isLink G (V₁ ∪ {w₀}) e v v).mpr
+        ⟨h, Set.mem_union_left _ hv, Set.mem_union_left _ hv⟩⟩
+  have hnonloops : {e | (G.induce (V₁ ∪ {w₀})).IsNonloopAt e v}
+      = {e | G.IsNonloopAt e v} := by
+    ext e
+    constructor
+    · rintro ⟨y, hyv, hl⟩
+      exact ⟨y, hyv, ((Graph.induce_isLink G (V₁ ∪ {w₀}) e v y).mp hl).1⟩
+    · rintro ⟨y, hyv, hl⟩
+      refine ⟨y, hyv, (Graph.induce_isLink G (V₁ ∪ {w₀}) e v y).mpr
+        ⟨hl, Set.mem_union_left _ hv, ?_⟩⟩
+      by_cases hy : y ∈ V₁
+      · exact Set.mem_union_left _ hy
+      · obtain rfl := Graph.eq_cutEdge_of_isLink_crossing hl₀ hu₀ hw₀ hcut hl hv hy
+        rcases hl.eq_and_eq_or_eq_and_eq hl₀ with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
+        · exact Set.mem_union_right _ rfl
+        · exact absurd hv hw₀
+  rw [Graph.degree_eq_ncard_add_ncard, Graph.degree_eq_ncard_add_ncard, hloops, hnonloops]
+
+/-- **The edge-closed side's far endpoint has degree exactly `1`** (Phase 39 W5-L5 cut-arm
+structure layer, degree lemma 2): in `Gᵢ⁺ = G.induce (V₁ ∪ {w₀})` the closure vertex `w₀` is
+incident to the crossing edge `e₀` only — any other `Gᵢ⁺`-edge at `w₀` would have its far endpoint
+in `V₁`, making it a second crossing edge of `G` (impossible under `≤ 1`), and a loop at `w₀` is
+excluded by `[G.Loopless]`. In particular a `G`-pencil-hub `w₀` is demoted to `Gᵢ⁺`-degree `1`,
+exactly the demotion `PencilNondegFeasible.mono`'s adjacent-point bridge covers. -/
+theorem _root_.Graph.degree_induce_union_singleton_far [Finite β] {G : Graph α β} [G.Loopless]
+    {V₁ : Set α} {e₀ : β} {u₀ w₀ : α}
+    (hl₀ : G.IsLink e₀ u₀ w₀) (hu₀ : u₀ ∈ V₁) (hw₀ : w₀ ∉ V₁)
+    (hcut : (G.cutEdges V₁).ncard ≤ 1) :
+    (G.induce (V₁ ∪ {w₀})).degree w₀ = 1 := by
+  have huw : u₀ ≠ w₀ := fun h => hw₀ (h ▸ hu₀)
+  have hloops : {e | (G.induce (V₁ ∪ {w₀})).IsLoopAt e w₀} = ∅ := by
+    ext e
+    simp only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]
+    exact fun h =>
+      G.not_isLoopAt e w₀ ((Graph.induce_isLink G (V₁ ∪ {w₀}) e w₀ w₀).mp h).1
+  have hnonloops : {e | (G.induce (V₁ ∪ {w₀})).IsNonloopAt e w₀} = {e₀} := by
+    ext e
+    simp only [Set.mem_setOf_eq, Set.mem_singleton_iff]
+    constructor
+    · rintro ⟨y, hyw, hl⟩
+      obtain ⟨hlG, -, hy⟩ := (Graph.induce_isLink G (V₁ ∪ {w₀}) e w₀ y).mp hl
+      have hy₁ : y ∈ V₁ := hy.resolve_right hyw
+      exact Graph.eq_cutEdge_of_isLink_crossing hl₀ hu₀ hw₀ hcut hlG.symm hy₁ hw₀
+    · rintro he
+      rw [he]
+      exact ⟨u₀, huw, (Graph.induce_isLink G (V₁ ∪ {w₀}) e₀ w₀ u₀).mpr
+        ⟨hl₀.symm, Set.mem_union_right _ rfl, Set.mem_union_left _ hu₀⟩⟩
+  rw [Graph.degree_eq_ncard_add_ncard, hloops, hnonloops, Set.ncard_empty, Set.ncard_singleton]
+
+/-- **Feasibility descends to the edge-closed side** (Phase 39 W5-L5 cut-arm structure layer, the
+IH-input corollary; the composition the cut-arm route verdict spiked): `PencilNondegFeasible K G`
+restricts to `Gᵢ⁺ = G.induce (V₁ ∪ {w₀})` through `PencilNondegFeasible.mono` — every `G`-hub on
+`V₁` keeps its full degree (degree lemma 1, no demotion), and the far endpoint `w₀` drops to
+degree `1` (degree lemma 2), the pendant demotion the `.mono` bridge already carries. This is the
+input half of the sub-case-1/2 IH consumption; the output half (transport of the glued conjuncts)
+is L5-cut-ii/iii. -/
+theorem PencilNondegFeasible.induce_union_singleton [Finite β] {G : Graph α β} [G.Loopless]
+    {V₁ : Set α} {e₀ : β} {u₀ w₀ : α}
+    (hfeas : PencilNondegFeasible K G)
+    (hl₀ : G.IsLink e₀ u₀ w₀) (hu₀ : u₀ ∈ V₁) (hw₀ : w₀ ∉ V₁)
+    (hV₁ : V₁ ⊆ V(G)) (hcut : (G.cutEdges V₁).ncard ≤ 1) :
+    PencilNondegFeasible K (G.induce (V₁ ∪ {w₀})) := by
+  have hle : G.induce (V₁ ∪ {w₀}) ≤ G := Graph.induce_le (by
+    rintro x (hx | rfl)
+    · exact hV₁ hx
+    · exact hl₀.right_mem)
+  refine hfeas.mono hle ?_
+  rintro v (hv₁ | rfl) hGhub
+  · exact Or.inl ⟨Set.mem_union_left _ hv₁, by
+      rw [Graph.degree_induce_union_singleton_of_mem hl₀ hu₀ hw₀ hcut hv₁]
+      exact hGhub.2⟩
+  · exact Or.inr (Graph.degree_induce_union_singleton_far hl₀ hu₀ hw₀ hcut).le
+
+/-- **The edge-closed side's deficiency bookkeeping** (Phase 39 W5-L5 cut-arm structure layer;
+`def(Gᵢ⁺) = def(G.induce V₁) + 1`): apply the cut split (KT Lemma 3.6,
+`deficiency_eq_of_cutEdges_ncard_le_one`) *inside* `Gᵢ⁺` at its singleton far side `{w₀}` — the
+unique crossing edge there is `e₀`, the singleton side is edgeless (`[G.Loopless]`) with
+deficiency `0` (`deficiency_of_edgeSet_empty`), the complementary side re-induces to
+`G.induce V₁` (`Graph.induce_induce_of_subset`), and the cut term contributes
+`D − (D − 1)·1 = 1` for every `D`. This is the bookkeeping that converts the IH rank at `Gᵢ⁺`
+(target `screwDim k · (|V₁| + 1 − 1) − def(Gᵢ⁺)`) into the bare-side form the landed cut assembly
+`finrank_span_rigidityRows_cutEdge_eq` consumes, once the drop brick removes the cut edge's rows. -/
+theorem _root_.Graph.deficiency_induce_union_singleton [Finite α] [Finite β] {G : Graph α β}
+    [G.Loopless] {n : ℕ} (hD : 1 ≤ Graph.bodyBarDim n) {V₁ : Set α} {e₀ : β} {u₀ w₀ : α}
+    (hl₀ : G.IsLink e₀ u₀ w₀) (hu₀ : u₀ ∈ V₁) (hw₀ : w₀ ∉ V₁)
+    (hcut : (G.cutEdges V₁).ncard ≤ 1) :
+    (G.induce (V₁ ∪ {w₀})).deficiency n = (G.induce V₁).deficiency n + 1 := by
+  classical
+  set Gp := G.induce (V₁ ∪ {w₀}) with hGpdef
+  have hne : ({w₀} : Set α).Nonempty := ⟨w₀, rfl⟩
+  have hssub : ({w₀} : Set α) ⊂ V(Gp) :=
+    (Set.ssubset_iff_of_subset (fun x hx => Set.mem_union_right _ hx)).mpr
+      ⟨u₀, Set.mem_union_left _ hu₀, fun h => hw₀ (h ▸ hu₀)⟩
+  have hcut' : Gp.cutEdges {w₀} = {e₀} := by
+    ext e
+    simp only [Graph.cutEdges, Set.mem_setOf_eq, Set.mem_singleton_iff]
+    constructor
+    · rintro ⟨-, x, y, hl, hx, hy⟩
+      obtain ⟨hlG, -, hyV⟩ := (Graph.induce_isLink G (V₁ ∪ {w₀}) e x y).mp hl
+      rw [hx] at hlG
+      have hy₁ : y ∈ V₁ := hyV.resolve_right hy
+      exact Graph.eq_cutEdge_of_isLink_crossing hl₀ hu₀ hw₀ hcut hlG.symm hy₁ hw₀
+    · rintro he
+      rw [he]
+      have hl' : Gp.IsLink e₀ w₀ u₀ := (Graph.induce_isLink G (V₁ ∪ {w₀}) e₀ w₀ u₀).mpr
+        ⟨hl₀.symm, Set.mem_union_right _ rfl, Set.mem_union_left _ hu₀⟩
+      exact ⟨hl'.edge_mem, w₀, u₀, hl', rfl, fun h => hw₀ (h ▸ hu₀)⟩
+  have hsplit := Graph.deficiency_eq_of_cutEdges_ncard_le_one (G := Gp) hD hne hssub
+    (by rw [hcut', Set.ncard_singleton])
+  have hdiff : V(Gp) \ {w₀} = V₁ := by
+    ext x
+    simp only [Set.mem_diff, Set.mem_singleton_iff]
+    exact ⟨fun ⟨hx, hxw⟩ => (hx.resolve_right hxw : x ∈ V₁),
+      fun hx => ⟨Set.mem_union_left _ hx, fun h => hw₀ (h ▸ hx)⟩⟩
+  have hE : E(Gp.induce {w₀}) = ∅ := by
+    ext e
+    simp only [Graph.edgeSet_induce, Set.mem_setOf_eq, Set.mem_singleton_iff,
+      Set.mem_empty_iff_false, iff_false]
+    rintro ⟨x, y, hl, hx, hy⟩
+    rw [hx, hy] at hl
+    exact G.not_isLoopAt e w₀ ((Graph.induce_isLink G (V₁ ∪ {w₀}) e w₀ w₀).mp hl).1
+  have hdef₀ : (Gp.induce {w₀}).deficiency n = 0 := by
+    rw [Graph.deficiency_of_edgeSet_empty hE]
+    simp [Set.ncard_singleton]
+  have hind : Gp.induce V₁ = G.induce V₁ :=
+    Graph.induce_induce_of_subset G Set.subset_union_left
+  rw [hcut', Set.ncard_singleton, hdiff, hind, hdef₀] at hsplit
+  rw [hsplit]
+  push_cast
+  ring
 
 end CombinatorialRigidity.Molecular

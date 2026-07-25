@@ -16,6 +16,7 @@ import CombinatorialRigidity.LamanTheorem
 import CombinatorialRigidity.LinearRigidityMatroid
 import CombinatorialRigidity.Matroid.Constructions.Submodular
 import CombinatorialRigidity.Matroid.Constructions.Union
+import CombinatorialRigidity.Mathlib.Combinatorics.Graph.Delete
 import CombinatorialRigidity.Mathlib.Combinatorics.SimpleGraph.Acyclic
 import CombinatorialRigidity.Mathlib.Combinatorics.SimpleGraph.Connectivity.Connected
 import CombinatorialRigidity.Mathlib.Combinatorics.SimpleGraph.DeleteEdges

@@ -12,8 +12,9 @@ Carved out of `Molecule/Pencil.lean` (the post-Phase-39 file-size split,
 `notes/PERFORMANCE.md`) for file size / navigability: the `≤1500`-LoC soft cap. This leaf carries
 the rows-polynomial identity and engine hookup (W5-L3: `pencilAnnihRowPoly`, `pencilRow`,
 `exists_polynomial_ne_zero_of_linearIndependent_pencilRow`, the product-route workhorse) and D6's
-re-seeding lemma's per-arity sweep helpers, cardinality bound, and selector construction (W5-L4).
-Builds on the grade-0 chart in `Molecule/Pencil/Chart.lean`.
+re-seeding lemma's per-arity sweep helpers and selector construction (W5-L4; the cardinality bound
+and its cross-incidence feeders were re-homed to `Molecule/Pencil/Motive.lean` 2026-07-24, the
+W5-L5 cut-arm import-cone move). Builds on the grade-0 chart in `Molecule/Pencil/Chart.lean`.
 
 This split is rename-free — every declaration keeps its `CombinatorialRigidity.Molecular`
 namespace, so the blueprint `\lean{...}` pins and `checkdecls` are unaffected.
@@ -573,17 +574,17 @@ theorem exists_cross₃_eq_of_ne_zero {q : Fin 4 → K} (hq : q ≠ 0) :
 `notes/Phase39-design.md` §"W5 leaf decomposition", pieces 1–2 of the re-seeding assembly)
 
 Continues W5-L4 towards the full `exists_pencilSeed_of_nondeg` assembly: given an arbitrary
-nondegenerate realization, (1) `ncard_closedHubNbhd_le_three_of_isNondegPencilRealization` — every
-body's closed hub-neighbourhood has at most `3` members (a `4`-member LI family would force the
-concurrency point to `0`, the same argument the design doc's K4 refutation uses), riding the new
-cross-incidence derivation `dotProduct_point_eq_zero_of_mem_closedHubNbhd` (own-panel incidence +
-the W2 necessity engine, generalizing the chart's own by-construction fact
-`dotProduct_pencilChartPoint_hubNormal_of_mem_closedHubNbhd` to an *arbitrary* realization); a
-companion `ncard_closedNbhd_le_three_of_not_pencilHub` bounds a non-hub body's closed neighbourhood
-via its degree (a purely combinatorial fact, no genericity); and (2)
-`exists_isFin3SelectorOf_of_ncard_le_three` — any finite set of cardinality `≤ 3` admits a
-`Fin 3`-selector witnessing `IsFin3SelectorOf`, by direct case analysis on `Set.ncard_eq_zero/
-_one/_two/_three`.
+nondegenerate realization, (1) the cardinality bound
+`ncard_closedHubNbhd_le_three_of_isNondegPencilRealization` — every body's closed
+hub-neighbourhood has at most `3` members — together with its cross-incidence feeders
+`dotProduct_{point,normal}_eq_zero_of_mem_closedNbhd`, all **re-homed 2026-07-24 to
+`Molecule/Pencil/Motive.lean`** (they are motive-consequence lemmas, and the W5-L5 cut arm's
+consumers need them without this file's chart stack in the import cone — `notes/Phase39-design.md`
+§"W5 leaf decomposition" L5-cut-i); a companion `ncard_closedNbhd_le_three_of_not_pencilHub`
+(below, still this file's) bounds a non-hub body's closed neighbourhood via its degree (a purely
+combinatorial fact, no genericity); and (2) `exists_isFin3SelectorOf_of_ncard_le_three` — any
+finite set of cardinality `≤ 3` admits a `Fin 3`-selector witnessing `IsFin3SelectorOf`, by direct
+case analysis on `Set.ncard_eq_zero/_one/_two/_three`.
 
 **The piece-3 gap, resolved by the 2026-07-24 W5-L4 blocker recon and restatement**
 (`notes/Phase39-design.md` §"W5 leaf decomposition" L4 "Blocker verdict"). Attempting piece 3 (the
@@ -618,101 +619,14 @@ targets. **Fixed by splitting `PencilSeed.fill` into two independent fields**, `
 (`Molecule/Pencil/Chart.lean`; `PencilSeed.ofCoord`'s coupling of the two from one coordinate,
 `Engine.lean` W5-L3, is harmless since the L3 machinery never reads `fillNbr`) — this removes the
 coupling for every field `K`, no genericity/characteristic assumption needed. The symmetric
-orthogonality fact `dotProduct_normal_eq_zero_of_mem_closedNbhd` below (the
-`point w ⬝ᵥ normal v = 0` mirror of `dotProduct_point_eq_zero_of_mem_closedNbhd`) is the piece the
+orthogonality fact `dotProduct_normal_eq_zero_of_mem_closedNbhd` (now in
+`Molecule/Pencil/Motive.lean`, the W5-L5 re-home; the `point w ⬝ᵥ normal v = 0` mirror of
+`dotProduct_point_eq_zero_of_mem_closedNbhd`) is the piece the
 eventual non-hub chart-normal reproduction needs: it shows the realization's own
 closed-neighbourhood *chart points* (each already reproducing `point w` up to a nonzero scalar) are
 orthogonal to `normal v`, so `cross₃` of them is a candidate to reproduce `normal v` projectively —
 completed by an LI-triple-in-a-perp argument uniform across arities, still to be assembled (piece 3
 itself remains open; `notes/Phase39.md` *Hand-off*). -/
-
-/-- **A nondegenerate realization's point is orthogonal to every selected closed-neighbour's
-normal** (Phase 39 W5-L4, the general form feeding both the cardinality bound below and the piece-3
-assembly): for `w ∈ closedNbhd v`, `point v ⬝ᵥ normal w = 0` — own-panel incidence when `w = v`; the
-W2 necessity cross-incidence (`dotProduct_eq_zero_of_extensorInPanel_of_extensorThroughPoint`, via
-the linking edge's own-panel membership of `normal w` and through-point membership of `point v`)
-otherwise. The proof never uses a hub hypothesis on `w`, so this generalizes what used to be stated
-only for `closedHubNbhd` (`dotProduct_point_eq_zero_of_mem_closedHubNbhd` below is now a one-line
-corollary); this generalizes the chart's by-construction fact
-(`dotProduct_pencilChartPoint_hubNormal_of_mem_closedHubNbhd`) from the chart's own constructed data
-to an *arbitrary* nondegenerate realization. -/
-theorem dotProduct_point_eq_zero_of_mem_closedNbhd
-    {G : Graph α β} {F : BodyHingeFramework K 2 α β}
-    {normal point : α → Fin 4 → K} (h : IsNondegPencilRealization G F normal point)
-    {v w : α} (hv : v ∈ V(G)) (hw : w ∈ G.closedNbhd v) :
-    point v ⬝ᵥ normal w = 0 := by
-  obtain ⟨hcop, _, hself, hthru⟩ := h.1
-  obtain ⟨_, _, hCne, hpanel⟩ := hcop
-  rcases hw with rfl | ⟨e, hlink⟩
-  · exact hself w hv
-  · exact dotProduct_eq_zero_of_extensorInPanel_of_extensorThroughPoint (hCne e)
-      (hpanel e v w hlink).2 (hthru e v w hlink).1
-
-/-- **The `closedHubNbhd` specialization** (Phase 39 W5-L4): immediate from the general
-`closedNbhd` form above, forgetting the hub conjunct on `w` (`closedHubNbhd v ⊆ closedNbhd v`
-pointwise, `hw.2`). -/
-theorem dotProduct_point_eq_zero_of_mem_closedHubNbhd
-    {G : Graph α β} {F : BodyHingeFramework K 2 α β}
-    {normal point : α → Fin 4 → K} (h : IsNondegPencilRealization G F normal point)
-    {v w : α} (hv : v ∈ V(G)) (hw : w ∈ G.closedHubNbhd v) :
-    point v ⬝ᵥ normal w = 0 :=
-  dotProduct_point_eq_zero_of_mem_closedNbhd h hv hw.2
-
-/-- **The symmetric form: a nondegenerate realization's normal is orthogonal to every selected
-closed-neighbour's point** (Phase 39 W5-L4, feeding the piece-3 assembly's non-hub chart-normal
-reproduction): for `w ∈ closedNbhd v`, `point w ⬝ᵥ normal v = 0`. Applies the general fact above at
-`(w, v)` in place of `(v, w)`: the `w = v` case reduces to itself; the linked case transports `w`'s
-own graph membership via `hlink.right_mem` and rewrites `v ∈ closedNbhd w` from
-`w ∈ closedNbhd v` by symmetrizing the link (`hlink.symm`). -/
-theorem dotProduct_normal_eq_zero_of_mem_closedNbhd
-    {G : Graph α β} {F : BodyHingeFramework K 2 α β}
-    {normal point : α → Fin 4 → K} (h : IsNondegPencilRealization G F normal point)
-    {v w : α} (hv : v ∈ V(G)) (hw : w ∈ G.closedNbhd v) :
-    point w ⬝ᵥ normal v = 0 := by
-  rcases hw with rfl | ⟨e, hlink⟩
-  · exact dotProduct_point_eq_zero_of_mem_closedNbhd h hv (Or.inl rfl)
-  · exact dotProduct_point_eq_zero_of_mem_closedNbhd h hlink.right_mem (Or.inr ⟨e, hlink.symm⟩)
-
-/-- **Piece 1: a nondegenerate realization's closed hub-neighbourhoods have `≤ 3` members**
-(Phase 39 W5-L4, the re-seeding assembly's cardinality bound — the same argument as the design
-doc's K4 refutation, `notes/Phase39-design.md` §"W5 design pass" verdict 1). Any `4`-member
-sub-family of an independent `normal` assignment on `closedHubNbhd v` would span all of `K⁴` (the
-ambient rank), forcing `point v` — orthogonal to every member (the cross-incidence lemma above) —
-to vanish, contradicting nondegeneracy. Concretely: the span of `normal '' closedHubNbhd v` sits
-inside `point v`'s `3`-dimensional perp (`finrank_toDualPerp_single_eq`), so its rank is `≤ 3`; the
-independence conjunct makes that rank exactly `(closedHubNbhd v).ncard` (`finrank_span_eq_card`,
-`[Finite α]` supplying the `Fintype` instance the plain `Set` needs). -/
-theorem ncard_closedHubNbhd_le_three_of_isNondegPencilRealization
-    [Finite α] {G : Graph α β} {F : BodyHingeFramework K 2 α β} {normal point : α → Fin 4 → K}
-    (h : IsNondegPencilRealization G F normal point) {v : α} (hv : v ∈ V(G)) :
-    (G.closedHubNbhd v).ncard ≤ 3 := by
-  classical
-  have hpt_ne : point v ≠ 0 := h.1.2.1 v hv
-  have hLI : LinearIndepOn K normal (G.closedHubNbhd v) := h.2.2.1 v hv
-  set Vperp : Submodule K (Fin 4 → K) :=
-    LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip (point v)) with hVperp
-  have hVdim : Module.finrank K Vperp = 3 := finrank_toDualPerp_single_eq hpt_ne
-  have hsub : Submodule.span K (normal '' G.closedHubNbhd v) ≤ Vperp := by
-    rw [Submodule.span_le]
-    rintro _ ⟨w, hw, rfl⟩
-    simp only [SetLike.mem_coe, hVperp, LinearMap.mem_ker, LinearMap.flip_apply,
-      piBasisFun_toDual_eq_dotProduct]
-    rw [dotProduct_comm]
-    exact dotProduct_point_eq_zero_of_mem_closedHubNbhd h hv hw
-  have hspan_le : Module.finrank K (Submodule.span K (normal '' G.closedHubNbhd v)) ≤ 3 := by
-    have hmono := Submodule.finrank_mono hsub
-    rwa [hVdim] at hmono
-  haveI : Fintype (G.closedHubNbhd v) := Fintype.ofFinite _
-  have hspan_eq : Module.finrank K
-      (Submodule.span K (Set.range (fun x : G.closedHubNbhd v => normal x)))
-      = Fintype.card (G.closedHubNbhd v) := finrank_span_eq_card hLI
-  have himg : Set.range (fun x : G.closedHubNbhd v => normal x) = normal '' G.closedHubNbhd v :=
-    (Set.image_eq_range normal (G.closedHubNbhd v)).symm
-  rw [himg] at hspan_eq
-  have hcard : (G.closedHubNbhd v).ncard = Fintype.card (G.closedHubNbhd v) := by
-    rw [Set.ncard_eq_toFinset_card', Set.toFinset_card]
-  rw [hcard, ← hspan_eq]
-  exact hspan_le
 
 /-- **A non-hub body's closed neighbourhood has `≤ 3` members** (Phase 39 W5-L4, the `closedNbhd`
 companion of the cardinality bound above — purely combinatorial, no genericity): a non-hub `v` has

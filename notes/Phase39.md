@@ -5,7 +5,8 @@ COMPLETE** (2026-07-24); **W5-L5 in progress**: loop arm and base arm landed aga
 `PencilPair` (the parallel-class blocker found, user-adjudicated to route (b′), and repaired, all
 2026-07-24 — *Decisions made*); **the cut arm's generic-half route is PINNED** (the 2026-07-24
 recon verdict on the `Gᵢ⁺` repair: three of four sub-cases buildable as leaves L5-cut-i…iv, the
-pendant-deg-3 residual open — *Blockers*). Next: build L5-cut-i (*Hand-off*); W4 after W5 (phase
+pendant-deg-3 residual open — *Blockers*); **L5-cut-i landed** (2026-07-25, the `Gᵢ⁺` structure
+layer — *Decisions made*). Next: build L5-cut-ii (*Hand-off*); W4 after W5 (phase
 opened 2026-07-23, recon-first). `Molecule/Pencil.lean` split into
 `Molecule/Pencil/{Statement,Arms,Motive,Chart,Engine,Reseed,Pair}.lean` (2026-07-24 housekeeping).
 
@@ -139,16 +140,21 @@ Full record, grounding, and the W0–W5 decomposition:
 
 **The phase stays OPEN** (the two superseding 2026-07-24 adjudications — no phase-close).
 
-**Next: build L5-cut-i** (the first cut-arm leaf, one commit; full leaf list and exact shapes:
-design doc L5 "Cut-arm route verdict"): the `Gᵢ⁺` structure layer — the two degree lemmas for
-`G.induce (Vᵢ ∪ {far})` under `≤ 1` crossing, the feasibility corollary through the landed
-`PencilNondegFeasible.mono`, the deficiency bookkeeping `def(Gᵢ⁺) = def(G[Vᵢ]) + 1`, and the
-spike-proved single-edge rank-drop brick (`Bricks.lean` §CutEdgeBrick; statement transcribed in
-the design doc). Then L5-cut-ii (transport/transfer bookkeeping), L5-cut-iii (the strengthened
-repositioning lemma — the risk-carrying leaf, spike-first), L5-cut-iv (the arm assembly, with
-the open pendant-deg-3 sub-case carried as an explicit hypothesis). **Do not build L5-cut-v**
-(the pendant-deg-3 residual) until its two chart-steering somewhere-witnesses get a
-numerics-first assessment (a separate small recon/numerics dispatch — design doc, sub-case 4).
+**Next: build L5-cut-ii** (transport + transfer bookkeeping, one commit; exact shape: design doc
+L5 "Cut-arm route verdict" leaf list): `IsNondegPencilRealization` transport along a
+contragredient pair (conjuncts 2–4 over the landed conjunct-1 transport
+`hasPencilPanelRealization_mapSupport_screwEquivOfLinearEquiv`); the forced-hinge lemma (`C ≠ 0`
+through an LI pair ⟹ `∃ c ≠ 0, C = c • extensor ![p, q]`, the Meet.lean composition derived in
+the design doc's L5 blocker verdict item 1); scale-invariance helpers for
+`ExtensorInPanel`/`ExtensorThroughPoint` in both slots (check `Statement.lean`/`Meet.lean`, mint
+what is missing); a `LinearIndepOn` unit-rescaling congruence; and the boundary identities
+(`closedHubNbhd`/`closedNbhd` of `Gᵢ⁺` vs `G` on `Vᵢ`, with the single `u_c` exception). Then
+L5-cut-iii (the strengthened repositioning lemma — the risk-carrying leaf, spike-first),
+L5-cut-iv (the arm assembly, with the open pendant-deg-3 sub-case carried as an explicit
+hypothesis). L5-cut-i (the `Gᵢ⁺` structure layer) landed 2026-07-25 (*Decisions made*). **Do not
+build L5-cut-v** (the pendant-deg-3 residual) until its two chart-steering somewhere-witnesses
+get a numerics-first assessment (a separate small recon/numerics dispatch — design doc,
+sub-case 4).
 
 **After the cut arm**: the successor assembly `pencil_conjecture_of_arms_pair` (mirrors
 `pencil_conjecture_of_arms`, W3-L7, wiring `pencilPair_of_isLoopAt` + `pencilPair_of_ncard_le_two`
@@ -173,6 +179,16 @@ neighbor — is `notes/IdeaBacklog.md`.
 
 ## Decisions made during this phase
 
+- **W5-L5 L5-cut-i landed** (2026-07-25, the `Gᵢ⁺` structure layer, `Motive.lean` + `Bricks.lean`):
+  degree lemmas `Graph.degree_induce_union_singleton_{of_mem,far}` (`≤ 1` crossing +
+  `[G.Loopless]`); feasibility corollary `PencilNondegFeasible.induce_union_singleton` (the
+  recon-spiked `.mono` composition); bookkeeping `Graph.deficiency_induce_union_singleton`
+  (`def(Gᵢ⁺) = def(G[V₁]) + 1`, KT Lemma 3.6 applied inside `Gᵢ⁺` at its singleton far side;
+  induce-idempotence minted as mirror `Mathlib/Combinatorics/Graph/Delete.lean`); the spike's drop
+  brick `finrank_span_rigidityRows_le_add_of_links_subset` (`Bricks.lean` §CutEdgeBrick). Import-cone
+  decision: MOVED `ncard_closedHubNbhd_le_three_…` + `dotProduct_{point,normal}_eq_zero_of_mem_
+  closedNbhd` Engine → Motive (their `finrank_toDualPerp_single_eq` dependency sits upstream in
+  `Statement.lean`, so `Pair.lean` keeps a chart-free cone). No blueprint node (technical infra).
 - **W5-L5 cut-arm route recon** (2026-07-24, docs-only; canonical record design doc L5 "Cut-arm
   route verdict"): `Gᵢ⁺ = G.induce (Vᵢ ∪ {far})` CONFIRMED as the IH-consumption shape; the
   shared-edge rank fear dissolved by regrouping (one new drop brick, proved sorry-free in the

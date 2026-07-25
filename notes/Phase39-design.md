@@ -1622,7 +1622,8 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
   (`K₃ + pendant` is simple + feasible), so it is not on the table without user adjudication.
 
   **Leaf decomposition (build order; sub-cases 1–3 buildable now).**
-  - **L5-cut-i** (one commit, `Motive.lean` + `RigidityMatrix/Bricks.lean`): the `Gᵢ⁺` structure
+  - **L5-cut-i** (**LANDED 2026-07-25**, `notes/Phase39.md` *Decisions made*; one commit,
+    `Motive.lean` + `RigidityMatrix/Bricks.lean`): the `Gᵢ⁺` structure
     layer — the two degree lemmas for `G.induce (Vᵢ ∪ {far})` under `≤ 1` crossing; the
     feasibility corollary (the spike's composition through `.mono`); the deficiency bookkeeping
     `def(Gᵢ⁺) = def(G[Vᵢ]) + 1` (needs induce-idempotence `(G.induce S).induce T = G.induce T`

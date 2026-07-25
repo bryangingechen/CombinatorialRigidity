@@ -435,6 +435,64 @@ theorem le_finrank_span_rigidityRows_of_cut [Finite α] [Finite β]
       _ ≤ Module.finrank K ↥S := Submodule.finrank_mono
           (sup_le hScS (sup_le hS₁S hS₂S))
 
+/-- **Single-edge row-drop bound** (`sec:pencil-reduction` rank infra; Phase 39 W5-L5 L5-cut-i,
+the cut-arm route verdict's new brick — `notes/Phase39-design.md` §"W5 leaf decomposition" L5).
+When every link of `G'` is either a link of the smaller graph `Gs` or the single extra edge `e₀`
+(same supporting extensor on both sides), dropping `e₀`'s rows costs at most its block dimension:
+`finrank (span rows(G')) ≤ finrank (span rows(Gs)) + (screwDim k − 1)`.
+
+This converts the cut-arm IH rank at the edge-closed side `Gᵢ⁺ = G.induce (Vᵢ ∪ {far})`
+(`Gs := G.induce Vᵢ`, `G' := Gᵢ⁺`, whose links are exactly the side's plus the cut edge) into the
+bare induced-side lower bound `finrank_span_rigidityRows_cutEdge_eq` consumes as `hlbᵢ`: the
+`(screwDim k − 1)` dropped here is exactly the `(D−1)·|C|` crossing term that assembly recovers,
+so the arithmetic balances. Proof: every generating row of `G'` lies in `span rows(Gs) ⊔ Sc`,
+where `Sc` is the image of `e₀`'s hinge-row block under `hingeRow u₀ v₀` — a swapped-orientation
+generator `hingeRow v₀ u₀ r` is the image of the negated block row (`hingeRow_swap`, the block
+being a subspace) — and `Sc`'s dimension is at most the block's `screwDim k − 1`
+(`Submodule.finrank_map_le`, `finrank_hingeRowBlock`). -/
+theorem finrank_span_rigidityRows_le_add_of_links_subset {k : ℕ} [Finite α]
+    {G' Gs : Graph α β} (ext : β → ScrewSpace K k) {e₀ : β} {u₀ v₀ : α}
+    (hl₀ : G'.IsLink e₀ u₀ v₀) (hext₀ : ext e₀ ≠ 0)
+    (hlinks : ∀ e u v, G'.IsLink e u v → Gs.IsLink e u v ∨ e = e₀) :
+    Module.finrank K (Submodule.span K
+        (⟨G', ext⟩ : BodyHingeFramework K k α β).rigidityRows)
+      ≤ Module.finrank K (Submodule.span K
+        (⟨Gs, ext⟩ : BodyHingeFramework K k α β).rigidityRows) + (screwDim k - 1) := by
+  classical
+  haveI : Fintype α := Fintype.ofFinite α
+  set F' : BodyHingeFramework K k α β := ⟨G', ext⟩ with hF'def
+  set Fs : BodyHingeFramework K k α β := ⟨Gs, ext⟩ with hFsdef
+  set Ss := Submodule.span K Fs.rigidityRows with hSsdef
+  set Sc : Submodule K (Module.Dual K (α → ScrewSpace K k)) :=
+    (F'.hingeRowBlock e₀).map ((screwDiff (k := k) (α := α) u₀ v₀).dualMap) with hScdef
+  -- Every generating row of `G'` lands in `Ss ⊔ Sc`.
+  have hle : Submodule.span K F'.rigidityRows ≤ Ss ⊔ Sc := by
+    rw [Submodule.span_le]
+    rintro φ ⟨e, u, v, hl, r, hr, rfl⟩
+    rcases hlinks e u v hl with hs | rfl
+    · exact Submodule.mem_sup_left (Submodule.subset_span ⟨e, u, v, hs, r, hr, rfl⟩)
+    · rcases hl.eq_and_eq_or_eq_and_eq hl₀ with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
+      · -- Aligned orientation: the row is the block image on the nose.
+        rw [hingeRow_eq_dualMap]
+        exact Submodule.mem_sup_right (Submodule.mem_map_of_mem hr)
+      · -- Swapped orientation: the row is the image of the negated block row.
+        rw [hingeRow_swap, hingeRow_eq_dualMap]
+        exact Submodule.mem_sup_right (Submodule.mem_map_of_mem (neg_mem hr))
+  -- The cut-block image has dimension at most `screwDim k − 1`.
+  have hSc : Module.finrank K ↥Sc ≤ screwDim k - 1 := by
+    have hmap := Submodule.finrank_map_le
+      ((screwDiff (k := k) (α := α) u₀ v₀).dualMap) (F'.hingeRowBlock e₀)
+    rwa [finrank_hingeRowBlock F' hext₀] at hmap
+  -- Assemble: rank of the sup is at most the sum of the ranks.
+  have hsup : Module.finrank K ↥(Ss ⊔ Sc)
+      ≤ Module.finrank K ↥Ss + Module.finrank K ↥Sc := by
+    have h := Submodule.finrank_sup_add_finrank_inf_eq Ss Sc
+    omega
+  calc Module.finrank K ↥(Submodule.span K F'.rigidityRows)
+      ≤ Module.finrank K ↥(Ss ⊔ Sc) := Submodule.finrank_mono hle
+    _ ≤ Module.finrank K ↥Ss + Module.finrank K ↥Sc := hsup
+    _ ≤ Module.finrank K ↥Ss + (screwDim k - 1) := Nat.add_le_add_left hSc _
+
 end CutEdgeBrick
 
 section SpliceBrick
