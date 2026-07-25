@@ -8,10 +8,12 @@ the (b′) `PencilPair`, wired by the successor `pencil_conjecture_of_arms_pair`
 per-leaf landing history, L5-cut-i through the dispatch shell). **L5-cut-v** (the `hcutPendant3`
 discharge route): assessed GO, route PINNED (2026-07-25 recon); **v-a landed**
 (`not_pencilNondegFeasible_of_triangle_two_hubs`, the triangle-`≥2`-hub infeasibility lemma);
-**v-b construction recipe derived** (docs-only, 2026-07-25) and its bridging/computational infra
+**v-b construction recipe derived** (docs-only, 2026-07-25), its bridging/computational infra
 **landed** (`Graph.neighbor_eq_of_degree_eq_three`, `Graph.not_adj_of_ne_of_mem_of_cutEdges_le_one`
-in `Motive.lean`; `linearIndependent_pi_single_triple`, `exists_smul_cross₃_pi_single` in
-`Engine.lean`); next: the main `by_cases`/`PencilSeed.mk` assembly (*Hand-off*). L6/L8 are parallel
+in `Motive.lean`; `linearIndependent_pi_single_triple`, `exists_smul_cross₃_pi_single`,
+`exists_fin3_rank_injOn` in `Engine.lean`) — the last of these fixes a genuine padding-collision
+gap the recipe's first slice missed; next: the `fin_cases`-per-vertex assembly (*Hand-off*). L6/L8
+are parallel
 combinatorial tracks buildable now; L7 (the research core) is
 last; W4 after W5 (phase opened 2026-07-23, recon-first). `Molecule/Pencil.lean` split into
 `Molecule/Pencil/{Statement,Arms,Motive,Chart,Engine,Reseed,Pair,Pair2}.lean` (2026-07-24/25
@@ -112,10 +114,10 @@ Full record, grounding, and the W0–W5 decomposition:
   `H`'s charts) is ASSESSED GO (numerics + a composition spike, 2026-07-25); its gating lemma
   `not_pencilNondegFeasible_of_triangle_two_hubs` (`Motive.lean`, any field) is now **landed** —
   full leaf list v-a…v-g and composition findings: design doc L5 "Cut-arm route verdict"
-  **L5-cut-v bullet**. **v-b's construction recipe is derived (docs-only) and its bridging +
-  computational infra is now landed** (an explicit-standard-basis-vector assignment, no abstract
-  sweep chaining — design doc's "v-b construction recipe" sub-bullet, now with a "Lean landing,
-  first slice" update); **next: the main assembly** (*Hand-off*).
+  **L5-cut-v bullet**. **v-b's construction recipe (docs-only) plus its bridging + computational
+  infra is landed**, including a same-session correction (a real padding-collision gap the
+  recipe's first slice missed, now fixed by `exists_fin3_rank_injOn`) — design doc's "v-b
+  construction recipe" sub-bullet; **next: the `fin_cases`-per-vertex assembly** (*Hand-off*).
   Feasibility propagation *as a proposition* stays open but bounded: the triangle-hub mechanism
   refutes any purely combinatorial (`≤ 3`-closedHubNbhd) feasibility criterion, while leaving L6's
   habitat claim untouched (no triangles in the no-proper-rigid habitat at `|V| ≥ 4`).
@@ -151,17 +153,26 @@ Full record, grounding, and the W0–W5 decomposition:
 `thm:pencil-conditional-realization-pair` green; `hcontract`/`hsplit`/`hcutPendant3` remain open
 hypotheses — full detail in *Decisions made*, below).
 
-**Next: the L5-cut-v-b main assembly.** L5-cut-v-a is landed; v-b's construction recipe (design
-doc L5-cut-v "v-b construction recipe" sub-bullet) now has its bridging + computational infra
-**landed** too (2026-07-25, `Motive.lean`/`Engine.lean`, *Decisions made*): the `Graph.degree`/
-`Simple` neighbour-exhaustiveness and non-adjacency facts, and the `cross₃`-of-standard-basis-
-vectors computation. **What remains** (the design doc's "Lean landing, first slice" update spells
-out the exact rewrite chain): define `index : α → Fin 4` by the recipe's case split, show
-`(PencilSeed.ofCoord q).hubNormal`/`.fillHub` agree with it, and prove `Set.InjOn index
-(closedHubNbhd v)` at each of `u_c, w1, w2` (the one genuinely new case-work — the "all three of
-`v_c, w1, w2` hub" impossibility at `u_c`, the sharper non-hub-degree bound at `w1`/`w2`) before
-invoking `exists_smul_cross₃_pi_single`. Then **v-c**…**v-g** per the design doc's L5-cut-v leaf
-list (the last leaf rewires the
+**Next: the L5-cut-v-b main assembly, `fin_cases`-per-vertex shaped.** L5-cut-v-a is landed; v-b's
+construction recipe (design doc L5-cut-v "v-b construction recipe" sub-bullet) has its bridging +
+computational infra landed (2026-07-25, `Motive.lean`/`Engine.lean`, *Decisions made*): the
+`Graph.degree`/`Simple` neighbour-exhaustiveness and non-adjacency facts, the `cross₃`-of-
+standard-basis-vectors computation, and (this session) `exists_fin3_rank_injOn`, fixing a real
+gap the first-slice recipe missed — a *single fixed* padding value collides whenever a body needs
+two `none` slots at once (as few as one real member is common at `u_c`/`w1`/`w2`), and no fixed
+function of the slot index alone can dodge every possible placement of the real member (a
+pigeonhole fact, checked by exhaustion). **What remains** (design doc's revised "What remains"
+under the same sub-bullet): for each of `u_c, w1, w2`, `obtain` the slot index of the
+always-present real member (itself for `u_c`, `u_c` for `w1`/`w2`) via `(hHubSel _).2.1`, then
+`fin_cases` it (3 branches pinning the literal slot layout); the hub-status case split (7
+non-impossible combinations, using the landed neighbour-exhaustiveness + cardinality-exclusion +
+v-a adjacency facts) determines which indices are already "real" per branch, hence the two safe
+fill values `exists_fin3_rank_injOn` assigns collision-free to the (≤ 2) `none` slots; close via
+`exists_smul_cross₃_pi_single` (arity 3) or a direct orthogonality argument on the concrete
+positional triple (arity 1/2 — no separate permutation-invariance lemma needed, since
+`exists_smul_cross₃_eq_of_linearIndependent` already takes its 3 arguments in whatever order the
+branch pins down). Then **v-c**…**v-g** per the design doc's L5-cut-v leaf list (the last leaf
+rewires the
 shell/successor — deleting `hcutPendant3`, adding `[Infinite K]` — and restates the blueprint
 node). **L6/L8 are parallel combinatorial tracks** buildable now (L6: habitat feasibility, the
 `≤ 3` closed-hub-neighbourhood lemma + witness-seed construction + the `G′.Simple` sub-obligation,
@@ -182,21 +193,18 @@ neighbor — is `notes/IdeaBacklog.md`.
 
 ## Decisions made during this phase
 
-- **L5-cut-v-b Lean landing, first slice** (2026-07-25, `Motive.lean` + `Engine.lean`; canonical
-  record design doc L5-cut-v "v-b construction recipe" sub-bullet): the bridging + computational
-  facts the recipe needs, all sorry-free. `Motive.lean`: `Graph.neighbor_eq_of_degree_eq_three`
-  (a degree-`3` vertex's three named neighbours are its *only* ones, via the vendored
-  `Matroid.Graph.Degree` library's `Graph.degree_eq_ncard_adj [G.Simple]` — this project's `Graph`
-  *is* `Matroid.Graph`, sharing `IsLink`/`Adj` with `Mathlib.Combinatorics.Graph` but adding
-  `degree`/`Simple` on top) and `Graph.not_adj_of_ne_of_mem_of_cutEdges_le_one` (the pendant
-  endpoint is never adjacent to a different `V₁`-member, via the already-landed
-  `Graph.eq_cutEdge_of_isLink_crossing`). `Engine.lean`: `linearIndependent_pi_single_triple` +
-  `exists_smul_cross₃_pi_single` (three pairwise-distinct standard basis vectors are LI, and
-  `cross₃` of them is a nonzero multiple of the fourth — an instance of the already-landed
-  `exists_smul_cross₃_eq_of_linearIndependent`). The remaining assembly (an `index : α → Fin 4`
-  function + three `Set.InjOn` case-checks) is fully mapped in the design doc, not yet built —
-  *Hand-off*. Gates green (build warning-clean + lint); axioms clean
-  (`propext`/`Classical.choice`/`Quot.sound` only).
+- **L5-cut-v-b bridging/computational infra landed, incl. a same-session padding-collision fix**
+  (2026-07-25, `Motive.lean` + `Engine.lean`; canonical record design doc L5-cut-v "v-b
+  construction recipe" sub-bullet, both the original text and the "correction found assembling
+  the main witness" update): `Graph.neighbor_eq_of_degree_eq_three` / `Graph.not_adj_of_ne_of_
+  mem_of_cutEdges_le_one` (`Motive.lean`, the `Graph.degree`/`Simple` bridging facts) and
+  `linearIndependent_pi_single_triple` / `exists_smul_cross₃_pi_single` / `exists_fin3_rank_injOn`
+  (`Engine.lean`, the `cross₃`-of-standard-basis-vectors computation plus a fix for a real gap:
+  a single fixed padding value collides whenever a body needs two simultaneous `none` slots, and
+  no fixed function of the slot index alone can dodge every placement of the real member — design
+  doc has the full pigeonhole argument). Remaining assembly is now `fin_cases`-per-vertex shaped,
+  not the flat `index`-formula first assumed — *Hand-off*. All sorry-free; gates green (build
+  warning-clean + lint); axioms clean (`propext`/`Classical.choice`/`Quot.sound` only).
 - **L5-cut-v-b construction recipe derived** (2026-07-25, docs-only; canonical record design doc
   L5 "Cut-arm route verdict" L5-cut-v "v-b construction recipe" sub-bullet): re-deriving witness
   (i) against the current `Chart.lean`/`Motive.lean` (F9) found the design doc's "arity sweeps"

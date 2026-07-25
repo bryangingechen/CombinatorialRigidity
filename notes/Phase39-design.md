@@ -1909,40 +1909,44 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
     sorry-free, gates green (`lake build` warning-clean, `lake lint` clean), axioms clean
     (`propext`/`Classical.choice`/`Quot.sound` only).
 
-    **What remains (the main assembly, scoped out this session — the shape is now fully mapped,
-    not just "locate the API"):** define `index : α → Fin 4` by the recipe's case split
-    (`u_c ↦ 0`, `w₁ ↦ 1`, `w₂ ↦ 2`, `v_c ↦` whichever of `1`/`2` isn't already claimed by a hub
-    `w₁`/`w₂` (`if G.PencilHub w₁ then 2 else 1`), every other vertex `↦ 3`); take
-    `q : α × Fin 4 × Fin 4 → K := fun p => if p.2.1 = 0 then Pi.single (index p.1) 1 p.2.2 else
-    Pi.single 3 1 p.2.2` (role `0` reads `index`, every fill role reads the constant `e₃`, so
-    `(PencilSeed.ofCoord q).hubNormal v = Pi.single (index v) 1` and `.fillHub v j = Pi.single 3
-    1` for every `v, j` — two one-line `funext`/`if`-unfold checks, `Fin.succ_ne_zero` closing the
-    role case). The only nontrivial residual is `Set.InjOn index (G.closedHubNbhd u_c)`, needed
-    to invoke `exists_smul_cross₃_pi_single` at each of `u_c, w₁, w₂` (their own triples read off
-    `index` at whatever `hubSel` selects, in *some* order — irrelevant to `LinearIndependent`,
-    but the *values* fed to `cross₃` must be pairwise distinct for the lemma's hypotheses):
-    - At `u_c`: `closedHubNbhd u_c ⊆ {u_c, v_c, w₁, w₂}` (`Graph.neighbor_eq_of_degree_eq_three`
-      at `u_c`'s three named edges, `PencilHub`'s own `∈ V(G)` conjunct restricting further to
-      hubs), and `index` is injective on it *given* `v_c, w₁, w₂` are not ALL simultaneously
-      hubs — ruled out by `(closedHubNbhd u_c).ncard ≤ 3` (from `hHubSel u_c`'s
-      `IsFin3SelectorOf`, which embeds the target set into `Fin 3`) against the 4 pairwise-distinct
-      elements `{u_c, v_c, w₁, w₂}` a witness to all-three-hub would put inside it.
-    - At `w₁`/`w₂`: `closedHubNbhd w₁ ⊆ {u_c, w₁} ∪ {≤ 1 more}` — the `≤ 1` bound is the sharper
-      fact `notes/Phase39.md` *Decisions made* already flags (a non-hub `w₁` has `degree ≤ 2`,
-      already spent on `u_c`, leaving no room for a *second* extra neighbour — the blanket
-      `ncard ≤ 3` bound alone would wrongly allow two), so `index`'s "everyone else ↦ 3" default
-      never collides with itself; `Graph.not_adj_of_ne_of_mem_of_cutEdges_le_one` (already landed)
-      additionally confirms `v_c` is never that "≤ 1 more" (not adjacent to `w₁`/`w₂` at all), and
-      v-a excludes the other adjacency collision (`w₁ ~ w₂` while both hubs) exactly as recorded
-      above.
-    Then `cross₃ (hubSlotNormal … u_c 0) (… 1) (… 2)` rewrites (via the `index`-agreement
-    identities) to `cross₃ (Pi.single (index ·) 1)` at the three slot values, feeding
-    `exists_smul_cross₃_pi_single` directly; the final `LinearIndependent` follows from three
-    pairwise-distinct missing indices (`3, 2, 1` respectively, by construction) via
-    `LinearIndependent.units_smul`-style per-body nonzero-scalar transport (already the
-    project's standing idiom, e.g. `exists_pencilSeed_of_nondeg`'s own closing step). **Next:
-    attempt this assembly fresh** — the per-vertex `InjOn` arguments above are the only
-    genuinely new case-work; everything else is now pinned to a concrete rewrite chain.
+    **Correction found assembling the main witness (2026-07-25): the "first slice" recipe above
+    has a real gap, now fixed.** A single global `fillHub := e₃` fails whenever a body needs
+    **two** padding slots at once (`u_c`, `w₁`, `w₂` can each have as few as ONE real member —
+    just themselves, or just the always-present `u_c` — leaving two `none` slots): reading the
+    *same* constant at two different slots makes two of `cross₃`'s three arguments literally
+    equal, forcing it to `0` outright (a repeated determinant row, in **any** field — not a
+    sign/order cosmetic issue). Worse, no fixed *function of the slot index alone* can dodge this
+    for every possible placement of the (unknown-in-advance) real member among the three slots —
+    a direct pigeonhole check (confirmed by exhaustion before landing the fix): with only two
+    "safe" values available (avoiding `0` and the target index) and three slots, some placement
+    of the real member forces the fix to double up on the other two. **The fix, landed this
+    session** (`Engine.lean`, right after `exists_smul_cross₃_pi_single`):
+    `exists_fin3_rank_injOn` — the "rank among earlier `none`-marked slots" function is injective
+    on the marked slots, so assigning the *first* marked slot one fill vector and any *second*
+    marked slot another never collides, however `hubSel` places the real member.
+
+    **What remains (the main assembly — now a `fin_cases`-shaped construction, not a blind
+    formula):** for each of `u_c, w₁, w₂` in turn, `obtain ⟨i₀, hi₀⟩ := (hHubSel _).2.1 <the
+    always-present member> ⟨...⟩` (the always-present member is the body itself for `u_c`, and
+    `u_c` for `w₁`/`w₂`, since `u_c` is a hub adjacent to both), then `fin_cases i₀` (three
+    branches pinning exactly which literal slot holds the real member). In each branch the other
+    two (named) slots are forced `none` whenever the body's `closedHubNbhd` has no other member
+    (the arity-`1` case) — from `hHubSel _`'s selector injectivity, no *other* slot can also read
+    `some` of the same singleton set — and get the two designated fill vectors via
+    `exists_fin3_rank_injOn` (or, when exactly one other member IS present — arity `2` — the
+    single remaining `none` slot needs only one fill vector, no collision risk at all). The
+    `u_c`/`w₁`/`w₂` hub-status case split (7 non-impossible combinations, `Graph.
+    neighbor_eq_of_degree_eq_three` + the `ncard ≤ 3` cardinality exclusion + v-a's adjacency
+    exclusion, all as recorded in the previous version of this note and still valid) determines,
+    per branch, WHICH indices are already "real" (hence off-limits for fill) and hence what the
+    two safe fill values are for that branch. The closing step in each leaf is unchanged:
+    `exists_smul_cross₃_pi_single` (arity `3`, no fill) or a direct `cross₃`-orthogonality
+    argument (arity `1`/`2`, using the *actual* positional triple `hubSlotNormal 0/1/2` — no
+    separate "permutation invariance of `LinearIndependent`" lemma is needed, since
+    `exists_smul_cross₃_eq_of_linearIndependent` already takes the three arguments in whatever
+    concrete order the branch pins down). **Next: attempt this fresh**, building outward from the
+    `fin_cases`-per-vertex skeleton rather than the flat `index` formula (which stays correct for
+    the arity-`3`, no-padding branches only).
 
 - **W5-L6**: habitat feasibility (verdict 4) — the ≤ 3 closed-hub-neighbourhood lemma
   on 2EC/no-proper-rigid graphs + the witness-seed construction discharging
