@@ -7,8 +7,10 @@ the (b′) `PencilPair`, wired by the successor `pencil_conjecture_of_arms_pair`
 `hcontract`/`hsplit`/`hcutPendant3` remain open hypotheses — *Decisions made* carries the full
 per-leaf landing history, L5-cut-i through the dispatch shell). **L5-cut-v** (the `hcutPendant3`
 discharge route): assessed GO, route PINNED (2026-07-25 recon); **v-a landed**
-(`not_pencilNondegFeasible_of_triangle_two_hubs`, the triangle-`≥2`-hub infeasibility lemma); next:
-v-b (*Hand-off*). L6/L8 are parallel combinatorial tracks buildable now; L7 (the research core) is
+(`not_pencilNondegFeasible_of_triangle_two_hubs`, the triangle-`≥2`-hub infeasibility lemma);
+**v-b construction recipe derived** (docs-only, 2026-07-25 — an explicit-basis-vector recipe,
+verified on paper, not yet in Lean); next: the v-b Lean landing (*Hand-off*). L6/L8 are parallel
+combinatorial tracks buildable now; L7 (the research core) is
 last; W4 after W5 (phase opened 2026-07-23, recon-first). `Molecule/Pencil.lean` split into
 `Molecule/Pencil/{Statement,Arms,Motive,Chart,Engine,Reseed,Pair,Pair2}.lean` (2026-07-24/25
 housekeeping).
@@ -108,7 +110,9 @@ Full record, grounding, and the W0–W5 decomposition:
   `H`'s charts) is ASSESSED GO (numerics + a composition spike, 2026-07-25); its gating lemma
   `not_pencilNondegFeasible_of_triangle_two_hubs` (`Motive.lean`, any field) is now **landed** —
   full leaf list v-a…v-g and composition findings: design doc L5 "Cut-arm route verdict"
-  **L5-cut-v bullet**. **Next: v-b** (a somewhere-witness construction on `G`'s chart, *Hand-off*).
+  **L5-cut-v bullet**. **v-b's construction recipe is now derived and paper-verified** (an
+  explicit-standard-basis-vector assignment, no abstract sweep chaining — design doc's "v-b
+  construction recipe" sub-bullet); **next: the v-b Lean landing** (*Hand-off*).
   Feasibility propagation *as a proposition* stays open but bounded: the triangle-hub mechanism
   refutes any purely combinatorial (`≤ 3`-closedHubNbhd) feasibility criterion, while leaving L6's
   habitat claim untouched (no triangles in the no-proper-rigid habitat at `|V| ≥ 4`).
@@ -144,11 +148,18 @@ Full record, grounding, and the W0–W5 decomposition:
 `thm:pencil-conditional-realization-pair` green; `hcontract`/`hsplit`/`hcutPendant3` remain open
 hypotheses — full detail in *Decisions made*, below).
 
-**Next: L5-cut-v-b.** L5-cut-v-a (`not_pencilNondegFeasible_of_triangle_two_hubs`, the
-triangle-`≥2`-hub infeasibility lemma) is landed (*Decisions made*). **v-b** is the first
-somewhere-witness construction — on `G`'s chart: hub normals chosen LI per closed-hub-neighbourhood
-+ the v-a exclusions, points hit by the landed arity sweeps (design doc's pinned statement (i)) —
-then **v-c**…**v-g** per the design doc's L5-cut-v leaf list (the last leaf rewires the
+**Next: the L5-cut-v-b Lean landing.** L5-cut-v-a (`not_pencilNondegFeasible_of_triangle_two_hubs`,
+the triangle-`≥2`-hub infeasibility lemma) is landed (*Decisions made*). **v-b**'s construction —
+the first somewhere-witness, on `G`'s chart (design doc's pinned statement (i)) — has a
+paper-verified recipe now (docs-only this session, no Lean yet): an explicit standard-basis-vector
+assignment via `cross₃_apply`'s alternating-cofactor identity, replacing the design doc's original
+"arity sweeps" phrasing (fragile to chain — the sweep lemmas' outputs aren't explicit enough to
+certify a later sweep avoids them). Full recipe + the two supporting facts (a sharper `degree ≤ 2`
+bound at a non-hub, and where v-a's exclusion is actually load-bearing): design doc L5-cut-v "v-b
+construction recipe" sub-bullet, *Decisions made* below. **What remains:** the `Graph.degree`/
+`Graph.Simple` (vendored `Matroid.Graph.Degree`) bridging fact for "`u_c`'s only neighbours are
+`v_c, w1, w2`" (not located this session), then the `by_cases`/`PencilSeed.mk` Lean assembly
+itself. Then **v-c**…**v-g** per the design doc's L5-cut-v leaf list (the last leaf rewires the
 shell/successor — deleting `hcutPendant3`, adding `[Infinite K]` — and restates the blueprint
 node). **L6/L8 are parallel combinatorial tracks** buildable now (L6: habitat feasibility, the
 `≤ 3` closed-hub-neighbourhood lemma + witness-seed construction + the `G′.Simple` sub-obligation,
@@ -169,6 +180,18 @@ neighbor — is `notes/IdeaBacklog.md`.
 
 ## Decisions made during this phase
 
+- **L5-cut-v-b construction recipe derived** (2026-07-25, docs-only; canonical record design doc
+  L5 "Cut-arm route verdict" L5-cut-v "v-b construction recipe" sub-bullet): re-deriving witness
+  (i) against the current `Chart.lean`/`Motive.lean` (F9) found the design doc's "arity sweeps"
+  phrasing fragile to chain (the sweep lemmas' abstract outputs can't be certified to avoid a
+  later sweep's target); the route that works is an explicit standard-basis-vector assignment via
+  `cross₃_apply`'s cofactor identity. Two facts, newly derived, make it watertight: a non-hub
+  `w1`/`w2` has at most one extra hub-neighbour beyond `u_c` (`PencilHub`'s own `degree ≤ 2`,
+  sharper than the blanket `ncard ≤ 3` bound — resolves a genuine near-miss the naive bound would
+  have missed), and v-a's exclusion is load-bearing at the specific collision "`w1`~`w2` both
+  hubs". Not yet done (scoped out once the strategy was secured): the `Graph.degree`/`Simple`
+  (vendored `Matroid.Graph.Degree`) bridging fact for `u_c`'s exact neighbour set, and the Lean
+  assembly. No blueprint node (infrastructure-planning, not a stated theorem).
 - **L5-cut-v-a landed** (2026-07-25, `not_pencilNondegFeasible_of_triangle_two_hubs`,
   `Motive.lean`, any field): the triangle-`≥2`-hub infeasibility finding as a lemma — `y, z`
   adjacent hubs (edge `e₂`), `x` the triangle's third vertex, conclusion

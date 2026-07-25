@@ -1842,6 +1842,65 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
       from the steered promoted families, `hlb₂ = 0` rank verbatim) + the shell/successor
       rewire + the blueprint restatement.
 
+    **v-b construction recipe (derived 2026-07-25, docs-only — de-risks the Lean landing, not
+    yet attempted in Lean).** Re-deriving witness (i) against the CURRENT `Chart.lean`/
+    `Motive.lean` definitions (F9) found the naive route (steer via the abstract arity-sweep
+    lemmas `exists_cross₃_eq_of_ne_zero_of_dotProduct_eq_zero`/
+    `exists_cross₃_eq_of_linearIndependent_pair_of_dotProduct_eq_zero`, chaining their ABSTRACT
+    outputs as inputs to a later sweep) is fragile: those lemmas' outputs are only known to
+    satisfy an orthogonality property, not an explicit direction, so a later sweep cannot
+    certify its own target avoids the earlier sweep's (unknown) output. The route that works
+    instead uses ONLY the four standard basis vectors of `K⁴` (available over any field,
+    matching the pinned statement's lack of an `[Infinite K]` hypothesis) and `cross₃`'s
+    alternating-cofactor identity (`cross₃_apply`, `Chart.lean`): for `{a,b,c,d} = {0,1,2,3}`,
+    `cross₃ e_a e_b e_c = ± e_d` (sign = the permutation parity; irrelevant since only the line
+    matters). **Recipe:** `hubNormal u_c := e0`; if `w1` is a hub, `hubNormal w1 := e1` (else
+    nothing to fix); if `w2` is a hub, `hubNormal w2 := e2`; every OTHER real hub-neighbour
+    appearing in `closedHubNbhd u_c`, `closedHubNbhd w1`, or `closedHubNbhd w2` (`v_c` if it is
+    a hub, or a "third party" hub adjacent to `w1`/`w2`) gets `e3`, and any genuine `fillHub`
+    padding slot also gets `e3`. Every one of the three target triples then reads back as
+    `{e0, x, y}` for two DISTINCT elements of `{e1,e2,e3}` (never a repeat), giving
+    `pencilChartPoint u_c = ±e3`, `… w1 = ±e2`, `… w2 = ±e1` — three distinct basis directions,
+    hence LI.
+
+    **The two facts that make this watertight (both re-derived, not assumed):**
+    (1) *Each of `w1`, `w2` has at most one "extra" hub-neighbour beyond `u_c`* — sharper than
+    the blanket `ncard(closedHubNbhd v) ≤ 3` feasibility bound (which alone would allow TWO
+    extras when `v` is not itself a hub, breaking the 4-basis-vector budget). The sharper bound
+    is `Graph.PencilHub`'s own definition: `¬ G.PencilHub w1` means `G.degree w1 ≤ 2`, and `w1`
+    already spends one of those `≤2` edges on `u_c`, leaving at most one more neighbour
+    (paralleling the L5-cut-iv sub-case-3 pendant producer's own degree bookkeeping). This
+    resolves what looked like a genuine gap on first pass: if a non-hub `w1` could have TWO
+    third-party hub-neighbours `q1 ≠ q2` and `w2` (also non-hub) shared BOTH of them, `w1`'s and
+    `w2`'s triples would read the identical multiset `{u_c, q1, q2}` and their chart points
+    would be forced proportional no matter what seed is chosen — the degree bound rules this out
+    (a non-hub vertex never has two "extra" hub-neighbours to begin with).
+    (2) *When BOTH `w1` and `w2` are hubs, they are NOT adjacent* — else `u_c, w1, w2` form a
+    triangle with `u_c` and (say) `w1` two adjacent hubs, contradicting `hfeas` via **v-a**
+    (`not_pencilNondegFeasible_of_triangle_two_hubs`). Without this, `w2` would sit inside
+    `closedHubNbhd w1` too, consuming `w1`'s only free slot and forcing `pencilChartPoint w1` to
+    the SAME `±e3` as `u_c` — this is the one place v-a's exclusion is load-bearing for v-b (not
+    merely "gates coincidences" in the abstract, as the leaf-list bullet above says, but rules
+    out the specific collision above). `v_c` is never adjacent to `w1`/`w2` at all (any such
+    edge would be a second crossing edge over `V1`, contradicting `hcut_le`'s `≤ 1` bound), so
+    it never enters `closedHubNbhd w1`/`closedHubNbhd w2` — only `closedHubNbhd u_c`, where it
+    is handled like any other "extra" (assigned whichever of `e1`/`e2` isn't already claimed by
+    a hub `w1`/`w2`, since at most one of `v_c`/`w1`/`w2` — never `w1` and `w2` together with
+    `v_c` — can be additionally a hub, by the `ncard ≤ 3` bound applied at `u_c` itself).
+
+    **Not yet done (the actual Lean landing).** The `Graph.degree`/`Graph.Simple` API this needs
+    is the vendored `Matroid.Graph.Degree` library (`.lake/packages/Matroid/Matroid/Graph/
+    Degree/{Basic,Defs}.lean`, `degree v := (eDegree v).toNat`, an `ENat`/handshake-based
+    definition, not a bare `Set.ncard neighborSet`) — the bridging fact "`degree u_c = 3` plus
+    three named distinct incident edges to `v_c, w1, w2` implies these are `u_c`'s only
+    neighbours" was not located/derived this session (time-boxed after the construction itself
+    was secured); likely needs an `Inc`-set cardinality argument (`degree` vs `E(G, v).ncard`
+    under `LocallyFinite`/`Finite`) rather than a direct neighbour-set lemma. The Lean assembly
+    itself (the `by_cases` on `PencilHub v_c/w1/w2`, the `PencilSeed.mk` literal, and the
+    `hubSel`-slot-vs-`Option`-unfold bookkeeping to place `e0..e3` at the right
+    `(vertex, slot)` pairs) is estimated as the larger remaining share of the work; **next:
+    attempt it fresh**, starting from the `Graph.degree`/`Simple` bridging fact above.
+
 - **W5-L6**: habitat feasibility (verdict 4) — the ≤ 3 closed-hub-neighbourhood lemma
   on 2EC/no-proper-rigid graphs + the witness-seed construction discharging
   `PencilNondegFeasible` at `G′ = G^{ab}_v`. **Extended by the L5 blocker verdict, per the landed
