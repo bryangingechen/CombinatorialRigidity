@@ -1243,9 +1243,106 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
   design-level call, most likely a recon) and why the design pass's own numerics (N4–N6) never
   exercised this: all three tested graphs (theta(2,2,2), K3,3, spider-K4) have `≥ 3` vertices, so
   none instantiate the base arm's own `|V(G)| ≤ 2` regime.
+
+  **Blocker verdict (2026-07-24 L5 blocker recon; compiler-checked scratch spike, not committed;
+  route recommendation PENDING USER ADJUDICATION — it restates the conjecture-level motive
+  `PencilPair`).** Three confirmations first, each against the landed definition bodies:
+
+  1. **The rank cap is REAL — `HasGenericPencilRealization` is unsatisfiable at any `≥ 2`-fold
+     parallel class, as the motive stands.** At a parallel class `{x, y}` with `point x, point y`
+     projectively distinct (the motive's second conjunct), *every* parallel edge's supporting
+     extensor is proportional to `extensor ![point x, point y]`: each edge's two
+     `ExtensorThroughPoint` witnesses give `C.val = extensor p₁ = extensor p₂` with
+     `point x ∈ span p₁`, `point y ∈ span p₂`; `C ≠ 0` (the coplanar realization's total nonzero
+     conjunct) makes both spans the same 2-plane (`span_range_eq_of_extensor_eq`, `Meet.lean`),
+     that plane contains the LI pair so equals `span {point x, point y}`, and
+     `exists_smul_extensor_eq_of_mem_span_range` (`Meet.lean`) yields the scalar. Proportional
+     extensors give the *identical* `hingeRowBlock` (`(span {supportExtensor e}).dualAnnihilator`,
+     `RigidityMatrix/Basic.lean` — it depends only on the extensor's line), so the whole class
+     contributes one 5-dim block. At the base instance (`V(G) = {x, y}`) the row span is the image
+     of that single block under `r ↦ r ∘ₗ screwDiff x y` — rank `≤ 5 < 6 =` target.
+  2. **Option (c) is REFUTED — the target rank is correctly derived.** The parallel pair's
+     deficiency is genuinely `0`: `isKDof_zero_of_parallel_pair` (`Deficiency.lean`) is landed and
+     is exactly this computation, and the *generic* (unpinned) two-hinge realization attains `6`
+     (the landed `theorem_55_base_producer_parallel_pair_gen` flow). The collapse is a true fact
+     about the nondegenerate locus, not a mis-derived target.
+  3. **Option (b) as scoped (narrow the dispatch) is UNWORKABLE standalone.** `PencilPair` as
+     landed is simply **false** at a parallel pair (feasible by the landed witness, generic half
+     unsatisfiable by 1), and `Graph.pencil_reduction` instantiates `P` at every graph the
+     induction passes through — no arm-narrowing routes around a false motive; (b) collapses into
+     a motive change too.
+
+  **Conjecture-level reading: the charter is SAFE.** The phase's headline is the *bare*
+  `HasPencilRealization` (existential, deficiency rank), which holds at parallel classes via the
+  coincident-point witness (W1's `exists_pencilPanelRealization_parallel_pair`). The collapse is an
+  artifact of the conditioning: at a parallel-class graph the pencil stratum is *reducible*, and its
+  max-rank locus lies in the coincident-point component — disjoint from the distinct-points
+  (nondegenerate) component the conditioned motive quantifies over. This is precisely the phenomenon
+  KT's own Theorem 5.5 meets at non-simple graphs ("two parallel edges want *equal* panels", p. 670,
+  as recorded in `HasGenericFullRankRealization`'s docstring, `PanelHinge.lean`) and handles by
+  `G.Simple`-conditioning; the landed `theorem_55_base_producer_gen`'s arm (iii) discharges the
+  generic conjunct at the parallel pair by `not_simple_of_isMinimalKDof_of_ncard_two` — vacuity by
+  ¬Simple, exactly the move available here.
+
+  **Two workable repair routes, both spike-typechecked; (b′) RECOMMENDED:**
+
+  - **(b′) — Simple-condition the pair (recommended):** restate
+    `PencilPair K n G := (G.Simple → PencilNondegFeasible K G → HasGenericPencilRealization K n G)
+    ∧ HasPencilRealization K n G`. Two-layer conditioning, each layer earning its keep: `G.Simple`
+    excludes the multigraph degenerations (KT Thm 5.5's own printed conditioning; the landed
+    Theorem55 pair's exact shape), `PencilNondegFeasible` excludes the stratum collapses (`K4`) —
+    the design pass's verdict-1 refutation applied to Simple-conditioning *alone*, not to the
+    conjunction. Costs/effects, swept: the chart tower (WF, the membership headline
+    `isNondegPencilRealization_pencilChartFramework_of_pencilChartWF`, `exists_pencilSeed_of_nondeg`,
+    the L3 engine) is **untouched** — no motive predicate changes; the landed feasibility witness
+    `exists_isNondegPencilRealization_parallel_pair` **stays true** and becomes the documented proof
+    that feasibility alone cannot replace `Simple` (spike-checked consistent with
+    `not_simple_of_parallel`); `pencilPair_of_isLoopAt` is a one-line fix (the feasibility discharge
+    still works; ¬Simple is also available); the base arm's parallel sub-case is vacuous by the
+    2-line `not_simple_of_parallel` (spiked), and its empty/single-edge sub-cases are unchanged
+    (both simple + feasible, so the small generic producers are owed exactly as before); the cut
+    arm's side consumption gets simplicity by `Simple.mono` (upstream); the contract-arm
+    feasibility-propagation addendum **resolves** — contraction-created parallel classes make
+    `G/E(H)` non-simple, so the generic IH obligation is vacuous there, the exact mirror of the
+    landed program's non-simple flows (the route the W5-L5 finding had closed off under
+    feasibility-only conditioning); the split arm's habitat `G` is already provably simple
+    (`simple_of_loopless_of_noRigid`, W3-L2a, minimality-free, minted for this arm), and the IH
+    consumption at `G′ = G^{ab}_v` owes a **new bounded L6 sub-obligation** — `G′` simple (no
+    triangle at `v` in the no-proper-rigid habitat since a triangle is a proper rigid subgraph at
+    `|V| ≥ 4`, plus the `|V(G)| = 3` edge case where `G′` is base-sized — fold into L6's charter,
+    where the feasibility witness-seed construction already owes the same habitat analysis).
+    Blueprint: restate `def:pencil-conditioned-pair` + its fmlnote + the red
+    `thm:pencil-conditional-realization-pair` prose in the same commit (statement-change gate; the
+    `\lean{}` pin survives). Docstring updates: `PencilPair`, `PencilNondegFeasible`'s correction
+    note, `Pair.lean`'s section headers.
+  - **(a) — strengthen the motive:** give `IsNondegPencilRealization` a fifth conjunct
+    `∀ e f u v, e ≠ f → G.IsLink e u v → G.IsLink f u v → LinearIndependent K
+    ![F.supportExtensor e, F.supportExtensor f]` (spike-typechecked), making parallel classes
+    infeasible (the forcing in 1 + the second conjunct give the contradiction — a bounded W2
+    composition, `not_pencilNondegFeasible_of_parallel`) and restoring the original vacuity plan
+    with feasibility as the *single* self-scoping conditioning; the docstring's KT
+    "no two hinges parallel" analogy becomes literal. Cost — the restatement wave the L4 tower just
+    paid once already: the membership headline is **falsified as stated** (the chart's parallel-edge
+    extensors are literally equal — `pencilChartFramework` reads `G.endsOf e`, identical on a
+    parallel class), so it must gain a no-parallel-class hypothesis (or `PencilChartWF` a
+    graph-shaped conjunct) and its blueprint node restates; the Engine's motive-destructuring
+    lemmas take arity fixups; the landed feasibility witness `exists_isNondegPencilRealization_
+    parallel_pair` becomes **false** and must be deleted (deletion-variant discipline: repoint its
+    five-plus cross-references); every future nondeg producer (L6's witness seed, the cut/contract
+    arm outputs, L7's perturbation output) owes the extra conjunct forever (vacuous wherever the
+    habitat is parallel-free, but carried).
+
+  Both routes leave the reduction skeleton, the W3 bare arms, the W3-L7 assembly, and the N4–N6/R2
+  numerics narratives untouched (every tested graph is simple; the only parallel-class graph in the
+  program's evidence set is W1's two-body double edge, which exercises the bare motive only).
+  Recommendation rationale: (b′) is the landed program's own precedent executed at one-tenth the
+  diff, and (a)'s single-predicate elegance buys nothing (b′) lacks mathematically — the two
+  conditionings have identical reach (a feasible-and-simple graph is exactly where both fire).
 - **W5-L6**: habitat feasibility (verdict 4) — the ≤ 3 closed-hub-neighbourhood lemma
   on 2EC/no-proper-rigid graphs + the witness-seed construction discharging
-  `PencilNondegFeasible` at `G′ = G^{ab}_v`.
+  `PencilNondegFeasible` at `G′ = G^{ab}_v`. **Extended by the L5 blocker verdict (2026-07-24,
+  pending the (b′) adjudication):** also owes `G′.Simple` (the no-triangle-at-`v` habitat argument
+  above) for the split arm's generic-IH consumption.
 - **W5-L7** (the research core): the single-candidate Claim-6.12 replacement — at the
   Case-III habitat, a chart seed of `G′` realizing rank `6(|V|−2)` *and* the
   candidate-`M₁` escape `r ⬝ Λ²Π̂(a) ≠ 0` (then the assembly + the output's own
@@ -1280,7 +1377,11 @@ parallel combinatorial tracks after L0; L7 last (consumes L2–L4, L6).
   `Simple`-conditioned half). L6 covers the *split* arm's `G′` only. This
   question is part of the W4 recon's charter (W4 recon), and now shares the
   base arm's open blocker (`notes/Phase39.md` *Blockers*) rather than a
-  separate vacuity route.
+  separate vacuity route. **Update (2026-07-24 L5 blocker recon):** under the
+  recommended (b′) repair (§"W5 leaf decomposition" L5's blocker verdict,
+  pending user adjudication) the vacuity route RETURNS — a contraction-created
+  parallel class makes `G/E(H)` non-simple, so the Simple-conditioned generic
+  IH obligation is vacuous there.
 
 ### Numerics index (this pass)
 
