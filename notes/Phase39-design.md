@@ -1244,9 +1244,9 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
   exercised this: all three tested graphs (theta(2,2,2), K3,3, spider-K4) have `≥ 3` vertices, so
   none instantiate the base arm's own `|V(G)| ≤ 2` regime.
 
-  **Blocker verdict (2026-07-24 L5 blocker recon; compiler-checked scratch spike, not committed;
-  route recommendation PENDING USER ADJUDICATION — it restates the conjecture-level motive
-  `PencilPair`).** Three confirmations first, each against the landed definition bodies:
+  **Blocker verdict (2026-07-24 L5 blocker recon; compiler-checked scratch spike, not committed
+  — the restatement itself landed separately, below).** Three confirmations first, each against
+  the landed definition bodies:
 
   1. **The rank cap is REAL — `HasGenericPencilRealization` is unsatisfiable at any `≥ 2`-fold
      parallel class, as the motive stands.** At a parallel class `{x, y}` with `point x, point y`
@@ -1341,7 +1341,7 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
 
   **Long-run comparison (2026-07-24 follow-up recon, commissioned by user adjudication; projects
   both routes through the phase's remaining program — the immediate costs above are not
-  re-litigated; route choice stays PENDING USER ADJUDICATION).** Methods: landed bodies re-read
+  re-litigated).** Methods: landed bodies re-read
   (`Pencil/{Motive,Pair,Chart}.lean`, `Theorem55.lean`'s pair spine, `ReducibleVertex.lean`'s
   simplicity lemmas, the graph library's `Simple` class = `Loopless` + edge-uniqueness); KT
   pp. 668/670 re-read against the `.refs` copy; one scratch spike (below), deleted.
@@ -1406,11 +1406,18 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
   generic statement (and that is recoverable later under (b′)); its permanent costs — the
   conditioned chart headline inherited by every future chart, the program-level split from the
   landed pair's pattern, a third `IsNondegPencilRealization` restatement wave on a tower that
-  stabilized only after two — are not recoverable under (a). Decision remains the user's.
+  stabilized only after two — are not recoverable under (a). **User adjudication (2026-07-24,
+  verbatim):** asked "With the long-run recon in: which repair route for the `PencilPair` motive?",
+  the user selected "(b′) Simple-condition the pair (Recommended)". **Landed same day**: `PencilPair`
+  restated to `(G.Simple → PencilNondegFeasible K G → HasGenericPencilRealization K n G) ∧
+  HasPencilRealization K n G` (`Molecule/Pencil/Motive.lean`), the loop arm one-line fixed, the
+  `not_simple_of_parallel` vacuity helper landed (`Motive.lean`), and the blueprint
+  `def:pencil-conditioned-pair`/`thm:pencil-conditional-realization-pair` nodes restated
+  (`pencil.tex`) — see `notes/Phase39.md` *Decisions made* for the commit-level record.
 - **W5-L6**: habitat feasibility (verdict 4) — the ≤ 3 closed-hub-neighbourhood lemma
   on 2EC/no-proper-rigid graphs + the witness-seed construction discharging
-  `PencilNondegFeasible` at `G′ = G^{ab}_v`. **Extended by the L5 blocker verdict (2026-07-24,
-  pending the (b′) adjudication):** also owes `G′.Simple` (the no-triangle-at-`v` habitat argument
+  `PencilNondegFeasible` at `G′ = G^{ab}_v`. **Extended by the L5 blocker verdict, per the landed
+  (b′) restatement:** also owes `G′.Simple` (the no-triangle-at-`v` habitat argument
   above) for the split arm's generic-IH consumption.
 - **W5-L7** (the research core): the single-candidate Claim-6.12 replacement — at the
   Case-III habitat, a chart seed of `G′` realizing rank `6(|V|−2)` *and* the

@@ -720,12 +720,18 @@ induction statement strengthened by a genericity conjunct, the way
 Theorem~5.5's induction statement carries a generic full-rank
 realization conditioned on simplicity alongside the bare panel
 realization (\cref{def:rank-hypothesis}). Conditioning on simplicity
-does not work here: at $K_4$ every vertex's closed hub-neighbourhood
-(below) is all four vertices, and the necessity direction of
-\cref{lem:two-pencil-extension-iff} forces every hub's panel normal into
-the same vertex's orthogonal complement, so no simple realization of
-$K_4$ has independent hub normals. The conditioning below asks instead
-for the realization's own nondegenerate-satisfiability.
+alone does not work here: at $K_4$ every vertex's closed
+hub-neighbourhood (below) is all four vertices, and the necessity
+direction of \cref{lem:two-pencil-extension-iff} forces every hub's
+panel normal into the same vertex's orthogonal complement, so no
+simple realization of $K_4$ has independent hub normals. Conditioning
+on the realization's own nondegenerate-satisfiability alone does not
+work either: a multigraph with a parallel class of hinges can carry a
+nondegenerate realization without any hub, yet no such realization
+attains the deficiency-rank target, since the class's two hinges are
+then forced onto a single common supporting line. The conditioning
+below asks for both together: simplicity, as in Theorem~5.5, and the
+realization's own nondegenerate-satisfiability.
 
 \begin{definition}[Nondegenerate pencil realization, feasibility]
   \label{def:pencil-nondegenerate}
@@ -791,17 +797,25 @@ for the realization's own nondegenerate-satisfiability.
         def:pencil-rank-hypothesis}
   A multigraph $G$ satisfies the \emph{conditioned pair} at $n$ when it
   has a pencil realization at the deficiency rank
-  (\cref{def:pencil-rank-hypothesis}) and, whenever it is
+  (\cref{def:pencil-rank-hypothesis}) and, whenever it is simple and
   nondegeneracy-feasible (\cref{def:pencil-nondegenerate}), a generic one
   (\cref{def:pencil-generic-motive}).
 \end{definition}
 \begin{fmlnote}
   \label{fmlnote:pencil-conditioned-pair}
   This is the pencil analogue of Theorem~5.5's own conditioned induction
-  statement (\cref{def:rank-hypothesis}), with nondegeneracy-feasibility
-  in place of simplicity as the conditioning, for the reason given above.
-  Dropping the first conjunct recovers the bare realization of
-  \cref{def:pencil-rank-hypothesis} directly.
+  statement (\cref{def:rank-hypothesis}), now conditioned on both
+  simplicity, exactly as Theorem~5.5, and nondegeneracy-feasibility, for
+  the $K_4$ reason above. Neither conjunct alone suffices: a multigraph
+  with a parallel class of hinges can carry a nondegenerate realization
+  (the two hinges can point to independent concurrency points and panel
+  normals, with neither body a hub), yet no nondegenerate realization of
+  such a multigraph attains the deficiency-rank target, since two hinges
+  through the same pair of bodies are forced onto a single common
+  supporting line whenever their concurrency points are projectively
+  distinct, contributing one row block where the target needs two
+  independent ones. Dropping the first conjunct recovers the bare
+  realization of \cref{def:pencil-rank-hypothesis} directly.
 \end{fmlnote}
 
 \begin{theorem}[Pencil realization from the contraction and split cases, conditioned pair]
@@ -821,6 +835,8 @@ for the realization's own nondegenerate-satisfiability.
   and cut-edge cases of \cref{thm:pencil-reduction} by their
   conditioned-pair analogues: the loop case's generic conjunct is
   vacuous, since a loop already breaks nondegeneracy-feasibility
-  (\cref{def:pencil-nondegenerate}); the base and cut-edge cases'
-  generic conjuncts remain to be established.
+  (\cref{def:pencil-nondegenerate}); the base case's parallel-class
+  sub-case is vacuous too, since a parallel class of edges is never
+  simple; the base case's remaining sub-cases and the cut-edge case's
+  generic conjunct remain to be established.
 \end{proof}

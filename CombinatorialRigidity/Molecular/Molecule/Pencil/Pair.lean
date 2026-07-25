@@ -23,11 +23,15 @@ graph-surgery + the motive's own vacuity/forgetful facts, not chart construction
 This leaf lands the loop arm first (free, per the design doc: a loop already breaks
 `PencilNondegFeasible`, so its generic obligation is vacuous). The base arm's parallel-class
 sub-case was planned as vacuous too ("nondegeneracy-infeasible") but that plan is **refuted**
-below — see §"a base-arm finding" — leaving the base arm's generic half an open blocker rather than
-a small producer task. The cut arm's generic half (moderate: mirrors the landed panel-side
-`case_cut_edge_realization_gp_gen`, reusing the W3-L4 transport/nondegeneracy/rank infra), the base
-arm's still-believed-small empty/single-edge sub-cases, and the successor assembly itself remain
-open — see `notes/Phase39.md` *Hand-off*.
+below — see §"a base-arm finding" — surfacing a genuine blocker for `PencilPair`'s own generic
+conjunct, **resolved 2026-07-24 by the user's (b′) adjudication**: `PencilPair` is restated
+(`Molecule/Pencil/Motive.lean`) to condition the generic conjunct on `G.Simple` in addition to
+`PencilNondegFeasible`, exactly KT Theorem 5.5's own two-layer conditioning, restoring the base
+arm's parallel-class vacuity via the new `not_simple_of_parallel` helper (not yet wired into a
+producer here — that is the next commit, `notes/Phase39.md` *Hand-off*). The cut arm's generic
+half (moderate: mirrors the landed panel-side `case_cut_edge_realization_gp_gen`, reusing the
+W3-L4 transport/nondegeneracy/rank infra), the base arm's still-believed-small empty/single-edge
+sub-cases, and the successor assembly itself remain open — see `notes/Phase39.md` *Hand-off*.
 
 See `notes/Phase39.md`, `notes/Phase39-design.md` (§"W5 leaf decomposition"), and
 `blueprint/src/chapter/pencil.tex`.
@@ -48,17 +52,20 @@ variable {α β : Type*}
 loop of `G` at `v`. If `G ＼ {e}` satisfies the conditioned pair at rank `n`, so does `G`: the bare
 half is `hasPencilRealization_of_isLoopAt` applied to the recursive bare half unchanged, and the
 generic half is **free** — `G` has a loop at `v`, so `not_pencilNondegFeasible_of_isLoopAt` already
-refutes `PencilNondegFeasible K G`, making the implication `PencilNondegFeasible K G →
-HasGenericPencilRealization K n G` vacuously true without consulting `hrec` at all. This is exactly
-the design doc's "loop arm free" verdict (`notes/Phase39-design.md` §"W5 leaf decomposition" L5). -/
+refutes `PencilNondegFeasible K G`, making the implication `G.Simple → PencilNondegFeasible K G →
+HasGenericPencilRealization K n G` vacuously true without consulting `hrec` or the `G.Simple`
+hypothesis at all (`¬ G.Simple` is also available at a loop, but the feasibility discharge already
+suffices). This is exactly the design doc's "loop arm free" verdict
+(`notes/Phase39-design.md` §"W5 leaf decomposition" L5), **one-line fixed 2026-07-24** for the
+(b′) restatement of `PencilPair` (an extra, unused `G.Simple` binder). -/
 theorem pencilPair_of_isLoopAt {G : Graph α β} {n : ℕ} {e : β} {v : α}
     (hloop : G.IsLoopAt e v) (hrec : PencilPair K n (G ＼ ({e} : Set β))) :
     PencilPair K n G :=
-  ⟨fun hfeas => absurd hfeas (not_pencilNondegFeasible_of_isLoopAt hloop),
+  ⟨fun _ hfeas => absurd hfeas (not_pencilNondegFeasible_of_isLoopAt hloop),
     hasPencilRealization_of_isLoopAt hloop hrec.2⟩
 
-/-! ## W5-L5: a base-arm finding — parallel classes are NOT nondegeneracy-infeasible (Phase 39
-PENCIL)
+/-! ## W5-L5: a base-arm finding — parallel classes are NOT nondegeneracy-infeasible, resolved via
+(b′) (Phase 39 PENCIL)
 
 The design doc's L5 spike (`notes/Phase39-design.md` §"W5 leaf decomposition") planned the base
 arm's parallel-class sub-case (`2 ≤ E(G).ncard` at `V(G).ncard = 2`) as vacuous — "parallel classes
@@ -85,8 +92,15 @@ full-rank (`D = 6`) parallel-pair construction uses
 `point := fun _ => q₀`, the *same* point at both bodies. So `HasGenericPencilRealization` looks
 unsatisfiable at any `≥ 2`-fold parallel class, while `PencilNondegFeasible` is witnessed there —
 the base arm's `PencilNondegFeasible → HasGenericPencilRealization` obligation cannot be discharged
-as "vacuous", and is not yet known to be provable either. Left as an open blocker; see the phase
-notes for the resolution options assessed (motive adjustment vs. a narrower base-arm dispatch). -/
+as "vacuous" under feasibility-only conditioning. **Resolved 2026-07-24 by the user's (b′)
+adjudication:** `PencilPair`'s generic conjunct is restated (`Molecule/Pencil/Motive.lean`) to
+require `G.Simple` as well, exactly KT Theorem 5.5's own conditioning at parallel classes — a
+parallel pair is never simple (two edges linking the same pair, `not_simple_of_parallel`), so the
+base arm's parallel-class sub-case is vacuous again, this time by non-simplicity rather than by
+infeasibility. The witness below stays exactly as landed: it is now the documented proof that
+feasibility alone could not have replaced `G.Simple` as the conditioning. Wiring
+`not_simple_of_parallel` into the actual base-arm producer is the next commit
+(`notes/Phase39.md` *Hand-off*). -/
 
 /-- **A parallel pair is nondegeneracy-feasible** (Phase 39 W5-L5; the base-arm finding above,
 compiler-checked): two edges `e ≠ f` both linking `x ≠ y`, with `V(G) = {x, y}` and

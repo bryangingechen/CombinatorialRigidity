@@ -18,6 +18,10 @@ the W5 design pass's final conditioned-pair motive (`PencilPair`, its `IsNondegP
 `Molecule/Pencil/Arms.lean`). `Graph.closedNbhd` moved here 2026-07-24 from
 `Molecule/Pencil/Chart.lean` (its original home) — the W5-L4 restatement's new
 `IsNondegPencilRealization` conjunct needs it, and `Chart.lean` is downstream of this file.
+`PencilPair` **restated 2026-07-24** per the W5-L5 blocker recon's (b′) route, user-adjudicated
+(`notes/Phase39.md` *Blockers*): its generic conjunct is now conditioned on `G.Simple` in addition
+to `PencilNondegFeasible`, and this leaf gained the corresponding vacuity helper
+`not_simple_of_parallel`.
 
 This split is rename-free — every declaration keeps its `CombinatorialRigidity.Molecular`
 namespace, so the blueprint `\lean{...}` pins and `checkdecls` are unaffected.
@@ -38,17 +42,26 @@ variable {α β : Type*}
 
 The W5 design pass (`notes/Phase39-design.md` §"W5 design pass") pinned the final induction
 motive: a *conditioned pair*, mirroring KT Theorem 5.5's own `(G.Simple →
-HasGenericFullRankRealization) ∧ HasPanelRealization` shape (`Theorem55.lean`), but conditioned on
-the stratum's own nondegenerate-satisfiability (`PencilNondegFeasible`) rather than `G.Simple` — a
-`Simple`-conditioned generic conjunct is refuted at `K4` (every body's closed hub-neighbourhood has
-`4` members there, forcing every hub normal into a common orthogonal complement, so no
-nondegenerate point exists), and a bare-existential generic conjunct starves both downstream
-consumers (the product-route genericity argument needs a *nondegenerate* stratum point to perturb
-from, not merely a full-rank one). This section lands the motive layer: the hub / closed-hub-
-neighbourhood combinatorics, the nondegeneracy predicate, its feasibility conditioning, the generic
-pencil motive, the conditioned-pair motive itself, the forgetful map back to the bare motive, and
-the loop guard showing feasibility already fails at a loop (so the loop arm's generic obligation is
-free, mirroring the landed program's `loop ⟹ ¬Simple`). -/
+HasGenericFullRankRealization) ∧ HasPanelRealization` shape (`Theorem55.lean`). The design pass's
+first cut conditioned the generic conjunct on the stratum's own nondegenerate-satisfiability
+(`PencilNondegFeasible`) *instead of* `G.Simple` — a `Simple`-conditioned generic conjunct alone is
+refuted at `K4` (every body's closed hub-neighbourhood has `4` members there, forcing every hub
+normal into a common orthogonal complement, so no nondegenerate point exists), and a
+bare-existential generic conjunct starves both downstream consumers (the product-route genericity
+argument needs a *nondegenerate* stratum point to perturb from, not merely a full-rank one).
+**Restated 2026-07-24** (W5-L5 blocker recon, the user's (b′) adjudication): a `≥ 2`-fold parallel
+class turns out to be nondegeneracy-*feasible* on its own
+(`exists_isNondegPencilRealization_parallel_pair`, `Pencil/Pair.lean`) yet caps the achievable rank
+one short of the target, so `PencilNondegFeasible` alone is not enough either — the generic
+conjunct now nests `PencilNondegFeasible` inside a `G.Simple` antecedent, exactly Theorem 5.5's own
+shape, with `PencilNondegFeasible` doing the additional `K4`-style work `G.Simple` alone cannot.
+This section lands the motive layer: the hub / closed-hub-neighbourhood combinatorics, the
+nondegeneracy predicate, its feasibility conditioning, the generic pencil motive, the
+conditioned-pair motive itself, the forgetful map back to the bare motive, the loop guard showing
+feasibility already fails at a loop (so the loop arm's generic obligation is free, mirroring the
+landed program's `loop ⟹ ¬Simple`), and the parallel-class vacuity guard `not_simple_of_parallel`
+(a `≥ 2`-fold parallel class already fails `G.Simple`, the same landed-program precedent applied to
+the pencil base arm). -/
 
 /-- **A pencil hub** (`def:pencil-nondegenerate`; Phase 39 W5-L0): a body of `G` of degree at least
 three, exactly where the pencil pin bites (a degree-`≤ 2` body is automatically a pencil, two
@@ -99,18 +112,21 @@ def IsNondegPencilRealization (G : Graph α β) (F : BodyHingeFramework K 2 α �
   (∀ v ∈ V(G), ¬ G.PencilHub v → LinearIndepOn K point (G.closedNbhd v))
 
 /-- **Nondegenerate-realization feasibility** (`def:pencil-nondegenerate`; Phase 39 W5-L0): the
-conditioning predicate for the pencil induction's generic conjunct — the pencil analogue of KT
-Theorem 5.5's `G.Simple`. Unlike `G.Simple`, this predicate is graph-dependent in a genuinely new
-way: it is refuted at `K4` (verdict 1, `notes/Phase39-design.md` §"W5 design pass" — every body's
-closed hub-neighbourhood has all four vertices, over-determining the panel normals against a
-nonzero point), so the conditioning self-scopes the stratum's known degenerations instead of ruling
-them out by simplicity. **Correction (2026-07-24, W5-L5):** the original verdict also claimed this
-predicate is refuted at any graph with a `≥ 2`-fold parallel class between two hubs — that claim is
-FALSE, refuted by a compiler-checked witness
+second conditioning predicate for the pencil induction's generic conjunct, nested inside a
+`G.Simple` antecedent (`PencilPair` below) — mirroring KT Theorem 5.5's own conditioned pair, with
+this extra layer because `G.Simple` alone does not exclude every degeneration of the pencil
+stratum: this predicate is refuted at `K4` (verdict 1, `notes/Phase39-design.md` §"W5 design pass"
+— every body's closed hub-neighbourhood has all four vertices, over-determining the panel normals
+against a nonzero point), a graph on which `G.Simple` alone says nothing. **Correction (2026-07-24,
+W5-L5):** the original verdict also claimed this predicate is refuted at any graph with a `≥ 2`-fold
+parallel class between two hubs — that claim is FALSE, refuted by a compiler-checked witness
 (`exists_isNondegPencilRealization_parallel_pair`, `Pencil/Pair.lean`): a parallel class is
-nondegeneracy-*feasible* (even without any hub, via two independent panels/points). See
-`notes/Phase39.md` *Blockers* for the resulting (still open) tension this creates for
-`HasGenericPencilRealization`'s rank target at such graphs. -/
+nondegeneracy-*feasible* (even without any hub, via two independent panels/points), even though the
+achievable rank there is capped one short of the target (`notes/Phase39.md` *Blockers*). **Resolved
+2026-07-24 by the user's (b′) adjudication:** this is exactly why `PencilPair`'s generic conjunct
+keeps a `G.Simple` layer alongside this predicate rather than dropping it in favor of feasibility
+alone — the witness above is the documented proof that feasibility cannot replace simplicity, and
+`not_simple_of_parallel` below discharges the parallel case by non-simplicity instead. -/
 def PencilNondegFeasible (K : Type*) [Field K] (G : Graph α β) : Prop :=
   ∃ (F : BodyHingeFramework K 2 α β) (normal point : α → Fin 4 → K),
     IsNondegPencilRealization G F normal point
@@ -124,15 +140,33 @@ def HasGenericPencilRealization (K : Type*) [Field K] (n : ℕ) (G : Graph α β
     (Module.finrank K (Submodule.span K F.rigidityRows) : ℤ)
       = screwDim 2 * ((V(G).ncard : ℤ) - 1) - G.deficiency n
 
-/-- **The conditioned-pair motive** (`def:pencil-conditioned-pair`; Phase 39 W5-L0): the final `P`
-of the pencil reduction (`Graph.pencil_reduction`) — a bare pencil realization together with, when
-the stratum is nondegeneracy-feasible, a genuinely generic one. This is the pencil analogue of the
-Theorem-5.5 conditioned pair `(G.Simple → HasGenericFullRankRealization K k n G) ∧
-HasPanelRealization K k n G` (`Theorem55.lean`), conditioned on `PencilNondegFeasible` in place of
-`G.Simple` (verdict 1, `notes/Phase39-design.md` §"W5 design pass"). -/
+/-- **The conditioned-pair motive** (`def:pencil-conditioned-pair`; Phase 39 W5-L0, **restated
+2026-07-24 per the user's (b′) adjudication** to the W5-L5 blocker recon
+(`notes/Phase39-design.md` §"W5 leaf decomposition" L5 "Blocker verdict"): the final `P` of the
+pencil reduction (`Graph.pencil_reduction`) — a bare pencil realization together with, when `G` is
+both simple and nondegeneracy-feasible, a genuinely generic one. Two-layer conditioning, each layer
+earning its keep: `G.Simple` excludes the multigraph degenerations exactly as KT Theorem 5.5's own
+conditioned pair does (`Theorem55.lean`) — a `≥ 2`-fold parallel class IS nondegeneracy-*feasible*
+(`exists_isNondegPencilRealization_parallel_pair`, `Pencil/Pair.lean`) but caps the achievable rank
+one short of the target, since two hinges through the same pair of bodies are forced onto a single
+supporting line — while `PencilNondegFeasible` excludes the stratum collapses a simplicity-only
+conditioning misses (`K4`, verdict 1, `notes/Phase39-design.md` §"W5 design pass"). This is now the
+exact Theorem-5.5 shape `(G.Simple → HasGenericFullRankRealization K k n G) ∧
+HasPanelRealization K k n G`, with `PencilNondegFeasible` nested inside the `G.Simple` antecedent
+rather than replacing it. -/
 def PencilPair (K : Type*) [Field K] (n : ℕ) (G : Graph α β) : Prop :=
-  (PencilNondegFeasible K G → HasGenericPencilRealization K n G) ∧
+  (G.Simple → PencilNondegFeasible K G → HasGenericPencilRealization K n G) ∧
     HasPencilRealization K n G
+
+/-- **A parallel class is never simple** (Phase 39 W5-L5, the (b′) repair's vacuity helper): two
+distinct edges linking the same pair of vertices already break `G.Simple`
+(`Graph.Simple.eq_of_isLink`). This is the fact `PencilPair`'s new `G.Simple` antecedent uses to
+route the base arm's parallel-class sub-case around `PencilNondegFeasible`'s own witness there
+(`exists_isNondegPencilRealization_parallel_pair`), mirroring the landed program's own
+`not_simple_of_isMinimalKDof_of_ncard_two` at the same graphs. -/
+theorem not_simple_of_parallel {G : Graph α β} {e f : β} {x y : α}
+    (hef : e ≠ f) (hl_e : G.IsLink e x y) (hl_f : G.IsLink f x y) : ¬ G.Simple :=
+  fun hSimple => hef (hSimple.eq_of_isLink hl_e hl_f)
 
 /-- **The forgetful map** (Phase 39 W5-L0, the pencil analogue of `hasPanelRealization_of_generic`):
 a generic pencil realization is in particular a bare pencil realization at the same rank — drop the

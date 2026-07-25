@@ -8,12 +8,15 @@ normal-side (`nbrSel`/`fillNbr`) global constructions plus the fifth `PencilChar
 (adjacent-point distinctness, a `units_smul` transport, no new per-vertex construction) into one
 `PencilSeed` with full `PencilChartWF` and projective point/normal reproduction; **W5-L5 opened**
 (new leaf `Molecule/Pencil/Pair.lean`), loop arm landed (`pencilPair_of_isLoopAt`); **the base-arm
-parallel-class blocker's verdict landed** (2026-07-24 recon: the rank cap is real — `PencilPair` as
-landed is FALSE at parallel pairs; two spike-typechecked repairs, (b′) `Simple`-conditioning
-recommended, **repair route PENDING USER ADJUDICATION**, *Blockers*); phase stays open (two user
-adjudications, below); next: **the user's (a)/(b′) call, then the `PencilPair` restatement slice**,
-then the base arm's empty/single-edge sub-cases, the cut arm's generic half, and the successor
-assembly, with L6/L8 parallel (*Hand-off*); W4 after W5 (phase opened 2026-07-23, recon-first).
+parallel-class blocker found, verdicted, user-adjudicated, and REPAIRED, all 2026-07-24**: the
+rank cap was real (`PencilPair` as first landed was FALSE at parallel pairs); the user selected
+repair route (b′) (`Simple`-conditioning); `PencilPair` is now restated
+`(G.Simple → PencilNondegFeasible → HasGenericPencilRealization) ∧ HasPencilRealization`
+(`Molecule/Pencil/Motive.lean`), the loop arm one-line fixed, `not_simple_of_parallel` landed, and
+the blueprint nodes restated (*Blockers*); phase stays open (two user adjudications, below); next:
+the base arm's empty/single-edge generic producers (parallel sub-case now vacuous via
+`not_simple_of_parallel`), then the cut arm's generic half, and the successor assembly, with L6/L8
+parallel (*Hand-off*); W4 after W5 (phase opened 2026-07-23, recon-first).
 **`Molecule/Pencil.lean` split into `Molecule/Pencil/{Statement,Arms,Motive,Chart,Engine,Reseed}.lean`
 2026-07-24** (housekeeping; see *Decisions made* for the file map).
 
@@ -119,35 +122,23 @@ Full record, grounding, and the W0–W5 decomposition:
 
 ## Blockers / open questions
 
-- **W5-L5 base-arm parallel-class blocker — verdict landed, repair route PENDING USER
-  ADJUDICATION** (2026-07-24 blocker recon; canonical record `notes/Phase39-design.md`
-  §"W5 leaf decomposition" L5 "Blocker verdict"). Confirmed against the landed definition bodies:
-  the rank cap is real — at any `≥ 2`-fold parallel class the motive's adjacent-point distinctness
-  forces every parallel edge onto the same supporting line (W2's `span_range_eq_of_extensor_eq` +
-  `exists_smul_extensor_eq_of_mem_span_range`), identical `hingeRowBlock`s cap the base instance at
-  rank `5 < 6`, so `HasGenericPencilRealization` is unsatisfiable there while `PencilNondegFeasible`
-  is witnessed — **`PencilPair` as landed is FALSE at parallel pairs**, and the reduction
-  instantiates `P` at every graph, so the motive itself must change (option (b) as scoped is
-  unworkable; option (c) refuted — deficiency is genuinely `0`, `isKDof_zero_of_parallel_pair`).
-  The charter is safe: the bare headline holds at parallel classes via the coincident-point W1
-  witness; the collapse is an artifact of conditioning on the distinct-points component of a
-  *reducible* stratum — the same phenomenon KT Thm 5.5 meets at non-simple graphs and handles by
-  `Simple`-conditioning (the landed `theorem_55_base_producer_gen` arm (iii) precedent).
-  **Two spike-typechecked repairs, awaiting the user's call** (both restate the conjecture-level
-  motive, so neither is executed yet):
-  - **(b′), recommended:** `PencilPair := (G.Simple → PencilNondegFeasible → HasGenericPencil…) ∧
-    HasPencilRealization` — the landed Theorem55 pair's exact shape; chart tower untouched, landed
-    witness stays true, contract-arm vacuity route restored, one-line loop-arm fix, 2-line
-    `not_simple_of_parallel`; new bounded L6 sub-obligation (`G′ = G^{ab}_v` simple).
-  - **(a):** a fifth `IsNondegPencilRealization` conjunct (distinct hinge lines along parallel
-    edges) making parallel classes infeasible — single-conditioning elegance, but a restatement
-    wave: the chart membership headline is falsified as stated (needs a no-parallel hypothesis),
-    engine arity fixups, the landed witness deleted, every future producer owes the conjunct.
-  Full cost tables + sweep in the design doc bullet. **The user-commissioned long-run comparison
-  (2026-07-24 follow-up recon, same design-doc bullet) also lands on (b′), HIGH confidence** —
-  the two conditionings are logically equivalent graph-by-graph, so the remaining mathematics is
-  route-independent, and (a)'s permanent costs (conditioned chart headline, pattern split from the
-  landed Theorem-55 pair, a third motive restatement wave) outweigh its statement aesthetics.
+- ~~W5-L5 base-arm parallel-class blocker~~ **resolved** (2026-07-24; canonical record
+  `notes/Phase39-design.md` §"W5 leaf decomposition" L5 "Blocker verdict" + "Long-run comparison").
+  The blocker recon confirmed against the landed definition bodies that the rank cap is real — at
+  any `≥ 2`-fold parallel class the motive's adjacent-point distinctness forces every parallel edge
+  onto the same supporting line, identical `hingeRowBlock`s cap the base instance at rank `5 < 6`,
+  so `PencilPair` as landed was FALSE at parallel pairs — and pinned two spike-typechecked repairs,
+  (b′) recommended. **User adjudication (2026-07-24, verbatim):** asked "With the long-run recon
+  in: which repair route for the `PencilPair` motive?", the user selected "(b′) Simple-condition
+  the pair (Recommended)". **Landed same session:** `PencilPair` restated to
+  `(G.Simple → PencilNondegFeasible K G → HasGenericPencilRealization K n G) ∧
+  HasPencilRealization K n G` (`Molecule/Pencil/Motive.lean`) — the landed Theorem55 pair's exact
+  shape; the loop arm `pencilPair_of_isLoopAt` one-line fixed; the `not_simple_of_parallel` vacuity
+  helper landed (`Motive.lean`); the blueprint `def:pencil-conditioned-pair` +
+  `thm:pencil-conditional-realization-pair` nodes restated (`pencil.tex`). The base arm's
+  parallel-class sub-case is vacuous again, now by non-simplicity rather than infeasibility —
+  wiring `not_simple_of_parallel` into the actual base-arm producer is next (*Hand-off*). New
+  bounded L6 sub-obligation recorded (`G′ = G^{ab}_v` simple, design doc L6 bullet).
 - ~~W5-L4 WF-conjunct blocker~~ **resolved** (2026-07-24 blocker recon; design doc
   L4 bullet "Blocker verdict"): the triple can genuinely fail — route 2 (motive
   restatement) pinned with typechecked shapes, **and landed** (same day, the
@@ -195,37 +186,35 @@ closing commit).
 does not need the grade-0 chart, `Chart.lean`/`Engine.lean`/`Reseed.lean`): the loop arm's
 conditioned-pair analogue landed, `pencilPair_of_isLoopAt` — exactly the design doc's "free"
 verdict, composing the landed bare-motive `hasPencilRealization_of_isLoopAt` with `absurd` +
-`not_pencilNondegFeasible_of_isLoopAt` for the vacuous generic half. Gates for any continuation:
-`lake build` (warning-clean) + `lake lint` when `.lean` is touched; `blueprint/verify.sh` +
-`blueprint/lint.sh` (vocabulary gate bans "stratum"/"strata") when `.tex` is touched.
+`not_pencilNondegFeasible_of_isLoopAt` for the vacuous generic half. The base arm's parallel-class
+blocker (found, verdicted, and — this session — user-adjudicated and REPAIRED via route (b′)) is
+recorded in *Blockers* above.
 
-**Next: the user adjudicates the W5-L5 repair route — (b′) recommended — then the `PencilPair`
-restatement slice.** The blocker's verdict is in (*Blockers* above; canonical record
-`notes/Phase39-design.md` §"W5 leaf decomposition" L5 "Blocker verdict"): `PencilPair` as landed is
-false at parallel pairs, so no Lean lands on the base/cut arms or the successor until the user
-picks between the two spike-typechecked repairs. **Under (b′)** (recommended) the next concrete
-commit is the restatement slice: restate `PencilPair` to
-`(G.Simple → PencilNondegFeasible → HasGenericPencilRealization) ∧ HasPencilRealization`
-(`Motive.lean`, + the `PencilNondegFeasible` correction-docstring update), fix
-`pencilPair_of_isLoopAt` (one line), add `not_simple_of_parallel` + the base arm's parallel-class
-vacuity (both spiked in the recon), and restate `def:pencil-conditioned-pair` + its fmlnote + the
-red `thm:pencil-conditional-realization-pair` prose in `pencil.tex` (statement-change gate) — all
-one commit, gates: `lake build`/`lake lint` + `blueprint/verify.sh`/`lint.sh`. **Under (a)** the
-slice is instead the fifth-conjunct restatement wave (design-doc bullet has the cost table —
-membership-headline hypothesis, engine arity fixups, witness deletion). After the slice: the base
-arm's empty/single-edge sub-cases (genuinely small, both simple + feasible), then the cut arm's
-generic half (moderate — mirrors the landed panel-side `case_cut_edge_realization_gp_gen`,
-`AlgebraicInduction/Theorem55.lean`; the W3-L4 transport/nondegeneracy/rank infra in `Arms.lean` is
-reusable; side simplicity via `Simple.mono`), then the successor assembly
+**Next: the base arm's empty/single-edge generic producers, now unblocked.** `PencilPair`'s
+generic conjunct is restated (this commit) as `G.Simple → PencilNondegFeasible K G →
+HasGenericPencilRealization K n G`, so the base arm's parallel-class sub-case (`2 ≤ E(G).ncard` at
+`V(G).ncard = 2`) is vacuous via `not_simple_of_parallel` (landed, `Motive.lean`, not yet wired
+into a base-arm producer) — the next concrete commit wires that vacuity in and discharges the
+base arm's remaining two sub-cases (empty graph, single edge), both genuinely small: simple and
+nondegeneracy-feasible, so their generic conjuncts are ordinary producer tasks, not blockers. After
+that: the cut arm's generic half (moderate — mirrors the landed panel-side
+`case_cut_edge_realization_gp_gen`, `AlgebraicInduction/Theorem55.lean`; the W3-L4
+transport/nondegeneracy/rank infra in `Arms.lean` is reusable; side simplicity via `Simple.mono`;
+per the long-run comparison, the side IH consumption owes side *feasibility*, not just
+simplicity — design doc L5 "Long-run comparison" point 1), then the successor assembly
 `pencil_conjecture_of_arms_pair` (mirrors `pencil_conjecture_of_arms`, W3-L7). **L6/L8 are
-parallel combinatorial tracks, unaffected by the blocker** (L6: habitat feasibility, the `≤ 3`
-closed-hub-neighbourhood lemma + witness-seed construction — under (b′) also the new `G′.Simple`
-sub-obligation, design-doc L6 bullet; L8: the `k = 0` residue, emptiness route recommended).
+parallel combinatorial tracks** (L6: habitat feasibility, the `≤ 3` closed-hub-neighbourhood
+lemma + witness-seed construction, now also owing the new `G′.Simple` sub-obligation per (b′),
+design-doc L6 bullet; L8: the `k = 0` residue, emptiness route recommended).
 **L7 (the research core) is last** — the uniform escape certificate
 `r ⬝ Λ²Π̂(a) ≢ 0`, likely the first leaf needing the `normalRow_eq_panelRow`-style graph bridge
 deferred from L3; N2 witnesses one instance. Full leaf detail:
 `notes/Phase39-design.md` §"W5 leaf decomposition". Then W4 (constrained-family Claim-6.4
 analogue, G′-block witness confirmed by N3) after W5.
+
+Gates for any continuation: `lake build` (warning-clean) + `lake lint` when `.lean` is touched;
+`blueprint/verify.sh` + `blueprint/lint.sh` (vocabulary gate bans "stratum"/"strata") when `.tex`
+is touched.
 
 ## Adjacent directions (orientation only, not this phase)
 
@@ -235,6 +224,20 @@ neighbor — is `notes/IdeaBacklog.md`.
 
 ## Decisions made during this phase
 
+- **W5-L5 `PencilPair` route-(b′) restatement landed** (2026-07-24; user adjudication verbatim:
+  asked "With the long-run recon in: which repair route for the `PencilPair` motive?", the user
+  selected "(b′) Simple-condition the pair (Recommended)"). `PencilPair` restated to
+  `(G.Simple → PencilNondegFeasible K G → HasGenericPencilRealization K n G) ∧
+  HasPencilRealization K n G` (`Molecule/Pencil/Motive.lean`) — the exact `Theorem55.lean` pair
+  shape, `PencilNondegFeasible` nested inside `G.Simple` rather than replacing it. The loop arm
+  `pencilPair_of_isLoopAt` one-line fixed (an extra unused `G.Simple` binder). New helper
+  `not_simple_of_parallel` (`Motive.lean`, 2 lines: two distinct edges linking the same pair break
+  `G.Simple` via `Graph.Simple.eq_of_isLink`) — not yet wired into a base-arm producer (*Hand-off*).
+  `PencilNondegFeasible`'s docstring and `Pair.lean`'s section headers/prose updated to record the
+  resolution in place of the prior "open blocker" framing. Blueprint: `def:pencil-conditioned-pair`
+  + its fmlnote + the red `thm:pencil-conditional-realization-pair` proof restated (`pencil.tex`,
+  statement-change gate — the `\lean{...}` pin survives the flip). Gates green: `lake build`
+  warning-clean, `lake lint` clean, `blueprint/verify.sh` + `blueprint/lint.sh` clean.
 - **W5-L5 blocker recon landed** (2026-07-24, docs-only; canonical record
   `notes/Phase39-design.md` §"W5 leaf decomposition" L5 "Blocker verdict"): rank cap confirmed
   against definition bodies (parallel edges forced onto one line ⇒ one `hingeRowBlock` ⇒ `5 < 6`);
@@ -242,7 +245,7 @@ neighbor — is `notes/IdeaBacklog.md`.
   unworkable standalone (`PencilPair` itself false at parallel pairs); charter safe (bare headline
   holds via the coincident-point W1 witness; the collapse is conditioning-component-relative on a
   reducible locus, KT Thm 5.5's own non-simple phenomenon). Repairs (a)/(b′) spike-typechecked;
-  (b′) `Simple`-conditioning recommended — **PENDING USER ADJUDICATION** (*Blockers*, *Hand-off*).
+  (b′) `Simple`-conditioning recommended — **user-adjudicated and landed**, entry above.
 - **W5-L5 base-arm parallel-class blocker found** (2026-07-24, `Molecule/Pencil/Pair.lean`, full
   derivation `notes/Phase39-design.md` §"W5 leaf decomposition" L5): re-deriving the design doc's
   "parallel classes are nondegeneracy-infeasible" plan against the CURRENT (restated, four-conjunct)
