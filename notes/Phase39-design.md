@@ -1688,24 +1688,52 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
     nondegeneracy conjuncts transferred wholesale via `LinearIndepOn.congr` composed with the new
     structure lemmas. **Remaining for L5-cut-iv:** sub-case 1 (`|C| = 1`, both sides `≥ 2`) and
     sub-case 3 (pendant, `deg_G u_c ≠ 3`), then the dispatch shell wiring all four sub-cases
-    together (sub-case 4 as the carried hypothesis). Concrete guidance for sub-case 1 (the hard
-    part, not yet attempted): consume the IH's generic half at `Gᵢ⁺` (not `G.induce Vᵢ`) on BOTH
-    sides, mirroring L5-cut-i's structure layer; get `hlbᵢ` via the drop brick
-    `finrank_span_rigidityRows_le_add_of_links_subset` applied to `(G' := Gᵢ⁺, Gs := G.induce Vᵢ,
-    e₀ := e_c)`; case-split on `by_cases hu_hub : G.PencilHub u_c` / `by_cases hv_hub :
-    G.PencilHub v_c` (2×2, matching the "complementary, never simultaneous" verdict) to pick the
-    `exists_reposition_cross_incidences_avoiding` args per branch; ALWAYS set `q₁ := point₁⁺ u_c`
-    (never junk) — it does double duty: avoidance-3 with `q₁` alone (`q₂ := 0`) gives the cut
-    edge's own second-conjunct pair-LI via `LinearIndependent.pair_iff'` regardless of hub status,
-    and (only in the `¬ G.PencilHub u_c` branch) extending `q₂` to cover the ≤1 extra `V₁`-neighbour
-    gives the fourth-conjunct extension too (symmetric for `w₁,w₂` at `v_c`). Needs one new small
-    helper (extract two covering vectors from an `ncard ≤ 2` set, e.g. via
-    `Set.ncard_eq_zero`/`_one`/`_two` case split) for the `s₁,s₂`/`t₁,t₂` closed-hub-neighbourhood
-    targets (bound via `ncard_closedHubNbhd_le_three_of_isNondegPencilRealization` on `G`'s own
-    feasibility witness, minus the crossing endpoint when it's a hub); the non-hub `closedNbhd`
-    bound the `q₂`/`w₂` extra-neighbour case needs, `ncard_closedNbhd_le_three_of_not_pencilHub`, is
-    still homed in `Engine.lean` — re-home to `Motive.lean` first (the L5-cut-i import-cone
-    precedent) since it needs no chart material.
+    together (sub-case 4 as the carried hypothesis).
+
+    **Sub-case 1's rank half landed (2026-07-25)**, a second standalone piece (the full sub-case
+    re-derived at F9-contact confirmed it is much larger than sub-case 2 — a 2×2 hub-status split
+    driving `exists_reposition_cross_incidences_avoiding`'s eight args, plus two `Gᵢ⁺` IH
+    consumptions — so this shrank to the rank composition alone, mirroring L5-cut-i/ii/iii's own
+    infrastructure-first landings):
+    `hlb_induce_of_isNondegPencilRealization_induce_union_singleton` (`Pair.lean`, generic in
+    `V₁`/`e₀`/`u₀`/`w₀` so the assembly applies it once per crossing endpoint) packages the IH's
+    `Gᵢ⁺` rank + the drop brick `BodyHingeFramework.finrank_span_rigidityRows_le_add_of_links_subset`
+    (applied at `G' := Gᵢ⁺, Gs := G.induce Vᵢ, e₀ := e_c`) + the deficiency bookkeeping
+    (`Graph.deficiency_induce_union_singleton`) into exactly the `hlbᵢ` shape
+    `finrank_span_rigidityRows_cutEdge_eq` wants. New supporting infra: the drop brick's own
+    `hlinks` case-dispatch, `Graph.isLink_induce_union_singleton_of_isLink` (`Motive.lean` — both
+    endpoints in `Vᵢ` survive the induce directly, one endpoint the far vertex forces the edge to
+    `e₀` via `Graph.eq_cutEdge_of_isLink_crossing`, both endpoints the far vertex is a loop);
+    `Graph.cutEdges_diff_subset` (`Deficiency.lean`, general: an edge crossing `V(G) ∖ V'` also
+    crosses `V'` by an endpoint-swap) — side 2's own `(G.cutEdges V₂).ncard ≤ 1` derives from side
+    1's through this, needed for side 2's own `Gᵢ⁺` construction; `exists_subset_pair_of_ncard_le_two`
+    (`Pair.lean`, generic — an `ncard ≤ 2` set embeds in a two-element set, padding with an
+    arbitrary element when smaller), the plumbing the *repositioning* half (below) will consume.
+    Also re-homed `ncard_closedNbhd_le_three_of_not_pencilHub` `Engine.lean → Motive.lean` (the
+    same import-cone reason as its `closedHubNbhd` sibling, L5-cut-i) since the repositioning half
+    needs it chart-free too.
+
+    **Concrete guidance for the repositioning/gluing half (the hard part, not yet attempted):**
+    case-split `by_cases hu_hub : G.PencilHub u_c` / `by_cases hv_hub : G.PencilHub v_c` (2×2,
+    matching the "complementary, never simultaneous" verdict) to pick the
+    `exists_reposition_cross_incidences_avoiding` args per branch. For the `s₁,s₂`/`t₁,t₂`
+    closed-hub-neighbourhood targets (steering 1/2, needed only in the hub branch): apply
+    `exists_subset_pair_of_ncard_le_two` to `G.closedHubNbhd u_c \ {v_c}` (resp. `v_c`'s), bounded
+    `≤ 2` via `ncard_closedHubNbhd_le_three_of_isNondegPencilRealization` on `G`'s own feasibility
+    witness combined with `Set.ncard_diff_singleton_lt_of_mem` (since `v_c` is a genuine member
+    exactly when it's a hub); junk `(0, 0)` in the non-hub branch (steering unused there). For the
+    `q₁,q₂`/`w₁,w₂` closed-neighbourhood targets (avoidance 3/4): **no need to force `q₁ := point₁⁺
+    u_c` literally** — apply the SAME cover helper to `G.closedNbhd u_c \ {v_c}` (bounded via
+    `ncard_closedNbhd_le_three_of_not_pencilHub`, needed only in the non-hub branch; junk in the
+    hub branch), and separately note `u_c` is ALWAYS a member of that covered set (regardless of
+    hub status, since it's only the *bound* that needs non-hub, not the membership fact), so
+    `point₁⁺ u_c ∈ span {q₁, q₂}` derives unconditionally from whichever cover was chosen — feeding
+    `LinearIndependent.pair_iff'` for the cut edge's own second-conjunct pair-LI in EVERY branch,
+    hub or not. Transport side 2 by `IsNondegPencilRealization.mapSupport_screwEquivOfLinearEquiv`;
+    take the fresh cut hinge from `exists_extensor_two_pencils`; assemble `hlinks` + the three
+    nondegeneracy conjuncts mirroring the bare arm's `|C| = 1` branch (`Arms.lean`) and sub-case 2's
+    conjunct pattern (`Pair.lean`), converting `(G.induce Vᵢ).IsLink` witnesses to `Gᵢ⁺.IsLink` ones
+    (a strict superset) wherever the IH's `HasPencilPanelRealization` conjuncts are consumed.
   - **L5-cut-v** (design-open, do not build yet): sub-case 4 — first a somewhere-witness
     assessment (recon/numerics), then the chart-steering route above if positive.
 

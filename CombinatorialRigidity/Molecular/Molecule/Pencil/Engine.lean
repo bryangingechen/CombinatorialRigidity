@@ -581,8 +581,10 @@ hub-neighbourhood has at most `3` members — together with its cross-incidence 
 `Molecule/Pencil/Motive.lean`** (they are motive-consequence lemmas, and the W5-L5 cut arm's
 consumers need them without this file's chart stack in the import cone — `notes/Phase39-design.md`
 §"W5 leaf decomposition" L5-cut-i); a companion `ncard_closedNbhd_le_three_of_not_pencilHub`
-(below, still this file's) bounds a non-hub body's closed neighbourhood via its degree (a purely
-combinatorial fact, no genericity); and (2) `exists_isFin3SelectorOf_of_ncard_le_three` — any
+(also `Motive.lean`, re-homed there 2026-07-25 for the same import-cone reason — the W5-L5 cut
+arm's sub-case-1 producer needs it too, `notes/Phase39-design.md` L5-cut-iv bullet) bounds a
+non-hub body's closed neighbourhood via its degree (a purely combinatorial fact, no genericity);
+and (2) `exists_isFin3SelectorOf_of_ncard_le_three` — any
 finite set of cardinality `≤ 3` admits a `Fin 3`-selector witnessing `IsFin3SelectorOf`, by direct
 case analysis on `Set.ncard_eq_zero/_one/_two/_three`.
 
@@ -627,37 +629,6 @@ closed-neighbourhood *chart points* (each already reproducing `point w` up to a 
 orthogonal to `normal v`, so `cross₃` of them is a candidate to reproduce `normal v` projectively —
 completed by an LI-triple-in-a-perp argument uniform across arities, still to be assembled (piece 3
 itself remains open; `notes/Phase39.md` *Hand-off*). -/
-
-/-- **A non-hub body's closed neighbourhood has `≤ 3` members** (Phase 39 W5-L4, the `closedNbhd`
-companion of the cardinality bound above — purely combinatorial, no genericity): a non-hub `v` has
-degree `≤ 2` (`Graph.PencilHub`'s negation), and the distinct-neighbour set `N(G, v)` embeds into
-the incident-edge set via "an edge's other endpoint" (`Graph.encard_adj_le_encard_inc`,
-unconditional — no loopless/simple hypothesis needed), which has cardinality
-`≤ eDegree v = degree v` (`[Finite β]` supplying `LocallyFinite`, `Graph.natCast_degree_eq`);
-`closedNbhd v = insert v (N(G, v))` (`rfl`), so `Set.ncard_insert_le` gives the `+ 1`. -/
-theorem ncard_closedNbhd_le_three_of_not_pencilHub [Finite β] {G : Graph α β} {v : α}
-    (hv : ¬ G.PencilHub v) :
-    (G.closedNbhd v).ncard ≤ 3 := by
-  classical
-  have hdeg : G.degree v ≤ 2 := by
-    by_contra hcon
-    push Not at hcon
-    by_cases hvV : v ∈ V(G)
-    · exact hv ⟨hvV, by omega⟩
-    · have h0 := Graph.degree_eq_zero_of_notMem (G := G) hvV
-      omega
-  have hNle : (N(G, v)).encard ≤ G.eDegree v :=
-    (Graph.encard_adj_le_encard_inc).trans (Graph.encard_inc_le_eDegree)
-  have heDeg : (G.degree v : ℕ∞) = G.eDegree v := Graph.natCast_degree_eq G v
-  rw [← heDeg] at hNle
-  have hcast : (G.degree v : ℕ∞) ≤ (2 : ℕ∞) := by exact_mod_cast hdeg
-  have hNle2 : (N(G, v)).encard ≤ (2 : ℕ∞) := hNle.trans hcast
-  obtain ⟨hNfin, hNcard⟩ := Set.encard_le_coe_iff_finite_ncard_le.mp hNle2
-  have heq : G.closedNbhd v = insert v (N(G, v)) := rfl
-  rw [heq]
-  calc (insert v (N(G, v))).ncard ≤ (N(G, v)).ncard + 1 := Set.ncard_insert_le v (N(G, v))
-    _ ≤ 2 + 1 := Nat.add_le_add_right hNcard 1
-    _ = 3 := by norm_num
 
 /-- **Piece 2: any finite `≤ 3`-cardinality set admits a `Fin 3`-selector** (Phase 39 W5-L4, the
 re-seeding assembly's selector construction). Case-splits on `s.ncard ∈ {0, 1, 2, 3}` (`omega` from

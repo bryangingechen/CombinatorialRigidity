@@ -9,8 +9,10 @@ pendant-deg-3 residual open — *Blockers*); **L5-cut-i, L5-cut-ii, and L5-cut-i
 (2026-07-25: the `Gᵢ⁺` structure layer, the transport/transfer-bookkeeping infra, and the
 strengthened repositioning lemma — the risk leaf closed match-free over any field, *Decisions
 made*); **L5-cut-iv in progress** (2026-07-25: sub-case 2, the disjoint-union generic producer,
-landed standalone — the full four-sub-case assembly did not fit one sitting, *Decisions made*).
-Next: build L5-cut-iv's sub-case 1 (`|C| = 1`, generic — the hard part) or sub-case 3 (pendant,
+landed standalone — the full four-sub-case assembly did not fit one sitting, *Decisions made*;
+sub-case 1's rank half — the `Gᵢ⁺` IH-rank/drop-brick composition, generalized over either
+crossing endpoint — landed the same day as a second standalone piece, also *Decisions made*).
+Next: sub-case 1's repositioning/gluing half (the hard remaining part) or sub-case 3 (pendant,
 `deg_G u_c ≠ 3`) (*Hand-off*); W4 after W5 (phase
 opened 2026-07-23, recon-first). `Molecule/Pencil.lean` split into
 `Molecule/Pencil/{Statement,Arms,Motive,Chart,Engine,Reseed,Pair}.lean` (2026-07-24 housekeeping).
@@ -111,8 +113,11 @@ Full record, grounding, and the W0–W5 decomposition:
   point-match mechanism proved unnecessary, and the uniform statement holds over **any** field
   (no `[Infinite K]`; *Decisions made*). Sub-cases `|C| = 0`, two-sided `|C| = 1`, and pendant
   with `deg_G u_c ≠ 3` are buildable now — **sub-case `|C| = 0` landed** (L5-cut-iv, 2026-07-25, a
-  standalone producer; *Decisions made*); sub-cases 1 (two-sided `|C| = 1`) and 3 (pendant,
-  `deg_G u_c ≠ 3`) plus the final dispatch remain (*Hand-off*). **OPEN residual: the pendant sub-case at `deg_G u_c = 3`** (`G = H + pendant`
+  standalone producer; *Decisions made*); **sub-case 1's rank half landed too** (same day, a second
+  standalone piece: the generic `Gᵢ⁺` IH-rank/drop-brick composition, *Decisions made*) — its
+  repositioning/gluing half (the hub-status case split + the final `hlinks`/nondegeneracy-conjunct
+  wiring), sub-case 3 (pendant, `deg_G u_c ≠ 3`), and the final dispatch remain
+  (*Hand-off*). **OPEN residual: the pendant sub-case at `deg_G u_c = 3`** (`G = H + pendant`
   at a degree-3 hub — exactly the `K_{1,3}` configuration; not vacuous, `K₃ + pendant` is simple
   + feasible): no IH consumption can close its output gap (sharpened this recon), motive option
   (c) is REFUTED as a full repair (input half only), and the candidate is a chart-steering route
@@ -149,37 +154,52 @@ Full record, grounding, and the W0–W5 decomposition:
 **The phase stays OPEN** (the two superseding 2026-07-24 adjudications — no phase-close).
 
 **Next: continue L5-cut-iv** — the arm assembly `pencilPair_of_not_twoEdgeConnected` did NOT fit
-one sitting (four sub-cases + the carried hypothesis is a very large single theorem), so this
-session shrank the deliverable per the standing scope-to-fit discipline: **sub-case 2 (`|C| = 0`,
-disjoint union) landed as a standalone, complete producer**
-`hasGenericPencilRealization_of_cutEdges_eq_empty` (`Pair.lean`), plus the three general
-disjoint-sides structure lemmas it needs (`Graph.degree_induce_of_forall_isLink_mem` /
-`Graph.closedHubNbhd_induce_of_forall_isLink_mem` / `Graph.closedNbhd_induce_of_forall_isLink_mem`,
-`Motive.lean` — *Decisions made*). **Two pieces remain before the dispatch shell can close:**
+one sitting (four sub-cases + the carried hypothesis is a very large single theorem), so this and
+the follow-up session shrank the deliverable per the standing scope-to-fit discipline. Landed so
+far (`Pair.lean` + `Motive.lean`, both *Decisions made*):
 
-- **Sub-case 1** (`|C| = 1`, both sides `≥ 2` — the hard part, not yet attempted): consume the
-  IH's generic half at `Gᵢ⁺` (not `G.induce Vᵢ`) on both sides (mirrors L5-cut-i's structure
-  layer); get `hlbᵢ` via the drop brick `finrank_span_rigidityRows_le_add_of_links_subset`;
-  case-split `by_cases hu_hub : G.PencilHub u_c` / `by_cases hv_hub : G.PencilHub v_c` (2×2, the
-  "complementary, never simultaneous" verdict) to pick
-  `exists_reposition_cross_incidences_avoiding`'s (`Arms.lean`) args per branch — its four
-  avoidance conclusions map to the glued conjuncts as its docstring records (steering 1 → third
-  conjunct at `u_c` when `v_c` is a hub, steering 2 → third conjunct at `v_c` when `u_c` is a hub,
-  avoidance 3 → fourth conjunct at `u_c` + the cut hinge's pair-LI via `q₁ := point₁⁺ u_c` ALWAYS
-  (never junk — via `LinearIndependent.pair_iff'`, regardless of hub status), avoidance 4 → fourth
-  conjunct at `v_c`); pad idle slots with `0`; present each avoided family as a two-generator span
-  — closed-hub-neighbourhood targets via `ncard_closedHubNbhd_le_three_of_isNondegPencilRealization`
-  on `G`'s own feasibility witness minus the crossing endpoint (needs a new small "cover an
-  `ncard ≤ 2` set by two vectors" helper, not yet built), closed-neighbourhood targets via
-  `ncard_closedNbhd_le_three_of_not_pencilHub` (currently in `Engine.lean` — re-home to
-  `Motive.lean` first, the L5-cut-i import-cone precedent); transport by
-  `IsNondegPencilRealization.mapSupport_screwEquivOfLinearEquiv`; take the fresh cut hinge from
-  `exists_extensor_two_pencils`; rank per the route verdict's 1a regrouping. Full derivation:
-  `notes/Phase39-design.md` §"W5 leaf decomposition" L5-cut-iv bullet.
-- **Sub-case 3** (pendant, `deg_G u_c ≠ 3`): no `Gᵢ⁺` (the pendant IS the far side); feasibility
-  restricts by blanket `.mono` (no demotion — verdict item 3); the one new construction is
-  choosing fresh pendant data (`point v_c`/`normal v_c`) off the bad span, dimension-counting as
-  `exists_perp_linearIndependent` already does; rank is the landed
+- **Sub-case 2** (`|C| = 0`, disjoint union) — **COMPLETE**, standalone producer
+  `hasGenericPencilRealization_of_cutEdges_eq_empty`, plus the three general disjoint-sides
+  structure lemmas it needs (`Graph.degree_induce_of_forall_isLink_mem` /
+  `Graph.closedHubNbhd_induce_of_forall_isLink_mem` / `Graph.closedNbhd_induce_of_forall_isLink_mem`).
+- **Sub-case 1** (`|C| = 1`, both sides `≥ 2` — the hard part), **rank half only**:
+  `hlb_induce_of_isNondegPencilRealization_induce_union_singleton` (generalized over either
+  crossing endpoint — the eventual assembly applies it once per side) packages the `Gᵢ⁺` IH-rank
+  consumption + the drop brick `BodyHingeFramework.finrank_span_rigidityRows_le_add_of_links_subset`
+  into exactly the `hlbᵢ` shape `finrank_span_rigidityRows_cutEdge_eq` wants, via the new
+  `Graph.isLink_induce_union_singleton_of_isLink` (`Motive.lean`, the `hlinks` case-dispatch the
+  drop brick's `G'/Gs` split needs) and `Graph.cutEdges_diff_subset` (`Deficiency.lean`, general
+  cut-symmetry fact — side 2's own `(G.cutEdges V₂).ncard ≤ 1` derives from side 1's via this).
+  Also landed: `exists_subset_pair_of_ncard_le_two` (`Pair.lean`, generic — covers an
+  `ncard ≤ 2` set by two elements, padding with an arbitrary one when smaller), the plumbing the
+  repositioning half needs. `ncard_closedNbhd_le_three_of_not_pencilHub` re-homed
+  `Engine.lean → Motive.lean` (import-cone precedent, since it's needed chart-free).
+
+**What remains for sub-case 1 (the repositioning/gluing half — not yet attempted):** case-split
+`by_cases hu_hub : G.PencilHub u_c` / `by_cases hv_hub : G.PencilHub v_c` (2×2, the "complementary,
+never simultaneous" verdict) to pick `exists_reposition_cross_incidences_avoiding`'s (`Arms.lean`)
+eight avoidance-target args per branch — its four avoidance conclusions map to the glued conjuncts
+as its docstring records (steering 1 → third conjunct at `u_c` when `v_c` is a hub, via
+`exists_subset_pair_of_ncard_le_two` on `G.closedHubNbhd u_c \ {v_c}` — bounded `≤ 2` by
+`ncard_closedHubNbhd_le_three_of_isNondegPencilRealization` on `G`'s own feasibility witness minus
+the crossing endpoint, `Set.ncard_diff_singleton_lt_of_mem`; steering 2 → third conjunct at `v_c`
+when `u_c` is a hub, symmetric; avoidance 3 → fourth conjunct at `u_c` (via the same cover helper
+on `G.closedNbhd u_c \ {v_c}`, bounded via `ncard_closedNbhd_le_three_of_not_pencilHub`) **+** the
+cut hinge's own second-conjunct pair-LI unconditionally (`u_c` is always a member of that covered
+set, so `point₁⁺ u_c ∈ span{q₁,q₂}` derives regardless of hub status — no need to force `q₁` to
+equal `point₁⁺ u_c` literally, `LinearIndependent.pair_iff'` closes the pair-LI from that
+membership fact); avoidance 4 → fourth conjunct at `v_c`, symmetric); pad idle slots with `0`;
+transport side 2 by `IsNondegPencilRealization.mapSupport_screwEquivOfLinearEquiv`; take the fresh
+cut hinge from `exists_extensor_two_pencils`; assemble `hlinks`/the three nondegeneracy conjuncts
+mirroring the bare arm's `|C| = 1` branch (`Arms.lean`) + sub-case 2's conjunct pattern (`Pair.lean`
+above), converting `(G.induce Vᵢ).IsLink` witnesses to `Gᵢ⁺.IsLink` ones (a superset) to feed the
+IH's `HasPencilPanelRealization` conjuncts. Full derivation record: `notes/Phase39-design.md`
+§"W5 leaf decomposition" L5-cut-iv bullet.
+
+- **Sub-case 3** (pendant, `deg_G u_c ≠ 3`), not yet attempted: no `Gᵢ⁺` (the pendant IS the far
+  side); feasibility restricts by blanket `.mono` (no demotion — verdict item 3); the one new
+  construction is choosing fresh pendant data (`point v_c`/`normal v_c`) off the bad span,
+  dimension-counting as `exists_perp_linearIndependent` already does; rank is the landed
   `finrank_span_rigidityRows_cutEdge_eq` verbatim (pendant side edgeless, `hlb₂ = 0`).
 
 Then the dispatch shell: case-split on `(G.cutEdges V₁).ncard = 0` vs. the single crossing edge,
@@ -212,6 +232,29 @@ neighbor — is `notes/IdeaBacklog.md`.
 
 ## Decisions made during this phase
 
+- **W5-L5 L5-cut-iv sub-case 1's rank half landed** (2026-07-25, `Pencil/Pair.lean` +
+  `Pencil/Motive.lean` + `Molecular/Deficiency.lean`): re-deriving the full sub-case-1 assembly
+  against current statements (F9) confirmed it is much larger than sub-case 2 (a 2×2 hub-status
+  case split driving `exists_reposition_cross_incidences_avoiding`'s eight args, plus two `Gᵢ⁺` IH
+  consumptions), so this dispatch shrank further to the **rank half** alone, mirroring how
+  L5-cut-i/ii/iii each landed one infrastructure piece before any assembly. Landed:
+  `hlb_induce_of_isNondegPencilRealization_induce_union_singleton` (generic in `V₁`/`e₀`/`u₀`/`w₀`,
+  so the eventual assembly instantiates it once per crossing endpoint) packages the drop brick
+  (`BodyHingeFramework.finrank_span_rigidityRows_le_add_of_links_subset`) + the deficiency
+  bookkeeping (`Graph.deficiency_induce_union_singleton`) into exactly the `hlbᵢ` shape
+  `finrank_span_rigidityRows_cutEdge_eq` wants; its own `hlinks` case-dispatch is the new
+  `Graph.isLink_induce_union_singleton_of_isLink` (`Motive.lean`); side 2's own
+  `(G.cutEdges V₂).ncard ≤ 1` (needed for the `Gᵢ⁺` construction on that side) derives from side
+  1's via the new general `Graph.cutEdges_diff_subset` (`Deficiency.lean` — an edge crossing
+  `V(G) ∖ V'` also crosses `V'`, by an endpoint-swap). Also landed the generic cover helper
+  `exists_subset_pair_of_ncard_le_two` (any `ncard ≤ 2` set embeds in a two-element set, padding
+  with an arbitrary element when smaller) and re-homed `ncard_closedNbhd_le_three_of_not_pencilHub`
+  `Engine.lean → Motive.lean` (same import-cone precedent as its `closedHubNbhd` sibling, L5-cut-i)
+  — both needed by the repositioning half, still open. One recurrence of the already-documented
+  TACTICS-QUIRKS § 4 (`subst` between two free variables can pick the "wrong" one to eliminate,
+  breaking a later bare-identifier reference) — no new entry, already covered. No blueprint node
+  (unnamed technical infra). Gates green; axioms clean (`propext`/`Classical.choice`/`Quot.sound`
+  only).
 - **W5-L5 L5-cut-iv sub-case 2 landed (disjoint union)** (2026-07-25, `Pencil/Pair.lean` +
   `Pencil/Motive.lean`): the full arm assembly `pencilPair_of_not_twoEdgeConnected` (four sub-cases
   + the carried sub-case-4 hypothesis) proved too large for one sitting, so this dispatch shrank

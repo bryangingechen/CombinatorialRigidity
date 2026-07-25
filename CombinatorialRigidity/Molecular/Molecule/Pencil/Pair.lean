@@ -641,4 +641,100 @@ theorem hasGenericPencilRealization_of_cutEdges_eq_empty [Finite α] [Finite β]
       fun e u v hl => ⟨(hlinks e u v hl).2.2.1, (hlinks e u v hl).2.2.2⟩⟩,
     hadjLI, hhubLI_glued, hnbhdLI_glued⟩, hrank_eq⟩
 
+/-! ## W5-L5 cut arm, sub-case 1 (`|C| = 1`, two-sided): infrastructure (Phase 39 PENCIL)
+
+The cut-arm route verdict's hard sub-case (`notes/Phase39-design.md` §"W5 leaf decomposition" L5
+"Cut-arm route verdict", item 1): with a single crossing edge and both sides `≥ 2` vertices, the
+generic conjunct consumes the IH's generic half at the **edge-closed sides**
+`Gᵢ⁺ = G.induce (Vᵢ ∪ {far})` rather than the bare induced sides, then reconciles the glued
+nondegeneracy conjuncts at the crossing endpoints via a repositioning steered by
+`exists_reposition_cross_incidences_avoiding`. This is a substantially larger assembly than
+sub-case 2 (the disjoint-union case above): this section lands its **rank half** first — the
+generic composition of the `Gᵢ⁺` IH rank via the drop brick — as a standalone, reusable lemma,
+mirroring how L5-cut-i landed the `Gᵢ⁺` structure layer ahead of the full assembly. The
+repositioning/gluing half (the hub-status case split driving the avoidance targets, and the final
+`hlinks`/nondegeneracy-conjunct wiring) remains open — `notes/Phase39.md` *Hand-off*. -/
+
+/-- **A set of cardinality `≤ 2` embeds in a two-element set** (Phase 39 W5-L5, L5-cut-iv sub-case
+1 plumbing): the consumer-side companion of the `≤ 3` closed-(hub-)neighbourhood cardinality
+bounds — pads with an arbitrary element when the set has fewer than two members, so a
+repositioning avoidance target can be instantiated against it whether the cover is tight or not. -/
+theorem exists_subset_pair_of_ncard_le_two {ι : Type*} [Nonempty ι] {s : Set ι}
+    (hfin : s.Finite) (hs : s.ncard ≤ 2) :
+    ∃ a b : ι, s ⊆ {a, b} := by
+  rcases (by omega : s.ncard = 0 ∨ s.ncard = 1 ∨ s.ncard = 2) with h0 | h1 | h2
+  · exact ⟨Classical.arbitrary ι, Classical.arbitrary ι, by
+      rw [Set.ncard_eq_zero hfin] at h0; simp [h0]⟩
+  · obtain ⟨a, ha⟩ := Set.ncard_eq_one.mp h1
+    exact ⟨a, a, by rw [ha]; simp⟩
+  · obtain ⟨a, b, -, hab⟩ := Set.ncard_eq_two.mp h2
+    exact ⟨a, b, hab.le⟩
+
+/-- **The two-sided `|C| = 1` sub-case's rank bound via the `Gᵢ⁺` IH consumption** (Phase 39 W5-L5,
+L5-cut-iv sub-case 1 rank half; `notes/Phase39-design.md` §"W5 leaf decomposition" L5 "Cut-arm
+route verdict" item 1a). Given a nondegenerate realization of the edge-closed side
+`Gᵢ⁺ = G.induce (V₁ ∪ {w₀})` attaining the deficiency-rank target there, dropping the crossing
+edge `e₀`'s rows (`finrank_span_rigidityRows_le_add_of_links_subset`,
+`RigidityMatrix/Bricks.lean`) converts it into exactly the induced-side lower bound
+`finrank_span_rigidityRows_cutEdge_eq` (`Arms.lean`) wants as `hlbᵢ` — the assembled side
+framework (`extF`, agreeing with `F.supportExtensor` on `V₁`-internal links) inherits the same
+bound via `span_rigidityRows_eq_of_supportExtensor_agree`. The `screwDim 2 − 1 = 5` the drop brick
+costs is exactly what the deficiency bookkeeping's `+ 1`
+(`Graph.deficiency_induce_union_singleton`) recovers. Stated generically in `V₁`/`e₀`/`u₀`/`w₀` so
+the eventual sub-case-1 assembly applies it verbatim to both crossing endpoints. -/
+theorem hlb_induce_of_isNondegPencilRealization_induce_union_singleton
+    [Finite α] [Finite β] {n : ℕ} (hD : 1 ≤ Graph.bodyBarDim n)
+    {G : Graph α β} [G.Loopless] {V₁ : Set α} {e₀ : β} {u₀ w₀ : α}
+    (hl₀ : G.IsLink e₀ u₀ w₀) (hu₀ : u₀ ∈ V₁) (hw₀ : w₀ ∉ V₁)
+    (hcut : (G.cutEdges V₁).ncard ≤ 1)
+    {extF : β → ScrewSpace K 2} {F : BodyHingeFramework K 2 α β} {normal point : α → Fin 4 → K}
+    (hnd : IsNondegPencilRealization (G.induce (V₁ ∪ {w₀})) F normal point)
+    (hrank : (Module.finrank K (Submodule.span K F.rigidityRows) : ℤ)
+      = screwDim 2 * ((V(G.induce (V₁ ∪ {w₀})).ncard : ℤ) - 1)
+        - (G.induce (V₁ ∪ {w₀})).deficiency n)
+    (hagree : ∀ e u v, (G.induce V₁).IsLink e u v → extF e = F.supportExtensor e) :
+    screwDim 2 * ((V₁.ncard : ℤ) - 1) - (G.induce V₁).deficiency n
+      ≤ (Module.finrank K (Submodule.span K
+        (⟨G.induce V₁, extF⟩ : BodyHingeFramework K 2 α β).rigidityRows) : ℤ) := by
+  classical
+  obtain ⟨hreal, -, -, -⟩ := hnd
+  obtain ⟨⟨hFg, -, hSnz, -⟩, -, -, -⟩ := hreal
+  have hscrew1 : 1 ≤ screwDim 2 := by decide
+  have hl₀' : (G.induce (V₁ ∪ {w₀})).IsLink e₀ u₀ w₀ :=
+    (Graph.induce_isLink G (V₁ ∪ {w₀}) e₀ u₀ w₀).mpr
+      ⟨hl₀, Set.mem_union_left _ hu₀, Set.mem_union_right _ rfl⟩
+  have hdrop := BodyHingeFramework.finrank_span_rigidityRows_le_add_of_links_subset
+    F.supportExtensor hl₀' (hSnz e₀)
+    (fun e u v hl => Graph.isLink_induce_union_singleton_of_isLink hl₀ hu₀ hw₀ hcut hl)
+  have hspaneq : Submodule.span K (⟨G.induce (V₁ ∪ {w₀}), F.supportExtensor⟩ :
+      BodyHingeFramework K 2 α β).rigidityRows = Submodule.span K F.rigidityRows :=
+    span_rigidityRows_eq_of_supportExtensor_agree F.supportExtensor F hFg (fun e u v _ => rfl)
+  have hFspan : Submodule.span K (⟨G.induce V₁, extF⟩ : BodyHingeFramework K 2 α β).rigidityRows
+      = Submodule.span K
+        (⟨G.induce V₁, F.supportExtensor⟩ : BodyHingeFramework K 2 α β).rigidityRows :=
+    span_rigidityRows_eq_of_supportExtensor_agree extF
+      (⟨G.induce V₁, F.supportExtensor⟩ : BodyHingeFramework K 2 α β) rfl hagree
+  have hVcard : V(G.induce (V₁ ∪ {w₀})).ncard = V₁.ncard + 1 := by
+    change (V₁ ∪ {w₀}).ncard = V₁.ncard + 1
+    rw [Set.union_singleton]
+    exact Set.ncard_insert_of_notMem hw₀
+  have hdefeq : (G.induce (V₁ ∪ {w₀})).deficiency n = (G.induce V₁).deficiency n + 1 :=
+    Graph.deficiency_induce_union_singleton (n := n) hD hl₀ hu₀ hw₀ hcut
+  have hdropZ : (Module.finrank K (Submodule.span K
+      (⟨G.induce (V₁ ∪ {w₀}), F.supportExtensor⟩ : BodyHingeFramework K 2 α β).rigidityRows) : ℤ)
+      ≤ (Module.finrank K (Submodule.span K
+        (⟨G.induce V₁, F.supportExtensor⟩ : BodyHingeFramework K 2 α β).rigidityRows) : ℤ)
+        + ((screwDim 2 : ℤ) - 1) := by
+    have hcast : (Module.finrank K (Submodule.span K
+        (⟨G.induce (V₁ ∪ {w₀}), F.supportExtensor⟩ : BodyHingeFramework K 2 α β).rigidityRows) : ℤ)
+        ≤ (Module.finrank K (Submodule.span K
+          (⟨G.induce V₁, F.supportExtensor⟩ : BodyHingeFramework K 2 α β).rigidityRows) : ℤ)
+          + ((screwDim 2 - 1 : ℕ) : ℤ) := by exact_mod_cast hdrop
+    rwa [Nat.cast_sub hscrew1, Nat.cast_one] at hcast
+  rw [hFspan]
+  rw [hspaneq] at hdropZ
+  rw [hrank, hVcard, hdefeq] at hdropZ
+  push_cast at hdropZ
+  linarith
+
 end CombinatorialRigidity.Molecular

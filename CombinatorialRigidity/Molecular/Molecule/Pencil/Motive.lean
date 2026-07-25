@@ -438,6 +438,40 @@ theorem ncard_closedHubNbhd_le_three_of_isNondegPencilRealization
   rw [hcard, ← hspan_eq]
   exact hspan_le
 
+/-- **A non-hub body's closed neighbourhood has `≤ 3` members** (Phase 39 W5-L4, the `closedNbhd`
+companion of the cardinality bound above — purely combinatorial, no genericity; **re-homed
+2026-07-25 from `Molecule/Pencil/Engine.lean`**, the same import-cone reason as the bound above —
+the W5-L5 cut arm's sub-case-1 producer needs it without the chart stack in the import cone): a
+non-hub `v` has degree `≤ 2` (`Graph.PencilHub`'s negation), and the distinct-neighbour set
+`N(G, v)` embeds into the incident-edge set via "an edge's other endpoint"
+(`Graph.encard_adj_le_encard_inc`, unconditional — no loopless/simple hypothesis needed), which has
+cardinality `≤ eDegree v = degree v` (`[Finite β]` supplying `LocallyFinite`,
+`Graph.natCast_degree_eq`); `closedNbhd v = insert v (N(G, v))` (`rfl`), so `Set.ncard_insert_le`
+gives the `+ 1`. -/
+theorem ncard_closedNbhd_le_three_of_not_pencilHub [Finite β] {G : Graph α β} {v : α}
+    (hv : ¬ G.PencilHub v) :
+    (G.closedNbhd v).ncard ≤ 3 := by
+  classical
+  have hdeg : G.degree v ≤ 2 := by
+    by_contra hcon
+    push Not at hcon
+    by_cases hvV : v ∈ V(G)
+    · exact hv ⟨hvV, by omega⟩
+    · have h0 := Graph.degree_eq_zero_of_notMem (G := G) hvV
+      omega
+  have hNle : (N(G, v)).encard ≤ G.eDegree v :=
+    (Graph.encard_adj_le_encard_inc).trans (Graph.encard_inc_le_eDegree)
+  have heDeg : (G.degree v : ℕ∞) = G.eDegree v := Graph.natCast_degree_eq G v
+  rw [← heDeg] at hNle
+  have hcast : (G.degree v : ℕ∞) ≤ (2 : ℕ∞) := by exact_mod_cast hdeg
+  have hNle2 : (N(G, v)).encard ≤ (2 : ℕ∞) := hNle.trans hcast
+  obtain ⟨hNfin, hNcard⟩ := Set.encard_le_coe_iff_finite_ncard_le.mp hNle2
+  have heq : G.closedNbhd v = insert v (N(G, v)) := rfl
+  rw [heq]
+  calc (insert v (N(G, v))).ncard ≤ (N(G, v)).ncard + 1 := Set.ncard_insert_le v (N(G, v))
+    _ ≤ 2 + 1 := Nat.add_le_add_right hNcard 1
+    _ = 3 := by norm_num
+
 /-! ## W5-L5 cut-arm structure layer: the edge-closed side `Gᵢ⁺` (Phase 39)
 
 The cut-arm route verdict (`notes/Phase39-design.md` §"W5 leaf decomposition" L5 "Cut-arm route
@@ -531,6 +565,33 @@ theorem _root_.Graph.degree_induce_union_singleton_far [Finite β] {G : Graph α
       exact ⟨u₀, huw, (Graph.induce_isLink G (V₁ ∪ {w₀}) e₀ w₀ u₀).mpr
         ⟨hl₀.symm, Set.mem_union_right _ rfl, Set.mem_union_left _ hu₀⟩⟩
   rw [Graph.degree_eq_ncard_add_ncard, hloops, hnonloops, Set.ncard_empty, Set.ncard_singleton]
+
+/-- **Every `Gᵢ⁺`-link is either `Vᵢ`-internal or the pinned cut edge** (Phase 39 W5-L5, L5-cut-iv
+sub-case 1: the `hlinks` hypothesis the drop brick
+`finrank_span_rigidityRows_le_add_of_links_subset` (`RigidityMatrix/Bricks.lean`) wants at
+`G' := Gᵢ⁺`, `Gs := G.induce Vᵢ`). Dispatches on whether each endpoint is in `V₁` or is `w₀`: both
+in `V₁` survive the induce directly; one endpoint `w₀` forces the edge to be `e₀`
+(`Graph.eq_cutEdge_of_isLink_crossing`, in either orientation); both endpoints `w₀` is a loop,
+excluded by `[G.Loopless]`. -/
+theorem _root_.Graph.isLink_induce_union_singleton_of_isLink [Finite β] {G : Graph α β}
+    [G.Loopless] {V₁ : Set α} {e₀ : β} {u₀ w₀ : α}
+    (hl₀ : G.IsLink e₀ u₀ w₀) (hu₀ : u₀ ∈ V₁) (hw₀ : w₀ ∉ V₁)
+    (hcut : (G.cutEdges V₁).ncard ≤ 1) {e : β} {u v : α}
+    (hl : (G.induce (V₁ ∪ {w₀})).IsLink e u v) :
+    (G.induce V₁).IsLink e u v ∨ e = e₀ := by
+  obtain ⟨hlG, hu, hv⟩ := (Graph.induce_isLink G (V₁ ∪ {w₀}) e u v).mp hl
+  by_cases hu₁ : u ∈ V₁
+  · by_cases hv₁ : v ∈ V₁
+    · exact Or.inl ((Graph.induce_isLink G V₁ e u v).mpr ⟨hlG, hu₁, hv₁⟩)
+    · have hvw : v = w₀ := hv.resolve_left hv₁
+      subst hvw
+      exact Or.inr (Graph.eq_cutEdge_of_isLink_crossing hl₀ hu₀ hw₀ hcut hlG hu₁ hw₀)
+  · have huw : u = w₀ := hu.resolve_left hu₁
+    by_cases hv₁ : v ∈ V₁
+    · exact Or.inr (Graph.eq_cutEdge_of_isLink_crossing hl₀ hu₀ hw₀ hcut hlG.symm hv₁ hu₁)
+    · have hvw : v = w₀ := hv.resolve_left hv₁
+      have huv : u = v := huw.trans hvw.symm
+      exact absurd (huv ▸ hlG) (G.not_isLoopAt e v)
 
 /-- **Feasibility descends to the edge-closed side** (Phase 39 W5-L5 cut-arm structure layer, the
 IH-input corollary; the composition the cut-arm route verdict spiked): `PencilNondegFeasible K G`

@@ -1197,6 +1197,22 @@ lemma cutEdges_eq_crossingEdges_cutLabeling {G : Graph α β} {V' : Set α} {a b
         exact hfxy rfl
       exact ⟨heG, y, x, hlink.symm, hyV', hxV'⟩
 
+/-- **`cutEdges` restricted to the complementary side is a subset of `cutEdges V'`**
+(`def:cut-edges-2ec`; Phase 39 W5-L5 L5-cut-iv, the two-sided cut-arm sub-case's feasibility
+restriction on the "other" side): an edge crossing `V(G) ∖ V'` — an endpoint in it, an endpoint
+outside it — also crosses `V'`, by swapping which endpoint plays which role
+(`hl.symm`; the endpoint outside `V(G) ∖ V'` and in `V(G)` is forced into `V'`). Both directions
+hold (the same argument applies with `V'` and `V(G) ∖ V'` swapped, since `cutEdges` only reads
+membership, not the ambient-subset hypothesis), but this one-directional subset form is all
+downstream users need — chiefly `Set.ncard_le_ncard` for the companion cardinality bound. -/
+theorem cutEdges_diff_subset (G : Graph α β) (V' : Set α) :
+    G.cutEdges (V(G) \ V') ⊆ G.cutEdges V' := by
+  rintro f ⟨hfE, x, y, hl, hx, hy⟩
+  have hyV : y ∈ V(G) := hl.right_mem
+  have hy' : y ∈ V' := by by_contra hy'; exact hy ⟨hyV, hy'⟩
+  have hx' : x ∉ V' := fun hx' => hx.2 hx'
+  exact ⟨hfE, y, x, hl.symm, hy', hx'⟩
+
 /-- **A `0`-dof graph is `2`-edge-connected** (`def:cut-edges-2ec`; KT Lemma 3.1 in
 labeling-free form). For a body-hinge-rigid (`0`-dof) graph `G` and `D = bodyBarDim n ≥ 1`,
 the predicate `G.TwoEdgeConnected` holds: given any nonempty proper vertex set `V' ⊊ V(G)`,
