@@ -302,6 +302,42 @@ theorem PencilNondegFeasible.mono {G H : Graph α β} [G.LocallyFinite]
     exact (LinearIndepOn.singleton (i := v)
       (hpnz v (Graph.vertexSet_mono hle hv))).mono hsub
 
+/-! ## W5-L5 cut-arm infra: nondegeneracy transports along a contragredient pair (Phase 39,
+L5-cut-ii)
+
+The cut arm's non-hub matching sub-case (`notes/Phase39-design.md` §"W5 leaf decomposition" L5
+"Cut-arm route verdict" item 1b) repositions one side's realization by a linear automorphism `g`
+of `K⁴` (with contragredient `h`) before gluing. The panel-realization half of that transport is
+already landed (`hasPencilPanelRealization_mapSupport_screwEquivOfLinearEquiv`, W3-L4 infra,
+`Molecule/Pencil/Arms.lean`); this section layers the three nondegeneracy conjuncts on top —
+conjuncts 2–4 transport by injectivity of `g`/`h` alone (`LinearIndependent.map_injOn` /
+`LinearIndepOn.map_injOn`), with no further geometric content, since `G` itself is unchanged so
+`PencilHub`/`closedHubNbhd`/`closedNbhd` are unchanged too. -/
+
+/-- **Nondegeneracy transports along a contragredient linear-equivalence pair**
+(Phase 39 W5-L5 cut-arm infra, L5-cut-ii; the `IsNondegPencilRealization` companion of
+`hasPencilPanelRealization_mapSupport_screwEquivOfLinearEquiv`). Transporting a nondegenerate
+pencil realization `(F, normal, point)` along a linear automorphism `g` of `K⁴` (acting on the
+concurrency points) with contragredient `h` (acting on the panel normals, `g x ⬝ᵥ h y = x ⬝ᵥ y`)
+produces another nondegenerate realization on the same graph `G`. -/
+theorem IsNondegPencilRealization.mapSupport_screwEquivOfLinearEquiv
+    {G : Graph α β} {F : BodyHingeFramework K 2 α β} {normal point : α → Fin 4 → K}
+    (g h : (Fin 4 → K) ≃ₗ[K] (Fin 4 → K)) (hgh : ∀ x y : Fin 4 → K, g x ⬝ᵥ h y = x ⬝ᵥ y)
+    (hnd : IsNondegPencilRealization G F normal point) :
+    IsNondegPencilRealization G (F.mapSupport (BodyHingeFramework.screwEquivOfLinearEquiv g))
+      (fun v => h (normal v)) (fun v => g (point v)) := by
+  obtain ⟨hreal, hadj, hhubLI, hnbhdLI⟩ := hnd
+  refine ⟨hasPencilPanelRealization_mapSupport_screwEquivOfLinearEquiv g h hgh hreal,
+    fun e u v hl => ?_, fun v hv => ?_, fun v hv hnothub => ?_⟩
+  · have hli := (hadj e u v hl).map_injOn g.toLinearMap g.injective.injOn
+    have heq : g.toLinearMap ∘ ![point u, point v] = ![g (point u), g (point v)] := by
+      funext i; fin_cases i <;> rfl
+    rwa [heq] at hli
+  · have hli := (hhubLI v hv).map_injOn h.toLinearMap h.injective.injOn
+    simpa [Function.comp_def] using hli
+  · have hli := (hnbhdLI v hv hnothub).map_injOn g.toLinearMap g.injective.injOn
+    simpa [Function.comp_def] using hli
+
 /-! ## Motive-consequence incidence and cardinality lemmas (Phase 39 W5-L4, re-homed W5-L5)
 
 The cross-incidence orthogonality facts and the closed-hub-neighbourhood cardinality bound an
@@ -577,5 +613,98 @@ theorem _root_.Graph.deficiency_induce_union_singleton [Finite α] [Finite β] {
   rw [hsplit]
   push_cast
   ring
+
+/-! ## W5-L5 cut-arm structure layer: boundary identities on `Vᵢ` (Phase 39, L5-cut-ii)
+
+The matching transport (`notes/Phase39-design.md` §"W5 leaf decomposition" L5 "Cut-arm route
+verdict" item 1b) reads `Gᵢ⁺.closedHubNbhd`/`closedNbhd` at the crossing endpoint `u₀` and its
+neighbours, all inside `V₁`. This section identifies both against `G`'s own: `closedNbhd` agrees
+on the nose (no exception — every `G`-neighbour of a `V₁`-vertex already lies in `V₁ ∪ {w₀}`, the
+full vertex set of `Gᵢ⁺`, since any other crossing neighbour would be a second cut edge); the
+`closedHubNbhd` differs from `G`'s own only by dropping `w₀` (the single `u₀` exception the design
+doc records — `w₀` is never a `Gᵢ⁺`-hub, degree lemma 2), a difference that is a no-op away from
+`u₀` since no other `V₁`-vertex is `G`-adjacent to `w₀`. -/
+
+/-- **`G`'s closed neighbourhood of a `V₁`-vertex stays inside `Gᵢ⁺`'s vertex set**
+(Phase 39 W5-L5 cut-arm structure layer): with at most one crossing edge, the only possible
+`V₁`-external `G`-neighbour of any `v ∈ V₁` is `w₀` itself (a second crossing destination would be
+a second cut edge, ruled out by `Graph.eq_cutEdge_of_isLink_crossing` forcing `v = u₀`, contradicted
+since `w₀ ∉ V₁`). -/
+theorem _root_.Graph.closedNbhd_subset_of_mem [Finite β] {G : Graph α β}
+    {V₁ : Set α} {e₀ : β} {u₀ w₀ : α}
+    (hl₀ : G.IsLink e₀ u₀ w₀) (hu₀ : u₀ ∈ V₁) (hw₀ : w₀ ∉ V₁)
+    (hcut : (G.cutEdges V₁).ncard ≤ 1) {v : α} (hv : v ∈ V₁) :
+    G.closedNbhd v ⊆ V₁ ∪ {w₀} := by
+  rintro w (rfl | ⟨e, hl⟩)
+  · exact Set.mem_union_left _ hv
+  · by_cases hw : w ∈ V₁
+    · exact Set.mem_union_left _ hw
+    · obtain rfl := Graph.eq_cutEdge_of_isLink_crossing hl₀ hu₀ hw₀ hcut hl hv hw
+      rcases hl.eq_and_eq_or_eq_and_eq hl₀ with ⟨-, rfl⟩ | ⟨rfl, -⟩
+      · exact Set.mem_union_right _ rfl
+      · exact absurd hv hw₀
+
+/-- **`Gᵢ⁺`'s closed neighbourhood of a `V₁`-vertex equals `G`'s own, on the nose**
+(Phase 39 W5-L5 cut-arm structure layer). No exception at `u₀`: `closedNbhd` carries no
+hub/degree filter, so every `G`-link at `v ∈ V₁` survives the induce verbatim
+(`Graph.closedNbhd_subset_of_mem` places the far endpoint inside `Gᵢ⁺`'s vertex set whenever it
+isn't already in `V₁`). -/
+theorem _root_.Graph.closedNbhd_induce_union_singleton [Finite β] {G : Graph α β}
+    {V₁ : Set α} {e₀ : β} {u₀ w₀ : α}
+    (hl₀ : G.IsLink e₀ u₀ w₀) (hu₀ : u₀ ∈ V₁) (hw₀ : w₀ ∉ V₁)
+    (hcut : (G.cutEdges V₁).ncard ≤ 1) {v : α} (hv : v ∈ V₁) :
+    (G.induce (V₁ ∪ {w₀})).closedNbhd v = G.closedNbhd v := by
+  apply Set.Subset.antisymm
+  · rintro w (rfl | ⟨e, hl⟩)
+    · exact Or.inl rfl
+    · exact Or.inr ⟨e, ((Graph.induce_isLink G (V₁ ∪ {w₀}) e v w).mp hl).1⟩
+  · rintro w hw
+    have hwmem : w ∈ V₁ ∪ ({w₀} : Set α) :=
+      Graph.closedNbhd_subset_of_mem hl₀ hu₀ hw₀ hcut hv hw
+    rcases hw with rfl | ⟨e, hl⟩
+    · exact Or.inl rfl
+    · exact Or.inr ⟨e, (Graph.induce_isLink G (V₁ ∪ {w₀}) e v w).mpr
+        ⟨hl, Set.mem_union_left _ hv, hwmem⟩⟩
+
+/-- **`Gᵢ⁺`'s closed hub-neighbourhood of a `V₁`-vertex is `G`'s own, minus `w₀`**
+(Phase 39 W5-L5 cut-arm structure layer; the design doc's "single `u₀` exception"). Hub status
+agrees on all of `V₁` (degree lemma 1, `Graph.degree_induce_union_singleton_of_mem`), and `w₀` is
+never a `Gᵢ⁺`-hub (degree lemma 2, `Graph.degree_induce_union_singleton_far` — degree `1 < 3`); the
+`\ {w₀}` correction is a no-op away from `u₀`, since no other `V₁`-vertex is `G`-adjacent to `w₀`
+(`Graph.closedNbhd_subset_of_mem`). -/
+theorem _root_.Graph.closedHubNbhd_induce_union_singleton [Finite β] {G : Graph α β} [G.Loopless]
+    {V₁ : Set α} {e₀ : β} {u₀ w₀ : α} (hV₁ : V₁ ⊆ V(G))
+    (hl₀ : G.IsLink e₀ u₀ w₀) (hu₀ : u₀ ∈ V₁) (hw₀ : w₀ ∉ V₁)
+    (hcut : (G.cutEdges V₁).ncard ≤ 1) {v : α} (hv : v ∈ V₁) :
+    (G.induce (V₁ ∪ {w₀})).closedHubNbhd v = G.closedHubNbhd v \ {w₀} := by
+  have hNeq := Graph.closedNbhd_induce_union_singleton hl₀ hu₀ hw₀ hcut hv
+  ext w
+  constructor
+  · intro hmem
+    have hhub := hmem.1
+    have hcase : w ∈ (G.induce (V₁ ∪ {w₀})).closedNbhd v := hmem.2
+    have hwmem : w ∈ V₁ ∪ ({w₀} : Set α) := hhub.1
+    have hwG : w ∈ G.closedNbhd v := hNeq ▸ hcase
+    rcases hwmem with hw₁ | hweq
+    · have hdeg3 : 3 ≤ (G.induce (V₁ ∪ {w₀})).degree w := hhub.2
+      rw [Graph.degree_induce_union_singleton_of_mem hl₀ hu₀ hw₀ hcut hw₁] at hdeg3
+      exact ⟨⟨⟨hV₁ hw₁, hdeg3⟩, hwG⟩, fun h => hw₀ (h ▸ hw₁)⟩
+    · exfalso
+      have hweq' : w = w₀ := hweq
+      have hdeg3 : 3 ≤ (G.induce (V₁ ∪ {w₀})).degree w := hhub.2
+      rw [hweq', Graph.degree_induce_union_singleton_far hl₀ hu₀ hw₀ hcut] at hdeg3
+      omega
+  · intro hmem
+    have hmemG : w ∈ G.closedHubNbhd v := hmem.1
+    have hwne : w ∉ ({w₀} : Set α) := hmem.2
+    have hwG : G.PencilHub w := hmemG.1
+    have hwcase : w ∈ G.closedNbhd v := hmemG.2
+    have hwmem : w ∈ V₁ ∪ ({w₀} : Set α) :=
+      Graph.closedNbhd_subset_of_mem hl₀ hu₀ hw₀ hcut hv hwcase
+    have hw₁ : w ∈ V₁ := hwmem.resolve_right hwne
+    have hcase' : w ∈ (G.induce (V₁ ∪ {w₀})).closedNbhd v := hNeq.symm ▸ hwcase
+    refine ⟨⟨Or.inl hw₁, ?_⟩, hcase'⟩
+    rw [Graph.degree_induce_union_singleton_of_mem hl₀ hu₀ hw₀ hcut hw₁]
+    exact hwG.2
 
 end CombinatorialRigidity.Molecular

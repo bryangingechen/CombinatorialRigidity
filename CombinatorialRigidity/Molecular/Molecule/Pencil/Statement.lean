@@ -835,4 +835,147 @@ theorem exists_extensor_two_pencils_iff {n_u n_v pt_u pt_v : Fin 4 → K} (hu_ne
     exact ⟨dotProduct_eq_zero_of_extensorInPanel_of_extensorThroughPoint hC h_nv h_tu,
            dotProduct_eq_zero_of_extensorInPanel_of_extensorThroughPoint hC h_nu h_tv⟩
 
+/-! ## W5-L5 cut-arm infra: scale invariance and the forced-hinge lemma (Phase 39, L5-cut-ii)
+
+The cut arm's non-hub matching sub-case (`notes/Phase39-design.md` §"W5 leaf decomposition" L5
+"Cut-arm route verdict" item 1b) reasons about `ExtensorInPanel`/`ExtensorThroughPoint` up to a
+nonzero rescaling in either argument: the extensor `C` (absorbing a scalar into one spanning slot,
+`extensor_update_smul`) or the normal/point (`n`/`q`, absorbing a scalar through the linearity of
+`⬝ᵥ`/`Submodule.span`). This section lands the four scale-invariance iffs and the forced-hinge
+lemma the L5 blocker verdict's item 1 derives: a nonzero hinge through two independent points is
+forced onto their join, up to scale. -/
+
+/-- **`ExtensorInPanel` is invariant under a nonzero rescaling of the extensor**
+(Phase 39 W5-L5 cut-arm infra). Absorb the scalar into the first slot of the witness family
+(`extensor_update_smul`); orthogonality of the rescaled slot is unaffected (`smul_dotProduct`).
+Stated at the grade `k = 2` this development uses throughout (indexing the witness family's first
+slot needs `Fin k` to carry a canonical `0`, which a generic `k : ℕ` does not supply). -/
+theorem extensorInPanel_smul_iff {C : ScrewSpace K 2} {n : Fin 4 → K} {c : K}
+    (hc : c ≠ 0) : ExtensorInPanel (c • C) n ↔ ExtensorInPanel C n := by
+  constructor
+  · rintro ⟨p, hpval, hperp⟩
+    refine ⟨Function.update p 0 (c⁻¹ • p 0), ?_, fun i => ?_⟩
+    · rw [extensor_update_smul p 0 c⁻¹, ← hpval, ScrewSpace.val_smul, smul_smul,
+        inv_mul_cancel₀ hc, one_smul]
+    · rcases eq_or_ne i 0 with rfl | hi
+      · rw [Function.update_self, smul_dotProduct, hperp 0, smul_zero]
+      · rw [Function.update_of_ne hi]; exact hperp i
+  · rintro ⟨p, hpval, hperp⟩
+    refine ⟨Function.update p 0 (c • p 0), ?_, fun i => ?_⟩
+    · rw [ScrewSpace.val_smul, hpval, extensor_update_smul]
+    · rcases eq_or_ne i 0 with rfl | hi
+      · rw [Function.update_self, smul_dotProduct, hperp 0, smul_zero]
+      · rw [Function.update_of_ne hi]; exact hperp i
+
+/-- **`ExtensorInPanel` is invariant under a nonzero rescaling of the normal**
+(Phase 39 W5-L5 cut-arm infra). Immediate from the linearity of `⬝ᵥ` in its second argument
+(`dotProduct_smul`) and cancelling the nonzero `c` in the field `K`. -/
+theorem extensorInPanel_smul_normal_iff {C : ScrewSpace K 2} {n : Fin 4 → K}
+    {c : K} (hc : c ≠ 0) : ExtensorInPanel C (c • n) ↔ ExtensorInPanel C n := by
+  constructor
+  · rintro ⟨p, hpval, hperp⟩
+    refine ⟨p, hpval, fun i => ?_⟩
+    have h := hperp i
+    rw [dotProduct_smul, smul_eq_mul] at h
+    exact (mul_eq_zero.mp h).resolve_left hc
+  · rintro ⟨p, hpval, hperp⟩
+    exact ⟨p, hpval, fun i => by rw [dotProduct_smul, hperp i, smul_zero]⟩
+
+/-- **`ExtensorThroughPoint` is invariant under a nonzero rescaling of the point**
+(Phase 39 W5-L5 cut-arm infra). Immediate from `Submodule.span`'s closure under `•` (both
+directions, using `c` and `c⁻¹`). -/
+theorem extensorThroughPoint_smul_point_iff {C : ScrewSpace K 2} {q : Fin 4 → K}
+    {c : K} (hc : c ≠ 0) : ExtensorThroughPoint C (c • q) ↔ ExtensorThroughPoint C q := by
+  constructor
+  · rintro ⟨p, hpval, hqmem⟩
+    refine ⟨p, hpval, ?_⟩
+    have := Submodule.smul_mem (Submodule.span K (Set.range p)) c⁻¹ hqmem
+    rwa [smul_smul, inv_mul_cancel₀ hc, one_smul] at this
+  · rintro ⟨p, hpval, hqmem⟩
+    exact ⟨p, hpval, Submodule.smul_mem _ c hqmem⟩
+
+/-- **`ExtensorThroughPoint` is invariant under a nonzero rescaling of the extensor**
+(Phase 39 W5-L5 cut-arm infra). Absorb the scalar into the first slot of the witness family, as
+`extensorInPanel_smul_iff`; the span of the rescaled family is unchanged, since it differs from
+the original only by a nonzero scalar in one slot (`hspan` below). -/
+theorem extensorThroughPoint_smul_iff {C : ScrewSpace K 2} {q : Fin 4 → K} {c : K}
+    (hc : c ≠ 0) : ExtensorThroughPoint (c • C) q ↔ ExtensorThroughPoint C q := by
+  have hspan : ∀ (p : Fin 2 → Fin 4 → K) (c' : K), c' ≠ 0 →
+      Submodule.span K (Set.range (Function.update p 0 (c' • p 0)))
+        = Submodule.span K (Set.range p) := by
+    intro p c' hc'
+    apply le_antisymm
+    · rw [Submodule.span_le]
+      rintro _ ⟨j, rfl⟩
+      rw [SetLike.mem_coe]
+      rcases eq_or_ne j 0 with rfl | hj
+      · rw [Function.update_self]
+        exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨0, rfl⟩)
+      · rw [Function.update_of_ne hj]
+        exact Submodule.subset_span ⟨j, rfl⟩
+    · rw [Submodule.span_le]
+      rintro _ ⟨j, rfl⟩
+      rw [SetLike.mem_coe]
+      rcases eq_or_ne j 0 with rfl | hj
+      · have hmem0 : Function.update p 0 (c' • p 0) 0 ∈
+            Submodule.span K (Set.range (Function.update p 0 (c' • p 0))) :=
+          Submodule.subset_span ⟨0, rfl⟩
+        have hmem0' : c'⁻¹ • Function.update p 0 (c' • p 0) 0 ∈
+            Submodule.span K (Set.range (Function.update p 0 (c' • p 0))) :=
+          Submodule.smul_mem _ _ hmem0
+        rwa [Function.update_self, smul_smul, inv_mul_cancel₀ hc', one_smul] at hmem0'
+      · have hjeq : p j = Function.update p 0 (c' • p 0) j := by rw [Function.update_of_ne hj]
+        rw [hjeq]
+        exact Submodule.subset_span ⟨j, rfl⟩
+  constructor
+  · rintro ⟨p, hpval, hqmem⟩
+    refine ⟨Function.update p 0 (c⁻¹ • p 0), ?_, ?_⟩
+    · rw [extensor_update_smul p 0 c⁻¹, ← hpval, ScrewSpace.val_smul, smul_smul,
+        inv_mul_cancel₀ hc, one_smul]
+    · rwa [hspan p c⁻¹ (inv_ne_zero hc)]
+  · rintro ⟨p, hpval, hqmem⟩
+    refine ⟨Function.update p 0 (c • p 0), ?_, ?_⟩
+    · rw [ScrewSpace.val_smul, hpval, extensor_update_smul]
+    · rwa [hspan p c hc]
+
+/-- **A nonzero hinge through two independent points is forced onto their join**
+(Phase 39 W5-L5 cut-arm infra, L5-cut-ii; the join-side companion of
+`dotProduct_eq_zero_of_extensorInPanel_of_extensorThroughPoint`'s meet-side necessity;
+`notes/Phase39-design.md` §"W5 leaf decomposition" L5 "Blocker verdict" item 1). If a nonzero
+`C : ScrewSpace K 2` passes through two projectively-distinct points `p, q`
+(`LinearIndependent K ![p, q]`), then `C` is a nonzero scalar multiple of the extensor of the line
+through `p, q` itself: `∃ c ≠ 0, c • C.val = extensor ![p, q]`.
+
+Each `ExtensorThroughPoint` witness gives a spanning pair `p', p''` with `C.val = extensor p' =
+extensor p''` and `p ∈ span p'`, `q ∈ span p''`; nonzero-ness of `C` makes both spans the same
+plane (`span_range_eq_of_extensor_eq`), so that plane contains the independent pair `p, q`, and
+`exists_smul_extensor_eq_of_mem_span_range` then gives the scalar `c` with `c • C.val = extensor
+![p, q]`; `c ≠ 0` since `extensor ![p, q] ≠ 0` (the pair is independent). This is the "two
+through-points + pair-LI force a hinge onto their join" composition the cut arm's non-hub matching
+transport needs to identify both sides' cut-edge hinges with the projective line `p ∨ q`. -/
+theorem exists_smul_eq_extensor_of_extensorThroughPoint_pair
+    {C : ScrewSpace K 2} {p q : Fin 4 → K} (hC : C ≠ 0)
+    (hp : ExtensorThroughPoint C p) (hq : ExtensorThroughPoint C q)
+    (hpq : LinearIndependent K ![p, q]) :
+    ∃ c : K, c ≠ 0 ∧ c • C.val = extensor ![p, q] := by
+  obtain ⟨p', hp'val, hpmem⟩ := hp
+  obtain ⟨p'', hp''val, hqmem⟩ := hq
+  have hCval : C.val ≠ 0 := fun h0 => hC (ScrewSpace.ext (h0.trans ScrewSpace.val_zero.symm))
+  have hp'ne : extensor p' ≠ 0 := hp'val ▸ hCval
+  have hp'li : LinearIndependent K p' := (extensor_ne_zero_iff_linearIndependent p').1 hp'ne
+  have heq : extensor p' = extensor p'' := by rw [← hp'val, ← hp''val]
+  have hspaneq : Submodule.span K (Set.range p'') = Submodule.span K (Set.range p') :=
+    span_range_eq_of_extensor_eq hp'ne heq
+  have hqmem' : q ∈ Submodule.span K (Set.range p') := hspaneq ▸ hqmem
+  obtain ⟨c, hc⟩ := exists_smul_extensor_eq_of_mem_span_range (u := ![p, q]) (v := p') hp'li
+    (fun i => by fin_cases i; exacts [hpmem, hqmem'])
+  have hcval : c • extensor p' = extensor (![p, q] : Fin 2 → Fin 4 → K) := by
+    have := congrArg (Subtype.val (p := fun x => x ∈ ⋀[K]^2 (Fin 4 → K))) hc
+    simpa only [Submodule.coe_smul] using this
+  refine ⟨c, ?_, ?_⟩
+  · rintro rfl
+    rw [zero_smul] at hcval
+    exact (extensor_ne_zero_iff_linearIndependent ![p, q]).2 hpq hcval.symm
+  · rw [hp'val]; exact hcval
+
 end CombinatorialRigidity.Molecular

@@ -5,8 +5,9 @@ COMPLETE** (2026-07-24); **W5-L5 in progress**: loop arm and base arm landed aga
 `PencilPair` (the parallel-class blocker found, user-adjudicated to route (b′), and repaired, all
 2026-07-24 — *Decisions made*); **the cut arm's generic-half route is PINNED** (the 2026-07-24
 recon verdict on the `Gᵢ⁺` repair: three of four sub-cases buildable as leaves L5-cut-i…iv, the
-pendant-deg-3 residual open — *Blockers*); **L5-cut-i landed** (2026-07-25, the `Gᵢ⁺` structure
-layer — *Decisions made*). Next: build L5-cut-ii (*Hand-off*); W4 after W5 (phase
+pendant-deg-3 residual open — *Blockers*); **L5-cut-i and L5-cut-ii both landed** (2026-07-25, the
+`Gᵢ⁺` structure layer + the transport/transfer-bookkeeping infra — *Decisions made*). Next: build
+L5-cut-iii, the risk-carrying repositioning leaf (*Hand-off*); W4 after W5 (phase
 opened 2026-07-23, recon-first). `Molecule/Pencil.lean` split into
 `Molecule/Pencil/{Statement,Arms,Motive,Chart,Engine,Reseed,Pair}.lean` (2026-07-24 housekeeping).
 
@@ -140,21 +141,24 @@ Full record, grounding, and the W0–W5 decomposition:
 
 **The phase stays OPEN** (the two superseding 2026-07-24 adjudications — no phase-close).
 
-**Next: build L5-cut-ii** (transport + transfer bookkeeping, one commit; exact shape: design doc
-L5 "Cut-arm route verdict" leaf list): `IsNondegPencilRealization` transport along a
-contragredient pair (conjuncts 2–4 over the landed conjunct-1 transport
-`hasPencilPanelRealization_mapSupport_screwEquivOfLinearEquiv`); the forced-hinge lemma (`C ≠ 0`
-through an LI pair ⟹ `∃ c ≠ 0, C = c • extensor ![p, q]`, the Meet.lean composition derived in
-the design doc's L5 blocker verdict item 1); scale-invariance helpers for
-`ExtensorInPanel`/`ExtensorThroughPoint` in both slots (check `Statement.lean`/`Meet.lean`, mint
-what is missing); a `LinearIndepOn` unit-rescaling congruence; and the boundary identities
-(`closedHubNbhd`/`closedNbhd` of `Gᵢ⁺` vs `G` on `Vᵢ`, with the single `u_c` exception). Then
-L5-cut-iii (the strengthened repositioning lemma — the risk-carrying leaf, spike-first),
-L5-cut-iv (the arm assembly, with the open pendant-deg-3 sub-case carried as an explicit
-hypothesis). L5-cut-i (the `Gᵢ⁺` structure layer) landed 2026-07-25 (*Decisions made*). **Do not
-build L5-cut-v** (the pendant-deg-3 residual) until its two chart-steering somewhere-witnesses
-get a numerics-first assessment (a separate small recon/numerics dispatch — design doc,
-sub-case 4).
+**Next: build L5-cut-iii** (the strengthened repositioning lemma — the risk-carrying leaf of the
+cut arm; exact shape: design doc L5 "Cut-arm route verdict" item 1b): extend the landed
+`exists_reposition_cross_incidences` by the per-hub-status obligations — a projective *point
+match* at non-hub crossing endpoints (transfers via the now-landed `IsNondegPencilRealization`
+transport + the forced-hinge lemma + the scale-invariance iffs, all L5-cut-ii), and an `∉ span`
+*steering* condition at hub endpoints (an open condition fed by `G`'s own feasibility witness +
+the `≤ 3` closed-hub-neighbourhood bound). Plausibly needs `[Infinite K]` (the panel sibling
+`case_cut_edge_realization_gp_gen`'s polynomial method is available as a technique). **Spike-first
+recommended** given the risk flag. Then L5-cut-iv (the arm assembly
+`pencilPair_of_not_twoEdgeConnected`, wiring sub-cases 1–3 with the open pendant-deg-3 sub-case
+carried as an explicit hypothesis). **Do not build L5-cut-v** (the pendant-deg-3 residual) until
+its two chart-steering somewhere-witnesses get a numerics-first assessment (a separate small
+recon/numerics dispatch — design doc, sub-case 4).
+
+L5-cut-i (the `Gᵢ⁺` structure layer) and L5-cut-ii (transport + transfer bookkeeping: the
+`IsNondegPencilRealization` contragredient-pair transport, the forced-hinge lemma, the four
+scale-invariance iffs, the `LinearIndepOn.units_smul` mirror congruence, and the
+`closedHubNbhd`/`closedNbhd` boundary identities) both landed 2026-07-25 (*Decisions made*).
 
 **After the cut arm**: the successor assembly `pencil_conjecture_of_arms_pair` (mirrors
 `pencil_conjecture_of_arms`, W3-L7, wiring `pencilPair_of_isLoopAt` + `pencilPair_of_ncard_le_two`
@@ -179,6 +183,26 @@ neighbor — is `notes/IdeaBacklog.md`.
 
 ## Decisions made during this phase
 
+- **W5-L5 L5-cut-ii landed** (2026-07-25, transport + transfer bookkeeping, `Statement.lean` +
+  `Motive.lean` + a mirror lemma): `IsNondegPencilRealization.mapSupport_screwEquivOfLinearEquiv`
+  layers nondegeneracy conjuncts 2–4 over the landed conjunct-1 panel transport by injectivity of
+  `g`/`h` alone (`LinearIndependent.map_injOn`/`LinearIndepOn.map_injOn` — no geometric content,
+  since `G` itself is unchanged); the forced-hinge lemma
+  `exists_smul_eq_extensor_of_extensorThroughPoint_pair` (`C ≠ 0` through an LI pair `p,q` ⟹
+  `∃c≠0, c•C.val = extensor ![p,q]`) is the Meet.lean composition
+  (`span_range_eq_of_extensor_eq` + `exists_smul_extensor_eq_of_mem_span_range`); four
+  scale-invariance iffs for `ExtensorInPanel`/`ExtensorThroughPoint` (both the extensor slot and
+  the normal/point slot), stated at the concrete grade `k = 2` (a generic `{k:ℕ}` hits `OfNat (Fin
+  k) 0` indexing the witness family — caught by the build, not a new FRICTION entry); the mirror
+  `LinearIndepOn.units_smul` (`Mathlib/LinearAlgebra/LinearIndependent/Basic.lean`); and the
+  boundary identities `Graph.closedNbhd_induce_union_singleton` (`Gᵢ⁺.closedNbhd v = G.closedNbhd
+  v` on `V₁`, no exception) / `Graph.closedHubNbhd_induce_union_singleton` (`= G.closedHubNbhd v \
+  {w₀}`, the design doc's "single `u₀` exception"), via the shared subset helper
+  `Graph.closedNbhd_subset_of_mem`. Two build-time frictions, both already-documented idioms (no
+  new FRICTION entries): the `OfNat` trap above, and a self-referential `rw` over-rewrite
+  (TACTICS-QUIRKS § 41 family) fixed by rewriting a fresh named hypothesis forward instead of
+  substituting a derived equation into the goal. No blueprint node (unnamed technical infra, as
+  L5-cut-i). Gates green; axioms clean (`propext`/`Classical.choice`/`Quot.sound` only).
 - **W5-L5 L5-cut-i landed** (2026-07-25, the `Gᵢ⁺` structure layer, `Motive.lean` + `Bricks.lean`):
   degree lemmas `Graph.degree_induce_union_singleton_{of_mem,far}` (`≤ 1` crossing +
   `[G.Loopless]`); feasibility corollary `PencilNondegFeasible.induce_union_singleton` (the

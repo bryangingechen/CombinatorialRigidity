@@ -15,7 +15,7 @@ public import Mathlib.Algebra.Module.Torsion.Field
 /-!
 # Upstream candidates: independent-family facts
 
-Five facts about linearly independent families, all upstream-eligible.
+Six facts about linearly independent families, all upstream-eligible.
 
 `LinearIndependent.disjoint_span_range_ker` is the converse companion of mathlib's
 `LinearIndependent.map`: if the composite `f ∘ v` is linearly independent, then the span of
@@ -69,12 +69,22 @@ coefficients, extended by `lam i = 1`) the rigidity project's redundant-row deco
 consumes (KT eqs. (6.24)/(6.25): the redundant row `v i` minus its expansion `w` over the
 others is the candidate vector `r̂`, with the redundant index's coefficient pinned to `1`).
 
+`LinearIndepOn.units_smul` is the `LinearIndepOn` companion of mathlib's own
+`LinearIndependent.units_smul`/`units_smul_iff` (stated only for the unrestricted
+`LinearIndependent`): rescaling each member of an independent-on-`s` family `v` by a
+per-index unit `w i` keeps it independent on `s`. Immediate from the mathlib lemma applied
+to the restricted family `s.restrict v`, since `LinearIndepOn` unfolds to exactly that. The
+rigidity project's cut-arm transport (`Molecule/Pencil/Motive.lean`, Phase 39 W5-L5) uses
+it for the per-body projective-scalar congruence a chart reproduction needs.
+
 Promotion to mathlib: copy-paste into `Mathlib/LinearAlgebra/LinearIndependent/Basic.lean`
 (it imports `linearIndependent_sum` there, `disjoint_span_singleton'` from `Span.Basic`,
 `Fintype.linearIndependent_iff`, and `Fintype.mem_span_image_iff_exists_fun` from
 `Finsupp.LinearCombination`). `linearIndependent_sumElim_block_swap` additionally needs
 `Submodule.mkQ`/`ker_mkQ` from `Quotient.Basic` and `LinearIndependent.sumElim_of_quotient`
 from `Dimension.Constructions` (so it would land downstream of those, not in `Basic`).
+`LinearIndepOn.units_smul` needs only `LinearIndependent.units_smul` itself, already in the
+same file.
 
 See `notes/FRICTION.md` *Mirrored* and `DESIGN.md` *Mirror directory*.
 -/
@@ -232,3 +242,15 @@ theorem linearIndependent_sumElim_block_swap {ιc : Type*}
   have hrebuild := hfindep.sumElim_of_quotient cand'
     (by simpa [hπ, Function.comp_def, P.mkQ_apply] using hcand'Q)
   simpa [hf] using hrebuild
+
+/-- **A unit-rescaling congruence for `LinearIndepOn`.** Over a ring, for a family `v : ι → M`
+independent on a set `s` and a per-index unit rescaling `w : ι → Rˣ`, the rescaled family `w • v`
+is again independent on `s`. The `LinearIndepOn` companion of mathlib's own
+`LinearIndependent.units_smul` (stated only for the unrestricted `LinearIndependent`); immediate
+from that lemma applied to the restricted family `s.restrict v`, since `LinearIndepOn R v s`
+unfolds to exactly `LinearIndependent R (s.restrict v)` and restriction commutes with the
+pointwise `•`. -/
+theorem LinearIndepOn.units_smul {R M ι : Type*} [Ring R] [AddCommGroup M] [Module R M]
+    {v : ι → M} {s : Set ι} (hv : LinearIndepOn R v s) (w : ι → Rˣ) :
+    LinearIndepOn R (w • v) s :=
+  LinearIndependent.units_smul hv fun x : s => w x

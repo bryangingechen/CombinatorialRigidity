@@ -1634,14 +1634,27 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
     without importing the chart stack — they are motive-consequence lemmas, currently homed in
     `Engine.lean` (import-cone decision for the builder: move to `Motive.lean` if their
     `finrank_toDualPerp_single_eq` dependency allows, else `Pair.lean` imports `Engine`).
-  - **L5-cut-ii**: transport + transfer bookkeeping — `IsNondegPencilRealization` transport
-    along a contragredient pair (conjuncts 2–4 over the landed conjunct-1 transport); the
-    forced-hinge lemma (`C ≠ 0` through an LI pair ⟹ `∃ c ≠ 0, C = c • extensor ![p, q]`, a
-    Meet.lean composition already derived in the L5 blocker verdict item 1); scale-invariance
-    helpers for `ExtensorInPanel`/`ExtensorThroughPoint` in both slots (check
-    `Statement.lean`/`Meet.lean`, mint what is missing); a `LinearIndepOn` unit-rescaling
-    congruence; and the boundary identities (`closedHubNbhd`/`closedNbhd` of `Gᵢ⁺` vs `G` on
-    `Vᵢ`, with the single `u_c` exception).
+  - **L5-cut-ii** (**LANDED 2026-07-25**, `notes/Phase39.md` *Decisions made*; one commit,
+    `Statement.lean` + `Motive.lean` + a `LinearIndepOn` mirror lemma): transport + transfer
+    bookkeeping, all five pieces. `IsNondegPencilRealization.mapSupport_screwEquivOfLinearEquiv`
+    (`Motive.lean`) layers conjuncts 2–4 over the landed conjunct-1 transport
+    (`hasPencilPanelRealization_mapSupport_screwEquivOfLinearEquiv`) by injectivity of `g`/`h`
+    alone (`LinearIndependent.map_injOn`/`LinearIndepOn.map_injOn`); the forced-hinge lemma
+    `exists_smul_eq_extensor_of_extensorThroughPoint_pair` (`Statement.lean`) is exactly the
+    Meet.lean composition (`span_range_eq_of_extensor_eq` +
+    `exists_smul_extensor_eq_of_mem_span_range`); the four scale-invariance iffs
+    (`extensorInPanel_smul_iff`/`_normal_iff`, `extensorThroughPoint_smul_iff`/`_point_iff`,
+    `Statement.lean`) are stated at the concrete grade `k = 2` (a generic `{k : ℕ}` hits
+    `OfNat (Fin k) 0` indexing the witness family's first slot — TACTICS-QUIRKS-adjacent, no new
+    entry needed); `LinearIndepOn.units_smul` mirrors mathlib's own
+    `LinearIndependent.units_smul` (`Mathlib/LinearAlgebra/LinearIndependent/Basic.lean`); and the
+    boundary identities `Graph.closedNbhd_induce_union_singleton` (equality, no exception) /
+    `Graph.closedHubNbhd_induce_union_singleton` (`= G.closedHubNbhd v \ {w₀}`, the "single `u_c`
+    exception") land in `Motive.lean`, via the shared subset helper
+    `Graph.closedNbhd_subset_of_mem`. Two build-time frictions hit, both already-documented
+    idioms (no new entries): the `OfNat (Fin k) 0` generic-grade trap above, and a self-referential
+    `rw [hj0]` over-rewrite (TACTICS-QUIRKS § 41 family) fixed by rewriting a fresh named
+    hypothesis forward instead of substituting a derived equation into the goal.
   - **L5-cut-iii** (the risk-carrying leaf): the strengthened repositioning lemma — the landed
     `exists_reposition_cross_incidences` extended by the per-hub-status obligations of (1b)
     (point matches at non-hub ends; `∉ span` steering at hub ends; `[Infinite K]` permitted).
