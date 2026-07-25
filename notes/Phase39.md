@@ -148,6 +148,13 @@ Full record, grounding, and the W0–W5 decomposition:
 
 **The phase stays OPEN** (the two superseding 2026-07-24 adjudications — no phase-close).
 
+**Owed housekeeping (first commit of the next session, before or with the v-c dispatch):** this
+note sits at the ~500-line tripwire with *Decisions made* outweighing the forward sections —
+compress per `notes/CLAUDE.md` *Forward-weighted note* (one-line the settled W5-L4/L5 entries;
+canonical detail already lives in the design doc + git history). Also decide `exists_fin3_rank_injOn`'s
+retirement (landed for the superseded `fin_cases` plan, currently unconsumed — see the design doc's
+v-b sub-bullet; keep if v-c/v-d consume it, else delete with the deletion-hygiene sweep).
+
 **W5-L5 is closed modulo the carried family** (loop/base/cut arms + the successor
 `pencil_conjecture_of_arms_pair`, `Pencil/Pair2.lean`, node
 `thm:pencil-conditional-realization-pair` green; `hcontract`/`hsplit`/`hcutPendant3` remain open
