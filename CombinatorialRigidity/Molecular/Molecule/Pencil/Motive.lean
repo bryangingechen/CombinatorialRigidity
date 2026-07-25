@@ -101,9 +101,16 @@ def IsNondegPencilRealization (G : Graph α β) (F : BodyHingeFramework K 2 α �
 /-- **Nondegenerate-realization feasibility** (`def:pencil-nondegenerate`; Phase 39 W5-L0): the
 conditioning predicate for the pencil induction's generic conjunct — the pencil analogue of KT
 Theorem 5.5's `G.Simple`. Unlike `G.Simple`, this predicate is graph-dependent in a genuinely new
-way: it is refuted at `K4` and at any graph with a `≥ 2`-fold parallel class between two hubs
-(verdict 1, `notes/Phase39-design.md` §"W5 design pass"), so the conditioning self-scopes the
-stratum's known degenerations instead of ruling them out by simplicity. -/
+way: it is refuted at `K4` (verdict 1, `notes/Phase39-design.md` §"W5 design pass" — every body's
+closed hub-neighbourhood has all four vertices, over-determining the panel normals against a
+nonzero point), so the conditioning self-scopes the stratum's known degenerations instead of ruling
+them out by simplicity. **Correction (2026-07-24, W5-L5):** the original verdict also claimed this
+predicate is refuted at any graph with a `≥ 2`-fold parallel class between two hubs — that claim is
+FALSE, refuted by a compiler-checked witness
+(`exists_isNondegPencilRealization_parallel_pair`, `Pencil/Pair.lean`): a parallel class is
+nondegeneracy-*feasible* (even without any hub, via two independent panels/points). See
+`notes/Phase39.md` *Blockers* for the resulting (still open) tension this creates for
+`HasGenericPencilRealization`'s rank target at such graphs. -/
 def PencilNondegFeasible (K : Type*) [Field K] (G : Graph α β) : Prop :=
   ∃ (F : BodyHingeFramework K 2 α β) (normal point : α → Fin 4 → K),
     IsNondegPencilRealization G F normal point

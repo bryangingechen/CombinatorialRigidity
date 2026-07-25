@@ -7,11 +7,13 @@ COMPLETE** 2026-07-24 — the re-seeding lemma `exists_pencilSeed_of_nondeg`
 normal-side (`nbrSel`/`fillNbr`) global constructions plus the fifth `PencilChartWF` conjunct
 (adjacent-point distinctness, a `units_smul` transport, no new per-vertex construction) into one
 `PencilSeed` with full `PencilChartWF` and projective point/normal reproduction; **W5-L5 opened**
-(new leaf `Molecule/Pencil/Pair.lean`), loop arm landed (`pencilPair_of_isLoopAt`); phase stays open
-(two user adjudications, below); next: the base arm's generic half (W5-L5, small — single-edge/empty
-producers, parallel classes nondegeneracy-infeasible hence vacuous), then the cut arm's generic half
-and the successor assembly, with L6/L8 parallel after L0 (*Hand-off*); W4 after W5 (phase opened
-2026-07-23, recon-first).
+(new leaf `Molecule/Pencil/Pair.lean`), loop arm landed (`pencilPair_of_isLoopAt`); **the base arm's
+"parallel classes are vacuous" plan is REFUTED** (2026-07-24, compiler-checked — a parallel class is
+nondegeneracy-*feasible*, but `HasGenericPencilRealization` looks unsatisfiable there, a genuine
+open blocker, not yet resolved); phase stays open (two user adjudications, below); next: **resolve
+the base-arm blocker** (a design-level call, most likely a recon), then the base arm's
+empty/single-edge sub-cases, the cut arm's generic half, and the successor assembly, with L6/L8
+parallel after L0 (*Hand-off*); W4 after W5 (phase opened 2026-07-23, recon-first).
 **`Molecule/Pencil.lean` split into `Molecule/Pencil/{Statement,Arms,Motive,Chart,Engine,Reseed}.lean`
 2026-07-24** (housekeeping; see *Decisions made* for the file map).
 
@@ -117,6 +119,25 @@ Full record, grounding, and the W0–W5 decomposition:
 
 ## Blockers / open questions
 
+- **OPEN — W5-L5 base-arm parallel-class blocker** (2026-07-24, `Molecule/Pencil/Pair.lean`,
+  full derivation in `notes/Phase39-design.md` §"W5 leaf decomposition" L5): the design doc's plan
+  to treat the base arm's parallel-class sub-case (`V(G).ncard ≤ 2`, `2 ≤ E(G).ncard`) as
+  nondegeneracy-*infeasible* (hence a vacuous generic obligation) is refuted — a landed,
+  compiler-checked witness (`exists_isNondegPencilRealization_parallel_pair`) shows
+  `PencilNondegFeasible` genuinely holds there (two independent panels/points, no hub needed), while
+  a separate argument (`hingeRowBlock` depends only on the extensor's line; two points force a
+  unique connecting line, confirmed by the already-landed W1 parallel-pair witness needing a
+  *shared* point for full rank) shows `HasGenericPencilRealization` looks unsatisfiable at any such
+  graph. The base arm's `PencilNondegFeasible → HasGenericPencilRealization` obligation is therefore
+  neither vacuous nor known provable at this sub-case — a genuine open blocker, not a proof gap.
+  **Resolution options assessed, none attempted:** (a) revisit `IsNondegPencilRealization`'s
+  conjuncts (unlikely — the second conjunct, adjacent-point distinctness, is load-bearing
+  elsewhere); (b) narrow `PencilPair`'s scope or the base arm's own dispatch to exclude `≥ 2`-fold
+  parallel classes (would ripple into `Graph.pencil_reduction`'s own case split, which currently
+  assumes `hbase` covers all of `V(G).ncard ≤ 2` unconditionally); (c) re-examine whether the
+  *target rank* itself is mis-derived for this case (deficiency `0` for any `m ≥ 2`, unchecked
+  independently of the W3 bare arm's own computation). Best next step is likely a design recon, not
+  a builder dispatch — this is a route/motive question, not a construction task.
 - ~~W5-L4 WF-conjunct blocker~~ **resolved** (2026-07-24 blocker recon; design doc
   L4 bullet "Blocker verdict"): the triple can genuinely fail — route 2 (motive
   restatement) pinned with typechecked shapes, **and landed** (same day, the
@@ -168,20 +189,33 @@ verdict, composing the landed bare-motive `hasPencilRealization_of_isLoopAt` wit
 `lake build` (warning-clean) + `lake lint` when `.lean` is touched; `blueprint/verify.sh` +
 `blueprint/lint.sh` (vocabulary gate bans "stratum"/"strata") when `.tex` is touched.
 
-**Next: the base arm's generic half (W5-L5 continues).** Per the design doc, this is the small
-piece: single-edge/empty producers, and parallel classes are nondegeneracy-infeasible (hence the
-generic obligation is vacuous there too) — likely a `PencilPair`-conditioned analogue of
-`hasPencilRealization_of_ncard_le_two` (`Arms.lean`) built the same way as the loop arm where the
-underlying graph shape is nondegeneracy-infeasible, plus a genuine small producer for the shapes
-that aren't. After that: the cut arm's generic half (moderate — mirrors the landed panel-side
-`case_cut_edge_realization_gp_gen`, `AlgebraicInduction/Theorem55.lean`; the W3-L4
-transport/nondegeneracy/rank infra in `Arms.lean` is reusable), then the successor assembly
-`pencil_conjecture_of_arms_pair` itself (mirrors `pencil_conjecture_of_arms`, W3-L7, wiring the
-three re-derived arms + `hcontract`/`hsplit` through `Graph.pencil_reduction`) — red node
+**This session also attempted the base arm's generic half** (per the prior hand-off) and, in
+re-deriving the design doc's "parallel classes are vacuous" plan against the CURRENT
+`IsNondegPencilRealization` (as the dispatch's caution required), **found it false** — landed as a
+compiler-checked witness, `exists_isNondegPencilRealization_parallel_pair`. See *Blockers* above
+for the full finding: a `≥ 2`-fold parallel class is nondegeneracy-feasible, yet
+`HasGenericPencilRealization` looks unsatisfiable there (achieving full rank forces a shared
+concurrency point, which nondegeneracy's own second conjunct forbids). The base arm's generic
+obligation is an **open blocker**, not a construction task — do not attempt to "build the parallel-
+class producer" next; that producer cannot exist as the motive is currently stated. The
+empty/single-edge sub-cases of the base arm were **not attempted** this session (the blocker was
+found first, and completing only 2 of 3 cases wouldn't assemble into a usable arm yet).
+
+**Next: resolve the W5-L5 base-arm blocker (a recon, not a builder dispatch).** The three
+resolution options in *Blockers* need a route decision before any more Lean lands on this arm:
+adjusting `IsNondegPencilRealization`'s conjuncts, narrowing the base arm's (or `PencilPair`'s)
+scope to exclude `≥ 2`-fold parallel classes (rippling into `Graph.pencil_reduction`'s existing
+`hbase` case, which currently claims all of `V(G).ncard ≤ 2` unconditionally), or re-checking the
+target-rank derivation independently. Once resolved, the base arm's empty/single-edge sub-cases
+(believed genuinely small/unblocked) can land, then the cut arm's generic half (moderate — mirrors
+the landed panel-side `case_cut_edge_realization_gp_gen`, `AlgebraicInduction/Theorem55.lean`; the
+W3-L4 transport/nondegeneracy/rank infra in `Arms.lean` is reusable), then the successor assembly
+`pencil_conjecture_of_arms_pair` itself (mirrors `pencil_conjecture_of_arms`, W3-L7) — red node
 `thm:pencil-conditional-realization-pair` already restated in `pencil.tex` (no `\lean{...}` pin
-yet). **L6/L8 are parallel combinatorial tracks after L0** (L6: habitat feasibility, the `≤ 3`
-closed-hub-neighbourhood lemma + witness-seed construction; L8: the `k = 0` residue, emptiness
-route recommended). **L7 (the research core) is last** — the uniform escape certificate
+yet, and its own statement may need revisiting depending on the blocker's resolution). **L6/L8 are
+parallel combinatorial tracks after L0** (L6: habitat feasibility, the `≤ 3` closed-hub-neighbourhood
+lemma + witness-seed construction; L8: the `k = 0` residue, emptiness route recommended) — neither
+is affected by this blocker. **L7 (the research core) is last** — the uniform escape certificate
 `r ⬝ Λ²Π̂(a) ≢ 0`, likely the first leaf needing the `normalRow_eq_panelRow`-style graph bridge
 deferred from L3; N2 witnesses one instance. Full leaf detail:
 `notes/Phase39-design.md` §"W5 leaf decomposition". Then W4 (constrained-family Claim-6.4
@@ -195,6 +229,22 @@ neighbor — is `notes/IdeaBacklog.md`.
 
 ## Decisions made during this phase
 
+- **W5-L5 base-arm parallel-class blocker found** (2026-07-24, `Molecule/Pencil/Pair.lean`, full
+  derivation `notes/Phase39-design.md` §"W5 leaf decomposition" L5): re-deriving the design doc's
+  "parallel classes are nondegeneracy-infeasible" plan against the CURRENT (restated, four-conjunct)
+  `IsNondegPencilRealization`, per the dispatch's re-derive-don't-adapt caution, refuted it —
+  `exists_isNondegPencilRealization_parallel_pair` is a compiler-checked witness that a `≥ 2`-fold
+  parallel pair is nondegeneracy-*feasible* (two independent panels/points via
+  `exists_extensor_two_pencils`; `closedHubNbhd`/`closedNbhd` both `⊆ V(G) = {x, y}` regardless of
+  hub status, so `LinearIndepOn.mono` closes the third/fourth conjuncts with no hub reasoning at
+  all). A separate argument (`hingeRowBlock` depends only on the extensor's own line; two points
+  force a unique connecting line; the already-landed W1 `exists_pencilPanelRealization_parallel_pair`
+  needs a *shared* point for its own full-rank witness) shows `HasGenericPencilRealization` looks
+  unsatisfiable at any such graph. Net: the base arm's `PencilNondegFeasible →
+  HasGenericPencilRealization` obligation is neither vacuous nor known provable — an open blocker
+  (*Blockers*), not a construction gap; did not attempt the base arm's empty/single-edge sub-cases
+  this session (found the blocker before reaching them). `#print axioms` clean; `lake build`
+  warning-clean; `lake lint` clean; no blueprint node touched.
 - **W5-L5 opened** (2026-07-24, new leaf `Molecule/Pencil/Pair.lean`): the loop arm's
   conditioned-pair analogue `pencilPair_of_isLoopAt` — given `G.IsLoopAt e v` and
   `PencilPair K n (G ＼ {e})`, concludes `PencilPair K n G`. Exactly the design doc's "loop arm

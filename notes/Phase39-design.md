@@ -848,6 +848,11 @@ the KT primary source (p. 684 re-verified this pass, see *Citations*).
    free), and a `≥ 2`-fold parallel class between two hubs kills the
    hub-normal-LI conjunct (KT Lemma 5.3's coincident-panel base stays
    bare-motive, as in the landed program's non-simple flows).
+   **Correction (2026-07-24, W5-L5): this parallel-class claim is FALSE**
+   — see §"W5 leaf decomposition" L5's finding below (a compiler-checked
+   witness shows a parallel class is nondegeneracy-feasible; the tension
+   this creates for `HasGenericPencilRealization`'s rank target is an
+   open blocker, not a vacuity).
 2. **The device is the grade-0 molecular-side chart + the LANDED
    engine; no new engine, no standing transfer-form conjunct.** The N2
    sampler made uniform: seeds = per-body free vectors (hub star-plane
@@ -1192,14 +1197,52 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
   file `Molecule/Pencil/Reseed.lean` (Engine.lean was near the `≤1500`-LoC cap). No blueprint node
   named for it yet (unnamed-technical-infra precedent). W5-L5 is next (below).
 - **W5-L5** (opened 2026-07-24, new leaf `Molecule/Pencil/Pair.lean`): the W3-L7 successor
-  `pencil_conjecture_of_arms_pair` (spiked) + the arm re-derivations against the pair motive: loop
+  `pencil_conjecture_of_arms_pair` (spiked) + the arm re-derivations against the pair motive. Loop
   arm **landed** (`pencilPair_of_isLoopAt` — free, exactly the design's vacuity verdict: composes
   `hasPencilRealization_of_isLoopAt`'s bare half with `absurd`/`not_pencilNondegFeasible_of_isLoopAt`
-  for the generic half, no new construction); base arm's generic half (small: single-edge/empty
-  producers; parallel classes are nondegeneracy-infeasible, hence vacuous) and cut arm's generic
-  half (moderate — mirrors the landed `case_cut_edge_realization_gp_gen`; the W3-L4
-  transport/nondegeneracy/rank infra is reusable) remain open, then the successor assembly itself.
-  This is the churn the GP caveat predicted, now bounded and scheduled.
+  for the generic half, no new construction). **Base arm's parallel-class sub-case: the "vacuous"
+  plan is REFUTED** (2026-07-24, re-deriving against the current 4-conjunct
+  `IsNondegPencilRealization`, per the dispatch's re-derive-don't-adapt caution) — see the new
+  finding below; cut arm's generic half (moderate — mirrors the landed
+  `case_cut_edge_realization_gp_gen`; the W3-L4 transport/nondegeneracy/rank infra is reusable) and
+  the successor assembly remain open, and the base arm's empty/single-edge sub-cases are still
+  believed small but not yet attempted. This is the churn the GP caveat predicted, now bounded but
+  larger than scheduled.
+
+  **Finding (2026-07-24, compiler-checked): a `≥ 2`-fold parallel class is nondegeneracy-FEASIBLE,
+  even at the base arm's own minimal instance (a parallel pair, no hub involved).** The design
+  doc's plan and `PencilNondegFeasible`'s own docstring both claimed parallel classes were
+  vacuous for the generic-conjunct obligation; `exists_isNondegPencilRealization_parallel_pair`
+  (`Pencil/Pair.lean`) is a compiler-checked, sorry-free counter-witness: two independent panels
+  `n₀, n₁` and two independent concurrency points `q₀, q₁` (via `exists_extensor_two_pencils`,
+  cross-incidences all `0` by construction) give a genuine `IsNondegPencilRealization` at *any*
+  parallel pair — `closedHubNbhd`/`closedNbhd` are both `⊆ V(G) = {x, y}` regardless of hub status,
+  and the two chosen normals/points are already independent, so `LinearIndepOn.mono` closes the
+  third/fourth conjuncts with no hub reasoning at all. Neither vertex needs degree `≥ 3`.
+
+  This creates a genuine tension for the base arm's own obligation
+  (`PencilNondegFeasible → HasGenericPencilRealization`): achieving the *full* target rank `D = 6`
+  (deficiency `0` for any `m ≥ 2` parallel class, `Graph.deficiency_le_deficiency_of_le_vertexSet_eq`
+  against a `2`-edge sub-rigid witness) needs **two independent-direction hinges** — one alone caps
+  rank at `D − 1 = 5`, since `hingeRowBlock e = (Submodule.span K {supportExtensor e}).dualAnnihilator`
+  (`RigidityMatrix/Basic.lean`) depends only on the extensor's own line, so proportional extensors
+  give the identical row block. But two edges both required to pass "through" the same two points
+  `pt_u, pt_v` are forced onto the *same* line whenever `pt_u ≠ pt_v` (`ExtensorThroughPoint`'s
+  witness family must literally contain both points, and a decomposable `2`-extensor containing two
+  given independent vectors is exactly their span — unique) — so two independent-direction hinges
+  through the same pair of bodies force `pt_u = pt_v` (up to scale), which is exactly what
+  `IsNondegPencilRealization`'s **second** conjunct (adjacent-point distinctness) forbids. The
+  already-landed `exists_pencilPanelRealization_parallel_pair` (W1) confirms this from the
+  construction side: its own full-rank parallel-pair witness uses `point := fun _ => q₀`, the
+  *same* point at both bodies — not a proof-specific shortcut but (per the argument above) the only
+  way to get two independent hinges at all. So `HasGenericPencilRealization` looks unsatisfiable at
+  any `≥ 2`-fold parallel class, while `PencilNondegFeasible` is witnessed (landed) there — the base
+  arm's generic obligation can be discharged as **neither** vacuous **nor** (yet) provable as
+  stated. This is a genuine, unresolved blocker, not a proof gap to fill in — see
+  `notes/Phase39.md` *Blockers* for the resolution options assessed (none attempted; needs a
+  design-level call, most likely a recon) and why the design pass's own numerics (N4–N6) never
+  exercised this: all three tested graphs (theta(2,2,2), K3,3, spider-K4) have `≥ 3` vertices, so
+  none instantiate the base arm's own `|V(G)| ≤ 2` regime.
 - **W5-L6**: habitat feasibility (verdict 4) — the ≤ 3 closed-hub-neighbourhood lemma
   on 2EC/no-proper-rigid graphs + the witness-seed construction discharging
   `PencilNondegFeasible` at `G′ = G^{ab}_v`.
@@ -1229,10 +1272,15 @@ parallel combinatorial tracks after L0; L7 last (consumes L2–L4, L6).
   2026-07-24): the contract arm consumes the IH's generic half at the contracted
   graph `G/E(H)`, so it must either derive `PencilNondegFeasible (G.rigidContract
   H r)` from its own hypotheses or route through the bare half where the conjunct
-  is vacuous (contraction can create hub-parallel classes, which kill hub-LI —
-  the mirror of the landed program's nonsimple flows around its
+  is vacuous (contraction can create hub-parallel classes, which ~~kill hub-LI~~
+  **do NOT kill hub-LI — corrected 2026-07-24, W5-L5 finding: parallel classes
+  (hub or not) are nondegeneracy-feasible; the "vacuous via infeasibility" route
+  is unavailable here too, same as the base arm's own open blocker** — the
+  mirror of the landed program's nonsimple flows around its
   `Simple`-conditioned half). L6 covers the *split* arm's `G′` only. This
-  question is part of the W4 recon's charter (W4 recon).
+  question is part of the W4 recon's charter (W4 recon), and now shares the
+  base arm's open blocker (`notes/Phase39.md` *Blockers*) rather than a
+  separate vacuity route.
 
 ### Numerics index (this pass)
 
