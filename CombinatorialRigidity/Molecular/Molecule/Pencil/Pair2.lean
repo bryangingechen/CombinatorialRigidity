@@ -685,4 +685,80 @@ theorem pencilPair_of_not_twoEdgeConnected [Finite α] [Finite β] {n : ℕ}
         exact hasGenericPencilRealization_of_isNondegPencilRealization_induce_union_singleton
           hD hn hl_c hu_c hv_c hssub.subset hcut_le hfeas hnd₁ hrank₁ hnd₂ hrank₂
 
+/-! ## W5-L5: the successor assembly `pencil_conjecture_of_arms_pair` (`thm:pencil-conditional-
+realization-pair`, Phase 39 PENCIL)
+
+Mirrors the W3-L7 wrapper `pencil_conjecture_of_arms` (`Molecule/Pencil/Arms.lean`), instantiating
+`Graph.pencil_reduction` at the conditioned-pair motive `P := PencilPair K 3` instead of the bare
+`HasPencilRealization K 3`: the loop/base/cut arms discharge internally from the three landed
+leaves above (`pencilPair_of_isLoopAt`, `pencilPair_of_ncard_le_two`,
+`pencilPair_of_not_twoEdgeConnected`), and `hcontract`/`hsplit` are taken as hypotheses exactly as
+W3-L7's, restated against `PencilPair` in place of `HasPencilRealization`. Unlike W3-L7, the cut
+arm is not fully self-contained: `pencilPair_of_not_twoEdgeConnected` itself takes the residual
+sub-case-4 hypothesis `hcutPendant3` (L5-cut-v, design-open), so this successor re-exposes it as
+its own carried hypothesis, universally quantified over the graph it is invoked at (the cut arm's
+`hcutPendant3` is scoped to a single ambient `G`). The conclusion is `PencilPair K 3 G` directly —
+exactly `def:pencil-conditioned-pair` at the spanning graph `hspan` provides — rather than W3-L7's
+`RankHypothesis`-bridged reformulation, since the blueprint's `thm:pencil-conditional-realization-
+pair` prose asks for "satisfies the conditioned pair" verbatim and `PencilPair` already *is* that
+predicate; no rank-nullity bridging is needed on top. -/
+
+set_option linter.unusedDecidableInType false in
+/-- **The pencil conjecture, conditional on the contraction and split cases, conditioned-pair
+motive** (`thm:pencil-conditional-realization-pair`; Phase 39 W5-L5, the successor to the W3-L7
+bare-motive wrapper `pencil_conjecture_of_arms`). Assembles `Graph.pencil_reduction` at `n = 3`
+against the conditioned-pair motive `PencilPair`, discharging the loop/base/cut arms internally
+from the landed leaves (`pencilPair_of_isLoopAt`, `pencilPair_of_ncard_le_two`,
+`pencilPair_of_not_twoEdgeConnected`) and taking the contraction/split arms as hypotheses,
+restated against `PencilPair` in place of the bare motive. The cut arm's residual sub-case 4
+(pendant attachment at degree exactly `3`, L5-cut-v — design-open, no plain IH consumption closes
+its output gap) is threaded through as the carried hypothesis `hcutPendant3`, conditioned on
+`G.Simple`/`PencilNondegFeasible K G` exactly as `pencilPair_of_not_twoEdgeConnected` needs it
+(unconditioned, the "net" graph — a triangle with a pendant at each vertex — makes the hypothesis
+unsatisfiable, `notes/Phase39.md` *Hand-off*). -/
+theorem pencil_conjecture_of_arms_pair [Nonempty α] [Finite α] [Finite β] [DecidableEq β]
+    (hcontract : ∀ G : Graph α β, G.Loopless → 3 ≤ V(G).ncard →
+      (∃ H : Graph α β, H.IsProperRigidSubgraph G 3) →
+      (∀ G' : Graph α β, V(G').Nonempty → V(G').ncard < V(G).ncard →
+        PencilPair K 3 G') →
+      PencilPair K 3 G)
+    (hsplit : ∀ G : Graph α β, G.Loopless → 3 ≤ V(G).ncard → G.TwoEdgeConnected →
+      (∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G 3) →
+      (∃ v ∈ V(G), G.degree v = 2) →
+      (∀ G' : Graph α β, V(G').Nonempty → V(G').ncard < V(G).ncard →
+        PencilPair K 3 G') →
+      PencilPair K 3 G)
+    (hcutPendant3 : ∀ (G : Graph α β) {V₁ : Set α} {e_c : β} {u_c v_c : α},
+      G.Simple → PencilNondegFeasible K G →
+      G.IsLink e_c u_c v_c → u_c ∈ V₁ → v_c ∉ V₁ → V(G) = V₁ ∪ {v_c} →
+      (G.cutEdges V₁).ncard ≤ 1 → G.degree u_c = 3 → HasGenericPencilRealization K 3 G)
+    (G : Graph α β) (hspan : V(G) = Set.univ) :
+    PencilPair K 3 G := by
+  classical
+  -- Numerics for `n = 3`, `k = 2`: `bodyBarDim 3 = 6 = screwDim 2` (as W3-L7).
+  have hD6 : (6 : ℕ) ≤ Graph.bodyBarDim 3 := Graph.six_le_bodyBarDim (by norm_num)
+  have hD2 : (2 : ℕ) ≤ Graph.bodyBarDim 3 := by omega
+  have hn : Graph.bodyBarDim 3 = screwDim 2 := Graph.bodyBarDim_eq_screwDim_sub_one (by norm_num)
+  -- The loop arm: unfold the recursive call on `G ＼ {e}` (same vertex set, one fewer edge).
+  have hloop_arm : ∀ G : Graph α β, (∃ e x, G.IsLoopAt e x) →
+      (∀ G' : Graph α β, V(G').Nonempty →
+        V(G').ncard < V(G).ncard ∨
+          (V(G').ncard = V(G).ncard ∧ E(G').ncard < E(G).ncard) →
+          PencilPair K 3 G') → PencilPair K 3 G := by
+    rintro G ⟨e, x, hloopAt⟩ IH
+    refine pencilPair_of_isLoopAt hloopAt (IH (G ＼ ({e} : Set β)) ?_ (Or.inr ⟨?_, ?_⟩))
+    · rw [Graph.vertexSet_deleteEdges]; exact ⟨x, hloopAt.left_mem⟩
+    · rw [Graph.vertexSet_deleteEdges]
+    · rw [Graph.edgeSet_deleteEdges]
+      exact Set.ncard_diff_singleton_lt_of_mem hloopAt.edge_mem
+  have hbase_arm : ∀ G : Graph α β, G.Loopless → V(G).Nonempty → V(G).ncard ≤ 2 →
+      PencilPair K 3 G :=
+    fun G hloop hne hV2 => pencilPair_of_ncard_le_two hloop hne hV2
+  have hcut_arm : ∀ G : Graph α β, G.Loopless → 3 ≤ V(G).ncard → ¬ G.TwoEdgeConnected →
+      (∀ G' : Graph α β, V(G').Nonempty → V(G').ncard < V(G).ncard →
+        PencilPair K 3 G') → PencilPair K 3 G :=
+    fun G _ _ hntec hIH => pencilPair_of_not_twoEdgeConnected hD2 hn hntec (hcutPendant3 G) hIH
+  have hVGne : V(G).Nonempty := by rw [hspan]; exact Set.univ_nonempty
+  exact Graph.pencil_reduction hD6 hloop_arm hbase_arm hcut_arm hcontract hsplit G hVGne
+
 end CombinatorialRigidity.Molecular

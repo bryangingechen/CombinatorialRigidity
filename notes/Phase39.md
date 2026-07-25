@@ -17,8 +17,11 @@ file, `Pair.lean` at the ~1500-LoC cap — plus three structure-layer lemmas in 
 *Decisions made*); **the dispatch shell `pencilPair_of_not_twoEdgeConnected` landed** (`Pair2.lean`,
 wiring all three buildable sub-cases + sub-case 4 carried as the explicit hypothesis
 `hcutPendant3`, *Decisions made*)). **L5-cut-v OPEN** (the pendant-deg-3 residual, design-open —
-*Blockers*). Next: the successor assembly `pencil_conjecture_of_arms_pair` (*Hand-off*); W4 after
-W5 (phase opened 2026-07-23, recon-first). `Molecule/Pencil.lean` split into
+*Blockers*). **The successor assembly `pencil_conjecture_of_arms_pair` landed** (2026-07-25,
+`Pair2.lean`, node `thm:pencil-conditional-realization-pair` green) — **W5-L5 is now closed modulo
+the carried family** (`hcontract`/`hsplit`/`hcutPendant3` remain open hypotheses, *Decisions
+made*). Next: L6/L8 parallel tracks, the L5-cut-v assessment, then L7 (*Hand-off*); W4 after W5
+(phase opened 2026-07-23, recon-first). `Molecule/Pencil.lean` split into
 `Molecule/Pencil/{Statement,Arms,Motive,Chart,Engine,Reseed,Pair,Pair2}.lean` (2026-07-24/25
 housekeeping).
 
@@ -32,9 +35,12 @@ reason to split — the phase's charter is the conjecture itself), then *"Let's 
 the loop after this dispatch returns and you've confirmed its results; we'll begin
 the research on the conjecture in a fresh session."*
 
-**W0–W3 all COMPLETE; W5 design settled; W5-L0–L4 all COMPLETE; W5-L5 mid-stream** (loop + base
-arms landed; cut arm blocked at design level, *Blockers*). Per-milestone detail for every completed
-piece lives in *Decisions made* below (reverse-chronological, one entry per landing) and in
+**W0–W3 all COMPLETE; W5 design settled; W5-L0–L4 all COMPLETE; W5-L5 closed modulo the carried
+family** (loop, base, and cut arms all landed against `PencilPair`, and the successor assembly
+`pencil_conjecture_of_arms_pair` wires them through `Graph.pencil_reduction`; three explicit
+hypotheses remain open — `hsplit` (awaits W5-L6/L7/L8), `hcontract` (a W4 obligation), and
+`hcutPendant3` (L5-cut-v), *Blockers*/*Hand-off*). Per-milestone detail for every completed piece
+lives in *Decisions made* below (reverse-chronological, one entry per landing) and in
 `notes/Phase39-design.md`; this section stays a pointer, not a second copy.
 
 **The W3–W5 route recon** (`notes/Phase39-design.md` §W3–W5 route recon) set the attack
@@ -164,41 +170,27 @@ Full record, grounding, and the W0–W5 decomposition:
 
 **The phase stays OPEN** (the two superseding 2026-07-24 adjudications — no phase-close).
 
-**L5-cut-iv is now fully COMPLETE**: the dispatch shell `pencilPair_of_not_twoEdgeConnected`
-(`Pencil/Pair2.lean`) landed, wiring all three buildable sub-cases (2, 1, 3 — each already
-standalone-complete from prior sessions, `Pair.lean` + `Pair2.lean` + `Motive.lean`, all
-*Decisions made*) through their own IH-consumption glue, exactly per the design doc's guidance:
-case-split on `(G.cutEdges V₁).ncard = 0` (sub-case 2, `hasGenericPencilRealization_of_
-cutEdges_eq_empty`) vs. the single crossing edge `e_c = u_c v_c` over `V₁` (complement `V₂`), then
-— since the cut-vertex-set unfold is unoriented — on whether `V₂.ncard = 1` (the far side a
-pendant), `V₁.ncard = 1` (the near side a pendant, handled symmetrically with `u_c`/`v_c` and
-`V₁`/`V₂` swapped), or both `≥ 2` (sub-case 1, consuming the IH at the two edge-closed sides
-`Gᵢ⁺ = G.induce (Vᵢ ∪ {far})` via `Simple.mono`/`PencilNondegFeasible.induce_union_singleton`/the
-`|V(Gᵢ⁺)| = |Vᵢ| + 1 < |V(G)|` bound, then gluing via
-`hasGenericPencilRealization_of_isNondegPencilRealization_induce_union_singleton`). Each pendant
-branch further splits on `G.degree <hub> = 3`: `≠ 3` fires the IH at the bare induced side and
-hands the witness to `hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant`;
-`= 3` is the residual sub-case 4 (L5-cut-v), carried as the explicit hypothesis `hcutPendant3` —
-its shape mirrors the pendant producer's own premises (with the degree inequality flipped to an
-equality and the IH-witness/rank arguments dropped, matching the design doc's finding that no
-plain IH consumption closes this sub-case's output gap) **plus `G.Simple`/`PencilNondegFeasible
-K G` antecedents, threaded from the ambient `hSimple`/`hfeas`** (2026-07-25 correction, below):
-dropping those two antecedents makes the hypothesis an *unsatisfiable* obligation, not merely a
-stronger one — the "net" graph (triangle with a pendant at each vertex) meets every configuration
-premise at each of its three symmetric cuts yet is infeasible (triangle-`≥2`-hub finding), so
-`HasGenericPencilRealization K n G` is actually false there; conditioning makes `hcutPendant3`
-vacuous at exactly such graphs, matching what the L5-cut-v chart-steering discharger needs anyway
-(it re-seeds `G`'s own feasibility witness). Gates green (build + lint); axioms clean
-(`propext`/`Classical.choice`/`Quot.sound` only, `#print axioms`-checked).
+**L5-cut-iv COMPLETE and the successor assembly landed — W5-L5 is now closed modulo the carried
+family.** `L5-cut-iv`'s dispatch shell `pencilPair_of_not_twoEdgeConnected` (`Pencil/Pair2.lean`,
+prior session) wires all three buildable sub-cases with the residual sub-case 4 carried as the
+explicit, `G.Simple`/`PencilNondegFeasible K G`-conditioned hypothesis `hcutPendant3` — full detail
+in *Decisions made*, below. On top: **the successor `pencil_conjecture_of_arms_pair` landed**
+(2026-07-25, `Pencil/Pair2.lean`), instantiating `Graph.pencil_reduction` at `P := PencilPair K 3`
+exactly as W3-L7 does at the bare motive — loop/base/cut arms discharged internally from the three
+landed leaves (`pencilPair_of_isLoopAt`, `pencilPair_of_ncard_le_two`,
+`pencilPair_of_not_twoEdgeConnected`), concluding `PencilPair K 3 G` directly (no `RankHypothesis`
+bridge needed, unlike W3-L7: the blueprint prose already asks for "satisfies the conditioned
+pair", which `PencilPair` already *is*). Three explicit hypotheses stay open: `hcontract`/`hsplit`
+(the contraction/split arms restated against `PencilPair`, not yet built — same status as W3-L7's,
+now discharged by W4/W5-L6–L8 respectively per the *Current state* pointer) and `hcutPendant3`
+(now universally quantified over the invoking graph, `∀ (G : Graph α β) {V₁ e_c u_c v_c}, …` — the
+L5-cut-v residual). Blueprint node `thm:pencil-conditional-realization-pair` flipped green
+(`\lean{}` + `\leanok`), its prose restated to add the pendant-degree-3 antecedent (hypothesis
+(ii)) the cut-arm findings surfaced, since the prior red-node prose predated them. Gates green
+(build + lint + blueprint verify/lint); axioms clean (`propext`/`Classical.choice`/`Quot.sound`
+only, `#print axioms`-checked).
 
-**Next: the successor assembly `pencil_conjecture_of_arms_pair`** (mirrors
-`pencil_conjecture_of_arms`, W3-L7, wiring `pencilPair_of_isLoopAt` + `pencilPair_of_ncard_le_two`
-+ the now-complete `pencilPair_of_not_twoEdgeConnected` (which itself takes `hcutPendant3` as a
-parameter — the successor either re-exposes it as its own carried hypothesis or discharges it once
-L5-cut-v lands) + `hcontract`/`hsplit` through `Graph.pencil_reduction`) — red node
-`thm:pencil-conditional-realization-pair` already restated in `pencil.tex`.
-
-**After the successor assembly**: the **L5-cut-v assessment** — a small recon/numerics dispatch to
+**Next: the L5-cut-v assessment** — a small recon/numerics dispatch to
 check the two chart-steering somewhere-witness constructions (a seed of `G` with the triple
 `{point u_c, point w₁, point w₂}` LI; a seed of `H` with the promoted families LI, design doc
 sub-case 4) before building L5-cut-v itself. **L6/L8 are parallel
@@ -221,6 +213,21 @@ neighbor — is `notes/IdeaBacklog.md`.
 
 ## Decisions made during this phase
 
+- **W5-L5 successor `pencil_conjecture_of_arms_pair` landed — W5-L5 closed modulo the carried
+  family** (2026-07-25, `Pencil/Pair2.lean`, node `thm:pencil-conditional-realization-pair` green):
+  mirrors W3-L7's `pencil_conjecture_of_arms`, instantiating `Graph.pencil_reduction` at
+  `P := PencilPair K 3` — `hloop_arm`/`hbase_arm`/`hcut_arm` wrap the three landed leaves
+  (`pencilPair_of_isLoopAt`/`pencilPair_of_ncard_le_two`/`pencilPair_of_not_twoEdgeConnected`)
+  exactly as W3-L7's wrap the bare-motive leaves, and `hcut_arm` re-exposes `hcutPendant3` as a
+  `∀ (G : Graph α β) {V₁ e_c u_c v_c}, …` hypothesis (the cut arm's own version is scoped to a
+  single ambient `G`). Concludes `PencilPair K 3 G` directly, not W3-L7's `RankHypothesis`-bridged
+  form — the blueprint's `def:pencil-conditioned-pair` node already **is** `PencilPair`, so no
+  extra rank-nullity bridging step earns its keep here. Blueprint restated in the same commit: the
+  theorem's antecedent gained a second clause (the pendant-attachment-degree-3 configuration) the
+  prior red-node prose predated (it was written before the cut-arm findings surfaced the residual).
+  No new FRICTION (pure re-derivation of the W3-L7 pattern, first-try clean build). Gates green
+  (build + lint + `blueprint/verify.sh`/`lint.sh`); axioms clean
+  (`propext`/`Classical.choice`/`Quot.sound` only, `#print axioms`-checked).
 - **W5-L5 L5-cut-iv COMPLETE — the dispatch shell landed** (2026-07-25, `Pencil/Pair2.lean`):
   `pencilPair_of_not_twoEdgeConnected` wires the three completed sub-case producers together. Bare
   half reuses `hasPencilRealization_of_not_twoEdgeConnected` unchanged (fed `hIH`'s own bare
