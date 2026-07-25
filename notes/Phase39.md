@@ -8,14 +8,17 @@ recon verdict on the `Gᵢ⁺` repair: three of four sub-cases buildable as leav
 pendant-deg-3 residual open — *Blockers*); **L5-cut-i, L5-cut-ii, and L5-cut-iii all landed**
 (2026-07-25: the `Gᵢ⁺` structure layer, the transport/transfer-bookkeeping infra, and the
 strengthened repositioning lemma — the risk leaf closed match-free over any field, *Decisions
-made*); **L5-cut-iv in progress** (2026-07-25: sub-case 2, the disjoint-union generic producer,
-landed standalone — the full four-sub-case assembly did not fit one sitting, *Decisions made*;
-**sub-case 1's two halves both landed** the same day as further standalone pieces — the `Gᵢ⁺`
-IH-rank/drop-brick composition, then the repositioning/gluing producer, both *Decisions made*;
-**sub-case 3 (pendant, `deg_G u_c ≠ 3`) landed standalone too** (2026-07-25, `Pencil/Pair2.lean` —
-new file, `Pair.lean` at the ~1500-LoC cap — plus three structure-layer lemmas in `Motive.lean`,
-*Decisions made*)). Next: the dispatch shell wiring all four sub-cases (*Hand-off*); W4 after W5
-(phase opened 2026-07-23, recon-first). `Molecule/Pencil.lean` split into
+made*); **L5-cut-iv COMPLETE** (2026-07-25: sub-case 2, the disjoint-union generic producer,
+landed standalone first — the full four-sub-case assembly did not fit one sitting, *Decisions
+made*; **sub-case 1's two halves both landed** the same day as further standalone pieces — the
+`Gᵢ⁺` IH-rank/drop-brick composition, then the repositioning/gluing producer, both *Decisions
+made*; **sub-case 3 (pendant, `deg_G u_c ≠ 3`) landed standalone too** (`Pencil/Pair2.lean` — new
+file, `Pair.lean` at the ~1500-LoC cap — plus three structure-layer lemmas in `Motive.lean`,
+*Decisions made*); **the dispatch shell `pencilPair_of_not_twoEdgeConnected` landed** (`Pair2.lean`,
+wiring all three buildable sub-cases + sub-case 4 carried as the explicit hypothesis
+`hcutPendant3`, *Decisions made*)). **L5-cut-v OPEN** (the pendant-deg-3 residual, design-open —
+*Blockers*). Next: the successor assembly `pencil_conjecture_of_arms_pair` (*Hand-off*); W4 after
+W5 (phase opened 2026-07-23, recon-first). `Molecule/Pencil.lean` split into
 `Molecule/Pencil/{Statement,Arms,Motive,Chart,Engine,Reseed,Pair,Pair2}.lean` (2026-07-24/25
 housekeeping).
 
@@ -102,7 +105,7 @@ Full record, grounding, and the W0–W5 decomposition:
 
 ## Blockers / open questions
 
-- **W5-L5 cut arm (generic half): route PINNED, one residual sub-case OPEN** (2026-07-24 recon
+- **W5-L5 cut arm (generic half): L5-cut-iv COMPLETE, L5-cut-v OPEN** (2026-07-24 recon
   verdict; canonical record — sub-case split, spike-proved drop brick, leaf list L5-cut-i…v,
   the two refuted dodges, and the new triangle-hub infeasibility finding:
   `notes/Phase39-design.md` §"W5 leaf decomposition" L5 "Cut-arm route verdict"). The `Gᵢ⁺ =
@@ -113,19 +116,22 @@ Full record, grounding, and the W0–W5 decomposition:
   per crossing-endpoint hub status. **The risk-carrying leaf is CLOSED** (L5-cut-iii, 2026-07-25):
   the strengthened repositioning lemma landed in a *match-free avoidance form* — the recon's
   point-match mechanism proved unnecessary, and the uniform statement holds over **any** field
-  (no `[Infinite K]`; *Decisions made*). Sub-cases `|C| = 0`, two-sided `|C| = 1`, and pendant
-  with `deg_G u_c ≠ 3` are buildable now — **all three landed** (L5-cut-iv, 2026-07-25): sub-case
-  `|C| = 0` a standalone producer; sub-case 1's two halves (the generic `Gᵢ⁺` IH-rank/drop-brick
+  (no `[Infinite K]`; *Decisions made*). **L5-cut-iv is now COMPLETE** (2026-07-25): sub-cases
+  `|C| = 0`, two-sided `|C| = 1`, and pendant with `deg_G u_c ≠ 3` each landed as a standalone
+  producer (sub-case `|C| = 0`; sub-case 1's two halves — the generic `Gᵢ⁺` IH-rank/drop-brick
   composition, then the repositioning/gluing producer
-  `hasGenericPencilRealization_of_isNondegPencilRealization_induce_union_singleton`); sub-case 3
-  (pendant) the producer `hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant`
-  (`Pencil/Pair2.lean`, new file) — all *Decisions made*. The final dispatch shell (which also owes
-  sub-case 1's IH-consumption wiring into the glue) remains (*Hand-off*). **OPEN residual: the pendant sub-case at `deg_G u_c = 3`** (`G = H + pendant`
+  `hasGenericPencilRealization_of_isNondegPencilRealization_induce_union_singleton`; sub-case 3
+  (pendant) the producer `hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant`,
+  `Pencil/Pair2.lean`), then wired together by the dispatch shell
+  `pencilPair_of_not_twoEdgeConnected` (`Pair2.lean`) — all *Decisions made*. **OPEN residual
+  (L5-cut-v): the pendant sub-case at `deg_G u_c = 3`** (`G = H + pendant`
   at a degree-3 hub — exactly the `K_{1,3}` configuration; not vacuous, `K₃ + pendant` is simple
   + feasible): no IH consumption can close its output gap (sharpened this recon), motive option
   (c) is REFUTED as a full repair (input half only), and the candidate is a chart-steering route
   (engine on both `G`'s and `H`'s charts) whose two somewhere-witness constructions need a
-  numerics-first assessment before building. Feasibility propagation *as a proposition* stays
+  numerics-first assessment before building. The dispatch shell carries this residual as the
+  explicit hypothesis `hcutPendant3` (no `sorry`) rather than building it — *Hand-off*.
+  Feasibility propagation *as a proposition* stays
   open but bounded: the new **triangle-`≥2`-hub infeasibility** mechanism refutes any purely
   combinatorial (`≤ 3`-closedHubNbhd) criterion, while leaving L6's habitat claim untouched (no
   triangles in the no-proper-rigid habitat at `|V| ≥ 4`).
@@ -156,54 +162,38 @@ Full record, grounding, and the W0–W5 decomposition:
 
 **The phase stays OPEN** (the two superseding 2026-07-24 adjudications — no phase-close).
 
-**Next: the dispatch shell** — the arm assembly `pencilPair_of_not_twoEdgeConnected` did NOT fit
-one sitting (four sub-cases + the carried hypothesis is a very large single theorem), so the
-prior sessions landed standalone pieces per the standing scope-to-fit discipline; **all three
-buildable sub-cases (2, 1, 3) are now COMPLETE** (`Pair.lean` + `Pair2.lean` + `Motive.lean`, all
-*Decisions made*):
+**L5-cut-iv is now fully COMPLETE**: the dispatch shell `pencilPair_of_not_twoEdgeConnected`
+(`Pencil/Pair2.lean`) landed, wiring all three buildable sub-cases (2, 1, 3 — each already
+standalone-complete from prior sessions, `Pair.lean` + `Pair2.lean` + `Motive.lean`, all
+*Decisions made*) through their own IH-consumption glue, exactly per the design doc's guidance:
+case-split on `(G.cutEdges V₁).ncard = 0` (sub-case 2, `hasGenericPencilRealization_of_
+cutEdges_eq_empty`) vs. the single crossing edge `e_c = u_c v_c` over `V₁` (complement `V₂`), then
+— since the cut-vertex-set unfold is unoriented — on whether `V₂.ncard = 1` (the far side a
+pendant), `V₁.ncard = 1` (the near side a pendant, handled symmetrically with `u_c`/`v_c` and
+`V₁`/`V₂` swapped), or both `≥ 2` (sub-case 1, consuming the IH at the two edge-closed sides
+`Gᵢ⁺ = G.induce (Vᵢ ∪ {far})` via `Simple.mono`/`PencilNondegFeasible.induce_union_singleton`/the
+`|V(Gᵢ⁺)| = |Vᵢ| + 1 < |V(G)|` bound, then gluing via
+`hasGenericPencilRealization_of_isNondegPencilRealization_induce_union_singleton`). Each pendant
+branch further splits on `G.degree <hub> = 3`: `≠ 3` fires the IH at the bare induced side and
+hands the witness to `hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant`;
+`= 3` is the residual sub-case 4 (L5-cut-v), carried as the explicit hypothesis `hcutPendant3` —
+its shape mirrors the pendant producer's own premises with the degree inequality flipped to an
+equality and the IH-witness/rank arguments dropped (matching the design doc's finding that no
+plain IH consumption closes this sub-case's output gap), so it is the natural conclusion of
+L5-cut-v's chart-steering candidate route, not a stronger convenience form. Gates green (build +
+lint); axioms clean (`propext`/`Classical.choice`/`Quot.sound` only, `#print axioms`-checked).
 
-- **Sub-case 2** (`|C| = 0`, disjoint union) — **COMPLETE**, standalone producer
-  `hasGenericPencilRealization_of_cutEdges_eq_empty`, plus the three general disjoint-sides
-  structure lemmas it needs (`Graph.degree_induce_of_forall_isLink_mem` /
-  `Graph.closedHubNbhd_induce_of_forall_isLink_mem` / `Graph.closedNbhd_induce_of_forall_isLink_mem`).
-- **Sub-case 1** (`|C| = 1`, both sides `≥ 2` — the hard part) — **both halves landed as
-  standalone pieces**: the rank half
-  `hlb_induce_of_isNondegPencilRealization_induce_union_singleton` (generic in either crossing
-  endpoint; supporting infra `Graph.isLink_induce_union_singleton_of_isLink`,
-  `Graph.cutEdges_diff_subset`, `exists_subset_pair_of_ncard_le_two`,
-  `ncard_closedNbhd_le_three_of_not_pencilHub` re-homed chart-free), and the
-  **repositioning/gluing half**
-  `hasGenericPencilRealization_of_isNondegPencilRealization_induce_union_singleton` (`Pair.lean`)
-  — a standalone producer taking the two `Gᵢ⁺` side witnesses (nondegeneracy + target rank) plus
-  `G`'s own feasibility witness and delivering `HasGenericPencilRealization K n G` outright.
-  What the dispatch shell still owes for this sub-case is **only the IH consumption**: derive
-  each side's `Gᵢ⁺` inputs (`Simple.mono` along `Graph.induce_le`,
-  `PencilNondegFeasible.induce_union_singleton`, and `|V(Gᵢ⁺)| = |Vᵢ| + 1 < |V(G)|` — which is
-  exactly where the both-sides-`≥ 2` case condition enters), fire the IH's generic half once per
-  side, and hand both witnesses to the glue.
-
-- **Sub-case 3** (pendant, `deg_G u_c ≠ 3`) — **COMPLETE** (`Pencil/Pair2.lean`, new file — `Pair.lean`
-  was at the ~1500-LoC cap): the producer
-  `hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant` takes `H := G.induce V₁`'s
-  IH-supplied witness directly (no `Gᵢ⁺`; the pendant IS the far side) and delivers `G`'s generic
-  realization outright. What the dispatch shell owes for this sub-case is **only the IH
-  consumption**: derive `PencilNondegFeasible K H` via blanket `PencilNondegFeasible.mono` (no
-  demotion needed at all — `Graph.pencilHub_iff_induce_of_degree_ne`, `Motive.lean`, shows `u_c`'s
-  hub status never changes under `hdeg3`), fire the IH's generic half at `H`, and hand the witness
-  to the producer.
-
-**Then the dispatch shell**: case-split on `(G.cutEdges V₁).ncard = 0` vs. the single crossing edge,
-then on `|V₂| = 1` (sub-case 3) vs. `≥ 2` (sub-case 1) vs. `deg_G u_c = 3` (sub-case 4, carried as
-an explicit hypothesis — the standing no-`sorry` idiom; phrase its shape to match the chart-steering
-route's two somewhere-witness conclusions, design doc sub-case 4), wiring each of the three
-completed sub-case producers above through its own IH-consumption glue. **Do not build L5-cut-v**
-(the pendant-deg-3 residual) until its two chart-steering somewhere-witnesses get a numerics-first
-assessment (a separate small recon/numerics dispatch — design doc, sub-case 4).
-
-**After the cut arm**: the successor assembly `pencil_conjecture_of_arms_pair` (mirrors
+**Next: the successor assembly `pencil_conjecture_of_arms_pair`** (mirrors
 `pencil_conjecture_of_arms`, W3-L7, wiring `pencilPair_of_isLoopAt` + `pencilPair_of_ncard_le_two`
-+ the cut arm + `hcontract`/`hsplit` through `Graph.pencil_reduction`) — red node
-`thm:pencil-conditional-realization-pair` already restated in `pencil.tex`. **L6/L8 are parallel
++ the now-complete `pencilPair_of_not_twoEdgeConnected` (which itself takes `hcutPendant3` as a
+parameter — the successor either re-exposes it as its own carried hypothesis or discharges it once
+L5-cut-v lands) + `hcontract`/`hsplit` through `Graph.pencil_reduction`) — red node
+`thm:pencil-conditional-realization-pair` already restated in `pencil.tex`.
+
+**After the successor assembly**: the **L5-cut-v assessment** — a small recon/numerics dispatch to
+check the two chart-steering somewhere-witness constructions (a seed of `G` with the triple
+`{point u_c, point w₁, point w₂}` LI; a seed of `H` with the promoted families LI, design doc
+sub-case 4) before building L5-cut-v itself. **L6/L8 are parallel
 combinatorial tracks** buildable now (L6: habitat feasibility, the `≤ 3` closed-hub-neighbourhood
 lemma + witness-seed construction + the `G′.Simple` sub-obligation, design-doc L6 bullet; L8: the
 `k = 0` residue, emptiness route recommended). **L7 (the research core) is last** — the uniform
@@ -223,6 +213,21 @@ neighbor — is `notes/IdeaBacklog.md`.
 
 ## Decisions made during this phase
 
+- **W5-L5 L5-cut-iv COMPLETE — the dispatch shell landed** (2026-07-25, `Pencil/Pair2.lean`):
+  `pencilPair_of_not_twoEdgeConnected` wires the three completed sub-case producers together. Bare
+  half reuses `hasPencilRealization_of_not_twoEdgeConnected` unchanged (fed `hIH`'s own bare
+  halves); generic half re-derives the cut decomposition and dispatches on `(G.cutEdges V₁).ncard`
+  then, at the single crossing edge, on which side (if either) is a pendant singleton — **both
+  orientations route through the same pendant producer** with `u_c`/`v_c`/`V₁`/`V₂` swapped, since
+  the cut-vertex-set unfold is unoriented (a case the design doc's own sub-case list didn't need to
+  distinguish but the shell does, since it doesn't get to choose which side is which). The residual
+  sub-case 4 (`deg_G u_c = 3`) is carried as the explicit hypothesis `hcutPendant3` — the standing
+  no-`sorry` idiom — shaped exactly as the pendant producer's own premises with the degree
+  inequality flipped to an equality and the IH-witness/rank arguments dropped, matching the design
+  doc's finding that no plain IH consumption closes this sub-case (not a stronger convenience
+  form). No new FRICTION (all infra reused verbatim); no blueprint node (unnamed technical infra,
+  as the sibling sub-cases). Gates green (build warning-clean on first try + lint); axioms clean
+  (`propext`/`Classical.choice`/`Quot.sound` only, `#print axioms`-checked).
 - **W5-L5 L5-cut-iv sub-case 3 landed (pendant, `deg_G u_c ≠ 3`)** (2026-07-25, new file
   `Pencil/Pair2.lean` — `Pair.lean` was at the ~1500-LoC cap, `notes/PERFORMANCE.md` — plus three
   structure-layer lemmas in `Motive.lean`): the producer

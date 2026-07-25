@@ -510,4 +510,165 @@ theorem hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant
       fun e u v hl => ⟨(hlinks e u v hl).2.2.1, (hlinks e u v hl).2.2.2⟩⟩,
     hadjLI, hhubLI_glued, hnbhdLI_glued⟩, hrank_eq⟩
 
+/-! ## W5-L5 cut arm, the dispatch shell (Phase 39 PENCIL, L5-cut-iv)
+
+The generic-half assembly wiring all four sub-cases of the cut-arm route verdict
+(`notes/Phase39-design.md` §"W5 leaf decomposition" L5 "Cut-arm route verdict") into
+`pencilPair_of_not_twoEdgeConnected`: the bare half reuses the landed W3-L4
+`hasPencilRealization_of_not_twoEdgeConnected` verbatim (feeding it `hIH`'s own bare halves); the
+generic half re-derives the cut decomposition (mirroring the bare arm's own unfold of
+`¬TwoEdgeConnected`) and dispatches on `(G.cutEdges V₁).ncard`, then — at the single crossing edge
+`e_c = u_c v_c` over `V₁`, complement `V₂` — on which side (if either) is a pendant singleton: `|C|
+= 0` is sub-case 2 (`hasGenericPencilRealization_of_cutEdges_eq_empty`); a pendant singleton side
+with attachment degree `≠ 3` is sub-case 3
+(`hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant`) — the cut-vertex-set
+unfold is unoriented (nothing pins which of `V₁`/`V₂` is the pendant side), so both orientations
+route through the same producer with `u_c`/`v_c` (and `V₁`/`V₂`) swapped; a pendant singleton side
+with attachment degree exactly `3` is the residual sub-case 4, carried as the explicit hypothesis
+`hcutPendant3` (the standing no-`sorry` idiom, `CombinatorialRigidity/CLAUDE.md`) rather than built:
+its shape mirrors the pendant producer's own premises with the degree inequality flipped to an
+equality and the IH-witness/rank arguments dropped, since the design doc's finding shows no plain
+IH consumption can close this sub-case's output gap — this is exactly the eventual conclusion of
+L5-cut-v's chart-steering candidate route (**do not build that route yet**: its two
+somewhere-witness constructions need a numerics-first assessment first, design doc L5-cut-iv/v),
+not a stronger convenience form (it is scoped to this `G` alone, and does not restate the ambient
+`G.Simple`/`PencilNondegFeasible K G`/`hIH` already in context). Both sides `≥ 2` is sub-case 1,
+consuming the IH at the two edge-closed sides `Gᵢ⁺ = G.induce (Vᵢ ∪ {far})` and gluing via
+`hasGenericPencilRealization_of_isNondegPencilRealization_induce_union_singleton`. -/
+
+/-- **The cut arm of the pencil reduction, conditioned-pair motive, dispatch shell**
+(Phase 39 W5-L5, L5-cut-iv; the `PencilPair` analogue of the bare-motive
+`hasPencilRealization_of_not_twoEdgeConnected`, W3-L4). Let `G` be a multigraph that is not
+`2`-edge-connected. If every smaller graph satisfies the conditioned pair at rank `n` (`hIH`), and
+every pendant-singleton cut configuration of `G` at attachment degree exactly `3` has a generic
+pencil realization (`hcutPendant3`, the residual sub-case 4 — `notes/Phase39-design.md` §"W5 leaf
+decomposition" L5-cut-v, design-open), then so does `G` satisfy the conditioned pair. -/
+theorem pencilPair_of_not_twoEdgeConnected [Finite α] [Finite β] {n : ℕ}
+    (hD : 2 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
+    {G : Graph α β} (hntec : ¬ G.TwoEdgeConnected)
+    (hcutPendant3 : ∀ {V₁ : Set α} {e_c : β} {u_c v_c : α}, G.IsLink e_c u_c v_c →
+      u_c ∈ V₁ → v_c ∉ V₁ → V(G) = V₁ ∪ {v_c} → (G.cutEdges V₁).ncard ≤ 1 →
+      G.degree u_c = 3 → HasGenericPencilRealization K n G)
+    (hIH : ∀ G' : Graph α β, V(G').Nonempty → V(G').ncard < V(G).ncard → PencilPair K n G') :
+    PencilPair K n G := by
+  refine ⟨fun hSimple hfeas => ?_,
+    hasPencilRealization_of_not_twoEdgeConnected hD hn hntec
+      (fun G' hne' hlt' => (hIH G' hne' hlt').2)⟩
+  classical
+  haveI := hSimple.toLoopless
+  simp only [Graph.TwoEdgeConnected, not_forall, not_le, exists_prop] at hntec
+  obtain ⟨V₁, hne, hssub, hcut_lt2⟩ := hntec
+  have hcut_le : (G.cutEdges V₁).ncard ≤ 1 := Nat.lt_succ_iff.mp hcut_lt2
+  set V₂ := V(G) \ V₁
+  rcases Set.eq_empty_or_nonempty (G.cutEdges V₁) with hC0 | ⟨e_c, he_c⟩
+  · -- ── `|C| = 0`: sub-case 2, the landed disjoint-union producer. ──────────────────────────
+    exact hasGenericPencilRealization_of_cutEdges_eq_empty hD hn hne hssub hC0 hSimple hfeas hIH
+  · -- ── `|C| = 1`: sub-cases 1/3/4, dispatched on which side (if either) is a pendant. ───────
+    have hne₂ : V₂.Nonempty := Set.nonempty_of_ssubset hssub
+    have hVcard : V₁.ncard + V₂.ncard = V(G).ncard := by
+      have hunion : V₁ ∪ V₂ = V(G) := Set.union_diff_cancel hssub.subset
+      have hdisj : Disjoint V₁ V₂ := Set.disjoint_sdiff_right
+      rw [← hunion, Set.ncard_union_eq hdisj (Set.toFinite V₁) (Set.toFinite V₂)]
+    have hV₁ne : V(G.induce V₁).Nonempty := hne
+    have hV₂ne : V(G.induce V₂).Nonempty := hne₂
+    have hVeq₂ : V(G.induce V₂).ncard = V₂.ncard := rfl
+    have hV₁ncard : V(G.induce V₁).ncard < V(G).ncard := Set.ncard_lt_ncard hssub (Set.toFinite _)
+    have hV₂ncard : V(G.induce V₂).ncard < V(G).ncard := by
+      have hV₁pos : 0 < V₁.ncard := hne.ncard_pos
+      rw [hVeq₂]; omega
+    simp only [Graph.cutEdges, Set.mem_setOf_eq] at he_c
+    obtain ⟨-, u_c, v_c, hl_c, hu_c, hv_c⟩ := he_c
+    have hv_c₂ : v_c ∈ V₂ := ⟨hl_c.right_mem, hv_c⟩
+    have hu_notin₂ : u_c ∉ V₂ := fun h => h.2 hu_c
+    have hV₂sub : V₂ ⊆ V(G) := Set.diff_subset
+    have hcut₂ : (G.cutEdges V₂).ncard ≤ 1 :=
+      le_trans (Set.ncard_le_ncard (Graph.cutEdges_diff_subset G V₁) (Set.toFinite _)) hcut_le
+    by_cases hV₂one : V₂.ncard = 1
+    · -- The far side `V₂` is a pendant singleton `{v_c}`: sub-case 3 (or 4, at `deg u_c = 3`).
+      have hV₂eq : V₂ = {v_c} := by
+        obtain ⟨a, ha⟩ := Set.ncard_eq_one.mp hV₂one
+        have hav : v_c ∈ ({a} : Set α) := by rw [← ha]; exact hv_c₂
+        rw [Set.mem_singleton_iff] at hav
+        rw [ha, hav]
+      have hVG : V(G) = V₁ ∪ {v_c} := by
+        rw [← hV₂eq]; exact (Set.union_diff_cancel hssub.subset).symm
+      by_cases hdeg3 : G.degree u_c = 3
+      · exact hcutPendant3 hl_c hu_c hv_c hVG hcut_le hdeg3
+      · have hSimple₁ : (G.induce V₁).Simple := hSimple.mono (Graph.induce_le hssub.subset)
+        have hfeas₁ : PencilNondegFeasible K (G.induce V₁) := by
+          refine hfeas.mono (Graph.induce_le hssub.subset) ?_
+          intro v hv hGhub
+          by_cases hvu : v = u_c
+          · rw [hvu]; rw [hvu] at hGhub
+            exact Or.inl ((Graph.pencilHub_iff_induce_of_degree_ne
+              hl_c hu_c hv_c hcut_le hdeg3).mp hGhub)
+          · exact Or.inl ⟨hv, by
+              rw [Graph.degree_induce_eq_of_ne hl_c hu_c hv_c hcut_le hv hvu]
+              exact hGhub.2⟩
+        obtain ⟨F₁, normal₁, point₁, hnd₁, hrank₁⟩ :=
+          (hIH (G.induce V₁) hV₁ne hV₁ncard).1 hSimple₁ hfeas₁
+        exact hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant
+          hD hn hl_c hu_c hv_c hVG hcut_le hdeg3 hnd₁ hrank₁
+    · by_cases hV₁one : V₁.ncard = 1
+      · -- The near side `V₁` is itself a pendant singleton `{u_c}`: sub-case 3/4, swapped roles.
+        have hV₁eq : V₁ = {u_c} := by
+          obtain ⟨a, ha⟩ := Set.ncard_eq_one.mp hV₁one
+          have hau : u_c ∈ ({a} : Set α) := by rw [← ha]; exact hu_c
+          rw [Set.mem_singleton_iff] at hau
+          rw [ha, hau]
+        have hVG' : V(G) = V₂ ∪ {u_c} := by
+          rw [← hV₁eq]; exact (Set.diff_union_of_subset hssub.subset).symm
+        by_cases hdeg3' : G.degree v_c = 3
+        · exact hcutPendant3 hl_c.symm hv_c₂ hu_notin₂ hVG' hcut₂ hdeg3'
+        · have hSimple₂ : (G.induce V₂).Simple := hSimple.mono (Graph.induce_le hV₂sub)
+          have hfeas₂ : PencilNondegFeasible K (G.induce V₂) := by
+            refine hfeas.mono (Graph.induce_le hV₂sub) ?_
+            intro v hv hGhub
+            by_cases hvv : v = v_c
+            · rw [hvv]; rw [hvv] at hGhub
+              exact Or.inl ((Graph.pencilHub_iff_induce_of_degree_ne
+                hl_c.symm hv_c₂ hu_notin₂ hcut₂ hdeg3').mp hGhub)
+            · exact Or.inl ⟨hv, by
+                rw [Graph.degree_induce_eq_of_ne hl_c.symm hv_c₂ hu_notin₂ hcut₂ hv hvv]
+                exact hGhub.2⟩
+          obtain ⟨F₂, normal₂, point₂, hnd₂, hrank₂⟩ :=
+            (hIH (G.induce V₂) hV₂ne hV₂ncard).1 hSimple₂ hfeas₂
+          exact hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant
+            hD hn hl_c.symm hv_c₂ hu_notin₂ hVG' hcut₂ hdeg3' hnd₂ hrank₂
+      · -- Both sides `≥ 2`: sub-case 1, the `Gᵢ⁺` IH consumption + repositioning glue.
+        have hV₂ge2 : 2 ≤ V₂.ncard := by have := hne₂.ncard_pos; omega
+        have hV₁ge2 : 2 ≤ V₁.ncard := by have := hne.ncard_pos; omega
+        have hV1p_sub : V₁ ∪ {v_c} ⊆ V(G) := by
+          rintro x (hx | rfl)
+          · exact hssub.subset hx
+          · exact hl_c.right_mem
+        have hV2p_sub : V₂ ∪ {u_c} ⊆ V(G) := by
+          rintro x (hx | rfl)
+          · exact hV₂sub hx
+          · exact hl_c.left_mem
+        have hV1p_card : V(G.induce (V₁ ∪ {v_c})).ncard = V₁.ncard + 1 := by
+          change (V₁ ∪ {v_c}).ncard = V₁.ncard + 1
+          rw [Set.union_singleton]
+          exact Set.ncard_insert_of_notMem hv_c
+        have hV2p_card : V(G.induce (V₂ ∪ {u_c})).ncard = V₂.ncard + 1 := by
+          change (V₂ ∪ {u_c}).ncard = V₂.ncard + 1
+          rw [Set.union_singleton]
+          exact Set.ncard_insert_of_notMem hu_notin₂
+        have hlt1p : V(G.induce (V₁ ∪ {v_c})).ncard < V(G).ncard := by rw [hV1p_card]; omega
+        have hlt2p : V(G.induce (V₂ ∪ {u_c})).ncard < V(G).ncard := by rw [hV2p_card]; omega
+        have hSimple1p : (G.induce (V₁ ∪ {v_c})).Simple := hSimple.mono (Graph.induce_le hV1p_sub)
+        have hSimple2p : (G.induce (V₂ ∪ {u_c})).Simple := hSimple.mono (Graph.induce_le hV2p_sub)
+        have hfeas1p : PencilNondegFeasible K (G.induce (V₁ ∪ {v_c})) :=
+          hfeas.induce_union_singleton hl_c hu_c hv_c hssub.subset hcut_le
+        have hfeas2p : PencilNondegFeasible K (G.induce (V₂ ∪ {u_c})) :=
+          hfeas.induce_union_singleton hl_c.symm hv_c₂ hu_notin₂ hV₂sub hcut₂
+        have hne1p : V(G.induce (V₁ ∪ {v_c})).Nonempty := ⟨u_c, Set.mem_union_left _ hu_c⟩
+        have hne2p : V(G.induce (V₂ ∪ {u_c})).Nonempty := ⟨v_c, Set.mem_union_left _ hv_c₂⟩
+        obtain ⟨F₁, normal₁, point₁, hnd₁, hrank₁⟩ :=
+          (hIH (G.induce (V₁ ∪ {v_c})) hne1p hlt1p).1 hSimple1p hfeas1p
+        obtain ⟨F₂, normal₂, point₂, hnd₂, hrank₂⟩ :=
+          (hIH (G.induce (V₂ ∪ {u_c})) hne2p hlt2p).1 hSimple2p hfeas2p
+        exact hasGenericPencilRealization_of_isNondegPencilRealization_induce_union_singleton
+          hD hn hl_c hu_c hv_c hssub.subset hcut_le hfeas hnd₁ hrank₁ hnd₂ hrank₂
+
 end CombinatorialRigidity.Molecular
