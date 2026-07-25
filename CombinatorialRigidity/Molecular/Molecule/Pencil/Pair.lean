@@ -20,18 +20,19 @@ generic conjunct the pair's first component asks for. Builds on `Molecule/Pencil
 (`Chart.lean`/`Engine.lean`/`Reseed.lean`) — the arm re-derivations below are pure
 graph-surgery + the motive's own vacuity/forgetful facts, not chart constructions.
 
-This leaf lands the loop arm first (free, per the design doc: a loop already breaks
+This leaf landed the loop arm first (free, per the design doc: a loop already breaks
 `PencilNondegFeasible`, so its generic obligation is vacuous). The base arm's parallel-class
 sub-case was planned as vacuous too ("nondegeneracy-infeasible") but that plan is **refuted**
 below — see §"a base-arm finding" — surfacing a genuine blocker for `PencilPair`'s own generic
 conjunct, **resolved 2026-07-24 by the user's (b′) adjudication**: `PencilPair` is restated
 (`Molecule/Pencil/Motive.lean`) to condition the generic conjunct on `G.Simple` in addition to
 `PencilNondegFeasible`, exactly KT Theorem 5.5's own two-layer conditioning, restoring the base
-arm's parallel-class vacuity via the new `not_simple_of_parallel` helper (not yet wired into a
-producer here — that is the next commit, `notes/Phase39.md` *Hand-off*). The cut arm's generic
-half (moderate: mirrors the landed panel-side `case_cut_edge_realization_gp_gen`, reusing the
-W3-L4 transport/nondegeneracy/rank infra), the base arm's still-believed-small empty/single-edge
-sub-cases, and the successor assembly itself remain open — see `notes/Phase39.md` *Hand-off*.
+arm's parallel-class vacuity via the new `not_simple_of_parallel` helper — wired into the landed
+base-arm producer `pencilPair_of_ncard_le_two` below. The cut arm's generic half is **blocked at
+design level** (the 2026-07-24 cut-arm finding: its side-IH consumption is gapped both ways at a
+hub-status-changing cut endpoint — `notes/Phase39.md` *Blockers*; the route-neutral restriction
+infra lives in `Motive.lean`), and the successor assembly remains open — see `notes/Phase39.md`
+*Hand-off*.
 
 See `notes/Phase39.md`, `notes/Phase39-design.md` (§"W5 leaf decomposition"), and
 `blueprint/src/chapter/pencil.tex`.
@@ -98,9 +99,8 @@ require `G.Simple` as well, exactly KT Theorem 5.5's own conditioning at paralle
 parallel pair is never simple (two edges linking the same pair, `not_simple_of_parallel`), so the
 base arm's parallel-class sub-case is vacuous again, this time by non-simplicity rather than by
 infeasibility. The witness below stays exactly as landed: it is now the documented proof that
-feasibility alone could not have replaced `G.Simple` as the conditioning. Wiring
-`not_simple_of_parallel` into the actual base-arm producer is the next commit
-(`notes/Phase39.md` *Hand-off*). -/
+feasibility alone could not have replaced `G.Simple` as the conditioning; `not_simple_of_parallel`
+is wired into the base-arm producer `pencilPair_of_ncard_le_two` below. -/
 
 /-- **A parallel pair is nondegeneracy-feasible** (Phase 39 W5-L5; the base-arm finding above,
 compiler-checked): two edges `e ≠ f` both linking `x ≠ y`, with `V(G) = {x, y}` and

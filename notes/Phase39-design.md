@@ -1415,6 +1415,58 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
   `not_simple_of_parallel` vacuity helper landed (`Motive.lean`), and the blueprint
   `def:pencil-conditioned-pair`/`thm:pencil-conditional-realization-pair` nodes restated
   (`pencil.tex`) — see `notes/Phase39.md` *Decisions made* for the commit-level record.
+  **Cut-arm finding (2026-07-24, the dispatched confrontation of the route-neutral sharpening
+  above; derivations checked against the landed definition bodies, restriction infra
+  compiler-checked).** The cut arm's generic half is gapped on **both** sides of its side-IH
+  consumption, and both gaps localize to a single phenomenon: **a cut endpoint of `G`-degree
+  exactly `3` changes hub status between `G` and its side** (degree `≥ 4`: hub in both; degree
+  `≤ 2`: non-hub in both — only the two endpoints of the single crossing edge can change degree
+  at all).
+
+  1. *Input gap (demotion — the recorded wrinkle, now confirmed with an explicit scenario).*
+     Restricting `G`'s feasibility witness to a side `G.induce Vᵢ` fails the fourth conjunct at a
+     demoted endpoint `u_c` (a `G`-hub, side non-hub): nothing in the four conjuncts constrains
+     the side-closed-neighbourhood point triple at a `G`-hub. Explicit scenario: `G = K_{1,3}`
+     (hub `u_c`, leaves `w₁, w₂, v_c`, cut edge to `v_c`) admits a full nondegenerate witness with
+     `point u_c, point w₁, point w₂` spanning only a 2-plane — the two side hinges then *coincide*
+     as lines (each is the span of its two endpoint points, forced by conjunct 2 + `Meet.lean`'s
+     Plücker injectivity), and the side `P₃`'s fourth conjunct at `u_c` fails. Side feasibility as
+     a *proposition* is not refuted (P₃ has other witnesses); the *restriction route* is. What
+     does restrict is now landed (`Motive.lean`): `IsNondegPencilRealization.mono` (everything
+     but the fourth conjunct at demoted hubs, taken as the explicit `hdemote` residual) and
+     `PencilNondegFeasible.mono` (feasibility descends along `H ≤ G` when every demotion lands at
+     `H`-degree `≤ 1`, where the 2-member closed neighbourhood rides the adjacent-point conjunct
+     — the `≤ 1` bound is sharp).
+  2. *Output gap (promotion — NEW, beyond the recorded wrinkle).* Dually, the glued realization
+     owes `G`'s **third** conjunct at the same endpoint: `u_c` is a `G`-hub, so
+     `G.closedHubNbhd` at `u_c` (and at each of `u_c`'s neighbours) gains `normal u_c` — but the
+     side witness never constrains `normal u_c` against its neighbours' normals (the side's
+     fourth conjunct constrains *points* there), and `normal u_c` is *forced* by the side's own
+     hinges (orthogonal to their 3-dim span), so no repositioning of the *other* side can repair
+     a dependent choice, and transports of the demoted side preserve its dependencies. The side
+     IH's motive simply does not supply what the glue needs at a promoted endpoint.
+
+  **Candidate repair observed (UNVERIFIED — needs a recon verdict before building).** Consume the
+  IH at the *edge-closed* sides `Gᵢ⁺` (the subgraph on `Vᵢ ∪ {far endpoint}` with the side's
+  edges plus the cut edge) instead of `G.induce Vᵢ`: every `Vᵢ`-vertex then keeps its full
+  `G`-degree (no demotion and no promotion at `u_c` — both gaps vanish), and the far endpoint
+  drops to degree `1`, exactly where the landed `PencilNondegFeasible.mono` bridges the residual.
+  `Gᵢ⁺ ≤ G` gives simplicity; `|V(Gᵢ⁺)| = |Vᵢ| + 1 < |V(G)|` needs `|V₃₋ᵢ| ≥ 2` (the `|V₂| = 1`
+  edge case needs its own arm — the far endpoint then has `G`-degree `≤ 1`). Open costs, all
+  unassessed: a shared-edge (not vertex-disjoint) rank/deficiency assembly — the landed cut
+  bricks (`le_finrank_span_rigidityRows_of_cut`, `deficiency_eq_of_cutEdges_ncard_le_one`) are
+  disjoint-sides-plus-crossing-term shaped, and the two `Gᵢ⁺` overlap in the shared hinge and
+  both its endpoints; a matching transport (reposition side 2 so the shared hinge and both
+  endpoint points agree projectively — two point-matching conditions, `exists_linearEquiv_
+  basisFun_pair`-shaped) with enough residual freedom for the glued realization's cross-side LI
+  conjuncts (plausibly `[Infinite K]`, as the panel sibling `case_cut_edge_realization_gp_gen`);
+  and the `|C| = 0` sub-case separately (disjoint union — needs only a degree-preservation lemma
+  for induce sides with no incident crossing edges, then the landed `.mono` at blanket hub
+  preservation plus a nondegeneracy-aware disjoint glue). Whether feasibility propagates to
+  induce-sides *as a proposition* (making the original route viable by a non-restriction
+  argument) is likewise open — `K4` shows feasibility is not universal, and no
+  feasible-`G`-with-infeasible-side example is known.
+
 - **W5-L6**: habitat feasibility (verdict 4) — the ≤ 3 closed-hub-neighbourhood lemma
   on 2EC/no-proper-rigid graphs + the witness-seed construction discharging
   `PencilNondegFeasible` at `G′ = G^{ab}_v`. **Extended by the L5 blocker verdict, per the landed

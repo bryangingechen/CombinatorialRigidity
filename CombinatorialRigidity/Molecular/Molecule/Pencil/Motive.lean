@@ -21,7 +21,9 @@ the W5 design pass's final conditioned-pair motive (`PencilPair`, its `IsNondegP
 `PencilPair` **restated 2026-07-24** per the W5-L5 blocker recon's (b′) route, user-adjudicated
 (`notes/Phase39.md` *Blockers*): its generic conjunct is now conditioned on `G.Simple` in addition
 to `PencilNondegFeasible`, and this leaf gained the corresponding vacuity helper
-`not_simple_of_parallel`.
+`not_simple_of_parallel`. The W5-L5 cut-arm restriction infra (`IsNondegPencilRealization.mono`
+and its monotonicity feeders, 2026-07-24) also lives here — the predicates it restricts are this
+file's.
 
 This split is rename-free — every declaration keeps its `CombinatorialRigidity.Molecular`
 namespace, so the blueprint `\lean{...}` pins and `checkdecls` are unaffected.
@@ -189,5 +191,114 @@ theorem not_pencilNondegFeasible_of_isLoopAt {G : Graph α β} {e : β} {v : α}
   have h := (LinearIndependent.pair_iff).1 (hLI e v v hloop) 1 (-1)
     (by rw [one_smul, neg_one_smul, add_neg_cancel])
   exact one_ne_zero h.1
+
+/-! ## W5-L5 cut-arm infra: nondegeneracy restricts to subgraphs, off demoted hubs (Phase 39)
+
+The cut arm of the conditioned-pair reduction owes each side's induction hypothesis its own
+`PencilNondegFeasible` input (`notes/Phase39-design.md` §"W5 leaf decomposition" L5, "Long-run
+comparison" point 1). This section lands the route-neutral restriction core behind that: a
+nondegenerate pencil realization of `G` restricts to any subgraph `H ≤ G` — same supporting
+extensors, same panels and points — with every conjunct surviving by monotonicity **except** the
+fourth (non-hub closed-neighbourhood point LI) at a **demoted hub**: a body that is a pencil hub
+of `G` but not of `H`. There `G`'s witness genuinely carries nothing (the fourth conjunct is
+exempt at `G`-hubs, and the other three do not force it — `G` may legitimately place the two
+surviving `H`-hinges of a demoted hub on one common line), so `IsNondegPencilRealization.mono`
+takes the residual as an explicit hypothesis, and the feasibility corollary
+`PencilNondegFeasible.mono` discharges it whenever every demotion lands at `H`-degree `≤ 1`,
+where the closed neighbourhood has at most two members and the adjacent-point conjunct already
+carries it. Demotion to `H`-degree exactly `2` is the genuinely gapped case — see
+`notes/Phase39.md` *Blockers* (the 2026-07-24 cut-arm finding). -/
+
+/-- **A pencil hub of a subgraph is a pencil hub of the ambient graph** (Phase 39 W5-L5 cut-arm
+infra): vertex membership and degree are both monotone along `H ≤ G` (`Graph.vertexSet_mono`,
+`Graph.degree_mono`; the latter asks the ambient graph to be locally finite). -/
+theorem _root_.Graph.PencilHub.of_le {G H : Graph α β} [G.LocallyFinite] {v : α}
+    (h : H.PencilHub v) (hle : H ≤ G) : G.PencilHub v :=
+  ⟨Graph.vertexSet_mono hle h.1, h.2.trans (Graph.degree_mono hle v)⟩
+
+/-- **The closed hub-neighbourhood is monotone along `H ≤ G`** (Phase 39 W5-L5 cut-arm infra):
+hubs promote to the ambient graph (`Graph.PencilHub.of_le`) and links persist
+(`Graph.IsLink.of_le`). -/
+theorem _root_.Graph.closedHubNbhd_mono {G H : Graph α β} [G.LocallyFinite]
+    (hle : H ≤ G) (v : α) : H.closedHubNbhd v ⊆ G.closedHubNbhd v := by
+  rintro w ⟨hhub, rfl | ⟨e, hlink⟩⟩
+  · exact ⟨hhub.of_le hle, Or.inl rfl⟩
+  · exact ⟨hhub.of_le hle, Or.inr ⟨e, hlink.of_le hle⟩⟩
+
+/-- **The closed neighbourhood is monotone along `H ≤ G`** (Phase 39 W5-L5 cut-arm infra). -/
+theorem _root_.Graph.closedNbhd_mono {G H : Graph α β}
+    (hle : H ≤ G) (v : α) : H.closedNbhd v ⊆ G.closedNbhd v := by
+  rintro w (rfl | ⟨e, hlink⟩)
+  · exact Or.inl rfl
+  · exact Or.inr ⟨e, hlink.of_le hle⟩
+
+/-- **Restriction of a nondegenerate pencil realization to a subgraph** (Phase 39 W5-L5 cut-arm
+infra). A nondegenerate pencil realization of `G` restricts to any `H ≤ G` — keep the supporting
+extensors, panels, and points — with every conjunct surviving by monotonicity except the fourth
+at a **demoted hub** (`G.PencilHub v` but `¬ H.PencilHub v`), where `G`'s witness genuinely
+carries no closed-neighbourhood point LI; that residual is the explicit hypothesis `hdemote`.
+At a demoted body of `H`-degree `≤ 1` the residual follows from the adjacent-point conjunct
+(the closed neighbourhood has at most two members — `PencilNondegFeasible.mono` below packages
+this); at `H`-degree exactly `2` it is genuinely unavailable, since `G` may place the body's two
+surviving hinges on one common line (`notes/Phase39.md` *Blockers*, the cut-arm finding). -/
+theorem IsNondegPencilRealization.mono {G H : Graph α β} [G.LocallyFinite]
+    {F : BodyHingeFramework K 2 α β} {normal point : α → Fin 4 → K}
+    (hnd : IsNondegPencilRealization G F normal point) (hle : H ≤ G)
+    (hdemote : ∀ v ∈ V(H), G.PencilHub v → ¬ H.PencilHub v →
+      LinearIndepOn K point (H.closedNbhd v)) :
+    IsNondegPencilRealization H ⟨H, F.supportExtensor⟩ normal point := by
+  obtain ⟨⟨⟨-, hnnz, hSnz, hpanel⟩, hpnz, hpinc, hthrough⟩, hadj, hhubLI, hnbhdLI⟩ := hnd
+  have hV : V(H) ⊆ V(G) := Graph.vertexSet_mono hle
+  refine ⟨⟨⟨rfl, fun v hv => hnnz v (hV hv), hSnz,
+      fun e u v hl => hpanel e u v (hl.of_le hle)⟩,
+    fun v hv => hpnz v (hV hv), fun v hv => hpinc v (hV hv),
+    fun e u v hl => hthrough e u v (hl.of_le hle)⟩,
+    fun e u v hl => hadj e u v (hl.of_le hle),
+    fun v hv => (hhubLI v (hV hv)).mono (Graph.closedHubNbhd_mono hle v), ?_⟩
+  intro v hv hvnothub
+  by_cases hGhub : G.PencilHub v
+  · exact hdemote v hv hGhub hvnothub
+  · exact (hnbhdLI v (hV hv) hGhub).mono (Graph.closedNbhd_mono hle v)
+
+/-- **Feasibility restricts to subgraphs whose demotions are all pendant-or-isolated**
+(Phase 39 W5-L5 cut-arm infra). `PencilNondegFeasible` descends along `H ≤ G` whenever every
+`G`-pencil-hub of `H` either stays an `H`-hub or drops to `H`-degree `≤ 1`: the witness restricts
+by `IsNondegPencilRealization.mono`, and the residual fourth conjunct at a degree-`≤ 1` demotion
+follows from the adjacent-point conjunct — the closed neighbourhood is `{v}` or `{v, w}` for the
+unique pendant neighbour `w` (`Graph.Inc.isPendant_of_degree_le_one`). The `≤ 1` bound is sharp:
+at a demotion to `H`-degree `2` the residual genuinely has no source in `G`'s witness
+(`notes/Phase39.md` *Blockers*, the cut-arm finding). -/
+theorem PencilNondegFeasible.mono {G H : Graph α β} [G.LocallyFinite]
+    (hfeas : PencilNondegFeasible K G) (hle : H ≤ G)
+    (hhub : ∀ v ∈ V(H), G.PencilHub v → H.PencilHub v ∨ H.degree v ≤ 1) :
+    PencilNondegFeasible K H := by
+  haveI : H.LocallyFinite := ‹G.LocallyFinite›.mono hle
+  obtain ⟨F, normal, point, hnd⟩ := hfeas
+  have hadj := hnd.2.1
+  have hpnz := hnd.1.2.1
+  refine ⟨⟨H, F.supportExtensor⟩, normal, point, hnd.mono hle ?_⟩
+  intro v hv hGhub hvnothub
+  rcases hhub v hv hGhub with hHhub | hdeg
+  · exact absurd hHhub hvnothub
+  by_cases hinc : ∃ e w, H.IsLink e v w
+  · obtain ⟨e, w, hl⟩ := hinc
+    have hpend : H.IsPendant e v := hl.inc_left.isPendant_of_degree_le_one hdeg
+    have hvw : v ≠ w := by rintro rfl; exact hpend.not_isLoopAt e hl
+    have hsub : H.closedNbhd v ⊆ {v, w} := by
+      rintro u (rfl | ⟨e', hl'⟩)
+      · exact Set.mem_insert _ _
+      · obtain rfl := hpend.edge_unique hl'.inc_left
+        obtain rfl := hl.right_unique hl'
+        exact Set.mem_insert_of_mem _ rfl
+    have hLI : LinearIndepOn K point {v, w} := by
+      rw [LinearIndepOn.pair_iff point hvw]
+      exact LinearIndependent.pair_iff.1 (hadj e v w (hl.of_le hle))
+    exact hLI.mono hsub
+  · have hsub : H.closedNbhd v ⊆ {v} := by
+      rintro u (rfl | ⟨e', hl'⟩)
+      · rfl
+      · exact absurd ⟨e', u, hl'⟩ hinc
+    exact (LinearIndepOn.singleton (i := v)
+      (hpnz v (Graph.vertexSet_mono hle hv))).mono hsub
 
 end CombinatorialRigidity.Molecular
