@@ -1587,9 +1587,9 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
        with the triple LI; a seed of `H` with the promoted families LI) — bounded geometric
        constructions of the same flavor as L6's witness-seed charter, NOT rank certificates
        (not L7-hard), but genuinely new; and the route pulls the chart stack
-       (`Chart`/`Engine`/`Reseed`) into the arm's import cone. **Do not build sub-case 4 until
-       these two somewhere-witnesses are assessed (a small recon or numerics-first dispatch);
-       sub-cases 1–3 are buildable now and do not depend on it.**
+       (`Chart`/`Engine`/`Reseed`) into the arm's import cone. **Assessed 2026-07-25: GO — the
+       two somewhere-witnesses exist and the composition is viable end-to-end; canonical
+       verdict + pinned statements + leaf list in the L5-cut-v bullet below.**
 
   **Feasibility propagation as a proposition (the finding's open alternative — now bounded, not
   settled).** A NEW obstruction mechanism found this recon (derivation-checked against the
@@ -1751,8 +1751,89 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
     `le_finrank_toDualPerp_inf` for the joint perp); rank closes by
     `finrank_span_rigidityRows_cutEdge_eq` verbatim (`hlb₂ = 0`, pendant side edgeless). No new
     rank work, confirming the "no new rank work at all" prediction below.
-  - **L5-cut-v** (design-open, do not build yet): sub-case 4 — first a somewhere-witness
-    assessment (recon/numerics), then the chart-steering route above if positive.
+  - **L5-cut-v: GO — route PINNED (2026-07-25 assessment recon; numerics-first, then a
+    compiler-checked composition spike, deleted).** The chart-steering candidate route
+    (item 4 above) is viable end-to-end; both somewhere-witness constructions exist and are
+    generic, not knife-edge. The residual is L6-flavored bounded geometry as hoped — no
+    L7-style rank certificate anywhere in it.
+    - *Numerics (exact rationals, mirroring the Lean chart definitions — `cross₃` as the
+      cofactor determinant `cross₃_apply`, chart points/normals with sorted-enumeration
+      selectors, point-join hinges, 15 annihilator rows per edge).* On `K₃+pendant`,
+      `C₄+pendant`, and a double-star tree (`u`–`a`,`u`–`w`,`u`–`p`,`a`–`b₁`,`a`–`b₂` — the
+      instance with a genuine 2-member promoted family `{forced n_u, free n_a}` and both
+      demoted-triple points confined to one 2-dim perp): the input witness (demoted triple LI
+      on `G`'s chart) and the output witness (promoted families LI on `H`'s chart) were each
+      found at the FIRST random seed, and the full glued `G`-realization passes every
+      nondegeneracy conjunct and attains the exact rank target (`17`/`23`/`25`
+      `= 6(|V|−1) − def`). Adversarial instance (triangle `u_c w₁ w₂` + pendants making
+      `u_c` AND `w₁` hubs): the promoted family at `u_c` is IDENTICALLY dependent (40/40
+      seeds — `n(w₁)` is structurally orthogonal to all three triple points, so it is forced
+      onto the same 1-dim triple-perp as the forced normal) while `H` itself stays feasible —
+      the obstruction is real, unfixable by steering, and excluded EXACTLY by `hcutPendant3`'s
+      `PencilNondegFeasible K G` antecedent (that `G`'s triangle has two hubs, the
+      triangle-`≥2`-hub finding). A Hall-type dimension count over the per-body allowed perps
+      shows this is the ONLY obstruction family for both witnesses: every coincidence that
+      pinches the demoted triple or a promoted family into a too-small subspace forces
+      `w₁ ~ w₂` with a second hub among `{u_c, w₁, w₂}` — infeasible for `G`.
+    - *The two pinned witness statements (spike-typechecked shapes).* (i) *Input:* under the
+      sub-case-4 configuration plus `hSimple`/`hfeas`, the two `V₁`-links `e₁ : u_c–w₁`,
+      `e₂ : u_c–w₂` (`w₁ ≠ w₂`), and any `hubSel` with
+      `∀ v, IsFin3SelectorOf (G.closedHubNbhd v) (hubSel v)`:
+      `∃ q : α × Fin 4 × Fin 4 → K, LinearIndependent K
+      ![pencilChartPoint (PencilSeed.ofCoord q) hubSel u_c, … w₁, … w₂]`.
+      (ii) *Output:* on `H := G.induce V₁`'s chart, under the same configuration and any
+      WF-correct `hubSel`/`nbrSel` pair for `H`:
+      `∃ q, ∀ v ∈ ({u_c, w₁, w₂} : Set α), LinearIndepOn K
+      (pencilChartNormal (PencilSeed.ofCoord q) hubSel nbrSel (G.induce V₁))
+      (G.closedHubNbhd v)` — the family function needs no by-cases: at `H`-hubs
+      `pencilChartNormal` reads the free seed normal, and at the demoted `u_c` its non-hub
+      branch IS the forced `cross₃` of the demoted triple.
+    - *Composition findings (the full producer spike-typechecked end-to-end, leaves
+      `sorry`'d).* (1) The producer's conclusion is exactly `hcutPendant3`'s conditioned
+      conclusion, and its premises are `hcutPendant3`'s premises PLUS the reduction's `hIH` —
+      which `hcutPendant3`'s statement does not carry. So the discharge **rewires the dispatch
+      shell** (prove sub-case 4 inline in `pencilPair_of_not_twoEdgeConnected`'s
+      `hdeg3 = 3` branches, where `hIH`/`hSimple`/`hfeas` are all in scope, and delete the
+      carried hypothesis from the shell AND from `pencil_conjecture_of_arms_pair`), rather
+      than proving `hcutPendant3` standalone — standalone is impossible, it has no IH.
+      (2) **`[Infinite K]` is required** (the engine's common-non-root step) and propagates to
+      the shell, the successor, and blueprint node `thm:pencil-conditional-realization-pair` —
+      an expected statement change (the W5 device is `[Infinite K]` throughout; the conjecture
+      is about genericity), NOT a motive change; restate the blueprint in the rewire commit
+      (the statement-change gate). (3) The `PencilSeed.ofCoord` `fillNbr := fillHub` coupling
+      (L3's 4-role coordinate space) does NOT block the route: chart points and hub normals
+      never read `fillNbr`, and both the demoted triple and every promoted family are
+      `fillNbr`-free (`nbrSel u_c` is fully assigned — `H.closedNbhd u_c` has exactly `3`
+      members), so every steering condition lives on the existing 4-role space; the standing
+      WF conditions are witnessed at the `fillNbr`-free flattening of the re-seeded seed
+      (chart points there literally coincide with the re-seeded seed's), and `fillNbr` is
+      re-chosen freely POST-steering at deg-`≤1` non-hub bodies (nothing else reads it). **No
+      Engine restatement needed.** (4) Rank transfers along re-seeding: every witness hinge is
+      forced projectively onto the point-join (`exists_smul_eq_extensor_of_
+      extensorThroughPoint_pair`), chart points reproduce the witness's projectively, and row
+      spans are invariant under per-edge nonzero extensor scaling; equality at the steered
+      seed = an LI `pencilRow` subfamily of target size (`≥`) + the landed
+      `finrank_span_rigidityRows_add_deficiency_le` (`≤`).
+    - *Leaf decomposition (build order; v-a is the next commit).*
+      **v-a**: `not_pencilNondegFeasible_of_triangle_two_hubs` (`Motive.lean`, any field) —
+      the triangle-`≥2`-hub infeasibility finding as a lemma (derivation already pinned in
+      the "Feasibility propagation" block above: conjunct-3 LI at two adjacent hubs, then 2-
+      and 3-member perp squeezes in `K⁴`); it gates both witness constructions' coincidence
+      exclusions. **v-b**: witness (i) (statement above; construction: hub normals chosen LI
+      per closed-hub-neighbourhood + the v-a exclusions, points hit by the landed arity
+      sweeps). **v-c**: witness (ii) (same toolkit on `H`'s chart). **v-d**: steering
+      bookkeeping — the "LI `≤3`-family of polynomial vectors at a witness ⟹ one
+      somewhere-nonzero polynomial whose non-roots keep it LI" extraction gadget (pair-minor
+      + `cross₃Poly` cases), the WF-conditions-at-the-flattening witnesses, and the
+      post-steering `fillNbr` re-choice lemma. **v-e**: the input-half assembly
+      `pencilNondegFeasible_induce_of_pendant_deg3` (re-seed → steer →
+      `isNondegPencilRealization_pencilChartFramework_of_pencilChartWF` → `.mono` with the
+      steered triple as `hdemote`). **v-f**: the rank-transport bricks (the `pencilRow` ↔
+      chart-`rigidityRows` link bridge — the Engine docstring's deferred "hends-style"
+      consumer — proportional row-span invariance, LI-subfamily extraction) + the output-half
+      steering assembly. **v-g**: the glue (sub-case-3-shaped; conjunct 3 at `u_c`/`w₁`/`w₂`
+      from the steered promoted families, `hlb₂ = 0` rank verbatim) + the shell/successor
+      rewire + the blueprint restatement.
 
 - **W5-L6**: habitat feasibility (verdict 4) — the ≤ 3 closed-hub-neighbourhood lemma
   on 2EC/no-proper-rigid graphs + the witness-seed construction discharging
