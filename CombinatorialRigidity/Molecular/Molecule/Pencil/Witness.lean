@@ -595,4 +595,556 @@ theorem exists_coord_linearIndependent_pencilChartPoint_of_pendant_deg3
     fin_cases i <;> simp [Units.smul_def, hcu, hc1, hc2]
   rwa [heq] at hbase
 
+/-! ## Witness (ii): the somewhere-witness on `H`'s chart (Phase 39 W5-L5, L5-cut-v-c)
+
+The output somewhere-witness. Two small linear-independence engines feed it: a nonzero-scaled
+family of standard basis vectors indexed by an injective direction map is `LinearIndepOn`
+(`linearIndepOn_smul_pi_single`, over a set) / `LinearIndependent` (over a `Fin m` family,
+`linearIndependent_smul_pi_single_of_injective`). -/
+
+/-- **A nonzero-scaled family of distinct standard basis vectors is linearly independent (over a
+set)** (Phase 39 W5-L5, L5-cut-v-c engine): if `J` is injective on `S` and `c` is nonzero there,
+`fun x => c x • e_{J x}` is `LinearIndepOn K · S`. Via `Pi.basisFun`'s independence composed along
+the injective `J` and rescaled by units (`LinearIndependent.units_smul`). -/
+theorem linearIndepOn_smul_pi_single {ι : Type*} {n : ℕ}
+    {S : Set ι} {J : ι → Fin n} {c : ι → K}
+    (hJ : Set.InjOn J S) (hc : ∀ x ∈ S, c x ≠ 0) :
+    LinearIndepOn K (fun x => c x • (Pi.single (J x) 1 : Fin n → K)) S := by
+  have hbase : LinearIndependent K (fun x : S => (Pi.single (J x) 1 : Fin n → K)) := by
+    have hcomp := (Pi.basisFun K (Fin n)).linearIndependent.comp
+      (fun x : S => J x) (hJ.injective)
+    have heq2 : (⇑(Pi.basisFun K (Fin n)) ∘ (fun x : S => J x))
+        = fun x : S => (Pi.single (J x) 1 : Fin n → K) := by
+      funext x; rw [Function.comp_apply, Pi.basisFun_apply]
+    rwa [heq2] at hcomp
+  have h := hbase.units_smul (fun x : S => Units.mk0 (c x) (hc x x.2))
+  have heq : ((fun x : S => Units.mk0 (c x) (hc x x.2)) •
+      fun x : S => (Pi.single (J x) 1 : Fin n → K))
+      = fun x : S => c x • (Pi.single (J x) 1 : Fin n → K) := by
+    funext x; simp [Units.smul_def]
+  rw [heq] at h
+  exact h
+
+/-- **A nonzero-scaled family of distinct standard basis vectors is linearly independent (over a
+`Fin m` family)** (Phase 39 W5-L5, L5-cut-v-c engine): the `Fin m`-indexed sibling of
+`linearIndepOn_smul_pi_single`, consumed for the demoted body's forced-`cross₃` LI premise. -/
+theorem linearIndependent_smul_pi_single_of_injective {m n : ℕ}
+    {T : Fin m → Fin n} {cs : Fin m → K}
+    (hT : Function.Injective T) (hcs : ∀ i, cs i ≠ 0) :
+    LinearIndependent K (fun i => cs i • (Pi.single (T i) 1 : Fin n → K)) := by
+  have hbase : LinearIndependent K (fun i : Fin m => (Pi.single (T i) 1 : Fin n → K)) := by
+    have hcomp := (Pi.basisFun K (Fin n)).linearIndependent.comp T hT
+    have heq2 : (⇑(Pi.basisFun K (Fin n)) ∘ T) = fun i => (Pi.single (T i) 1 : Fin n → K) := by
+      funext i; rw [Function.comp_apply, Pi.basisFun_apply]
+    rwa [heq2] at hcomp
+  have h := hbase.units_smul (fun i => Units.mk0 (cs i) (hcs i))
+  have heq : ((fun i => Units.mk0 (cs i) (hcs i)) •
+      fun i : Fin m => (Pi.single (T i) 1 : Fin n → K))
+      = fun i => cs i • (Pi.single (T i) 1 : Fin n → K) := by
+    funext i; simp [Units.smul_def]
+  rwa [heq] at h
+
+/-- **The pendant-cut somewhere-witness on `H := G.induce V₁`'s chart** (Phase 39 W5-L5, L5-cut-v-c;
+the pinned witness (ii) of `notes/Phase39-design.md` §"W5 leaf decomposition" L5-cut-v): under the
+sub-case-4 **pendant** configuration (`V(G) = V₁ ∪ {v_c}`, so `v_c` is the far-side pendant,
+`G.degree u_c = 3`, cut edge `e_c : u_c–v_c` the only crossing edge, the two `V₁`-links
+`e₁ : u_c–w₁`, `e₂ : u_c–w₂`) with `G` simple and nondegeneracy-feasible, and for *any* WF-correct
+`hubSel`/`nbrSel` pair for `H := G.induce V₁`, some seed coordinate `q` makes the chart's
+constructed normals `LinearIndepOn` over each of `u_c`, `w₁`, `w₂`'s closed hub-neighbourhood
+**in `G`** (the stronger set — `H.closedHubNbhd v ⊆ G.closedHubNbhd v`, so the eventual `H`-side
+consumer gets its `H.closedHubNbhd v` conjunct by `LinearIndepOn.mono`). Feeds the output-half
+steering leaves (v-d/v-f) through `pencilChartPointPoly`/normal-polynomial eval identities.
+
+The pendant hypothesis `hVG` (matching sub-case 3's producer,
+`hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant`, and in scope at the
+sub-case-4 discharge) makes `v_c` a degree-`1` non-hub, so it never enters any family — the design
+doc's composition finding "every promoted family is `fillNbr`-free" holds exactly there, since the
+only non-hub family member is the demoted `u_c`, whose neighbour selector `nbrSel u_c` is fully
+assigned (`H.closedNbhd u_c = {u_c, w₁, w₂}`). The family function `pencilChartNormal ... H` needs
+no by-cases: at an `H`-hub it reads the free seed normal `e_{idx}`; at the demoted `u_c` its
+non-hub branch is the forced `cross₃` of the three demoted-triple points, which the seed steers to
+`±e_0` (the three points being steered to `±e_3`, `±e_2`, `±e_1`, exactly the v-b construction).
+The direction map is v-b's `idx` (`u_c ↦ 0`, `w₁ ↦ 1`, `w₂ ↦ 2`, else `3`), so the per-family
+injectivity is v-b's own combinatorics (the `≤ 3` cardinality bound and the v-a triangle
+exclusion). -/
+theorem exists_coord_linearIndependent_pencilChartNormal_of_pendant_deg3
+    [Finite α] [Finite β] {G : Graph α β} {V₁ : Set α} {e_c e₁ e₂ : β} {u_c v_c w₁ w₂ : α}
+    (hSimple : G.Simple) (hfeas : PencilNondegFeasible K G)
+    (hl_c : G.IsLink e_c u_c v_c) (hu_c : u_c ∈ V₁) (hv_c : v_c ∉ V₁)
+    (hVG : V(G) = V₁ ∪ {v_c}) (hcut : (G.cutEdges V₁).ncard ≤ 1) (hdeg : G.degree u_c = 3)
+    (hl₁ : G.IsLink e₁ u_c w₁) (hl₂ : G.IsLink e₂ u_c w₂)
+    (hw₁ : w₁ ∈ V₁) (hw₂ : w₂ ∈ V₁) (hw12 : w₁ ≠ w₂)
+    (hubSel nbrSel : α → Fin 3 → Option α)
+    (hHubSel : ∀ v, IsFin3SelectorOf ((G.induce V₁).closedHubNbhd v) (hubSel v))
+    (hNbrSel : ∀ v, ¬ (G.induce V₁).PencilHub v →
+      IsFin3SelectorOf ((G.induce V₁).closedNbhd v) (nbrSel v)) :
+    ∃ q : α × Fin 4 × Fin 4 → K,
+      ∀ v ∈ ({u_c, w₁, w₂} : Set α),
+        LinearIndepOn K
+          (pencilChartNormal (PencilSeed.ofCoord q) hubSel nbrSel (G.induce V₁))
+          (G.closedHubNbhd v) := by
+  classical
+  haveI := hSimple
+  haveI : G.LocallyFinite := inferInstance
+  -- Distinctness and `u_c`'s ambient hub status.
+  have hw1u : w₁ ≠ u_c := hl₁.ne.symm
+  have hw2u : w₂ ≠ u_c := hl₂.ne.symm
+  have hvcu : v_c ≠ u_c := hl_c.ne.symm
+  have hv1 : v_c ≠ w₁ := by rintro rfl; exact hv_c hw₁
+  have hv2 : v_c ≠ w₂ := by rintro rfl; exact hv_c hw₂
+  have hub_u : G.PencilHub u_c := ⟨hl_c.left_mem, by omega⟩
+  -- The bare induced side `H := G.induce V₁`.
+  have hV₁G : V₁ ⊆ V(G) := by rw [hVG]; exact Set.subset_union_left
+  have hle : G.induce V₁ ≤ G := Graph.induce_le hV₁G
+  have hVH_mem : ∀ x ∈ V₁, x ∈ V(G.induce V₁) := by
+    intro x hx; rw [Graph.vertexSet_induce]; exact hx
+  have hdegH_uc : (G.induce V₁).degree u_c = 2 := by
+    have h := Graph.degree_eq_degree_induce_succ hl_c hu_c hv_c hcut; omega
+  have hnothub_uc : ¬ (G.induce V₁).PencilHub u_c := fun h => by
+    have := h.2; rw [hdegH_uc] at this; omega
+  -- `v_c` is a degree-`1` pendant, hence never a hub.
+  have hvc_deg : G.degree v_c = 1 := by
+    have hGeq : G.induce (V₁ ∪ {v_c}) = G := by rw [← hVG]; exact Graph.induce_vertexSet G
+    have h := Graph.degree_induce_union_singleton_far hl_c hu_c hv_c hcut
+    rwa [hGeq] at h
+  have hvc_nothub : ¬ G.PencilHub v_c := fun h => by have := h.2; rw [hvc_deg] at this; omega
+  -- Feasibility cardinality bound and `u_c`'s neighbours.
+  obtain ⟨F₀, nrm₀, pt₀, hnd₀⟩ := id hfeas
+  have hcard : ∀ v ∈ V(G), (G.closedHubNbhd v).ncard ≤ 3 := fun v hv =>
+    ncard_closedHubNbhd_le_three_of_isNondegPencilRealization hnd₀ hv
+  have hN : N(G, u_c) = ({v_c, w₁, w₂} : Set α) :=
+    Graph.neighbor_eq_of_degree_eq_three hSimple hl_c hl₁ hl₂ hv1 hv2 hw12 hdeg
+  -- Family classification at `u_c` (`v_c` excluded, being a non-hub).
+  have hSu : ∀ x ∈ G.closedHubNbhd u_c, x = u_c ∨ x = w₁ ∨ x = w₂ := by
+    rintro x ⟨hxhub, h | ⟨e, he⟩⟩
+    · exact Or.inl h
+    · have hxN : x ∈ N(G, u_c) := he.adj
+      rw [hN] at hxN
+      rcases hxN with rfl | rfl | rfl
+      · exact absurd hxhub hvc_nothub
+      · exact Or.inr (Or.inl rfl)
+      · exact Or.inr (Or.inr rfl)
+  -- The v-a triangle exclusions: `w₁ ~ w₂` is barred whenever either is a hub.
+  have hw2_nadj1 : G.PencilHub w₂ → ¬ G.Adj w₁ w₂ := by
+    rintro hh2 ⟨e₃, he₃⟩
+    exact not_pencilNondegFeasible_of_triangle_two_hubs hw1u (Ne.symm hw2u) hw12
+      hl₁.symm hl₂ he₃.symm hub_u hh2 hfeas
+  have hw1_nadj2 : G.PencilHub w₁ → ¬ G.Adj w₂ w₁ := by
+    rintro hh1 ⟨e₃, he₃⟩
+    exact not_pencilNondegFeasible_of_triangle_two_hubs hw2u (Ne.symm hw1u) (Ne.symm hw12)
+      hl₂.symm hl₁ he₃.symm hub_u hh1 hfeas
+  have hnw2_1 : w₂ ∉ G.closedHubNbhd w₁ := by
+    rintro ⟨hh2, h | ⟨e, he⟩⟩
+    · exact hw12 h.symm
+    · exact hw2_nadj1 hh2 ⟨e, he⟩
+  have hnw1_2 : w₁ ∉ G.closedHubNbhd w₂ := by
+    rintro ⟨hh1, h | ⟨e, he⟩⟩
+    · exact hw12 h
+    · exact hw1_nadj2 hh1 ⟨e, he⟩
+  -- At most one third-party member at `w₁`/`w₂` (v-b's degree/cardinality bookkeeping).
+  have huniq_1 : ∀ x ∈ G.closedHubNbhd w₁, ∀ y ∈ G.closedHubNbhd w₁,
+      x ≠ u_c → x ≠ w₁ → y ≠ u_c → y ≠ w₁ → x = y := by
+    intro x hx y hy hxu hxw hyu hyw
+    by_contra hxy
+    obtain ⟨hxhub, hx' | ⟨ex, hex⟩⟩ := hx
+    · exact hxw hx'
+    obtain ⟨hyhub, hy' | ⟨ey, hey⟩⟩ := hy
+    · exact hyw hy'
+    by_cases h1 : G.PencilHub w₁
+    · have hsub4 : ({w₁, u_c, x, y} : Set α) ⊆ G.closedHubNbhd w₁ := by
+        rintro z (rfl | rfl | rfl | rfl)
+        · exact ⟨h1, Or.inl rfl⟩
+        · exact ⟨hub_u, Or.inr ⟨e₁, hl₁.symm⟩⟩
+        · exact ⟨hxhub, Or.inr ⟨ex, hex⟩⟩
+        · exact ⟨hyhub, Or.inr ⟨ey, hey⟩⟩
+      have h4card : ({w₁, u_c, x, y} : Set α).ncard = 4 := by
+        rw [Set.ncard_insert_of_notMem (by simp [hw1u, Ne.symm hxw, Ne.symm hyw]),
+          Set.ncard_insert_of_notMem (by simp [Ne.symm hxu, Ne.symm hyu]),
+          Set.ncard_insert_of_notMem (by simp [hxy]), Set.ncard_singleton]
+      have hle4 := Set.ncard_le_ncard hsub4 (Set.toFinite _)
+      have hb := hcard w₁ hl₁.right_mem
+      rw [h4card] at hle4
+      omega
+    · have hdeg1 : G.degree w₁ ≤ 2 := by
+        by_contra hcon
+        exact h1 ⟨hl₁.right_mem, by omega⟩
+      have hsub3 : ({u_c, x, y} : Set α) ⊆ N(G, w₁) := by
+        rintro z (rfl | rfl | rfl)
+        · exact hl₁.symm.adj
+        · exact ⟨ex, hex⟩
+        · exact ⟨ey, hey⟩
+      have h3card : ({u_c, x, y} : Set α).ncard = 3 :=
+        Set.ncard_eq_three.mpr ⟨u_c, x, y, Ne.symm hxu, Ne.symm hyu, hxy, rfl⟩
+      have hle3 := Set.ncard_le_ncard hsub3 (Set.toFinite _)
+      rw [h3card, ← Graph.degree_eq_ncard_adj] at hle3
+      omega
+  have huniq_2 : ∀ x ∈ G.closedHubNbhd w₂, ∀ y ∈ G.closedHubNbhd w₂,
+      x ≠ u_c → x ≠ w₂ → y ≠ u_c → y ≠ w₂ → x = y := by
+    intro x hx y hy hxu hxw hyu hyw
+    by_contra hxy
+    obtain ⟨hxhub, hx' | ⟨ex, hex⟩⟩ := hx
+    · exact hxw hx'
+    obtain ⟨hyhub, hy' | ⟨ey, hey⟩⟩ := hy
+    · exact hyw hy'
+    by_cases h2 : G.PencilHub w₂
+    · have hsub4 : ({w₂, u_c, x, y} : Set α) ⊆ G.closedHubNbhd w₂ := by
+        rintro z (rfl | rfl | rfl | rfl)
+        · exact ⟨h2, Or.inl rfl⟩
+        · exact ⟨hub_u, Or.inr ⟨e₂, hl₂.symm⟩⟩
+        · exact ⟨hxhub, Or.inr ⟨ex, hex⟩⟩
+        · exact ⟨hyhub, Or.inr ⟨ey, hey⟩⟩
+      have h4card : ({w₂, u_c, x, y} : Set α).ncard = 4 := by
+        rw [Set.ncard_insert_of_notMem (by simp [hw2u, Ne.symm hxw, Ne.symm hyw]),
+          Set.ncard_insert_of_notMem (by simp [Ne.symm hxu, Ne.symm hyu]),
+          Set.ncard_insert_of_notMem (by simp [hxy]), Set.ncard_singleton]
+      have hle4 := Set.ncard_le_ncard hsub4 (Set.toFinite _)
+      have hb := hcard w₂ hl₂.right_mem
+      rw [h4card] at hle4
+      omega
+    · have hdeg2 : G.degree w₂ ≤ 2 := by
+        by_contra hcon
+        exact h2 ⟨hl₂.right_mem, by omega⟩
+      have hsub3 : ({u_c, x, y} : Set α) ⊆ N(G, w₂) := by
+        rintro z (rfl | rfl | rfl)
+        · exact hl₂.symm.adj
+        · exact ⟨ex, hex⟩
+        · exact ⟨ey, hey⟩
+      have h3card : ({u_c, x, y} : Set α).ncard = 3 :=
+        Set.ncard_eq_three.mpr ⟨u_c, x, y, Ne.symm hxu, Ne.symm hyu, hxy, rfl⟩
+      have hle3 := Set.ncard_le_ncard hsub3 (Set.toFinite _)
+      rw [h3card, ← Graph.degree_eq_ncard_adj] at hle3
+      omega
+  -- The direction map (v-b's `idx`, simplified: `v_c` is not a hub, so it needs no own index).
+  set idx : α → Fin 4 := fun x =>
+    if x = u_c then 0 else if x = w₁ then 1 else if x = w₂ then 2 else 3 with hidx_def
+  have hidx_u : idx u_c = 0 := by simp [hidx_def]
+  have hidx_1 : idx w₁ = 1 := by simp [hidx_def, hw1u]
+  have hidx_2 : idx w₂ = 2 := by simp [hidx_def, hw2u, Ne.symm hw12]
+  have hidx_o : ∀ x, x ≠ u_c → x ≠ w₁ → x ≠ w₂ → idx x = 3 := by
+    intro x h1 h2 h3; simp [hidx_def, h1, h2, h3]
+  -- Classification at `w₁`/`w₂`.
+  have hSw1 : ∀ x ∈ G.closedHubNbhd w₁, x = u_c ∨ x = w₁ ∨ idx x = 3 := by
+    intro x hx
+    by_cases h1 : x = u_c
+    · exact Or.inl h1
+    by_cases h2 : x = w₁
+    · exact Or.inr (Or.inl h2)
+    refine Or.inr (Or.inr (hidx_o x h1 h2 ?_))
+    rintro rfl; exact hnw2_1 hx
+  have hSw2 : ∀ x ∈ G.closedHubNbhd w₂, x = u_c ∨ x = w₂ ∨ idx x = 3 := by
+    intro x hx
+    by_cases h1 : x = u_c
+    · exact Or.inl h1
+    by_cases h2 : x = w₂
+    · exact Or.inr (Or.inl h2)
+    refine Or.inr (Or.inr (hidx_o x h1 ?_ h2))
+    rintro rfl; exact hnw1_2 hx
+  -- Target-avoidance and injectivity of `idx` on each family (over `G`).
+  have hdG_u : ∀ x ∈ G.closedHubNbhd u_c, idx x ≠ (3 : Fin 4) := by
+    intro x hx
+    rcases hSu x hx with rfl | rfl | rfl
+    · rw [hidx_u]; decide
+    · rw [hidx_1]; decide
+    · rw [hidx_2]; decide
+  have hinjG_u : Set.InjOn idx (G.closedHubNbhd u_c) := by
+    intro x hx y hy hxy
+    rcases hSu x hx with rfl | rfl | rfl <;> rcases hSu y hy with rfl | rfl | rfl
+    · rfl
+    · rw [hidx_u, hidx_1] at hxy; exact absurd hxy (by decide)
+    · rw [hidx_u, hidx_2] at hxy; exact absurd hxy (by decide)
+    · rw [hidx_1, hidx_u] at hxy; exact absurd hxy (by decide)
+    · rfl
+    · rw [hidx_1, hidx_2] at hxy; exact absurd hxy (by decide)
+    · rw [hidx_2, hidx_u] at hxy; exact absurd hxy (by decide)
+    · rw [hidx_2, hidx_1] at hxy; exact absurd hxy (by decide)
+    · rfl
+  have hdG_1 : ∀ x ∈ G.closedHubNbhd w₁, idx x ≠ (2 : Fin 4) := by
+    intro x hx
+    rcases hSw1 x hx with rfl | rfl | h3
+    · rw [hidx_u]; decide
+    · rw [hidx_1]; decide
+    · rw [h3]; decide
+  have hinjG_1 : Set.InjOn idx (G.closedHubNbhd w₁) := by
+    intro x hx y hy hxy
+    rcases hSw1 x hx with rfl | rfl | hx3 <;> rcases hSw1 y hy with rfl | rfl | hy3
+    · rfl
+    · rw [hidx_u, hidx_1] at hxy; exact absurd hxy (by decide)
+    · rw [hidx_u, hy3] at hxy; exact absurd hxy (by decide)
+    · rw [hidx_1, hidx_u] at hxy; exact absurd hxy (by decide)
+    · rfl
+    · rw [hidx_1, hy3] at hxy; exact absurd hxy (by decide)
+    · rw [hx3, hidx_u] at hxy; exact absurd hxy (by decide)
+    · rw [hx3, hidx_1] at hxy; exact absurd hxy (by decide)
+    · have hxu : x ≠ u_c := by rintro rfl; rw [hidx_u] at hx3; exact absurd hx3 (by decide)
+      have hxw : x ≠ w₁ := by rintro rfl; rw [hidx_1] at hx3; exact absurd hx3 (by decide)
+      have hyu : y ≠ u_c := by rintro rfl; rw [hidx_u] at hy3; exact absurd hy3 (by decide)
+      have hyw : y ≠ w₁ := by rintro rfl; rw [hidx_1] at hy3; exact absurd hy3 (by decide)
+      exact huniq_1 x hx y hy hxu hxw hyu hyw
+  have hdG_2 : ∀ x ∈ G.closedHubNbhd w₂, idx x ≠ (1 : Fin 4) := by
+    intro x hx
+    rcases hSw2 x hx with rfl | rfl | h3
+    · rw [hidx_u]; decide
+    · rw [hidx_2]; decide
+    · rw [h3]; decide
+  have hinjG_2 : Set.InjOn idx (G.closedHubNbhd w₂) := by
+    intro x hx y hy hxy
+    rcases hSw2 x hx with rfl | rfl | hx3 <;> rcases hSw2 y hy with rfl | rfl | hy3
+    · rfl
+    · rw [hidx_u, hidx_2] at hxy; exact absurd hxy (by decide)
+    · rw [hidx_u, hy3] at hxy; exact absurd hxy (by decide)
+    · rw [hidx_2, hidx_u] at hxy; exact absurd hxy (by decide)
+    · rfl
+    · rw [hidx_2, hy3] at hxy; exact absurd hxy (by decide)
+    · rw [hx3, hidx_u] at hxy; exact absurd hxy (by decide)
+    · rw [hx3, hidx_2] at hxy; exact absurd hxy (by decide)
+    · have hxu : x ≠ u_c := by rintro rfl; rw [hidx_u] at hx3; exact absurd hx3 (by decide)
+      have hxw : x ≠ w₂ := by rintro rfl; rw [hidx_2] at hx3; exact absurd hx3 (by decide)
+      have hyu : y ≠ u_c := by rintro rfl; rw [hidx_u] at hy3; exact absurd hy3 (by decide)
+      have hyw : y ≠ w₂ := by rintro rfl; rw [hidx_2] at hy3; exact absurd hy3 (by decide)
+      exact huniq_2 x hx y hy hxu hxw hyu hyw
+  -- The point-construction slot extensions over `H`'s closed hub-neighbourhoods (v-b's toolkit).
+  have hdH_u : ∀ x ∈ (G.induce V₁).closedHubNbhd u_c, idx x ≠ (3 : Fin 4) :=
+    fun x hx => hdG_u x (Graph.closedHubNbhd_mono hle u_c hx)
+  have hinjH_u : Set.InjOn idx ((G.induce V₁).closedHubNbhd u_c) :=
+    hinjG_u.mono (Graph.closedHubNbhd_mono hle u_c)
+  have hdH_1 : ∀ x ∈ (G.induce V₁).closedHubNbhd w₁, idx x ≠ (2 : Fin 4) :=
+    fun x hx => hdG_1 x (Graph.closedHubNbhd_mono hle w₁ hx)
+  have hinjH_1 : Set.InjOn idx ((G.induce V₁).closedHubNbhd w₁) :=
+    hinjG_1.mono (Graph.closedHubNbhd_mono hle w₁)
+  have hdH_2 : ∀ x ∈ (G.induce V₁).closedHubNbhd w₂, idx x ≠ (1 : Fin 4) :=
+    fun x hx => hdG_2 x (Graph.closedHubNbhd_mono hle w₂ hx)
+  have hinjH_2 : Set.InjOn idx ((G.induce V₁).closedHubNbhd w₂) :=
+    hinjG_2.mono (Graph.closedHubNbhd_mono hle w₂)
+  obtain ⟨σu, hσu_inj, hσu_d, hσu_match⟩ :=
+    exists_injective_extension_of_isFin3SelectorOf (hHubSel u_c) hdH_u hinjH_u
+  obtain ⟨σ1, hσ1_inj, hσ1_d, hσ1_match⟩ :=
+    exists_injective_extension_of_isFin3SelectorOf (hHubSel w₁) hdH_1 hinjH_1
+  obtain ⟨σ2, hσ2_inj, hσ2_d, hσ2_match⟩ :=
+    exists_injective_extension_of_isFin3SelectorOf (hHubSel w₂) hdH_2 hinjH_2
+  -- The seed (v-b's seed verbatim; the simpler `idx`).
+  set fill : α → Fin 3 → Fin 4 → K := fun v =>
+    if v = u_c then fun j => Pi.single (σu j) (1 : K)
+    else if v = w₁ then fun j => Pi.single (σ1 j) (1 : K)
+    else if v = w₂ then fun j => Pi.single (σ2 j) (1 : K)
+    else fun _ _ => 0 with hfill_def
+  have hfill_u : fill u_c = fun j => Pi.single (σu j) (1 : K) := by simp [hfill_def]
+  have hfill_1 : fill w₁ = fun j => Pi.single (σ1 j) (1 : K) := by simp [hfill_def, hw1u]
+  have hfill_2 : fill w₂ = fun j => Pi.single (σ2 j) (1 : K) := by
+    simp [hfill_def, hw2u, Ne.symm hw12]
+  set q : α × Fin 4 × Fin 4 → K :=
+    fun p => Fin.cases (motive := fun _ => K)
+      ((Pi.single (idx p.1) (1 : K) : Fin 4 → K) p.2.2)
+      (fun j => fill p.1 j p.2.2) p.2.1
+    with hq_def
+  have hHubN : ∀ v : α, (PencilSeed.ofCoord q).hubNormal v = Pi.single (idx v) (1 : K) := by
+    intro v; funext i; simp [PencilSeed.ofCoord, hq_def]
+  have hFillH : ∀ (v : α) (j : Fin 3), (PencilSeed.ofCoord q).fillHub v j = fill v j := by
+    intro v j; funext i; simp [PencilSeed.ofCoord, hq_def]
+  have hslot : ∀ (v : α) (σv : Fin 3 → Fin 4), fill v = (fun j => Pi.single (σv j) (1 : K)) →
+      (∀ i w, hubSel v i = some w → σv i = idx w) →
+      ∀ i, hubSlotNormal (PencilSeed.ofCoord q) hubSel v i = Pi.single (σv i) (1 : K) := by
+    intro v σv hfv hmatch i
+    cases hcase : hubSel v i with
+    | none => simp only [hubSlotNormal, hcase, hFillH, hfv]
+    | some w =>
+        simp only [hubSlotNormal, hcase]
+        rw [hHubN, hmatch i w hcase]
+  have hslot_u := hslot u_c σu hfill_u hσu_match
+  have hslot_1 := hslot w₁ σ1 hfill_1 hσ1_match
+  have hslot_2 := hslot w₂ σ2 hfill_2 hσ2_match
+  -- The three chart points are nonzero multiples of `e₃`, `e₂`, `e₁`.
+  obtain ⟨cu, hcu0, hpt_u⟩ : ∃ cc : K, cc ≠ 0 ∧
+      pencilChartPoint (PencilSeed.ofCoord q) hubSel u_c
+        = cc • (Pi.single (3 : Fin 4) 1 : Fin 4 → K) := by
+    have h01 : σu 0 ≠ σu 1 := fun h => absurd (hσu_inj h) (by decide)
+    have h02 : σu 0 ≠ σu 2 := fun h => absurd (hσu_inj h) (by decide)
+    have h12 : σu 1 ≠ σu 2 := fun h => absurd (hσu_inj h) (by decide)
+    obtain ⟨cc, hcc, hcross⟩ :=
+      exists_smul_cross₃_pi_single (K := K) (hσu_d 0) (hσu_d 1) (hσu_d 2) h01 h02 h12
+    exact ⟨cc, hcc, by rw [pencilChartPoint, hslot_u 0, hslot_u 1, hslot_u 2, hcross]⟩
+  obtain ⟨c1, hc10, hpt_1⟩ : ∃ cc : K, cc ≠ 0 ∧
+      pencilChartPoint (PencilSeed.ofCoord q) hubSel w₁
+        = cc • (Pi.single (2 : Fin 4) 1 : Fin 4 → K) := by
+    have h01 : σ1 0 ≠ σ1 1 := fun h => absurd (hσ1_inj h) (by decide)
+    have h02 : σ1 0 ≠ σ1 2 := fun h => absurd (hσ1_inj h) (by decide)
+    have h12 : σ1 1 ≠ σ1 2 := fun h => absurd (hσ1_inj h) (by decide)
+    obtain ⟨cc, hcc, hcross⟩ :=
+      exists_smul_cross₃_pi_single (K := K) (hσ1_d 0) (hσ1_d 1) (hσ1_d 2) h01 h02 h12
+    exact ⟨cc, hcc, by rw [pencilChartPoint, hslot_1 0, hslot_1 1, hslot_1 2, hcross]⟩
+  obtain ⟨c2, hc20, hpt_2⟩ : ∃ cc : K, cc ≠ 0 ∧
+      pencilChartPoint (PencilSeed.ofCoord q) hubSel w₂
+        = cc • (Pi.single (1 : Fin 4) 1 : Fin 4 → K) := by
+    have h01 : σ2 0 ≠ σ2 1 := fun h => absurd (hσ2_inj h) (by decide)
+    have h02 : σ2 0 ≠ σ2 2 := fun h => absurd (hσ2_inj h) (by decide)
+    have h12 : σ2 1 ≠ σ2 2 := fun h => absurd (hσ2_inj h) (by decide)
+    obtain ⟨cc, hcc, hcross⟩ :=
+      exists_smul_cross₃_pi_single (K := K) (hσ2_d 0) (hσ2_d 1) (hσ2_d 2) h01 h02 h12
+    exact ⟨cc, hcc, by rw [pencilChartPoint, hslot_2 0, hslot_2 1, hslot_2 2, hcross]⟩
+  -- `H.closedNbhd u_c = {u_c, w₁, w₂}`, so `nbrSel u_c` is fully assigned.
+  have hNH_uc : (G.induce V₁).closedNbhd u_c = ({u_c, w₁, w₂} : Set α) := by
+    ext x
+    simp only [Graph.closedNbhd, Set.mem_setOf_eq, Set.mem_insert_iff, Set.mem_singleton_iff]
+    constructor
+    · rintro (rfl | ⟨e, he⟩)
+      · exact Or.inl rfl
+      · obtain ⟨heG, -, hxV₁⟩ := (Graph.induce_isLink G V₁ e u_c x).mp he
+        have hxN : x ∈ N(G, u_c) := heG.adj
+        rw [hN] at hxN
+        rcases hxN with rfl | rfl | rfl
+        · exact absurd hxV₁ hv_c
+        · exact Or.inr (Or.inl rfl)
+        · exact Or.inr (Or.inr rfl)
+    · rintro (hx | hx | hx)
+      · exact Or.inl hx
+      · refine Or.inr ⟨e₁, ?_⟩
+        rw [hx]; exact (Graph.induce_isLink G V₁ e₁ u_c w₁).mpr ⟨hl₁, hu_c, hw₁⟩
+      · refine Or.inr ⟨e₂, ?_⟩
+        rw [hx]; exact (Graph.induce_isLink G V₁ e₂ u_c w₂).mpr ⟨hl₂, hu_c, hw₂⟩
+  have hselNbr : IsFin3SelectorOf ({u_c, w₁, w₂} : Set α) (nbrSel u_c) := by
+    have := hNbrSel u_c hnothub_uc; rwa [hNH_uc] at this
+  -- Every slot of `nbrSel u_c` is `some` (three members fill three slots).
+  obtain ⟨iu, hiu⟩ := hselNbr.2.1 u_c (by simp)
+  obtain ⟨i1, hi1⟩ := hselNbr.2.1 w₁ (by simp)
+  obtain ⟨i2, hi2⟩ := hselNbr.2.1 w₂ (by simp)
+  have hiu1 : iu ≠ i1 := by
+    rintro rfl; rw [hiu] at hi1; exact hw1u (Option.some.inj hi1).symm
+  have hiu2 : iu ≠ i2 := by
+    rintro rfl; rw [hiu] at hi2; exact hw2u (Option.some.inj hi2).symm
+  have hi12 : i1 ≠ i2 := by
+    rintro rfl; rw [hi1] at hi2; exact hw12 (Option.some.inj hi2)
+  have huniv : ({iu, i1, i2} : Finset (Fin 3)) = Finset.univ := by
+    apply Finset.eq_univ_of_card
+    rw [Finset.card_insert_of_notMem (by simp [hiu1, hiu2]),
+      Finset.card_insert_of_notMem (by simp [hi12]), Finset.card_singleton, Fintype.card_fin]
+  have hall : ∀ i : Fin 3, i = iu ∨ i = i1 ∨ i = i2 := by
+    intro i
+    have : i ∈ ({iu, i1, i2} : Finset (Fin 3)) := huniv ▸ Finset.mem_univ i
+    simpa using this
+  have hns_some : ∀ i, ∃ z, nbrSel u_c i = some z := by
+    intro i; rcases hall i with rfl | rfl | rfl
+    exacts [⟨u_c, hiu⟩, ⟨w₁, hi1⟩, ⟨w₂, hi2⟩]
+  choose mem hmem using hns_some
+  have hmem_inj : Function.Injective mem := fun i j hij =>
+    hselNbr.2.2 i j (mem i) (hmem i) (hij ▸ hmem j)
+  have hmem_mem : ∀ i, mem i = u_c ∨ mem i = w₁ ∨ mem i = w₂ := by
+    intro i; have := hselNbr.1 i (mem i) (hmem i); simpa using this
+  -- The nbr-slot points, read as scaled basis vectors, and the forced normal at `u_c`.
+  set tgt : α → Fin 4 := fun z => if z = u_c then 3 else if z = w₁ then 2 else 1 with htgt_def
+  set T : Fin 3 → Fin 4 := fun i => tgt (mem i) with hT_def
+  set cs : Fin 3 → K := fun i => if mem i = u_c then cu else if mem i = w₁ then c1 else c2
+    with hcs_def
+  have hcs_ne : ∀ i, cs i ≠ 0 := by
+    intro i; simp only [hcs_def]
+    rcases hmem_mem i with h | h | h
+    · rw [if_pos h]; exact hcu0
+    · rw [if_neg (by rw [h]; exact hw1u), if_pos h]; exact hc10
+    · rw [if_neg (by rw [h]; exact hw2u), if_neg (by rw [h]; exact Ne.symm hw12)]; exact hc20
+  have hT_ne : ∀ i, T i ≠ (0 : Fin 4) := by
+    intro i; simp only [hT_def, htgt_def]
+    rcases hmem_mem i with h | h | h
+    · rw [if_pos h]; decide
+    · rw [if_neg (by rw [h]; exact hw1u), if_pos h]; decide
+    · rw [if_neg (by rw [h]; exact hw2u), if_neg (by rw [h]; exact Ne.symm hw12)]; decide
+  have hT_val : ∀ i, (mem i = u_c ∧ T i = 3) ∨ (mem i = w₁ ∧ T i = 2) ∨
+      (mem i = w₂ ∧ T i = 1) := by
+    intro i
+    rcases hmem_mem i with h | h | h
+    · exact Or.inl ⟨h, by simp [hT_def, htgt_def, h]⟩
+    · exact Or.inr (Or.inl ⟨h, by simp [hT_def, htgt_def, h, hw1u]⟩)
+    · exact Or.inr (Or.inr ⟨h, by simp [hT_def, htgt_def, h, hw2u, Ne.symm hw12]⟩)
+  have hT_inj : Function.Injective T := by
+    intro i j hij
+    apply hmem_inj
+    rcases hT_val i with ⟨hmi, hti⟩ | ⟨hmi, hti⟩ | ⟨hmi, hti⟩ <;>
+      rcases hT_val j with ⟨hmj, htj⟩ | ⟨hmj, htj⟩ | ⟨hmj, htj⟩ <;>
+      rw [hmi, hmj] <;>
+      first
+        | rfl
+        | (rw [hti, htj] at hij; exact absurd hij (by decide))
+  have hnsp_eq : ∀ i, nbrSlotPoint (PencilSeed.ofCoord q) hubSel nbrSel u_c i
+      = cs i • (Pi.single (T i) 1 : Fin 4 → K) := by
+    intro i
+    have h0 : nbrSlotPoint (PencilSeed.ofCoord q) hubSel nbrSel u_c i
+        = pencilChartPoint (PencilSeed.ofCoord q) hubSel (mem i) := by
+      simp only [nbrSlotPoint, hmem i]
+    rcases hmem_mem i with h | h | h
+    · have hcsi : cs i = cu := by simp [hcs_def, h]
+      have hTi : T i = (3 : Fin 4) := by simp [hT_def, htgt_def, h]
+      rw [h0, h, hpt_u, hcsi, hTi]
+    · have hcsi : cs i = c1 := by simp [hcs_def, h, hw1u]
+      have hTi : T i = (2 : Fin 4) := by simp [hT_def, htgt_def, h, hw1u]
+      rw [h0, h, hpt_1, hcsi, hTi]
+    · have hcsi : cs i = c2 := by simp [hcs_def, h, hw2u, Ne.symm hw12]
+      have hTi : T i = (1 : Fin 4) := by simp [hT_def, htgt_def, h, hw2u, Ne.symm hw12]
+      rw [h0, h, hpt_2, hcsi, hTi]
+  have hNu : ∃ cc : K, cc ≠ 0 ∧
+      pencilChartNormal (PencilSeed.ofCoord q) hubSel nbrSel (G.induce V₁) u_c
+        = cc • (Pi.single (0 : Fin 4) 1 : Fin 4 → K) := by
+    rw [pencilChartNormal_of_not_pencilHub _ _ _ hnothub_uc]
+    have hLI3 : LinearIndependent K
+        ![nbrSlotPoint (PencilSeed.ofCoord q) hubSel nbrSel u_c 0,
+          nbrSlotPoint (PencilSeed.ofCoord q) hubSel nbrSel u_c 1,
+          nbrSlotPoint (PencilSeed.ofCoord q) hubSel nbrSel u_c 2] := by
+      have hfam : (![nbrSlotPoint (PencilSeed.ofCoord q) hubSel nbrSel u_c 0,
+          nbrSlotPoint (PencilSeed.ofCoord q) hubSel nbrSel u_c 1,
+          nbrSlotPoint (PencilSeed.ofCoord q) hubSel nbrSel u_c 2] : Fin 3 → Fin 4 → K)
+          = fun i => cs i • (Pi.single (T i) 1 : Fin 4 → K) := by
+        funext i; fin_cases i <;> exact hnsp_eq _
+      rw [hfam]; exact linearIndependent_smul_pi_single_of_injective hT_inj hcs_ne
+    have he0_ne : (Pi.single (0 : Fin 4) 1 : Fin 4 → K) ≠ 0 := by
+      intro h; have := congrFun h 0; simp at this
+    have horth : ∀ i, (Pi.single (0 : Fin 4) (1 : K) : Fin 4 → K) ⬝ᵥ
+        nbrSlotPoint (PencilSeed.ofCoord q) hubSel nbrSel u_c i = 0 := by
+      intro i
+      rw [hnsp_eq i, dotProduct_smul, dotProduct_single_one]
+      simp only [Pi.single_apply]
+      rw [if_neg (hT_ne i), smul_zero]
+    obtain ⟨cc, hcc, hcross⟩ :=
+      exists_smul_cross₃_eq_of_linearIndependent hLI3 he0_ne (horth 0) (horth 1) (horth 2)
+    exact ⟨cc, hcc, hcross⟩
+  -- Assemble the three families.
+  obtain ⟨cu_n, hcu_n0, hNu_eq⟩ := hNu
+  set cfam : α → K := fun x => if x = u_c then cu_n else 1 with hcfam_def
+  have hcfam_ne : ∀ x, cfam x ≠ 0 := by
+    intro x; simp only [hcfam_def]; split
+    · exact hcu_n0
+    · exact one_ne_zero
+  have hval : ∀ x, G.PencilHub x → (x = u_c ∨ x ∈ V₁) →
+      pencilChartNormal (PencilSeed.ofCoord q) hubSel nbrSel (G.induce V₁) x
+        = cfam x • (Pi.single (idx x) 1 : Fin 4 → K) := by
+    intro x hxhub _
+    by_cases hxu : x = u_c
+    · subst hxu; rw [hNu_eq]; simp only [hcfam_def, if_pos rfl, hidx_u]
+    · have hxV₁ : x ∈ V₁ := by
+        have hxVG : x ∈ V(G) := hxhub.1
+        rw [hVG] at hxVG
+        rcases hxVG with h | h
+        · exact h
+        · rw [Set.mem_singleton_iff] at h; exact absurd (h ▸ hxhub) hvc_nothub
+      have hxHhub : (G.induce V₁).PencilHub x := by
+        refine ⟨hVH_mem x hxV₁, ?_⟩
+        rw [Graph.degree_induce_eq_of_ne hl_c hu_c hv_c hcut hxV₁ hxu]; exact hxhub.2
+      rw [pencilChartNormal_of_pencilHub _ _ _ hxHhub, hHubN]
+      simp only [hcfam_def, if_neg hxu, one_smul]
+  refine ⟨q, fun v hv => ?_⟩
+  simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hv
+  have hval' : ∀ x ∈ G.closedHubNbhd v,
+      pencilChartNormal (PencilSeed.ofCoord q) hubSel nbrSel (G.induce V₁) x
+        = cfam x • (Pi.single (idx x) 1 : Fin 4 → K) := by
+    intro x hx
+    refine hval x hx.1 ?_
+    by_cases hxu : x = u_c
+    · exact Or.inl hxu
+    · right
+      have hxVG : x ∈ V(G) := hx.1.1
+      rw [hVG] at hxVG
+      rcases hxVG with h | h
+      · exact h
+      · rw [Set.mem_singleton_iff] at h; exact absurd (h ▸ hx.1) hvc_nothub
+  have hinj : Set.InjOn idx (G.closedHubNbhd v) := by
+    rcases hv with rfl | rfl | rfl
+    exacts [hinjG_u, hinjG_1, hinjG_2]
+  exact (linearIndepOn_smul_pi_single (J := idx) (c := cfam) hinj
+    (fun x _ => hcfam_ne x)).congr (fun x hx => (hval' x hx).symm)
+
 end CombinatorialRigidity.Molecular

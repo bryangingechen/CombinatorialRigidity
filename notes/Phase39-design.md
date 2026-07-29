@@ -1814,7 +1814,7 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
       spans are invariant under per-edge nonzero extensor scaling; equality at the steered
       seed = an LI `pencilRow` subfamily of target size (`≥`) + the landed
       `finrank_span_rigidityRows_add_deficiency_le` (`≤`).
-    - *Leaf decomposition (build order; v-c is the next commit).*
+    - *Leaf decomposition (build order; v-d is the next commit).*
       **v-a LANDED (2026-07-25)**: `not_pencilNondegFeasible_of_triangle_two_hubs`
       (`Motive.lean`, any field) — the triangle-`≥2`-hub infeasibility finding as a lemma
       (conjunct-3 LI at two adjacent hubs `y, z`, then the 2- and 3-member perp squeezes in
@@ -1830,7 +1830,21 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
       `exists_coord_linearIndependent_pencilChartPoint_of_pendant_deg3` (new file
       `Molecule/Pencil/Witness.lean` — `Engine.lean` was at the LoC cap; imports `Pencil.Engine`,
       aggregator wired) — full landing record in the "v-b construction recipe" sub-bullet below.
-      **v-c**: witness (ii) (same toolkit on `H`'s chart). **v-d**: steering
+      **v-c LANDED (2026-07-25)**: witness (ii),
+      `exists_coord_linearIndependent_pencilChartNormal_of_pendant_deg3` (`Witness.lean`, same
+      toolkit on `H := G.induce V₁`'s chart). Refinement vs the pinned shape: carries the pendant
+      config `hVG : V(G) = V₁ ∪ {v_c}` (in scope at the v-g discharge, matching sub-case-3's
+      producer), so `v_c` is a degree-`1` non-hub never in a family — exactly the composition
+      finding's implicit assumption ("promoted families are `fillNbr`-free" holds only there; a
+      hub `v_c` would need the `fillNbr`/`nbrSel` layer this refinement sidesteps). The family sets
+      are `G.closedHubNbhd v` (stronger than `H`'s; consumer restricts by `LinearIndepOn.mono`);
+      the demoted `u_c`'s forced `cross₃`-of-points normal is steered to `±e_0` via
+      `exists_smul_cross₃_eq_of_linearIndependent` (`nbrSel u_c` fully assigned,
+      `H.closedNbhd u_c = {u_c, w₁, w₂}`). Two reusable engines added to `Witness.lean`:
+      `linearIndepOn_smul_pi_single` / `linearIndependent_smul_pi_single_of_injective` (a
+      nonzero-scaled family of distinct standard basis vectors is independent).
+      `exists_fin3_rank_injOn` (`Engine.lean`) still unconsumed after v-b/v-c — retirement deferred
+      to v-d. **v-d**: steering
       bookkeeping — the "LI `≤3`-family of polynomial vectors at a witness ⟹ one
       somewhere-nonzero polynomial whose non-roots keep it LI" extraction gadget (pair-minor
       + `cross₃Poly` cases), the WF-conditions-at-the-flattening witnesses, and the
