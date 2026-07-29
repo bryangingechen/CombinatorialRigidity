@@ -176,18 +176,30 @@ carries the flattening bridge, `exists_extend_linearIndependent`, the `fillNbr` 
 `pencilNondegFeasible_induce_of_pendant_deg3` (its signature mirrors witness (i)'s config + `hVG`,
 adds `[Infinite K]`, concludes `PencilNondegFeasible K (G.induce V₁)`).
 
-**Next concrete commit — v-f (output-half rank-transport bricks + steering assembly).** The normal
-analogue of the v-e primitive, `exists_common_seed_linearIndepOn_pencilChartNormal` (parallel to
-`exists_common_seed_linearIndepOn_pencilChartPoint`, via the v-d normal gadget
-`exists_polynomial_ne_zero_of_linearIndependent_pencilChartNormal`), is the parallel steering brick;
-on top of it, the rank-transport bricks (the `pencilRow` ↔ chart-`rigidityRows` link bridge — the
-Engine docstring's deferred "hends-style" consumer — proportional row-span invariance, LI-subfamily
-extraction). Assess/decompose at dispatch: the rank side is genuinely new (though NOT L7-hard), and
-this leaf may need its own recon or a multi-commit split. Then **v-g** (the sub-case-3-shaped glue —
-conjunct 3 at `u_c`/`w₁`/`w₂` from the steered promoted families, `hlb₂ = 0` rank verbatim — plus
-the shell/successor rewire: discharge `hcutPendant3` in `pencilPair_of_not_twoEdgeConnected` and
-`pencil_conjecture_of_arms_pair`, add `[Infinite K]` there, and the blueprint restatement). Full leaf
-detail: `notes/Phase39-design.md` §"W5 leaf decomposition" L5-cut-v.
+**v-f RECONNED + compiler-spiked (2026-07-29) — GO, no obstruction.** The output-half rank-transport
+is a faithful pencil-mirror of the landed panel lemma
+`finrank_span_rigidityRows_ofNormals_of_isGenericNormals`; decomposed into six S=1 leaves (v-f-1…v-f-6),
+each with an EXACT signature, in `notes/Phase39-design.md` §"W5 leaf decomposition" L5-cut-v **"v-f
+decomposition"**. Load-bearing finding: the general `BodyHingeFramework` panel-row machinery (`panelRow`,
+`panelRow_mem_rigidityRows_of_link`, `exists_independent_panelRow_subfamily_of_le_finrank`,
+`finrank_span_rigidityRows_add_deficiency_le`) is REUSABLE on the chart verbatim — the Pencil import cone
+already reaches it, so no new import and no re-proof of the extraction/B2 layer. A scratchpad spike built
+the bridge (v-f-1), the row-span scaling invariance (v-f-2), and the full `le_antisymm` composition
+(v-f-4) **sorry-free + axiom-clean**; the composition's only residual is the LI `pencilRow` subfamily at
+the steered seed + nonzero hinges — both produced from landed bricks (v-b/v-c witnesses,
+`exists_smul_eq_extensor_of_extensorThroughPoint_pair`, `exists_common_seed_pencilRow_and_polynomials`).
+
+**Next concrete commit — v-f-1/2/3/4 (the genuinely-new rank bricks).** The link bridge
+`pencilRow_mem_rigidityRows_of_mem_edgeSet` + row-span scaling invariance
+`span_rigidityRows_eq_of_supportExtensor_proportional` + the re-seeding proportionality (v-f-3) + the
+output rank `le_antisymm` (v-f-4); v-f-1/2/4 already spike-proved. Then v-f-5 (clean-mirror normal
+primitive `exists_common_seed_linearIndepOn_pencilChartNormal`, optional) and **v-f-6** (the output-half
+assembly, mirroring v-e's `pencilNondegFeasible_induce_of_pendant_deg3` at `H` with the rank rows +
+promoted families steered). Then **v-g** (the sub-case-3-shaped glue — conjunct 3 at `u_c`/`w₁`/`w₂` from
+the steered promoted families, `hlb₂ = 0` rank verbatim — plus the shell/successor rewire: discharge
+`hcutPendant3` in `pencilPair_of_not_twoEdgeConnected` and `pencil_conjecture_of_arms_pair`, add
+`[Infinite K]` there, and the blueprint restatement). Full leaf detail + exact signatures:
+`notes/Phase39-design.md` §"W5 leaf decomposition" L5-cut-v "v-f decomposition".
 
 **L6/L8 are parallel combinatorial tracks** buildable now (L6: habitat feasibility, the
 `≤ 3` closed-hub-neighbourhood lemma + witness-seed construction + the `G′.Simple` sub-obligation,
@@ -208,6 +220,16 @@ neighbor — is `notes/IdeaBacklog.md`.
 
 ## Decisions made during this phase
 
+- **L5-cut-v-f RECONNED + compiler-spiked — output-half rank-transport, GO no obstruction** (2026-07-29,
+  design-pass, docs-only; canonical record `notes/Phase39-design.md` §"W5 leaf decomposition" L5-cut-v
+  "v-f decomposition"). The output half is a faithful pencil-mirror of the landed panel lemma
+  `finrank_span_rigidityRows_ofNormals_of_isGenericNormals`; decomposed into six S=1 leaves with exact
+  signatures. Load-bearing finding: the general `BodyHingeFramework` panel-row machinery (`panelRow`,
+  `panelRow_mem_rigidityRows_of_link`, `exists_independent_panelRow_subfamily_of_le_finrank`, the B2
+  bound) is reusable on the chart verbatim (cone already reaches it — no new import, no re-proof). A
+  scratchpad spike built the bridge, the row-span scaling invariance, and the full `le_antisymm`
+  composition sorry-free + axiom-clean; composition finding (4) composes exactly as pinned, residual =
+  the LI `pencilRow` subfamily + nonzero hinges (both landed-brick-fed). No motive/IH change.
 - **L5-cut-v-e COMPLETE — the input-half steering assembly** (2026-07-29,
   `Molecule/Pencil/Steer.lean`, imports `Pencil.{Reseed,Witness}` added):
   `pencilNondegFeasible_induce_of_pendant_deg3` — under the pendant deg-`3` config over `[Infinite K]`,

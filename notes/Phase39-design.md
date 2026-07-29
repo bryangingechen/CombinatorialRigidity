@@ -1887,15 +1887,91 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
       `hdemote` residual, the surviving demoted triple). Three local helpers: `pencilChartPoint_congr`,
       `linearIndepOn_triple_of_linearIndependent` (reverse `Fin 3` set↔indexed),
       `linearIndepOn_nbrSlotPoint_isSome_of_pencilChartPoint` (the `hnbr_some` reindexing; TACTICS-QUIRKS
-      § 102 for the `choose`-tactic idiom). **v-f (next)**: the output-half — the normal analogue of the
-      primitive, `exists_common_seed_linearIndepOn_pencilChartNormal` (via the v-d normal gadget
-      `exists_polynomial_ne_zero_of_linearIndependent_pencilChartNormal`), plus the rank-transport bricks
-      (the `pencilRow` ↔ chart-`rigidityRows` link bridge — the Engine docstring's deferred "hends-style"
-      consumer — proportional row-span invariance, LI-subfamily extraction). The rank side is genuinely
-      new (not L7-hard) and may want its own recon or a multi-commit split at dispatch. **v-g**: the glue
+      § 102 for the `choose`-tactic idiom). **v-f (next; RECONNED + compiler-spiked 2026-07-29 — full
+      decomposition, exact signatures, and the sorry-free rank-transport spike in the dedicated "v-f
+      decomposition" sub-bullet below)**: the output-half rank-transport, a faithful pencil-mirror of the
+      landed panel lemma `finrank_span_rigidityRows_ofNormals_of_isGenericNormals`; six S=1 leaves,
+      **GO — no obstruction, finding (4) composes exactly as pinned**. **v-g**: the glue
       (sub-case-3-shaped; conjunct 3 at `u_c`/`w₁`/`w₂` from the steered promoted families, `hlb₂ = 0`
       rank verbatim) + the shell/successor rewire (discharge `hcutPendant3`, add `[Infinite K]`) + the
       blueprint restatement.
+
+    **v-f decomposition (reconned + compiler-spiked 2026-07-29; the output-half rank-transport).**
+    The route is a faithful pencil-mirror of the landed panel lemma
+    `finrank_span_rigidityRows_ofNormals_of_isGenericNormals` (`GenericLift/PanelGeneric.lean`):
+    lower bound = an LI row subfamily of the target count transferred to the chart, upper bound = the
+    landed deterministic B2 bound `finrank_span_rigidityRows_add_deficiency_le`, pinched by
+    `le_antisymm`. The panel proof's genericity-over-`q` step is replaced by explicit steering (the
+    landed product-route `exists_common_seed_pencilRow_and_polynomials`). **Load-bearing finding: the
+    general `BodyHingeFramework` panel-row machinery is REUSABLE on the chart verbatim** — `panelRow`,
+    `panelRow_mem_rigidityRows_of_link`, `span_panelRow_eq_rigidityRows`, and
+    `exists_independent_panelRow_subfamily_of_le_finrank` (`Pinning.lean`/`GenericityDevice.lean`) are
+    framework-agnostic, and the Pencil import cone already reaches them (Statement → Theorem55 →
+    Pinning/GenericityDevice), so **no new import** and **no re-proof** of the extraction/B2 layer is
+    owed. The genuinely-new work is confined to the graph-bridge (v-f-1) and the re-seeding transfer
+    (v-f-3); everything else re-wires landed pieces.
+
+    *Compiler-checked spike (scratchpad only, deleted — not committed).* Three theorems built
+    **sorry-free and axiom-clean** (`propext`/`Classical.choice`/`Quot.sound` only, checked by
+    `#print axioms`) against the landed olean tree: the bridge (v-f-1), the row-span scaling
+    invariance (v-f-2), and the **full `le_antisymm` composition** (v-f-4). The composition carries no
+    hidden residual: `spike_output_rank`'s ONLY sorry-analogues are its named hypotheses — the LI
+    `pencilRow` subfamily of size `target_H` at the steered seed (`hslink`/`hsLI`/`hscard`) and the
+    nonzero hinges (`hne`) — both produced downstream by v-f-3/v-f-6 from landed bricks. **VERDICT:
+    GO — composition finding (4) composes exactly as pinned; the residual is the two named leaf
+    inputs, no motive/IH change, no orphaned hypothesis.**
+
+    *Leaves (build order; each S=1 given the exact signatures below).*
+    - **v-f-1 — the link bridge (the Engine docstring's deferred "hends-style" consumer).** On a
+      genuine edge, `pencilRow hubSel G.endsOf q` IS the chart framework's own `panelRow`, hence a
+      rigidity row — the whole "graph bridge" is `rw [pencilRow, panelRow,
+      pencilChartFramework_supportExtensor_of_mem_edgeSet]` then the landed general
+      `panelRow_mem_rigidityRows_of_link`. Spike-proved (`[Inhabited α]`; `i : β ×
+      Set.powersetCard (Fin 4) 2 × Set.powersetCard (Fin 4) 2`, `he : i.1 ∈ E(G)`):
+      `pencilRow hubSel G.endsOf q i = (pencilChartFramework (PencilSeed.ofCoord q) hubSel G).panelRow
+      G.endsOf i` (helper) and `… ∈ (pencilChartFramework (PencilSeed.ofCoord q) hubSel G).rigidityRows`.
+    - **v-f-2 — row-span invariance under per-edge nonzero extensor scaling.** Two frameworks on the
+      same graph with per-edge proportional (nonzero-scalar) support extensors on links have equal
+      rigidity-row spans (via `Submodule.span_singleton_smul_eq`). Spike-proved:
+      `(F₁ F₂ : BodyHingeFramework K k α β) (hg : F₁.graph = F₂.graph) (hprop : ∀ e u v,
+      F₁.graph.IsLink e u v → ∃ c ≠ 0, c • F₁.supportExtensor e = F₂.supportExtensor e) : span K
+      F₁.rigidityRows = span K F₂.rigidityRows`.
+    - **v-f-3 — the re-seeded chart hinge is proportional to the witness hinge** (produces v-f-2's
+      `hprop`). For a re-seed `seed₁` of an `IsNondegPencilRealization H F₁ normal₁ point₁`
+      (`exists_pencilSeed_of_nondeg`: `pencilChartPoint seed₁ w = c_w • point₁ w`), each link's chart
+      hinge is a nonzero multiple of `F₁`'s: the landed
+      `exists_smul_eq_extensor_of_extensorThroughPoint_pair` forces `F₁.supportExtensor e` onto
+      `extensor ![point₁ u, point₁ v]`, and extensor bilinearity turns the reproduction scalars into
+      the proportionality. `v-f-2 ∘ v-f-3` + `hrank₁` give `finrank(span (chart seed₁).rigidityRows)
+      = target_H` (the only genuinely-new arithmetic; ≈30 lines, mirrors the panel `hrank0` step).
+    - **v-f-4 — the output rank conclusion (the `le_antisymm`).** From an LI `pencilRow` subfamily of
+      size `target_H` at the steered seed + nonzero hinges, `finrank(span (chart (ofCoord q)
+      hubSel H).rigidityRows) = target_H`. Spike-proved (lower bound via v-f-1 + `finrank_span_eq_card`
+      + `Submodule.finrank_mono`; upper bound `finrank_span_rigidityRows_add_deficiency_le`). Its
+      hypotheses ARE the spike's exact residual goals.
+    - **v-f-5 — clean mirror (low-risk): `exists_common_seed_linearIndepOn_pencilChartNormal`** — the
+      `pencilChartNormal` twin of the landed `exists_common_seed_linearIndepOn_pencilChartPoint`
+      (`Steer.lean`), via the landed normal gadget
+      `exists_polynomial_ne_zero_of_linearIndependent_pencilChartNormal`. Convenience for marshalling
+      the promoted-family conditions; the assembly may instead fold them straight into
+      `exists_common_seed_pencilRow_and_polynomials`'s `P` via the gadget, so this leaf is optional /
+      not strictly on the critical path.
+    - **v-f-6 — the output-half assembly (capstone).** Structurally mirrors the landed v-e assembly
+      `pencilNondegFeasible_induce_of_pendant_deg3` (`Steer.lean`) at `H := G.induce V₁`, ADDING: the
+      rank rows steered alongside (one `exists_common_seed_pencilRow_and_polynomials` call — `hLI` =
+      the v-f-1/v-f-3/extraction `pencilRow` subfamily at the flattening, `P` = the standing point +
+      promoted normal conditions, each a "nonzero somewhere" polynomial via the point/normal gadgets)
+      and the rank conclusion (v-f-4). The "satisfiable somewhere" certificates are ALREADY landed:
+      the demoted-triple witness (i) (v-b) and the promoted-family witness (ii) (v-c). Output: a
+      steered `IsNondegPencilRealization H` with `finrank = target_H` AND `LinearIndepOn K normal
+      (G.closedHubNbhd v)` for `v ∈ {u_c, w₁, w₂}` — the promoted families v-g's glue consumes. Small
+      helper owed: `pencilChartFramework` reads points only, so the point-preserving post-steering
+      `fillNbr` re-choice keeps the rank (a `pencilChartFramework_congr`-on-points lemma, parallel to
+      the landed `pencilChartPoint_congr`).
+
+    *Suggested multi-commit split (as the hand-off flagged):* v-f-1/2/3/4 (the genuinely-new rank
+    bricks — v-f-1/2/4 already spike-proved sorry-free) in one commit; v-f-5 (mirror) folded in or
+    separate; v-f-6 (assembly) the capstone. No obstruction anywhere in the chain.
 
     **v-b construction recipe (derived 2026-07-25; the witness LANDED same day — see "the main
     assembly, landed" below).** Re-deriving witness (i) against the CURRENT `Chart.lean`/
