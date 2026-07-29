@@ -12,10 +12,10 @@ discharge route): assessed GO, route PINNED (2026-07-25 recon); **v-a landed**
 `G`'s chart, new file `Molecule/Pencil/Witness.lean`, closed via the abstract padding lemma
 `exists_injective_extension_of_isFin3SelectorOf`); **v-c LANDED** (2026-07-25,
 `exists_coord_linearIndependent_pencilChartNormal_of_pendant_deg3`, same file — witness (ii) on
-`H := G.induce V₁`'s chart, reusing v-b's toolkit + combinatorics); **v-d extraction gadget +
-WF-flattening witnesses LANDED** (2026-07-25 gadget, `Engine.lean`; 2026-07-29 flattening bridge,
-new file `Molecule/Pencil/Steer.lean`); next: **rest of v-d** (`fillNbr` re-choice + the
-`exists_fin3_rank_injOn` retirement call — *Hand-off*).
+`H := G.induce V₁`'s chart, reusing v-b's toolkit + combinatorics); **v-d COMPLETE** (2026-07-25
+extraction gadget `Engine.lean`; 2026-07-29 WF-flattening bridge + `fillNbr` re-choice, new file
+`Molecule/Pencil/Steer.lean`; the superseded `exists_fin3_rank_injOn` retired same commit); next:
+**v-e** (the input-half steering assembly — *Hand-off*).
 L6/L8 are parallel
 combinatorial tracks buildable now; L7 (the research core) is
 last; W4 after W5 (phase opened 2026-07-23, recon-first). `Molecule/Pencil.lean` split into
@@ -123,13 +123,14 @@ Full record, grounding, and the W0–W5 decomposition:
   degree-`1` non-hub (never in a family — matching the design's "promoted families are
   `fillNbr`-free" analysis). **v-d's extraction gadget LANDED** (2026-07-25, `Engine.lean`:
   `exists_polynomial_ne_zero_of_linearIndependent_pencilChart{Point,Normal}` + the
-  `pencilChartNormalPoly`/`nbrSlotPointPoly` mirror). **v-d WF-flattening witnesses LANDED**
-  (2026-07-29, new file `Molecule/Pencil/Steer.lean`: `PencilSeed.toCoord` + `pencilChartPoint`/
-  `hubSlotNormal` coincidence + `pencilChartWF_standing_ofCoord_toCoord`, the four `fillNbr`-free
-  conjuncts at the flattening). `exists_fin3_rank_injOn` (`Engine.lean`) still unconsumed (neither
-  gadget nor flattening bridge used it); retirement call still deferred (the `fillNbr` re-choice may
-  want it — decide then, with the deletion-hygiene sweep). **Next: rest of v-d** (`fillNbr`
-  re-choice, *Hand-off*).
+  `pencilChartNormalPoly`/`nbrSlotPointPoly` mirror). **v-d WF-flattening witnesses + `fillNbr`
+  re-choice LANDED, v-d COMPLETE** (2026-07-29, new file `Molecule/Pencil/Steer.lean`:
+  `PencilSeed.toCoord` + coincidence + `pencilChartWF_standing_ofCoord_toCoord` for the four standing
+  conjuncts, then `exists_fillNbr_pencilChartWF_of_standing` closing conjunct 4 by the general
+  extension lemma `exists_extend_linearIndependent`). `exists_fin3_rank_injOn` (`Engine.lean`)
+  **RETIRED** same commit (deletion-hygiene sweep done — the re-choice does not consume it; it uses
+  the "extend an LI partial family by filling free slots" route, not the pigeonhole). **Next: v-e**
+  (*Hand-off*).
   Feasibility propagation *as a proposition* stays open but bounded: the triangle-hub mechanism
   refutes any purely combinatorial (`≤ 3`-closedHubNbhd) feasibility criterion, while leaving L6's
   habitat claim untouched (no triangles in the no-proper-rigid habitat at `|V| ≥ 4`).
@@ -165,28 +166,25 @@ Full record, grounding, and the W0–W5 decomposition:
 `thm:pencil-conditional-realization-pair` green; `hcontract`/`hsplit`/`hcutPendant3` remain open
 hypotheses — full detail in *Decisions made*, below).
 
-**Next: rest of L5-cut-v-d.** The **extraction gadget LANDED** (2026-07-25, `Engine.lean`): the two
-chart-family steering gadgets `exists_polynomial_ne_zero_of_linearIndependent_pencilChart{Point,
-Normal}` (thin `[Field K]`-only specializations of the maximal-minor engine
-`exists_polynomial_ne_zero_of_linearIndependent_at_reindex` — no `[Infinite K]`; that enters only in
-the product-route workhorse downstream) + the "`cross₃Poly` cases" mirror `pencilChartNormalPoly`
-(with `nbrSlotPointPoly`) and its eval identity. The **WF-flattening witnesses LANDED** (2026-07-29,
-new file `Molecule/Pencil/Steer.lean`, imports `Pencil.Engine`): `PencilSeed.toCoord` (the
-`fillNbr`-free flattening onto the engine's `α × Fin 4 × Fin 4` space), the point-side coincidence
-lemmas (`pencilChartPoint_ofCoord_toCoord`, `hubSlotNormal_ofCoord_toCoord`), and
-`pencilChartWF_standing_ofCoord_toCoord` (the four `fillNbr`-free `PencilChartWF` conjuncts at the
-flattening — the sole `fillNbr`-reading fourth conjunct is deliberately excluded, supplied by (1)
-below). **Still owed for v-d** (the smallest next commit is the first): (1) the **post-steering
-`fillNbr` re-choice lemma** — at deg-`≤1` non-hub bodies re-choose `fillNbr` (the `nbrSel`-unassigned
-slots) so `PencilChartWF`'s fourth conjunct holds, without disturbing the point-side / steered
-conditions (`pencilChartPoint`/`hubSlotNormal` never read `fillNbr`); (2) the
-**`exists_fin3_rank_injOn` retirement call** (`Engine.lean`, still unconsumed — neither the gadget
-nor the flattening bridge used it; retire with the tree-wide deletion-hygiene sweep IF (1) does not
-want it, else keep). `Steer.lean` is the home for the remaining steering pieces; v-e/v-f will add the
-`Pencil.Witness` import there when they consume the somewhere-witnesses. Then **v-e**…**v-g** per the
-design doc's L5-cut-v leaf list (the last leaf rewires the
-shell/successor — deleting `hcutPendant3`, adding `[Infinite K]` — and restates the blueprint
-node). **L6/L8 are parallel combinatorial tracks** buildable now (L6: habitat feasibility, the
+**v-d COMPLETE** (extraction gadget + WF-flattening bridge + `fillNbr` re-choice all landed;
+`exists_fin3_rank_injOn` retired — *Decisions made*). `Steer.lean` now carries the flattening bridge,
+the general extension lemma `exists_extend_linearIndependent`, and the re-choice
+`exists_fillNbr_pencilChartWF_of_standing` (standing conjuncts + per-body `some`-slot LI ⟹ full
+`PencilChartWF` via a `fillNbr`-only re-choice).
+
+**Next: v-e** — the input-half steering assembly `pencilNondegFeasible_induce_of_pendant_deg3`:
+re-seed (`exists_pencilSeed_of_nondeg`) → steer the demoted/promoted families to independence via the
+gadget + the somewhere-witnesses (v-b/v-c, `Pencil.Witness` — add that import to `Steer.lean` here) →
+feed `pencilChartWF_standing_ofCoord_toCoord` + `exists_fillNbr_pencilChartWF_of_standing` to get full
+`PencilChartWF` → `isNondegPencilRealization_pencilChartFramework_of_pencilChartWF` → `.mono` with the
+steered triple as `hdemote`. Then **v-f** (rank-transport bricks + output-half steering assembly) and
+**v-g** (the sub-case-3-shaped glue + the shell/successor rewire deleting `hcutPendant3`, adding
+`[Infinite K]`, and the blueprint restatement). At v-e's `hnbr_some` obligation: the deg-`≤ 1`
+non-hub `some`-slot LI comes from conjunct 3 (nonzero points) / conjunct 5 (adjacent-point LI);
+the fully-assigned bodies' conjunct 4 is the steered input. Full leaf detail:
+`notes/Phase39-design.md` §"W5 leaf decomposition" L5-cut-v.
+
+**L6/L8 are parallel combinatorial tracks** buildable now (L6: habitat feasibility, the
 `≤ 3` closed-hub-neighbourhood lemma + witness-seed construction + the `G′.Simple` sub-obligation,
 design-doc L6 bullet; L8: the `k = 0` residue, emptiness route recommended). **L7 (the research
 core) is last** — the uniform escape certificate `r ⬝ Λ²Π̂(a) ≢ 0`; N2 witnesses one instance. Full
@@ -205,6 +203,15 @@ neighbor — is `notes/IdeaBacklog.md`.
 
 ## Decisions made during this phase
 
+- **L5-cut-v-d COMPLETE — post-steering `fillNbr` re-choice + `exists_fin3_rank_injOn` retired**
+  (2026-07-29, `Molecule/Pencil/Steer.lean`): `exists_fillNbr_pencilChartWF_of_standing` closes
+  `PencilChartWF`'s fourth conjunct from the four standing conjuncts
+  (`pencilChartWF_standing_ofCoord_toCoord`) + each non-hub body's `some`-slot `nbrSlotPoint` LI, via
+  a `fillNbr`-only re-choice (shared `hubNormal`/`fillHub`, so points are defeq and the standing
+  conjuncts transfer). Core: the general `exists_extend_linearIndependent` (fill an LI partial
+  family's free slots to a full LI family in dim `≥ n`; upstream-eligible, FRICTION
+  `[mirror-candidate]`). **`exists_fin3_rank_injOn` RETIRED** same commit (extend-and-fill route, not
+  the pigeonhole — unconsumed through v-a…v-d; tree-wide hygiene sweep done). Gates + axioms clean.
 - **L5-cut-v-d WF-flattening witnesses LANDED — standing WF conditions at the `fillNbr`-free
   flattening** (2026-07-29, new file `Molecule/Pencil/Steer.lean`, imports `Pencil.Engine`;
   composition finding (3)): `PencilSeed.toCoord` flattens a re-seeded seed onto the engine's

@@ -98,6 +98,24 @@ to be re-derived by re-reading entries later.
 
 ## Open
 
+### [mirror-candidate] No packaged "extend a `LinearIndepOn` partial family by filling the free slots" lemma
+- **Where it bit:** Phase 39 (PENCIL) W5-L5 L5-cut-v-d, the post-steering `fillNbr` re-choice
+  (`Molecular/Molecule/Pencil/Steer.lean`, `exists_fillNbr_pencilChartWF_of_standing`). Closing
+  `PencilChartWF`'s fourth conjunct at a non-hub body means: given the `nbrSel`-assigned slots' points
+  already independent, fill the unassigned slots to make the whole `Fin 3 → K⁴` triple independent.
+- **Friction:** needed the general fact "`g : Fin n → V` LI on a subset `s` of slots, `n ≤ finrank K
+  V` ⟹ `∃ g'` agreeing with `g` on `s` and LI on all of `Fin n`", which mathlib does not package in
+  this fill-the-free-slots shape (`LinearIndepOn.extend`/`Basis.extend` extend to a *subset* of a
+  spanning set, not by filling designated indices with fresh vectors). Proved it locally as
+  `exists_extend_linearIndependent` (induction on `(univ \ s).card`, `linearIndepOn_insert` +
+  "pick a vector outside a proper span" per step).
+- **Proposed fix:** upstream-eligible; mirror to `Mathlib/LinearAlgebra/LinearIndependent/Basic.lean`
+  (or `.../Lemmas.lean`) as a general `LinearIndepOn`-extension lemma over an arbitrary
+  finite-dimensional `V` and `Fintype ι`, then have `Steer.lean` consume the mirror. Kept local for
+  now (the Pencil files are non-module; a mirror pulls a module-system import into the cone) — lift
+  in a cleanup round or the next toucher.
+- **Status:** open.
+
 ### [mirror-candidate] `Matrix.dotProduct`/`Matrix.det` glue lemmas are unnamespaced; no packaged `LinearIndependent`-rows-iff-`det≠0` for a square family
 - **Where it bit:** Phase 39 (PENCIL) W5-L1 (`Molecular/Molecule/Pencil.lean`, `cross₃` and its
   properties). Two separate gaps in one commit: (1) `dotProduct_eq_iff`, `dotProduct_eq_zero_iff`,

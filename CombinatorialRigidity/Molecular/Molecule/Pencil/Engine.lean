@@ -617,54 +617,16 @@ theorem exists_smul_cross₃_pi_single {a b c d : Fin 4} (had : a ≠ d) (hbd : 
     rw [dotProduct_single_one, Pi.single_apply, if_neg hcd]
   exact exists_smul_cross₃_eq_of_linearIndependent hLI hd_ne hq1 hq2 hq3
 
-/-! ## L5-cut-v-b construction infra: a collision-free padding-slot assignment (Phase 39 W5-L5,
-`notes/Phase39-design.md` §"W5 leaf decomposition" L5-cut-v "v-b construction recipe")
+/-! ## W5-L4: the exact perp-sweeps at arity `2`/`1`/`0` (Phase 39 PENCIL, D6,
+`notes/Phase39-design.md` §"W5 design pass", verdict 2)
 
-**A correction to the "Lean landing, first slice" note's recipe, found assembling the main
-witness this session.** That note's `fillHub`/`index` plan assumed a *single fixed* padding
-value (`e₃`, uniformly) suffices whenever a body's `closedHubNbhd` needs padding — but `u_c`,
-`w₁`, `w₂` can each have as few as ONE real member (just `u_c` itself, or just the always-present
-`u_c` at `w₁`/`w₂`), needing **two** padding slots simultaneously. A single fixed padding value
-read at two different (unknown-in-advance) slots makes two of `cross₃`'s three arguments
-*literally equal*, forcing the output to `0` (a repeated row in the underlying determinant) —
-`PencilChartWF`'s own nonzero-ness conjunct would fail outright, not just a cosmetic ordering
-issue. Two safe values are not enough either: `Fin 3` has three slots, and any assignment
-*independent of which slot the real member occupies* must, by pigeonhole, put the same value at
-two slots for **some** placement of the real member (verified by direct case exhaustion before
-landing the fix below) — so the assignment must depend on the actual selector, not just the slot
-index. -/
-
-/-- **A `Fin 3` "rank among earlier marked slots" function is injective on the marked slots**
-(Phase 39 W5-L5, L5-cut-v-b infra, the fix for the padding-collision gap above): for any
-`p : Fin 3 → Prop`, the map `i ↦ #{j < i | p j}` takes distinct values on any two distinct
-`i, j` with `p i` and `p j`. Feeds the eventual padding assignment: read a body's *first* `none`
-selector slot with one designated fill vector and any *second* `none` slot with another, and
-this lemma certifies the two slots never collide, however `hubSel` happens to place the real
-member among the three slots. Proved via strict-monotonicity of the rank (the smaller of two
-marked indices witnesses a strict subset of "elements before it" versus "elements before the
-larger one", so `Finset.card_lt_card` separates the two ranks). -/
-theorem exists_fin3_rank_injOn (p : Fin 3 → Prop) [DecidablePred p] :
-    Set.InjOn (fun i => (Finset.univ.filter (fun j => j < i ∧ p j)).card) {i | p i} := by
-  have hmono : ∀ i j : Fin 3, i < j → p i →
-      (Finset.univ.filter (fun k => k < i ∧ p k)).card <
-        (Finset.univ.filter (fun k => k < j ∧ p k)).card := by
-    intro i j hlt hpi
-    have hsub : Finset.univ.filter (fun k => k < i ∧ p k) ⊆
-        Finset.univ.filter (fun k => k < j ∧ p k) := by
-      intro k hk
-      simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hk ⊢
-      exact ⟨hk.1.trans hlt, hk.2⟩
-    refine Finset.card_lt_card ((Finset.ssubset_iff_of_subset hsub).mpr ⟨i, ?_, ?_⟩)
-    · simp only [Finset.mem_filter, Finset.mem_univ, true_and]
-      exact ⟨hlt, hpi⟩
-    · simp only [Finset.mem_filter, Finset.mem_univ, true_and, not_and]
-      intro h; exact absurd h (lt_irrefl i)
-  intro i hi j hj hij
-  simp only [Set.mem_setOf_eq] at hi hj
-  by_contra hne
-  rcases lt_or_gt_of_ne hne with hlt | hgt
-  · exact absurd hij (hmono i j hlt hi).ne
-  · exact absurd hij (hmono j i hgt hj).ne'
+The arity-`2`/`1`/`0` companions of the arity-`3` proportional sweep above: with one or more
+`cross₃` fill slots free, a target vector orthogonal to the prescribed normals is hit **exactly**
+(no residual scalar to correct), by extending those normals to a basis of the target's perp and,
+where a slot survives, rescaling it (`cross₃`'s homogeneity). Arity `2` repackages the W5-L1 range
+identity
+`range_cross₃L_eq_perp` as an `∃ z`; arity `1`/`0` add successive "pick a vector outside the current
+span" choices. These feed the re-seeding lemma at bodies with `≤ 1` real prescribed normal. -/
 
 /-- **The arity-`2` perp-sweep, exact form** (Phase 39 W5-L4, piece-3 assembly infrastructure): the
 concrete `∃ z` packaging the design doc's L1 bullet left as an abstract range equality

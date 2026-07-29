@@ -138,8 +138,8 @@ facts above, per the selector's eight `some`/`none` shapes. Consumed with
 `Pi.single (σ i) 1` as slot `i`'s normal: the slot triple is then three distinct standard basis
 vectors avoiding `e_d`, so its `cross₃` is a nonzero multiple of `e_d`
 (`exists_smul_cross₃_pi_single`). This is the corrected form of the design doc's padding plans:
-no fixed function of the slot index alone can avoid collisions (the pigeonhole fact recorded at
-`exists_fin3_rank_injOn`), and the assignment here depends on the selector's actual shape. -/
+no fixed function of the slot index alone can avoid collisions (a pigeonhole fact), and the
+assignment here depends on the selector's actual shape. -/
 theorem exists_injective_extension_of_isFin3SelectorOf {S : Set α} {sel : Fin 3 → Option α}
     (hsel : IsFin3SelectorOf S sel) {idx : α → Fin 4} {d : Fin 4}
     (hd : ∀ w ∈ S, idx w ≠ d) (hinj : Set.InjOn idx S) :

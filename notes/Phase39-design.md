@@ -1844,7 +1844,9 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
       `linearIndepOn_smul_pi_single` / `linearIndependent_smul_pi_single_of_injective` (a
       nonzero-scaled family of distinct standard basis vectors is independent).
       `exists_fin3_rank_injOn` (`Engine.lean`) still unconsumed after v-b/v-c — retirement deferred
-      to v-d. **v-d: extraction gadget LANDED (2026-07-25)**, rest owed. The "LI `≤3`-family of
+      to v-d. **v-d COMPLETE (2026-07-29)**: gadget (2026-07-25) + WF-flattening bridge + `fillNbr`
+      re-choice, and `exists_fin3_rank_injOn` **RETIRED** (see the v-d completion sub-bullet at the
+      end of this leaf list). The "LI `≤3`-family of
       polynomial vectors at a witness ⟹ one somewhere-nonzero polynomial whose non-roots keep it LI"
       extraction gadget is `exists_polynomial_ne_zero_of_linearIndependent_pencilChart{Point,Normal}`
       (`Engine.lean`) — thin `[Field K]`-only specializations of the maximal-minor engine
@@ -1853,14 +1855,24 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
       engine exposes the witnessing minor rather than picking a point, so infiniteness enters only
       when `exists_common_seed_pencilRow_and_polynomials` extracts the common seed downstream). The
       "`cross₃Poly` cases" is the new normal mirror `pencilChartNormalPoly` (+ `nbrSlotPointPoly`) and
-      its eval identity, companions of the existing `pencilChartPointPoly`. **Still owed for v-d**:
-      the WF-conditions-at-the-flattening witnesses, the post-steering `fillNbr` re-choice lemma, and
-      the `exists_fin3_rank_injOn` retirement call (unconsumed by the gadget; retire with the
-      deletion-hygiene sweep unless the owed pieces want it). `Engine.lean` ≈ 1443 LoC now — the
-      remaining steering pieces likely want a new `Molecule/Pencil/Steer.lean`. **v-e**: the input-half assembly
-      `pencilNondegFeasible_induce_of_pendant_deg3` (re-seed → steer →
-      `isNondegPencilRealization_pencilChartFramework_of_pencilChartWF` → `.mono` with the
-      steered triple as `hdemote`). **v-f**: the rank-transport bricks (the `pencilRow` ↔
+      its eval identity, companions of the existing `pencilChartPointPoly`. **v-d completion
+      (2026-07-29, new file `Molecule/Pencil/Steer.lean`):** (a) the WF-flattening bridge —
+      `PencilSeed.toCoord` + coincidence lemmas + `pencilChartWF_standing_ofCoord_toCoord` (the four
+      `fillNbr`-free conjuncts); (b) the post-steering `fillNbr` re-choice
+      `exists_fillNbr_pencilChartWF_of_standing` — the four standing conjuncts + each non-hub body's
+      `some`-slot `nbrSlotPoint` LI (`hnbr_some`; at a fully-assigned body = conjunct 4, from steering;
+      at deg-`≤ 1` = the adjacent-point subfamily, from conjunct 3/5) ⟹ full `PencilChartWF` by a
+      `fillNbr`-only re-choice, via the general `exists_extend_linearIndependent` (fill an LI partial
+      family's free slots to a full LI family in dim `≥ n`; upstream-eligible, FRICTION
+      `[mirror-candidate]`); (c) **`exists_fin3_rank_injOn` RETIRED** — the re-choice takes the
+      extend-and-fill route not the pigeonhole, so it stayed unconsumed through all of v-a…v-d;
+      tree-wide deletion-hygiene sweep done (decl + orphaned section header retitled to the arity-`2/1/0`
+      perp-sweeps it fronted, `Witness.lean` docstring ref repointed to "a pigeonhole fact"). **v-e**:
+      the input-half assembly `pencilNondegFeasible_induce_of_pendant_deg3` (re-seed → steer →
+      `pencilChartWF_standing_ofCoord_toCoord` + `exists_fillNbr_pencilChartWF_of_standing` → full
+      `PencilChartWF` → `isNondegPencilRealization_pencilChartFramework_of_pencilChartWF` → `.mono`
+      with the steered triple as `hdemote`; add the `Pencil.Witness` import to `Steer.lean` here).
+      **v-f**: the rank-transport bricks (the `pencilRow` ↔
       chart-`rigidityRows` link bridge — the Engine docstring's deferred "hends-style"
       consumer — proportional row-span invariance, LI-subfamily extraction) + the output-half
       steering assembly. **v-g**: the glue (sub-case-3-shaped; conjunct 3 at `u_c`/`w₁`/`w₂`
@@ -1948,7 +1960,9 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
     session** (`Engine.lean`, right after `exists_smul_cross₃_pi_single`):
     `exists_fin3_rank_injOn` — the "rank among earlier `none`-marked slots" function is injective
     on the marked slots, so assigning the *first* marked slot one fill vector and any *second*
-    marked slot another never collides, however `hubSel` places the real member.
+    marked slot another never collides, however `hubSel` places the real member. (Historical: this
+    helper was RETIRED at v-d, unconsumed — the v-b assembly below took the injective-extension route
+    instead; the name no longer exists in the tree.)
 
     **The main assembly, LANDED (2026-07-25):**
     `exists_coord_linearIndependent_pencilChartPoint_of_pendant_deg3`, new file
@@ -1963,9 +1977,8 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
     `d` (`InjOn` + `≠ d` on the neighbourhood), it produces an *injective* `σ : Fin 3 → Fin 4`
     avoiding `d` and matching the selector, so every body's slot triple becomes three distinct
     `Pi.single`s and `exists_smul_cross₃_pi_single` closes ALL arities uniformly (no separate
-    arity-`1`/`2` orthogonality argument, no `exists_fin3_rank_injOn` consumption — that lemma
-    stays landed in `Engine.lean` as the recorded pigeonhole fact but is now unconsumed;
-    retirement decision deferred until v-c/v-d settle whether they want it). The 7-way
+    arity-`1`/`2` orthogonality argument, no `exists_fin3_rank_injOn` consumption — that helper
+    stayed unconsumed through v-a…v-d and was RETIRED at v-d). The 7-way
     hub-status split dissolves into the three per-body `InjOn`/`≠ d` proofs, fed by exactly the
     recipe's facts: `Graph.neighbor_eq_of_degree_eq_three` (u_c's neighbours exhausted), the
     `ncard ≤ 3` bound (not-all-three-hubs + at-most-one-third-party at a hub `w₁`/`w₂`), the
