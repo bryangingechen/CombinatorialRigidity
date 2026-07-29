@@ -18,7 +18,8 @@ extraction gadget `Engine.lean`; 2026-07-29 WF-flattening bridge + `fillNbr` re-
 COMPLETE** (2026-07-29, the input-half assembly `pencilNondegFeasible_induce_of_pendant_deg3`,
 `Steer.lean`: steer `G`'s re-seeded witness to a common seed carrying the demoted triple alongside
 every standing WF condition, `fillNbr` re-choice → full `PencilChartWF`, chart realization restricted
-to `H := G.induce V₁`; **v-f/v-g next** — *Hand-off*).
+to `H := G.induce V₁`); **v-f-1…4 LANDED** (2026-07-29, the output-half rank-transport bricks,
+`Steer.lean`); **v-f-5/6 + v-g next** — *Hand-off*.
 L6/L8 are parallel
 combinatorial tracks buildable now; L7 (the research core) is
 last; W4 after W5 (phase opened 2026-07-23, recon-first). `Molecule/Pencil.lean` split into
@@ -189,16 +190,26 @@ the bridge (v-f-1), the row-span scaling invariance (v-f-2), and the full `le_an
 the steered seed + nonzero hinges — both produced from landed bricks (v-b/v-c witnesses,
 `exists_smul_eq_extensor_of_extensorThroughPoint_pair`, `exists_common_seed_pencilRow_and_polynomials`).
 
-**Next concrete commit — v-f-1/2/3/4 (the genuinely-new rank bricks).** The link bridge
-`pencilRow_mem_rigidityRows_of_mem_edgeSet` + row-span scaling invariance
-`span_rigidityRows_eq_of_supportExtensor_proportional` + the re-seeding proportionality (v-f-3) + the
-output rank `le_antisymm` (v-f-4); v-f-1/2/4 already spike-proved. Then v-f-5 (clean-mirror normal
-primitive `exists_common_seed_linearIndepOn_pencilChartNormal`, optional) and **v-f-6** (the output-half
-assembly, mirroring v-e's `pencilNondegFeasible_induce_of_pendant_deg3` at `H` with the rank rows +
-promoted families steered). Then **v-g** (the sub-case-3-shaped glue — conjunct 3 at `u_c`/`w₁`/`w₂` from
-the steered promoted families, `hlb₂ = 0` rank verbatim — plus the shell/successor rewire: discharge
-`hcutPendant3` in `pencilPair_of_not_twoEdgeConnected` and `pencil_conjecture_of_arms_pair`, add
-`[Infinite K]` there, and the blueprint restatement). Full leaf detail + exact signatures:
+**v-f-1…4 LANDED (2026-07-29, `Steer.lean`; *Decisions made*).** The four genuinely-new rank bricks:
+v-f-1 link bridge (`pencilRow_mem_rigidityRows_of_mem_edgeSet`), v-f-2 row-span scaling invariance
+(`span_rigidityRows_eq_of_supportExtensor_proportional`), v-f-3 re-seeding proportionality
+(`exists_smul_supportExtensor_eq_pencilChartFramework_of_reseed`), v-f-4 output rank `le_antisymm`
+(`finrank_span_rigidityRows_pencilChartFramework_eq_of_independent_pencilRow`). The general
+`BodyHingeFramework` panel-row machinery was reused verbatim (no new import).
+
+**Next concrete commit — v-f-6 (the output-half assembly capstone).** Mirror v-e's
+`pencilNondegFeasible_induce_of_pendant_deg3` (`Steer.lean`) at `H := G.induce V₁`, ADDING the rank
+rows steered alongside (one `exists_common_seed_pencilRow_and_polynomials` call — `hLI` = the
+v-f-1/v-f-3/extraction `pencilRow` subfamily at the flattening, `P` = the standing point + promoted
+normal conditions via the point/normal gadgets) and the rank conclusion (v-f-4); the demoted-triple
+(v-b) and promoted-family (v-c) "satisfiable somewhere" certificates are landed. Owes a small
+`pencilChartFramework_congr`-on-points helper (`pencilChartFramework` reads points only, so the
+point-preserving `fillNbr` re-choice keeps the rank). **v-f-5** (the optional clean-mirror normal
+primitive `exists_common_seed_linearIndepOn_pencilChartNormal`) may be folded in or landed first.
+Then **v-g** (the sub-case-3-shaped glue — conjunct 3 at `u_c`/`w₁`/`w₂` from the steered promoted
+families, `hlb₂ = 0` rank verbatim — plus the shell/successor rewire: discharge `hcutPendant3` in
+`pencilPair_of_not_twoEdgeConnected` and `pencil_conjecture_of_arms_pair`, add `[Infinite K]` there,
+and the blueprint restatement). Full leaf detail + exact signatures:
 `notes/Phase39-design.md` §"W5 leaf decomposition" L5-cut-v "v-f decomposition".
 
 **L6/L8 are parallel combinatorial tracks** buildable now (L6: habitat feasibility, the
@@ -220,6 +231,22 @@ neighbor — is `notes/IdeaBacklog.md`.
 
 ## Decisions made during this phase
 
+- **L5-cut-v-f-1…4 LANDED — the output-half rank-transport bricks** (2026-07-29,
+  `Molecule/Pencil/Steer.lean`): **v-f-1** link bridge (`pencilRow_mem_rigidityRows_of_mem_edgeSet` +
+  helper `pencilRow_eq_panelRow_pencilChartFramework`) — a genuine-edge chart `pencilRow` IS the chart
+  framework's own `panelRow`, hence a rigidity row (landed general `panelRow_mem_rigidityRows_of_link`);
+  **v-f-2** row-span scaling invariance (`span_rigidityRows_eq_of_supportExtensor_proportional`) — per-edge
+  proportional support extensors ⟹ equal rigidity-row spans (`Submodule.span_singleton_smul_eq`);
+  **v-f-3** the one new leaf, re-seeding proportionality
+  (`exists_smul_supportExtensor_eq_pencilChartFramework_of_reseed`) — the re-seeded chart hinge is a
+  nonzero multiple of the witness hinge, via `exists_smul_eq_extensor_of_extensorThroughPoint_pair` +
+  extensor bilinearity (local `extensor_pair_smul`); **v-f-4** output rank `le_antisymm`
+  (`finrank_span_rigidityRows_pencilChartFramework_eq_of_independent_pencilRow`) — LI `pencilRow`
+  subfamily of size target + nonzero hinges ⟹ `finrank = target` (lower = v-f-1 + `finrank_span_eq_card`
+  + `Submodule.finrank_mono`; upper = B2 `finrank_span_rigidityRows_add_deficiency_le`). The general
+  `BodyHingeFramework` panel-row machinery reused verbatim (no new import, no re-proof). FRICTION
+  `[mirror-candidate]`: `extensor_pair_smul` (belongs in `Extensor.lean`, kept local pending the
+  deep-rebuild-free mirror). Gates green (build warning-clean + lint); axioms clean.
 - **L5-cut-v-f RECONNED + compiler-spiked — output-half rank-transport, GO no obstruction** (2026-07-29,
   design-pass, docs-only; canonical record `notes/Phase39-design.md` §"W5 leaf decomposition" L5-cut-v
   "v-f decomposition"). The output half is a faithful pencil-mirror of the landed panel lemma

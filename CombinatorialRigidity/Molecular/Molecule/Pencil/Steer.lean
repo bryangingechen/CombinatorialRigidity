@@ -558,4 +558,175 @@ theorem pencilNondegFeasible_induce_of_pendant_deg3 [Finite α] [Finite β] [Inf
   rw [hveq, hcnbhd]
   exact hdemote_set
 
+/-! ## The output-half rank-transport bricks (Phase 39 W5-L5 L5-cut-v-f) -/
+
+/-- **v-f-1 (link bridge, helper): a chart `pencilRow` at a genuine edge IS the chart framework's
+own `panelRow`** (Phase 39 W5-L5 L5-cut-v-f, the Engine docstring's deferred "hends-style"
+consumer; `notes/Phase39-design.md` §"W5 leaf decomposition" L5-cut-v "v-f decomposition"). The
+graph-free annihilator row `pencilRow hubSel G.endsOf q i` (`Engine.lean`) reads exactly the
+`pencilChartFramework (PencilSeed.ofCoord q) hubSel G`'s own supporting extensor at the edge `i.1`
+(`pencilChartFramework_supportExtensor_of_mem_edgeSet`, using the canonical selector `G.endsOf`),
+so at a genuine edge it is definitionally that framework's `panelRow` at the same index — the whole
+bridge is unfolding both sides and rewriting the extensor. -/
+theorem pencilRow_eq_panelRow_pencilChartFramework [Inhabited α]
+    (hubSel : α → Fin 3 → Option α) (q : α × Fin 4 × Fin 4 → K) {G : Graph α β}
+    {i : β × Set.powersetCard (Fin 4) 2 × Set.powersetCard (Fin 4) 2} (he : i.1 ∈ E(G)) :
+    pencilRow hubSel G.endsOf q i
+      = (pencilChartFramework (PencilSeed.ofCoord q) hubSel G).panelRow G.endsOf i := by
+  rw [pencilRow, BodyHingeFramework.panelRow,
+    pencilChartFramework_supportExtensor_of_mem_edgeSet (PencilSeed.ofCoord q) hubSel he]
+
+/-- **v-f-1 (link bridge): a chart `pencilRow` at a genuine edge is a rigidity row of the chart
+framework** (Phase 39 W5-L5 L5-cut-v-f). Composes the row-identity
+`pencilRow_eq_panelRow_pencilChartFramework` with the landed general
+`BodyHingeFramework.panelRow_mem_rigidityRows_of_link` (`Pinning.lean`) at the canonical selector
+`G.endsOf` — every genuine edge links its `endsOf` bodies (`isLink_endsOf`). This is the lower-bound
+feeder of the output-half `le_antisymm`: the steered LI `pencilRow` subfamily lands in the chart's
+rigidity-row span. -/
+theorem pencilRow_mem_rigidityRows_of_mem_edgeSet [Inhabited α]
+    (hubSel : α → Fin 3 → Option α) (q : α × Fin 4 × Fin 4 → K) {G : Graph α β}
+    {i : β × Set.powersetCard (Fin 4) 2 × Set.powersetCard (Fin 4) 2} (he : i.1 ∈ E(G)) :
+    pencilRow hubSel G.endsOf q i
+      ∈ (pencilChartFramework (PencilSeed.ofCoord q) hubSel G).rigidityRows := by
+  obtain ⟨e, t₁, t₂⟩ := i
+  rw [pencilRow_eq_panelRow_pencilChartFramework hubSel q he]
+  exact (pencilChartFramework (PencilSeed.ofCoord q) hubSel G).panelRow_mem_rigidityRows_of_link
+    G.endsOf (u := (G.endsOf e).1) (w := (G.endsOf e).2) rfl (G.isLink_endsOf he) t₁ t₂
+
+/-- **v-f-2: two frameworks on the same graph with per-edge proportional support extensors have
+equal rigidity-row spans** (Phase 39 W5-L5 L5-cut-v-f). Because the hinge-row block
+`r(p(e)) = (span {C(p(e))})^⊥` (`hingeRowBlock`) depends on the supporting extensor only through the
+line it spans, a nonzero per-edge scalar `c • F₁.supportExtensor e = F₂.supportExtensor e` on every
+link leaves each block — hence the whole rigidity-row *set* (`rigidityRows` quantifies over links) —
+unchanged (`Submodule.span_singleton_smul_eq`). Consumed by the output half: the re-seeded chart
+framework has hinges proportional to the witness framework's (v-f-3), so their rigidity-row spans,
+and thus their ranks, coincide. -/
+theorem span_rigidityRows_eq_of_supportExtensor_proportional {k : ℕ}
+    (F₁ F₂ : BodyHingeFramework K k α β) (hg : F₁.graph = F₂.graph)
+    (hprop : ∀ e u v, F₁.graph.IsLink e u v →
+      ∃ c : K, c ≠ 0 ∧ c • F₁.supportExtensor e = F₂.supportExtensor e) :
+    Submodule.span K F₁.rigidityRows = Submodule.span K F₂.rigidityRows := by
+  have hblock : ∀ e u v, F₁.graph.IsLink e u v → F₁.hingeRowBlock e = F₂.hingeRowBlock e := by
+    intro e u v hlink
+    obtain ⟨c, hc, hceq⟩ := hprop e u v hlink
+    have hspan : Submodule.span K {F₂.supportExtensor e}
+        = Submodule.span K {F₁.supportExtensor e} := by
+      rw [← hceq]; exact Submodule.span_singleton_smul_eq hc.isUnit _
+    rw [F₁.hingeRowBlock_apply, F₂.hingeRowBlock_apply, hspan]
+  have hset : F₁.rigidityRows = F₂.rigidityRows := by
+    ext φ
+    constructor
+    · rintro ⟨e, u, v, hlink, r, hr, rfl⟩
+      exact ⟨e, u, v, hg ▸ hlink, r, hblock e u v hlink ▸ hr, rfl⟩
+    · rintro ⟨e, u, v, hlink, r, hr, rfl⟩
+      have hlink₁ : F₁.graph.IsLink e u v := by rw [hg]; exact hlink
+      exact ⟨e, u, v, hlink₁, r, (hblock e u v hlink₁).symm ▸ hr, rfl⟩
+  rw [hset]
+
+/-- **Scaling both slots of a `2`-extensor scales it by the product of the scalars** (Phase 39
+W5-L5 L5-cut-v-f, the arithmetic core of v-f-3): `extensor ![a • x, b • y] = (a * b) • extensor
+![x, y]`, two applications of the single-slot multilinearity `extensor_update_smul`
+(`Extensor.lean`). A general `extensor` fact whose canonical home is `Extensor.lean`; kept local
+here to avoid rebuilding that deep-upstream module for the rank-brick commit — see
+`notes/FRICTION.md`. -/
+theorem extensor_pair_smul (a b : K) (x y : Fin 4 → K) :
+    extensor (![a • x, b • y] : Fin 2 → Fin 4 → K)
+      = (a * b) • extensor (![x, y] : Fin 2 → Fin 4 → K) := by
+  have e1 : (![a • x, y] : Fin 2 → Fin 4 → K)
+      = Function.update (![x, y] : Fin 2 → Fin 4 → K) 0 (a • (![x, y] : Fin 2 → Fin 4 → K) 0) := by
+    funext i; fin_cases i <;> simp
+  have e0 : (![a • x, b • y] : Fin 2 → Fin 4 → K)
+      = Function.update (![a • x, y] : Fin 2 → Fin 4 → K) 1
+          (b • (![a • x, y] : Fin 2 → Fin 4 → K) 1) := by
+    funext i; fin_cases i <;> simp
+  rw [e0, extensor_update_smul, e1, extensor_update_smul, smul_smul, mul_comm b a]
+
+/-- **v-f-3: the re-seeded chart framework's hinge is a nonzero multiple of the witness hinge**
+(Phase 39 W5-L5 L5-cut-v-f, the one genuinely-new rank leaf; produces v-f-2's `hprop`). For a
+nondegenerate pencil realization `IsNondegPencilRealization H F₁ normal₁ point₁` and a re-seeding
+whose chart points reproduce the realization's own points up to a nonzero per-body scalar
+(`hpt : pencilChartPoint seed₁ hubSel w = c_w • point₁ w`, the `exists_pencilSeed_of_nondeg`
+output), each link's chart supporting extensor
+`(pencilChartFramework seed₁ hubSel H).supportExtensor e` is a nonzero multiple of
+`F₁.supportExtensor e`. The landed
+`exists_smul_eq_extensor_of_extensorThroughPoint_pair` (`Statement.lean`) forces the nonzero hinge
+`F₁.supportExtensor e` — passing through both endpoints' points (the through-point conjunct) and
+carrying the independent pair (the adjacent-distinctness conjunct) — onto `extensor ![point₁ x,
+point₁ y]` at the canonical endpoints `x, y = G.endsOf e`; extensor bilinearity
+(`extensor_pair_smul`) absorbs the reproduction scalars `c_x, c_y` into the proportionality. Feeds
+v-f-2 to transport the witness framework's rank to the re-seeded chart. -/
+theorem exists_smul_supportExtensor_eq_pencilChartFramework_of_reseed [Inhabited α]
+    {H : Graph α β} {F₁ : BodyHingeFramework K 2 α β} {normal₁ point₁ : α → Fin 4 → K}
+    (h₁ : IsNondegPencilRealization H F₁ normal₁ point₁)
+    {seed₁ : PencilSeed K α} {hubSel : α → Fin 3 → Option α}
+    (hpt : ∀ w ∈ V(H), ∃ c : K, c ≠ 0 ∧ pencilChartPoint seed₁ hubSel w = c • point₁ w)
+    {e : β} {u v : α} (hlink : H.IsLink e u v) :
+    ∃ c : K, c ≠ 0 ∧ c • F₁.supportExtensor e
+      = (pencilChartFramework seed₁ hubSel H).supportExtensor e := by
+  obtain ⟨⟨⟨-, -, hSuppNe, -⟩, -, -, hThru⟩, hB, -, -⟩ := h₁
+  have he : e ∈ E(H) := hlink.edge_mem
+  have hEnds : H.IsLink e (H.endsOf e).1 (H.endsOf e).2 := H.isLink_endsOf he
+  have hthru := hThru e (H.endsOf e).1 (H.endsOf e).2 hEnds
+  have hind : LinearIndependent K ![point₁ (H.endsOf e).1, point₁ (H.endsOf e).2] :=
+    hB e (H.endsOf e).1 (H.endsOf e).2 hEnds
+  obtain ⟨a, ha_ne, ha_eq⟩ :=
+    exists_smul_eq_extensor_of_extensorThroughPoint_pair (hSuppNe e) hthru.1 hthru.2 hind
+  obtain ⟨cx, hcx_ne, hcx_eq⟩ := hpt (H.endsOf e).1 hEnds.left_mem
+  obtain ⟨cy, hcy_ne, hcy_eq⟩ := hpt (H.endsOf e).2 hEnds.right_mem
+  refine ⟨cx * cy * a, mul_ne_zero (mul_ne_zero hcx_ne hcy_ne) ha_ne, ?_⟩
+  rw [pencilChartFramework_supportExtensor_of_mem_edgeSet seed₁ hubSel he]
+  apply ScrewSpace.ext
+  rw [ScrewSpace.val_smul, ScrewSpace.val_mk, hcx_eq, hcy_eq, extensor_pair_smul, ← ha_eq,
+    smul_smul]
+
+/-- **v-f-4: the chart framework's rigidity-row rank pinches to the deficiency target** (Phase 39
+W5-L5 L5-cut-v-f, the output-rank `le_antisymm`). Given a linearly independent `pencilRow` subfamily
+of size the target rank `D(|V(G)|−1) − def(G̃)` at the steered seed `PencilSeed.ofCoord q`, indexed
+by genuine edges (`hslink`), and nonzero hinges everywhere links occur (`hC`), the rigidity-row span
+of `pencilChartFramework (PencilSeed.ofCoord q) hubSel G` has finrank exactly the target. Lower
+bound: each subfamily row is a chart rigidity row (v-f-1), so `finrank_span_eq_card` +
+`Submodule.finrank_mono` give `Nat.card s ≤ finrank`. Upper bound: the landed deterministic B2 bound
+`BodyHingeFramework.finrank_span_rigidityRows_add_deficiency_le` (`GenericityDevice.lean`) at the
+nonzero hinges. The mirror of the panel lemma
+`finrank_span_rigidityRows_ofNormals_of_isGenericNormals` (`PanelGeneric.lean`), with the panel
+proof's genericity-over-`q` step replaced by explicit steering (supplied by v-f-6). -/
+theorem finrank_span_rigidityRows_pencilChartFramework_eq_of_independent_pencilRow
+    [Inhabited α] [Finite α] [Finite β] {n : ℕ}
+    (hn : Graph.bodyBarDim n = screwDim 2) {G : Graph α β} (hGne : V(G).Nonempty)
+    (hubSel : α → Fin 3 → Option α) {q : α × Fin 4 × Fin 4 → K}
+    (hC : ∀ e u v, G.IsLink e u v →
+      (pencilChartFramework (PencilSeed.ofCoord q) hubSel G).supportExtensor e ≠ 0)
+    {s : Set (β × Set.powersetCard (Fin 4) 2 × Set.powersetCard (Fin 4) 2)}
+    (hslink : ∀ i ∈ s, (i : β × _ × _).1 ∈ E(G))
+    (hsLI : LinearIndependent K fun i : s => pencilRow hubSel G.endsOf q (i : β × _ × _))
+    (hscard : (Nat.card s : ℤ) = screwDim 2 * ((V(G).ncard : ℤ) - 1) - G.deficiency n) :
+    (Module.finrank K (Submodule.span K
+        (pencilChartFramework (PencilSeed.ofCoord q) hubSel G).rigidityRows) : ℤ)
+      = screwDim 2 * ((V(G).ncard : ℤ) - 1) - G.deficiency n := by
+  classical
+  haveI : Fintype s := Fintype.ofFinite s
+  -- Lower bound: the independent `pencilRow` subfamily lands in the chart's rigidity-row span.
+  have hsub : Submodule.span K
+        (Set.range fun i : s => pencilRow hubSel G.endsOf q (i : β × _ × _))
+      ≤ Submodule.span K (pencilChartFramework (PencilSeed.ofCoord q) hubSel G).rigidityRows := by
+    rw [Submodule.span_le]
+    rintro _ ⟨i, rfl⟩
+    exact Submodule.subset_span
+      (pencilRow_mem_rigidityRows_of_mem_edgeSet hubSel q (hslink i.1 i.2))
+  have hlbN : Nat.card s ≤ Module.finrank K (Submodule.span K
+      (pencilChartFramework (PencilSeed.ofCoord q) hubSel G).rigidityRows) :=
+    calc Nat.card s = Fintype.card s := Nat.card_eq_fintype_card
+      _ = Module.finrank K (Submodule.span K
+            (Set.range fun i : s => pencilRow hubSel G.endsOf q (i : β × _ × _))) :=
+          (finrank_span_eq_card hsLI).symm
+      _ ≤ _ := Submodule.finrank_mono hsub
+  have hlb : (Nat.card s : ℤ) ≤ (Module.finrank K (Submodule.span K
+      (pencilChartFramework (PencilSeed.ofCoord q) hubSel G).rigidityRows) : ℤ) := by
+    exact_mod_cast hlbN
+  -- Upper bound: the deterministic B2 deficiency bound at the nonzero hinges.
+  have hub := BodyHingeFramework.finrank_span_rigidityRows_add_deficiency_le
+    (pencilChartFramework (PencilSeed.ofCoord q) hubSel G) hn hGne hC
+  simp only [pencilChartFramework_graph] at hub
+  exact le_antisymm hub (by rw [← hscard]; exact hlb)
+
 end CombinatorialRigidity.Molecular

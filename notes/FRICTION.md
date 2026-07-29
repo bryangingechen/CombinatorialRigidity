@@ -116,6 +116,22 @@ to be re-derived by re-reading entries later.
   in a cleanup round or the next toucher.
 - **Status:** open.
 
+### [mirror-candidate] No packaged "scale two slots of a `2`-extensor" lemma — `extensor ![a • x, b • y] = (a*b) • extensor ![x, y]`
+- **Where it bit:** Phase 39 (PENCIL) W5-L5 L5-cut-v-f, the re-seeding proportionality brick
+  (`Molecular/Molecule/Pencil/Steer.lean`, `exists_smul_supportExtensor_eq_pencilChartFramework_of_reseed`,
+  v-f-3). The re-seeded chart hinge `extensor ![c_x • point x, c_y • point y]` had to be turned into
+  `(c_x * c_y) • extensor ![point x, point y]` to absorb the reproduction scalars into the hinge
+  proportionality v-f-2 consumes.
+- **Friction:** the single-slot multilinearity `extensor_update_smul` (`Extensor.lean`) is the only
+  packaged scaling fact; the two-slot form needs two nested `Function.update` rewrites plus `smul_smul`.
+  Proved locally as `extensor_pair_smul`.
+- **Proposed fix:** its canonical home is `Extensor.lean` (it is about the project's own `extensor`,
+  not mathlib), as a `Finset.prod`-form `extensor (fun i => c i • v i) = (∏ i, c i) • extensor v`
+  (one `MultilinearMap.map_smul_univ`) or the 2-slot specialization. Kept local in `Steer.lean` for
+  now to avoid rebuilding the deep-upstream `Extensor.lean` for the rank-brick commit — lift when a
+  second consumer appears or in a cleanup round.
+- **Status:** open.
+
 ### [mirror-candidate] `Matrix.dotProduct`/`Matrix.det` glue lemmas are unnamespaced; no packaged `LinearIndependent`-rows-iff-`det≠0` for a square family
 - **Where it bit:** Phase 39 (PENCIL) W5-L1 (`Molecular/Molecule/Pencil.lean`, `cross₃` and its
   properties). Two separate gaps in one commit: (1) `dotProduct_eq_iff`, `dotProduct_eq_zero_iff`,
