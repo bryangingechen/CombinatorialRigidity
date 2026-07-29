@@ -172,6 +172,67 @@ theorem pencilChartPointPoly_eval (hubSel : α → Fin 3 → Option α) (v : α)
       = hubSlotNormal (PencilSeed.ofCoord q) hubSel v 2 from
       funext fun j => hubSlotNormalPoly_eval hubSel v 2 q j]
 
+/-- **Slot `i` of `v`'s neighbour-selector, read as a point vector and lifted to `MvPolynomial`**
+(Phase 39 W5-L5 L5-cut-v-d): the polynomial mirror of `nbrSlotPoint`, feeding
+`pencilChartNormalPoly`'s non-hub branch. At a `some w` slot it is the selected neighbour's
+constructed-point polynomial (`pencilChartPointPoly`); at a `none` slot it reads the seed's
+`fillNbr` slot directly, which `PencilSeed.ofCoord` couples to role `slot.succ`
+(`pencilXPoly slot.succ v`). -/
+noncomputable def nbrSlotPointPoly (hubSel nbrSel : α → Fin 3 → Option α) (v : α) (slot : Fin 3) :
+    Fin 4 → MvPolynomial (α × Fin 4 × Fin 4) K :=
+  match nbrSel v slot with
+  | some w => pencilChartPointPoly hubSel w
+  | none => pencilXPoly slot.succ v
+
+/-- **`nbrSlotPointPoly` evaluates to the actual `nbrSlotPoint` value** (Phase 39 W5-L5
+L5-cut-v-d): the `some` branch is `pencilChartPointPoly_eval`, the `none` branch reads off
+`PencilSeed.ofCoord`'s `fillNbr := q (·, slot.succ, ·)` coupling via `pencilXPoly_eval`. -/
+theorem nbrSlotPointPoly_eval (hubSel nbrSel : α → Fin 3 → Option α) (v : α) (slot : Fin 3)
+    (q : α × Fin 4 × Fin 4 → K) (i : Fin 4) :
+    MvPolynomial.eval q (nbrSlotPointPoly hubSel nbrSel v slot i)
+      = nbrSlotPoint (PencilSeed.ofCoord q) hubSel nbrSel v slot i := by
+  simp only [nbrSlotPointPoly, nbrSlotPoint, PencilSeed.ofCoord]
+  cases nbrSel v slot with
+  | some w => exact pencilChartPointPoly_eval hubSel w q i
+  | none => exact pencilXPoly_eval slot.succ v q i
+
+open Classical in
+/-- **The chart's constructed normal, lifted to `MvPolynomial`** (Phase 39 W5-L5 L5-cut-v-d, the
+"`cross₃Poly` cases" mirror): the polynomial companion of `pencilChartNormal`. At a pencil hub `v`
+it is the seed's free hub-normal, which `PencilSeed.ofCoord` couples to role `0`
+(`pencilXPoly 0 v`); otherwise it is the `cross₃Poly` of the three (padded) closed-neighbourhood
+slot-point polynomials — a literal `4×4` determinant of degree-≤3 rows (each `nbrSlotPointPoly` is a
+constructed point), hence degree ≤ 9. The hub test `G.PencilHub v` is seed-independent, so it lifts
+verbatim into an `if`. -/
+noncomputable def pencilChartNormalPoly (hubSel nbrSel : α → Fin 3 → Option α) (G : Graph α β)
+    (v : α) : Fin 4 → MvPolynomial (α × Fin 4 × Fin 4) K :=
+  if G.PencilHub v then pencilXPoly 0 v
+  else cross₃Poly (nbrSlotPointPoly hubSel nbrSel v 0) (nbrSlotPointPoly hubSel nbrSel v 1)
+    (nbrSlotPointPoly hubSel nbrSel v 2)
+
+/-- **`pencilChartNormalPoly` evaluates to the actual `pencilChartNormal` value** (Phase 39 W5-L5
+L5-cut-v-d): the seed-independent hub test splits both `if`s together; the hub branch is
+`pencilXPoly_eval` against `PencilSeed.ofCoord`'s `hubNormal := q (·, 0, ·)`, the non-hub branch
+pushes `MvPolynomial.eval` through `cross₃Poly` (`cross₃Poly_eval`) and rewrites each slot via
+`nbrSlotPointPoly_eval`. -/
+theorem pencilChartNormalPoly_eval (hubSel nbrSel : α → Fin 3 → Option α) (G : Graph α β) (v : α)
+    (q : α × Fin 4 × Fin 4 → K) (i : Fin 4) :
+    MvPolynomial.eval q (pencilChartNormalPoly hubSel nbrSel G v i)
+      = pencilChartNormal (PencilSeed.ofCoord q) hubSel nbrSel G v i := by
+  rw [pencilChartNormalPoly, pencilChartNormal]
+  split_ifs with hv
+  · rw [pencilXPoly_eval]; rfl
+  · rw [cross₃Poly_eval,
+      show (fun j => MvPolynomial.eval q (nbrSlotPointPoly hubSel nbrSel v 0 j))
+        = nbrSlotPoint (PencilSeed.ofCoord q) hubSel nbrSel v 0 from
+        funext fun j => nbrSlotPointPoly_eval hubSel nbrSel v 0 q j,
+      show (fun j => MvPolynomial.eval q (nbrSlotPointPoly hubSel nbrSel v 1 j))
+        = nbrSlotPoint (PencilSeed.ofCoord q) hubSel nbrSel v 1 from
+        funext fun j => nbrSlotPointPoly_eval hubSel nbrSel v 1 q j,
+      show (fun j => MvPolynomial.eval q (nbrSlotPointPoly hubSel nbrSel v 2 j))
+        = nbrSlotPoint (PencilSeed.ofCoord q) hubSel nbrSel v 2 from
+        funext fun j => nbrSlotPointPoly_eval hubSel nbrSel v 2 q j]
+
 /-- **The point-join's screw-basis coordinate, lifted to `MvPolynomial`** (Phase 39 W5-L3, the
 pencil `annihRowPoly` mirror's second stage — the grade-`2` analogue of the panel layer's
 `panelSupportPoly`/`normalsJoinPoly` and the body-and-hinge layer's `hingeExtensorPoly`, *without*
@@ -316,6 +377,68 @@ theorem exists_polynomial_ne_zero_of_linearIndependent_pencilRow [Finite α] [Fi
   obtain ⟨Q, hQ0, hQ⟩ :=
     exists_polynomial_ne_zero_of_linearIndependent_at_reindex e g c φ hg (p₀ := q₀) (s := s) h
   exact ⟨Q, hQ0, hQ⟩
+
+/-! ### L5-cut-v-d: the chart-family steering extraction gadget (Phase 39 W5-L5,
+`notes/Phase39-design.md` §"W5 leaf decomposition" L5-cut-v, the v-d leaf)
+
+The steering half of the L5-cut-v discharge: the somewhere-witnesses (`Witness.lean`, v-b/v-c)
+certify the chart's constructed points / normals linearly independent at *one* seed; these two
+specializations of the maximal-minor engine
+(`exists_polynomial_ne_zero_of_linearIndependent_at_reindex`) turn each such witness into a single
+seed-polynomial, nonzero at the witness seed, whose every non-root keeps the family independent —
+exactly the "nonvanishing somewhere" input `exists_common_seed_pencilRow_and_polynomials` needs (so
+one common steered seed serves the rows minor *and* all the demoted/promoted independence
+witnesses). The engine needs no infiniteness hypothesis (it exposes the witnessing minor rather
+than picking a point); `[Infinite K]` enters only when the product-route workhorse above extracts
+the common seed. The coordinate identification is the identity `(Fin 4 → K) ≃ₗ (Fin 4 → K)`
+reindexed by `finCongr (Module.finrank_fin_fun K) : Fin (finrank K (Fin 4 → K)) ≃ Fin 4`, and the
+`hg` coordinate identity is `pencilChartPointPoly_eval` / `pencilChartNormalPoly_eval`. -/
+
+/-- **Chart-point steering gadget** (Phase 39 W5-L5 L5-cut-v-d): for any endpoint selector
+`ends : ι → α` (finite `ι`) and any subfamily of the chart's constructed points linearly
+independent at a seed `q₀`, a single seed-polynomial nonzero at `q₀` whose non-roots keep that
+subfamily independent. Consumes witness (i) (`Witness.lean`) after transporting its `![·]` family to
+the subtype shape. A direct instance of `exists_polynomial_ne_zero_of_linearIndependent_at_reindex`
+with `W := Fin 4 → K`, coordinate polynomials `pencilChartPointPoly`, and identification
+`hg := pencilChartPointPoly_eval`. -/
+theorem exists_polynomial_ne_zero_of_linearIndependent_pencilChartPoint [Finite α]
+    {ι : Type*} [Finite ι] (hubSel : α → Fin 3 → Option α) (ends : ι → α)
+    {q₀ : α × Fin 4 × Fin 4 → K} {s : Set ι}
+    (h : LinearIndependent K
+      (fun i : s => pencilChartPoint (PencilSeed.ofCoord q₀) hubSel (ends i))) :
+    ∃ Q : MvPolynomial (α × Fin 4 × Fin 4) K, MvPolynomial.eval q₀ Q ≠ 0 ∧
+      ∀ q, MvPolynomial.eval q Q ≠ 0 →
+        LinearIndependent K
+          (fun i : s => pencilChartPoint (PencilSeed.ofCoord q) hubSel (ends i)) :=
+  exists_polynomial_ne_zero_of_linearIndependent_at_reindex (finCongr (Module.finrank_fin_fun K))
+    (fun q i => pencilChartPoint (PencilSeed.ofCoord q) hubSel (ends i))
+    (fun i j => pencilChartPointPoly hubSel (ends i) j)
+    (LinearEquiv.refl K (Fin 4 → K))
+    (fun q i j => (pencilChartPointPoly_eval hubSel (ends i) q j).symm)
+    h
+
+/-- **Chart-normal steering gadget** (Phase 39 W5-L5 L5-cut-v-d): the `pencilChartNormal`
+companion of the point gadget. For any endpoint selector `ends : ι → α` and any subfamily of the
+chart's constructed normals on `G` linearly independent at a seed `q₀`, a single seed-polynomial
+nonzero at `q₀` whose non-roots keep it independent. Consumes witness (ii) (`Witness.lean`) — its
+`LinearIndepOn K (pencilChartNormal …) (closedHubNbhd v)` conclusion is this shape at `ι := α`,
+`ends := id`, `s := closedHubNbhd v`. A direct instance of the reindexed engine with coordinate
+polynomials `pencilChartNormalPoly` and `hg := pencilChartNormalPoly_eval`. -/
+theorem exists_polynomial_ne_zero_of_linearIndependent_pencilChartNormal [Finite α]
+    {ι : Type*} [Finite ι] (hubSel nbrSel : α → Fin 3 → Option α) (G : Graph α β) (ends : ι → α)
+    {q₀ : α × Fin 4 × Fin 4 → K} {s : Set ι}
+    (h : LinearIndependent K
+      (fun i : s => pencilChartNormal (PencilSeed.ofCoord q₀) hubSel nbrSel G (ends i))) :
+    ∃ Q : MvPolynomial (α × Fin 4 × Fin 4) K, MvPolynomial.eval q₀ Q ≠ 0 ∧
+      ∀ q, MvPolynomial.eval q Q ≠ 0 →
+        LinearIndependent K
+          (fun i : s => pencilChartNormal (PencilSeed.ofCoord q) hubSel nbrSel G (ends i)) :=
+  exists_polynomial_ne_zero_of_linearIndependent_at_reindex (finCongr (Module.finrank_fin_fun K))
+    (fun q i => pencilChartNormal (PencilSeed.ofCoord q) hubSel nbrSel G (ends i))
+    (fun i j => pencilChartNormalPoly hubSel nbrSel G (ends i) j)
+    (LinearEquiv.refl K (Fin 4 → K))
+    (fun q i j => (pencilChartNormalPoly_eval hubSel nbrSel G (ends i) q j).symm)
+    h
 
 /-- **Finitely many polynomials each nonvanishing somewhere have a common non-root**
 (Phase 39 W5-L3, the product-route workhorse's generic half): over an infinite field, if every

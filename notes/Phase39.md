@@ -12,7 +12,10 @@ discharge route): assessed GO, route PINNED (2026-07-25 recon); **v-a landed**
 `G`'s chart, new file `Molecule/Pencil/Witness.lean`, closed via the abstract padding lemma
 `exists_injective_extension_of_isFin3SelectorOf`); **v-c LANDED** (2026-07-25,
 `exists_coord_linearIndependent_pencilChartNormal_of_pendant_deg3`, same file — witness (ii) on
-`H := G.induce V₁`'s chart, reusing v-b's toolkit + combinatorics); next: **v-d** (*Hand-off*).
+`H := G.induce V₁`'s chart, reusing v-b's toolkit + combinatorics); **v-d extraction gadget LANDED**
+(2026-07-25, `Engine.lean`: the two chart-family steering gadgets + the `pencilChartNormalPoly`
+mirror); next: **rest of v-d** (WF-flattening witnesses + `fillNbr` re-choice + the
+`exists_fin3_rank_injOn` retirement call — *Hand-off*).
 L6/L8 are parallel
 combinatorial tracks buildable now; L7 (the research core) is
 last; W4 after W5 (phase opened 2026-07-23, recon-first). `Molecule/Pencil.lean` split into
@@ -118,9 +121,12 @@ Full record, grounding, and the W0–W5 decomposition:
   **L5-cut-v bullet**. **v-a/-b/-c all LANDED** (`Molecule/Pencil/Witness.lean`); the witness (ii)
   lemma (v-c) reuses v-b's toolkit + combinatorics, adding the pendant config `hVG` so `v_c` is a
   degree-`1` non-hub (never in a family — matching the design's "promoted families are
-  `fillNbr`-free" analysis). `exists_fin3_rank_injOn` (`Engine.lean`) stays unconsumed (neither v-b
-  nor v-c used it); retirement deferred to v-d with the deletion-hygiene sweep. **Next: v-d** (the
-  polynomial-steering extraction gadget, *Hand-off*).
+  `fillNbr`-free" analysis). **v-d's extraction gadget LANDED** (2026-07-25, `Engine.lean`:
+  `exists_polynomial_ne_zero_of_linearIndependent_pencilChart{Point,Normal}` + the
+  `pencilChartNormalPoly`/`nbrSlotPointPoly` mirror). `exists_fin3_rank_injOn` (`Engine.lean`) still
+  unconsumed (the gadget did not use it either); retirement call deferred to the rest-of-v-d commit
+  (the remaining pieces may want it — decide then, with the deletion-hygiene sweep). **Next: rest of
+  v-d** (WF-flattening witnesses + `fillNbr` re-choice, *Hand-off*).
   Feasibility propagation *as a proposition* stays open but bounded: the triangle-hub mechanism
   refutes any purely combinatorial (`≤ 3`-closedHubNbhd) feasibility criterion, while leaving L6's
   habitat claim untouched (no triangles in the no-proper-rigid habitat at `|V| ≥ 4`).
@@ -151,24 +157,25 @@ Full record, grounding, and the W0–W5 decomposition:
 
 **The phase stays OPEN** (the two superseding 2026-07-24 adjudications — no phase-close).
 
-**Owed housekeeping** (done with the v-c commit, 2026-07-25): the note was compressed per
-`notes/CLAUDE.md` *Forward-weighted note* (settled W0–W3 / W5-L0–L4 / older L5 entries one-lined;
-canonical detail in the design doc + git history). `exists_fin3_rank_injOn`'s retirement stays
-deferred to v-d (still unconsumed after v-b/v-c, but v-d's steering gadget may want it — decide
-then, with the deletion-hygiene sweep).
-
 **W5-L5 is closed modulo the carried family** (loop/base/cut arms + the successor
 `pencil_conjecture_of_arms_pair`, `Pencil/Pair2.lean`, node
 `thm:pencil-conditional-realization-pair` green; `hcontract`/`hsplit`/`hcutPendant3` remain open
 hypotheses — full detail in *Decisions made*, below).
 
-**Next: L5-cut-v-d — the polynomial-steering extraction gadget.** v-a/-b/-c all landed
-(`Molecule/Pencil/Witness.lean`: the demoted-triple point witness (i), and the promoted-normal
-witness (ii) `exists_coord_linearIndependent_pencilChartNormal_of_pendant_deg3`). v-d is the "LI
-`≤3`-family of polynomial vectors at a witness ⟹ one somewhere-nonzero polynomial whose non-roots
-keep it LI" extraction gadget (pair-minor + `cross₃Poly` cases), plus the WF-conditions-at-the-
-flattening witnesses and the post-steering `fillNbr` re-choice lemma; it is the natural place to
-decide `exists_fin3_rank_injOn`'s retirement (still unconsumed). Then **v-e**…**v-g** per the
+**Next: rest of L5-cut-v-d.** The **extraction gadget LANDED** (2026-07-25, `Engine.lean`): the two
+chart-family steering gadgets `exists_polynomial_ne_zero_of_linearIndependent_pencilChart{Point,
+Normal}` (thin `[Field K]`-only specializations of the maximal-minor engine
+`exists_polynomial_ne_zero_of_linearIndependent_at_reindex` — no `[Infinite K]`; that enters only in
+the product-route workhorse downstream) + the "`cross₃Poly` cases" mirror `pencilChartNormalPoly`
+(with `nbrSlotPointPoly`) and its eval identity. **Still owed for v-d** (the smallest next commit is
+the first of these): (1) the **WF-conditions-at-the-flattening witnesses** — the standing
+`PencilChartWF` conjuncts hold at the `fillNbr`-free flattening of the re-seeded seed; (2) the
+**post-steering `fillNbr` re-choice lemma** — `fillNbr` re-chosen freely at deg-`≤1` non-hub bodies
+without disturbing the steered conditions; (3) the **`exists_fin3_rank_injOn` retirement call**
+(`Engine.lean`, still unconsumed — the gadget did not use it; retire with the tree-wide
+deletion-hygiene sweep IF (1)/(2) do not want it, else keep). `Engine.lean` is now ~1443 LoC; the
+remaining steering pieces / v-e–v-g assemblies likely warrant a new `Molecule/Pencil/Steer.lean`
+(imports Engine + Witness) rather than pushing Engine past the ~1500 cap. Then **v-e**…**v-g** per the
 design doc's L5-cut-v leaf list (the last leaf rewires the
 shell/successor — deleting `hcutPendant3`, adding `[Infinite K]` — and restates the blueprint
 node). **L6/L8 are parallel combinatorial tracks** buildable now (L6: habitat feasibility, the
@@ -190,6 +197,16 @@ neighbor — is `notes/IdeaBacklog.md`.
 
 ## Decisions made during this phase
 
+- **L5-cut-v-d extraction gadget LANDED — the chart-family steering gadgets** (2026-07-25,
+  `Engine.lean`): `exists_polynomial_ne_zero_of_linearIndependent_pencilChart{Point,Normal}` turn a
+  chart point/normal subfamily LI at one seed into a seed-polynomial nonzero there whose non-roots
+  keep it LI (the "nonvanishing somewhere" input the product-route workhorse consumes). Both are
+  thin `[Field K]`-only instances of the maximal-minor engine
+  `exists_polynomial_ne_zero_of_linearIndependent_at_reindex` (`φ := refl`,
+  `e := finCongr (Module.finrank_fin_fun K)`; `[Infinite K]` enters only downstream). New
+  "`cross₃Poly` cases" mirror `pencilChartNormalPoly` (+ `nbrSlotPointPoly`) + eval identity.
+  No new FRICTION (reused existing eval-mirror + engine-hookup patterns). `exists_fin3_rank_injOn`
+  still unconsumed. Gates green; axioms clean.
 - **L5-cut-v-c LANDED — the somewhere-witness on `H := G.induce V₁`'s chart** (2026-07-25,
   `exists_coord_linearIndependent_pencilChartNormal_of_pendant_deg3`, `Molecule/Pencil/Witness.lean`):
   the pinned witness (ii). Reuses v-b's toolkit (`exists_injective_extension_of_isFin3SelectorOf`

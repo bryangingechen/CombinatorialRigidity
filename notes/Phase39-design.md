@@ -1844,11 +1844,20 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
       `linearIndepOn_smul_pi_single` / `linearIndependent_smul_pi_single_of_injective` (a
       nonzero-scaled family of distinct standard basis vectors is independent).
       `exists_fin3_rank_injOn` (`Engine.lean`) still unconsumed after v-b/v-c — retirement deferred
-      to v-d. **v-d**: steering
-      bookkeeping — the "LI `≤3`-family of polynomial vectors at a witness ⟹ one
-      somewhere-nonzero polynomial whose non-roots keep it LI" extraction gadget (pair-minor
-      + `cross₃Poly` cases), the WF-conditions-at-the-flattening witnesses, and the
-      post-steering `fillNbr` re-choice lemma. **v-e**: the input-half assembly
+      to v-d. **v-d: extraction gadget LANDED (2026-07-25)**, rest owed. The "LI `≤3`-family of
+      polynomial vectors at a witness ⟹ one somewhere-nonzero polynomial whose non-roots keep it LI"
+      extraction gadget is `exists_polynomial_ne_zero_of_linearIndependent_pencilChart{Point,Normal}`
+      (`Engine.lean`) — thin `[Field K]`-only specializations of the maximal-minor engine
+      `exists_polynomial_ne_zero_of_linearIndependent_at_reindex` (`φ := LinearEquiv.refl`,
+      `e := finCongr (Module.finrank_fin_fun K)`; NB the gadget itself needs NO `[Infinite K]` — the
+      engine exposes the witnessing minor rather than picking a point, so infiniteness enters only
+      when `exists_common_seed_pencilRow_and_polynomials` extracts the common seed downstream). The
+      "`cross₃Poly` cases" is the new normal mirror `pencilChartNormalPoly` (+ `nbrSlotPointPoly`) and
+      its eval identity, companions of the existing `pencilChartPointPoly`. **Still owed for v-d**:
+      the WF-conditions-at-the-flattening witnesses, the post-steering `fillNbr` re-choice lemma, and
+      the `exists_fin3_rank_injOn` retirement call (unconsumed by the gadget; retire with the
+      deletion-hygiene sweep unless the owed pieces want it). `Engine.lean` ≈ 1443 LoC now — the
+      remaining steering pieces likely want a new `Molecule/Pencil/Steer.lean`. **v-e**: the input-half assembly
       `pencilNondegFeasible_induce_of_pendant_deg3` (re-seed → steer →
       `isNondegPencilRealization_pencilChartFramework_of_pencilChartWF` → `.mono` with the
       steered triple as `hdemote`). **v-f**: the rank-transport bricks (the `pencilRow` ↔
