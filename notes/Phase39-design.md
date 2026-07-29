@@ -1868,28 +1868,34 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
       extend-and-fill route not the pigeonhole, so it stayed unconsumed through all of v-a…v-d;
       tree-wide deletion-hygiene sweep done (decl + orphaned section header retitled to the arity-`2/1/0`
       perp-sweeps it fronted, `Witness.lean` docstring ref repointed to "a pigeonhole fact"). **v-e
-      (in progress)**: the input-half assembly `pencilNondegFeasible_induce_of_pendant_deg3` (re-seed
-      → steer → `pencilChartWF_standing_ofCoord_toCoord` + `exists_fillNbr_pencilChartWF_of_standing`
-      → full `PencilChartWF` → `isNondegPencilRealization_pencilChartFramework_of_pencilChartWF` →
-      `.mono` with the steered triple as `hdemote`; add the `Pencil.Witness` import to `Steer.lean`).
-      **Landed 2026-07-29 (`Steer.lean`):** the load-bearing "steer to a common seed" step, the
-      primitive `exists_common_seed_linearIndepOn_pencilChartPoint` — finitely many
-      `LinearIndepOn K (pencilChartPoint (ofCoord q) hubSel) (S i)` conditions each satisfiable
-      somewhere share one common seed (v-d point gadget at `ends := id` +
-      `exists_common_eval_ne_zero_of_forall_exists`, whence `[Infinite K]`). The key simplification it
-      encodes: every steered condition — conjunct 3 (`pencilChartPoint v ≠ 0`), conjunct 5 (adjacent
-      pairs), `hnbr_some` (assigned neighbour points), and the demoted triple — is a
-      `pencilChartPoint`-LI condition on a subset of `α`, so one engine call carries them all; no
-      `hubSlotNormal`/normal steering gadget is needed for the input half. **Remaining:** the
-      marshalling (feed the primitive one `S i` per condition — standing ones satisfiable at the
-      re-seed flattening `seed₀.toCoord`, the demoted triple at witness (i)'s seed — then re-extract
-      and run `exists_fillNbr_pencilChartWF_of_standing`) + the tail (chart realization + `.mono`).
-      **v-f**: the rank-transport bricks (the `pencilRow` ↔
-      chart-`rigidityRows` link bridge — the Engine docstring's deferred "hends-style"
-      consumer — proportional row-span invariance, LI-subfamily extraction) + the output-half
-      steering assembly. **v-g**: the glue (sub-case-3-shaped; conjunct 3 at `u_c`/`w₁`/`w₂`
-      from the steered promoted families, `hlb₂ = 0` rank verbatim) + the shell/successor
-      rewire + the blueprint restatement.
+      COMPLETE (2026-07-29, `Steer.lean`, imports `Pencil.{Reseed,Witness}`)**: the input-half assembly
+      `pencilNondegFeasible_induce_of_pendant_deg3` (`PencilNondegFeasible K G → PencilNondegFeasible K
+      (G.induce V₁)` under the pendant deg-`3` config + `hVG`, over `[Infinite K]`). Two landings —
+      first the "steer to a common seed" primitive `exists_common_seed_linearIndepOn_pencilChartPoint`
+      (finitely many `pencilChartPoint`-LI conditions each satisfiable somewhere share one common seed;
+      v-d point gadget `ends := id` + `exists_common_eval_ne_zero_of_forall_exists`, whence
+      `[Infinite K]`), then the assembly itself. The key simplification the primitive encodes: every
+      steered condition — conjunct 3 (`pencilChartPoint v ≠ 0`), conjunct 5 (adjacent pairs),
+      `hnbr_some` (assigned neighbour points), and the demoted triple — is a `pencilChartPoint`-LI
+      condition on a subset of `α`, so **one** engine call carries them all (index `α ⊕ (α×α) ⊕ Unit`);
+      no `hubSlotNormal`/normal steering gadget is needed for the input half. Assembly: re-seed
+      (`exists_pencilSeed_of_nondeg`) → marshal (standing conditions satisfiable at the flattening
+      `seed₀.toCoord` via `pencilChartWF_standing_ofCoord_toCoord`; triple at witness (i)'s seed) →
+      `exists_fillNbr_pencilChartWF_of_standing` → full `PencilChartWF` →
+      `isNondegPencilRealization_pencilChartFramework_of_pencilChartWF` → `.mono` to `H := G.induce V₁`
+      (`u_c` the only demotion, `degree_induce_eq_of_ne`; `H.closedNbhd u_c = {u_c,w₁,w₂}` the
+      `hdemote` residual, the surviving demoted triple). Three local helpers: `pencilChartPoint_congr`,
+      `linearIndepOn_triple_of_linearIndependent` (reverse `Fin 3` set↔indexed),
+      `linearIndepOn_nbrSlotPoint_isSome_of_pencilChartPoint` (the `hnbr_some` reindexing; TACTICS-QUIRKS
+      § 102 for the `choose`-tactic idiom). **v-f (next)**: the output-half — the normal analogue of the
+      primitive, `exists_common_seed_linearIndepOn_pencilChartNormal` (via the v-d normal gadget
+      `exists_polynomial_ne_zero_of_linearIndependent_pencilChartNormal`), plus the rank-transport bricks
+      (the `pencilRow` ↔ chart-`rigidityRows` link bridge — the Engine docstring's deferred "hends-style"
+      consumer — proportional row-span invariance, LI-subfamily extraction). The rank side is genuinely
+      new (not L7-hard) and may want its own recon or a multi-commit split at dispatch. **v-g**: the glue
+      (sub-case-3-shaped; conjunct 3 at `u_c`/`w₁`/`w₂` from the steered promoted families, `hlb₂ = 0`
+      rank verbatim) + the shell/successor rewire (discharge `hcutPendant3`, add `[Infinite K]`) + the
+      blueprint restatement.
 
     **v-b construction recipe (derived 2026-07-25; the witness LANDED same day — see "the main
     assembly, landed" below).** Re-deriving witness (i) against the CURRENT `Chart.lean`/

@@ -15,8 +15,10 @@ discharge route): assessed GO, route PINNED (2026-07-25 recon); **v-a landed**
 `H := G.induce V₁`'s chart, reusing v-b's toolkit + combinatorics); **v-d COMPLETE** (2026-07-25
 extraction gadget `Engine.lean`; 2026-07-29 WF-flattening bridge + `fillNbr` re-choice, new file
 `Molecule/Pencil/Steer.lean`; the superseded `exists_fin3_rank_injOn` retired same commit); **v-e
-in progress** (the common-seed steering primitive `exists_common_seed_linearIndepOn_pencilChartPoint`
-landed 2026-07-29, `Steer.lean`; the marshalling + tail remain — *Hand-off*).
+COMPLETE** (2026-07-29, the input-half assembly `pencilNondegFeasible_induce_of_pendant_deg3`,
+`Steer.lean`: steer `G`'s re-seeded witness to a common seed carrying the demoted triple alongside
+every standing WF condition, `fillNbr` re-choice → full `PencilChartWF`, chart realization restricted
+to `H := G.induce V₁`; **v-f/v-g next** — *Hand-off*).
 L6/L8 are parallel
 combinatorial tracks buildable now; L7 (the research core) is
 last; W4 after W5 (phase opened 2026-07-23, recon-first). `Molecule/Pencil.lean` split into
@@ -130,8 +132,8 @@ Full record, grounding, and the W0–W5 decomposition:
   conjuncts, then `exists_fillNbr_pencilChartWF_of_standing` closing conjunct 4 by the general
   extension lemma `exists_extend_linearIndependent`). `exists_fin3_rank_injOn` (`Engine.lean`)
   **RETIRED** same commit (deletion-hygiene sweep done — the re-choice does not consume it; it uses
-  the "extend an LI partial family by filling free slots" route, not the pigeonhole). **v-e in
-  progress: steering primitive landed (2026-07-29), marshalling + tail remain** (*Hand-off*).
+  the "extend an LI partial family by filling free slots" route, not the pigeonhole). **v-e COMPLETE
+  (2026-07-29): input-half assembly `pencilNondegFeasible_induce_of_pendant_deg3` landed** (*Hand-off*).
   Feasibility propagation *as a proposition* stays open but bounded: the triangle-hub mechanism
   refutes any purely combinatorial (`≤ 3`-closedHubNbhd) feasibility criterion, while leaving L6's
   habitat claim untouched (no triangles in the no-proper-rigid habitat at `|V| ≥ 4`).
@@ -167,36 +169,25 @@ Full record, grounding, and the W0–W5 decomposition:
 `thm:pencil-conditional-realization-pair` green; `hcontract`/`hsplit`/`hcutPendant3` remain open
 hypotheses — full detail in *Decisions made*, below).
 
-**v-d COMPLETE** (extraction gadget + WF-flattening bridge + `fillNbr` re-choice all landed;
-`exists_fin3_rank_injOn` retired — *Decisions made*). `Steer.lean` now carries the flattening bridge,
-the general extension lemma `exists_extend_linearIndependent`, and the re-choice
-`exists_fillNbr_pencilChartWF_of_standing` (standing conjuncts + per-body `some`-slot LI ⟹ full
-`PencilChartWF` via a `fillNbr`-only re-choice).
+**v-d/v-e COMPLETE — the input half is closed** (`Steer.lean`; *Decisions made*). `Steer.lean` now
+carries the flattening bridge, `exists_extend_linearIndependent`, the `fillNbr` re-choice
+`exists_fillNbr_pencilChartWF_of_standing`, the common-seed primitive
+`exists_common_seed_linearIndepOn_pencilChartPoint`, and the assembled input half
+`pencilNondegFeasible_induce_of_pendant_deg3` (its signature mirrors witness (i)'s config + `hVG`,
+adds `[Infinite K]`, concludes `PencilNondegFeasible K (G.induce V₁)`).
 
-**v-e in progress** — the input-half steering assembly `pencilNondegFeasible_induce_of_pendant_deg3`.
-**Landed 2026-07-29:** the load-bearing "steer to a common seed" step, the primitive
-`exists_common_seed_linearIndepOn_pencilChartPoint` (`Steer.lean`) — finitely many
-`LinearIndepOn K (pencilChartPoint (ofCoord q) hubSel) (S i)` conditions, each satisfiable somewhere,
-share one common seed (v-d point gadget + `exists_common_eval_ne_zero_of_forall_exists`, whence
-`[Infinite K]`). **Remaining (next commit):** the marshalling + tail. Marshalling — feed the
-primitive one `S i` per condition, each a `pencilChartPoint`-LI set satisfiable somewhere: conjunct 3
-= `{v}` singleton (`pencilChartPoint v ≠ 0`, via `cross₃_ne_zero_iff_linearIndependent`), conjunct 5
-= `{u,v}` adjacent pair (`LinearIndepOn.pair_iff`), `hnbr_some` = the `nbrSel`-assigned neighbour
-points (reindexed by the selector's injectivity), all satisfiable at the re-seed flattening
-`seed₀.toCoord` (`exists_pencilSeed_of_nondeg` + `pencilChartWF_standing_ofCoord_toCoord`); and the
-demoted triple `{u_c, w₁, w₂}` satisfiable at witness (i)'s seed
-(`exists_coord_linearIndependent_pencilChartPoint_of_pendant_deg3`, fed the re-seed's `hubSel`). Then
-re-extract each condition at the common seed, apply `exists_fillNbr_pencilChartWF_of_standing` (with
-`hnbr_some` from the marshalled neighbour-point families) → full `PencilChartWF G` at a seed sharing
-the steered `hubNormal`/`fillHub` (so the demoted triple, `fillNbr`-free, survives). Tail:
-`isNondegPencilRealization_pencilChartFramework_of_pencilChartWF` → `.mono` (to `H := G.induce V₁`)
-with the demoted triple as `hdemote` (needs `H.closedNbhd u_c = {u_c, w₁, w₂}` and "only `u_c` is
-demoted") → `PencilNondegFeasible K H`. Add the `Pencil.Witness` import to `Steer.lean` at that
-commit. Then **v-f** (rank-transport bricks + output-half steering assembly; the normal analogue of
-the primitive, `exists_common_seed_linearIndepOn_pencilChartNormal`, is the parallel brick there) and
-**v-g** (the sub-case-3-shaped glue + the shell/successor rewire deleting `hcutPendant3`, adding
-`[Infinite K]`, and the blueprint restatement). Full leaf detail:
-`notes/Phase39-design.md` §"W5 leaf decomposition" L5-cut-v.
+**Next concrete commit — v-f (output-half rank-transport bricks + steering assembly).** The normal
+analogue of the v-e primitive, `exists_common_seed_linearIndepOn_pencilChartNormal` (parallel to
+`exists_common_seed_linearIndepOn_pencilChartPoint`, via the v-d normal gadget
+`exists_polynomial_ne_zero_of_linearIndependent_pencilChartNormal`), is the parallel steering brick;
+on top of it, the rank-transport bricks (the `pencilRow` ↔ chart-`rigidityRows` link bridge — the
+Engine docstring's deferred "hends-style" consumer — proportional row-span invariance, LI-subfamily
+extraction). Assess/decompose at dispatch: the rank side is genuinely new (though NOT L7-hard), and
+this leaf may need its own recon or a multi-commit split. Then **v-g** (the sub-case-3-shaped glue —
+conjunct 3 at `u_c`/`w₁`/`w₂` from the steered promoted families, `hlb₂ = 0` rank verbatim — plus
+the shell/successor rewire: discharge `hcutPendant3` in `pencilPair_of_not_twoEdgeConnected` and
+`pencil_conjecture_of_arms_pair`, add `[Infinite K]` there, and the blueprint restatement). Full leaf
+detail: `notes/Phase39-design.md` §"W5 leaf decomposition" L5-cut-v.
 
 **L6/L8 are parallel combinatorial tracks** buildable now (L6: habitat feasibility, the
 `≤ 3` closed-hub-neighbourhood lemma + witness-seed construction + the `G′.Simple` sub-obligation,
@@ -217,16 +208,26 @@ neighbor — is `notes/IdeaBacklog.md`.
 
 ## Decisions made during this phase
 
-- **L5-cut-v-e (partial) — the common-seed chart-point steering primitive** (2026-07-29,
-  `Molecule/Pencil/Steer.lean`): `exists_common_seed_linearIndepOn_pencilChartPoint` — over
-  `[Infinite K]`/`[Finite α]`, finitely many `LinearIndepOn K (pencilChartPoint (ofCoord q) hubSel)
-  (S i)` conditions each satisfiable at some seed share one common seed. Thin composition of the v-d
-  point gadget (`exists_polynomial_ne_zero_of_linearIndependent_pencilChartPoint`, `ends := id`) +
-  `exists_common_eval_ne_zero_of_forall_exists`. This is v-e's load-bearing "steer to a common seed"
-  step: every standing conjunct (3 = `pencilChartPoint v ≠ 0`, 5 = adjacent pair, `hnbr_some` =
-  assigned neighbour points) and the demoted triple are all `pencilChartPoint`-LI conditions, so one
-  call carries them together. Unconsumed brick (v-d precedent); marshalling + tail are the next
-  commit (*Hand-off*). No new FRICTION, no blueprint node (unnamed infra). Gates + axioms clean.
+- **L5-cut-v-e COMPLETE — the input-half steering assembly** (2026-07-29,
+  `Molecule/Pencil/Steer.lean`, imports `Pencil.{Reseed,Witness}` added):
+  `pencilNondegFeasible_induce_of_pendant_deg3` — under the pendant deg-`3` config over `[Infinite K]`,
+  `PencilNondegFeasible K G → PencilNondegFeasible K (G.induce V₁)`. Re-seed `G`'s witness
+  (`exists_pencilSeed_of_nondeg`), feed the common-seed primitive one `pencilChartPoint`-LI set per
+  condition over the index `α ⊕ (α×α) ⊕ Unit` (conjunct 3 = `{v}`; conjunct 5 = adjacent `{u,v}`;
+  `hnbr_some` = the non-hub `closedNbhd v`; demoted triple = `{u_c,w₁,w₂}`) — standing ones satisfiable
+  at the flattening `seed₀.toCoord`, the triple at witness (i)'s seed — re-extract, `fillNbr` re-choice
+  → full `PencilChartWF`, then `isNondeg…_of_pencilChartWF` `.mono` to `H`, `u_c` the sole demotion
+  (`degree_induce_eq_of_ne`), `hdemote` = the surviving demoted triple. Three local helpers:
+  `pencilChartPoint_congr` (points ignore `fillNbr`), `linearIndepOn_triple_of_linearIndependent`
+  (reverse of Motive's `…_of_linearIndepOn`), `linearIndepOn_nbrSlotPoint_isSome_of_pencilChartPoint`
+  (the `hnbr_some` reindexing). FRICTION `[idiom]` → TACTICS-QUIRKS § 102 (`choose` tactic vs
+  `.choose_spec` in `simp`); reverse-triple noted on the open `n`-ary `LinearIndepOn.pair_iff` entry.
+  Gates + axioms clean.
+- **L5-cut-v-e (primitive) — the common-seed chart-point steering primitive** (2026-07-29,
+  `Steer.lean`): `exists_common_seed_linearIndepOn_pencilChartPoint` — finitely many
+  `pencilChartPoint`-LI conditions each satisfiable somewhere share one common seed (v-d point gadget
+  `ends := id` + `exists_common_eval_ne_zero_of_forall_exists`, whence `[Infinite K]`). The
+  load-bearing "steer to a common seed" step consumed by the v-e assembly above.
 - **L5-cut-v-d COMPLETE — post-steering `fillNbr` re-choice + `exists_fin3_rank_injOn` retired**
   (2026-07-29, `Molecule/Pencil/Steer.lean`): `exists_fillNbr_pencilChartWF_of_standing` closes
   `PencilChartWF`'s fourth conjunct from the four standing conjuncts

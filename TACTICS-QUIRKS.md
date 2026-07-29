@@ -129,6 +129,7 @@ failing pattern and the working fix.
 - *"Application type mismatch"* on a multi-arg call `f X idx t1 t2`, naming the **last** written argument against an unrelated-looking expected type (not an arity complaint) → § 97 (`X = S.field` was written without parens around `S.field idx`, so all four tokens became separate arguments to `f`; parenthesize `f (S.field idx) t1 t2`)
 - `fin_cases i <;> fin_cases j <;> simp_all` (or similar case-bash) times out with `(deterministic) timeout at simp`, even though the *same* tactic block compiles instantly standalone or in a shallower proof → § 99 (`simp_all`'s cost scales with the ambient context's complexity, not just the goal; hoist the light sub-goal's proof to occur before the heavy `have`s accumulate, and/or `clear` the goal-irrelevant heavy hypotheses inside that sub-proof's own `by` block — **not** a `maxHeartbeats` bump)
 - *"Application type mismatch"* on a hypothesis argument, naming an unrelated function type (`?m → Fin 3 → Option ?m`) as the expected type, after a lemma call with fewer `_` placeholders than the signature has *explicit binders* → § 100 (a grouped binder `(a b : T)` is **two** explicit slots, not one; count binders, not clauses, when filling `_ _ …`)
+- `simp only [someDef, h.choose_spec]` (or `(hex i).choose_spec`) fails with *"maximum recursion depth has been reached"*, where `someDef` is a `match`-def being reduced against a `some (…​.choose)` witness — even though the identical `simp only [someDef, hi]` with a *plain* witness `hi` compiles instantly → § 102 (the opaque `Exists.choose` term makes `simp`'s match-reduction loop; hoist a plain witness function with the **`choose` tactic** — `choose wsel hwsel using hex` — then `simp only [someDef, hwsel i]`)
 
 ## Sections
 
@@ -3740,3 +3741,30 @@ argument in one place.
 **Worked case:** Phase 39 (PENCIL) W5-L5 L5-cut-v-b, the `Fin 4` padding-slot pick facts
 (`Molecular/Molecule/Pencil/Witness.lean`, `exists_fin4_ne_ne_ne` and its two iterates feeding
 `exists_injective_extension_of_isFin3SelectorOf`).
+
+## 102. `simp only [matchDef, e.choose_spec]` blows `maxRecDepth` on an `Exists.choose` witness — hoist a plain witness with the `choose` *tactic*
+
+**Symptom.** Reducing a `match`-valued definition against a witness that came from
+`Exists.choose` — e.g. `simp only [nbrSlotPoint, (hex i).choose_spec]` where
+`nbrSlotPoint … = match nbrSel v ↑i with | some w => … | none => …` and
+`(hex i).choose_spec : nbrSel v ↑i = some (hex i).choose` — fails with *"maximum recursion depth
+has been reached"*. Deceptively, the **identical** `simp only [matchDef, hi]` with a *plain* local
+witness `hi : nbrSel v i = some w` compiles instantly (it is the standard match-reduction idiom,
+e.g. `Chart.lean`'s `dotProduct_pencilChartPoint_pencilChartNormal_of_mem_closedNbhd`).
+
+**Cause.** The rewrite target is an opaque `Exists.choose` application, not a variable. Rewriting
+`nbrSel v ↑i` to `some (hex i).choose` leaves a `match some (…​.choose) with …` whose iota-reduction
+`simp` tries to drive — and the `.choose`/`.choose_spec` pair keeps regenerating rewritable
+subterms, so `simp`'s inner loop recurses without making progress.
+
+**Fix.** Don't carry the witness at the term level. Hoist it with the **`choose` tactic**:
+`choose wsel hwsel using hex` turns `hex : ∀ i, ∃ w, P i w` into a *function* `wsel` and
+`hwsel : ∀ i, P i (wsel i)` with `wsel i` a plain application (no `casesOn`/`.choose` in its head).
+Then `simp only [matchDef, hwsel i]` reduces the match exactly as the plain-witness sibling does.
+Any `change`/`Subtype.ext` steps that referenced `(hex i).choose` transfer to `wsel i` unchanged.
+(This is the reduction-side cousin of § 79's `.choose` non-reduction trap, which is about
+projections through an unreduced `casesOn`.)
+
+**Worked case:** Phase 39 (PENCIL) W5-L5 L5-cut-v-e,
+`linearIndepOn_nbrSlotPoint_isSome_of_pencilChartPoint` (`Molecular/Molecule/Pencil/Steer.lean`) —
+the `nbrSel`-slot-to-selected-vertex reindexing for the `hnbr_some` marshalling.

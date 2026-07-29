@@ -2413,10 +2413,36 @@ Resolved by mirroring `LinearIndependent.dualMap_of_surjective` /
   every future fixed arity. Not attempted here — building the general bijection cleanly (handling
   `s.ncard`/`Fintype.card ↥s` compatibly) looked like more work than the one fixed-arity instance
   this commit needed.
-- **Status:** open (upstream-eligible, not yet mirrored — kept project-internal in
-  `Pencil/Engine.lean` per that file's own precedent of several similar bespoke
-  `Fin 3`-literal ↔ subtype-indexed-family bridge lemmas, e.g.
+- **Reverse direction also now landed** (Phase 39 W5-L5 L5-cut-v-e, 2026-07-29,
+  `linearIndepOn_triple_of_linearIndependent`, `Pencil/Steer.lean`): the `n = 3` *indexed → set*
+  converse (`LinearIndependent K ![f x, f y, f z]` + distinctness → `LinearIndepOn K f {x, y, z}`),
+  needed to feed witness (i)'s indexed-triple output into the set-based common-seed primitive. Same
+  bijection `Fin 3 → ↥{x,y,z}` (`Equiv.ofBijective`), transported by `linearIndependent_equiv` (the
+  precompose-with-equiv invariance) rather than `LinearIndependent.comp`. So the `n = 3` iff is now
+  complete project-side (both directions), still bespoke rather than the general
+  `linearIndepOn_iff_linearIndependent_comp_equiv` below.
+- **Status:** open (upstream-eligible, not yet mirrored — both `Fin 3` directions kept
+  project-internal, forward in `Pencil/Motive.lean`, reverse in `Pencil/Steer.lean`, per the
+  chart stack's precedent of bespoke `Fin 3`-literal ↔ subtype-indexed-family bridge lemmas, e.g.
   `linearIndepOn_pencilChartNormal_closedHubNbhd`).
+
+### [idiom] `simp only [someDef, e.choose_spec]` blows `maxRecDepth` when the def's match reduces against an `Exists.choose` term — hoist a plain witness with the `choose` *tactic*
+- **Where it bit:** Phase 39 W5-L5 L5-cut-v-e,
+  `linearIndepOn_nbrSlotPoint_isSome_of_pencilChartPoint` (`Pencil/Steer.lean`) — reducing
+  `nbrSlotPoint seed hubSel nbrSel v ↑i` (a `match nbrSel v ↑i with …`) to
+  `pencilChartPoint seed hubSel (hex i).choose` via
+  `simp only [nbrSlotPoint, (hex i).choose_spec]` (with `hex i : ∃ w, nbrSel v ↑i = some w`, so
+  `(hex i).choose_spec : nbrSel v ↑i = some (hex i).choose`) failed with *"maximum recursion depth
+  has been reached"*. The **same** `simp only [nbrSlotPoint, hi]` shape with a *plain* witness
+  `hi : nbrSel v i = some w` compiles instantly (`Chart.lean`'s
+  `dotProduct_pencilChartPoint_pencilChartNormal_of_mem_closedNbhd`); the only difference is the
+  witness being an opaque `Exists.choose` application rather than a local variable.
+- **Fix:** replace the term-level `hex`/`.choose`/`.choose_spec` with the **`choose` tactic** —
+  `choose wsel hwsel using hex` gives a plain function `wsel : _ → α` and
+  `hwsel : ∀ i, nbrSel v ↑i = some (wsel i)`. Then `simp only [nbrSlotPoint, hwsel i]` reduces the
+  match exactly as the plain-witness sibling does, no recursion. (The `change`/`Subtype.ext` steps
+  that use the witness are unaffected.)
+- **Status:** idiom. **Lifted to:** TACTICS-QUIRKS § 102.
 
 ### [idiom] `simp_all` case-bash timed out once copied into a deeper proof, despite compiling instantly standalone
 - **Where it bit:** Phase 39 W5-L4 piece 3 (normal side),

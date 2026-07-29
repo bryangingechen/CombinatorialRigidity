@@ -4,6 +4,8 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
 import CombinatorialRigidity.Molecular.Molecule.Pencil.Engine
+import CombinatorialRigidity.Molecular.Molecule.Pencil.Reseed
+import CombinatorialRigidity.Molecular.Molecule.Pencil.Witness
 
 /-!
 # WF conditions at the `fillNbr`-free flattening (Phase 39 PENCIL, W5-L5 L5-cut-v-d)
@@ -318,5 +320,242 @@ theorem exists_common_seed_linearIndepOn_pencilChartPoint [Finite α] [Infinite 
   choose P hP0 hP using hpoly
   obtain ⟨q, hq⟩ := exists_common_eval_ne_zero_of_forall_exists P (fun i => ⟨q₀ i, hP0 i⟩)
   exact ⟨q, fun i => hP i q (hq i)⟩
+
+/-! ## The input-half steering assembly (Phase 39 W5-L5 L5-cut-v-e) -/
+
+/-- **The chart's constructed point depends only on the seed's `hubNormal`/`fillHub`** (Phase 39
+W5-L5 L5-cut-v-e): two seeds agreeing on `hubNormal` and `fillHub` induce the same
+`pencilChartPoint`, since `pencilChartPoint`/`hubSlotNormal` never read `fillNbr`. This lets the
+post-steering `fillNbr` re-choice (`exists_fillNbr_pencilChartWF_of_standing`, whose output seed
+shares the input's `hubNormal`/`fillHub`) preserve the steered demoted-triple independence. -/
+theorem pencilChartPoint_congr {seed seed' : PencilSeed K α} (hubSel : α → Fin 3 → Option α)
+    (hhub : seed'.hubNormal = seed.hubNormal) (hfill : seed'.fillHub = seed.fillHub) :
+    pencilChartPoint seed' hubSel = pencilChartPoint seed hubSel := by
+  funext v
+  have hslot : ∀ i, hubSlotNormal seed' hubSel v i = hubSlotNormal seed hubSel v i := by
+    intro i
+    unfold hubSlotNormal
+    cases hubSel v i with
+    | none => rw [hfill]
+    | some w => rw [hhub]
+  simp only [pencilChartPoint, hslot]
+
+/-- **An independent literal `Fin 3` triple gives `LinearIndepOn` on the `3`-element set** (Phase 39
+W5-L5 L5-cut-v-e; the reverse of `linearIndependent_triple_of_linearIndepOn`, `Motive.lean`): the
+distinct-witness map `Fin 3 → ↥{x, y, z}` is a bijection, and `LinearIndependent` is invariant under
+precomposition with it (`linearIndependent_equiv`). Upstream-eligible (a general `LinearIndepOn`
+fact, no rigidity content); kept local pending a mirror — see `notes/FRICTION.md`. -/
+theorem linearIndepOn_triple_of_linearIndependent {V : Type*} [AddCommGroup V] [Module K V]
+    (f : α → V) {x y z : α} (hxy : x ≠ y) (hxz : x ≠ z) (hyz : y ≠ z)
+    (hLI : LinearIndependent K ![f x, f y, f z]) :
+    LinearIndepOn K f {x, y, z} := by
+  have hx : x ∈ ({x, y, z} : Set α) := by simp
+  have hy : y ∈ ({x, y, z} : Set α) := by simp
+  have hz : z ∈ ({x, y, z} : Set α) := by simp
+  set e : Fin 3 → ↥({x, y, z} : Set α) := ![⟨x, hx⟩, ⟨y, hy⟩, ⟨z, hz⟩] with he_def
+  have heinj : Function.Injective e := by
+    intro i j hij; fin_cases i <;> fin_cases j <;> simp_all [e, Subtype.ext_iff]
+  have hesurj : Function.Surjective e := by
+    rintro ⟨w, hw⟩
+    simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hw
+    rcases hw with rfl | rfl | rfl
+    · exact ⟨0, rfl⟩
+    · exact ⟨1, rfl⟩
+    · exact ⟨2, rfl⟩
+  set eqv : Fin 3 ≃ ↥({x, y, z} : Set α) := Equiv.ofBijective e ⟨heinj, hesurj⟩ with heqv_def
+  change LinearIndependent K (fun w : ↥({x, y, z} : Set α) => f ↑w)
+  have hcomp : (fun w : ↥({x, y, z} : Set α) => f ↑w) ∘ ⇑eqv = ![f x, f y, f z] := by
+    funext i; fin_cases i <;> rfl
+  exact (linearIndependent_equiv eqv).mp (by rw [hcomp]; exact hLI)
+
+/-- **The `nbrSel`-assigned-slot subfamily is independent when the closed-neighbourhood chart points
+are** (Phase 39 W5-L5 L5-cut-v-e; the reindexing the `hnbr_some` marshalling needs): at a non-hub
+`v` whose neighbour-selector is correct, `LinearIndepOn` of the chart's points over the closed
+neighbourhood transfers to `LinearIndepOn` of `nbrSlotPoint` over the selector's `some` slots. The
+witnessing map `slot ↦ selected vertex` is injective (selector clause 3), so
+`LinearIndependent.comp` carries the closed-neighbourhood independence to the slots (`nbrSlotPoint`
+reads off exactly the selected vertex's chart point at a `some` slot). The reverse feed of
+`linearIndepOn_pencilChartPoint_closedNbhd` (`Chart.lean`) for the `some`-subfamily. -/
+theorem linearIndepOn_nbrSlotPoint_isSome_of_pencilChartPoint {G : Graph α β} {v : α}
+    (seed : PencilSeed K α) {hubSel nbrSel : α → Fin 3 → Option α}
+    (hSel : IsFin3SelectorOf (G.closedNbhd v) (nbrSel v))
+    (hLI : LinearIndepOn K (pencilChartPoint seed hubSel) (G.closedNbhd v)) :
+    LinearIndepOn K (nbrSlotPoint seed hubSel nbrSel v) {i | (nbrSel v i).isSome} := by
+  classical
+  have hex : ∀ i : ↥{i | (nbrSel v i).isSome}, ∃ w, nbrSel v ↑i = some w :=
+    fun i => Option.isSome_iff_exists.mp i.2
+  choose wsel hwsel using hex
+  set g : ↥{i | (nbrSel v i).isSome} → ↥(G.closedNbhd v) :=
+    fun i => ⟨wsel i, hSel.1 ↑i (wsel i) (hwsel i)⟩ with hg_def
+  have hginj : Function.Injective g := by
+    intro i j hij
+    have hval : wsel i = wsel j := congrArg Subtype.val hij
+    exact Subtype.ext (hSel.2.2 ↑i ↑j (wsel j) (hval ▸ hwsel i) (hwsel j))
+  have hLI' : LinearIndependent K (fun w : ↥(G.closedNbhd v) => pencilChartPoint seed hubSel ↑w) :=
+    hLI
+  have hcomp := hLI'.comp g hginj
+  have heq : (fun w : ↥(G.closedNbhd v) => pencilChartPoint seed hubSel ↑w) ∘ g
+      = fun i : ↥{i | (nbrSel v i).isSome} => nbrSlotPoint seed hubSel nbrSel v ↑i := by
+    funext i
+    change pencilChartPoint seed hubSel (wsel i) = nbrSlotPoint seed hubSel nbrSel v ↑i
+    simp only [nbrSlotPoint, hwsel i]
+  change LinearIndependent K
+    (fun i : ↥{i | (nbrSel v i).isSome} => nbrSlotPoint seed hubSel nbrSel v ↑i)
+  rw [← heq]; exact hcomp
+
+/-- **The pendant-cut input half: feasibility descends to the induced side** (Phase 39 W5-L5,
+L5-cut-v-e; the input-half assembly of `notes/Phase39-design.md` §"W5 leaf decomposition" L5-cut-v
+candidate route (i)). Under the sub-case-4 pendant configuration (`G.degree u_c = 3`, cut edge
+`e_c : u_c–v_c` the only crossing edge, `u_c`'s two `V₁`-links `e₁ : u_c–w₁`, `e₂ : u_c–w₂`) with
+`G` simple and nondegeneracy-feasible over an infinite field, `H := G.induce V₁` is itself
+nondegeneracy-feasible. Steers `G`'s re-seeded feasibility witness (`exists_pencilSeed_of_nondeg`)
+to a single seed making the demoted triple `{u_c, w₁, w₂}` — the residual the restriction `.mono`
+owes at the demoted hub `u_c` — linearly independent *alongside* every standing `PencilChartWF`
+condition (`exists_common_seed_linearIndepOn_pencilChartPoint`), re-establishes the fourth WF
+conjunct by the post-steering `fillNbr` re-choice (`exists_fillNbr_pencilChartWF_of_standing`,
+point-preserving so the demoted triple survives), and restricts the resulting chart realization
+(`isNondegPencilRealization_pencilChartFramework_of_pencilChartWF`) to `H`
+(`IsNondegPencilRealization.mono`, `u_c` the only demoted body — the sole `V₁`-vertex whose degree
+changes across the one crossing edge). Feeds the IH's generic half at the one-smaller `H` in the
+eventual sub-case-4 discharge (L5-cut-v-g). -/
+theorem pencilNondegFeasible_induce_of_pendant_deg3 [Finite α] [Finite β] [Infinite K]
+    {G : Graph α β} {V₁ : Set α} {e_c e₁ e₂ : β} {u_c v_c w₁ w₂ : α}
+    (hSimple : G.Simple) (hfeas : PencilNondegFeasible K G)
+    (hl_c : G.IsLink e_c u_c v_c) (hu_c : u_c ∈ V₁) (hv_c : v_c ∉ V₁)
+    (hVG : V(G) = V₁ ∪ {v_c}) (hcut : (G.cutEdges V₁).ncard ≤ 1) (hdeg : G.degree u_c = 3)
+    (hl₁ : G.IsLink e₁ u_c w₁) (hl₂ : G.IsLink e₂ u_c w₂)
+    (hw₁ : w₁ ∈ V₁) (hw₂ : w₂ ∈ V₁) (hw12 : w₁ ≠ w₂) :
+    PencilNondegFeasible K (G.induce V₁) := by
+  classical
+  haveI := hSimple
+  haveI := hSimple.toLoopless
+  haveI : Inhabited α := ⟨u_c⟩
+  haveI : G.LocallyFinite := inferInstance
+  have hv1 : v_c ≠ w₁ := by rintro rfl; exact hv_c hw₁
+  have hv2 : v_c ≠ w₂ := by rintro rfl; exact hv_c hw₂
+  -- The re-seeded feasibility witness of `G`.
+  obtain ⟨F₀, normal₀, point₀, hnd⟩ := id hfeas
+  obtain ⟨seed₀, hubSel, nbrSel, hWF₀, -, -⟩ := exists_pencilSeed_of_nondeg hnd
+  -- The flattening `seed₀.toCoord` reproduces `seed₀`'s chart points.
+  have hpt_eq : pencilChartPoint (PencilSeed.ofCoord seed₀.toCoord) hubSel
+      = pencilChartPoint seed₀ hubSel := funext (pencilChartPoint_ofCoord_toCoord seed₀ hubSel)
+  -- Steer to a common seed carrying every standing condition together with the demoted triple.
+  obtain ⟨q, hq⟩ := exists_common_seed_linearIndepOn_pencilChartPoint (K := K) hubSel
+    (fun i : α ⊕ (α × α) ⊕ Unit => match i with
+      | Sum.inl v => if G.PencilHub v then ({v} : Set α) else G.closedNbhd v
+      | Sum.inr (Sum.inl p) => if G.Adj p.1 p.2 then ({p.1, p.2} : Set α) else ∅
+      | Sum.inr (Sum.inr _) => ({u_c, w₁, w₂} : Set α))
+    (by
+      rintro (v | ⟨u, v⟩ | _)
+      · -- conjunct 3 (all bodies) + `hnbr` (non-hubs): satisfiable at the flattening.
+        change ∃ q, LinearIndepOn K (pencilChartPoint (PencilSeed.ofCoord q) hubSel)
+          (if G.PencilHub v then ({v} : Set α) else G.closedNbhd v)
+        refine ⟨seed₀.toCoord, ?_⟩
+        rw [hpt_eq]
+        by_cases hv : G.PencilHub v
+        · rw [if_pos hv]
+          exact (linearIndepOn_singleton_iff K).mpr (pencilChartPoint_ne_zero seed₀ (hWF₀.2.2.1 v))
+        · rw [if_neg hv]
+          exact linearIndepOn_pencilChartPoint_closedNbhd seed₀ (hWF₀.2.1 v hv) (hWF₀.2.2.2.1 v hv)
+      · -- conjunct 5 (adjacent pairs): satisfiable at the flattening.
+        change ∃ q, LinearIndepOn K (pencilChartPoint (PencilSeed.ofCoord q) hubSel)
+          (if G.Adj u v then ({u, v} : Set α) else ∅)
+        by_cases hadj : G.Adj u v
+        · rw [if_pos hadj]
+          obtain ⟨e, he⟩ := hadj
+          refine ⟨seed₀.toCoord, ?_⟩
+          rw [hpt_eq]
+          exact (LinearIndepOn.pair_iff (pencilChartPoint seed₀ hubSel) he.ne).mpr
+            (LinearIndependent.pair_iff.mp (hWF₀.2.2.2.2 e u v he))
+        · rw [if_neg hadj]
+          exact ⟨seed₀.toCoord, linearIndepOn_empty K _⟩
+      · -- the demoted triple: satisfiable at witness (i)'s seed.
+        change ∃ q, LinearIndepOn K (pencilChartPoint (PencilSeed.ofCoord q) hubSel)
+          ({u_c, w₁, w₂} : Set α)
+        obtain ⟨q, hq⟩ := exists_coord_linearIndependent_pencilChartPoint_of_pendant_deg3
+          hSimple hfeas hl_c hu_c hv_c hcut hdeg hl₁ hl₂ hw₁ hw₂ hw12 hubSel hWF₀.1
+        exact ⟨q, linearIndepOn_triple_of_linearIndependent
+          (pencilChartPoint (PencilSeed.ofCoord q) hubSel) hl₁.ne hl₂.ne hw12 hq⟩)
+  set seed := PencilSeed.ofCoord q with hseed_def
+  -- Reconstruct the standing `PencilChartWF` conditions at the common seed.
+  have hptnz : ∀ v, pencilChartPoint seed hubSel v ≠ 0 := by
+    intro v
+    by_cases hv : G.PencilHub v
+    · have h : LinearIndepOn K (pencilChartPoint seed hubSel)
+          (if G.PencilHub v then ({v} : Set α) else G.closedNbhd v) := hq (Sum.inl v)
+      rw [if_pos hv] at h
+      exact (linearIndepOn_singleton_iff K).mp h
+    · have h : LinearIndepOn K (pencilChartPoint seed hubSel)
+          (if G.PencilHub v then ({v} : Set α) else G.closedNbhd v) := hq (Sum.inl v)
+      rw [if_neg hv] at h
+      exact (linearIndepOn_singleton_iff K).mp (h.mono (Set.singleton_subset_iff.mpr (Or.inl rfl)))
+  have hhub_LI : ∀ v, LinearIndependent K
+      ![hubSlotNormal seed hubSel v 0, hubSlotNormal seed hubSel v 1,
+        hubSlotNormal seed hubSel v 2] := by
+    intro v
+    have h := hptnz v
+    rw [pencilChartPoint] at h
+    exact (cross₃_ne_zero_iff_linearIndependent _ _ _).mp h
+  have hpt_LI : ∀ e u v, G.IsLink e u v → LinearIndependent K
+      ![pencilChartPoint seed hubSel u, pencilChartPoint seed hubSel v] := by
+    intro e u v hl
+    have h : LinearIndepOn K (pencilChartPoint seed hubSel)
+        (if G.Adj u v then ({u, v} : Set α) else ∅) := hq (Sum.inr (Sum.inl (u, v)))
+    rw [if_pos hl.adj] at h
+    rw [LinearIndependent.pair_iff]
+    exact (LinearIndepOn.pair_iff (pencilChartPoint seed hubSel) hl.ne).mp h
+  have hnbr_some : ∀ v, ¬ G.PencilHub v → LinearIndepOn K (nbrSlotPoint seed hubSel nbrSel v)
+      {i | (nbrSel v i).isSome} := by
+    intro v hv
+    have h : LinearIndepOn K (pencilChartPoint seed hubSel)
+        (if G.PencilHub v then ({v} : Set α) else G.closedNbhd v) := hq (Sum.inl v)
+    rw [if_neg hv] at h
+    exact linearIndepOn_nbrSlotPoint_isSome_of_pencilChartPoint seed (hWF₀.2.1 v hv) h
+  -- Post-steering `fillNbr` re-choice: full `PencilChartWF` at a point-preserving seed.
+  obtain ⟨seed', hhub_eq, hfill_eq, hWF'⟩ :=
+    exists_fillNbr_pencilChartWF_of_standing hWF₀.1 hWF₀.2.1 hhub_LI hpt_LI hnbr_some
+  have hpcp_eq : pencilChartPoint seed' hubSel = pencilChartPoint seed hubSel :=
+    pencilChartPoint_congr hubSel hhub_eq hfill_eq
+  -- The demoted triple survives (chart points unchanged by the `fillNbr` re-choice).
+  have hdemote_set : LinearIndepOn K (pencilChartPoint seed' hubSel) ({u_c, w₁, w₂} : Set α) := by
+    rw [hpcp_eq]; exact hq (Sum.inr (Sum.inr ()))
+  -- The chart realization of `G`, then restrict to `H := G.induce V₁`.
+  have hnd' := isNondegPencilRealization_pencilChartFramework_of_pencilChartWF hWF'
+  have hV₁G : V₁ ⊆ V(G) := by rw [hVG]; exact Set.subset_union_left
+  have hle : G.induce V₁ ≤ G := Graph.induce_le hV₁G
+  have hN : N(G, u_c) = ({v_c, w₁, w₂} : Set α) :=
+    Graph.neighbor_eq_of_degree_eq_three hSimple hl_c hl₁ hl₂ hv1 hv2 hw12 hdeg
+  -- `u_c`'s `H`-closed neighbourhood is exactly the demoted triple.
+  have hcnbhd : (G.induce V₁).closedNbhd u_c = ({u_c, w₁, w₂} : Set α) := by
+    ext w
+    constructor
+    · rintro (rfl | ⟨e, he⟩)
+      · exact Set.mem_insert _ _
+      · obtain ⟨hlG, -, hwV₁⟩ := (Graph.induce_isLink G V₁ e u_c w).mp he
+        have hwN : w ∈ N(G, u_c) := hlG.adj
+        rw [hN] at hwN
+        rcases hwN with rfl | rfl | rfl
+        · exact absurd hwV₁ hv_c
+        · exact Set.mem_insert_of_mem _ (Set.mem_insert _ _)
+        · exact Set.mem_insert_of_mem _ (Set.mem_insert_of_mem _ rfl)
+    · intro hw
+      have h1 : u_c ∈ (G.induce V₁).closedNbhd u_c := Or.inl rfl
+      have h2 : w₁ ∈ (G.induce V₁).closedNbhd u_c :=
+        Or.inr ⟨e₁, (Graph.induce_isLink G V₁ e₁ u_c w₁).mpr ⟨hl₁, hu_c, hw₁⟩⟩
+      have h3 : w₂ ∈ (G.induce V₁).closedNbhd u_c :=
+        Or.inr ⟨e₂, (Graph.induce_isLink G V₁ e₂ u_c w₂).mpr ⟨hl₂, hu_c, hw₂⟩⟩
+      rcases hw with rfl | rfl | rfl
+      · exact h1
+      · exact h2
+      · exact h3
+  refine ⟨_, _, _, hnd'.mono hle ?_⟩
+  intro v hv hGhub hHnothub
+  have hvV₁ : v ∈ V₁ := by rwa [Graph.vertexSet_induce] at hv
+  have hveq : v = u_c := by
+    by_contra hvne
+    exact hHnothub ⟨hv, by
+      rw [Graph.degree_induce_eq_of_ne hl_c hu_c hv_c hcut hvV₁ hvne]; exact hGhub.2⟩
+  rw [hveq, hcnbhd]
+  exact hdemote_set
 
 end CombinatorialRigidity.Molecular
