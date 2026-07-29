@@ -1867,11 +1867,23 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
       `[mirror-candidate]`); (c) **`exists_fin3_rank_injOn` RETIRED** — the re-choice takes the
       extend-and-fill route not the pigeonhole, so it stayed unconsumed through all of v-a…v-d;
       tree-wide deletion-hygiene sweep done (decl + orphaned section header retitled to the arity-`2/1/0`
-      perp-sweeps it fronted, `Witness.lean` docstring ref repointed to "a pigeonhole fact"). **v-e**:
-      the input-half assembly `pencilNondegFeasible_induce_of_pendant_deg3` (re-seed → steer →
-      `pencilChartWF_standing_ofCoord_toCoord` + `exists_fillNbr_pencilChartWF_of_standing` → full
-      `PencilChartWF` → `isNondegPencilRealization_pencilChartFramework_of_pencilChartWF` → `.mono`
-      with the steered triple as `hdemote`; add the `Pencil.Witness` import to `Steer.lean` here).
+      perp-sweeps it fronted, `Witness.lean` docstring ref repointed to "a pigeonhole fact"). **v-e
+      (in progress)**: the input-half assembly `pencilNondegFeasible_induce_of_pendant_deg3` (re-seed
+      → steer → `pencilChartWF_standing_ofCoord_toCoord` + `exists_fillNbr_pencilChartWF_of_standing`
+      → full `PencilChartWF` → `isNondegPencilRealization_pencilChartFramework_of_pencilChartWF` →
+      `.mono` with the steered triple as `hdemote`; add the `Pencil.Witness` import to `Steer.lean`).
+      **Landed 2026-07-29 (`Steer.lean`):** the load-bearing "steer to a common seed" step, the
+      primitive `exists_common_seed_linearIndepOn_pencilChartPoint` — finitely many
+      `LinearIndepOn K (pencilChartPoint (ofCoord q) hubSel) (S i)` conditions each satisfiable
+      somewhere share one common seed (v-d point gadget at `ends := id` +
+      `exists_common_eval_ne_zero_of_forall_exists`, whence `[Infinite K]`). The key simplification it
+      encodes: every steered condition — conjunct 3 (`pencilChartPoint v ≠ 0`), conjunct 5 (adjacent
+      pairs), `hnbr_some` (assigned neighbour points), and the demoted triple — is a
+      `pencilChartPoint`-LI condition on a subset of `α`, so one engine call carries them all; no
+      `hubSlotNormal`/normal steering gadget is needed for the input half. **Remaining:** the
+      marshalling (feed the primitive one `S i` per condition — standing ones satisfiable at the
+      re-seed flattening `seed₀.toCoord`, the demoted triple at witness (i)'s seed — then re-extract
+      and run `exists_fillNbr_pencilChartWF_of_standing`) + the tail (chart realization + `.mono`).
       **v-f**: the rank-transport bricks (the `pencilRow` ↔
       chart-`rigidityRows` link bridge — the Engine docstring's deferred "hends-style"
       consumer — proportional row-span invariance, LI-subfamily extraction) + the output-half

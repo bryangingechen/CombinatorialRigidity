@@ -285,4 +285,38 @@ theorem exists_fillNbr_pencilChartWF_of_standing {G : Graph α β} {seed : Penci
     rw [← hfun]; funext i; fin_cases i <;> rfl
   rw [hmat]; exact hLI
 
+/-! ## Steering chart points to simultaneous independence (Phase 39 W5-L5 L5-cut-v-e) -/
+
+/-- **Finitely many chart-point independence conditions, each satisfiable somewhere, share a common
+seed** (Phase 39 W5-L5 L5-cut-v-e, the "steer to a common seed" engine call of
+`notes/Phase39-design.md` §"W5 leaf decomposition" L5-cut-v): over an infinite field with a finite
+body type, if for each index `i` some seed makes the chart's constructed points linearly independent
+on the set `S i`, then a *single* seed makes every family independent at once. This is the
+load-bearing step of the L5-cut-v input-half assembly: every condition the steered seed must satisfy
+— each body's hub-slot triple independence (`pencilChartPoint v ≠ 0`, the singleton case), each
+link's adjacent-point distinctness (the pair case), each non-hub body's `nbrSel`-assigned point
+independence, and the demoted pendant triple `{u_c, w₁, w₂}` — is exactly a
+`LinearIndepOn K (pencilChartPoint …)` condition on a subset of `α`, satisfiable somewhere (the
+re-seeded flattening for the standing conjuncts, witness (i) for the demoted triple).
+
+Each condition becomes a seed-polynomial nonzero at its own witness seed whose non-roots preserve
+the family (`exists_polynomial_ne_zero_of_linearIndependent_pencilChartPoint`, `Engine.lean`, at
+`ends := id`, `s := S i`); the common non-root of the finite family
+(`exists_common_eval_ne_zero_of_forall_exists`, whence `[Infinite K]`) is the steered seed. -/
+theorem exists_common_seed_linearIndepOn_pencilChartPoint [Finite α] [Infinite K]
+    {ι : Type*} [Finite ι] (hubSel : α → Fin 3 → Option α) (S : ι → Set α)
+    (h : ∀ i, ∃ q : α × Fin 4 × Fin 4 → K,
+      LinearIndepOn K (pencilChartPoint (PencilSeed.ofCoord q) hubSel) (S i)) :
+    ∃ q : α × Fin 4 × Fin 4 → K, ∀ i,
+      LinearIndepOn K (pencilChartPoint (PencilSeed.ofCoord q) hubSel) (S i) := by
+  choose q₀ hq₀ using h
+  have hpoly : ∀ i, ∃ Q : MvPolynomial (α × Fin 4 × Fin 4) K,
+      MvPolynomial.eval (q₀ i) Q ≠ 0 ∧
+      ∀ q, MvPolynomial.eval q Q ≠ 0 →
+        LinearIndepOn K (pencilChartPoint (PencilSeed.ofCoord q) hubSel) (S i) :=
+    fun i => exists_polynomial_ne_zero_of_linearIndependent_pencilChartPoint hubSel id (hq₀ i)
+  choose P hP0 hP using hpoly
+  obtain ⟨q, hq⟩ := exists_common_eval_ne_zero_of_forall_exists P (fun i => ⟨q₀ i, hP0 i⟩)
+  exact ⟨q, fun i => hP i q (hq i)⟩
+
 end CombinatorialRigidity.Molecular
