@@ -2946,13 +2946,27 @@ Recorded corrections + tracked residues from the 2026-07-30 L7b-shape route reco
   ```
   The feasible case never consults `hbareSplit` (it rides forgetful ∘ generic) and the
   infeasible case never consults `hK` — the two carried kernels partition cleanly by
-  feasibility. **User adjudication owed** (coordinator to surface, not decide): (a) carry
-  `hbareSplit` as pinned (recommended — the `hK` posture; PENCIL becomes "proven modulo (K) +
-  (K-bare)"), vs. (b) condition the pair's *bare* conjunct as well (an IH-level motive change
-  that weakens the final theorem), vs. (c) commission the (K-bare) research before building
-  L7c-5/6. If (a): the eventual (K-bare) research recon goes numerics-first — (1) exact-ℚ bare
-  rank tests at the infeasible gadgets (`G` and `G′`); (2) extension probes from *degenerate*
-  target-rank `G′`-seeds.
+  feasibility. **User adjudication (2026-07-30, "Numerics gate first"): run the numerics-first
+  (K-bare) probe before deciding among carry/motive-change/research** — settled by the probe
+  below, which returned SUPPORTED.
+
+  **(K-bare) numerics gate PASSED 2026-07-30** (untracked scripts
+  `scratchpad/kbare/{kbare_common,gate1,gate2,stress_extra}.py`; independent of the (K) escape
+  probes, per residue (ii)'s own numerics-first plan above). Both planned gates SUPPORTED, with
+  *certified* (not sampled-only) bare-target attainment at every infeasible gadget tried:
+  `theta(6,6,6)` + center hub `105/105` target, its safe split `100/100`, `spider(5,5,5)` `90/90`
+  (`= 5|E|`, full row independence), a 17-vertex gadget `95/95`, and a `theta`-family sweep
+  `120/110/115` — and extension from a *forced-degenerate* seed works in **both** deficiency
+  branches (`splitOff_deficiency_le/ge`'s `def(G′) ∈ {def(G), def(G)−1}` dichotomy). One
+  discharge-level caveat recorded: in the def-*equal* branch the re-inserted point must avoid
+  the deleted hinge's line (an in-stratum genericity side condition the eventual discharge needs
+  to track — generic placement works from every seed tried). This fills the evidence-gap flagged
+  at item 4 above (the 2026-07-23 rank tests (R2) sampled zero infeasible-*habitat* graphs);
+  (K-bare) is now evidenced at parity with (K). **Consequence, per the user's same-day
+  "Numerics gate first" adjudication and post-gate "Continue: full L7c" confirmation: route (a)
+  — carry `hbareSplit` as pinned — is GO.** L7c-5/6 may proceed carrying it exactly as pinned
+  above; the (K-bare) *research* (closing `hbareSplit` itself, as opposed to carrying it) is not
+  commissioned by this gate and stays open alongside (K)'s own research (routes 1–2 below).
 - **Residue (iii) — non-simple bare half: PINNED 2026-07-30 as leaf L7c-1 below.** `¬Simple`
   habitat `G` is excluded by `hnoRigid` (a parallel pair is proper rigid at `|V| ≥ 3`); the
   externalization IS needed (the assembly needs `G.Simple` for L7b's instance argument and the

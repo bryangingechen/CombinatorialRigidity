@@ -13,17 +13,21 @@ L5-cut-v-a…v-g all landed (`Motive.lean`/`Witness.lean`/`Engine.lean`/`Steer.l
 L8 DISSOLVED into (K)'s discharge (2026-07-30 ruling); L7 (the research core) is the last /
 critical path; W4 after W5** (phase opened 2026-07-23, recon-first). **W5-L7a AND L7b LANDED
 2026-07-30** (`Escape.lean`); kernel (K) route 3 adjudicated (carry the `hK` implication);
-**L7c decomposed 2026-07-30** (design pass — two carried kernels: `hK` + the new `hbareSplit`,
-the latter pending user adjudication); **L7c-1 + L7c-2 LANDED same day** (L7c-1 closed by reuse
+**L7c decomposed 2026-07-30** (design pass — two carried kernels: `hK` + the new `hbareSplit`);
+**L7c-1 + L7c-2 LANDED same day** (L7c-1 closed by reuse
 of `simple_of_loopless_of_noRigid`, no new lemma; L7c-2 =
 `exists_splitOff_data_of_degree_eq_two_of_twoEdgeConnected`); **(K-bare) adjudicated "Numerics
-gate first"** (build L7c-1…4, probe before L7c-5/6). **L6a-safe-exists's rigid `k = 0` half PROVEN 2026-07-30**
+gate first", then the gate PASSED same day** (both planned gates SUPPORTED, certified bare-target
+attainment at every infeasible gadget tried — detail in *Blockers*/*Decisions made*):
+**route (a), carry `hbareSplit` as pinned, is GO for L7c-5/6**. **L6a-safe-exists's rigid `k = 0`
+half PROVEN 2026-07-30**
 (`edgeBound_of_noRigid_of_degree_two` + `exists_adjacent_degree_two_pair_of_noRigid_of_degree_two`,
 `ReducibleVertex.lean`) — the split-arm safe-vertex existence obligation is now closed in full,
 minimality-free, needing no deficiency case-split at the L7 call site. **L7c-3 LANDED 2026-07-30**
 (`Molecule/Pencil/Base.lean`, new file: `pencilPair_of_habitat_ncard_eq_three`) — the `|V| = 3`
 direct-witness base leaf; **L7c-4 (the `|V| = 4` sibling) remains open**, scoped to a follow-up
-commit (the two habitats are not symmetric enough to share a proof — see *Decisions made*).
+commit (the two habitats are not symmetric enough to share a proof — see *Decisions made*); L7c-5
+is independently GO (does not depend on L7c-4).
 `Molecule/Pencil.lean` split into
 `Molecule/Pencil/{Statement,Arms,Motive,Chart,Engine,Reseed,Witness,Steer,Pair,Pair2,Escape,Base}.lean`
 (2026-07-24/25/29/30 housekeeping).
@@ -255,15 +259,21 @@ Full record, grounding, and the W0–W5 decomposition:
   attack routes 1–2 (localization / panel-span reuse) both factor through `hK`'s discharge;
   `notes/Phase39-design.md` §"W5-L7 research recon" "Lean decomposition" + "Route options"),
   **kernel (K-bare)** (the bare-half-off-feasibility residue, SETTLED 2026-07-30 by the L7c
-  assembly recon: NOT buildable without new mathematics — the panel forgetful-map precedent
-  structurally cannot cover it, infeasibility transfers to `G′`, and the extension is
-  Case-III-increment-strength from a possibly degenerate input; carried form `hbareSplit`
-  pinned in the design doc residue (ii). **2026-07-30 adjudication (verbatim): "Numerics gate
-  first"** — build L7c-1…4 now (LANDED, this commit + L7c-3/4 still open), run the exact-ℚ
-  (K-bare) probe before building L7c-5/6; the three-way choice (carry `hbareSplit` (recommended)
-  vs. condition the pair's bare conjunct (motive change) vs. research first) stays
-  session-scope-deferred to the probe's outcome — a numerics probe runs independently under
-  untracked `scratchpad/`),
+  assembly recon as a second carried kernel `hbareSplit`, pinned in the design doc residue (ii);
+  **2026-07-30 "Numerics gate first" adjudication → numerics gate PASSED same day**: both planned
+  gates SUPPORTED with *certified* bare-target attainment at every infeasible gadget tried
+  (`theta(6,6,6)`+center `105/105`, its safe split `100/100`, `spider(5,5,5)` `90/90` full row
+  independence, a 17-vertex gadget `95/95`, a `theta`-family sweep `120/110/115`), and extension
+  from a forced-degenerate seed works in both deficiency branches (one discharge-level caveat: the
+  def-equal branch's re-inserted point must avoid the deleted hinge's line — an in-stratum
+  genericity side condition, generic placement works from every seed tried); fills the 2026-07-23
+  R2 evidence gap (zero infeasible-habitat graphs tested there) — (K-bare) is now evidenced at
+  parity with (K). **Consequence (per the same-day "Numerics gate first" adjudication + post-gate
+  "Continue: full L7c" confirmation): route (a) — carry `hbareSplit` as pinned — is GO**; L7c-5/6
+  may proceed carrying it exactly as pinned (design doc residue (ii)); the (K-bare) *research*
+  itself (closing `hbareSplit`, as opposed to carrying it) stays open alongside (K)'s. Scripts:
+  `scratchpad/kbare/{kbare_common,gate1,gate2,stress_extra}.py` (untracked, independent of the
+  escape probes above),
   and W4's witness generality (unchanged, after W5). W5-L8 is no longer a standalone open item
   (dissolved into (K)'s discharge, 2026-07-30 ruling — design doc §"W5 leaf decomposition" L8).
 - ~~W5-L6 split-arm feasibility (safe-vertex existence)~~ **CLOSED** (2026-07-29 L6a re-route +
@@ -325,12 +335,17 @@ carry-vs-motive-change-vs-research three-way choice stays deferred to the probe'
 **L7c-3 LANDED 2026-07-30** (`Molecule/Pencil/Base.lean`,
 `pencilPair_of_habitat_ncard_eq_three` — detail in *Decisions made*). **L7c-4 remains open**
 (scoped out of that commit — the `C₄` identification/witness genuinely differs from `C₃`'s, not a
-mechanical repeat).
-**Next concrete commit:**
+mechanical repeat). **The (K-bare) numerics gate PASSED 2026-07-30** (same day as the "Numerics
+gate first" adjudication — detail in *Blockers*); **consequence: route (a), carry `hbareSplit` as
+pinned, is GO** — L7c-5/6 no longer wait on anything except being built (`Blockers`/design doc
+residue (ii)).
+**Next concrete commit — two independent candidates, either unblocks the other's sibling leaf:**
 - **L7c-4** (the `C₄` base leaf; `Base.lean` is the home, and the FRICTION [idiom] "wedge-family
   independence via the join-detector" entry generalizes directly to the 4-term case — the harder
   parts are the per-vertex-normal construction and the degree-`3`-exclusion-via-triangle-freeness
   identification step, both pinned in the design doc).
+- **L7c-5** (the `5 ≤ |V|` producer carrying `hK` + `hbareSplit`, GO per the gate pass above —
+  does not depend on L7c-4; only L7c-6, the final successor wrapper, needs all of L7c-3/4/5).
 - **The (K-bare) numerics probe** (running independently; exact-ℚ bare rank at the infeasible
   gadgets + degenerate-seed extension probes — design doc residue (ii)'s "if (a)" plan); its
   outcome settles whether L7c-5/6 proceed under the carry route or a different one.
@@ -370,6 +385,19 @@ neighbor — is `notes/IdeaBacklog.md`.
 
 ## Decisions made during this phase
 
+- **(K-bare) numerics gate PASSED — verdict transcribed** (2026-07-30, docs-only; canonical
+  `notes/Phase39-design.md` residue (ii)). Both planned gates SUPPORTED with certified bare-target
+  attainment at every infeasible gadget tried (`theta(6,6,6)`+center `105/105`, its safe split
+  `100/100`, `spider(5,5,5)` `90/90` full row independence, a 17-vertex gadget `95/95`, a
+  `theta`-family sweep `120/110/115`); extension from a forced-degenerate seed works in both
+  deficiency branches (one caveat: the def-equal branch's re-inserted point must avoid the deleted
+  hinge's line, an in-stratum genericity side condition met from every seed tried). Fills the
+  2026-07-23 R2 evidence gap (zero infeasible-habitat graphs tested there); (K-bare) now evidenced
+  at parity with (K). **Consequence, per the user's same-day "Numerics gate first" adjudication and
+  post-gate "Continue: full L7c" confirmation: route (a) — carry `hbareSplit` as pinned — is GO.**
+  L7c-5/6 may proceed carrying it exactly as pinned; the (K-bare) research itself (closing
+  `hbareSplit`, not just carrying it) stays open. Scripts:
+  `scratchpad/kbare/{kbare_common,gate1,gate2,stress_extra}.py` (untracked).
 - **W5-L7c-3 LANDED (scope reduced to `C₃` only this commit)** (2026-07-30,
   `Molecule/Pencil/Base.lean`, new file: `pencilPair_of_habitat_ncard_eq_three`). Identification:
   `Simple` (via `simple_of_loopless_of_noRigid`) + 2EC's degree-`≥2` lower bound + `Simple`'s
