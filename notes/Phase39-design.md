@@ -2305,8 +2305,34 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
     **L6b RE-ROUTED (2026-07-30 spike — the `hcard`-only pin is FALSE; see the L6b block below).**
     Its input `hcard` type still matches L6a-transfer's output at `G := G′`, but `hcard` **alone does
     not imply `PencilNondegFeasible`** — L6b needs an extra triangle-exclusion hypothesis, and a NEW
-    obligation **L6d** (triangle-freeness transfer `G ⇒ G′`) is now tracked. **L6c UNCHANGED** (landed
+    obligation **L6d** (triangle-exclusion transfer `G ⇒ G′`) was surfaced. **L6c UNCHANGED** (landed
     citation). **L8 UNAFFECTED.**
+
+    **L6d VERIFIED — the transfer HOLDS, and delivers *full* triangle-freeness of `G′` (2026-07-30
+    habitat-foundations recon).** Grounded against the LANDED `not_pencilNondegFeasible_of_triangle_
+    two_hubs` (`Motive.lean:563`), `triangle_isProperRigidSubgraph` (`Operations.lean:994`),
+    `isKDof_zero_of_cycle` (`Deficiency.lean:743`), and `splitOff` (`Operations.lean:769`). See the
+    L6d sub-leaf below for the pinned signatures + route; the two verdicts in brief:
+    - **Q1 (triangle ⟹ proper rigid at `|V| ≥ 4`): TRUE, already LANDED** as
+      `Graph.triangle_isProperRigidSubgraph` (needs only `3 ≤ bodyBarDim n`, `G.Simple`, the three
+      triangle links, `a ≠ b`, `4 ≤ V(G).ncard`). Its contrapositive is exactly "no-proper-rigid +
+      `|V| ≥ 4` ⟹ `G` triangle-free". No new lemma for the base fact.
+    - **Q2 (transfer to `G′`): the naive worry is void.** A *new* `G′`-triangle can only be
+      `{a, b, c}` for `c` a common `G`-neighbour of the split endpoints `a, b` (the fresh edge `ab`
+      plus two surviving edges); but then `{v, a, b, c}` is an **induced 4-cycle** in `G`
+      (`ab ∉ E(G)` by triangle-freeness, `vc ∉ E(G)` since `deg_G v = 2` with `N(v) = {a,b}`), and a
+      **`C₄` is `D6`-rigid** (`isKDof_zero_of_cycle` at `m = 4 ≤ bodyBarDim 3 = 6`; independently
+      re-checked, exact partition deficiency `= 0`), hence a *proper* rigid subgraph at `|V| ≥ 5` —
+      contradicting `hnoRigid`. So **the common neighbour `c` cannot exist**, `G′` gains *no* triangle
+      at all, and full triangle-freeness transfers. The "safe" split hypothesis is **not even needed
+      for L6d** (only for L6a-transfer's `closedHubNbhd ≤ 3`); `deg_G v = 2` + no-proper-rigid +
+      `|V| ≥ 5` suffice. Exhaustive check (all `{2,3}`-degree habitats `n ≤ 7`; sampled `n = 8`):
+      **zero** habitats where any degree-2 split creates even one `G′`-triangle. Because the transfer
+      yields the FULL triangle-freeness the design originally intended, **L6b is re-pinned with a
+      triangle-freeness hypothesis, not merely the minimal `¬(two-hub-triangle)`** — which makes
+      L6b-ii's `#3/#4/#5` core strictly easier (its failure locus, the two-hub triangle, is a fortiori
+      absent). Dispatch-log F9 instance — a *confirmed* pin this time, first non-refutation of the L6
+      arc's habitat claims.
 
     **⚠ ADJUDICATION POSTURE (revised 2026-07-30 recon — the earlier "two coupled open items" is
     superseded; a W3-level minimality re-introduction is NOT forced).**
@@ -2350,20 +2376,28 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
     `exists_fillNbr_pencilChartWF_of_standing` → headline) composes; the block is *only* the missing
     hypothesis. Corrected decomposition (the `#3/#4/#5` moment-curve core is NOT yet resolved — the
     spike never reached it):
-    - **L6b needs an extra hypothesis** excluding two-adjacent-hub triangles: minimal
-      `¬ (two-adjacent-hub triangle)`; the design's intended sufficient form is total triangle-freeness
-      (from the no-proper-rigid habitat at `|V| ≥ 4`, per the *Blockers* claim — **itself owed a
-      verification**, given this arc's pattern of optimistic habitat pins).
-    - **L6d (NEW, previously UNTRACKED):** the triangle-freeness (or no-two-hub-triangle) transfer to
-      `G′ = G.splitOff v a b e₀` from `G`'s habitat (2EC + no-proper-rigid + safe split, `|V| ≥ 4`).
-      The L6→L7 wiring omitted this; it is the link feeding L6b's new hypothesis. Owed a red node /
-      checklist item, not a prose aside.
-    - **L6b-i (buildable once the hypothesis is settled):** the assembly given selectors + the three
-      satisfiable-somewhere LI conditions → `PencilNondegFeasible` (the v-e template minus its `.mono`
-      restriction). Not banked by the spike (factoring ambiguous until the hypothesis lands).
-    - **L6b-ii (spike-first, against the corrected hypothesis):** the general-position `#3/#4/#5`
-      witnesses from `hcard` + no-two-hub-triangle — the genuinely-new moment-curve core, unchanged in
-      difficulty, now correctly scoped.
+    - **L6b's extra hypothesis is now PINNED as `G` triangle-free** (delivered by L6d below; strictly
+      stronger than the minimal-necessary `¬(two-adjacent-hub triangle)`, and free here). Re-pinned
+      signature:
+      ```lean
+      theorem pencilNondegFeasible_of_ncard_closedHubNbhd_le_three_of_triangleFree
+          [Inhabited α] [Finite α] [Finite β] [Infinite K] {G : Graph α β}
+          (hcard : ∀ v, (G.closedHubNbhd v).ncard ≤ 3)
+          (htf : ∀ e₁ e₂ e₃ x y z, x ≠ y → y ≠ z → x ≠ z →
+            G.IsLink e₁ x y → G.IsLink e₂ y z → G.IsLink e₃ z x → False) :
+          PencilNondegFeasible K G
+      ```
+      (The minimal form would weaken `htf` to `… → ¬ (G.PencilHub y ∧ G.PencilHub z)`; not needed —
+      L6d gives the full form.) `hcard` matches L6a-transfer's output; `htf` matches L6d's output; both
+      at `G := G′`.
+    - **L6b-i (buildable once the two hypotheses are in hand):** the assembly given selectors + the
+      three satisfiable-somewhere LI conditions → `PencilNondegFeasible` (the v-e template minus its
+      `.mono` restriction). Not banked by the spike (factoring ambiguous until the hypothesis lands).
+    - **L6b-ii (spike-first, against the pinned hypothesis):** the general-position `#3/#4/#5`
+      witnesses from `hcard` + `htf` — the genuinely-new moment-curve core. **Now correctly scoped and
+      strictly easier:** `htf` (triangle-free) means the LI core never meets *any* triangle, so the
+      spike's `#4`/`#5` failure locus (the squeezed two-hub triangle) is a fortiori excluded. The
+      positive char-free Vandermonde/general-position construction remains its spike-first job.
     - **Missing brick:** a selector-existence lemma (`IsFin3SelectorOf` for any `ncard ≤ 3` set), used
       by `#1`/`#2`; not currently in tree.
 
@@ -2403,6 +2437,49 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
         assembly #1/#2, prose-settleable given `hcard`) and L6b-ii (the general-position seed
         #3/#4/#5, spike-first).
 
+  - **L6d — triangle-freeness of `G′` (NEW, VERIFIED 2026-07-30; buildable now, purely combinatorial,
+    target `Molecule/Pencil/Habitat.lean`).** The honest producer of L6b's `htf` at `G′`. Two pieces:
+    a small proper-rigid brick + the transfer wrapper.
+    - **The `C₄` brick** — the induced-4-cycle analogue of the LANDED `triangle_isProperRigidSubgraph`
+      (`Operations.lean:994`), built the same way (`isKDof_zero_of_cycle` at `m = 4` for `0`-dof,
+      instead of `isKDof_zero_of_triangle`; `E(H) = {4 cycle edges}` by the induced-edge antisymmetry
+      under `G.Simple`; properness from `|V(G)| ≥ 5`). `cycle_isProperRigidSubgraph` (`Operations.lean:
+      1079`) does **not** apply — it needs all-but-one cycle vertex *closed* (degree exactly its two
+      cycle edges), but the offending `C₄`'s two hub corners carry external edges. Target:
+      ```lean
+      theorem c4_isProperRigidSubgraph [Finite α] {G : Graph α β} [G.Simple] {p q r s : α}
+          {e₁ e₂ e₃ e₄ : β} {n : ℕ} (hD : 4 ≤ bodyBarDim n)
+          (h₁ : G.IsLink e₁ p q) (h₂ : G.IsLink e₂ q r) (h₃ : G.IsLink e₃ r s) (h₄ : G.IsLink e₄ s p)
+          (hpq : p ≠ q) (hqr : q ≠ r) (hrs : r ≠ s) (hsp : s ≠ p) (hpr : p ≠ r) (hqs : q ≠ s)
+          (hpr_nadj : ∀ e, ¬ G.IsLink e p r) (hqs_nadj : ∀ e, ¬ G.IsLink e q s)  -- chordless
+          (hcard : 5 ≤ V(G).ncard) :
+          ∃ H : Graph α β, H.IsProperRigidSubgraph G n
+      ```
+    - **The transfer wrapper** `splitOff_triangleFree_of_noRigid`: at a degree-2 `v` of a simple,
+      no-proper-rigid `G` with `|V(G)| ≥ 5`, `G′ = G.splitOff v a b e₀` is triangle-free (= L6b's
+      `htf`). Target:
+      ```lean
+      theorem splitOff_triangleFree_of_noRigid
+          [Finite α] [Finite β] {G : Graph α β} [G.Simple] {n : ℕ} {v a b : α} {e₀ : β}
+          (hD : 4 ≤ bodyBarDim n) (hV : 5 ≤ V(G).ncard)
+          (hnoRigid : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n)
+          (hdeg : G.degree v = 2) (heₐ : ∃ eₐ, G.IsLink eₐ v a) (e_b : ∃ e_b, G.IsLink e_b v b)
+          (hab : a ≠ b) :
+          ∀ e₁ e₂ e₃ x y z, x ≠ y → y ≠ z → x ≠ z →
+            (G.splitOff v a b e₀).IsLink e₁ x y → (G.splitOff v a b e₀).IsLink e₂ y z →
+            (G.splitOff v a b e₀).IsLink e₃ z x → False
+      ```
+      Route (grounded): a `G′`-triangle either (i) uses no fresh edge `e₀` ⟹ its three edges survive
+      in `G − v ≤ G` ⟹ it is a `G`-triangle ⟹ `triangle_isProperRigidSubgraph` (`|V| ≥ 4`) ⟹ ⊥ via
+      `hnoRigid`; or (ii) uses `e₀ = ab` ⟹ its apex `c` is a common `G`-neighbour of `a, b`, `c ∉
+      {v,a,b}`, and `{v,a,b,c}` is a chordless induced `C₄` in `G` (`va, vb` from `heₐ/e_b`; `ac, bc`
+      surviving; `ab ∉ E(G)` since else `{a,v,b}` is a `G`-triangle killed by (i)'s route; `vc ∉ E(G)`
+      since `deg_G v = 2`, `N(v) = {a,b}`, `c ∉ {a,b}`) ⟹ `c4_isProperRigidSubgraph` ⟹ ⊥ via
+      `hnoRigid`. **No `2EC`, no safe hypothesis** — those enter only via L6a-transfer's separate
+      `closedHubNbhd ≤ 3` obligation. `|V(G)| = 4` is a base case (a `4`-vertex no-proper-rigid 2EC
+      triangle-free graph is `C₄`, all degree-2, no hubs; its `splitOff` is a hub-free triangle,
+      trivially feasible) — dispatched with L6c's base.
+
   - **L6c — `G′.Simple`: NOT a new build leaf, a citation folded into the L7 assembly.** For
     `G′ = G.splitOff v a b e₀` at `|V(G)| ≥ 4`, `G′.Simple` is EXACTLY the LANDED
     `splitOff_simple_of_noRigid_of_card` (`Induction/Operations.lean:1104`), consuming `[G.Simple]`
@@ -2412,11 +2489,13 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
     the `|V(G)| = 3` edge case (triangle spanning, not proper; `G′` on 2 vertices, base-sized) needs a
     separate base dispatch — also an L7/assembly concern.
 
-  **L6 → L7 wiring (settled 2026-07-29; the `closedHubNbhd`-transfer route, NOT the discarded
-  "re-derive `G′` habitat properties" one).** The chain L7 runs: split-arm antecedent
-  `PencilNondegFeasible K G` `→` (landed `ncard_closedHubNbhd_le_three_of_isNondegPencilRealization`)
-  `∀ w, G.closedHubNbhd w ≤ 3` `→` (**L6a-transfer** at a *safe* `v`) `∀ w, G′.closedHubNbhd w ≤ 3`
-  `→` (**L6b**) `PencilNondegFeasible K G′` `→` (IH generic half + **L6c** `G′.Simple`)
+  **L6 → L7 wiring (settled 2026-07-29; L6d thread added 2026-07-30; the `closedHubNbhd`-transfer
+  route, NOT the discarded "re-derive `G′` habitat properties" one).** The chain L7 runs: split-arm
+  antecedent `PencilNondegFeasible K G` `→` (landed
+  `ncard_closedHubNbhd_le_three_of_isNondegPencilRealization`)
+  `∀ w, G.closedHubNbhd w ≤ 3` `→` (**L6a-transfer** at a *safe* `v`) `∀ w, G′.closedHubNbhd w ≤ 3`;
+  **and, in parallel from the split-arm's `hnoRigid` + `|V| ≥ 5`,** (**L6d**) `G′` triangle-free;
+  the two together `→` (**L6b**) `PencilNondegFeasible K G′` `→` (IH generic half + **L6c** `G′.Simple`)
   `HasGenericPencilRealization K 3 G′` `→` (L7 extension) `HasGenericPencilRealization K 3 G`. The
   earlier "apply a combinatorial ≤ 3 lemma to `G′` from its own 2EC/no-rigid" plan is DEAD (that lemma
   is false, refuted above); the transfer route needs `G′`'s habitat properties *not at all* — only
@@ -2425,11 +2504,13 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
   splits (coupling benign). Existence = L6a-safe-exists (non-rigid half proven; rigid half a bounded
   have-hyp).
 
-  **Build order.** L6a-transfer FIRST (buildable now, combinatorial, fixes the L6b interface). L6b
-  (spike-first) is independent given the `hcard` hypothesis and may proceed in parallel. L6a-safe-exists:
-  the non-rigid half (`indep_matroidMG_of_noRigid_of_deficiency_pos` + the generalized counting) is
-  buildable now; the rigid (`k = 0`) half is a bounded `have`-hypothesis (not blocking). L6c is a
-  citation at assembly time; L8 is fully parallel.
+  **Build order.** L6a-transfer LANDED. **L6d next** (buildable now, combinatorial: the `C₄` brick
+  `c4_isProperRigidSubgraph` then `splitOff_triangleFree_of_noRigid` — a faithful `m = 4` mirror of
+  `triangle_isProperRigidSubgraph`, no chart stack). L6b (spike-first) is independent given its
+  `hcard`/`htf` hypotheses and may proceed in parallel. L6a-safe-exists: the non-rigid half
+  (`indep_matroidMG_of_noRigid_of_deficiency_pos` + the generalized counting) is buildable now; the
+  rigid (`k = 0`) half is a bounded `have`-hypothesis (not blocking). L6c is a citation at assembly
+  time; L8 is fully parallel.
 - **W5-L7** (the research core): the single-candidate Claim-6.12 replacement — at the
   Case-III habitat, a chart seed of `G′` realizing rank `6(|V|−2)` *and* the
   candidate-`M₁` escape `r ⬝ Λ²Π̂(a) ≠ 0` (then the assembly + the output's own

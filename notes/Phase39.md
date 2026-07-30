@@ -45,10 +45,13 @@ route (b′)); device = the grade-0 molecular chart (`Molecule/Pencil/Chart.lean
 rows-polynomial engine (`Molecule/Pencil/Engine.lean`) + the D6 re-seeding lemma
 (`Molecule/Pencil/Reseed.lean`), leaves **L0–L8** (L0–L4 complete; L5 closed modulo
 `hcontract`/`hsplit`, all L5-cut-v leaves landed; **L6 re-routed 2026-07-29 (L6a-as-pinned refuted,
-then settled): the real work is the `G ⇒ G′` transfer at a *safe* split vertex, LANDED 2026-07-30
-(`Habitat.lean`). Safe-vertex existence + L7 coupling settled 2026-07-30: coupling benign (KT splits safe);
-**non-rigid safe-vertex existence LANDED in Lean 2026-07-30** (`ReducibleVertex.lean`/`Operations.lean`),
-rigid (`k=0`) half a bounded `have`-hyp**; L8 parallel; L7, the
+then settled): the real work is the `G ⇒ G′` transfer at a *safe* split vertex, L6a-transfer LANDED
+2026-07-30 (`Habitat.lean`). Safe-vertex existence + L7 coupling settled 2026-07-30: coupling benign
+(KT splits safe); non-rigid safe-vertex existence LANDED (`ReducibleVertex.lean`/`Operations.lean`),
+rigid (`k=0`) half a bounded `have`-hyp. L6b `hcard`-only pin refuted then re-pinned; the new
+triangle-exclusion hypothesis L6d is VERIFIED (2026-07-30 habitat recon): `G′` is *fully*
+triangle-free at any degree-2 split (induced-`C₄`-is-`D6`-rigid argument), so L6b is re-pinned with a
+triangle-free hypothesis and L6d (the `C₄`-brick) is the next buildable leaf**; L8 parallel; L7, the
 research core, last).
 
 The opening recon ran 2026-07-23; verdicts (R1–R3) below in *Opening recon verdicts*.
@@ -187,22 +190,24 @@ dropped as inert (Decisions-made). The **rigid (`k = 0`) half stays a bounded `h
 4.6 off minimality; decisive `S(Petersen)` evidence, no counterexample; user call only whether to
 prove it now).
 
-**W5-L6b `hcard`-only pin REFUTED (2026-07-30 bank-authorized spike).** `hcard : ∀ v, closedHubNbhd
-≤ 3` alone does NOT imply `PencilNondegFeasible K G` — a two-adjacent-hub triangle satisfies `hcard`
-yet is infeasible by the landed `not_pencilNondegFeasible_of_triangle_two_hubs` (compiler-checked
-refutation; 5-vertex witness). This was ALREADY implied by the *Blockers* triangle-hub note — the L6b
-pin was an internal plan inconsistency, not new math. The chart assembly route is sound; only the
-hypothesis is wrong. Canonical corrected decomposition: `notes/Phase39-design.md` §"W5 leaf
-decomposition" L6b (L6b needs a no-two-hub-triangle hypothesis; NEW obligation **L6d** = triangle-
-freeness transfer `G ⇒ G′`; L6b-i assembly buildable once the hypothesis lands; L6b-ii the
-spike-first `#3/#4/#5` core; missing `IsFin3SelectorOf`-existence brick).
+**W5-L6b re-pinned + L6d VERIFIED (2026-07-30 habitat-foundations recon; canonical `notes/Phase39-
+design.md` §"W5 leaf decomposition" L6b/L6d).** The `hcard`-only L6b pin was refuted (a two-adjacent-
+hub triangle satisfies `hcard ≤ 3` yet is infeasible by the landed
+`not_pencilNondegFeasible_of_triangle_two_hubs`); L6b now takes a triangle-free hypothesis. The recon
+then VERIFIED both habitat claims: (Q1) triangle ⟹ proper rigid at `|V| ≥ 4` is already LANDED
+(`Graph.triangle_isProperRigidSubgraph`, contrapositive ⟹ habitat triangle-free), and (Q2) the
+transfer HOLDS — `G′` is *fully* triangle-free at ANY degree-2 split (a new `G′`-triangle would give
+an induced `C₄` in `G`, and `C₄` is `D6`-rigid (`isKDof_zero_of_cycle`, `m=4`), a proper rigid
+subgraph at `|V| ≥ 5`, contradicting `hnoRigid`). Exhaustive search (all `{2,3}`-degree habitats
+`n ≤ 7`, sampled `n = 8`): zero counterexamples. So L6d is a THEOREM (not an existence gamble); safe
+is **not** needed for it (only L6a-transfer needs safe). No route-breaker.
 
-**Next concrete commit — a habitat-foundations recon** (recommended): VERIFY the *Blockers* claim
-that the no-proper-rigid habitat is triangle-free at `|V| ≥ 4` (i.e. a triangle is a proper rigid
-subgraph there — owed a check given this arc's three optimistic-pin refutations) AND that it transfers
-to `G′ = G.splitOff v a b e₀` (the L6d obligation), then re-pin L6b's corrected hypothesis + formally
-track L6d. Only after that recon are L6b-i / L6b-ii / L6d builds on verified ground. Parallel
-alternative unaffected by all this: **W5-L8** (the `k = 0` residue, emptiness route).
+**Next concrete commit — build W5-L6d** (`Molecule/Pencil/Habitat.lean`): the `C₄`-proper-rigid brick
+`c4_isProperRigidSubgraph` (an `m = 4` mirror of `triangle_isProperRigidSubgraph`, `isKDof_zero_of_
+cycle` for `0`-dof), then the transfer wrapper `splitOff_triangleFree_of_noRigid`. Pinned signatures +
+route in the design doc. After L6d: L6b-i (assembly) / L6b-ii (spike-first `#3/#4/#5`) build on
+verified ground; L6a-transfer already LANDED supplies the other L6b input. Fully parallel alternative:
+**W5-L8** (the `k = 0` residue, emptiness route).
 
 **W5-L6 invariant SETTLED (2026-07-29 L6a recon; canonical `notes/Phase39-design.md` §"W5 leaf
 decomposition" L6a).** The ≤ 3 closed-hub-neighbourhood bound on `G` is **not** a graph-combinatorial
@@ -250,6 +255,22 @@ neighbor — is `notes/IdeaBacklog.md`.
 
 ## Decisions made during this phase
 
+- **W5-L6d VERIFIED + L6b re-pinned — the habitat-foundations recon (design-pass commit)** (2026-07-30;
+  canonical `notes/Phase39-design.md` §"W5 leaf decomposition" L6b/L6d + the wiring). Settled the two
+  questions the L6b refutation raised, grounded against LANDED bodies: (Q1) *triangle ⟹ proper rigid
+  at `|V| ≥ 4`* — already LANDED as `Graph.triangle_isProperRigidSubgraph` (`Operations.lean:994`), so
+  no-proper-rigid habitat is triangle-free at `|V| ≥ 4`. (Q2) *transfer to `G′`* — HOLDS, and gives
+  *full* triangle-freeness of `G′` at ANY degree-2 split: a new `G′`-triangle `{a,b,c}` forces an
+  induced `C₄` `{v,a,b,c}` in `G`, and `C₄` is `D6`-rigid (`isKDof_zero_of_cycle`, `m=4`; exact
+  partition-deficiency `= 0`, independently re-checked) hence a proper rigid subgraph at `|V| ≥ 5` —
+  ⊥ against `hnoRigid`. Exhaustive `{2,3}`-degree search (`n ≤ 7` + sampled `n = 8`): zero
+  counterexamples; the naive "common neighbour ⟹ new triangle" worry is void (the common neighbour is
+  the excluded `C₄`). L6d is a THEOREM, not an existence gamble; **safe not needed for L6d** (only for
+  L6a-transfer). L6b re-pinned to take a triangle-free hypothesis (strictly stronger than the minimal
+  `¬two-hub-triangle`, free here, and strictly easier for L6b-ii). Next buildable: L6d = the `C₄`
+  brick `c4_isProperRigidSubgraph` + `splitOff_triangleFree_of_noRigid` (`Habitat.lean`). No Lean
+  built (design pass); scratch search reverted, tree clean. Dispatch-log F9 instance — first
+  *confirmed* (non-refuted) pin of the L6 habitat arc.
 - **W5-L6b `hcard`-only pin REFUTED by the bank-authorized spike; L6d surfaced** (2026-07-30, no
   commit — spike left tree clean; coordinator salvage this commit). The spike (compiler-checked
   scratch, reverted) showed `hcard : ∀ v, closedHubNbhd ≤ 3 ⟹ PencilNondegFeasible K G` is FALSE: a
