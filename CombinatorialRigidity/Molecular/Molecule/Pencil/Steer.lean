@@ -874,4 +874,74 @@ theorem exists_independent_pencilRow_subfamily_at_toCoord_of_reseed
       exact pencilRow_eq_panelRow_pencilChartFramework hubSel seed₁.toCoord hL.edge_mem
     rw [hfeq]; exact hsLI
 
+/-! ### The chart-normal congruence for the post-steering `fillNbr` re-choice (Phase 39 W5-L5
+L5-cut-v-f, the output-half assembly's promoted-family transfer)
+
+The output-half assembly (`notes/Phase39-design.md` §"W5 leaf decomposition" L5-cut-v "v-f
+decomposition", the v-f-6 entry) steers the induction hypothesis's generic `H`-witness so the
+promoted normal families (witness (ii), `Witness.lean`) hold at the steered seed
+`PencilSeed.ofCoord q`, then re-chooses `fillNbr` post-steering
+(`exists_fillNbr_pencilChartWF_of_standing`) to close `PencilChartWF`'s fourth conjunct. The
+re-chosen seed `seed'` shares the steered seed's `hubNormal`/`fillHub` but not its `fillNbr`, so the
+steered promoted families must be *transported* from `PencilSeed.ofCoord q` to `seed'`.
+
+`pencilChartNormal` reads `fillNbr` only through its non-hub branch's `cross₃` of `nbrSlotPoint`
+vectors, and only at that body's `nbrSel`-*unassigned* (`none`) slots. So at any body that is either
+a pencil hub (reads the free `hubNormal`, shared) or has a *fully assigned* neighbour-selector
+(every `nbrSlotPoint` slot reads a `pencilChartPoint`, itself `fillNbr`-free and preserved by
+`pencilChartPoint_congr`), the constructed normal is `fillNbr`-free — the design's "every promoted
+family is `fillNbr`-free" fact. Every member of a promoted family `G.closedHubNbhd v` is a pencil
+hub, so on the promoted-family sets the transfer is clean; the sole demoted body `u_c` (a non-hub of
+`H := G.induce V₁` whose `H`-closed-neighbourhood `{u_c, w₁, w₂}` has exactly three members, forcing
+`nbrSel u_c` total) is `fillNbr`-free via the fully-assigned branch. -/
+
+/-- **The chart's constructed normal depends only on the seed's `hubNormal`/`fillHub` at a body that
+is a hub or has a fully-assigned neighbour-selector** (Phase 39 W5-L5 L5-cut-v-f, the third sibling
+of `pencilChartPoint_congr`/`pencilChartFramework_congr`). Two seeds agreeing on `hubNormal` and
+`fillHub` induce the same `pencilChartNormal G v` whenever `v` is a pencil hub (the normal is the
+shared free `hubNormal v`) or, being a non-hub, has every neighbour-slot assigned (`hassigned`: the
+non-hub `cross₃` then reads only `pencilChartPoint`s of selected neighbours, preserved by
+`pencilChartPoint_congr`, never the re-chosen `fillNbr`). This is what lets the point-preserving
+post-steering `fillNbr` re-choice carry the steered promoted-normal independence verbatim from
+`PencilSeed.ofCoord q` to the re-chosen `seed'`. -/
+theorem pencilChartNormal_congr {seed seed' : PencilSeed K α}
+    (hubSel nbrSel : α → Fin 3 → Option α) (G : Graph α β) {v : α}
+    (hhub : seed'.hubNormal = seed.hubNormal) (hfill : seed'.fillHub = seed.fillHub)
+    (hassigned : ¬ G.PencilHub v → ∀ i, (nbrSel v i).isSome) :
+    pencilChartNormal seed' hubSel nbrSel G v = pencilChartNormal seed hubSel nbrSel G v := by
+  by_cases hv : G.PencilHub v
+  · rw [pencilChartNormal_of_pencilHub seed' hubSel nbrSel hv,
+      pencilChartNormal_of_pencilHub seed hubSel nbrSel hv, hhub]
+  · rw [pencilChartNormal_of_not_pencilHub seed' hubSel nbrSel hv,
+      pencilChartNormal_of_not_pencilHub seed hubSel nbrSel hv]
+    have hpt : pencilChartPoint seed' hubSel = pencilChartPoint seed hubSel :=
+      pencilChartPoint_congr hubSel hhub hfill
+    have hslot : ∀ i, nbrSlotPoint seed' hubSel nbrSel v i
+        = nbrSlotPoint seed hubSel nbrSel v i := by
+      intro i
+      obtain ⟨w, hw⟩ := Option.isSome_iff_exists.mp (hassigned hv i)
+      simp only [nbrSlotPoint, hw]
+      exact congrFun hpt w
+    rw [hslot 0, hslot 1, hslot 2]
+
+/-- **The promoted normal families transfer across a point-preserving `fillNbr` re-choice** (Phase
+39 W5-L5 L5-cut-v-f, the output-half assembly's promoted-family transfer). A `LinearIndepOn` of the
+chart's constructed normals over a set `s` on which every member is a pencil hub or a fully-assigned
+non-hub (`hassigned`, the "`fillNbr`-free" condition) survives replacing the seed by any `seed'`
+agreeing on `hubNormal`/`fillHub` — via `LinearIndepOn.congr` and the pointwise
+`pencilChartNormal_congr`. The output-half assembly (`notes/Phase39.md` *Hand-off*) applies this at
+each promoted set `G.closedHubNbhd v` (`v ∈ {u_c, w₁, w₂}`), whose members are all `G`-hubs; it
+discharges `hassigned` by the sub-case degree bookkeeping (a `G`-hub member of `V₁` other than the
+demoted `u_c` stays an `H`-hub, and `u_c`'s neighbour-selector is total since `H.closedNbhd u_c`
+has three members). -/
+theorem linearIndepOn_pencilChartNormal_congr {seed seed' : PencilSeed K α}
+    (hubSel nbrSel : α → Fin 3 → Option α) (G : Graph α β) {s : Set α}
+    (hhub : seed'.hubNormal = seed.hubNormal) (hfill : seed'.fillHub = seed.fillHub)
+    (hassigned : ∀ w ∈ s, ¬ G.PencilHub w → ∀ i, (nbrSel w i).isSome)
+    (hLI : LinearIndepOn K (pencilChartNormal seed hubSel nbrSel G) s) :
+    LinearIndepOn K (pencilChartNormal seed' hubSel nbrSel G) s := by
+  apply hLI.congr
+  intro w hw
+  exact (pencilChartNormal_congr hubSel nbrSel G hhub hfill (hassigned w hw)).symm
+
 end CombinatorialRigidity.Molecular
