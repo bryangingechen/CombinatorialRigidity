@@ -45,8 +45,9 @@ route (b′)); device = the grade-0 molecular chart (`Molecule/Pencil/Chart.lean
 rows-polynomial engine (`Molecule/Pencil/Engine.lean`) + the D6 re-seeding lemma
 (`Molecule/Pencil/Reseed.lean`), leaves **L0–L8** (L0–L4 complete; L5 closed modulo
 `hcontract`/`hsplit`, all L5-cut-v leaves landed; **L6 re-routed 2026-07-29 (L6a-as-pinned refuted,
-then settled): ≤ 3 on `G` is free from the `PencilNondegFeasible K G` antecedent, the real work is the
-`G ⇒ G′` transfer at a *safe* split vertex; next commit = L6a-transfer**; L8 parallel; L7, the
+then settled): the real work is the `G ⇒ G′` transfer at a *safe* split vertex; next commit =
+L6a-transfer. Safe-vertex existence + L7 coupling settled 2026-07-30: coupling benign (KT splits safe),
+existence proven for non-rigid `G` and a bounded `have`-hyp for rigid `G`**; L8 parallel; L7, the
 research core, last).
 
 The opening recon ran 2026-07-23; verdicts (R1–R3) below in *Opening recon verdicts*.
@@ -131,16 +132,19 @@ Full record, grounding, and the W0–W5 decomposition:
   (the uniform escape certificate `r ⬝ Λ²Π̂(a) ≢ 0` on the chart — the genuinely
   new mathematics, N2 witnesses one instance), **W5-L8** (the k = 0 residue —
   emptiness route recommended), and W4's witness generality (unchanged, after W5).
-- **W5-L6 split-arm feasibility — invariant SETTLED, two coupled items OPEN** (2026-07-29
-  L6a recon; canonical `notes/Phase39-design.md` §"W5 leaf decomposition" L6a "Re-route
-  SETTLED"). ≤ 3 on `G` is free from the split arm's `PencilNondegFeasible K G` antecedent
-  (landed `ncard_closedHubNbhd_le_three_of_isNondegPencilRealization`); but the transfer
-  `G ⇒ G′` fails at "dangerous" split vertices (computer-verified feasible/2EC/no-rigid gadget
-  where `splitOff` makes a 4-member `closedHubNbhd`, so `G′` is infeasible), so L7 **must split a
-  safe vertex**. ⚠ **USER-ADJUDICATION items:** (i) safe-vertex existence off minimality
-  (evidence strong, proof open); (ii) whether L7's rank argument admits a safe vertex (if not,
-  re-introduce split-arm minimality — a W3-level rework). L6a-transfer + L6b + L8 are all
-  buildable now regardless.
+- **W5-L6 split-arm feasibility — invariant SETTLED; coupling RESOLVED benign; safe-vertex
+  existence half-proven** (2026-07-29 L6a re-route + 2026-07-30 safe-exists recon; canonical
+  `notes/Phase39-design.md` §"W5 leaf decomposition" L6a). ≤ 3 on `G` is free from the split arm's
+  `PencilNondegFeasible K G` antecedent (landed
+  `ncard_closedHubNbhd_le_three_of_isNondegPencilRealization`); the transfer `G ⇒ G′` fails at
+  "dangerous" split vertices (computer-verified gadget), so L7 must split a **safe** (adjacent-deg-2-pair
+  endpoint) vertex. **2026-07-30 recon findings:** (ii) the L7 coupling is **benign** — KT's Case III
+  (Lemma 6.13) splits a chain of ≥ 2 degree-2 vertices, i.e. a safe vertex, obtained from KT Lemma 4.6,
+  so no W3-level minimality re-introduction is forced; (i) safe-vertex existence off minimality is
+  **PROVEN for non-rigid `G`** (`deficiency > 0`: `M(G̃)` independent via three landed bricks) and
+  **OPEN only for rigid `G`** (`k = 0`, = classical KT Lemma 4.6 off `IsMinimalKDof 0`; decisive
+  computational evidence incl. `S(Petersen)`, carry as `have`-hyp). L6a-transfer + L6b + L8 + the
+  non-rigid discharger are all buildable now; the `k = 0` bound is bounded and non-blocking.
 - The full biconditional transport `ExtensorThroughPoint C q ↔
   ExtensorInPanel (screwComplementIso C) q` (design doc's W0 pin) is
   landed only as its **two forward implications** (all the self-duality
@@ -182,12 +186,16 @@ Other buildable-now leaves (parallel pivots):
 - **W5-L8** (the `k = 0` residue, emptiness route). Fully parallel.
 - **W5-L6c** (`G′.Simple` = landed `splitOff_simple_of_noRigid_of_card`) — a citation, folded into L7.
 
-**⚠ Two coupled OPEN items flagged for user adjudication** (canonical: design doc L6a): (i) *safe-vertex
-existence off minimality* — the landed `exists_adjacent_degree_two_pair` needs `IsMinimalKDof 0` which
-route (b′) dropped; evidence strong that it generalizes, proof open; pin as a `have`-hyp. (ii) *L6/L7
-coupling* — the split-vertex choice is L7's (the unbuilt rank core); whether its rank argument admits a
-safe vertex is open, and if not the fix is a W3-level rework (re-introduce split-arm minimality). Neither
-blocks L6a-transfer / L6b / L8.
+**Safe-vertex existence + L7 coupling (2026-07-30 recon; canonical: design doc L6a).** (ii) *L6/L7
+coupling* — **RESOLVED benign**: KT's Case III (Lemma 6.13) splits a chain of ≥ 2 degree-2 vertices =
+a safe vertex (obtained from KT Lemma 4.6), so the rank argument *consumes* a safe vertex and no
+W3-level minimality re-introduction is forced. (i) *safe-vertex existence off minimality* — **PROVEN
+for non-rigid `G`** (`deficiency > 0` ⟹ `M(G̃)` independent, via `fundCircuit_inducedSpan_vertexSet_eq`
++ `circuit_induces_isRigidSubgraph` + `deficiency_le_deficiency_of_le_vertexSet_eq`), **OPEN only for
+rigid `G`** (`k = 0` = KT Lemma 4.6 off `IsMinimalKDof 0`; = `corank ≤ 5`; decisive computational
+evidence incl. `S(Petersen)`, no counterexample). Non-blocking: the `k = 0` edge bound is carried as a
+`have`-hyp. **Remaining user call = only whether to prove the `k = 0` bound now or carry the have-hyp —
+not a build-vs-rework decision.** Neither blocks L6a-transfer / L6b / L8 / the non-rigid discharger.
 - **W5-L7** (the research core, last): the uniform escape certificate `r ⬝ Λ²Π̂(a) ≢ 0` on the
   chart — the genuinely new mathematics; N2 witnesses one instance.
 - **W4** (after W5): the constrained-family Claim-6.4 analogue, `G′`-block witness confirmed by N3;
@@ -209,6 +217,19 @@ neighbor — is `notes/IdeaBacklog.md`.
 
 ## Decisions made during this phase
 
+- **W5-L6a-safe-exists SPLIT BY DEFICIENCY + L7 coupling RESOLVED benign** (2026-07-30 design-pass
+  recon; canonical `notes/Phase39-design.md` §"W5 leaf decomposition" L6a + "Numerics index"). Settles
+  the two 2026-07-29 user-adjudication flags. (1) **Coupling (ii) benign:** grounded against KT Lemma
+  6.13, Case III splits a ≥ 2-chain endpoint = a coordinator-safe vertex (from KT Lemma 4.6) — the rank
+  core *consumes* safety; no W3-level split-arm minimality re-introduction is forced. (2) **Existence (i)
+  half-proven:** reduced `exists_adjacent_degree_two_pair` off `IsMinimalKDof 0` to one edge bound
+  `(D−1)|E| < D(|V|−1)+(D−1)` (the landed degree double-count uses no minimality); the **non-rigid**
+  case (`deficiency > 0`) is PROVEN minimality-free — `M(G̃)` independent via
+  `fundCircuit_inducedSpan_vertexSet_eq` + `circuit_induces_isRigidSubgraph` +
+  `deficiency_le_deficiency_of_le_vertexSet_eq` — leaving only the **rigid** (`k = 0`, = KT's own Case
+  III) residue as a bounded `have`-hyp. Decisive exact-ℚ evidence (subdivision families +
+  high-girth `S(Petersen)`): **no** counterexample. Re-pinned signatures + route + numerics in the
+  design doc. No Lean built (design pass). Dispatch-log F9 instance (adjudication-flag resolution).
 - **W5-L6 invariant SETTLED + route re-pinned** (2026-07-29; L6a proof-route recon this commit,
   after the same-day refutation of the bare-combinatorial L6a). Canonical:
   `notes/Phase39-design.md` §"W5 leaf decomposition" L6a "Re-route SETTLED". Findings: (1) the ≤ 3
