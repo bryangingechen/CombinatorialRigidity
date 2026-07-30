@@ -153,7 +153,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 36. Proof automation: `grind` adoption + tactic-smell sweep (post-program) — AUTOMATE | `CombinatorialRigidity/` (internals-only) | ✓ Complete — build-neutral rw→simp/grind sweep, headline axioms unchanged (see `notes/Phase36.md`) |
 | 37. `Molecular/` fragility-zone tactic sweep (post-program) — AUTOMATE-Z | `Molecular/{AlgebraicInduction,RigidityMatrix}/` + ScrewSpace-carrier files (internals-only) | ✓ Complete — build-neutral rw→simp sweep (103 collapses / 17 reverts; going-in NO-GO overturned to GO), headline axioms unchanged (see `notes/Phase37.md`) |
 | 38. Long-proof de-duplication / missing-abstraction extraction (post-program) — FACTOR | `Molecular/` + top-level `Framework` API (internals-only) | ✓ Complete — shared engines/glue extracted from the 10 longest proofs (net −365 Lean lines; all 17 headline axioms unchanged, re-verified), no new mathematics (see `notes/Phase38.md`) |
-| 39. Hinge-pencil molecular conjecture (post-program) — PENCIL | `Molecular/Molecule/Pencil/` (+ `Meet.lean` adders), `pencil.tex` | ◐ In progress (W0–W3 + W5-L0–L6 complete modulo two carried hypotheses `hcontract`/`hsplit`; **W5-L6 habitat feasibility COMPLETE 2026-07-30** — feasibility headline over `[G.Simple]`, rigid-`k=0` half a bounded `have`-hyp; L7 the research core + L8 + W4 remain — see `notes/Phase39.md`) |
+| 39. Hinge-pencil molecular conjecture (post-program) — PENCIL | `Molecular/Molecule/Pencil/` (+ `Meet.lean` adders), `pencil.tex` | ◐ In progress (W0–W3 + W5-L0–L6 complete; **L7a/L7b LANDED, L7c decomposed 2026-07-30** — two carried kernels `hK`/`hbareSplit` ((K-bare) adjudication open) + buildable leaves; L8 dissolved into (K)'s discharge; W4 after W5 — see `notes/Phase39.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -1139,11 +1139,13 @@ extension biconditional (`exists_extensor_two_pencils_iff`) — all in
 attack order W3 → W5 → W4, W3's strip route refuted and the
 all-multigraphs induction (b′) adopted with typechecked leaf shapes,
 W5's genericity escape and W4's constrained-family route both supported
-by new exact-rational numerics. The reduction skeleton and its loop, cut,
-and base arms (W3-L0–L3, L4, L5, L6a) are all landed (2026-07-24); only
-the provisional bare-motive wrapper (W3-L7) remains to close W3's shell,
-after which W5 (genericity device) then W4 (constrained-family route)
-follow. Hand-off → `notes/Phase39.md`.
+by new exact-rational numerics. W3 and the W5 device/arms/feasibility
+layers are complete; as of 2026-07-30 the W5-L7 rank core is decomposed
+into landed glue (L7a/L7b) plus the L7c build sequence carrying two
+named kernels — (K)/`hK` (the escape, research open) and
+(K-bare)/`hbareSplit` (the bare half off-feasibility, adjudication
+open) — with W4 (constrained-family route, `hcontract`) to follow.
+Hand-off → `notes/Phase39.md`.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 

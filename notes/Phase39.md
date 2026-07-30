@@ -10,10 +10,11 @@ L5-cut-v-a…v-g all landed (`Motive.lean`/`Witness.lean`/`Engine.lean`/`Steer.l
 `hasGenericPencilRealization_pendant_deg3_of_IH` + the shell/successor rewire dropping
 `hcutPendant3` and adding `[Infinite K]`, blueprint node restated) — per-leaf detail one-lined in
 *Decisions made* + `notes/Phase39-design.md`. **W5-L6 (habitat feasibility) COMPLETE 2026-07-30;
-L8 buildable in parallel; L7 (the research core) is the last / critical path; W4 after W5** (phase
-opened 2026-07-23, recon-first). **W5-L7a (the safe-split IH generic half) LANDED 2026-07-30**
-(`Escape.lean`); kernel (K) route 3 adjudicated (carry `hEsc` explicit) — next is L7b or
-`escapePoly`. **L6a-safe-exists's rigid `k = 0` half PROVEN 2026-07-30**
+L8 DISSOLVED into (K)'s discharge (2026-07-30 ruling); L7 (the research core) is the last /
+critical path; W4 after W5** (phase opened 2026-07-23, recon-first). **W5-L7a AND L7b LANDED
+2026-07-30** (`Escape.lean`); kernel (K) route 3 adjudicated (carry the `hK` implication);
+**L7c decomposed 2026-07-30** (design pass — two carried kernels: `hK` + the new `hbareSplit`,
+the latter pending user adjudication). **L6a-safe-exists's rigid `k = 0` half PROVEN 2026-07-30**
 (`edgeBound_of_noRigid_of_degree_two` + `exists_adjacent_degree_two_pair_of_noRigid_of_degree_two`,
 `ReducibleVertex.lean`) — the split-arm safe-vertex existence obligation is now closed in full,
 minimality-free, needing no deficiency case-split at the L7 call site.
@@ -69,8 +70,20 @@ pencilRow_target`) — **signature corrected in the same commit** (`[Nonempty α
 coordinator-adjudicated after a builder BLOCKED on the pin as transcribed): `hEsc`'s own type reads
 `G.endsOf`, which needs `[Inhabited α]` at statement-elaboration time, not just proof-time; the
 design doc's `hK` pin has the identical shape and is flagged there for the L7c builder. Detail in
-*Decisions made*. Gates + axioms clean. **Next: build L7c (the hsplit assembly, carrying `hK`
-alone).**
+*Decisions made*. Gates + axioms clean.
+
+**W5-L7c DECOMPOSED 2026-07-30** (design pass; canonical `notes/Phase39-design.md` §"W5-L7
+research recon" — the "L7c decomposition" block + the settled residues (i)–(iv)). Headline
+finding: **"L7c carries `hK` alone" is REVISED** — the bare-half-off-feasibility residue (ii) is
+NOT buildable without new mathematics (a second kernel, **(K-bare)**, carried as `hbareSplit`;
+grounding: the panel program's split arm produces its bare conjunct only as forgetful ∘ generic
+under habitat-forced simplicity, and the pencil pair's second conditioning layer (feasibility) is
+not habitat-forced — theta gadget — while infeasibility transfers to `G′`, killing both the IH's
+generic half and `hK`'s antecedent). **User adjudication OWED: carry `hbareSplit` (recommended)
+vs. condition the pair's bare conjunct (motive change) vs. research (K-bare) first.** The rest of
+L7c is pinned as six ordered buildable leaves L7c-1…6 (plumbing ×2, `C₃`/`C₄` base leaves,
+producer, wrapper — exact signatures in the design doc); **L8 dissolved** into (K)'s discharge
+(same pass). Detail in *Decisions made*.
 
 **The rigid `k = 0` half's route recon LANDED 2026-07-30, and the bound was PROVEN in the same
 commit** (`ReducibleVertex.lean`: `edgeBound_of_noRigid_of_degree_two` +
@@ -90,13 +103,15 @@ is REFUTED** as a standalone certificate. The escape reduces (via the landed ref
 landed genericity engine `exists_common_seed_pencilRow_and_polynomials` is already built to
 consume. L7 decomposes into buildable glue (L7a, LANDED) + a buildable rank-to-generic steering
 assembly (L7b, re-pinned 2026-07-30 — no `escapePoly`; (K) carried as the `hK` rank-increment
-implication) + the L7c assembly; only (K) and the tracked L7c residues are open.
-**W5-L8 (`k=0` residue) buildable in parallel; W4 after W5.** The phase stays OPEN.
+implication) + the L7c assembly; open after the 2026-07-30 L7c design pass: (K), (K-bare)
+(the settled residue (ii)), and the buildable L7c leaves.
+**W5-L8 dissolved into (K)'s discharge (2026-07-30 ruling); W4 after W5.** The phase stays OPEN.
 
 **W0–W3 all COMPLETE; W5 design settled; W5-L0–L4 all COMPLETE; W5-L5 closed modulo TWO carried
 hypotheses** (loop, base, and cut arms all landed against `PencilPair`, and the successor assembly
 `pencil_conjecture_of_arms_pair` wires them through `Graph.pencil_reduction`; two explicit
-hypotheses remain open — `hsplit` (awaits W5-L6/L7/L8) and `hcontract` (a W4 obligation),
+hypotheses remain open — `hsplit` (awaits the W5-L7c build sequence) and `hcontract` (a W4
+obligation),
 *Blockers*/*Hand-off*). **L5-cut-v CLOSED 2026-07-29**: the residual sub-case-4 hypothesis
 `hcutPendant3` is discharged inline over `[Infinite K]` by `hasGenericPencilRealization_pendant_
 deg3_of_IH` (`Pair2.lean`), so both `pencilPair_of_not_twoEdgeConnected` and
@@ -127,9 +142,9 @@ triangle-free hypothesis. **L6d LANDED 2026-07-30 (`Habitat.lean`): the `C₄` p
 2026-07-30 (`Witness.lean`, `exists_coord_linearIndepOn_pencilChartPoint_of_idx`); adjacent-pair
 caller (`hsat_adj`) + per-body caller (`hsat_pt`) LANDED 2026-07-30, and **L6b COMPLETE 2026-07-30**
 — headline `pencilNondegFeasible_of_ncard_closedHubNbhd_le_three_of_triangleFree` (`Steer.lean`)
-wires the two callers + selectors through the L6b-i assembly. **The remaining W5 leaves are L8 (the
-`k=0` residue), L7 (the research core, last), and W4 (after W5); L6a-safe-exists is CLOSED in full
-(both halves LANDED)**).
+wires the two callers + selectors through the L6b-i assembly. **The remaining W5 work is L7
+(L7a/L7b LANDED; the L7c build sequence + the two carried kernels) and W4 (after W5); L8
+dissolved into (K)'s discharge; L6a-safe-exists is CLOSED in full (both halves LANDED)**).
 
 The opening recon ran 2026-07-23; verdicts (R1–R3) below in *Opening recon verdicts*.
 
@@ -218,11 +233,14 @@ Full record, grounding, and the W0–W5 decomposition:
   `hLI` food), NOT an `escapePoly` ≢-0 statement (that sizing was refuted by a BLOCKED build);
   attack routes 1–2 (localization / panel-span reuse) both factor through `hK`'s discharge;
   `notes/Phase39-design.md` §"W5-L7 research recon" "Lean decomposition" + "Route options"),
-  **the L7c bare-half-off-feasibility residue** (the theta counterexample makes the generic
-  conjunct vacuous but the *bare* conjunct is still owed; pinned route candidate = a bare
-  rank-extension leaf, own focused recon before build — design doc residue (ii)),
-  **W5-L8** (the k = 0 residue — emptiness route recommended), and
-  W4's witness generality (unchanged, after W5).
+  **kernel (K-bare)** (the bare-half-off-feasibility residue, SETTLED 2026-07-30 by the L7c
+  assembly recon: NOT buildable without new mathematics — the panel forgetful-map precedent
+  structurally cannot cover it, infeasibility transfers to `G′`, and the extension is
+  Case-III-increment-strength from a possibly degenerate input; carried form `hbareSplit`
+  pinned in the design doc residue (ii); **OPEN USER ADJUDICATION: carry `hbareSplit`
+  (recommended) vs. condition the pair's bare conjunct (motive change) vs. research first**),
+  and W4's witness generality (unchanged, after W5). W5-L8 is no longer a standalone open item
+  (dissolved into (K)'s discharge, 2026-07-30 ruling — design doc §"W5 leaf decomposition" L8).
 - ~~W5-L6 split-arm feasibility (safe-vertex existence)~~ **CLOSED** (2026-07-29 L6a re-route +
   2026-07-30 safe-exists recon + build; canonical `notes/Phase39-design.md` §"W5 leaf
   decomposition" L6a). ≤ 3 on `G` is free from the split arm's `PencilNondegFeasible K G`
@@ -249,7 +267,8 @@ Full record, grounding, and the W0–W5 decomposition:
 
 **W5-L5 closed modulo TWO carried hypotheses** — loop/base/cut arms + successor
 `pencil_conjecture_of_arms_pair` (`Pair2.lean`, node `thm:pencil-conditional-realization-pair` green
-over `[Infinite K]`); only `hcontract` (W4) and `hsplit` (W5-L6/L7/L8) remain. Finished L6 landings
+over `[Infinite K]`); only `hcontract` (W4) and `hsplit` (the W5-L7c build sequence) remain.
+Finished L6 landings
 (one-line; detail in *Decisions made* + design doc §"W5 leaf decomposition"): **L6a-transfer**
 (`ncard_closedHubNbhd_splitOff_le_three_of_safe`, `Habitat.lean`), **L6a-safe-exists** (both halves
 LANDED — non-rigid `exists_adjacent_degree_two_pair_of_noRigid_of_deficiency_pos`, rigid
@@ -265,18 +284,24 @@ decomposition" — the canonical re-pin). `escapePoly` is DELETED from the plan;
 carried as the `hK` rank-increment implication. **L7a LANDED** (`Escape.lean`,
 `hasGenericPencilRealization_of_splitOff_of_safe`). **L7b LANDED** (`Escape.lean`,
 `hasGenericPencilRealization_of_independent_pencilRow_target`, signature corrected to
-`[Inhabited α]` in the same commit — detail in *Decisions made*). **Next concrete commit:**
-- **W5-L7c build** — the hsplit assembly, carrying `hK` alone (the rigid `k=0` bound is PROVEN, no
-  other carried hypothesis remains). Checklist: safe-`v` choice via the closed L6a-safe-exists;
-  fresh-`e₀` plumbing (`e₀ ∉ E(G)` for the deficiency lemmas); the small-`|V|` `C₃`/`C₄` base
-  leaves (`htf` false at `C₃` — direct witnesses); the bare-half-off-feasibility leaf (own focused
-  recon first — design doc residue (ii), theta counterexample); non-simple bare-half restatement if
-  needed (residue (iii)); **thread `[Inhabited α]` into `hK`'s own carrying signature** (design doc
-  flags the identical `G.endsOf` gap there — cheap, the assembly has `v` in hand).
-- **W5-L8** (the `k = 0` residue, emptiness route recommended — `notes/Phase39-design.md` §"W5 leaf
-  decomposition" L8): the deficiency-`0` split-off bookkeeping / emptiness of the residue class.
+`[Inhabited α]` in the same commit — detail in *Decisions made*). **L7c DECOMPOSED 2026-07-30**
+(design pass; canonical leaf list = the design doc's "L7c decomposition" block: L7c-1
+`simple_of_noRigid`, L7c-2 the 2EC-sourced split-data extractor, L7c-3/4 the `C₃`/`C₄` base
+leaves, L7c-5 the `5 ≤ |V|` producer carrying `hK` + `hbareSplit`, L7c-6 the successor wrapper;
+`[Inhabited α]` enters at L7c-5/6). **Next concrete commit:**
+- **L7c-1 + L7c-2** (one S1 plumbing commit, buildable now, adjudication-independent):
+  `simple_of_noRigid` (`ReducibleVertex.lean` — the minimality-free extraction of
+  `simple_of_isMinimalKDof_of_noRigid`) and
+  `exists_splitOff_data_of_degree_eq_two_of_twoEdgeConnected` (`ForestSurgery/Reduction.lean` —
+  re-source the crossing bound from 2EC; the pinned signatures are in the design doc block).
+- **Surface the (K-bare) adjudication to the user** (blocks L7c-5/6 only): carry `hbareSplit`
+  (recommended) vs. condition the pair's bare conjunct (motive change) vs. research (K-bare)
+  first — design doc residue (ii).
+- **L7c-3 / L7c-4** (the `C₃`/`C₄` base leaves, buildable now, one S2 commit each or combined).
 - **Attack kernel (K)** (research recon, route 1 localization recommended — its first gate is the
-  local-vs-global numerical test in the design doc's "Route options").
+  local-vs-global numerical test in the design doc's "Route options"); the **(K-bare) research
+  recon** (numerics-first: bare rank at the infeasible gadgets; degenerate-seed extension probes)
+  runs independently if adjudicated.
 - **W4** (after W5 — the constrained-family Claim-6.4 analogue, discharges `hcontract`).
 
 L6a-safe-exists is **CLOSED in full** (both halves LANDED). With L6b done, the L6/L7 split-arm chain
@@ -293,9 +318,11 @@ closed-hub-neighbourhood bound is free from the split arm's `PencilNondegFeasibl
 **L6c** = landed
 `splitOff_simple_of_noRigid_of_card`, folds into L7.
 
-Discharging `hsplit` (L6/L7/L8) then `hcontract` (W4) removes the last two carried hypotheses of
-`pencil_conjecture_of_arms_pair` and completes the conditional-realization successor. Full leaf
-detail: `notes/Phase39-design.md` §"W5 leaf decomposition".
+Discharging `hsplit` (the L7c-1…6 build sequence) then `hcontract` (W4) removes the last two
+carried hypotheses of `pencil_conjecture_of_arms_pair`; the L7c-6 successor then carries exactly
+`hcontract`, `hK`, `hbareSplit`, and the mechanical `hfresh` supply (the Q4 bookkeeping in the
+design doc's "Remaining-open after L7c" block). Full leaf detail: `notes/Phase39-design.md`
+§"W5 leaf decomposition" + §"W5-L7 research recon".
 
 Gates for any continuation: `lake build` (warning-clean) + `lake lint` when `.lean` is touched;
 `blueprint/verify.sh` + `blueprint/lint.sh` (vocabulary gate bans "stratum"/"strata") when `.tex`
@@ -309,6 +336,14 @@ neighbor — is `notes/IdeaBacklog.md`.
 
 ## Decisions made during this phase
 
+- **W5-L7c DECOMPOSED + (K-bare) isolated + L8 dissolved** (2026-07-30, design pass; canonical
+  `notes/Phase39-design.md` §"W5-L7 research recon" "L7c decomposition" + residues (i)–(iv) +
+  §"W5 leaf decomposition" L8). The bare half off-feasibility (residue (ii)) is NOT buildable —
+  a second carried kernel `hbareSplit` (panel precedent = forgetful ∘ generic only, verified
+  `Theorem55.lean:2499`; infeasibility transfers to `G′`; delete-dodge refuted `C₅ → P₄`) —
+  **user adjudication owed** (carry vs. motive change vs. research). Six buildable leaves
+  L7c-1…6 pinned with signatures (incl. the `exists_splitOff_data_of_degree_eq_two` IsKDof-0
+  pointer correction → 2EC re-sourcing); L8 survives only inside (K)'s discharge.
 - **W5-L7b LANDED + pinned signature CORRECTED (`[Nonempty α]` → `[Inhabited α]`)** (2026-07-30,
   `Molecule/Pencil/Escape.lean`: `hasGenericPencilRealization_of_independent_pencilRow_target`).
   Builder dispatch **returned BLOCKED first**: the design doc's pin (`[Nonempty α] [Finite α]
