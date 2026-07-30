@@ -2185,7 +2185,8 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
     (landed necessity), the IH's generic half is vacuous, and *there is no `G′`-realization to extend* —
     the "build a fresh feasible `G′`" route dies at that `v`.
 
-    **Computer-verified gadget (this recon, `scratchpad/habitat.py`).** The path `a–v–b` with `a` joined to
+    **Computer-verified gadget (this recon, `scratchpad/habitat.py` — session-local, not
+    preserved; results recorded here).** The path `a–v–b` with `a` joined to
     two hubs `x, y`, and `x, y, b` on a subdivided-triangle cycle of three length-`L` arcs (`L = 5`: 17
     vertices; `L = 6`: 20), is loopless, simple, **2EC**, **no-proper-rigid** (certified: `f(W) < 0` for
     *every* proper `W`, worst `−1` at `{a, v}`; `f(W) := 5|E_G(W)| − 6(|W|−1) = −partitionDef` at the
@@ -2304,7 +2305,8 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
       **covers BOTH deficiency halves** at the split-arm call site (it needs only a degree-2-vertex
       witness, which either deficiency regime's own search already supplies), so the deficiency
       case split at the L7 call site dissolves: one lemma serves both. The exhaustive computational
-      evidence gathered this recon (`scratchpad/{kzero,kzero2,petersen,broad}.py`, exact-ℚ
+      evidence gathered this recon (`scratchpad/{kzero,kzero2,petersen,broad}.py` —
+      session-local, not preserved; results recorded here — exact-ℚ
       rigidity-matrix rank + exact partition deficiency, *zero* counterexamples across
       `S(Petersen)` and all tested subdivision families) stands as corroboration, not the closing
       argument — the Lean proof above is unconditional.
@@ -2366,7 +2368,8 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
       deficiency regimes at the L7 call site.
     - **The `splitOff`-invariant finding stands** (it is what made the safe-vertex distinction
       necessary): `splitOff` does **not** preserve feasibility at a *dangerous* vertex
-      (computer-verified gadget, `scratchpad/habitat.py`), so L7 must split a safe one — which, per
+      (computer-verified gadget, `scratchpad/habitat.py` — session-local, not preserved;
+      results recorded here), so L7 must split a safe one — which, per
       (ii), is exactly what KT already does.
 
   - **L6b — the general-position witness seed** (target: `Molecule/Pencil/Witness.lean`).
@@ -2639,7 +2642,8 @@ bullet); L7 last (consumes L2–L4, L6).
 | N6 | spider-K4 coincidence branch (`u,a,b,c` coplanar; 6 samples + 2 generic) | 54 = target in all |
 
 L6a-safe-exists numerics (2026-07-30 recon; exact-ℚ Plücker rigidity-matrix rank + exact partition
-deficiency; scripts `scratchpad/{kzero,kzero2,petersen,broad}.py`, reproduce `habitat/safe/exact/search`):
+deficiency; scripts `scratchpad/{kzero,kzero2,petersen,broad}.py` — session-local, not
+preserved; results recorded below; reproduce `habitat/safe/exact/search`):
 
 | # | experiment | result |
 |---|---|---|
@@ -2956,7 +2960,7 @@ Recorded corrections + tracked residues from the 2026-07-30 L7b-shape route reco
   below, which returned SUPPORTED.
 
   **(K-bare) numerics gate PASSED 2026-07-30** (untracked scripts
-  `scratchpad/kbare/{kbare_common,gate1,gate2,stress_extra}.py`; independent of the (K) escape
+  `notes/scripts/kbare/{kbare_common,gate1,gate2,stress_extra}.py`; independent of the (K) escape
   probes, per residue (ii)'s own numerics-first plan above). Both planned gates SUPPORTED, with
   *certified* (not sampled-only) bare-target attainment at every infeasible gadget tried:
   `theta(6,6,6)` + center hub `105/105` target, its safe split `100/100`, `spider(5,5,5)` `90/90`
