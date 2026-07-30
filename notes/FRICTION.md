@@ -116,6 +116,20 @@ to be re-derived by re-reading entries later.
   in a cleanup round or the next toucher.
 - **Status:** open.
 
+### [mirror-candidate] No packaged "inject a finite set into a no-smaller finite set" lemma (`Set.ncard` → `Set.InjOn` + `MapsTo`)
+- **Where it bit:** Phase 39 (PENCIL) W5-L6b-ii, the adjacent-pair direction map `idx`
+  (`Molecular/Molecule/Pencil/Witness.lean`, `exists_idx_dtgt_pair`). Needed to inject a
+  `≤ 3`-cardinality closed-hub-neighbourhood into a chosen palette of `Fin 4` values.
+- **Friction:** wanted the plain fact "`T.ncard ≤ P.ncard` (both finite) ⟹ `∃ f, Set.InjOn f T ∧
+  ∀ x ∈ T, f x ∈ P`", which mathlib packages only as the *embedding* form
+  `Function.Embedding.nonempty_of_card_le` (over `Fintype`s, not `Set.ncard` with a total `f` and an
+  ambient junk value). Proved locally as `exists_injOn_mapsTo_of_ncard_le` (`Fintype` cards from
+  `Nat.card_coe_set_eq` + `Nat.card_eq_fintype_card`, then the embedding, extended by `default`).
+- **Proposed fix:** upstream-eligible; mirror to `Mathlib/Data/Set/Card.lean` as a general
+  `Set.ncard`-flavoured injection lemma. Kept local for now (same non-module import-cone reason as
+  the sibling entries) — lift in a cleanup round.
+- **Status:** open.
+
 ### [mirror-candidate] No packaged "scale two slots of a `2`-extensor" lemma — `extensor ![a • x, b • y] = (a*b) • extensor ![x, y]`
 - **Where it bit:** Phase 39 (PENCIL) W5-L5 L5-cut-v-f, the re-seeding proportionality brick
   (`Molecular/Molecule/Pencil/Steer.lean`, `exists_smul_supportExtensor_eq_pencilChartFramework_of_reseed`,

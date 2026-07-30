@@ -2418,14 +2418,23 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
       (`idx` → hub normals, per-body `exists_injective_extension_of_isFin3SelectorOf` padding,
       `exists_smul_cross₃_pi_single` → scaled targets, `linearIndepOn_smul_pi_single` for distinctness),
       char-free with no feasibility/graph structure of its own beyond `hHubSel`. Its conclusion
-      type-matches the L6b-i families exactly (axioms clean). **Still open (later commits):**
-      construct `idx`/`dtgt` per set-shape (`{v}` / `closedNbhd v` per body, `{p.1,p.2}` per adjacent
-      pair, `∅`) from `hcard` + `htf` and wire the headline
+      type-matches the L6b-i families exactly (axioms clean). **The adjacent-pair caller (`hsat_adj`)
+      is LANDED (2026-07-30, `Molecule/Pencil/Witness.lean`,
+      `exists_coord_linearIndepOn_pencilChartPoint_adjacentPair`):** at an adjacent pair `{u,v}` the
+      two closed hub-neighbourhoods overlap only inside `{u,v}` (a common third hub closes a triangle
+      `u–v–w`, ⊥ by `htf`), so a two-set combinatorial core `exists_idx_dtgt_pair` builds `idx`/`dtgt`
+      by injecting `closedHubNbhd u` into a `3`-value palette avoiding `dtgt u` and the disjoint
+      remainder `closedHubNbhd v \ closedHubNbhd u` into the values avoiding `dtgt v` and the overlap's
+      image (palette sizes matching by the `≤ 3` bound, uniformly — no hub case split). Two reusable
+      bricks: `exists_injOn_mapsTo_of_ncard_le` (inject a finite set into a no-smaller one;
+      upstream-eligible, `FRICTION.md` [mirror-candidate]) + `exists_idx_dtgt_pair`. **Still open
+      (later commits):** the **per-body caller `hsat_pt`** (`{v}` at a hub — trivial one-set; `closedNbhd
+      v` at a non-hub — a THREE-set construction that is genuinely harder because two neighbours' closed
+      hub-neighbourhoods can share an *external* hub via an induced `C₄`, so the sets are **not**
+      `S`-separated the way the adjacent pair is, forcing a tighter forced-value assignment — verified
+      constructible by hand in the worst case but not the disjoint-palette route), then wire the headline
       `pencilNondegFeasible_of_ncard_closedHubNbhd_le_three_of_triangleFree` (`choose` selectors ⟶
-      L6b-ii ⟶ `pencilNondegFeasible_of_selectors_of_satisfiable`). `htf` is the exact lever: it
-      excludes the two-hub-triangle (adjacent pair) and the common-neighbour-triangle (closed-nbhd
-      triple) that alone would force a `dtgt`/`idx` collision — hand-verified constructible for the
-      both-hubs and doubly-shared-hub configurations (no route-breaker found). The `≤ 3` cardinality
+      the two callers ⟶ `pencilNondegFeasible_of_selectors_of_satisfiable`). The `≤ 3` cardinality
       bound is `hcard`; the triangle exclusions are `htf` (replacing v-b's feasibility-derived
       `not_pencilNondegFeasible_of_triangle_two_hubs`).
     - **Selector brick — NOT missing (2026-07-30 spike finding):** the `IsFin3SelectorOf`-existence

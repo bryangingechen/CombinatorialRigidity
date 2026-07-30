@@ -55,8 +55,11 @@ triangle-free hypothesis. **L6d LANDED 2026-07-30 (`Habitat.lean`): the `C₄` p
 `c4_isProperRigidSubgraph` + the transfer wrapper `splitOff_triangleFree_of_noRigid`, both over
 `namespace Graph`. L6b-i LANDED 2026-07-30 (`Steer.lean`, the feasibility assembly
 `pencilNondegFeasible_of_selectors_of_satisfiable`); L6b-ii char-free general-position CORE LANDED
-2026-07-30 (`Witness.lean`, `exists_coord_linearIndepOn_pencilChartPoint_of_idx`, v-b's construction
-extracted); its per-set-shape `idx`/`dtgt` callers + headline wiring are the next buildable pieces**;
+2026-07-30 (`Witness.lean`, `exists_coord_linearIndepOn_pencilChartPoint_of_idx`); **L6b-ii
+adjacent-pair caller (`hsat_adj`) LANDED 2026-07-30** (`Witness.lean`,
+`exists_coord_linearIndepOn_pencilChartPoint_adjacentPair` + bricks; `htf` confines the pair's
+hub-neighbourhood overlap to `{u,v}`); the per-body caller `hsat_pt` (non-hub `closedNbhd v` = a
+harder non-`S`-separated 3-set build) + headline wiring are the next buildable pieces**;
 L8 parallel; L7, the research core, last).
 
 The opening recon ran 2026-07-23; verdicts (R1–R3) below in *Opening recon verdicts*.
@@ -168,118 +171,49 @@ Full record, grounding, and the W0–W5 decomposition:
 
 **The phase stays OPEN** (the two superseding 2026-07-24 adjudications — no phase-close).
 
-**W5-L5 is closed modulo TWO carried hypotheses** (loop/base/cut arms + the successor
-`pencil_conjecture_of_arms_pair`, `Pencil/Pair2.lean`, node
-`thm:pencil-conditional-realization-pair` green over `[Infinite K]`; only `hcontract` (W4) and
-`hsplit` (W5-L6/L7/L8) remain open — full detail in *Decisions made*, below). **L5-cut-v CLOSED
-2026-07-29** (v-g part 2): `hcutPendant3` is discharged inline by
-`hasGenericPencilRealization_pendant_deg3_of_IH` (`Pair2.lean`), so both
-`pencilPair_of_not_twoEdgeConnected` and `pencil_conjecture_of_arms_pair` dropped it and gained
-`[Infinite K]`.
+**W5-L5 closed modulo TWO carried hypotheses** — loop/base/cut arms + successor
+`pencil_conjecture_of_arms_pair` (`Pair2.lean`, node `thm:pencil-conditional-realization-pair` green
+over `[Infinite K]`); only `hcontract` (W4) and `hsplit` (W5-L6/L7/L8) remain. Finished L6 landings
+(one-line; detail in *Decisions made* + design doc §"W5 leaf decomposition"): **L6a-transfer**
+(`ncard_closedHubNbhd_splitOff_le_three_of_safe`, `Habitat.lean`), **L6a-safe-exists non-rigid half**
+(`exists_adjacent_degree_two_pair_of_noRigid_of_deficiency_pos`, `ReducibleVertex.lean`/`Operations.lean`;
+rigid `k=0` half a bounded `have`-hyp), **L6d** (`c4_isProperRigidSubgraph` + `splitOff_triangleFree_of_noRigid`,
+`Habitat.lean`), **L6b-i** assembly (`pencilNondegFeasible_of_selectors_of_satisfiable`, `Steer.lean`;
+needs `[G.Loopless]`), **L6b-ii core** (`exists_coord_linearIndepOn_pencilChartPoint_of_idx`,
+`Witness.lean`), **L6b-ii adjacent-pair caller** (`exists_coord_linearIndepOn_pencilChartPoint_adjacentPair`
++ bricks `exists_injOn_mapsTo_of_ncard_le`/`exists_idx_dtgt_pair`, `Witness.lean`, 2026-07-30).
 
-**W5-L6a-transfer LANDED 2026-07-30** (`Molecule/Pencil/Habitat.lean`, new file wired into
-`CombinatorialRigidity.lean`): `ncard_closedHubNbhd_splitOff_le_three_of_safe` supplies L6b's `hcard`
-at `G′` from `G`'s. **Signature corrected** — the bare-existential pin was FALSE at `a = b` (self-loop
-inflates a non-hub into a `G′`-hub; 10-vertex counterexample), fixed by the explicit `hab : a ≠ b`
-(free at the L7 call site via `exists_splitOff_data_of_degree_eq_two`'s `eₐ ≠ e_b`); `{n}`/`hdeg`
-dropped. Route: `hab` ⟹ `G′` loopless ⟹ `degree` monotone ⟹ hub-transfer, then the per-`w` case
-split. Detail: *Decisions made* + `notes/Phase39-design.md` §"W5 leaf decomposition" L6a.
+**Next concrete commit — the L6b-ii per-body caller `hsat_pt` + headline.** With the adjacent-pair
+caller (`hsat_adj`) landed, what remains for L6b:
+- **(A) per-body caller `hsat_pt`:** `∀ v, ∃ q, LinearIndepOn K (pencilChartPoint (ofCoord q) hubSel)`
+  `(if G.PencilHub v then {v} else G.closedNbhd v)`. Two shapes: `{v}` at a hub is the trivial
+  one-set case (invert the selector / reuse `exists_idx_dtgt_pair`-style on one set); `closedNbhd v`
+  at a non-hub (`|closedNbhd v| ≤ 3`) is a **THREE-set construction, genuinely harder than the pair**
+  — two neighbours' closed hub-neighbourhoods can share an *external* hub via an induced `C₄`, so they
+  are **not** `S`-separated (the disjoint-palette route of `exists_idx_dtgt_pair` does not apply);
+  hand-verified constructible in the worst case (a forced near-bijection of `{a,b,w₁,w₂}` onto
+  `Fin 4`), so it likely needs its own combinatorial core (a 3-set analogue of `exists_idx_dtgt_pair`,
+  or a direct build). **DERIVATION-GUARD note for the next builder:** re-verify the non-hub 3-set
+  construction against the worst case before committing.
+- **Headline** (once `hsat_pt` lands): `pencilNondegFeasible_of_ncard_closedHubNbhd_le_three_of_triangleFree`
+  `[Inhabited α][Finite α][Finite β][Infinite K][G.Simple] (hcard) (htf) : PencilNondegFeasible K G`
+  = `choose` selectors (`exists_isFin3SelectorOf_of_ncard_le_three` for hubs;
+  `ncard_closedNbhd_le_three_of_not_pencilHub` for non-hubs) ⟶ the two callers ⟶
+  `pencilNondegFeasible_of_selectors_of_satisfiable`. `[G.Simple]` REQUIRED (loop ⟹ conjunct #5 false).
 
-**W5-L6a-safe-exists non-rigid half LANDED 2026-07-30** (`ReducibleVertex.lean`/`Operations.lean`):
-the generalized counting `exists_adjacent_degree_two_pair_of_edgeBound`, the non-rigid brick
-`indep_matroidMG_of_noRigid_of_deficiency_pos` (Operations), and the composition
-`exists_adjacent_degree_two_pair_of_noRigid_of_deficiency_pos` — a `∃` adjacent-degree-2-pair
-(= a coordinator-safe vertex under 2EC) for the entire non-rigid (`deficiency > 0`) split-arm
-habitat, with no minimality anywhere. The pinned `[DecidableEq β]`/`hnp` on the counting lemma were
-dropped as inert (Decisions-made). The **rigid (`k = 0`) half stays a bounded `have`-hyp** (KT Lemma
-4.6 off minimality; decisive `S(Petersen)` evidence, no counterexample; user call only whether to
-prove it now).
+**Fully parallel alternatives:** **W5-L8** (the `k = 0` residue, emptiness route); **W5-L7** (the
+research core, last — the uniform escape certificate `r ⬝ Λ²Π̂(a) ≢ 0` on the chart, the genuinely new
+mathematics; N2 witnesses one instance); **W4** (after W5 — the constrained-family Claim-6.4 analogue,
+discharges `hcontract`).
 
-**W5-L6b re-pinned + L6d VERIFIED (2026-07-30 habitat-foundations recon; canonical `notes/Phase39-
-design.md` §"W5 leaf decomposition" L6b/L6d).** The `hcard`-only L6b pin was refuted (a two-adjacent-
-hub triangle satisfies `hcard ≤ 3` yet is infeasible by the landed
-`not_pencilNondegFeasible_of_triangle_two_hubs`); L6b now takes a triangle-free hypothesis. The recon
-then VERIFIED both habitat claims: (Q1) triangle ⟹ proper rigid at `|V| ≥ 4` is already LANDED
-(`Graph.triangle_isProperRigidSubgraph`, contrapositive ⟹ habitat triangle-free), and (Q2) the
-transfer HOLDS — `G′` is *fully* triangle-free at ANY degree-2 split (a new `G′`-triangle would give
-an induced `C₄` in `G`, and `C₄` is `D6`-rigid (`isKDof_zero_of_cycle`, `m=4`), a proper rigid
-subgraph at `|V| ≥ 5`, contradicting `hnoRigid`). Exhaustive search (all `{2,3}`-degree habitats
-`n ≤ 7`, sampled `n = 8`): zero counterexamples. So L6d is a THEOREM (not an existence gamble); safe
-is **not** needed for it (only L6a-transfer needs safe). No route-breaker.
-
-**W5-L6d LANDED 2026-07-30** (`Molecule/Pencil/Habitat.lean`, `namespace Graph`): the `C₄`
-proper-rigid brick `c4_isProperRigidSubgraph` (an `m = 4` mirror of `triangle_isProperRigidSubgraph`,
-`isKDof_zero_of_cycle` for `0`-dof, properness from `|V| ≥ 5`) + the transfer wrapper
-`splitOff_triangleFree_of_noRigid` (`htf` at `G′`, its `hcard` sibling landed in L6a-transfer). Both
-inputs to L6b are now honest producers in tree. Gates + axioms clean.
-
-**W5-L6b-i LANDED 2026-07-30** (`Steer.lean`, `pencilNondegFeasible_of_selectors_of_satisfiable`,
-compiler-checked spike): the L6b assembly — global selectors + the two "satisfiable-somewhere"
-chart-point-LI families (`{v}`/`closedNbhd v` per body; `{u,v}` per adjacent pair) →
-`PencilNondegFeasible`, the v-e template minus `.mono`. Axioms clean. **Two spike findings:** the
-`IsFin3SelectorOf`-existence brick is **NOT missing** — it is the landed
-`exists_isFin3SelectorOf_of_ncard_le_three` (`Engine.lean:793`); and the re-pinned L6b signature is
-**FALSE without a looplessness hypothesis** (a loop makes conjunct #5
-`LinearIndependent ![point v, point v]` unsatisfiable ⟹ `PencilNondegFeasible` false), so the
-headline needs `[G.Simple]`/`[G.Loopless]` (free from the honest producer `G′.Simple`, L6c). Detail:
-*Decisions made* + design doc L6b.
-
-**W5-L6b-ii char-free general-position CORE LANDED 2026-07-30** (`Molecule/Pencil/Witness.lean`,
-`exists_coord_linearIndepOn_pencilChartPoint_of_idx`): given `idx dtgt : α → Fin 4` with `idx`
-injective + avoiding `dtgt s` on each `G.closedHubNbhd s` for `s ∈ S`, and `dtgt` injective on `S`,
-`∃ q, LinearIndepOn K (pencilChartPoint (ofCoord q) hubSel) S` — v-b's construction extracted verbatim
-(`idx` → hub normals; per-body `exists_injective_extension_of_isFin3SelectorOf` padding;
-`exists_smul_cross₃_pi_single` → scaled targets; `linearIndepOn_smul_pi_single` for distinctness),
-char-free with no feasibility/graph structure beyond `hHubSel`. Its conclusion type-matches the
-L6b-i families (A)/(B) exactly. Axioms clean; no new FRICTION (faithful v-b mirror, built first try).
-
-**Next concrete commit — the L6b-ii per-set-shape callers** (build `idx`/`dtgt` from `hcard` + `htf`,
-then wire the headline): the two satisfiability lemmas the core now discharges
-- (A) `∀ v, ∃ q, LinearIndepOn K (pencilChartPoint (PencilSeed.ofCoord q) hubSel)`
-  `(if G.PencilHub v then {v} else G.closedNbhd v)`
-- (B) `∀ p, ∃ q, LinearIndepOn K (pencilChartPoint (PencilSeed.ofCoord q) hubSel)`
-  `(if G.Adj p.1 p.2 then {p.1,p.2} else ∅)`
-
-each by supplying the core with a per-set-shape `idx`/`dtgt` (taking `hubSel`/`hHubSel` as inputs, as
-v-b does): the `{v}` singleton is trivial (any single target); `closedNbhd v` and the adjacent pair
-`{p.1,p.2}` need `idx` injective + `dtgt`-avoiding on each member's `G.closedHubNbhd`, with the
-per-member targets distinct. `htf` is the exact lever: it excludes the two-hub-triangle (adjacent
-pair) and the common-neighbour-triangle (closed-nbhd triple) that alone would force a `dtgt`/`idx`
-collision — hand-verified constructible for the both-hubs and doubly-shared-hub configs (no
-route-breaker). Then the headline `pencilNondegFeasible_of_ncard_closedHubNbhd_le_three_of_
-triangleFree` = `choose` selectors (via `exists_isFin3SelectorOf_of_ncard_le_three`) ⟶ (A)/(B) ⟶
-`pencilNondegFeasible_of_selectors_of_satisfiable`. The `≤ 3` bound is `hcard`; the triangle
-exclusions are `htf`. Fully parallel alternative: **W5-L8** (the `k = 0` residue, emptiness route).
-
-**W5-L6 invariant SETTLED (2026-07-29 L6a recon; canonical `notes/Phase39-design.md` §"W5 leaf
-decomposition" L6a).** The ≤ 3 closed-hub-neighbourhood bound on `G` is **not** a graph-combinatorial
-fact (the refuted L6a's `2EC + no-rigid ⟹ ≤ 3` is false, computer-verified theta counterexample) — it
-is **free from the split arm's own `PencilNondegFeasible K G` antecedent** via the LANDED
-`ncard_closedHubNbhd_le_three_of_isNondegPencilRealization`, and where it fails `G` is infeasible so
-the obligation is vacuous (this also moots the `(5,5,5)` borderline). The **real gap** is the transfer
-`G ⇒ G′`: `splitOff` at a *dangerous* vertex (both neighbours hubs, one tight) makes a 4-member
-neighbourhood, so `G′` is infeasible — computer-verified gadget. Fix: split a **safe** vertex.
-Other buildable-now leaves (parallel pivots):
-- **W5-L6b** (spike-first, takes `hcard` explicitly): the general-position witness seed →
-  `PencilNondegFeasible K G′`. Its input type-matches L6a-transfer's output exactly. UNCHANGED by the
-  re-route.
-- **W5-L8** (the `k = 0` residue, emptiness route). Fully parallel.
-- **W5-L6c** (`G′.Simple` = landed `splitOff_simple_of_noRigid_of_card`) — a citation, folded into L7.
-
-**Safe-vertex existence + L7 coupling (2026-07-30 recon; canonical: design doc L6a).** (ii) *L6/L7
-coupling* — **RESOLVED benign**: KT's Case III (Lemma 6.13) splits a chain of ≥ 2 degree-2 vertices =
-a safe vertex (obtained from KT Lemma 4.6), so the rank argument *consumes* a safe vertex and no
-W3-level minimality re-introduction is forced. (i) *safe-vertex existence off minimality* — **PROVEN
-for non-rigid `G`** (`deficiency > 0` ⟹ `M(G̃)` independent, via `fundCircuit_inducedSpan_vertexSet_eq`
-+ `circuit_induces_isRigidSubgraph` + `deficiency_le_deficiency_of_le_vertexSet_eq`), **OPEN only for
-rigid `G`** (`k = 0` = KT Lemma 4.6 off `IsMinimalKDof 0`; = `corank ≤ 5`; decisive computational
-evidence incl. `S(Petersen)`, no counterexample). Non-blocking: the `k = 0` edge bound is carried as a
-`have`-hyp. **Remaining user call = only whether to prove the `k = 0` bound now or carry the have-hyp —
-not a build-vs-rework decision.** Neither blocks L6a-transfer / L6b / L8 / the non-rigid discharger.
-- **W5-L7** (the research core, last): the uniform escape certificate `r ⬝ Λ²Π̂(a) ≢ 0` on the
-  chart — the genuinely new mathematics; N2 witnesses one instance.
-- **W4** (after W5): the constrained-family Claim-6.4 analogue, `G′`-block witness confirmed by N3;
-  discharges `hcontract`.
+**W5-L6 invariant SETTLED** (2026-07-29; design doc §"W5 leaf decomposition" L6a): the ≤ 3
+closed-hub-neighbourhood bound is free from the split arm's `PencilNondegFeasible K G` antecedent
+(`ncard_closedHubNbhd_le_three_of_isNondegPencilRealization`); the real gap was the `G ⇒ G′` transfer
+(fixed by splitting a **safe** vertex, L6a-transfer). Safe-vertex existence + L7 coupling settled
+(2026-07-30): coupling benign (KT Case III consumes a safe vertex); non-rigid existence proven, rigid
+`k=0` a bounded `have`-hyp. **Remaining user call = only whether to prove the `k=0` bound now** — not a
+build-vs-rework decision; nothing on the L6b/L8 path blocks on it. **L6c** = landed
+`splitOff_simple_of_noRigid_of_card`, folds into L7.
 
 Discharging `hsplit` (L6/L7/L8) then `hcontract` (W4) removes the last two carried hypotheses of
 `pencil_conjecture_of_arms_pair` and completes the conditional-realization successor. Full leaf
@@ -297,6 +231,21 @@ neighbor — is `notes/IdeaBacklog.md`.
 
 ## Decisions made during this phase
 
+- **W5-L6b-ii ADJACENT-PAIR CALLER LANDED — `hsat_adj` from `hcard` + `htf`** (2026-07-30,
+  `Molecule/Pencil/Witness.lean`, `exists_coord_linearIndepOn_pencilChartPoint_adjacentPair`; canonical
+  `notes/Phase39-design.md` §"W5 leaf decomposition" L6b-ii). Supplies the general-position core with
+  a per-pair `idx`/`dtgt`: at adjacent `{u,v}`, `htf` confines `closedHubNbhd u ∩ closedHubNbhd v ⊆
+  {u,v}` (a common third hub `w` closes a triangle `u–v–w`), so the two-set combinatorial core
+  `exists_idx_dtgt_pair` injects `closedHubNbhd u` into a `3`-value palette avoiding `dtgt u = 2` and
+  the disjoint remainder `closedHubNbhd v \ closedHubNbhd u` into the values avoiding `dtgt v` and the
+  overlap's image — palette sizes matching by `hcard` (`≤ 3`), **uniformly, with no hub case split**
+  (`|U∩V|` cancels in `(V\U).ncard = V.ncard − |U∩V|` vs palette `3 − |U∩V|`). Reusable brick
+  `exists_injOn_mapsTo_of_ncard_le` (inject a finite set into a no-smaller one, via
+  `Function.Embedding.nonempty_of_card_le`; upstream-eligible → FRICTION [mirror-candidate]). Combinatorial
+  core compiler-verified standalone before integrating. `[G.Loopless]` (for `u ≠ v` via `IsLink.ne`);
+  `open Classical in` for the statement-level `if G.Adj …`. Gates + axioms clean
+  (`propext`/`Classical.choice`/`Quot.sound`). **Remaining L6b: the per-body `hsat_pt` (non-hub
+  `closedNbhd v` is a non-`S`-separated 3-set — harder) + headline** (*Hand-off*).
 - **W5-L6b-ii CORE LANDED — the char-free general-position engine** (2026-07-30,
   `Molecule/Pencil/Witness.lean`, `exists_coord_linearIndepOn_pencilChartPoint_of_idx`; canonical
   `notes/Phase39-design.md` §"W5 leaf decomposition" L6b-ii). v-b's construction extracted as a
@@ -439,32 +388,17 @@ neighbor — is `notes/IdeaBacklog.md`.
   `H`; (iii) conjunct 4 at `u_c` is vacuous, and `point v_c` dodges the single generator `point₁ u_c`
   (not a `≤ 2`-cover). Rank verbatim (`hlb₂ = 0`). **Scope-pin composition risk DISCHARGED** (green).
   No new FRICTION (mirror). Gates + axioms clean.
-- **L5-cut-v-f-6 COMPLETE — the output-half steering assembly** (2026-07-29,
-  `Molecule/Pencil/Steer.lean`): `exists_isNondegPencilRealization_induce_promotedNormal_of_pendant_deg3`
-  — under the pendant deg-`3` config over `[Infinite K]`, from a generic `H := G.induce V₁` witness
-  (`IsNondegPencilRealization` + deficiency-rank `hrank₁`, the sub-case-3 producer's input shape) it
-  produces a nondegenerate `H`-realization at the target rank PLUS `∀ v ∈ {u_c, w₁, w₂}, LinearIndepOn
-  K normal (G.closedHubNbhd v)`. Structural mirror of the v-e input-half assembly, adding: the rank
-  rows steered alongside via ONE `exists_common_seed_pencilRow_and_polynomials` call (`hLI` = the
-  flattening `pencilRow` subfamily from `exists_independent_pencilRow_subfamily_at_toCoord_of_reseed`;
-  `P` = the standing point polys + the witness-(ii) promoted-normal polys over the index `(α ⊕ (α×α))
-  ⊕ Fin 3`), the rank via v-f-4, and the promoted-family transfer to the re-chosen `seed'`
-  (`linearIndepOn_pencilChartNormal_congr`). `hassigned` discharge = the inline `Fin 3`-selector-total
-  pigeonhole at `u_c` (`Finset.card_eq_three`/`eq_univ_of_card`) + degree bookkeeping. **v-f-5 dropped**
-  (unneeded — the normal conditions fold straight into the workhorse `P`). No new FRICTION (faithful
-  v-e mirror). Gates green (build warning-clean + lint); axioms clean.
-- **L5-cut-v-f-1…4 + input/normal-congr bricks LANDED** (2026-07-29, `Molecule/Pencil/Steer.lean`;
-  canonical detail in `notes/Phase39-design.md` §"W5 leaf decomposition" L5-cut-v "v-f decomposition"):
-  the output-half rank-transport chain the assembly above composes. v-f-1 link bridge
-  (`pencilRow_mem_rigidityRows_of_mem_edgeSet`), v-f-2 row-span scaling invariance
-  (`span_rigidityRows_eq_of_supportExtensor_proportional`), v-f-3 re-seeding proportionality
-  (`exists_smul_supportExtensor_eq_pencilChartFramework_of_reseed`), v-f-4 output rank `le_antisymm`
-  (`finrank_span_rigidityRows_pencilChartFramework_eq_of_independent_pencilRow`); the input bricks
-  `pencilChartFramework_congr`, `span_rigidityRows_pencilChartFramework_eq_of_reseed`, the `hLI`
-  producer `exists_independent_pencilRow_subfamily_at_toCoord_of_reseed`; the promoted-family
-  `pencilChartNormal_congr` + `linearIndepOn_pencilChartNormal_congr`. General `BodyHingeFramework`
-  panel-row machinery reused verbatim (no new import). FRICTION `[mirror-candidate]`:
-  `extensor_pair_smul` (belongs in `Extensor.lean`, kept local pending the deep-rebuild-free mirror).
+- **L5-cut-v-f (output-half steering, COMPLETE, one-lined; canonical `notes/Phase39-design.md`
+  §"W5 leaf decomposition" L5-cut-v "v-f decomposition" + git).** v-f-6 assembly
+  `exists_isNondegPencilRealization_induce_promotedNormal_of_pendant_deg3` (`Steer.lean`, the v-e
+  mirror producing the `H`-realization at target rank + the promoted `∀ v ∈ {u_c,w₁,w₂}` normal-LI
+  family, one `exists_common_seed_pencilRow_and_polynomials` call; v-f-5 dropped). v-f-1…4 rank-transport
+  chain + input/normal-congr bricks (`pencilRow_mem_rigidityRows_of_mem_edgeSet`,
+  `span_rigidityRows_eq_of_supportExtensor_proportional`,
+  `exists_smul_supportExtensor_eq_pencilChartFramework_of_reseed`,
+  `finrank_span_rigidityRows_pencilChartFramework_eq_of_independent_pencilRow`,
+  `pencilChartFramework_congr`, `linearIndepOn_pencilChartNormal_congr`). FRICTION `[mirror-candidate]`
+  `extensor_pair_smul` (kept local).
 - **L5-cut-v-e COMPLETE — the input-half steering assembly** (2026-07-29,
   `Molecule/Pencil/Steer.lean`, imports `Pencil.{Reseed,Witness}` added):
   `pencilNondegFeasible_induce_of_pendant_deg3` — under the pendant deg-`3` config over `[Infinite K]`,
@@ -485,52 +419,15 @@ neighbor — is `notes/IdeaBacklog.md`.
   `pencilChartPoint`-LI conditions each satisfiable somewhere share one common seed (v-d point gadget
   `ends := id` + `exists_common_eval_ne_zero_of_forall_exists`, whence `[Infinite K]`). The
   load-bearing "steer to a common seed" step consumed by the v-e assembly above.
-- **L5-cut-v-d COMPLETE — post-steering `fillNbr` re-choice + `exists_fin3_rank_injOn` retired**
-  (2026-07-29, `Molecule/Pencil/Steer.lean`): `exists_fillNbr_pencilChartWF_of_standing` closes
-  `PencilChartWF`'s fourth conjunct from the four standing conjuncts
-  (`pencilChartWF_standing_ofCoord_toCoord`) + each non-hub body's `some`-slot `nbrSlotPoint` LI, via
-  a `fillNbr`-only re-choice (shared `hubNormal`/`fillHub`, so points are defeq and the standing
-  conjuncts transfer). Core: the general `exists_extend_linearIndependent` (fill an LI partial
-  family's free slots to a full LI family in dim `≥ n`; upstream-eligible, FRICTION
-  `[mirror-candidate]`). **`exists_fin3_rank_injOn` RETIRED** same commit (extend-and-fill route, not
-  the pigeonhole — unconsumed through v-a…v-d; tree-wide hygiene sweep done). Gates + axioms clean.
-- **L5-cut-v-d WF-flattening witnesses LANDED — standing WF conditions at the `fillNbr`-free
-  flattening** (2026-07-29, new file `Molecule/Pencil/Steer.lean`, imports `Pencil.Engine`;
-  composition finding (3)): `PencilSeed.toCoord` flattens a re-seeded seed onto the engine's
-  `α × Fin 4 × Fin 4` space, dropping the independent `fillNbr` (`PencilSeed.ofCoord` re-derives it
-  as `fillHub`). As `pencilChartPoint`/`hubSlotNormal` never read `fillNbr`, points coincide
-  (`pencilChartPoint_ofCoord_toCoord`) and the four `fillNbr`-free `PencilChartWF` conjuncts transfer
-  (`pencilChartWF_standing_ofCoord_toCoord`); the fourth (non-hub `nbrSlotPoint` LI, sole
-  `fillNbr`-reader) is left to the `fillNbr` re-choice — NOT carried here (unsatisfiable at deg-`≤1`
-  non-hubs). `Fin.cons` constant-motive ascription → TACTICS-QUIRKS § 96 (broadened from `Fin.snoc`).
-  No blueprint node (unnamed infra). Gates green; axioms clean.
-- **L5-cut-v-d extraction gadget LANDED — the chart-family steering gadgets** (2026-07-25,
-  `Engine.lean`): `exists_polynomial_ne_zero_of_linearIndependent_pencilChart{Point,Normal}` turn a
-  chart point/normal subfamily LI at one seed into a seed-polynomial nonzero there whose non-roots
-  keep it LI (the "nonvanishing somewhere" input the product-route workhorse consumes). Both are
-  thin `[Field K]`-only instances of the maximal-minor engine
-  `exists_polynomial_ne_zero_of_linearIndependent_at_reindex` (`φ := refl`,
-  `e := finCongr (Module.finrank_fin_fun K)`; `[Infinite K]` enters only downstream). New
-  "`cross₃Poly` cases" mirror `pencilChartNormalPoly` (+ `nbrSlotPointPoly`) + eval identity.
-  No new FRICTION (reused existing eval-mirror + engine-hookup patterns). `exists_fin3_rank_injOn`
-  still unconsumed. Gates green; axioms clean.
-- **L5-cut-v-c LANDED — the somewhere-witness on `H := G.induce V₁`'s chart** (2026-07-25,
-  `exists_coord_linearIndependent_pencilChartNormal_of_pendant_deg3`, `Molecule/Pencil/Witness.lean`):
-  the pinned witness (ii). Reuses v-b's toolkit (`exists_injective_extension_of_isFin3SelectorOf`
-  for the three chart points → `±e₃/e₂/e₁`) and v-b's exact combinatorics (`idx`, the `≤ 3`
-  cardinality bound, the v-a triangle exclusion, `huniq_*`), plus two small
-  `LinearIndepOn`/`LinearIndependent`-of-scaled-distinct-basis engines. Two additions over v-b:
-  the demoted `u_c`'s forced normal `= cross₃` of the three points is steered to `±e_0`
-  (`exists_smul_cross₃_eq_of_linearIndependent`, `nbrSel u_c` fully assigned since
-  `H.closedNbhd u_c = {u_c, w₁, w₂}`), and the family sets are `G.closedHubNbhd v` (stronger than
-  `H`'s; the consumer restricts by `LinearIndepOn.mono`). **Statement refinement, flagged:** carries
-  the pendant config `hVG : V(G) = V₁ ∪ {v_c}` (matching sub-case-3's producer, in scope at the
-  v-g discharge), making `v_c` a degree-`1` non-hub so it never enters a family — this is exactly
-  the design's composition-finding assumption ("every promoted family is `fillNbr`-free"), which
-  fails if `v_c` is a hub. `exists_fin3_rank_injOn` still unconsumed (retirement deferred to v-d).
-  No new FRICTION (all patterns reused / `LinearIndepOn.congr` + `Pi.basisFun` composition). No
-  blueprint node (unnamed technical infra, as the sibling L5-cut leaves). Gates green (build
-  warning-clean + lint); axioms clean (`propext`/`Classical.choice`/`Quot.sound`).
+- **L5-cut-v-d + v-c (steering re-choice / flattening / gadgets / witness (ii), COMPLETE, one-lined;
+  canonical `notes/Phase39-design.md` §"W5 leaf decomposition" L5-cut-v + git).** v-d
+  `exists_fillNbr_pencilChartWF_of_standing` (`Steer.lean`, the `fillNbr`-only re-choice closing
+  `PencilChartWF`'s fourth conjunct; core `exists_extend_linearIndependent`, FRICTION
+  `[mirror-candidate]`; retired `exists_fin3_rank_injOn`); the `PencilSeed.toCoord` WF-flattening
+  witnesses (`pencilChartWF_standing_ofCoord_toCoord`, `Fin.cons` motive → TACTICS-QUIRKS § 96); the
+  extraction gadgets `exists_polynomial_ne_zero_of_linearIndependent_pencilChart{Point,Normal}`
+  (`Engine.lean`). v-c witness (ii) `exists_coord_linearIndependent_pencilChartNormal_of_pendant_deg3`
+  (`Witness.lean`, the v-b mirror on `H`'s chart; carries the pendant `hVG`, `v_c` a deg-`1` non-hub).
 - **L5-cut-v-b LANDED — the somewhere-witness on `G`'s chart** (2026-07-25,
   `exists_coord_linearIndependent_pencilChartPoint_of_pendant_deg3`, new file
   `Molecule/Pencil/Witness.lean` + aggregator import; canonical construction record design doc

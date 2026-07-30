@@ -1236,4 +1236,200 @@ theorem exists_coord_linearIndepOn_pencilChartPoint_of_idx
   exact (linearIndepOn_smul_pi_single (K := K) (J := dtgt) (c := ccfam) hdinj
     (fun x hx => (hccfam x hx).1)).congr (fun x hx => ((hccfam x hx).2).symm)
 
+/-! ## The per-set-shape callers (Phase 39 W5-L6b-ii)
+
+The two "satisfiable-somewhere" chart-point-LI families that the landed L6b-i assembly
+`pencilNondegFeasible_of_selectors_of_satisfiable` (`Pencil/Steer.lean`) consumes, built by
+supplying the general-position core `exists_coord_linearIndepOn_pencilChartPoint_of_idx` with a
+per-set-shape direction map `idx` and target map `dtgt`. This commit lands the **adjacent-pair**
+family (`hsat_adj`'s shape); the per-body family (`hsat_pt`) and the headline wiring are the next
+pieces (`notes/Phase39-design.md` §"W5 leaf decomposition" L6b-ii).
+
+For the adjacent pair `{u, v}` (`u ~ v`), the two closed hub-neighbourhoods overlap only in
+`{u, v}`: a common third hub `w` (a hub adjacent to both `u` and `v`) would close a triangle
+`u–v–w`, excluded by triangle-freeness (`htf`). So the direction map `idx` can be built by a single
+injection of `closedHubNbhd u` into a `3`-value palette avoiding `dtgt u`, plus a second injection
+of the (disjoint) rest of `closedHubNbhd v` into the values avoiding both `dtgt v` and the image of
+the overlap — the exact cardinalities coming from the `≤ 3` bound (`hcard`). -/
+
+/-- **Inject a finite set into a finite set of no-smaller cardinality** (Phase 39 W5-L6b-ii helper;
+upstream-eligible, `notes/FRICTION.md` [mirror-candidate]): if `T.ncard ≤ P.ncard`, there is a total
+`f` injective on `T` and mapping `T` into `P` (junk `default` off `T`). Used to build the
+per-set-shape direction maps `idx` the general-position core consumes. -/
+theorem exists_injOn_mapsTo_of_ncard_le {γ δ : Type*} [Inhabited δ] {T : Set γ} {P : Set δ}
+    (hT : T.Finite) (hP : P.Finite) (hle : T.ncard ≤ P.ncard) :
+    ∃ f : γ → δ, Set.InjOn f T ∧ ∀ x ∈ T, f x ∈ P := by
+  classical
+  haveI := hT.fintype
+  haveI := hP.fintype
+  have hc : Fintype.card T ≤ Fintype.card P := by
+    rw [← Nat.card_eq_fintype_card, ← Nat.card_eq_fintype_card, Nat.card_coe_set_eq,
+      Nat.card_coe_set_eq]
+    exact hle
+  obtain ⟨e⟩ := Function.Embedding.nonempty_of_card_le hc
+  refine ⟨fun x => if h : x ∈ T then (e ⟨x, h⟩ : δ) else default, ?_, ?_⟩
+  · intro x hx y hy hxy
+    simp only [dif_pos hx, dif_pos hy] at hxy
+    exact Subtype.ext_iff.mp (e.injective (Subtype.ext hxy))
+  · intro x hx
+    simp only [dif_pos hx]
+    exact (e ⟨x, hx⟩).2
+
+/-- **The direction/target maps for an adjacent pair** (Phase 39 W5-L6b-ii combinatorial core): for
+distinct `u, v` whose two `≤ 3`-cardinality sets `U, V` overlap only inside `{u, v}` (`hcap` — the
+triangle-freeness exclusion at the call site), there are direction/target maps `idx dtgt` with
+`dtgt` injective on `{u, v}`, `idx` injective on each of `U, V` and avoiding the respective target.
+`idx` sends `U` injectively into `{0, 1, 3}` (avoiding `dtgt u = 2`) via
+`exists_injOn_mapsTo_of_ncard_le`, picks `dtgt v` outside `{2} ∪ idx '' (U ∩ V)`, and sends the
+disjoint remainder `V \ U` into the values avoiding `dtgt v` and `idx '' (U ∩ V)` — the palette
+sizes matching `V \ U` exactly because `|U ∩ V|` cancels (`≤ 3` on each side). -/
+theorem exists_idx_dtgt_pair [Finite α] {u v : α} (huv : u ≠ v) {U V : Set α}
+    (hcap : U ∩ V ⊆ ({u, v} : Set α)) (hU3 : U.ncard ≤ 3) (hV3 : V.ncard ≤ 3) :
+    ∃ idx dtgt : α → Fin 4,
+      Set.InjOn dtgt {u, v} ∧
+      (∀ x ∈ U, idx x ≠ dtgt u) ∧ (∀ x ∈ V, idx x ≠ dtgt v) ∧
+      Set.InjOn idx U ∧ Set.InjOn idx V := by
+  classical
+  -- `fu`: inject `U` into `{0, 1, 3}` (avoiding `dtgt u = 2`).
+  have hPu : ({0, 1, 3} : Set (Fin 4)).ncard = 3 :=
+    Set.ncard_eq_three.mpr ⟨0, 1, 3, by decide, by decide, by decide, rfl⟩
+  obtain ⟨fu, hfu_inj, hfu_map⟩ :=
+    exists_injOn_mapsTo_of_ncard_le (T := U) (P := ({0, 1, 3} : Set (Fin 4)))
+      (Set.toFinite _) (Set.toFinite _) (hU3.trans hPu.ge)
+  have hfu_ne2 : ∀ x ∈ U, fu x ≠ 2 := by
+    intro x hx h2
+    have hm := hfu_map x hx
+    rw [h2] at hm
+    simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hm
+    rcases hm with h | h | h <;> exact absurd h (by decide)
+  set m := (U ∩ V).ncard with hm_def
+  have hm2 : m ≤ 2 := by
+    have h := Set.ncard_le_ncard hcap (Set.toFinite _)
+    rwa [Set.ncard_pair huv] at h
+  have hfuimg : (fu '' (U ∩ V)).ncard = m := (hfu_inj.mono Set.inter_subset_left).ncard_image
+  have hXcard : (insert (2 : Fin 4) (fu '' (U ∩ V))).ncard ≤ 3 := by
+    refine (Set.ncard_insert_le _ _).trans ?_
+    rw [hfuimg]; omega
+  obtain ⟨dtgtv, hdtgtv⟩ : ∃ d : Fin 4, d ∉ insert (2 : Fin 4) (fu '' (U ∩ V)) := by
+    by_contra hcon
+    push Not at hcon
+    have huniv : (insert (2 : Fin 4) (fu '' (U ∩ V))) = Set.univ := Set.eq_univ_of_forall hcon
+    rw [huniv, Set.ncard_univ] at hXcard
+    simp [Nat.card_eq_fintype_card] at hXcard
+  rw [Set.mem_insert_iff] at hdtgtv
+  push Not at hdtgtv
+  obtain ⟨hdtgtv2, hdtgtv_img⟩ := hdtgtv
+  set Y := insert dtgtv (fu '' (U ∩ V)) with hY_def
+  have hVU_add : (V \ U).ncard + m = V.ncard := by
+    rw [hm_def, ← Set.diff_self_inter (s := V) (t := U), Set.inter_comm V U]
+    exact Set.ncard_diff_add_ncard_of_subset Set.inter_subset_right (Set.toFinite _)
+  have hY_card : Y.ncard = m + 1 := by
+    rw [hY_def, Set.ncard_insert_of_notMem hdtgtv_img (Set.toFinite _), hfuimg]
+  have hPv_add : (Set.univ \ Y).ncard + Y.ncard = 4 := by
+    have h := Set.ncard_diff_add_ncard_of_subset (Set.subset_univ Y)
+      (Set.toFinite (Set.univ : Set (Fin 4)))
+    rwa [Set.ncard_univ, Nat.card_eq_fintype_card, Fintype.card_fin] at h
+  obtain ⟨gv, hgv_inj, hgv_map⟩ :=
+    exists_injOn_mapsTo_of_ncard_le (T := V \ U) (P := Set.univ \ Y)
+      (Set.toFinite _) (Set.toFinite _) (by omega)
+  have hgv_ne : ∀ x ∈ V \ U, gv x ≠ dtgtv ∧ gv x ∉ fu '' (U ∩ V) := by
+    intro x hx
+    have h := (hgv_map x hx).2
+    rw [hY_def, Set.mem_insert_iff] at h
+    push Not at h
+    exact h
+  -- The maps, with evaluation lemmas.
+  set idx : α → Fin 4 := fun x => if x ∈ U then fu x else gv x with hidx_def
+  set dtgt : α → Fin 4 := fun x => if x = u then (2 : Fin 4) else dtgtv with hdtgt_def
+  have hidxU : ∀ x, x ∈ U → idx x = fu x := fun x hx => by rw [hidx_def]; exact if_pos hx
+  have hidxnU : ∀ x, x ∉ U → idx x = gv x := fun x hx => by rw [hidx_def]; exact if_neg hx
+  have hdtu : dtgt u = 2 := by rw [hdtgt_def]; exact if_pos rfl
+  have hdtv : dtgt v = dtgtv := by rw [hdtgt_def]; exact if_neg huv.symm
+  refine ⟨idx, dtgt, ?_, ?_, ?_, ?_, ?_⟩
+  · intro x hx y hy hxy
+    simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hx hy
+    rcases hx with rfl | rfl <;> rcases hy with rfl | rfl
+    · rfl
+    · rw [hdtu, hdtv] at hxy; exact absurd hxy hdtgtv2.symm
+    · rw [hdtu, hdtv] at hxy; exact absurd hxy hdtgtv2
+    · rfl
+  · intro x hx
+    rw [hidxU x hx, hdtu]; exact hfu_ne2 x hx
+  · intro x hx
+    rw [hdtv]
+    by_cases hxU : x ∈ U
+    · rw [hidxU x hxU]
+      have him : fu x ∈ fu '' (U ∩ V) := Set.mem_image_of_mem fu ⟨hxU, hx⟩
+      intro h; rw [h] at him; exact hdtgtv_img him
+    · rw [hidxnU x hxU]; exact (hgv_ne x ⟨hx, hxU⟩).1
+  · intro x hx y hy hxy
+    rw [hidxU x hx, hidxU y hy] at hxy
+    exact hfu_inj hx hy hxy
+  · intro x hx y hy hxy
+    by_cases hxU : x ∈ U <;> by_cases hyU : y ∈ U
+    · rw [hidxU x hxU, hidxU y hyU] at hxy; exact hfu_inj hxU hyU hxy
+    · exfalso
+      rw [hidxU x hxU, hidxnU y hyU] at hxy
+      have h1 : fu x ∈ fu '' (U ∩ V) := Set.mem_image_of_mem fu ⟨hxU, hx⟩
+      exact (hgv_ne y ⟨hy, hyU⟩).2 (hxy ▸ h1)
+    · exfalso
+      rw [hidxnU x hxU, hidxU y hyU] at hxy
+      have h1 : fu y ∈ fu '' (U ∩ V) := Set.mem_image_of_mem fu ⟨hyU, hy⟩
+      exact (hgv_ne x ⟨hx, hxU⟩).2 (hxy ▸ h1)
+    · rw [hidxnU x hxU, hidxnU y hyU] at hxy
+      exact hgv_inj ⟨hx, hxU⟩ ⟨hy, hyU⟩ hxy
+
+open Classical in
+/-- **The adjacent-pair somewhere-witness family** (Phase 39 W5-L6b-ii; the `hsat_adj` input of
+`pencilNondegFeasible_of_selectors_of_satisfiable`): for any ordered pair `p`, some seed coordinate
+`q` makes the chart points linearly independent over `{p.1, p.2}` when the two are adjacent (over
+`∅` otherwise, trivially). Adjacency plus triangle-freeness (`htf`) confine the two closed
+hub-neighbourhoods' overlap to `{p.1, p.2}`, so `exists_idx_dtgt_pair` builds the direction/target
+maps the general-position core `exists_coord_linearIndepOn_pencilChartPoint_of_idx` consumes; the
+`≤ 3` bound is `hcard`. -/
+theorem exists_coord_linearIndepOn_pencilChartPoint_adjacentPair
+    [Finite α] [Finite β] {G : Graph α β} [G.Loopless]
+    (hcard : ∀ v, (G.closedHubNbhd v).ncard ≤ 3)
+    (htf : ∀ e₁ e₂ e₃ x y z, x ≠ y → y ≠ z → x ≠ z →
+      G.IsLink e₁ x y → G.IsLink e₂ y z → G.IsLink e₃ z x → False)
+    (hubSel : α → Fin 3 → Option α)
+    (hHubSel : ∀ v, IsFin3SelectorOf (G.closedHubNbhd v) (hubSel v))
+    (p : α × α) :
+    ∃ q : α × Fin 4 × Fin 4 → K,
+      LinearIndepOn K (pencilChartPoint (PencilSeed.ofCoord q) hubSel)
+        (if G.Adj p.1 p.2 then ({p.1, p.2} : Set α) else ∅) := by
+  classical
+  obtain ⟨u, v⟩ := p
+  by_cases hadj : G.Adj u v
+  · rw [if_pos hadj]
+    obtain ⟨e_uv, hl_uv⟩ := hadj
+    have huv : u ≠ v := hl_uv.ne
+    -- Triangle-freeness confines the two hub-neighbourhoods' overlap to `{u, v}`.
+    have hcap : G.closedHubNbhd u ∩ G.closedHubNbhd v ⊆ ({u, v} : Set α) := by
+      intro w hw
+      by_cases hwu : w = u
+      · exact Or.inl hwu
+      by_cases hwv : w = v
+      · exact Or.inr hwv
+      obtain ⟨e_uw, hl_uw⟩ := hw.1.2.resolve_left hwu
+      obtain ⟨e_vw, hl_vw⟩ := hw.2.2.resolve_left hwv
+      exact (htf e_uv e_vw e_uw u v w huv (Ne.symm hwv) (Ne.symm hwu)
+        hl_uv hl_vw hl_uw.symm).elim
+    obtain ⟨idx, dtgt, hdinj, hav_u, hav_v, hinj_u, hinj_v⟩ :=
+      exists_idx_dtgt_pair huv hcap (hcard u) (hcard v)
+    refine exists_coord_linearIndepOn_pencilChartPoint_of_idx (S := ({u, v} : Set α))
+      (idx := idx) (dtgt := dtgt) hubSel hHubSel hdinj ?_ ?_
+    · intro s hs
+      simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hs
+      rcases hs with rfl | rfl
+      · exact hav_u
+      · exact hav_v
+    · intro s hs
+      simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hs
+      rcases hs with rfl | rfl
+      · exact hinj_u
+      · exact hinj_v
+  · rw [if_neg hadj]
+    exact ⟨fun _ => 0, linearIndepOn_empty K _⟩
+
 end CombinatorialRigidity.Molecular
