@@ -53,8 +53,10 @@ triangle-exclusion hypothesis L6d is VERIFIED (2026-07-30 habitat recon): `G′`
 triangle-free at any degree-2 split (induced-`C₄`-is-`D6`-rigid argument), so L6b is re-pinned with a
 triangle-free hypothesis. **L6d LANDED 2026-07-30 (`Habitat.lean`): the `C₄` proper-rigid brick
 `c4_isProperRigidSubgraph` + the transfer wrapper `splitOff_triangleFree_of_noRigid`, both over
-`namespace Graph`; L6b is now the next buildable leaf (both its `hcard`/`htf` inputs are honest
-producers in tree)**; L8 parallel; L7, the research core, last).
+`namespace Graph`. L6b-i LANDED 2026-07-30 (`Steer.lean`, the feasibility assembly
+`pencilNondegFeasible_of_selectors_of_satisfiable`); L6b-ii (the char-free general-position core, two
+satisfiability families from `hcard`+`htf`) is the next buildable leaf, spike-grounded via v-b's
+finite-`Fin 4` route**; L8 parallel; L7, the research core, last).
 
 The opening recon ran 2026-07-23; verdicts (R1–R3) below in *Opening recon verdicts*.
 
@@ -210,13 +212,36 @@ proper-rigid brick `c4_isProperRigidSubgraph` (an `m = 4` mirror of `triangle_is
 `splitOff_triangleFree_of_noRigid` (`htf` at `G′`, its `hcard` sibling landed in L6a-transfer). Both
 inputs to L6b are now honest producers in tree. Gates + axioms clean.
 
-**Next concrete commit — build W5-L6b** (spike-first, per the design doc L6b decomposition): the
-general-position feasibility criterion `pencilNondegFeasible_of_ncard_closedHubNbhd_le_three_of_
-triangleFree` taking `hcard` (from L6a-transfer) + `htf` (from L6d). Split into **L6b-i** (the
-selector-assembly `#1/#2`, prose-settleable — plus the missing `IsFin3SelectorOf`-existence brick)
-and **L6b-ii** (the general-position `#3/#4/#5` moment-curve core — COMPILER-CHECKED SPIKE REQUIRED
-before committing; the `htf` hypothesis strictly excludes the two-hub-triangle failure locus). Fully
-parallel alternative: **W5-L8** (the `k = 0` residue, emptiness route).
+**W5-L6b-i LANDED 2026-07-30** (`Steer.lean`, `pencilNondegFeasible_of_selectors_of_satisfiable`,
+compiler-checked spike): the L6b assembly — global selectors + the two "satisfiable-somewhere"
+chart-point-LI families (`{v}`/`closedNbhd v` per body; `{u,v}` per adjacent pair) →
+`PencilNondegFeasible`, the v-e template minus `.mono`. Axioms clean. **Two spike findings:** the
+`IsFin3SelectorOf`-existence brick is **NOT missing** — it is the landed
+`exists_isFin3SelectorOf_of_ncard_le_three` (`Engine.lean:793`); and the re-pinned L6b signature is
+**FALSE without a looplessness hypothesis** (a loop makes conjunct #5
+`LinearIndependent ![point v, point v]` unsatisfiable ⟹ `PencilNondegFeasible` false), so the
+headline needs `[G.Simple]`/`[G.Loopless]` (free from the honest producer `G′.Simple`, L6c). Detail:
+*Decisions made* + design doc L6b.
+
+**Next concrete commit — build W5-L6b-ii** (spike-first, the genuinely-new char-free core): the two
+satisfiability lemmas
+- (A) `∀ v, ∃ q, LinearIndepOn K (pencilChartPoint (PencilSeed.ofCoord q) hubSel)`
+  `(if G.PencilHub v then {v} else G.closedNbhd v)`
+- (B) `∀ p, ∃ q, LinearIndepOn K (pencilChartPoint (PencilSeed.ofCoord q) hubSel)`
+  `(if G.Adj p.1 p.2 then {p.1,p.2} else ∅)`
+
+from `hcard` + `htf` (taking `hubSel`/`hHubSel` as inputs, as v-b does), then the headline
+`pencilNondegFeasible_of_ncard_closedHubNbhd_le_three_of_triangleFree` = `choose` selectors ⟶ L6b-ii
+⟶ `pencilNondegFeasible_of_selectors_of_satisfiable`. **Route (spike-grounded, no route-breaker):**
+the finite-`Fin 4`/`Pi.single` route of v-b (`exists_coord_linearIndependent_pencilChartPoint_of_
+pendant_deg3`), NOT moment-curve/Vandermonde (that needs polynomial infra not in tree). Extract v-b's
+core ("given `idx : α → Fin 4` injective+target-avoiding on each `closedHubNbhd s` for `s ∈ S`, with
+targets distinct on `S`, ∃ seed making the points on `S` distinct scaled basis vectors ⟹ LI") as a
+general lemma, then build `idx` per set-shape from `hcard` + `htf`. `htf` is the exact lever: it
+excludes the two-hub-triangle (adjacent pair) and the common-neighbour-triangle (closed-nbhd triple)
+that would force dependent points — hand-verified constructible for the both-hubs and
+doubly-shared-hub configurations. Size ≈ v-b's ~350 lines + the core extraction; a multi-commit
+leaf. Fully parallel alternative: **W5-L8** (the `k = 0` residue, emptiness route).
 
 **W5-L6 invariant SETTLED (2026-07-29 L6a recon; canonical `notes/Phase39-design.md` §"W5 leaf
 decomposition" L6a).** The ≤ 3 closed-hub-neighbourhood bound on `G` is **not** a graph-combinatorial
@@ -264,6 +289,24 @@ neighbor — is `notes/IdeaBacklog.md`.
 
 ## Decisions made during this phase
 
+- **W5-L6b-i LANDED — the pencil-feasibility assembly (compiler-checked spike, bank-authorized)**
+  (2026-07-30, `Molecule/Pencil/Steer.lean`, `pencilNondegFeasible_of_selectors_of_satisfiable`;
+  canonical `notes/Phase39-design.md` §"W5 leaf decomposition" L6b). Given global hub/neighbour
+  selectors + the two satisfiable-somewhere chart-point-LI families (`{v}`/`closedNbhd v` per body;
+  `{u,v}` per adjacent pair), produces `PencilNondegFeasible K G` — the L5-cut-v-e template
+  `pencilNondegFeasible_induce_of_pendant_deg3` minus its `.mono` restriction (steer to common seed →
+  reconstruct standing WF conjuncts → `fillNbr` re-choice → headline). **Home note:** lives in
+  `Steer.lean`, NOT `Witness.lean` (the task's named target): the assembly needs Steer's common-seed
+  primitive, and `Steer` imports `Witness`, so the headline cannot live in `Witness`. **Two spike
+  findings that revise the design pin:** (1) the `IsFin3SelectorOf`-existence brick is NOT missing —
+  it is the landed `exists_isFin3SelectorOf_of_ncard_le_three` (`Engine.lean:793`, `{s} (hfin) (hs)`);
+  (2) the re-pinned headline signature is FALSE without looplessness — a loop `IsLink e v v` makes
+  conjunct #5 `LinearIndependent ![point v, point v]` unsatisfiable, so `PencilNondegFeasible` is
+  false; the assembly takes `[G.Loopless]` (the honest producer supplies `G′.Simple`, L6c). **L6b-ii
+  (the two satisfiability families from `hcard`+`htf`) remains open** — spike-grounded as constructible
+  via v-b's finite-`Fin 4` route (`htf` excludes the dependent loci; no route-breaker), a multi-commit
+  generalization of v-b (see *Hand-off*). Friction review: none (faithful v-e mirror; only idiom is
+  `open Classical in` for statement-level `if` decidability). Gates + axioms clean.
 - **W5-L6d LANDED — the `C₄` proper-rigid brick + the triangle-freeness transfer** (2026-07-30,
   `Molecule/Pencil/Habitat.lean`, both in `namespace Graph`; canonical `notes/Phase39-design.md`
   §"W5 leaf decomposition" L6d). `c4_isProperRigidSubgraph` — the `m = 4` mirror of

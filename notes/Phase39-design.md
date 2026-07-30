@@ -2378,10 +2378,10 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
     spike never reached it):
     - **L6b's extra hypothesis is now PINNED as `G` triangle-free** (delivered by L6d below; strictly
       stronger than the minimal-necessary `¬(two-adjacent-hub triangle)`, and free here). Re-pinned
-      signature:
+      signature (**CORRECTED 2026-07-30 spike — `[G.Simple]`/`[G.Loopless]` added, see below**):
       ```lean
       theorem pencilNondegFeasible_of_ncard_closedHubNbhd_le_three_of_triangleFree
-          [Inhabited α] [Finite α] [Finite β] [Infinite K] {G : Graph α β}
+          [Inhabited α] [Finite α] [Finite β] [Infinite K] {G : Graph α β} [G.Simple]
           (hcard : ∀ v, (G.closedHubNbhd v).ncard ≤ 3)
           (htf : ∀ e₁ e₂ e₃ x y z, x ≠ y → y ≠ z → x ≠ z →
             G.IsLink e₁ x y → G.IsLink e₂ y z → G.IsLink e₃ z x → False) :
@@ -2389,17 +2389,43 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
       ```
       (The minimal form would weaken `htf` to `… → ¬ (G.PencilHub y ∧ G.PencilHub z)`; not needed —
       L6d gives the full form.) `hcard` matches L6a-transfer's output; `htf` matches L6d's output; both
-      at `G := G′`.
-    - **L6b-i (buildable once the two hypotheses are in hand):** the assembly given selectors + the
-      three satisfiable-somewhere LI conditions → `PencilNondegFeasible` (the v-e template minus its
-      `.mono` restriction). Not banked by the spike (factoring ambiguous until the hypothesis lands).
-    - **L6b-ii (spike-first, against the pinned hypothesis):** the general-position `#3/#4/#5`
-      witnesses from `hcard` + `htf` — the genuinely-new moment-curve core. **Now correctly scoped and
-      strictly easier:** `htf` (triangle-free) means the LI core never meets *any* triangle, so the
-      spike's `#4`/`#5` failure locus (the squeezed two-hub triangle) is a fortiori excluded. The
-      positive char-free Vandermonde/general-position construction remains its spike-first job.
-    - **Missing brick:** a selector-existence lemma (`IsFin3SelectorOf` for any `ncard ≤ 3` set), used
-      by `#1`/`#2`; not currently in tree.
+      at `G := G′`. **Looplessness FINDING (2026-07-30 spike):** the earlier pin (no `Simple`) is
+      **FALSE** — a loop `G.IsLink e v v` makes `IsNondegPencilRealization`'s conjunct #5
+      `LinearIndependent K ![point v, point v]` unsatisfiable, so `PencilNondegFeasible K G` is false,
+      while `hcard`/`htf` (about triangles, not loops) stay satisfied. The needed hypothesis is
+      `[G.Loopless]`; the honest producer supplies the stronger `G′.Simple`
+      (`splitOff_simple_of_noRigid_of_card`, L6c), so pin `[G.Simple]`.
+    - **L6b-i LANDED (2026-07-30, `Molecule/Pencil/Steer.lean`,
+      `pencilNondegFeasible_of_selectors_of_satisfiable`):** the assembly — global selectors + the two
+      satisfiable-somewhere chart-point-LI families → `PencilNondegFeasible` (the L5-cut-v-e template
+      `pencilNondegFeasible_induce_of_pendant_deg3` minus its `.mono` restriction: steer to common seed
+      → reconstruct standing WF conjuncts → `fillNbr` re-choice → headline). Takes `[G.Loopless]`.
+      **Home: `Steer.lean`, NOT `Witness.lean`** — it needs Steer's `exists_common_seed_linearIndepOn_
+      pencilChartPoint`, and `Steer` imports `Witness`, so the headline cannot live in `Witness`.
+      The two condition families it consumes (matching the common-seed index sets, `ι = α ⊕ (α×α)`):
+      per body `∃ q, LinearIndepOn (pencilChartPoint (ofCoord q) hubSel) (if PencilHub v then {v} else
+      closedNbhd v)`; per pair `∃ q, LinearIndepOn … (if Adj p.1 p.2 then {p.1,p.2} else ∅)`.
+    - **L6b-ii (spike-first, THE remaining char-free core; still open):** the two satisfiability
+      families above from `hcard` + `htf`, taking `hubSel`/`hHubSel` as inputs (as v-b does).
+      **Route SPIKE-GROUNDED to the finite-`Fin 4`/`Pi.single` route of v-b**
+      (`exists_coord_linearIndependent_pencilChartPoint_of_pendant_deg3`), NOT moment-curve/Vandermonde
+      (the `RigidityMatroid` moment curve is over `ℝ`; a char-free Vandermonde would need polynomial
+      infra — Vandermonde LI, `cross₃`↔cubic-coeffs, root-set proportionality — none in tree, a bigger
+      build). Extract v-b's core as a general lemma ("given `idx : α → Fin 4` injective + target-
+      avoiding on each `closedHubNbhd s` for `s ∈ S`, with the per-`s` targets distinct on `S`, ∃ seed
+      whose points on `S` are distinct scaled basis vectors ⟹ LI"), then construct `idx` per set-shape
+      from `hcard` + `htf`. `htf` is the exact lever: it excludes the two-hub-triangle (adjacent pair)
+      and the common-neighbour-triangle (closed-nbhd triple) that alone would force dependent points —
+      hand-verified constructible for the both-hubs and doubly-shared-hub configurations (no route-
+      breaker found). Size ≈ v-b (~350 lines) + the core extraction; a **multi-commit** leaf. The
+      `≤ 3` cardinality bound is `hcard`; the triangle exclusions are `htf` (replacing v-b's
+      feasibility-derived `not_pencilNondegFeasible_of_triangle_two_hubs`).
+    - **Selector brick — NOT missing (2026-07-30 spike finding):** the `IsFin3SelectorOf`-existence
+      lemma for any `ncard ≤ 3` finite set is already in tree as
+      `exists_isFin3SelectorOf_of_ncard_le_three` (`Molecule/Pencil/Engine.lean:793`,
+      `{s : Set α} (hfin : s.Finite) (hs : s.ncard ≤ 3) : ∃ sel, IsFin3SelectorOf s sel`) — a
+      case-split on `ncard ∈ {0,1,2,3}`. L6b-i / the headline `choose` `hubSel`/`nbrSel` from it
+      (`hcard` for the hub side; `ncard_closedNbhd_le_three_of_not_pencilHub` for the non-hub side).
 
     (Historical) The refuted pin + its route, retained for the assembly detail (`#1`/`#2` still hold):
     Target signature

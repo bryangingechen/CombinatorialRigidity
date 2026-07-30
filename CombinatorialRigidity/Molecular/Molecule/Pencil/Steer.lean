@@ -1241,4 +1241,90 @@ theorem exists_isNondegPencilRealization_induce_promotedNormal_of_pendant_deg3
   · simpa using hcongrv 1
   · simpa using hcongrv 2
 
+/-! ## The W5-L6b feasibility assembly (Phase 39 W5-L6b-i)
+
+The split arm's feasibility producer `pencilNondegFeasible_of_ncard_closedHubNbhd_le_three_of_
+triangleFree` (`notes/Phase39-design.md` §"W5 leaf decomposition" L6b) decomposes into two leaves:
+**L6b-i** — the assembly below, which turns global hub/neighbour selectors plus the three
+"satisfiable-somewhere" chart-point independence conditions into a full `PencilNondegFeasible`; and
+**L6b-ii** — the genuinely-new general-position core producing those satisfiability conditions from
+`hcard` + triangle-freeness (spike-first; still open). This file lands L6b-i. -/
+
+open Classical in
+/-- **W5-L6b-i — the pencil-feasibility assembly** (Phase 39 W5-L6b-i; `notes/Phase39-design.md`
+§"W5 leaf decomposition" L6b). Given global hub/neighbour selectors correct against every body's
+closed hub-neighbourhood / (at non-hubs) closed neighbourhood, and the two families of
+"satisfiable-somewhere" chart-point independence conditions — one per body (`{v}` at a hub for point
+nonvanishing; `closedNbhd v` at a non-hub for the closed-neighbourhood point independence feeding
+the fourth WF conjunct), one per adjacent pair (`{u, v}` for adjacent-point distinctness) — the
+graph is `PencilNondegFeasible`.
+
+This is the input-half of the L5-cut-v-e template `pencilNondegFeasible_induce_of_pendant_deg3`
+**minus its `.mono` restriction step**: steer all the conditions to one common seed
+(`exists_common_seed_linearIndepOn_pencilChartPoint`), reconstruct the standing `PencilChartWF`
+conjuncts at it, re-choose `fillNbr` for the fourth (`exists_fillNbr_pencilChartWF_of_standing`),
+and read off the chart realization
+(`isNondegPencilRealization_pencilChartFramework_of_pencilChartWF`) — no restriction to an induced
+subgraph. `[G.Loopless]` is genuinely required: at a loop `G.IsLink e v v` the fifth WF conjunct
+`LinearIndependent K ![point v, point v]` is unsatisfiable, so the conclusion is false there (the
+honest split-arm producer supplies it via `G′.Simple`, L6c). -/
+theorem pencilNondegFeasible_of_selectors_of_satisfiable [Finite α] [Finite β] [Infinite K]
+    [Inhabited α] {G : Graph α β} [G.Loopless]
+    (hubSel nbrSel : α → Fin 3 → Option α)
+    (hHubSel : ∀ v, IsFin3SelectorOf (G.closedHubNbhd v) (hubSel v))
+    (hNbrSel : ∀ v, ¬ G.PencilHub v → IsFin3SelectorOf (G.closedNbhd v) (nbrSel v))
+    (hsat_pt : ∀ v, ∃ q : α × Fin 4 × Fin 4 → K,
+      LinearIndepOn K (pencilChartPoint (PencilSeed.ofCoord q) hubSel)
+        (if G.PencilHub v then ({v} : Set α) else G.closedNbhd v))
+    (hsat_adj : ∀ p : α × α, ∃ q : α × Fin 4 × Fin 4 → K,
+      LinearIndepOn K (pencilChartPoint (PencilSeed.ofCoord q) hubSel)
+        (if G.Adj p.1 p.2 then ({p.1, p.2} : Set α) else ∅)) :
+    PencilNondegFeasible K G := by
+  classical
+  obtain ⟨q, hq⟩ := exists_common_seed_linearIndepOn_pencilChartPoint (K := K) hubSel
+    (fun i : α ⊕ (α × α) => match i with
+      | Sum.inl v => if G.PencilHub v then ({v} : Set α) else G.closedNbhd v
+      | Sum.inr p => if G.Adj p.1 p.2 then ({p.1, p.2} : Set α) else ∅)
+    (by
+      rintro (v | p)
+      · exact hsat_pt v
+      · exact hsat_adj p)
+  set seed := PencilSeed.ofCoord q with hseed_def
+  have hptnz : ∀ v, pencilChartPoint seed hubSel v ≠ 0 := by
+    intro v
+    by_cases hv : G.PencilHub v
+    · have h : LinearIndepOn K (pencilChartPoint seed hubSel)
+          (if G.PencilHub v then ({v} : Set α) else G.closedNbhd v) := hq (Sum.inl v)
+      rw [if_pos hv] at h
+      exact (linearIndepOn_singleton_iff K).mp h
+    · have h : LinearIndepOn K (pencilChartPoint seed hubSel)
+          (if G.PencilHub v then ({v} : Set α) else G.closedNbhd v) := hq (Sum.inl v)
+      rw [if_neg hv] at h
+      exact (linearIndepOn_singleton_iff K).mp (h.mono (Set.singleton_subset_iff.mpr (Or.inl rfl)))
+  have hhub_LI : ∀ v, LinearIndependent K
+      ![hubSlotNormal seed hubSel v 0, hubSlotNormal seed hubSel v 1,
+        hubSlotNormal seed hubSel v 2] := by
+    intro v
+    have h := hptnz v
+    rw [pencilChartPoint] at h
+    exact (cross₃_ne_zero_iff_linearIndependent _ _ _).mp h
+  have hpt_LI : ∀ e u v, G.IsLink e u v → LinearIndependent K
+      ![pencilChartPoint seed hubSel u, pencilChartPoint seed hubSel v] := by
+    intro e u v hl
+    have h : LinearIndepOn K (pencilChartPoint seed hubSel)
+        (if G.Adj u v then ({u, v} : Set α) else ∅) := hq (Sum.inr (u, v))
+    rw [if_pos hl.adj] at h
+    rw [LinearIndependent.pair_iff]
+    exact (LinearIndepOn.pair_iff (pencilChartPoint seed hubSel) hl.ne).mp h
+  have hnbr_some : ∀ v, ¬ G.PencilHub v → LinearIndepOn K (nbrSlotPoint seed hubSel nbrSel v)
+      {i | (nbrSel v i).isSome} := by
+    intro v hv
+    have h : LinearIndepOn K (pencilChartPoint seed hubSel)
+        (if G.PencilHub v then ({v} : Set α) else G.closedNbhd v) := hq (Sum.inl v)
+    rw [if_neg hv] at h
+    exact linearIndepOn_nbrSlotPoint_isSome_of_pencilChartPoint seed (hNbrSel v hv) h
+  obtain ⟨seed', hhub_eq, hfill_eq, hWF'⟩ :=
+    exists_fillNbr_pencilChartWF_of_standing hHubSel hNbrSel hhub_LI hpt_LI hnbr_some
+  exact ⟨_, _, _, isNondegPencilRealization_pencilChartFramework_of_pencilChartWF hWF'⟩
+
 end CombinatorialRigidity.Molecular
