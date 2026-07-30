@@ -13,7 +13,10 @@ L5-cut-v-a…v-g all landed (`Motive.lean`/`Witness.lean`/`Engine.lean`/`Steer.l
 L8 buildable in parallel; L7 (the research core) is the last / critical path; W4 after W5** (phase
 opened 2026-07-23, recon-first). **W5-L7a (the safe-split IH generic half) LANDED 2026-07-30**
 (`Escape.lean`); kernel (K) route 3 adjudicated (carry `hEsc` explicit) — next is L7b or
-`escapePoly`.
+`escapePoly`. **L6a-safe-exists's rigid `k = 0` half PROVEN 2026-07-30**
+(`edgeBound_of_noRigid_of_degree_two` + `exists_adjacent_degree_two_pair_of_noRigid_of_degree_two`,
+`ReducibleVertex.lean`) — the split-arm safe-vertex existence obligation is now closed in full,
+minimality-free, needing no deficiency case-split at the L7 call site.
 `Molecule/Pencil.lean` split into
 `Molecule/Pencil/{Statement,Arms,Motive,Chart,Engine,Reseed,Witness,Steer,Pair,Pair2,Escape}.lean`
 (2026-07-24/25/29 housekeeping).
@@ -47,6 +50,12 @@ stays L6a-safe-exists, not this leaf), `G.Simple`, `PencilNondegFeasible K G`, a
 the four landed L6 leaves to produce `HasGenericPencilRealization K 3 (G.splitOff v a b e₀)` — pure
 combinatorial glue, no new math, doesn't touch (K) or the rigid `k=0` half. Detail in *Decisions
 made*. Gates + axioms clean. **Next: L7b (consumes (K) as `hEsc`) or `escapePoly`.**
+
+**The rigid `k = 0` half's route recon LANDED 2026-07-30, and the bound was PROVEN in the same
+commit** (`ReducibleVertex.lean`: `edgeBound_of_noRigid_of_degree_two` +
+`exists_adjacent_degree_two_pair_of_noRigid_of_degree_two`). The `have`-hyp is retired; the
+split-arm safe-vertex existence obligation is discharged in full for both deficiency regimes by
+one lemma. Detail in *Decisions made*.
 
 **W5-L7 research recon LANDED 2026-07-30** (design pass, `notes/Phase39-design.md` §"W5-L7
 research recon"; scripts `scratchpad/escape/*.py`). Verdict: the escape `r ⬝ Λ²Π̂(a) ≠ 0`
@@ -85,7 +94,8 @@ rows-polynomial engine (`Molecule/Pencil/Engine.lean`) + the D6 re-seeding lemma
 then settled): the real work is the `G ⇒ G′` transfer at a *safe* split vertex, L6a-transfer LANDED
 2026-07-30 (`Habitat.lean`). Safe-vertex existence + L7 coupling settled 2026-07-30: coupling benign
 (KT splits safe); non-rigid safe-vertex existence LANDED (`ReducibleVertex.lean`/`Operations.lean`),
-rigid (`k=0`) half a bounded `have`-hyp. L6b `hcard`-only pin refuted then re-pinned; the new
+rigid (`k=0`) half PROVEN 2026-07-30 (`edgeBound_of_noRigid_of_degree_two`, `ReducibleVertex.lean`)
+— L6a-safe-exists CLOSED in full. L6b `hcard`-only pin refuted then re-pinned; the new
 triangle-exclusion hypothesis L6d is VERIFIED (2026-07-30 habitat recon): `G′` is *fully*
 triangle-free at any degree-2 split (induced-`C₄`-is-`D6`-rigid argument), so L6b is re-pinned with a
 triangle-free hypothesis. **L6d LANDED 2026-07-30 (`Habitat.lean`): the `C₄` proper-rigid brick
@@ -96,8 +106,8 @@ triangle-free hypothesis. **L6d LANDED 2026-07-30 (`Habitat.lean`): the `C₄` p
 caller (`hsat_adj`) + per-body caller (`hsat_pt`) LANDED 2026-07-30, and **L6b COMPLETE 2026-07-30**
 — headline `pencilNondegFeasible_of_ncard_closedHubNbhd_le_three_of_triangleFree` (`Steer.lean`)
 wires the two callers + selectors through the L6b-i assembly. **The remaining W5 leaves are L8 (the
-`k=0` residue), L7 (the research core, last), and W4 (after W5); L6a-safe-exists's rigid `k=0` half
-stays a bounded have-hyp**).
+`k=0` residue), L7 (the research core, last), and W4 (after W5); L6a-safe-exists is CLOSED in full
+(both halves LANDED)**).
 
 The opening recon ran 2026-07-23; verdicts (R1–R3) below in *Opening recon verdicts*.
 
@@ -185,23 +195,20 @@ Full record, grounding, and the W0–W5 decomposition:
   carry (K) as a `have`-hyp and build the rest now; `notes/Phase39-design.md` §"W5-L7 research
   recon" "Route options"), **W5-L8** (the k = 0 residue — emptiness route recommended), and
   W4's witness generality (unchanged, after W5).
-- **W5-L6 split-arm feasibility — invariant SETTLED; coupling RESOLVED benign; safe-vertex
-  existence half-proven** (2026-07-29 L6a re-route + 2026-07-30 safe-exists recon; canonical
-  `notes/Phase39-design.md` §"W5 leaf decomposition" L6a). ≤ 3 on `G` is free from the split arm's
-  `PencilNondegFeasible K G` antecedent (landed
-  `ncard_closedHubNbhd_le_three_of_isNondegPencilRealization`); the transfer `G ⇒ G′` fails at
-  "dangerous" split vertices (computer-verified gadget), so L7 must split a **safe** (adjacent-deg-2-pair
-  endpoint) vertex. **2026-07-30 recon findings:** (ii) the L7 coupling is **benign** — KT's Case III
-  (Lemma 6.13) splits a chain of ≥ 2 degree-2 vertices, i.e. a safe vertex, obtained from KT Lemma 4.6,
-  so no W3-level minimality re-introduction is forced; (i) safe-vertex existence off minimality is
-  **PROVEN + LANDED in Lean 2026-07-30 for non-rigid `G`** (`deficiency > 0`: the generalized counting
-  `exists_adjacent_degree_two_pair_of_edgeBound`, the non-rigid brick
-  `indep_matroidMG_of_noRigid_of_deficiency_pos`, and the composition
-  `exists_adjacent_degree_two_pair_of_noRigid_of_deficiency_pos`, `ReducibleVertex.lean`/`Operations.lean`)
-  and **OPEN only for rigid `G`** (`k = 0`, = classical KT Lemma 4.6 off `IsMinimalKDof 0`; decisive
-  computational evidence incl. `S(Petersen)`, carry as `have`-hyp). **L6a-transfer LANDED 2026-07-30**
-  (`Habitat.lean`, `ncard_closedHubNbhd_splitOff_le_three_of_safe`); L6b + L8 remain
-  buildable now; the `k = 0` bound is bounded and non-blocking.
+- ~~W5-L6 split-arm feasibility (safe-vertex existence)~~ **CLOSED** (2026-07-29 L6a re-route +
+  2026-07-30 safe-exists recon + build; canonical `notes/Phase39-design.md` §"W5 leaf
+  decomposition" L6a). ≤ 3 on `G` is free from the split arm's `PencilNondegFeasible K G`
+  antecedent (landed `ncard_closedHubNbhd_le_three_of_isNondegPencilRealization`); the transfer
+  `G ⇒ G′` needs a **safe** (adjacent-deg-2-pair endpoint) split vertex (L6a-transfer, landed,
+  `Habitat.lean`); the L7 coupling is **benign** — KT's Case III (Lemma 6.13) splits a chain of
+  ≥ 2 degree-2 vertices, i.e. a safe vertex, obtained from KT Lemma 4.6, so no W3-level
+  minimality re-introduction is forced. **Safe-vertex existence is PROVEN minimality-free for
+  both deficiency regimes** — non-rigid (`deficiency > 0`:
+  `exists_adjacent_degree_two_pair_of_noRigid_of_deficiency_pos`) and rigid (`k = 0`, 2026-07-30:
+  `exists_adjacent_degree_two_pair_of_noRigid_of_degree_two`, the counting dual of W3-L1's
+  `exists_isProperRigidSubgraph_of_three_le_degree` off the degree-2 vertex directly, no
+  smoothing/subdivision detour), both `ReducibleVertex.lean`/`Operations.lean`. No open item
+  remains.
 - The full biconditional transport `ExtensorThroughPoint C q ↔
   ExtensorInPanel (screwComplementIso C) q` (design doc's W0 pin) is
   landed only as its **two forward implications** (all the self-duality
@@ -216,9 +223,10 @@ Full record, grounding, and the W0–W5 decomposition:
 `pencil_conjecture_of_arms_pair` (`Pair2.lean`, node `thm:pencil-conditional-realization-pair` green
 over `[Infinite K]`); only `hcontract` (W4) and `hsplit` (W5-L6/L7/L8) remain. Finished L6 landings
 (one-line; detail in *Decisions made* + design doc §"W5 leaf decomposition"): **L6a-transfer**
-(`ncard_closedHubNbhd_splitOff_le_three_of_safe`, `Habitat.lean`), **L6a-safe-exists non-rigid half**
-(`exists_adjacent_degree_two_pair_of_noRigid_of_deficiency_pos`, `ReducibleVertex.lean`/`Operations.lean`;
-rigid `k=0` half a bounded `have`-hyp), **L6d** (`c4_isProperRigidSubgraph` + `splitOff_triangleFree_of_noRigid`,
+(`ncard_closedHubNbhd_splitOff_le_three_of_safe`, `Habitat.lean`), **L6a-safe-exists** (both halves
+LANDED — non-rigid `exists_adjacent_degree_two_pair_of_noRigid_of_deficiency_pos`, rigid
+`exists_adjacent_degree_two_pair_of_noRigid_of_degree_two`,
+`ReducibleVertex.lean`/`Operations.lean`), **L6d** (`c4_isProperRigidSubgraph` + `splitOff_triangleFree_of_noRigid`,
 `Habitat.lean`), and **L6b COMPLETE** (`Witness.lean` callers + `Steer.lean` headline — see the
 Decisions-made entry; the honest producer of the split arm's feasibility obligation, needing only
 `hcard` from L6a-transfer and `htf` from L6d).
@@ -234,17 +242,16 @@ kernel (K) as an explicit `hEsc` hypothesis** (`notes/Phase39-design.md` §"W5-L
   either build `escapePoly` first or stub its type through as a parameter).
 - **`escapePoly`** — the `M₁` `6×6`-minor as an `MvPolynomial` in the seed coords (L3-style),
   the input L7b's `hEsc` hypothesis names.
-Once both land, the reduction is complete modulo (K) + the rigid `k=0` bound. **The rigid `k=0`
-bound itself is scheduled separately** (2026-07-30 session check-in: user selected "Prove now" —
-the coordinator schedules its own route recon as a separate dispatch, not folded into L7b).
+Once both land, the reduction is complete modulo (K) alone — the rigid `k=0` bound is now
+**PROVEN** (this commit's route recon + build; user selected "Prove now" at the 2026-07-30
+session check-in).
 - **W5-L8** (the `k = 0` residue, emptiness route recommended — `notes/Phase39-design.md` §"W5 leaf
   decomposition" L8): the deficiency-`0` split-off bookkeeping / emptiness of the residue class.
 - **Attack kernel (K)** (research recon, route 1 localization recommended — its first gate is the
   local-vs-global numerical test in the design doc's "Route options").
 - **W4** (after W5 — the constrained-family Claim-6.4 analogue, discharges `hcontract`).
 
-L6a-safe-exists's **rigid `k=0` half** stays a bounded `have`-hyp (user call is only whether to prove
-it now; nothing on the L7/L8 path blocks on it). With L6b done, the L6/L7 split-arm chain
+L6a-safe-exists is **CLOSED in full** (both halves LANDED). With L6b done, the L6/L7 split-arm chain
 (`PencilNondegFeasible K G` → L6a-transfer → L6d → **L6b** → `PencilNondegFeasible K G′` → IH + L6c →
 `HasGenericPencilRealization K 3 G′` → L7 extension) has every combinatorial link but the L7 rank
 extension itself.
@@ -253,9 +260,9 @@ extension itself.
 closed-hub-neighbourhood bound is free from the split arm's `PencilNondegFeasible K G` antecedent
 (`ncard_closedHubNbhd_le_three_of_isNondegPencilRealization`); the real gap was the `G ⇒ G′` transfer
 (fixed by splitting a **safe** vertex, L6a-transfer). Safe-vertex existence + L7 coupling settled
-(2026-07-30): coupling benign (KT Case III consumes a safe vertex); non-rigid existence proven, rigid
-`k=0` a bounded `have`-hyp. **Remaining user call = only whether to prove the `k=0` bound now** — not a
-build-vs-rework decision; nothing on the L6b/L8 path blocks on it. **L6c** = landed
+(2026-07-30): coupling benign (KT Case III consumes a safe vertex); **both** the non-rigid and rigid
+(`k=0`) existence halves are now PROVEN — L6a-safe-exists closed in full, no open item remains.
+**L6c** = landed
 `splitOff_simple_of_noRigid_of_card`, folds into L7.
 
 Discharging `hsplit` (L6/L7/L8) then `hcontract` (W4) removes the last two carried hypotheses of
@@ -274,6 +281,33 @@ neighbor — is `notes/IdeaBacklog.md`.
 
 ## Decisions made during this phase
 
+- **L6a-safe-exists rigid `k = 0` half PROVEN — route recon + build, same commit** (2026-07-30,
+  `Induction/ReducibleVertex.lean`; canonical `notes/Phase39-design.md` §"W5 leaf decomposition"
+  L6a). Coordinator-verified recon finding: the edge bound needs neither minimality nor a
+  deficiency-sign case split — only a degree-2 vertex, which the split arm's antecedent already
+  carries (minimality-free per W3-L1's `pencil_reduction`). Two theorems: (1)
+  `edgeBound_of_noRigid_of_degree_two` — for loopless `G` with no proper rigid subgraph, `D ≥ 6`,
+  `3 ≤ |V|`, and a vertex `v` of degree exactly `2`, the KT-4.5(i) edge bound
+  `(D−1)|E| < D(|V|−1)+(D−1)`; proof is the counting dual of W3-L1's
+  `exists_isProperRigidSubgraph_of_three_le_degree` (`Operations.lean:414`): the fiber `E'` of
+  edges avoiding `v` is independent in `M(G̃)` (else a circuit's `circuit_induces_isRigidSubgraph`
+  span avoids `v`, hence proper, contradicting `hnp`), so `(D,D)`-sparsity of `E'` on itself plus
+  its vertex-span bound `≤ |V|−1` gives the bound directly, no smoothing/subdivision needed
+  (the earlier "smooth to min-degree-3, lift back" route was dead — subdivision doesn't preserve
+  deficiency). (2) `exists_adjacent_degree_two_pair_of_noRigid_of_degree_two` — feeds (1) into the
+  landed `exists_adjacent_degree_two_pair_of_edgeBound`; **covers BOTH deficiency halves** at the
+  split-arm call site (needs only a degree-2-vertex witness, not a deficiency-sign split), so
+  `exists_adjacent_degree_two_pair_of_noRigid_of_deficiency_pos` (the non-rigid half, landed
+  2026-07-30 earlier this phase) is not subsumed but the future L7 dispatch site now has one
+  lemma serving both regimes. `[DecidableEq β]` on both theorems false-positives as unused
+  (instance threaded to a callee / `classical`-shadowed) — suppressed via
+  `set_option linter.unusedDecidableInType false in` before the docstring (matching W3-L1's
+  precedent), matching the pinned route-recon signatures verbatim. Attribution: corollary of KT
+  Lemma 3.4 (circuit induces rigid subgraph), presented as a minimality-free replacement of KT
+  Lemma 4.5(i) in the degree-2 habitat. Recon evidence: exhaustive exact-ℚ check, all simple
+  graphs `n = 3..7`, zero violations (corroboration, not the closing argument — the Lean proof is
+  unconditional). No new FRICTION. Gates + axioms clean
+  (`propext`/`Classical.choice`/`Quot.sound`; full `lake build` + `lake lint` both clean).
 - **2026-07-30 session check-in adjudication + W5-L7a LANDED** (`Molecule/Pencil/Escape.lean`, new
   file). User selected route 3 for kernel (K) ("build now" — carry `hEsc` explicit, per the L7
   recon's "Route options") and "Prove now" for L6a-safe-exists's rigid `k=0` half (its own route

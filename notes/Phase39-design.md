@@ -2229,8 +2229,9 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
       `ncard_closedNbhd_le_three_of_not_pencilHub`; hub `w` has `G′.closedHubNbhd w ⊆ G.closedHubNbhd w`
       (`splitOff`'s only new adjacency is `ab`, and a hub `w=a` with hub partner `b` contradicts `hsafe`),
       closed by `hcard w`.
-    - **L6a-safe-exists (SPLIT BY DEFICIENCY 2026-07-30 recon: non-rigid half PROVEN
-      minimality-free; rigid half OPEN but strongly sharpened).** The obligation: under the split-arm
+    - **L6a-safe-exists (SPLIT BY DEFICIENCY 2026-07-30 recon; BOTH HALVES NOW PROVEN
+      minimality-free — non-rigid half same-day recon, rigid half same-day route recon +
+      build).** The obligation: under the split-arm
       hypotheses, a **coordinator-safe** degree-2 vertex exists (a degree-2 `v` with a non-hub
       neighbour). Under 2EC (`¬ PencilHub w ⟺ deg w = 2`, from `PencilHub := _ ∧ 3 ≤ degree`,
       `Motive.lean:73`) this is **exactly an adjacent degree-2 pair**, i.e. the LANDED
@@ -2285,22 +2286,28 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
       (`ground_indep_iff_isBase`), so `isBase_ncard_add_deficiency_eq` gives `(D−1)|E| + k = D(|V|−1)`,
       whence `hedge` is immediate (`− k < D − 1`). This discharges the entire **non-rigid** split-arm
       habitat with **no minimality anywhere**.
-      **Rigid half (k = 0, `G` rigid): OPEN, = classical KT Lemma 4.6 off minimality.** `hedge` at
-      `k = 0` is `corank ≤ D−2 = 4` (`corank ≤ D−1 = 5` already suffices vs `5|E| ≥ 6|V|`, so **one unit
-      of slack** over KT's minimal `no_rigid_edge_count`). No clean proof: the "smooth to a min-degree-3
-      multigraph `H`, apply the minimality-free W3-L1 `exists_isProperRigidSubgraph_of_three_le_degree`,
-      lift back" route has the **subdivision-does-not-preserve-deficiency gap** (`C6` rigid ↦ `C7` not,
-      verified `scratchpad/exact.py`) — the lift is the wrong direction (un-smoothing *decreases*
-      rigidity). **Evidence SHARPENED to decisive this recon** (`scratchpad/{kzero,kzero2,petersen,broad}.py`,
-      exact-ℚ rigidity-matrix rank + exact partition deficiency): *no* coordinator-safe counterexample
-      (rigid + no-proper-rigid + 2EC + simple + deg-2 vertex + no adjacent deg-2 pair) exists in **any**
-      tested family — all subdivision patterns of `K4`/`K5`/`K3,3`/prism, and, sharpest, the
-      high-girth **`S(Petersen)`** (girth-5, triangle- and `K₂,₃`-free, subdivide every edge: rigid,
-      corank exactly 6, 2EC, feasible, no adjacent deg-2 pair) — every one carries a proper rigid
-      subgraph. The recurring rigid piece: a 3-edge-cut complement (delete one hub) subdivides to the
-      exact rigid boundary (`S(Petersen − v)` on 21 vertices is rigid; `S(triangle) = C6`;
-      `S(K₂,₃) = θ(4,4,4)`). Carry the `k = 0` edge bound as a `have`-hypothesis (`hedge`); it is the
-      lone residual, and it is exactly the case KT's minimal Lemma 4.6 was written for.
+      **Rigid half (k = 0, `G` rigid): PROVEN 2026-07-30 (route recon + build), minimality-free
+      — no subdivision/smoothing detour needed.** The "smooth to a min-degree-3 multigraph `H`,
+      apply the minimality-free W3-L1 `exists_isProperRigidSubgraph_of_three_le_degree`, lift back"
+      route above is a dead end (subdivision does not preserve deficiency, `C6` rigid ↦ `C7` not);
+      the route that actually works needs no deficiency case-split and no smoothing at all — it
+      argues **directly off the degree-2 vertex** `v` itself, exactly the counting dual of W3-L1:
+      let `Ev = E(G) ∖ E(G, v)` (`|Ev| + 2 = |E|` since `deg v = 2`) and `E'` its `(D−1)`-fold
+      fiber in `G̃`. `E'` is independent in `M(G̃)`: else a circuit `C ⊆ E'` induces
+      (`circuit_induces_isRigidSubgraph`, KT Lemma 3.4) a rigid subgraph spanning `≥ 2` vertices
+      (looplessness) that avoids `v` (every `E'`-fiber's edge avoids `v`), hence proper —
+      contradicting `hnp`. Independence gives `(D,D)`-sparsity of `E'` on itself
+      (`matroidMG_indep_iff`); its vertex span avoids `v` (`≤ |V| − 1`), so `|E'| + D ≤ D(|V|−1)`,
+      i.e. `(D−1)(|E|−2) + D ≤ D(|V|−1)`, which rearranges to the strict target (`D−2 < D−1`).
+      LANDED as `edgeBound_of_noRigid_of_degree_two` (`ReducibleVertex.lean`), consumed by the
+      composition `exists_adjacent_degree_two_pair_of_noRigid_of_degree_two` — the latter
+      **covers BOTH deficiency halves** at the split-arm call site (it needs only a degree-2-vertex
+      witness, which either deficiency regime's own search already supplies), so the deficiency
+      case split at the L7 call site dissolves: one lemma serves both. The exhaustive computational
+      evidence gathered this recon (`scratchpad/{kzero,kzero2,petersen,broad}.py`, exact-ℚ
+      rigidity-matrix rank + exact partition deficiency, *zero* counterexamples across
+      `S(Petersen)` and all tested subdivision families) stands as corroboration, not the closing
+      argument — the Lean proof above is unconditional.
 
     **L6b RE-ROUTED (2026-07-30 spike — the `hcard`-only pin is FALSE; see the L6b block below).**
     Its input `hcard` type still matches L6a-transfer's output at `G := G′`, but `hcard` **alone does
@@ -2345,17 +2352,18 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
       vertex. The split-vertex choice is L7's (`hsplit` gives mere existence; the arm prover picks any
       degree-2 vertex, and re-derives a safe one from its own hypotheses). **No tension between safety
       and the rank core; no W3-level rework re-introducing split-arm minimality is indicated.**
-    - **(i) Safe-vertex existence off minimality — half discharged.** The **non-rigid** habitat
-      (`deficiency G > 0`, all of the split arm except KT's Case III) is now PROVEN minimality-free
-      (`indep_matroidMG_of_noRigid_of_deficiency_pos` + the generalized counting, both buildable now).
-      The **rigid** residue (`deficiency G = 0`, = KT Case III, where minimality classically lives) is
-      the lone open item: carry its edge bound as a `have`-hypothesis. Decisive computational evidence
-      (incl. the sharp high-girth `S(Petersen)`) found **no counterexample**. This is a *bounded* open
-      lemma (`corank ≤ 5` for rigid no-proper-rigid graphs — one unit of slack over KT's minimal
-      bound), **not** a route obstruction: the phase proceeds on L6a-transfer + L6b + L8 + the
-      non-rigid discharger now, with the `k = 0` edge bound pinned. User adjudication is only *whether
-      to invest in proving the k = 0 bound now or carry it as a have-hyp* — not a build-vs-rework
-      decision.
+    - **(i) Safe-vertex existence off minimality — FULLY DISCHARGED (2026-07-30).** The **non-rigid**
+      habitat (`deficiency G > 0`, all of the split arm except KT's Case III) was PROVEN
+      minimality-free same-day (`indep_matroidMG_of_noRigid_of_deficiency_pos` + the generalized
+      counting). The **rigid** residue (`deficiency G = 0`, = KT Case III, where minimality
+      classically lives) was the remaining open item; the user adjudicated "prove now" the same
+      session, and its own route recon (grounded against `IsProperRigidSubgraph`/
+      `circuit_induces_isRigidSubgraph`/`matroidMG_indep_iff`) found a direct minimality-free
+      argument off the degree-2 vertex alone (no smoothing, no deficiency case-split) — landed as
+      `edgeBound_of_noRigid_of_degree_two` (see the L6a-safe-exists entry above for the route).
+      **Both halves are now proven**; the split-arm safe-vertex existence obligation is closed in
+      its entirety, and `exists_adjacent_degree_two_pair_of_noRigid_of_degree_two` serves both
+      deficiency regimes at the L7 call site.
     - **The `splitOff`-invariant finding stands** (it is what made the safe-vertex distinction
       necessary): `splitOff` does **not** preserve feasibility at a *dangerous* vertex
       (computer-verified gadget, `scratchpad/habitat.py`), so L7 must split a safe one — which, per
@@ -2550,17 +2558,17 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
   is false, refuted above); the transfer route needs `G′`'s habitat properties *not at all* — only
   `G`'s feasibility + a safe split. **L7 owns the split-vertex choice** and picks a safe one — which,
   per the revised posture above, is exactly the adjacent-deg-2-pair endpoint KT's Case III already
-  splits (coupling benign). Existence = L6a-safe-exists (non-rigid half proven; rigid half a bounded
-  have-hyp).
+  splits (coupling benign). Existence = L6a-safe-exists (**both halves PROVEN** — non-rigid and
+  rigid).
 
   **Build order.** L6a-transfer LANDED; **L6d LANDED** (the `C₄` brick `c4_isProperRigidSubgraph`
   then `splitOff_triangleFree_of_noRigid` — a faithful `m = 4` mirror of
   `triangle_isProperRigidSubgraph`, no chart stack). **L6b next** (spike-first): both its inputs are
   now honest producers in tree (`hcard` from L6a-transfer, `htf` from L6d), so it is fully
-  buildable given its `hcard`/`htf` hypotheses. L6a-safe-exists: the non-rigid half
-  (`indep_matroidMG_of_noRigid_of_deficiency_pos` + the generalized counting) is buildable now; the
-  rigid (`k = 0`) half is a bounded `have`-hypothesis (not blocking). L6c is a citation at assembly
-  time; L8 is fully parallel.
+  buildable given its `hcard`/`htf` hypotheses. L6a-safe-exists: **both halves LANDED**
+  (`indep_matroidMG_of_noRigid_of_deficiency_pos` + the generalized counting for the non-rigid
+  half; `edgeBound_of_noRigid_of_degree_two` for the rigid half — see the L6a-safe-exists entry
+  above). L6c is a citation at assembly time; L8 is fully parallel.
 - **W5-L7** (the research core): the single-candidate Claim-6.12 replacement — at the
   Case-III habitat, a chart seed of `G′` realizing rank `6(|V|−2)` *and* the
   candidate-`M₁` escape `r ⬝ Λ²Π̂(a) ≠ 0` (then the assembly + the output's own
@@ -2578,12 +2586,11 @@ parallel combinatorial tracks after L0; L7 last (consumes L2–L4, L6).
 
 ### Open after this pass (owner)
 
-- **L6a-safe-exists, rigid (`k = 0`) half only** — the `k = 0` edge bound
-  `(D−1)|E| < D(|V|−1)+(D−1)` (⟺ `corank ≤ D−2`; `≤ D−1` suffices) for rigid no-proper-rigid
-  graphs off minimality (= KT Lemma 4.6 without `IsMinimalKDof 0`). Decisive computational
-  evidence (incl. `S(Petersen)`), no clean proof. Owner: L6 builder (pin as `have`-hyp; **not
-  blocking** — the non-rigid half is proven). *The `k > 0` half and the L6/L7 coupling are RESOLVED
-  this pass (2026-07-30) — see §"W5 leaf decomposition" L6a.*
+- ~~L6a-safe-exists, rigid (`k = 0`) half~~ **CLOSED same day** — landed as
+  `edgeBound_of_noRigid_of_degree_two` (a direct, minimality-free argument off the degree-2
+  vertex, no smoothing/subdivision detour; see the L6a-safe-exists entry above). *Both the
+  `k = 0` half and the L6/L7 coupling are RESOLVED this pass (2026-07-30) — see §"W5 leaf
+  decomposition" L6a.*
 - L7's uniform escape certificate — the research core (W5 dispatch, numerics-first).
 - Whether the split arm needs further minimality-free analogues of KT Lemma 4.3
   beyond Claim 6.11's inputs — assess inside the arm build (builder).
@@ -2728,12 +2735,13 @@ a uniform symbolic value of `E` at a canonical seed appears to require solving t
 stress uniformly.
 
 **Lean decomposition — the L7 assembly is BUILDABLE NOW with (K) as a bounded hypothesis**
-(exactly mirroring how L6a-safe-exists's rigid `k=0` half rides as a `have`-hyp while the
-rest builds). L7 discharges `hsplit` of `pencil_conjecture_of_arms_pair` (`Pair2.lean:1229`):
+(the same posture L6a-safe-exists's rigid `k=0` half rode under, before its 2026-07-30 route
+recon closed it — (K) is the one hypothesis of this shape left standing). L7 discharges
+`hsplit` of `pencil_conjecture_of_arms_pair` (`Pair2.lean:1229`):
 given `G` loopless, `3 ≤ |V(G)|`, `2EC`, no-proper-rigid, `∃ v, G.degree v = 2`, and the IH
 `∀ G', |V'| < |V|, PencilPair K 3 G'`, produce `PencilPair K 3 G`. Buildable leaves:
-- **L7a — safe split + IH generic half.** Pick a safe vertex `v` (L6a-safe-exists;
-  non-rigid half landed, rigid `k=0` a bounded have-hyp), form `G' = G.splitOff v a b e₀`,
+- **L7a — safe split + IH generic half.** Pick a safe vertex `v` (L6a-safe-exists; both
+  halves now LANDED), form `G' = G.splitOff v a b e₀`,
   and from the IH extract `HasGenericPencilRealization K 3 G'` via the landed L6 chain:
   `PencilNondegFeasible K G` (the `PencilPair` generic-conjunct antecedent) →
   `ncard_closedHubNbhd_le_three_of_isNondegPencilRealization` →
@@ -2799,12 +2807,13 @@ explicit hypothesis, isolating the research obligation to a single crisp `∃`-s
    pencil pinning breaks (dim 5 < 6), so a genuinely new non-vanishing input is needed.
 
 3. **Carry (K) as a project-level `have`-hypothesis indefinitely** (effort: 0 now; defers
-   the research). Land L7a + L7b + `escapePoly` with `hEsc` explicit, exactly as
-   L6a-safe-exists's rigid `k=0` half is carried. This completes the *entire* pencil
-   reduction modulo two named hypotheses ((K) and the `k=0` bound), turning PENCIL into
-   "conditional on two crisp `∃`/counting statements, both with decisive exact-ℚ evidence
-   and 0 counterexamples". Legitimate as a milestone; the conjecture is then *proven modulo
-   (K)*, and (K) can be attacked (routes 1–2) or adjudicated later.
+   the research). Land L7a + L7b + `escapePoly` with `hEsc` explicit — the same posture
+   L6a-safe-exists's rigid `k=0` half rode under before its route recon closed it (this
+   pass, same session). This completes the *entire* pencil reduction modulo the single
+   remaining named hypothesis (K), turning PENCIL into "conditional on one crisp
+   `∃`-statement, with decisive exact-ℚ evidence and 0 counterexamples". Legitimate as a
+   milestone; the conjecture is then *proven modulo (K)*, and (K) can be attacked
+   (routes 1–2) or adjudicated later.
 
 **Recommendation.** Build L7a + L7b + `escapePoly` now under route 3 (carry `hEsc`), which
 unblocks the whole reduction and is the exact precedent-matching move; in parallel, fire a

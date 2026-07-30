@@ -1231,6 +1231,165 @@ theorem exists_adjacent_degree_two_pair_of_noRigid_of_deficiency_pos [Finite α]
     linarith
   exact exists_adjacent_degree_two_pair_of_edgeBound hD hV h2ec hedge
 
+/-! ### The rigid (`k = 0`) edge bound off a degree-2 vertex, minimality-free
+(`lem:no-rigid-edge-count`, `k = 0` specialization; `notes/Phase39-design.md` §"W5 leaf
+decomposition" L6a "Re-route SETTLED", rigid-half route recon 2026-07-30)
+
+`no_rigid_edge_count`'s `k = 0` case needs neither minimality nor deficiency — only a degree-2
+vertex, exactly the shape the split arm's safe-vertex antecedent already supplies. Corollary of
+KT Lemma 3.4 (`circuit_induces_isRigidSubgraph`), presented as a minimality-free replacement of
+KT Lemma 4.5(i) in the degree-2 habitat, the counting dual of `exists_isProperRigidSubgraph_of_
+three_le_degree` (W3-L1): the fiber `E'` of the edges avoiding `v` is independent in `M(G̃)`
+(else a circuit's induced rigid span avoids `v`, contradicting no-proper-rigid-subgraph), hence
+`(D,D)`-sparse on itself, and the vertex-span bound `≤ |V| − 1` (it avoids `v`) turns this into
+the strict edge count `(D−1)|E| < D(|V|−1) + (D−1)`. Recon evidence: exhaustive exact-ℚ check,
+all simple graphs `n = 3..7`, zero violations. -/
+
+-- `[DecidableEq β]` is pinned by the `notes/Phase39-design.md` route recon signature (matching
+-- `circuit_induces_isRigidSubgraph`/`matroidMG`'s standing requirement, `exists_isProperRigidSub
+-- graph_of_three_le_degree`'s precedent above); the proof opens with `classical`, so the
+-- elaborated term routes decidability through `Classical.propDecidable` instead, making the
+-- named instance a genuine false positive for this narrower-scoped lint.
+set_option linter.unusedDecidableInType false in
+/-- **Rigid (`k = 0`) edge bound off a degree-2 vertex, minimality-free** (KT Lemma 4.5(i) at
+`k = 0`, corollary of KT Lemma 3.4). For a loopless `G` with no proper rigid subgraph,
+`D = bodyBarDim n ≥ 6`, `3 ≤ |V(G)|`, and a vertex `v` of degree exactly `2`,
+`(D−1)|E(G)| < D(|V(G)|−1) + (D−1)`. Unlike `no_rigid_edge_count`, this needs no minimality
+hypothesis — only the degree-2 vertex, which the non-rigid reducible-vertex search already
+produces off 2-edge-connectivity alone
+(`exists_adjacent_degree_two_pair_of_noRigid_of_deficiency_pos`); this closes the companion
+`k = 0` gap that search leaves open.
+
+Proof: let `Ev = E(G) ∖ E(G, v)` (`|Ev| + 2 = |E|` since `deg v = 2`) and `E'` its `(D−1)`-fold
+fiber in `G̃`. `E'` is independent in `M(G̃)`: else a circuit `C ⊆ E'` induces
+(`circuit_induces_isRigidSubgraph`) a rigid subgraph spanning `≥ 2` vertices (looplessness) that
+avoids `v` (every `E'`-fiber's edge avoids `v`), hence proper — contradicting `hnp`. Independence
+gives `(D,D)`-sparsity of `E'` on itself (`matroidMG_indep_iff`); since its vertex span avoids
+`v`, `|E'| + D ≤ D(|V|−1)`, i.e. `(D−1)(|E|−2) + D ≤ D(|V|−1)`, which rearranges to the strict
+target (`D − 2 < D − 1`). -/
+theorem edgeBound_of_noRigid_of_degree_two
+    [DecidableEq β] [Finite α] [Finite β] {G : Graph α β} {n : ℕ} [G.Loopless]
+    (hD : 6 ≤ bodyBarDim n) (hV : 3 ≤ V(G).ncard)
+    (hnp : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n)
+    {v : α} (hvV : v ∈ V(G)) (hdeg : G.degree v = 2) :
+    (bodyHingeMult n : ℤ) * E(G).ncard
+      < bodyBarDim n * ((V(G).ncard : ℤ) - 1) + bodyHingeMult n := by
+  classical
+  have hD1 : 1 ≤ bodyBarDim n := by omega
+  have hHM : (bodyHingeMult n : ℤ) = (bodyBarDim n : ℤ) - 1 := by rw [bodyHingeMult]; omega
+  -- `Ev`: the edges of `G` avoiding `v`; `|Ev| + 2 = |E|` since `deg v = 2`.
+  set Ev : Set β := E(G) \ E(G, v) with hEvdef
+  have hEvsub : Ev ⊆ E(G) := diff_subset
+  have hδcard : E(G, v).ncard = 2 := by rw [← degree_eq_ncard_inc]; exact hdeg
+  have hEvcard : Ev.ncard + 2 = E(G).ncard := by
+    rw [hEvdef, ← hδcard]; exact ncard_diff_add_ncard_of_subset (incEdges_subset G v)
+  -- `E'`: the `(D − 1)`-fold fiber of `Ev` in the multiplied graph.
+  set E' : Set (β × Fin (bodyHingeMult n)) := {p | p.1 ∈ Ev} with hE'def
+  have hE'prod : E' = Ev ×ˢ (Set.univ : Set (Fin (bodyHingeMult n))) := by
+    ext ⟨e, i⟩; simp [hE'def]
+  have hE'card : E'.ncard = Ev.ncard * bodyHingeMult n := by
+    rw [hE'prod, Set.ncard_prod, Set.ncard_univ, Nat.card_eq_fintype_card, Fintype.card_fin]
+  have hE'sub : E' ⊆ E(G.mulTilde n) := fun p hp ↦ (mem_edgeSet_mulTilde G n).mpr (hEvsub hp)
+  -- `E'`'s spanned vertices avoid `v`.
+  have hspan_sub : (G.mulTilde n).spanningVerts E' ⊆ V(G) \ {v} := by
+    rintro x ⟨p, hpE', y, hlink⟩
+    have hxyG : G.IsLink p.1 x y := (mulTilde_isLink G n).mp hlink
+    have hpEv : p.1 ∈ Ev := hpE'
+    refine ⟨hxyG.left_mem, ?_⟩
+    rw [Set.mem_singleton_iff]
+    rintro rfl
+    exact hpEv.2 hxyG.inc_left
+  -- `E'` is independent in `M(G̃)`: else a circuit's induced rigid span avoids `v`, contradicting
+  -- no-proper-rigid-subgraph.
+  have hindep : (G.matroidMG n).Indep E' := by
+    by_contra hnotindep
+    have hE'dep : (G.matroidMG n).Dep E' :=
+      ⟨hnotindep, by rw [matroidMG, Matroid.restrict_ground_eq]; exact hE'sub⟩
+    obtain ⟨C, hCsub, hCcirc⟩ := hE'dep.exists_isCircuit_subset
+    set H := G.inducedSpan n C with hHdef
+    have hHrigid : H.IsRigidSubgraph G n := circuit_induces_isRigidSubgraph hD1 hCcirc
+    have hVH2 : 2 ≤ V(H).ncard := by
+      rw [hHdef, vertexSet_inducedSpan, fiberSpan]
+      obtain ⟨q, hq⟩ := hCcirc.nonempty
+      obtain ⟨x, y, hinc⟩ := exists_isLink_of_mem_edgeSet ((hCsub.trans hE'sub) hq)
+      have hxy : x ≠ y := ((mulTilde_isLink G n).mp hinc).ne
+      exact (Set.one_lt_ncard (Set.toFinite _)).mpr
+        ⟨x, ⟨q, hq, hinc.inc_left⟩, y, ⟨q, hq, hinc.inc_right⟩, hxy⟩
+    have hspanC_sub : (G.mulTilde n).spanningVerts C ⊆ (G.mulTilde n).spanningVerts E' :=
+      fun x ⟨p, hp, hinc⟩ ↦ ⟨p, hCsub hp, hinc⟩
+    have hVHsub : V(H) ⊆ V(G) \ {v} := by
+      rw [hHdef, vertexSet_inducedSpan, fiberSpan]
+      exact hspanC_sub.trans hspan_sub
+    have hvnotH : v ∉ V(H) := fun hvH ↦ (hVHsub hvH).2 rfl
+    have hVHssub : V(H) ⊂ V(G) :=
+      (ssubset_iff_of_subset (hVHsub.trans diff_subset)).mpr ⟨v, hvV, hvnotH⟩
+    exact hnp H ⟨hHrigid, hVH2, hVHssub⟩
+  -- Count: `Ev = ∅` closes directly (`|E| = 2`); else sparsity of `E'` on itself gives the bound.
+  rcases eq_empty_or_nonempty Ev with hEvempty | hEvne
+  · have hEcard2 : E(G).ncard = 2 := by rw [← hEvcard, hEvempty, Set.ncard_empty]
+    have hVpos : (3 : ℤ) ≤ (V(G).ncard : ℤ) := by exact_mod_cast hV
+    have hDpos : (6 : ℤ) ≤ (bodyBarDim n : ℤ) := by exact_mod_cast hD
+    have hDV : (3 : ℤ) * (bodyBarDim n : ℤ) ≤ (bodyBarDim n : ℤ) * (V(G).ncard : ℤ) := by
+      have := mul_le_mul_of_nonneg_left hVpos (a := (bodyBarDim n : ℤ)) (by positivity)
+      linarith
+    rw [hEcard2, hHM]
+    push_cast
+    linarith [hDV, hDpos]
+  · have hVne : V(G).Nonempty := ⟨v, hvV⟩
+    have hE'ne : E'.Nonempty := by
+      obtain ⟨e, he⟩ := hEvne
+      have hHM0 : 0 < bodyHingeMult n := by rw [bodyHingeMult]; omega
+      exact ⟨(e, ⟨0, hHM0⟩), he⟩
+    obtain ⟨_, hsparse⟩ := (matroidMG_indep_iff G n).mp hindep
+    have hE'edge : E' ⊆ E(G.mulTilde n ↾ E') := by
+      rw [edgeSet_restrict, Set.inter_eq_right.mpr hE'sub]
+    have hsp := hsparse E' hE'edge hE'ne
+    rw [spanningVerts_restrict_of_subset (subset_refl E')] at hsp
+    have hspancard : ((G.mulTilde n).spanningVerts E').ncard ≤ V(G).ncard - 1 :=
+      (Set.ncard_le_ncard hspan_sub (Set.toFinite _)).trans_eq (Set.ncard_diff_singleton_of_mem hvV)
+    have hVpos : 1 ≤ V(G).ncard := hVne.ncard_pos
+    have hsp' : (E'.ncard : ℤ) + (bodyBarDim n : ℤ) ≤
+        (bodyBarDim n : ℤ) * (((G.mulTilde n).spanningVerts E').ncard : ℤ) := by exact_mod_cast hsp
+    have hspancard' : (((G.mulTilde n).spanningVerts E').ncard : ℤ) ≤ (V(G).ncard : ℤ) - 1 := by
+      zify [hVpos] at hspancard; exact hspancard
+    have hstep : (bodyBarDim n : ℤ) * (((G.mulTilde n).spanningVerts E').ncard : ℤ) ≤
+        (bodyBarDim n : ℤ) * ((V(G).ncard : ℤ) - 1) :=
+      mul_le_mul_of_nonneg_left hspancard' (by positivity)
+    have hA : (E'.ncard : ℤ) + (bodyBarDim n : ℤ) ≤ (bodyBarDim n : ℤ) * ((V(G).ncard : ℤ) - 1) :=
+      hsp'.trans hstep
+    have hE'card' : (E'.ncard : ℤ) = (Ev.ncard : ℤ) * (bodyHingeMult n : ℤ) := by
+      exact_mod_cast hE'card
+    have hEvcard' : (Ev.ncard : ℤ) + 2 = (E(G).ncard : ℤ) := by exact_mod_cast hEvcard
+    have hCM : ((Ev.ncard : ℤ) + 2) * (bodyHingeMult n : ℤ)
+        = (E(G).ncard : ℤ) * (bodyHingeMult n : ℤ) := by rw [hEvcard']
+    nlinarith [hA, hE'card', hCM, hHM]
+
+-- `[DecidableEq β]` false-positives as unused for the same reason as
+-- `edgeBound_of_noRigid_of_degree_two` above: it is threaded only to that callee, and instance
+-- resolution at the call site can synthesize `Classical.propDecidable` instead of reusing the
+-- local hypothesis.
+set_option linter.unusedDecidableInType false in
+/-- **A coordinator-safe reducible vertex exists in the no-proper-rigid-subgraph habitat**
+(the rigid-half companion of `exists_adjacent_degree_two_pair_of_noRigid_of_deficiency_pos`;
+Katoh–Tanigawa 2011 Lemma 4.6, off minimality — this covers BOTH deficiency halves at the
+split-arm call site, since it needs no degree-2-vertex-existence hypothesis beyond `hv`, which
+the non-rigid companion's own conclusion supplies just as well). For a **loopless**,
+`2`-edge-connected `G` with no proper rigid subgraph, `D ≥ 6`, `3 ≤ |V(G)|`, and a witness
+`v` of degree `2`, there are two adjacent degree-`2` vertices.
+
+Proof: `edgeBound_of_noRigid_of_degree_two` supplies the KT-4.5(i) edge bound from `v` alone
+(no minimality, no deficiency sign), which `exists_adjacent_degree_two_pair_of_edgeBound`
+consumes. -/
+theorem exists_adjacent_degree_two_pair_of_noRigid_of_degree_two
+    [DecidableEq β] [Finite α] [Finite β] {G : Graph α β} {n : ℕ} [G.Loopless]
+    (hD : 6 ≤ bodyBarDim n) (hV : 3 ≤ V(G).ncard) (h2ec : G.TwoEdgeConnected)
+    (hnp : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n)
+    (hv : ∃ v ∈ V(G), G.degree v = 2) :
+    ∃ v a : α, v ∈ V(G) ∧ a ∈ V(G) ∧ G.degree v = 2 ∧ G.degree a = 2 ∧ ∃ e, G.IsLink e v a := by
+  obtain ⟨v, hvV, hvdeg⟩ := hv
+  exact exists_adjacent_degree_two_pair_of_edgeBound hD hV h2ec
+    (edgeBound_of_noRigid_of_degree_two hD hV hnp hvV hvdeg)
+
 /-- **Edge-splitting** `H_{ab}^v` (`def:graph-operations`): the inverse of splitting-off.
 Subdivide the edge `e₀` of `H` (joining `a` and `b`) by a fresh degree-2 vertex `v`,
 replacing `e₀` with the path `a — v — b` carried by two fresh edges `e₁` (joining `a`,
