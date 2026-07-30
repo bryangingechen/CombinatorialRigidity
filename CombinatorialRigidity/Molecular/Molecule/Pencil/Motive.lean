@@ -544,9 +544,10 @@ theorem finrank_toDualPerp_triple_eq {n : Fin 3 → Fin 4 → K} (hn : LinearInd
 The new obstruction mechanism the L5-cut-v assessment recon found
 (`notes/Phase39-design.md` §"W5 leaf decomposition" L5 "Feasibility propagation"): a triangle with
 two adjacent pencil hubs is nondegeneracy-infeasible, regardless of the third vertex's own hub
-status. This is exactly what the L5-cut-v chart-steering discharge excludes via `hcutPendant3`'s
-`PencilNondegFeasible K G` antecedent at the adversarial "net" configuration (a triangle with two
-hubs), and gates both of that leaf's somewhere-witness constructions (v-b, v-c). -/
+status. This is exactly what the inline L5-cut-v sub-case-4 discharge
+(`hasGenericPencilRealization_pendant_deg3_of_IH`, `Pencil/Pair2.lean`) excludes via its
+`PencilNondegFeasible K G` (`hfeas`) antecedent at the adversarial "net" configuration (a triangle
+with two hubs), and gates both of that leaf's somewhere-witness constructions (v-b, v-c). -/
 
 /-- **A triangle with two adjacent pencil hubs is nondegeneracy-infeasible** (Phase 39 W5-L5,
 L5-cut-v-a; derivation pinned in `notes/Phase39-design.md`'s "Feasibility propagation" finding).

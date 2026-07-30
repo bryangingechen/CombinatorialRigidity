@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
 import CombinatorialRigidity.Molecular.Molecule.Pencil.Pair
+import CombinatorialRigidity.Molecular.Molecule.Pencil.Steer
 
 /-!
 # The conditioned-pair cut arm, sub-case 3: the pendant producer (Phase 39 PENCIL, W5-L5)
@@ -953,6 +954,79 @@ theorem hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant_
       fun e u v hl => ⟨(hlinks e u v hl).2.2.1, (hlinks e u v hl).2.2.2⟩⟩,
     hadjLI, hhubLI_glued, hnbhdLI_glued⟩, hrank_eq⟩
 
+/-! ## W5-L5 cut arm, sub-case 4: the IH-consuming discharge (Phase 39 PENCIL, L5-cut-v-g part 2)
+
+The glue that closes the residual sub-case 4 inside the dispatch shell, discharging the formerly
+carried `hcutPendant3` hypothesis. Over an infinite field, from the pendant deg-`3` cut
+configuration, the ambient simplicity + nondegeneracy-feasibility of `G`, and the induction
+hypothesis `hIH` on all strictly-smaller graphs: extract `u_c`'s two `V₁`-links from
+`G.degree u_c = 3` (`Graph.degree_eq_ncard_adj` + `Set.ncard_eq_two` on `N(G, u_c) \ {v_c}`),
+propagate feasibility to `H := G.induce V₁` (v-e, `pencilNondegFeasible_induce_of_pendant_deg3`,
+`Steer.lean`), fire the IH for `H`'s generic witness, steer it to the three promoted normal families
+at `{u_c, w₁, w₂}` (v-f-6, `exists_isNondegPencilRealization_induce_promotedNormal_of_pendant_deg3`,
+`Steer.lean`), and glue via the demoted-hub producer
+(`hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant_deg3`, v-g part 1).
+The two rank forms coincide verbatim
+(both `screwDim 2 * (V₁.ncard - 1) - (G.induce V₁).deficiency n`), so no arithmetic bridging is
+needed. -/
+
+/-- **The pendant sub-case-4 discharge from the induction hypothesis** (Phase 39 W5-L5,
+L5-cut-v-g part 2). Under the pendant deg-`3` cut configuration over an infinite field, with the
+ambient simplicity + nondegeneracy-feasibility of `G` and the induction hypothesis `hIH` on all
+strictly-smaller graphs, `G` has a generic pencil realization. Extract `u_c`'s two `V₁`-links from
+`G.degree u_c = 3`, propagate feasibility to `H := G.induce V₁` (v-e), obtain `H`'s generic witness
+from `hIH`, steer it to the three promoted normal families at `{u_c, w₁, w₂}` (v-f-6), and glue
+(v-g part 1). This is the inline discharge that lets `pencilPair_of_not_twoEdgeConnected` drop the
+formerly carried sub-case-4 hypothesis. -/
+theorem hasGenericPencilRealization_pendant_deg3_of_IH [Finite α] [Finite β] [Infinite K] {n : ℕ}
+    (hD : 2 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
+    {G : Graph α β} {V₁ : Set α} {e_c : β} {u_c v_c : α}
+    (hSimple : G.Simple) (hfeas : PencilNondegFeasible K G)
+    (hl_c : G.IsLink e_c u_c v_c) (hu_c : u_c ∈ V₁) (hv_c : v_c ∉ V₁)
+    (hVG : V(G) = V₁ ∪ {v_c}) (hcut : (G.cutEdges V₁).ncard ≤ 1) (hdeg : G.degree u_c = 3)
+    (hIH : ∀ G' : Graph α β, V(G').Nonempty → V(G').ncard < V(G).ncard → PencilPair K n G') :
+    HasGenericPencilRealization K n G := by
+  classical
+  haveI := hSimple
+  -- ── Extract `u_c`'s two `V₁`-links `e₁ : u_c–w₁`, `e₂ : u_c–w₂` from `G.degree u_c = 3`. ──────
+  have hNcard : N(G, u_c).ncard = 3 := by
+    rw [← Graph.degree_eq_ncard_adj (G := G) (x := u_c), hdeg]
+  have hvc_mem : v_c ∈ N(G, u_c) := hl_c.adj
+  have hdiff2 : (N(G, u_c) \ {v_c}).ncard = 2 := by
+    rw [Set.ncard_diff_singleton_of_mem hvc_mem, hNcard]
+  obtain ⟨w₁, w₂, hw12, hdiffeq⟩ := Set.ncard_eq_two.mp hdiff2
+  have hw₁mem : w₁ ∈ N(G, u_c) \ {v_c} := by rw [hdiffeq]; exact Set.mem_insert _ _
+  have hw₂mem : w₂ ∈ N(G, u_c) \ {v_c} := by rw [hdiffeq]; exact Set.mem_insert_of_mem _ rfl
+  obtain ⟨e₁, hl₁⟩ : G.Adj u_c w₁ := hw₁mem.1
+  obtain ⟨e₂, hl₂⟩ : G.Adj u_c w₂ := hw₂mem.1
+  have hw₁V : w₁ ∈ V₁ := by
+    have hmem : w₁ ∈ V(G) := hl₁.right_mem
+    rw [hVG] at hmem
+    exact hmem.resolve_right (fun h => hw₁mem.2 h)
+  have hw₂V : w₂ ∈ V₁ := by
+    have hmem : w₂ ∈ V(G) := hl₂.right_mem
+    rw [hVG] at hmem
+    exact hmem.resolve_right (fun h => hw₂mem.2 h)
+  -- ── Feasibility of `H := G.induce V₁` (v-e) + the IH witness for `H`. ─────────────────────────
+  have hV₁sub : V₁ ⊆ V(G) := by rw [hVG]; exact Set.subset_union_left
+  have hssub : V₁ ⊂ V(G) :=
+    (Set.ssubset_iff_of_subset hV₁sub).mpr
+      ⟨v_c, by rw [hVG]; exact Set.mem_union_right _ rfl, hv_c⟩
+  have hSimple₁ : (G.induce V₁).Simple := hSimple.mono (Graph.induce_le hV₁sub)
+  have hfeas₁ : PencilNondegFeasible K (G.induce V₁) :=
+    pencilNondegFeasible_induce_of_pendant_deg3 hSimple hfeas hl_c hu_c hv_c hVG hcut hdeg
+      hl₁ hl₂ hw₁V hw₂V hw12
+  have hV₁ne : V(G.induce V₁).Nonempty := ⟨u_c, hu_c⟩
+  have hV₁ncard : V(G.induce V₁).ncard < V(G).ncard := Set.ncard_lt_ncard hssub (Set.toFinite _)
+  obtain ⟨F₁, normal₁, point₁, hnd₁, hrank₁⟩ :=
+    (hIH (G.induce V₁) hV₁ne hV₁ncard).1 hSimple₁ hfeas₁
+  -- ── Steer to the three promoted normal families (v-f-6), then glue (v-g part 1). ──────────────
+  obtain ⟨F, normal, point, hnd, hrank, hpromoted⟩ :=
+    exists_isNondegPencilRealization_induce_promotedNormal_of_pendant_deg3 hn hSimple hfeas
+      hl_c hu_c hv_c hVG hcut hdeg hl₁ hl₂ hw₁V hw₂V hw12 hnd₁ hrank₁
+  exact hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant_deg3 hD hn hSimple
+    hl_c hu_c hv_c hVG hcut hdeg hl₁ hl₂ hw₁V hw₂V hw12 hnd hrank hpromoted
+
 /-! ## W5-L5 cut arm, the dispatch shell (Phase 39 PENCIL, L5-cut-iv)
 
 The generic-half assembly wiring all four sub-cases of the cut-arm route verdict
@@ -967,45 +1041,31 @@ with attachment degree `≠ 3` is sub-case 3
 (`hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant`) — the cut-vertex-set
 unfold is unoriented (nothing pins which of `V₁`/`V₂` is the pendant side), so both orientations
 route through the same producer with `u_c`/`v_c` (and `V₁`/`V₂`) swapped; a pendant singleton side
-with attachment degree exactly `3` is the residual sub-case 4, carried as the explicit hypothesis
-`hcutPendant3` (the standing no-`sorry` idiom, `CombinatorialRigidity/CLAUDE.md`) rather than built:
-its shape mirrors the pendant producer's own premises with the degree inequality flipped to an
-equality and the IH-witness/rank arguments dropped, since the design doc's finding shows no plain
-IH consumption can close this sub-case's output gap — this is exactly the eventual conclusion of
-L5-cut-v's chart-steering candidate route (**do not build that route yet**: its two
-somewhere-witness constructions need a numerics-first assessment first, design doc L5-cut-iv/v).
-**`hcutPendant3` is conditioned on `G.Simple`/`PencilNondegFeasible K G`, threaded from the ambient
-`hSimple`/`hfeas` already in scope at every use site** — dropping this conditioning would make the
-hypothesis an UNSATISFIABLE obligation, not merely a stronger one: the "net" graph (a triangle with
-a pendant at each vertex) satisfies every configuration premise (pendant side, attachment degree
-exactly `3`, `≤ 1` crossing edge) at every one of its three symmetric cuts, yet
-`HasGenericPencilRealization K n G` is actually FALSE there — the triangle's three degree-`3`
-hubs trigger the route recon's triangle-`≥2`-hub infeasibility finding, so `G` is not even
-`PencilNondegFeasible` (`notes/Phase39-design.md` §"W5 leaf decomposition" L5, "Feasibility
-propagation"). Conditioning on `G.Simple`/`PencilNondegFeasible K G` makes the carried hypothesis
-vacuous at exactly such configurations (the net graph is simple and feasibility-infeasible, so
-`hfeas` alone already discharges the obligation there) and matches what the intended L5-cut-v
-chart-steering discharger actually needs as input (it re-seeds `G`'s own feasibility witness, so
-it *requires* `PencilNondegFeasible K G` to exist in the first place). Both sides `≥ 2` is
-sub-case 1, consuming the IH at the two edge-closed sides `Gᵢ⁺ = G.induce (Vᵢ ∪ {far})` and gluing
-via `hasGenericPencilRealization_of_isNondegPencilRealization_induce_union_singleton`. -/
+with attachment degree exactly `3` is the residual sub-case 4, discharged INLINE (over an infinite
+field) by `hasGenericPencilRealization_pendant_deg3_of_IH` above — the L5-cut-v chart-steering
+route, now landed: extract the two `V₁`-links, propagate feasibility to `H := G.induce V₁` (v-e),
+consume the IH for `H`'s generic witness, steer it to the three promoted normal families (v-f-6),
+and glue
+via the demoted-hub producer (v-g part 1). The ambient `hSimple`/`hfeas` are exactly the inputs the
+chart-steering discharge needs (it re-seeds `G`'s own feasibility witness, so it *requires*
+`PencilNondegFeasible K G` to exist): at the adversarial "net" graph (a triangle with a pendant at
+each vertex) `HasGenericPencilRealization K n G` is FALSE — the triangle's three degree-`3` hubs
+trigger the triangle-`≥2`-hub infeasibility finding, so `G` is not even `PencilNondegFeasible`
+(`notes/Phase39-design.md` §"W5 leaf decomposition" L5, "Feasibility propagation") — but there
+`hfeas` is itself unavailable, so the sub-case is never reached. Both sides `≥ 2` is sub-case 1,
+consuming the IH at the two edge-closed sides `Gᵢ⁺ = G.induce (Vᵢ ∪ {far})` and gluing via
+`hasGenericPencilRealization_of_isNondegPencilRealization_induce_union_singleton`. -/
 
 /-- **The cut arm of the pencil reduction, conditioned-pair motive, dispatch shell**
 (Phase 39 W5-L5, L5-cut-iv; the `PencilPair` analogue of the bare-motive
-`hasPencilRealization_of_not_twoEdgeConnected`, W3-L4). Let `G` be a multigraph that is not
-`2`-edge-connected. If every smaller graph satisfies the conditioned pair at rank `n` (`hIH`), and
-every simple, nondegeneracy-feasible pendant-singleton cut configuration of `G` at attachment
-degree exactly `3` has a generic pencil realization (`hcutPendant3`, the residual sub-case 4 —
-`notes/Phase39-design.md` §"W5 leaf decomposition" L5-cut-v, design-open; conditioned on
-`G.Simple`/`PencilNondegFeasible K G` so the obligation stays satisfiable — vacuous at
-infeasible/non-simple configurations such as the "net" graph, see the section comment above),
-then so does `G` satisfy the conditioned pair. -/
-theorem pencilPair_of_not_twoEdgeConnected [Finite α] [Finite β] {n : ℕ}
+`hasPencilRealization_of_not_twoEdgeConnected`, W3-L4). Over an infinite field, let `G` be a
+multigraph that is not `2`-edge-connected. If every smaller graph satisfies the conditioned pair at
+rank `n` (`hIH`), then so does `G` — all four cut sub-cases discharge internally, the residual
+pendant attachment at degree exactly `3` (formerly the carried hypothesis `hcutPendant3`) via the
+inline L5-cut-v chart-steering discharge `hasGenericPencilRealization_pendant_deg3_of_IH`. -/
+theorem pencilPair_of_not_twoEdgeConnected [Finite α] [Finite β] [Infinite K] {n : ℕ}
     (hD : 2 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
     {G : Graph α β} (hntec : ¬ G.TwoEdgeConnected)
-    (hcutPendant3 : ∀ {V₁ : Set α} {e_c : β} {u_c v_c : α}, G.Simple → PencilNondegFeasible K G →
-      G.IsLink e_c u_c v_c → u_c ∈ V₁ → v_c ∉ V₁ → V(G) = V₁ ∪ {v_c} →
-      (G.cutEdges V₁).ncard ≤ 1 → G.degree u_c = 3 → HasGenericPencilRealization K n G)
     (hIH : ∀ G' : Graph α β, V(G').Nonempty → V(G').ncard < V(G).ncard → PencilPair K n G') :
     PencilPair K n G := by
   refine ⟨fun hSimple hfeas => ?_,
@@ -1050,7 +1110,8 @@ theorem pencilPair_of_not_twoEdgeConnected [Finite α] [Finite β] {n : ℕ}
       have hVG : V(G) = V₁ ∪ {v_c} := by
         rw [← hV₂eq]; exact (Set.union_diff_cancel hssub.subset).symm
       by_cases hdeg3 : G.degree u_c = 3
-      · exact hcutPendant3 hSimple hfeas hl_c hu_c hv_c hVG hcut_le hdeg3
+      · exact hasGenericPencilRealization_pendant_deg3_of_IH hD hn hSimple hfeas hl_c hu_c hv_c hVG
+          hcut_le hdeg3 hIH
       · have hSimple₁ : (G.induce V₁).Simple := hSimple.mono (Graph.induce_le hssub.subset)
         have hfeas₁ : PencilNondegFeasible K (G.induce V₁) := by
           refine hfeas.mono (Graph.induce_le hssub.subset) ?_
@@ -1076,7 +1137,8 @@ theorem pencilPair_of_not_twoEdgeConnected [Finite α] [Finite β] {n : ℕ}
         have hVG' : V(G) = V₂ ∪ {u_c} := by
           rw [← hV₁eq]; exact (Set.diff_union_of_subset hssub.subset).symm
         by_cases hdeg3' : G.degree v_c = 3
-        · exact hcutPendant3 hSimple hfeas hl_c.symm hv_c₂ hu_notin₂ hVG' hcut₂ hdeg3'
+        · exact hasGenericPencilRealization_pendant_deg3_of_IH hD hn hSimple hfeas hl_c.symm hv_c₂
+            hu_notin₂ hVG' hcut₂ hdeg3' hIH
         · have hSimple₂ : (G.induce V₂).Simple := hSimple.mono (Graph.induce_le hV₂sub)
           have hfeas₂ : PencilNondegFeasible K (G.induce V₂) := by
             refine hfeas.mono (Graph.induce_le hV₂sub) ?_
@@ -1136,12 +1198,12 @@ Mirrors the W3-L7 wrapper `pencil_conjecture_of_arms` (`Molecule/Pencil/Arms.lea
 `HasPencilRealization K 3`: the loop/base/cut arms discharge internally from the three landed
 leaves above (`pencilPair_of_isLoopAt`, `pencilPair_of_ncard_le_two`,
 `pencilPair_of_not_twoEdgeConnected`), and `hcontract`/`hsplit` are taken as hypotheses exactly as
-W3-L7's, restated against `PencilPair` in place of `HasPencilRealization`. Unlike W3-L7, the cut
-arm is not fully self-contained: `pencilPair_of_not_twoEdgeConnected` itself takes the residual
-sub-case-4 hypothesis `hcutPendant3` (L5-cut-v, design-open), so this successor re-exposes it as
-its own carried hypothesis, universally quantified over the graph it is invoked at (the cut arm's
-`hcutPendant3` is scoped to a single ambient `G`). The conclusion is `PencilPair K 3 G` directly —
-exactly `def:pencil-conditioned-pair` at the spanning graph `hspan` provides — rather than W3-L7's
+W3-L7's, restated against `PencilPair` in place of `HasPencilRealization`. Over an infinite field
+the cut arm is now fully self-contained (`pencilPair_of_not_twoEdgeConnected` discharges its
+residual sub-case 4 — pendant attachment at degree exactly `3` — inline via the L5-cut-v
+chart-steering discharge `hasGenericPencilRealization_pendant_deg3_of_IH`), so this successor no
+longer re-exposes any cut-arm hypothesis. The conclusion is `PencilPair K 3 G` directly — exactly
+`def:pencil-conditioned-pair` at the spanning graph `hspan` provides — rather than W3-L7's
 `RankHypothesis`-bridged reformulation, since the blueprint's `thm:pencil-conditional-realization-
 pair` prose asks for "satisfies the conditioned pair" verbatim and `PencilPair` already *is* that
 predicate; no rank-nullity bridging is needed on top. -/
@@ -1149,17 +1211,16 @@ predicate; no rank-nullity bridging is needed on top. -/
 set_option linter.unusedDecidableInType false in
 /-- **The pencil conjecture, conditional on the contraction and split cases, conditioned-pair
 motive** (`thm:pencil-conditional-realization-pair`; Phase 39 W5-L5, the successor to the W3-L7
-bare-motive wrapper `pencil_conjecture_of_arms`). Assembles `Graph.pencil_reduction` at `n = 3`
-against the conditioned-pair motive `PencilPair`, discharging the loop/base/cut arms internally
-from the landed leaves (`pencilPair_of_isLoopAt`, `pencilPair_of_ncard_le_two`,
-`pencilPair_of_not_twoEdgeConnected`) and taking the contraction/split arms as hypotheses,
-restated against `PencilPair` in place of the bare motive. The cut arm's residual sub-case 4
-(pendant attachment at degree exactly `3`, L5-cut-v — design-open, no plain IH consumption closes
-its output gap) is threaded through as the carried hypothesis `hcutPendant3`, conditioned on
-`G.Simple`/`PencilNondegFeasible K G` exactly as `pencilPair_of_not_twoEdgeConnected` needs it
-(unconditioned, the "net" graph — a triangle with a pendant at each vertex — makes the hypothesis
-unsatisfiable, `notes/Phase39.md` *Hand-off*). -/
+bare-motive wrapper `pencil_conjecture_of_arms`). Over an infinite field, assembles
+`Graph.pencil_reduction` at `n = 3` against the conditioned-pair motive `PencilPair`, discharging
+the loop/base/cut arms internally from the landed leaves (`pencilPair_of_isLoopAt`,
+`pencilPair_of_ncard_le_two`, `pencilPair_of_not_twoEdgeConnected`) and taking only the
+contraction/split arms as hypotheses, restated against `PencilPair` in place of the bare motive. The
+cut arm's residual sub-case 4 (pendant attachment at degree exactly `3`) is discharged inside
+`pencilPair_of_not_twoEdgeConnected` by the L5-cut-v chart-steering route, so no cut-arm hypothesis
+is carried here. -/
 theorem pencil_conjecture_of_arms_pair [Nonempty α] [Finite α] [Finite β] [DecidableEq β]
+    [Infinite K]
     (hcontract : ∀ G : Graph α β, G.Loopless → 3 ≤ V(G).ncard →
       (∃ H : Graph α β, H.IsProperRigidSubgraph G 3) →
       (∀ G' : Graph α β, V(G').Nonempty → V(G').ncard < V(G).ncard →
@@ -1171,10 +1232,6 @@ theorem pencil_conjecture_of_arms_pair [Nonempty α] [Finite α] [Finite β] [De
       (∀ G' : Graph α β, V(G').Nonempty → V(G').ncard < V(G).ncard →
         PencilPair K 3 G') →
       PencilPair K 3 G)
-    (hcutPendant3 : ∀ (G : Graph α β) {V₁ : Set α} {e_c : β} {u_c v_c : α},
-      G.Simple → PencilNondegFeasible K G →
-      G.IsLink e_c u_c v_c → u_c ∈ V₁ → v_c ∉ V₁ → V(G) = V₁ ∪ {v_c} →
-      (G.cutEdges V₁).ncard ≤ 1 → G.degree u_c = 3 → HasGenericPencilRealization K 3 G)
     (G : Graph α β) (hspan : V(G) = Set.univ) :
     PencilPair K 3 G := by
   classical
@@ -1200,7 +1257,7 @@ theorem pencil_conjecture_of_arms_pair [Nonempty α] [Finite α] [Finite β] [De
   have hcut_arm : ∀ G : Graph α β, G.Loopless → 3 ≤ V(G).ncard → ¬ G.TwoEdgeConnected →
       (∀ G' : Graph α β, V(G').Nonempty → V(G').ncard < V(G).ncard →
         PencilPair K 3 G') → PencilPair K 3 G :=
-    fun G _ _ hntec hIH => pencilPair_of_not_twoEdgeConnected hD2 hn hntec (hcutPendant3 G) hIH
+    fun G _ _ hntec hIH => pencilPair_of_not_twoEdgeConnected hD2 hn hntec hIH
   have hVGne : V(G).Nonempty := by rw [hspan]; exact Set.univ_nonempty
   exact Graph.pencil_reduction hD6 hloop_arm hbase_arm hcut_arm hcontract hsplit G hVGne
 
