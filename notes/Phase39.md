@@ -26,12 +26,22 @@ reason to split — the phase's charter is the conjecture itself), then *"Let's 
 the loop after this dispatch returns and you've confirmed its results; we'll begin
 the research on the conjecture in a fresh session."*
 
-**2026-07-30 adjudication (this session, verbatim):** *"Let's wrap up this session when
-we finish L6 and leave the research core to a fresh session."* L6 (habitat feasibility)
-is now COMPLETE, so this session wraps here; **the fresh session begins at W5-L7 (the
-research core — the uniform escape certificate `r ⬝ Λ²Π̂(a) ≢ 0`, the genuinely new
-mathematics), with W5-L8 (`k=0` residue) buildable in parallel and W4 after W5.** The
-phase stays OPEN (no phase-close).
+**2026-07-30 adjudication (verbatim):** *"Let's wrap up this session when
+we finish L6 and leave the research core to a fresh session."*
+
+**W5-L7 research recon LANDED 2026-07-30** (design pass, `notes/Phase39-design.md` §"W5-L7
+research recon"; scripts `scratchpad/escape/*.py`). Verdict: the escape `r ⬝ Λ²Π̂(a) ≠ 0`
+(candidate `M₁`) is confirmed pencil-generic across **5 structurally-distinct chain
+habitats** (double-subdiv K4/W4/W5/K5−matching/prism+diag; all chain-end degrees
+(3,3)/(4,3)/(5,3)/(4,4); 0 escape failures), BUT it is a **genuinely generic** condition,
+not a structural identity — a sign-change probe pins an interior rank-84/nullity-1 pencil
+realization where `M₁` FAILS, so the design doc's **route (b) [(6.44) algebraic identity]
+is REFUTED** as a standalone certificate. The escape reduces (via the landed reformulation
+`M₁ ⟺ r ⬝ (b̂∧ĉ) ≠ 0`) to **one ≢-0-somewhere obligation** — kernel **(K)** — which the
+landed genericity engine `exists_common_seed_pencilRow_and_polynomials` is already built to
+consume. L7 decomposes into buildable glue (L7a) + a buildable rank-extension assembly
+(L7b, consuming (K) as a `have`-hyp) + an `escapePoly` definition; only (K) is open.
+**W5-L8 (`k=0` residue) buildable in parallel; W4 after W5.** The phase stays OPEN.
 
 **W0–W3 all COMPLETE; W5 design settled; W5-L0–L4 all COMPLETE; W5-L5 closed modulo TWO carried
 hypotheses** (loop, base, and cut arms all landed against `PencilPair`, and the successor assembly
@@ -148,10 +158,14 @@ Full record, grounding, and the W0–W5 decomposition:
   (2026-07-24, design doc L4 bullet): the motive gained its fourth conjunct
   (route 2, landed), and `PencilSeed`'s single `fill` split into `fillHub`/`fillNbr`.
   No open question remains at either; W5-L4 closed (*Decisions made*).
-- Open research questions inside the pinned W5 route, downstream of L4: **W5-L7**
-  (the uniform escape certificate `r ⬝ Λ²Π̂(a) ≢ 0` on the chart — the genuinely
-  new mathematics, N2 witnesses one instance), **W5-L8** (the k = 0 residue —
-  emptiness route recommended), and W4's witness generality (unchanged, after W5).
+- Open research questions inside the pinned W5 route, downstream of L4: **W5-L7 kernel
+  (K)** (the escape polynomial `E = r⬝(b̂∧ĉ)` is `≢ 0` on the chart of `G^{ab}_v`, uniformly
+  across all Case-III habitats — the genuinely new mathematics; recon 2026-07-30 REFUTED the
+  (6.44)-identity route, isolated (K) as the sole open piece, and offered 3 routes for user
+  adjudication: localization (recommended attempt), reuse landed panel-span machinery, or
+  carry (K) as a `have`-hyp and build the rest now; `notes/Phase39-design.md` §"W5-L7 research
+  recon" "Route options"), **W5-L8** (the k = 0 residue — emptiness route recommended), and
+  W4's witness generality (unchanged, after W5).
 - **W5-L6 split-arm feasibility — invariant SETTLED; coupling RESOLVED benign; safe-vertex
   existence half-proven** (2026-07-29 L6a re-route + 2026-07-30 safe-exists recon; canonical
   `notes/Phase39-design.md` §"W5 leaf decomposition" L6a). ≤ 3 on `G` is free from the split arm's
@@ -190,12 +204,20 @@ rigid `k=0` half a bounded `have`-hyp), **L6d** (`c4_isProperRigidSubgraph` + `s
 Decisions-made entry; the honest producer of the split arm's feasibility obligation, needing only
 `hcard` from L6a-transfer and `htf` from L6d).
 
-**Next concrete commit — one of the three remaining W5 leaves (all parallel):**
+**Next concrete commit — options (the L7 recon landed 2026-07-30; see its "Route options" for the
+user adjudication on kernel (K)):**
+- **W5-L7a + L7b + `escapePoly`** (RECOMMENDED, route 3 — carry kernel (K) as an explicit `hEsc`
+  hypothesis, exactly as L6a-safe-exists's rigid `k=0` half rides as a `have`-hyp;
+  `notes/Phase39-design.md` §"W5-L7 research recon" "Lean decomposition"): L7a = safe-split + IH
+  generic half via the landed L6 chain; L7b = the rank extension consuming (K), mirroring the v-f-6
+  assembly + `finrank_span_rigidityRows_pencilChartFramework_eq_of_independent_pencilRow`
+  (`Steer.lean:693`) + `exists_common_seed_pencilRow_and_polynomials` (`Engine.lean:476`); `escapePoly`
+  = the `M₁` `6×6`-minor as an `MvPolynomial` in the seed coords (L3-style). Unblocks the whole
+  reduction modulo (K) + the `k=0` bound.
 - **W5-L8** (the `k = 0` residue, emptiness route recommended — `notes/Phase39-design.md` §"W5 leaf
   decomposition" L8): the deficiency-`0` split-off bookkeeping / emptiness of the residue class.
-- **W5-L7** (the research core, last — the uniform escape certificate `r ⬝ Λ²Π̂(a) ≢ 0` on the chart,
-  the genuinely new mathematics; N2 witnesses one instance; couples benignly to the split arm per
-  the 2026-07-30 recon).
+- **Attack kernel (K)** (research recon, route 1 localization recommended — its first gate is the
+  local-vs-global numerical test in the design doc's "Route options").
 - **W4** (after W5 — the constrained-family Claim-6.4 analogue, discharges `hcontract`).
 
 L6a-safe-exists's **rigid `k=0` half** stays a bounded `have`-hyp (user call is only whether to prove
@@ -229,6 +251,15 @@ neighbor — is `notes/IdeaBacklog.md`.
 
 ## Decisions made during this phase
 
+- **W5-L7 research recon (design pass, no `.lean`)** (2026-07-30, `notes/Phase39-design.md` §"W5-L7
+  research recon"; scripts `scratchpad/escape/*.py`, exact-ℚ). `M₁` escape confirmed pencil-generic
+  across 5 habitats (degrees (3,3)/(4,3)/(5,3)/(4,4); 0 failures; `dim S=5` structural), but a
+  sign-change probe pins an interior rank-84/nullity-1 realization where `M₁` FAILS ⟹ the escape is
+  genuinely generic and route (b) [(6.44) identity] is REFUTED as a standalone certificate.
+  Reformulation `M₁ ⟺ r⬝(b̂∧ĉ)≠0` (KT p.690); KT-faithful target is the disjunction `r∉S^⊥` (0/92
+  failures) — single-`M₁` is generic-only. Verdict: only route (a) (genericity device, already built
+  to consume it) is viable; L7 = buildable L7a (glue) + L7b (rank extension + `escapePoly`) carrying
+  the sole kernel **(K)** (escape `≢0` uniformly) as `hEsc`; 3 routes offered for adjudication.
 - **W5-L6b COMPLETE — per-body caller `hsat_pt` + the feasibility headline** (2026-07-30,
   `Witness.lean` + `Steer.lean`; canonical `notes/Phase39-design.md` §"W5 leaf decomposition" L6b).
   Three pieces: (1) the three-set brick `exists_idx_dtgt_triple` (analogue of `exists_idx_dtgt_pair`

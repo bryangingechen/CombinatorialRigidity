@@ -2626,6 +2626,191 @@ deficiency; scripts `scratchpad/{kzero,kzero2,petersen,broad}.py`, reproduce `ha
 | L4 | broad search: **all** subdivision patterns of `K4/K5/K3,3/prism` (simple+2EC+deg-2, no adj pair) | **0** coordinator-safe counterexamples (every one has a proper rigid subgraph); k=0 sub-case: 0 |
 | L5 | reproduced prior all-dangerous route-breaker search (`safe/search.py`) | 0 split-safe route-breakers (PM subdivisions + direct hub-cycles `C_k`, `k≥7`) |
 
+### W5-L7 research recon (2026-07-30): the uniform escape certificate
+
+The phase's research core. Question: is the single-candidate escape `r ⬝ Λ²Π̂(a) ≠ 0`
+(candidate `M₁`, KT eq. (6.42)) true pencil-generically across **all** Case-III chain
+habitats, and by what argument? Method: exact-ℚ Plücker rigidity-matrix experiments
+across ≥ 3 structurally-distinct habitats (scripts `scratchpad/escape/*.py`; same model
+as §R2/N2 — molecular `G²`, hinge extensor `ĉ_u ∧ ĉ_v`, 5 rows/edge = `C_e^⊥`, pencil =
+every degree-≥3 body's closed star coplanar), plus a decisive sign-change probe. KT
+pp. 690–691 re-verified against the `.refs` copy this pass (see below).
+
+**Setup recap (grounded in KT pp. 690–691, read directly this pass).** `M₁` full rank
+⟺ `r ∉ (span C(L))^⊥` for the free line `L ⊂ Π(a)` (KT p. 690), and since `a` is
+degree-2 in `G^{ab}_v` the line `L` is *completely* free, so `∪_L C(L)` spans all of
+`Λ²Π̂(a)`. Hence **escape `M₁` ⟺ `r ⬝ w ≠ 0` for some `w ∈ Λ²Π̂(a)`**. Structurally
+`r ⬝ C(q(ab)) = 0` (r is a combination of the `ab`-rows) and `r ⬝ C(q(ac)) = 0` (KT
+(6.44)); `C(q(ab)) = â∧b̂` and `C(q(ac)) = â∧ĉ` span the 2-dim `pencil(a) ⊂ Λ²Π̂(a)`.
+Since `Λ²Π̂(a) = ⟨â∧b̂, â∧ĉ, b̂∧ĉ⟩`, the escape collapses to a **single scalar**:
+**`M₁` works ⟺ `r ⬝ (b̂ ∧ ĉ) ≠ 0`**, i.e. `r` is not orthogonal to the extensor of the
+line joining the two chain-end points `pt(b), pt(c)` (a line *not* through `pt(a)`).
+All three facts (`r⊥â∧b̂`, `r⊥â∧ĉ`, `M₁ ⟺ r⬝(b̂∧ĉ)≠0`) verified numerically at every
+seed below.
+
+**Numerics N7 — the escape across five chain habitats (exact-ℚ).** Each habitat is a
+double-subdivision of a base graph with `m₀ = 2n₀−2` (the tightness `5|E|=6(|V|−1)`
+condition for double-subdivision), split at an interior degree-2 vertex adjacent to a
+hub — giving `G^{ab}_v` with `5|E'| = 6(|V'|−1)+1` (nullity 1 structural, from the
+−1 vertex / −1 edge net of the split; this is a **general Case-III fact**, not
+habitat-specific). Reproduce: `python3 scratchpad/escape/run_habitats.py`.
+
+| # | habitat (double-subdiv of …) | chain-end degs (b,c) | `\|V'\|` | rank / nullity | dim S | `M₁` escape `r⬝(b̂∧ĉ)≠0` |
+|---|---|---|---|---|---|---|
+| H1 | K4 (= N2 reproduce) | (3,3) | 15 | 84 / 1 | 5 | ✓ 5/5 |
+| H2 | W4 wheel, **spoke** chain | (4,3) | 20 | 114 / 1 | 5 | ✓ 5/5 |
+| H2b | W4 wheel, rim chain | (3,3) | 20 | 114 / 1 | 5 | ✓ 4/4 |
+| H3 | W5 wheel, **spoke** chain | (5,3) | 25 | 144 / 1 | 5 | ✓ 4/4 (1 seed nullity-2, not generic — skipped) |
+| H4 | K5 − perfect matching | (3,3) | 20 | 114 / 1 | 5 | ✓ 4/4 |
+| H5 | prism + diagonal | (4,4) | 25 | 144 / 1 | 5 | ✓ 4/4 |
+
+In every rank-target / nullity-1 seed: KT (6.44) holds, `dim S = 5` (the §R3 shortfall,
+now confirmed structural — `3+2+2−1−1`, the two overlaps `â∧b̂ ∈ Λ²Π̂(a)∩pencil(b)`,
+`â∧ĉ ∈ Λ²Π̂(a)∩pencil(c)`), and `M₁`, `M₂`, `M₃` all work individually. **0 escape
+failures across all habitats and every chain-end degree pair (3,3)/(4,3)/(5,3)/(4,4).**
+
+**Finding 1 — the escape has a genuine in-stratum failure locus; route (b) as a
+standalone identity is REFUTED.** Sweeping `a` along the meet line `Π(b)∩Π(c)` (the one
+free parameter for `a`, exact-ℚ; `scratchpad/escape/probe_zero.py`), the escape value
+`E(t) = r⬝(b̂∧ĉ)` **changes sign** (seeds 1000 and 3000 both take `+` and `−`), with
+rank 84 / nullity 1 holding throughout. Bisection (`localize_zero.py`) pins a zero at an
+interior `t* ≈ −2.5311710127` where both bracket endpoints (width `~10⁻¹²`) are valid
+rank-84/nullity-1 pencil realizations — so **`M₁` genuinely fails on a codimension-1
+in-stratum locus**. Consequence: no algebraic identity can force `E ≠ 0` (a non-constant
+`E` that takes both signs on the connected stratum must vanish); the (6.44) identity
+gives only `r ⊥ pencil(a)` (2 conditions), and the escape is a *third, independent*
+condition. **Routes (a) and (b) are therefore not alternatives** — the design doc's
+"(a) canonical seed OR (b) algebraic identity" framing was optimistic. (b) survives only
+as a possible cleaner *expression* for `E` feeding a ≢-0 argument, never as a
+self-contained certificate. The escape is genuinely generic and **requires the in-stratum
+genericity device** (Chart/Engine/Reseed) — exactly the N2 "failure locus is a proper
+closed condition, seeds are literal seeds" picture, now proven (not just asserted) to have
+a nonempty failure locus.
+
+**Finding 2 — the KT-faithful target is the disjunction `r ∉ S^⊥`; single-`M₁` is
+generic-only (optimism guard).** KT's actual Claim 6.12 asks only that *at least one* of
+`M₁/M₂/M₃` be full rank, i.e. `r ∉ S^⊥` where `S = Λ²Π̂(a)+pencil(b)+pencil(c)`
+(`dim S = 5`, so `S^⊥` is 1-dim). The all-three-fail locus `r ∈ S^⊥` was **never** hit
+(0 / 92 valid configs, incl. a targeted sweep across the `M₁` zero and 8 seeds × 7 `t`;
+`probe_disjunction.py`): where `M₁` fails, `M₂` and `M₃` still work. So the disjunction is
+far more robust than any single candidate. **This revises the design doc's single-candidate
+reduction:** choosing `M₁` alone is *sound* (M₁ full rank ⟹ target rank) and its escape
+*is* generically true, but it is **not** a structural shortcut — `M₁`-alone needs the
+genericity device just as much as the disjunction would (the design doc's "L ⊂ Π(a) is
+completely free, so `M₁` is the cheapest" is about the *device parametrisation* of the free
+line, not about the escape being free of a failure locus). The single-`M₁` polynomial (one
+`6×6` minor) is simpler to feed the engine than a three-way disjunction, so it stays the
+recommended target — but the note that it "works alone, not narrowly" (N2) is a
+*generic-point* statement, not an every-point one.
+
+**Route verdict.** The escape is a genuine genericity statement; the correct and only
+viable shape is **route (a) — a ≢-0 certificate for the escape polynomial on the pencil
+chart, promoted to generic by the landed device.** The device is *already built to consume
+it*: `exists_common_seed_pencilRow_and_polynomials` (`Engine.lean:476`) takes the rank
+rows (an LI `pencilRow` subfamily) together with finitely many polynomials each nonzero
+*somewhere*, and its own docstring names "W5-L7's rank target *and* its candidate-`M₁`
+escape polynomial" as the intended consumer. So the whole L7 rank extension reduces
+mechanically to **one ≢-0-somewhere obligation** on the escape polynomial `E` — and *that*
+is the genuinely-new mathematics.
+
+**The research kernel (crisp).** Prove, uniformly across all Case-III chain habitats:
+> **(K)** The escape polynomial `E` (the `M₁` `6×6`-minor determinant, equivalently
+> `r ⬝ (b̂∧ĉ)` as a rational function of the chart seed) is **not identically zero** on
+> the pencil chart of `G^{ab}_v` — equivalently, `∃` a chart seed `q` with `E(q) ≠ 0`.
+
+Numerics support (K) strongly (5 habitats, all degree pairs, 0 counterexamples; and the
+weaker disjunction target `r ∉ S^⊥` is even more robust). What neither numerics (finite)
+nor (6.44) (refuted as an identity) settles is *why (K) holds for every habitat*. The
+obstruction is that `E` depends on the **global** redundancy `r` (the `a`-block of the
+unique stress of `G^{ab}_v`, supported on the fundamental circuit of the excess edge `ab`,
+which need not be local), so a per-instance seed cannot discharge the `∀ G` Lean leaf, and
+a uniform symbolic value of `E` at a canonical seed appears to require solving the global
+stress uniformly.
+
+**Lean decomposition — the L7 assembly is BUILDABLE NOW with (K) as a bounded hypothesis**
+(exactly mirroring how L6a-safe-exists's rigid `k=0` half rides as a `have`-hyp while the
+rest builds). L7 discharges `hsplit` of `pencil_conjecture_of_arms_pair` (`Pair2.lean:1229`):
+given `G` loopless, `3 ≤ |V(G)|`, `2EC`, no-proper-rigid, `∃ v, G.degree v = 2`, and the IH
+`∀ G', |V'| < |V|, PencilPair K 3 G'`, produce `PencilPair K 3 G`. Buildable leaves:
+- **L7a — safe split + IH generic half.** Pick a safe vertex `v` (L6a-safe-exists;
+  non-rigid half landed, rigid `k=0` a bounded have-hyp), form `G' = G.splitOff v a b e₀`,
+  and from the IH extract `HasGenericPencilRealization K 3 G'` via the landed L6 chain:
+  `PencilNondegFeasible K G` (the `PencilPair` generic-conjunct antecedent) →
+  `ncard_closedHubNbhd_le_three_of_isNondegPencilRealization` →
+  `ncard_closedHubNbhd_splitOff_le_three_of_safe` (L6a-transfer) + `splitOff_triangleFree_of_noRigid`
+  (L6d) → `pencilNondegFeasible_of_ncard_closedHubNbhd_le_three_of_triangleFree` (L6b,
+  `Steer.lean:1344`) → IH generic half + `splitOff_simple_of_noRigid_of_card` (L6c). This
+  leaf is combinatorial glue, no new math.
+- **L7b — the rank extension (assembly), consuming (K) as a hypothesis.** Target shape
+  (mirrors the landed v-f-6 output-half assembly `…_induce_promotedNormal_of_pendant_deg3`
+  and `finrank_span_rigidityRows_pencilChartFramework_eq_of_independent_pencilRow`,
+  `Steer.lean:693`):
+  ```lean
+  -- schematic; the escape hypothesis `hEsc` is kernel (K), carried as a have-hyp
+  theorem hasGenericPencilRealization_of_splitOff_of_escape
+      [Inhabited α] [Finite α] [Finite β] [Infinite K] {G : Graph α β} [G.Simple]
+      {v a b : α} {e₀ : β} (hsafe : …) (hdeg : G.degree v = 2)
+      (hG' : HasGenericPencilRealization K 3 (G.splitOff v a b e₀))
+      (hEsc : ∃ q : α × Fin 4 × Fin 4 → K,          -- kernel (K): the ≢-0 seed
+        MvPolynomial.eval q (escapePoly hubSel G a b) ≠ 0) :
+      HasGenericPencilRealization K 3 G
+  ```
+  Route: re-seed `G'`'s generic witness onto the chart of `G` (add back `v` with its two
+  edges `bv`, `va`), feed the `G'`-rank `pencilRow` subfamily (target size
+  `6(|V|−2)`) plus the escape polynomial `escapePoly` to
+  `exists_common_seed_pencilRow_and_polynomials`, obtaining one common seed where the
+  `G'`-rows stay independent *and* `E ≠ 0`; the `M₁` full-rank minor then supplies the 6
+  new independent rows (edges `bv`, `va`), so
+  `finrank_span_rigidityRows_pencilChartFramework_eq_of_independent_pencilRow` pinches the
+  rank to `6(|V|−1)` (deficiency 0); reconstruct the four `IsNondegPencilRealization`
+  conjuncts at the common seed (the standing chart-WF re-choice, as in `Steer.lean`'s v-e).
+  The bare `HasPencilRealization K 3 G` half is the forgetful map. **New sub-obligation to
+  define:** `escapePoly` — the `M₁` `6×6`-minor determinant as an `MvPolynomial` in the
+  seed coords (the `pencilRow`/`pencilChartPoint` machinery already builds constructed
+  points as degree-≤3 polynomials, so the minor is a polynomial; this is L3-style work,
+  buildable).
+
+So the *only* piece not buildable-now is kernel **(K)** — the `∃`-seed `hEsc`. Everything
+else (L7a glue + L7b assembly + `escapePoly` definition) can land with `hEsc` as an
+explicit hypothesis, isolating the research obligation to a single crisp `∃`-statement.
+
+**Route options for kernel (K) — user adjudication.** Numerics-first per instance
+(the pinned method) *validates* (K) but cannot *close* the `∀ G` Lean leaf. Three routes:
+
+1. **Localization / reduction to a local model** (recommended to attempt first;
+   effort: medium-high, 1 research recon + 3–6 build leaves *if* it holds). Prove (K) by
+   showing that at a *generic* seed the escape `E` depends only on a bounded neighbourhood
+   of the chain `b–v–a–c` — degenerate the far graph (a "coning"/specialisation seed, à la
+   KT's own Claim-6.4 specialisation `Π₁(v):=Π₂(v*)`) so the stress localises and `E`
+   reduces to a computable local bracket, manifestly nonzero at a canonical local seed.
+   *Risk:* the stress is supported on the (possibly global) fundamental circuit of `ab`;
+   localisation needs a "generic-seed stress-localisation" lemma that is itself unproven.
+   Next step: a numerical test of whether `E`'s (non)vanishing is local (fix identical
+   local chain data across two different global habitats, compare) before committing.
+
+2. **Reuse the landed panel-case span machinery** (effort: medium, 2–4 leaves *if*
+   applicable). The panel-case Claim 6.12 (four-point span = 6) is formalised as
+   `exists_complementIso_ne_zero_of_homogeneousIncidence` (+`_gen`, `RigidityMatrix/Claim612.lean`).
+   The pencil case shrinks the span to 5 but the *escape* only needs `r ∉ Λ²Π̂(a)^⊥`
+   (weaker than span-6). Investigate whether a pencil-restricted variant of that landed
+   argument certifies `r` avoids the 3-dim `Λ²Π̂(a)^⊥` — i.e. whether the pinned-pencil
+   span computation can be run through the same `complementIso` non-vanishing device.
+   *Risk:* the four-point argument's independence input (Lemma 2.1) is exactly what the
+   pencil pinning breaks (dim 5 < 6), so a genuinely new non-vanishing input is needed.
+
+3. **Carry (K) as a project-level `have`-hypothesis indefinitely** (effort: 0 now; defers
+   the research). Land L7a + L7b + `escapePoly` with `hEsc` explicit, exactly as
+   L6a-safe-exists's rigid `k=0` half is carried. This completes the *entire* pencil
+   reduction modulo two named hypotheses ((K) and the `k=0` bound), turning PENCIL into
+   "conditional on two crisp `∃`/counting statements, both with decisive exact-ℚ evidence
+   and 0 counterexamples". Legitimate as a milestone; the conjecture is then *proven modulo
+   (K)*, and (K) can be attacked (routes 1–2) or adjudicated later.
+
+**Recommendation.** Build L7a + L7b + `escapePoly` now under route 3 (carry `hEsc`), which
+unblocks the whole reduction and is the exact precedent-matching move; in parallel, fire a
+focused research recon on route 1 (localisation), with the local-vs-global numerical test
+as its first gate. Do **not** guess that (K) is provable by (6.44) — that is refuted.
+
 ## Higher-`d` note (orientation only, per the phase-open decision)
 
 The pencil stratum generalizes: hinges at a body contained in a
