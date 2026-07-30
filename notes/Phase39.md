@@ -19,7 +19,10 @@ COMPLETE** (2026-07-29, the input-half assembly `pencilNondegFeasible_induce_of_
 `Steer.lean`: steer `G`'s re-seeded witness to a common seed carrying the demoted triple alongside
 every standing WF condition, `fillNbr` re-choice → full `PencilChartWF`, chart realization restricted
 to `H := G.induce V₁`); **v-f-1…4 LANDED** (2026-07-29, the output-half rank-transport bricks,
-`Steer.lean`); **v-f-5/6 + v-g next** — *Hand-off*.
+`Steer.lean`); **v-f-6 input bricks LANDED** (2026-07-29, `Steer.lean`: the owed
+`pencilChartFramework_congr` helper + the re-seed rank transport `hLI` producer
+`exists_independent_pencilRow_subfamily_at_toCoord_of_reseed`); **v-f-6 assembly proper + v-g
+next** — *Hand-off*.
 L6/L8 are parallel
 combinatorial tracks buildable now; L7 (the research core) is
 last; W4 after W5 (phase opened 2026-07-23, recon-first). `Molecule/Pencil.lean` split into
@@ -197,15 +200,36 @@ v-f-1 link bridge (`pencilRow_mem_rigidityRows_of_mem_edgeSet`), v-f-2 row-span 
 (`finrank_span_rigidityRows_pencilChartFramework_eq_of_independent_pencilRow`). The general
 `BodyHingeFramework` panel-row machinery was reused verbatim (no new import).
 
-**Next concrete commit — v-f-6 (the output-half assembly capstone).** Mirror v-e's
-`pencilNondegFeasible_induce_of_pendant_deg3` (`Steer.lean`) at `H := G.induce V₁`, ADDING the rank
-rows steered alongside (one `exists_common_seed_pencilRow_and_polynomials` call — `hLI` = the
-v-f-1/v-f-3/extraction `pencilRow` subfamily at the flattening, `P` = the standing point + promoted
-normal conditions via the point/normal gadgets) and the rank conclusion (v-f-4); the demoted-triple
-(v-b) and promoted-family (v-c) "satisfiable somewhere" certificates are landed. Owes a small
-`pencilChartFramework_congr`-on-points helper (`pencilChartFramework` reads points only, so the
-point-preserving `fillNbr` re-choice keeps the rank). **v-f-5** (the optional clean-mirror normal
-primitive `exists_common_seed_linearIndepOn_pencilChartNormal`) may be folded in or landed first.
+**v-f-6 input bricks LANDED (2026-07-29, `Steer.lean`; *Decisions made*).** The re-seed rank
+transport: `pencilChartFramework_congr` (the owed helper — the framework reads points only), the
+v-f-2∘v-f-3 span-transfer `span_rigidityRows_pencilChartFramework_eq_of_reseed`, and the `hLI`
+producer `exists_independent_pencilRow_subfamily_at_toCoord_of_reseed` (an LI `pencilRow` subfamily
+of the target size at the flattening `seed₁.toCoord`). These are exactly the rank-rows input the
+assembly's `exists_common_seed_pencilRow_and_polynomials` call consumes.
+
+**Next concrete commit — v-f-6 (the output-half assembly proper).** Input = the IH's *generic*
+`H`-witness (unpacked `IsNondegPencilRealization (G.induce V₁) F₁ normal₁ point₁` + `hrank₁ :
+finrank = target_H`, the sub-case-3 producer's shape). Mirror v-e's
+`pencilNondegFeasible_induce_of_pendant_deg3` (`Steer.lean`): re-seed
+(`exists_pencilSeed_of_nondeg`), take the `hLI` from the landed input brick, then ONE
+`exists_common_seed_pencilRow_and_polynomials` call whose `P` = the standing point conditions (each
+via `exists_polynomial_ne_zero_of_linearIndependent_pencilChartPoint`, satisfiable at the flattening
+`pencilChartWF_standing_ofCoord_toCoord`) + the promoted normal families (witness (ii) `v-c`
+`exists_coord_linearIndependent_pencilChartNormal_of_pendant_deg3`, via
+`exists_polynomial_ne_zero_of_linearIndependent_pencilChartNormal`); at the common seed, reconstruct
+standing WF + `fillNbr` re-choice (`exists_fillNbr_pencilChartWF_of_standing`, copy-adaptable from
+v-e) → `IsNondegPencilRealization H`, rank via v-f-4
+(`finrank_span_rigidityRows_pencilChartFramework_eq_of_independent_pencilRow`), and the promoted
+families. Output: a generic realization of `H` (= `HasGenericPencilRealization K n H`) PLUS
+`∀ v ∈ {u_c,w₁,w₂}, LinearIndepOn K normal (G.closedHubNbhd v)`. **Genuinely-new residual to
+watch (may itself want a sub-commit):** the promoted families are established at `PencilSeed.ofCoord
+q` but the realization's `normal` is at the re-chosen `seed'`; transfer needs
+`pencilChartNormal seed' … H = pencilChartNormal (ofCoord q) … H` on each `G.closedHubNbhd v` — clean
+at hub members (read `hubNormal`, shared) and at the demoted `u_c` (its `nbrSel` is fully assigned,
+`H.closedNbhd u_c = {u_c,w₁,w₂}`, so it reads only `pencilChartPoint`, `fillNbr`-free), the design's
+"every promoted family is `fillNbr`-free" fact — but needs a targeted `pencilChartNormal`-congruence
+lemma. **v-f-5** (the optional clean-mirror normal primitive
+`exists_common_seed_linearIndepOn_pencilChartNormal`) may be folded in or landed first.
 Then **v-g** (the sub-case-3-shaped glue — conjunct 3 at `u_c`/`w₁`/`w₂` from the steered promoted
 families, `hlb₂ = 0` rank verbatim — plus the shell/successor rewire: discharge `hcutPendant3` in
 `pencilPair_of_not_twoEdgeConnected` and `pencil_conjecture_of_arms_pair`, add `[Infinite K]` there,
@@ -231,6 +255,15 @@ neighbor — is `notes/IdeaBacklog.md`.
 
 ## Decisions made during this phase
 
+- **L5-cut-v-f-6 (input bricks) LANDED — the re-seed rank transport** (2026-07-29,
+  `Molecule/Pencil/Steer.lean`): the pieces the v-f-6 assembly needs before its steering call.
+  `pencilChartFramework_congr` (the owed helper — framework reads the seed only through
+  `pencilChartPoint`, so equal points ⟹ equal framework; structure-eta `calc`, no `@[ext]` on
+  `BodyHingeFramework`); `span_rigidityRows_pencilChartFramework_eq_of_reseed` (v-f-2 ∘ v-f-3);
+  `exists_independent_pencilRow_subfamily_at_toCoord_of_reseed` (the `hLI` producer: an LI
+  `pencilRow` subfamily of the target size at the flattening `seed₁.toCoord`, via the general
+  `exists_independent_panelRow_subfamily_of_le_finrank` + v-f-1). No new FRICTION (the one build-cycle
+  was the TACTICS-QUIRKS § 508 ascription-doesn't-redirect class). Gates + axioms clean.
 - **L5-cut-v-f-1…4 LANDED — the output-half rank-transport bricks** (2026-07-29,
   `Molecule/Pencil/Steer.lean`): **v-f-1** link bridge (`pencilRow_mem_rigidityRows_of_mem_edgeSet` +
   helper `pencilRow_eq_panelRow_pencilChartFramework`) — a genuine-edge chart `pencilRow` IS the chart

@@ -1956,7 +1956,13 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
       the promoted-family conditions; the assembly may instead fold them straight into
       `exists_common_seed_pencilRow_and_polynomials`'s `P` via the gadget, so this leaf is optional /
       not strictly on the critical path.
-    - **v-f-6 — the output-half assembly (capstone).** Structurally mirrors the landed v-e assembly
+    - **v-f-6 — the output-half assembly (capstone).** *(Input bricks + the owed
+      `pencilChartFramework_congr` helper LANDED 2026-07-29, `Steer.lean`: the re-seed rank transport
+      `span_rigidityRows_pencilChartFramework_eq_of_reseed` and the `hLI` producer
+      `exists_independent_pencilRow_subfamily_at_toCoord_of_reseed`; the assembly proper — steering
+      marshalling + WF reconstruction + rank via v-f-4 + the promoted-family transfer to the
+      re-chosen `seed'` — remains, `notes/Phase39.md` *Hand-off*.)* Structurally mirrors the landed
+      v-e assembly
       `pencilNondegFeasible_induce_of_pendant_deg3` (`Steer.lean`) at `H := G.induce V₁`, ADDING: the
       rank rows steered alongside (one `exists_common_seed_pencilRow_and_polynomials` call — `hLI` =
       the v-f-1/v-f-3/extraction `pencilRow` subfamily at the flattening, `P` = the standing point +

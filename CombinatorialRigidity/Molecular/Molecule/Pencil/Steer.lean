@@ -729,4 +729,149 @@ theorem finrank_span_rigidityRows_pencilChartFramework_eq_of_independent_pencilR
   simp only [pencilChartFramework_graph] at hub
   exact le_antisymm hub (by rw [← hscard]; exact hlb)
 
+/-! ### The re-seed rank transport: the `pencilRow` subfamily at the flattening (Phase 39 W5-L5
+L5-cut-v-f, the output-half assembly's rank input)
+
+The v-f-6 output-half assembly (`notes/Phase39-design.md` §"W5 leaf decomposition" L5-cut-v "v-f
+decomposition", the v-f-6 entry) steers the induction-hypothesis's *generic* `H`-witness on `H`'s
+own chart so the promoted normal families hold alongside the rank rows. The rank rows it steers are
+produced here: re-seed the generic witness (`exists_pencilSeed_of_nondeg`), transport its
+deficiency-target rank to the chart (the row-span depends on the supporting extensor only through
+the line it spans, and the re-seeded chart hinge is a nonzero multiple of the witness hinge — v-f-2
+∘ v-f-3), flatten onto the engine's coordinate space without disturbing points
+(`pencilChartFramework_congr`), and extract a linearly-independent `pencilRow` subfamily of the
+target size (the general `exists_independent_panelRow_subfamily_of_le_finrank` + the v-f-1 bridge).
+This is exactly the `hLI` input `exists_common_seed_pencilRow_and_polynomials` (`Engine.lean`)
+consumes when it steers the rank rows to the common seed. -/
+
+/-- **The chart framework depends on the seed only through its constructed points** (Phase 39 W5-L5
+L5-cut-v-f, the small helper the output-half assembly owes; parallel to the landed
+`pencilChartPoint_congr`). `pencilChartFramework` reads the seed exclusively through
+`pencilChartPoint seed hubSel` — its supporting extensor at a genuine edge is the point-join of the
+two endpoints' constructed points, and the off-`E(G)` fallback is seed-free — so two seeds inducing
+the same constructed points induce the same framework, hence the same rigidity rows and the same
+span rank. This is what lets the point-preserving post-steering `fillNbr` re-choice
+(`pencilChartPoint_congr`) carry the steered rank verbatim from `PencilSeed.ofCoord q` to the
+re-chosen `seed'`, and lets the flattening `PencilSeed.ofCoord seed₁.toCoord` inherit the re-seeded
+chart's rank (`pencilChartPoint_ofCoord_toCoord`). -/
+theorem pencilChartFramework_congr [Inhabited α] {seed seed' : PencilSeed K α}
+    (hubSel : α → Fin 3 → Option α) (G : Graph α β)
+    (hpt : pencilChartPoint seed hubSel = pencilChartPoint seed' hubSel) :
+    pencilChartFramework seed hubSel G = pencilChartFramework seed' hubSel G := by
+  have hsupp : (pencilChartFramework seed hubSel G).supportExtensor
+      = (pencilChartFramework seed' hubSel G).supportExtensor := by
+    funext e
+    by_cases he : e ∈ E(G)
+    · rw [pencilChartFramework_supportExtensor_of_mem_edgeSet seed hubSel he,
+        pencilChartFramework_supportExtensor_of_mem_edgeSet seed' hubSel he, hpt]
+    · rw [pencilChartFramework_supportExtensor_of_not_mem_edgeSet seed hubSel he,
+        pencilChartFramework_supportExtensor_of_not_mem_edgeSet seed' hubSel he]
+  calc pencilChartFramework seed hubSel G
+      = ⟨G, (pencilChartFramework seed hubSel G).supportExtensor⟩ := rfl
+    _ = ⟨G, (pencilChartFramework seed' hubSel G).supportExtensor⟩ := by rw [hsupp]
+    _ = pencilChartFramework seed' hubSel G := rfl
+
+/-- **The re-seeded chart's rigidity-row span equals the witness framework's** (Phase 39 W5-L5
+L5-cut-v-f, the composition of v-f-2 and v-f-3). For a re-seed `seed₁` of a nondegenerate pencil
+realization `IsNondegPencilRealization H F₁ normal₁ point₁` whose chart points reproduce the
+realization's own points up to a nonzero per-body scalar (`hpt`, the `exists_pencilSeed_of_nondeg`
+output), the chart framework's rigidity-row span coincides with `F₁`'s: every link's chart
+supporting extensor is a nonzero multiple of `F₁`'s
+(`exists_smul_supportExtensor_eq_pencilChartFramework_of_reseed`, v-f-3), and proportional support
+extensors leave the rigidity-row span unchanged
+(`span_rigidityRows_eq_of_supportExtensor_proportional`, v-f-2). Consequently the chart attains
+`F₁`'s deficiency-target rank verbatim — the "rank transfers along re-seeding" step of the
+output-half route. -/
+theorem span_rigidityRows_pencilChartFramework_eq_of_reseed [Inhabited α]
+    {H : Graph α β} {F₁ : BodyHingeFramework K 2 α β} {normal₁ point₁ : α → Fin 4 → K}
+    (h₁ : IsNondegPencilRealization H F₁ normal₁ point₁)
+    {seed₁ : PencilSeed K α} {hubSel : α → Fin 3 → Option α}
+    (hpt : ∀ w ∈ V(H), ∃ c : K, c ≠ 0 ∧ pencilChartPoint seed₁ hubSel w = c • point₁ w) :
+    Submodule.span K (pencilChartFramework seed₁ hubSel H).rigidityRows
+      = Submodule.span K F₁.rigidityRows := by
+  have hFg : F₁.graph = H := h₁.1.1.1
+  refine (span_rigidityRows_eq_of_supportExtensor_proportional F₁
+    (pencilChartFramework seed₁ hubSel H) ?_ ?_).symm
+  · rw [pencilChartFramework_graph]; exact hFg
+  · intro e u v hlink
+    rw [hFg] at hlink
+    exact exists_smul_supportExtensor_eq_pencilChartFramework_of_reseed h₁ hpt hlink
+
+/-- **The steered rank rows: an independent `pencilRow` subfamily of the target size at the
+flattening** (Phase 39 W5-L5 L5-cut-v-f, the `hLI` input of the output-half assembly's
+`exists_common_seed_pencilRow_and_polynomials` call). From a nondegenerate `H`-realization `F₁`
+whose rigidity-row span has rank `≥ N` (`hN`; `N :=` the deficiency target in the assembly) and a
+re-seed reproducing its points (`hpt`), the graph-free rows `pencilRow hubSel H.endsOf
+seed₁.toCoord` carry `N` linearly independent members indexed by genuine edges. Assembly: the
+flattening's chart coincides with the re-seed's (`pencilChartFramework_congr`,
+`pencilChartPoint_ofCoord_toCoord`), so its rigidity-row span attains `F₁`'s rank
+(`span_rigidityRows_pencilChartFramework_eq_of_reseed`) and its hinges are nonzero at every link
+(v-f-3 proportionality, `F₁`'s hinges nonzero); the general
+rank-input extractor (`exists_independent_panelRow_subfamily_of_le_finrank`) hands back `N`
+independent `panelRow` rows of genuine links, each of which IS the graph-free `pencilRow`
+(`pencilRow_eq_panelRow_pencilChartFramework`, v-f-1). -/
+theorem exists_independent_pencilRow_subfamily_at_toCoord_of_reseed
+    [Inhabited α] [Finite α] [Finite β]
+    {H : Graph α β} {F₁ : BodyHingeFramework K 2 α β} {normal₁ point₁ : α → Fin 4 → K}
+    (h₁ : IsNondegPencilRealization H F₁ normal₁ point₁)
+    {seed₁ : PencilSeed K α} {hubSel : α → Fin 3 → Option α}
+    (hpt : ∀ w ∈ V(H), ∃ c : K, c ≠ 0 ∧ pencilChartPoint seed₁ hubSel w = c • point₁ w)
+    {N : ℕ} (hN : N ≤ Module.finrank K (Submodule.span K F₁.rigidityRows)) :
+    ∃ s : Set (β × Set.powersetCard (Fin 4) 2 × Set.powersetCard (Fin 4) 2),
+      (∀ i ∈ s, (i : β × _ × _).1 ∈ E(H)) ∧ Nat.card s = N ∧
+      LinearIndependent K
+        (fun i : s => pencilRow hubSel H.endsOf seed₁.toCoord (i : β × _ × _)) := by
+  classical
+  have hSuppNe : ∀ e, F₁.supportExtensor e ≠ 0 := h₁.1.1.2.2.1
+  -- The chart at the flattening coincides with the chart at `seed₁` (points coincide).
+  have hcongr : pencilChartFramework (PencilSeed.ofCoord seed₁.toCoord) hubSel H
+      = pencilChartFramework seed₁ hubSel H :=
+    pencilChartFramework_congr hubSel H
+      (funext fun v => pencilChartPoint_ofCoord_toCoord seed₁ hubSel v)
+  -- Its rigidity-row span attains `F₁`'s rank.
+  have hspan : Submodule.span K
+        (pencilChartFramework (PencilSeed.ofCoord seed₁.toCoord) hubSel H).rigidityRows
+      = Submodule.span K F₁.rigidityRows := by
+    rw [hcongr]; exact span_rigidityRows_pencilChartFramework_eq_of_reseed h₁ hpt
+  have hNle : N ≤ Module.finrank K (Submodule.span K
+      (pencilChartFramework (PencilSeed.ofCoord seed₁.toCoord) hubSel H).rigidityRows) := by
+    rw [hspan]; exact hN
+  -- The chart's hinges are nonzero at every genuine link (proportional to `F₁`'s nonzero hinges).
+  have hne : ∀ e, (pencilChartFramework (PencilSeed.ofCoord seed₁.toCoord) hubSel H).graph.IsLink e
+      (H.endsOf e).1 (H.endsOf e).2 →
+      (pencilChartFramework (PencilSeed.ofCoord seed₁.toCoord) hubSel H).supportExtensor e ≠ 0 := by
+    intro e hlink
+    rw [pencilChartFramework_graph] at hlink
+    obtain ⟨c, hc, hceq⟩ :=
+      exists_smul_supportExtensor_eq_pencilChartFramework_of_reseed h₁ hpt hlink
+    rw [hcongr, ← hceq]
+    exact smul_ne_zero hc (hSuppNe e)
+  -- The canonical selector `H.endsOf` records a genuine link of every edge of the chart's graph.
+  have hends : ∀ e u v,
+      (pencilChartFramework (PencilSeed.ofCoord seed₁.toCoord) hubSel H).graph.IsLink e u v →
+      (pencilChartFramework (PencilSeed.ofCoord seed₁.toCoord) hubSel H).graph.IsLink e
+        (H.endsOf e).1 (H.endsOf e).2 := by
+    intro e u v hlink
+    rw [pencilChartFramework_graph] at hlink ⊢
+    exact H.isLink_endsOf hlink.edge_mem
+  -- Extract `N` independent `panelRow` rows of genuine links, at the canonical selector.
+  obtain ⟨s, hslink, hscard, hsLI⟩ :=
+    (pencilChartFramework (PencilSeed.ofCoord seed₁.toCoord) hubSel
+      H).exists_independent_panelRow_subfamily_of_le_finrank (ends := H.endsOf) hends hne hNle
+  refine ⟨s, ?_, hscard, ?_⟩
+  · intro i hi
+    have hL := hslink i hi
+    rw [pencilChartFramework_graph] at hL
+    exact hL.edge_mem
+  · -- Each extracted `panelRow` of a genuine link IS the graph-free `pencilRow` (v-f-1).
+    have hfeq : (fun i : s => pencilRow hubSel H.endsOf seed₁.toCoord (i : β × _ × _))
+        = (fun i : s =>
+            (pencilChartFramework (PencilSeed.ofCoord seed₁.toCoord) hubSel H).panelRow
+              H.endsOf (i : β × _ × _)) := by
+      funext i
+      have hL := hslink i.1 i.2
+      rw [pencilChartFramework_graph] at hL
+      exact pencilRow_eq_panelRow_pencilChartFramework hubSel seed₁.toCoord hL.edge_mem
+    rw [hfeq]; exact hsLI
+
 end CombinatorialRigidity.Molecular
