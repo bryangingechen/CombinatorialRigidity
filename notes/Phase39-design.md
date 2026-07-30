@@ -2674,9 +2674,13 @@ seed below.
 **Numerics N7 — the escape across five chain habitats (exact-ℚ).** Each habitat is a
 double-subdivision of a base graph with `m₀ = 2n₀−2` (the tightness `5|E|=6(|V|−1)`
 condition for double-subdivision), split at an interior degree-2 vertex adjacent to a
-hub — giving `G^{ab}_v` with `5|E'| = 6(|V'|−1)+1` (nullity 1 structural, from the
-−1 vertex / −1 edge net of the split; this is a **general Case-III fact**, not
-habitat-specific). Reproduce: `python3 scratchpad/escape/run_habitats.py`.
+hub — giving `G^{ab}_v` with `5|E'| = 6(|V'|−1)+1` (nullity 1, from the
+−1 vertex / −1 edge net of the split; ~~this is a **general Case-III fact**, not
+habitat-specific~~ **corrected 2026-07-30, non-constancy recon: general only for
+tight habitats** — the true general form is `index(G′) = index(G) + 1` with
+`index := 5|E| − 6(|V|−1)`, and the hK class contains `index(G) ≥ 1` habitats
+whose `G′` has corank ≥ 2, see §"(K) non-constancy recon" below).
+Reproduce: `python3 scratchpad/escape/run_habitats.py`.
 
 | # | habitat (double-subdiv of …) | chain-end degs (b,c) | `\|V'\|` | rank / nullity | dim S | `M₁` escape `r⬝(b̂∧ĉ)≠0` |
 |---|---|---|---|---|---|---|
@@ -3243,7 +3247,120 @@ proving non-constancy uniformly in `G` is still open — it is a strictly weaker
 any pointwise escape certificate (it asks only that `r` *move* as one far vertex moves, not
 where it lands), plausibly a derivative/transversality statement about the corank-1 stress,
 but the `∀ G` uniformity remains the crux. That statement is the recommended object of the
-next (K) recon.
+next (K) recon — *fired same day, verdict PARTIAL, next subsection.*
+
+### (K) non-constancy recon (2026-07-30): corank stratification — PARTIAL, kernel narrowed to (K-tight)
+
+Commissioned as the route-1 gate's follow-up: *does uniform stress non-constancy have a
+provable route?* Answer: **not within landed machinery — but the question itself was
+mis-scoped**, and this recon replaces it with a corank stratification that (a) corrects a
+factual error in the N7 record, (b) discharges the escape *automatically* on a whole
+stratum modulo one new seed-quality obligation, and (c) confines the genuinely hard kernel
+to the tight class. Methods: definition bodies re-read (`IsProperRigidSubgraph`,
+`Deficiency.lean:483` — properness is **vertex**-properness `V(H) ⊂ V(G)`;
+`HasGenericPencilRealization`, `Motive.lean:140`), a boundary-load derivation (below,
+flagged where not yet KT-pinned), and exact-ℚ experiments N9a/N9b
+(`scratchpad/escape/n9.py`, untracked; reproduce `python3 n9.py`).
+
+**1. Corank stratification (correction + witnesses).** Write `index(G) := 5|E| −
+6(|V|−1)`. The split arithmetic gives `index(G′) = index(G) + 1` always; in the `k = 0`
+branch (`G` rigid) `G′` is rigid too, so its corank at a target-rank seed is
+`index(G) + 1` — **corank 1 holds exactly on the tight stratum `index(G) = 0`**. The hK
+class genuinely contains `index(G) ≥ 1`: `C₅` (index 1, `G′ = C₄` corank 2 — cycles later
+turn out non-critical, see item 4) and, non-trivially, **θ(4,4,3)** (10 vertices, 11
+edges, index 1, both chain ends degree-3 hubs): N9a confirms it is rigid (54/54 generic
+AND pencil-generic), has no vertex-proper rigid subgraph (its cycles are `C₈`/`C₇`, both
+flexible; all proper subgraphs are unions of subpaths under the count), and its split at
+the short path's interior gives `G′` with **corank exactly 2** at pencil-generic
+target-rank seeds (48/48, 3/3 samples). `index(G) ≤ 4` on the whole habitat class
+(`edgeBound_of_noRigid_of_degree_two`), so the stratification is finite: `index ∈
+{0,…,4}`.
+
+**2. The general escape condition is about the stress *image* `R_a`, and `dim R_a ≥ 2` is
+automatic escape.** Derived this pass by a boundary-load calculus (flag: my derivation,
+numerically consistent, NOT yet re-pinned against KT pp. 684–691's general
+`|B′ ∩ ãb| < 5` machinery — that re-pin is the first task of any formalization): a
+dependency of the extended `G`-rows involving the two new blocks corresponds to a vector
+`u ∈ C(va)^⊥ ∩ C(vb)^⊥` realizable as an antisymmetric boundary load `(−u @ a, +u @ b)`
+of the shared (`G−v`) rows; with the candidate construction `hinge(vb) := q(ab)`,
+`hinge(va) := L` swept, such `u` must lie in `R_a := {a-blocks of the `ab`-fiber parts of
+`G′`-stresses}`, and the extension attains `G`-target iff `R_a ⊄ (span C(L))^⊥` for some
+candidate — over all three candidates, **failure ⟺ `R_a ⊆ S^⊥`**. Since `dim S^⊥ = 1`
+(both-ends-hubs, chart-generic), `dim R_a ≥ 2` makes failure *impossible*. N9a: at every
+θ-split seed, `dim R_a = 2`, `dim S = 5`, `R_a ⊄ S^⊥`, and every generic re-insertion of
+`v` attained the `G`-target 54/54 (6/6 extension samples).
+
+**3. `dim R_a = corank − s₀`, and the habitat kills `s₀` combinatorially.** The a-block
+map on the stress space has kernel = the pure shared-row stresses (`s₀`-dim), because the
+`ab`-fiber's 5 rows biject combinations to `C(ab)^⊥` — so `dim R_a = corank − s₀`. A
+count-matroid circuit supported inside `G−v` induces a rigid subgraph on `V(C) ⊆
+V(G)∖{v} ⊊ V(G)` (`circuit_induces_isRigidSubgraph`, landed) — **excluded by
+`hnoRigid`**. So `s₀ = 0` at count level, and `s₀ = 0` holds at any seed where the shared
+subrank is generic. Consequence: **on `index(G) ≥ 1` strata the escape is automatic at
+shared-subrank-generic seeds** — the escape kernel is *replaced* by a seed-quality
+obligation, **(K-shared)**: `∃` a `G′`-chart seed with `G′`-rows at target rank AND the
+count-independent shared family fully independent. Engine-composable (two LI conditions,
+the engine's native food); the somewhere-witness for the shared half is related to the
+IH at `G−v` (which has `< |V|` vertices, so `hIH` applies!) but is NOT free: the IH's
+generic half is feasibility-conditioned, and a `G−v` witness needs the `a ∈ Π(b)`-star
+incidence added before it lives on `G′`'s chart. Promising, unfinished — pinned as the
+`index ≥ 1` branch's remaining obligation, strictly better-shaped than an escape
+certificate (monotone row-independence of a count-independent family, no stress, no
+deficiency bookkeeping).
+
+**4. The hard kernel is (K-tight), and its habitats are 2-connected.** Non-hub chain ends
+give `dim S = 6` (`r ≠ 0` suffices — the landed panel argument's shape closes pointwise),
+so the critical class is: **tight (`index 0`), both chain ends hubs** — exactly the N7
+double-subdivision family, unknowingly chosen. There `corank = 1`, `R_a = ⟨r⟩`, and
+failure ⟺ `r ∥ w` — the variability lever's proper scope. New structural fact: a
+lever-critical habitat has **no cut vertex** — blocks satisfy `index(G) = Σ index(Bᵢ)`;
+a block of index ≥ 1 contains a circuit (rigid, vertex-proper — excluded), and an
+index-0 block is either count-independent (then rigid, vertex-proper — excluded) or
+contains a circuit (excluded); so all blocks would need index ≤ −1, contradicting the sum
+`= 0` unless `G` is a single block. This kills the one *identified* mechanism for
+`[r]`-constancy (a stress living autonomously on one side of a cut vertex, where far
+moves provably cannot touch it). **N9b (canonical-move completeness):** in H1, moving
+ANY single far movable vertex (all six, in-plane where constrained) changes `[r]` — the
+non-constancy is witnessed by every available move, not a lucky one.
+
+**5. Provable route for (K-tight)? NO — each candidate mechanism hits the same missing
+technology.** (a) *Canonical-move derivative argument*: numerically complete (N9b), but a
+Lean proof must express `[r]` as a rational function of the seed and show a derivative is
+nonzero — this is precisely the corank-1-stress-by-cofactors infrastructure the L7b build
+dispatch REFUTED as in-tree-absent (chosen-minor dependence, multi-commit new infra), now
+needed inside the discharge rather than the statement. (b) *Degeneration/limits*: needs
+stress control at degenerate seeds — the localization machinery route 1 was shown to
+lack. (c) *Via the engine*: circular — the somewhere-witness for "`[r] ≠ [r₀]`" IS
+non-constancy. Verdict: **PARTIAL** — the reduction narrowed the kernel's habitat class
+(tight, both ends hubs, 2-connected) and weakened its target (`r` must *move*, not land
+anywhere specific), with decisive numerics and zero counterexamples, but no landed-brick
+route closes it. The single identified enabling technology for ANY further attack is the
+**stress-as-chart-rational-function infrastructure** (corank-1 cofactor gadget over the
+chart ring + subrank-genericity bookkeeping) — it would serve mechanisms (a) and (b)
+and the §2 failure-condition formalization alike.
+
+**Adjudication options (user).**
+
+- **A — keep carrying `hK` as pinned** (recommended; consistent with the standing route-3
+  adjudication). Zero effort now. The stratification above becomes the discharge's
+  roadmap when (K) research resumes: `index ≥ 1` → automatic-escape branch modulo
+  (K-shared); `index 0` → (K-tight). `hK`'s statement needs no change (its ∃-LI shape is
+  agnostic to all of this — the pin held up well).
+- **B — commission the stress-function infrastructure** (the only identified path to
+  closing (K) in-tree): 1 design pass to pin the cofactor gadget + chart-ring plumbing,
+  then multi-commit build, then the (K-tight) non-constancy argument on top — research-
+  scale, success not assured (the final derivative-nonvanishing step is itself unproven
+  mathematics; numerics say true, nothing says provable-cheaply).
+- **C — literature hunt** (stress non-constancy / stress matrices of count-tight
+  body-hinge graphs): low odds — the stratum is novel (phase-open finding), and the
+  question mixes pencil-chart geometry with matroid tightness in a form unlikely to be
+  in print. Cheap to run alongside A.
+
+One more scope note for the eventual discharge, recorded while fresh: `hK`'s class also
+contains `k > 0` (`def(G) > 0`) habitats, where `G′` can have corank 0 (no stress at all
+— e.g. `C₇ → C₆`) and the escape story is vacuous; the discharge there should follow KT
+Case II (Lemma 6.8, which §R3 found survives the pin), not Case III. The `k = 0` /
+`k > 0` fork is internal to the discharge; nothing in `hK`'s statement moves.
 
 ## Higher-`d` note (orientation only, per the phase-open decision)
 

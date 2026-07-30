@@ -124,15 +124,18 @@ exactly three remaining open items — **next concrete commit: pick any one, non
 - **`hcontract`** (W4) — the constrained-family Claim-6.4 analogue; not yet attacked (design doc
   §"W4 route (third core): cluster refutation + the constrained-family survivor (N3)"; the last
   W-level leaf, scheduled after W5 closes).
-- **`hK`** (kernel (K), research) — the escape `≢ 0` uniformity kernel. **Route 1
-  (localization) is REFUTED — NO-GO** (2026-07-30 gate: the stress is supported on *every*
-  edge, and the escape's zero locus moves with the far graph at identical radius-1 chain
-  data, even under one distance-4 vertex move); route 2's pointwise reuse is also refuted
-  (the landed device needs a spanning join family, the pencil pin caps the span at 5). The
-  surviving attack is the **variability-lever reduction**: (K) reduces to *stress
-  non-constancy* — `[r]` takes ≥ 2 values as far data varies over a fixed local block —
-  via the locally-computable 1-dim `S^⊥` generator; uniform non-constancy is the next (K)
-  recon's object. Design doc §"W5-L7 research recon" "(K) route-1 gate".
+- **`hK`** (kernel (K), research) — the escape `≢ 0` uniformity kernel. **Routes 1 and 2
+  (as pinned) are REFUTED** (2026-07-30 gate + follow-up recon: locality fails — the
+  stress is globally supported and the escape's zero locus moves with the far graph at
+  identical local data; the landed span device needs a spanning family the pin caps at 5).
+  The follow-up **non-constancy recon returned PARTIAL** with a corank stratification:
+  `index(G) ≥ 1` habitats get the escape *automatically* modulo a new seed-quality
+  obligation (K-shared); the hard kernel narrows to **(K-tight)** — tight (`5|E| =
+  6(|V|−1)`), both chain ends hubs, provably 2-connected — where no landed-brick route
+  closes it; the one identified enabling technology is stress-as-chart-rational-function
+  infrastructure. **User adjudication owed**: keep carrying `hK` (recommended, zero
+  effort) vs. commission that infrastructure (research-scale) vs. literature hunt.
+  Design doc §"W5-L7 research recon" "(K) route-1 gate" + "(K) non-constancy recon".
 - **`hbareSplit`** (kernel (K-bare), research) — the bare-half-off-feasibility kernel. The
   numerics gate is SUPPORTED (parity with (K): certified bare-target attainment at every
   infeasible gadget tried, both deficiency branches), but the Lean discharge itself is open — the
@@ -154,6 +157,14 @@ neighbor — is `notes/IdeaBacklog.md`.
 Reverse-chronological, one line per landing; full derivations live in git and
 `notes/Phase39-design.md` (per-decision pointer where the design doc has a named section).
 
+- **(K) non-constancy recon — PARTIAL; kernel narrowed to (K-tight); adjudication owed**
+  (2026-07-30, docs-only; exact-ℚ scripts `scratchpad/escape/n9.py`, untracked) — corank
+  stratification by `index(G) = 5|E| − 6(|V|−1)` (N7's "nullity 1 general Case-III fact"
+  CORRECTED — θ(4,4,3) is a both-ends-hubs corank-2 witness); `dim R_a ≥ 2` makes the escape
+  automatic (boundary-load derivation, N9a-consistent, KT re-pin owed), so `index ≥ 1` trades
+  the escape for (K-shared) and the hard kernel is (K-tight) — 2-connected, canonical-move
+  numerics complete (N9b), but NO provable route in landed machinery. Design doc §"W5-L7
+  research recon" "(K) non-constancy recon".
 - **(K) route-1 gate FIRED — locality REFUTED, NO-GO** (2026-07-30, docs-only; exact-ℚ scripts
   `scratchpad/escape/localtest*.py`, untracked) — with identical radius-1 chain data the escape's
   zero locus moves with the far graph (within-habitat and cross-habitat; stress supported on every
