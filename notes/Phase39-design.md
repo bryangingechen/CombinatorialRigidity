@@ -1891,10 +1891,13 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
       decomposition, exact signatures, and the sorry-free rank-transport spike in the dedicated "v-f
       decomposition" sub-bullet below)**: the output-half rank-transport, a faithful pencil-mirror of the
       landed panel lemma `finrank_span_rigidityRows_ofNormals_of_isGenericNormals`; six S=1 leaves,
-      **GO — no obstruction, finding (4) composes exactly as pinned**. **v-g**: the glue
-      (sub-case-3-shaped; conjunct 3 at `u_c`/`w₁`/`w₂` from the steered promoted families, `hlb₂ = 0`
-      rank verbatim) + the shell/successor rewire (discharge `hcutPendant3`, add `[Infinite K]`) + the
-      blueprint restatement.
+      **GO — no obstruction, finding (4) composes exactly as pinned**. **v-g PART 1 LANDED
+      (2026-07-29, `Pair2.lean`, `hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant_deg3`)**:
+      the glue (sub-case-3-shaped; conjunct 3 at `u_c`/`w₁`/`w₂` from the steered promoted families
+      `hpromoted`, elsewhere the `G`/`H` closed-hub-nbhd equality, `hlb₂ = 0` rank verbatim) — the
+      demoted-`u_c` fresh-data composition against the promoted families verified green, `[Field K]`-only.
+      **v-g PART 2 (next)**: the shell/successor rewire (discharge `hcutPendant3`, add `[Infinite K]`,
+      import Steer) + the blueprint restatement (`notes/Phase39.md` *Hand-off* has the step-by-step).
 
     **v-f decomposition (reconned + compiler-spiked 2026-07-29; the output-half rank-transport).**
     The route is a faithful pencil-mirror of the landed panel lemma

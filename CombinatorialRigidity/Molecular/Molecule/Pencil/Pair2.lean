@@ -510,6 +510,449 @@ theorem hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant
       fun e u v hl => ⟨(hlinks e u v hl).2.2.1, (hlinks e u v hl).2.2.2⟩⟩,
     hadjLI, hhubLI_glued, hnbhdLI_glued⟩, hrank_eq⟩
 
+/-! ## W5-L5 cut arm, sub-case 4 (pendant, `deg_G u_c = 3`): the demoted-hub producer
+(Phase 39 PENCIL, L5-cut-v-g)
+
+The residual sub-case 4 of the cut-arm route verdict (`notes/Phase39-design.md` §"W5 leaf
+decomposition" L5-cut-v): `G = H + pendant v_c at u_c` (`H := G.induce V₁`) with `G.degree u_c = 3`
+exactly — the value at which the dropped crossing edge DEMOTES `u_c` from a `G`-hub (`degree 3 ≥ 3`)
+to an `H`-non-hub (`degree 2`). Unlike sub-case 3
+(`hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant`), the hub-status change
+is real, so the closed-hub-neighbourhood transfer breaks at exactly the bodies whose
+`G`-hub-neighbourhood contains the demoted `u_c` — namely `u_c` itself and `u_c`'s two
+`V₁`-neighbours `w₁`, `w₂`. Those three promoted families are supplied as the extra hypothesis
+`hpromoted` (the v-f-6 output
+`exists_isNondegPencilRealization_induce_promotedNormal_of_pendant_deg3`, `Steer.lean`); every
+OTHER body's `G`-hub-neighbourhood equals its `H`-one and transfers verbatim
+from `H`'s own conjunct 3. Conjunct 4 at `u_c` is vacuous (`u_c` is a `G`-hub), so — unlike
+sub-case 3, where a possibly-non-hub `u_c` forced dodging a `≤ 2`-generator cover — the fresh
+pendant data `point v_c` need only dodge the single generator `point₁ u_c` (conjuncts 2 /
+4-at-`v_c`), inside `normal₁ u_c`'s `3`-dimensional perp for the hinge. The rank closes by
+`finrank_span_rigidityRows_cutEdge_eq` verbatim (`hlb₂ = 0`, edgeless far side). This is the glue
+half of L5-cut-v-g; its input is the v-f-6 output. -/
+
+/-- **The pendant sub-case's producer, demoted-hub variant** (Phase 39 W5-L5, L5-cut-v-g; the
+`deg u_c = 3` companion of the sub-case-3
+`hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant`).
+Given a simple `G` with a single crossing edge `e_c = u_c v_c` over `V₁ ⊆ V(G)` whose complement is
+the singleton `{v_c}`, `G.degree u_c = 3` with `u_c`'s two `V₁`-links `e₁ : u_c–w₁`, `e₂ : u_c–w₂`
+(`w₁ ≠ w₂`), a nondegenerate realization of `H := G.induce V₁` attaining its deficiency-rank target,
+and the three promoted normal families at `u_c`, `w₁`, `w₂` (`hpromoted`, the v-f-6 output), `G` has
+a generic pencil realization: pick fresh pendant data `normal v_c`/`point v_c` off `point₁ u_c`'s
+span inside `normal₁ u_c`'s `3`-dimensional perp, take the pendant edge's hinge from
+`exists_extensor_two_pencils`, and glue. Conjunct 3 transfers from `hpromoted` at the demoted triple
+`{u_c, w₁, w₂}` and from `H`'s own family elsewhere; conjunct 4 is vacuous at the `G`-hub `u_c` and
+transfers verbatim off it; the rank closes by `finrank_span_rigidityRows_cutEdge_eq` with the
+pendant side's `hlb₂ = 0`. -/
+theorem hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant_deg3
+    [Finite α] [Finite β] {n : ℕ}
+    (hD : 2 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
+    {G : Graph α β} {V₁ : Set α} {e_c e₁ e₂ : β} {u_c v_c w₁ w₂ : α}
+    (hSimple : G.Simple)
+    (hl_c : G.IsLink e_c u_c v_c) (hu_c : u_c ∈ V₁) (hv_c : v_c ∉ V₁)
+    (hVG : V(G) = V₁ ∪ {v_c}) (hcut : (G.cutEdges V₁).ncard ≤ 1)
+    (hdeg : G.degree u_c = 3)
+    (hl₁ : G.IsLink e₁ u_c w₁) (hl₂ : G.IsLink e₂ u_c w₂)
+    (hw₁ : w₁ ∈ V₁) (hw₂ : w₂ ∈ V₁) (hw12 : w₁ ≠ w₂)
+    {F₁ : BodyHingeFramework K 2 α β} {normal₁ point₁ : α → Fin 4 → K}
+    (hnd₁ : IsNondegPencilRealization (G.induce V₁) F₁ normal₁ point₁)
+    (hrank₁ : (Module.finrank K (Submodule.span K F₁.rigidityRows) : ℤ)
+      = screwDim 2 * ((V₁.ncard : ℤ) - 1) - (G.induce V₁).deficiency n)
+    (hpromoted : ∀ v ∈ ({u_c, w₁, w₂} : Set α),
+      LinearIndepOn K normal₁ (G.closedHubNbhd v)) :
+    HasGenericPencilRealization K n G := by
+  classical
+  haveI := hSimple.toLoopless
+  -- ── Basic structural facts: `v_c` is a pendant; `u_c` demotes (`G`-hub, `H`-non-hub). ─────────
+  have hGeq : G.induce (V₁ ∪ {v_c}) = G := by rw [← hVG]; exact Graph.induce_vertexSet G
+  have hvc_deg : G.degree v_c = 1 := by
+    have h := Graph.degree_induce_union_singleton_far hl_c hu_c hv_c hcut
+    rwa [hGeq] at h
+  have hvc_not_hub : ¬ G.PencilHub v_c := by
+    intro h; have h2 := h.2; omega
+  have hcross_eq : ∀ e' x y, G.IsLink e' x y → x ∈ V₁ → y ∉ V₁ →
+      e' = e_c ∧ x = u_c ∧ y = v_c := by
+    intro e' x y hle hx hy
+    have he' := Graph.eq_cutEdge_of_isLink_crossing hl_c hu_c hv_c hcut hle hx hy
+    subst he'
+    rcases hle.eq_and_eq_or_eq_and_eq hl_c with ⟨hxeq, hyeq⟩ | ⟨hxeq, hyeq⟩
+    · exact ⟨rfl, hxeq, hyeq⟩
+    · rw [hxeq] at hx; exact absurd hx hv_c
+  have hdeg_eq : ∀ w ∈ V₁, w ≠ u_c → (G.induce V₁).degree w = G.degree w :=
+    fun w hw hwne => Graph.degree_induce_eq_of_ne hl_c hu_c hv_c hcut hw hwne
+  have huc_Ghub : G.PencilHub u_c := ⟨hl_c.left_mem, hdeg.ge⟩
+  have hdegH_uc : (G.induce V₁).degree u_c = 2 := by
+    have h := Graph.degree_eq_degree_induce_succ hl_c hu_c hv_c hcut; omega
+  have hv_c_w₁ : v_c ≠ w₁ := fun h => hv_c (h ▸ hw₁)
+  have hv_c_w₂ : v_c ≠ w₂ := fun h => hv_c (h ▸ hw₂)
+  have hN : N(G, u_c) = ({v_c, w₁, w₂} : Set α) :=
+    Graph.neighbor_eq_of_degree_eq_three hSimple hl_c hl₁ hl₂ hv_c_w₁ hv_c_w₂ hw12 hdeg
+  -- ── `V(G) \ V₁ = {v_c}`, edgeless. ─────────────────────────────────────────────────────────
+  have hV₁sub : V₁ ⊆ V(G) := by rw [hVG]; exact Set.subset_union_left
+  have hV₂eq : V(G) \ V₁ = {v_c} := by
+    ext x
+    constructor
+    · rintro ⟨hxG, hxV₁⟩
+      rw [hVG] at hxG
+      exact hxG.resolve_left hxV₁
+    · intro hx
+      rw [Set.mem_singleton_iff] at hx
+      subst hx
+      exact ⟨by rw [hVG]; exact Set.mem_union_right _ rfl, hv_c⟩
+  have hV₂edgeless : E(G.induce (V(G) \ V₁)) = ∅ := by
+    ext e
+    simp only [Graph.edgeSet_induce, Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]
+    rintro ⟨a, b, hl, ha, hb⟩
+    rw [hV₂eq, Set.mem_singleton_iff] at ha hb
+    rw [ha, hb] at hl
+    exact G.not_isLoopAt e v_c hl
+  -- ── `H`'s own witness data. ────────────────────────────────────────────────────────────────
+  obtain ⟨hreal₁, hadj₁, hhubLI₁, hnbhdLI₁⟩ := hnd₁
+  obtain ⟨⟨hF₁g, hn₁nz, hS₁nz, hpanel₁⟩, hp₁nz, hp₁inc, hthrough₁⟩ := hreal₁
+  have hn1_ne : normal₁ u_c ≠ 0 := hn₁nz u_c hu_c
+  have hp1_ne : point₁ u_c ≠ 0 := hp₁nz u_c hu_c
+  -- ── Choose `point_vc` off `span {point₁ u_c}`, inside `normal₁ u_c`'s perp. ──────────────────
+  set ker₁ : (Fin 4 → K) → Submodule K (Fin 4 → K) :=
+    fun t => LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip t) with hker₁
+  have hker_mem : ∀ t z : Fin 4 → K, z ∈ ker₁ t ↔ z ⬝ᵥ t = 0 := by
+    intro t z
+    simp only [hker₁, LinearMap.mem_ker, LinearMap.flip_apply, piBasisFun_toDual_eq_dotProduct]
+  have hVdim : Module.finrank K (ker₁ (normal₁ u_c)) = 3 := finrank_toDualPerp_single_eq hn1_ne
+  have hspan_le : Module.finrank K
+      (Submodule.span K ({point₁ u_c, 0} : Set (Fin 4 → K))) ≤ 2 := finrank_span_pair_le _ _
+  have hnotle : ¬ (ker₁ (normal₁ u_c) ≤
+      Submodule.span K ({point₁ u_c, 0} : Set (Fin 4 → K))) := by
+    intro hle
+    have hm := Submodule.finrank_mono hle
+    omega
+  obtain ⟨point_vc, hpvc_mem, hpvc_notmem⟩ := SetLike.not_le_iff_exists.mp hnotle
+  have hmem₀ : point₁ u_c ∈ ({point₁ u_c, 0} : Set (Fin 4 → K)) := Set.mem_insert _ _
+  have hpvc_perp : point_vc ⬝ᵥ normal₁ u_c = 0 := (hker_mem (normal₁ u_c) point_vc).mp hpvc_mem
+  have hpvc_ne : point_vc ≠ 0 := by
+    intro h; apply hpvc_notmem; rw [h]; exact Submodule.zero_mem _
+  -- ── Choose `normal_vc` orthogonal to both `point₁ u_c` and `point_vc`. ────────────────────
+  have h2dim : 2 ≤ Module.finrank K
+      ((ker₁ (point₁ u_c) ⊓ ker₁ point_vc : Submodule K (Fin 4 → K))) :=
+    le_finrank_toDualPerp_inf (point₁ u_c) point_vc
+  have hnvc_notle : ¬ (ker₁ (point₁ u_c) ⊓ ker₁ point_vc) ≤ (⊥ : Submodule K (Fin 4 → K)) := by
+    intro hle
+    have hm := Submodule.finrank_mono hle
+    simp only [finrank_bot] at hm
+    omega
+  obtain ⟨normal_vc, hnvc_mem, hnvc_notbot⟩ := SetLike.not_le_iff_exists.mp hnvc_notle
+  have hnvc_p1 : normal_vc ⬝ᵥ point₁ u_c = 0 := (hker_mem (point₁ u_c) normal_vc).mp hnvc_mem.1
+  have hnvc_pvc : normal_vc ⬝ᵥ point_vc = 0 := (hker_mem point_vc normal_vc).mp hnvc_mem.2
+  have hnvc_ne : normal_vc ≠ 0 := by
+    intro h; apply hnvc_notbot; rw [h]; exact Submodule.zero_mem _
+  -- ── The pendant edge's hinge. ─────────────────────────────────────────────────────────────
+  obtain ⟨C_cut, hCne, hCpn_u, hCpn_v, hCth_u, hCth_v⟩ :=
+    exists_extensor_two_pencils (n_u := normal₁ u_c) (n_v := normal_vc)
+      (pt_u := point₁ u_c) (pt_v := point_vc)
+      hp1_ne (hp₁inc u_c hu_c) (by rw [dotProduct_comm]; exact hnvc_pvc)
+      (by rw [dotProduct_comm]; exact hnvc_p1) hpvc_perp
+  -- ── The glued data. ────────────────────────────────────────────────────────────────────────
+  set normal : α → Fin 4 → K := fun v => if v ∈ V₁ then normal₁ v else normal_vc
+  set point : α → Fin 4 → K := fun v => if v ∈ V₁ then point₁ v else point_vc
+  set extF : β → ScrewSpace K 2 := fun e =>
+    if ∃ a b, (G.induce V₁).IsLink e a b then F₁.supportExtensor e else C_cut
+  set F : BodyHingeFramework K 2 α β := ⟨G, extF⟩
+  have hlinks : ∀ e u v, G.IsLink e u v →
+      ExtensorInPanel (extF e) (normal u) ∧ ExtensorInPanel (extF e) (normal v) ∧
+      ExtensorThroughPoint (extF e) (point u) ∧ ExtensorThroughPoint (extF e) (point v) := by
+    intro e u v hl
+    simp only [extF]
+    by_cases hE₁ : ∃ a b, (G.induce V₁).IsLink e a b
+    · simp only [hE₁, ↓reduceIte]
+      obtain ⟨a, b, hlab⟩ := hE₁
+      have hu₁ : u ∈ V₁ := mem_of_induce_isLink_left hl hlab
+      have hv₁ : v ∈ V₁ := mem_of_induce_isLink_right hl hlab
+      simp only [normal, point, hu₁, hv₁, ↓reduceIte]
+      have hl' : (G.induce V₁).IsLink e u v := (Graph.induce_isLink G V₁ e u v).mpr ⟨hl, hu₁, hv₁⟩
+      exact ⟨(hpanel₁ e u v hl').1, (hpanel₁ e u v hl').2,
+             (hthrough₁ e u v hl').1, (hthrough₁ e u v hl').2⟩
+    · simp only [hE₁, ↓reduceIte]
+      have hu_or : u ∈ V₁ ∨ u = v_c := by
+        have h : u ∈ V₁ ∪ ({v_c} : Set α) := by rw [← hVG]; exact hl.left_mem
+        rcases h with h | h
+        · exact Or.inl h
+        · exact Or.inr (Set.mem_singleton_iff.mp h)
+      have hv_or : v ∈ V₁ ∨ v = v_c := by
+        have h : v ∈ V₁ ∪ ({v_c} : Set α) := by rw [← hVG]; exact hl.right_mem
+        rcases h with h | h
+        · exact Or.inl h
+        · exact Or.inr (Set.mem_singleton_iff.mp h)
+      have hopp : (u ∈ V₁ ∧ v = v_c) ∨ (u = v_c ∧ v ∈ V₁) := by
+        rcases hu_or with hu₁ | huvc
+        · rcases hv_or with hv₁ | hvvc
+          · exact absurd ⟨u, v, (Graph.induce_isLink G V₁ e u v).mpr ⟨hl, hu₁, hv₁⟩⟩ hE₁
+          · exact Or.inl ⟨hu₁, hvvc⟩
+        · rcases hv_or with hv₁ | hvvc
+          · exact Or.inr ⟨huvc, hv₁⟩
+          · exfalso; rw [huvc, hvvc] at hl; exact G.not_isLoopAt e v_c hl
+      rcases hopp with ⟨hu₁, hveq⟩ | ⟨hueq, hv₁⟩
+      · have hl' : G.IsLink e u v_c := by rw [hveq] at hl; exact hl
+        obtain ⟨-, hueq2, -⟩ := hcross_eq e u v_c hl' hu₁ hv_c
+        have hnu : normal u = normal₁ u_c := by rw [hueq2]; simp only [normal, hu_c, ↓reduceIte]
+        have hnv : normal v = normal_vc := by rw [hveq]; simp only [normal, hv_c, ↓reduceIte]
+        have hpu : point u = point₁ u_c := by rw [hueq2]; simp only [point, hu_c, ↓reduceIte]
+        have hpv : point v = point_vc := by rw [hveq]; simp only [point, hv_c, ↓reduceIte]
+        rw [hnu, hnv, hpu, hpv]
+        exact ⟨hCpn_u, hCpn_v, hCth_u, hCth_v⟩
+      · have hu_notin : u ∉ V₁ := by rw [hueq]; exact hv_c
+        obtain ⟨-, hveq2, -⟩ := hcross_eq e v u hl.symm hv₁ hu_notin
+        have hnu : normal u = normal_vc := by rw [hueq]; simp only [normal, hv_c, ↓reduceIte]
+        have hnv : normal v = normal₁ u_c := by rw [hveq2]; simp only [normal, hu_c, ↓reduceIte]
+        have hpu : point u = point_vc := by rw [hueq]; simp only [point, hv_c, ↓reduceIte]
+        have hpv : point v = point₁ u_c := by rw [hveq2]; simp only [point, hu_c, ↓reduceIte]
+        rw [hnu, hnv, hpu, hpv]
+        exact ⟨hCpn_v, hCpn_u, hCth_v, hCth_u⟩
+  have hnorm_nz : ∀ v ∈ V(G), normal v ≠ 0 := by
+    intro v _
+    by_cases hv₁ : v ∈ V₁
+    · simp only [normal, hv₁, ↓reduceIte]; exact hn₁nz v hv₁
+    · simp only [normal, hv₁, ↓reduceIte]; exact hnvc_ne
+  have hextF_nz : ∀ e, extF e ≠ 0 := by
+    intro e
+    simp only [extF]
+    by_cases hE₁ : ∃ a b, (G.induce V₁).IsLink e a b
+    · simp only [hE₁, ↓reduceIte]; exact hS₁nz e
+    · simp only [hE₁, ↓reduceIte]; exact hCne
+  have hpoint_nz : ∀ v ∈ V(G), point v ≠ 0 := by
+    intro v _
+    by_cases hv₁ : v ∈ V₁
+    · simp only [point, hv₁, ↓reduceIte]; exact hp₁nz v hv₁
+    · simp only [point, hv₁, ↓reduceIte]; exact hpvc_ne
+  have hpoint_inc : ∀ v ∈ V(G), point v ⬝ᵥ normal v = 0 := by
+    intro v _
+    by_cases hv₁ : v ∈ V₁
+    · simp only [point, normal, hv₁, ↓reduceIte]; exact hp₁inc v hv₁
+    · simp only [point, normal, hv₁, ↓reduceIte]; rw [dotProduct_comm]; exact hnvc_pvc
+  -- ── Conjunct 2: adjacent-point pair-LI. ──────────────────────────────────────────────────
+  have hadjLI : ∀ e u v, G.IsLink e u v → LinearIndependent K ![point u, point v] := by
+    intro e u v hl
+    by_cases hu₁ : u ∈ V₁
+    · by_cases hv₁ : v ∈ V₁
+      · have hl' : (G.induce V₁).IsLink e u v :=
+          (Graph.induce_isLink G V₁ e u v).mpr ⟨hl, hu₁, hv₁⟩
+        have hpu : point u = point₁ u := by simp only [point, hu₁, ↓reduceIte]
+        have hpv : point v = point₁ v := by simp only [point, hv₁, ↓reduceIte]
+        rw [hpu, hpv]
+        exact hadj₁ e u v hl'
+      · have hveq : v = v_c :=
+          Set.mem_singleton_iff.mp
+            ((show v ∈ V₁ ∪ ({v_c} : Set α) by rw [← hVG]; exact hl.right_mem).resolve_left hv₁)
+        have hl' : G.IsLink e u v_c := by rw [hveq] at hl; exact hl
+        obtain ⟨-, hueq2, -⟩ := hcross_eq e u v_c hl' hu₁ hv_c
+        have hpu : point u = point₁ u_c := by rw [hueq2]; simp only [point, hu_c, ↓reduceIte]
+        have hpv : point v = point_vc := by rw [hveq]; simp only [point, hv_c, ↓reduceIte]
+        rw [hpu, hpv, LinearIndependent.pair_iff' hp1_ne]
+        intro a ha
+        exact hpvc_notmem (ha ▸ Submodule.smul_mem _ a (Submodule.subset_span hmem₀))
+    · have hueq : u = v_c :=
+        Set.mem_singleton_iff.mp
+          ((show u ∈ V₁ ∪ ({v_c} : Set α) by rw [← hVG]; exact hl.left_mem).resolve_left hu₁)
+      by_cases hv₁ : v ∈ V₁
+      · have hu_notin : u ∉ V₁ := by rw [hueq]; exact hv_c
+        obtain ⟨-, hveq2, -⟩ := hcross_eq e v u hl.symm hv₁ hu_notin
+        have hpu : point u = point_vc := by rw [hueq]; simp only [point, hv_c, ↓reduceIte]
+        have hpv : point v = point₁ u_c := by rw [hveq2]; simp only [point, hu_c, ↓reduceIte]
+        rw [hpu, hpv]
+        refine LinearIndependent.pair_symm_iff.mp ?_
+        rw [LinearIndependent.pair_iff' hp1_ne]
+        intro a ha
+        exact hpvc_notmem (ha ▸ Submodule.smul_mem _ a (Submodule.subset_span hmem₀))
+      · exfalso
+        have hveq : v = v_c :=
+          Set.mem_singleton_iff.mp
+            ((show v ∈ V₁ ∪ ({v_c} : Set α) by rw [← hVG]; exact hl.right_mem).resolve_left hv₁)
+        rw [hueq, hveq] at hl
+        exact G.not_isLoopAt e v_c hl
+  -- ── Conjunct 3: closed-hub-neighbourhood normal LI. ──────────────────────────────────────
+  have hHub_sub_V₁ : ∀ v, G.closedHubNbhd v ⊆ V₁ := by
+    intro v w hw
+    obtain ⟨hwhub, -⟩ := hw
+    have hwne : w ≠ v_c := fun h => hvc_not_hub (h ▸ hwhub)
+    have hwG : w ∈ V(G) := hwhub.1
+    rw [hVG] at hwG
+    exact hwG.resolve_right (fun h => hwne (Set.mem_singleton_iff.mp h))
+  have hclosedHubNbhd_vc : G.closedHubNbhd v_c ⊆ {u_c} := by
+    rintro w ⟨hwhub, hcase⟩
+    rcases hcase with rfl | ⟨e, hl⟩
+    · exact absurd hwhub hvc_not_hub
+    · have hwV1 : w ∈ V₁ := by
+        by_contra hwV1
+        have hweq : w = v_c :=
+          Set.mem_singleton_iff.mp
+            ((show w ∈ V₁ ∪ ({v_c} : Set α) by rw [← hVG]; exact hwhub.1).resolve_left hwV1)
+        rw [hweq] at hl
+        exact G.not_isLoopAt e v_c hl
+      obtain ⟨-, hweq2, -⟩ := hcross_eq e w v_c hl.symm hwV1 hv_c
+      simp [hweq2]
+  have hnu_ne : normal u_c ≠ 0 := by simp only [normal, hu_c, ↓reduceIte]; exact hn1_ne
+  have hhubLI_glued : ∀ v ∈ V(G), LinearIndepOn K normal (G.closedHubNbhd v) := by
+    intro v hv
+    by_cases hv₁ : v ∈ V₁
+    · by_cases htriple : v ∈ ({u_c, w₁, w₂} : Set α)
+      · -- The demoted triple: the promoted family is exactly `hpromoted`.
+        refine (hpromoted v htriple).congr (fun x hx => ?_)
+        simp only [normal, hHub_sub_V₁ v hx, ↓reduceIte]
+      · -- Every other body: `G`-hub-neighbourhood = `H`-one (the demoted `u_c` is not in it).
+        have hvne_uc : v ≠ u_c := fun h => htriple (by rw [h]; exact Set.mem_insert _ _)
+        have hnadj : ∀ e, ¬ G.IsLink e v u_c := by
+          intro e hl
+          have hvN : v ∈ N(G, u_c) := hl.symm.adj
+          rw [hN] at hvN
+          rcases hvN with rfl | rfl | rfl
+          · exact hv_c hv₁
+          · exact htriple (Set.mem_insert_of_mem _ (Set.mem_insert _ _))
+          · exact htriple (Set.mem_insert_of_mem _ (Set.mem_insert_of_mem _ rfl))
+        have hHeq : G.closedHubNbhd v = (G.induce V₁).closedHubNbhd v := by
+          ext w
+          simp only [Graph.closedHubNbhd, Set.mem_setOf_eq]
+          constructor
+          · rintro ⟨hwhub, hcase⟩
+            have hwne_vc : w ≠ v_c := fun h => hvc_not_hub (h ▸ hwhub)
+            have hwV1 : w ∈ V₁ := by
+              have hwG : w ∈ V(G) := hwhub.1
+              rw [hVG] at hwG
+              exact hwG.resolve_right (fun h => hwne_vc (Set.mem_singleton_iff.mp h))
+            have hwne_uc : w ≠ u_c := by
+              rintro rfl
+              rcases hcase with heq | ⟨e, hl⟩
+              · exact hvne_uc heq.symm
+              · exact hnadj e hl
+            refine ⟨⟨hwV1, by rw [hdeg_eq w hwV1 hwne_uc]; exact hwhub.2⟩, ?_⟩
+            rcases hcase with rfl | ⟨e, hl⟩
+            · exact Or.inl rfl
+            · exact Or.inr ⟨e, (Graph.induce_isLink G V₁ e v w).mpr ⟨hl, hv₁, hwV1⟩⟩
+          · rintro ⟨hwhubH, hcase⟩
+            have hwV1 : w ∈ V₁ := hwhubH.1
+            have hwne_uc : w ≠ u_c := by
+              rintro rfl
+              have hd := hwhubH.2
+              rw [hdegH_uc] at hd
+              omega
+            refine ⟨⟨by rw [hVG]; exact Set.mem_union_left _ hwV1, by
+              rw [← hdeg_eq w hwV1 hwne_uc]; exact hwhubH.2⟩, ?_⟩
+            rcases hcase with rfl | ⟨e, hl⟩
+            · exact Or.inl rfl
+            · exact Or.inr ⟨e, ((Graph.induce_isLink G V₁ e v w).mp hl).1⟩
+        rw [hHeq]
+        refine (hhubLI₁ v hv₁).congr (fun x hx => ?_)
+        have hxV₁ : x ∈ V₁ := hx.1.1
+        simp only [normal, hxV₁, ↓reduceIte]
+    · have hveq : v = v_c :=
+        Set.mem_singleton_iff.mp
+          ((show v ∈ V₁ ∪ ({v_c} : Set α) by rw [← hVG]; exact hv).resolve_left hv₁)
+      rw [hveq]
+      exact (LinearIndepOn.singleton (i := u_c) hnu_ne).mono hclosedHubNbhd_vc
+  -- ── Conjunct 4: non-hub closed-neighbourhood point LI. ───────────────────────────────────
+  have hnbhdLI_glued : ∀ v ∈ V(G), ¬ G.PencilHub v → LinearIndepOn K point (G.closedNbhd v) := by
+    intro v hv hnothub
+    by_cases hv₁ : v ∈ V₁
+    · by_cases hvu : v = u_c
+      · -- `u_c` is a `G`-hub, so conjunct 4 does not apply there.
+        exact absurd huc_Ghub (hvu ▸ hnothub)
+      · have hnothubH : ¬ (G.induce V₁).PencilHub v := by
+          intro h
+          exact hnothub ⟨hv, by rw [← hdeg_eq v hv₁ hvu]; exact h.2⟩
+        have hbase := hnbhdLI₁ v hv₁ hnothubH
+        have hset : G.closedNbhd v = (G.induce V₁).closedNbhd v := by
+          ext w
+          constructor
+          · rintro (rfl | ⟨e, hl⟩)
+            · exact Or.inl rfl
+            · have hw₁ : w ∈ V₁ := by
+                by_contra hw₁
+                obtain ⟨-, hveq, -⟩ := hcross_eq e v w hl hv₁ hw₁
+                exact hvu hveq
+              exact Or.inr ⟨e, (Graph.induce_isLink G V₁ e v w).mpr ⟨hl, hv₁, hw₁⟩⟩
+          · rintro (rfl | ⟨e, hl⟩)
+            · exact Or.inl rfl
+            · exact Or.inr ⟨e, ((Graph.induce_isLink G V₁ e v w).mp hl).1⟩
+        rw [hset]
+        refine hbase.congr (fun x hx => ?_)
+        have hxV₁ : x ∈ V₁ := by
+          rcases hx with rfl | ⟨e, hl⟩
+          · exact hv₁
+          · exact ((Graph.induce_isLink G V₁ e v x).mp hl).2.2
+        simp only [point, hxV₁, ↓reduceIte]
+    · have hveq : v = v_c :=
+        Set.mem_singleton_iff.mp
+          ((show v ∈ V₁ ∪ ({v_c} : Set α) by rw [← hVG]; exact hv).resolve_left hv₁)
+      have hset : G.closedNbhd v = ({v_c, u_c} : Set α) := by
+        rw [hveq]
+        ext w
+        constructor
+        · rintro (rfl | ⟨e, hl⟩)
+          · exact Set.mem_insert _ _
+          · have hwV1 : w ∈ V₁ := by
+              by_contra hwV1
+              have hweq2 : w = v_c :=
+                Set.mem_singleton_iff.mp
+                  ((show w ∈ V₁ ∪ ({v_c} : Set α) by
+                    rw [← hVG]; exact hl.right_mem).resolve_left hwV1)
+              rw [hweq2] at hl
+              exact G.not_isLoopAt e v_c hl
+            obtain ⟨-, hweq3, -⟩ := hcross_eq e w v_c hl.symm hwV1 hv_c
+            rw [hweq3]
+            exact Set.mem_insert_of_mem _ rfl
+        · rintro (rfl | rfl)
+          · exact Or.inl rfl
+          · exact Or.inr ⟨e_c, hl_c.symm⟩
+      rw [hset]
+      rw [LinearIndepOn.pair_iff point (fun h => hv_c (h ▸ hu_c) : v_c ≠ u_c)]
+      exact LinearIndependent.pair_iff.mp
+        (LinearIndependent.pair_symm_iff.mp (hadjLI e_c u_c v_c hl_c))
+  -- ── Rank. ──────────────────────────────────────────────────────────────────────────────────
+  have hne : V₁.Nonempty := ⟨u_c, hu_c⟩
+  have hssub : V₁ ⊂ V(G) :=
+    (Set.ssubset_iff_of_subset hV₁sub).mpr ⟨v_c, by rw [hVG]; exact Set.mem_union_right _ rfl, hv_c⟩
+  have hVcard : V₁.ncard + (V(G) \ V₁).ncard = V(G).ncard := by
+    have hdisj : Disjoint V₁ (V(G) \ V₁) := Set.disjoint_sdiff_right
+    rw [← Set.ncard_union_eq hdisj (Set.toFinite V₁) (Set.toFinite _), Set.union_diff_cancel hV₁sub]
+  have hD1 : 1 ≤ Graph.bodyBarDim n := by omega
+  have hdef : G.deficiency n = (G.induce V₁).deficiency n + (G.induce (V(G) \ V₁)).deficiency n
+      + (Graph.bodyBarDim n : ℤ) - ((Graph.bodyBarDim n : ℤ) - 1) * (G.cutEdges V₁).ncard :=
+    Graph.deficiency_eq_of_cutEdges_ncard_le_one hD1 hne hssub hcut
+  have hFext : ∀ e u v, F.graph.IsLink e u v → F.supportExtensor e ≠ 0 := fun e _ _ _ => hextF_nz e
+  have hFcut : ∀ e ∈ G.cutEdges V₁, ∃ a b, F.graph.IsLink e a b ∧ a ∈ V₁ ∧ b ∉ V₁ := by
+    intro e he
+    simp only [Graph.cutEdges, Set.mem_setOf_eq] at he
+    obtain ⟨-, a, b, hlab, ha, hb⟩ := he
+    exact ⟨a, b, hlab, ha, hb⟩
+  have hFVne : V(F.graph).Nonempty := ⟨u_c, hV₁sub hu_c⟩
+  have hagree₁ : ∀ e u v, (G.induce V₁).IsLink e u v → extF e = F₁.supportExtensor e :=
+    fun e u v hl => by
+      simp only [extF, show (∃ a b, (G.induce V₁).IsLink e a b) from ⟨u, v, hl⟩, ↓reduceIte]
+  have hF₁span := span_rigidityRows_eq_of_supportExtensor_agree extF F₁ hF₁g hagree₁
+  have hlb₁ : screwDim 2 * ((V₁.ncard : ℤ) - 1) - (G.induce V₁).deficiency n
+      ≤ (Module.finrank K (Submodule.span K F₁.rigidityRows) : ℤ) := hrank₁.ge
+  have hlb₂ : screwDim 2 * (((V(G) \ V₁).ncard : ℤ) - 1) - (G.induce (V(G) \ V₁)).deficiency n
+      ≤ (Module.finrank K (Submodule.span K
+        (⟨G.induce (V(G) \ V₁), extF⟩ : BodyHingeFramework K 2 α β).rigidityRows) : ℤ) := by
+    have hrows_empty : (⟨G.induce (V(G) \ V₁), extF⟩ :
+        BodyHingeFramework K 2 α β).rigidityRows = ∅ := by
+      ext φ
+      simp only [Set.mem_empty_iff_false, iff_false]
+      rintro ⟨e, u, v, hlink, -⟩
+      have he : e ∈ E(G.induce (V(G) \ V₁)) := hlink.edge_mem
+      rw [hV₂edgeless] at he
+      exact he
+    have hVeq₂ : (V(G) \ V₁).ncard = 1 := by rw [hV₂eq]; exact Set.ncard_singleton v_c
+    have hVeq₂' : V(G.induce (V(G) \ V₁)).ncard = 1 := hVeq₂
+    rw [hrows_empty, Submodule.span_empty, finrank_bot, hVeq₂,
+      Graph.deficiency_of_edgeSet_empty hV₂edgeless, hVeq₂']
+    norm_num
+  have hrank_eq := finrank_span_rigidityRows_cutEdge_eq hD hn F rfl rfl hcut hFext hFcut hFVne
+    hVcard hdef hF₁span rfl hlb₁ hlb₂
+  exact ⟨F, normal, point,
+    ⟨⟨⟨rfl, hnorm_nz, hextF_nz,
+        fun e u v hl => ⟨(hlinks e u v hl).1, (hlinks e u v hl).2.1⟩⟩,
+      hpoint_nz, hpoint_inc,
+      fun e u v hl => ⟨(hlinks e u v hl).2.2.1, (hlinks e u v hl).2.2.2⟩⟩,
+    hadjLI, hhubLI_glued, hnbhdLI_glued⟩, hrank_eq⟩
+
 /-! ## W5-L5 cut arm, the dispatch shell (Phase 39 PENCIL, L5-cut-iv)
 
 The generic-half assembly wiring all four sub-cases of the cut-arm route verdict

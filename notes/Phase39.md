@@ -25,7 +25,10 @@ to `H := G.induce V₁`); **v-f-1…4 LANDED** (2026-07-29, the output-half rank
 transfer LANDED** (2026-07-29, `Steer.lean`: `pencilChartNormal_congr` +
 `linearIndepOn_pencilChartNormal_congr`); **v-f COMPLETE — v-f-6 output-half assembly proper LANDED**
 (2026-07-29, `Steer.lean`: `exists_isNondegPencilRealization_induce_promotedNormal_of_pendant_deg3`);
-**v-g next** — *Hand-off*.
+**v-g PART 1 LANDED** (2026-07-29, `Pair2.lean`: the demoted-hub glue producer
+`hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant_deg3` — mirrors sub-case 3,
+consumes the v-f-6 output; the fresh-data composition against the promoted families verified green);
+**v-g PART 2 next** (the shell/successor rewire discharging `hcutPendant3` + blueprint) — *Hand-off*.
 L6/L8 are parallel
 combinatorial tracks buildable now; L7 (the research core) is
 last; W4 after W5 (phase opened 2026-07-23, recon-first). `Molecule/Pencil.lean` split into
@@ -195,18 +198,44 @@ no obstruction (recon + prior agent's composition check both held). **v-f-5** (t
 normal conditions straight into the `exists_common_seed_pencilRow_and_polynomials` `P` via the normal
 gadget, so it stays unbuilt (drop it from the leaf list unless a later consumer wants it).
 
-**Next concrete commit — v-g (the sub-case-4 glue + shell/successor rewire).** Two parts:
-1. **The `deg u_c = 3` producer** `hasGenericPencilRealization_..._pendant_deg3` (mirror the landed
-   sub-case-3 producer `hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant`,
-   `Pair2.lean`): feed the v-f-6 output (the steered generic `H`-witness + the three promoted families)
-   as the sub-case-3-shaped input, choose fresh pendant data `normal v_c`/`point v_c` off the bad span
-   at `u_c` (now available because conjunct 3 at `u_c`/`w₁`/`w₂` is exactly the promoted families),
-   glue the pendant edge's hinge, `hlb₂ = 0` rank verbatim (edgeless far side). The one delta from
-   sub-case 3 is that `u_c` DEMOTES (`G`-hub, `H`-non-hub) so the fresh-data choice must dodge the
-   promoted-family span rather than a single normal — that is what the v-f-6 output was built to supply.
-2. **The shell/successor rewire:** discharge `hcutPendant3` in `pencilPair_of_not_twoEdgeConnected`
-   (`Pair.lean`) and `pencil_conjecture_of_arms_pair` (`Pair2.lean`) using part 1, and add `[Infinite
-   K]` to those signatures (the assembly needs it) + the blueprint restatement.
+**v-g PART 1 LANDED (2026-07-29, `Pair2.lean`):** the demoted-hub glue producer
+`hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant_deg3` — a faithful mirror of
+the sub-case-3 producer taking the v-f-6 output (`hnd₁`/`hrank₁` + `hpromoted`, the three promoted
+families at `{u_c,w₁,w₂}`) as input. `[Field K]`-only glue (no `[Infinite K]`). The scope-pin's
+composition risk is DISCHARGED — it builds green (conjunct 3 at the demoted triple = `hpromoted`,
+elsewhere `G.closedHubNbhd v = H.closedHubNbhd v` transfers from `H`; conjunct 4 vacuous at the
+`G`-hub `u_c`; `point v_c` dodges the single generator `point₁ u_c`; rank verbatim, `hlb₂ = 0`).
+
+**Next concrete commit — v-g PART 2 (the shell/successor rewire + blueprint), which DISCHARGES
+`hcutPendant3` and closes L5-cut-v.** The 2026-07-25 assessment recon pinned this as a REWIRE (not a
+standalone proof of `hcutPendant3`, which has no IH). Steps:
+1. **Add the import** `import CombinatorialRigidity.Molecular.Molecule.Pencil.Steer` to `Pair2.lean`
+   (currently Pair2 ← Pair ← Motive; Steer sits in a separate branch — Steer ← Engine/Reseed/Witness,
+   none import Pair/Pair2, so the import is ACYCLIC). This pulls v-e/v-f-6 into scope.
+2. **Prove sub-case 4 inline** in `pencilPair_of_not_twoEdgeConnected` (`Pair2.lean`, where
+   `hIH`/`hSimple`/`hfeas` are in scope) at BOTH `hdeg3` branches (far side `V₂={v_c}`, and swapped
+   near side `V₁={u_c}`). At each: (a) extract `u_c`'s two `V₁`-links `e₁:u_c–w₁`, `e₂:u_c–w₂`
+   (`w₁≠w₂`, both in `V₁`) from `G.degree u_c = 3` + `hSimple` + `hl_c` — `N(G,u_c).ncard = 3` via
+   `Graph.degree_eq_ncard_adj`, `v_c ∈ N`, so `N \ {v_c}` has 2 members (`Set.ncard_eq_two`), both
+   `≠ v_c` hence `∈ V₁`, with links from neighbour-set membership; (b) `hSimple₁`, `hfeas₁ :=
+   pencilNondegFeasible_induce_of_pendant_deg3 …` (v-e, Steer); (c) H-witness `⟨F₁,normal₁,point₁,
+   hnd₁,hrank₁⟩ := (hIH (G.induce V₁) hV₁ne hV₁ncard).1 hSimple₁ hfeas₁`; (d) `⟨F,normal,point,hnd,
+   hrank,hpromoted⟩ := exists_isNondegPencilRealization_induce_promotedNormal_of_pendant_deg3 …`
+   (v-f-6, Steer); (e) `exact hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant_deg3
+   … hnd hrank hpromoted` (v-g part 1). Consider factoring (a)–(e) into ONE helper (folding the link
+   extraction in) so both sites are one-liners. **Add `[Infinite K]`** to the shell (v-e/v-f-6 need it).
+3. **Delete the `hcutPendant3` hypothesis** from BOTH `pencilPair_of_not_twoEdgeConnected` AND
+   `pencil_conjecture_of_arms_pair`; add `[Infinite K]` to both; fix `pencil_conjecture_of_arms_pair`'s
+   `hcut_arm` (drop the `(hcutPendant3 G)` argument to `pencilPair_of_not_twoEdgeConnected`).
+4. **Blueprint** `thm:pencil-conditional-realization-pair` (`blueprint/src/chapter/pencil.tex` ~L821):
+   add `[Infinite K]` (state "over an infinite field") and DROP the pendant-degree-3 antecedent clause
+   (hypothesis (ii)) — the statement-change gate: the `\lean{}` pin survives the signature change so
+   restate the node in the SAME commit. Run `blueprint/verify.sh` + `blueprint/lint.sh`.
+5. **Sweep** `hcutPendant3`: after deletion, `grep` the repo — every surviving mention must be
+   retirement-history, not a live cross-ref. NOTE `Motive.lean` L547's section-comment mentions
+   `hcutPendant3`'s antecedent as a LIVE cross-ref (a surviving decl's prose) — repoint it to the
+   inline sub-case-4 discharge's `hfeas` antecedent.
+
 Full leaf detail + exact signatures: `notes/Phase39-design.md` §"W5 leaf decomposition" L5-cut-v.
 
 **L6/L8 are parallel combinatorial tracks** buildable now (L6: habitat feasibility, the
@@ -228,6 +257,18 @@ neighbor — is `notes/IdeaBacklog.md`.
 
 ## Decisions made during this phase
 
+- **L5-cut-v-g PART 1 LANDED — the demoted-hub glue producer** (2026-07-29, `Pair2.lean`):
+  `hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant_deg3` — the `deg u_c = 3`
+  companion of the sub-case-3 pendant producer, a faithful mirror taking the v-f-6 output
+  (`hnd₁`/`hrank₁` + `hpromoted : ∀ v ∈ {u_c,w₁,w₂}, LinearIndepOn K normal₁ (G.closedHubNbhd v)`) as
+  input, `[Field K]`-only glue. Three localized deltas from sub-case 3: (i) `u_c` is a definite
+  `G`-hub / `H`-non-hub (`huc_Ghub`/`hdegH_uc`), replacing `pencilHub_iff_induce_of_degree_ne`; (ii)
+  conjunct 3 splits — at the demoted triple `{u_c,w₁,w₂}` (where `G.closedHubNbhd v` contains the
+  demoted `u_c`) it is `hpromoted`, elsewhere `G.closedHubNbhd v = H.closedHubNbhd v` (proof via
+  `Graph.neighbor_eq_of_degree_eq_three`, `u_c ∉` since `v` not adjacent to `u_c`) transferring from
+  `H`; (iii) conjunct 4 at `u_c` is vacuous, and `point v_c` dodges the single generator `point₁ u_c`
+  (not a `≤ 2`-cover). Rank verbatim (`hlb₂ = 0`). **Scope-pin composition risk DISCHARGED** (green).
+  No new FRICTION (mirror). Gates + axioms clean. PART 2 (the rewire + blueprint) is next (*Hand-off*).
 - **L5-cut-v-f-6 COMPLETE — the output-half steering assembly** (2026-07-29,
   `Molecule/Pencil/Steer.lean`): `exists_isNondegPencilRealization_induce_promotedNormal_of_pendant_deg3`
   — under the pendant deg-`3` config over `[Infinite K]`, from a generic `H := G.induce V₁` witness
