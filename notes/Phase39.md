@@ -45,8 +45,8 @@ route (b′)); device = the grade-0 molecular chart (`Molecule/Pencil/Chart.lean
 rows-polynomial engine (`Molecule/Pencil/Engine.lean`) + the D6 re-seeding lemma
 (`Molecule/Pencil/Reseed.lean`), leaves **L0–L8** (L0–L4 complete; L5 closed modulo
 `hcontract`/`hsplit`, all L5-cut-v leaves landed; **L6 re-routed 2026-07-29 (L6a-as-pinned refuted,
-then settled): the real work is the `G ⇒ G′` transfer at a *safe* split vertex; next commit =
-L6a-transfer. Safe-vertex existence + L7 coupling settled 2026-07-30: coupling benign (KT splits safe),
+then settled): the real work is the `G ⇒ G′` transfer at a *safe* split vertex, LANDED 2026-07-30
+(`Habitat.lean`). Safe-vertex existence + L7 coupling settled 2026-07-30: coupling benign (KT splits safe),
 existence proven for non-rigid `G` and a bounded `have`-hyp for rigid `G`**; L8 parallel; L7, the
 research core, last).
 
@@ -143,7 +143,8 @@ Full record, grounding, and the W0–W5 decomposition:
   so no W3-level minimality re-introduction is forced; (i) safe-vertex existence off minimality is
   **PROVEN for non-rigid `G`** (`deficiency > 0`: `M(G̃)` independent via three landed bricks) and
   **OPEN only for rigid `G`** (`k = 0`, = classical KT Lemma 4.6 off `IsMinimalKDof 0`; decisive
-  computational evidence incl. `S(Petersen)`, carry as `have`-hyp). L6a-transfer + L6b + L8 + the
+  computational evidence incl. `S(Petersen)`, carry as `have`-hyp). **L6a-transfer LANDED 2026-07-30**
+  (`Habitat.lean`, `ncard_closedHubNbhd_splitOff_le_three_of_safe`); L6b + L8 + the
   non-rigid discharger are all buildable now; the `k = 0` bound is bounded and non-blocking.
 - The full biconditional transport `ExtensorThroughPoint C q ↔
   ExtensorInPanel (screwComplementIso C) q` (design doc's W0 pin) is
@@ -164,12 +165,23 @@ Full record, grounding, and the W0–W5 decomposition:
 `pencilPair_of_not_twoEdgeConnected` and `pencil_conjecture_of_arms_pair` dropped it and gained
 `[Infinite K]`.
 
-**Next concrete commit — `W5-L6a-transfer`** (buildable now, purely combinatorial, target new
-`Molecule/Pencil/Habitat.lean`): the `closedHubNbhd` transfer at a *safe* split vertex —
-`ncard_closedHubNbhd_splitOff_le_three_of_safe` (signature in `notes/Phase39-design.md` §"W5 leaf
-decomposition" L6a), which supplies L6b's `hcard` at `G′` from `G`'s feasibility. This is the corrected
-replacement for the refuted bare-combinatorial L6a. Its one prerequisite lemma is degree-preservation
-of `a, b` under `splitOff` (`G.Simple`, `a ≠ b`, `ab ∉ E`).
+**W5-L6a-transfer LANDED 2026-07-30** (`Molecule/Pencil/Habitat.lean`, new file wired into
+`CombinatorialRigidity.lean`): `ncard_closedHubNbhd_splitOff_le_three_of_safe` supplies L6b's `hcard`
+at `G′` from `G`'s. **Signature corrected** — the bare-existential pin was FALSE at `a = b` (self-loop
+inflates a non-hub into a `G′`-hub; 10-vertex counterexample), fixed by the explicit `hab : a ≠ b`
+(free at the L7 call site via `exists_splitOff_data_of_degree_eq_two`'s `eₐ ≠ e_b`); `{n}`/`hdeg`
+dropped. Route: `hab` ⟹ `G′` loopless ⟹ `degree` monotone ⟹ hub-transfer, then the per-`w` case
+split. Detail: *Decisions made* + `notes/Phase39-design.md` §"W5 leaf decomposition" L6a.
+
+**Next concrete commit — pick any buildable-now leaf** (all parallel):
+- **W5-L6b** (`pencilNondegFeasible_of_ncard_closedHubNbhd_le_three`, target `Witness.lean`): the
+  general-position witness seed taking `hcard` explicitly — its input now has an honest producer
+  (L6a-transfer at `G := G′`). **COMPILER-CHECKED SPIKE REQUIRED** for its char-free moment-curve LI
+  core (design doc L6b conjuncts #3/#4/#5); the recommended next.
+- **W5-L6a-safe-exists, non-rigid half** (`indep_matroidMG_of_noRigid_of_deficiency_pos` + the
+  generalized counting `exists_adjacent_degree_two_pair_of_edgeBound`, design doc L6a): PROVEN
+  minimality-free, buildable now; discharges the whole non-rigid split-arm habitat.
+- **W5-L8** (the `k = 0` residue, emptiness route). Fully parallel.
 
 **W5-L6 invariant SETTLED (2026-07-29 L6a recon; canonical `notes/Phase39-design.md` §"W5 leaf
 decomposition" L6a).** The ≤ 3 closed-hub-neighbourhood bound on `G` is **not** a graph-combinatorial
@@ -217,6 +229,21 @@ neighbor — is `notes/IdeaBacklog.md`.
 
 ## Decisions made during this phase
 
+- **W5-L6a-transfer LANDED + pinned signature CORRECTED (was false)** (2026-07-30,
+  `Molecule/Pencil/Habitat.lean`, new file wired into `CombinatorialRigidity.lean`):
+  `ncard_closedHubNbhd_splitOff_le_three_of_safe` — the safe-split `closedHubNbhd ≤ 3` transfer
+  `G ⇒ G′`, the honest producer of L6b's `hcard` at `G′`. **The dispatched bare-existential pin was
+  FALSE** (returned BLOCKED, coordinator-verified via Matroid `incFun_eq_two_iff`): the two
+  existentials don't force `a ≠ b`, and at `a = b` the fresh `e₀` is a self-loop whose double-counted
+  degree turns a non-hub `a` into a `G′`-hub, inflating a *neighbour's* closed hub-neighbourhood to
+  `4` (explicit 10-vertex counterexample). Fix = explicit `hab : a ≠ b` (free at the L7 call site via
+  `exists_splitOff_data_of_degree_eq_two`'s `eₐ ≠ e_b`); `{n}`/`hdeg` dropped (unused). Route: `hab`
+  ⟹ `G′` loopless ⟹ `G′.degree x ≤ G.degree x` ∀`x` (`E(G′,x) ⊆ insert e₀ (E(G,x) \ {edge to v})`,
+  `-1`/`+1` cancel; needs neither `e₀ ∉ E` nor `ab ∉ E`) ⟹ every `G′`-hub is a `G`-hub; then per `w`:
+  non-hub via `ncard_closedNbhd_le_three_of_not_pencilHub`, hub via `⊆ G.closedHubNbhd w` (the sole
+  new adjacency is `ab`, and a hub `w=a` with hub `b` contradicts `hsafe`). Output type-matches L6b.
+  No new FRICTION (subst-direction gotcha hit + fixed via `▸`, already TACTICS-QUIRKS § 4). Gates +
+  axioms clean. Dispatch-log F9 (BLOCKED-then-corrected).
 - **W5-L6a-safe-exists SPLIT BY DEFICIENCY + L7 coupling RESOLVED benign** (2026-07-30 design-pass
   recon; canonical `notes/Phase39-design.md` §"W5 leaf decomposition" L6a + "Numerics index"). Settles
   the two 2026-07-29 user-adjudication flags. (1) **Coupling (ii) benign:** grounded against KT Lemma

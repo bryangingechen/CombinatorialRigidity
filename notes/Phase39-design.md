@@ -2201,20 +2201,34 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
     Dangerous ⟺ both neighbours hubs with one tight. The refuted L6a is therefore replaced by **two**
     pieces:
 
-    - **L6a-transfer (buildable NOW, purely combinatorial, target `Molecule/Pencil/Habitat.lean`):** the
+    - **L6a-transfer (LANDED 2026-07-30, purely combinatorial, `Molecule/Pencil/Habitat.lean`):** the
       `closedHubNbhd` transfer at a safe split vertex — the honest producer of L6b's `hcard` at `G′`.
-      Target signature:
+      Landed signature:
       ```lean
       theorem ncard_closedHubNbhd_splitOff_le_three_of_safe
-          [Finite α] [Finite β] {n : ℕ} {G : Graph α β} [G.Simple] {v a b : α} {e₀ : β}
-          (heₐ : ∃ eₐ, G.IsLink eₐ v a) (e_b : ∃ e_b, G.IsLink e_b v b) (hdeg : G.degree v = 2)
+          [Finite α] [Finite β] {G : Graph α β} [G.Simple] {v a b : α} {e₀ : β}
+          (hab : a ≠ b)
+          (heₐ : ∃ eₐ, G.IsLink eₐ v a) (e_b : ∃ e_b, G.IsLink e_b v b)
           (hsafe : ¬ G.PencilHub a ∨ ¬ G.PencilHub b)
           (hcard : ∀ w, (G.closedHubNbhd w).ncard ≤ 3) :
           ∀ w, ((G.splitOff v a b e₀).closedHubNbhd w).ncard ≤ 3
       ```
-      Route: the three-way split above (`w ∉ {a, b}`: identity; `w ∈ {a, b}`: `∪ singleton`, and `hsafe`
-      makes the added singleton land in a neighbourhood already `≤ 2`). Degree-preservation of `a, b` is
-      the one lemma to establish first (`degree_splitOff_eq` for `a, b` under `G.Simple`, `a ≠ b`, `ab ∉ E`).
+      **The first pin (bare existentials + `G.degree v = 2`, no `hab`) was FALSE** (coordinator-verified,
+      dispatch F9): the two existentials do not force `a ≠ b` (a degree-`2` `v` may have a third
+      neighbour, so both are witnessable by the single `v`–`a` edge), and at `a = b` the fresh `e₀` is a
+      **self-loop** at `a` whose double-counted degree (Matroid `incFun_eq_two_iff`) can turn a non-hub
+      `a` into a `G′`-hub, inflating a *neighbour's* closed hub-neighbourhood to `4` (explicit
+      `10`-vertex counterexample `v,a,c,w,h₁,h₂,p₁,p₂,q₁,q₂`, edges `va,vc,aw,wh₁,wh₂,h₁p₁,h₁p₂,h₂q₁,h₂q₂`:
+      every hypothesis holds yet `(G′.closedHubNbhd w).ncard = 4`). Fix = the explicit `hab : a ≠ b`,
+      **free at the L7 call site** (`exists_splitOff_data_of_degree_eq_two`'s `eₐ ≠ e_b` + `G.Simple`);
+      `{n}` and `hdeg` are dropped (`n` was never used, and `hdeg` is unused for the bound under the
+      route below). Output `∀ w, (G′.closedHubNbhd w).ncard ≤ 3` still type-matches L6b's `hcard` exactly.
+      Route (landed): `hab` ⟹ `G′` loopless ⟹ `G′.degree x ≤ G.degree x` for **every** `x`
+      (`E(G′, x) ⊆ insert e₀ (E(G, x) \ {edge to v})`, the `-1`/`+1` cancel — needs neither `e₀ ∉ E(G)`
+      nor `ab ∉ E(G)`) ⟹ every `G′`-hub is a `G`-hub; then per `w`: non-hub `w` via
+      `ncard_closedNbhd_le_three_of_not_pencilHub`; hub `w` has `G′.closedHubNbhd w ⊆ G.closedHubNbhd w`
+      (`splitOff`'s only new adjacency is `ab`, and a hub `w=a` with hub partner `b` contradicts `hsafe`),
+      closed by `hcard w`.
     - **L6a-safe-exists (SPLIT BY DEFICIENCY 2026-07-30 recon: non-rigid half PROVEN
       minimality-free; rigid half OPEN but strongly sharpened).** The obligation: under the split-arm
       hypotheses, a **coordinator-safe** degree-2 vertex exists (a degree-2 `v` with a non-hub
