@@ -28,8 +28,11 @@ minimality-free, needing no deficiency case-split at the L7 call site. **L7c-3 L
 direct-witness base leaf. **L7c-4 LANDED 2026-07-30** (`Base.lean`,
 `pencilPair_of_habitat_ncard_eq_four` — the `|V| = 4` sibling, needing a per-vertex "opposite"
 panel normal and a degree-`3`-exclusion identification not shared with `C₃`; detail in *Decisions
-made*). **`hsplit`'s residue (i) (small `|V|`) is now fully discharged**; L7c-5 is the next leaf
-(does not depend on L7c-4, was already independently GO).
+made*). **`hsplit`'s residue (i) (small `|V|`) is now fully discharged**. **L7c-5 LANDED
+2026-07-30** (`Escape.lean`, `pencilPair_of_splitOff_of_habitat`) — the `5 ≤ |V|` producer carrying
+`hK` + `hbareSplit`, chaining L7c-1/2 (Simple + split data), the safe-pair alignment, and (per
+`PencilNondegFeasible K G`) either L7a→`hK`→L7b or `hbareSplit` fed the IH's bare half; detail in
+*Decisions made*. Only **L7c-6** (the successor wrapper) remains to close `hsplit` in full.
 `Molecule/Pencil.lean` split into
 `Molecule/Pencil/{Statement,Arms,Motive,Chart,Engine,Reseed,Witness,Steer,Pair,Pair2,Escape,Base}.lean`
 (2026-07-24/25/29/30 housekeeping).
@@ -342,9 +345,10 @@ different construction from `C₃`, not a mechanical repeat, per the earlier def
 detail in *Blockers*); **consequence: route (a), carry `hbareSplit` as pinned, is GO** — L7c-5/6
 no longer wait on anything except being built (`Blockers`/design doc residue (ii)).
 **`hsplit` residue (i) (small `|V|`) is now fully discharged (both L7c-3 and L7c-4 landed).**
-**Next concrete commit:**
-- **L7c-5** (the `5 ≤ |V|` producer carrying `hK` + `hbareSplit`, GO per the gate pass above;
-  only L7c-6, the final successor wrapper, needs all of L7c-3/4/5).
+**L7c-5 LANDED 2026-07-30** (`Escape.lean`, `pencilPair_of_splitOff_of_habitat` — detail in
+*Decisions made*). **Next concrete commit:**
+- **L7c-6** (the final successor wrapper, needs all of L7c-3/4/5, all now landed — the last leaf
+  closing `hsplit` in full).
 - **Attack kernel (K)** (research recon, route 1 localization recommended — its first gate is the
   local-vs-global numerical test in the design doc's "Route options").
 - **W4** (after W5 — the constrained-family Claim-6.4 analogue, discharges `hcontract`).
@@ -381,6 +385,12 @@ neighbor — is `notes/IdeaBacklog.md`.
 
 ## Decisions made during this phase
 
+- **W5-L7c-5 LANDED** (2026-07-30, `Molecule/Pencil/Escape.lean`,
+  `pencilPair_of_splitOff_of_habitat`) — the `5 ≤ |V|` hsplit producer, built exactly to the
+  pinned route/signature (both carried kernels `hK`/`hbareSplit` used as given, not attacked);
+  align step uses `IsLink.right_unique` to match the extractor's `a`/`b` to the safe pair's `a₀`.
+  Namespace-qualification friction already covered by the standing FRICTION [idiom] entry. Gates +
+  axioms clean.
 - **W5-L7c-4 LANDED** (2026-07-30, `Molecule/Pencil/Base.lean`,
   `pencilPair_of_habitat_ncard_eq_four`) — the `|V| = 4` base leaf deferred from L7c-3.
   Identification: triangle-freeness (`triangle_isProperRigidSubgraph`) excludes a degree-`3`
