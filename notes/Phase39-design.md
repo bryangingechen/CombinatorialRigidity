@@ -2577,7 +2577,9 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
   the uniform certificate (a canonical symmetric witness seed per chain habitat, or an
   algebraic identity from KT eq. (6.44)) is the genuinely new mathematics — first
   W5 *research* dispatch once L0–L4 are in tree, numerics-first per instance as
-  before.
+  before. *(Lean shape RE-PINNED 2026-07-30: the carried form is the `hK`
+  rank-increment implication, not an `escapePoly` ≢-0 statement — see §"W5-L7
+  research recon" "Lean decomposition".)*
 - **W5-L8** (sub-obligation (ii)): the k = 0 residue (verdict 5; spiked emptiness
   route recommended). Motive-independent; buildable in parallel with L6.
 
@@ -2740,7 +2742,9 @@ recon closed it — (K) is the one hypothesis of this shape left standing). L7 d
 `hsplit` of `pencil_conjecture_of_arms_pair` (`Pair2.lean:1229`):
 given `G` loopless, `3 ≤ |V(G)|`, `2EC`, no-proper-rigid, `∃ v, G.degree v = 2`, and the IH
 `∀ G', |V'| < |V|, PencilPair K 3 G'`, produce `PencilPair K 3 G`. Buildable leaves:
-- **L7a — safe split + IH generic half.** Pick a safe vertex `v` (L6a-safe-exists; both
+- **L7a — safe split + IH generic half. LANDED 2026-07-30**
+  (`hasGenericPencilRealization_of_splitOff_of_safe`, `Molecule/Pencil/Escape.lean`; safe-vertex
+  *existence* stays L6a-safe-exists, not this leaf). Pick a safe vertex `v` (L6a-safe-exists; both
   halves now LANDED), form `G' = G.splitOff v a b e₀`,
   and from the IH extract `HasGenericPencilRealization K 3 G'` via the landed L6 chain:
   `PencilNondegFeasible K G` (the `PencilPair` generic-conjunct antecedent) →
@@ -2749,38 +2753,134 @@ given `G` loopless, `3 ≤ |V(G)|`, `2EC`, no-proper-rigid, `∃ v, G.degree v =
   (L6d) → `pencilNondegFeasible_of_ncard_closedHubNbhd_le_three_of_triangleFree` (L6b,
   `Steer.lean:1344`) → IH generic half + `splitOff_simple_of_noRigid_of_card` (L6c). This
   leaf is combinatorial glue, no new math.
-- **L7b — the rank extension (assembly), consuming (K) as a hypothesis.** Target shape
-  (mirrors the landed v-f-6 output-half assembly `…_induce_promotedNormal_of_pendant_deg3`
-  and `finrank_span_rigidityRows_pencilChartFramework_eq_of_independent_pencilRow`,
-  `Steer.lean:693`):
+- **L7b — the rank-to-generic steering assembly. RE-PINNED 2026-07-30** (L7b-shape route recon,
+  fired after the `escapePoly` build dispatch returned BLOCKED). The original pin here — `hEsc :
+  ∃ q, MvPolynomial.eval q (escapePoly hubSel G a b) ≠ 0` with `escapePoly` the `M₁` `6×6`-minor
+  as an `MvPolynomial`, sized "L3-style, buildable" — is **refuted**: KT eq. (6.42)'s second
+  block-row is the *global* stress `r = Σ_j λ_j r_j` (left null vector of the entire rigidity
+  matrix of `G′`), so a faithful `escapePoly` needs a corank-1-null-vector-by-cofactors gadget
+  that does not exist in tree (multi-commit new infra), and any polynomial formula must fix a
+  maximal nonsingular submatrix whose nonsingularity is itself seed-dependent — the column choice
+  leaks into the pinned statement ("chosen minor ≠ 0 AND `E ≠ 0`"). **And no polynomial is
+  needed**: the engine's rank slot is an LI witness —
+  `exists_common_seed_pencilRow_and_polynomials` (`Engine.lean:476`) takes `hLI` directly and
+  *internally* polynomializes it (`exists_polynomial_ne_zero_of_linearIndependent_pencilRow`), so
+  an ∃-LI-witness escape is already, by the landed engine, equivalent to a maximal-minor-≢-0
+  statement without ever defining the minor. Re-pinned L7b (**split-data-free** — `v`, `a`, `b`,
+  `e₀`, `hG′`, `hsafe` all drop out; a reusable "L6b + rank" headline; home
+  `Pencil/Escape.lean`; ONE commit, ~300–450 lines — every call a landed pattern: the v-f-6 rank
+  thread (`Steer.lean:997ff`) with `G` for `G.induce V₁`, the L6b-i WF body (`Steer.lean:1271`),
+  the `Witness.lean:1570/1664` somewhere-producers at an arbitrary correct selector, the pinch
+  (`Steer.lean:693`)):
   ```lean
-  -- schematic; the escape hypothesis `hEsc` is kernel (K), carried as a have-hyp
-  theorem hasGenericPencilRealization_of_splitOff_of_escape
-      [Inhabited α] [Finite α] [Finite β] [Infinite K] {G : Graph α β} [G.Simple]
-      {v a b : α} {e₀ : β} (hsafe : …) (hdeg : G.degree v = 2)
-      (hG' : HasGenericPencilRealization K 3 (G.splitOff v a b e₀))
-      (hEsc : ∃ q : α × Fin 4 × Fin 4 → K,          -- kernel (K): the ≢-0 seed
-        MvPolynomial.eval q (escapePoly hubSel G a b) ≠ 0) :
+  theorem hasGenericPencilRealization_of_independent_pencilRow_target
+      [Nonempty α] [Finite α] [Finite β] [Infinite K] {G : Graph α β} [G.Simple]
+      (hGne : V(G).Nonempty)
+      (hcard : ∀ v, (G.closedHubNbhd v).ncard ≤ 3)
+      (htf : ∀ e₁ e₂ e₃ x y z, x ≠ y → y ≠ z → x ≠ z →
+        G.IsLink e₁ x y → G.IsLink e₂ y z → G.IsLink e₃ z x → False)
+      (hEsc : ∃ (hubSel : α → Fin 3 → Option α) (q : α × Fin 4 × Fin 4 → K)
+          (s : Set (β × Set.powersetCard (Fin 4) 2 × Set.powersetCard (Fin 4) 2)),
+        (∀ w, IsFin3SelectorOf (G.closedHubNbhd w) (hubSel w)) ∧
+        (∀ i ∈ s, (i : β × _ × _).1 ∈ E(G)) ∧
+        ((Nat.card s : ℤ) = screwDim 2 * ((V(G).ncard : ℤ) - 1) - G.deficiency 3) ∧
+        LinearIndependent K (fun i : s => pencilRow hubSel G.endsOf q (i : β × _ × _))) :
       HasGenericPencilRealization K 3 G
   ```
-  Route: re-seed `G'`'s generic witness onto the chart of `G` (add back `v` with its two
-  edges `bv`, `va`), feed the `G'`-rank `pencilRow` subfamily (target size
-  `6(|V|−2)`) plus the escape polynomial `escapePoly` to
-  `exists_common_seed_pencilRow_and_polynomials`, obtaining one common seed where the
-  `G'`-rows stay independent *and* `E ≠ 0`; the `M₁` full-rank minor then supplies the 6
-  new independent rows (edges `bv`, `va`), so
-  `finrank_span_rigidityRows_pencilChartFramework_eq_of_independent_pencilRow` pinches the
-  rank to `6(|V|−1)` (deficiency 0); reconstruct the four `IsNondegPencilRealization`
-  conjuncts at the common seed (the standing chart-WF re-choice, as in `Steer.lean`'s v-e).
-  The bare `HasPencilRealization K 3 G` half is the forgetful map. **New sub-obligation to
-  define:** `escapePoly` — the `M₁` `6×6`-minor determinant as an `MvPolynomial` in the
-  seed coords (the `pencilRow`/`pencilChartPoint` machinery already builds constructed
-  points as degree-≤3 polynomials, so the minor is a polynomial; this is L3-style work,
-  buildable).
+  Route: destructure `hEsc`; `P` := the per-body + adjacent-pair point conditions at `hEsc`'s own
+  `hubSel` (`exists_coord_linearIndepOn_pencilChartPoint_perBody`/`_adjacentPair`, each converted
+  per-condition by `exists_polynomial_ne_zero_of_linearIndependent_pencilChartPoint`); one
+  `exists_common_seed_pencilRow_and_polynomials` call; reconstruct the standing WF conjuncts +
+  the `fillNbr` re-choice + read off the realization (the L6b-i body); pinch the rank at the
+  common seed and transport to the re-chosen seed by `pencilChartFramework_congr` (the v-f-6
+  thread). In the L7c assembly the antecedents come free: `hcard` from `hfeas`
+  (`ncard_closedHubNbhd_le_three_of_isNondegPencilRealization`), `htf` from `hnoRigid` +
+  `triangle_isProperRigidSubgraph` (`|V| ≥ 4`). The bare `HasPencilRealization K 3 G` half is the
+  forgetful map *where the generic antecedents hold* — see residue (ii) below.
+- **Kernel (K) as carried: `hK`, realization-input + extension-shaped** (re-pinned 2026-07-30).
+  The recon **rejected** carrying the bare full-family form ((K)-full, no input): given
+  feasibility it is equivalent to the generic half of the conjecture itself at `G` — the
+  induction would carry its own conclusion schema, and L7a plus the whole L6 chain become dead
+  code. The input must be the realization-level `HasGenericPencilRealization K 3 (G.splitOff v a
+  b e₀)` — exactly L7a's landed output — NOT a row-LI-at-a-seed input, which would force a
+  chart/selector choice into the statement and hit the G/G′ selector mismatch
+  (`closedHubNbhd_G(a) = closedHubNbhd_{G′}(a) \ {b}` and symmetrically at `b`, from `¬Adj_G a b`
+  (triangle-free habitat); a G′-correct `IsFin3SelectorOf` at `b` *must* select `a` when `a` is a
+  hub, and is then G-incorrect). Carried form — the L7c hsplit assembly's sole remaining
+  `have`-hyp slot (the rigid `k=0` half closed 2026-07-30); antecedent discipline: (K) carries
+  every hypothesis the assembly has at the call site:
+  ```lean
+  hK : ∀ (G : Graph α β) (v a b : α) (eₐ e_b e₀ : β), G.Simple → 5 ≤ V(G).ncard →
+    G.TwoEdgeConnected → (∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G 3) →
+    G.degree v = 2 → eₐ ≠ e_b → G.IsLink eₐ v a → G.IsLink e_b v b →
+    (¬ G.PencilHub a ∨ ¬ G.PencilHub b) → e₀ ∉ E(G) →
+    HasGenericPencilRealization K 3 (G.splitOff v a b e₀) →
+    ∃ hubSel q s, (∀ w, IsFin3SelectorOf (G.closedHubNbhd w) (hubSel w)) ∧
+      (∀ i ∈ s, (i : β × _ × _).1 ∈ E(G)) ∧
+      ((Nat.card s : ℤ) = screwDim 2 * ((V(G).ncard : ℤ) - 1) - G.deficiency 3) ∧
+      LinearIndependent K (fun i : s => pencilRow hubSel G.endsOf q (i : β × _ × _))
+  ```
+  This is **KT Claim 6.12 at the rank-increment (consequence) level** — KT p. 690's disjunction
+  ("one of `M₁/M₂/M₃` nonsingular") implies it directly; the blueprint node, when written, states
+  the increment form with a remark naming KT's sharper disjunction and the `M₁` route as the
+  intended proof, and notes the engine-equivalence to a minor-≢-0 statement. **Claim612-style
+  opaque functionals** (`case_III_claim612_gen`, `Molecular/RigidityMatrix/Claim612.lean:1339`)
+  are the *discharge's* tool (the corank-1 stress of a concrete matrix at a fixed seed needs no
+  polynomial gadget), not a carried shape — Finding 1's in-stratum failure locus makes any
+  ∀-realization opaque-`r` escape hypothesis false, and the ∃-form collapses into `hK`. Both
+  prior attack routes factor through `hK`'s discharge without loss (route 1's `escapePoly` infra
+  can still be built *inside* the discharge if that attack is chosen; route 2's opaque-`r`
+  fixed-seed `M₁` linear algebra is how the discharge should do the block computation).
 
-So the *only* piece not buildable-now is kernel **(K)** — the `∃`-seed `hEsc`. Everything
-else (L7a glue + L7b assembly + `escapePoly` definition) can land with `hEsc` as an
-explicit hypothesis, isolating the research obligation to a single crisp `∃`-statement.
+So the *only* piece not buildable-now is kernel **(K)** — the `hK` implication above. L7a is
+LANDED; L7b (re-pinned) is one buildable commit; the L7c hsplit assembly carries `hK` alone.
+Recorded corrections + tracked residues from the 2026-07-30 L7b-shape route recon:
+
+- **Bookkeeping correction to the earlier "+6 new rows" prose.** The `+6` is the increment over
+  the *full* `G′`-row space (which includes the `e₀ = ab` block — not a subfamily of `G`'s rows,
+  `e₀ ∉ E(G)`). Against the shared `G−v` rows the two new edges `eₐ`, `e_b` must contribute
+  **10** (H1 habitat numbers: common rows 80 and independent — the unique dependency needs the
+  `e₀`-block — G-target 90). And `splitOff_deficiency_le/ge` (`SplitOffDeficiency.lean:62/197`)
+  pin `def(G′) ∈ {def(G), def(G)−1}`, so the increment over `G′` is 6 *or* 5 by branch. The
+  refuted `escapePoly` pin silently baked in one branch and one bookkeeping reading; `hK`'s
+  ∃-LI form is branch- and bookkeeping-agnostic (all of it discharge-internal). `hK` is also
+  safely vacuous exactly where unusable: a ≥ 4-member `closedHubNbhd` in `G` transfers into `G′`
+  (the `G′` sets at `a`/`b` are supersets, elsewhere equal off `v`), killing the
+  `HasGenericPencilRealization G′` antecedent.
+- **The G′-chart → G-chart re-seed moves out of L7b entirely, into (K)'s discharge.** There the
+  landed bricks apply (`exists_pencilSeed_of_nondeg`, `Reseed.lean:65`;
+  `exists_independent_pencilRow_subfamily_at_toCoord_of_reseed`, `Steer.lean:813` — its `hubSel`
+  is a free variable, only the point-reproduction `hpt` matters), modulo one genuinely new
+  **split re-seed** sub-leaf: reproduce the `G′`-realization's points on a G-correct chart. At
+  `a`/`b` the G-selector selects a *subset* of the realization's orthogonality set, so the freed
+  slot lowers the `cross₃` arity and the landed arity-≤ 2 exact-hit lemmas get easier, not
+  harder. This is the recon's single riskiest assumption (no landed instance); if it is harder
+  than expected only the discharge's effort estimate moves — `hK` itself stays well-posed.
+- **Residue (i) — small `|V|` (TRACKED, L7c checklist).** `hsplit` supplies `3 ≤ |V|`; L7a and
+  the `htf` derivation need `5 ≤` / `4 ≤`. The `|V| ∈ {3,4}` habitat is exactly `C₃`, `C₄`
+  (triangles / parallel classes are proper rigid there; both graphs hub-free) — but **`htf` is
+  false at `C₃`**, so even the L6b feasibility route fails there; these need direct-witness
+  leaves (caliber of `exists_isNondegPencilRealization_parallel_pair`), promoted from the L6d
+  bullet's untracked "base dispatch" remark to explicit L7c checklist items.
+- **Residue (ii) — the bare half off-feasibility (TRACKED; own focused recon before build).**
+  `PencilPair`'s bare conjunct (`HasPencilRealization`, rank target included,
+  `Statement.lean:103`) is owed *unconditionally*, but the decomposition's only bare producer is
+  the forgetful map, which needs Simple + Feasible. "Habitat ⟹ `hcard ≤ 3`" is **already refuted
+  by the phase's own record** — the 2026-07-29 L6a refutation's theta counterexample is a 2EC +
+  no-proper-rigid + degree-2-carrying + simple habitat graph with `closedHubNbhd(center) = 4`
+  (recorded in `notes/Phase39.md` *Blockers* and the L6a block above; it is what made "infeasible
+  ⟹ generic-conjunct vacuous" the standing posture — but the *bare* half is not vacuous there).
+  Pinned route candidate: a **bare rank-extension leaf** — the IH gives
+  `HasPencilRealization K 3 G′` unconditionally; extend it across the split to `G`'s bare
+  target. Fire a focused recon on this leaf before building it (the pencil chart cannot express
+  a 4-member hub-neighbourhood incidence — `cross₃` takes three — so the leaf needs a non-chart
+  device or a KT-5.6-style strip-extend analogue).
+- **Residue (iii) — non-simple bare half (TRACKED, L7c checklist).** `¬Simple` habitat `G` is
+  excluded by `hnoRigid` (a parallel pair is proper rigid at `|V| ≥ 3`) — the brick is internal
+  to `splitOff_simple_of_noRigid_of_card`; restate externally at L7c if needed.
+- **Residue (iv) — fresh-`e₀` plumbing (TRACKED, L7c checklist).** The deficiency lemmas need
+  `e₀ ∉ E(G)`; L7c must exhibit a spare label (assembly work, precedent in the Phase-20/26
+  induction).
 
 **Route options for kernel (K) — user adjudication.** Numerics-first per instance
 (the pinned method) *validates* (K) but cannot *close* the `∀ G` Lean leaf. Three routes:
@@ -2807,18 +2907,25 @@ explicit hypothesis, isolating the research obligation to a single crisp `∃`-s
    pencil pinning breaks (dim 5 < 6), so a genuinely new non-vanishing input is needed.
 
 3. **Carry (K) as a project-level `have`-hypothesis indefinitely** (effort: 0 now; defers
-   the research). Land L7a + L7b + `escapePoly` with `hEsc` explicit — the same posture
-   L6a-safe-exists's rigid `k=0` half rode under before its route recon closed it (this
-   pass, same session). This completes the *entire* pencil reduction modulo the single
-   remaining named hypothesis (K), turning PENCIL into "conditional on one crisp
+   the research). **ADJUDICATED 2026-07-30 (session check-in) and re-shaped same day by the
+   L7b route recon:** land L7a (LANDED) + the re-pinned L7b + the L7c assembly with `hK`
+   explicit — the same posture L6a-safe-exists's rigid `k=0` half rode under before its
+   route recon closed it (this pass, same session). This completes the *entire* pencil
+   reduction modulo the single remaining named hypothesis (K) (plus the L7c residues
+   (i)–(iv) above, all tracked), turning PENCIL into "conditional on one crisp
    `∃`-statement, with decisive exact-ℚ evidence and 0 counterexamples". Legitimate as a
    milestone; the conjecture is then *proven modulo (K)*, and (K) can be attacked
-   (routes 1–2) or adjudicated later.
+   (routes 1–2, both factoring through `hK`'s discharge) or adjudicated later.
 
-**Recommendation.** Build L7a + L7b + `escapePoly` now under route 3 (carry `hEsc`), which
-unblocks the whole reduction and is the exact precedent-matching move; in parallel, fire a
-focused research recon on route 1 (localisation), with the local-vs-global numerical test
-as its first gate. Do **not** guess that (K) is provable by (6.44) — that is refuted.
+**Recommendation** (route 3 adjudicated; `escapePoly` deleted from the plan by the
+2026-07-30 re-pin). Build the re-pinned L7b
+(`hasGenericPencilRealization_of_independent_pencilRow_target`, one commit, every call a
+landed pattern), then the L7c hsplit assembly carrying `hK` (checklist: safe-`v` choice via
+the closed L6a-safe-exists, fresh-`e₀` plumbing, small-`|V|` base leaves, the
+bare-half-off-feasibility leaf after its own recon, non-simple bare-half restatement if
+needed); in parallel, fire a focused research recon on route 1 (localisation), with the
+local-vs-global numerical test as its first gate. Do **not** guess that (K) is provable by
+(6.44) — that is refuted.
 
 ## Higher-`d` note (orientation only, per the phase-open decision)
 

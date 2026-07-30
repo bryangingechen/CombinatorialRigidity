@@ -49,7 +49,21 @@ generic half: given a safe split vertex's data as explicit hypotheses (safe-vert
 stays L6a-safe-exists, not this leaf), `G.Simple`, `PencilNondegFeasible K G`, and the IH, chains
 the four landed L6 leaves to produce `HasGenericPencilRealization K 3 (G.splitOff v a b e₀)` — pure
 combinatorial glue, no new math, doesn't touch (K) or the rigid `k=0` half. Detail in *Decisions
-made*. Gates + axioms clean. **Next: L7b (consumes (K) as `hEsc`) or `escapePoly`.**
+made*. Gates + axioms clean.
+
+**W5-L7b RE-PINNED 2026-07-30** (docs design pass, this commit; canonical
+`notes/Phase39-design.md` §"W5-L7 research recon" "Lean decomposition"). The `escapePoly` build
+dispatch returned **BLOCKED** — the "L3-style, buildable" sizing was refuted (`M₁`'s row needs the
+*global* stress as a polynomial; no corank-1-cofactor infra in tree) — and the follow-up
+L7b-shape route recon adjudicated **route 3 in a realization-input, extension-shaped form**:
+`escapePoly` is DELETED from the plan (the engine's `hLI` slot makes an ∃-LI witness equivalent to
+a minor-≢-0 statement, no polynomial object needed); L7b is re-pinned split-data-free as
+`hasGenericPencilRealization_of_independent_pencilRow_target` (home `Escape.lean`, one commit,
+every call a landed pattern); kernel (K) is carried as the `hK` implication (KT Claim 6.12 at the
+rank-increment level, input = exactly L7a's output). Four L7c residues are now TRACKED in the
+design doc, incl. the small-`|V|` `C₃`/`C₄` base leaves and the bare-half-off-feasibility leaf
+(theta counterexample: the *bare* conjunct is not vacuous where feasibility fails).
+**Next: build L7b′ (`hasGenericPencilRealization_of_independent_pencilRow_target`).**
 
 **The rigid `k = 0` half's route recon LANDED 2026-07-30, and the bound was PROVEN in the same
 commit** (`ReducibleVertex.lean`: `edgeBound_of_noRigid_of_degree_two` +
@@ -67,8 +81,9 @@ realization where `M₁` FAILS, so the design doc's **route (b) [(6.44) algebrai
 is REFUTED** as a standalone certificate. The escape reduces (via the landed reformulation
 `M₁ ⟺ r ⬝ (b̂∧ĉ) ≠ 0`) to **one ≢-0-somewhere obligation** — kernel **(K)** — which the
 landed genericity engine `exists_common_seed_pencilRow_and_polynomials` is already built to
-consume. L7 decomposes into buildable glue (L7a) + a buildable rank-extension assembly
-(L7b, consuming (K) as a `have`-hyp) + an `escapePoly` definition; only (K) is open.
+consume. L7 decomposes into buildable glue (L7a, LANDED) + a buildable rank-to-generic steering
+assembly (L7b, re-pinned 2026-07-30 — no `escapePoly`; (K) carried as the `hK` rank-increment
+implication) + the L7c assembly; only (K) and the tracked L7c residues are open.
 **W5-L8 (`k=0` residue) buildable in parallel; W4 after W5.** The phase stays OPEN.
 
 **W0–W3 all COMPLETE; W5 design settled; W5-L0–L4 all COMPLETE; W5-L5 closed modulo TWO carried
@@ -188,12 +203,18 @@ Full record, grounding, and the W0–W5 decomposition:
   (route 2, landed), and `PencilSeed`'s single `fill` split into `fillHub`/`fillNbr`.
   No open question remains at either; W5-L4 closed (*Decisions made*).
 - Open research questions inside the pinned W5 route, downstream of L4: **W5-L7 kernel
-  (K)** (the escape polynomial `E = r⬝(b̂∧ĉ)` is `≢ 0` on the chart of `G^{ab}_v`, uniformly
+  (K)** (mathematically: the escape `E = r⬝(b̂∧ĉ)` is `≢ 0` on the chart of `G^{ab}_v`, uniformly
   across all Case-III habitats — the genuinely new mathematics; recon 2026-07-30 REFUTED the
-  (6.44)-identity route, isolated (K) as the sole open piece, and offered 3 routes for user
-  adjudication: localization (recommended attempt), reuse landed panel-span machinery, or
-  carry (K) as a `have`-hyp and build the rest now; `notes/Phase39-design.md` §"W5-L7 research
-  recon" "Route options"), **W5-L8** (the k = 0 residue — emptiness route recommended), and
+  (6.44)-identity route and isolated (K) as the sole open piece; **route 3 adjudicated at the
+  session check-in and re-shaped by the same-day L7b route recon** — the carried Lean form is the
+  `hK` rank-increment implication (realization input = L7a's output; ∃-LI output = the engine's
+  `hLI` food), NOT an `escapePoly` ≢-0 statement (that sizing was refuted by a BLOCKED build);
+  attack routes 1–2 (localization / panel-span reuse) both factor through `hK`'s discharge;
+  `notes/Phase39-design.md` §"W5-L7 research recon" "Lean decomposition" + "Route options"),
+  **the L7c bare-half-off-feasibility residue** (the theta counterexample makes the generic
+  conjunct vacuous but the *bare* conjunct is still owed; pinned route candidate = a bare
+  rank-extension leaf, own focused recon before build — design doc residue (ii)),
+  **W5-L8** (the k = 0 residue — emptiness route recommended), and
   W4's witness generality (unchanged, after W5).
 - ~~W5-L6 split-arm feasibility (safe-vertex existence)~~ **CLOSED** (2026-07-29 L6a re-route +
   2026-07-30 safe-exists recon + build; canonical `notes/Phase39-design.md` §"W5 leaf
@@ -231,20 +252,24 @@ LANDED — non-rigid `exists_adjacent_degree_two_pair_of_noRigid_of_deficiency_p
 Decisions-made entry; the honest producer of the split arm's feasibility obligation, needing only
 `hcard` from L6a-transfer and `htf` from L6d).
 
-**Route 3 ADJUDICATED (2026-07-30 session check-in) — build L7a + L7b + `escapePoly` now, carry
-kernel (K) as an explicit `hEsc` hypothesis** (`notes/Phase39-design.md` §"W5-L7 research recon"
-"Lean decomposition"). **L7a LANDED this commit** (`Escape.lean`,
-`hasGenericPencilRealization_of_splitOff_of_safe`). **Next concrete commit — either of:**
-- **W5-L7b** (the rank extension consuming (K) as `hEsc`, mirroring the v-f-6 assembly +
-  `finrank_span_rigidityRows_pencilChartFramework_eq_of_independent_pencilRow`
-  (`Steer.lean:693`) + `exists_common_seed_pencilRow_and_polynomials` (`Engine.lean:476`); target
-  shape in the design doc's "Lean decomposition" schematic — needs `escapePoly` as an input, so
-  either build `escapePoly` first or stub its type through as a parameter).
-- **`escapePoly`** — the `M₁` `6×6`-minor as an `MvPolynomial` in the seed coords (L3-style),
-  the input L7b's `hEsc` hypothesis names.
-Once both land, the reduction is complete modulo (K) alone — the rigid `k=0` bound is now
-**PROVEN** (this commit's route recon + build; user selected "Prove now" at the 2026-07-30
-session check-in).
+**Route 3 ADJUDICATED (2026-07-30 session check-in), re-shaped same day by the L7b route recon
+after the `escapePoly` build BLOCKED** (`notes/Phase39-design.md` §"W5-L7 research recon" "Lean
+decomposition" — the canonical re-pin). `escapePoly` is DELETED from the plan; kernel (K) is
+carried as the `hK` rank-increment implication. **L7a LANDED** (`Escape.lean`,
+`hasGenericPencilRealization_of_splitOff_of_safe`). **Next concrete commit:**
+- **W5-L7b′ build** — `hasGenericPencilRealization_of_independent_pencilRow_target`
+  (`Escape.lean`; signature pinned in the design doc's "Lean decomposition"): from `hcard` + `htf`
+  + the ∃-LI `hEsc`, a generic pencil realization of `G`. One commit; every call a landed pattern
+  (the L6b-i WF body `Steer.lean:1271`, the `Witness.lean` somewhere-producers, one
+  `exists_common_seed_pencilRow_and_polynomials` call `Engine.lean:476`, the pinch
+  `Steer.lean:693` + `pencilChartFramework_congr` — the v-f-6 rank thread with `G` for
+  `G.induce V₁`).
+Then **L7c** (the hsplit assembly, carrying `hK` alone — the rigid `k=0` bound is PROVEN, no
+other carried hypothesis remains). L7c checklist: safe-`v` choice via the closed L6a-safe-exists;
+fresh-`e₀` plumbing (`e₀ ∉ E(G)` for the deficiency lemmas); the small-`|V|` `C₃`/`C₄` base
+leaves (`htf` false at `C₃` — direct witnesses); the bare-half-off-feasibility leaf (own focused
+recon first — design doc residue (ii), theta counterexample); non-simple bare-half restatement if
+needed (residue (iii)).
 - **W5-L8** (the `k = 0` residue, emptiness route recommended — `notes/Phase39-design.md` §"W5 leaf
   decomposition" L8): the deficiency-`0` split-off bookkeeping / emptiness of the residue class.
 - **Attack kernel (K)** (research recon, route 1 localization recommended — its first gate is the
@@ -281,7 +306,14 @@ neighbor — is `notes/IdeaBacklog.md`.
 
 ## Decisions made during this phase
 
-- **L6a-safe-exists rigid `k = 0` half PROVEN — route recon + build, same commit** (2026-07-30,
+- **W5-L7b RE-PINNED + kernel (K) carried form settled — L7b-shape route recon** (2026-07-30,
+  docs design pass; canonical `notes/Phase39-design.md` §"W5-L7 research recon" "Lean
+  decomposition"). The `escapePoly` pin ("L3-style, buildable") was refuted by a BLOCKED build
+  (global stress, no cofactor infra); adjudicated: L7b = split-data-free
+  `hasGenericPencilRealization_of_independent_pencilRow_target` (`Escape.lean`), (K) = the `hK`
+  implication (KT Claim 6.12 at the rank-increment level; ∃-LI output = the engine's `hLI` slot,
+  minor-≢-0-equivalent). (K)-full rejected (subsumption); four L7c residues tracked, incl. the
+  bare-half-off-feasibility leaf (theta refutes habitat ⟹ `hcard ≤ 3`).
   `Induction/ReducibleVertex.lean`; canonical `notes/Phase39-design.md` §"W5 leaf decomposition"
   L6a). Coordinator-verified recon finding: the edge bound needs neither minimality nor a
   deficiency-sign case split — only a degree-2 vertex, which the split arm's antecedent already
