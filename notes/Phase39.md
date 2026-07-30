@@ -281,4 +281,19 @@ Reverse-chronological, one line per landing; full derivations live in git and
   verification history: `notes/Phase35.md` *Citations*,
   `notes/Phase23-cleanup.md`.
 - Jordán 2016 (MSJ Memoirs 34) — checked silent on the pencil stratum
-  in the 2026-07-23 survey (the no-literature-result finding).
+  in the 2026-07-23 survey (the no-literature-result finding), re-confirmed
+  by the 2026-07-30 (K) literature hunt (0 pages match pencil/coplanar/
+  concurrent/molecular/special-position).
+- The 2026-07-30 (K) literature hunt (option C, `Phase39-design.md` §"(K)
+  literature hunt") verified these project-new sources against the `.refs`
+  copies / primary metadata, all MISSes on the (K-tight) crux: White–Whiteley,
+  *The algebraic geometry of motions of bar-and-body frameworks*, SIAM J.
+  Alg. Disc. Meth. **8** (1987) 1–32; White–Whiteley, *The Algebraic Geometry
+  of Stresses in Frameworks*, SIAM J. Alg. Disc. Meth. **4** (1983) 481–511
+  (DOI 10.1137/0604049); Whiteley, *Rigidity of molecular structures: generic
+  and geometric analysis*, in Rigidity Theory and Applications (Thorpe &
+  Duxbury, eds.), Kluwer/Plenum 1999, 21–46; Whiteley, *Union of matroids and
+  rigidity of frameworks*, SIAM J. Discrete Math. **1** (1988) 237–255;
+  Schulze–Tanigawa, *Linking rigid bodies symmetrically* (arXiv:1402.0039);
+  Garamvölgyi, *Stress-linked pairs of vertices and the generic stress
+  matroid* (arXiv:2308.16851).

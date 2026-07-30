@@ -3370,6 +3370,79 @@ contains `k > 0` (`def(G) > 0`) habitats, where `G′` can have corank 0 (no str
 Case II (Lemma 6.8, which §R3 found survives the pin), not Case III. The `k = 0` /
 `k > 0` fork is internal to the discharge; nothing in `hK`'s statement moves.
 
+### (K) literature hunt (option C) (2026-07-30): the crux is novel — NO HIT
+
+The user-adjudicated option-C hunt (above): *does published literature bear on the (K-tight)
+crux — stress non-constancy for count-tight body-hinge multigraphs on the pencil substratum?*
+Method: WebSearch/WebFetch + the `.refs/` copies (pypdf keyword sweeps + page reads). Verdict:
+**NO HIT on the crux.** The closest published body of work is the White–Whiteley "pure
+condition / algebraic geometry of stresses and motions" theory, which is the in-print ancestor
+of option B's stress-as-chart-rational-function infrastructure but does **not** address the
+constrained-substratum non-constancy the (K-tight) kernel needs. The stratum-specific question
+is confirmed novel (the phase-open no-literature finding stands, now against a deliberate hunt).
+
+**What was searched (so the hunt is not silently repeated).**
+- *Venues/authors:* White–Whiteley algebraic-geometry-of-stresses/motions (`.refs` 1983, 1987);
+  Whiteley molecular + hinge-panel special-position analysis (`.refs` 1988, 1999, 2005); Tay
+  1989 (`.refs`); Schulze–Tanigawa symmetric body-hinge; Nixon–Owen–Power surface-constrained
+  frameworks; Jackson–Jordán molecular (`.refs` 2008/2009); Tanigawa Dilworth-truncation (`.refs`
+  2010); Garamvölgyi generic stress matroid (2023). Spot-check of the two phase-open sources:
+  Jordán 2016 (`.refs`) has **0** pages matching pencil/coplanar/concurrent/molecular/
+  special-position; KT 2011 already recorded silent — both confirmed silent, not re-litigated.
+- *Terms:* "self-stress / stress matrix (5,6)-tight body-hinge"; "pure condition bracket-ring
+  special positions"; "coplanar/concurrent hinge special position stress"; "generic rigidity on
+  a variety / substratum"; "coincident-point rigidity special position"; "corank-1 stress
+  rational function transversality"; "sp²/planar-bonded molecular rigidity".
+
+**Nearest hits (verified citations; each a MISS on the crux, relevance noted).**
+- **White & Whiteley, *The algebraic geometry of motions of bar-and-body frameworks*, SIAM J.
+  Algebraic Discrete Methods 8 (1987), no. 1, 1–32** (`.refs`, title page + p. 21–25 read).
+  THE closest analogue: for a bar-and-body isostatic multigraph a *single* polynomial (the pure
+  condition) cuts out the special positions, and at a generic point of each irreducible factor
+  the stress space is 1-dim with scope = the whole block (Prop. 4.6), with the factoring given by
+  the block lattice. *Miss:* (i) bar-and-*body*, not body-*hinge* (a hinge is a special 2-extensor
+  position of five bars); (ii) it structures the stress at generic points of the special-position
+  *variety* (where the frame goes dependent), not on a full-rank **pencil substratum**; (iii) it
+  proves stress *scope/factoring*, never the **non-constancy of a fixed corank-1 stress's a-block
+  direction `[r]` as data varies within a tight substratum** — exactly the (K-tight) object. It is
+  the published shape of option B's infrastructure, not a discharge of (K).
+- **White & Whiteley, *The Algebraic Geometry of Stresses in Frameworks*, SIAM J. Algebraic
+  Discrete Methods 4 (1983), no. 4, 481–511** (`.refs`, DOI 10.1137/0604049). The bar-joint
+  predecessor of the 1987 theory; same single-polynomial / stress-factoring story, one step
+  further from body-hinge. *Miss:* same three reasons, more so.
+- **Whiteley, *Rigidity of molecular structures: generic and geometric analysis*, in Rigidity
+  Theory and Applications (Thorpe & Duxbury, eds.), Kluwer/Plenum 1999, pp. 21–46** (`.refs`,
+  pp. 25–32 read). Directly on molecular (concurrent-hinge) bodies and their **polar hinge-panel
+  (coplanar-hinge)** structures; carries the geometric special-position analysis (C₆ boat = linear
+  line complex, the Bricard "four planes concurrent" shaky condition). *Miss:* expository /
+  per-small-cycle (C₆), no general non-constancy result for tight (5,6) multigraphs; and it treats
+  concurrency (molecular) and coplanarity (its polar) as **separate dual halves** — never their
+  intersection, which is exactly the pencil stratum (both at one body). Corroborates the project's
+  self-dual-stratum finding; does not touch the crux.
+- **Whiteley, *Union of matroids and rigidity of frameworks*, SIAM J. Discrete Math. 1 (1988),
+  no. 2, 237–255** (`.refs`, p. 245 read). States the concurrent↔coplanar polarity (three
+  concurrent lines dual to three coplanar) and, in §6.2, points to the White–Whiteley
+  single-polynomial special-position theory. *Miss:* the polarity is background the project
+  already has; no non-constancy result.
+- **Schulze & Tanigawa, *Linking rigid bodies symmetrically* (arXiv:1402.0039, 2014).** Symmetric
+  body-bar/body-hinge rigidity via symmetry-adapted matrices. *Miss:* a **symmetry** substratum,
+  not the concurrency+coplanarity pencil substratum; orthogonal machinery.
+- **Garamvölgyi, *Stress-linked pairs of vertices and the generic stress matroid*
+  (arXiv:2308.16851, 2023).** Algebraic-dual "generic stress matroid" of the bar-joint rigidity
+  matroid; about *generic* stress structure / global-linkedness. *Miss:* bar-joint, generic (not a
+  constrained substratum), and about stress *constancy* across generic realizations — the opposite
+  question from substratum non-constancy.
+- **Nixon–Owen–Power surface-constrained frameworks** (surveyed, not a `.refs` primary): a
+  "generic rigidity on a variety" template, but for **bar-joint** frameworks on 2-surfaces
+  ((2,k)-tight), no bearing on body-hinge pencil stress. *Miss.*
+
+**Consequence for the phase.** None — option A stands (adjudicated). The hunt does **not** change
+the (K) outlook: no published result discharges (K-tight), and the nearest theory (White–Whiteley
+pure condition) is precisely the infrastructure option B would build in-tree, not an off-the-shelf
+citation. If (K) research ever resumes under option B, the 1983/1987 pure-condition papers are the
+right starting exemplars for the corank-1 cofactor gadget + irreducible-factor stress bookkeeping.
+No coordinator/user escalation needed (expected NO-HIT confirmed).
+
 ## Higher-`d` note (orientation only, per the phase-open decision)
 
 The pencil stratum generalizes: hinges at a body contained in a
