@@ -9,8 +9,9 @@ L5-cut-v-a…v-g all landed (`Motive.lean`/`Witness.lean`/`Engine.lean`/`Steer.l
 **v-g PART 2 LANDED** (2026-07-29, `Pair2.lean`: the inline sub-case-4 discharge
 `hasGenericPencilRealization_pendant_deg3_of_IH` + the shell/successor rewire dropping
 `hcutPendant3` and adding `[Infinite K]`, blueprint node restated) — per-leaf detail one-lined in
-*Decisions made* + `notes/Phase39-design.md`. **L6/L8 are parallel combinatorial tracks buildable
-now; L7 (the research core) is last; W4 after W5** (phase opened 2026-07-23, recon-first).
+*Decisions made* + `notes/Phase39-design.md`. **W5-L6 (habitat feasibility) COMPLETE 2026-07-30;
+L8 buildable in parallel; L7 (the research core) is the last / critical path; W4 after W5** (phase
+opened 2026-07-23, recon-first).
 `Molecule/Pencil.lean` split into
 `Molecule/Pencil/{Statement,Arms,Motive,Chart,Engine,Reseed,Witness,Steer,Pair,Pair2}.lean`
 (2026-07-24/25/29 housekeeping).
@@ -24,6 +25,13 @@ phase. Unless there's a good reason to split here."* (coordinator assessed: no
 reason to split — the phase's charter is the conjecture itself), then *"Let's end
 the loop after this dispatch returns and you've confirmed its results; we'll begin
 the research on the conjecture in a fresh session."*
+
+**2026-07-30 adjudication (this session, verbatim):** *"Let's wrap up this session when
+we finish L6 and leave the research core to a fresh session."* L6 (habitat feasibility)
+is now COMPLETE, so this session wraps here; **the fresh session begins at W5-L7 (the
+research core — the uniform escape certificate `r ⬝ Λ²Π̂(a) ≢ 0`, the genuinely new
+mathematics), with W5-L8 (`k=0` residue) buildable in parallel and W4 after W5.** The
+phase stays OPEN (no phase-close).
 
 **W0–W3 all COMPLETE; W5 design settled; W5-L0–L4 all COMPLETE; W5-L5 closed modulo TWO carried
 hypotheses** (loop, base, and cut arms all landed against `PencilPair`, and the successor assembly

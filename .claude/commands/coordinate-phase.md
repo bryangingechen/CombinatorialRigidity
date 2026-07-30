@@ -290,7 +290,18 @@ CLAUDE.md at phase close.
    chapter open past what the source actually uses, was refuted by the
    section's pre-build recon — dispatch-log 2026-07-11). Before the
    first build against any section of transcribed math, a pre-build
-   recon of that section is the check that fires in time. The rating
+   recon of that section is the check that fires in time. **The guard's
+   third face is a design PIN vs the phase's own recorded Blockers**: a
+   leaf's pinned hypothesis / signature (from a design pass) can
+   silently contradict a refutation the phase already recorded — before
+   dispatching a build on a pinned leaf, diff its hypotheses against the
+   phase note's *Blockers* + the design doc's recorded counterexamples,
+   not just against definition bodies. A Phase-39 `hcard`-only L6b pin
+   rode "UNCHANGED" through two recons while the note's own *Blockers*
+   already recorded the triangle-hub mechanism refuting any
+   `≤3`-closedHubNbhd feasibility criterion; it was refuted at first
+   build contact by a bank-authorized spike (dispatch-log F10). No gate
+   reads a pinned hypothesis against recorded prose. The rating
    step is the natural moment: you are already reading the hand-off's
    route.
 3. Dispatch the Agent tool with the rung-pinned `subagent_type` from

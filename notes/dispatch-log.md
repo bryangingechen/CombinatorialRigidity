@@ -248,3 +248,25 @@ At phase close, promote stable entries into the coordinator command's
   re-derivation against a conditioned motive is P≥2 even when the
   design doc calls it "small"/"free" — reserve P=1 for arms whose
   vacuity guard is already landed and named.
+- **F10 — diff a design PIN against the phase's OWN recorded Blockers
+  at pin/dispatch time (Phase 39 W5-L6 habitat arc).** The L6 arc
+  produced THREE optimistic-pin refutations, each caught cheaply by a
+  recon/spike before any wasted build. The sharpest: the L6b leaf was
+  pinned with `hcard : ∀ v, closedHubNbhd ≤ 3` as its ONLY hypothesis,
+  which rode "L6b UNCHANGED" through two later recons — while the phase
+  note's *Blockers* section ALREADY recorded that the triangle-hub
+  mechanism (`not_pencilNondegFeasible_of_triangle_two_hubs`) refutes
+  *any* purely-combinatorial `≤3`-closedHubNbhd feasibility criterion.
+  The pin contradicted a recorded refutation and was killed at first
+  build contact (a bank-authorized spike). No gate reads a pinned
+  hypothesis against recorded prose, and F8/step-2's def-body check
+  does not cover a pin-vs-Blockers contradiction. **The coordinator
+  check that fires in time:** before dispatching a build on a pinned
+  leaf, diff its hypotheses/signature against the phase note's
+  *Blockers* + the design doc's recorded counterexamples — now folded
+  into the step-2 derivation guard. Corollary (validated 3×): on a
+  research phase where design pins outrun verification, recon/spike-
+  first — including **bank-authorized spikes** (bank the clean sub-
+  pieces, revert+map the hard residual) — keeps every refutation
+  cheap; the pattern completed W5-L6 (habitat feasibility) with zero
+  wasted builds despite three false pins.
