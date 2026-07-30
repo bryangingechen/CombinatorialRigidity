@@ -185,6 +185,54 @@ to be re-derived by re-reading entries later.
 - **Friction:** `join_extensor : extensor a ∨ₑ extensor b = extensor (Fin.append a b)` and `join_def : A ∨ₑ B = A * B`. Starting from a goal `extensor ![x,a,b] = extensor ![x] * extensor ![a,b]`, `rw [← join_extensor]` fails ("did not find `extensor (Fin.append ?a ?b)`" — the product is `*`, not `∨ₑ`, and no `Fin.append` is present). Right order: `rw [← join_def, join_extensor]` (product → `∨ₑ` → `extensor (Fin.append ..)`), then `congr 1; funext i; fin_cases i <;> rfl` bridges `![x,a,b] = Fin.append ![x] ![a,b]`.
 - **Status:** resolved in-proof (usage note).
 
+### [idiom] A `Graph`-namespaced typeclass field (`Simple.eq_of_isLink`, etc.) is unresolvable as a bare name outside `namespace Graph` — use `hSimple.eq_of_isLink` (dot notation on the instance term) or the fully-qualified `Graph.Simple.eq_of_isLink`
+- **Where it bit:** Phase 39 (PENCIL) W5-L7c-3 (`Molecule/Pencil/Base.lean`), which lives in
+  `namespace CombinatorialRigidity.Molecular` (like most `Pencil/*.lean` files), not
+  `namespace Graph`. Writing bare `Simple.eq_of_isLink he hf` (the form that resolves fine
+  *inside* `Induction/Operations.lean`/`ReducibleVertex.lean`, both under `namespace Graph`)
+  fails with "unknown identifier" — name resolution only searches the *current* namespace plus
+  explicit `open`s, and this file has neither `open Graph` nor a re-export.
+- **Fix:** given `hSimple : G.Simple` already in scope, `hSimple.eq_of_isLink he hf` resolves via
+  dot notation (Lean inserts `hSimple` at the class-instance argument, not just the first
+  explicit one) — the uniform fix whether or not a receiver term is at hand is the fully-qualified
+  `Graph.Simple.eq_of_isLink he hf`. Same pattern for any theorem living in `namespace Graph` that
+  a `Molecule/Pencil/*.lean` file calls bare (`Graph.simple_of_loopless_of_noRigid`,
+  `Graph.two_le_degree_of_twoEdgeConnected` here) — these are not class fields, so only the
+  `Graph.`-qualified form works (no dot-notation shortcut without a receiver of exactly that type).
+- **Status:** idiom (recurs for any `Graph`-namespaced lemma/field called from a
+  `CombinatorialRigidity.Molecular`-namespaced file without an explicit qualifier).
+
+### [idiom] Proving a small explicit family of grade-`2` wedge extensors is linearly independent: join each with its complementary basis pair (a "detector" functional), not a hand-rolled exterior-power coordinate readout
+- **Where it bit:** Phase 39 (PENCIL) W5-L7c-3 (`Molecule/Pencil/Base.lean`,
+  `pencilPair_of_habitat_ncard_eq_three`): the triangle witness's three cycle-edge support
+  extensors `extensor ![p0,p1], extensor ![p1,p2], extensor ![p2,p0]` (three of the four `K⁴`
+  standard basis vectors, wedged pairwise) must be `LinearIndependent K` as a `Fin 3`-family —
+  `theorem_55_cycle`'s `hgen` hypothesis — before any of the rest of the realization (rank via
+  bridge B1) can proceed.
+- **Friction:** there is no ready-made "small explicit wedge family is LI" lemma, and hand-picking
+  exterior-power coordinates (via `ScrewSpace.equivExteriorPower`/mathlib's `exteriorPower` basis
+  API) looked like it would need unfamiliar machinery. The fix needs only the already-landed
+  `extensor`/`join` API (`Extensor.lean`) and no new infrastructure.
+- **Fix (the technique).** To show `c₀ • Cᵢⱼ + c₁ • Cⱼₖ + c₂ • Cₖᵢ = 0 ⟹ each cᵢ = 0` where each
+  `C_ab := extensor ![a, b]` (`ScrewSpace.mk`-wrapped) is a wedge of two of `n` linearly
+  independent vectors `v₀, …, v_{n-1}` in `K^n`: for each wedge, RIGHT-MULTIPLY the whole equation
+  (in the ambient `ExteriorAlgebra`, via `ScrewSpace.val` + `congrArg (· * extensor <complement>)`)
+  by `extensor <the complementary (n-2) vectors not in that wedge>`. Every *other* wedge in the sum
+  shares at least one vector with that complement, so its product vanishes by
+  `extensor_eq_zero_of_eq` (a repeated vector kills the wedge, alternating property); the wedge
+  itself, joined with its own complement, becomes (via `← join_def, join_extensor` —
+  the entry above) the extensor of *all `n` vectors in some order* — nonzero by
+  `extensor_ne_zero_iff_linearIndependent` applied to the full family (reordered via
+  `LinearIndependent.comp` + an explicit `Fin n ≃ Fin n` witnessed `by decide`, when the order
+  differs from the canonical one). `smul_eq_zero` then isolates that one coefficient. Repeat once
+  per wedge (3 times here) with the matching complement. Each individual step is `simp only
+  [add_mul, smul_mul_assoc, zero_mul, <the 3 key/zero facts>, smul_zero, add_zero]` against the
+  right-multiplied hypothesis. Fully generic in `n` (only the concrete complements change); no
+  exterior-power coordinate API needed at all.
+- **Status:** idiom (recurs verbatim for the sibling `C₄` base leaf, L7c-4 — a `Fin 4`-family with
+  4 wedges, each detected by joining with its own complementary pair of the remaining two basis
+  vectors — and for any future small-explicit-witness realization needing hinge independence).
+
 ### [idiom] `linearIndependent_fin_cons` is now deprecated (mathlib bump) — use `linearIndependent_finCons`
 - **Where it bit:** Phase 39 (PENCIL) W2 remainder (`Meet.lean`, `extensor_triple_eq_zero_iff`), splitting `LinearIndependent K (Fin.cons x v)` into `LinearIndependent K v ∧ x ∉ span (range v)`.
 - **Friction:** `linearIndependent_fin_cons` compiles but emits a deprecation warning (→ `linearIndependent_finCons`), tripping the warning-clean gate. Sibling of the `push_neg`→`push Not` rename below; another camelCase-ification in a recent mathlib bump.

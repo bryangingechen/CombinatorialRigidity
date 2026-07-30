@@ -3003,25 +3003,38 @@ L7c-5/L7c-6 only — their *statements* carry `hK`, whose type reads `pencilRow 
   all — the statement is purely graph-theoretic). Home `ForestSurgery/Reduction.lean` beside
   the original. Gates + axioms clean (`propext`/`Classical.choice`/`Quot.sound`; full
   `lake build` + `lake lint` both clean).
-- **L7c-3 (S2, buildable now)** — the `C₃` base leaf (residue (i)):
+- **L7c-3 LANDED 2026-07-30** (`Molecule/Pencil/Base.lean`, new file) — the `C₃` base leaf
+  (residue (i)):
   ```lean
   theorem pencilPair_of_habitat_ncard_eq_three [Finite α] [Finite β] {G : Graph α β}
       (hloop : G.Loopless) (hV : V(G).ncard = 3) (h2ec : G.TwoEdgeConnected)
       (hnoRigid : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G 3) : PencilPair K 3 G
   ```
   Identification: Simple (L7c-1) + `|V| = 3` caps every degree at `2`; 2EC forces degree `≥ 2`
-  (`two_le_degree_of_twoEdgeConnected`) ⟹ 2-regular ⟹ the spanning `C₃`. Witness (direct,
-  caliber `exists_isNondegPencilRealization_parallel_pair`): three non-collinear homogeneous
-  points; hinges = the three side lines (the pencil constraints force them); all three panels =
+  (`two_le_degree_of_twoEdgeConnected`) ⟹ 2-regular ⟹ the spanning `C₃`. Landed via a direct
+  contradiction argument (no third neighbour exists to absorb a second edge at any vertex),
+  slightly leaner than a full edge/degree classification. Witness (direct, caliber
+  `exists_isNondegPencilRealization_parallel_pair`): three of the four `K⁴` standard basis
+  vectors as points; hinges = the three side-line wedges; all three panels =
   the triangle's plane (the R1 collapse — two distinct lines through a point span their plane),
-  so `normal` is constant; hub-free (`PencilHub` needs degree `≥ 3`) makes conjunct 3 trivial
-  and conjunct 4 = the 3-point LI. Rank: the three side-line extensors are LI (three
-  non-concurrent lines of one plane: `Λ²` of a 3-dim space is 3-dim, the dual triangle's
-  vertices are not collinear) ⟹ `theorem_55_cycle` at `m = 3` ⟹ bridge B1
+  so `normal` is constant (the fourth basis vector); hub-free (`PencilHub` needs degree `≥ 3`)
+  makes conjunct 3 trivial and conjunct 4 = the 3-point LI (a sub-family of the basis). Rank: the
+  three side-line extensors are LI — proved via a new reusable "join-detector" technique
+  (FRICTION [idiom], join each wedge with the complementary unused basis pair; every other wedge
+  then repeats a vector against that complement and vanishes) rather than a hand-rolled
+  exterior-power coordinate readout — ⟹ `theorem_55_cycle` at `m = 3` ⟹ bridge B1
   (`isInfinitesimallyRigidOn_vertexSet_iff_finrank_span_rigidityRows`, the base arm's own
   single-edge rank thread, `Pencil/Pair.lean:1252ff`) ⟹ rank `= 6(|V|−1)`, which is the target
   since `def = 0` (`isKDof_zero_of_cycle`). Bare half = `hasPencilRealization_of_generic`.
-- **L7c-4 (S2, buildable now)** — the `C₄` base leaf, same template at `m = 4`:
+- **L7c-4 (S2, buildable now)** — the `C₄` base leaf, same template at `m = 4`. **Not the same
+  proof as L7c-3, on inspection (2026-07-30 build dispatch):** `C₃`'s witness rides a degeneracy
+  specific to *three* points always being coplanar (a shared constant panel normal); at `C₄` no
+  such collapse is forced, so each vertex needs its *own* panel normal (the "opposite" basis
+  vector, index `i + 2`, simultaneously orthogonal to its own point and both neighbours' — still
+  an explicit standard-basis construction, not a generic/numerics route), and the degree bound
+  additionally needs the triangle-freeness exclusion below (not just Simple + 2EC). The
+  join-detector technique for the wedge-family independence (now landed at L7c-3, FRICTION
+  [idiom]) generalizes directly to the 4-term case.
   ```lean
   theorem pencilPair_of_habitat_ncard_eq_four [Finite α] [Finite β] {G : Graph α β}
       (hloop : G.Loopless) (hV : V(G).ncard = 4) (h2ec : G.TwoEdgeConnected)

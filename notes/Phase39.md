@@ -20,10 +20,13 @@ of `simple_of_loopless_of_noRigid`, no new lemma; L7c-2 =
 gate first"** (build L7c-1…4, probe before L7c-5/6). **L6a-safe-exists's rigid `k = 0` half PROVEN 2026-07-30**
 (`edgeBound_of_noRigid_of_degree_two` + `exists_adjacent_degree_two_pair_of_noRigid_of_degree_two`,
 `ReducibleVertex.lean`) — the split-arm safe-vertex existence obligation is now closed in full,
-minimality-free, needing no deficiency case-split at the L7 call site.
+minimality-free, needing no deficiency case-split at the L7 call site. **L7c-3 LANDED 2026-07-30**
+(`Molecule/Pencil/Base.lean`, new file: `pencilPair_of_habitat_ncard_eq_three`) — the `|V| = 3`
+direct-witness base leaf; **L7c-4 (the `|V| = 4` sibling) remains open**, scoped to a follow-up
+commit (the two habitats are not symmetric enough to share a proof — see *Decisions made*).
 `Molecule/Pencil.lean` split into
-`Molecule/Pencil/{Statement,Arms,Motive,Chart,Engine,Reseed,Witness,Steer,Pair,Pair2,Escape}.lean`
-(2026-07-24/25/29 housekeeping).
+`Molecule/Pencil/{Statement,Arms,Motive,Chart,Engine,Reseed,Witness,Steer,Pair,Pair2,Escape,Base}.lean`
+(2026-07-24/25/29/30 housekeeping).
 
 ## Current state
 
@@ -319,8 +322,15 @@ decomposition"): L7c-2 = `exists_splitOff_data_of_degree_eq_two_of_twoEdgeConnec
 (verbatim): "Numerics gate first"** — build L7c-1…4 now, run the exact-ℚ (K-bare) probe before
 building L7c-5/6 (a numerics probe runs independently under untracked `scratchpad/`); the
 carry-vs-motive-change-vs-research three-way choice stays deferred to the probe's outcome.
+**L7c-3 LANDED 2026-07-30** (`Molecule/Pencil/Base.lean`,
+`pencilPair_of_habitat_ncard_eq_three` — detail in *Decisions made*). **L7c-4 remains open**
+(scoped out of that commit — the `C₄` identification/witness genuinely differs from `C₃`'s, not a
+mechanical repeat).
 **Next concrete commit:**
-- **L7c-3 / L7c-4** (the `C₃`/`C₄` base leaves, buildable now, one S2 commit each or combined).
+- **L7c-4** (the `C₄` base leaf; `Base.lean` is the home, and the FRICTION [idiom] "wedge-family
+  independence via the join-detector" entry generalizes directly to the 4-term case — the harder
+  parts are the per-vertex-normal construction and the degree-`3`-exclusion-via-triangle-freeness
+  identification step, both pinned in the design doc).
 - **The (K-bare) numerics probe** (running independently; exact-ℚ bare rank at the infeasible
   gadgets + degenerate-seed extension probes — design doc residue (ii)'s "if (a)" plan); its
   outcome settles whether L7c-5/6 proceed under the carry route or a different one.
@@ -360,6 +370,28 @@ neighbor — is `notes/IdeaBacklog.md`.
 
 ## Decisions made during this phase
 
+- **W5-L7c-3 LANDED (scope reduced to `C₃` only this commit)** (2026-07-30,
+  `Molecule/Pencil/Base.lean`, new file: `pencilPair_of_habitat_ncard_eq_three`). Identification:
+  `Simple` (via `simple_of_loopless_of_noRigid`) + 2EC's degree-`≥2` lower bound + `Simple`'s
+  at-most-one-edge-per-pair upper bound force every vertex of the 3-element `V(G)` to be adjacent
+  to *both* others (a direct contradiction argument — no third neighbour exists to absorb a
+  second edge — needs no full-classification detour). Witness: three of the four `K⁴` standard
+  basis vectors as points, the fourth as one shared constant panel normal (the "R1 collapse" fact
+  that 3 points always span at most a plane); no vertex is a `PencilHub` (degree `2 < 3`), so the
+  closed-hub-neighbourhood conjunct is vacuous and the closed-neighbourhood conjunct is a
+  sub-family of the basis. Rank: `theorem_55_cycle` + bridge B1
+  (`isInfinitesimallyRigidOn_vertexSet_iff_finrank_span_rigidityRows`) needs the three cycle-edge
+  wedge extensors linearly independent — the crux, proved via a new reusable technique (FRICTION
+  [idiom] "wedge-family independence via the join-detector": join each wedge with the
+  complementary pair of unused basis vectors — every *other* wedge then repeats a vector against
+  that complement and vanishes, isolating the wedge's own coefficient against the nonzero "top"
+  extensor). **Scope note:** the dispatch was asked for L7c-3 **and** L7c-4 (`C₄`) together; L7c-4
+  turned out to need a materially different construction (per-vertex — not shared-constant —
+  panel normals, plus a triangle-freeness-based degree-`3` exclusion the `C₃` case doesn't need),
+  so it is deferred to its own commit rather than risk an incomplete/rushed landing (phase-builder
+  scope-shrink discipline). Two new FRICTION [idiom] entries (the join-detector technique;
+  `Graph`-namespaced field/lemma resolution from outside `namespace Graph`). Gates + axioms clean
+  (`propext`/`Classical.choice`/`Quot.sound`; full `lake build` + `lake lint` both clean).
 - **W5-L7c-1 + L7c-2 LANDED + (K-bare) "Numerics gate first" adjudication** (2026-07-30,
   `ForestSurgery/Reduction.lean` + `notes/Phase39-design.md` correction). L7c-2 =
   `exists_splitOff_data_of_degree_eq_two_of_twoEdgeConnected` — mechanical copy of
