@@ -903,7 +903,12 @@ the KT primary source (p. 684 re-verified this pass, see *Citations*).
    them, a **graded chart** (points-first elimination ordering; the N6
    sampler is the blueprint) extends the device without touching the
    motive.
-4. **Split-arm use-sites are conjecturally feasible (W5-L6).** Two
+4. **Split-arm use-sites are conjecturally feasible (W5-L6).**
+   ⚠️ **REFUTED as a bare-hypothesis claim (2026-07-29) — the "≤ 3
+   closed hub-neighbourhood" lemma below is FALSE for general
+   2EC/no-proper-rigid graphs; the sampling here used only SHORT chains.
+   Computer-verified counterexample + re-route in §"W5 leaf
+   decomposition" L6a.** Two
    attempts to build a 2EC/no-proper-rigid habitat graph containing a
    4-member closed hub-neighbourhood both fell into the contract arm:
    spider-K4 has the dependent proper subset `{u,a,b,c,p₁,p₂,q₁,q₂}`
@@ -2134,18 +2139,33 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
     contradicting `hnoRigid`. Grep confirms **no existing partial**: the landed
     `ncard_closedHubNbhd_le_three_of_isNondegPencilRealization` (`Motive.lean:409`) derives `≤ 3`
     *from* a realization — circular here, since L6b is *building* the realization.
-    **PROOF-RISK FLAG (recon clause 2, flag-don't-force).** A pure local induced-subgraph count is
-    INSUFFICIENT: `v` + 3 hub-neighbours `a, b, c` can induce as few as 3 edges (the star
-    `va, vb, vc`; `5·3 = 15 < 18 = 6·3`, not rigid), because `a, b, c`'s degree comes from edges
-    *leaving* `{v, a, b, c}`. The proof needs the GLOBAL `hnoRigid` strength via a KT-style
-    region/deficiency argument; the sibling `exists_isProperRigidSubgraph_of_three_le_degree`
-    (`Induction/Operations.lean:369`, W3-L1) is a *global-min-degree* handshake count, a template for
-    the count style but not a direct reuse. The lemma is asserted true by §"W5 design pass" verdict 4
-    on the evidence of two failed counterexample attempts (spider-K4, 3-chain star — both contained a
-    proper rigid subgraph, i.e. fell into the contract arm), but is **NOT PROVEN**; `h2ec`'s role in
-    the proof is TBD (verdict 4 lists it; it may not be load-bearing). **This is L6's highest-risk
-    sub-leaf — build FIRST; if the direct proper-rigid-exhibit route stalls, it earns its own
-    sub-recon / numerics pass before further L6 effort.**
+    **REFUTED (2026-07-29, L6a build → computer-verified counterexample, coordinator-reproduced; NOT
+    the pinned lemma).** The bare-hypothesis lemma above is **FALSE**. Counterexample (verified over
+    all `2^19` vertex subsets): the theta graph at `n = 3` (`D = bodyBarDim 3 = 6`) — central hub `v`
+    with spokes to `a, b, c`, where `a, b, c` lie on an 18-cycle of three **6-edge** arcs (`19`
+    vertices, `21` edges). It is loopless, simple, `TwoEdgeConnected` (min edge-cut `= 2`), and has
+    **no proper rigid subgraph**: writing `f(W) := 5·|E_G(W)| − 6·(|W|−1)` (= `−partitionDef` at the
+    finest partition), a rigid subgraph forces `f ≥ 0`, and here `max` over proper `|W| ≥ 2` is
+    `−1 < 0` — so no proper rigid subgraph (robust to the spanning reading, since `f(V) = −3`). Yet
+    `deg v = deg a = deg b = deg c = 3`, so all four are `PencilHub`s and
+    `(G.closedHubNbhd v).ncard = 4 > 3`, contradicting the conclusion while every hypothesis holds.
+    **Root cause of verdict 4's error:** it sampled only SHORT chains (spider-K4, 3-chain-4), which
+    stay dense; **each edge subdivision changes `f` by `−1`**, so lengthening the arcs drives every
+    proper subset strictly sparse while preserving the four degree-3 hubs and 2EC. The sharp
+    transition at `D = 6`: arcs `(4,4,4) → f_max = 1`, `(5,5,5) → 0` (borderline tight), `(6,6,6) →
+    −1` (clean). The builder reproduced verdict 4's own hand numbers as a cross-check (spider-K4
+    `f = 3`, chain-4 `f = 1`). Note the counterexample is itself strictly SPARSE (`f(V) = −3`, not
+    rigid) — the true split-arm habitat likely carries a rigidity/tightness invariant (`f(V) ≥ 0`)
+    the bare hypotheses omit.
+    **Re-route (owner: a dedicated L6a proof-route recon — the next dispatch).** Settle the correct
+    invariant at the actual use-site `G′ = G.splitOff v a b e₀`; candidate strengthenings (builder):
+    (a) `G` rigid / spanning-circuit / minimally-0-dof — most likely, but the borderline `(5,5,5)`
+    case gives `f(V) = 0` with a proper tight subset, so whether the circuit hypothesis actually
+    rescues the ≤ 3 bound is itself OPEN and needs a matroid-rank computation, not just the `f` count;
+    (b) 3-edge-connectivity (the counterexample is exactly 2EC); (c) a max-degree bound. The L6→L7
+    wiring (supplying `hcard` for `G′`) must be re-planned: either a restated L6a that applies to `G′`,
+    or a direct structural `splitOff` argument. **L6b (takes `hcard` as an explicit hypothesis) and L8
+    are UNAFFECTED — independently buildable now.**
 
   - **L6b — the general-position witness seed** (target: `Molecule/Pencil/Witness.lean`; decoupled
     from L6a via an explicit `hcard` hypothesis, so it is independently buildable). Target signature

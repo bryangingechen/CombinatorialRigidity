@@ -151,17 +151,22 @@ Full record, grounding, and the W0–W5 decomposition:
 
 **Next concrete commit — pick up one of the three remaining W5 leaves (L6/L7/L8) or W4** (each still
 gated on `hsplit`/`hcontract`). The natural first steps:
-- **W5-L6** (parallel combinatorial track, buildable now): habitat feasibility — **decomposed
-  2026-07-29** into L6a (the `≤ 3` closed-hub-neighbourhood lemma), L6b (the general-position witness
-  seed → `PencilNondegFeasible K G′`, spike-first), and L6c (`G′.Simple`, a citation to the LANDED
-  `splitOff_simple_of_noRigid_of_card`, folded into L7). Full sub-leaf signatures + routes + spike
-  flags: `notes/Phase39-design.md` §"W5 leaf decomposition" L6. **Next concrete commit: L6a** —
-  `ncard_closedHubNbhd_le_three_of_twoEdgeConnected_of_noRigid` (new `Pencil/Habitat.lean`; the gating
-  combinatorial risk — a local count is insufficient, the proof needs the global `hnoRigid` strength;
-  see the design doc's PROOF-RISK flag). L6b (with the `≤ 3` bound as an explicit hypothesis) may
-  proceed in parallel. L6 feeds L7, NOT `hsplit` directly.
-- **W5-L8** (parallel combinatorial track, buildable now): the `k = 0` residue, emptiness route
-  recommended.
+- **W5-L6** (habitat feasibility) — **decomposed 2026-07-29** into L6a (the `≤ 3`
+  closed-hub-neighbourhood lemma), L6b (the general-position witness seed →
+  `PencilNondegFeasible K G′`, spike-first), and L6c (`G′.Simple`, a citation to the LANDED
+  `splitOff_simple_of_noRigid_of_card`, folded into L7). **L6a as first pinned is REFUTED
+  (2026-07-29):** the bare `2EC + no-proper-rigid ⟹ ≤ 3` claim is FALSE (computer-verified theta-graph
+  counterexample, all four hyps hold yet `closedHubNbhd v = 4`; the counterexample is strictly sparse,
+  `f(V) = −3`, so the true habitat likely carries an omitted rigidity/tightness invariant). Full
+  counterexample + candidate re-routes: `notes/Phase39-design.md` §"W5 leaf decomposition" L6a.
+  **Next concrete commit: a dedicated L6a proof-route recon** — settle the correct invariant at the
+  use-site `G′ = G.splitOff v a b e₀` (candidates: `G` rigid/spanning-circuit; 3-edge-connectivity;
+  max-degree) and the L6→L7 `hcard` wiring, then re-pin L6a's signature. L6 feeds L7, NOT `hsplit`
+  directly.
+- **W5-L8** (parallel combinatorial track, buildable now, UNAFFECTED by the L6a refutation): the
+  `k = 0` residue, emptiness route recommended. **L6b** (takes the `≤ 3` bound as an explicit
+  `hcard` hypothesis) is likewise independently buildable now — either is a viable pivot if the L6a
+  recon stalls.
 - **W5-L7** (the research core, last): the uniform escape certificate `r ⬝ Λ²Π̂(a) ≢ 0` on the
   chart — the genuinely new mathematics; N2 witnesses one instance.
 - **W4** (after W5): the constrained-family Claim-6.4 analogue, `G′`-block witness confirmed by N3;
@@ -183,6 +188,18 @@ neighbor — is `notes/IdeaBacklog.md`.
 
 ## Decisions made during this phase
 
+- **W5-L6 decomposed (L6a/L6b/L6c), then L6a-as-pinned REFUTED** (2026-07-29; design pass `6768bd33`
+  + coordinator salvage this commit). The L6 design-pass recon split habitat feasibility into L6a
+  (the `≤ 3` closed-hub-neighbourhood combinatorial lemma), L6b (the witness seed →
+  `PencilNondegFeasible K G′`, decoupled via an explicit `hcard` hypothesis), L6c (`G′.Simple` = the
+  landed `splitOff_simple_of_noRigid_of_card`, a citation — a real simplification). The L6a build then
+  **refuted** its own pinned signature with a computer-verified counterexample (theta graph, arcs
+  `(6,6,6)`: 2EC + no-proper-rigid, yet four degree-3 hubs ⟹ `closedHubNbhd = 4`), returning BLOCKED
+  with no commit — the bare `2EC + no-proper-rigid` hypotheses do NOT bound the closed hub
+  neighbourhood. Canonical counterexample + candidate re-routes: `notes/Phase39-design.md` §"W5 leaf
+  decomposition" L6a. **Next: a dedicated L6a proof-route recon** to settle the true use-site invariant
+  (`G′ = G.splitOff v a b e₀`) — the counterexample is strictly sparse (`f(V) = −3`), so a
+  rigidity/tightness invariant is the leading candidate. L6b/L8 unaffected. Dispatch-log F9 instance.
 - **L5-cut-v-g PART 2 LANDED — the inline sub-case-4 discharge + shell/successor rewire; L5-cut-v
   CLOSED** (2026-07-29, `Pair2.lean`; `hcutPendant3` DISCHARGED): new helper
   `hasGenericPencilRealization_pendant_deg3_of_IH` (`[Infinite K]`) closes the pendant deg-`3`
