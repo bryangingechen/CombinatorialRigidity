@@ -2974,32 +2974,35 @@ buildable leaves; every named call is landed unless flagged. `[Inhabited α]` en
 L7c-5/L7c-6 only — their *statements* carry `hK`, whose type reads `pencilRow … G.endsOf …`
 (the flagged correction above); L7c-1…4 need none of it.
 
-- **L7c-1 (S1, buildable now)** — externalized habitat simplicity (residue (iii)):
-  ```lean
-  theorem simple_of_noRigid [Finite α] [Finite β] [DecidableEq β] {G : Graph α β} {n : ℕ}
-      [G.Loopless] (hD : 2 ≤ bodyBarDim n) (hV : 3 ≤ V(G).ncard)
-      (hnp : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) : G.Simple
-  ```
-  Home `Induction/ReducibleVertex.lean` beside `simple_of_isMinimalKDof_of_noRigid`; verbatim
-  body with `[G.Loopless]` replacing the two `loopless_of_isMinimalKDof hG` uses (the
-  parallel-pair arm is `isKDof_zero_of_parallel_pair` + `hnp`, minimality-free already). The
-  builder may find some instance arguments droppable — match the original otherwise.
-- **L7c-2 (S1, buildable now)** — the 2EC-sourced split-data extractor. **Plan-pointer
-  correction (caught this recon):** the L6a-transfer entry's "`hab` free at the L7 call site via
-  `exists_splitOff_data_of_degree_eq_two`" does not hold as-is — that lemma
-  (`ForestSurgery/Reduction.lean:326`) requires `hG0 : G.IsKDof n 0`, which the (b′) habitat
-  lacks. Its ONLY use of `hG0` is the crossing bound `two_le_crossingEdges_of_isKDof_zero`;
-  re-source from the habitat's own `h2ec` at the singleton cut `{v}` (the same 2EC-re-sourcing
-  move as the landed `exists_adjacent_degree_two_pair_of_edgeBound`):
-  ```lean
-  theorem exists_splitOff_data_of_degree_eq_two_of_twoEdgeConnected [Finite α] [Finite β]
-      {G : Graph α β} (h2ec : G.TwoEdgeConnected) {v b₀ : α}
-      (hvG : v ∈ V(G)) (hb₀G : b₀ ∈ V(G)) (hb₀v : b₀ ≠ v) (hdeg : G.degree v = 2) :
-      ∃ (a b : α) (eₐ e_b : β), a ≠ v ∧ b ≠ v ∧ a ∈ V(G) ∧ b ∈ V(G) ∧ eₐ ≠ e_b ∧
-        G.IsLink eₐ v a ∧ G.IsLink e_b v b ∧ ∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b
-  ```
-  Home `ForestSurgery/Reduction.lean` beside the original (mechanical copy; the
-  `cutEdges`/`crossingEdges`-at-`{v}` bridge is the only new glue).
+- **L7c-1 — ALREADY DISCHARGED, no new Lean (caught by the 2026-07-30 build dispatch).**
+  externalized habitat simplicity (residue (iii)) was pinned as a new `simple_of_noRigid`
+  (`[G.Loopless]` instance, `[DecidableEq β]`, verbatim body of `simple_of_isMinimalKDof_of_
+  noRigid` with `loopless_of_isMinimalKDof hG` replaced). The build dispatch diffed this pin
+  against `simple_of_loopless_of_noRigid` (`ReducibleVertex.lean:767`, **W3-L2a, landed
+  2026-07-24 — minted for exactly this arm**, its own docstring says so: "the split arm's
+  habitat `G` is already provably simple … minimality-free, minted for this arm") and found the
+  two bodies **byte-identical** (only the `Loopless` argument's binder — instance vs. explicit —
+  and the vestigial `[DecidableEq β]`, both artifacts of mechanically copying
+  `simple_of_isMinimalKDof_of_noRigid`'s typeclass list rather than genuine proof needs, differ).
+  `simple_of_loopless_of_noRigid`'s own `hloop : G.Loopless` explicit binder is in fact the
+  *better* fit for L7c-5's pinned signature (which also carries `hloop` explicit, not an
+  instance) — no instance-conversion dance needed at the call site: `simple_of_loopless_of_
+  noRigid (n := 3) hD hV hloop hnoRigid`. **No `simple_of_noRigid` lands; L7c-1 is closed by
+  reuse.**
+- **L7c-2 LANDED 2026-07-30** (`ForestSurgery/Reduction.lean`,
+  `exists_splitOff_data_of_degree_eq_two_of_twoEdgeConnected`) — the 2EC-sourced split-data
+  extractor. **Plan-pointer correction (caught this recon):** the L6a-transfer entry's "`hab`
+  free at the L7 call site via `exists_splitOff_data_of_degree_eq_two`" does not hold as-is —
+  that lemma (`ForestSurgery/Reduction.lean:326`) requires `hG0 : G.IsKDof n 0`, which the (b′)
+  habitat lacks. Its ONLY use of `hG0` is the crossing bound `two_le_crossingEdges_of_isKDof_
+  zero`; re-sourced from the habitat's own `h2ec : G.TwoEdgeConnected` at the singleton cut `{v}`
+  (the same 2EC-re-sourcing move as the landed `exists_adjacent_degree_two_pair_of_edgeBound`):
+  mechanical copy of the original body with the crossing-edges step replaced by
+  `h2ec {v} ⟨v, Set.mem_singleton v⟩ hssub` + `cutEdges_eq_crossingEdges_cutLabeling` +
+  `crossingEdges_cutLabeling_singleton_subset`. Landed verbatim to the pin (no `n` parameter at
+  all — the statement is purely graph-theoretic). Home `ForestSurgery/Reduction.lean` beside
+  the original. Gates + axioms clean (`propext`/`Classical.choice`/`Quot.sound`; full
+  `lake build` + `lake lint` both clean).
 - **L7c-3 (S2, buildable now)** — the `C₃` base leaf (residue (i)):
   ```lean
   theorem pencilPair_of_habitat_ncard_eq_three [Finite α] [Finite β] {G : Graph α β}

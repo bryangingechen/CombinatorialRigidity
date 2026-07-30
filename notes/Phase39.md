@@ -14,7 +14,10 @@ L8 DISSOLVED into (K)'s discharge (2026-07-30 ruling); L7 (the research core) is
 critical path; W4 after W5** (phase opened 2026-07-23, recon-first). **W5-L7a AND L7b LANDED
 2026-07-30** (`Escape.lean`); kernel (K) route 3 adjudicated (carry the `hK` implication);
 **L7c decomposed 2026-07-30** (design pass — two carried kernels: `hK` + the new `hbareSplit`,
-the latter pending user adjudication). **L6a-safe-exists's rigid `k = 0` half PROVEN 2026-07-30**
+the latter pending user adjudication); **L7c-1 + L7c-2 LANDED same day** (L7c-1 closed by reuse
+of `simple_of_loopless_of_noRigid`, no new lemma; L7c-2 =
+`exists_splitOff_data_of_degree_eq_two_of_twoEdgeConnected`); **(K-bare) adjudicated "Numerics
+gate first"** (build L7c-1…4, probe before L7c-5/6). **L6a-safe-exists's rigid `k = 0` half PROVEN 2026-07-30**
 (`edgeBound_of_noRigid_of_degree_two` + `exists_adjacent_degree_two_pair_of_noRigid_of_degree_two`,
 `ReducibleVertex.lean`) — the split-arm safe-vertex existence obligation is now closed in full,
 minimality-free, needing no deficiency case-split at the L7 call site.
@@ -106,6 +109,21 @@ assembly (L7b, re-pinned 2026-07-30 — no `escapePoly`; (K) carried as the `hK`
 implication) + the L7c assembly; open after the 2026-07-30 L7c design pass: (K), (K-bare)
 (the settled residue (ii)), and the buildable L7c leaves.
 **W5-L8 dissolved into (K)'s discharge (2026-07-30 ruling); W4 after W5.** The phase stays OPEN.
+
+**W5-L7c-1 + L7c-2 LANDED 2026-07-30** (plumbing commit; canonical `notes/Phase39-design.md`
+§"W5-L7 research recon" "L7c decomposition"). **L7c-2** =
+`exists_splitOff_data_of_degree_eq_two_of_twoEdgeConnected` (`ForestSurgery/Reduction.lean`) —
+the 2EC-re-sourced split-data extractor, dropping the `IsKDof n 0` hypothesis the (b′) habitat
+lacks. **L7c-1 needed NO new Lean**: the build dispatch diffed the pinned `simple_of_noRigid`
+against the already-landed `simple_of_loopless_of_noRigid` (W3-L2a, 2026-07-24 — its own
+docstring says "minted for this arm") and found the two proof bodies byte-identical (only an
+inert `[DecidableEq β]` and instance-vs-explicit `Loopless` differ, both artifacts of
+mechanically copying `simple_of_isMinimalKDof_of_noRigid`'s typeclass list); L7c-1 closes by
+reuse, and the existing explicit-`hloop` binder is the better fit for L7c-5's own signature (no
+instance-conversion needed at the call site). **2026-07-30 kernel (K-bare) adjudication
+(verbatim): "Numerics gate first"** — build L7c-1…4 now, run the exact-ℚ (K-bare) probe before
+building L7c-5/6; the session-scope carry-vs-motive-change-vs-research decision among the three
+routes is deferred to the probe's outcome. Gates + axioms clean.
 
 **W0–W3 all COMPLETE; W5 design settled; W5-L0–L4 all COMPLETE; W5-L5 closed modulo TWO carried
 hypotheses** (loop, base, and cut arms all landed against `PencilPair`, and the successor assembly
@@ -237,8 +255,12 @@ Full record, grounding, and the W0–W5 decomposition:
   assembly recon: NOT buildable without new mathematics — the panel forgetful-map precedent
   structurally cannot cover it, infeasibility transfers to `G′`, and the extension is
   Case-III-increment-strength from a possibly degenerate input; carried form `hbareSplit`
-  pinned in the design doc residue (ii); **OPEN USER ADJUDICATION: carry `hbareSplit`
-  (recommended) vs. condition the pair's bare conjunct (motive change) vs. research first**),
+  pinned in the design doc residue (ii). **2026-07-30 adjudication (verbatim): "Numerics gate
+  first"** — build L7c-1…4 now (LANDED, this commit + L7c-3/4 still open), run the exact-ℚ
+  (K-bare) probe before building L7c-5/6; the three-way choice (carry `hbareSplit` (recommended)
+  vs. condition the pair's bare conjunct (motive change) vs. research first) stays
+  session-scope-deferred to the probe's outcome — a numerics probe runs independently under
+  untracked `scratchpad/`),
   and W4's witness generality (unchanged, after W5). W5-L8 is no longer a standalone open item
   (dissolved into (K)'s discharge, 2026-07-30 ruling — design doc §"W5 leaf decomposition" L8).
 - ~~W5-L6 split-arm feasibility (safe-vertex existence)~~ **CLOSED** (2026-07-29 L6a re-route +
@@ -288,20 +310,22 @@ carried as the `hK` rank-increment implication. **L7a LANDED** (`Escape.lean`,
 (design pass; canonical leaf list = the design doc's "L7c decomposition" block: L7c-1
 `simple_of_noRigid`, L7c-2 the 2EC-sourced split-data extractor, L7c-3/4 the `C₃`/`C₄` base
 leaves, L7c-5 the `5 ≤ |V|` producer carrying `hK` + `hbareSplit`, L7c-6 the successor wrapper;
-`[Inhabited α]` enters at L7c-5/6). **Next concrete commit:**
-- **L7c-1 + L7c-2** (one S1 plumbing commit, buildable now, adjudication-independent):
-  `simple_of_noRigid` (`ReducibleVertex.lean` — the minimality-free extraction of
-  `simple_of_isMinimalKDof_of_noRigid`) and
-  `exists_splitOff_data_of_degree_eq_two_of_twoEdgeConnected` (`ForestSurgery/Reduction.lean` —
-  re-source the crossing bound from 2EC; the pinned signatures are in the design doc block).
-- **Surface the (K-bare) adjudication to the user** (blocks L7c-5/6 only): carry `hbareSplit`
-  (recommended) vs. condition the pair's bare conjunct (motive change) vs. research (K-bare)
-  first — design doc residue (ii).
+`[Inhabited α]` enters at L7c-5/6). **L7c-1 + L7c-2 LANDED 2026-07-30**
+(one S1 plumbing commit; canonical `notes/Phase39-design.md` §"W5-L7 research recon" "L7c
+decomposition"): L7c-2 = `exists_splitOff_data_of_degree_eq_two_of_twoEdgeConnected`
+(`ForestSurgery/Reduction.lean`, 2EC-re-sourced); **L7c-1 needed no new Lean** — the pinned
+`simple_of_noRigid` is byte-identical to the already-landed `simple_of_loopless_of_noRigid`
+(W3-L2a), so it closes by reuse (*Decisions made*). **2026-07-30 kernel (K-bare) adjudication
+(verbatim): "Numerics gate first"** — build L7c-1…4 now, run the exact-ℚ (K-bare) probe before
+building L7c-5/6 (a numerics probe runs independently under untracked `scratchpad/`); the
+carry-vs-motive-change-vs-research three-way choice stays deferred to the probe's outcome.
+**Next concrete commit:**
 - **L7c-3 / L7c-4** (the `C₃`/`C₄` base leaves, buildable now, one S2 commit each or combined).
+- **The (K-bare) numerics probe** (running independently; exact-ℚ bare rank at the infeasible
+  gadgets + degenerate-seed extension probes — design doc residue (ii)'s "if (a)" plan); its
+  outcome settles whether L7c-5/6 proceed under the carry route or a different one.
 - **Attack kernel (K)** (research recon, route 1 localization recommended — its first gate is the
-  local-vs-global numerical test in the design doc's "Route options"); the **(K-bare) research
-  recon** (numerics-first: bare rank at the infeasible gadgets; degenerate-seed extension probes)
-  runs independently if adjudicated.
+  local-vs-global numerical test in the design doc's "Route options").
 - **W4** (after W5 — the constrained-family Claim-6.4 analogue, discharges `hcontract`).
 
 L6a-safe-exists is **CLOSED in full** (both halves LANDED). With L6b done, the L6/L7 split-arm chain
@@ -336,6 +360,24 @@ neighbor — is `notes/IdeaBacklog.md`.
 
 ## Decisions made during this phase
 
+- **W5-L7c-1 + L7c-2 LANDED + (K-bare) "Numerics gate first" adjudication** (2026-07-30,
+  `ForestSurgery/Reduction.lean` + `notes/Phase39-design.md` correction). L7c-2 =
+  `exists_splitOff_data_of_degree_eq_two_of_twoEdgeConnected` — mechanical copy of
+  `exists_splitOff_data_of_degree_eq_two`'s body, re-sourcing the crossing-edges bound from
+  `h2ec : G.TwoEdgeConnected` at the singleton cut `{v}` instead of `hG0 : G.IsKDof n 0` (absent
+  from the (b′) habitat), via `cutEdges_eq_crossingEdges_cutLabeling` +
+  `crossingEdges_cutLabeling_singleton_subset`. **L7c-1 needed no new Lean**: diffing the pinned
+  `simple_of_noRigid` against the already-landed `simple_of_loopless_of_noRigid` (W3-L2a,
+  2026-07-24, its own docstring: "minted for this arm") showed the two proof bodies
+  byte-identical — only an inert `[DecidableEq β]` and instance-vs-explicit `Loopless` differ,
+  both artifacts of mechanically copying `simple_of_isMinimalKDof_of_noRigid`'s typeclass list
+  rather than genuine proof needs; the existing lemma's explicit `hloop` binder is in fact the
+  better fit for L7c-5's own signature (also explicit, not an instance). No duplicate lemma
+  landed; design doc's L7c-1 entry corrected to a reuse pointer. **User adjudication
+  transcribed (verbatim): kernel (K-bare) — "Numerics gate first"** — build L7c-1…4 now, run
+  the exact-ℚ (K-bare) probe before building L7c-5/6; the carry-`hbareSplit`-vs-motive-change-
+  vs-research choice stays deferred to the probe's outcome. Gates + axioms clean
+  (`propext`/`Classical.choice`/`Quot.sound`; full `lake build` + `lake lint` both clean).
 - **W5-L7c DECOMPOSED + (K-bare) isolated + L8 dissolved** (2026-07-30, design pass; canonical
   `notes/Phase39-design.md` §"W5-L7 research recon" "L7c decomposition" + residues (i)–(iv) +
   §"W5 leaf decomposition" L8). The bare half off-feasibility (residue (ii)) is NOT buildable —

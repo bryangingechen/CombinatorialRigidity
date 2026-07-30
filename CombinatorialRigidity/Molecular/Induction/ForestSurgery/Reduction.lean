@@ -361,6 +361,61 @@ theorem exists_splitOff_data_of_degree_eq_two [Finite α] [Finite β]
       simpa [Set.mem_insert_iff] using this
   exact ⟨a, b, eₐ, e_b, hav, hbv, hla.right_mem, hlb.right_mem, hne, hla, hlb, hclosure⟩
 
+/-! ### Split-off data from `2`-edge-connectivity alone, minimality-free (L7c-2, Phase 39)
+
+`exists_splitOff_data_of_degree_eq_two` above needs `hG0 : G.IsKDof n 0`, which the Phase 39
+pencil split-arm habitat does not carry (only `G.TwoEdgeConnected`; `notes/Phase39-design.md`
+§"W5-L7 research recon" "L7c decomposition", the plan-pointer correction the 2026-07-30
+assembly recon caught). `hG0`'s *only* use above is the crossing-edges bound
+`two_le_crossingEdges_of_isKDof_zero` at the singleton cut `{v}` — exactly what
+`TwoEdgeConnected`'s own defining clause supplies directly, the same 2EC-re-sourcing move as
+`exists_adjacent_degree_two_pair_of_edgeBound` (`ReducibleVertex.lean:1068`). Mechanical copy
+of the proof above with that one step re-sourced from `h2ec` via `cutEdges_eq_crossingEdges_
+cutLabeling` + `crossingEdges_cutLabeling_singleton_subset`. -/
+theorem exists_splitOff_data_of_degree_eq_two_of_twoEdgeConnected [Finite α] [Finite β]
+    {G : Graph α β} (h2ec : G.TwoEdgeConnected) {v b₀ : α}
+    (hvG : v ∈ V(G)) (hb₀G : b₀ ∈ V(G)) (hb₀v : b₀ ≠ v) (hdeg : G.degree v = 2) :
+    ∃ (a b : α) (eₐ e_b : β), a ≠ v ∧ b ≠ v ∧ a ∈ V(G) ∧ b ∈ V(G) ∧ eₐ ≠ e_b ∧
+      G.IsLink eₐ v a ∧ G.IsLink e_b v b ∧ ∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b := by
+  classical
+  -- `degree v = 2·#loops + #nonloops`, and `#nonloops ≥ 2` (2EC at the singleton cut `{v}`).
+  have hcount := G.degree_eq_ncard_add_ncard v
+  have hssub : ({v} : Set α) ⊂ V(G) := by
+    constructor
+    · exact Set.singleton_subset_iff.mpr hvG
+    · intro heq
+      have : b₀ ∈ ({v} : Set α) := heq hb₀G
+      rw [Set.mem_singleton_iff] at this
+      exact hb₀v this
+  have hcut : 2 ≤ (G.cutEdges {v}).ncard := h2ec {v} ⟨v, Set.mem_singleton v⟩ hssub
+  rw [cutEdges_eq_crossingEdges_cutLabeling (Set.mem_singleton v) (by simpa using hb₀v)] at hcut
+  have hnl2 : 2 ≤ {e | G.IsNonloopAt e v}.ncard :=
+    le_trans hcut (Set.ncard_le_ncard crossingEdges_cutLabeling_singleton_subset
+      (Set.toFinite _))
+  -- Hence `#loops = 0` and `#nonloops = 2`.
+  have hnl_eq : {e | G.IsNonloopAt e v}.ncard = 2 := by omega
+  have hloop0 : {e | G.IsLoopAt e v}.ncard = 0 := by omega
+  -- The two nonloop edges, distinct, with far endpoints.
+  obtain ⟨eₐ, e_b, hne, hset⟩ := Set.ncard_eq_two.mp hnl_eq
+  have hea : G.IsNonloopAt eₐ v := by
+    have : eₐ ∈ {e | G.IsNonloopAt e v} := by rw [hset]; exact Set.mem_insert _ _
+    exact this
+  have heb : G.IsNonloopAt e_b v := by
+    have : e_b ∈ {e | G.IsNonloopAt e v} := by rw [hset]; exact Set.mem_insert_of_mem _ rfl
+    exact this
+  obtain ⟨a, hav, hla⟩ := hea
+  obtain ⟨b, hbv, hlb⟩ := heb
+  -- Closure: every `v`-incident edge is `eₐ` or `e_b` (no loops at `v`).
+  have hclosure : ∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b := by
+    intro e x hlink
+    have hinc : G.Inc e v := hlink.inc_left
+    rcases hinc.isLoopAt_or_isNonloopAt with hloop | hnonloop
+    · exact absurd (Set.eq_empty_iff_forall_notMem.mp
+        (Set.ncard_eq_zero (Set.toFinite _) |>.mp hloop0) e hloop) id
+    · have : e ∈ ({eₐ, e_b} : Set β) := hset ▸ hnonloop
+      simpa [Set.mem_insert_iff] using this
+  exact ⟨a, b, eₐ, e_b, hav, hbv, hla.right_mem, hlb.right_mem, hne, hla, hlb, hclosure⟩
+
 /-! ### A degree-2 vertex exists at general `n` (E2b, Phase 23g)
 
 The `davg < 3` counting core (Phase 20's `exists_degree_le_two`, general `n`) combined with the
