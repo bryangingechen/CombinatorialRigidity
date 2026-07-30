@@ -2,10 +2,10 @@
 
 **Status:** in progress — phase stays OPEN (2026-07-24/2026-07-30 user adjudications, quoted
 verbatim in *Current state*). W0–W3 and W5-L0–L6 are all COMPLETE; the `hsplit` build sequence
-(W5-L7c-1…6) is CLOSED IN FULL (2026-07-30). Only four items remain, all carried by the landed
-successor `pencil_conjecture_of_hcontract_hK_hbareSplit` (`Molecule/Pencil/Escape.lean`):
-`hcontract` (W4), kernel `hK`, kernel `hbareSplit`, and a mechanical `hfresh` supply — see
-*Hand-off*.
+(W5-L7c-1…6) is CLOSED IN FULL (2026-07-30), and `hfresh`'s mechanical counting discharge
+(residue (iv)) landed the same day. Only three items remain, all carried by the landed successor
+`pencil_conjecture_of_hcontract_hK_hbareSplit_of_card` (`Molecule/Pencil/Escape.lean`):
+`hcontract` (W4), kernel `hK`, and kernel `hbareSplit` — see *Hand-off*.
 
 ## Current state
 
@@ -21,10 +21,13 @@ discharged — see *Decisions made*).
 
 W0–W3 and W5-L0–L6 are all COMPLETE (L6a-safe-exists closed in full both halves; L6b/L6d landed).
 **The W5-L7 arc is now CLOSED**: L7a, L7b, and L7c-1…6 all landed (`Molecule/Pencil/Escape.lean`/
-`Base.lean`) — the `hsplit` build sequence is discharged in full. The successor
-`pencil_conjecture_of_hcontract_hK_hbareSplit` (`Escape.lean`) carries exactly `hcontract` (W4),
-`hK` (kernel (K)), `hbareSplit` (kernel (K-bare)), and a `∀`-form `hfresh` — the four remaining
-open items, detailed in *Hand-off*. File layout: `Molecule/Pencil.lean` split into
+`Base.lean`) — the `hsplit` build sequence is discharged in full — and **`hfresh`'s mechanical
+counting discharge (residue (iv)) also landed**: `freshEdgeSupply_of_card_lt_of_noRigid_of_
+degree_two` supplies it from a `β`-cardinality headroom bound (the pencil-habitat analogue of
+`Graph.freshEdgeSupply_of_card_lt`), and `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card`
+(`Escape.lean`) is the resulting consumer-facing headline, carrying exactly `hcontract` (W4),
+`hK` (kernel (K)), and `hbareSplit` (kernel (K-bare)) — the three remaining open items, detailed
+in *Hand-off*. File layout: `Molecule/Pencil.lean` split into
 `Molecule/Pencil/{Statement,Arms,Motive,Chart,Engine,Reseed,Witness,Steer,Pair,Pair2,Escape,
 Base}.lean`. Full per-leaf history: `notes/Phase39-design.md` §"W5 leaf decomposition" +
 §"W5-L7 research recon"; this section stays a pointer, not a second copy.
@@ -99,9 +102,10 @@ Full record, grounding, and the W0–W5 decomposition:
 - ~~W5-L6 split-arm feasibility (safe-vertex existence)~~ **CLOSED** (2026-07-29/30) — both
   deficiency regimes' safe-vertex existence PROVEN minimality-free; the L6/L7 coupling is benign
   (KT Case III already splits a safe vertex, Lemma 6.13/4.6).
-- **Open: kernels (K) and (K-bare), `hfresh`'s mechanical discharge, and W4 (`hcontract`)** — the
-  entire remaining work of the phase; see *Hand-off* for the per-item route and the
-  `notes/Phase39-design.md` pointers.
+- ~~`hfresh`'s mechanical discharge~~ **CLOSED** (2026-07-30) — `freshEdgeSupply_of_card_lt_of_
+  noRigid_of_degree_two` + `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card` (`Escape.lean`).
+- **Open: kernels (K) and (K-bare), and W4 (`hcontract`)** — the entire remaining work of the
+  phase; see *Hand-off* for the per-item route and the `notes/Phase39-design.md` pointers.
 - The full biconditional transport `ExtensorThroughPoint C q ↔ ExtensorInPanel (screwComplementIso
   C) q` (design doc's W0 pin) is landed only as its two forward implications; the reverse arms
   need a `complementIso` involution lemma, not in tree — deferred, not on any critical path.
@@ -112,9 +116,10 @@ Full record, grounding, and the W0–W5 decomposition:
 
 **`hsplit` is CLOSED IN FULL** (W5-L7c-1…6, all landed 2026-07-30 — one-line verdicts in
 *Decisions made*; full detail `notes/Phase39-design.md` §"W5-L7 research recon" "L7c
-decomposition"). The landed successor `pencil_conjecture_of_hcontract_hK_hbareSplit`
-(`Molecule/Pencil/Escape.lean`) wraps `pencil_conjecture_of_arms_pair` and carries exactly four
-remaining open items — **next concrete commit: pick any one, none blocks another**:
+decomposition"), and **`hfresh`'s mechanical discharge (residue (iv)) is CLOSED too** (same day).
+The landed successor `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card`
+(`Molecule/Pencil/Escape.lean`) wraps `pencil_conjecture_of_hcontract_hK_hbareSplit` and carries
+exactly three remaining open items — **next concrete commit: pick any one, none blocks another**:
 
 - **`hcontract`** (W4) — the constrained-family Claim-6.4 analogue; not yet attacked (design doc
   §"W4 route (third core): cluster refutation + the constrained-family survivor (N3)"; the last
@@ -129,10 +134,6 @@ remaining open items — **next concrete commit: pick any one, none blocks anoth
   infeasible gadget tried, both deficiency branches), but the Lean discharge itself is open — the
   extension route, plus the def-equal branch's caveat (the re-inserted point must avoid the
   deleted hinge's line, an in-stratum genericity side condition) — design doc residue (ii).
-- **`hfresh`** (mechanical S1) — the `∀`-form fresh-edge supply from a β-cardinality hypothesis;
-  route = `Graph.freshEdgeSupply_of_card_lt` (panel precedent `case_III_realization_all_k`), with
-  the pencil habitat's edge bound from the landed `edgeBound_of_noRigid_of_degree_two` in place
-  of minimality — design doc residue (iv) / L7c-6 pin.
 
 Gates for any continuation: `lake build` (warning-clean) + `lake lint` when `.lean` is touched;
 `blueprint/verify.sh` + `blueprint/lint.sh` (vocabulary gate bans "stratum"/"strata") when `.tex`
@@ -149,6 +150,13 @@ neighbor — is `notes/IdeaBacklog.md`.
 Reverse-chronological, one line per landing; full derivations live in git and
 `notes/Phase39-design.md` (per-decision pointer where the design doc has a named section).
 
+- **`hfresh`'s mechanical discharge LANDED — residue (iv) CLOSED** (2026-07-30, `Escape.lean`) —
+  `freshEdgeSupply_of_card_lt_of_noRigid_of_degree_two` (the pencil-habitat analogue of
+  `Graph.freshEdgeSupply_of_card_lt`, edge bound from `Graph.edgeBound_of_noRigid_of_degree_two`
+  in place of minimality) plus the consumer-facing headline
+  `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card`, mirroring the panel spine's own
+  `theorem_55_minimalKDof_k`/`theorem_55_d3` split; blueprint node
+  `thm:pencil-conditional-realization-pair`'s `\lean{...}` list extended with the new name.
 - **W5-L7c-5 + L7c-6 LANDED — `hsplit` CLOSED IN FULL** (2026-07-30, `Escape.lean`) —
   `pencilPair_of_splitOff_of_habitat` (the `5 ≤ |V|` producer, carrying `hK`/`hbareSplit` as
   given) and the successor wrapper `pencil_conjecture_of_hcontract_hK_hbareSplit` (dispatching

@@ -2974,14 +2974,14 @@ Recorded corrections + tracked residues from the 2026-07-30 L7b-shape route reco
   mechanical extraction: `simple_of_isMinimalKDof_of_noRigid` (`ReducibleVertex.lean:698`) uses
   its minimality hypothesis ONLY through `loopless_of_isMinimalKDof` (verified against the body
   this recon) — replace it with a `[G.Loopless]` instance.
-- **Residue (iv) — fresh-`e₀` plumbing: PINNED 2026-07-30 (panel precedent verified).** The
-  producer takes `hfresh : ∃ e₀, e₀ ∉ E(G)` exactly as the panel Case-III producer does
-  (`case_III_realization_all_k`), and the successor wrapper threads a `∀`-form supply
-  hypothesis exactly as the panel spine's `hfresh` carry; the supply's discharge from a
-  β-cardinality hypothesis is the panel's own `Graph.freshEdgeSupply_of_card_lt` route
-  (`Theorem55.lean:2858`), with the pencil habitat's edge bound coming from the landed
-  `edgeBound_of_noRigid_of_degree_two` instead of minimality — a separate mechanical S1 at the
-  final headline, not an L7c blocker.
+- **Residue (iv) — fresh-`e₀` plumbing: CLOSED 2026-07-30.** The producer takes `hfresh : ∃ e₀,
+  e₀ ∉ E(G)` exactly as the panel Case-III producer does (`case_III_realization_all_k`), and the
+  successor wrapper threads a `∀`-form supply hypothesis exactly as the panel spine's `hfresh`
+  carry. The follow-up counting discharge landed the same day:
+  `freshEdgeSupply_of_card_lt_of_noRigid_of_degree_two` (`Escape.lean`) proves the `∀`-form supply
+  from `bodyBarDim 3 * (|α| − 1) < |β|`, following `Graph.freshEdgeSupply_of_card_lt`'s skeleton
+  (`Theorem55.lean:2858`) with `edgeBound_of_noRigid_of_degree_two` in place of the minimality edge
+  bound; `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card` is the consumer-facing headline.
 
 **The L7c hsplit assembly — settled decomposition (2026-07-30 assembly recon).** Ordered
 buildable leaves; every named call is landed unless flagged. `[Inhabited α]` enters at
@@ -3094,14 +3094,16 @@ L7c-5/L7c-6 only — their *statements* carry `hK`, whose type reads `pencilRow 
   (∀ H, ¬ H.IsProperRigidSubgraph G' 3) → (∃ v ∈ V(G'), G'.degree v = 2) → 3 ≤ V(G').ncard →
   ∃ e₀, e₀ ∉ E(G')` — the exact antecedents the counting discharge needs) as hypotheses, with
   `[Inhabited α]` (subsuming the current `[Nonempty α]`). The supply's counting discharge
-  (residue (iv) route) is a follow-up S1, not part of this commit.
+  (residue (iv) route) is a follow-up S1, not part of this commit — CLOSED same day, see
+  residue (iv) above.
 
 **Remaining-open after L7c (the `hsplit` bookkeeping, Q4 of the assembly recon).** Once
 L7c-1…6 land, `hsplit` is discharged and the successor carries exactly: `hcontract` (W4),
 `hK` ((K) — research, routes 1–2 below), `hbareSplit` ((K-bare) — user adjudication above,
-then research), and `hfresh` (mechanical counting, S1). L8 is DISSOLVED as a standalone leaf
-(see its ruling in §"W5 leaf decomposition"). The earlier expectation "L7c carries `hK`
-alone" is thereby revised: `hK` alone covers only the feasible branch.
+then research), and `hfresh` (mechanical counting, S1 — CLOSED same day, see residue (iv)
+above). L8 is DISSOLVED as a standalone leaf (see its ruling in §"W5 leaf decomposition"). The
+earlier expectation "L7c carries `hK` alone" is thereby revised: `hK` alone covers only the
+feasible branch.
 
 **Route options for kernel (K) — user adjudication.** Numerics-first per instance
 (the pinned method) *validates* (K) but cannot *close* the `∀ G` Lean leaf. Three routes:

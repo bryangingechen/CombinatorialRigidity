@@ -62,8 +62,14 @@ base leaves `pencilPair_of_habitat_ncard_eq_three`/`_four` (`Base.lean`), and `5
 goes to this file's own `pencilPair_of_splitOff_of_habitat`, fed a fresh edge from the caller's
 `∀`-form supply `hfresh`. The result carries exactly `hcontract` (unchanged, W4's obligation),
 the two open kernels `hK`/`hbareSplit` ((K)/(K-bare), both user-adjudicated to be carried this
-session), and `hfresh` (a mechanical S1 bookkeeping item, still open) — every other hypothesis of
-the pencil reduction is now internal.
+session), and `hfresh` (a mechanical S1 bookkeeping item) — every other hypothesis of the pencil
+reduction is now internal.
+
+This file finally discharges `hfresh` mechanically (residue (iv)): `freshEdgeSupply_of_card_lt_
+of_noRigid_of_degree_two` supplies it from a `β`-cardinality headroom bound, and
+`pencil_conjecture_of_hcontract_hK_hbareSplit_of_card` is the resulting consumer-facing headline,
+carrying exactly `hcontract`/`hK`/`hbareSplit` plus the headroom bound in place of `hfresh` —
+mirroring the panel spine's own `theorem_55_minimalKDof_k`/`theorem_55_d3` split.
 
 See `notes/Phase39.md`, `notes/Phase39-design.md` (§"W5-L7 research recon"), and
 `blueprint/src/chapter/pencil.tex`.
@@ -483,5 +489,98 @@ theorem pencil_conjecture_of_hcontract_hK_hbareSplit [Inhabited α] [Finite α] 
       · exact pencilPair_of_splitOff_of_habitat hloop (by omega) h2ec hnoRigid hdeg2
           (hfresh G hloop hnoRigid hdeg2 hV) hK hbareSplit hIH
   exact pencil_conjecture_of_arms_pair hcontract hsplit G hspan
+
+/-! ## `hfresh`'s mechanical discharge — residue (iv) (Phase 39 PENCIL)
+
+The `hfresh` hypothesis that `pencil_conjecture_of_hcontract_hK_hbareSplit` above still takes is a
+mechanical `∀`-form fresh-edge supply, not a research kernel
+(`notes/Phase39-design.md` residue (iv)): the pencil-habitat analogue of the panel spine's own
+`Graph.freshEdgeSupply_of_card_lt` (`Molecular/Deficiency.lean:3501`), with the edge bound coming
+from `Graph.edgeBound_of_noRigid_of_degree_two` (`Induction/ReducibleVertex.lean:1270`, KT Lemma
+4.5(i) at `k = 0`) in place of minimality. Lands the standalone supply lemma
+`freshEdgeSupply_of_card_lt_of_noRigid_of_degree_two` plus the consumer-facing headline
+`pencil_conjecture_of_hcontract_hK_hbareSplit_of_card`, mirroring the panel spine's own
+`theorem_55_minimalKDof_k`/`theorem_55_d3` split
+(`AlgebraicInduction/Theorem55.lean:2571,2601`). -/
+
+/-- **Fresh-edge supply for the pencil habitat, from a `β`-cardinality headroom bound** (mechanical
+S1, Phase 39 PENCIL residue (iv)). The pencil-habitat analogue of `Graph.freshEdgeSupply_of_card_lt`
+matching exactly the `hfresh` slot of `pencil_conjecture_of_hcontract_hK_hbareSplit`: given
+`bodyBarDim 3 * (|α| − 1) < |β|`, every loopless multigraph with no proper rigid subgraph, a
+degree-`2` vertex, and `3 ≤ |V|` has an edge label outside its edge set.
+
+Proof: if `E(G') = univ` then `|E(G')| = |β|`; `Graph.edgeBound_of_noRigid_of_degree_two` at the
+witnessed degree-`2` vertex gives `5|E(G')| < 6(|V(G')| − 1) + 5` (`bodyHingeMult 3 = 5`,
+`bodyBarDim 3 = 6`); `|V(G')| ≤ |α|` and the headroom bound then force `4|β| < 5`, while `3 ≤
+|V(G')| ≤ |α|` forces `|β| > 6(|α| − 1) ≥ 12` via the headroom bound again — contradictory. -/
+theorem freshEdgeSupply_of_card_lt_of_noRigid_of_degree_two
+    [Finite α] [Finite β]
+    (hcard : Graph.bodyBarDim 3 * (Nat.card α - 1) < Nat.card β) :
+    ∀ G' : Graph α β, G'.Loopless → (∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G' 3) →
+      (∃ v ∈ V(G'), G'.degree v = 2) → 3 ≤ V(G').ncard → ∃ e₀ : β, e₀ ∉ E(G') := by
+  classical
+  intro G' hloop hnoRigid hdeg2 hV
+  haveI : G'.Loopless := hloop
+  by_contra hcon
+  push Not at hcon
+  have hEuniv : E(G') = Set.univ := Set.eq_univ_of_forall hcon
+  obtain ⟨v, hvV, hvdeg⟩ := hdeg2
+  have hD6 : (6 : ℕ) ≤ Graph.bodyBarDim 3 := Graph.six_le_bodyBarDim (by norm_num)
+  have hbound := Graph.edgeBound_of_noRigid_of_degree_two hD6 hV hnoRigid hvV hvdeg
+  have hVleNat : V(G').ncard ≤ Nat.card α := by
+    have h1 := Set.ncard_le_ncard (Set.subset_univ V(G'))
+    rwa [Set.ncard_univ] at h1
+  have hαpos : 1 ≤ Nat.card α := by omega
+  have hcardZ : (Graph.bodyBarDim 3 : ℤ) * ((Nat.card α : ℤ) - 1) < (Nat.card β : ℤ) := by
+    zify [hαpos] at hcard
+    exact hcard
+  have hEeq : (E(G').ncard : ℤ) = (Nat.card β : ℤ) := by rw [hEuniv, Set.ncard_univ]
+  have hVleZ : (V(G').ncard : ℤ) ≤ (Nat.card α : ℤ) := by exact_mod_cast hVleNat
+  have hVZ : (3 : ℤ) ≤ (V(G').ncard : ℤ) := by exact_mod_cast hV
+  have hBDn : Graph.bodyBarDim 3 = 6 := by decide
+  have hBHn : Graph.bodyHingeMult 3 = 5 := by decide
+  have hBDZ : (Graph.bodyBarDim 3 : ℤ) = 6 := by exact_mod_cast hBDn
+  have hBHZ : (Graph.bodyHingeMult 3 : ℤ) = 5 := by exact_mod_cast hBHn
+  rw [hEeq, hBDZ, hBHZ] at hbound
+  rw [hBDZ] at hcardZ
+  linarith [hbound, hcardZ, hVleZ, hVZ]
+
+set_option linter.unusedDecidableInType false in
+/-- **The consumer-facing headline, `hfresh` discharged by a `β`-cardinality bound** (Phase 39
+PENCIL, residue (iv)). The repackaging of `pencil_conjecture_of_hcontract_hK_hbareSplit`
+replacing the mechanical `∀`-form `hfresh` supply by the concrete headroom bound `bodyBarDim 3 *
+(|α| − 1) < |β|` (`freshEdgeSupply_of_card_lt_of_noRigid_of_degree_two` above), mirroring the panel
+spine's own `theorem_55_minimalKDof_k`/`theorem_55_d3` split. `hcontract`/`hK`/`hbareSplit` carry
+unchanged; every other hypothesis of the pencil reduction is internal. -/
+theorem pencil_conjecture_of_hcontract_hK_hbareSplit_of_card [Inhabited α] [Finite α] [Finite β]
+    [DecidableEq β] [Infinite K]
+    (hcontract : ∀ G : Graph α β, G.Loopless → 3 ≤ V(G).ncard →
+      (∃ H : Graph α β, H.IsProperRigidSubgraph G 3) →
+      (∀ G' : Graph α β, V(G').Nonempty → V(G').ncard < V(G).ncard →
+        PencilPair K 3 G') →
+      PencilPair K 3 G)
+    (hK : ∀ (G : Graph α β) (v a b : α) (eₐ e_b e₀ : β), G.Simple → 5 ≤ V(G).ncard →
+      G.TwoEdgeConnected → (∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G 3) →
+      G.degree v = 2 → eₐ ≠ e_b → G.IsLink eₐ v a → G.IsLink e_b v b →
+      (¬ G.PencilHub a ∨ ¬ G.PencilHub b) → e₀ ∉ E(G) →
+      HasGenericPencilRealization K 3 (G.splitOff v a b e₀) →
+      ∃ (hubSel : α → Fin 3 → Option α) (q : α × Fin 4 × Fin 4 → K)
+        (s : Set (β × Set.powersetCard (Fin 4) 2 × Set.powersetCard (Fin 4) 2)),
+        (∀ w, IsFin3SelectorOf (G.closedHubNbhd w) (hubSel w)) ∧
+        (∀ i ∈ s, (i : β × _ × _).1 ∈ E(G)) ∧
+        ((Nat.card s : ℤ) = screwDim 2 * ((V(G).ncard : ℤ) - 1) - G.deficiency 3) ∧
+        LinearIndependent K (fun i : s => pencilRow hubSel G.endsOf q (i : β × _ × _)))
+    (hbareSplit : ∀ (G : Graph α β) (v a b : α) (eₐ e_b e₀ : β), G.Simple → 5 ≤ V(G).ncard →
+      G.TwoEdgeConnected → (∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G 3) →
+      G.degree v = 2 → eₐ ≠ e_b → G.IsLink eₐ v a → G.IsLink e_b v b →
+      (¬ G.PencilHub a ∨ ¬ G.PencilHub b) → e₀ ∉ E(G) →
+      ¬ PencilNondegFeasible K G →
+      HasPencilRealization K 3 (G.splitOff v a b e₀) →
+      HasPencilRealization K 3 G)
+    (hcard : Graph.bodyBarDim 3 * (Nat.card α - 1) < Nat.card β)
+    (G : Graph α β) (hspan : V(G) = Set.univ) :
+    PencilPair K 3 G :=
+  pencil_conjecture_of_hcontract_hK_hbareSplit hcontract hK hbareSplit
+    (freshEdgeSupply_of_card_lt_of_noRigid_of_degree_two hcard) G hspan
 
 end CombinatorialRigidity.Molecular
