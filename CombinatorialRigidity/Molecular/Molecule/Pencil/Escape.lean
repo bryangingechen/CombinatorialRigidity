@@ -6,6 +6,8 @@ Authors: Bryan Gin-ge Chen
 import CombinatorialRigidity.Molecular.Induction.ReducibleVertex
 import CombinatorialRigidity.Molecular.Molecule.Pencil.Habitat
 import CombinatorialRigidity.Molecular.Molecule.Pencil.Steer
+import CombinatorialRigidity.Molecular.Molecule.Pencil.Base
+import CombinatorialRigidity.Molecular.Molecule.Pencil.Pair2
 
 /-!
 # W5-L7a — the safe-split IH generic half (Phase 39 PENCIL)
@@ -51,6 +53,17 @@ implication, and the induction hypothesis on strictly smaller graphs, produces `
 The two carried kernels partition cleanly by `PencilNondegFeasible K G`: feasible chains L7a's
 `G′`-generic output through `hK` into L7b; infeasible discharges the bare half directly via
 `hbareSplit` fed the IH's `G′`-bare half.
+
+This file finally lands **W5-L7c-6** — `pencil_conjecture_of_hcontract_hK_hbareSplit`, the
+successor wrapper closing `hsplit` in full (`notes/Phase39-design.md` §"W5-L7 research recon" "L7c
+decomposition"). It builds the `hsplit` hypothesis `pencil_conjecture_of_arms_pair`
+(`Pair2.lean`) still takes by dispatching on `V(G).ncard`: `= 3`/`= 4` go to the direct-witness
+base leaves `pencilPair_of_habitat_ncard_eq_three`/`_four` (`Base.lean`), and `5 ≤ V(G).ncard`
+goes to this file's own `pencilPair_of_splitOff_of_habitat`, fed a fresh edge from the caller's
+`∀`-form supply `hfresh`. The result carries exactly `hcontract` (unchanged, W4's obligation),
+the two open kernels `hK`/`hbareSplit` ((K)/(K-bare), both user-adjudicated to be carried this
+session), and `hfresh` (a mechanical S1 bookkeeping item, still open) — every other hypothesis of
+the pencil reduction is now internal.
 
 See `notes/Phase39.md`, `notes/Phase39-design.md` (§"W5-L7 research recon"), and
 `blueprint/src/chapter/pencil.tex`.
@@ -407,5 +420,68 @@ theorem pencilPair_of_splitOff_of_habitat
     refine ⟨fun _ hf => absurd hf hfeas, ?_⟩
     exact hbareSplit G v a b eₐ e_b e₀ hSimple hV h2ec hnoRigid hvdeg heab hea heb hsafe he₀ hfeas
       (hIH _ hV'ne hV'lt).2
+
+/-! ## W5-L7c-6: the successor wrapper closing `hsplit` (Phase 39 PENCIL)
+
+The final leaf of the L7c hsplit assembly (`notes/Phase39-design.md` §"W5-L7 research recon" "L7c
+decomposition"): wraps `pencil_conjecture_of_arms_pair` (`Pair2.lean`) into its successor, replacing
+the `hsplit` hypothesis by the `|V| ∈ {3, 4}` vs `5 ≤ |V|` dispatch to the three landed producers
+(`pencilPair_of_habitat_ncard_eq_three`/`_four`, `pencilPair_of_splitOff_of_habitat`). The
+successor's own hypotheses are exactly the residue: `hcontract` unchanged, the two carried kernels
+`hK`/`hbareSplit`, and the mechanical `∀`-form fresh-edge supply `hfresh` (residue (iv), still a
+follow-up S1 discharge, not attempted here). -/
+
+set_option linter.unusedDecidableInType false in
+/-- **W5-L7c-6 — the successor wrapper closing `hsplit`** (Phase 39 PENCIL;
+`notes/Phase39-design.md` §"W5-L7 research recon" "L7c decomposition"). The pencil conjecture,
+conditional on the contraction arm (`hcontract`, unchanged from `pencil_conjecture_of_arms_pair`),
+kernel (K)'s carried rank-increment implication `hK`, kernel (K-bare)'s carried bare
+split-extension implication `hbareSplit`, and a mechanical `∀`-form fresh-edge supply `hfresh`.
+Builds `hsplit` internally by dispatching on `V(G).ncard`: `= 3`/`= 4` to the direct-witness base
+leaves (`Base.lean`), `5 ≤` to `pencilPair_of_splitOff_of_habitat` above, fed a fresh edge from
+`hfresh`. -/
+theorem pencil_conjecture_of_hcontract_hK_hbareSplit [Inhabited α] [Finite α] [Finite β]
+    [DecidableEq β] [Infinite K]
+    (hcontract : ∀ G : Graph α β, G.Loopless → 3 ≤ V(G).ncard →
+      (∃ H : Graph α β, H.IsProperRigidSubgraph G 3) →
+      (∀ G' : Graph α β, V(G').Nonempty → V(G').ncard < V(G).ncard →
+        PencilPair K 3 G') →
+      PencilPair K 3 G)
+    (hK : ∀ (G : Graph α β) (v a b : α) (eₐ e_b e₀ : β), G.Simple → 5 ≤ V(G).ncard →
+      G.TwoEdgeConnected → (∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G 3) →
+      G.degree v = 2 → eₐ ≠ e_b → G.IsLink eₐ v a → G.IsLink e_b v b →
+      (¬ G.PencilHub a ∨ ¬ G.PencilHub b) → e₀ ∉ E(G) →
+      HasGenericPencilRealization K 3 (G.splitOff v a b e₀) →
+      ∃ (hubSel : α → Fin 3 → Option α) (q : α × Fin 4 × Fin 4 → K)
+        (s : Set (β × Set.powersetCard (Fin 4) 2 × Set.powersetCard (Fin 4) 2)),
+        (∀ w, IsFin3SelectorOf (G.closedHubNbhd w) (hubSel w)) ∧
+        (∀ i ∈ s, (i : β × _ × _).1 ∈ E(G)) ∧
+        ((Nat.card s : ℤ) = screwDim 2 * ((V(G).ncard : ℤ) - 1) - G.deficiency 3) ∧
+        LinearIndependent K (fun i : s => pencilRow hubSel G.endsOf q (i : β × _ × _)))
+    (hbareSplit : ∀ (G : Graph α β) (v a b : α) (eₐ e_b e₀ : β), G.Simple → 5 ≤ V(G).ncard →
+      G.TwoEdgeConnected → (∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G 3) →
+      G.degree v = 2 → eₐ ≠ e_b → G.IsLink eₐ v a → G.IsLink e_b v b →
+      (¬ G.PencilHub a ∨ ¬ G.PencilHub b) → e₀ ∉ E(G) →
+      ¬ PencilNondegFeasible K G →
+      HasPencilRealization K 3 (G.splitOff v a b e₀) →
+      HasPencilRealization K 3 G)
+    (hfresh : ∀ G' : Graph α β, G'.Loopless → (∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G' 3) →
+      (∃ v ∈ V(G'), G'.degree v = 2) → 3 ≤ V(G').ncard → ∃ e₀ : β, e₀ ∉ E(G'))
+    (G : Graph α β) (hspan : V(G) = Set.univ) :
+    PencilPair K 3 G := by
+  classical
+  have hsplit : ∀ G : Graph α β, G.Loopless → 3 ≤ V(G).ncard → G.TwoEdgeConnected →
+      (∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G 3) →
+      (∃ v ∈ V(G), G.degree v = 2) →
+      (∀ G' : Graph α β, V(G').Nonempty → V(G').ncard < V(G).ncard → PencilPair K 3 G') →
+      PencilPair K 3 G := by
+    intro G hloop hV h2ec hnoRigid hdeg2 hIH
+    by_cases h3 : V(G).ncard = 3
+    · exact pencilPair_of_habitat_ncard_eq_three hloop h3 h2ec hnoRigid
+    · by_cases h4 : V(G).ncard = 4
+      · exact pencilPair_of_habitat_ncard_eq_four hloop h4 h2ec hnoRigid
+      · exact pencilPair_of_splitOff_of_habitat hloop (by omega) h2ec hnoRigid hdeg2
+          (hfresh G hloop hnoRigid hdeg2 hV) hK hbareSplit hIH
+  exact pencil_conjecture_of_arms_pair hcontract hsplit G hspan
 
 end CombinatorialRigidity.Molecular

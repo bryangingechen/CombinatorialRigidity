@@ -32,8 +32,14 @@ made*). **`hsplit`'s residue (i) (small `|V|`) is now fully discharged**. **L7c-
 2026-07-30** (`Escape.lean`, `pencilPair_of_splitOff_of_habitat`) — the `5 ≤ |V|` producer carrying
 `hK` + `hbareSplit`, chaining L7c-1/2 (Simple + split data), the safe-pair alignment, and (per
 `PencilNondegFeasible K G`) either L7a→`hK`→L7b or `hbareSplit` fed the IH's bare half; detail in
-*Decisions made*. Only **L7c-6** (the successor wrapper) remains to close `hsplit` in full.
-`Molecule/Pencil.lean` split into
+*Decisions made*. **L7c-6 LANDED 2026-07-30** (`Escape.lean`,
+`pencil_conjecture_of_hcontract_hK_hbareSplit`) — the successor wrapper closing `hsplit` in full:
+dispatches `|V| ∈ {3, 4}` to L7c-3/L7c-4 and `5 ≤ |V|` to L7c-5, and wraps
+`pencil_conjecture_of_arms_pair` (`Pair2.lean`) into a successor carrying exactly `hcontract`
+(unchanged), `hK`, `hbareSplit`, and a `∀`-form `hfresh`; node `thm:pencil-conditional-realization-
+pair` restated to name the carried-hypothesis set + a new `fmlnote` on kernels (K)/(K-bare). **The
+`hsplit` build sequence is CLOSED**; only `hcontract` (W4), `hK`/`hbareSplit` (research), and
+`hfresh` (mechanical S1) remain open. `Molecule/Pencil.lean` split into
 `Molecule/Pencil/{Statement,Arms,Motive,Chart,Engine,Reseed,Witness,Steer,Pair,Pair2,Escape,Base}.lean`
 (2026-07-24/25/29/30 housekeeping).
 
@@ -275,8 +281,8 @@ Full record, grounding, and the W0–W5 decomposition:
   R2 evidence gap (zero infeasible-habitat graphs tested there) — (K-bare) is now evidenced at
   parity with (K). **Consequence (per the same-day "Numerics gate first" adjudication + post-gate
   "Continue: full L7c" confirmation): route (a) — carry `hbareSplit` as pinned — is GO**; L7c-5/6
-  may proceed carrying it exactly as pinned (design doc residue (ii)); the (K-bare) *research*
-  itself (closing `hbareSplit`, as opposed to carrying it) stays open alongside (K)'s. Scripts:
+  proceeded carrying it exactly as pinned (design doc residue (ii)), both now LANDED; the (K-bare)
+  *research* itself (closing `hbareSplit`, as opposed to carrying it) stays open alongside (K)'s. Scripts:
   `scratchpad/kbare/{kbare_common,gate1,gate2,stress_extra}.py` (untracked, independent of the
   escape probes above),
   and W4's witness generality (unchanged, after W5). W5-L8 is no longer a standalone open item
@@ -346,11 +352,16 @@ detail in *Blockers*); **consequence: route (a), carry `hbareSplit` as pinned, i
 no longer wait on anything except being built (`Blockers`/design doc residue (ii)).
 **`hsplit` residue (i) (small `|V|`) is now fully discharged (both L7c-3 and L7c-4 landed).**
 **L7c-5 LANDED 2026-07-30** (`Escape.lean`, `pencilPair_of_splitOff_of_habitat` — detail in
-*Decisions made*). **Next concrete commit:**
-- **L7c-6** (the final successor wrapper, needs all of L7c-3/4/5, all now landed — the last leaf
-  closing `hsplit` in full).
+*Decisions made*). **L7c-6 LANDED 2026-07-30** (`Escape.lean`,
+`pencil_conjecture_of_hcontract_hK_hbareSplit` — detail in *Decisions made*): the `hsplit` build
+sequence is CLOSED in full. **Next concrete commit (pick one):**
 - **Attack kernel (K)** (research recon, route 1 localization recommended — its first gate is the
   local-vs-global numerical test in the design doc's "Route options").
+- **Attack kernel (K-bare)** (research recon; numerics gate already SUPPORTED, the Lean discharge
+  itself is still open — design doc residue (ii)).
+- **`hfresh`'s mechanical S1 discharge** (residue (iv) — the fresh-edge supply from a
+  β-cardinality hypothesis, `Graph.freshEdgeSupply_of_card_lt` route, panel precedent
+  `case_III_realization_all_k`).
 - **W4** (after W5 — the constrained-family Claim-6.4 analogue, discharges `hcontract`).
 
 L6a-safe-exists is **CLOSED in full** (both halves LANDED). With L6b done, the L6/L7 split-arm chain
@@ -367,11 +378,12 @@ closed-hub-neighbourhood bound is free from the split arm's `PencilNondegFeasibl
 **L6c** = landed
 `splitOff_simple_of_noRigid_of_card`, folds into L7.
 
-Discharging `hsplit` (the L7c-1…6 build sequence) then `hcontract` (W4) removes the last two
-carried hypotheses of `pencil_conjecture_of_arms_pair`; the L7c-6 successor then carries exactly
-`hcontract`, `hK`, `hbareSplit`, and the mechanical `hfresh` supply (the Q4 bookkeeping in the
-design doc's "Remaining-open after L7c" block). Full leaf detail: `notes/Phase39-design.md`
-§"W5 leaf decomposition" + §"W5-L7 research recon".
+`hsplit` (the L7c-1…6 build sequence) is now discharged in full; the landed successor
+`pencil_conjecture_of_hcontract_hK_hbareSplit` (`Escape.lean`) carries exactly `hcontract` (W4),
+`hK`, `hbareSplit` (the two open kernels, research), and the mechanical `hfresh` supply (residue
+(iv), the Q4 bookkeeping in the design doc's "Remaining-open after L7c" block, still a follow-up
+S1). Full leaf detail: `notes/Phase39-design.md` §"W5 leaf decomposition" + §"W5-L7 research
+recon".
 
 Gates for any continuation: `lake build` (warning-clean) + `lake lint` when `.lean` is touched;
 `blueprint/verify.sh` + `blueprint/lint.sh` (vocabulary gate bans "stratum"/"strata") when `.tex`
@@ -385,6 +397,19 @@ neighbor — is `notes/IdeaBacklog.md`.
 
 ## Decisions made during this phase
 
+- **W5-L7c-6 LANDED — `hsplit` CLOSED IN FULL** (2026-07-30, `Molecule/Pencil/Escape.lean`,
+  `pencil_conjecture_of_hcontract_hK_hbareSplit`) — the successor wrapper, built exactly to the
+  pinned route: constructs `hsplit` internally via `by_cases` on `V(G).ncard = 3`/`= 4` (to
+  L7c-3/L7c-4) else `by omega` to `5 ≤ V(G).ncard` (to L7c-5, fed a fresh edge from the caller's
+  `∀`-form `hfresh`), then calls `pencil_conjecture_of_arms_pair` unchanged. Blueprint node
+  `thm:pencil-conditional-realization-pair` (`pencil.tex`) restated: `\lean{}` list extended with
+  the successor, statement prose replaces the raw "2EC with no proper rigid subgraph" clause with
+  the `|V| ∈ {3,4}` vs `≥ 5` dispatch and a plain-language description of kernels (K)/(K-bare) (no
+  new blueprint defs for `pencilRow`/`screwDim` — deliberately kept at the conceptual level, not a
+  literal transcription of the Lean types), plus a new `fmlnote` naming both kernels as open
+  hypotheses with the KT Claim 6.12 pointer. Gates + axioms clean (`propext`/`Classical.choice`/
+  `Quot.sound`; full `lake build` + `lake lint` both clean; `blueprint/verify.sh` +
+  `blueprint/lint.sh` both clean).
 - **W5-L7c-5 LANDED** (2026-07-30, `Molecule/Pencil/Escape.lean`,
   `pencilPair_of_splitOff_of_habitat`) — the `5 ≤ |V|` hsplit producer, built exactly to the
   pinned route/signature (both carried kernels `hK`/`hbareSplit` used as given, not attacked);

@@ -818,20 +818,40 @@ realization's own nondegenerate-satisfiability.
   realization of \cref{def:pencil-rank-hypothesis} directly.
 \end{fmlnote}
 
-\begin{theorem}[Pencil realization from the contraction and split cases, conditioned pair]
+\begin{theorem}[Pencil realization from the contraction case and two open kernels, conditioned pair]
   \label{thm:pencil-conditional-realization-pair}
-  \lean{CombinatorialRigidity.Molecular.pencil_conjecture_of_arms_pair}
+  \lean{CombinatorialRigidity.Molecular.pencil_conjecture_of_arms_pair,
+        CombinatorialRigidity.Molecular.pencil_conjecture_of_hcontract_hK_hbareSplit}
   \leanok
   \uses{thm:pencil-reduction, def:pencil-conditioned-pair, def:rigid-subgraph,
-        def:pencil-nondegenerate, def:pencil-generic-motive}
+        def:pencil-nondegenerate, def:pencil-generic-motive, def:pencil-rank-hypothesis}
   Let $K$ be an infinite field. Suppose that for every loopless
   multigraph $G$ with $|V(G)| \ge 3$, if every strictly smaller such graph
   satisfies the conditioned pair (\cref{def:pencil-conditioned-pair}) at
-  $n = 3$, then so does $G$ whenever it has a proper rigid subgraph, and so
-  does $G$ whenever it is two-edge-connected with no proper rigid subgraph.
-  Then every multigraph on the whole ambient body set satisfies the
-  conditioned pair at $n = 3$.
+  $n = 3$, then so does $G$ whenever it has a proper rigid subgraph. For the
+  two-edge-connected case with no proper rigid subgraph, the conditioned
+  pair holds unconditionally on three or four vertices (such a multigraph is
+  forced to be the spanning $3$-cycle, resp.\ $4$-cycle). On five or more
+  vertices it holds given the following, at a degree-two vertex $v$ one of
+  whose two neighbours is not a pencil hub, with split-off multigraph $G'$
+  already satisfying the conditioned pair: whenever $G$ is
+  nondegeneracy-feasible, a generic pencil realization of $G'$ extends to one
+  of $G$ at the deficiency rank (kernel (K)); whenever it is not, a pencil
+  realization of $G'$ at the deficiency rank extends to one of $G$ at the
+  deficiency rank (kernel (K-bare)); and some edge outside $E(G)$ is always
+  available. Then every multigraph on the whole ambient body set satisfies
+  the conditioned pair at $n = 3$.
 \end{theorem}
+\begin{fmlnote}
+  \label{fmlnote:pencil-conditional-realization-pair-kernels}
+  Kernels (K) and (K-bare) are the two hypotheses this formalization
+  currently carries rather than proves. Both are supported by exact-rational
+  computation across many habitat graphs with zero counterexamples found,
+  and (K) is additionally implied by the rank-nullity structure
+  Katoh--Tanigawa's own Claim 6.12~\cite{katohTanigawa2011} establishes for
+  its three candidate certificates $M_1, M_2, M_3$ — one of which is always
+  nonsingular at a generic seed.
+\end{fmlnote}
 \begin{proof}
   \leanok
   \uses{thm:pencil-reduction, def:pencil-nondegenerate}
@@ -854,4 +874,13 @@ realization's own nondegenerate-satisfiability.
   side, so its promoted concurrency family is re-selected by steering the
   larger side's chart realization to a common generic seed, and the
   attached vertex's fresh data avoids the resulting exceptional locus.
+
+  The split case's own hypothesis is built directly from the case split
+  above: on three or four vertices, from a direct construction placing a
+  point at each vertex; on five or more vertices, from a degree-two vertex
+  with a non-hub neighbour (existence needs no minimality — a graph with
+  every vertex of degree at least three already has a proper rigid
+  subgraph, \cref{lem:pencil-min-degree-rigid}), a fresh edge, and whichever
+  of kernel (K) or kernel (K-bare) applies to $G$'s own
+  nondegeneracy-feasibility.
 \end{proof}
