@@ -903,21 +903,19 @@ the KT primary source (p. 684 re-verified this pass, see *Citations*).
    them, a **graded chart** (points-first elimination ordering; the N6
    sampler is the blueprint) extends the device without touching the
    motive.
-4. **Split-arm use-sites are conjecturally feasible (W5-L6).**
-   ⚠️ **REFUTED as a bare-hypothesis claim (2026-07-29) — the "≤ 3
-   closed hub-neighbourhood" lemma below is FALSE for general
-   2EC/no-proper-rigid graphs; the sampling here used only SHORT chains.
-   Computer-verified counterexample + re-route in §"W5 leaf
-   decomposition" L6a.** Two
-   attempts to build a 2EC/no-proper-rigid habitat graph containing a
-   4-member closed hub-neighbourhood both fell into the contract arm:
-   spider-K4 has the dependent proper subset `{u,a,b,c,p₁,p₂,q₁,q₂}`
-   (5·9 = 45 > 42 = 6·7), and the 3-chain star with chain length 4 has a
-   dependent two-chain subset (5·11 = 55 > 54). The combinatorial lemma
-   "2EC + no proper rigid subgraph ⟹ every closed hub-neighbourhood has
-   ≤ 3 members" (plus a witness-seed construction, char-free à la
-   `momentCurve`) is the W5-L6 leaf; it is what discharges
-   `PencilNondegFeasible` at the split arm's `G′ = G^{ab}_v`.
+4. **Split-arm use-sites (W5-L6).** ⚠️ **Verdict SUPERSEDED (2026-07-29,
+   L6a proof-route recon) — canonical resolution now in §"W5 leaf
+   decomposition" L6a "Re-route SETTLED".** In brief: the "2EC + no proper
+   rigid subgraph ⟹ every closed hub-neighbourhood ≤ 3" lemma this verdict
+   proposed is FALSE (computer-verified theta counterexample), but it was the
+   **wrong target** — the ≤ 3 bound on `G` is free from the split arm's own
+   `PencilNondegFeasible K G` antecedent (landed
+   `ncard_closedHubNbhd_le_three_of_isNondegPencilRealization`), and where it
+   fails `G` is infeasible so the obligation is vacuous. The REAL content is
+   the transfer `G ⇒ G′`, which fails at "dangerous" split vertices (a
+   computer-verified feasible/2EC/no-rigid gadget where `splitOff` makes a
+   4-member neighbourhood, so `G′` is infeasible); the fix is to split a
+   **safe** vertex, with two coupled open items flagged there.
 5. **The k = 0 residue (sub-obligation (ii)) sharpened.** KT p. 684
    (re-verified this pass) shows Claim 6.11's proof consumes minimality
    **twice**: Lemma 4.3(ii) (`|B′ ∩ ãb| < 5`) *and* "Gᵥ is minimal by
@@ -2157,15 +2155,97 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
     `f = 3`, chain-4 `f = 1`). Note the counterexample is itself strictly SPARSE (`f(V) = −3`, not
     rigid) — the true split-arm habitat likely carries a rigidity/tightness invariant (`f(V) ≥ 0`)
     the bare hypotheses omit.
-    **Re-route (owner: a dedicated L6a proof-route recon — the next dispatch).** Settle the correct
-    invariant at the actual use-site `G′ = G.splitOff v a b e₀`; candidate strengthenings (builder):
-    (a) `G` rigid / spanning-circuit / minimally-0-dof — most likely, but the borderline `(5,5,5)`
-    case gives `f(V) = 0` with a proper tight subset, so whether the circuit hypothesis actually
-    rescues the ≤ 3 bound is itself OPEN and needs a matroid-rank computation, not just the `f` count;
-    (b) 3-edge-connectivity (the counterexample is exactly 2EC); (c) a max-degree bound. The L6→L7
-    wiring (supplying `hcard` for `G′`) must be re-planned: either a restated L6a that applies to `G′`,
-    or a direct structural `splitOff` argument. **L6b (takes `hcard` as an explicit hypothesis) and L8
-    are UNAFFECTED — independently buildable now.**
+    **Re-route SETTLED (2026-07-29, L6a proof-route recon).** The refuted lemma was proving the
+    *wrong statement*. The ≤ 3 bound on `G` is **not a graph-combinatorial fact** (candidates (a)/(b)/(c)
+    below all miss the point); it is **free from the split arm's own `PencilNondegFeasible K G`
+    antecedent**. `PencilPair`'s generic half is `G.Simple → PencilNondegFeasible K G →
+    HasGenericPencilRealization K 3 G` (`Motive.lean:160`), so when the split arm proves that half it
+    **has `PencilNondegFeasible K G` in scope**, and the LANDED
+    `ncard_closedHubNbhd_le_three_of_isNondegPencilRealization` (`Motive.lean:409`) turns it into
+    `∀ v ∈ V(G), (G.closedHubNbhd v).ncard ≤ 3` with **zero new work**. On graphs where that bound
+    *fails* (the theta counterexample: `closedHubNbhd v = 4`), the contrapositive of the *same* landed
+    lemma makes `G` **infeasible** (`¬ PencilNondegFeasible K G`), so the split arm's generic obligation
+    is **vacuous** — the refuted L6a was never needed there. No combinatorial ≤ 3 lemma on `G` exists.
+
+    **(5,5,5) borderline RESOLVED (moot).** The worry — does a rigidity/tightness hypothesis rescue a
+    combinatorial ≤ 3 lemma, since `(5,5,5)` is tight (`f(V) = 0`) with a proper tight subset — dissolves:
+    `theta(5,5,5)` has `closedHubNbhd(center) = 4` *regardless of arc length*, hence is infeasible, hence
+    vacuous. Arc length flips **no-proper-rigid**, never `closedHubNbhd ≤ 3`, and `> 3 ⟹` infeasible `⟹`
+    vacuous. Candidate (a) [strengthen L6a with rigidity/circuit], (b) [3-edge-conn], (c) [max-degree]
+    are all solving a non-problem; **none is pursued.**
+
+    **The real gap is the transfer `G ⇒ G′`, and it CAN fail.** L6b needs `hcard` at **`G′`**, not `G`.
+    Under `G.Simple` (split-arm antecedent) the fresh edge `ab` and the deletion of the degree-2 `v`
+    **preserve every degree** except `v`'s, so `PencilHub` is unchanged off `v` and
+    `(G′.closedHubNbhd w) = (G.closedHubNbhd w)` for `w ∉ {a, b}`, while
+    `G′.closedHubNbhd a = G.closedHubNbhd a ∪ ({b} if G.PencilHub b)` (symmetric at `b`; `v ∉` either,
+    being a non-hub, and `a`–`b` non-adjacent in `G` by `triangle_isProperRigidSubgraph`/`hnoRigid`).
+    So the transfer **creates a 4-member neighbourhood at `a`** exactly when `a` is a hub with
+    `|G.closedHubNbhd a| = 3` (tight) and `b` is a hub — a **dangerous** split. Then `G′` is **infeasible**
+    (landed necessity), the IH's generic half is vacuous, and *there is no `G′`-realization to extend* —
+    the "build a fresh feasible `G′`" route dies at that `v`.
+
+    **Computer-verified gadget (this recon, `scratchpad/habitat.py`).** The path `a–v–b` with `a` joined to
+    two hubs `x, y`, and `x, y, b` on a subdivided-triangle cycle of three length-`L` arcs (`L = 5`: 17
+    vertices; `L = 6`: 20), is loopless, simple, **2EC**, **no-proper-rigid** (certified: `f(W) < 0` for
+    *every* proper `W`, worst `−1` at `{a, v}`; `f(W) := 5|E_G(W)| − 6(|W|−1) = −partitionDef` at the
+    finest partition, so `f(W) < 0 ⟹ deficiency(G[W]) > 0 ⟹ G[W]` not rigid — airtight), and **feasible**
+    (`closedHubNbhd ≤ 3` everywhere, `= 3` at `a`). Yet `splitOff v a b` gives
+    `closedHubNbhd_{G′}(a) = {a, x, y, b}`, `= 4`, so **`G′` is infeasible**. Splitting any *arc-interior*
+    degree-2 vertex instead keeps `≤ 3` (**safe**). So the bound does NOT transfer for an arbitrary split
+    vertex.
+
+    **The route survives iff the split arm splits a SAFE degree-2 vertex.** Call a degree-2 `v` with
+    neighbours `a, b` **safe** when `¬ G.PencilHub a ∨ ¬ G.PencilHub b` (at least one neighbour a
+    non-hub); equivalently, under 2EC (no degree `≤ 1`), `v` is adjacent to another degree-2 vertex.
+    Dangerous ⟺ both neighbours hubs with one tight. The refuted L6a is therefore replaced by **two**
+    pieces:
+
+    - **L6a-transfer (buildable NOW, purely combinatorial, target `Molecule/Pencil/Habitat.lean`):** the
+      `closedHubNbhd` transfer at a safe split vertex — the honest producer of L6b's `hcard` at `G′`.
+      Target signature:
+      ```lean
+      theorem ncard_closedHubNbhd_splitOff_le_three_of_safe
+          [Finite α] [Finite β] {n : ℕ} {G : Graph α β} [G.Simple] {v a b : α} {e₀ : β}
+          (heₐ : ∃ eₐ, G.IsLink eₐ v a) (e_b : ∃ e_b, G.IsLink e_b v b) (hdeg : G.degree v = 2)
+          (hsafe : ¬ G.PencilHub a ∨ ¬ G.PencilHub b)
+          (hcard : ∀ w, (G.closedHubNbhd w).ncard ≤ 3) :
+          ∀ w, ((G.splitOff v a b e₀).closedHubNbhd w).ncard ≤ 3
+      ```
+      Route: the three-way split above (`w ∉ {a, b}`: identity; `w ∈ {a, b}`: `∪ singleton`, and `hsafe`
+      makes the added singleton land in a neighbourhood already `≤ 2`). Degree-preservation of `a, b` is
+      the one lemma to establish first (`degree_splitOff_eq` for `a, b` under `G.Simple`, `a ≠ b`, `ab ∉ E`).
+    - **L6a-safe-exists (OPEN — flagged below):** under the split-arm hypotheses + feasibility, a safe
+      degree-2 vertex exists. This is exactly the LANDED `exists_adjacent_degree_two_pair`
+      (`Induction/ReducibleVertex.lean:893`, KT Lemma 4.6 at `d = 3`) **generalized off minimality** — the
+      landed version consumes `G.IsMinimalKDof n 0` (via `no_rigid_edge_count`, `ReducibleVertex.lean:330`,
+      which also needs minimality), and route (b′) **dropped** minimality (the reduction runs on all
+      spanning multigraphs). Whether the adjacent-pair bound survives on the weaker `no-proper-rigid + 2EC`
+      (+ feasibility) hypotheses is the open combinatorial question. **Evidence STRONG that it does**
+      (`scratchpad/{safe,exact,search}.py`): every "all-dangerous" construction tested — perfect-matching
+      subdivisions of `K4`/prism/cube/`K3,3`/Petersen, and direct hub-cycles `C_k` (`k ≥ 7`) with antipodal
+      single-subdivision bridges — is feasible + 2EC + all-degree-2-dangerous **but always fails
+      no-proper-rigid under *exact* deficiency** (direct hub–hub edges, forced by tightness, create a
+      proper rigid subgraph; note `C_L` is rigid at `D = 6` iff `L ≤ 6`). **No clean proof yet:** the
+      natural "smooth `G` to a min-degree-3 hub-multigraph `H`, apply the landed W3-L1
+      `exists_isProperRigidSubgraph_of_three_le_degree` (minimality-FREE!), lift `H`'s proper rigid
+      subgraph back" argument has a **gap — subdivision does NOT preserve deficiency** (`C6` rigid ↦ `C7`
+      not, verified), so a rigid subgraph of the smoothing need not lift to a rigid subgraph of `G`.
+
+    **L6b UNCHANGED** (takes `hcard` explicitly); its input type is exactly L6a-transfer's output at
+    `G := G′` — confirmed type-match. **L6c UNCHANGED** (landed citation). **L8 UNAFFECTED.**
+
+    **⚠ FLAG FOR USER ADJUDICATION (two coupled open items, per the coordinator's flag-don't-force
+    charter).** (i) *Safe-vertex existence off minimality* (L6a-safe-exists) — evidence strong, proof open;
+    the phase can proceed by building L6a-transfer + L6b + L8 (all buildable now) and pinning
+    L6a-safe-exists as a `have`-hypothesis until settled. (ii) *Coupling to L7* — the split-vertex choice is
+    made by L7 (the KT Case II/III rank argument, the unbuilt research core; `hsplit` is a *hypothesis* of
+    `pencil_conjecture_of_arms_pair`, so L7 owns the choice). Whether L7's rank argument is compatible with
+    (or can be forced onto) a **safe** vertex is **open**; if L7 needs a *dangerous* vertex, the route needs
+    deeper rework — most plausibly re-introducing the minimality/rigidity invariant that (b′) dropped for the
+    split arm, a **W3-level** concern. This is the genuine "does `splitOff` preserve the needed invariant"
+    finding: **it does NOT preserve feasibility at dangerous vertices**, and the fix (split safe) is
+    well-motivated but not yet proven compatible with the rank core.
 
   - **L6b — the general-position witness seed** (target: `Molecule/Pencil/Witness.lean`; decoupled
     from L6a via an explicit `hcard` hypothesis, so it is independently buildable). Target signature
@@ -2213,14 +2293,21 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
     the `|V(G)| = 3` edge case (triangle spanning, not proper; `G′` on 2 vertices, base-sized) needs a
     separate base dispatch — also an L7/assembly concern.
 
-  **L6 → L7 wiring obligation (owned by L7, flagged here).** To INVOKE L6b at `G′`, the split arm
-  must supply `hcard` for `G′` — i.e. apply L6a to `G′`, which first needs `G′` shown
-  `TwoEdgeConnected` + no-proper-rigid + loopless (habitat properties of `splitOff`, NOT inherited for
-  free), OR a `closedHubNbhd` transfer `G ⇒ G′` (identity away from `a, b`, which `splitOff`
-  perturbs). This lives in L7, not L6.
+  **L6 → L7 wiring (settled 2026-07-29; the `closedHubNbhd`-transfer route, NOT the discarded
+  "re-derive `G′` habitat properties" one).** The chain L7 runs: split-arm antecedent
+  `PencilNondegFeasible K G` `→` (landed `ncard_closedHubNbhd_le_three_of_isNondegPencilRealization`)
+  `∀ w, G.closedHubNbhd w ≤ 3` `→` (**L6a-transfer** at a *safe* `v`) `∀ w, G′.closedHubNbhd w ≤ 3`
+  `→` (**L6b**) `PencilNondegFeasible K G′` `→` (IH generic half + **L6c** `G′.Simple`)
+  `HasGenericPencilRealization K 3 G′` `→` (L7 extension) `HasGenericPencilRealization K 3 G`. The
+  earlier "apply a combinatorial ≤ 3 lemma to `G′` from its own 2EC/no-rigid" plan is DEAD (that lemma
+  is false, refuted above); the transfer route needs `G′`'s habitat properties *not at all* — only
+  `G`'s feasibility + a safe split. **L7 owns the split-vertex choice** and must pick a safe one
+  (existence = L6a-safe-exists, open; compatibility with the rank argument = the flag above).
 
-  **Build order.** L6a FIRST (gating combinatorial risk). L6b (spike-first) is independent given the
-  `hcard` hypothesis and may proceed in parallel. L6c is a citation at assembly time.
+  **Build order.** L6a-transfer FIRST (buildable now, combinatorial, fixes the L6b interface). L6b
+  (spike-first) is independent given the `hcard` hypothesis and may proceed in parallel. L6a-safe-exists
+  is the open combinatorial obligation (pin as a `have`-hypothesis; settle later — the phase is not
+  blocked on it). L6c is a citation at assembly time; L8 is fully parallel.
 - **W5-L7** (the research core): the single-candidate Claim-6.12 replacement — at the
   Case-III habitat, a chart seed of `G′` realizing rank `6(|V|−2)` *and* the
   candidate-`M₁` escape `r ⬝ Λ²Π̂(a) ≠ 0` (then the assembly + the output's own
@@ -2238,6 +2325,12 @@ parallel combinatorial tracks after L0; L7 last (consumes L2–L4, L6).
 
 ### Open after this pass (owner)
 
+- **L6a-safe-exists** (the split-arm safe-vertex existence off minimality) — strong
+  computational evidence, no clean proof; the `exists_adjacent_degree_two_pair`
+  generalization off `IsMinimalKDof 0`. Owner: L6 builder (pin as `have`-hyp; not blocking).
+- **L6/L7 coupling** — whether L7's KT Case II/III rank argument admits a *safe* split
+  vertex; if not, deeper rework (re-introduce split-arm minimality, W3-level). ⚠ **USER
+  ADJUDICATION FLAG** (canonical: §"W5 leaf decomposition" L6a). Owner: L7 recon.
 - L7's uniform escape certificate — the research core (W5 dispatch, numerics-first).
 - Whether the split arm needs further minimality-free analogues of KT Lemma 4.3
   beyond Claim 6.11's inputs — assess inside the arm build (builder).

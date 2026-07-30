@@ -44,8 +44,10 @@ pass"): final motive = the conditioned pair `PencilPair` (further `Simple`-condi
 route (b′)); device = the grade-0 molecular chart (`Molecule/Pencil/Chart.lean`) + the
 rows-polynomial engine (`Molecule/Pencil/Engine.lean`) + the D6 re-seeding lemma
 (`Molecule/Pencil/Reseed.lean`), leaves **L0–L8** (L0–L4 complete; L5 closed modulo
-`hcontract`/`hsplit`, all L5-cut-v leaves landed; **L6 decomposed 2026-07-29 into L6a/L6b/L6c, next
-commit = L6a**; L8 parallel; L7, the research core, last).
+`hcontract`/`hsplit`, all L5-cut-v leaves landed; **L6 re-routed 2026-07-29 (L6a-as-pinned refuted,
+then settled): ≤ 3 on `G` is free from the `PencilNondegFeasible K G` antecedent, the real work is the
+`G ⇒ G′` transfer at a *safe* split vertex; next commit = L6a-transfer**; L8 parallel; L7, the
+research core, last).
 
 The opening recon ran 2026-07-23; verdicts (R1–R3) below in *Opening recon verdicts*.
 
@@ -127,9 +129,18 @@ Full record, grounding, and the W0–W5 decomposition:
   No open question remains at either; W5-L4 closed (*Decisions made*).
 - Open research questions inside the pinned W5 route, downstream of L4: **W5-L7**
   (the uniform escape certificate `r ⬝ Λ²Π̂(a) ≢ 0` on the chart — the genuinely
-  new mathematics, N2 witnesses one instance), **W5-L6** (habitat feasibility
-  lemma + the new `G′.Simple` sub-obligation), **W5-L8** (the k = 0 residue —
+  new mathematics, N2 witnesses one instance), **W5-L8** (the k = 0 residue —
   emptiness route recommended), and W4's witness generality (unchanged, after W5).
+- **W5-L6 split-arm feasibility — invariant SETTLED, two coupled items OPEN** (2026-07-29
+  L6a recon; canonical `notes/Phase39-design.md` §"W5 leaf decomposition" L6a "Re-route
+  SETTLED"). ≤ 3 on `G` is free from the split arm's `PencilNondegFeasible K G` antecedent
+  (landed `ncard_closedHubNbhd_le_three_of_isNondegPencilRealization`); but the transfer
+  `G ⇒ G′` fails at "dangerous" split vertices (computer-verified feasible/2EC/no-rigid gadget
+  where `splitOff` makes a 4-member `closedHubNbhd`, so `G′` is infeasible), so L7 **must split a
+  safe vertex**. ⚠ **USER-ADJUDICATION items:** (i) safe-vertex existence off minimality
+  (evidence strong, proof open); (ii) whether L7's rank argument admits a safe vertex (if not,
+  re-introduce split-arm minimality — a W3-level rework). L6a-transfer + L6b + L8 are all
+  buildable now regardless.
 - The full biconditional transport `ExtensorThroughPoint C q ↔
   ExtensorInPanel (screwComplementIso C) q` (design doc's W0 pin) is
   landed only as its **two forward implications** (all the self-duality
@@ -149,24 +160,34 @@ Full record, grounding, and the W0–W5 decomposition:
 `pencilPair_of_not_twoEdgeConnected` and `pencil_conjecture_of_arms_pair` dropped it and gained
 `[Infinite K]`.
 
-**Next concrete commit — pick up one of the three remaining W5 leaves (L6/L7/L8) or W4** (each still
-gated on `hsplit`/`hcontract`). The natural first steps:
-- **W5-L6** (habitat feasibility) — **decomposed 2026-07-29** into L6a (the `≤ 3`
-  closed-hub-neighbourhood lemma), L6b (the general-position witness seed →
-  `PencilNondegFeasible K G′`, spike-first), and L6c (`G′.Simple`, a citation to the LANDED
-  `splitOff_simple_of_noRigid_of_card`, folded into L7). **L6a as first pinned is REFUTED
-  (2026-07-29):** the bare `2EC + no-proper-rigid ⟹ ≤ 3` claim is FALSE (computer-verified theta-graph
-  counterexample, all four hyps hold yet `closedHubNbhd v = 4`; the counterexample is strictly sparse,
-  `f(V) = −3`, so the true habitat likely carries an omitted rigidity/tightness invariant). Full
-  counterexample + candidate re-routes: `notes/Phase39-design.md` §"W5 leaf decomposition" L6a.
-  **Next concrete commit: a dedicated L6a proof-route recon** — settle the correct invariant at the
-  use-site `G′ = G.splitOff v a b e₀` (candidates: `G` rigid/spanning-circuit; 3-edge-connectivity;
-  max-degree) and the L6→L7 `hcard` wiring, then re-pin L6a's signature. L6 feeds L7, NOT `hsplit`
-  directly.
-- **W5-L8** (parallel combinatorial track, buildable now, UNAFFECTED by the L6a refutation): the
-  `k = 0` residue, emptiness route recommended. **L6b** (takes the `≤ 3` bound as an explicit
-  `hcard` hypothesis) is likewise independently buildable now — either is a viable pivot if the L6a
-  recon stalls.
+**Next concrete commit — `W5-L6a-transfer`** (buildable now, purely combinatorial, target new
+`Molecule/Pencil/Habitat.lean`): the `closedHubNbhd` transfer at a *safe* split vertex —
+`ncard_closedHubNbhd_splitOff_le_three_of_safe` (signature in `notes/Phase39-design.md` §"W5 leaf
+decomposition" L6a), which supplies L6b's `hcard` at `G′` from `G`'s feasibility. This is the corrected
+replacement for the refuted bare-combinatorial L6a. Its one prerequisite lemma is degree-preservation
+of `a, b` under `splitOff` (`G.Simple`, `a ≠ b`, `ab ∉ E`).
+
+**W5-L6 invariant SETTLED (2026-07-29 L6a recon; canonical `notes/Phase39-design.md` §"W5 leaf
+decomposition" L6a).** The ≤ 3 closed-hub-neighbourhood bound on `G` is **not** a graph-combinatorial
+fact (the refuted L6a's `2EC + no-rigid ⟹ ≤ 3` is false, computer-verified theta counterexample) — it
+is **free from the split arm's own `PencilNondegFeasible K G` antecedent** via the LANDED
+`ncard_closedHubNbhd_le_three_of_isNondegPencilRealization`, and where it fails `G` is infeasible so
+the obligation is vacuous (this also moots the `(5,5,5)` borderline). The **real gap** is the transfer
+`G ⇒ G′`: `splitOff` at a *dangerous* vertex (both neighbours hubs, one tight) makes a 4-member
+neighbourhood, so `G′` is infeasible — computer-verified gadget. Fix: split a **safe** vertex.
+Other buildable-now leaves (parallel pivots):
+- **W5-L6b** (spike-first, takes `hcard` explicitly): the general-position witness seed →
+  `PencilNondegFeasible K G′`. Its input type-matches L6a-transfer's output exactly. UNCHANGED by the
+  re-route.
+- **W5-L8** (the `k = 0` residue, emptiness route). Fully parallel.
+- **W5-L6c** (`G′.Simple` = landed `splitOff_simple_of_noRigid_of_card`) — a citation, folded into L7.
+
+**⚠ Two coupled OPEN items flagged for user adjudication** (canonical: design doc L6a): (i) *safe-vertex
+existence off minimality* — the landed `exists_adjacent_degree_two_pair` needs `IsMinimalKDof 0` which
+route (b′) dropped; evidence strong that it generalizes, proof open; pin as a `have`-hyp. (ii) *L6/L7
+coupling* — the split-vertex choice is L7's (the unbuilt rank core); whether its rank argument admits a
+safe vertex is open, and if not the fix is a W3-level rework (re-introduce split-arm minimality). Neither
+blocks L6a-transfer / L6b / L8.
 - **W5-L7** (the research core, last): the uniform escape certificate `r ⬝ Λ²Π̂(a) ≢ 0` on the
   chart — the genuinely new mathematics; N2 witnesses one instance.
 - **W4** (after W5): the constrained-family Claim-6.4 analogue, `G′`-block witness confirmed by N3;
@@ -188,18 +209,20 @@ neighbor — is `notes/IdeaBacklog.md`.
 
 ## Decisions made during this phase
 
-- **W5-L6 decomposed (L6a/L6b/L6c), then L6a-as-pinned REFUTED** (2026-07-29; design pass `6768bd33`
-  + coordinator salvage this commit). The L6 design-pass recon split habitat feasibility into L6a
-  (the `≤ 3` closed-hub-neighbourhood combinatorial lemma), L6b (the witness seed →
-  `PencilNondegFeasible K G′`, decoupled via an explicit `hcard` hypothesis), L6c (`G′.Simple` = the
-  landed `splitOff_simple_of_noRigid_of_card`, a citation — a real simplification). The L6a build then
-  **refuted** its own pinned signature with a computer-verified counterexample (theta graph, arcs
-  `(6,6,6)`: 2EC + no-proper-rigid, yet four degree-3 hubs ⟹ `closedHubNbhd = 4`), returning BLOCKED
-  with no commit — the bare `2EC + no-proper-rigid` hypotheses do NOT bound the closed hub
-  neighbourhood. Canonical counterexample + candidate re-routes: `notes/Phase39-design.md` §"W5 leaf
-  decomposition" L6a. **Next: a dedicated L6a proof-route recon** to settle the true use-site invariant
-  (`G′ = G.splitOff v a b e₀`) — the counterexample is strictly sparse (`f(V) = −3`), so a
-  rigidity/tightness invariant is the leading candidate. L6b/L8 unaffected. Dispatch-log F9 instance.
+- **W5-L6 invariant SETTLED + route re-pinned** (2026-07-29; L6a proof-route recon this commit,
+  after the same-day refutation of the bare-combinatorial L6a). Canonical:
+  `notes/Phase39-design.md` §"W5 leaf decomposition" L6a "Re-route SETTLED". Findings: (1) the ≤ 3
+  closed-hub-neighbourhood bound on `G` is **free** from the split arm's own `PencilNondegFeasible K G`
+  antecedent (LANDED `ncard_closedHubNbhd_le_three_of_isNondegPencilRealization`, `Motive.lean:409`) —
+  the refuted L6a's `2EC + no-rigid ⟹ ≤ 3` was the wrong target (false; theta counterexample), and
+  where it fails `G` is infeasible so the split-arm obligation is vacuous (this moots the `(5,5,5)`
+  borderline: theta has `closedHubNbhd(center) = 4` at every arc length ⟹ infeasible ⟹ vacuous).
+  (2) The real gap is the transfer `G ⇒ G′`: `splitOff` at a *dangerous* vertex makes a 4-member
+  neighbourhood ⟹ `G′` infeasible — computer-verified feasible/2EC/no-rigid gadget (`scratchpad/`).
+  Fix: split a **safe** vertex. Re-pin: L6a → **L6a-transfer** (buildable now, combinatorial) +
+  **L6a-safe-exists** (open). L6b/L6c/L8 unchanged; L6b's `hcard` input type-matches L6a-transfer's
+  output. **⚠ Two coupled items flagged for user adjudication** (safe-vertex existence off minimality;
+  L6/L7 rank-argument compatibility). Dispatch-log F9 instance.
 - **L5-cut-v-g PART 2 LANDED — the inline sub-case-4 discharge + shell/successor rewire; L5-cut-v
   CLOSED** (2026-07-29, `Pair2.lean`; `hcutPendant3` DISCHARGED): new helper
   `hasGenericPencilRealization_pendant_deg3_of_IH` (`[Infinite K]`) closes the pendant deg-`3`
