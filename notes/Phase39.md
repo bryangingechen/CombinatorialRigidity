@@ -124,11 +124,15 @@ exactly three remaining open items — **next concrete commit: pick any one, non
 - **`hcontract`** (W4) — the constrained-family Claim-6.4 analogue; not yet attacked (design doc
   §"W4 route (third core): cluster refutation + the constrained-family survivor (N3)"; the last
   W-level leaf, scheduled after W5 closes).
-- **`hK`** (kernel (K), research) — the escape `≢ 0` uniformity kernel. Route 1 (localization,
-  recommended first: degenerate/"cone" the far graph so the stress localises to the chain
-  `b–v–a–c`; first gate = a local-vs-global numerical test) or route 2 (reuse the landed
-  panel-case span machinery, `exists_complementIso_ne_zero_of_homogeneousIncidence`, restricted
-  to the pencil's 5-dim span) — design doc §"W5-L7 research recon" "Route options".
+- **`hK`** (kernel (K), research) — the escape `≢ 0` uniformity kernel. **Route 1
+  (localization) is REFUTED — NO-GO** (2026-07-30 gate: the stress is supported on *every*
+  edge, and the escape's zero locus moves with the far graph at identical radius-1 chain
+  data, even under one distance-4 vertex move); route 2's pointwise reuse is also refuted
+  (the landed device needs a spanning join family, the pencil pin caps the span at 5). The
+  surviving attack is the **variability-lever reduction**: (K) reduces to *stress
+  non-constancy* — `[r]` takes ≥ 2 values as far data varies over a fixed local block —
+  via the locally-computable 1-dim `S^⊥` generator; uniform non-constancy is the next (K)
+  recon's object. Design doc §"W5-L7 research recon" "(K) route-1 gate".
 - **`hbareSplit`** (kernel (K-bare), research) — the bare-half-off-feasibility kernel. The
   numerics gate is SUPPORTED (parity with (K): certified bare-target attainment at every
   infeasible gadget tried, both deficiency branches), but the Lean discharge itself is open — the
@@ -150,6 +154,12 @@ neighbor — is `notes/IdeaBacklog.md`.
 Reverse-chronological, one line per landing; full derivations live in git and
 `notes/Phase39-design.md` (per-decision pointer where the design doc has a named section).
 
+- **(K) route-1 gate FIRED — locality REFUTED, NO-GO** (2026-07-30, docs-only; exact-ℚ scripts
+  `scratchpad/escape/localtest*.py`, untracked) — with identical radius-1 chain data the escape's
+  zero locus moves with the far graph (within-habitat and cross-habitat; stress supported on every
+  edge; sensitivity to a single distance-4 vertex move), killing route 1 and route 2's pointwise
+  reuse; (K) reduced instead to *stress non-constancy* via the local 1-dim `S^⊥` lever. Design doc
+  §"W5-L7 research recon" "(K) route-1 gate".
 - **`hfresh`'s mechanical discharge LANDED — residue (iv) CLOSED** (2026-07-30, `Escape.lean`) —
   `freshEdgeSupply_of_card_lt_of_noRigid_of_degree_two` (the pencil-habitat analogue of
   `Graph.freshEdgeSupply_of_card_lt`, edge bound from `Graph.edgeBound_of_noRigid_of_degree_two`

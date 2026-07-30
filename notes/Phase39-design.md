@@ -2859,6 +2859,7 @@ given `G` loopless, `3 ≤ |V(G)|`, `2EC`, no-proper-rigid, `∃ v, G.degree v =
   prior attack routes factor through `hK`'s discharge without loss (route 1's `escapePoly` infra
   can still be built *inside* the discharge if that attack is chosen; route 2's opaque-`r`
   fixed-seed `M₁` linear algebra is how the discharge should do the block computation).
+  *(Route 1 has since been closed NO-GO — see §"(K) route-1 gate" below.)*
 
 **Not-buildable-now inventory (REVISED 2026-07-30, L7c assembly recon):** TWO carried kernels,
 not one — kernel **(K)** (the `hK` implication above) and the bare-half kernel **(K-bare)**
@@ -3118,6 +3119,9 @@ feasible branch.
    localisation needs a "generic-seed stress-localisation" lemma that is itself unproven.
    Next step: a numerical test of whether `E`'s (non)vanishing is local (fix identical
    local chain data across two different global habitats, compare) before committing.
+   **Gate FIRED 2026-07-30 — locality REFUTED, route 1 is NO-GO** (the risk confirmed at
+   its worst: the stress is supported on *every* edge, and the escape's zero locus moves
+   with the far graph at identical local data); see §"(K) route-1 gate" below.
 
 2. **Reuse the landed panel-case span machinery** (effort: medium, 2–4 leaves *if*
    applicable). The panel-case Claim 6.12 (four-point span = 6) is formalised as
@@ -3128,6 +3132,11 @@ feasible branch.
    span computation can be run through the same `complementIso` non-vanishing device.
    *Risk:* the four-point argument's independence input (Lemma 2.1) is exactly what the
    pencil pinning breaks (dim 5 < 6), so a genuinely new non-vanishing input is needed.
+   **Assessed 2026-07-30 (route-1 gate recon) — risk CONFIRMED against the landed body;
+   partial reuse survives**: the span-side computation reduces the disjunction escape to a
+   single proportionality `r ∥ w` with `w` the locally-computable generator of the 1-dim
+   `S^⊥`, yielding the *variability-lever* reduction of (K) to stress non-constancy —
+   see §"(K) route-1 gate" below.
 
 3. **Carry (K) as a project-level `have`-hypothesis indefinitely** (effort: 0 now; defers
    the research). **ADJUDICATED 2026-07-30 (session check-in) and re-shaped same day by the
@@ -3143,10 +3152,98 @@ feasible branch.
 **Recommendation** (route 3 adjudicated; `escapePoly` deleted by the 2026-07-30 re-pin; L7b
 LANDED; L7c decomposed by the 2026-07-30 assembly recon — the block above is canonical). Build
 L7c-1 + L7c-2 (one S1 plumbing commit), then L7c-3/L7c-4 (the base leaves), then — once the
-(K-bare) adjudication returns — L7c-5 and L7c-6. In parallel, fire the route-1 (localisation)
-research recon for (K), with the local-vs-global numerical test as its first gate; the (K-bare)
+(K-bare) adjudication returns — L7c-5 and L7c-6. *(All of the above landed 2026-07-30.)* The
+route-1 (localisation) research recon FIRED 2026-07-30 and its local-vs-global gate **refuted
+locality — route 1 is closed NO-GO**; the surviving (K) attack is the variability-lever
+reduction through route 2's span-side reuse (§"(K) route-1 gate" below), whose open core —
+uniform stress non-constancy — is the recommended object of the next (K) recon. The (K-bare)
 research recon (numerics-first, residue (ii) above) can run independently. Do **not** guess
-that (K) is provable by (6.44) — that is refuted.
+that (K) is provable by (6.44) — that is refuted; do **not** re-attempt route-1 localisation.
+
+### (K) route-1 gate (2026-07-30): the local-vs-global test — locality REFUTED, NO-GO
+
+Commissioned per route 1's own pinned first gate above ("a numerical test of whether `E`'s
+(non)vanishing is local … before committing"). Question: at a generic seed, does the escape
+`E = r ⬝ (b̂∧ĉ)` depend only on a bounded neighbourhood of the chain `b–v–a–c`, so that
+degenerating/coning the far graph localises the stress? Method: exact-ℚ, same model as N7
+(scripts `scratchpad/escape/localtest.py` + `localtest_zeros.py`, untracked; reproduce
+`python3 localtest_zeros.py`). Every reported configuration validated rank = target,
+nullity 1, (6.44), `r ⊥ â∧b̂`, `r ⊥ â∧ĉ`, `r ≠ 0`.
+
+**Setup (N8).** Fix one **radius-1 local block**, identical rationals across all runs:
+`pt(b)`, `Π(b)`, `pt(c)`, `Π(c)`, the two non-`a` in-plane neighbours of each of `b` and `c`,
+and `pt(a)(t) = p₀ + t·dir` on the meet line `Π(b) ∩ Π(c)`. Vary ONLY the far graph:
+within-habitat far resampling (H1 = dbl-subdiv K4, far seeds 1–3) and cross-habitat
+(H4 = dbl-subdiv (K5 − matching), chain-end degrees (3,3) matching H1's, so the radius-1
+block is habitat-portable verbatim). Repeated with a second local block (seed 77) — same
+picture throughout.
+
+**Results (exact-ℚ):**
+
+1. **The stress is supported on every edge** — 17/17 (H1) and 23/23 (H4) edge blocks carry
+   nonzero stress in every valid run, both local blocks. In these tight habitats
+   (`5|E′| = 6(|V′|−1) + 1`, no proper rigid subgraph upstream) the fundamental circuit of
+   `ab` is the entire edge set: there is no proper subgraph to localise the stress onto.
+   The route's named risk, confirmed at its worst.
+2. **`[r]` moves with far data.** At the same `t` and identical local block, the projective
+   direction of the escape vector `r` differs across all three H1 far seeds and both H4 far
+   seeds (5 pairwise-distinct directions).
+3. **The zero locus of `E(t)` moves — including within one habitat.** Same local block,
+   integer sweep `t ∈ [−6,6]` + bisection (bracket width ~4·10⁻⁹, endpoints valid
+   rank-target/nullity-1 realizations): H1 far1 — **no zero** (constant sign); H1 far2 —
+   zeros at `t* ≈ −1.7529130, −0.0048921`; H4 far1 — zeros at `t* ≈ −3.0835821, −2.7321426`.
+   Identical local chain data is compatible with both vanishing and non-vanishing of the
+   escape, decided by the far graph alone.
+4. **Sensitivity radius ≥ 4.** Moving a SINGLE far interior vertex (graph distance 4 from
+   the chain, staying inside its hub's plane — an in-stratum move) changes `[r]` and
+   multiplies the normalized escape `Ẽ` (scale fixed by `r`'s first nonzero coordinate) by a
+   factor non-constant in `t` (0.7419 at `t = 0`, 5.3133 at `t = 1`) — so the zero set of
+   `t ↦ E(t)` itself changes under one distance-4 vertex move. No radius-≤ 3 neighbourhood
+   determines the escape's (non)vanishing. (All cross-run comparisons here use scale-free
+   invariants — projective `[r]`, zero loci, normalized ratios; raw signs of `E` across
+   *different* runs are λ-scale artifacts and were not used.)
+
+**Verdict: route 1 is NO-GO.** The escape's (non)vanishing at a generic seed is a genuinely
+global function of the seed — not a function of any bounded chain neighbourhood — because
+the corank-1 stress it reads is globally supported and globally coupled. The
+coning/specialization variant loses its premise too: localising the stress means shrinking
+the realized circuit, i.e. forcing a proper row subset dependent — a rank-threatening
+degeneration with no landed control, and the "generic-seed stress-localisation" lemma the
+route needed is now *known false at generic seeds* (support is the whole edge set there).
+Do not re-attempt.
+
+**Route-2 assessment (against its named risk, grounded in the landed body).** The landed
+device's engine is `case_III_claim612_gen` (`RigidityMatrix/Claim612.lean:1339`; the
+consumer-facing `exists_complementIso_ne_zero_of_homogeneousIncidence` at `:1382` adds only
+the line-data dispatch): its **sole non-vanishing input is `hr : r ≠ 0`** plus a
+linearly-independent 4-family `pbar` whose pairwise joins span all of `Λ²K⁴`
+(`span_omitTwoExtensor_eq_top`, Lemma 2.1). The panel certificate is exactly "the candidate
+spaces span everything, so `r ≠ 0` suffices". Under the pencil pin the available candidate
+space is `S = Λ²Π̂(a) + pencil(b) + pencil(c)` with `dim S = 5` (structural, N7), so
+`r ∈ S^⊥ ∖ {0}` is uncontradicted and `r ≠ 0` concludes nothing: **the named risk is
+CONFIRMED** — no pencil-restricted rerun of the landed argument closes (K); a genuinely new
+non-vanishing input is required. What *does* survive as reuse is the span-side reduction:
+`S^⊥` is 1-dimensional with generator `w` computable from the local block alone
+(`pencil(b)` is determined by `(pt(b), Π(b))`, `pencil(c)` by `(pt(c), Π(c))`, `Λ²Π̂(a)` by
+the three chain points), and the KT-faithful **disjunction** escape (one of `M₁/M₂/M₃`
+works, KT Claim 6.12 p. 690 — which implies `hK`'s rank increment, and `hK` is
+candidate-agnostic) fails at a seed **iff `r ∥ w`**.
+
+**The variability lever (new; what a route-2/(K) recon needs to settle).** Since `w` is
+fixed on the fiber of seeds over a fixed local block, any two seeds in that fiber with
+`r₁, r₂ ≠ 0` and `[r₁] ≠ [r₂]` cannot both satisfy `r ∥ w` — at least one certifies the
+disjunction escape, hence the `hK` increment. **(K) therefore reduces to stress
+non-constancy**: *over some chart-generic local block (where `dim S = 5`), the stress's
+`a`-block direction `[r]` takes at least two values as the far data varies.* Exactly this
+non-constancy is what N8 witnesses in every habitat and under a single distance-4 vertex
+move (findings 2/4). Two cautions pinned now: the reduction needs the **disjunction** form,
+not `M₁`-alone (two distinct `[r]` can both lie on the 3-dim
+`{r ⬝ (b̂∧ĉ) = 0} ∩ pencil(a)^⊥`; only the 1-dim `S^⊥` is excluded by non-constancy), and
+proving non-constancy uniformly in `G` is still open — it is a strictly weaker target than
+any pointwise escape certificate (it asks only that `r` *move* as one far vertex moves, not
+where it lands), plausibly a derivative/transversality statement about the corank-1 stress,
+but the `∀ G` uniformity remains the crux. That statement is the recommended object of the
+next (K) recon.
 
 ## Higher-`d` note (orientation only, per the phase-open decision)
 
