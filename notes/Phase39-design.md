@@ -2302,8 +2302,11 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
       `S(K₂,₃) = θ(4,4,4)`). Carry the `k = 0` edge bound as a `have`-hypothesis (`hedge`); it is the
       lone residual, and it is exactly the case KT's minimal Lemma 4.6 was written for.
 
-    **L6b UNCHANGED** (takes `hcard` explicitly); its input type is exactly L6a-transfer's output at
-    `G := G′` — confirmed type-match. **L6c UNCHANGED** (landed citation). **L8 UNAFFECTED.**
+    **L6b RE-ROUTED (2026-07-30 spike — the `hcard`-only pin is FALSE; see the L6b block below).**
+    Its input `hcard` type still matches L6a-transfer's output at `G := G′`, but `hcard` **alone does
+    not imply `PencilNondegFeasible`** — L6b needs an extra triangle-exclusion hypothesis, and a NEW
+    obligation **L6d** (triangle-freeness transfer `G ⇒ G′`) is now tracked. **L6c UNCHANGED** (landed
+    citation). **L8 UNAFFECTED.**
 
     **⚠ ADJUDICATION POSTURE (revised 2026-07-30 recon — the earlier "two coupled open items" is
     superseded; a W3-level minimality re-introduction is NOT forced).**
@@ -2332,9 +2335,40 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
       (computer-verified gadget, `scratchpad/habitat.py`), so L7 must split a safe one — which, per
       (ii), is exactly what KT already does.
 
-  - **L6b — the general-position witness seed** (target: `Molecule/Pencil/Witness.lean`; decoupled
-    from L6a via an explicit `hcard` hypothesis, so it is independently buildable). Target signature
-    (exact finiteness / `Simple` side-hyps pinned in-spike):
+  - **L6b — the general-position witness seed** (target: `Molecule/Pencil/Witness.lean`).
+    **⚠ THE `hcard`-ONLY PINNED SIGNATURE BELOW IS REFUTED (2026-07-30 bank-authorized spike).**
+    `hcard : ∀ v, (G.closedHubNbhd v).ncard ≤ 3` alone does **not** imply `PencilNondegFeasible K G`:
+    a graph with a **two-adjacent-hub triangle** satisfies `hcard ≤ 3` yet is infeasible by the LANDED
+    `not_pencilNondegFeasible_of_triangle_two_hubs` (`Motive.lean:563`). Compiler-checked (scratch,
+    reverted): `not_pencilNondegFeasible_of_triangle_two_hubs (…) (hthm hcard) : False`. Smallest
+    witness (simple, hand-verified): `{u,v,w,u',v'}`, edges `{uv,uw,vw,uu',vv'}` — `u,v` deg-3 hubs,
+    triangle `u,v,w`, every `closedHubNbhd ≤ 2`. **This is an internal plan inconsistency, not new
+    math:** the *Blockers* section of `notes/Phase39.md` (the triangle-hub mechanism refutes any purely
+    `≤ 3`-closedHubNbhd feasibility criterion) already recorded it; the L6b pin was never reconciled
+    against it. The **chart assembly route is sound** — the spike confirmed the v-e template
+    (`Steer.lean:421`, `exists_common_seed_linearIndepOn_pencilChartPoint` →
+    `exists_fillNbr_pencilChartWF_of_standing` → headline) composes; the block is *only* the missing
+    hypothesis. Corrected decomposition (the `#3/#4/#5` moment-curve core is NOT yet resolved — the
+    spike never reached it):
+    - **L6b needs an extra hypothesis** excluding two-adjacent-hub triangles: minimal
+      `¬ (two-adjacent-hub triangle)`; the design's intended sufficient form is total triangle-freeness
+      (from the no-proper-rigid habitat at `|V| ≥ 4`, per the *Blockers* claim — **itself owed a
+      verification**, given this arc's pattern of optimistic habitat pins).
+    - **L6d (NEW, previously UNTRACKED):** the triangle-freeness (or no-two-hub-triangle) transfer to
+      `G′ = G.splitOff v a b e₀` from `G`'s habitat (2EC + no-proper-rigid + safe split, `|V| ≥ 4`).
+      The L6→L7 wiring omitted this; it is the link feeding L6b's new hypothesis. Owed a red node /
+      checklist item, not a prose aside.
+    - **L6b-i (buildable once the hypothesis is settled):** the assembly given selectors + the three
+      satisfiable-somewhere LI conditions → `PencilNondegFeasible` (the v-e template minus its `.mono`
+      restriction). Not banked by the spike (factoring ambiguous until the hypothesis lands).
+    - **L6b-ii (spike-first, against the corrected hypothesis):** the general-position `#3/#4/#5`
+      witnesses from `hcard` + no-two-hub-triangle — the genuinely-new moment-curve core, unchanged in
+      difficulty, now correctly scoped.
+    - **Missing brick:** a selector-existence lemma (`IsFin3SelectorOf` for any `ncard ≤ 3` set), used
+      by `#1`/`#2`; not currently in tree.
+
+    (Historical) The refuted pin + its route, retained for the assembly detail (`#1`/`#2` still hold):
+    Target signature
     ```lean
     theorem pencilNondegFeasible_of_ncard_closedHubNbhd_le_three
         [Inhabited α] [Finite α] [Finite β] [Infinite K] {G : Graph α β}

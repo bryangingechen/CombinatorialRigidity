@@ -187,12 +187,22 @@ dropped as inert (Decisions-made). The **rigid (`k = 0`) half stays a bounded `h
 4.6 off minimality; decisive `S(Petersen)` evidence, no counterexample; user call only whether to
 prove it now).
 
-**Next concrete commit — pick a buildable-now leaf** (all parallel):
-- **W5-L6b** (`pencilNondegFeasible_of_ncard_closedHubNbhd_le_three`, target `Witness.lean`): the
-  general-position witness seed taking `hcard` explicitly — its input has an honest producer
-  (L6a-transfer at `G := G′`). **COMPILER-CHECKED SPIKE REQUIRED** for its char-free moment-curve LI
-  core (design doc L6b conjuncts #3/#4/#5); the recommended next.
-- **W5-L8** (the `k = 0` residue, emptiness route). Fully parallel.
+**W5-L6b `hcard`-only pin REFUTED (2026-07-30 bank-authorized spike).** `hcard : ∀ v, closedHubNbhd
+≤ 3` alone does NOT imply `PencilNondegFeasible K G` — a two-adjacent-hub triangle satisfies `hcard`
+yet is infeasible by the landed `not_pencilNondegFeasible_of_triangle_two_hubs` (compiler-checked
+refutation; 5-vertex witness). This was ALREADY implied by the *Blockers* triangle-hub note — the L6b
+pin was an internal plan inconsistency, not new math. The chart assembly route is sound; only the
+hypothesis is wrong. Canonical corrected decomposition: `notes/Phase39-design.md` §"W5 leaf
+decomposition" L6b (L6b needs a no-two-hub-triangle hypothesis; NEW obligation **L6d** = triangle-
+freeness transfer `G ⇒ G′`; L6b-i assembly buildable once the hypothesis lands; L6b-ii the
+spike-first `#3/#4/#5` core; missing `IsFin3SelectorOf`-existence brick).
+
+**Next concrete commit — a habitat-foundations recon** (recommended): VERIFY the *Blockers* claim
+that the no-proper-rigid habitat is triangle-free at `|V| ≥ 4` (i.e. a triangle is a proper rigid
+subgraph there — owed a check given this arc's three optimistic-pin refutations) AND that it transfers
+to `G′ = G.splitOff v a b e₀` (the L6d obligation), then re-pin L6b's corrected hypothesis + formally
+track L6d. Only after that recon are L6b-i / L6b-ii / L6d builds on verified ground. Parallel
+alternative unaffected by all this: **W5-L8** (the `k = 0` residue, emptiness route).
 
 **W5-L6 invariant SETTLED (2026-07-29 L6a recon; canonical `notes/Phase39-design.md` §"W5 leaf
 decomposition" L6a).** The ≤ 3 closed-hub-neighbourhood bound on `G` is **not** a graph-combinatorial
@@ -240,6 +250,19 @@ neighbor — is `notes/IdeaBacklog.md`.
 
 ## Decisions made during this phase
 
+- **W5-L6b `hcard`-only pin REFUTED by the bank-authorized spike; L6d surfaced** (2026-07-30, no
+  commit — spike left tree clean; coordinator salvage this commit). The spike (compiler-checked
+  scratch, reverted) showed `hcard : ∀ v, closedHubNbhd ≤ 3 ⟹ PencilNondegFeasible K G` is FALSE: a
+  two-adjacent-hub triangle satisfies `hcard` yet is infeasible by the landed
+  `not_pencilNondegFeasible_of_triangle_two_hubs` (5-vertex witness `{u,v,w,u',v'}`). This was already
+  implied by the *Blockers* triangle-hub note — an internal plan inconsistency, not new math; the L6b
+  pin (from `6768bd33`) never reconciled against it. The chart **assembly** route is sound (v-e
+  template composes); only the hypothesis is wrong. Corrected decomposition (design doc L6b): L6b gains
+  a no-two-hub-triangle hypothesis; NEW obligation **L6d** (triangle-freeness transfer `G ⇒ G′`);
+  L6b-i (assembly) + L6b-ii (spike-first `#3/#4/#5` core) + a missing `IsFin3SelectorOf`-existence
+  brick. **Next: a habitat-foundations recon** verifying the habitat is triangle-free at `|V| ≥ 4` and
+  that it transfers to `G′`, before re-pinning. Dispatch-log F9 instance (third optimistic-pin
+  refutation in the L6 arc).
 - **W5-L6a-safe-exists NON-RIGID HALF LANDED** (2026-07-30, `Induction/ReducibleVertex.lean` +
   `Induction/Operations.lean`): three decls discharging the whole non-rigid (`deficiency > 0`)
   split-arm safe-vertex obligation, no minimality anywhere. (i) `exists_adjacent_degree_two_pair_of_edgeBound`
