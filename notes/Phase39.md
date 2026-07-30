@@ -17,7 +17,10 @@ a fresh session."* **2026-07-30 (verbatim):** *"Let's wrap up this session when 
 leave the research core to a fresh session."* **2026-07-30 session check-in (verbatim, settled
 the L7 recon's "Route options" and the L6a-safe-exists rigid-half open item):** kernel (K) route
 — *"Route 3: build now"*; L6a-safe-exists rigid `k=0` half — *"Prove now"* (both since
-discharged — see *Decisions made*).
+discharged — see *Decisions made*). **2026-07-30, later same session (verbatim, adjudicating
+the (K) non-constancy recon's options A/B/C):** *"C: literature hunt + A"* — keep carrying `hK`
+as pinned (A) AND run the cheap read-only literature hunt (C) alongside; option B (commission
+the stress-function infrastructure) is NOT commissioned now.
 
 W0–W3 and W5-L0–L6 are all COMPLETE (L6a-safe-exists closed in full both halves; L6b/L6d landed).
 **The W5-L7 arc is now CLOSED**: L7a, L7b, and L7c-1…6 all landed (`Molecule/Pencil/Escape.lean`/
@@ -133,8 +136,10 @@ exactly three remaining open items — **next concrete commit: pick any one, non
   obligation (K-shared); the hard kernel narrows to **(K-tight)** — tight (`5|E| =
   6(|V|−1)`), both chain ends hubs, provably 2-connected — where no landed-brick route
   closes it; the one identified enabling technology is stress-as-chart-rational-function
-  infrastructure. **User adjudication owed**: keep carrying `hK` (recommended, zero
-  effort) vs. commission that infrastructure (research-scale) vs. literature hunt.
+  infrastructure. **Adjudicated ("C: literature hunt + A", verbatim)**: keep carrying `hK`
+  as pinned (zero effort now) AND run the cheap read-only literature hunt alongside — the
+  coordinator's next dispatch, not run by this pass; commissioning the stress-function
+  infrastructure (option B) is NOT authorized now.
   Design doc §"W5-L7 research recon" "(K) route-1 gate" + "(K) non-constancy recon".
 - **`hbareSplit`** (kernel (K-bare), research) — the bare-half-off-feasibility kernel. The
   numerics gate is SUPPORTED (parity with (K): certified bare-target attainment at every
@@ -157,8 +162,12 @@ neighbor — is `notes/IdeaBacklog.md`.
 Reverse-chronological, one line per landing; full derivations live in git and
 `notes/Phase39-design.md` (per-decision pointer where the design doc has a named section).
 
+- **(K) adjudication: "C: literature hunt + A"** (2026-07-30, user, verbatim) — keep carrying
+  `hK` as pinned (route A) AND run the cheap literature hunt (route C) alongside; commissioning
+  the stress-function infrastructure (route B) is NOT authorized now. Design doc §"W5-L7
+  research recon" "(K) non-constancy recon" adjudication options block marked ADJUDICATED.
 - **(K) non-constancy recon — PARTIAL; kernel narrowed to (K-tight); adjudication owed**
-  (2026-07-30, docs-only; exact-ℚ scripts `scratchpad/escape/n9.py`, untracked) — corank
+  (2026-07-30, docs-only; exact-ℚ scripts `notes/scripts/escape/n9.py`) — corank
   stratification by `index(G) = 5|E| − 6(|V|−1)` (N7's "nullity 1 general Case-III fact"
   CORRECTED — θ(4,4,3) is a both-ends-hubs corank-2 witness); `dim R_a ≥ 2` makes the escape
   automatic (boundary-load derivation, N9a-consistent, KT re-pin owed), so `index ≥ 1` trades
@@ -166,7 +175,7 @@ Reverse-chronological, one line per landing; full derivations live in git and
   numerics complete (N9b), but NO provable route in landed machinery. Design doc §"W5-L7
   research recon" "(K) non-constancy recon".
 - **(K) route-1 gate FIRED — locality REFUTED, NO-GO** (2026-07-30, docs-only; exact-ℚ scripts
-  `scratchpad/escape/localtest*.py`, untracked) — with identical radius-1 chain data the escape's
+  `notes/scripts/escape/localtest*.py`) — with identical radius-1 chain data the escape's
   zero locus moves with the far graph (within-habitat and cross-habitat; stress supported on every
   edge; sensitivity to a single distance-4 vertex move), killing route 1 and route 2's pointwise
   reuse; (K) reduced instead to *stress non-constancy* via the local 1-dim `S^⊥` lever. Design doc
@@ -207,7 +216,7 @@ Reverse-chronological, one line per landing; full derivations live in git and
   statement-level occurrence needs it), landed same commit. Dispatch-log F9 (×2). Design doc
   §"W5-L7 research recon" "Lean decomposition".
 - **2026-07-30 research day: recon isolates kernel (K); route 3 adjudicated; L7a LANDED; rigid
-  `k=0` half PROVEN** (scripts `scratchpad/escape/*.py`; design doc §"W5-L7 research recon") — `M₁`
+  `k=0` half PROVEN** (scripts `notes/scripts/escape/*.py`; design doc §"W5-L7 research recon") — `M₁`
   escape confirmed pencil-generic across 5 habitats but genuinely generic (route (b) [(6.44)
   identity] REFUTED), isolating kernel **(K)**; user selected route 3 ("build now") + "Prove now"
   for the rigid half (verbatim, *Current state*); `hasGenericPencilRealization_of_splitOff_of_safe`

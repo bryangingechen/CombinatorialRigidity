@@ -2654,7 +2654,7 @@ deficiency; scripts `scratchpad/{kzero,kzero2,petersen,broad}.py`, reproduce `ha
 The phase's research core. Question: is the single-candidate escape `r ⬝ Λ²Π̂(a) ≠ 0`
 (candidate `M₁`, KT eq. (6.42)) true pencil-generically across **all** Case-III chain
 habitats, and by what argument? Method: exact-ℚ Plücker rigidity-matrix experiments
-across ≥ 3 structurally-distinct habitats (scripts `scratchpad/escape/*.py`; same model
+across ≥ 3 structurally-distinct habitats (scripts `notes/scripts/escape/*.py`; same model
 as §R2/N2 — molecular `G²`, hinge extensor `ĉ_u ∧ ĉ_v`, 5 rows/edge = `C_e^⊥`, pencil =
 every degree-≥3 body's closed star coplanar), plus a decisive sign-change probe. KT
 pp. 690–691 re-verified against the `.refs` copy this pass (see below).
@@ -2680,7 +2680,7 @@ habitat-specific~~ **corrected 2026-07-30, non-constancy recon: general only for
 tight habitats** — the true general form is `index(G′) = index(G) + 1` with
 `index := 5|E| − 6(|V|−1)`, and the hK class contains `index(G) ≥ 1` habitats
 whose `G′` has corank ≥ 2, see §"(K) non-constancy recon" below).
-Reproduce: `python3 scratchpad/escape/run_habitats.py`.
+Reproduce: `python3 notes/scripts/escape/run_habitats.py`.
 
 | # | habitat (double-subdiv of …) | chain-end degs (b,c) | `\|V'\|` | rank / nullity | dim S | `M₁` escape `r⬝(b̂∧ĉ)≠0` |
 |---|---|---|---|---|---|---|
@@ -2698,9 +2698,9 @@ failures across all habitats and every chain-end degree pair (3,3)/(4,3)/(5,3)/(
 
 **Finding 1 — the escape has a genuine in-stratum failure locus; route (b) as a
 standalone identity is REFUTED.** Sweeping `a` along the meet line `Π(b)∩Π(c)` (the one
-free parameter for `a`, exact-ℚ; `scratchpad/escape/probe_zero.py`), the escape value
+free parameter for `a`, exact-ℚ; `notes/scripts/escape/probe_zero.py`), the escape value
 `E(t) = r⬝(b̂∧ĉ)` **changes sign** (seeds 1000 and 3000 both take `+` and `−`), with
-rank 84 / nullity 1 holding throughout. Bisection (`localize_zero.py`) pins a zero at an
+rank 84 / nullity 1 holding throughout. Bisection (`notes/scripts/escape/localize_zero.py`) pins a zero at an
 interior `t* ≈ −2.5311710127` where both bracket endpoints (width `~10⁻¹²`) are valid
 rank-84/nullity-1 pencil realizations — so **`M₁` genuinely fails on a codimension-1
 in-stratum locus**. Consequence: no algebraic identity can force `E ≠ 0` (a non-constant
@@ -2719,7 +2719,7 @@ generic-only (optimism guard).** KT's actual Claim 6.12 asks only that *at least
 `M₁/M₂/M₃` be full rank, i.e. `r ∉ S^⊥` where `S = Λ²Π̂(a)+pencil(b)+pencil(c)`
 (`dim S = 5`, so `S^⊥` is 1-dim). The all-three-fail locus `r ∈ S^⊥` was **never** hit
 (0 / 92 valid configs, incl. a targeted sweep across the `M₁` zero and 8 seeds × 7 `t`;
-`probe_disjunction.py`): where `M₁` fails, `M₂` and `M₃` still work. So the disjunction is
+`notes/scripts/escape/probe_disjunction.py`): where `M₁` fails, `M₂` and `M₃` still work. So the disjunction is
 far more robust than any single candidate. **This revises the design doc's single-candidate
 reduction:** choosing `M₁` alone is *sound* (M₁ full rank ⟹ target rank) and its escape
 *is* generically true, but it is **not** a structural shortcut — `M₁`-alone needs the
@@ -3170,8 +3170,8 @@ Commissioned per route 1's own pinned first gate above ("a numerical test of whe
 (non)vanishing is local … before committing"). Question: at a generic seed, does the escape
 `E = r ⬝ (b̂∧ĉ)` depend only on a bounded neighbourhood of the chain `b–v–a–c`, so that
 degenerating/coning the far graph localises the stress? Method: exact-ℚ, same model as N7
-(scripts `scratchpad/escape/localtest.py` + `localtest_zeros.py`, untracked; reproduce
-`python3 localtest_zeros.py`). Every reported configuration validated rank = target,
+(scripts `notes/scripts/escape/localtest.py` + `localtest_zeros.py`; reproduce
+`python3 notes/scripts/escape/localtest_zeros.py`). Every reported configuration validated rank = target,
 nullity 1, (6.44), `r ⊥ â∧b̂`, `r ⊥ â∧ĉ`, `r ≠ 0`.
 
 **Setup (N8).** Fix one **radius-1 local block**, identical rationals across all runs:
@@ -3260,7 +3260,7 @@ to the tight class. Methods: definition bodies re-read (`IsProperRigidSubgraph`,
 `Deficiency.lean:483` — properness is **vertex**-properness `V(H) ⊂ V(G)`;
 `HasGenericPencilRealization`, `Motive.lean:140`), a boundary-load derivation (below,
 flagged where not yet KT-pinned), and exact-ℚ experiments N9a/N9b
-(`scratchpad/escape/n9.py`, untracked; reproduce `python3 n9.py`).
+(`notes/scripts/escape/n9.py`; reproduce `python3 notes/scripts/escape/n9.py`).
 
 **1. Corank stratification (correction + witnesses).** Write `index(G) := 5|E| −
 6(|V|−1)`. The split arithmetic gives `index(G′) = index(G) + 1` always; in the `k = 0`
@@ -3339,7 +3339,11 @@ route closes it. The single identified enabling technology for ANY further attac
 chart ring + subrank-genericity bookkeeping) — it would serve mechanisms (a) and (b)
 and the §2 failure-condition formalization alike.
 
-**Adjudication options (user).**
+**Adjudication options (user). ADJUDICATED (2026-07-30 session check-in, verbatim):
+"C: literature hunt + A"** — i.e. option A (keep carrying `hK` as pinned) AND option C
+(run the cheap read-only literature hunt) both proceed; option B (commission the
+stress-function infrastructure) is NOT commissioned now. The literature hunt itself is
+the coordinator's next dispatch, not run by this pass.
 
 - **A — keep carrying `hK` as pinned** (recommended; consistent with the standing route-3
   adjudication). Zero effort now. The stratification above becomes the discharge's
