@@ -11,9 +11,11 @@ L5-cut-v-a…v-g all landed (`Motive.lean`/`Witness.lean`/`Engine.lean`/`Steer.l
 `hcutPendant3` and adding `[Infinite K]`, blueprint node restated) — per-leaf detail one-lined in
 *Decisions made* + `notes/Phase39-design.md`. **W5-L6 (habitat feasibility) COMPLETE 2026-07-30;
 L8 buildable in parallel; L7 (the research core) is the last / critical path; W4 after W5** (phase
-opened 2026-07-23, recon-first).
+opened 2026-07-23, recon-first). **W5-L7a (the safe-split IH generic half) LANDED 2026-07-30**
+(`Escape.lean`); kernel (K) route 3 adjudicated (carry `hEsc` explicit) — next is L7b or
+`escapePoly`.
 `Molecule/Pencil.lean` split into
-`Molecule/Pencil/{Statement,Arms,Motive,Chart,Engine,Reseed,Witness,Steer,Pair,Pair2}.lean`
+`Molecule/Pencil/{Statement,Arms,Motive,Chart,Engine,Reseed,Witness,Steer,Pair,Pair2,Escape}.lean`
 (2026-07-24/25/29 housekeeping).
 
 ## Current state
@@ -28,6 +30,23 @@ the research on the conjecture in a fresh session."*
 
 **2026-07-30 adjudication (verbatim):** *"Let's wrap up this session when
 we finish L6 and leave the research core to a fresh session."*
+
+**2026-07-30 session check-in adjudication (verbatim, settles the L7 recon's "Route options" and
+the L6a-safe-exists rigid-half open item):** kernel (K) route — *"Route 3: build now"* (land
+W5-L7a + L7b + `escapePoly` with kernel (K) carried as an explicit `hEsc` hypothesis, per
+`notes/Phase39-design.md` §"W5-L7 research recon" "Lean decomposition"; routes 1/2
+(localization / panel-span reuse) remain attackable afterwards). L6a-safe-exists rigid `k=0` half
+— *"Prove now"* (the rigid `k=0` edge bound is to be proven this session rather than carried
+indefinitely; its route recon is scheduled as a separate dispatch, not attacked in the L7a commit
+below — the `have`-hyp stays in place until that lands).
+
+**W5-L7a LANDED 2026-07-30** (`Molecule/Pencil/Escape.lean`, new file:
+`hasGenericPencilRealization_of_splitOff_of_safe`, route 3's first Lean leaf) — the safe-split IH
+generic half: given a safe split vertex's data as explicit hypotheses (safe-vertex *existence*
+stays L6a-safe-exists, not this leaf), `G.Simple`, `PencilNondegFeasible K G`, and the IH, chains
+the four landed L6 leaves to produce `HasGenericPencilRealization K 3 (G.splitOff v a b e₀)` — pure
+combinatorial glue, no new math, doesn't touch (K) or the rigid `k=0` half. Detail in *Decisions
+made*. Gates + axioms clean. **Next: L7b (consumes (K) as `hEsc`) or `escapePoly`.**
 
 **W5-L7 research recon LANDED 2026-07-30** (design pass, `notes/Phase39-design.md` §"W5-L7
 research recon"; scripts `scratchpad/escape/*.py`). Verdict: the escape `r ⬝ Λ²Π̂(a) ≠ 0`
@@ -204,16 +223,20 @@ rigid `k=0` half a bounded `have`-hyp), **L6d** (`c4_isProperRigidSubgraph` + `s
 Decisions-made entry; the honest producer of the split arm's feasibility obligation, needing only
 `hcard` from L6a-transfer and `htf` from L6d).
 
-**Next concrete commit — options (the L7 recon landed 2026-07-30; see its "Route options" for the
-user adjudication on kernel (K)):**
-- **W5-L7a + L7b + `escapePoly`** (RECOMMENDED, route 3 — carry kernel (K) as an explicit `hEsc`
-  hypothesis, exactly as L6a-safe-exists's rigid `k=0` half rides as a `have`-hyp;
-  `notes/Phase39-design.md` §"W5-L7 research recon" "Lean decomposition"): L7a = safe-split + IH
-  generic half via the landed L6 chain; L7b = the rank extension consuming (K), mirroring the v-f-6
-  assembly + `finrank_span_rigidityRows_pencilChartFramework_eq_of_independent_pencilRow`
-  (`Steer.lean:693`) + `exists_common_seed_pencilRow_and_polynomials` (`Engine.lean:476`); `escapePoly`
-  = the `M₁` `6×6`-minor as an `MvPolynomial` in the seed coords (L3-style). Unblocks the whole
-  reduction modulo (K) + the `k=0` bound.
+**Route 3 ADJUDICATED (2026-07-30 session check-in) — build L7a + L7b + `escapePoly` now, carry
+kernel (K) as an explicit `hEsc` hypothesis** (`notes/Phase39-design.md` §"W5-L7 research recon"
+"Lean decomposition"). **L7a LANDED this commit** (`Escape.lean`,
+`hasGenericPencilRealization_of_splitOff_of_safe`). **Next concrete commit — either of:**
+- **W5-L7b** (the rank extension consuming (K) as `hEsc`, mirroring the v-f-6 assembly +
+  `finrank_span_rigidityRows_pencilChartFramework_eq_of_independent_pencilRow`
+  (`Steer.lean:693`) + `exists_common_seed_pencilRow_and_polynomials` (`Engine.lean:476`); target
+  shape in the design doc's "Lean decomposition" schematic — needs `escapePoly` as an input, so
+  either build `escapePoly` first or stub its type through as a parameter).
+- **`escapePoly`** — the `M₁` `6×6`-minor as an `MvPolynomial` in the seed coords (L3-style),
+  the input L7b's `hEsc` hypothesis names.
+Once both land, the reduction is complete modulo (K) + the rigid `k=0` bound. **The rigid `k=0`
+bound itself is scheduled separately** (2026-07-30 session check-in: user selected "Prove now" —
+the coordinator schedules its own route recon as a separate dispatch, not folded into L7b).
 - **W5-L8** (the `k = 0` residue, emptiness route recommended — `notes/Phase39-design.md` §"W5 leaf
   decomposition" L8): the deficiency-`0` split-off bookkeeping / emptiness of the residue class.
 - **Attack kernel (K)** (research recon, route 1 localization recommended — its first gate is the
@@ -251,6 +274,23 @@ neighbor — is `notes/IdeaBacklog.md`.
 
 ## Decisions made during this phase
 
+- **2026-07-30 session check-in adjudication + W5-L7a LANDED** (`Molecule/Pencil/Escape.lean`, new
+  file). User selected route 3 for kernel (K) ("build now" — carry `hEsc` explicit, per the L7
+  recon's "Route options") and "Prove now" for L6a-safe-exists's rigid `k=0` half (its own route
+  recon scheduled as a separate dispatch, not attacked here). `hasGenericPencilRealization_of_
+  splitOff_of_safe`: given safe-split data (`v`, neighbours `a`/`b` via `eₐ ≠ e_b`,
+  `hsafe : ¬PencilHub a ∨ ¬PencilHub b`) as explicit hypotheses — safe-vertex *existence* stays
+  L6a-safe-exists's job — plus `G.Simple`, `PencilNondegFeasible K G`, and the IH, chains
+  `ncard_closedHubNbhd_le_three_of_isNondegPencilRealization` →
+  `ncard_closedHubNbhd_splitOff_le_three_of_safe` (L6a-transfer) +
+  `Graph.splitOff_triangleFree_of_noRigid` (L6d) →
+  `pencilNondegFeasible_of_ncard_closedHubNbhd_le_three_of_triangleFree` (L6b) → IH's generic
+  conjunct + `Graph.splitOff_simple_of_noRigid_of_card` (L6c) to produce
+  `HasGenericPencilRealization K 3 (G.splitOff v a b e₀)`. `[Inhabited α]` derived from the ambient
+  `[Nonempty α]` via `Classical.inhabited_of_nonempty`. No FRICTION (faithful glue of landed
+  lemmas; one minor Lean-syntax fix — a multi-line `by` block inside an anonymous constructor
+  needs `refine ⟨_, ?_⟩` + a separate tactic block, not `⟨_, by tac₁ \n tac₂⟩`). Gates + axioms
+  clean (`propext`/`Classical.choice`/`Quot.sound`).
 - **W5-L7 research recon (design pass, no `.lean`)** (2026-07-30, `notes/Phase39-design.md` §"W5-L7
   research recon"; scripts `scratchpad/escape/*.py`, exact-ℚ). `M₁` escape confirmed pencil-generic
   across 5 habitats (degrees (3,3)/(4,3)/(5,3)/(4,4); 0 failures; `dim S=5` structural), but a

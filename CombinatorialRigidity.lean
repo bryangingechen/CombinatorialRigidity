@@ -37,6 +37,7 @@ import CombinatorialRigidity.Molecular.Molecule.Dictionary
 import CombinatorialRigidity.Molecular.Molecule.Duality
 import CombinatorialRigidity.Molecular.Molecule.GeneralPosition4
 import CombinatorialRigidity.Molecular.Molecule.Modelling
+import CombinatorialRigidity.Molecular.Molecule.Pencil.Escape
 import CombinatorialRigidity.Molecular.Molecule.Pencil.Habitat
 import CombinatorialRigidity.Molecular.Molecule.Pencil.Pair2
 import CombinatorialRigidity.Molecular.Molecule.Pencil.Reseed
