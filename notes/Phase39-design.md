@@ -1956,28 +1956,28 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
       the promoted-family conditions; the assembly may instead fold them straight into
       `exists_common_seed_pencilRow_and_polynomials`'s `P` via the gadget, so this leaf is optional /
       not strictly on the critical path.
-    - **v-f-6 — the output-half assembly (capstone).** *(Input bricks + the owed
-      `pencilChartFramework_congr` helper LANDED 2026-07-29, `Steer.lean`: the re-seed rank transport
-      `span_rigidityRows_pencilChartFramework_eq_of_reseed` and the `hLI` producer
-      `exists_independent_pencilRow_subfamily_at_toCoord_of_reseed`; the assembly proper — steering
-      marshalling + WF reconstruction + rank via v-f-4 + the promoted-family transfer to the
-      re-chosen `seed'` — remains, `notes/Phase39.md` *Hand-off*.)* Structurally mirrors the landed
-      v-e assembly
-      `pencilNondegFeasible_induce_of_pendant_deg3` (`Steer.lean`) at `H := G.induce V₁`, ADDING: the
-      rank rows steered alongside (one `exists_common_seed_pencilRow_and_polynomials` call — `hLI` =
-      the v-f-1/v-f-3/extraction `pencilRow` subfamily at the flattening, `P` = the standing point +
-      promoted normal conditions, each a "nonzero somewhere" polynomial via the point/normal gadgets)
-      and the rank conclusion (v-f-4). The "satisfiable somewhere" certificates are ALREADY landed:
-      the demoted-triple witness (i) (v-b) and the promoted-family witness (ii) (v-c). Output: a
-      steered `IsNondegPencilRealization H` with `finrank = target_H` AND `LinearIndepOn K normal
-      (G.closedHubNbhd v)` for `v ∈ {u_c, w₁, w₂}` — the promoted families v-g's glue consumes. Small
-      helper owed: `pencilChartFramework` reads points only, so the point-preserving post-steering
-      `fillNbr` re-choice keeps the rank (a `pencilChartFramework_congr`-on-points lemma, parallel to
-      the landed `pencilChartPoint_congr`).
+    - **v-f-6 — the output-half assembly (capstone). LANDED 2026-07-29** (`Steer.lean`,
+      `exists_isNondegPencilRealization_induce_promotedNormal_of_pendant_deg3`). Structurally mirrors
+      the landed v-e assembly `pencilNondegFeasible_induce_of_pendant_deg3` at `H := G.induce V₁`,
+      ADDING: the rank rows steered alongside (one `exists_common_seed_pencilRow_and_polynomials` call
+      — `hLI` = the v-f-1/v-f-3/extraction `pencilRow` subfamily at the flattening
+      `exists_independent_pencilRow_subfamily_at_toCoord_of_reseed`, `P` = the standing point +
+      promoted normal conditions over the index `(α ⊕ (α×α)) ⊕ Fin 3`, each a "nonzero somewhere"
+      polynomial via the point/normal gadgets) and the rank conclusion (v-f-4). The "satisfiable
+      somewhere" certificates were landed: witness (i) (v-b) — not needed here, the demoted triple is
+      a v-e concern — and the promoted-family witness (ii) (v-c). The point-preserving `fillNbr`
+      re-choice keeps the rank via `pencilChartFramework_congr` (framework reads points only). Output:
+      a steered `IsNondegPencilRealization H` with `finrank = target_H` AND `LinearIndepOn K normal
+      (G.closedHubNbhd v)` for `v ∈ {u_c, w₁, w₂}` — the sub-case-3 producer's input shape plus the
+      promoted families v-g's glue consumes. Landed in one commit; the `hassigned` discharge used an
+      inline `Fin 3`-selector-total pigeonhole at `u_c`.
+    - **v-f-5 — DROPPED (not built).** The assembly folds the promoted-normal conditions straight into
+      `exists_common_seed_pencilRow_and_polynomials`'s `P` via the normal gadget, so the standalone
+      `exists_common_seed_linearIndepOn_pencilChartNormal` mirror was never needed — off the critical
+      path as the entry above already flagged. Revive only if a later consumer wants it.
 
-    *Suggested multi-commit split (as the hand-off flagged):* v-f-1/2/3/4 (the genuinely-new rank
-    bricks — v-f-1/2/4 already spike-proved sorry-free) in one commit; v-f-5 (mirror) folded in or
-    separate; v-f-6 (assembly) the capstone. No obstruction anywhere in the chain.
+    **v-f COMPLETE (2026-07-29):** all six leaves landed (v-f-5 dropped). Next is v-g, the sub-case-4
+    glue + shell/successor rewire — see `notes/Phase39.md` *Hand-off*.
 
     **v-b construction recipe (derived 2026-07-25; the witness LANDED same day — see "the main
     assembly, landed" below).** Re-deriving witness (i) against the CURRENT `Chart.lean`/

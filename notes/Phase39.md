@@ -23,7 +23,9 @@ to `H := G.induce V₁`); **v-f-1…4 LANDED** (2026-07-29, the output-half rank
 `pencilChartFramework_congr` helper + the re-seed rank transport `hLI` producer
 `exists_independent_pencilRow_subfamily_at_toCoord_of_reseed`); **v-f-6 normal-congr + promoted-family
 transfer LANDED** (2026-07-29, `Steer.lean`: `pencilChartNormal_congr` +
-`linearIndepOn_pencilChartNormal_congr`); **v-f-6 assembly proper + v-g next** — *Hand-off*.
+`linearIndepOn_pencilChartNormal_congr`); **v-f COMPLETE — v-f-6 output-half assembly proper LANDED**
+(2026-07-29, `Steer.lean`: `exists_isNondegPencilRealization_induce_promotedNormal_of_pendant_deg3`);
+**v-g next** — *Hand-off*.
 L6/L8 are parallel
 combinatorial tracks buildable now; L7 (the research core) is
 last; W4 after W5 (phase opened 2026-07-23, recon-first). `Molecule/Pencil.lean` split into
@@ -138,7 +140,10 @@ Full record, grounding, and the W0–W5 decomposition:
   extension lemma `exists_extend_linearIndependent`). `exists_fin3_rank_injOn` (`Engine.lean`)
   **RETIRED** same commit (deletion-hygiene sweep done — the re-choice does not consume it; it uses
   the "extend an LI partial family by filling free slots" route, not the pigeonhole). **v-e COMPLETE
-  (2026-07-29): input-half assembly `pencilNondegFeasible_induce_of_pendant_deg3` landed** (*Hand-off*).
+  (2026-07-29): input-half assembly `pencilNondegFeasible_induce_of_pendant_deg3`. v-f COMPLETE
+  (2026-07-29): the rank bricks (v-f-1…4) + input/normal-congr bricks + the v-f-6 output-half assembly
+  `exists_isNondegPencilRealization_induce_promotedNormal_of_pendant_deg3` — all `Steer.lean`; only
+  v-g (the sub-case-4 glue + shell/successor rewire) remains** (*Hand-off*).
   Feasibility propagation *as a proposition* stays open but bounded: the triangle-hub mechanism
   refutes any purely combinatorial (`≤ 3`-closedHubNbhd) feasibility criterion, while leaving L6's
   habitat claim untouched (no triangles in the no-proper-rigid habitat at `|V| ≥ 4`).
@@ -174,77 +179,35 @@ Full record, grounding, and the W0–W5 decomposition:
 `thm:pencil-conditional-realization-pair` green; `hcontract`/`hsplit`/`hcutPendant3` remain open
 hypotheses — full detail in *Decisions made*, below).
 
-**v-d/v-e COMPLETE — the input half is closed** (`Steer.lean`; *Decisions made*). `Steer.lean` now
-carries the flattening bridge, `exists_extend_linearIndependent`, the `fillNbr` re-choice
-`exists_fillNbr_pencilChartWF_of_standing`, the common-seed primitive
-`exists_common_seed_linearIndepOn_pencilChartPoint`, and the assembled input half
-`pencilNondegFeasible_induce_of_pendant_deg3` (its signature mirrors witness (i)'s config + `hVG`,
-adds `[Infinite K]`, concludes `PencilNondegFeasible K (G.induce V₁)`).
+**v-d/v-e/v-f ALL COMPLETE — the pendant-cut `deg u_c = 3` input AND output halves are closed**
+(`Steer.lean`; per-brick detail in *Decisions made* + `notes/Phase39-design.md` §"W5 leaf
+decomposition" L5-cut-v "v-f decomposition"). The **input half** is
+`pencilNondegFeasible_induce_of_pendant_deg3` (steer `G`'s re-seeded witness → `PencilNondegFeasible K
+(G.induce V₁)`). The **output half** is the v-f rank-transport chain (v-f-1…4 rank bricks, the input
+`_congr`/re-seed-transport bricks, the promoted-family `_congr` transfer) capped by the assembly
+`exists_isNondegPencilRealization_induce_promotedNormal_of_pendant_deg3` — under the pendant `deg
+u_c = 3` config over `[Infinite K]`, from a generic `H := G.induce V₁` witness it produces a
+nondegenerate `H`-realization at the deficiency-rank target (sub-case-3 producer's input shape) PLUS
+`∀ v ∈ {u_c, w₁, w₂}, LinearIndepOn K normal (G.closedHubNbhd v)` (the promoted families v-g's glue
+consumes). The `fin 3`-selector-total pigeonhole and the whole steering assembly landed in one commit,
+no obstruction (recon + prior agent's composition check both held). **v-f-5** (the optional clean
+`exists_common_seed_linearIndepOn_pencilChartNormal` mirror) was NOT needed — the assembly folds the
+normal conditions straight into the `exists_common_seed_pencilRow_and_polynomials` `P` via the normal
+gadget, so it stays unbuilt (drop it from the leaf list unless a later consumer wants it).
 
-**v-f RECONNED + compiler-spiked (2026-07-29) — GO, no obstruction.** The output-half rank-transport
-is a faithful pencil-mirror of the landed panel lemma
-`finrank_span_rigidityRows_ofNormals_of_isGenericNormals`; decomposed into six S=1 leaves (v-f-1…v-f-6),
-each with an EXACT signature, in `notes/Phase39-design.md` §"W5 leaf decomposition" L5-cut-v **"v-f
-decomposition"**. Load-bearing finding: the general `BodyHingeFramework` panel-row machinery (`panelRow`,
-`panelRow_mem_rigidityRows_of_link`, `exists_independent_panelRow_subfamily_of_le_finrank`,
-`finrank_span_rigidityRows_add_deficiency_le`) is REUSABLE on the chart verbatim — the Pencil import cone
-already reaches it, so no new import and no re-proof of the extraction/B2 layer. A scratchpad spike built
-the bridge (v-f-1), the row-span scaling invariance (v-f-2), and the full `le_antisymm` composition
-(v-f-4) **sorry-free + axiom-clean**; the composition's only residual is the LI `pencilRow` subfamily at
-the steered seed + nonzero hinges — both produced from landed bricks (v-b/v-c witnesses,
-`exists_smul_eq_extensor_of_extensorThroughPoint_pair`, `exists_common_seed_pencilRow_and_polynomials`).
-
-**v-f-1…4 LANDED (2026-07-29, `Steer.lean`; *Decisions made*).** The four genuinely-new rank bricks:
-v-f-1 link bridge (`pencilRow_mem_rigidityRows_of_mem_edgeSet`), v-f-2 row-span scaling invariance
-(`span_rigidityRows_eq_of_supportExtensor_proportional`), v-f-3 re-seeding proportionality
-(`exists_smul_supportExtensor_eq_pencilChartFramework_of_reseed`), v-f-4 output rank `le_antisymm`
-(`finrank_span_rigidityRows_pencilChartFramework_eq_of_independent_pencilRow`). The general
-`BodyHingeFramework` panel-row machinery was reused verbatim (no new import).
-
-**v-f-6 input bricks + normal-congr + promoted-family transfer LANDED (2026-07-29, `Steer.lean`;
-*Decisions made*).** Rank transport: `pencilChartFramework_congr`, the v-f-2∘v-f-3 span-transfer
-`span_rigidityRows_pencilChartFramework_eq_of_reseed`, and the `hLI` producer
-`exists_independent_pencilRow_subfamily_at_toCoord_of_reseed` (an LI `pencilRow` subfamily of the
-target size at the flattening `seed₁.toCoord`) — exactly the rank-rows input the assembly's
-`exists_common_seed_pencilRow_and_polynomials` call consumes. Promoted-family transfer:
-`pencilChartNormal_congr` (third `_congr` sibling — the normal reads `fillNbr` only through a non-hub
-`cross₃` at unassigned slots, so a point-preserving `fillNbr` re-choice preserves it at any hub or
-fully-assigned body) + `linearIndepOn_pencilChartNormal_congr` (the `LinearIndepOn` transfer of the
-steered promoted families from `PencilSeed.ofCoord q` to the re-chosen `seed'`, given the
-`fillNbr`-free condition `hassigned`).
-
-**Next concrete commit — v-f-6 (the output-half assembly proper).** Input = the IH's *generic*
-`H`-witness (unpacked `IsNondegPencilRealization (G.induce V₁) F₁ normal₁ point₁` + `hrank₁ :
-finrank = target_H`, the sub-case-3 producer's shape). Distinct from v-e (which re-seeds `G`'s
-feasibility witness): here the **rank rows** come from re-seeding the generic `H`-witness. Sketch:
-`exists_pencilSeed_of_nondeg` on the `H`-witness → `hpt` (points reproduced up to a per-body scalar);
-`exists_independent_pencilRow_subfamily_at_toCoord_of_reseed` (landed) → the `hLI` at
-`N := target_H.toNat` (needs `0 ≤ target_H` + `Nat.card = target_H` bookkeeping, mirroring the panel
-`finrank_span_rigidityRows_ofNormals_of_isGenericNormals`); then ONE
-`exists_common_seed_pencilRow_and_polynomials` call (`ends := H.endsOf`) whose `P` = the standing
-point conditions (each via `exists_polynomial_ne_zero_of_linearIndependent_pencilChartPoint`,
-satisfiable at the flattening `pencilChartWF_standing_ofCoord_toCoord`) + the promoted normal
-families (witness (ii) `v-c` `exists_coord_linearIndependent_pencilChartNormal_of_pendant_deg3`, via
-`exists_polynomial_ne_zero_of_linearIndependent_pencilChartNormal`); at the common seed, reconstruct
-standing WF + `fillNbr` re-choice (`exists_fillNbr_pencilChartWF_of_standing`, copy-adaptable from
-v-e) → `IsNondegPencilRealization H`; rank via v-f-4
-(`finrank_span_rigidityRows_pencilChartFramework_eq_of_independent_pencilRow` — feed the common-seed
-`hLI` + nonzero hinges); the promoted families transferred to the re-chosen `seed'` via the landed
-`linearIndepOn_pencilChartNormal_congr`. **The promoted-family transfer COMPOSES (verified this
-dispatch — no obstruction):** its `hassigned` discharge for each `G.closedHubNbhd v`
-(`v ∈ {u_c,w₁,w₂}`) is standard bookkeeping — every member is a `G`-hub, hence in `V₁` (`v_c` is a
-non-hub, `hvc_nothub`); a member `≠ u_c` keeps its degree in `H` (`Graph.degree_induce_eq_of_ne`) so
-stays an `H`-hub (premise vacuous); at `u_c` (the sole demotion) `nbrSel u_c` is total since
-`H.closedNbhd u_c = {u_c,w₁,w₂}` has three members (a `Fin 3`-selector of a 3-element set is total —
-a small pigeonhole `have`, not yet landed). Output: a generic realization of `H`
-(= `HasGenericPencilRealization K n H`) PLUS `∀ v ∈ {u_c,w₁,w₂}, LinearIndepOn K normal
-(G.closedHubNbhd v)`. **v-f-5** (the optional clean-mirror normal primitive
-`exists_common_seed_linearIndepOn_pencilChartNormal`) may be folded in.
-Then **v-g** (the sub-case-3-shaped glue — conjunct 3 at `u_c`/`w₁`/`w₂` from the steered promoted
-families, `hlb₂ = 0` rank verbatim — plus the shell/successor rewire: discharge `hcutPendant3` in
-`pencilPair_of_not_twoEdgeConnected` and `pencil_conjecture_of_arms_pair`, add `[Infinite K]` there,
-and the blueprint restatement). Full leaf detail + exact signatures:
-`notes/Phase39-design.md` §"W5 leaf decomposition" L5-cut-v "v-f decomposition".
+**Next concrete commit — v-g (the sub-case-4 glue + shell/successor rewire).** Two parts:
+1. **The `deg u_c = 3` producer** `hasGenericPencilRealization_..._pendant_deg3` (mirror the landed
+   sub-case-3 producer `hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant`,
+   `Pair2.lean`): feed the v-f-6 output (the steered generic `H`-witness + the three promoted families)
+   as the sub-case-3-shaped input, choose fresh pendant data `normal v_c`/`point v_c` off the bad span
+   at `u_c` (now available because conjunct 3 at `u_c`/`w₁`/`w₂` is exactly the promoted families),
+   glue the pendant edge's hinge, `hlb₂ = 0` rank verbatim (edgeless far side). The one delta from
+   sub-case 3 is that `u_c` DEMOTES (`G`-hub, `H`-non-hub) so the fresh-data choice must dodge the
+   promoted-family span rather than a single normal — that is what the v-f-6 output was built to supply.
+2. **The shell/successor rewire:** discharge `hcutPendant3` in `pencilPair_of_not_twoEdgeConnected`
+   (`Pair.lean`) and `pencil_conjecture_of_arms_pair` (`Pair2.lean`) using part 1, and add `[Infinite
+   K]` to those signatures (the assembly needs it) + the blueprint restatement.
+Full leaf detail + exact signatures: `notes/Phase39-design.md` §"W5 leaf decomposition" L5-cut-v.
 
 **L6/L8 are parallel combinatorial tracks** buildable now (L6: habitat feasibility, the
 `≤ 3` closed-hub-neighbourhood lemma + witness-seed construction + the `G′.Simple` sub-obligation,
@@ -265,53 +228,32 @@ neighbor — is `notes/IdeaBacklog.md`.
 
 ## Decisions made during this phase
 
-- **L5-cut-v-f-6 (normal-congr + promoted-family transfer) LANDED** (2026-07-29,
-  `Molecule/Pencil/Steer.lean`): the output-half assembly's promoted-family transfer.
-  `pencilChartNormal_congr` (the third `_congr` sibling of `pencilChartPoint_congr`/
-  `pencilChartFramework_congr`) — a point-preserving `fillNbr` re-choice preserves `pencilChartNormal
-  G v` at any pencil hub (reads the shared `hubNormal`) or fully-assigned non-hub (its non-hub
-  `cross₃` reads only `pencilChartPoint`s of selected neighbours, `fillNbr`-free), captured by the
-  hypothesis `hassigned : ¬G.PencilHub v → ∀ i, (nbrSel v i).isSome`. `linearIndepOn_pencilChartNormal_congr`
-  transfers the steered v-c families from `PencilSeed.ofCoord q` to the re-chosen `seed'`
-  (`LinearIndepOn.congr` + pointwise). Composition of the `hassigned` discharge for the pendant config
-  verified (analysis in *Hand-off*; all needed lemmas confirmed present) — no obstruction. No new
-  FRICTION (mirrors the landed `pencilChartPoint_congr`). Gates green (build warning-clean + lint);
-  axioms clean (`propext`/`Classical.choice`/`Quot.sound`).
-- **L5-cut-v-f-6 (input bricks) LANDED — the re-seed rank transport** (2026-07-29,
-  `Molecule/Pencil/Steer.lean`): the pieces the v-f-6 assembly needs before its steering call.
-  `pencilChartFramework_congr` (the owed helper — framework reads the seed only through
-  `pencilChartPoint`, so equal points ⟹ equal framework; structure-eta `calc`, no `@[ext]` on
-  `BodyHingeFramework`); `span_rigidityRows_pencilChartFramework_eq_of_reseed` (v-f-2 ∘ v-f-3);
-  `exists_independent_pencilRow_subfamily_at_toCoord_of_reseed` (the `hLI` producer: an LI
-  `pencilRow` subfamily of the target size at the flattening `seed₁.toCoord`, via the general
-  `exists_independent_panelRow_subfamily_of_le_finrank` + v-f-1). No new FRICTION (the one build-cycle
-  was the TACTICS-QUIRKS § 508 ascription-doesn't-redirect class). Gates + axioms clean.
-- **L5-cut-v-f-1…4 LANDED — the output-half rank-transport bricks** (2026-07-29,
-  `Molecule/Pencil/Steer.lean`): **v-f-1** link bridge (`pencilRow_mem_rigidityRows_of_mem_edgeSet` +
-  helper `pencilRow_eq_panelRow_pencilChartFramework`) — a genuine-edge chart `pencilRow` IS the chart
-  framework's own `panelRow`, hence a rigidity row (landed general `panelRow_mem_rigidityRows_of_link`);
-  **v-f-2** row-span scaling invariance (`span_rigidityRows_eq_of_supportExtensor_proportional`) — per-edge
-  proportional support extensors ⟹ equal rigidity-row spans (`Submodule.span_singleton_smul_eq`);
-  **v-f-3** the one new leaf, re-seeding proportionality
-  (`exists_smul_supportExtensor_eq_pencilChartFramework_of_reseed`) — the re-seeded chart hinge is a
-  nonzero multiple of the witness hinge, via `exists_smul_eq_extensor_of_extensorThroughPoint_pair` +
-  extensor bilinearity (local `extensor_pair_smul`); **v-f-4** output rank `le_antisymm`
-  (`finrank_span_rigidityRows_pencilChartFramework_eq_of_independent_pencilRow`) — LI `pencilRow`
-  subfamily of size target + nonzero hinges ⟹ `finrank = target` (lower = v-f-1 + `finrank_span_eq_card`
-  + `Submodule.finrank_mono`; upper = B2 `finrank_span_rigidityRows_add_deficiency_le`). The general
-  `BodyHingeFramework` panel-row machinery reused verbatim (no new import, no re-proof). FRICTION
-  `[mirror-candidate]`: `extensor_pair_smul` (belongs in `Extensor.lean`, kept local pending the
-  deep-rebuild-free mirror). Gates green (build warning-clean + lint); axioms clean.
-- **L5-cut-v-f RECONNED + compiler-spiked — output-half rank-transport, GO no obstruction** (2026-07-29,
-  design-pass, docs-only; canonical record `notes/Phase39-design.md` §"W5 leaf decomposition" L5-cut-v
-  "v-f decomposition"). The output half is a faithful pencil-mirror of the landed panel lemma
-  `finrank_span_rigidityRows_ofNormals_of_isGenericNormals`; decomposed into six S=1 leaves with exact
-  signatures. Load-bearing finding: the general `BodyHingeFramework` panel-row machinery (`panelRow`,
-  `panelRow_mem_rigidityRows_of_link`, `exists_independent_panelRow_subfamily_of_le_finrank`, the B2
-  bound) is reusable on the chart verbatim (cone already reaches it — no new import, no re-proof). A
-  scratchpad spike built the bridge, the row-span scaling invariance, and the full `le_antisymm`
-  composition sorry-free + axiom-clean; composition finding (4) composes exactly as pinned, residual =
-  the LI `pencilRow` subfamily + nonzero hinges (both landed-brick-fed). No motive/IH change.
+- **L5-cut-v-f-6 COMPLETE — the output-half steering assembly** (2026-07-29,
+  `Molecule/Pencil/Steer.lean`): `exists_isNondegPencilRealization_induce_promotedNormal_of_pendant_deg3`
+  — under the pendant deg-`3` config over `[Infinite K]`, from a generic `H := G.induce V₁` witness
+  (`IsNondegPencilRealization` + deficiency-rank `hrank₁`, the sub-case-3 producer's input shape) it
+  produces a nondegenerate `H`-realization at the target rank PLUS `∀ v ∈ {u_c, w₁, w₂}, LinearIndepOn
+  K normal (G.closedHubNbhd v)`. Structural mirror of the v-e input-half assembly, adding: the rank
+  rows steered alongside via ONE `exists_common_seed_pencilRow_and_polynomials` call (`hLI` = the
+  flattening `pencilRow` subfamily from `exists_independent_pencilRow_subfamily_at_toCoord_of_reseed`;
+  `P` = the standing point polys + the witness-(ii) promoted-normal polys over the index `(α ⊕ (α×α))
+  ⊕ Fin 3`), the rank via v-f-4, and the promoted-family transfer to the re-chosen `seed'`
+  (`linearIndepOn_pencilChartNormal_congr`). `hassigned` discharge = the inline `Fin 3`-selector-total
+  pigeonhole at `u_c` (`Finset.card_eq_three`/`eq_univ_of_card`) + degree bookkeeping. **v-f-5 dropped**
+  (unneeded — the normal conditions fold straight into the workhorse `P`). No new FRICTION (faithful
+  v-e mirror). Gates green (build warning-clean + lint); axioms clean.
+- **L5-cut-v-f-1…4 + input/normal-congr bricks LANDED** (2026-07-29, `Molecule/Pencil/Steer.lean`;
+  canonical detail in `notes/Phase39-design.md` §"W5 leaf decomposition" L5-cut-v "v-f decomposition"):
+  the output-half rank-transport chain the assembly above composes. v-f-1 link bridge
+  (`pencilRow_mem_rigidityRows_of_mem_edgeSet`), v-f-2 row-span scaling invariance
+  (`span_rigidityRows_eq_of_supportExtensor_proportional`), v-f-3 re-seeding proportionality
+  (`exists_smul_supportExtensor_eq_pencilChartFramework_of_reseed`), v-f-4 output rank `le_antisymm`
+  (`finrank_span_rigidityRows_pencilChartFramework_eq_of_independent_pencilRow`); the input bricks
+  `pencilChartFramework_congr`, `span_rigidityRows_pencilChartFramework_eq_of_reseed`, the `hLI`
+  producer `exists_independent_pencilRow_subfamily_at_toCoord_of_reseed`; the promoted-family
+  `pencilChartNormal_congr` + `linearIndepOn_pencilChartNormal_congr`. General `BodyHingeFramework`
+  panel-row machinery reused verbatim (no new import). FRICTION `[mirror-candidate]`:
+  `extensor_pair_smul` (belongs in `Extensor.lean`, kept local pending the deep-rebuild-free mirror).
 - **L5-cut-v-e COMPLETE — the input-half steering assembly** (2026-07-29,
   `Molecule/Pencil/Steer.lean`, imports `Pencil.{Reseed,Witness}` added):
   `pencilNondegFeasible_induce_of_pendant_deg3` — under the pendant deg-`3` config over `[Infinite K]`,

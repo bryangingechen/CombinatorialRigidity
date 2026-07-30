@@ -944,4 +944,301 @@ theorem linearIndepOn_pencilChartNormal_congr {seed seed' : PencilSeed K α}
   intro w hw
   exact (pencilChartNormal_congr hubSel nbrSel G hhub hfill (hassigned w hw)).symm
 
+/-! ## The output-half steering assembly (Phase 39 W5-L5 L5-cut-v-f-6)
+
+The capstone of the pendant-cut route's `deg u_c = 3` sub-case (`notes/Phase39-design.md` §"W5 leaf
+decomposition" L5-cut-v "v-f decomposition", the v-f-6 entry; `notes/Phase39.md` *Hand-off*). It is
+the generic-realization analogue of the input-half assembly
+`pencilNondegFeasible_induce_of_pendant_deg3` above, and structurally mirrors it: re-seed a
+nondegenerate realization of `H := G.induce V₁`, steer one common seed carrying every standing
+`PencilChartWF` condition, re-choose `fillNbr`, and read off the chart realization. The differences
+are the two the v-f decomposition names:
+
+* the **rank rows** are steered *alongside* the point/normal conditions in one
+  `exists_common_seed_pencilRow_and_polynomials` call — the LI `pencilRow` subfamily at the
+  flattening (`exists_independent_pencilRow_subfamily_at_toCoord_of_reseed`) is its `hLI`, while the
+  standing point conditions (via `exists_polynomial_ne_zero_of_linearIndependent_pencilChartPoint`,
+  satisfiable at the re-seeded flattening) and the promoted normal families (witness (ii), via
+  `exists_polynomial_ne_zero_of_linearIndependent_pencilChartNormal`) are its `P` — so the steered
+  seed realizes the target rank (v-f-4) as well as full `PencilChartWF`;
+* the **promoted normal families** `LinearIndepOn K normal (G.closedHubNbhd v)`
+  (`v ∈ {u_c, w₁, w₂}`) are carried out as an extra conclusion, transferred from the steered seed to
+  the `fillNbr`-re-chosen seed by `linearIndepOn_pencilChartNormal_congr` — their `hassigned`
+  discharge is standard degree bookkeeping (every family member is a `G`-hub in `V₁`; one other than
+  `u_c` keeps its `H`-degree so stays an `H`-hub, and at the sole demotion `u_c` the selector
+  `nbrSel u_c` is total since `H.closedNbhd u_c = {u_c, w₁, w₂}` has three members).
+
+The output is exactly the sub-case-3 producer's input shape
+(`hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant`, `Pair2.lean`) — a
+nondegenerate realization of `H` at its deficiency-rank target — **plus** the promoted families the
+`deg u_c = 3` glue (L5-cut-v-g) consumes to choose fresh pendant data at `u_c`. -/
+
+/-- **The pendant-cut output half: a generic realization of the induced side carrying the promoted
+normal families** (Phase 39 W5-L5, L5-cut-v-f-6; the output-half assembly of
+`notes/Phase39-design.md` §"W5 leaf decomposition" L5-cut-v "v-f decomposition"). Under the
+sub-case-4 pendant configuration (`G.degree u_c = 3`, cut edge `e_c : u_c–v_c` the only crossing
+edge, `u_c`'s two `V₁`-links `e₁ : u_c–w₁`, `e₂ : u_c–w₂`) with `G` simple and
+nondegeneracy-feasible over an infinite field, and a nondegenerate realization of `H := G.induce V₁`
+attaining its
+deficiency-rank target, there is a nondegenerate realization of `H` **at the same rank** whose
+per-body normal is additionally linearly independent over each of `u_c`, `w₁`, `w₂`'s closed
+hub-neighbourhood in `G`.
+
+Re-seeds the given `H`-realization (`exists_pencilSeed_of_nondeg`), extracts the target-rank
+`pencilRow` subfamily at the flattening
+(`exists_independent_pencilRow_subfamily_at_toCoord_of_reseed`, v-f), and steers it to one common
+seed together with every standing `PencilChartWF` point condition
+and the promoted normal families (witness (ii)) via `exists_common_seed_pencilRow_and_polynomials`;
+re-establishes the fourth WF conjunct by the point-preserving `fillNbr` re-choice
+(`exists_fillNbr_pencilChartWF_of_standing`), reads off the chart realization
+(`isNondegPencilRealization_pencilChartFramework_of_pencilChartWF`) and its rank (v-f-4
+`finrank_span_rigidityRows_pencilChartFramework_eq_of_independent_pencilRow`), and transfers the
+promoted families to the re-chosen seed (`linearIndepOn_pencilChartNormal_congr`). -/
+theorem exists_isNondegPencilRealization_induce_promotedNormal_of_pendant_deg3
+    [Finite α] [Finite β] [Infinite K] {n : ℕ} (hn : Graph.bodyBarDim n = screwDim 2)
+    {G : Graph α β} {V₁ : Set α} {e_c e₁ e₂ : β} {u_c v_c w₁ w₂ : α}
+    (hSimple : G.Simple) (hfeas : PencilNondegFeasible K G)
+    (hl_c : G.IsLink e_c u_c v_c) (hu_c : u_c ∈ V₁) (hv_c : v_c ∉ V₁)
+    (hVG : V(G) = V₁ ∪ {v_c}) (hcut : (G.cutEdges V₁).ncard ≤ 1) (hdeg : G.degree u_c = 3)
+    (hl₁ : G.IsLink e₁ u_c w₁) (hl₂ : G.IsLink e₂ u_c w₂)
+    (hw₁ : w₁ ∈ V₁) (hw₂ : w₂ ∈ V₁) (hw12 : w₁ ≠ w₂)
+    {F₁ : BodyHingeFramework K 2 α β} {normal₁ point₁ : α → Fin 4 → K}
+    (hnd₁ : IsNondegPencilRealization (G.induce V₁) F₁ normal₁ point₁)
+    (hrank₁ : (Module.finrank K (Submodule.span K F₁.rigidityRows) : ℤ)
+      = screwDim 2 * ((V₁.ncard : ℤ) - 1) - (G.induce V₁).deficiency n) :
+    ∃ (F : BodyHingeFramework K 2 α β) (normal point : α → Fin 4 → K),
+      IsNondegPencilRealization (G.induce V₁) F normal point ∧
+      (Module.finrank K (Submodule.span K F.rigidityRows) : ℤ)
+        = screwDim 2 * ((V₁.ncard : ℤ) - 1) - (G.induce V₁).deficiency n ∧
+      ∀ v ∈ ({u_c, w₁, w₂} : Set α), LinearIndepOn K normal (G.closedHubNbhd v) := by
+  classical
+  haveI := hSimple
+  haveI := hSimple.toLoopless
+  haveI : Inhabited α := ⟨u_c⟩
+  haveI : G.LocallyFinite := inferInstance
+  have hv1 : v_c ≠ w₁ := by rintro rfl; exact hv_c hw₁
+  have hv2 : v_c ≠ w₂ := by rintro rfl; exact hv_c hw₂
+  -- ── Structural facts about `H := G.induce V₁`. ────────────────────────────────────────────────
+  have hVH : V(G.induce V₁) = V₁ := Graph.vertexSet_induce G V₁
+  have huc_memH : u_c ∈ V(G.induce V₁) := by rw [hVH]; exact hu_c
+  have hvc_deg : G.degree v_c = 1 := by
+    have hGeq : G.induce (V₁ ∪ {v_c}) = G := by rw [← hVG]; exact Graph.induce_vertexSet G
+    have h := Graph.degree_induce_union_singleton_far hl_c hu_c hv_c hcut
+    rwa [hGeq] at h
+  have hvc_nothub : ¬ G.PencilHub v_c := fun h => by have := h.2; rw [hvc_deg] at this; omega
+  have hdegH_uc : (G.induce V₁).degree u_c = 2 := by
+    have h := Graph.degree_eq_degree_induce_succ hl_c hu_c hv_c hcut; omega
+  have hnothub_uc : ¬ (G.induce V₁).PencilHub u_c := fun h => by
+    have := h.2; rw [hdegH_uc] at this; omega
+  have hN : N(G, u_c) = ({v_c, w₁, w₂} : Set α) :=
+    Graph.neighbor_eq_of_degree_eq_three hSimple hl_c hl₁ hl₂ hv1 hv2 hw12 hdeg
+  have hcnbhd : (G.induce V₁).closedNbhd u_c = ({u_c, w₁, w₂} : Set α) := by
+    ext w
+    constructor
+    · rintro (rfl | ⟨e, he⟩)
+      · exact Set.mem_insert _ _
+      · obtain ⟨hlG, -, hwV₁⟩ := (Graph.induce_isLink G V₁ e u_c w).mp he
+        have hwN : w ∈ N(G, u_c) := hlG.adj
+        rw [hN] at hwN
+        rcases hwN with rfl | rfl | rfl
+        · exact absurd hwV₁ hv_c
+        · exact Set.mem_insert_of_mem _ (Set.mem_insert _ _)
+        · exact Set.mem_insert_of_mem _ (Set.mem_insert_of_mem _ rfl)
+    · intro hw
+      have h1 : u_c ∈ (G.induce V₁).closedNbhd u_c := Or.inl rfl
+      have h2 : w₁ ∈ (G.induce V₁).closedNbhd u_c :=
+        Or.inr ⟨e₁, (Graph.induce_isLink G V₁ e₁ u_c w₁).mpr ⟨hl₁, hu_c, hw₁⟩⟩
+      have h3 : w₂ ∈ (G.induce V₁).closedNbhd u_c :=
+        Or.inr ⟨e₂, (Graph.induce_isLink G V₁ e₂ u_c w₂).mpr ⟨hl₂, hu_c, hw₂⟩⟩
+      rcases hw with rfl | rfl | rfl
+      · exact h1
+      · exact h2
+      · exact h3
+  -- ── Re-seed the given `H`-realization. ───────────────────────────────────────────────────────
+  obtain ⟨seed₁, hubSel, nbrSel, hWF₁, hptrepro, -⟩ := exists_pencilSeed_of_nondeg hnd₁
+  have hpt_eq : pencilChartPoint (PencilSeed.ofCoord seed₁.toCoord) hubSel
+      = pencilChartPoint seed₁ hubSel := funext (pencilChartPoint_ofCoord_toCoord seed₁ hubSel)
+  -- `nbrSel u_c` is total: a `Fin 3`-selector of the 3-element `H.closedNbhd u_c` fills every slot.
+  have huc_total : ∀ i, (nbrSel u_c i).isSome := by
+    have hsel := hWF₁.2.1 u_c hnothub_uc
+    rw [hcnbhd] at hsel
+    obtain ⟨i0, hi0⟩ := hsel.2.1 u_c (Set.mem_insert _ _)
+    obtain ⟨i1, hi1⟩ := hsel.2.1 w₁ (Set.mem_insert_of_mem _ (Set.mem_insert _ _))
+    obtain ⟨i2, hi2⟩ := hsel.2.1 w₂ (Set.mem_insert_of_mem _ (Set.mem_insert_of_mem _ rfl))
+    have hd01 : i0 ≠ i1 := by rintro rfl; rw [hi0] at hi1; exact hl₁.ne (Option.some.inj hi1)
+    have hd02 : i0 ≠ i2 := by rintro rfl; rw [hi0] at hi2; exact hl₂.ne (Option.some.inj hi2)
+    have hd12 : i1 ≠ i2 := by rintro rfl; rw [hi1] at hi2; exact hw12 (Option.some.inj hi2)
+    intro i
+    have hcard : ({i0, i1, i2} : Finset (Fin 3)).card = 3 :=
+      Finset.card_eq_three.mpr ⟨i0, i1, i2, hd01, hd02, hd12, rfl⟩
+    have huniv : ({i0, i1, i2} : Finset (Fin 3)) = Finset.univ :=
+      Finset.eq_univ_of_card _ (by rw [Fintype.card_fin]; exact hcard)
+    have hi_mem : i ∈ ({i0, i1, i2} : Finset (Fin 3)) := by rw [huniv]; exact Finset.mem_univ i
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hi_mem
+    rcases hi_mem with h | h | h
+    · simp [h, hi0]
+    · simp [h, hi1]
+    · simp [h, hi2]
+  -- ── The standing point conditions as "nonvanishing somewhere" polynomials (at the flattening). ─
+  have hpolyA : ∀ v : α, ∃ Q : MvPolynomial (α × Fin 4 × Fin 4) K,
+      (∃ q, MvPolynomial.eval q Q ≠ 0) ∧
+      (∀ q, MvPolynomial.eval q Q ≠ 0 →
+        LinearIndepOn K (pencilChartPoint (PencilSeed.ofCoord q) hubSel)
+          (if (G.induce V₁).PencilHub v then ({v} : Set α) else (G.induce V₁).closedNbhd v)) := by
+    intro v
+    have hwit : LinearIndepOn K (pencilChartPoint (PencilSeed.ofCoord seed₁.toCoord) hubSel)
+        (if (G.induce V₁).PencilHub v then ({v} : Set α) else (G.induce V₁).closedNbhd v) := by
+      rw [hpt_eq]
+      by_cases hv : (G.induce V₁).PencilHub v
+      · rw [if_pos hv]
+        exact (linearIndepOn_singleton_iff K).mpr (pencilChartPoint_ne_zero seed₁ (hWF₁.2.2.1 v))
+      · rw [if_neg hv]
+        exact linearIndepOn_pencilChartPoint_closedNbhd seed₁ (hWF₁.2.1 v hv) (hWF₁.2.2.2.1 v hv)
+    obtain ⟨Q, hQ0, hQ⟩ :=
+      exists_polynomial_ne_zero_of_linearIndependent_pencilChartPoint hubSel id hwit
+    exact ⟨Q, ⟨seed₁.toCoord, hQ0⟩, fun q hq => hQ q hq⟩
+  choose PA hPA0 hPA using hpolyA
+  have hpolyB : ∀ p : α × α, ∃ Q : MvPolynomial (α × Fin 4 × Fin 4) K,
+      (∃ q, MvPolynomial.eval q Q ≠ 0) ∧
+      (∀ q, MvPolynomial.eval q Q ≠ 0 →
+        LinearIndepOn K (pencilChartPoint (PencilSeed.ofCoord q) hubSel)
+          (if (G.induce V₁).Adj p.1 p.2 then ({p.1, p.2} : Set α) else ∅)) := by
+    rintro ⟨u, v⟩
+    have hwit : LinearIndepOn K (pencilChartPoint (PencilSeed.ofCoord seed₁.toCoord) hubSel)
+        (if (G.induce V₁).Adj u v then ({u, v} : Set α) else ∅) := by
+      by_cases hadj : (G.induce V₁).Adj u v
+      · rw [if_pos hadj]
+        obtain ⟨e, he⟩ := hadj
+        rw [hpt_eq]
+        exact (LinearIndepOn.pair_iff (pencilChartPoint seed₁ hubSel) he.ne).mpr
+          (LinearIndependent.pair_iff.mp (hWF₁.2.2.2.2 e u v he))
+      · rw [if_neg hadj]; exact linearIndepOn_empty K _
+    obtain ⟨Q, hQ0, hQ⟩ :=
+      exists_polynomial_ne_zero_of_linearIndependent_pencilChartPoint hubSel id hwit
+    exact ⟨Q, ⟨seed₁.toCoord, hQ0⟩, fun q hq => hQ q hq⟩
+  choose PB hPB0 hPB using hpolyB
+  -- ── The promoted normal families as "nonvanishing somewhere" polynomials (witness (ii)). ───────
+  obtain ⟨qN, hqN⟩ := exists_coord_linearIndependent_pencilChartNormal_of_pendant_deg3
+    hSimple hfeas hl_c hu_c hv_c hVG hcut hdeg hl₁ hl₂ hw₁ hw₂ hw12 hubSel nbrSel hWF₁.1 hWF₁.2.1
+  have hpolyC : ∀ k : Fin 3, ∃ Q : MvPolynomial (α × Fin 4 × Fin 4) K,
+      (∃ q, MvPolynomial.eval q Q ≠ 0) ∧
+      (∀ q, MvPolynomial.eval q Q ≠ 0 →
+        LinearIndepOn K (pencilChartNormal (PencilSeed.ofCoord q) hubSel nbrSel (G.induce V₁))
+          (G.closedHubNbhd (![u_c, w₁, w₂] k))) := by
+    intro k
+    have hmem : (![u_c, w₁, w₂] k) ∈ ({u_c, w₁, w₂} : Set α) := by fin_cases k <;> simp
+    have hwit : LinearIndepOn K
+        (pencilChartNormal (PencilSeed.ofCoord qN) hubSel nbrSel (G.induce V₁))
+        (G.closedHubNbhd (![u_c, w₁, w₂] k)) := hqN (![u_c, w₁, w₂] k) hmem
+    obtain ⟨Q, hQ0, hQ⟩ :=
+      exists_polynomial_ne_zero_of_linearIndependent_pencilChartNormal hubSel nbrSel
+        (G.induce V₁) id hwit
+    exact ⟨Q, ⟨qN, hQ0⟩, fun q hq => hQ q hq⟩
+  choose PC hPC0 hPC using hpolyC
+  -- ── The rank rows at the flattening. ─────────────────────────────────────────────────────────
+  obtain ⟨s, hslink, hscard, hsLI⟩ := exists_independent_pencilRow_subfamily_at_toCoord_of_reseed
+    hnd₁ hptrepro (le_refl (Module.finrank K (Submodule.span K F₁.rigidityRows)))
+  -- ── One common seed for the rank rows, the point conditions, and the promoted normal families. ─
+  have hPsome : ∀ i : (α ⊕ (α × α)) ⊕ Fin 3,
+      ∃ q, MvPolynomial.eval q ((Sum.elim (Sum.elim PA PB) PC) i) ≠ 0 := by
+    rintro ((v | p) | k)
+    · exact hPA0 v
+    · exact hPB0 p
+    · exact hPC0 k
+  obtain ⟨q, hqrows, hqP⟩ := exists_common_seed_pencilRow_and_polynomials hubSel
+    (G.induce V₁).endsOf hsLI (Sum.elim (Sum.elim PA PB) PC) hPsome
+  have hcondA : ∀ v, LinearIndepOn K (pencilChartPoint (PencilSeed.ofCoord q) hubSel)
+      (if (G.induce V₁).PencilHub v then ({v} : Set α) else (G.induce V₁).closedNbhd v) :=
+    fun v => hPA v q (hqP (Sum.inl (Sum.inl v)))
+  have hcondB : ∀ u v, LinearIndepOn K (pencilChartPoint (PencilSeed.ofCoord q) hubSel)
+      (if (G.induce V₁).Adj u v then ({u, v} : Set α) else ∅) :=
+    fun u v => hPB (u, v) q (hqP (Sum.inl (Sum.inr (u, v))))
+  have hcondC : ∀ k, LinearIndepOn K
+      (pencilChartNormal (PencilSeed.ofCoord q) hubSel nbrSel (G.induce V₁))
+      (G.closedHubNbhd (![u_c, w₁, w₂] k)) := fun k => hPC k q (hqP (Sum.inr k))
+  -- ── Reconstruct the standing `PencilChartWF` conditions at the common seed. ────────────────────
+  have hptnz : ∀ v, pencilChartPoint (PencilSeed.ofCoord q) hubSel v ≠ 0 := by
+    intro v
+    by_cases hv : (G.induce V₁).PencilHub v
+    · have h := hcondA v; rw [if_pos hv] at h
+      exact (linearIndepOn_singleton_iff K).mp h
+    · have h := hcondA v; rw [if_neg hv] at h
+      exact (linearIndepOn_singleton_iff K).mp (h.mono (Set.singleton_subset_iff.mpr (Or.inl rfl)))
+  have hhub_LI : ∀ v, LinearIndependent K
+      ![hubSlotNormal (PencilSeed.ofCoord q) hubSel v 0,
+        hubSlotNormal (PencilSeed.ofCoord q) hubSel v 1,
+        hubSlotNormal (PencilSeed.ofCoord q) hubSel v 2] := by
+    intro v
+    have h := hptnz v
+    rw [pencilChartPoint] at h
+    exact (cross₃_ne_zero_iff_linearIndependent _ _ _).mp h
+  have hpt_LI : ∀ e u v, (G.induce V₁).IsLink e u v → LinearIndependent K
+      ![pencilChartPoint (PencilSeed.ofCoord q) hubSel u,
+        pencilChartPoint (PencilSeed.ofCoord q) hubSel v] := by
+    intro e u v hl
+    have h := hcondB u v; rw [if_pos hl.adj] at h
+    rw [LinearIndependent.pair_iff]
+    exact (LinearIndepOn.pair_iff (pencilChartPoint (PencilSeed.ofCoord q) hubSel) hl.ne).mp h
+  have hnbr_some : ∀ v, ¬ (G.induce V₁).PencilHub v →
+      LinearIndepOn K (nbrSlotPoint (PencilSeed.ofCoord q) hubSel nbrSel v)
+        {i | (nbrSel v i).isSome} := by
+    intro v hv
+    have h := hcondA v; rw [if_neg hv] at h
+    exact linearIndepOn_nbrSlotPoint_isSome_of_pencilChartPoint (PencilSeed.ofCoord q)
+      (hWF₁.2.1 v hv) h
+  -- ── Post-steering `fillNbr` re-choice: full `PencilChartWF` at a point-preserving seed. ────────
+  obtain ⟨seed', hhub_eq, hfill_eq, hWF'⟩ :=
+    exists_fillNbr_pencilChartWF_of_standing hWF₁.1 hWF₁.2.1 hhub_LI hpt_LI hnbr_some
+  have hnd' := isNondegPencilRealization_pencilChartFramework_of_pencilChartWF hWF'
+  have hpcp_eq : pencilChartPoint seed' hubSel = pencilChartPoint (PencilSeed.ofCoord q) hubSel :=
+    pencilChartPoint_congr hubSel hhub_eq hfill_eq
+  have hgcongr : pencilChartFramework (PencilSeed.ofCoord q) hubSel (G.induce V₁)
+      = pencilChartFramework seed' hubSel (G.induce V₁) :=
+    pencilChartFramework_congr hubSel (G.induce V₁) hpcp_eq.symm
+  -- ── The output rank via v-f-4. ────────────────────────────────────────────────────────────────
+  have hSuppNe' : ∀ e, (pencilChartFramework seed' hubSel (G.induce V₁)).supportExtensor e ≠ 0 :=
+    hnd'.1.1.2.2.1
+  have hC : ∀ e u v, (G.induce V₁).IsLink e u v →
+      (pencilChartFramework (PencilSeed.ofCoord q) hubSel (G.induce V₁)).supportExtensor e ≠ 0 := by
+    intro e u v _
+    rw [hgcongr]; exact hSuppNe' e
+  have hscardZ : (Nat.card s : ℤ)
+      = screwDim 2 * ((V(G.induce V₁).ncard : ℤ) - 1) - (G.induce V₁).deficiency n := by
+    rw [hscard, hVH]; exact hrank₁
+  have hrankq := finrank_span_rigidityRows_pencilChartFramework_eq_of_independent_pencilRow
+    hn (G := G.induce V₁) ⟨u_c, huc_memH⟩ hubSel hC hslink hqrows hscardZ
+  have hrankOut : (Module.finrank K (Submodule.span K
+        (pencilChartFramework seed' hubSel (G.induce V₁)).rigidityRows) : ℤ)
+      = screwDim 2 * ((V₁.ncard : ℤ) - 1) - (G.induce V₁).deficiency n := by
+    rw [← hgcongr, hrankq, hVH]
+  -- ── The promoted normal families, transferred to the re-chosen seed. ──────────────────────────
+  have hassigned_core : ∀ w, G.PencilHub w → ¬ (G.induce V₁).PencilHub w →
+      ∀ i, (nbrSel w i).isSome := by
+    intro w hwG hwnotH i
+    have hwV : w ∈ V(G) := hwG.1
+    rw [hVG] at hwV
+    have hwvc : w ≠ v_c := by rintro rfl; exact hvc_nothub hwG
+    have hwV₁ : w ∈ V₁ := by
+      rcases hwV with h | h
+      · exact h
+      · exact absurd (Set.mem_singleton_iff.mp h) hwvc
+    have hwuc : w = u_c := by
+      by_contra hne
+      apply hwnotH
+      refine ⟨by rw [hVH]; exact hwV₁, ?_⟩
+      rw [Graph.degree_induce_eq_of_ne hl_c hu_c hv_c hcut hwV₁ hne]; exact hwG.2
+    subst hwuc
+    exact huc_total i
+  refine ⟨pencilChartFramework seed' hubSel (G.induce V₁),
+    pencilChartNormal seed' hubSel nbrSel (G.induce V₁), pencilChartPoint seed' hubSel,
+    hnd', hrankOut, ?_⟩
+  intro v hv
+  have hcongrv := fun k => linearIndepOn_pencilChartNormal_congr hubSel nbrSel (G.induce V₁)
+    hhub_eq hfill_eq (fun w hw => hassigned_core w hw.1) (hcondC k)
+  simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hv
+  rcases hv with rfl | rfl | rfl
+  · simpa using hcongrv 0
+  · simpa using hcongrv 1
+  · simpa using hcongrv 2
+
 end CombinatorialRigidity.Molecular
