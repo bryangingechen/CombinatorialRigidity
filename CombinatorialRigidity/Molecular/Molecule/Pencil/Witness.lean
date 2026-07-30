@@ -1147,4 +1147,93 @@ theorem exists_coord_linearIndependent_pencilChartNormal_of_pendant_deg3
   exact (linearIndepOn_smul_pi_single (J := idx) (c := cfam) hinj
     (fun x _ => hcfam_ne x)).congr (fun x hx => (hval' x hx).symm)
 
+/-! ## The general-position core (Phase 39 W5-L6b-ii)
+
+The reusable core of the v-b/v-c constructions above, extracted for the split arm's feasibility
+producer `pencilNondegFeasible_of_ncard_closedHubNbhd_le_three_of_triangleFree`
+(`notes/Phase39-design.md` §"W5 leaf decomposition" L6b). Its conclusion,
+`∃ q, LinearIndepOn K (pencilChartPoint (PencilSeed.ofCoord q) hubSel) S`, is exactly the shape of
+the two "satisfiable-somewhere" chart-point-LI families that the landed L6b-i assembly
+`pencilNondegFeasible_of_selectors_of_satisfiable` (`Pencil/Steer.lean`) consumes. The **later**
+L6b-ii commits build the per-set-shape direction/target maps (`{v}` / `closedNbhd v` per body,
+`{p.1, p.2}` per adjacent pair) from `hcard` + triangle-freeness and wire the headline; this lemma
+is the char-free general position engine they all call. -/
+
+/-- **The general-position core of the pendant-cut somewhere-witness** (Phase 39 W5-L5/L6b-ii; the
+reusable core of `exists_coord_linearIndependent_pencilChartPoint_of_pendant_deg3` and its `H`-side
+sibling): given a direction map `idx` and a target-index map `dtgt`, both respected on the whole of
+each body `s ∈ S`'s closed hub-neighbourhood — `idx` injective there and avoiding `dtgt s`, and the
+targets `dtgt` distinct across `S` — some seed coordinate `q` makes each `s ∈ S`'s chart point a
+nonzero multiple of the distinct standard basis vector `e_{dtgt s}`, hence the chart points
+`LinearIndepOn` over `S`.
+
+The construction is v-b's verbatim: `idx` becomes the seed's hub normals, and each body's
+selector-induced slots are padded to an injective avoiding-`dtgt s` triple
+(`exists_injective_extension_of_isFin3SelectorOf`), so its `cross₃` point is a nonzero multiple of
+`e_{dtgt s}` (`exists_smul_cross₃_pi_single`); distinctness of the `dtgt` targets then gives
+independence (`linearIndepOn_smul_pi_single`). Unlike v-b/v-c it fixes no configuration: the
+per-set-shape callers supply `idx`/`dtgt` and the two combinatorial facts, so this lemma is entirely
+char-free general position with no feasibility or graph structure of its own beyond `hHubSel`. -/
+theorem exists_coord_linearIndepOn_pencilChartPoint_of_idx
+    {G : Graph α β} {S : Set α} {idx dtgt : α → Fin 4}
+    (hubSel : α → Fin 3 → Option α)
+    (hHubSel : ∀ v, IsFin3SelectorOf (G.closedHubNbhd v) (hubSel v))
+    (hdinj : Set.InjOn dtgt S)
+    (havoid : ∀ s ∈ S, ∀ x ∈ G.closedHubNbhd s, idx x ≠ dtgt s)
+    (hinj : ∀ s ∈ S, Set.InjOn idx (G.closedHubNbhd s)) :
+    ∃ q : α × Fin 4 × Fin 4 → K,
+      LinearIndepOn K (pencilChartPoint (PencilSeed.ofCoord q) hubSel) S := by
+  classical
+  -- Per body in `S`, pull out the injective avoiding-`dtgt s` slot extension.
+  have hex : ∀ s : α, ∃ σ : Fin 3 → Fin 4, s ∈ S →
+      Function.Injective σ ∧ (∀ i, σ i ≠ dtgt s) ∧
+        (∀ i w, hubSel s i = some w → σ i = idx w) := by
+    intro s
+    by_cases hs : s ∈ S
+    · obtain ⟨σ, hσinj, hσd, hσm⟩ :=
+        exists_injective_extension_of_isFin3SelectorOf (hHubSel s) (havoid s hs) (hinj s hs)
+      exact ⟨σ, fun _ => ⟨hσinj, hσd, hσm⟩⟩
+    · exact ⟨fun _ => 0, fun h => absurd h hs⟩
+  choose σfam hσfam using hex
+  -- The seed: hub normals from `idx`, fills from the per-body extensions (v-b's seed).
+  set q : α × Fin 4 × Fin 4 → K :=
+    fun p => Fin.cases (motive := fun _ => K)
+      ((Pi.single (idx p.1) (1 : K) : Fin 4 → K) p.2.2)
+      (fun j => (Pi.single (σfam p.1 j) (1 : K) : Fin 4 → K) p.2.2) p.2.1
+    with hq_def
+  refine ⟨q, ?_⟩
+  have hHubN : ∀ v : α, (PencilSeed.ofCoord q).hubNormal v = Pi.single (idx v) (1 : K) := by
+    intro v; funext i; simp [PencilSeed.ofCoord, hq_def]
+  have hFillH : ∀ (v : α) (j : Fin 3),
+      (PencilSeed.ofCoord q).fillHub v j = Pi.single (σfam v j) (1 : K) := by
+    intro v j; funext i; simp [PencilSeed.ofCoord, hq_def]
+  -- Each body's slot triple reads back the extension's basis vectors.
+  have hslot : ∀ (v : α), (∀ i w, hubSel v i = some w → σfam v i = idx w) →
+      ∀ i, hubSlotNormal (PencilSeed.ofCoord q) hubSel v i = Pi.single (σfam v i) (1 : K) := by
+    intro v hmatch i
+    cases hcase : hubSel v i with
+    | none => simp only [hubSlotNormal, hcase, hFillH]
+    | some w =>
+        simp only [hubSlotNormal, hcase]
+        rw [hHubN, hmatch i w hcase]
+  -- On each `s ∈ S`, the chart point is a nonzero multiple of `e_{dtgt s}`.
+  have hpt : ∀ s : α, ∃ cc : K, s ∈ S →
+      cc ≠ 0 ∧ pencilChartPoint (PencilSeed.ofCoord q) hubSel s
+        = cc • (Pi.single (dtgt s) 1 : Fin 4 → K) := by
+    intro s
+    by_cases hs : s ∈ S
+    · obtain ⟨hσinj, hσd, hσm⟩ := hσfam s hs
+      have hsl := hslot s hσm
+      have h01 : σfam s 0 ≠ σfam s 1 := fun h => absurd (hσinj h) (by decide)
+      have h02 : σfam s 0 ≠ σfam s 2 := fun h => absurd (hσinj h) (by decide)
+      have h12 : σfam s 1 ≠ σfam s 2 := fun h => absurd (hσinj h) (by decide)
+      obtain ⟨cc, hcc, hcross⟩ :=
+        exists_smul_cross₃_pi_single (K := K) (hσd 0) (hσd 1) (hσd 2) h01 h02 h12
+      exact ⟨cc, fun _ => ⟨hcc, by rw [pencilChartPoint, hsl 0, hsl 1, hsl 2, hcross]⟩⟩
+    · exact ⟨1, fun h => absurd h hs⟩
+  choose ccfam hccfam using hpt
+  -- Distinct targets, rescaled by nonzero scalars, are independent.
+  exact (linearIndepOn_smul_pi_single (K := K) (J := dtgt) (c := ccfam) hdinj
+    (fun x hx => (hccfam x hx).1)).congr (fun x hx => ((hccfam x hx).2).symm)
+
 end CombinatorialRigidity.Molecular

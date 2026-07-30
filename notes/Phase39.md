@@ -54,9 +54,10 @@ triangle-free at any degree-2 split (induced-`C₄`-is-`D6`-rigid argument), so 
 triangle-free hypothesis. **L6d LANDED 2026-07-30 (`Habitat.lean`): the `C₄` proper-rigid brick
 `c4_isProperRigidSubgraph` + the transfer wrapper `splitOff_triangleFree_of_noRigid`, both over
 `namespace Graph`. L6b-i LANDED 2026-07-30 (`Steer.lean`, the feasibility assembly
-`pencilNondegFeasible_of_selectors_of_satisfiable`); L6b-ii (the char-free general-position core, two
-satisfiability families from `hcard`+`htf`) is the next buildable leaf, spike-grounded via v-b's
-finite-`Fin 4` route**; L8 parallel; L7, the research core, last).
+`pencilNondegFeasible_of_selectors_of_satisfiable`); L6b-ii char-free general-position CORE LANDED
+2026-07-30 (`Witness.lean`, `exists_coord_linearIndepOn_pencilChartPoint_of_idx`, v-b's construction
+extracted); its per-set-shape `idx`/`dtgt` callers + headline wiring are the next buildable pieces**;
+L8 parallel; L7, the research core, last).
 
 The opening recon ran 2026-07-23; verdicts (R1–R3) below in *Opening recon verdicts*.
 
@@ -223,25 +224,32 @@ chart-point-LI families (`{v}`/`closedNbhd v` per body; `{u,v}` per adjacent pai
 headline needs `[G.Simple]`/`[G.Loopless]` (free from the honest producer `G′.Simple`, L6c). Detail:
 *Decisions made* + design doc L6b.
 
-**Next concrete commit — build W5-L6b-ii** (spike-first, the genuinely-new char-free core): the two
-satisfiability lemmas
+**W5-L6b-ii char-free general-position CORE LANDED 2026-07-30** (`Molecule/Pencil/Witness.lean`,
+`exists_coord_linearIndepOn_pencilChartPoint_of_idx`): given `idx dtgt : α → Fin 4` with `idx`
+injective + avoiding `dtgt s` on each `G.closedHubNbhd s` for `s ∈ S`, and `dtgt` injective on `S`,
+`∃ q, LinearIndepOn K (pencilChartPoint (ofCoord q) hubSel) S` — v-b's construction extracted verbatim
+(`idx` → hub normals; per-body `exists_injective_extension_of_isFin3SelectorOf` padding;
+`exists_smul_cross₃_pi_single` → scaled targets; `linearIndepOn_smul_pi_single` for distinctness),
+char-free with no feasibility/graph structure beyond `hHubSel`. Its conclusion type-matches the
+L6b-i families (A)/(B) exactly. Axioms clean; no new FRICTION (faithful v-b mirror, built first try).
+
+**Next concrete commit — the L6b-ii per-set-shape callers** (build `idx`/`dtgt` from `hcard` + `htf`,
+then wire the headline): the two satisfiability lemmas the core now discharges
 - (A) `∀ v, ∃ q, LinearIndepOn K (pencilChartPoint (PencilSeed.ofCoord q) hubSel)`
   `(if G.PencilHub v then {v} else G.closedNbhd v)`
 - (B) `∀ p, ∃ q, LinearIndepOn K (pencilChartPoint (PencilSeed.ofCoord q) hubSel)`
   `(if G.Adj p.1 p.2 then {p.1,p.2} else ∅)`
 
-from `hcard` + `htf` (taking `hubSel`/`hHubSel` as inputs, as v-b does), then the headline
-`pencilNondegFeasible_of_ncard_closedHubNbhd_le_three_of_triangleFree` = `choose` selectors ⟶ L6b-ii
-⟶ `pencilNondegFeasible_of_selectors_of_satisfiable`. **Route (spike-grounded, no route-breaker):**
-the finite-`Fin 4`/`Pi.single` route of v-b (`exists_coord_linearIndependent_pencilChartPoint_of_
-pendant_deg3`), NOT moment-curve/Vandermonde (that needs polynomial infra not in tree). Extract v-b's
-core ("given `idx : α → Fin 4` injective+target-avoiding on each `closedHubNbhd s` for `s ∈ S`, with
-targets distinct on `S`, ∃ seed making the points on `S` distinct scaled basis vectors ⟹ LI") as a
-general lemma, then build `idx` per set-shape from `hcard` + `htf`. `htf` is the exact lever: it
-excludes the two-hub-triangle (adjacent pair) and the common-neighbour-triangle (closed-nbhd triple)
-that would force dependent points — hand-verified constructible for the both-hubs and
-doubly-shared-hub configurations. Size ≈ v-b's ~350 lines + the core extraction; a multi-commit
-leaf. Fully parallel alternative: **W5-L8** (the `k = 0` residue, emptiness route).
+each by supplying the core with a per-set-shape `idx`/`dtgt` (taking `hubSel`/`hHubSel` as inputs, as
+v-b does): the `{v}` singleton is trivial (any single target); `closedNbhd v` and the adjacent pair
+`{p.1,p.2}` need `idx` injective + `dtgt`-avoiding on each member's `G.closedHubNbhd`, with the
+per-member targets distinct. `htf` is the exact lever: it excludes the two-hub-triangle (adjacent
+pair) and the common-neighbour-triangle (closed-nbhd triple) that alone would force a `dtgt`/`idx`
+collision — hand-verified constructible for the both-hubs and doubly-shared-hub configs (no
+route-breaker). Then the headline `pencilNondegFeasible_of_ncard_closedHubNbhd_le_three_of_
+triangleFree` = `choose` selectors (via `exists_isFin3SelectorOf_of_ncard_le_three`) ⟶ (A)/(B) ⟶
+`pencilNondegFeasible_of_selectors_of_satisfiable`. The `≤ 3` bound is `hcard`; the triangle
+exclusions are `htf`. Fully parallel alternative: **W5-L8** (the `k = 0` residue, emptiness route).
 
 **W5-L6 invariant SETTLED (2026-07-29 L6a recon; canonical `notes/Phase39-design.md` §"W5 leaf
 decomposition" L6a).** The ≤ 3 closed-hub-neighbourhood bound on `G` is **not** a graph-combinatorial
@@ -289,6 +297,23 @@ neighbor — is `notes/IdeaBacklog.md`.
 
 ## Decisions made during this phase
 
+- **W5-L6b-ii CORE LANDED — the char-free general-position engine** (2026-07-30,
+  `Molecule/Pencil/Witness.lean`, `exists_coord_linearIndepOn_pencilChartPoint_of_idx`; canonical
+  `notes/Phase39-design.md` §"W5 leaf decomposition" L6b-ii). v-b's construction extracted as a
+  reusable lemma with NO configuration of its own: given `idx dtgt : α → Fin 4` with `idx` injective +
+  avoiding `dtgt s` on each `G.closedHubNbhd s` for `s ∈ S` and `dtgt` injective on `S`,
+  `∃ q, LinearIndepOn K (pencilChartPoint (ofCoord q) hubSel) S`. Route = v-b verbatim (`idx` → seed
+  hub normals via `PencilSeed.ofCoord`; per-body `exists_injective_extension_of_isFin3SelectorOf`
+  padding to an injective avoiding-`dtgt s` slot triple; `exists_smul_cross₃_pi_single` makes each
+  point `cc • e_{dtgt s}` with `cc ≠ 0`; `linearIndepOn_smul_pi_single` + `.congr` from distinct
+  targets). **DERIVATION GUARD met:** conclusion type-matches the L6b-i consumers (A)/(B) exactly (the
+  `hsat_pt`/`hsat_adj` shape of `pencilNondegFeasible_of_selectors_of_satisfiable`). Needs no
+  finiteness (`hHubSel` is a hypothesis; nothing in the body uses `[Finite _]`). Home = `Witness.lean`
+  (with v-b, its extraction source); v-b/v-c left unrefactored (their `Fin 3`-vector conclusions
+  differ in shape — refactor optional, deferred). No new FRICTION (faithful mirror, built first try;
+  the `∀ s, ∃ x, s ∈ S → P` + `choose` idiom to avoid dependent choose is v-c's own pattern). Gates +
+  axioms clean (`propext`/`Classical.choice`/`Quot.sound`). **Remaining L6b-ii: the per-set-shape
+  `idx`/`dtgt` callers (A)/(B) from `hcard`+`htf` + headline wiring** (*Hand-off*).
 - **W5-L6b-i LANDED — the pencil-feasibility assembly (compiler-checked spike, bank-authorized)**
   (2026-07-30, `Molecule/Pencil/Steer.lean`, `pencilNondegFeasible_of_selectors_of_satisfiable`;
   canonical `notes/Phase39-design.md` §"W5 leaf decomposition" L6b). Given global hub/neighbour
@@ -322,35 +347,16 @@ neighbor — is `notes/IdeaBacklog.md`.
   verbatim. Both build subtleties routine + already-documented (defeq closes `![…]`-indexed `Fin 4`
   goals with no `simp`, TACTICS-QUIRKS §46 augmented; `rintro rfl` on `f = e₀` substitutes `e₀` away,
   §4 — used named `intro`+`▸`). Gates + axioms clean (`propext`/`Classical.choice`/`Quot.sound`).
-- **W5-L6d VERIFIED + L6b re-pinned — the habitat-foundations recon (design-pass commit)** (2026-07-30;
-  canonical `notes/Phase39-design.md` §"W5 leaf decomposition" L6b/L6d + the wiring). Settled the two
-  questions the L6b refutation raised, grounded against LANDED bodies: (Q1) *triangle ⟹ proper rigid
-  at `|V| ≥ 4`* — already LANDED as `Graph.triangle_isProperRigidSubgraph` (`Operations.lean:994`), so
-  no-proper-rigid habitat is triangle-free at `|V| ≥ 4`. (Q2) *transfer to `G′`* — HOLDS, and gives
-  *full* triangle-freeness of `G′` at ANY degree-2 split: a new `G′`-triangle `{a,b,c}` forces an
-  induced `C₄` `{v,a,b,c}` in `G`, and `C₄` is `D6`-rigid (`isKDof_zero_of_cycle`, `m=4`; exact
-  partition-deficiency `= 0`, independently re-checked) hence a proper rigid subgraph at `|V| ≥ 5` —
-  ⊥ against `hnoRigid`. Exhaustive `{2,3}`-degree search (`n ≤ 7` + sampled `n = 8`): zero
-  counterexamples; the naive "common neighbour ⟹ new triangle" worry is void (the common neighbour is
-  the excluded `C₄`). L6d is a THEOREM, not an existence gamble; **safe not needed for L6d** (only for
-  L6a-transfer). L6b re-pinned to take a triangle-free hypothesis (strictly stronger than the minimal
-  `¬two-hub-triangle`, free here, and strictly easier for L6b-ii). Next buildable: L6d = the `C₄`
-  brick `c4_isProperRigidSubgraph` + `splitOff_triangleFree_of_noRigid` (`Habitat.lean`). No Lean
-  built (design pass); scratch search reverted, tree clean. Dispatch-log F9 instance — first
-  *confirmed* (non-refuted) pin of the L6 habitat arc.
-- **W5-L6b `hcard`-only pin REFUTED by the bank-authorized spike; L6d surfaced** (2026-07-30, no
-  commit — spike left tree clean; coordinator salvage this commit). The spike (compiler-checked
-  scratch, reverted) showed `hcard : ∀ v, closedHubNbhd ≤ 3 ⟹ PencilNondegFeasible K G` is FALSE: a
-  two-adjacent-hub triangle satisfies `hcard` yet is infeasible by the landed
-  `not_pencilNondegFeasible_of_triangle_two_hubs` (5-vertex witness `{u,v,w,u',v'}`). This was already
-  implied by the *Blockers* triangle-hub note — an internal plan inconsistency, not new math; the L6b
-  pin (from `6768bd33`) never reconciled against it. The chart **assembly** route is sound (v-e
-  template composes); only the hypothesis is wrong. Corrected decomposition (design doc L6b): L6b gains
-  a no-two-hub-triangle hypothesis; NEW obligation **L6d** (triangle-freeness transfer `G ⇒ G′`);
-  L6b-i (assembly) + L6b-ii (spike-first `#3/#4/#5` core) + a missing `IsFin3SelectorOf`-existence
-  brick. **Next: a habitat-foundations recon** verifying the habitat is triangle-free at `|V| ≥ 4` and
-  that it transfers to `G′`, before re-pinning. Dispatch-log F9 instance (third optimistic-pin
-  refutation in the L6 arc).
+- **W5-L6b `hcard`-only pin REFUTED → habitat-foundations recon → L6b re-pinned triangle-free**
+  (2026-07-30, two design-pass commits, both now superseded by the L6b-i/L6d landings above; canonical
+  `notes/Phase39-design.md` §"W5 leaf decomposition" L6b/L6d). The bank-authorized spike refuted the
+  `hcard`-only pin (a two-adjacent-hub triangle is `hcard ≤ 3` yet infeasible by
+  `not_pencilNondegFeasible_of_triangle_two_hubs`); the follow-up recon then VERIFIED both habitat
+  claims — (Q1) triangle ⟹ proper rigid at `|V| ≥ 4` is landed (`Graph.triangle_isProperRigidSubgraph`)
+  and (Q2) `G′` is *fully* triangle-free at any degree-2 split (a `G′`-triangle forces an induced `C₄`,
+  which is `D6`-rigid, ⊥ against `hnoRigid`; exhaustive `{2,3}`-degree search `n ≤ 8`, zero
+  counterexamples) — so L6b took a triangle-free hypothesis and L6d became a THEOREM (safe not needed).
+  Dispatch-log F9 instances (third optimistic-pin refutation, then first *confirmed* pin, of the L6 arc).
 - **W5-L6a-safe-exists NON-RIGID HALF LANDED** (2026-07-30, `Induction/ReducibleVertex.lean` +
   `Induction/Operations.lean`): three decls discharging the whole non-rigid (`deficiency > 0`)
   split-arm safe-vertex obligation, no minimality anywhere. (i) `exists_adjacent_degree_two_pair_of_edgeBound`

@@ -2405,21 +2405,29 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
       The two condition families it consumes (matching the common-seed index sets, `ι = α ⊕ (α×α)`):
       per body `∃ q, LinearIndepOn (pencilChartPoint (ofCoord q) hubSel) (if PencilHub v then {v} else
       closedNbhd v)`; per pair `∃ q, LinearIndepOn … (if Adj p.1 p.2 then {p.1,p.2} else ∅)`.
-    - **L6b-ii (spike-first, THE remaining char-free core; still open):** the two satisfiability
-      families above from `hcard` + `htf`, taking `hubSel`/`hHubSel` as inputs (as v-b does).
-      **Route SPIKE-GROUNDED to the finite-`Fin 4`/`Pi.single` route of v-b**
+    - **L6b-ii (spike-first, THE remaining char-free core; core LANDED, callers open):** the two
+      satisfiability families above from `hcard` + `htf`, taking `hubSel`/`hHubSel` as inputs (as v-b
+      does). **Route SPIKE-GROUNDED to the finite-`Fin 4`/`Pi.single` route of v-b**
       (`exists_coord_linearIndependent_pencilChartPoint_of_pendant_deg3`), NOT moment-curve/Vandermonde
       (the `RigidityMatroid` moment curve is over `ℝ`; a char-free Vandermonde would need polynomial
       infra — Vandermonde LI, `cross₃`↔cubic-coeffs, root-set proportionality — none in tree, a bigger
-      build). Extract v-b's core as a general lemma ("given `idx : α → Fin 4` injective + target-
-      avoiding on each `closedHubNbhd s` for `s ∈ S`, with the per-`s` targets distinct on `S`, ∃ seed
-      whose points on `S` are distinct scaled basis vectors ⟹ LI"), then construct `idx` per set-shape
-      from `hcard` + `htf`. `htf` is the exact lever: it excludes the two-hub-triangle (adjacent pair)
-      and the common-neighbour-triangle (closed-nbhd triple) that alone would force dependent points —
-      hand-verified constructible for the both-hubs and doubly-shared-hub configurations (no route-
-      breaker found). Size ≈ v-b (~350 lines) + the core extraction; a **multi-commit** leaf. The
-      `≤ 3` cardinality bound is `hcard`; the triangle exclusions are `htf` (replacing v-b's
-      feasibility-derived `not_pencilNondegFeasible_of_triangle_two_hubs`).
+      build). **The general core is LANDED (2026-07-30, `Molecule/Pencil/Witness.lean`,
+      `exists_coord_linearIndepOn_pencilChartPoint_of_idx`):** given `idx dtgt : α → Fin 4` with `idx`
+      injective + avoiding `dtgt s` on each `G.closedHubNbhd s` for `s ∈ S`, and `dtgt` injective on
+      `S`, `∃ q, LinearIndepOn K (pencilChartPoint (ofCoord q) hubSel) S` — v-b's construction verbatim
+      (`idx` → hub normals, per-body `exists_injective_extension_of_isFin3SelectorOf` padding,
+      `exists_smul_cross₃_pi_single` → scaled targets, `linearIndepOn_smul_pi_single` for distinctness),
+      char-free with no feasibility/graph structure of its own beyond `hHubSel`. Its conclusion
+      type-matches the L6b-i families exactly (axioms clean). **Still open (later commits):**
+      construct `idx`/`dtgt` per set-shape (`{v}` / `closedNbhd v` per body, `{p.1,p.2}` per adjacent
+      pair, `∅`) from `hcard` + `htf` and wire the headline
+      `pencilNondegFeasible_of_ncard_closedHubNbhd_le_three_of_triangleFree` (`choose` selectors ⟶
+      L6b-ii ⟶ `pencilNondegFeasible_of_selectors_of_satisfiable`). `htf` is the exact lever: it
+      excludes the two-hub-triangle (adjacent pair) and the common-neighbour-triangle (closed-nbhd
+      triple) that alone would force a `dtgt`/`idx` collision — hand-verified constructible for the
+      both-hubs and doubly-shared-hub configurations (no route-breaker found). The `≤ 3` cardinality
+      bound is `hcard`; the triangle exclusions are `htf` (replacing v-b's feasibility-derived
+      `not_pencilNondegFeasible_of_triangle_two_hubs`).
     - **Selector brick — NOT missing (2026-07-30 spike finding):** the `IsFin3SelectorOf`-existence
       lemma for any `ncard ≤ 3` finite set is already in tree as
       `exists_isFin3SelectorOf_of_ncard_le_three` (`Molecule/Pencil/Engine.lean:793`,
