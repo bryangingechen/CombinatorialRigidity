@@ -88,7 +88,7 @@ failing pattern and the working fix.
 - downstream `import M` + `namespace Foo` + `open scoped Graph` → `V(G)` *"unexpected token ')'; expected ','"* AND `binop%` flips bare-ℕ `n-1`→ℤ-sub (`exact_mod_cast` fails); `open Foo` is fine → § 56 (a bare `Graph.`-prefixed decl inside `namespace Foo` in `M` made a `Foo.Graph` sub-namespace that captures `open scoped Graph`; pin the decl to `_root_.Graph.`)
 - *"unexpected token '+'; expected ')'"* on `f ((x : ℕ) - 1 + 2)` / `⟨(x : ℕ) - 1 + 1, h⟩` (a type-ascription left operand then `+`/`-`), goal display silently drops the trailing `+ k` → § 62 (re-parenthesize the whole arithmetic: `(((x : ℕ) - 1) + 2)`)
 - `omega` fails on a goal over `↑(⟨(i : ℕ), h⟩ : Fin m)` with `hid : (i : ℕ) < …` in scope, the counterexample naming a `↑↑i` atom that *satisfies* the goal → § 63 (omega atomizes `Fin.val (Fin.mk …)` distinctly from `(i : ℕ)`; force the defeq with `show … from hid`, not `simp only [Fin.val_mk]` which the linter flags unused)
-- *"failed to synthesize Fintype (n₁ ⊕ n₂)"* (or any constructed column type) reported at the **goal-statement** line `… : … ≤ (Matrix.fromBlocks …).rank`, despite an in-proof `haveI : Fintype … := Fintype.ofFinite …` → § 64 (`Matrix.rank`/`mulVec` carries `[Fintype <cols>]`; when the *goal* exposes `.rank` on a built type, put `[Fintype]` on the summands in the signature — the in-proof instance is too late)
+- *"failed to synthesize Fintype (n₁ ⊕ n₂)"* (or any constructed column type) reported at the **goal-statement** line `… : … ≤ (Matrix.fromBlocks …).rank`, despite an in-proof `haveI : Fintype … := Fintype.ofFinite …` → § 64 (`Matrix.rank`/`mulVec` carries `[Fintype <cols>]`; when the *goal* exposes `.rank` on a built type, put `[Fintype]` on the summands in the signature — the in-proof instance is too late); the same shape with `Inhabited α` (e.g. a hypothesis whose *type* invokes `Graph.endsOf`) → § 64 (worked case)
 - *"rewrite … Did not find … `Disjoint ?m ?m`"* on `rw [Set.disjoint_left]` against a `Set.PairwiseDisjoint`/`Pairwise (Disjoint on f)` goal → § 71 (unfolds to `Function.onFun Disjoint f a b`; supply the proof as a term, `Set.disjoint_left.mpr (…)`, instead of rewriting)
 - `zify`/`push_cast` on a hypothesis containing `↑(∑ᶠ u ∈ s, f u)` casts only the *outer* `finsum`, leaving `∑ᶠ x, ↑(∑ᶠ (_ : x ∈ s), f x)` instead of `∑ᶠ u ∈ s, ↑(f u)` — the two are defeq but not syntactically equal, so a later `rw`/`linarith` matching a manually-stated cast form fails → § 72 (convert the `finsum` to a `Finset.sum` — `finsum_mem_eq_finite_toFinset_sum` — *before* casting; `Finset.sum`'s cast pushes through cleanly via `Nat.cast_sum`)
 - *"environment already contains 'Ns.foo' from <other module>"* at `lake lint`/`runLinter` (the whole-project import-merge) on a decl `lake build <your module>` accepted → § 65 (a duplicate top-level name in a shared namespace; single-file build never imports the sibling, so name-check the namespace — `grep -rn "def <name>"` / `lean_local_search` — before naming, and run `lake lint` not just `lake build <module>` pre-commit)
@@ -115,7 +115,7 @@ failing pattern and the working fix.
 - *"failed to synthesize instance `Fintype ↑(G.neighborSet v)`"* on a statement using `G.degree v` under `[Fintype V]` alone (no other instance) → § 84 (`[Fintype V]` alone never gives `Fintype (G.neighborSet v)` — that needs `[DecidableRel G.Adj]` too, or an explicit per-vertex `[Fintype (G.neighborSet v)]`; there is no automatic `Finite → Fintype` bridging instance in mathlib, `Fintype.ofFinite` is a `noncomputable def`, not a registered instance)
 - *"Unknown identifier `ℝ`"* (*"cannot treat … as an implicitly bound variable … `autoImplicit` is `false`"*) in a downstream file that never imports the module supplying the notation, right after a leaf dependency drops that import during a field-generalization sweep → § 85 (the module system's `public import` re-exports transitively; the downstream file relied on the leaf's dropped import, not its own)
 - *"failed to compile definition, consider marking it as `noncomputable` … depends on `Real.instField`"* on a plain `def` that used to compile fine, right after a dependency it calls was generalized from concrete `ℝ` to `[Field K]` → § 86 (instantiating the generic hypothesis at `K := ℝ` routes through `Field.toCommRing`/`Real.instField` instead of the direct, computable `Real.instCommRing` the ℝ-hardwired version used; mark the caller `noncomputable`)
-- *"typeclass instance problem is stuck: `Field ?m…`"* (or an *"unknown identifier"*/kernel *"unknown constant"* cascade from a sibling decl) on a theorem whose statement is *itself* `Fin _ → K`-free — it only names a previously-generalized function by its non-`K` arguments (e.g. `Function.Injective (wedgePairing k hj)`) — right after that function's base ring was swept from concrete `ℝ` to `[Field K]` → § 87 (the theorem's own header never mentions `K` as a token, so Lean's section-variable auto-inclusion never brings it into scope for this decl at all; annotate the call `(K := K)` — or any other literal `K` token in the header — to force inclusion; in a *still-`ℝ`-hardwired downstream caller* of the newly-`K`-generic function the same stuck-`Field ?m` fires at `have`/`set`/`Function.Injective (f (k := k) …)` proof sites and the pin is `(K := ℝ)`)
+- *"typeclass instance problem is stuck: `Field ?m…`"* (or an *"unknown identifier"*/kernel *"unknown constant"* cascade from a sibling decl) on a theorem whose statement is *itself* `Fin _ → K`-free — it only names a previously-generalized function by its non-`K` arguments (e.g. `Function.Injective (wedgePairing k hj)`) — right after that function's base ring was swept from concrete `ℝ` to `[Field K]` → § 87 (the theorem's own header never mentions `K` as a token, so Lean's section-variable auto-inclusion never brings it into scope for this decl at all; annotate the call `(K := K)` — or any other literal `K` token in the header — to force inclusion; in a *still-`ℝ`-hardwired downstream caller* of the newly-`K`-generic function the same stuck-`Field ?m` fires at `have`/`set`/`Function.Injective (f (k := k) …)` proof sites and the pin is `(K := ℝ)`); the same stuck-`Field ?m` on an un-ascribed `obtain ⟨x, hx⟩ := call` whose call's explicit arguments carry no `K`-content, even inside an already-`K`-generic theorem → § 87 (ascribe the `obtain`'s target type explicitly instead of annotating the callee)
 - *"…is not definitionally equal to…"* on a `change`/`rw`/defeq whose two sides differ **only in a universe level** (`Module.finrank.{u, u}` vs `.{u, 0}`), over a carrier `def` just generalized from concrete `ℝ` to `[Field K]` → § 88 (a literal `: Type` result ascription that was right at `ℝ` — universe 0 — pins the carrier at `Type 0` while its body over abstract `K : Type u` is `Type u`; drop the `: Type` or make it `Type _`)
 - *`two_ne_zero`/`(2 : K) ≠ 0` fails to synthesize, or `linarith failed to find a contradiction`* on a goal about **field scalars** (not ℕ/ℤ counts) after an ℝ→K sweep → § 89 (the *proof*, not the signature, silently used ℝ's characteristic-0 or ordered structure: a hard-coded nonzero numeral (`t = 2`, `two_ne_zero`) is a hidden char-≠-2 assumption — reroute a "pick a nonzero scalar avoiding a small bad set" argument through `[Infinite K]` + `Set.infinite_univ.diff hfin |>.nonempty`; and `linarith`/`nlinarith`/`positivity` on a field-scalar identity needs an ordered field — over general `K` use `linear_combination`/`ring`)
 - `rw [neg_one_smul]` (no arguments) *"Did not find an occurrence of the pattern `-1 • ?x`"* even though the goal visibly is `(-1 : K) • x = -x` → § 90 (`neg_one_smul`'s ring argument is **explicit**, so a bare `rw` must synthesize its instances against unconstrained metavariables before any goal-matching happens, and the search comes back empty instead of deferring; supply the term fully — `exact neg_one_smul K x`, never `neg_one_smul K _` — or use the `module` tactic once the opaque functions on either side have already been related by their own congruence lemma)
@@ -2600,6 +2600,20 @@ constructed type appears **solely inside the proof**, never in the stated goal. 
 goal text contains `.rank` / `mulVec` on anything other than a bare hypothesis variable, the column
 type's `Fintype` belongs in the signature.
 
+**Same shape, a different instance (Phase 39 PENCIL, W5-L7b):** a design-doc-pinned signature for
+`hasGenericPencilRealization_of_independent_pencilRow_target` used `[Nonempty α]` only, but its
+hypothesis `hEsc`'s own *type* — not the proof — reads `pencilRow hubSel G.endsOf q i`, and
+`Graph.endsOf` (`Induction/Operations.lean`) takes `[Inhabited α]` (for its off-`E(G)` junk value).
+`lake build` failed *"failed to synthesize instance of type class `Inhabited α`"* right at that
+`hEsc` binder in the signature, exactly as `Fintype` fails above — a proof-body `haveI : Inhabited α
+:= Classical.inhabited_of_nonempty inferInstance` (the idiom every other landed leaf in the same
+file uses, since none of their *statements* invoke `Graph.endsOf`) cannot reach a statement-level
+occurrence. Same fix, same rule of thumb (generalized): whenever the *stated type* invokes a def
+that itself carries an instance argument (`.rank`/`mulVec` ↦ `Fintype`; `Graph.endsOf` ↦
+`Inhabited`; anything similar), that instance goes in the signature, full stop — check by scanning
+the goal/hypothesis *text*, not by trusting an in-proof derivation that happens to typecheck for
+every *other* declaration in the file.
+
 ## 65. A duplicate top-level decl name in a shared namespace builds fine per-file but fails the whole-project lint — name-check before naming, and lint (not just build) before commit
 
 **Symptom.** `lake build <your module>` succeeds, but `lake lint` (`runLinter`, the CI gate) aborts
@@ -3296,6 +3310,22 @@ c)`); the sibling sites that wrap the product in `.submatrix re en` / `.row p` (
 `Matrix _ _ _` expected type) resolved fine. Fixed uniformly with `columnOp (K := K) (k := k) hva`
 (36 sites; harmless where `K` already inferred). The 9-char pin overran the 100-col limit on 3
 proof-body `rw` lines — rewrap `p body c,` onto a continuation line.
+
+**Recurrence via an un-ascribed `obtain`, not a bare application (Phase 39 PENCIL, W5-L7b).** A
+`have hpolyA : ∀ v, ∃ Q : MvPolynomial (α × Fin 4 × Fin 4) K, … := by intro v; obtain ⟨q, hq⟩ :=
+exists_coord_linearIndepOn_pencilChartPoint_perBody hcard htf hubSel hHubSel v; …` failed
+*"typeclass instance problem is stuck: `Field ?m.287`"*, even though the enclosing theorem's own
+signature mentions `K` freely (unlike §87's core scenario) — the difference is that
+`exists_coord_linearIndepOn_pencilChartPoint_perBody`'s **explicit arguments** (`hcard`, `htf`,
+`hubSel`, `hHubSel`, `v`) carry no `K`-content at all (they're about `G`/`α`/`β` only), and an
+un-ascribed `obtain ⟨q, hq⟩ := call` doesn't hand the elaborator an expected type to unify against
+before it tries to resolve the call's own `[Field K]` instance — so `K` stays a bare metavariable at
+exactly the point instance search fires, same failure mode as a bare `exact`/`have` application with
+no `K`-bearing argument. **Fix:** ascribe the destructured hypothesis's type explicitly, `obtain
+⟨q, hq⟩ : ∃ q : α × Fin 4 × Fin 4 → K, LinearIndepOn K (pencilChartPoint (PencilSeed.ofCoord q)
+hubSel) (…) := call` (mirrors the `(K := K)` fix's effect — a literal `K` token the elaborator can
+bind before diving into the call) — cheaper than annotating the callee itself when the surrounding
+`have`'s own stated type already spells out the shape.
 
 ## 88. Generalizing a carrier `def X (k) : Type := ↥(…)` from concrete `ℝ` to `[Field K]` leaves a wrong `: Type` (universe 0) ascription that surfaces as a later universe-mismatch defeq failure
 

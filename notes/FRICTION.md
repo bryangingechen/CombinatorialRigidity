@@ -4876,6 +4876,27 @@ limitations. Worth a once-over so future agents don't re-litigate.
 - **Status:** mirrored.
 - **Mirror file:** `Mathlib/Algebra/Module/Submodule/Union.lean` (new mirror file).
 
+### [idiom] A design-doc-pinned signature used `[Nonempty α]`, but its hypothesis's *type* invoked `Graph.endsOf` (needs `[Inhabited α]`) — plus a second `Field ?m` stuck instance from an un-ascribed `obtain`
+- **Where it bit:** Phase 39 (PENCIL) W5-L7b, `Molecular/Molecule/Pencil/Escape.lean`,
+  `hasGenericPencilRealization_of_independent_pencilRow_target`. The route-recon pin in
+  `notes/Phase39-design.md` gave `hEsc`'s existential type as `… LinearIndependent K (fun i : s =>
+  pencilRow hubSel G.endsOf q i)` under `[Nonempty α]`.
+- **Friction:** `lake build` failed *"failed to synthesize instance of type class `Inhabited α`"*
+  right at the theorem's own signature — `Graph.endsOf` needs `[Inhabited α]` for its off-`E(G)`
+  junk value, and a statement-level occurrence can't be satisfied by a proof-body `haveI :=
+  Classical.inhabited_of_nonempty inferInstance` (the idiom every sibling leaf in the file uses,
+  since none of *their* statements invoke `endsOf`). Fixing that then exposed a second, unrelated
+  stuck-`Field ?m` inside the proof: `obtain ⟨q, hq⟩ := exists_coord_linearIndepOn_
+  pencilChartPoint_perBody hcard htf hubSel hHubSel v` (all five explicit args carry no
+  `K`-content), left `K` an unconstrained metavariable at instance-resolution time.
+- **Fix:** add `[Inhabited α]` to the signature (dropping the now-redundant `[Nonempty α]`); ascribe
+  the `obtain`'s target type explicitly (`obtain ⟨q, hq⟩ : ∃ q : … → K, LinearIndepOn K … := call`)
+  instead of leaving it to infer from later use.
+- **Status:** resolved in-proof (dispatch returned BLOCKED with the compile-verified fix first;
+  coordinator adjudicated landing it — dispatch-log 2026-07-30 row, F9 pattern). **Lifted to:**
+  TACTICS-QUIRKS § 64 (statement-level instance requirement) and § 87 (un-ascribed `obtain` leaving
+  an implicit type-parameter stuck).
+
 ## Archived: Resolved (project-internal)
 
 The body of this section was moved to

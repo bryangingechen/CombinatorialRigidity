@@ -51,7 +51,7 @@ the four landed L6 leaves to produce `HasGenericPencilRealization K 3 (G.splitOf
 combinatorial glue, no new math, doesn't touch (K) or the rigid `k=0` half. Detail in *Decisions
 made*. Gates + axioms clean.
 
-**W5-L7b RE-PINNED 2026-07-30** (docs design pass, this commit; canonical
+**W5-L7b RE-PINNED 2026-07-30** (docs design pass; canonical
 `notes/Phase39-design.md` §"W5-L7 research recon" "Lean decomposition"). The `escapePoly` build
 dispatch returned **BLOCKED** — the "L3-style, buildable" sizing was refuted (`M₁`'s row needs the
 *global* stress as a polynomial; no corank-1-cofactor infra in tree) — and the follow-up
@@ -63,7 +63,14 @@ every call a landed pattern); kernel (K) is carried as the `hK` implication (KT 
 rank-increment level, input = exactly L7a's output). Four L7c residues are now TRACKED in the
 design doc, incl. the small-`|V|` `C₃`/`C₄` base leaves and the bare-half-off-feasibility leaf
 (theta counterexample: the *bare* conjunct is not vacuous where feasibility fails).
-**Next: build L7b′ (`hasGenericPencilRealization_of_independent_pencilRow_target`).**
+
+**W5-L7b LANDED 2026-07-30** (`Escape.lean`, `hasGenericPencilRealization_of_independent_
+pencilRow_target`) — **signature corrected in the same commit** (`[Nonempty α]` → `[Inhabited α]`,
+coordinator-adjudicated after a builder BLOCKED on the pin as transcribed): `hEsc`'s own type reads
+`G.endsOf`, which needs `[Inhabited α]` at statement-elaboration time, not just proof-time; the
+design doc's `hK` pin has the identical shape and is flagged there for the L7c builder. Detail in
+*Decisions made*. Gates + axioms clean. **Next: build L7c (the hsplit assembly, carrying `hK`
+alone).**
 
 **The rigid `k = 0` half's route recon LANDED 2026-07-30, and the bound was PROVEN in the same
 commit** (`ReducibleVertex.lean`: `edgeBound_of_noRigid_of_degree_two` +
@@ -256,20 +263,16 @@ Decisions-made entry; the honest producer of the split arm's feasibility obligat
 after the `escapePoly` build BLOCKED** (`notes/Phase39-design.md` §"W5-L7 research recon" "Lean
 decomposition" — the canonical re-pin). `escapePoly` is DELETED from the plan; kernel (K) is
 carried as the `hK` rank-increment implication. **L7a LANDED** (`Escape.lean`,
-`hasGenericPencilRealization_of_splitOff_of_safe`). **Next concrete commit:**
-- **W5-L7b′ build** — `hasGenericPencilRealization_of_independent_pencilRow_target`
-  (`Escape.lean`; signature pinned in the design doc's "Lean decomposition"): from `hcard` + `htf`
-  + the ∃-LI `hEsc`, a generic pencil realization of `G`. One commit; every call a landed pattern
-  (the L6b-i WF body `Steer.lean:1271`, the `Witness.lean` somewhere-producers, one
-  `exists_common_seed_pencilRow_and_polynomials` call `Engine.lean:476`, the pinch
-  `Steer.lean:693` + `pencilChartFramework_congr` — the v-f-6 rank thread with `G` for
-  `G.induce V₁`).
-Then **L7c** (the hsplit assembly, carrying `hK` alone — the rigid `k=0` bound is PROVEN, no
-other carried hypothesis remains). L7c checklist: safe-`v` choice via the closed L6a-safe-exists;
-fresh-`e₀` plumbing (`e₀ ∉ E(G)` for the deficiency lemmas); the small-`|V|` `C₃`/`C₄` base
-leaves (`htf` false at `C₃` — direct witnesses); the bare-half-off-feasibility leaf (own focused
-recon first — design doc residue (ii), theta counterexample); non-simple bare-half restatement if
-needed (residue (iii)).
+`hasGenericPencilRealization_of_splitOff_of_safe`). **L7b LANDED** (`Escape.lean`,
+`hasGenericPencilRealization_of_independent_pencilRow_target`, signature corrected to
+`[Inhabited α]` in the same commit — detail in *Decisions made*). **Next concrete commit:**
+- **W5-L7c build** — the hsplit assembly, carrying `hK` alone (the rigid `k=0` bound is PROVEN, no
+  other carried hypothesis remains). Checklist: safe-`v` choice via the closed L6a-safe-exists;
+  fresh-`e₀` plumbing (`e₀ ∉ E(G)` for the deficiency lemmas); the small-`|V|` `C₃`/`C₄` base
+  leaves (`htf` false at `C₃` — direct witnesses); the bare-half-off-feasibility leaf (own focused
+  recon first — design doc residue (ii), theta counterexample); non-simple bare-half restatement if
+  needed (residue (iii)); **thread `[Inhabited α]` into `hK`'s own carrying signature** (design doc
+  flags the identical `G.endsOf` gap there — cheap, the assembly has `v` in hand).
 - **W5-L8** (the `k = 0` residue, emptiness route recommended — `notes/Phase39-design.md` §"W5 leaf
   decomposition" L8): the deficiency-`0` split-off bookkeeping / emptiness of the residue class.
 - **Attack kernel (K)** (research recon, route 1 localization recommended — its first gate is the
@@ -306,6 +309,30 @@ neighbor — is `notes/IdeaBacklog.md`.
 
 ## Decisions made during this phase
 
+- **W5-L7b LANDED + pinned signature CORRECTED (`[Nonempty α]` → `[Inhabited α]`)** (2026-07-30,
+  `Molecule/Pencil/Escape.lean`: `hasGenericPencilRealization_of_independent_pencilRow_target`).
+  Builder dispatch **returned BLOCKED first**: the design doc's pin (`[Nonempty α] [Finite α]
+  [Finite β] [Infinite K]`) fails to elaborate, since `hEsc`'s own *type* reads `pencilRow hubSel
+  G.endsOf q i`, and `Graph.endsOf` (`Induction/Operations.lean`) needs `[Inhabited α]` for its
+  off-`E(G)` junk value — a statement-level occurrence no tactic-local
+  `Classical.inhabited_of_nonempty` can reach (this project deliberately does not register
+  `Nonempty → Inhabited` as a global instance). Builder compile-verified the one-token fix (a
+  scratch `sorry`-stubbed signature swap) before surfacing rather than self-patching, per the
+  dispatch's explicit "BLOCKED with the exact mismatch, don't adjust the shape" instruction.
+  **Coordinator adjudicated:** add `[Inhabited α]` (drop the now-redundant `[Nonempty α]`); do NOT
+  restructure to an explicit `ends : β → α × α` parameter. Landed in one commit: the corrected
+  signature, the already-validated proof body (destructure `hEsc`; build `nbrSel`; convert the two
+  Witness.lean "somewhere" families to polynomials; one
+  `exists_common_seed_pencilRow_and_polynomials` call; reconstruct `PencilChartWF` + `fillNbr`
+  re-choice; pinch the rank via `pencilChartFramework_congr` — the v-f-6 rank thread with `G` for
+  `G.induce V₁`, no re-seed step since `hEsc` supplies the seed directly), plus a second latent bug
+  the corrected signature exposed (K-unification stuck in `hpolyA`/`hpolyB` without an explicit
+  `obtain … : ∃ q : α × Fin 4 × Fin 4 → K, … :=` type ascription — fixed by ascribing, matching
+  v-f-6's `have hwit : LinearIndepOn K … := …` idiom). The design doc's `hK` pin (identical
+  `G.endsOf` shape) is flagged with the same correction for the L7c builder. Dispatch-log F9
+  instance (BLOCKED-then-corrected, same shape as the 2026-07-30 L6a-transfer sequence). Gates +
+  axioms clean (`propext`/`Classical.choice`/`Quot.sound`; full `lake build` + `lake lint` both
+  clean).
 - **W5-L7b RE-PINNED + kernel (K) carried form settled — L7b-shape route recon** (2026-07-30,
   docs design pass; canonical `notes/Phase39-design.md` §"W5-L7 research recon" "Lean
   decomposition"). The `escapePoly` pin ("L3-style, buildable") was refuted by a BLOCKED build

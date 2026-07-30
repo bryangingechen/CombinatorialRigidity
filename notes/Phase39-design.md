@@ -2774,7 +2774,7 @@ given `G` loopless, `3 ≤ |V(G)|`, `2EC`, no-proper-rigid, `∃ v, G.degree v =
   (`Steer.lean:693`)):
   ```lean
   theorem hasGenericPencilRealization_of_independent_pencilRow_target
-      [Nonempty α] [Finite α] [Finite β] [Infinite K] {G : Graph α β} [G.Simple]
+      [Inhabited α] [Finite α] [Finite β] [Infinite K] {G : Graph α β} [G.Simple]
       (hGne : V(G).Nonempty)
       (hcard : ∀ v, (G.closedHubNbhd v).ncard ≤ 3)
       (htf : ∀ e₁ e₂ e₃ x y z, x ≠ y → y ≠ z → x ≠ z →
@@ -2787,6 +2787,15 @@ given `G` loopless, `3 ≤ |V(G)|`, `2EC`, no-proper-rigid, `∃ v, G.degree v =
         LinearIndependent K (fun i : s => pencilRow hubSel G.endsOf q (i : β × _ × _))) :
       HasGenericPencilRealization K 3 G
   ```
+  **Signature corrected 2026-07-30** (`[Nonempty α]` → `[Inhabited α]`, coordinator-adjudicated):
+  `hEsc`'s own *type* reads `G.endsOf`, and `Graph.endsOf` needs `[Inhabited α]` for its off-`E(G)`
+  junk value — a statement-level occurrence no tactic-local `Classical.inhabited_of_nonempty` can
+  reach, so the route recon's `[Nonempty α]` pin failed to elaborate (builder-caught, BLOCKED,
+  compile-verified fix). `[Inhabited α]` subsumes `[Nonempty α]` for existence purposes; the L7c
+  call site has concrete vertices (`v`/`a`/`b`) in hand, so this costs nothing downstream. **The
+  `hK` pin below has the identical `G.endsOf` shape and needs the same correction** — flagged
+  there for the L7c builder.
+
   Route: destructure `hEsc`; `P` := the per-body + adjacent-pair point conditions at `hEsc`'s own
   `hubSel` (`exists_coord_linearIndepOn_pencilChartPoint_perBody`/`_adjacentPair`, each converted
   per-condition by `exists_polynomial_ne_zero_of_linearIndependent_pencilChartPoint`); one
@@ -2820,6 +2829,11 @@ given `G` loopless, `3 ≤ |V(G)|`, `2EC`, no-proper-rigid, `∃ v, G.degree v =
       ((Nat.card s : ℤ) = screwDim 2 * ((V(G).ncard : ℤ) - 1) - G.deficiency 3) ∧
       LinearIndependent K (fun i : s => pencilRow hubSel G.endsOf q (i : β × _ × _))
   ```
+  **Same `[Inhabited α]` correction applies here (flagged 2026-07-30, not yet built):** `hK`'s
+  conclusion has the identical `pencilRow … G.endsOf …` shape as `hEsc` above, so whatever
+  signature carries `hK` (the L7c hsplit assembly) needs `[Inhabited α]` in scope — cheap there,
+  since the assembly already has the concrete vertex `v` in hand (`⟨v⟩ : Inhabited α`).
+
   This is **KT Claim 6.12 at the rank-increment (consequence) level** — KT p. 690's disjunction
   ("one of `M₁/M₂/M₃` nonsingular") implies it directly; the blueprint node, when written, states
   the increment form with a remark naming KT's sharper disjunction and the `M₁` route as the
