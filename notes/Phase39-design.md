@@ -2959,7 +2959,7 @@ Recorded corrections + tracked residues from the 2026-07-30 L7b-shape route reco
   (K-bare) probe before deciding among carry/motive-change/research** — settled by the probe
   below, which returned SUPPORTED.
 
-  **(K-bare) numerics gate PASSED 2026-07-30** (untracked scripts
+  **(K-bare) numerics gate PASSED 2026-07-30** (scripts
   `notes/scripts/kbare/{kbare_common,gate1,gate2,stress_extra}.py`; independent of the (K) escape
   probes, per residue (ii)'s own numerics-first plan above). Both planned gates SUPPORTED, with
   *certified* (not sampled-only) bare-target attainment at every infeasible gadget tried:
