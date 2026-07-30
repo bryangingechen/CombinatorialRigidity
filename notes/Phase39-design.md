@@ -2437,9 +2437,12 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
         assembly #1/#2, prose-settleable given `hcard`) and L6b-ii (the general-position seed
         #3/#4/#5, spike-first).
 
-  - **L6d — triangle-freeness of `G′` (NEW, VERIFIED 2026-07-30; buildable now, purely combinatorial,
-    target `Molecule/Pencil/Habitat.lean`).** The honest producer of L6b's `htf` at `G′`. Two pieces:
-    a small proper-rigid brick + the transfer wrapper.
+  - **L6d — triangle-freeness of `G′` (LANDED 2026-07-30, `Molecule/Pencil/Habitat.lean`, both pieces
+    over `namespace Graph`; axioms clean).** The honest producer of L6b's `htf` at `G′`. Two pieces:
+    a small proper-rigid brick + the transfer wrapper. Pinned signatures below matched verbatim; the
+    only build subtleties were routine (defeq closes `![…]`-indexed `Fin 4` goals without `simp`,
+    TACTICS-QUIRKS §46; a `rintro rfl` on `f = e₀` substitutes `e₀` away, use a named `intro`+`▸`,
+    §4).
     - **The `C₄` brick** — the induced-4-cycle analogue of the LANDED `triangle_isProperRigidSubgraph`
       (`Operations.lean:994`), built the same way (`isKDof_zero_of_cycle` at `m = 4` for `0`-dof,
       instead of `isKDof_zero_of_triangle`; `E(H) = {4 cycle edges}` by the induced-edge antisymmetry
@@ -2504,10 +2507,11 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
   splits (coupling benign). Existence = L6a-safe-exists (non-rigid half proven; rigid half a bounded
   have-hyp).
 
-  **Build order.** L6a-transfer LANDED. **L6d next** (buildable now, combinatorial: the `C₄` brick
-  `c4_isProperRigidSubgraph` then `splitOff_triangleFree_of_noRigid` — a faithful `m = 4` mirror of
-  `triangle_isProperRigidSubgraph`, no chart stack). L6b (spike-first) is independent given its
-  `hcard`/`htf` hypotheses and may proceed in parallel. L6a-safe-exists: the non-rigid half
+  **Build order.** L6a-transfer LANDED; **L6d LANDED** (the `C₄` brick `c4_isProperRigidSubgraph`
+  then `splitOff_triangleFree_of_noRigid` — a faithful `m = 4` mirror of
+  `triangle_isProperRigidSubgraph`, no chart stack). **L6b next** (spike-first): both its inputs are
+  now honest producers in tree (`hcard` from L6a-transfer, `htf` from L6d), so it is fully
+  buildable given its `hcard`/`htf` hypotheses. L6a-safe-exists: the non-rigid half
   (`indep_matroidMG_of_noRigid_of_deficiency_pos` + the generalized counting) is buildable now; the
   rigid (`k = 0`) half is a bounded `have`-hypothesis (not blocking). L6c is a citation at assembly
   time; L8 is fully parallel.

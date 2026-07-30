@@ -2057,6 +2057,16 @@ three `fin_cases` branches each need a *different* `cons_val_*`, do the reductio
 combined `<;> simp only […]` flags the non-matching args unused). Phase 22h W10b (`CaseI.lean`),
 the `fin_cases u` discriminator dispatch.
 
+**Better, when the branch closes by a *term*: skip `simp` entirely.** `![…] ⟨k, _⟩` — and even
+`Fin` cyclic-successor arithmetic `⟨k, _⟩ + ⟨1, _⟩` — reduce *definitionally*, and `exact` /
+`first` check up to defeq. So a `fin_cases i <;> first | exact h₁ | exact h₂ | …` closes each
+branch against a hypothesis with **no** `Matrix.cons_val_*` and **no** `show … from rfl`, and a
+consumer like `Simple.eq_of_isLink h₁ he` (or `hpr_nadj _`) typechecks against a still-`![…]`-headed
+`he` because unification sees through the `vecCons`. This sidesteps the per-branch reduction *and*
+the `unusedSimpArgs` warning altogether — prefer it whenever the goal is discharged by a term rather
+than rewritten. Phase 39 W5-L6d (`Habitat.lean`, `c4_isProperRigidSubgraph`): the `4`-cycle links,
+the `range`-membership dispatch, and the induced-edge classification all close this way.
+
 
 ## 47. ℕ-subtraction in a theorem statement causes `ring` to fail after `push_cast`
 

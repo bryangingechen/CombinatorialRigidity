@@ -51,8 +51,10 @@ then settled): the real work is the `G ⇒ G′` transfer at a *safe* split vert
 rigid (`k=0`) half a bounded `have`-hyp. L6b `hcard`-only pin refuted then re-pinned; the new
 triangle-exclusion hypothesis L6d is VERIFIED (2026-07-30 habitat recon): `G′` is *fully*
 triangle-free at any degree-2 split (induced-`C₄`-is-`D6`-rigid argument), so L6b is re-pinned with a
-triangle-free hypothesis and L6d (the `C₄`-brick) is the next buildable leaf**; L8 parallel; L7, the
-research core, last).
+triangle-free hypothesis. **L6d LANDED 2026-07-30 (`Habitat.lean`): the `C₄` proper-rigid brick
+`c4_isProperRigidSubgraph` + the transfer wrapper `splitOff_triangleFree_of_noRigid`, both over
+`namespace Graph`; L6b is now the next buildable leaf (both its `hcard`/`htf` inputs are honest
+producers in tree)**; L8 parallel; L7, the research core, last).
 
 The opening recon ran 2026-07-23; verdicts (R1–R3) below in *Opening recon verdicts*.
 
@@ -202,12 +204,19 @@ subgraph at `|V| ≥ 5`, contradicting `hnoRigid`). Exhaustive search (all `{2,3
 `n ≤ 7`, sampled `n = 8`): zero counterexamples. So L6d is a THEOREM (not an existence gamble); safe
 is **not** needed for it (only L6a-transfer needs safe). No route-breaker.
 
-**Next concrete commit — build W5-L6d** (`Molecule/Pencil/Habitat.lean`): the `C₄`-proper-rigid brick
-`c4_isProperRigidSubgraph` (an `m = 4` mirror of `triangle_isProperRigidSubgraph`, `isKDof_zero_of_
-cycle` for `0`-dof), then the transfer wrapper `splitOff_triangleFree_of_noRigid`. Pinned signatures +
-route in the design doc. After L6d: L6b-i (assembly) / L6b-ii (spike-first `#3/#4/#5`) build on
-verified ground; L6a-transfer already LANDED supplies the other L6b input. Fully parallel alternative:
-**W5-L8** (the `k = 0` residue, emptiness route).
+**W5-L6d LANDED 2026-07-30** (`Molecule/Pencil/Habitat.lean`, `namespace Graph`): the `C₄`
+proper-rigid brick `c4_isProperRigidSubgraph` (an `m = 4` mirror of `triangle_isProperRigidSubgraph`,
+`isKDof_zero_of_cycle` for `0`-dof, properness from `|V| ≥ 5`) + the transfer wrapper
+`splitOff_triangleFree_of_noRigid` (`htf` at `G′`, its `hcard` sibling landed in L6a-transfer). Both
+inputs to L6b are now honest producers in tree. Gates + axioms clean.
+
+**Next concrete commit — build W5-L6b** (spike-first, per the design doc L6b decomposition): the
+general-position feasibility criterion `pencilNondegFeasible_of_ncard_closedHubNbhd_le_three_of_
+triangleFree` taking `hcard` (from L6a-transfer) + `htf` (from L6d). Split into **L6b-i** (the
+selector-assembly `#1/#2`, prose-settleable — plus the missing `IsFin3SelectorOf`-existence brick)
+and **L6b-ii** (the general-position `#3/#4/#5` moment-curve core — COMPILER-CHECKED SPIKE REQUIRED
+before committing; the `htf` hypothesis strictly excludes the two-hub-triangle failure locus). Fully
+parallel alternative: **W5-L8** (the `k = 0` residue, emptiness route).
 
 **W5-L6 invariant SETTLED (2026-07-29 L6a recon; canonical `notes/Phase39-design.md` §"W5 leaf
 decomposition" L6a).** The ≤ 3 closed-hub-neighbourhood bound on `G` is **not** a graph-combinatorial
@@ -255,6 +264,21 @@ neighbor — is `notes/IdeaBacklog.md`.
 
 ## Decisions made during this phase
 
+- **W5-L6d LANDED — the `C₄` proper-rigid brick + the triangle-freeness transfer** (2026-07-30,
+  `Molecule/Pencil/Habitat.lean`, both in `namespace Graph`; canonical `notes/Phase39-design.md`
+  §"W5 leaf decomposition" L6d). `c4_isProperRigidSubgraph` — the `m = 4` mirror of
+  `triangle_isProperRigidSubgraph`: a chordless induced `C₄` in a simple `G` with `|V| ≥ 5` is a
+  proper rigid subgraph, `0`-dof via `isKDof_zero_of_cycle` on `vtx = ![p,q,r,s]` (`3 ≤ m ≤ bodyBarDim
+  n` both from `hD : 4 ≤ …`), `E(H) = range edge` by induced-edge antisymmetry (the two chords
+  excluded by `hpr_nadj`/`hqs_nadj`, the four sides pinned by `Simple.eq_of_isLink`), properness from
+  the `|range vtx| = 4 < 5` gap — so, unlike `cycle_isProperRigidSubgraph`, no vertex-closure hyp.
+  `splitOff_triangleFree_of_noRigid` — the wrapper: a `G′`-triangle with no fresh edge is a
+  `G`-triangle (⊥ via `triangle_isProperRigidSubgraph`/`hnoRigid`); with the fresh `e₀ = ab` its apex
+  `c` and `{v,a,c,b}` form a chordless `G`-`C₄` (`vc ∉ E` from `deg_G v = 2`/`N(v) = {a,b}` inlined;
+  `ab ∉ E` from the triangle brick) ⟹ `c4_isProperRigidSubgraph` ⟹ ⊥. Matched the pinned signatures
+  verbatim. Both build subtleties routine + already-documented (defeq closes `![…]`-indexed `Fin 4`
+  goals with no `simp`, TACTICS-QUIRKS §46 augmented; `rintro rfl` on `f = e₀` substitutes `e₀` away,
+  §4 — used named `intro`+`▸`). Gates + axioms clean (`propext`/`Classical.choice`/`Quot.sound`).
 - **W5-L6d VERIFIED + L6b re-pinned — the habitat-foundations recon (design-pass commit)** (2026-07-30;
   canonical `notes/Phase39-design.md` §"W5 leaf decomposition" L6b/L6d + the wiring). Settled the two
   questions the L6b refutation raised, grounded against LANDED bodies: (Q1) *triangle ⟹ proper rigid
