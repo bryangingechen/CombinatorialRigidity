@@ -141,11 +141,19 @@ exactly three remaining open items — **next concrete commit: pick any one, non
   coordinator's next dispatch, not run by this pass; commissioning the stress-function
   infrastructure (option B) is NOT authorized now.
   Design doc §"W5-L7 research recon" "(K) route-1 gate" + "(K) non-constancy recon".
-- **`hbareSplit`** (kernel (K-bare), research) — the bare-half-off-feasibility kernel. The
-  numerics gate is SUPPORTED (parity with (K): certified bare-target attainment at every
-  infeasible gadget tried, both deficiency branches), but the Lean discharge itself is open — the
-  extension route, plus the def-equal branch's caveat (the re-inserted point must avoid the
-  deleted hinge's line, an in-stratum genericity side condition) — design doc residue (ii).
+- **`hbareSplit`** (kernel (K-bare), research) — the bare-half-off-feasibility kernel; **carried
+  as pinned (the standing GO), extension route recon'd NO-GO on landed machinery** (2026-07-30):
+  the chart/reseed/engine device is definitionally dead at infeasible `G` (no nondeg realization
+  exists to consume), and the kernel is corank-stratified by a landed-brick count dichotomy
+  (dependent ⟹ spanning circuit ⟹ rigid) whose stressed stratum is NONEMPTY — the DZ gadget
+  (subdivided `K3,3` + apex, corank-**2** split seeds) sits in the habitat, so `¬Feasible` buys no
+  corank control. Minimal open statement: **(K-bare-ext)**, the arbitrary-seed insertion lemma
+  (the def-equal caveat folds into its `∃` as a line-avoidance side condition; supply = the
+  `pt(v)`-placement freedom, no device needed). Prerequisite for any discharge: the owed KT
+  pp. 684–691 boundary-load re-pin + its arbitrary-seed extension. Numerics extended to the
+  stressed stratum (`notes/scripts/kbare/danger.py`): off-line placements attain, on-line fail by
+  exactly 1, 0 counterexamples. Design doc §"(K-bare) extension-route recon" (adjudication
+  options A/B/C there; A = keep carrying, recommended).
 
 Gates for any continuation: `lake build` (warning-clean) + `lake lint` when `.lean` is touched;
 `blueprint/verify.sh` + `blueprint/lint.sh` (vocabulary gate bans "stratum"/"strata") when `.tex`
@@ -162,6 +170,13 @@ neighbor — is `notes/IdeaBacklog.md`.
 Reverse-chronological, one line per landing; full derivations live in git and
 `notes/Phase39-design.md` (per-decision pointer where the design doc has a named section).
 
+- **(K-bare) extension-route recon — NO-GO on landed machinery; kernel corank-stratified; carry
+  stands** (2026-07-30, docs-only; exact-ℚ script `notes/scripts/kbare/danger.py`) — landed
+  devices definitionally dead at infeasible `G`; count dichotomy (KT-4.5(ii) shape,
+  minimality-freeable) confines stress to the rigid dependent stratum, which is NONEMPTY (DZ
+  gadget, corank-2 split seeds — the earlier gate had sampled only count-independent gadgets);
+  minimal open statement (K-bare-ext) named; `¬Feasible` consumed as routing only. Design doc
+  §"(K-bare) extension-route recon".
 - **(K) adjudication: "C: literature hunt + A"** (2026-07-30, user, verbatim) — keep carrying
   `hK` as pinned (route A) AND run the cheap literature hunt (route C) alongside; commissioning
   the stress-function infrastructure (route B) is NOT authorized now. Design doc §"W5-L7

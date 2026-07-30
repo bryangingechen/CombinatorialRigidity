@@ -2971,7 +2971,11 @@ Recorded corrections + tracked residues from the 2026-07-30 L7b-shape route reco
   the deleted hinge's line (an in-stratum genericity side condition the eventual discharge needs
   to track — generic placement works from every seed tried). This fills the evidence-gap flagged
   at item 4 above (the 2026-07-23 rank tests (R2) sampled zero infeasible-*habitat* graphs);
-  (K-bare) is now evidenced at parity with (K). **Consequence, per the user's same-day
+  (K-bare) is now evidenced at parity with (K). *(Scope-corrected by the extension-route recon
+  below, same day: every gadget of this gate is count-INDEPENDENT — corank 0 at `G`'s target,
+  ≤ 1 at `G′`'s — so the gate never sampled the stressed stratum; the dependent (corank-2)
+  stratum is nonempty inside the (K-bare) habitat and was then probed there too (`danger.py`),
+  same qualitative picture — see §"(K-bare) extension-route recon".)* **Consequence, per the user's same-day
   "Numerics gate first" adjudication and post-gate "Continue: full L7c" confirmation: route (a)
   — carry `hbareSplit` as pinned — is GO.** L7c-5/6 may proceed carrying it exactly as pinned
   above; the (K-bare) *research* (closing `hbareSplit` itself, as opposed to carrying it) is not
@@ -3442,6 +3446,128 @@ pure condition) is precisely the infrastructure option B would build in-tree, no
 citation. If (K) research ever resumes under option B, the 1983/1987 pure-condition papers are the
 right starting exemplars for the corank-1 cofactor gadget + irreducible-factor stress bookkeeping.
 No coordinator/user escalation needed (expected NO-HIT confirmed).
+
+### (K-bare) extension-route recon (2026-07-30): NO-GO on landed machinery — the kernel is real, corank-stratified, and its stressed stratum is nonempty
+
+Commissioned per the *Hand-off* `hbareSplit` bullet: *does the extension route discharge
+`hbareSplit` with landed machinery, and if not, what exactly is the new mathematics?* Methods:
+definition-body re-reads (`PencilNondegFeasible`/`IsNondegPencilRealization`, `Motive.lean:110/133`;
+`HasPencilRealization`, `Statement.lean:103`; `exists_pencilSeed_of_nondeg`, `Reseed.lean:65`;
+`indep_edgeSet_mulTilde_of_noRigid_of_pos`, `ReducibleVertex.lean:515`; the L7c-5 body,
+`Escape.lean:334ff`), a skeleton-arithmetic construction, and exact-ℚ probes
+(`notes/scripts/kbare/danger.py`; reproduce `python3 notes/scripts/kbare/danger.py` from that
+directory). Verdict: **NO-GO for a build now** — the extension route stays *supported as
+mathematics* (strengthened below) but no landed-machinery route closes the `∀ G` leaf; carrying
+`hbareSplit` as pinned (the standing GO) is unchanged. What the recon settles:
+
+**1. The landed genericity machinery is *provably* dead at infeasible `G` — by definition, both
+sides.** `PencilNondegFeasible` (`Motive.lean:133`) IS "a nondegenerate realization exists", so
+`¬ PencilNondegFeasible K G` says the entire chart/reseed/engine device has *nothing to consume*:
+`exists_pencilSeed_of_nondeg` (`Reseed.lean:65`) takes an `IsNondegPencilRealization`, and the
+engine's callers all sit above it. Infeasibility propagates to `G′` (residue (ii) item 2), so no
+reseeding device exists on either side. The extension's ONLY genericity slot is the
+**`pt(v)`-placement freedom**: 3-dim when both split ends are non-hubs, 2-dim (the hub end's star
+plane, which contains `line(pt a, pt b)`) when one end is a hub — `hsafe` caps hub ends at one,
+so the freedom never drops below 2-dim and line-avoidance is always dimensionally possible.
+
+**2. Count dichotomy — landed-brick shape, corank-stratifies the kernel.** If `E(G̃)` is
+count-dependent it contains a circuit (`Matroid.Dep.exists_isCircuit_subset`);
+`circuit_induces_isRigidSubgraph` + `hnoRigid` (vertex-properness) force the circuit to *span*, so
+`def(G) = 0`. This is exactly the body of `indep_edgeSet_mulTilde_of_noRigid_of_pos`
+(`ReducibleVertex.lean:515`, KT 4.5(ii)), whose minimality enters only via
+`loopless_of_isMinimalKDof` (`:521`) and `hG.deficiency_eq` (`:582`) — a habitat variant (explicit
+`hloop` + deficiency value) is mechanical, the same freeing as `simple_of_loopless_of_noRigid`.
+With corank-at-target `= index + def` (`index := 5|E| − 6(|V|−1)`) and `def(G′) ∈ {def, def−1}`
+(`splitOff_deficiency_le/ge`), the (K-bare) habitat splits: **`def > 0` ⟹ count-independent**
+(corank 0 at `G`, ≤ 1 at `G′`); **count-dependent ⟹ rigid** (`def = 0`, `index ≥ 1`, corank
+`index` at `G` and `index + 1 ≥ 2` at `G′`). `index ≤ 4` (`edgeBound_of_noRigid_of_degree_two`)
+keeps the stratification finite.
+
+**3. The landed gate's evidence covered only the independent stratum.** Probe 0 (`danger.py`):
+all seven gate gadgets — `theta(6,6,6)+center` and its split, `spider(5,5,5)+center`, the
+17-vertex gadget, the `theta` family sweep — are count-INDEPENDENT (`target = 5|E|` in every
+attainment figure; corank 0 at `G`'s target). The "parity with (K)" reading was
+independent-stratum-only (scope note added at the gate block above).
+
+**4. The stressed stratum is NONEMPTY inside the (K-bare) habitat — witness DZ, so infeasibility
+buys no corank control.** Construction (skeleton arithmetic: subdivide a cubic multigraph
+skeleton, `f`-constraints become per-sub-skeleton length bounds — every 2EC skeleton edge ≤ 4,
+skeleton cycles through two apex edges ≥ 7 total, sub-thetas ≥ 13; a triangle-containing skeleton
+like `K4` is arithmetically excluded at index 1, which is why the earlier 19-vertex theta family
+was forced count-*sparse*): **DZ** = subdivided `K3,3` on parts `{h0,u1,u2} | {h1,h2,h3}`, lengths
+`h0`: (1,1,1), `u1`: (2,4,4), `u2`: (4,2,4). Certified exactly (`danger.py` probe 1): 20v/23e,
+simple, 2EC, min-deg 2, `max f(W)` over proper `|W| ≥ 2` = **−1** (no proper rigid), `f(V) = +1`
+(count-DEPENDENT, spanning circuit, index 1), `def = 0`, and `closedHubNbhd(h0) =
+{h0,h1,h2,h3}`, ncard **4** ⟹ provably infeasible
+(`ncard_closedHubNbhd_le_three_of_isNondegPencilRealization`, contrapositive). A genuine
+`hbareSplit` habitat member whose split carries **corank 2** at target-rank seeds — beyond even
+(K-tight)'s corank-1 setting. Consequence: `¬Feasible` does NOT confine the discharge to
+corank ≤ 1; the two kernels' hard zones are *disjoint but adjacent* ((K-tight): tight rigid,
+feasible side; (K-bare)-dependent: index ≥ 1 rigid, infeasible side).
+
+**5. Extension probes at DZ — the route's mathematics survives at corank 2 (N-DZ).** Bare target
+attained at `G` (114/114, 10/10 samples + exact-ℚ confirm — DZ is *not* a counterexample to
+PENCIL's bare half). From corank-2 target-rank `G′` seeds, for BOTH split shapes — non-hub-ends
+(free placement) and the KT-faithful hub-end split at `v = u1h2_1` (`a = u1` hub: placement
+confined to `u1`'s star plane) — **every off-line placement tried attains** `114` (exact-ℚ
+confirmed once per shape) and **every on-`line(a,b)` placement fails by exactly 1** (113;
+midpoint included — collinear `pt(v)` puts both new hinges on the deleted hinge's own line). The
+def-equal caveat's locus persists at corank 2 and, at every seed tried, the observed failure set
+is exactly the line. 0/15 seeds produced an off-line failure.
+
+**6. Where `¬ PencilNondegFeasible K G` is consumed: routing only.** In the landed assembly it
+selects the branch (`Escape.lean:396–428`); in the extension route it acts *negatively* (item 1 —
+it is why no landed device applies). The insertion statement itself is feasibility-blind (the
+gate's context probe C already certified it at a feasible gadget), and no step of the identified
+discharge consumes the forced `≥ 4`-hub witness (it sits off the chain, `v`-free). A future
+discharge *may* exploit that structure, but nothing identified needs it — so a proof of the
+insertion lemma below would discharge `hbareSplit` with its `¬Feasible` antecedent unused.
+
+**The minimal new mathematics (the honest core).** One open statement:
+
+> **(K-bare-ext)** — the *arbitrary-seed insertion lemma*: for **every** bare pencil realization
+> of `G′ = G.splitOff v a b e₀` attaining `target(G′)` (habitat antecedents, `hsafe`), there is a
+> placement `pt(v)` — off `line(pt a, pt b)`, and inside the hub end's star plane when an end is
+> a hub — whose induced realization of `G` attains `target(G)`.
+
+The caveat's Lean form is a **side condition inside (K-bare-ext)'s `∃`** (a non-collinearity
+`pt(v) ∉ line(pt a, pt b)`, e.g. a 3-point LI conjunct), NOT a separate genericity-supply
+obligation: the supply is the placement freedom itself over `[Infinite K]` (avoid a line in a
+≥ 2-dim slot) once the attainment locus is known nonempty — the W5 seed/reseed/engine devices are
+not the supply and provably cannot be (item 1). Why (K-bare-ext) is new mathematics, precisely:
+the only identified proof calculus is the boundary-load / `R_a`-image analysis of the (K)
+non-constancy recon §2, which (i) is **not landed**, (ii) carries the explicitly-owed **KT
+pp. 684–691 re-pin** as its first task — that re-pin is therefore a prerequisite here, not a free
+brick — and (iii) was derived for *chart-generic* seeds: its `s₀ = 0` step (shared-subrank
+genericity) is not automatic at an opaque IH seed, so a genuinely new **arbitrary-seed/seed-repair
+extension** of the calculus is needed (rank-`≥ target` is open, which helps perturbation
+arguments, but in-pencil-variety local moves have no landed device at infeasible `G′`), plus a
+**corank-stratified uniform statement** (corank-0 seeds reduce to a stress-free monotone
+row-independence claim — the (K-shared) shape; corank ≥ 1 meets escape-type stress obstructions;
+corank 2 is now known reachable). Relative to (K): easier on uniformity (no non-constancy — the
+placement freedom is the prover's), **harder on the seed side** (no chart, adversarial seeds), so
+(K)'s option-B stress-function infrastructure serves it only in its arbitrary-seed variant —
+(K-bare-ext) is related to, but not subsumed by, that commission.
+
+**Adjudication options (user).**
+
+- **A — keep carrying `hbareSplit` as pinned** (recommended; this is the standing "route (a) GO"
+  adjudication, unchanged). Zero effort now; this recon's stratification + (K-bare-ext) become
+  the discharge's roadmap, exactly as the (K) recon's stratification did for `hK`.
+- **B — commission the insertion-calculus research** (the only identified path to closing
+  `hbareSplit` in-tree): first the owed KT pp. 684–691 re-pin, then the corank-stratified
+  boundary-load lemma at arbitrary seeds, then (K-bare-ext) on top — research-scale, success not
+  assured; shares its hardest ingredient (stress control at non-generic seeds) with (K)'s
+  option B without being identical to it.
+- **C — cheap numerics extensions alongside A** (evidence-only, cannot close the leaf):
+  adversarial seed hunts at DZ (deeper-degenerate `G′` seeds, à la `stress_extra.py`), an
+  `index ≥ 2` danger-gadget existence search (the `K3,3` skeleton is arithmetically excluded at
+  index 2 by the same length bounds; larger skeletons unprobed), and off-line failure-locus
+  mapping (is the failure set *exactly* the line at corank 2?).
+
+**Numerics index (this recon).** `notes/scripts/kbare/danger.py` (see the directory README's
+row): probe 0 = gate-gadget count audit; probes 1–2 = DZ certification + bare attainment;
+probes 3a/3b = corank-2 extension, non-hub-ends and hub-end splits.
 
 ## Higher-`d` note (orientation only, per the phase-open decision)
 
