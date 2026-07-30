@@ -44,8 +44,8 @@ pass"): final motive = the conditioned pair `PencilPair` (further `Simple`-condi
 route (b′)); device = the grade-0 molecular chart (`Molecule/Pencil/Chart.lean`) + the
 rows-polynomial engine (`Molecule/Pencil/Engine.lean`) + the D6 re-seeding lemma
 (`Molecule/Pencil/Reseed.lean`), leaves **L0–L8** (L0–L4 complete; L5 closed modulo
-`hcontract`/`hsplit`, all L5-cut-v leaves landed; L6/L8 parallel combinatorial tracks; L7, the
-research core, last).
+`hcontract`/`hsplit`, all L5-cut-v leaves landed; **L6 decomposed 2026-07-29 into L6a/L6b/L6c, next
+commit = L6a**; L8 parallel; L7, the research core, last).
 
 The opening recon ran 2026-07-23; verdicts (R1–R3) below in *Opening recon verdicts*.
 
@@ -151,9 +151,15 @@ Full record, grounding, and the W0–W5 decomposition:
 
 **Next concrete commit — pick up one of the three remaining W5 leaves (L6/L7/L8) or W4** (each still
 gated on `hsplit`/`hcontract`). The natural first steps:
-- **W5-L6** (parallel combinatorial track, buildable now): habitat feasibility — the
-  `≤ 3` closed-hub-neighbourhood lemma + witness-seed construction + the `G′.Simple` sub-obligation
-  (`notes/Phase39-design.md` §"W5 leaf decomposition" L6 bullet).
+- **W5-L6** (parallel combinatorial track, buildable now): habitat feasibility — **decomposed
+  2026-07-29** into L6a (the `≤ 3` closed-hub-neighbourhood lemma), L6b (the general-position witness
+  seed → `PencilNondegFeasible K G′`, spike-first), and L6c (`G′.Simple`, a citation to the LANDED
+  `splitOff_simple_of_noRigid_of_card`, folded into L7). Full sub-leaf signatures + routes + spike
+  flags: `notes/Phase39-design.md` §"W5 leaf decomposition" L6. **Next concrete commit: L6a** —
+  `ncard_closedHubNbhd_le_three_of_twoEdgeConnected_of_noRigid` (new `Pencil/Habitat.lean`; the gating
+  combinatorial risk — a local count is insufficient, the proof needs the global `hnoRigid` strength;
+  see the design doc's PROOF-RISK flag). L6b (with the `≤ 3` bound as an explicit hypothesis) may
+  proceed in parallel. L6 feeds L7, NOT `hsplit` directly.
 - **W5-L8** (parallel combinatorial track, buildable now): the `k = 0` residue, emptiness route
   recommended.
 - **W5-L7** (the research core, last): the uniform escape certificate `r ⬝ Λ²Π̂(a) ≢ 0` on the

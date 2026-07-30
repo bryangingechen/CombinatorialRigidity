@@ -2097,11 +2097,110 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
     same toolkit on `H := G.induce V₁`'s chart — the extension lemma is body-agnostic and
     should be reused as-is).
 
-- **W5-L6**: habitat feasibility (verdict 4) — the ≤ 3 closed-hub-neighbourhood lemma
-  on 2EC/no-proper-rigid graphs + the witness-seed construction discharging
-  `PencilNondegFeasible` at `G′ = G^{ab}_v`. **Extended by the L5 blocker verdict, per the landed
-  (b′) restatement:** also owes `G′.Simple` (the no-triangle-at-`v` habitat argument
-  above) for the split arm's generic-IH consumption.
+- **W5-L6 — habitat feasibility for the split arm's `G′ = G.splitOff v a b e₀`** (`= G^{ab}_v`,
+  `Induction/Operations.lean:724`; verdict 4 + the L5 (b′) restatement). **Decomposed 2026-07-29 by
+  the L6 design-pass recon**, grounding every signature against the LANDED motive/chart bodies
+  (`Pencil/{Motive,Chart}.lean`), NOT the stale 2026-07-24 "Pinned Lean shapes" block (which predates
+  the (b′) `Simple`-conditioning and the L4 fourth conjunct).
+
+  **Consumer confirmed (the wrong-level check).** The split arm's generic conjunct is
+  `G.Simple → PencilNondegFeasible K G → HasGenericPencilRealization K 3 G`; it fires the IH
+  `PencilPair K 3 G′`'s generic half `G′.Simple → PencilNondegFeasible K G′ →
+  HasGenericPencilRealization K 3 G′` (landed `PencilPair`, `Motive.lean:160`), which consumes
+  **exactly `G′.Simple` + `PencilNondegFeasible K G′` and nothing stronger** (checked against the
+  landed `PencilNondegFeasible`/`HasGenericPencilRealization` bodies, `Motive.lean:133`/`140`). The
+  IH's *output* `HasGenericPencilRealization K 3 G′` is L7's input. **So L6 does NOT feed `hsplit`
+  directly — it feeds the L7 split-arm assembly, which discharges `hsplit`.** `G`'s own
+  `PencilNondegFeasible K G` antecedent is NOT used by L6: `G′` adds the shortcut edge `ab`, whose
+  cross-incidences (`point a ⬝ᵥ normal b = 0`, …) are unforced when `a, b` are non-adjacent in `G`,
+  so restricting `G`'s realization does not produce one for `G′` — the fresh witness seed is the
+  design's pinned route, and this is why.
+
+  Three sub-leaves, ordered:
+
+  - **L6a — the ≤ 3 combinatorial lemma** (target: new `Molecule/Pencil/Habitat.lean`, imports
+    `Pencil.Motive` + `Induction.Operations`; `Motive.lean` is near the ~1500-LoC tripwire, and the
+    lemma bridges `closedHubNbhd` to `IsProperRigidSubgraph`. Purely combinatorial, no chart.) Target
+    signature:
+    ```lean
+    theorem ncard_closedHubNbhd_le_three_of_twoEdgeConnected_of_noRigid
+        [DecidableEq β] [Finite α] [Finite β] {n : ℕ} {G : Graph α β}
+        (hD : 4 ≤ Graph.bodyBarDim n) (hloop : G.Loopless) (h2ec : G.TwoEdgeConnected)
+        (hnoRigid : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) (v : α) :
+        (G.closedHubNbhd v).ncard ≤ 3
+    ```
+    Structure: `v` non-hub ⟹ `≤ 2` (degree `≤ 2` ⟹ `≤ 2` hub-neighbours, and `v ∉ closedHubNbhd v`);
+    `v` a hub with `≥ 3` hub-neighbours (the `≥ 4`-member case) ⟹ exhibit a proper rigid subgraph,
+    contradicting `hnoRigid`. Grep confirms **no existing partial**: the landed
+    `ncard_closedHubNbhd_le_three_of_isNondegPencilRealization` (`Motive.lean:409`) derives `≤ 3`
+    *from* a realization — circular here, since L6b is *building* the realization.
+    **PROOF-RISK FLAG (recon clause 2, flag-don't-force).** A pure local induced-subgraph count is
+    INSUFFICIENT: `v` + 3 hub-neighbours `a, b, c` can induce as few as 3 edges (the star
+    `va, vb, vc`; `5·3 = 15 < 18 = 6·3`, not rigid), because `a, b, c`'s degree comes from edges
+    *leaving* `{v, a, b, c}`. The proof needs the GLOBAL `hnoRigid` strength via a KT-style
+    region/deficiency argument; the sibling `exists_isProperRigidSubgraph_of_three_le_degree`
+    (`Induction/Operations.lean:369`, W3-L1) is a *global-min-degree* handshake count, a template for
+    the count style but not a direct reuse. The lemma is asserted true by §"W5 design pass" verdict 4
+    on the evidence of two failed counterexample attempts (spider-K4, 3-chain star — both contained a
+    proper rigid subgraph, i.e. fell into the contract arm), but is **NOT PROVEN**; `h2ec`'s role in
+    the proof is TBD (verdict 4 lists it; it may not be load-bearing). **This is L6's highest-risk
+    sub-leaf — build FIRST; if the direct proper-rigid-exhibit route stalls, it earns its own
+    sub-recon / numerics pass before further L6 effort.**
+
+  - **L6b — the general-position witness seed** (target: `Molecule/Pencil/Witness.lean`; decoupled
+    from L6a via an explicit `hcard` hypothesis, so it is independently buildable). Target signature
+    (exact finiteness / `Simple` side-hyps pinned in-spike):
+    ```lean
+    theorem pencilNondegFeasible_of_ncard_closedHubNbhd_le_three
+        [Inhabited α] [Finite α] [Finite β] [Infinite K] {G : Graph α β}
+        (hcard : ∀ v, (G.closedHubNbhd v).ncard ≤ 3) :
+        PencilNondegFeasible K G
+    ```
+    Route, grounded against the LANDED chart: reduce to constructing a `PencilSeed K α`
+    (`Chart.lean:361`) + global selectors `hubSel nbrSel : α → Fin 3 → Option α`, prove
+    `PencilChartWF G seed hubSel nbrSel` (`Chart.lean:465`), then apply the LANDED headline
+    `isNondegPencilRealization_pencilChartFramework_of_pencilChartWF` (`Chart.lean:920`) and repackage
+    as the `PencilNondegFeasible` existential. The five `PencilChartWF` conjuncts:
+      - **#1** `∀ v, IsFin3SelectorOf (closedHubNbhd v) (hubSel v)` — **CONSUMES `hcard`**
+        (`IsFin3SelectorOf`'s surjectivity conjunct needs the target `≤ 3`, `Chart.lean:378`); build
+        the global selector by choice (reuse `exists_injective_extension_of_isFin3SelectorOf`,
+        `Witness.lean`).
+      - **#2** `∀ v, ¬ PencilHub v → IsFin3SelectorOf (closedNbhd v) (nbrSel v)` — **FREE** via the
+        LANDED `ncard_closedNbhd_le_three_of_not_pencilHub` (`Motive.lean:451`).
+      - **#3/#4/#5** the LI conjuncts (`hubSlotNormal` triple LI at every body; `nbrSlotPoint` triple
+        LI at every non-hub; adjacent `pencilChartPoint` pairs LI) — **the general-position /
+        char-free "moment-curve" core: COMPILER-CHECKED SPIKE REQUIRED (recon method-match).** These
+        are route-composition questions in the defeq-fragile chart zone: they compose through `cross₃`
+        of the seed's `hubNormal`/`fillHub`/`fillNbr`, COUPLED through the shared `hubNormal w` reused
+        across every body whose `closedHubNbhd` contains `w`. Likely route: a char-free
+        Vandermonde/general-position `hubNormal` (distinct field elements, `[Infinite K]`; the
+        `RigidityMatroid.lean` moment curve is bar-joint / over `ℝ` — NOT reusable, so "à la
+        `momentCurve`" is only an analogy) fed through the L3 common-seed primitives
+        (`exists_common_seed_linearIndepOn_pencilChartPoint`, `Steer.lean`;
+        `exists_common_seed_pencilRow_and_polynomials`, `Engine.lean`; both `[Infinite K]`). **The
+        builder MUST write a throwaway spike (`sorry` the residual LI goals, report the kernel-checked
+        residuals) before committing — prose cannot settle whether a chosen seed makes all `cross₃`
+        triples LI.** If the spike shows the LI core is multi-commit, split L6b into L6b-i (selector
+        assembly #1/#2, prose-settleable given `hcard`) and L6b-ii (the general-position seed
+        #3/#4/#5, spike-first).
+
+  - **L6c — `G′.Simple`: NOT a new build leaf, a citation folded into the L7 assembly.** For
+    `G′ = G.splitOff v a b e₀` at `|V(G)| ≥ 4`, `G′.Simple` is EXACTLY the LANDED
+    `splitOff_simple_of_noRigid_of_card` (`Induction/Operations.lean:1104`), consuming `[G.Simple]`
+    (split-arm antecedent), the two edges `eₐ : v–a`, `e_b : v–b` at the degree-2 vertex,
+    `4 ≤ V(G).ncard`, and `hnoRigid` (split-arm antecedent) — no new construction, no triangle
+    argument to re-derive (it is internal to that lemma, via `triangle_isProperRigidSubgraph`). Only
+    the `|V(G)| = 3` edge case (triangle spanning, not proper; `G′` on 2 vertices, base-sized) needs a
+    separate base dispatch — also an L7/assembly concern.
+
+  **L6 → L7 wiring obligation (owned by L7, flagged here).** To INVOKE L6b at `G′`, the split arm
+  must supply `hcard` for `G′` — i.e. apply L6a to `G′`, which first needs `G′` shown
+  `TwoEdgeConnected` + no-proper-rigid + loopless (habitat properties of `splitOff`, NOT inherited for
+  free), OR a `closedHubNbhd` transfer `G ⇒ G′` (identity away from `a, b`, which `splitOff`
+  perturbs). This lives in L7, not L6.
+
+  **Build order.** L6a FIRST (gating combinatorial risk). L6b (spike-first) is independent given the
+  `hcard` hypothesis and may proceed in parallel. L6c is a citation at assembly time.
 - **W5-L7** (the research core): the single-candidate Claim-6.12 replacement — at the
   Case-III habitat, a chart seed of `G′` realizing rank `6(|V|−2)` *and* the
   candidate-`M₁` escape `r ⬝ Λ²Π̂(a) ≠ 0` (then the assembly + the output's own
