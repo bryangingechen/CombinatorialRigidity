@@ -130,6 +130,8 @@ failing pattern and the working fix.
 - `fin_cases i <;> fin_cases j <;> simp_all` (or similar case-bash) times out with `(deterministic) timeout at simp`, even though the *same* tactic block compiles instantly standalone or in a shallower proof → § 99 (`simp_all`'s cost scales with the ambient context's complexity, not just the goal; hoist the light sub-goal's proof to occur before the heavy `have`s accumulate, and/or `clear` the goal-irrelevant heavy hypotheses inside that sub-proof's own `by` block — **not** a `maxHeartbeats` bump)
 - *"Application type mismatch"* on a hypothesis argument, naming an unrelated function type (`?m → Fin 3 → Option ?m`) as the expected type, after a lemma call with fewer `_` placeholders than the signature has *explicit binders* → § 100 (a grouped binder `(a b : T)` is **two** explicit slots, not one; count binders, not clauses, when filling `_ _ …`)
 - `simp only [someDef, h.choose_spec]` (or `(hex i).choose_spec`) fails with *"maximum recursion depth has been reached"*, where `someDef` is a `match`-def being reduced against a `some (…​.choose)` witness — even though the identical `simp only [someDef, hi]` with a *plain* witness `hi` compiles instantly → § 102 (the opaque `Exists.choose` term makes `simp`'s match-reduction loop; hoist a plain witness function with the **`choose` tactic** — `choose wsel hwsel using hex` — then `simp only [someDef, hwsel i]`)
+- `rcases h with h | h | h` on `h : e ∈ A ∪ B ∪ C` fails with *"`h✝ : … C` is not an inductive datatype"* → § 103 (`∪` is left-associative, so the membership is `(e∈A ∨ e∈B) ∨ e∈C`; the flat 3-pattern assumes right-nesting — write `(h | h) | h` to match, or state the union right-nested)
+- A `have`/lemma statement `¬ ∃ x, P x → (conclusion)` elaborates but a later application fails with the *wrong* hypothesis's type reported as expected (the intended final hypothesis is missing an arrow) → § 104 (the `∃`-binder's body extends past the `→`, so `¬` swallows the whole implication into its scope; parenthesize the negated existential: `(¬ ∃ x, P x) → (conclusion)`)
 
 ## Sections
 
@@ -3808,3 +3810,54 @@ projections through an unreduced `casesOn`.)
 **Worked case:** Phase 39 (PENCIL) W5-L5 L5-cut-v-e,
 `linearIndepOn_nbrSlotPoint_isSome_of_pencilChartPoint` (`Molecular/Molecule/Pencil/Steer.lean`) —
 the `nbrSel`-slot-to-selected-vertex reindexing for the `hnbr_some` marshalling.
+
+## 103. `rcases h with h | h | h` on a `∪`-of-three membership fails — `∪` is left-associative, the flat pattern assumes right-nesting
+
+**Symptom.** `h : e ∈ A ∪ B ∪ C` (a `Set` union of three set-builder pieces), and
+`rcases h with h | h | h` (or the analogous `obtain`) fails with *"Tactic `rcases` failed:
+`h✝ : … C` is not an inductive datatype"* — naming the *last* disjunct, not an obviously
+Or-shaped term.
+
+**Cause.** `∪` is left-associative, so `A ∪ B ∪ C` parses as `(A ∪ B) ∪ C`, and membership
+unfolds to `(e ∈ A ∨ e ∈ B) ∨ e ∈ C` — a **left**-nested `Or`. The flat pattern `h | h | h`
+implicitly assumes the more familiar **right**-nesting that a raw `P ∨ Q ∨ R` gets from `∨`
+itself being right-associative (`P ∨ (Q ∨ R)`); rcases's alternation splitter peels the
+outermost `Or` first and tries to match the *first* two patterns against the left branch,
+which here is the single disjunct `e ∈ C`, not a further `Or` — hence the "not an inductive
+datatype" complaint naming the wrong term.
+
+**Fix.** Group the pattern to match the actual left-nesting: `rcases h with (h | h) | h`.
+(Symmetric note: a hand-written `Set` union of ≥ 3 pieces intended for this kind of case split
+could instead be stated right-nested, `A ∪ (B ∪ C)`, to match the more common flat-pattern
+intuition — but matching the *existing* associativity with explicit grouping is the safer fix
+when the union already appears elsewhere.)
+
+**Worked case:** Phase 39 (PENCIL) W5-L7c-4, the `|V| = 4` base case's degree-bound helpers
+(`Molecular/Molecule/Pencil/Base.lean`, `hdeg_eq2_aux`/`hboth`'s `E(G, v) ⊆ A ∪ B ∪ C` subset
+proofs) — confirmed via a standalone `lean_run_code` repro before patching all five call sites.
+
+## 104. `¬ ∃ x, P x → Q` parses as `¬ (∃ x, (P x → Q))`, not `(¬ ∃ x, P x) → Q` — a later application reports the wrong hypothesis's type
+
+**Symptom.** `have hboth : … → G.degree v = 2 → ¬ ∃ e, G.IsLink e v m → (∃ e, G.IsLink e v a) ∧
+(∃ e, G.IsLink e v b) := by …` elaborates and even *type-checks its own proof* without
+complaint, but a later four-argument application `hboth v a b m hVeq hdeg hno` fails with
+*"the argument `hno` has type `¬∃ e, G.IsLink e v m` but is expected to have type `∃ e,
+G.IsLink e v m → (∃ e, G.IsLink e v a) ∧ ∃ e, G.IsLink e v b`"* — i.e. `hboth`'s type, after
+the first three arguments, is *not* the intended one-more-hypothesis-then-conclusion arrow.
+
+**Cause.** `∃ e, P e` binds as far right as it can, past a subsequent `→`: `∃ e, G.IsLink e v m
+→ Q` parses as `∃ e, (G.IsLink e v m → Q)`, and `¬` then applies to that *whole* existential
+(`¬ (∃ e, G.IsLink e v m → Q)`), leaving no trailing arrow at all — the declared "four more
+hypotheses then a conjunction" statement collapses to "three hypotheses then a negated
+existential-of-an-implication". The proof script can still discharge this (unintentional)
+statement by accident if the tactic block happens to work either way, which is why the bug
+survives to the call site instead of failing at the `have`.
+
+**Fix.** Parenthesize the negated existential whenever anything follows it:
+`(¬ ∃ e, G.IsLink e v m) → (∃ e, G.IsLink e v a) ∧ (∃ e, G.IsLink e v b)`. General rule: a
+`¬ ∃ …`/`¬ ∀ …` hypothesis clause embedded mid-statement (not as the final conclusion) always
+needs explicit parens around the whole quantifier — never rely on binder-vs-`¬` precedence.
+
+**Worked case:** Phase 39 (PENCIL) W5-L7c-4, `Molecular/Molecule/Pencil/Base.lean`'s `hboth`
+case-split helper (caught by the very first build attempt's "Application type mismatch" against
+`hboth z x y w hV_zxyw hdeg_z hzw_no`).

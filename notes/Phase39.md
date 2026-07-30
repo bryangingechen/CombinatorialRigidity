@@ -25,9 +25,11 @@ half PROVEN 2026-07-30**
 `ReducibleVertex.lean`) — the split-arm safe-vertex existence obligation is now closed in full,
 minimality-free, needing no deficiency case-split at the L7 call site. **L7c-3 LANDED 2026-07-30**
 (`Molecule/Pencil/Base.lean`, new file: `pencilPair_of_habitat_ncard_eq_three`) — the `|V| = 3`
-direct-witness base leaf; **L7c-4 (the `|V| = 4` sibling) remains open**, scoped to a follow-up
-commit (the two habitats are not symmetric enough to share a proof — see *Decisions made*); L7c-5
-is independently GO (does not depend on L7c-4).
+direct-witness base leaf. **L7c-4 LANDED 2026-07-30** (`Base.lean`,
+`pencilPair_of_habitat_ncard_eq_four` — the `|V| = 4` sibling, needing a per-vertex "opposite"
+panel normal and a degree-`3`-exclusion identification not shared with `C₃`; detail in *Decisions
+made*). **`hsplit`'s residue (i) (small `|V|`) is now fully discharged**; L7c-5 is the next leaf
+(does not depend on L7c-4, was already independently GO).
 `Molecule/Pencil.lean` split into
 `Molecule/Pencil/{Statement,Arms,Motive,Chart,Engine,Reseed,Witness,Steer,Pair,Pair2,Escape,Base}.lean`
 (2026-07-24/25/29/30 housekeeping).
@@ -333,22 +335,16 @@ decomposition"): L7c-2 = `exists_splitOff_data_of_degree_eq_two_of_twoEdgeConnec
 building L7c-5/6 (a numerics probe runs independently under untracked `scratchpad/`); the
 carry-vs-motive-change-vs-research three-way choice stays deferred to the probe's outcome.
 **L7c-3 LANDED 2026-07-30** (`Molecule/Pencil/Base.lean`,
-`pencilPair_of_habitat_ncard_eq_three` — detail in *Decisions made*). **L7c-4 remains open**
-(scoped out of that commit — the `C₄` identification/witness genuinely differs from `C₃`'s, not a
-mechanical repeat). **The (K-bare) numerics gate PASSED 2026-07-30** (same day as the "Numerics
-gate first" adjudication — detail in *Blockers*); **consequence: route (a), carry `hbareSplit` as
-pinned, is GO** — L7c-5/6 no longer wait on anything except being built (`Blockers`/design doc
-residue (ii)).
-**Next concrete commit — two independent candidates, either unblocks the other's sibling leaf:**
-- **L7c-4** (the `C₄` base leaf; `Base.lean` is the home, and the FRICTION [idiom] "wedge-family
-  independence via the join-detector" entry generalizes directly to the 4-term case — the harder
-  parts are the per-vertex-normal construction and the degree-`3`-exclusion-via-triangle-freeness
-  identification step, both pinned in the design doc).
-- **L7c-5** (the `5 ≤ |V|` producer carrying `hK` + `hbareSplit`, GO per the gate pass above —
-  does not depend on L7c-4; only L7c-6, the final successor wrapper, needs all of L7c-3/4/5).
-- **The (K-bare) numerics probe** (running independently; exact-ℚ bare rank at the infeasible
-  gadgets + degenerate-seed extension probes — design doc residue (ii)'s "if (a)" plan); its
-  outcome settles whether L7c-5/6 proceed under the carry route or a different one.
+`pencilPair_of_habitat_ncard_eq_three` — detail in *Decisions made*). **L7c-4 LANDED 2026-07-30**
+(same file, `pencilPair_of_habitat_ncard_eq_four` — detail in *Decisions made*; needed a genuinely
+different construction from `C₃`, not a mechanical repeat, per the earlier deferral). **The
+(K-bare) numerics gate PASSED 2026-07-30** (same day as the "Numerics gate first" adjudication —
+detail in *Blockers*); **consequence: route (a), carry `hbareSplit` as pinned, is GO** — L7c-5/6
+no longer wait on anything except being built (`Blockers`/design doc residue (ii)).
+**`hsplit` residue (i) (small `|V|`) is now fully discharged (both L7c-3 and L7c-4 landed).**
+**Next concrete commit:**
+- **L7c-5** (the `5 ≤ |V|` producer carrying `hK` + `hbareSplit`, GO per the gate pass above;
+  only L7c-6, the final successor wrapper, needs all of L7c-3/4/5).
 - **Attack kernel (K)** (research recon, route 1 localization recommended — its first gate is the
   local-vs-global numerical test in the design doc's "Route options").
 - **W4** (after W5 — the constrained-family Claim-6.4 analogue, discharges `hcontract`).
@@ -385,6 +381,24 @@ neighbor — is `notes/IdeaBacklog.md`.
 
 ## Decisions made during this phase
 
+- **W5-L7c-4 LANDED** (2026-07-30, `Molecule/Pencil/Base.lean`,
+  `pencilPair_of_habitat_ncard_eq_four`) — the `|V| = 4` base leaf deferred from L7c-3.
+  Identification: triangle-freeness (`triangle_isProperRigidSubgraph`) excludes a degree-`3`
+  vertex (its neighbour's forced second edge would close a triangle), so all four degrees are
+  exactly `2`; a case split on one vertex's unique non-neighbour (three symmetric cases, via two
+  reusable helpers `hboth`/`hexcl`) pins the labelled `4`-cycle. Witness: **all four** `K⁴`
+  standard basis vectors as points (unlike `C₃`, none spare for a shared normal), each vertex's
+  panel normal the *opposite* point (cyclic index `+2`); rank via the join-detector technique
+  (FRICTION [idiom], generalized from 3 to 4 terms as flagged) ⟹ `theorem_55_cycle`/B1/`isKDof_
+  zero_of_cycle` exactly as `C₃`. Needed `set_option maxHeartbeats 1000000` (the largest single
+  proof term in the file) after two `simp`/`whnf` mitigations — hoisting the identification's
+  purely-combinatorial `have`s (`hvtx_inj`, `hedge_inj`, `hrange`, `hlink4`) ahead of the
+  `ScrewSpace`-heavy witness section, and `clear`ing the (now-consumed) identification helpers
+  `hdeg_eq2_aux`/`hboth`/`hexcl` right after obtaining the labelled cycle. Two new FRICTION
+  [rescue] entries lifted straight to `TACTICS-QUIRKS.md` §103/§104 (a 3-way `Set` union's
+  left-associativity breaking a flat `rcases h|h|h` pattern; a mid-statement `¬ ∃ e, P e → Q`
+  swallowing the trailing arrow into the existential's scope). Gates + axioms clean
+  (`propext`/`Classical.choice`/`Quot.sound`; full `lake build` + `lake lint` both clean).
 - **(K-bare) numerics gate PASSED — verdict transcribed** (2026-07-30, docs-only; canonical
   `notes/Phase39-design.md` residue (ii)). Both planned gates SUPPORTED with certified bare-target
   attainment at every infeasible gadget tried (`theta(6,6,6)`+center `105/105`, its safe split

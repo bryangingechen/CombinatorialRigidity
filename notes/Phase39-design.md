@@ -3040,8 +3040,10 @@ L7c-5/L7c-6 only — their *statements* carry `hK`, whose type reads `pencilRow 
   (`isInfinitesimallyRigidOn_vertexSet_iff_finrank_span_rigidityRows`, the base arm's own
   single-edge rank thread, `Pencil/Pair.lean:1252ff`) ⟹ rank `= 6(|V|−1)`, which is the target
   since `def = 0` (`isKDof_zero_of_cycle`). Bare half = `hasPencilRealization_of_generic`.
-- **L7c-4 (S2, buildable now)** — the `C₄` base leaf, same template at `m = 4`. **Not the same
-  proof as L7c-3, on inspection (2026-07-30 build dispatch):** `C₃`'s witness rides a degeneracy
+- **L7c-4 LANDED 2026-07-30** (`Molecule/Pencil/Base.lean`,
+  `pencilPair_of_habitat_ncard_eq_four`, matching the pinned signature below verbatim) — the `C₄`
+  base leaf, same template at `m = 4`. **Not the same proof as L7c-3, on inspection (2026-07-30
+  build dispatch):** `C₃`'s witness rides a degeneracy
   specific to *three* points always being coplanar (a shared constant panel normal); at `C₄` no
   such collapse is forced, so each vertex needs its *own* panel normal (the "opposite" basis
   vector, index `i + 2`, simultaneously orthogonal to its own point and both neighbours' — still
