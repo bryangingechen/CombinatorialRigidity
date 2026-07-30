@@ -46,8 +46,9 @@ rows-polynomial engine (`Molecule/Pencil/Engine.lean`) + the D6 re-seeding lemma
 (`Molecule/Pencil/Reseed.lean`), leaves **L0–L8** (L0–L4 complete; L5 closed modulo
 `hcontract`/`hsplit`, all L5-cut-v leaves landed; **L6 re-routed 2026-07-29 (L6a-as-pinned refuted,
 then settled): the real work is the `G ⇒ G′` transfer at a *safe* split vertex, LANDED 2026-07-30
-(`Habitat.lean`). Safe-vertex existence + L7 coupling settled 2026-07-30: coupling benign (KT splits safe),
-existence proven for non-rigid `G` and a bounded `have`-hyp for rigid `G`**; L8 parallel; L7, the
+(`Habitat.lean`). Safe-vertex existence + L7 coupling settled 2026-07-30: coupling benign (KT splits safe);
+**non-rigid safe-vertex existence LANDED in Lean 2026-07-30** (`ReducibleVertex.lean`/`Operations.lean`),
+rigid (`k=0`) half a bounded `have`-hyp**; L8 parallel; L7, the
 research core, last).
 
 The opening recon ran 2026-07-23; verdicts (R1–R3) below in *Opening recon verdicts*.
@@ -141,11 +142,14 @@ Full record, grounding, and the W0–W5 decomposition:
   endpoint) vertex. **2026-07-30 recon findings:** (ii) the L7 coupling is **benign** — KT's Case III
   (Lemma 6.13) splits a chain of ≥ 2 degree-2 vertices, i.e. a safe vertex, obtained from KT Lemma 4.6,
   so no W3-level minimality re-introduction is forced; (i) safe-vertex existence off minimality is
-  **PROVEN for non-rigid `G`** (`deficiency > 0`: `M(G̃)` independent via three landed bricks) and
-  **OPEN only for rigid `G`** (`k = 0`, = classical KT Lemma 4.6 off `IsMinimalKDof 0`; decisive
+  **PROVEN + LANDED in Lean 2026-07-30 for non-rigid `G`** (`deficiency > 0`: the generalized counting
+  `exists_adjacent_degree_two_pair_of_edgeBound`, the non-rigid brick
+  `indep_matroidMG_of_noRigid_of_deficiency_pos`, and the composition
+  `exists_adjacent_degree_two_pair_of_noRigid_of_deficiency_pos`, `ReducibleVertex.lean`/`Operations.lean`)
+  and **OPEN only for rigid `G`** (`k = 0`, = classical KT Lemma 4.6 off `IsMinimalKDof 0`; decisive
   computational evidence incl. `S(Petersen)`, carry as `have`-hyp). **L6a-transfer LANDED 2026-07-30**
-  (`Habitat.lean`, `ncard_closedHubNbhd_splitOff_le_three_of_safe`); L6b + L8 + the
-  non-rigid discharger are all buildable now; the `k = 0` bound is bounded and non-blocking.
+  (`Habitat.lean`, `ncard_closedHubNbhd_splitOff_le_three_of_safe`); L6b + L8 remain
+  buildable now; the `k = 0` bound is bounded and non-blocking.
 - The full biconditional transport `ExtensorThroughPoint C q ↔
   ExtensorInPanel (screwComplementIso C) q` (design doc's W0 pin) is
   landed only as its **two forward implications** (all the self-duality
@@ -173,14 +177,21 @@ inflates a non-hub into a `G′`-hub; 10-vertex counterexample), fixed by the ex
 dropped. Route: `hab` ⟹ `G′` loopless ⟹ `degree` monotone ⟹ hub-transfer, then the per-`w` case
 split. Detail: *Decisions made* + `notes/Phase39-design.md` §"W5 leaf decomposition" L6a.
 
-**Next concrete commit — pick any buildable-now leaf** (all parallel):
+**W5-L6a-safe-exists non-rigid half LANDED 2026-07-30** (`ReducibleVertex.lean`/`Operations.lean`):
+the generalized counting `exists_adjacent_degree_two_pair_of_edgeBound`, the non-rigid brick
+`indep_matroidMG_of_noRigid_of_deficiency_pos` (Operations), and the composition
+`exists_adjacent_degree_two_pair_of_noRigid_of_deficiency_pos` — a `∃` adjacent-degree-2-pair
+(= a coordinator-safe vertex under 2EC) for the entire non-rigid (`deficiency > 0`) split-arm
+habitat, with no minimality anywhere. The pinned `[DecidableEq β]`/`hnp` on the counting lemma were
+dropped as inert (Decisions-made). The **rigid (`k = 0`) half stays a bounded `have`-hyp** (KT Lemma
+4.6 off minimality; decisive `S(Petersen)` evidence, no counterexample; user call only whether to
+prove it now).
+
+**Next concrete commit — pick a buildable-now leaf** (all parallel):
 - **W5-L6b** (`pencilNondegFeasible_of_ncard_closedHubNbhd_le_three`, target `Witness.lean`): the
-  general-position witness seed taking `hcard` explicitly — its input now has an honest producer
+  general-position witness seed taking `hcard` explicitly — its input has an honest producer
   (L6a-transfer at `G := G′`). **COMPILER-CHECKED SPIKE REQUIRED** for its char-free moment-curve LI
   core (design doc L6b conjuncts #3/#4/#5); the recommended next.
-- **W5-L6a-safe-exists, non-rigid half** (`indep_matroidMG_of_noRigid_of_deficiency_pos` + the
-  generalized counting `exists_adjacent_degree_two_pair_of_edgeBound`, design doc L6a): PROVEN
-  minimality-free, buildable now; discharges the whole non-rigid split-arm habitat.
 - **W5-L8** (the `k = 0` residue, emptiness route). Fully parallel.
 
 **W5-L6 invariant SETTLED (2026-07-29 L6a recon; canonical `notes/Phase39-design.md` §"W5 leaf
@@ -229,6 +240,23 @@ neighbor — is `notes/IdeaBacklog.md`.
 
 ## Decisions made during this phase
 
+- **W5-L6a-safe-exists NON-RIGID HALF LANDED** (2026-07-30, `Induction/ReducibleVertex.lean` +
+  `Induction/Operations.lean`): three decls discharging the whole non-rigid (`deficiency > 0`)
+  split-arm safe-vertex obligation, no minimality anywhere. (i) `exists_adjacent_degree_two_pair_of_edgeBound`
+  — a mechanical copy of `exists_adjacent_degree_two_pair`'s body with the `X₃₊` min-degree-3 bound
+  re-sourced from 2EC (`two_le_degree_of_twoEdgeConnected`) and the KT-4.5(i) edge count taken as an
+  explicit `hedge`; (ii) `indep_matroidMG_of_noRigid_of_deficiency_pos` (Operations) — `def(G̃) > 0 ⟹`
+  `M(G̃)` free, via the three landed bricks (`fundCircuit_inducedSpan_vertexSet_eq` +
+  `circuit_induces_isRigidSubgraph` + `deficiency_le_deficiency_of_le_vertexSet_eq`); (iii) the
+  composition `exists_adjacent_degree_two_pair_of_noRigid_of_deficiency_pos` — freeness makes `E(G̃)` the
+  base (`ground_indep_iff_isBase`), so `isBase_ncard_add_deficiency_eq` gives `(D−1)|E| + k = D(|V|−1)`
+  and `hedge` is immediate from `k > 0`. **The pinned `[DecidableEq β]` + `hnp` on (i) were DROPPED as
+  provably inert** (off minimality the only rigidity uses were the removed `no_rigid_edge_count` /
+  `two_le_crossingEdges_of_isKDof_zero`; `IsMinimalKDof`'s type was what carried `matroidMG`/`DecidableEq β`,
+  so both fall out — leaving a strictly more general statement, `classical` covering decidability). The
+  rigid (`k = 0`) half stays a bounded `have`-hyp. Recurrence of the FRICTION `[idiom] unusedDecidableInType`
+  pattern, resolved by the `classical`-conversion route now recorded there. Gates + axioms clean
+  (`propext`/`Classical.choice`/`Quot.sound`).
 - **W5-L6a-transfer LANDED + pinned signature CORRECTED (was false)** (2026-07-30,
   `Molecule/Pencil/Habitat.lean`, new file wired into `CombinatorialRigidity.lean`):
   `ncard_closedHubNbhd_splitOff_le_three_of_safe` — the safe-split `closedHubNbhd ≤ 3` transfer

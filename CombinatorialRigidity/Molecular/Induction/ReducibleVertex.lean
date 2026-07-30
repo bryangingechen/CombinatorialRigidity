@@ -1049,6 +1049,188 @@ theorem exists_adjacent_degree_two_pair [DecidableEq β] [Finite α] [Finite β]
   zify at hedge hsum_lb1 hsum_lb2 hhand hs2s3card
   nlinarith [Nat.cast_nonneg (α := ℤ) s2.card, Nat.cast_nonneg (α := ℤ) s3p.card]
 
+/-- **Adjacent degree-2 pair from an explicit edge bound** (Katoh–Tanigawa 2011 Lemma 4.6 at
+`d = 3`, generalized off `IsMinimalKDof n 0`). The minimality-free core of
+`exists_adjacent_degree_two_pair`: for a **loopless**, `2`-edge-connected `G` with `D ≥ 6`,
+`3 ≤ |V(G)|`, and the explicit KT-4.5(i) edge bound
+`(D−1)|E| < D(|V|−1) + (D−1)` (in `ℤ`), there are two adjacent degree-`2` vertices.
+
+Proof: identical to `exists_adjacent_degree_two_pair`, but (i) the minimum-degree-`3` bound on
+`X₃₊ = {deg ≠ 2}` comes from `2`-edge-connectivity (`two_le_degree_of_twoEdgeConnected`) rather
+than the `0`-dof crossing-edge count, and (ii) the KT-4.5(i) edge count is taken as the explicit
+hypothesis `hedge` rather than derived from minimality (`no_rigid_edge_count`). The degree
+double-count (`2|X₂| + 3|X₃₊| ≤ Σdeg` and `Σ_{X₂}deg ≤ Σ_{X₃₊}deg`, giving `Σdeg ≥ 4|X₂|`) uses
+no minimality; the final `nlinarith` contradicts `Σdeg ≥ 4|X₂|` and `5|E| ≥ 6|V|` against
+`hedge`. (Off minimality both the `[DecidableEq β]` and no-proper-rigid-subgraph hypotheses of
+the KT-4.6 form `exists_adjacent_degree_two_pair` become inert — the sole rigidity uses were the
+now-dropped `no_rigid_edge_count`/`two_le_crossingEdges_of_isKDof_zero` — so they are omitted,
+leaving a strictly more general statement.) -/
+theorem exists_adjacent_degree_two_pair_of_edgeBound [Finite α] [Finite β]
+    {G : Graph α β} {n : ℕ} [G.Loopless]
+    (hD : 6 ≤ bodyBarDim n) (hV : 3 ≤ V(G).ncard) (h2ec : G.TwoEdgeConnected)
+    (hedge : (bodyHingeMult n : ℤ) * E(G).ncard
+      < bodyBarDim n * ((V(G).ncard : ℤ) - 1) + bodyHingeMult n) :
+    ∃ v a : α, v ∈ V(G) ∧ a ∈ V(G) ∧ G.degree v = 2 ∧ G.degree a = 2 ∧ ∃ e, G.IsLink e v a := by
+  classical
+  haveI hFin : G.Finite := { edgeSet_finite := Set.toFinite _, vertexSet_finite := Set.toFinite _ }
+  haveI : Fintype α := Fintype.ofFinite _
+  haveI : Fintype β := Fintype.ofFinite _
+  have hDi : (6 : ℤ) ≤ (bodyBarDim n : ℤ) := by exact_mod_cast hD
+  have hHM : (bodyHingeMult n : ℤ) = (bodyBarDim n : ℤ) - 1 := by rw [bodyHingeMult]; omega
+  have hVne : V(G).Nonempty := Set.nonempty_of_ncard_ne_zero (by omega)
+  -- Handshake over the vertex Finset.
+  set s := G.vertexSet_finite.toFinset with hs
+  have hhand : ∑ v ∈ s, G.degree v = 2 * E(G).ncard := by
+    rw [hs, ← finsum_mem_eq_finite_toFinset_sum _ G.vertexSet_finite]
+    exact handshake_degree_subtype G
+  have hscard : s.card = V(G).ncard := by
+    rw [hs, ← Set.ncard_eq_toFinset_card _ G.vertexSet_finite]
+  -- By contradiction: no two adjacent degree-2 vertices.
+  by_contra hno
+  push Not at hno
+  have hno' : ∀ v a : α, v ∈ V(G) → a ∈ V(G) → G.degree v = 2 → G.degree a = 2 →
+      ∀ e : β, ¬ G.IsLink e v a := hno
+  -- Define X₂ and X3p (= X₃₊) as Finsets.
+  set s2 := s.filter (fun v => G.degree v = 2) with hs2
+  set s3p := s \ s2 with hs3p
+  have hmemV : ∀ v, v ∈ s ↔ v ∈ V(G) := fun v => by simp [hs]
+  have hmem2 : ∀ v, v ∈ s2 ↔ v ∈ V(G) ∧ G.degree v = 2 := fun v => by
+    simp [hs2, Finset.mem_filter, hmemV]
+  have hmem3p : ∀ w, w ∈ s3p ↔ w ∈ V(G) ∧ G.degree w ≠ 2 := fun w => by
+    simp only [hs3p, Finset.mem_sdiff, hs2, Finset.mem_filter]
+    constructor
+    · rintro ⟨hw, hnd⟩; exact ⟨(hmemV w).mp hw, fun h => hnd ⟨hw, h⟩⟩
+    · rintro ⟨hwV, hwd⟩; exact ⟨(hmemV w).mpr hwV, fun ⟨_, h⟩ => hwd h⟩
+  -- Every vertex in X3p has degree ≥ 3 (2-edge-connectivity + degree ≠ 2).
+  have hX3deg : ∀ w ∈ s3p, 3 ≤ G.degree w := by
+    intro w hw
+    obtain ⟨hwV, hwdeg2⟩ := (hmem3p w).mp hw
+    have hdeg_ge2 : 2 ≤ G.degree w :=
+      two_le_degree_of_twoEdgeConnected h2ec hwV (by omega)
+    omega
+  -- Sum splits over s2 ∪ s3p = s.
+  have hsplit : ∀ f : α → ℕ,
+      ∑ v ∈ s, f v = ∑ v ∈ s2, f v + ∑ v ∈ s3p, f v := fun f => by
+    have h := Finset.sum_sdiff (Finset.filter_subset (fun v => G.degree v = 2) s) (f := f)
+    change ∑ x ∈ s \ s2, f x + ∑ x ∈ s2, f x = ∑ x ∈ s, f x at h
+    rw [← hs3p] at h
+    linarith
+  have hX2sum_eq : ∑ v ∈ s2, G.degree v = 2 * s2.card := by
+    have := Finset.sum_const_nat (fun v hv => ((hmem2 v).mp hv).2)
+    linarith
+  -- Bound 1: Σdeg ≥ 2|X₂| + 3|X3p|.
+  have hsum_lb1 : 2 * s2.card + 3 * s3p.card ≤ ∑ v ∈ s, G.degree v := by
+    rw [hsplit]
+    have h3 : 3 * s3p.card ≤ ∑ w ∈ s3p, G.degree w := by
+      have := Finset.card_nsmul_le_sum s3p G.degree 3 hX3deg
+      simpa [mul_comm] using this
+    linarith [hX2sum_eq ▸ (le_refl (∑ v ∈ s2, G.degree v))]
+  -- Bound 2: Σ_{X3p} deg ≥ Σ_{X₂} deg, so Σdeg ≥ 4|X₂|.
+  have hX3_ge_X2 : ∑ v ∈ s2, G.degree v ≤ ∑ w ∈ s3p, G.degree w := by
+    have hrw₂ : ∑ v ∈ s2, G.degree v = ∑ v ∈ s2, ∑ e : β, G.incFun e v :=
+      Finset.sum_congr rfl fun v _ => degree_eq_fintype_sum G v
+    have hrw₃ : ∑ w ∈ s3p, G.degree w = ∑ w ∈ s3p, ∑ e : β, G.incFun e w :=
+      Finset.sum_congr rfl fun w _ => degree_eq_fintype_sum G w
+    conv_lhs => rw [hrw₂]; rw [Finset.sum_comm]
+    conv_rhs => rw [hrw₃]; rw [Finset.sum_comm]
+    apply Finset.sum_le_sum
+    intro e _
+    by_cases hpos : 0 < ∑ v ∈ s2, G.incFun e v
+    · have ⟨v, hvs2, hv_pos⟩ : ∃ v ∈ s2, 0 < G.incFun e v := by
+        by_contra hall
+        push Not at hall
+        have : ∑ v ∈ s2, G.incFun e v = 0 :=
+          Finset.sum_eq_zero fun v hv => Nat.le_zero.mp (hall v hv)
+        omega
+      have hvinc : G.Inc e v := by
+        have h0 : G.incFun e v ≠ 0 := by omega
+        exact not_not.mp (incFun_vertex_eq_zero_iff.not.mp h0)
+      obtain ⟨hvV, hvdeg2⟩ := (hmem2 v).mp hvs2
+      have hvnl : G.IsNonloopAt e v := hvinc.isNonloopAt
+      obtain ⟨w, _hwv, hlvw⟩ := hvnl
+      have hwV : w ∈ V(G) := hlvw.right_mem
+      have hwdeg2 : G.degree w ≠ 2 := fun hd => hno' v w hvV hwV hvdeg2 hd e hlvw
+      have hws3p : w ∈ s3p := (hmem3p w).mpr ⟨hwV, hwdeg2⟩
+      have hwincfun : G.incFun e w = 1 := hlvw.inc_right.isNonloopAt.incFun_eq_one
+      have hLHS1 : ∑ u ∈ s2, G.incFun e u ≤ 1 := by
+        apply Finset.sum_le_one_iff.mpr
+        intro u u' hus2 hu's2 hu_ne0 hu'_ne0
+        have hunc : G.Inc e u :=
+          not_not.mp (incFun_vertex_eq_zero_iff.not.mp (by omega))
+        have hu'nc : G.Inc e u' :=
+          not_not.mp (incFun_vertex_eq_zero_iff.not.mp (by omega))
+        obtain ⟨wu, _, hluwu⟩ := hunc.isNonloopAt
+        obtain ⟨wu', _, hluwu'⟩ := hu'nc.isNonloopAt
+        obtain ⟨huu', _⟩ | ⟨_huwu', hwuu'⟩ := hluwu.eq_and_eq_or_eq_and_eq hluwu'
+        · exact ⟨huu', hunc.isNonloopAt.incFun_eq_one⟩
+        · obtain ⟨huV, hudeg2⟩ := (hmem2 u).mp hus2
+          obtain ⟨hu'V, hu'deg2⟩ := (hmem2 u').mp hu's2
+          exact absurd (hwuu'.symm ▸ hluwu) (hno' u u' huV hu'V hudeg2 hu'deg2 e)
+      calc ∑ v ∈ s2, G.incFun e v
+          ≤ 1 := hLHS1
+        _ = G.incFun e w := hwincfun.symm
+        _ ≤ ∑ w ∈ s3p, G.incFun e w :=
+            Finset.single_le_sum (fun i _ => Nat.zero_le _) hws3p
+    · simp only [not_lt, Nat.le_zero] at hpos
+      rw [hpos]
+      exact Finset.sum_nonneg (f := G.incFun e) fun w _ => Nat.zero_le _
+  -- Bound 2: Σdeg ≥ 4|X₂|.
+  have hsum_lb2 : 4 * s2.card ≤ ∑ v ∈ s, G.degree v := by
+    rw [hsplit, hX2sum_eq]
+    linarith [Finset.sum_nonneg (f := G.degree) (s := s3p) fun w _ => Nat.zero_le _]
+  -- Card identity: |s2| + |s3p| = |V(G)|.
+  have hs2s3card : s2.card + s3p.card = V(G).ncard := by
+    have hdisjoint : Disjoint s2 s3p := Finset.disjoint_sdiff
+    have hunion : s2 ∪ s3p = s := by
+      rw [hs3p]; exact Finset.union_sdiff_of_subset (Finset.filter_subset _ s)
+    rw [← Finset.card_union_of_disjoint hdisjoint, hunion, hscard]
+  -- Final numeric contradiction.
+  have hVpos : 1 ≤ V(G).ncard := hVne.ncard_pos
+  zify at hedge hsum_lb1 hsum_lb2 hhand hs2s3card
+  nlinarith [Nat.cast_nonneg (α := ℤ) s2.card, Nat.cast_nonneg (α := ℤ) s3p.card]
+
+/-- **A coordinator-safe reducible vertex exists in the non-rigid habitat** (the non-rigid half
+of the W5-L6a split-arm safe-vertex existence; Katoh–Tanigawa 2011 Lemma 4.6, off minimality).
+For a **loopless**, `2`-edge-connected `G` with no proper rigid subgraph, `D ≥ 6`, `3 ≤ |V(G)|`,
+and strictly positive deficiency `def(G̃) > 0`, there are two adjacent degree-`2` vertices. Under
+`2`-edge-connectivity (`¬ PencilHub w ↔ deg w = 2`) such a pair is exactly a coordinator-safe
+split vertex, so this discharges the split-arm safe-vertex obligation for the whole non-rigid
+habitat — with no minimality hypothesis anywhere.
+
+Proof: positive deficiency makes `M(G̃)` free
+(`indep_matroidMG_of_noRigid_of_deficiency_pos`), so the ground set `E(G̃)` is a base of size
+`|E(G̃)| = (D−1)|E(G)|`; `isBase_ncard_add_deficiency_eq` then gives
+`(D−1)|E| + def(G̃) = D(|V|−1)`. Since `def(G̃) > 0` (and `D − 1 ≥ 0`) this yields the KT-4.5(i)
+edge bound `(D−1)|E| < D(|V|−1) + (D−1)`, which `exists_adjacent_degree_two_pair_of_edgeBound`
+consumes. -/
+theorem exists_adjacent_degree_two_pair_of_noRigid_of_deficiency_pos [Finite α]
+    [Finite β] {G : Graph α β} {n : ℕ} [G.Loopless]
+    (hD : 6 ≤ bodyBarDim n) (hV : 3 ≤ V(G).ncard) (h2ec : G.TwoEdgeConnected)
+    (hnp : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) (hk : 0 < G.deficiency n) :
+    ∃ v a : α, v ∈ V(G) ∧ a ∈ V(G) ∧ G.degree v = 2 ∧ G.degree a = 2 ∧ ∃ e, G.IsLink e v a := by
+  classical
+  have hD1 : 1 ≤ bodyBarDim n := by linarith
+  have hne : V(G).Nonempty := Set.nonempty_of_ncard_ne_zero (by omega)
+  -- `M(G̃)` is free (no redundant fibers) since `def(G̃) > 0`.
+  have hindep := indep_matroidMG_of_noRigid_of_deficiency_pos hD1 hnp hk
+  have hground : (G.matroidMG n).E = E(G.mulTilde n) := by
+    simp [matroidMG, Matroid.restrict_ground_eq]
+  have hbase : (G.matroidMG n).IsBase E(G.mulTilde n) := by
+    rw [← hground]
+    rw [← hground] at hindep
+    exact Matroid.ground_indep_iff_isBase.mp hindep
+  -- Base size `= (D−1)|E(G)|`, and `|B| + def(G̃) = D(|V|−1)`.
+  have hbc := G.isBase_ncard_add_deficiency_eq n hD1 hne hbase
+  have hEcard : (E(G.mulTilde n).ncard : ℤ) = (bodyHingeMult n : ℤ) * E(G).ncard := by
+    rw [mulTilde_edgeSet_ncard]; push_cast; ring
+  rw [hEcard] at hbc
+  -- Edge bound from `def(G̃) > 0` and `D − 1 ≥ 0`.
+  have hedge : (bodyHingeMult n : ℤ) * E(G).ncard
+      < bodyBarDim n * ((V(G).ncard : ℤ) - 1) + bodyHingeMult n := by
+    have hHMnn : (0 : ℤ) ≤ (bodyHingeMult n : ℤ) := by positivity
+    linarith
+  exact exists_adjacent_degree_two_pair_of_edgeBound hD hV h2ec hedge
+
 /-- **Edge-splitting** `H_{ab}^v` (`def:graph-operations`): the inverse of splitting-off.
 Subdivide the edge `e₀` of `H` (joining `a` and `b`) by a fresh degree-2 vertex `v`,
 replacing `e₀` with the path `a — v — b` carried by two fresh edges `e₁` (joining `a`,

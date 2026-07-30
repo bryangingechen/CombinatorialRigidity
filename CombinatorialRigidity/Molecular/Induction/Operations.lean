@@ -340,6 +340,51 @@ theorem fundCircuit_inducedSpan_vertexSet_eq [DecidableEq β] [Finite α] [Finit
   exact hnp (G.inducedSpan n X)
     ⟨hrigid, hV2, hsub.ssubset_of_ne (fun heq ↦ hnotle heq.ge)⟩
 
+/-- **No proper rigid subgraph + positive deficiency ⟹ `M(G̃)` has no redundant fiber**
+(the non-rigid half of KT Lemma 4.6's edge bound, off minimality). For a **loopless** `G`
+with **no proper rigid subgraph** and strictly positive deficiency `def(G̃) > 0`, the whole
+ground set `E(G̃)` is independent in `M(G̃)` (i.e. `M(G̃)` is free — every base is all of
+`E(G̃)`).
+
+Proof: by contradiction. Were `E(G̃)` dependent, a base `B` of `M(G̃)` would miss some fiber
+`p ∈ E(G̃) ∖ B` (otherwise `E(G̃) ⊆ B` and `E(G̃)` is independent as a subset of the base).
+Its fundamental circuit `X = fundCircuit p B` spans all of `V(G)`
+(`fundCircuit_inducedSpan_vertexSet_eq`, off the no-proper-rigid hypothesis) and induces a
+rigid — hence `0`-dof — subgraph `G[V(X)]` (`circuit_induces_isRigidSubgraph`). Deficiency is
+antitone at a fixed vertex set (`deficiency_le_deficiency_of_le_vertexSet_eq`), so the
+spanning `G[V(X)] ≤ G` with `V(G[V(X)]) = V(G)` forces `def(G̃) ≤ def((G[V(X)])̃) = 0`,
+contradicting `def(G̃) > 0`. This is the minimality-free replacement of KT 4.5(i)'s edge
+count in the non-rigid (`k > 0`) regime. -/
+theorem indep_matroidMG_of_noRigid_of_deficiency_pos [DecidableEq β] [Finite α] [Finite β]
+    {G : Graph α β} [G.Loopless] {n : ℕ} (hD : 1 ≤ bodyBarDim n)
+    (hnp : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) (hk : 0 < G.deficiency n) :
+    (G.matroidMG n).Indep E(G.mulTilde n) := by
+  classical
+  by_contra hnindep
+  -- Pick a base `B` of `M(G̃)`; its ground set is `E(G̃)`.
+  obtain ⟨B, hB⟩ := (G.matroidMG n).exists_isBase
+  have hground : (G.matroidMG n).E = E(G.mulTilde n) := by
+    simp [matroidMG, Matroid.restrict_ground_eq]
+  -- If `E(G̃)` were dependent, some fiber `p` lies outside `B` (else `E(G̃) ⊆ B` is independent).
+  obtain ⟨p, hpE, hpB⟩ : ∃ p ∈ E(G.mulTilde n), p ∉ B := by
+    by_contra h
+    push Not at h
+    exact hnindep (hB.indep.subset fun p hp => h p hp)
+  -- Its fundamental circuit spans `V(G)` and induces a rigid (`0`-dof) subgraph.
+  have hpground : p ∈ (G.matroidMG n).E := by rw [hground]; exact hpE
+  have hXcirc : (G.matroidMG n).IsCircuit ((G.matroidMG n).fundCircuit p B) :=
+    hB.fundCircuit_isCircuit hpground hpB
+  have hrigid : (G.inducedSpan n ((G.matroidMG n).fundCircuit p B)).IsRigidSubgraph G n :=
+    circuit_induces_isRigidSubgraph hD hXcirc
+  have hspan : V(G.inducedSpan n ((G.matroidMG n).fundCircuit p B)) = V(G) :=
+    fundCircuit_inducedSpan_vertexSet_eq hD hnp hB hpE hpB
+  -- A spanning rigid subgraph forces `def(G̃) ≤ def((G[V(X)])̃) = 0`, contradicting `hk`.
+  have hdef_le : G.deficiency n
+      ≤ (G.inducedSpan n ((G.matroidMG n).fundCircuit p B)).deficiency n :=
+    deficiency_le_deficiency_of_le_vertexSet_eq hD hrigid.1 hspan
+  have hzero : (G.inducedSpan n ((G.matroidMG n).fundCircuit p B)).deficiency n = 0 := hrigid.2
+  omega
+
 /-! ## A minimum-degree-`3` vertex forces a proper rigid subgraph
 (`lem:min-degree-proper-rigid`, W3-L1; `notes/Phase39-design.md` §"W3 leaf decomposition")
 

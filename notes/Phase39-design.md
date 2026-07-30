@@ -2243,35 +2243,48 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
       `(D−1)|E| < D(|V|−1) + (D−1)` (⟺ `5|E| < 6|V|−1` at `D = 6`; ⟺ corank `≤ D−2`), which the
       landed nlinarith contradicts against `5|E| ≥ 6|V|`.
 
-      Re-pin as a mechanical refactor of the landed lemma + a per-deficiency edge-bound discharger:
+      Re-pin as a mechanical refactor of the landed lemma + a per-deficiency edge-bound discharger.
+      **NON-RIGID HALF LANDED 2026-07-30** (both bricks + the composition, `ReducibleVertex.lean` /
+      `Operations.lean`; gates + axioms clean). Landed signatures (the pinned `[DecidableEq β]` and
+      `hnp` on (i) were DROPPED as **provably inert** — off minimality the only rigidity uses were the
+      removed `no_rigid_edge_count`/`two_le_crossingEdges_of_isKDof_zero`, and `IsMinimalKDof`'s type was
+      what carried `matroidMG`/`DecidableEq β`; `classical` covers decidability, leaving a strictly more
+      general statement):
       ```lean
       -- (i) generalized counting: drop IsMinimalKDof, take the edge bound as an explicit hyp.
       -- Mechanical copy of `exists_adjacent_degree_two_pair`'s body: bounds 1/2 verbatim (2EC via
       -- `two_le_degree_of_twoEdgeConnected`, `Deficiency.lean:1244`), final nlinarith on `hedge`.
-      theorem exists_adjacent_degree_two_pair_of_edgeBound
-          [DecidableEq β] [Finite α] [Finite β] {n : ℕ} {G : Graph α β}
-          (hD : 6 ≤ Graph.bodyBarDim n) (hV : 3 ≤ V(G).ncard) (h2ec : G.TwoEdgeConnected)
-          (hnp : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n)
-          (hedge : (Graph.bodyHingeMult n : ℤ) * E(G).ncard
-            < Graph.bodyBarDim n * ((V(G).ncard : ℤ) - 1) + Graph.bodyHingeMult n) :
+      theorem exists_adjacent_degree_two_pair_of_edgeBound     -- LANDED (Graph namespace)
+          [Finite α] [Finite β] {G : Graph α β} {n : ℕ} [G.Loopless]
+          (hD : 6 ≤ bodyBarDim n) (hV : 3 ≤ V(G).ncard) (h2ec : G.TwoEdgeConnected)
+          (hedge : (bodyHingeMult n : ℤ) * E(G).ncard
+            < bodyBarDim n * ((V(G).ncard : ℤ) - 1) + bodyHingeMult n) :
+          ∃ v a : α, v ∈ V(G) ∧ a ∈ V(G) ∧ G.degree v = 2 ∧ G.degree a = 2 ∧ ∃ e, G.IsLink e v a
+      -- (iii) composition for the non-rigid habitat (k := deficiency G > 0):
+      theorem exists_adjacent_degree_two_pair_of_noRigid_of_deficiency_pos   -- LANDED (Graph namespace)
+          [Finite α] [Finite β] {G : Graph α β} {n : ℕ} [G.Loopless]
+          (hD : 6 ≤ bodyBarDim n) (hV : 3 ≤ V(G).ncard) (h2ec : G.TwoEdgeConnected)
+          (hnp : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) (hk : 0 < G.deficiency n) :
           ∃ v a : α, v ∈ V(G) ∧ a ∈ V(G) ∧ G.degree v = 2 ∧ G.degree a = 2 ∧ ∃ e, G.IsLink e v a
       ```
-      **Non-rigid half (k := deficiency G > 0): PROVEN minimality-free, buildable NOW.** New brick:
+      **Non-rigid half (k := deficiency G > 0): PROVEN minimality-free.** New brick (LANDED,
+      `Operations.lean`, `Graph` namespace):
       ```lean
-      theorem indep_matroidMG_of_noRigid_of_deficiency_pos   -- name tentative
-          [DecidableEq β] [Finite α] [Finite β] {n : ℕ} {G : Graph α β} [G.Loopless]
-          (hD : 1 ≤ Graph.bodyBarDim n)
+      theorem indep_matroidMG_of_noRigid_of_deficiency_pos
+          [DecidableEq β] [Finite α] [Finite β] {G : Graph α β} [G.Loopless] {n : ℕ}
+          (hD : 1 ≤ bodyBarDim n)
           (hnp : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) (hk : 0 < G.deficiency n) :
           (G.matroidMG n).Indep E(G.mulTilde n)
       ```
       Proof (3 landed bricks): if `M(G̃)` is not independent, some base `B` misses a fiber `p`; its
       fundamental circuit `X = fundCircuit p B` **spans `V(G)`** (`fundCircuit_inducedSpan_vertexSet_eq`,
-      `Operations.lean:310`, exactly the no-proper-rigid + Loopless hook) and its `inducedSpan` is
-      **rigid** (`circuit_induces_isRigidSubgraph`, `Operations.lean:240`); a spanning rigid subgraph
+      `Operations.lean`, exactly the no-proper-rigid + Loopless hook) and its `inducedSpan` is
+      **rigid** (`circuit_induces_isRigidSubgraph`, `Operations.lean`); a spanning rigid subgraph
       forces `deficiency G ≤ deficiency (inducedSpan) = 0` (`deficiency_le_deficiency_of_le_vertexSet_eq`,
-      `Deficiency.lean:930`), contradicting `hk`. Independence gives `(D−1)|E| = D(|V|−1) − k`, whence
-      `hedge` is immediate (`− k < D − 1`, in fact `≤ D(|V|−1) − 1`). This discharges the entire
-      **non-rigid** split-arm habitat with **no minimality anywhere**.
+      `Deficiency.lean`), contradicting `hk`. In (iii), `E(G̃)` is then the base
+      (`ground_indep_iff_isBase`), so `isBase_ncard_add_deficiency_eq` gives `(D−1)|E| + k = D(|V|−1)`,
+      whence `hedge` is immediate (`− k < D − 1`). This discharges the entire **non-rigid** split-arm
+      habitat with **no minimality anywhere**.
       **Rigid half (k = 0, `G` rigid): OPEN, = classical KT Lemma 4.6 off minimality.** `hedge` at
       `k = 0` is `corank ≤ D−2 = 4` (`corank ≤ D−1 = 5` already suffices vs `5|E| ≥ 6|V|`, so **one unit
       of slack** over KT's minimal `no_rigid_edge_count`). No clean proof: the "smooth to a min-degree-3
