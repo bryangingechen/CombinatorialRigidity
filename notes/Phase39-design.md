@@ -2427,16 +2427,19 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
       remainder `closedHubNbhd v \ closedHubNbhd u` into the values avoiding `dtgt v` and the overlap's
       image (palette sizes matching by the `≤ 3` bound, uniformly — no hub case split). Two reusable
       bricks: `exists_injOn_mapsTo_of_ncard_le` (inject a finite set into a no-smaller one;
-      upstream-eligible, `FRICTION.md` [mirror-candidate]) + `exists_idx_dtgt_pair`. **Still open
-      (later commits):** the **per-body caller `hsat_pt`** (`{v}` at a hub — trivial one-set; `closedNbhd
-      v` at a non-hub — a THREE-set construction that is genuinely harder because two neighbours' closed
-      hub-neighbourhoods can share an *external* hub via an induced `C₄`, so the sets are **not**
-      `S`-separated the way the adjacent pair is, forcing a tighter forced-value assignment — verified
-      constructible by hand in the worst case but not the disjoint-palette route), then wire the headline
-      `pencilNondegFeasible_of_ncard_closedHubNbhd_le_three_of_triangleFree` (`choose` selectors ⟶
-      the two callers ⟶ `pencilNondegFeasible_of_selectors_of_satisfiable`). The `≤ 3` cardinality
-      bound is `hcard`; the triangle exclusions are `htf` (replacing v-b's feasibility-derived
-      `not_pencilNondegFeasible_of_triangle_two_hubs`).
+      upstream-eligible, `FRICTION.md` [mirror-candidate]) + `exists_idx_dtgt_pair`. **L6b COMPLETE
+      (2026-07-30):** the **per-body caller `exists_coord_linearIndepOn_pencilChartPoint_perBody`**
+      (`Witness.lean`) — hub/degree-`0` centre → the trivial singleton (private
+      `…_hubSingleton`); degree-`1` → `exists_idx_dtgt_pair`; degree-`2` → the **new three-set brick
+      `exists_idx_dtgt_triple`** (`Witness.lean`, the analogue of `exists_idx_dtgt_pair` for a non-hub
+      centre + its ≤ 2 neighbours; the `C₄`-shared external hub is handled *not* by `S`-separation but
+      by the overlap bound `(Xa ∩ Xb).ncard ≤ 2` cancelling and the choice `dtgt b := idx a` — which
+      collapses the `Xv`-injectivity constraint since `idx b` is forced off `dtgt b`; DERIVATION GUARD
+      met, the tight `{a,b,w₁,w₂}` near-bijection fits `Fin 4`). Then the **headline
+      `pencilNondegFeasible_of_ncard_closedHubNbhd_le_three_of_triangleFree`** (`Steer.lean`, `[G.Simple]`
+      supplying `[G.Loopless]`): `choose` selectors (`hcard`/`ncard_closedNbhd_le_three_of_not_pencilHub`)
+      ⟶ the two callers ⟶ `pencilNondegFeasible_of_selectors_of_satisfiable`. `htf` replaces v-b's
+      feasibility-derived `not_pencilNondegFeasible_of_triangle_two_hubs`. Gates + axioms clean.
     - **Selector brick — NOT missing (2026-07-30 spike finding):** the `IsFin3SelectorOf`-existence
       lemma for any `ncard ≤ 3` finite set is already in tree as
       `exists_isFin3SelectorOf_of_ncard_le_three` (`Molecule/Pencil/Engine.lean:793`,

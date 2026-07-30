@@ -1379,6 +1379,186 @@ theorem exists_idx_dtgt_pair [Finite α] {u v : α} (huv : u ≠ v) {U V : Set �
     · rw [hidxnU x hxU, hidxnU y hyU] at hxy
       exact hgv_inj ⟨hx, hxU⟩ ⟨hy, hyU⟩ hxy
 
+/-- **The direction/target maps for a non-hub body and its (≤ 2) neighbours** (Phase 39 W5-L6b-ii
+combinatorial core, the three-set analogue of `exists_idx_dtgt_pair`): for a non-hub centre `v`
+with neighbours `a`, `b` (all distinct), whose closed hub-neighbourhoods `Xa`, `Xb` are `≤ 3` and
+overlap in `≤ 2` *external* hubs (`hcap`; neither `a ∈ Xb` nor `b ∈ Xa`, by triangle-freeness),
+and whose own closed hub-neighbourhood `Xv ⊆ {a, b}` sits inside `Xa`/`Xb` (`haXv`/`hbXv` — a hub
+neighbour of `v` is a hub, hence in its own set), there are direction/target maps `idx dtgt` with
+`dtgt` injective on `{v, a, b}` and `idx` injective on each of `Xv`, `Xa`, `Xb` avoiding the
+respective target.
+
+`Xa` injects into `{0, 1, 2}` (avoiding `dtgt a = 3`); `dtgt b` is picked as `idx a` when `a ∈ Xa`
+(so `idx b`, forced off `dtgt b`, differs from `idx a`, giving injectivity on `Xv`) and otherwise
+off `{3} ∪ idx '' (Xa ∩ Xb)`; the disjoint remainder `Xb \ Xa` fills the values avoiding `dtgt b`
+and `idx '' (Xa ∩ Xb)`; `dtgt v` avoids `{3, dtgt b, idx b}`. The palette sizes match because
+`(Xa ∩ Xb).ncard` cancels — `≤ 3` on each side against a `≤ 2` overlap, exactly the pair core's
+arithmetic with the third set layered on. -/
+theorem exists_idx_dtgt_triple [Finite α] {v a b : α}
+    (hva : v ≠ a) (hvb : v ≠ b) (hab : a ≠ b) {Xv Xa Xb : Set α}
+    (hXv : Xv ⊆ ({a, b} : Set α))
+    (haXv : a ∈ Xv → a ∈ Xa) (hbXv : b ∈ Xv → b ∈ Xb)
+    (haXb : a ∉ Xb) (hbXa : b ∉ Xa)
+    (hcap : (Xa ∩ Xb).ncard ≤ 2) (hXa3 : Xa.ncard ≤ 3) (hXb3 : Xb.ncard ≤ 3) :
+    ∃ idx dtgt : α → Fin 4,
+      Set.InjOn dtgt ({v, a, b} : Set α) ∧
+      (∀ x ∈ Xv, idx x ≠ dtgt v) ∧ (∀ x ∈ Xa, idx x ≠ dtgt a) ∧ (∀ x ∈ Xb, idx x ≠ dtgt b) ∧
+      Set.InjOn idx Xv ∧ Set.InjOn idx Xa ∧ Set.InjOn idx Xb := by
+  classical
+  -- Inject `Xa` into `{0, 1, 2}` (avoiding `dtgt a = 3`).
+  have hPa : ({0, 1, 2} : Set (Fin 4)).ncard = 3 :=
+    Set.ncard_eq_three.mpr ⟨0, 1, 2, by decide, by decide, by decide, rfl⟩
+  obtain ⟨fa, hfa_inj, hfa_map⟩ :=
+    exists_injOn_mapsTo_of_ncard_le (T := Xa) (P := ({0, 1, 2} : Set (Fin 4)))
+      (Set.toFinite _) (Set.toFinite _) (hXa3.trans hPa.ge)
+  have hfa_ne3 : ∀ x ∈ Xa, fa x ≠ 3 := by
+    intro x hx h3
+    have hm := hfa_map x hx
+    rw [h3] at hm
+    simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hm
+    rcases hm with h | h | h <;> exact absurd h (by decide)
+  set m := (Xa ∩ Xb).ncard with hm_def
+  have hfaimg : (fa '' (Xa ∩ Xb)).ncard = m := (hfa_inj.mono Set.inter_subset_left).ncard_image
+  -- `dtgt b`: `idx a` when `a ∈ Xa` (forcing `idx b ≠ idx a`), else off `{3} ∪ idx '' (Xa ∩ Xb)`.
+  obtain ⟨db, hdb_notin, hdb_a⟩ :
+      ∃ db : Fin 4, db ∉ insert (3 : Fin 4) (fa '' (Xa ∩ Xb)) ∧ (a ∈ Xa → db = fa a) := by
+    by_cases ha : a ∈ Xa
+    · refine ⟨fa a, ?_, fun _ => rfl⟩
+      simp only [Set.mem_insert_iff, not_or]
+      refine ⟨hfa_ne3 a ha, ?_⟩
+      rintro ⟨w, hw, hwa⟩
+      have hweqa : w = a := hfa_inj (Set.inter_subset_left hw) ha hwa
+      exact haXb (hweqa ▸ Set.inter_subset_right hw)
+    · have hins_le : (insert (3 : Fin 4) (fa '' (Xa ∩ Xb))).ncard ≤ 3 := by
+        refine (Set.ncard_insert_le _ _).trans ?_
+        rw [hfaimg]; omega
+      obtain ⟨db, hdb⟩ : ∃ d : Fin 4, d ∉ insert (3 : Fin 4) (fa '' (Xa ∩ Xb)) := by
+        by_contra hcon
+        push Not at hcon
+        have huniv : insert (3 : Fin 4) (fa '' (Xa ∩ Xb)) = Set.univ := Set.eq_univ_of_forall hcon
+        rw [huniv, Set.ncard_univ] at hins_le
+        simp [Nat.card_eq_fintype_card] at hins_le
+      exact ⟨db, hdb, fun h => absurd h ha⟩
+  rw [Set.mem_insert_iff] at hdb_notin
+  push Not at hdb_notin
+  obtain ⟨hdb3, hdb_img⟩ := hdb_notin
+  -- The `dtgt b`-avoiding palette for the disjoint remainder `Xb \ Xa`.
+  set Y := insert db (fa '' (Xa ∩ Xb)) with hY_def
+  have hbXa_add : (Xb \ Xa).ncard + m = Xb.ncard := by
+    rw [hm_def, ← Set.diff_self_inter (s := Xb) (t := Xa), Set.inter_comm Xa Xb]
+    exact Set.ncard_diff_add_ncard_of_subset Set.inter_subset_left (Set.toFinite _)
+  have hY_card : Y.ncard = m + 1 := by
+    rw [hY_def, Set.ncard_insert_of_notMem hdb_img (Set.toFinite _), hfaimg]
+  have hPrem_add : (Set.univ \ Y).ncard + Y.ncard = 4 := by
+    have h := Set.ncard_diff_add_ncard_of_subset (Set.subset_univ Y)
+      (Set.toFinite (Set.univ : Set (Fin 4)))
+    rwa [Set.ncard_univ, Nat.card_eq_fintype_card, Fintype.card_fin] at h
+  obtain ⟨gb, hgb_inj, hgb_map⟩ :=
+    exists_injOn_mapsTo_of_ncard_le (T := Xb \ Xa) (P := Set.univ \ Y)
+      (Set.toFinite _) (Set.toFinite _) (by omega)
+  have hgb_ne : ∀ x ∈ Xb \ Xa, gb x ≠ db ∧ gb x ∉ fa '' (Xa ∩ Xb) := by
+    intro x hx
+    have h := (hgb_map x hx).2
+    rw [hY_def, Set.mem_insert_iff] at h
+    push Not at h
+    exact h
+  -- The index map, with evaluation lemmas.
+  set idx : α → Fin 4 := fun x => if x ∈ Xa then fa x else gb x with hidx_def
+  have hidxXa : ∀ x, x ∈ Xa → idx x = fa x := fun x hx => by rw [hidx_def]; exact if_pos hx
+  have hidxnXa : ∀ x, x ∉ Xa → idx x = gb x := fun x hx => by rw [hidx_def]; exact if_neg hx
+  have hidxb : idx b = gb b := hidxnXa b hbXa
+  -- `dtgt v` avoiding `{3, db, idx b}`.
+  obtain ⟨dv, hdv⟩ : ∃ d : Fin 4, d ∉ ({3, db, idx b} : Set (Fin 4)) := by
+    have hle : ({3, db, idx b} : Set (Fin 4)).ncard ≤ 3 := by
+      refine (Set.ncard_insert_le _ _).trans ?_
+      refine Nat.add_le_add_right ((Set.ncard_insert_le _ _).trans ?_) 1
+      simp
+    by_contra hcon
+    push Not at hcon
+    have huniv : ({3, db, idx b} : Set (Fin 4)) = Set.univ := Set.eq_univ_of_forall hcon
+    rw [huniv, Set.ncard_univ] at hle
+    simp [Nat.card_eq_fintype_card] at hle
+  simp only [Set.mem_insert_iff, Set.mem_singleton_iff, not_or] at hdv
+  obtain ⟨hdv3, hdv_db, hdv_idxb⟩ := hdv
+  -- The target map, with evaluation lemmas.
+  set dtgt : α → Fin 4 := fun x => if x = v then dv else if x = a then (3 : Fin 4) else db
+    with hdtgt_def
+  have hdtv : dtgt v = dv := by rw [hdtgt_def]; exact if_pos rfl
+  have hdta : dtgt a = 3 := by rw [hdtgt_def]; exact (if_neg (Ne.symm hva)).trans (if_pos rfl)
+  have hdtb : dtgt b = db := by
+    rw [hdtgt_def]; exact (if_neg (Ne.symm hvb)).trans (if_neg (Ne.symm hab))
+  refine ⟨idx, dtgt, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
+  · -- `dtgt` injective on `{v, a, b}`.
+    intro x hx y hy hxy
+    simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hx hy
+    rcases hx with rfl | rfl | rfl <;> rcases hy with rfl | rfl | rfl
+    · rfl
+    · rw [hdtv, hdta] at hxy; exact absurd hxy hdv3
+    · rw [hdtv, hdtb] at hxy; exact absurd hxy hdv_db
+    · rw [hdtv, hdta] at hxy; exact absurd hxy.symm hdv3
+    · rfl
+    · rw [hdta, hdtb] at hxy; exact absurd hxy (Ne.symm hdb3)
+    · rw [hdtv, hdtb] at hxy; exact absurd hxy.symm hdv_db
+    · rw [hdta, hdtb] at hxy; exact absurd hxy.symm (Ne.symm hdb3)
+    · rfl
+  · -- avoid at `v`.
+    intro x hx
+    rw [hdtv]
+    have hxab := hXv hx
+    simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hxab
+    rcases hxab with rfl | rfl
+    · rw [hidxXa x (haXv hx), ← hdb_a (haXv hx)]; exact Ne.symm hdv_db
+    · exact Ne.symm hdv_idxb
+  · -- avoid at `a`.
+    intro x hx
+    rw [hidxXa x hx, hdta]
+    exact hfa_ne3 x hx
+  · -- avoid at `b`.
+    intro x hx
+    rw [hdtb]
+    by_cases hxXa : x ∈ Xa
+    · rw [hidxXa x hxXa]
+      intro heq
+      exact hdb_img (heq ▸ Set.mem_image_of_mem fa ⟨hxXa, hx⟩)
+    · rw [hidxnXa x hxXa]
+      exact (hgb_ne x ⟨hx, hxXa⟩).1
+  · -- `idx` injective on `Xv`.
+    intro x hx y hy hxy
+    have hxab := hXv hx
+    have hyab := hXv hy
+    simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hxab hyab
+    rcases hxab with hxa | hxb
+    · rcases hyab with hya | hyb
+      · rw [hxa, hya]
+      · exfalso
+        have hax : a ∈ Xv := hxa ▸ hx
+        have hby : b ∈ Xv := hyb ▸ hy
+        rw [hxa, hyb, hidxXa a (haXv hax), ← hdb_a (haXv hax), hidxb] at hxy
+        exact (hgb_ne b ⟨hbXv hby, hbXa⟩).1 hxy.symm
+    · rcases hyab with hya | hyb
+      · exfalso
+        have hbx : b ∈ Xv := hxb ▸ hx
+        have hay : a ∈ Xv := hya ▸ hy
+        rw [hxb, hya, hidxXa a (haXv hay), ← hdb_a (haXv hay), hidxb] at hxy
+        exact (hgb_ne b ⟨hbXv hbx, hbXa⟩).1 hxy
+      · rw [hxb, hyb]
+  · -- `idx` injective on `Xa`.
+    intro x hx y hy hxy
+    rw [hidxXa x hx, hidxXa y hy] at hxy
+    exact hfa_inj hx hy hxy
+  · -- `idx` injective on `Xb`.
+    intro x hx y hy hxy
+    by_cases hxXa : x ∈ Xa <;> by_cases hyXa : y ∈ Xa
+    · rw [hidxXa x hxXa, hidxXa y hyXa] at hxy; exact hfa_inj hxXa hyXa hxy
+    · exfalso
+      rw [hidxXa x hxXa, hidxnXa y hyXa] at hxy
+      exact (hgb_ne y ⟨hy, hyXa⟩).2 (hxy ▸ Set.mem_image_of_mem fa ⟨hxXa, hx⟩)
+    · exfalso
+      rw [hidxnXa x hxXa, hidxXa y hyXa] at hxy
+      exact (hgb_ne x ⟨hx, hxXa⟩).2 (hxy ▸ Set.mem_image_of_mem fa ⟨hyXa, hy⟩)
+    · rw [hidxnXa x hxXa, hidxnXa y hyXa] at hxy
+      exact hgb_inj ⟨hx, hxXa⟩ ⟨hy, hyXa⟩ hxy
+
 open Classical in
 /-- **The adjacent-pair somewhere-witness family** (Phase 39 W5-L6b-ii; the `hsat_adj` input of
 `pencilNondegFeasible_of_selectors_of_satisfiable`): for any ordered pair `p`, some seed coordinate
@@ -1431,5 +1611,194 @@ theorem exists_coord_linearIndepOn_pencilChartPoint_adjacentPair
       · exact hinj_v
   · rw [if_neg hadj]
     exact ⟨fun _ => 0, linearIndepOn_empty K _⟩
+
+/-! ## The per-body somewhere-witness (Phase 39 W5-L6b-ii)
+
+The `hsat_pt` input of the L6b-i assembly `pencilNondegFeasible_of_selectors_of_satisfiable`
+(`Pencil/Steer.lean`): a per-body chart-point-LI family over `{v}` at a hub and over `closedNbhd v`
+at a non-hub. The hub / degree-`0` cases are the trivial singleton witness; a non-hub of degree `1`
+reuses the two-set core `exists_idx_dtgt_pair`; a non-hub of degree `2` uses the three-set core
+`exists_idx_dtgt_triple`, whose overlap hypotheses triangle-freeness (`htf`) and the `≤ 3` bounds
+(`hcard`, `ncard_closedNbhd_le_three_of_not_pencilHub`) discharge. -/
+
+/-- **The singleton somewhere-witness** (Phase 39 W5-L6b-ii helper): the trivial one-set case — at
+any body `v`, some seed coordinate makes the chart point independent over `{v}` (nonzero), by
+injecting `closedHubNbhd v` (`≤ 3` by `hcard`) into `{0, 1, 2}` and targeting `3`. Used for the hub
+branch (`{v}`) and the degree-`0` non-hub branch (`closedNbhd v = {v}`) of the per-body family. -/
+private theorem exists_coord_linearIndepOn_pencilChartPoint_hubSingleton [Finite α]
+    {G : Graph α β} (hcard : ∀ v, (G.closedHubNbhd v).ncard ≤ 3)
+    (hubSel : α → Fin 3 → Option α)
+    (hHubSel : ∀ v, IsFin3SelectorOf (G.closedHubNbhd v) (hubSel v)) (v : α) :
+    ∃ q : α × Fin 4 × Fin 4 → K,
+      LinearIndepOn K (pencilChartPoint (PencilSeed.ofCoord q) hubSel) ({v} : Set α) := by
+  obtain ⟨idx, hidx_inj, hidx_map⟩ :=
+    exists_injOn_mapsTo_of_ncard_le (T := G.closedHubNbhd v) (P := ({0, 1, 2} : Set (Fin 4)))
+      (Set.toFinite _) (Set.toFinite _)
+      ((hcard v).trans (Set.ncard_eq_three.mpr ⟨0, 1, 2, by decide, by decide, by decide, rfl⟩).ge)
+  refine exists_coord_linearIndepOn_pencilChartPoint_of_idx (S := ({v} : Set α))
+    (idx := idx) (dtgt := fun _ => 3) hubSel hHubSel ?_ ?_ ?_
+  · intro x hx y hy _
+    rw [Set.mem_singleton_iff] at hx hy
+    rw [hx, hy]
+  · intro s hs x hx
+    rw [Set.mem_singleton_iff] at hs
+    subst hs
+    intro heq
+    have hm := hidx_map x hx
+    rw [heq] at hm
+    simp at hm
+  · intro s hs
+    rw [Set.mem_singleton_iff] at hs
+    subst hs
+    exact hidx_inj
+
+open Classical in
+/-- **The per-body somewhere-witness family** (Phase 39 W5-L6b-ii; the `hsat_pt` input of
+`pencilNondegFeasible_of_selectors_of_satisfiable`): for any body `v`, some seed coordinate `q`
+makes the chart points independent over `{v}` at a hub (point nonvanishing) and over the closed
+neighbourhood `closedNbhd v` at a non-hub. The hub / degree-`0` cases reduce to the singleton
+witness; a non-hub of degree `1` (`closedNbhd v = {v, a}`) reuses the two-set core
+`exists_idx_dtgt_pair`; a non-hub of degree `2` (`closedNbhd v = {v, a, b}`) uses the three-set
+core `exists_idx_dtgt_triple` — its overlap hypotheses discharged by triangle-freeness (`htf`
+excludes `a ~ b` and any common hub-neighbour closing a triangle) and the `≤ 3` bounds. -/
+theorem exists_coord_linearIndepOn_pencilChartPoint_perBody
+    [Finite α] [Finite β] {G : Graph α β} [G.Loopless]
+    (hcard : ∀ v, (G.closedHubNbhd v).ncard ≤ 3)
+    (htf : ∀ e₁ e₂ e₃ x y z, x ≠ y → y ≠ z → x ≠ z →
+      G.IsLink e₁ x y → G.IsLink e₂ y z → G.IsLink e₃ z x → False)
+    (hubSel : α → Fin 3 → Option α)
+    (hHubSel : ∀ v, IsFin3SelectorOf (G.closedHubNbhd v) (hubSel v))
+    (v : α) :
+    ∃ q : α × Fin 4 × Fin 4 → K,
+      LinearIndepOn K (pencilChartPoint (PencilSeed.ofCoord q) hubSel)
+        (if G.PencilHub v then ({v} : Set α) else G.closedNbhd v) := by
+  classical
+  by_cases hv : G.PencilHub v
+  · rw [if_pos hv]
+    exact exists_coord_linearIndepOn_pencilChartPoint_hubSingleton hcard hubSel hHubSel v
+  · rw [if_neg hv]
+    -- `v` non-hub: `closedNbhd v = insert v N(G,v)`, `|N(G,v)| ≤ 2`.
+    have hdeg : G.degree v ≤ 2 := by
+      by_contra hcon
+      push Not at hcon
+      by_cases hvV : v ∈ V(G)
+      · exact hv ⟨hvV, by omega⟩
+      · have h0 := Graph.degree_eq_zero_of_notMem (G := G) hvV
+        omega
+    have hNle : (N(G, v)).encard ≤ G.eDegree v :=
+      (Graph.encard_adj_le_encard_inc).trans (Graph.encard_inc_le_eDegree)
+    have heDeg : (G.degree v : ℕ∞) = G.eDegree v := Graph.natCast_degree_eq G v
+    rw [← heDeg] at hNle
+    have hcast : (G.degree v : ℕ∞) ≤ (2 : ℕ∞) := by exact_mod_cast hdeg
+    have hNle2 : (N(G, v)).encard ≤ (2 : ℕ∞) := hNle.trans hcast
+    obtain ⟨hNfin, hNcard⟩ := Set.encard_le_coe_iff_finite_ncard_le.mp hNle2
+    obtain h0 | h1 | h2 :
+        (N(G, v)).ncard = 0 ∨ (N(G, v)).ncard = 1 ∨ (N(G, v)).ncard = 2 := by
+      rcases Nat.lt_or_ge (N(G, v)).ncard 1 with h | h
+      · exact Or.inl (by omega)
+      · rcases Nat.lt_or_ge (N(G, v)).ncard 2 with h' | h'
+        · exact Or.inr (Or.inl (by omega))
+        · exact Or.inr (Or.inr (le_antisymm hNcard h'))
+    · -- degree `0`: `closedNbhd v = {v}`.
+      have hcn : G.closedNbhd v = insert v (N(G, v)) := rfl
+      have hS : G.closedNbhd v = ({v} : Set α) := by
+        rw [hcn, (Set.ncard_eq_zero hNfin).mp h0]; simp
+      rw [hS]
+      exact exists_coord_linearIndepOn_pencilChartPoint_hubSingleton hcard hubSel hHubSel v
+    · -- degree `1`: `closedNbhd v = {v, a}`, two-set core.
+      obtain ⟨a, h1eq⟩ := Set.ncard_eq_one.mp h1
+      have haN : a ∈ N(G, v) := by rw [h1eq]; simp
+      obtain ⟨e_a, hl_a⟩ : G.Adj v a := haN
+      have hva : v ≠ a := hl_a.ne
+      have hcn : G.closedNbhd v = insert v (N(G, v)) := rfl
+      have hS : G.closedNbhd v = ({v, a} : Set α) := by rw [hcn, h1eq]
+      have hcap : G.closedHubNbhd v ∩ G.closedHubNbhd a ⊆ ({v, a} : Set α) := by
+        intro w hw
+        rcases hw.1.2 with heq | ⟨e_vw, hl_vw⟩
+        · exact Or.inl heq
+        · have hwN : w ∈ N(G, v) := hl_vw.adj
+          rw [h1eq] at hwN
+          exact Or.inr hwN
+      obtain ⟨idx, dtgt, hdinj, hav_u, hav_a, hinj_u, hinj_a⟩ :=
+        exists_idx_dtgt_pair hva hcap (hcard v) (hcard a)
+      rw [hS]
+      refine exists_coord_linearIndepOn_pencilChartPoint_of_idx (S := ({v, a} : Set α))
+        (idx := idx) (dtgt := dtgt) hubSel hHubSel hdinj ?_ ?_
+      · intro s hs x hx
+        simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hs
+        rcases hs with rfl | rfl
+        · exact hav_u x hx
+        · exact hav_a x hx
+      · intro s hs
+        simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hs
+        rcases hs with rfl | rfl
+        · exact hinj_u
+        · exact hinj_a
+    · -- degree `2`: `closedNbhd v = {v, a, b}`, three-set core.
+      obtain ⟨a, b, hab, h2eq⟩ := Set.ncard_eq_two.mp h2
+      have haN : a ∈ N(G, v) := by rw [h2eq]; simp
+      have hbN : b ∈ N(G, v) := by rw [h2eq]; simp
+      obtain ⟨e_a, hl_a⟩ : G.Adj v a := haN
+      obtain ⟨e_b, hl_b⟩ : G.Adj v b := hbN
+      have hva : v ≠ a := hl_a.ne
+      have hvb : v ≠ b := hl_b.ne
+      have hcn : G.closedNbhd v = insert v (N(G, v)) := rfl
+      have hS : G.closedNbhd v = ({v, a, b} : Set α) := by rw [hcn, h2eq]
+      have hXv : G.closedHubNbhd v ⊆ ({a, b} : Set α) := by
+        intro w hw
+        rcases hw.2 with heq | ⟨e_vw, hl_vw⟩
+        · exact absurd (heq ▸ hw.1) hv
+        · have hwN : w ∈ N(G, v) := hl_vw.adj
+          rw [h2eq] at hwN
+          exact hwN
+      have haXv : a ∈ G.closedHubNbhd v → a ∈ G.closedHubNbhd a := fun h => ⟨h.1, Or.inl rfl⟩
+      have hbXv : b ∈ G.closedHubNbhd v → b ∈ G.closedHubNbhd b := fun h => ⟨h.1, Or.inl rfl⟩
+      have haXb : a ∉ G.closedHubNbhd b := by
+        intro haCHb
+        rcases haCHb.2 with heq | ⟨e_ba, hl_ba⟩
+        · exact hab heq
+        · exact htf e_a e_ba e_b v a b hva hab hvb hl_a hl_ba.symm hl_b.symm
+      have hbXa : b ∉ G.closedHubNbhd a := by
+        intro hbCHa
+        rcases hbCHa.2 with heq | ⟨e_ab, hl_ab⟩
+        · exact hab heq.symm
+        · exact htf e_b e_ab e_a v b a hvb hab.symm hva hl_b hl_ab.symm hl_a.symm
+      have hcap : (G.closedHubNbhd a ∩ G.closedHubNbhd b).ncard ≤ 2 := by
+        have hsub : G.closedHubNbhd a ∩ G.closedHubNbhd b ⊆ G.closedHubNbhd a \ {a} := by
+          intro w hw
+          refine ⟨hw.1, ?_⟩
+          intro hwa
+          rw [Set.mem_singleton_iff] at hwa
+          exact haXb (hwa ▸ hw.2)
+        refine (Set.ncard_le_ncard hsub (Set.toFinite _)).trans ?_
+        by_cases hha : G.PencilHub a
+        · have haa : a ∈ G.closedHubNbhd a := ⟨hha, Or.inl rfl⟩
+          rw [Set.ncard_diff_singleton_of_mem haa]
+          have := hcard a; omega
+        · have haCN : a ∈ G.closedNbhd a := Or.inl rfl
+          have hsub2 : G.closedHubNbhd a \ {a} ⊆ G.closedNbhd a \ {a} := by
+            intro w hw
+            exact ⟨hw.1.2, hw.2⟩
+          refine (Set.ncard_le_ncard hsub2 (Set.toFinite _)).trans ?_
+          rw [Set.ncard_diff_singleton_of_mem haCN]
+          have := ncard_closedNbhd_le_three_of_not_pencilHub hha
+          omega
+      obtain ⟨idx, dtgt, hdinj, hav_v, hav_a, hav_b, hinj_v, hinj_a, hinj_b⟩ :=
+        exists_idx_dtgt_triple hva hvb hab hXv haXv hbXv haXb hbXa hcap (hcard a) (hcard b)
+      rw [hS]
+      refine exists_coord_linearIndepOn_pencilChartPoint_of_idx (S := ({v, a, b} : Set α))
+        (idx := idx) (dtgt := dtgt) hubSel hHubSel hdinj ?_ ?_
+      · intro s hs x hx
+        simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hs
+        rcases hs with rfl | rfl | rfl
+        · exact hav_v x hx
+        · exact hav_a x hx
+        · exact hav_b x hx
+      · intro s hs
+        simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hs
+        rcases hs with rfl | rfl | rfl
+        · exact hinj_v
+        · exact hinj_a
+        · exact hinj_b
 
 end CombinatorialRigidity.Molecular

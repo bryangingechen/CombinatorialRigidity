@@ -1327,4 +1327,42 @@ theorem pencilNondegFeasible_of_selectors_of_satisfiable [Finite α] [Finite β]
     exists_fillNbr_pencilChartWF_of_standing hHubSel hNbrSel hhub_LI hpt_LI hnbr_some
   exact ⟨_, _, _, isNondegPencilRealization_pencilChartFramework_of_pencilChartWF hWF'⟩
 
+/-! ## The W5-L6b feasibility headline (Phase 39 W5-L6b) -/
+
+/-- **W5-L6b — pencil feasibility from `≤ 3` closed hub-neighbourhoods and triangle-freeness**
+(Phase 39 W5-L6b; `notes/Phase39-design.md` §"W5 leaf decomposition" L6b): a triangle-free simple
+graph whose closed hub-neighbourhoods all have `≤ 3` members is `PencilNondegFeasible`. Choose
+global hub / non-hub-neighbour selectors (`exists_isFin3SelectorOf_of_ncard_le_three`, `hcard` on
+the hub side and `ncard_closedNbhd_le_three_of_not_pencilHub` on the non-hub side), then feed the
+two satisfiability families (`exists_coord_linearIndepOn_pencilChartPoint_perBody` /
+`…_adjacentPair`) to the L6b-i assembly `pencilNondegFeasible_of_selectors_of_satisfiable`.
+`[G.Simple]` is required — a loop makes the fifth `IsNondegPencilRealization` conjunct
+`LinearIndependent ![point v, point v]` unsatisfiable — and supplies the callers' `[G.Loopless]`.
+This is the honest producer of the split arm's L6b obligation: `hcard` transfers from `G` at a safe
+split (`ncard_closedHubNbhd_splitOff_le_three_of_safe`, L6a-transfer) and `htf` from the
+no-proper-rigid habitat (`splitOff_triangleFree_of_noRigid`, L6d). -/
+theorem pencilNondegFeasible_of_ncard_closedHubNbhd_le_three_of_triangleFree
+    [Inhabited α] [Finite α] [Finite β] [Infinite K] {G : Graph α β} [G.Simple]
+    (hcard : ∀ v, (G.closedHubNbhd v).ncard ≤ 3)
+    (htf : ∀ e₁ e₂ e₃ x y z, x ≠ y → y ≠ z → x ≠ z →
+      G.IsLink e₁ x y → G.IsLink e₂ y z → G.IsLink e₃ z x → False) :
+    PencilNondegFeasible K G := by
+  classical
+  haveI : G.Loopless := ‹G.Simple›.toLoopless
+  choose hubSel hHubSel using
+    fun v => exists_isFin3SelectorOf_of_ncard_le_three (Set.toFinite _) (hcard v)
+  have hnbr : ∀ v, ∃ sel : Fin 3 → Option α,
+      ¬ G.PencilHub v → IsFin3SelectorOf (G.closedNbhd v) sel := by
+    intro v
+    by_cases hv : G.PencilHub v
+    · exact ⟨fun _ => none, fun h => absurd hv h⟩
+    · obtain ⟨sel, hsel⟩ :=
+        exists_isFin3SelectorOf_of_ncard_le_three (Set.toFinite _)
+          (ncard_closedNbhd_le_three_of_not_pencilHub hv)
+      exact ⟨sel, fun _ => hsel⟩
+  choose nbrSel hNbrSel using hnbr
+  exact pencilNondegFeasible_of_selectors_of_satisfiable hubSel nbrSel hHubSel hNbrSel
+    (exists_coord_linearIndepOn_pencilChartPoint_perBody hcard htf hubSel hHubSel)
+    (exists_coord_linearIndepOn_pencilChartPoint_adjacentPair hcard htf hubSel hHubSel)
+
 end CombinatorialRigidity.Molecular
