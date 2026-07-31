@@ -128,9 +128,23 @@ The landed successor `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card`
 (`Molecule/Pencil/Escape.lean`) wraps `pencil_conjecture_of_hcontract_hK_hbareSplit` and carries
 exactly three remaining open items — **next concrete commit: pick any one, none blocks another**:
 
-- **`hcontract`** (W4) — the constrained-family Claim-6.4 analogue; not yet attacked (design doc
-  §"W4 route (third core): cluster refutation + the constrained-family survivor (N3)"; the last
-  W-level leaf, scheduled after W5 closes).
+- **`hcontract`** (W4) — **decomposed 2026-07-30** (design doc §"W4 decomposition recon";
+  adjudication owed on its options A/B/C). No new motive: the constrained family lives inside
+  kernel discharges only; the IH-interface remainder is settled by the landed `PencilPair`
+  (consumption gated by the *contracted* graph's `Simple ∧ Feasible`). Buildable now:
+  **W4-L1** (non-simple bare producer, KT 6.2 mirror + motions-collapse rank brick), **W4-L2**
+  (the feasibility-based L7b sibling, `htf` replaced by `hfeas`), **W4-L3** (the dispatch
+  skeleton — spike-compiled — threading three new carried hypotheses through the successor:
+  kernels **(K-c)** `hKc` (Claim-6.4 rank increment, generic contracted input) and
+  **(K-bare-c)** `hbareContract` (bare extension at infeasible `G`), plus the deliberately
+  coarse branch-arm `hnoGood` (vertex-removal branch — real and nonempty: `C4+x,y` provably has
+  all contractions non-simple)). Owed recon **W4-L4**: the minimality-free 6.5/6.6
+  identification (both landed lemmas consume minimality; the trigger here is broader) — re-pins
+  `hnoGood`; then **W4-L5** builds the N9 re-add steering leaf. New exact-ℚ gates all PASSED
+  (`notes/scripts/w4/`): N8 (K-bare-c at K4) 18/18, N9 (vertex removal at `C4+x,y`; also the
+  first direct truth sample of the conjecture there) 24/24 → 30/30 with the rank-29 collinear
+  control = the output fourth-conjunct locus, N10/N10b ((K-c), two new boundary patterns
+  incl. forced-panel) 30/30.
 - **`hK`** (kernel (K), research) — the escape `≢ 0` uniformity kernel. **Routes 1 and 2
   (as pinned) are REFUTED** (2026-07-30 gate + follow-up recon: locality fails — the
   stress is globally supported and the escape's zero locus moves with the far graph at
@@ -179,7 +193,12 @@ neighbor — is `notes/IdeaBacklog.md`.
 Reverse-chronological, one line per landing; full derivations live in git and
 `notes/Phase39-design.md` (per-decision pointer where the design doc has a named section).
 
-- **(K-bare) adjudication: "C: cheap numerics extensions + A"** (2026-07-30, user, verbatim) —
+- **W4 (`hcontract`) decomposition recon — dispatch skeleton spiked, kernels (K-c)/(K-bare-c)
+  pinned, vertex-removal branch isolated; gates N8/N9/N10/N10b all PASSED** (2026-07-30,
+  docs+scripts-only; exact-ℚ `notes/scripts/w4/hybrid_gates.py`) — no motive change; constrained
+  family discharge-internal; `hnoGood` carried coarse pending the W4-L4 minimality-free
+  6.5/6.6-analogue recon; contract-arm feasibility-propagation addendum RESOLVED (dispatch, not
+  propagation). Adjudication owed (options A/B/C). Design doc §"W4 decomposition recon".
   keep carrying `hbareSplit` as pinned (A) AND the option-C probes ran same day
   (`notes/scripts/kbare/optc.py`, exact-ℚ): C1 chain-local adversarial degenerations fall below
   `target(G′)` (excluded by (K-bare-ext)'s own antecedent; hub-coplanar stratum unchanged); C2

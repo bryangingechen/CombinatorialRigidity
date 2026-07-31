@@ -800,6 +800,10 @@ the IH interface: the constrained-family argument consumes in-family
 *genericity* of the smaller realizations, not bare existence — the
 conditioned-pair motive of the GP caveat above.
 
+*(2026-07-30: this remainder is now decomposed — dispatch skeleton, carried kernels
+(K-c)/(K-bare-c), and the vertex-removal branch — in §"W4 decomposition recon" below;
+remainder (iii) is settled there by the landed `PencilPair`.)*
+
 ### Numerics index (this recon)
 
 | # | experiment | result |
@@ -2614,7 +2618,9 @@ bullet); L7 last (consumes L2–L4, L6).
 - Whether the split arm needs further minimality-free analogues of KT Lemma 4.3
   beyond Claim 6.11's inputs — assess inside the arm build (builder).
 - W4's constrained-substrata chart (graded extension, N6 blueprint) and witness
-  generality — unchanged from §W4 route, consumes the W5 device (W4 recon).
+  generality — ~~unchanged from §W4 route, consumes the W5 device (W4 recon)~~
+  **decomposed 2026-07-30**: both now live inside kernel (K-c)'s discharge; see
+  §"W4 decomposition recon".
 - **Contract-arm feasibility propagation** (coordinator addendum on acceptance,
   2026-07-24): the contract arm consumes the IH's generic half at the contracted
   graph `G/E(H)`, so it must either derive `PencilNondegFeasible (G.rigidContract
@@ -2631,7 +2637,11 @@ bullet); L7 last (consumes L2–L4, L6).
   recommended (b′) repair (§"W5 leaf decomposition" L5's blocker verdict,
   pending user adjudication) the vacuity route RETURNS — a contraction-created
   parallel class makes `G/E(H)` non-simple, so the Simple-conditioned generic
-  IH obligation is vacuous there.
+  IH obligation is vacuous there. **RESOLVED 2026-07-30 (W4 decomposition
+  recon):** feasibility propagation is NOT derived — the arm *dispatches* on
+  the contracted graph's `Simple ∧ Feasible` conditioning; when it fails, the
+  generic input to kernel (K-c) is unavailable and the case routes to the
+  vertex-removal branch (`hnoGood`). See §"W4 decomposition recon".
 
 ### Numerics index (this pass)
 
@@ -3606,6 +3616,233 @@ row): probe 0 = gate-gadget count audit; probes 1–2 = DZ certification + bare 
 probes 3a/3b = corank-2 extension, non-hub-ends and hub-end splits.
 `notes/scripts/kbare/optc.py` (README row): the adjudicated option-C probes — C1 adversarial
 degenerate seeds, C2 index-2 gadget search + corank-3 mini-gate, C3 failure-locus map.
+
+### W4 decomposition recon (2026-07-30): the `hcontract` arm — dispatch skeleton, two carried kernels, one under-decomposed branch
+
+Commissioned by the coordinator (the phase's last unattacked core; the `hK`/`hbareSplit`
+adjudications stand and were not reopened). Continues §"W4 route (third core)" above.
+Methods: landed definition bodies re-read (`Escape.lean`'s successor `hcontract` slot;
+`Motive.lean` `PencilPair`/`IsNondegPencilRealization`; `Deficiency.lean`
+`IsProperRigidSubgraph` — carries `2 ≤ |V(H)|` and `V(H) ⊊ V(G)`, so the contraction
+measure and nonemptiness are free; `ReducibleVertex.lean` `rigidContract` +
+`rigidContract_vertexSet_ncard_lt`; `Contraction.lean` `rigidContract_deficiency_eq`
+(landed, minimality-free) and the two KT-6.5/6.6 identification lemmas
+(`exists_degree_two_removeVertex_of_no_simple_contraction`,
+`deficiency_eq_zero_of_simple_rigid_no_simpleContraction`) — both verified to consume
+`IsMinimalKDof n 0`; the panel Case-I architecture (`Theorem55.lean`
+`case_I_dispatch_gen`/`case_I_realization_nonsimple_gen`/`case_I_realization_h65_gen`,
+`CaseI.lean`/`Coupling.lean`); L7b's landed body (`Escape.lean:186` — its `htf` is consumed
+*only* through the two `Witness.lean` somewhere-producers); a `lake env lean` signature
+spike (all five statements below elaborated AND the full dispatch skeleton *compiled*
+against them, `sorry`-bodied kernels; scratch deleted); four new exact-ℚ gates
+N8/N9/N10/N10b (tracked, `notes/scripts/w4/`, README there). KT pointers (Lemmas 6.2/6.3/6.5,
+Claims 6.4/6.6, pp. 673–676) are consumed as previously verified (§Citations); no new
+external citations are introduced.
+
+**Verdict (a) — the constrained family `F` is NOT reified.** No new motive, no `F`
+predicate, no `PencilPair` change. The fiber-product family (pairs coupled by the W2
+cross-incidences at `δ(V′)`) lives only *inside* the kernels' discharges — as the
+graded-chart parametrization of constrained substrata (verdict 3's N6 blueprint) — exactly
+as (K) avoided reifying `escapePoly`. At statement level the arm carries hK-shaped
+implications: realization-level inputs at the contracted graph, the ∃-LI-`pencilRow`
+conclusion at `G`. **Remainder (iii) is thereby settled by the landed `PencilPair`:** the
+IH interface is the conditioned pair itself, and its consumption partitions by the
+*contracted graph's* two-layer conditioning — `(G.rigidContract H r).Simple ∧
+PencilNondegFeasible K (G.rigidContract H r)` gates the generic input, mirroring L7c-5's
+feasible/infeasible partition one level down.
+
+**Verdict (b) — the dispatch skeleton is buildable now (spike-compiled).** The `hcontract`
+producer `pencilPair_of_properRigid` dispatches four ways (KT's own 6.2/6.3/6.5 split plus
+the pencil's second conditioning layer):
+
+1. `¬ G.Simple` — generic conjunct vacuous; bare via **W4-A** (KT Lemma 6.2 mirror, below).
+2. `G.Simple ∧ ¬ PencilNondegFeasible K G` — generic vacuous (`absurd`); bare via kernel
+   **(K-bare-c)** fed the *bare* IH at `G.rigidContract H r` (any `(H, r)`; the bare IH is
+   unconditioned, so no contraction dispatch is needed here).
+3. `G.Simple ∧ Feasible ∧ ∃ (H, r)` with contraction Simple ∧ Feasible — the IH's generic
+   half fires at the contraction; kernel **(K-c)** turns it into LI rows for `G`; **W4-B**
+   (below) steers them to the generic motive; bare = forgetful. (Skeleton note from the
+   spike: build the generic result once and pair it L7c-5-style,
+   `⟨fun _ _ => hgen, hasPencilRealization_of_generic hgen⟩` — the two conjuncts must not
+   each re-run the construction.)
+4. `G.Simple ∧ Feasible ∧` no such `(H, r)` — the **vertex-removal branch** (KT Lemma 6.5
+   territory, broadened by the feasibility layer), carried as the explicitly
+   under-decomposed `hnoGood` hypothesis pending its own identification recon (verdict (d)).
+
+Measure plumbing all landed: `rigidContract_vertexSet_ncard_lt` (strict decrease from
+`2 ≤ |V(H)|`), image-nonemptiness via `vertexSet_rigidContract`, `IsProperRigidSubgraph.
+vertexSet_nonempty` for the representative `r`.
+
+**Verdict (c) — the pinned carried shapes** (all spike-elaborated; antecedent discipline as
+`hK` — everything the call site has; `[Inhabited α]` needed by `pencilRow … G.endsOf`, the
+L7b-flagged correction):
+
+```lean
+hKc : ∀ (G H : Graph α β) (r : α), G.Simple → 3 ≤ V(G).ncard →
+  H.IsProperRigidSubgraph G 3 → r ∈ V(H) →
+  PencilNondegFeasible K G →
+  (G.rigidContract H r).Simple →
+  HasGenericPencilRealization K 3 (G.rigidContract H r) →
+  ∃ (hubSel : α → Fin 3 → Option α) (q : α × Fin 4 × Fin 4 → K)
+    (s : Set (β × Set.powersetCard (Fin 4) 2 × Set.powersetCard (Fin 4) 2)),
+    (∀ w, IsFin3SelectorOf (G.closedHubNbhd w) (hubSel w)) ∧
+    (∀ i ∈ s, (i : β × _ × _).1 ∈ E(G)) ∧
+    ((Nat.card s : ℤ) = screwDim 2 * ((V(G).ncard : ℤ) - 1) - G.deficiency 3) ∧
+    LinearIndependent K (fun i : s => pencilRow hubSel G.endsOf q (i : β × _ × _))
+
+hbareContract : ∀ (G H : Graph α β) (r : α), G.Simple → 3 ≤ V(G).ncard →
+  H.IsProperRigidSubgraph G 3 → r ∈ V(H) →
+  ¬ PencilNondegFeasible K G →
+  HasPencilRealization K 3 (G.rigidContract H r) →
+  HasPencilRealization K 3 G
+
+hnoGood : ∀ G : Graph α β, G.Simple → 3 ≤ V(G).ncard →
+  PencilNondegFeasible K G →
+  (∃ H : Graph α β, H.IsProperRigidSubgraph G 3) →
+  (∀ (H : Graph α β) (r : α), H.IsProperRigidSubgraph G 3 → r ∈ V(H) →
+    ¬ ((G.rigidContract H r).Simple ∧ PencilNondegFeasible K (G.rigidContract H r))) →
+  (∀ G' : Graph α β, V(G').Nonempty → V(G').ncard < V(G).ncard → PencilPair K 3 G') →
+  HasGenericPencilRealization K 3 G
+```
+
+**(K-c)** is KT Claim 6.4 at the rank-increment level on the constrained family: input =
+exactly what branch 3 extracts from the IH; conclusion identical to `hK`'s ∃-LI form
+(branch- and bookkeeping-agnostic; the vacuity guard mirrors `hK` — an infeasible
+contraction kills the input). Bookkeeping grounding: `rigidContract_deficiency_eq` pins
+`def(G/E(H)) = def(G)`, and `|V(G/E(H))| = |V(G)| − |V(H)| + 1` makes the target increment
+exactly `6(|V(H)| − 1)` — the H-block's own rigid-block target, N3's `18 = 6·3` (the ncard
+*equality* for the collapse image is one small counting brick; only `<` is landed). Its
+discharge is the phase's genuine W4 research: (i) the graded chart on the constrained
+substrata (points-first elimination, N6 sampler as blueprint) — the joint-genericity
+device, remainder (i); (ii) per-boundary-pattern in-family `G′`-block witnesses — remainder
+(ii), evidence now N3 + N10 + N10b (three structurally distinct patterns, below); (iii)
+the specialization semicontinuity step (KT p. 675's argument re-run on the chart). Both
+attack routes factor through the discharge without loss.
+
+**(K-bare-c)** mirrors `hbareSplit` (weakest-precondition; the implication may ignore the
+given witness — its truth follows from the bare conjecture at `G`). Evidence: gate N8
+(below) — and note the specialization glue *runs* at the fully degenerate contracted input
+(the 3-parallel class's target-rank realizations are provably all coincident-cluster: two
+distinct hinges through both points force coincident points, then coincident panels — the
+W5-L5 forcing).
+
+**`hnoGood` is a branch-arm, NOT a crisp kernel** — it carries the full IH, so per the
+(K)-full rejection rationale it must not be treated as a discharge-ready research kernel;
+it is the honest placeholder for branch 4 pending the identification recon below. Do not
+build a discharge against it before that recon re-pins it.
+
+**W4-B — the feasibility-based L7b sibling (buildable leaf).** Statement = L7b
+(`hasGenericPencilRealization_of_independent_pencilRow_target`) with `hcard`/`htf` replaced
+by `hfeas : PencilNondegFeasible K G` (spike-elaborated). The contract habitat *has*
+triangles (a triangle is proper rigid at `4 ≤ |V|` — the arm's own entry condition), so
+L7b is unusable as landed; but its `htf` is consumed only through the two `Witness.lean`
+somewhere-producers (`exists_coord_linearIndepOn_pencilChartPoint_perBody`/
+`_adjacentPair`), which *construct* point-LI seeds from nothing. With feasibility in hand
+the witness itself supplies every point condition, transported to the chart by the landed
+re-seed (`exists_pencilSeed_of_nondeg`); the one new brick is sourcing those conditions
+**at `hEsc`'s own `hubSel`** (the re-seed reproduces at the witness's selectors; a
+per-body slot-transport — same arity-dispatch pattern as `Engine.lean`'s landed sweeps,
+`pencilChartPoint` is per-body local — is the flagged risk, est. small). Everything else
+is L7b's body verbatim (engine call, WF reconstruction, `fillNbr` re-choice, rank pinch).
+
+**W4-A — the non-simple bare producer (buildable leaf; KT Lemma 6.2 mirror,
+minimality-free).** `¬Simple` + loopless gives a parallel pair; the 2-body pair subgraph is
+proper rigid at `3 ≤ |V|` (the landed `isKDof_zero_of_parallel_pair` + the panel 6.2's own
+`H′` construction pattern); contract it (`rigidContract_deficiency_eq` preserves the
+deficiency, so targets differ by exactly `6`); bare IH at the contraction; un-contract with
+**shared data** — both endpoints inherit `(pt₂(v*), Π₂(v*))`, old hinges keep their
+extensors with endpoints re-routed (cross-incidences are free: the data is literally
+shared; a third parallel edge, a *loop* at `v*` in the contraction, re-routes the same
+way), and the class itself gets two independent lines through `pt*` in `Π*` (the W1
+parallel-pair move). New bricks: the glue construction + `HasPencilPanelRealization` proof
+(cut-arm assembly style), and the **motions-collapse rank brick**: with two
+independent-line hinges on the pair, any glued motion has `S(x) = S(y)` (the two
+`hingeRowBlock`s' kernels meet only in equality), so glued motions ≅ contracted motions
+and `rank = 6 + rank(contracted)`; the `≤ target` direction is free (the universal
+partition bound). Bounded, est. 2–3 commits; no kernel.
+
+**Verdict (d) — the vertex-removal branch is real, nonempty, and holds the W4
+discriminating instance; its identification is the one genuinely unshaped question.**
+`C4+x,y` (the §W4-route cluster instance) is simple, feasible (hubs `{1, 3}` nonadjacent,
+triangle-free — the landed L6b headline), has proper rigid subgraphs, and **every**
+contraction is non-simple, provably: every rigid subgraph on ≥ 2 vertices contains both
+`1` and `3` (deleting either leaves a star, a forest — nothing rigid), and every outside
+body is adjacent to both, so ≥ 2 edges always merge into a parallel pair at `v*`. So
+branch 4 cannot be dodged. On it, the KT-6.5 *shape* (a degree-2 vertex `v` with `G − v`
+rigid) does hold at this instance (`v = x`, `G − x = C4+y`), and gate N9 (below) confirms
+the pencil vertex-removal route end-to-end: IH at `G − x` attains 24/24, the re-add
+(`pt(x)` on `Π(1) ∩ Π(3)`, hinges the forced joining lines) attains 30/30 — with a genuine
+in-stratum failure locus, `pt(x) ∈ line(pt(1), pt(3))` capping rank at exactly 29
+(deliberate control), excluded by precisely the output motive's fourth conjunct at `x`.
+The geometric re-add is therefore the landed steering pattern (L5-cut-v /
+`exists_isNondegPencilRealization_induce_promotedNormal_of_pendant_deg3`, plus the panel
+h65's triple-LI det factor's pencil analogue) — bounded once the branch's combinatorics is
+pinned. What is NOT known, and is the next recon's charter (**W4-L4**): the
+minimality-free identification — both landed 6.5/6.6 lemmas consume `IsMinimalKDof n 0`
+(verified against the bodies), the pencil habitat has no minimality, and the trigger is
+broader (non-simple **or infeasible** contraction, no KT analogue for the second
+disjunct). Open sub-questions there: does the branch always present a degree-2 vertex `v`
+with `def(G − v) = def(G)` (the (K-bare) gate's `C₅ → P₄` warning shows vertex deletion
+does not preserve deficiency in general)? and the `G − v` feasibility interface (the
+cut-arm demotion gap; the landed input-steering pattern is the expected fix). Do NOT
+assume KT Claim 6.6 transfers.
+
+**Numerics index (this recon; exact-ℚ, tracked `notes/scripts/w4/hybrid_gates.py`, seed
+fixed, reproduce `python3 notes/scripts/w4/hybrid_gates.py 6`).** All targets certified
+against the exact partition deficiency; pencil-witness conjuncts verified per sample; the
+universal `rank ≤ target` bound makes mod-p/exact agreement one-sided (the scripts use
+exact ℚ throughout here).
+
+| # | gate (instance, kernel shape probed) | result |
+|---|---|---|
+| N8 | K4 via triangle contraction ((K-bare-c): coincident-cluster contracted input, specialization glue) | contraction 6/6; hybrid **18/18** in 6/6 samples |
+| N9 | `C4+x,y` via vertex removal (branch 4; also the first direct truth sample of the conjecture at the discriminating instance — §R2 only bounded it) | `C4+y` **24/24**, extended **30/30** in 6/6; collinear control: `pt(x) ∈ line(pt1, pt3)` gives exactly **29** (the fourth-conjunct locus) |
+| N10 | `C4 + x∼1, y∼2, x∼y` via C4 contraction ((K-c): simple + feasible contraction; two *distinct-anchor* boundary panels — the first pattern beyond N3's single cluster) | triangle IH 12/12; hybrid **30/30** in 6/6 |
+| N10b | `C4 + x∼1, y∼1, x∼y` (forced boundary panel: body 1's panel = `plane(pt₁(1), pt₂(x), pt₂(y))`, no genericity survives at it) | triangle IH 12/12; hybrid **30/30** in 6/6 |
+
+Remainder (ii)'s evidence now spans three structurally distinct boundary patterns
+(single-cluster N3, free two-anchor N10, forced-panel N10b) — per the pinned
+numerics-first method, further patterns stay numerically explorable per-instance inside
+(K-c)'s discharge.
+
+**Honest scope caveats.** Every gate instance has `def = 0` at both `G` and the contracted
+graph — deficient-habitat contraction instances are unprobed (the same count-independent
+first-gate scope the (K-bare) arc later had to widen); the gates test the *hybrid at the
+specialization-flavored family point*, not the chart-generic transfer (that is (K-c)-(iii)'s
+research content); and `hnoGood`'s shape is deliberately coarse (see above).
+
+**Ordered leaf list (W4-L*).**
+
+- **W4-L1** (buildable now): W4-A, the non-simple bare producer + its two bricks
+  (shared-data un-contraction glue; motions-collapse rank). 2–3 commits.
+- **W4-L2** (buildable now): W4-B, the feasibility-based L7b sibling (one flagged small
+  brick: somewhere point-conditions at an arbitrary correct `hubSel` from a nondeg
+  witness). 1–2 commits.
+- **W4-L3** (after L1/L2): the dispatch skeleton `pencilPair_of_properRigid` (spiked above,
+  compiles modulo the leaves/kernels) + the successor restatement threading
+  `hKc`/`hbareContract`/`hnoGood` through `pencil_conjecture_of_hcontract_hK_hbareSplit`'s
+  `hcontract` slot; blueprint nodes in the same commit. 1 commit.
+- **W4-L4** (recon, before or parallel to L3): the branch-4 identification — the
+  minimality-free 6.5/6.6 analogue under the broadened trigger, the `def(G − v)`
+  bookkeeping, the `G − v`-feasibility (demotion-steering) interface; numerics-first
+  (combinatorial search for branch-4 inhabitants *without* a good removal vertex).
+  Re-pins `hnoGood`.
+- **W4-L5** (build, after L4): the vertex-removal geometric leaf — N9's construction in
+  Lean (forced joining-line hinges, `pt(v)` steered off the failure line + promoted
+  conditions), the L5-cut-v / h65 steering pattern on `G − v`'s chart. Replaces `hnoGood`
+  if L4's identification lands; otherwise `hnoGood` stays carried.
+- **Kernels (K-c) / (K-bare-c)**: carried (the hK/hbareSplit posture); discharge research
+  as recorded above, after (or alongside) the (K)/(K-bare) work they share the device
+  extension with.
+
+**Adjudication options (user):** (A) build W4-L1 → L2 → L3 now, kernels + `hnoGood`
+carried — completes the *entire* pencil reduction modulo five named hypotheses
+(`hK`, `hbareSplit`, `hKc`, `hbareContract`, `hnoGood`), with L4 owed before `hnoGood` can
+be believed crisp; (B) fire W4-L4 first (it shapes the least-crisp carry; L1/L2 are
+shape-stable either way); (C) extend numerics to deficient-habitat contraction instances
+before building. Recommendation: **A, with L4 dispatched in parallel** — the L1/L2/L3
+statements do not depend on L4's outcome, and the successor-with-kernels milestone is the
+same "proven modulo crisp statements" posture the user already adjudicated for W5.
 
 ## Higher-`d` note (orientation only, per the phase-open decision)
 
