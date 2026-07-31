@@ -24,7 +24,11 @@ the stress-function infrastructure) is NOT commissioned now. **2026-07-30, follo
 adjudicating the (K-bare) extension-route recon's options A/B/C):** *"C: cheap numerics
 extensions + A"* — keep carrying `hbareSplit` as pinned (A) AND run the option-C probes (run
 same day — see *Decisions made*); option B (the insertion-calculus research) is NOT
-commissioned now.
+commissioned now. **2026-07-30, adjudicating the W4 decomposition recon's options A/B/C
+(verbatim):** *"B: L4 recon first"* — settle the W4-L4 minimality-free
+6.5/6.6-identification question BEFORE building W4-L1→L3; options A (build now, kernels
+carried) and C (deficient-habitat numerics) NOT commissioned now. The L4 recon ran the same
+day — see *Decisions made* and the `hcontract` hand-off bullet.
 
 W0–W3 and W5-L0–L6 are all COMPLETE (L6a-safe-exists closed in full both halves; L6b/L6d landed).
 **The W5-L7 arc is now CLOSED**: L7a, L7b, and L7c-1…6 all landed (`Molecule/Pencil/Escape.lean`/
@@ -112,7 +116,10 @@ Full record, grounding, and the W0–W5 decomposition:
 - ~~`hfresh`'s mechanical discharge~~ **CLOSED** (2026-07-30) — `freshEdgeSupply_of_card_lt_of_
   noRigid_of_degree_two` + `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card` (`Escape.lean`).
 - **Open: kernels (K) and (K-bare), and W4 (`hcontract`)** — the entire remaining work of the
-  phase; see *Hand-off* for the per-item route and the `notes/Phase39-design.md` pointers.
+  phase; see *Hand-off* for the per-item route and the `notes/Phase39-design.md` pointers. W4
+  is now fully decomposed (recons of 2026-07-30): buildable leaves W4-L4b/L1/L2/L3′/L5 plus
+  the carried `hKc`/`hbareContract`/`hnoGood'`; the W4 build sequence awaits commissioning
+  (the "B: L4 recon first" adjudication deferred it until the L4 recon — now complete).
 - The full biconditional transport `ExtensorThroughPoint C q ↔ ExtensorInPanel (screwComplementIso
   C) q` (design doc's W0 pin) is landed only as its two forward implications; the reverse arms
   need a `complementIso` involution lemma, not in tree — deferred, not on any critical path.
@@ -128,23 +135,31 @@ The landed successor `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card`
 (`Molecule/Pencil/Escape.lean`) wraps `pencil_conjecture_of_hcontract_hK_hbareSplit` and carries
 exactly three remaining open items — **next concrete commit: pick any one, none blocks another**:
 
-- **`hcontract`** (W4) — **decomposed 2026-07-30** (design doc §"W4 decomposition recon";
-  adjudication owed on its options A/B/C). No new motive: the constrained family lives inside
-  kernel discharges only; the IH-interface remainder is settled by the landed `PencilPair`
-  (consumption gated by the *contracted* graph's `Simple ∧ Feasible`). Buildable now:
-  **W4-L1** (non-simple bare producer, KT 6.2 mirror + motions-collapse rank brick), **W4-L2**
-  (the feasibility-based L7b sibling, `htf` replaced by `hfeas`), **W4-L3** (the dispatch
-  skeleton — spike-compiled — threading three new carried hypotheses through the successor:
-  kernels **(K-c)** `hKc` (Claim-6.4 rank increment, generic contracted input) and
-  **(K-bare-c)** `hbareContract` (bare extension at infeasible `G`), plus the deliberately
-  coarse branch-arm `hnoGood` (vertex-removal branch — real and nonempty: `C4+x,y` provably has
-  all contractions non-simple)). Owed recon **W4-L4**: the minimality-free 6.5/6.6
-  identification (both landed lemmas consume minimality; the trigger here is broader) — re-pins
-  `hnoGood`; then **W4-L5** builds the N9 re-add steering leaf. New exact-ℚ gates all PASSED
-  (`notes/scripts/w4/`): N8 (K-bare-c at K4) 18/18, N9 (vertex removal at `C4+x,y`; also the
-  first direct truth sample of the conjecture there) 24/24 → 30/30 with the rank-29 collinear
-  control = the output fourth-conjunct locus, N10/N10b ((K-c), two new boundary patterns
-  incl. forced-panel) 30/30.
+- **`hcontract`** (W4) — **decomposed 2026-07-30** (design doc §"W4 decomposition recon") and
+  its **W4-L4 identification recon COMPLETE same day** (user-adjudicated "B: L4 recon first";
+  design doc §"W4-L4 identification recon" — the canonical W4 leaf list now lives THERE, not
+  in the decomposition section). No new motive: the constrained family lives inside kernel
+  discharges only; the IH-interface remainder is settled by the landed `PencilPair`
+  (consumption gated by the *contracted* graph's `Simple ∧ Feasible`). L4 verdict: both landed
+  KT-6.5/6.6 lemmas (`Contraction.lean:1004/1171`) consume minimality only in their tails, and
+  the pencil habitat's `hcard` bound (from feasibility) REPLACES it — a third edge at the
+  removal vertex forces a 4-member `closedHubNbhd` — so the co-1 case (∃ proper rigid `H` on
+  `|V|−1` vertices) closes minimality-free with `def(G) = def(G−v) = 0` for free, and KT's
+  non-simple-contraction trigger provably reduces to it (the carrier bridge). The residual
+  carry narrows to **`hnoGood'`** (no co-1 + no Simple∧Feasible contraction + 2EC), with
+  **0 inhabitants found** by a two-run structured+random search
+  (`notes/scripts/w4/no_good_search.py`; vacuity conjectured, NOT proven; feasibility's
+  combinatorial middle zone recorded). **Next concrete commit (when the W4 build is
+  commissioned): W4-L4b** — the co-1 identification lemma `exists_degree_two_of_co1_rigid`
+  (pinned signature in the design section, spike-elaborated, all bricks landed, 1 commit).
+  Then, order-flexible: W4-L1 (non-simple bare producer, KT 6.2 mirror), W4-L2 (the
+  feasibility-based L7b sibling), W4-L3′ (the reshaped skeleton: ¬2EC → landed cut-arm reuse,
+  co-1 → `hremove`, good contraction → `hKc` → W4-B, else `hnoGood'`; spike-COMPILED), and the
+  W4-L5 arc (discharge `hremove`, the N9-validated re-add via the landed L5-cut-v/h65 steering
+  patterns). Carried after L3′: kernels `hKc`/`hbareContract` (hK-posture), `hnoGood'`
+  (research options: prove the vacuity conjecture first), `hremove` (until W4-L5). Numerics
+  evidence: gates N8/N9(+rank-29 control)/N10/N10b all PASSED (`notes/scripts/w4/`,
+  `hybrid_gates.py`).
 - **`hK`** (kernel (K), research) — the escape `≢ 0` uniformity kernel. **Routes 1 and 2
   (as pinned) are REFUTED** (2026-07-30 gate + follow-up recon: locality fails — the
   stress is globally supported and the escape's zero locus moves with the far graph at
@@ -193,12 +208,25 @@ neighbor — is `notes/IdeaBacklog.md`.
 Reverse-chronological, one line per landing; full derivations live in git and
 `notes/Phase39-design.md` (per-decision pointer where the design doc has a named section).
 
+- **W4-L4 identification recon COMPLETE — minimality replaced by feasibility; co-1 dispatch;
+  residual narrowed to `hnoGood'` with 0 search inhabitants** (2026-07-30, docs+scripts-only,
+  per the user's "B: L4 recon first" adjudication, verbatim) — minimality trace of
+  `Contraction.lean:1004/1171` (two tail consumption points; prefix minimality-free); the
+  `hcard`-for-minimality trade (third edge ⟹ 4-member `closedHubNbhd`); the co-1
+  identification leaf W4-L4b pinned buildable (all bricks landed, spike-elaborated); KT's
+  non-simple trigger provably reduces to co-1 (carrier bridge); skeleton reshaped (L3′: ¬2EC
+  cut-arm reuse + co-1 branch + `hremove` interface for W4-L5); residual search
+  (`notes/scripts/w4/no_good_search.py`, two runs, refined three-way feasibility proxy):
+  0 candidates, vacuity conjectured not proven. Design doc §"W4-L4 identification recon".
+- **W4 adjudication: "B: L4 recon first"** (2026-07-30, user, verbatim) — settle W4-L4 before
+  building W4-L1→L3; options A (build now) and C (deficient-habitat numerics) NOT
+  commissioned. Recon ran same day (entry above).
 - **W4 (`hcontract`) decomposition recon — dispatch skeleton spiked, kernels (K-c)/(K-bare-c)
   pinned, vertex-removal branch isolated; gates N8/N9/N10/N10b all PASSED** (2026-07-30,
   docs+scripts-only; exact-ℚ `notes/scripts/w4/hybrid_gates.py`) — no motive change; constrained
   family discharge-internal; `hnoGood` carried coarse pending the W4-L4 minimality-free
-  6.5/6.6-analogue recon; contract-arm feasibility-propagation addendum RESOLVED (dispatch, not
-  propagation). Adjudication owed (options A/B/C). Design doc §"W4 decomposition recon".
+  6.5/6.6-analogue recon (since run — entries above); contract-arm feasibility-propagation
+  addendum RESOLVED (dispatch, not propagation). Design doc §"W4 decomposition recon".
   keep carrying `hbareSplit` as pinned (A) AND the option-C probes ran same day
   (`notes/scripts/kbare/optc.py`, exact-ℚ): C1 chain-local adversarial degenerations fall below
   `target(G′)` (excluded by (K-bare-ext)'s own antecedent; hub-coplanar stratum unchanged); C2

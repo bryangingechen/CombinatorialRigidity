@@ -3729,7 +3729,9 @@ W5-L5 forcing).
 **`hnoGood` is a branch-arm, NOT a crisp kernel** — it carries the full IH, so per the
 (K)-full rejection rationale it must not be treated as a discharge-ready research kernel;
 it is the honest placeholder for branch 4 pending the identification recon below. Do not
-build a discharge against it before that recon re-pins it.
+build a discharge against it before that recon re-pins it. *(Re-pinned 2026-07-30 by the
+L4 recon: superseded by the NARROWED `hnoGood'` + the buildable co-1 identification leaf
+— see §"W4-L4 identification recon".)*
 
 **W4-B — the feasibility-based L7b sibling (buildable leaf).** Statement = L7b
 (`hasGenericPencilRealization_of_independent_pencilRow_target`) with `hcard`/`htf` replaced
@@ -3818,31 +3820,205 @@ research content); and `hnoGood`'s shape is deliberately coarse (see above).
 - **W4-L2** (buildable now): W4-B, the feasibility-based L7b sibling (one flagged small
   brick: somewhere point-conditions at an arbitrary correct `hubSel` from a nondeg
   witness). 1–2 commits.
-- **W4-L3** (after L1/L2): the dispatch skeleton `pencilPair_of_properRigid` (spiked above,
-  compiles modulo the leaves/kernels) + the successor restatement threading
-  `hKc`/`hbareContract`/`hnoGood` through `pencil_conjecture_of_hcontract_hK_hbareSplit`'s
-  `hcontract` slot; blueprint nodes in the same commit. 1 commit.
-- **W4-L4** (recon, before or parallel to L3): the branch-4 identification — the
-  minimality-free 6.5/6.6 analogue under the broadened trigger, the `def(G − v)`
-  bookkeeping, the `G − v`-feasibility (demotion-steering) interface; numerics-first
-  (combinatorial search for branch-4 inhabitants *without* a good removal vertex).
-  Re-pins `hnoGood`.
-- **W4-L5** (build, after L4): the vertex-removal geometric leaf — N9's construction in
+- **W4-L3** ~~(after L1/L2): the dispatch skeleton `pencilPair_of_properRigid` (spiked
+  above, compiles modulo the leaves/kernels)~~ **RESHAPED 2026-07-30 (L4 recon)** — the
+  canonical skeleton is now L3′ in §"W4-L4 identification recon" (adds the ¬2EC cut-arm
+  reuse and the co-1 dispatch; carried set changes).
+- **W4-L4** (recon) — **FIRED 2026-07-30, verdict in §"W4-L4 identification recon"**:
+  minimality trace complete, the feasibility-for-minimality trade closes the co-1 case
+  minimality-free (buildable leaf W4-L4b), the residual narrows to `hnoGood'`
+  (0 search candidates).
+- **W4-L5** (build, after L4b): the vertex-removal geometric leaf — N9's construction in
   Lean (forced joining-line hinges, `pt(v)` steered off the failure line + promoted
-  conditions), the L5-cut-v / h65 steering pattern on `G − v`'s chart. Replaces `hnoGood`
-  if L4's identification lands; otherwise `hnoGood` stays carried.
+  conditions), the L5-cut-v / h65 steering pattern on `G − v`'s chart. Interface now
+  PINNED as the `hremove` producer shape (§"W4-L4 identification recon").
 - **Kernels (K-c) / (K-bare-c)**: carried (the hK/hbareSplit posture); discharge research
   as recorded above, after (or alongside) the (K)/(K-bare) work they share the device
   extension with.
 
-**Adjudication options (user):** (A) build W4-L1 → L2 → L3 now, kernels + `hnoGood`
-carried — completes the *entire* pencil reduction modulo five named hypotheses
-(`hK`, `hbareSplit`, `hKc`, `hbareContract`, `hnoGood`), with L4 owed before `hnoGood` can
-be believed crisp; (B) fire W4-L4 first (it shapes the least-crisp carry; L1/L2 are
-shape-stable either way); (C) extend numerics to deficient-habitat contraction instances
-before building. Recommendation: **A, with L4 dispatched in parallel** — the L1/L2/L3
-statements do not depend on L4's outcome, and the successor-with-kernels milestone is the
-same "proven modulo crisp statements" posture the user already adjudicated for W5.
+**Adjudication options (user). ADJUDICATED (2026-07-30, verbatim): "B: L4 recon
+first"** — settle the W4-L4 minimality-free 6.5/6.6-identification question BEFORE
+building L1→L3; options A (build now, kernels carried) and C (deficient-habitat numerics
+first) are NOT commissioned now. The L4 recon ran the same day — verdict, the re-pinned
+carries, and the L1–L3 reshape in §"W4-L4 identification recon" below (the leaf list
+above is superseded in part by that section's restatement).
+
+### W4-L4 identification recon (2026-07-30): minimality-free 6.5/6.6 — the feasibility trade, the co-1 dispatch, the narrowed residual
+
+Commissioned by the user's "B: L4 recon first" adjudication (verbatim; options block
+above). Question: can the KT Lemma 6.5 / Claim 6.6 identification be re-derived
+minimality-free for the pencil habitat's broader trigger (contraction non-simple OR
+infeasible)? Methods: the two landed identification lemmas' proof bodies read
+line-by-line (`Induction/Contraction.lean:1004`
+`exists_degree_two_removeVertex_of_no_simple_contraction`, `:1171`
+`deficiency_eq_zero_of_simple_rigid_no_simpleContraction`); their input bricks verified
+minimality-free against source (`exists_maximal_induced_isProperRigidSubgraph`,
+`Deficiency.lean:978`; `exists_isLink_pair_of_rigidContract_not_simple`,
+`Contraction.lean:870`; `removeVertex_deficiency_ge`, `SplitOffDeficiency.lean:405`;
+`deficiency_le_deficiency_of_le_vertexSet_eq`, `Deficiency.lean:930`;
+`two_le_degree_of_isKDof_zero`, `Deficiency.lean:1306`); a `lake env lean` spike (the
+identification-lemma statement AND the full reshaped skeleton compiled, `sorry`-bodied
+leaves only; scratch deleted); a two-run combinatorial search probe (tracked,
+`notes/scripts/w4/no_good_search.py`). No new external citations (KT Claim 6.6, p. 676,
+consumed as previously verified).
+
+**Verdict 1 — the minimality trace.** `:1004` consumes `IsMinimalKDof n 0` at exactly
+TWO points, both in its tail: step 4b, `eq_of_isMinimalKDof_of_le_of_vertexSet_eq_of_
+isKDof` (forcing `G = G''`, which is what buys `deg_G(v) = 2` and `G − v = G′`), and
+step 5, `subgraph_minimality` (packaging `(G − v).IsMinimalKDof n 0` — consumed only by
+the *panel* IH's minimality interface, which the pencil IH does not have). Steps 1–4a —
+the maximal induced-saturated extraction, the parallel-pair extraction from
+non-simplicity, the two-`addEdge` carrier `G''` with `G'' − v = G′` and
+`def(G'') = 0`, and the maximality argument forcing `V(G'') = V(G)` — are entirely
+minimality-free (every input brick verified). `:1171` consumes minimality ONLY in its
+final line (`hG.deficiency_eq`, reading `k = def(G)`) — its own docstring's claim, now
+verified against the body; a minimality-free sibling concluding `G.deficiency n = 0` is
+an L7c-1-grade verbatim-prefix extraction (not separately needed below — the co-1 route
+subsumes it).
+
+**Verdict 2 — the feasibility-for-minimality trade (the recon's key finding).** In the
+pencil habitat, the `hcard` bound (from `PencilNondegFeasible K G` via the landed
+`ncard_closedHubNbhd_le_three_of_isNondegPencilRealization`) replaces minimality for the
+degree-2 conclusion. Let `H` be proper rigid with `v ∉ V(H)` and `eₐ : v–a`,
+`e_b : v–b` into `V(H)`. Any third `G`-edge at `v` goes to some `w ∈ V(H) ∖ {a, b}`
+(loopless; a repeat of `a`/`b` is a parallel pair, killed by `G.Simple`) — but then
+`closedHubNbhd_G(v) ⊇ {v, a, b, w}` has FOUR members: `v` is a hub (three edges), and
+each of `a, b, w` has `H`-degree `≥ 2` (`two_le_degree_of_isKDof_zero` at the rigid `H`,
+`2 ≤ |V(H)|` from `IsProperRigidSubgraph`) plus the `v`-edge, so `G`-degree `≥ 3` —
+contradicting `hcard`. Hence `deg_G(v) = 2` exactly, with no minimality anywhere.
+
+**Verdict 3 — the co-1 reformulation: the identification decouples from contractions.**
+The right dispatch is on `∃ H` proper rigid with `|V(H)| + 1 = |V(G)|` (a **co-1** rigid
+subgraph), not on contraction non-simplicity:
+
+- *Co-1 present:* `v` := the unique outside vertex; `deg_G(v) ≥ 2` (2EC, available by
+  the skeleton's branch-0 below); `deg_G(v) = 2` by Verdict 2; carrier
+  `G'' := (H.addEdge eₐ v a).addEdge e_b v b ≤ G` spanning with `G'' − v = H` (the
+  landed `:1004` step-3 plumbing verbatim) gives `def(G'') = 0`
+  (`removeVertex_deficiency_ge` + `def(H) = 0`), hence `def(G) = 0`
+  (`deficiency_le_deficiency_of_le_vertexSet_eq`) and `def(G − v) = 0` (`H ≤ G − v`
+  spanning). Simple ✓ by `mono`. **Every brick is landed**; the pinned leaf
+  (spike-elaborated) is
+
+  ```lean
+  theorem exists_degree_two_of_co1_rigid [DecidableEq β] [Finite α] [Finite β]
+      {G : Graph α β} (hSimple : G.Simple) (hV3 : 3 ≤ V(G).ncard)
+      (h2ec : G.TwoEdgeConnected)
+      (hcard : ∀ w ∈ V(G), (G.closedHubNbhd w).ncard ≤ 3)
+      {H : Graph α β} (hH : H.IsProperRigidSubgraph G 3)
+      (hco1 : V(H).ncard + 1 = V(G).ncard) :
+      ∃ (v a b : α) (eₐ e_b : β), a ≠ v ∧ b ≠ v ∧ a ≠ b ∧ eₐ ≠ e_b ∧
+        G.IsLink eₐ v a ∧ G.IsLink e_b v b ∧
+        (∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b) ∧
+        G.deficiency 3 = 0 ∧ (G.removeVertex v).deficiency 3 = 0 ∧
+        (G.removeVertex v).Simple ∧ v ∈ V(G)
+  ```
+
+  This is leaf **W4-L4b** (buildable now, 1 commit).
+- *The bridge to KT's trigger:* the maximal `G′`'s contraction being non-simple
+  IMPLIES a co-1 rigid subgraph exists, minimality-free — steps 1–4a produce
+  `V(G'') = V(G)` with `G'' − v = G′`, so `G − v ⊇ G′` is spanning on `V(G) ∖ {v}`,
+  `def(G − v) ≤ def(G′) = 0`, and `G − v` is itself a co-1 proper rigid subgraph. So
+  the co-1 dispatch **subsumes the entire non-simple disjunct** of the broader trigger;
+  KT Claim 6.6's own carrier machinery survives as the bridge's proof, with its two
+  minimality points replaced by Verdict 2 + the deficiency computation. (Conversely a
+  co-1 subgraph's contraction is always non-simple at `deg_G(v) ≥ 2` — two vertices,
+  parallel `v–v*` edges — so co-1 ⟺ maximal-contraction-non-simple in the 2EC habitat;
+  prose only, the dispatch needs one direction.)
+
+**Verdict 4 — the residual (`hnoGood` → `hnoGood'`, NARROWED).** With co-1 dispatched,
+the carried branch shrinks to: `G` simple, 2EC, feasible, `∃`-rigid, **no co-1 rigid
+subgraph**, and no `(H, r)` with contraction Simple ∧ Feasible. Its recorded structure:
+every maximal induced-saturated proper rigid `G′` there has a provably **simple**
+contraction (non-simple would produce a co-1 via the bridge — contradiction), hence
+infeasible by the trigger; and infeasibility's `¬hcard` mechanism provably localizes AT
+`v*` (an outside vertex `w` adjacent to `v*` loses its unique `V(G′)`-neighbour `u` —
+always a `G`-hub, since `deg_{G′}(u) ≥ 2` plus `w`'s edge — and gains at most `v*`, so
+off-`v*` closed hub-neighbourhoods stay `≤ 3`; a 4-member set needs `v*` hub with `≥ 3`
+hub outside-neighbours). Honest caveat: `PencilNondegFeasible` has no combinatorial
+characterization — landed-sufficient is `hcard ∧ triangle-free` (L6b) plus the spanning-
+`C₃` witness (L7c-3); landed-necessary is `hcard` and no-2-hub-triangle — so a **middle
+zone** (e.g. `hcard` graphs with only `≤ 1`-hub triangles beyond `C₃`) is undecided by
+landed lemmas, and the residual's trigger is a genuinely geometric predicate. The
+narrowed carry (spike-elaborated, still IH-carrying — a branch-arm, not a discharge-ready
+kernel):
+
+  ```lean
+  hnoGood' : ∀ G : Graph α β, G.Simple → 3 ≤ V(G).ncard →
+    G.TwoEdgeConnected → PencilNondegFeasible K G →
+    (∃ H : Graph α β, H.IsProperRigidSubgraph G 3) →
+    (∀ H : Graph α β, H.IsProperRigidSubgraph G 3 → V(H).ncard + 1 < V(G).ncard) →
+    (∀ (H : Graph α β) (r : α), H.IsProperRigidSubgraph G 3 → r ∈ V(H) →
+      ¬ ((G.rigidContract H r).Simple ∧ PencilNondegFeasible K (G.rigidContract H r))) →
+    (∀ G' : Graph α β, V(G').Nonempty → V(G').ncard < V(G).ncard → PencilPair K 3 G') →
+    HasGenericPencilRealization K 3 G
+  ```
+
+**Verdict 5 — residual inhabitedness: 0 candidates found; vacuity CONJECTURED, not
+proven.** Search probe (`notes/scripts/w4/no_good_search.py`, two runs). Run 1 (coarse
+two-way proxy, candidate-OVER-inclusive since provably-good was under-approximated):
+full coverage of families A1 (cycle + 3 anchored hub gadgets, the `¬hcard`-at-`v*`
+mechanism; 3267 instances) and A2 (cycle + anchored adjacent pair, the triangle
+mechanism; 1170) + 2000 sparse randoms → exactly ONE candidate, `B#351` (two adjacent
+degree-4 hubs joined by a hub edge + three length-3 paths) — dissolved on inspection:
+contracting its rigid 6-vertex theta leaves the **spanning `C₃`**, simple and feasible
+by the landed L7c-3 witness (the coarse proxy had treated every triangle as
+not-provably-feasible). Run 2 (refined three-way classifier: provably-good /
+provably-bad / middle-zone, `B#351` kept as a regression check, `|V| ≤ 13` cap): 4000
+randoms + the two-hub-multi-path family C + capped A1/A2 → **0 candidates, strong or
+middle**. Structural squeeze recorded: two hand constructions aimed at the residual both
+collapsed (a C6+3-hub gadget — its `G − b` was rigid, i.e. co-1; a C5+pair gadget — a
+small `C₄` subgraph had a simple + provably-feasible contraction), and the two-hub-long-
+path family always yields a good contraction through "contract everything but one path"
+(the leftover is a `C₃`/`C₄`/..., provably feasible). **Conjecture (open):** the
+residual habitat is empty — every simple 2EC feasible graph with a proper rigid subgraph
+has a co-1 rigid subgraph or a Simple∧Feasible contraction. If proven, `hnoGood'` is
+vacuously dischargeable; until then it is carried as pinned. Do NOT treat the search as
+proof; the middle zone additionally means a true inhabitant could be missed by the
+proxies in either direction.
+
+**The reshaped skeleton (L3′) and the W4-L5 interface (`hremove`) — supersedes the
+decomposition section's W4-L3 pin.** The skeleton `pencilPair_of_properRigid`
+(spike-COMPILED end-to-end, `sorry`-bodied leaves):
+
+0. `¬ G.TwoEdgeConnected` → reuse the landed cut arm wholesale
+   (`pencilPair_of_not_twoEdgeConnected hD2 hn h2ec hIH`, `Pair2.lean` — signature
+   verified; this is what puts 2EC in scope for every later branch, needed by both the
+   co-1 identification and the residual's structure).
+1. `¬ Simple` → generic vacuous; bare via W4-A (leaf W4-L1, unchanged).
+2. `Simple ∧ ¬ Feasible` → generic vacuous; bare via `hbareContract` at any `(H, r)`
+   (kernel unchanged).
+3. `Simple ∧ Feasible`: build the generic result ONCE (`⟨fun _ _ => hgen,
+   hasPencilRealization_of_generic hgen⟩`), by:
+   - co-1 rigid subgraph exists → W4-L4b, then the vertex-removal producer `hremove`
+     (the W4-L5 leaf's pinned interface — carried as a hypothesis until W4-L5 lands):
+     from the habitat + the identification's outputs (`deg`-2 closure clause,
+     `def(G) = 0 = def(G − v)`) + the IH, produce `HasGenericPencilRealization K 3 G`;
+   - else `∃ (H, r)` contraction Simple ∧ Feasible → IH generic → `hKc` → W4-B
+     (leaf W4-L2, unchanged);
+   - else → `hnoGood'` (the antecedent plumbing from the two `by_cases` compiles —
+     the no-co-1 strict bound comes from `Set.ncard_lt_ncard` on `V(H) ⊂ V(G)` plus
+     the co-1 case exclusion).
+
+**Re-pinned ordered leaf list (canonical; supersedes the decomposition section's).**
+
+- **W4-L4b** (buildable now, 1 commit, all bricks landed): the co-1 identification
+  lemma above. Recommended FIRST build of the arc (cheapest, and it certifies the
+  trade that everything else leans on).
+- **W4-L1** (buildable now, unchanged): W4-A, the non-simple bare producer.
+- **W4-L2** (buildable now, unchanged): W4-B, the feasibility-based L7b sibling.
+- **W4-L3′** (after L4b/L1/L2): the reshaped skeleton + successor restatement, carrying
+  `hKc`, `hbareContract`, `hnoGood'`, and `hremove`; blueprint nodes in the same commit.
+- **W4-L5** (its own arc, the largest build; before or after L3′): discharge `hremove` —
+  the N9-validated re-add (forced joining-line hinges, `pt(v)` on `Π(a) ∩ Π(b)` steered
+  off `line(pt(a), pt(b))`), the L5-cut-v / h65 steering pattern on `(G − v)`'s chart;
+  its inner obligations: `G − v` feasibility for the IH's generic half (the demotion
+  gap at the two neighbours — the landed input-steering pattern) and the output
+  conjuncts at `v` and its neighbours.
+- **Kernels** `hKc` / `hbareContract`: carried, unchanged. **`hnoGood'`**: carried,
+  narrowed; its research options are (i) prove the vacuity conjecture (combinatorial,
+  bounded search space of mechanisms recorded above) or (ii) attack it directly as a
+  geometric branch — do not attempt (ii) before (i) is assessed.
 
 ## Higher-`d` note (orientation only, per the phase-open decision)
 
