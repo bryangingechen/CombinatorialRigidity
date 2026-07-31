@@ -28,7 +28,12 @@ commissioned now. **2026-07-30, adjudicating the W4 decomposition recon's option
 (verbatim):** *"B: L4 recon first"* — settle the W4-L4 minimality-free
 6.5/6.6-identification question BEFORE building W4-L1→L3; options A (build now, kernels
 carried) and C (deficient-habitat numerics) NOT commissioned now. The L4 recon ran the same
-day — see *Decisions made* and the `hcontract` hand-off bullet.
+day — see *Decisions made* and the `hcontract` hand-off bullet. **2026-07-30, session pause
+(verbatim):** *"OK, let's pause the loop and prepare for handoff to a fresh session after this
+agent returns, as we're coming up on some token limits."* — the coordinator loop ended after
+the W4-L4 recon landed and verified; no further dispatches this session. A fresh session picks
+up per *Hand-off* (next concrete commit: W4-L4b, once the W4 build is commissioned — or a
+coordinator session re-opens with the standing kernel adjudications unchanged).
 
 W0–W3 and W5-L0–L6 are all COMPLETE (L6a-safe-exists closed in full both halves; L6b/L6d landed).
 **The W5-L7 arc is now CLOSED**: L7a, L7b, and L7c-1…6 all landed (`Molecule/Pencil/Escape.lean`/
@@ -170,9 +175,11 @@ exactly three remaining open items — **next concrete commit: pick any one, non
   6(|V|−1)`), both chain ends hubs, provably 2-connected — where no landed-brick route
   closes it; the one identified enabling technology is stress-as-chart-rational-function
   infrastructure. **Adjudicated ("C: literature hunt + A", verbatim)**: keep carrying `hK`
-  as pinned (zero effort now) AND run the cheap read-only literature hunt alongside — the
-  coordinator's next dispatch, not run by this pass; commissioning the stress-function
-  infrastructure (option B) is NOT authorized now.
+  as pinned (zero effort now); the literature hunt RAN same day — **NO HIT**, the crux
+  confirmed novel (nearest work: the White–Whiteley 1983/1987 pure-condition papers, the
+  right exemplars if option B is ever commissioned; see *Citations* + design doc §"(K)
+  literature hunt"); commissioning the stress-function infrastructure (option B) is NOT
+  authorized now.
   Design doc §"W5-L7 research recon" "(K) route-1 gate" + "(K) non-constancy recon".
 - **`hbareSplit`** (kernel (K-bare), research) — the bare-half-off-feasibility kernel; **carried
   as pinned (the standing GO), extension route recon'd NO-GO on landed machinery** (2026-07-30):
