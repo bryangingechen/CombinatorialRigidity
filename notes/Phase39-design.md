@@ -3549,7 +3549,10 @@ placement freedom is the prover's), **harder on the seed side** (no chart, adver
 (K)'s option-B stress-function infrastructure serves it only in its arbitrary-seed variant —
 (K-bare-ext) is related to, but not subsumed by, that commission.
 
-**Adjudication options (user).**
+**Adjudication options (user). ADJUDICATED (2026-07-30 follow-up, verbatim): "C: cheap
+numerics extensions + A"** — option A (keep carrying `hbareSplit` as pinned, the standing
+route-(a) GO) stands AND option C's three probes were commissioned and run same day (results
+block below); option B (the insertion-calculus research) is NOT commissioned now.
 
 - **A — keep carrying `hbareSplit` as pinned** (recommended; this is the standing "route (a) GO"
   adjudication, unchanged). Zero effort now; this recon's stratification + (K-bare-ext) become
@@ -3565,9 +3568,44 @@ placement freedom is the prover's), **harder on the seed side** (no chart, adver
   index 2 by the same length bounds; larger skeletons unprobed), and off-line failure-locus
   mapping (is the failure set *exactly* the line at corank 2?).
 
+**Option-C results (2026-07-30, same day; exact-ℚ, `notes/scripts/kbare/optc.py`; reproduce
+`python3 optc.py c1|c2|c3` from that directory).** Evidence-only, per the adjudication — nothing
+here closes the leaf; (K-bare-ext) as pinned is unchanged. Findings:
+
+- **C1 (adversarial seeds).** The three *chain-local* degenerations tried at DZ's corank-2 split
+  (chain line forced through the far hub point, from either side; apex star collinear) all fall
+  **below `target(G′)`** at every sampled seed (106–107 vs 108, 18/18) — they are excluded by
+  (K-bare-ext)'s own rank antecedent. A structural plus for the eventual discharge: at these
+  seeds the target-rank hypothesis itself polices exactly the local chain degeneracy the
+  insertion calculus's `dim S` step needs (evidence-level: one gadget, one sampler family). The
+  *global* hub-coplanar degeneration IS target-compatible: 6/6 corank-2 seeds, off-line
+  placements attain 3/3, on-line/midpoint fail by 1 — the picture is unchanged on that deeper
+  stratum.
+- **C2 (`index ≥ 2` existence) — danger gadgets with corank-3 splits EXIST.** In the family
+  "subdivided cubic skeleton + apex hub (three length-1 edges), per-edge length ≤ 3" (the length
+  bound is forced at index 2 by the drop-one-edge subsets): `K3,3` is arithmetically excluded
+  (0 candidate length assignments), but **cube `Q3` and Wagner `V8` (both 24v/28e) and Petersen
+  (29v/34e) all yield hits** — both 8v-skeleton hits certified exactly (`f(V) = +2`, `def = 0`,
+  `max f(W)` proper `= −1`, 2EC, simple, infeasible; the Petersen hit skeleton-level-certified
+  only, `2^29` exact table skipped). Mini-gate on both 8v hits: bare target **138/138 attained**
+  (corank 2 at `G` itself), and extension from **corank-3** `G′` seeds (hub-end split, placement
+  confined to the hub's star plane): off-line in-plane attains 3/3 at every seed, on-line fails
+  by exactly 1 (137). So the corank stratification is genuinely inhabited at least up to
+  `corank(G′) = 3` (`index ≤ 4` caps it at 5), and the qualitative extension picture is
+  corank-stable so far.
+- **C3 (failure-locus map at corank 2).** At fixed target-rank DZ `G′` seeds, both split shapes:
+  **every** sampled point ON `line(a,b)` fails by exactly 1 (15/15 per shape, rank exactly
+  `target − 1`; 3 per shape exact-ℚ-confirmed), and **0** exact-ℚ-confirmed failures among 179
+  off-line placements (80 free-space randoms + 20 points on planes through the line at the
+  non-hub split; 79 randoms in the hub end's star plane at the hub-end split). As far as
+  sampling shows the failure set is *exactly* the deleted hinge's line — sharply consistent with
+  (K-bare-ext)'s side condition being precisely line-avoidance and nothing more.
+
 **Numerics index (this recon).** `notes/scripts/kbare/danger.py` (see the directory README's
 row): probe 0 = gate-gadget count audit; probes 1–2 = DZ certification + bare attainment;
 probes 3a/3b = corank-2 extension, non-hub-ends and hub-end splits.
+`notes/scripts/kbare/optc.py` (README row): the adjudicated option-C probes — C1 adversarial
+degenerate seeds, C2 index-2 gadget search + corank-3 mini-gate, C3 failure-locus map.
 
 ## Higher-`d` note (orientation only, per the phase-open decision)
 

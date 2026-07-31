@@ -20,7 +20,11 @@ the L7 recon's "Route options" and the L6a-safe-exists rigid-half open item):** 
 discharged — see *Decisions made*). **2026-07-30, later same session (verbatim, adjudicating
 the (K) non-constancy recon's options A/B/C):** *"C: literature hunt + A"* — keep carrying `hK`
 as pinned (A) AND run the cheap read-only literature hunt (C) alongside; option B (commission
-the stress-function infrastructure) is NOT commissioned now.
+the stress-function infrastructure) is NOT commissioned now. **2026-07-30, follow-up (verbatim,
+adjudicating the (K-bare) extension-route recon's options A/B/C):** *"C: cheap numerics
+extensions + A"* — keep carrying `hbareSplit` as pinned (A) AND run the option-C probes (run
+same day — see *Decisions made*); option B (the insertion-calculus research) is NOT
+commissioned now.
 
 W0–W3 and W5-L0–L6 are all COMPLETE (L6a-safe-exists closed in full both halves; L6b/L6d landed).
 **The W5-L7 arc is now CLOSED**: L7a, L7b, and L7c-1…6 all landed (`Molecule/Pencil/Escape.lean`/
@@ -152,8 +156,13 @@ exactly three remaining open items — **next concrete commit: pick any one, non
   `pt(v)`-placement freedom, no device needed). Prerequisite for any discharge: the owed KT
   pp. 684–691 boundary-load re-pin + its arbitrary-seed extension. Numerics extended to the
   stressed stratum (`notes/scripts/kbare/danger.py`): off-line placements attain, on-line fail by
-  exactly 1, 0 counterexamples. Design doc §"(K-bare) extension-route recon" (adjudication
-  options A/B/C there; A = keep carrying, recommended).
+  exactly 1, 0 counterexamples. **Adjudicated ("C: cheap numerics extensions + A", verbatim,
+  2026-07-30):** carry stands; option-C probes run same day (`notes/scripts/kbare/optc.py`) —
+  chain-local adversarial degenerations are excluded by the rank antecedent itself; index-2
+  gadgets EXIST (cube/Wagner skeletons, corank-**3** splits, same qualitative picture); the
+  corank-2 failure set is exactly the line at every sampled seed. Option B (insertion-calculus
+  research) NOT commissioned. Design doc §"(K-bare) extension-route recon" (options block
+  marked ADJUDICATED, option-C results block appended).
 
 Gates for any continuation: `lake build` (warning-clean) + `lake lint` when `.lean` is touched;
 `blueprint/verify.sh` + `blueprint/lint.sh` (vocabulary gate bans "stratum"/"strata") when `.tex`
@@ -170,6 +179,15 @@ neighbor — is `notes/IdeaBacklog.md`.
 Reverse-chronological, one line per landing; full derivations live in git and
 `notes/Phase39-design.md` (per-decision pointer where the design doc has a named section).
 
+- **(K-bare) adjudication: "C: cheap numerics extensions + A"** (2026-07-30, user, verbatim) —
+  keep carrying `hbareSplit` as pinned (A) AND the option-C probes ran same day
+  (`notes/scripts/kbare/optc.py`, exact-ℚ): C1 chain-local adversarial degenerations fall below
+  `target(G′)` (excluded by (K-bare-ext)'s own antecedent; hub-coplanar stratum unchanged); C2
+  index-2 danger gadgets EXIST (cube/Wagner 24v hits certified exactly; Petersen skeleton-level)
+  with bare attainment 138/138 and the same extension picture at corank-**3** `G′` seeds; C3 the
+  corank-2 failure set is exactly `line(a,b)` at every sampled seed (15/15 on-line fail by 1,
+  0/179 off-line failures). Option B NOT commissioned. Design doc §"(K-bare) extension-route
+  recon" option-C results block.
 - **(K-bare) extension-route recon — NO-GO on landed machinery; kernel corank-stratified; carry
   stands** (2026-07-30, docs-only; exact-ℚ script `notes/scripts/kbare/danger.py`) — landed
   devices definitionally dead at infeasible `G`; count dichotomy (KT-4.5(ii) shape,
