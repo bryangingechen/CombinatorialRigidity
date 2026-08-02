@@ -53,6 +53,12 @@ invariant, with (K-res) carried as a sibling hypothesis alongside the byte-ident
 (K)-family crux. The same adjudication commissions the next research dispatch: the (K-tight)
 informal recon, starting with the carrier-aware KT pp. 684–691 boundary-load re-pin
 (workbook §"widened kernels" Step 5's M2-vs-`S^⊥` caveat is the motivating finding).
+**That dispatch RAN the same day — the re-pin is DONE** (workbook §(K-tight),
+`notes/scripts/w4/repin.py`): the carrier escape criterion is proven-informally and
+machine-validated (KT's M₁ is carrier-dead; combined failure ⟺ `★r ∥ C(Π(b)∩Π(c))`), the
+motivating seed-442 mispredict and *every* recorded escape failure turned out to be
+placement-sampler artifacts (no genuine failure exists in the corrected record), and the
+kernel is narrowed to one uniform gap, (K-move)/(K-pitch) — see *Hand-off*.
 
 W0–W3 and W5-L0–L6 are all COMPLETE (L6a-safe-exists closed in full both halves; L6b/L6d landed).
 **The W5-L7 arc is now CLOSED**: L7a, L7b, and L7c-1…6 all landed (`Molecule/Pencil/Escape.lean`/
@@ -212,7 +218,15 @@ exactly three remaining open items — **next concrete commit: pick any one, non
   confirmed novel (nearest work: the White–Whiteley 1983/1987 pure-condition papers, the
   right exemplars if option B is ever commissioned; see *Citations* + design doc §"(K)
   literature hunt"); commissioning the stress-function infrastructure (option B) is NOT
-  authorized now.
+  authorized now. **The KT pp. 684–691 re-pin is DONE (2026-08-02, workbook §(K-tight))**:
+  the escape criterion is settled against the carrier (attainment ⟺ two functionals
+  independent on the obstruction space `U`; (K-tight)/(K-res) hard-stratum failure ⟺
+  `★r ∥ C(meet line)`), no genuine escape failure exists in the corrected numerics, and
+  the open mathematics is one uniform gap — **(K-move)** ("`[r]` moves on a local-block
+  fiber", the route-1 gate's lever, now aimed at the proven failure direction) or the new
+  scalar form **(K-pitch)** ("the transmitted wrench has pitch": one polynomial per
+  (graph, split), the White–Whiteley-shaped entry point if option B is ever commissioned).
+  Next research step, when (K) resumes: attack (K-pitch) via the pure-condition calculus.
   Design doc §"W5-L7 research recon" "(K) route-1 gate" + "(K) non-constancy recon".
 - **`hbareSplit`** (kernel (K-bare), research) — the bare-half-off-feasibility kernel; **carried
   as pinned (the standing GO), extension route recon'd NO-GO on landed machinery** (2026-07-30):
@@ -248,6 +262,15 @@ neighbor — is `notes/IdeaBacklog.md`.
 Reverse-chronological, one line per landing; full derivations live in git and
 `notes/Phase39-design.md` (per-decision pointer where the design doc has a named section).
 
+- **(K-tight) KT pp. 684–691 re-pin DONE — carrier escape criterion proven+validated; every
+  recorded escape failure was a sampler artifact** (2026-08-02, docs+scripts-only, exact-ℚ
+  `notes/scripts/w4/repin.py`) — M₁ carrier-dead, M₂/M₃ survive as point sweeps (routes A/B);
+  attainment ⟺ two functionals independent on `U` (`dim U = dim R_a + 1` forced; 80/80
+  per-placement); (K-tight) failure ⟺ `★r ∥ C(Π(b)∩Π(c))`; failure locus `line(ab) ∪ P′`.
+  Seed 442 and the 94/96 non-escapes were `plane_basis` degeneracies (`n[2] = 0`); corrected
+  record: every target-rank seed escapes. Kernel narrowed to (K-move)/(K-pitch). Workbook
+  §(K-tight); the design doc's (K)-sections carry dated pointers.
+
 - **W4 routes 1/3 kernel-widening cost PRICED — one kernel, not two; no counterexample**
   (2026-08-02, docs+scripts-only, exact-ℚ `notes/scripts/w4/widened.py`) — `hbareSplit` is
   unreachable at a residual (feasible by hypothesis, so the split producer's infeasible
@@ -256,7 +279,8 @@ Reverse-chronological, one line per landing; full derivations live in git and
   (K) analysis's `s₀ = 0` step **breaks** — the rigid core's own dependency cancels the index
   gain (`dim R_a = 5 + def(G′) − def(G−v)`, 4192/4192), so the residual habitat sits wholesale
   in (K-tight)'s hard `dim R_a = 1` stratum — yet the escape holds: 8/8 escaping seeds at
-  `W19`/`S29`, 94/96 pool-wide, vs 11/12 for the pinned kernel's own tight control. **(E) is
+  `W19`/`S29`, 94/96 pool-wide, vs 11/12 for the pinned kernel's own tight control (all
+  non-escapes later shown sampler artifacts — the (K-tight) re-pin entry). **(E) is
   reduced** to a `noRigid`-free verbatim-prefix leaf plus **(E-loc)** (255/255).
   `notes/Pencil-informal.md` §"widened kernels (routes 1/3)". **W4 route adjudication owed.**
 - **(SAFE-RES) REFUTED; successor (SAFE-RES′) pinned with two named gaps** (2026-08-02,
@@ -426,7 +450,10 @@ Reverse-chronological, one line per landing; full derivations live in git and
   are transcribed from `notes/Pencil.md`'s 2026-07-23 survey against
   the project-canonical source (ROADMAP *References*); KT pointer
   verification history: `notes/Phase35.md` *Citations*,
-  `notes/Phase23-cleanup.md`.
+  `notes/Phase23-cleanup.md`. The (K-tight) re-pin (2026-08-02)
+  verified pp. 681–691 (Lemma 6.10's proof: Claims 6.11/6.12, the
+  `p₁/p₂/p₃` constructions, (6.44), the Lemma 2.1 four-point span)
+  directly against the `.refs` copy — workbook §(K-tight) Step 0.
 - Jordán 2016 (MSJ Memoirs 34) — checked silent on the pencil stratum
   in the 2026-07-23 survey (the no-literature-result finding), re-confirmed
   by the 2026-07-30 (K) literature hunt (0 pages match pencil/coplanar/

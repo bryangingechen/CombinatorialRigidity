@@ -3272,6 +3272,14 @@ where it lands), plausibly a derivative/transversality statement about the coran
 but the `∀ G` uniformity remains the crux. That statement is the recommended object of the
 next (K) recon — *fired same day, verdict PARTIAL, next subsection.*
 
+**(K-tight) re-pin pointer (2026-08-02).** The lever's `w` is now *identified*: the
+carrier-corrected criterion (KT pp. 684–691 re-derived against the carrier) puts combined
+failure at `r ∥ ★C(Π(b) ∩ Π(c))` — the meet line's starred extensor, local-block data —
+and the `E = r ⬝ (b̂∧ĉ)` M₁ test used by this gate's scripts certifies only the
+*panel-model* escape, which the carrier cannot realize. The gate's verdicts (locality
+refuted, non-constancy as the lever) are unaffected. `notes/Pencil-informal.md`
+§(K-tight).
+
 ### (K) non-constancy recon (2026-07-30): corank stratification — PARTIAL, kernel narrowed to (K-tight)
 
 Commissioned as the route-1 gate's follow-up: *does uniform stress non-constancy have a
@@ -3389,6 +3397,16 @@ survives, what breaks (item 3's `s₀ = 0` and item 4's proof, not its conclusio
 the corank identity `dim R_a = 5 + def(G′) − def(G−v)`, the reduction of item 1's
 `index ≤ 4` to a cheap leaf plus (E-loc), and a caveat against item 2's failure
 criterion: `notes/Pencil-informal.md` §"widened kernels (routes 1/3)".
+
+**(K-tight) re-pin pointer (2026-08-02, later).** Item 2's owed KT pp. 684–691 re-pin is
+**done, against the carrier** — `notes/Pencil-informal.md` §(K-tight). The §2 criterion is
+corrected there (three panel leaks: M₁'s `Λ²Π̂(a)` is carrier-unrealizable; M₂/M₃'s spans
+are the *full* `Λ²Π̂(b)`/`Λ²Π̂(c)`, not the pencils; the obstruction space is
+`U = R_a ⊕ ⟨w⟩`, not `R_a`), item 4's "non-hub ends: `r ≠ 0` suffices" is corrected (a
+1-dim bad set `⟨★C_ab⟩` remains per route), and (K-shared) is absorbed into
+`dim R_a ≥ 1`. The Step-5 caveat's seed-442 mispredict dissolved: a placement-sampler
+artifact, not a criterion failure — no genuine escape failure exists in the phase's
+corrected numerics (`notes/scripts/w4/repin.py`).
 
 One more scope note for the eventual discharge, recorded while fresh: `hK`'s class also
 contains `k > 0` (`def(G) > 0`) habitats, where `G′` can have corank 0 (no stress at all
@@ -3628,6 +3646,15 @@ a residual is `PencilNondegFeasible` by hypothesis, so the split producer's
 `hbareSplit` branch (`Escape.lean:424–428`) is unreachable there; this recon's count
 dichotomy and (K-bare-ext) stand exactly as pinned. `notes/Pencil-informal.md`
 §"widened kernels (routes 1/3)" *Step 0*.
+
+**(K-tight) re-pin pointer (2026-08-02, later).** (K-bare-ext)'s named prerequisite —
+the KT pp. 684–691 re-pin — is **done** (`notes/Pencil-informal.md` §(K-tight); exact at
+arbitrary target-rank seeds, so item (iii)'s chart-genericity worry narrows to
+`dim R_a ≥ 1`). One correction to C3's gloss: the failure set is *not* exactly the line —
+on the `dim U = 2` stratum it is `line(a,b) ∪ P′`, a second line invisible to C3's
+sampling and exhibited at the control (`repin.py --control`); (K-bare-ext)'s `∃`-form
+side condition is unaffected. Implications for the statement:
+`notes/Pencil-informal.md` §(K-bare-ext).
 
 **Numerics index (this recon).** `notes/scripts/kbare/danger.py` (see the directory README's
 row): probe 0 = gate-gadget count audit; probes 1–2 = DZ certification + bare attainment;

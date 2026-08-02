@@ -114,3 +114,36 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
     the property `edgeBound_of_noRigid_of_degree_two` extracts from `hnoRigid`.
 
   Argument state: `notes/Pencil-informal.md` §"widened kernels (routes 1/3)".
+
+  **Escape-figure correction (2026-08-02, the (K-tight) re-pin).** The
+  non-escaping seeds behind `--validate`'s 11/12 (incl. seed 442) and
+  `--sample`'s 94/96 are **placement-sampler artifacts**: `localtest.py`'s
+  `plane_basis` returns two *parallel* in-plane directions whenever the
+  normal's third coordinate is `0`, so those seeds' "in-plane placements"
+  all sat on one line through `pt(b)`, freezing `hinge(vb)`. With a robust
+  sampler every target-rank seed probed escapes — see `repin.py` below.
+  `widened.py` is left unchanged as the record of what was measured.
+
+- `repin.py [--control | --theta | --witness | --stratum | --pointwise]` —
+  the **carrier-aware KT pp. 684–691 boundary-load re-pin** (2026-08-02):
+  validates the corrected escape criterion of `notes/Pencil-informal.md`
+  §(K-tight) (attainment ⟺ two functionals independent on the obstruction
+  space `U`; `dim U = dim R_a + 1` forced; route-A/B uniform failure ⟺
+  `r ⊥ Λ²Π̂(b)` / `r ⊥ Λ²Π̂(c)`; combined failure ⟺ `★r ∥ C(meet line)`).
+  Exact-ℚ, on top of `widened.py` / `../escape/`.
+  - `--control` (~10 min): dbl-subdivided `K4`, seeds 440–479 — criterion
+    exact 34/34 (routes A, B, and A|B); seed-442 post-mortem (escapes with
+    the robust sampler; bad-line generator = `★C(meet line)`); the second
+    failure line `P′` exhibited (off-line placement failing by exactly 1);
+    the pencil-restricted M2 predictor refuted (32/34, seeds 442/473).
+  - `--theta` (~2 min): θ(4,4,3), `dim R_a = 2` — `dim U = 3 = dim R_a + 1`,
+    all seeds escape both routes.
+  - `--witness` (~8 min): `W19` (3 split shapes) and `S29` (`s₀ = 2`) —
+    criterion exact 12/12 and 4/4.
+  - `--stratum` (~10 min): the `(def 0, dim R_a 1)` pool stratum — 24/24
+    agreement, 0 genuine failures (the two `--sample` failures reproduce as
+    seeds 5000/5001 of one pair, both with `nrm[b][2] = 0`).
+  - `--pointwise` (~8 min): the per-placement biconditional (attainment ⟺
+    rank-2 of the `U`-functional matrix), 80/80 at the control and `W19`.
+
+  Argument state: `notes/Pencil-informal.md` §(K-tight).
