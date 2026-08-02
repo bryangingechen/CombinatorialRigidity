@@ -3225,6 +3225,11 @@ picture throughout.
    invariants — projective `[r]`, zero loci, normalized ratios; raw signs of `E` across
    *different* runs are λ-scale artifacts and were not used.)
 
+**Widened-habitat pointer (2026-08-02).** Finding 1's *explanation* ("no proper
+subgraph to localise the stress onto") is a `hnoRigid` consequence, but the gate's
+NO-GO verdict does not depend on it — see `notes/Pencil-informal.md` §"widened
+kernels (routes 1/3)" *Step 1* (row K4).
+
 **Verdict: route 1 is NO-GO.** The escape's (non)vanishing at a generic seed is a genuinely
 global function of the seed — not a function of any bounded chain neighbourhood — because
 the corank-1 stress it reads is globally supported and globally coupled. The
@@ -3377,6 +3382,13 @@ the coordinator's next dispatch, not run by this pass.
   body-hinge graphs): low odds — the stratum is novel (phase-open finding), and the
   question mixes pencil-chart geometry with matroid tightness in a form unlikely to be
   in print. Cheap to run alongside A.
+
+**Widened-habitat pointer (2026-08-02).** If W4 routes 1/3 are adjudicated, this
+section's stratification is consumed on a habitat where `hnoRigid` is FALSE. What
+survives, what breaks (item 3's `s₀ = 0` and item 4's proof, not its conclusion),
+the corank identity `dim R_a = 5 + def(G′) − def(G−v)`, the reduction of item 1's
+`index ≤ 4` to a cheap leaf plus (E-loc), and a caveat against item 2's failure
+criterion: `notes/Pencil-informal.md` §"widened kernels (routes 1/3)".
 
 One more scope note for the eventual discharge, recorded while fresh: `hK`'s class also
 contains `k > 0` (`def(G) > 0`) habitats, where `G′` can have corank 0 (no stress at all
@@ -3610,6 +3622,12 @@ here closes the leaf; (K-bare-ext) as pinned is unchanged. Findings:
   non-hub split; 79 randoms in the hub end's star plane at the hub-end split). As far as
   sampling shows the failure set is *exactly* the deleted hinge's line — sharply consistent with
   (K-bare-ext)'s side condition being precisely line-avoidance and nothing more.
+
+**Widened-habitat pointer (2026-08-02).** W4 routes 1/3 do **not** reach this kernel —
+a residual is `PencilNondegFeasible` by hypothesis, so the split producer's
+`hbareSplit` branch (`Escape.lean:424–428`) is unreachable there; this recon's count
+dichotomy and (K-bare-ext) stand exactly as pinned. `notes/Pencil-informal.md`
+§"widened kernels (routes 1/3)" *Step 0*.
 
 **Numerics index (this recon).** `notes/scripts/kbare/danger.py` (see the directory README's
 row): probe 0 = gate-gadget count audit; probes 1–2 = DZ certification + bare attainment;

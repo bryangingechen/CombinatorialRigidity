@@ -75,10 +75,42 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
     candidate and every `G − v` re-checked on both oracles.
   - `--search` (~15 min): structured + random short-branch sweeps, plus the
     ultra-short (`≤ 1` interior) probe.
-  - `--prime` (~15 min): coverage for the successor conjecture (SAFE-RES′)
+  - `--prime` (~1 min): coverage for the successor conjecture (SAFE-RES′)
     over every residual inhabitant both scripts produce.
-  - `--structure` (~10 min): coverage for the *argument's own* steps — (C7),
+  - `--structure` (~10 s): coverage for the *argument's own* steps — (C7),
     the (C8) dichotomy, the (E-κ) count, the (V) branch characterization.
 
   Argument state, the successor (SAFE-RES′), and consequences for W4:
   `notes/Pencil-informal.md` §"(SAFE-RES)".
+
+  **Recorded-figure correction (2026-08-02, re-run by the widened-kernel
+  recon).** `--prime` reports **255** residual inhabitants, of which **216**
+  carry a deep split vertex, so **39** refute (SAFE-RES) — the workbook's
+  original "281 / 65" was a transcription error, corrected there. Every other
+  figure reproduces exactly (`--search` 1989/39/584/343, `--structure`
+  338/59/59/0/59); `saferes.py` itself is unchanged since it landed.
+
+- `widened.py [--validate | --witness | --pool | --sample | --ebound]` —
+  the **widened-kernel** probe (2026-08-02). W4 routes 1/3 dispatch residual
+  graphs to the split arm, whose carried kernel `hK` takes `hnoRigid` as an
+  antecedent, so the kernel has to widen; this script measures what that costs.
+  Exact-ℚ, on top of `../escape/`'s rigidity machinery. New geometry:
+  `place_pencil_general`, a pencil-generic placement handling **hub-hub
+  adjacency** (`escape/place_pencil` samples every hub plane independently —
+  valid only for the double-subdivision families, where no two hubs are
+  adjacent; every residual has hub edges).
+  - `--validate` (~1 min): reproduces the N9a record (θ(4,4,3): `s₀ = 0`,
+    `dim R_a = 2`, escaping seeds 8/8) and the tight both-ends-hubs control
+    (dbl-subdivided `K4`: `dim R_a = 1`, escaping seeds 11/12); checks the
+    identity `dim R_a = 5 + def(G′) − def(G−v)` on all 4192 pool pairs.
+  - `--witness` (~2 min): W19 and S29 — the pencil target rank is attained at
+    both; every split-usable vertex has `s₀ = 2`, `dim R_a = 1`; escaping
+    seeds 8/8, on-line placements fail 16/16 resp. 14/14.
+  - `--pool` (~1 min): the 255-residual combinatorial sweep (`s₀`, `dim R_a`,
+    the `def × dim R_a` cross-tab, 2-connectedness).
+  - `--sample` (~4 min): stratified exact-ℚ escape rate, 94/96 escaping seeds.
+  - `--ebound` (~1 min): the **(E) re-route** probe — 255/255 residuals carry a
+    degree-2 vertex `v₀` with `E(G − v₀)` count-independent, which is exactly
+    the property `edgeBound_of_noRigid_of_degree_two` extracts from `hnoRigid`.
+
+  Argument state: `notes/Pencil-informal.md` §"widened kernels (routes 1/3)".

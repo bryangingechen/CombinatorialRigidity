@@ -41,8 +41,11 @@ workbook `notes/Pencil-informal.md`** §"`hnoGood'` vacuity" — **user adjudica
 before the W4 build is commissioned. A follow-up research dispatch the same day **REFUTED
 (SAFE-RES)** (the deep-split-vertex conjecture routes 1/3 turned on) and replaced it with
 **(SAFE-RES′)**, whose two named gaps are (E) the KT-4.5(i) count without `hnoRigid` and
-(T) triangle-freeness of the residual — workbook §(SAFE-RES). The adjudication is unchanged
-in shape: routes 1/3 are still live, at a now-precisely-priced cost.
+(T) triangle-freeness of the residual — workbook §(SAFE-RES). A third dispatch the same day
+**priced the kernel widening**: it is **one** kernel (K-res), not two; the escape survives
+numerically at every residual probed; and (E) is reduced to a cheap leaf plus (E-loc) —
+workbook §"widened kernels (routes 1/3)". **The W4 route adjudication (1 vs 3 vs 2 vs park)
+is now fully priced and owed.**
 
 W0–W3 and W5-L0–L6 are all COMPLETE (L6a-safe-exists closed in full both halves; L6b/L6d landed).
 **The W5-L7 arc is now CLOSED**: L7a, L7b, and L7c-1…6 all landed (`Molecule/Pencil/Escape.lean`/
@@ -136,8 +139,10 @@ Full record, grounding, and the W0–W5 decomposition:
   (the "B: L4 recon first" adjudication deferred it until the L4 recon — now complete).
   **`hnoGood'` is now known NON-vacuous** (2026-08-02) — branch 4 needs content; routes in
   `notes/Pencil-informal.md` §"`hnoGood'` vacuity", adjudication owed. **(SAFE-RES) is
-  REFUTED** (same day); routes 1/3 now cost §(SAFE-RES)'s (E) + (T) + (V) instead, with (T)
-  a genuine research gap (no landed lemma can decide it, and no certified search can see it).
+  REFUTED** (same day); routes 1/3 now cost §(SAFE-RES)'s (T) + (V) + the reduced (E), with
+  (T) a genuine research gap (no landed lemma can decide it, and no certified search can see
+  it), plus **one** widened kernel (K-res) — `hbareSplit` is untouched (workbook §"widened
+  kernels (routes 1/3)").
 - The full biconditional transport `ExtensorThroughPoint C q ↔ ExtensorInPanel (screwComplementIso
   C) q` (design doc's W0 pin) is landed only as its two forward implications; the reverse arms
   need a `complementIso` involution lemma, not in tree — deferred, not on any critical path.
@@ -169,11 +174,12 @@ exactly three remaining open items — **next concrete commit: pick any one, non
   (`notes/scripts/w4/no_good_search.py`) — but the vacuity conjecture is **REFUTED**
   (2026-08-02, `notes/scripts/w4/nogood_subdiv.py`, `|V| = 19` inhabitant): `hnoGood'`
   stays carried and branch 4 needs content, so an **adjudication of the three routes in
-  `notes/Pencil-informal.md` §"`hnoGood'` vacuity" is owed** — note routes 1/3 would widen
-  the carried `hK`/`hbareSplit` kernels (their `noRigid` antecedent), which is a
-  kernel-scope change, not a leaf, **and additionally need (E) + (T) + (V)** of workbook
-  §(SAFE-RES) (the deep-split-vertex conjecture they used to turn on is REFUTED,
-  `notes/scripts/w4/saferes.py`, `|V| = 29`). **Next concrete commit (when the W4 build is
+  `notes/Pencil-informal.md` §"`hnoGood'` vacuity" is owed — now fully priced**: routes 1/3
+  cost **one** extra carried kernel, the `noRigid`-free **(K-res)** (same shape and
+  difficulty class as `hK`; `hbareSplit` is unreachable at a residual), a residual-habitat
+  L7a sibling, and (T) + (V) + the reduced (E) of workbook §(SAFE-RES) — see workbook
+  §"widened kernels (routes 1/3)" for the trace, statements, and exact-ℚ numerics
+  (`notes/scripts/w4/widened.py`). **Next concrete commit (when the W4 build is
   commissioned): W4-L4b** — the co-1 identification lemma `exists_degree_two_of_co1_rigid`
   (pinned signature in the design section, spike-elaborated, all bricks landed, 1 commit).
   Then, order-flexible: W4-L1 (non-simple bare producer, KT 6.2 mirror), W4-L2 (the
@@ -234,28 +240,33 @@ neighbor — is `notes/IdeaBacklog.md`.
 Reverse-chronological, one line per landing; full derivations live in git and
 `notes/Phase39-design.md` (per-decision pointer where the design doc has a named section).
 
+- **W4 routes 1/3 kernel-widening cost PRICED — one kernel, not two; no counterexample**
+  (2026-08-02, docs+scripts-only, exact-ℚ `notes/scripts/w4/widened.py`) — `hbareSplit` is
+  unreachable at a residual (feasible by hypothesis, so the split producer's infeasible
+  branch never fires), so only `hK` widens, to **(K-res)** (`hnoRigid` ↦
+  `PencilNondegFeasible`), best carried as a sibling hypothesis leaving `hK` untouched. The
+  (K) analysis's `s₀ = 0` step **breaks** — the rigid core's own dependency cancels the index
+  gain (`dim R_a = 5 + def(G′) − def(G−v)`, 4192/4192), so the residual habitat sits wholesale
+  in (K-tight)'s hard `dim R_a = 1` stratum — yet the escape holds: 8/8 escaping seeds at
+  `W19`/`S29`, 94/96 pool-wide, vs 11/12 for the pinned kernel's own tight control. **(E) is
+  reduced** to a `noRigid`-free verbatim-prefix leaf plus **(E-loc)** (255/255).
+  `notes/Pencil-informal.md` §"widened kernels (routes 1/3)". **W4 route adjudication owed.**
 - **(SAFE-RES) REFUTED; successor (SAFE-RES′) pinned with two named gaps** (2026-08-02,
-  docs+scripts-only, `notes/scripts/w4/saferes.py`) — `S29`, a `|V| = 29` residual whose
-  every branch carries `≤ 2` interior vertices (same certification standard as `W19`; third
-  independent oracle, matroid-union tree packing, polynomial so it runs at `|V| = 29`): the
-  Ear Lemma bounds *ears* and `S29` carries all its ear length in **hub chains**. Survives:
-  (C7) every ear at a maximal cluster has `≥ 6` interior; (C8) the certified dichotomy; the
-  branch count `f(V) = 5b − 6h + 6 − I`, giving the matching `κ ≥ 2` **conditional on (E)**.
-  **(SAFE-RES′)** = (E) `f(V(G)) ≤ 4` without `hnoRigid` + (T) triangle-free (**not
-  landed-reachable**) + (V) elementary; 281/281 inhabitants satisfy all three (evidence for
-  (E)/(T), not proof). `notes/Pencil-informal.md` §(SAFE-RES).
+  docs+scripts-only, `notes/scripts/w4/saferes.py`) — `S29`, a `|V| = 29` residual whose every
+  branch carries `≤ 2` interior vertices (same certification standard as `W19`; third oracle,
+  matroid-union tree packing): the Ear Lemma bounds *ears*, and `S29` carries all its ear
+  length in **hub chains**. Survives: (C7), the (C8) dichotomy, the branch count
+  `f(V) = 5b − 6h + 6 − I` giving `κ ≥ 2` **conditional on (E)**. **(SAFE-RES′)** = (E) + (T)
+  (**not landed-reachable**) + (V); 255/255 inhabitants satisfy all three (evidence, not
+  proof; the figure was first recorded as 281 in error). `notes/Pencil-informal.md` §(SAFE-RES).
 - **`hnoGood'` vacuity REFUTED; `notes/Pencil-informal.md` opened** (2026-08-02,
-  docs+scripts-only) — an explicit `|V| = 19` inhabitant (`C₄` core, three degree-3 poles,
-  three 4-interior paths) with BOTH feasibility verdicts landed-lemma-certified: `G` feasible
-  by L6b (`hcard` + triangle-free), its unique proper rigid subgraph's contraction infeasible
-  by the `hcard` necessity lemma (`closedHubNbhd(v*)` = 4). Enabling tool: the **Ear Lemma**
-  (rigid + ear of `j` interior vertices stays rigid iff `j ≤ 5`), which forces residual
-  instances past the earlier search's `|V| ≤ 13` / path-`≤ 3` caps. What survives: a
-  structure theorem for the contraction branch (maximal cluster ⟹ simple contraction, no
-  `v*`-triangle, `hcard` fails only at `v*` with ≥ 3 boundary hubs). New scripts
-  `notes/scripts/w4/nogood_subdiv.py` (pebble-game oracle validated 400/400 against
-  `exact_deficiency`). Routes out + the new open conjecture (SAFE-RES):
-  `notes/Pencil-informal.md` §"`hnoGood'` vacuity" — **adjudication owed**.
+  docs+scripts-only, `notes/scripts/w4/nogood_subdiv.py`) — `W19`, an explicit `|V| = 19`
+  inhabitant (`C₄` core, three degree-3 poles, three 4-interior paths), BOTH feasibility
+  verdicts landed-lemma-certified. Enabling tool: the **Ear Lemma** (rigid + ear of `j`
+  interior vertices stays rigid iff `j ≤ 5`), which pushes residual instances past the earlier
+  search's `|V| ≤ 13` / path-`≤ 3` caps. Survives: a structure theorem for the contraction
+  branch (maximal cluster ⟹ simple contraction, no `v*`-triangle, `hcard` fails only at `v*`
+  with ≥ 3 boundary hubs). `notes/Pencil-informal.md` §"`hnoGood'` vacuity".
 - **W4-L4 identification recon COMPLETE — minimality replaced by feasibility; co-1 dispatch;
   residual narrowed to `hnoGood'` with 0 search inhabitants** (2026-07-30, docs+scripts-only,
   per the user's "B: L4 recon first" adjudication, verbatim) — minimality trace of

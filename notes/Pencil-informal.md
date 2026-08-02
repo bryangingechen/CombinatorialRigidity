@@ -260,10 +260,11 @@ vacuity. Three routes, in increasing cost:
    `hnoRigid` points the landed chain consumes, are worked out in
    **§(SAFE-RES)** below — the deep-split-vertex conjecture that used to be
    stated here is **refuted**, and its surviving successor (SAFE-RES′) is
-   that section's subject. What does *not* change: **`hnoRigid` sits in the
-   antecedents of the carried kernels `hK` and `hbareSplit`**, so this route
-   widens two already-open research kernels rather than reusing them as
-   pinned — that remains route 1's dominant cost.
+   that section's subject. The kernel-widening cost is priced in
+   **§"widened kernels (routes 1/3)"**: it is **one** kernel — the
+   `noRigid`-free **(K-res)** (`hbareSplit` is unreachable at a residual,
+   which is feasible by hypothesis) — carried alongside the byte-identical
+   `hK`, plus a residual-habitat sibling of the L7a leaf.
 2. **Discharge branch 4 directly**: build a generic realization of `G` from
    the IH's *bare* half at an infeasible contraction. This is the hardest
    kernel shape in the phase (strictly stronger than `hbareContract`, which
@@ -271,16 +272,26 @@ vacuity. Three routes, in increasing cost:
 3. **Change the dispatch invariant** so the contraction branch is only
    entered when a good contraction exists — i.e. carry the Step-2 structure
    theorem as the branch condition and route the `≥ 3`-boundary-hub
-   configuration to the split arm. Same kernel-widening cost as route 1, but
-   the case analysis is pinned by Step 2 (now also by §(SAFE-RES)'s (C7)/(C8))
-   rather than by a new conjecture. §(SAFE-RES) Step 1 sharpens what this
-   route inherits: at a **triangle-free** residual, case (A) — `≥ 3` boundary
+   configuration to the split arm. Same kernel cost as route 1, but the case
+   analysis is pinned by Step 2 (now also by §(SAFE-RES)'s (C7)/(C8)) rather
+   than by a new conjecture. §(SAFE-RES) Step 1 sharpens what this route
+   inherits: at a **triangle-free** residual, case (A) — `≥ 3` boundary
    hubs — is the *only* configuration, so route 3's case analysis is a
    two-way split, not an open-ended one.
 
-Route 1 vs 3 is a coordinator/user adjudication. Both now need the same
-bundle — §(SAFE-RES)'s (E), (T) and (V) — and both need the `noRigid`-free
-kernel restatements.
+Route 1 vs 3 is a coordinator/user adjudication. Both need the same bundle:
+
+- **(K-res)**, one extra carried kernel — same statement shape and same
+  difficulty class as `hK`, on the complementary habitat; supported by
+  exact-ℚ numerics at every residual probed (§"widened kernels" Steps 4–5).
+  Its *proof route* is strictly harder than `hK`'s: the residual habitat sits
+  wholesale in the `dim R_a = 1` stratum where the (K) recon found no
+  landed-brick route (Step 2).
+- **(T)** and **(V)** of §(SAFE-RES′), unchanged.
+- **(E)**, now reduced to a cheap `noRigid`-free Lean leaf plus the new
+  combinatorial gap **(E-loc)** (§"widened kernels" Step 3, 255/255).
+
+Neither route needs `hbareSplit` to move.
 
 ## §(SAFE-RES) — **REFUTED**; successor (SAFE-RES′) open
 
@@ -294,8 +305,9 @@ is a `|V| = 29` residual, certified to the same standard as `W19` — both
 feasibility verdicts landed-lemma-backed, no middle zone — in which **every**
 branch carries at most `2` interior vertices. What survives is the strictly
 weaker **(SAFE-RES′)** of *Step 3*, which is what the landed split arm actually
-consumes; it is **open**, holds on 281/281 inhabitants swept, and reduces to two
+consumes; it is **open**, holds on 255/255 inhabitants swept, and reduces to two
 named gaps: the residual's edge count **(E)** and its triangle-freeness **(T)**.
+**(E) is since reduced further** — §"widened kernels (routes 1/3)" *Step 3*.
 
 Here *residual* abbreviates `hnoGood'`'s antecedent bundle (`notes/Phase39-design.md`
 §"W4-L4 identification recon" Verdict 4): `G.Simple`, `3 ≤ |V(G)|`,
@@ -466,18 +478,21 @@ vertex**.
 > vertex `v` whose neighbours `a ≠ b` satisfy `deg a = 2 ∨ deg b = 2`,
 > `a ≁ b`, and `N(a) ∩ N(b) = {v}`.* — i.e. exactly (S1)–(S5).
 
-**Verdict: open**, 281/281 on every residual inhabitant swept (both scripts'
+**Verdict: open**, 255/255 on every residual inhabitant swept (both scripts'
 families; `saferes.py --prime`). It decomposes into three obligations:
 
-- **(E)** `f(V(G)) ≤ 4` — **open; the sharpest single statement route 1 needs.**
-  It *is* KT Lemma 4.5(i)'s conclusion, landed only under `hnoRigid`
-  (`edgeBound_of_noRigid_of_degree_two`), and the residual habitat has a rigid
-  subgraph, so that producer is unavailable. Numerics: 281/281, and `S29`,
-  `W19` both sit at `f = 2`. No proof; the natural attempt (bound `f(V(G))` by
-  `f(S) + …` at a maximal cluster) leaks because `f(S)` of a dense rigid `H` is
-  unbounded.
+- **(E)** `f(V(G)) ≤ 4` — **open, but no longer the sharpest thing route 1
+  needs: it is now reduced to (E-loc)**, §"widened kernels (routes 1/3)"
+  *Step 3*. It *is* KT Lemma 4.5(i)'s conclusion, landed only under `hnoRigid`
+  (`edgeBound_of_noRigid_of_degree_two`) — but that lemma consumes `hnoRigid`
+  at exactly one point, to make the `v`-avoiding edge fiber count-independent,
+  and 255/255 residuals carry a degree-`2` vertex at which that independence
+  holds outright. Numerics: 255/255 for `f ≤ 4` itself, and `S29`, `W19` both
+  sit at `f = 2`. (The natural direct attempt — bound `f(V(G))` by `f(S) + …`
+  at a maximal cluster — leaks because `f(S)` of a dense rigid `H` is
+  unbounded; the (E-loc) route replaces it.)
 - **(T)** `G` triangle-free — **open, with a landed-invisible failure mode**
-  (Step 4). Numerics: 281/281, but that is *not* evidence: the search's own
+  (Step 4). Numerics: 255/255, but that is *not* evidence: the search's own
   feasibility certificate for `G` is L6b, which requires triangle-freeness, so
   a triangle-carrying residual can never appear in a certified sweep.
 - **(V)** the local choice — **elementary given (E) and (T).** (E) supplies a
@@ -544,10 +559,12 @@ feasibility-*necessary* condition that kills pendant triangles.
   instance dies as `not-feasible` (317) or `co-1` (26), exactly the two
   outcomes the (E-κ) count predicts. Random subdivisions of dense bases are a
   poor generator for this habitat; the structured family is what reaches it.
-- **`--prime`**: 281 residual inhabitants across both scripts' families —
-  216 have a deep split vertex (so **65 refute (SAFE-RES)**), and 281/281 have
+- **`--prime`**: **255** residual inhabitants across both scripts' families —
+  216 have a deep split vertex (so **39 refute (SAFE-RES)**), and 255/255 have
   two adjacent degree-2 vertices, satisfy (E), are triangle-free, and carry a
-  split-usable vertex.
+  split-usable vertex. (Figures re-run 2026-08-02 by the widened-kernel recon;
+  the "281 / 65" first recorded here was a transcription error — the script is
+  unchanged and every other figure in this section reproduces exactly.)
 - **`--structure`**: coverage for this section's own steps. (E-κ): 338
   ultra-short instances (`κ ≤ 1`), **0** violations of `f(V(G)) ≥ 5`. On 59
   residual inhabitants: **(C7) 59/59**, **(C8) case (A) 59/59** (case (B) 0/59,
@@ -557,6 +574,289 @@ feasibility-*necessary* condition that kills pendant triangles.
 
 Reproduce: `python3 notes/scripts/w4/saferes.py --validate | --witness |
 --search | --prime | --structure`.
+
+## §widened kernels (routes 1/3) — **priced; no counterexample**
+
+**Verdict: true-modulo-named-gaps.** W4 routes 1/3 send *residual* graphs to
+the split arm, whose carried kernels take
+`hnoRigid : ∀ H, ¬ H.IsProperRigidSubgraph G 3` as an antecedent, so a kernel
+must widen. Three findings price that:
+
+1. **It is ONE kernel, not two.** `hbareSplit` is unreachable at a residual
+   (Step 0), so its habitat and its whole (K-bare) analysis are untouched.
+   The route-1 text's "widens two already-open research kernels" was wrong.
+2. **The widened kernel (K-res) is not new mathematics — it is `hK`'s own
+   conclusion on a bigger habitat** (Step 4). `hK`'s conclusion mentions only
+   `G`; both the pinned and the widened obligation say "this `G` attains the
+   pencil rank target in chart form". What the widening costs is the *proof
+   route*: the (K) stratification's cheap branch dies (Step 2).
+3. **The escape still works at every residual probed** — exact-ℚ, 8/8 escaping
+   seeds at `W19` and `S29`, 94/96 over a stratified pool sample, against
+   11/12 for the *pinned* kernel's own tight control (Step 5). A failure here
+   would have killed routes 1/3 outright; none appeared.
+
+Net: routes 1/3 cost **one extra carried kernel of the same shape and the same
+difficulty class as `hK`**, plus §(SAFE-RES)'s (T) and (V), plus (E) — which
+Step 3 reduces to a cheap Lean leaf and one new combinatorial gap (E-loc).
+
+**What would change this.** A residual split at which *no* target-rank `G′`
+seed escapes (that would refute (K-res) and kill routes 1/3); a reading error
+in `pencilPair_of_splitOff_of_habitat`'s `by_cases hfeas` branching (read from
+the body, `Escape.lean:396–428`); or a residual with no degree-`2` vertex
+whose `v`-avoiding edge fiber is count-independent (that would undo Step 3).
+
+### Step 0 — which kernels routes 1/3 actually touch
+
+Read from the landed producer `pencilPair_of_splitOff_of_habitat`
+(`Molecule/Pencil/Escape.lean:334`) and the residual's own antecedent bundle
+(`hnoGood'`, `notes/Phase39-design.md` §"W4-L4 identification recon" Verdict 4).
+
+- The producer branches on `by_cases hfeas : PencilNondegFeasible K G`
+  (`:396`). The **feasible** branch chains L7a → `hK` → L7b; the **infeasible**
+  branch (`:424–428`) is the *only* consumer of `hbareSplit`.
+- A residual is **feasible by hypothesis** — `PencilNondegFeasible K G` is one
+  of `hnoGood'`'s antecedents — and branch 4 of the L3′ skeleton sits inside
+  the `Simple ∧ Feasible` case, whose only deliverable is
+  `HasGenericPencilRealization K 3 G` (the bare half is
+  `hasPencilRealization_of_generic` of it).
+
+So at a residual the infeasible branch is discharged by `absurd`, and
+**`hbareSplit` is never instantiated**. Its `hnoRigid`, its corank
+stratification, and (K-bare-ext) all stand exactly as pinned. (For the record,
+what *would* break if it were reached: the (K-bare) count dichotomy
+"count-dependent ⟹ spanning circuit ⟹ `def(G) = 0`" needs vertex-properness to
+force the circuit to span. At a residual the core supplies a non-spanning
+circuit, so `def(G) > 0` **and** count-dependent becomes possible — 57 of the
+255 pool residuals are exactly that, a combination the pinned dichotomy
+excludes.)
+
+The `hnoRigid` consumption points of the surviving chain are §(SAFE-RES)
+*Step 0*'s (S0)–(S5) plus **one that section missed**: the wrapper's `hfresh`
+discharge `freshEdgeSupply_of_card_lt_of_noRigid_of_degree_two`
+(`Escape.lean:516`) calls `edgeBound_of_noRigid_of_degree_two` and nothing
+else, so it collapses into **(E)** exactly like (S1)/(S2). Also free at a
+residual: `5 ≤ |V(G)|`, since a simple rigid subgraph needs `≥ 3` vertices
+(`2` vertices give one edge, `def = 1`) and no-co-1 adds two more.
+
+### Step 1 — the trace: where the settled (K) analysis consumes `noRigid`
+
+Four points in `notes/Phase39-design.md` §"(K) route-1 gate" + §"(K)
+non-constancy recon", each read from the design text against the landed lemma
+it cites:
+
+| # | consumption | producer | fate at a residual |
+|---|---|---|---|
+| K1 | `index(G) ≤ 4`, so the corank stratification is finite | `edgeBound_of_noRigid_of_degree_two` (`ReducibleVertex.lean:1270`) | = gap **(E)**; **survives modulo (E-loc)**, Step 3 |
+| K2 | `s₀ = 0` (no pure shared-row stresses), hence `dim R_a = corank(G′)` | `circuit_induces_isRigidSubgraph` + vertex-properness | **BREAKS**, Step 2 — this is the load-bearing one |
+| K3 | a lever-critical habitat has no cut vertex (blocks argument) | same | **proof breaks; conclusion holds** 255/255 |
+| K4 | route-1 gate finding 1's *explanation* that the stress is globally supported ("no proper subgraph to localise onto") | prose | verdict unaffected — that gate **refuted** locality; a residual makes the picture more mixed, not more local. Route 1 of the (K) options stays NO-GO |
+
+K2's exact form: a count-matroid circuit inside `G − v` induces a rigid
+subgraph on `V(C) ⊆ V(G) ∖ {v}`, vertex-proper, excluded by `hnoRigid`. So the
+step really needs only
+
+> **(I)** `E(G − v)` is independent in the `(6,6)` count matroid
+> (equivalently `f(W) ≤ 0` for every `W ⊆ V(G) ∖ {v}`),
+
+which is strictly weaker than `hnoRigid` — a rigid subgraph is
+count-*dependent* only when `f(V(H)) > 0`, so a residual all of whose rigid
+subgraphs are count-tight can still satisfy (I). 160 of the 255 pool residuals
+are of that kind. `W19` and `S29` are **not**: their `C₄` cores have
+`f = 5·4 − 6·3 = 2 > 0`.
+
+### Step 2 — what breaks: the corank arithmetic at a residual
+
+Write `index(H) = 5|E(H)| − 6(|V(H)| − 1)`. At a target-rank seed
+`corank(H) = 5|E(H)| − rank = index(H) + def(H)`. For a split at a degree-`2`
+`v` — so `|E(G−v)| = |E| − 2`, `|E(G′)| = |E| − 1`, and both lose one vertex:
+
+```
+s₀        = corank(G − v) = index(G) − 4 + def(G − v)
+corank(G′) = index(G) + 1 + def(G′)
+dim R_a   = corank(G′) − s₀ = 5 + def(G′) − def(G − v)          (†)
+```
+
+(†) is **independent of `index(G)`** — checked on all 4192 (residual,
+split-usable `v`) pairs of the pool, 0 mismatches, and matched by the
+*geometric* `s₀`/`corank` read off the exact-ℚ seeds at `W19`/`S29`.
+
+The (K) recon's cheap branch was: `index(G) ≥ 1` ⟹ `s₀ = 0` ⟹
+`dim R_a = corank(G′) = index(G) + 1 ≥ 2` ⟹ **escape automatic**. At a
+residual the proper rigid subgraph's own dependency reappears as `s₀` and
+**cancels the index gain exactly**. Concretely at `W19` and `S29`
+(`index = 2`, `def = 0`): every split-usable `v` has `def(G−v) = 4`,
+`def(G′) = 0`, `s₀ = 2`, `corank(G′) = 3`, hence `dim R_a = 1` — the
+`(K-tight)`-shaped hard regime, at an index-2 graph.
+
+Pool-wide, over the 102 **rigid** residuals (`def(G) = 0`), the
+`(index, dim R_a)` pairs are `(0,1): 1128`, `(1,1): 450`, `(1,2): 40`,
+`(2,1): 120` — i.e. `dim R_a = 1` on 1698 of 1738 pairs, and there is no
+`index ≥ 1 ⟹ dim R_a ≥ 2` implication left. Deficient residuals (`def > 0`)
+mostly give `dim R_a = 0`; those are the `k > 0` habitats the design doc
+already routes to KT Case II rather than Case III.
+
+**So: the widened kernel's habitat lands wholesale in (K)'s hard stratum.**
+That is the honest cost of routes 1/3 to the (K) *analysis* — not to (K)'s
+truth (Step 5) and not to its statement (Step 4).
+
+K3 fares better: the block argument dies, but 255/255 pool residuals (and
+`W19`, `S29`) are 2-connected anyway, so the property the lever argument wanted
+is still there — it just needs a different proof, presumably from the (C7)/(C8)
+structure rather than from circuits.
+
+### Step 3 — (E) is reduced: a cheap leaf plus (E-loc)
+
+`edgeBound_of_noRigid_of_degree_two` (`ReducibleVertex.lean:1270`) uses its
+`hnp` at **exactly one point** (verified line-by-line in the body, not from the
+docstring): to prove `hindep : (G.matroidMG n).Indep E'`, where `E'` is the
+`5`-fold fiber of the edges avoiding `v`. Everything after that is pure
+counting: sparsity of `E'` on a vertex set avoiding `v` gives
+`5(|E| − 2) + 6 ≤ 6(|V| − 1)`, i.e. `f(V(G)) ≤ 4`. Two consequences.
+
+- A `noRigid`-free sibling taking `(I)` (or "no proper rigid subgraph avoids
+  `v`") in place of `hnoRigid` is a **verbatim-prefix extraction**, the same
+  L7c-1-grade move as `simple_of_loopless_of_noRigid`. Cheap Lean leaf.
+- The conclusion `f(V(G)) ≤ 4` is a statement about `G`, **not about `v`**. So
+  (E) follows as soon as *some* degree-`2` vertex satisfies (I) — it need not
+  be the vertex the split uses. That is the new gap:
+
+> **(E-loc)** *Every residual `G` has a degree-`2` vertex `v₀` with `E(G − v₀)`
+> independent in the `(6,6)` count matroid.*
+
+**Numerics: 255/255** (`widened.py --ebound`). The witness is typically *not*
+split-usable: at `W19` it is `c1` or `c3`, at `S29` it is `m1` or `m2` — the
+**core's own** degree-`2` vertices, and the split-usable set is disjoint from
+them in both cases. (210 of the 255 do have a split-usable witness, which then
+buys `s₀ = 0` as well; `W19`/`S29` are among the 45 that do not.)
+
+Structure that should make (E-loc) tractable. `f` is **supermodular** (`|E(·)|`
+is supermodular; `−6(|W| − 1)` is modular), so
+`f(W₁ ∪ W₂) ≥ f(W₁) + f(W₂) − f(W₁ ∩ W₂)`. When `W₁ ∩ W₂` is a single vertex
+`f(W₁ ∩ W₂) = 0`, and when it is count-independent `f(W₁ ∩ W₂) ≤ 0`; either
+way two count-dependent sets meeting like that **merge** into a
+count-dependent union. So the obstruction to (E-loc) is one of exactly two
+shapes: two count-dependent vertex sets meeting in an independent set (in
+particular two *disjoint* proper rigid subgraphs with `f > 0`), or a single
+dependent "brick" all of whose vertices have `G`-degree `≥ 3`. Neither occurs
+anywhere in the pool. Discharging (E-loc) fixes gap **(E)** of §(SAFE-RES)
+*Step 3*, and with it the `hfresh` discharge of Step 0.
+
+### Step 4 — the minimal honest widened statements
+
+The kernel routes 1/3 need is `hK` with `hnoRigid` deleted. Since `hK` is only
+ever invoked inside `by_cases hfeas`, adding `PencilNondegFeasible K G` is free
+at the existing call site and *weakens* the obligation, so the minimal honest
+form is:
+
+> **(K-res)** For every `G : Graph α β` with `G.Simple`, `5 ≤ |V(G)|`,
+> `G.TwoEdgeConnected`, **`PencilNondegFeasible K G`**, a vertex `v` of degree
+> `2` with `eₐ ≠ e_b`, `G.IsLink eₐ v a`, `G.IsLink e_b v b`,
+> `¬ G.PencilHub a ∨ ¬ G.PencilHub b`, and `e₀ ∉ E(G)`: if
+> `HasGenericPencilRealization K 3 (G.splitOff v a b e₀)`, then there are a
+> correct hub selector `hubSel`, a seed `q`, and an edge-indexed
+> `s` of size `screwDim 2 * (|V(G)| − 1) − G.deficiency 3` with
+> `LinearIndependent K (fun i : s => pencilRow hubSel G.endsOf q i)`.
+
+— i.e. `hK`'s statement verbatim, `hnoRigid` ↦ `PencilNondegFeasible K G`.
+`f(V(G)) ≤ 4` and triangle-freeness may be added as further antecedents at no
+cost, since the route must establish both anyway ((E)/(T) of §(SAFE-RES)); they
+are *not* needed for the conclusion to be stated, so the minimal form omits
+them.
+
+**Two packagings, same mathematics.**
+
+- *(a) widen `hK` in place.* One kernel; but it edits the landed
+  `pencilPair_of_splitOff_of_habitat` and every caller.
+- *(b) carry `(K-res)` as a second hypothesis alongside the byte-identical
+  `hK`.* No landed code moves; branch 4 gets its own producer. **Recommended.**
+
+There is no double work either way: `hK`'s habitat (`hnoRigid`) and (K-res)'s
+(`∃` proper rigid, via the residual) are **disjoint**, so (a) is exactly
+(b) + `hK` merged. And because `hK`'s *conclusion* mentions only `G`, both
+obligations assert the same thing — "this `G` attains the pencil rank target in
+chart form" — on complementary habitats. The widening adds **no new kind of
+mathematics**; it adds a habitat on which the identified proof route (the
+escape) is in its hard regime.
+
+Besides the kernel, branch 4 needs a **residual-habitat sibling of L7a**
+(`hasGenericPencilRealization_of_splitOff_of_safe`, `Escape.lean:95`): a leaf,
+not a kernel, whose three `hnoRigid` calls are exactly (S3)/(S4)/(S5), all
+supplied by (T) + (V) of §(SAFE-RES′). That was already priced there.
+
+### Step 5 — numerics: does the widened kernel hold?
+
+Exact-ℚ, `notes/scripts/w4/widened.py`. The comparable statistic is the
+**escape rate**: over pencil-generic seeds of `G′` that attain `target(G′)`,
+the fraction from which *some* admissible re-insertion of `v` (the model's only
+freedom is `pt(v)`, confined to `Π(b)` when `b` is a hub) reaches `target(G)`.
+Kernel (K) needs one escaping seed, so a seed-level failure is not a
+counterexample; a *split* with no escaping seed would be.
+
+| object | habitat | `s₀` | `corank(G′)` | `dim R_a` | escaping seeds |
+|---|---|---|---|---|---|
+| θ(4,4,3) split (N9a control) | `noRigid`, index 1 | 0 | 2 | 2 | **8/8** |
+| dbl-subdivided `K4` (tight control) | `noRigid`, index 0 | 0 | 1 | 1 | **11/12** |
+| `W19`, 3 split shapes | residual, index 2 | 2 | 3 | 1 | **8/8** each |
+| `S29` | residual, index 2 | 2 | 3 | 1 | **8/8** |
+| stratified pool sample, 8 strata × 3 pairs | residual | — | — | 0/1/2 | **94/96** |
+
+- The pencil rank target itself is attained at `W19` (108/108) and `S29`
+  (168/168) at freely-sampled pencil-generic seeds — so **the rank statement
+  (K-res)'s conclusion packages is true at both**, independently of the route
+  (the remaining packaging — the hub selector and the `pencilRow` indexing —
+  is combinatorial and comes from `hcard`).
+- The only non-escaping seeds in the whole sweep sit in the
+  `(def(G) = 0, dim R_a = 1)` stratum, at 10/12 — the *same* regime and the
+  *same* rate as the pinned kernel's own tight control (11/12). **No split had
+  zero escaping seeds.**
+- `dim R_a ≥ 2` was automatic-escape everywhere it occurred (12/12 at
+  `def = 0`), so the (K) recon's *criterion* survives; it is only its
+  derivation of `s₀ = 0` that dies.
+- On-line placements (`pt(v) ∈ line(pt a, pt b)`) fail 16/16 at `W19` and
+  14/14 at `S29`, reproducing (K-bare)'s C3 "failure set is exactly the line".
+
+**One caveat recorded against the design doc.** At the tight control, seed 442
+is a target-rank `G′` seed from which *no* re-insertion attains (checked over
+12 in-plane placements, and with `pt(a)` re-sampled in `Π(c)` as well) — yet
+the (K) non-constancy recon's §2 criterion `R_a ⊄ S^⊥` (with `dim S = 5`)
+says escape is available there. The observed predictor over 12 control seeds
+is instead the narrower **M2**: `R_a ⊄ pencil(b)^⊥`, where `b` is the end
+whose plane confines `pt(v)` — 12/12 versus 11/12 for the `S`-criterion. This
+is consistent with the design doc's own flag that the §2 boundary-load
+derivation is **not yet re-pinned against KT pp. 684–691**: KT's `M₁/M₂/M₃`
+live in the *panel* model, where a hinge may be any line in each body's panel,
+whereas the pencil carrier forces `hinge(uv) ∝ point(u) ∧ point(v)` —
+`HasPencilPanelRealization` (`Molecule/Pencil/Statement.lean:88`) requires
+`ExtensorThroughPoint` at *both* endpoints, and `IsNondegPencilRealization`
+conjunct 2 makes the two points projectively distinct, so their join is the
+only line through both. Evidence-level, one gadget — but it is the first
+direct test of that criterion, and it says the owed re-pin should be done
+against the *carrier*, not just against KT.
+
+### Verification
+
+`notes/scripts/w4/widened.py` (tracked; exact-ℚ). New geometry:
+`place_pencil_general`, a pencil-generic placement that handles **hub-hub
+adjacency** — `escape/pencil_escape.py`'s sampler gives every hub an
+independent plane, which is only valid for the double-subdivision families
+(no two hubs adjacent); every residual has hub edges, so hub normals must be
+solved against their hub neighbours and shared non-hubs placed on plane
+intersections. `--validate` reproduces the N9a record exactly and checks (†)
+on all 4192 pool pairs.
+
+Reproduce: `python3 notes/scripts/w4/widened.py --validate | --witness |
+--pool | --sample | --ebound`.
+
+### Confidence verdict per widened kernel
+
+- **(K-res)** — **open, no counterexample; same difficulty class as `hK`.**
+  Truth: supported by direct rank attainment at `W19`/`S29` and a 94/96 escape
+  rate. Provability: strictly *harder to route* than the pinned `hK`, because
+  the whole residual habitat sits in the `dim R_a = 1` stratum where the (K)
+  recon found no landed-brick route (the identified enabling technology is
+  unchanged — stress-as-chart-rational-function infrastructure, §(K-tight)).
+- **`hbareSplit` / (K-bare-ext)** — **unchanged.** Not on routes 1/3's path
+  (Step 0); its adjudicated carry stands verbatim.
 
 ## §(K-tight) — stub
 
@@ -569,6 +869,13 @@ technology (stress-as-chart-rational-function infrastructure) are in
 recon"; the literature verdict (NO HIT, crux novel) is §"(K) literature
 hunt".
 
+**Scope note (2026-08-02).** The `index ≥ 1` trade is **habitat-limited**: it
+runs on `s₀ = 0`, which is a `noRigid` consequence. If W4 routes 1/3 are
+adjudicated, the residual habitat they add sits wholesale inside (K-tight)'s
+shape (`dim R_a = 1`) whatever its index — §"widened kernels (routes 1/3)"
+*Step 2*. That section also records the first direct test of the §2
+boundary-load failure criterion against the pencil carrier (Step 5, caveat).
+
 **Verdict: open.** To be filled by the dispatch that attacks it; nothing is
 being developed here yet.
 
@@ -579,6 +886,10 @@ the arbitrary-seed insertion lemma, with the def-equal caveat folded into its
 `∃` as a line-avoidance side condition. Statement, the corank stratification
 that produced it, the DZ/cube/Wagner danger gadgets and the option-C probe
 results are in `notes/Phase39-design.md` §"(K-bare) extension-route recon".
+
+**Scope note (2026-08-02).** W4 routes 1/3 do **not** touch this kernel: a
+residual is feasible by hypothesis, so the split producer's `hbareSplit`
+branch is unreachable there — §"widened kernels (routes 1/3)" *Step 0*.
 
 **Verdict: open.** To be filled by the dispatch that attacks it; nothing is
 being developed here yet.
