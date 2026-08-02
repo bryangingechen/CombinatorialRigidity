@@ -27,6 +27,15 @@ for *organizing* this directory is here.
 - **`PERFORMANCE.md`** — performance investigations and structural
   options (Lean module system, import boundaries). Its own header
   explains the format.
+- **`Pencil-informal.md`** — the Phase-39 (PENCIL) **informal-mathematics
+  workbook**: proofs under development for the kernels and branch arms the
+  phase carries as hypotheses, staged *before* blueprint transcription
+  (nothing in it is formalization-committed). Same editing discipline as a
+  phase note — each section is the *current* state of its argument, revised
+  in place, and carries an explicit confidence verdict
+  (proven-informally / true-modulo-named-gap / open / refuted) plus a "what
+  would change this" line. Dated recon history stays in
+  `Phase39-design.md`; this file carries only the mathematics.
 - **`ScrewSpaceCarrier-design.md`** — design doc for the *carrier-opacity*
   refactor (the `ScrewSpace` `abbrev` → diffuse-typeclass `maxHeartbeats`
   cost, the opacity spike, mathlib precedents, and the design-recon-first

@@ -32,3 +32,26 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
   (landed-lemma-backed provably-good / provably-bad / middle-zone) and
   the `B#351` coarse-proxy regression check. Result (2026-07-30, two
   runs): **0 candidates** (strong or middle). ~10 min per run.
+  **Superseded as evidence** by `nogood_subdiv.py` below — its `|V| ≤ 13`
+  cap and `≤ 3`-interior gadget paths both sit below the Ear-Lemma
+  threshold, so the habitat it swept was empty for structural reasons.
+
+- `nogood_subdiv.py [--validate | --witness | --min]` — the follow-up
+  search over **subdivision** families with arbitrarily long branches
+  (2026-08-02). Replaces the `2^|V|` subset sweep by a branch-subset
+  enumeration (a rigid `W` is its own 2-core, so it is a union of whole
+  branches), and the deficiency oracle by the Lee–Streinu `(6,6)` pebble
+  game (`def = 6(|V|−1) − rank_{(6,6)}(5G)`). Result: the `hnoGood'`
+  **vacuity conjecture is REFUTED** — 96 inhabitants, smallest `|V| = 19`.
+  - `--validate` (~4 min): pebble game vs `kbare_common.exact_deficiency`,
+    400/400; `C_k` rigid iff `k ≤ 6`; the Ear-Lemma threshold; branch
+    enumeration vs brute force on 120 random 2EC graphs.
+  - `--witness` (~1 min): the canonical `|V| = 19` inhabitant, re-checked
+    over all `2^19` subsets with both oracles, plus the two deficient
+    variants.
+  - `--min` (~3 min): 21455-instance minimality sweep + the short-branch
+    probe behind the open (SAFE-RES) conjecture.
+  - no flag (~4 min): families D/E/F.
+
+  Argument state and consequences: `notes/Pencil-informal.md`
+  §"`hnoGood'` vacuity".

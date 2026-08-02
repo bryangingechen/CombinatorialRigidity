@@ -33,7 +33,12 @@ day — see *Decisions made* and the `hcontract` hand-off bullet. **2026-07-30, 
 agent returns, as we're coming up on some token limits."* — the coordinator loop ended after
 the W4-L4 recon landed and verified; no further dispatches this session. A fresh session picks
 up per *Hand-off* (next concrete commit: W4-L4b, once the W4 build is commissioned — or a
-coordinator session re-opens with the standing kernel adjudications unchanged).
+coordinator session re-opens with the standing kernel adjudications unchanged). **2026-08-02
+(research dispatch, docs+scripts-only):** the `hnoGood'` **vacuity conjecture is REFUTED** — an
+explicit `|V| = 19` inhabitant, both feasibility verdicts landed-lemma-certified. Branch 4 of the
+W4 skeleton therefore needs real content; the three routes out (and the new open conjecture
+SAFE-RES they turn on) are in the **new informal workbook `notes/Pencil-informal.md`**
+§"`hnoGood'` vacuity" — **user adjudication owed** before the W4 build is commissioned.
 
 W0–W3 and W5-L0–L6 are all COMPLETE (L6a-safe-exists closed in full both halves; L6b/L6d landed).
 **The W5-L7 arc is now CLOSED**: L7a, L7b, and L7c-1…6 all landed (`Molecule/Pencil/Escape.lean`/
@@ -125,6 +130,8 @@ Full record, grounding, and the W0–W5 decomposition:
   is now fully decomposed (recons of 2026-07-30): buildable leaves W4-L4b/L1/L2/L3′/L5 plus
   the carried `hKc`/`hbareContract`/`hnoGood'`; the W4 build sequence awaits commissioning
   (the "B: L4 recon first" adjudication deferred it until the L4 recon — now complete).
+  **`hnoGood'` is now known NON-vacuous** (2026-08-02) — branch 4 needs content; routes +
+  the open (SAFE-RES) conjecture in `notes/Pencil-informal.md`, adjudication owed.
 - The full biconditional transport `ExtensorThroughPoint C q ↔ ExtensorInPanel (screwComplementIso
   C) q` (design doc's W0 pin) is landed only as its two forward implications; the reverse arms
   need a `complementIso` involution lemma, not in tree — deferred, not on any critical path.
@@ -153,8 +160,12 @@ exactly three remaining open items — **next concrete commit: pick any one, non
   non-simple-contraction trigger provably reduces to it (the carrier bridge). The residual
   carry narrows to **`hnoGood'`** (no co-1 + no Simple∧Feasible contraction + 2EC), with
   **0 inhabitants found** by a two-run structured+random search
-  (`notes/scripts/w4/no_good_search.py`; vacuity conjectured, NOT proven; feasibility's
-  combinatorial middle zone recorded). **Next concrete commit (when the W4 build is
+  (`notes/scripts/w4/no_good_search.py`) — but the vacuity conjecture is **REFUTED**
+  (2026-08-02, `notes/scripts/w4/nogood_subdiv.py`, `|V| = 19` inhabitant): `hnoGood'`
+  stays carried and branch 4 needs content, so an **adjudication of the three routes in
+  `notes/Pencil-informal.md` §"`hnoGood'` vacuity" is owed** — note routes 1/3 would widen
+  the carried `hK`/`hbareSplit` kernels (their `noRigid` antecedent), which is a
+  kernel-scope change, not a leaf. **Next concrete commit (when the W4 build is
   commissioned): W4-L4b** — the co-1 identification lemma `exists_degree_two_of_co1_rigid`
   (pinned signature in the design section, spike-elaborated, all bricks landed, 1 commit).
   Then, order-flexible: W4-L1 (non-simple bare producer, KT 6.2 mirror), W4-L2 (the
@@ -215,6 +226,18 @@ neighbor — is `notes/IdeaBacklog.md`.
 Reverse-chronological, one line per landing; full derivations live in git and
 `notes/Phase39-design.md` (per-decision pointer where the design doc has a named section).
 
+- **`hnoGood'` vacuity REFUTED; `notes/Pencil-informal.md` opened** (2026-08-02,
+  docs+scripts-only) — an explicit `|V| = 19` inhabitant (`C₄` core, three degree-3 poles,
+  three 4-interior paths) with BOTH feasibility verdicts landed-lemma-certified: `G` feasible
+  by L6b (`hcard` + triangle-free), its unique proper rigid subgraph's contraction infeasible
+  by the `hcard` necessity lemma (`closedHubNbhd(v*)` = 4). Enabling tool: the **Ear Lemma**
+  (rigid + ear of `j` interior vertices stays rigid iff `j ≤ 5`), which forces residual
+  instances past the earlier search's `|V| ≤ 13` / path-`≤ 3` caps. What survives: a
+  structure theorem for the contraction branch (maximal cluster ⟹ simple contraction, no
+  `v*`-triangle, `hcard` fails only at `v*` with ≥ 3 boundary hubs). New scripts
+  `notes/scripts/w4/nogood_subdiv.py` (pebble-game oracle validated 400/400 against
+  `exact_deficiency`). Routes out + the new open conjecture (SAFE-RES):
+  `notes/Pencil-informal.md` §"`hnoGood'` vacuity" — **adjudication owed**.
 - **W4-L4 identification recon COMPLETE — minimality replaced by feasibility; co-1 dispatch;
   residual narrowed to `hnoGood'` with 0 search inhabitants** (2026-07-30, docs+scripts-only,
   per the user's "B: L4 recon first" adjudication, verbatim) — minimality trace of

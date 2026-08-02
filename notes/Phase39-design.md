@@ -3976,6 +3976,10 @@ has a co-1 rigid subgraph or a Simple∧Feasible contraction. If proven, `hnoGoo
 vacuously dischargeable; until then it is carried as pinned. Do NOT treat the search as
 proof; the middle zone additionally means a true inhabitant could be missed by the
 proxies in either direction.
+**REFUTED 2026-08-02** — the conjecture is FALSE (an explicit `|V| = 19` inhabitant, both
+feasibility verdicts landed-lemma-certified; the caps above were the blind spot). Current
+argument state, the structure theorem that survives, and the routes out:
+`notes/Pencil-informal.md` §"`hnoGood'` vacuity".
 
 **The reshaped skeleton (L3′) and the W4-L5 interface (`hremove`) — supersedes the
 decomposition section's W4-L3 pin.** The skeleton `pencilPair_of_properRigid`
@@ -4016,9 +4020,9 @@ decomposition section's W4-L3 pin.** The skeleton `pencilPair_of_properRigid`
   gap at the two neighbours — the landed input-steering pattern) and the output
   conjuncts at `v` and its neighbours.
 - **Kernels** `hKc` / `hbareContract`: carried, unchanged. **`hnoGood'`**: carried,
-  narrowed; its research options are (i) prove the vacuity conjecture (combinatorial,
-  bounded search space of mechanisms recorded above) or (ii) attack it directly as a
-  geometric branch — do not attempt (ii) before (i) is assessed.
+  narrowed; ~~its research options are (i) prove the vacuity conjecture … or (ii) attack
+  it directly~~ — option (i) is **REFUTED** (2026-08-02, `notes/Pencil-informal.md`
+  §"`hnoGood'` vacuity"); the live options are now that section's routes 1–3.
 
 ## Higher-`d` note (orientation only, per the phase-open decision)
 
