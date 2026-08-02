@@ -58,7 +58,12 @@ informal recon, starting with the carrier-aware KT pp. 684–691 boundary-load r
 machine-validated (KT's M₁ is carrier-dead; combined failure ⟺ `★r ∥ C(Π(b)∩Π(c))`), the
 motivating seed-442 mispredict and *every* recorded escape failure turned out to be
 placement-sampler artifacts (no genuine failure exists in the corrected record), and the
-kernel is narrowed to one uniform gap, (K-move)/(K-pitch) — see *Hand-off*.
+kernel is narrowed to one uniform gap, (K-move)/(K-pitch) — see *Hand-off*. **The 2026-08-02
+session ended there** (per the wrap-up authorization quoted above; all four research
+dispatches landed and coordinator-verified). A fresh session picks up per *Hand-off*: the
+next research step is (K-pitch) via the pure-condition calculus; the W4 build (route 3(b),
+first commit W4-L4b) awaits commissioning; kernels stay carried per the standing
+adjudications.
 
 W0–W3 and W5-L0–L6 are all COMPLETE (L6a-safe-exists closed in full both halves; L6b/L6d landed).
 **The W5-L7 arc is now CLOSED**: L7a, L7b, and L7c-1…6 all landed (`Molecule/Pencil/Escape.lean`/
