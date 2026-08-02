@@ -36,9 +36,13 @@ up per *Hand-off* (next concrete commit: W4-L4b, once the W4 build is commission
 coordinator session re-opens with the standing kernel adjudications unchanged). **2026-08-02
 (research dispatch, docs+scripts-only):** the `hnoGood'` **vacuity conjecture is REFUTED** — an
 explicit `|V| = 19` inhabitant, both feasibility verdicts landed-lemma-certified. Branch 4 of the
-W4 skeleton therefore needs real content; the three routes out (and the new open conjecture
-SAFE-RES they turn on) are in the **new informal workbook `notes/Pencil-informal.md`**
-§"`hnoGood'` vacuity" — **user adjudication owed** before the W4 build is commissioned.
+W4 skeleton therefore needs real content; the three routes out are in the **new informal
+workbook `notes/Pencil-informal.md`** §"`hnoGood'` vacuity" — **user adjudication owed**
+before the W4 build is commissioned. A follow-up research dispatch the same day **REFUTED
+(SAFE-RES)** (the deep-split-vertex conjecture routes 1/3 turned on) and replaced it with
+**(SAFE-RES′)**, whose two named gaps are (E) the KT-4.5(i) count without `hnoRigid` and
+(T) triangle-freeness of the residual — workbook §(SAFE-RES). The adjudication is unchanged
+in shape: routes 1/3 are still live, at a now-precisely-priced cost.
 
 W0–W3 and W5-L0–L6 are all COMPLETE (L6a-safe-exists closed in full both halves; L6b/L6d landed).
 **The W5-L7 arc is now CLOSED**: L7a, L7b, and L7c-1…6 all landed (`Molecule/Pencil/Escape.lean`/
@@ -130,8 +134,10 @@ Full record, grounding, and the W0–W5 decomposition:
   is now fully decomposed (recons of 2026-07-30): buildable leaves W4-L4b/L1/L2/L3′/L5 plus
   the carried `hKc`/`hbareContract`/`hnoGood'`; the W4 build sequence awaits commissioning
   (the "B: L4 recon first" adjudication deferred it until the L4 recon — now complete).
-  **`hnoGood'` is now known NON-vacuous** (2026-08-02) — branch 4 needs content; routes +
-  the open (SAFE-RES) conjecture in `notes/Pencil-informal.md`, adjudication owed.
+  **`hnoGood'` is now known NON-vacuous** (2026-08-02) — branch 4 needs content; routes in
+  `notes/Pencil-informal.md` §"`hnoGood'` vacuity", adjudication owed. **(SAFE-RES) is
+  REFUTED** (same day); routes 1/3 now cost §(SAFE-RES)'s (E) + (T) + (V) instead, with (T)
+  a genuine research gap (no landed lemma can decide it, and no certified search can see it).
 - The full biconditional transport `ExtensorThroughPoint C q ↔ ExtensorInPanel (screwComplementIso
   C) q` (design doc's W0 pin) is landed only as its two forward implications; the reverse arms
   need a `complementIso` involution lemma, not in tree — deferred, not on any critical path.
@@ -165,7 +171,9 @@ exactly three remaining open items — **next concrete commit: pick any one, non
   stays carried and branch 4 needs content, so an **adjudication of the three routes in
   `notes/Pencil-informal.md` §"`hnoGood'` vacuity" is owed** — note routes 1/3 would widen
   the carried `hK`/`hbareSplit` kernels (their `noRigid` antecedent), which is a
-  kernel-scope change, not a leaf. **Next concrete commit (when the W4 build is
+  kernel-scope change, not a leaf, **and additionally need (E) + (T) + (V)** of workbook
+  §(SAFE-RES) (the deep-split-vertex conjecture they used to turn on is REFUTED,
+  `notes/scripts/w4/saferes.py`, `|V| = 29`). **Next concrete commit (when the W4 build is
   commissioned): W4-L4b** — the co-1 identification lemma `exists_degree_two_of_co1_rigid`
   (pinned signature in the design section, spike-elaborated, all bricks landed, 1 commit).
   Then, order-flexible: W4-L1 (non-simple bare producer, KT 6.2 mirror), W4-L2 (the
@@ -226,6 +234,15 @@ neighbor — is `notes/IdeaBacklog.md`.
 Reverse-chronological, one line per landing; full derivations live in git and
 `notes/Phase39-design.md` (per-decision pointer where the design doc has a named section).
 
+- **(SAFE-RES) REFUTED; successor (SAFE-RES′) pinned with two named gaps** (2026-08-02,
+  docs+scripts-only, `notes/scripts/w4/saferes.py`) — `S29`, a `|V| = 29` residual whose
+  every branch carries `≤ 2` interior vertices (same certification standard as `W19`; third
+  independent oracle, matroid-union tree packing, polynomial so it runs at `|V| = 29`): the
+  Ear Lemma bounds *ears* and `S29` carries all its ear length in **hub chains**. Survives:
+  (C7) every ear at a maximal cluster has `≥ 6` interior; (C8) the certified dichotomy; the
+  branch count `f(V) = 5b − 6h + 6 − I` making the sharp bound `κ ≥ 2`. **(SAFE-RES′)** =
+  (E) `f(V(G)) ≤ 4` without `hnoRigid` + (T) triangle-free (**not landed-reachable**) + (V)
+  elementary; 281/281 inhabitants satisfy all three. `notes/Pencil-informal.md` §(SAFE-RES).
 - **`hnoGood'` vacuity REFUTED; `notes/Pencil-informal.md` opened** (2026-08-02,
   docs+scripts-only) — an explicit `|V| = 19` inhabitant (`C₄` core, three degree-3 poles,
   three 4-interior paths) with BOTH feasibility verdicts landed-lemma-certified: `G` feasible

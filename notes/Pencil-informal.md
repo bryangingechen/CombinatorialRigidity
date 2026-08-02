@@ -256,32 +256,14 @@ Branch 4 of the reshaped skeleton (L3′) can no longer be discharged by
 vacuity. Three routes, in increasing cost:
 
 1. **Re-dispatch the residual to the split arm** (recommended for
-   assessment first). At `W19` the split arm's *geometric* inputs are all
-   present — the long branches supply a degree-2 vertex `v` strictly inside a
-   branch of `≥ 3` interior vertices, whose two neighbours are degree-2,
-   non-adjacent and share no other neighbour. **Every one of the 93 sweep
-   inhabitants has such a vertex, and a 366-instance probe restricted to
-   graphs with every branch `≤ 1` interior vertex found no inhabitant at
-   all** — so the conjecture worth proving next is
-
-   > **(SAFE-RES)** *A residual `G` always has a degree-2 vertex strictly
-   > interior to a branch with `≥ 3` interior vertices.* — verdict **open**,
-   > strong numerical support; the Ear Lemma forces long *ears* but not
-   > directly long *branches*, which is the gap.
-
-   The Lean cost is *not* only (SAFE-RES). Reading
-   `pencilPair_of_splitOff_of_habitat` (`Escape.lean:334`) and
-   `hasGenericPencilRealization_of_splitOff_of_safe` (`:95`), the landed
-   chain consumes `hnoRigid` at five points: `simple_of_loopless_of_noRigid`
-   (free at a residual `G`, `Simple` is a hypothesis);
-   `exists_adjacent_degree_two_pair_of_noRigid_of_degree_two` (= SAFE-RES);
-   `splitOff_simple_of_noRigid_of_card` and
-   `splitOff_triangleFree_of_noRigid` (both re-derivable from a *deep* split
-   vertex, which is why (SAFE-RES) is stated in that sharper form); the
-   `htf` derivation feeding L7b (already superseded by W4-B / leaf W4-L2);
-   and — the real cost — **`hnoRigid` sits in the antecedents of the carried
-   kernels `hK` and `hbareSplit`**, so this route widens two already-open
-   research kernels rather than reusing them as pinned.
+   assessment first). The split arm's inputs at a residual `G`, and the
+   `hnoRigid` points the landed chain consumes, are worked out in
+   **§(SAFE-RES)** below — the deep-split-vertex conjecture that used to be
+   stated here is **refuted**, and its surviving successor (SAFE-RES′) is
+   that section's subject. What does *not* change: **`hnoRigid` sits in the
+   antecedents of the carried kernels `hK` and `hbareSplit`**, so this route
+   widens two already-open research kernels rather than reusing them as
+   pinned — that remains route 1's dominant cost.
 2. **Discharge branch 4 directly**: build a generic realization of `G` from
    the IH's *bare* half at an infeasible contraction. This is the hardest
    kernel shape in the phase (strictly stronger than `hbareContract`, which
@@ -290,10 +272,284 @@ vacuity. Three routes, in increasing cost:
    entered when a good contraction exists — i.e. carry the Step-2 structure
    theorem as the branch condition and route the `≥ 3`-boundary-hub
    configuration to the split arm. Same kernel-widening cost as route 1, but
-   the case analysis is pinned by Step 2 rather than by a new conjecture.
+   the case analysis is pinned by Step 2 (now also by §(SAFE-RES)'s (C7)/(C8))
+   rather than by a new conjecture. §(SAFE-RES) Step 1 sharpens what this
+   route inherits: at a **triangle-free** residual, case (A) — `≥ 3` boundary
+   hubs — is the *only* configuration, so route 3's case analysis is a
+   two-way split, not an open-ended one.
 
-Route 1 vs 3 is a coordinator/user adjudication; both need (SAFE-RES) or an
-equivalent, and both need the `noRigid`-free kernel restatements.
+Route 1 vs 3 is a coordinator/user adjudication. Both now need the same
+bundle — §(SAFE-RES)'s (E), (T) and (V) — and both need the `noRigid`-free
+kernel restatements.
+
+## §(SAFE-RES) — **REFUTED**; successor (SAFE-RES′) open
+
+**Verdict: refuted.** §`hnoGood'` route 1 pinned
+
+> **(SAFE-RES)** *every residual `G` has a degree-2 vertex strictly interior to
+> a branch with `≥ 3` interior vertices (a "deep split vertex")*
+
+on the strength of 93/93 sweep inhabitants. It is **false**. `S29` (*Step 2*)
+is a `|V| = 29` residual, certified to the same standard as `W19` — both
+feasibility verdicts landed-lemma-backed, no middle zone — in which **every**
+branch carries at most `2` interior vertices. What survives is the strictly
+weaker **(SAFE-RES′)** of *Step 3*, which is what the landed split arm actually
+consumes; it is **open**, holds on 281/281 inhabitants swept, and reduces to two
+named gaps: the residual's edge count **(E)** and its triangle-freeness **(T)**.
+
+Here *residual* abbreviates `hnoGood'`'s antecedent bundle (`notes/Phase39-design.md`
+§"W4-L4 identification recon" Verdict 4): `G.Simple`, `3 ≤ |V(G)|`,
+`G.TwoEdgeConnected`, `PencilNondegFeasible K G`, a proper rigid subgraph exists,
+**no** co-1 rigid subgraph, and **no** `(H, r)` whose `rigidContract` is
+`Simple ∧ PencilNondegFeasible`. Branch / hub vocabulary is **(R4)**: a
+**branch** is a maximal path all of whose interior vertices have degree `2`,
+with hub endpoints (a 2EC feasible `G` with a hub is a subdivision of its hub
+multigraph).
+
+**What would change this.** *For the refutation:* an arithmetic error (three
+independent integer-exact oracles agree — *Verification*), or a misreading of
+the split arm's `hnoRigid` consumption (all five points were read from the
+landed proof bodies, not docstrings). *For the successor:* a proof or
+counterexample for **(E)** or **(T)**. A residual carrying a triangle would
+settle (T) negatively — but *Step 4* shows such a graph is invisible to any
+landed-lemma-certified search, so numerics cannot decide (T) in either
+direction.
+
+### Step 0 — what the split arm actually consumes (`hnoRigid`, five points)
+
+Read off the landed chain `hasGenericPencilRealization_of_splitOff_of_safe`
+(`Molecule/Pencil/Escape.lean:95`) and `pencilPair_of_splitOff_of_habitat`
+(`:334`), at a degree-`2` vertex `v` with neighbours `a ≠ b`:
+
+- **(S0)** `simple_of_loopless_of_noRigid` — free at a residual (`G.Simple` is
+  a hypothesis).
+- **(S1)+(S2)** the safe pair, from
+  `exists_adjacent_degree_two_pair_of_noRigid_of_degree_two`
+  (`Induction/ReducibleVertex.lean:1383`): `deg v = 2` and `deg a = 2` (so
+  `hsafe : ¬G.PencilHub a ∨ ¬G.PencilHub b`, `PencilHub w ↔ w ∈ V(G) ∧ 3 ≤ deg w`).
+  **New reading (this recon).** Its `hnoRigid` enters *only* through
+  `edgeBound_of_noRigid_of_degree_two` (`:1270`), whose sole output is the
+  KT-4.5(i) count. The actual consumer
+  `exists_adjacent_degree_two_pair_of_edgeBound` (`:1068`) is already
+  rigid-free: it needs `[G.Loopless]`, `3 ≤ |V(G)|`, `G.TwoEdgeConnected`, and
+  `(D−1)|E| < D(|V|−1) + (D−1)` — at `D = 6`, `5|E| < 6(|V|−1) + 5`. So in the
+  residual habitat (S1)+(S2) reduce to the **pure counting hypothesis**
+
+  > **(E)**  `f(V(G)) := 5|E(G)| − 6(|V(G)| − 1) ≤ 4`.
+
+- **(S3)** `a ≁ b` — all that `splitOff_simple_of_noRigid_of_card`
+  (`Induction/Operations.lean:1149`) needs `hnoRigid` for: it kills the
+  triangle `{v, a, b}` an `ab`-edge would create, via
+  `triangle_isProperRigidSubgraph`.
+- **(S4)** `N(a) ∩ N(b) = {v}` — the induced-`C₄` arm of
+  `splitOff_triangleFree_of_noRigid` (`Molecule/Pencil/Habitat.lean:300`), via
+  `c4_isProperRigidSubgraph`; `deg v = 2` already supplies the second diagonal
+  `vc ∉ E(G)`.
+- **(S5)** **`G` is triangle-free** — the *other* arm of the same lemma: a
+  `G′`-triangle avoiding the fresh edge `e₀` is a `G`-triangle, i.e. a proper
+  rigid subgraph.
+
+*Correction to the route-1 text.* The claim that a deep split vertex makes "the
+split's simplicity and triangle-freeness re-derive" is three-quarters true: it
+buys (S2), (S3) and (S4), **not** (S5), which is a global condition on `G` and
+is exactly the gap (T) below.
+
+### Step 1 — new structure at a maximal cluster of a residual
+
+Extends §`hnoGood'` Step 2. Let `H` be the maximal induced-saturated proper
+rigid subgraph of `exists_maximal_induced_isProperRigidSubgraph`
+(`Molecular/Deficiency.lean:978` — maximal in **vertex cardinality among all**
+proper rigid subgraphs, and induced-saturated; `IsProperRigidSubgraph H G n`
+is `H.IsRigidSubgraph G n ∧ 2 ≤ |V(H)| ∧ V(H) ⊂ V(G)`, `Deficiency.lean:483`).
+Write `S = V(H)`, `T = V(G) ∖ S`, `t = |T| ≥ 2` (`t = 1` is the excluded co-1
+case). An **ear** is a path with both ends in `S` and interior in `T`; the
+degenerate closed ear (both ends at the same `u ∈ S`) obeys the same Ear-Lemma
+count `5(j+1) − 6j = 5 − j` and is numerically re-checked for `j = 0..7`.
+
+> **(C7) Every ear through `T` has `≥ 6` interior vertices.**
+
+*Proof.* Ear Lemma + maximality give the dichotomy: an ear `P` with
+`1 ≤ j ≤ 5` interior vertices makes `G[S ∪ int(P)]` rigid with `> |S|`
+vertices, so it cannot be *proper* — hence `int(P) = T` and `t = j ≤ 5`.
+Suppose that happens; `T` is then the path `w₁ … w_t`. (i) No `w_i` with
+`1 < i < t` has an `S`-edge: it would give an ear with `i < t` interior
+vertices, which by the dichotomy would have to cover `T`. (ii) `G[T]` has no
+chord `w_i w_j` (`j > i+1`): routing the covering ear through it produces a
+shorter one, same contradiction. So `G[T]` is exactly that path and every
+`T`-vertex has `deg_G = 2`; with (C1) the contraction `G/H` is the **cycle**
+`C_{t+1}` on `{v*, w₁, …, w_t}`. For `t = 2` that is the spanning `C₃`,
+feasible by the landed-**sufficient** L7c-3 witness; for `t ≥ 3` it is hub-free
+and triangle-free, so feasible by the landed-**sufficient** L6b. Either way
+`G/H` is `Simple ∧ Feasible` — a good contraction, contradicting the residual. ∎
+
+> **(C8) Dichotomy at a maximal cluster.** `G/H` is simple (C1) and infeasible,
+> and `¬`(landed-sufficient) is `¬hcard ∨ ∃ triangle`; a `v*`-triangle is
+> excluded by (C5). So exactly one of
+> **(A)** `v*` is a hub of `G/H` with `≥ 3` hub neighbours — i.e. `≥ 3`
+> boundary vertices of `T` are `G`-hubs — or
+> **(B)** `G[T]` carries a triangle, which by **(R5)** is a *pendant* triangle
+> of `G` (two adjacent degree-`2` vertices with a common hub), i.e. a petal
+> branch with `2` interior vertices.
+> In particular **at a triangle-free residual, (A) holds at every maximal
+> cluster.**
+
+(C7) + (C8)(A) + (C6) pin the shape: the core is at least a `C₄` with its two
+hubs opposite, it carries `≥ 3` boundary hubs spread over `≥ 2` attachment
+points, and those boundary hubs are pairwise at `G[T]`-distance `≥ 5`.
+
+### Step 2 — the refutation: `S29`
+
+```
+core    C₄ :  A – m1 – B – m2 – A            (A deg 4, B deg 3)
+poles   hub edges  A–z0,  A–z1,  B–z2
+ring    z0 – y0 – z1 – y1 – z2 – y2 – z0,  every leg 2-subdivided
+spokes  y0–p, y1–p, y2–p,                  every spoke 2-subdivided
+```
+
+`|V| = 29`, `|E| = 34`, `f(V(G)) = 2`, `def(G) = 0`. Hubs (9):
+`A, B, z0, z1, z2, y0, y1, y2, p`; **every one of the 14 branches carries
+`0`, `1` or `2` interior vertices** — max `2`, so there is **no deep split
+vertex**.
+
+- **Residual, both verdicts landed-certified.** `G` is simple, 2EC, and
+  `PencilNondegFeasible` by **L6b** (`hcard`: the hub-induced graph is the path
+  `z0 – A – z1` plus the edge `B – z2`, max degree 2; girth 4, so triangle-free).
+  The unique proper rigid subgraph is the core `{A, m1, B, m2}` (`C₄`, **(R3)**);
+  `|V(H)| + 1 = 5 < 29`, so no co-1; and `G/H` is simple with
+  `closedHubNbhd(v*) = {v*, z0, z1, z2}` of size **4**, refuted by the landed
+  *necessary* `ncard_closedHubNbhd_le_three_of_isNondegPencilRealization`.
+- **Why the Ear Lemma cannot see it.** The ear `A – z0 – ⋯ – z1 – A` has 7
+  interior vertices — comfortably past the Ear Lemma's threshold, so the core
+  stays maximal — but it decomposes as `A–z0` (0 interior) + `z0…y0` (2) +
+  `y0…z1` (2) + `z1–A` (0). *All the ear length is carried by hub chains.* The
+  Ear Lemma bounds ears; (SAFE-RES) asserted something about branches; the
+  witness lives exactly in that gap, which is the failure the coordinator
+  flagged.
+- **Why it has to be this big — the branch arithmetic.** Let `h` = #hubs,
+  `b` = #branches, `I = |V| − h` the total branch interior, `c` the cycle rank.
+  Then `|E| = b + I`, `c = b − h + 1`, and
+
+  ```
+  f(V(G)) = 5c − (|V| − 1) = 5b − 6h + 6 − I .
+  ```
+
+  Min degree `3` at hubs gives `2b ≥ 3h`. If every branch has `≤ κ` interior
+  vertices then `I ≤ κb`, so `f(V(G)) ≥ (5 − κ)b − 6h + 6`.
+  - `κ ≤ 1`: `f(V(G)) ≥ 4b − 6h + 6 ≥ 6h − 6h + 6 = 6 > 4`, so **(E) fails
+    outright** — a graph with at least one hub whose every branch has `≤ 1`
+    interior vertex violates the KT-4.5(i) edge bound. (The hubless case is
+    not residual at all: `G` is then a cycle, whose proper subgraphs are
+    forests, so no proper rigid subgraph exists.) (Dually, `f(V(G)) ≥ 4` is
+    exactly the range in
+    which a degree-`2` co-1 rigid subgraph is arithmetically permitted, since
+    `f(V(G − v)) = f(V(G)) − 4`.) This is the *proof* behind the earlier
+    366-instance short-branch probe's emptiness.
+  - `κ = 2`: `f(V(G)) ≥ 6 − 1.5h`, no obstruction from `h ≥ 2` — but equality
+    pressure forces the graph to be near-cubic and near-fully-subdivided.
+    `S29` is exactly that (`h = 9`, `b = 14`, `I = 20`, `f = 2`).
+
+  **So the sharp branch bound at a residual is `κ ≥ 2`, not `κ ≥ 3`** — and
+  `κ ≥ 2` is, given (E), already landed as
+  `exists_adjacent_degree_two_pair_of_edgeBound`. (SAFE-RES) was one notch too
+  strong, and `S29` attains the true bound.
+
+### Step 3 — the successor (SAFE-RES′)
+
+> **(SAFE-RES′)** *A residual `G` is triangle-free and carries a degree-`2`
+> vertex `v` whose neighbours `a ≠ b` satisfy `deg a = 2 ∨ deg b = 2`,
+> `a ≁ b`, and `N(a) ∩ N(b) = {v}`.* — i.e. exactly (S1)–(S5).
+
+**Verdict: open**, 281/281 on every residual inhabitant swept (both scripts'
+families; `saferes.py --prime`). It decomposes into three obligations:
+
+- **(E)** `f(V(G)) ≤ 4` — **open; the sharpest single statement route 1 needs.**
+  It *is* KT Lemma 4.5(i)'s conclusion, landed only under `hnoRigid`
+  (`edgeBound_of_noRigid_of_degree_two`), and the residual habitat has a rigid
+  subgraph, so that producer is unavailable. Numerics: 281/281, and `S29`,
+  `W19` both sit at `f = 2`. No proof; the natural attempt (bound `f(V(G))` by
+  `f(S) + …` at a maximal cluster) leaks because `f(S)` of a dense rigid `H` is
+  unbounded.
+- **(T)** `G` triangle-free — **open, with a landed-invisible failure mode**
+  (Step 4). Numerics: 281/281, but that is *not* evidence: the search's own
+  feasibility certificate for `G` is L6b, which requires triangle-freeness, so
+  a triangle-carrying residual can never appear in a certified sweep.
+- **(V)** the local choice — **elementary given (E) and (T).** (E) supplies a
+  branch `β` with `j ≥ 2` interior vertices `x₁ … x_j` and hub ends `u, u'`.
+  Then:
+  - `j ≥ 4`, or `j = 3` with `u ≠ u'`: take `v = x₂`; `a = x₁`, `b = x₃` are
+    degree `2`, non-adjacent, and share only `x₂`. ✓
+  - `j = 2` with `u ≠ u'` and `u ≁ u'`: take `v = x₁`; `a = x₂` (degree 2),
+    `b = u`, `N(u) ∩ N(x₂) = {x₁}`. ✓
+  - the three residues — `j = 2` with `u = u'` (a pendant triangle, killed by
+    (T)); `j = 3` with `u = u'`; `j = 2` with `u ~ u'` — are unusable at every
+    vertex of `β`. Each of the last two exhibits a **chordless induced `C₄`**
+    (`u, x₁, x₂, u'` resp. `u, x₁, x₂, x₃`), hence a proper rigid subgraph, so
+    they are natural material for the contraction arm rather than the split
+    arm; a full proof of (V) must show that not *every* `≥ 2`-interior branch
+    of a residual is of those two shapes.
+
+### Step 4 — why (T) is not reachable from the landed lemmas
+
+Let `Δ = {x, y, z}` be a triangle of a feasible `G` with `|V(G)| > 3`. By
+**(R5)** `x, y` have degree `2` and `z` is a hub, so `Δ` is a *pendant*
+triangle, and it is a proper rigid subgraph. Its contraction is simple (`x, y`
+have no outside neighbours) and equals `G − x − y` with `z ↦ v*`,
+`deg v* = deg z − 2`. The only degree that changes is `z`'s, and it only
+*drops*, so no vertex gains hub status; `x, y` were not hubs, so
+`closedHubNbhd_{G/Δ}(v*) ⊆ closedHubNbhd_G(z)[z ↦ v*]` and every other closed
+hub neighbourhood is contained in its `G`-counterpart. Hence **`hcard(G/Δ)`
+always holds**, and the residual's `¬Feasible(G/Δ)` can only be witnessed,
+landed-wise, by a *second* triangle in `G − x − y`.
+
+Consequences: (i) `G` must carry `≥ 2` triangles, and two pendant triangles
+already satisfy every landed test, so (T) is **not provable** from the landed
+set; (ii) such a `G` is itself middle-zone (a 1-hub triangle is neither
+landed-sufficient-feasible nor landed-necessary-infeasible), so it is
+**invisible to a certified search** — (T) is a genuine research gap, not a
+numerics gap. The smallest instance does die: the **bowtie** (two pendant
+triangles at one degree-4 hub, `|V| = 5`) contracts either triangle to the
+spanning `C₃`, landed-feasible by L7c-3 — a good contraction. Route 1/3 must
+either carry (T) as a hypothesis, add triangle-freeness to branch 4's dispatch
+condition (routing the triangle case elsewhere), or land a new
+feasibility-*necessary* condition that kills pendant triangles.
+
+### Verification
+
+`notes/scripts/w4/saferes.py` (tracked; exact integer arithmetic), on top of
+`nogood_subdiv.py`'s machinery.
+
+- **Third oracle.** `treepack_deficiency` packs 6 edge-disjoint spanning
+  forests in `5H` by matroid-union augmenting paths (Nash-Williams/Tutte). It
+  is polynomial, so — unlike `kbare_common.exact_deficiency`, a `2^|V|`
+  partition enumeration — it runs at `|V| = 29`. `--validate`: all three
+  oracles agree on 250 random graphs (0 mismatches), on `C_k` (rigid iff
+  `k ≤ 6`), on the Ear-Lemma threshold `j = 5/6`, and on sparse subdivisions up
+  to `|V| ≈ 30`.
+- **`--witness`** re-derives `S29`, evaluates all 1718 branch-subset candidates
+  on both the pebble game and the tree packing (0 disagreements, unique rigid
+  set = the core), and excludes co-1 **vertex by vertex** — all 29 `G − v` are
+  non-rigid on both oracles (`min def(G − v) = 2`).
+- **`--search`**: a 1989-instance structured short-branch sweep (core + poles +
+  hub ring) yields 39 short-branch residuals and puts the minimum at
+  `|V| = 29`. Two random sweeps over min-degree-3 bases with the branch cap
+  *verified on the built graph* (not merely intended): 584 instances at
+  `κ ≤ 2` and 343 at `κ ≤ 1` produce **0** residuals — at `κ ≤ 1` every
+  instance dies as `not-feasible` (317) or `co-1` (26), exactly the two
+  outcomes the (E-κ) count predicts. Random subdivisions of dense bases are a
+  poor generator for this habitat; the structured family is what reaches it.
+- **`--prime`**: 281 residual inhabitants across both scripts' families —
+  216 have a deep split vertex (so **65 refute (SAFE-RES)**), and 281/281 have
+  two adjacent degree-2 vertices, satisfy (E), are triangle-free, and carry a
+  split-usable vertex.
+- **`--structure`**: coverage for this section's own steps. (E-κ): 338
+  ultra-short instances (`κ ≤ 1`), **0** violations of `f(V(G)) ≥ 5`. On 59
+  residual inhabitants: **(C7) 59/59**, **(C8) case (A) 59/59** (case (B) 0/59,
+  as Step 4 predicts for a certified sweep), split-usable vertex 59/59. The (V)
+  branch characterization was checked against the direct scan with no
+  over-generous branch on any instance in the pool.
+
+Reproduce: `python3 notes/scripts/w4/saferes.py --validate | --witness |
+--search | --prime | --structure`.
 
 ## §(K-tight) — stub
 

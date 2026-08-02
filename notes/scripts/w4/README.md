@@ -55,3 +55,30 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
 
   Argument state and consequences: `notes/Pencil-informal.md`
   §"`hnoGood'` vacuity".
+
+- `saferes.py [--validate | --witness | --search | --prime | --structure]` —
+  the adversarial attack on the **(SAFE-RES)** conjecture (2026-08-02).
+  `nogood_subdiv.py`'s families carry all their ear length in ONE long
+  branch; the Ear Lemma constrains *ears*, not *branches*, so this script
+  sweeps the blind spot — subdivided multigraphs whose branch interiors are
+  all `≤ 2`, with the ear length carried by **hub chains**. Result:
+  **(SAFE-RES) is REFUTED** by a `|V| = 29` residual with every branch at
+  exactly `≤ 2` interior vertices, both feasibility verdicts
+  landed-lemma-certified.
+  - Second oracle: `treepack_deficiency`, matroid-union augmenting paths
+    packing 6 edge-disjoint spanning forests in `5H`. Polynomial, so unlike
+    `kbare_common.exact_deficiency` (`2^|V|`) it runs at `|V| = 29`.
+  - `--validate` (~2 min): all THREE oracles (partition / pebble game /
+    tree packing) agree on 250 random graphs; `C_k`, the Ear Lemma
+    threshold, and sparse subdivisions up to `|V| ≈ 30`.
+  - `--witness` (~2 min): the `|V| = 29` refutation, every branch-subset
+    candidate and every `G − v` re-checked on both oracles.
+  - `--search` (~15 min): structured + random short-branch sweeps, plus the
+    ultra-short (`≤ 1` interior) probe.
+  - `--prime` (~15 min): coverage for the successor conjecture (SAFE-RES′)
+    over every residual inhabitant both scripts produce.
+  - `--structure` (~10 min): coverage for the *argument's own* steps — (C7),
+    the (C8) dichotomy, the (E-κ) count, the (V) branch characterization.
+
+  Argument state, the successor (SAFE-RES′), and consequences for W4:
+  `notes/Pencil-informal.md` §"(SAFE-RES)".
