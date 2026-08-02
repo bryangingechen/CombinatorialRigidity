@@ -435,23 +435,30 @@ vertex**.
 
   Min degree `3` at hubs gives `2b ≥ 3h`. If every branch has `≤ κ` interior
   vertices then `I ≤ κb`, so `f(V(G)) ≥ (5 − κ)b − 6h + 6`.
-  - `κ ≤ 1`: `f(V(G)) ≥ 4b − 6h + 6 ≥ 6h − 6h + 6 = 6 > 4`, so **(E) fails
-    outright** — a graph with at least one hub whose every branch has `≤ 1`
-    interior vertex violates the KT-4.5(i) edge bound. (The hubless case is
-    not residual at all: `G` is then a cycle, whose proper subgraphs are
-    forests, so no proper rigid subgraph exists.) (Dually, `f(V(G)) ≥ 4` is
-    exactly the range in
-    which a degree-`2` co-1 rigid subgraph is arithmetically permitted, since
-    `f(V(G − v)) = f(V(G)) − 4`.) This is the *proof* behind the earlier
-    366-instance short-branch probe's emptiness.
+  - `κ ≤ 1`: `f(V(G)) ≥ 4b − 6h + 6 ≥ 6h − 6h + 6 = 6 > 4`, so **(E)'s
+    inequality fails for such a graph** — one with at least one hub and every
+    branch at `≤ 1` interior vertex violates the KT-4.5(i) edge bound. (The
+    hubless case is not residual at all: `G` is then a cycle, whose proper
+    subgraphs are forests, so no proper rigid subgraph exists.) (Dually,
+    `f(V(G)) ≥ 4` is exactly the range in which a degree-`2` co-1 rigid
+    subgraph is arithmetically permitted, since
+    `f(V(G − v)) = f(V(G)) − 4`.) **Conditionality.** What this proves outright
+    is only that a `κ ≤ 1` graph with a hub violates the KT-4.5(i) count; it
+    rules out `κ ≤ 1` *residuals* solely through **(E)**, which is open
+    (Step 3). So the short-branch probes' emptiness — 366 instances in
+    §`hnoGood'`, 343 here — is *evidence for* (E), not a consequence of the
+    arithmetic.
   - `κ = 2`: `f(V(G)) ≥ 6 − 1.5h`, no obstruction from `h ≥ 2` — but equality
     pressure forces the graph to be near-cubic and near-fully-subdivided.
     `S29` is exactly that (`h = 9`, `b = 14`, `I = 20`, `f = 2`).
 
-  **So the sharp branch bound at a residual is `κ ≥ 2`, not `κ ≥ 3`** — and
-  `κ ≥ 2` is, given (E), already landed as
-  `exists_adjacent_degree_two_pair_of_edgeBound`. (SAFE-RES) was one notch too
-  strong, and `S29` attains the true bound.
+  Two things to keep apart. **Unconditional:** `κ = 2` residuals exist
+  (`S29`), so `κ ≥ 3` — (SAFE-RES) — is false; and a `κ ≤ 1` graph with a hub
+  violates the KT-4.5(i) count. **Conditional on (E):** the matching lower
+  bound `κ ≥ 2` at a residual, which is then not new work at all — it is the
+  landed `exists_adjacent_degree_two_pair_of_edgeBound`. So the picture is
+  that (SAFE-RES) was one notch too strong, `S29` attains the true value, and
+  the whole branch-length question collapses into (E).
 
 ### Step 3 — the successor (SAFE-RES′)
 

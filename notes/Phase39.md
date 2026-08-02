@@ -240,9 +240,10 @@ Reverse-chronological, one line per landing; full derivations live in git and
   independent oracle, matroid-union tree packing, polynomial so it runs at `|V| = 29`): the
   Ear Lemma bounds *ears* and `S29` carries all its ear length in **hub chains**. Survives:
   (C7) every ear at a maximal cluster has `≥ 6` interior; (C8) the certified dichotomy; the
-  branch count `f(V) = 5b − 6h + 6 − I` making the sharp bound `κ ≥ 2`. **(SAFE-RES′)** =
-  (E) `f(V(G)) ≤ 4` without `hnoRigid` + (T) triangle-free (**not landed-reachable**) + (V)
-  elementary; 281/281 inhabitants satisfy all three. `notes/Pencil-informal.md` §(SAFE-RES).
+  branch count `f(V) = 5b − 6h + 6 − I`, giving the matching `κ ≥ 2` **conditional on (E)**.
+  **(SAFE-RES′)** = (E) `f(V(G)) ≤ 4` without `hnoRigid` + (T) triangle-free (**not
+  landed-reachable**) + (V) elementary; 281/281 inhabitants satisfy all three (evidence for
+  (E)/(T), not proof). `notes/Pencil-informal.md` §(SAFE-RES).
 - **`hnoGood'` vacuity REFUTED; `notes/Pencil-informal.md` opened** (2026-08-02,
   docs+scripts-only) — an explicit `|V| = 19` inhabitant (`C₄` core, three degree-3 poles,
   three 4-interior paths) with BOTH feasibility verdicts landed-lemma-certified: `G` feasible
