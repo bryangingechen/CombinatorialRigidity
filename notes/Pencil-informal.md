@@ -279,7 +279,9 @@ vacuity. Three routes, in increasing cost:
    hubs — is the *only* configuration, so route 3's case analysis is a
    two-way split, not an open-ended one.
 
-Route 1 vs 3 is a coordinator/user adjudication. Both need the same bundle:
+**ADJUDICATED (2026-08-02, user): route 3, packaging (b)** — recorded as a decision, not
+built; W4 stays parked while the (K)-family research proceeds (the route's kernel and the
+pinned `hK` share their crux). Both routes needed the same bundle:
 
 - **(K-res)**, one extra carried kernel — same statement shape and same
   difficulty class as `hK`, on the complementary habitat; supported by

@@ -44,8 +44,15 @@ before the W4 build is commissioned. A follow-up research dispatch the same day 
 (T) triangle-freeness of the residual — workbook §(SAFE-RES). A third dispatch the same day
 **priced the kernel widening**: it is **one** kernel (K-res), not two; the escape survives
 numerically at every residual probed; and (E) is reduced to a cheap leaf plus (E-loc) —
-workbook §"widened kernels (routes 1/3)". **The W4 route adjudication (1 vs 3 vs 2 vs park)
-is now fully priced and owed.**
+workbook §"widened kernels (routes 1/3)". **The W4 route is ADJUDICATED (2026-08-02,
+verbatim: "OK, let's proceed with your recommendation first, but we can wrap up soon
+afterwards if you think things would be better handled in a fresh session." — adopting the
+coordinator recommendation): route 3, packaging (b)** — the structure-theorem-pinned dispatch
+invariant, with (K-res) carried as a sibling hypothesis alongside the byte-identical `hK` —
+**recorded as a decision, not built; W4 stays parked** while research continues on the
+(K)-family crux. The same adjudication commissions the next research dispatch: the (K-tight)
+informal recon, starting with the carrier-aware KT pp. 684–691 boundary-load re-pin
+(workbook §"widened kernels" Step 5's M2-vs-`S^⊥` caveat is the motivating finding).
 
 W0–W3 and W5-L0–L6 are all COMPLETE (L6a-safe-exists closed in full both halves; L6b/L6d landed).
 **The W5-L7 arc is now CLOSED**: L7a, L7b, and L7c-1…6 all landed (`Molecule/Pencil/Escape.lean`/
@@ -173,12 +180,13 @@ exactly three remaining open items — **next concrete commit: pick any one, non
   **0 inhabitants found** by a two-run structured+random search
   (`notes/scripts/w4/no_good_search.py`) — but the vacuity conjecture is **REFUTED**
   (2026-08-02, `notes/scripts/w4/nogood_subdiv.py`, `|V| = 19` inhabitant): `hnoGood'`
-  stays carried and branch 4 needs content, so an **adjudication of the three routes in
-  `notes/Pencil-informal.md` §"`hnoGood'` vacuity" is owed — now fully priced**: routes 1/3
-  cost **one** extra carried kernel, the `noRigid`-free **(K-res)** (same shape and
-  difficulty class as `hK`; `hbareSplit` is unreachable at a residual), a residual-habitat
-  L7a sibling, and (T) + (V) + the reduced (E) of workbook §(SAFE-RES) — see workbook
-  §"widened kernels (routes 1/3)" for the trace, statements, and exact-ℚ numerics
+  stays carried and branch 4 needs content. **Route ADJUDICATED (2026-08-02): route 3,
+  packaging (b)** — the structure-theorem-pinned dispatch invariant ((C7)/(C8) two-way split
+  at triangle-free residuals), with **(K-res)** carried as a sibling hypothesis alongside the
+  byte-identical `hK` (`hbareSplit` is unreachable at a residual) — **recorded, not built; W4
+  stays parked**. The route's bundle: (K-res) + a residual-habitat L7a sibling + (T) + (V) +
+  the reduced (E)/(E-loc) of workbook §(SAFE-RES) — see workbook §"widened kernels
+  (routes 1/3)" for the trace, statements, and exact-ℚ numerics
   (`notes/scripts/w4/widened.py`). **Next concrete commit (when the W4 build is
   commissioned): W4-L4b** — the co-1 identification lemma `exists_degree_two_of_co1_rigid`
   (pinned signature in the design section, spike-elaborated, all bricks landed, 1 commit).
