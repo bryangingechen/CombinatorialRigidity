@@ -58,7 +58,11 @@ dissolved — so the **`K4`/`W4` double-subdivision control habitats are CLOSED 
 split** (23/23 witnesses; mixed-length + hub-hub flanks witnessed inside the framework),
 while parallel `G°`-edges are proven order-0-obstructed (uncovered exemplar `P21`).
 Remaining uniform gaps: **(K-Λ)** + **(K-slide-cl)** + `P21`-type shapes. Workbook
-§(K-pitch)/§(K-slide); scripts `notes/scripts/w4/{pitch,kslide}.py`. A fresh session picks
+§(K-pitch)/§(K-slide); scripts `notes/scripts/w4/{pitch,kslide}.py`. **The 2026-08-04
+session ended there** (user wrap adjudication, verbatim: *"Let's end the loop after you've
+confirmed the results from the current subagent; commit everything so we can restart again
+in a fresh session."* — all three dispatches landed and coordinator-verified, incl. every
+headline figure re-run). A fresh session picks
 up per *Hand-off*: the W4 build (route 3(b), first commit W4-L4b) awaits commissioning;
 kernels stay carried per the standing adjudications; the next (K) research step is a class
 proof of (K-slide-cl) on the decorated `G°` carrier, or (K-Λ)'s quadric-avoidance.
