@@ -3424,6 +3424,19 @@ over); and the companion mechanism extends to length-4 companions via the **Λ-c
 **(K-Λ)/(K-slide)**, both `G°`-level and strictly more local than (K-wit).
 `notes/Pencil-informal.md` §(K-pitch) Steps 5b/6; exact-ℚ `notes/scripts/w4/pitch.py`.
 
+**(K-slide) transfer-theorem pointer (2026-08-04, third dispatch).** The slide-in is now a
+**proof device**, not a heuristic: the slide-transfer theorem (S1) — slide = chart automorphism
+at `ε ≠ 0`, row family polynomial through `ε = 0` — makes one exact limit witness prove the
+pitch `≢ 0` on the habitat's chart, with the rank-persistence proviso *dissolved* (now an
+a-posteriori corollary). Witnessed and closed: the `K4`/`W4` double-subdivision control
+habitats at **every** split, `K5−2e`, prism+diagonal, mixed-lengths, and hub-hub-edge members
+(23/23 limit witnesses; both untested Step-6(e) flanks now inside the framework). Parallel
+`G°`-edges are **structurally obstructed at order 0** (repeated-line cycle stress, proven for
+the full support; hub-concentrated circuit exhibited for the reduced one) — the sharpest
+uncovered shape is `P21` (non-`bc`-parallel, no short `bc`-companion, reachable by neither
+mechanism). Residue renamed **(K-slide-cl)** (class-uniform, parallel-free shapes).
+`notes/Pencil-informal.md` §(K-slide); exact-ℚ `notes/scripts/w4/kslide.py`.
+
 One more scope note for the eventual discharge, recorded while fresh: `hK`'s class also
 contains `k > 0` (`def(G) > 0`) habitats, where `G′` can have corank 0 (no stress at all
 — e.g. `C₇ → C₆`) and the escape story is vacuous; the discharge there should follow KT

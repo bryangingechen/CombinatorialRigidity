@@ -46,25 +46,22 @@ invariant, with (K-res) carried as a sibling hypothesis alongside the byte-ident
 **recorded as a decision, not built; W4 stays parked** while research continues on the
 (K)-family crux; the same adjudication commissioned the (K-tight) re-pin dispatch (run same
 day, above). **The 2026-08-02 session ended there** (all four dispatches landed and
-coordinator-verified). **2026-08-04 (research dispatch,
-docs+scripts-only): the (K-pitch) attack RAN** — the pitch polynomial transfers
-**stress-free to the motion side** of `G − v − a` ((T1)–(T4), proven-informally +
-machine-validated, `notes/scripts/w4/pitch.py`), **closes in bracket-monomial form at
-companion-length-3-chain splits** (θ(3,3,6), a (K-res) hard-stratum member — the first
-hard-stratum splits discharged by argument), and the uniform kernel is narrowed to the
-stress-free witness forms (K-wit)/(K-pitch-∞); pitch was nonzero at 29/29 probed seeds —
-workbook §(K-pitch). **The same day's second (K-pitch) dispatch attacked the uniform gap**:
-the naive collinear-collapse route is **REFUTED** (chart-incompatible; its repair lands on
-the target-rank-deficient all-coplanar locus) and replaced by the chart-legal **slide-in
-degeneration**, whose `G°`-local limit system keeps the pitch alive on simple hub
-multigraphs (dbl-K4, 3/3 exact, rank-persistent, `O(ε)`-convergent) but goes null on
-parallel-edge `G°` (thetas) — exactly the habitats the companion forms cover; and the
-**Λ-compression (T5)** extends the companion mechanism to length-4 companions (all far
-data through one covector `λ`; `Q(z) = Φ_loc(λ)`, validated at θ(3,4,5) + the new
-non-theta habitat NT21). Named gaps now **(K-Λ)** and **(K-slide)** — workbook §(K-pitch)
-Steps 5b/6. A fresh session picks up per *Hand-off*: the W4 build (route 3(b), first
-commit W4-L4b) awaits commissioning; kernels stay carried per the standing adjudications;
-the next (K) research step is the `G°`-level (K-slide) statement.
+coordinator-verified). **2026-08-04 (three research
+dispatches, docs+scripts-only): the (K-pitch)/(K-slide) arc** — (1) the pitch polynomial
+transfers **stress-free to the motion side** of `G − v − a` ((T1)–(T4)) and **closes in
+bracket-monomial form** at length-3-companion splits (θ(3,3,6): the first hard-stratum
+splits discharged by argument); (2) the naive collinear collapse is **REFUTED**, replaced
+by the chart-legal **slide-in degeneration**; the Λ-compression (T5) extends companions to
+length 4 (gap **(K-Λ)**); (3) the **slide-transfer theorem (S1)** makes the slide-in a
+proof device — one exact limit witness closes a split, the rank-persistence proviso
+dissolved — so the **`K4`/`W4` double-subdivision control habitats are CLOSED at every
+split** (23/23 witnesses; mixed-length + hub-hub flanks witnessed inside the framework),
+while parallel `G°`-edges are proven order-0-obstructed (uncovered exemplar `P21`).
+Remaining uniform gaps: **(K-Λ)** + **(K-slide-cl)** + `P21`-type shapes. Workbook
+§(K-pitch)/§(K-slide); scripts `notes/scripts/w4/{pitch,kslide}.py`. A fresh session picks
+up per *Hand-off*: the W4 build (route 3(b), first commit W4-L4b) awaits commissioning;
+kernels stay carried per the standing adjudications; the next (K) research step is a class
+proof of (K-slide-cl) on the decorated `G°` carrier, or (K-Λ)'s quadric-avoidance.
 
 W0–W3 and W5-L0–L6 are all COMPLETE (L6a-safe-exists closed in full both halves; L6b/L6d landed).
 **The W5-L7 arc is now CLOSED**: L7a, L7b, and L7c-1…6 all landed (`Molecule/Pencil/Escape.lean`/
@@ -232,30 +229,23 @@ exactly three remaining open items — **next concrete commit: pick any one, non
   fiber", the route-1 gate's lever, now aimed at the proven failure direction) or the new
   scalar form **(K-pitch)** ("the transmitted wrench has pitch": one polynomial per
   (graph, split)). **(K-pitch) is DEVELOPED (2026-08-04, workbook §(K-pitch))**: the pitch
-  transfers stress-free to the motion side of `G − v − a` — the transmitted load spans the
-  perp of `V_bc ⊕ ⟨C_ab, C_ac⟩` with `V_bc` the chain ends' relative twist system, the
-  sign law `Q(r)·Q(z) < 0` trades it for the reciprocal twist's pitch, and escape ⟺ some
-  `H`-motion pairs non-trivially with the meet line — no stress-cofactor infrastructure
-  needed (option B's scope shrinks accordingly). At splits with a **parallel length-3
-  companion chain** the pitch is a **bracket monomial** and the kernel CLOSES there
-  (θ(3,3,6), a (K-res) hard-stratum member, proven-informally). **The second 2026-08-04
-  dispatch attacked the uniform gap**: (i) the **Λ-compression (T5)** — at a length-`k`
-  companion (`4 ≤ k ≤ 6`) the far graph enters `Q(z)` only through the annihilator
-  covector(s) of `V_bc` in the companion span, an explicit local quadratic `Φ_loc(λ)` at
-  `k = 4` (validated at θ(3,4,5) with an independent far-covector cross-check, and at the
-  new non-theta tight habitat NT21) — gap **(K-Λ)**: one projective point off one local
-  quadric; (ii) the naive **collinear collapse is REFUTED** (interiors reach the chord
-  only at the hub point; the panel-resident repair forces the all-coplanar locus,
-  target-rank-deficient on tight habitats by R2), corrected to the chart-legal
-  **slide-in** (interiors slide into hub points; hub-incident hinge lines constant,
-  interior-interior hinges → chords), whose `G°`-local limit system is rank-persistent,
-  `O(ε)`-approached, and **pitched** on simple `G°` (dbl-K4 3/3) but **null** on
-  parallel-edge `G°` (thetas 2/2) — gap **(K-slide)**, complementary to the companion
-  forms. Remaining uniform gaps: **(K-Λ)** + **(K-slide)** (with (K-wit)/(K-pitch-∞) the
-  weakest exact forms). Next research step, when (K) resumes: the `G°`-level (K-slide)
-  statement (serial-triple-decorated simple multigraphs — White–Whiteley-1987-adjacent),
-  or (K-Λ)'s quadric-avoidance; untested flanks: mixed path lengths on simple `G°`,
-  residual hub-hub edges. Workbook §(K-pitch) Steps 5b/6.
+  transfers stress-free to the motion side of `G − v − a` ((T1)–(T4): the load spans the
+  perp of `V_bc ⊕ ⟨C_ab, C_ac⟩`; sign law `Q(r)·Q(z) < 0`; escape ⟺ some `H`-motion pairs
+  non-trivially with the meet line — option B's scope shrinks), closes as a **bracket
+  monomial** at length-3-companion splits (θ(3,3,6), (K-res) hard stratum,
+  proven-informally), and extends to length-4 companions via the **Λ-compression (T5)** —
+  gap **(K-Λ)**: one projective point off one local quadric (θ(3,4,5) + NT21 validated).
+  **The slide-in is a PROOF DEVICE (2026-08-04 third dispatch, workbook §(K-slide))**: the
+  slide-transfer theorem (S1) — slide = chart automorphism at `ε ≠ 0`, row family
+  polynomial through `ε = 0` — makes one exact limit witness close a habitat's split, the
+  rank-persistence proviso dissolved; witnessed: the `K4`/`W4` control habitats at
+  **every** split, `K5−2e`, prism+diagonal, mixed-lengths, hub-hub-edge members (23/23
+  pitched); parallel `G°`-edges proven order-0-obstructed (`P21` the uncovered shape,
+  reachable by neither mechanism). Remaining uniform gaps: **(K-Λ)** + **(K-slide-cl)**
+  (class-uniform on the decorated `G°` carrier — the White–Whiteley pure-condition
+  target) + `P21`-type shapes; (K-wit)/(K-pitch-∞) the weakest exact forms. Next research
+  step, when (K) resumes: a class proof of (K-slide-cl) (factor the limit system's pure
+  condition along `G°`), or (K-Λ)'s quadric-avoidance.
   Design doc §"W5-L7 research recon" "(K) route-1 gate" + "(K) non-constancy recon".
 - **`hbareSplit`** (kernel (K-bare), research) — the bare-half-off-feasibility kernel; **carried
   as pinned (the standing GO), extension route recon'd NO-GO on landed machinery** (2026-07-30):
@@ -291,6 +281,15 @@ neighbor — is `notes/IdeaBacklog.md`.
 Reverse-chronological, one line per landing; full derivations live in git and
 `notes/Phase39-design.md` (per-decision pointer where the design doc has a named section).
 
+- **(K-slide) slide-transfer theorem (S1) PROVEN — one exact limit witness closes a split;
+  `K4`/`W4` control habitats closed at every split** (2026-08-04 third dispatch,
+  docs+scripts-only, exact-ℚ `notes/scripts/w4/kslide.py`) — slide = chart automorphism at
+  `ε ≠ 0`, row family polynomial through `ε = 0`; the rank-persistence proviso dissolved
+  (a-posteriori corollary). 23/23 limit witnesses pitched (7 members, 11 split-classes;
+  mixed-length + hub-hub flanks witnessed; hub-level serial-chain carrier machine-checked).
+  Parallel `G°`-edges proven order-0-obstructed (repeated-line cycle stress); `P21` = the
+  uncovered shape. Gaps now (K-Λ)/(K-slide-cl). Workbook §(K-slide).
+
 - **(K-pitch) uniform-gap attack — naive collinear collapse REFUTED, slide-in named and
   validated; Λ-compression extends companions to length 4** (2026-08-04 second dispatch,
   docs+scripts-only, `pitch.py --companion4 | --slide`) — (T5): far data enters `Q(z)`
@@ -320,25 +319,19 @@ Reverse-chronological, one line per landing; full derivations live in git and
   §(K-tight); the design doc's (K)-sections carry dated pointers.
 
 - **W4 routes 1/3 kernel-widening cost PRICED — one kernel, not two; no counterexample**
-  (2026-08-02, docs+scripts-only, exact-ℚ `notes/scripts/w4/widened.py`) — `hbareSplit` is
-  unreachable at a residual (feasible by hypothesis, so the split producer's infeasible
-  branch never fires), so only `hK` widens, to **(K-res)** (`hnoRigid` ↦
-  `PencilNondegFeasible`), best carried as a sibling hypothesis leaving `hK` untouched. The
-  (K) analysis's `s₀ = 0` step **breaks** — the rigid core's own dependency cancels the index
-  gain (`dim R_a = 5 + def(G′) − def(G−v)`, 4192/4192), so the residual habitat sits wholesale
-  in (K-tight)'s hard `dim R_a = 1` stratum — yet the escape holds: 8/8 escaping seeds at
-  `W19`/`S29`, 94/96 pool-wide, vs 11/12 for the pinned kernel's own tight control (all
-  non-escapes later shown sampler artifacts — the (K-tight) re-pin entry). **(E) is
-  reduced** to a `noRigid`-free verbatim-prefix leaf plus **(E-loc)** (255/255).
-  `notes/Pencil-informal.md` §"widened kernels (routes 1/3)". **W4 route adjudication owed.**
+  (2026-08-02, docs+scripts-only, exact-ℚ `notes/scripts/w4/widened.py`) — only `hK` widens
+  (to **(K-res)**, best carried as a sibling hypothesis); `hbareSplit` is unreachable at a
+  residual. The (K) analysis's `s₀ = 0` step breaks (`dim R_a = 5 + def(G′) − def(G−v)`,
+  4192/4192; the residual habitat sits in the hard `dim R_a = 1` stratum) yet the escape
+  holds (8/8 at `W19`/`S29`, 94/96 pool-wide; non-escapes later shown sampler artifacts);
+  (E) reduced to a verbatim-prefix leaf + (E-loc) (255/255). Workbook §"widened kernels
+  (routes 1/3)". (The owed W4 route adjudication has since landed — route 3(b).)
 - **(SAFE-RES) REFUTED; successor (SAFE-RES′) pinned with two named gaps** (2026-08-02,
-  docs+scripts-only, `notes/scripts/w4/saferes.py`) — `S29`, a `|V| = 29` residual whose every
-  branch carries `≤ 2` interior vertices (same certification standard as `W19`; third oracle,
-  matroid-union tree packing): the Ear Lemma bounds *ears*, and `S29` carries all its ear
-  length in **hub chains**. Survives: (C7), the (C8) dichotomy, the branch count
-  `f(V) = 5b − 6h + 6 − I` giving `κ ≥ 2` **conditional on (E)**. **(SAFE-RES′)** = (E) + (T)
-  (**not landed-reachable**) + (V); 255/255 inhabitants satisfy all three (evidence, not
-  proof; the figure was first recorded as 281 in error). `notes/Pencil-informal.md` §(SAFE-RES).
+  docs+scripts-only, `notes/scripts/w4/saferes.py`) — `S29` (`|V| = 29`, every branch `≤ 2`
+  interiors, all ear length in hub chains; `W19`-standard certification, third oracle).
+  Survives: (C7), the (C8) dichotomy, the branch count giving `κ ≥ 2` conditional on (E).
+  **(SAFE-RES′)** = (E) + (T) (not landed-reachable) + (V); 255/255 inhabitants satisfy all
+  three (evidence, not proof; first recorded as 281 in error). Workbook §(SAFE-RES).
 - **`hnoGood'` vacuity REFUTED; `notes/Pencil-informal.md` opened** (2026-08-02,
   docs+scripts-only, `notes/scripts/w4/nogood_subdiv.py`) — `W19`, an explicit `|V| = 19`
   inhabitant (`C₄` core, three degree-3 poles, three 4-interior paths), BOTH feasibility

@@ -191,3 +191,28 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
     evaluation fails exactly where the companion forms take over).
 
   Argument state: `notes/Pencil-informal.md` §(K-pitch).
+
+- `kslide.py [--k4 | --battery [0-3] | --mixed | --flanks]` — the
+  **(K-slide)** attack (2026-08-04, third pass): the slide-transfer
+  theorem's per-habitat `ε = 0` witnesses. Validates, per member: the
+  transfer certificate ((T1)–(T3) + `Q(r) ≠ 0` at one target-rank
+  `dim R_a = 1` seed, via `pitch.transfer_probe`) and hard limit
+  witnesses (W1) `dim mot = 6|V_H| − 5|E_H|`, (W2) `dim V_bc(limit) = 3`,
+  (W3) `z(limit)` defined, (W4) `Q(z_limit) ≠ 0` — by (S1) one such
+  witness proves the pitch `≢ 0` on the habitat's chart. Exact-ℚ, on top
+  of `repin.py` / `pitch.py`.
+  - `--k4` (~1 min): dbl-subdivided `K4` — 3 witnesses, plus the (S2)
+    hub-level serial-chain `V_bc` cross-check (interior elimination).
+  - `--battery [0-3]` (~2–6 min each): `W4` wheel (rim; spoke, both
+    ends), `K5 − {01, 23}` (split `02`), prism+diagonal (split `01`,
+    both ends) — 2 witnesses per split-class, all pitched.
+  - `--mixed` (~2 min): `K4` with lengths `(3,4,2,3,3,3)` — flank (i),
+    both split ends; serial-4-chain + meet-line-pair carriers
+    cross-checked at hub level.
+  - `--flanks` (~4 min): the hub-hub-edge member (flank (ii), both ends,
+    WITNESSED) and the parallel non-`bc`-edge member `P21` — order-0
+    obstructed in both slide supports; the limit stress's chain support
+    and line rank exhibited (full support: the parallel pair, 6 edges
+    rank 5; reduced: the theta sub-multigraph, 12 edges rank 6).
+
+  Argument state: `notes/Pencil-informal.md` §(K-slide).
