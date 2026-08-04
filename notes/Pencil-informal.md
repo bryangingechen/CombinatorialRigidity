@@ -1114,7 +1114,300 @@ strong evidence, narrowed to (K-move)/(K-pitch).** The enabling technology
 is unchanged (stress-as-chart-rational-function / pure-condition
 infrastructure, option B), with (K-pitch) as the new sharpest entry point:
 one scalar polynomial whose non-vanishing per habitat closes the kernel's
-hard stratum.
+hard stratum. **(K-pitch) is developed in §(K-pitch) below (2026-08-04)**:
+the pitch transfers off the stress side onto the motion side of
+`G − v − a`, and closes in bracket-monomial form at companion-chain
+habitats.
+
+## §(K-pitch) — the null-wrench route: motion-side transfer, the placement quartic, a bracket-monomial closed form
+
+The attack on §(K-tight) Step 5's sharpest entry point: escape failure
+requires the transmitted wrench `r̃ = ★r` to be a *line* extensor
+(`⟨r̃, r̃⟩_Klein = 0`), so `⟨r̃, r̃⟩ ≢ 0` on the seed variety suffices — one
+scalar polynomial per (graph, split). Standing notation, on top of
+§(K-tight)'s: split chain `b–v–a–c` at a target-rank `G′`-seed in the
+`def(G) = def(G′) = 0` world, hard stratum `dim R_a = 1`;
+`H := G − v − a = G′ − a` (terminal bodies `b, c`);
+`T := ⟨C_ab, C_ac⟩` (the pencil of lines through `pt(a)` in
+`plane(a,b,c)`); `B(x,y) := ⟨x, ★y⟩` the Klein form (`B(C(L), C(L′)) = 0`
+⟺ the lines meet), `Q(x) := B(x,x)` the pitch quadric (`Q(x) = 0` ⟺ `x`
+is a line extensor).
+
+**Verdict (three-part).** (i) The reductions (T1)–(T4) below —
+transferring the pitch off the stress side onto the **motion side of
+`H`** — are **proven-informally**: exact linear algebra plus classical
+quadratic-form theory, machine-validated per seed at every probed habitat
+(`notes/scripts/w4/pitch.py`). (ii) At habitats whose split chain has a
+**parallel length-3 companion chain** — θ(3,3,6) the exemplar, a member of
+the **(K-res)** hard stratum (it contains a rigid `C₆`) — the pitch
+polynomial collapses to a **bracket monomial** and (K-pitch) **closes**
+(Step 5): the first hard-stratum splits discharged by argument (exact
+seeds certify only the open side conditions' nonemptiness) rather than by
+observation alone. (iii) The uniform kernel over the full class stays
+**open**, reduced to the stress-free forms (K-wit)/(K-pitch-∞) below; the
+adversarial record is intact — pitch was **nonzero at every probed seed**
+(29/29: 16 tight-control + 5 residual + 8 pool-stratum).
+
+**What would change this.** *For the reductions:* an error in the two-port
+derivation (T1) — each claim is asserted per seed against an independently
+computed stress. *For the route:* a habitat with `Q(z) ≡ 0` at every seed
+(that kills the pitch route there, while escape may still hold through a
+moving line wrench); none found. *For the closed form:* a companion-chain
+habitat where one of the five brackets vanishes identically on the pencil
+chart — the stated hypotheses exclude the one identified degeneration
+(an `x`/`y`–opposite-hub adjacency, which drops `dim V_bc ≤ 2` and leaves
+the companion-chain hypothesis unsatisfiable).
+
+### Step 0 — the pitch polynomial, and which specializations are legitimate
+
+By Cramer, the corank-1 stress's coefficients at a target-rank seed are
+signed maximal minors of the deleted-row matrices of `R(G′)`, so
+`r = Σ_j λ_{(ab)j} r_j(C_ab)` and `P := ⟨r̃, r̃⟩` are honest **polynomials
+in the chart coordinates** (not just rational functions on the target-rank
+locus). Two consequences frame everything below.
+
+- **One witness seed decides a split.** `P ≢ 0` plus density of the
+  target-rank locus (supplied by the kernel's own antecedent,
+  `HasGenericPencilRealization` of the split graph) gives a seed that is
+  simultaneously target-rank and `P ≠ 0`; §(K-tight) Steps 2/5 then give
+  the escape, and `hK`/(K-res)'s conclusion follows (the hub-selector /
+  `pencilRow` packaging is combinatorial, from `hcard` — §"widened
+  kernels" Step 5).
+- **Polynomial specialization ≠ the refuted degeneration route.** The
+  route-1 NO-GO (design doc §"(K) route-1 gate") refuted *analytic stress
+  control at degenerate seeds*; evaluating the polynomial `P` at a special
+  chart point needs no control — the obstruction was only ever that no
+  specialization made the global minors *computable*. (T1) supplies
+  exactly that computability, by eliminating the stress from `P`
+  altogether.
+
+### Step 1 — (T1): the two-port transfer — `r` from motions of `H`, no stress
+
+`H = G′ − a` and `a` carries exactly the two hinges `C_ab, C_ac` in `G′`,
+both through `pt(a)` (KT's (6.44) equilibrium body). Let
+
+> `V_bc := { m(b) − m(c) : m a motion of H }` ⊆ `K⁶`
+
+be the **relative twist system** of the terminals — a motion-side object
+(motions of a body–hinge framework are screw-center assignments with
+`m(x) − m(y) ∈ ⟨C_xy⟩` per hinge; Whiteley 1996 §12.2). Then, exactly:
+
+> **(T1)** `r` is Euclidean-orthogonal to `V_bc` and to `T`; at a seed
+> with `dim V_bc = 3` (the generic value; observed at every probed seed)
+> `W := V_bc ⊕ T` is 5-dimensional and **`r` spans `W^⊥`**. Moreover
+> `V_bc ∩ T = 0` is *forced* at a target-rank seed.
+
+*Proof.* Restrict the stress `λ` to the `H`-rows: equilibrium at every
+body off `{a, b, c}` is untouched, at `b` the deleted `ab`-fiber
+contributed `−r`, at `c` the `ac`-fiber contributed `−r_ac = +r` (6.44).
+So `λ|_H` is an `H`-row combination with net load `(+r @ b, −r @ c, 0)`.
+Pairing a row combination's loads against any motion gives `0`, so
+`⟨r, m(b) − m(c)⟩ = 0` for every motion `m` — `r ⊥ V_bc`; `r ⊥ T` is the
+reciprocity of `r` to both `a`-hinges (§(K-tight)). Conversely a nonzero
+`t = ω₁C_ab + ω₂C_ac ∈ V_bc ∩ T` extends the `H`-motion to
+`m(a) := m(b) − ω₁C_ab = m(c) + ω₂C_ac`, a nontrivial flex of `G′` —
+impossible at a target-rank seed with `def(G′) = 0`. So
+`dim W = dim V_bc + 2 = 5` and the 1-dimensional `W^⊥` is `⟨r⟩`. ∎
+
+Two structural facts ride along. **(a) Path-sum containment:** telescoping
+`m(x) − m(y) = ω_{xy}C_{xy}` along any `b`–`c` path `P` of `H` gives
+`V_bc ⊆ span{C_e : e ∈ P}` — for **every** path, simultaneously. This is
+the lever Step 5 uses. **(b)** `V_bc` needs only a kernel computation
+(cycle conditions on hinge rotations) — the stress, its cofactors, and
+the corank bookkeeping have disappeared from the right-hand side; this is
+the computable simplification the refuted routes lacked.
+
+### Step 2 — (T2): the sign law — pitch of `r` = − pitch of the reciprocal twist
+
+`T` is **totally isotropic** for `B` (its two generators meet at `pt(a)`),
+and both `★r` and the solution set of `B(·, C_ab) = B(·, C_ac) = 0` live
+in `T^⊥` (Klein-perp, 4-dimensional). Let
+
+> `z` span `V_bc ∩ T^{⊥_B}` — the **reciprocal twist**: the unique (up to
+> scale, generically) relative twist of `b` vs `c` through `H` that does
+> no reciprocal work on either hinge at `a`.
+
+In the quotient `T^{⊥_B}/T` — a **hyperbolic plane** (Witt index drops by
+`dim T`) — the classes of `★r` and `z` are `B`-orthogonal (that is (T1):
+`B(★r, z) = ⟨r, z⟩ = 0`). In a hyperbolic plane two nonzero orthogonal
+vectors are either both isotropic (and parallel) or both anisotropic with
+`Q`-values of product `= −(nonzero square)`:
+
+> **(T2)** at a seed where `z ∉ T` and `★r ∉ T`:
+> `Q(r) = 0 ⟺ Q(z) = 0`, and when nonzero `Q(r)·Q(z) < 0`.
+
+So the pitch of the transmitted wrench equals (up to a negative square)
+the pitch of a **motion** of the smaller framework `H`. Failure geometry:
+`Q(z) = 0` means the reciprocal twist is an actual **line** `L`; `z ∈ T^⊥`
+then forces `L` through `pt(a)` or `L ⊆ plane(a,b,c)` (a line meets both
+`a`-hinges ⟺ one of the two). On the irreducible chart, identical
+vanishing of `Q(z)` therefore splits into two sharp identical-membership
+statements — *(F-A)* `z` is always a rotation about a line through
+`pt(a)`, or *(F-B)* always about a line in `plane(a,b,c)` — each refutable
+by one exact seed.
+
+### Step 3 — (T3): the motion form of the full criterion, and (K-wit)
+
+The β-plane `Λ²Π̂(b)` is maximal isotropic, hence its own Klein-perp; so
+§(K-tight)'s route-A uniform-failure criterion `r ⊥ Λ²Π̂(b)` reads:
+**`★r` is a line lying in the panel `Π(b)`** — and route B dually. Both
+routes failing ⟺ `★r ∈ Λ²Π̂(b) ∩ Λ²Π̂(c) = ⟨C(M)⟩`, recovering
+§(K-tight) Step 2.5. Transferred by (T1) (and using
+`B(C(M), C_ab) = B(C(M), C_ac) = 0`, since `M` passes through `pt(a)`):
+
+> **(T3)** at a `dim W = 5` target-rank seed, both hubs: **escape ⟺ some
+> motion `m` of `H` has `B(C(M), m(b) − m(c)) ≠ 0`** — the relative twist
+> system is not contained in the linear line complex of the meet line.
+
+Two consequences. **(a)** `Q(r) ≠ 0` certifies **both routes at once**
+(any failure mode requires `★r` decomposable) — and this is
+**end-stratum-uniform**: at a free chain end the failure directions are
+again line extensors (`★C_ab`-type, §(K-tight) Step 4), so pitch ≠ 0
+certifies escape in every end configuration with the *same* polynomial.
+**(b)** The kernel's remaining content, in its weakest exact form, is now
+stress-free and existential:
+
+> **(K-wit)** *(per habitat + split; equivalent to the escape at a good
+> seed)* — some pencil-chart target-rank seed of `G′` admits a motion of
+> `H` whose relative `b`–`c` twist pairs non-trivially with `C(M)` (both
+> hubs; at a free end, with the corresponding 1-dim failure direction).
+
+One linear functional on one kernel — much closer to the phase's
+somewhere-witness engine food than stress cofactors, though still open
+uniformly (the kernel is seed-dependent).
+
+### Step 4 — (T4): the placement quartic, and an `a`-free leading term
+
+`pt(a)` is a chart coordinate confined to the meet line `M`; `V_bc` does
+not involve `a` at all. Fix everything but `pt(a) = p₀ + t·d` (`d` = the
+direction of `M`): the two conditions cutting `z` out of `V_bc` are linear
+in `t`, so `z(t)` is quadratic and
+
+> **(T4)** `q(t) := Q(z(t))` is a polynomial of degree ≤ 4 whose `t⁴`
+> coefficient is `Q(z_∞)`, where `z_∞` is the same construction with the
+> two `a`-hinges replaced by the lines joining `M`'s **direction point**
+> `(d, 0)` to `pt(b)`, `pt(c)` — an expression in which `a` does not
+> appear.
+
+Validated by exact interpolation at four habitats (one seed each,
+`--sweep`), with the sign law re-checked against a fully recomputed stress
+at moved placements. All five coefficients were nonzero at all four, the
+leading one included. This gives a sufficient reduction one level down:
+
+> **(K-pitch-∞)** *(sufficient for (K-pitch) at the split)* — `Q(z_∞) ≢ 0`
+> on the `a`-free part of the chart.
+
+### Step 5 — the companion-chain closed form: pitch as a bracket monomial
+
+Suppose the split chain `b–v–a–c` has a **parallel length-3 companion**:
+a second path `b–x–y–c` in `H` (so `G` has two length-3 hub paths between
+the same hubs). Write `C₁ = C(bx), C₂ = C(xy), C₃ = C(yc)` and
+`[p,q,r,s]` for the `4×4` determinant of the four homogenized points.
+
+> **Proposition (companion-chain closed form).** At a target-rank seed
+> with `dim V_bc = 3`: path-sum containment (Step 1a) pins
+> `V_bc = ⟨C₁, C₂, C₃⟩`, and the reciprocal twist is
+> `z = −[y,c,a,b][x,y,a,c]·C₁ + [y,c,a,b][b,x,a,c]·C₂
+>      − [x,y,a,b][b,x,a,c]·C₃`, with
+>
+> `Q(z) = 2·[x,y,a,b]·[b,x,a,c]·[y,c,a,b]·[x,y,a,c]·[b,x,y,c]`.
+>
+> In particular (T2/T3): if the five brackets are nonzero at one such
+> seed, the split escapes.
+
+*Proof.* The Gram of `B` on `(C₁, C₂, C₃)` has only one nonzero entry,
+`B(C₁, C₃) = [b,x,y,c]` (consecutive lines meet at `pt(x)`, `pt(y)`) —
+the serial-chain signature (`rank Q|_{V_bc} = 2`, observed identically at
+θ(3,3,6)). The two cutting conditions have coefficient rows
+`(0, [x,y,a,b], [y,c,a,b])` and `([b,x,a,c], [x,y,a,c], 0)` — the zeros
+because `C₁` and `C_ab` meet at `pt(b)`, `C₃` and `C_ac` at `pt(c)`. The
+cross product gives `z`; expanding `Q` through the Gram leaves the single
+`2·z₁z₃·[b,x,y,c]` term. ∎
+
+**Instantiation: θ(3,3,6)** (two length-3 paths + one length-6 path
+between two hubs; tight, `def = 0` (machine-checked), 2EC,
+landed-**sufficient** feasible — triangle-free with `hcard` from the R4
+shape, the L6b criterion — and it contains the rigid `C₆` spanned by the
+two short paths, so it is a **(K-res)**-habitat member, not reachable by
+the pinned `hK`). On its chart: `x, a ∈ Π(b)`, `y, a ∈ Π(c)`, all else
+generic. Each bracket has an obvious witness — `[x,y,a,b]` needs
+`y ∉ Π(b)` etc.; `[b,x,y,c]` needs the two short paths non-coplanar — so
+each is `≢ 0` on the irreducible chart, hence so is their product; the
+remaining open conditions (target rank, `dim V_bc = 3`, the (T2) side
+conditions) are nonempty by the validated seeds, so a common good seed
+exists and **(K-pitch) holds at θ(3,3,6)'s hard-stratum split:
+proven-informally** (machine-confirmed exactly, `--theta336`:
+`V_bc = ⟨C₁,C₂,C₃⟩`, the monomial identity, and the sign law against the
+independently computed stress, 4/4 seeds).
+
+**Scope.** The proposition applies verbatim to any hard-stratum split
+with a parallel length-3 companion (interior `x, y` may even be hubs —
+only the five bracket-nonvanishing checks are chart-dependent). The one
+identified degeneration: `y` adjacent to `b` (or `x` to `c`) forces the
+bracket's four points coplanar *and* creates a shorter `b`–`c` path,
+collapsing `dim V_bc ≤ 2` — outside the proposition's hypotheses. This is
+the White–Whiteley mechanism in miniature: at special structure the pure
+condition **factors into brackets** (cf. the 1987 paper's factorization
+of bar-and-body pure conditions along the block lattice), and the pencil
+chart is then attacked bracket-by-bracket.
+
+### Step 6 — uniformity: what remains open, and the identified route
+
+The general habitat has no companion 3-chain, and `V_bc` is then pinned
+only *inside* every path's line span. Named state:
+
+- **(K-pitch), general case: open.** Reduced to (K-wit)/(K-pitch-∞);
+  refutable per habitat by a `q ≡ 0` seed family (none found). Strictly
+  easier than **(K-move)** as a target — one scalar against a projective
+  direction — and now *strictly closer to landed machinery*: the witness
+  object is a motion kernel, not a stress cofactor.
+- **The collinear-collapse leading term** (the remaining pure-condition
+  route to uniformity, unfinished): degenerate each hub path of `H`
+  toward its own line. Tightness is exactly the budget
+  `Σ_P ℓ_P = 6·c°(G°)` over the hub multigraph `G°` (elementary:
+  `index(G) = 6(|E°| − |V°| + 1) − Σℓ_P`), so at the collapse each path
+  transmits its single line and the order-0 system is body–hinge on `G°`
+  — but the path blocks' ranks collapse (each path's 5-row fibers become
+  parallel), so the leading term couples order-0 `G°` data to the paths'
+  first-order shape coefficients. A genuinely multi-scale analysis;
+  **open**, and the natural successor to Step 5's factorization if the
+  uniform statement is ever attacked head-on. (The analytic stress-control
+  objection does not apply — Step 0 — but nothing here is computed yet.)
+- **The joint sweep** (§(K-tight) Step 5) still only widens the escape;
+  un-analyzed.
+
+**Adversarial hunt (this pass).** A pitch-route counterexample must have
+the reciprocal twist `z` decomposable at every seed — by the Step-2
+dichotomy, a line through `pt(a)` always, or a line in `plane(a,b,c)`
+always — while `V_bc` varies with the far seed (route-1 gate, N8). No
+structural mechanism produces that: the only found `Q|_{V_bc}`-degeneracy
+(the serial-chain Gram) still yields nonzero pitch as a bracket monomial.
+Pitch was nonzero at **29/29** probed seeds: 16 tight-control (dbl-subdiv
+`K4` 6, θ(3,4,5) 5, θ(3,3,6) 5), 5 residual (`W19` 3 — free-end shape,
+`S29` 2 — both-hubs), 8 pool-stratum (4 splits × 2). **No counterexample
+candidate; hunt negative.**
+
+### Verification
+
+`notes/scripts/w4/pitch.py` (tracked; exact-ℚ, on top of `repin.py`, with
+its robust in-plane sampler; every sampled object carries rank/dimension
+asserts). Reproduce:
+`python3 notes/scripts/w4/pitch.py --control | --witness | --stratum |
+--sweep | --theta336`. Per seed it asserts: (T1) `r ⊥ V_bc`,
+`V_bc ∩ T = 0`, `W^⊥ = ⟨r⟩`; (T2) side conditions and the sign law
+`Q(r)·Q(z) < 0` (or both zero); (T3) the motion-form combined criterion
+against `repin.py`'s validated `critA/critB`, and the `★r`-in-panel
+route-A form; (T4) exact interpolation, degree ≤ 4, `q₄ = Q(z_∞)`, and
+the sign law against a recomputed stress at two moved placements;
+(`--theta336`) the pairing–bracket dictionary
+`B(C(uv), C(pq)) = [u,v,p,q]`, `V_bc = ⟨C₁,C₂,C₃⟩`, the closed-form `z`,
+and the bracket-monomial identity.
+
+**Confidence verdict: (T1)–(T4) and the companion-chain closed form
+proven-informally; (K-pitch) at θ(3,3,6)-type splits proven-informally;
+the uniform (K-pitch)/(K-tight)/(K-res) kernel open — narrowed to
+(K-wit)/(K-pitch-∞), with the collinear-collapse leading term as the
+identified route.**
 
 ## §(K-bare-ext) — stub
 

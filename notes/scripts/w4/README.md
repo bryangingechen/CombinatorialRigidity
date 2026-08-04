@@ -147,3 +147,30 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
     rank-2 of the `U`-functional matrix), 80/80 at the control and `W19`.
 
   Argument state: `notes/Pencil-informal.md` §(K-tight).
+
+- `pitch.py [--control | --witness | --stratum | --sweep | --theta336]` —
+  the **(K-pitch)** development (2026-08-04): the null-wrench test's
+  motion-side transfer. Validates, per target-rank seed on the
+  `dim R_a = 1` hard stratum: **(T1)** the transmitted load `r` spans the
+  Euclidean perp of `V_bc ⊕ ⟨C_ab, C_ac⟩`, `V_bc` = the relative twist
+  system of the chain ends through `H = G − v − a` (stress-free);
+  **(T2)** the sign law `Q(r)·Q(z) < 0` (or both zero) against the
+  reciprocal twist `z`; **(T3)** the motion form of the full escape
+  criterion (escape ⟺ some `H`-motion pairs non-trivially with the meet
+  line) against `repin.py`'s validated per-route criteria; **(T4)** the
+  `pt(a)`-sweep quartic `q(t) = Q(z(t))` with `a`-free leading coefficient.
+  Exact-ℚ, on top of `repin.py` (robust sampler inherited).
+  - `--control` (~4 min): dbl-subdivided `K4` + the tight thetas
+    θ(3,4,5)/θ(3,3,6) — (T1)–(T3) hold on all 16 seeds; pitch nonzero 16/16.
+  - `--witness` (~4 min): `W19` (free-end shape) + `S29` (both-hubs) —
+    5/5 residual seeds, pitch nonzero 5/5.
+  - `--stratum` (~4 min): 4 pool splits × 2 seeds — 8/8, pitch nonzero 8/8.
+  - `--sweep` (~6 min): the quartic at 4 habitats — degree ≤ 4 exact,
+    `q₄ = Q(z_∞) ≠ 0`, sign law re-checked against recomputed stresses.
+  - `--theta336` (~1 min): the **companion-chain closed form** — at
+    θ(3,3,6), `V_bc = ⟨C(bx), C(xy), C(yc)⟩` and
+    `Q(z) = 2[x,y,a,b][b,x,a,c][y,c,a,b][x,y,a,c][b,x,y,c]`, a bracket
+    monomial; validated exactly (4/4 seeds), incl. the pairing–bracket
+    dictionary `B(C(uv), C(pq)) = [u,v,p,q]`.
+
+  Argument state: `notes/Pencil-informal.md` §(K-pitch).

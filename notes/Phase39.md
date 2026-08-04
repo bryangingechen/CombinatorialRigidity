@@ -60,10 +60,16 @@ motivating seed-442 mispredict and *every* recorded escape failure turned out to
 placement-sampler artifacts (no genuine failure exists in the corrected record), and the
 kernel is narrowed to one uniform gap, (K-move)/(K-pitch) — see *Hand-off*. **The 2026-08-02
 session ended there** (per the wrap-up authorization quoted above; all four research
-dispatches landed and coordinator-verified). A fresh session picks up per *Hand-off*: the
-next research step is (K-pitch) via the pure-condition calculus; the W4 build (route 3(b),
+dispatches landed and coordinator-verified). **2026-08-04 (research dispatch,
+docs+scripts-only): the (K-pitch) attack RAN** — the pitch polynomial transfers
+**stress-free to the motion side** of `G − v − a` ((T1)–(T4), proven-informally +
+machine-validated, `notes/scripts/w4/pitch.py`), **closes in bracket-monomial form at
+companion-length-3-chain splits** (θ(3,3,6), a (K-res) hard-stratum member — the first
+hard-stratum splits discharged by argument), and the uniform kernel is narrowed to the
+stress-free witness forms (K-wit)/(K-pitch-∞); pitch was nonzero at 29/29 probed seeds —
+workbook §(K-pitch). A fresh session picks up per *Hand-off*: the W4 build (route 3(b),
 first commit W4-L4b) awaits commissioning; kernels stay carried per the standing
-adjudications.
+adjudications; the next (K) research step is (K-wit)/(K-pitch-∞).
 
 W0–W3 and W5-L0–L6 are all COMPLETE (L6a-safe-exists closed in full both halves; L6b/L6d landed).
 **The W5-L7 arc is now CLOSED**: L7a, L7b, and L7c-1…6 all landed (`Molecule/Pencil/Escape.lean`/
@@ -230,8 +236,18 @@ exactly three remaining open items — **next concrete commit: pick any one, non
   the open mathematics is one uniform gap — **(K-move)** ("`[r]` moves on a local-block
   fiber", the route-1 gate's lever, now aimed at the proven failure direction) or the new
   scalar form **(K-pitch)** ("the transmitted wrench has pitch": one polynomial per
-  (graph, split), the White–Whiteley-shaped entry point if option B is ever commissioned).
-  Next research step, when (K) resumes: attack (K-pitch) via the pure-condition calculus.
+  (graph, split)). **(K-pitch) is DEVELOPED (2026-08-04, workbook §(K-pitch))**: the pitch
+  transfers stress-free to the motion side of `G − v − a` — the transmitted load spans the
+  perp of `V_bc ⊕ ⟨C_ab, C_ac⟩` with `V_bc` the chain ends' relative twist system, the
+  sign law `Q(r)·Q(z) < 0` trades it for the reciprocal twist's pitch, and escape ⟺ some
+  `H`-motion pairs non-trivially with the meet line — no stress-cofactor infrastructure
+  needed (option B's scope shrinks accordingly). At splits with a **parallel length-3
+  companion chain** the pitch is a **bracket monomial** and the kernel CLOSES there
+  (θ(3,3,6), a (K-res) hard-stratum member, proven-informally). Remaining uniform gap:
+  **(K-wit)/(K-pitch-∞)** (stress-free witness forms), with the collinear-collapse
+  leading term the identified route. Next research step, when (K) resumes: attack
+  (K-wit)/(K-pitch-∞) — the collinear-collapse leading term, or extend the
+  companion-chain factorization past length-3 companions.
   Design doc §"W5-L7 research recon" "(K) route-1 gate" + "(K) non-constancy recon".
 - **`hbareSplit`** (kernel (K-bare), research) — the bare-half-off-feasibility kernel; **carried
   as pinned (the standing GO), extension route recon'd NO-GO on landed machinery** (2026-07-30):
@@ -266,6 +282,16 @@ neighbor — is `notes/IdeaBacklog.md`.
 
 Reverse-chronological, one line per landing; full derivations live in git and
 `notes/Phase39-design.md` (per-decision pointer where the design doc has a named section).
+
+- **(K-pitch) developed — motion-side transfer proven; bracket-monomial closed form at
+  companion-chain splits; uniform gap narrowed to (K-wit)/(K-pitch-∞)** (2026-08-04,
+  docs+scripts-only, exact-ℚ `notes/scripts/w4/pitch.py`) — the transmitted load spans the
+  perp of `V_bc ⊕ ⟨C_ab, C_ac⟩` (`V_bc` = the chain ends' relative twist system through
+  `G−v−a`; stress-free); sign law `Q(r)·Q(z) < 0`; escape ⟺ some `H`-motion pairs
+  non-trivially with the meet line; `pt(a)`-sweep quartic with `a`-free leading term;
+  θ(3,3,6) ((K-res) hard stratum) CLOSED via
+  `Q(z) = 2[x,y,a,b][b,x,a,c][y,c,a,b][x,y,a,c][b,x,y,c]`; pitch nonzero 29/29 seeds.
+  Workbook §(K-pitch); the design doc's (K)-sections carry dated pointers.
 
 - **(K-tight) KT pp. 684–691 re-pin DONE — carrier escape criterion proven+validated; every
   recorded escape failure was a sampler artifact** (2026-08-02, docs+scripts-only, exact-ℚ
@@ -400,42 +426,19 @@ Reverse-chronological, one line per landing; full derivations live in git and
   `edgeBound_of_noRigid_of_degree_two` + `exists_adjacent_degree_two_pair_of_noRigid_of_degree_two`
   (`ReducibleVertex.lean`, corollary of KT Lemma 3.4) close the rigid half minimality-free,
   covering both deficiency regimes with one lemma.
-- **W5-L6b re-pinned triangle-free + L6b-i assembly LANDED** (2026-07-30) — a bank-authorized
-  spike refuted the `hcard`-only pin (`not_pencilNondegFeasible_of_triangle_two_hubs`); the
-  follow-up recon VERIFIED both habitat claims and re-pinned triangle-free;
-  `pencilNondegFeasible_of_selectors_of_satisfiable` (`Steer.lean`) is the feasibility assembly
-  from selectors + satisfiable-somewhere LI families, needing `[G.Loopless]`. Dispatch-log F9.
-- **W5-L6b-ii (engine + callers) + L6b COMPLETE** (2026-07-30, `Witness.lean`/`Steer.lean`) —
-  `exists_coord_linearIndepOn_pencilChartPoint_of_idx` (reusable char-free general-position
-  engine, no config of its own) feeds the adjacent-pair caller `hsat_adj` and the per-body caller
-  `hsat_pt`/`exists_idx_dtgt_triple`; headline
-  `pencilNondegFeasible_of_ncard_closedHubNbhd_le_three_of_triangleFree` (`Steer.lean`) wires both
-  through the L6b-i assembly. Reusable brick `exists_injOn_mapsTo_of_ncard_le` (FRICTION
-  [mirror-candidate]); FRICTION: omega/`Set.ncard`-atom idiom.
-- **W5-L6a (invariant, transfer, non-rigid safe-exists, L7 coupling) + L6d all LANDED**
-  (2026-07-29/30) — the `≤3` closed-hub-neighbourhood bound is free from `PencilNondegFeasible K G`'s
-  own antecedent (invariant SETTLED); the real gap was the `G⇒G′` transfer, fixed by splitting a
-  **safe** vertex: `ncard_closedHubNbhd_splitOff_le_three_of_safe` (`Habitat.lean` — the dispatched
-  bare-existential pin was FALSE, a 10-vertex counterexample, fixed with explicit `hab : a≠b`);
-  non-rigid safe-vertex existence PROVEN minimality-free
-  (`exists_adjacent_degree_two_pair_of_noRigid_of_deficiency_pos`,
-  `ReducibleVertex.lean`/`Operations.lean`); L6/L7 coupling RESOLVED benign (KT Lemma 6.13/4.6
-  already splits a safe vertex); `c4_isProperRigidSubgraph` + `splitOff_triangleFree_of_noRigid`
-  (`Habitat.lean`, the `C₄` proper-rigid brick + triangle-freeness transfer, TACTICS-QUIRKS §46
-  augmented). Dispatch-log F9 ×3 (bare pin, invariant re-route, coupling). (Rigid `k=0` half
-  PROVEN separately, above.)
-- **L5-cut-v-a…v-g all LANDED** (2026-07-25/29, `Motive.lean`/`Witness.lean`/`Steer.lean`/
-  `Engine.lean`/`Pair2.lean`) — the full cut-arm sub-case (v) chain: v-a triangle-hub
-  infeasibility (`not_pencilNondegFeasible_of_triangle_two_hubs`); v-b the somewhere-witness on
-  `G`'s chart (`exists_coord_linearIndependent_pencilChartPoint_of_pendant_deg3`, new file
-  `Witness.lean`; FRICTION [idiom] → TACTICS-QUIRKS §101); v-c/v-d the `H`-chart witness +
-  `fillNbr` re-choice + flattening gadgets (TACTICS-QUIRKS §96); v-e the common-seed steering
-  primitive + input-half assembly (`pencilNondegFeasible_induce_of_pendant_deg3`, FRICTION [idiom]
-  → TACTICS-QUIRKS §102); v-f the output-half steering assembly
-  (`exists_isNondegPencilRealization_induce_promotedNormal_of_pendant_deg3`, FRICTION
-  [mirror-candidate] `extensor_pair_smul`); v-g (parts 1–2) the demoted-hub glue producer,
-  discharging `hcutPendant3` inline over `[Infinite K]` — **L5-cut-v CLOSED in full**.
-- **Older W5-L5 / W0–W4 entries (one-lined; canonical detail in `notes/Phase39-design.md` + git).**
+- **Older W5-L5/L6 / W0–W4 entries (one-lined; canonical detail in `notes/Phase39-design.md`
+  + git).** L6b re-pinned triangle-free (spike refuted the `hcard`-only pin) + L6b-i assembly
+  `pencilNondegFeasible_of_selectors_of_satisfiable` + L6b-ii engine
+  `exists_coord_linearIndepOn_pencilChartPoint_of_idx` and headline
+  `pencilNondegFeasible_of_ncard_closedHubNbhd_le_three_of_triangleFree` (`Steer.lean`;
+  dispatch-log F9; FRICTION `exists_injOn_mapsTo_of_ncard_le` [mirror-candidate] +
+  omega/`Set.ncard`-atom idiom). L6a invariant + safe-vertex transfer
+  `ncard_closedHubNbhd_splitOff_le_three_of_safe` (bare pin was FALSE, 10-vertex
+  counterexample) + `exists_adjacent_degree_two_pair_of_noRigid_of_deficiency_pos` + L6d
+  `c4_isProperRigidSubgraph`/`splitOff_triangleFree_of_noRigid` (TACTICS-QUIRKS §46; F9 ×3);
+  L6/L7 coupling benign (KT 6.13/4.6). L5-cut-v-a…v-g the full sub-case-(v) chain
+  (`Witness.lean`/`Steer.lean`/`Pair2.lean`; TACTICS-QUIRKS §96/§101/§102; FRICTION
+  `extensor_pair_smul` [mirror-candidate]) — L5-cut-v CLOSED, `hcutPendant3` inline.
   L5-cut-iv shell `pencilPair_of_not_twoEdgeConnected` + sub-cases (`Pair.lean`/`Pair2.lean`);
   L5-cut-i…iii the `Gᵢ⁺` structure layer + restriction infra (`Motive.lean`/`Bricks.lean`/
   `Arms.lean`). Base arm `pencilPair_of_ncard_le_two`; `PencilPair` route-(b′) restatement
@@ -476,3 +479,8 @@ Reverse-chronological, one line per landing; full derivations live in git and
   Schulze–Tanigawa, *Linking rigid bodies symmetrically* (arXiv:1402.0039);
   Garamvölgyi, *Stress-linked pairs of vertices and the generic stress
   matroid* (arXiv:2308.16851).
+- Whiteley, *Some matroids from discrete applied geometry*, in Matroid Theory
+  (Bonin–Oxley–Servatius, eds.), Contemp. Math. **197**, AMS 1996, 171–311 —
+  §12.2's screw-center description of body-hinge motions
+  (`Sᵢ − Sⱼ = α_{ij} h_{ij}`) verified against the `.refs` copy (2026-08-04,
+  the (K-pitch) development); volume/pages verified against AMS metadata.

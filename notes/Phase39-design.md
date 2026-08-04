@@ -3408,6 +3408,15 @@ are the *full* `Λ²Π̂(b)`/`Λ²Π̂(c)`, not the pencils; the obstruction spa
 artifact, not a criterion failure — no genuine escape failure exists in the phase's
 corrected numerics (`notes/scripts/w4/repin.py`).
 
+**(K-pitch) development pointer (2026-08-04).** Item 5's enabling-technology assessment is
+**partially superseded**: the pitch polynomial (the null-wrench sufficient certificate) needs
+NO stress-as-chart-rational-function infrastructure — it transfers stress-free to the motion
+side of `G − v − a` (the chain ends' relative twist system; a kernel computation, no
+cofactors), and **closes in bracket-monomial form** at splits with a parallel length-3
+companion chain (θ(3,3,6), a (K-res) hard-stratum member). The uniform gap is now
+(K-wit)/(K-pitch-∞); the collinear-collapse leading term is the identified route.
+`notes/Pencil-informal.md` §(K-pitch); exact-ℚ `notes/scripts/w4/pitch.py`.
+
 One more scope note for the eventual discharge, recorded while fresh: `hK`'s class also
 contains `k > 0` (`def(G) > 0`) habitats, where `G′` can have corank 0 (no stress at all
 — e.g. `C₇ → C₆`) and the escape story is vacuous; the discharge there should follow KT
@@ -3486,6 +3495,11 @@ pure condition) is precisely the infrastructure option B would build in-tree, no
 citation. If (K) research ever resumes under option B, the 1983/1987 pure-condition papers are the
 right starting exemplars for the corank-1 cofactor gadget + irreducible-factor stress bookkeeping.
 No coordinator/user escalation needed (expected NO-HIT confirmed).
+
+**(K-pitch) pointer (2026-08-04).** The pure-condition calculus WAS since engaged, informally
+and without commissioning option B: at companion-length-3-chain splits the pitch certificate
+factors into a product of five 4-point brackets — the White–Whiteley factoring mechanism in
+miniature, on the motion side. `notes/Pencil-informal.md` §(K-pitch).
 
 ### (K-bare) extension-route recon (2026-07-30): NO-GO on landed machinery — the kernel is real, corank-stratified, and its stressed stratum is nonempty
 
