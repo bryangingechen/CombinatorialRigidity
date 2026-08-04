@@ -291,6 +291,182 @@ def stratum(pairs_n=4, maxv=22):
           f"pitch nonzero on {pit}/{tot}")
 
 
+# ---------------- (T5) longer companions: the Lambda-compression ------------
+
+def coords_in(S, vec):
+    """Coordinates of `vec` in the (independent) spanning list S, or None."""
+    rows6 = [[Si[r] for Si in S] + [-vec[r]] for r in range(6)]
+    for x in nullspace(rows6):
+        if x[-1] != 0:
+            return [xi / x[-1] for xi in x[:-1]]
+    return None
+
+
+def det3(rows):
+    (a, b, c), (d, e, f), (g, h, i) = rows
+    return a * (e * i - f * h) - b * (d * i - f * g) + c * (d * h - e * g)
+
+
+def cross4(l1, l2, l3):
+    """omega with [l1; l2; l3] . omega = 0 (Laplace cofactors, 3x4)."""
+    A = [l1, l2, l3]
+    out = []
+    for i in range(4):
+        cols = [j for j in range(4) if j != i]
+        minor = [[A[r][j] for j in cols] for r in range(3)]
+        out.append((F(-1) ** (i + 1)) * det3(minor))
+    return out
+
+
+def paths_graph(bc_paths, labeled_paths):
+    """Build a subdivision graph from hub-path specs.
+    `bc_paths`: list of lengths of b(=0)-c(=1) paths; `labeled_paths`:
+    list of (h1, h2, length) for other hub pairs. Returns (edges, paths)
+    where paths maps an index to its full vertex list."""
+    edges, paths, nxt = [], {}, 100
+    specs = [(0, 1, L) for L in bc_paths] + list(labeled_paths)
+    for k, (h1, h2, L) in enumerate(specs):
+        vs = [h1]
+        prev = h1
+        for _ in range(L - 1):
+            edges.append((prev, nxt))
+            vs.append(nxt)
+            prev = nxt
+            nxt += 1
+        edges.append((prev, h2))
+        vs.append(h2)
+        paths[k] = vs
+    return edges, paths
+
+
+def nt21():
+    """A non-theta tight habitat: hubs b=0, c=1, u=2, w=3; b-c paths of
+    length 3 (the split chain) and 4 (the companion); plus b-u:4, u-c:4,
+    b-w:3, w-c:3, u-w:3.  Sum ell = 24 = 6 c(G-hub) (c = 4): tight."""
+    return paths_graph([3, 4], [(0, 2, 4), (2, 1, 4), (0, 3, 3),
+                                (3, 1, 3), (2, 3, 3)])
+
+
+def companion4_probe(edges, v, seed, comp_path, far_arc=None):
+    """(T5) at one seed: with a length-4 companion b-x1-x2-x3-c, the far
+    data enters Q(z) only through the annihilator covector lambda of V_bc
+    inside span(C1..C4), and Q(z) = 2(w0 w2 g1 + w1 w3 g2 + w0 w3 g3)."""
+    p = seed_probe(edges, v, seed, nplace=0)
+    if p is None or p['dim R_a'] != 1:
+        return None
+    placed, pt, nrm, hubs, nb, U, Ra_basis, Cab0, tgtG, hubsG = p['_ctx']
+    a, b, c = p['a'], p['b'], p['c']
+    assert comp_path[0] == b and comp_path[-1] == c and len(comp_path) == 5
+    C = [wedge2(hat(placed[comp_path[i]]), hat(placed[comp_path[i + 1]]))
+         for i in range(4)]
+    assert rank(C) == 4, "companion line span degenerate"
+    # Gram zeros (consecutive lines meet):
+    for i in range(3):
+        assert klein(C[i], C[i + 1]) == 0
+    g1, g2, g3 = klein(C[0], C[2]), klein(C[1], C[3]), klein(C[0], C[3])
+    Vbc, _, _ = H_motions_vbc(edges, v, a, b, c, placed)
+    if len(Vbc) != 3:
+        return None
+    # path-sum containment V_bc <= span(C), and the far covector lambda:
+    Vco = []
+    for m in Vbc:
+        co = coords_in(C, m)
+        assert co is not None, "V_bc escapes the companion span"
+        Vco.append(co)
+    lam_space = nullspace(Vco)
+    assert len(lam_space) == 1, "far covector not unique"
+    lam = lam_space[0]
+    ah, bh, ch = hat(placed[a]), hat(placed[b]), hat(placed[c])
+    Cab, Cac = wedge2(ah, bh), wedge2(ah, ch)
+    mrow = [klein(Ci, Cab) for Ci in C]
+    nrow = [klein(Ci, Cac) for Ci in C]
+    assert mrow[0] == 0 and nrow[3] == 0, "structural zeros"
+    om = cross4(lam, mrow, nrow)
+    for row in (lam, mrow, nrow):
+        assert dot(row, om) == 0
+    z4 = [sum((om[i] * C[i][k] for i in range(4)), F(0)) for k in range(6)]
+    if all(x == 0 for x in z4):
+        return None
+    # z4 is THE reciprocal twist:
+    z, _ = z_from(Vbc, Cab, Cac)
+    assert z is not None and in_span(z4, span_basis([z])), \
+        "Lambda-compressed z differs from computed z"
+    Qz4 = 2 * (om[0] * om[2] * g1 + om[1] * om[3] * g2 + om[0] * om[3] * g3)
+    assert Q(z4) == Qz4, "Lambda-quadratic formula"
+    r = Ra_basis[0]
+    Qr = Q(r)
+    assert (Qr == 0) == (Qz4 == 0)
+    if Qr != 0:
+        assert Qr * Qz4 < 0
+    out = {'seed': seed, 'Q!=0': Qz4 != 0}
+    # theta bonus: lambda is the far arc's span normal, restricted:
+    if far_arc is not None:
+        D = [wedge2(hat(placed[far_arc[i]]), hat(placed[far_arc[i + 1]]))
+             for i in range(len(far_arc) - 1)]
+        nu = nullspace(span_basis(D))
+        if len(nu) == 1:
+            lam2 = [dot(Ci, nu[0]) for Ci in C]
+            assert in_span(lam2, span_basis([lam])), \
+                "theta far-covector cross-check"
+            out['nu check'] = True
+    return out
+
+
+def companion4():
+    print("== (T5) length-4 companion: the Lambda-compression ==")
+    E = theta_edges((3, 4, 5))
+    comp = [0, 13, 14, 15, 1]
+    far = [0, 17, 18, 19, 20, 1]
+    n_ok = 0
+    for seed in range(200, 240):
+        o = companion4_probe(E, 10, seed, comp, far_arc=far)
+        if o is None:
+            continue
+        n_ok += 1
+        print(f"  theta(3,4,5) seed {seed}: lambda unique, z4 == z, "
+              f"Q = Lambda-quadratic OK, Q != 0: {o['Q!=0']}, "
+              f"nu cross-check: {o.get('nu check', '-')}")
+        if n_ok >= 3:
+            break
+    assert n_ok >= 3
+    # the non-theta habitat:
+    E, paths = nt21(), None
+    E2, pmap = paths_graph([3, 4], [(0, 2, 4), (2, 1, 4), (0, 3, 3),
+                                    (3, 1, 3), (2, 3, 3)])
+    from nogood_subdiv import deficiency as defic
+    assert defic(E2) == 0, "NT21 not tight-rigid"
+    # hnoRigid at branch granularity (a rigid subgraph is a union of
+    # whole branches -- its own 2-core):
+    import itertools as it
+    nbr = len(pmap)
+    for rsub in range(1, 2 ** nbr - 1):
+        sel = [pmap[k] for k in range(nbr) if rsub & (1 << k)]
+        vs = set(v_ for p_ in sel for v_ in p_)
+        sub = [e for e in E2 if e[0] in vs and e[1] in vs]
+        if not sub or len(verts_of(sub)) < 3:
+            continue
+        if defic(sub) == 0 and len(verts_of(sub)) < len(verts_of(E2)):
+            # a vertex-proper rigid branch union would break hnoRigid
+            raise AssertionError(f"NT21 has a proper rigid subgraph {rsub}")
+    print("  NT21: tight (def 0), no proper rigid branch-union "
+          f"(2^{nbr} checked)")
+    split_v = pmap[0][1]           # first interior of the length-3 b-c path
+    comp2 = pmap[1]
+    n_ok = 0
+    for seed in range(300, 340):
+        o = companion4_probe(E2, split_v, seed, comp2)
+        if o is None:
+            continue
+        n_ok += 1
+        print(f"  NT21 seed {seed}: lambda unique, z4 == z, "
+              f"Q = Lambda-quadratic OK, Q != 0: {o['Q!=0']}")
+        if n_ok >= 2:
+            break
+    assert n_ok >= 2
+    print("COMPANION4 OK: Lambda-compression validated "
+          "(theta(3,4,5) + NT21)")
+
+
 # ---------------- the companion-chain closed form (theta(3,3,6)) ------------
 
 def det4(rows):
@@ -518,6 +694,189 @@ def sweep():
     print("SWEEP OK" if ok else "SWEEP: some habitat unusable")
 
 
+# ---------------- the slide-in degeneration (route-1 probe) -----------------
+
+def rows_from_lines(edges, Cmap, V):
+    """Rigidity rows from EXPLICIT line extensors per edge (the projective
+    limit configuration; magnitudes normalized away)."""
+    from pencil_escape import perp_basis
+    idx = {v_: k for k, v_ in enumerate(V)}
+    ncol = 6 * len(V)
+    rows = []
+    for e in edges:
+        Ce = Cmap[e]
+        assert any(x != 0 for x in Ce), f"zero limit line at {e}"
+        for w_ in perp_basis(Ce):
+            row = [F(0)] * ncol
+            bu, bw = 6 * idx[e[0]], 6 * idx[e[1]]
+            for k in range(6):
+                row[bu + k] += w_[k]
+                row[bw + k] -= w_[k]
+            rows.append(row)
+    return rows, idx
+
+
+def vbc_from_lines(Hed, Cmap, b, c):
+    VH = sorted(verts_of(Hed), key=str)
+    rows, idx = rows_from_lines(Hed, Cmap, VH)
+    motions = nullspace(rows)
+    ib, ic = 6 * idx[b], 6 * idx[c]
+    D = [[m[ib + k] - m[ic + k] for k in range(6)] for m in motions]
+    return span_basis(D)
+
+
+def slide_probe(edges, v, seed, slide_map,
+                eps_list=(F(1), F(1, 4), F(1, 16), F(1, 64))):
+    """The slide-in family: each slid interior x moves on
+    pt(hub) + eps*(x0 - pt(hub)) (chart-legal: the segment stays in the
+    hub's panel).  Track V_bc, z, Q(z) at eps in {1, 1/4, 1/16, 1/64} and
+    at the projective LIMIT configuration (hub-incident hinges keep their
+    original lines; slid-slid hinges become hub chords)."""
+    p = seed_probe(edges, v, seed, nplace=0)
+    if p is None or p['dim R_a'] != 1:
+        return None
+    placed, pt, nrm, hubs, nb, U, Ra_basis, Cab0, tgtG, hubsG = p['_ctx']
+    a, b, c = p['a'], p['b'], p['c']
+    ah, bh, ch = hat(placed[a]), hat(placed[b]), hat(placed[c])
+    Cab, Cac = wedge2(ah, bh), wedge2(ah, ch)
+    Hed = [e for e in edges if v not in e and a not in e]
+    report = {'seed': seed, 'eps': []}
+    bases = {}
+    for eps in eps_list:
+        pl = dict(placed)
+        for x, h in slide_map.items():
+            pl[x] = [pt[h][i] + eps * (placed[x][i] - pt[h][i])
+                     for i in range(3)]
+        Vbc, dimMot, _ = H_motions_vbc(edges, v, a, b, c, pl)
+        report['dim mot ' + str(eps)] = dimMot
+        if len(Vbc) != 3:
+            report['eps'].append((eps, f'dim V_bc = {len(Vbc)}'))
+            continue
+        z, _ = z_from(Vbc, Cab, Cac)
+        qz = None if z is None else Q(z)
+        report['eps'].append((eps, 'Q!=0' if qz not in (None, 0) else
+                              ('Q=0' if qz == 0 else 'z degen')))
+        bases[eps] = Vbc
+    # the limit configuration.  Per-edge rule (derived in the workbook):
+    #   * (hub u, slid x -> u): the hinge line is CONSTANT along the slide
+    #     (u^ ^ (u^ + eps d) = eps * u^ ^ x0^) -- keep the original line;
+    #   * (slid p -> h_p, slid q -> h_q), h_p != h_q: the chord h_p ^ h_q;
+    #   * (slid p -> h_p, fixed q), q != h_p: the line h_p ^ q0;
+    #   * (fixed, fixed): unchanged.
+    Cmap = {}
+    ok = True
+    for e in Hed:
+        p_, q_ = e
+        tp = slide_map.get(p_)
+        tq = slide_map.get(q_)
+        if tp is not None and tq is not None:
+            Ce = wedge2(hat(pt[tp]), hat(pt[tq]))
+        elif tp is not None and q_ == tp or tq is not None and p_ == tq:
+            Ce = wedge2(hat(placed[p_]), hat(placed[q_]))   # constant line
+        elif tp is not None:
+            Ce = wedge2(hat(pt[tp]), hat(placed[q_]))
+        elif tq is not None:
+            Ce = wedge2(hat(placed[p_]), hat(pt[tq]))
+        else:
+            Ce = wedge2(hat(placed[p_]), hat(placed[q_]))
+        if all(x == 0 for x in Ce):
+            ok = False
+            break
+        Cmap[e] = Ce
+    if not ok:
+        report['limit'] = 'coincident limit points'
+        return report
+    VH = sorted(verts_of(Hed), key=str)
+    rows_lim, idx_lim = rows_from_lines(Hed, Cmap, VH)
+    mot_lim = nullspace(rows_lim)
+    report['dim mot limit'] = len(mot_lim)
+    ibl, icl = 6 * idx_lim[b], 6 * idx_lim[c]
+    Vlim = span_basis([[m[ibl + k] - m[icl + k] for k in range(6)]
+                       for m in mot_lim])
+    report['dim V_bc limit'] = len(Vlim)
+    if len(Vlim) == 3:
+        zlim, _ = z_from(Vlim, Cab, Cac)
+        report['Q(z) limit'] = None if zlim is None else Q(zlim)
+        report['z limit'] = ('degen' if zlim is None else
+                             ('null' if Q(zlim) == 0 else 'pitched'))
+        # convergence evidence, basis-invariantly: the normalized Pluecker
+        # coordinates of the 3-plane V_bc(eps) approach the limit plane's:
+        pl_lim = plucker3(Vlim)
+        difs = []
+        for eps in sorted(bases, reverse=True)[-3:]:
+            d_ = max(abs(x - y) for x, y in zip(plucker3(bases[eps]), pl_lim))
+            difs.append((eps, d_))
+        report['convergence'] = difs
+    return report
+
+
+def plucker3(basis):
+    """Normalized Pluecker coordinates of a 3-plane in K^6 (20 maximal
+    minors of the 3x6 basis matrix; scaled so the largest |entry| is 1,
+    with the first nonzero entry positive) -- basis-invariant."""
+    import itertools as it
+    assert len(basis) == 3
+    ps = [det3([[basis[r][cix] for cix in cols] for r in range(3)])
+          for cols in it.combinations(range(6), 3)]
+    mx = max(abs(x) for x in ps)
+    assert mx != 0
+    ps = [x / mx for x in ps]
+    lead = next(x for x in ps if x != 0)
+    return [x if lead > 0 else -x for x in ps]
+
+
+def slide_line(name, seed, rep):
+    conv = rep.get('convergence')
+    cs = ('; '.join(
+        f"eps={e_}: {('%.3g' % float(d_)) if not isinstance(d_, str) else d_}"
+        for e_, d_ in conv) if conv else '-')
+    return (f"  {name} seed {seed}: eps track "
+            f"{[(str(e_), s_) for e_, s_ in rep['eps']]}; "
+            f"mot {rep.get('dim mot 1/64')}->"
+            f"{rep.get('dim mot limit')} (limit); "
+            f"dim V_bc(limit)={rep.get('dim V_bc limit')}; "
+            f"z(limit): {rep.get('z limit', '-')}; convergence: {cs}")
+
+
+def slide():
+    print("== slide-in degeneration (route-1 probe) ==")
+    K4 = [(0, 1), (0, 2), (0, 3), (1, 2), (1, 3), (2, 3)]
+    E, hubs, chains, allv = double_subdivide(K4)
+    v = chains[0][1]
+    aa = chains[0][2]
+    # slide every intact chain's interiors into their adjacent hubs:
+    smap = {}
+    for (u, x, y, w) in chains[1:]:
+        smap[x] = u
+        smap[y] = w
+    n_ok = 0
+    for seed in range(440, 470):
+        rep = slide_probe(E, v, seed, smap,
+                          eps_list=(F(1), F(1, 4), F(1, 16), F(1, 64),
+                                    F(1, 256), F(1, 1024)))
+        if rep is None:
+            continue
+        n_ok += 1
+        print(slide_line('dbl-K4', seed, rep))
+        if n_ok >= 3:
+            break
+    assert n_ok >= 3
+    # theta(3,4,5): partial slide (only panel-adjacent interiors move):
+    E2 = theta_edges((3, 4, 5))
+    smap2 = {13: 0, 15: 1, 17: 0, 20: 1}   # arc ends -> their hubs
+    n_ok = 0
+    for seed in range(200, 230):
+        rep = slide_probe(E2, 10, seed, smap2)
+        if rep is None:
+            continue
+        n_ok += 1
+        print(slide_line('theta(3,4,5)', seed, rep))
+        if n_ok >= 2:
+            break
+    assert n_ok >= 2
+    print("SLIDE probe done (verdict recorded in the workbook)")
+
+
 def main():
     if '--control' in sys.argv:
         control()
@@ -529,6 +888,10 @@ def main():
         sweep()
     elif '--theta336' in sys.argv:
         theta336()
+    elif '--companion4' in sys.argv:
+        companion4()
+    elif '--slide' in sys.argv:
+        slide()
     else:
         print(__doc__)
 

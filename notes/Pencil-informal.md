@@ -1133,20 +1133,29 @@ scalar polynomial per (graph, split). Standing notation, on top of
 ⟺ the lines meet), `Q(x) := B(x,x)` the pitch quadric (`Q(x) = 0` ⟺ `x`
 is a line extensor).
 
-**Verdict (three-part).** (i) The reductions (T1)–(T4) below —
-transferring the pitch off the stress side onto the **motion side of
-`H`** — are **proven-informally**: exact linear algebra plus classical
-quadratic-form theory, machine-validated per seed at every probed habitat
+**Verdict (three-part; parts (ii)/(iii) extended 2026-08-04, second
+pass).** (i) The reductions (T1)–(T5) below — transferring the pitch off
+the stress side onto the **motion side of `H`** — are
+**proven-informally**: exact linear algebra plus classical quadratic-form
+theory, machine-validated per seed at every probed habitat
 (`notes/scripts/w4/pitch.py`). (ii) At habitats whose split chain has a
 **parallel length-3 companion chain** — θ(3,3,6) the exemplar, a member of
 the **(K-res)** hard stratum (it contains a rigid `C₆`) — the pitch
 polynomial collapses to a **bracket monomial** and (K-pitch) **closes**
 (Step 5): the first hard-stratum splits discharged by argument (exact
 seeds certify only the open side conditions' nonemptiness) rather than by
-observation alone. (iii) The uniform kernel over the full class stays
-**open**, reduced to the stress-free forms (K-wit)/(K-pitch-∞) below; the
-adversarial record is intact — pitch was **nonzero at every probed seed**
-(29/29: 16 tight-control + 5 residual + 8 pool-stratum).
+observation alone. For **longer companions** the far data compresses to a
+single annihilator covector and `Q(z)` is an explicit local quadratic in
+it (Step 5b, (T5)). (iii) The uniform kernel over the full class stays
+**open**, but the naive collinear-collapse route is **refuted** and
+replaced by the chart-legal **slide-in degeneration** (Step 6), which
+evaluates the pitch at a `G°`-local limit system and *survives* on
+simple hub multigraphs; the named gaps are now **(K-Λ)** and **(K-slide)**
+(both strictly more local than (K-wit), which remains the weakest exact
+form). Adversarial record intact — pitch was **nonzero at every probed
+seed** (29/29 first pass: 16 tight-control + 5 residual + 8 pool-stratum;
++5/5 second pass at the (T5) driver, θ(3,4,5) and the new non-theta tight
+habitat NT21).
 
 **What would change this.** *For the reductions:* an error in the two-port
 derivation (T1) — each claim is asserted per seed against an independently
@@ -1156,7 +1165,10 @@ moving line wrench); none found. *For the closed form:* a companion-chain
 habitat where one of the five brackets vanishes identically on the pencil
 chart — the stated hypotheses exclude the one identified degeneration
 (an `x`/`y`–opposite-hub adjacency, which drops `dim V_bc ≤ 2` and leaves
-the companion-chain hypothesis unsatisfiable).
+the companion-chain hypothesis unsatisfiable). *For the slide-in route:* a
+simple-`G°` habitat whose slide-in limit twist is null (that would push
+(K-slide) to next order there); a companion habitat whose local quadratic
+`Φ_loc` is the zero form (that would blunt (K-Λ) to the trivial reduction).
 
 ### Step 0 — the pitch polynomial, and which specializations are legitimate
 
@@ -1351,28 +1363,121 @@ condition **factors into brackets** (cf. the 1987 paper's factorization
 of bar-and-body pure conditions along the block lattice), and the pencil
 chart is then attacked bracket-by-bracket.
 
-### Step 6 — uniformity: what remains open, and the identified route
+### Step 5b — (T5): longer companions — the Λ-compression
 
-The general habitat has no companion 3-chain, and `V_bc` is then pinned
-only *inside* every path's line span. Named state:
+Suppose the companion `b`–`c` path has length `k` with `4 ≤ k ≤ 6` and
+independent lines `C₁,…,C_k`. Path-sum containment still pins
+`V_bc ⊆ ⟨C₁,…,C_k⟩`, now of codimension `k − 3`; **all far-graph
+dependence enters through the annihilator** `Λ` of `V_bc` in the span's
+dual (a `(k−3)`-frame of covectors; for `k = 4` a single covector `λ`, up
+to scale). For `k = 4`:
 
-- **(K-pitch), general case: open.** Reduced to (K-wit)/(K-pitch-∞);
-  refutable per habitat by a `q ≡ 0` seed family (none found). Strictly
-  easier than **(K-move)** as a target — one scalar against a projective
-  direction — and now *strictly closer to landed machinery*: the witness
-  object is a motion kernel, not a stress cofactor.
-- **The collinear-collapse leading term** (the remaining pure-condition
-  route to uniformity, unfinished): degenerate each hub path of `H`
-  toward its own line. Tightness is exactly the budget
-  `Σ_P ℓ_P = 6·c°(G°)` over the hub multigraph `G°` (elementary:
-  `index(G) = 6(|E°| − |V°| + 1) − Σℓ_P`), so at the collapse each path
-  transmits its single line and the order-0 system is body–hinge on `G°`
-  — but the path blocks' ranks collapse (each path's 5-row fibers become
-  parallel), so the leading term couples order-0 `G°` data to the paths'
-  first-order shape coefficients. A genuinely multi-scale analysis;
-  **open**, and the natural successor to Step 5's factorization if the
-  uniform statement is ever attacked head-on. (The analytic stress-control
-  objection does not apply — Step 0 — but nothing here is computed yet.)
+> **(T5)** with `m := (⟨C_i, ★C_ab⟩)_i = (0, m₂, m₃, m₄)` and
+> `n := (⟨C_i, ★C_ac⟩)_i = (n₁, n₂, n₃, 0)` (the zeros structural, as in
+> Step 5), the reciprocal twist's coefficient vector is the Laplace
+> cofactor vector `ω` of the `3×4` matrix `[λ; m; n]`, and — since the
+> path Gram is banded (consecutive lines meet) —
+>
+> `Q(z) = 2·(ω₁ω₃·[b,x₁,x₂,x₃] + ω₂ω₄·[x₁,x₂,x₃,c] + ω₁ω₄·[b,x₁,x₃,c])`
+>
+> — an explicit **quadratic form `Φ_loc(λ)`** whose coefficients are
+> 4-point brackets in the local points `{b, x₁, x₂, x₃, c, a}` only.
+
+`k = 3` recovers Step 5 (no far data at all — `Φ_loc` is a constant, the
+bracket monomial); at `k ≥ 7` the span is everything and the compression
+is vacuous. The reduced gap on such habitats:
+
+> **(K-Λ)** *(sufficient for (K-pitch) at a length-4-companion split)* —
+> some target-rank chart seed's far covector `λ` avoids the local quadric
+> `{Φ_loc = 0}`.
+
+One projective point against one locally-computable quadric — the entire
+far graph enters through `λ` alone. Machine-validated exactly
+(`--companion4`): at θ(3,4,5) (where `λ` is independently recomputable as
+the far arc's span normal — cross-checked) and at **NT21**, a new
+non-theta tight habitat (hub multigraph on 4 hubs with `b`–`c` paths of
+lengths 3 and 4 plus five more; `Σℓ = 24 = 6·4`; certified `def = 0` and
+no proper rigid branch-union over all `2⁷` branch subsets): `λ` unique,
+`z` reproduced from `(λ, m, n)` alone, the `Φ_loc` identity exact, and
+`Q ≠ 0` with the (T2) sign law against the independently computed stress,
+5/5 seeds.
+
+### Step 6 — uniformity: the naive collapse refuted, and the slide-in degeneration
+
+**(a) The naive collinear collapse is REFUTED as a chart move.** "Each
+hub path degenerates toward its own line" cannot happen on the pencil
+chart: an interior `x` adjacent to hub `u` lives in `Π(u)`, and the chord
+`line(pt u, pt w)` meets `Π(u)` only at `pt(u)` (else the panels are
+incident) — so the path can only reach its chord *at the hub point
+itself*. And repairing this by making chords panel-resident
+(`pt(w) ∈ Π(u)` along every `G°`-edge) forces each closed hub star
+coplanar (`n_u ⊥` every neighbour chord — impossible outright when the
+chords at `u` span 3-space), which on the probed complete-type `G°`
+(e.g. `K4`) is exactly the **all-coplanar locus** — and that locus is
+target-rank-**deficient** on tight habitats (R2's criterion
+`2|E| < 3|V| − 3` holds identically under `5|E| = 6(|V|−1)`). The
+tightness budget `Σ_P ℓ_P = 6·c°(G°)` (elementary:
+`index(G) = 6(|E°| − |V°| + 1) − Σℓ_P`) survives as bookkeeping, but the
+order-0 "body–hinge on `G°` with one line per path" picture does not.
+
+**(b) The corrected, chart-legal degeneration: the slide-in.** Move each
+panel-constrained interior *into its hub point along its own ray*:
+`x(ε) = pt(u) + ε·(x₀ − pt(u))` — the segment stays in `Π(u)`, so every
+`ε > 0` is an honest chart point. The hinge lines have a clean limit,
+per edge: a **hub-incident** hinge `u–x` is *constant* along the slide
+(`û ∧ (û + εd) = ε·û∧x̂₀` — same line, dying magnitude); an
+**interior–interior** hinge becomes the **chord** `û∧ŵ`; an
+interior–fixed hinge becomes the hub-to-point line. So for an
+all-length-3 (double-subdivision) habitat the limit system is **body–
+hinge on `G°` where each edge carries the serial triple
+(pencil line at `u`, chord `u∧w`, pencil line at `w`)** — consecutive
+members meeting at the hub points, i.e. per `G°`-edge exactly the banded
+serial-chain Gram of Step 5, one level up. The far data compresses to
+`G°`-local decorations (hub points, normals, one pencil parameter per
+edge-end).
+
+**(c) Why the limit is analytically legitimate (motion side).** The
+5-row blocks depend only on the hinge *lines*, which converge; the H-row
+rank is **constant** along the family (machine: motion dimension 9 → 9
+at dbl-K4 and θ(3,4,5) alike), and a constant-rank family has continuous
+kernel — so `V_bc(ε) → V_bc(limit)` with no stress control needed
+anywhere (the route-1 gate's objection was a stress-side problem; it
+dissolves on the motion side). Machine: normalized Plücker coordinates
+of `V_bc(ε)` approach the limit plane at rate `O(ε)` (dbl-K4 down to
+`ε = 1/1024`, θ to `1/64`; one seed reaches the asymptotic regime late —
+distance 0.998 at `1/64`, 0.134 at `1/1024` — but descends as forced).
+And the escape logic needs no target rank at the small-`ε` seeds: by
+Step 0's specialization logic, `Q(z) ≠ 0` at *one* legal parameter point
+makes the rational function `≢ 0`, and the target-rank/side-condition
+loci are dense open.
+
+**(d) The slide-in evaluation WORKS on simple `G°`.** At dbl-subdivided
+`K4` (the (K-tight) control), the limit system keeps `dim V_bc = 3` and
+its reciprocal twist is **pitched** (`Q(z_limit) ≠ 0`), 3/3 decorations,
+exact (`--slide`). The reduced gap:
+
+> **(K-slide)** *(sufficient for (K-pitch) at an all-length-3 habitat
+> with simple hub multigraph, given the observed rank persistence)* — at
+> the slide-in limit system on `G°` (serial triples per edge, `T` at
+> `a`), the reciprocal twist has `Q ≠ 0` for generic decorations.
+
+This is a `G°`-level bracket-calculus statement about *decorated simple
+multigraphs* — finitely many decoration parameters per edge, no
+subdivision interiors left — squarely in White–Whiteley-1987 territory
+(the decorated system is bar-and-body-like), and the natural target of
+the next pure-condition pass.
+
+**(e) The parallel-edge obstruction — and the division of labor.** On a
+theta, all chords coincide with `line(b,c)`, and the (partial) slide-in
+limit twist comes out **null** (`Q = 0`, 2/2 exact at θ(3,4,5)): the
+order-0 evaluation fails on `G°` with parallel edges, and (K-slide) must
+go to next order there. But parallel `b`–`c` edges in `G°` are exactly
+**short companion paths** — the habitats Steps 5/5b handle by the
+monomial / `Φ_loc` forms. The two mechanisms partition the probed
+habitat shapes; what neither yet covers: mixed path lengths on simple
+`G°` (partial slides beyond thetas — untested), and residual habitats'
+hub-hub edges (a chord that is an actual hinge — untested).
+
 - **The joint sweep** (§(K-tight) Step 5) still only widens the escape;
   un-analyzed.
 
@@ -1384,8 +1489,12 @@ structural mechanism produces that: the only found `Q|_{V_bc}`-degeneracy
 (the serial-chain Gram) still yields nonzero pitch as a bracket monomial.
 Pitch was nonzero at **29/29** probed seeds: 16 tight-control (dbl-subdiv
 `K4` 6, θ(3,4,5) 5, θ(3,3,6) 5), 5 residual (`W19` 3 — free-end shape,
-`S29` 2 — both-hubs), 8 pool-stratum (4 splits × 2). **No counterexample
-candidate; hunt negative.**
+`S29` 2 — both-hubs), 8 pool-stratum (4 splits × 2); the second pass adds
+**5/5** at the (T5) driver (θ(3,4,5) 3, NT21 2). The slide-in limit's
+*null* twist on thetas is not a counterexample — those splits escape
+through Steps 5/5b, and the theta `ε`-family itself stays `Q ≠ 0` at every
+sampled `ε` down to `1/64`. **No counterexample candidate; hunt
+negative.**
 
 ### Verification
 
@@ -1393,21 +1502,29 @@ candidate; hunt negative.**
 its robust in-plane sampler; every sampled object carries rank/dimension
 asserts). Reproduce:
 `python3 notes/scripts/w4/pitch.py --control | --witness | --stratum |
---sweep | --theta336`. Per seed it asserts: (T1) `r ⊥ V_bc`,
-`V_bc ∩ T = 0`, `W^⊥ = ⟨r⟩`; (T2) side conditions and the sign law
-`Q(r)·Q(z) < 0` (or both zero); (T3) the motion-form combined criterion
-against `repin.py`'s validated `critA/critB`, and the `★r`-in-panel
-route-A form; (T4) exact interpolation, degree ≤ 4, `q₄ = Q(z_∞)`, and
-the sign law against a recomputed stress at two moved placements;
-(`--theta336`) the pairing–bracket dictionary
+--sweep | --theta336 | --companion4 | --slide`. Per seed it asserts:
+(T1) `r ⊥ V_bc`, `V_bc ∩ T = 0`, `W^⊥ = ⟨r⟩`; (T2) side conditions and
+the sign law `Q(r)·Q(z) < 0` (or both zero); (T3) the motion-form
+combined criterion against `repin.py`'s validated `critA/critB`, and the
+`★r`-in-panel route-A form; (T4) exact interpolation, degree ≤ 4,
+`q₄ = Q(z_∞)`, and the sign law against a recomputed stress at two moved
+placements; (`--theta336`) the pairing–bracket dictionary
 `B(C(uv), C(pq)) = [u,v,p,q]`, `V_bc = ⟨C₁,C₂,C₃⟩`, the closed-form `z`,
-and the bracket-monomial identity.
+and the bracket-monomial identity; (`--companion4`, T5) the containment
+`V_bc ⊆ ⟨C₁..C₄⟩`, uniqueness of `λ`, `z` from `(λ, m, n)` alone, the
+`Φ_loc` identity, the θ far-arc `ν` cross-check, and NT21's habitat
+certificates (`def = 0`, no proper rigid branch-union, `2⁷` subsets);
+(`--slide`) the per-edge limit-line rule, motion-rank persistence
+(9 → 9), `O(ε)` Plücker convergence of `V_bc(ε)` to the limit plane, and
+the limit twist's pitch class (pitched at dbl-K4, null at θ).
 
-**Confidence verdict: (T1)–(T4) and the companion-chain closed form
-proven-informally; (K-pitch) at θ(3,3,6)-type splits proven-informally;
-the uniform (K-pitch)/(K-tight)/(K-res) kernel open — narrowed to
-(K-wit)/(K-pitch-∞), with the collinear-collapse leading term as the
-identified route.**
+**Confidence verdict: (T1)–(T5), the companion-chain closed form, and
+the slide-in limit calculus proven-informally; (K-pitch) at
+θ(3,3,6)-type splits proven-informally; the naive collinear collapse
+refuted; the uniform (K-pitch)/(K-tight)/(K-res) kernel open — narrowed
+to (K-Λ) (companion habitats) and (K-slide) (simple-`G°` habitats), with
+(K-wit)/(K-pitch-∞) as the weakest exact forms and the `G°`-level
+(K-slide) statement the natural next pure-condition target.**
 
 ## §(K-bare-ext) — stub
 

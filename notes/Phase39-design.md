@@ -3408,14 +3408,21 @@ are the *full* `Λ²Π̂(b)`/`Λ²Π̂(c)`, not the pencils; the obstruction spa
 artifact, not a criterion failure — no genuine escape failure exists in the phase's
 corrected numerics (`notes/scripts/w4/repin.py`).
 
-**(K-pitch) development pointer (2026-08-04).** Item 5's enabling-technology assessment is
-**partially superseded**: the pitch polynomial (the null-wrench sufficient certificate) needs
-NO stress-as-chart-rational-function infrastructure — it transfers stress-free to the motion
-side of `G − v − a` (the chain ends' relative twist system; a kernel computation, no
-cofactors), and **closes in bracket-monomial form** at splits with a parallel length-3
-companion chain (θ(3,3,6), a (K-res) hard-stratum member). The uniform gap is now
-(K-wit)/(K-pitch-∞); the collinear-collapse leading term is the identified route.
-`notes/Pencil-informal.md` §(K-pitch); exact-ℚ `notes/scripts/w4/pitch.py`.
+**(K-pitch) development pointer (2026-08-04, two dispatches).** Item 5's enabling-technology
+assessment is **partially superseded**: the pitch polynomial (the null-wrench sufficient
+certificate) needs NO stress-as-chart-rational-function infrastructure — it transfers
+stress-free to the motion side of `G − v − a` (the chain ends' relative twist system; a
+kernel computation, no cofactors), and **closes in bracket-monomial form** at splits with a
+parallel length-3 companion chain (θ(3,3,6), a (K-res) hard-stratum member). The same day's
+second dispatch attacked the uniform gap: the **naive collinear-collapse leading term is
+REFUTED as a chart move** (its panel-resident repair forces the target-rank-deficient
+all-coplanar locus), corrected to the **slide-in degeneration** — rank-persistent, hence
+motion-continuous, with a `G°`-local limit system that stays pitched on simple hub
+multigraphs and goes null exactly on parallel-edge ones (where the companion forms take
+over); and the companion mechanism extends to length-4 companions via the **Λ-compression**
+(all far data through one covector; `Q(z) = Φ_loc(λ)`). The uniform gaps are now
+**(K-Λ)/(K-slide)**, both `G°`-level and strictly more local than (K-wit).
+`notes/Pencil-informal.md` §(K-pitch) Steps 5b/6; exact-ℚ `notes/scripts/w4/pitch.py`.
 
 One more scope note for the eventual discharge, recorded while fresh: `hK`'s class also
 contains `k > 0` (`def(G) > 0`) habitats, where `G′` can have corank 0 (no stress at all

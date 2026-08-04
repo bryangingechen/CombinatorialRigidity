@@ -33,43 +33,38 @@ day — see *Decisions made* and the `hcontract` hand-off bullet. **2026-07-30, 
 agent returns, as we're coming up on some token limits."* — the coordinator loop ended after
 the W4-L4 recon landed and verified; no further dispatches this session. A fresh session picks
 up per *Hand-off* (next concrete commit: W4-L4b, once the W4 build is commissioned — or a
-coordinator session re-opens with the standing kernel adjudications unchanged). **2026-08-02
-(research dispatch, docs+scripts-only):** the `hnoGood'` **vacuity conjecture is REFUTED** — an
-explicit `|V| = 19` inhabitant, both feasibility verdicts landed-lemma-certified. Branch 4 of the
-W4 skeleton therefore needs real content; the three routes out are in the **new informal
-workbook `notes/Pencil-informal.md`** §"`hnoGood'` vacuity" — **user adjudication owed**
-before the W4 build is commissioned. A follow-up research dispatch the same day **REFUTED
-(SAFE-RES)** (the deep-split-vertex conjecture routes 1/3 turned on) and replaced it with
-**(SAFE-RES′)**, whose two named gaps are (E) the KT-4.5(i) count without `hnoRigid` and
-(T) triangle-freeness of the residual — workbook §(SAFE-RES). A third dispatch the same day
-**priced the kernel widening**: it is **one** kernel (K-res), not two; the escape survives
-numerically at every residual probed; and (E) is reduced to a cheap leaf plus (E-loc) —
-workbook §"widened kernels (routes 1/3)". **The W4 route is ADJUDICATED (2026-08-02,
+coordinator session re-opens with the standing kernel adjudications unchanged). **2026-08-02 (four research
+dispatches, docs+scripts-only; the informal workbook `notes/Pencil-informal.md` opened):**
+`hnoGood'` vacuity REFUTED (`W19`); (SAFE-RES) REFUTED, successor (SAFE-RES′); the routes-1/3
+kernel widening PRICED (one kernel, (K-res)); the (K-tight) carrier re-pin DONE (criterion
+proven+validated; every recorded escape failure a sampler artifact) — one-line records in
+*Decisions made*, mathematics in the workbook. **The W4 route is ADJUDICATED (2026-08-02,
 verbatim: "OK, let's proceed with your recommendation first, but we can wrap up soon
 afterwards if you think things would be better handled in a fresh session." — adopting the
 coordinator recommendation): route 3, packaging (b)** — the structure-theorem-pinned dispatch
 invariant, with (K-res) carried as a sibling hypothesis alongside the byte-identical `hK` —
 **recorded as a decision, not built; W4 stays parked** while research continues on the
-(K)-family crux. The same adjudication commissions the next research dispatch: the (K-tight)
-informal recon, starting with the carrier-aware KT pp. 684–691 boundary-load re-pin
-(workbook §"widened kernels" Step 5's M2-vs-`S^⊥` caveat is the motivating finding).
-**That dispatch RAN the same day — the re-pin is DONE** (workbook §(K-tight),
-`notes/scripts/w4/repin.py`): the carrier escape criterion is proven-informally and
-machine-validated (KT's M₁ is carrier-dead; combined failure ⟺ `★r ∥ C(Π(b)∩Π(c))`), the
-motivating seed-442 mispredict and *every* recorded escape failure turned out to be
-placement-sampler artifacts (no genuine failure exists in the corrected record), and the
-kernel is narrowed to one uniform gap, (K-move)/(K-pitch) — see *Hand-off*. **The 2026-08-02
-session ended there** (per the wrap-up authorization quoted above; all four research
-dispatches landed and coordinator-verified). **2026-08-04 (research dispatch,
+(K)-family crux; the same adjudication commissioned the (K-tight) re-pin dispatch (run same
+day, above). **The 2026-08-02 session ended there** (all four dispatches landed and
+coordinator-verified). **2026-08-04 (research dispatch,
 docs+scripts-only): the (K-pitch) attack RAN** — the pitch polynomial transfers
 **stress-free to the motion side** of `G − v − a` ((T1)–(T4), proven-informally +
 machine-validated, `notes/scripts/w4/pitch.py`), **closes in bracket-monomial form at
 companion-length-3-chain splits** (θ(3,3,6), a (K-res) hard-stratum member — the first
 hard-stratum splits discharged by argument), and the uniform kernel is narrowed to the
 stress-free witness forms (K-wit)/(K-pitch-∞); pitch was nonzero at 29/29 probed seeds —
-workbook §(K-pitch). A fresh session picks up per *Hand-off*: the W4 build (route 3(b),
-first commit W4-L4b) awaits commissioning; kernels stay carried per the standing
-adjudications; the next (K) research step is (K-wit)/(K-pitch-∞).
+workbook §(K-pitch). **The same day's second (K-pitch) dispatch attacked the uniform gap**:
+the naive collinear-collapse route is **REFUTED** (chart-incompatible; its repair lands on
+the target-rank-deficient all-coplanar locus) and replaced by the chart-legal **slide-in
+degeneration**, whose `G°`-local limit system keeps the pitch alive on simple hub
+multigraphs (dbl-K4, 3/3 exact, rank-persistent, `O(ε)`-convergent) but goes null on
+parallel-edge `G°` (thetas) — exactly the habitats the companion forms cover; and the
+**Λ-compression (T5)** extends the companion mechanism to length-4 companions (all far
+data through one covector `λ`; `Q(z) = Φ_loc(λ)`, validated at θ(3,4,5) + the new
+non-theta habitat NT21). Named gaps now **(K-Λ)** and **(K-slide)** — workbook §(K-pitch)
+Steps 5b/6. A fresh session picks up per *Hand-off*: the W4 build (route 3(b), first
+commit W4-L4b) awaits commissioning; kernels stay carried per the standing adjudications;
+the next (K) research step is the `G°`-level (K-slide) statement.
 
 W0–W3 and W5-L0–L6 are all COMPLETE (L6a-safe-exists closed in full both halves; L6b/L6d landed).
 **The W5-L7 arc is now CLOSED**: L7a, L7b, and L7c-1…6 all landed (`Molecule/Pencil/Escape.lean`/
@@ -243,11 +238,24 @@ exactly three remaining open items — **next concrete commit: pick any one, non
   `H`-motion pairs non-trivially with the meet line — no stress-cofactor infrastructure
   needed (option B's scope shrinks accordingly). At splits with a **parallel length-3
   companion chain** the pitch is a **bracket monomial** and the kernel CLOSES there
-  (θ(3,3,6), a (K-res) hard-stratum member, proven-informally). Remaining uniform gap:
-  **(K-wit)/(K-pitch-∞)** (stress-free witness forms), with the collinear-collapse
-  leading term the identified route. Next research step, when (K) resumes: attack
-  (K-wit)/(K-pitch-∞) — the collinear-collapse leading term, or extend the
-  companion-chain factorization past length-3 companions.
+  (θ(3,3,6), a (K-res) hard-stratum member, proven-informally). **The second 2026-08-04
+  dispatch attacked the uniform gap**: (i) the **Λ-compression (T5)** — at a length-`k`
+  companion (`4 ≤ k ≤ 6`) the far graph enters `Q(z)` only through the annihilator
+  covector(s) of `V_bc` in the companion span, an explicit local quadratic `Φ_loc(λ)` at
+  `k = 4` (validated at θ(3,4,5) with an independent far-covector cross-check, and at the
+  new non-theta tight habitat NT21) — gap **(K-Λ)**: one projective point off one local
+  quadric; (ii) the naive **collinear collapse is REFUTED** (interiors reach the chord
+  only at the hub point; the panel-resident repair forces the all-coplanar locus,
+  target-rank-deficient on tight habitats by R2), corrected to the chart-legal
+  **slide-in** (interiors slide into hub points; hub-incident hinge lines constant,
+  interior-interior hinges → chords), whose `G°`-local limit system is rank-persistent,
+  `O(ε)`-approached, and **pitched** on simple `G°` (dbl-K4 3/3) but **null** on
+  parallel-edge `G°` (thetas 2/2) — gap **(K-slide)**, complementary to the companion
+  forms. Remaining uniform gaps: **(K-Λ)** + **(K-slide)** (with (K-wit)/(K-pitch-∞) the
+  weakest exact forms). Next research step, when (K) resumes: the `G°`-level (K-slide)
+  statement (serial-triple-decorated simple multigraphs — White–Whiteley-1987-adjacent),
+  or (K-Λ)'s quadric-avoidance; untested flanks: mixed path lengths on simple `G°`,
+  residual hub-hub edges. Workbook §(K-pitch) Steps 5b/6.
   Design doc §"W5-L7 research recon" "(K) route-1 gate" + "(K) non-constancy recon".
 - **`hbareSplit`** (kernel (K-bare), research) — the bare-half-off-feasibility kernel; **carried
   as pinned (the standing GO), extension route recon'd NO-GO on landed machinery** (2026-07-30):
@@ -282,6 +290,15 @@ neighbor — is `notes/IdeaBacklog.md`.
 
 Reverse-chronological, one line per landing; full derivations live in git and
 `notes/Phase39-design.md` (per-decision pointer where the design doc has a named section).
+
+- **(K-pitch) uniform-gap attack — naive collinear collapse REFUTED, slide-in named and
+  validated; Λ-compression extends companions to length 4** (2026-08-04 second dispatch,
+  docs+scripts-only, `pitch.py --companion4 | --slide`) — (T5): far data enters `Q(z)`
+  only through the annihilator covector of `V_bc` in the companion span (`Φ_loc(λ)`
+  quadratic; θ(3,4,5) + NT21, 5/5); slide-in limit = body-hinge on `G°` with per-edge
+  serial triples (pencil, chord, pencil), rank-persistent, `O(ε)`-approached, pitched on
+  simple `G°` (3/3) / null on parallel-edge `G°` (2/2). Gaps now (K-Λ)/(K-slide).
+  Workbook §(K-pitch) Steps 5b/6; design-doc pointers updated.
 
 - **(K-pitch) developed — motion-side transfer proven; bracket-monomial closed form at
   companion-chain splits; uniform gap narrowed to (K-wit)/(K-pitch-∞)** (2026-08-04,

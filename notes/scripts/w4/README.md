@@ -172,5 +172,22 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
     `Q(z) = 2[x,y,a,b][b,x,a,c][y,c,a,b][x,y,a,c][b,x,y,c]`, a bracket
     monomial; validated exactly (4/4 seeds), incl. the pairing–bracket
     dictionary `B(C(uv), C(pq)) = [u,v,p,q]`.
+  - `--companion4` (~5 min, 2026-08-04 second pass): the **Λ-compression
+    (T5)** — at a length-4 companion the far data enters only through the
+    annihilator covector `λ` of `V_bc` in the companion span, and
+    `Q(z) = Φ_loc(λ)`, an explicit local quadratic. Validated at
+    θ(3,4,5) (3 seeds, with the far-arc `ν` cross-check) and at **NT21**,
+    a non-theta tight habitat built here (`def = 0` and
+    no-proper-rigid-branch-union certified over all `2⁷` subsets).
+  - `--slide` (~10 min, 2026-08-04 second pass): the **slide-in
+    degeneration** (the corrected collinear collapse) — panel-constrained
+    interiors slide into their hub points (chart-legal); hub-incident
+    hinge lines are constant, interior–interior hinges become hub chords.
+    Tracks `V_bc`, `z`, `Q(z)` at `ε` down to `1/1024` plus the projective
+    limit system: motion rank persists (9 → 9), `V_bc(ε)` converges to
+    the limit plane at `O(ε)` (normalized Plücker distance), and the limit
+    twist is **pitched** at dbl-subdiv `K4` (simple `G°`, 3/3) but
+    **null** at θ(3,4,5) (parallel-edge `G°`, 2/2 — the order-0
+    evaluation fails exactly where the companion forms take over).
 
   Argument state: `notes/Pencil-informal.md` §(K-pitch).
