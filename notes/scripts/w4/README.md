@@ -396,3 +396,53 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
 
   Argument state and per-mode assertion list: `notes/Pencil-informal.md`
   §(K-Λ).
+
+- `dominance.py [--cap | --jac | --far | --validate]` — the **C1 dominance
+  spike** (2026-08-05, ninth pass; `notes/Pencil-strategy.md` §4-C1, the one
+  candidate the arc had never run). Question: is the map
+  `H ↦ V_bc` into `Gr(3,6)` **dominant**? If it were, the escape would follow
+  for generic reasons, because by **(PC-Z)** the failure locus is two Schubert
+  `σ₁` conditions of codimension 1. This driver computes the **rank of the
+  differential** at exact rational seeds and measures it against
+  `dim Gr(3,6) = 9`. Result: **rank 9 (dominant) at every class habitat probed
+  — and provably ≤ 4 at every length-3-companion habitat**, which `hnoRigid`
+  puts outside the class but which `hK`'s (K-res) sibling carries; the far graph
+  contributes at most `3(k−3)` to the rank, so C1's *inductive* claim ("the
+  image grows with the far graph") is refuted. Method: `V_bc` is the image of
+  the kernel of an **augmented linear system** (`m_x − m_y − ω_e C_e = 0`) whose
+  entries are polynomial in the chart coordinates, so each directional
+  derivative is implicit differentiation of that kernel — a derived exact-ℚ
+  solve, no CAS. The chart tangent is the kernel of the differentiated pencil
+  condition `⟨n_u, pt(w) − pt(u)⟩ = 0`, so the derivative never leaves the
+  stratum; `pt(a)`, `pt(b)`, `pt(c)`, `Π(b)`, `Π(c)` are frozen so the bad locus
+  stands still (asserted). Exact ℚ throughout, sitting on `repin`/`pitch`/
+  `kslide` (and `flanks.star_span_ranks` as the `plane_basis` genericity
+  guard); every sampled object rank/dimension asserted. Run with
+  `PYTHONHASHSEED=0`.
+  - `--cap` (~20 s): the structural ceiling, before any numerics. Path-sum
+    containment asserted at **every** `b`–`c` path of `H` (21 seeds, 7
+    habitats); at companion length `k = 3` the containment is an *equality*, so
+    `rank Q|V_bc = 2` (asserted, and `= 3` at `k ≥ 4`) and `V_bc` sits in the
+    discriminant hypersurface of `Gr(3,6)`. Also the `C_{3+k}` dichotomy — the
+    split chain plus the companion is rigid iff `k ≤ 3` — cross-checked against
+    `kslide.no_rigid_branch_union`, so **`hnoRigid` forces `k ≥ 4`**; and
+    `V_bc ∩ α(a) = V_bc ∩ Λ²π̂ = 0` at all 21 seeds, i.e. the escape holds
+    everywhere measured, including where the rank is capped.
+  - `--jac` (~57 s): the rank table, 3 seeds × 7 habitats × 3 scopings (FIXED =
+    the dominance measure; FREE and UNPINNED diagnostic). `k = 3`: **4** of 9,
+    exactly the proven cap, and **6** with the pencil pin dropped — so the
+    deficiency is path-sum containment, not the pin. `k ∈ {4,5,6}`: **9** at
+    every habitat (θ(3,4,5), NT21, NT16k5, `K4` and `K5−M` double
+    subdivisions), so the map is dominant there.
+  - `--far` (~28 s): the far-graph block. Restricting the chart tangent to
+    directions moving only vertices off the shortest companion gives rank
+    `0, 3, 6, 9` at `k = 3,4,5,6` — exactly the **(T5)** bound `3(k−3)`,
+    asserted and attained. At `k = 3` every far direction is in `ker dV`.
+  - `--validate` (~19 s): the machinery, three ways — `V_bc` from the rigidity
+    matrix (`pitch.H_motions_vbc`), from the augmented system and from the
+    cycle kernel all agree; the augmented-system and cycle-kernel
+    **differentials agree entry by entry**; and an exact secant quotient on a
+    chart-exact ray converges to the computed differential.
+
+  Argument state and per-mode assertion list: `notes/Pencil-informal.md`
+  §(K-dom).

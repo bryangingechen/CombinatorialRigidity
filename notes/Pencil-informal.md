@@ -161,6 +161,7 @@ all in this file.
 | **(K-chord)** *(new, 2026-08-05)* | (K-pure) P1–P4, P9 | **open**, and the *replacement* combinatorial residue: `∃Σ` with `e₀ ∉ cl_{R_3}(E_chord(Σ))` at generic hub points — **necessary** for the slide device by (PC-OBS). Per shape it is checkable by **exact rank** — done exhaustively over the 23 candidate hub graphs with `|V°| ≤ 6` (`R_3`-dependence ⟺ Maxwell-overbraced; 5 dependent, 18 independent; smallest `K5`) — but unlike (K-slide-comb) it lives in a matroid with **no combinatorial characterisation** (generic 3-dimensional rigidity), so a class argument has nothing to reduce to | a support menu wide enough to satisfy it *together with* (W1)–(W4) at every class shape (P9 item 5: widen the 5-support menu, sweep the `|V°| ≤ 6` strata, 6v11e first) — or a class shape satisfying it at **no** support, which would refute the device class-wide |
 | `P21` / parallel `G°` edges | (K-slide) 5, (K-flank) F5, (K-pure) P4/P7 | **mechanism corrected and scope sharpened** (§(K-pure)): at a *class* parallel shape the full-support obstruction is the **chord stress at (W4)**, not (S5) at (W1), and it needs only a `bc`-parallel edge of length `≤ 4`. (S5)'s `(3,3)` row-dependence mechanism is **proven impossible inside tight + `hnoRigid`** (`C_k` rigid for `k ≤ 6` forces `ℓ₁ + ℓ₂ ≥ 7`), so **`P21` is a (K-res) residual, not a tight class member**. `P21`'s own obstruction is unchanged and is **not confined to the `ε = 0` limit** — §(K-flank) F5(d)/(e) exhibits the same theta-circuit stress (`{12, 13, 23a, 23b}`, 12 edges, line rank 6) on a **nonempty locus of the pencil chart itself** (5 of 35 rational seeds), where it forces `dim R_a = 0`. **θ(3,4,5) is CLOSED** by a reduced support, without (K-Λ) | for `bc`-parallel class shapes: a reduced support (done at θ(3,4,5)) or the companion forms — the monomial at `ℓ = 3`, and at `ℓ = 4` **(K-wit)**, since §(K-Λ) shows the companion form there is *equivalent* to it rather than an independent gap. At `ℓ = 5,6` **the (T5) frame is REFUTED as the route** (§(K-Λ) *Step 7*: at `k ≥ 5` the (F-A) bad locus gains a second, equal-dimensional component — a smooth conic, so nonempty over `K̄` — and at `k = 6` `C(M) ∈ S` removes even the local guard), so those shapes need **something else, none identified** (this refutes the *argument shape*, not the conjecture and not their closability; whether a *rational* point of that component is realized by a real habitat is open). For `P21`-type (K-res) shapes: a new `G°`-local mechanism — none identified |
 | **(K-flank)** | (K-flank) F0–F7 | **per shape, not a uniform gap: half 2 proven-informally** by exact `∃`-witnesses at the Tay target (8 named + 843 stratum shapes, 0 failures); half 1 carries **no `hK` counterexample and no re-pin** (16/16 `e₀`-end splits, 26/26 eligible splits of the 5-chromatic flank, both KT routes); **(K-pitch) closed at all 16 flank splits** by `ε = 1` certificates; the full-support slide limit is **degenerate at all four structural flanks**; **class uniformity untouched** | — n/a: a per-shape result, not a gap. *Settled per shape; the uniform statement is unchanged* (the disproof risk is removed, no uniform gap moves) |
+| **(K-dom)** *(new, 2026-08-05)* | (K-dom) D0–D7 | **open as the uniform statement, and provably FALSE off the class**, so the strategy doc's §4-C1 route is **not recommended**. Writing `k` for the *companion length* (the shortest `b`–`c` path of `H`; `k ≥ 3`): **(D1)** `rank d(H ↦ V_bc) ≤ min(9, 6k − 14)` in the bad-locus-frozen scoping, **proven** from path-sum containment — so `≤ 4` at `k = 3`, where `V_bc` is moreover always in the discriminant hypersurface of `Gr(3,6)`; **(D2)** the far block is `≤ 3(k−3)` (a corollary of (T5)), **attained** at `0,3,6,9` for `k = 3,4,5,6`; **(D3)** `hnoRigid` forces `k ≥ 4` (= §(K-slide) *Step 5*'s `ℓ₁+ℓ₂ ≥ 7`), so the cap bites exactly on **(K-res)**. Measured: rank **9 — dominance — at all 5 probed class habitats** (θ(3,4,5), NT21, NT16k5, `K4`/`K5−M` dbl-subdiv; `k ∈ {4,5,6}`) and exactly **4** at both `k = 3` habitats. **(D4)**: rank 9 at one rational seed ⟹ the escape on a *dense open* subset of that shape's chart — a strictly stronger per-shape statement than an `∃`-witness, and no more useful. §4-C1's two claimed values are **REFUTED** (D6): the image does **not** grow with the far graph (it is capped by the local `k`), and the 2026-07-30 locality gate was run at `k = 6`, the *maximal* far-dependence grade, so it is not evidence for dominance. **Class uniformity untouched** — "rank 9 at every class shape" is one determinantal condition per (shape, split), the same per-shape object §(K-pure) *P5* names as the wall | a class habitat with `rank dV < 9` at every seed (a sharp new obstruction; none found), **or** a mechanism making `rank dV = 9` combinatorially certifiable class-wide — the only thing that would turn C1 into a uniform route |
 | **(K-bare)/(K-bare-ext)** | (K-bare-ext) | **open**, nothing being developed; `hbareSplit` carried as pinned, off W4 routes 1/3's path; the (K-tight) re-pin fixes the criterion's shape and corrects "the failure set is exactly the line" to `line(a,b) ∪ P′` | (i) `dim R_a ≥ 1` at an adversarial IH seed and (ii) a rank-2 point in the confinement space — with no chart supplying genericity for either |
 
 **Shapes no *class-uniform* mechanism covers** (the class program's uncovered
@@ -192,10 +193,14 @@ plus **two unexplained mechanisms** — 6v11e's `dim V_bc = 2` drop and the
 
 **Settled, so not to be re-derived:** the carrier escape criterion and the
 `dim U = dim R_a + 1` structure ((K-tight) 0–3); routes 1 and 2 of the original
-(K) pin, **REFUTED** by the locality gate; the naive collinear collapse,
+(K) pin, **REFUTED** by the locality gate — and now *graded*: (K-dom) (D2) shows
+far-dependence of `V_bc` is `3(k−3)`, zero at `k = 3` and maximal at the `k = 6`
+shapes the gate was run on; the naive collinear collapse,
 **REFUTED** as a chart move ((K-pitch) 6a); the (T1)–(T5) motion-side transfer;
-(S1) and its (S2) carrier; (C6). Every recorded escape *failure* in the phase's
-numerics was a placement-sampler artifact ((K-tight) 3).
+(S1) and its (S2) carrier; (C6); the **companion length** `k` as the arc's
+organizing local invariant — `k ≥ 4` on the class, `k = 3` exactly on the
+(K-res) `C₆` residuals ((K-dom) (D3)). Every recorded escape *failure* in the
+phase's numerics was a placement-sampler artifact ((K-tight) 3).
 
 ## §(K-tight) — the carrier escape criterion (KT pp. 684–691 re-pin) and the uniform mechanism
 
@@ -3393,6 +3398,400 @@ length-5-companion split where the pitch route is blind while the escape holds �
 the first genuine loss of the pitch route, and the sharpest reason to abandon it
 at `ℓ ≥ 5`. *(v)* An error in (T1) or (T5) themselves — each is re-asserted per
 seed here against an independently computed stress.
+
+## §(K-dom) — the dominance spike: the differential of `H ↦ V_bc`, and why C1 is not an inductive route (**dominance HOLDS at every class habitat probed; C1's two claimed values REFUTED; class uniformity untouched**)
+
+Answering `notes/Pencil-strategy.md` §4-C1, the one candidate on that doc's
+list nothing in the arc had run: *compute the Jacobian of the `V_bc` map with
+respect to the far-realization parameters and measure its rank against
+`dim Gr(3,6) = 9`.* Read against §(K-pitch) *Steps 1, 5b* (path-sum
+containment and (T5)) and §(K-pure) *Step P3* ((PC-Z)), whose notation it
+inherits verbatim. The strategy doc's §§2–4 are flagged there as
+coordinator-authored synthesis carrying no driver; this section is the driver.
+
+**Headline, stated up front.**
+
+- **The rank is 9 — dominance holds — at every class habitat probed** (5 of
+  them, companion lengths 4, 5, 6), so at each of those shapes the escape holds
+  on a *dense open* subset of the chart. That is a genuine positive, and a new
+  proof route.
+- **But there is a structural cap, and it is sharp**: `rank dV ≤ min(9, 6k−14)`
+  where `k` is the companion length (**(D1)**), so at `k = 3` the rank is at
+  most **4**, measured to be exactly 4. `k = 3` habitats are exactly the ones
+  whose split chain plus companion is a rigid `C₆`, i.e. **(K-res)** residuals —
+  which `hK` carries as a byte-identical sibling.
+- **Both of §4-C1's claimed values are refuted.** The far graph contributes at
+  most `3(k−3)` to the rank (**(D2)**, a corollary of (T5), *attained* at every
+  probed habitat and **0** at `k = 3`), so "as the far graph grows the image can
+  only grow" is false: the image dimension is pinned by a purely **local**
+  invariant. And the 2026-07-30 locality refutation was gated at `k = 6`, the
+  *maximal* far-dependence grade, so it is not evidence for dominance in general
+  — at `k = 3` the same quantity is `0` and, by (T1), the escape there is a
+  **local** condition.
+- **Class uniformity is untouched.** "Rank 9 at every class shape" is one
+  determinantal condition per (shape, split) — the same per-shape object
+  §(K-pure) *P5* identified as the wall. C1 relocates the wall; it does not
+  cross it.
+
+### Standing notation (on top of §(K-pitch))
+
+Split chain `b–v–a–c` at a target-rank `G′`-seed with `b`, `c` hubs;
+`H := G − v − a`; `V_bc` the relative twist system, `dim V_bc = 3`;
+`T := ⟨C_ab, C_ac⟩`; `α(a)`, `Λ²π̂` the two maximal isotropic 3-spaces of
+(PC-Z). The **companion length** `k` is the length of the *shortest* `b`–`c`
+path of `H`; `k ≥ 3` always, since `dim V_bc = 3` needs `dim span{C_e : e ∈ P}
+≥ 3`. Write `S_P := span{C_e : e ∈ P}`.
+
+`Gr(3,6)` is `dim 9`, and at `V ∈ Gr(3,6)` its tangent space is
+`Hom(V, K⁶/V)`, of dimension `3·3 = 9`. **The differential measured here is
+the map (chart tangent) → `Hom(V_bc, K⁶/V_bc)`**, not the rank of a raw
+coordinate Jacobian.
+
+### Step D0 — the question, and what has to be held fixed
+
+By (PC-Z) the escape fails exactly when `V_bc` meets `α(a)` or `Λ²π̂`; each is
+the Schubert condition `σ₁` on `Gr(3,6)`, of **codimension 1**. So if the map
+`H ↦ V_bc` were **dominant** — image dense in `Gr(3,6)` — a generic realization
+would miss the bad locus and the escape would follow for generic reasons.
+
+`α(a)` depends only on `pt(a)`; `Λ²π̂` only on `π̂ = plane(a,b,c)`, i.e. on
+`pt(a), pt(b), pt(c)`. **Neither is far data.** So the well-posed dominance
+question varies the chart with the bad locus *standing still*:
+
+> **the FIXED scoping** — `pt(a)`, `pt(b)`, `pt(c)` and the two panels `Π(b)`,
+> `Π(c)` frozen (`pt(a) ∈ M = Π(b) ∩ Π(c)` is then frozen consistently), every
+> other chart coordinate free.
+
+This resolves the `b`/`c` coupling the question carries (`b` and `c` are `a`'s
+`G′`-neighbours, so `a`'s data constrains `H`'s realization at `b` and `c`): we
+freeze *all* of it rather than trying to propagate it. Freezing more can only
+lower the rank, so a rank of 9 in this scoping is a conservative positive.
+
+Two further scopings are computed as **diagnostics only**: FREE (nothing
+frozen — the bad locus co-moves, so a rank there bounds nothing about the
+escape) and UNPINNED (the panel constraints dropped, `a,b,c` still frozen —
+which isolates whether a rank deficiency is caused by the *pencil pin* or by
+something pin-free).
+
+Two scoping disciplines are load-bearing and were honoured: the differential is
+taken along the **pencil-stratum chart** (the tangent space is the kernel of the
+differentiated pencil condition `⟨n_u, pt(w) − pt(u)⟩ = 0` over every hub `u`
+and `G′`-neighbour `w`), never along unconstrained point coordinates — the pin
+removing freedom is the entire phenomenon under study; and no chart direction
+is allowed to move `pt(a)`, `pt(b)` or `pt(c)` (asserted in the driver).
+
+### Step D1 — (D1): the a-priori cap, `rank dV ≤ min(9, 6k − 14)`
+
+This is settled **before** any numerics, because a structural cap and a
+measured deficiency must agree.
+
+> **(D1)** *(proven-informally)* In the FIXED scoping,
+> `rank dV ≤ min(9, (3k − 5) + 3(k − 3)) = min(9, 6k − 14)`.
+> In particular `rank dV ≤ 4` at every `k = 3` habitat, and `(D1)` is vacuous
+> for `k ≥ 4`.
+
+*Proof.* Fix a shortest `b`–`c` path `P = b x₁ … x_{k−1} c` of `H`. Path-sum
+containment (§(K-pitch) *Step 1a*) gives `V_bc ⊆ S_P`, so `V_bc` is determined
+by the pair (`S_P`, the annihilator of `V_bc` in `S_P*`). Two counts:
+
+1. `S_P` is a function of `pt(x₁), …, pt(x_{k−1})` alone. In the FIXED scoping
+   `x₁` is a neighbour of the hub `b`, so `pt(x₁) ∈ Π(b)`, a *frozen* plane —
+   2 parameters; dually `pt(x_{k−1}) ∈ Π(c)` — 2; the `k − 3` middle interiors
+   contribute `3` each. Total `3k − 5`. (If an `x_i` carries a further hub
+   incidence it has *fewer* parameters, never more.)
+2. `dim S_P = k` for `k ≤ 6` at a nondegenerate seed, and the annihilator of
+   the hyperplane-or-deeper `V_bc ⊆ S_P` is a point of `Gr(k − 3, k)`, of
+   dimension `3(k − 3)`.
+
+The image of the chart therefore has dimension `≤ (3k − 5) + 3(k − 3)`, and the
+rank of the differential is bounded by the image dimension. At `k = 3` the
+containment is an **equality of 3-spaces** — `V_bc = S_P = ⟨C₁, C₂, C₃⟩`, the
+§(K-pitch) *Step 5* configuration — the annihilator term is `0`, and the whole
+map factors through `(pt x₁, pt x₂) ∈ Π(b) × Π(c)`: 4 parameters. ∎
+
+**A basis-free corollary, independent of the freezing.** At `k = 3` the Gram of
+`B` on `(C₁, C₂, C₃)` has a single nonzero entry `B(C₁,C₃) = [b,x₁,x₂,c]` (the
+serial-chain signature, §(K-pitch) *Step 5*), so `rank B|_{V_bc} = 2` and
+
+> `V_bc` always lies in the **discriminant hypersurface** `{det Gram_B = 0}` of
+> `Gr(3,6)` — an 8-dimensional subvariety — so dominance is impossible at
+> `k = 3` for a reason that no choice of frozen data can repair.
+
+*Exact:* `--cap` asserts `rank Q|_{V_bc} = 2` at `k = 3` and `= 3` at `k ≥ 4`,
+at 21 seeds over 7 habitats, together with `V_bc ⊆ S_P` at **every** `b`–`c`
+path (not only the shortest).
+
+### Step D2 — (D2): the far block is `3(k − 3)`, and it is attained
+
+The strategy doc's inductive hope is about the *far* parameters specifically,
+so they get their own bound. (T5) (§(K-pitch) *Step 5b*) already says the shape
+of the answer: at a length-`k` companion **all far-graph dependence enters
+through the annihilator `Λ` of `V_bc` in `S_P*`**. Counting that annihilator:
+
+> **(D2)** *(proven-informally; a corollary of (T5) + (D1)'s count 2)*
+> Restricted to chart directions that move only vertices **off** a shortest
+> companion, `rank dV ≤ 3(k − 3)`. In particular the far block is
+> `0` at `k = 3`, `3` at `k = 4`, `6` at `k = 5`, `9` at `k = 6`.
+
+*Exact:* `--far` measures the far block at 14 seeds over the 7 habitats; the
+per-habitat maximum is `0, 0, 3, 3, 6, 9, 9` in the table order of *Step D4* —
+**the bound, attained at every habitat**. At the two `k = 3` habitats that means
+all 13 resp. 41 far directions lie in `ker dV`.
+
+Two consequences worth stating separately.
+
+- **The far graph does not enlarge the image once `k` is fixed.** Beyond
+  `3(k−3)` directions, every additional far parameter is in the kernel. At
+  `k = 3` there is no budget at all: `V_bc` is *constant* along the entire far
+  chart.
+- **Locality is graded by `k`.** At `k = 3`, (T1) makes `⟨r⟩ = (V_bc ⊕ T)^⊥`
+  with both summands functions of the six points `{b, x₁, x₂, c, a}` and
+  `pt(a)`, so the escape criterion is a **local** condition there. The
+  2026-07-30 route-1 locality gate (design doc §"(K) route-1 gate";
+  `escape/localtest.py`) was run on the double subdivisions of `K4` and
+  `K5 − M`, both `k = 6` — the *maximal* grade. Its refutation of locality is
+  therefore consistent with (D2), and (D2) explains it: far-dependence rises
+  from nothing to everything as `k` runs 3 → 6.
+
+### Step D3 — `hnoRigid` forces `k ≥ 4`, so (D1) bites exactly on (K-res)
+
+The split chain (3 edges) and a shortest companion (`k` edges) are internally
+disjoint, so their union is a cycle `C_{3+k}` of `G`, and it is *proper*
+(`b`, `c` are hubs, so `G` has more edges). By R3 (`def(C_j) = max(0, j − 6)`)
+that cycle is **rigid iff `3 + k ≤ 6`, i.e. iff `k = 3`**. Hence:
+
+> **(D3)** *(proven; it is §(K-slide) *Step 5*'s `ℓ₁ + ℓ₂ ≥ 7` in this
+> notation)* A tight `hnoRigid` habitat has `k ≥ 4`. Equivalently, every
+> `k = 3` habitat is a **(K-res)** residual, not a member of the pinned-`hK`
+> class.
+
+*Exact:* `--cap` asserts the `C_{3+k}` dichotomy at all 21 seeds and
+cross-checks it against `kslide.no_rigid_branch_union` (the exhaustive
+branch-union sweep) — the two certificates agree at every habitat.
+
+So (D1) is **vacuous on the pinned `hK` class** and bites exactly on the
+(K-res) half that `hK` also carries since the 2026-08-02 route-3(b)
+adjudication. That is the honest scope of the negative: it does not touch the
+class, and it does block C1 from covering everything `hK` must cover.
+
+### Step D4 — the measurement
+
+`--jac`, 7 habitats × 3 valid seeds × 3 scopings. Rank is lower semicontinuous,
+so the **maximum over seeds** is a lower bound for the generic rank, and (D1) is
+the upper bound; where the two meet the generic rank is *determined*.
+
+| habitat | `k` | status | FIXED | FREE | UNPINNED | (D1) cap |
+|---|---|---|---|---|---|---|
+| θ(3,3,6) | 3 | (K-res) | **4** | 8 | 6 | 4 |
+| NT21c3 | 3 | (K-res) | **4** | 8 | 6 | 4 |
+| θ(3,4,5) | 4 | class | **9** | 9 | 9 | 9 |
+| NT21 | 4 | class | **9** | 9 | 9 | 9 |
+| NT16k5 | 5 | class | **9** | 9 | 9 | 9 |
+| `K4` dbl-subdiv | 6 | class | **9** | 9 | 9 | 9 |
+| `K5−M` dbl-subdiv | 6 | class | **9** | 9 | 9 | 9 |
+
+Readings:
+
+- **`k = 3`: rank exactly 4**, i.e. (D1) is *sharp*, at both habitats and every
+  seed. Dropping the pencil pin (UNPINNED) raises it only to **6** = the
+  `2 × 3` parameters of the two companion interiors freed of their panels, so
+  **the deficiency is path-sum containment, not the pin**: C1 would fail at
+  these shapes in KT's unpinned world too.
+- **`k ≥ 4`: rank 9 at every habitat**, at 1–3 of the 3 seeds each (a seed
+  giving 8 is a non-generic point of an irreducible chart, which
+  semicontinuity handles). The map is **dominant** at θ(3,4,5) — the
+  §(K-Λ)/(K-wit) exemplar — at two non-theta class shapes and at both control
+  double subdivisions.
+- The escape itself holds at **all 21** seeds (`V_bc ∩ α(a) = V_bc ∩ Λ²π̂ = 0`,
+  asserted), *including* the rank-capped `k = 3` ones. So dominance is
+  **sufficient and very far from necessary** for the escape.
+
+### Step D5 — what dominance buys at a shape, exactly
+
+> **Proposition (D4).** Let a (shape, split) have a rational FIXED-scoping seed
+> at which `rank dV = 9`. Then on a dense open subset of that shape's pencil
+> chart the seed is target-rank, nondegenerate, and satisfies
+> `V_bc ∩ α(a) = V_bc ∩ Λ²π̂ = 0` — hence, by (PC-Z) and (T2)/(T3), `Q(r) ≠ 0`
+> and the escape holds on **both** KT routes.
+
+*Proof.* The chart with `pt(a), pt(b), pt(c), Π(b), Π(c)` frozen is an
+irreducible tower of affine-linear fibres (§(K-slide) *Step 1(e)*, with the
+first stages frozen). Rank is lower semicontinuous, so `rank dV = 9` at one
+point makes the generic rank `9 = dim Gr(3,6)`; in characteristic `0` that is
+dominance, so the preimage of the codimension-1 bad locus is a proper closed
+subset. The remaining requirements (target rank, `dim V_bc = 3`, the (T2) side
+conditions) are open and nonempty at the witness seed. A finite intersection of
+dense opens in an irreducible variety is dense open. ∎
+
+**Calibrate this honestly.** §4-C1's own caveat — "dominance *at one habitat* is
+per-shape again" — is correct, and the driver's numbers do not weaken it. What
+(D4) adds over §(K-flank)'s per-shape `∃`-witnesses is that it certifies a
+*dense open* set of good seeds rather than one, and does so **uniformly in the
+bad locus**: the same rank-9 statement kills *every* codimension-1 obstruction
+at that shape, not just the two of (PC-Z). It is a strictly stronger per-shape
+statement. It is not a more *useful* one for `hK` as pinned, because one
+`Q(r) ≠ 0` witness plus chart irreducibility already gives the escape at a
+generic seed — which §(K-flank) has at 16/16 probed splits.
+
+### Step D6 — assessment of §4-C1's two claimed values
+
+The strategy doc gives two reasons to prefer dominance over a pointwise
+condition. Both fail, and (D2) is why.
+
+**Claim (i) — "it is inductive in the right direction: as the far graph grows by
+a generating move, parameters are *added*, so the image can only grow."
+REFUTED.** By (D2) the far parameters' contribution is capped at `3(k−3)`, a
+function of the *local* companion length only. Once that budget is saturated —
+and `--far` shows it is saturated at every habitat probed — every further far
+parameter lies in `ker dV`, so growing the far graph does not enlarge the image.
+At `k = 3` the budget is `0`: the image is a fixed 4-fold no matter how large
+the far graph is. What would actually have to be carried inductively is `k ≥ 4`,
+and by (D3) that is *exactly* `hnoRigid` — already an antecedent of `hK`. The
+inductive content C1 hoped to gain is therefore already in the hypothesis, and
+C1 adds nothing to it.
+
+**Claim (ii) — "it reframes route 1's refutation as an asset: the escape's zero
+locus moves with the far graph, so the map is highly non-constant." REFUTED as
+an inference.** The route-1 gate measured the *stress*-side zero locus at
+`k = 6` habitats (`escape/localtest.py`, double subdivisions of `K4` and
+`K5 − M`), which by (D2) is the maximal far-dependence grade. The same
+measurement at `k = 3` would return the opposite verdict: far-dependence `0`,
+and by (T1) a fully local escape criterion. So "the map is highly non-constant"
+is not a property of the class — it is a property of high `k`, and the correct
+statement is the **grading** (D2), not a global non-constancy.
+
+**And the wall is not crossed.** Suppose one wanted the uniform statement
+"`rank dV = 9` at every class (shape, split)". That is the non-vanishing of a
+`9 × 9` minor of a matrix built from one shape's chart — **one determinantal
+condition per (shape, split)**, with no subset-indexed family, no exchange, no
+matroid: precisely the ingredient-2 failure §(K-pure) *P5* isolates. C1
+*relocates* the crux from `Q(z) ≢ 0` to `rank dV = 9` — a strictly stronger and
+equally per-shape condition. It is not a route to class uniformity.
+
+### Step D7 — what this leaves, honestly
+
+- **(K-dom)**, the uniform form — "`rank dV = 9` at every class (shape,
+  split)" — is **open**, verified at 5 class habitats spanning `k ∈ {4,5,6}`,
+  and provably **false** on the (K-res) `k = 3` family. Because a
+  counterexample on the class would be a shape whose entire chart maps into a
+  proper subvariety of `Gr(3,6)`, and none is known, the statement is plausible
+  — but it is not a *weaker* target than `hK`, so closing it is not progress
+  unless a mechanism appears.
+- The `k = 3` family is not a loss: it is exactly where §(K-pitch) *Step 5*'s
+  bracket monomial **closes** the pitch (θ(3,3,6)). So the two mechanisms are
+  complementary — a **companion-length dichotomy** (`k = 3` by the monomial,
+  `k ≥ 4` by dominance) covers every habitat probed. Whether that dichotomy can
+  be made uniform is exactly the open (K-dom) plus the already-open `k ≥ 4`
+  side; the dichotomy is an *organizing* observation, not a proof.
+- Not probed: `k = 4, 5, 6` habitats with a **parallel `G°` edge** (`P21`-type),
+  where §(K-pure) *P4* locates a separate obstruction; and whether any class
+  shape has `rank dV < 9`.
+
+### Verification
+
+`notes/scripts/w4/dominance.py` (tracked, new this pass; exact-ℚ, stdlib-only,
+no CAS; sits beside `flanks`/`pure`/`lambda` on `repin`/`pitch`/`kslide`; every
+sampled object rank/dimension asserted, including `flanks.star_span_ranks` as
+the `plane_basis` genericity guard; all rng seeded, `PYTHONHASHSEED=0` pinned;
+all four modes verified byte-deterministic across repeated runs). Run from the
+repo root:
+
+```
+PYTHONHASHSEED=0 python3 notes/scripts/w4/dominance.py --cap       # (D1), (D3)
+PYTHONHASHSEED=0 python3 notes/scripts/w4/dominance.py --jac       # the rank table
+PYTHONHASHSEED=0 python3 notes/scripts/w4/dominance.py --far       # (D2)
+PYTHONHASHSEED=0 python3 notes/scripts/w4/dominance.py --validate  # the machinery
+```
+
+**The model, and why the differential is computable in exact ℚ.** `V_bc` is the
+image under `m ↦ m(b) − m(c)` of the kernel of the **augmented** system in
+unknowns `(m_x)_{x ∈ V(H)}`, `(ω_e)_{e ∈ E(H)}`
+
+```
+m_x − m_y − ω_e·C_e = 0      (6 rows per edge e = (x,y)),
+```
+
+whose entries are *polynomial* in the chart coordinates. So each directional
+derivative is implicit differentiation of a kernel: `A u = 0` and
+`A u′ = −(∂A) u`, a derived linear system solved at the base point, with
+`dV(δ)` the class of `u′[m_b] − u′[m_c]` in `K⁶/V_bc`. Solvability of every such
+system is itself asserted (it is exactly the local constancy of `rank A`). The
+chart tangent is `ker` of the differentiated pencil condition, so the derivative
+never leaves the stratum. This is §(K-pitch) *Step 1(b)*'s "`V_bc` needs only a
+kernel computation" made differentiable.
+
+Habitats (7): θ(3,3,6) and **NT21c3** (`k = 3`; NT21c3 is the NT21 hub
+multigraph with the companion shortened to 3 — `b`–`c` paths 3 and 3, plus
+`b–u:4, u–c:4, b–w:3, w–c:3, u–w:4`; `|V| = 21`, `|E| = 24` — so the `k = 3`
+cap is not a θ artifact); θ(3,4,5) and NT21 (`k = 4`); **NT16k5** (`k = 5`; hubs
+`b,c,u,w`, one `b`–`c` path of length 3 plus `b–u:2, u–c:3, b–w:2, w–c:3,
+u–w:5`; `|V| = 16`, `|E| = 18`); and the double subdivisions of `K4` and
+`K5 − M` (`k = 6`, the arc's control habitats and route 1's locality-gate
+shapes). Every one is asserted tight (`5|E| = 6(|V|−1)`), `def = 0`,
+`hcard_ok`, triangle-free at load; class-vs-(K-res) is decided per habitat by
+the two agreeing certificates of *Step D3*.
+
+Per mode, what is asserted:
+
+- `--cap`: `V_bc ⊆ S_P` at **every** `b`–`c` path of `H` (not only shortest);
+  at `k = 3`, `V_bc = S_P` exactly; `rank Q|_{V_bc} = 2 ⟺ k = 3`; the
+  `C_{3+k}` rigidity dichotomy, cross-checked against
+  `kslide.no_rigid_branch_union`; and `V_bc ∩ α(a) = V_bc ∩ Λ²π̂ = 0` (the
+  escape) at every seed.
+- `--jac`: `dim V_bc = 3`; no FIXED/UNPINNED direction moves `a`, `b` or `c`
+  (the bad locus stands still); every implicit-differentiation system solvable;
+  `rank dV ≤` the (D1) cap; at `k = 3` the cap **attained** and the UNPINNED
+  rank `≤ 6`; at `k ≥ 4` rank 9 attained.
+- `--far`: `rank dV|_{far} ≤ 3(k−3)` at every seed, and `= 0` at `k = 3`.
+- `--validate`: three independent models for `V_bc` agree (the rigidity matrix
+  via `pitch.H_motions_vbc`, the augmented system, the cycle kernel), with
+  `dim ker(augmented) = dim mot(H)` and `dim Z = dim mot(H) − 6`; the
+  augmented-system and **cycle-kernel differentials agree entry by entry** on
+  every chart direction (two different matrices, two different solves); and an
+  exact secant quotient `φ(t)/t` on a chart-*exact* ray (directions moving no
+  hub normal keep `θ₀ + tδ` in the chart identically) converges to the computed
+  differential, error halving at `t = 2^{−3..−6}`.
+
+**Figures.**
+
+| figure | value |
+|---|---|
+| `--cap` seeds | **21** over 7 habitats; containment at every `b`–`c` path; `rank Q\|_{V_bc}` = 2 at `k = 3`, 3 at `k ≥ 4`; escape holds at **21/21** |
+| `--jac` FIXED rank, `k = 3` (θ(3,3,6), NT21c3) | **4** at 6/6 seeds = the (D1) cap, attained |
+| `--jac` UNPINNED rank, `k = 3` | **6** at 6/6 seeds — the pin is not the cause |
+| `--jac` FIXED rank, `k ≥ 4` (5 habitats) | **9** attained at each; `dim Gr(3,6) = 9`, so **dominant** |
+| `--far` far block at `k = 3,4,5,6` | **0, 3, 6, 9** = `3(k−3)`, the (D2) bound, attained at every habitat |
+| `--far` far directions in `ker dV` at `k = 3` | **13/13** (θ(3,3,6)), **41/41** (NT21c3) |
+| `--validate` habitats | **7**; three `V_bc` models agree; two differentials agree on all 9 entries × every direction; secant errors halve |
+
+**Confidence verdict.**
+
+- **(D1) (the `min(9, 6k−14)` cap), (D2) (the `3(k−3)` far block), (D3)
+  (`hnoRigid ⟹ k ≥ 4`), (D4) (dominance ⟹ the escape on a dense open set):
+  proven-informally**, each with a driver mode asserting that sentence.
+- **Dominance at the 5 probed class habitats: proven-informally per shape**
+  (rank 9 at a rational seed + chart irreducibility + semicontinuity).
+- **Dominance as a class-uniform statement, (K-dom): open** — and **false** on
+  the (K-res) `k = 3` family, so it cannot serve `hK` in the form `hK` is
+  carried.
+- **§4-C1's claims (i) and (ii): REFUTED** (Step D6). C1 is **not** an
+  inductive route and does not escape the ingredient-2 failure; it is not
+  recommended as the phase's direction.
+- **Class uniformity is untouched.** No uniform gap closes here.
+
+**What would change this.** *(i)* A class habitat (`k ≥ 4`, `hnoRigid`) whose
+FIXED rank is `< 9` at *every* seed — that would be a sharp new obstruction and
+would make (K-dom) false outright; none found, and the driver's `--jac` is the
+place to add shapes. *(ii)* A far-direction rank exceeding `3(k−3)` — that would
+refute (D2) and, with it, Step D6's refutation of claim (i); asserted per seed.
+*(iii)* An error in the differentiation itself — guarded by two independent
+derivative routes agreeing entry by entry plus the secant test, so an error
+would have to be shared by the augmented and cycle models. *(iv)* A `k = 3`
+class habitat — impossible by (D3), whose two certificates agree at every
+habitat; a disagreement would be the finding. *(v)* A mechanism making
+`rank dV = 9` *combinatorially* certifiable at every class shape — that, and
+only that, would turn C1 into a uniform route; nothing in the arc suggests one,
+and §(K-pure) *P5* is the reason to expect none.
 
 ## §(K-bare-ext) — stub
 

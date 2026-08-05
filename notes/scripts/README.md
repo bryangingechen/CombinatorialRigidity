@@ -32,7 +32,7 @@ changed figures.
 
 ## 0. The path bootstrap
 
-One mechanism, applied identically in all 28 script files. `scriptpath.py`
+One mechanism, applied identically in all 29 script files. `scriptpath.py`
 puts every layer directory on `sys.path`, so any harness module can import any
 other by bare module name from any working directory. **The idiom to copy** —
 three lines, directly above the harness imports, below the stdlib ones:
@@ -105,6 +105,8 @@ is needed by a second driver, that is the signal to move it one layer down
 | rigidity rows from **explicit hinge lines** (the slide-limit systems) | `rows_from_lines` | `pitch` |
 | target rank / max pencil rank of a graph | `pencil_rank`, `pencil_rank_max` | `kbare_common`, `widened` |
 | dimension of the projective **bar-and-joint** self-stress space in 3-space, at explicit points (the `R_3` matroid of the hub graph; multigraph-safe) | `bar_stress_dim` | `pure` |
+| **augmented** motion system of `H` (`m_x − m_y − ω_e C_e = 0`; polynomial entries, so it can be differentiated) | `motion_system` | `dominance` |
+| cycle-condition matrix on hinge rotations (the second, independent motion model) | `cycle_data` | `dominance` |
 
 The two `build_rigidity`s take different arguments and return different tuples
 — see *Divergences*.
@@ -138,6 +140,9 @@ The two `build_rigidity`s take different arguments and return different tuples
 | per-vertex closed-**star rank** — the genericity guard against the `plane_basis` artifact | `star_span_ranks` | `flanks` |
 | point on a plane / on the meet line of two planes | `point_in_plane3`, `line_of_two_planes` | `kbare_common`, `gate2` |
 | meet line of two planes → `(p0, dir)` | `meet_line` | `localtest` |
+| tangent space of the **pencil chart** at a placement (the differentiated pencil condition), with a choice of frozen `a`/`b`/`c` data | `build_chart` | `dominance` |
+| rank of the differential of `H ↦ V_bc` in `Hom(V_bc, K⁶/V_bc)` | `dV_rank` (cross-check `dV_rank_cycles`) | `dominance` |
+| particular solutions of `A x = rhs` for many right-hand sides in one `rref` | `solve_multi` | `dominance` |
 
 `plane_basis` exists in three degenerate variants — **read *Divergences*
 before touching any of them.** `rvec3` likewise.
@@ -155,6 +160,7 @@ before touching any of them.** `rvec3` likewise.
 | `(K-slide)` battery members (`W4`, `K5−{01,23}`, prism+diagonal, flanks) | `member` | `kslide` |
 | length-4-companion habitats, class-predicate-certified at load time (θ(3,4,5), `NT21`, and the two new non-theta shapes **`NT24`** / **`NT30`**) | `habitat_specs` (`nt24` for the shape alone) | `lambda` |
 | the `|V| = 19` / `|V| = 29` residual inhabitants | `W19`, `w29` | `widened`, `saferes` |
+| companion-length variants of the NT21 hub multigraph: length-3 companion (a (K-res) shape) and length-5 companion (a class shape) | `nt21c3`, `nt16k5` | `dominance` |
 | subdivision families D/E/F/G, core-ring, random short-branch | `family_d/e/g`, `family_core_ring`, `random_short`, `random_subdivision` | `nogood_subdiv`, `saferes` |
 | spider / theta+center / dangerous / DZ gadgets | `spider`, `dangerous_gadget`, `split_off`, `dz_gadget` | `kbare_common`, `danger` |
 
@@ -166,6 +172,8 @@ before touching any of them.** `rvec3` likewise.
 | adjacency map pre-seeded over an explicit vertex list | `neighbors_seeded` | `pencil_escape` |
 | connectivity / 2-edge-connectivity | `is_connected`, `is_2ec` | `kbare_common` |
 | closed hub neighbourhoods (the `hcard` habitat datum) | `closed_hub_nbhds` | `kbare_common` |
+| every simple `b`–`c` path of a graph, up to a length bound | `simple_paths` | `dominance` |
+| hub-path map for `no_rigid_branch_union`, derived from `branch_decomposition` | `branch_pmap` | `dominance` |
 | hub set, triangles, `hcard` test | `hub_set`, `triangles`, `hcard_ok` | `nogood_subdiv` |
 | branch (2-core path) decomposition; rigid vertex sets | `branch_decomposition`, `rigid_vertex_sets` | `nogood_subdiv` |
 | induced subgraph / contraction of a vertex set | `induced_edges`, `contraction` | `nogood_subdiv` |
@@ -192,7 +200,7 @@ before touching any of them.** `rvec3` likewise.
                           |
                   w4/ DRIVER STACK (deepest last)
    nogood_subdiv -> saferes -> widened -> repin -> pitch -> kslide -> kslidecl
-        -> kslidecomb -> {flanks, pure, lambda}
+        -> kslidecomb -> {flanks, pure, lambda}  -> dominance
                               (siblings; none imports another)
 ```
 
@@ -216,8 +224,15 @@ Three layers:
   (direction C — the limit carrier's pure condition, the chord obstruction, the
   slide-support menu) and `lambda` (direction B — the (T5) Λ-compression's
   quadric, its two-hyperplane factorization, and companion lengths 5/6; it sits
-  on `pitch`, and does **not** import `flanks` or `pure`). None imports another,
-  so a further (K)-arc driver goes *beside* them, not through them.
+  on `pitch`, and does **not** import `flanks` or `pure`). None of the three
+  imports another, so a further (K)-arc driver goes *beside* them, not through
+  them. **`dominance`** (the C1 spike — the differential of `H ↦ V_bc` against
+  `dim Gr(3,6)`) is the one exception, and a narrow one: it sits beside the
+  three but imports `flanks.star_span_ranks`, which is a §1-catalogued
+  *primitive* with `flanks` as its canonical home, not a private helper. Per
+  rule 2 below, **a third consumer of `star_span_ranks` is the signal to move it
+  down to `repin`** (re-exporting from `flanks` so the recorded figures do not
+  move); with two consumers the move is not yet worth the figure-gate cost.
 
 **The rule for a new script.** Import **downward** only:
 
@@ -347,6 +362,10 @@ arcs too.
 | `python3 notes/scripts/w4/lambda.py --habitat` | 25 s | ibid. (end-to-end at 4 habitats + the `ℓ = 3` corollary at θ(3,3,6)) |
 | `python3 notes/scripts/w4/lambda.py --l56` | 0 s | ibid. (`ℓ = 5,6` refuted through the (T5) frame) |
 | `python3 notes/scripts/w4/lambda.py --adv` | 536 s | ibid. (the refutation hunt + the constructed (Λ0d)/(Λ0f) witnesses) |
+| `python3 notes/scripts/w4/dominance.py --cap` | 20 s | workbook §(K-dom) (path-sum containment, the `min(9, 6k−14)` cap, `hnoRigid ⟹ k ≥ 4`) |
+| `python3 notes/scripts/w4/dominance.py --jac` | 57 s | ibid. (the rank table against `dim Gr(3,6) = 9`) |
+| `python3 notes/scripts/w4/dominance.py --far` | 28 s | ibid. (the (T5) far block `3(k−3)`, attained) |
+| `python3 notes/scripts/w4/dominance.py --validate` | 19 s | ibid. (three models for `V_bc`; two derivative routes; the secant test) |
 
 Per-driver prose — *what* each mode asserts — stays in the three per-directory
 READMEs (`escape/README.md`, `kbare/README.md`, `w4/README.md`). This table is

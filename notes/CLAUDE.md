@@ -62,8 +62,9 @@ for *organizing* this directory is here.
   per-shape-positives asymmetry; the whole crux restated inside `Gr(3,6)`; and a
   counting-saturation argument ruling out every count-expressible invariant),
   what the KT formalization did and did not yield as extractable technique,
-  **three candidate stronger inductive invariants** with one cheap decisive
-  spike, and the **symbolic-computation assessment** (the harness is
+  **three candidate stronger inductive invariants** — of which C1 (dominance of
+  the `V_bc` map) was adjudicated, run and struck on 2026-08-05, its verdict in
+  `Pencil-informal.md` §(K-dom) — and the **symbolic-computation assessment** (the harness is
   exact-pointwise with hand-rolled univariate interpolation only; Macaulay2 is
   installed, sandbox-verified, never used, and would upgrade §(K-Λ)'s
   38-strata evidence to a class-uniform proof — plus the conventions it would

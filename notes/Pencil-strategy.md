@@ -24,6 +24,11 @@ a recon or a spike before it can be priced.
    collinear collapse, the tetrahedral collapse (antecedent *and* statement),
    and the un-specialized pure condition. That is a recurring wall one level
    above any single route, so the question is whether the wall is intrinsic.
+   (§4-C1, the candidate this doc rated best, has since been run and is a
+   **sixth** — `notes/Pencil-informal.md` §(K-dom) *Step D6*: it relocates the
+   crux from `Q(z) ≢ 0` to `rank dV = 9`, a strictly stronger and equally
+   per-shape determinantal condition, so §2.2's diagnosis survives it intact.
+   That is one prediction of this doc's own analysis confirmed by a driver.)
 2. **Did the KT formalization yield extractable technique that generalizes?**
    This was a stated goal of opening the phase. §3 gives the ledger.
 
@@ -121,6 +126,16 @@ graph, hence lies in the image of
 
 and **we have no description of that image.** If it were Zariski-dense we would
 be done uniformly in one line.
+
+> **Partly answered, 2026-08-05** (`notes/Pencil-informal.md` §(K-dom); the
+> mathematics is not restated here). The image is Zariski-dense — the map is
+> dominant — at every *class* habitat probed, but its dimension is capped by
+> `min(9, 6k − 14)` in the **companion length** `k`, so at `k = 3` it is a
+> 4-fold inside the discriminant hypersurface of `Gr(3,6)`. `k = 3` happens
+> exactly at the (K-res) `C₆` residuals. Crucially the far graph contributes at
+> most `3(k−3)` to that dimension, so §4-C1's "the image grows with the far
+> graph" is false and the paragraph's hope of "done uniformly in one line" does
+> not survive: density per shape is per shape.
 
 This also restates §(K-pure) *P7*'s locality/pitch trade as a fact about that
 map: the degenerations that give combinatorial control **move `V_bc` onto the bad
@@ -224,7 +239,18 @@ escape is *carried* rather than re-proved at each shape. The phase has done this
 once already: W5-L4's motive gained a **fourth conjunct** precisely because the
 first three did not force what the induction needed.
 
-### C1 — dominance of the `V_bc` map (the best candidate; untried)
+### C1 — dominance of the `V_bc` map (**RUN 2026-08-05; NOT recommended**)
+
+> **Status: the spike below was adjudicated, dispatched and run.** Verdict, in
+> one line: **dominance holds (rank 9) at every class habitat probed, but both
+> of the two reasons given below for preferring it are refuted, and it does not
+> reach class uniformity.** The mathematics — the cap
+> `rank ≤ min(9, 6k − 14)` in the companion length `k`, the far block
+> `3(k−3)`, `hnoRigid ⟹ k ≥ 4`, the rank table, and the assessment of the two
+> claims — is `notes/Pencil-informal.md` **§(K-dom)**, which is the canonical
+> home; the *State of (K)* map carries the one-row status. The text below is
+> kept as the pre-spike derivation it was, so the two paragraphs of "reasons
+> this is attractive" can be read against their refutation.
 
 Carry a statement about the *map* of §2.4 rather than a pointwise condition.
 Since the bad locus is codimension 1, it suffices that the image is **not
@@ -380,8 +406,12 @@ adjudications (W4 parked; option B not commissioned; `hK`/`hbareSplit` carried).
 Conditional first steps, so a fresh session can start immediately once the
 direction is set:
 
-- **If the direction is C1 (dominance):** the §4-C1 Jacobian spike — one
-  read-only dispatch, new driver, exact ℚ, no CAS. Report the rank against 9.
+- ~~**If the direction is C1 (dominance):** the §4-C1 Jacobian spike~~ —
+  **DONE 2026-08-05** (adjudicated, dispatched, landed; driver
+  `notes/scripts/w4/dominance.py`, mathematics in `notes/Pencil-informal.md`
+  §(K-dom)). Rank **9** at every class habitat probed, **4** (a proven cap) at
+  the `k = 3` (K-res) family; C1's inductive and locality-reframing claims both
+  refuted, so C1 is **not** a route to uniformity and is not a live direction.
 - **If the direction is the symbolic upgrade:** §5.3's first item — re-do
   §(K-Λ)'s (Λ0) spans at the generic point of the local frame in Macaulay2, and
   land §5.4's conventions in the same commit as the first M2 driver.
