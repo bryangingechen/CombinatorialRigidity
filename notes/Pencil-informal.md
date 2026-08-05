@@ -1153,9 +1153,10 @@ evaluates the pitch at a `G°`-local limit system — developed in the
 sibling **§(K-slide)** (2026-08-04 third pass) into a proof device: the
 slide-transfer theorem (S1) makes one exact limit witness close a
 habitat's split, the `K4`/`W4` control habitats are closed at every
-split, and the named gaps are now **(K-Λ)** and **(K-slide-cl)** plus
-the `P21`-type parallel-edge shapes (with (K-wit) still the weakest
-exact form). Adversarial record intact — pitch was **nonzero at every
+split, and the named gaps are now **(K-Λ)** and **(K-slide-cl)** —
+itself reduced (fourth pass, §(K-slide-cl)) to the combinatorial
+**(K-slide-comb)** — plus the `P21`-type parallel-edge shapes (with
+(K-wit) still the weakest exact form). Adversarial record intact — pitch was **nonzero at every
 probed seed** (29/29 first pass: 16 tight-control + 5 residual + 8
 pool-stratum; +5/5 second pass at the (T5) driver, θ(3,4,5) and the new
 non-theta tight habitat NT21; +23/23 limit witnesses + 12/12 transfer
@@ -1520,8 +1521,9 @@ the limit twist's pitch class (pitched at dbl-K4, null at θ).
 the slide-in limit calculus proven-informally; (K-pitch) at
 θ(3,3,6)-type splits proven-informally; the naive collinear collapse
 refuted; the uniform (K-pitch)/(K-tight)/(K-res) kernel open — narrowed
-to (K-Λ) (companion habitats) and, after §(K-slide)'s third pass,
-(K-slide-cl) (parallel-free shapes, every probed member discharged)
+to (K-Λ) (companion habitats) and, after §(K-slide)'s third pass and
+§(K-slide-cl)'s fourth, (K-slide-comb) (the combinatorial residue of
+(K-slide-cl) on parallel-free shapes, every probed member discharged)
 plus the `P21`-type shapes, with (K-wit)/(K-pitch-∞) as the weakest
 exact forms.**
 
@@ -1566,15 +1568,17 @@ the probed reduced support does not rescue it (a circuit closes on a
 theta sub-multigraph; exhibited). The sharpest uncovered *shape* is
 **P21** — a parallel non-`bc` edge with no length-≤4 `bc`-companion —
 reachable by neither the slide device nor the companion forms. The
-class-uniform residue is **(K-slide-cl)** (Step 5).
+class-uniform residue is **(K-slide-cl)** (Step 5) — attacked in
+**§(K-slide-cl)** (fourth pass, 2026-08-04): the geometry is discharged
+by the tetrahedral collapse and the residue reduces to the purely
+combinatorial **(K-slide-comb)**.
 
 **What would change this.** *For (S1):* an error in the
 automorphism/polynomiality argument — refutable by a habitat whose chart
 pitch vanishes identically while a (W1)–(W4) witness exists (the theorem
 says none can). *For the member closures:* nothing short of that — each
-rests on exact certificates plus (S1). *For the residue:* a class proof
-of (K-slide-cl) on the decorated `G°`-level system (the natural
-White–Whiteley pure-condition target), or any local mechanism for
+rests on exact certificates plus (S1). *For the residue:* a proof (or refutation) of §(K-slide-cl)'s
+combinatorial residue (K-slide-comb), or any local mechanism for
 `P21`-type shapes.
 
 ### Step 1 — (S1): the slide-transfer theorem
@@ -1736,7 +1740,11 @@ seed escapes), but with no `G°`-local argument. The named residue:
 Every attempted member closed at the first sampled decorations; a class
 proof should factor the limit system's pure condition along `G°`'s
 structure (the White–Whiteley 1987 mechanism, now aimed at a decorated
-bar-and-body-like object with only pencil lines and chords).
+bar-and-body-like object with only pencil lines and chords). **That
+factoring is now carried out in §(K-slide-cl)** (the tetrahedral
+collapse): (K-slide-cl) is true-modulo-**(K-slide-comb)**, a purely
+combinatorial assignment problem, solved by search at every probed
+member.
 
 ### Verification
 
@@ -1756,8 +1764,271 @@ supports with the stress's chain support and line rank printed.
 the `K4`/`W4` double-subdivision control habitats closed at every
 split; the parallel-edge order-0 obstruction proven (full support) /
 exhibited (reduced support); the uniform kernel still open — residue
-(K-slide-cl) + (K-Λ) + the `P21`-type shapes, with (K-wit)/(K-pitch-∞)
-the weakest exact forms.**
+(K-slide-cl), reduced by §(K-slide-cl) to (K-slide-comb), + (K-Λ) +
+the `P21`-type shapes, with (K-wit)/(K-pitch-∞) the weakest exact
+forms.**
+
+## §(K-slide-cl) — the tetrahedral collapse: the class statement reduced to a combinatorial assignment problem
+
+Sibling of §(K-slide), attacking the class-uniform residue its Step 5
+named; standing notation inherited (`G°`, decorations, the split edge
+`e₀ = bc` of length 3, witnesses (W1)–(W4), the limit-line dictionary of
+(S2)). The route is the one §(K-slide) suggested — factor the limit
+system along `G°`'s structure — made concrete by the **specialization
+technique of White–Whiteley 1987** (the Theorem-2.18 proof: evaluate the
+pure condition at an assignment of *one shared coordinate frame per
+spanning tree*, so a single Laplace term survives), now run **inside the
+decoration variety**, whose pencil/chord structure does not admit free
+`k`-frame rows.
+
+**Verdict (2026-08-04, fourth pass).** (i) The **collapse mechanism
+(C1)–(C3) is proven-informally**: at a *tetrahedral collapse* decoration
+— hubs placed on the four vertices of a coordinate tetrahedron by a
+proper 4-coloring, panels/pencil directions/interior points chosen per
+the transversal dictionary (C2) — every limit row becomes a scalar
+difference equation in one of six basis-line coordinates, and
+(W1)–(W2) become **pure combinatorics**: the six edge classes must be
+forests, exactly three spanning trees and three two-component forests
+each separating `b` from `c`; then `V_bc` = the span of the three
+separating lines' opposite duals, and (W3)/(W4) close by an explicit
+bracket monomial in `pt(a)` (C3). (ii) The **length dictionary is
+complete** on the class (C0): tightness alone caps every path at length
+6 (`def ≥ ℓ − 6`, interiors-as-singletons partition), and under
+`hnoRigid` a length-6 path is impossible too (its complement branch
+union is tight, hence a proper rigid subgraph; 5848/5848 machine sweep)
+— so `ℓ ∈ {1,…,5}`, exactly the range (C2) covers. (iii) The pure
+tetrahedral scheme has one genuine obstruction, located exactly: a
+**length-2 path forces a tetra point into both end panels**, and at the
+mixed-length member this pincers against the neighbouring pencil planes
+(every pt-mode assignment dies — proven by the finite case check, C4);
+the **meet-plane extension** (C4) repairs it (interior at
+`M ∩ π(i,j,m)`, panels freed, one non-basis row absorbed by the exact
+witness). (iv) With the extension, **the assignment problem is solved
+and the collapse witness verified at all 7 probed members** — the full
+§(K-slide) battery (`kslidecl.py`, exact-ℚ; 6 pure, 1 extended). What
+remains class-uniform is the purely combinatorial residue
+**(K-slide-comb)** (C5): existence of a coloring + assignment with the
+forest/separator structure. (K-slide-cl) is therefore
+**true-modulo-(K-slide-comb)** — the geometry is discharged; the gap is
+a finite matroid-flavoured question per shape, with 4-colorability
+*proven* for all-length-3 shapes (3-degeneracy from 5/6-sparsity) and
+every probed shape solved by search.
+
+**What would change this.** *For the mechanism:* an error in the
+transversal calculus (C2) — machine-asserted per edge per member
+(`klein(L, C) = 0` for every assigned basis line against every chain
+line), with the V_bc-structure and Gram identities asserted globally.
+*For the residue:* a shape where (K-slide-comb) is unsolvable — that
+would blunt the tetrahedral basis there, not the route (the basis
+configuration can be generalized; the meet-plane extension is the first
+instance); a shape whose underlying simple graph is not 4-colorable
+would do it structurally (excluded for all-length-3 shapes, open in
+general). *For the class verdict:* a proof of (K-slide-comb) upgrades
+(K-slide-cl) to proven-informally wholesale; a counterexample to
+(K-slide-comb) forces a second-generation basis.
+
+### Step C0 — the hub-level target, and dictionary completeness
+
+By (S2), interior elimination is exact and the limit system is the
+hub-level serial-chain system: bodies at the hubs of `G° − e₀`, one
+constraint `m(u) − m(w) ∈ S_P := span(chain lines)` per edge `P`, i.e.
+`6 − ℓ_P` scalar rows (for independent chain lines). Tightness
+(`Σ_P ℓ_P = 6·c°(G°)`) makes the total row count `6|V°| − 9`, so
+(W1) says the rows are independent (`dim mot = 9`), (W2) that the
+kernel is trivial twists ⊕ a 3-dimensional `V_bc`.
+
+Two elementary lemmas close the length bookkeeping:
+
+- **(ℓ ≥ 7 is not tight.)** Putting a length-`ℓ` path's interiors in
+  singleton parts and everything else in one part scores
+  `6ℓ − 6 − 5ℓ = ℓ − 6`, so `def(G) ≥ ℓ − 6`: a tight graph has every
+  path of length ≤ 6. (Machine: K4 lengths `(3;7,2,2,2,2)` has the
+  tight count but `def = 1`.)
+- **(ℓ = 6 forces a rigid complement.)** If `G` is tight with a
+  length-6 non-split path, the branch union of all *other* paths has
+  the tight count (`Σℓ` drops by `6 = 6·Δc°`), and any bad partition of
+  it would lift to `G` at zero cost through the six interiors — so the
+  complement is a proper **rigid** branch union and `hnoRigid` fails.
+  (Machine: 5848/5848 tight W4-wheel shapes with a length-6 path fail
+  `hnoRigid`.)
+
+So on the tight-`hnoRigid` subclass `ℓ ∈ {1,…,5}` — the dictionary
+below is complete. ((K-res) residual shapes waive `hnoRigid`, so they
+may carry length-6 paths; those contribute **no** hub-level rows and
+the mechanism is unchanged, but no parallel-free (K-res) member was at
+hand to probe.)
+
+### Step C1 — the six scalar systems
+
+Let `E₁…E₄` be the vertices of a coordinate tetrahedron and
+`L_ij := C(E_i ∨ E_j)` its six edge lines: a **basis** of `Λ²K⁴` with
+`B(L_ij, L_kl) ≠ 0` iff `{i,j}, {k,l}` are **opposite** (disjoint). So
+`x_L(v) := B(m(v), L)` are linear coordinates on twists, and a
+constraint `m(u) − m(w) ∈ S_P` whose reciprocal space
+`R_P := {ω : B(ω, C) = 0 ∀C ∈ S_P}` is *spanned by basis lines*
+`A_P ⊆ {L_ij}` reads as the `|A_P|` scalar equations
+
+> `x_L(u) = x_L(w)`, one per `L ∈ A_P`.
+
+If every edge is basis-aligned this way, the whole hub-level system
+splits into **six scalar graph systems**: for each basis line `L`, the
+class `E_L := {P : L ∈ A_P}` constrains `x_L` to be constant on the
+components of `(V°, E_L)`. Hence, exactly:
+
+> **(C1)** rows independent ⟺ every class is a **forest**; then
+> `dim ker = Σ_L c_L` (`c_L` = component count), and since
+> `Σ_L (c_L − 1) = 3`: **(W1) ∧ (W2)** ⟺ three classes are spanning
+> trees and three are two-component forests **each separating `b` from
+> `c`**; in that case `V_bc = ⟨ opp-dual(L) : L separating ⟩` (the
+> B-dual basis vector of `L_ij` is proportional to its opposite line).
+
+This is the White–Whiteley tree-specialization structure: the surviving
+"Laplace term" is the product of the six forest determinants, evaluated
+inside the pencil-decoration variety rather than at free `k`-frame
+rows.
+
+### Step C2 — the transversal dictionary (which alignments the chart allows)
+
+Color the hubs `φ: V° → {1,…,4}` **properly** (adjacent hubs distinct,
+`φ(b) ≠ φ(c)` — `b, c` are non-adjacent in `G° − e₀` by
+parallel-freeness, but (C3) needs their points distinct) and place
+`pt(u) = E_{φu}`. Per edge `P = uw` of length `ℓ`, colors
+`(i, j) = (φu, φw)`, the chain lines can be decorated so that `R_P` is
+*exactly* a basis-line span (each claim = one transversal computation;
+all machine-asserted per edge):
+
+    ℓ = 1 : chord L_ij; panels of u, w both contain it (mutual-panel
+            data).                     A_P = all five basis lines ≠ opp(ij)
+    ℓ = 2 : interior at E_k (k ∉ {i,j}), forced into BOTH panels; chain
+            (L_ik, L_kj).              A_P = {ij, ik, jk, opp(ij)}
+    ℓ = 3 : P_u = Π(u) ∩ π(i,j,s), chord L_ij, P_w = Π(w) ∩ π(i,j,t).
+                                       A_P = {ij, it, js}
+    ℓ = 4 : middle at E_k, P_u ⊂ π(i,k,l), P_w ⊂ π(j,k,l) ({k,l} =
+            complement).               A_P = {ij, opp(ij)} (forced)
+    ℓ = 5 : middles at E_k and a generic point of π(i,j,k); pencil ends
+            generic in their panels.   A_P = {ij} (forced)
+
+The ℓ = 3 computation is the exemplar: a line through `E_i` meets
+`L_js` iff it lies in `π(i,j,s)`, so the class prescription *forces*
+`P_u = Π(u) ∩ π(i,j,s)` — the transversal set of the serial triple is
+`pencil(E_i, π(i,j,t)) ∪ pencil(E_j, π(i,j,s))`, spanning exactly
+`⟨L_ij, L_it, L_js⟩`. (Same-color chords of different edges coincide as
+lines; that is harmless — dependencies live inside classes, and classes
+are forests.)
+
+### Step C3 — (W3)/(W4) at the collapse: the bracket monomial, and finiteness of the local type
+
+With separators `{L¹, L², L³}` and duals `D_s ∝ opp(L^s)`,
+`Q|_{V_bc}`'s Gram is nonzero exactly on opposite dual pairs — so the
+separator triple must contain **exactly one opposite pair** (no pair ⟹
+`Q|_{V_bc} ≡ 0` ⟹ that witness fails (W4); two pairs don't fit in a
+triple). Then `Q|_{V_bc}` has the serial-chain signature (rank 2), and
+with `pt(a)` on the meet line `M = Π(b) ∩ Π(c)`, `z` is the cross
+product of the rows `(B(D_s, C_ab))_s, (B(D_s, C_ac))_s` — 4-point
+brackets. Exemplar (the type found at `K4`, separators
+`{L₁₂, L₁₃, L₂₄}`, `φb = 1, φc = 2`; structural zeros from
+`E₁ ∈ D₃ = L₁₃`, `E₂ ∈ D₂ = L₂₄`):
+
+> `Q(z) = 2·[3,4,a,1]·[2,4,a,1]·[3,4,a,2]·[1,3,a,2]·[2,4,1,3]`
+
+— a bracket **monomial** again (the Step-5 pattern one level up),
+nonzero iff `pt(a)` avoids the four tetrahedron faces: generic on `M`.
+Crucially, (W3)/(W4) depend only on the **local type** (separator
+triple, `φb`, `φc`, the `b`/`c` panels and `pt(a)`) — *not* on the
+shape — so their nonvanishing is a **finite** check over types, not
+part of the per-shape combinatorics. (Machine corroboration: members
+with the same type produce byte-identical `Q(z_lim)` under the same
+panel draws.)
+
+### Step C4 — the length-2 pincer, and the meet-plane extension
+
+The ℓ = 2 alignment is the one dictionary entry that **constrains the
+panels**: `E_k` must lie in both end panels. At the mixed-length member
+(`K4`, lengths `(3;4,2,3,3,3)`) this is fatal: in either admissible
+coloring, the forced panel point's color collides with the color of a
+neighbouring ℓ = 3 edge's far end, degenerating that edge's pencil line
+onto its chord (`E_j ∈ Π(u)` forces `P_u = Π(u) ∩ π(i,j,s) = L_ij` for
+*every* `s`) — both colorings die, all pt-mode assignments fail (a
+finite check, confirmed by exhaustive search). The repair keeps the
+class structure and frees the panels:
+
+> **(meet-plane mode)** place the ℓ = 2 interior at
+> `x₁ = M_uw ∩ π(i,j,m)` (`m ∉ {i,j}`). Both chain lines then lie in
+> `π(i,j,m)`, so `A_P ⊇ {ij, im, jm}` — three aligned rows — and the
+> fourth row is non-basis ("extra"). The aligned kernel grows to
+> `9 + z` (`z` = number of meet-plane edges, budget
+> `Σ(c_L − 1) = 3 + z`), and the `z` extra rows must cut it back to 9
+> with `dim V_bc = 3` — checked by the **exact witness itself** (which
+> is all (S1) consumes; `V_bc ⊆ ⟨opp duals of separating classes⟩`
+> remains a theorem and is asserted).
+
+Local compatibility (part of the assignment problem): forced panel
+points must avoid the far-end colors of ℓ = 3 edges at the same hub,
+and each ℓ = 4 edge needs an admissible middle point
+(`{k,l} ⊄ req(u) ∪ req(w)`).
+
+### Step C5 — (K-slide-comb), what is proven, and the battery
+
+> **(K-slide-comb)** *(the class-uniform residue; per shape a finite
+> problem)* — for the shape `(G°, ℓ, e₀)`: there exist a proper
+> 4-coloring `φ` of the simple graph underlying `G°` **+ e₀** (so
+> `φb ≠ φc`) and per-edge choices (C2/C4: `k` or meet-plane `m` at
+> ℓ = 2; `s, t` at ℓ = 3) satisfying the local compatibility rules,
+> such that the six classes are forests with excess `3 + z`, at least
+> three classes separate `b` from `c` (exactly three spanning trees +
+> three separating 2-component forests when `z = 0`), the separating
+> lines contain an opposite pair, and (for `z > 0`) the extra rows cut
+> the aligned kernel exactly.
+
+Proven pieces: **4-colorability holds for every all-length-3 shape** —
+5/6-sparsity of the subdivision gives `|E(K)| ≤ 2|W| − 2` for every
+subgraph `K` of `G° + e₀` (up to the one extra edge), so min degree ≤ 3
+in every subgraph: 3-degenerate, greedily 4-colorable. (General
+lengths: the same sparsity gives only weak degeneracy bounds;
+4-colorability is open there and is *part of* (K-slide-comb) — as is
+the option of replacing the tetrahedron by another basis configuration
+if a shape ever needs it.) The battery (`kslidecl.py`, all exact-ℚ;
+same members as §(K-slide) Step 4):
+
+| member | mode | separating classes | witness |
+|---|---|---|---|
+| dbl-subdiv `K4` | pure | {12},{13},{24} | (W1)–(W4) ✓ |
+| `W4` rim split | pure | {12},{14},{23} | ✓ |
+| `W4` spoke split | pure | {12},{14},{23} | ✓ |
+| `K5 − {01,23}`, split 02 | pure | {12},{13},{24} | ✓ |
+| prism + diagonal, split 01 | pure | {12},{14},{23} | ✓ |
+| `K4` mixed `(3;4,2,3,3,3)` | meet-plane (z = 1) | {12},{13},{24} | ✓ |
+| `K4` + hub-hub edge | pure | {12},{14},{23} | ✓ |
+
+Each collapse witness realizes as an honest chart point (interiors
+along the chosen pencil rays, `pt(a) ∈ M` — the chart's own
+constraints are exactly the dictionary's), so (S1) applies verbatim:
+each row of the table *re-closes* that split by a structural witness —
+and the class program now stands or falls with (K-slide-comb) alone.
+
+### Verification
+
+`notes/scripts/w4/kslidecl.py` (tracked; exact-ℚ, on top of
+`repin.py`/`pitch.py`/`kslide.py`; every sampled object carries
+rank/dimension asserts). Reproduce:
+`python3 notes/scripts/w4/kslidecl.py --k4 | --battery [0-3] | --mixed |
+--hubhub | --scope`. Per member it asserts: `def = 0`; per edge the
+chain-span dimension, independence of the assigned basis lines, and the
+transversal identities `klein(L, C) = 0`; globally (W1) (subdivision-
+level row independence), (W2) with the `V_bc` structure identity
+(equality to the separators' opposite-dual span in pure mode,
+containment in extended mode) and the Gram-structure identity (pure
+mode), (W3), and (W4) `Q(z_lim) ≠ 0`. `--scope` validates both
+dictionary-completeness lemmas (the `def = ℓ − 6` exemplar; the
+exhaustive length-6 sweep).
+
+**Confidence verdict: the collapse mechanism (C1)–(C4) and the
+dictionary-completeness lemmas proven-informally; (K-slide-cl)
+true-modulo-(K-slide-comb) — geometry discharged, the residue purely
+combinatorial, solved by search at all 7 probed members (6 pure
+tetrahedral, 1 meet-plane extended); 4-colorability proven for
+all-length-3 shapes; (K-slide-comb) in general, and the (K-res)
+length-6 flank, open.**
 
 ## §(K-bare-ext) — stub
 

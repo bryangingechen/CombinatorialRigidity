@@ -3437,6 +3437,18 @@ uncovered shape is `P21` (non-`bc`-parallel, no short `bc`-companion, reachable 
 mechanism). Residue renamed **(K-slide-cl)** (class-uniform, parallel-free shapes).
 `notes/Pencil-informal.md` §(K-slide); exact-ℚ `notes/scripts/w4/kslide.py`.
 
+**(K-slide-cl) class-reduction pointer (2026-08-04, fourth dispatch).** The class residue is
+now **true-modulo-(K-slide-comb)**: the *tetrahedral collapse* (the WW87 Theorem-2.18
+shared-frame-per-tree specialization, run inside the decoration variety) turns the limit
+system into six scalar forest systems, making (W1)–(W2) pure combinatorics (3 spanning trees
++ 3 `b|c`-separating forests) and (W3)–(W4) a finite local-type bracket monomial. The length
+dictionary is proven complete (`def ≥ ℓ − 6` excludes `ℓ ≥ 7` from tight shapes; an `ℓ = 6`
+path forces a rigid complement branch union, so `hnoRigid` fails — 5848/5848 sweep); the
+length-2 alignment's panel pincer is proven fatal at the mixed member and repaired by the
+meet-plane extension. All 7 battery members witnessed; 4-colorability proven for
+all-length-3 shapes. `notes/Pencil-informal.md` §(K-slide-cl); exact-ℚ
+`notes/scripts/w4/kslidecl.py`.
+
 One more scope note for the eventual discharge, recorded while fresh: `hK`'s class also
 contains `k > 0` (`def(G) > 0`) habitats, where `G′` can have corank 0 (no stress at all
 — e.g. `C₇ → C₆`) and the escape story is vacuous; the discharge there should follow KT

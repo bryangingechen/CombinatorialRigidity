@@ -62,10 +62,19 @@ Remaining uniform gaps: **(K-Λ)** + **(K-slide-cl)** + `P21`-type shapes. Workb
 session ended there** (user wrap adjudication, verbatim: *"Let's end the loop after you've
 confirmed the results from the current subagent; commit everything so we can restart again
 in a fresh session."* — all three dispatches landed and coordinator-verified, incl. every
-headline figure re-run). A fresh session picks
+headline figure re-run). **2026-08-04, fresh session (fourth research dispatch,
+docs+scripts-only): (K-slide-cl) attacked by the tetrahedral collapse** — the
+White–Whiteley-1987 tree-specialization run inside the decoration variety turns the limit
+system into six scalar forest systems; (K-slide-cl) is now **true-modulo-(K-slide-comb)**
+(a purely combinatorial assignment problem, solved by search at all 7 battery members —
+6 pure, 1 via the meet-plane extension after a proven length-2 obstruction), the length
+dictionary is proven complete (`ℓ ≤ 5` on tight+hnoRigid shapes), and (W3)/(W4) close by
+a finite local-type bracket monomial. Workbook §(K-slide-cl); script
+`notes/scripts/w4/kslidecl.py`. A fresh session picks
 up per *Hand-off*: the W4 build (route 3(b), first commit W4-L4b) awaits commissioning;
-kernels stay carried per the standing adjudications; the next (K) research step is a class
-proof of (K-slide-cl) on the decorated `G°` carrier, or (K-Λ)'s quadric-avoidance.
+kernels stay carried per the standing adjudications; the next (K) research step is
+(K-slide-comb) (prove the assignment problem class-wide, or probe adversarial shapes),
+or (K-Λ)'s quadric-avoidance.
 
 W0–W3 and W5-L0–L6 are all COMPLETE (L6a-safe-exists closed in full both halves; L6b/L6d landed).
 **The W5-L7 arc is now CLOSED**: L7a, L7b, and L7c-1…6 all landed (`Molecule/Pencil/Escape.lean`/
@@ -245,11 +254,20 @@ exactly three remaining open items — **next concrete commit: pick any one, non
   rank-persistence proviso dissolved; witnessed: the `K4`/`W4` control habitats at
   **every** split, `K5−2e`, prism+diagonal, mixed-lengths, hub-hub-edge members (23/23
   pitched); parallel `G°`-edges proven order-0-obstructed (`P21` the uncovered shape,
-  reachable by neither mechanism). Remaining uniform gaps: **(K-Λ)** + **(K-slide-cl)**
-  (class-uniform on the decorated `G°` carrier — the White–Whiteley pure-condition
-  target) + `P21`-type shapes; (K-wit)/(K-pitch-∞) the weakest exact forms. Next research
-  step, when (K) resumes: a class proof of (K-slide-cl) (factor the limit system's pure
-  condition along `G°`), or (K-Λ)'s quadric-avoidance.
+  reachable by neither mechanism). **The class proof of (K-slide-cl) is DEVELOPED
+  (2026-08-04 fourth dispatch, workbook §(K-slide-cl))**: the tetrahedral collapse — hubs
+  on a coordinate tetrahedron by a proper 4-coloring, chains aligned to basis lines by a
+  transversal dictionary (proven complete: `ℓ ≤ 5` on tight+hnoRigid shapes) — factors
+  the limit system into six scalar forest systems (the WW87 Thm-2.18 specialization run
+  inside the decoration variety); (W1)–(W2) become forest/separator combinatorics,
+  (W3)–(W4) a finite local-type bracket monomial, and (K-slide-cl) is
+  **true-modulo-(K-slide-comb)** — a purely combinatorial assignment problem, solved by
+  search at all 7 battery members (`kslidecl.py`; the length-2 panel pincer proven and
+  repaired by the meet-plane extension; 4-colorability proven for all-length-3 shapes).
+  Remaining uniform gaps: **(K-Λ)** + **(K-slide-comb)** + `P21`-type shapes;
+  (K-wit)/(K-pitch-∞) the weakest exact forms. Next research step, when (K) resumes:
+  prove (K-slide-comb) class-wide (or hunt an unsolvable shape), or (K-Λ)'s
+  quadric-avoidance.
   Design doc §"W5-L7 research recon" "(K) route-1 gate" + "(K) non-constancy recon".
 - **`hbareSplit`** (kernel (K-bare), research) — the bare-half-off-feasibility kernel; **carried
   as pinned (the standing GO), extension route recon'd NO-GO on landed machinery** (2026-07-30):
@@ -284,6 +302,16 @@ neighbor — is `notes/IdeaBacklog.md`.
 
 Reverse-chronological, one line per landing; full derivations live in git and
 `notes/Phase39-design.md` (per-decision pointer where the design doc has a named section).
+
+- **(K-slide-cl) reduced to combinatorics — the tetrahedral collapse; verdict
+  true-modulo-(K-slide-comb)** (2026-08-04 fourth dispatch, docs+scripts-only, exact-ℚ
+  `notes/scripts/w4/kslidecl.py`) — WW87 Thm-2.18 specialization inside the decoration
+  variety: six scalar forest systems; (W1)–(W2) ⟺ 3 spanning trees + 3 `b|c`-separating
+  forests, `V_bc` = the separators' opposite duals; (W3)–(W4) a finite local-type bracket
+  monomial (one opposite pair required). Length dictionary proven complete (`def ≥ ℓ−6`;
+  ℓ=6 ⟹ rigid complement, 5848/5848). Length-2 panel pincer proven (mixed member, all
+  pt-mode assignments die) and repaired (meet-plane extension). 7/7 members witnessed.
+  Workbook §(K-slide-cl).
 
 - **(K-slide) slide-transfer theorem (S1) PROVEN — one exact limit witness closes a split;
   `K4`/`W4` control habitats closed at every split** (2026-08-04 third dispatch,
@@ -493,6 +521,13 @@ Reverse-chronological, one line per landing; full derivations live in git and
   Schulze–Tanigawa, *Linking rigid bodies symmetrically* (arXiv:1402.0039);
   Garamvölgyi, *Stress-linked pairs of vertices and the generic stress
   matroid* (arXiv:2308.16851).
+- White–Whiteley 1987 (op. cit. above) §2 — verified against the `.refs` copy
+  (2026-08-04, the (K-slide-cl) development): Proposition 2.6 (the pure condition
+  `C(G) = det M(G,T)`, a bracket polynomial of degree `|V|−1`, linear per edge),
+  Corollary 2.7 (`C(G(p)) ≠ 0` ⟺ `G(p)` k-isostatic), Theorem 2.18 (nonzero pure
+  k-condition ⟺ k edge-disjoint spanning trees ⟺ matroid union of k cycle matroids;
+  proof by the shared-indeterminates-per-tree specialization — the technique the
+  tetrahedral collapse instantiates), Corollary 2.19 (Tay's count).
 - Whiteley, *Some matroids from discrete applied geometry*, in Matroid Theory
   (Bonin–Oxley–Servatius, eds.), Contemp. Math. **197**, AMS 1996, 171–311 —
   §12.2's screw-center description of body-hinge motions
