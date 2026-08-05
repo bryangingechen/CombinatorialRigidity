@@ -89,6 +89,7 @@ keeps only what git cannot show.
 | 2026-08-02 | Phase39 (SAFE-RES) informal recon (`ec2454ed`; prose fixup `480bcfa2`, same-agent) | opus (recon) | gate-invisible overclaim caught at coordinator scrutiny — workbook internal inconsistency | Step 2 called the branch arithmetic "the *proof* behind" the short-branch probes' emptiness, and the "sharp bound κ≥2" takeaway carried the same hidden conditionality — both follow only from gap (E), which the SAME section's Step 3 lists OPEN; a miniature echo sat in the phase-note entry (coordinator phrase-grep missed it; the agent's own re-read found it). No gate reads informal prose; caught by internal-consistency scrutiny (claims vs the section's own named gaps). Same-agent continuation fixed both files. Lesson: scan each workbook section for claims stronger than its own named gaps. |
 | 2026-08-02 | Phase39 (SAFE-RES) recon pool figures (`ec2454ed`; corrected in `4045bd37`) | opus (recon) | gate-invisible numeric transcription error, caught by the NEXT dispatch's re-run | Workbook + phase note recorded the residual pool as "281 inhabitants / 65 (SAFE-RES) refutations"; the unchanged script yields 255/216 (39 refutations) — a transcription error, every other figure reproduces. Surfaced only because the widening recon re-ran the pool as its own input; coordinator re-ran `--prime` and confirmed 255/216. Lesson: coordinator spot re-runs should cover headline FIGURES, not just the `--validate`/`--witness` drivers; a downstream dispatch consuming a prior dispatch's pool re-derives its counts rather than quoting them. |
 | 2026-08-02 | Phase39 numerics-infra defect: degenerate placement sampler (caught in `d6d1aa91`) | fable (recon) | latent script defect contaminated MULTIPLE dispatches' recorded figures; caught by an exact-criterion cross-check, not by any re-run | `localtest.py::plane_basis` returns two PARALLEL in-plane directions whenever a normal's third coordinate is 0, so "in-plane" sweeps sampled a line — every recorded escape FAILURE (seed-442 "mispredict", 11/12 tight control, 94/96 pool, the C3 "failure set is exactly the line" gloss, the interim "M2-pencil 12/12" predictor) was this artifact; positive records unaffected (a degenerate sampler can only suppress escapes). Coordinator re-runs had reproduced the figures faithfully — reproduction ≠ correctness when the defect is in the shared harness. Caught only when the fable re-pin derived an exact per-placement criterion and the observations contradicted it. Lessons: samplers need degeneracy guards + a sampled-object rank assert; when a derived criterion and an observation disagree, suspect the OBSERVATION's harness before weakening the criterion. |
+| 2026-08-05 | Phase39 (K-slide-comb) recon (`3a8b07a5`) | opus (recon; fable substitute, session rung config) | two gate-invisible defects in the PRIOR pass's "proven pieces", caught by the next dispatch | The fourth pass (`a886bab5`) recorded (a) "4-colorability proven for all-length-3 shapes" as discharging the collapse's colouring premise — but every menu mandates `L_{φu,φw}`, so the premise needs an **acyclic** 4-colouring, about which 3-degeneracy says nothing; and (b) (C2)'s length-4 entry as "(forced)" — an *exhaustiveness* claim its per-entry machine asserts can't test (refuted, 12/12 witnesses). Both rode through last session's coordinator reasoning-scrutiny pass. Lessons: a "proven piece" discharging a premise must be checked against the premise's ACTUAL invariant, not a nearby one; a dictionary entry marked "forced" is an exhaustiveness claim needing its own driver. Third consecutive pass in this arc correcting its predecessor — see F11. |
 
 ## Findings
 
@@ -280,3 +281,22 @@ At phase close, promote stable entries into the coordinator command's
   pieces, revert+map the hard residual) — keeps every refutation
   cheap; the pattern completed W5-L6 (habitat feasibility) with zero
   wasted builds despite three false pins.
+- **F11 — in an informal-research arc, the corrective mechanism is the
+  NEXT pass, not coordinator scrutiny (Phase 39 kernel-(K) arc).** Three
+  consecutive passes each corrected a predecessor's recorded claim: the
+  degenerate-sampler contamination (2026-08-02), then two "proven
+  pieces" of the tetrahedral collapse (2026-08-05 — an
+  acyclic-vs-proper colouring conflation and a "forced" dictionary
+  entry). Every one survived a coordinator reasoning-scrutiny pass that
+  reproduced the drivers faithfully, because the defects sat in claims
+  no driver *tested*: a premise discharged against the wrong invariant,
+  an exhaustiveness assertion backed only by per-instance asserts, a
+  sampler whose degeneracy suppressed the phenomenon it sampled. The
+  coordinator checks that DO fire: (i) re-run headline **figures**, not
+  just `--validate` drivers; (ii) for each "proven piece", ask *which
+  driver tests THIS sentence* — an untested sentence is a conjecture
+  however proven its neighbours; (iii) treat "forced"/"exhaustive"/
+  "the only" as their own claim class. Corollary for planning: on such
+  an arc, price each pass as including a correction to the last one,
+  and prefer commissioning the **next pass** over building on the
+  current pass's optimistic residue.

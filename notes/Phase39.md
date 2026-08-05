@@ -166,8 +166,9 @@ exactly three remaining open items — **next concrete commit: pick any one, non
   (`notes/scripts/w4/no_good_search.py`) — but the vacuity conjecture is **REFUTED**
   (2026-08-02, `notes/scripts/w4/nogood_subdiv.py`, `|V| = 19` inhabitant): `hnoGood'`
   stays carried and branch 4 needs content. **Route ADJUDICATED (2026-08-02): route 3,
-  packaging (b)** — the structure-theorem-pinned dispatch invariant ((C7)/(C8) two-way split
-  at triangle-free residuals), with **(K-res)** carried as a sibling hypothesis alongside the
+  packaging (b)** — the structure-theorem-pinned dispatch invariant (§(SAFE-RES)'s (C7)/(C8)
+  two-way split at triangle-free residuals — *not* §(K-slide-comb)'s same-numbered labels),
+  with **(K-res)** carried as a sibling hypothesis alongside the
   byte-identical `hK` (`hbareSplit` is unreachable at a residual) — **recorded, not built; W4
   stays parked**. The route's bundle: (K-res) + a residual-habitat L7a sibling + (T) + (V) +
   the reduced (E)/(E-loc) of workbook §(SAFE-RES) — see workbook §"widened kernels

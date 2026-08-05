@@ -1782,7 +1782,7 @@ exhibited (reduced support); the uniform kernel still open — residue
 not conditional), + (K-Λ) + the `P21`-type shapes, with
 (K-wit)/(K-pitch-∞) the weakest exact forms.**
 
-## §(K-slide-cl) — the tetrahedral collapse: the class statement reduced to a combinatorial assignment problem
+## §(K-slide-cl) — the tetrahedral collapse: the class statement reduced to a combinatorial assignment problem (**reduction proven; antecedent refuted — OPEN**, see §(K-slide-comb))
 
 Sibling of §(K-slide), attacking the class-uniform residue its Step 5
 named; standing notation inherited (`G°`, decorations, the split edge
@@ -2075,6 +2075,14 @@ menus `A_P`, witnesses (W1)–(W4)). Throughout `n = |V°|` and
 battery certifies — `G°` simple with min degree ≥ 3, the subdivision `G`
 tight (`def = 0`, hence 5/6-sparse on every subgraph) and `hnoRigid`, both
 `e₀`-ends hubs.
+
+> **Label scoping.** The `(C…)` labels below continue §(K-slide-cl)'s
+> `(C0)`–`(C5)` run, so this section's **(C6)** (the unrestricted packing) and
+> **(C7)** (the length-4 menu repair) belong to the *collapse* family. They are
+> unrelated to the identically-numbered **(C7)/(C8)** of §(SAFE-RES) / §`hnoGood'`
+> vacuity, which are the *W4 residual structure theorem*'s claims — the ones the
+> route-3(b) adjudication is pinned on. Cite either by section, never by bare
+> number.
 
 **Verdict (2026-08-05, fifth pass).**
 
