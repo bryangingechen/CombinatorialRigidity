@@ -198,6 +198,10 @@ The two `build_rigidity`s take different arguments and return different tuples
 | tangent space of the **pencil chart** at a placement (the differentiated pencil condition), with a choice of frozen `a`/`b`/`c` data | `build_chart` | `dominance` |
 | rank of the differential of `H ↦ V_bc` in `Hom(V_bc, K⁶/V_bc)` | `dV_rank` (cross-check `dV_rank_cycles`) | `dominance` |
 | particular solutions of `A x = rhs` for many right-hand sides in one `rref` | `solve_multi` | `dominance` |
+| a **guarded** pencil-chart placement of `G′` (star-rank + witness checks, and the `meet_line` parallel-normal guard below) | `chart_point` | `outer` |
+| target rank + `dim R_a` at an **arbitrary** (e.g. hand-modified) placement — what `seed_probe` cannot do, since it samples from an integer seed | `stratum_at` | `outer` |
+| `lambda.omega_curves`-shaped frame dict at an arbitrary placement | `build_frame` | `outer` |
+| the two `ω±` curve families with **no** (Λ0f) assertion | `raw_span_bases` / `raw_spans` | `outer` |
 
 `plane_basis` exists in three degenerate variants — **read *Divergences*
 before touching any of them.** `rvec3` likewise.
@@ -228,6 +232,10 @@ before touching any of them.** `rvec3` likewise.
 | connectivity / 2-edge-connectivity | `is_connected`, `is_2ec` | `kbare_common` |
 | closed hub neighbourhoods (the `hcard` habitat datum) | `closed_hub_nbhds` | `kbare_common` |
 | every simple `b`–`c` path of a graph, up to a length bound | `simple_paths` | `dominance` |
+| every **length-4** `b`–`c` companion; its outer bracket `g₁₄ = [b,x₁,x₃,c]`; its hub pattern; the (Λ0i) free-end criterion | `companions4`, `outer_bracket`, `hub_pattern`, `free_ends` | `outer` |
+| `(a, b, c, G′, H)` at a split whose two chain ends are both hubs | `split_data` | `outer` |
+| the parameter along `M` at which a coplanar line crosses it (see *Divergences* vs `span_meet`) | `meet_param` | `outer` |
+| class shapes over a hub **multigraph** carrying a length-4 companion; the arithmetic pre-filter; bounded length compositions | `shapes_from`, `has_l4`, `bounded_comps` | `outer` |
 | hub-path map for `no_rigid_branch_union`, derived from `branch_decomposition` | `branch_pmap` | `dominance` |
 | hub set, triangles, `hcard` test | `hub_set`, `triangles`, `hcard_ok` | `nogood_subdiv` |
 | branch (2-core path) decomposition; rigid vertex sets | `branch_decomposition`, `rigid_vertex_sets` | `nogood_subdiv` |
@@ -255,7 +263,7 @@ before touching any of them.** `rvec3` likewise.
                           |
                   w4/ DRIVER STACK (deepest last)
    nogood_subdiv -> saferes -> widened -> repin -> pitch -> kslide -> kslidecl
-        -> kslidecomb -> {flanks, pure, lambda}  -> dominance
+        -> kslidecomb -> {flanks, pure, lambda}  -> dominance, outer
                               (siblings; none imports another)
 
 
@@ -287,12 +295,18 @@ Three layers, plus one **language island**:
   on `pitch`, and does **not** import `flanks` or `pure`). None of the three
   imports another, so a further (K)-arc driver goes *beside* them, not through
   them. **`dominance`** (the C1 spike — the differential of `H ↦ V_bc` against
-  `dim Gr(3,6)`) is the one exception, and a narrow one: it sits beside the
-  three but imports `flanks.star_span_ranks`, which is a §1-catalogued
-  *primitive* with `flanks` as its canonical home, not a private helper. Per
-  rule 2 below, **a third consumer of `star_span_ranks` is the signal to move it
-  down to `repin`** (re-exporting from `flanks` so the recorded figures do not
-  move); with two consumers the move is not yet worth the figure-gate cost.
+  `dim Gr(3,6)`) and **`outer`** (the §(K-Λ) *Step 3a* follow-up — the outer
+  companion bracket `g₁₄ = [b,x₁,x₃,c]`) sit beside the three rather than on
+  them, but each imports catalogued §1 *primitives* from a sibling rather than
+  a private helper: `dominance` takes `flanks.star_span_ranks`, and `outer`
+  takes that plus `dominance`'s `build_chart` / `simple_paths` / `h_edges` and
+  — through `importlib`, since `lambda` is a keyword — `lambda`'s
+  `habitat_specs` / `omega_curves` / `rows_mnqs`. **`star_span_ranks` now has
+  three consumers, which is exactly the signal rule 2 names: the next commit
+  that already owes a full `repin` re-baseline should move it down** (with a
+  re-export from `flanks` so the recorded figures do not move); on its own the
+  move is not worth the figure-gate cost, since `repin` sits under the whole
+  `w4/` chain.
 - **The M2 island** — `m2/`. Macaulay2, not Python, so there is **no import
   edge** in either direction: an M2 driver cannot reuse a §1 primitive and must
   re-derive the ones it needs. That is a licensed exception to rule 3 below and
@@ -435,6 +449,11 @@ arcs too.
 | `python3 notes/scripts/w4/dominance.py --jac` | 57 s | ibid. (the rank table against `dim Gr(3,6) = 9`) |
 | `python3 notes/scripts/w4/dominance.py --far` | 28 s | ibid. (the (T5) far block `3(k−3)`, attained) |
 | `python3 notes/scripts/w4/dominance.py --validate` | 19 s | ibid. (three models for `V_bc`; two derivative routes; the secant test) |
+| `python3 notes/scripts/w4/outer.py --geom` | 26 s | workbook §(K-Λ) *Step 3a* ((Λ0g); the constructed `g₁₄ = 0` chart point at all 4 habitats) |
+| `python3 notes/scripts/w4/outer.py --habitat` | 45 s | ibid. (the named inventory, 48 triples) |
+| `python3 notes/scripts/w4/outer.py --sweep` | 18 s | ibid. (1357 class shapes, 4280 pairs; the (Λ0i) coverage split) |
+| `python3 notes/scripts/w4/outer.py --tangent` | 45 s | ibid. (`d g₁₄ ≠ 0` on the chart tangent space, 684/684) |
+| `python3 notes/scripts/w4/outer.py --patterns` | 299 s | ibid. (the coverage boundary: 4 of 8 companion hub patterns realized) |
 
 ### `m2/` — the Macaulay2 symbolic layer
 
@@ -465,6 +484,20 @@ canonical descriptions.
    442). Nothing failed, nothing asserted, and the defect survived multiple
    dispatches until the `(K-tight)` re-pin found it. An assert on the sampled
    in-plane basis' rank would have caught it on the first run.
+
+   **Known latent defect, guarded rather than fixed (2026-08-05).**
+   `localtest.meet_line` is documented to signal "the two planes have no meet
+   line" by returning a **zero direction**, and `widened.place_pencil_general`
+   tests for exactly that — but when the two normals are **parallel** every
+   `2×2` minor vanishes, its base-point loop never binds `p0`, and it raises
+   `UnboundLocalError` instead of returning. So the caller's guard is
+   unreachable in the one case it was written for. Fixing it means editing an
+   `escape/`-layer module the entire `w4/` stack imports, i.e. re-baselining
+   every recorded figure in the harness (*figures do not move*, second
+   bullet). Until a commit already owes that re-baseline, a **caller-side**
+   guard is the correct handling: `outer.chart_point` catches the
+   `UnboundLocalError` and rejects the draw as degenerate, with the reason in
+   a comment. A new sampler should do the same.
 2. **Exact ℚ only.** `fractions.Fraction` throughout; no floating point, not
    even for a heuristic pre-filter. A GF(p) rank is allowed *only* as a
    certified lower bound for the rational rank, always with an exact-ℚ recheck
@@ -516,6 +549,7 @@ Python figures are frozen, and §4 convention 5 applies.
 | `hcard_ok`, `is_spanning_c3`, `provably_feasible` | Same pair of files, independently written: `no_good_search`'s route through `kbare_common.closed_hub_nbhds` / `has_triangle`, `nogood_subdiv`'s through its own `hub_set` / `triangles`. Believed extensionally equal on the swept habitats; **not verified equal in general**. | Left in place. Do not assume equality; use `nogood_subdiv`'s. |
 | `validate`, `witness`, `control`, `stratum`, `sweep`, `main`, `run_member`, `classify` | Driver-**mode entry points**, one per driver, named after the flag that selects them (`--validate`, `--witness`, …). Not primitives; each means something different per module. | Module-local by design. |
 | `dot3` (`kslidecl`) | A 3-vector special case of `exactcore.dot`, kept local to the tetrahedral-basis code. | Harmless; prefer `exactcore.dot` in new work. |
+| `span_meet` (`lambda`) vs `meet_param` (`outer`) | Same *job* — "where do these two subspaces meet" — different ambient and different return. `span_meet` intersects two subspaces of **ℚ⁶** (it is hard-coded to that ambient, `for r in range(6)`) and returns a basis; `meet_param` meets two **coplanar lines of ℚ³** and returns the *parameter* of the meet along the second line, or `None` for a meet at infinity. `span_meet` cannot be called on the ℚ⁴/ℚ³ data, so this is rule 3's "it must differ, so give it a different name". | Both stay. Use `span_meet` for Λ²-level meets, `meet_param` for the two marked points on the meet line `M`. |
 | pencil-frame samplers: `lambda.sample_local_frame` vs `widened.place_pencil_general` | Both place a pencil-generic configuration, and they are **not** interchangeable in two independent ways. **(a) Different in-plane sampler.** `sample_local_frame` uses the **robust** `repin.rob_in_plane` for every panel-constrained interior; `place_pencil_general` routes a **single-hub** interior through the *degenerate* `localtest.in_plane_point` (the `plane_basis` family above). Swapping either way changes which points are drawn, and in the degenerate direction it reintroduces exactly the defect that silently contaminated several passes' recorded escape figures. **(b) Different object.** `place_pencil_general` places a **whole graph**; `sample_local_frame` places only the *local frame* of a companion split (`b, x₁..x_{k−1}, c, a`, the two panels, the meet line `M`) and models the far graph by **synthetic** far-hub-neighbour normal constraints — which is precisely what §(K-Λ)'s class-uniformity claim over the 38 local strata needs, and what a whole-graph placement cannot express. | **Do not merge, and do not "unify" the sampler.** Habitat-level (K-Λ) frames go through `lambda.habitat_frame`, which calls `repin.seed_probe` (hence `place_pencil_general`) deliberately, so both samplers appear in one driver by design. |
 
 Merged in the 2026-08-05 rewire (verified semantically identical, then gated

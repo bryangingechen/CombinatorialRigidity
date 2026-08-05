@@ -150,7 +150,7 @@ all in this file.
 | **(K-tight)** | (K-tight) 5 | **open**, true with strong evidence; no genuine escape failure anywhere in the corrected numerics **on the hard stratum `dim R_a = 1`** (and above it) — the claim is **false without that qualifier**: §(K-flank) F5(d) exhibits 5 legal nondegenerate target-rank `G′` seeds at `P21` with `s₀ = 1`, `dim R_a = 0`, `dim U = 1`, which the Step-2.3 calculus *proves* fail at every placement (8/8 observed each); `hK`'s ∃-form is untouched (30/35 escape) | (K-move) or (K-pitch) |
 | **(K-move)** | (K-tight) 5 | **open — the sharpest gap** on the stress side; N8 refutes block-determined `[r]` at both probed families | `[r]`-as-chart-rational-function infrastructure (option B, **not** commissioned) |
 | **(K-pitch)** | (K-pitch); (K-pure) P3; (K-Λ) | (T1)–(T5) **proven-informally**; **closed** at length-3-companion splits (bracket monomial, θ(3,3,6)); uniform form **open**. Step 2's (F-A)/(F-B) dichotomy is **upgraded to the algebraic form (PC-Z)** (§(K-pure), proven-informally): `Q(z) = 0 ⟺ V_bc` meets `α(a)` or `Λ²π̂`, the only two maximal totally isotropic 3-spaces containing `T` — the exact target of any future non-vanishing argument (its *reason* is Witt's theorem — §(K-Λ) *Step 1*). The `ℓ = 3` verdict is unchanged but now has a **two-line proof that *explains* its five brackets**: they are the coordinate form of `S ∩ α_a = S ∩ β_{π_a} = 0` (§(K-Λ) *Step 1*(i)). The bracket **closed form extends from `ℓ = 3` to `ℓ = 4`**, as a **product of two bracket-linear forms in the far covector** ((Λ1), since 2026-08-05 a **symbolic identity over the function field** — `M2 --script notes/scripts/m2/lambda1.m2`) — a positive standalone result, but **not** a non-vanishing theorem: its zero locus is nonempty exactly at the two structurally meaningful configurations | one seed with `Q(z) ≠ 0` per (graph, split), uniformly — by (PC-Z), one seed where `V_bc` misses **both** isotropic 3-spaces |
-| **(K-wit)** | (K-pitch) 3; (K-Λ) 3–6 | **open**; the weakest exact form — per habitat+split *equivalent* to the escape at a good seed — and now the **single live form of the pitch route at companion splits**: it inherits (K-Λ)'s status and gains a *necessary-and-sufficient* companion form (§(K-Λ) *Theorem (Λ-completeness at length-4 companions)*: the escape holds at some target-rank seed **iff** the pitch certificate is nonzero at some target-rank seed). The **two-point failure locus is this row's content** — `{V_bc ⊥_B C(M)}` (the failure itself) and `{V_bc ⊥_B C(bc)}` (route A escapes, `★r ∝ C(bc)`). Two load-bearing side conditions are newly **named**, neither present in the prior formulation: **(Λ0d)** panel non-incidence in **both** directions (`pt(c) ∉ Π(b)` *and* `pt(b) ∉ Π(c)`; witness θ(3,4,5) seed 345, where `span_t ω⁻` collapses `3 → 1`) and **(Λ0f)**, now **PROVEN at the generic point and WIDER than first stated** (2026-08-05, `m2/lambda0.m2`): the exact criterion is **(Λ0f′)** `span_t ω⁺ = 3 ⟺ p⁺₂p⁺₃·g₁₃g₁₄g₂₄ ≠ 0` (and `q₂q₃·g₁₃g₁₄g₂₄ ≠ 0` for `ω⁻`), where `g₁₃g₂₄ ≠ 0` is `rank Q|_S = 4` and **`g₁₄ = [b,x₁,x₃,c] ≠ 0` was asserted nowhere** — the two outer companion lines must not meet; non-vacuous by an explicit degeneration keeping every other clause | one `H`-motion pairing non-trivially with `C(M)`, uniformly |
+| **(K-wit)** | (K-pitch) 3; (K-Λ) 3–6 | **open**; the weakest exact form — per habitat+split *equivalent* to the escape at a good seed — and now the **single live form of the pitch route at companion splits**: it inherits (K-Λ)'s status and gains a *necessary-and-sufficient* companion form (§(K-Λ) *Theorem (Λ-completeness at length-4 companions)*: the escape holds at some target-rank seed **iff** the pitch certificate is nonzero at some target-rank seed). The **two-point failure locus is this row's content** — `{V_bc ⊥_B C(M)}` (the failure itself) and `{V_bc ⊥_B C(bc)}` (route A escapes, `★r ∝ C(bc)`). Two load-bearing side conditions are newly **named**, neither present in the prior formulation: **(Λ0d)** panel non-incidence in **both** directions (`pt(c) ∉ Π(b)` *and* `pt(b) ∉ Π(c)`; witness θ(3,4,5) seed 345, where `span_t ω⁻` collapses `3 → 1`) and **(Λ0f)**, now **PROVEN at the generic point and WIDER than first stated** (2026-08-05, `m2/lambda0.m2`): the exact criterion is **(Λ0f′)** `span_t ω⁺ = 3 ⟺ p⁺₂p⁺₃·g₁₃g₁₄g₂₄ ≠ 0` (and `q₂q₃·g₁₃g₁₄g₂₄ ≠ 0` for `ω⁻`), where `g₁₃g₂₄ ≠ 0` is `rank Q|_S = 4` and **`g₁₄ = [b,x₁,x₃,c] ≠ 0` was asserted nowhere** — the two outer companion lines must not meet. Since 2026-08-05 (§(K-Λ) *Step 3a*, `outer.py`) that clause is **located, not merely named**: geometrically it says the two marked points `C₁ ∩ M`, `C₄ ∩ M` of the meet line coincide **(Λ0g)**; wherever a companion end is free it is **implied by (Λ0d)** **(Λ0i)** (3628/4280 swept pairs); **no class habitat in scope forces it** (`g₁₄ ≠ 0` at 4280/4280 exact pairs over 1357 class shapes, `d g₁₄ ≠ 0` at 684/684 chart points), so **Λ-completeness stands as written**; but it *is* reachable at a target-rank `dim R_a = 1` seed of all four habitats by an explicit chart move, both spans dropping `3 → 2`, so the clause is load-bearing. Residual: class shapes with **two or more hubs on the companion interior**, which no swept family realizes | one `H`-motion pairing non-trivially with `C(M)`, uniformly |
 | **(K-pitch-∞)** | (K-pitch) 4 | **open**; sufficient for (K-pitch) at a split; all five quartic coefficients nonzero at 4/4 habitats | `Q(z_∞) ≢ 0` on the `a`-free chart |
 | **(K-Λ)** | (K-Λ) 1–6; (K-pitch) 5b | **REFUTED as an independent gap** (§(K-Λ), fan-out direction B): at a length-4-companion split it is *equivalent* to **(K-wit)** (Steps 3–5), so **closing (K-Λ) *is* closing (K-wit)** and no local argument can close it. `Φ_loc`'s non-degeneracy is **PROVEN, class-uniformly** — `Φ_loc` is always a **rank-2** form, the product of two distinct rational linear forms ((Λ1), an **identity over the function field** since 2026-08-05: `m2/lambda1.m2`, the harness's first Macaulay2 driver; it needs none of (Λ0) and none of the panel data) — so the previously-flagged "`Φ_loc ≡ 0`" degeneration is **impossible** and the "local quadric" is a pair of rational hyperplanes. Using (T4)'s `a`-line freedom, the far covectors bad for the whole line shrink to **two points**, with failure locus `{V_bc ⊥_B C(M)}` (= the genuine (T3) failure) and `{V_bc ⊥_B C(bc)}` (= route A escapes outright, `★r ∝ C(bc)`). Its exemplar θ(3,4,5) is separately closed by a reduced-support slide witness (§(K-pure) P7) | — refuted as an independent gap; the live form is **(K-wit)** (row above) |
 | **(K-slide)/(S1)** | (K-slide) 1–4 | **(S1) proven-informally**; per-member (K-slide) **witness-decidable and discharged at every probed member** (23/23, 7 members, 11 split-classes) — `K4`/`W4` control habitats closed at **every** split. Status unchanged by the sixth pass, but (S1) **remark (iii)'s support freedom is promoted from a proof convenience to *the* load-bearing parameter**: `E_chord(Σ)` shrinks with `Σ`, so the support choice alone decides whether the limit is pitched (§(K-pure) P1/P7) | — settled per member; the class form is (K-slide-cl) |
@@ -202,7 +202,11 @@ organizing local invariant — `k ≥ 4` on the class, `k = 3` exactly on the
 (K-res) `C₆` residuals ((K-dom) (D3)); **(Λ0)** and the `a`-line spans, proven at
 the **generic point** of the local frame and **class-uniform** ((K-Λ) *Standing
 notation* + 3, `m2/lambda0.m2`) — do not re-sample them, but note the criterion
-is the widened **(Λ0f′)**, not the recorded (Λ0f); and **(Λ1)**, now a **symbolic
+is the widened **(Λ0f′)**, not the recorded (Λ0f); the **`g₁₄` clause** of
+(Λ0f′), settled as *not forced by any class habitat in scope* and *implied by
+(Λ0d) at a free companion end* ((K-Λ) *Step 3a*, `outer.py`) — do not re-sweep
+it; the open residual is the two-hub-interior companion pattern, item (vii);
+and **(Λ1)**, now a **symbolic
 identity over the function field** ((K-Λ) 2, `m2/lambda1.m2`) rather than 23 frames —
 `Φ_loc` factors into two bracket-linear forms at *every* length-4-companion
 frame, with no (Λ0) and no panel hypothesis, so nothing about `Φ_loc`'s shape
@@ -3308,7 +3312,81 @@ hyperplane of `S`, so `V_bc ⊆ C(L)^{⊥B}` ⟺ the coordinate form of
 `B(·, C(L))` annihilates `V_bc` ⟺ it is proportional to `λ`.)
 
 So the bad far covectors are **two points of `P³`**, not a quadric's worth —
-and each is structurally meaningful.
+and each is structurally meaningful. (This rests on (Λ0f′) in full, whose one
+previously-unasserted factor `g₁₄` is the subject of *Step 3a*: where `g₁₄`
+vanishes, `span_t ω± = 2` and (Λ2) acquires a **third** branch — a whole
+hyperplane of bad `λ` on each side, not a point. *Step 3a* settles that no
+class habitat in the searched scope is confined to that locus.)
+
+### Step 3a — the `g₁₄` clause, located (2026-08-05, `outer.py`)
+
+*What would change this* item (vi) asked whether a **class habitat can force
+`g₁₄ = 0` on its whole pencil chart**, which would put a third branch into
+(Λ2) and force the completeness theorem to be restated. It cannot, in the
+scope searched — and the reason is two elementary facts the arc had not
+written down. Both are asserted per frame by `notes/scripts/w4/outer.py`.
+
+> **(Λ0g) the geometric form.** `x₁ ∈ N_{G′}(b)` and `x₃ ∈ N_{G′}(c)`, so
+> `C₁ = C(bx₁) ⊆ Π(b)` and `C₄ = C(x₃c) ⊆ Π(c)`. Both panels contain `M`,
+> and two lines of a projective plane always meet, so **each outer companion
+> line always meets `M`** — which is the structural vanishing
+> `p⁺₁ = p⁺₄ = 0` read backwards. Two lines of `P³` meet iff they are
+> coplanar, and a meet of `C₁ ⊆ Π(b)` with `C₄ ⊆ Π(c)` lies in
+> `Π(b) ∩ Π(c) = M`. Hence, whenever `Π(b) ≠ Π(c)`,
+>
+> `g₁₄ = 0 ⟺ C₁ ∩ M = C₄ ∩ M` **as points of `M`**.
+
+So the clause is not "two lines of space happen to meet" but "**two marked
+points of the line `M` coincide**" — one equation, on the very line along
+which `pt(a)` slides. (Asserted in both directions at every frame of `--geom`,
+`--habitat` and `--sweep`; the meet is projective, so a line affinely parallel
+to `M` meets it at `M`'s point at infinity, and two such lines coincide there.)
+
+> **(Λ0i) the mobility criterion.** If `x₁` has degree 2 and its other
+> neighbour `x₂` is not a hub, then `b` is `x₁`'s only hub neighbour and `x₁`
+> carries no panel of its own, so `pt(x₁)`'s **only** chart constraint is
+> `pt(x₁) ∈ Π(b)`: it sweeps a dense subset of that plane with the entire
+> rest of the placement held fixed. `g₁₄` is affine in `pt(x₁)` with zero
+> locus the plane `plane(b, x₃, c)`, so `g₁₄ ≡ 0` on the chart would force
+> `Π(b) = plane(b, x₃, c)`, hence `pt(c) ∈ Π(b)` — a failure of **(Λ0d)**.
+> Symmetrically with `x₃` free in `Π(c)` and the other half of (Λ0d).
+
+**Consequence: wherever either companion end is free, the `g₁₄` clause is
+*implied by* (Λ0d) and is not an independent hypothesis at all.** Measured
+over the systematic sweep: **3628 of 4280** (split, companion) pairs are
+covered by this criterion alone. The 652 that are not are all the single hub
+pattern **`x₂` a hub** — the `2 + 2` via-hub companion `b–x₁–u–x₃–c`, where
+`pt(x₁) ∈ Π(b) ∩ Π(u)` and `pt(x₃) ∈ Π(u) ∩ Π(c)` are each pinned to a *line*
+rather than sweeping a plane. Those are discharged one level up, at the
+chart's tangent space (`dominance.build_chart`, scoping FIXED, so `pt(a)`,
+`pt(b)`, `pt(c)` and both panels stand still): `d g₁₄ ≠ 0` at **684/684**
+probed chart points, **all 652** uncovered companions among them. A nonzero
+differential makes `{g₁₄ = 0}` a proper hypersurface of the chart, which is
+strictly more than "not identically zero".
+
+**The degeneration is nevertheless REACHABLE — at a good seed.** `--geom`
+constructs it: slide `pt(x₁)` inside `Π(b)` onto the line joining `pt(b)` to
+`D := C₄ ∩ M` (legal, because both points lie in `Π(b)`, and in the free
+pattern that is `x₁`'s only constraint). Then `C₁ ∩ M = D = C₄ ∩ M`, so
+`g₁₄ = 0` exactly. At all four habitats — θ(3,4,5), NT21, NT24, NT30 — the
+result is an exact pencil realization with
+
+- `g₁₄ = 0` while `g₁₃, g₂₄ ≠ 0` and **all four middle brackets survive**, so
+  (Λ0a), (Λ0b), (Λ0c), (Λ0d), (Λ0e) and the recorded (Λ0f) all hold;
+- **both spans drop, `3 → 2`** — (Λ0f′) predicts exactly this, and the
+  recorded (Λ0f) predicts the opposite: `lambda.omega_curves`' own coded
+  equivalence **fires as an `AssertionError`** at these points (caught and
+  reported by `outer.py`, never repaired — §4 convention 5);
+- the placement is still **target-rank with `dim R_a = 1`**, i.e. a *good
+  seed* on the hard stratum, with `dim V_bc = 3`.
+
+So this is `m2/lambda0.m2` block (P5) reproduced on **real class habitats**
+rather than on the abstract slice: the third (Λ2) branch is **not vacuous**
+anywhere in the class — it is a genuine, reachable stratum of every probed
+habitat's chart. What it is not is *forced*: it is a hypersurface, and at each
+constructed point the habitat's **own** far covector `λ` annihilates neither
+collapsed span, so `Q(z(t)) ≢ 0` (degree 4) and the pitch certificate still
+fires — 0 of 4 constructed points is actually blind.
 
 ### Step 4 — branch 1: `λ ∝ p⁺` is the genuine escape failure
 
@@ -3443,7 +3521,17 @@ PYTHONHASHSEED=0 python3 notes/scripts/w4/lambda.py --l56       # ℓ = 5, 6
 PYTHONHASHSEED=0 python3 notes/scripts/w4/lambda.py --adv       # the hunt
 M2 --script notes/scripts/m2/lambda1.m2                         # (Λ1) symbolically
 M2 --script notes/scripts/m2/lambda0.m2                         # (Λ0) + the spans
+PYTHONHASHSEED=0 python3 notes/scripts/w4/outer.py --geom       # (Λ0g) + the construction
+PYTHONHASHSEED=0 python3 notes/scripts/w4/outer.py --habitat    # named inventory
+PYTHONHASHSEED=0 python3 notes/scripts/w4/outer.py --sweep      # the systematic sweep
+PYTHONHASHSEED=0 python3 notes/scripts/w4/outer.py --tangent    # d g₁₄ ≠ 0 on the chart
+PYTHONHASHSEED=0 python3 notes/scripts/w4/outer.py --patterns   # the coverage boundary
 ```
+
+The last five lines are `notes/scripts/w4/outer.py` (tracked, new 2026-08-05;
+exact ℚ, a `w4/` leaf beside `flanks`/`pure`/`lambda`/`dominance`), the
+*Step 3a* driver. It **reads** `lambda.py` through `importlib` for the four
+certified habitats and the `ω±` curve machinery and never modifies it.
 
 The last line is the harness's **Macaulay2 layer** (`notes/scripts/m2/`, opened
 2026-08-05 with this driver; conventions in `notes/scripts/m2/README.md`, M2
@@ -3519,6 +3607,14 @@ Per mode, what is asserted:
 | `lambda0.m2` (P4): the span criterion | `cross4` of all **4** coefficient triples `= ±w₃^{3−j}w₂^{j}·Π⁺·p⁺`; `Π⁺ = p⁺₂p⁺₃g₁₃g₁₄g₂₄`, `Π⁻ = q₂q₃g₁₃g₁₄g₂₄` |
 | `lambda0.m2` (P5): the missing `g₁₄` clause | not vacuous — a degeneration killing **only** `g₁₄` keeps (Λ0a,b,c,e) + all four middle brackets and drops **both** spans |
 | `lambda0.m2` run time | **0.1 s** (the `a`-line parameter `t` never becomes an indeterminate) |
+| `outer.py --geom`: (Λ0g) | asserted in **both** directions at **12** (seed, companion) pairs (4 habitats × 3 hard-stratum seeds); `g₁₄ ≠ 0` at every one |
+| `outer.py --geom`: the constructed `g₁₄ = 0` point | **4/4 habitats**; `g₁₃, g₂₄ ≠ 0` and all four middle brackets survive; both spans **3 → 2**; still **target-rank, `dim R_a = 1`, `dim V_bc = 3`**; `lambda.omega_curves`' coded (Λ0f) equivalence **raises** at each |
+| `outer.py --geom`: does the third branch *bite*? | **0 of 4** — the habitat's own `λ` annihilates neither collapsed span, `Q(z(t)) ≢ 0` (deg 4) |
+| `outer.py --habitat`: the named inventory | **7** named shapes carry a length-4 companion (θ(3,4,5), NT21, NT24, NT30, the `dominance` duplicates, and the `K4` menu-blocked flank `(1,1,3,5,3,5)`); **48** (split, seed, companion) triples, `g₁₄ ≠ 0` at every one |
+| `outer.py --sweep`: the systematic sweep | **1357** class shapes with a length-4 companion, **4280** (split, companion) pairs, **4280** placed exactly — `g₁₄ = 0` at **0** |
+| `outer.py --sweep`: (Λ0i) coverage | **3628 / 4280** covered by the free-end criterion alone; the 652 residual are all the single pattern `x₂` a hub |
+| `outer.py --tangent`: `d g₁₄` on the chart | nonzero at **684/684** chart points, including **all 652** (Λ0i)-uncovered companions — so `{g₁₄ = 0}` is a proper hypersurface |
+| `outer.py --patterns`: realizable hub patterns | **4 of 8** — `(0,0,0)`, `(0,0,1)`, `(1,0,0)`, `(0,1,0)`; **7002** companions. `(0,1,1)`, `(1,0,1)`, `(1,1,0)`, `(1,1,1)` unrealized **in scope** (a coverage boundary, not a theorem) |
 
 **Confidence verdict.**
 
@@ -3540,6 +3636,15 @@ Per mode, what is asserted:
   (Λ0f′)**, which is **wider than the recorded (Λ0f)** by the three Gram
   factors `g₁₃g₁₄g₂₄`, of which `g₁₄ = [b,x₁,x₃,c] ≠ 0` was asserted nowhere
   and is shown non-vacuous by an explicit degeneration.
+  **The `g₁₄` clause itself is now located** (*Step 3a*, `outer.py`): it says
+  the two marked points `C₁ ∩ M`, `C₄ ∩ M` of the meet line coincide
+  **(Λ0g)**; wherever a companion end is free it is *implied by* (Λ0d)
+  **(Λ0i)**, so it is a new hypothesis only in the `x₂`-a-hub pattern; and
+  **no class habitat in the searched scope forces it** — `g₁₄ ≠ 0` at all
+  4280 swept (split, companion) pairs and `d g₁₄ ≠ 0` on the chart tangent
+  space at all 684 probed points. It is nevertheless **reachable at a good
+  seed** of every probed habitat by an explicit chart move, so the clause is
+  not decorative.
   **Why this is uniform and not 38 symbolic strata:** the proof mentions no
   habitat, no stratum and no sample — it runs on **one irreducible variety**
   (explicitly parameterized, hence irreducible), and the strata enter only in
@@ -3599,15 +3704,52 @@ component realized by a real habitat's `V_bc`: that would be a
 length-5-companion split where the pitch route is blind while the escape holds —
 the first genuine loss of the pitch route, and the sharpest reason to abandon it
 at `ℓ ≥ 5`. *(v)* An error in (T1) or (T5) themselves — each is re-asserted per
-seed here against an independently computed stress. *(vi)* **A class habitat
-whose length-4 companion forces `g₁₄ = [b,x₁,x₃,c] = 0`** — i.e. whose outer
-companion lines `C(bx₁)`, `C(x₃c)` necessarily meet on the whole pencil chart.
-By (Λ0f′) the `a`-line spans collapse there and (Λ2)'s two-point dichotomy
-gains a third branch, so the Λ-completeness theorem would need restating. The
-clause is generic on the *frame* variety, so this can only come from a habitat
-whose chart fails to dominate that variety — none is known, and (P6) argues
-none exists; but the clause was invisible before this pass and has never been
-searched for. **This is the cheapest open follow-up the pass leaves.**
+seed here against an independently computed stress.
+
+*(vi)* **ANSWERED, 2026-08-05 (*Step 3a*, `outer.py`): no class habitat in
+the searched scope forces `g₁₄ = 0`.** The question was whether some class
+habitat's whole pencil chart lies in `{g₁₄ = 0}` — the outer companion lines
+`C(bx₁)`, `C(x₃c)` necessarily meeting — which by (Λ0f′) collapses the
+`a`-line spans and gives (Λ2) a third branch, forcing the Λ-completeness
+theorem to be restated. Three findings, in decreasing strength:
+
+- **The clause is a coincidence of two points on `M`** (Λ0g), and wherever a
+  companion end is free it is **implied by (Λ0d)** (Λ0i) — 3628 of 4280 swept
+  pairs. It is a genuinely new hypothesis only in the `x₂`-a-hub pattern.
+- **`g₁₄ ≠ 0`** at every one of **4280** exact (split, companion) pairs over
+  **1357** class shapes, and **`d g₁₄ ≠ 0`** on the pencil chart's tangent
+  space at **684/684** probed points — including all 652 (Λ0i)-uncovered
+  companions. So `{g₁₄ = 0}` is a *proper hypersurface* of every chart in
+  scope, not the whole chart.
+- **But it is reachable at a good seed**: an explicit chart move produces, at
+  each of θ(3,4,5)/NT21/NT24/NT30, a target-rank `dim R_a = 1` realization
+  with `g₁₄ = 0`, every other (Λ0) clause intact, and both spans `3 → 2`.
+  The third (Λ2) branch is therefore **real, and (Λ0)'s `g₁₄` clause is
+  load-bearing** — it just never becomes the *only* option for a habitat.
+
+**Λ-completeness stands as written**, provided (Λ0) is read with the widened
+(Λ0f′) — which is what the theorem's "under (Λ0)" already means, since the
+theorem is an `∃ good seed` statement and the bad set is a hypersurface.
+
+*Scope of that answer, stated because it is easy to overstate.* Exhaustive
+over the θ family, over `G° = K4` (lengths ≤ 5), and over `K4` + a parallel
+`bc` edge (lengths ≤ 6); **capped** at 25 shapes per `|V°| = 5` hub graph
+(3 graphs, `|E°| = 8, 9, 10`); the named inventory (`lambda`, `dominance`,
+`flanks`) on top. Nothing beyond `|V°| = 5`, nothing at lengths above the
+per-family bound, and — the sharpest boundary — **only 4 of the 8 companion
+hub patterns are realized by any class shape in scope** (`--patterns`, at a
+widened length bound of 8): the four with at most one hub among `x₁, x₂, x₃`.
+A class shape realizing `(1,0,1)`, `(0,1,1)`, `(1,1,0)` or `(1,1,1)` — two or
+more hubs on the companion interior — is **not** covered by anything above,
+and whether one exists is open. That is the residual form of item (vi).
+
+*(vii)* **A class shape whose length-4 companion carries two or more hubs**
+(pattern `(1,0,1)`, `(0,1,1)`, `(1,1,0)`, `(1,1,1)`), i.e. two or more
+hub-hub edges along the companion. None occurs in the swept families; the
+`g₁₄` argument above says nothing about such a shape, and neither does
+(Λ0i). Cheapest next probe: widen `outer.py --patterns` past `|V°| = 5`, or
+prove the pattern impossible inside tight + `hnoRigid` + `hcard` (the same
+shape of argument as §(K-slide) *Step 5*'s `ℓ₁ + ℓ₂ ≥ 7`).
 
 ## §(K-dom) — the dominance spike: the differential of `H ↦ V_bc`, and why C1 is not an inductive route (**dominance HOLDS at every class habitat probed; C1's two claimed values REFUTED; class uniformity untouched**)
 

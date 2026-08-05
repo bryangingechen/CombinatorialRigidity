@@ -446,3 +446,43 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
 
   Argument state and per-mode assertion list: `notes/Pencil-informal.md`
   §(K-dom).
+
+- `outer.py [--geom | --habitat | --sweep | --tangent | --patterns]` — the
+  **outer companion bracket** `g₁₄ = [b, x₁, x₃, c] = B(C(bx₁), C(x₃c))`, the
+  one factor of the (Λ0f′) span criterion (`m2/lambda0.m2`) that the harness
+  asserted nowhere. Answers §(K-Λ) *What would change this* item (vi): **can a
+  class habitat force `g₁₄ = 0` on its whole pencil chart**, which would give
+  (Λ2) a third branch and force the Λ-completeness theorem to be restated?
+  Sampling settles this one exactly, since the question is identical vanishing:
+  one exact chart point with `g₁₄ ≠ 0` refutes forcing at that habitat. Sits
+  beside `dominance` as a `w4/` leaf; **reads** `lambda.py` through `importlib`
+  (keyword name) and never modifies it. Run with `PYTHONHASHSEED=0`.
+  - `--geom` (~26 s): **(Λ0g)** — `C₁ ⊆ Π(b)` and `C₄ ⊆ Π(c)`, both panels
+    contain `M`, so each outer line *always* meets `M` and
+    `g₁₄ = 0 ⟺ C₁ ∩ M = C₄ ∩ M` (asserted both ways, 12 pairs). Then the
+    construction: slide `pt(x₁)` inside `Π(b)` onto the line `b–(C₄ ∩ M)`,
+    producing at **all four** habitats an exact pencil realization with
+    `g₁₄ = 0`, every other (Λ0) clause intact, both spans `3 → 2`, and still
+    **target-rank with `dim R_a = 1`**. `lambda.omega_curves`' coded (Λ0f)
+    equivalence raises there — caught and reported, never repaired.
+  - `--habitat` (~45 s): the named inventory (`lambda`, `dominance`, `flanks`)
+    — 7 shapes carry a length-4 companion; 48 (split, seed, companion) triples
+    at hard-stratum target-rank seeds, `g₁₄ ≠ 0` at every one.
+  - `--sweep` (~18 s): the systematic class-shape sweep — exhaustive over the
+    θ family, `G° = K4` (lengths ≤ 5) and `K4` + a parallel `bc` edge
+    (lengths ≤ 6), capped at 25 per `|V°| = 5` hub graph. **1357** class
+    shapes, **4280** (split, companion) pairs, all placed exactly, `g₁₄ = 0`
+    at **none**; plus the **(Λ0i)** coverage split (3628 covered by the
+    free-end criterion, 652 residual, all the `x₂`-a-hub pattern).
+  - `--tangent` (~45 s): `d g₁₄ ≠ 0` along `dominance.build_chart`'s pencil
+    tangent space (scoping FIXED) at **684/684** chart points, including all
+    652 (Λ0i)-uncovered companions — so `{g₁₄ = 0}` is a proper hypersurface
+    of the chart, not the whole chart.
+  - `--patterns` (~299 s): the coverage boundary itself — which of the 8 hub
+    patterns `(x₁, x₂, x₃)` a class companion can have, at a widened length
+    bound. **4 of 8** realized; the four with ≥ 2 hubs on the companion
+    interior appear in no swept family, and the driver prints that as a
+    boundary rather than a theorem.
+
+  Argument state and per-mode assertion list: `notes/Pencil-informal.md`
+  §(K-Λ) *Step 3a*.
