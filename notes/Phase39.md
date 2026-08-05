@@ -6,7 +6,7 @@
 (2026-07-30). Only three items remain, all carried by the landed successor
 `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card` (`Molecule/Pencil/Escape.lean`):
 `hcontract` (W4), kernel `hK`, and kernel `hbareSplit` — see *Hand-off*. Kernel-(K) research
-is at its fifth docs-only pass (workbook `notes/Pencil-informal.md`; the settled W4-residual
+is at its sixth docs-only pass (workbook `notes/Pencil-informal.md`; the settled W4-residual
 arc split out to `notes/Pencil-W4-informal.md` on 2026-08-05).
 
 ## Current state
@@ -30,7 +30,7 @@ The landed headline `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card`
 (`Molecule/Pencil/Escape.lean`) carries exactly three open items — `hcontract` (W4), `hK`,
 `hbareSplit` — each detailed in *Hand-off*.
 
-**Kernel-(K) research arc — five docs+scripts-only dispatch days** (mathematics in the
+**Kernel-(K) research arc — six docs+scripts-only dispatch days** (mathematics in the
 kernel-(K) workbook `notes/Pencil-informal.md` — whose *State of (K)* map is the entry point —
 and, for the 2026-08-02 W4-residual verdicts, in `notes/Pencil-W4-informal.md`; one-line
 records in *Decisions made*): **2026-08-02** — `hnoGood'`
@@ -44,21 +44,27 @@ class-wide** (workbook §(K-slide-comb); `notes/scripts/w4/kslidecomb.py`): 5-ch
 and acyclicity-obstructed hub graphs both sit in the class, so the tetrahedral collapse is a
 *sub-class* device and **(K-slide-cl) is back to open** — but its packing half is now uniform
 and proven ((C6), Edmonds matroid partition from 5/6-sparsity alone), (C2)'s length-4 entry is
-corrected, and **(C7)** (the repaired dictionary) is the named continuation.
+corrected, and **(C7)** (the repaired dictionary) is the named continuation. **2026-08-05
+(sixth pass, fan-out direction A) — the conjecture HOLDS at every uncovered flank** (workbook
+§(K-flank); `notes/scripts/w4/flanks.py`): no disproof, no `hK` re-pin, (K-pitch) closed at all
+16 flank splits, and class uniformity untouched.
 
 Remaining uniform (K) gaps: **(K-Λ)**, **(K-slide-cl)** (routes: (C7), or a decoration with more
-than four hub positions), and `P21`-type parallel-`G°`-edge shapes. Canonical status home for all
-of them: the workbook's **State of (K)** gap map.
+than four hub positions), and `P21`-type parallel-`G°`-edge shapes — none of them moved by the
+sixth pass, which is per-shape. Canonical status home for all of them: the workbook's
+**State of (K)** gap map.
 
-**Next concrete work: the three-way research fan-out, prepared and not yet dispatched —
-`notes/Pencil-fanout.md`.** The 2026-08-05 user adjudication (verbatim there) holds the Lean
-back until the research yields *"an informal proof or disproof or any results that would be
+**Next concrete work: land research fan-out directions B and C — `notes/Pencil-fanout.md`
+(*Landing checklist*).** The three-way fan-out is **dispatched**, and direction **A is LANDED**
+(2026-08-05, workbook §(K-flank)): the conjecture holds at every uncovered flank, so the pivot
+rule does **not** fire and nothing about the phase's target changes. **B** ((K-Λ)'s
+quadric-avoidance) and **C** (the White–Whiteley pure condition un-specialized) are still to
+land, each by that checklist — re-run every cited driver *and* its headline figures, merge into
+`notes/Pencil-informal.md`, update the matching *State of (K)* row(s), commit the new script,
+add one ≤8-line entry here. The 2026-08-05 user adjudication (verbatim in that file) holds the
+Lean back until the research yields *"an informal proof or disproof or any results that would be
 significant as standalone pieces of math"*, so **W4 stays parked even though it is fully
-decomposed and buildable**. The three directions are A (adversarial test at the shapes no
-mechanism covers — a disproof of the conjecture is the headline outcome), B ((K-Λ)'s
-quadric-avoidance), C (the White–Whiteley pure condition un-specialized). That file carries the
-exact questions, the verified grounding, the non-collision dispatch mechanics (read-only,
-commits nothing, coordinator lands serially), and the pivot rule if A refutes the conjecture.
+decomposed and buildable**.
 
 **Numerics harness prepped (2026-08-05, prep commit — no mathematics, no `.lean`).** The
 `notes/scripts/` harness is now layered: one canonical `sys.path` bootstrap
@@ -179,49 +185,31 @@ The landed successor `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card`
 exactly three remaining open items, detailed below.
 
 > **Next concrete commit** — see *Current state* (authoritative; this is a thin pointer so the
-> two cannot drift): dispatch the prepared three-way research fan-out,
-> **`notes/Pencil-fanout.md`** (directions A/B/C, read-only, coordinator lands serially). The
+> two cannot drift): land the next returned direction of the research fan-out,
+> **`notes/Pencil-fanout.md`** *Landing checklist* (A **landed**; B and C outstanding). The
 > 2026-08-05 adjudication holds the Lean back pending a standalone-significant informal result,
 > so **W4 stays parked** despite being fully decomposed and buildable — do **not** open a W4
 > build without a fresh user adjudication.
 
 The three carried items:
 
-- **`hcontract`** (W4) — **decomposed 2026-07-30** (design doc §"W4 decomposition recon") and
-  its **W4-L4 identification recon COMPLETE same day** (user-adjudicated "B: L4 recon first";
-  design doc §"W4-L4 identification recon" — the canonical W4 leaf list now lives THERE, not
-  in the decomposition section). No new motive: the constrained family lives inside kernel
-  discharges only; the IH-interface remainder is settled by the landed `PencilPair`
-  (consumption gated by the *contracted* graph's `Simple ∧ Feasible`). L4 verdict: both landed
-  KT-6.5/6.6 lemmas (`Contraction.lean:1004/1171`) consume minimality only in their tails, and
-  the pencil habitat's `hcard` bound (from feasibility) REPLACES it — a third edge at the
-  removal vertex forces a 4-member `closedHubNbhd` — so the co-1 case (∃ proper rigid `H` on
-  `|V|−1` vertices) closes minimality-free with `def(G) = def(G−v) = 0` for free, and KT's
-  non-simple-contraction trigger provably reduces to it (the carrier bridge). The residual
-  carry narrows to **`hnoGood'`** (no co-1 + no Simple∧Feasible contraction + 2EC), with
-  **0 inhabitants found** by a two-run structured+random search
-  (`notes/scripts/w4/no_good_search.py`) — but the vacuity conjecture is **REFUTED**
-  (2026-08-02, `notes/scripts/w4/nogood_subdiv.py`, `|V| = 19` inhabitant): `hnoGood'`
-  stays carried and branch 4 needs content. **Route ADJUDICATED (2026-08-02): route 3,
-  packaging (b)** — the structure-theorem-pinned dispatch invariant (the W4 workbook
-  `notes/Pencil-W4-informal.md` §(SAFE-RES)'s (C7)/(C8) two-way split at triangle-free
-  residuals — *not* `notes/Pencil-informal.md` §(K-slide-comb)'s same-numbered labels),
-  with **(K-res)** carried as a sibling hypothesis alongside the
-  byte-identical `hK` (`hbareSplit` is unreachable at a residual) — **recorded, not built; W4
-  stays parked**. The route's bundle: (K-res) + a residual-habitat L7a sibling + (T) + (V) +
-  the reduced (E)/(E-loc) of W4-workbook §(SAFE-RES) — see that file's §"widened kernels
-  (routes 1/3)" for the trace, statements, and exact-ℚ numerics
-  (`notes/scripts/w4/widened.py`). **Next concrete commit (when the W4 build is
-  commissioned): W4-L4b** — the co-1 identification lemma `exists_degree_two_of_co1_rigid`
-  (pinned signature in the design section, spike-elaborated, all bricks landed, 1 commit).
-  Then, order-flexible: W4-L1 (non-simple bare producer, KT 6.2 mirror), W4-L2 (the
-  feasibility-based L7b sibling), W4-L3′ (the reshaped skeleton: ¬2EC → landed cut-arm reuse,
-  co-1 → `hremove`, good contraction → `hKc` → W4-B, else `hnoGood'`; spike-COMPILED), and the
-  W4-L5 arc (discharge `hremove`, the N9-validated re-add via the landed L5-cut-v/h65 steering
-  patterns). Carried after L3′: kernels `hKc`/`hbareContract` (hK-posture), `hnoGood'`
-  (research options: prove the vacuity conjecture first), `hremove` (until W4-L5). Numerics
-  evidence: gates N8/N9(+rank-29 control)/N10/N10b all PASSED (`notes/scripts/w4/`,
-  `hybrid_gates.py`).
+- **`hcontract`** (W4) — **fully decomposed, buildable, and PARKED.** Canonical home:
+  `notes/Phase39-design.md` §"W4 decomposition recon" + §"W4-L4 identification recon" (the
+  canonical leaf list lives THERE), with the residual mathematics in the W4 workbook
+  `notes/Pencil-W4-informal.md`. State: the L4 verdict trades minimality for the pencil
+  habitat's `hcard` bound, so the co-1 case closes minimality-free and KT's
+  non-simple-contraction trigger provably reduces to it; the residual carry narrows to
+  **`hnoGood'`**, whose vacuity conjecture is **REFUTED** (2026-08-02, `|V| = 19`,
+  `nogood_subdiv.py`), so branch 4 needs content. **Route ADJUDICATED (2026-08-02): route 3,
+  packaging (b)** — the structure-theorem-pinned dispatch invariant (W4 workbook §(SAFE-RES)'s
+  (C7)/(C8) split — *not* `notes/Pencil-informal.md` §(K-slide-comb)'s same-numbered labels),
+  with **(K-res)** carried as a sibling of the byte-identical `hK`; bundle and numerics in that
+  file's §"widened kernels (routes 1/3)". **Recorded, not built — W4 stays parked** (see
+  *Current state*); when commissioned the next concrete commit is **W4-L4b**
+  (`exists_degree_two_of_co1_rigid`, pinned + spike-elaborated, all bricks landed, 1 commit),
+  then order-flexibly W4-L1/L2/L3′ (spike-COMPILED) and the W4-L5 arc, carrying `hKc`/
+  `hbareContract`/`hnoGood'`/`hremove`. Gates N8/N9(+rank-29 control)/N10/N10b all PASSED
+  (`notes/scripts/w4/hybrid_gates.py`).
 - **`hK`** (kernel (K), research) — the escape `≢ 0` uniformity kernel, and the phase's hardest
   open item. **Standing adjudication ("C: literature hunt + A", verbatim, 2026-07-30): keep
   carrying `hK` as pinned (zero effort now); commissioning the stress-as-chart-rational-function
@@ -233,29 +221,21 @@ The three carried items:
   one uniform gap serves both).
   **The mathematics is NOT restated here.** Canonical home: `notes/Pencil-informal.md` — its
   **State of (K)** gap map is one row per named gap ((K-tight), (K-move), (K-pitch), (K-wit),
-  (K-pitch-∞), (K-Λ), (S1)/(K-slide), (K-slide-cl), (K-slide-comb), (C6), (C7), `P21`), each
+  (K-pitch-∞), (K-Λ), (S1)/(K-slide), (K-slide-cl), (K-slide-comb), (C6), (C7), `P21`,
+  (K-flank)), each
   with status, what would close it, and what it is conditional on, plus the uncovered-shape list
   and a *settled, do not re-derive* block. Read that map, not this bullet, before any (K) work;
   update it in place rather than writing a fresh summary. Route history: design doc §"W5-L7
   research recon" "(K) route-1 gate" + "(K) non-constancy recon".
-- **`hbareSplit`** (kernel (K-bare), research) — the bare-half-off-feasibility kernel; **carried
-  as pinned (the standing GO), extension route recon'd NO-GO on landed machinery** (2026-07-30):
-  the chart/reseed/engine device is definitionally dead at infeasible `G` (no nondeg realization
-  exists to consume), and the kernel is corank-stratified by a landed-brick count dichotomy
-  (dependent ⟹ spanning circuit ⟹ rigid) whose stressed stratum is NONEMPTY — the DZ gadget
-  (subdivided `K3,3` + apex, corank-**2** split seeds) sits in the habitat, so `¬Feasible` buys no
-  corank control. Minimal open statement: **(K-bare-ext)**, the arbitrary-seed insertion lemma
-  (the def-equal caveat folds into its `∃` as a line-avoidance side condition; supply = the
-  `pt(v)`-placement freedom, no device needed). Prerequisite for any discharge: the owed KT
-  pp. 684–691 boundary-load re-pin + its arbitrary-seed extension. Numerics extended to the
-  stressed stratum (`notes/scripts/kbare/danger.py`): off-line placements attain, on-line fail by
-  exactly 1, 0 counterexamples. **Adjudicated ("C: cheap numerics extensions + A", verbatim,
-  2026-07-30):** carry stands; option-C probes run same day (`notes/scripts/kbare/optc.py`) —
-  chain-local adversarial degenerations are excluded by the rank antecedent itself; index-2
-  gadgets EXIST (cube/Wagner skeletons, corank-**3** splits, same qualitative picture); the
-  corank-2 failure set is exactly the line at every sampled seed. Option B (insertion-calculus
-  research) NOT commissioned. Design doc §"(K-bare) extension-route recon" (options block
-  marked ADJUDICATED, option-C results block appended).
+- **`hbareSplit`** (kernel (K-bare), research) — the bare-half-off-feasibility kernel, **carried
+  as pinned** (the standing GO, "C: cheap numerics extensions + A", verbatim 2026-07-30; option B,
+  the insertion-calculus research, NOT commissioned), with its **extension route recon'd NO-GO on
+  landed machinery** the same day: the devices are definitionally dead at infeasible `G`, and the
+  count dichotomy's stressed stratum is NONEMPTY, so `¬Feasible` buys no corank control. Minimal
+  open statement: **(K-bare-ext)**; the mathematics is not restated here — status row in the
+  workbook's *State of (K)* map, full record in the design doc §"(K-bare) extension-route recon"
+  (options block ADJUDICATED, option-C results appended), numerics
+  `notes/scripts/kbare/{danger,optc}.py`.
 
 Gates for any continuation: `lake build` (warning-clean) + `lake lint` when `.lean` is touched;
 `blueprint/verify.sh` + `blueprint/lint.sh` (vocabulary gate bans "stratum"/"strata") when `.tex`
@@ -278,6 +258,15 @@ neighbor — is `notes/IdeaBacklog.md`.
 
 Reverse-chronological, one line per landing; full derivations live in git and
 `notes/Phase39-design.md` (per-decision pointer where the design doc has a named section).
+
+- **Fan-out direction A LANDED — the pencil conjecture HOLDS at every uncovered flank; no
+  disproof, no pivot** (2026-08-05 sixth dispatch, docs+scripts-only, exact-ℚ
+  `notes/scripts/w4/flanks.py`) — half 2 proven-informally **per shape** by exact `∃`-witnesses
+  at the Tay target (8 named + 843 stratum shapes, 0 failures); `hK` needs **no re-pin** (16/16
+  `e₀`-end + 26/26 all-splits escapes, both KT routes); (K-pitch) closes at all 16 flank splits;
+  the **full-support** slide limit is degenerate at all four structural flanks (3 other shapes
+  join the (K-slide) battery); a **∀-realization** escape form REFUTED at `P21`. **Class
+  uniformity untouched.** Workbook §(K-flank).
 
 - **Workbook split by arc + *State of (K)* map** (2026-08-05, prep; no mathematics, no verdict
   changes) — `notes/Pencil-W4-informal.md` opened; `W19`/`S29` promoted to the shared
@@ -356,21 +345,14 @@ Reverse-chronological, one line per landing; full derivations live in git and
   survives as route 3(b)'s pin. W4 workbook §"`hnoGood'` vacuity"; `nogood_subdiv.py`.
 - **The 2026-07-30 recon day (one-lined; every verdict is carried forward in the matching
   *Hand-off* bullet, which is the canonical home — full record `notes/Phase39-design.md` + git).**
-  *(K) non-constancy recon — PARTIAL*: corank stratification by `index(G) = 5|E| - 6(|V|-1)`
-  (correcting N7's "nullity 1" fact -- theta(4,4,3) is a corank-2 both-ends-hubs witness);
-  `dim R_a >= 2` makes the escape automatic, so the hard kernel is **(K-tight)**
-  (`notes/scripts/escape/n9.py`). *(K-bare) extension-route recon -- NO-GO on landed machinery*:
-  the devices are definitionally dead at infeasible `G`, and the count dichotomy confines stress
-  to the rigid dependent stratum, which is NONEMPTY (DZ gadget) -- minimal open statement
-  **(K-bare-ext)**. *W4 decomposition recon*: dispatch skeleton spiked, kernels (K-c)/(K-bare-c)
-  pinned, gates N8/N9/N10/N10b PASSED (`hybrid_gates.py`). *W4-L4 identification recon*:
-  minimality traded for feasibility (`Contraction.lean:1004/1171` tails; a third edge forces a
-  4-member `closedHubNbhd`), W4-L4b pinned buildable, skeleton reshaped to L3', residual narrowed
-  to `hnoGood'` with 0 search inhabitants (`no_good_search.py`; its vacuity later REFUTED). User
-  adjudications that day, verbatim: **"C: literature hunt + A"** (K), **"C: cheap numerics
-  extensions + A"** (K-bare -- the option-C probes ran same day, `notes/scripts/kbare/optc.py`:
-  corank-2 failure set exactly `line(a,b)`, 0/179 off-line failures), **"B: L4 recon first"**
-  (W4). Option B in both kernel cases: **NOT commissioned.**
+  *(K) non-constancy — PARTIAL*: corank stratification by `index(G) = 5|E| − 6(|V|−1)` (correcting
+  N7's "nullity 1"; `dim R_a ≥ 2` escapes automatically), leaving **(K-tight)** as the hard kernel
+  (`escape/n9.py`). *(K-bare) extension route — NO-GO on landed machinery*: minimal open statement
+  **(K-bare-ext)**. *W4 decomposition + W4-L4 identification*: skeleton spiked (later reshaped to
+  L3′), minimality traded for feasibility, W4-L4b pinned buildable, residual narrowed to
+  `hnoGood'`, gates N8/N9/N10/N10b PASSED. User adjudications, verbatim: **"C: literature hunt
+  + A"** (K), **"C: cheap numerics extensions + A"** (K-bare; probes ran same day, `kbare/optc.py`),
+  **"B: L4 recon first"** (W4). Option B in both kernel cases: **NOT commissioned.**
 - **(K) route-1 gate FIRED — locality REFUTED, NO-GO** (2026-07-30, docs-only; exact-ℚ scripts
   `notes/scripts/escape/localtest*.py`) — with identical radius-1 chain data the escape's
   zero locus moves with the far graph (within-habitat and cross-habitat; stress supported on every
@@ -395,28 +377,21 @@ Reverse-chronological, one line per landing; full derivations live in git and
   the consumer headline `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card`; blueprint node
   `thm:pencil-conditional-realization-pair` restated + `\lean{...}` extended.
 - **Older W5-L5/L6 / W0–W4 entries (one-lined; canonical detail in `notes/Phase39-design.md`
-  + git).** L6b re-pinned triangle-free (spike refuted the `hcard`-only pin) + L6b-i assembly
-  `pencilNondegFeasible_of_selectors_of_satisfiable` + L6b-ii engine
-  `exists_coord_linearIndepOn_pencilChartPoint_of_idx` and headline
-  `pencilNondegFeasible_of_ncard_closedHubNbhd_le_three_of_triangleFree` (`Steer.lean`;
-  dispatch-log F9; FRICTION `exists_injOn_mapsTo_of_ncard_le` [mirror-candidate] +
-  omega/`Set.ncard`-atom idiom). L6a invariant + safe-vertex transfer
-  `ncard_closedHubNbhd_splitOff_le_three_of_safe` (bare pin was FALSE, 10-vertex
-  counterexample) + `exists_adjacent_degree_two_pair_of_noRigid_of_deficiency_pos` + L6d
-  `c4_isProperRigidSubgraph`/`splitOff_triangleFree_of_noRigid` (TACTICS-QUIRKS §46; F9 ×3);
-  L6/L7 coupling benign (KT 6.13/4.6). L5-cut-v-a…v-g the full sub-case-(v) chain
-  (`Witness.lean`/`Steer.lean`/`Pair2.lean`; TACTICS-QUIRKS §96/§101/§102; FRICTION
-  `extensor_pair_smul` [mirror-candidate]) — L5-cut-v CLOSED, `hcutPendant3` inline.
-  L5-cut-iv shell `pencilPair_of_not_twoEdgeConnected` + sub-cases (`Pair.lean`/`Pair2.lean`);
-  L5-cut-i…iii the `Gᵢ⁺` structure layer + restriction infra (`Motive.lean`/`Bricks.lean`/
-  `Arms.lean`). Base arm `pencilPair_of_ncard_le_two`; `PencilPair` route-(b′) restatement
-  (user-adjudicated) + `not_simple_of_parallel`; loop arm `pencilPair_of_isLoopAt`. W5-L4
+  + git).** W5-L6: L6b re-pinned triangle-free (the spike refuted the `hcard`-only pin) with its
+  assembly/engine leaves and the headline
+  `pencilNondegFeasible_of_ncard_closedHubNbhd_le_three_of_triangleFree` (`Steer.lean`); L6a's
+  invariant + safe-vertex transfer (the bare pin was FALSE, 10-vertex counterexample); L6d's
+  triangle-free split-off; the L6/L7 coupling benign (KT 6.13/4.6). W5-L5: the full cut arm
+  (sub-cases i–v, `hcutPendant3` inline; `Pair.lean`/`Pair2.lean`/`Witness.lean`/`Steer.lean`),
+  the user-adjudicated route-(b′) `PencilPair` restatement, base and loop arms; L4
   `exists_pencilSeed_of_nondeg` (`Reseed.lean`); `Pencil.lean`→`Pencil/` split; W5 design pass.
-  W3: L7 `pencil_conjecture_of_arms`, L4 cut arm `hasPencilRealization_of_not_twoEdgeConnected`,
-  L1 `exists_isProperRigidSubgraph_of_three_le_degree`, L2 `Graph.pencil_reduction`. W2
-  `exists_extensor_two_pencils_iff`; W1 `exists_concurrency_point_of_extensorInPanel_pair`; W0
-  statement layer + self-duality; opening recon (R1–R3). Promotions: TACTICS-GOLF §11/§22/§23,
-  TACTICS-QUIRKS §99/§100/§101.
+  W3: L7 `pencil_conjecture_of_arms`, the L4 cut arm, L1/L2. W2/W1/W0: the extensor-pair layer,
+  the statement layer + self-duality, opening recon (R1–R3).
+
+- **Promoted out of this phase** (one-line pointers; the cross-references carry the content):
+  TACTICS-GOLF §11/§22/§23; TACTICS-QUIRKS §46/§96/§99/§100/§101/§102/§103/§104; FRICTION
+  `exists_injOn_mapsTo_of_ncard_le` + `extensor_pair_smul` [mirror-candidate] and the
+  omega/`Set.ncard`-atom idiom.
 
 ## Citations (transcribed, project-canonical sources)
 

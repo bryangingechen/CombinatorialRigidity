@@ -255,3 +255,46 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
   count + `def = 0` + `hnoRigid`. Exact ℚ/ℤ, on top of the whole chain.
   Per-mode assertion table: `notes/Pencil-informal.md` §(K-slide-comb)
   *Verification*.
+
+- `flanks.py [--conj | --degen | --strata | --split | --allsplits | --pitch |
+  --rzero | --limit]` — the **adversarial rank test at the uncovered flanks**
+  (2026-08-05, sixth pass; research fan-out direction A), which computes the
+  *geometry* at the shapes §(K-slide-comb) *Step D5* and §(K-slide) *Step 5*
+  left with a combinatorial description only. It keeps two questions apart:
+  half 2 (does the **pencil conjecture** hold there — a failure would disprove
+  the phase's target theorem) and half 1 (does the pinned kernel `hK` hold —
+  a failure would force a re-pin). Result: **no disproof** — half 2 holds at
+  every flank shape by an exact `∃`-witness, and `hK` needs no re-pin. Every
+  sampled configuration carries the four-conjunct `IsNondegPencilRealization`
+  check **and** a star-rank genericity guard (the `plane_basis` precedent);
+  exact ℚ throughout, on top of the whole chain. Run with `PYTHONHASHSEED=0`.
+  - `--conj` (~10 s): half 2 at the 8 named shapes — class + habitat
+    certification (`def = 0`, tight, 2EC, `hcard`, triangle-free), then an
+    exact nondegenerate configuration at the Tay target, 8/8.
+  - `--degen` (~4 s): the sampler control at the 5-chromatic flank — 27/27
+    generic samples at the target; 11 guard-rejected samples, each short by
+    exactly the number of collapsed closed stars.
+  - `--strata` (~85 s): half 2 over whole strata by `rank_modp = #rows`
+    certification with an exact-ℚ recheck per stratum — `K5` 210/210, 6v/11e
+    155/155, `K222` 40/40 (seed 20260805), the **exhaustive** menu-blocked
+    `K4` stratum 438/438: **843 shapes, 0 failures**.
+  - `--split` (~193 s): half 1 at both `e₀` ends of all 8 shapes — antecedent
+    witnessed and nondegenerate, hard-stratum invariants, criterion =
+    observation, both KT routes escape, each escape re-certified as a half-2
+    witness (16/16).
+  - `--allsplits` (~176 s): half 1 at **every** eligible split of the
+    5-chromatic flank — the `∀ (v, a, b)` in `hK` — 26/26.
+  - `--pitch` (~65 s): (T1)–(T3) + `Q(r) ≠ 0` at all 16 flank splits, so
+    (K-pitch) closes at each individually (16/16).
+  - `--rzero` (~84 s): the `dim R_a = 0` stratum exhibited at last, at `P21` —
+    30/5/5 seeds, `dim U = 1`, 8/8 placements fail at each jump seed (so a
+    **∀-realization** escape form is REFUTED), and the jump stress's theta
+    sub-multigraph support (12 edges, line rank 6).
+  - `--limit` (~762 s): the (K-slide) **full-support** limit carrier at the
+    flanks, 40 generic non-aligned decorations per shape, with a
+    first-failing-conjunct tally — witnesses at `W5`, `W7` and the
+    menu-blocked `K4` (seed 101), **none** at any of the four structural
+    flanks.
+
+  Argument state and per-mode assertion table: `notes/Pencil-informal.md`
+  §(K-flank).

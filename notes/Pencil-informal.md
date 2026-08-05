@@ -147,7 +147,7 @@ all in this file.
 | gap | § + steps | status | what would close it |
 |---|---|---|---|
 | escape criterion | (K-tight) 0–3 | **proven-informally** (attainment ⟺ two `U`-functionals independent; combined failure ⟺ `★r ∥ C(M)`); 80/80 per-placement | — settled; not a gap |
-| **(K-tight)** | (K-tight) 5 | **open**, true with strong evidence; no genuine escape failure anywhere in the corrected numerics | (K-move) or (K-pitch) |
+| **(K-tight)** | (K-tight) 5 | **open**, true with strong evidence; no genuine escape failure anywhere in the corrected numerics **on the hard stratum `dim R_a = 1`** (and above it) — the claim is **false without that qualifier**: §(K-flank) F5(d) exhibits 5 legal nondegenerate target-rank `G′` seeds at `P21` with `s₀ = 1`, `dim R_a = 0`, `dim U = 1`, which the Step-2.3 calculus *proves* fail at every placement (8/8 observed each); `hK`'s ∃-form is untouched (30/35 escape) | (K-move) or (K-pitch) |
 | **(K-move)** | (K-tight) 5 | **open — the sharpest gap** on the stress side; N8 refutes block-determined `[r]` at both probed families | `[r]`-as-chart-rational-function infrastructure (option B, **not** commissioned) |
 | **(K-pitch)** | (K-pitch) | (T1)–(T5) **proven-informally**; **closed** at length-3-companion splits (bracket monomial, θ(3,3,6)); uniform form **open** | one seed with `Q(z) ≠ 0` per (graph, split), uniformly |
 | **(K-wit)** | (K-pitch) 3 | **open**; the weakest exact form — per habitat+split *equivalent* to the escape at a good seed | one `H`-motion pairing non-trivially with `C(M)`, uniformly |
@@ -158,17 +158,27 @@ all in this file.
 | **(K-slide-comb)** | (K-slide-comb) | **REFUTED as a class statement** (two structural flanks at explicit class members satisfying `hcard`/`htf`); per shape still a finite certificate-bearing problem, and "(K-slide-comb) at a shape ⟹ (K-slide-cl) there" stays **proven** | — refuted; the needed invariant is **acyclic** 4-colourability, which 3-degeneracy does *not* give |
 | **(C6)** | (K-slide-comb) D1 | **proven-informally at every class shape** — the unrestricted 6-fold base packing exists because Edmonds' matroid-partition min-max hypothesis for it *is* 5/6-sparsity; so the packing content is never the obstruction (and is Phase-12/13/14-reachable) | — settled; only a non-tight shape could break it |
 | **(C7)** | (K-slide-comb) D4 | **proven-informally combinatorially** (the length-4 menu is *all* five 2-subsets containing `L_ij`; 12/12 exact; `K4` coverage 439 → 702/877, octahedron flank rescued); two honest gaps — no full (W1)–(W4) witness at a repaired member, and `ℓ ∈ {1,2,5}` open (at `ℓ = 5` the mandatory-`L_ij` claim is itself suspect) | a geometric witness at a repaired member + the `ℓ ∈ {1,2,5}` analogues; cannot touch either structural flank |
-| `P21` / parallel `G°` edges | (K-slide) 5 | parallel `G°`-edges **proven** to obstruct the slide device at order 0 under the full support (every decoration), and the probed reduced support does not rescue it | for `bc`-parallel shapes: the companion forms (monomial at `ℓ = 3`, (K-Λ) at `ℓ = 4`, the (T5) frame at `ℓ = 5,6`); for `P21`-type shapes: a new `G°`-local mechanism — none identified |
+| `P21` / parallel `G°` edges | (K-slide) 5, (K-flank) F5 | parallel `G°`-edges **proven** to obstruct the slide device at order 0 under the full support (every decoration), and the probed reduced support does not rescue it; the obstruction is **not confined to the `ε = 0` limit** — §(K-flank) F5(d)/(e) exhibits the same theta-circuit stress (`{12, 13, 23a, 23b}`, 12 edges, line rank 6) on a **nonempty locus of the pencil chart itself** (5 of 35 rational seeds), where it forces `dim R_a = 0` | for `bc`-parallel shapes: the companion forms (monomial at `ℓ = 3`, (K-Λ) at `ℓ = 4`, the (T5) frame at `ℓ = 5,6`); for `P21`-type shapes: a new `G°`-local mechanism — none identified |
+| **(K-flank)** | (K-flank) F0–F7 | **per shape, not a uniform gap: half 2 proven-informally** by exact `∃`-witnesses at the Tay target (8 named + 843 stratum shapes, 0 failures); half 1 carries **no `hK` counterexample and no re-pin** (16/16 `e₀`-end splits, 26/26 eligible splits of the 5-chromatic flank, both KT routes); **(K-pitch) closed at all 16 flank splits** by `ε = 1` certificates; the full-support slide limit is **degenerate at all four structural flanks**; **class uniformity untouched** | — n/a: a per-shape result, not a gap. *Settled per shape; the uniform statement is unchanged* (the disproof risk is removed, no uniform gap moves) |
 | **(K-bare)/(K-bare-ext)** | (K-bare-ext) | **open**, nothing being developed; `hbareSplit` carried as pinned, off W4 routes 1/3's path; the (K-tight) re-pin fixes the criterion's shape and corrects "the failure set is exactly the line" to `line(a,b) ∪ P′` | (i) `dim R_a ≥ 1` at an adversarial IH seed and (ii) a rank-2 point in the confinement space — with no chart supplying genericity for either |
 
-**Shapes no mechanism covers** (the class program's uncovered flanks, all from
-§(K-slide-comb) *Step D5* + §(K-slide) *Step 5*): `χ(G°) ≥ 5` — exactly `K5` or
-`Δ(G°) ≥ 5` by Brooks, since four hub positions cap the collapse; hub graphs
-with no **acyclic** 4-colouring; shapes where the (pure) menu is unsolvable
-even though the colouring premise holds (438 of the 877 exhaustive `K4` shapes,
-of which (C7) rescues enough to reach 702/877); non-`bc`-parallel `G°`-edges
-with no length-`≤ 4` `bc`-companion (`P21`); and the (K-res) length-6 flank,
-unprobed.
+**Shapes no *class-uniform* mechanism covers** (the class program's uncovered
+flanks, all from §(K-slide-comb) *Step D5* + §(K-slide) *Step 5*): `χ(G°) ≥ 5` —
+exactly `K5` or `Δ(G°) ≥ 5` by Brooks, since four hub positions cap the
+collapse; hub graphs with no **acyclic** 4-colouring; shapes where the (pure)
+menu is unsolvable even though the colouring premise holds (438 of the 877
+exhaustive `K4` shapes, of which (C7) rescues enough to reach 702/877);
+non-`bc`-parallel `G°`-edges with no length-`≤ 4` `bc`-companion (`P21`); and
+the (K-res) length-6 flank, unprobed.
+
+Every one of them is now **individually discharged** (§(K-flank)): half 2 by an
+exact nondegenerate witness at the Tay target — 8 named shapes plus 843 in whole
+strata, including the exhaustive 438 menu-blocked `K4` shapes — and (K-pitch) by
+an `ε = 1` certificate at every probed split (16/16). What they lack is a
+class-uniform *mechanism*, not a certificate; three of them (the two wheels and
+one menu-blocked `K4` shape) even reach the `G°`-level carrier and join the
+§(K-slide) *Step 4* battery. The (K-res) length-6 flank remains the one
+**unprobed** entry (§(K-flank) F7 item 3).
 
 **Settled, so not to be re-derived:** the carrier escape criterion and the
 `dim U = dim R_a + 1` structure ((K-tight) 0–3); routes 1 and 2 of the original
@@ -324,11 +334,17 @@ probed seed (Step 3):
   seed 442, `nrm[b] = (1, −5/2, 0)`. With a robust sampler
   (`repin.py::rob_in_plane`) **seed 442 escapes on both routes**; so do the
   pool's two recorded failures (one pair, seeds 5000/5001, both with
-  `nrm[b][2] = 0`). Corrected record: **every target-rank seed ever probed
-  escapes** — 34/34 tight control, 6/6 θ(4,4,3), 12/12 `W19`, 4/4 `S29`,
-  24/24 the `(def 0, dim R_a 1)` pool stratum. (Positive records — on-line
-  failures, rank attainments — are unaffected; the artifact only ever
-  *suppressed* escapes.)
+  `nrm[b][2] = 0`). Corrected record: **on the hard stratum `dim R_a = 1`, and
+  above it, every target-rank seed ever probed escapes** — 34/34 tight control,
+  12/12 `W19`, 4/4 `S29`, 24/24 the `(def 0, dim R_a 1)` pool stratum, and 6/6
+  θ(4,4,3) at `dim R_a = 2`. (Positive records — on-line failures, rank
+  attainments — are unaffected; the artifact only ever *suppressed* escapes.)
+  **The stratum qualifier is load-bearing** (added 2026-08-05, §(K-flank)
+  F5(d)): without it the sentence is *false*. At `P21` five legal nondegenerate
+  target-rank `G′` seeds have `s₀ = 1`, `dim R_a = 0`, `dim U = 1`, and fail at
+  **every** placement — exactly as Step 2.3 predicts. The figures above are
+  unaffected (every seed behind them sits at `dim R_a ≥ 1`); what was stated
+  more strongly than measured is the *record*, not the mathematics.
 - **Per-placement biconditional 80/80** (`--pointwise`): attainment ⟺ the
   two `U`-functionals independent, checked placement-by-placement at the
   tight control (`s₀ = 0`) and `W19` (`s₀ = 2`).
@@ -1016,13 +1032,32 @@ sweep). Witness = hard (W1)–(W4); certificate = (T1)–(T3) + `Q(r) ≠ 0`.
 | prism + diagonal `04`, split `01` (all 3) | 26 | yes | both ends (2 runs) | 2 + 2 |
 | `K4` mixed `(3,4,2,3,3,3)` | 16 | yes | both ends (2 runs) | 2 + 2, (S2) check |
 | `K4` + hub-hub edge `23`, `(3,1,4,4,3,3)` | 16 | yes | both ends (2 runs) | 2 + 2 |
+| `W5` wheel (all 3) † | 26 | yes | the `e₀` split of §(K-flank) *F1* | 1 (full support) |
+| `W7` wheel (all 3) † | 36 | yes | ibid. | 1 (full support) |
+| `K4`, lengths `(1,1,3,5,3,5)` † | 16 | yes | ibid. | 1 (full support) |
 
 23/23 witnesses pitched; 12/12 certificates passed ((T1)–(T3) re-validated
-at every new habitat). Consequences: **(K-pitch) holds at every listed
+at every new habitat) — those two figures are the original seven members'
+record. Consequences: **(K-pitch) holds at every listed
 split, proven-informally** ((S1) + (S3)); the `K4` and `W4` rows close
 their habitats at *every* split (orbit-complete), so the
 double-subdivision (K-tight) control class over `K4`/`W4` is **closed
 with no residual side condition**.
+
+† **Three members added 2026-08-05 by §(K-flank) *Step F6*** (`flanks.py
+--limit`; 3/3 further witnesses). Each carries a full **full-support**
+(W1)–(W4) limit witness at *generic, non-aligned* decorations, seed 101 —
+(W1) `dim mot = 9`, (W2) `dim V_bc = 3`, (W3) `z` defined, (W4)
+`Q(z_lim) ≠ 0` — so by (S1) + (S3) each of those splits is closed
+**through the `G°`-level carrier**, not merely by an `ε = 1` certificate.
+The wheels are §(K-flank)'s high-concurrency probes (`Δ(G°) = 5, 7`:
+five resp. seven concurrent coplanar hinges at one body). **The third
+row is the significant one:** `K4` `(1,1,3,5,3,5)` is one of the **438
+menu-blocked** shapes of §(K-slide-comb) *Step D5* item 3, so at that
+shape the menu obstruction is strictly *stronger than the slide device
+requires* — evidence that the 438-shape flank is (at least partly) a
+defect of the **dictionary**, not of the device, consistent with (C7)'s
+partial rescue.
 
 ### Step 5 — (S5): the parallel-edge obstruction, and the residue
 
@@ -1037,13 +1072,21 @@ pair, 6 edges, line rank 5.) So (W1) is unattainable at parallel
 **Reduced supports (probed, obstructed).** Hub-incident lines never move
 along any slide ((S1)(b)), so both parallel chains keep pencil-line ends
 at the shared hubs regardless of support, and the limit concentrates
-chords through hub points. At **P21** — `G°` = `K4 − 02` plus doubled
-`23`, lengths `(3; 3,3; 4,5,3,3)`, 21 vertices, residual-shaped (the
-parallel pair is a rigid `C₆`) — leaving one parallel chain fully
+chords through hub points. At **P21** — `G°` = **`K4` with `23` doubled**
+(7 hub paths, `Σℓ = 24`), lengths `(3; 3,3; 4,5,3,3)`, `|V| = 21`,
+residual-shaped (the parallel pair is a rigid `C₆`) — leaving one parallel
+chain fully
 unslid still yields exactly one limit stress, now supported on the theta
 sub-multigraph `{12, 13, 23a, 23b}` (12 edges, line rank 6; exhibited).
 Half-measures are worse: a half-slid chain's middle line passes through
-the hub point and rebuilds the short circuit.
+the hub point and rebuilds the short circuit. (**`G°` corrected
+2026-08-05**, §(K-flank) *F1*: this shape read "`K4 − 02` plus doubled
+`23`" here, which supplies only six hub paths and so cannot carry the
+seven-entry length list above; `kslide.flanks()` builds all six `K4`
+edges plus a second `23`, and every figure in this paragraph is that
+shape's. §(K-flank) *F5(d)/(e)* then exhibits the **same** theta-circuit
+stress at `ε = 1`, on a nonempty locus of the pencil chart itself — so
+this obstruction is not confined to the limit.)
 
 **Division of labor, updated from Step 6(e).** `bc`-parallel shapes go
 to the companion forms (Steps 5/5b: monomial at `ℓ = 3`, (K-Λ) at
@@ -1412,7 +1455,14 @@ the girth is `≥ 6`:
 
 - **the 5-chromatic flank (robust).** `G° = K5` with lengths
   `(3,3,3,3,4,4,4,4,4,4)` is tight + `hnoRigid` (`|V| = 31`; 84 of the
-  all-`{3,4}` assignments qualify), and `χ(K5) = 5`. A **proper** colouring
+  all-`{3,4}` assignments qualify **under this section's convention** — the
+  count is convention-dependent, reconciled 2026-08-05 in §(K-flank) *F1*:
+  **210** = `C(10,4)` all-`{3,4}` assignments with `Σℓ = 36` are class shapes,
+  every one of them, `hnoRigid` never failing here; **84** = `C(9,3)` of those
+  have the *designated* split edge `(0,1)` at length 3, which is what
+  `kslidecomb.py` counts, while `flanks.py --strata` takes `e₀` := the first
+  length-3 edge — as `--k4full` does — and so reports all 210. Both figures are
+  right under their own convention), and `χ(K5) = 5`. A **proper** colouring
   is forced for *any* tetrahedral decoration, not merely for the (C2)
   dictionary: if `pt(u) = pt(w)` on a hub path of length `ℓ`, its (S2) limit
   chain spans `< ℓ` (machine-checked at every `ℓ ∈ {1,…,5}`; at `ℓ ∈ {1,3}`
@@ -1721,6 +1771,544 @@ witness and its `ℓ ∈ {1,2,5}` analogues **open**; and **(K-slide-cl) back to
 open**, covered exactly on the shapes where the assignment problem is
 solvable (all 7 battery members, hence the `K4`/`W4` control habitats,
 unchanged).
+
+## §(K-flank) — the adversarial rank test at the uncovered flanks: **half 2 proven-informally per shape; no disproof**
+
+Sibling of §(K-slide-comb), computing the geometry at the flank taxonomy its
+*Step D5* left. Standing notation inherited from the *Shared dictionary*,
+§(K-tight) (the escape criterion, `U`, `R_a`, `r`, `r̃ = ★r`, `C(M)`, `s₀`),
+§(K-pitch) ((T1)–(T3), `Q`), §(K-slide) (`G°`, decorations, (W1)–(W4), (S1),
+(S5), `P21`) and §(K-slide-comb) (the flank taxonomy of *Step D5*).
+
+§(K-slide-comb) *Step D5* and §(K-slide) *Step 5* left a list of **shapes no
+class-uniform mechanism covers**, all of them built **combinatorially only** —
+`def`, `hnoRigid`, the chromatic / acyclicity obstruction, the packing. No
+geometry had ever been computed at any of them, and the opening recon's R2
+("the conjecture survives all exact-rational rank tests") **predates** them,
+so it is not evidence about them. This section computes the geometry, keeping
+two questions apart:
+
+1. does the pinned kernel `hK` hold at these shapes (a failure forces a
+   re-pin), and
+2. does the **pencil conjecture itself** hold there — at a nondegenerate
+   pencil realization of a flank shape, does the body-hinge rank reach the Tay
+   target (a failure disproves the phase's target theorem)?
+
+**Verdict (2026-08-05, sixth pass).**
+
+(i) **HALF 2 HOLDS at every flank shape — proven-informally, per shape, by an
+exact witness; there is no disproof.** At each shape an exact rational
+configuration is exhibited that satisfies **all four conjuncts** of
+`IsNondegPencilRealization` (`Molecule/Pencil/Motive.lean:110`) and whose
+exact-ℚ body-hinge rank **equals** the Tay target `6(|V| − 1) − def`. Because
+`HasGenericPencilRealization` (`Motive.lean:140`) is itself an **∃** over
+(framework, normal, point), one such witness *is* the statement at that shape
+— no genericity or sampling argument is consumed. Tested: the eight named
+shapes below and **843** flank class shapes in whole strata (Step F3),
+including the **exhaustive** 438 menu-blocked `K4` shapes and all 210 all-`{3,4}`
+`K5` class shapes. Zero failures.
+
+(ii) **HALF 1: no `hK` counterexample, and no re-pin needed.** At all 16
+probed `e₀`-end splits (8 shapes × both ends) and at **every** eligible split
+of the 5-chromatic flank, `hK`'s realization antecedent is witnessed by a
+*nondegenerate* target-rank `G′` seed and the escape is **observed on both KT
+routes**, with the §(K-tight) criterion matching the observation seed by seed
+and the escaping configuration re-certified as a legal nondegenerate
+realization of `G` at target rank. The hard stratum is what these shapes sit
+in (`s₀ = 0`, `dim R_a = 1`, `dim U = 2` at every clean seed): the flanks are
+not an easy case in disguise.
+
+(iii) **(K-pitch) closes at every flank split** (16/16): the transmitted
+wrench is **non-null** (`Q(r) ≠ 0`) at the first valid seed of each, with
+(T1)–(T3) and the (T2) sign law re-validated, `dim V_bc = 3` and the Klein Gram
+on `V_bc` of rank 3. By §(K-slide) *Step 3*'s one-witness logic each such
+certificate closes (K-pitch) at that split individually. So the flank shapes
+join the §(K-slide) *Step 4* battery as **individually closed members** —
+what they are *not* is covered by a **class-uniform** device.
+
+(iv) **What resists at the flanks is the degeneration, not the geometry — and
+it resists one level *earlier* than the collapse.** At the very shapes where
+the collapse's assignment problem is unsolvable, the undegenerate rank problem
+is **maximally healthy**: the full pencil-row family of `G` is independent
+(rank `= 5|E| =` target), and at `ε = 1` the transmitted wrench is non-null.
+But the **full-support slide-in limit is itself degenerate at every structural
+flank** (Step F6, `--limit`; 40 sampled decorations each, no (W1)–(W4)
+witness), in a shape-dependent way — so §(K-slide)'s `G°`-level carrier, the
+object *Step 3* designates as where a class-uniform argument should live, does
+not reach these shapes under the full support either. This **corrects** the
+reading this pass started from ("the flanks obstruct only the tetrahedral
+alignment"): they obstruct the alignment **and** the full-support limit. The
+slide support is a free parameter ((S1) remark (iii)), so what is bounded is
+the device *as run*, not the carrier in principle — the concrete next probe is
+named in Step F7.
+
+(v) **A ∀-realization escape statement is FALSE — exhibited.** At `P21`,
+5 of 35 valid target-rank `G′` seeds have an `s₀`-jump (`s₀ = 1`, hence
+`dim R_a = 0`, `dim U = 1`) and therefore fail at **every** placement of `v`
+— the first such seed ever exhibited in the phase's numerics, confirming a
+§(K-tight) *Step 2.3* prediction that had never been tested. `hK`'s ∃-form is
+untouched (30 of 35 seeds escape). Each jump seed's `G − v` stress is
+supported on the **theta sub-multigraph `{12, 13, 23a, 23b}`** (12 edges, line
+rank 6) — *exactly* the support §(K-slide) *Step 5* exhibits for `P21`'s
+reduced-support **limit** stress: the parallel-edge obstruction is **not
+confined to the `ε = 0` limit**; it inhabits a nonempty locus of the pencil
+chart itself.
+
+**What would change this.** *For half 2:* an error in the model dictionary
+(the harness' 5-rows-per-hinge Euclidean-perp rigidity model vs
+`BodyHingeFramework.rigidityRows`) — the standing §(K-tight) caveat, shared by
+every numeric result in this workbook; or a flank shape outside the tested
+strata (the `(K-res)` **length-6** flank is still unprobed, Step F7). *For
+half 1:* a split at a flank shape where **no** seed escapes — none found, and
+the only non-escaping seeds found are the ones the calculus proves must fail.
+*For (iv):* a flank shape whose generic pencil rows are dependent (the strata
+of Step F3 say there is none up to `|V| = 41`), or — in the other direction —
+a **reduced slide support** under which a structural flank *does* carry a
+(W1)–(W4) witness, which would move the flank inside the (K-slide) carrier
+(Step F7 item 2).
+
+### Step F0 — the two questions are not independent, and the quantifiers matter
+
+Both halves must be stated against the landed objects, or the test measures the
+wrong thing.
+
+**Half 2 is an ∃.** `HasGenericPencilRealization K 3 G` unfolds
+(`Motive.lean:140`) to: **∃** a body-hinge framework `F` and maps
+`normal, point : α → Fin 4 → K` with `IsNondegPencilRealization G F normal
+point` and `finrank (span F.rigidityRows) = 6(|V| − 1) − def`. The word
+"generic" names the *stratum* (the nondegeneracy conjuncts), **not** a
+Zariski-generic quantifier. So a single exact configuration settles half 2 at a
+shape outright. Its four conjuncts, in the harness model (where the support
+extensor **is** `pt(u) ∧ pt(v)`, so `ExtensorThroughPoint` at both endpoints
+is built in):
+
+1. `HasPencilPanelRealization` — per body a nonzero `normal v` with
+   `point v ⬝ᵥ normal v = 0` and every incident hinge inside `normal v ^⊥`;
+   equivalently, the hats of `{v} ∪ N(v)` admit a nonzero common annihilator
+   (`kbare_common.verify_pencil_witness`, which also rejects coincident
+   adjacent points);
+2. every link's endpoint points **projectively distinct**;
+3. `LinearIndepOn normal (closedHubNbhd v)` at every body;
+4. `LinearIndepOn point (closedNbhd v)` at every **non-hub** body — i.e. at a
+   degree-2 body, `pt(v), pt(p), pt(q)` not collinear.
+
+At an all-lengths-`≥ 3` shape conjunct 3 is a nonzero-normal condition
+(`closedHubNbhd` is a singleton at every body — hubs have no hub neighbours),
+and conjunct 4 is the non-collinearity of every interior's little star. Both
+are asserted per witness here, not assumed; so is `rank ≤ target`.
+
+**Since each flank shape is tight, half 2 = full row rank.** `def = 0` and
+`5|E| = 6(|V| − 1)` give `#rows = target = 6|V| − 6`. Two bounds then pin the
+rank from above at *every* configuration, and neither needs the deficiency
+theory: the six trivial twists always lie in the kernel (`rank ≤ 6|V| − 6`),
+and the row count is what it is (`rank ≤ 5|E|`). So attainment is exactly
+**independence of the whole pencil-row family**, and a `rank_modp` equal to the
+target *certifies* the rational rank outright (`rank_p ≤ rank_ℚ ≤ #rows =
+target`, the first inequality because a nonvanishing `k × k` minor mod `p` is a
+nonvanishing integer minor). That is how the strata of Step F3 are certified
+cheaply and exactly — `p = 2⁶¹ − 1` — with an exact-ℚ recheck at each
+stratum's first shape and at every named witness of Step F2.
+
+**Half 1 is an ∃ on both sides.** `hK` as pinned (`notes/Phase39-design.md`
+§"W5-L7 research recon") reads: `G` simple, `5 ≤ |V|`, 2-edge-connected,
+**`hnoRigid`**, `deg v = 2`, the two links, `(¬ hub a ∨ ¬ hub b)`, `e₀ ∉ E(G)`,
+**and `HasGenericPencilRealization K 3 (G.splitOff v a b e₀)`** ⟹ ∃ `hubSel`,
+a seed `q` and a target-size set `s` of genuine edges with the `pencilRow`
+subfamily independent at `q`. Three consequences for a refutation attempt:
+
+- The conclusion is "**some** chart seed of `G` reaches the target", not "the
+  given `G′`-seed extends". So a target-rank `G′`-seed that fails to extend is
+  **not** a counterexample — only a shape where *no* `G`-seed reaches the
+  target is, and by L7b (`hasGenericPencilRealization_of_independent_pencilRow_
+  target`, `Escape.lean:186`, **landed**) that would refute half 2 as well.
+  Hence: **half 2 holding at a shape closes the only route by which that shape
+  could refute `hK`'s content.** The converse bridge — from a *witness
+  configuration* to a *chart seed* — is the deferred re-seeding lemma
+  `exists_pencilSeed_of_nondeg` (`Engine.lean`; the point-reproduction side is
+  landed, the normal side and the final assembly are not). That step is
+  **shape-independent**, so the flanks introduce no new gap; but the strict
+  statement of what this section proves for half 1 is *the mathematics of
+  `hK` at these shapes*, with the chart restatement resting on that landed-in-
+  part lemma.
+- `hnoRigid` sits in the antecedent, and `P21` **fails** it (its parallel pair
+  is a rigid `C₆`, `no_rigid_branch_union` = False). So `hK` is **vacuous** at
+  `P21`; `P21` is a `(K-res)`-shaped habitat member, and the probes there test
+  the escape *mechanism* only. All seven other shapes carry `hnoRigid`.
+- The antecedent asks for a **nondegenerate** `G′` realization. Every `G′`
+  seed used below is re-certified against all four conjuncts (`G′` has a
+  length-2 path, so its conjuncts 3 and 4 genuinely bite: the meet-line
+  interior's two hub normals must be independent and `pt(a), pt(b), pt(c)`
+  non-collinear).
+
+**The placement-sampler trap, and the guard.** `widened.place_pencil_general`
+places a single-panel interior with `localtest.in_plane_point`, whose
+`plane_basis` returns two **parallel** in-plane directions whenever the
+normal's third coordinate is `0` (`notes/scripts/README.md` *Divergences*; the
+defect behind the corrected `widened.py` escape figures — §(K-tight) *Step 3*).
+A hub normal is drawn from `rquat`, so this is not rare: at these shapes
+**11 of 40** seeds are affected, and each affected hub collapses its whole
+closed star onto a line. Read naively such a seed *looks like a disproof*. The
+guard used throughout is structural, not a coordinate test: at a generic
+pencil configuration the hats of `{v} ∪ N(v)` have rank **3** at every body
+(3 is the maximum — at a hub they all lie in the 3-dimensional panel; at a
+degree-2 body there are only three of them, and rank 3 there **is** conjunct
+4). Step F4 measures that this guard detects exactly the artifact.
+
+### Step F1 — the shapes, and their habitat certification
+
+All eight are re-certified by the driver, **asserted** and not assumed:
+`def = 0`, tight (`5|E| = 6(|V| − 1)`), 2-edge-connected, **`hcard`** (every
+hub has `≤ 2` hub neighbours) and **triangle-free** — the last two being
+exactly the conditions the (K) consumer carries
+(`hasGenericPencilRealization_of_independent_pencilRow_target`,
+`Escape.lean:186`). `hnoRigid` (`kslide.no_rigid_branch_union`) is **reported**
+per shape rather than asserted, precisely because `P21` fails it; in the
+`--strata` sweeps it *is* asserted, via `kslidecomb.shape_ok`.
+
+| shape | `G°` | `χ(G°)` | `Δ(G°)` | `\|V\|` | `\|E\|` | target | flank |
+|---|---|---|---|---|---|---|---|
+| `K5`, lengths `(3,3,3,3,4,4,4,4,4,4)` | `K5` | 5 | 4 | 31 | 36 | 180 | D5-1, 5-chromatic |
+| `K5 + v` (6th hub on `0,1,2`), `(4⁹,3⁴)` | 13 edges | 5 | 5 | 41 | 48 | 240 | D5-1, the Brooks `Δ ≥ 5` branch |
+| 6v/11e, `(3⁸,4³)` | 11 edges | 4 | 4 | 31 | 36 | 180 | D5-2, no acyclic 4-colouring |
+| `K222` octahedron, `(3⁶,4⁶)` | 12 edges | 3 | 4 | 36 | 42 | 210 | D5-3 (starved menu; (C7) rescues it) |
+| wheel `W5`, all-3 | 10 edges | 4 | 5 | 26 | 30 | 150 | high-concurrency probe |
+| wheel `W7`, all-3 | 14 edges | 4 | 7 | 36 | 42 | 210 | high-concurrency probe |
+| `K4`, lengths `(1,1,3,5,3,5)` | `K4` | 4 | 3 | 16 | 18 | 90 | D5-3, first menu-blocked shape |
+| `P21`, `(3;3,3;4,5,3,3)` | `K4` + doubled `23` | 4 | 4 | 21 | 24 | 120 | §(K-slide) 5, parallel `G°`-edge |
+
+Two additions to the workbook's list, both deliberate:
+
+- **`K5 + v`** exhibits the *second* branch of the Brooks characterization
+  (§(K-slide-comb) verdict (i): `χ(G°) ≥ 5` forces `G° = K5` **or**
+  `Δ(G°) ≥ 5`). The workbook names that branch but never exhibits it; here it
+  is, as a class shape with `χ = 5`, `Δ = 5`, `G° ≠ K5`.
+- **the wheels** are the sharpest *geometric* adversary available: their centre
+  is a single body carrying `Δ(G°)` concurrent coplanar hinges, which is where
+  a rank cap would be most plausible (and where the collapse's four-position
+  ceiling bites hardest). All-length-3 is exactly tight for a wheel
+  (`3m = 6(m − n + 1)` iff `m = 2n − 2`), so no search is needed. `W7` puts
+  **seven** hinges in one pencil and still attains. The one visible mechanism
+  by which a high-degree hub could cap the rank is that *all* of a body's
+  hinges live in the 3-dimensional `Λ²Π̂(h)`, however many there are; the
+  measurement says that does not bite for `Δ(G°) ≤ 7`. It is **not** evidence
+  about unbounded `Δ`, which the class does not bound.
+
+Two corrections to workbook prose, both checked, both **now applied in place**
+(this section is their record):
+
+- §(K-slide) *Step 5* described `P21` as "`G°` = `K4 − 02` plus doubled `23`".
+  The spec it cites (and `kslide.flanks()` builds) is **all six `K4` edges plus
+  a second `23`**: 7 hub paths, `Σℓ = 24 = 6(7 − 4 + 1)`, `|V| = 21`. With
+  `K4 − 02` there would be 6 paths and the quoted lengths could not be tight —
+  the sentence's own length list `(3; 3,3; 4,5,3,3)` has seven entries. Read
+  "`K4` with `23` doubled".
+- §(K-slide-comb) verdict (i) said "84 of the all-`{3,4}` assignments qualify"
+  at `K5`. Reconciled: **210** = `C(10,4)` all-`{3,4}` assignments with
+  `Σℓ = 36` are class shapes (all of them are — `hnoRigid` never fails here),
+  of which **84** = `C(9,3)` have the *designated* split edge `(0,1)` of
+  length 3. Both figures are right under their own convention; the driver here
+  uses "`e₀` := the first length-3 edge", as `--k4full` does, and reports 210.
+
+### Step F2 — (F1): half 2 at the named shapes
+
+> **(F1)** *(proven-informally, per shape)* — at each of the eight shapes of
+> Step F1 there is an exact rational configuration satisfying all four
+> conjuncts of `IsNondegPencilRealization` whose exact-ℚ body-hinge rank equals
+> the Tay target. Hence `HasGenericPencilRealization ℚ 3 G` holds at each —
+> and, the witness being rational, over every field of characteristic 0 (rank
+> of a fixed rational matrix is unchanged by field extension), and over
+> `GF(2⁶¹ − 1)` by the same witness's mod-`p` rank.
+
+*Proof.* By Step F0 the predicate is an `∃`, the witnesses are exhibited
+(`flanks.py --conj`, seeds printed), and every conjunct plus `rank ≤ target` is
+asserted at each witness. The rank figures: `180 = 180`, `180`, `210`, `240`,
+`150`, `210`, `90`, `120` — in each case `= #rows = target`. ∎
+
+Two remarks. **(a)** Attainment is *full row rank*, so at these tight shapes
+the conclusion is the strongest possible: the pencil rows of `G` are
+**independent**, and the deficiency bound is met with no slack anywhere.
+**(b)** By the chart's irreducibility (a tower of affine-linear fibers —
+§(K-slide) *Step 1(e)*) the attaining set is dense open, so the witnesses are
+generic in the usual sense too; nothing below needs that.
+
+### Step F3 — the strata: attainment is not an artifact of one length assignment
+
+A single exhibited assignment per hub graph would be a weak test of a
+*class*-flavoured worry, so half 2 is run over whole strata
+(`flanks.py --strata`; the `rank_modp = #rows = target` certification of
+Step F0, with an exact-ℚ recheck at each stratum's first shape):
+
+| stratum | shapes | half 2 |
+|---|---|---|
+| `K5`, all-`{3,4}` assignments (`Σℓ = 36`) | 210 of 210 candidates are class shapes | **210/210** |
+| 6v/11e, all-`{3,4}` (`Σℓ = 36`) | 155 of 165 candidates | **155/155** |
+| `K222`, all-`{3,4}` (`Σℓ = 42`), seeded sample (seed 20260805, 40 draws) | 40 | **40/40** |
+| `G° = K4`, the **menu-blocked** shapes, exhaustive | 438 of the 877 | **438/438** |
+
+**843 flank class shapes, 0 failures.** The `K4` row is the exhaustive
+menu-blocked flank of *Step D5 item 3* — every shape the pure dictionary
+misses is included — and by the `--k4full` record every one of them carries an
+`ℓ ≤ 2` edge (the only all-`≥ 3` `K4` shape is `(3,3,3,3,3,3)`, which solves),
+so hub–hub adjacency and meet-line interiors are inside the sweep, not
+excluded from it. Every shape in every row was additionally re-certified
+`hcard` + triangle-free.
+
+### Step F4 — the sampler-artifact control (and why the deficits are not evidence)
+
+`flanks.py --degen`, at the 5-chromatic flank, seeds 1..40: **27** generic
+samples, **all** at rank 180 = target; **11** guard-rejected samples, each
+short of the target by **exactly** the number of hubs whose closed star
+collapsed to a line (deficits 1 and 2 observed); 2 unplaceable. So
+
+- every rank deficit ever seen at these shapes is a sampler artifact, and the
+  star-rank guard is *exact* on this shape — it detects precisely the affected
+  samples and predicts the deficit;
+- a **coordinate** test would not do: `--degen` exhibits samples with two
+  zero-coordinate normals whose stars are nonetheless generic, and one with a
+  single zero-coordinate normal that collapses. Only the structural rank
+  condition classifies correctly. (This is the `plane_basis` precedent
+  generalized: the right guard is a rank assert on the sampled *object*, not a
+  test on the sampled *parameter*.)
+
+Without the guard, 11 of 40 seeds at the headline flank shape would have read
+as rank deficits at a shape "no mechanism covers" — the exact shape of a false
+disproof.
+
+### Step F5 — half 1: `hK`, the escape mechanism, and the pitch at the flanks
+
+**(a) Both `e₀` ends, all eight shapes** (`flanks.py --split`; seeds 101..120,
+3 placements per route). At every split: `hK`'s antecedent witnessed by a
+nondegenerate target-rank `G′` seed; `s₀ = 0`, `dim R_a = 1`, `dim U = 2` —
+the **hard stratum**; the §(K-tight) structure identities
+(`dim U = dim R_a + 1`, `U ∩ C(ab)^⊥ = R_a`, `R_a ⊆ U`) asserted; `critA` and
+`critB` both true and **both routes observed to escape**; and the escaping
+`G`-configuration re-certified against all four nondegeneracy conjuncts at
+target rank (so each escape is *also* a half-2 witness). 16/16 splits.
+
+**(b) Every eligible split of the 5-chromatic flank** (`flanks.py
+--allsplits`). `hK` quantifies over `(v, a, b)`, so one bad split would
+refute it. Every `v` with `deg v = 2` and a degree-2 neighbour is probed:
+**26 splits — 26/26 escape**, at the first valid seed each. Eight of them have
+**both** chain ends hubs (the two interiors of each of the four length-3
+paths) — the (K-tight) hard form with the 5-dimensional combined failure span;
+the other 18 are the three eligible interiors of each length-4 path, where one
+chain end is free and the failure locus is 1-dimensional (strictly easier,
+§(K-tight) *Step 4*). The escapes here are rank-level (the nondegeneracy
+re-certification runs at the 16 `e₀` splits of (a)); nothing rests on it, since
+half 2 at the shape is certified independently in Step F2.
+
+**(c) The pitch certificate** (`flanks.py --pitch`). At the first valid seed of
+each of the 16 splits: (T1) `r ⊥_E V_bc` with `W = V_bc ⊕ T` of dim 5 and
+`W^⊥ = ⟨r⟩`; (T2) the sign law with `Q(r)·Q(z) < 0`; (T3) the motion-form
+criterion agreeing with the §(K-tight) span form, and the route-A
+`★r`-in-panel form; `dim V_bc = 3` with the Klein Gram of rank 3; and
+**`Q(r) ≠ 0`** — a **non-null transmitted wrench**, which certifies escape on
+both routes. 16/16. By §(K-slide) *Step 3* each certificate closes (K-pitch)
+at that split, so the eight shapes of Step F1 are individually closed exactly
+as the seven §(K-slide) *Step 4* battery members are.
+
+**(d) The `dim R_a = 0` stratum, exhibited at last** (`flanks.py --rzero`).
+§(K-tight) *Step 2.3* proves that a target-rank `G′` seed with `dim R_a = 0`
+has `dim U = 1`, so the two placement functionals can never be independent on
+`U` and the seed **fails at every placement**. No such seed had ever been
+exhibited: the record was "every target-rank seed ever probed escapes"
+(§(K-tight) *Step 3*). At `P21`, split `v = 100`, seeds 101..140: **30** seeds
+with `dim R_a = 1` (escaping), **5** with `s₀ = 1`, `dim R_a = 0`, `dim U = 1`
+(8/8 placements fail at each, as predicted), 5 invalid. Consequences:
+
+- the prediction is **confirmed** against an exhibited *legal nondegenerate*
+  target-rank `G′` realization;
+- any **∀-realization** form of the escape ("every target-rank `G′` seed
+  extends") is **FALSE at `P21`** — independent confirmation, at a
+  whole-seed rather than a placement-locus granularity, of the design doc's
+  "Finding 1 makes any ∀-realization opaque-`r` escape hypothesis false".
+  `hK`'s ∃-form is untouched;
+- the count-theoretic prediction (`widened.split_report`) is
+  `dim R_a = 5 + def(G′) − def(G − v) = 1`; the jump is **geometric**, i.e.
+  the *pencil* stratum carries corank the count does not see, on a locus that
+  is not thin in the sampler's rational range (5/35).
+
+**Correction to the numerical record** (the reason this matters beyond `P21`).
+§(K-tight) *Step 3* recorded "**every** target-rank seed ever probed escapes",
+and the gap map's (K-tight) row read "no genuine escape failure anywhere in the
+corrected numerics". Both were true when written and both needed one
+qualifier: the statement holds on the **hard stratum `dim R_a = 1`** (and above
+it), and it is **false without that qualifier**, by the five seeds above. The
+mathematics is unchanged (Step 2.3 always said so); the *record* was stated
+more strongly than the stratum it was measured on. **Both are amended in
+place** (§(K-tight) *Step 3*; the gap map's (K-tight) row).
+
+**(e) What carries the jump — a hypothesis this pass refuted and replaced.**
+The natural guess was "the parallel pair's rigid `C₆` picks up a stress".
+Measured: at every one of the 5 jump seeds the `G − v` self-stress is
+supported on **12 edges, on the four chains among hubs `{1,2,3}`** — hub pairs
+`(2,3), (2,3), (1,2), (1,3)`, i.e. the **theta sub-multigraph
+`{12, 13, 23a, 23b}`** — with **line rank 6**. Not the parallel pair alone.
+That is *exactly* the support, edge count and line rank §(K-slide) *Step 5*
+exhibits for `P21`'s reduced-support **limit** stress. So (S5)'s parallel-edge
+obstruction is not an artifact of the `ε = 0` degeneration: the same theta
+circuit closes on a nonempty locus of the pencil chart itself, where it forces
+`dim R_a = 0`.
+
+### Step F6 — what this settles for the gap map
+
+**The geometry of `G` is unobstructed; both degenerations are not.**
+§(K-slide-comb) *Step D5* item 4 suspected that "it is the *alignment* device
+that fails to be class-uniform". Half of that is now measured and half is
+**corrected**.
+
+*Measured, and confirming Step D5:* where the collapse's assignment problem has
+no solution at all, the undegenerate pencil-row family of `G` is
+**independent** — full row rank, no slack (Steps F2/F3) — and the `ε = 1`
+transmitted wrench is non-null (Step F5c). So no flank shape's *geometry*
+resists.
+
+*Corrected:* the obstruction is not confined to the tetrahedral alignment.
+`flanks.py --limit` runs `kslide.limit_witness` at **generic, non-aligned**
+decorations of the **full-support** `ε = 0` limit system, 40 seeds per shape,
+and finds **no (W1)–(W4) witness at any of the four structural flanks**, with a
+different first-failing conjunct per shape (the tally is printed; the assert
+order is (W1) → (W4), so a tally concentrated on a later conjunct certifies the
+earlier ones held at every seed):
+
+| shape | full-support limit at 40 generic decorations |
+|---|---|
+| `K5`, χ = 5 | (W1) fails at 5 seeds; at the other 27 valid ones (W1)+(W2) hold and **(W3)** fails — `z(limit)` degenerate, the two `T`-conditions dependent on `V_bc` |
+| 6v/11e | (W1) holds at all 30 valid seeds; **(W2)** fails at all 30 — `dim V_bc(limit) = 2`, the limit system over-constrained at `b, c` |
+| `K222` octahedron | (W1),(W2),(W3) hold at all 30 valid seeds; **(W4)** fails at all 30 — the limit twist is Klein-**null** at every sampled decoration |
+| `K5 + v`, χ = 5, Δ = 5 | identical profile: **(W4)** fails at all 30 valid seeds |
+| `P21` | **(W1)** fails at all 35 valid seeds — the proven parallel-edge order-0 obstruction, (S5) |
+| wheels `W5`, `W7`; `K4` `(1,1,3,5,3,5)` | **witness found at seed 101** — (W1) `dim mot = 9`, (W2) `dim V_bc = 3`, (W3) `z` defined, (W4) `Q(z_lim) ≠ 0` |
+
+So the `G°`-level limit carrier — §(K-slide) *Step 3*'s designated home for a
+class-uniform argument — **does not reach the structural flanks under the full
+slide support**, and the three shapes where it does reach are exactly the ones
+that were never structurally obstructed (two wheels and a menu-blocked `K4`,
+each witnessed at the very first seed). The failure profiles are **uniform per
+shape**, not scattered: 30/30 at `K222` and `K5 + v` ((W4) null twist), 30/30 at
+6v/11e ((W2) `dim V_bc = 2`), 27/27 of the (W1)-passing seeds at `K5` ((W3) `z`
+degenerate), 35/35 at `P21` ((W1)). Uniformity over 30-odd rational decorations
+is consistent with identical vanishing on the decoration variety — which is
+what a *proof* of the full-support limit's degeneracy at these shapes would
+assert — but sampling can only ever refute identical vanishing, never
+establish it, so this is evidence for the shape of the obstruction, not a
+proof of it.
+Since the ε = 1 pitch is non-null at these same splits (Step F5c), the
+vanishing is a property of the **degeneration**, not of the shape; and since
+the support Σ is a free parameter ((S1) remark (iii)), the negative bounds the
+device *as run*. It is nonetheless a second, independent obstruction at the
+flanks, and it is new: no prior pass ran the limit witness at these shapes.
+
+**One flank shape moves inside the (K-slide) carrier — and it is a
+menu-blocked one.** The `K4` shape `(1,1,3,5,3,5)`, a member of *Step D5 item
+3*'s 438 menu-blocked shapes, carries a full (W1)–(W4) limit witness at the
+first seed. By (S1) that closes (K-pitch) there **through the `G°`-level
+carrier**, not merely through an `ε = 1` certificate. So for that shape the
+menu obstruction is strictly stronger than the device requires: the 438-shape
+flank is (at least in part) a defect of the *dictionary*, exactly as (C7)'s
+partial rescue suggested, and not of the slide device. The two wheels are new
+(K-slide) members on the same footing — the §(K-slide) *Step 4* battery table
+gains three rows (done, marked `†` there).
+
+Two readings, kept separate:
+
+- **Settled.** No flank shape is a counterexample to the conjecture; no flank
+  shape is a counterexample to `hK`; each flank shape is individually closed
+  for (K-pitch) by an exact `ε = 1` certificate, and three of them through the
+  `G°`-level carrier as well. The *Shapes no mechanism covers* list of the gap
+  map is accordingly re-titled: these are shapes no **class-uniform** mechanism
+  covers — every one of them is now individually discharged.
+- **Not settled.** Nothing here is class-uniform. 843 shapes with `|V| ≤ 41`
+  are 843 shapes, and the uniform statement remains (K-tight)/(K-move)/
+  (K-pitch) exactly as before. This pass **removes a disproof risk and adds
+  mechanism data**; it moves no uniform gap.
+
+One structural consequence worth recording for direction C's benefit: at a
+tight class shape, half 2 *is* the statement "the pencil rows of `G` are
+independent at some chart point", i.e. the non-vanishing of one maximal
+minor of the pencil rigidity matrix — a **pure-condition-shaped** statement in
+White–Whiteley's idiom, on `G` itself rather than on a degenerated limit. The
+843 shapes say that minor is nonzero at every tested class shape; what is
+missing is a *reason*, and the pure condition of `G` (not of the limit) is
+where a uniform reason would live.
+
+### Step F7 — what remains open (honestly)
+
+1. **Class uniformity.** Untouched. This section is per-shape certificates.
+2. **Reduced slide supports at the structural flanks.** The concrete
+   continuation this pass exposes: (S1) holds for *any* support `Σ`, and the
+   full support is what Step F6 measures degenerate at the four structural
+   flanks. Which reduced supports keep (W1)–(W4) alive there is unprobed, and
+   it is cheap to probe (`limit_witness` takes `smap_omit`; §(K-slide) *Step 5*
+   already uses it at `P21`). A reduced-support witness at the `K5` flank would
+   put the 5-chromatic flank inside the (K-slide) carrier — the single most
+   valuable follow-up the direction-A data points at.
+3. **The `(K-res)` length-6 flank** (gap map, *Shapes no class-uniform
+   mechanism covers*) is **still unprobed**. It is out of this dispatch's
+   target list, and it cannot be reached from the tight class: §(K-slide-cl)
+   *Step C0*'s "`ℓ = 6` forces a rigid complement" lemma means a length-6 path
+   is impossible under `hnoRigid`, so a probe needs a genuine `(K-res)`
+   residual member (`notes/Pencil-W4-informal.md` §"widened kernels" *Step 4*),
+   and none parallel-free was at hand. The right next probe, and cheap: build
+   one, and run `--conj`/`--split` on it.
+4. **The model dictionary.** Every rank figure lives in the harness'
+   5-rows-per-hinge Euclidean-perp model (row space `= {w : ⟨w, C(e)⟩ = 0}`,
+   kernel `= ⟨C(e)⟩`, global kernel the 6 trivial twists — checked implicitly
+   by every `rank = 6|V| − 6` figure here). The §(K-tight) caveat stands
+   unchanged; it is shared by the whole workbook, not specific to this pass.
+5. **The chart bridge.** Half 1's chart-level restatement rests on
+   `exists_pencilSeed_of_nondeg`, landed only in part (Step F0). Shape-
+   independent, but not free.
+6. **`P21`'s `s₀`-jump locus** is uncharted: 5/35 rational samples is not a
+   dimension count. Whether the theta-circuit locus is a hypersurface in the
+   `P21` chart, and whether an analogous locus exists at *parallel-free*
+   shapes (none seen: 0 jump seeds at the other seven shapes), is open. It is
+   the one place in this pass where a *negative* structure was found, and the
+   natural continuation if the parallel-edge family is ever needed.
+
+### Verification
+
+`notes/scripts/w4/flanks.py` (tracked, new this pass; exact ℚ throughout, no
+floating point; imports the harness read-only; every sampled configuration
+carries the four-conjunct nondegeneracy check *and* the star-rank genericity
+guard; all seeds are literals and printed). Reproduce, from the repo root and
+with `PYTHONHASHSEED=0`: `python3 notes/scripts/w4/flanks.py --conj | --degen |
+--strata | --split | --allsplits | --pitch | --rzero | --limit`.
+
+| driver | ~time | what it asserts |
+|---|---|---|
+| `--conj` | 10 s | HALF 2 at the 8 named shapes: class + habitat certification, then an exact nondegenerate configuration at the Tay target (8/8, exact-ℚ ranks 180/180/210/240/150/210/90/120) |
+| `--degen` | 4 s | the sampler control at the 5-chromatic flank: 27/27 generic samples at the target; 11 guard-rejected, each short by exactly the number of collapsed stars |
+| `--strata` | 85 s | HALF 2 over whole strata: `K5` 210/210, 6v/11e 155/155, `K222` 40/40 (seed 20260805), `K4` menu-blocked 438/438 — 843 shapes, 0 failures, exact-ℚ recheck per stratum |
+| `--split` | 193 s | HALF 1 at both `e₀` ends of all 8 shapes: antecedent witnessed + nondegenerate, hard-stratum invariants, criterion = observation, both routes escape, escape re-certified as a half-2 witness |
+| `--allsplits` | 176 s | HALF 1 at **every** eligible split of the 5-chromatic flank (the ∀ in `hK`) |
+| `--pitch` | 65 s | (T1)–(T3) + `Q(r) ≠ 0` at all 16 flank splits (16/16): (K-pitch) closes at each |
+| `--rzero` | 84 s | the `dim R_a = 0` stratum at `P21`: 30/5/5 seeds, `dim U = 1`, 8/8 placements fail, and the theta-sub-multigraph stress support (12 edges, line rank 6) |
+| `--limit` | 762 s | the (K-slide) FULL-SUPPORT limit carrier at the flanks, 40 generic decorations per shape, first-failure tally per conjunct: witnesses at `W5`, `W7` and the menu-blocked `K4` (seed 101, `dim mot = 9`); **none** at `K5` (W3 27/27), 6v/11e (W2 30/30), `K222` and `K5+v` (W4 30/30), `P21` (W1 35/35) |
+
+**Confidence verdict: HALF 2 — the pencil conjecture at the uncovered flanks
+— is PROVEN-INFORMALLY per shape** (exact nondegenerate witnesses at the Tay
+target; 8 named shapes + 843 stratum shapes, 0 failures), so **no
+counterexample exists at the shapes most likely to carry one and the disproof
+risk is removed** — the **class-uniform** target theorem is *not* thereby
+established (nothing in this section is uniform: (i) and Step F7 item 1);
+**HALF 1 — `hK` at the flanks — carries no counterexample and needs no
+re-pin** (16/16 `e₀`-end splits and every eligible split of the 5-chromatic
+flank escape on both routes, with the (K-tight) criterion matching seed by
+seed), with the strict caveat that the chart-level restatement rests on the
+partly-landed re-seeding lemma; **(K-pitch) closes at every flank split**
+(16/16 non-null transmitted wrenches); **the geometry of `G` is unobstructed at
+the flanks while BOTH degenerations are obstructed there** — the tetrahedral
+alignment (§(K-slide-comb), already known) and now, newly, the **full-support
+slide-in limit** at all four structural flanks (uniform per-shape failure
+profiles over 30-odd generic decorations each, with reduced supports unprobed
+and named as the follow-up), against which three previously-uncovered shapes —
+the two wheels and a **menu-blocked `K4` shape** — do carry full (W1)–(W4)
+limit witnesses and so join the (K-slide) battery; and **a ∀-realization escape
+statement is REFUTED at `P21`** by an exhibited `dim R_a = 0` seed whose forced
+failure confirms a (K-tight) prediction never before tested. **Class uniformity
+is untouched** — this pass removes a disproof risk and adds mechanism data; it
+closes no uniform gap.
 
 ## §(K-bare-ext) — stub
 

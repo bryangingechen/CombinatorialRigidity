@@ -304,6 +304,14 @@ arcs too.
 | `python3 notes/scripts/w4/kslidecomb.py --relaxed` | 2 s | ibid. (the repaired menu) |
 | `python3 notes/scripts/w4/kslidecomb.py --k4full` | 1 s | ibid. (877 shapes) |
 | `python3 notes/scripts/w4/kslidecomb.py --sweep` | 1 s | ibid. (seeded `|V°| ≤ 5`) |
+| `python3 notes/scripts/w4/flanks.py --conj` | 10 s | workbook §(K-flank) (half 2 at the 8 named flank shapes) |
+| `python3 notes/scripts/w4/flanks.py --degen` | 4 s | ibid. (the sampler-artifact control) |
+| `python3 notes/scripts/w4/flanks.py --strata` | 85 s | ibid. (half 2 over whole strata, 843 shapes) |
+| `python3 notes/scripts/w4/flanks.py --split` | 193 s | ibid. (half 1 at both `e₀` ends of all 8 shapes) |
+| `python3 notes/scripts/w4/flanks.py --allsplits` | 176 s | ibid. (every eligible split of the 5-chromatic flank) |
+| `python3 notes/scripts/w4/flanks.py --pitch` | 65 s | ibid. ((K-pitch) at all 16 flank splits) |
+| `python3 notes/scripts/w4/flanks.py --rzero` | 84 s | ibid. (the `dim R_a = 0` stratum at `P21`) |
+| `python3 notes/scripts/w4/flanks.py --limit` | 762 s | ibid. (the full-support slide limit at the flanks) |
 
 Per-driver prose — *what* each mode asserts — stays in the three per-directory
 READMEs (`escape/README.md`, `kbare/README.md`, `w4/README.md`). This table is
