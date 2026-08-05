@@ -355,16 +355,35 @@ genuine proofs, not evidence) and can **refute** identical vanishing. It can
 
 ### 5.3 Where a CAS would buy something sampling cannot
 
-**The concrete one, available now.** §(K-Λ)'s (Λ0) argument says each clause is
-an open condition on the **local frame's** chart, "the same irreducible variety
-for every class habitat carrying a length-4 companion", so exact witnesses across
-finitely many strata certify (Λ0) generically for the whole class. That is the
-one argument in the arc whose logical form is *generic-point computation per
-stratum ⟹ uniform over the class* — implemented as **164 sampled rational
-frames**. Treating the frame coordinates as indeterminates and computing the
-spans over the function field would **turn that evidence into a proof, uniformly
-over the class**. First place symbolic tooling reaches something sampling
-structurally cannot.
+**The concrete one — RUN 2026-08-05, and it delivered.** §(K-Λ)'s (Λ0) argument
+says each clause is an open condition on the **local frame's** chart, "the same
+irreducible variety for every class habitat carrying a length-4 companion", so
+exact witnesses across finitely many strata certify (Λ0) generically for the
+whole class. That is the one argument in the arc whose logical form is
+*generic-point computation per stratum ⟹ uniform over the class* — implemented
+as **164 sampled rational frames**. `M2 --script notes/scripts/m2/lambda0.m2`
+executes it instead: every (Λ0) clause is now a nonzero polynomial on one
+irreducible variety, the containments and `t`-degrees are identities, and the
+38 strata are shown *irrelevant at the generic point* (each maps onto a dense
+subset of that variety). Mathematics in `notes/Pencil-informal.md` §(K-Λ).
+
+Three things to carry forward from it:
+
+- **It is genuinely class-uniform**, not 38 symbolic strata: the proof names no
+  habitat, no stratum, no sample, and a dominant map pulls the dense open
+  conclusion back to *every* class habitat's chart.
+- **It found a missing hypothesis.** The span criterion is
+  `p⁺₂p⁺₃·g₁₃g₁₄g₂₄ ≠ 0`; the recorded (Λ0f) carries only the first two
+  factors, and `g₁₄ = [b,x₁,x₃,c] ≠ 0` is asserted nowhere in the Python
+  harness. It is generic, so no sampled frame ever saw it fail — the exact
+  failure mode sampling cannot detect.
+- **It also marks the method's boundary, and confirms §2.3.** The upgrade works
+  because (Λ0) is a statement about the **local frame alone**, where the far
+  graph does not appear. (K-wit) — the escape's uniformity — quantifies over the
+  far covector `λ`, which the frame deliberately leaves free, so it is not a
+  statement on this variety and no generic-point computation on the frame
+  reaches it. The symbolic route can make every *far-graph-free hypothesis
+  package* uniform and stops exactly where the far graph enters.
 
 **Others, in rough order of value.** (i) Is the pullback of the bad
 hypersurface's equation identically zero on the image of the `V_bc` map? — an
@@ -455,18 +474,18 @@ direction is set:
   §(K-dom)). Rank **9** at every class habitat probed, **4** (a proven cap) at
   the `k = 3` (K-res) family; C1's inductive and locality-reframing claims both
   refuted, so C1 is **not** a route to uniformity and is not a live direction.
-- **If the direction is the symbolic upgrade:** **IN PROGRESS.** §5.4's
-  conventions and the first M2 driver landed together on 2026-08-05, with
-  §5.3's item (ii) — (Λ1) — as the deliberately-low-risk first consumer
-  (verified; §(K-Λ) *Step 2*). The **next** step is §5.3's *first* item, and it
-  is where the mathematics is: re-do §(K-Λ)'s **(Λ0) spans at the generic point
-  of the local frame**, turning the 38-strata exact-witness evidence into a
-  class-uniform statement. It is a strictly harder computation than (Λ1) — the
-  spans `span_t ω⁺(t)`, `span_t ω⁻(t)` are computed *along the `a`-line*, so
-  the sliding parameter `t` joins the indeterminates and the object is a rank
-  statement over `ℚ(frame)[t]` rather than a single polynomial identity — and
-  the (Λ1) run's measured feasibility boundary (§5.3) is the budget to plan
-  against.
+- ~~**If the direction is the symbolic upgrade:**~~ **DELIVERED 2026-08-05.**
+  §5.4's conventions plus `lambda1.m2` ((Λ1), item (ii), the deliberately
+  low-risk first consumer) landed first; `lambda0.m2` then closed §5.3's *first*
+  item — (Λ0) and the `a`-line spans at the generic point, class-uniform, plus
+  the missing `g₁₄` clause. The feared cost did not materialize: the `a`-line
+  parameter `t` never joins the indeterminates, because `ω⁺(t)`, `ω⁻(t)` are
+  *structurally* cubic and quadratic in `t`, so their coefficient vectors come
+  from finite differences of integer evaluations and the whole run is ~0.1 s.
+  **What remains of §5.3** is item (i) — the elimination question, "is the bad
+  hypersurface's pullback identically zero on the image of the `V_bc` map?",
+  which is §2.4's open problem and is *not* far-graph-free — and item (iii),
+  (K-chord)/`R_3` for parameterized families.
 - **If the direction is C3 (mixed stratum):** first question is combinatorial and
   needs no geometry — can KT's reduction always avoid a prescribed vertex
   set `S`? Read Phase 20's generation theorem before scoping.

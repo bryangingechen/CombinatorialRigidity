@@ -6,8 +6,8 @@ per-driver description list for this directory, plus the four conventions the
 M2 layer adds on top (they were specified in advance in
 `notes/Pencil-strategy.md` §5.4 and are binding here).
 
-Opened 2026-08-05 with `lambda1.m2`. This is the **only** non-Python part of
-the harness.
+Opened 2026-08-05 with `lambda1.m2`; `lambda0.m2` followed the same day. This
+is the **only** non-Python part of the harness.
 
 ## Why the layer exists
 
@@ -195,3 +195,53 @@ output unchanged.
   Reproduce: `M2 --script notes/scripts/m2/lambda1.m2` (~1 s). Prints one
   `OK` line per assertion and a final `PASSED` line; a failing `assert` exits
   non-zero.
+
+- **`lambda0.m2`** — **(Λ0)** and the **`a`-line spans**, `notes/Pencil-informal.md`
+  §(K-Λ) *Standing notation* + *Step 3*, established at the **generic point of
+  the local frame**. This is `notes/Pencil-strategy.md` §5.3's *first* item: the
+  one argument in the arc whose logical form is *generic-point computation ⟹
+  uniform over the class*, and the reason the layer was built. It upgrades
+  `w4/lambda.py --span` (164 sampled frames over 38 strata).
+
+  Headline — the span criterion is an **identity**, and it is **wider than the
+  recorded one**. With `g13 = B(C₁,C₃)`, `g14 = B(C₁,C₄)`, `g24 = B(C₂,C₄)` the
+  three surviving entries of the banded Gram:
+
+  > `span_t ω⁺(t) = 3` ⟺ `p⁺₂ · p⁺₃ · g13 · g14 · g24 ≠ 0`
+  > `span_t ω⁻(t) = 3` ⟺ `q₂ · q₃ · g13 · g14 · g24 ≠ 0`
+
+  (Λ0f) as recorded carries only the first two factors of each. `g13·g24 ≠ 0`
+  is `rank Q|_S = 4` (the driver checks `det Gram = (g13·g24)²`), asserted
+  elsewhere in the harness but never linked to the span; **`g14 ≠ 0` is
+  asserted nowhere**. Block (P5) settles that this is a correction rather than
+  pedantry: it degenerates `C₄`'s direction onto `C₁`'s (`v2 = λu2, v3 = λu3`),
+  which kills `g14` while **every** recorded (Λ0) clause — (Λ0a) `rank{C_i}=4`,
+  (Λ0b) `S ∩ T = 0`, (Λ0c) `rank[m;n] = 2`, (Λ0e) `C(M) ∉ S`, and all four
+  `p⁺`/`q` middle brackets — still holds, and both spans drop.
+
+  Seven blocks: **(P1)** closed forms `p⁺ = (0, −u₁y₀, −y₁v₀, 0)`,
+  `q = (0, u₃y₂−u₂y₃, y₃v₂−y₂v₃, 0)` with their structural zeros, `m₁ = n₄ = 0`,
+  and the banded Gram; **(P2)** every (Λ0) clause exhibited as a *nonzero
+  polynomial*, hence generic — this is what replaces "certified generic by exact
+  witnesses in 38 strata"; **(P3)** the two containments
+  `p⁺·ω⁺(t) ≡ 0`, `q·ω⁻(t) ≡ 0` as identities, with `deg_t ω⁺ = 3`,
+  `deg_t ω⁻ = 2` exactly; **(P4)** the span criterion, via `cross4` of every
+  coefficient triple; **(P5)** the degeneration above; **(P6)** the
+  class-uniformity bridge; **(P7)** the core re-run without the `P_b`/`P_c`
+  normalization (20 indeterminates), so the part of the gauge that assumes
+  (Λ0d) is shown not to be load-bearing.
+
+  **On the gauge, and on `t`.** GL(4) is transitive on ordered pairs of
+  independent covectors, so `ν_b = e₀*`, `ν_c = e₁*` — whence
+  `Π(b) = {X₀=0}`, `Π(c) = {X₁=0}`, `M = ⟨e₂,e₃⟩` and `pt(a(t)) = e₂ + t e₃`.
+  The residual group still moves `P_b` inside `Π(b)` and `P_c` inside `Π(c)`,
+  so *given (Λ0d)* put `P_b = e₁`, `P_c = e₀`; 14 coordinates survive. Two
+  things worth carrying forward: the gauge **consumes (Λ0d)** (which is why
+  (P7) exists), and the `a`-line parameter `t` **does not** join the
+  indeterminates — `ω⁺(t)` is cubic and `ω⁻(t)` quadratic in `t` *structurally*,
+  so their coefficient vectors come from finite differences of 4 resp. 3
+  integer evaluations, and the span of a polynomial curve is the span of its
+  coefficients. That is what keeps this at ~0.1 s rather than at the wall
+  `lambda1.m2` measured.
+
+  Reproduce: `M2 --script notes/scripts/m2/lambda0.m2` (~0.1 s).

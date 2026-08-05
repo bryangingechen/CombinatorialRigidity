@@ -446,6 +446,7 @@ line and treated as part of the figure.
 | invocation | ~time | cited by |
 |---|---|---|
 | `M2 --script notes/scripts/m2/lambda1.m2` | 1 s | workbook §(K-Λ) *Step 2* ((Λ1) as an identity over the function field) |
+| `M2 --script notes/scripts/m2/lambda0.m2` | 0.1 s | workbook §(K-Λ) *Standing notation* + *Step 3* ((Λ0) and the `a`-line spans at the generic point; the widened span criterion) |
 
 Per-driver prose — *what* each mode asserts — stays in the four per-directory
 READMEs (`escape/README.md`, `kbare/README.md`, `w4/README.md`,
