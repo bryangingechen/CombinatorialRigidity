@@ -35,7 +35,16 @@ for *organizing* this directory is here.
   in place, and carries an explicit confidence verdict
   (proven-informally / true-modulo-named-gap / open / refuted) plus a "what
   would change this" line. Dated recon history stays in
-  `Phase39-design.md`; this file carries only the mathematics.
+  `Phase39-design.md`; this file carries only the mathematics. It holds the
+  live **kernel-(K)** arc, the **Shared dictionary** both workbooks use, and
+  the **State of (K)** gap map (the artifact a new pass *updates* rather than
+  re-summarizing).
+- **`Pencil-W4-informal.md`** — the same workbook's **W4 (`hcontract`)
+  residual arc**, split out 2026-08-05: three sections closed *as arguments*
+  (`hnoGood'` vacuity / (SAFE-RES) refuted, the kernel widening priced) and
+  kept at full detail because they are the input to the eventual W4 build,
+  which the route-3(b) adjudication parks. Same discipline; the (K) arc is
+  the sibling file above.
 - **`ScrewSpaceCarrier-design.md`** — design doc for the *carrier-opacity*
   refactor (the `ScrewSpace` `abbrev` → diffuse-typeclass `maxHeartbeats`
   cost, the opacity spike, mathlib precedents, and the design-recon-first

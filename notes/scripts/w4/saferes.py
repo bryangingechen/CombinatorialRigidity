@@ -13,7 +13,7 @@ necessary condition for the contraction), exactly as for the `W19` inhabitant of
 `nogood_subdiv.py`.
 
 The weaker property the split arm actually consumes SURVIVES; see
-`split_usable` below and `notes/Pencil-informal.md` §(SAFE-RES) for the
+`split_usable` below and `notes/Pencil-W4-informal.md` §(SAFE-RES) for the
 statement (SAFE-RES').
 
 Why a new script.  `nogood_subdiv.py` swept core+poles+LONG PATHS families:

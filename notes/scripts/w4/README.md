@@ -67,7 +67,7 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
     probe behind the open (SAFE-RES) conjecture.
   - no flag (~4 min): families D/E/F.
 
-  Argument state and consequences: `notes/Pencil-informal.md`
+  Argument state and consequences: `notes/Pencil-W4-informal.md`
   §"`hnoGood'` vacuity".
 
 - `saferes.py [--validate | --witness | --search | --prime | --structure]` —
@@ -95,7 +95,7 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
     the (C8) dichotomy, the (E-κ) count, the (V) branch characterization.
 
   Argument state, the successor (SAFE-RES′), and consequences for W4:
-  `notes/Pencil-informal.md` §"(SAFE-RES)".
+  `notes/Pencil-W4-informal.md` §"(SAFE-RES)".
 
   **Recorded-figure correction (2026-08-02, re-run by the widened-kernel
   recon).** `--prime` reports **255** residual inhabitants, of which **216**
@@ -127,7 +127,7 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
     degree-2 vertex `v₀` with `E(G − v₀)` count-independent, which is exactly
     the property `edgeBound_of_noRigid_of_degree_two` extracts from `hnoRigid`.
 
-  Argument state: `notes/Pencil-informal.md` §"widened kernels (routes 1/3)".
+  Argument state: `notes/Pencil-W4-informal.md` §"widened kernels (routes 1/3)".
 
   **Escape-figure correction (2026-08-02, the (K-tight) re-pin).** The
   non-escaping seeds behind `--validate`'s 11/12 (incl. seed 442) and

@@ -2,8 +2,9 @@
 
 Exact-ℚ (`fractions.Fraction`; **no floating point anywhere**) stdlib-only
 Python backing the Phase-39 PENCIL research arcs. It is an *audit trail*: every
-numeric figure quoted in `notes/Pencil-informal.md` and
-`notes/Phase39-design.md` is produced by a driver here, and the workbook's
+numeric figure quoted in the two PENCIL workbooks
+(`notes/Pencil-informal.md`, `notes/Pencil-W4-informal.md`) and in
+`notes/Phase39-design.md` is produced by a driver here, and the workbooks'
 *Verification* blocks cite the exact command line.
 
 **Read this file before adding or editing anything.** §1 tells you which
@@ -249,7 +250,9 @@ line; a non-zero exit or a missing `OK`/`PASSED` line is a failure.
 
 ### `w4/` — the `hcontract` arm **and** the whole kernel-(K) continuation
 
-Workbook = `notes/Pencil-informal.md`. Note the directory name is stale (see
+Workbooks = `notes/Pencil-informal.md` (the kernel-(K) arc) and
+`notes/Pencil-W4-informal.md` (the settled W4 residual arc). Note the
+directory name is stale (see
 *Deliberate non-goals*): `w4/` holds the `(K-tight)`/`(K-pitch)`/`(K-slide)`
 arcs too.
 
@@ -257,16 +260,16 @@ arcs too.
 |---|---|---|
 | `python3 notes/scripts/w4/hybrid_gates.py 6` | 1 s | design doc §"W4 decomposition recon" (gates N8/N9/N10/N10b) |
 | `python3 notes/scripts/w4/no_good_search.py` | 5 s | design doc §"W4-L4 identification recon" (**superseded as evidence** by `nogood_subdiv.py`) |
-| `python3 notes/scripts/w4/nogood_subdiv.py --validate` | 1 s | workbook §"`hnoGood'` vacuity" |
+| `python3 notes/scripts/w4/nogood_subdiv.py --validate` | 1 s | W4 workbook §"`hnoGood'` vacuity" |
 | `python3 notes/scripts/w4/nogood_subdiv.py --witness` | 1 s | ibid. (the `|V| = 19` inhabitant) |
 | `python3 notes/scripts/w4/nogood_subdiv.py --min` | 12 s | ibid. |
 | `python3 notes/scripts/w4/nogood_subdiv.py` | 2 s | ibid. (families D/E/F) |
-| `python3 notes/scripts/w4/saferes.py --validate` | 1 s | workbook §(SAFE-RES) |
+| `python3 notes/scripts/w4/saferes.py --validate` | 1 s | W4 workbook §(SAFE-RES) |
 | `python3 notes/scripts/w4/saferes.py --witness` | 2 s | ibid. (the `|V| = 29` refutation) |
 | `python3 notes/scripts/w4/saferes.py --search` | 290 s | ibid. |
 | `python3 notes/scripts/w4/saferes.py --prime` | 39 s | ibid. (255 residual inhabitants) |
 | `python3 notes/scripts/w4/saferes.py --structure` | 8 s | ibid. ((C7), the (C8) dichotomy, (E-κ), (V)) |
-| `python3 notes/scripts/w4/widened.py --validate` | 70 s | workbook §"widened kernels (routes 1/3)" |
+| `python3 notes/scripts/w4/widened.py --validate` | 70 s | W4 workbook §"widened kernels (routes 1/3)" |
 | `python3 notes/scripts/w4/widened.py --witness` | 105 s | ibid. |
 | `python3 notes/scripts/w4/widened.py --pool` | 44 s | ibid. |
 | `python3 notes/scripts/w4/widened.py --sample` | 245 s | ibid. |

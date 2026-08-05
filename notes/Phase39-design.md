@@ -3227,7 +3227,7 @@ picture throughout.
 
 **Widened-habitat pointer (2026-08-02).** Finding 1's *explanation* ("no proper
 subgraph to localise the stress onto") is a `hnoRigid` consequence, but the gate's
-NO-GO verdict does not depend on it — see `notes/Pencil-informal.md` §"widened
+NO-GO verdict does not depend on it — see `notes/Pencil-W4-informal.md` §"widened
 kernels (routes 1/3)" *Step 1* (row K4).
 
 **Verdict: route 1 is NO-GO.** The escape's (non)vanishing at a generic seed is a genuinely
@@ -3396,7 +3396,7 @@ section's stratification is consumed on a habitat where `hnoRigid` is FALSE. Wha
 survives, what breaks (item 3's `s₀ = 0` and item 4's proof, not its conclusion),
 the corank identity `dim R_a = 5 + def(G′) − def(G−v)`, the reduction of item 1's
 `index ≤ 4` to a cheap leaf plus (E-loc), and a caveat against item 2's failure
-criterion: `notes/Pencil-informal.md` §"widened kernels (routes 1/3)".
+criterion: `notes/Pencil-W4-informal.md` §"widened kernels (routes 1/3)".
 
 **(K-tight) re-pin pointer (2026-08-02, later).** Item 2's owed KT pp. 684–691 re-pin is
 **done, against the carrier** — `notes/Pencil-informal.md` §(K-tight). The §2 criterion is
@@ -3690,7 +3690,7 @@ here closes the leaf; (K-bare-ext) as pinned is unchanged. Findings:
 **Widened-habitat pointer (2026-08-02).** W4 routes 1/3 do **not** reach this kernel —
 a residual is `PencilNondegFeasible` by hypothesis, so the split producer's
 `hbareSplit` branch (`Escape.lean:424–428`) is unreachable there; this recon's count
-dichotomy and (K-bare-ext) stand exactly as pinned. `notes/Pencil-informal.md`
+dichotomy and (K-bare-ext) stand exactly as pinned. `notes/Pencil-W4-informal.md`
 §"widened kernels (routes 1/3)" *Step 0*.
 
 **(K-tight) re-pin pointer (2026-08-02, later).** (K-bare-ext)'s named prerequisite —
@@ -4070,7 +4070,7 @@ proxies in either direction.
 **REFUTED 2026-08-02** — the conjecture is FALSE (an explicit `|V| = 19` inhabitant, both
 feasibility verdicts landed-lemma-certified; the caps above were the blind spot). Current
 argument state, the structure theorem that survives, and the routes out:
-`notes/Pencil-informal.md` §"`hnoGood'` vacuity".
+`notes/Pencil-W4-informal.md` §"`hnoGood'` vacuity".
 
 **The reshaped skeleton (L3′) and the W4-L5 interface (`hremove`) — supersedes the
 decomposition section's W4-L3 pin.** The skeleton `pencilPair_of_properRigid`
@@ -4112,7 +4112,7 @@ decomposition section's W4-L3 pin.** The skeleton `pencilPair_of_properRigid`
   conjuncts at `v` and its neighbours.
 - **Kernels** `hKc` / `hbareContract`: carried, unchanged. **`hnoGood'`**: carried,
   narrowed; ~~its research options are (i) prove the vacuity conjecture … or (ii) attack
-  it directly~~ — option (i) is **REFUTED** (2026-08-02, `notes/Pencil-informal.md`
+  it directly~~ — option (i) is **REFUTED** (2026-08-02, `notes/Pencil-W4-informal.md`
   §"`hnoGood'` vacuity"); the live options are now that section's routes 1–3.
 
 ## Higher-`d` note (orientation only, per the phase-open decision)

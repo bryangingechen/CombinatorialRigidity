@@ -6,7 +6,8 @@
 (2026-07-30). Only three items remain, all carried by the landed successor
 `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card` (`Molecule/Pencil/Escape.lean`):
 `hcontract` (W4), kernel `hK`, and kernel `hbareSplit` — see *Hand-off*. Kernel-(K) research
-is at its fifth docs-only pass (workbook `notes/Pencil-informal.md`).
+is at its fifth docs-only pass (workbook `notes/Pencil-informal.md`; the settled W4-residual
+arc split out to `notes/Pencil-W4-informal.md` on 2026-08-05).
 
 ## Current state
 
@@ -29,8 +30,10 @@ The landed headline `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card`
 (`Molecule/Pencil/Escape.lean`) carries exactly three open items — `hcontract` (W4), `hK`,
 `hbareSplit` — each detailed in *Hand-off*.
 
-**Kernel-(K) research arc — five docs+scripts-only dispatch days** (mathematics in the workbook
-`notes/Pencil-informal.md`, one-line records in *Decisions made*): **2026-08-02** — `hnoGood'`
+**Kernel-(K) research arc — five docs+scripts-only dispatch days** (mathematics in the
+kernel-(K) workbook `notes/Pencil-informal.md` — whose *State of (K)* map is the entry point —
+and, for the 2026-08-02 W4-residual verdicts, in `notes/Pencil-W4-informal.md`; one-line
+records in *Decisions made*): **2026-08-02** — `hnoGood'`
 vacuity REFUTED, (SAFE-RES) REFUTED, the routes-1/3 kernel widening PRICED ((K-res)), the
 (K-tight) carrier re-pin DONE. **2026-08-04** — (K-pitch)'s motion-side transfer + bracket
 monomial; the slide-in degeneration (naive collinear collapse REFUTED); the slide-transfer
@@ -49,15 +52,20 @@ than four hub positions), and `P21`-type parallel-`G°`-edge shapes. A fresh ses
 carried per the standing adjudications.
 
 **Numerics harness prepped (2026-08-05, prep commit — no mathematics, no `.lean`).** The
-`notes/scripts/` harness is now layered instead of sideways-wired, so a research dispatch pays
-no orientation tax: one canonical `sys.path` bootstrap (`notes/scripts/scriptpath.py`) replaces
-ten hand-rolled hacks in three idioms; the reimplemented exact-ℚ / Plücker primitives have one
-home (`notes/scripts/exactcore.py`); and **`notes/scripts/README.md`** carries the primitive
-index (job → canonical function → module), the layering map + import rule, the full driver
-invocation table, and the mandatory conventions. Same-named-but-different functions
-(`plane_basis`, `rvec3`, `build_rigidity`, …) were deliberately **not** merged — see that file's
-*Divergences*. Gated figure-invariant against a pristine pre-change tree at identical
-`PYTHONHASHSEED`: **67/67 documented driver invocations, 0 changed figures.**
+`notes/scripts/` harness is now layered: one canonical `sys.path` bootstrap
+(`notes/scripts/scriptpath.py`), one home for the reimplemented exact-ℚ / Plücker primitives
+(`notes/scripts/exactcore.py`), and **`notes/scripts/README.md`** as the entry point (primitive
+index, layering map + import rule, full driver invocation table, mandatory conventions, and the
+*Divergences* rows that must **not** be merged). Gated figure-invariant against a pristine
+pre-change tree: **67/67 documented driver invocations, 0 changed figures.**
+
+**Workbook split by arc (2026-08-05, second prep commit — no mathematics, no `.lean`, no
+figures).** The settled W4-residual arc (three closed sections; W4 itself parked) moved out of
+`notes/Pencil-informal.md` into **`notes/Pencil-W4-informal.md`** at full detail, so a (K)
+research dispatch reads only live material. The (K) workbook gained the canonical `W19`/`S29`
+definitions in its *Shared dictionary* and a one-screen **State of (K)** gap map — the artifact
+a future pass **updates** instead of re-deriving five section verdicts in sequence (where the
+fourth pass's acyclic-vs-proper colouring conflation hid). No verdict moved.
 
 File layout: `Molecule/Pencil.lean` split into
 `Molecule/Pencil/{Statement,Arms,Motive,Chart,Engine,Reseed,Witness,Steer,Pair,Pair2,Escape,
@@ -141,11 +149,11 @@ Full record, grounding, and the W0–W5 decomposition:
   the carried `hKc`/`hbareContract`/`hnoGood'`; the W4 build sequence awaits commissioning
   (the "B: L4 recon first" adjudication deferred it until the L4 recon — now complete).
   **`hnoGood'` is now known NON-vacuous** (2026-08-02) — branch 4 needs content; routes in
-  `notes/Pencil-informal.md` §"`hnoGood'` vacuity", adjudication owed. **(SAFE-RES) is
-  REFUTED** (same day); routes 1/3 now cost §(SAFE-RES)'s (T) + (V) + the reduced (E), with
-  (T) a genuine research gap (no landed lemma can decide it, and no certified search can see
-  it), plus **one** widened kernel (K-res) — `hbareSplit` is untouched (workbook §"widened
-  kernels (routes 1/3)").
+  the W4 workbook `notes/Pencil-W4-informal.md` §"`hnoGood'` vacuity", adjudication owed.
+  **(SAFE-RES) is REFUTED** (same day); routes 1/3 now cost §(SAFE-RES)'s (T) + (V) + the
+  reduced (E), with (T) a genuine research gap (no landed lemma can decide it, and no
+  certified search can see it), plus **one** widened kernel (K-res) — `hbareSplit` is
+  untouched (same file, §"widened kernels (routes 1/3)").
 - The full biconditional transport `ExtensorThroughPoint C q ↔ ExtensorInPanel (screwComplementIso
   C) q` (design doc's W0 pin) is landed only as its two forward implications; the reverse arms
   need a `complementIso` involution lemma, not in tree — deferred, not on any critical path.
@@ -177,12 +185,13 @@ exactly three remaining open items — **next concrete commit: pick any one, non
   (`notes/scripts/w4/no_good_search.py`) — but the vacuity conjecture is **REFUTED**
   (2026-08-02, `notes/scripts/w4/nogood_subdiv.py`, `|V| = 19` inhabitant): `hnoGood'`
   stays carried and branch 4 needs content. **Route ADJUDICATED (2026-08-02): route 3,
-  packaging (b)** — the structure-theorem-pinned dispatch invariant (§(SAFE-RES)'s (C7)/(C8)
-  two-way split at triangle-free residuals — *not* §(K-slide-comb)'s same-numbered labels),
+  packaging (b)** — the structure-theorem-pinned dispatch invariant (the W4 workbook
+  `notes/Pencil-W4-informal.md` §(SAFE-RES)'s (C7)/(C8) two-way split at triangle-free
+  residuals — *not* `notes/Pencil-informal.md` §(K-slide-comb)'s same-numbered labels),
   with **(K-res)** carried as a sibling hypothesis alongside the
   byte-identical `hK` (`hbareSplit` is unreachable at a residual) — **recorded, not built; W4
   stays parked**. The route's bundle: (K-res) + a residual-habitat L7a sibling + (T) + (V) +
-  the reduced (E)/(E-loc) of workbook §(SAFE-RES) — see workbook §"widened kernels
+  the reduced (E)/(E-loc) of W4-workbook §(SAFE-RES) — see that file's §"widened kernels
   (routes 1/3)" for the trace, statements, and exact-ℚ numerics
   (`notes/scripts/w4/widened.py`). **Next concrete commit (when the W4 build is
   commissioned): W4-L4b** — the co-1 identification lemma `exists_degree_two_of_co1_rigid`
@@ -287,6 +296,9 @@ neighbor — is `notes/IdeaBacklog.md`.
 Reverse-chronological, one line per landing; full derivations live in git and
 `notes/Phase39-design.md` (per-decision pointer where the design doc has a named section).
 
+- **Workbook split by arc + *State of (K)* map** (2026-08-05, prep; no mathematics, no verdict
+  changes) — `notes/Pencil-W4-informal.md` opened; `W19`/`S29` promoted to the shared
+  dictionary — *Current state*.
 - **Numerics-harness prep** (2026-08-05, no mathematics; 67/67 drivers re-run, 0 changed figures) — *Current state*.
 
 - **(K-slide-comb) REFUTED class-wide; the packing half made uniform ((C6)); (C2)'s length-4
@@ -346,28 +358,19 @@ Reverse-chronological, one line per landing; full derivations live in git and
   record: every target-rank seed escapes. Kernel narrowed to (K-move)/(K-pitch). Workbook
   §(K-tight); the design doc's (K)-sections carry dated pointers.
 
-- **W4 routes 1/3 kernel-widening cost PRICED — one kernel, not two; no counterexample**
-  (2026-08-02, docs+scripts-only, exact-ℚ `notes/scripts/w4/widened.py`) — only `hK` widens
-  (to **(K-res)**, best carried as a sibling hypothesis); `hbareSplit` is unreachable at a
-  residual. The (K) analysis's `s₀ = 0` step breaks (`dim R_a = 5 + def(G′) − def(G−v)`,
-  4192/4192; the residual habitat sits in the hard `dim R_a = 1` stratum) yet the escape
-  holds (8/8 at `W19`/`S29`, 94/96 pool-wide; non-escapes later shown sampler artifacts);
-  (E) reduced to a verbatim-prefix leaf + (E-loc) (255/255). Workbook §"widened kernels
-  (routes 1/3)". (The owed W4 route adjudication has since landed — route 3(b).)
-- **(SAFE-RES) REFUTED; successor (SAFE-RES′) pinned with two named gaps** (2026-08-02,
-  docs+scripts-only, `notes/scripts/w4/saferes.py`) — `S29` (`|V| = 29`, every branch `≤ 2`
-  interiors, all ear length in hub chains; `W19`-standard certification, third oracle).
-  Survives: (C7), the (C8) dichotomy, the branch count giving `κ ≥ 2` conditional on (E).
-  **(SAFE-RES′)** = (E) + (T) (not landed-reachable) + (V); 255/255 inhabitants satisfy all
-  three (evidence, not proof; first recorded as 281 in error). Workbook §(SAFE-RES).
-- **`hnoGood'` vacuity REFUTED; `notes/Pencil-informal.md` opened** (2026-08-02,
-  docs+scripts-only, `notes/scripts/w4/nogood_subdiv.py`) — `W19`, an explicit `|V| = 19`
-  inhabitant (`C₄` core, three degree-3 poles, three 4-interior paths), BOTH feasibility
-  verdicts landed-lemma-certified. Enabling tool: the **Ear Lemma** (rigid + ear of `j`
-  interior vertices stays rigid iff `j ≤ 5`), which pushes residual instances past the earlier
-  search's `|V| ≤ 13` / path-`≤ 3` caps. Survives: a structure theorem for the contraction
-  branch (maximal cluster ⟹ simple contraction, no `v*`-triangle, `hcard` fails only at `v*`
-  with ≥ 3 boundary hubs). `notes/Pencil-informal.md` §"`hnoGood'` vacuity".
+- **W4 routes 1/3 kernel-widening PRICED — one kernel, not two; no counterexample**
+  (2026-08-02) — only `hK` widens, to **(K-res)**, carried as a sibling of the byte-identical
+  `hK`; `hbareSplit` is unreachable at a residual. The `s₀ = 0` step breaks while the escape
+  holds; **(E)** reduces to a cheap `noRigid`-free leaf + **(E-loc)**. W4 workbook
+  `notes/Pencil-W4-informal.md` §"widened kernels (routes 1/3)"; `widened.py`.
+- **(SAFE-RES) REFUTED; successor (SAFE-RES′) open** (2026-08-02) — `S29` (`|V| = 29`, every
+  branch `≤ 2` interiors, all ear length in hub chains) refutes it; **(SAFE-RES′)** = (E) +
+  (T) + (V), 255/255 inhabitants, with **(T)** not landed-reachable and invisible to a
+  certified search. W4 workbook §(SAFE-RES); `saferes.py`.
+- **`hnoGood'` vacuity REFUTED; the PENCIL workbooks opened** (2026-08-02) — `W19`
+  (`|V| = 19`), both feasibility verdicts landed-lemma-certified, reached via the **Ear
+  Lemma**; branch 4 needs content, and the residual **structure theorem** at a maximal cluster
+  survives as route 3(b)'s pin. W4 workbook §"`hnoGood'` vacuity"; `nogood_subdiv.py`.
 - **The 2026-07-30 recon day (one-lined; every verdict is carried forward in the matching
   *Hand-off* bullet, which is the canonical home — full record `notes/Phase39-design.md` + git).**
   *(K) non-constancy recon — PARTIAL*: corank stratification by `index(G) = 5|E| - 6(|V|-1)`
