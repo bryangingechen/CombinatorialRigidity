@@ -1122,9 +1122,15 @@ shape's. §(K-flank) *F5(d)/(e)* then exhibits the **same** theta-circuit
 stress at `ε = 1`, on a nonempty locus of the pencil chart itself — so
 this obstruction is not confined to the limit.)
 
-**Division of labor, updated from Step 6(e).** `bc`-parallel shapes go
-to the companion forms (Steps 5/5b: monomial at `ℓ = 3`, (K-Λ) at
-`ℓ = 4`, the (T5) frame at `ℓ = 5, 6`). Non-`bc`-parallel shapes with no
+**Division of labor, updated from Step 6(e)** — *and revised 2026-08-05
+by §(K-Λ); the gap map's `P21` row is the canonical form.* `bc`-parallel
+shapes go to the companion forms (Steps 5/5b: the monomial at `ℓ = 3`;
+at `ℓ = 4` **(K-wit)**, since §(K-Λ) shows the companion form there is
+*equivalent* to it rather than an independent gap). At `ℓ = 5, 6` **the
+(T5) frame is REFUTED as the route** (§(K-Λ) *Step 7*), so those shapes
+need something else, none identified — a refutation of the *argument
+shape*, not of the conjecture or of their closability.
+Non-`bc`-parallel shapes with no
 length-≤4 `bc`-companion — exemplar `P21` — are covered by **neither**
 mechanism: closable per-split by Step-0 seed logic (P21's certificate
 seed escapes), but with no `G°`-local argument. The named residue:

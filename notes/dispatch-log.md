@@ -300,3 +300,19 @@ At phase close, promote stable entries into the coordinator command's
   an arc, price each pass as including a correction to the last one,
   and prefer commissioning the **next pass** over building on the
   current pass's optimistic residue.
+- **F12 — when a return flags a stale claim in a named cell, grep the
+  whole file: the same claim usually also sits in the body prose that
+  the cell summarizes (Phase 39 fan-out landing).** Direction B's return
+  explicitly flagged that directions A/C left a `(T5) frame at
+  ℓ = 5,6` route standing in the gap map's `P21` row, which its Step 7
+  refutes. The coordinator's landing spec pinned *that row*, and the
+  builder fixed it thoroughly — but the identical claim also lived in
+  §(K-slide) *Step 5*'s "Division of labor" prose, which the row
+  summarizes, and rode onto master asserting a route refuted by a
+  section landed in the same commit. Nothing gates this: no build, no
+  `checkdecls`, and the flagged cell *was* correct afterwards. The fix
+  is the scope-pin, not the builder — pin "every instance in the tree,
+  found by grep", exactly as the CLAUDE.md deletion/retirement variant
+  requires for deleted decl names. Generalization: a gap-map / status
+  table is a *summary* of body prose, so a correction to a summary row
+  is presumptively a correction to at least one body paragraph too.
