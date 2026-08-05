@@ -49,6 +49,9 @@ Reproduce:  cd notes/scripts/kbare && python3 danger.py
 """
 import random, time
 from fractions import Fraction as F
+import os, sys
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+import scriptpath  # noqa: F401,E402  -- canonical harness path bootstrap
 from kbare_common import *
 from gate1 import report_graph
 from gate2 import line_of_two_planes

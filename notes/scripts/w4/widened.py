@@ -41,10 +41,9 @@ import sys
 from fractions import Fraction as F
 from itertools import product
 
-_HERE = os.path.dirname(os.path.abspath(__file__))
-for _p in (_HERE, os.path.join(_HERE, '..', 'kbare'),
-           os.path.join(_HERE, '..', 'escape')):
-    sys.path.insert(0, _p)
+import os, sys
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+import scriptpath  # noqa: F401,E402  -- canonical harness path bootstrap
 
 from kbare_common import verts_of, neighbors, degrees, is_2ec
 import nogood_subdiv as ns

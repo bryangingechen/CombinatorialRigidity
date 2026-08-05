@@ -53,8 +53,9 @@ import random
 import sys
 from itertools import combinations, product
 
-sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                                '..', 'kbare'))
+import os, sys
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+import scriptpath  # noqa: F401,E402  -- canonical harness path bootstrap
 from kbare_common import (exact_deficiency, verts_of, neighbors, degrees,
                           is_2ec, closed_hub_nbhds)
 

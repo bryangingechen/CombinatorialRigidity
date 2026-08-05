@@ -2,6 +2,9 @@
 rank 84 / nullity 1 persist right up to the crossing (=> the failure config is a
 valid pencil realization, not a rank-dropping degeneracy)."""
 from fractions import Fraction as F
+import os, sys
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+import scriptpath  # noqa: F401,E402  -- canonical harness path bootstrap
 from probe_zero import build_config_parametric, escape_value
 
 cfg,a,b,c = build_config_parametric(1000)

@@ -48,6 +48,17 @@ than four hub positions), and `P21`-type parallel-`G°`-edge shapes. A fresh ses
 *Hand-off*: the W4 build (route 3(b), first commit W4-L4b) awaits commissioning; kernels stay
 carried per the standing adjudications.
 
+**Numerics harness prepped (2026-08-05, prep commit — no mathematics, no `.lean`).** The
+`notes/scripts/` harness is now layered instead of sideways-wired, so a research dispatch pays
+no orientation tax: one canonical `sys.path` bootstrap (`notes/scripts/scriptpath.py`) replaces
+ten hand-rolled hacks in three idioms; the reimplemented exact-ℚ / Plücker primitives have one
+home (`notes/scripts/exactcore.py`); and **`notes/scripts/README.md`** carries the primitive
+index (job → canonical function → module), the layering map + import rule, the full driver
+invocation table, and the mandatory conventions. Same-named-but-different functions
+(`plane_basis`, `rvec3`, `build_rigidity`, …) were deliberately **not** merged — see that file's
+*Divergences*. Gated figure-invariant against a pristine pre-change tree at identical
+`PYTHONHASHSEED`: **67/67 documented driver invocations, 0 changed figures.**
+
 File layout: `Molecule/Pencil.lean` split into
 `Molecule/Pencil/{Statement,Arms,Motive,Chart,Engine,Reseed,Witness,Steer,Pair,Pair2,Escape,
 Base}.lean`. Full per-leaf history: `notes/Phase39-design.md` §"W5 leaf decomposition" +
@@ -256,7 +267,14 @@ exactly three remaining open items — **next concrete commit: pick any one, non
 
 Gates for any continuation: `lake build` (warning-clean) + `lake lint` when `.lean` is touched;
 `blueprint/verify.sh` + `blueprint/lint.sh` (vocabulary gate bans "stratum"/"strata") when `.tex`
-is touched.
+is touched. **When `notes/scripts/` is touched**, the gate is figure invariance: baseline every
+driver in `notes/scripts/README.md` §3 before editing, re-run after, require byte-identical
+output at pinned `PYTHONHASHSEED` (that README's *Hard rule — figures do not move*).
+
+**Any (K)- or W4-side numerics dispatch starts from `notes/scripts/README.md`** — primitive index,
+layering map, invocation table, conventions (degeneracy guards + a rank/dimension assert on every
+sampled object are mandatory; the `plane_basis` precedent is cited there). Do not reimplement a
+primitive it lists, and do not merge a *Divergences* row.
 
 ## Adjacent directions (orientation only, not this phase)
 
@@ -268,6 +286,8 @@ neighbor — is `notes/IdeaBacklog.md`.
 
 Reverse-chronological, one line per landing; full derivations live in git and
 `notes/Phase39-design.md` (per-decision pointer where the design doc has a named section).
+
+- **Numerics-harness prep** (2026-08-05, no mathematics; 67/67 drivers re-run, 0 changed figures) — *Current state*.
 
 - **(K-slide-comb) REFUTED class-wide; the packing half made uniform ((C6)); (C2)'s length-4
   entry corrected ((C7))** (2026-08-05 fifth dispatch, docs+scripts-only, exact

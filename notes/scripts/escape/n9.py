@@ -18,6 +18,9 @@ N9b: H1 canonical-move completeness -- for EVERY far movable vertex of the H1
 """
 from fractions import Fraction as F
 import random, itertools
+import os, sys
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+import scriptpath  # noqa: F401,E402  -- canonical harness path bootstrap
 import pencil_escape as pe
 from pencil_escape import (build_rigidity, rank, left_nullspace, wedge2, hat, dot,
                            rvec3, rquat)
@@ -45,11 +48,9 @@ def theta_split_edges():
     E.append((H1v, 31))
     return E
 
-def neighbors(edges):
-    nb = {}
-    for u, w in edges:
-        nb.setdefault(u, set()).add(w); nb.setdefault(w, set()).add(u)
-    return nb
+# canonical home `exactcore.neighbors` (2026-08-05); NOT the 2-arg
+# `pencil_escape.neighbors_seeded`.
+from exactcore import neighbors   # noqa: E402
 
 def place_pencil(edges, rng, extra_inplane=()):
     """Pencil placement: hubs (deg>=3) get (pt, normal); deg-2 vertices adjacent

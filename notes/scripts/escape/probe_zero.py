@@ -11,12 +11,15 @@ dead.  Also do the same sweep for a hub-plane rotation parameter.
 """
 from fractions import Fraction as F
 import random
+import os, sys
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+import scriptpath  # noqa: F401,E402  -- canonical harness path bootstrap
 import pencil_escape as pe
 from pencil_escape import (double_subdivide, build_rigidity, rank, left_nullspace,
                            wedge2, hat, dot)
 
-def K4():
-    vs=[0,1,2,3]; return [(i,j) for i in vs for j in vs if i<j]
+# base graphs: canonical home `pencil_escape` (2026-08-05).
+from pencil_escape import K4   # noqa: E402
 
 def build_config_parametric(seed):
     """Return a function cfg(t) producing G' data with a's meet-line param = t,
@@ -37,6 +40,10 @@ def build_config_parametric(seed):
     normal = {h: pe.rvec3(rng) for h in hubs}
 
     def plane_basis(h):
+        # Nested clone of `localtest.plane_basis` (same DEGENERATE construction:
+        # parallel directions when a normal coordinate is 0).  Left in place --
+        # de-nesting it would make this driver import a sibling driver.  Robust
+        # successor: `repin.robust_plane_basis`.  README *Divergences*.
         n = normal[h]; basis=[]
         for e in ([F(1),F(0),F(0)],[F(0),F(1),F(0)],[F(0),F(0),F(1)]):
             proj = dot(e,n)/dot(n,n)

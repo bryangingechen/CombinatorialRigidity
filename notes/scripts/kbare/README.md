@@ -7,18 +7,23 @@ verdicts cited in `notes/Phase39-design.md` §"W5-L7 research recon", residue
 (ii) ("(K-bare) numerics gate PASSED 2026-07-30"). Moved here from a session
 scratchpad (`scratchpad/kbare/`) 2026-07-30 for reproducibility, per the
 project's *Never commit local machine paths* discipline (checked: none
-present) — kept byte-faithful to their original scratch form, not refactored.
-Independent of the `notes/scripts/escape/` scripts, which back kernel (K)
-instead (see that directory's own README).
+present). A **parallel** model layer to the `notes/scripts/escape/` scripts,
+which back kernel (K) instead (see that directory's own README); the two
+carriers' samplers and rigidity-matrix builders genuinely differ — see
+`notes/scripts/README.md` *Divergences*.
 
-Every script is standalone stdlib Python (no third-party dependencies).
-`gate1.py`/`gate2.py`/`stress_extra.py` import `kbare_common` (and, for
-`gate2.py`/`stress_extra.py`, `gate1.sample_spider_pencil`) as local siblings,
-so run with `python3 <script>.py` from this directory (the in-script
-docstrings say `cd scratchpad/kbare && python3 <script>.py` — that is the
-scripts' original scratch-relative reproduce note, left byte-faithful; from
-the repo root, `cd notes/scripts/kbare && python3 <script>.py` is the
-equivalent).
+**Start from `notes/scripts/README.md`** — the harness-wide primitive index,
+layering map, invocation table, and conventions. This file is the per-driver
+description list for this directory.
+
+Every script is stdlib-only Python (no third-party dependencies). Run from the
+**repo root** as `python3 notes/scripts/kbare/<script>.py`; the canonical
+`scriptpath` bootstrap (2026-08-05) makes the working directory irrelevant, so
+the in-script docstrings' `cd scratchpad/kbare && …` reproduce notes are
+historical only. The exact-ℚ linear algebra and Plücker primitives
+`kbare_common` used to define now live in `notes/scripts/exactcore.py` and are
+re-exported from `kbare_common` under their original names (`rank_exact` is
+`exactcore.rank`), so `from kbare_common import *` is unchanged.
 
 | script | role | backs |
 |---|---|---|

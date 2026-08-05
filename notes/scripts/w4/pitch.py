@@ -47,10 +47,9 @@ import random
 import sys
 from fractions import Fraction as F
 
-_HERE = os.path.dirname(os.path.abspath(__file__))
-for _p in (_HERE, os.path.join(_HERE, '..', 'kbare'),
-           os.path.join(_HERE, '..', 'escape')):
-    sys.path.insert(0, _p)
+import os, sys
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+import scriptpath  # noqa: F401,E402  -- canonical harness path bootstrap
 
 from repin import (seed_probe, hodge_star, span_basis, in_span, rank_at_V,
                    lambda2_plane)
@@ -75,9 +74,8 @@ def Q(x):
     return klein(x, x)
 
 
-def cross3(u, v):
-    return [u[1] * v[2] - u[2] * v[1], u[2] * v[0] - u[0] * v[2],
-            u[0] * v[1] - u[1] * v[0]]
+# canonical home `exactcore.cross3` (2026-08-05); re-exported for `kslidecl`.
+from exactcore import cross3   # noqa: E402,F401
 
 
 # ---------------- theta graphs (tight members with a length-3 path) --------

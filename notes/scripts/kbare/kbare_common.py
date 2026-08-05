@@ -35,59 +35,21 @@ from fractions import Fraction as F
 import random
 from array import array
 
+import os, sys
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+import scriptpath  # noqa: F401,E402  -- canonical harness path bootstrap
+
+# Exact-Q linear algebra + Plucker primitives + 1-arg `neighbors`: canonical
+# home is `notes/scripts/exactcore.py` (this file used to reimplement them
+# alongside `escape/pencil_escape.py`).  Re-exported here under exactly the
+# names this module used to define -- `rank_exact` is `exactcore.rank` -- so
+# every `from kbare_common import *` consumer sees an unchanged namespace.
+from exactcore import (rref, nullspace, dot, PL, wedge2, hat,   # noqa: E402,F401
+                       perp_basis, neighbors, rank as rank_exact)
+
 P61 = (1 << 61) - 1  # Mersenne prime
 
 # ---------------- exact-Q linear algebra ----------------
-
-def rref(M):
-    M = [row[:] for row in M]
-    if not M:
-        return M, []
-    rows, cols = len(M), len(M[0])
-    piv = []
-    r = 0
-    for c in range(cols):
-        pr = None
-        for i in range(r, rows):
-            if M[i][c] != 0:
-                pr = i
-                break
-        if pr is None:
-            continue
-        M[r], M[pr] = M[pr], M[r]
-        inv = F(1) / M[r][c]
-        M[r] = [x * inv for x in M[r]]
-        for i in range(rows):
-            if i != r and M[i][c] != 0:
-                f = M[i][c]
-                M[i] = [a - f * b for a, b in zip(M[i], M[r])]
-        piv.append(c)
-        r += 1
-        if r == rows:
-            break
-    return M, piv
-
-def rank_exact(M):
-    if not M:
-        return 0
-    _, p = rref(M)
-    return len(p)
-
-def nullspace(M):
-    if not M:
-        return []
-    cols = len(M[0])
-    R, piv = rref(M)
-    pivset = set(piv)
-    free = [c for c in range(cols) if c not in pivset]
-    basis = []
-    for fc in free:
-        v = [F(0)] * cols
-        v[fc] = F(1)
-        for ri, pc in enumerate(piv):
-            v[pc] = -R[ri][fc]
-        basis.append(v)
-    return basis
 
 def rank_modp(M, p=P61):
     """Rank over GF(p).  Lower bound for rational rank (equality generically)."""
@@ -124,22 +86,6 @@ def rank_modp(M, p=P61):
             break
     return rk
 
-def dot(u, v):
-    return sum((a * b for a, b in zip(u, v)), F(0))
-
-# ---------------- Plucker ----------------
-
-PL = [(0, 1), (0, 2), (0, 3), (1, 2), (1, 3), (2, 3)]
-
-def wedge2(Pt, Q):
-    return [Pt[i] * Q[j] - Pt[j] * Q[i] for (i, j) in PL]
-
-def hat(c):
-    return [c[0], c[1], c[2], F(1)]
-
-def perp_basis(v):
-    return nullspace([v])
-
 # ---------------- graph utilities ----------------
 
 def verts_of(edges):
@@ -148,13 +94,6 @@ def verts_of(edges):
         vs.add(u)
         vs.add(w)
     return sorted(vs, key=str)
-
-def neighbors(edges):
-    nb = {}
-    for u, w in edges:
-        nb.setdefault(u, set()).add(w)
-        nb.setdefault(w, set()).add(u)
-    return nb
 
 def degrees(edges):
     d = {}
@@ -409,7 +348,14 @@ def rnonzero3(rng):
             return v
 
 def plane_basis(nvec3):
-    """Two independent directions orthogonal (Euclidean) to spatial normal."""
+    """Two independent directions orthogonal (Euclidean) to spatial normal.
+
+    DEGENERATE, same defect as `localtest.plane_basis`: when a coordinate of
+    `nvec3` is 0 the first two accepted directions are PARALLEL, so
+    `point_in_plane3` samples a line.  This is that same construction cleared
+    of denominators, hence a DIFFERENT scalar multiple — the two are NOT
+    interchangeable, and merging them would move recorded figures.  Robust
+    successor: `repin.robust_plane_basis`.  README *Divergences*."""
     basis = []
     for e in ([F(1), F(0), F(0)], [F(0), F(1), F(0)], [F(0), F(0), F(1)]):
         d = [e[i] * dot(nvec3, nvec3) - dot(e, nvec3) * nvec3[i] for i in range(3)]

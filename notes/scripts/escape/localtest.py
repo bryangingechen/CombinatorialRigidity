@@ -19,6 +19,9 @@ localization gate FAILS.  If both are far-invariant -> locality supported.
 """
 from fractions import Fraction as F
 import random, itertools
+import os, sys
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+import scriptpath  # noqa: F401,E402  -- canonical harness path bootstrap
 import pencil_escape as pe
 from pencil_escape import (double_subdivide, build_rigidity, rank, left_nullspace,
                            wedge2, hat, dot, rvec3, rquat)
@@ -26,6 +29,16 @@ from pencil_escape import (double_subdivide, build_rigidity, rank, left_nullspac
 # ---------- standalone local-geometry helpers (decoupled from any rng closure) ----------
 
 def plane_basis(n):
+    """DEGENERATE SAMPLER — kept verbatim as the record of what was measured.
+
+    Whenever a coordinate of `n` is 0 this returns two PARALLEL in-plane
+    directions, so `in_plane_point` samples a LINE rather than the plane.
+    That is the defect behind the corrected `widened.py` escape figures
+    (`--validate` 11/12, `--sample` 94/96; see the w4 README).  The robust
+    successor is `repin.robust_plane_basis`; use that in any new work.
+    NOT interchangeable with `kbare_common.plane_basis`, which is the same
+    construction cleared of denominators — a different scalar multiple, hence
+    different sampled points.  See `notes/scripts/README.md` *Divergences*."""
     basis = []
     for e in ([F(1),F(0),F(0)],[F(0),F(1),F(0)],[F(0),F(0),F(1)]):
         proj = dot(e, n) / dot(n, n)
@@ -71,15 +84,9 @@ def sample_local(seed):
 
 # ---------- habitat assembly with a fixed local block ----------
 
-def K4():
-    vs = [0,1,2,3]
-    return [(i,j) for i in vs for j in vs if i < j]
-
-def K5_minus_matching():
-    vs = [0,1,2,3,4]
-    E = [(i,j) for i in vs for j in vs if i < j]
-    E.remove((0,1)); E.remove((2,3))
-    return E
+# base graphs: canonical home `pencil_escape` (2026-08-05); re-exported here
+# because `n9` / `localtest_zeros` import them from this module.
+from pencil_escape import K4, K5_minus_matching   # noqa: E402,F401
 
 def build_cfg(base_edges, chain_idx, local, far_seed):
     """G' = (dbl-subdiv base)^{ab}_v with the given fixed local block and

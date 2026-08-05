@@ -1,10 +1,12 @@
 import random, sys
+import os, sys
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+import scriptpath  # noqa: F401,E402  -- canonical harness path bootstrap
 from pencil_escape import (sample_pencil_split, escape_test, double_subdivide,
                            build_rigidity, rank)
 
-def K4():
-    vs = [0,1,2,3]
-    return [(i,j) for i in vs for j in vs if i<j]
+# base graphs: canonical home `pencil_escape` (2026-08-05).
+from pencil_escape import K4, K5_minus_matching   # noqa: E402,F401
 
 def wheel(n):
     """W_n: hub 0, rim 1..n in a cycle."""
@@ -14,12 +16,6 @@ def wheel(n):
     for i in range(1, n+1):
         j = i+1 if i < n else 1
         E.append((min(i,j), max(i,j)))
-    return E
-
-def K5_minus_matching():
-    vs=[0,1,2,3,4]
-    E=[(i,j) for i in vs for j in vs if i<j]
-    E.remove((0,1)); E.remove((2,3))
     return E
 
 def prism_plus_diag():

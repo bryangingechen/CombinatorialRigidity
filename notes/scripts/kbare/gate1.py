@@ -16,6 +16,9 @@ attaining sample.
 Reproduce:  cd scratchpad/kbare && python3 gate1.py
 """
 import random, sys, time
+import os, sys
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+import scriptpath  # noqa: F401,E402  -- canonical harness path bootstrap
 from kbare_common import *
 
 def sample_spider_pencil(edges, meta, rng):

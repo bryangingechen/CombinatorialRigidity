@@ -44,9 +44,9 @@ import random
 import sys
 from itertools import combinations, product
 
-_HERE = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, _HERE)
-sys.path.insert(0, os.path.join(_HERE, '..', 'kbare'))
+import os, sys
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+import scriptpath  # noqa: F401,E402  -- canonical harness path bootstrap
 
 from kbare_common import exact_deficiency, verts_of, neighbors, degrees, is_2ec
 from nogood_subdiv import (D_BODY, MULT, deficiency, is_rigid, is_simple,

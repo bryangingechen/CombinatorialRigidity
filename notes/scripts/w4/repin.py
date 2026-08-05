@@ -43,10 +43,9 @@ import random
 import sys
 from fractions import Fraction as F
 
-_HERE = os.path.dirname(os.path.abspath(__file__))
-for _p in (_HERE, os.path.join(_HERE, '..', 'kbare'),
-           os.path.join(_HERE, '..', 'escape')):
-    sys.path.insert(0, _p)
+import os, sys
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+import scriptpath  # noqa: F401,E402  -- canonical harness path bootstrap
 
 from widened import (orient, removeV, splitOff, place_pencil_general,
                      split_report, residuals, prime_pool, W19, f_of)
@@ -89,14 +88,18 @@ def hodge_star(w):
 
 # ---------------- panel spans ----------------------------------------------
 
-def cross(u, v):
-    return [u[1] * v[2] - u[2] * v[1], u[2] * v[0] - u[0] * v[2],
-            u[0] * v[1] - u[1] * v[0]]
+# canonical home `exactcore.cross3`; the local name stays `cross` (2026-08-05).
+from exactcore import cross3 as cross   # noqa: E402
 
 
 def robust_plane_basis(n):
-    """Two independent in-plane directions, valid for ANY nonzero normal
-    (`localtest.plane_basis` degenerates when a normal coordinate is 0)."""
+    """Two independent in-plane directions, valid for ANY nonzero normal.
+
+    THE canonical in-plane sampler basis.  `localtest.plane_basis` /
+    `probe_zero`'s nested clone / `kbare_common.plane_basis` all degenerate
+    (return two PARALLEL directions) when a normal coordinate is 0 — the
+    defect behind the corrected `widened.py` escape figures.  Prefer this one
+    in any new work; see `notes/scripts/README.md` *Divergences*."""
     for e in ([F(1), F(0), F(0)], [F(0), F(1), F(0)], [F(0), F(0), F(1)]):
         b0 = cross(n, e)
         if any(x != 0 for x in b0):

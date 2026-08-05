@@ -9,6 +9,9 @@ Two questions:
 from fractions import Fraction as F
 import random, functools
 print = functools.partial(print, flush=True)
+import os, sys
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+import scriptpath  # noqa: F401,E402  -- canonical harness path bootstrap
 from probe_zero import build_config_parametric
 import pencil_escape as pe
 from pencil_escape import (build_rigidity, rank, left_nullspace, wedge2, hat, dot,

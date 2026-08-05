@@ -21,85 +21,28 @@ Split: Case III removes an interior degree-2 vertex v of a chain b-v-a-c
 from fractions import Fraction as F
 import random, itertools
 
-# ---------- exact-Q linear algebra ----------
+import os, sys
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+import scriptpath  # noqa: F401,E402  -- canonical harness path bootstrap
 
-def rref(M):
-    """Reduced row echelon form (list of list of Fraction). Returns (R, pivots)."""
-    M = [row[:] for row in M]
-    if not M:
-        return M, []
-    rows = len(M); cols = len(M[0])
-    pivots = []
-    r = 0
-    for c in range(cols):
-        # find pivot in column c at or below row r
-        piv = None
-        for i in range(r, rows):
-            if M[i][c] != 0:
-                piv = i; break
-        if piv is None:
-            continue
-        M[r], M[piv] = M[piv], M[r]
-        inv = F(1) / M[r][c]
-        M[r] = [x * inv for x in M[r]]
-        for i in range(rows):
-            if i != r and M[i][c] != 0:
-                f = M[i][c]
-                M[i] = [a - f * b for a, b in zip(M[i], M[r])]
-        pivots.append(c)
-        r += 1
-        if r == rows:
-            break
-    return M, pivots
+# Exact-Q linear algebra + Plucker primitives: canonical home is
+# `notes/scripts/exactcore.py` (this file used to reimplement them alongside
+# `kbare/kbare_common.py`).  Re-exported here, so every existing
+# `from pencil_escape import ...` consumer is unaffected.
+from exactcore import (rref, rank, nullspace, left_nullspace, dot,   # noqa: E402,F401
+                       PL, wedge2, hat, perp_basis)
 
-def rank(M):
-    if not M: return 0
-    _, p = rref(M)
-    return len(p)
+# ---------- base graphs (shared by the escape drivers) ----------
 
-def nullspace(M):
-    """Basis of {x : M x = 0} (right null space), as list of column-vectors."""
-    if not M:
-        return []
-    cols = len(M[0])
-    R, piv = rref(M)
-    pivset = set(piv)
-    free = [c for c in range(cols) if c not in pivset]
-    basis = []
-    for fcol in free:
-        vec = [F(0)] * cols
-        vec[fcol] = F(1)
-        for ri, pc in enumerate(piv):
-            vec[pc] = -R[ri][fcol]
-        basis.append(vec)
-    return basis
+def K4():
+    vs = [0,1,2,3]
+    return [(i,j) for i in vs for j in vs if i < j]
 
-def left_nullspace(M):
-    """Basis of {y : y^T M = 0} = nullspace of M^T."""
-    if not M: return []
-    rows = len(M); cols = len(M[0])
-    MT = [[M[i][j] for i in range(rows)] for j in range(cols)]
-    return nullspace(MT)
-
-def dot(u, v):
-    return sum((a * b for a, b in zip(u, v)), F(0))
-
-# ---------- Plucker / exterior ----------
-
-# index order for Lambda^2 of R^4 (basis e0,e1,e2,e3):
-PL = [(0,1),(0,2),(0,3),(1,2),(1,3),(2,3)]
-
-def wedge2(P, Q):
-    """P,Q in Q^4 -> P^Q in R^6 (Plucker coords, order PL)."""
-    return [P[i]*Q[j] - P[j]*Q[i] for (i,j) in PL]
-
-def hat(c):
-    """homogenize a Q^3 point -> Q^4 as (x,y,z,1)."""
-    return [c[0], c[1], c[2], F(1)]
-
-def perp_basis(v):
-    """basis of {w in R^6 : w . v = 0} (5-dim if v != 0)."""
-    return nullspace([v])  # 1 x 6 matrix
+def K5_minus_matching():
+    vs = [0,1,2,3,4]
+    E = [(i,j) for i in vs for j in vs if i < j]
+    E.remove((0,1)); E.remove((2,3))
+    return E
 
 # ---------- graph construction ----------
 
@@ -122,7 +65,11 @@ def double_subdivide(base_edges):
     allverts = sorted(set(itertools.chain.from_iterable(edges)))
     return edges, hubs, chains, allverts
 
-def neighbors(edges, allverts):
+def neighbors_seeded(edges, allverts):
+    """Adjacency map with a key pre-seeded for EVERY vertex of `allverts`, so
+    isolated vertices survive as empty sets.  Renamed from `neighbors` (2026-08-05)
+    to stop colliding with the 1-arg `exactcore.neighbors`, which keys only the
+    vertices the edge list touches — see README *Divergences*."""
     nb = {v: set() for v in allverts}
     for u, w in edges:
         nb[u].add(w); nb[w].add(u)
@@ -153,7 +100,7 @@ def sample_pencil_split(base_edges, split_chain_index, rng):
         edges2.append((p, q))
     edges2.append((b, a))  # fresh ab   (= u - y)
     Vp = sorted(set(itertools.chain.from_iterable(edges2)))
-    nb = neighbors(edges2, Vp)
+    nb = neighbors_seeded(edges2, Vp)
 
     # sample planes at hubs (all base vertices are hubs, deg>=3 in the subdivision)
     pt = {}

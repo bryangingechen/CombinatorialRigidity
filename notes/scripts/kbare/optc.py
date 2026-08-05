@@ -51,6 +51,9 @@ Reproduce:  cd notes/scripts/kbare && python3 optc.py c1|c2|c3
 import random, sys, time
 from fractions import Fraction as F
 from itertools import product
+import os, sys
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+import scriptpath  # noqa: F401,E402  -- canonical harness path bootstrap
 from kbare_common import *
 from gate2 import line_of_two_planes
 from danger import dz_gadget, sample_dz_pencil

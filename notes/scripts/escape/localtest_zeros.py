@@ -2,6 +2,9 @@
 block (seed 500), sweep t and bisect the zero t* of E(t) per far placement.
 Faster evaluator: one rref (left nullspace) per eval; rank derived from nullity."""
 from fractions import Fraction as F
+import os, sys
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+import scriptpath  # noqa: F401,E402  -- canonical harness path bootstrap
 from localtest import (sample_local, build_cfg, K4, K5_minus_matching)
 from pencil_escape import build_rigidity, left_nullspace, wedge2, hat, dot
 

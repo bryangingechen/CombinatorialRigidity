@@ -17,6 +17,9 @@ Reproduce:  cd scratchpad/kbare && python3 stress_extra.py
 """
 import random
 from fractions import Fraction as F
+import os, sys
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+import scriptpath  # noqa: F401,E402  -- canonical harness path bootstrap
 from kbare_common import *
 from gate1 import sample_spider_pencil
 

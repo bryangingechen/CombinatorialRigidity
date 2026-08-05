@@ -1,9 +1,23 @@
-# Phase 39 W4 (`hcontract`) recon — contraction-arm hybrid gates
+# Phase 39 W4 (`hcontract`) recon — and the whole kernel-(K) continuation
+
+**Start from `notes/scripts/README.md`** — the harness-wide primitive index,
+layering map, full invocation table (including `kslidecl.py` / `kslidecomb.py`,
+which this file does not describe), and conventions. This file is the
+per-driver description list for this directory.
+
+**The directory name is stale, deliberately so.** `w4/` was opened for the
+`hcontract` (W4) arm, but it now also carries the kernel-(K) continuation —
+`(K-tight)` (`repin.py`), `(K-pitch)` (`pitch.py`), `(K-slide)` (`kslide.py`),
+`(K-slide-cl)` (`kslidecl.py`), `(K-slide-comb)` (`kslidecomb.py`). A rename is
+churn until the (K) arc closes; see `notes/scripts/README.md` *Deliberate
+non-goals*.
 
 Exact-ℚ numerics for the W4 decomposition recon (2026-07-30); results and
 the decomposition they feed are in `notes/Phase39-design.md`
-§"W4 decomposition recon". Shared infrastructure imported from
-`../kbare/kbare_common.py` (model-to-Lean dictionary in its docstring).
+§"W4 decomposition recon". The drivers here form a chain (each builds on the
+previous arc's machinery), sitting on the two model layers
+`../kbare/kbare_common.py` and `../escape/pencil_escape.py` and, under those,
+the shared primitives in `../exactcore.py`.
 
 - `hybrid_gates.py [nsamples]` — the four gates:
   - **N8** K4 via triangle contraction (the bare-kernel `(K-bare-c)` shape:
@@ -216,3 +230,28 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
     rank 5; reduced: the theta sub-multigraph, 12 edges rank 6).
 
   Argument state: `notes/Pencil-informal.md` §(K-slide).
+
+- `kslidecl.py [--k4 | --battery [0-3] | --mixed | --hubhub | --scope]` — the
+  **tetrahedral collapse** (2026-08-04, fourth pass): the WW87 Thm-2.18
+  specialization inside the decoration variety that factors the `(K-slide)`
+  limit system into six scalar forest systems, reducing `(K-slide-cl)` to the
+  combinatorial `(K-slide-comb)`. Per member it asserts `def = 0`, the
+  per-edge chain-span dimension, independence of the assigned basis lines, the
+  transversal identities `klein(L, C) = 0`, then (W1)–(W4) with the `V_bc`
+  structure and Gram identities. `--scope` validates both
+  dictionary-completeness lemmas (the `def = ℓ − 6` exemplar; the exhaustive
+  length-6 sweep, 5848/5848). Exact-ℚ, on top of `repin.py`/`pitch.py`/
+  `kslide.py`. Per-mode assertion list: `notes/Pencil-informal.md`
+  §(K-slide-cl) *Verification*.
+
+- `kslidecomb.py [--battery | --pack | --k5 | --acyclic | --flanks | --dict4 |
+  --relaxed | --k4full | --sweep]` — the **combinatorial residue**
+  (2026-08-05, fifth pass), which **REFUTES `(K-slide-comb)` class-wide**: the
+  colouring premise fails at 5-chromatic `G°` and at acyclicity-obstructed
+  `G°`. Surviving positive content: `--pack` proves **(C6)** (the unrestricted
+  6-fold base packing exists at every class shape, Edmonds matroid partition)
+  and `--dict4` proves **(C7)** ((C2)'s length-4 "forced" entry is wrong,
+  12/12 exact witnesses). Every shape is re-certified by `shape_ok` = tight
+  count + `def = 0` + `hnoRigid`. Exact ℚ/ℤ, on top of the whole chain.
+  Per-mode assertion table: `notes/Pencil-informal.md` §(K-slide-comb)
+  *Verification*.
