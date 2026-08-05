@@ -30,57 +30,49 @@ The landed headline `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card`
 (`Molecule/Pencil/Escape.lean`) carries exactly three open items — `hcontract` (W4), `hK`,
 `hbareSplit` — each detailed in *Hand-off*.
 
-**Kernel-(K) research arc — six docs+scripts-only dispatch days** (mathematics in the
-kernel-(K) workbook `notes/Pencil-informal.md` — whose *State of (K)* map is the entry point —
-and, for the 2026-08-02 W4-residual verdicts, in `notes/Pencil-W4-informal.md`; one-line
-records in *Decisions made*): **2026-08-02** — `hnoGood'`
-vacuity REFUTED, (SAFE-RES) REFUTED, the routes-1/3 kernel widening PRICED ((K-res)), the
-(K-tight) carrier re-pin DONE. **2026-08-04** — (K-pitch)'s motion-side transfer + bracket
-monomial; the slide-in degeneration (naive collinear collapse REFUTED); the slide-transfer
-theorem (S1), closing the `K4`/`W4` control habitats at **every** split (23/23 witnesses), with
-parallel `G°`-edges proven order-0-obstructed; then the tetrahedral collapse, reducing
-(K-slide-cl) to the combinatorial (K-slide-comb). **2026-08-05 — (K-slide-comb) is REFUTED
-class-wide** (workbook §(K-slide-comb); `notes/scripts/w4/kslidecomb.py`): 5-chromatic (`K5`)
-and acyclicity-obstructed hub graphs both sit in the class, so the tetrahedral collapse is a
-*sub-class* device and **(K-slide-cl) is back to open** — but its packing half is now uniform
-and proven ((C6), Edmonds matroid partition from 5/6-sparsity alone), (C2)'s length-4 entry is
-corrected, and **(C7)** (the repaired dictionary) is the named continuation. **2026-08-05
-(sixth pass, fan-out direction A) — the conjecture HOLDS at every uncovered flank** (workbook
-§(K-flank); `notes/scripts/w4/flanks.py`): no disproof, no `hK` re-pin, (K-pitch) closed at all
-16 flank splits, and class uniformity untouched.
+**Kernel-(K) research arc — seven docs+scripts-only research dispatches** (the workbook's sixth
+pass; mathematics in the kernel-(K) workbook `notes/Pencil-informal.md` — whose *State of (K)*
+map is the entry point — and, for the 2026-08-02 W4-residual verdicts, in
+`notes/Pencil-W4-informal.md`; one line per landing in *Decisions made*, the canonical record).
+**2026-08-02** — `hnoGood'` vacuity and (SAFE-RES) REFUTED, the routes-1/3 kernel widening
+PRICED ((K-res)), the (K-tight) carrier re-pin DONE. **2026-08-04** — (K-pitch)'s motion-side
+transfer + bracket monomial; the slide-in degeneration (naive collinear collapse REFUTED); the
+slide-transfer theorem (S1), closing the `K4`/`W4` control habitats at **every** split (23/23);
+then the tetrahedral collapse, reducing (K-slide-cl) to the combinatorial (K-slide-comb).
+**2026-08-05** — **(K-slide-comb) REFUTED class-wide** (5-chromatic and acyclicity-obstructed
+hub graphs sit in the class, so the collapse is a *sub-class* device), with its packing half made
+uniform ((C6)) and (C7) named; then the three-way fan-out: **A** — the conjecture **HOLDS** at
+every uncovered flank (no disproof, no `hK` re-pin, (K-pitch) closed at all 16 flank splits);
+**C** — the pure condition is the **wrong invariant**, **(K-slide-cl) REFUTED as stated** by the
+chord obstruction (PC-OBS), and **5 of the 6** probed flank shapes CLOSED by reduced slide
+supports. Class uniformity is untouched by either.
 
-Remaining uniform (K) gaps: **(K-Λ)**, **(K-slide-cl)** (routes: (C7), or a decoration with more
-than four hub positions), and `P21`-type parallel-`G°`-edge shapes — none of them moved by the
-sixth pass, which is per-shape. Canonical status home for all of them: the workbook's
-**State of (K)** gap map.
+Remaining uniform (K) gaps: **(K-Λ)** (direction B's target, landing next), the **`∃Σ`-repaired
+(K-slide-cl)** with its successor residue **(K-chord)**, and `P21`-type parallel-`G°`-edge
+(K-res) shapes — none closed by the fan-out, which is per-shape. Canonical status home for all
+of them: the workbook's **State of (K)** gap map.
 
-**Next concrete work: land research fan-out directions B and C — `notes/Pencil-fanout.md`
-(*Landing checklist*).** The three-way fan-out is **dispatched**, and direction **A is LANDED**
-(2026-08-05, workbook §(K-flank)): the conjecture holds at every uncovered flank, so the pivot
-rule does **not** fire and nothing about the phase's target changes. **B** ((K-Λ)'s
-quadric-avoidance) and **C** (the White–Whiteley pure condition un-specialized) are still to
-land, each by that checklist — re-run every cited driver *and* its headline figures, merge into
-`notes/Pencil-informal.md`, update the matching *State of (K)* row(s), commit the new script,
-add one ≤8-line entry here. The 2026-08-05 user adjudication (verbatim in that file) holds the
-Lean back until the research yields *"an informal proof or disproof or any results that would be
-significant as standalone pieces of math"*, so **W4 stays parked even though it is fully
-decomposed and buildable**.
+**Next concrete work: land research fan-out direction B — `notes/Pencil-fanout.md`
+(*Landing checklist*).** Directions **A and C are LANDED** (2026-08-05; workbook §(K-flank) and
+§(K-pure)): A found no disproof, so the pivot rule does **not** fire and nothing about the
+phase's target changes; C refuted its own strategy while proving (PC-Z)/(PC-OBS) and closing 5 of
+6 flank shapes. **B** ((K-Λ)'s quadric-avoidance) is the one still to land, by that checklist —
+re-run every cited driver *and* its headline figures, merge into `notes/Pencil-informal.md`,
+update the matching *State of (K)* row(s) (**read B's return against the (K-Λ) row**, which C
+annotated), commit the new script, add one ≤8-line entry here. The 2026-08-05 user adjudication
+(verbatim in that file) holds the Lean back until the research yields *"an informal proof or
+disproof or any results that would be significant as standalone pieces of math"*, so **W4 stays
+parked even though it is fully decomposed and buildable**.
 
-**Numerics harness prepped (2026-08-05, prep commit — no mathematics, no `.lean`).** The
-`notes/scripts/` harness is now layered: one canonical `sys.path` bootstrap
-(`notes/scripts/scriptpath.py`), one home for the reimplemented exact-ℚ / Plücker primitives
-(`notes/scripts/exactcore.py`), and **`notes/scripts/README.md`** as the entry point (primitive
-index, layering map + import rule, full driver invocation table, mandatory conventions, and the
-*Divergences* rows that must **not** be merged). Gated figure-invariant against a pristine
-pre-change tree: **67/67 documented driver invocations, 0 changed figures.**
-
-**Workbook split by arc (2026-08-05, second prep commit — no mathematics, no `.lean`, no
-figures).** The settled W4-residual arc (three closed sections; W4 itself parked) moved out of
-`notes/Pencil-informal.md` into **`notes/Pencil-W4-informal.md`** at full detail, so a (K)
-research dispatch reads only live material. The (K) workbook gained the canonical `W19`/`S29`
-definitions in its *Shared dictionary* and a one-screen **State of (K)** gap map — the artifact
-a future pass **updates** instead of re-deriving five section verdicts in sequence (where the
-fourth pass's acyclic-vs-proper colouring conflation hid). No verdict moved.
+**Harness + workbook prep (2026-08-05, two prep commits — no mathematics, no `.lean`, no changed
+figures).** `notes/scripts/` is layered behind one `sys.path` bootstrap (`scriptpath.py`) and one
+primitives home (`exactcore.py`), with **`notes/scripts/README.md`** as the entry point (primitive
+index, layering map + import rule, invocation table, mandatory conventions, the *Divergences* rows
+that must **not** be merged); gated figure-invariant at **67/67** documented invocations. The
+settled W4-residual arc moved to **`notes/Pencil-W4-informal.md`** at full detail, so a (K)
+dispatch reads only live material, and the (K) workbook gained the canonical `W19`/`S29`
+definitions plus the one-screen **State of (K)** gap map — the artifact a pass now *updates*
+instead of re-deriving section verdicts in sequence. No verdict moved.
 
 File layout: `Molecule/Pencil.lean` split into
 `Molecule/Pencil/{Statement,Arms,Motive,Chart,Engine,Reseed,Witness,Steer,Pair,Pair2,Escape,
@@ -186,7 +178,7 @@ exactly three remaining open items, detailed below.
 
 > **Next concrete commit** — see *Current state* (authoritative; this is a thin pointer so the
 > two cannot drift): land the next returned direction of the research fan-out,
-> **`notes/Pencil-fanout.md`** *Landing checklist* (A **landed**; B and C outstanding). The
+> **`notes/Pencil-fanout.md`** *Landing checklist* (A and C **landed**; B outstanding). The
 > 2026-08-05 adjudication holds the Lean back pending a standalone-significant informal result,
 > so **W4 stays parked** despite being fully decomposed and buildable — do **not** open a W4
 > build without a fresh user adjudication.
@@ -259,6 +251,15 @@ neighbor — is `notes/IdeaBacklog.md`.
 Reverse-chronological, one line per landing; full derivations live in git and
 `notes/Phase39-design.md` (per-decision pointer where the design doc has a named section).
 
+- **Fan-out direction C LANDED — the pure condition is the WRONG INVARIANT; (K-slide-cl) REFUTED
+  as stated; 5 of 6 flanks closed by reduced supports** (2026-08-05 seventh dispatch,
+  docs+scripts-only, exact-ℚ `notes/scripts/w4/pure.py`) — WW87's pure condition is a *rank*
+  certificate (Cor. 2.7 = (W1) ∧ (W2)) and cannot see (W4); **(PC-Z)** is the exact reformulation
+  (`Q(z) = 0 ⟺ V_bc` meets `α(a)` or `Λ²π̂`), **(PC1)–(PC3)/(PC-OBS)** the arc's first
+  identically-vanishing-pitch theorem, governed by `R_3`-dependence — a **different** refutation
+  from §(K-slide-comb)'s colouring one (statement vs antecedent). Thm 2.18 does **not** transfer;
+  **(K-chord)** is the successor residue; **option B not required**. Workbook §(K-pure).
+
 - **Fan-out direction A LANDED — the pencil conjecture HOLDS at every uncovered flank; no
   disproof, no pivot** (2026-08-05 sixth dispatch, docs+scripts-only, exact-ℚ
   `notes/scripts/w4/flanks.py`) — half 2 proven-informally **per shape** by exact `∃`-witnesses
@@ -268,10 +269,9 @@ Reverse-chronological, one line per landing; full derivations live in git and
   join the (K-slide) battery); a **∀-realization** escape form REFUTED at `P21`. **Class
   uniformity untouched.** Workbook §(K-flank).
 
-- **Workbook split by arc + *State of (K)* map** (2026-08-05, prep; no mathematics, no verdict
-  changes) — `notes/Pencil-W4-informal.md` opened; `W19`/`S29` promoted to the shared
-  dictionary — *Current state*.
-- **Numerics-harness prep** (2026-08-05, no mathematics; 67/67 drivers re-run, 0 changed figures) — *Current state*.
+- **Harness + workbook prep** (2026-08-05, two commits; no mathematics, no verdict changes; 67/67
+  drivers re-run, 0 changed figures) — `notes/scripts/README.md` as the harness entry point;
+  `notes/Pencil-W4-informal.md` opened; `W19`/`S29` + the *State of (K)* map — *Current state*.
 
 - **(K-slide-comb) REFUTED class-wide; the packing half made uniform ((C6)); (C2)'s length-4
   entry corrected ((C7))** (2026-08-05 fifth dispatch, docs+scripts-only, exact

@@ -298,3 +298,48 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
 
   Argument state and per-mode assertion table: `notes/Pencil-informal.md`
   §(K-flank).
+
+- `pure.py [--chord | --flanks | --support | --pure | --parallel]` — the
+  **pure condition of the slide-in limit carrier, un-specialized** (2026-08-05,
+  sixth pass; research fan-out direction C), which asks whether the
+  class-uniform escape can be settled by a non-vanishing theorem for
+  White–Whiteley 1987's pure condition instead of by the tetrahedral collapse.
+  Result: **NO, and the reason is a mismatch of invariants** — the pure
+  condition is a *rank* certificate (WW87 Cor. 2.7), which for the limit
+  carrier is (W1) ∧ (W2), while the escape's obstruction at the uncovered
+  flanks is **(W4)**, a question about the Klein *quadric*. Positive residue:
+  **(PC-Z)** (`Q(z) = 0` ⟺ `V_bc` meets `α(a)` or `Λ²π̂`) and
+  **(PC1)–(PC3)/(PC-OBS)**, the arc's first *proven* identically-vanishing-pitch
+  theorem, governed by `R_3`-dependence of the hub-point framework; plus the
+  slide **support** as the lever, which rescues 5 of the 6 probed flank shapes.
+  Exact ℚ throughout, on top of `repin.py`/`pitch.py`/`kslide.py`/
+  `kslidecomb.py`; every limit system is built from an honest `repin.seed_probe`
+  chart seed (a hand-rolled decoration need not be chart-realizable, so it would
+  not transfer under (S1)). Run with `PYTHONHASHSEED=0`.
+  - `--chord` (~45 s): **(PC1)** as a length/support rule against the *measured*
+    `C_uw ∈ R_P` (90 `G°`-edge instances over 6 shapes); **(PC2)**+**(PC3)** by
+    assembling the chord stress as an explicit row combination of the actual
+    limit rows and checking its covector is a nonzero multiple of the `C_bc`
+    load; then the **census** — over the 23 candidate hub graphs with
+    `|V°| ≤ 6`, `R_3`-dependence ⟺ Maxwell-overbraced (5 dependent, 18
+    independent; smallest `K5`, `|E°| = 10 > 9`).
+  - `--flanks` (~385 s): full-support (W1)–(W4) verdicts at 13 shapes (2
+    pitched controls, 5 `K5`, the 6v11e and `K222` flanks, 3 menu-blocked `K4`,
+    θ(3,4,5)), each with the chord predictor asserted against the verdict.
+  - `--support` (~384 s): the 5-support menu (full; no slide at `c`; at `b`; at
+    both; nowhere) at 3 `K5` shapes, 6v11e, `K222`, θ(3,4,5) — rescue = `≥ 1`
+    full witness at a **nonempty** support, which is what (S1) consumes;
+    `Σ = ∅` is reported separately as the `ε = 1` chart (where (S1) is vacuous)
+    and then closed by the transfer certificate ((T1)–(T3) + `Q(r) ≠ 0`).
+  - `--pure` (~187 s): the invariant mismatch — (W1) ∧ (W2) at every valid seed
+    while `Q(z) = 0` at every one, at 4 class shapes (14/14, 12/12, 12/12,
+    11/11); plus the **free-bar contrast** showing WW87 Thm 2.18 cannot transfer
+    to the decoration variety (θ(3,4,5), `P21`, `K5`).
+  - `--parallel` (~4 s): the corrected parallel-`G°`-edge row — at θ(3,4,5)
+    (W1) and (W2) hold and the obstruction is the chord stress at (W4), not
+    (S5) at (W1); and `def(C_k) = 0 ⟺ k ≤ 6`, so `hnoRigid` forces
+    `ℓ₁ + ℓ₂ ≥ 7` on a parallel pair (which puts the (S5) `(3,3)` mechanism
+    outside the tight class).
+
+  Argument state and per-mode assertion table: `notes/Pencil-informal.md`
+  §(K-pure).

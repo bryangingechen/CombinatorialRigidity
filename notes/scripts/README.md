@@ -94,6 +94,7 @@ into a new file. Names in **bold** live in the base layer.
 | rigidity rows from **explicit hinge extensors** | `build_rigidity_extensors` | `hybrid_gates` |
 | rigidity rows from **explicit hinge lines** (the slide-limit systems) | `rows_from_lines` | `pitch` |
 | target rank / max pencil rank of a graph | `pencil_rank`, `pencil_rank_max` | `kbare_common`, `widened` |
+| dimension of the projective **bar-and-joint** self-stress space in 3-space, at explicit points (the `R_3` matroid of the hub graph; multigraph-safe) | `bar_stress_dim` | `pure` |
 
 The two `build_rigidity`s take different arguments and return different tuples
 — see *Divergences*.
@@ -120,8 +121,11 @@ The two `build_rigidity`s take different arguments and return different tuples
 | per-seed escape probe (rank, stress, criterion) | `seed_probe` | `repin` |
 | transfer certificate (T1)–(T3) + `Q(r)` | `transfer_probe` | `pitch` |
 | slide-in degeneration at `ε`, plus its projective limit | `slide_probe`, `slide_line` | `pitch` |
+| reduced **slide-support** menu: the slid interiors at one hub / every slid interior | `hub_side_interiors`, `all_slid` | `pure` |
 | spider / dangerous-gadget / DZ pencil samplers | `sample_spider_pencil`, `sample_dz_pencil` | `gate1`, `danger` |
 | witness check: every conjunct of `HasPencilPanelRealization` | `verify_pencil_witness` | `kbare_common` |
+| witness check: all four conjuncts of `IsNondegPencilRealization` (on top of the previous row) | `nondeg_conjuncts` | `flanks` |
+| per-vertex closed-**star rank** — the genericity guard against the `plane_basis` artifact | `star_span_ranks` | `flanks` |
 | point on a plane / on the meet line of two planes | `point_in_plane3`, `line_of_two_planes` | `kbare_common`, `gate2` |
 | meet line of two planes → `(p0, dir)` | `meet_line` | `localtest` |
 
@@ -176,7 +180,8 @@ before touching any of them.** `rvec3` likewise.
         +-----------------+-----------------+
                           |
                   w4/ DRIVER STACK (deepest last)
-   nogood_subdiv -> saferes -> widened -> repin -> pitch -> kslide -> kslidecl -> kslidecomb
+   nogood_subdiv -> saferes -> widened -> repin -> pitch -> kslide -> kslidecl
+        -> kslidecomb -> {flanks, pure}   (siblings; neither imports the other)
 ```
 
 Three layers:
@@ -193,7 +198,11 @@ Three layers:
   `saferes` (tree-packing oracle, `w29`) → `widened` (hub-hub-safe placement) →
   `repin` (robust sampler, escape criterion) → `pitch` (Klein form, transfer) →
   `kslide` (limit witnesses) → `kslidecl` (tetrahedral collapse) →
-  `kslidecomb` (the combinatorial residue).
+  `kslidecomb` (the combinatorial residue) → and then **two sibling leaves** on
+  top of it, from the kernel-(K) research fan-out: `flanks` (the adversarial
+  rank test at the uncovered flanks) and `pure` (the limit carrier's pure
+  condition, the chord obstruction, the slide-support menu). Neither imports the
+  other, so a further (K)-arc driver goes *beside* them, not through them.
 
 **The rule for a new script.** Import **downward** only:
 
@@ -312,6 +321,11 @@ arcs too.
 | `python3 notes/scripts/w4/flanks.py --pitch` | 65 s | ibid. ((K-pitch) at all 16 flank splits) |
 | `python3 notes/scripts/w4/flanks.py --rzero` | 84 s | ibid. (the `dim R_a = 0` stratum at `P21`) |
 | `python3 notes/scripts/w4/flanks.py --limit` | 762 s | ibid. (the full-support slide limit at the flanks) |
+| `python3 notes/scripts/w4/pure.py --chord` | 45 s | workbook §(K-pure) ((PC1)–(PC3) and the `R_3` census) |
+| `python3 notes/scripts/w4/pure.py --flanks` | 385 s | ibid. (full-support (W1)–(W4) at 13 shapes) |
+| `python3 notes/scripts/w4/pure.py --support` | 384 s | ibid. (the 5-support menu; 5 of 6 flank shapes rescued) |
+| `python3 notes/scripts/w4/pure.py --pure` | 187 s | ibid. (the invariant mismatch; the free-bar contrast) |
+| `python3 notes/scripts/w4/pure.py --parallel` | 4 s | ibid. (the corrected parallel-`G°`-edge row) |
 
 Per-driver prose — *what* each mode asserts — stays in the three per-directory
 READMEs (`escape/README.md`, `kbare/README.md`, `w4/README.md`). This table is
