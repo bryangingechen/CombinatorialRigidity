@@ -64,11 +64,13 @@ for *organizing* this directory is here.
   what the KT formalization did and did not yield as extractable technique,
   **three candidate stronger inductive invariants** — of which C1 (dominance of
   the `V_bc` map) was adjudicated, run and struck on 2026-08-05, its verdict in
-  `Pencil-informal.md` §(K-dom) — and the **symbolic-computation assessment** (the harness is
-  exact-pointwise with hand-rolled univariate interpolation only; Macaulay2 is
-  installed, sandbox-verified, never used, and would upgrade §(K-Λ)'s
-  38-strata evidence to a class-uniform proof — plus the conventions it would
-  need first). Strategy, **not** mathematics: every mathematical claim points at
+  `Pencil-informal.md` §(K-dom) — and the **symbolic-computation assessment**
+  (the Python harness is exact-pointwise with hand-rolled univariate
+  interpolation only; its §5.4 **Macaulay2 layer is now LANDED** —
+  `notes/scripts/m2/`, opened 2026-08-05 with `lambda1.m2`, which turned
+  §(K-Λ)'s (Λ1) into an identity over the function field — and the *next*
+  symbolic step, §5.3's first item, would upgrade §(K-Λ)'s 38-strata evidence to
+  a class-uniform proof). Strategy, **not** mathematics: every mathematical claim points at
   the workbook section that owns it, and its §§2–4 *diagnoses* carry no driver —
   they are arguments a successor should attack rather than assume. Read it
   before choosing the phase's direction; `notes/Phase39.md` *Current state* is

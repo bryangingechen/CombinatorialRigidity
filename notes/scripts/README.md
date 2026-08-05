@@ -1,8 +1,10 @@
 # `notes/scripts` — the Phase-39 PENCIL numerics harness
 
 Exact-ℚ (`fractions.Fraction`; **no floating point anywhere**) stdlib-only
-Python backing the Phase-39 PENCIL research arcs. It is an *audit trail*: every
-numeric figure quoted in the two PENCIL workbooks
+Python — plus, since 2026-08-05, **one Macaulay2 symbolic layer** (`m2/`, the
+single stated exception to "stdlib-only Python"; read `m2/README.md` before
+touching it) — backing the Phase-39 PENCIL research arcs. It is an *audit
+trail*: every numeric figure quoted in the two PENCIL workbooks
 (`notes/Pencil-informal.md`, `notes/Pencil-W4-informal.md`) and in
 `notes/Phase39-design.md` is produced by a driver here, and the workbooks'
 *Verification* blocks cite the exact command line.
@@ -12,23 +14,76 @@ primitive already exists (so you don't reimplement one); §2 tells you where a
 new module goes; §3 is the reproduce table; §4 is the mandatory discipline;
 *Divergences* lists the same-named-but-different functions that must **not** be
 merged; *Deliberate non-goals* lists two things a future session should leave
-alone.
+alone. §§1–4 are about the **Python** harness; the M2 layer adds four
+conventions of its own on top of them (`m2/README.md`), the first of which is
+that its output is *evidence*, never a substitute for a Lean proof.
+
+**Hard rule — every script the project runs is committed.** Standing user
+requirement (2026-08-05): *"in general, I would like all of the scripts we run
+to be committed for reproducibility"*. A script that produced a figure, a
+verdict, or a decision is part of the audit trail, so it is tracked in the
+commit that uses it — never left in a scratch directory, never quoted from a
+transcript, never described in prose in place of the file. This covers
+throwaway probes too: if a probe's answer gets written into a note, the probe
+becomes a driver here (or its answer is recorded as *measured, script not
+retained*, explicitly). Check: `git status --porcelain notes/scripts/` is clean
+at commit time, and `git ls-files notes/scripts/` lists every file the commit
+message cites.
 
 **Hard rule — invocation paths are frozen.** Drivers are cited as
-`python3 notes/scripts/<dir>/<name>.py <flags>`, run from the repo root. Do not
-move or rename a script file, and do not change a driver flag: that would
-invalidate recorded reproduce commands. This is also why the tree is
-deliberately **not** a Python package (a package needs `python3 -m`).
+`python3 notes/scripts/<dir>/<name>.py <flags>` (and `M2 --script
+notes/scripts/m2/<name>.m2`), run from the repo root. Do not move or rename a
+script file, and do not change a driver flag: that would invalidate recorded
+reproduce commands. This is also why the tree is deliberately **not** a Python
+package (a package needs `python3 -m`).
 
 **Hard rule — figures do not move.** These outputs are the evidence behind
-landed adjudications. Any refactor must be verified figure-invariant: baseline
-every driver in §3 *before* editing, re-run after, and require byte-identical
-output. Pin `PYTHONHASHSEED=0` on both passes (a few drivers print a `set`,
-whose iteration order is otherwise randomized per process) and ignore only the
-wall-clock seconds a driver prints about itself. The 2026-08-05 rewire that
-created `scriptpath.py` / `exactcore.py` was gated exactly this way: 67/67
-invocations, 65 byte-identical, 2 identical modulo their own timing print, 0
-changed figures.
+landed adjudications, and a refactor must never move one. The gate that
+enforces this is **triggered by what the commit actually touches** — it is not
+an unconditional "re-run everything":
+
+- **No tracked driver modified → the gate discharges by that check alone.**
+  Run
+
+  ```
+  git diff --name-only -- '*.py' '*.m2'   # and --cached for anything staged
+  git status --porcelain notes/scripts/   # staged / untracked additions
+  ```
+
+  and record the result as evidence in the commit message. A commit that only
+  *adds* a driver, or only edits prose, **cannot** move an existing figure: no
+  existing driver's code path changed, so there is nothing for a re-run to
+  detect. Baselining all of §3 in that case buys nothing — it cost ~62
+  baseline-plus-re-run pairs on the 2026-08-05 `673cfbf3` dispatch and
+  established exactly what the one-line `git diff` establishes.
+- **A tracked driver IS modified → the full obligation stands.** Baseline
+  *before* editing, re-run after, require byte-identical output — for that
+  driver **and every driver that imports it**. §2's layering map gives the
+  import closure: touching `exactcore.py` or `scriptpath.py` means everything;
+  touching `pitch.py` means `kslide`, `kslidecl`, `kslidecomb`, `lambda`, and
+  transitively `flanks` / `pure` / `dominance`; touching a leaf driver means
+  only that driver.
+- **Strictness is unchanged when it fires.** Pin `PYTHONHASHSEED=0` on both
+  passes (a few drivers print a `set`, whose iteration order is otherwise
+  randomized per process). Byte-identical means byte-identical. The one
+  documented exception is the wall-clock seconds a driver prints about itself
+  (`flanks.py`) — ignore that line and nothing else. The M2 layer's version
+  line is the analogous exception, with its own re-baselining procedure
+  (`m2/README.md` convention 2).
+
+The 2026-08-05 rewire that created `scriptpath.py` / `exactcore.py` is the
+model of the second bullet firing in full: 67/67 invocations, 65 byte-identical,
+2 identical modulo their own timing print, 0 changed figures.
+
+**Two invocations do not fit a 600 s foreground budget** — `flanks.py --limit`
+(762 s) and `lambda.py --adv` (536 s). Recorded here so a dispatch plans around
+it instead of rediscovering it: they are why the "re-run everything" reading of
+this rule was not even *completable* on the 2026-08-05 dispatch, in exactly the
+case where it was also vacuous. When a driver they depend on **does** change,
+the gate is satisfied for them by running each one on its own, in the
+foreground, as the commit's last step with nothing else competing, and quoting
+its verdict line in the commit message. The obligation is not waivable by
+budget: if that does not fit the sitting, the commit does not land.
 
 ## 0. The path bootstrap
 
@@ -202,9 +257,14 @@ before touching any of them.** `rvec3` likewise.
    nogood_subdiv -> saferes -> widened -> repin -> pitch -> kslide -> kslidecl
         -> kslidecomb -> {flanks, pure, lambda}  -> dominance
                               (siblings; none imports another)
+
+
+   m2/  SYMBOLIC LAYER (Macaulay2; no import edge to any of the above)
+   lambda1.m2 ...        re-derives the primitives it needs, and pins each
+                         re-derivation against its Python original in-driver
 ```
 
-Three layers:
+Three layers, plus one **language island**:
 
 - **Base** — `exactcore.py`. Pure, deterministic, rng-free primitives. No
   harness imports except `scriptpath`.
@@ -233,6 +293,15 @@ Three layers:
   rule 2 below, **a third consumer of `star_span_ranks` is the signal to move it
   down to `repin`** (re-exporting from `flanks` so the recorded figures do not
   move); with two consumers the move is not yet worth the figure-gate cost.
+- **The M2 island** — `m2/`. Macaulay2, not Python, so there is **no import
+  edge** in either direction: an M2 driver cannot reuse a §1 primitive and must
+  re-derive the ones it needs. That is a licensed exception to rule 3 below and
+  the reason `m2/README.md` convention 3 requires each re-derivation to name its
+  canonical Python home *and* to pin the convention with a check inside the
+  driver (`lambda1.m2`'s (M0) and the `cross4` argument-order check in (M1)).
+  The island is **additive only**: it exists for questions the exact-pointwise
+  Python harness structurally cannot answer, never to re-implement one it
+  already answered (`m2/README.md` convention 4).
 
 **The rule for a new script.** Import **downward** only:
 
@@ -367,9 +436,21 @@ arcs too.
 | `python3 notes/scripts/w4/dominance.py --far` | 28 s | ibid. (the (T5) far block `3(k−3)`, attained) |
 | `python3 notes/scripts/w4/dominance.py --validate` | 19 s | ibid. (three models for `V_bc`; two derivative routes; the secant test) |
 
-Per-driver prose — *what* each mode asserts — stays in the three per-directory
-READMEs (`escape/README.md`, `kbare/README.md`, `w4/README.md`). This table is
-the canonical **invocation** list; those are the canonical descriptions.
+### `m2/` — the Macaulay2 symbolic layer
+
+Not Python: these run under `M2`, still from the repo root, and their output is
+**evidence, never a substitute for Lean** (`m2/README.md` convention 1). The
+pinned M2 version is **1.26.06**, printed by every driver as its second output
+line and treated as part of the figure.
+
+| invocation | ~time | cited by |
+|---|---|---|
+| `M2 --script notes/scripts/m2/lambda1.m2` | 1 s | workbook §(K-Λ) *Step 2* ((Λ1) as an identity over the function field) |
+
+Per-driver prose — *what* each mode asserts — stays in the four per-directory
+READMEs (`escape/README.md`, `kbare/README.md`, `w4/README.md`,
+`m2/README.md`). This table is the canonical **invocation** list; those are the
+canonical descriptions.
 
 ## 4. Conventions — mandatory
 
@@ -409,6 +490,19 @@ the canonical **invocation** list; those are the canonical descriptions.
 Consolidating any row below would change recorded figures. They are separate
 functions that happen to share a name; each is reachable from §1 under its own
 row.
+
+**This discipline extends across the language boundary.** Every primitive
+re-derived on the M2 side is a **divergence candidate**: it cannot import its
+Python original, so it is a genuine second implementation of a §1 row, and
+nothing but a check makes the two agree. The rule (`m2/README.md` convention 3)
+is that each re-derivation names its canonical Python home at the definition
+*and* is pinned by an explicit in-driver check — `lambda1.m2`'s (M0) pins the
+bracket dictionary `B(C(uv), C(pq)) = [u,v,p,q]` that ties its Plücker order,
+`hodge_star` and `klein` to `exactcore` / `repin` / `pitch`, and its (M1) pins
+`cross4`'s sign and argument order. If an M2 re-derivation is ever found to
+*differ* from its original, it becomes a row in the table below like any other
+same-name-different-semantics pair — **do not** silently "fix" either side: the
+Python figures are frozen, and §4 convention 5 applies.
 
 | name | the divergence | ruling |
 |---|---|---|

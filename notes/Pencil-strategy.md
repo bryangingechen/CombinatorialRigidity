@@ -323,9 +323,14 @@ thing to check first.
 ### 5.1 What the harness does today
 
 `notes/scripts/` is **exact ℚ** (`fractions.Fraction`, no floating point
-anywhere), **stdlib-only** Python. Verified 2026-08-05: no CAS has ever been used
-in this repo — zero references to sympy / Macaulay2 / Gröbner / numpy / scipy in
-`notes/` or `CombinatorialRigidity/`; sympy is not installed.
+anywhere), **stdlib-only** Python. Verified 2026-08-05: no CAS had ever been
+used in this repo — zero references to sympy / Macaulay2 / Gröbner / numpy /
+scipy in `notes/` or `CombinatorialRigidity/`; sympy is not installed.
+
+> **Superseded the same day, in one direction only.** The Macaulay2 layer
+> `notes/scripts/m2/` now exists (§5.4). Everything above still describes the
+> **Python** harness, which is unchanged and whose figures are frozen; `m2/` is
+> the single stated exception and is *additive*.
 
 The only symbolic capability is **hand-rolled and univariate**: `pitch.py`'s
 `lagrange_coeffs`, with `lambda.py`'s `poly_of` / `scal_poly_of` / `poly_deg` /
@@ -363,40 +368,78 @@ structurally cannot.
 
 **Others, in rough order of value.** (i) Is the pullback of the bad
 hypersurface's equation identically zero on the image of the `V_bc` map? — an
-elimination question, and the exact form of §2.4's open problem. (ii) Verify
-(Λ1)'s 16-entry bracket identity symbolically rather than per-frame. (iii)
-(K-chord)/`R_3` questions for parameterized families.
+elimination question, and the exact form of §2.4's open problem. ~~(ii) Verify
+(Λ1)'s 16-entry bracket identity symbolically rather than per-frame.~~ —
+**DONE 2026-08-05**, and it was the layer's deliberate first consumer precisely
+because its answer was already known, so a mis-configured M2 layer would show
+up immediately (`M2 --script notes/scripts/m2/lambda1.m2`; mathematics in
+`notes/Pencil-informal.md` §(K-Λ) *Step 2*). It verified, and it came with two
+things the per-frame battery could not give: (Λ1) needs **none** of (Λ0) and
+none of the panel data, and `rank Φ_loc = 2` is now generic rather than
+observed. (iii) (K-chord)/`R_3` questions for parameterized families.
+
+**One measured feasibility datum, from that first driver.** The **ungauged**
+end-to-end (Λ1) expansion — all 28 point coordinates indeterminate, degree 52 —
+does **not** finish (killed at 600 s). The gauge slice (fix `b, x₁, x₂, x₃` to
+the standard basis; `g = [b|x₁|x₂|x₃]⁻¹` is the unique GL(4) element doing so,
+so the slice meets every orbit once and the identity transports) runs in ~1 s.
+The margin between those two is the practical boundary of this layer, and it
+confirms the paragraph below: budget for the *local frame*, never the whole
+graph.
 
 **Why this is plausible rather than fantasy:** Gröbner blowup makes whole-graph
 symbolic work hopeless (a `|V| = 31` shape carries ~120 point coordinates), so it
 is viable only on the **local frame** — 6 points, two panels, a meet line — which
 is precisely where §5.3's first item lives.
 
-### 5.4 Macaulay2 — availability and the conventions it would need
+### 5.4 Macaulay2 — the layer, and its conventions (**LANDED 2026-08-05**)
 
-`M2` is on `PATH` and **runs in the sandbox today**: verified 2026-08-05 by a
-`M2 --script` Gröbner computation from a temp directory. Only the
-run-in-a-temp-dir pattern is confirmed; reading/writing inside the repo may need
-sandbox directories added.
+**The layer exists.** `notes/scripts/m2/`, opened 2026-08-05 together with its
+first driver `lambda1.m2` (§5.3 item (ii)); its own README carries the four
+conventions below in binding form, and `notes/scripts/README.md` names it in
+§2's layering map and §3's invocation table. This section is now a pointer plus
+the sandbox record; **read `notes/scripts/m2/README.md` before touching it.**
 
-Introducing it is a **new harness layer** and needs its own conventions before
-the first figure is quoted:
+**Sandbox mechanics — established, not assumed.** The earlier note recorded only
+the run-in-a-temp-dir pattern as confirmed and flagged repo-internal I/O as
+possibly needing sandbox directories added. Re-verified directly on 2026-08-05,
+and it is better than that: `M2` is on `PATH` (version **1.26.06**), a
+`M2 --script` on a path *inside* the repo runs with `currentDirectory()` = the
+repo root, and M2 can both **read and write** files inside the repo (probed by a
+write / read-back / `removeFile` round trip and by reading a tracked file). No
+sandbox directories had to be added, and M2 does not need its application
+directory to exist. A failing `assert` exits **non-zero**, so an M2 driver
+satisfies the harness's "non-zero exit or missing verdict line = failure" rule
+directly.
+
+The four conventions, as landed (full text: `notes/scripts/m2/README.md`):
 
 - **Status of its output.** Evidence for the workbook, at the same standing as
   the numerics — **never** a substitute for Lean. The project formalizes
   everything its argument uses (`DESIGN.md` *Formalize everything the argument
   uses*); "verified in Macaulay2" is not a proof the project may cite in place
-  of a formalization.
-- **Reproducibility.** `notes/scripts/README.md`'s *Hard rule — figures do not
-  move* must extend to it: pin the M2 version, make every run deterministic and
-  seed-printed, and add each invocation to §3's table. An external binary is a
-  reproducibility surface the current rules do not cover.
-- **Placement.** A `notes/scripts/m2/` directory with its own README, named in
-  §2's layering map. The README's opening "stdlib-only Python" line needs
-  amending, and the *Divergences* discipline should be extended to any primitive
-  reimplemented on the M2 side.
-- **Do not port existing drivers.** Figure invariance and the frozen invocation
-  paths mean M2 is *additive* — for new questions only.
+  of a formalization, and no blueprint node may take `\leanok` on the strength
+  of an M2 run. Written first in that README because it is the convention most
+  likely to erode: M2 output *reads* like a proof in a way a table of sampled
+  ranks does not.
+- **Reproducibility.** The M2 version is **pinned (1.26.06) and printed as every
+  driver's second output line**, so it is part of the figure and an upgrade
+  shows up as a diff rather than as a silent change of meaning; every run is
+  deterministic and prints `randomness: none`; each invocation is in
+  `notes/scripts/README.md` §3. The re-baselining procedure after an M2 upgrade
+  is spelled out there (re-run, require every line but the version line
+  byte-identical, move the pin in the same commit; any other moved line is a
+  genuine figure change and goes through the workbook).
+- **Placement.** `notes/scripts/m2/` with its own README; the harness README's
+  opening "stdlib-only Python" line now names it as the single exception. The
+  *Divergences* discipline is extended across the language boundary: an M2
+  driver cannot import a §1 primitive, so every re-derivation is a divergence
+  *candidate* and must name its Python home and be pinned by an in-driver check
+  (`lambda1.m2`'s (M0) and its `cross4` argument-order check).
+- **Do not port existing drivers.** M2 is *additive* — for new questions only.
+  `lambda.py --witt` keeps its 23 frames and its figures unchanged; the M2
+  result is recorded as an **upgrade of the confidence verdict**, with both
+  cited.
 
 ## 6. Hand-off
 
@@ -412,9 +455,18 @@ direction is set:
   §(K-dom)). Rank **9** at every class habitat probed, **4** (a proven cap) at
   the `k = 3` (K-res) family; C1's inductive and locality-reframing claims both
   refuted, so C1 is **not** a route to uniformity and is not a live direction.
-- **If the direction is the symbolic upgrade:** §5.3's first item — re-do
-  §(K-Λ)'s (Λ0) spans at the generic point of the local frame in Macaulay2, and
-  land §5.4's conventions in the same commit as the first M2 driver.
+- **If the direction is the symbolic upgrade:** **IN PROGRESS.** §5.4's
+  conventions and the first M2 driver landed together on 2026-08-05, with
+  §5.3's item (ii) — (Λ1) — as the deliberately-low-risk first consumer
+  (verified; §(K-Λ) *Step 2*). The **next** step is §5.3's *first* item, and it
+  is where the mathematics is: re-do §(K-Λ)'s **(Λ0) spans at the generic point
+  of the local frame**, turning the 38-strata exact-witness evidence into a
+  class-uniform statement. It is a strictly harder computation than (Λ1) — the
+  spans `span_t ω⁺(t)`, `span_t ω⁻(t)` are computed *along the `a`-line*, so
+  the sliding parameter `t` joins the indeterminates and the object is a rank
+  statement over `ℚ(frame)[t]` rather than a single polynomial identity — and
+  the (Λ1) run's measured feasibility boundary (§5.3) is the budget to plan
+  against.
 - **If the direction is C3 (mixed stratum):** first question is combinatorial and
   needs no geometry — can KT's reduction always avoid a prescribed vertex
   set `S`? Read Phase 20's generation theorem before scoping.

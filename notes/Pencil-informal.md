@@ -149,10 +149,10 @@ all in this file.
 | escape criterion | (K-tight) 0–3 | **proven-informally** (attainment ⟺ two `U`-functionals independent; combined failure ⟺ `★r ∥ C(M)`); 80/80 per-placement | — settled; not a gap |
 | **(K-tight)** | (K-tight) 5 | **open**, true with strong evidence; no genuine escape failure anywhere in the corrected numerics **on the hard stratum `dim R_a = 1`** (and above it) — the claim is **false without that qualifier**: §(K-flank) F5(d) exhibits 5 legal nondegenerate target-rank `G′` seeds at `P21` with `s₀ = 1`, `dim R_a = 0`, `dim U = 1`, which the Step-2.3 calculus *proves* fail at every placement (8/8 observed each); `hK`'s ∃-form is untouched (30/35 escape) | (K-move) or (K-pitch) |
 | **(K-move)** | (K-tight) 5 | **open — the sharpest gap** on the stress side; N8 refutes block-determined `[r]` at both probed families | `[r]`-as-chart-rational-function infrastructure (option B, **not** commissioned) |
-| **(K-pitch)** | (K-pitch); (K-pure) P3; (K-Λ) | (T1)–(T5) **proven-informally**; **closed** at length-3-companion splits (bracket monomial, θ(3,3,6)); uniform form **open**. Step 2's (F-A)/(F-B) dichotomy is **upgraded to the algebraic form (PC-Z)** (§(K-pure), proven-informally): `Q(z) = 0 ⟺ V_bc` meets `α(a)` or `Λ²π̂`, the only two maximal totally isotropic 3-spaces containing `T` — the exact target of any future non-vanishing argument (its *reason* is Witt's theorem — §(K-Λ) *Step 1*). The `ℓ = 3` verdict is unchanged but now has a **two-line proof that *explains* its five brackets**: they are the coordinate form of `S ∩ α_a = S ∩ β_{π_a} = 0` (§(K-Λ) *Step 1*(i)). The bracket **closed form extends from `ℓ = 3` to `ℓ = 4`**, as a **product of two bracket-linear forms in the far covector** ((Λ1)) — a positive standalone result, but **not** a non-vanishing theorem: its zero locus is nonempty exactly at the two structurally meaningful configurations | one seed with `Q(z) ≠ 0` per (graph, split), uniformly — by (PC-Z), one seed where `V_bc` misses **both** isotropic 3-spaces |
+| **(K-pitch)** | (K-pitch); (K-pure) P3; (K-Λ) | (T1)–(T5) **proven-informally**; **closed** at length-3-companion splits (bracket monomial, θ(3,3,6)); uniform form **open**. Step 2's (F-A)/(F-B) dichotomy is **upgraded to the algebraic form (PC-Z)** (§(K-pure), proven-informally): `Q(z) = 0 ⟺ V_bc` meets `α(a)` or `Λ²π̂`, the only two maximal totally isotropic 3-spaces containing `T` — the exact target of any future non-vanishing argument (its *reason* is Witt's theorem — §(K-Λ) *Step 1*). The `ℓ = 3` verdict is unchanged but now has a **two-line proof that *explains* its five brackets**: they are the coordinate form of `S ∩ α_a = S ∩ β_{π_a} = 0` (§(K-Λ) *Step 1*(i)). The bracket **closed form extends from `ℓ = 3` to `ℓ = 4`**, as a **product of two bracket-linear forms in the far covector** ((Λ1), since 2026-08-05 a **symbolic identity over the function field** — `M2 --script notes/scripts/m2/lambda1.m2`) — a positive standalone result, but **not** a non-vanishing theorem: its zero locus is nonempty exactly at the two structurally meaningful configurations | one seed with `Q(z) ≠ 0` per (graph, split), uniformly — by (PC-Z), one seed where `V_bc` misses **both** isotropic 3-spaces |
 | **(K-wit)** | (K-pitch) 3; (K-Λ) 3–6 | **open**; the weakest exact form — per habitat+split *equivalent* to the escape at a good seed — and now the **single live form of the pitch route at companion splits**: it inherits (K-Λ)'s status and gains a *necessary-and-sufficient* companion form (§(K-Λ) *Theorem (Λ-completeness at length-4 companions)*: the escape holds at some target-rank seed **iff** the pitch certificate is nonzero at some target-rank seed). The **two-point failure locus is this row's content** — `{V_bc ⊥_B C(M)}` (the failure itself) and `{V_bc ⊥_B C(bc)}` (route A escapes, `★r ∝ C(bc)`). Two load-bearing side conditions are newly **named**, neither present in the prior formulation: **(Λ0d)** panel non-incidence in **both** directions (`pt(c) ∉ Π(b)` *and* `pt(b) ∉ Π(c)`; witness θ(3,4,5) seed 345, where `span_t ω⁻` collapses `3 → 1`) and **(Λ0f)** (`p⁺₂, p⁺₃ ≠ 0` and `q₂, q₃ ≠ 0`; necessity *constructed*, 4/4 each) | one `H`-motion pairing non-trivially with `C(M)`, uniformly |
 | **(K-pitch-∞)** | (K-pitch) 4 | **open**; sufficient for (K-pitch) at a split; all five quartic coefficients nonzero at 4/4 habitats | `Q(z_∞) ≢ 0` on the `a`-free chart |
-| **(K-Λ)** | (K-Λ) 1–6; (K-pitch) 5b | **REFUTED as an independent gap** (§(K-Λ), fan-out direction B): at a length-4-companion split it is *equivalent* to **(K-wit)** (Steps 3–5), so **closing (K-Λ) *is* closing (K-wit)** and no local argument can close it. `Φ_loc`'s non-degeneracy is **proven-informally** — `Φ_loc` is always a **rank-2** form, the product of two distinct rational linear forms ((Λ1)) — so the previously-flagged "`Φ_loc ≡ 0`" degeneration is **impossible** and the "local quadric" is a pair of rational hyperplanes. Using (T4)'s `a`-line freedom, the far covectors bad for the whole line shrink to **two points**, with failure locus `{V_bc ⊥_B C(M)}` (= the genuine (T3) failure) and `{V_bc ⊥_B C(bc)}` (= route A escapes outright, `★r ∝ C(bc)`). Its exemplar θ(3,4,5) is separately closed by a reduced-support slide witness (§(K-pure) P7) | — refuted as an independent gap; the live form is **(K-wit)** (row above) |
+| **(K-Λ)** | (K-Λ) 1–6; (K-pitch) 5b | **REFUTED as an independent gap** (§(K-Λ), fan-out direction B): at a length-4-companion split it is *equivalent* to **(K-wit)** (Steps 3–5), so **closing (K-Λ) *is* closing (K-wit)** and no local argument can close it. `Φ_loc`'s non-degeneracy is **PROVEN, class-uniformly** — `Φ_loc` is always a **rank-2** form, the product of two distinct rational linear forms ((Λ1), an **identity over the function field** since 2026-08-05: `m2/lambda1.m2`, the harness's first Macaulay2 driver; it needs none of (Λ0) and none of the panel data) — so the previously-flagged "`Φ_loc ≡ 0`" degeneration is **impossible** and the "local quadric" is a pair of rational hyperplanes. Using (T4)'s `a`-line freedom, the far covectors bad for the whole line shrink to **two points**, with failure locus `{V_bc ⊥_B C(M)}` (= the genuine (T3) failure) and `{V_bc ⊥_B C(bc)}` (= route A escapes outright, `★r ∝ C(bc)`). Its exemplar θ(3,4,5) is separately closed by a reduced-support slide witness (§(K-pure) P7) | — refuted as an independent gap; the live form is **(K-wit)** (row above) |
 | **(K-slide)/(S1)** | (K-slide) 1–4 | **(S1) proven-informally**; per-member (K-slide) **witness-decidable and discharged at every probed member** (23/23, 7 members, 11 split-classes) — `K4`/`W4` control habitats closed at **every** split. Status unchanged by the sixth pass, but (S1) **remark (iii)'s support freedom is promoted from a proof convenience to *the* load-bearing parameter**: `E_chord(Σ)` shrinks with `Σ`, so the support choice alone decides whether the limit is pitched (§(K-pure) P1/P7) | — settled per member; the class form is (K-slide-cl) |
 | **(K-slide-cl)** | (K-slide-cl), (K-slide-comb), (K-pure) | **REFUTED as stated** (§(K-pure), at the full support): the chord obstruction **(PC-OBS)** kills (W4) — or (W3) — at *every* decoration of three `K5` class shapes and of θ(3,4,5). This is a **statement**-level refutation by `R_3`-dependence, a **different mechanism** from (K-slide-comb)'s antecedent-level colouring refutation below — do not conflate them. The **repaired** statement quantifies `∃Σ` over slide supports and in that form is **open**. The **covered sub-class grows**: the collapse-solvable shapes (all 7 battery members) *plus* the three `K5` 5-chromatic shapes, `K222` and θ(3,4,5), which now carry **reduced-support** (S1) witnesses | for the `∃Σ` form: **(K-chord)** below, plus a mechanism for the residual (W2)/(W4) failures. The "generic pure condition of the limit system instead of the collapse" route is itself **REFUTED** (§(K-pure) P0/P5: that condition sees only (W1) ∧ (W2)) |
 | **(K-slide-comb)** | (K-slide-comb) | **REFUTED as a class statement** (two structural flanks at explicit class members satisfying `hcard`/`htf`); per shape still a finite certificate-bearing problem, and "(K-slide-comb) at a shape ⟹ (K-slide-cl) there" stays **proven** | — refuted; the needed invariant is **acyclic** 4-colourability, which 3-degeneracy does *not* give |
@@ -199,7 +199,11 @@ shapes the gate was run on; the naive collinear collapse,
 **REFUTED** as a chart move ((K-pitch) 6a); the (T1)–(T5) motion-side transfer;
 (S1) and its (S2) carrier; (C6); the **companion length** `k` as the arc's
 organizing local invariant — `k ≥ 4` on the class, `k = 3` exactly on the
-(K-res) `C₆` residuals ((K-dom) (D3)). Every recorded escape *failure* in the
+(K-res) `C₆` residuals ((K-dom) (D3)); and **(Λ1)**, now a **symbolic identity
+over the function field** ((K-Λ) 2, `m2/lambda1.m2`) rather than 23 frames —
+`Φ_loc` factors into two bracket-linear forms at *every* length-4-companion
+frame, with no (Λ0) and no panel hypothesis, so nothing about `Φ_loc`'s shape
+or rank needs re-deriving or re-sampling. Every recorded escape *failure* in the
 phase's numerics was a placement-sampler artifact ((K-tight) 3).
 
 ## §(K-tight) — the carrier escape criterion (KT pp. 684–691 re-pin) and the uniform mechanism
@@ -3108,7 +3112,8 @@ proportional linear maps). Then
 `λ = σs + τq + (⟨m,n⟩-part)` gives `s·ω⁺ = q·ω⁻ = 0` and `s·ω⁻ = −q·ω⁺`, and
 evaluating at `λ = s` (where `cof(s) = ω⁺`) pins `κ² = 1/(q·ω⁺)²`. ∎
 (The driver verifies the identity with the scalar **exactly 1**, i.e. with the
-`pitch.cross4` normalization of `cof` there is no residual constant.)
+`pitch.cross4` normalization of `cof` there is no residual constant. The
+symbolic check below pins the *sign* as well: `κ = −1/(q·ω⁺)`.)
 
 *Exact, per frame:* `--witt` computes `Φ_loc`'s `4×4` matrix from the linear map
 `λ ↦ cof(λ)` and the banded Gram, and asserts `rank = 2`, `Φ_loc ≠ 0`,
@@ -3116,6 +3121,71 @@ evaluating at `λ = s` (where `cof(s) = ω⁺`) pins `κ² = 1/(q·ω⁺)²`. �
 exactly 1** (i.e. `(q·ω⁺)²·PhiM = −B(ω⁺,ω⁻)(ω⁺ω⁻ᵀ + ω⁻ω⁺ᵀ)`, all 16 entries)
 — 23 frames: 5 hub-pattern strata × 3 local frames, plus 2 seeds at each of
 four habitats.
+
+**Symbolic, over the function field — (Λ1) is an IDENTITY, not 23 samples**
+(2026-08-05, `M2 --script notes/scripts/m2/lambda1.m2`, the harness's first
+Macaulay2 driver). Treating the frame's coordinates as indeterminates upgrades
+(Λ1) from per-frame evidence to a statement about *every* frame at once. What
+the driver establishes, in four blocks:
+
+- **(M1) the universal cofactor identity**, with `m, n, q, s, λ` **free**
+  covectors in `K⁴` (20 indeterminates, no geometry, no gauge):
+  `(q·ω⁺)·cof(λ) = (λ·ω⁺)·ω⁻ − (λ·ω⁻)·ω⁺`. This is the *Proof* above's
+  `cof(λ) = κ[(λ·ω⁻)ω⁺ − (λ·ω⁺)ω⁻]` together with its normalization, and it
+  holds with no hypotheses whatsoever.
+- **(M2) the universal quadratic expansion**, same 20 indeterminates plus a
+  **free symmetric Gram** (30 in all): squaring (M1) gives
+  `(q·ω⁺)²Φ_loc(λ) = (λ·ω⁺)²Q(ω⁻) − 2(λ·ω⁺)(λ·ω⁻)B(ω⁺,ω⁻) + (λ·ω⁻)²Q(ω⁺)`.
+  So `Q(ω⁺) = Q(ω⁻) = 0` is the **only** geometric input (Λ1) has.
+- **(M3) the α/β isotropy lemma**, gauge-free (four free points): each of
+  `⟨C_ab, C_ac, C_aw⟩` and `⟨C_ab, C_ac, C_bc⟩` is totally isotropic and
+  3-dimensional over the function field, hence maximal isotropic, hence
+  self-`B`-perp — so anything `B`-orthogonal to one of them lies *inside* it.
+  That is exactly `Q(ω⁺) = Q(ω⁻) = 0`, since `m·ω = n·ω = s·ω = 0` (resp.
+  `q·ω = 0`) *is* `B`-orthogonality to those three lines. **(M1)+(M2)+(M3) is a
+  gauge-free proof of (Λ1)** — the Step-1 Witt argument reappears here as the
+  self-perpendicularity of a maximal isotropic, computed rather than quoted.
+- **(M4) (Λ1) end-to-end**, both in its 16-entry matrix form and in the scalar
+  form above, on the gauge slice `b, x₁, x₂, x₃ = e₀, e₁, e₂, e₃` with `a`, `c`,
+  `w` and the far covector `λ` free. Both sides are bracket polynomials, hence
+  GL(4) relative invariants of the same weight 13, and `g = [b|x₁|x₂|x₃]⁻¹` is
+  the *unique* element of GL(4) carrying an independent quadruple to the
+  standard basis — so the slice meets every orbit exactly once and vanishing on
+  it is vanishing identically. The same run re-derives generically, rather than
+  per frame, the structural zeros `m₁ = n₄ = q₁ = q₄ = 0`, the banded Gram,
+  `ω±` nonzero line extensors with `ω⁺` through `pt(a)` and `ω⁻` inside
+  `plane(a,b,c)`, `q·ω⁺ ≠ 0`, `B(ω⁺,ω⁻) ≠ 0`, the scalar exactly 1, and
+  `rank Φ_loc = 2`.
+
+**Two things this adds beyond confirming the 23 frames.**
+
+1. **(Λ1) needs none of (Λ0), and none of the panel data.** In (M4) the points
+   `a, c, w` and the covector `λ` are free — in particular `pt(a)` is *not*
+   constrained to the meet line `M`, and no panel non-incidence is assumed. The
+   identity is unconditional; (Λ0a–f) is what makes its ingredients **nonzero**
+   (`ω± ≠ 0`, `q·ω⁺ ≠ 0`, `B(ω⁺,ω⁻) ≠ 0`, `rank[m;n] = 2`), and the driver shows
+   each of those is nonzero *as a polynomial*, i.e. off a proper closed subset.
+   So "(Λ1) under (Λ0)" is really "(Λ1) always, with (Λ0) securing the
+   normalization" — a cleaner statement than the one the per-frame battery
+   could support.
+2. **`rank Φ_loc = 2` is now generic, not observed.** Previously 23 frames;
+   now it follows from the identity plus `B(ω⁺,ω⁻) ≠ 0` and
+   `rank[ω⁺; ω⁻] = 2`, both verified as polynomial non-vanishing.
+
+*Feasibility, measured — the boundary a successor should budget for.* The
+**ungauged** end-to-end expansion (all 28 point coordinates indeterminate) has
+degree 52 and does **not** finish: killed at 600 s inside `cross4` on the
+ungauged bracket rows. The local frame is symbolically viable; a whole-graph
+placement is not (`notes/Pencil-strategy.md` §5.3). That probe is recorded as
+*measured, script not retained* — it is (M4) with the gauge removed, a one-line
+edit of the committed driver (`notes/scripts/m2/README.md`).
+
+*Standing of this output.* Evidence for this workbook, at the same standing as
+the exact-ℚ numerics — **never** a substitute for Lean. "Verified in Macaulay2"
+is not a proof the project may cite in place of a formalization
+(`DESIGN.md` *Formalize everything the argument uses*; `notes/scripts/m2/README.md`
+convention 1). `lambda.py --witt` is **not** superseded: its 23 frames and its
+recorded figures stand unchanged, and the two are cited together.
 
 **This kills the flagged risk.** "`Φ_loc` the zero form" cannot happen under
 (Λ0), and neither can `Φ_loc` be irreducible: the quadric is always a pair of
@@ -3299,7 +3369,14 @@ PYTHONHASHSEED=0 python3 notes/scripts/w4/lambda.py --dichot    # (Λ2), (Λ3)
 PYTHONHASHSEED=0 python3 notes/scripts/w4/lambda.py --habitat   # end-to-end + ℓ=3
 PYTHONHASHSEED=0 python3 notes/scripts/w4/lambda.py --l56       # ℓ = 5, 6
 PYTHONHASHSEED=0 python3 notes/scripts/w4/lambda.py --adv       # the hunt
+M2 --script notes/scripts/m2/lambda1.m2                         # (Λ1) symbolically
 ```
+
+The last line is the harness's **Macaulay2 layer** (`notes/scripts/m2/`, opened
+2026-08-05 with this driver; conventions in `notes/scripts/m2/README.md`, M2
+version **1.26.06** pinned and printed, no randomness). It is *additive*: it
+does not reimplement or replace `lambda.py --witt`, whose figures below stand
+unchanged.
 
 Habitats: θ(3,4,5) and NT21 (the two `pitch --companion4` shapes) plus **two
 new length-4-companion shapes** — `NT24` (hubs `b,c,u,w`; `b`–`c` paths 3, 4
@@ -3362,14 +3439,28 @@ Per mode, what is asserted:
 | `--adv`: `rank Q\|_{V_bc}` histogram (real seeds) | `{3: 357}` — always the smooth-conic case |
 | `--adv`: `(span ω⁺, span ω⁻)` histogram | `{(3,3): 1491, (2,3): 6}`; **all 6** off-pattern frames have a vanishing *middle* `p⁺` entry — the named (Λ0f) failure, and nothing else |
 | `--adv`: the two constructed necessity witnesses | `p⁺₃ = 0 ⟹ span ω⁺ = 2` (4/4), `q₃ = 0 ⟹ span ω⁻ = 2` (4/4) |
+| `lambda1.m2` (M1)/(M2)/(M3): the gauge-free half of (Λ1) | identities in **20 / 30 / 16** indeterminates, residual **0** — no geometry in (M1)/(M2), no gauge anywhere |
+| `lambda1.m2` (M4): (Λ1) end-to-end, matrix + scalar form | residual **0** in `ℚ[a,c,w,λ]` (16 indeterminates, `b,x₁,x₂,x₃` gauged) — all 16 matrix entries, scalar exactly **1** |
+| `lambda1.m2`: the ungauged expansion | **infeasible** — degree 52 in 28 indeterminates, killed at 600 s |
 
 **Confidence verdict.**
 
+- **(Λ1) (the two-hyperplane bracket factorization): PROVEN — a symbolic
+  identity over the function field**, upgraded 2026-08-05 from 23 sampled
+  rational frames (`lambda.py --witt`) by `m2/lambda1.m2` (*Step 2*). Its
+  gauge-free half (M1)+(M2)+(M3) is a complete proof; (M4) checks the assembled
+  form end-to-end on a slice that meets every GL(4)-orbit once. It needs **none**
+  of (Λ0) and none of the panel data — (Λ0) secures only the non-vanishing of
+  the ingredients, itself now verified at the polynomial level. This is the arc's
+  first class-uniform *positive* statement of any kind; it is about `Φ_loc`'s
+  shape, and (as *Steps 3–5* show) it does **not** touch the escape's own
+  uniformity.
 - **Step 1 (Witt structure `{Q = 0} ∩ T^{⊥B} = α_a ∪ β_{π_a}`), Step 1(i) (the
-  `ℓ = 3` two-line closure), (Λ1) (the two-hyperplane bracket factorization),
-  (Λ2) (the `a`-line dichotomy), (Λ3) (`★r ∝ C(bc)`), and the
-  Λ-completeness theorem: proven-informally**, with (Λ0f) and (Λ0d) named as
-  hypotheses and certified generic by exact witnesses in all 38 local strata.
+  `ℓ = 3` two-line closure), (Λ2) (the `a`-line dichotomy), (Λ3)
+  (`★r ∝ C(bc)`), and the Λ-completeness theorem: proven-informally**, with
+  (Λ0f) and (Λ0d) named as hypotheses and certified generic by exact witnesses
+  in all 38 local strata. (Step 1's maximal-isotropic input is separately
+  re-derived symbolically as `lambda1.m2` (M3).)
 - **(K-Λ) as an independent gap: REFUTED** — it is equivalent to (K-wit) at
   length-4-companion splits. Therefore **(K-pitch) at length-4-companion
   splits stays open, exactly as open as (K-wit)** — this pass does *not* close
