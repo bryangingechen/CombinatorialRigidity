@@ -8,9 +8,11 @@ per-driver description list for this directory.
 **The directory name is stale, deliberately so.** `w4/` was opened for the
 `hcontract` (W4) arm, but it now also carries the kernel-(K) continuation —
 `(K-tight)` (`repin.py`), `(K-pitch)` (`pitch.py`), `(K-slide)` (`kslide.py`),
-`(K-slide-cl)` (`kslidecl.py`), `(K-slide-comb)` (`kslidecomb.py`). A rename is
-churn until the (K) arc closes; see `notes/scripts/README.md` *Deliberate
-non-goals*.
+`(K-slide-cl)` (`kslidecl.py`), `(K-slide-comb)` (`kslidecomb.py`), and the
+three kernel-(K) research fan-out arcs — `(K-flank)` (`flanks.py`, direction A),
+`(K-pure)` (`pure.py`, direction C), `(K-Λ)` (`lambda.py`, direction B). A
+rename is churn until the (K) arc closes; see `notes/scripts/README.md`
+*Deliberate non-goals*.
 
 Exact-ℚ numerics for the W4 decomposition recon (2026-07-30); results and
 the decomposition they feed are in `notes/Phase39-design.md`
@@ -343,3 +345,54 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
 
   Argument state and per-mode assertion table: `notes/Pencil-informal.md`
   §(K-pure).
+
+- `lambda.py [--witt | --span | --dichot | --habitat | --l56 | --adv]` — the
+  **(T5) Λ-compression's quadric** (2026-08-05, sixth pass; research fan-out
+  direction B), which asks whether **(K-Λ)** — "one projective point `λ` off one
+  local quadric `{Φ_loc = 0}`" — closes uniformly over the class. Result: **the
+  framing was wrong and (K-Λ) is REFUTED as an *independent* gap.** `Φ_loc` is
+  never the zero form and never full rank: it is always a **rank-2** form, the
+  product of two distinct rational linear forms in `λ` ((Λ1)), so the quadric is
+  a pair of hyperplanes; and after using (T4)'s `a`-line freedom the bad far
+  covectors shrink to **two points**, which are exactly the genuine (T3) escape
+  failure and a configuration where route A escapes outright — so at a
+  length-4-companion split (K-Λ) is *equivalent* to **(K-wit)**. Positive
+  residue: the length-3 bracket monomial gets a two-line proof, and its closed
+  form extends to `ℓ = 4` as a product of two bracket-linear forms.
+  Exact ℚ throughout, on top of `pitch.py` (and `repin.seed_probe` for habitat
+  frames); every sampled object rank/dimension asserted; all rng seeded. Run with
+  `PYTHONHASHSEED=0`. Note this file's basename is a Python keyword, so its
+  primitives (`span_meet`, `pluck_of`) are not reachable by `import lambda` —
+  `notes/scripts/README.md` §1.
+  - `--witt` (~13 s): the Witt structure — `T` totally isotropic, `T^{⊥B}/T` a
+    hyperbolic plane, `{Q = 0} ∩ T^{⊥B} = α_a ∪ β_{π_a}` (**(Λ0′)**) — then
+    `dim N = 2`, `rank Q|_N = 2`, `ω±` line extensors spanning `S ∩ α/β`, and
+    **(Λ1) with the scalar exactly 1** on all 16 matrix entries. 23 frames.
+  - `--span` (~20 s): the two `a`-line curves `ω⁺(t)`, `ω⁻(t)` — degrees
+    `≤ 3`/`≤ 2`, both spans `= 3` (**not** 4 — the pass's decisive negative
+    measurement), identified as `S ∩ C(M)^{⊥B}` / `S ∩ C(bc)^{⊥B}` with
+    annihilators `⟨p⁺⟩`/`⟨q⟩`, and the bracket equivalence **(Λ0f)** in both
+    directions. **164 frames** over 38 local-chart strata + 4 habitats, uniformly
+    `(3,3,3,2)`.
+  - `--dichot` (~1 s): **(Λ2)** — `Q(z(t)) ≡ 0` exactly at `λ ∝ p⁺` / `λ ∝ q`,
+    with a generic `λ` giving `≢ 0` — and **(Λ3)** `★r ∝ C(bc)` with
+    `C(bc) ∉ Λ²Π̂(b)`, so route A escapes in that branch. 18 frames, 9 strata.
+  - `--habitat` (~25 s): end-to-end at θ(3,4,5), NT21 and the two new
+    class-certified non-theta shapes **NT24** / **NT30** — the Λ-compressed `z`
+    against `pitch.z_from`, the (T2) sign law against an independently computed
+    stress, (T3) agreement `escape ⟺ ¬(λ ∝ p⁺)` — plus the `ℓ = 3` corollary at
+    θ(3,3,6).
+  - `--l56` (~0 s): `dim(S ∩ α_a) = k − 3` for `k = 3,4,5,6` and `C(M) ∈ S ⟺
+    k = 6`; at `k = 5` the Plücker reduction `(dim W, dim W^⊥,
+    rank Q|_{W^⊥}) = (3,3,3)` on **both** the α/`C(M)` and β/`C(bc)` sides — a
+    smooth conic, so the (F-A) bad locus gains a second equal-dimensional
+    component and **`ℓ = 5,6` is refuted through this frame** (the argument
+    shape, not the conjecture).
+  - `--adv` (~536 s): the refutation hunt over 1497 frames (357 real habitat
+    seeds + 1140 local frames) — `λ ∝ p⁺` / `λ ∝ q` / `Q(z) = 0` / `C(M) ∈ S`
+    all **0** — plus the **(Λ0d)** panel-incidence witness (θ(3,4,5) seed 345,
+    `span ω⁻` collapsing `3 → 1`) and the two **constructed** (Λ0f) necessity
+    witnesses (`p⁺₃ = 0 ⟹ span ω⁺ = 2`, `q₃ = 0 ⟹ span ω⁻ = 2`, 4/4 each).
+
+  Argument state and per-mode assertion list: `notes/Pencil-informal.md`
+  §(K-Λ).

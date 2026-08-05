@@ -32,7 +32,7 @@ changed figures.
 
 ## 0. The path bootstrap
 
-One mechanism, applied identically in all 24 script files. `scriptpath.py`
+One mechanism, applied identically in all 28 script files. `scriptpath.py`
 puts every layer directory on `sys.path`, so any harness module can import any
 other by bare module name from any working directory. **The idiom to copy** —
 three lines, directly above the harness imports, below the stdlib ones:
@@ -55,6 +55,14 @@ harness modules share a basename.
 Import from the canonical home. Do **not** reimplement; do not copy a body
 into a new file. Names in **bold** live in the base layer.
 
+**One caveat on the `lambda` rows below.** `lambda` is a Python keyword, so
+`w4/lambda.py`'s primitives cannot be reached by `import lambda` — a consumer
+needs `importlib.import_module('lambda')`. The invocation path is frozen (see
+the top of this file), so the file is **not** renamed; if a `lambda` primitive
+is needed by a second driver, that is the signal to move it one layer down
+(`exactcore` for `span_meet` / `pluck_of`) per §2's rule 2, re-exporting from
+`lambda` so its recorded figures do not move.
+
 ### Exact linear algebra
 
 | job | canonical | module |
@@ -67,6 +75,7 @@ into a new file. Names in **bold** live in the base layer.
 | left nullspace basis (self-stress space) | **`left_nullspace`** | `exactcore` |
 | basis of a span, via `rref` pivots | `span_basis` | `repin` |
 | span membership test | `in_span` | `repin` |
+| **meet** of two spans in ℚ⁶ → a basis of the intersection | `span_meet` | `lambda` |
 | coordinate (Euclidean) pairing, any length | **`dot`** | `exactcore` |
 | cross product on ℚ³ | **`cross3`** (re-exported as `cross` by `repin`) | `exactcore` |
 
@@ -84,6 +93,7 @@ into a new file. Names in **bold** live in the base layer.
 | Λ² of a plane at a hub (3-dim) | `lambda2_plane` | `repin` |
 | Λ² of the lines through a point (3-dim) | `lambda2_through` | `repin` |
 | bracket `[p,q,r,s]` = 4×4 determinant | `bracket` / `det4` | `pitch` |
+| Plücker point of a 2-dim subspace inside a 4-dim ambient given by an ordered basis (the `Λ²Y` reduction) | `pluck_of` | `lambda` |
 
 ### Rigidity matrices
 
@@ -143,6 +153,7 @@ before touching any of them.** `rvec3` likewise.
 | candidate hub graphs `G°` up to `|V°| ≤ 6`; exhaustive `K4` stratum | `candidate_graphs`, `driver_k4full` | `kslidecomb` |
 | `hnoRigid` certification over branch unions | `no_rigid_branch_union` | `kslide` |
 | `(K-slide)` battery members (`W4`, `K5−{01,23}`, prism+diagonal, flanks) | `member` | `kslide` |
+| length-4-companion habitats, class-predicate-certified at load time (θ(3,4,5), `NT21`, and the two new non-theta shapes **`NT24`** / **`NT30`**) | `habitat_specs` (`nt24` for the shape alone) | `lambda` |
 | the `|V| = 19` / `|V| = 29` residual inhabitants | `W19`, `w29` | `widened`, `saferes` |
 | subdivision families D/E/F/G, core-ring, random short-branch | `family_d/e/g`, `family_core_ring`, `random_short`, `random_subdivision` | `nogood_subdiv`, `saferes` |
 | spider / theta+center / dangerous / DZ gadgets | `spider`, `dangerous_gadget`, `split_off`, `dz_gadget` | `kbare_common`, `danger` |
@@ -181,7 +192,8 @@ before touching any of them.** `rvec3` likewise.
                           |
                   w4/ DRIVER STACK (deepest last)
    nogood_subdiv -> saferes -> widened -> repin -> pitch -> kslide -> kslidecl
-        -> kslidecomb -> {flanks, pure}   (siblings; neither imports the other)
+        -> kslidecomb -> {flanks, pure, lambda}
+                              (siblings; none imports another)
 ```
 
 Three layers:
@@ -198,11 +210,14 @@ Three layers:
   `saferes` (tree-packing oracle, `w29`) → `widened` (hub-hub-safe placement) →
   `repin` (robust sampler, escape criterion) → `pitch` (Klein form, transfer) →
   `kslide` (limit witnesses) → `kslidecl` (tetrahedral collapse) →
-  `kslidecomb` (the combinatorial residue) → and then **two sibling leaves** on
-  top of it, from the kernel-(K) research fan-out: `flanks` (the adversarial
-  rank test at the uncovered flanks) and `pure` (the limit carrier's pure
-  condition, the chord obstruction, the slide-support menu). Neither imports the
-  other, so a further (K)-arc driver goes *beside* them, not through them.
+  `kslidecomb` (the combinatorial residue) → and then **three sibling leaves**
+  on top of it, one per kernel-(K) research fan-out direction: `flanks`
+  (direction A — the adversarial rank test at the uncovered flanks), `pure`
+  (direction C — the limit carrier's pure condition, the chord obstruction, the
+  slide-support menu) and `lambda` (direction B — the (T5) Λ-compression's
+  quadric, its two-hyperplane factorization, and companion lengths 5/6; it sits
+  on `pitch`, and does **not** import `flanks` or `pure`). None imports another,
+  so a further (K)-arc driver goes *beside* them, not through them.
 
 **The rule for a new script.** Import **downward** only:
 
@@ -326,6 +341,12 @@ arcs too.
 | `python3 notes/scripts/w4/pure.py --support` | 384 s | ibid. (the 5-support menu; 5 of 6 flank shapes rescued) |
 | `python3 notes/scripts/w4/pure.py --pure` | 187 s | ibid. (the invariant mismatch; the free-bar contrast) |
 | `python3 notes/scripts/w4/pure.py --parallel` | 4 s | ibid. (the corrected parallel-`G°`-edge row) |
+| `python3 notes/scripts/w4/lambda.py --witt` | 13 s | workbook §(K-Λ) ((Λ0′) Witt, (Λ1) the rank-2 factorization) |
+| `python3 notes/scripts/w4/lambda.py --span` | 20 s | ibid. ((Λ0f) and the two `a`-line spans; 164 frames, `(3,3,3,2)`) |
+| `python3 notes/scripts/w4/lambda.py --dichot` | 1 s | ibid. ((Λ2) the two-point dichotomy, (Λ3) `★r ∝ C(bc)`) |
+| `python3 notes/scripts/w4/lambda.py --habitat` | 25 s | ibid. (end-to-end at 4 habitats + the `ℓ = 3` corollary at θ(3,3,6)) |
+| `python3 notes/scripts/w4/lambda.py --l56` | 0 s | ibid. (`ℓ = 5,6` refuted through the (T5) frame) |
+| `python3 notes/scripts/w4/lambda.py --adv` | 536 s | ibid. (the refutation hunt + the constructed (Λ0d)/(Λ0f) witnesses) |
 
 Per-driver prose — *what* each mode asserts — stays in the three per-directory
 READMEs (`escape/README.md`, `kbare/README.md`, `w4/README.md`). This table is
@@ -381,6 +402,7 @@ row.
 | `hcard_ok`, `is_spanning_c3`, `provably_feasible` | Same pair of files, independently written: `no_good_search`'s route through `kbare_common.closed_hub_nbhds` / `has_triangle`, `nogood_subdiv`'s through its own `hub_set` / `triangles`. Believed extensionally equal on the swept habitats; **not verified equal in general**. | Left in place. Do not assume equality; use `nogood_subdiv`'s. |
 | `validate`, `witness`, `control`, `stratum`, `sweep`, `main`, `run_member`, `classify` | Driver-**mode entry points**, one per driver, named after the flag that selects them (`--validate`, `--witness`, …). Not primitives; each means something different per module. | Module-local by design. |
 | `dot3` (`kslidecl`) | A 3-vector special case of `exactcore.dot`, kept local to the tetrahedral-basis code. | Harmless; prefer `exactcore.dot` in new work. |
+| pencil-frame samplers: `lambda.sample_local_frame` vs `widened.place_pencil_general` | Both place a pencil-generic configuration, and they are **not** interchangeable in two independent ways. **(a) Different in-plane sampler.** `sample_local_frame` uses the **robust** `repin.rob_in_plane` for every panel-constrained interior; `place_pencil_general` routes a **single-hub** interior through the *degenerate* `localtest.in_plane_point` (the `plane_basis` family above). Swapping either way changes which points are drawn, and in the degenerate direction it reintroduces exactly the defect that silently contaminated several passes' recorded escape figures. **(b) Different object.** `place_pencil_general` places a **whole graph**; `sample_local_frame` places only the *local frame* of a companion split (`b, x₁..x_{k−1}, c, a`, the two panels, the meet line `M`) and models the far graph by **synthetic** far-hub-neighbour normal constraints — which is precisely what §(K-Λ)'s class-uniformity claim over the 38 local strata needs, and what a whole-graph placement cannot express. | **Do not merge, and do not "unify" the sampler.** Habitat-level (K-Λ) frames go through `lambda.habitat_frame`, which calls `repin.seed_probe` (hence `place_pencil_general`) deliberately, so both samplers appear in one driver by design. |
 
 Merged in the 2026-08-05 rewire (verified semantically identical, then gated
 figure-invariant): `rref`, `rank`/`rank_exact`, `nullspace`, `left_nullspace`,

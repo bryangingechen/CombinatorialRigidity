@@ -30,7 +30,7 @@ The landed headline `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card`
 (`Molecule/Pencil/Escape.lean`) carries exactly three open items — `hcontract` (W4), `hK`,
 `hbareSplit` — each detailed in *Hand-off*.
 
-**Kernel-(K) research arc — seven docs+scripts-only research dispatches** (the workbook's sixth
+**Kernel-(K) research arc — eight docs+scripts-only research dispatches** (the workbook's sixth
 pass; mathematics in the kernel-(K) workbook `notes/Pencil-informal.md` — whose *State of (K)*
 map is the entry point — and, for the 2026-08-02 W4-residual verdicts, in
 `notes/Pencil-W4-informal.md`; one line per landing in *Decisions made*, the canonical record).
@@ -45,24 +45,39 @@ uniform ((C6)) and (C7) named; then the three-way fan-out: **A** — the conject
 every uncovered flank (no disproof, no `hK` re-pin, (K-pitch) closed at all 16 flank splits);
 **C** — the pure condition is the **wrong invariant**, **(K-slide-cl) REFUTED as stated** by the
 chord obstruction (PC-OBS), and **5 of the 6** probed flank shapes CLOSED by reduced slide
-supports. Class uniformity is untouched by either.
+supports; **B** — **(K-Λ) REFUTED as an independent gap** (equivalent to **(K-wit)** at
+`ℓ = 4`-companion splits), `Φ_loc` proven always rank 2 so its flagged `Φ_loc ≡ 0` risk is
+impossible, and **`ℓ = 5,6` refuted through the (T5) frame**.
 
-Remaining uniform (K) gaps: **(K-Λ)** (direction B's target, landing next), the **`∃Σ`-repaired
-(K-slide-cl)** with its successor residue **(K-chord)**, and `P21`-type parallel-`G°`-edge
-(K-res) shapes — none closed by the fan-out, which is per-shape. Canonical status home for all
-of them: the workbook's **State of (K)** gap map.
+**The fan-out is COMPLETE — all three directions LANDED** (all 2026-08-05: A `0ee85777`, C
+`e38eb6b5`, then B; workbook §(K-flank), §(K-pure), §(K-Λ)). Net effect: the **disproof
+risk is removed** (A — the conjecture holds at every uncovered flank by exact witnesses, and the
+pivot rule does not fire); the combinatorial residue is **replaced**, (K-slide-comb) by
+**(K-chord)** (C), which unlike its predecessor lives in a matroid with no combinatorial
+characterisation; and the pitch route's companion gap **collapses onto (K-wit)** (B), now its
+single live form. Three named gaps moved from open to refuted-or-superseded, and **class
+uniformity of the escape is untouched by all three** — no uniform gap closed.
 
-**Next concrete work: land research fan-out direction B — `notes/Pencil-fanout.md`
-(*Landing checklist*).** Directions **A and C are LANDED** (2026-08-05; workbook §(K-flank) and
-§(K-pure)): A found no disproof, so the pivot rule does **not** fire and nothing about the
-phase's target changes; C refuted its own strategy while proving (PC-Z)/(PC-OBS) and closing 5 of
-6 flank shapes. **B** ((K-Λ)'s quadric-avoidance) is the one still to land, by that checklist —
-re-run every cited driver *and* its headline figures, merge into `notes/Pencil-informal.md`,
-update the matching *State of (K)* row(s) (**read B's return against the (K-Λ) row**, which C
-annotated), commit the new script, add one ≤8-line entry here. The 2026-08-05 user adjudication
-(verbatim in that file) holds the Lean back until the research yields *"an informal proof or
-disproof or any results that would be significant as standalone pieces of math"*, so **W4 stays
-parked even though it is fully decomposed and buildable**.
+Remaining uniform (K) gaps: **(K-wit)** (the pitch route's single live form), the
+**`∃Σ`-repaired (K-slide-cl)** with its successor residue **(K-chord)**, and `P21`-type
+parallel-`G°`-edge (K-res) shapes — none closed by the fan-out, which is per-shape. Canonical
+status home for all of them: the workbook's **State of (K)** gap map.
+
+**Next: the phase direction is a USER DECISION and is AWAITING ADJUDICATION.** The coordinator
+is surfacing it; nothing is pre-selected here, and no phase close, pivot or re-scope is proposed.
+The three candidate continuations the returns themselves identify, listed without preference:
+
+- **(a)** the two **unexplained mechanisms** direction C isolated — 6v11e's (W2) `dim V_bc = 2`
+  drop, and the `V_bc ∩ Λ²π̂ ≠ 0` incidence at `K222` / `K4 (1,1,3,5,4,4)` — together with
+  widening the slide-support menu and sweeping the `|V°| ≤ 6` strata (§(K-pure) *P9* item 5;
+  6v11e is where that item says to start);
+- **(b)** **(K-wit)**, the single live form of the pitch route at companion splits, for which
+  §(K-Λ) supplies a necessary-and-sufficient companion form, the two-point failure locus, and the
+  two newly named side conditions (Λ0d)/(Λ0f);
+- **(c)** the **W4 build** — fully decomposed and buildable, but **PARKED** by the standing
+  2026-08-05 adjudication, which holds the Lean back until the research yields *"an informal
+  proof or disproof or any results that would be significant as standalone pieces of math"*. It
+  does not open without a fresh user adjudication.
 
 **Harness + workbook prep (2026-08-05, two prep commits — no mathematics, no `.lean`, no changed
 figures).** `notes/scripts/` is layered behind one `sys.path` bootstrap (`scriptpath.py`) and one
@@ -177,11 +192,12 @@ The landed successor `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card`
 exactly three remaining open items, detailed below.
 
 > **Next concrete commit** — see *Current state* (authoritative; this is a thin pointer so the
-> two cannot drift): land the next returned direction of the research fan-out,
-> **`notes/Pencil-fanout.md`** *Landing checklist* (A and C **landed**; B outstanding). The
-> 2026-08-05 adjudication holds the Lean back pending a standalone-significant informal result,
-> so **W4 stays parked** despite being fully decomposed and buildable — do **not** open a W4
-> build without a fresh user adjudication.
+> two cannot drift): the research fan-out is **COMPLETE** (A, C and B all landed 2026-08-05, per
+> **`notes/Pencil-fanout.md`** *Landing checklist*), so the phase direction is now a **user
+> decision**, awaiting adjudication; *Current state* names the three candidate continuations and
+> selects none. The 2026-08-05 adjudication holds the Lean back pending a standalone-significant
+> informal result, so **W4 stays parked** despite being fully decomposed and buildable — do
+> **not** open a W4 build without a fresh user adjudication.
 
 The three carried items:
 
@@ -251,6 +267,15 @@ neighbor — is `notes/IdeaBacklog.md`.
 Reverse-chronological, one line per landing; full derivations live in git and
 `notes/Phase39-design.md` (per-decision pointer where the design doc has a named section).
 
+- **Fan-out direction B LANDED — (K-Λ) REFUTED as an independent gap; `ℓ = 5,6` refuted through
+  the (T5) frame** (2026-08-05 eighth dispatch, docs+scripts-only, exact-ℚ
+  `notes/scripts/w4/lambda.py`) — at `ℓ = 4`-companion splits (K-Λ) is *equivalent* to **(K-wit)**
+  (Witt: `T^{⊥B}/T` is a hyperbolic plane); `Φ_loc` is always **rank 2**, a product of two
+  bracket-linear forms ((Λ1)), so the flagged `Φ_loc ≡ 0` risk is **impossible** and the bad far
+  covectors are **two structurally meaningful points** (`V_bc ⊥_B C(M)` = the genuine (T3)
+  failure; `V_bc ⊥_B C(bc)` ⟹ `★r ∝ C(bc)`, route A escapes); the bracket closed form extends to
+  `ℓ = 4`; (Λ0d)/(Λ0f) newly named. **Class uniformity untouched.** Workbook §(K-Λ).
+
 - **Fan-out direction C LANDED — the pure condition is the WRONG INVARIANT; (K-slide-cl) REFUTED
   as stated; 5 of 6 flanks closed by reduced supports** (2026-08-05 seventh dispatch,
   docs+scripts-only, exact-ℚ `notes/scripts/w4/pure.py`) — WW87's pure condition is a *rank*
@@ -300,26 +325,21 @@ Reverse-chronological, one line per landing; full derivations live in git and
   (a-posteriori corollary). 23/23 limit witnesses pitched (7 members, 11 split-classes;
   mixed-length + hub-hub flanks witnessed; hub-level serial-chain carrier machine-checked).
   Parallel `G°`-edges proven order-0-obstructed (repeated-line cycle stress); `P21` = the
-  uncovered shape. Gaps now (K-Λ)/(K-slide-cl). Workbook §(K-slide).
+  uncovered shape. Gaps *then* (K-Λ)/(K-slide-cl). Workbook §(K-slide).
 
 - **(K-pitch) uniform-gap attack — naive collinear collapse REFUTED, slide-in named and
-  validated; Λ-compression extends companions to length 4** (2026-08-04 second dispatch,
-  docs+scripts-only, `pitch.py --companion4 | --slide`) — (T5): far data enters `Q(z)`
-  only through the annihilator covector of `V_bc` in the companion span (`Φ_loc(λ)`
-  quadratic; θ(3,4,5) + NT21, 5/5); slide-in limit = body-hinge on `G°` with per-edge
-  serial triples (pencil, chord, pencil), rank-persistent, `O(ε)`-approached, pitched on
-  simple `G°` (3/3) / null on parallel-edge `G°` (2/2). Gaps now (K-Λ)/(K-slide).
-  Workbook §(K-pitch) Steps 5b/6; design-doc pointers updated.
+  validated; Λ-compression (T5) extends companions to length 4** (2026-08-04 second dispatch,
+  `pitch.py --companion4 | --slide`) — far data enters `Q(z)` only through the annihilator
+  covector of `V_bc` in the companion span; the slide-in limit is rank-persistent and
+  `O(ε)`-approached, pitched on simple `G°` / null on parallel-edge `G°`. Workbook §(K-pitch)
+  Steps 5b/6. *(Its named gap (K-Λ) is since refuted as independent — the B entry above.)*
 
-- **(K-pitch) developed — motion-side transfer proven; bracket-monomial closed form at
-  companion-chain splits; uniform gap narrowed to (K-wit)/(K-pitch-∞)** (2026-08-04,
-  docs+scripts-only, exact-ℚ `notes/scripts/w4/pitch.py`) — the transmitted load spans the
-  perp of `V_bc ⊕ ⟨C_ab, C_ac⟩` (`V_bc` = the chain ends' relative twist system through
-  `G−v−a`; stress-free); sign law `Q(r)·Q(z) < 0`; escape ⟺ some `H`-motion pairs
-  non-trivially with the meet line; `pt(a)`-sweep quartic with `a`-free leading term;
-  θ(3,3,6) ((K-res) hard stratum) CLOSED via
-  `Q(z) = 2[x,y,a,b][b,x,a,c][y,c,a,b][x,y,a,c][b,x,y,c]`; pitch nonzero 29/29 seeds.
-  Workbook §(K-pitch); the design doc's (K)-sections carry dated pointers.
+- **(K-pitch) developed — motion-side transfer (T1)–(T4) proven; bracket-monomial closed form at
+  companion-chain splits; θ(3,3,6) CLOSED** (2026-08-04, exact-ℚ `notes/scripts/w4/pitch.py`) —
+  transmitted load spans the perp of `V_bc ⊕ ⟨C_ab, C_ac⟩`, sign law `Q(r)·Q(z) < 0`, escape ⟺
+  some `H`-motion pairs non-trivially with the meet line, `pt(a)`-sweep quartic with `a`-free
+  leading term, `Q(z) = 2[x,y,a,b][b,x,a,c][y,c,a,b][x,y,a,c][b,x,y,c]`; pitch nonzero 29/29.
+  Weakest exact forms (K-wit)/(K-pitch-∞). Workbook §(K-pitch).
 
 - **(K-tight) KT pp. 684–691 re-pin DONE — carrier escape criterion proven+validated; every
   recorded escape failure was a sampler artifact** (2026-08-02, docs+scripts-only, exact-ℚ
