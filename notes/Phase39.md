@@ -70,7 +70,11 @@ system into six scalar forest systems; (K-slide-cl) is now **true-modulo-(K-slid
 6 pure, 1 via the meet-plane extension after a proven length-2 obstruction), the length
 dictionary is proven complete (`ℓ ≤ 5` on tight+hnoRigid shapes), and (W3)/(W4) close by
 a finite local-type bracket monomial. Workbook §(K-slide-cl); script
-`notes/scripts/w4/kslidecl.py`. A fresh session picks
+`notes/scripts/w4/kslidecl.py`. **This session ended there** (user wrap adjudication,
+verbatim: *"The subagent used more tokens than I expected, so let's wrap up this session
+after you've checked its results."* — the dispatch landed and coordinator-verified: all 7
+battery drivers + both scope lemmas re-run green, reasoning scrutinized, no conflict with
+any recorded Blocker or standing adjudication). A fresh session picks
 up per *Hand-off*: the W4 build (route 3(b), first commit W4-L4b) awaits commissioning;
 kernels stay carried per the standing adjudications; the next (K) research step is
 (K-slide-comb) (prove the assignment problem class-wide, or probe adversarial shapes),
