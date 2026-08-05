@@ -53,6 +53,25 @@ for *organizing* this directory is here.
   scratchpad, commit nothing, coordinator lands serially), and the per-return
   landing checklist. Read it when dispatching or landing that fan-out;
   `Pencil-informal.md`'s *State of (K)* map is the mathematical entry point.
+  **The fan-out is COMPLETE** (all three landed 2026-08-05); its strategic
+  aftermath is the file below.
+- **`Pencil-strategy.md`** — the Phase-39 **strategic record** written after the
+  fan-out landed: *why* class uniformity of the escape resists (a
+  three-ingredient diagnosis of how rank conditions become combinatorial and
+  which ingredient the pencil pin costs; the uniform-negatives /
+  per-shape-positives asymmetry; the whole crux restated inside `Gr(3,6)`; and a
+  counting-saturation argument ruling out every count-expressible invariant),
+  what the KT formalization did and did not yield as extractable technique,
+  **three candidate stronger inductive invariants** with one cheap decisive
+  spike, and the **symbolic-computation assessment** (the harness is
+  exact-pointwise with hand-rolled univariate interpolation only; Macaulay2 is
+  installed, sandbox-verified, never used, and would upgrade §(K-Λ)'s
+  38-strata evidence to a class-uniform proof — plus the conventions it would
+  need first). Strategy, **not** mathematics: every mathematical claim points at
+  the workbook section that owns it, and its §§2–4 *diagnoses* carry no driver —
+  they are arguments a successor should attack rather than assume. Read it
+  before choosing the phase's direction; `notes/Phase39.md` *Current state* is
+  authoritative for the standing adjudications.
 - **`ScrewSpaceCarrier-design.md`** — design doc for the *carrier-opacity*
   refactor (the `ScrewSpace` `abbrev` → diffuse-typeclass `maxHeartbeats`
   cost, the opacity spike, mathlib precedents, and the design-recon-first

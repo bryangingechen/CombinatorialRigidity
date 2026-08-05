@@ -65,6 +65,18 @@ status home for all of them: the workbook's **State of (K)** gap map.
 
 **Next: the phase direction is a USER DECISION and is AWAITING ADJUDICATION.** The coordinator
 is surfacing it; nothing is pre-selected here, and no phase close, pivot or re-scope is proposed.
+
+> **Read `notes/Pencil-strategy.md` before choosing.** It is the post-fan-out strategic
+> record: *why* class uniformity resists (the three-ingredient diagnosis, the
+> uniform-negatives/per-shape-positives asymmetry, the `Gr(3,6)` framing, and the
+> counting-saturation argument that rules out every count-expressible invariant), what the
+> KT formalization did and did not yield, **three candidate stronger inductive invariants**
+> beyond the three continuations below — incl. one cheap decisive spike nothing in the arc
+> has run — and the symbolic-computation assessment (the harness is exact-pointwise with
+> univariate interpolation only; Macaulay2 is available and unused, and would upgrade
+> §(K-Λ)'s 38-strata evidence to a class-uniform proof). It also carries the conditional
+> first commit under each possible adjudication.
+
 The three candidate continuations the returns themselves identify, listed without preference:
 
 - **(a)** the two **unexplained mechanisms** direction C isolated — 6v11e's (W2) `dim V_bc = 2`
