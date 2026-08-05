@@ -47,9 +47,18 @@ and proven ((C6), Edmonds matroid partition from 5/6-sparsity alone), (C2)'s len
 corrected, and **(C7)** (the repaired dictionary) is the named continuation.
 
 Remaining uniform (K) gaps: **(K-Λ)**, **(K-slide-cl)** (routes: (C7), or a decoration with more
-than four hub positions), and `P21`-type parallel-`G°`-edge shapes. A fresh session picks up per
-*Hand-off*: the W4 build (route 3(b), first commit W4-L4b) awaits commissioning; kernels stay
-carried per the standing adjudications.
+than four hub positions), and `P21`-type parallel-`G°`-edge shapes. Canonical status home for all
+of them: the workbook's **State of (K)** gap map.
+
+**Next concrete work: the three-way research fan-out, prepared and not yet dispatched —
+`notes/Pencil-fanout.md`.** The 2026-08-05 user adjudication (verbatim there) holds the Lean
+back until the research yields *"an informal proof or disproof or any results that would be
+significant as standalone pieces of math"*, so **W4 stays parked even though it is fully
+decomposed and buildable**. The three directions are A (adversarial test at the shapes no
+mechanism covers — a disproof of the conjecture is the headline outcome), B ((K-Λ)'s
+quadric-avoidance), C (the White–Whiteley pure condition un-specialized). That file carries the
+exact questions, the verified grounding, the non-collision dispatch mechanics (read-only,
+commits nothing, coordinator lands serially), and the pivot rule if A refutes the conjecture.
 
 **Numerics harness prepped (2026-08-05, prep commit — no mathematics, no `.lean`).** The
 `notes/scripts/` harness is now layered: one canonical `sys.path` bootstrap
@@ -167,7 +176,16 @@ Full record, grounding, and the W0–W5 decomposition:
 decomposition"), and **`hfresh`'s mechanical discharge (residue (iv)) is CLOSED too** (same day).
 The landed successor `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card`
 (`Molecule/Pencil/Escape.lean`) wraps `pencil_conjecture_of_hcontract_hK_hbareSplit` and carries
-exactly three remaining open items — **next concrete commit: pick any one, none blocks another**:
+exactly three remaining open items, detailed below.
+
+> **Next concrete commit** — see *Current state* (authoritative; this is a thin pointer so the
+> two cannot drift): dispatch the prepared three-way research fan-out,
+> **`notes/Pencil-fanout.md`** (directions A/B/C, read-only, coordinator lands serially). The
+> 2026-08-05 adjudication holds the Lean back pending a standalone-significant informal result,
+> so **W4 stays parked** despite being fully decomposed and buildable — do **not** open a W4
+> build without a fresh user adjudication.
+
+The three carried items:
 
 - **`hcontract`** (W4) — **decomposed 2026-07-30** (design doc §"W4 decomposition recon") and
   its **W4-L4 identification recon COMPLETE same day** (user-adjudicated "B: L4 recon first";
@@ -204,57 +222,22 @@ exactly three remaining open items — **next concrete commit: pick any one, non
   (research options: prove the vacuity conjecture first), `hremove` (until W4-L5). Numerics
   evidence: gates N8/N9(+rank-29 control)/N10/N10b all PASSED (`notes/scripts/w4/`,
   `hybrid_gates.py`).
-- **`hK`** (kernel (K), research) — the escape `≢ 0` uniformity kernel. **Routes 1 and 2
-  (as pinned) are REFUTED** (2026-07-30 gate + follow-up recon: locality fails — the
-  stress is globally supported and the escape's zero locus moves with the far graph at
-  identical local data; the landed span device needs a spanning family the pin caps at 5).
-  The follow-up **non-constancy recon returned PARTIAL** with a corank stratification:
-  `index(G) ≥ 1` habitats get the escape *automatically* modulo a new seed-quality
-  obligation (K-shared); the hard kernel narrows to **(K-tight)** — tight (`5|E| =
-  6(|V|−1)`), both chain ends hubs, provably 2-connected — where no landed-brick route
-  closes it; the one identified enabling technology is stress-as-chart-rational-function
-  infrastructure. **Adjudicated ("C: literature hunt + A", verbatim)**: keep carrying `hK`
-  as pinned (zero effort now); the literature hunt RAN same day — **NO HIT**, the crux
-  confirmed novel (nearest work: the White–Whiteley 1983/1987 pure-condition papers, the
-  right exemplars if option B is ever commissioned; see *Citations* + design doc §"(K)
-  literature hunt"); commissioning the stress-function infrastructure (option B) is NOT
-  authorized now. **The KT pp. 684–691 re-pin is DONE (2026-08-02, workbook §(K-tight))**:
-  the escape criterion is settled against the carrier (attainment ⟺ two functionals
-  independent on the obstruction space `U`; (K-tight)/(K-res) hard-stratum failure ⟺
-  `★r ∥ C(meet line)`), no genuine escape failure exists in the corrected numerics, and
-  the open mathematics is one uniform gap — **(K-move)** ("`[r]` moves on a local-block
-  fiber", the route-1 gate's lever, now aimed at the proven failure direction) or the new
-  scalar form **(K-pitch)** ("the transmitted wrench has pitch": one polynomial per
-  (graph, split)). **(K-pitch) DEVELOPED (2026-08-04, workbook §(K-pitch))**: the pitch
-  transfers stress-free to the motion side of `G − v − a` ((T1)–(T4)), closes as a **bracket
-  monomial** at length-3-companion splits (θ(3,3,6), the (K-res) hard stratum), and extends to
-  length-4 companions via the **Λ-compression (T5)** — gap **(K-Λ)**: one projective point off
-  one local quadric. **The slide-in is a PROOF DEVICE (workbook §(K-slide))**: the
-  slide-transfer theorem (S1) makes one exact limit witness close a habitat's split (the
-  rank-persistence proviso dissolved) — 23/23 witnesses, so the **`K4`/`W4` control habitats
-  close at every split**; parallel `G°`-edges proven order-0-obstructed (`P21` the uncovered
-  shape). **The tetrahedral collapse (workbook §(K-slide-cl))** factors the limit system into
-  six scalar forest systems (WW87 Thm-2.18 specialization inside the decoration variety),
-  reducing (K-slide-cl) to the combinatorial (K-slide-comb) — length dictionary proven complete
-  (`ℓ ≤ 5`), (W3)/(W4) a finite local-type bracket monomial. **(K-slide-comb) is then REFUTED
-  class-wide (2026-08-05, workbook §(K-slide-comb), `notes/scripts/w4/kslidecomb.py`)**: the
-  colouring premise fails inside the class, at 5-chromatic `G°` (`K5` with all-`{3,4}` lengths;
-  properness is forced at every length, so this needs a >4-hub-position decoration) and at
-  acyclicity-obstructed `G°` (every menu contains `L_{φu φw}`, so `φ` must be *acyclic* — which
-  3-degeneracy does **not** give, correcting the previous "4-colorability proven" reading); the
-  pure dictionary is also menu-blocked at 438/877 exhaustive `K4` shapes. **(K-slide-cl) is
-  therefore OPEN**, covered exactly on the solvable sub-class (all 7 battery members, hence the
-  control habitats). Surviving positive content: **(C6)** — the unrestricted 6-fold base packing
-  (3 bases of `M(G°)/e₀` + 3 of `M(G°)∖e₀`, `P` used `6 − ℓ_P` times) holds at **every** class
-  shape, because Edmonds' matroid-partition min-max hypothesis for it *is* 5/6-sparsity — so the
-  packing content is never the obstruction and is Phase-12/13/14-reachable; and **(C7)** —
-  (C2)'s length-4 "forced" entry is **wrong** (12/12 exact witnesses; the menu is every 2-subset
-  containing `L_ij`), lifting `K4` coverage to 702/877 and rescuing the octahedron flank. Uniform
-  gaps now: **(K-Λ)** + **(K-slide-cl)** + `P21`-type shapes; (K-wit)/(K-pitch-∞) the weakest
-  exact forms. Next research step when (K) resumes: (C7)'s geometric witness and its
-  `ℓ ∈ {1,2,5}` analogues, a >4-hub-position decoration for the refuted flanks, or (K-Λ)'s
-  quadric-avoidance.
-  Design doc §"W5-L7 research recon" "(K) route-1 gate" + "(K) non-constancy recon".
+- **`hK`** (kernel (K), research) — the escape `≢ 0` uniformity kernel, and the phase's hardest
+  open item. **Standing adjudication ("C: literature hunt + A", verbatim, 2026-07-30): keep
+  carrying `hK` as pinned (zero effort now); commissioning the stress-as-chart-rational-function
+  infrastructure (option B) is NOT authorized.** The literature hunt ran the same day — **NO
+  HIT**, the crux confirmed novel (nearest work: the White–Whiteley 1983/1987 pure-condition
+  papers, the right exemplars if option B is ever commissioned; see *Citations* + design doc
+  §"(K) literature hunt"). Since the 2026-08-02 W4 route-3(b) adjudication `hK` also carries the
+  **(K-res)** residual habitat as a byte-identical sibling (same difficulty class, same stratum,
+  one uniform gap serves both).
+  **The mathematics is NOT restated here.** Canonical home: `notes/Pencil-informal.md` — its
+  **State of (K)** gap map is one row per named gap ((K-tight), (K-move), (K-pitch), (K-wit),
+  (K-pitch-∞), (K-Λ), (S1)/(K-slide), (K-slide-cl), (K-slide-comb), (C6), (C7), `P21`), each
+  with status, what would close it, and what it is conditional on, plus the uncovered-shape list
+  and a *settled, do not re-derive* block. Read that map, not this bullet, before any (K) work;
+  update it in place rather than writing a fresh summary. Route history: design doc §"W5-L7
+  research recon" "(K) route-1 gate" + "(K) non-constancy recon".
 - **`hbareSplit`** (kernel (K-bare), research) — the bare-half-off-feasibility kernel; **carried
   as pinned (the standing GO), extension route recon'd NO-GO on landed machinery** (2026-07-30):
   the chart/reseed/engine device is definitionally dead at infeasible `G` (no nondeg realization

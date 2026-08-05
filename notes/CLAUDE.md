@@ -45,6 +45,14 @@ for *organizing* this directory is here.
   kept at full detail because they are the input to the eventual W4 build,
   which the route-3(b) adjudication parks. Same discipline; the (K) arc is
   the sibling file above.
+- **`Pencil-fanout.md`** — dispatch scoping (not mathematics) for the Phase-39
+  three-way kernel-(K) research fan-out: the user adjudication holding the Lean
+  back pending a standalone-significant informal result, the three independent
+  directions and why the fourth was declined, the non-collision mechanics for
+  **parallel** read-only research dispatches (own new script, draft to the
+  scratchpad, commit nothing, coordinator lands serially), and the per-return
+  landing checklist. Read it when dispatching or landing that fan-out;
+  `Pencil-informal.md`'s *State of (K)* map is the mathematical entry point.
 - **`ScrewSpaceCarrier-design.md`** — design doc for the *carrier-opacity*
   refactor (the `ScrewSpace` `abbrev` → diffuse-typeclass `maxHeartbeats`
   cost, the opacity spike, mathlib precedents, and the design-recon-first
