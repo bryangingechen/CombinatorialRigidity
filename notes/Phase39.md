@@ -234,13 +234,19 @@ discharge (residue (iv)) is CLOSED too**. The landed successor
 > coordinator-owned: the deliberate re-baselining commit clearing all **four** *Harness debt*
 > items — item 4 is the first defect that changes how existing output may be *read*.
 >
-> **NOT DECIDED HERE:** whether the remaining route-σ work preempts the **mechanisms pass**
-> (*Current state* (a)), the one unstarted item of the user's adjudicated dispatch ordering.
-> That is an **open user adjudication**; both are live and neither is pre-selected.
-> **Since 2026-08-05 a third contender joins that same adjudication:** the ranked live shortlist
-> of `notes/Pencil-strategy.md` §4.6 (*Current state* (f)) — the only one of the three aimed at
-> **class uniformity itself**. Smallest concrete commit: U2's `supp(λ)` driver (a pure addition,
-> so the figure gate discharges by the no-driver-modified check). Also **not pre-selected**.
+> **THE NEXT COMMIT IS DECIDED — the harness re-baselining round** (user-adjudicated 2026-08-06:
+> *"let's fix the harness and clear any debt there while you're at it."*). It clears **all four**
+> harness-debt items in one sequence and re-baselines every recorded figure; scope, order and the
+> moved-figure rule are in `notes/scripts/README.md` *Harness debt*, **OPENED** block. Trigger:
+> dispatch-log **F13** — a mitigation for a recorded defect found ineffective. **It precedes all
+> research below.**
+>
+> **QUEUED, still an open user adjudication** — three contenders, none pre-selected: the remaining
+> route-σ work; the **mechanisms pass** (*Current state* (a)); and `Pencil-strategy.md` §4.6's
+> ranked shortlist (*Current state* (f)), the only one aimed at **class uniformity itself**. The
+> live crux is **(ANH-R1)**: is `H/P − β` pencil-rigid, and is that *easier* than its parent or
+> merely smaller? §2.3's new convergence note — two independent routes, one residual shape —
+> argues the wall is structural, so attack it directly if a third route lands there too.
 >
 > Deliberate non-goals: (Λ0), (Λ1), the `g₁₄` clause, §(K-ind), §(K-Δ), **§(K-clos)'s field
 > question**, **§(K-ann)'s settled batch** ((ANH-1)–(ANH-6), (SD-6)) and **§(K-out)'s settled
@@ -321,28 +327,28 @@ is the canonical home a successor reads.
   can ever deliver it**; availability only pointwise (356/357, 270/270, two disjoint pinned
   pools) with an (OUT)-silent *nondegenerate* constructed point; **(OC-7) a HARNESS DEFECT**
   (≈ 9 % of habitat frames forced `λᵢ = 0`, uncaught by the documented guard, *Harness debt* 4).
-  **No gap-map status moves; class uniformity untouched by all three.**
+  **No gap-map status moves; class uniformity untouched by all three.** *Coordinator capture,
+  same day:* the **harness re-baselining round OPENED** (user-adjudicated; scope in
+  `notes/scripts/README.md` *Harness debt*), dispatch-log rows + **F13**/**F14**, and
+  `Pencil-strategy.md` §2.3's **convergence note** — A's and B's residuals are both
+  *pencil-rigidity of a contraction of `H`*, so §2.3's wall is structural, not route-specific.
 
-- **Notes reorganization: the label registry opened; the workbook and design doc INDEXED, not
-  split or compressed** (2026-08-05, docs only — nothing renamed, no marker moved). Canonical
-  home for the minting rule, the diagnosis and the reserved namespaces: **`notes/Pencil-labels.md`**.
-  Two argued skips: no `notes/pencil/` directory move; **`Phase39-design.md` FROZEN** (119 anchors).
+- **Notes reorganization: label registry opened; workbook and design doc INDEXED, not split or
+  compressed** (2026-08-05, docs only). Canonical home **`notes/Pencil-labels.md`**. Two argued
+  skips: no `notes/pencil/` move; **`Phase39-design.md` FROZEN** (119 anchors).
 
 - **Broad class-uniformity recon: five directions REFUTED, three live successors ranked**
-  (2026-08-05, prose only; canonical home `notes/Pencil-strategy.md` **§4.6**, not restated here).
-  Refuted: `∀λ`, the `Gr(3,6)` cluster structure (a **third** ambient-ground-set MISS),
-  moment-curve/positivity, the codimension comparison, definable choice/QE, and "choose the split
-  to force `k = 4`". One new derivation, **(OUT)**, migrated to workbook §(K-Λ) *Step 5a* — since
-  2026-08-06 measured, §(K-out). Calibration: **`k = 4` ⟺ `hnoRigid` is tight**. No status moves.
+  (2026-08-05; canonical home `notes/Pencil-strategy.md` **§4.6**). Refuted: `∀λ`, the `Gr(3,6)`
+  cluster structure (a **third** ambient-ground-set MISS), moment-curve/positivity, the
+  codimension comparison, definable choice/QE, "choose the split to force `k = 4`". One new
+  derivation **(OUT)** → §(K-Λ) *Step 5a*. Calibration: **`k = 4` ⟺ `hnoRigid` is tight**.
 
-- **The route-σ arc — three landings; canonical home workbook §(K-σ), live summary the
-  *Hand-off* blockquote, neither restated here** (2026-08-05, `sigma.py`). **Route σ landed as a
-  CANDIDATE** (route A at the dual seed `σu`, `★r ∥ C(bc)`); σ-intertwining **REFUTED literally,
-  CONFIRMED covariantly** (so §(K-Λ)'s failure locus is a σ-orbit); **σ-equivariant seed recipes
-  DEAD**; obligation 1's numerics half **DONE** (`--hunt`: the dual conjuncts are **NOT** implied
-  — 53 constructed counterexamples, an F11-class correction to *Step σ4*'s 63/63 — obligation 1
-  shrunk to two conditions, steering exact, **(σ7)** proven); field scope **superseded
-  2026-08-06** by §(K-clos). **No gap-map status row moves.**
+- **The route-σ arc — three landings; canonical home workbook §(K-σ)** (2026-08-05, `sigma.py`).
+  **Route σ a CANDIDATE** (route A at `σu`, `★r ∥ C(bc)`); σ-intertwining **REFUTED literally,
+  CONFIRMED covariantly** (§(K-Λ)'s failure locus is a σ-orbit); **σ-equivariant recipes DEAD**;
+  obligation 1's numerics half **DONE** (`--hunt`: dual conjuncts **NOT** implied — 53
+  counterexamples, an F11-class correction to *Step σ4*'s 63/63 — shrunk to two conditions,
+  steering exact, **(σ7)** proven); field scope **superseded 2026-08-06** by §(K-clos).
 
 - **(K-ind) REFUTED as a route — no move of the induction relates two class members**
   (2026-08-05, workbook §(K-ind), no driver): tight ⟺ `(5c+1, 6c)`, `splitOff` fixes `G°`, the
@@ -355,19 +361,16 @@ is the canonical home a successor reads.
   isotropic*, `V_bc` never is; its ground set is `[3]` and never grows), so §7's lead is
   discharged and §2.2 sharpens to **the missing ingredient is the ground set, not the min-max**.
 
-- **The `g₁₄` clause is NOT forced by any class habitat in scope — Λ-completeness stands as
-  written** (2026-08-05, `outer.py`; canonical home workbook §(K-Λ) *Step 3a*, with (Λ0g)/(Λ0i)
-  and the 4280/4280 + 684/684 figures). Residual: companions with ≥ 2 hubs on the interior.
+- **The `g₁₄` clause is NOT forced by any class habitat — Λ-completeness stands as written**
+  (2026-08-05, `outer.py`; workbook §(K-Λ) *Step 3a*). Residual: ≥ 2 hubs on a companion interior.
 
-- **(Λ0) + the `a`-line spans PROVEN at the generic point — CLASS-UNIFORM; the recorded criterion
-  was INCOMPLETE** (2026-08-05, `m2/lambda0.m2`; workbook §(K-Λ)). Exact criterion **(Λ0f′)**
-  `p⁺₂p⁺₃·g₁₃g₁₄g₂₄ ≠ 0`. **Methodological verdict: uniform because (Λ0) is far-graph-free, and
-  (K-wit) is not.**
+- **(Λ0) + the `a`-line spans PROVEN at the generic point, CLASS-UNIFORM; the recorded criterion
+  was INCOMPLETE** (2026-08-05, `m2/lambda0.m2`; §(K-Λ)) — **(Λ0f′)**; uniform because (Λ0) is
+  far-graph-free and (K-wit) is not.
 
-- **The Macaulay2 layer LANDED, and (Λ1) is an IDENTITY over the function field** (2026-08-05) —
-  `notes/scripts/m2/` with §5.4's four conventions binding, plus `lambda1.m2`'s gauge-free proof;
-  the ungauged 28-coordinate expansion does not finish. Same commit made the **figure-invariance
-  gate proportionate** (it fires on `git diff --name-only -- '*.py' '*.m2'`).
+- **The Macaulay2 layer LANDED; (Λ1) is an IDENTITY over the function field** (2026-08-05,
+  `m2/lambda1.m2`; §5.4's conventions bind, ungauged expansion does not finish). Same commit made
+  the figure-invariance gate proportionate.
 
 - **The 2026-08-05 research day, sixth–ninth dispatches (one line each; the named workbook
   section is the canonical home).** *A* (`flanks.py`, §(K-flank)): the conjecture **HOLDS at

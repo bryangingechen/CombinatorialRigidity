@@ -92,6 +92,8 @@ keeps only what git cannot show.
 | 2026-08-05 | Phase39 (K-slide-comb) recon (`3a8b07a5`) | opus (recon; fable substitute, session rung config) | two gate-invisible defects in the PRIOR pass's "proven pieces", caught by the next dispatch | The fourth pass (`a886bab5`) recorded (a) "4-colorability proven for all-length-3 shapes" as discharging the collapse's colouring premise — but every menu mandates `L_{φu,φw}`, so the premise needs an **acyclic** 4-colouring, about which 3-degeneracy says nothing; and (b) (C2)'s length-4 entry as "(forced)" — an *exhaustiveness* claim its per-entry machine asserts can't test (refuted, 12/12 witnesses). Both rode through last session's coordinator reasoning-scrutiny pass. Lessons: a "proven piece" discharging a premise must be checked against the premise's ACTUAL invariant, not a nearby one; a dictionary entry marked "forced" is an exhaustiveness claim needing its own driver. Third consecutive pass in this arc correcting its predecessor — see F11. |
 | 2026-08-05 | Phase39 σ-recon verdict landed (`3df70929`) | opus (recon) → opus (builder) | gate-invisible figure defect caught by the LANDING dispatch | The σ recon's Step-σ4 table reported "63/63" on every row, but its four scratch drivers ran *different* seed pools per script (one covered 34 seeds, another 73), so the uniform figure was an aggregate across inconsistent scopes — no gate reads a recon's own table. Caught when the landing builder consolidated the scratch drivers into one committed `sigma.py`, pinned a single 63-seed pool, and re-ran every check over it; the landed figure is now literally true. Lesson: a read-only recon's headline figure needs a pinned pool before it is quoted, and driver consolidation at landing is where that gets enforced. |
 | 2026-08-05 | Phase39 verdict-landing commit (`c09b32bf` → amended `3df70929`) | opus (builder) | wrong trailer from a stale in-definition example — RECURRENCE | Both opus agent definitions illustrated the trailer with `e.g. Claude Opus 4.8` while the dispatched model was Opus 5; the builder wrote the stale name, caught it itself, and amended. Same failure mode CLAUDE.md already records from 2026-07-02 (a stale `Sonnet 4.6` example propagating into a landed trailer) — the instruction was correct ("read your environment block"), the *example* was the hazard. Coordinator fix: both opus variants now carry no version example and an explicit do-not-copy warning naming both incidents. |
+| 2026-08-06 | Phase39 fan-out direction B (`d2805253`) | opus (recon) | latent harness defect found BY a dispatch — the documented guard does not guard | `place_pencil_general`'s single-hub-interior sampler degenerates via `localtest.plane_basis` at 32/357 POOL-G frames (~9%), and the degeneracy *implies* the measured quantity (`λᵢ = 0`, 15/15 b-side + 18/18 c-side). `star_span_ranks` — whose own docstring (`flanks.py:201`) calls it the genericity guard against exactly this artifact — does not catch it, and no `IsNondegPencilRealization` conjunct excludes it. Second `plane_basis` contamination (cf. 2026-08-02) and the first where the mitigation failed. Caught only because B happened to measure a quantity the degeneracy forces. Landed as harness-debt item 4; coordinator opened the re-baselining round. See F13. |
+| 2026-08-06 | Phase39 fan-out direction A landing (`c9cf5792`) | opus (builder) | mitigation VALIDATED — registry caught a three-way label collision at landing | A's draft minted bare `(R1)`/`(R2)`, which would have collided three ways (Shared dictionary / opening recon / `Pencil-strategy.md` §4.6's six refutations); landed as `(ANH-R1)`/`(ANH-R2)`, and the promoted branch-length result as `(SD-6)` not `(R6)`. `notes/Pencil-labels.md` was created the same day, hours earlier, for precisely this failure mode. Logged as a positive control: the registry is load-bearing, not decorative, and the minting rule fired at the right moment (draft→landing) rather than after the fact. |
 
 ## Findings
 
@@ -318,3 +320,40 @@ At phase close, promote stable entries into the coordinator command's
   requires for deleted decl names. Generalization: a gap-map / status
   table is a *summary* of body prose, so a correction to a summary row
   is presumptively a correction to at least one body paragraph too.
+- **F13 — a guard is not verified by existing; a sampler defect that
+  *implies* the measured quantity is invisible to every downstream
+  check (Phase 39, 2026-08-06).** The 2026-08-02 `plane_basis`
+  contamination produced a mitigation — `star_span_ranks`, documented
+  in its own docstring as the genericity guard against that artifact.
+  It does not catch the coincident-hinge-line degeneracy, which
+  *forces* `λᵢ = 0`, i.e. manufactures the phenomenon under
+  measurement in ~9% of frames. Nothing gates this: not the build, not
+  the conjuncts, not figure invariance (a contaminated figure
+  reproduces perfectly). Two lessons. (i) **Classify a figure before
+  trusting it:** *rates* are distorted by degenerate frames, while
+  *identities* and *pointwise existence witnesses* are conservative
+  under them (junk points make an ∀-claim harder, not easier) — this
+  is what let §(K-ann) stand while §(K-out)'s rates needed restriction
+  to 318 clean frames. (ii) **A guard needs its own adversarial test**,
+  i.e. a witness the guard is supposed to reject; a guard that has only
+  ever been observed passing is untested. Corollary for the
+  coordinator: when a mitigation for a recorded defect turns out
+  ineffective, that is the trigger for the deliberate re-baselining
+  round, not another caller-side patch.
+- **F14 — coordinator premises are as unverified as a subagent's, and
+  the cheap check is measurement (Phase 39, 2026-08-06).** Four
+  coordinator-supplied premises were refuted in one session, each by a
+  measurement rather than an argument: "a directory is a namespace"
+  (the collision it would fix was already cross-file, 6 files);
+  "compress `Phase39-design.md` per the `Phase22` precedent" (wrong
+  precedent — 8 anchors there vs 119 here, so the disposition is
+  freeze); "option B and U2 are the same object" (directionally right,
+  specifically wrong); and "`Gr(3,6)` is the smallest finite-type
+  Grassmannian" (every `Gr(2,n)` is type `A_{n−3}`). All four were
+  passed in `route`/`scope-pin` shaping blocks — which the playbook
+  restricts to *coordinator-verified information* — so the failure was
+  labelling reasoning as verified. Mitigation that worked: every one of
+  those prompts also told the agent that refuting the seed was a fully
+  successful outcome, and every refutation came back explicitly. **Mark
+  coordinator hypotheses as hypotheses in the shaping block**; reserve
+  the verified register for things actually opened in source or re-run.

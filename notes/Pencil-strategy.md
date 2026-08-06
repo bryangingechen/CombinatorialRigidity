@@ -143,6 +143,35 @@ it is the asymmetry expressing itself.** Consequence worth stating plainly: what
 the arc has accumulated are class-wide *non-existence* facts, and non-existence
 facts do not compose into an existence proof.
 
+> **The wall is structural, not a property of either route — two independent
+> passes hit the same object from different directions** (coordinator
+> observation, 2026-08-06; neither pass could see this, because neither could
+> see the other's residual). The 2026-08-06 fan-out ran directions A and B with
+> **no shared machinery** and unrelated targets — A a class-uniform bracket
+> formula for `dλ` (`§(K-ann)`), B the outer-line criterion (`§(K-out)`). Both
+> terminated on a residual of the *same* shape, and the coincidence is tighter
+> than "both are rank lower bounds", which would be generic:
+>
+> - **(ANH-R1)** `τ_β ≠ 0` at the pencil placement, i.e. `H/P − β` is
+>   pencil-rigid — a contraction of the far graph `H` by the welded companion.
+> - **(OC-8)** `L_b ⊄ R₁` (or the `c`-mirror) on the pencil chart of
+>   `H/{e₂,e₃,e₄}` — a contraction of the far graph `H` by three companion
+>   edges.
+>
+> Both are **pencil-rigidity of a contraction of `H`**, and both are the *lower*
+> bound direction of this subsection's asymmetry. So the residual is not an
+> artifact of how either route was set up: §2.3's wall has been **relocated and
+> weakened twice, from two directions, and crossed neither time**.
+>
+> **A prediction, recorded so it can be checked rather than admired.** A third
+> independent route should terminate the same way. If the next pass's residual
+> *is* again a rank lower bound on a contraction of `H`, stop looking for routes:
+> the productive target becomes the wall itself — *why do rank lower bounds at
+> pencil placements resist on contracted far graphs?* — which is a question about
+> one object, not a survey of approaches. If the next residual is **not** of that
+> shape, that is the genuinely informative outcome and it deserves the attention
+> a surprise deserves.
+
 ### 2.4 The whole crux inside one Grassmannian
 
 (PC-Z) lets the crux be restated compactly. `V_bc` is a 3-dimensional subspace

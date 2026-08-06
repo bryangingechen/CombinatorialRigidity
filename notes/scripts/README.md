@@ -707,6 +707,42 @@ the one that most raises the price of waiting: every new habitat battery drawn
 through `place_pencil_general` inherits the exposure, and its figures then have
 to be re-read under the coincident-hinge guard rather than simply re-run.
 
+> **OPENED 2026-08-06 — user-adjudicated, verbatim: *"let's fix the harness and
+> clear any debt there while you're at it."*** The trigger was item 4: a
+> *mitigation for a recorded defect turning out ineffective* is a different
+> event from a latent bug, because it means the recorded defensive story is
+> false wherever it is quoted (dispatch-log **F13**). The round clears **all
+> four items in one commit sequence**, which is the whole point of the
+> "one deliberate re-baselining" framing — a partial fix pays the re-baseline
+> cost without buying the invariant back.
+>
+> **Scope, in the order the price is paid.** (1) Fix `star_span_ranks`, or add
+> the guard it fails to supply, so the coincident-hinge / free-rotor
+> configuration is *rejected, not measured* — and give it an **adversarial
+> test** (a witness it must reject), per F13: a guard observed only passing is
+> untested. (2) `localtest.meet_line` to signal rather than raise, retiring the
+> caller-side `UnboundLocalError` catches. (3) `lambda.omega_curves`' coded
+> (Λ0f) equivalence at the newly-reachable `g₁₄ = 0` points, whose underlying
+> cause is that it codes the superseded (Λ0f) rather than (Λ0f′). (4) Move
+> `flanks.star_span_ranks` down to `repin` (four consumers, past §2 rule 2's
+> own trigger) — do this *with* item 1, since both touch that function.
+>
+> **Then the re-baseline itself, and it is the expensive half.** Every recorded
+> figure re-runs; each change is either **byte-identical** (state it) or a
+> figure that **moved**, in which case the workbook section owning it is
+> repointed **in the same commit** and the movement is explained — a moved
+> figure is a mathematical event, not a chore. Budget for the two invocations
+> exceeding a 600 s foreground budget (`flanks.py --limit`, `lambda.py --adv`)
+> and run them in separate foreground calls. Expect figures to move **only**
+> where item 1 bites; if a figure moves elsewhere, stop and surface it.
+>
+> **Read F13's figure classification before deciding what to re-read rather
+> than merely re-run:** *rates* drawn through `place_pencil_general` are
+> exposed; *identities* and *pointwise existence witnesses* are conservative
+> under the defect and do not move. `§(K-out)` is already restricted to its 318
+> coincidence-free frames; `§(K-ann)` is flagged for a check and expected clean
+> on this classification, but the check is owed, not assumed.
+
 **One unreconciled observation, recorded so a later pass does not trip on it**
 (coordinator re-ran `outer.py --patterns` on 2026-08-05 and confirmed its
 headline, 4 of 8 patterns realized): `--patterns` reports **1006** companions in
