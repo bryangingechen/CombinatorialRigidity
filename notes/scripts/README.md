@@ -264,7 +264,8 @@ before touching any of them.** `rvec3` likewise.
                   w4/ DRIVER STACK (deepest last)
    nogood_subdiv -> saferes -> widened -> repin -> pitch -> kslide -> kslidecl
         -> kslidecomb -> {flanks, pure, lambda}  -> dominance, outer, sigma,
-                              (siblings; none imports another)     closure, annih
+                              (siblings; none imports another)     closure, annih,
+                                                                   outerline
 
 
    m2/  SYMBOLIC LAYER (Macaulay2; no import edge to any of the above)
@@ -332,6 +333,22 @@ Three layers, plus one **language island**:
   and — through `importlib`, `lambda` being a keyword — `lambda.HABITATS4`. It
   reimplements nothing: the `star_span_ranks` genericity guard rides in through
   `dominance.base_seed`.
+  **`outerline`** (§(K-out) — (OUT)'s hypothesis measured: the welded
+  relative-twist model, the ambient-generic availability map, the never-automatic
+  negative (OC-3), and the constructed (OUT)-silent chart point) is the
+  **sixth** such leaf and, like `annih`, reimplements nothing: `outer`'s
+  `split_data` / `companions4` / `free_ends` / `hub_pattern` / `stratum_at` /
+  `build_frame` / `geom_checks` / `lam0d` / `sweep_shapes` / `named_inventory` /
+  `eligible_splits`, `nogood_subdiv`'s `deficiency` / `contraction`,
+  `widened.place_pencil_general`, `flanks`' `star_span_ranks` /
+  `nondeg_conjuncts`, `pitch`'s `H_motions_vbc` / `klein` / `coords_in`,
+  `repin`'s `span_basis` / `in_span` / `robust_plane_basis`,
+  `pencil_escape.build_rigidity`, `kbare_common`'s `verify_pencil_witness` /
+  `verts_of`, and — through `importlib` — `lambda`'s `habitat_specs` /
+  `rows_mnqs` / `qpoly` / `span_meet` / `poly_deg`. It also imports
+  `localtest.plane_basis` **as a diagnostic, never as a sampler** (aliased
+  `DEGENERATE_PLANE_BASIS`): (OC-7) needs to know *when the degenerate basis
+  fires*, which is the finding that put *Harness debt* item 4 on the list.
   **`star_span_ranks` now has FOUR consumers, past the signal rule 2 names: the
   next commit that already owes a full `repin` re-baseline should move it down**
   (with a re-export from `flanks` so the recorded figures do not move); on its
@@ -504,6 +521,10 @@ arcs too.
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/annih.py --recipe` | 37 s | ibid. *Step A7* ((ANH-7): `κ_β` 1-dimensional, `τ_β ∝ κ_β`, the one-bracket criterion correct at **56/56** sites; `dim U_y` reported 32 / 24) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/annih.py --census` | 23 s | ibid. *Steps A4/A6/A9* ((ANH-4)'s two corollaries, the *Shared dictionary*'s **(SD-6)** and its past-length-6 stress test, and the 4296-triple coverage 3820/4296 = 89 %) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/annih.py --validate` | 8 s | ibid. (the machinery: the Hodge dictionary, `λ ⊥ π_P(Z)`, `λ ∈ row(N)`, transmissibility off `P`, `V_bc` reconstructed — 4 habitats). **All six modes byte-identical under two `PYTHONHASHSEED` values** |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/outerline.py --comb` | 14 s | workbook §(K-out) *Step O2* ((OC-2): the ambient-generic availability map over POOL-C — 4296 (split, companion) pairs, `(μ, dim R, A) = (1,5,0)` on both sides). **Ambient-generic; it does NOT discharge (OUT)** |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/outerline.py --pool` | 358 s | ibid. *Steps O1/O4/O5* ((OC-1) the welded model at 46 frames; (OC-5) the POOL-G distribution 322/17/17/1 and (OUT)'s conclusion at 356/356; **(OC-7)** the sampler defect). **Quote its rates over the 318 coincidence-free frames, never the raw 357** |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/outerline.py --shapes` | 322 s | ibid. *Step O7* ((OC-6): POOL-S, 41 shapes / 90 splits / **270 frames, disjoint from POOL-G** — 270/270, no silent pair). **Never aggregate with POOL-G** |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/outerline.py --build` | 10 s | ibid. *Steps O3/O6* ((OC-3) `dim(R ∩ L) = 1` on-chart; (OC-4) the constructed (OUT)-silent nondegenerate point at all 4 habitats, 3 coincidence-free). **All four modes byte-identical under two `PYTHONHASHSEED` values; `--pool` and `--shapes` do not fit one 600 s budget together** |
 
 ### `m2/` — the Macaulay2 symbolic layer
 
@@ -534,6 +555,22 @@ canonical descriptions.
    442). Nothing failed, nothing asserted, and the defect survived multiple
    dispatches until the `(K-tight)` re-pin found it. An assert on the sampled
    in-plane basis' rank would have caught it on the first run.
+
+   **That precedent is NOT closed by `flanks.star_span_ranks`, and this
+   paragraph used to read as though it were** (corrected 2026-08-06, *Harness
+   debt* item 4; measurement in workbook §(K-out) **(OC-7)**). The `plane_basis`
+   family struck **a second time**: `widened.place_pencil_general` still routes
+   every *single-hub interior* through it, so at ≈ 9 % of habitat frames every
+   such interior of one hub lands on **one line** — and there
+   `star_span_ranks`, whose own docstring calls itself *"the genericity guard
+   against the `plane_basis` artifact"*, still returns rank 3, because a
+   *third* neighbour (placed by a different branch) spans the panel. So a green
+   `star_span_ranks` is evidence about the hub's **star**, never that the
+   sampler drew generically; the guard that catches this class is *no two hinge
+   lines at a hub coincide*, and a new sampler or battery should assert that
+   too. Consequence for how output is read, not just written: **a
+   `place_pencil_general`-sampled battery may never be quoted as a rate or as
+   evidence about a generic chart point** (*Harness debt* 4).
 
    **Known latent defect, guarded rather than fixed (2026-08-05).**
    `localtest.meet_line` is documented to signal "the two planes have no meet
@@ -611,13 +648,13 @@ figure-invariant): `rref`, `rank`/`rank_exact`, `nullspace`, `left_nullspace`,
 `neighbors` (`kbare_common`, `n9`); `K4`/`K5_minus_matching` (three copies:
 `localtest`, `probe_zero`, `run_habitats`).
 
-## Harness debt — three parked items, and the tension that parks them
+## Harness debt — four parked items, and the tension that parks them
 
-Named as a list (2026-08-05) so a successor does not rediscover them one at a
-time. **The debt is one-directional and it accumulates**: every item is parked
-because *"figures do not move"* and *"fix the bug"* point in opposite
-directions, and each new driver that depends on the current state raises the
-price of the eventual fix.
+Named as a list (2026-08-05; item 4 added 2026-08-06) so a successor does not
+rediscover them one at a time. **The debt is one-directional and it
+accumulates**: every item is parked because *"figures do not move"* and *"fix
+the bug"* point in opposite directions, and each new driver that depends on the
+current state raises the price of the eventual fix.
 
 1. **`localtest.meet_line` raises instead of signalling.** It is documented to
    signal "the two planes have no meet line" by returning a **zero direction**,
@@ -634,14 +671,41 @@ price of the eventual fix.
    (Λ0f), not the widened (Λ0f′), which is the underlying reason.
 3. **`flanks.star_span_ranks` has four consumers** (`flanks`, `dominance`,
    `outer`, `sigma`), past §2 rule 2's own trigger to move it down to `repin`.
+4. **`widened.place_pencil_general`'s in-plane sampler degenerates at ≈ 9 % of
+   habitat frames, the degeneracy FORCES `λᵢ = 0`, and `flanks.star_span_ranks`
+   — the documented guard against exactly this — does not catch it** (added
+   2026-08-06; measured by `outerline.py --pool`, workbook §(K-out) **(OC-7)**,
+   the canonical home). It routes every *single-hub interior* through
+   `localtest.in_plane_point`, whose `plane_basis` is the degenerate member of
+   the *Divergences* table, so when it fires at a hub **every** such interior of
+   that hub lands on one line and the hub becomes a free rotor: **32 of 357**
+   POOL-G frames, and the implication *degenerate ⟹ `λᵢ = 0`* holds 15/15 on the
+   `b` side and 18/18 on the `c` side. No `IsNondegPencilRealization` conjunct
+   excludes it either. **This is the second recorded `plane_basis` contamination
+   — the first is the 2026-08-02 `(K-tight)` re-pin's phantom escape failures,
+   `notes/dispatch-log.md` — and the FIRST in which the documented guard
+   failed**, which is why §4 convention 1's precedent paragraph no longer reads
+   as though `star_span_ranks` closes this class. The correct cheap guard is
+   *no two hinge lines at a hub coincide*, which `outerline.py` implements
+   locally. **Standing consequence, binding now and not waiting for the fix
+   (§(K-out) states it as a rule): no `place_pencil_general`-sampled battery may
+   be quoted as a *rate*, or as evidence about a *generic* chart point** — quote
+   POOL-G-style figures over the coincidence-free sub-pool. Negatives (`0 hits`)
+   and positive existence witnesses are unharmed, one-directionally: a
+   degenerate draw creates neither a false hit nor a false witness.
 
-**Neither defect corrupts a figure — both fail loudly** — and item 3 is
-placement, not correctness. But each fix touches a module the whole `w4/` stack
+**No defect on this list corrupts a recorded figure — items 1–3 fail loudly,
+and item 4 is one-directional** (it can only manufacture `λᵢ = 0` events, so it
+touches *rate* readings and nothing else) — and item 3 is placement, not
+correctness. But each fix touches a module the whole `w4/` stack
 imports, i.e. it owes the full re-baseline of *figures do not move* (second
 bullet), including the two invocations that exceed a 600 s foreground budget.
 **The recorded option is one deliberate re-baselining commit clearing all
-three at once**, which pays that cost exactly once; opening it is a coordinator
-decision, not something a research dispatch should do on the side.
+four at once**, which pays that cost exactly once; opening it is a coordinator
+decision, not something a research dispatch should do on the side. Item 4 is
+the one that most raises the price of waiting: every new habitat battery drawn
+through `place_pencil_general` inherits the exposure, and its figures then have
+to be re-read under the coincident-hinge guard rather than simply re-run.
 
 **One unreconciled observation, recorded so a later pass does not trip on it**
 (coordinator re-ran `outer.py --patterns` on 2026-08-05 and confirmed its

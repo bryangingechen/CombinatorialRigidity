@@ -98,15 +98,21 @@ that three concurrent read-only passes cannot collide with each other or with
 anything above. Each prefix was verified **0-hit** across `*.md`, `*.tex`,
 `*.lean`, `*.py`, `*.m2` at reservation time, as was each section name.
 
-| dispatch | scope | **reserved label prefix** | **reserved section name** |
-|---|---|---|---|
-| **B** | the (viii) measurement plus (OUT)'s combinatorial half | **`OC-`** (*O*uter *C*riterion) → `(OC-1)`, `(OC-2)`, … | **`§(K-out)`** |
+**All three directions have LANDED** (2026-08-06) and **the reservation table is
+now empty**: `AC-`/`§(K-clos)` (C), `ANH-`/`§(K-ann)` (A) and `OC-`/`§(K-out)`
+(B, the (viii) measurement plus (OUT)'s combinatorial half) are live entries of
+the registry below, not reservations. A reservation is released by **moving** its
+row into the registry in the landing commit — never by deleting it — which is
+what each of the three landing commits did. The mechanics below stay because
+they bind the *next* parallel dispatch, not because one is in flight.
 
-**Directions C and A have LANDED** (2026-08-06) and their reservations are
-retired: `AC-`/`§(K-clos)` and `ANH-`/`§(K-ann)` are now live entries of the
-registry below, not reservations. A reservation is released by moving its row
-into the registry in the landing commit — never by deleting it. **Direction B is
-still in flight**, so `OC-`/`§(K-out)` stay reserved.
+**One naming hazard this fan-out created, recorded rather than renamed (L4).**
+The **direction letters A/B/C are re-used** between the 2026-08-05 fan-out
+(A = §(K-flank), B = §(K-Λ), C = §(K-pure)) and the 2026-08-06 one
+(A = §(K-ann), B = §(K-out), C = §(K-clos)) — so "direction B" is ambiguous
+across the corpus and **must be dated wherever it is written**. The *section*
+names never collide, which is why they, not the letters, are the durable
+reference.
 
 One thing direction A's landing exercised, worth recording because it is the
 first time a *reserved* dispatch hit clause L1 from the inside: the draft minted
@@ -150,6 +156,7 @@ Status keywords are pointers to the owning section's verdict block and the
 | §(K-σ) | `σ` ✓ | (σ1)–(σ7); Steps σ0–σ6, σ4b; hunt pools H4/H5 | the polarity as a symmetry of the split; **route σ** | (σ7) proven; route σ a CANDIDATE (its field scope settled by §(K-clos)) |
 | §(K-clos) | `AC-` ✓ | (AC-1)–(AC-8); Steps Z0–Z8; driver blocks AC-C0/AC-E/AC-S/AC-U/AC-X/AC-Q/AC-R2/AC-F/AC-2c/AC-P (`closure.py`) | the over-`ℂ̄` question: the polarity's field scope, the σ-fixed grid locus, the `⋆`-eigen decoupling, the route-σ collapse, the char-0 descent | (AC-6) **refuted** as a class statement, open on the tight stratum; the rest proven-informally |
 | §(K-ann) | `ANH-` ✓ | (ANH-1)–(ANH-8); the two residual inputs **(ANH-R1)**, **(ANH-R2)**; Steps A1–A9; driver modes `--stress`/`--rate`/`--supp`/`--recipe`/`--census`/`--validate` (`annih.py`) | the annihilator as a self-stress of the contracted framework `H/P`: the reciprocity identity, the named move, the `k = 4` Tay circuit, the one-bracket recipe. **(ANH-8) is promoted to the *Shared dictionary* as (SD-6)** — that is the only copy | (ANH-1)–(ANH-6), (ANH-8) proven / proven-informally; (ANH-7) true-modulo-named-gap; **(ANH-R1) open** |
+| §(K-out) | `OC-` ✓ | (OC-1)–(OC-8); Steps O1–O8; the four **pools** POOL-C / POOL-G / POOL-S / POOL-B; driver modes `--comb`/`--pool`/`--shapes`/`--build` (`outerline.py`) | (OUT)'s hypothesis measured: the exact hinge-rate reading, the ambient-generic map, the never-automatic negative, the constructed silent point, the two pool distributions, the sampler defect, and the residual | **(OC-3)** proven-informally and load-bearing; (OC-1) proven-informally; (OC-2)/(OC-5)/(OC-6)/(OC-7) measured; (OC-4) exhibited; **(OC-8) open**. **(OC-7) is a harness item**, `notes/scripts/README.md` *Harness debt* 4 |
 | §(K-ind) | `IN-` | (I0)–(I4); Steps I0–I6 | numerical invariant along the generating moves | refuted as a route; (I3) a positive by-product |
 | §(K-Δ) | `DL-` | **(M1)**, **(M2)**, **(M3)**; (N1), (N2) | the Δ-matroid literature hunt: (M1)–(M3) are the **three hypothesis tests**, (N1)/(N2) the two readings bought | NO HIT; discharged |
 | §(K-bare-ext) | `BE-` | (K-bare-ext) | the (K-bare) stub | open, nothing being developed |
@@ -157,10 +164,10 @@ Status keywords are pointers to the owning section's verdict block and the
 Gap names used arc-wide and owned by the *State of (K)* map: **(K-tight)**,
 (K-move), (K-pitch), (K-pitch-∞), (K-wit), (K-Λ), (K-slide), (K-slide-cl),
 (K-slide-comb), (K-chord), (K-flank), (K-dom), (K-σ), **(K-clos)**, **(K-ann)**,
-(K-ind), (K-Δ), (K-bare)/(K-bare-ext), and **(K-res)** (owned by the W4
-workbook, below). These are already tagged and collision-free; keep the `K-`
+**(K-out)**, (K-ind), (K-Δ), (K-bare)/(K-bare-ext), and **(K-res)** (owned by the
+W4 workbook, below). These are already tagged and collision-free; keep the `K-`
 form for any new gap. ((K-clos) was landed 2026-08-06 with its registry row but
-was missed from this sentence; added here with (K-ann).)
+was missed from this sentence; added here with (K-ann) and (K-out).)
 
 ## Registry — `notes/Pencil-W4-informal.md` (the W4 residual workbook)
 

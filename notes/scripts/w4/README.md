@@ -390,7 +390,13 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
     shape, not the conjecture).
   - `--adv` (~536 s): the refutation hunt over 1497 frames (357 real habitat
     seeds + 1140 local frames) — `λ ∝ p⁺` / `λ ∝ q` / `Q(z) = 0` / `C(M) ∈ S`
-    all **0** — plus the **(Λ0d)** panel-incidence witness (θ(3,4,5) seed 345,
+    all **0**. **Denominators, corrected 2026-08-06** (§(K-out) *Step O8*): the
+    first three are computed **only inside the habitat loop**, so their `0` is
+    over `≤ 400` frames (4 habitats × seeds 200–299), **not** 1497 — the 1140
+    local-strata frames leave the far covector free and carry no `λ` at all;
+    `C(M) ∈ S` and the span histogram *are* counted in both loops, so those
+    figures keep the 1497 denominator. Plus the **(Λ0d)** panel-incidence
+    witness (θ(3,4,5) seed 345,
     `span ω⁻` collapsing `3 → 1`) and the two **constructed** (Λ0f) necessity
     witnesses (`p⁺₃ = 0 ⟹ span ω⁺ = 2`, `q₃ = 0 ⟹ span ω⁻ = 2`, 4/4 each).
 
@@ -677,3 +683,57 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
   `notes/Pencil-informal.md` §(K-ann). **The recipe's kernel is class-uniform;
   its two inputs are not** — quote (ANH-7) only with **(ANH-R1)** (`τ_β ≠ 0` at
   the pencil placement, **open**, relocation #4) attached.
+
+- `outerline.py [--comb | --pool | --shapes | --build]` — **(OUT)'s hypothesis,
+  measured.** Answers §(K-Λ) *What would change this* item (viii) and *Step 5a*'s
+  "never evaluated anywhere in the arc": `lambda.py --adv` computes `λ` but
+  reports only the two proportionalities, never `λ₁` and `λ₄` separately, and
+  `λ₁ = 0 ⟺ C₁ ∈ V_bc` is exactly (OUT)'s first disjunct failing. Exact ℚ,
+  stdlib only; a `w4/` leaf beside
+  `dominance`/`outer`/`sigma`/`closure`/`annih`, importing only catalogued §1
+  primitives and **modifying nothing** (`lambda.py` and `outer.py` are read).
+  Run with `PYTHONHASHSEED=0` (all four modes verified byte-identical under two
+  different hash seeds). **Each mode prints its pool, and no figure is
+  aggregated across two pools.**
+  - `--comb` (~14 s): **(OC-2)** over **POOL-C** (deterministic, no rng: the 4
+    habitats, `outer.named_inventory()`, every `outer.sweep_shapes()` family) —
+    **4296** (split, companion) pairs, all with `χ = 0`, `def(H/X) = def(H/Y) =
+    0` and `(μ, dim R, A) = (1, 5, 0)` on **both** sides, plus the `5χ` count
+    identity for `H/X` per pair. **This is the *ambient*-generic count
+    (`nogood_subdiv.deficiency`) and it does NOT discharge (OUT)**: the pencil
+    chart is a proper subvariety, which is the whole point of `--build`.
+  - `--pool` (~358 s): **POOL-G** = the 4 `lambda.habitat_specs` habitats ×
+    placement seeds 200–299, **357 frames** (16 no placement, 27 star-span
+    rejects), with (Λ0d) failures **kept and reported**. **(OC-1)** the welded
+    relative-twist chain (`λᵢ = 0 ⟺ C_i ∈ V_bc ⟺ dim W_i = 1 ⟺ C_i ∈ R_i`)
+    asserted at 46 frames; **(OC-5)** the distribution `322/17/17/1`, (OUT)'s
+    hypothesis at 356/357 and its **conclusion** separately at 356/356, plus the
+    codimension-1 rates of every (Λ0) bracket over the same pool; **(OC-7)** the
+    sampler diagnostics. `λ` cross-checked against `lambda.habitat_frame` at 20
+    frames. **Quote its rates over the 318 coincidence-free frames, never the
+    raw 357** (*Harness debt* 4).
+  - `--shapes` (~322 s): **(OC-6)** over **POOL-S** — 41 class shapes (the
+    19-shape named inventory + the first 4 of each sweep family), every eligible
+    split, seeds 1–39, ≤ 3 frames per split: **270 frames over 90 splits**,
+    hypothesis 270/270, **0** (split, companion) pairs with no available frame.
+    **POOL-S is disjoint from POOL-G and its figures are never summed with
+    POOL-G's.**
+  - `--build` (~10 s): **POOL-B** — the 4 habitats × seeds 200–259, slides from
+    a fixed list. **(OC-3)** on-chart (`dim R = 5`, `dim(R ∩ L) = 1`, never 2)
+    and **(OC-4)** the construction: slide `pt(x₁)`/`pt(x₃)` onto their marked
+    directions and land, at all four habitats, an exact chart point with
+    `λ₁ = λ₄ = 0` — **(OUT) SILENT** — keeping every (Λ0) clause, the target
+    rank, `dim R_a = 1` and all four `IsNondegPencilRealization` conjuncts, with
+    `deg_t Q(z(t)) = 4` so the escape still holds. **3 of the 4 carry no
+    coincident hinge line**, which is what makes the locus real rather than an
+    artifact of *Harness debt* 4.
+
+  Note `outerline` imports `localtest.plane_basis` **as a diagnostic only**
+  (aliased `DEGENERATE_PLANE_BASIS`) — it never samples with it; (OC-7) needs to
+  know when the degenerate basis fires.
+
+  Argument state, the pool definitions and the per-mode assertion list:
+  `notes/Pencil-informal.md` §(K-out). **The headline is the NEGATIVE (OC-3) —
+  the bad locus is nonempty on every class shape's chart, so no counting
+  argument can ever deliver (OUT)'s hypothesis; what the pools establish is
+  availability, MEASURED, not proven.**

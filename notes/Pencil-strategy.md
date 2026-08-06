@@ -572,13 +572,17 @@ that per-shape content is **already measured** (`dominance.py --far`: the far
 block attains `3(k−3)` at 5/5 class habitats, so `λ` is not even locally
 constant there). What is missing is a *mechanism*, and the concrete deliverable
 is **one named far-chart move with a bracket formula for `dλ` valid at every
-class member**. Two cheap probes rank ahead of prose, both new driver modes:
+class member**. Two cheap probes ranked ahead of prose, both new driver modes:
 report `λ₁, λ₄` (equivalently `C₁, C₄ ∈ V_bc`) over the existing
-length-4-companion frames — (OUT)'s hypothesis is **unmeasured anywhere in the
-arc** (§(K-Λ) *what would change this* (viii)) — and compute
-`deficiency(H/{e₂,e₃,e₄})` over the enumerated length-4-companion class shapes
-with the harness's existing `nogood_subdiv.deficiency`, mapping where (OUT) is
-even generically available.
+length-4-companion frames, and compute `deficiency(H/{e₂,e₃,e₄})` over the
+enumerated length-4-companion class shapes, mapping where (OUT) is even
+generically available. **BOTH ARE DONE (2026-08-06, `outerline.py`; canonical
+home workbook §(K-out), not restated here), and the answer is not the one this
+paragraph expected:** the availability map is *uniform* but **ambient**-generic
+((OC-2)), and on the pencil chart the bad locus is **nonempty at every class
+shape** ((OC-3)) — so (OUT)'s hypothesis is *available* pointwise (356/357,
+270/270) yet **never deliverable by a count**. The move-and-formula deliverable
+itself was half-delivered by §(K-ann) (below).
 
 *What would kill it.* A class shape at which `λ` is constant on the far chart —
 a genuine surprise against (D2)'s attainment, and a sharp new obstruction. Or a
