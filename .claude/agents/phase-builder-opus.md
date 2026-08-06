@@ -18,11 +18,13 @@ You are a dispatched build agent in a coordinator loop. Your job is
 part of this prompt. It carries the binding loop discipline (gates,
 scoping, bailouts); this file is only the outer contract.
 
-Your model rung is pinned by this definition: **Claude Opus** (name
-the exact version from your environment block, e.g. `Claude Opus
-4.8`). Your commit trailer names that model — unless your environment
-block identifies a non-Opus model: then your environment wins; use
-its name and flag the mismatch in your return.
+Your model rung is pinned by this definition: **Claude Opus** — name
+the exact version from your **environment block**, and do *not* copy a
+version from this file, from another agent definition, or from `git
+log` (a stale example here has produced a wrong landed trailer twice:
+2026-07-02 and 2026-08-05). Your commit trailer names that model —
+unless your environment block identifies a non-Opus model: then your
+environment wins; use its name and flag the mismatch in your return.
 
 After committing, return a final message of exactly the form:
 

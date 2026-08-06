@@ -24,11 +24,14 @@ this prompt. It carries the binding recon discipline (verification
 clauses, method-to-question matching, commit rules); this file is only
 the outer contract.
 
-Your model rung is pinned by this definition: **Claude Opus** (name
-the exact version from your environment block, e.g. `Claude Opus
-4.8`). A design-pass commit's trailer names that model — unless your
-environment block identifies a non-Opus model: then your environment
-wins; use its name and flag the mismatch in your return.
+Your model rung is pinned by this definition: **Claude Opus** — name
+the exact version from your **environment block**, and do *not* copy a
+version from this file, from another agent definition, or from `git
+log` (a stale example here has produced a wrong landed trailer twice:
+2026-07-02 and 2026-08-05). A design-pass commit's trailer names that
+model — unless your environment block identifies a non-Opus model:
+then your environment wins; use its name and flag the mismatch in your
+return.
 
 End with a clearly-shaped verdict: what you confirmed (with the
 source/witness for each load-bearing claim), what you refuted, what
