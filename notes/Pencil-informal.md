@@ -147,7 +147,7 @@ all in this file.
 | gap | § + steps | status | what would close it |
 |---|---|---|---|
 | escape criterion | (K-tight) 0–3 | **proven-informally** (attainment ⟺ two `U`-functionals independent; combined failure ⟺ `★r ∥ C(M)`); 80/80 per-placement | — settled; not a gap |
-| **(K-tight)** | (K-tight) 5; (K-σ) | **open**, true with strong evidence; no genuine escape failure anywhere in the corrected numerics **on the hard stratum `dim R_a = 1`** (and above it) — the claim is **false without that qualifier**: §(K-flank) F5(d) exhibits 5 legal nondegenerate target-rank `G′` seeds at `P21` with `s₀ = 1`, `dim R_a = 0`, `dim U = 1`, which the Step-2.3 calculus *proves* fail at every placement (8/8 observed each); `hK`'s ∃-form is untouched (30/35 escape). **A CANDIDATE closure now exists and this row does NOT move on it**: §(K-σ)'s **route σ** (route A run at the dual seed `σu`) would close the hard stratum *length-free* via the 6-dimensional span `Λ²Π̂(b) + Λ²Π̂(c) + α_{pt(b)} = K⁶` (or its `c`-mirror — the side condition is **free** by (σ7)), but it rests on four named obligations, the first of which — σ-nondegeneracy of the transported seed — is **NOT implied**: 53 constructed hard-stratum, primally-nondegenerate seeds violate the dual conjuncts (`sigma.py --hunt`, 2026-08-05), so the earlier "observed 63/63" was genericity. Two of the four conjuncts are free (1 by the landed `hasPencilPanelRealization_mapExtensor_screwComplementIso`, 3 by the primal conjuncts when no two hubs are adjacent) and the steering repair is exhibited exactly on a chart line | (K-move), (K-pitch), **or** discharging §(K-σ) *Step σ5* obligation 1 — the named repair is `exists_common_seed_pencilRow_and_polynomials` (`Engine.lean:476`), whose remaining design decision is **which maximal minor** to fix per LI conjunct (they are unions of basic opens, not single hypersurface complements). **`exists_pencilSeed_of_nondeg` is NOT the bridge** — it takes obligation 1 as a hypothesis |
+| **(K-tight)** | (K-tight) 5; (K-σ) | **open**, true with strong evidence; no genuine escape failure anywhere in the corrected numerics **on the hard stratum `dim R_a = 1`** (and above it) — the claim is **false without that qualifier**: §(K-flank) F5(d) exhibits 5 legal nondegenerate target-rank `G′` seeds at `P21` with `s₀ = 1`, `dim R_a = 0`, `dim U = 1`, which the Step-2.3 calculus *proves* fail at every placement (8/8 observed each); `hK`'s ∃-form is untouched (30/35 escape). **A CANDIDATE closure now exists and this row does NOT move on it**: §(K-σ)'s **route σ** (route A run at the dual seed `σu`) would close the hard stratum *length-free* via the 6-dimensional span `Λ²Π̂(b) + Λ²Π̂(c) + α_{pt(b)} = K⁶` (or its `c`-mirror — the side condition is **free** by (σ7)), but it rests on four named obligations, the first of which — σ-nondegeneracy of the transported seed — is **NOT implied**: 53 constructed hard-stratum, primally-nondegenerate seeds violate the dual conjuncts (`sigma.py --hunt`, 2026-08-05), so the earlier "observed 63/63" was genericity. Two of the four conjuncts are free **at `ℝ`** (1 by the landed `hasPencilPanelRealization_mapExtensor_screwComplementIso`, 3 by the primal conjuncts when no two hubs are adjacent) and the steering repair is exhibited exactly on a chart line. **FIELD-SCOPE CAVEAT (2026-08-05, recorded not settled):** route σ is an `ℝ`-only construction — `screwComplementIso` is `ScrewSpace ℝ 2 ≃ₗ[ℝ] ScrewSpace ℝ 2` — aimed at an `hK` quantified at general `[Infinite K]`, so this candidate closes the row only at `ℝ` unless the polarity generalizes (§(K-σ) *Field scope*) | (K-move), (K-pitch), **or** discharging §(K-σ) *Step σ5* obligation 1 — the named repair is `exists_common_seed_pencilRow_and_polynomials` (`Engine.lean:476`), whose remaining design decisions are **which maximal minor** to fix per LI conjunct (they are unions of basic opens, not single hypersurface complements) **and at which field** (`ℝ`, instantiating the headline first, or general `K`, which needs a general-`K` polarity). **`exists_pencilSeed_of_nondeg` is NOT the bridge** — it takes obligation 1 as a hypothesis |
 | **(K-move)** | (K-tight) 5 | **open — the sharpest gap** on the stress side; N8 refutes block-determined `[r]` at both probed families | `[r]`-as-chart-rational-function infrastructure (option B, **not** commissioned) |
 | **(K-pitch)** | (K-pitch); (K-pure) P3; (K-Λ) | (T1)–(T5) **proven-informally**; **closed** at length-3-companion splits (bracket monomial, θ(3,3,6)); uniform form **open**. Step 2's (F-A)/(F-B) dichotomy is **upgraded to the algebraic form (PC-Z)** (§(K-pure), proven-informally): `Q(z) = 0 ⟺ V_bc` meets `α(a)` or `Λ²π̂`, the only two maximal totally isotropic 3-spaces containing `T` — the exact target of any future non-vanishing argument (its *reason* is Witt's theorem — §(K-Λ) *Step 1*). The `ℓ = 3` verdict is unchanged but now has a **two-line proof that *explains* its five brackets**: they are the coordinate form of `S ∩ α_a = S ∩ β_{π_a} = 0` (§(K-Λ) *Step 1*(i)). The bracket **closed form extends from `ℓ = 3` to `ℓ = 4`**, as a **product of two bracket-linear forms in the far covector** ((Λ1), since 2026-08-05 a **symbolic identity over the function field** — `M2 --script notes/scripts/m2/lambda1.m2`) — a positive standalone result, but **not** a non-vanishing theorem: its zero locus is nonempty exactly at the two structurally meaningful configurations | one seed with `Q(z) ≠ 0` per (graph, split), uniformly — by (PC-Z), one seed where `V_bc` misses **both** isotropic 3-spaces |
 | **(K-wit)** | (K-pitch) 3; (K-Λ) 3–6 | **open**; the weakest exact form — per habitat+split *equivalent* to the escape at a good seed — and now the **single live form of the pitch route at companion splits**: it inherits (K-Λ)'s status and gains a *necessary-and-sufficient* companion form (§(K-Λ) *Theorem (Λ-completeness at length-4 companions)*: the escape holds at some target-rank seed **iff** the pitch certificate is nonzero at some target-rank seed). The **two-point failure locus is this row's content** — `{V_bc ⊥_B C(M)}` (the failure itself) and `{V_bc ⊥_B C(bc)}` (route A escapes, `★r ∝ C(bc)`); since 2026-08-05 those two points are known to be **exactly a σ-orbit** (§(K-σ) (σ5)), so the recorded asymmetry between their consequences is a *one-frame artifact*, not a broken symmetry — and if §(K-σ)'s candidate route σ stands, this row's trichotomy loses its failure branch and (K-wit) leaves the escape's critical path. Two load-bearing side conditions are newly **named**, neither present in the prior formulation: **(Λ0d)** panel non-incidence in **both** directions (`pt(c) ∉ Π(b)` *and* `pt(b) ∉ Π(c)`; witness θ(3,4,5) seed 345, where `span_t ω⁻` collapses `3 → 1`) and **(Λ0f)**, now **PROVEN at the generic point and WIDER than first stated** (2026-08-05, `m2/lambda0.m2`): the exact criterion is **(Λ0f′)** `span_t ω⁺ = 3 ⟺ p⁺₂p⁺₃·g₁₃g₁₄g₂₄ ≠ 0` (and `q₂q₃·g₁₃g₁₄g₂₄ ≠ 0` for `ω⁻`), where `g₁₃g₂₄ ≠ 0` is `rank Q|_S = 4` and **`g₁₄ = [b,x₁,x₃,c] ≠ 0` was asserted nowhere** — the two outer companion lines must not meet. Since 2026-08-05 (§(K-Λ) *Step 3a*, `outer.py`) that clause is **located, not merely named**: geometrically it says the two marked points `C₁ ∩ M`, `C₄ ∩ M` of the meet line coincide **(Λ0g)**; wherever a companion end is free it is **implied by (Λ0d)** **(Λ0i)** (3628/4280 swept pairs); **no class habitat in scope forces it** (`g₁₄ ≠ 0` at 4280/4280 exact pairs over 1357 class shapes, `d g₁₄ ≠ 0` at 684/684 chart points), so **Λ-completeness stands as written**; but it *is* reachable at a target-rank `dim R_a = 1` seed of all four habitats by an explicit chart move, both spans dropping `3 → 2`, so the clause is load-bearing. Residual: class shapes with **two or more hubs on the companion interior**, which no swept family realizes | one `H`-motion pairing non-trivially with `C(M)`, uniformly |
@@ -162,7 +162,7 @@ all in this file.
 | `P21` / parallel `G°` edges | (K-slide) 5, (K-flank) F5, (K-pure) P4/P7 | **mechanism corrected and scope sharpened** (§(K-pure)): at a *class* parallel shape the full-support obstruction is the **chord stress at (W4)**, not (S5) at (W1), and it needs only a `bc`-parallel edge of length `≤ 4`. (S5)'s `(3,3)` row-dependence mechanism is **proven impossible inside tight + `hnoRigid`** (`C_k` rigid for `k ≤ 6` forces `ℓ₁ + ℓ₂ ≥ 7`), so **`P21` is a (K-res) residual, not a tight class member**. `P21`'s own obstruction is unchanged and is **not confined to the `ε = 0` limit** — §(K-flank) F5(d)/(e) exhibits the same theta-circuit stress (`{12, 13, 23a, 23b}`, 12 edges, line rank 6) on a **nonempty locus of the pencil chart itself** (5 of 35 rational seeds), where it forces `dim R_a = 0`. **θ(3,4,5) is CLOSED** by a reduced support, without (K-Λ) | for `bc`-parallel class shapes: a reduced support (done at θ(3,4,5)) or the companion forms — the monomial at `ℓ = 3`, and at `ℓ = 4` **(K-wit)**, since §(K-Λ) shows the companion form there is *equivalent* to it rather than an independent gap. At `ℓ = 5,6` **the (T5) frame is REFUTED as the route** (§(K-Λ) *Step 7*: at `k ≥ 5` the (F-A) bad locus gains a second, equal-dimensional component — a smooth conic, so nonempty over `K̄` — and at `k = 6` `C(M) ∈ S` removes even the local guard), so those shapes need **something else, none identified** (this refutes the *argument shape*, not the conjecture and not their closability; whether a *rational* point of that component is realized by a real habitat is open). For `P21`-type (K-res) shapes: a new `G°`-local mechanism — none identified |
 | **(K-flank)** | (K-flank) F0–F7 | **per shape, not a uniform gap: half 2 proven-informally** by exact `∃`-witnesses at the Tay target (8 named + 843 stratum shapes, 0 failures); half 1 carries **no `hK` counterexample and no re-pin** (16/16 `e₀`-end splits, 26/26 eligible splits of the 5-chromatic flank, both KT routes); **(K-pitch) closed at all 16 flank splits** by `ε = 1` certificates; the full-support slide limit is **degenerate at all four structural flanks**; **class uniformity untouched** | — n/a: a per-shape result, not a gap. *Settled per shape; the uniform statement is unchanged* (the disproof risk is removed, no uniform gap moves) |
 | **(K-dom)** *(new, 2026-08-05)* | (K-dom) D0–D7 | **open as the uniform statement, and provably FALSE off the class**, so the strategy doc's §4-C1 route is **not recommended**. Writing `k` for the *companion length* (the shortest `b`–`c` path of `H`; `k ≥ 3`): **(D1)** `rank d(H ↦ V_bc) ≤ min(9, 6k − 14)` in the bad-locus-frozen scoping, **proven** from path-sum containment — so `≤ 4` at `k = 3`, where `V_bc` is moreover always in the discriminant hypersurface of `Gr(3,6)`; **(D2)** the far block is `≤ 3(k−3)` (a corollary of (T5)), **attained** at `0,3,6,9` for `k = 3,4,5,6`; **(D3)** `hnoRigid` forces `k ≥ 4` (= §(K-slide) *Step 5*'s `ℓ₁+ℓ₂ ≥ 7`), so the cap bites exactly on **(K-res)**. Measured: rank **9 — dominance — at all 5 probed class habitats** (θ(3,4,5), NT21, NT16k5, `K4`/`K5−M` dbl-subdiv; `k ∈ {4,5,6}`) and exactly **4** at both `k = 3` habitats. **(D4)**: rank 9 at one rational seed ⟹ the escape on a *dense open* subset of that shape's chart — a strictly stronger per-shape statement than an `∃`-witness, and no more useful. §4-C1's two claimed values are **REFUTED** (D6): the image does **not** grow with the far graph (it is capped by the local `k`), and the 2026-07-30 locality gate was run at `k = 6`, the *maximal* far-dependence grade, so it is not evidence for dominance. **Class uniformity untouched** — "rank 9 at every class shape" is one determinantal condition per (shape, split), the same per-shape object §(K-pure) *P5* names as the wall | a class habitat with `rank dV < 9` at every seed (a sharp new obstruction; none found), **or** a mechanism making `rank dV = 9` combinatorially certifiable class-wide — the only thing that would turn C1 into a uniform route |
-| **(K-σ)** *(new, 2026-08-05)* | (K-σ) σ0–σ6, σ4b | **four settled verdicts + one CANDIDATE, offered for adjudication.** Settled: the σ-intertwining question is **REFUTED in its literal form** (`pt(a) ∈ π_a` forces `pt(a)·pt(a) = 0`, impossible over ℝ with the project's *definite* polarity — `Molecular/Meet.lean:88` records it is the Hodge star of the standard dot product) and **CONFIRMED covariantly** (`σ(α_p) = β_{p^⊥}`, `σ(β_π) = α_{pole(π)}`), which makes §(K-Λ)'s two-point failure locus **exactly a σ-orbit**; and **σ-equivariant seed recipes are DEAD** — no σ-fixed pencil configuration exists over ℝ, and a null polarity puts every hinge line in a linear line complex, giving a self-stress per cycle (**deficit exactly 1 at 6/6** on tight `C₆`). Fourth settled verdict, **new 2026-08-05** (`sigma.py --hunt`, three pools of its own, disjoint from the 63): **(σ7)** *Step σ3*'s side condition `pt(b) ∉ Π(c)` is **FREE** — primal conjunct 4 at the split's middle body `a` forbids both halves of (Λ0d) from failing at once (39/39 witnesses that forcing both leaves `a` with no panel), settling *What would change this* (iv); **and, in the other direction, the dual conjuncts at `σu` are NOT implied** — 53 constructed hard-stratum, primally-nondegenerate seeds violate dual conjuncts 2 and 4 (coplanar-chain degeneration), so *Step σ4*'s 63/63 was genericity. Candidate: **route σ**, whose uniform-failure criterion `★r ∥ C(bc)` is the σ-image of routes A/B's `★r ∥ C(M)` and cannot hold simultaneously with it. Scope of the validation: `s₀ = 0`, `dim R_a = 1`, both ends hubs, tight control only (the hunt pools widen the *configurations*, not the shape) — `dim R_a = 0` **untouched**, (K-res) `s₀ = 2` **unsampled**; the criterion at `σu` is **imported, not re-derived**, and its failure direction is **unwitnessed** (`predAfalse = 0/63`); and the branch route σ closes has **never been observed nonempty**, so the gain is **evidence → argument**, never *bug fixed*. **No gap-map status moves on account of route σ** | obligation 1 of §(K-σ) *Step σ5* — now **sized, not just named**: conjunct 1 free by a landed theorem, conjunct 3 free by the primal conjuncts on no-adjacent-hub shapes, conjunct 2 at the two `a`-edges = two-sided (Λ0d), leaving two genuinely new conditions with a steering repair exhibited exactly (`bracket(τ) = τ·bracket(1)`). Route σ faces exactly **one** crux: the workbook's two kills of M₁ (§(K-tight) *Step 1* and *Step 2.6*) have the **same** stated reason, the `hinge(vb) := q(ab)` pinning |
+| **(K-σ)** *(new, 2026-08-05)* | (K-σ) *Field scope*, σ0–σ6, σ4b | **four settled verdicts + one CANDIDATE, offered for adjudication — all under a FIELD-SCOPE caveat.** `σ = screwComplementIso` exists in tree **only over `ℝ`** (`Duality.lean:69`), and so does the self-duality theorem the conjunct-1 freeness cites (`Statement.lean:257`), while **`hK` is quantified at the general `[Infinite K]`** of `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card` (`Escape.lean:555`). Whether the polarity generalizes is **OPEN and not attempted** — encouraging, since `complementIso` and `ScrewSpace.equivExteriorPower` are already general-`K` in tree, but unproven. **(σ7) needs no polarity and is field-neutral outright**; (σ1)–(σ6) and route σ are field-neutral *modulo the polarity existing*; the two refutations below use `ℝ`-**definiteness** and do **not** port. Settled: the σ-intertwining question is **REFUTED in its literal form** (`pt(a) ∈ π_a` forces `pt(a)·pt(a) = 0`, impossible over ℝ with the project's *definite* polarity — `Molecular/Meet.lean:88` records it is the Hodge star of the standard dot product) and **CONFIRMED covariantly** (`σ(α_p) = β_{p^⊥}`, `σ(β_π) = α_{pole(π)}`), which makes §(K-Λ)'s two-point failure locus **exactly a σ-orbit**; and **σ-equivariant seed recipes are DEAD** — no σ-fixed pencil configuration exists over ℝ, and a null polarity puts every hinge line in a linear line complex, giving a self-stress per cycle (**deficit exactly 1 at 6/6** on tight `C₆`). Fourth settled verdict, **new 2026-08-05** (`sigma.py --hunt`, three pools of its own, disjoint from the 63): **(σ7)** *Step σ3*'s side condition `pt(b) ∉ Π(c)` is **FREE** — primal conjunct 4 at the split's middle body `a` forbids both halves of (Λ0d) from failing at once (39/39 witnesses that forcing both leaves `a` with no panel), settling *What would change this* (iv); **and, in the other direction, the dual conjuncts at `σu` are NOT implied** — 53 constructed hard-stratum, primally-nondegenerate seeds violate dual conjuncts 2 and 4 (coplanar-chain degeneration), so *Step σ4*'s 63/63 was genericity. Candidate: **route σ**, whose uniform-failure criterion `★r ∥ C(bc)` is the σ-image of routes A/B's `★r ∥ C(M)` and cannot hold simultaneously with it. Scope of the validation: `s₀ = 0`, `dim R_a = 1`, both ends hubs, tight control only (the hunt pools widen the *configurations*, not the shape) — `dim R_a = 0` **untouched**, (K-res) `s₀ = 2` **unsampled**; the criterion at `σu` is **imported, not re-derived**, and its failure direction is **unwitnessed** (`predAfalse = 0/63`); and the branch route σ closes has **never been observed nonempty**, so the gain is **evidence → argument**, never *bug fixed*. **No gap-map status moves on account of route σ** | obligation 1 of §(K-σ) *Step σ5* — now **sized, not just named** (all of it **at `ℝ`** — see the caveat opposite): conjunct 1 free by a landed theorem, conjunct 3 free by the primal conjuncts on no-adjacent-hub shapes, conjunct 2 at the two `a`-edges = two-sided (Λ0d), leaving two genuinely new conditions with a steering repair exhibited exactly (`bracket(τ) = τ·bracket(1)`). Route σ faces exactly **one** crux: the workbook's two kills of M₁ (§(K-tight) *Step 1* and *Step 2.6*) have the **same** stated reason, the `hinge(vb) := q(ab)` pinning |
 | **(K-ind)** *(new, 2026-08-05)* | (K-ind) I0–I6 | **REFUTED as a route**, and not merely "no invariant found": the transport structure the question presupposes does not exist on the `hK` habitat. **(I1)** tight ⟺ `(|V|,|E|) = (5c+1, 6c)`, so two tight graphs of equal cycle rank have equal size and **no arm of `pencil_reduction` can relate them**; **(I2)** `splitOff` at a degree-2 vertex takes `index 0 → 1` preserving `c` and fixing the hub multigraph `G°`; **(I4)** inside one `G°` the class is a **finite antichain**, and the class's infinitude is entirely in the `G°` direction, which no move reaches. **(I0)**: the failure locus is a **divisor**, so its only numerical invariant is the single bit `codim F = 1`, which *is* `hK` — the question as posed is circular, and the image-side reading is (K-dom), already struck. One genuine positive by-product: **(I3)**, subdivision-monotonicity of `Image(V_bc)` — real, new, *and pointing the wrong way*, since the induction descends and every descent bottoms out at `k ≤ 3` where (D1) caps the rank at 4 | — refuted as a route. Any future "strengthen the inductive invariant" proposal must first exhibit a move relating two class members; `pencil_reduction`'s five arms supply none |
 | **(K-Δ)** *(new, 2026-08-05)* | (K-Δ) | **NO HIT — the literature lead is discharged**, not open. Two independently fatal hypothesis failures: **(M1)** the subject's objects are *totally isotropic* subspaces and `V_bc` never is (Klein Gram rank 3, or 2 on serial chains — an `O(6)`-invariant, not a frame choice), so it has no Wick vector and carries no Δ-matroid; **(M3)** the ground set is `[3]`, fixed by `dim Λ²K⁴ = 6`, and never grows with the graph — `Pencil-strategy.md` §2.2's ingredient-2 failure in the target literature's own terms. Recorded as a *pass*: the **form** matches exactly (transversality to two coordinate isotropics = two Wick coordinates nonzero). Buys two readings, not a route: **(N1)** the `ℓ = 3` criterion as five feasible pairs in the Dress–Havel metroid of the five lines, and **(N2)** the **pentagon** reading — `Q(z) ≠ 0` ⟺ no two non-consecutive edges of the closed chain `b–x–y–c–a–b` meet | — discharged. `Pencil-strategy.md` §7's "one unverified lead" is now a checked negative with the reason |
 | **(K-bare)/(K-bare-ext)** | (K-bare-ext) | **open**, nothing being developed; `hbareSplit` carried as pinned, off W4 routes 1/3's path; the (K-tight) re-pin fixes the criterion's shape and corrects "the failure set is exactly the line" to `line(a,b) ∪ P′` | (i) `dim R_a ≥ 1` at an adversarial IH seed and (ii) a rank-2 point in the confinement space — with no chart supplying genericity for either |
@@ -224,6 +224,12 @@ phase's numerics was a placement-sampler artifact ((K-tight) 3).
   refuted, the **covariant** one confirmed, and the two-point failure locus is a
   σ-orbit. **σ-equivariant seed recipes are dead** with a proof — do not
   re-attempt a symmetric-configuration construction.
+- **The field scope of §(K-σ) is RECORDED, not settled** ((K-σ) *Field scope*,
+  2026-08-05): `σ` and the four polarity theorems are `ℝ`-only in tree while
+  `hK` is consumed at general `[Infinite K]`; (σ7) is field-neutral, (σ1)–(σ6)
+  and route σ port *if* the polarity does, and *Step σ1(a)*/*Step σ6*'s two
+  refutations use `ℝ`-definiteness and do **not** port. Do not re-derive the
+  signature census; **do** treat "does the polarity generalize?" as open.
 - **The obligation-1 hunt is DONE, in both directions** ((K-σ) σ3/σ4b,
   `sigma.py --hunt`; three pools of its own): the dual conjuncts at `σu` are
   **not implied** by the primal ones (53 constructed hard-stratum,
@@ -4205,15 +4211,20 @@ Read against §(K-tight) *Steps 0–3* (whose criterion it uses verbatim),
 failure locus it explains). Notation inherited from §(K-Λ) *Standing
 notation*.
 
-**Status, stated before the mathematics, because three things here are settled
-and one is not.**
+**Status, stated before the mathematics, because four things here are settled
+and one is not** — and because the whole section carries a **field-scope
+qualifier** stated immediately after the bullets.
 
-- **Settled — refuted.** The σ-intertwining question *in its literal form*: σ
-  does **not** intertwine `α(a)` and `Λ²π̂` of one configuration (*Step σ1(a)*).
+- **Settled — refuted, `ℝ`-specifically.** The σ-intertwining question *in its
+  literal form*: σ does **not** intertwine `α(a)` and `Λ²π̂` of one
+  configuration (*Step σ1(a)*). **The argument uses `ℝ`-definiteness and does
+  not port** — see *Field scope*.
 - **Settled — confirmed.** The **covariant** form `σ(α_p) = β_{p^⊥}`,
   `σ(β_π) = α_{pole(π)}`, which exchanges the two branches of (PC-Z) across an
   involution of the seed space (*Step σ1(b)*).
-- **Settled — refuted.** **σ-equivariant seed recipes are dead**: over `ℝ` with
+- **Settled — refuted, `ℝ`-specifically** (the "over `ℝ`" below is load-bearing,
+  not decorative; *Field scope*). **σ-equivariant seed recipes are dead**: over
+  `ℝ` with
   the project's polarity there is *no* σ-fixed pencil configuration at all, and
   for a general correlation the fixed locus is degenerate — a null correlation
   forces every hinge line into a linear line complex and produces a self-stress
@@ -4239,6 +4250,77 @@ and one is not.**
   σ-completeness span is `K⁶` via `α_{pt(b)}` or via `α_{pt(c)}`. This settles
   *What would change this* item (iv) at every both-ends-hubs split. It does
   **not** make the two-sided (Λ0d) of §(K-Λ) free — see (σ7)'s scope note.
+  **(σ7) is the one result here that needs no polarity at all** — see *Field
+  scope* immediately below.
+
+### Field scope — read this before quoting anything in this section
+
+**Recorded as an open gap, 2026-08-05 (coordinator verification of `bd270bce`);
+NOT settled here, and no attempt is made to settle it.** This whole section is
+about a polarity that exists **in tree only over `ℝ`**, while the obligation it
+aims to discharge is consumed at a **general infinite field**. Three landed
+signatures, verified directly:
+
+| object | field | source |
+|---|---|---|
+| `screwComplementIso` (= `σ`) | **`ℝ`-only**: `ScrewSpace ℝ 2 ≃ₗ[ℝ] ScrewSpace ℝ 2` | `Molecular/Molecule/Duality.lean:69` |
+| `hasPencilPanelRealization_mapExtensor_screwComplementIso` | **`ℝ`-only**: `{F : BodyHingeFramework ℝ 2 α β}` | `Pencil/Statement.lean:257` |
+| `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card`, and **`hK` inside it** | **general**: `[Infinite K]`, `PencilPair K 3 G`, seed `q : α × Fin 4 × Fin 4 → K` | `Pencil/Escape.lean:555` |
+
+`HasPencilPanelRealization`, `IsNondegPencilRealization`,
+`HasGenericPencilRealization` and the whole chart/`pencilRow` engine are
+**general-`K`** (Phase 33 made the core chain field-general). Exactly **five**
+declarations in `Pencil/` fix `ℝ`, and **four of them are the polarity
+cluster**: `screwComplementIso_mk_extensor` (`Statement.lean:166`), the two
+forward predicate transports (`:185`, `:216`) and the self-duality theorem
+(`:257`). The fifth, `exists_hasPencilPanelRealization_witness` (`:665`), is an
+unrelated concrete `d = 3` non-vacuity certificate.
+
+**Consequence, stated plainly.** "*Step σ5* obligation 1's conjunct 1 is free by
+a landed theorem" is true **at `ℝ`**. At the general `K` where `hK` is
+quantified there is no polarity in tree, so there is no `σ`, no route σ, and no
+freeness claim. Nothing in this section is *wrong* — the numerics are ℚ ⊂ ℝ and
+every verdict below holds over `ℝ` — but the qualifier was missing, and the gap
+map advertised obligation 1 as "sized" without it.
+
+**Which verdicts are field-neutral and which are genuinely `ℝ`-mathematics** (by
+reading the arguments, not by re-deriving them):
+
+- **Needs no polarity at all, so field-neutral outright: (σ7)** and the *Step
+  σ3* span computation's linear algebra. (σ7)'s proof uses only the primal
+  conjuncts and `dim M = 2`; the span computation uses the Klein form `B`, which
+  is the volume form and exists over any field.
+- **Field-neutral *modulo the polarity existing*: (σ1)–(σ6)**, the covariant
+  statement *Step σ1(b)*, route σ itself, and the conjunct-1 freeness. Each is a
+  statement about `⋆` and the standard (nondegenerate) pairing, neither of which
+  needs `ℝ`.
+- **Genuinely `ℝ`-mathematics, because it uses *definiteness*, not just
+  nondegeneracy — and therefore **not** portable:** *Step σ1(a)*'s refutation of
+  the literal intertwining (`pt(a) ∈ pt(a)^⊥ ⟹ pt(a)·pt(a) = 0 ⟹ pt(a) = 0`)
+  and *Step σ6*'s "no σ-fixed pencil configuration exists". Over a field with
+  isotropic vectors both arguments simply stop; whether their **conclusions**
+  survive is **unknown and untested**. A successor porting this section must
+  *re-derive* these two, not re-cite them.
+
+**Does the polarity generalize past `ℝ`? OPEN — but the reading is encouraging,
+and this is a reading, not a proof.** Both ingredients of `screwComplementIso`
+are **already field-general in tree**: `complementIso` is
+`⋀[K]^j (Fin (k+2) → K) ≃ₗ[K] ⋀[K]^(k+2−j) (…)` (`Molecular/Meet.lean:479`),
+built from `wedgePairing` (injective over any field, via `Pi.basisFun K`) and
+`toDualEquiv`; and `ScrewSpace.equivExteriorPower (K) [Field K] (k)` is general
+(`RigidityMatrix/Basic.lean:185`). So `screwComplementIso`'s `ℝ` looks like a
+**writing choice, not a mathematical obstruction** — the definition would
+typecheck verbatim with `K` in place of `ℝ`. The four ℝ-fixed *theorems*'
+helper inputs are general-`K` too (`mem_span_of_dotProduct_perp_pair`
+`Statement.lean:133`, `exists_extensor_eq_panelSupportExtensor`,
+`extensor_ne_zero_iff_linearIndependent`, `panelSupportExtensor_ne_zero_iff`).
+**None of that is a proof, and no generalization is attempted here.**
+
+**Precedent: the phase has already hit this exact mismatch once.** `Pencil/
+Arms.lean`'s W3-L4 section header records it verbatim — the landed
+Crapo–Whiteley projective invariance "is over `ℝ` … the pencil arm works over a
+general field `K`", so that section **wrote the `K`-level transport itself**
+rather than reusing the ℝ one. Same shape, same fix pattern, one section's cost.
 
 **Headline.** The projective polarity `σ := screwComplementIso` is a genuine
 symmetry of the pencil stratum, and it is *not* a symmetry of the escape
@@ -4273,7 +4355,8 @@ exist uniformly over the class" asks for.
 
 ### Step σ0 — the polarity in coordinates, and what it does to a pencil realization
 
-`screwComplementIso` (`Molecular/Molecule/Duality.lean:69`) is `complementIso`
+`screwComplementIso` (`Molecular/Molecule/Duality.lean:69`, **`ℝ`-only** —
+*Field scope*) is `complementIso`
 at `j = k = 2` conjugated by `ScrewSpace.equivExteriorPower`; `Molecular/
 Meet.lean:88` records that `complementIso` is built from the volume form
 (`screwAlgebraTopEquiv`) and the standard dot product (`Pi.basisFun.toDual`),
@@ -4552,7 +4635,13 @@ notices — **the four primal conjuncts only ever look at the points.**
      conjunct 1 at `σu`. (Verified against the landed proof, 2026-08-05: it is
      stated at `K = ℝ`, `k = 2`, and the framework it produces is
      `F.mapExtensor screwComplementIso`, which is the right one — route σ
-     works with the σ-image framework throughout.) **Free.**
+     works with the σ-image framework throughout.) **Free — AT `ℝ` ONLY.**
+     `screwComplementIso` is `ScrewSpace ℝ 2 ≃ₗ[ℝ] ScrewSpace ℝ 2`, while `hK`
+     is quantified at the general `[Infinite K]` of
+     `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card`, so at that `K`
+     there is no `σ` in tree and this bullet says nothing. See *Field scope*:
+     the gap is recorded, not settled, and the reading suggests the polarity
+     generalizes.
    - **Conjunct 3 is implied by the PRIMAL conjuncts whenever no two hubs are
      adjacent.** At `σu` it reads `LinearIndepOn point (closedHubNbhd v)`. At a
      hub `v` with no hub neighbour, `closedHubNbhd v = {v}`, so it is
@@ -4621,12 +4710,16 @@ notices — **the four primal conjuncts only ever look at the points.**
      steered off while the rank is kept.
 
    **Net.** Obligation 1 is not vacuous and is not free, but it is **smaller
-   than it looked**: two of four conjuncts are free (one by a landed theorem,
-   one by the primal conjuncts on the shapes in scope), one is a re-labelling
-   of the already-named (Λ0d), and the remaining content has a validated
-   steering mechanism. It remains **Lean engineering against a landed pattern,
-   not new mathematics** — with the minor-choice above as the one design
-   decision it carries.
+   than it looked**: two of four conjuncts are free **at `ℝ`** (one by a landed
+   theorem, one by the primal conjuncts on the shapes in scope), one is a
+   re-labelling of the already-named (Λ0d), and the remaining content has a
+   validated steering mechanism. It remains **Lean engineering against a landed
+   pattern, not new mathematics** — with **two** design decisions, not one: the
+   minor-choice above, and **the field**. Discharging `hK` at `ℝ` (instantiate
+   the headline first) needs no new duality work; discharging it at the general
+   `K` the landed headline quantifies over needs a **general-`K` polarity**,
+   which does not exist in tree. *Field scope* prices that; the choice is not
+   made here.
 2. **Scope.** Verified only at `s₀ = 0`, `dim R_a = 1`, both ends hubs, on the
    tight control — and the `--hunt` pools do not widen that: they are further
    configurations of the *same* two splits of the same shape, chosen
@@ -4658,7 +4751,9 @@ notices — **the four primal conjuncts only ever look at the points.**
   (`extensorInPanel_screwComplementIso_of_extensorThroughPoint` and its dual),
   the stratum self-duality
   `hasPencilPanelRealization_mapExtensor_screwComplementIso`, and
-  `complementIso_toDual` / `complementIso_map_contragredient_eq`. **Not** in
+  `complementIso_toDual` / `complementIso_map_contragredient_eq`. **Every
+  `screwComplementIso` entry in that list is `ℝ`-fixed** (*Field scope*; the
+  `complementIso` ones are general-`K`). **Not** in
   tree: any statement that `σ` is self-adjoint, an isometry, or an involution.
   The natural route to `σ² = id` is (i) self-adjointness — immediate from
   `complementIso_toDual` (`⟨⋆X, Y⟩ = vol(X ∨ₑ Y) = vol(Y ∨ₑ X) = ⟨⋆Y, X⟩`, even
@@ -4738,10 +4833,17 @@ is itself). Baselined before the edit, re-run after: `--transport`, `--adv`,
   53 constructed hard-stratum primally-nondegenerate witnesses). The 63/63 of
   *Step σ4* was genericity.
 - **Route σ as a closure of (K-tight) on the hard stratum: CANDIDATE, offered
-  for adjudication.** Obligation 1 is still the single crux, now **sized**: two
-  of its four conjuncts are free, one is the already-named (Λ0d), and the
-  steering repair is exhibited exactly. Obligations 2–4 bound the scope and the
-  claim's strength. **No gap-map status moves.**
+  for adjudication — and, as landed machinery, an `ℝ`-only one.** Obligation 1
+  is still the single crux, now **sized**: two of its four conjuncts are free
+  **at `ℝ`**, one is the already-named (Λ0d), and the steering repair is
+  exhibited exactly. Obligations 2–4 bound the scope and the claim's strength.
+  **No gap-map status moves.**
+- **Field scope: OPEN, recorded not settled** (*Field scope*, *What would change
+  this* (vi)). `σ` is `ℝ`-only in tree; `hK` is consumed at general
+  `[Infinite K]`. (σ7) and the span linear algebra are field-neutral outright;
+  (σ1)–(σ6) and route σ are field-neutral *modulo the polarity existing*;
+  *Step σ1(a)* and *Step σ6*'s two refutations are genuine `ℝ`-mathematics and
+  do **not** port.
 
 **What would change this.** *(i)* A seed where `crit_A(σu)` is false *and* route
 A at `σu` nevertheless escapes (or vice versa) refutes (σ6) and with it *Step
@@ -4762,6 +4864,21 @@ seed 345 is now known to be reachable on the **tight control's** hard stratum
 too (H4, 35/35) — harmless for *Step σ3*, load-bearing for obligation 1.
 *(v)* A class shape with **two adjacent hubs**: dual conjunct 3 stops being
 free there (H0's hypothesis), and obligation 1 grows back to three conditions.
+*(vi)* **THE OPEN FIELD QUESTION — does the polarity generalize past `ℝ`?**
+(*Field scope*, recorded 2026-08-05, deliberately not settled.) `σ` exists in
+tree only at `ℝ`, `hK` is consumed at general `[Infinite K]`. If the polarity
+**does** generalize — and both of `screwComplementIso`'s ingredients are already
+field-general in tree, so the reading is encouraging — route σ, conjunct-1
+freeness and (σ1)–(σ6) all port, and the ported statement is what obligation 1
+needs. If it does **not**, route σ closes `hK` only at `ℝ`, and using it means
+instantiating the landed headline at `ℝ` first — a real narrowing of a
+field-general theorem, and a decision for the user, not for a research pass.
+Either way *Step σ1(a)* and *Step σ6*'s refutations do **not** port: they use
+`ℝ`-**definiteness**, so over a field with isotropic vectors their conclusions
+are unknown — a σ-fixed pencil configuration might well exist there, which
+would revive the σ-equivariant-recipe route this section buried. That is the
+one place where the field question could *change a settled verdict* rather than
+merely re-scope it.
 
 ## §(K-ind) — can a numerical invariant of the failure locus be carried along the generating moves? (**NO — the transport graph on the class is edgeless; the one genuine chart relation runs the wrong way and bottoms out at `k ≤ 3`**)
 

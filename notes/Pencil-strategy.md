@@ -224,7 +224,9 @@ The phase consumed KT's machinery heavily and successfully:
 
 - R1 confirmed the **carrier material is all in-tree** — the Phase-35
   containment model, the `ExtensorThroughPoint`/`ExtensorInPanel` duality,
-  `screwComplementIso` for on-stratum self-duality.
+  `screwComplementIso` for on-stratum self-duality — the last **only over `ℝ`**,
+  which §(K-σ) *Field scope* records as an open gap against the field-general
+  `hK`.
 - The W5 arc ran on KT lemmas throughout: Lemma 6.2 and Case II survive with
   pinned choices; Lemma 3.4 supplied the degree-two machinery; Lemma 6.13/4.6
   made the L6/L7 coupling benign; KT 6.5/6.6 (`Contraction.lean:1004/1171`) is
@@ -543,9 +545,13 @@ direction is set:
   docstring already names this consumer shape). **Its numerics half landed the
   same day** (`sigma.py --hunt`, §(K-σ) *Step σ4b*): the dual conjuncts are
   **not** implied — 53 constructed hard-stratum, primally-nondegenerate
-  counterexamples — but two of the four are free, one is the already-named
-  (Λ0d), and the steering is exhibited exactly. What is left is **Lean**, and it
-  is held by the standing Lean-hold adjudication. Route σ is a **candidate**,
+  counterexamples — but two of the four are free **at `ℝ`**, one is the
+  already-named (Λ0d), and the steering is exhibited exactly. What is left is
+  **Lean**, and it is held by the standing Lean-hold adjudication.
+  **Before picking this direction, read §(K-σ) *Field scope*:** `σ` exists in
+  tree only over `ℝ` while `hK` is quantified at general `[Infinite K]`, so the
+  Lean half carries a second design decision — discharge at `ℝ` (instantiate the
+  headline first) or build a general-`K` polarity. Route σ is a **candidate**,
   not a settled closure; it moves no gap-map row, and whether the rest of it
   should **preempt the mechanisms pass** is an open user adjudication.
 - **If the direction is C3 (mixed stratum):** first question is combinatorial and
