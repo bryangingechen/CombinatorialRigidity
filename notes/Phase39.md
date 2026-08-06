@@ -6,12 +6,12 @@
 (2026-07-30). Only three items remain, all carried by the landed successor
 `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card` (`Molecule/Pencil/Escape.lean`):
 `hcontract` (W4), kernel `hK`, and kernel `hbareSplit` — see *Hand-off*. Kernel-(K) research
-is at its twenty-second docs+scripts-only pass (workbook `notes/Pencil-informal.md`; the settled
+is at its twenty-third docs+scripts-only pass (workbook `notes/Pencil-informal.md`; the settled
 W4-residual arc is `notes/Pencil-W4-informal.md`). The **2026-08-06** three-way fan-out is
 COMPLETE, and so is the harness re-baselining round that followed it (S1–S4); the **SECOND**
-2026-08-06 fan-out — directions **T / R / M**, user-adjudicated — is LANDING: **T is LANDED**
-(**§(K-grid)** — the tight stratum reduced to (GR-4) + (GR-6)), **M returned, coordinator
-verification pending**, **R pending re-dispatch** (see *Hand-off*).
+2026-08-06 fan-out — directions **T / R / M**, user-adjudicated — is LANDING: **T and M are
+LANDED** (**§(K-grid)** — the tight stratum reduced to (GR-4) + (GR-6); **§(K-mech)** — both
+*P8* anomalies mechanised, 6v11e rescued), **R is IN FLIGHT** (see *Hand-off*).
 Fan-out direction letters are re-used across dates — **always date them**.
 
 ## Current state
@@ -39,7 +39,7 @@ constraints; the dated dispatch narrative is in *Decisions made* and git):
   **2026-08-06 second fan-out adjudication**: the mechanisms pass runs as direction **M**, in
   parallel with **T** ((AC-6) tight stratum) and **R** ((ANH-R1)); route σ not selected.
 
-**Kernel-(K) research arc — twenty-one docs+scripts-only dispatches, plus one strategy-only
+**Kernel-(K) research arc — twenty-two docs+scripts-only dispatches, plus one strategy-only
 pass** (2026-08-02 → 08-06).
 Mathematics: the workbook `notes/Pencil-informal.md`, whose **State of (K)** map is the entry
 point and the artifact a pass *updates*; settled W4-residual verdicts are in
@@ -53,8 +53,10 @@ statement), with **(K-chord)**/**(K-wit)** the successors; the arc gained its fi
 search — in §(K-ann), whose two inputs are *not* uniform; §(K-σ)'s **field scope is settled**;
 §(K-out) measured (OUT)'s hypothesis and **proved it can never be delivered by a count**
 ((OC-3)); the 2026-08-06 direction-T landing reduced the **tight stratum** to two geometry-free
-gaps (**§(K-grid)**, (GR-4) + (GR-6)); and **class uniformity of the escape remains untouched by
-every one of them**.
+gaps (**§(K-grid)**, (GR-4) + (GR-6)); the direction-M landing **mechanised both *P8* anomalies
+and rescued 6v11e** (**§(K-mech)** — the slide device's failure modes on the probed strata are
+now three named decoration-free conditions); and **class uniformity of the escape remains
+untouched by every one of them**.
 
 > **The one live candidate, and it is NOT settled — `notes/Pencil-informal.md` §(K-σ)** (the
 > canonical home; the four obligations, the `--hunt` findings, the validation scope and the
@@ -71,12 +73,12 @@ every one of them**.
 The other candidate continuations, unselected, without preference; each has a canonical home
 that carries the detail, so they are **not** restated here:
 
-- **(a)** the **mechanisms pass** — the two unexplained mechanisms of §(K-pure) *P8*/*P9*
-  (6v11e's `dim V_bc = 2` drop and the `V_bc ∩ Λ²π̂ ≠ 0` incidence at `K222` /
-  `K4 (1,1,3,5,4,4)`), with the widened slide-support menu and the `|V°| ≤ 6` sweep; *P9*
-  item 5 says to start at 6v11e. This is the **last unstarted item of the adjudicated
-  ordering**; §(K-σ) *Step σ6* adds one probe to it (`V_bc ∩ Λ²π̂ ≠ 0` is the σ-image of
-  `V_bc ∩ α(·) ≠ 0` at the dual seed).
+- **(a)** the **mechanisms pass** — **RUN 2026-08-06 as fan-out direction M; canonical home
+  §(K-mech)**: both *P8* anomalies mechanised in one calculus (the welded flex (MX-6), the
+  pole-cluster load (MX-4)/(MX-5)), **6v11e rescued** ((MX-7) — the slide device closes it after
+  all), the σ rider settled NO ((MX-8)), the `|V°| ≤ 6` predictor measured complete-and-sound
+  with one new (W4)-failing shape found-and-explained ((MX-9)). The letter stays for cross-refs;
+  the item is **done**.
 - **(b)** **(K-wit)**, the single live form of the pitch route at companion splits: §(K-Λ)
   supplies its necessary-and-sufficient companion form, the two-point failure locus (now known
   to be a σ-orbit) and the side conditions (Λ0d)/(Λ0f′). *(2026-08-06, §(K-out)):* its `k = 4`
@@ -237,11 +239,11 @@ discharge (residue (iv)) is CLOSED too**. The landed successor
 > **not restated here**. Route σ was NOT selected (its remaining substance is the parked Lean
 > half). The coordinator lands returns serially per the fan-out landing checklist, with a
 > session-budget check between landings (`.claude/scripts/session-usage.py limits`).
-> **Landing status: T LANDED** (this commit — **§(K-grid)**, the census 907/907, the residual
-> reduced to (GR-4) + (GR-6)); **M returned** (an org spend-limit outage split all three
-> dispatches into checkpoint-resume halves; M's verdict awaits the coordinator's landing
-> checklist); **R pending re-dispatch** (its post-checkpoint census was lost to the outage; it
-> resumes from its 2026-08-06 11:34 checkpoint).
+> **Landing status: T LANDED** (`fb84ab88` — **§(K-grid)**, the census 907/907, the residual
+> reduced to (GR-4) + (GR-6)); **M LANDED** (this commit — **§(K-mech)**, both anomalies
+> mechanised, 6v11e rescued, all five driver modes coordinator-re-run); **R IN FLIGHT**,
+> re-running from its checkpoint after two interruptions (an org spend-limit outage + a
+> transient connection error; its post-checkpoint figures were lost and are being re-run).
 >
 > Deliberate non-goals: (Λ0), (Λ1), the `g₁₄` clause, §(K-ind), §(K-Δ), **§(K-clos)'s field
 > question**, **§(K-ann)'s settled batch** ((ANH-1)–(ANH-6), (SD-6)) and **§(K-out)'s settled
@@ -307,6 +309,15 @@ survey — incl. IDENT-PANEL, the nearest neighbour — is `notes/IdeaBacklog.md
 Reverse-chronological, one line per landing; full derivations live in git,
 `notes/Phase39-design.md`, and (for the (K) arc) the workbook section named in each entry, which
 is the canonical home a successor reads.
+
+- **Second fan-out, direction M LANDED — §(K-mech): both *P8* anomalies mechanised, 6v11e
+  RESCUED** (2026-08-06, `mech.py`; canonical home workbook **§(K-mech)**). One calculus (the
+  realizable-load space `Ω`, α-confinement (MX-2)): the 6v11e drop = a forced welded flex
+  ((MX-6)); the `K222`/`K4` incidence = a forced pole-cluster load ((MX-4)/(MX-5), bounds
+  2/2/3 met with equality, controls ≤ 1); **the slide device closes 6v11e** at a
+  mechanism-guided support ((MX-7), 9/9 prediction table) — §(K-pure) *P7*'s "device does not
+  reach this shape" withdrawn; σ rider NO ((MX-8)); `|V°| ≤ 6` predictor measured
+  complete-and-sound, one new (W4)-failing shape ((MX-9)). Uniformity untouched.
 
 - **Second fan-out, direction T LANDED — §(K-grid): the tight stratum reduced, with proven
   reductions, to two geometry-free gaps** (2026-08-06, `grid.py`; canonical home workbook
@@ -389,23 +400,17 @@ is the canonical home a successor reads.
   colouring premise fails inside the class; **(C6)** proven at every class shape (Edmonds), so
   the packing is never the obstruction; **(C7)**: `K4` coverage 439→702/877.
 
-- **(K-slide) (S1) PROVEN, and (K-slide-cl) reduced to combinatorics** (2026-08-04,
-  `kslide.py` / `kslidecl.py`; workbooks §(K-slide), §(K-slide-cl)) — the slide is a chart
-  automorphism at `ε ≠ 0` with the row family polynomial through `ε = 0`, so **one exact limit
-  witness closes a split** (23/23 pitched; `K4`/`W4` controls closed at every split; parallel
-  `G°`-edges order-0-obstructed, leaving `P21`).
+- **(K-slide) (S1) PROVEN; (K-slide-cl) reduced to combinatorics** (2026-08-04,
+  `kslide.py`/`kslidecl.py`; workbooks §(K-slide), §(K-slide-cl)) — one exact limit witness
+  closes a split (23/23 pitched; parallel `G°`-edges order-0-obstructed, leaving `P21`).
 
-- **(K-pitch) developed; the naive collinear collapse REFUTED; Λ-compression (T5) extends
-  companions to length 4** (2026-08-04, two dispatches, `pitch.py`; workbook §(K-pitch)) —
-  motion-side transfer (T1)–(T4), the sign law, the `pt(a)`-sweep quartic, and the five-bracket
-  monomial at companion-chain splits (θ(3,3,6) CLOSED; 29/29). Far data enters `Q(z)` only
-  through the annihilator covector. Weakest exact forms (K-wit)/(K-pitch-∞).
+- **(K-pitch) developed; naive collinear collapse REFUTED; (T5) extends companions to length 4**
+  (2026-08-04, `pitch.py`; workbook §(K-pitch)) — (T1)–(T4), the sign law, the five-bracket
+  monomial (θ(3,3,6) CLOSED; 29/29); weakest exact forms (K-wit)/(K-pitch-∞).
 
 - **(K-tight) KT pp. 684–691 re-pin DONE — carrier escape criterion proven+validated; every
-  recorded escape failure was a sampler artifact** (2026-08-02, `repin.py`; workbook §(K-tight))
-  — attainment ⟺ two functionals independent on `U`; failure locus `line(ab) ∪ P′`; seed 442 and
-  the 94/96 non-escapes were `plane_basis` degeneracies (**the first of two** — see §(K-out)
-  (OC-7)). Kernel narrowed to (K-move)/(K-pitch).
+  recorded escape failure was a sampler artifact** (2026-08-02, `repin.py`; workbook
+  §(K-tight)); kernel narrowed to (K-move)/(K-pitch).
 
 - **W4 residual arc, three landings (2026-08-02; canonical home `notes/Pencil-W4-informal.md`).**
   Kernel-widening **PRICED** — only `hK` widens, to **(K-res)** (`widened.py`); **(SAFE-RES)
@@ -427,13 +432,10 @@ is the canonical home a successor reads.
   route 1 and route 2's pointwise reuse; (K) reduced instead to *stress non-constancy*. (Since
   **graded** by (D2): far-dependence is `3(k−3)`, and the gate was run at the maximal `k = 6`.)
 
-- **The 2026-07-30 W5-L7 build day (one-lined; `hsplit` is CLOSED IN FULL, so nothing upcoming
-  leans on the detail — canonical record: `notes/Phase39-design.md` + git).** Recon isolated
-  kernel **(K)** (route (b), the (6.44) identity, REFUTED); user adjudicated "route 3: build
-  now". L7a landed with the rigid `k=0` half closed minimality-free (KT Lemma 3.4); L7b re-pinned
-  split-data-free after `escapePoly` was refuted by a BLOCKED build (dispatch-log F9 ×2); L7c
-  decomposed into six leaves ending at `pencil_conjecture_of_hcontract_hK_hbareSplit`; then
-  `hfresh`'s residue (iv), the consumer headline, and the blueprint node restatement.
+- **The 2026-07-30 W5-L7 build day** (`hsplit` CLOSED IN FULL; canonical record
+  `notes/Phase39-design.md` + git): recon isolated kernel **(K)**; L7a–L7c landed six leaves
+  ending at `pencil_conjecture_of_hcontract_hK_hbareSplit`, then `hfresh`'s residue (iv) and
+  the consumer headline; `escapePoly` refuted by a BLOCKED build (dispatch-log F9 ×2).
 
 - **Older W5-L5/L6 / W0–W4 entries (one-lined; canonical detail in `notes/Phase39-design.md`
   + git).** W5-L6: L6b re-pinned **triangle-free** (the spike refuted the `hcard`-only pin),

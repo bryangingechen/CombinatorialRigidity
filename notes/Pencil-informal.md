@@ -81,6 +81,7 @@ section's own verdict block and the gap-map row, which stay authoritative.
 | §(K-Δ) | 7280–7546 | **NO HIT — the lead is discharged** | `DL-` |
 | §(K-bare-ext) | 7547–7585 | open, nothing being developed | `BE-` |
 | §(K-grid) | 7752–8156 | **reduction proven** — the tight-stratum residual of (AC-6) in final combinatorial form; residual = (GR-4) + (GR-6), open | `GR-` |
+| §(K-mech) | 8161–8541 | **both §(K-pure) *P8* anomalies mechanised** in one calculus (the load space `Ω`); **6v11e RESCUED** ((MX-7)) — the slide device closes it after all; the σ rider settled NO ((MX-8)); the `\|V°\| ≤ 6` predictor measured complete-and-sound ((MX-9)) | `MX-` |
 
 **Live vs settled**, using the division of the 2026-08-05 reorganization pass.
 Live: §(K-tight), §(K-Λ), §(K-σ), §(K-pure), **§(K-ann)** — whose live residue is
@@ -228,12 +229,13 @@ all in this file.
 | **(K-slide-comb)** | (K-slide-comb) | **REFUTED as a class statement** (two structural flanks at explicit class members satisfying `hcard`/`htf`); per shape still a finite certificate-bearing problem, and "(K-slide-comb) at a shape ⟹ (K-slide-cl) there" stays **proven** | — refuted; the needed invariant is **acyclic** 4-colourability, which 3-degeneracy does *not* give |
 | **(C6)** | (K-slide-comb) D1 | **proven-informally at every class shape** — the unrestricted 6-fold base packing exists because Edmonds' matroid-partition min-max hypothesis for it *is* 5/6-sparsity; so the packing content is never the obstruction (and is Phase-12/13/14-reachable). **Status unchanged, role downgraded** (§(K-pure) P2/P6): it certifies the *ambient* hypothesis of a theorem that does **not** transfer to the decoration variety, and it is about the 6-fold **graphic union** — the wrong matroid for the pitch, which `R_3`-dependence governs | — settled; only a non-tight shape could break it |
 | **(C7)** | (K-slide-comb) D4 | **proven-informally combinatorially** (the length-4 menu is *all* five 2-subsets containing `L_ij`; 12/12 exact; `K4` coverage 439 → 702/877, octahedron flank rescued); two honest gaps — no full (W1)–(W4) witness at a repaired member, and `ℓ ∈ {1,2,5}` open (at `ℓ = 5` the mandatory-`L_ij` claim is itself suspect) | a geometric witness at a repaired member + the `ℓ ∈ {1,2,5}` analogues; cannot touch either structural flank |
-| **(K-chord)** *(new, 2026-08-05)* | (K-pure) P1–P4, P9 | **open**, and the *replacement* combinatorial residue: `∃Σ` with `e₀ ∉ cl_{R_3}(E_chord(Σ))` at generic hub points — **necessary** for the slide device by (PC-OBS). Per shape it is checkable by **exact rank** — done exhaustively over the 23 candidate hub graphs with `|V°| ≤ 6` (`R_3`-dependence ⟺ Maxwell-overbraced; 5 dependent, 18 independent; smallest `K5`) — but unlike (K-slide-comb) it lives in a matroid with **no combinatorial characterisation** (generic 3-dimensional rigidity), so a class argument has nothing to reduce to | a support menu wide enough to satisfy it *together with* (W1)–(W4) at every class shape (P9 item 5: widen the 5-support menu, sweep the `|V°| ≤ 6` strata, 6v11e first) — or a class shape satisfying it at **no** support, which would refute the device class-wide |
+| **(K-chord)** *(new, 2026-08-05)* | (K-pure) P1–P4, P9 | **open**, and the *replacement* combinatorial residue: `∃Σ` with `e₀ ∉ cl_{R_3}(E_chord(Σ))` at generic hub points — **necessary** for the slide device by (PC-OBS). Per shape it is checkable by **exact rank** — done exhaustively over the 23 candidate hub graphs with `|V°| ≤ 6` (`R_3`-dependence ⟺ Maxwell-overbraced; 5 dependent, 18 independent; smallest `K5`) — but unlike (K-slide-comb) it lives in a matroid with **no combinatorial characterisation** (generic 3-dimensional rigidity), so a class argument has nothing to reduce to. *Since 2026-08-06 (§(K-mech), direction M):* the device's necessary-condition set at a support `Σ` **widens to three named, decoration-free items** — (K-chord) itself, both pole-cluster bounds ≤ 1 ((MX-4)/(MX-5)), and no forced flex route ((MX-6)) — and on the sampled `\|V°\| ≤ 6` strata the three-way predictor is **measured complete and sound** ((MX-9): 21/21, one new (W4)-failing shape found-and-explained, 0 unexplained) | a support menu wide enough to satisfy it *together with* (W1)–(W4) at every class shape — P9 item 5's probe is now **RUN** (§(K-mech): 6v11e **rescued** (MX-7), the sweep measured) and the residue is the **sufficiency** of the three-condition set beyond the sampled strata — or a class shape satisfying it at **no** support, which would refute the device class-wide (still unexhibited; the covered sub-class grew by 6v11e) |
 | `P21` / parallel `G°` edges | (K-slide) 5, (K-flank) F5, (K-pure) P4/P7 | **mechanism corrected and scope sharpened** (§(K-pure)): at a *class* parallel shape the full-support obstruction is the **chord stress at (W4)**, not (S5) at (W1), and it needs only a `bc`-parallel edge of length `≤ 4`. (S5)'s `(3,3)` row-dependence mechanism is **proven impossible inside tight + `hnoRigid`** (`C_k` rigid for `k ≤ 6` forces `ℓ₁ + ℓ₂ ≥ 7`), so **`P21` is a (K-res) residual, not a tight class member**. `P21`'s own obstruction is unchanged and is **not confined to the `ε = 0` limit** — §(K-flank) F5(d)/(e) exhibits the same theta-circuit stress (`{12, 13, 23a, 23b}`, 12 edges, line rank 6) on a **nonempty locus of the pencil chart itself** (5 of 35 rational seeds), where it forces `dim R_a = 0`. **θ(3,4,5) is CLOSED** by a reduced support, without (K-Λ) | for `bc`-parallel class shapes: a reduced support (done at θ(3,4,5)) or the companion forms — the monomial at `ℓ = 3`, and at `ℓ = 4` **(K-wit)**, since §(K-Λ) shows the companion form there is *equivalent* to it rather than an independent gap. At `ℓ = 5,6` **the (T5) frame is REFUTED as the route** (§(K-Λ) *Step 7*: at `k ≥ 5` the (F-A) bad locus gains a second, equal-dimensional component — a smooth conic, so nonempty over `K̄` — and at `k = 6` `C(M) ∈ S` removes even the local guard), so those shapes need **something else, none identified** (this refutes the *argument shape*, not the conjecture and not their closability; whether a *rational* point of that component is realized by a real habitat is open). For `P21`-type (K-res) shapes: a new `G°`-local mechanism — none identified |
 | **(K-flank)** | (K-flank) F0–F7 | **per shape, not a uniform gap: half 2 proven-informally** by exact `∃`-witnesses at the Tay target (8 named + 843 stratum shapes, 0 failures); half 1 carries **no `hK` counterexample and no re-pin** (16/16 `e₀`-end splits, 26/26 eligible splits of the 5-chromatic flank, both KT routes); **(K-pitch) closed at all 16 flank splits** by `ε = 1` certificates; the full-support slide limit is **degenerate at all four structural flanks**; **class uniformity untouched** | — n/a: a per-shape result, not a gap. *Settled per shape; the uniform statement is unchanged* (the disproof risk is removed, no uniform gap moves) |
 | **(K-dom)** *(new, 2026-08-05)* | (K-dom) D0–D7 | **open as the uniform statement, and provably FALSE off the class**, so the strategy doc's §4-C1 route is **not recommended**. Writing `k` for the *companion length* (the shortest `b`–`c` path of `H`; `k ≥ 3`): **(D1)** `rank d(H ↦ V_bc) ≤ min(9, 6k − 14)` in the bad-locus-frozen scoping, **proven** from path-sum containment — so `≤ 4` at `k = 3`, where `V_bc` is moreover always in the discriminant hypersurface of `Gr(3,6)`; **(D2)** the far block is `≤ 3(k−3)` (a corollary of (T5)), **attained** at `0,3,6,9` for `k = 3,4,5,6` — and since 2026-08-06 that number has a **mechanism** rather than a measurement: §(K-ann) **(ANH-1)** identifies the annihilator as the self-stress space of the contracted framework `H/P`, so `3(k−3)` is `dim Gr(k−3,k)` **for that stress space** and the dimension `k−3` is forced by a *count*; **(D3)** `hnoRigid` forces `k ≥ 4` (= §(K-slide) *Step 5*'s `ℓ₁+ℓ₂ ≥ 7`), so the cap bites exactly on **(K-res)**. Measured: rank **9 — dominance — at all 5 probed class habitats** (θ(3,4,5), NT21, NT16k5, `K4`/`K5−M` dbl-subdiv; `k ∈ {4,5,6}`) and exactly **4** at both `k = 3` habitats. **(D4)**: rank 9 at one rational seed ⟹ the escape on a *dense open* subset of that shape's chart — a strictly stronger per-shape statement than an `∃`-witness, and no more useful. §4-C1's two claimed values are **REFUTED** (D6): the image does **not** grow with the far graph (it is capped by the local `k`), and the 2026-07-30 locality gate was run at `k = 6`, the *maximal* far-dependence grade, so it is not evidence for dominance. **Class uniformity untouched** — "rank 9 at every class shape" is one determinantal condition per (shape, split), the same per-shape object §(K-pure) *P5* names as the wall | a class habitat with `rank dV < 9` at every seed (a sharp new obstruction; none found), **or** a mechanism making `rank dV = 9` combinatorially certifiable class-wide — the only thing that would turn C1 into a uniform route |
 | **(K-σ)** *(new, 2026-08-05)* | (K-σ) *Field scope*, σ0–σ6, σ4b | **four settled verdicts + one CANDIDATE, offered for adjudication; the FIELD-SCOPE caveat they carried is DISCHARGED** (§(K-clos), 2026-08-06 — see the row below and the sentence marked SETTLED here). `σ = screwComplementIso` exists in tree **only over `ℝ`** (`Duality.lean:69`), and so does the self-duality theorem the conjunct-1 freeness cites (`Statement.lean:257`), while **`hK` is quantified at the general `[Infinite K]`** of `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card` (`Escape.lean:555`). Whether the polarity generalizes is **SETTLED — YES** (§(K-clos) (AC-1), 2026-08-06): bookkeeping, one section, and the general-`K` **transport is already landed** as `BodyHingeFramework.mapSupport` with its rank lemma, so `ProjectiveInvariance.lean` needs no generalization; source-level, **not compiler-checked**. **(σ7) needs no polarity and is field-neutral outright**; (σ1)–(σ6) and route σ are field-neutral *modulo the polarity existing*, so they **port**; the two refutations below use `ℝ`-**definiteness** and do **not** port — indeed **both REVERSE over `ℂ̄`** (§(K-clos) (AC-2)/(AC-3): σ-fixed configurations exist and are nondegenerate at the Tay target), **and the verdict they support survives anyway** on the field-neutral §(K-clos) (AC-5). Settled: the σ-intertwining question is **REFUTED in its literal form** (`pt(a) ∈ π_a` forces `pt(a)·pt(a) = 0`, impossible over ℝ with the project's *definite* polarity — `Molecular/Meet.lean:88` records it is the Hodge star of the standard dot product) and **CONFIRMED covariantly** (`σ(α_p) = β_{p^⊥}`, `σ(β_π) = α_{pole(π)}`), which makes §(K-Λ)'s two-point failure locus **exactly a σ-orbit**; and **σ-equivariant seed recipes are DEAD** — no σ-fixed pencil configuration exists over ℝ, and a null polarity puts every hinge line in a linear line complex, giving a self-stress per cycle (**deficit exactly 1 at 6/6** on tight `C₆`). Fourth settled verdict, **new 2026-08-05** (`sigma.py --hunt`, three pools of its own, disjoint from the pinned 47): **(σ7)** *Step σ3*'s side condition `pt(b) ∉ Π(c)` is **FREE** — primal conjunct 4 at the split's middle body `a` forbids both halves of (Λ0d) from failing at once (39/39 witnesses that forcing both leaves `a` with no panel), settling *What would change this* (iv); **and, in the other direction, the dual conjuncts at `σu` are NOT implied** — 45 constructed hard-stratum, primally-nondegenerate seeds violate dual conjuncts 2 and 4 (coplanar-chain degeneration), so *Step σ4*'s 47/47 was genericity. Candidate: **route σ**, whose uniform-failure criterion `★r ∥ C(bc)` is the σ-image of routes A/B's `★r ∥ C(M)` and cannot hold simultaneously with it. Scope of the validation: `s₀ = 0`, `dim R_a = 1`, both ends hubs, tight control only (the hunt pools widen the *configurations*, not the shape) — `dim R_a = 0` **untouched**, (K-res) `s₀ = 2` **unsampled**; the criterion at `σu` is **imported, not re-derived**, and its failure direction is **unwitnessed** (`predAfalse = 0/47`); and the branch route σ closes has **never been observed nonempty**, so the gain is **evidence → argument**, never *bug fixed*. **No gap-map status moves on account of route σ** | obligation 1 of §(K-σ) *Step σ5* — now **sized, not just named** (all of it **at `ℝ`** — see the caveat opposite): conjunct 1 free by a landed theorem, conjunct 3 free by the primal conjuncts on no-adjacent-hub shapes, conjunct 2 at the two `a`-edges = two-sided (Λ0d), leaving two genuinely new conditions with a steering repair exhibited exactly (`bracket(τ) = τ·bracket(1)`). Route σ faces exactly **one** crux: the workbook's two kills of M₁ (§(K-tight) *Step 1* and *Step 2.6*) have the **same** stated reason, the `hinge(vb) := q(ab)` pinning |
 | **(K-clos)** *(new, 2026-08-06)* | (K-clos) Z0–Z8 | **The field question of §(K-σ), settled — plus one construction REFUTED as a class statement and left OPEN only on the tight stratum.** Read the two halves separately. **Settled, proven-informally:** **(AC-1)** the polarity **generalizes** — bookkeeping, one section, and the general-`K` transport is already in tree (`BodyHingeFramework.mapSupport`, `Molecular/GenericLift/HingeGeneric.lean:462`, rank lemma `:544`), so `ProjectiveInvariance.lean`'s 19-declaration `ℝ`-fixed `mapExtensor` API needs **no** generalization (source-level, **not compiler-checked** — the dispatch carried a no-Lean constraint, and a ~20-line typecheck spike would settle it); **(AC-2)** the σ-fixed locus over `ℂ̄` is exactly the `P¹ × P¹` **grid** on the fixed quadric, with the conjugacy law `p ⬝ᵥ p′ = 2[s,s′][u,u′]`; **(AC-3)** those grids are **nondegenerate at the Tay target**, so §(K-σ) *Step σ6*'s "degenerate" is **REFUTED for the symmetric correlation** (it stands for the null one); **(AC-4)** the `⋆`-eigen decoupling `rank = rank₊ + rank₋` and the three conditions target rank forces (balance, both classes forests, both blocks isostatic); **(AC-5)** at a σ-fixed seed **route σ IS route A** (32/32, as subspaces), which is the **field-neutral replacement** for the `ℝ`-definiteness kill — so *"σ-equivariant seed recipes are DEAD" survives algebraic closure*; **(AC-7)** `hK` over `ℂ̄` **implies** `hK` over every infinite characteristic-0 field, converse **false**, so `ℝ` is the **narrowest** choice and the residual content of `[Infinite K]` is **positive characteristic only** — never probed; **(AC-8)** char 2 breaks the geometry (double plane, no splitting) but not (AC-1). **REFUTED as a class statement, OPEN on the tight stratum: (AC-6)** — the grids are a *combinatorial recipe* (a ruling 2-colouring of `E(G)`) for target-rank nondegenerate pencil realizations, reaching the target at **15/15 tight** shapes of a pinned 21-shape pool (all eight §(K-flank) flank shapes among them) and at the (K-res) inhabitant `W19` (1/1, rigid but not count-tight), 2/5 not-rigid, **18/21** overall. It **fails at three**, and the habitat attribution is the point: θ(1,2,9) and θ(2,3,7) are **out** of `hK`'s habitat (`hnoRigid` false) — θ(1,2,9)'s miss is *correct behaviour*, its triangle with two hubs already forbidden by `not_pencilNondegFeasible_of_triangle_two_hubs` — while **`C11`, a bare odd cycle, is IN the habitat and refutes the class statement by itself**. The mechanism is **parity and is complete**: no admissible colouring exists **iff** `G` has a bare odd cycle component (`C3…C14` → exactly `[3,5,7,9,11,13]`; 19/19 non-cycle pool shapes admit one) — and it **cannot** be the tight-stratum obstruction, since a tight shape has hubs and is never a bare cycle. **This row must not be read as "open" unqualified: the habitat-level statement is settled NEGATIVELY.** Chart-image membership for the grids is **proven and machine-verified** since 2026-08-06 (§(K-grid) (GR-5), 5/5 end-to-end) | for the *narrow* remainder only: the tight-stratum residual now lives in **§(K-grid)** (2026-08-06, direction T) as the pair **(GR-4) + (GR-6)** — the counting criterion's sufficiency at conic labels, and the admissible-colouring existence — both geometry-free. The direction-network statement this cell used to name ("isostatic whenever (AC-4)(i)–(ii) hold") is **refuted and corrected** there ((GR-2)/(GR-3): the mono-hub bond, and two proven counting families), the cheap-kill census is run and extended 15/15 → **907/907** (θ(2,5,5) + the exhaustive `K4` stratum included, no miss), and chart-image membership is proven ((GR-5)), so a target-rank grid **is** `hK`'s conclusion object. Discharging (GR-4) + (GR-6) discharges `hK` on the tight stratum **directly**, then over every infinite characteristic-0 field by (AC-7). Nothing here would ever make the statement habitat-uniform: `C11` is permanent. **(AC-9), new 2026-08-06:** every σ-fixed body of degree `≥ 3` carries a **coincident hinge line** (pigeonhole against the two-ruling-lines cap), so the σ-fixed locus lies entirely inside the free-rotor locus and the composite guard accepts **0 of 64** `ds-K4` colourings — this **qualifies** (AC-3) (the four conjuncts and the Tay target still hold, so *Step σ6*'s claim stays refuted about that predicate) and forbids reading any σ-fixed witness as *generic* |
+| **(K-mech)** *(new, 2026-08-06, direction M)* | (K-mech) (MX-1)–(MX-9) | **Both §(K-pure) *P8* anomalies mechanised, in one calculus** — the realizable-load space `Ω := V_bc^{⊥_B}` and the α-confinement of slid chain spans ((MX-2), a per-line strengthening of (PC1)). 6v11e's `dim V_bc = 2` drop = a **forced welded flex**, two overlapping α-routes through the hub-5 meet ((MX-6)); the `K222` / `K4 (1,1,3,5,4,4)` incidence = a **forced pole-cluster load** through `pt(c)` ((MX-4)/(MX-5), bounds 2/2 met with equality; the all-`{3,4}` `K5` strong-containment branch is the bound-3 case); the chord obstruction (PC3) is the special case `ω = C_bc`. **6v11e RESCUED** ((MX-7)): omitting one far-side interior kills both routes, full (W1)–(W4) witnesses 3/3 seeds × 5 supports, 9/9 prediction table — the slide device closes it after all. σ rider settled **NO** within the probed family ((MX-8); the ℓ1 hub-hub chord is the one forced exception). (MX-9): the three-mechanism predictor measured complete-and-sound on `\|V°\| ≤ 6`, finding one **new** (W4)-failing shape (`\|E°\| = 11`, cluster bound 2) it had never seen | the **sufficiency** of the three decoration-free conditions ((K-chord) + cluster ≤ 1 + no flex route) beyond the sampled strata — a wider census could surface a fourth mechanism, which would be a finding, not a defect; class uniformity untouched |
 | **(K-grid)** *(new, 2026-08-06, direction T)* | (K-grid) G0–G7 | **The tight-stratum residual of (AC-6), reduced with proven reductions to two geometry-free gaps.** (GR-1) each `⋆`-eigen-block is a **conic direction network = generalized C¹-quadratic spline system** on the contracted multigraph, with the exact rank identity `rank = 3n_c − 3 − dim Z` verified 688/688 through two independent matrices; (GR-2) the former proof target "(AC-4)(i)–(ii) ⟹ both blocks isostatic" is **refuted** — 8 of `ds-K4`'s 64 colourings are balanced/both-forests at rank 89, mechanism a **bond of the contracted graph inside one ruling class** (mono hub = free rotor; the rank-costing boundary case of (AC-9)); (GR-3) two proven, mutually non-subsuming counting obstruction families bound `dim Z`; (GR-4) their max **equals** generic `dim Z` at all 688 pool instances (**true-modulo-named-gap** — the ≤ direction at conic labels; the construction's component-index labels are NOT generic, 10/688 special-value overshoots); (GR-5) chart-image membership **proven-informally class-uniformly + machine-verified 5/5 end-to-end** — a target-rank grid IS `hK`'s conclusion object (`Escape.lean:555`) over `ℚ(i)`, hence over every infinite char-0 field by (AC-7); census **907/907** (877 exhaustive `K4` + 6 + 21 sweeps + 3 thetas incl. the new θ(2,5,5)), first-hit 835 at the first filter-passing colouring | **(GR-4)** — the matroid-union tensor realization pushed through the moment-curve confinement (valuation/degeneration refinement of the classical specialization argument) — **plus (GR-6)** — an admissible colouring satisfying (GR-3)(a)/(b)/(c) in both blocks exists at every tight class shape (open; 907/907 evidence; Nash-Williams/Edmonds-shaped, cf. (C6); **no min-max yet**, and until one exists `Pencil-strategy.md` §2.3's base-rate warning applies). Together they discharge `hK` on the tight stratum over every infinite characteristic-0 field |
 | **(K-ann)** *(new, 2026-08-06)* | (K-ann) A1–A9 | **A recipe delivered and an input relocated — read the two halves separately, and do not let the first warm up the second.** **Delivered, and the arc's first *formula* rather than a search** (`Pencil-strategy.md` §2.2's sense): **(ANH-2)** the reciprocity identity `dλ(π_P ω) = Σ_e ω_e B(τ_e, δC_e)`, local at the moved vertex, no genericity hypothesis, class-uniform, verified at 276 far-chart directions × 828 motions against an independent implicit differentiation; **(ANH-3)** at the named move (translate one non-hub 2-valent far body) it collapses to **one Klein pairing**, 192 single-vertex moves. Carry its caveat: *the formula's kernel is bounded-size and class-uniform; what it pairs against (`τ`, `ω`) is not* — so U1 is **half** delivered, the move and the formula but not the inputs. **Proven, and the mechanism behind (D2):** **(ANH-1)** `λ` **is a self-stress** — of the *contracted* framework `H/P` (weld the companion into one body), stress dimension exactly `k−3` (18 seeds, 9 habitats, `k = 3..6`), so (T5)/(D2) stop being measured bounds. **Proven, `k = 4`-only:** **(ANH-4)** `E(H/P)` is a **circuit of the generic Tay matroid**, from 5/6-sparsity + `hnoRigid`, the count `5k+10 ≤ 6k+6` tight exactly at `k = 4` — the same equality case as (D3)'s `k ≥ 4`; realized side, the support is the **whole** far edge set at 14/14 class seeds, so the named move needs **no support-location step**, with an off-class control (`hnoRigid` dropped) where the circuit is a proper 5-cycle and moves off it leave `V_bc` exactly fixed. **(ANH-7)**: on the **89 %** (3820/4296) of triples with a length-5 `H/P` branch the whole criterion is **one 4-point bracket**, correct 56/56. Corrections recorded here because they were written down before the pass ran: option B and U2 are **not** the same object (`λ` is a self-stress of the contracted **far** framework, not `[r]`); U2's cocircuit reading is the **dual** of what the recipe needs (`supp τ` is a *circuit*); and the pass's own `⟨C(z₁z₂)⟩` kill set is wrong at `dim U_y = 1`, the general criterion being `ρ_y ⊥_B (V_y ∧ U_y)`. **`k`-grading:** (ANH-1/2/3/5/6) and (SD-6) are length-free (`k = 3..6`); **(ANH-4) is provably `k = 4` only**, and with `k = 4` the `hnoRigid` equality case **no `k`-graded mechanism including this one can close the class** — the verdict `Pencil-strategy.md` §4.6 already carries. **No gap-map *status* moves; class uniformity untouched** | **(ANH-R1)** `τ_β ≠ 0` at the pencil placement — `H/P − β` (count exactly 0, generically isostatic) is **rigid** there. This is **relocation #4**, of a *different kind* for three reasons and *not thereby easier*: it crosses into a matroid that **has** a min-max (Tay, Phases 12–15) whose combinatorial half (ANH-4) **proves**; it lands on a **strictly smaller graph** (`\|E(G)\|−12` edges); and by §(K-ind) *Step I6* the welded body is not a pencil body, so it sits on the **mixed stratum** — not the same problem shrunk, and `Pencil-strategy.md` §4-C3's second concrete consumer after (OUT). It does **not** evade §2.3 (a rank *lower* bound): **limiting, not fatal** — the smaller graph's matroid is Tay's, where independence *is* combinatorially characterised, so the wall changes from "no matroid sees this" to "the matroid sees it and the pin may not respect the matroid" (the weak-map / specialization-stability lead of §4.6, which now has a statement to attach to). **OPEN and stated as open: whether (ANH-R1) is genuinely easier than its parent, or merely smaller — nothing in this pass settles that.** What it *would* close: the **length-4-companion stratum outright**, via §(K-Λ)'s Λ-completeness, since `dλ ≢ 0` makes `{λ = p⁺}` proper on an irreducible chart |
 | **(K-out)** *(new, 2026-08-06)* | (K-out) O1–O8 | **(OUT)'s hypothesis, measured — and the headline is the NEGATIVE. Read the two halves separately, and do not let the second warm up the first.** **The negative, proven-informally and load-bearing: (OC-3)** on the pencil chart `C₁ = C(b,x₁)` is confined to the 2-dimensional pencil `L_b = α_{pt(b)} ∩ β_{Π(b)}` while the far relative twist space `R₁` does not see `pt(x₁)`, so `dim R₁ = 5` forces `dim(R₁ ∩ L_b) ≥ 5 + 2 − 6 = 1` — **`{λ₁ = 0}` is nonempty at every class shape in the enumerated scope**, exactly one marked direction of `x₁`'s pencil. Therefore **no counting argument, no matroid statement and no placement-blind argument can ever deliver (OUT)'s hypothesis**; measured on-chart `dim R = 5`, `dim(R ∩ L) = 1` (never 2) at 46/46 frames, so the bad locus is also *proper*. **The combinatorial half does NOT deliver availability: (OC-2)**'s uniform 4296-pair result (`χ = 0`, `def(H/X) = def(H/Y) = 0`, `(μ, dim R, A) = (1,5,0)` on both sides) collapses to **one** measured fact — rigidity of `H/X`, the rest being arithmetic — and `deficiency` is the ***ambient*-generic** count, blind to the chart confinement. **The positives are pointwise, over two DISJOINT pinned pools, never aggregated: (OC-5)** POOL-G (4 habitats × seeds 200–299, 357 frames) distribution `322/17/17/1`, hypothesis **356/357**, conclusion separately verified **356/356**, (Λ0d) failing **0/357**; **(OC-6)** POOL-S (41 shapes / 90 splits / 270 frames) **270/270** with **0** silent (split, companion) pairs; **(OC-1)** *Step 5a*'s hinge-rate reading is exact and driver-asserted (`λ₁ = 0 ⟺ C₁ ∈ V_bc ⟺ dim W₁ = 1 ⟺ C₁ ∈ R₁`, 46 frames); **(OC-4)** the bad line is **reached by a legal chart move** at all four habitats — 3 of them with no coincident hinge line — keeping every (Λ0) clause, target rank, `dim R_a = 1` and all four `IsNondegPencilRealization` conjuncts, and with `deg_t Q(z(t)) = 4` there, so the escape holds exactly where (OUT) is blind. **(OUT) is therefore available, never automatic, and not contradicted.** **A HARNESS DEFECT, escalated: (OC-7)** — `widened.place_pencil_general`'s single-hub-interior sampler degenerates via `localtest.plane_basis` at **32 of 357** POOL-G frames (≈ 9 %) and that degeneracy **implies** `λᵢ = 0` (15/15 `b`-side, 18/18 `c`-side), uncaught by `flanks.star_span_ranks` (*documented* as the guard against exactly that artifact) and excluded by no `IsNondegPencilRealization` conjunct. **Standing rule: no `place_pencil_general` battery may be quoted as a *rate* or as evidence about a generic chart point** — POOL-G figures are quoted over the **318 coincidence-free** frames, never the raw 357. Second `plane_basis` contamination, **first with the documented guard failing**; `notes/scripts/README.md` *Harness debt* item 4. §(K-ann) is flagged for a **check, not an error**: its claims are identities and pointwise attainments, which degenerate frames make *harder* to satisfy (conservative); rates are what the defect distorts. **Verdict: availability, MEASURED, not proven. No gap-map *status* moves; class uniformity untouched** — the (K-wit) row's *what would close it* cell gains the (OC-3) caveat on (OUT) | **(OC-8)**: at every class shape, a hard-stratum target-rank point of the **whole-graph** chart with `L_b ⊄ R₁` or `L_c ⊄ R₄`. That is a rank **lower** bound at a pencil placement — `Pencil-strategy.md` §2.3's wall **relocated** onto the smaller `H/{e₂,e₃,e₄}` and **weakened, not crossed** — and (OC-3) says the relocation **cannot be discharged combinatorially**, so any proof must be a genericity argument on the whole-graph chart (needing its hard-stratum component not to lie inside `{λ₁ = 0} ∩ {λ₄ = 0}`), which the arc has never established because `λ` is a **far** datum. The one symbolically tractable piece: `L_b ⊄ R₁` as a polynomial non-vanishing (`Pencil-strategy.md` §5.3). **(OC-7) is CLEARED** (2026-08-06 re-baselining round S1/S2: the composite guard `repin.star_generic` exists, is adversarially tested on both a constructed and a sampled witness, and is adopted at every `w4/` acceptance site except this section's two measuring modes); **(OC-9)** measures that the guard rejects 58/357 and strictly contains the two-end diagnostic's 39 |
@@ -262,11 +264,15 @@ one menu-blocked `K4` shape) even reach the `G°`-level carrier and join the
 **And every *probed* one now has its split closed** (§(K-pure), direction C):
 the three obstructed `K5` all-`{3,4}` shapes by a **reduced** slide support, the
 two `K5` shapes carrying an `ℓ = 5` edge at the **full** support, `K222` and
-θ(3,4,5) by a reduced support, and **6v11e by its chart certificate only** (the
-slide *device* fails there at every probed nonempty support). So what remains
-uncovered is no longer a *shape* list: it is the **class-uniform** statement,
-plus **two unexplained mechanisms** — 6v11e's `dim V_bc = 2` drop and the
-`V_bc ∩ Λ²π̂ ≠ 0` incidence at `K222` / `K4 (1,1,3,5,4,4)` (§(K-pure) P8).
+θ(3,4,5) by a reduced support, and **6v11e by the slide device at a
+mechanism-guided reduced support** (§(K-mech) (MX-7), 2026-08-06 — previously by
+its chart certificate only; the old 5-support menu omitted only b/c-side
+interiors, which the ledger shows keep both flex routes alive). So what remains
+uncovered is no longer a *shape* list: it is the **class-uniform** statement.
+The two formerly unexplained mechanisms of §(K-pure) *P8* — 6v11e's
+`dim V_bc = 2` drop and the `V_bc ∩ Λ²π̂ ≠ 0` incidence at `K222` /
+`K4 (1,1,3,5,4,4)` — are both **mechanised in §(K-mech)** ((MX-6) the welded
+flex, (MX-4)/(MX-5) the pole-cluster load), in one calculus.
 
 **Settled, so not to be re-derived:** the carrier escape criterion and the
 `dim U = dim R_a + 1` structure ((K-tight) 0–3); routes 1 and 2 of the original
@@ -2726,12 +2732,15 @@ three obstructed `K5` 5-chromatic flank shapes (2/3, 3/3, 3/3 sampled seeds), at
 the **`K222` octahedron flank** (3/3) and at **θ(3,4,5)** (3/3). So the slide
 device **closes** those splits, and the gap map's `χ(G°) ≥ 5` row, its `K222`
 entry and (for θ(3,4,5)) its parallel-`G°`-edge row stop being uncovered. The
-**6v11e acyclicity flank** is the one shape the *device* does not reach: it fails
-**(W2)** (`dim V_bc = 2`) at all four nonempty probed supports, and only the
-degenerate `Σ = ∅` (which is the `ε = 1` chart, where (S1) is **vacuous**) is
-pitched. Its split closes anyway, by the (K-pitch) Step-0 one-witness argument —
-full chart transfer certificates ((T1)–(T3) + `Q(r) ≠ 0`, `dim R_a = 1`, the (T2)
-side conditions) at **11/11** valid seeds. `pure.py --support`. **This answers
+**6v11e acyclicity flank** failed **(W2)** (`dim V_bc = 2`) at all four nonempty
+probed supports, with only the degenerate `Σ = ∅` (the `ε = 1` chart, where (S1)
+is **vacuous**) pitched; its split closed anyway, by the (K-pitch) Step-0
+one-witness argument — full chart transfer certificates ((T1)–(T3) +
+`Q(r) ≠ 0`, `dim R_a = 1`, the (T2) side conditions) at **11/11** valid seeds.
+`pure.py --support`. *(Superseded 2026-08-06, §(K-mech): the four probed
+supports all omitted b/c-side interiors — exactly the omissions (MX-6)'s flex
+ledger shows keep both routes alive; a single far-side omission rescues the
+device, (MX-7), so 6v11e is now closed by the slide device too.)* **This answers
 §(K-flank) *Step F7* item 2**, which named reduced slide supports at the
 structural flanks as the single most valuable follow-up its data pointed at.
 
@@ -3074,13 +3083,20 @@ one positive class-side result.
   this is the parallel-`G°`-edge shape the gap map lists as reachable only by the
   companion forms ((K-Λ) at `ℓ = 4`). A slide witness reaches it directly.
 - 6v11e acyclicity flank: (W2) fails (`dim V_bc = 2`) at **all four** nonempty
-  supports. Only `Σ = ∅` is pitched — but that is the `ε = 1` chart, where the
+  supports *of this 5-support menu* — **superseded 2026-08-06, §(K-mech)
+  (MX-6)/(MX-7): the drop is a forced welded flex whose routes these
+  b/c-side omissions cannot kill; a far-side single omission rescues the
+  device (9/9 prediction table)**. Only `Σ = ∅` is pitched here — but that is
+  the `ε = 1` chart, where the
   slide is the identity and **(S1) is vacuous**: the "witness" is just a chart
   seed. The *split* is nevertheless closed, by (K-pitch) Step-0 one-witness
   logic: full chart transfer certificates ((T1)–(T3) + `Q(r) ≠ 0`, which also
   check `dim R_a = 1` and the (T2) side conditions that (W1)–(W4) do not) at
-  **11/11** valid seeds. The **slide device** does not reach this shape and no
-  mechanism for its (W2) drop is known.
+  **11/11** valid seeds. *(Both halves of the closing sentence this bullet used
+  to carry — "the slide device does not reach this shape and no mechanism for
+  its (W2) drop is known" — are **withdrawn 2026-08-06, §(K-mech)**: the
+  mechanism is the welded flex (MX-6), and the device reaches the shape at a
+  mechanism-guided support (MX-7).)*
 
 Three riders. **(a)** The menu is 5 of `2^{#slid interiors}` supports; "not
 rescued" is not a verdict. **(b)** A reduced support costs precisely what the
@@ -3105,9 +3121,13 @@ right question is sharper and single-valued:
 > **no** chord stress present? At the `K5` shapes it is forced by (PC3); here
 > nothing explains it. And at 6v11e, why does `dim V_bc` drop to 2?
 
-These are the two honest gaps of this pass, and they are now *well-posed*:
-(PC-Z) reduces "why does the pitch vanish?" to "why does `V_bc` meet one of two
-named isotropic 3-spaces?".
+**Both questions are ANSWERED (2026-08-06, §(K-mech))**: the incidence is a
+forced pole-cluster load through `pt(c)` ((MX-4)/(MX-5), bound 2 met with
+equality, the chord stress being the special case `ω = C_bc`), and the 6v11e
+drop is a forced welded flex ((MX-6)) — both in one calculus on the
+realizable-load space `Ω`. They were the two honest gaps of this pass, and
+(PC-Z)'s reduction — "why does the pitch vanish?" to "why does `V_bc` meet one
+of two named isotropic 3-spaces?" — is exactly the form the mechanisms answer.
 
 ### Step P9 — what a class proof needs now
 
@@ -3140,7 +3160,11 @@ named isotropic 3-spaces?".
    per-shape finite search the driver already performs on a 5-support menu;
    widening the menu and sweeping the `|V°| ≤ 6` strata is cheap, and would
    either produce a genuine class-level refutation or a much larger covered
-   sub-class. 6v11e is where to start.
+   sub-class. 6v11e is where to start. **RUN 2026-08-06 as fan-out direction M
+   (§(K-mech))**: 6v11e rescued ((MX-7)), the sweep measured
+   complete-and-sound for the three-mechanism predictor ((MX-9)), one new
+   (W4)-failing shape found-and-explained; the class-level refutation remains
+   unexhibited.
 
 ### Verification
 
@@ -3183,11 +3207,15 @@ corrected and the (S5) `(3,3)` mechanism proven **impossible** inside tight +
 `hnoRigid`. **Five flank shapes CLOSED by reduced-support (S1) witnesses** — all
 three obstructed `K5` 5-chromatic shapes, `K222`, and θ(3,4,5) — and the sixth,
 the **6v11e acyclicity flank**, closed by its chart transfer certificate (11/11)
-though the slide *device* fails there at every nonempty probed support. So every
+— *and, since 2026-08-06, by the slide device itself at a mechanism-guided
+support (§(K-mech) (MX-7))*. So every
 probed §(K-slide-comb) Step-D5 flank shape now has its split closed, per shape,
-and §(K-flank) *Step F7* item 2 is answered. **Open:** 6v11e's (W2) drop; the
-`K222` / `K4 (1,1,3,5,4,4)` `V_bc ∩ Λ²π̂ ≠ 0`
-coincidence; and whether `∃Σ` with (K-chord) + (W1)–(W4) is class-uniform.
+and §(K-flank) *Step F7* item 2 is answered. **Open** *(updated 2026-08-06)*:
+the two anomalies this verdict used to list — 6v11e's (W2) drop and the
+`K222` / `K4 (1,1,3,5,4,4)` incidence — are **mechanised in §(K-mech)**
+((MX-6), (MX-4)/(MX-5)); what remains open is whether `∃Σ` with the
+three-condition set ((K-chord) + cluster bounds ≤ 1 + no flex route) and
+(W1)–(W4) is class-uniform.
 **Option B is not required** by this direction.
 
 ## §(K-Λ) — the Λ-compression's quadric: a two-hyperplane factorization, and why (K-Λ) collapses onto (K-wit) (**(K-Λ) REFUTED as an independent gap; `ℓ ∈ {5,6}` refuted through the (T5) frame**)
@@ -8157,3 +8185,385 @@ obstruction family, refuting (GR-4) as stated. (iii) A proof of (GR-4)
 moment-curve confinement by a valuation argument) — upgrades the criterion
 to a theorem. (iv) A min-max proof of (GR-6) — closes the tight stratum,
 and with it `hK` there, over every infinite characteristic-0 field.
+
+## §(K-mech) — the mechanisms of the residual (W2)/(W4) anomalies: the load space Ω, the α-confinement calculus, and the 6v11e rescue
+
+Sibling of §(K-pure), answering its *Step P8* and *Step P9* item 5 (the
+second fan-out's direction M, `notes/Pencil-fanout.md` §"Direction M").
+Standing notation inherited from §(K-pure): the slide-limit carrier at a
+support `Σ`, witnesses (W1)–(W4), chain spans `S_P`, available bars
+`R_P = S_P^{⊥_B}`, loaded stresses and loads, `T = ⟨C_ab, C_ac⟩`,
+`π = plane(pt a, pt b, pt c)`, the two maximal totally isotropic 3-spaces
+`α(a)` and `Λ²π̂` of §(K-pure)'s (PC-Z), `α(p) = p̂ ∧ K⁴`. One new object:
+
+- **Ω := V_bc^{⊥_B}, the realizable-load space.** A covector
+  `m ↦ B(m(b) − m(c), ω)` vanishes on the limit motion space iff it lies in
+  the limit system's row space, i.e. iff `ω` is the load of a loaded stress;
+  so Ω is exactly the set of realizable loads, and it is computable as a
+  perp. (Under (W1) the realizing stress is unique.)
+
+**Verdict (2026-08-06, second fan-out direction M).**
+
+(i) **Both residual anomalies of §(K-pure) *Step P8* now have mechanisms,
+and both mechanisms live in one calculus** — forced elements of Ω produced
+by the α-confinement of slid chain spans (MX-2). The 6v11e `dim V_bc = 2`
+drop is a forced **welded flex** with two overlapping α-routes (MX-6); the
+`V_bc ∩ Λ²π̂ ≠ 0` incidence at `K222` and `K4 (1,1,3,5,4,4)` is a forced
+**pole-cluster load** through `pt(c)` (MX-4/MX-5), with §(K-pure)'s chord
+stress (PC3) as the special case `ω = C_bc`.
+
+(ii) **6v11e is RESCUED — the slide device closes it after all** (MX-7).
+The mechanism names its own off switches; omitting a **single interior**
+(the 5-side end of chain `b–5` or `c–5`) kills both flex routes, and the
+resulting nonempty-support limit systems carry full (W1)–(W4) witnesses
+(3/3 sampled seeds each, `repin.star_generic` green). §(K-pure) *Step P7*'s
+"the slide device does not reach this shape" is therefore **withdrawn**: its
+5-support menu omitted only b/c-side interiors, and every one of those
+supports keeps both routes alive — exactly as the ledger predicts. The
+gap map's 6v11e entry ("chart certificate the only closure") moves: the
+device closes the split.
+
+(iii) The full prediction table — 3 single-omission rescues, 2 two-omission
+rescues, 4 predicted-stuck controls — is verified 9/9 by `mech.py --wide`.
+A wrong ledger would have missed on at least one row.
+
+### (MX-1) — self-duality of the (PC-Z) incidence *(proven)*
+
+> For `W` a maximal totally isotropic 3-space of `(Λ²K⁴, B)` (so
+> `W^{⊥_B} = W`) and any subspace `V_bc ⊆ Λ²K⁴`,
+>
+>     dim(Ω ∩ W) = dim(V_bc ∩ W) + 3 − dim V_bc.
+
+*Proof.* `Ω ∩ W = V_bc^⊥ ∩ W^⊥ = (V_bc + W)^⊥`, so
+`dim(Ω ∩ W) = 6 − dim V_bc − 3 + dim(V_bc ∩ W)`. ∎
+
+Consequences, with (PC-Z): under (W1)–(W3) with `dim V_bc = 3`, **the escape
+fails at a decoration iff some realizable load is a line through `pt(a)` or
+a line in `π`** (`Ω` meets `α(a)` or `Λ²π̂`). The chord obstruction (PC3) is
+the case `ω = C_bc ∈ Λ²π̂`. And at `dim V_bc = 2` both incidences are
+automatic — so a (W2) failure subsumes the (W4) question. Asserted at every
+guarded seed of every driver mode.
+
+### (MX-2) — α-confinement of slid chain spans *(proven; strengthens (PC1))*
+
+> Every limit line of a chain of length `ℓ ≤ 4` passes **through one of the
+> two hub points** — not merely meets the chord — provided the same slide
+> pattern (PC1) requires for chord-obstruction, and in the following
+> refined per-line form. For `P = uw`, `[u, y₁, …, y_{ℓ−1}, w]`:
+> hub-incident lines are pencil lines (through the hub point, always);
+> a line with a slid end passes through that end's hub point; so
+>
+>     S_P ⊆ α(u) + α(w)   for  ℓ ≤ 2 (any support);  ℓ = 3 with ≥ 1 end
+>                          slid;  ℓ = 4 with both ends slid,
+>
+> and `S_P` splits into an α(u)-part and an α(w)-part of sizes
+> (by `(ℓ, slide)`-case) `(1,1), (1,2), (2,1), (2,2)` etc. — read off the
+> (S1)(b) dictionary exactly as in (PC1)'s proof.
+
+*Proof.* The same case analysis as §(K-pure) *Step P1*, keeping the stronger
+observation at each case: `(slid, slid) ↦` the chord (through both);
+`(hub, nbr) ↦` a pencil line at the hub; `(slid, fixed) ↦ p̂t(h) ∧ x̂`
+(through `pt(h)`); only `(fixed, fixed)` middle lines are unconfined, and
+they occur exactly in the complementary cases. ∎
+
+Everything below is bookkeeping on top of (MX-2); the driver measures each
+containment it uses rather than trusting the rule (and asserts the rule
+against the measurement).
+
+### (MX-3) — two-path forced loads *(proven-informally)*
+
+> For an internal hub `h` adjacent to both `b` and `c`, every element of
+> `R_bh ∩ R_hc = (S_bh + S_hc)^{⊥_B}` is a realizable load (the loaded
+> stress puts the same bar on both chains, equilibrium at `h` is
+> automatic). Its dimension is `6 − dim(S_bh + S_hc)`, and (MX-2) forces it
+> positive in enumerable patterns: for two ℓ3 chains with their h-side ends
+> slid, `S_bh + S_hc ⊆ ⟨L_b⟩ + α(h) + ⟨L_c⟩` is ≤ 5-dimensional, so a load
+> exists **at every decoration** — it lies in `α(h)` (a line through
+> `pt(h)`) and B-annihilates `L_b`, `L_c`. For `ℓ_bh = 1` (a hub-hub edge)
+> the count `dim R_bh = 5` gives a forced load against any `ℓ_hc ≤ 4`
+> chain; the bar can be taken to be the **chord `C_hc` on both edges**.
+
+At 6v11e (hubs 3, 4, 5 all joined to both `b` and `c` by ℓ3 chains) this
+already forces three independent loads `ω₃, ω₄, ω₅ ∈ Ω`, each in `α(pt h)`,
+measured 3-dimensional at every guarded seed — but three loads alone do not
+drop `dim V_bc`. The drop is the flex (MX-6).
+
+### (MX-4) — pole-cluster stresses *(proven-informally; `--inc` green)*
+
+> Fix the split end `c` (the *pole*; everything mirrors for `b`) and a hub
+> set `X ∋ c` with `b ∉ X`. Consider stresses built from: one **chord** bar
+> per chord-obstructed chain inside `X` ((PC1)); the **α-bars**
+> `α(h) ∩ R_P` on each chain from `h ∈ X` to `b` (dimension
+> `δ = 3 − #(non-α(h) lines of the chain)` by (MX-2) — at the full support
+> `δ = 3` at ℓ1, `2` at ℓ2 and ℓ3, `1` at ℓ4, `0` at ℓ5; the driver
+> computes the space directly, support-aware); zero on chains leaving `X`
+> elsewhere. Every bar at a hub `h ∈ X` passes through `pt(h)`,
+> so each internal equilibrium drops from 6 conditions to 3, and with
+> `U := #chords + Σ δ`:
+>
+>     dim(Ω ∩ α(pt c)) ≥ U − 3(|X| − 1).
+>
+> If the bound reaches **2**, then since `α(c) ∩ Λ²π̂ = pencil(pt c; π)` is
+> 2-dimensional (`pt(c) ∈ π`), two planes inside the 3-space `α(c)` must
+> meet: **`Ω ∩ Λ²π̂ ≠ 0`, and by (MX-1)+(PC-Z) the pitch vanishes at every
+> decoration.** If it reaches **3**, `Ω ⊇ α(c)` forces `Ω = α(c) = V_bc`
+> (both 3-dim, `α(c)` self-perp): the strong-containment branch where (W3)
+> fails.
+
+*Proof of the bound.* The constrained stress system has `U` unknowns and at
+most `3(|X|−1)` independent conditions (each non-pole hub's vertex sum lies
+in its own 3-dim `α(h)`); a solution's load at `c` is the sum of `c`'s bars,
+all through `pt(c)`, hence in `α(c)`; a zero-load solution would be an
+unloaded stress of the limit system, impossible under (W1); realizability is
+by construction. ∎
+
+### (MX-5) — the incidence anomalies, explained *(proven-informally; `--inc` green)*
+
+Measured (`mech.py --inc`, acceptance gated on `repin.star_generic`, 2
+guarded seeds per shape; the cluster bound is additionally *asserted* ≤ the
+measured `dim(Ω ∩ α(pole))` at every shape/seed, and every cluster load is
+asserted realizable and through the pole point):
+
+| shape | best c-cluster bound (at X) | measured `dim(Ω∩α_c)` | measured `dim(Ω∩α_b)` | verdict |
+|---|---|---|---|---|
+| `K222` | **2** (X = all internal + c) | 2 | 0 | W4 FAILS |
+| `K4 (1,1,3,5,4,4)` | **2** (X = {c, 2, 3}) | 2 | 0 | W4 FAILS |
+| `K5 (3,3,3,3,4,...)` | **3** (X = {c, 2, 3, 4}) | 3 (`V_bc = α(pt c)`) | 1 | W3 FAILS |
+| dbl-subdiv `K4` | 1 | 1 | 1 | PITCHED |
+| `K4` mixed | 1 | 1 | 1 | PITCHED |
+| `K4 (1,1,3,5,3,5)` | 1 (X = {c, 2}) | 1 | 0 | PITCHED |
+| `K4 (1,1,3,5,5,3)` | 1 (X = {c, 3}) | 1 | 0 | PITCHED |
+
+- **`K4 (1,1,3,5,4,4)`** (relabeled: `b` has ℓ1 hub-hub edges to hubs 2, 3;
+  `c` has ℓ4 chains to both; the ℓ5 edge `2–3` is never chord-obstructed):
+  `X = {c, 2, 3}` gives `U = 2 + 3 + 3 = 8`, bound `8 − 6 = 2`. The unique
+  (up to scale) incidence load passes through `pt(c)`; the realizing stress
+  is supported on the two 2-paths `b–2–c`, `b–3–c`, carrying the chords
+  `C_{2c}`, `C_{3c}` as uniform bars; the loads span the 2-plane
+  `⟨C_{2c}, C_{3c}⟩ ⊆ α(c)`, whose forced meet with `pencil(c; π)` is the
+  line `π ∩ plane(pt 2, pt 3, pt c)` — through `pt(c)`, exactly as measured.
+- **`K222`**: `X = {c, 2, 3, 4, 5}` gives `U = 8 chords + (2+2+2) α-bars on
+  the three ℓ3 b-chains = 14`, bound `14 − 12 = 2`. Incidence load through
+  `pt(c)` at every seed; stress supported on all 11 chains — chords on the
+  8 internal ones, α-bars (through the far hub point, meeting `L_b`) on the
+  three `b`-chains.
+- **`K5 (3,3,3,3,4,4,4,4,4,4)`**: bound `12 − 9 = 3` — **the mechanism of
+  the strong-containment branch** `V_bc = α(pt c)` that §(K-pure) (PC3)
+  could only observe; (W3) fails exactly as its parenthetical predicts.
+- **The two pitched menu-blocked `K4` controls** show the sharpness: their
+  ℓ5 edge replaces one ℓ4, killing one path's chord, and the bound drops to
+  1 — no incidence, pitched.
+- **The b/c asymmetry and the silent α(a) branch are structural**: the
+  b-side best bound is 0 at all three anomaly shapes (measured `dim(Ω∩α_b)`
+  0, 0, 1); and `a` is not a hub of the limit carrier, so no cluster
+  produces loads through `pt(a)` — matching `dim(Ω ∩ α(a)) = 0` ((MX-1)
+  duality asserted) at every probed class seed. The α-branch of (PC-Z)
+  never fires in this family.
+
+### (MX-6) — the 6v11e welded flex, mechanised *(proven-informally; `--flex` green)*
+
+> `dim V_bc = 3 − dim F` where `F` is the space of limit motions with
+> `m(b) = m(c) = 0` (the *welded flex*; the map `ker → V_bc` has exactly
+> the trivial twists and `F` in its kernel). Dually `dim Ω = 3 + dim F`.
+> At 6v11e (hubs `b=0, c=1, 2, 3, 4, 5`; ℓ3 on all six b/c chains and on
+> `2–3`; ℓ4 on `2–4`, `2–5`, `3–4`), `dim F ≥ 1` is forced at every
+> decoration of every support that keeps the far-side ends of the six
+> b/c chains slid and both ends of `3–4` slid, through **two overlapping
+> α-routes**:
+>
+> - **Route A (localized on hubs 2, 5).** Parameters: `φ₅ = t·ξ₅` with
+>   `ξ₅` spanning the forced 1-dim `S_{b5} ∩ S_{c5} ⊆ α(5)` ((MX-3)'s
+>   primal twin: two 2-dim α(5)-parts meet inside the 3-dim `α(5)`), and
+>   `φ₂ = s·ζ₂` with `ζ₂` spanning the 1-dim `S_{23} ∩ S_{24}`, which is
+>   forced into `α(2)` (from `S_{23}` an element is in `α(2) + ⟨L₃⟩`, from
+>   `S_{24}` in `α(2) + α(4)`-parts; generically the extra directions
+>   miss). One condition: `φ₂ − φ₅ ∈ S_{25}`, which costs **1**, not 2,
+>   because `⟨ζ₂⟩, ⟨ξ₅⟩, S_{25}` all lie in the 5-dim `α(2) + α(5)` where
+>   the 4-dim `S_{25}` has codimension 1. Count `2 − 1 = 1`.
+> - **Route B (spread over 2, 3, 4, 5).** Parameters: the three forced
+>   meets `ξ₃, ξ₄, ξ₅` plus `φ₂` free: `3 + 6 = 9`. Conditions:
+>   `3 + 2 + 2` at hub 2's chains, plus **1** — not 2 — at the edge `3–4`
+>   (its constraint lives in the 5-dim `α(3) + α(4)` ⊇ the fully-slid
+>   4-dim `S_{34}`). Count `9 − 8 = 1`.
+>
+> Both routes pass through the hub-5 meet `ξ₅`. Since the decoration
+> variety is irreducible ((S1)(e), as used in §(K-pure) *Step P0*), a
+> generic forcing extends to every decoration by upper semicontinuity of
+> kernel dimension; hence (W2) fails identically wherever a route is live —
+> which includes all four supports the 5-menu probed (their omissions are
+> all b/c-side, touching no ingredient).
+
+Measured (`mech.py --flex`, acceptance gated on `repin.star_generic`,
+2 guarded seeds × 4 supports + controls): `dim F = 1`, flex localized on
+hubs `{2, 5}` with `φ₅ ∈ S_{b5} ∩ S_{c5}`, `φ₂ ∈ S_{23} ∩ S_{24} ⊆ α(2)`,
+all containments as stated; controls (dbl-subdiv `K4`, `K4` mixed):
+`dim F = 0`. Hub 5 is the only common neighbour of `b, c` whose single
+other chain closes a route — hubs 3 and 4 have their candidate routes
+killed by the extra `3–4` edge condition, and the driver's stuck-support
+rows confirm the asymmetry.
+
+### (MX-7) — the widened support menu and the rescue *(verified 9/9)*
+
+`mech.py --wide` runs the ledger's full prediction table at 6v11e:
+
+| support (omissions from the full slide) | ledger predicts | measured (3 seeds) |
+|---|---|---|
+| 5-side end of chain `b–5` (1 interior) | A+B dead → rescue | **PITCHED (W1)–(W4) ×3**, `star_generic` green |
+| 5-side end of chain `c–5` (1 interior) | rescue | **PITCHED ×3** |
+| both of the above (2) | rescue | **PITCHED ×3** |
+| 3-side of `3–4` + both interiors of `2–3` (3) | B and A dead separately → rescue | **PITCHED ×3** |
+| 3-side of `3–4` + 2-side of `2–5` (2) | rescue | **PITCHED ×3** |
+| 3-side of `3–4` only (1) | route A survives → stuck | W2 FAILS ×3 |
+| both interiors of `2–3` (2) | route B survives → stuck | W2 FAILS ×3 |
+| 2-side of `2–4`, `2–5` (2) | route B survives → stuck | W2 FAILS ×3 |
+| 3-side of `b–3` (1) | route A survives → stuck | W2 FAILS ×3 |
+
+Since (S1) consumes exactly one full (W1)–(W4) limit witness, **the slide
+device closes the 6v11e split** at (e.g.) the single-omission support. The
+rescue rows are existence witnesses (guard-exempt by the standing rule) and
+nevertheless pass the composite guard.
+
+### (MX-8) — the σ rider (§(K-σ) *Step σ6* / the dispatch's rider probe) *(`--sigma` green)*
+
+The rider asked whether the two incidence configurations are σ-images of
+one another (`V_bc ∩ Λ²π̂ ≠ 0` being the σ-image of `V_bc ∩ α(·) ≠ 0` at
+the dual seed). Verdict: **NO — inside the probed family**, for three
+verified reasons and one structural surprise:
+
+1. **The transport itself is exact** (asserted at 2 guarded seeds × both
+   shapes): starring every limit line gives a system whose motion space is
+   `σ`-conjugate, so its `V′_bc = σ(V_bc)` (asserted as spans), and the
+   incidence transports to `σ(V_bc) ∩ α(pole π) ≠ 0` — an **α-branch**
+   incidence at `pole(plane abc)`, per §(K-σ) *Step σ1(b)*'s covariant
+   dictionary. The pole point is asserted distinct from `pt(a)`, `pt(b)`,
+   `pt(c)` and every hub point, so this α-space is one the carrier family
+   never produces.
+2. **But the starred system is not a slide-limit carrier of the dual
+   placement**: a starred chord `σ(C_uw)` is the meet line of the two dual
+   panels, not the dual seed's chord — asserted on every chain of length
+   ≥ 2 whose ends are both hubs. **Structural exception, forced and now
+   proven (the probe's assert caught it)**: on an ℓ1 (hub-hub) chain the
+   hinge lies in *both* panels, so `C_uw = Π(u) ∩ Π(w)` and its polar IS
+   the dual chord — the one bar type the polarity maps back into the
+   dual-seed carrier family.
+3. **Both measured incidences are the same c-side β-branch type** (loads
+   through `pt(c)` in `π`, (MX-5)), so `K222` and `K4 (1,1,3,5,4,4)` are
+   parallel instances of one mechanism, not a σ-dual pair; each one's
+   σ-image lives at a meet-line carrier outside the probed family.
+
+### (MX-9) — the |V°| ≤ 6 strata sweep *(measured; `--sweep` green)*
+
+One sampled class shape per candidate hub graph (23 graphs, simple,
+connected, min degree ≥ 3; length assignments drawn from
+`random.Random(20260806)` with `e₀` at ℓ3, certified by
+`kslidecomb.shape_ok`; full support; one `star_generic`-guarded chart seed
+each; two shapes skipped at the |V| ≤ 41 cost cap — the |E°| ∈ {14, 15}
+Maxwell-overbraced stratum, where §(K-pure) *Step P4*'s chord census
+already speaks). Predictor per shape: CHORD (a chord stress through `e₀`,
+(PC2)/(PC3)) ∨ CLUSTER ≥ 2 (MX-4) ∨ FLEX ≥ 1 (MX-6). Result, 21/21:
+
+- **20 shapes PITCHED, all with every mechanism silent** (chord absent,
+  cluster bounds ≤ 1, flex 0);
+- **1 new (W4) failure found in the wild** — `|V°| = 6, |E°| = 11`, lens
+  `(3,4,3,4,4,1,4,3,3,4,3)` — with cluster bound **2** and no chord, no
+  flex: a fresh instance of the (MX-4)/(MX-5) mechanism, predicted by the
+  calculus that was built from `K222`/`K4`, on a shape it had never seen;
+- **0 unexplained failures, 0 mechanism-fired-yet-pitched rows** (the
+  latter asserted — a violation would abort the driver).
+
+So on the sampled strata the three-mechanism predictor is *measured
+complete and sound* at the full support. This is a measurement, not a
+theorem: sufficiency of "all three silent" for (W1)–(W4) remains open
+(and is exactly the shape of the honest next question §(K-pure) *Step P9*
+item 5 asked).
+
+### What this buys (K-chord) and the class program
+
+The dispatch named the target shape: *"a structural characterization of when
+the incidence happens ... feeds (K-chord)"*. The calculus delivers exactly
+that, in load form:
+
+- **Exact reformulation ((MX-1) + (PC-Z)):** under (W1)–(W3), the escape
+  fails at a decoration **iff** some realizable load lies in
+  `Λ²π̂ ∪ α(a)`; and (W2) fails iff `dim Ω ≥ 4`.
+- **The forced part of Ω is combinatorially computable per (shape, Σ):**
+  chord stresses (§(K-pure) (PC2)/(PC3), governed by `R_3`), two-path loads
+  (MX-3), pole-cluster loads (MX-4), and welded-flex routes (MX-6). So the
+  slide device at support `Σ` now carries **three named necessary
+  conditions**, all decoration-free:
+  1. `e₀ ∉ cl_{R_3}(E_chord(Σ))` — (K-chord), unchanged;
+  2. both pole-cluster bounds ≤ 1 — else (MX-5) kills (W4) or (W3);
+  3. no forced flex route — else (MX-6) kills (W2).
+  Whether these three are jointly *sufficient* on the |V°| ≤ 6 strata is
+  what `--sweep` measures (a measured completeness, not a theorem).
+- **6v11e closes**, so §(K-pure) *Step P9* item 5's "6v11e first" is
+  discharged with a *rescue*, not a refutation: no class shape is currently
+  known where the device fails at every support — the class-level
+  refutation possibility named in the (K-chord) row's "what would close it"
+  cell remains unexhibited, and the covered sub-class grows by 6v11e.
+- The pole-cluster bound also gives the arc's first mechanism for the
+  **strong-containment branch** of §(K-pure) (PC3) (`V_bc = α(pt c)` at the
+  all-{3,4} `K5`), and explains the b/c- and α/β-branch asymmetries as
+  structural, not accidental.
+
+### Verification
+
+`notes/scripts/w4/mech.py` (untracked in this dispatch; imports `pure` /
+`kslide` / `repin` / `kslidecomb` / `widened` and — via `importlib` —
+`lambda.span_meet`; exact ℚ; `RNG_SEED = 20260806` is the file's only
+randomness literal, used by `--sweep`'s length sampler; every limit system
+is built by `pure.limit_data` from an honest `repin.seed_probe` chart seed;
+every sampled object carries a rank/dimension assert; batteries quoted as
+rates gate acceptance on the composite guard `repin.star_generic`, and the
+(W1)–(W4) rescue rows are existence witnesses reported with their guard
+status). Reproduce, from the repo root:
+
+| invocation | ~time | what it asserts |
+|---|---|---|
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/mech.py --flex` | ~4 min | (MX-6) at 6v11e: dim V_bc = 2, dim F = 1, the flex's hub support, every ledger containment (the three 1-dim α-meets, `S_34 ⊆ α(3)+α(4)`, `S_25 ⊆ α(2)+α(5)`, `φ₂ ∈ S_23∩S_24 ⊆ α(2)`), at all four probed supports × 2 guarded seeds; controls dim F = 0; (MX-1) asserted per seed |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/mech.py --wide` | ~5 min | (MX-7): the 9-row prediction table — 5 rescue rows each with a full (W1)–(W4) witness (asserted present), 4 stuck controls (asserted `W2 FAILS` at every seed) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/mech.py --inc` | ~4 min | (MX-3)/(MX-4)/(MX-5): the cluster bound vs measured `dim(Ω∩α(pole))` at 3 anomaly shapes + 4 controls (per-X assert that the bound never exceeds the measured value; per-load asserts realizable + through the pole); the forced incidence and its `pencil(c;π)` meet; (MX-1) at every seed |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/mech.py --sigma` | ~3 min | (MX-8): `V′_bc = σ(V_bc)` as spans; the branch swap to `α(pole π)`; pole ≠ any carrier point; the ℓ1 (forced equality) vs ℓ≥2 (forced difference) starred-chord dichotomy |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/mech.py --sweep` | ~10 min | the |V°| ≤ 6 strata predictor pass (one guarded seed per sampled class shape; asserts no mechanism-fired-yet-pitched row) |
+
+### Confidence verdict
+
+- **(MX-1), (MX-2): proven** (two-line linear algebra; the (S1)(b) case
+  analysis, the same casework as §(K-pure) (PC1) with a stronger per-line
+  conclusion).
+- **(MX-3), (MX-4), (MX-6): proven-informally**, each ingredient asserted
+  by a driver mode at every guarded seed; the genericity step in (MX-6)
+  rests on the decoration variety's irreducibility ((S1)(e)) exactly as
+  §(K-pure) *Step P0* already uses it.
+- **(MX-5): proven-informally** (`--inc` green: bounds 2, 2, 3 met with
+  equality at the three anomaly shapes, ≤ 1 at all four controls; every
+  cluster load asserted realizable and through the pole).
+- **(MX-7), the 6v11e rescue: proven-informally** — exact (W1)–(W4)
+  witnesses at five distinct reduced supports, 3/3 sampled seeds each; the
+  claim consumed is (S1)'s one-witness transfer, unchanged; the 9-row
+  prediction table (5 rescues, 4 stuck controls) verified with per-row
+  asserts.
+- **(MX-8): the σ-rider verdict is settled as NO within the probed
+  family**, with the transport identity, the pole-point disjointness, and
+  the ℓ1/ℓ≥2 starred-chord dichotomy asserted (the ℓ1 equality being a
+  small proven fact: a hub-hub hinge is its panels' meet line, so σ maps
+  it to the dual chord).
+- **(MX-9): measured** (a 21-shape sampled census, not a theorem).
+- **Class uniformity: untouched.** These are mechanisms and per-shape
+  closures; no uniform gap moves. What changes is the *shape* of the
+  residue: §(K-pure) *Step P8*'s "two measured anomalies with no
+  mechanism" is now empty, and the slide device's failure modes on the
+  probed strata are exactly three named, decoration-free conditions.
+
+**What would change this.** *(For (MX-6))* a decoration where the asserted
+containments fail — they are open conditions verified per guarded seed; a
+failure would break the driver's asserts, not the semicontinuity step.
+*(For (MX-4))* an unloaded stress at a (W1) seed — excluded by (W1)
+itself. *(For the rescue)* the witnesses are exact; only an error in
+`pure.limit_data`'s construction (shared with the whole §(K-pure) arc)
+could void them. *(For (MX-5))* a control with cluster bound ≥ 2 or an
+incidence shape with every bound ≤ 1 — none exists in the probed pool.
+*(For (MX-9))* it is one guarded seed per shape and one sampled length
+assignment per hub graph at the full support only; a wider census could
+surface a fourth mechanism — that, not a refutation of (MX-1)–(MX-6),
+is the live risk, and finding one would be a finding, not a defect.
