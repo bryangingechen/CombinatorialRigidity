@@ -624,3 +624,56 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
   §(K-clos). **(AC-6) is REFUTED as a class statement** (`C11`, a bare odd cycle
   in `hK`'s habitat) **and open only on the tight stratum** — do not read the
   15/15 as a class result.
+
+- `annih.py [--stress | --rate | --supp | --recipe | --census | --validate]` —
+  **the annihilator as a self-stress of the contracted framework.** Exact ℚ,
+  stdlib only, no CAS; a `w4/` leaf beside `dominance`/`outer`/`sigma`/`closure`,
+  and the one that reimplements nothing — every primitive is imported (see
+  `notes/scripts/README.md`'s layering map for the full list), with the
+  `star_span_ranks` genericity guard riding in through `dominance.base_seed` and
+  all rng seeded through `repin.seed_probe`. Run with `PYTHONHASHSEED=0` (all six
+  modes verified byte-identical under two different hash seeds).
+  - `--stress` (~30 s): **(ANH-1)** — the screw-circulation space of `H` supported
+    inside the companion, compared **as a subspace** with the motion-side
+    annihilator `nullspace(π_P Z)` at 18 seeds over 9 habitats, `k = 3..6`. Also
+    asserts `dim = k−3`, `dof(H/P) = def(H/P) = 0` (rigidity at the pencil
+    placement *and* combinatorially), the count `5|E(H/P)| − 6(|V|−1) = k−3`, and
+    that `H` itself carries no self-stress.
+  - `--rate` (~20 s): **(ANH-2)** the reciprocity identity
+    `dλ(π_P ω) = Σ_e ω_e B(τ_e, δC_e)`, checked direction by direction and `ω` by
+    `ω` against an **independent** implicit differentiation of `ker N` — 276
+    far-chart directions × 828 motions; the locality of `dC`; **(ANH-3)** the
+    collapsed one-Klein-pairing form at 192 single-vertex moves (zero-pitch `ρ_y`
+    at **0/192**, which is why the section says *one pairing*, not *one bracket*);
+    and **(ANH-5)** as a **subspace identity**, not a coincidence of booleans.
+  - `--supp` (~81 s): **(ANH-4)**'s realized side. `C_pen ⊆ C_gen` with `C_gen`
+    from `count_matroid_rank` on `5(H/P)` and `C_pen` computed **twice** (full
+    solve, and a stress space rebuilt on the reduced edge list); 16 seeds, equality
+    at all, and `|C_pen| = |E(H/P)|` at **14/14 class seeds** — the support is the
+    whole far edge set, so the named move needs no support-location step. Also
+    prints the far block of `rank dλ` (3 / 6 / 9 at `k = 4/5/6`), reproducing
+    §(K-dom) *(D2)* through the annihilator. The **off-class control**
+    `θ4(3,4,5,6)` (tight, `def = 0`, `hcard`, triangle-free, but `hnoRigid`
+    **false**, asserted at load) is what makes the off-support tests non-vacuous:
+    its circuit is a proper 5-cycle, and `dV = 0` at all 13 single-vertex moves off
+    it.
+  - `--recipe` (~37 s): **(ANH-7)** at 56 (length-5 branch, free middle body)
+    sites over 2 named exemplars, 6 swept `K4` shapes nobody hand-picked, and the
+    control — `κ_β` 1-dimensional, `τ_β ∝ κ_β`, the equivalence
+    `κ_β ∝ C(w₁w₃) ⟺ [w₁,w₃,w₄,w₅] = 0`, and the general `(V_y ∧ U_y)^{⊥B}`
+    criterion alongside the closed form. 56/56 correct, 32 sites at `dim U_y = 2`
+    and 24 at `dim U_y = 1`.
+  - `--census` (~23 s): 4296 (shape, split, length-4 companion) triples —
+    `girth(H/P) ≥ 6` unless `|E(H/P)| = 5` (8 cases, all θ(3,4,5)); the circuit
+    certificate at 400 of them (budgeted); the branch-length histogram capped at
+    **5**, which is the *Shared dictionary*'s **(SD-6)**; and the same generators
+    re-run past length 6 (θ families to 12, `K4`/`K4+par` to 7) as an (SD-6) stress
+    test. Coverage of the closed form: **3820/4296 = 89 %**.
+  - `--validate` (~8 s): the machinery — the Hodge dictionary
+    `⟨★τ, C⟩ = B(τ, C)`, `λ` annihilating `π_P(Z)`, `λ ∈ row(N)`, transmissibility
+    off `P`, and `V_bc` reconstructed from `Z` in the `C`-basis, at 4 habitats.
+
+  Argument state, the F11 claim→mode table and the confidence verdict:
+  `notes/Pencil-informal.md` §(K-ann). **The recipe's kernel is class-uniform;
+  its two inputs are not** — quote (ANH-7) only with **(ANH-R1)** (`τ_β ≠ 0` at
+  the pencil placement, **open**, relocation #4) attached.

@@ -100,23 +100,34 @@ anything above. Each prefix was verified **0-hit** across `*.md`, `*.tex`,
 
 | dispatch | scope | **reserved label prefix** | **reserved section name** |
 |---|---|---|---|
-| **A** | U1 + U2 + (K)-option-B fused — the annihilator target, the cycle-space / cocircuit ground set, the stress-function reading | **`ANH-`** (*AN*nihilator + *H*inge-rate) → `(ANH-1)`, `(ANH-2)`, … | **`§(K-ann)`** |
 | **B** | the (viii) measurement plus (OUT)'s combinatorial half | **`OC-`** (*O*uter *C*riterion) → `(OC-1)`, `(OC-2)`, … | **`§(K-out)`** |
 
-**Direction C has LANDED** (2026-08-06) and its reservation is retired: `AC-` and
-`§(K-clos)` are now live entries of the registry below, not reservations. A
-reservation is released by moving its row into the registry in the landing
-commit — never by deleting it.
+**Directions C and A have LANDED** (2026-08-06) and their reservations are
+retired: `AC-`/`§(K-clos)` and `ANH-`/`§(K-ann)` are now live entries of the
+registry below, not reservations. A reservation is released by moving its row
+into the registry in the landing commit — never by deleting it. **Direction B is
+still in flight**, so `OC-`/`§(K-out)` stay reserved.
 
-Binding on each of the three: **use your prefix for every label you mint**, including
+One thing direction A's landing exercised, worth recording because it is the
+first time a *reserved* dispatch hit clause L1 from the inside: the draft minted
+bare `(R1)`/`(R2)` for its two residual inputs — a **three-way** collision (the
+*Shared dictionary*, the opening recon questions, and `Pencil-strategy.md`
+§4.6's six refutations), which the reserved prefix does not by itself prevent
+because the draft reached for a bare letter. They landed as **(ANH-R1)** /
+**(ANH-R2)**, the "append a letter" form sanctioned below, and the promoted
+*Shared dictionary* fact landed as **(SD-6)** rather than `(R6)` for the same
+reason. **A reserved prefix protects a dispatch from its siblings, not from the
+existing corpus; clause L1 still binds inside a reservation.**
+
+Binding on a reserved dispatch: **use your prefix for every label you mint**, including
 sub-claims and driver blocks; cite everything you did not mint in the qualified
 form (L3); and if you open a section, use the reserved name so the coordinator
 can land three returns serially without a rename. A dispatch that needs a
 second prefix (e.g. a driver-block family distinct from its claims) appends a
 letter — `ANH-M1`, `ANH-M2` — rather than reaching for a bare letter.
 
-Existing gap names, statuses and section verdicts are **not** in these
-dispatches' namespace: moving a status is a coordinator action, per the fan-out
+Existing gap names, statuses and section verdicts are **not** in a reserved
+dispatch's namespace: moving a status is a coordinator action, per the fan-out
 landing checklist.
 
 ## Registry — `notes/Pencil-informal.md` (the (K) workbook)
@@ -126,7 +137,7 @@ Status keywords are pointers to the owning section's verdict block and the
 
 | owning section | tag | labels in use | what the family is | status (see owner) |
 |---|---|---|---|---|
-| *Shared dictionary* | `SD-` | (R1)–(R5) | elementary rigid-graph facts used by **both** workbooks: min degree, size bound, short cycles, `hcard` restated, feasible triangles pendant | settled |
+| *Shared dictionary* | `SD-` | (R1)–(R5) *(grandfathered)*; **(SD-6)** | elementary rigid-graph facts used by **both** workbooks: min degree, size bound, short cycles, `hcard` restated, feasible triangles pendant, **branch length `≤ 5`** (= §(K-ann)'s (ANH-8), promoted here 2026-08-06; `SD-` because `(R6)` is taken by `Pencil-strategy.md` §4.6) | settled |
 | §(K-tight) | `KT-` | (K-move) *(named here)*; Steps 0–5 | the carrier escape criterion, KT pp. 684–691 re-pin | criterion proven-informally; (K-tight) open |
 | §(K-pitch) | `PT-` | (T1)–(T5); (K-wit), (K-pitch-∞) *(named here)*; Steps 0–6 | motion-side transfer, sign law, placement quartic, Λ-compression | (T1)–(T5) proven-informally; uniform form open |
 | §(K-slide) | `SL-` | (S1)–(S5); **(W1)–(W4)**; (K-slide-cl) *(named here)*; Steps 1–5 | the slide-in transfer theorem; **(W1)–(W4) are the four conditions of the `ε = 0` limit line system** | (S1) proven-informally |
@@ -138,15 +149,18 @@ Status keywords are pointers to the owning section's verdict block and the
 | §(K-dom) | `DM-` | **(D1)**–(D4); Steps D0–D7 | the dominance spike, differential of `H ↦ V_bc` | (D1)–(D3) proven; C1 refuted as a route |
 | §(K-σ) | `σ` ✓ | (σ1)–(σ7); Steps σ0–σ6, σ4b; hunt pools H4/H5 | the polarity as a symmetry of the split; **route σ** | (σ7) proven; route σ a CANDIDATE (its field scope settled by §(K-clos)) |
 | §(K-clos) | `AC-` ✓ | (AC-1)–(AC-8); Steps Z0–Z8; driver blocks AC-C0/AC-E/AC-S/AC-U/AC-X/AC-Q/AC-R2/AC-F/AC-2c/AC-P (`closure.py`) | the over-`ℂ̄` question: the polarity's field scope, the σ-fixed grid locus, the `⋆`-eigen decoupling, the route-σ collapse, the char-0 descent | (AC-6) **refuted** as a class statement, open on the tight stratum; the rest proven-informally |
+| §(K-ann) | `ANH-` ✓ | (ANH-1)–(ANH-8); the two residual inputs **(ANH-R1)**, **(ANH-R2)**; Steps A1–A9; driver modes `--stress`/`--rate`/`--supp`/`--recipe`/`--census`/`--validate` (`annih.py`) | the annihilator as a self-stress of the contracted framework `H/P`: the reciprocity identity, the named move, the `k = 4` Tay circuit, the one-bracket recipe. **(ANH-8) is promoted to the *Shared dictionary* as (SD-6)** — that is the only copy | (ANH-1)–(ANH-6), (ANH-8) proven / proven-informally; (ANH-7) true-modulo-named-gap; **(ANH-R1) open** |
 | §(K-ind) | `IN-` | (I0)–(I4); Steps I0–I6 | numerical invariant along the generating moves | refuted as a route; (I3) a positive by-product |
 | §(K-Δ) | `DL-` | **(M1)**, **(M2)**, **(M3)**; (N1), (N2) | the Δ-matroid literature hunt: (M1)–(M3) are the **three hypothesis tests**, (N1)/(N2) the two readings bought | NO HIT; discharged |
 | §(K-bare-ext) | `BE-` | (K-bare-ext) | the (K-bare) stub | open, nothing being developed |
 
 Gap names used arc-wide and owned by the *State of (K)* map: **(K-tight)**,
 (K-move), (K-pitch), (K-pitch-∞), (K-wit), (K-Λ), (K-slide), (K-slide-cl),
-(K-slide-comb), (K-chord), (K-flank), (K-dom), (K-σ), (K-ind), (K-Δ),
-(K-bare)/(K-bare-ext), and **(K-res)** (owned by the W4 workbook, below). These
-are already tagged and collision-free; keep the `K-` form for any new gap.
+(K-slide-comb), (K-chord), (K-flank), (K-dom), (K-σ), **(K-clos)**, **(K-ann)**,
+(K-ind), (K-Δ), (K-bare)/(K-bare-ext), and **(K-res)** (owned by the W4
+workbook, below). These are already tagged and collision-free; keep the `K-`
+form for any new gap. ((K-clos) was landed 2026-08-06 with its registry row but
+was missed from this sentence; added here with (K-ann).)
 
 ## Registry — `notes/Pencil-W4-informal.md` (the W4 residual workbook)
 
@@ -179,7 +193,7 @@ token a reader will meet bare in the existing corpus.
 | **(D1)–(D4)** | §(K-dom) claims | §(K-dom) *Steps* D0–D7 | §(K-slide-comb) *Steps* D0–D5 |
 | **(M1)–(M4)** | §(K-Λ) `lambda1.m2` driver blocks | §(K-Δ) the three hypothesis tests | — |
 | **(P1)–(P7)** | §(K-Λ) `lambda0.m2` driver blocks | §(K-pure) *Steps* P0–P9 | — |
-| **(R1)–(R5)** | *Shared dictionary* rigid-graph facts | R1/R2/R3 the opening recon questions | — |
+| **(R1)–(R6)** | *Shared dictionary* rigid-graph facts (R1)–(R5) | R1/R2/R3 the opening recon questions | `Pencil-strategy.md` §4.6's six refutations (R1)–(R6) — **and (ANH-R1)/(ANH-R2)**, §(K-ann)'s two residual inputs, which are *prefixed precisely to stay out of this row* |
 | **(T)** | §(K-pitch) (T1)–(T5) transfer claims | W4 §(SAFE-RES) (T) — triangle-freeness | — |
 | **(W1)–(W4)** | §(K-slide) limit-system conditions | the phase's **work packages** W0–W5 (**W4 = `hcontract`**) | — |
 | **(N1), (N2)** | §(K-Δ) the two readings | N8/N9/N10/N10b the W4 gates | — |

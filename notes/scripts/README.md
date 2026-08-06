@@ -264,7 +264,7 @@ before touching any of them.** `rvec3` likewise.
                   w4/ DRIVER STACK (deepest last)
    nogood_subdiv -> saferes -> widened -> repin -> pitch -> kslide -> kslidecl
         -> kslidecomb -> {flanks, pure, lambda}  -> dominance, outer, sigma,
-                              (siblings; none imports another)     closure
+                              (siblings; none imports another)     closure, annih
 
 
    m2/  SYMBOLIC LAYER (Macaulay2; no import edge to any of the above)
@@ -319,6 +319,19 @@ Three layers, plus one **language island**:
   `ℚ(i)`, private to it and deliberately *not* pushed down to `exactcore`
   (nothing else needs isotropic vectors, and moving it would re-baseline the
   whole chain).
+  **`annih`** (§(K-ann) — the annihilator as a self-stress of the contracted
+  framework `H/P`: the reciprocity identity for `dλ`, the named single-vertex
+  move, the `k = 4` Tay circuit, the one-bracket recipe) is the **fifth** such
+  leaf, and the one that reuses the most: `dominance`'s `cycle_data` /
+  `build_chart` / `dV_rank` / `solve_multi` / `dC_along` / `base_seed` /
+  `simple_paths` / `h_edges`, `outer`'s `split_data` / `companions4` /
+  `named_inventory` / `sweep_shapes`, `repin`'s `hodge_star` / `span_basis` /
+  `in_span`, `pitch`'s `klein` / `Q` / `theta_edges` / `paths_graph`,
+  `nogood_subdiv`'s `deficiency` / `hcard_ok` / `triangles` /
+  `count_matroid_rank`, `kslide.no_rigid_branch_union`, `kbare_common.verts_of`
+  and — through `importlib`, `lambda` being a keyword — `lambda.HABITATS4`. It
+  reimplements nothing: the `star_span_ranks` genericity guard rides in through
+  `dominance.base_seed`.
   **`star_span_ranks` now has FOUR consumers, past the signal rule 2 names: the
   next commit that already owes a full `repin` re-baseline should move it down**
   (with a re-export from `flanks` so the recorded figures do not move); on its
@@ -485,6 +498,12 @@ arcs too.
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/closure.py --collapse` | 1 s | ibid. *Step Z5* ((AC-5): at a σ-fixed seed route σ's criterion and route A's coincide **as subspaces**, 32/32) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/closure.py --char2` | 1 s | ibid. *Step Z8* ((AC-8) the double plane and the non-splitting) + the char-`p` **proxy** table for (AC-7) consequence 3 |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/closure.py --validate` | 43 s | ibid. (all eight legs; byte-identical under two `PYTHONHASHSEED` values) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/annih.py --stress` | 30 s | workbook §(K-ann) *Step A1* ((ANH-1): the annihilator is the self-stress space of the contracted `H/P`; `dim = k−3`; `H/P` rigid at the placement and combinatorially; 18 seeds over 9 habitats, `k = 3..6`) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/annih.py --rate` | 20 s | ibid. *Steps A2/A3/A5* ((ANH-2) the reciprocity identity at 276 far-chart directions × 828 motions, against an independent implicit differentiation; (ANH-3) the one-pairing form at 192 single-vertex moves; (ANH-5) **as a subspace identity**) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/annih.py --supp` | 81 s | ibid. *Step A4*, realized side ((ANH-4): `C_pen ⊆ C_gen` at 16 seeds with equality at all, full support at 14/14 class seeds; the far block of `rank dλ` reproducing (D2)'s `3(k−3)`; the off-class control's proper 5-cycle) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/annih.py --recipe` | 37 s | ibid. *Step A7* ((ANH-7): `κ_β` 1-dimensional, `τ_β ∝ κ_β`, the one-bracket criterion correct at **56/56** sites; `dim U_y` reported 32 / 24) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/annih.py --census` | 23 s | ibid. *Steps A4/A6/A9* ((ANH-4)'s two corollaries, the *Shared dictionary*'s **(SD-6)** and its past-length-6 stress test, and the 4296-triple coverage 3820/4296 = 89 %) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/annih.py --validate` | 8 s | ibid. (the machinery: the Hodge dictionary, `λ ⊥ π_P(Z)`, `λ ∈ row(N)`, transmissibility off `P`, `V_bc` reconstructed — 4 habitats). **All six modes byte-identical under two `PYTHONHASHSEED` values** |
 
 ### `m2/` — the Macaulay2 symbolic layer
 
