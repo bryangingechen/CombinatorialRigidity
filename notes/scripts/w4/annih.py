@@ -64,8 +64,17 @@ criterion is the single remaining 4-point bracket `[w1, w3, w4, w5]`.
 
 Drivers (foreground, one at a time; exact rational arithmetic, no floating
 point anywhere; every sampled configuration carries rank/dimension asserts,
-including `dominance.base_seed`'s `star_span_ranks` genericity guard against
-the `plane_basis` artifact -- `notes/scripts/README.md` *Divergences*):
+including `dominance.base_seed`'s composite genericity guard
+`repin.star_generic` against the `plane_basis` artifact --
+`notes/scripts/README.md` *Divergences*.  That guard gained its
+coincident-hinge clause on 2026-08-06 (slice S2; *Harness debt* item 4), so
+some seeds here moved to the next clean one.  §(K-ann)'s claims are
+identities, ranks and pointwise attainments -- conservative under the defect
+per F13's classification -- and the owed re-read confirmed EVERY verdict
+unchanged.  One figure improved rather than merely moving: `--supp`'s far
+block of `rank dlambda` now attains (D2)'s bound `3(k-3)` at every seed
+including `k = 6`, where the contaminated seeds used to report 5 and 7 out
+of 9):
 
     python3 notes/scripts/w4/annih.py --stress    # (ANH-1)
     python3 notes/scripts/w4/annih.py --rate      # (ANH-2), (ANH-3), (ANH-5)

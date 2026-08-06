@@ -64,8 +64,10 @@ freezing: `B|_{V_bc}` is then the Gram of a 3-chain of lines, of rank 2, so
 
 Drivers (foreground, one at a time; exact rational arithmetic, no floating
 point anywhere; every sampled configuration carries rank/dimension asserts,
-including the `star_span_ranks` genericity guard against the `plane_basis`
-artifact -- `notes/scripts/README.md` *Divergences*):
+including the composite genericity guard `repin.star_generic` against the
+`plane_basis` artifact -- `notes/scripts/README.md` *Divergences*.  Until
+2026-08-06 this line named `star_span_ranks`, which is only HALF that guard:
+see `base_seed` below and *Harness debt* item 4):
 
     python3 notes/scripts/w4/dominance.py --cap        # the structural cap
     python3 notes/scripts/w4/dominance.py --jac        # the Jacobian ranks
@@ -87,10 +89,12 @@ from nogood_subdiv import (deficiency, branch_decomposition, hcard_ok,
 from kslide import no_rigid_branch_union
 from pencil_escape import double_subdivide, K4, K5_minus_matching
 from kbare_common import verts_of
-# `star_span_ranks` is the README section-1 canonical genericity guard; it
-# lives in the sibling leaf `flanks`.  See README section 2's note: a third
-# consumer is the signal to move it down to `repin`.
-from flanks import star_span_ranks
+# The configuration genericity guards moved down to `repin` in slice S1
+# (2026-08-06) once `star_span_ranks` had six consumers, past README section
+# 2 rule 2's trigger; slice S2 repoints this importer off the `flanks`
+# re-export and onto the composite `star_generic`, which is what `base_seed`
+# now enforces.
+from repin import star_generic, star_span_ranks   # noqa: F401
 
 
 # ---------------- graph helpers --------------------------------------------
@@ -552,9 +556,17 @@ def base_seed(edges, v, seed):
         return None
     Gp = [e for e in edges if v not in e] + [(a, b)]
     # GENERICITY GUARD (the `plane_basis` artifact): every closed star must
-    # span its panel.  A seed failing this is rejected, not measured.
-    ssr = star_span_ranks(Gp, placed)
-    if any(r != 3 for r in ssr.values()):
+    # span its panel AND no two hinge lines at a body may coincide.  A seed
+    # failing either is rejected, not measured.
+    #
+    # THE SECOND CLAUSE ARRIVED 2026-08-06 (slice S2).  Until then this guard
+    # was `star_span_ranks` alone and the "rejected, not measured" promise was
+    # FALSE for the free-rotor half of the artifact -- the closed star can
+    # still span its panel through a third neighbour while two of the hub's
+    # bodies share one hinge line, and that configuration was measured, not
+    # rejected, at every consumer quoting this docstring (F13; (OC-7) in
+    # workbook §(K-out); *Harness debt* item 4).
+    if not star_generic(Gp, placed):
         return None
     Hed = h_edges(edges, v, a)
     VH = sorted(verts_of(Hed), key=str)

@@ -42,15 +42,26 @@ places a single-panel interior with `localtest.in_plane_point`, whose
 third coordinate is 0 (`notes/scripts/README.md` *Divergences*; the defect
 behind the corrected `widened.py` escape figures).  At these shapes that
 happens often -- a hub normal is drawn from `rquat`, so a zero coordinate has
-probability 1/19 per coordinate -- and it makes ALL of a hub's neighbours
-collinear with the hub point, which COSTS EXACTLY ONE RANK PER AFFECTED HUB.
-Read naively, such a seed looks like a disproof of the conjecture.  The guard
-here rejects it structurally: at a generic pencil configuration every body's
-closed star spans its panel, i.e. the hats of `{v} u N(v)` have rank 3 at
-EVERY vertex, hub or not (rank 3 is the maximum: at a hub all these points lie
-in the 3-dimensional panel; at a degree-2 body there are only three of them,
-and rank 3 there IS `IsNondegPencilRealization`'s fourth conjunct).  `--degen`
-tests that this guard detects exactly the artifact.
+probability 1/19 per coordinate -- and it makes ALL of a hub's SINGLE-HUB
+neighbours collinear with the hub point.  When that exhausts the hub's star it
+COSTS EXACTLY ONE RANK, and read naively such a seed looks like a disproof of
+the conjecture; the closed-star rank test rejects those structurally, since at
+a generic pencil configuration the hats of `{v} u N(v)` have rank 3 at EVERY
+vertex, hub or not (rank 3 is the maximum: at a hub all these points lie in
+the 3-dimensional panel; at a degree-2 body there are only three of them, and
+rank 3 there IS `IsNondegPencilRealization`'s fourth conjunct).
+
+THE CLOSED-STAR RANK TEST IS NOT THE WHOLE GUARD, and this docstring claimed
+it was until 2026-08-06 (*Harness debt* item 4; measured as (OC-7) in workbook
+§(K-out)).  When the sampler degenerates at a hub that ALSO has a neighbour
+placed by a different branch, that third neighbour still spans the panel: the
+star rank stays 3, no rank is lost, and nothing here noticed -- yet two of the
+hub's bodies now share ONE hinge line and the hub is a free rotor about it.
+No `IsNondegPencilRealization` conjunct excludes that either.  The composite
+guard is `repin.star_generic` (closed-star ranks AND no two hinge lines at a
+body coinciding), adopted at this module's acceptance site
+`clean_pencil_seed` by slice S2 of the re-baselining round; `--degen`
+measures both halves side by side and shows they are DIFFERENT tests.
 
 Drivers (foreground, one at a time; exact rational arithmetic, no floating
 point anywhere; every sampled configuration carries the rank/dimension asserts
@@ -76,7 +87,10 @@ Which driver tests which sentence (the F11 requirement):
    consumer carries (def 0, hnoRigid, hcard, triangle-free, 2-edge-connected)"
                                                           -> `--conj` (asserts)
   "the only rank deficits seen at these shapes are placement-sampler
-   artifacts, and the guard detects exactly them"         -> `--degen`
+   artifacts, and the CLOSED-STAR RANK test detects exactly the
+   rank-deficient ones -- while the sampler degenerates at strictly more
+   samples than that, which is why the acceptance guard is the composite"
+                                                          -> `--degen`
   "attainment is not an artifact of the ONE exhibited length assignment:
    it holds at EVERY class shape of the flank strata"     -> `--strata`
   "at both `e0`-end splits of each shape, `hK`'s antecedent is witnessed and
@@ -204,8 +218,10 @@ def named_shapes():
 # recorded reproduce command keep working unchanged.  Read its docstring there
 # before trusting it: it is NOT the sufficient genericity guard the module
 # docstring above once called it (*Harness debt* item 4 / (OC-7)); the
-# composite is `repin.star_generic`.
-from repin import star_span_ranks   # noqa: E402,F401
+# composite is `repin.star_generic`, ADOPTED at this module's acceptance site
+# `clean_pencil_seed` by slice S2 (2026-08-06).
+from repin import (coincident_hinges, star_generic,   # noqa: E402,F401
+                   star_span_ranks)
 
 
 def nondeg_conjuncts(edges, placed):
@@ -249,10 +265,20 @@ def target_of(edges):
 
 def clean_pencil_seed(edges, seeds):
     """The first seed of `seeds` whose `place_pencil_general` sample is a
-    GENERIC nondegenerate pencil configuration (all four conjuncts + every
-    star of full rank 3).  Returns `(seed, placed, ctx, stats)`; `stats`
-    counts the rejected samples by cause."""
-    stats = {'none': 0, 'degenerate': 0, 'illegal': 0, 'tried': 0}
+    GENERIC nondegenerate pencil configuration.  Returns
+    `(seed, placed, ctx, stats)`; `stats` counts the rejected samples by
+    cause.
+
+    THIS IS THE MODULE'S ACCEPTANCE SITE, and since slice S2 (2026-08-06) the
+    acceptance test is the COMPOSITE guard `repin.star_generic`: all four
+    `IsNondegPencilRealization` conjuncts, every closed star of full rank 3,
+    AND no two hinge lines at a body coinciding.  The third clause is the one
+    the round adds -- it is the free-rotor degeneration (OC-7) found the old
+    guard blind to, and it is excluded by no conjunct, so it has to be tested
+    HERE rather than inside `nondeg_conjuncts`, which states exactly the Lean
+    predicate and must keep stating exactly it."""
+    stats = {'none': 0, 'degenerate': 0, 'coincident': 0, 'illegal': 0,
+             'tried': 0}
     for s in seeds:
         out = place_pencil_general(edges, random.Random(s))
         if out is None:
@@ -262,6 +288,9 @@ def clean_pencil_seed(edges, seeds):
         ok, why = nondeg_conjuncts(edges, out[0])
         if not ok:
             stats['degenerate' if 'star rank' in why[0] else 'illegal'] += 1
+            continue
+        if coincident_hinges(edges, out[0]):
+            stats['coincident'] += 1
             continue
         return s, out[0], out, stats
     return None, None, None, stats
@@ -310,6 +339,7 @@ def certify_shape(label, specs, note, seeds=range(1, 60), exact=True,
     assert ok, (label, why)
     if verbose:
         print(f"    seed {seed} (rejected: {stats['degenerate']} degenerate, "
+              f"{stats['coincident']} coincident-hinge, "
               f"{stats['illegal']} illegal, {stats['none']} unplaceable)")
         print(f"    all four IsNondegPencilRealization conjuncts: OK")
         print(f"    rank: modp {rp}   exact-Q {rq}   rows {nr}   TARGET {tgt}"
@@ -348,14 +378,20 @@ def driver_conj():
 
 def driver_degen():
     print("== the placement-sampler control at the 5-chromatic flank ==")
-    print("   claim under test: every rank deficit observed at this shape is")
-    print("   an artifact of `localtest.plane_basis`, and the star-rank guard")
-    print("   detects exactly the affected samples -- the deficit equals the")
-    print("   number of hubs whose closed star collapsed to a line.\n")
+    print("   claim under test (RESTATED 2026-08-06, slice S2 -- the previous")
+    print("   two sentences were falsified by (OC-7)/F13 and are repaired")
+    print("   below): every rank deficit observed at this shape is an")
+    print("   artifact of `localtest.plane_basis`; the CLOSED-STAR RANK test")
+    print("   detects exactly the RANK-DEFICIENT samples, the deficit equal")
+    print("   to the number of hubs whose closed star collapsed to a line --")
+    print("   and it is NOT the genericity guard, because the same sampler")
+    print("   artifact also produces FULL-RANK samples carrying a coincident")
+    print("   hinge line, which only the composite `repin.star_generic`")
+    print("   rejects.  Both columns below, side by side.\n")
     lab, specs, _n = named_shapes()[0]
     edges, _pmap = shape_data(specs)
     tgt = target_of(edges)
-    clean = degen = 0
+    clean = degen = coinc_only = 0
     for s in range(1, 41):
         out = place_pencil_general(edges, random.Random(s))
         if out is None:
@@ -364,23 +400,44 @@ def driver_degen():
         placed, pt, nrm, hubs, nb = out
         sr = star_span_ranks(edges, placed)
         collapsed = sorted((v for v in sr if sr[v] != 3), key=str)
+        co = coincident_hinges(edges, placed)
         zc = sum(1 for h in hubs if any(x == 0 for x in nrm[h]))
         rp, _rq, _nr = pencil_rank(edges, placed, exact=False)
-        tag = 'GENERIC' if not collapsed else f'collapsed stars {collapsed}'
+        if collapsed:
+            tag = f'collapsed stars {collapsed}'
+        elif co:
+            tag = f'star ranks OK, COINCIDENT HINGES {co}'
+        else:
+            tag = 'GENERIC'
         print(f"   seed {s:3d}: rank {rp} of {tgt}   normals with a zero "
               f"coordinate: {zc}   {tag}")
         if collapsed:
             degen += 1
             assert rp == tgt - len(collapsed), \
                 (s, rp, tgt, collapsed)      # the deficit IS the collapse
+        elif co:
+            coinc_only += 1
+            # THE (OC-7) BLIND SPOT, measured here: a coincident hinge line
+            # costs NO rank, which is exactly why the star-rank test looked
+            # sufficient for six months of passes.
+            assert rp == tgt, (s, rp, tgt, co)
         else:
             clean += 1
             assert rp == tgt, (s, rp, tgt)   # every generic sample attains
-    print(f"\n   generic samples: {clean}, all at the target {tgt}")
-    print(f"   guard-rejected samples: {degen}, each short by exactly the "
-          f"number of collapsed stars")
-    print("   => the deficits are sampler artifacts; the guard is exact on "
-          "this shape.")
+    print(f"\n   samples the COMPOSITE guard accepts: {clean}, all at the "
+          f"target {tgt}")
+    print(f"   rejected by the closed-star rank test: {degen}, each short by "
+          f"exactly the\n     number of collapsed stars -- so on this shape "
+          f"that test IS exact for the\n     rank deficit, which is the "
+          f"repaired form of the old claim")
+    print(f"   rejected ONLY by the coincident-hinge clause: {coinc_only}, "
+          f"every one at the\n     FULL target rank {tgt} -- invisible to the "
+          f"star-rank test, to all four\n     IsNondegPencilRealization "
+          f"conjuncts, and to the rank itself.  This is the\n     (OC-7) "
+          f"blind spot, on this shape, in this driver's own pool.")
+    print("   => the deficits are sampler artifacts; the closed-star rank "
+          "test catches the\n      rank-losing artifacts and ONLY those, and "
+          "the composite guard is what a\n      battery must test.")
     print("   NOTE a zero normal coordinate does not by itself collapse a "
           "star (see the counts);")
     print("   the structural guard, not a coordinate test, is what must be "

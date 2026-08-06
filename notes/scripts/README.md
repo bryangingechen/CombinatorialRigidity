@@ -13,9 +13,9 @@ trail*: every numeric figure quoted in the two PENCIL workbooks
 primitive already exists (so you don't reimplement one); §2 tells you where a
 new module goes; §3 is the reproduce table; §4 is the mandatory discipline;
 *Divergences* lists the same-named-but-different functions that must **not** be
-merged; *Harness debt* lists the parked defects and — **OPEN since 2026-08-06** —
-the re-baselining round clearing them, whose *The build plan* subsection is what
-a build dispatch runs against; *Deliberate non-goals* lists two things a future
+merged; *Harness debt* lists the parked defects and — **OPEN since 2026-08-06, with
+slices S1 and S2 landed and only S3/S4 left** — the re-baselining round clearing
+them, whose *The build plan* subsection is what a build dispatch runs against; *Deliberate non-goals* lists two things a future
 session should leave alone. §§1–4 are about the **Python** harness; the M2 layer adds four
 conventions of its own on top of them (`m2/README.md`), the first of which is
 that its output is *evidence*, never a substitute for a Lean proof.
@@ -78,7 +78,8 @@ model of the second bullet firing in full: 67/67 invocations, 65 byte-identical,
 2 identical modulo their own timing print, 0 changed figures.
 
 **Two invocations do not fit a 600 s foreground budget** — `flanks.py --limit`
-(762 s) and `lambda.py --adv` (536 s). Recorded here so a dispatch plans around
+(762 s) and `lambda.py --adv` (536 s); `outerline.py --pool` (358 s) and
+`--shapes` (322 s) each fit alone but not together. Recorded here so a dispatch plans around
 it instead of rediscovering it: they are why the "re-run everything" reading of
 this rule was not even *completable* on the 2026-08-05 dispatch, in exactly the
 case where it was also vacuous. When a driver they depend on **does** change,
@@ -486,7 +487,7 @@ arcs too.
 | `python3 notes/scripts/w4/kslidecomb.py --k4full` | 1 s | ibid. (877 shapes) |
 | `python3 notes/scripts/w4/kslidecomb.py --sweep` | 1 s | ibid. (seeded `|V°| ≤ 5`) |
 | `python3 notes/scripts/w4/flanks.py --conj` | 10 s | workbook §(K-flank) (half 2 at the 8 named flank shapes) |
-| `python3 notes/scripts/w4/flanks.py --degen` | 4 s | ibid. (the sampler-artifact control) |
+| `python3 notes/scripts/w4/flanks.py --degen` | 4 s | ibid. (the sampler-artifact control; since S2 it reports the closed-star rank test and the coincident-hinge clause **side by side** — 11 rank-deficient vs 10 full-rank coincident of 38 placeable) |
 | `python3 notes/scripts/w4/flanks.py --strata` | 85 s | ibid. (half 2 over whole strata, 843 shapes) |
 | `python3 notes/scripts/w4/flanks.py --split` | 193 s | ibid. (half 1 at both `e₀` ends of all 8 shapes) |
 | `python3 notes/scripts/w4/flanks.py --allsplits` | 176 s | ibid. (every eligible split of the 5-chromatic flank) |
@@ -517,9 +518,9 @@ arcs too.
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/sigma.py --adv` | 87 s | ibid. (the α/β perp generators, `C(M) ∦ C(bc)`, the `predA` census, pullback legality, the `W19` (K-res) leg) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/sigma.py --nondeg` | 43 s | ibid. (all four `IsNondegPencilRealization` conjuncts at `σu` and at the witness; the chart point equations) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/sigma.py --fixed` | 1 s | ibid. *Step σ6* (σ-fixed configurations are degenerate: deficit 1 at 6/6 on `C₆`) |
-| `PYTHONHASHSEED=0 python3 notes/scripts/w4/sigma.py --hunt` | 135 s | ibid. *Step σ4b* (obligation 1: H0–H5 — the conjunct arithmetic, the random leg, the constructed dual-conjunct failure, the steering, and (σ7)). **Runs on three pools of its own, disjoint from the pinned 63** |
-| `PYTHONHASHSEED=0 python3 notes/scripts/w4/closure.py --fixed` | 2 s | workbook §(K-clos) *Steps Z2/Z3* ((AC-2) the ℚ-vs-ℚ(i) control and the grid conjugacy law; (AC-3) a nondegenerate σ-fixed configuration at the Tay target) |
-| `PYTHONHASHSEED=0 python3 notes/scripts/w4/closure.py --sweep` | 19 s | ibid. *Step Z4* ((AC-4): `rank = rank₊ + rank₋` at all 64 `ds-K4` colourings; balance, forests, both blocks at `3\|V\|−3`) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/sigma.py --hunt` | 135 s | ibid. *Step σ4b* (obligation 1: H0–H5 — the conjunct arithmetic, the random leg, the constructed dual-conjunct failure, the steering, and (σ7)). **Runs on three pools of its own, disjoint from the pinned 47** |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/closure.py --fixed` | 2 s | workbook §(K-clos) *Steps Z2/Z3* ((AC-2) the ℚ-vs-ℚ(i) control and the grid conjugacy law; (AC-3) a nondegenerate σ-fixed configuration at the Tay target; **(AC-9)** its four coincident hinge lines, one per hub) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/closure.py --sweep` | 19 s | ibid. *Step Z4* ((AC-4): `rank = rank₊ + rank₋` at all 64 `ds-K4` colourings; balance, forests, both blocks at `3\|V\|−3`) + **(AC-9)**: the composite guard accepts **0 of 64**, asserted |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/closure.py --shapes` | 7 s | ibid. *Step Z6* ((AC-6), the 13-shape table — all colourings, ≤ 8 alternation chains) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/closure.py --flanks` | 15 s | ibid. ((AC-6) at the 8 §(K-flank) flank shapes). **Its `hit` column saturates at the probe cap 6 and is NOT a fraction of `pass`; the load-bearing column is `best`** |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/closure.py --pool` | 21 s | ibid. **THE ONLY PLACE AN AGGREGATE MAY BE READ FROM** — the pinned 21-shape pool (`--shapes` ∪ `--flanks`) in three disjoint groups (tight 15/15, rigid-not-count-tight 1/1, not-rigid 2/5, overall 18/21) plus the habitat attribution of every miss |
@@ -534,7 +535,7 @@ arcs too.
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/annih.py --census` | 23 s | ibid. *Steps A4/A6/A9* ((ANH-4)'s two corollaries, the *Shared dictionary*'s **(SD-6)** and its past-length-6 stress test, and the 4296-triple coverage 3820/4296 = 89 %) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/annih.py --validate` | 8 s | ibid. (the machinery: the Hodge dictionary, `λ ⊥ π_P(Z)`, `λ ∈ row(N)`, transmissibility off `P`, `V_bc` reconstructed — 4 habitats). **All six modes byte-identical under two `PYTHONHASHSEED` values** |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/outerline.py --comb` | 14 s | workbook §(K-out) *Step O2* ((OC-2): the ambient-generic availability map over POOL-C — 4296 (split, companion) pairs, `(μ, dim R, A) = (1,5,0)` on both sides). **Ambient-generic; it does NOT discharge (OUT)** |
-| `PYTHONHASHSEED=0 python3 notes/scripts/w4/outerline.py --pool` | 358 s | ibid. *Steps O1/O4/O5* ((OC-1) the welded model at 46 frames; (OC-5) the POOL-G distribution 322/17/17/1 and (OUT)'s conclusion at 356/356; **(OC-7)** the sampler defect). **Quote its rates over the 318 coincidence-free frames, never the raw 357** |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/outerline.py --pool` | 358 s | ibid. *Steps O1/O4/O5* ((OC-1) the welded model at 46 frames; (OC-5) the POOL-G distribution 322/17/17/1 and (OUT)'s conclusion at 356/356; **(OC-7)** the sampler defect; **(OC-9)** the FIELD half of the guard's adversarial test — the guard rejects 58/357 and strictly contains the two-end diagnostic's 39). **Quote its rates over the 318 coincidence-free frames or the 299 the guard accepts, never the raw 357** |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/outerline.py --shapes` | 322 s | ibid. *Step O7* ((OC-6): POOL-S, 41 shapes / 90 splits / **270 frames, disjoint from POOL-G** — 270/270, no silent pair). **Never aggregate with POOL-G** |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/outerline.py --build` | 10 s | ibid. *Steps O3/O6* ((OC-3) `dim(R ∩ L) = 1` on-chart; (OC-4) the constructed (OUT)-silent nondegenerate point at all 4 habitats, 3 coincidence-free). **All four modes byte-identical under two `PYTHONHASHSEED` values; `--pool` and `--shapes` do not fit one 600 s budget together** |
 
@@ -579,10 +580,20 @@ canonical descriptions.
    *third* neighbour (placed by a different branch) spans the panel. So a green
    `star_span_ranks` is evidence about the hub's **star**, never that the
    sampler drew generically; the guard that catches this class is *no two hinge
-   lines at a hub coincide*, and a new sampler or battery should assert that
-   too. Consequence for how output is read, not just written: **a
-   `place_pencil_general`-sampled battery may never be quoted as a rate or as
-   evidence about a generic chart point** (*Harness debt* 4).
+   lines at a body coincide*, and a new sampler or battery **must** assert it.
+
+   **ADOPTED 2026-08-06 (slice S2), and this is now a positive rule.** The
+   composite `repin.star_generic` is the acceptance gate at every `w4/` site
+   that used to test `star_span_ranks`; write new gates against it, never
+   against the star-rank test alone. Consequence for how output is read: **a
+   `place_pencil_general`-sampled battery may be quoted as a rate exactly when
+   its acceptance gate is `repin.star_generic`** — which, after S2, is every
+   battery except `outerline --pool` and `--build`, whose whole subject is the
+   coincidence and which report it instead (each says so in its own output).
+   How big the blind spot was, measured twice on different shapes:
+   **32 of 357** POOL-G frames (≈ 9 %, (OC-7)) and **10 of 38** placeable
+   samples at the 5-chromatic flank (26 %, `flanks --degen`), every one of the
+   latter at the FULL target rank with all four conjuncts green.
 
    **`localtest.meet_line` now SIGNALS rather than raising (fixed 2026-08-06,
    slice S1).** It had been *documented* to signal "the two planes have no meet
@@ -664,16 +675,18 @@ Python figures are frozen, and §4 convention 5 applies.
 | `flanks.nondeg_conjuncts` vs `sigma.nondeg_conjuncts_hom` | Both test all four conjuncts of `IsNondegPencilRealization`. `nondeg_conjuncts(edges, placed)` takes an **affine placement** and *derives* the normals itself (through `kbare_common.verify_pencil_witness`), returning `(True, normals)` or a named failure; `nondeg_conjuncts_hom(edges, V, P, N, hubs)` takes homogeneous points **and** normals as independent inputs and returns a 4-tuple of bools. The first cannot express `σu` at all, since there the points *are* another configuration's normals and no affine placement produces them. | Both stay. The `_hom` suffix marks the homogeneous model; do not merge. |
 | pencil-frame samplers: `lambda.sample_local_frame` vs `widened.place_pencil_general` | Both place a pencil-generic configuration, and they are **not** interchangeable in two independent ways. **(a) Different in-plane sampler.** `sample_local_frame` uses the **robust** `repin.rob_in_plane` for every panel-constrained interior; `place_pencil_general` routes a **single-hub** interior through the *degenerate* `localtest.in_plane_point` (the `plane_basis` family above). Swapping either way changes which points are drawn, and in the degenerate direction it reintroduces exactly the defect that silently contaminated several passes' recorded escape figures. **(b) Different object.** `place_pencil_general` places a **whole graph**; `sample_local_frame` places only the *local frame* of a companion split (`b, x₁..x_{k−1}, c, a`, the two panels, the meet line `M`) and models the far graph by **synthetic** far-hub-neighbour normal constraints — which is precisely what §(K-Λ)'s class-uniformity claim over the 38 local strata needs, and what a whole-graph placement cannot express. | **Do not merge, and do not "unify" the sampler.** Habitat-level (K-Λ) frames go through `lambda.habitat_frame`, which calls `repin.seed_probe` (hence `place_pencil_general`) deliberately, so both samplers appear in one driver by design. |
 
-**One TRANSIENT exact duplicate, not a divergence, scheduled to close in S2.**
+**One TRANSIENT exact duplicate — CLOSED by S2 (2026-08-06).**
 `repin.hinge_coincidences` (added by slice S1) and `outerline.hinge_coincidences`
-(`outerline.py:257`, written locally when (OC-7) measured the defect) are the
-**same predicate with the same signature and the same semantics** — the second
-is not a second implementation to be reconciled, it is the first one's origin.
-S1 could not retire it because `outerline.py` is outside S1's edit list; S2
-repoints `outerline` at `repin`'s copy in the same commit that adopts the guard.
-Until then, call `repin`'s. (Recorded here rather than left silent because rule
-3 forbids reimplementing a §1 name, and a reader who found both without this
-note would reasonably look for the semantic difference — there is none.)
+(written locally when (OC-7) measured the defect) were the **same predicate with
+the same signature and the same semantics** — the second was not a second
+implementation to be reconciled, it was the first one's origin. S1 could not
+retire it because `outerline.py` was outside S1's edit list; **S2 deleted the
+local copy and `outerline` now imports `repin`'s**, in the same commit that
+adopted the guard. `outerline.degenerate_sampler` stays local by design: it is
+a question about `widened`'s **sampler**, not about a configuration, so it does
+not belong among the configuration guards. (Kept as a row here because a reader
+meeting the retired name in git history would otherwise look for a semantic
+difference — there was none.)
 
 Merged in the 2026-08-05 rewire (verified semantically identical, then gated
 figure-invariant): `rref`, `rank`/`rank_exact`, `nullspace`, `left_nullspace`,
@@ -682,15 +695,15 @@ figure-invariant): `rref`, `rank`/`rank_exact`, `nullspace`, `left_nullspace`,
 `neighbors` (`kbare_common`, `n9`); `K4`/`K5_minus_matching` (three copies:
 `localtest`, `probe_zero`, `run_habitats`).
 
-## Harness debt — four items; **1, 3 and half of 4 CLEARED 2026-08-06 by slice S1**
+## Harness debt — four items; **1, 3 and 4 CLEARED 2026-08-06 by slices S1+S2; only item 2 (S3's) remains**
 
 Named as a list (2026-08-05; item 4 added 2026-08-06) so a successor does not
 rediscover them one at a time. **The debt was one-directional and it
 accumulated**: every item was parked because *"figures do not move"* and *"fix
 the bug"* point in opposite directions, and each new driver that depended on the
 current state raised the price of the eventual fix. The re-baselining round
-below is the deliberate commit sequence that pays it once; **S1 has landed**, so
-read each item's status line before acting on it.
+below is the deliberate commit sequence that pays it once; **S1 and S2 have
+landed**, so read each item's status line before acting on it.
 
 1. **CLEARED (S1, 2026-08-06) — `localtest.meet_line` raised instead of
    signalling.** It was documented to signal "the two planes have no meet line"
@@ -721,12 +734,22 @@ read each item's status line before acting on it.
    2026-08-06**, here and in §2; `closure` and `outerline` were missing from
    both lists. The count is the *trigger* for rule 2, so an undercount is not
    cosmetic.)
-4. **HALF-CLEARED (S1 defines the guard; S2 adopts it).** The guard
-   `repin.star_generic` — *no two hinge lines at a hub coincide*, on top of the
-   star-rank test — now exists, with its adversarial test at `repin.py --hinge`
-   (a constructed must-REJECT witness plus the pinned counter-fact that the old
-   guard passes it). **Nothing adopts it yet**, so every standing consequence
-   below still binds verbatim, including the rule about quoting rates.
+4. **CLEARED (S1 defines the guard, S2 adopts it; 2026-08-06).** The guard
+   `repin.star_generic` — *no two hinge lines at a body coincide*, on top of
+   the star-rank test — exists with a **constructed** adversarial test at
+   `repin.py --hinge` and, since S2, a **sampled** one at `outerline --pool`
+   ((OC-9)). It is the acceptance gate at every `w4/` site that had the
+   star-rank test, with **two deliberate exceptions that are recorded, not
+   silent**: `outerline --pool`'s (OC-7) diagnostics and `outerline --build`'s
+   coincidence-freeness report, which *measure* the coincidence — a hard reject
+   there would have deleted the measurement that opened this round. **The
+   standing rule below is replaced, not merely lifted**: a
+   `place_pencil_general`-sampled battery may be quoted as a rate exactly when
+   its acceptance gate is `repin.star_generic`; the two measuring modes say so
+   in their own output. All four F13-falsified claims are repaired
+   (`star_span_ranks`' docstring in S1; `dominance.base_seed`'s "rejected, not
+   measured", `flanks --degen`'s two, `outer.chart_point`'s and `flanks`' module
+   docstring in S2).
    The original entry: **`widened.place_pencil_general`'s in-plane sampler
    degenerates at ≈ 9 % of
    habitat frames, the degeneracy FORCES `λᵢ = 0`, and `flanks.star_span_ranks`
@@ -887,9 +910,22 @@ four invocations each. Reverse-import closures computed from the landed
 | # | edits | re-baseline obligation | expected |
 |---|---|---|---|
 | **S1** ✅ **LANDED 2026-08-06** | `escape/localtest.py`, `w4/repin.py`, `w4/flanks.py`, `w4/outer.py`, `w4/sigma.py` — **plus `escape/n9.py`, `w4/pitch.py`, `w4/lambda.py`** for the addendum below (all three already inside the closure, so no extra obligation) | `localtest`'s closure: **90 rows / 96 invocations** (everything except `escape/{localize_zero,probe_disjunction,probe_zero,run_habitats,pencil_escape}`, all of `kbare/`, `w4/{hybrid_gates,no_good_search,nogood_subdiv,saferes}`, `m2/`). ~99 min per pass. | **90/90 byte-identical.** Any non-identical row is a bug *in S1*. **Achieved:** 96/96 invocations `rc=0`, 95 byte-identical, `flanks.py --conj` identical modulo its own wall-clock print (`flanks.py:316`, the rule's one documented exception), **0 figures moved**. |
-| **S2** | `w4/flanks.py`, `w4/dominance.py`, `w4/outer.py`, `w4/sigma.py`, `w4/closure.py`, `w4/annih.py`, `w4/outerline.py` + every owning workbook section | `flanks`' closure: **41 rows** (`flanks`, `dominance`, `outer`, `sigma`, `closure`, `annih`, `outerline`). ~55 min per pass. | **Rates move; identities, ranks and pointwise witnesses do not.** |
+| **S2** ✅ **LANDED 2026-08-06** | `w4/flanks.py`, `w4/dominance.py`, `w4/outer.py`, `w4/sigma.py`, `w4/closure.py`, `w4/annih.py`, `w4/outerline.py` + every owning workbook section | `flanks`' closure: **41 rows** (`flanks`, `dominance`, `outer`, `sigma`, `closure`, `annih`, `outerline`). ~55 min per pass. | **Rates move; identities, ranks and pointwise witnesses do not.** **Achieved:** 41/41 `rc=0`, **21 byte-identical**, **20 moved** — and the prediction held exactly: not one identity, rank or attainment changed its verdict, three *improved to their bound* once the contaminated seeds were rejected, and the moves are (a) seed relabelling, (b) the σ pool re-pin 63 → 47, (c) two repaired claims and two new measurements ((AC-9), (OC-9)). All five `outer` rows byte-identical, so S3's "one moved row: `outer --geom`" is preserved. |
 | **S3** | `w4/lambda.py`, `w4/outer.py` | `lambda`'s closure: **21 rows** (`lambda`, `outer`, `annih`, `outerline`). ~32 min per pass. | **One row moves:** `outer.py --geom`. |
-| **S4** | docs only (this file, the four per-directory READMEs, the workbooks, `notes/dispatch-log.md`) | **None** — discharged by `git diff --name-only -- '*.py' '*.m2'` coming back empty, per the *figures do not move* first bullet. | n/a |
+| **S4** | docs only (this file, the four per-directory READMEs, the workbooks, `notes/dispatch-log.md`) — **plus one deliverable that is not about the harness at all: compress `notes/Phase39.md`** (added 2026-08-06 by S2). | **None** — discharged by `git diff --name-only -- '*.py' '*.m2'` coming back empty, per the *figures do not move* first bullet. | n/a |
+
+**S4's phase-note compression, stated as a deliverable so it stops slipping.**
+`notes/Phase39.md` is past `notes/CLAUDE.md`'s **~500-line tripwire** and has
+grown in every slice of this round (554 lines at S2's open; the tripwire is
+"almost always a swallowed promotion — stop and investigate, don't just trim").
+The per-commit *Compress in-commit* rule has now slipped twice inside this
+round, because each slice's honest hand-off edit is additive and the round is
+not over. S4 is the right home: it is docs-only, it owes no re-baseline, and it
+is the commit that closes the round, so the note can be compressed against the
+round's *final* state rather than an intermediate one. Concretely: promote the
+cross-cutting entries, one-line the settled ones, and collapse the four
+harness-debt paragraphs in *Blockers* to a pointer at this section — which is
+their canonical home and already carries the detail.
 
 **S1 — the plumbing, and the only slice that must be byte-identical.** Carries
 scope **(2)** and **(4)** and the *definition* of scope (1)'s guard, because all
@@ -978,6 +1014,66 @@ list's first entry, `star_span_ranks`' own docstring, was repaired early in S1
 **Owed here, not assumed:** the §(K-ann) check the OPENED block names — every
 `annih` figure re-read under the guard, expected clean because its claims are
 identities and pointwise attainments (conservative), never rates.
+
+> **S2 ADDENDUM — what LANDED, and the three places it deviated from the plan
+> above (2026-08-06).** The gate: **41/41 invocations `rc=0`, 21
+> byte-identical, 20 moved**, baseline chained off S1's committed post-edit
+> capture per the licence below. Every moved row is repointed in its owning
+> workbook section in this same commit.
+>
+> **Deviation 1 — the guard is NOT adopted inside `nondeg_conjuncts`, and the
+> plan's first site is wrong.** `flanks.py`'s inlined star-rank test sits
+> inside `nondeg_conjuncts`, whose contract is *exactly* the four conjuncts of
+> the Lean `IsNondegPencilRealization`. Adding a fifth, non-Lean clause there
+> would make the harness's headline predicate diverge from the statement it
+> mirrors — and, concretely, would have **broken `outerline --build`**, whose
+> (OC-4) construction asserts `nondeg_conjuncts` at a point that is
+> coincident-hinge on purpose (that is the whole content of "3 of 4 are
+> coincidence-free"). The composite guard is adopted one level up, at this
+> module's actual acceptance site `flanks.clean_pencil_seed`, which is where
+> the word "GENERIC" already appeared in the docstring. Twelve sites take the
+> hard reject; `outerline`'s two report, as the plan required.
+>
+> **Deviation 2 — the field test's expected equality is REFUTED, in the safe
+> direction.** The plan predicted `--pool` would assert the guard's rejection
+> set *equals* the diagnostic's. It is **strictly wider**: the guard rejects
+> **58 of 357**, the two-end diagnostic 39, and the extra **19** carry a
+> coincidence elsewhere in the configuration (all printed). The assert that
+> landed is therefore the containment — which is a theorem about the two
+> predicates, so it tests something real — plus the printed cross-tab and the
+> guard-clean sub-pool's own distribution. §(K-out)'s 318 restriction is
+> **not** thereby wrong (every `λᵢ = 0` frame carries a coincidence at its own
+> hub, so the 19 extras all have both outer coordinates nonzero); it is simply
+> not the guard's output, and the strictest certifiable denominator is 299.
+> Recorded as **(OC-9)**.
+>
+> **Deviation 3 — one moved figure is a MATHEMATICAL finding, not a
+> re-baseline, and it was surfaced rather than repointed.** `closure.py`'s
+> `starOK` column became the composite guard, and every σ-fixed configuration
+> of `ds-K4` fails it — **0 of 64 colourings**, including the (AC-3) witness,
+> with a coincidence at every hub. That is not sampling: at a point of the
+> quadric the tangent plane meets it in exactly **two** lines, so a body of
+> degree `≥ 3` must repeat one, and §(K-clos) *Step Z3* had already written
+> down the cap without drawing the consequence. Landed as **(AC-9)**, proven
+> by pigeonhole and measured by the driver's own assert. It **qualifies (AC-3)
+> without weakening it** — the four conjuncts and the Tay target still hold —
+> and it forbids reading any σ-fixed witness as generic.
+>
+> **The §(K-ann) re-read is DONE and CLEAN**, exactly as F13's classification
+> predicted: `--census`/`--validate` byte-identical, three modes differing only
+> in which seed integer each habitat's first clean draw is, and one figure
+> *improved* (`--supp`'s far block now attains (D2)'s `3(k−3)` at every seed).
+> The same improvement shape appears in `dominance --jac` (FIXED rank 9 at
+> every `k ≥ 4` seed, three seeds used to say 8) and `--far`: **the
+> contaminated draws were exactly the ones that missed the bound.**
+>
+> **The σ pool re-pin, the largest single movement.** `sigma.py`'s pinned pool
+> is asserted (`totals['seeds'] == 63`), and 16 of the 63 carried a
+> coincidence, so the assert fired on the first run. Re-pinned to **47**
+> (`23 + 24`); every `n/n` check survives verbatim, and the `--hunt` counts
+> moved with it (H2 `53` → `45`). §(K-σ) is repointed throughout, with the
+> three surviving `63/63`s explicitly marked as references to the 2026-08-05
+> F11 defect rather than to this pool.
 
 **S3 — scope (3), and it is independent of scope (1)/(4) but sequenced
 last-but-one.** No code path is shared with scope (1)/(2)/(4); the ordering is

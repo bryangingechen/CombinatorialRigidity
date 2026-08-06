@@ -33,6 +33,21 @@ statement verified over ℚ(i) is an existence statement over `ℂ̄`.
 
 Exact throughout: `Gauss` wraps a pair of `fractions.Fraction`.  No floating
 point.  No randomness (so nothing to seed); no `set` is printed.
+
+ONE FIGURE MOVED ON 2026-08-06 (slice S2 of the re-baselining round), and it
+carries a NEW measured fact, **(AC-9)**.  The `starOK` column of `--sweep` and
+the corresponding `--fixed` line used to report `star_span_ranks` alone; they
+now report the composite `repin.star_generic` (closed-star ranks AND no two
+hinge lines coinciding at a body).  Under it EVERY σ-fixed configuration of
+`ds-K4` — all 64 ruling colourings, including the 12 target-rank ones and the
+(AC-3) witness — is REJECTED, with a coincidence at every hub, while its rank,
+its four `IsNondegPencilRealization` conjuncts and its closed-star ranks stay
+green.  So (AC-3)'s refutation of "the σ-fixed locus is degenerate" is a
+statement about THAT PREDICATE and not about genericity, and on this shape the
+σ-fixed locus sits entirely inside the coincident-hinge locus.  `--char2`'s
+seed also moved (0-60 first clean seed 2 → 6), since its `clean_pencil_seed`
+now applies the composite guard; its mod-`p` ranks are an explicitly-labelled
+proxy and moved with it.
 """
 import argparse
 import itertools
@@ -52,8 +67,9 @@ from hybrid_gates import build_rigidity_extensors                   # noqa: E402
 from kbare_common import rank_modp, verts_of                        # noqa: E402
 from exactcore import hat                                           # noqa: E402
 from widened import W19                                             # noqa: E402
-from flanks import (clean_pencil_seed, nondeg_conjuncts,            # noqa: E402
-                    star_span_ranks)
+from flanks import clean_pencil_seed, nondeg_conjuncts             # noqa: E402
+from repin import (coincident_hinges, star_generic,                 # noqa: E402
+                   star_span_ranks)
 from nogood_subdiv import (deficiency, hcard_ok, hub_set,        # noqa: E402
                            rigid_vertex_sets, triangles)
 
@@ -602,8 +618,13 @@ def probe(name, edges, col, want_full=False, fast=False):
     for e, C in ext:
         assert (star_sign(C) == +1) == (col[e] == 'A')
     placed = {v: dehom(pt[v]) for v in allverts}
+    # The composite genericity guard since 2026-08-06 (slice S2): closed-star
+    # ranks AND no two hinge lines coinciding at a body.  Reported, as before,
+    # rather than used to reject: a σ-fixed configuration is CONSTRUCTED here,
+    # not sampled, so its genericity is a measurement about the construction.
+    genok = star_generic(edges, placed)
     srk = star_span_ranks(edges, placed)
-    starok = (set(srk.values()) == {3})
+    coin = coincident_hinges(edges, placed)
     ok, why = nondeg_conjuncts(edges, placed)
     if fast:
         rP, _ = eigen_subsystem_contracted(allverts, edges, col, ext, 'P')
@@ -615,7 +636,8 @@ def probe(name, edges, col, want_full=False, fast=False):
             cP, _ = eigen_subsystem_contracted(allverts, edges, col, ext, 'P')
             cM, _ = eigen_subsystem_contracted(allverts, edges, col, ext, 'M')
             assert (cP, cM) == (rP, rM), "contracted / full ranks disagree"
-    d = dict(nEA=len(EA), nEB=len(EB), starok=starok, ok=ok,
+    d = dict(nEA=len(EA), nEB=len(EB), starok=genok, ok=ok,
+             starrk=(set(srk.values()) == {3}), coin=coin,
              why=(None if ok else why[0]),
              rP=rP, rM=rM, rk=rP + rM,
              cA=cycle_rank(allverts, EA), cB=cycle_rank(allverts, EB))
@@ -649,16 +671,27 @@ def leg_fixed():
           f"{d['cA'] == d['cB'] == 0})")
     print("  every body isotropic; every edge conjugate; every hinge screw a")
     print("  ⋆-eigenvector whose sign is its ruling                        OK")
-    print(f"  all four IsNondegPencilRealization conjuncts + star ranks 3: "
-          f"{d['ok'] and d['starok']}")
+    print(f"  all four IsNondegPencilRealization conjuncts: {d['ok']}; "
+          f"closed-star ranks all 3: {d['starrk']}")
+    print(f"  the composite genericity guard repin.star_generic: "
+          f"{d['starok']}")
+    print(f"    coincident hinge lines (body, x, u): {d['coin']}")
     print(f"  rank {d['full']} = rank(+) {d['rP']} + rank(−) {d['rM']}, "
           f"target {6 * (len(allverts) - 1)}, deficit "
           f"{6 * (len(allverts) - 1) - d['full']}")
-    print("  ⟹ σ-FIXED PENCIL CONFIGURATIONS EXIST over ℂ̄, are")
-    print("    nondegenerate, and REACH the Tay target.  §(K-σ) Step σ6's")
-    print("    'the fixed locus is degenerate' is REFUTED for the symmetric")
+    print("  ⟹ σ-FIXED PENCIL CONFIGURATIONS EXIST over ℂ̄, satisfy every")
+    print("    IsNondegPencilRealization conjunct, and REACH the Tay target.")
+    print("    §(K-σ) Step σ6's 'the fixed locus is degenerate' is REFUTED")
+    print("    AS A STATEMENT ABOUT THAT PREDICATE for the symmetric")
     print("    correlation (it holds for the null one, which is a different")
     print("    fixed locus).")
+    print("  BUT (measured 2026-08-06, slice S2, and NOT known when (AC-3)")
+    print("    was written): the witness carries a coincident hinge line at")
+    print("    EVERY hub -- the harness' composite genericity guard rejects")
+    print("    it, while its rank, its four conjuncts and its closed-star")
+    print("    ranks are all green.  So 'nondegenerate' here means exactly")
+    print("    'the four conjuncts', never 'generic'; --sweep measures how")
+    print("    far that goes on this shape.")
     print()
     return col
 
@@ -670,7 +703,7 @@ def leg_sweep():
     target = 6 * (len(allverts) - 1)
     cols, _ = colourings(edges)
     print(f"[AC-S] every ruling colouring of ds-K4 ({len(cols)})")
-    print("   |E_A| |E_B| starOK nondegOK  rank  def   r+   r-  cA cB   n")
+    print("   |E_A| |E_B|  genOK nondegOK  rank  def   r+   r-  cA cB   n")
     tally = {}
     good = 0
     for col in cols:
@@ -687,7 +720,13 @@ def leg_sweep():
         print(f"   {nEA:4d} {nEB:5d}  {str(so):5s}  {str(ok):5s}"
               f"   {rk:4d} {target - rk:4d} {rP:4d} {rM:4d}  {cA:2d} {cB:2d}"
               f"  {tally[key]:3d}")
-    print(f"  legal (all four conjuncts + star ranks 3): {good} / {len(cols)}")
+    print(f"  legal (all four IsNondegPencilRealization conjuncts): "
+          f"{good} / {len(cols)}")
+    ngen = sum(n for k, n in tally.items() if k[3] and k[2])
+    print(f"  ... AND composite-guard generic (no coincident hinge line "
+          f"anywhere): {ngen} / {len(cols)}")
+    assert ngen == 0, "a σ-fixed colouring is composite-guard GENERIC -- " \
+        "(AC-9) as measured 2026-08-06 no longer holds; update §(K-clos)"
     tgt = sum(n for k, n in tally.items() if k[3] and k[4] == target)
     print(f"  legal AND at the Tay target              : {tgt} / {len(cols)}")
     for k in tally:

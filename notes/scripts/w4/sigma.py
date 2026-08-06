@@ -25,17 +25,25 @@ Modes (the first four run on one pinned seed pool; see SEED POOL below):
 SEED POOL.  Two splits of the tight control (the double-subdivided `K4`,
 `|V| = 16`, target 90, `G'` target 84): seeds 440-479 at chain 0 and 500-529 at
 chain 1.  A seed is *valid* when its draw survives the guards AND lands on the
-hard stratum (`s0 = 0`, `dim R_a = 1`); 34 + 29 = 63 of the 70 do.  Every
-figure the FIRST FOUR modes quote is over that pool.  `--adv` additionally
+hard stratum (`s0 = 0`, `dim R_a = 1`); 23 + 24 = 47 of the 70 do.  Every
+figure the FIRST FOUR modes quote is over that pool.
+
+THE POOL WAS 34 + 29 = 63 UNTIL 2026-08-06, and it shrank to 47 when slice S2
+of the re-baselining round adopted the composite genericity guard
+`repin.star_generic` at `hard_stratum_seed` (*Harness debt* item 4): 16 of the
+63 carried a coincident hinge line -- a hub with two of its bodies on one
+hinge line, which the closed-star rank test alone passes.  Every per-seed
+figure the pool carries is an `n/n` conjunct or rank check, so all of them
+survive verbatim on the smaller, cleaner pool; only the denominator moved.  `--adv` additionally
 probes two `W19` splits (the (K-res) residual habitat), which yield **no**
 valid hard-stratum seed in the probed range -- recorded as *unsampled*, never
 as *tested and passed*.
 
-HUNT POOLS (`--hunt` only, and deliberately kept SEPARATE from the pinned 63 --
+HUNT POOLS (`--hunt` only, and deliberately kept SEPARATE from the pinned 47 --
 the whole point of the mode is to reach configurations the pinned pool does not
 contain).  Three, declared at `HUNT_SEEDS` / `COPLANAR_SEEDS` /
 `SIDECOND_SEEDS` below and printed in the mode's header.  No `--hunt` figure is
-quoted over the 63-seed pool and no 63-seed figure is quoted over these.
+quoted over the pinned pool and no pinned-pool figure is quoted over these.
 """
 import os
 import random
@@ -53,9 +61,8 @@ from nogood_subdiv import deficiency, hub_set                    # noqa: E402
 from widened import W19, orient, place_pencil_general, splitOff  # noqa: E402
 from localtest import meet_line                                  # noqa: E402
 from repin import (hodge_star, lambda2_through, rob_in_plane,    # noqa: E402
-                   span_basis)
+                   span_basis, star_generic)
 from pitch import det4                                           # noqa: E402
-from flanks import star_span_ranks                               # noqa: E402
 from hybrid_gates import build_rigidity_extensors                # noqa: E402
 
 CHAIN0_SEEDS = range(440, 480)
@@ -63,7 +70,7 @@ CHAIN1_SEEDS = range(500, 530)
 W19_SEEDS = range(600, 620)
 SWEEP_TRIES = 14          # route-A placement draws at sigma u, per seed
 
-# --- `--hunt` pools, kept separate from the pinned 63 (see the header) -------
+# --- `--hunt` pools, kept separate from the pinned 47 (see the header) -------
 HUNT_SEEDS = range(1000, 1060)        # H1: the fresh random leg, per split
 COPLANAR_SEEDS = range(2000, 2030)    # H2/H3: the constructive leg, per split
 SIDECOND_SEEDS = range(3000, 3020)    # H4/H5: the (Lambda 0d) leg, per split
@@ -184,18 +191,19 @@ def hard_stratum_seed(Gp, Vp, a, b, seed, tgtGp, tally):
     data at `P`, and the generator `r` of `R_a`.
 
     Guards, in order (each rejection is counted, none consumes rng): the
-    sampler failing; a closed-star rank below 3 at some body (the
-    `plane_basis` genericity guard, `flanks.star_span_ranks`); two adjacent
-    points projectively equal; the seed off target rank; a non-hub whose panel
-    normal is not unique; and finally the stratum test `(s0, dim R_a) =
-    (0, 1)`."""
+    sampler failing; the composite `plane_basis` genericity guard
+    `repin.star_generic` -- a closed-star rank below 3 at some body, OR two
+    hinge lines coinciding at one body (the second clause adopted 2026-08-06,
+    slice S2: `star_span_ranks` alone lets the free-rotor half of the artifact
+    through, *Harness debt* item 4 / (OC-7)); two adjacent points
+    projectively equal; the seed off target rank; a non-hub whose panel normal
+    is not unique; and finally the stratum test `(s0, dim R_a) = (0, 1)`."""
     pl = place_pencil_general(Gp, random.Random(seed))
     if pl is None:
         tally['rej_sampler'] += 1
         return None
     placed, pt, nrm, hubs, nb = pl
-    ranks = star_span_ranks(Gp, placed)
-    if any(rk != 3 for rk in ranks.values()):
+    if not star_generic(Gp, placed):
         tally['rej_star'] += 1
         return None
     P = {w: hat(placed[w]) for w in Vp}
@@ -607,7 +615,7 @@ def fixed_is_degenerate():
 # ---------------- mode: --hunt (obligation 1) --------------------------------
 #
 # *Step sigma5* obligation 1 asks whether the DUAL `IsNondegPencilRealization`
-# conjuncts, observed to hold at `sigma u` at all 63 pinned seeds, can FAIL at
+# conjuncts, observed to hold at `sigma u` at all 47 pinned seeds, can FAIL at
 # a hard-stratum seed at all -- and, where they do, whether the seed can be
 # steered to one where they hold.  The pinned pool cannot answer it: the dual
 # conjuncts are open conditions, so a random exact-Q draw never lands on their
@@ -757,7 +765,12 @@ def coplanar_chain_placement(Gp, chain, hubs_set, seed):
         return None, 'draw'
     if not legal_pencil(Gp, out, pt, nrm, hubs_set):
         return None, 'illegal'
-    if any(rk != 3 for rk in star_span_ranks(Gp, out).values()):
+    # The composite guard since 2026-08-06 (slice S2): the coplanar chain is
+    # built to fail the DUAL conjuncts, so the PRIMAL configuration it is
+    # built on must be generic in the full sense -- a base sample carrying a
+    # coincident hinge line would make H2's witness a free-rotor artifact
+    # rather than the isolated dual failure it is advertised as.
+    if not star_generic(Gp, out):
         return None, 'star'
     return (out, pt, nrm, placed[x]), None
 
@@ -1053,7 +1066,7 @@ def main(argv):
         print("OK")
         return
     elif mode == '--hunt':
-        print(f"  HUNT POOLS (separate from the pinned 63): random "
+        print(f"  HUNT POOLS (separate from the pinned 47): random "
               f"{HUNT_SEEDS.start}-{HUNT_SEEDS.stop - 1}, coplanar-chain "
               f"{COPLANAR_SEEDS.start}-{COPLANAR_SEEDS.stop - 1}, "
               f"(Lambda0d) {SIDECOND_SEEDS.start}-{SIDECOND_SEEDS.stop - 1}, "
@@ -1072,7 +1085,7 @@ def main(argv):
     else:
         print(f"unknown mode {mode}")
         return 2
-    assert totals['seeds'] == 63, totals
+    assert totals['seeds'] == 47, totals
     print(f"  pool: {totals['seeds']} hard-stratum seeds, every check n/n")
     print("OK")
 

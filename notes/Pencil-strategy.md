@@ -901,8 +901,9 @@ direction is set:
   (`exists_common_seed_pencilRow_and_polynomials`, `Engine.lean:476`, whose own
   docstring already names this consumer shape). **Its numerics half landed the
   same day** (`sigma.py --hunt`, §(K-σ) *Step σ4b*): the dual conjuncts are
-  **not** implied — 53 constructed hard-stratum, primally-nondegenerate
-  counterexamples — but two of the four are free **at `ℝ`**, one is the
+  **not** implied — 45 constructed hard-stratum, primally-nondegenerate
+  counterexamples (53 until the 2026-08-06 harness re-baseline shrank the
+  pinned pool from 63 to 47; §(K-σ) *Step σ4*'s blockquote) — but two of the four are free **at `ℝ`**, one is the
   already-named (Λ0d), and the steering is exhibited exactly. What is left is
   **Lean**, and it is held by the standing Lean-hold adjudication.
   **Before picking this direction, read §(K-σ) *Field scope*:** `σ` exists in

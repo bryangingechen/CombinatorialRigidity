@@ -173,19 +173,17 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
   C) q` (design doc's W0 pin) is landed only as its two forward implications; the reverse arms
   need a `complementIso` involution lemma, not in tree — deferred, **off every critical path**
   (§(K-σ) *Step σ6*: route σ does not need it, and sketches the route to it).
-- **Harness debt — four items, the round CLEARING them is mid-flight** (`notes/scripts/README.md`
-  *Harness debt*, the canonical home — status per item lives there and is not restated here).
-  **Items 1 and 3 are CLEARED** by slice S1 (`localtest.meet_line` signals instead of raising;
-  `star_span_ranks` moved down to `repin`). **Item 2** (`lambda.omega_curves`' coded (Λ0f)
-  equivalence at the newly-reachable `g₁₄ = 0` points) is S3's. **Item 4** —
-  `place_pencil_general`'s in-plane sampler degenerating at ≈ 9 % of habitat frames in a way that
-  **forces `λᵢ = 0`** and that `star_span_ranks`, *the documented guard against exactly it*, does
-  not catch (§(K-out) **(OC-7)**; second `plane_basis` contamination, first with the guard
-  failing) — is **half-cleared**: the guard exists and is adversarially tested, and **S2 adopts
-  it**. Until then item 4's **standing rule binds unchanged**: no `place_pencil_general` battery
-  may be quoted as a *rate* or as evidence about a generic chart point. Same block:
-  `outer.py --patterns` and `--sweep` run over different denominators (7002 vs 4280 pairs), so
-  their companion counts are **not comparable**.
+- **Harness debt — only item 2 is left** (`notes/scripts/README.md` *Harness debt*, the canonical
+  home — status per item lives there and is not restated here). **Items 1, 3 and 4 are CLEARED**
+  (S1: `localtest.meet_line` signals instead of raising, `star_span_ranks` moved down to `repin`,
+  the composite guard `repin.star_generic` defined + adversarially tested; S2: the guard ADOPTED
+  at every `w4/` acceptance site, with `outerline --pool`/`--build` deliberately reporting rather
+  than rejecting because measuring the coincidence is their subject). **Item 2**
+  (`lambda.omega_curves`' coded (Λ0f) equivalence at the newly-reachable `g₁₄ = 0` points) is
+  **S3's**. Item 4's old prohibition is **replaced by a positive rule**: a
+  `place_pencil_general`-sampled battery may be quoted as a *rate* exactly when its acceptance
+  gate is `repin.star_generic`. Same block: `outer.py --patterns` and `--sweep` run over different
+  denominators (7002 vs 4280 pairs), so their companion counts are **not comparable**.
 
 ## Hand-off / next phase
 
@@ -256,18 +254,37 @@ discharge (residue (iv)) is CLOSED too**. The landed successor
 > classified as already-guarded on the strength of a neighbouring `rank(...) == 2` assert that
 > passes **vacuously** at a zero direction. Both recorded in the plan's *S1 addendum*.
 >
-> **Smallest concrete next commit: slice S2** — `w4/{flanks,dominance,outer,sigma,closure,annih,
-> outerline}.py` plus every owning workbook section. It *adopts* the guard at the 14 acceptance
-> sites (**a per-site judgement, not a sweep**: `outerline --pool`'s (OC-7) diagnostics and
-> `--build`'s coincidence-freeness report must keep *measuring* the coincidence), repairs the two
-> remaining F13-falsified claims (`dominance.base_seed`, `flanks --degen`), adds the field half of
-> the adversarial test, and owes the §(K-ann) re-read. Obligation: `flanks`' closure, **41 rows**,
-> ≈ 55 min per pass, and here **rates legitimately move** while identities, ranks and pointwise
-> witnesses must not. Exact file list and per-site detail: `notes/scripts/README.md` *Harness
-> debt* → **The build plan**, **not restated here**. Two mechanics S1 paid for: write each
-> invocation's output to its own file and compare with `cmp`; and background `flanks.py --limit`
-> (762 s, the only invocation past the 600 s foreground ceiling) **first**, with the foreground
-> work running alongside — a subagent's background job dies when its turn ends.
+> **Slice S2 is LANDED (2026-08-06)** — the gate came back **41/41 `rc=0`, 21 byte-identical, 20
+> moved**, and every moved figure is repointed in its owning workbook section in the same commit
+> (canonical home for the ledger: `notes/scripts/README.md` *The build plan* → *S2 addendum*, not
+> restated here). Harness-debt item **4 is CLEARED**. The prediction held exactly: **no identity,
+> rank or pointwise attainment changed its verdict**; three *improved to their bound* once the
+> contaminated seeds were rejected (`dominance --jac`/`--far`, `annih --supp` — the draws that
+> missed the bound were the contaminated ones); the moves are seed relabelling, the σ pool re-pin
+> **63 → 47**, two repaired claims and two new measured facts. All five `outer` rows are
+> byte-identical, so S3's "one moved row, `outer --geom`" is preserved. Three things S2 found that
+> the plan had not, all recorded in the addendum: the guard must **not** go inside
+> `flanks.nondeg_conjuncts` (that predicate mirrors the Lean statement, and adopting there would
+> have broken `outerline --build`'s (OC-4) assert) — it went to the real acceptance site
+> `clean_pencil_seed`; the field test's expected *equality* is **refuted in the safe direction**
+> (the guard rejects 58/357 vs the two-end diagnostic's 39, strictly containing it — **(OC-9)**);
+> and one moved figure is a **mathematical finding**, **(AC-9)**: every σ-fixed body of degree
+> `≥ 3` carries a coincident hinge line, by pigeonhole against §(K-clos) *Step Z3*'s
+> two-ruling-lines cap, so the composite guard accepts **0 of 64** `ds-K4` colourings — this
+> *qualifies* (AC-3) (the four conjuncts and the Tay target still hold) and forbids reading any
+> σ-fixed witness as generic. The **§(K-ann) re-read is DONE and CLEAN**.
+>
+> **Smallest concrete next commit: slice S3** — `w4/{lambda,outer}.py`, coding the landed (Λ0f′)
+> in place of the superseded (Λ0f) at `lambda.omega_curves`. Obligation: `lambda`'s closure,
+> **21 rows**, ≈ 32 min; expected **one** moved row, `outer.py --geom`, whose owning workbook line
+> is §(K-Λ) *Step 3a*'s verification-table row. `lambda.py --adv` (536 s) runs alone. Exact detail:
+> `notes/scripts/README.md` *Harness debt* → **The build plan**, **not restated here**. Then
+> **S4**, docs-only, which now also owes the `notes/Phase39.md` compression (the note is past the
+> ~500-line tripwire and has grown in every slice of this round; recorded as an S4 deliverable in
+> the plan). Two mechanics both landed slices paid for: write each invocation's output to its own
+> file and compare with `cmp`; and background the one invocation past the 600 s ceiling **first**,
+> with the foreground work running alongside — a subagent's background job dies when its turn
+> ends.
 >
 > **QUEUED, still an open user adjudication** — three contenders, none pre-selected: the remaining
 > route-σ work; the **mechanisms pass** (*Current state* (a)); and `Pencil-strategy.md` §4.6's
@@ -363,6 +380,20 @@ is the canonical home a successor reads.
   `notes/scripts/README.md` *Harness debt*), dispatch-log rows + **F13**/**F14**, and
   `Pencil-strategy.md` §2.3's **convergence note** — A's and B's residuals are both
   *pencil-rigidity of a contraction of `H`*, so §2.3's wall is structural, not route-specific.
+
+- **Harness re-baselining round, slice S2 LANDED — the guard is ADOPTED, and two new facts fell
+  out of adopting it** (2026-08-06; canonical home `notes/scripts/README.md` *The build plan* →
+  *S2 addendum*, and the owning workbook sections, not restated here). Gate: 41/41 `rc=0`, 21
+  byte-identical, 20 moved, every move repointed in the same commit. Harness-debt item **4
+  CLEARED**; the "no rate from a `place_pencil_general` battery" prohibition becomes the positive
+  rule *a rate is quotable exactly when the acceptance gate is `repin.star_generic`*. **(AC-9)**
+  (§(K-clos)): every σ-fixed body of degree `≥ 3` carries a coincident hinge line — **proven** by
+  pigeonhole against *Step Z3*'s two-ruling-lines cap, measured 0/64; it qualifies (AC-3) without
+  weakening it. **(OC-9)** (§(K-out)): the guard rejects 58/357 and **strictly contains** the
+  two-end diagnostic's 39, refuting the plan's expected equality in the safe direction. Also: the
+  guard belongs at the acceptance site, **not** inside `nondeg_conjuncts` (which mirrors the Lean
+  predicate); the σ pool re-pins 63 → 47 with every `n/n` check surviving; and three figures
+  *improved to their bound* because the contaminated draws were exactly the ones that missed it.
 
 - **Harness re-baselining round, slice S1 LANDED** (2026-08-06; canonical home
   `notes/scripts/README.md` *Harness debt* → *The build plan* + its *S1 addendum*, not restated

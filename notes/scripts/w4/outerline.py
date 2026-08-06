@@ -112,7 +112,12 @@ over that one pool; nothing is aggregated across modes.
                     leg, so the counts here are directly comparable to that
                     mode's.  Frames are kept when the placement is target-rank
                     with `dim R_a = 1`, `dim V_bc = 3`, `rank{C_i} = 4` and
-                    the `star_span_ranks` genericity guard is green;
+                    the closed-star rank test `star_span_ranks` green -- NOT
+                    the composite `repin.star_generic`, deliberately, since
+                    the coincidence is what (OC-7) measures here (slice S2's
+                    per-site judgement; the composite is reported, and its
+                    rejection set is compared against the local diagnostic as
+                    the FIELD HALF of the guard's adversarial test);
                     (Lambda-0d) failures are KEPT and reported separately
                     rather than dropped (which is what `lambda.habitat_frame`
                     does), because (OUT) stops applying there.
@@ -136,9 +141,13 @@ catalogued section-1 primitives: `outer`'s `split_data` / `companions4` /
 `lambda`'s `habitat_specs` / `rows_mnqs` / `qpoly` / `span_meet` / `poly_deg`
 (through `importlib`, since `lambda` is a keyword), `nogood_subdiv`'s
 `deficiency` / `contraction`, `pencil_escape.build_rigidity`,
-`widened.place_pencil_general`, `flanks.star_span_ranks`, `pitch`'s
+`widened.place_pencil_general`, `flanks.nondeg_conjuncts`, `pitch`'s
 `H_motions_vbc` / `klein` / `coords_in`, and `repin`'s `span_basis` /
-`in_span` / `robust_plane_basis`.
+`in_span` / `robust_plane_basis` plus the four configuration genericity
+guards `star_span_ranks` / `hinge_coincidences` / `coincident_hinges` /
+`star_generic` (the third and fourth added by the 2026-08-06 re-baselining
+round; `hinge_coincidences` was written HERE and moved down to `repin` in
+slice S2, so this file now IMPORTS what used to be its own local copy).
 """
 import importlib
 import random
@@ -155,9 +164,11 @@ from kbare_common import verify_pencil_witness, verts_of           # noqa: E402
 from pencil_escape import build_rigidity                           # noqa: E402
 from nogood_subdiv import contraction, deficiency                  # noqa: E402
 from widened import place_pencil_general                           # noqa: E402
-from repin import (in_span, robust_plane_basis, span_basis)       # noqa: E402
+from repin import (coincident_hinges, hinge_coincidences,          # noqa: E402
+                   in_span, robust_plane_basis, span_basis,
+                   star_generic, star_span_ranks)
 from pitch import H_motions_vbc, coords_in, klein                  # noqa: E402
-from flanks import nondeg_conjuncts, star_span_ranks               # noqa: E402
+from flanks import nondeg_conjuncts                                # noqa: E402
 import outer                                                       # noqa: E402
 
 # READ, not used as a sampler: `localtest.plane_basis` is the DEGENERATE
@@ -253,22 +264,15 @@ def marked_direction(placed, nrm, h, R):
 
 
 # ---------------- (OC-7) the two degeneracy diagnostics ---------------------
-
-def hinge_coincidences(Gp, placed, h, x):
-    """The `G'`-neighbours `u != x` of the hub `h` whose hinge line
-    `C(h, u)` is PROJECTIVELY EQUAL to `C(h, x)` -- equivalently, whose point
-    is collinear with `pt(h)` and `pt(x)`.
-
-    This is a genuine degeneration of a pencil realization (two bodies of the
-    hub's star share one hinge line), and it is **not excluded** by any of the
-    four `IsNondegPencilRealization` conjuncts as `flanks.nondeg_conjuncts`
-    implements them, nor by `flanks.star_span_ranks`: the hub's star can still
-    span its panel through a third neighbour.  (OC-7)."""
-    nb = neighbors(Gp)
-    Cx = wedge2(hat(placed[h]), hat(placed[x]))
-    assert any(k != 0 for k in Cx), "degenerate hinge extensor"
-    return [u for u in sorted(nb[h], key=str) if u != x
-            and rank([Cx, wedge2(hat(placed[h]), hat(placed[u]))]) == 1]
+#
+# `hinge_coincidences` was written HERE, locally, when (OC-7) measured the
+# defect; slice S2 (2026-08-06) repointed it at `repin.hinge_coincidences`,
+# which is the same predicate with the same signature and the same semantics
+# (this copy was its origin, not a second implementation -- README
+# *Divergences*, the TRANSIENT-duplicate note, now discharged).  Imported
+# above beside `coincident_hinges` / `star_generic`.  `degenerate_sampler`
+# stays local: it is a question about `widened`'s SAMPLER, not about a
+# configuration, so it has no place among the configuration guards.
 
 
 def degenerate_sampler(nrm, h):
@@ -452,11 +456,19 @@ def frame_at(E, v, P, seed, a, b, c, Gp, Hed, VH):
     on `random.Random(seed)`), same target-rank / `dim R_a = 1` filter (through
     the catalogued `outer.stratum_at`, which is `seed_probe`'s stress block
     without the parts this question does not use), same `lambda` -- with two
-    deliberate differences: the `star_span_ranks` genericity guard is applied
-    (the `plane_basis` precedent), and a (Lambda-0d) failure is REPORTED
+    deliberate differences: the closed-star rank test `star_span_ranks` is
+    applied (the `plane_basis` precedent), and a (Lambda-0d) failure is REPORTED
     rather than dropped, because that is precisely where (OUT) stops
     applying.  `--pool` cross-checks `lambda` against `habitat_frame` on a
-    fixed subsample."""
+    fixed subsample.
+
+    ADOPTION JUDGEMENT (slice S2, 2026-08-06).  This is one of the two sites
+    where the coincident-hinge guard is deliberately NOT a rejection: the
+    coincidence is what (OC-7) MEASURES, and rejecting it here would delete
+    the measurement that opened the re-baselining round.  The acceptance set
+    is therefore unchanged (`star_span_ranks` only) and the composite verdict
+    `repin.star_generic` rides along in the returned dict as `'generic'`, for
+    `--pool`'s field test to compare against the local diagnostics."""
     pl = place_pencil_general(Gp, random.Random(seed))
     if pl is None:
         return None, 'no placement'
@@ -497,7 +509,9 @@ def frame_at(E, v, P, seed, a, b, c, Gp, Hed, VH):
     return {'seed': seed, 'placed': placed, 'pt': pt, 'nrm': nrm, 'fr': fr,
             'C': C, 'Vbc': Vbc, 'lam': lam, 't_a': ts[0], 'st': st,
             'a': a, 'b': b, 'c': c, 'Gp': Gp, 'Hed': Hed, 'VH': VH,
-            'P': P, 'E': E, 'v': v}, None
+            'P': P, 'E': E, 'v': v,
+            'generic': star_generic(Gp, placed),
+            'coinc': coincident_hinges(Gp, placed)}, None
 
 
 def clauses(d):
@@ -528,9 +542,12 @@ def pool():
     print("           (the same integer pool lambda.py --adv uses for its "
           "habitat leg).")
     print("   Kept: target rank, dim R_a = 1, dim V_bc = 3, rank{C_i} = 4, "
-          "star_span_ranks")
-    print("   green.  (Lambda-0d) failures are KEPT and reported, not "
-          "dropped.")
+          "the closed-star")
+    print("   rank test green -- and DELIBERATELY NOT the composite "
+          "coincident-hinge guard,")
+    print("   which is what (OC-7) measures here and is reported below "
+          "instead of rejected.")
+    print("   (Lambda-0d) failures are KEPT and reported, not dropped.")
     print(f"   rng: the placement is random.Random(seed) inside "
           f"widened.place_pencil_general;\n        nothing else here draws -- "
           f"the aux point w is fixed at (1,-2,5) and the\n        pencil "
@@ -547,6 +564,7 @@ def pool():
     xchecked = 0
     deg_tab, coinc_tab, clean_pat = {}, {}, {}
     rotor_rows, both_deg, any_deg = [], 0, 0
+    field_tab, field_extra, gen_pat = {}, [], {}
 
     for name, E, v, cmp_ in LAM.HABITATS4:
         a, b, c, Gp, Hed = outer.split_data(E, v)
@@ -612,6 +630,26 @@ def pool():
                 any_deg += 1
             if not cob and not coc:
                 clean_pat[key] = clean_pat.get(key, 0) + 1
+            if d['generic']:
+                gen_pat[key] = gen_pat.get(key, 0) + 1
+            # THE FIELD HALF OF THE ADVERSARIAL TEST (slice S2).  The
+            # constructed half lives at `repin.py --hinge`; this is the
+            # sampled one, and its provenance is measured, not invented.
+            # `repin.star_generic` is the guard the round adopts; the local
+            # (OC-7) diagnostic `cob or coc` is the hand-restriction §(K-out)
+            # applied by eye.  The guard is the WIDER test by construction (it
+            # looks at every body and every pair, the diagnostic only at the
+            # two companion ends), so one direction is a theorem and the other
+            # is the measurement: does looking everywhere find anything the
+            # two ends do not?
+            diag = bool(cob) or bool(coc)
+            field_tab[(not d['generic'], diag)] = \
+                field_tab.get((not d['generic'], diag), 0) + 1
+            assert not (diag and d['generic']), \
+                (f"{name} seed {seed}: a coincidence at a companion end that "
+                 f"`star_generic` does not see -- the guard is NOT wider")
+            if not d['generic'] and not diag:
+                field_extra.append((name, seed, d['coinc']))
             # (OUT)'s hypothesis, and -- separately -- its conclusion.
             applies = cl['d'] and cl['f'] and cl['g13'] and cl['g14'] \
                 and cl['g24'] and cl['a'] and cl['b'] and cl['c'] and cl['e']
@@ -724,6 +762,42 @@ def pool():
         "a degenerate-sampler frame did NOT force lambda_i = 0"
     assert all(not z for (side, co, z) in coinc_tab if not co), \
         "a coincidence-free frame nevertheless has lambda_i = 0"
+    print(f"\n   THE FIELD HALF OF THE COINCIDENT-HINGE GUARD'S ADVERSARIAL "
+          f"TEST (slice S2):\n     `repin.star_generic` REJECTS vs the local "
+          f"(OC-7) diagnostic at (b, c) -> count")
+    for k in sorted(field_tab, key=str):
+        print(f"         (guard rejects, diagnostic fires) = "
+              f"{tuple(bool(x) for x in k)} : {field_tab[k]}")
+    nrej = sum(v for k, v in field_tab.items() if k[0])
+    ndiag = sum(v for k, v in field_tab.items() if k[1])
+    print(f"     the guard rejects {nrej} of {n}; the hand-restriction drops "
+          f"{ndiag} of {n},\n     leaving §(K-out)'s {n - ndiag}.  The guard "
+          f"is the wider test and its rejection\n     set CONTAINS the "
+          f"diagnostic's, asserted at every frame above.")
+    if field_extra:
+        print(f"     the {len(field_extra)} frame(s) the guard catches and "
+              f"the two-end diagnostic misses\n     (a coincidence elsewhere "
+              f"in the configuration):")
+        for row in field_extra:
+            print(f"         {row}")
+        print(f"     so the two sets are NOT equal: §(K-out)'s "
+              f"hand-restriction to the {n - ndiag} frames\n     "
+              f"coincidence-free AT THE COMPANION ENDS is WIDER than the "
+              f"guard's own output,\n     which is {n - nrej} frames.  Every "
+              f"lambda_i = 0 frame carries a coincidence at\n     the hub "
+              f"the coordinate belongs to (asserted above), so the extra "
+              f"frames all\n     have both outer coordinates nonzero and "
+              f"neither reading is corrupted by the\n     other -- but a "
+              f"rate quoted over the guard's sub-pool is the STRICTER one:")
+    else:
+        print("     and the two sets are EQUAL on this pool: every "
+              "coincidence in a POOL-G\n     frame sits at a companion end, "
+              "so §(K-out)'s hand-restriction to the\n     coincidence-free "
+              "sub-pool IS the guard's output.")
+    ngen = sum(gen_pat.values())
+    print(f"     POOL-G frames the composite guard ACCEPTS: {ngen} of {n}; "
+          f"their\n       (lambda_1 = 0, lambda_4 = 0) distribution: "
+          f"{ {tuple(int(x) for x in k): val for k, val in sorted(gen_pat.items())} }")
     print("     Reading: the harness's in-plane sampler degeneracy IMPLIES "
           "lambda_i = 0 (it")
     print("     puts every single-hub interior of that hub on ONE line, so "
@@ -974,6 +1048,16 @@ def build():
                         continue
                     if not verify_pencil_witness(Gp, new)[0]:
                         continue
+                    # ADOPTION JUDGEMENT (slice S2): the SECOND deliberate
+                    # non-adoption.  (OC-4)'s whole content is that the
+                    # {lambda_1 = lambda_4 = 0} locus is reached at a point
+                    # that is NOT the free-rotor configuration, and it is
+                    # measured by counting how many of the four constructions
+                    # come out coincidence-free (3 of 4, asserted below).
+                    # Rejecting a coincident slide here would silently
+                    # re-search until the count was 4 of 4 and delete the
+                    # measurement.  So the acceptance gate stays the star-rank
+                    # test and `star_generic` is REPORTED per construction.
                     if any(r != 3 for r in
                            star_span_ranks(Gp, new).values()):
                         continue
@@ -1036,6 +1120,9 @@ def build():
             print(f"       (OC-7) marked direction aims at the hub "
                   f"neighbours {aim}; coincident hinges at b {cob}, at c "
                   f"{coc}")
+            print(f"       the composite guard repin.star_generic: "
+                  f"{star_generic(Gp, new)}"
+                  f"   (all coincidences: {coincident_hinges(Gp, new)})")
             print(f"       all four IsNondegPencilRealization conjuncts: "
                   f"{nd}" + ("" if nd else f"  {ndinfo}"))
             if not cob and not coc:

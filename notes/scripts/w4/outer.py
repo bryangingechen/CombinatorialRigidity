@@ -98,8 +98,12 @@ WHAT THE DRIVER DOES.
               a boundary, not a theorem, and is printed as such.
 
 Exact rational arithmetic throughout; no floating point.  Every sampled
-placement carries the `star_span_ranks` genericity guard (the `plane_basis`
-precedent) and a rank assert; every rng is seeded and its seed printed.
+placement carries the composite genericity guard `repin.star_generic` (the
+`plane_basis` precedent: closed-star ranks AND no two hinge lines coinciding
+at a body -- the second clause adopted 2026-08-06 by slice S2 of the
+re-baselining round, since `star_span_ranks` alone misses the free-rotor half
+of the artifact) and a rank assert; every rng is seeded and its seed
+printed.
 
     python3 notes/scripts/w4/outer.py --geom
     python3 notes/scripts/w4/outer.py --habitat
@@ -126,7 +130,8 @@ from repin import rank_at_V, seed_probe, span_basis                 # noqa: E402
 from pitch import (bracket, coords_in, det4, H_motions_vbc,        # noqa: E402
                    klein, paths_graph)
 from kslidecomb import relabel, shape_ok                            # noqa: E402
-from flanks import named_shapes, star_span_ranks                    # noqa: E402
+from flanks import named_shapes                                     # noqa: E402
+from repin import star_generic                                      # noqa: E402
 from dominance import (build_chart, h_edges, simple_paths,         # noqa: E402
                        FIXED, HABITATS)
 
@@ -231,9 +236,16 @@ def split_data(edges, v):
 
 
 def chart_point(Gp, rng):
-    """A pencil-chart placement of `G'`, with the mandatory guards: every
-    hub's closed star spans exactly its panel (`star_span_ranks`, the
-    `plane_basis` genericity guard) and `verify_pencil_witness` green."""
+    """A pencil-chart placement of `G'`, with the mandatory guards:
+    `repin.star_generic` -- every body's closed star spans exactly its panel
+    AND no two hinge lines at a body coincide -- and `verify_pencil_witness`
+    green.
+
+    Until 2026-08-06 this docstring called `star_span_ranks` alone "the
+    `plane_basis` genericity guard", which is one of the four claims F13
+    falsified: the free-rotor half of the artifact passes that test (a third
+    neighbour still spans the panel) and was measured, not rejected.  Slice
+    S2 adopted the composite here."""
     # No `UnboundLocalError` catch here since 2026-08-06: `localtest.meet_line`
     # now SIGNALS a parallel-normal draw with a zero direction, so
     # `place_pencil_general`'s own `if all(x == 0 for x in d): return None`
@@ -244,7 +256,7 @@ def chart_point(Gp, rng):
     if pl is None:
         return None
     placed, pt, nrm, hubs, nb = pl
-    if any(r != 3 for r in star_span_ranks(Gp, placed).values()):
+    if not star_generic(Gp, placed):
         return None
     ok, _info = verify_pencil_witness(Gp, placed)
     if not ok:
@@ -382,7 +394,7 @@ def geom():
             if p is None or p['dim R_a'] != 1:
                 continue
             placed, pt, nrm = p['_ctx'][0], p['_ctx'][1], p['_ctx'][2]
-            if any(r != 3 for r in star_span_ranks(Gp, placed).values()):
+            if not star_generic(Gp, placed):
                 continue
             if not lam0d(placed, nrm, b, c):
                 continue
@@ -428,7 +440,7 @@ def geom():
                 new, D = slide_x1_onto(placed, nrm, b, c, P, lamb)
                 if not verify_pencil_witness(Gp, new)[0]:
                     continue
-                if any(r != 3 for r in star_span_ranks(Gp, new).values()):
+                if not star_generic(Gp, new):
                     continue
                 g = geom_checks(new, nrm, b, c, P)
                 if g['g14'] != 0:
@@ -484,8 +496,7 @@ def geom():
                 "g14 = 0 did NOT drop the spans -- (Lambda-0f') is wrong"
             # ... and the placement really is a chart point of the habitat:
             ok, _ = verify_pencil_witness(Gp, new)
-            assert ok and all(r == 3 for r in
-                              star_span_ranks(Gp, new).values())
+            assert ok and star_generic(Gp, new)
             Vbc, ndim, _ = H_motions_vbc(E, v, a, b, c, new)
             st = stratum_at(E, Gp, new, a, b)
             print(f"       still a legal pencil realization of {name}: "
@@ -689,7 +700,7 @@ def habitat():
                 if p is None or p['dim R_a'] != 1:
                     continue
                 placed, pt, nrm = p['_ctx'][0], p['_ctx'][1], p['_ctx'][2]
-                if any(r != 3 for r in star_span_ranks(Gp, placed).values()):
+                if not star_generic(Gp, placed):
                     continue
                 if not lam0d(placed, nrm, b, c):
                     continue
@@ -873,7 +884,7 @@ def tangent():
                 if p is None or p['dim R_a'] != 1:
                     continue
                 placed, pt, nrm = p['_ctx'][0], p['_ctx'][1], p['_ctx'][2]
-                if any(r != 3 for r in star_span_ranks(Gp, placed).values()):
+                if not star_generic(Gp, placed):
                     continue
                 if not lam0d(placed, nrm, b, c):
                     continue

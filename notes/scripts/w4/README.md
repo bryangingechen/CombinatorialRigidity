@@ -14,6 +14,18 @@ three kernel-(K) research fan-out arcs — `(K-flank)` (`flanks.py`, direction A
 rename is churn until the (K) arc closes; see `notes/scripts/README.md`
 *Deliberate non-goals*.
 
+**Every acceptance gate in this directory takes the COMPOSITE genericity guard
+`repin.star_generic` since 2026-08-06** (the re-baselining round's slice S2;
+`notes/scripts/README.md` *Harness debt* item 4 and *The build plan*): closed
+stars of full rank 3 **and** no two hinge lines coinciding at a body. The
+star-rank test alone — which several docstrings here used to call *the*
+`plane_basis` genericity guard — misses the free-rotor half of the artifact.
+Two modes deliberately **report** the coincidence instead of rejecting it,
+because measuring it is their subject: `outerline --pool` and
+`outerline --build`. Twenty of this directory's 41 recorded rows moved in that
+commit; each is repointed in its owning workbook section, and the two new
+measured facts are **(AC-9)** (§(K-clos)) and **(OC-9)** (§(K-out)).
+
 Exact-ℚ numerics for the W4 decomposition recon (2026-07-30); results and
 the decomposition they feed are in `notes/Phase39-design.md`
 §"W4 decomposition recon". The drivers here form a chain (each builds on the
@@ -283,7 +295,7 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
   a failure would force a re-pin). Result: **no disproof** — half 2 holds at
   every flank shape by an exact `∃`-witness, and `hK` needs no re-pin. Every
   sampled configuration carries the four-conjunct `IsNondegPencilRealization`
-  check **and** a star-rank genericity guard (the `plane_basis` precedent);
+  check **and** the composite genericity guard `repin.star_generic` (the `plane_basis` precedent; the star-rank test alone until slice S2, 2026-08-06);
   exact ℚ throughout, on top of the whole chain. Run with `PYTHONHASHSEED=0`.
   - `--conj` (~10 s): half 2 at the 8 named shapes — class + habitat
     certification (`def = 0`, tight, 2EC, `hcard`, triangle-free), then an
@@ -437,7 +449,7 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
   condition `⟨n_u, pt(w) − pt(u)⟩ = 0`, so the derivative never leaves the
   stratum; `pt(a)`, `pt(b)`, `pt(c)`, `Π(b)`, `Π(c)` are frozen so the bad locus
   stands still (asserted). Exact ℚ throughout, sitting on `repin`/`pitch`/
-  `kslide` (and `flanks.star_span_ranks` as the `plane_basis` genericity
+  `kslide` (and `repin.star_generic` as the `plane_basis` genericity
   guard); every sampled object rank/dimension asserted. Run with
   `PYTHONHASHSEED=0`.
   - `--cap` (~20 s): the structural ceiling, before any numerics. Path-sum
@@ -527,13 +539,13 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
 
   **One pinned seed pool for the first four modes**: two splits of the tight
   control (the double-subdivided `K4`, `|V| = 16`, target 90 / `G′` target 84),
-  seeds 440–479 at chain 0 and 500–529 at chain 1, of which **34 + 29 = 63** are
+  seeds 440–479 at chain 0 and 500–529 at chain 1, of which **23 + 24 = 47** are
   valid — i.e. survive the guards *and* land on the hard stratum (`s₀ = 0`,
   `dim R_a = 1`). Each of those modes asserts every counter equals that pool and
   asserts the pool size itself, so a sampler change that silently moved the
   pool fails the run. **`--hunt` runs on three pools of its own** (random
   1000–1059, coplanar-chain 2000–2029, (Λ0d) 3000–3019, per split), printed in
-  its header and deliberately disjoint from the 63 — it exists to reach
+  its header and deliberately disjoint from the pinned 47 — it exists to reach
   configurations the pinned pool cannot contain. **Do not quote a figure from
   one pool over the other.**
   - `--transport` (~87 s): **(σ4)** `ν_u ∧ ν_w ∝ ⋆(p̂_u ∧ p̂_w)` on every edge —
@@ -546,16 +558,16 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
     `Π(a) ∩ Π(c)`.
   - `--adv` (~87 s): the adversarial half — `dim(α_{pt b} + α_{pt c}) = 5` with
     perp `★C(bc)`; `dim(β_{Π b} + β_{Π c}) = 5` with perp `★C(M)` and
-    `C(M) ∦ C(bc)`; the `predA` census (**`predAfalse = 0/63`**, so (σ6)'s
+    `C(M) ∦ C(bc)`; the `predA` census (**`predAfalse = 0/47`**, so (σ6)'s
     failure direction is *unwitnessed*); pullback legality; and the observation
-    that routes A/B at `u` **already** escape at all 63 seeds. Also probes two
+    that routes A/B at `u` **already** escape at all 47 seeds. Also probes two
     `W19` splits (the (K-res) residual habitat) over seeds 600–619 and finds
     **0** valid hard-stratum seeds — asserted to stay empty, so a successor who
     makes it nonempty is forced to update the workbook.
   - `--nondeg` (~43 s): all four `IsNondegPencilRealization` conjuncts
     (`Motive.lean:110-115`) at `u`, at `σu` (reported **per conjunct**, because
     that is the obligation), and at the route-σ witness; plus the chart's
-    binding point equations at both. `σu` nondegenerate is **observed 63/63,
+    binding point equations at both. `σu` nondegenerate is **observed 47/47,
     not proven** — the conjuncts are not self-dual.
   - `--fixed` (~1 s): σ-**equivariant** seed recipes are dead. Over ℝ with the
     project's definite polarity there is no σ-fixed pencil configuration at all;
@@ -569,7 +581,7 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
     a random hunt cannot reach it; **H2** the **constructive** failure — the
     coplanar-chain degeneration gives **53** legal, target-rank, `s₀ = 0`,
     `dim R_a = 1`, **primally nondegenerate** seeds at which dual conjuncts 2
-    and 4 FAIL at `σu`, so *Step σ4*'s 63/63 was genericity and **not** an
+    and 4 FAIL at `σu`, so *Step σ4*'s 47/47 was genericity and **not** an
     implication; **H3** the **steering** — on an explicit chart line the
     offending bracket is `τ·bracket(1)` *identically* (affine in `τ`, zero at
     `τ = 0`), so the failure locus meets the line in exactly one point, and at
@@ -651,7 +663,7 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
   stdlib only, no CAS; a `w4/` leaf beside `dominance`/`outer`/`sigma`/`closure`,
   and the one that reimplements nothing — every primitive is imported (see
   `notes/scripts/README.md`'s layering map for the full list), with the
-  `star_span_ranks` genericity guard riding in through `dominance.base_seed` and
+  composite `repin.star_generic` genericity guard riding in through `dominance.base_seed` and
   all rng seeded through `repin.seed_probe`. Run with `PYTHONHASHSEED=0` (all six
   modes verified byte-identical under two different hash seeds).
   - `--stress` (~30 s): **(ANH-1)** — the screw-circulation space of `H` supported
@@ -725,7 +737,7 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
     hypothesis at 356/357 and its **conclusion** separately at 356/356, plus the
     codimension-1 rates of every (Λ0) bracket over the same pool; **(OC-7)** the
     sampler diagnostics. `λ` cross-checked against `lambda.habitat_frame` at 20
-    frames. **Quote its rates over the 318 coincidence-free frames, never the
+    frames. **Quote its rates over the 318 coincidence-free frames, or the 299 the composite guard accepts ((OC-9)), never the
     raw 357** (*Harness debt* 4).
   - `--shapes` (~322 s): **(OC-6)** over **POOL-S** — 41 class shapes (the
     19-shape named inventory + the first 4 of each sweep family), every eligible
