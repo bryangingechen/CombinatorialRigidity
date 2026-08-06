@@ -62,7 +62,9 @@ for *organizing* this directory is here.
   **parallel** read-only research dispatches (own new script, draft to the
   scratchpad, commit nothing, coordinator lands serially), and the per-return
   landing checklist. Read it when dispatching or landing that fan-out;
-  `Pencil-informal.md`'s *State of (K)* map is the mathematical entry point.
+  `Pencil-informal.md`'s *State of (K)* map is the mathematical entry point, and
+  its *Section index* is the navigation table (per-section line ranges + status,
+  so a dispatch loads only the sections it needs).
   **The fan-out is COMPLETE** (all three landed 2026-08-05); its strategic
   aftermath is the file below.
 - **`Pencil-strategy.md`** — the Phase-39 **strategic record** written after the
@@ -185,6 +187,28 @@ phase note's *Decisions made*. **Tripwire: a `*-design.md` past ~1500 lines
 almost always has closed arcs overdue for this** (`Phase23-design.md` reached
 7,627 lines / ~167k tokens before the 2026-06-22 cleanup); the firing trigger
 is `PHASE-BOUNDARIES.md` *When this commit closes a phase*.
+
+**"Almost always" — the exception, and how to test for it in one command.**
+Before compressing, count the file's **live Lean doc-comment anchors**:
+`grep -rc '<name>.md' --include='*.lean' .`. The number decides the
+disposition, because a body-shrink deletes exactly the text those anchors
+point at — leaving a **dangling claim**, which is worse than a dangling path
+since nothing gates it.
+
+- **Few anchors → compress.** `Phase22-realization-design.md` had **8**; its
+  anchor-preserving body-shrink went 8,590 → 1,939 lines with **zero**
+  repoints. That is *why* it was cheap, and it is the precedent to cite only
+  when the count is comparable.
+- **Many anchors → freeze, and say so in the file's own header.**
+  `Phase23-design.md` (**136**) and `Phase39-design.md` (**119**, of which 84
+  target body sub-items inside three sections) are the two documented
+  exceptions: both stay frozen as live-cited technical archives, navigable by
+  an in-file arc index rather than shorter. Compression then costs repointing
+  every anchor in one commit — a deliberate round, never a side errand.
+
+A frozen design doc still accepts **appended** new arcs and header/index
+edits; what it does not accept is shrinking, deleting or renaming an anchored
+heading or sub-item.
 
 ## Phase notes
 

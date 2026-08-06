@@ -1,14 +1,68 @@
 # Phase 39 — PENCIL opening recon (R1–R3 design record)
 
-**Status: live recon record** (the `notes/<topic>-design.md` pattern,
-`notes/CLAUDE.md` *One canonical home per content type*). Written by the
-2026-07-23 opening-recon design pass against `notes/Phase39.md`'s
+**Status: FROZEN live-cited technical archive** (the `notes/<topic>-design.md`
+pattern, `notes/CLAUDE.md` *One canonical home per content type*). Written by
+the 2026-07-23 opening-recon design pass against `notes/Phase39.md`'s
 *Opening recon questions*; extended by the 2026-07-24 **W3–W5 route
 recon** (§W3–W5 route recon below — attack order, the W3 route verdict
 with a refutation of candidate (a), the revised W4/W5 route analysis
 with new discriminating numerics, and the W3 leaf decomposition with
-typechecked signatures). Once the phase's build (or close) decisions
-land in `notes/Phase39.md`, closed arcs here compress to verdicts.
+typechecked signatures), and by the 2026-07-30 recon day.
+
+> **FROZEN — do not compress, and do not delete body text** (decided
+> 2026-08-05 by the notes-reorganization pass; the second documented exception
+> to `notes/CLAUDE.md`'s ~1500-line `*-design.md` tripwire, after
+> `Phase23-design.md`). The tripwire's normal disposition — *closed arcs
+> compress to verdicts* — does **not** apply here, and the reason is
+> measurable. This file carries **119 live Lean doc-comment anchors across 17
+> files**, and **84 of them target body sub-items inside three sections**:
+> §"W5 leaf decomposition" (60 anchors, at `L4`, `L5`, `L6a`/`L6b`/`L6d`,
+> `L5-cut-i`…`v`, `L5-cut-v-a`…`f`, "Cut-arm route verdict" item 3, "Blocker
+> verdict", "Feasibility propagation", "v-f decomposition"), §"W5-L7 research
+> recon" (12, at "L7c decomposition", "Lean decomposition", "residue (iv)"),
+> and §"W5 design pass" (12, at "verdict 1"/"verdict 2"). A body-shrink would
+> leave those 84 doc-comments pointing at derivations that no longer exist — a
+> **dangling claim**, which is worse than a dangling path because nothing
+> gates it.
+>
+> The precedent cited for compressing a design doc,
+> `Phase22-realization-design.md` (8,590 → 1,939 lines with **zero** repoints),
+> had **8** anchors — that is *why* it cost nothing. `Phase23-design.md`, at
+> **136**, was frozen for exactly this reason. At 119 this file is the
+> `Phase23-design.md` case, not the `Phase22` one. `notes/Pencil-fanout.md`
+> *Shared mechanics* already treats it as frozen operationally ("no agent
+> edits … `notes/Phase39-design.md` (frozen)").
+>
+> **What is allowed:** appending a new dated recon arc, and editing this
+> header/index. **What is not:** shrinking, deleting, or renaming any section
+> heading or anchored sub-item. Compression is available only as a deliberate
+> round that repoints all 119 Lean doc-comments in the same commit — a
+> coordinator decision, never a side errand.
+
+**Arc index — navigation.** Line ranges are as of this commit; the heading text
+is the durable anchor. "Anchored" = targeted by Lean doc-comments, so its body
+is load-bearing.
+
+| arc | lines | state | Lean anchors |
+|---|---|---|---|
+| Verdict summary | 76–120 | the file's own summary | — |
+| R1 / R2 / R3 — opening recon | 121–446 | CLOSED (verdicts one-lined in `Phase39.md`) | 3 (§R1, §R3) |
+| Decomposition (W0–W5) | 447–494 | CLOSED | 1 (W0) |
+| W3–W5 route recon (2026-07-24) | 495–868 | CLOSED | 4 |
+| W5 design pass (2026-07-24) | 869–1046 | CLOSED | **12** (verdict 1/2) |
+| **W5 leaf decomposition** | 1047–2719 | CLOSED | **60** — the densest arc |
+| **W5-L7 research recon (2026-07-30)** | 2720–3238 | CLOSED (`hsplit` closed in full) | **12** |
+| (K) route-1 gate (2026-07-30) | 3239–3336 | CLOSED — locality REFUTED | — |
+| (K) non-constancy recon (2026-07-30) | 3337–3511 | CLOSED — PARTIAL, left (K-tight) | — |
+| (K) literature hunt (2026-07-30) | 3512–3589 | CLOSED — NO HIT; **canonical home of that bibliography** | — |
+| (K-bare) extension-route recon | 3590–3764 | CLOSED — NO-GO; minimal statement (K-bare-ext) | — |
+| W4 decomposition recon (2026-07-30) | 3765–3990 | **live as W4's canonical leaf list**; W4 parked | — |
+| W4-L4 identification recon (2026-07-30) | 3991–4171 | **live** with the above | — |
+| Higher-`d` note / Citations | 4172–4212 | orientation; citation record | — |
+
+The kernel-(K) *mathematics* is **not** here — it is `notes/Pencil-informal.md`
+(the workbook) and `notes/Pencil-strategy.md`. This file is the dated recon
+record and the W5/W4 leaf decompositions.
 
 Methods used: KT primary source (`.refs/`
 katoh-tanigawa-2011-molecular-conjecture.pdf; page pointers verified

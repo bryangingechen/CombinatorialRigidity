@@ -50,6 +50,41 @@ asked, what method was used, what was refuted — is
 *Decisions made*. This file carries only the mathematics, in its current
 state.
 
+## Section index — navigation
+
+**Navigation only.** The *State of (K)* map below is and remains the single
+mathematical entry point; this table exists so that a dispatch can load the two
+or three sections it needs rather than the whole file. Line ranges are **as of
+this commit** — if one looks wrong, grep the `## §(…)` heading, which is the
+durable anchor. The *tag* column is the section's prefix for **new** labels
+(`notes/Pencil-labels.md` clause L1); statuses are one-word pointers to the
+section's own verdict block and the gap-map row, which stay authoritative.
+
+| § | lines | status (owner: the section's verdict block) | tag |
+|---|---|---|---|
+| *Shared dictionary* + test shapes `W19`/`S29` | 88–166 | serves **both** workbooks | `SD-` |
+| ***State of (K)* — the gap map** | 167–309 | **the entry point; a pass updates it in place** | — |
+| §(K-tight) | 310–569 | criterion proven-informally; **(K-tight) open — the phase's hardest item** | `KT-` |
+| §(K-pitch) | 570–1003 | (T1)–(T5) proven-informally; closed at `ℓ = 3`; uniform form open | `PT-` |
+| §(K-slide) | 1004–1295 | (S1) proven-informally; settled per member | `SL-` |
+| §(K-slide-cl) | 1296–1587 | reduction proven; **refuted as stated**; the `∃Σ` form open | `SC-` |
+| §(K-slide-comb) | 1588–1939 | **refuted as a class statement**; (C6)/(C7) proven-informally | `SB-` |
+| §(K-flank) | 1940–2492 | per shape, not a uniform gap; half 2 proven-informally | `FL-` |
+| §(K-pure) | 2493–3048 | direction C **refuted**; (PC-Z)/(PC-OBS) proven-informally; **(K-chord)** the successor | `PC-` |
+| §(K-Λ) | 3049–3970 | **refuted as an independent gap**; (Λ1) an identity; **(OUT)** lives here | `Λ` |
+| §(K-dom) | 3971–4364 | dominance holds at every probed habitat; **C1 not a route** | `DM-` |
+| §(K-σ) | 4365–5040 | **route σ a CANDIDATE, `ℝ`-only** — the one live candidate | `σ` |
+| §(K-ind) | 5041–5386 | **refuted as a route** | `IN-` |
+| §(K-Δ) | 5387–5653 | **NO HIT — the lead is discharged** | `DL-` |
+| §(K-bare-ext) | 5654–5692 | open, nothing being developed | `BE-` |
+
+**Live vs settled**, using the division of the 2026-08-05 reorganization pass.
+Live: §(K-tight), §(K-Λ), §(K-σ), §(K-pure), and **(K-wit)** (owned jointly by
+§(K-pitch) *Step 3* and §(K-Λ) *Steps 3–6*). Settled or refuted, so **do not
+re-derive**: §(K-slide-comb), §(K-Δ), §(K-ind), §(K-slide-cl) as stated, and
+§(K-dom)'s C1 verdict. The gap map's *Settled, so not to be re-derived* blocks
+are authoritative for the per-item detail.
+
 ## Shared dictionary (used by every section of both workbooks)
 
 Body-hinge at `d = 3`: `D = bodyBarDim 3 = 6`, hinge multiplicity `5`.

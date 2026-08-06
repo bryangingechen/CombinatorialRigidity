@@ -234,6 +234,26 @@ This category is essentially a structured re-run of `CLAUDE.md`
 *When this commit closes a phase* → *Review project organization*,
 applied to phases that have been closed for a while.
 
+**Standing §D candidate — a directory structure for `notes/`.** Recorded
+2026-08-05 by the Phase-39 notes-reorganization pass, deliberately **not** done
+there. `notes/` is 110+ flat `.md` files; grouping them (per-phase or per-topic
+subdirectories) is plausible but touches the project-wide reading order,
+`notes/CLAUDE.md`'s *Files in this directory* map, and cross-references in ~40
+phase notes. Two findings should shape whoever picks it up:
+
+- **A directory is not a label namespace.** The Phase-39 pass measured this: the
+  (C6)/(C7) collision that motivated it was *already* cross-file, and splitting
+  an arc into its own file had not prevented it, while topic-tagged label
+  families never collided at all. Reorganize directories for *findability and
+  context budget*, never as a fix for naming collisions — that fix is a registry
+  plus a minting rule (`notes/Pencil-labels.md` is the worked example).
+- **Convention-named files have gravity.** `notes/PhaseN.md` is reading-order
+  step 3 in the top-level `CLAUDE.md` and is named in `PHASE-BOUNDARIES.md`;
+  `notes/PhaseN-design.md` is pinned by this file's sub-lettered-phase rule and
+  can carry 100+ Lean doc-comment anchors. Moving those is a much larger change
+  than moving topic notes, and should be decided for the convention as a whole,
+  not one phase at a time.
+
 ## Per-round work log
 
 Every cleanup round gets its own work log under `notes/`, named to
