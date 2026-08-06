@@ -13,7 +13,9 @@ user-adjudicated — landed: **§(K-grid)** (T — the tight stratum reduced to 
 **§(K-mech)** (M — both *P8* anomalies mechanised, 6v11e rescued), and the §(K-ann)
 continuation Steps A10–A13 (R — (ANH-R1) one-point-decidable, pointwise refuted). **The
 THIRD fan-out — G / Q / O, user-adjudicated 2026-08-06, dispatched SERIALLY O → Q → G — is
-IN FLIGHT** (specs `notes/Pencil-fanout.md` §"Third fan-out"; see *Hand-off*).
+IN FLIGHT: O LANDED** (§(K-out) Steps O9–O12 — the combinatorial half PROVEN, (OC-8) reduced
+to one explicit line), **Q is the next dispatch** (specs `notes/Pencil-fanout.md` §"Third
+fan-out"; see *Hand-off*).
 Fan-out direction letters are re-used across dates — **always date them**.
 
 ## Current state
@@ -82,39 +84,22 @@ escape remains untouched by every one of them**.
 > `hK` and `hbareSplit` stay carried as pinned; **W4 stays PARKED**; the phase does **not** close.
 
 The other candidate continuations, unselected, without preference; each has a canonical home
-that carries the detail, so they are **not** restated here:
+that carries the detail, so they are **not** restated here. (The former items (a)/(g) of this
+list — the mechanisms pass and the (ANH-R1) probe — are **DONE**, landed as second-fan-out
+directions M and R; their letters survive only in cross-references.)
 
-- **(a)** the **mechanisms pass** — **RUN 2026-08-06 as fan-out direction M; canonical home
-  §(K-mech)**: both *P8* anomalies mechanised in one calculus (the welded flex (MX-6), the
-  pole-cluster load (MX-4)/(MX-5)), **6v11e rescued** ((MX-7) — the slide device closes it after
-  all), the σ rider settled NO ((MX-8)), the `|V°| ≤ 6` predictor measured complete-and-sound
-  with one new (W4)-failing shape found-and-explained ((MX-9)). The letter stays for cross-refs;
-  the item is **done**.
-- **(b)** **(K-wit)**, the single live form of the pitch route at companion splits: §(K-Λ)
-  supplies its necessary-and-sufficient companion form, the two-point failure locus (now known
-  to be a σ-orbit) and the side conditions (Λ0d)/(Λ0f′). *(2026-08-06, §(K-out)):* its `k = 4`
-  sufficient route **(OUT)** is now measured — *available* pointwise but **never automatic**,
-  and **(OC-3) rules out any counting route to it**; the residue is (OC-8).
+- **(b)** **(K-wit)**, the single live form of the pitch route at companion splits (§(K-Λ);
+  §(K-out)'s (OC-3) rules out any counting route to its (OUT) shortcut, and since direction O
+  the (OC-8) residue is a **containment** question — §(K-out) Steps O9–O12).
 - **(c)** the **W4 build** — fully decomposed and buildable, but **PARKED** by the standing
-  2026-08-05 adjudication holding the Lean back until the research yields *"an informal proof or
-  disproof or any results that would be significant as standalone pieces of math"*. It does not
-  open without a fresh user adjudication.
-- **(d)** the **companion-length dichotomy** as an organizing frame (§(K-dom) *D7*): `k = 3`
-  closed by §(K-pitch)'s bracket monomial, `k ≥ 4` by dominance at every shape probed — an
-  *observation*, not a proof. The concrete unprobed item is `k ≥ 4` with a **parallel `G°`
-  edge** (`P21`-type), where §(K-pure) *P4* locates a separate obstruction.
-- **(e)** the residual of §(K-Λ) item (vii): whether a class shape can carry **two or more hubs
-  on a length-4 companion's interior**. No swept family realizes one.
-- **(f)** *(2026-08-05; U1 + U2 RUN 2026-08-06 as direction A, §(K-ann))* the **three ranked live
-  entries of `notes/Pencil-strategy.md` §4.6**: U1 **half delivered** (the named move and the
-  bracket formula, not their inputs), U2's `E(H)` ground set survives with its cocircuit/circuit
-  duality corrected, **U3** (`hK` as a non-existence) still unrun.
-- **(g)** **(ANH-R1)** — **RUN 2026-08-06 as fan-out direction R; canonical home §(K-ann)
-  Steps A10–A13**: one-point-decidable per shape ((ANH-9)), discharged at the generic point of
-  every probed triple ((ANH-10), 26/26 + 58/58), bad locus **inhabited** by exact rational
-  chart points ((ANH-11)/(ANH-12)) so no placement-blind route exists, "easier or merely
-  smaller" settled as **merely smaller**. **(ANH-R1) itself stays OPEN**; the letter stays for
-  cross-refs; the *probe* is done.
+  2026-08-05 Lean-hold adjudication; does not open without a fresh user adjudication.
+- **(d)** the **companion-length dichotomy** as an organizing frame (§(K-dom) *D7*); the
+  concrete unprobed item is `k ≥ 4` with a **parallel `G°` edge** (`P21`-type, §(K-pure) *P4*).
+- **(e)** the residual of §(K-Λ) item (vii): **two or more hubs on a length-4 companion's
+  interior** — no swept family realizes one.
+- **(f)** `notes/Pencil-strategy.md` §4.6's ranked shortlist: U1 **half delivered**, U2's
+  ground set survives (its cocircuit/circuit duality corrected), **U3** (`hK` as a
+  non-existence) still unrun.
 
 **Read `notes/Pencil-strategy.md` before choosing anything else** — the post-fan-out strategic
 record (why class uniformity resists, what the KT formalization yielded, the candidate stronger
@@ -232,12 +217,12 @@ discharge (residue (iv)) is CLOSED too**. The landed successor
 > post-second-fan-out hand-off; route σ's Lean half NOT selected) is IN FLIGHT, dispatched
 > SERIALLY O → Q → G** — specs, rungs and the leads-3+4 merge rationale:
 > `notes/Pencil-fanout.md` §"Third fan-out"; label reservations: `notes/Pencil-labels.md`.
-> **O** = §(K-out) continuation (widen the combinatorial sweep past `|V°| ≤ 5`, then the
-> (OC-8) attack via the symbolically tractable `L_b ⊄ R₁` non-vanishing); **Q** = §(K-ann)'s
-> per-shape M2 identity `C(H/P − β) ≢ 0` (decisive both ways for (ANH-R1) per shape);
-> **G** = §(K-grid)'s (GR-4)+(GR-6), the T/R convergence target — discharging both closes `hK`
-> on the tight stratum. The coordinator lands each return (fan-out landing checklist) before
-> dispatching the next.
+> **O LANDED** (this commit — §(K-out) Steps O9–O12, one-lined in *Decisions made*, the
+> workbook section the canonical home). **The next dispatch is Q** = §(K-ann)'s per-shape M2
+> identity `C(H/P − β) ≢ 0` (decisive both ways for (ANH-R1) per shape; opus rung), then
+> **G** = §(K-grid)'s (GR-4)+(GR-6), the T/R convergence target (top rung) — discharging both
+> closes `hK` on the tight stratum. The coordinator lands each return (fan-out landing
+> checklist) before dispatching the next.
 >
 > Deliberate non-goals: (Λ0), (Λ1), the `g₁₄` clause, §(K-ind), §(K-Δ), **§(K-clos)'s field
 > question**, **§(K-ann)'s settled batch** ((ANH-1)–(ANH-6), (SD-6)) and **§(K-out)'s settled
@@ -303,6 +288,15 @@ survey — incl. IDENT-PANEL, the nearest neighbour — is `notes/IdeaBacklog.md
 Reverse-chronological, one line per landing; full derivations live in git,
 `notes/Phase39-design.md`, and (for the (K) arc) the workbook section named in each entry, which
 is the canonical home a successor reads.
+
+- **Third fan-out, direction O LANDED — §(K-out) Steps O9–O12: the combinatorial half PROVEN,
+  (OC-7)'s necessity clause REFUTED, (OC-8) reduced to one explicit line** (2026-08-06,
+  `outerwide.py`/`outerwide.m2`; canonical home workbook **§(K-out)**). (OC-10) the availability
+  map is forced (items 1–2 struck; θ(3,4,5) the unique theta member; an F11 self-caught proof
+  repair — `hnoRigid` load-bearing); (OC-12) at degree-3 hubs `λ₁ = 0 ⟺` coincident hinge off
+  `{p = pt(b)}`; (OC-13)/(OC-14) the bad locus is one panel line `C₀`, inhabited by 38/38
+  constructed nondegenerate points; (OC-16) `Δ = [a,u,b]·C₀(pt b) ≢ 0` at the `ℓ_min = 5`
+  frame's generic point. (OC-8) stays OPEN as a containment question; uniformity untouched.
 
 - **Second fan-out, direction R LANDED — §(K-ann) Steps A10–A13: (ANH-R1) one-point-decidable,
   discharged at every probed triple, and REFUTED pointwise** (2026-08-06, `shrink.py`; canonical

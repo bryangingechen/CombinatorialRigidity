@@ -403,6 +403,9 @@ re-check session budget before dispatching nothing further / the next round.
 
 ## Third fan-out — prepared 2026-08-06 (directions G / Q / O); dispatched SERIALLY, O → Q → G
 
+**Landing status: O LANDED 2026-08-06** (§(K-out) Steps O9–O12, (OC-10)–(OC-16);
+drivers coordinator-re-run, all five modes byte-identical); **Q is next**, then G.
+
 **User-adjudicated 2026-08-06**, this session, immediately after the second
 fan-out landed: presented with the *Hand-off* blockquote's five live leads
 (no pre-selection), the user selected **all four research leads** — (1) the
