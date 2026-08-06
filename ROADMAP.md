@@ -153,7 +153,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 36. Proof automation: `grind` adoption + tactic-smell sweep (post-program) — AUTOMATE | `CombinatorialRigidity/` (internals-only) | ✓ Complete — build-neutral rw→simp/grind sweep, headline axioms unchanged (see `notes/Phase36.md`) |
 | 37. `Molecular/` fragility-zone tactic sweep (post-program) — AUTOMATE-Z | `Molecular/{AlgebraicInduction,RigidityMatrix}/` + ScrewSpace-carrier files (internals-only) | ✓ Complete — build-neutral rw→simp sweep (103 collapses / 17 reverts; going-in NO-GO overturned to GO), headline axioms unchanged (see `notes/Phase37.md`) |
 | 38. Long-proof de-duplication / missing-abstraction extraction (post-program) — FACTOR | `Molecular/` + top-level `Framework` API (internals-only) | ✓ Complete — shared engines/glue extracted from the 10 longest proofs (net −365 Lean lines; all 17 headline axioms unchanged, re-verified), no new mathematics (see `notes/Phase38.md`) |
-| 39. Hinge-pencil molecular conjecture (post-program) — PENCIL | `Molecular/Molecule/Pencil/` (+ `Meet.lean` adders), `pencil.tex` | ◐ In progress (W0–W5 complete; W4 route 3(b) adjudicated & parked pending a standalone-significant informal result; the kernel-(K) research arc is at 17 docs+scripts-only dispatches and **class uniformity is still untouched**; the one live candidate is **route σ**, resting on obligation 1, whose **numerics half is now done** — the dual conjuncts are *not* implied, but two of four are free **at `ℝ`** and the steering works exactly; the remaining half is Lean, is **blocked by the standing Lean-hold adjudication**, and carries an open **field-scope** gap (`σ` is `ℝ`-only in tree while `hK` is field-general) — see `notes/Phase39.md`, workbook `notes/Pencil-informal.md` §(K-σ)) |
+| 39. Hinge-pencil molecular conjecture (post-program) — PENCIL | `Molecular/Molecule/Pencil/` (+ `Meet.lean` adders), `pencil.tex` | ◐ In progress (W0–W5 complete; three carried items remain — `hcontract` (W4, parked) and the kernels `hK` / `hbareSplit`; the kernel-(K) research arc is at 21 docs+scripts-only passes with **class uniformity still untouched**, and the next direction is an open user adjudication — see `notes/Phase39.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -1146,15 +1146,20 @@ named kernels — (K)/`hK` (the escape, research open) and
 (K-bare)/`hbareSplit` (the bare half off-feasibility, adjudication
 open) — with W4 (constrained-family route, `hcontract`) to follow.
 Since 2026-08-02 the phase has run a **docs+scripts-only kernel-(K) research
-arc** (17 dispatches as of 2026-08-05): the disproof risk is removed, six
-named gaps or routes are refuted-or-superseded, the arc gained its first
-class-uniform positive, a Macaulay2 symbolic layer landed — and **class
-uniformity of the escape is untouched by every one of them**. One **candidate**
-closure is now on the table (route σ, the polarity applied to the seed),
-resting on a single obligation whose numerics half is discharged and whose
-Lean half is held by the standing Lean-hold adjudication — and which is, as
-landed machinery, an `ℝ`-only construction aimed at a field-general `hK`.
-Hand-off → `notes/Phase39.md`.
+arc** (21 passes as of 2026-08-06): the disproof risk is removed, seven named
+gaps, routes or constructions are refuted-or-superseded, the arc gained its
+first class-uniform positive and then its first *recipe* (a formula rather
+than a search), a Macaulay2 symbolic layer landed — and **class uniformity of
+the escape is untouched by every one of them**. One **candidate** closure is
+on the table (route σ, the polarity applied to the seed), resting on a single
+obligation whose numerics half is discharged and whose Lean half is held by
+the standing Lean-hold adjudication; its **field scope is settled**
+(2026-08-06 — the polarity generalizes, so `ℝ` is the *narrowest* choice
+rather than a restriction). A **harness re-baselining round** then cleared all
+four recorded numerics-harness debt items across four slices, re-running 260
+driver invocations and moving 21 figures, each repointed in the section that
+owns it. The next direction is an **open user adjudication** among three
+contenders. Hand-off → `notes/Phase39.md`.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 

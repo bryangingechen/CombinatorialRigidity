@@ -172,9 +172,6 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
   C) q` (design doc's W0 pin) is landed only as its two forward implications; the reverse arms
   need a `complementIso` involution lemma, not in tree — deferred, **off every critical path**
   (§(K-σ) *Step σ6*: route σ does not need it, and sketches the route to it).
-- **Doc hygiene, not mathematics:** ROADMAP §39 and its *Status* row are stale as of 2026-08-06
-  — they still count 17 kernel-(K) dispatches / six refuted gaps and call the **field-scope gap
-  OPEN**, which §(K-clos) SETTLED. A status-surface sync is owed; it blocks no research.
 - **Harness debt — ALL FOUR ITEMS CLEARED, round CLOSED** (2026-08-06, S1–S4). Canonical home
   `notes/scripts/README.md` *Harness debt* → the **CLOSED** block, which carries per-item status,
   the cost ledger, the **two prohibitions the round lifts**, the three positive rules it leaves,
