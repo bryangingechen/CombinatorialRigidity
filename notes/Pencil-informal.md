@@ -3611,9 +3611,14 @@ result is an exact pencil realization with
 - `g₁₄ = 0` while `g₁₃, g₂₄ ≠ 0` and **all four middle brackets survive**, so
   (Λ0a), (Λ0b), (Λ0c), (Λ0d), (Λ0e) and the recorded (Λ0f) all hold;
 - **both spans drop, `3 → 2`** — (Λ0f′) predicts exactly this, and the
-  recorded (Λ0f) predicts the opposite: `lambda.omega_curves`' own coded
-  equivalence **fires as an `AssertionError`** at these points (caught and
-  reported by `outer.py`, never repaired — §4 convention 5);
+  recorded (Λ0f) predicts the opposite. Until 2026-08-06 that showed up as
+  `lambda.omega_curves`' own coded equivalence **firing as an
+  `AssertionError`** here, caught and reported by `outer.py` but not repaired
+  (harness-debt item 2). **Repaired by re-baselining slice S3**
+  (`notes/scripts/README.md` *The build plan*): `omega_curves` now codes
+  (Λ0f′), so at these four points it **accepts** and reports the drop to
+  `(2, 2)` with `g₁₄` the single vanishing factor — the criterion and the
+  independent `raw_spans` measurement now agree instead of contradicting;
 - the placement is still **target-rank with `dim R_a = 1`**, i.e. a *good
   seed* on the hard stratum, with `dim V_bc = 3`.
 
@@ -3948,7 +3953,7 @@ Per mode, what is asserted:
 | `lambda0.m2` (P5): the missing `g₁₄` clause | not vacuous — a degeneration killing **only** `g₁₄` keeps (Λ0a,b,c,e) + all four middle brackets and drops **both** spans |
 | `lambda0.m2` run time | **0.1 s** (the `a`-line parameter `t` never becomes an indeterminate) |
 | `outer.py --geom`: (Λ0g) | asserted in **both** directions at **12** (seed, companion) pairs (4 habitats × 3 hard-stratum seeds); `g₁₄ ≠ 0` at every one |
-| `outer.py --geom`: the constructed `g₁₄ = 0` point | **4/4 habitats**; `g₁₃, g₂₄ ≠ 0` and all four middle brackets survive; both spans **3 → 2**; still **target-rank, `dim R_a = 1`, `dim V_bc = 3`**; `lambda.omega_curves`' coded (Λ0f) equivalence **raises** at each |
+| `outer.py --geom`: the constructed `g₁₄ = 0` point | **4/4 habitats**; `g₁₃, g₂₄ ≠ 0` and all four middle brackets survive; both spans **3 → 2**; still **target-rank, `dim R_a = 1`, `dim V_bc = 3`**. **Repointed 2026-08-06** (re-baselining slice S3, the round's single moved figure): `lambda.omega_curves` used to **raise** at each of the four — it coded the superseded (Λ0f) — and now codes (Λ0f′), so it **accepts** the point and *predicts* the drop, reporting `(span ω⁺, span ω⁻) = (2, 2)` with `(g₁₃, g₁₄, g₂₄) ≠ 0` = `(True, False, True)`. This is (Λ0f′)'s Gram half confirmed by the harness's own criterion rather than by the driver's independent `raw_spans` alone |
 | `outer.py --geom`: does the third branch *bite*? | **0 of 4** — the habitat's own `λ` annihilates neither collapsed span, `Q(z(t)) ≢ 0` (deg 4) |
 | `outer.py --habitat`: the named inventory | **7** named shapes carry a length-4 companion (θ(3,4,5), NT21, NT24, NT30, the `dominance` duplicates, and the `K4` menu-blocked flank `(1,1,3,5,3,5)`); **48** (split, seed, companion) triples, `g₁₄ ≠ 0` at every one |
 | `outer.py --sweep`: the systematic sweep | **1357** class shapes with a length-4 companion, **4280** (split, companion) pairs, **4280** placed exactly — `g₁₄ = 0` at **0** |

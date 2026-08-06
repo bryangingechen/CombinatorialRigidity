@@ -398,9 +398,12 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
   - `--span` (~20 s): the two `a`-line curves `ω⁺(t)`, `ω⁻(t)` — degrees
     `≤ 3`/`≤ 2`, both spans `= 3` (**not** 4 — the pass's decisive negative
     measurement), identified as `S ∩ C(M)^{⊥B}` / `S ∩ C(bc)^{⊥B}` with
-    annihilators `⟨p⁺⟩`/`⟨q⟩`, and the bracket equivalence **(Λ0f)** in both
-    directions. **164 frames** over 38 local-chart strata + 4 habitats, uniformly
-    `(3,3,3,2)`.
+    annihilators `⟨p⁺⟩`/`⟨q⟩`, and the bracket equivalence — since
+    **slice S3, 2026-08-06**, the widened **(Λ0f′)**
+    `span ω⁺ = 3 ⟺ p⁺₂p⁺₃·g₁₃g₁₄g₂₄ ≠ 0` rather than the superseded (Λ0f) —
+    in both directions. **164 frames** over 38 local-chart strata + 4 habitats,
+    uniformly `(3,3,3,2)`; all 164 have `g₁₃g₁₄g₂₄ ≠ 0`, which is why the
+    widening moved no figure here.
   - `--dichot` (~1 s): **(Λ2)** — `Q(z(t)) ≡ 0` exactly at `λ ∝ p⁺` / `λ ∝ q`,
     with a generic `λ` giving `≢ 0` — and **(Λ3)** `★r ∝ C(bc)` with
     `C(bc) ∉ Λ²Π̂(b)`, so route A escapes in that branch. 18 frames, 9 strata.
@@ -496,8 +499,12 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
     construction: slide `pt(x₁)` inside `Π(b)` onto the line `b–(C₄ ∩ M)`,
     producing at **all four** habitats an exact pencil realization with
     `g₁₄ = 0`, every other (Λ0) clause intact, both spans `3 → 2`, and still
-    **target-rank with `dim R_a = 1`**. `lambda.omega_curves`' coded (Λ0f)
-    equivalence raises there — caught and reported, never repaired.
+    **target-rank with `dim R_a = 1`**. `lambda.omega_curves`' coded
+    equivalence used to **raise** there (it coded the superseded (Λ0f));
+    since **re-baselining slice S3, 2026-08-06** it codes (Λ0f′) and
+    **accepts** the point, reporting `(span ω⁺, span ω⁻) = (2, 2)` with
+    `g₁₄` the single vanishing Gram factor. That printed line is the round's
+    one moved figure.
   - `--habitat` (~45 s): the named inventory (`lambda`, `dominance`, `flanks`)
     — 7 shapes carry a length-4 companion; 48 (split, seed, companion) triples
     at hard-stratum target-rank seeds, `g₁₄ ≠ 0` at every one.

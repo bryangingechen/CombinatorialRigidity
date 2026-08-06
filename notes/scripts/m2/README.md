@@ -212,8 +212,10 @@ output unchanged.
 
   (Λ0f) as recorded carries only the first two factors of each. `g13·g24 ≠ 0`
   is `rank Q|_S = 4` (the driver checks `det Gram = (g13·g24)²`), asserted
-  elsewhere in the harness but never linked to the span; **`g14 ≠ 0` is
-  asserted nowhere**. Block (P5) settles that this is a correction rather than
+  elsewhere in the harness but never linked to the span; **`g14 ≠ 0` was
+  asserted nowhere** until 2026-08-06, when re-baselining slice S3 coded the
+  full (Λ0f′) into `lambda.omega_curves` (`../README.md` *Harness debt* item
+  2). Block (P5) settles that this is a correction rather than
   pedantry: it degenerates `C₄`'s direction onto `C₁`'s (`v2 = λu2, v3 = λu3`),
   which kills `g14` while **every** recorded (Λ0) clause — (Λ0a) `rank{C_i}=4`,
   (Λ0b) `S ∩ T = 0`, (Λ0c) `rank[m;n] = 2`, (Λ0e) `C(M) ∉ S`, and all four

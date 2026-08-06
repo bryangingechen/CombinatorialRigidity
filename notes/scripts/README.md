@@ -14,7 +14,8 @@ primitive already exists (so you don't reimplement one); §2 tells you where a
 new module goes; §3 is the reproduce table; §4 is the mandatory discipline;
 *Divergences* lists the same-named-but-different functions that must **not** be
 merged; *Harness debt* lists the parked defects and — **OPEN since 2026-08-06, with
-slices S1 and S2 landed and only S3/S4 left** — the re-baselining round clearing
+slices S1, S2 and S3 landed (all four debt items CLEARED) and only the docs-only
+S4 left** — the re-baselining round clearing
 them, whose *The build plan* subsection is what a build dispatch runs against; *Deliberate non-goals* lists two things a future
 session should leave alone. §§1–4 are about the **Python** harness; the M2 layer adds four
 conventions of its own on top of them (`m2/README.md`), the first of which is
@@ -206,7 +207,7 @@ The two `build_rigidity`s take different arguments and return different tuples
 | a **guarded** pencil-chart placement of `G′` (star-rank + `verify_pencil_witness` checks; the parallel-normal draw is rejected upstream by `place_pencil_general` since 2026-08-06) | `chart_point` | `outer` |
 | target rank + `dim R_a` at an **arbitrary** (e.g. hand-modified) placement — what `seed_probe` cannot do, since it samples from an integer seed | `stratum_at` | `outer` |
 | `lambda.omega_curves`-shaped frame dict at an arbitrary placement | `build_frame` | `outer` |
-| the two `ω±` curve families with **no** (Λ0f) assertion | `raw_span_bases` / `raw_spans` | `outer` |
+| the two `ω±` curve families with **no** (Λ0f′) assertion — an independent cross-check of `lambda.omega_curves`' coded criterion | `raw_span_bases` / `raw_spans` | `outer` |
 
 `plane_basis` exists in three degenerate variants — **read *Divergences*
 before touching any of them.** `rvec3` likewise.
@@ -500,7 +501,7 @@ arcs too.
 | `python3 notes/scripts/w4/pure.py --pure` | 187 s | ibid. (the invariant mismatch; the free-bar contrast) |
 | `python3 notes/scripts/w4/pure.py --parallel` | 4 s | ibid. (the corrected parallel-`G°`-edge row) |
 | `python3 notes/scripts/w4/lambda.py --witt` | 13 s | workbook §(K-Λ) ((Λ0′) Witt, (Λ1) the rank-2 factorization) |
-| `python3 notes/scripts/w4/lambda.py --span` | 20 s | ibid. ((Λ0f) and the two `a`-line spans; 164 frames, `(3,3,3,2)`) |
+| `python3 notes/scripts/w4/lambda.py --span` | 20 s | ibid. ((Λ0f′) — the widened criterion since slice S3 — and the two `a`-line spans; 164 frames, `(3,3,3,2)`) |
 | `python3 notes/scripts/w4/lambda.py --dichot` | 1 s | ibid. ((Λ2) the two-point dichotomy, (Λ3) `★r ∝ C(bc)`) |
 | `python3 notes/scripts/w4/lambda.py --habitat` | 25 s | ibid. (end-to-end at 4 habitats + the `ℓ = 3` corollary at θ(3,3,6)) |
 | `python3 notes/scripts/w4/lambda.py --l56` | 0 s | ibid. (`ℓ = 5,6` refuted through the (T5) frame) |
@@ -509,7 +510,7 @@ arcs too.
 | `python3 notes/scripts/w4/dominance.py --jac` | 57 s | ibid. (the rank table against `dim Gr(3,6) = 9`) |
 | `python3 notes/scripts/w4/dominance.py --far` | 28 s | ibid. (the (T5) far block `3(k−3)`, attained) |
 | `python3 notes/scripts/w4/dominance.py --validate` | 19 s | ibid. (three models for `V_bc`; two derivative routes; the secant test) |
-| `python3 notes/scripts/w4/outer.py --geom` | 26 s | workbook §(K-Λ) *Step 3a* ((Λ0g); the constructed `g₁₄ = 0` chart point at all 4 habitats) |
+| `python3 notes/scripts/w4/outer.py --geom` | 26 s | workbook §(K-Λ) *Step 3a* ((Λ0g); the constructed `g₁₄ = 0` chart point at all 4 habitats). **Its `lambda.omega_curves` line moved in slice S3** — the coded criterion now accepts the point and reports spans `(2,2)` instead of raising |
 | `python3 notes/scripts/w4/outer.py --habitat` | 45 s | ibid. (the named inventory, 48 triples) |
 | `python3 notes/scripts/w4/outer.py --sweep` | 18 s | ibid. (1357 class shapes, 4280 pairs; the (Λ0i) coverage split) |
 | `python3 notes/scripts/w4/outer.py --tangent` | 45 s | ibid. (`d g₁₄ ≠ 0` on the chart tangent space, 684/684) |
@@ -695,7 +696,7 @@ figure-invariant): `rref`, `rank`/`rank_exact`, `nullspace`, `left_nullspace`,
 `neighbors` (`kbare_common`, `n9`); `K4`/`K5_minus_matching` (three copies:
 `localtest`, `probe_zero`, `run_habitats`).
 
-## Harness debt — four items; **1, 3 and 4 CLEARED 2026-08-06 by slices S1+S2; only item 2 (S3's) remains**
+## Harness debt — four items, **ALL FOUR CLEARED 2026-08-06** by slices S1+S2+S3
 
 Named as a list (2026-08-05; item 4 added 2026-08-06) so a successor does not
 rediscover them one at a time. **The debt was one-directional and it
@@ -720,11 +721,17 @@ landed**, so read each item's status line before acting on it.
    internal use in `sample_local`; `widened` is the one usually forgotten, and
    it is the one that mattered, since `place_pencil_general` is where the raise
    escaped into the whole `w4/` chain.
-2. **`lambda.omega_curves`' coded (Λ0f) equivalence raises at `g₁₄ = 0`.** That
-   point became *reachable* only when `outer.py --geom` constructed it
-   (2026-08-05); the driver catches and reports the raise, never repairs it
-   (workbook §(K-Λ) *Step 3a*). The coded equivalence is the **superseded**
-   (Λ0f), not the widened (Λ0f′), which is the underlying reason.
+2. **CLEARED (S3, 2026-08-06) — `lambda.omega_curves` codes the widened
+   (Λ0f′).** It used to code the **superseded** (Λ0f), whose bracket
+   equivalence carries the two middle brackets but not the three Gram factors
+   `g₁₃g₁₄g₂₄`, so it raised at a `g₁₄ = 0` frame — a point that became
+   *reachable* only when `outer.py --geom` constructed it (2026-08-05), and
+   which the driver could then only catch and report (workbook §(K-Λ)
+   *Step 3a*). The two asserts now test `Π± ≠ 0` in full, so the criterion
+   *predicts* the drop rather than contradicting it; with `strict=False` the
+   returned off-pattern dict carries `gram = (g₁₃, g₁₄, g₂₄)` so a consumer
+   can tell a middle-bracket failure from a Gram one. One figure moved,
+   `outer.py --geom`'s, repointed in the same commit.
 3. **CLEARED (S1, 2026-08-06) — `star_span_ranks` moved down to `repin`.** It
    had six consumers — `flanks` itself plus the five modules that import it
    (`dominance.py:93`, `sigma.py:58`, `outer.py:129`, `closure.py:56`,
@@ -911,7 +918,7 @@ four invocations each. Reverse-import closures computed from the landed
 |---|---|---|---|
 | **S1** ✅ **LANDED 2026-08-06** | `escape/localtest.py`, `w4/repin.py`, `w4/flanks.py`, `w4/outer.py`, `w4/sigma.py` — **plus `escape/n9.py`, `w4/pitch.py`, `w4/lambda.py`** for the addendum below (all three already inside the closure, so no extra obligation) | `localtest`'s closure: **90 rows / 96 invocations** (everything except `escape/{localize_zero,probe_disjunction,probe_zero,run_habitats,pencil_escape}`, all of `kbare/`, `w4/{hybrid_gates,no_good_search,nogood_subdiv,saferes}`, `m2/`). ~99 min per pass. | **90/90 byte-identical.** Any non-identical row is a bug *in S1*. **Achieved:** 96/96 invocations `rc=0`, 95 byte-identical, `flanks.py --conj` identical modulo its own wall-clock print (`flanks.py:316`, the rule's one documented exception), **0 figures moved**. |
 | **S2** ✅ **LANDED 2026-08-06** | `w4/flanks.py`, `w4/dominance.py`, `w4/outer.py`, `w4/sigma.py`, `w4/closure.py`, `w4/annih.py`, `w4/outerline.py` + every owning workbook section | `flanks`' closure: **41 rows** (`flanks`, `dominance`, `outer`, `sigma`, `closure`, `annih`, `outerline`). ~55 min per pass. | **Rates move; identities, ranks and pointwise witnesses do not.** **Achieved:** 41/41 `rc=0`, **21 byte-identical**, **20 moved** — and the prediction held exactly: not one identity, rank or attainment changed its verdict, three *improved to their bound* once the contaminated seeds were rejected, and the moves are (a) seed relabelling, (b) the σ pool re-pin 63 → 47, (c) two repaired claims and two new measurements ((AC-9), (OC-9)). All five `outer` rows byte-identical, so S3's "one moved row: `outer --geom`" is preserved. |
-| **S3** | `w4/lambda.py`, `w4/outer.py` | `lambda`'s closure: **21 rows** (`lambda`, `outer`, `annih`, `outerline`). ~32 min per pass. | **One row moves:** `outer.py --geom`. |
+| **S3** ✅ **LANDED 2026-08-06** | `w4/lambda.py`, `w4/outer.py` + `Pencil-informal.md` §(K-Λ) *Step 3*/*Step 3a* | `lambda`'s closure: **21 rows** (`lambda`, `outer`, `annih`, `outerline`). ~32 min per pass. | **One row moves:** `outer.py --geom`. **Achieved exactly that:** 21/21 `rc=0`, **20 byte-identical, 1 moved** — `outer.py --geom`, four lines (one per habitat), from the coded equivalence *firing* to it *accepting* with spans `(2, 2)` and `(g₁₃, g₁₄, g₂₄) ≠ 0 = (True, False, True)`. All six `lambda` rows byte-identical as predicted. |
 | **S4** | docs only (this file, the four per-directory READMEs, the workbooks, `notes/dispatch-log.md`) — **plus one deliverable that is not about the harness at all: compress `notes/Phase39.md`** (added 2026-08-06 by S2). | **None** — discharged by `git diff --name-only -- '*.py' '*.m2'` coming back empty, per the *figures do not move* first bullet. | n/a |
 
 **S4's phase-note compression, stated as a deliverable so it stops slipping.**
@@ -1092,6 +1099,60 @@ spans `(2,2)`. Its owning workbook line is `Pencil-informal.md` §(K-Λ)
 expected byte-identical (no recorded `lambda` frame reaches `g₁₄ = 0`; the
 `--adv` histogram's six off-pattern frames fail on a *middle* entry, which
 (Λ0f′) still catches) — **verify, do not assume**, and `--adv` runs alone.
+
+> **S3 ADDENDUM — what LANDED (2026-08-06).** The gate: **21/21 invocations
+> `rc=0`, 20 byte-identical, 1 moved**, the move being `outer.py --geom` and
+> nothing else. Every prediction in the paragraph above held, including the
+> ones stated as *verify, do not assume*.
+>
+> **The `lambda` baseline was re-captured, and that was itself a check.** S2's
+> capture does not cover `lambda` (it sits outside `flanks`' closure), so the
+> six `lambda_*` rows were re-run at S2's committed HEAD before any S3 edit
+> and compared against S1's post-edit capture: **6/6 byte-identical**. That
+> confirms S2 stayed inside the closure it declared — a movement there would
+> have been an S2 finding, not S3 headroom — and it is the shape any future
+> slice should copy when the baseline-chaining licence spans a closure gap.
+>
+> **The one moved row, in full.** Four lines, one per habitat, all identical
+> in form: `lambda.omega_curves' coded (Lambda-0f) equivalence FIRES: span
+> w+ = 2 but p+ middle entries (True, True)` becomes `… coded (Lambda-0f')
+> equivalence ACCEPTS the point: spans (w+, w-) = (2, 2), gram = (True,
+> False, True) nonzero`. The `gram` triple is the substantive addition: it
+> shows `g₁₃, g₂₄ ≠ 0` and `g₁₄ = 0`, i.e. the *isolated* Gram degeneration
+> (Λ0f′) predicts, distinguishing it from the middle-bracket failure (Λ0f)
+> already knew about. So the harness's own criterion now **confirms** the
+> `g₁₄` half of (Λ0f′) at four real class habitats, where before only
+> `outer.raw_spans` — the deliberately un-guarded independent measurement —
+> did.
+>
+> **Deviation from the plan's wording, recorded rather than absorbed.** The
+> plan predicted the report "becomes spans `(2,2)`", i.e. the existing `else`
+> branch printing unchanged. The landed print instead names the criterion and
+> the `gram` triple. This is a deliberate widening *inside the one row already
+> expected to move*: the round's headline event is a documented defect being
+> repaired, and a driver whose output still said only `spans (2, 2)` would not
+> record that the coded criterion is now the thing agreeing. No other row is
+> affected.
+>
+> **Three stale claims repaired in the same commit** (the F13 discipline —
+> a defect's *defensive story* is false wherever it is quoted). All three are
+> docstrings/comments, and no §3 row prints a docstring, so all three are
+> figure-invariant: `outer.py`'s module docstring, which said the raise is
+> "caught and reported, never repaired (§4 convention 5 forbids touching
+> `lambda.py`)" — convention 5 never forbade this round, it *prices* it (see
+> *Scope (1)* above); `outer.py`'s `importlib` comment, which said "`lambda.py`
+> is READ, never modified"; and `outer.spans_at`'s own docstring, whose catch
+> is now a guard against `omega_curves`' *other* asserts rather than the
+> expected path.
+>
+> **What S3 did NOT do, deliberately.** `lambda.py --adv`'s printed verdict
+> still reads "every off-pattern frame has a vanishing middle bracket (the
+> named (Λ0f) failure), and nothing else". That sentence is a true statement
+> *about the sample* and re-wording it would have moved a second row for no
+> mathematical content; the code comment beside it now says explicitly that a
+> Gram factor could break the span instead, that the frame's dict records
+> which, and that no draw here realizes the `g₁₄` branch — only `outer.py
+> --geom`'s construction does.
 
 **Ordering rationale.** S1 first because it is the only slice with a *clean
 signal*: mixed with a figure-moving slice, an accidental movement hides inside

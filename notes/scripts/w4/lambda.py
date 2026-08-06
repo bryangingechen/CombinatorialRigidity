@@ -608,7 +608,13 @@ def omega_curves(fr, waux, ts=None, strict=True):
       * p+ and q are independent, and both are nonzero.
 
     So the set of far covectors lambda that are bad for the WHOLE a-line is
-    exactly the two points [p+], [q] of P^3.  Returns a dict."""
+    exactly the two points [p+], [q] of P^3.  Returns a dict.
+
+    The bracket criterion for the two 3-dimensional spans is the WIDENED
+    (Lambda-0f'), not the recorded (Lambda-0f) -- see the comment at the two
+    asserts below.  With `strict=False` an off-pattern frame is returned
+    instead of raising, and its dict carries `gram = (g13, g14, g24)` so a
+    consumer can tell a middle-bracket failure from a Gram one."""
     ts = list(ts or TS)
     C, CM = fr['C'], fr['CM']
     assert fr['complen'] == 4
@@ -636,22 +642,43 @@ def omega_curves(fr, waux, ts=None, strict=True):
     WP = [g[1] for g in good]
     WM = [g[2] for g in good]
     rp, rm = rank(WP), rank(WM)
-    # (Lambda-0f) in explicit bracket form: the span is full exactly when the
-    # two non-structural entries of p+ (resp. q) are nonzero -- i.e. when
-    # neither middle companion line C2 = C(x1 x2), C3 = C(x2 x3) meets M
-    # (resp. line(bc)).  Both directions asserted; the necessity half is
-    # constructed in --adv (`degeneracy_witnesses`).
-    assert (rp == 3) == (pplus[1] != 0 and pplus[2] != 0), \
-        f"span w+ = {rp} but p+ middle entries {(pplus[1] != 0, pplus[2] != 0)}"
-    assert (rm == 3) == (q0[1] != 0 and q0[2] != 0), \
-        f"span w- = {rm} but q middle entries {(q0[1] != 0, q0[2] != 0)}"
+    # (Lambda-0f') in explicit bracket form -- the WIDENED criterion proven at
+    # the generic point by `m2/lambda0.m2` (workbook (K-Lambda) Step 3), which
+    # supersedes the recorded (Lambda-0f) this driver used to code:
+    #
+    #     span_t w+ = 3  <=>  Pi+ := p+_2 p+_3 g13 g14 g24 != 0
+    #     span_t w- = 3  <=>  Pi- := q_2  q_3  g13 g14 g24 != 0
+    #
+    # with g_ij = B(C_i, C_j) the three surviving entries of the banded Gram
+    # of S.  The middle-bracket factors are the recorded (Lambda-0f): neither
+    # middle companion line C2 = C(x1 x2), C3 = C(x2 x3) meets M (resp.
+    # line(bc)).  The three Gram factors are what (Lambda-0f) MISSED --
+    # `g13 g24 != 0` is `rank Q|_S = 4` (asserted by --witt, never linked to
+    # the span) and `g14 = [b, x1, x3, c] != 0` -- the two OUTER companion
+    # lines must not meet -- was asserted nowhere.  That last clause is
+    # reachable: `outer.py --geom` constructs a chart point with g14 = 0 at
+    # all four habitats, and the superseded equivalence raised at every one
+    # (`notes/scripts/README.md` *Harness debt* item 2, cleared here).  Both
+    # directions asserted; the middle-bracket necessity half is constructed in
+    # --adv (`degeneracy_witnesses`), the g14 half in `outer.py --geom`.
+    g13, g14, g24 = (klein(C[0], C[2]), klein(C[0], C[3]), klein(C[1], C[3]))
+    gram = g13 * g14 * g24
+    assert (rp == 3) == (pplus[1] != 0 and pplus[2] != 0 and gram != 0), \
+        (f"span w+ = {rp} but p+ middle entries "
+         f"{(pplus[1] != 0, pplus[2] != 0)}, (g13, g14, g24) nonzero "
+         f"{(g13 != 0, g14 != 0, g24 != 0)}")
+    assert (rm == 3) == (q0[1] != 0 and q0[2] != 0 and gram != 0), \
+        (f"span w- = {rm} but q middle entries "
+         f"{(q0[1] != 0, q0[2] != 0)}, (g13, g14, g24) nonzero "
+         f"{(g13 != 0, g14 != 0, g24 != 0)}")
     if not strict:
         # the hunt mode records off-pattern frames instead of raising; the
         # bracket equivalence above is still asserted, so an off-pattern frame
-        # is always accompanied by a vanishing middle bracket.
+        # always carries a vanishing middle bracket OR a vanishing Gram
+        # bracket, and `gram` says which.
         if (rp, rm) != (3, 3):
             return {'span w+': rp, 'span w-': rm, 'p+': pplus, 'q': q0,
-                    'off-pattern': True}
+                    'gram': (g13, g14, g24), 'off-pattern': True}
     assert (rp, rm) == (3, 3), f"OFF-PATTERN spans ({rp}, {rm})"
     annP, annM = nullspace(WP), nullspace(WM)
     assert len(annP) == 1 and rank([annP[0], pplus]) == 1, \
@@ -1288,8 +1315,11 @@ def adv():
         print(f"   off-pattern frame: {row[0]} {row[1]} spans {row[2]}, "
               f"p+ zeros {row[3]}, q zeros {row[4]}")
     assert hits['lam~p+'] == 0 and hits['lam~q'] == 0 and hits['Q(z)=0'] == 0
-    # every off-pattern frame carries a vanishing MIDDLE bracket -- i.e. the
-    # only way (Lambda-0f) fails is the named one:
+    # every off-pattern frame in THIS SAMPLE carries a vanishing MIDDLE
+    # bracket.  Under the widened (Lambda-0f') a Gram factor (g13, g14, g24)
+    # could break the span instead -- the frame's dict now records which --
+    # and none of the sampled frames does; the g14 branch is realized only by
+    # `outer.py --geom`'s CONSTRUCTED chart point, never by a draw here:
     for row in hits['off']:
         assert row[3][1] or row[3][2] or row[4][1] or row[4][2], \
             f"off-pattern frame with all middle brackets nonzero: {row}"

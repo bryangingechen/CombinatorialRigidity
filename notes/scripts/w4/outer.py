@@ -71,10 +71,12 @@ WHAT THE DRIVER DOES.
               result is an exact pencil chart point OF A REAL CLASS HABITAT
               with `g14 = 0`; both `a`-line spans are then measured.  This
               reproduces `m2/lambda0.m2` block (P5) on a real habitat rather
-              than on the abstract slice, and it makes `lambda.omega_curves`'
-              own coded (Lambda-0f) equivalence FIRE -- caught and reported,
-              never repaired (`notes/scripts/README.md` section 4
-              convention 5 forbids touching `lambda.py`).
+              than on the abstract slice.  Until 2026-08-06 it also made
+              `lambda.omega_curves`' own coded (Lambda-0f) equivalence FIRE,
+              caught and reported but not repaired; the re-baselining round's
+              slice S3 codes the widened (Lambda-0f') there, so the
+              equivalence now ACCEPTS this point and predicts the drop to
+              `(2, 2)` (`notes/scripts/README.md` *Harness debt* item 2).
   --habitat   the named-inventory sweep: every class habitat of the arc's
               inventory that carries a length-4 `b`-`c` companion, at every
               eligible split and several target-rank hard-stratum seeds,
@@ -139,11 +141,13 @@ from dominance import (build_chart, h_edges, simple_paths,         # noqa: E402
 # only through `importlib` (`notes/scripts/README.md` section 1, the caveat on
 # the `lambda` rows).  What is needed here is SHAPE and FRAME data --
 # `habitat_specs` (the four certified length-4-companion habitats) and
-# `omega_curves` (the (Lambda-0f) span measurement whose criterion this
+# `omega_curves` (the (Lambda-0f') span measurement whose criterion this
 # driver is testing) -- not a linear-algebra primitive, so the README's
 # "move it one layer down" remedy does not apply: moving `omega_curves` would
-# edit `lambda.py` and trip the full figure gate on `--adv` (536 s) for no
-# gain.  `lambda.py` is READ, never modified.
+# gain nothing.  `lambda.py` is READ, not modified here -- the one edit it
+# took for this driver's sake is the (Lambda-0f') recoding of `omega_curves`'
+# bracket equivalence, landed as slice S3 of the 2026-08-06 re-baselining
+# round together with this file.
 LAM = importlib.import_module('lambda')
 
 
@@ -326,8 +330,16 @@ def build_frame(placed, pt, nrm, b, c, P, seed):
 
 
 def spans_at(fr, waux, strict=False):
-    """`lambda.omega_curves` at a frame, catching the coded (Lambda-0f)
-    equivalence when it fires.  Returns `(dict | None, message)`."""
+    """`lambda.omega_curves` at a frame, catching any assert it raises.
+    Returns `(dict | None, message)`.
+
+    Until 2026-08-06 the catch was load-bearing HERE: `omega_curves` coded the
+    superseded (Lambda-0f), whose bracket equivalence is false at a `g14 = 0`
+    frame, so the constructed point below raised at all four habitats
+    (`notes/scripts/README.md` *Harness debt* item 2).  It now codes the
+    widened (Lambda-0f'), which predicts the drop, so with `strict=False` the
+    off-pattern dict comes back instead.  The catch is kept as a guard against
+    the function's OTHER asserts, not as the expected path."""
     try:
         return LAM.omega_curves(fr, waux, strict=strict), None
     except AssertionError as e:
@@ -482,12 +494,13 @@ def geom():
             print(f"       (Lambda-0a,b,c,d,e) and all four middle brackets "
                   f"SURVIVE")
             if sp is None:
-                print(f"       lambda.omega_curves' coded (Lambda-0f) "
-                      f"equivalence FIRES: {msg}")
+                print(f"       lambda.omega_curves RAISES here: {msg}")
             else:
-                print(f"       spans (w+, w-) = ({sp['span w+']}, "
-                      f"{sp['span w-']})")
-            # the spans, measured directly (omega_curves asserts (Lambda-0f)
+                print(f"       lambda.omega_curves' coded (Lambda-0f') "
+                      f"equivalence ACCEPTS the point: spans (w+, w-) = "
+                      f"({sp['span w+']}, {sp['span w-']}), "
+                      f"gram = {tuple(x != 0 for x in sp['gram'])} nonzero")
+            # the spans, measured directly (omega_curves asserts (Lambda-0f')
             # before returning them, so recompute the two ranks here).
             rp, rm = raw_spans(nf, waux)
             print(f"       measured spans: span w+ = {rp}, span w- = {rm} "
@@ -539,9 +552,11 @@ def geom():
 
 def raw_span_bases(fr, waux):
     """The two sampled curve families `{w+(t)}`, `{w-(t)}` with NO
-    (Lambda-0f) assertion -- the measurement `lambda.omega_curves` makes but
-    guards behind the coded (and, since `m2/lambda0.m2`, incomplete) bracket
-    equivalence, which is exactly what fires at a `g14 = 0` frame."""
+    (Lambda-0f') assertion -- the measurement `lambda.omega_curves` makes but
+    guards behind its coded bracket equivalence.  Kept as an INDEPENDENT
+    measurement of the two ranks: it is what showed the drop at a `g14 = 0`
+    frame while the superseded (Lambda-0f) still raised there, and it is what
+    cross-checks the widened (Lambda-0f') that replaced it."""
     WP, WM = [], []
     for t in LAM.TS:
         m, n, q, s, _ = LAM.rows_mnqs(fr, t, waux)

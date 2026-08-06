@@ -173,17 +173,13 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
   C) q` (design doc's W0 pin) is landed only as its two forward implications; the reverse arms
   need a `complementIso` involution lemma, not in tree — deferred, **off every critical path**
   (§(K-σ) *Step σ6*: route σ does not need it, and sketches the route to it).
-- **Harness debt — only item 2 is left** (`notes/scripts/README.md` *Harness debt*, the canonical
-  home — status per item lives there and is not restated here). **Items 1, 3 and 4 are CLEARED**
-  (S1: `localtest.meet_line` signals instead of raising, `star_span_ranks` moved down to `repin`,
-  the composite guard `repin.star_generic` defined + adversarially tested; S2: the guard ADOPTED
-  at every `w4/` acceptance site, with `outerline --pool`/`--build` deliberately reporting rather
-  than rejecting because measuring the coincidence is their subject). **Item 2**
-  (`lambda.omega_curves`' coded (Λ0f) equivalence at the newly-reachable `g₁₄ = 0` points) is
-  **S3's**. Item 4's old prohibition is **replaced by a positive rule**: a
-  `place_pencil_general`-sampled battery may be quoted as a *rate* exactly when its acceptance
-  gate is `repin.star_generic`. Same block: `outer.py --patterns` and `--sweep` run over different
-  denominators (7002 vs 4280 pairs), so their companion counts are **not comparable**.
+- **Harness debt — ALL FOUR ITEMS CLEARED** (2026-08-06, slices S1+S2+S3; `notes/scripts/README.md`
+  *Harness debt* is the canonical home — per-item status and the round's three addenda live there
+  and are **not** restated here). Two consequences that bind future work and so stay in this note:
+  item 4's old prohibition is **replaced by a positive rule** — a `place_pencil_general`-sampled
+  battery may be quoted as a *rate* exactly when its acceptance gate is `repin.star_generic`; and
+  `outer.py --patterns` and `--sweep` run over different denominators (7002 vs 4280 pairs), so
+  their companion counts are **not comparable**.
 
 ## Hand-off / next phase
 
@@ -274,17 +270,27 @@ discharge (residue (iv)) is CLOSED too**. The landed successor
 > *qualifies* (AC-3) (the four conjuncts and the Tay target still hold) and forbids reading any
 > σ-fixed witness as generic. The **§(K-ann) re-read is DONE and CLEAN**.
 >
-> **Smallest concrete next commit: slice S3** — `w4/{lambda,outer}.py`, coding the landed (Λ0f′)
-> in place of the superseded (Λ0f) at `lambda.omega_curves`. Obligation: `lambda`'s closure,
-> **21 rows**, ≈ 32 min; expected **one** moved row, `outer.py --geom`, whose owning workbook line
-> is §(K-Λ) *Step 3a*'s verification-table row. `lambda.py --adv` (536 s) runs alone. Exact detail:
-> `notes/scripts/README.md` *Harness debt* → **The build plan**, **not restated here**. Then
-> **S4**, docs-only, which now also owes the `notes/Phase39.md` compression (the note is past the
-> ~500-line tripwire and has grown in every slice of this round; recorded as an S4 deliverable in
-> the plan). Two mechanics both landed slices paid for: write each invocation's output to its own
-> file and compare with `cmp`; and background the one invocation past the 600 s ceiling **first**,
-> with the foreground work running alongside — a subagent's background job dies when its turn
-> ends.
+> **Slice S3 is LANDED (2026-08-06)** — the gate came back **21/21 `rc=0`, 20 byte-identical, 1
+> moved**, and the one moved row is exactly the predicted `outer.py --geom`, repointed in its
+> owning workbook section (§(K-Λ) *Step 3*/*Step 3a*) in the same commit. Harness-debt item **2 is
+> CLEARED**, so **all four are**. `lambda.omega_curves` codes the widened **(Λ0f′)**
+> (`Π± = p⁺₂p⁺₃·g₁₃g₁₄g₂₄ ≠ 0`), so at the constructed `g₁₄ = 0` chart point it now *accepts* and
+> *predicts* the `3 → 2` drop instead of raising — the harness's own criterion confirming
+> (Λ0f′)'s Gram half at four real class habitats, where before only `outer.raw_spans` did.
+> Canonical ledger: `notes/scripts/README.md` *The build plan* → *S3 addendum*, not restated here.
+> One thing S3 checked that the plan only assumed: `lambda` sits outside S2's closure, so its six
+> rows were re-baselined at S2's HEAD before any edit and came back **6/6 byte-identical** against
+> S1's capture — which independently confirms S2 stayed inside the closure it declared.
+>
+> **Smallest concrete next commit: slice S4** — docs-only, no re-baseline (discharged by
+> `git diff --name-only -- '*.py' '*.m2'` coming back empty). It closes the round and owes one
+> deliverable that is not about the harness at all: **compress `notes/Phase39.md`**, which is past
+> `notes/CLAUDE.md`'s ~500-line tripwire and has grown in every slice. Exact scope:
+> `notes/scripts/README.md` *Harness debt* → **The build plan**, S4's row and the paragraph under
+> it. Mechanics all three landed slices paid for: write each invocation's output to its own file
+> and compare with `cmp`; run an invocation past the 600 s ceiling in its own foreground call with
+> an explicit `timeout` (never a shell-level one, never piped into `tail`) — a subagent's
+> background job dies when its turn ends.
 >
 > **QUEUED, still an open user adjudication** — three contenders, none pre-selected: the remaining
 > route-σ work; the **mechanisms pass** (*Current state* (a)); and `Pencil-strategy.md` §4.6's
@@ -298,10 +304,10 @@ discharge (residue (iv)) is CLOSED too**. The landed successor
 > batch** ((OC-1)–(OC-7); the two pools are pinned and **disjoint**) are **done** — do not
 > re-derive, re-sweep, re-run their literature hunt, re-open "does the polarity generalize?",
 > re-measure (D2)'s far block, re-sample POOL-G or POOL-S, **propose a counting / matroid route
-> to (OUT)'s hypothesis** ((OC-3) refutes the whole class), or touch `lambda.py`'s figures —
-> **one carve-out**: the re-baselining round's slice **S3** edits `lambda.py` on purpose
-> (OPENED-block scope (3), coding the landed (Λ0f′) in place of the superseded (Λ0f)) and moves
-> exactly one recorded figure, `outer.py --geom`'s.
+> to (OUT)'s hypothesis** ((OC-3) refutes the whole class), or touch `lambda.py`'s figures — the
+> one carve-out, the re-baselining round's slice **S3**, is **spent**: it edited `lambda.py` on
+> purpose (OPENED-block scope (3), coding the landed (Λ0f′) in place of the superseded (Λ0f)) and
+> moved exactly the one recorded figure it was licensed to, `outer.py --geom`'s.
 > **W4 stays parked** despite being fully decomposed and buildable (no W4 build without a fresh
 > user adjudication), `hK`/`hbareSplit` stay carried as pinned, option B in both kernel cases
 > stays un-commissioned.
@@ -380,6 +386,16 @@ is the canonical home a successor reads.
   `notes/scripts/README.md` *Harness debt*), dispatch-log rows + **F13**/**F14**, and
   `Pencil-strategy.md` §2.3's **convergence note** — A's and B's residuals are both
   *pencil-rigidity of a contraction of `H`*, so §2.3's wall is structural, not route-specific.
+
+- **Harness re-baselining round, slice S3 LANDED — the last debt item CLEARED, and a reported
+  contradiction becomes a confirmation** (2026-08-06; canonical home `notes/scripts/README.md`
+  *The build plan* → *S3 addendum*, not restated here). Gate 21/21 `rc=0`, **20 byte-identical,
+  1 moved** — the predicted `outer.py --geom`, repointed in §(K-Λ) *Step 3*/*Step 3a* here.
+  `lambda.omega_curves` codes the widened **(Λ0f′)** `Π± = p⁺₂p⁺₃·g₁₃g₁₄g₂₄ ≠ 0`, so at the
+  constructed `g₁₄ = 0` point it *predicts* the `3 → 2` drop instead of raising: the harness's own
+  criterion now confirms (Λ0f′)'s Gram half at four class habitats, where only the un-guarded
+  `outer.raw_spans` did. `lambda`, outside S2's closure, was re-baselined first — **6/6
+  byte-identical**, which also confirms S2 stayed inside the closure it declared.
 
 - **Harness re-baselining round, slice S2 LANDED — the guard is ADOPTED, and two new facts fell
   out of adopting it** (2026-08-06; canonical home `notes/scripts/README.md` *The build plan* →
