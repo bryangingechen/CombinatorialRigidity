@@ -263,8 +263,8 @@ before touching any of them.** `rvec3` likewise.
                           |
                   w4/ DRIVER STACK (deepest last)
    nogood_subdiv -> saferes -> widened -> repin -> pitch -> kslide -> kslidecl
-        -> kslidecomb -> {flanks, pure, lambda}  -> dominance, outer, sigma
-                              (siblings; none imports another)
+        -> kslidecomb -> {flanks, pure, lambda}  -> dominance, outer, sigma,
+                              (siblings; none imports another)     closure
 
 
    m2/  SYMBOLIC LAYER (Macaulay2; no import edge to any of the above)
@@ -308,6 +308,17 @@ Three layers, plus one **language island**:
   `rob_in_plane`, `pitch.det4` and `localtest.meet_line` (the last two added
   2026-08-05 by `--hunt`; both are already in the import closure, and
   `meet_line` is used behind the *Harness debt* 1 caller-side guard).
+  **`closure`** (§(K-clos) — the polarity over an algebraically closed field:
+  the σ-fixed grid locus, the `⋆`-eigen decoupling, the route-σ collapse, the
+  char-0 descent) joins them as a fourth such leaf, taking
+  `flanks.nondeg_conjuncts` / `star_span_ranks`,
+  `hybrid_gates.build_rigidity_extensors`, `repin`'s `hodge_star` /
+  `lambda2_through`, `pitch.theta_edges`, `widened.W19`,
+  `nogood_subdiv`'s deficiency + habitat oracles and `kbare_common.rank_modp`.
+  It is the **only** driver whose scalars are not ℚ: its `Gauss` class is exact
+  `ℚ(i)`, private to it and deliberately *not* pushed down to `exactcore`
+  (nothing else needs isotropic vectors, and moving it would re-baseline the
+  whole chain).
   **`star_span_ranks` now has FOUR consumers, past the signal rule 2 names: the
   next commit that already owes a full `repin` re-baseline should move it down**
   (with a re-export from `flanks` so the recorded figures do not move); on its
@@ -465,6 +476,15 @@ arcs too.
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/sigma.py --nondeg` | 43 s | ibid. (all four `IsNondegPencilRealization` conjuncts at `σu` and at the witness; the chart point equations) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/sigma.py --fixed` | 1 s | ibid. *Step σ6* (σ-fixed configurations are degenerate: deficit 1 at 6/6 on `C₆`) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/sigma.py --hunt` | 135 s | ibid. *Step σ4b* (obligation 1: H0–H5 — the conjunct arithmetic, the random leg, the constructed dual-conjunct failure, the steering, and (σ7)). **Runs on three pools of its own, disjoint from the pinned 63** |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/closure.py --fixed` | 2 s | workbook §(K-clos) *Steps Z2/Z3* ((AC-2) the ℚ-vs-ℚ(i) control and the grid conjugacy law; (AC-3) a nondegenerate σ-fixed configuration at the Tay target) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/closure.py --sweep` | 19 s | ibid. *Step Z4* ((AC-4): `rank = rank₊ + rank₋` at all 64 `ds-K4` colourings; balance, forests, both blocks at `3\|V\|−3`) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/closure.py --shapes` | 7 s | ibid. *Step Z6* ((AC-6), the 13-shape table — all colourings, ≤ 8 alternation chains) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/closure.py --flanks` | 15 s | ibid. ((AC-6) at the 8 §(K-flank) flank shapes). **Its `hit` column saturates at the probe cap 6 and is NOT a fraction of `pass`; the load-bearing column is `best`** |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/closure.py --pool` | 21 s | ibid. **THE ONLY PLACE AN AGGREGATE MAY BE READ FROM** — the pinned 21-shape pool (`--shapes` ∪ `--flanks`) in three disjoint groups (tight 15/15, rigid-not-count-tight 1/1, not-rigid 2/5, overall 18/21) plus the habitat attribution of every miss |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/closure.py --parity` | 1 s | ibid. ((AC-6)'s mechanism: no admissible colouring ⟺ a bare **odd** cycle component; `C3…C14` → exactly `[3,5,7,9,11,13]`) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/closure.py --collapse` | 1 s | ibid. *Step Z5* ((AC-5): at a σ-fixed seed route σ's criterion and route A's coincide **as subspaces**, 32/32) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/closure.py --char2` | 1 s | ibid. *Step Z8* ((AC-8) the double plane and the non-splitting) + the char-`p` **proxy** table for (AC-7) consequence 3 |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/closure.py --validate` | 43 s | ibid. (all eight legs; byte-identical under two `PYTHONHASHSEED` values) |
 
 ### `m2/` — the Macaulay2 symbolic layer
 

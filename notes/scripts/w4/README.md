@@ -565,3 +565,62 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
   Argument state, the four obligations and the per-mode assertion list:
   `notes/Pencil-informal.md` §(K-σ). **Route σ is a CANDIDATE offered for
   adjudication — it moves no gap-map row.**
+
+- `closure.py [--fixed | --sweep | --shapes | --flanks | --pool | --parity |
+  --collapse | --char2 | --validate]` — the polarity **over an algebraically
+  closed field**. The **only** driver in the harness whose scalars are not ℚ: it
+  works over the Gaussian rationals **ℚ(i)** (exact, `Gauss` = a pair of
+  `Fraction`s; no floating point, no rng, so nothing to seed), because ℚ(i) is
+  the smallest extension of ℚ carrying a nonzero solution of `∑ xᵢ² = 0` — and
+  that single fact is the whole difference the §(K-clos) question is about. It
+  uses the harness's **own** `⋆` (`repin.hodge_star`), rigidity rows
+  (`hybrid_gates.build_rigidity_extensors`) and nondegeneracy checker
+  (`flanks.nondeg_conjuncts`) unchanged; only the field is enlarged. Sits beside
+  `dominance`/`outer`/`sigma` as a `w4/` leaf. Run with `PYTHONHASHSEED=0`
+  (verified byte-identical under two different hash seeds).
+  - `--fixed` (~2 s): the control **AC-C0** (no ℚ-isotropic vector in `[−3,3]⁴`;
+    an explicit ℚ(i) one; the `⋆` eigenspaces `3 + 3`, ℚ-rational and mutually
+    orthogonal; both rulings realizing both `⋆`-signs; the conjugacy law
+    `p ⬝ᵥ p′ = 2[s,s′][u,u′]`), then **AC-E**: a σ-fixed pencil configuration of
+    the tight control `ds-K4` with all four `IsNondegPencilRealization`
+    conjuncts, every star of rank 3, and rank **90 = the Tay target**. So
+    §(K-σ) *Step σ6*'s "the fixed locus is degenerate" is **refuted for the
+    symmetric correlation** (it stands for the null one, a different locus).
+  - `--sweep` (~19 s): **AC-S**, the full `ds-K4` census — all **64** ruling
+    colourings satisfy `rank = rank₊ + rank₋` (a test, not a restatement: the
+    two eigen-blocks are built independently of `build_rigidity_extensors`);
+    every target-rank colouring is balanced with both ruling classes forests and
+    both blocks isostatic at `3|V|−3 = 45`; every unbalanced one falls short.
+  - `--shapes` (~7 s): **AC-U**, the 13-shape table, all colourings.
+  - `--flanks` (~15 s): **AC-X**, the eight §(K-flank) flank shapes. **The `hit`
+    column SATURATES at the probe cap of 6 and is not a fraction of `pass`** —
+    the driver prints that caveat above the table, and the load-bearing column
+    is `best`.
+  - `--pool` (~21 s): **AC-Q**, the pinned 21-shape pool = exactly the union of
+    the two tables above, tallied into three **disjoint** groups — tight
+    (`def = 0` **and** `5|E| = 6(|V|−1)`) **15/15**, rigid-but-not-count-tight
+    (`W19` alone) **1/1**, not rigid **2/5**, overall **18/21** — then every
+    miss attributed against `hK`'s own hypotheses (`hnoRigid`, plus the landed
+    *necessary* feasibility conditions). **This is the only leg an aggregate may
+    be quoted from**; it is computed from the same rows, so it cannot drift from
+    them (the `63/63`-across-inconsistent-pools defect, `notes/dispatch-log.md`).
+  - `--parity` (~1 s): **AC-R2**, the one identified structural obstruction —
+    over `C3…C14` the shapes admitting no colouring are exactly the **odd** ones
+    `[3,5,7,9,11,13]`, and all 19 non-cycle pool shapes admit one. A tight shape
+    has hubs, so it is never a bare cycle: **parity cannot be the tight-stratum
+    obstruction.**
+  - `--collapse` (~1 s): **AC-F**, at a σ-fixed seed route σ's uniform-failure
+    criterion and route A's coincide **as subspaces** of each eigenspace,
+    32/32 (16 bodies × 2 eigenspaces) — a basis-wise check would not settle an
+    iff.
+  - `--char2` (~1 s): **AC-2c**, `x ⬝ᵥ x = (∑xᵢ)²` on all 16 vectors of `𝔽₂⁴`
+    (the fixed quadric is a double plane) and the two rank tables showing `Λ²`
+    does not split; then **AC-P**, a mod-`p` table on one rational target-rank
+    `ds-K4` configuration, printed as an explicitly labelled **proxy** for the
+    char-`p` question — it is a statement about one seed, not about the minor.
+  - `--validate` (~43 s): all eight legs.
+
+  Argument state and per-leg assertion list: `notes/Pencil-informal.md`
+  §(K-clos). **(AC-6) is REFUTED as a class statement** (`C11`, a bare odd cycle
+  in `hK`'s habitat) **and open only on the tight stratum** — do not read the
+  15/15 as a class result.

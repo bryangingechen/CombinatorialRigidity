@@ -6,9 +6,9 @@
 (2026-07-30). Only three items remain, all carried by the landed successor
 `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card` (`Molecule/Pencil/Escape.lean`):
 `hcontract` (W4), kernel `hK`, and kernel `hbareSplit` — see *Hand-off*. Kernel-(K) research
-is at its eighteenth docs+scripts-only pass (workbook `notes/Pencil-informal.md`; the settled
-W4-residual arc split out to `notes/Pencil-W4-informal.md` on 2026-08-05; the eighteenth is
-strategy only — `notes/Pencil-strategy.md` §4.6).
+is at its nineteenth docs+scripts-only pass (workbook `notes/Pencil-informal.md`; the settled
+W4-residual arc split out to `notes/Pencil-W4-informal.md` on 2026-08-05; the nineteenth is
+fan-out direction C — workbook §(K-clos), `closure.py`).
 
 ## Current state
 
@@ -36,16 +36,18 @@ constraints; the dated dispatch narrative is in *Decisions made* and git):
   (below) preempts it, and — since 2026-08-05 — whether §4.6's uniformity shortlist ((f) below)
   does. Not decided here.
 
-**Kernel-(K) research arc — seventeen docs+scripts-only dispatches, plus one strategy-only
-pass** (2026-08-02 → 08-05).
+**Kernel-(K) research arc — eighteen docs+scripts-only dispatches, plus one strategy-only
+pass** (2026-08-02 → 08-06).
 Mathematics: the workbook `notes/Pencil-informal.md`, whose **State of (K)** map is the entry
 point and the artifact a pass *updates*; settled W4-residual verdicts are in
 `notes/Pencil-W4-informal.md`; strategy in `notes/Pencil-strategy.md`. One line per landing in
 *Decisions made*, which with git is the canonical dispatch record — **not restated here**. Net
-effect: the **disproof risk is removed**; six named gaps or routes moved from open to
-refuted-or-superseded ((K-slide-comb), (K-slide-cl) as stated, (K-Λ) as independent, C1/(K-dom)
-as a route, **(K-ind)** as a route, **(K-Δ)** as a lead), with **(K-chord)** and **(K-wit)** as
-the successors; the arc gained its first **class-uniform positive** — (Λ1); and **class
+effect: the **disproof risk is removed**; seven named gaps, routes or constructions moved from
+open to refuted-or-superseded ((K-slide-comb), (K-slide-cl) as stated, (K-Λ) as independent,
+C1/(K-dom) as a route, **(K-ind)** as a route, **(K-Δ)** as a lead, and §(K-clos)'s grid recipe
+as a class statement), with **(K-chord)** and **(K-wit)** as
+the successors; the arc gained its first **class-uniform positive** — (Λ1); §(K-σ)'s **field
+scope is settled** (§(K-clos)); and **class
 uniformity of the escape remains untouched by every one of them**.
 
 > **The one live candidate, and it is NOT settled — `notes/Pencil-informal.md` §(K-σ)** (the
@@ -55,8 +57,9 @@ uniformity of the escape remains untouched by every one of them**.
 > the polarity replaces every body's point by its own panel normal; it would close (K-tight) on
 > the hard stratum, *length-free*, via `Λ²Π̂(b) + Λ²Π̂(c) + α_{pt(b)} = K⁶`. It is a **candidate
 > offered for adjudication**, resting on four obligations (the first verified in both directions
-> and shrunk to two conditions, 2026-08-05) and **`ℝ`-only** while `hK` is quantified at general
-> `[Infinite K]`. Standing consequences: **no gap-map status moves on account of route σ**;
+> and shrunk to two conditions, 2026-08-05). It is **no longer field-blocked** (2026-08-06,
+> §(K-clos)): the polarity generalizes, the general-`K` transport is landed, and `ℝ` is the
+> *narrowest* field choice. Standing consequences: **no gap-map status moves on account of route σ**;
 > `hK` and `hbareSplit` stay carried as pinned; **W4 stays PARKED**; the phase does **not** close.
 
 The other candidate continuations, unselected, without preference; each has a canonical home
@@ -162,8 +165,7 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
 - The full biconditional transport `ExtensorThroughPoint C q ↔ ExtensorInPanel (screwComplementIso
   C) q` (design doc's W0 pin) is landed only as its two forward implications; the reverse arms
   need a `complementIso` involution lemma, not in tree — deferred, **not on any critical path**,
-  and §(K-σ) *Step σ6* confirms route σ does not need it (it applies `σ` once and never returns)
-  while sketching the two-step route to it if it is ever wanted.
+  and §(K-σ) *Step σ6* confirms route σ does not need it and sketches the route to it.
 - **Harness debt — three parked items, now a named list** (`notes/scripts/README.md` *Harness
   debt*): `localtest.meet_line` raising instead of signalling; `lambda.omega_curves`' coded
   (Λ0f) equivalence raising at the newly-reachable `g₁₄ = 0` points; and
@@ -196,15 +198,11 @@ discharge (residue (iv)) is CLOSED too**. The landed successor
 > **total** parameterization (no chart-image side condition). It carries **two** design
 > decisions. (a) **Which maximal minor to fix per LI conjunct** — the dual conjuncts are unions
 > of basic opens, not single hypersurface complements, so the repair needs sufficiency,
-> graph-dependently. (b) **WHICH FIELD** (recorded 2026-08-05, workbook §(K-σ) *Field scope*):
-> `σ = screwComplementIso` exists in tree **only over `ℝ`** (`Duality.lean:69`), and so does the
-> self-duality theorem the conjunct-1 freeness cites (`Statement.lean:257`), but **`hK` is
-> quantified at the general `[Infinite K]`** of the landed headline (`Escape.lean:555`). So the
-> Lean half must either discharge `hK` at `ℝ` (instantiating a field-general theorem — a real
-> narrowing, and a **user** decision) or build a **general-`K` polarity** first. Whether the
-> polarity generalizes is **OPEN**; the reading is encouraging (both of `screwComplementIso`'s
-> ingredients are already general-`K`) but unproven, and `Pencil/Arms.lean`'s W3-L4 section is
-> the in-tree precedent for exactly this mismatch. **`exists_pencilSeed_of_nondeg`
+> graph-dependently. (b) **WHICH FIELD — SETTLED as mathematics, still a user call as scope**
+> (2026-08-06, workbook §(K-clos); canonical home, not restated here): the polarity **does**
+> generalize, its general-`K` transport is landed (`mapSupport`), so `ProjectiveInvariance.lean`
+> needs nothing — and `ℝ` is the **narrowest** option, not a safe default, since `hK` over `ℂ̄`
+> implies it over every infinite characteristic-0 field and not conversely. **`exists_pencilSeed_of_nondeg`
 > (`Reseed.lean:65`) is NOT the bridge** and is circular if used as one.
 > **BUT THAT COMMIT IS BLOCKED**: the standing 2026-08-05 adjudication holding the Lean back
 > pending *"an informal proof or disproof or any results that would be significant as standalone
@@ -224,8 +222,9 @@ discharge (residue (iv)) is CLOSED too**. The landed successor
 > **class uniformity itself**. Smallest concrete commit: U2's `supp(λ)` driver (a pure addition,
 > so the figure gate discharges by the no-driver-modified check). Also **not pre-selected**.
 >
-> Deliberate non-goals: (Λ0), (Λ1), the `g₁₄` clause, §(K-ind) and §(K-Δ) are **done** — do not
-> re-derive, re-sweep, or re-run their literature hunt, and do not touch `lambda.py`'s figures.
+> Deliberate non-goals: (Λ0), (Λ1), the `g₁₄` clause, §(K-ind), §(K-Δ) and **§(K-clos)'s field
+> question** are **done** — do not re-derive, re-sweep, re-run their literature hunt, re-open
+> "does the polarity generalize?", or touch `lambda.py`'s figures.
 > **W4 stays parked** despite being fully decomposed and buildable (no W4 build without a fresh
 > user adjudication), `hK`/`hbareSplit` stay carried as pinned, option B in both kernel cases
 > stays un-commissioned.
@@ -287,30 +286,32 @@ Reverse-chronological, one line per landing; full derivations live in git,
 `notes/Phase39-design.md`, and (for the (K) arc) the workbook section named in each entry, which
 is the canonical home a successor reads.
 
+- **Fan-out direction C: §(K-σ)'s field question SETTLED; the construction it produced REFUTED as
+  a class statement** (2026-08-06, `closure.py`, exact ℚ(i); canonical home workbook **§(K-clos)**,
+  not restated here). **(AC-1)** the polarity generalizes — bookkeeping, transport already landed
+  (`mapSupport`), `ProjectiveInvariance.lean` untouched; **(AC-7)** `ℂ̄` ⟹ every infinite char-0
+  field, converse false, so `ℝ` is the **narrowest** choice and `[Infinite K]`'s residue is char
+  `p`; **(AC-2)/(AC-3)** two `ℝ`-refutations **reverse**, their verdict surviving on the
+  field-neutral **(AC-5)** (at a σ-fixed seed route σ *is* route A); **(AC-6)** the grid recipe
+  **refuted** by `C11`, in-habitat, parity mechanism complete — open only on the tight stratum.
+
 - **Notes reorganization: the label registry opened; the workbook and design doc INDEXED, not
-  split or compressed** (2026-08-05, docs only, no mathematics — no verdict, status, scope or
-  confidence marker moved, and nothing was renamed). New **`notes/Pencil-labels.md`**: every
-  label token in the pencil doc set, a four-clause minting rule (grep the registry; never label a
-  *Step*; qualify cross-section citations; do not rename), a collision table, and **reserved
-  namespaces `ANH-`/`OC-`/`AC-` + `§(K-ann)`/`§(K-out)`/`§(K-clos)`** for the incoming fan-out.
-  Measured diagnosis, refining the hypothesis: **3 of the 6 incidents were naming, 3 were
-  canonical-home, 0 were file length** — and file boundaries do *not* prevent collisions
-  (the (C6)/(C7) clash was already cross-file), while topic-tagged families (`Λ`, `σ`, `PC`,
-  `K-`) have never collided. Two argued skips (rationale: this file and `notes/CLAUDE.md`): no `notes/pencil/` directory move,
-  and **`Phase39-design.md` FROZEN rather than compressed** (119 live Lean anchors).
+  split or compressed** (2026-08-05, docs only — nothing renamed, no verdict/status/scope marker
+  moved). Canonical home for the four-clause minting rule, the measured diagnosis (**3 of the 6
+  incidents naming, 3 canonical-home, 0 file length**) and the fan-out's reserved namespaces:
+  **`notes/Pencil-labels.md`**. Two argued skips: no `notes/pencil/` directory move, and
+  **`Phase39-design.md` FROZEN rather than compressed** (119 live Lean anchors).
 
 - **Broad class-uniformity recon: five directions REFUTED, three live successors ranked**
   (2026-08-05, prose only, no driver, no Lean; canonical home `notes/Pencil-strategy.md` **§4.6**,
   which carries every argument and is **not restated here**). Refuted: `∀λ` (it *is*
   Λ-completeness), the `Gr(3,6)` cluster structure (§(K-Δ)'s (M3) verbatim — a **third** MISS for
   the ambient-ground-set reason), moment-curve/positivity, the codimension comparison, definable
-  choice/QE, and the bonus "choose the split to force `k = 4`". One new derivation, **(OUT)** —
-  both bad `λ` lie on the line `{λ₁ = λ₄ = 0}`, so the escape holds as soon as one *outer*
-  companion line is not a relative twist — since **migrated to its canonical home**, workbook
-  §(K-Λ) *Step 5a* (conditional on (Λ0d) + the widened (Λ0f′); sufficient, never necessary;
-  hypothesis unmeasured), where it also hands §4-C3 the consumer it lacked. Calibration:
-  **`k = 4` ⟺ `hnoRigid` is tight**. **No gap-map *status* moves; the (K-wit) row's *what
-  would close it* cell gains (OUT) as a length-4-scoped sufficient condition.**
+  choice/QE, and the bonus "choose the split to force `k = 4`". One new derivation, **(OUT)**,
+  **migrated to its canonical home** workbook §(K-Λ) *Step 5a* (conditional on (Λ0d) + the widened
+  (Λ0f′); sufficient, never necessary; hypothesis unmeasured), where it also hands §4-C3 the
+  consumer it lacked. Calibration: **`k = 4` ⟺ `hnoRigid` is tight**. **No gap-map *status*
+  moves; the (K-wit) row's *what would close it* cell gains (OUT).**
 
 - **The route-σ arc — three landings, one line each; canonical home workbook §(K-σ), live
   summary the *Hand-off* blockquote, neither restated here** (2026-08-05, `sigma.py`).
@@ -320,9 +321,8 @@ is the canonical home a successor reads.
   with a proof. (2) **Obligation 1's numerics half DONE** (`--hunt`): the dual conjuncts are
   **NOT** implied (53 constructed counterexamples vs 0 in 107 random draws — an F11-class
   correction to *Step σ4*'s 63/63), obligation 1 shrinks to two conditions, steering exact,
-  **(σ7)** proven. (3) **FIELD SCOPE recorded, not settled**: `σ` is `ℝ`-only while `hK` is
-  general-`K`; two of §(K-σ)'s refutations use `ℝ`-definiteness and do **not** port. In-tree
-  precedent for the mismatch: `Pencil/Arms.lean` W3-L4. **No gap-map status row moves.**
+  **(σ7)** proven. (3) **FIELD SCOPE recorded, not settled** — **superseded 2026-08-06** by
+  §(K-clos) (entry above). **No gap-map status row moves.**
 
 - **(K-ind) REFUTED as a route — no move of the induction relates two class members**
   (2026-08-05, workbook §(K-ind), no driver). (I1) tight ⟺ `(|V|,|E|) = (5c+1, 6c)`; (I2)

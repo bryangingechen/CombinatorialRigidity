@@ -102,9 +102,13 @@ anything above. Each prefix was verified **0-hit** across `*.md`, `*.tex`,
 |---|---|---|---|
 | **A** | U1 + U2 + (K)-option-B fused — the annihilator target, the cycle-space / cocircuit ground set, the stress-function reading | **`ANH-`** (*AN*nihilator + *H*inge-rate) → `(ANH-1)`, `(ANH-2)`, … | **`§(K-ann)`** |
 | **B** | the (viii) measurement plus (OUT)'s combinatorial half | **`OC-`** (*O*uter *C*riterion) → `(OC-1)`, `(OC-2)`, … | **`§(K-out)`** |
-| **C** | the over-`ℂ̄` direction | **`AC-`** (*A*lgebraically *C*losed) → `(AC-1)`, `(AC-2)`, … | **`§(K-clos)`** |
 
-Binding on all three: **use your prefix for every label you mint**, including
+**Direction C has LANDED** (2026-08-06) and its reservation is retired: `AC-` and
+`§(K-clos)` are now live entries of the registry below, not reservations. A
+reservation is released by moving its row into the registry in the landing
+commit — never by deleting it.
+
+Binding on each of the three: **use your prefix for every label you mint**, including
 sub-claims and driver blocks; cite everything you did not mint in the qualified
 form (L3); and if you open a section, use the reserved name so the coordinator
 can land three returns serially without a rename. A dispatch that needs a
@@ -132,7 +136,8 @@ Status keywords are pointers to the owning section's verdict block and the
 | §(K-pure) | `PC-` ✓ | (PC1), (PC2), (PC3), (PC5), (PC6), (PC-Z), (PC-OBS); (K-chord) *(named here)*; Steps P0–P9 | the pure condition of the limit carrier | (PC-Z)/(PC-OBS) proven-informally; direction C refuted |
 | §(K-Λ) | `Λ` ✓ | (Λ0), (Λ0a)–(Λ0i), (Λ0′), (Λ0f′), (Λ1), (Λ2), (Λ3), **(OUT)**; **driver blocks (M1)–(M4)** (`lambda1.m2`) and **(P1)–(P7)** (`lambda0.m2`) | the Λ-compression's quadric; (OUT) = the outer-line criterion, *Step 5a* | (Λ1) an identity over the function field; (K-Λ) refuted as an independent gap |
 | §(K-dom) | `DM-` | **(D1)**–(D4); Steps D0–D7 | the dominance spike, differential of `H ↦ V_bc` | (D1)–(D3) proven; C1 refuted as a route |
-| §(K-σ) | `σ` ✓ | (σ1)–(σ7); Steps σ0–σ6, σ4b; hunt pools H4/H5 | the polarity as a symmetry of the split; **route σ** | (σ7) proven; route σ a CANDIDATE, `ℝ`-only |
+| §(K-σ) | `σ` ✓ | (σ1)–(σ7); Steps σ0–σ6, σ4b; hunt pools H4/H5 | the polarity as a symmetry of the split; **route σ** | (σ7) proven; route σ a CANDIDATE (its field scope settled by §(K-clos)) |
+| §(K-clos) | `AC-` ✓ | (AC-1)–(AC-8); Steps Z0–Z8; driver blocks AC-C0/AC-E/AC-S/AC-U/AC-X/AC-Q/AC-R2/AC-F/AC-2c/AC-P (`closure.py`) | the over-`ℂ̄` question: the polarity's field scope, the σ-fixed grid locus, the `⋆`-eigen decoupling, the route-σ collapse, the char-0 descent | (AC-6) **refuted** as a class statement, open on the tight stratum; the rest proven-informally |
 | §(K-ind) | `IN-` | (I0)–(I4); Steps I0–I6 | numerical invariant along the generating moves | refuted as a route; (I3) a positive by-product |
 | §(K-Δ) | `DL-` | **(M1)**, **(M2)**, **(M3)**; (N1), (N2) | the Δ-matroid literature hunt: (M1)–(M3) are the **three hypothesis tests**, (N1)/(N2) the two readings bought | NO HIT; discharged |
 | §(K-bare-ext) | `BE-` | (K-bare-ext) | the (K-bare) stub | open, nothing being developed |
