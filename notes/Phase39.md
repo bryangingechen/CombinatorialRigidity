@@ -8,8 +8,9 @@
 `hcontract` (W4), kernel `hK`, and kernel `hbareSplit` — see *Hand-off*. Kernel-(K) research
 is at its twenty-first docs+scripts-only pass (workbook `notes/Pencil-informal.md`; the settled
 W4-residual arc is `notes/Pencil-W4-informal.md`). The **2026-08-06** three-way fan-out is
-COMPLETE, and so is the harness re-baselining round that followed it (S1–S4). Fan-out direction
-letters are re-used across dates — **always date them**.
+COMPLETE, and so is the harness re-baselining round that followed it (S1–S4); a **SECOND**
+2026-08-06 fan-out — directions **T / R / M**, user-adjudicated — is IN FLIGHT (see *Hand-off*).
+Fan-out direction letters are re-used across dates — **always date them**.
 
 ## Current state
 
@@ -30,12 +31,11 @@ constraints; the dated dispatch narrative is in *Decisions made* and git):
   the scripts we run to be committed for reproducibility"* — now a hard rule of the harness
   (`notes/scripts/README.md`). Every script the project runs is tracked, including probes
   whose answers reach a note.
-- **2026-08-05, dispatch ordering (user-adjudicated, partly executed):** `g₁₄` →
-  invariant-through-moves → σ-equivariance → **mechanisms pass** → Δ-matroid. The first three
-  are DONE and Δ-matroid was run early in the same parallel round, so **only the mechanisms
-  pass is unstarted**. **OPEN and explicitly left to the user:** whether verifying **route σ**
-  (below) preempts it, and — since 2026-08-05 — whether §4.6's uniformity shortlist ((f) below)
-  does. Not decided here.
+- **2026-08-05, dispatch ordering (user-adjudicated; RESOLVED 2026-08-06):** `g₁₄` →
+  invariant-through-moves → σ-equivariance → **mechanisms pass** → Δ-matroid. The ordering's
+  open tail (does route σ or §4.6's shortlist preempt the mechanisms pass?) was resolved by the
+  **2026-08-06 second fan-out adjudication**: the mechanisms pass runs as direction **M**, in
+  parallel with **T** ((AC-6) tight stratum) and **R** ((ANH-R1)); route σ not selected.
 
 **Kernel-(K) research arc — twenty docs+scripts-only dispatches, plus one strategy-only
 pass** (2026-08-02 → 08-06).
@@ -236,13 +236,15 @@ discharge (residue (iv)) is CLOSED too**. The landed successor
 > coincident hinge line, so no σ-fixed witness reads as generic) and **(OC-9)** (§(K-out) — the
 > composite guard rejects 58/357, strictly containing the two-end diagnostic's 39).
 >
-> **THE NEXT COMMIT IS NOT DECIDED. It is an open user adjudication — three contenders, none
-> pre-selected:** the remaining route-σ work; the **mechanisms pass** (*Current state* (a)); and
-> `Pencil-strategy.md` §4.6's ranked shortlist (*Current state* (f)), the only one aimed at
-> **class uniformity itself**. The live crux is **(ANH-R1)**: is `H/P − β` pencil-rigid, and is
-> that *easier* than its parent or merely smaller? §2.3's convergence note — two independent
-> routes, one residual shape — argues the wall is structural, so attack it directly if a third
-> route lands there too.
+> **ADJUDICATED 2026-08-06 — a SECOND three-way fan-out, directions T / R / M in parallel**
+> (user: *"OK, let's go with 1+2+3 in parallel"*): **T** = §(K-clos) (AC-6)'s tight-stratum
+> residual (the direct-`hK`-discharge pair), **R** = §(K-ann) (ANH-R1) (the live crux: is
+> `H/P − β` pencil-rigid, and is the relocation *easier* or merely smaller?), **M** = the
+> mechanisms pass (*Current state* (a)). Dispatch specs, reserved namespaces and drivers:
+> `notes/Pencil-fanout.md` §"Second fan-out" + `notes/Pencil-labels.md`'s T/R/M table —
+> **not restated here**. Route σ was NOT selected (its remaining substance is the parked Lean
+> half). The coordinator lands returns serially per the fan-out landing checklist, with a
+> session-budget check between landings (`.claude/scripts/session-usage.py limits`).
 >
 > Deliberate non-goals: (Λ0), (Λ1), the `g₁₄` clause, §(K-ind), §(K-Δ), **§(K-clos)'s field
 > question**, **§(K-ann)'s settled batch** ((ANH-1)–(ANH-6), (SD-6)) and **§(K-out)'s settled

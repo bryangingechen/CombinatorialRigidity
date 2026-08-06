@@ -250,3 +250,146 @@ whether it can be pursued under the standing adjudications.
 5. Keep `notes/Phase39.md` forward-weighted and under the ~500-line tripwire;
    the gap map is the canonical home for (K) status, so the phase note's
    kernel bullets stay thin pointers.
+
+---
+
+## Second fan-out — prepared and dispatched 2026-08-06 (directions T / R / M)
+
+**User-adjudicated 2026-08-06**, this session, after the harness re-baselining
+round closed: of the coordinator's proposed parallel package the user selected
+*"OK, let's go with 1+2+3 in parallel"* — 1 = the §(K-clos) (AC-6)
+tight-stratum residual (**T**), 2 = §(K-ann) (ANH-R1) (**R**), 3 = the
+mechanisms pass (**M**; `notes/Phase39.md` *Current state* (a)). This resolves
+the 2026-08-05 open ordering question (whether route σ or §4.6's shortlist
+preempts the mechanisms pass): the mechanisms pass runs NOW, in parallel with
+both. Route σ was **not** selected — its remaining substance is the Lean half,
+which the standing 2026-08-05 adjudication keeps parked. Direction letters are
+**T / R / M**, deliberately not A/B/C (already date-ambiguous —
+`notes/Pencil-labels.md`).
+
+**Shared mechanics: identical to the first fan-out's** (top of this file) —
+each dispatch is a **top-rung research recon** (`recon-fable`, available this
+session), **read-only w.r.t. every shared file**, **commits NOTHING**, may
+create **its own new driver** at the pinned path below (importing the harness
+read-only; left untracked for the coordinator to gate and commit), writes its
+full mathematics as a **draft workbook section** in the session scratchpad
+(`fanout-<T|R|M>.md`) in the workbook's register with an explicit confidence
+verdict and a "what would change this" line, and keeps the return message to a
+tight verdict. The F11 requirement binds (each headline claim needs a driver
+that tests that sentence; "forced"/"exhaustive"/"the only" are their own claim
+class), as do `notes/scripts/README.md`'s conventions (exact ℚ, seeded
+randomness, degeneracy guards + rank/dimension asserts, import from the
+canonical layer — check the *Divergences* table). Three deltas from the first
+fan-out:
+
+1. Reserved namespaces are the **2026-08-06 T/R/M table** in
+   `notes/Pencil-labels.md` — clause L1 still binds *inside* a reservation
+   (the (ANH-R1)/(ANH-R2) precedent).
+2. Any sampled battery quoted as a **rate** or as evidence about a generic
+   chart point must gate acceptance on the composite guard
+   `repin.star_generic` — the re-baselining round's positive rule
+   (`notes/scripts/README.md` *Harness debt* → CLOSED). Negatives and
+   existence witnesses are exempt as before.
+3. The coordinator checks live session budget between landings
+   (`.claude/scripts/session-usage.py limits`) and lands serially, per the
+   first fan-out's landing checklist.
+
+### Direction T — the (AC-6) tight-stratum residual: discharge `hK` directly
+
+**The question.** §(K-clos) (AC-6) settled the habitat-level grid-recipe
+statement **negatively** (the bare odd cycle `C11`, permanent) but left the
+**tight stratum** open with no obstruction identified (15/15 tight shapes
+reach the Tay target). Deliver the pair the *State of (K)* map names: (i)
+*Step Z4*'s contracted **direction network** proven isostatic whenever
+(AC-4)(i)–(ii) hold, and (ii) **chart-image membership** of the grid
+configurations verified against `pencilChartPoint` (`Molecule/Pencil/Chart.lean:393`)
+and `pencilChartNormal` (`Chart.lean:412`) — currently "argued, not verified".
+Delivering both discharges `hK` **on the tight stratum directly** — no escape
+route, no split, no inductive hypothesis — and then over every infinite
+characteristic-0 field by (AC-7).
+
+**Cheap kill first.** The map names it: a census over the `kslidecomb`
+class-shape pool hunting a tight shape where the recipe misses target rank. A
+miss **with its mechanism** is a full deliverable; run the census before
+investing in the argument.
+
+**Coordinator's verified findings.** The two chart declarations exist at the
+cited lines (checked this session). The (AC-1)–(AC-9) batch and the parity
+characterization are settled — the workbook's "Settled 2026-08-06, the
+over-`ℂ̄` batch" block binds; in particular **(AC-9)**: no σ-fixed witness
+reads as *generic* (every σ-fixed body of degree ≥ 3 carries a coincident
+hinge line). A rank-attainment witness at a σ-fixed point is still legitimate
+by lower semicontinuity — state explicitly which kind of witness each claim
+uses.
+
+**Honest scope.** *"No route, and here is the precise obstruction"* is a fine
+outcome. Nothing here re-opens the habitat-level statement.
+
+**Driver** `notes/scripts/w4/grid.py` (imports `closure.py` read-only).
+**Labels** per the reservation table.
+
+### Direction R — (ANH-R1): pencil-rigidity of the contracted framework
+
+**The question.** Is `H/P − β` **rigid at the pencil placement** (`τ_β ≠ 0`),
+class-uniformly at `k = 4`? A positive closes the **whole length-4-companion
+stratum** via §(K-Λ)'s Λ-completeness, with (ANH-7)'s one-bracket recipe as
+the consumer. Equally deliverable: settle the recorded open half — is the
+relocation genuinely *easier* than its parent, or merely smaller? The wall now
+sits in **Tay's matroid**, whose independence IS combinatorially characterized
+(Phases 12–15), so the sharp form is: does the pencil **pin respect the
+matroid** — the weak-map / specialization-stability lead of
+`Pencil-strategy.md` §4.6, which (ANH-R1) finally gives a statement.
+
+**Smallest concrete probe** (already named in `notes/Phase39.md` (g)): a
+census hunting a class seed with `supp_pen ⊊ supp_gen` at `k = 4` — a strict
+support drop at the pencil placement would witness weak-map specialization
+actually biting.
+
+**Grounding (canonical §(K-ann); do not re-derive):** (ANH-1) `λ` is the
+self-stress of `H/P`, dimension `k − 3`; (ANH-4) `E(H/P)` is a Tay circuit at
+`k = 4` **only**, support the whole far edge set at 14/14 class seeds;
+branch lengths ≤ 5 ((SD-6)); `supp(τ)` is a **circuit** and `supp(λ)` a
+**cocircuit** — do not conflate them.
+
+**Cautions.** (ANH-R1) is a rank **lower** bound — `Pencil-strategy.md` §2.3's
+asymmetry is relocated, not evaded; **no counting / matroid / placement-blind
+route to (OUT)'s hypothesis** ((OC-3) refutes the class); nothing here closes
+`k ≥ 5`.
+
+**Driver** `notes/scripts/w4/shrink.py` (imports `annih.py` read-only).
+**Labels** per the reservation table.
+
+### Direction M — the mechanisms pass (§(K-pure) P8/P9)
+
+**The question.** Explain the arc's two remaining *measured anomalies with no
+mechanism*: (i) **6v11e's `dim V_bc = 2` drop** — the slide device fails there
+at every probed nonempty support, its chart certificate the only closure; (ii)
+the **`V_bc ∩ Λ²π̂ ≠ 0` incidence** at `K222` and `K4 (1,1,3,5,4,4)`. Start at
+6v11e (*P9* item 5); widen the slide-support menu; sweep the `|V°| ≤ 6`
+strata. One rider probe from §(K-σ) *Step σ6*: `V_bc ∩ Λ²π̂ ≠ 0` is the
+σ-image of `V_bc ∩ α(·) ≠ 0` at the dual seed — check whether the incidence
+configurations are σ-images of one another.
+
+**Why this is standalone-significant.** These anomalies are where either a
+**new invariant** or a **near-counterexample** hides. By §(K-pure)'s (PC-Z),
+`Q(z) = 0 ⟺ V_bc` meets one of the two maximal totally isotropic 3-spaces
+containing `T` — so a structural characterization of *when the incidence
+happens* is exactly the target shape of any future non-vanishing argument,
+and a mechanism feeds **(K-chord)**, the live combinatorial residue. This is
+also the last unstarted item of the user-adjudicated 2026-08-05 ordering.
+
+**Cautions.** (K-slide-cl) **as stated** is refuted — the `∃Σ` form is the
+open one; the pure condition is the **wrong invariant** (*P5*) — this pass
+hunts mechanisms, not a revival of direction C; §(K-flank)'s per-shape rank
+tests are settled — do not re-run them.
+
+**Driver** `notes/scripts/w4/mech.py` (imports `pure.py` / `kslide.py`
+read-only). **Labels** per the reservation table — M opens §(K-mech) rather
+than minting in §(K-pure).
+
+### Landing (coordinator, per returned direction)
+
+The first fan-out's landing checklist (above) applies verbatim, plus: move
+the direction's reservation row into the registry in the landing commit;
+direction M's landing adds a *State of (K)* row (or extends (K-chord)'s);
+re-check session budget before dispatching nothing further / the next round.

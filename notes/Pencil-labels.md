@@ -98,13 +98,26 @@ that three concurrent read-only passes cannot collide with each other or with
 anything above. Each prefix was verified **0-hit** across `*.md`, `*.tex`,
 `*.lean`, `*.py`, `*.m2` at reservation time, as was each section name.
 
-**All three directions have LANDED** (2026-08-06) and **the reservation table is
-now empty**: `AC-`/`§(K-clos)` (C), `ANH-`/`§(K-ann)` (A) and `OC-`/`§(K-out)`
+**All three directions have LANDED** (2026-08-06) and that reservation table is
+released: `AC-`/`§(K-clos)` (C), `ANH-`/`§(K-ann)` (A) and `OC-`/`§(K-out)`
 (B, the (viii) measurement plus (OUT)'s combinatorial half) are live entries of
 the registry below, not reservations. A reservation is released by **moving** its
 row into the registry in the landing commit — never by deleting it — which is
 what each of the three landing commits did. The mechanics below stay because
 they bind the *next* parallel dispatch, not because one is in flight.
+
+**Reserved 2026-08-06 for the SECOND fan-out — directions T / R / M**
+(`notes/Pencil-fanout.md` §"Second fan-out"; letters chosen precisely to avoid
+the A/B/C date-ambiguity below). Each token verified **0-hit** across `*.md`,
+`*.tex`, `*.lean`, `*.py`, `*.m2` at reservation time. T and R *extend* live
+sections, so their reservations are the unclaimed tails of those sections'
+existing families — the owning section stays authoritative:
+
+| direction | reserved labels | reserved section (only if opened) | reserved driver |
+|---|---|---|---|
+| **T** (tight-stratum grid) | (AC-10) and above; Steps Z9+ — both in §(K-clos); prefix `GR-` for any family that doesn't fit | §(K-grid) | `notes/scripts/w4/grid.py` |
+| **R** (contracted rigidity, (ANH-R1)) | (ANH-9) and above; (ANH-R3) and above; Steps A10+ — all in §(K-ann); prefix `RG-` for any family that doesn't fit | §(K-rig) | `notes/scripts/w4/shrink.py` |
+| **M** (mechanisms pass) | prefix `MX-` only — M **cites** §(K-pure)'s *P8*/*P9* in qualified form and mints **nothing** there | §(K-mech) | `notes/scripts/w4/mech.py` |
 
 **One naming hazard this fan-out created, recorded rather than renamed (L4).**
 The **direction letters A/B/C are re-used** between the 2026-08-05 fan-out
