@@ -75,6 +75,18 @@ for *organizing* this directory is here.
   they are arguments a successor should attack rather than assume. Read it
   before choosing the phase's direction; `notes/Phase39.md` *Current state* is
   authoritative for the standing adjudications.
+- **`scripts/`** — the numerics harness (exact ℚ Python, plus the `m2/`
+  Macaulay2 layer). Entry point is **`scripts/README.md`**: primitive index,
+  layering map, invocation table, and the standing rules. Two of those rules
+  bind **project-wide**, not just numerics dispatches, so they are flagged
+  here: *every script the project runs is committed* (a standing user
+  requirement of 2026-08-05 — a script that produced a figure, verdict or
+  decision is part of the audit trail, never left in a scratch directory or
+  quoted from a transcript; a throwaway probe either becomes a driver or is
+  recorded as *measured, script not retained*, explicitly), and *figures do
+  not move* (byte-identical output at pinned `PYTHONHASHSEED`, with the
+  re-run obligation proportionate to whether a tracked driver actually
+  changed). The README also carries the *Harness debt* list.
 - **`ScrewSpaceCarrier-design.md`** — design doc for the *carrier-opacity*
   refactor (the `ScrewSpace` `abbrev` → diffuse-typeclass `maxHeartbeats`
   cost, the opacity spike, mathlib precedents, and the design-recon-first

@@ -170,6 +170,17 @@ The step-4/5 checks below always run. On top of them, by rung:
   the touched `.lean` files.
 - **probe (haiku):** re-run every gate the return names; treat all
   attestations as unverified.
+
+When re-running a gate **yourself**, obey the same mechanics the agent
+cores mandate: pass the Bash tool's **`timeout` PARAMETER** and never
+wrap the command in a shell-level `timeout` or pipe it into
+`tail`/`head`. A shell `timeout` does **not** prevent the harness
+auto-backgrounding a long call (only the tool parameter does), and a
+pipe masks the exit status. The cores say this; this file did not, and
+a coordinator re-run duly got auto-backgrounded at the 120 s default
+on 2026-08-05. A backgrounded re-run is recoverable — wait for the
+completion notification, never re-read an unchanged output file — but
+it costs a turn.
 - **Escalation:** BLOCKED return or failed verification →
   re-dispatch the same task one rung up with the failed route named
   in the prompt; keep any landed commit, close the gap in the
