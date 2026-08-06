@@ -6,7 +6,7 @@
 (2026-07-30). Only three items remain, all carried by the landed successor
 `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card` (`Molecule/Pencil/Escape.lean`):
 `hcontract` (W4), kernel `hK`, and kernel `hbareSplit` — see *Hand-off*. Kernel-(K) research
-is at its fifteenth docs+scripts-only pass (workbook `notes/Pencil-informal.md`; the settled
+is at its sixteenth docs+scripts-only pass (workbook `notes/Pencil-informal.md`; the settled
 W4-residual arc split out to `notes/Pencil-W4-informal.md` on 2026-08-05).
 
 ## Current state
@@ -39,7 +39,7 @@ The landed headline `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card`
 (`Molecule/Pencil/Escape.lean`) carries exactly three open items — `hcontract` (W4), `hK`,
 `hbareSplit` — each detailed in *Hand-off*.
 
-**Kernel-(K) research arc — fifteen docs+scripts-only dispatches** (2026-08-02 → 08-05).
+**Kernel-(K) research arc — sixteen docs+scripts-only dispatches** (2026-08-02 → 08-05).
 Mathematics: the workbook `notes/Pencil-informal.md`, whose **State of (K)** map is the entry
 point and the artifact a pass *updates*; settled W4-residual verdicts are in
 `notes/Pencil-W4-informal.md`; strategy in `notes/Pencil-strategy.md`. One line per landing in
@@ -54,13 +54,18 @@ uniformity of the escape remains untouched by every one of them**.
 > **Route σ** (route A run at the dual seed `σu`, where the polarity replaces every body's
 > point by its own panel normal) would close (K-tight) on the hard stratum, *length-free*, via
 > `Λ²Π̂(b) + Λ²Π̂(c) + α_{pt(b)} = K⁶`. It is landed as a **candidate offered for
-> adjudication**, with four obligations preserved: (1) σ-nondegeneracy of the transported seed
-> is **observed 63/63, not proven**; (2) scope is `s₀ = 0`, `dim R_a = 1`, both ends hubs,
-> tight control only — `dim R_a = 0` untouched, (K-res) `s₀ = 2` unsampled; (3) the imported
-> criterion's **failure** direction is unwitnessed (`predAfalse = 0/63`); (4) the branch it
-> closes has **never been observed nonempty**, so the gain is **evidence → argument**, not a
-> repaired failure. **No gap-map status moves on account of route σ**; `hK` and `hbareSplit`
-> stay carried as pinned; **W4 stays PARKED**; the phase does **not** close.
+> adjudication**, with four obligations, the first now **verified in both directions**
+> (2026-08-05, `sigma.py --hunt`): (1) the dual conjuncts at `σu` are **NOT implied** — 53
+> constructed hard-stratum, primally-nondegenerate counterexamples — but only **two** of the
+> four are genuinely new (conjunct 1 is free by a landed theorem, conjunct 3 by the primal
+> conjuncts on no-adjacent-hub shapes, conjunct 2 at the two `a`-edges is the already-named
+> (Λ0d)), and the steering repair is exhibited **exactly**; (2) scope is `s₀ = 0`,
+> `dim R_a = 1`, both ends hubs, tight control only — `dim R_a = 0` untouched, (K-res) `s₀ = 2`
+> unsampled; (3) the imported criterion's **failure** direction is unwitnessed
+> (`predAfalse = 0/63`); (4) the branch it closes has **never been observed nonempty**, so the
+> gain is **evidence → argument**, not a repaired failure. Same pass **proved (σ7)** — *Step
+> σ3*'s side condition is free. **No gap-map status moves on account of route σ**; `hK` and
+> `hbareSplit` stay carried as pinned; **W4 stays PARKED**; the phase does **not** close.
 
 The other candidate continuations, unselected, without preference; each has a canonical home
 that carries the detail, so they are **not** restated here:
@@ -184,25 +189,40 @@ discharge (residue (iv)) is CLOSED too**. The landed successor
 `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card` (`Molecule/Pencil/Escape.lean`) wraps
 `pencil_conjecture_of_hcontract_hK_hbareSplit` and carries exactly three open items, below.
 
-> **Smallest concrete commit if work continues on this thread: the σ-NONDEGENERACY
-> VERIFICATION** — `notes/Pencil-informal.md` §(K-σ) *Step σ5* **obligation 1**, the single
-> obligation route σ rests on. Show that a hard-stratum seed can be steered to one where the
-> **dual** `IsNondegPencilRealization` conjuncts hold at `σu` (they are open conditions on the
-> pencil chart, and the 63 exact ℚ witnesses certify non-vacuity). The named repair is the
-> landed `exists_common_seed_pencilRow_and_polynomials` (`Engine.lean:476`) — whose own
-> docstring already names this consumer shape, "W5-L7's rank target *and* its candidate-`M₁`
-> escape polynomial" — so this is Lean engineering against a landed pattern, **not new
-> mathematics**. Cheap first step, before any Lean: one more `sigma.py` mode that runs the same
-> steering numerically at a seed where the dual conjuncts fail, if one can be found at all.
+> **The numerics half of the σ-NONDEGENERACY VERIFICATION is DONE** (2026-08-05,
+> `sigma.py --hunt`, workbook §(K-σ) *Step σ3*/*Step σ4b*/*Step σ5*). The hunt found the
+> failure: **53** constructed hard-stratum, primally-nondegenerate `G′` seeds at which the
+> **dual** conjuncts 2 and 4 fail at `σu` (the coplanar-chain degeneration), while a random
+> pool of 107 fresh draws finds none — so the earlier "observed 63/63" was genericity and
+> never an implication. The steering was then run there and **works, exactly**: on a chart
+> line through the failure the offending bracket is `τ·bracket(1)` identically, so the failure
+> locus is hit at one point only, and at every other `τ` the seed is hard-stratum with primal
+> *and* dual conjuncts 4/4. Two of the four dual conjuncts turned out **free** (1 by the landed
+> `hasPencilPanelRealization_mapExtensor_screwComplementIso`, 3 by the primal conjuncts when no
+> two hubs are adjacent), and the same pass proved **(σ7)** — *Step σ3*'s side condition is
+> free, settling that section's *What would change this* item (iv).
+>
+> **Smallest concrete commit if work continues on this thread: the LEAN half of obligation 1**
+> — steer to a common seed via the landed `exists_common_seed_pencilRow_and_polynomials`
+> (`Engine.lean:476`). Its own docstring already names this consumer shape ("W5-L7's rank
+> target *and* its candidate-`M₁` escape polynomial"), the chart is a **total** parameterization
+> (no chart-image side condition), and the one design decision is **which maximal minor to fix
+> per LI conjunct** — the dual conjuncts are unions of basic opens, not single hypersurface
+> complements, so the repair needs sufficiency, graph-dependently. **`exists_pencilSeed_of_nondeg`
+> (`Reseed.lean:65`) is NOT the bridge** and is circular if used as one.
+> **BUT THAT COMMIT IS BLOCKED**: the standing 2026-08-05 adjudication holding the Lean back
+> pending *"an informal proof or disproof or any results that would be significant as standalone
+> pieces of math"* is **general, not W4-scoped**, so it holds back this repair too. It does not
+> open without a fresh user adjudication.
 >
 > **Route σ faces exactly ONE crux, not two.** The workbook kills M₁ twice — §(K-tight)
 > *Step 1* as "the nondegeneracy-forbidden locus", *Step 2.6* as "M₁'s span is
 > carrier-unrealizable" — but the second's stated reason is the **same** `hinge(vb) := q(ab)`
 > pinning. That materially bounds what verifying route σ costs.
 >
-> **NOT DECIDED HERE:** whether this preempts the **mechanisms pass** (*Current state* (a)), the
-> one unstarted item of the user's adjudicated dispatch ordering. That is an **open user
-> adjudication**; both are live and neither is pre-selected.
+> **NOT DECIDED HERE:** whether the remaining route-σ work preempts the **mechanisms pass**
+> (*Current state* (a)), the one unstarted item of the user's adjudicated dispatch ordering.
+> That is an **open user adjudication**; both are live and neither is pre-selected.
 >
 > Deliberate non-goals: (Λ0), (Λ1), the `g₁₄` clause, §(K-ind) and §(K-Δ) are **done** — do not
 > re-derive, re-sweep, or re-run their literature hunt, and do not touch `lambda.py`'s figures.
@@ -265,6 +285,19 @@ survey — incl. IDENT-PANEL, the nearest neighbour — is `notes/IdeaBacklog.md
 Reverse-chronological, one line per landing; full derivations live in git,
 `notes/Phase39-design.md`, and (for the (K) arc) the workbook section named in each entry, which
 is the canonical home a successor reads.
+
+- **Obligation 1's numerics half DONE — the dual conjuncts are NOT implied, the steering WORKS,
+  and (σ7) makes *Step σ3*'s side condition free** (2026-08-05, `sigma.py --hunt`, workbook
+  §(K-σ) *Step σ3*/*σ4b*/*σ5*). **53** constructed hard-stratum, primally-nondegenerate seeds
+  violate dual conjuncts 2 and 4 at `σu` (coplanar-chain degeneration), against **0** in 107
+  fresh random draws — so *Step σ4*'s 63/63 was genericity, an F11-class correction to this
+  arc's own predecessor. Obligation 1 nonetheless **shrinks to two conditions**: conjunct 1 is
+  free by the landed `hasPencilPanelRealization_mapExtensor_screwComplementIso`, conjunct 3 by
+  the primal conjuncts on no-adjacent-hub shapes, conjunct 2 at the two `a`-edges *is* two-sided
+  (Λ0d). Steering exhibited exactly (`bracket(τ) = τ·bracket(1)`, 12 lines / 60 points).
+  **(σ7)** proven: primal conjunct 4 at the split's middle body forbids both (Λ0d) halves from
+  failing at once (39/39 witnesses), settling §(K-σ)'s *What would change this* (iv).
+  **No gap-map status row moves.**
 
 - **Route σ landed as a CANDIDATE; the σ-intertwining question REFUTED literally and CONFIRMED
   covariantly; σ-equivariant seed recipes DEAD** (2026-08-05, workbook §(K-σ),

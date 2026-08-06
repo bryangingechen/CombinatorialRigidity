@@ -540,9 +540,14 @@ direction is set:
   (`notes/Pencil-informal.md` §(K-σ) *Step σ5* obligation 1) — the one crux the
   candidate rests on, with a named repair against landed machinery
   (`exists_common_seed_pencilRow_and_polynomials`, `Engine.lean:476`, whose own
-  docstring already names this consumer shape). Route σ is a **candidate**, not
-  a settled closure; it moves no gap-map row, and whether it should **preempt
-  the mechanisms pass** is an open user adjudication.
+  docstring already names this consumer shape). **Its numerics half landed the
+  same day** (`sigma.py --hunt`, §(K-σ) *Step σ4b*): the dual conjuncts are
+  **not** implied — 53 constructed hard-stratum, primally-nondegenerate
+  counterexamples — but two of the four are free, one is the already-named
+  (Λ0d), and the steering is exhibited exactly. What is left is **Lean**, and it
+  is held by the standing Lean-hold adjudication. Route σ is a **candidate**,
+  not a settled closure; it moves no gap-map row, and whether the rest of it
+  should **preempt the mechanisms pass** is an open user adjudication.
 - **If the direction is C3 (mixed stratum):** first question is combinatorial and
   needs no geometry — can KT's reduction always avoid a prescribed vertex
   set `S`? Read Phase 20's generation theorem before scoping.

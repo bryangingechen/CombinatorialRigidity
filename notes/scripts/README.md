@@ -303,8 +303,11 @@ Three layers, plus one **language island**:
   that plus `dominance`'s `build_chart` / `simple_paths` / `h_edges` and —
   through `importlib`, since `lambda` is a keyword — `lambda`'s
   `habitat_specs` / `omega_curves` / `rows_mnqs`; `sigma` takes
-  `flanks.star_span_ranks`, `hybrid_gates.build_rigidity_extensors`, and
-  `repin`'s `hodge_star` / `span_basis` / `lambda2_through`.
+  `flanks.star_span_ranks`, `hybrid_gates.build_rigidity_extensors`,
+  `repin`'s `hodge_star` / `span_basis` / `lambda2_through` /
+  `rob_in_plane`, `pitch.det4` and `localtest.meet_line` (the last two added
+  2026-08-05 by `--hunt`; both are already in the import closure, and
+  `meet_line` is used behind the *Harness debt* 1 caller-side guard).
   **`star_span_ranks` now has FOUR consumers, past the signal rule 2 names: the
   next commit that already owes a full `repin` re-baseline should move it down**
   (with a re-export from `flanks` so the recorded figures do not move); on its
@@ -461,6 +464,7 @@ arcs too.
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/sigma.py --adv` | 87 s | ibid. (the α/β perp generators, `C(M) ∦ C(bc)`, the `predA` census, pullback legality, the `W19` (K-res) leg) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/sigma.py --nondeg` | 43 s | ibid. (all four `IsNondegPencilRealization` conjuncts at `σu` and at the witness; the chart point equations) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/sigma.py --fixed` | 1 s | ibid. *Step σ6* (σ-fixed configurations are degenerate: deficit 1 at 6/6 on `C₆`) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/sigma.py --hunt` | 135 s | ibid. *Step σ4b* (obligation 1: H0–H5 — the conjunct arithmetic, the random leg, the constructed dual-conjunct failure, the steering, and (σ7)). **Runs on three pools of its own, disjoint from the pinned 63** |
 
 ### `m2/` — the Macaulay2 symbolic layer
 
@@ -582,8 +586,8 @@ price of the eventual fix.
    normals are **parallel** every `2×2` minor vanishes, its base-point loop never
    binds `p0`, and it raises `UnboundLocalError`. So the caller's guard is
    **unreachable in the one case it was written for**. Handled caller-side
-   (`outer.chart_point` catches it and rejects the draw); full detail in §4
-   convention 1.
+   (`outer.chart_point` catches it and rejects the draw; `sigma.py --hunt`'s
+   two constructive placers do the same); full detail in §4 convention 1.
 2. **`lambda.omega_curves`' coded (Λ0f) equivalence raises at `g₁₄ = 0`.** That
    point became *reachable* only when `outer.py --geom` constructed it
    (2026-08-05); the driver catches and reports the raise, never repairs it

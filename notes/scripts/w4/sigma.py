@@ -14,21 +14,28 @@ is literally `(points, normals) := (N, P)`.  That is why the affine samplers'
 `(placed, nrm)` pair is homogenized once, in `hard_stratum_seed`, and never
 used again.
 
-Modes (all four run on one pinned seed pool; see SEED POOL below):
+Modes (the first four run on one pinned seed pool; see SEED POOL below):
 
     python3 notes/scripts/w4/sigma.py --transport   # (sigma1)-(sigma6), V0-V5
     python3 notes/scripts/w4/sigma.py --adv         # the adversarial half
     python3 notes/scripts/w4/sigma.py --nondeg      # nondegeneracy at sigma u
     python3 notes/scripts/w4/sigma.py --fixed       # sigma-FIXED is degenerate
+    python3 notes/scripts/w4/sigma.py --hunt        # obligation 1: hunt+steer
 
 SEED POOL.  Two splits of the tight control (the double-subdivided `K4`,
 `|V| = 16`, target 90, `G'` target 84): seeds 440-479 at chain 0 and 500-529 at
 chain 1.  A seed is *valid* when its draw survives the guards AND lands on the
 hard stratum (`s0 = 0`, `dim R_a = 1`); 34 + 29 = 63 of the 70 do.  Every
-figure the workbook quotes is over that pool.  `--adv` additionally probes two
-`W19` splits (the (K-res) residual habitat), which yield **no** valid
-hard-stratum seed in the probed range -- recorded as *unsampled*, never as
-*tested and passed*.
+figure the FIRST FOUR modes quote is over that pool.  `--adv` additionally
+probes two `W19` splits (the (K-res) residual habitat), which yield **no**
+valid hard-stratum seed in the probed range -- recorded as *unsampled*, never
+as *tested and passed*.
+
+HUNT POOLS (`--hunt` only, and deliberately kept SEPARATE from the pinned 63 --
+the whole point of the mode is to reach configurations the pinned pool does not
+contain).  Three, declared at `HUNT_SEEDS` / `COPLANAR_SEEDS` /
+`SIDECOND_SEEDS` below and printed in the mode's header.  No `--hunt` figure is
+quoted over the 63-seed pool and no 63-seed figure is quoted over these.
 """
 import os
 import random
@@ -44,7 +51,10 @@ from pencil_escape import double_subdivide, rquat                # noqa: E402
 from kbare_common import verts_of                                # noqa: E402
 from nogood_subdiv import deficiency, hub_set                    # noqa: E402
 from widened import W19, orient, place_pencil_general, splitOff  # noqa: E402
-from repin import hodge_star, lambda2_through, span_basis        # noqa: E402
+from localtest import meet_line                                  # noqa: E402
+from repin import (hodge_star, lambda2_through, rob_in_plane,    # noqa: E402
+                   span_basis)
+from pitch import det4                                           # noqa: E402
 from flanks import star_span_ranks                               # noqa: E402
 from hybrid_gates import build_rigidity_extensors                # noqa: E402
 
@@ -52,6 +62,13 @@ CHAIN0_SEEDS = range(440, 480)
 CHAIN1_SEEDS = range(500, 530)
 W19_SEEDS = range(600, 620)
 SWEEP_TRIES = 14          # route-A placement draws at sigma u, per seed
+
+# --- `--hunt` pools, kept separate from the pinned 63 (see the header) -------
+HUNT_SEEDS = range(1000, 1060)        # H1: the fresh random leg, per split
+COPLANAR_SEEDS = range(2000, 2030)    # H2/H3: the constructive leg, per split
+SIDECOND_SEEDS = range(3000, 3020)    # H4/H5: the (Lambda 0d) leg, per split
+STEER_TAUS = (F(1), F(1, 3), F(-2), F(5, 7), F(11))   # tau != 0, exact
+STEER_LIMIT = 6           # H2 configurations carried into H3, per split
 
 # the standard symplectic form on K^4 (the null correlation of --fixed)
 J = [[F(0), F(1), F(0), F(0)],
@@ -90,6 +107,28 @@ def lambda2_perp(nu):
                       for i in range(3) for j in range(i + 1, 3)])
     assert len(out) == 3, "Lambda^2 of a plane is 3-dimensional"
     return out
+
+
+def panel_normals(edges, V, P, pt, nrm):
+    """The HOMOGENEOUS panel normal at every body: the sampler's own affine
+    plane at a hub (homogenized), the unique annihilator of the body's closed
+    star elsewhere.  `None` when some body's normal is **not unique** -- which
+    is itself a verdict, not a sampler hiccup: a body whose closed star spans
+    only a line has no panel at all (`--hunt` H5 turns exactly this into a
+    proof).  A `null4` uniqueness wrapper, not a new primitive."""
+    nbp = neighbors(edges)
+    N = {}
+    for w in V:
+        if w in nrm:
+            nn = nrm[w]
+            N[w] = [nn[0], nn[1], nn[2],
+                    -sum(nn[i] * pt[w][i] for i in range(3))]
+        else:
+            cand = null4([P[w]] + [P[t] for t in sorted(nbp[w], key=str)])
+            if cand is None:
+                return None
+            N[w] = cand
+    return N
 
 
 def rows_from_points(edges, V, P):
@@ -168,19 +207,10 @@ def hard_stratum_seed(Gp, Vp, a, b, seed, tgtGp, tally):
     if rank(rows) != tgtGp:
         tally['rej_rank'] += 1
         return None
-    nbp = neighbors(Gp)
-    N = {}
-    for w in Vp:
-        if w in nrm:
-            nn = nrm[w]
-            N[w] = [nn[0], nn[1], nn[2],
-                    -sum(nn[i] * pt[w][i] for i in range(3))]
-        else:
-            cand = null4([P[w]] + [P[t] for t in sorted(nbp[w], key=str)])
-            if cand is None:
-                tally['rej_normal'] += 1
-                return None
-            N[w] = cand
+    N = panel_normals(Gp, Vp, P, pt, nrm)
+    if N is None:
+        tally['rej_normal'] += 1
+        return None
     assert all(any(t != 0 for t in N[w]) for w in Vp), "zero panel normal"
     e_ab = next(e for e in er if set(e) == {a, b})
     Ra = load_span(rows, er, e_ab, idx, a)
@@ -574,6 +604,405 @@ def fixed_is_degenerate():
     assert tried == 6 and ok == 6, (tried, ok)
 
 
+# ---------------- mode: --hunt (obligation 1) --------------------------------
+#
+# *Step sigma5* obligation 1 asks whether the DUAL `IsNondegPencilRealization`
+# conjuncts, observed to hold at `sigma u` at all 63 pinned seeds, can FAIL at
+# a hard-stratum seed at all -- and, where they do, whether the seed can be
+# steered to one where they hold.  The pinned pool cannot answer it: the dual
+# conjuncts are open conditions, so a random exact-Q draw never lands on their
+# failure locus.  The hunt therefore has one random leg (H1, which finds
+# nothing, and says so) and three CONSTRUCTIVE ones.
+
+def legal_pencil(edges, placed, pt, nrm, hubs_set):
+    """Is `placed` a legal pencil placement -- every hub's closed star inside
+    that hub's own affine panel, and no edge with coincident endpoints?
+
+    `place_pencil_general` checks exactly this on its own draws; the
+    hand-degenerated placements below are not sampler output, so they have to
+    re-impose it (convention 1: a degeneracy guard on every sampled object)."""
+    nb = neighbors(edges)
+    for hh in sorted(hubs_set, key=str):
+        for u in nb[hh]:
+            if dot(nrm[hh], [placed[u][i] - pt[hh][i] for i in range(3)]) != 0:
+                return False
+    return all(placed[u] != placed[w] for (u, w) in edges)
+
+
+def diagnose(Gp, Vp, placed, pt, nrm, a, b, hubs_set, tgtGp):
+    """`(P, N, record)` at an ARBITRARY (possibly hand-degenerated) placement,
+    with no rejection ladder -- every quantity reported instead.  `N` is `None`
+    when some body has no unique panel.
+
+    Deliberately **not** a refactor of `hard_stratum_seed`: that function's
+    guard ORDER is what the four pinned modes' rejection tallies are made of,
+    so it stays exactly as it is (`notes/scripts/README.md` *figures do not
+    move*).  This answers a different question -- "what IS this
+    configuration?" rather than "is this draw usable?"."""
+    P = {w: hat(placed[w]) for w in Vp}
+    N = panel_normals(Gp, Vp, P, pt, nrm)
+    rows, er, C, idx = rows_from_points(Gp, Vp, P)
+    e_ab = next(e for e in er if set(e) == {a, b})
+    shared = [e for e in Gp if set(e) != {a, b}]
+    rec = dict(rank=rank(rows), target=tgtGp,
+               dim_Ra=len(load_span(rows, er, e_ab, idx, a)),
+               s0=5 * len(shared) - rank(rows_from_points(shared, Vp, P)[0]))
+    rec['hard'] = (rec['rank'] == tgtGp and rec['dim_Ra'] == 1
+                   and rec['s0'] == 0)
+    if N is not None:
+        rec['primal'] = nondeg_conjuncts_hom(Gp, Vp, P, N, hubs_set)
+        rec['dual'] = nondeg_conjuncts_hom(Gp, Vp, N, P, hubs_set)
+    return P, N, rec
+
+
+def conjunct_arithmetic(Gp, Vp, hubs_set, label):
+    """H0 -- the shape's *conjunct arithmetic*: how much of obligation 1 is
+    genuinely new, before any geometry is drawn.
+
+    Dual conjunct 1 is FREE as a matter of landed Lean, not of measurement:
+    `hasPencilPanelRealization_mapExtensor_screwComplementIso`
+    (`Molecule/Pencil/Statement.lean:257`) IS the statement that conjunct 1
+    transports to `sigma u`.  Dual conjunct 3 (`LinearIndepOn point
+    (closedHubNbhd v)`) is implied by the PRIMAL conjuncts whenever **no two
+    hubs are adjacent**: `closedHubNbhd v = {v}` at a hub, so the dual conjunct
+    reads `point v != 0` (primal conjunct 1); and `closedHubNbhd v` is a subset
+    of `closedNbhd v` at a non-hub, so the dual conjunct is primal conjunct 4
+    restricted (`LinearIndepOn.mono`).  This leg asserts that combinatorial
+    hypothesis on the shape actually being sampled, so the reduction is not
+    taken on faith."""
+    nb = neighbors(Gp)
+    hh = [e for e in Gp if e[0] in hubs_set and e[1] in hubs_set]
+    chn = {w: {t for t in ({w} | nb.get(w, set())) if t in hubs_set}
+           for w in Vp}
+    cn = {w: {w} | nb.get(w, set()) for w in Vp}
+    print(f"    {label}: |V|={len(Vp)} |E|={len(Gp)} hubs={len(hubs_set)} "
+          f"hub-hub edges={len(hh)} "
+          f"max|closedHubNbhd|={max(len(s) for s in chn.values())} "
+          f"max|closedNbhd|={max(len(s) for s in cn.values())}")
+    assert not hh, ("a hub-hub edge makes dual conjunct 3 a genuinely new "
+                    "condition -- re-derive H0 before trusting the reduction",
+                    hh)
+    assert all(chn[w] == {w} for w in Vp if w in hubs_set), chn
+    assert all(chn[w] <= cn[w] for w in Vp), (chn, cn)
+    return len(hh)
+
+
+def hunt_random(E, v, seeds, label):
+    """H1 -- the fresh random leg.  A wider pool of hard-stratum draws, the
+    four dual conjuncts censused at `sigma u`.  Expected (and asserted): no
+    failure, because the dual conjuncts are open conditions."""
+    a, b, c, Gp, Vp, VG, tgtG, tgtGp = split_setup(E, v)
+    hubsGp = hub_set(Gp)
+    t = new_tally(d1=0, d2=0, d3=0, d4=0, dualfail=0)
+    for seed in seeds:
+        got = hard_stratum_seed(Gp, Vp, a, b, seed, tgtGp, t)
+        if got is None:
+            continue
+        P, N, rows, er, C, idx, r = got
+        t['seeds'] += 1
+        d = nondeg_conjuncts_hom(Gp, Vp, N, P, hubsGp)
+        for k, val in zip(('d1', 'd2', 'd3', 'd4'), d):
+            t[k] += val
+        t['dualfail'] += (not all(d))
+    show(label, t)
+    assert t['dualfail'] == 0, \
+        ("a RANDOM draw hit the dual failure locus -- H1's reading (the "
+         "locus is a proper subvariety, so the hunt must be constructive) "
+         "no longer holds; update the workbook", t)
+    return t
+
+
+def coplanar_chain_placement(Gp, chain, hubs_set, seed):
+    """H2's adversarial placement: a LEGAL pencil placement of `Gp` whose
+    chain `(h, x, y, hp)` -- `h`, `hp` hubs, `x`, `y` degree-2 bodies with
+    `h~x~y~hp` -- has its four bodies COPLANAR.
+
+    Construction.  `x`'s only panel constraint is `x in Pi(h)` and `y`'s is
+    `y in Pi(hp)`, so pick `z` on the meet line `Pi(h) cap Pi(hp)` and put `x`
+    on the line `h z` and `y` on the line `hp z`: both constraints hold, and
+    `h, x, y, hp, z` all lie in the plane spanned by `h`, `hp`, `z`.  The
+    coplanarity makes `x`'s panel (the plane through `h, x, y`) and `y`'s (the
+    plane through `x, y, hp`) COINCIDE, so at `sigma u` the two adjacent
+    "points" `N[x]`, `N[y]` are projectively equal -- dual conjunct 2 fails on
+    the edge `xy`, and dual conjunct 4 fails at both `x` and `y`.  Nothing
+    primal notices: the four PRIMAL conjuncts only ever see the points.
+
+    Returns `((placed, pt, nrm, x_generic), None)` or `(None, reason)`."""
+    h, x, y, hp = chain
+    nb = neighbors(Gp)
+    assert h in hubs_set and hp in hubs_set, chain
+    assert x not in hubs_set and y not in hubs_set, chain
+    assert nb[x] == {h, y} and nb[y] == {x, hp}, (chain, nb[x], nb[y])
+    pl = place_pencil_general(Gp, random.Random(seed))
+    if pl is None:
+        return None, 'sampler'
+    placed, pt, nrm, _hubs, _nb = pl
+    try:
+        p0, d = meet_line(pt[h], nrm[h], pt[hp], nrm[hp])
+    except UnboundLocalError:
+        # `localtest.meet_line` RAISES instead of signalling when the two
+        # normals are parallel (`notes/scripts/README.md` *Harness debt* 1);
+        # the sanctioned handling is this caller-side guard, as in
+        # `outer.chart_point`.
+        return None, 'meetline'
+    if all(u == 0 for u in d):
+        return None, 'meetline'
+    rg = random.Random(31337 + seed)
+    s, t1, t2 = rquat(rg), rquat(rg), rquat(rg)
+    z = [p0[i] + s * d[i] for i in range(3)]
+    if t1 == 0 or t2 == 0 or z == pt[h] or z == pt[hp]:
+        return None, 'draw'
+    out = dict(placed)
+    out[x] = [pt[h][i] + t1 * (z[i] - pt[h][i]) for i in range(3)]
+    out[y] = [pt[hp][i] + t2 * (z[i] - pt[hp][i]) for i in range(3)]
+    if out[x] == placed[x]:
+        return None, 'draw'
+    if not legal_pencil(Gp, out, pt, nrm, hubs_set):
+        return None, 'illegal'
+    if any(rk != 3 for rk in star_span_ranks(Gp, out).values()):
+        return None, 'star'
+    return (out, pt, nrm, placed[x]), None
+
+
+def steer_line(Gp, Vp, chain, placed, pt, nrm, x_gen, a, b, hubs_set, tgtGp,
+               t):
+    """H3 -- the steering, on an explicit chart line through the failure.
+
+    `x(tau) = (1-tau)*x_deg + tau*x_gen`, both endpoints inside `Pi(h)`, so the
+    whole line is a legal pencil family and only the coplanarity bracket moves.
+    `hat` is affine in the point and the bracket is multilinear, so
+    `[P_h, P_x(tau), P_y, P_hp]` is AFFINE in `tau`; it vanishes at `tau = 0`
+    by construction, hence equals `tau * bracket(1)` identically.  With
+    `bracket(1) != 0` that is a *proof* -- not a sample -- that the failure
+    locus meets this line in the ONE point `tau = 0`.
+
+    This is the exact-arithmetic instance of obligation 1's repair (c),
+    `exists_common_seed_pencilRow_and_polynomials` (`Engine.lean:476`): steer
+    along the chart, keep the rank, leave the failure locus."""
+    h, x, y, hp = chain
+    x_deg = placed[x]
+    br1 = None
+    for tau in (F(0),) + STEER_TAUS:
+        pl2 = dict(placed)
+        pl2[x] = [(1 - tau) * x_deg[i] + tau * x_gen[i] for i in range(3)]
+        t['tau'] += 1
+        if not legal_pencil(Gp, pl2, pt, nrm, hubs_set):
+            continue
+        t['tau_legal'] += 1
+        P, N, rec = diagnose(Gp, Vp, pl2, pt, nrm, a, b, hubs_set, tgtGp)
+        br = det4([P[h], P[x], P[y], P[hp]])
+        if tau == 0:
+            t['br0_zero'] += (br == 0)
+            continue
+        if br1 is None:
+            assert tau == 1, "STEER_TAUS must start at tau = 1"
+            br1 = br
+            t['br1_nonzero'] += (br != 0)
+        t['linear'] += (br == tau * br1)
+        t['steered'] += (rec['hard'] and N is not None
+                         and all(rec['primal']) and all(rec['dual']))
+    return t
+
+
+def sidecond_placement(Gp, targets, hubs_set, seed):
+    """H4/H5 -- force `pt(other) in Pi(h)` for every `(h, other)` in `targets`
+    by re-choosing `h`'s panel normal inside `(pt(other) - pt(h))^perp` and
+    re-placing `h`'s non-hub neighbours in the new panel.
+
+    `pt(b) in Pi(c)` is the NEGATION of *Step sigma3*'s side condition, and it
+    is also exactly "dual conjunct 2 fails on the edge `ac`": `a`'s panel is
+    the plane through `pt(a), pt(b), pt(c)`, which equals `Pi(c)` iff
+    `pt(b) in Pi(c)`.  So the side condition and one dual conjunct are the same
+    scalar.  Returns `((placed, pt, nrm), None)` or `(None, reason)`."""
+    nb = neighbors(Gp)
+    pl = place_pencil_general(Gp, random.Random(seed))
+    if pl is None:
+        return None, 'sampler'
+    placed, pt, nrm, _hubs, _nb = pl
+    rg = random.Random(555 + seed)
+    nrm2, out = dict(nrm), dict(placed)
+    for (h, other) in targets:
+        bas = nullspace([[pt[other][i] - pt[h][i] for i in range(3)]])
+        if len(bas) != 2:
+            return None, 'coincident-hubs'
+        co = [rquat(rg) for _ in bas]
+        n1 = [sum((co[k] * bas[k][i] for k in range(2)), F(0))
+              for i in range(3)]
+        if all(u == 0 for u in n1):
+            return None, 'draw'
+        nrm2[h] = n1
+    for (h, _other) in targets:
+        for s in sorted(nb[h], key=str):
+            hn = sorted((u for u in nb[s] if u in hubs_set), key=str)
+            if len(hn) >= 2:
+                try:
+                    p0, d = meet_line(pt[hn[0]], nrm2[hn[0]],
+                                      pt[hn[1]], nrm2[hn[1]])
+                except UnboundLocalError:      # harness debt 1; see above
+                    return None, 'meetline'
+                if all(u == 0 for u in d):
+                    return None, 'meetline'
+                tt = rquat(rg)
+                out[s] = [p0[i] + tt * d[i] for i in range(3)]
+            else:
+                out[s] = rob_in_plane(pt[h], nrm2[h], rg)
+    if not legal_pencil(Gp, out, pt, nrm2, hubs_set):
+        return None, 'illegal'
+    return (out, pt, nrm2), None
+
+
+def hunt(E, v, chain, label, totals):
+    """The five legs at one split."""
+    a, b, c, Gp, Vp, VG, tgtG, tgtGp = split_setup(E, v)
+    hubs_set = hub_set(Gp)
+    print(f"== {label}: v={v} a={a} b={b} c={c} target(G')={tgtGp} "
+          f"degenerated chain={chain} ==")
+    conjunct_arithmetic(Gp, Vp, hubs_set, "H0 shape")
+
+    hunt_random(E, v, HUNT_SEEDS, "H1 random")
+
+    # --- H2: the constructive failure ---------------------------------------
+    h, x, y, hp = chain
+    t2 = new_tally(rej_meetline=0, rej_draw=0, rej_illegal=0,
+                   built=0, hard=0, primal=0, dual_c1=0, dual_c3=0,
+                   c2_fails_on_xy=0, c4_fails_at_xy=0, exact_pattern=0)
+    del t2['rej_coincident'], t2['rej_rank'], t2['rej_normal']
+    del t2['rej_stratum']
+    steered = []
+    for seed in COPLANAR_SEEDS:
+        got, why = coplanar_chain_placement(Gp, chain, hubs_set, seed)
+        if got is None:
+            t2['rej_' + why] += 1
+            continue
+        placed, pt, nrm, x_gen = got
+        t2['seeds'] += 1
+        P, N, rec = diagnose(Gp, Vp, placed, pt, nrm, a, b, hubs_set, tgtGp)
+        assert N is not None, "the degenerated chain still has panels"
+        t2['built'] += 1
+        t2['hard'] += rec['hard']
+        t2['primal'] += all(rec['primal'])
+        t2['dual_c1'] += rec['dual'][0]
+        t2['dual_c3'] += rec['dual'][2]
+        t2['c2_fails_on_xy'] += (rank([N[x], N[y]]) == 1)
+        nb = neighbors(Gp)
+        t2['c4_fails_at_xy'] += all(
+            rank([N[u] for u in sorted({w} | nb[w], key=str)]) < 3
+            for w in (x, y))
+        t2['exact_pattern'] += (rec['dual'] == (True, False, True, False))
+        if len(steered) < STEER_LIMIT:
+            steered.append((placed, pt, nrm, x_gen))
+    show("H2 coplanar chain", t2)
+    n2 = t2['seeds']
+    assert n2 > 0, "H2 built nothing -- the hunt has no witness"
+    for k in ('built', 'hard', 'primal', 'dual_c1', 'dual_c3',
+              'c2_fails_on_xy', 'c4_fails_at_xy', 'exact_pattern'):
+        assert t2[k] == n2, (k, t2)
+    print(f"    H2 VERDICT: {n2}/{n2} hard-stratum, PRIMALLY NONDEGENERATE "
+          f"seeds at which the DUAL conjuncts 2 and 4 FAIL at sigma u "
+          f"(1 and 3 hold). Obligation 1 is NOT vacuous.")
+
+    # --- H3: the steering ---------------------------------------------------
+    t3 = new_tally(tau=0, tau_legal=0, br0_zero=0, br1_nonzero=0, linear=0,
+                   steered=0)
+    for k in ('rej_sampler', 'rej_star', 'rej_coincident', 'rej_rank',
+              'rej_normal', 'rej_stratum'):
+        del t3[k]
+    for (placed, pt, nrm, x_gen) in steered:
+        t3['seeds'] += 1
+        steer_line(Gp, Vp, chain, placed, pt, nrm, x_gen, a, b, hubs_set,
+                   tgtGp, t3)
+    show("H3 steering", t3)
+    n3 = t3['seeds']
+    assert t3['tau'] == n3 * (1 + len(STEER_TAUS)) == t3['tau_legal'], t3
+    assert t3['br0_zero'] == n3 and t3['br1_nonzero'] == n3, t3
+    assert t3['linear'] == n3 * len(STEER_TAUS), t3
+    assert t3['steered'] == n3 * len(STEER_TAUS), t3
+    print(f"    H3 VERDICT: bracket(tau) = tau * bracket(1) exactly, "
+          f"bracket(1) != 0 -- the failure locus meets each chart line in the "
+          f"ONE point tau = 0, and at every tau != 0 the seed is hard-stratum "
+          f"with primal AND dual 4/4. The steering WORKS.")
+
+    # --- H4/H5: the (Lambda 0d) side condition ------------------------------
+    t4 = new_tally(rej_meetline=0, rej_draw=0, rej_illegal=0,
+                   rej_coincidenthubs=0, primal=0,
+                   ptb_in_Pic=0, ptc_notin_Pib=0,
+                   c2_ab_ok=0, c2_ac_fails=0, span_b5=0, span_c6=0)
+    for k in ('rej_star', 'rej_coincident', 'rej_rank'):
+        del t4[k]
+    for seed in SIDECOND_SEEDS:
+        got, why = sidecond_placement(Gp, [(c, b)], hubs_set, seed)
+        if got is None:
+            t4['rej_' + why.replace('-', '')] += 1
+            continue
+        placed, pt, nrm2 = got
+        P, N, rec = diagnose(Gp, Vp, placed, pt, nrm2, a, b, hubs_set, tgtGp)
+        if N is None:
+            t4['rej_normal'] += 1
+            continue
+        if not rec['hard']:
+            # the surgery is free to leave the hard stratum; only hard-stratum
+            # configurations are evidence about *Step sigma3*, so they are
+            # guarded out and counted rather than silently averaged in.
+            t4['rej_stratum'] += 1
+            continue
+        t4['seeds'] += 1
+        t4['primal'] += all(rec['primal'])
+        t4['ptb_in_Pic'] += (dot(P[b], N[c]) == 0)
+        t4['ptc_notin_Pib'] += (dot(P[c], N[b]) != 0)
+        t4['c2_ab_ok'] += (rank([N[a], N[b]]) == 2)
+        t4['c2_ac_fails'] += (rank([N[a], N[c]]) == 1)
+        t4['span_b5'] += (len(span_basis(lambda2_perp(N[b])
+                                         + lambda2_perp(N[c])
+                                         + lambda2_through(P[b]))) == 5)
+        t4['span_c6'] += (len(span_basis(lambda2_perp(N[b])
+                                         + lambda2_perp(N[c])
+                                         + lambda2_through(P[c]))) == 6)
+    show("H4 (Lambda0d) one-sided", t4)
+    n4 = t4['seeds']
+    assert n4 > 0, "H4 built nothing"
+    for k in ('primal', 'ptb_in_Pic', 'ptc_notin_Pib', 'c2_ab_ok',
+              'c2_ac_fails', 'span_b5', 'span_c6'):
+        assert t4[k] == n4, (k, t4)
+    print(f"    H4 VERDICT: *Step sigma3*'s side condition pt(b) not-in Pi(c) "
+          f"FAILS at {n4}/{n4} hard-stratum primally-nondegenerate seeds -- "
+          f"the b-span drops to 5 -- but the c-mirror span is 6 at all of "
+          f"them, and the failing scalar IS dual conjunct 2 on the edge ac.")
+
+    t5 = new_tally(rej_meetline=0, rej_draw=0, rej_illegal=0,
+                   rej_coincidenthubs=0,
+                   legal=0, adj_distinct=0, abc_rank2=0, no_panel_at_a=0)
+    for k in ('rej_star', 'rej_coincident', 'rej_rank', 'rej_normal',
+              'rej_stratum'):
+        del t5[k]
+    for seed in SIDECOND_SEEDS:
+        got, why = sidecond_placement(Gp, [(c, b), (b, c)], hubs_set, seed)
+        if got is None:
+            t5['rej_' + why.replace('-', '')] += 1
+            continue
+        placed, pt, nrm2 = got
+        t5['seeds'] += 1
+        P = {w: hat(placed[w]) for w in Vp}
+        t5['legal'] += legal_pencil(Gp, placed, pt, nrm2, hubs_set)
+        t5['adj_distinct'] += all(rank([P[u], P[w]]) == 2 for (u, w) in Gp)
+        t5['abc_rank2'] += (rank([P[a], P[b], P[c]]) == 2)
+        t5['no_panel_at_a'] += (null4([P[a], P[b], P[c]]) is None)
+    show("H5 (Lambda0d) both halves", t5)
+    n5 = t5['seeds']
+    assert n5 > 0, "H5 built nothing"
+    for k in ('legal', 'adj_distinct', 'abc_rank2', 'no_panel_at_a'):
+        assert t5[k] == n5, (k, t5)
+    print(f"    H5 VERDICT: forcing BOTH halves of (Lambda 0d) is a legal "
+          f"pencil placement with adjacent points distinct, but "
+          f"rank(pt a, pt b, pt c) = 2 at {n5}/{n5} -- PRIMAL conjunct 4 at "
+          f"`a` fails and `a` has no panel at all. So primal nondegeneracy "
+          f"FORCES one half of (Lambda 0d): *Step sigma3*'s side condition is "
+          f"free in its disjunctive form.")
+    totals['splits'] += 1
+    totals['h2'] += n2
+    totals['h4'] += n4
+    totals['h5'] += n5
+
+
 # ---------------- driver ------------------------------------------------------
 
 def control_split(chain):
@@ -626,6 +1055,23 @@ def main(argv):
         nondegeneracy(E1, v1, CHAIN1_SEEDS, "tight control, chain 1", totals)
     elif mode == '--fixed':
         fixed_is_degenerate()
+        print("OK")
+        return
+    elif mode == '--hunt':
+        print(f"  HUNT POOLS (separate from the pinned 63): random "
+              f"{HUNT_SEEDS.start}-{HUNT_SEEDS.stop - 1}, coplanar-chain "
+              f"{COPLANAR_SEEDS.start}-{COPLANAR_SEEDS.stop - 1}, "
+              f"(Lambda0d) {SIDECOND_SEEDS.start}-{SIDECOND_SEEDS.stop - 1}, "
+              f"per split; construction rng 31337+seed / 555+seed; "
+              f"tau in {{0}} u {tuple(str(x) for x in STEER_TAUS)}")
+        ht = dict(splits=0, h2=0, h4=0, h5=0)
+        hunt(E0, v0, (0, 6, 7, 2), "tight control, chain 0", ht)
+        hunt(E1, v1, (0, 8, 9, 3), "tight control, chain 1", ht)
+        assert ht['splits'] == 2 and ht['h2'] > 0 and ht['h4'] > 0 \
+            and ht['h5'] > 0, ht
+        print(f"  hunt: {ht['splits']} splits, {ht['h2']} constructed "
+              f"dual-failure seeds, {ht['h4']} one-sided (Lambda0d) seeds, "
+              f"{ht['h5']} both-halves collapses; every check n/n")
         print("OK")
         return
     else:

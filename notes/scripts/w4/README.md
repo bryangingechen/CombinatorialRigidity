@@ -492,7 +492,7 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
   Argument state and per-mode assertion list: `notes/Pencil-informal.md`
   §(K-Λ) *Step 3a*.
 
-- `sigma.py [--transport | --adv | --nondeg | --fixed]` — the **projective
+- `sigma.py [--transport | --adv | --nondeg | --fixed | --hunt]` — the **projective
   polarity `σ`** (`screwComplementIso`) as a symmetry of the split, and
   **route σ**: route A run at the *dual* seed `σu`. The whole driver works in
   **homogeneous** data — a body carries a point `P[w]` and a panel normal
@@ -504,13 +504,17 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
   (verified byte-identical under two different hash seeds, so no printed
   collection depends on hash order).
 
-  **One pinned seed pool for every mode**: two splits of the tight control (the
-  double-subdivided `K4`, `|V| = 16`, target 90 / `G′` target 84), seeds
-  440–479 at chain 0 and 500–529 at chain 1, of which **34 + 29 = 63** are
+  **One pinned seed pool for the first four modes**: two splits of the tight
+  control (the double-subdivided `K4`, `|V| = 16`, target 90 / `G′` target 84),
+  seeds 440–479 at chain 0 and 500–529 at chain 1, of which **34 + 29 = 63** are
   valid — i.e. survive the guards *and* land on the hard stratum (`s₀ = 0`,
-  `dim R_a = 1`). Every mode asserts each of its counters equals that pool and
+  `dim R_a = 1`). Each of those modes asserts every counter equals that pool and
   asserts the pool size itself, so a sampler change that silently moved the
-  pool fails the run.
+  pool fails the run. **`--hunt` runs on three pools of its own** (random
+  1000–1059, coplanar-chain 2000–2029, (Λ0d) 3000–3019, per split), printed in
+  its header and deliberately disjoint from the 63 — it exists to reach
+  configurations the pinned pool cannot contain. **Do not quote a figure from
+  one pool over the other.**
   - `--transport` (~87 s): **(σ4)** `ν_u ∧ ν_w ∝ ⋆(p̂_u ∧ p̂_w)` on every edge —
     "σ replaces every body's point by its own panel normal"; `rank`, `s₀`,
     `dim R_a` transported; **(σ6)** the criterion transport
@@ -537,6 +541,26 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
     for a **null** correlation `J` every hinge line is forced into `J`'s linear
     line complex, giving a self-stress per cycle. Measured on tight `C₆`:
     **deficit exactly 1 at 6/6** placements, with `⋆S ⊥` every hinge asserted.
+  - `--hunt` (~135 s, added 2026-08-05): **obligation 1**, in five legs. **H0**
+    the shape's *conjunct arithmetic* (no hub–hub edge, so dual conjunct 3 is
+    implied by the primal ones); **H1** a fresh random pool — **0 failures in
+    107** hard-stratum draws, i.e. the failure locus is a proper subvariety and
+    a random hunt cannot reach it; **H2** the **constructive** failure — the
+    coplanar-chain degeneration gives **53** legal, target-rank, `s₀ = 0`,
+    `dim R_a = 1`, **primally nondegenerate** seeds at which dual conjuncts 2
+    and 4 FAIL at `σu`, so *Step σ4*'s 63/63 was genericity and **not** an
+    implication; **H3** the **steering** — on an explicit chart line the
+    offending bracket is `τ·bracket(1)` *identically* (affine in `τ`, zero at
+    `τ = 0`), so the failure locus meets the line in exactly one point, and at
+    every `τ ≠ 0` the seed is hard-stratum with primal and dual 4/4; **H4/H5**
+    the (Λ0d) side condition — one-sided failure is reachable on the hard
+    stratum (35/35, and the failing scalar *is* dual conjunct 2 on the edge
+    `ac`), while forcing **both** halves leaves the split's middle body with no
+    panel at all (39/39), which is the witness for **(σ7)**: primal conjunct 4
+    forbids the two-sided failure, so *Step σ3*'s side condition is free.
+    Uses `localtest.meet_line` behind the sanctioned **caller-side** guard
+    (*Harness debt* 1), and re-imposes the sampler's own legality + star-rank
+    guards on every hand-degenerated placement.
 
   Argument state, the four obligations and the per-mode assertion list:
   `notes/Pencil-informal.md` §(K-σ). **Route σ is a CANDIDATE offered for
