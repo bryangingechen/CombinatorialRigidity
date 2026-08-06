@@ -13,6 +13,11 @@ candidate routes), then `notes/Pencil-informal.md`'s **State of (K)** gap map
 (the canonical per-gap status). The mathematics is **not** restated here; every
 claim below points at the workbook section that owns it.
 
+**Labels.** §4's **C1/C2/C3** (candidate invariants) and §4.6's **U1/U2/U3** are
+this file's own family; `C1`–`C3` collide with two unrelated `(C·)` families in
+the workbooks, which is why §4.6 minted `U1`–`U3` rather than continuing the
+letter. The registry and the minting rule are **`notes/Pencil-labels.md`**.
+
 **Nothing here is adjudicated.** The phase direction was with the user when this
 was written. §4's candidates are *derivations*, not verified routes — each needs
 a recon or a spike before it can be priced.

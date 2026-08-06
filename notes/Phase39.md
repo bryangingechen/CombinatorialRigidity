@@ -36,11 +36,6 @@ constraints; the dated dispatch narrative is in *Decisions made* and git):
   (below) preempts it, and — since 2026-08-05 — whether §4.6's uniformity shortlist ((f) below)
   does. Not decided here.
 
-W0–W3 and W5-L0–L7 are COMPLETE (`hsplit` closed in full; `hfresh`'s counting discharge landed).
-The landed headline `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card`
-(`Molecule/Pencil/Escape.lean`) carries exactly three open items — `hcontract` (W4), `hK`,
-`hbareSplit` — each detailed in *Hand-off*.
-
 **Kernel-(K) research arc — seventeen docs+scripts-only dispatches, plus one strategy-only
 pass** (2026-08-02 → 08-05).
 Mathematics: the workbook `notes/Pencil-informal.md`, whose **State of (K)** map is the entry
@@ -91,16 +86,12 @@ that carries the detail, so they are **not** restated here:
   workbook §(K-Λ) *Step 5a*), U2 (the hinge-rate / cycle-space presentation — the arc's first
   candidate ground set that **grows with the graph**), U3 (`hK` as a non-existence).
 
-**Read `notes/Pencil-strategy.md` before choosing anything else.** It is the post-fan-out
-strategic record: why class uniformity resists (the three-ingredient diagnosis — now sharpened
-to *the missing ingredient is the ground set, not the min-max*, and to the **recipe-vs-search**
-framing; the uniform-negatives/per-shape-positives asymmetry; the `Gr(3,6)` framing; the
-counting-saturation argument), what the KT formalization did and did not yield, the candidate
-stronger inductive invariants (**C1 run and struck**, leaving C2 and C3), and §5's
-symbolic-computation assessment. **Its §4.6** (the broad class-uniformity recon) is the entry
-point for any attack on the crux itself: six refutations plus a ranked three-entry live
-shortlist (`U1`–`U3`), each with its cheapest decisive experiment and what would kill it —
-**not restated here**.
+**Read `notes/Pencil-strategy.md` before choosing anything else** — the post-fan-out strategic
+record (why class uniformity resists, what the KT formalization did and did not yield, the
+candidate stronger invariants with **C1 run and struck**, and §5's symbolic-computation
+assessment). Its own header is the table of contents; **not restated here**. **Its §4.6** is the
+entry point for any attack on the crux itself: six refutations plus the ranked `U1`–`U3`
+shortlist, each with its cheapest decisive experiment and what would kill it.
 
 **Any (K)- or W4-side numerics dispatch starts from `notes/scripts/README.md`**, and a symbolic
 one also from `notes/scripts/m2/README.md`. Detail in *Blockers* — not restated here.
@@ -249,7 +240,8 @@ The three carried items:
   carry narrows to **`hnoGood'`**, whose vacuity conjecture is **REFUTED** (2026-08-02,
   `|V| = 19`), so branch 4 needs content. **Route ADJUDICATED (2026-08-02): route 3, packaging
   (b)** — the structure-theorem-pinned dispatch invariant (W4 workbook §(SAFE-RES)'s (C7)/(C8)
-  split — *not* §(K-slide-comb)'s same-numbered labels), with **(K-res)** carried as a sibling of
+  split; the collision with §(K-slide-comb)'s same-numbered labels is registered in
+  `notes/Pencil-labels.md`), with **(K-res)** carried as a sibling of
   the byte-identical `hK`. **Recorded, not built — W4 stays parked**; when commissioned the next
   concrete commit is **W4-L4b** (`exists_degree_two_of_co1_rigid`, pinned + spike-elaborated, all
   bricks landed, 1 commit), then order-flexibly W4-L1/L2/L3′ and the W4-L5 arc. Gates
@@ -294,6 +286,18 @@ survey — incl. IDENT-PANEL, the nearest neighbour — is `notes/IdeaBacklog.md
 Reverse-chronological, one line per landing; full derivations live in git,
 `notes/Phase39-design.md`, and (for the (K) arc) the workbook section named in each entry, which
 is the canonical home a successor reads.
+
+- **Notes reorganization: the label registry opened; the workbook and design doc INDEXED, not
+  split or compressed** (2026-08-05, docs only, no mathematics — no verdict, status, scope or
+  confidence marker moved, and nothing was renamed). New **`notes/Pencil-labels.md`**: every
+  label token in the pencil doc set, a four-clause minting rule (grep the registry; never label a
+  *Step*; qualify cross-section citations; do not rename), a collision table, and **reserved
+  namespaces `ANH-`/`OC-`/`AC-` + `§(K-ann)`/`§(K-out)`/`§(K-clos)`** for the incoming fan-out.
+  Measured diagnosis, refining the hypothesis: **3 of the 6 incidents were naming, 3 were
+  canonical-home, 0 were file length** — and file boundaries do *not* prevent collisions
+  (the (C6)/(C7) clash was already cross-file), while topic-tagged families (`Λ`, `σ`, `PC`,
+  `K-`) have never collided. Two argued skips (rationale: this file and `notes/CLAUDE.md`): no `notes/pencil/` directory move,
+  and **`Phase39-design.md` FROZEN rather than compressed** (119 live Lean anchors).
 
 - **Broad class-uniformity recon: five directions REFUTED, three live successors ranked**
   (2026-08-05, prose only, no driver, no Lean; canonical home `notes/Pencil-strategy.md` **§4.6**,
@@ -462,16 +466,12 @@ is the canonical home a successor reads.
   `minimal_kdof_reduction` (§(K-ind) *Verification*).
 - Jordán 2016 (MSJ Memoirs 34) — checked silent on the pencil stratum in the 2026-07-23 survey,
   re-confirmed by the 2026-07-30 (K) literature hunt.
-- The 2026-07-30 (K) literature hunt (option C, `Phase39-design.md` §"(K) literature hunt")
-  verified these project-new sources against the `.refs` copies / primary metadata, all MISSes on
-  the (K-tight) crux: White–Whiteley, *The algebraic geometry of motions of bar-and-body
-  frameworks*, SIAM J. Alg. Disc. Meth. **8** (1987) 1–32; White–Whiteley, *The Algebraic Geometry
-  of Stresses in Frameworks*, SIAM J. Alg. Disc. Meth. **4** (1983) 481–511 (DOI
-  10.1137/0604049); Whiteley, *Rigidity of molecular structures: generic and geometric analysis*,
-  in Rigidity Theory and Applications (Thorpe & Duxbury, eds.), Kluwer/Plenum 1999, 21–46;
-  Whiteley, *Union of matroids and rigidity of frameworks*, SIAM J. Discrete Math. **1** (1988)
-  237–255; Schulze–Tanigawa, *Linking rigid bodies symmetrically* (arXiv:1402.0039); Garamvölgyi,
-  *Stress-linked pairs of vertices and the generic stress matroid* (arXiv:2308.16851).
+- The 2026-07-30 (K) literature hunt (option C) verified six project-new sources against the
+  `.refs` copies / primary metadata, all MISSes on the (K-tight) crux — White–Whiteley 1987 and
+  1983, Whiteley 1988 and 1999, Schulze–Tanigawa, Garamvölgyi. **The full verified bibliography,
+  with per-source venue data and the reason each is a MISS, is `notes/Phase39-design.md` §"(K)
+  literature hunt" — the canonical home; it is not duplicated here** (same pointer discipline as
+  the Δ-matroid bibliography below).
 - White–Whiteley 1987 (op. cit.) §2 — verified against the `.refs` copy (2026-08-04, the
   (K-slide-cl) development): Proposition 2.6, Corollary 2.7, Theorem 2.18 (the technique the
   tetrahedral collapse instantiates), Corollary 2.19 (Tay's count).

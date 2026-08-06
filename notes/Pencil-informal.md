@@ -36,6 +36,14 @@ pointer.
   landed-**necessary** (`hcard`; no-2-hub-triangle), or **middle zone**
   (undecided by landed lemmas).
 
+- **Labels are registered, not invented.** Before minting any label, read
+  `notes/Pencil-labels.md` and follow its four-clause rule: grep the registry
+  for the token, never write a bare parenthesized token for a *Step*, qualify
+  every cross-section citation with its owner (`§(K-slide-comb) (C6)`), and do
+  not rename existing labels. Add your row in the same commit that mints the
+  label. That file also carries the reserved namespaces for in-flight parallel
+  dispatches.
+
 **Recon verdict history lives elsewhere.** The dated recon record — what was
 asked, what method was used, what was refuted — is
 `notes/Phase39-design.md`; the one-line decisions are `notes/Phase39.md`

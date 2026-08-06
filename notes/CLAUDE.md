@@ -45,6 +45,16 @@ for *organizing* this directory is here.
   kept at full detail because they are the input to the eventual W4 build,
   which the route-3(b) adjudication parks. Same discipline; the (K) arc is
   the sibling file above.
+- **`Pencil-labels.md`** — the Phase-39 **label registry and minting rule**: one
+  index of every label token in use across the pencil doc set, the measured
+  diagnosis of why bare single-letter families collide while topic-tagged ones
+  never have, the four-clause minting rule (**grep the registry before minting;
+  never label a step; qualify every cross-section citation; do not rename**),
+  the collision table for tokens that are ambiguous today, and the **reserved
+  label namespaces** for in-flight parallel dispatches. **Mandatory read before
+  minting any label** in that doc set; it is an index, so the owning section
+  stays authoritative for meaning and status. Opened 2026-08-05 after six
+  recorded confusion incidents, three of them naming collisions.
 - **`Pencil-fanout.md`** — dispatch scoping (not mathematics) for the Phase-39
   three-way kernel-(K) research fan-out: the user adjudication holding the Lean
   back pending a standalone-significant informal result, the three independent

@@ -38,6 +38,14 @@ definitions of the test shapes `W19` and `S29`) are in **`notes/Pencil-informal.
 name the file whenever they leave this one; a bare `§…` is a section of this
 file.
 
+**Labels.** This file's `(C1)`–`(C6)` (§`hnoGood'` vacuity) and `(C7)`/`(C8)`
+(§(SAFE-RES)) are a **different family** from `notes/Pencil-informal.md`
+§(K-slide-cl)/§(K-slide-comb)'s same-numbered labels, and from
+`notes/Pencil-strategy.md` §4's C1/C2/C3. The registry that records all three,
+and the minting rule that prevents the next such clash, is
+**`notes/Pencil-labels.md`** — read it before minting a label, and qualify every
+cross-section citation with its owner.
+
 ## §`hnoGood'` vacuity — **REFUTED**
 
 **Verdict: refuted.** The W4-L4 recon's conjecture — *every simple, 2EC,

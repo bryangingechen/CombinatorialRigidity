@@ -80,6 +80,19 @@ research passes committed to the same files. So:
   one commit per direction, merging the draft into the workbook and updating
   the *State of (K)* gap map row.
 
+**Label non-collision — the document-side analogue of the tree-side mechanics
+above** (added 2026-08-05, after the reorganization pass). The mechanics in this
+section stop three concurrent dispatches contending for *files*; they do nothing
+about three concurrent dispatches minting the **same label**, which is the
+failure that produced the (C6)/(C7) fixup `86d77894`. So each direction of a
+fan-out gets a **reserved label prefix and a reserved section name**, allocated
+in **`notes/Pencil-labels.md`** *Reserved namespaces* and verified 0-hit across
+the tree before dispatch. A dispatch prompt names its prefix; the draft uses it
+for every label it mints; the coordinator can then land three returns serially
+without a rename. `notes/Pencil-labels.md`'s four-clause minting rule binds every
+dispatch — in particular, **qualify every citation of a label you did not mint**
+with its owning section.
+
 **Every dispatch carries these, from `notes/scripts/README.md`:** exact ℚ only;
 degeneracy guards plus a rank/dimension assert on every sampled object (the
 `plane_basis` precedent — a degenerate sampler silently contaminated several
