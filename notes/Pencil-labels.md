@@ -111,11 +111,13 @@ they bind the *next* parallel dispatch, not because one is in flight.
 the A/B/C date-ambiguity below). Each token verified **0-hit** across `*.md`,
 `*.tex`, `*.lean`, `*.py`, `*.m2` at reservation time. T and R *extend* live
 sections, so their reservations are the unclaimed tails of those sections'
-existing families — the owning section stays authoritative:
+existing families — the owning section stays authoritative. **Direction T
+LANDED** (2026-08-06): its reservation row moved into the registry below
+(`GR-`/§(K-grid) — the dispatch minted nothing in §(K-clos), so (AC-10)+/Z9+
+return to that section's unclaimed tail); R and M remain reserved:
 
 | direction | reserved labels | reserved section (only if opened) | reserved driver |
 |---|---|---|---|
-| **T** (tight-stratum grid) | (AC-10) and above; Steps Z9+ — both in §(K-clos); prefix `GR-` for any family that doesn't fit | §(K-grid) | `notes/scripts/w4/grid.py` |
 | **R** (contracted rigidity, (ANH-R1)) | (ANH-9) and above; (ANH-R3) and above; Steps A10+ — all in §(K-ann); prefix `RG-` for any family that doesn't fit | §(K-rig) | `notes/scripts/w4/shrink.py` |
 | **M** (mechanisms pass) | prefix `MX-` only — M **cites** §(K-pure)'s *P8*/*P9* in qualified form and mints **nothing** there | §(K-mech) | `notes/scripts/w4/mech.py` |
 
@@ -173,6 +175,7 @@ Status keywords are pointers to the owning section's verdict block and the
 | §(K-ind) | `IN-` | (I0)–(I4); Steps I0–I6 | numerical invariant along the generating moves | refuted as a route; (I3) a positive by-product |
 | §(K-Δ) | `DL-` | **(M1)**, **(M2)**, **(M3)**; (N1), (N2) | the Δ-matroid literature hunt: (M1)–(M3) are the **three hypothesis tests**, (N1)/(N2) the two readings bought | NO HIT; discharged |
 | §(K-bare-ext) | `BE-` | (K-bare-ext) | the (K-bare) stub | open, nothing being developed |
+| §(K-grid) | `GR-` ✓ | (GR-1)–(GR-6); Steps G0–G7; driver blocks GR-D1–GR-D5 (`grid.py`) | the tight-stratum residual of (AC-6): eigen-blocks as conic direction networks / generalized-spline systems, the two counting obstruction families, chart-image membership, the 907-shape census | reduction proven; (GR-2) a proven refutation of the former (AC-6) close-route sentence; residual = (GR-4) + (GR-6), open |
 
 Gap names used arc-wide and owned by the *State of (K)* map: **(K-tight)**,
 (K-move), (K-pitch), (K-pitch-∞), (K-wit), (K-Λ), (K-slide), (K-slide-cl),

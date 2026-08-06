@@ -6,10 +6,12 @@
 (2026-07-30). Only three items remain, all carried by the landed successor
 `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card` (`Molecule/Pencil/Escape.lean`):
 `hcontract` (W4), kernel `hK`, and kernel `hbareSplit` — see *Hand-off*. Kernel-(K) research
-is at its twenty-first docs+scripts-only pass (workbook `notes/Pencil-informal.md`; the settled
+is at its twenty-second docs+scripts-only pass (workbook `notes/Pencil-informal.md`; the settled
 W4-residual arc is `notes/Pencil-W4-informal.md`). The **2026-08-06** three-way fan-out is
-COMPLETE, and so is the harness re-baselining round that followed it (S1–S4); a **SECOND**
-2026-08-06 fan-out — directions **T / R / M**, user-adjudicated — is IN FLIGHT (see *Hand-off*).
+COMPLETE, and so is the harness re-baselining round that followed it (S1–S4); the **SECOND**
+2026-08-06 fan-out — directions **T / R / M**, user-adjudicated — is LANDING: **T is LANDED**
+(**§(K-grid)** — the tight stratum reduced to (GR-4) + (GR-6)), **M returned, coordinator
+verification pending**, **R pending re-dispatch** (see *Hand-off*).
 Fan-out direction letters are re-used across dates — **always date them**.
 
 ## Current state
@@ -37,7 +39,7 @@ constraints; the dated dispatch narrative is in *Decisions made* and git):
   **2026-08-06 second fan-out adjudication**: the mechanisms pass runs as direction **M**, in
   parallel with **T** ((AC-6) tight stratum) and **R** ((ANH-R1)); route σ not selected.
 
-**Kernel-(K) research arc — twenty docs+scripts-only dispatches, plus one strategy-only
+**Kernel-(K) research arc — twenty-one docs+scripts-only dispatches, plus one strategy-only
 pass** (2026-08-02 → 08-06).
 Mathematics: the workbook `notes/Pencil-informal.md`, whose **State of (K)** map is the entry
 point and the artifact a pass *updates*; settled W4-residual verdicts are in
@@ -50,7 +52,9 @@ statement), with **(K-chord)**/**(K-wit)** the successors; the arc gained its fi
 **class-uniform positive** ((Λ1)) and, 2026-08-06, its first **recipe** — a formula, not a
 search — in §(K-ann), whose two inputs are *not* uniform; §(K-σ)'s **field scope is settled**;
 §(K-out) measured (OUT)'s hypothesis and **proved it can never be delivered by a count**
-((OC-3)); and **class uniformity of the escape remains untouched by every one of them**.
+((OC-3)); the 2026-08-06 direction-T landing reduced the **tight stratum** to two geometry-free
+gaps (**§(K-grid)**, (GR-4) + (GR-6)); and **class uniformity of the escape remains untouched by
+every one of them**.
 
 > **The one live candidate, and it is NOT settled — `notes/Pencil-informal.md` §(K-σ)** (the
 > canonical home; the four obligations, the `--hunt` findings, the validation scope and the
@@ -172,11 +176,9 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
   C) q` (design doc's W0 pin) is landed only as its two forward implications; the reverse arms
   need a `complementIso` involution lemma, not in tree — deferred, **off every critical path**
   (§(K-σ) *Step σ6*: route σ does not need it, and sketches the route to it).
-- **Harness debt — ALL FOUR ITEMS CLEARED, round CLOSED** (2026-08-06, S1–S4). Canonical home
-  `notes/scripts/README.md` *Harness debt* → the **CLOSED** block, which carries per-item status,
-  the cost ledger, the **two prohibitions the round lifts**, the three positive rules it leaves,
-  and two recorded-not-fixed observations. Nothing restated here — read it before any numerics
-  dispatch, and treat any un-repointed copy of a lifted prohibition as stale.
+- **Harness debt — CLEARED, round CLOSED** (2026-08-06, S1–S4; canonical home
+  `notes/scripts/README.md` *Harness debt* → **CLOSED**). Read it before any numerics dispatch;
+  treat any un-repointed copy of a lifted prohibition as stale.
 
 ## Hand-off / next phase
 
@@ -215,26 +217,16 @@ discharge (residue (iv)) is CLOSED too**. The landed successor
 > carrier-unrealizable" — but the second's stated reason is the **same** `hinge(vb) := q(ab)`
 > pinning. That materially bounds what verifying route σ costs.
 >
-> **The three-way fan-out is COMPLETE** (2026-08-06: C §(K-clos) `890ec4a6`, A §(K-ann)
-> `c9cf5792`, B §(K-out) `d2805253`). No gap-map *status* moves, so the adjudication below is
-> unchanged in shape. **(OUT) is now measured**, and its cheapest
-> continuation (§(K-out) *What would change this*) is **widening `outerline.py --comb` past
-> `outer.sweep_shapes()`'s `|V°| ≤ 5` cap** (14 s at the present scope) to hunt `dim R = 6`
-> (which makes (OUT) *dead* there) or `dim R ≤ 4` / `μ ≥ 2` (which closes it there).
+> **The FIRST 2026-08-06 fan-out is COMPLETE** (C `890ec4a6`, A `c9cf5792`, B `d2805253`;
+> one-lined in *Decisions made*). (OUT)'s cheapest continuation: widen `outerline.py --comb`
+> past the `|V°| ≤ 5` cap to hunt `dim R = 6` (kills (OUT) there) or `dim R ≤ 4` / `μ ≥ 2`
+> (closes it there) — §(K-out) *What would change this*.
 >
-> **THE HARNESS RE-BASELINING ROUND IS CLOSED** (user-adjudicated 2026-08-06: *"let's fix the
-> harness and clear any debt there while you're at it."*; four slices — decomposition `d5ae55aa`,
-> S1 `c980118a`, S2 `1fd1b1e4`, S3 `50e1f28c`, S4 this commit). Trigger: dispatch-log **F13**, a
-> mitigation for a recorded defect found ineffective. **All four harness-debt items are cleared**
-> and every recorded figure re-baselined — 260 invocations, 21 figures moved, each repointed in
-> its owning workbook section in the commit that moved it. **Canonical home for all of it**
-> (per-item status, the cost-vs-prediction ledger, the two prohibitions the round **lifts**, the
-> three positive rules it leaves, the per-slice addenda, and two recorded-not-fixed observations):
-> `notes/scripts/README.md` *Harness debt* → the **CLOSED** block. **No gap-map row moved** — the
-> round was a precondition to the research queue, never a substitute for it. Two of the moves are
-> mathematics, not chores: **(AC-9)** (§(K-clos) — every σ-fixed body of degree `≥ 3` carries a
-> coincident hinge line, so no σ-fixed witness reads as generic) and **(OC-9)** (§(K-out) — the
-> composite guard rejects 58/357, strictly containing the two-end diagnostic's 39).
+> **THE HARNESS RE-BASELINING ROUND IS CLOSED** (user-adjudicated 2026-08-06; five commits
+> `d5ae55aa`/`c980118a`/`1fd1b1e4`/`50e1f28c`/S4). Canonical home for everything — per-item
+> status, cost ledger, the two prohibitions **lifted**, the three positive rules, the addenda:
+> `notes/scripts/README.md` *Harness debt* → the **CLOSED** block. **No gap-map row moved**;
+> two of the moves are mathematics ((AC-9), (OC-9) — see *Decisions made*).
 >
 > **ADJUDICATED 2026-08-06 — a SECOND three-way fan-out, directions T / R / M in parallel**
 > (user: *"OK, let's go with 1+2+3 in parallel"*): **T** = §(K-clos) (AC-6)'s tight-stratum
@@ -245,6 +237,11 @@ discharge (residue (iv)) is CLOSED too**. The landed successor
 > **not restated here**. Route σ was NOT selected (its remaining substance is the parked Lean
 > half). The coordinator lands returns serially per the fan-out landing checklist, with a
 > session-budget check between landings (`.claude/scripts/session-usage.py limits`).
+> **Landing status: T LANDED** (this commit — **§(K-grid)**, the census 907/907, the residual
+> reduced to (GR-4) + (GR-6)); **M returned** (an org spend-limit outage split all three
+> dispatches into checkpoint-resume halves; M's verdict awaits the coordinator's landing
+> checklist); **R pending re-dispatch** (its post-checkpoint census was lost to the outage; it
+> resumes from its 2026-08-06 11:34 checkpoint).
 >
 > Deliberate non-goals: (Λ0), (Λ1), the `g₁₄` clause, §(K-ind), §(K-Δ), **§(K-clos)'s field
 > question**, **§(K-ann)'s settled batch** ((ANH-1)–(ANH-6), (SD-6)) and **§(K-out)'s settled
@@ -295,12 +292,10 @@ The three carried items:
 
 Gates for any continuation: `lake build` (warning-clean) + `lake lint` when `.lean` is touched;
 `blueprint/verify.sh` + `blueprint/lint.sh` (vocabulary gate bans "stratum"/"strata") when `.tex`
-is touched. **When `notes/scripts/` is touched**, the gate is figure invariance, **triggered by
-what the commit modifies**: `git diff --name-only -- '*.py' '*.m2'` empty ⇒ that check *is* the
-discharge and goes in the commit message; a driver modified ⇒ the full baseline / re-run /
-byte-identical obligation for it and its import closure. Canonical home, with the invocations
-exceeding a 600 s foreground budget and the mandatory conventions: `notes/scripts/README.md`
-*Hard rule — figures do not move*; a **symbolic** dispatch adds `notes/scripts/m2/README.md`.
+is touched; **when `notes/scripts/` is touched**, figure invariance proportionate to what the
+commit modifies (`git diff --name-only -- '*.py' '*.m2'` empty ⇒ that check IS the discharge,
+stated in the commit message) — canonical home `notes/scripts/README.md` *Hard rule — figures do
+not move*; a **symbolic** dispatch adds `notes/scripts/m2/README.md`.
 
 ## Adjacent directions (orientation only, not this phase)
 
@@ -313,14 +308,20 @@ Reverse-chronological, one line per landing; full derivations live in git,
 `notes/Phase39-design.md`, and (for the (K) arc) the workbook section named in each entry, which
 is the canonical home a successor reads.
 
+- **Second fan-out, direction T LANDED — §(K-grid): the tight stratum reduced, with proven
+  reductions, to two geometry-free gaps** (2026-08-06, `grid.py`; canonical home workbook
+  **§(K-grid)**). Each `⋆`-eigen-block is a conic direction network = **generalized-spline
+  system** ((GR-1), rank identity 688/688); the gap map's close-route sentence REFUTED as worded
+  ((GR-2), the mono-hub bond); corrected to two proven counting families ((GR-3)), exact at
+  generic labels ((GR-4), true-modulo-named-gap); chart-image membership PROVEN + machine-verified
+  ((GR-5), 5/5) — a target-rank grid IS `hK`'s conclusion object; census 15/15 → **907/907**, no
+  kill. Residual: **(GR-4) + (GR-6)**. Uniformity untouched.
+
 - **The harness re-baselining round — all four debt items CLEARED, round CLOSED** (2026-08-06,
-  five commits: `d5ae55aa` decompose, `c980118a` S1, `1fd1b1e4` S2, `50e1f28c` S3, S4 this one).
-  Canonical home — cost ledger, the two prohibitions **lifted**, the three positive rules, the
-  per-slice addenda: `notes/scripts/README.md` *Harness debt* → **CLOSED** + *The build plan*;
-  **not restated here**. Trigger: dispatch-log **F13**. 260 invocations, 21 figures moved, each
-  repointed in the commit that moved it; F13's rates-exposed / identities-conservative triage
-  held **exactly**. Two moves are mathematics: **(AC-9)** (§(K-clos)), **(OC-9)** (§(K-out)).
-  **No gap-map row moved.**
+  five commits `d5ae55aa`…S4; trigger dispatch-log **F13**). Canonical home:
+  `notes/scripts/README.md` *Harness debt* → **CLOSED**. 260 invocations, 21 figures moved, each
+  repointed in its moving commit. Two moves are mathematics: **(AC-9)** (§(K-clos)), **(OC-9)**
+  (§(K-out)). **No gap-map row moved.**
 
 - **The 2026-08-06 three-way kernel-(K) fan-out — three landings; each one's canonical home is
   its named workbook section, none restated here.** *C* (`closure.py`, **§(K-clos)**): §(K-σ)'s
@@ -469,6 +470,11 @@ is the canonical home a successor reads.
 - White–Whiteley 1987 (op. cit.) §2 — verified against the `.refs` copy (2026-08-04, the
   (K-slide-cl) development): Proposition 2.6, Corollary 2.7, Theorem 2.18 (the technique the
   tetrahedral collapse instantiates), Corollary 2.19 (Tay's count).
+- **The 2026-08-06 direction-T landing** (§(K-grid)) verified one project-new source against
+  publisher metadata (Smith ScholarWorks record + arXiv listing), cited as context only (nothing
+  in §(K-grid) is derived from it): **Gilbert–Polster–Tymoczko**, *Generalized splines on
+  arbitrary graphs*, Pacific J. Math. **281** (2016), no. 2, 333–364 (arXiv:1306.0801).
+  Whiteley 1996 (op. cit. below) is re-used for the matroid-union context, no new section pointer.
 - Whiteley, *Some matroids from discrete applied geometry*, in Matroid Theory
   (Bonin–Oxley–Servatius, eds.), Contemp. Math. **197**, AMS 1996, 171–311 — §12.2's screw-center
   description of body-hinge motions verified against the `.refs` copy (2026-08-04, the (K-pitch)
