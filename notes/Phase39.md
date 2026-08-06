@@ -6,12 +6,14 @@
 (2026-07-30). Only three items remain, all carried by the landed successor
 `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card` (`Molecule/Pencil/Escape.lean`):
 `hcontract` (W4), kernel `hK`, and kernel `hbareSplit` — see *Hand-off*. Kernel-(K) research
-is at its twenty-third docs+scripts-only pass (workbook `notes/Pencil-informal.md`; the settled
-W4-residual arc is `notes/Pencil-W4-informal.md`). The **2026-08-06** three-way fan-out is
-COMPLETE, and so is the harness re-baselining round that followed it (S1–S4); the **SECOND**
-2026-08-06 fan-out — directions **T / R / M**, user-adjudicated — is LANDING: **T and M are
-LANDED** (**§(K-grid)** — the tight stratum reduced to (GR-4) + (GR-6); **§(K-mech)** — both
-*P8* anomalies mechanised, 6v11e rescued), **R is IN FLIGHT** (see *Hand-off*).
+is at its twenty-fourth docs+scripts-only pass (workbook `notes/Pencil-informal.md`; the settled
+W4-residual arc is `notes/Pencil-W4-informal.md`). **BOTH 2026-08-06 fan-outs are COMPLETE**
+(and so is the harness re-baselining round between them, S1–S4). The second — **T / R / M**,
+user-adjudicated — landed: **§(K-grid)** (T — the tight stratum reduced to (GR-4) + (GR-6)),
+**§(K-mech)** (M — both *P8* anomalies mechanised, 6v11e rescued), and the §(K-ann)
+continuation Steps A10–A13 (R — (ANH-R1) one-point-decidable, pointwise refuted). **The
+adjudicated ordering is exhausted; the next direction awaits user adjudication** (see
+*Hand-off*).
 Fan-out direction letters are re-used across dates — **always date them**.
 
 ## Current state
@@ -39,7 +41,7 @@ constraints; the dated dispatch narrative is in *Decisions made* and git):
   **2026-08-06 second fan-out adjudication**: the mechanisms pass runs as direction **M**, in
   parallel with **T** ((AC-6) tight stratum) and **R** ((ANH-R1)); route σ not selected.
 
-**Kernel-(K) research arc — twenty-two docs+scripts-only dispatches, plus one strategy-only
+**Kernel-(K) research arc — twenty-three docs+scripts-only dispatches, plus one strategy-only
 pass** (2026-08-02 → 08-06).
 Mathematics: the workbook `notes/Pencil-informal.md`, whose **State of (K)** map is the entry
 point and the artifact a pass *updates*; settled W4-residual verdicts are in
@@ -55,8 +57,11 @@ search — in §(K-ann), whose two inputs are *not* uniform; §(K-σ)'s **field 
 ((OC-3)); the 2026-08-06 direction-T landing reduced the **tight stratum** to two geometry-free
 gaps (**§(K-grid)**, (GR-4) + (GR-6)); the direction-M landing **mechanised both *P8* anomalies
 and rescued 6v11e** (**§(K-mech)** — the slide device's failure modes on the probed strata are
-now three named decoration-free conditions); and **class uniformity of the escape remains
-untouched by every one of them**.
+now three named decoration-free conditions); the direction-R landing made **(ANH-R1)
+one-point-decidable per shape, discharged it at every probed triple, and REFUTED it pointwise**
+(§(K-ann) Steps A10–A13 — no placement-blind route exists; directions T and R **converge** on
+one missing technology, uniform constructed chart witnesses); and **class uniformity of the
+escape remains untouched by every one of them**.
 
 > **The one live candidate, and it is NOT settled — `notes/Pencil-informal.md` §(K-σ)** (the
 > canonical home; the four obligations, the `--hunt` findings, the validation scope and the
@@ -98,11 +103,12 @@ that carries the detail, so they are **not** restated here:
   entries of `notes/Pencil-strategy.md` §4.6**: U1 **half delivered** (the named move and the
   bracket formula, not their inputs), U2's `E(H)` ground set survives with its cocircuit/circuit
   duality corrected, **U3** (`hK` as a non-existence) still unrun.
-- **(g)** *(new, 2026-08-06)* **(ANH-R1)** — `H/P − β` pencil-rigid, i.e. `τ_β ≠ 0` at the
-  pencil placement (workbook §(K-ann) *Step A8*: **relocation #4**, on the mixed stratum and a
-  strictly smaller graph, and whether it is *easier* than its parent is **open**). Discharging
-  it closes the whole length-4-companion stratum via Λ-completeness. Smallest concrete commit:
-  an `annih.py --shrink` census hunting a class seed with `supp_pen ⊊ supp_gen` at `k = 4`.
+- **(g)** **(ANH-R1)** — **RUN 2026-08-06 as fan-out direction R; canonical home §(K-ann)
+  Steps A10–A13**: one-point-decidable per shape ((ANH-9)), discharged at the generic point of
+  every probed triple ((ANH-10), 26/26 + 58/58), bad locus **inhabited** by exact rational
+  chart points ((ANH-11)/(ANH-12)) so no placement-blind route exists, "easier or merely
+  smaller" settled as **merely smaller**. **(ANH-R1) itself stays OPEN**; the letter stays for
+  cross-refs; the *probe* is done.
 
 **Read `notes/Pencil-strategy.md` before choosing anything else** — the post-fan-out strategic
 record (why class uniformity resists, what the KT formalization yielded, the candidate stronger
@@ -191,33 +197,18 @@ discharge (residue (iv)) is CLOSED too**. The landed successor
 `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card` (`Molecule/Pencil/Escape.lean`) wraps
 `pencil_conjecture_of_hcontract_hK_hbareSplit` and carries exactly three open items, below.
 
-> **The numerics half of the σ-NONDEGENERACY VERIFICATION is DONE** (2026-08-05,
-> `sigma.py --hunt`; canonical home, **not restated here**: workbook §(K-σ) *Step σ3* / *Step
-> σ4b* / *Step σ5*, one-lined in *Decisions made*). Net: the dual conjuncts CAN fail on the
-> hard stratum, the steering WORKS exactly, obligation 1 shrinks to two conditions, and
-> **(σ7)** is proven.
->
-> **Smallest concrete commit if work continues on this thread: the LEAN half of obligation 1**
-> — steer to a common seed via the landed `exists_common_seed_pencilRow_and_polynomials`
-> (`Engine.lean:476`). Its docstring already names this consumer shape, and the chart is a
-> **total** parameterization (no chart-image side condition). It carries **two** design
-> decisions. (a) **Which maximal minor to fix per LI conjunct** — the dual conjuncts are unions
-> of basic opens, not single hypersurface complements, so the repair needs sufficiency,
-> graph-dependently. (b) **WHICH FIELD — SETTLED as mathematics, still a user call as scope**
-> (2026-08-06, workbook §(K-clos); canonical home, not restated here): the polarity **does**
-> generalize, its general-`K` transport is landed (`mapSupport`), so `ProjectiveInvariance.lean`
-> needs nothing — and `ℝ` is the **narrowest** option, not a safe default, since `hK` over `ℂ̄`
-> implies it over every infinite characteristic-0 field and not conversely. **`exists_pencilSeed_of_nondeg`
-> (`Reseed.lean:65`) is NOT the bridge** and is circular if used as one.
-> **BUT THAT COMMIT IS BLOCKED**: the standing 2026-08-05 adjudication holding the Lean back
-> pending *"an informal proof or disproof or any results that would be significant as standalone
-> pieces of math"* is **general, not W4-scoped**, so it holds back this repair too. It does not
-> open without a fresh user adjudication.
->
-> **Route σ faces exactly ONE crux, not two.** The workbook kills M₁ twice — §(K-tight)
-> *Step 1* as "the nondegeneracy-forbidden locus", *Step 2.6* as "M₁'s span is
-> carrier-unrealizable" — but the second's stated reason is the **same** `hinge(vb) := q(ab)`
-> pinning. That materially bounds what verifying route σ costs.
+> **Route σ's remaining substance is its parked LEAN half** (obligation 1; the numerics half is
+> DONE — §(K-σ) *Steps σ3–σ5*, one-lined in *Decisions made*; obligation 1 shrank to two
+> conditions and **(σ7)** is proven). When adjudicated open, the smallest concrete commit steers
+> to a common seed via the landed `exists_common_seed_pencilRow_and_polynomials`
+> (`Engine.lean:476`; the chart is **total**), carrying two design decisions: (a) which maximal
+> minor per LI conjunct (the dual conjuncts are unions of basic opens); (b) **which FIELD** —
+> settled as mathematics (§(K-clos): the polarity generalizes, `mapSupport` landed, `ℝ` the
+> **narrowest** option), still a user call as scope. **`exists_pencilSeed_of_nondeg`
+> (`Reseed.lean:65`) is NOT the bridge** (circular). Route σ faces exactly **one** crux (the
+> workbook's two kills of M₁ share one stated reason — the `hinge(vb) := q(ab)` pinning).
+> **BLOCKED by the standing 2026-08-05 Lean-hold adjudication (general, not W4-scoped)**; does
+> not open without a fresh user adjudication.
 >
 > **The FIRST 2026-08-06 fan-out is COMPLETE** (C `890ec4a6`, A `c9cf5792`, B `d2805253`;
 > one-lined in *Decisions made*). (OUT)'s cheapest continuation: widen `outerline.py --comb`
@@ -230,20 +221,22 @@ discharge (residue (iv)) is CLOSED too**. The landed successor
 > `notes/scripts/README.md` *Harness debt* → the **CLOSED** block. **No gap-map row moved**;
 > two of the moves are mathematics ((AC-9), (OC-9) — see *Decisions made*).
 >
-> **ADJUDICATED 2026-08-06 — a SECOND three-way fan-out, directions T / R / M in parallel**
-> (user: *"OK, let's go with 1+2+3 in parallel"*): **T** = §(K-clos) (AC-6)'s tight-stratum
-> residual (the direct-`hK`-discharge pair), **R** = §(K-ann) (ANH-R1) (the live crux: is
-> `H/P − β` pencil-rigid, and is the relocation *easier* or merely smaller?), **M** = the
-> mechanisms pass (*Current state* (a)). Dispatch specs, reserved namespaces and drivers:
-> `notes/Pencil-fanout.md` §"Second fan-out" + `notes/Pencil-labels.md`'s T/R/M table —
-> **not restated here**. Route σ was NOT selected (its remaining substance is the parked Lean
-> half). The coordinator lands returns serially per the fan-out landing checklist, with a
-> session-budget check between landings (`.claude/scripts/session-usage.py limits`).
-> **Landing status: T LANDED** (`fb84ab88` — **§(K-grid)**, the census 907/907, the residual
-> reduced to (GR-4) + (GR-6)); **M LANDED** (this commit — **§(K-mech)**, both anomalies
-> mechanised, 6v11e rescued, all five driver modes coordinator-re-run); **R IN FLIGHT**,
-> re-running from its checkpoint after two interruptions (an org spend-limit outage + a
-> transient connection error; its post-checkpoint figures were lost and are being re-run).
+> **The SECOND three-way fan-out (T / R / M, user-adjudicated 2026-08-06: *"OK, let's go with
+> 1+2+3 in parallel"*; route σ NOT selected) is COMPLETE** — dispatch template
+> `notes/Pencil-fanout.md` §"Second fan-out".
+> **Landing status: ALL THREE LANDED** — T `fb84ab88` (**§(K-grid)**), M `72f05634`
+> (**§(K-mech)**), R this commit (§(K-ann) Steps A10–A13). Every landing's drivers were
+> coordinator-re-run; each is one-lined in *Decisions made*, its named workbook section the
+> canonical home. **The 2026-08-05 adjudicated ordering is exhausted** (`g₁₄` →
+> invariant-through-moves → σ-equivariance → mechanisms pass → Δ-matroid all done, T/R on top).
+> **Next direction = user adjudication.** The live leads, each with its canonical home: (1) the
+> **T/R convergence target** — a class-uniform constructed-witness recipe, i.e. §(K-grid)'s
+> (GR-4)+(GR-6) (which would discharge `hK` on the tight stratum and is the same technology
+> (ANH-R1) needs); (2) the **per-shape M2 identity** `C(H/P − β) ≢ 0` (§(K-ann) *What would
+> change this* (iii) — the cheapest decisive per-shape experiment left); (3) **(K-wit)** via
+> the (OC-8) residue (*Current state* (b)); (4) widening `outerline.py --comb` (the (OUT)
+> continuation above); (5) the **parked Lean half** of route σ / obligation 1 (needs a fresh
+> adjudication to open, like W4). No option is pre-selected.
 >
 > Deliberate non-goals: (Λ0), (Λ1), the `g₁₄` clause, §(K-ind), §(K-Δ), **§(K-clos)'s field
 > question**, **§(K-ann)'s settled batch** ((ANH-1)–(ANH-6), (SD-6)) and **§(K-out)'s settled
@@ -309,6 +302,16 @@ survey — incl. IDENT-PANEL, the nearest neighbour — is `notes/IdeaBacklog.md
 Reverse-chronological, one line per landing; full derivations live in git,
 `notes/Phase39-design.md`, and (for the (K) arc) the workbook section named in each entry, which
 is the canonical home a successor reads.
+
+- **Second fan-out, direction R LANDED — §(K-ann) Steps A10–A13: (ANH-R1) one-point-decidable,
+  discharged at every probed triple, and REFUTED pointwise** (2026-08-06, `shrink.py`; canonical
+  home workbook **§(K-ann)** continuation). (ANH-9) the weak-map formulation — one exact rank
+  computation at one rational point decides (ANH-R1) per triple; (ANH-10) the pinned census
+  probe: clean negative at 26/26 guarded generic seeds, 58/58 sites `τ_β ≠ 0`; (ANH-11)/(ANH-12)
+  the bad locus **inhabited** by exact rational guard-accepted points (`supp` 11 → 6 at six
+  (ANH-R1)-exact witnesses) — no counting/matroid/placement-blind route exists (the τ-side
+  (OC-3) analogue); "easier or merely smaller" settled: **merely smaller**, T and R converging
+  on uniform constructed witnesses. (ANH-R1) stays OPEN; uniformity untouched.
 
 - **Second fan-out, direction M LANDED — §(K-mech): both *P8* anomalies mechanised, 6v11e
   RESCUED** (2026-08-06, `mech.py`; canonical home workbook **§(K-mech)**). One calculus (the

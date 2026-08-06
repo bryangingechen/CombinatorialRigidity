@@ -1,6 +1,10 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: prepared 2026-08-05, not yet dispatched.** Three independent research
+**Status: BOTH fan-outs COMPLETE.** The first (A/B/C below, prepared
+2026-08-05) landed 2026-08-05/06; the second (T/R/M, §"Second fan-out") landed
+2026-08-06 — T `fb84ab88` (§(K-grid)), M `72f05634` (§(K-mech)), R (the
+§(K-ann) Steps A10–A13 continuation). This file remains the dispatch-scoping
+template for any future fan-out. Three independent research
 directions on kernel (K), specified here so a fresh session can dispatch them
 at S=1 without re-deriving the scoping. User-adjudicated this session (verbatim
 below). The mathematics lives in `notes/Pencil-informal.md` (the (K) workbook —
@@ -253,7 +257,7 @@ whether it can be pursued under the standing adjudications.
 
 ---
 
-## Second fan-out — prepared and dispatched 2026-08-06 (directions T / R / M)
+## Second fan-out — prepared and dispatched 2026-08-06 (directions T / R / M); **COMPLETE, all three landed 2026-08-06**
 
 **User-adjudicated 2026-08-06**, this session, after the harness re-baselining
 round closed: of the coordinator's proposed parallel package the user selected

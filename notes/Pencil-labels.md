@@ -111,15 +111,13 @@ they bind the *next* parallel dispatch, not because one is in flight.
 the A/B/C date-ambiguity below). Each token verified **0-hit** across `*.md`,
 `*.tex`, `*.lean`, `*.py`, `*.m2` at reservation time. T and R *extend* live
 sections, so their reservations are the unclaimed tails of those sections'
-existing families — the owning section stays authoritative. **Directions T and M
-LANDED** (2026-08-06): their reservation rows moved into the registry below
-(`GR-`/§(K-grid) — T minted nothing in §(K-clos), so (AC-10)+/Z9+ return to that
-section's unclaimed tail; `MX-`/§(K-mech) — M minted nothing in §(K-pure), as
-required); R remains reserved:
-
-| direction | reserved labels | reserved section (only if opened) | reserved driver |
-|---|---|---|---|
-| **R** (contracted rigidity, (ANH-R1)) | (ANH-9) and above; (ANH-R3) and above; Steps A10+ — all in §(K-ann); prefix `RG-` for any family that doesn't fit | §(K-rig) | `notes/scripts/w4/shrink.py` |
+existing families — the owning section stays authoritative. **All three directions
+LANDED** (2026-08-06) and the reservation table is released, each row moved into
+the registry below: `GR-`/§(K-grid) (T — minted nothing in §(K-clos), so
+(AC-10)+/Z9+ return to that section's unclaimed tail), `MX-`/§(K-mech) (M —
+minted nothing in §(K-pure), as required), and (ANH-9)–(ANH-12)/Steps A10–A13
+(R — landed as a §(K-ann) continuation; §(K-rig) was never opened and `RG-` was
+never minted, so both return to the pool).
 
 **One naming hazard this fan-out created, recorded rather than renamed (L4).**
 The **direction letters A/B/C are re-used** between the 2026-08-05 fan-out
@@ -170,7 +168,7 @@ Status keywords are pointers to the owning section's verdict block and the
 | §(K-dom) | `DM-` | **(D1)**–(D4); Steps D0–D7 | the dominance spike, differential of `H ↦ V_bc` | (D1)–(D3) proven; C1 refuted as a route |
 | §(K-σ) | `σ` ✓ | (σ1)–(σ7); Steps σ0–σ6, σ4b; hunt pools H4/H5 | the polarity as a symmetry of the split; **route σ** | (σ7) proven; route σ a CANDIDATE (its field scope settled by §(K-clos)) |
 | §(K-clos) | `AC-` ✓ | (AC-1)–**(AC-9)**; Steps Z0–Z8; driver blocks AC-C0/AC-E/AC-S/AC-U/AC-X/AC-Q/AC-R2/AC-F/AC-2c/AC-P (`closure.py`) | the over-`ℂ̄` question: the polarity's field scope, the σ-fixed grid locus, the `⋆`-eigen decoupling, the route-σ collapse, the char-0 descent | (AC-6) **refuted** as a class statement, open on the tight stratum; the rest proven-informally. **(AC-9)** (minted 2026-08-06, re-baselining slice S2): every σ-fixed body of degree `≥ 3` carries a coincident hinge line — **proven** by pigeonhole against *Step Z3*'s two-ruling-lines cap, measured 0/64 by the composite guard; it **qualifies (AC-3)** without weakening it |
-| §(K-ann) | `ANH-` ✓ | (ANH-1)–(ANH-8); the two residual inputs **(ANH-R1)**, **(ANH-R2)**; Steps A1–A9; driver modes `--stress`/`--rate`/`--supp`/`--recipe`/`--census`/`--validate` (`annih.py`) | the annihilator as a self-stress of the contracted framework `H/P`: the reciprocity identity, the named move, the `k = 4` Tay circuit, the one-bracket recipe. **(ANH-8) is promoted to the *Shared dictionary* as (SD-6)** — that is the only copy | (ANH-1)–(ANH-6), (ANH-8) proven / proven-informally; (ANH-7) true-modulo-named-gap; **(ANH-R1) open** |
+| §(K-ann) | `ANH-` ✓ | (ANH-1)–(ANH-8); the two residual inputs **(ANH-R1)**, **(ANH-R2)**; Steps A1–A9; driver modes `--stress`/`--rate`/`--supp`/`--recipe`/`--census`/`--validate` (`annih.py`); **since 2026-08-06 (direction R)** (ANH-9)–(ANH-12), Steps A10–A13, and driver modes `--census`/`--bad`/`--comb`/`--validate` (`shrink.py`) | the annihilator as a self-stress of the contracted framework `H/P`: the reciprocity identity, the named move, the `k = 4` Tay circuit, the one-bracket recipe. **(ANH-8) is promoted to the *Shared dictionary* as (SD-6)** — that is the only copy | (ANH-1)–(ANH-6), (ANH-8) proven / proven-informally; (ANH-7) true-modulo-named-gap; **(ANH-R1) open** |
 | §(K-out) | `OC-` ✓ | (OC-1)–**(OC-9)**; Steps O1–O8; the four **pools** POOL-C / POOL-G / POOL-S / POOL-B; driver modes `--comb`/`--pool`/`--shapes`/`--build` (`outerline.py`) | (OUT)'s hypothesis measured: the exact hinge-rate reading, the ambient-generic map, the never-automatic negative, the constructed silent point, the two pool distributions, the sampler defect, and the residual | **(OC-3)** proven-informally and load-bearing; (OC-1) proven-informally; (OC-2)/(OC-5)/(OC-6)/(OC-7) measured; (OC-4) exhibited; **(OC-8) open**. **(OC-7) is a harness item**, `notes/scripts/README.md` *Harness debt* 4 — **CLEARED 2026-08-06** by the re-baselining round, whose slice S2 also minted **(OC-9)** here (the FIELD half of the coincident-hinge guard's adversarial test: the guard rejects 58/357 and its rejection set strictly contains the two-end diagnostic's 39) |
 | §(K-ind) | `IN-` | (I0)–(I4); Steps I0–I6 | numerical invariant along the generating moves | refuted as a route; (I3) a positive by-product |
 | §(K-Δ) | `DL-` | **(M1)**, **(M2)**, **(M3)**; (N1), (N2) | the Δ-matroid literature hunt: (M1)–(M3) are the **three hypothesis tests**, (N1)/(N2) the two readings bought | NO HIT; discharged |
