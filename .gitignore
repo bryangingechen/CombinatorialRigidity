@@ -39,6 +39,7 @@ blueprint/web/
 !.claude/agents/
 !.claude/agents-core/
 !.claude/hooks/
+!.claude/scripts/
 !.claude/settings.json
 
 # Python bytecode caches from the notes/scripts/ numerics (untracked

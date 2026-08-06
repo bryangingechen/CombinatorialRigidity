@@ -186,6 +186,22 @@ it costs a turn.
   in the prompt; keep any landed commit, close the gap in the
   follow-up.
 
+### Session-budget check (multi-dispatch)
+
+Before dispatching agents in **parallel** (a fan-out), and between
+landings, check live subscription headroom: `python3
+.claude/scripts/session-usage.py limits` (pass `--config-dir` when the
+local Claude config dir is non-default) prints the 5-hour-window and
+weekly utilization with reset times — the same data as Claude Code's
+`/usage` screen, via the OAuth usage endpoint. Above ~80% on either
+limit, stagger dispatches (one at a time, re-check between returns)
+instead of fanning out; near a 5-hour reset, prefer waiting it out. The
+`tokens` subcommand sums per-model token usage from the local
+transcripts (subagent transcripts included, deduped by message id) —
+use it to calibrate a planned fan-out against what a comparable past
+round actually consumed. Serial single-dispatch loops don't need the
+check; the completion notification cadence self-paces them.
+
 ### Exception log
 
 `notes/dispatch-log.md` records **exceptions only** — escalations,
