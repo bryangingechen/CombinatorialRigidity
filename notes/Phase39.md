@@ -226,13 +226,11 @@ discharge (residue (iv)) is CLOSED too**. The landed successor
 > pinning. That materially bounds what verifying route σ costs.
 >
 > **The three-way fan-out is COMPLETE** (2026-08-06: C §(K-clos) `890ec4a6`, A §(K-ann)
-> `c9cf5792`, B §(K-out) — this commit). No gap-map *status* moves, so the adjudication below is
-> unchanged in shape; two option prices changed. **(OUT) is now measured**, and its cheapest
+> `c9cf5792`, B §(K-out) `d2805253`). No gap-map *status* moves, so the adjudication below is
+> unchanged in shape. **(OUT) is now measured**, and its cheapest
 > continuation (§(K-out) *What would change this*) is **widening `outerline.py --comb` past
 > `outer.sweep_shapes()`'s `|V°| ≤ 5` cap** (14 s at the present scope) to hunt `dim R = 6`
-> (which makes (OUT) *dead* there) or `dim R ≤ 4` / `μ ≥ 2` (which closes it there). Second, and
-> coordinator-owned: the deliberate re-baselining commit clearing all **four** *Harness debt*
-> items — item 4 is the first defect that changes how existing output may be *read*.
+> (which makes (OUT) *dead* there) or `dim R ≤ 4` / `μ ≥ 2` (which closes it there).
 >
 > **THE NEXT COMMIT IS DECIDED — the harness re-baselining round** (user-adjudicated 2026-08-06:
 > *"let's fix the harness and clear any debt there while you're at it."*). It clears **all four**
@@ -240,6 +238,21 @@ discharge (residue (iv)) is CLOSED too**. The landed successor
 > moved-figure rule are in `notes/scripts/README.md` *Harness debt*, **OPENED** block. Trigger:
 > dispatch-log **F13** — a mitigation for a recorded defect found ineffective. **It precedes all
 > research below.**
+>
+> **Decomposed into four slices 2026-08-06** — canonical home `notes/scripts/README.md`
+> *Harness debt* → **The build plan**, with exact file lists, per-slice import closures, row
+> counts and expected-moved figures; **not restated here**. Item 1's shape is settled there
+> (**add the coincident-hinge guard**; the `place_pencil_general` sampler repoint is **declined**,
+> with its price recorded), as is the adversarial test's witness.
+>
+> **Smallest concrete next commit: slice S1** — `escape/localtest.py`, `w4/repin.py`,
+> `w4/flanks.py`, `w4/outer.py`, `w4/sigma.py`. OPENED-block **scope (2)** (`localtest.meet_line`)
+> and **scope (4)** (move `star_span_ranks` to `repin`) plus the guard's
+> *definition* and its adversarial test (`repin.py --hinge`, a new §3 row); the guard is **not**
+> adopted, so S1's whole obligation — `localtest`'s closure, **90 of the 114 §3 rows**, ≈ 99 min
+> per pass — must come back **90/90 byte-identical**, and any moved row is a bug in S1. Capture
+> the baseline as the dispatch's first action, before any edit; `flanks.py --limit` (762 s) and
+> `lambda.py --adv` (536 s) each run alone in the foreground.
 >
 > **QUEUED, still an open user adjudication** — three contenders, none pre-selected: the remaining
 > route-σ work; the **mechanisms pass** (*Current state* (a)); and `Pencil-strategy.md` §4.6's
@@ -253,7 +266,10 @@ discharge (residue (iv)) is CLOSED too**. The landed successor
 > batch** ((OC-1)–(OC-7); the two pools are pinned and **disjoint**) are **done** — do not
 > re-derive, re-sweep, re-run their literature hunt, re-open "does the polarity generalize?",
 > re-measure (D2)'s far block, re-sample POOL-G or POOL-S, **propose a counting / matroid route
-> to (OUT)'s hypothesis** ((OC-3) refutes the whole class), or touch `lambda.py`'s figures.
+> to (OUT)'s hypothesis** ((OC-3) refutes the whole class), or touch `lambda.py`'s figures —
+> **one carve-out**: the re-baselining round's slice **S3** edits `lambda.py` on purpose
+> (OPENED-block scope (3), coding the landed (Λ0f′) in place of the superseded (Λ0f)) and moves
+> exactly one recorded figure, `outer.py --geom`'s.
 > **W4 stays parked** despite being fully decomposed and buildable (no W4 build without a fresh
 > user adjudication), `hK`/`hbareSplit` stay carried as pinned, option B in both kernel cases
 > stays un-commissioned.
@@ -332,6 +348,18 @@ is the canonical home a successor reads.
   `notes/scripts/README.md` *Harness debt*), dispatch-log rows + **F13**/**F14**, and
   `Pencil-strategy.md` §2.3's **convergence note** — A's and B's residuals are both
   *pencil-rigidity of a contraction of `H`*, so §2.3's wall is structural, not route-specific.
+
+- **Harness re-baselining round DECOMPOSED into four slices** (2026-08-06, docs only; canonical
+  home `notes/scripts/README.md` *Harness debt* → *The build plan*, not restated here). Scope (1)
+  settled as **add the coincident-hinge guard**, not repoint `place_pencil_general`'s sampler —
+  decisive reason: a sampler that never *draws* a bad point never *rejects* one, so the repoint
+  cannot discharge a requirement stated as "rejected, not measured" with an adversarial witness;
+  and it is import-blocked short of `exactcore` (`repin` imports `widened`), which would move
+  every `w4/` figure and destroy F13's rates-vs-identities triage. §4 convention 5 **prices** the
+  repoint, does not veto it. Three stale counts corrected against the source: `star_span_ranks`
+  has **six** consumers (not four — `closure`, `outerline` were missing, and the count is rule 2's
+  trigger); `meet_line` has **seven** importers, `widened` the one that matters; the README's
+  `sigma --hunt` catch claim is **correct** and the three catch sites are exhaustive.
 
 - **Notes reorganization: label registry opened; workbook and design doc INDEXED, not split or
   compressed** (2026-08-05, docs only). Canonical home **`notes/Pencil-labels.md`**. Two argued

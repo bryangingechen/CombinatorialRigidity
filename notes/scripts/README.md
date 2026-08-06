@@ -13,8 +13,10 @@ trail*: every numeric figure quoted in the two PENCIL workbooks
 primitive already exists (so you don't reimplement one); §2 tells you where a
 new module goes; §3 is the reproduce table; §4 is the mandatory discipline;
 *Divergences* lists the same-named-but-different functions that must **not** be
-merged; *Deliberate non-goals* lists two things a future session should leave
-alone. §§1–4 are about the **Python** harness; the M2 layer adds four
+merged; *Harness debt* lists the parked defects and — **OPEN since 2026-08-06** —
+the re-baselining round clearing them, whose *The build plan* subsection is what
+a build dispatch runs against; *Deliberate non-goals* lists two things a future
+session should leave alone. §§1–4 are about the **Python** harness; the M2 layer adds four
 conventions of its own on top of them (`m2/README.md`), the first of which is
 that its output is *evidence*, never a substitute for a Lean proof.
 
@@ -349,11 +351,19 @@ Three layers, plus one **language island**:
   `localtest.plane_basis` **as a diagnostic, never as a sampler** (aliased
   `DEGENERATE_PLANE_BASIS`): (OC-7) needs to know *when the degenerate basis
   fires*, which is the finding that put *Harness debt* item 4 on the list.
-  **`star_span_ranks` now has FOUR consumers, past the signal rule 2 names: the
+  **`star_span_ranks` now has SIX consumers, past the signal rule 2 names: the
   next commit that already owes a full `repin` re-baseline should move it down**
   (with a re-export from `flanks` so the recorded figures do not move); on its
   own the move is not worth the figure-gate cost, since `repin` sits under the
-  whole `w4/` chain. See *Harness debt* below — this is item 3 of three.
+  whole `w4/` chain. See *Harness debt* below — this is item 3 of four, and the
+  **re-baselining round is OPEN**, so the move is scheduled (slice S1 of *The
+  build plan*). The six: `flanks` itself (`flanks.py:201`, and its own
+  `--degen` / `nondeg_conjuncts`) plus five importing modules —
+  `dominance.py:93`, `sigma.py:58`, `outer.py:129`, `closure.py:56`,
+  `outerline.py:160`. A **seventh, indirect** consumer is `annih`, which
+  reaches the guard through `dominance.base_seed` and reimplements nothing
+  (`annih.py:67`). (Counted as *four* here and in *Harness debt* item 3 until
+  2026-08-06; `closure` and `outerline` were missing from both lists.)
 - **The M2 island** — `m2/`. Macaulay2, not Python, so there is **no import
   edge** in either direction: an M2 driver cannot reuse a §1 primitive and must
   re-derive the ones it needs. That is a licensed exception to rule 3 below and
@@ -582,9 +592,15 @@ canonical descriptions.
    `escape/`-layer module the entire `w4/` stack imports, i.e. re-baselining
    every recorded figure in the harness (*figures do not move*, second
    bullet). Until a commit already owes that re-baseline, a **caller-side**
-   guard is the correct handling: `outer.chart_point` catches the
-   `UnboundLocalError` and rejects the draw as degenerate, with the reason in
-   a comment. A new sampler should do the same.
+   guard is the correct handling, at **three** sites: `outer.chart_point`
+   (`outer.py:239`) and `sigma.py --hunt`'s two constructive placers,
+   `coplanar_chain_placement` (`sigma.py:742`) and `sidecond_placement`
+   (`sigma.py:841`) — each catches the `UnboundLocalError` and rejects the draw
+   as degenerate, with the reason in a comment. A new sampler should do the
+   same. (All three retire in slice S1 of *The build plan* below, and the
+   retirement is provably figure-invariant: at each site the fixed
+   signal-instead-of-raise path reaches a rejection with the *same* return
+   value — `None`, or the reason string `'meetline'` — that the catch produced.)
 2. **Exact ℚ only.** `fractions.Fraction` throughout; no floating point, not
    even for a heuristic pre-filter. A GF(p) rank is allowed *only* as a
    certified lower bound for the rational rank, always with an exact-ℚ recheck
@@ -661,16 +677,30 @@ current state raises the price of the eventual fix.
    and `widened.place_pencil_general` tests for exactly that — but when the two
    normals are **parallel** every `2×2` minor vanishes, its base-point loop never
    binds `p0`, and it raises `UnboundLocalError`. So the caller's guard is
-   **unreachable in the one case it was written for**. Handled caller-side
-   (`outer.chart_point` catches it and rejects the draw; `sigma.py --hunt`'s
-   two constructive placers do the same); full detail in §4 convention 1.
+   **unreachable in the one case it was written for**. Handled caller-side at
+   exactly three sites (`outer.chart_point`/`outer.py:239` catches it and
+   rejects the draw; `sigma.py --hunt`'s two constructive placers —
+   `coplanar_chain_placement` at `sigma.py:742`, `sidecond_placement` at
+   `sigma.py:841` — do the same). **Both halves of that sentence re-verified by
+   grep 2026-08-06**: the `--hunt` claim is correct, and the three are
+   exhaustive. Full detail in §4 convention 1. `meet_line` itself
+   (`escape/localtest.py:57`) is imported by **seven** modules — `n9`,
+   `widened`, `repin`, `pitch`, `lambda`, `outer`, `sigma` — plus its own
+   internal use at `localtest.py:81`; `widened` is the one usually forgotten,
+   and it is the one that matters, since `place_pencil_general` is where the
+   raise escapes into the whole `w4/` chain.
 2. **`lambda.omega_curves`' coded (Λ0f) equivalence raises at `g₁₄ = 0`.** That
    point became *reachable* only when `outer.py --geom` constructed it
    (2026-08-05); the driver catches and reports the raise, never repairs it
    (workbook §(K-Λ) *Step 3a*). The coded equivalence is the **superseded**
    (Λ0f), not the widened (Λ0f′), which is the underlying reason.
-3. **`flanks.star_span_ranks` has four consumers** (`flanks`, `dominance`,
-   `outer`, `sigma`), past §2 rule 2's own trigger to move it down to `repin`.
+3. **`flanks.star_span_ranks` has six consumers** — `flanks` itself plus the
+   five modules that import it (`dominance.py:93`, `sigma.py:58`,
+   `outer.py:129`, `closure.py:56`, `outerline.py:160`), and a seventh
+   indirectly through `dominance.base_seed` (`annih`) — past §2 rule 2's own
+   trigger to move it down to `repin`. (**Recorded as four until 2026-08-06**,
+   here and in §2; `closure` and `outerline` were missing from both lists. The
+   count is the *trigger* for rule 2, so an undercount is not cosmetic.)
 4. **`widened.place_pencil_general`'s in-plane sampler degenerates at ≈ 9 % of
    habitat frames, the degeneracy FORCES `λᵢ = 0`, and `flanks.star_span_ranks`
    — the documented guard against exactly this — does not catch it** (added
@@ -724,7 +754,7 @@ to be re-read under the coincident-hinge guard rather than simply re-run.
 > caller-side `UnboundLocalError` catches. (3) `lambda.omega_curves`' coded
 > (Λ0f) equivalence at the newly-reachable `g₁₄ = 0` points, whose underlying
 > cause is that it codes the superseded (Λ0f) rather than (Λ0f′). (4) Move
-> `flanks.star_span_ranks` down to `repin` (four consumers, past §2 rule 2's
+> `flanks.star_span_ranks` down to `repin` (six consumers, past §2 rule 2's
 > own trigger) — do this *with* item 1, since both touch that function.
 >
 > **Then the re-baseline itself, and it is the expensive half.** Every recorded
@@ -743,9 +773,207 @@ to be re-read under the coincident-hinge guard rather than simply re-run.
 > coincidence-free frames; `§(K-ann)` is flagged for a check and expected clean
 > on this classification, but the check is owed, not assumed.
 
-**One unreconciled observation, recorded so a later pass does not trip on it**
-(coordinator re-ran `outer.py --patterns` on 2026-08-05 and confirmed its
-headline, 4 of 8 patterns realized): `--patterns` reports **1006** companions in
+### The build plan — four slices, with exact file lists
+
+Settled 2026-08-06 by a decomposition pass, grounded in the code rather than in
+the prose above. The OPENED block gives the scope and the price order; this
+subsection turns it into slices a build dispatch can run against. **Every claim
+below is a claim about the landed source, and the line numbers are the
+witnesses.** Nothing here re-opens the round.
+
+> **Read the numbering carefully — there are two.** The OPENED block's *scope*
+> order **(1)–(4)** is by price, and is **not** the numbered *Harness debt* list
+> above it. This subsection uses the OPENED block's, written **scope (n)**.
+> The map: scope (1) = the coincident-hinge guard = debt item **4**; scope (2) =
+> `localtest.meet_line` = debt item **1**; scope (3) = `lambda.omega_curves` =
+> debt item **2**; scope (4) = move `star_span_ranks` = debt item **3**.
+
+#### Scope (1) — the fix shape: a GUARD, not a sampler repoint
+
+The block offers "fix `star_span_ranks`, **or** add the guard it fails to
+supply". A third option exists and is **declined**: repointing
+`widened.place_pencil_general`'s single-hub interior (`widened.py:207`) off the
+degenerate `localtest.in_plane_point` onto `repin.rob_in_plane`. The decision is
+**add the guard**, for four reasons, the first of which is decisive:
+
+1. **A repoint cannot discharge scope (1) as written.** It requires the
+   configuration to be *rejected, not measured*, plus an adversarial test naming
+   a witness the guard must reject. A sampler that never *draws* a bad point does
+   not *reject* one, and the coincident-hinge configuration remains perfectly
+   constructible afterwards (`sigma.coplanar_chain_placement`,
+   `outer.slide_x1_onto`, and `outerline --build`'s own θ(3,4,5) point all
+   build one on purpose). A repoint answers a different question.
+2. **The repoint is import-blocked at the layer it would need.** `repin` imports
+   `widened` (`repin.py:50`), so `widened` cannot import `repin` — the swap first
+   requires relocating `robust_plane_basis` (`repin.py:95`) down to `exactcore`,
+   and §2's own rule says touching `exactcore.py` *means everything*: all 114 §3
+   rows, including `escape/` and `kbare/`, which the guard route never reaches.
+3. **The repoint moves every `w4/` figure and destroys the F13 triage.** rng
+   consumption is identical either way (`in_plane_point` and `rob_in_plane` each
+   draw exactly two `rquat`), so seeds stay aligned — but every single-hub
+   interior lands on a *different point of the same panel*, so every printed
+   coordinate, bracket and zero-parameter downstream of `place_pencil_general`
+   changes. "Byte-identical" then stops being available as the discharge for the
+   whole `w4/` chain, and F13's *rates-exposed / identities-conservative* split —
+   the tool the round is supposed to triage with — no longer separates anything.
+   Under the guard route the split is exactly right.
+4. **The repoint leaves the round's headline event unrepaired.** F13 is *a
+   documented mitigation turning out ineffective*: `star_span_ranks`' docstring
+   (`flanks.py:201`) calls itself "the genericity guard against the `plane_basis`
+   artifact", `dominance.base_seed` promises "a seed failing this is rejected,
+   not measured" (`dominance.py:554`), and both are quoted at every consumer. A
+   repoint silences one sampler and leaves the false claim standing.
+
+**What the repoint would have cost, stated so the choice is auditable:** the
+`exactcore` relocation in (2) plus a re-baseline of all 114 §3 rows in which
+essentially no `w4/` row can be discharged as byte-identical — i.e. ~90 moved
+figures to *re-read* rather than re-run, against the guard route's handful.
+
+**On §4 convention 5 (asked explicitly, and the answer is "it prices, it does
+not veto").** Convention 5's canonical example *is* this defect —
+`widened.py` is "left unchanged as the record of what was measured" precisely
+because of the `plane_basis` family — so the reading that convention 5 governs
+only *wrong figures* and not *genuine sampler defects* is refuted by its own
+example. But convention 5 forbids *rewriting a script so its old numbers look
+right*; a deliberate re-baselining commit that re-runs everything and repoints
+each moved figure is the sanctioned way out, and this round is exactly that. So
+convention 5 is **not** the reason the repoint is declined — reasons 1–4 are.
+The *Divergences* row "pencil-frame samplers" is likewise not a veto: it forbids
+*merging* `sample_local_frame` and `place_pencil_general`, and warns that
+swapping changes drawn points; it does not rule on the robust direction. Should
+a later pass want the repoint anyway, open it as a **new** debt item, not as
+part of this round.
+
+#### The slices
+
+Row counts are §3 table rows (114 total); the two `--battery 0 … 3` rows are
+four invocations each. Reverse-import closures computed from the landed
+`import` lines, not from §2's prose.
+
+| # | edits | re-baseline obligation | expected |
+|---|---|---|---|
+| **S1** | `escape/localtest.py`, `w4/repin.py`, `w4/flanks.py`, `w4/outer.py`, `w4/sigma.py` | `localtest`'s closure: **90 rows / 96 invocations** (everything except `escape/{localize_zero,probe_disjunction,probe_zero,run_habitats,pencil_escape}`, all of `kbare/`, `w4/{hybrid_gates,no_good_search,nogood_subdiv,saferes}`, `m2/`). ~99 min per pass. | **90/90 byte-identical.** Any non-identical row is a bug *in S1*. |
+| **S2** | `w4/flanks.py`, `w4/dominance.py`, `w4/outer.py`, `w4/sigma.py`, `w4/closure.py`, `w4/annih.py`, `w4/outerline.py` + every owning workbook section | `flanks`' closure: **41 rows** (`flanks`, `dominance`, `outer`, `sigma`, `closure`, `annih`, `outerline`). ~55 min per pass. | **Rates move; identities, ranks and pointwise witnesses do not.** |
+| **S3** | `w4/lambda.py`, `w4/outer.py` | `lambda`'s closure: **21 rows** (`lambda`, `outer`, `annih`, `outerline`). ~32 min per pass. | **One row moves:** `outer.py --geom`. |
+| **S4** | docs only (this file, the four per-directory READMEs, the workbooks, `notes/dispatch-log.md`) | **None** — discharged by `git diff --name-only -- '*.py' '*.m2'` coming back empty, per the *figures do not move* first bullet. | n/a |
+
+**S1 — the plumbing, and the only slice that must be byte-identical.** Carries
+scope **(2)** and **(4)** and the *definition* of scope (1)'s guard, because all
+three sit inside one closure and paying it once is the whole point of the round.
+Concretely: (a) `localtest.meet_line` gains an `else` branch binding a zero
+`p0`/`d` instead of falling out of its loop unbound (`localtest.py:62–72`);
+(b) the three caller-side `UnboundLocalError` catches retire (`outer.py:239`,
+`sigma.py:742`, `sigma.py:841`) — **provably figure-invariant**, since at each
+site the signal path reaches a rejection with the identical return value
+(`None`, or the reason string `'meetline'`), and `widened.py:202`'s
+`if all(x == 0 for x in d): return None` is the already-written guard that
+becomes reachable; (c) `star_span_ranks` moves `flanks.py:201` → `repin.py`
+(re-exported from `flanks`, `neighbors` added to `repin`'s `exactcore` import;
+the five importers may repoint or ride the re-export); (d) the new guard —
+*no two hinge lines at a hub coincide*, i.e. the `hinge_coincidences` predicate
+`outerline.py:257` already implements locally — is **defined** in `repin`
+beside it, and (e) `repin.py` gains a `--hinge` mode carrying the adversarial
+test. **Nothing in S1 adopts the guard**, so no acceptance set changes and no
+figure moves; (d) and (e) are additive code no existing path reaches. S1 adds
+one **new** §3 row (`repin.py --hinge`), which is an addition, not a movement.
+Note `widened.py` is **not** edited: convention 5's freeze holds, and it needs
+no edit.
+
+**S2 — adoption, and the only slice where a figure legitimately moves.** Swaps
+each `if any(r != 3 for r in star_span_ranks(...))` acceptance gate for the
+composite guard, at the **14 sites**: `flanks.py:235` (the same test inlined
+inside `nondeg_conjuncts`) and `:367`, `dominance.py:556`, `sigma.py:197` and `:762`,
+`outer.py:256`, `:394`, `:440`, `:497`, `:701`, `:885`, `closure.py:605`,
+`outerline.py:464` and `:978`. **Adoption is a per-site judgement, not a sweep**
+— `outerline --pool`'s (OC-7) diagnostics and `outerline --build`'s
+coincidence-freeness report *measure* the coincidence and must keep seeing it;
+a hard reject there would delete the measurement that opened this round. S2 is
+**one** commit and not seven, because `flanks` is inside every other adopter's
+closure: any split re-pays the same 41 rows. S2 also repairs the claims that
+F13 falsified — `star_span_ranks`' docstring, `dominance.base_seed`'s
+"rejected, not measured", `flanks.py --degen`'s "the guard is exact on this
+shape" / "the guard detects exactly them" (`flanks.py:73–79`, whose printed
+output therefore moves) — and adds the **field** half of the adversarial test:
+`outerline --pool` asserts the guard's rejection set *equals* the 32 frames its
+`degenerate_sampler` ∨ `hinge_coincidences` diagnostic finds, so §(K-out)'s
+318-of-357 restriction becomes the guard's output rather than a hand-restriction.
+**Owed here, not assumed:** the §(K-ann) check the OPENED block names — every
+`annih` figure re-read under the guard, expected clean because its claims are
+identities and pointwise attainments (conservative), never rates.
+
+**S3 — scope (3), and it is independent of scope (1)/(4) but sequenced
+last-but-one.** No code path is shared with scope (1)/(2)/(4); the ordering is
+by *risk*, not by dependency. `lambda.omega_curves`' coded (Λ0f) equivalence is the pair of
+asserts at `lambda.py:644` and `:646`; the fix codes the widened **(Λ0f′)**
+instead, whose statement is already **proven and landed** — `Pencil-informal.md`
+§(K-Λ) *Step 3* (`m2/lambda0.m2`), `span_t ω⁺ = 3 ⟺ p⁺₂p⁺₃·g₁₃g₁₄g₂₄ ≠ 0` — so
+S3 is a coding task, not a research one, and the three Gram brackets are
+computable in place from `fr['C']` (`g₁₄ = klein(C₁, C₄)`). **The one moved
+figure is `outer.py --geom`**: `outer.spans_at` (`outer.py:327`) catches the
+`AssertionError` today and reports the raise; with (Λ0f′) coded the assert
+passes, `strict=False` returns the off-pattern dict, and the report becomes
+spans `(2,2)`. Its owning workbook line is `Pencil-informal.md` §(K-Λ)
+*Step 3a*'s verification table row *"`outer.py --geom`: the constructed
+`g₁₄ = 0` point"*, repointed in the same commit. `lambda`'s own six rows are
+expected byte-identical (no recorded `lambda` frame reaches `g₁₄ = 0`; the
+`--adv` histogram's six off-pattern frames fail on a *middle* entry, which
+(Λ0f′) still catches) — **verify, do not assume**, and `--adv` runs alone.
+
+**Ordering rationale.** S1 first because it is the only slice with a *clean
+signal*: mixed with a figure-moving slice, an accidental movement hides inside
+an expected one. S2 second because the per-site reject-vs-report judgement needs
+the guard to exist. S3 second-to-last because it also edits `outer.py`. S4 last.
+
+**One deviation from the OPENED block, recorded so a dispatch does not stop on
+it.** The block says *"expect figures to move only where item 1 bites; if a
+figure moves elsewhere, stop and surface it."* Read against the decomposition
+that is **scope (1)** — and S3 moves `outer.py --geom` for **scope (3)**, which
+is a predicted movement, not the surfacing trigger. The trigger stands
+everywhere else, and in particular **any** movement in S1 fires it.
+
+**Baseline chaining — a licence, so the round is not re-run four times over.**
+The gate compares against the *immediately preceding committed state*, so S2's
+baseline **is** S1's committed re-run output over S2's 41-row subset, and S3's
+is S2's. Capture each slice's post-edit output and keep it for the next slice.
+Total: 90 + 90 + 41 + 21 = **242 driver runs**, against 304 if every slice
+re-baselines from scratch. Capture S1's baseline as the dispatch's *first*
+action, before any edit.
+
+#### The adversarial test for scope (1) (F13: a guard observed only passing is untested)
+
+Two witnesses, deliberately of different provenance, plus a negative control.
+
+- **Must-REJECT, constructed (the unit test, `repin.py --hinge`, lands in S1).**
+  Take a clean `place_pencil_general` sample; pick a hub `h` with a single-hub
+  interior `x` and another `G′`-neighbour `u`; slide `pt(x)` onto the line
+  through `pt(h)` and `pt(u)`. **Legal**, because both endpoints lie in `Π(h)`
+  so the whole line does — the same legality argument as
+  `sigma.coplanar_chain_placement` (`sigma.py:715–764`) and
+  `outer.slide_x1_onto` (`outer.py:334`). The result is a *bona fide* pencil
+  realization with `C(h,x) = C(h,u)`. Constructed rather than sampled on
+  purpose: it does not depend on a lucky seed and it survives any future change
+  to the sampler, which a sampled witness would not.
+- **The pinned counter-fact, asserted in the same test.** On that witness,
+  `star_span_ranks` must return **3 at every vertex** and all four
+  `IsNondegPencilRealization` conjuncts must hold. This is the assertion that
+  records *why* the old guard was insufficient; without it the test proves only
+  that the new guard fires, not that it fires where the documented one did not.
+  **Constraint on the construction, derived from (OC-7)'s mechanism, not
+  optional:** `h` must keep a third neighbour **off** the line `pt(h) pt(u)`,
+  since that third neighbour is exactly what lets `h`'s star still span its
+  panel. If the counter-fact fails, the construction picked the wrong hub — that
+  is a bug in the test, not a finding about the guard.
+- **Negative control, same test.** The un-slid sample must **pass**.
+- **Must-REJECT, sampled (the field test, `outerline --pool`, lands in S2).**
+  The provenance is measured, not invented: **32 of 357** POOL-G frames, and the
+  named one is **θ(3,4,5) placement seed 233**, degenerate at *both* `b` and `c`
+  and simultaneously §(K-out)'s single (OUT)-silent frame — `Pencil-informal.md`
+  §(K-out) *Step O5* **(OC-7)**, the canonical home.
+
+### One unreconciled observation, recorded so a later pass does not trip on it
+
+The coordinator re-ran `outer.py --patterns` on 2026-08-05 and confirmed its
+headline (4 of 8 patterns realized): `--patterns` reports **1006** companions in
 the uncovered `(0,1,0)` pattern while `--sweep` reports **652** uncovered pairs.
 The two modes run over different denominators (7002 vs 4280 pairs), so this is
 **expected rather than contradictory** — but it was **not reconciled**, and
