@@ -11,6 +11,16 @@ per the project's *Never commit local machine paths* discipline (checked: none p
 map, invocation table, and conventions. This file is the per-driver description list
 for this directory.
 
+**The 2026-08-06 re-baselining round CLOSED with all four harness-debt items
+cleared** (`../README.md` *Harness debt* → the **CLOSED** block). It reached this
+directory in one place: `localtest.meet_line` now **signals** instead of raising
+(item 1), and `localtest.sample_local` / `n9.place_pencil` — two of the six direct
+callers that were testing nothing — gained an explicit `assert`. The three drivers
+here inside slice S1's closure (`localtest`, `localtest_zeros`, `n9`) were
+re-baselined and came back byte-identical; the other five (`pencil_escape`,
+`run_habitats`, `probe_zero`, `localize_zero`, `probe_disjunction`) sit outside it
+and were untouched.
+
 Every script is stdlib-only Python (no third-party dependencies). Run from the **repo
 root** as `python3 notes/scripts/escape/<script>.py`; the canonical `scriptpath`
 bootstrap (2026-08-05) makes the working directory irrelevant. `pencil_escape.py` and

@@ -9,6 +9,19 @@ M2 layer adds on top (they were specified in advance in
 Opened 2026-08-05 with `lambda1.m2`; `lambda0.m2` followed the same day. This
 is the **only** non-Python part of the harness.
 
+**The 2026-08-06 re-baselining round left this directory untouched**, and that
+is a fact about the closures: `m2/` sits outside all four slices' import
+closures, so no driver here was edited and no `.m2` figure moved
+(`../README.md` *Harness debt* → the **CLOSED** block, the canonical home for
+the round). Two of its outcomes still reach the M2 side. **(a)** `lambda0.m2`'s
+(Λ0f′) — proven here 2026-08-05 — is what slice S3 coded into
+`lambda.omega_curves`, so the Python criterion and this layer's now agree; that
+is convention 3's cross-language pin working as intended. **(b)** §4 convention
+5, which convention 2's re-baselining procedure defers to, gained an explicit
+statement of what it does *not* say: it forbids rewriting a script so its old
+numbers look right, and **prices** rather than vetoes a deliberate re-baselining
+repair. The same reading applies to an M2 driver found defective.
+
 ## Why the layer exists
 
 `notes/scripts/`'s Python is **exact-pointwise**: it evaluates the geometry at

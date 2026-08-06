@@ -13,11 +13,11 @@ trail*: every numeric figure quoted in the two PENCIL workbooks
 primitive already exists (so you don't reimplement one); §2 tells you where a
 new module goes; §3 is the reproduce table; §4 is the mandatory discipline;
 *Divergences* lists the same-named-but-different functions that must **not** be
-merged; *Harness debt* lists the parked defects and — **OPEN since 2026-08-06, with
-slices S1, S2 and S3 landed (all four debt items CLEARED) and only the docs-only
-S4 left** — the re-baselining round clearing
-them, whose *The build plan* subsection is what a build dispatch runs against; *Deliberate non-goals* lists two things a future
-session should leave alone. §§1–4 are about the **Python** harness; the M2 layer adds four
+merged; *Harness debt* lists the four parked defects and the re-baselining round
+that cleared them — **the round is CLOSED (S1–S4, 2026-08-06, all four items
+CLEARED)**, and that section now carries the round's standing rules, its
+per-slice cost record, and the two prohibitions it **lifts**; *Deliberate
+non-goals* lists two things a future session should leave alone. §§1–4 are about the **Python** harness; the M2 layer adds four
 conventions of its own on top of them (`m2/README.md`), the first of which is
 that its output is *evidence*, never a substitute for a Lean proof.
 
@@ -88,6 +88,14 @@ the gate is satisfied for them by running each one on its own, in the
 foreground, as the commit's last step with nothing else competing, and quoting
 its verdict line in the commit message. The obligation is not waivable by
 budget: if that does not fit the sitting, the commit does not land.
+
+**A dispatched agent runs an over-ceiling invocation FIRST, backgrounded, with
+the foreground work alongside it** — never backgrounded with nothing left to do,
+because a subagent's background job is killed when its turn ends (it never
+writes its `.rc` and leaves a 0-byte output file). This is the one place the
+`phase-builder` core's *all gates foreground* mandate needs a reading rather
+than a literal application, and the round validated it twice; see
+`notes/dispatch-log.md` (2026-08-06 S1 row) for the failure it replaces.
 
 ## 0. The path bootstrap
 
@@ -641,6 +649,30 @@ canonical descriptions.
    255/216/39 supersedes the workbook's original transcription. A superseded
    driver keeps running and keeps reproducing its old numbers.
 
+   **What convention 5 does NOT say, stated because a docstring got it wrong**
+   (`outer.py`'s module docstring until slice S3, 2026-08-06: *"never repaired
+   — §4 convention 5 forbids touching `lambda.py`"*). Convention 5 forbids
+   *rewriting a script so its old numbers look right*. It does **not** freeze a
+   defective driver: a deliberate re-baselining commit that re-runs the
+   modified driver's whole import closure and **repoints every moved figure in
+   its owning workbook section, in the same commit**, is the sanctioned way to
+   repair one. Convention 5 *prices* such a commit; it never vetoes it. (The
+   2026-08-06 round is the worked example — and `widened.py` still went
+   untouched, because there the freeze was the right call on its own merits,
+   not because convention 5 compelled it.)
+6. **A guard needs an adversarial witness it must reject** (dispatch-log
+   **F13**: a guard observed only passing is untested). Landing a genericity /
+   degeneracy guard is not complete until a driver mode *constructs* an object
+   the guard must reject and asserts the rejection, together with the **pinned
+   counter-fact** — what the previously-documented guard says on that same
+   witness, which is what records why the new one was needed — and a **negative
+   control** (the un-degenerated object must pass). Prefer a constructed
+   witness to a sampled one: it does not depend on a lucky seed and it survives
+   a later change to the sampler. The worked example is `repin.py --hinge`
+   (constructed) plus `outerline --pool`'s field test (sampled), for
+   `repin.star_generic`; see *The build plan* → *The adversarial test for scope
+   (1)*.
+
 ## Divergences — same name, different semantics: **do not merge**
 
 Consolidating any row below would change recorded figures. They are separate
@@ -696,15 +728,17 @@ figure-invariant): `rref`, `rank`/`rank_exact`, `nullspace`, `left_nullspace`,
 `neighbors` (`kbare_common`, `n9`); `K4`/`K5_minus_matching` (three copies:
 `localtest`, `probe_zero`, `run_habitats`).
 
-## Harness debt — four items, **ALL FOUR CLEARED 2026-08-06** by slices S1+S2+S3
+## Harness debt — four items, **ALL FOUR CLEARED**; the round is **CLOSED** (S1–S4, 2026-08-06)
 
 Named as a list (2026-08-05; item 4 added 2026-08-06) so a successor does not
 rediscover them one at a time. **The debt was one-directional and it
 accumulated**: every item was parked because *"figures do not move"* and *"fix
 the bug"* point in opposite directions, and each new driver that depended on the
 current state raised the price of the eventual fix. The re-baselining round
-below is the deliberate commit sequence that pays it once; **S1 and S2 have
-landed**, so read each item's status line before acting on it.
+below is the deliberate commit sequence that paid it once; it **closed
+2026-08-06** with all four items cleared. The per-item entries are kept in the
+past tense as the record of what was wrong and what replaced it — read the
+**CLOSED** block for the rules that bind new work.
 
 1. **CLEARED (S1, 2026-08-06) — `localtest.meet_line` raised instead of
    signalling.** It was documented to signal "the two planes have no meet line"
@@ -779,7 +813,9 @@ landed**, so read each item's status line before acting on it.
    be quoted as a *rate*, or as evidence about a *generic* chart point** — quote
    POOL-G-style figures over the coincidence-free sub-pool. Negatives (`0 hits`)
    and positive existence witnesses are unharmed, one-directionally: a
-   degenerate draw creates neither a false hit nor a false witness.
+   degenerate draw creates neither a false hit nor a false witness. *(That
+   prohibition is **superseded** — the CLOSED block's rule (i) is what binds
+   now. It is quoted here verbatim only as the original entry.)*
 
 **No defect on this list corrupts a recorded figure — items 1–3 fail loudly,
 and item 4 is one-directional** (it can only manufacture `λᵢ = 0` events, so it
@@ -836,6 +872,73 @@ which is why they were guarded in the same commit.)*
 > under the defect and do not move. `§(K-out)` is already restricted to its 318
 > coincidence-free frames; `§(K-ann)` is flagged for a check and expected clean
 > on this classification, but the check is owed, not assumed.
+
+> **CLOSED 2026-08-06 by slice S4.** All four items cleared, every recorded
+> figure re-baselined, every moved figure repointed in its owning workbook
+> section in the commit that moved it. This block is what binds new work; the
+> per-slice detail is in *The build plan* below and its three addenda.
+>
+> **Cost against prediction.** The plan's re-baseline arithmetic was accurate
+> and its *mathematical* predictions held; what it under-called was its own
+> edit lists. Row/figure ledger: **S1** 96 invocations, 95 byte-identical + 1
+> identical modulo its own wall-clock print, **0 moved** (predicted 90/90
+> identical, and any movement would have been a bug *in S1*); **S2** 41
+> invocations, 21 identical, **20 moved** (predicted "rates move; identities,
+> ranks and pointwise witnesses do not" — held **exactly**, not one identity,
+> rank or attainment changed its verdict, and three figures *improved to their
+> bound* because the contaminated draws were precisely the ones that had missed
+> it); **S3** 21 invocations, 20 identical, **1 moved** (predicted: exactly
+> `outer.py --geom`). Total **260** completed invocations (96 baseline + 96 S1
+> + 41 S2 + 6 + 21 S3) against the chaining licence's **254** projection (its
+> "242 driver runs" counted §3 *rows*) — the +6 is S3's cross-closure
+> re-capture of the six `lambda` rows at S2's HEAD, which was itself a check
+> and confirmed S2 stayed
+> inside its declared closure. Every slice found something the plan had not
+> (S1: a **sixth** unguarded `meet_line` caller; S2: the guard's site is
+> `clean_pencil_seed`, not `nondeg_conjuncts`, and the field test's expected
+> *equality* is refuted in the safe direction; S3: the moved print widened on
+> purpose), all recorded in the addenda rather than absorbed. **F13's figure
+> classification is now a validated triage tool, not a hypothesis.**
+>
+> **TWO PROHIBITIONS ARE LIFTED. Both were quoted in several places, so a
+> reader meeting an un-repointed copy should treat it as stale.**
+> **(i) The rate prohibition** — item 4's *"no `place_pencil_general`-sampled
+> battery may be quoted as a rate, or as evidence about a generic chart
+> point"*. **Replaced, not merely lifted**, by the positive rule in §4
+> convention 1: **a battery may be quoted as a rate exactly when its acceptance
+> gate is `repin.star_generic`** — which, after S2, is every battery except
+> `outerline --pool` and `--build`, whose subject *is* the coincidence and
+> which report it instead (each says so in its own output). §(K-out)'s POOL-G
+> rates are quoted over the 318 coincidence-free frames, or the 299 the
+> composite guard accepts ((OC-9)), never the raw 357.
+> **(ii) `outer.py`'s "§4 convention 5 forbids touching `lambda.py`"** — false
+> as stated, repaired in S3, and now answered in convention 5 itself:
+> convention 5 forbids rewriting a script so its old numbers look right, and
+> **prices** a deliberate re-baselining repair rather than vetoing it. The
+> freeze that *does* still hold is `widened.py`'s, on its own merits (it is the
+> record of what was measured, and the round deliberately declined the sampler
+> repoint — *Scope (1)* below).
+>
+> **THE NEW POSITIVE RULES.** (a) **`repin.star_generic` is what a new sampler
+> or battery tests** — closed stars of full rank 3 **and** no two hinge lines
+> coinciding at a body. Never the star-rank test alone: `star_span_ranks` is
+> evidence about a hub's *star*, never that the sampler drew generically —
+> its own docstring claimed otherwise, and that claim is what F13 falsified.
+> (b) **A guard needs an
+> adversarial witness it must reject** — now §4 convention 6, with the pinned
+> counter-fact and the negative control that make the test say why the *old*
+> guard was insufficient. (c) The **round shape itself** is the sanctioned way
+> to repair a driver defect: fix, re-run the whole import closure, repoint each
+> moved figure in the same commit, and treat a moved figure as a mathematical
+> event owing an explanation. Two of this round's twenty-one moves were exactly
+> that — **(AC-9)** and **(OC-9)** are findings, not chores.
+>
+> **What the round did NOT buy.** No gap-map row moved and class uniformity is
+> untouched; the round was a precondition to the research queue, never a
+> substitute for it. The declined sampler repoint (`place_pencil_general`'s
+> single-hub interior onto `repin.rob_in_plane`) stays declined and is **not**
+> re-opened here: should a later pass want it, it opens as a **new** debt item
+> with its own re-baseline, per *Scope (1)*.
 
 ### The build plan — four slices, with exact file lists
 
@@ -919,20 +1022,23 @@ four invocations each. Reverse-import closures computed from the landed
 | **S1** ✅ **LANDED 2026-08-06** | `escape/localtest.py`, `w4/repin.py`, `w4/flanks.py`, `w4/outer.py`, `w4/sigma.py` — **plus `escape/n9.py`, `w4/pitch.py`, `w4/lambda.py`** for the addendum below (all three already inside the closure, so no extra obligation) | `localtest`'s closure: **90 rows / 96 invocations** (everything except `escape/{localize_zero,probe_disjunction,probe_zero,run_habitats,pencil_escape}`, all of `kbare/`, `w4/{hybrid_gates,no_good_search,nogood_subdiv,saferes}`, `m2/`). ~99 min per pass. | **90/90 byte-identical.** Any non-identical row is a bug *in S1*. **Achieved:** 96/96 invocations `rc=0`, 95 byte-identical, `flanks.py --conj` identical modulo its own wall-clock print (`flanks.py:316`, the rule's one documented exception), **0 figures moved**. |
 | **S2** ✅ **LANDED 2026-08-06** | `w4/flanks.py`, `w4/dominance.py`, `w4/outer.py`, `w4/sigma.py`, `w4/closure.py`, `w4/annih.py`, `w4/outerline.py` + every owning workbook section | `flanks`' closure: **41 rows** (`flanks`, `dominance`, `outer`, `sigma`, `closure`, `annih`, `outerline`). ~55 min per pass. | **Rates move; identities, ranks and pointwise witnesses do not.** **Achieved:** 41/41 `rc=0`, **21 byte-identical**, **20 moved** — and the prediction held exactly: not one identity, rank or attainment changed its verdict, three *improved to their bound* once the contaminated seeds were rejected, and the moves are (a) seed relabelling, (b) the σ pool re-pin 63 → 47, (c) two repaired claims and two new measurements ((AC-9), (OC-9)). All five `outer` rows byte-identical, so S3's "one moved row: `outer --geom`" is preserved. |
 | **S3** ✅ **LANDED 2026-08-06** | `w4/lambda.py`, `w4/outer.py` + `Pencil-informal.md` §(K-Λ) *Step 3*/*Step 3a* | `lambda`'s closure: **21 rows** (`lambda`, `outer`, `annih`, `outerline`). ~32 min per pass. | **One row moves:** `outer.py --geom`. **Achieved exactly that:** 21/21 `rc=0`, **20 byte-identical, 1 moved** — `outer.py --geom`, four lines (one per habitat), from the coded equivalence *firing* to it *accepting* with spans `(2, 2)` and `(g₁₃, g₁₄, g₂₄) ≠ 0 = (True, False, True)`. All six `lambda` rows byte-identical as predicted. |
-| **S4** | docs only (this file, the four per-directory READMEs, the workbooks, `notes/dispatch-log.md`) — **plus one deliverable that is not about the harness at all: compress `notes/Phase39.md`** (added 2026-08-06 by S2). | **None** — discharged by `git diff --name-only -- '*.py' '*.m2'` coming back empty, per the *figures do not move* first bullet. | n/a |
+| **S4** ✅ **LANDED 2026-08-06 — the round CLOSES** | docs only (this file, the per-directory READMEs, `notes/Phase39.md`, `notes/dispatch-log.md`) — **plus one deliverable that is not about the harness at all: compress `notes/Phase39.md`** (added 2026-08-06 by S2). | **None** — discharged by `git diff --name-only -- '*.py' '*.m2'` coming back empty, per the *figures do not move* first bullet. **Discharged exactly that way.** | n/a. **Delivered:** the CLOSED block above (cost-vs-prediction, the two lifted prohibitions, the three new positive rules), §4 convention 6, the per-directory README sync, `Phase39.md` 601 → under the ~500-line tripwire, and three dispatch-log rows + two Findings lines. |
 
-**S4's phase-note compression, stated as a deliverable so it stops slipping.**
-`notes/Phase39.md` is past `notes/CLAUDE.md`'s **~500-line tripwire** and has
-grown in every slice of this round (554 lines at S2's open; the tripwire is
-"almost always a swallowed promotion — stop and investigate, don't just trim").
-The per-commit *Compress in-commit* rule has now slipped twice inside this
-round, because each slice's honest hand-off edit is additive and the round is
-not over. S4 is the right home: it is docs-only, it owes no re-baseline, and it
-is the commit that closes the round, so the note can be compressed against the
-round's *final* state rather than an intermediate one. Concretely: promote the
-cross-cutting entries, one-line the settled ones, and collapse the four
-harness-debt paragraphs in *Blockers* to a pointer at this section — which is
-their canonical home and already carries the detail.
+**S4's phase-note compression — DONE, and what the tripwire was hiding.**
+`notes/Phase39.md` reached **601 lines** (554 at S2's open), past
+`notes/CLAUDE.md`'s ~500-line tripwire, having grown in every slice of this
+round; the per-commit *Compress in-commit* rule slipped three times inside it,
+because each slice's honest hand-off edit is additive while the round is
+running. S4 was the right home — docs-only, no re-baseline owed, and closing
+the round means the note could be compressed against its *final* state rather
+than an intermediate one. The tripwire's own warning ("almost always a
+swallowed promotion — stop and investigate, don't just trim") was accurate: the
+swallowed promotion was **this section**. Four *Decisions made* entries and a
+five-paragraph *Hand-off* narrative were re-telling a round whose canonical
+home is here; they collapsed to one ≤8-line entry and a pointer, with the
+*Blockers* harness-debt bullet cut to the same. **Nothing was summarized away:**
+the verbatim standing adjudications, the route-σ blockquote, the (a)–(g)
+contenders and the *Deliberate non-goals* list are untouched by design.
 
 **S1 — the plumbing, and the only slice that must be byte-identical.** Carries
 scope **(2)** and **(4)** and the *definition* of scope (1)'s guard, because all
@@ -1226,14 +1332,30 @@ Two witnesses, deliberately of different provenance, plus a negative control.
   and simultaneously §(K-out)'s single (OUT)-silent frame — `Pencil-informal.md`
   §(K-out) *Step O5* **(OC-7)**, the canonical home.
 
-### One unreconciled observation, recorded so a later pass does not trip on it
+### Recorded observations, so a later pass does not trip on them
 
-The coordinator re-ran `outer.py --patterns` on 2026-08-05 and confirmed its
-headline (4 of 8 patterns realized): `--patterns` reports **1006** companions in
-the uncovered `(0,1,0)` pattern while `--sweep` reports **652** uncovered pairs.
-The two modes run over different denominators (7002 vs 4280 pairs), so this is
-**expected rather than contradictory** — but it was **not reconciled**, and
-neither figure should be quoted as the other.
+Neither is a debt item: the first is a reconciliation nobody has done, the
+second a latent defect on an unreachable path. Both are **recorded, not fixed**.
+
+1. **`outer.py --patterns` and `--sweep` are not comparable.** The coordinator
+   re-ran `--patterns` on 2026-08-05 and confirmed its headline (4 of 8
+   patterns realized): it reports **1006** companions in the uncovered
+   `(0,1,0)` pattern while `--sweep` reports **652** uncovered pairs. The two
+   modes run over different denominators (7002 vs 4280 pairs), so this is
+   **expected rather than contradictory** — but it was **not reconciled**, and
+   neither figure should be quoted as the other.
+2. **`outer.py --geom`'s `sp['gram']` read is unreachable, not safe** (flagged
+   by S3, 2026-08-06; deliberately not fixed there, since S4 touches no `.py`).
+   The `--geom` print reads `sp['gram']` (`outer.py:502`), and `gram` is a key
+   of `lambda.omega_curves`' **off-pattern** dict only (`lambda.py:681`), not of
+   its full return. The path is unreachable as the code stands — at the
+   constructed `g₁₄ = 0` point the coded (Λ0f′) equivalence forces the spans to
+   drop, so `omega_curves` always takes the off-pattern branch — and the worst
+   case is a loud `KeyError`, never a silent wrong answer, so it moves no
+   figure. **The next commit that touches `outer.py` should add `gram` to the
+   full return dict** (a `.py` edit inside `lambda`'s closure, so it owes that
+   closure's re-baseline; expected byte-identical, since no §3 row reads the
+   full dict's `gram`).
 
 ## Deliberate non-goals
 

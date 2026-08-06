@@ -7,10 +7,9 @@
 `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card` (`Molecule/Pencil/Escape.lean`):
 `hcontract` (W4), kernel `hK`, and kernel `hbareSplit` — see *Hand-off*. Kernel-(K) research
 is at its twenty-first docs+scripts-only pass (workbook `notes/Pencil-informal.md`; the settled
-W4-residual arc split out to `notes/Pencil-W4-informal.md` on 2026-08-05; the twenty-first is
-the **2026-08-06** fan-out's direction B — workbook §(K-out), `outerline.py` — and that fan-out
-is now **COMPLETE**. Its direction letters are re-used from the 2026-08-05 one, whose direction
-B was §(K-Λ); always date them).
+W4-residual arc is `notes/Pencil-W4-informal.md`). The **2026-08-06** three-way fan-out is
+COMPLETE, and so is the harness re-baselining round that followed it (S1–S4). Fan-out direction
+letters are re-used across dates — **always date them**.
 
 ## Current state
 
@@ -173,13 +172,14 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
   C) q` (design doc's W0 pin) is landed only as its two forward implications; the reverse arms
   need a `complementIso` involution lemma, not in tree — deferred, **off every critical path**
   (§(K-σ) *Step σ6*: route σ does not need it, and sketches the route to it).
-- **Harness debt — ALL FOUR ITEMS CLEARED** (2026-08-06, slices S1+S2+S3; `notes/scripts/README.md`
-  *Harness debt* is the canonical home — per-item status and the round's three addenda live there
-  and are **not** restated here). Two consequences that bind future work and so stay in this note:
-  item 4's old prohibition is **replaced by a positive rule** — a `place_pencil_general`-sampled
-  battery may be quoted as a *rate* exactly when its acceptance gate is `repin.star_generic`; and
-  `outer.py --patterns` and `--sweep` run over different denominators (7002 vs 4280 pairs), so
-  their companion counts are **not comparable**.
+- **Doc hygiene, not mathematics:** ROADMAP §39 and its *Status* row are stale as of 2026-08-06
+  — they still count 17 kernel-(K) dispatches / six refuted gaps and call the **field-scope gap
+  OPEN**, which §(K-clos) SETTLED. A status-surface sync is owed; it blocks no research.
+- **Harness debt — ALL FOUR ITEMS CLEARED, round CLOSED** (2026-08-06, S1–S4). Canonical home
+  `notes/scripts/README.md` *Harness debt* → the **CLOSED** block, which carries per-item status,
+  the cost ledger, the **two prohibitions the round lifts**, the three positive rules it leaves,
+  and two recorded-not-fixed observations. Nothing restated here — read it before any numerics
+  dispatch, and treat any un-repointed copy of a lifted prohibition as stale.
 
 ## Hand-off / next phase
 
@@ -225,79 +225,27 @@ discharge (residue (iv)) is CLOSED too**. The landed successor
 > `outer.sweep_shapes()`'s `|V°| ≤ 5` cap** (14 s at the present scope) to hunt `dim R = 6`
 > (which makes (OUT) *dead* there) or `dim R ≤ 4` / `μ ≥ 2` (which closes it there).
 >
-> **THE NEXT COMMIT IS DECIDED — the harness re-baselining round** (user-adjudicated 2026-08-06:
-> *"let's fix the harness and clear any debt there while you're at it."*). It clears **all four**
-> harness-debt items in one sequence and re-baselines every recorded figure; scope, order and the
-> moved-figure rule are in `notes/scripts/README.md` *Harness debt*, **OPENED** block. Trigger:
-> dispatch-log **F13** — a mitigation for a recorded defect found ineffective. **It precedes all
-> research below.**
+> **THE HARNESS RE-BASELINING ROUND IS CLOSED** (user-adjudicated 2026-08-06: *"let's fix the
+> harness and clear any debt there while you're at it."*; four slices — decomposition `d5ae55aa`,
+> S1 `c980118a`, S2 `1fd1b1e4`, S3 `50e1f28c`, S4 this commit). Trigger: dispatch-log **F13**, a
+> mitigation for a recorded defect found ineffective. **All four harness-debt items are cleared**
+> and every recorded figure re-baselined — 260 invocations, 21 figures moved, each repointed in
+> its owning workbook section in the commit that moved it. **Canonical home for all of it**
+> (per-item status, the cost-vs-prediction ledger, the two prohibitions the round **lifts**, the
+> three positive rules it leaves, the per-slice addenda, and two recorded-not-fixed observations):
+> `notes/scripts/README.md` *Harness debt* → the **CLOSED** block. **No gap-map row moved** — the
+> round was a precondition to the research queue, never a substitute for it. Two of the moves are
+> mathematics, not chores: **(AC-9)** (§(K-clos) — every σ-fixed body of degree `≥ 3` carries a
+> coincident hinge line, so no σ-fixed witness reads as generic) and **(OC-9)** (§(K-out) — the
+> composite guard rejects 58/357, strictly containing the two-end diagnostic's 39).
 >
-> **Decomposed into four slices 2026-08-06** — canonical home `notes/scripts/README.md`
-> *Harness debt* → **The build plan**, with exact file lists, per-slice import closures, row
-> counts and expected-moved figures; **not restated here**. Item 1's shape is settled there
-> (**add the coincident-hinge guard**; the `place_pencil_general` sampler repoint is **declined**,
-> with its price recorded), as is the adversarial test's witness.
->
-> **Slice S1 is LANDED (2026-08-06)** — the gate came back **96/96 invocations `rc=0`, 95
-> byte-identical, 0 figures moved** (the 96th, `flanks.py --conj`, differs only in the driver's
-> own wall-clock print, the rule's one documented exception). Harness-debt items **1** and **3**
-> are CLEARED; item **4** is half-cleared — the guard `repin.star_generic` and its adversarial
-> test `repin.py --hinge` now exist, but **nothing adopts them**, so item 4's standing rule
-> (*no `place_pencil_general` battery may be quoted as a rate*) still binds verbatim.
-> Two things the slice found that the plan had not: `localtest.meet_line` had **six** direct
-> callers testing nothing, which the fix would have turned from loud failures into silent wrong
-> answers (all six guarded in the same commit), and one of them — `lambda.py:1110` — was
-> classified as already-guarded on the strength of a neighbouring `rank(...) == 2` assert that
-> passes **vacuously** at a zero direction. Both recorded in the plan's *S1 addendum*.
->
-> **Slice S2 is LANDED (2026-08-06)** — the gate came back **41/41 `rc=0`, 21 byte-identical, 20
-> moved**, and every moved figure is repointed in its owning workbook section in the same commit
-> (canonical home for the ledger: `notes/scripts/README.md` *The build plan* → *S2 addendum*, not
-> restated here). Harness-debt item **4 is CLEARED**. The prediction held exactly: **no identity,
-> rank or pointwise attainment changed its verdict**; three *improved to their bound* once the
-> contaminated seeds were rejected (`dominance --jac`/`--far`, `annih --supp` — the draws that
-> missed the bound were the contaminated ones); the moves are seed relabelling, the σ pool re-pin
-> **63 → 47**, two repaired claims and two new measured facts. All five `outer` rows are
-> byte-identical, so S3's "one moved row, `outer --geom`" is preserved. Three things S2 found that
-> the plan had not, all recorded in the addendum: the guard must **not** go inside
-> `flanks.nondeg_conjuncts` (that predicate mirrors the Lean statement, and adopting there would
-> have broken `outerline --build`'s (OC-4) assert) — it went to the real acceptance site
-> `clean_pencil_seed`; the field test's expected *equality* is **refuted in the safe direction**
-> (the guard rejects 58/357 vs the two-end diagnostic's 39, strictly containing it — **(OC-9)**);
-> and one moved figure is a **mathematical finding**, **(AC-9)**: every σ-fixed body of degree
-> `≥ 3` carries a coincident hinge line, by pigeonhole against §(K-clos) *Step Z3*'s
-> two-ruling-lines cap, so the composite guard accepts **0 of 64** `ds-K4` colourings — this
-> *qualifies* (AC-3) (the four conjuncts and the Tay target still hold) and forbids reading any
-> σ-fixed witness as generic. The **§(K-ann) re-read is DONE and CLEAN**.
->
-> **Slice S3 is LANDED (2026-08-06)** — the gate came back **21/21 `rc=0`, 20 byte-identical, 1
-> moved**, and the one moved row is exactly the predicted `outer.py --geom`, repointed in its
-> owning workbook section (§(K-Λ) *Step 3*/*Step 3a*) in the same commit. Harness-debt item **2 is
-> CLEARED**, so **all four are**. `lambda.omega_curves` codes the widened **(Λ0f′)**
-> (`Π± = p⁺₂p⁺₃·g₁₃g₁₄g₂₄ ≠ 0`), so at the constructed `g₁₄ = 0` chart point it now *accepts* and
-> *predicts* the `3 → 2` drop instead of raising — the harness's own criterion confirming
-> (Λ0f′)'s Gram half at four real class habitats, where before only `outer.raw_spans` did.
-> Canonical ledger: `notes/scripts/README.md` *The build plan* → *S3 addendum*, not restated here.
-> One thing S3 checked that the plan only assumed: `lambda` sits outside S2's closure, so its six
-> rows were re-baselined at S2's HEAD before any edit and came back **6/6 byte-identical** against
-> S1's capture — which independently confirms S2 stayed inside the closure it declared.
->
-> **Smallest concrete next commit: slice S4** — docs-only, no re-baseline (discharged by
-> `git diff --name-only -- '*.py' '*.m2'` coming back empty). It closes the round and owes one
-> deliverable that is not about the harness at all: **compress `notes/Phase39.md`**, which is past
-> `notes/CLAUDE.md`'s ~500-line tripwire and has grown in every slice. Exact scope:
-> `notes/scripts/README.md` *Harness debt* → **The build plan**, S4's row and the paragraph under
-> it. Mechanics all three landed slices paid for: write each invocation's output to its own file
-> and compare with `cmp`; run an invocation past the 600 s ceiling in its own foreground call with
-> an explicit `timeout` (never a shell-level one, never piped into `tail`) — a subagent's
-> background job dies when its turn ends.
->
-> **QUEUED, still an open user adjudication** — three contenders, none pre-selected: the remaining
-> route-σ work; the **mechanisms pass** (*Current state* (a)); and `Pencil-strategy.md` §4.6's
-> ranked shortlist (*Current state* (f)), the only one aimed at **class uniformity itself**. The
-> live crux is **(ANH-R1)**: is `H/P − β` pencil-rigid, and is that *easier* than its parent or
-> merely smaller? §2.3's new convergence note — two independent routes, one residual shape —
-> argues the wall is structural, so attack it directly if a third route lands there too.
+> **THE NEXT COMMIT IS NOT DECIDED. It is an open user adjudication — three contenders, none
+> pre-selected:** the remaining route-σ work; the **mechanisms pass** (*Current state* (a)); and
+> `Pencil-strategy.md` §4.6's ranked shortlist (*Current state* (f)), the only one aimed at
+> **class uniformity itself**. The live crux is **(ANH-R1)**: is `H/P − β` pencil-rigid, and is
+> that *easier* than its parent or merely smaller? §2.3's convergence note — two independent
+> routes, one residual shape — argues the wall is structural, so attack it directly if a third
+> route lands there too.
 >
 > Deliberate non-goals: (Λ0), (Λ1), the `g₁₄` clause, §(K-ind), §(K-Δ), **§(K-clos)'s field
 > question**, **§(K-ann)'s settled batch** ((ANH-1)–(ANH-6), (SD-6)) and **§(K-out)'s settled
@@ -349,14 +297,11 @@ The three carried items:
 Gates for any continuation: `lake build` (warning-clean) + `lake lint` when `.lean` is touched;
 `blueprint/verify.sh` + `blueprint/lint.sh` (vocabulary gate bans "stratum"/"strata") when `.tex`
 is touched. **When `notes/scripts/` is touched**, the gate is figure invariance, **triggered by
-what the commit modifies**: if `git diff --name-only -- '*.py' '*.m2'` shows **no tracked driver
-modified** (a pure addition, or prose only), that check *is* the discharge and goes in the commit
-message; if a driver **is** modified, the full baseline / re-run / byte-identical obligation
-stands for it and its import closure. Both halves, plus the invocations exceeding a 600 s
-foreground budget (`flanks.py --limit`, `lambda.py --adv`, and `outerline.py --pool`/`--shapes`
-which do not fit *together*), are in `notes/scripts/README.md` *Hard rule — figures do not move*,
-with the primitive index, layering map, invocation table and conventions; a **symbolic** dispatch
-adds `notes/scripts/m2/README.md`.
+what the commit modifies**: `git diff --name-only -- '*.py' '*.m2'` empty ⇒ that check *is* the
+discharge and goes in the commit message; a driver modified ⇒ the full baseline / re-run /
+byte-identical obligation for it and its import closure. Canonical home, with the invocations
+exceeding a 600 s foreground budget and the mandatory conventions: `notes/scripts/README.md`
+*Hard rule — figures do not move*; a **symbolic** dispatch adds `notes/scripts/m2/README.md`.
 
 ## Adjacent directions (orientation only, not this phase)
 
@@ -369,70 +314,23 @@ Reverse-chronological, one line per landing; full derivations live in git,
 `notes/Phase39-design.md`, and (for the (K) arc) the workbook section named in each entry, which
 is the canonical home a successor reads.
 
-- **The 2026-08-06 three-way kernel-(K) fan-out — three landings, one line each; the named
-  workbook section is the canonical home and none is restated here.** *C* (`closure.py`, ℚ(i),
-  **§(K-clos)**): §(K-σ)'s **field question SETTLED** — the polarity generalizes, transport
-  landed, `ℝ` the **narrowest** choice — and the σ-fixed **grid recipe REFUTED** class-wide by
-  `C11`. *A* (`annih.py`, **§(K-ann)**): the arc's first **RECIPE** — `λ` is a self-stress of the
-  contracted `H/P`, one Klein pairing at a named far move, `E(H/P)` a Tay **circuit** at `k = 4`,
-  one 4-point bracket on 89 % of triples; residual **(ANH-R1)** = relocation #4. *B*
-  (`outerline.py`, **§(K-out)**): (OUT)'s hypothesis **MEASURED**, headline the **negative
-  (OC-3)** — the bad locus is nonempty on *every* class shape's chart, so **no counting argument
-  can ever deliver it**; availability only pointwise (356/357, 270/270, two disjoint pinned
-  pools) with an (OUT)-silent *nondegenerate* constructed point; **(OC-7) a HARNESS DEFECT**
-  (≈ 9 % of habitat frames forced `λᵢ = 0`, uncaught by the documented guard, *Harness debt* 4).
-  **No gap-map status moves; class uniformity untouched by all three.** *Coordinator capture,
-  same day:* the **harness re-baselining round OPENED** (user-adjudicated; scope in
-  `notes/scripts/README.md` *Harness debt*), dispatch-log rows + **F13**/**F14**, and
-  `Pencil-strategy.md` §2.3's **convergence note** — A's and B's residuals are both
-  *pencil-rigidity of a contraction of `H`*, so §2.3's wall is structural, not route-specific.
+- **The harness re-baselining round — all four debt items CLEARED, round CLOSED** (2026-08-06,
+  five commits: `d5ae55aa` decompose, `c980118a` S1, `1fd1b1e4` S2, `50e1f28c` S3, S4 this one).
+  Canonical home — cost ledger, the two prohibitions **lifted**, the three positive rules, the
+  per-slice addenda: `notes/scripts/README.md` *Harness debt* → **CLOSED** + *The build plan*;
+  **not restated here**. Trigger: dispatch-log **F13**. 260 invocations, 21 figures moved, each
+  repointed in the commit that moved it; F13's rates-exposed / identities-conservative triage
+  held **exactly**. Two moves are mathematics: **(AC-9)** (§(K-clos)), **(OC-9)** (§(K-out)).
+  **No gap-map row moved.**
 
-- **Harness re-baselining round, slice S3 LANDED — the last debt item CLEARED, and a reported
-  contradiction becomes a confirmation** (2026-08-06; canonical home `notes/scripts/README.md`
-  *The build plan* → *S3 addendum*, not restated here). Gate 21/21 `rc=0`, **20 byte-identical,
-  1 moved** — the predicted `outer.py --geom`, repointed in §(K-Λ) *Step 3*/*Step 3a* here.
-  `lambda.omega_curves` codes the widened **(Λ0f′)** `Π± = p⁺₂p⁺₃·g₁₃g₁₄g₂₄ ≠ 0`, so at the
-  constructed `g₁₄ = 0` point it *predicts* the `3 → 2` drop instead of raising: the harness's own
-  criterion now confirms (Λ0f′)'s Gram half at four class habitats, where only the un-guarded
-  `outer.raw_spans` did. `lambda`, outside S2's closure, was re-baselined first — **6/6
-  byte-identical**, which also confirms S2 stayed inside the closure it declared.
-
-- **Harness re-baselining round, slice S2 LANDED — the guard is ADOPTED, and two new facts fell
-  out of adopting it** (2026-08-06; canonical home `notes/scripts/README.md` *The build plan* →
-  *S2 addendum*, and the owning workbook sections, not restated here). Gate: 41/41 `rc=0`, 21
-  byte-identical, 20 moved, every move repointed in the same commit. Harness-debt item **4
-  CLEARED**; the "no rate from a `place_pencil_general` battery" prohibition becomes the positive
-  rule *a rate is quotable exactly when the acceptance gate is `repin.star_generic`*. **(AC-9)**
-  (§(K-clos)): every σ-fixed body of degree `≥ 3` carries a coincident hinge line — **proven** by
-  pigeonhole against *Step Z3*'s two-ruling-lines cap, measured 0/64; it qualifies (AC-3) without
-  weakening it. **(OC-9)** (§(K-out)): the guard rejects 58/357 and **strictly contains** the
-  two-end diagnostic's 39, refuting the plan's expected equality in the safe direction. Also: the
-  guard belongs at the acceptance site, **not** inside `nondeg_conjuncts` (which mirrors the Lean
-  predicate); the σ pool re-pins 63 → 47 with every `n/n` check surviving; and three figures
-  *improved to their bound* because the contaminated draws were exactly the ones that missed it.
-
-- **Harness re-baselining round, slice S1 LANDED** (2026-08-06; canonical home
-  `notes/scripts/README.md` *Harness debt* → *The build plan* + its *S1 addendum*, not restated
-  here). `meet_line` signals instead of raising, the three caller-side catches retire,
-  `star_span_ranks` moves to `repin` (re-exported), and the coincident-hinge guard
-  `repin.star_generic` is **defined with an adversarial test** (`repin.py --hinge`) but **not
-  adopted**. Gate: 96/96 `rc=0`, 95 byte-identical, **0 figures moved**. The finding: making
-  `meet_line` signal would have turned a **loud** failure into a **silent wrong answer** at
-  **six** unguarded direct callers — one of which (`lambda.py:1110`) looked guarded because of a
-  neighbouring `rank(...) == 2` assert that passes **vacuously** at a zero direction, the same
-  failure mode as F13 itself.
-
-- **Harness re-baselining round DECOMPOSED into four slices** (2026-08-06, docs only; canonical
-  home `notes/scripts/README.md` *Harness debt* → *The build plan*, not restated here). Scope (1)
-  settled as **add the coincident-hinge guard**, not repoint `place_pencil_general`'s sampler —
-  decisive reason: a sampler that never *draws* a bad point never *rejects* one, so the repoint
-  cannot discharge a requirement stated as "rejected, not measured" with an adversarial witness;
-  and it is import-blocked short of `exactcore` (`repin` imports `widened`), which would move
-  every `w4/` figure and destroy F13's rates-vs-identities triage. §4 convention 5 **prices** the
-  repoint, does not veto it. Three stale counts corrected against the source: `star_span_ranks`
-  has **six** consumers (not four — `closure`, `outerline` were missing, and the count is rule 2's
-  trigger); `meet_line` has **seven** importers, `widened` the one that matters; the README's
-  `sigma --hunt` catch claim is **correct** and the three catch sites are exhaustive.
+- **The 2026-08-06 three-way kernel-(K) fan-out — three landings; each one's canonical home is
+  its named workbook section, none restated here.** *C* (`closure.py`, **§(K-clos)**): §(K-σ)'s
+  **field question SETTLED** (`ℝ` the **narrowest** choice), the σ-fixed **grid recipe REFUTED**
+  class-wide. *A* (`annih.py`, **§(K-ann)**): the arc's first **RECIPE** (`λ` a self-stress of
+  `H/P`); residual **(ANH-R1)**, relocation #4. *B* (`outerline.py`, **§(K-out)**): (OUT)
+  **MEASURED**, headline the **negative (OC-3)** — no counting argument can ever deliver it —
+  plus **(OC-7)**, the defect that opened the round above. **No status moves; uniformity
+  untouched.** Same day: §2.3's **convergence note** — A's and B's residuals are one shape.
 
 - **Notes reorganization: label registry opened; workbook and design doc INDEXED, not split or
   compressed** (2026-08-05, docs only). Canonical home **`notes/Pencil-labels.md`**. Two argued
@@ -474,17 +372,13 @@ is the canonical home a successor reads.
   the figure-invariance gate proportionate.
 
 - **The 2026-08-05 research day, sixth–ninth dispatches (one line each; the named workbook
-  section is the canonical home).** *A* (`flanks.py`, §(K-flank)): the conjecture **HOLDS at
-  every uncovered flank** — half 2 per shape by exact `∃`-witnesses (8 named + 843 stratum
-  shapes, 0 failures); `hK` needs **no re-pin**; a **∀-realization** escape form REFUTED at
-  `P21`. *C* (`pure.py`, §(K-pure)): the pure condition is the **WRONG INVARIANT**;
-  **(K-slide-cl) REFUTED as stated**; **(PC-Z)** the exact reformulation; **(K-chord)** the
-  successor. *B* (`lambda.py`, §(K-Λ)): **(K-Λ) REFUTED as an independent gap** — at `ℓ = 4`
-  *equivalent* to **(K-wit)** (Witt); `Φ_loc` always rank 2 ((Λ1)); `ℓ = 5,6` refuted *through
-  the (T5) frame*; (Λ0d)/(Λ0f) named. *C1* (`dominance.py`, §(K-dom)): **dominance HOLDS at every
-  class habitat probed (rank 9) but is not a route to uniformity**; the **companion length** `k`
-  governs — **(D1)** `rank dV ≤ min(9, 6k−14)`, **(D2)** far block `≤ 3(k−3)` attained, **(D3)**
-  `hnoRigid ⟹ k ≥ 4`. **Class uniformity untouched by all four.**
+  section is the canonical home).** *A* (`flanks.py`, §(K-flank)): the conjecture **HOLDS at every
+  uncovered flank** (exact `∃`-witnesses, 851 shapes, 0 failures); `hK` needs **no re-pin**. *C*
+  (`pure.py`, §(K-pure)): the pure condition is the **WRONG INVARIANT**; **(K-slide-cl) REFUTED as
+  stated**; **(PC-Z)** the reformulation, **(K-chord)** the successor. *B* (`lambda.py`, §(K-Λ)):
+  **(K-Λ) REFUTED as an independent gap** — at `ℓ = 4` *equivalent* to **(K-wit)** (Witt); (Λ1),
+  (Λ0d)/(Λ0f) named there. *C1* (`dominance.py`, §(K-dom)): **dominance HOLDS (rank 9), not a
+  route** — **(D1)**–**(D3)** grade it by `k`. **Uniformity untouched by all four.**
 
 - **Harness + workbook prep** (2026-08-05, two commits; no mathematics, no verdict changes; 67/67
   drivers re-run, 0 changed figures) — `notes/scripts/README.md`;

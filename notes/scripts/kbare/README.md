@@ -16,6 +16,18 @@ carriers' samplers and rigidity-matrix builders genuinely differ — see
 layering map, invocation table, and conventions. This file is the per-driver
 description list for this directory.
 
+**The 2026-08-06 re-baselining round did not reach this directory, and that is
+a fact about the closures, not an oversight.** All four harness-debt items were
+cleared by slices S1–S3 (`../README.md` *Harness debt* → the **CLOSED** block);
+`kbare/` sits outside every one of their import closures, so no driver here was
+edited and no figure here moved. The round's standing rules still apply to
+**new** work: a new sampler or battery asserts the composite genericity guard
+`repin.star_generic` rather than a star-rank test alone, and a new guard owes
+an adversarial witness it must reject (§4 conventions 1 and 6). Note this
+directory's own `kbare_common.plane_basis` is the third member of the
+degenerate `plane_basis` family (*Divergences*) — untouched by the round, and
+new work uses `repin.robust_plane_basis`.
+
 Every script is stdlib-only Python (no third-party dependencies). Run from the
 **repo root** as `python3 notes/scripts/kbare/<script>.py`; the canonical
 `scriptpath` bootstrap (2026-08-05) makes the working directory irrelevant, so

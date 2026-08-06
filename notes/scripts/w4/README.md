@@ -26,6 +26,18 @@ because measuring it is their subject: `outerline --pool` and
 commit; each is repointed in its owning workbook section, and the two new
 measured facts are **(AC-9)** (§(K-clos)) and **(OC-9)** (§(K-out)).
 
+**The round CLOSED 2026-08-06 with all four debt items cleared** (S1–S4;
+`notes/scripts/README.md` *Harness debt* → the **CLOSED** block is the canonical
+home and carries the cost-vs-prediction ledger). Three consequences bind new
+work in this directory. **(1)** A new sampler or battery here tests
+`repin.star_generic`, never `star_span_ranks` alone. **(2)** The old
+prohibition *"no `place_pencil_general`-sampled battery may be quoted as a
+rate"* is **replaced** by a positive rule: a battery is quotable as a rate
+exactly when its acceptance gate **is** `repin.star_generic` — so every battery
+here except `outerline --pool` / `--build`, which report the coincidence
+instead. **(3)** A guard added here owes an **adversarial witness it must
+reject** (§4 convention 6); `repin.py --hinge` is the worked example.
+
 Exact-ℚ numerics for the W4 decomposition recon (2026-07-30); results and
 the decomposition they feed are in `notes/Phase39-design.md`
 §"W4 decomposition recon". The drivers here form a chain (each builds on the
@@ -504,7 +516,11 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
     since **re-baselining slice S3, 2026-08-06** it codes (Λ0f′) and
     **accepts** the point, reporting `(span ω⁺, span ω⁻) = (2, 2)` with
     `g₁₄` the single vanishing Gram factor. That printed line is the round's
-    one moved figure.
+    one moved figure. *(Recorded, not fixed: that print reads `sp['gram']`,
+    a key of `omega_curves`' **off-pattern** dict only. Unreachable as the code
+    stands and a loud `KeyError` at worst — `notes/scripts/README.md`
+    *Recorded observations* 2; the next commit touching `outer.py` should add
+    `gram` to the full return dict.)*
   - `--habitat` (~45 s): the named inventory (`lambda`, `dominance`, `flanks`)
     — 7 shapes carry a length-4 companion; 48 (split, seed, companion) triples
     at hard-stratum target-rank seeds, `g₁₄ ≠ 0` at every one.
@@ -527,7 +543,7 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
     two modes run over different denominators (7002 vs 4280 pairs), so
     `--patterns`' 1006 `(0,1,0)` companions and `--sweep`'s 652 uncovered pairs
     are not comparable — expected, but **unreconciled**
-    (`notes/scripts/README.md` *Harness debt*).
+    (`notes/scripts/README.md` *Recorded observations* 1).
 
   Argument state and per-mode assertion list: `notes/Pencil-informal.md`
   §(K-Λ) *Step 3a*.
@@ -598,9 +614,12 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
     `ac`), while forcing **both** halves leaves the split's middle body with no
     panel at all (39/39), which is the witness for **(σ7)**: primal conjunct 4
     forbids the two-sided failure, so *Step σ3*'s side condition is free.
-    Uses `localtest.meet_line` behind the sanctioned **caller-side** guard
-    (*Harness debt* 1), and re-imposes the sampler's own legality + star-rank
-    guards on every hand-degenerated placement.
+    Uses `localtest.meet_line` and **tests its returned direction** — since
+    slice S1 (2026-08-06) `meet_line` signals a parallel-normal pair with a zero
+    direction instead of raising, so this mode's two `UnboundLocalError` catches
+    are **retired** and the `d`-test is the whole guard (*Harness debt* item 1,
+    CLEARED). It re-imposes the sampler's own legality + composite-guard checks
+    on every hand-degenerated placement.
 
   Argument state, the four obligations and the per-mode assertion list:
   `notes/Pencil-informal.md` §(K-σ). **Route σ is a CANDIDATE offered for

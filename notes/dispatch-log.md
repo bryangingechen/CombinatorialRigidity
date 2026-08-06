@@ -94,6 +94,9 @@ keeps only what git cannot show.
 | 2026-08-05 | Phase39 verdict-landing commit (`c09b32bf` → amended `3df70929`) | opus (builder) | wrong trailer from a stale in-definition example — RECURRENCE | Both opus agent definitions illustrated the trailer with `e.g. Claude Opus 4.8` while the dispatched model was Opus 5; the builder wrote the stale name, caught it itself, and amended. Same failure mode CLAUDE.md already records from 2026-07-02 (a stale `Sonnet 4.6` example propagating into a landed trailer) — the instruction was correct ("read your environment block"), the *example* was the hazard. Coordinator fix: both opus variants now carry no version example and an explicit do-not-copy warning naming both incidents. |
 | 2026-08-06 | Phase39 fan-out direction B (`d2805253`) | opus (recon) | latent harness defect found BY a dispatch — the documented guard does not guard | `place_pencil_general`'s single-hub-interior sampler degenerates via `localtest.plane_basis` at 32/357 POOL-G frames (~9%), and the degeneracy *implies* the measured quantity (`λᵢ = 0`, 15/15 b-side + 18/18 c-side). `star_span_ranks` — whose own docstring (`flanks.py:201`) calls it the genericity guard against exactly this artifact — does not catch it, and no `IsNondegPencilRealization` conjunct excludes it. Second `plane_basis` contamination (cf. 2026-08-02) and the first where the mitigation failed. Caught only because B happened to measure a quantity the degeneracy forces. Landed as harness-debt item 4; coordinator opened the re-baselining round. See F13. |
 | 2026-08-06 | Phase39 fan-out direction A landing (`c9cf5792`) | opus (builder) | mitigation VALIDATED — registry caught a three-way label collision at landing | A's draft minted bare `(R1)`/`(R2)`, which would have collided three ways (Shared dictionary / opening recon / `Pencil-strategy.md` §4.6's six refutations); landed as `(ANH-R1)`/`(ANH-R2)`, and the promoted branch-length result as `(SD-6)` not `(R6)`. `notes/Pencil-labels.md` was created the same day, hours earlier, for precisely this failure mode. Logged as a positive control: the registry is load-bearing, not decorative, and the minting rule fired at the right moment (draft→landing) rather than after the fact. |
+| 2026-08-06 | Phase39 harness round S1, first attempt (re-run; landed `c980118a`) | opus (builder) | over-ceiling invocation lost to a turn-end background kill; coordinator re-ran | The slice backgrounded `flanks.py --limit` (762 s, past the harness's 600 s foreground ceiling) and returned to park; a subagent's background job is killed when its turn ends, so it never wrote its `.rc` and left a 0-byte output. Coordinator re-ran it. The rule, validated by the retry and again by S2: **background the over-ceiling invocation FIRST and run the foreground work alongside it**, so the turn never ends while it is in flight. Gap exposed: F6's all-gates-foreground mandate has no carve-out for invocations past the ceiling, and both agent cores are silent on it. See F15. |
+| 2026-08-06 | Phase39 harness round S1 dispatch scope-pin (`c980118a`) | opus (builder) | coordinator premise labelled VERIFIED was wrong — truncated grep (F14-class) | The prompt's `scope-pin` block told the builder the only caller-side `UnboundLocalError` catch was `outer.py:239` and that the README's three-site claim was an overcount to correct. There are three (`outer.py:239`, `sigma.py:742`, `sigma.py:841`); the README was right all along. Cause: a `grep ... \| head -20` whose output the coordinator read as exhaustive, then passed in the VERIFIED register. The builder re-derived from source. Lesson: a truncated search is not a verified enumeration -- drop the pipe, or say "at least". See F14. |
+| 2026-08-06 | Phase39 harness round S1 addendum, the sixth site (`c980118a`) | opus (builder) | coordinator site list undercounted; build agent caught it — a second instance of F13's own pattern | The coordinator-opened S1 addendum named five unguarded `meet_line` callers; there are six. The missed one, `lambda.py:1110`, was classified already-guarded because a neighbouring `rank([hat(M0), hat(M0+Md), hat(pt b)]) == 2` assert reads like a guard -- at `Md = 0` it compares a row with itself and passes vacuously. A check that cannot fire, mistaken for a guard, inside the commit repairing that very defect class. The builder caught it and folded `lambda.py` into S1's edit list (already inside the closure, so no extra re-baseline). See F16. |
 
 ## Findings
 
@@ -357,3 +360,42 @@ At phase close, promote stable entries into the coordinator command's
   successful outcome, and every refutation came back explicitly. **Mark
   coordinator hypotheses as hypotheses in the shaping block**; reserve
   the verified register for things actually opened in source or re-run.
+  *Fifth instance, 2026-08-06 (harness round S1), with a mechanical cause
+  worth naming on its own:* a `scope-pin` block "corrected" the harness
+  README's three-catch-site claim down to one, from a `grep … | head -20`
+  read as exhaustive. The README had been right. **A truncated search is not
+  a verified enumeration** — when a count is going into the verified
+  register, drop the pipe (or the `-m`/`head` cap) and count the full
+  output; if you keep the cap, write "at least N", which is what the search
+  actually established.
+- **F15 — the 600 s foreground ceiling has no carve-out in the
+  foreground-gates mandate, and a subagent's background job dies with its
+  turn (Phase 39, 2026-08-06).** F6 mandates foreground gates with an
+  explicit `timeout` and both cores forbid `run_in_background`/Monitor on
+  them. Neither says what to do with an invocation that *cannot* finish
+  inside the harness's 600 s ceiling — the numerics harness has four
+  (`flanks.py --limit` at 762 s is the worst). S1's first attempt did the
+  natural thing: backgrounded it, then ended its turn to park. The job died
+  with the turn, never wrote its `.rc`, and left a 0-byte output; the
+  coordinator re-ran it. **The shape that works, validated twice (S1's retry
+  and S2): start the over-ceiling invocation backgrounded FIRST, run the
+  foreground work alongside it, and collect it before the turn ends — never
+  background it with nothing left to do.** That is not in tension with F6,
+  whose failure mode is *ending a turn while waiting*; this shape never
+  waits. Recorded where a numerics dispatch plans its run
+  (`notes/scripts/README.md` *Hard rule — figures do not move*); the agent
+  cores still say nothing, so a dispatch prompt naming an over-ceiling
+  invocation should carry the line.
+- **F16 — a present check is not a guard: test whether it CAN fire (Phase
+  39, 2026-08-06).** Auditing the `meet_line` call sites, a neighbouring
+  `rank([hat(M0), hat(M0+Md), hat(pt b)]) == 2` assert was read as the guard
+  covering an unguarded call — but at `Md = 0`, precisely the input in
+  question, its second entry equals its first, so it passes **vacuously** and
+  can never fire there. This is F13 one level down: F13 is a guard that fires
+  on the wrong condition; this is a check that cannot fire at all on the
+  input it appears to cover, and it was mistaken for a guard **inside the
+  commit repairing the first instance**. The mechanical version of the check:
+  substitute the degenerate value into the assert by hand and ask whether
+  anything is still constrained. Corollary, and the reason this one was
+  caught: a coordinator's site list is a starting point the builder
+  re-derives, not a checklist it executes.
