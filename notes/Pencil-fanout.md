@@ -1,6 +1,7 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: BOTH fan-outs COMPLETE.** The first (A/B/C below, prepared
+**Status: first and second fan-outs COMPLETE; the THIRD (G/Q/O, §"Third
+fan-out") is DISPATCHED 2026-08-06.** The first (A/B/C below, prepared
 2026-08-05) landed 2026-08-05/06; the second (T/R/M, §"Second fan-out") landed
 2026-08-06 — T `fb84ab88` (§(K-grid)), M `72f05634` (§(K-mech)), R (the
 §(K-ann) Steps A10–A13 continuation). This file remains the dispatch-scoping
@@ -397,3 +398,174 @@ The first fan-out's landing checklist (above) applies verbatim, plus: move
 the direction's reservation row into the registry in the landing commit;
 direction M's landing adds a *State of (K)* row (or extends (K-chord)'s);
 re-check session budget before dispatching nothing further / the next round.
+
+---
+
+## Third fan-out — prepared 2026-08-06 (directions G / Q / O); dispatched SERIALLY, O → Q → G
+
+**User-adjudicated 2026-08-06**, this session, immediately after the second
+fan-out landed: presented with the *Hand-off* blockquote's five live leads
+(no pre-selection), the user selected **all four research leads** — (1) the
+T/R convergence target, (2) the per-shape M2 identity, (3) (K-wit) via
+(OC-8), (4) widening `outerline.py --comb` — and did **not** select (5), the
+parked Lean half of route σ. The 2026-08-05 Lean-hold adjudication therefore
+stands untouched; W4 stays parked; `hK`/`hbareSplit` stay carried as pinned;
+option B in both kernel cases stays un-commissioned. A follow-up adjudication
+the same session: **dispatch serially, not in parallel** (token budget), with
+the rung mixed per direction — O and Q at **opus** (tightly pinned,
+decisive-by-construction experiments; coordinator re-runs every driver at
+landing), G at the **top rung** (the crux proof attempt, the one direction
+where "settles new mirror math" fires).
+
+**Dispatch shape (coordinator).** Leads (3) and (4) are one section's
+continuations — the widening is §(K-out) *What would change this* items 1–2
+and the (OC-8) attack is its item 6, and the widening's outcome can reframe
+the attack (a `dim R ≤ 4` hit closes (OUT) unconditionally where it lands) —
+so they run as ONE direction (**O**), widening first. Three directions,
+letters **G / Q / O** (dated; A/B/C and T/R/M are taken by the earlier
+fan-outs). Serial order **O → Q → G**: the two cheap decisive experiments
+land and inform before the expensive deep attempt.
+
+**Shared mechanics: identical to the second fan-out's** (§"Second fan-out",
+including its three deltas — the reserved-namespace table is now the
+2026-08-06 **G/Q/O** table in `notes/Pencil-labels.md`; any battery quoted as
+a *rate* or as generic-chart-point evidence gates on `repin.star_generic`;
+the coordinator lands each return before dispatching the next, with a budget
+check between). Serial dispatch does not relax the mechanics: each dispatch
+is **read-only w.r.t. every shared file**, **commits NOTHING**, creates only
+its own pinned new driver(s) (untracked, for the coordinator to gate and
+commit), writes its full mathematics as a draft workbook section
+(`fanout-<G|Q|O>.md`, session scratchpad) in the workbook's register with an
+explicit confidence verdict and a "what would change this" line, and keeps
+the return message to a tight verdict. The F11 requirement binds ("forced" /
+"exhaustive" / "the only" are their own claim class needing their own
+driver), as do `notes/scripts/README.md`'s conventions (exact ℚ, seeded
+randomness, degeneracy guards + rank/dimension asserts, import from the
+canonical layer — check the *Divergences* table). A direction that opens
+Macaulay2 work reads `notes/scripts/m2/README.md` first and budgets per
+`Pencil-strategy.md` §5.3: gauge slice mandatory, local/contracted objects
+only — the ungauged whole-frame expansion is a measured 600 s kill.
+
+### Direction O — §(K-out) continuation: widen the combinatorial sweep, then attack (OC-8)
+
+**Part 1 — the widening (run FIRST; cheap, decisive either way).** Extend the
+(OC-2)-style combinatorial sweep past the `|V°| ≤ 5` cap and the `lmax`
+bounds of `outer.sweep_shapes()` (the present scope ran 14 s), hunting the
+two hits §(K-out) *What would change this* items 1–2 name: **`dim R = 6`**
+(kills (OUT) at that shape; *Step O2*'s arithmetic says it needs `H/X`
+non-rigid, hence a chord `χ ≥ 1` or a count violation — report the mechanism)
+or **`dim R ≤ 4` / `μ ≥ 2`** (closes (OUT) *unconditionally* there — a
+genuine partial closure; needs a chorded companion). Either hit is
+standalone-significant; a no-hit widens (OC-2)'s measured base and is
+reported as a rate over the widened pool.
+
+**Part 2 — the (OC-8) attack.** (OC-8): at every class shape, a hard-stratum
+target-rank point of the **whole-graph** chart with `L_b ⊄ R₁` or
+`L_c ⊄ R₄`. §(K-out) (OC-3) proves no counting / matroid / placement-blind
+route exists, so any discharge is a **genericity argument on the whole-graph
+chart** — which the arc has never established, because `λ` is a far datum.
+The one symbolically tractable piece is `L_b ⊄ R₁` as a polynomial
+non-vanishing (*What would change this* item 6; `Pencil-strategy.md` §5.3) —
+but `R₁` is a **far** object and `m2/lambda0.m2`'s gauge slice does not reach
+it, so the first research content is **formulating the right variety**: a
+contracted / quotient object small enough for M2 per §5.3's boundary, on
+which `L_b ⊄ R₁` becomes a generic-point computation. *"No route, and here is
+the precise obstruction"* is a fine outcome.
+
+**Cautions.** Do **NOT** attempt *What would change this* item 4 (pushing the
+constructed point to the bad point `p⁺` — deliberately not attempted,
+recorded); item 5 is **spent** (the re-baselining round is CLOSED); do not
+re-derive (OC-1)–(OC-7); POOL-G rates quote over the **318 coincidence-free**
+frames, never the raw 357; claims touching **(K-wit)** are cited in the
+qualified form and any new label is minted `OC-`, never in §(K-Λ)'s
+namespace.
+
+**Driver** `notes/scripts/w4/outerwide.py` (imports `outerline.py`
+read-only); optional M2 leaf `notes/scripts/m2/outerwide.m2`. **Labels**
+(OC-10)+, Steps O9+ (reservation table in `notes/Pencil-labels.md`).
+
+### Direction Q — §(K-ann): the per-shape M2 identity `C(H/P − β) ≢ 0`
+
+**The question.** Per shape: is `C(H/P − β) ≢ 0` as an identity over the
+function field of the pencil chart (§(K-ann) *Step A13* item 4; *What would
+change this (Steps A10–A13)* item (iii))? A positive at a shape upgrades that
+shape's (ANH-10) census row from witness to **proof** of (ANH-R1) at the
+generic point; a failure **refutes (ANH-R1) there**. Decisive both ways —
+the cheapest decisive per-shape experiment left.
+
+**Grounding (canonical §(K-ann); do not re-derive).** (ANH-1): `λ` is the
+self-stress of the contracted framework `H/P`, dimension `k − 3`; (ANH-4):
+`E(H/P)` is a Tay circuit at `k = 4` **only**; (ANH-9): the weak-map
+formulation — one exact rank computation at one rational point decides
+(ANH-R1) per triple; (ANH-11)/(ANH-12): the bad locus is **inhabited** by
+exact rational guard-accepted points, so the pointwise statement is refuted
+and the identity is exactly the *generic* statement, no more. Consistency
+check, not a target: the identity's zero locus must contain the nine
+(ANH-12) witnesses.
+
+**Scope.** Start at the census's probed triples (the (ANH-10) pool); sweep as
+many shapes as the M2 budget allows and report **per shape**. Method per
+`m2/README.md` + `Pencil-strategy.md` §5.3/§5.4: gauge slice mandatory, the
+contracted object only, respect the measured 600 s boundary. State explicitly
+whether each proof step is per-shape or uniform — class uniformity moves
+**only** if the identity's *proof* is uniform, and the draft must say which
+it delivered.
+
+**Cautions.** `supp(τ)` is a **circuit** and `supp(λ)` a **cocircuit** — do
+not conflate; no counting / matroid route to (ANH-R1) exists ((ANH-11)/
+(ANH-12), the τ-side analogue of §(K-out) (OC-3)) — the identity is a
+per-shape genericity statement, not a class route; any battery quoted as a
+rate gates on `repin.star_generic`.
+
+**Driver** `notes/scripts/m2/anhr1.m2` (+ optional Python wrapper
+`notes/scripts/w4/anhr1.py`, importing `shrink.py`/`annih.py` read-only).
+**Labels** (ANH-13)+, Steps A14+.
+
+### Direction G — §(K-grid)'s (GR-4) + (GR-6): the tight-stratum discharge
+
+**The question.** Prove either or both of the two geometry-free residuals of
+§(K-grid): **(GR-4)** — the counting criterion's missing `≤` direction at
+conic labels, most plausibly the matroid-union tensor realization pushed
+through the moment-curve confinement by a **valuation / degeneration**
+refinement of the classical specialization argument (*What would change
+this* item (iii)) — and **(GR-6)** — an admissible colouring satisfying
+(GR-3)(a)/(b)/(c) in both blocks exists at every tight class shape:
+Nash-Williams/Edmonds-shaped (cf. §(K-slide-comb) (C6)), 907/907 evidence,
+**no min-max yet** (item (iv); until one exists `Pencil-strategy.md` §2.3's
+base-rate warning applies). Either alone is standalone-significant; both
+together discharge `hK` **on the tight stratum directly**, then over every
+infinite characteristic-0 field by §(K-clos) (AC-7). This is the direction
+both T and R converge on — the missing technology is uniform constructed
+chart witnesses.
+
+**Cheap kills first** (the section's own items (i)–(ii)): a tight class
+shape where the census's early-exit + random-parameter retry finds **no**
+target colouring (refutes (GR-6)); a colouring-block anywhere with generic
+`dim Z` strictly **above** the (GR-3) max (a third obstruction family,
+refuting (GR-4) as stated). The census stands at 907/907 — widening it is
+evidence, not proof; the deliverable is the **argument**.
+
+**Convergence rider (a note in the draft, not a second deliverable).** State
+any recipe / min-max in a form whose evaluability on §(K-ann)'s **mixed
+contracted object** can be assessed later ((ANH-9)(iii); §(K-ann) *What
+would change this* item (ii)). Do not chase (ANH-R1) itself.
+
+**Cautions.** Nothing here re-opens the habitat-level (AC-6) refutation
+(`C11` is permanent); (GR-2)'s mono-hub-bond mechanism is settled — do not
+re-derive it; §(K-clos) (AC-9) forbids reading any σ-fixed witness as
+*generic*. *"No route, and here is the precise obstruction"* is a fine
+outcome for either residual.
+
+**Driver** `notes/scripts/w4/gridwit.py` (imports `grid.py` read-only);
+optional M2 leaf `notes/scripts/m2/gridwit.m2`. **Labels** (GR-7)+, Steps
+G8+; if a min-max development needs its own section, the reserved name is
+**§(K-pack)**, tag `PK-`.
+
+### Landing (coordinator, per returned direction)
+
+The first fan-out's landing checklist applies verbatim, plus: move the
+direction's reservation row into the registry in the landing commit; land
+each return and re-check session budget **before dispatching the next
+direction** (serial order O → Q → G); direction O's landing may move the
+(OUT)-related cells of the (K-wit)/(K-out) rows, which the coordinator
+folds into direction Q/G's prompts only if a hit actually landed.

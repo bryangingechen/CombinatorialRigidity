@@ -12,8 +12,8 @@ W4-residual arc is `notes/Pencil-W4-informal.md`). **BOTH 2026-08-06 fan-outs ar
 user-adjudicated — landed: **§(K-grid)** (T — the tight stratum reduced to (GR-4) + (GR-6)),
 **§(K-mech)** (M — both *P8* anomalies mechanised, 6v11e rescued), and the §(K-ann)
 continuation Steps A10–A13 (R — (ANH-R1) one-point-decidable, pointwise refuted). **The
-adjudicated ordering is exhausted; the next direction awaits user adjudication** (see
-*Hand-off*).
+THIRD fan-out — G / Q / O, user-adjudicated 2026-08-06, dispatched SERIALLY O → Q → G — is
+IN FLIGHT** (specs `notes/Pencil-fanout.md` §"Third fan-out"; see *Hand-off*).
 Fan-out direction letters are re-used across dates — **always date them**.
 
 ## Current state
@@ -40,6 +40,12 @@ constraints; the dated dispatch narrative is in *Decisions made* and git):
   open tail (does route σ or §4.6's shortlist preempt the mechanisms pass?) was resolved by the
   **2026-08-06 second fan-out adjudication**: the mechanisms pass runs as direction **M**, in
   parallel with **T** ((AC-6) tight stratum) and **R** ((ANH-R1)); route σ not selected.
+- **2026-08-06, third fan-out:** of the post-second-fan-out hand-off's five live leads the user
+  selected **all four research leads** (T/R convergence target; per-shape M2 identity; (K-wit)
+  via (OC-8); widen `outerline.py --comb`) and NOT route σ's parked Lean half; a same-session
+  follow-up: **dispatch serially, not in parallel** (token budget), O and Q at opus, G at the
+  top rung. Coordinator merged leads 3+4 into direction **O** (one section's continuations).
+  Specs + rationale: `notes/Pencil-fanout.md` §"Third fan-out".
 
 **Kernel-(K) research arc — twenty-three docs+scripts-only dispatches, plus one strategy-only
 pass** (2026-08-02 → 08-06).
@@ -210,33 +216,28 @@ discharge (residue (iv)) is CLOSED too**. The landed successor
 > **BLOCKED by the standing 2026-08-05 Lean-hold adjudication (general, not W4-scoped)**; does
 > not open without a fresh user adjudication.
 >
-> **The FIRST 2026-08-06 fan-out is COMPLETE** (C `890ec4a6`, A `c9cf5792`, B `d2805253`;
-> one-lined in *Decisions made*). (OUT)'s cheapest continuation: widen `outerline.py --comb`
-> past the `|V°| ≤ 5` cap to hunt `dim R = 6` (kills (OUT) there) or `dim R ≤ 4` / `μ ≥ 2`
-> (closes it there) — §(K-out) *What would change this*.
->
-> **THE HARNESS RE-BASELINING ROUND IS CLOSED** (user-adjudicated 2026-08-06; five commits
-> `d5ae55aa`/`c980118a`/`1fd1b1e4`/`50e1f28c`/S4). Canonical home for everything — per-item
-> status, cost ledger, the two prohibitions **lifted**, the three positive rules, the addenda:
-> `notes/scripts/README.md` *Harness debt* → the **CLOSED** block. **No gap-map row moved**;
-> two of the moves are mathematics ((AC-9), (OC-9) — see *Decisions made*).
+> **The FIRST 2026-08-06 fan-out is COMPLETE** (C `890ec4a6`, A `c9cf5792`, B `d2805253`) and
+> **the harness re-baselining round is CLOSED** (five commits; canonical home
+> `notes/scripts/README.md` *Harness debt* → the **CLOSED** block; no gap-map row moved) —
+> both one-lined in *Decisions made*. (OUT)'s cheapest continuation — the `--comb` widening —
+> is now part 1 of direction **O** below.
 >
 > **The SECOND three-way fan-out (T / R / M, user-adjudicated 2026-08-06: *"OK, let's go with
-> 1+2+3 in parallel"*; route σ NOT selected) is COMPLETE** — dispatch template
-> `notes/Pencil-fanout.md` §"Second fan-out".
-> **Landing status: ALL THREE LANDED** — T `fb84ab88` (**§(K-grid)**), M `72f05634`
-> (**§(K-mech)**), R this commit (§(K-ann) Steps A10–A13). Every landing's drivers were
-> coordinator-re-run; each is one-lined in *Decisions made*, its named workbook section the
-> canonical home. **The 2026-08-05 adjudicated ordering is exhausted** (`g₁₄` →
-> invariant-through-moves → σ-equivariance → mechanisms pass → Δ-matroid all done, T/R on top).
-> **Next direction = user adjudication.** The live leads, each with its canonical home: (1) the
-> **T/R convergence target** — a class-uniform constructed-witness recipe, i.e. §(K-grid)'s
-> (GR-4)+(GR-6) (which would discharge `hK` on the tight stratum and is the same technology
-> (ANH-R1) needs); (2) the **per-shape M2 identity** `C(H/P − β) ≢ 0` (§(K-ann) *What would
-> change this* (iii) — the cheapest decisive per-shape experiment left); (3) **(K-wit)** via
-> the (OC-8) residue (*Current state* (b)); (4) widening `outerline.py --comb` (the (OUT)
-> continuation above); (5) the **parked Lean half** of route σ / obligation 1 (needs a fresh
-> adjudication to open, like W4). No option is pre-selected.
+> 1+2+3 in parallel"*; route σ NOT selected) is COMPLETE** — T `fb84ab88` (**§(K-grid)**),
+> M `72f05634` (**§(K-mech)**), R `794b3603` (§(K-ann) Steps A10–A13); every landing's drivers
+> coordinator-re-run, each one-lined in *Decisions made*, its named workbook section the
+> canonical home. The 2026-08-05 adjudicated ordering is exhausted.
+>
+> **The THIRD fan-out (G / Q / O, user-adjudicated 2026-08-06 — all four research leads of the
+> post-second-fan-out hand-off; route σ's Lean half NOT selected) is IN FLIGHT, dispatched
+> SERIALLY O → Q → G** — specs, rungs and the leads-3+4 merge rationale:
+> `notes/Pencil-fanout.md` §"Third fan-out"; label reservations: `notes/Pencil-labels.md`.
+> **O** = §(K-out) continuation (widen the combinatorial sweep past `|V°| ≤ 5`, then the
+> (OC-8) attack via the symbolically tractable `L_b ⊄ R₁` non-vanishing); **Q** = §(K-ann)'s
+> per-shape M2 identity `C(H/P − β) ≢ 0` (decisive both ways for (ANH-R1) per shape);
+> **G** = §(K-grid)'s (GR-4)+(GR-6), the T/R convergence target — discharging both closes `hK`
+> on the tight stratum. The coordinator lands each return (fan-out landing checklist) before
+> dispatching the next.
 >
 > Deliberate non-goals: (Λ0), (Λ1), the `g₁₄` clause, §(K-ind), §(K-Δ), **§(K-clos)'s field
 > question**, **§(K-ann)'s settled batch** ((ANH-1)–(ANH-6), (SD-6)) and **§(K-out)'s settled

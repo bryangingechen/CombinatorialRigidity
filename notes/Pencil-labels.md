@@ -119,6 +119,22 @@ minted nothing in §(K-pure), as required), and (ANH-9)–(ANH-12)/Steps A10–A
 (R — landed as a §(K-ann) continuation; §(K-rig) was never opened and `RG-` was
 never minted, so both return to the pool).
 
+**Reserved 2026-08-06 for the THIRD fan-out — directions G / Q / O**
+(`notes/Pencil-fanout.md` §"Third fan-out"; letters dated — A/B/C and T/R/M
+are taken above; G/Q/O chosen off the collision table's bare-token rows).
+Each token verified **0-hit** across `*.md`, `*.tex`, `*.lean`, `*.py`,
+`*.m2` at reservation time (`outerwide.m2` replaced a first candidate whose
+token was a substring of existing prose). All three directions *extend* live
+sections, so the reservations are the unclaimed tails of the owning families
+— the owning section stays authoritative. Dispatch is **serial** (O → Q → G,
+a user adjudication), which does not relax the reservation discipline:
+
+| direction | extends | reserved labels | reserved driver path(s) | reserved section (only if needed) |
+|---|---|---|---|---|
+| **O** | §(K-out) | (OC-10)+, Steps O9+ | `notes/scripts/w4/outerwide.py`, `notes/scripts/m2/outerwide.m2` | — |
+| **Q** | §(K-ann) | (ANH-13)+, Steps A14+ | `notes/scripts/m2/anhr1.m2`, `notes/scripts/w4/anhr1.py` | — |
+| **G** | §(K-grid) | (GR-7)+, Steps G8+ | `notes/scripts/w4/gridwit.py`, `notes/scripts/m2/gridwit.m2` | **§(K-pack)**, tag `PK-` |
+
 **One naming hazard this fan-out created, recorded rather than renamed (L4).**
 The **direction letters A/B/C are re-used** between the 2026-08-05 fan-out
 (A = §(K-flank), B = §(K-Λ), C = §(K-pure)) and the 2026-08-06 one
