@@ -140,7 +140,7 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
   sampler every target-rank seed probed escapes — see `repin.py` below.
   `widened.py` is left unchanged as the record of what was measured.
 
-- `repin.py [--control | --theta | --witness | --stratum | --pointwise]` —
+- `repin.py [--control | --theta | --witness | --stratum | --pointwise | --hinge]` —
   the **carrier-aware KT pp. 684–691 boundary-load re-pin** (2026-08-02):
   validates the corrected escape criterion of `notes/Pencil-informal.md`
   §(K-tight) (attainment ⟺ two functionals independent on the obstruction
@@ -161,8 +161,23 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
     seeds 5000/5001 of one pair, both with `nrm[b][2] = 0`).
   - `--pointwise` (~8 min): the per-placement biconditional (attainment ⟺
     rank-2 of the `U`-functional matrix), 80/80 at the control and `W19`.
+  - `--hinge` (~1 s, added 2026-08-06): the **adversarial test for the
+    coincident-hinge guard**, which lives in this module along with
+    `star_span_ranks` (moved down from `flanks.py`). Constructs a must-REJECT
+    witness by sliding a single-hub interior of a hub onto the line through
+    the hub and another of its neighbours — legal, since both endpoints lie
+    in the hub's panel — and asserts three things: the new
+    `repin.star_generic` rejects it; the *documented* guard
+    `star_span_ranks` returns 3 at every vertex and all four
+    `IsNondegPencilRealization` conjuncts still hold on it (**the pinned
+    counter-fact** — this is what records why the old guard was
+    insufficient); and the un-slid sample passes (negative control). Its
+    subject, not its evidence, is the guard: F13's rule is that a guard
+    observed only passing is untested.
 
-  Argument state: `notes/Pencil-informal.md` §(K-tight).
+  Argument state: `notes/Pencil-informal.md` §(K-tight); for `--hinge`, the
+  guard's own record is `notes/scripts/README.md` *Harness debt* item 4 and
+  workbook §(K-out) **(OC-7)**.
 
 - `pitch.py [--control | --witness | --stratum | --sweep | --theta336]` —
   the **(K-pitch)** development (2026-08-04): the null-wrench test's

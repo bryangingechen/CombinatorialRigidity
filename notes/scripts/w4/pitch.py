@@ -195,6 +195,12 @@ def transfer_probe(edges, v, seed):
         out['pitch certifies'] = True
     if b in hubsG and b in nrm and c in hubsG and c in nrm:
         p0, d = meet_line(pt[b], nrm[b], pt[c], nrm[c])
+        # section 4 convention 1: since 2026-08-06 `meet_line` SIGNALS "no meet
+        # line" with a zero direction rather than raising, so `m0 == m1` and
+        # `C(M) = 0` would sail through the reciprocity asserts below.  The
+        # surrounding idiom here is assert, and no recorded run reaches it.
+        assert any(x != 0 for x in d), \
+            f"panels Pi({b}), Pi({c}) parallel: no meet line M"
         m0, m1 = p0, [p0[i] + d[i] for i in range(3)]
         CM = wedge2(hat(m0), hat(m1))
         # C(M) is auto-reciprocal to T (M passes through pt(a)):
@@ -611,6 +617,13 @@ def sweep_one(name, edges, v, seeds):
         if len(Vbc) != 3:
             continue
         p0, d = meet_line(pt[b], nrm[b], pt[c], nrm[c])
+        # section 4 convention 1: with the 2026-08-06 signalling `meet_line`, a
+        # zero `d` would freeze `pa` at the origin for every `t`, so `q(t)`
+        # would interpolate a CONSTANT and the quartic below would be
+        # meaningless rather than absent.  The seed filters above are the
+        # loop's `continue` idiom; this is a degeneracy, so it asserts.
+        assert any(x != 0 for x in d), \
+            f"seed {seed}: panels Pi({b}), Pi({c}) parallel: no a-line"
         bh, ch = hat(placed[b]), hat(placed[c])
 
         def z_at(pa4):

@@ -36,6 +36,15 @@ Drivers:
     python3 notes/scripts/w4/repin.py --theta     # theta(4,4,3), dim R_a = 2
     python3 notes/scripts/w4/repin.py --witness   # W19 / S29 residual splits
     python3 notes/scripts/w4/repin.py --stratum   # the (def 0, dim R_a 1) pool stratum
+    python3 notes/scripts/w4/repin.py --pointwise # the per-placement biconditional
+    python3 notes/scripts/w4/repin.py --hinge     # the coincident-hinge guard's
+                                                  #   adversarial test (2026-08-06)
+
+This module is also where the configuration GENERICITY GUARDS live (moved down
+here in the 2026-08-06 re-baselining round, slice S1, since `repin` sits under
+the whole `w4/` chain): `star_span_ranks` (from `flanks`, which re-exports it),
+and the new `hinge_coincidences` / `coincident_hinges` / `star_generic` that
+close the hole (OC-7) found in it.
 """
 import itertools
 import os
@@ -89,7 +98,8 @@ def hodge_star(w):
 # ---------------- panel spans ----------------------------------------------
 
 # canonical home `exactcore.cross3`; the local name stays `cross` (2026-08-05).
-from exactcore import cross3 as cross   # noqa: E402
+# `neighbors` arrived with `star_span_ranks` (2026-08-06, round S1).
+from exactcore import cross3 as cross, neighbors   # noqa: E402
 
 
 def robust_plane_basis(n):
@@ -136,6 +146,78 @@ def lambda2_through(phat):
     """Basis of {phat ^ x : x in K^4} (3-dim): all lines through the point."""
     es = [[F(1) if k == i else F(0) for k in range(4)] for i in range(4)]
     return span_basis([wedge2(phat, e) for e in es])
+
+
+# ---------------- configuration genericity guards ---------------------------
+#
+# `star_span_ranks` moved down here from `flanks.py:201` on 2026-08-06 (round
+# S1) once it had SIX consumers, past section 2 rule 2's own trigger; `flanks`
+# re-exports it, so no recorded figure moves and the five importing modules may
+# repoint at leisure.  `hinge_coincidences` and the composite `star_generic`
+# are the NEW guard the round adds beside it -- see (OC-7) / *Harness debt*
+# item 4 for why the old one is not sufficient on its own.
+
+def star_span_ranks(edges, placed):
+    """Per vertex, the rank of the hats of `{v} u N(v)`.  Maximal value 3
+    everywhere (a hub's star lies in its 3-dim panel; a degree-2 body has
+    three points).  Rank 3 at every vertex is `IsNondegPencilRealization`'s
+    fourth conjunct.
+
+    NOT a sufficient genericity guard on its own, and its docstring claimed
+    otherwise until 2026-08-06: at a hub whose in-plane sampler degenerated it
+    still returns 3 whenever a THIRD neighbour spans the panel, so it misses
+    the coincident-hinge / free-rotor configuration entirely.  Measured at
+    32 of 357 POOL-G frames -- `Pencil-informal.md` §(K-out) (OC-7), and
+    `notes/scripts/README.md` *Harness debt* item 4.  Pair it with
+    `hinge_coincidences`, or just call `star_generic`."""
+    nb = neighbors(edges)
+    return {v: rank([hat(placed[v])]
+                    + [hat(placed[u]) for u in sorted(nb[v], key=str)])
+            for v in sorted(nb, key=str)}
+
+
+def hinge_coincidences(edges, placed, h, x):
+    """The neighbours `u != x` of `h` whose hinge line `C(h, u)` is
+    PROJECTIVELY EQUAL to `C(h, x)` -- equivalently, whose point is collinear
+    with `pt(h)` and `pt(x)`.
+
+    Two bodies of the hub's star sharing one hinge line is a genuine
+    degeneration of a pencil realization -- the hub becomes a free rotor -- and
+    it is excluded by NO conjunct of `IsNondegPencilRealization` as
+    `flanks.nondeg_conjuncts` implements them, nor by `star_span_ranks` above.
+    This is the guard the round adds; `repin.py --hinge` is its adversarial
+    test.  (`outerline.hinge_coincidences` is the same predicate, written
+    locally when (OC-7) measured the defect; it is repointed at this copy in
+    slice S2, which is also where the guard is ADOPTED at the 14 acceptance
+    sites.  Nothing in S1 adopts it, so no acceptance set changes.)"""
+    nb = neighbors(edges)
+    Cx = wedge2(hat(placed[h]), hat(placed[x]))
+    assert any(k != 0 for k in Cx), "degenerate hinge extensor"
+    return [u for u in sorted(nb[h], key=str) if u != x
+            and rank([Cx, wedge2(hat(placed[h]), hat(placed[u]))]) == 1]
+
+
+def coincident_hinges(edges, placed):
+    """Every `(v, x, u)` with `x < u` in `N(v)` sharing one hinge line at `v`.
+    Empty iff no two hinge lines coincide anywhere in the configuration."""
+    nb = neighbors(edges)
+    out = []
+    for v in sorted(nb, key=str):
+        star = sorted(nb[v], key=str)
+        for i, x in enumerate(star):
+            for u in hinge_coincidences(edges, placed, v, x):
+                if str(x) < str(u):
+                    out.append((v, x, u))
+    return out
+
+
+def star_generic(edges, placed):
+    """THE composite genericity guard: every closed star spans its panel AND
+    no two hinge lines at a body coincide.  `star_span_ranks` alone is the
+    version F13 found ineffective; this is what a new sampler or battery
+    should test."""
+    return (all(r == 3 for r in star_span_ranks(edges, placed).values())
+            and not coincident_hinges(edges, placed))
 
 
 # ---------------- the per-seed probe ----------------------------------------
@@ -383,6 +465,12 @@ def postmortem(E, v, p):
         print(f"    bad-line dim = {len(wbad)}; r parallel to it: "
               f"{all(in_span(r, wbad) for r in Ra_basis)}")
         p0, d = meet_line(pt[b], nrm[b], pt[c], nrm[c])
+        # section 4 convention 1: with the 2026-08-06 signalling `meet_line`, a
+        # zero `d` gives `CM = 0`, and `in_span(0, wbad)` is True by
+        # convention -- i.e. the line below would PRINT a spurious True.  This
+        # block only prints, so the guard is an assert.
+        assert any(x != 0 for x in d), \
+            f"panels Pi({b}), Pi({c}) parallel: no meet line M"
         m0, m1 = p0, [p0[i] + d[i] for i in range(3)]
         CM = wedge2(hat(m0), hat(m1))
         sCM = hodge_star(CM)
@@ -531,9 +619,125 @@ def pointwise(nseeds=4, nplace=10):
     print("POINTWISE OK")
 
 
+def hinge():
+    """The ADVERSARIAL TEST for the coincident-hinge guard (F13: a guard
+    observed only passing is untested).
+
+    MUST-REJECT, and CONSTRUCTED rather than sampled on purpose -- it does not
+    depend on a lucky seed and it survives any future change to the sampler.
+    Take a clean `place_pencil_general` sample; pick a hub `h` with a
+    single-hub interior `x` and another neighbour `u`; slide `pt(x)` onto the
+    line through `pt(h)` and `pt(u)`.  The slide is LEGAL, because both
+    endpoints lie in `Pi(h)` so the whole line does -- the same legality
+    argument as `sigma.coplanar_chain_placement` and `outer.slide_x1_onto` --
+    and the result is a bona fide pencil realization with `C(h,x) = C(h,u)`.
+
+    THE PINNED COUNTER-FACT, asserted on the same witness: `star_span_ranks`
+    returns 3 at EVERY vertex and all four `IsNondegPencilRealization`
+    conjuncts hold.  This is what records *why* the documented guard was
+    insufficient; without it the test would show only that the new guard
+    fires, not that it fires where the old one did not.  Per (OC-7)'s
+    mechanism the construction must keep a THIRD neighbour of `h` OFF the line
+    `pt(h) pt(u)` -- that neighbour is exactly what lets `h`'s star still span
+    its panel -- so the search below demands one.  A failure of the
+    counter-fact is a bug in this test (it picked the wrong hub), not a
+    finding about the guard.
+
+    NEGATIVE CONTROL: the un-slid sample must PASS."""
+    from pencil_escape import K4
+    # `flanks` imports `repin`, so this sibling import is deferred to call
+    # time.  `nondeg_conjuncts` is section 1's canonical four-conjunct check
+    # and is NOT reimplemented here (section 2 rule 3).
+    from flanks import nondeg_conjuncts
+
+    print("== the coincident-hinge guard: adversarial test ==")
+    SEED, SLIDE = 6, F(2)
+    E, _hubs0, _chains, _allv = double_subdivide(K4())
+    nb = neighbors(E)
+    hubset = {v for v in sorted(nb, key=str) if len(nb[v]) >= 3}
+    pl = place_pencil_general(E, random.Random(SEED))
+    assert pl is not None, f"dbl-subdiv K4 seed {SEED} no longer samples"
+    placed, pt, nrm, hubs, _nb = pl
+
+    # --- negative control: the un-slid sample passes -----------------------
+    ranks0 = star_span_ranks(E, placed)
+    ok0, info0 = nondeg_conjuncts(E, placed)
+    assert ok0, info0
+    assert set(ranks0.values()) == {3}, ranks0
+    assert coincident_hinges(E, placed) == [], coincident_hinges(E, placed)
+    assert star_generic(E, placed)
+    print(f"  negative control (dbl-subdiv K4, place_pencil_general seed "
+          f"{SEED}): {len(ranks0)} vertices, star ranks all 3, all four "
+          f"conjuncts hold, no coincident hinges -- guard PASSES")
+
+    # --- the constructed must-reject witness -------------------------------
+    pick = None
+    for h in sorted(hubset, key=str):
+        for x in sorted(nb[h], key=str):
+            if x in hubset or len([t for t in nb[x] if t in hubset]) != 1:
+                continue                  # `x` must be a SINGLE-hub interior
+            for u in sorted(nb[h], key=str):
+                if u == x:
+                    continue
+                q = [pt[h][i] + SLIDE * (placed[u][i] - pt[h][i])
+                     for i in range(3)]
+                cand = dict(placed)
+                cand[x] = q
+                Cu = wedge2(hat(pt[h]), hat(placed[u]))
+                third = [w for w in sorted(nb[h], key=str) if w not in (x, u)
+                         and rank([Cu, wedge2(hat(pt[h]),
+                                              hat(placed[w]))]) != 1]
+                if third and set(star_span_ranks(E, cand).values()) == {3}:
+                    pick = (h, x, u, third[0], cand, q)
+                    break
+            if pick:
+                break
+        if pick:
+            break
+    assert pick is not None, \
+        f"no eligible (hub, single-hub interior, third neighbour) at {SEED}"
+    h, x, u, w3, slid, q = pick
+
+    # legality of the slide: it is a genuine pencil realization
+    assert dot(nrm[h], [q[i] - pt[h][i] for i in range(3)]) == 0, \
+        "the slid point left the hub's panel"
+    assert all(dot(nrm[hh], [slid[s][i] - pt[hh][i] for i in range(3)]) == 0
+               for hh in hubs for s in nb[hh]), "pencil condition broken"
+    assert all(slid[p] != slid[w] for (p, w) in E), \
+        "coincident adjacent points"
+    okS, infoS = nondeg_conjuncts(E, slid)
+    assert okS, ("the slide broke a conjunct: not a bona fide realization",
+                 infoS)
+
+    # THE COUNTER-FACT: the documented guard does not fire
+    ranksS = star_span_ranks(E, slid)
+    assert set(ranksS.values()) == {3}, ranksS
+
+    # the new guard rejects, and names exactly the coincident pair
+    co = hinge_coincidences(E, slid, h, x)
+    assert co == [u], (co, u)
+    pair = (h, min((x, u), key=str), max((x, u), key=str))
+    assert coincident_hinges(E, slid) == [pair], coincident_hinges(E, slid)
+    assert not star_generic(E, slid)
+
+    print(f"  witness: slide pt({x}), a single-hub interior of hub {h}, onto "
+          f"line(pt({h}), pt({u})) at parameter {SLIDE}")
+    print(f"    C({h},{x}) == C({h},{u}) projectively; still a bona fide "
+          f"pencil realization (all four conjuncts hold)")
+    print(f"    THE COUNTER-FACT: star_span_ranks == 3 at all {len(ranksS)} "
+          f"vertices, so the DOCUMENTED guard does not fire -- hub {h}'s "
+          f"third neighbour {w3} still spans its panel")
+    print(f"    the new guard: hinge_coincidences({h}, {x}) = {co}; "
+          f"coincident_hinges = {coincident_hinges(E, slid)}; "
+          f"star_generic REJECTS")
+    print("HINGE OK")
+
+
 def main():
     if '--pointwise' in sys.argv:
         pointwise()
+    elif '--hinge' in sys.argv:
+        hinge()
     elif '--control' in sys.argv:
         control()
     elif '--theta' in sys.argv:

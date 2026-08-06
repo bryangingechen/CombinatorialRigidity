@@ -234,22 +234,13 @@ def chart_point(Gp, rng):
     """A pencil-chart placement of `G'`, with the mandatory guards: every
     hub's closed star spans exactly its panel (`star_span_ranks`, the
     `plane_basis` genericity guard) and `verify_pencil_witness` green."""
-    try:
-        pl = place_pencil_general(Gp, rng)
-    except UnboundLocalError:
-        # LATENT DEFECT IN A FROZEN MODULE, guarded here rather than fixed.
-        # `localtest.meet_line` is documented to signal "no meet line" by
-        # returning a zero direction -- and `place_pencil_general` tests for
-        # exactly that -- but when the two panel normals are PARALLEL its
-        # every 2x2 minor vanishes, the base-point loop never binds `p0`, and
-        # it raises `UnboundLocalError` instead of returning.  So the caller's
-        # guard is unreachable in the one case it was written for.  Fixing it
-        # means editing an `escape/`-layer module that the entire `w4/` stack
-        # imports, i.e. re-baselining every recorded figure in the harness
-        # (`notes/scripts/README.md` *figures do not move*, second bullet);
-        # that is not this commit's business.  A parallel-normal draw is a
-        # degenerate sample, so the correct local handling is to reject it.
-        return None
+    # No `UnboundLocalError` catch here since 2026-08-06: `localtest.meet_line`
+    # now SIGNALS a parallel-normal draw with a zero direction, so
+    # `place_pencil_general`'s own `if all(x == 0 for x in d): return None`
+    # (`widened.py:202`) -- written for exactly this case and unreachable until
+    # the fix -- rejects the draw and we see it as `pl is None` below.  Same
+    # rejection, same return value.  (Round S1; *Harness debt* item 1.)
+    pl = place_pencil_general(Gp, rng)
     if pl is None:
         return None
     placed, pt, nrm, hubs, nb = pl

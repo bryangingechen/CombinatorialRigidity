@@ -55,7 +55,21 @@ def in_plane_point(pt0, n, rng):
     return [pt0[i] + s*bss[0][i] + t*bss[1][i] for i in range(3)]
 
 def meet_line(pt_b, n_b, pt_c, n_c):
-    """meet line of the two planes: base point p0, direction d."""
+    """meet line of the two planes: base point p0, direction d.
+
+    SIGNALS "the two planes have no meet line" by returning a ZERO direction
+    (with a zero base point); it never raises.  The three pivot determinants
+    tried below ARE `+-d[0]`, `-d[1]`, `+d[2]`, so the loop fails to find a
+    pivot exactly when `d == 0`, i.e. exactly when `n_b` and `n_c` are
+    parallel (or one of them is zero) -- which is what the `else` branch
+    reports.
+
+    Until 2026-08-06 that `else` was missing: `p0` fell out of the loop
+    unbound and the function raised `UnboundLocalError` instead, which made
+    every caller's documented zero-direction guard unreachable in the one
+    case it was written for (`notes/scripts/README.md` *Harness debt* item 1,
+    cleared in the re-baselining round's slice S1).  Callers MUST test `d` --
+    that is section 4 convention 1's degeneracy guard for this sampler."""
     n1, n2 = n_b, n_c
     d = [n1[1]*n2[2]-n1[2]*n2[1], n1[2]*n2[0]-n1[0]*n2[2], n1[0]*n2[1]-n1[1]*n2[0]]
     c1 = dot(n1, pt_b); c2 = dot(n2, pt_c)
@@ -69,6 +83,9 @@ def meet_line(pt_b, n_b, pt_c, n_c):
             p0[cols[0]] = inv[0][0]*c1 + inv[0][1]*c2
             p0[cols[1]] = inv[1][0]*c1 + inv[1][1]*c2
             break
+    else:
+        assert all(x == 0 for x in d), "no pivot but a nonzero meet direction"
+        p0 = [F(0)]*3
     return p0, d
 
 def sample_local(seed):
@@ -79,6 +96,13 @@ def sample_local(seed):
     nbrsB = [in_plane_point(pt_b, n_b, rng) for _ in range(2)]
     nbrsC = [in_plane_point(pt_c, n_c, rng) for _ in range(2)]
     p0, d = meet_line(pt_b, n_b, pt_c, n_c)
+    # section 4 convention 1, on the sampled meet line: `d == 0` means the two
+    # panels are parallel and `p0, d` describe no line at all.  This block has
+    # no rejection path -- it returns `d` into the dict -- so the guard is an
+    # assert.  Before 2026-08-06 `meet_line` raised here instead of signalling,
+    # so no recorded run reaches it; the assert preserves that loudness.
+    assert any(x != 0 for x in d), \
+        f"parallel panel normals at seed {seed}: no meet line"
     return dict(pt_b=pt_b, n_b=n_b, pt_c=pt_c, n_c=n_c,
                 nbrsB=nbrsB, nbrsC=nbrsC, p0=p0, d=d)
 

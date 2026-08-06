@@ -173,18 +173,17 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
   C) q` (design doc's W0 pin) is landed only as its two forward implications; the reverse arms
   need a `complementIso` involution lemma, not in tree — deferred, **off every critical path**
   (§(K-σ) *Step σ6*: route σ does not need it, and sketches the route to it).
-- **Harness debt — FOUR parked items, now a named list** (`notes/scripts/README.md` *Harness
-  debt*, the canonical home — not restated here): `localtest.meet_line`, `lambda.omega_curves`'
-  coded (Λ0f) equivalence at the newly-reachable `g₁₄ = 0` points, `flanks.star_span_ranks`
-  at **four** consumers, and — **new 2026-08-06, an escalation** — `place_pencil_general`'s
-  in-plane sampler degenerating at ≈ 9 % of habitat frames in a way that **forces `λᵢ = 0`** and
-  that `star_span_ranks`, *the documented guard against exactly it*, does not catch (§(K-out)
-  **(OC-7)**; second `plane_basis` contamination, first with the guard failing). No item
-  corrupts a recorded figure — 1–3 fail loudly, 4 is one-directional — but 4 carries a
-  **standing rule that binds now**: no `place_pencil_general` battery may be quoted as a *rate*
-  or as evidence about a generic chart point. The recorded option is still **one deliberate
-  re-baselining commit clearing all four**, a coordinator decision, not a side errand. Same
-  block:
+- **Harness debt — four items, the round CLEARING them is mid-flight** (`notes/scripts/README.md`
+  *Harness debt*, the canonical home — status per item lives there and is not restated here).
+  **Items 1 and 3 are CLEARED** by slice S1 (`localtest.meet_line` signals instead of raising;
+  `star_span_ranks` moved down to `repin`). **Item 2** (`lambda.omega_curves`' coded (Λ0f)
+  equivalence at the newly-reachable `g₁₄ = 0` points) is S3's. **Item 4** —
+  `place_pencil_general`'s in-plane sampler degenerating at ≈ 9 % of habitat frames in a way that
+  **forces `λᵢ = 0`** and that `star_span_ranks`, *the documented guard against exactly it*, does
+  not catch (§(K-out) **(OC-7)**; second `plane_basis` contamination, first with the guard
+  failing) — is **half-cleared**: the guard exists and is adversarially tested, and **S2 adopts
+  it**. Until then item 4's **standing rule binds unchanged**: no `place_pencil_general` battery
+  may be quoted as a *rate* or as evidence about a generic chart point. Same block:
   `outer.py --patterns` and `--sweep` run over different denominators (7002 vs 4280 pairs), so
   their companion counts are **not comparable**.
 
@@ -245,14 +244,30 @@ discharge (residue (iv)) is CLOSED too**. The landed successor
 > (**add the coincident-hinge guard**; the `place_pencil_general` sampler repoint is **declined**,
 > with its price recorded), as is the adversarial test's witness.
 >
-> **Smallest concrete next commit: slice S1** — `escape/localtest.py`, `w4/repin.py`,
-> `w4/flanks.py`, `w4/outer.py`, `w4/sigma.py`. OPENED-block **scope (2)** (`localtest.meet_line`)
-> and **scope (4)** (move `star_span_ranks` to `repin`) plus the guard's
-> *definition* and its adversarial test (`repin.py --hinge`, a new §3 row); the guard is **not**
-> adopted, so S1's whole obligation — `localtest`'s closure, **90 of the 114 §3 rows**, ≈ 99 min
-> per pass — must come back **90/90 byte-identical**, and any moved row is a bug in S1. Capture
-> the baseline as the dispatch's first action, before any edit; `flanks.py --limit` (762 s) and
-> `lambda.py --adv` (536 s) each run alone in the foreground.
+> **Slice S1 is LANDED (2026-08-06)** — the gate came back **96/96 invocations `rc=0`, 95
+> byte-identical, 0 figures moved** (the 96th, `flanks.py --conj`, differs only in the driver's
+> own wall-clock print, the rule's one documented exception). Harness-debt items **1** and **3**
+> are CLEARED; item **4** is half-cleared — the guard `repin.star_generic` and its adversarial
+> test `repin.py --hinge` now exist, but **nothing adopts them**, so item 4's standing rule
+> (*no `place_pencil_general` battery may be quoted as a rate*) still binds verbatim.
+> Two things the slice found that the plan had not: `localtest.meet_line` had **six** direct
+> callers testing nothing, which the fix would have turned from loud failures into silent wrong
+> answers (all six guarded in the same commit), and one of them — `lambda.py:1110` — was
+> classified as already-guarded on the strength of a neighbouring `rank(...) == 2` assert that
+> passes **vacuously** at a zero direction. Both recorded in the plan's *S1 addendum*.
+>
+> **Smallest concrete next commit: slice S2** — `w4/{flanks,dominance,outer,sigma,closure,annih,
+> outerline}.py` plus every owning workbook section. It *adopts* the guard at the 14 acceptance
+> sites (**a per-site judgement, not a sweep**: `outerline --pool`'s (OC-7) diagnostics and
+> `--build`'s coincidence-freeness report must keep *measuring* the coincidence), repairs the two
+> remaining F13-falsified claims (`dominance.base_seed`, `flanks --degen`), adds the field half of
+> the adversarial test, and owes the §(K-ann) re-read. Obligation: `flanks`' closure, **41 rows**,
+> ≈ 55 min per pass, and here **rates legitimately move** while identities, ranks and pointwise
+> witnesses must not. Exact file list and per-site detail: `notes/scripts/README.md` *Harness
+> debt* → **The build plan**, **not restated here**. Two mechanics S1 paid for: write each
+> invocation's output to its own file and compare with `cmp`; and background `flanks.py --limit`
+> (762 s, the only invocation past the 600 s foreground ceiling) **first**, with the foreground
+> work running alongside — a subagent's background job dies when its turn ends.
 >
 > **QUEUED, still an open user adjudication** — three contenders, none pre-selected: the remaining
 > route-σ work; the **mechanisms pass** (*Current state* (a)); and `Pencil-strategy.md` §4.6's
@@ -348,6 +363,17 @@ is the canonical home a successor reads.
   `notes/scripts/README.md` *Harness debt*), dispatch-log rows + **F13**/**F14**, and
   `Pencil-strategy.md` §2.3's **convergence note** — A's and B's residuals are both
   *pencil-rigidity of a contraction of `H`*, so §2.3's wall is structural, not route-specific.
+
+- **Harness re-baselining round, slice S1 LANDED** (2026-08-06; canonical home
+  `notes/scripts/README.md` *Harness debt* → *The build plan* + its *S1 addendum*, not restated
+  here). `meet_line` signals instead of raising, the three caller-side catches retire,
+  `star_span_ranks` moves to `repin` (re-exported), and the coincident-hinge guard
+  `repin.star_generic` is **defined with an adversarial test** (`repin.py --hinge`) but **not
+  adopted**. Gate: 96/96 `rc=0`, 95 byte-identical, **0 figures moved**. The finding: making
+  `meet_line` signal would have turned a **loud** failure into a **silent wrong answer** at
+  **six** unguarded direct callers — one of which (`lambda.py:1110`) looked guarded because of a
+  neighbouring `rank(...) == 2` assert that passes **vacuously** at a zero direction, the same
+  failure mode as F13 itself.
 
 - **Harness re-baselining round DECOMPOSED into four slices** (2026-08-06, docs only; canonical
   home `notes/scripts/README.md` *Harness debt* → *The build plan*, not restated here). Scope (1)

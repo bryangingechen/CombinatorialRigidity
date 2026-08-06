@@ -1108,6 +1108,14 @@ def incidence_witness():
         "seed 345 is not the panel-incidence witness any more"
     assert dot(nrm[b], [placed[c][i] - placed[b][i] for i in range(3)]) != 0
     Mp0, Md = meet_line(pt[b], nrm[b], pt[c], nrm[c])
+    # section 4 convention 1.  The other three `meet_line` sites in this module
+    # (`:260`, `:280`, `:565`) already test the zero direction; this one did
+    # not, and the `rank(...) == 2` assert below does NOT stand in for it --
+    # with `Md == 0` its second entry equals its first, so it passes vacuously
+    # at rank 2.  Since 2026-08-06 `meet_line` signals instead of raising, so
+    # the test has to be explicit (unreachable on any recorded run).
+    assert any(x != 0 for x in Md), \
+        f"panels Pi({b}), Pi({c}) parallel: no meet line M"
     fr = {'complen': 4, 'path': list(comp), 'placed': placed, 'pt': pt,
           'nrm': nrm, 'bl': b, 'cl': c, 'M': (Mp0, Md),
           'C': [wedge2(hat(placed[comp[i]]), hat(placed[comp[i + 1]]))

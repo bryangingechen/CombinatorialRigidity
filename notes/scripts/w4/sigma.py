@@ -737,14 +737,12 @@ def coplanar_chain_placement(Gp, chain, hubs_set, seed):
     if pl is None:
         return None, 'sampler'
     placed, pt, nrm, _hubs, _nb = pl
-    try:
-        p0, d = meet_line(pt[h], nrm[h], pt[hp], nrm[hp])
-    except UnboundLocalError:
-        # `localtest.meet_line` RAISES instead of signalling when the two
-        # normals are parallel (`notes/scripts/README.md` *Harness debt* 1);
-        # the sanctioned handling is this caller-side guard, as in
-        # `outer.chart_point`.
-        return None, 'meetline'
+    # Since 2026-08-06 `localtest.meet_line` SIGNALS parallel normals with a
+    # zero direction rather than raising (*Harness debt* item 1, cleared in
+    # round S1), so the zero-direction test below is the whole guard and the
+    # former `UnboundLocalError` catch is gone -- it returned this same
+    # `(None, 'meetline')`.
+    p0, d = meet_line(pt[h], nrm[h], pt[hp], nrm[hp])
     if all(u == 0 for u in d):
         return None, 'meetline'
     rg = random.Random(31337 + seed)
@@ -835,12 +833,9 @@ def sidecond_placement(Gp, targets, hubs_set, seed):
         for s in sorted(nb[h], key=str):
             hn = sorted((u for u in nb[s] if u in hubs_set), key=str)
             if len(hn) >= 2:
-                try:
-                    p0, d = meet_line(pt[hn[0]], nrm2[hn[0]],
-                                      pt[hn[1]], nrm2[hn[1]])
-                except UnboundLocalError:      # harness debt 1; see above
-                    return None, 'meetline'
-                if all(u == 0 for u in d):
+                p0, d = meet_line(pt[hn[0]], nrm2[hn[0]],
+                                  pt[hn[1]], nrm2[hn[1]])
+                if all(u == 0 for u in d):     # signalled, not raised; see above
                     return None, 'meetline'
                 tt = rquat(rg)
                 out[s] = [p0[i] + tt * d[i] for i in range(3)]

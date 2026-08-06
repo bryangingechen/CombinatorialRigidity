@@ -198,16 +198,14 @@ def named_shapes():
 
 # ---------------- exact configuration quality --------------------------------
 
-def star_span_ranks(edges, placed):
-    """Per vertex, the rank of the hats of `{v} u N(v)`.  Maximal value 3
-    everywhere (a hub's star lies in its 3-dim panel; a degree-2 body has
-    three points).  See the module docstring: rank 3 at every vertex is
-    simultaneously the genericity guard against the `plane_basis` artifact
-    and `IsNondegPencilRealization`'s fourth conjunct."""
-    nb = neighbors(edges)
-    return {v: rank_exact([hat(placed[v])]
-                          + [hat(placed[u]) for u in sorted(nb[v], key=str)])
-            for v in sorted(nb, key=str)}
+# `star_span_ranks` MOVED DOWN to `repin` on 2026-08-06 (round S1): it had six
+# consumers, past section 2 rule 2's trigger, and `repin` sits under the whole
+# `w4/` chain.  Re-exported here so the five importing modules and every
+# recorded reproduce command keep working unchanged.  Read its docstring there
+# before trusting it: it is NOT the sufficient genericity guard the module
+# docstring above once called it (*Harness debt* item 4 / (OC-7)); the
+# composite is `repin.star_generic`.
+from repin import star_span_ranks   # noqa: E402,F401
 
 
 def nondeg_conjuncts(edges, placed):

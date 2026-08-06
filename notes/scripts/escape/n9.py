@@ -73,6 +73,13 @@ def place_pencil(edges, rng, extra_inplane=()):
             placed[s] = in_plane_point(pt[forced[s]], nrm[forced[s]], rng)
         elif len(hn) == 2:
             p0, d = meet_line(pt[hn[0]], nrm[hn[0]], pt[hn[1]], nrm[hn[1]])
+            # section 4 convention 1: `meet_line` SIGNALS "no meet line" with a
+            # zero direction (2026-08-06); without this guard `s` would be
+            # placed at the origin.  `place_pencil` has no rejection path, so
+            # the guard is an assert -- and it is unreachable on any recorded
+            # run, since `meet_line` raised at exactly these inputs before.
+            assert any(x != 0 for x in d), \
+                f"parallel panel normals at hubs {hn}: no meet line for {s}"
             t = rquat(rng)
             placed[s] = [p0[i] + t*d[i] for i in range(3)]
         elif len(hn) == 1:
