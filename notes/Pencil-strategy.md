@@ -17,6 +17,14 @@ claim below points at the workbook section that owns it.
 was written. §4's candidates are *derivations*, not verified routes — each needs
 a recon or a spike before it can be priced.
 
+> **§4.6 was added later the same day** by a separately-commissioned broad recon
+> on class uniformity itself — the phase's crux, untouched by all seventeen
+> docs+scripts passes. It carries **six refutations** (`∀λ`, cluster structure on
+> `Gr(3,6)`, moment-curve/positivity, a codimension comparison, definable choice,
+> and a bonus sixth) and a **ranked three-entry live shortlist** (`U1`–`U3`), each
+> with its cheapest decisive experiment and what would kill it. Start there
+> before §4's C2/C3.
+
 ## 1. The two questions this doc answers
 
 1. **Why does class uniformity resist?** Five structurally different routes have
@@ -369,6 +377,318 @@ thing to check first.
 
 `dim R_a ≥ 2`, and every other count-expressible invariant, by §2.5.
 
+### 4.6 The broad class-uniformity recon (2026-08-05) — six refutations, three live successors
+
+**Status: assessment only.** No mathematics is landed by this subsection, **no
+driver was run**, and **no *State of (K)* row moves**. Commissioned to look
+outside the arc's habits at the one thing seventeen docs+scripts passes never
+touched — class uniformity itself — with four coordinator seeds explicitly
+offered as unverified hypotheses. **All four seeds die**, as do the invited
+definable-choice reading and a bonus sixth idea of this pass's own; the most
+useful output is that two of them die for the *same* reason as §7's Δ-matroid
+lead. Read the refutations first; the live shortlist that follows is short on
+purpose, and its three entries **interlock** (one target, one machine, one
+logical form) rather than being independent bets.
+
+**The test every candidate must pass, stated once.** §2.2's missing ingredient,
+sharpened by §(K-Δ)'s **(M3)**, is *a ground set that grows with the graph*.
+Any proposed structure — literature or homegrown — is a MISS unless its index
+set is `E(G)` or something derived from it. Applying that test up front is
+cheaper than a hunt, and it is what the two completed hunts should be
+remembered for.
+
+#### Refuted or discharged this pass
+
+**(R1) `∀λ` — make the far covector a free indeterminate.** *Refuted as a new
+route, because it is already proven.* The `∀λ` statement is not merely true:
+it **is** §(K-Λ)'s *Theorem (Λ-completeness at length-4 companions)*, and it is
+already class-uniform — for every `λ ∈ P(S*)` outside **two named points** the
+escape holds, and the statement names no graph, no habitat and no stratum. So
+"class uniformity may contain no graph quantifier at all" is half right in a way
+that is worth stating precisely: **the criterion has no graph quantifier and is
+discharged; the graph quantifier lives entirely in the *realizability* of `λ`.**
+That is §5.3's boundary restated, and the pattern is now a third instance —
+C1 relocated the crux from `Q(z) ≢ 0` to `rank dV = 9`; `∀λ` relocates it to
+"`λ ≠ p⁺` is realizable". *Sub-questions, both answerable from the record:*
+`lambda.py --adv`'s failure to find `λ ∝ p⁺` is **non-realizability, not
+non-existence** — `p⁺` is a covector that manifestly exists, and §(K-Λ) *Step 4*
+already says a hit would be a **counterexample to the pencil conjecture** at
+that habitat, i.e. `--adv` is a disproof hunt, not an existence question. And
+the M2 feasibility question is **already answered by a landed run**:
+`m2/lambda1.m2` block **(M4)** is the gauged local frame *with `λ` free*, and
+it finishes; the 600 s kill is the *ungauged 28-point* expansion, not the
+`λ`-indeterminate one. Nothing new to compute here.
+*The residue is live and is entry **U1** below.*
+
+**(R2) Cluster structure on `Gr(3,6)`.** *Refuted, and it is (M3) verbatim — a
+third MISS for the Δ-matroid reason.* The literature is real and verified:
+Scott, *Grassmannians and Cluster Algebras*, Proc. London Math. Soc. **92**
+(2006) 345–380, DOI 10.1112/S0024611505015571, classifies the finite-type
+Grassmannians; `Gr(3,6)` is the type-`D₄` case (6 frozen + 16 mutable cluster
+variables). **Correct the seed's parenthetical:** `Gr(3,6)` is *not* the
+smallest Grassmannian of finite cluster type — every `Gr(2,n)` is finite type
+`A_{n−3}` — it is the smallest one **outside the `Gr(2,n)` series**. Three
+independent failures, any one fatal:
+- **Ground set (M3).** The cluster structure's index set is the ~22 cluster
+  variables of the *ambient* `Gr(3,6)`, fixed by `dim Λ²K⁴ = 6`. It never grows
+  with the graph. This is §(K-Δ)'s (M3) with a different subject line.
+- **Wrong group.** The cluster structure is an `SL(6)`/Plücker structure; the
+  geometry here is `PGL(4) ⊂ SO(6)` preserving the Klein form `B`. A mutation
+  does not preserve `B`, so exchange relates quantities that are not
+  simultaneously meaningful for the escape. The cluster labelling also depends
+  on an *ordering* of a basis of `K⁶` that no part of the geometry supplies.
+- **It re-derives what the arc already has.** Because `α_{pt(a)} ∩ β_{π_a} = T`
+  is 2-dimensional, a basis `e₁,e₂` of `T` extended by `e₃ ∈ α`, `e₄ ∈ β`
+  makes both Schubert conditions **single Plücker coordinates**
+  (`V ∩ W ≠ 0 ⟺ p(V) ∧ p(W) = 0`), so the bad locus is the product of two
+  Plücker coordinates. That *is* §(K-ind) *I0*'s "degree-2 form factoring into
+  two hyperplanes" and §(K-Δ)'s (N1)/(N2) "two Wick coordinates nonzero", in a
+  basis-dependent costume. No new information.
+
+**(R3) Moment curve / total positivity.** *Refuted in one line, and the line is
+worth keeping.* The pencil condition at a body of degree `d ≥ 3` says
+`pt(v)` and its `d` neighbour points are **coplanar** — four or more points on
+a plane. Four distinct points of a rational normal curve are **never** coplanar
+(the bracket is a Vandermonde). So a moment-curve placement of the body points
+is the *exact antipode* of a pencil realization: **the canonical
+maximally-nondegenerate configuration is incompatible with the pin at every
+hub.** That is §2.4's *degenerate-enough-to-compute* wall seen from the other
+side, and it is a cleaner statement of it than the arc has. Two salvages
+assessed and both declined: (i) placing only the **hubs** on a curve and
+choosing branch interiors in the hub planes is compatible — but that is just
+the chart's already-known tower structure (§(K-slide) *Step 1(e)*; (Λ0)'s
+stratum discussion), and the escape's brackets involve the *constrained* points
+`x₁ ∈ Π(b)`, `x₃ ∈ Π(c)`, not the free hub points, so the curve buys nothing
+where it is needed; (ii) positivity has **already delivered everything it can**
+— at `k = 3` the pitch is a subtraction-free **bracket monomial** (§(K-pitch)
+*Step 5*), which is precisely a positivity recipe and precisely why `k = 3`
+closes, while at `k = 4` (Λ1)'s factors are *linear in the far covector* and not
+bracket monomials, so there is nothing for a sign argument to bite on.
+
+**(R4) Codimension comparison of `D` against the pencil stratum.** *Refuted,
+and it can never work — not "it fails asymptotically".* Two counts settle it.
+- `codim D = 1` **exactly**. A tight class member is **isostatic**: with
+  `5|E| = 6(|V|−1)` and `def = 0` the rigidity matrix has `5|E|` rows and target
+  rank `6(|V|−1) = 5|E|`, i.e. it is square modulo the 6-dimensional trivial
+  motions, so the deficient locus is the zero set of the **single** White–Whiteley
+  pure condition (White–Whiteley 1987, the project-canonical source already
+  verified in `notes/Phase39.md` *Citations*), non-vanishing on the panel
+  stratum by KT. A hypersurface.
+- `codim(pencil ⊂ panel) ≥ 2` at every class member. Panel data is one plane per
+  body (`3|V|` parameters, each hinge then forced as `Π(u) ∩ Π(v)`); pencil adds
+  a point per body on its own plane and forces `pt(v) ∈ Π(u)` per edge —
+  `5|V| − 2|E|` parameters. The naive difference is
+  `2(|E| − |V|) = 2(c − 1) = Σ_v max(0, deg v − 2)` (it is `0` on a bare cycle,
+  which is the right answer — the pin does not bite there — and `≥ 1` per hub);
+  the (K-tight) hard stratum has **both chain ends hubs**, so `≥ 2` wherever the
+  question is even posed. Only the `≥ 1` half is load-bearing below; the
+  `2(c − 1)` value assumes the `2|E|` incidence equations are independent and is
+  flagged as a naive count.
+
+So `dim(pencil) < dim D` at **every** class member. A dimension comparison could
+only obstruct containment when `dim(pencil) > dim D`, i.e. when `codim D`
+*exceeds* `codim(pencil)` — and `codim D = 1` is the smallest a proper closed
+subvariety can have, so the inequality runs the wrong way everywhere, not
+asymptotically. The only comparison with teeth would be degree/multiplicity,
+which needs exactly the description of `Image(φ_G)` that §2.4 says is missing.
+
+**(R5) Definable choice / quantifier elimination over real closed fields.**
+*Refuted, but it points somewhere.* Semialgebraic definable choice does supply
+"the function that builds the seeds" — §2.2's missing recipe — **for a fixed
+number of variables**. The class has an unbounded number (a `|V| = 31` shape
+carries ~120 coordinates), so there is no single formula to eliminate
+quantifiers in. The only repair is a **bounded-dimensional intermediary** every
+class member factors through, and (T5)/(D2) already supply one: at
+`k ≤ 6` the far graph's *entire* footprint is the annihilator
+`Λ ∈ Gr(k−3, S_P*)`. So the model-theoretic reading is not a route; it is an
+argument for **U1**.
+
+**(R6) Bonus refutation — "choose the split to force a length-4 companion".**
+`hK` as landed is quantified `∀` over the split data
+(verified at `Escape.lean:555`; the producer `pencilPair_of_splitOff_of_habitat`,
+`Escape.lean:334`, in fact *chooses* the pair via
+`exists_adjacent_degree_two_pair_of_noRigid_of_degree_two`, so an `∃`-form looks
+like it would suffice — **not verified**, and it would be a Lean refactor).
+That raises the hope of choosing the split to control `k`. It
+**fails at recorded shapes**: in the `K4` double subdivision every branch has
+length 3, so every split's shortest companion is `3 + 3 = 6` — `k = 6` at every
+available split, which is exactly the value §(K-dom) *D4* records. The
+`∀`-vs-`∃` observation itself stands and is Lean-facing; it is **not pinned
+here** (the Lean hold is standing) and it is recorded only so a successor does
+not re-derive it.
+
+#### The ranked live shortlist
+
+Three entries, labelled **U** (uniformity) rather than continuing the `C`
+sequence — the workbook already owns `(C6)`/`(C7)` and the collision would be
+real. They are **one object seen three ways** — U1 the target, U2 the machine,
+U3 the logical form — and the ranking is by expected value toward *uniformity*,
+not by how much is already known.
+
+**U1 (rank 1) — retarget §2.4's image problem from `Gr(3,6)` to the
+annihilator, and read the failure off its support.**
+
+*The statement it would prove.* For a class (shape, split) of companion length
+`k ∈ {4,5,6}`, let `A(G) ⊆ Gr(k−3, S_P*)` be the image of the far chart under
+`p ↦ Λ(p)` in the (D0) FIXED scoping. Then `hK` there is exactly
+`A(G) ⊄ Bad_Λ`, where `Bad_Λ` is **graph-independent** and proper. At `k = 4`,
+`Bad_Λ` is **two points of `P³`** ((Λ2)), one of which is the route-A escape,
+so the target is: *`λ` is not the constant map `p⁺` on the far chart.*
+
+*Why §2's diagnosis does not already refute it.* It is strictly weaker than
+(K-dom): dominance asks `rank dV = 9`; the far block attaining its (D2) cap
+asks `rank = 3(k−3)`; **this asks `rank ≥ 1` at `k = 4`.** Three nested targets,
+and the arc has only ever attacked the strongest. And "non-constant" is not a
+determinantal condition — it is the negation of an identity, which is the one
+shape a *single named chart move with a bracket formula for `dλ`* can settle,
+i.e. a recipe in §2.2's sense rather than a search.
+
+*The derivation that makes it concrete, and it is new.* `p⁺ = (0, p⁺₂, p⁺₃, 0)`
+and `q = (0, q₂, q₃, 0)` have their outer entries vanishing **structurally**
+((Λ0f)'s parenthetical). Since `λ_i = λ(C_i)` and `V_bc = ker λ ∩ S`, the
+vanishing `λ₁ = 0` says exactly `C₁ ∈ V_bc`. Hence **both** bad points lie on
+the line `{λ₁ = λ₄ = 0}` of `P(S*)`, and:
+
+>  **(OUT)** At a length-4-companion hard-stratum split, under (Λ0), the escape
+>  holds at some target-rank seed as soon as **one outer companion line fails to
+>  be a relative twist** — `C₁ = C(b,x₁) ∉ V_bc` **or** `C₄ = C(x₃,c) ∉ V_bc`.
+>  In hinge-rate terms `C₁ ∈ V_bc` says: *some motion of `H` freezes the
+>  companion's last three hinges and bends the first* — i.e. `b` is **not**
+>  rigidly attached to the welded body `⟨x₁,x₂,x₃,c⟩` in `H/{e₂,e₃,e₄}`.
+
+One condition. No quadric, no meet line, no `pt(a)`, no ratio, no panels.
+**Flagged: this is mathematics with no workbook home** — a successor should move
+it into §(K-Λ) (or refute it) when that section is next opened.
+
+*And it hands §4-C3 a consumer it did not have.* (OUT)'s sufficient condition is
+a **rigidity fact about a contracted framework** — and by §(K-ind) *I6* the
+contracted body is *not* a pencil body, so the fact needed lives on the **mixed
+stratum**. C3 was recorded as "strictly weaker than the conjecture and follows
+from nothing already proved", with no consumer. It now has one.
+
+*Cheapest decisive experiment.* Not another measurement: the per-shape content
+is **already measured** (`dominance.py --far`: the far block attains `3(k−3)` at
+5/5 class habitats, so `λ` is not even locally constant there). What is missing
+is a *mechanism*, and the concrete deliverable is **one named far-chart move
+with a bracket formula for `dλ` valid at every class member**. The cheapest
+honest probe is the combinatorial half of (OUT): compute
+`deficiency(H/{e₂,e₃,e₄})` over the enumerated length-4-companion class shapes
+with the harness's existing `nogood_subdiv.deficiency`, mapping where the
+criterion is even generically available.
+
+*What would kill it.* A class shape at which `λ` is constant on the far chart —
+a genuine surprise against (D2)'s attainment, and a sharp new obstruction. Or a
+proof that no single move works class-wide, which would make U1 a fourth
+relocation. **Honesty flag:** if the move can only be exhibited per shape, this
+is another per-shape positive and must be recorded as one. *Scope:* the `k = 4`
+reduction to two points is (Λ2), so it needs (Λ0f′) and (Λ0d); at `k = 5` the
+bad set is 3-dimensional in a 6-dimensional Grassmannian (§(K-Λ) *Step 7*) and
+at `k = 6` the target is `Gr(3,6)` again, so U1's *gain* is graded by `k` and
+disappears at `k ≥ 6`.
+
+*One calibration this pass owes the record.* **`k = 4` is exactly the case where
+`hnoRigid` is tight.** (D3) proves the split chain plus a shortest companion
+close a proper cycle `C_{3+k}`, rigid iff `3 + k ≤ 6`, so `hnoRigid` gives
+`k ≥ 4` — and `k = 4` is the *equality* case, the shortest cycle the hypothesis
+permits. So the one companion length at which the arc has a complete local
+theory (Λ-completeness) is the extremal boundary of the class hypothesis, and
+the interior (`k ≥ 5`) is where §(K-Λ) *Step 7* refutes the (T5) frame. Both
+populations are non-empty in the arc's own habitat table (`k = 4`: θ(3,4,5),
+NT21; `k = 6`: both double subdivisions), which is why **no `k`-graded mechanism
+can close the class**, whatever the distribution. A cheap combinatorial census
+of `k` over the enumerated class families (877 `K4` shapes, 210 `K5` all-`{3,4}`
+shapes, the θ level sets) would refine the distribution; it would **not** change
+that verdict, which is why this pass did not run it.
+
+**U2 (rank 2) — the hinge-rate / cycle-space presentation: a ground set that
+grows with the graph.**
+
+*The statement it would prove.* Writing a body-hinge motion in **hinge rates**
+(`m(u) − m(w) = ω_e C_e` per hinge — the identity §(K-ind) *I3*'s proof already
+uses), `mot(H)` modulo the trivial screws is
+`Z(H) = {ω ∈ K^{E(H)} : Σ_{e∈Z} ±ω_e C_e = 0 for every cycle Z}`, and
+`V_bc = π_P(Z(H))` for any `b`–`c` path `P`. Then `λ` spans
+`W ∩ (K^P)*` where `W := Z(H)^⊥` — i.e. **`λ` is the (essentially unique)
+element of a linear space on the ground set `E(H)` whose support lies inside the
+companion**, so `supp(λ)` is a **cocircuit** of the corresponding linear matroid
+on `E(H)`. (OUT) then reads: *the escape can only fail if the two **middle**
+companion edges `{e₂,e₃}` contain a cocircuit.* The target: a combinatorial
+obstruction to that, class-wide.
+
+*Why §2's diagnosis does not already refute it.* This is the first candidate in
+the arc whose index set is `E(H)` — it **passes (M3)**, which is exactly what
+killed the Δ-matroid lead and (R2) above. §2.2's sharper complaint ("the
+polynomials are not subset-indexed determinants of one fixed matrix") is also
+answered: `W` is the row space of **one** matrix, indexed by (cycle, coordinate)
+against `E(H)`. §2.5's counting saturation does not apply: `W` is
+realization-dependent, not count-expressible.
+
+*Cheapest decisive experiment.* **The machinery is already committed**:
+`dominance.py:cycle_data` builds exactly this `N` (`6c × |E|`, block entry
+`(cycle, e) = ± C_e`, `Z = ker N`), currently used only as an independent
+cross-check of the differential and **never as a structural lever**. A new
+driver (pure addition, so the figure gate discharges by the no-driver-modified
+check) computes `λ` in `ω`-coordinates directly and reports `supp(λ)` at every
+recorded length-4-companion habitat. A single habitat with
+`supp(λ) ⊆ {e₂,e₃}` would be a near-counterexample and the most valuable single
+datum available.
+
+*What would kill it.* Two named ways, and the first is serious. **(i)** §(K-pure)
+*P5*'s invariant mismatch survives the reformulation: (OUT) factors the failure
+into a *support* half (matroid-visible) and a *ratio* half
+`p⁺₃λ₂ = p⁺₂λ₃` (Klein-form data, invisible to any matroid). The support half
+alone is sufficient for the escape, which is why the entry is live — but if the
+support condition turns out **satisfiable** at some class shape, the quadric
+half is needed and P5 applies verbatim. **(ii)** If the matroid degenerates to
+the 6-fold graphic union, that is the workbook's **(C6)** and §(K-pure) *P6* already says it is the
+wrong matroid. **Honesty flag:** "`{e₂,e₃}` contains no cocircuit" is a rank
+*lower* bound, so §2.3's asymmetry has **not** been evaded — only relocated onto
+a smaller, contracted graph.
+
+**U3 (rank 3) — restate `hK` as a non-existence, so §2.3's asymmetry works for
+it instead of against it.**
+
+*The statement it would prove.* For every class (shape, split): the framework
+`H` together with a bar along the meet line `M` joining `b` and `c` admits **no
+chart-wide self-stress with the bar in its support**. This is (T3) in
+contrapositive: the escape fails at *every* seed iff that stress exists at every
+seed, and on an irreducible chart Cramer makes its coefficients rational
+functions with a **constant support** on a dense open set.
+
+*Why §2's diagnosis does not already refute it.* §2.3's whole content is that
+*uniform results in this arc are negatives* — "every negative is uniform; every
+positive is per-shape". U3 is the first statement of the target **in negative
+form**, so for the first time the target's logical shape matches the shape the
+record says is attainable. And the object it denies (a stress with a support)
+is subset-indexed, so it inherits U2's ground set.
+
+*Cheapest decisive experiment.* Enumerate the possible constant supports. The
+stress lives on `E(H) ∪ {bar}`; because the pencil realization is a *weak-map
+specialization* of the generic one, the support need not be a generic circuit —
+that is precisely §(K-pure) *P6*'s `P21` exhibit — so the honest first step is
+prose, not a driver: characterize which supports can carry a chart-wide (rather
+than pointwise) stress.
+
+*What would kill it.* If chart-wide stresses turn out to have no more structure
+than pointwise ones, U3 is only a change of wording. It is also **adjacent to
+the un-commissioned option B** (`[r]` as a chart rational function) and must not
+be allowed to become it: U3 is an informal argument about supports, not Lean
+infrastructure, and the standing 2026-07-30 NO-GO on option B is unaffected.
+
+#### On a third literature hunt
+
+**Not recommended, and the reason is a theorem-shaped one.** Both completed
+hunts (2026-07-30 rigidity-side; 2026-08-05 Δ-matroid-side) fail the (M3)
+ground-set test, (R2) makes it three, and the *only* index sets a graph supplies
+are `E(G)` and its derivatives — which is rigidity theory, i.e. hunt 1. A fourth
+subject would have to be **graph-indexed matroid *deformation*** (weak maps /
+specialization-stability of a designated element), which does pass (M3); this
+pass could **not name a specific theorem there**, so it is recorded as a lead
+with no verified pointer, explicitly weaker than §7's screw-theory pointer and
+subject to the same "verify from scratch" rule. §7's standing verdict — *the
+right pointer for a successor is "Coxeter matroids, and the reason they don't
+apply"* — is unchanged.
+
 ## 5. Methodology — symbolic computation
 
 ### 5.1 What the harness does today
@@ -554,9 +874,23 @@ direction is set:
   headline first) or build a general-`K` polarity. Route σ is a **candidate**,
   not a settled closure; it moves no gap-map row, and whether the rest of it
   should **preempt the mechanisms pass** is an open user adjudication.
+- **NEW, 2026-08-05 — if the direction is a class-uniformity attack:** read
+  **§4.6** first. Its five refutations are settled (do not re-run `∀λ`, the
+  cluster reading, a moment-curve/positivity recipe, a codimension comparison,
+  or definable choice), and its three live entries are ranked with the cheapest
+  decisive experiment named per entry. The single smallest concrete next step is
+  **U2's**: a new driver (pure addition) computing `λ` in hinge-rate
+  coordinates from the already-committed `dominance.py:cycle_data` and reporting
+  `supp(λ)` at every recorded length-4-companion habitat. **U1** carries the
+  pass's one new derivation, **(OUT)** — the escape holds as soon as one *outer*
+  companion line is not a relative twist — which has **no workbook home** and
+  should be moved into §(K-Λ) or refuted when that section is next opened.
 - **If the direction is C3 (mixed stratum):** first question is combinatorial and
   needs no geometry — can KT's reduction always avoid a prescribed vertex
-  set `S`? Read Phase 20's generation theorem before scoping.
+  set `S`? Read Phase 20's generation theorem before scoping. **§4.6-U1 gives
+  C3 the consumer it lacked:** (OUT)'s sufficient condition is a rigidity fact
+  about a *contracted* framework, whose merged body is not a pencil body
+  (§(K-ind) *I6*), so it is a mixed-stratum statement.
 - **If the direction is to bank the buildable Lean:** W4 is fully decomposed;
   **W4-L4b** (`exists_degree_two_of_co1_rigid`) is the pinned next commit — see
   `notes/Phase39.md` *Hand-off*. This requires a fresh adjudication, since the
@@ -567,9 +901,30 @@ direction is set:
 
 ## 7. Provenance
 
-§§2–4 are a coordinator-authored synthesis (2026-08-05) of the three fan-out
-returns plus the arc's prior record, produced in discussion with the user at the
-end of the fan-out session. Every mathematical claim traces to a workbook section
+**§4.6 is a later, separately-commissioned recon (2026-08-05), read against the
+same record; it ran no driver and moved no gap-map row.** Its refutations (R1)–(R6)
+are arguments, not measurements, and each names the landed fact it turns on:
+(R1) on §(K-Λ) *Steps 3–5* and `m2/lambda1.m2` (M4); (R2) on §(K-ind) *I0* plus
+the Scott citation below; (R3) on the Vandermonde bracket and §(K-pitch)
+*Step 5*; (R4) on the isostatic count `5|E| = 6(|V|−1)` with `def = 0`, plus
+White–Whiteley's pure condition; (R6) on the `K4` double subdivision's `k = 6`
+in §(K-dom) *D4* and on `hK`'s `∀`-quantified split data (`Escape.lean:555`).
+Its one *new* derivation, **(OUT)**, is flagged in place as mathematics with no
+workbook home — attack it, do not assume it.
+
+**Project-new source verified this pass** (publisher metadata + the arXiv
+preprint listing; **no section pointer is asserted**, per the project's
+"classical / no guessed §N" rule): Scott, *Grassmannians and Cluster Algebras*,
+Proc. London Math. Soc. **92** (2006), no. 2, 345–380, DOI
+10.1112/S0024611505015571 (preprint arXiv:math/0311148) — the classification of
+the finite-type Grassmannians. The `D₄` label for `Gr(3,6)`, and
+`A_{n−3}` for `Gr(2,n)`, are standard readings of that classification and are
+used in §4.6 (R2) only to state what the seed proposed, never as a load-bearing
+step.
+
+§§2–4 (excluding §4.6) are a coordinator-authored synthesis (2026-08-05) of the
+three fan-out returns plus the arc's prior record, produced in discussion with
+the user at the end of the fan-out session. Every mathematical claim traces to a workbook section
 or a landed commit named inline; the *diagnoses* (§2.3's asymmetry, §2.4's
 Grassmannian framing, §2.5's saturation argument, §4's framing correction) are
 new synthesis and carry no driver — they are arguments, and a successor should
