@@ -543,22 +543,18 @@ determinantal condition — it is the negation of an identity, which is the one
 shape a *single named chart move with a bracket formula for `dλ`* can settle,
 i.e. a recipe in §2.2's sense rather than a search.
 
-*The derivation that makes it concrete, and it is new.* `p⁺ = (0, p⁺₂, p⁺₃, 0)`
-and `q = (0, q₂, q₃, 0)` have their outer entries vanishing **structurally**
-((Λ0f)'s parenthetical). Since `λ_i = λ(C_i)` and `V_bc = ker λ ∩ S`, the
-vanishing `λ₁ = 0` says exactly `C₁ ∈ V_bc`. Hence **both** bad points lie on
-the line `{λ₁ = λ₄ = 0}` of `P(S*)`, and:
-
->  **(OUT)** At a length-4-companion hard-stratum split, under (Λ0), the escape
->  holds at some target-rank seed as soon as **one outer companion line fails to
->  be a relative twist** — `C₁ = C(b,x₁) ∉ V_bc` **or** `C₄ = C(x₃,c) ∉ V_bc`.
->  In hinge-rate terms `C₁ ∈ V_bc` says: *some motion of `H` freezes the
->  companion's last three hinges and bends the first* — i.e. `b` is **not**
->  rigidly attached to the welded body `⟨x₁,x₂,x₃,c⟩` in `H/{e₂,e₃,e₄}`.
-
-One condition. No quadric, no meet line, no `pt(a)`, no ratio, no panels.
-**Flagged: this is mathematics with no workbook home** — a successor should move
-it into §(K-Λ) (or refute it) when that section is next opened.
+*The concrete criterion it produced — **(OUT)**, whose canonical home is the
+workbook.* Because `p⁺` and `q` have their outer entries vanishing
+*structurally*, the whole (Λ2) bad set lies on **one line** of `P(S*)`, so the
+escape holds by pitch as soon as **one outer companion line is not a relative
+twist**. Statement, derivation, the hinge-rate and contracted-graph readings,
+the conditionality on (Λ0d) + the widened (Λ0f′), and the confidence verdict:
+**`notes/Pencil-informal.md` §(K-Λ) *Step 5a*** — migrated there 2026-08-05 and
+**not restated here**, per this file's charter (strategy, not mathematics). The
+*State of (K)* map's **(K-wit)** row carries it in its *what would close it*
+cell. Two things to keep in view when quoting it in one line: it is
+**sufficient, never necessary**, and its hypothesis is a **rank lower bound**,
+so §2.3's asymmetry is relocated onto a smaller contracted graph, not evaded.
 
 *And it hands §4-C3 a consumer it did not have.* (OUT)'s sufficient condition is
 a **rigidity fact about a contracted framework** — and by §(K-ind) *I6* the
@@ -566,15 +562,18 @@ contracted body is *not* a pencil body, so the fact needed lives on the **mixed
 stratum**. C3 was recorded as "strictly weaker than the conjecture and follows
 from nothing already proved", with no consumer. It now has one.
 
-*Cheapest decisive experiment.* Not another measurement: the per-shape content
-is **already measured** (`dominance.py --far`: the far block attains `3(k−3)` at
-5/5 class habitats, so `λ` is not even locally constant there). What is missing
-is a *mechanism*, and the concrete deliverable is **one named far-chart move
-with a bracket formula for `dλ` valid at every class member**. The cheapest
-honest probe is the combinatorial half of (OUT): compute
+*Cheapest decisive experiment.* Not another measurement of the *differential*:
+that per-shape content is **already measured** (`dominance.py --far`: the far
+block attains `3(k−3)` at 5/5 class habitats, so `λ` is not even locally
+constant there). What is missing is a *mechanism*, and the concrete deliverable
+is **one named far-chart move with a bracket formula for `dλ` valid at every
+class member**. Two cheap probes rank ahead of prose, both new driver modes:
+report `λ₁, λ₄` (equivalently `C₁, C₄ ∈ V_bc`) over the existing
+length-4-companion frames — (OUT)'s hypothesis is **unmeasured anywhere in the
+arc** (§(K-Λ) *what would change this* (viii)) — and compute
 `deficiency(H/{e₂,e₃,e₄})` over the enumerated length-4-companion class shapes
-with the harness's existing `nogood_subdiv.deficiency`, mapping where the
-criterion is even generically available.
+with the harness's existing `nogood_subdiv.deficiency`, mapping where (OUT) is
+even generically available.
 
 *What would kill it.* A class shape at which `λ` is constant on the far chart —
 a genuine surprise against (D2)'s attainment, and a sharp new obstruction. Or a
@@ -611,8 +610,8 @@ uses), `mot(H)` modulo the trivial screws is
 `W ∩ (K^P)*` where `W := Z(H)^⊥` — i.e. **`λ` is the (essentially unique)
 element of a linear space on the ground set `E(H)` whose support lies inside the
 companion**, so `supp(λ)` is a **cocircuit** of the corresponding linear matroid
-on `E(H)`. (OUT) then reads: *the escape can only fail if the two **middle**
-companion edges `{e₂,e₃}` contain a cocircuit.* The target: a combinatorial
+on `E(H)`. **(OUT)** (§(K-Λ) *Step 5a*) then reads: *the escape can only fail if
+the two **middle** companion edges `{e₂,e₃}` contain a cocircuit.* The target: a combinatorial
 obstruction to that, class-wide.
 
 *Why §2's diagnosis does not already refute it.* This is the first candidate in
@@ -883,8 +882,9 @@ direction is set:
   coordinates from the already-committed `dominance.py:cycle_data` and reporting
   `supp(λ)` at every recorded length-4-companion habitat. **U1** carries the
   pass's one new derivation, **(OUT)** — the escape holds as soon as one *outer*
-  companion line is not a relative twist — which has **no workbook home** and
-  should be moved into §(K-Λ) or refuted when that section is next opened.
+  companion line is not a relative twist — whose canonical home is
+  `notes/Pencil-informal.md` §(K-Λ) *Step 5a*; §4.6 keeps only the strategic
+  readings.
 - **If the direction is C3 (mixed stratum):** first question is combinatorial and
   needs no geometry — can KT's reduction always avoid a prescribed vertex
   set `S`? Read Phase 20's generation theorem before scoping. **§4.6-U1 gives
@@ -909,8 +909,11 @@ the Scott citation below; (R3) on the Vandermonde bracket and §(K-pitch)
 *Step 5*; (R4) on the isostatic count `5|E| = 6(|V|−1)` with `def = 0`, plus
 White–Whiteley's pure condition; (R6) on the `K4` double subdivision's `k = 6`
 in §(K-dom) *D4* and on `hK`'s `∀`-quantified split data (`Escape.lean:555`).
-Its one *new* derivation, **(OUT)**, is flagged in place as mathematics with no
-workbook home — attack it, do not assume it.
+Its one *new* derivation, **(OUT)**, was migrated the same day to its canonical
+home `notes/Pencil-informal.md` §(K-Λ) *Step 5a* (statement, derivation,
+conditionality, confidence verdict, and a *what would change this* item), so
+this file states no mathematics of its own — attack (OUT) there, do not assume
+it here.
 
 **Project-new source verified this pass** (publisher metadata + the arXiv
 preprint listing; **no section pointer is asserted**, per the project's

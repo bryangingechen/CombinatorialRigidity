@@ -87,20 +87,18 @@ that carries the detail, so they are **not** restated here:
 - **(e)** the residual of §(K-Λ) item (vii): whether a class shape can carry **two or more hubs
   on a length-4 companion's interior**. No swept family realizes one.
 - **(f)** *(new, 2026-08-05)* the **three ranked live entries of `notes/Pencil-strategy.md`
-  §4.6** — U1 (retarget §2.4's image problem to the annihilator `Λ`; the new **(OUT)**
-  criterion), U2 (the hinge-rate / cycle-space presentation — the arc's first candidate ground
-  set that **grows with the graph**), U3 (restate `hK` as a non-existence). Smallest concrete
-  step: U2's `supp(λ)` driver over the committed `dominance.py:cycle_data`.
+  §4.6** — U1 (retarget §2.4's image problem to the annihilator `Λ`; its **(OUT)** criterion is
+  workbook §(K-Λ) *Step 5a*), U2 (the hinge-rate / cycle-space presentation — the arc's first
+  candidate ground set that **grows with the graph**), U3 (`hK` as a non-existence).
 
 **Read `notes/Pencil-strategy.md` before choosing anything else.** It is the post-fan-out
 strategic record: why class uniformity resists (the three-ingredient diagnosis — now sharpened
 to *the missing ingredient is the ground set, not the min-max*, and to the **recipe-vs-search**
-framing; the uniform-negatives/per-shape-positives asymmetry; the `Gr(3,6)` framing with its
-four objects kept apart; the counting-saturation argument), what the KT formalization did and
-did not yield, the candidate stronger inductive invariants (**C1 run and struck**, leaving C2
-and C3), and §5's symbolic-computation assessment with the M2 layer landed and its measured
-feasibility boundary. **Its new §4.6** (2026-08-05, the broad class-uniformity recon) is the
-entry point for any attack on the crux itself: six refutations plus a ranked three-entry live
+framing; the uniform-negatives/per-shape-positives asymmetry; the `Gr(3,6)` framing; the
+counting-saturation argument), what the KT formalization did and did not yield, the candidate
+stronger inductive invariants (**C1 run and struck**, leaving C2 and C3), and §5's
+symbolic-computation assessment. **Its §4.6** (the broad class-uniformity recon) is the entry
+point for any attack on the crux itself: six refutations plus a ranked three-entry live
 shortlist (`U1`–`U3`), each with its cheapest decisive experiment and what would kill it —
 **not restated here**.
 
@@ -302,11 +300,13 @@ is the canonical home a successor reads.
   which carries every argument and is **not restated here**). Refuted: `∀λ` (it *is*
   Λ-completeness), the `Gr(3,6)` cluster structure (§(K-Δ)'s (M3) verbatim — a **third** MISS for
   the ambient-ground-set reason), moment-curve/positivity, the codimension comparison, definable
-  choice/QE, and the bonus "choose the split to force `k = 4`". One new derivation with **no
-  workbook home**, to be moved into §(K-Λ) or refuted: **(OUT)** — both bad `λ` lie in
-  `{λ₁ = λ₄ = 0}`, so the escape holds as soon as one *outer* companion line is not a relative
-  twist; it hands §4-C3 the consumer it lacked. Calibration: **`k = 4` ⟺ `hnoRigid` is tight**.
-  **No gap-map row moves.**
+  choice/QE, and the bonus "choose the split to force `k = 4`". One new derivation, **(OUT)** —
+  both bad `λ` lie on the line `{λ₁ = λ₄ = 0}`, so the escape holds as soon as one *outer*
+  companion line is not a relative twist — since **migrated to its canonical home**, workbook
+  §(K-Λ) *Step 5a* (conditional on (Λ0d) + the widened (Λ0f′); sufficient, never necessary;
+  hypothesis unmeasured), where it also hands §4-C3 the consumer it lacked. Calibration:
+  **`k = 4` ⟺ `hnoRigid` is tight**. **No gap-map *status* moves; the (K-wit) row's *what
+  would close it* cell gains (OUT) as a length-4-scoped sufficient condition.**
 
 - **The route-σ arc — three landings, one line each; canonical home workbook §(K-σ), live
   summary the *Hand-off* blockquote, neither restated here** (2026-08-05, `sigma.py`).
