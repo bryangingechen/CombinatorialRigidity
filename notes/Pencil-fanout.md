@@ -87,6 +87,20 @@ passes' recorded escape-failure figures); seed all randomness; import from the
 canonical layer, never reimplement (see the README's *Divergences* table for
 the same-name-different-semantics traps).
 
+> **The protocol has now been exercised twice, and the second time at a NEW
+> shape (2026-08-05, second research day).** Three read-only recons ran
+> concurrently with **one *committing* dispatch**, all four in a **single working
+> tree**, with **zero collisions**: the committing dispatch's diff contained only
+> its own files, and `git status` stayed clean. The mechanic that made it safe is
+> exactly the one above — read-only agents commit nothing and draft **outside**
+> the repo — so the committing agent's staging area is never contended.
+> **Worktrees were explicitly NOT used, and that was the right call**: the
+> contention here is over *shared documents* (`Pencil-informal.md`, the *State of
+> (K)* map, `Phase39.md`), not over the tree, so a worktree would convert a
+> scheduling problem into a merge problem. Serial landing by the coordinator is
+> what resolves the document contention, and it is unaffected by where the agents
+> ran.
+
 **And the F11 requirement** (dispatch-log): *each headline claim needs a driver
 that tests that sentence.* This arc's last three passes each corrected a
 predecessor's "proven piece", every one of which survived a coordinator

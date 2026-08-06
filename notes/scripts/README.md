@@ -263,7 +263,7 @@ before touching any of them.** `rvec3` likewise.
                           |
                   w4/ DRIVER STACK (deepest last)
    nogood_subdiv -> saferes -> widened -> repin -> pitch -> kslide -> kslidecl
-        -> kslidecomb -> {flanks, pure, lambda}  -> dominance, outer
+        -> kslidecomb -> {flanks, pure, lambda}  -> dominance, outer, sigma
                               (siblings; none imports another)
 
 
@@ -295,18 +295,21 @@ Three layers, plus one **language island**:
   on `pitch`, and does **not** import `flanks` or `pure`). None of the three
   imports another, so a further (K)-arc driver goes *beside* them, not through
   them. **`dominance`** (the C1 spike — the differential of `H ↦ V_bc` against
-  `dim Gr(3,6)`) and **`outer`** (the §(K-Λ) *Step 3a* follow-up — the outer
-  companion bracket `g₁₄ = [b,x₁,x₃,c]`) sit beside the three rather than on
+  `dim Gr(3,6)`), **`outer`** (the §(K-Λ) *Step 3a* follow-up — the outer
+  companion bracket `g₁₄ = [b,x₁,x₃,c]`) and **`sigma`** (§(K-σ) — the polarity
+  as a symmetry of the split, and route σ) sit beside the three rather than on
   them, but each imports catalogued §1 *primitives* from a sibling rather than
-  a private helper: `dominance` takes `flanks.star_span_ranks`, and `outer`
-  takes that plus `dominance`'s `build_chart` / `simple_paths` / `h_edges` and
-  — through `importlib`, since `lambda` is a keyword — `lambda`'s
-  `habitat_specs` / `omega_curves` / `rows_mnqs`. **`star_span_ranks` now has
-  three consumers, which is exactly the signal rule 2 names: the next commit
-  that already owes a full `repin` re-baseline should move it down** (with a
-  re-export from `flanks` so the recorded figures do not move); on its own the
-  move is not worth the figure-gate cost, since `repin` sits under the whole
-  `w4/` chain.
+  a private helper: `dominance` takes `flanks.star_span_ranks`; `outer` takes
+  that plus `dominance`'s `build_chart` / `simple_paths` / `h_edges` and —
+  through `importlib`, since `lambda` is a keyword — `lambda`'s
+  `habitat_specs` / `omega_curves` / `rows_mnqs`; `sigma` takes
+  `flanks.star_span_ranks`, `hybrid_gates.build_rigidity_extensors`, and
+  `repin`'s `hodge_star` / `span_basis` / `lambda2_through`.
+  **`star_span_ranks` now has FOUR consumers, past the signal rule 2 names: the
+  next commit that already owes a full `repin` re-baseline should move it down**
+  (with a re-export from `flanks` so the recorded figures do not move); on its
+  own the move is not worth the figure-gate cost, since `repin` sits under the
+  whole `w4/` chain. See *Harness debt* below — this is item 3 of three.
 - **The M2 island** — `m2/`. Macaulay2, not Python, so there is **no import
   edge** in either direction: an M2 driver cannot reuse a §1 primitive and must
   re-derive the ones it needs. That is a licensed exception to rule 3 below and
@@ -454,6 +457,10 @@ arcs too.
 | `python3 notes/scripts/w4/outer.py --sweep` | 18 s | ibid. (1357 class shapes, 4280 pairs; the (Λ0i) coverage split) |
 | `python3 notes/scripts/w4/outer.py --tangent` | 45 s | ibid. (`d g₁₄ ≠ 0` on the chart tangent space, 684/684) |
 | `python3 notes/scripts/w4/outer.py --patterns` | 299 s | ibid. (the coverage boundary: 4 of 8 companion hub patterns realized) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/sigma.py --transport` | 87 s | workbook §(K-σ) *Step σ4* ((σ1)–(σ6); the 6-dim span; the route-σ witness and its pullback) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/sigma.py --adv` | 87 s | ibid. (the α/β perp generators, `C(M) ∦ C(bc)`, the `predA` census, pullback legality, the `W19` (K-res) leg) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/sigma.py --nondeg` | 43 s | ibid. (all four `IsNondegPencilRealization` conjuncts at `σu` and at the witness; the chart point equations) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/sigma.py --fixed` | 1 s | ibid. *Step σ6* (σ-fixed configurations are degenerate: deficit 1 at 6/6 on `C₆`) |
 
 ### `m2/` — the Macaulay2 symbolic layer
 
@@ -550,6 +557,8 @@ Python figures are frozen, and §4 convention 5 applies.
 | `validate`, `witness`, `control`, `stratum`, `sweep`, `main`, `run_member`, `classify` | Driver-**mode entry points**, one per driver, named after the flag that selects them (`--validate`, `--witness`, …). Not primitives; each means something different per module. | Module-local by design. |
 | `dot3` (`kslidecl`) | A 3-vector special case of `exactcore.dot`, kept local to the tetrahedral-basis code. | Harmless; prefer `exactcore.dot` in new work. |
 | `span_meet` (`lambda`) vs `meet_param` (`outer`) | Same *job* — "where do these two subspaces meet" — different ambient and different return. `span_meet` intersects two subspaces of **ℚ⁶** (it is hard-coded to that ambient, `for r in range(6)`) and returns a basis; `meet_param` meets two **coplanar lines of ℚ³** and returns the *parameter* of the meet along the second line, or `None` for a meet at infinity. `span_meet` cannot be called on the ℚ⁴/ℚ³ data, so this is rule 3's "it must differ, so give it a different name". | Both stay. Use `span_meet` for Λ²-level meets, `meet_param` for the two marked points on the meet line `M`. |
+| `repin.lambda2_plane` vs `sigma.lambda2_perp` | Same *space* — `Λ²` of a plane, 3-dimensional — from different data. `lambda2_plane(pt_h, nrm_h, rng)` takes an **affine** hub point + 3-normal, samples three in-plane points through `plane_pts`, and **consumes rng**; `lambda2_perp(nu)` takes a **homogeneous** 4-covector and wedges a basis of `nu^⊥`, deterministically. `sigma.py` works entirely in homogeneous data (at `σu` the "points" are another configuration's normals, which no affine hub datum expresses), so it cannot call the first; and swapping either way changes the rng stream. | Both stay. Use `lambda2_plane` inside the affine samplers, `lambda2_perp` in homogeneous code. |
+| `flanks.nondeg_conjuncts` vs `sigma.nondeg_conjuncts_hom` | Both test all four conjuncts of `IsNondegPencilRealization`. `nondeg_conjuncts(edges, placed)` takes an **affine placement** and *derives* the normals itself (through `kbare_common.verify_pencil_witness`), returning `(True, normals)` or a named failure; `nondeg_conjuncts_hom(edges, V, P, N, hubs)` takes homogeneous points **and** normals as independent inputs and returns a 4-tuple of bools. The first cannot express `σu` at all, since there the points *are* another configuration's normals and no affine placement produces them. | Both stay. The `_hom` suffix marks the homogeneous model; do not merge. |
 | pencil-frame samplers: `lambda.sample_local_frame` vs `widened.place_pencil_general` | Both place a pencil-generic configuration, and they are **not** interchangeable in two independent ways. **(a) Different in-plane sampler.** `sample_local_frame` uses the **robust** `repin.rob_in_plane` for every panel-constrained interior; `place_pencil_general` routes a **single-hub** interior through the *degenerate* `localtest.in_plane_point` (the `plane_basis` family above). Swapping either way changes which points are drawn, and in the degenerate direction it reintroduces exactly the defect that silently contaminated several passes' recorded escape figures. **(b) Different object.** `place_pencil_general` places a **whole graph**; `sample_local_frame` places only the *local frame* of a companion split (`b, x₁..x_{k−1}, c, a`, the two panels, the meet line `M`) and models the far graph by **synthetic** far-hub-neighbour normal constraints — which is precisely what §(K-Λ)'s class-uniformity claim over the 38 local strata needs, and what a whole-graph placement cannot express. | **Do not merge, and do not "unify" the sampler.** Habitat-level (K-Λ) frames go through `lambda.habitat_frame`, which calls `repin.seed_probe` (hence `place_pencil_general`) deliberately, so both samplers appear in one driver by design. |
 
 Merged in the 2026-08-05 rewire (verified semantically identical, then gated
@@ -558,6 +567,46 @@ figure-invariant): `rref`, `rank`/`rank_exact`, `nullspace`, `left_nullspace`,
 `kbare_common`); `cross`/`cross3` (three copies: `gate2`, `pitch`, `repin`);
 `neighbors` (`kbare_common`, `n9`); `K4`/`K5_minus_matching` (three copies:
 `localtest`, `probe_zero`, `run_habitats`).
+
+## Harness debt — three parked items, and the tension that parks them
+
+Named as a list (2026-08-05) so a successor does not rediscover them one at a
+time. **The debt is one-directional and it accumulates**: every item is parked
+because *"figures do not move"* and *"fix the bug"* point in opposite
+directions, and each new driver that depends on the current state raises the
+price of the eventual fix.
+
+1. **`localtest.meet_line` raises instead of signalling.** It is documented to
+   signal "the two planes have no meet line" by returning a **zero direction**,
+   and `widened.place_pencil_general` tests for exactly that — but when the two
+   normals are **parallel** every `2×2` minor vanishes, its base-point loop never
+   binds `p0`, and it raises `UnboundLocalError`. So the caller's guard is
+   **unreachable in the one case it was written for**. Handled caller-side
+   (`outer.chart_point` catches it and rejects the draw); full detail in §4
+   convention 1.
+2. **`lambda.omega_curves`' coded (Λ0f) equivalence raises at `g₁₄ = 0`.** That
+   point became *reachable* only when `outer.py --geom` constructed it
+   (2026-08-05); the driver catches and reports the raise, never repairs it
+   (workbook §(K-Λ) *Step 3a*). The coded equivalence is the **superseded**
+   (Λ0f), not the widened (Λ0f′), which is the underlying reason.
+3. **`flanks.star_span_ranks` has four consumers** (`flanks`, `dominance`,
+   `outer`, `sigma`), past §2 rule 2's own trigger to move it down to `repin`.
+
+**Neither defect corrupts a figure — both fail loudly** — and item 3 is
+placement, not correctness. But each fix touches a module the whole `w4/` stack
+imports, i.e. it owes the full re-baseline of *figures do not move* (second
+bullet), including the two invocations that exceed a 600 s foreground budget.
+**The recorded option is one deliberate re-baselining commit clearing all
+three at once**, which pays that cost exactly once; opening it is a coordinator
+decision, not something a research dispatch should do on the side.
+
+**One unreconciled observation, recorded so a later pass does not trip on it**
+(coordinator re-ran `outer.py --patterns` on 2026-08-05 and confirmed its
+headline, 4 of 8 patterns realized): `--patterns` reports **1006** companions in
+the uncovered `(0,1,0)` pattern while `--sweep` reports **652** uncovered pairs.
+The two modes run over different denominators (7002 vs 4280 pairs), so this is
+**expected rather than contradictory** — but it was **not reconciled**, and
+neither figure should be quoted as the other.
 
 ## Deliberate non-goals
 

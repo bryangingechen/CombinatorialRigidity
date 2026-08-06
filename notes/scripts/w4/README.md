@@ -482,7 +482,62 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
     patterns `(x₁, x₂, x₃)` a class companion can have, at a widened length
     bound. **4 of 8** realized; the four with ≥ 2 hubs on the companion
     interior appear in no swept family, and the driver prints that as a
-    boundary rather than a theorem.
+    boundary rather than a theorem. *Re-run and confirmed by the coordinator,
+    2026-08-05.* **Do not read its companion counts against `--sweep`'s**: the
+    two modes run over different denominators (7002 vs 4280 pairs), so
+    `--patterns`' 1006 `(0,1,0)` companions and `--sweep`'s 652 uncovered pairs
+    are not comparable — expected, but **unreconciled**
+    (`notes/scripts/README.md` *Harness debt*).
 
   Argument state and per-mode assertion list: `notes/Pencil-informal.md`
   §(K-Λ) *Step 3a*.
+
+- `sigma.py [--transport | --adv | --nondeg | --fixed]` — the **projective
+  polarity `σ`** (`screwComplementIso`) as a symmetry of the split, and
+  **route σ**: route A run at the *dual* seed `σu`. The whole driver works in
+  **homogeneous** data — a body carries a point `P[w]` and a panel normal
+  `N[w]` in `ℚ⁴` with `P[w]·N[w] = 0`, and `σu` is literally
+  `(points, normals) := (N, P)` — which is why two of its helpers are
+  *Divergences* rows against their affine originals (`lambda2_perp` vs
+  `repin.lambda2_plane`; `nondeg_conjuncts_hom` vs `flanks.nondeg_conjuncts`).
+  Sits beside `dominance`/`outer` as a `w4/` leaf. Run with `PYTHONHASHSEED=0`
+  (verified byte-identical under two different hash seeds, so no printed
+  collection depends on hash order).
+
+  **One pinned seed pool for every mode**: two splits of the tight control (the
+  double-subdivided `K4`, `|V| = 16`, target 90 / `G′` target 84), seeds
+  440–479 at chain 0 and 500–529 at chain 1, of which **34 + 29 = 63** are
+  valid — i.e. survive the guards *and* land on the hard stratum (`s₀ = 0`,
+  `dim R_a = 1`). Every mode asserts each of its counters equals that pool and
+  asserts the pool size itself, so a sampler change that silently moved the
+  pool fails the run.
+  - `--transport` (~87 s): **(σ4)** `ν_u ∧ ν_w ∝ ⋆(p̂_u ∧ p̂_w)` on every edge —
+    "σ replaces every body's point by its own panel normal"; `rank`, `s₀`,
+    `dim R_a` transported; **(σ6)** the criterion transport
+    `crit_A(σu) ⟺ r ⊥̸ α_{pt(b)}` together with `r(σu) ∝ ★r(u)`; the
+    six-dimensional span `β_{Π b} + β_{Π c} + α_{pt b} = K⁶` of the
+    σ-completeness theorem; and route σ's witness, pulled back into `u`'s frame,
+    exhibited as the `pt(v) = pt(b)` family with `pt(a)` sliding on
+    `Π(a) ∩ Π(c)`.
+  - `--adv` (~87 s): the adversarial half — `dim(α_{pt b} + α_{pt c}) = 5` with
+    perp `★C(bc)`; `dim(β_{Π b} + β_{Π c}) = 5` with perp `★C(M)` and
+    `C(M) ∦ C(bc)`; the `predA` census (**`predAfalse = 0/63`**, so (σ6)'s
+    failure direction is *unwitnessed*); pullback legality; and the observation
+    that routes A/B at `u` **already** escape at all 63 seeds. Also probes two
+    `W19` splits (the (K-res) residual habitat) over seeds 600–619 and finds
+    **0** valid hard-stratum seeds — asserted to stay empty, so a successor who
+    makes it nonempty is forced to update the workbook.
+  - `--nondeg` (~43 s): all four `IsNondegPencilRealization` conjuncts
+    (`Motive.lean:110-115`) at `u`, at `σu` (reported **per conjunct**, because
+    that is the obligation), and at the route-σ witness; plus the chart's
+    binding point equations at both. `σu` nondegenerate is **observed 63/63,
+    not proven** — the conjuncts are not self-dual.
+  - `--fixed` (~1 s): σ-**equivariant** seed recipes are dead. Over ℝ with the
+    project's definite polarity there is no σ-fixed pencil configuration at all;
+    for a **null** correlation `J` every hinge line is forced into `J`'s linear
+    line complex, giving a self-stress per cycle. Measured on tight `C₆`:
+    **deficit exactly 1 at 6/6** placements, with `⋆S ⊥` every hinge asserted.
+
+  Argument state, the four obligations and the per-mode assertion list:
+  `notes/Pencil-informal.md` §(K-σ). **Route σ is a CANDIDATE offered for
+  adjudication — it moves no gap-map row.**

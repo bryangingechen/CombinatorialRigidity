@@ -72,6 +72,26 @@ states this as "the Klein quadric is invisible to the matroid — it is exactly 
 extra structure that makes body-hinge geometry more than body-bar
 combinatorics".
 
+> **Confirmed from outside the subject, 2026-08-05.** The one literature where
+> "combinatorics that sees a quadric" is the *topic* — Δ-matroids / orthogonal
+> matroids — supplies ingredient 1 (the spinor variety) and ingredient 3 (parity
+> min-max, jump systems, union/delta-sum) in quantity, and **still cannot supply
+> ingredient 2**: its subset-indexed family `S ↦ Pf(A_S)` is indexed by the
+> *ambient* `[n]`, never by the graph. So the sharper statement of this
+> subsection is: **the missing ingredient is the ground set, not the min-max.**
+> Verdict, hypotheses and sources: `notes/Pencil-informal.md` §(K-Δ).
+
+**The recipe-vs-search framing, which is what §2.3's asymmetry costs in
+practice.** KT discharges its per-case seed obligation with **recipes** —
+eq. (6.3)'s block-triangular construction, the 1-extension normal form:
+*formulas*, valid at every instance of a case, which is exactly why they are
+automatically uniform. The pencil arc discharges the same obligation with a
+**per-shape search** — §(K-flank)'s 8 named + 843 stratum witnesses, each a
+genuine proof by chart irreducibility, and each found rather than written down.
+**A search does not carry a reason.** In one line: *we can build any seed you
+name; we cannot write the function that builds them.* Every "per-shape positive"
+in the table above is a search result, and that is why none of them composes.
+
 This also explains why Tay's theorem was reachable and this is not. In Tay's
 setting the quadric enters only in *choosing* the per-hinge subspaces; once
 chosen generically the rank is pure matroid union. **The pencil pin is a
@@ -137,6 +157,21 @@ be done uniformly in one line.
 > graph" is false and the paragraph's hope of "done uniformly in one line" does
 > not survive: density per shape is per shape.
 
+> **Four objects, and the conversation kept conflating them** (coordinator
+> scrutiny, 2026-08-05; the mathematics and the connection it makes are
+> `notes/Pencil-informal.md` §(K-ind) *Step I0*, which is the canonical home).
+> **(1)** `V_bc(p)` is a **point** of `Gr(3,6)`, not a locus. **(2)** The
+> graph-dependent object is the **map** `φ_G : chart(G) → Gr(3,6)` and its
+> **image** — the thing this subsection says we have no description of.
+> **(3)** The bad locus `B ⊆ Gr(3,6)` is the union of two Schubert divisors,
+> each the *hyperplane class* in the Plücker embedding, so `B` is cut by a single
+> degree-2 form **factoring into two hyperplanes** — and `B` is
+> **graph-independent**. **(4)** `F = φ_G^{-1}(B) ⊆ chart(G)` is a hypersurface
+> exactly when `hK` holds there, the whole chart when it fails. *The connection:*
+> that global factorization is the shadow of §(K-Λ) **(Λ1)**'s local result
+> (`Φ_loc` always rank 2, a product of two rational linear forms) — **the two
+> computations are the same geometry at two scales.**
+
 This also restates §(K-pure) *P7*'s locality/pitch trade as a fact about that
 map: the degenerations that give combinatorial control **move `V_bc` onto the bad
 hypersurface** — that is what (PC-OBS) proves — while the honest chart avoids it
@@ -145,6 +180,20 @@ handle. *Degenerate enough to compute, and you break the thing you are
 computing.* §(K-pure)'s two unexplained residuals (`K222` and
 `K4 (1,1,3,5,4,4)`, where `V_bc ∩ Λ²π̂ ≠ 0` with no chord stress) are the
 sharpest available data on the map's image.
+
+> **That wall now has a proof, in the one case where a symmetry looked like an
+> escape from it** (2026-08-05; `notes/Pencil-informal.md` §(K-σ) *Step σ6*).
+> A **σ-equivariant seed recipe** — build the seed as a fixed point of the
+> polarity, so uniformity comes free — is dead: over `ℝ` with the project's
+> *definite* polarity there is **no σ-fixed pencil configuration at all**
+> (`normal_v ∝ point_v` plus the landed incidence conjunct forces
+> `point_v · point_v = 0`), and for a general correlation the fixed locus is
+> worse than empty, it is degenerate — a **null** correlation makes the incidence
+> automatic but forces every hinge line into a **linear line complex**, giving a
+> self-stress per independent cycle. Measured on tight `C₆`: **deficit exactly 1
+> at 6/6**. Exactly this subsection's trade, with a witness. (The *candidate*
+> route σ escapes it by applying `σ` **once**, to move to a different seed —
+> it never asks for equivariance.)
 
 ### 2.5 Counting saturation — no count-expressible invariant can help
 
@@ -486,6 +535,14 @@ direction is set:
   hypersurface's pullback identically zero on the image of the `V_bc` map?",
   which is §2.4's open problem and is *not* far-graph-free — and item (iii),
   (K-chord)/`R_3` for parameterized families.
+- **NEW, 2026-08-05 — if the direction is to verify route σ:** the single
+  concrete commit is **σ-nondegeneracy of the transported seed**
+  (`notes/Pencil-informal.md` §(K-σ) *Step σ5* obligation 1) — the one crux the
+  candidate rests on, with a named repair against landed machinery
+  (`exists_common_seed_pencilRow_and_polynomials`, `Engine.lean:476`, whose own
+  docstring already names this consumer shape). Route σ is a **candidate**, not
+  a settled closure; it moves no gap-map row, and whether it should **preempt
+  the mechanisms pass** is an open user adjudication.
 - **If the direction is C3 (mixed stratum):** first question is combinatorial and
   needs no geometry — can KT's reduction always avoid a prescribed vertex
   set `S`? Read Phase 20's generation theorem before scoping.
@@ -511,10 +568,27 @@ were verified against the tree and the sandbox on the day.
 Classical facts named without a bibliographic pointer, per the project's
 "classical" convention: Witt's theorem, the α/β classification of the Klein
 quadric's maximal isotropics, the Schubert codimension count, Maxwell's count,
-and the double banana. **One unverified lead**, recorded so it is not mistaken
-for a route: conditions about *isotropic* subspaces and their intersections are
-the subject of the Δ-matroid / orthogonal-matroid literature (Bouchet and
-successors), which is the only place I know of where "combinatorics that sees a
-quadric" is the topic. **No specific theorem there has been checked against this
-problem** — treat it as a literature-recon question, not a candidate route, and
-verify any citation before writing it into a chapter.
+and the double banana. `deg Gr(3,6) = 42` (§2.4's pointer into §(K-ind) *I0*) is
+likewise classical; **the class of the discriminant hypersurface in `Gr(3,6)` is
+NOT verified and must not be asserted.**
+
+**The one recorded unverified lead is now CHECKED AND REFUTED (2026-08-05), with
+the reason.** It read: conditions about *isotropic* subspaces and their
+intersections are the subject of the Δ-matroid / orthogonal-matroid literature
+(Bouchet and successors), the only place where "combinatorics that sees a
+quadric" is the topic. The literature is real and the *shape* of statement the
+phase wants genuinely exists in it — but **two of its three standing hypotheses
+fail on `V_bc`, each independently fatally**: its objects are *totally isotropic*
+subspaces and `V_bc` never is (an `O(6)`-invariant, not a frame choice), and its
+ground set is `[3]`, fixed by `dim Λ²K⁴ = 6`, never growing with the graph.
+Full verdict, dictionary, the two readings it does buy ((N1)/(N2)), the
+corroborating negative from the current rigidity survey, and a fully verified
+bibliography: `notes/Pencil-informal.md` **§(K-Δ)**. Two consequences for this
+document: §2.2 is sharpened (*the missing ingredient is the ground set, not the
+min-max*), and the right pointer for a successor is **"Coxeter matroids, and the
+reason they don't apply"** — a theorem (Witt: `SO₆` has four orbits on
+`Gr(3,6)`), not a gap in the literature. One *new* unverified pointer replaces
+it, flagged as such: `V_bc` is a **three-system of screws**, and the classical
+screw-theory literature (Ball; Hunt; Gibson–Hunt) studies the `O(6)`-geometry of
+such systems. It is geometric, not combinatorial, so it would not supply
+ingredient 2 either — **verify every citation from scratch before using it.**
