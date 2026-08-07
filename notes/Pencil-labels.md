@@ -201,6 +201,20 @@ G, E and now TCOL).
 rejected as a **direction code** under (L5)'s substring check, which is a
 distinct test from a prefixed label's — recorded so the two are not confused.
 
+**Reserved 2026-08-07 for the SIXTH direction — CFLANK**
+(`notes/Pencil-fanout.md` §"Sixth direction"). A **single direction**, not a
+fan-out — selection **delegated to the coordinator**, not user-adjudicated
+from a candidate list (`notes/Phase39.md` *Current state*, the "keep going
+on my own judgment" adjudication). The code `CFLANK` (circuit-profile
+flank) is a topic-tagged mnemonic under (L5), verified **0-hit as a raw
+substring** across `*.md`, `*.tex`, `*.lean`, `*.py`, `*.m2` at reservation
+time — as are the reserved section name **§(K-prof)** and tag **`PF-`**.
+The direction *extends* §(K-grid)'s live family, so its label reservation
+is the unclaimed tail of that family (labels (GR-21)+, Steps G24+) and the
+owning section stays authoritative; **§(K-prof)** / `PF-` are reserved only
+for use if the argument needs a section of its own. Not yet dispatched —
+the reservation stays open until landing.
+
 **One naming hazard the second fan-out created, recorded rather than renamed
 (L4).** The **direction letters A/B/C are re-used** between the 2026-08-05 fan-out
 (A = §(K-flank), B = §(K-Λ), C = §(K-pure)) and the 2026-08-06 one

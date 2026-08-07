@@ -9,14 +9,13 @@
 is at its thirty-first docs+scripts-only pass (workbook `notes/Pencil-informal.md`; the settled
 W4-residual arc is `notes/Pencil-W4-informal.md`). **ALL FIVE rounds are now COMPLETE** —
 first fan-out A/B/C, the harness re-baselining round S1–S4, second fan-out T/R/M, third
-fan-out G/Q/O (2026-08-06), fourth fan-out E/J (2026-08-07), **fifth fan-out PEX/TCOL
-(2026-08-07)**. Direction PEX **LANDED** (§(K-frame) continuation Steps FR7–FR11 — the
-bare-cycle stratum PROVEN **finite** and exhaustively enumerated, **(FR-R1) PROVEN** with
-(FR-4)'s named gap the sole rider); direction TCOL **LANDED** (§(K-grid) continuation Steps
-G19–G23 — the branch-level reduction, the circuit run law, the 6-spanning-tree packing
-statement, and collapse order 4 at all 18 habitat separators, all proven, but **(GR-15)
-stays OPEN — no flank found**). **The next direction awaits user adjudication** (see
-*Hand-off*). **Class uniformity remains untouched by every round.**
+fan-out G/Q/O (2026-08-06), fourth fan-out E/J (2026-08-07), fifth fan-out PEX/TCOL
+(2026-08-07, PEX **(FR-R1) PROVEN**, TCOL four structural results proven but **(GR-15)
+stays OPEN — no flank found**; full verdicts in *Decisions made*). **The user has
+delegated next-direction selection to the coordinator** ("keep going on my own judgment",
+2026-08-07 — see *Hand-off*); the **sixth direction, CFLANK**, is PREPPED (not yet
+dispatched) — `notes/Pencil-fanout.md` §"Sixth direction". **Class uniformity remains
+untouched by every round.**
 Direction codes are **multi-letter and topic-tagged from the fifth fan-out on**
 (`notes/Pencil-labels.md` clause **(L5)**); the grandfathered single letters are re-used
 across dates — **always date those**.
@@ -50,16 +49,24 @@ constraints; the dated dispatch narrative is in *Decisions made* and git):
   §"Third fan-out". **2026-08-06, fourth fan-out (COMPLETE, E/J):** selected the (GR-10)
   min-max attack and the shared dominance lemma; serial E→J, top rung —
   `notes/Pencil-fanout.md` §"Fourth fan-out".
-- **2026-08-07, fifth fan-out:** of the post-fourth-fan-out hand-off's five candidate
-  directions the user selected **(1) prove (FR-R1)** and **(2) the (GR-15)/(GR-4′) attack**,
-  and NOT (3) the (FR-6) follow-ons, (4) the unselected leads (b)–(f), or (5) the parked Lean
-  half (route σ / W4) — the Lean hold stands. Serial dispatch, order **PEX → TCOL** (the order
-  is load-bearing: both are colouring-existence over the same *Step G12* branch-bit structure,
-  and (FR-R1) is the one with no spline/rank side, so it feeds TCOL). Both mapped to the top
-  rung; **the top rung is unavailable this session** (same check-in), so both **substitute
-  opus**. Same check-in: the 10-dispatch cap is **lifted** and rescue §1 mechanical fixups are
-  **pre-authorized**. Specs: `notes/Pencil-fanout.md` §"Fifth fan-out"; reservations +
-  the new multi-letter direction-code rule (L5): `notes/Pencil-labels.md`.
+- **2026-08-07, fifth fan-out (COMPLETE, PEX/TCOL):** of the post-fourth-fan-out hand-off's
+  five candidates the user selected (FR-R1) and the (GR-15)/(GR-4′) attack (not the (FR-6)
+  follow-ons, the unselected leads (b)–(f), or route σ / W4). Serial **PEX → TCOL** (order
+  load-bearing — both are colouring-existence over the same *Step G12* structure); both
+  mapped top rung, **opus substituted** (fable unavailable); 10-dispatch cap **lifted**,
+  rescue §1 mechanical fixups **pre-authorized**. Specs + the (L5) direction-code rule:
+  `notes/Pencil-fanout.md` §"Fifth fan-out", `notes/Pencil-labels.md`.
+- **2026-08-07, delegation adjudication (binds from the SIXTH direction on).** Asked at
+  the session-start check-in "TCOL is the fifth fan-out's last direction. When it lands,
+  what should I do?", the user selected **"Keep going on my own judgment"** — *"After
+  landing TCOL I pick the next direction from the hand-off's candidate list and continue
+  dispatching without checking in."* This delegates **selection only** and changes **no**
+  standing constraint: the phase stays OPEN, the 2026-08-05 Lean hold stands, W4 stays
+  PARKED, `hK`/`hbareSplit` stay carried as pinned, option B in both kernel cases stays
+  un-commissioned. Supersedes the *Hand-off*'s prior "next direction awaits user
+  adjudication" sentence — the same check-in's top-rung/cap/rescue calls (above bullet)
+  are otherwise unchanged. The coordinator's first pick under this delegation is the
+  **sixth direction, CFLANK** — `notes/Pencil-fanout.md` §"Sixth direction".
 
 **Kernel-(K) research arc — thirty docs+scripts-only dispatches, plus one strategy-only
 pass** (2026-08-02 → 08-07).
@@ -205,26 +212,20 @@ discharge (residue (iv)) is CLOSED too**. The landed successor
 > **BLOCKED by the standing 2026-08-05 Lean-hold adjudication (general, not W4-scoped)**; does
 > not open without a fresh user adjudication.
 >
-> **The FIRST fan-out (A/B/C of 2026-08-05/06), the harness re-baselining round (S1–S4), the
-> SECOND fan-out (T/R/M) and the THIRD fan-out (G/Q/O) are ALL COMPLETE** — each direction
-> one-lined in *Decisions made*, its workbook section the canonical home, every driver
+> **The FIRST through FIFTH fan-outs are ALL COMPLETE** — first (A/B/C), the harness
+> re-baselining round (S1–S4), second (T/R/M), third (G/Q/O), fourth (E `cdd23d30` / J
+> `12edc305`), fifth (PEX `b32c1c2c` / TCOL `cd0af9e1`); each direction one-lined in
+> *Decisions made* (with dates), its workbook section the canonical home, every driver
 > coordinator-re-run.
 >
-> **The FOURTH fan-out (directions E / J, user-adjudicated 2026-08-06) is COMPLETE** — E
-> `cdd23d30` (§(K-grid) Steps G14–G18), J `12edc305` (§(K-frame)); each one-lined in
-> *Decisions made*, its workbook section the canonical home, every driver coordinator-re-run.
->
-> **The FIFTH fan-out (directions PEX / TCOL, user-adjudicated 2026-08-07) is COMPLETE** —
-> PEX `b32c1c2c` (§(K-frame) continuation, Steps FR7–FR11): the bare-cycle stratum PROVEN
-> **finite** and exhaustively enumerated, **(FR-R1) PROVEN** with (FR-4)'s named gap the sole
-> rider. TCOL (this commit, §(K-grid) continuation, Steps G19–G23, `w4/gridcol.py`): four
-> structural results PROVEN — the branch-level reduction to a square system on the hub
-> multigraph (GR-16), the circuit run law binding only at two length profiles (GR-17), the
-> tree-triple as a grouping of an always-existing 6-spanning-tree packing (GR-18), and a
-> collapse-order-4 certificate at all 18 habitat separators (GR-19) — but **(GR-15) stays
-> OPEN, no flank found**; PEX's transferable technique carries over only for its two named
-> enablers (the component law, the girth-bounded vacuity), not for finiteness or for the
-> conclusion. **Next direction awaits user adjudication** — no option pre-selected.
+> **2026-08-07 delegation (supersedes "next direction awaits user adjudication" above).**
+> Asked at check-in what to do once TCOL lands, the user selected **"Keep going on my own
+> judgment"** — the coordinator now picks the next direction and dispatches without
+> checking in (selection only; every standing constraint is unchanged — see *Current
+> state*). Pick: the **SIXTH direction, CFLANK** — a single direction (not a fan-out)
+> targeting a structural flank against **(GR-15)**, TCOL's item (v) — **PREPPED,
+> dispatches next**: `notes/Pencil-fanout.md` §"Sixth direction";
+> `notes/Pencil-labels.md`.
 >
 > **Not selected at the 2026-08-07 adjudication**, and so not open: the **(FR-6) follow-ons**
 > (§(K-frame) *What would change this* items (ii)–(iv) — the `ℓ_min = 5` battery beyond
@@ -296,8 +297,17 @@ Reverse-chronological, one line per landing; full derivations live in git,
 `notes/Phase39-design.md`, and (for the (K) arc) the workbook section named in each entry, which
 is the canonical home a successor reads.
 
-- **The FIFTH fan-out — both directions LANDED 2026-08-07** (PEX `b32c1c2c`, TCOL this
-  commit; canonical homes the workbook sections named). *PEX, §(K-frame) continuation Steps
+- **The SIXTH direction — CFLANK adjudicated (delegation) and prepped, 2026-08-07, not yet
+  dispatched.** The user delegated next-direction *selection* (no standing constraint) to the
+  coordinator ("keep going on my own judgment" — *Current state*); the coordinator picked
+  TCOL's own *What would change this* item (v) — a targeted structural flank against
+  **(GR-15)** — as **direction CFLANK**, minted under (L5), reserving **§(K-prof)** / `PF-`
+  (0-hit verified) as the unclaimed tail of §(K-grid)'s family. Mapped top rung, opus
+  substituted. Spec `notes/Pencil-fanout.md` §"Sixth direction"; reservation
+  `notes/Pencil-labels.md`.
+
+- **The FIFTH fan-out — both directions LANDED 2026-08-07** (PEX `b32c1c2c`, TCOL
+  `cd0af9e1`; canonical homes the workbook sections named). *PEX, §(K-frame) continuation Steps
   FR7–FR11, `patexist.py`*: the bare-cycle stratum PROVEN **finite** (22 iso classes / 76
   sites / 1976 labelled instances) and exhaustively enumerated; **(FR-R1) PROVEN**, (FR-4)'s
   named gap the sole rider. *TCOL, §(K-grid) continuation Steps G19–G23, `gridcol.py`*: four
@@ -307,24 +317,20 @@ is the canonical home a successor reads.
   both.
 
 - **The FOURTH fan-out — both directions LANDED 2026-08-07** (E `cdd23d30`, J `12edc305`;
-  canonical homes the workbook sections named). *E, §(K-grid) Steps G14–G18, `packmm.py`*:
-  the (GR-10) **min-max REFUTED as posed** — NP-complete at exact balance ((GR-13)), **18
-  counting-blind separators ON THE HABITAT** — while (GR-10) survives exhaustive enumeration;
-  residual re-aimed at **(GR-15)**. *J, the new section §(K-frame), `framedom.py` +
-  `framedom.m2`*: the shared chart-to-frame dominance lemma **delivered in minimal form**
-  ((FR-1)–(FR-3)), transport by **`G′`-regridding** ((FR-4), one named gap: (GR-5) at `G′`),
-  the (ANH-14) residue **discharged at 1904/1904 sites** ((FR-5)); residue (FR-R1) — **now
-  PROVEN by PEX, above**. Uniformity untouched by both.
+  canonical homes the workbook sections named). *E* (§(K-grid) Steps G14–G18, `packmm.py`):
+  the (GR-10) min-max REFUTED as posed (NP-complete at exact balance, (GR-13)); (GR-10)
+  itself survives exhaustive enumeration; residual re-aimed at (GR-15). *J* (new section
+  §(K-frame), `framedom.py`+`.m2`): the chart-to-frame dominance lemma delivered in minimal
+  form ((FR-1)–(FR-3)), transport by `G′`-regridding (FR-4); (ANH-14) discharged 1904/1904
+  sites (FR-5); residue (FR-R1) — now PROVEN by PEX. Uniformity untouched by both.
 
 - **The THIRD fan-out — all three directions LANDED 2026-08-06** (canonical homes the
-  workbook sections named). *G, §(K-grid) Steps G8–G13, `gridwit.py`*: (GR-4)
-  refuted-as-stated and repaired ((GR-8)/(GR-4′)), and the **tree-triple certificate theorem
-  (GR-9) PROVEN**. *Q, §(K-ann) Steps A14–A17, `anhr1.py`/`anhr1.m2`*: the "upgrade" premise
-  refuted ((ANH-16)); **ONE universal irreducible degree-12 polynomial** governs the
-  bare-cycle stratum ((ANH-14)) — the stratum PEX later proves finite. *O, §(K-out) Steps
-  O9–O12, `outerwide.py`/`outerwide.m2`*: the availability map is **forced** ((OC-10)), the
-  bad locus one explicit panel line `C₀`. All three converged on **chart-to-frame
-  dominance** — delivered by J, discharged by PEX. Uniformity untouched by all three.
+  workbook sections named). *G* (§(K-grid) Steps G8–G13, `gridwit.py`): (GR-4)
+  refuted-and-repaired ((GR-4′)), tree-triple theorem (GR-9) PROVEN. *Q* (§(K-ann) Steps
+  A14–A17, `anhr1.py`/`anhr1.m2`): the "upgrade" premise refuted; ONE universal irreducible
+  degree-12 polynomial governs the bare-cycle stratum (ANH-14). *O* (§(K-out) Steps O9–O12,
+  `outerwide.py`/`.m2`): the availability map FORCED (OC-10). All three converged on
+  chart-to-frame dominance — delivered by J, discharged by PEX. Uniformity untouched.
 
 - **The SECOND fan-out — all three directions LANDED 2026-08-06** (canonical homes the
   workbook sections named): *T* (§(K-grid)) and *R* (§(K-ann)) both **superseded in detail**

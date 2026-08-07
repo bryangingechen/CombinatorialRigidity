@@ -1,15 +1,20 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: ALL FIVE fan-outs COMPLETE.** The first (A/B/C below, prepared
-2026-08-05) landed 2026-08-05/06; the second (T/R/M, §"Second fan-out")
-2026-08-06; the third (G/Q/O, §"Third fan-out") 2026-08-06; the fourth (E/J,
-§"Fourth fan-out") 2026-08-07; the fifth (PEX/TCOL, §"Fifth fan-out")
-2026-08-07. This file remains the dispatch-scoping
-template for any future fan-out. Three independent research
-directions on kernel (K), specified here so a fresh session can dispatch them
-at S=1 without re-deriving the scoping. User-adjudicated this session (verbatim
-below). The mathematics lives in `notes/Pencil-informal.md` (the (K) workbook —
-start from its *State of (K)* gap map); this file is dispatch scoping only.
+**Status: ALL FIVE fan-outs COMPLETE; the SIXTH direction (CFLANK,
+§"Sixth direction") is PREPARED, not yet dispatched.** The first (A/B/C
+below, prepared 2026-08-05) landed 2026-08-05/06; the second (T/R/M,
+§"Second fan-out") 2026-08-06; the third (G/Q/O, §"Third fan-out")
+2026-08-06; the fourth (E/J, §"Fourth fan-out") 2026-08-07; the fifth
+(PEX/TCOL, §"Fifth fan-out") 2026-08-07. CFLANK is a **single direction**,
+not a fan-out — its selection is a **coordinator delegation**
+(`notes/Phase39.md` *Current state*, the 2026-08-07 "keep going on my own
+judgment" adjudication), not a user pick from a candidate list. This file
+remains the dispatch-scoping template for any future fan-out or single
+direction. Three independent research directions on kernel (K), specified
+here so a fresh session can dispatch them at S=1 without re-deriving the
+scoping. User-adjudicated this session (verbatim below). The mathematics
+lives in `notes/Pencil-informal.md` (the (K) workbook — start from its
+*State of (K)* gap map); this file is dispatch scoping only.
 
 ## The adjudication that produced this
 
@@ -1022,3 +1027,111 @@ The first fan-out's landing checklist applies verbatim, plus:
 4. Fold PEX's landed result into TCOL's prompt **only if something actually
    landed** — the transfer hypothesis above is a hypothesis, and a PEX
    refutation is just as much an input to TCOL as a PEX proof.
+
+## Sixth direction — CFLANK (single direction, prepared 2026-08-07)
+
+**Status: prepared, not yet dispatched.** Not a fan-out — a single direction.
+The fifth fan-out (PEX/TCOL) is COMPLETE, and per the 2026-08-07 delegation
+adjudication ("keep going on my own judgment" — `notes/Phase39.md` *Current
+state*), next-direction **selection** is now the coordinator's call, not a
+user pick from a candidate list; every standing constraint from the fifth
+fan-out is otherwise unchanged. The coordinator selected this direction from
+TCOL's own *What would change this* item (v) — the one thing the fifth
+fan-out named as never attempted.
+
+**Direction code CFLANK** (circuit-profile flank), minted under clause
+**(L5)** as a multi-letter topic-tagged code. Verified **0-hit as a raw
+substring**, case-insensitively, across `*.md`/`*.tex`/`*.lean`/`*.py`/`*.m2`
+— as are the reserved section name **§(K-prof)** and tag **`PF-`**. Reserved
+in `notes/Pencil-labels.md`.
+
+### The question
+
+Refute **(GR-15)** with a *targeted structural flank* — a tight class shape
+whose **every** admissible colouring leaves generic `dim Z > 0` in some
+block — or fail to, and name the precise obstruction. This is TCOL's *What
+would change this* item **(v)**, the one thing the fifth fan-out named as
+never attempted: "`--wide` sampled both and found nothing; a targeted
+adversarial construction has not been attempted."
+
+**Why now, and why it is newly cheap.** After **(GR-16)** the search is a
+search over `(G°, ℓ, bits)` and is cheap per shape; **(GR-17)(d)** isolated
+the only two binding circuit length-profiles. The two named places to look,
+both from TCOL: (1) shapes whose `G°` is rich in **`(2,2,3)` and `(2,2,2,2)`
+circuits sharing branches**, so the `h_≠ ≥ 2` requirements **conflict** — a
+bit-assignment conflict is exactly the mechanism a class-uniformity
+refutation would use; (2) hub multigraphs with **many parallel branch
+pairs**. `--wide` sampled both families (7653/7653, no miss) — but **sampled
+≠ constructed**. The deliverable is an adversarial **construction**, not a
+wider sweep: widening a pool is evidence, not progress (standing rule).
+
+**Both outcomes are fully successful, and the spec says so explicitly.** A
+**flank** refutes (GR-15) and **(GR-10) with it**, re-routing the phase —
+that is the headline. **No flank, with the obstruction named** — an argument
+that the conflicting-`h_≠` mechanism cannot be made global — is a **positive
+step toward (GR-15)**, because it closes the one family where a refutation
+could live. `Pencil-strategy.md` §2.3's base-rate warning applies verbatim:
+every prior class-uniform combinatorial-existence claim of this arc was
+eventually either proven by a min-max or refuted by a structural flank.
+
+**Grounding (canonical §(K-grid) Steps G19–G23 + *Step G12*; do not
+re-derive).** (GR-16) the branch reduction — `dim Z` is a square `3c × 3c`
+system read off `(G°, ℓ, bits)` alone; (GR-17) the run law
+`2·runs(γ) = (L−r) + h_≠(γ)`, automatic whenever `Σ_{β∈γ}(ℓ_β−1) ≥ 5`,
+binding only at profiles `(2,2,3)` and `(2,2,2,2)` when `Λ = ∅`; (GR-18) the
+packing is never the obstruction, only the 3+3 grouping; (GR-19) the
+collapse hierarchy, `κ ≤ 4` measured on the census pool; *Step G12*(i) one
+free bit per branch.
+
+**Cautions (all load-bearing).**
+
+- **The shape must be IN the habitat.** A "flank" failing `hcard`,
+  `hnoRigid`, or carrying a two-hub triangle refutes nothing `hK` needs —
+  the θ(1,2,9) precedent under §(K-clos) (AC-6), where a miss was *correct
+  behaviour* because the shape was out of habitat. Certify habitat
+  membership before reporting any hit, and state which certificate.
+- **`Λ ≠ ∅` is where (GR-17)(d) is only measured, not proven** (TCOL's item
+  (iv)); a flank found there is *also* a witness for that open clause — say
+  which side any hit sits on.
+- A per-shape exact hit is already a per-shape proof ((GR-7) remark (i)), so
+  a claimed flank needs the miss **exhaustive over bits**, not sampled.
+  "Every admissible colouring" is an F11 claim class of its own and needs
+  its own driver.
+- No σ-fixed witness is read as generic (§(K-clos) (AC-9)); a rank miss of a
+  literal construction at one parameter point is not a miss of the recipe
+  (*Step G4* item 1) — retry at seeded random rational parameters before
+  calling anything structural.
+- Do not re-derive (GR-1)–(GR-19); do not re-attack the (GR-10) min-max
+  ((GR-13) closed it as posed); do not re-run the (GR-14) rainbow-Δ hunt
+  (habitat applicability measured nil, 0/400 + 0/18). All of
+  `notes/Phase39.md` *Hand-off*'s "Deliberate non-goals" continue to bind.
+
+**Driver** `notes/scripts/w4/cflank.py` (imports `gridcol.py` / `packmm.py`
+/ `grid.py` / `closure.py` read-only). **Labels** (GR-21)+, Steps G24+;
+section name if the argument needs one: **§(K-prof)**, tag `PF-`. Optional
+M2 leaf `notes/scripts/m2/cflank.m2` (not expected — the question is
+combinatorial).
+
+**Rung.** Mapped **top rung** (a crux proof/refutation attempt whose verdict
+re-routes the phase — the same trigger that put G, E, J, PEX and TCOL
+there); fable unavailable this session, so **substitute opus**
+(`recon-opus`), per the playbook's *nearest available rung at or above the
+mapped one*.
+
+**Mechanics: identical to the fifth fan-out's.** Read-only w.r.t. every
+shared file; commits NOTHING; creates only its own pinned new driver
+(untracked, for the coordinator to gate and commit); writes its full
+mathematics as a draft workbook section `fanout-CFLANK.md` in the session
+scratchpad, in the workbook's register, with an explicit confidence verdict
+and a "what would change this" line; keeps the return message to a tight
+verdict. F11 binds; `notes/scripts/README.md`'s conventions bind (exact ℚ,
+seeded randomness, degeneracy guards + rank/dimension asserts, import from
+the canonical layer — check the *Divergences* table); F15's over-ceiling
+shape applies to any invocation that cannot finish inside 600 s.
+
+### Landing (coordinator)
+
+The fifth fan-out's landing checklist applies verbatim (which is the first
+fan-out's plus its four additions) — including moving the reservation row
+into the registry and adding the driver's rows to
+`notes/scripts/README.md` §3's invocation table in the landing commit.
