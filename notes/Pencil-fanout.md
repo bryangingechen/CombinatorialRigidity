@@ -1,16 +1,17 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
 **Status: ALL FIVE fan-outs COMPLETE; the SIXTH direction (CFLANK,
-§"Sixth direction") is PREPARED, not yet dispatched.** The first (A/B/C
+§"Sixth direction") LANDED 2026-08-07.** The first (A/B/C
 below, prepared 2026-08-05) landed 2026-08-05/06; the second (T/R/M,
 §"Second fan-out") 2026-08-06; the third (G/Q/O, §"Third fan-out")
 2026-08-06; the fourth (E/J, §"Fourth fan-out") 2026-08-07; the fifth
-(PEX/TCOL, §"Fifth fan-out") 2026-08-07. CFLANK is a **single direction**,
-not a fan-out — its selection is a **coordinator delegation**
-(`notes/Phase39.md` *Current state*, the 2026-08-07 "keep going on my own
-judgment" adjudication), not a user pick from a candidate list. This file
-remains the dispatch-scoping template for any future fan-out or single
-direction. Three independent research directions on kernel (K), specified
+(PEX/TCOL, §"Fifth fan-out") 2026-08-07; the sixth (CFLANK, §"Sixth
+direction") 2026-08-07 — no flank found, (GR-15) stays OPEN. CFLANK was a
+**single direction**, not a fan-out — its selection was a **coordinator
+delegation** (`notes/Phase39.md` *Current state*, the 2026-08-07 "keep
+going on my own judgment" adjudication), not a user pick from a candidate
+list. This file remains the dispatch-scoping template for any future
+fan-out or single direction. Three independent research directions on kernel (K), specified
 here so a fresh session can dispatch them at S=1 without re-deriving the
 scoping. User-adjudicated this session (verbatim below). The mathematics
 lives in `notes/Pencil-informal.md` (the (K) workbook — start from its
@@ -1030,7 +1031,18 @@ The first fan-out's landing checklist applies verbatim, plus:
 
 ## Sixth direction — CFLANK (single direction, prepared 2026-08-07)
 
-**Status: prepared, not yet dispatched.** Not a fan-out — a single direction.
+**Status: LANDED 2026-08-07.** §(K-grid) continuation, Steps G24–G28,
+(GR-21)–(GR-26), driver `w4/cflank.py` — an exact **excess law** (GR-21)
+pins TCOL's binding-circuit-rich stratum to `D = 0` (cubic hub multigraphs,
+a constant length budget), **five sparsity caps** (GR-22) bound how many
+binding circuits the habitat allows there, a **flip injection** (GR-23) and
+a **private-branch repair theorem** (GR-24) turn NC1-satisfiability from
+*measured* into *proven* wherever they apply, a **cut criterion** (GR-25)
+reaches 18-hub/51-vertex targets, and an **exhaustive 40 742-shape hunt**
+(GR-26) over the whole `D = 0` stratum at `n_hub ∈ {2,4,6}` finds not one
+NC1-unsatisfiable shape. **No flank; TCOL's item (v) is CLOSED AS A
+ROUTE.** (GR-15) stays OPEN, unchanged in status; class uniformity of `hK`
+untouched, no gap-map status moves. Not a fan-out — a single direction.
 The fifth fan-out (PEX/TCOL) is COMPLETE, and per the 2026-08-07 delegation
 adjudication ("keep going on my own judgment" — `notes/Phase39.md` *Current
 state*), next-direction **selection** is now the coordinator's call, not a

@@ -598,6 +598,14 @@ arcs too.
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/gridcol.py --hier` | 98 s | ibid. *Step G22* ((GR-19): collapse order 4 at 18/18 habitat separators; the exemplar's `r = 3` search exhausted, `r = 4` value-independent over 840 tuples) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/gridcol.py --wide` | 159 s | ibid. the cheap kill on 11 unswept hub-graph families: 7653/7653 shapes carry a good colouring, no flank |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/gridcol.py --validate` | 509 s | ibid. (all five modes). **All six modes byte-identical under two `PYTHONHASHSEED` values**. **No Macaulay2 leaf was opened** — `m2/gridcol.m2` was reserved and returned unused |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/cflank.py --law` | 161 s | workbook §(K-grid) continuation (direction CFLANK) *Step G24/G25* ((GR-21)/(GR-22) at 907 census + 4920 constructed `D = 0` pool shapes; (GR-25) equivalence at 16 270/16 270 pairs) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/cflank.py --adv` | 4 s | ibid. *Step G26* ((GR-23) the repair, 222/222; the F13 constructed all-length-2 `K4` witness + pinned counter-fact + `K4(3,3,3,3,3,3)` control) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/cflank.py --cubic` | 155 s | ibid. *Step G27/G28* (the `Λ = ∅` hunt: 4920 shapes, 284 512 admissible colourings, (GR-24) hypothesis asserted 4920/4920) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/cflank.py --lam` | 9 s | ibid. (the `Λ ≠ ∅` hunt at `n_hub ≤ 4`: 1294 shapes, all length tuples; (GR-25) with `Λ` included) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/cflank.py --lam6` | 1288 s | ibid. **OVER THE 600 s CEILING (F15)** — `n_hub = 6` at `\|Λ\| ≤ 1`: 39 448 shapes, 34 850 with `Λ ≠ ∅`; started backgrounded first and collected before the turn ends, never waited on |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/cflank.py --dens` | 93 s | ibid. *Step G26* (the kill density: 2570 shapes / 2847 binding circuits, median kill 0.0667, max 1/7 against the proven 1/4 cap) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/cflank.py --tight` | 3 s | ibid. *Step G27* (the 14 named targets, up to 18 hubs / 51 vertices, incl. the ladder `CL8` and the truncated prism carried only by (GR-24)) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/cflank.py --validate` | 384 s | ibid. (all modes but `--lam6`). **Every figure identical under `PYTHONHASHSEED` 0 and 999; the only differing bytes are the two printed elapsed-time annotations (`cflank.py:726`, `:914`), which are wall-clock and inherently non-deterministic** — a re-runner should expect a non-empty byte diff there and nowhere else. **No Macaulay2 leaf was opened** — `m2/cflank.m2` was reserved and returned unused |
 
 ### `m2/` — the Macaulay2 symbolic layer
 

@@ -6,16 +6,17 @@
 (2026-07-30). Only three items remain, all carried by the landed successor
 `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card` (`Molecule/Pencil/Escape.lean`):
 `hcontract` (W4), kernel `hK`, and kernel `hbareSplit` — see *Hand-off*. Kernel-(K) research
-is at its thirty-first docs+scripts-only pass (workbook `notes/Pencil-informal.md`; the settled
-W4-residual arc is `notes/Pencil-W4-informal.md`). **ALL FIVE rounds are now COMPLETE** —
-first fan-out A/B/C, the harness re-baselining round S1–S4, second fan-out T/R/M, third
-fan-out G/Q/O (2026-08-06), fourth fan-out E/J (2026-08-07), fifth fan-out PEX/TCOL
-(2026-08-07, PEX **(FR-R1) PROVEN**, TCOL four structural results proven but **(GR-15)
-stays OPEN — no flank found**; full verdicts in *Decisions made*). **The user has
-delegated next-direction selection to the coordinator** ("keep going on my own judgment",
-2026-08-07 — see *Hand-off*); the **sixth direction, CFLANK**, is PREPPED (not yet
-dispatched) — `notes/Pencil-fanout.md` §"Sixth direction". **Class uniformity remains
-untouched by every round.**
+is at its thirty-second docs+scripts-only pass (workbook `notes/Pencil-informal.md`; the settled
+W4-residual arc is `notes/Pencil-W4-informal.md`). **ALL FIVE fan-outs plus the SIXTH
+direction are now COMPLETE** — first fan-out A/B/C, the harness re-baselining round S1–S4,
+second fan-out T/R/M, third fan-out G/Q/O (2026-08-06), fourth fan-out E/J (2026-08-07),
+fifth fan-out PEX/TCOL (2026-08-07, PEX **(FR-R1) PROVEN**, TCOL four structural results
+proven but **(GR-15) stays OPEN — no flank found**), sixth direction CFLANK (2026-08-07,
+six more structural results proven, an exhaustive 40 742-shape hunt, **still no flank —
+(GR-15) stays OPEN**; full verdicts in *Decisions made*). **The user has delegated
+next-direction selection to the coordinator** ("keep going on my own judgment", 2026-08-07
+— see *Hand-off*); a **seventh direction is recommended but not yet prepped or
+dispatched** — see *Hand-off*. **Class uniformity remains untouched by every round.**
 Direction codes are **multi-letter and topic-tagged from the fifth fan-out on**
 (`notes/Pencil-labels.md` clause **(L5)**); the grandfathered single letters are re-used
 across dates — **always date those**.
@@ -65,10 +66,13 @@ constraints; the dated dispatch narrative is in *Decisions made* and git):
   PARKED, `hK`/`hbareSplit` stay carried as pinned, option B in both kernel cases stays
   un-commissioned. Supersedes the *Hand-off*'s prior "next direction awaits user
   adjudication" sentence — the same check-in's top-rung/cap/rescue calls (above bullet)
-  are otherwise unchanged. The coordinator's first pick under this delegation is the
-  **sixth direction, CFLANK** — `notes/Pencil-fanout.md` §"Sixth direction".
+  are otherwise unchanged. The coordinator's first pick under this delegation, the
+  **sixth direction CFLANK**, LANDED 2026-08-07 (`notes/Pencil-fanout.md` §"Sixth
+  direction") — no flank found, (GR-15) stays OPEN. The recommended seventh direction
+  (a (GR-22)-style cap on the structured (GR-8) family, not yet prepped or dispatched)
+  is in *Hand-off*.
 
-**Kernel-(K) research arc — thirty docs+scripts-only dispatches, plus one strategy-only
+**Kernel-(K) research arc — thirty-one docs+scripts-only dispatches, plus one strategy-only
 pass** (2026-08-02 → 08-07).
 Mathematics: the workbook `notes/Pencil-informal.md`, whose **State of (K)** map is the entry
 point, the canonical per-gap status home, and the artifact a pass *updates*; settled
@@ -80,8 +84,10 @@ the gap map with its successor; the arc's structural positives are (Λ1), §(K-a
 §(K-out)'s **proven combinatorial half** ((OC-10)), §(K-grid)'s **proven tree-triple theorem**
 ((GR-9)), and §(K-frame)'s **minimal dominance lemma** ((FR-1)–(FR-4)), now discharged in
 full on the bare-cycle stratum by PEX ((FR-R1) PROVEN); TCOL added four more proven
-structural results on the tight stratum ((GR-16)–(GR-19)) without closing (GR-15); **class
-uniformity of the escape remains untouched by every one of the arc's thirty dispatches.**
+structural results on the tight stratum ((GR-16)–(GR-19)) without closing (GR-15); CFLANK
+added six more ((GR-21)–(GR-26)) and an exhaustive 40 742-shape hunt, closing TCOL's two
+named flank sites as routes without closing (GR-15) either; **class uniformity of the
+escape remains untouched by every one of the arc's thirty-one dispatches.**
 
 > **The one live candidate, and it is NOT settled — `notes/Pencil-informal.md` §(K-σ)** (the
 > canonical home; the four obligations, the `--hunt` findings, the validation scope and the
@@ -212,20 +218,31 @@ discharge (residue (iv)) is CLOSED too**. The landed successor
 > **BLOCKED by the standing 2026-08-05 Lean-hold adjudication (general, not W4-scoped)**; does
 > not open without a fresh user adjudication.
 >
-> **The FIRST through FIFTH fan-outs are ALL COMPLETE** — first (A/B/C), the harness
+> **The FIRST through SIXTH directions are ALL COMPLETE** — first (A/B/C), the harness
 > re-baselining round (S1–S4), second (T/R/M), third (G/Q/O), fourth (E `cdd23d30` / J
-> `12edc305`), fifth (PEX `b32c1c2c` / TCOL `cd0af9e1`); each direction one-lined in
-> *Decisions made* (with dates), its workbook section the canonical home, every driver
-> coordinator-re-run.
+> `12edc305`), fifth (PEX `b32c1c2c` / TCOL `cd0af9e1`), sixth (CFLANK, this commit); each
+> direction one-lined in *Decisions made* (with dates), its workbook section the canonical
+> home, every driver coordinator-re-run.
 >
 > **2026-08-07 delegation (supersedes "next direction awaits user adjudication" above).**
 > Asked at check-in what to do once TCOL lands, the user selected **"Keep going on my own
 > judgment"** — the coordinator now picks the next direction and dispatches without
 > checking in (selection only; every standing constraint is unchanged — see *Current
-> state*). Pick: the **SIXTH direction, CFLANK** — a single direction (not a fan-out)
-> targeting a structural flank against **(GR-15)**, TCOL's item (v) — **PREPPED,
-> dispatches next**: `notes/Pencil-fanout.md` §"Sixth direction";
-> `notes/Pencil-labels.md`.
+> state*). The coordinator's pick under this delegation, the **SIXTH direction, CFLANK**
+> — a single direction (not a fan-out) targeting a structural flank against **(GR-15)**,
+> TCOL's item (v) — **LANDED**: `notes/Pencil-fanout.md` §"Sixth direction";
+> `notes/Pencil-labels.md`. **No flank found; (GR-15) stays OPEN, unchanged in status.**
+>
+> **Recommended seventh direction, under the same standing delegation — NOT YET PREPPED OR
+> DISPATCHED.** CFLANK's own *What would change this* item (i): **a (GR-22)-style cap on
+> the structured (GR-8) family `max_P g(P)` over general sub-multigraphs `P`, not just on
+> circuits** — everything CFLANK proves is about circuits, and *Step G23*'s own scoping
+> probe already found `a = 0`, NC1-satisfied blocks with a nonzero structured (GR-8)
+> maximum. CFLANK's own text calls this "the successor target"; closing it would either
+> close (GR-15) at `D = 0` outright or locate the flank that (NC1) cannot see. A fresh
+> session either preps it (spec into `notes/Pencil-fanout.md` §"Seventh direction" +
+> namespace reservation in `notes/Pencil-labels.md`) or the user re-decides — the
+> recommendation is not itself a dispatch.
 >
 > **Not selected at the 2026-08-07 adjudication**, and so not open: the **(FR-6) follow-ons**
 > (§(K-frame) *What would change this* items (ii)–(iv) — the `ℓ_min = 5` battery beyond
@@ -297,57 +314,34 @@ Reverse-chronological, one line per landing; full derivations live in git,
 `notes/Phase39-design.md`, and (for the (K) arc) the workbook section named in each entry, which
 is the canonical home a successor reads.
 
-- **The SIXTH direction — CFLANK adjudicated (delegation) and prepped, 2026-08-07, not yet
-  dispatched.** The user delegated next-direction *selection* (no standing constraint) to the
-  coordinator ("keep going on my own judgment" — *Current state*); the coordinator picked
-  TCOL's own *What would change this* item (v) — a targeted structural flank against
-  **(GR-15)** — as **direction CFLANK**, minted under (L5), reserving **§(K-prof)** / `PF-`
-  (0-hit verified) as the unclaimed tail of §(K-grid)'s family. Mapped top rung, opus
-  substituted. Spec `notes/Pencil-fanout.md` §"Sixth direction"; reservation
-  `notes/Pencil-labels.md`.
+- **The SIXTH direction — CFLANK LANDED 2026-08-07** (`w4/cflank.py`; canonical home
+  §(K-grid) continuation Steps G24–G28). Coordinator-delegated pick of TCOL's own *What
+  would change this* item (v) — a targeted structural flank against **(GR-15)**. Six new
+  proven results: the excess law **(GR-21)** `Σ(ℓ−2) = 2D+6` pins the binding-circuit-rich
+  stratum to `D = 0`; five sparsity caps **(GR-22)**; the flip injection **(GR-23)**
+  (`4T+3Q < 12 ⟹` NC1 satisfiable); the private-branch repair theorem **(GR-24)** (no bound
+  on `T,Q`); the cut criterion **(GR-25)** (equivalent to the canonical oracle, reaching
+  18-hub targets); and the exhaustive **(GR-26)** 40 742-shape hunt — zero misses. TCOL's
+  two named flank sites are **CLOSED AS ROUTES**, but **(GR-15) stays OPEN, no flank
+  found**; recommended successor in *Hand-off*. `§(K-prof)`/`PF-` returned unopened.
+  Uniformity untouched.
 
-- **The FIFTH fan-out — both directions LANDED 2026-08-07** (PEX `b32c1c2c`, TCOL
-  `cd0af9e1`; canonical homes the workbook sections named). *PEX, §(K-frame) continuation Steps
-  FR7–FR11, `patexist.py`*: the bare-cycle stratum PROVEN **finite** (22 iso classes / 76
-  sites / 1976 labelled instances) and exhaustively enumerated; **(FR-R1) PROVEN**, (FR-4)'s
-  named gap the sole rider. *TCOL, §(K-grid) continuation Steps G19–G23, `gridcol.py`*: four
-  structural results PROVEN — the branch-level reduction (GR-16), the circuit run law
-  (GR-17), the 6-spanning-tree packing statement (GR-18), collapse order 4 at all 18 habitat
-  separators (GR-19) — but **(GR-15) stays OPEN, no flank found**. Uniformity untouched by
-  both.
-
-- **The FOURTH fan-out — both directions LANDED 2026-08-07** (E `cdd23d30`, J `12edc305`;
-  canonical homes the workbook sections named). *E* (§(K-grid) Steps G14–G18, `packmm.py`):
-  the (GR-10) min-max REFUTED as posed (NP-complete at exact balance, (GR-13)); (GR-10)
-  itself survives exhaustive enumeration; residual re-aimed at (GR-15). *J* (new section
-  §(K-frame), `framedom.py`+`.m2`): the chart-to-frame dominance lemma delivered in minimal
-  form ((FR-1)–(FR-3)), transport by `G′`-regridding (FR-4); (ANH-14) discharged 1904/1904
-  sites (FR-5); residue (FR-R1) — now PROVEN by PEX. Uniformity untouched by both.
-
-- **The THIRD fan-out — all three directions LANDED 2026-08-06** (canonical homes the
-  workbook sections named). *G* (§(K-grid) Steps G8–G13, `gridwit.py`): (GR-4)
-  refuted-and-repaired ((GR-4′)), tree-triple theorem (GR-9) PROVEN. *Q* (§(K-ann) Steps
-  A14–A17, `anhr1.py`/`anhr1.m2`): the "upgrade" premise refuted; ONE universal irreducible
-  degree-12 polynomial governs the bare-cycle stratum (ANH-14). *O* (§(K-out) Steps O9–O12,
-  `outerwide.py`/`.m2`): the availability map FORCED (OC-10). All three converged on
-  chart-to-frame dominance — delivered by J, discharged by PEX. Uniformity untouched.
-
-- **The SECOND fan-out — all three directions LANDED 2026-08-06** (canonical homes the
-  workbook sections named): *T* (§(K-grid)) and *R* (§(K-ann)) both **superseded in detail**
-  by later fan-outs (G/E and Q respectively); *M* (§(K-mech), `mech.py`) mechanised both
-  §(K-pure) *P8* anomalies in one calculus, rescuing 6v11e ((MX-7)), σ rider NO ((MX-8)).
-  Uniformity untouched by all three.
-
-- **The harness re-baselining round — all four debt items CLEARED, round CLOSED** (2026-08-06,
-  five commits `d5ae55aa`…S4; trigger dispatch-log **F13**). Canonical home:
-  `notes/scripts/README.md` *Harness debt* → **CLOSED**. 260 invocations, 21 figures moved, each
-  repointed in its moving commit. Two moves are mathematics: **(AC-9)** (§(K-clos)), **(OC-9)**
-  (§(K-out)). **No gap-map row moved.**
-
-- **The 2026-08-06 three-way kernel-(K) fan-out — three landings** (*C* `closure.py` §(K-clos):
-  the field question SETTLED, `ℝ` the narrowest choice; *A* `annih.py` §(K-ann): the arc's first
-  RECIPE, residual (ANH-R1); *B* `outerline.py` §(K-out): (OUT) MEASURED, headline the negative
-  (OC-3)). Same day: §2.3's convergence note — A's and B's residuals are one shape.
+- **The FIRST through FIFTH fan-outs — all LANDED 2026-08-05…08-07** (canonical homes the
+  workbook sections named; commits `d5ae55aa`…, `cdd23d30`, `12edc305`, `b32c1c2c`,
+  `cd0af9e1`). First (A `closure.py` §(K-clos): field question settled, `ℝ` narrowest; B
+  `outerline.py` §(K-out): (OUT) measured, (OC-3) the load-bearing negative; C `annih.py`
+  §(K-ann): the arc's first recipe) plus the harness re-baselining round (S1–S4, 260
+  invocations audited, 21 figures moved and repointed, **(AC-9)**/**(OC-9)** the two
+  mathematical moves) landed 2026-08-05/06. Second (T/R/M — T and R both later superseded in
+  detail, M mechanised both §(K-pure) *P8* anomalies) and third (G: (GR-4) refuted-and-repaired
+  as (GR-4′), tree-triple theorem (GR-9) PROVEN; Q: ONE universal irreducible degree-12
+  polynomial (ANH-14); O: availability map FORCED (OC-10)) landed 2026-08-06, all converging
+  on chart-to-frame dominance. Fourth (E: the (GR-10) min-max REFUTED as posed via NP-completeness
+  (GR-13), (GR-10) itself surviving exhaustive enumeration; J: the dominance lemma delivered
+  minimally (FR-1)–(FR-4)) and fifth (PEX: the bare-cycle stratum PROVEN finite and
+  exhaustively enumerated, **(FR-R1) PROVEN**; TCOL: four more proven structural results
+  (GR-16)–(GR-19), **(GR-15) stays OPEN**) landed 2026-08-07. **Class uniformity of `hK`
+  untouched by all thirteen directions across the five fan-outs.**
 
 - **Notes reorganization: label registry opened; workbook and design doc INDEXED, not split or
   compressed** (2026-08-05, docs only). Canonical home **`notes/Pencil-labels.md`**. Two argued
