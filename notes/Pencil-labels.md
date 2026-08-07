@@ -137,8 +137,26 @@ Steps O9–O12, `outerwide.py` + `outerwide.m2` (§(K-out)'s row); Q as
 Steps G8–G13, `gridwit.py` (§(K-grid)'s row — `gridwit.m2` was never needed
 and **§(K-pack)** / `PK-` return to the pool unopened).
 
-**One naming hazard this fan-out created, recorded rather than renamed (L4).**
-The **direction letters A/B/C are re-used** between the 2026-08-05 fan-out
+**Reserved 2026-08-06 for the FOURTH fan-out — directions E / J**
+(`notes/Pencil-fanout.md` §"Fourth fan-out"; letters dated — A/B/C (×2),
+S1–S4, T/R/M and G/Q/O are taken above; E/J chosen off the collision
+table's bare-token rows). One recorded hazard, not a rename (L4): **(E)**
+bare remains §(SAFE-RES)'s gap token in the W4 workbook — the direction is
+always written *direction E*, dated where ambiguity is possible. Each
+reserved token below verified **0-hit** across `*.md`, `*.tex`, `*.lean`,
+`*.py`, `*.m2` at reservation time, except §(K-pack)/`PK-`, which is
+**re-reserved from the pool** (returned unopened by direction G), and the
+`GR-`/`G`-step tails, which are the unclaimed tails of §(K-grid)'s live
+families — the owning section stays authoritative. Dispatch is **serial**
+(E → J), which does not relax the reservation discipline:
+
+| direction | target | reserved labels / steps | reserved driver(s) | section (only if opened) |
+|---|---|---|---|---|
+| **E** ((GR-10) min-max) | §(K-grid) continuation | (GR-12)+, Steps G14+ | `w4/packmm.py`, `m2/packmm.m2` | **§(K-pack)**, tag `PK-` (re-reserved) |
+| **J** (chart-to-frame dominance) | new section | (FR-1)+, Steps FR0+ | `w4/framedom.py`, `m2/framedom.m2` | **§(K-frame)**, tag `FR-` |
+
+**One naming hazard the second fan-out created, recorded rather than renamed
+(L4).** The **direction letters A/B/C are re-used** between the 2026-08-05 fan-out
 (A = §(K-flank), B = §(K-Λ), C = §(K-pure)) and the 2026-08-06 one
 (A = §(K-ann), B = §(K-out), C = §(K-clos)) — so "direction B" is ambiguous
 across the corpus and **must be dated wherever it is written**. The *section*

@@ -7,15 +7,13 @@
 `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card` (`Molecule/Pencil/Escape.lean`):
 `hcontract` (W4), kernel `hK`, and kernel `hbareSplit` — see *Hand-off*. Kernel-(K) research
 is at its twenty-seventh docs+scripts-only pass (workbook `notes/Pencil-informal.md`; the settled
-W4-residual arc is `notes/Pencil-W4-informal.md`). **ALL THREE 2026-08-06 fan-outs are
-COMPLETE** (first A/B/C; the harness re-baselining round S1–S4; second T/R/M — §(K-grid),
-§(K-mech), §(K-ann) Steps A10–A13). **The
-THIRD fan-out — G / Q / O, user-adjudicated 2026-08-06, dispatched SERIALLY O → Q → G — is
-COMPLETE** (O: §(K-out) Steps O9–O12 — the combinatorial half PROVEN, (OC-8) reduced to one
-explicit line. Q: §(K-ann) Steps A14–A17 — no shape refuted, ONE universal polynomial governs
-the bare-cycle stratum. G: §(K-grid) Steps G8–G13 — (GR-4) refuted-as-stated and repaired, the
-tree-triple theorem **(GR-9) proven**, the tight-stratum residual now **(GR-10) alone**).
-**The next direction awaits user adjudication** (see *Hand-off*).
+W4-residual arc is `notes/Pencil-W4-informal.md`). **ALL FOUR earlier 2026-08-06 rounds are
+COMPLETE** (first fan-out A/B/C; the harness re-baselining round S1–S4; second fan-out T/R/M;
+third fan-out G/Q/O — net shape: the tight stratum hangs on **(GR-10) alone** with the geometry
+proven ((GR-9)), and directions O/Q terminated at one shared residue, **chart-to-frame
+dominance**). **The FOURTH fan-out — directions E ((GR-10) min-max) / J (the shared dominance
+lemma), user-adjudicated 2026-08-06, dispatched SERIALLY E → J at the top rung — is IN FLIGHT**
+(specs: `notes/Pencil-fanout.md` §"Fourth fan-out"; see *Hand-off*).
 Fan-out direction letters are re-used across dates — **always date them**.
 
 ## Current state
@@ -48,6 +46,12 @@ constraints; the dated dispatch narrative is in *Decisions made* and git):
   follow-up: **dispatch serially, not in parallel** (token budget), O and Q at opus, G at the
   top rung. Coordinator merged leads 3+4 into direction **O** (one section's continuations).
   Specs + rationale: `notes/Pencil-fanout.md` §"Third fan-out".
+- **2026-08-06, fourth fan-out:** of the post-third-fan-out hand-off's four candidate
+  directions the user selected **(1) the (GR-10) min-max attack** and **(2) the shared
+  chart-to-frame dominance lemma**, and NOT the unselected leads (b)–(f) or the parked Lean
+  half (route σ / W4) — the Lean hold stands. Serial dispatch (the session default), order
+  E → J; both at the top rung (coordinator playbook application, recorded in the specs:
+  `notes/Pencil-fanout.md` §"Fourth fan-out"; reservations: `notes/Pencil-labels.md`).
 
 **Kernel-(K) research arc — twenty-six docs+scripts-only dispatches, plus one strategy-only
 pass** (2026-08-02 → 08-06).
@@ -194,31 +198,24 @@ discharge (residue (iv)) is CLOSED too**. The landed successor
 > **BLOCKED by the standing 2026-08-05 Lean-hold adjudication (general, not W4-scoped)**; does
 > not open without a fresh user adjudication.
 >
-> **The FIRST fan-out (A/B/C of 2026-08-05/06) and the harness re-baselining round are
-> COMPLETE/CLOSED** (canonical home `notes/scripts/README.md` *Harness debt*), and **the
-> SECOND fan-out (T / R / M) is COMPLETE** (T `fb84ab88`, M `72f05634`, R `794b3603`) — all
-> one-lined in *Decisions made*; the 2026-08-05 adjudicated ordering is exhausted.
+> **The FIRST fan-out (A/B/C of 2026-08-05/06), the harness re-baselining round (S1–S4), the
+> SECOND fan-out (T/R/M) and the THIRD fan-out (G/Q/O) are ALL COMPLETE** — each direction
+> one-lined in *Decisions made*, its workbook section the canonical home, every driver
+> coordinator-re-run.
 >
-> **The THIRD fan-out (G / Q / O, user-adjudicated 2026-08-06 — all four research leads of the
-> post-second-fan-out hand-off; route σ's Lean half NOT selected) is IN FLIGHT, dispatched
-> SERIALLY O → Q → G** — specs, rungs and the leads-3+4 merge rationale:
-> `notes/Pencil-fanout.md` §"Third fan-out"; label reservations: `notes/Pencil-labels.md`.
-> **ALL THREE LANDED** — O `35e2ce91` (§(K-out) Steps O9–O12), Q `c5769c77` (§(K-ann)
-> Steps A14–A17), G this commit (§(K-grid) Steps G8–G13); each one-lined in *Decisions made*,
-> its workbook section the canonical home, every driver coordinator-re-run.
-> **Next direction = user adjudication.** The fan-out's net shape, for that adjudication:
-> the tight stratum now hangs on **ONE geometry-free statement, (GR-10)** (both-block
-> tree-triple colouring existence; 907/907 measured; the named min-max obstruction is the
-> grouped-exchange failure — a partition-constrained base packing one constraint from
-> Phases-12–15 machinery), with the geometry discharged by the proven **(GR-9)**; and
-> directions O and Q terminated at one shared residue, **chart-to-frame dominance**
-> (§(K-out) (OC-16); §(K-ann) (ANH-14)), for which G's Step G13 names a candidate lemma
-> shape ("explicit constructed point off the explicit bad divisor + irreducibility ⟹
-> dominance") whose witness half the grid technology could supply — the transport to the
-> contracted objects is the unattempted step. The natural candidate directions are therefore
-> (1) a min-max attack on (GR-10), (2) the shared dominance lemma, (3) anything from the
-> unselected leads (b)–(f) above, or (4) the parked Lean half of route σ / the W4 build (each
-> needs a fresh adjudication). No option is pre-selected.
+> **The FOURTH fan-out (directions E / J, user-adjudicated 2026-08-06 — the (GR-10) min-max
+> attack and the shared chart-to-frame dominance lemma; leads (b)–(f) and the parked Lean
+> half NOT selected) is IN FLIGHT, dispatched SERIALLY E → J, both at the top rung** — specs,
+> grounding and cautions: `notes/Pencil-fanout.md` §"Fourth fan-out"; label reservations:
+> `notes/Pencil-labels.md`. Direction **E** attacks **(GR-10)** (both-block tree-triple
+> colouring existence; 907/907 measured; the grouped-exchange failure the named obstruction —
+> a partition-constrained base packing one constraint from Phases-12–15 machinery), whose
+> discharge with the proven (GR-9), (GR-5) and §(K-clos) (AC-7) closes `hK` on the tight
+> stratum. Direction **J** attacks the residue directions O and Q both terminated at,
+> **chart-to-frame dominance** (§(K-out) (OC-16); §(K-ann) (ANH-14)), via §(K-grid) *Step
+> G13*'s candidate lemma shape ("explicit constructed point off the explicit bad divisor +
+> irreducibility ⟹ dominance") — the transport to the contracted objects is the unattempted
+> step. Landing per the fan-out doc's checklist; the coordinator lands E before dispatching J.
 >
 > Deliberate non-goals: (Λ0), (Λ1), the `g₁₄` clause, §(K-ind), §(K-Δ), **§(K-clos)'s field
 > question**, **§(K-ann)'s settled batch** ((ANH-1)–(ANH-6), (SD-6)) and **§(K-out)'s settled

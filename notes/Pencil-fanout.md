@@ -578,3 +578,168 @@ each return and re-check session budget **before dispatching the next
 direction** (serial order O → Q → G); direction O's landing may move the
 (OUT)-related cells of the (K-wit)/(K-out) rows, which the coordinator
 folds into direction Q/G's prompts only if a hit actually landed.
+
+---
+
+## Fourth fan-out — prepared 2026-08-06 (directions E / J); dispatched SERIALLY, E → J
+
+**User-adjudicated 2026-08-06**, this session, immediately after the third
+fan-out landed: presented with the *Hand-off* blockquote's four candidate
+directions (no pre-selection), the user selected **(1) the (GR-10) min-max
+attack** and **(2) the shared dominance lemma**, and did **not** select (3)
+the unselected leads (b)–(f) or (4) the parked Lean half of route σ / the W4
+build. The 2026-08-05 Lean-hold adjudication therefore stands untouched; W4
+stays parked; `hK`/`hbareSplit` stay carried as pinned; option B in both
+kernel cases stays un-commissioned. Dispatch is **serial** (the standing
+session default; the user's check-in confirmed serial-unless-stated), order
+**E → J** (the user's listed order; E's outcome cannot be reframed by J's,
+so no cheap-first inversion applies). Direction letters are **E / J**, dated
+— A/B/C (×2), S1–S4, T/R/M and G/Q/O are taken; both chosen off the
+collision table's bare-token rows. One recorded hazard, not a rename:
+**(E)** bare remains §(SAFE-RES)'s gap token (W4 workbook) — the direction
+is always written *direction E*, with the date when ambiguity is possible.
+
+**Rung (coordinator, playbook application — not a user adjudication):** both
+directions run at the **top rung** (`recon-fable`). Each is a crux proof
+attempt on which a positive verdict settles new mathematics and re-routes
+the phase — the same trigger that put direction G at the top rung; neither
+is a tightly-pinned decisive-by-construction experiment of the O/Q kind.
+
+**Shared mechanics: identical to the second fan-out's** (§"Second fan-out",
+including its three deltas — the reserved-namespace table is now the
+2026-08-06 **E/J** table in `notes/Pencil-labels.md`; any battery quoted as
+a *rate* or as generic-chart-point evidence gates on `repin.star_generic`;
+the coordinator lands each return before dispatching the next, with a
+budget check between). Serial dispatch does not relax the mechanics: each
+dispatch is **read-only w.r.t. every shared file**, **commits NOTHING**,
+creates only its own pinned new driver(s) (untracked, for the coordinator
+to gate and commit), writes its full mathematics as a draft workbook
+section (`fanout-<E|J>.md`, session scratchpad) in the workbook's register
+with an explicit confidence verdict and a "what would change this" line,
+and keeps the return message to a tight verdict. The F11 requirement binds
+("forced" / "exhaustive" / "the only" are their own claim class needing
+their own driver), as do `notes/scripts/README.md`'s conventions (exact ℚ,
+seeded randomness, degeneracy guards + rank/dimension asserts, import from
+the canonical layer — check the *Divergences* table). A direction that
+opens Macaulay2 work reads `notes/scripts/m2/README.md` first and budgets
+per `Pencil-strategy.md` §5.3/§5.4: gauge slice mandatory, local/contracted
+objects only — the ungauged whole-frame expansion is a measured 600 s kill,
+and §(K-ann) (ANH-16) brackets the reach from both sides (degree 12 in 24
+indeterminates finishes at 578 s; the θ core at the generic point does not
+finish at 600 s).
+
+### Direction E — §(K-grid)'s (GR-10): a min-max for the partition-constrained tree-triple packing
+
+**The question.** Prove **(GR-10)** — every tight class shape admits an
+admissible ruling colouring whose classes partition, in **both** blocks,
+into three groups with pairwise-union spanning trees of the respective
+contracted multigraph (*Step G11*'s boxed statement; measured 907/907) —
+by a min-max for the partition-constrained base packing, or refute it with
+a structural flank. Discharging (GR-10), with the proven (GR-9), (GR-5) and
+§(K-clos) (AC-7), discharges `hK` **on the tight stratum directly**, over
+every infinite characteristic-0 field.
+
+**Grounding (canonical §(K-grid) Steps G11–G12; do not re-derive).** The
+named obstruction: grouped co-independence is not a matroid on the classes
+(*Step G11*'s `U_{2,4}` example — the exchange axiom fails), so Edmonds /
+Nash-Williams–Tutte supply the **unconstrained prototype but no
+off-the-shelf min-max**; without the class constraint the packing side is
+exactly §(K-slide-comb) (C6)'s Phases-12–15 territory. The natural min side
+is (GR-3)(b)'s counting condition — `3(comp(G∖F) − 1) ≤ 2|F|` over class
+unions — and **whether it (plus admissibility) is sufficient at tight
+shapes IS the open question**. The finite-object structure is *Step G12*,
+all proven: admissible colourings are one free bit per branch; the
+both-classes-forests constraint sees only the hub-hub subgraph of `G°`;
+balance is a signed subset-sum over odd-length branches; per hub multigraph
+`G°`, (GR-10) is a finite CSP parametrized by the length profile — so a
+min-max must be **uniform over `G°`**, not over subdivisions (§(K-ind)
+(I4)).
+
+**Cheap kill first** (the section's *What would change this* item (i)): a
+tight class shape whose **every** admissible colouring leaves, in some
+block, a group-obstructing pattern — refutes (GR-10); (GR-11)'s
+hierarchical certificates and the (GR-4′) route then re-enter the critical
+path, in that order. None surfaced in 907 shapes; widening the census
+further is **evidence, not proof** — the deliverable is the **argument**.
+Until a min-max exists, `Pencil-strategy.md` §2.3's base-rate warning
+applies verbatim (every prior class-uniform combinatorial-existence claim
+of this arc was eventually proven by a min-max or refuted by a flank).
+
+**Tools.** (GR-11) (proven, undeveloped) is the fallback shape: ε-adic
+hierarchical certificates whose order-0 system is (GR-9)'s three-point
+collapse — a candidate induction skeleton for the sufficiency direction.
+§(K-slide-comb) (C6)'s Edmonds argument is the reachable unconstrained
+half. Phases 12–15 (matroid union, Tutte–Nash-Williams, Edmonds partition)
+are in tree.
+
+**Cautions.** Nothing here re-opens the habitat-level (AC-6) refutation
+(`C11` is permanent — tight shapes have hubs and are never bare cycles); do
+not re-derive (GR-1)–(GR-9) or (GR-4′); no σ-fixed witness is read as
+generic (§(K-clos) (AC-9)); *"no min-max, and here is the precise
+obstruction"* is a fine outcome.
+
+**Driver** `notes/scripts/w4/packmm.py` (imports `gridwit.py` / `grid.py` /
+`closure.py` read-only); optional M2 leaf `notes/scripts/m2/packmm.m2`.
+**Labels** (GR-12)+, Steps G14+ (reservation table in
+`notes/Pencil-labels.md`); if the min-max development needs its own
+section, the reserved name is **§(K-pack)**, tag `PK-` (re-reserved from
+the pool).
+
+### Direction J — the shared chart-to-frame dominance lemma ((OC-16) / (ANH-14))
+
+**The question.** Directions O and Q terminated on residues of one shape —
+**chart-to-frame dominance**: §(K-out) (OC-16)'s gap (at degree-3 hubs,
+availability ⟺ the hard-stratum target-rank locus `⊄ {pt(b) ∈ C₀}`;
+3081/5226 POOL-CW pairs at the `b` end) and §(K-ann) (ANH-14)'s (the
+universal irreducible degree-12 polynomial `C` nonzero somewhere on the
+frame's reachable locus; 1904/6426 length-5-branch sites). §(K-grid) *Step
+G13* names the candidate lemma shape serving both: *"an explicit
+constructed rational point on the relevant stratum, off the explicit bad
+divisor, plus irreducibility of the stratum, gives dominance."* Deliver
+that lemma at either residue — or price precisely why the shape fails.
+
+**The three research contents, in order.** (1) **Evaluability battery**
+(*Step G13*'s assessment — one battery per residue): both bad divisors are
+evaluable at the (GR-5)/(GR-9) grid points ((OC-16)'s
+`Δ = [a,u,b] · C₀(pt b)` is closed-form at degree-3 hubs; (ANH-14)'s `C` is
+one universal bracket polynomial) — run it. (2) **The transport, the
+unattempted step**: the grid points live at the *pencil* placement of `G`;
+serving the residues needs the construction transported to the contracted
+objects — `H/{e₂,e₃,e₄}` for (OC-16), `H/P − β` for (ANH-14). Note
+(OC-16)'s own residue framing: the far datum there is compressed to four
+chain points, so its dominance question is *smaller* than (OC-8) as
+recorded, and is a **finite check per chain hub pattern** (the census's
+`(x₁,x₂,x₃)` histogram is the companion-side analogue). (3) **The
+irreducibility ingredient** — irreducibility of the hard-stratum locus is
+the ingredient none of the three directions owns; identify the smallest
+object on which it must hold and what would prove it.
+
+**Cautions.** The witness must certify through **rank semicontinuity off a
+divisor**, never through guard genericity — σ-fixed points are never
+composite-guard generic (§(K-clos) (AC-9)); no counting / matroid /
+placement-blind route exists on either side ((OC-3); its τ-side analogue
+(ANH-11)/(ANH-12)) — do not propose one; `supp(τ)` is a **circuit** and
+`supp(λ)` a **cocircuit**; POOL-G figures are quoted over the **318
+coincidence-free** frames, never the raw 357; do not re-derive §(K-out)'s
+settled batch ((OC-1)–(OC-7)) or §(K-ann)'s ((ANH-1)–(ANH-6), (SD-6)); the
+two pools are pinned and **disjoint**, never aggregated. *"No route, and
+here is the precise obstruction"* is a fine outcome.
+
+**Driver** `notes/scripts/w4/framedom.py` (imports `gridwit.py` /
+`outerwide.py` / `anhr1.py` / `shrink.py` read-only); M2 leaf
+`notes/scripts/m2/framedom.m2` (this direction is M2-heavy — budget per
+§5.3/§5.4 as above). **Labels**: new section **§(K-frame)**, tag `FR-`,
+labels (FR-1)+, Steps FR0+ (reservation table in
+`notes/Pencil-labels.md`); cross-references into §(K-out)/§(K-ann) use the
+qualified form (L3), and moving either section's gap-map cell is the
+coordinator's action at landing, never the draft's.
+
+### Landing (coordinator, per returned direction)
+
+The first fan-out's landing checklist applies verbatim, plus: move the
+direction's reservation row into the registry in the landing commit; land
+each return and re-check session budget **before dispatching the next
+direction** (serial order E → J); direction E's landing may move the
+(GR-10) cell of the §(K-grid) row, which the coordinator folds into
+direction J's prompt only if something actually landed (the grid witness
+supply is *Step G13*'s candidate supplier for J's witness half).
