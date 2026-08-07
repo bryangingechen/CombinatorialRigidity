@@ -586,6 +586,12 @@ arcs too.
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/framedom.py --transport` | 25 s | ibid. *Steps FR3/FR4* ((FR-4)/(FR-5): 30/30 exact end-to-end certificates with negative controls) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/framedom.py --outer` | 5 s | ibid. *Step FR5* ((FR-6) at θ(3,4,5): the 8-colouring table, 4/8 on-stratum, strict package 0/8, 16/16 criterion equivalences) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/framedom.py --validate` | 2 s | ibid. (machinery + the cross-language pin 4608). **All five modes byte-identical under two `PYTHONHASHSEED` values** |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/patexist.py --frame` | 12 s | workbook §(K-frame) continuation (direction PEX) *Step FR8* ((FR-9): the frame's normal form, every clause asserted per site, 1904/1904 pool sites) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/patexist.py --recipe` | 12 s | ibid. *Step FR10* ((FR-11): the recipe's colouring built and verified, 1904/1904 pool sites, first variant every time) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/patexist.py --strat` | 3 s | ibid. *Steps FR7/FR9/FR11* ((FR-8): the complete bare-cycle stratum enumerated — 22 iso classes / 76 sites / 1976 labelled, all pattern-available; (FR-9) reconfirmed at 1976/1976 stratum sites; (FR-12): 0 collisions over every colouring of every site — (FR-R1) PROVEN) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/patexist.py --recon` | 15 s | ibid. *Step FR7* ((FR-14): the pool and complete-stratum censuses reconciled by isomorphism class, 0 missing, 14/22 swept; the §(K-ann) *Step A14* `c′ ≤ 1` cells re-derived at the class level) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/patexist.py --kill` | 12 s | ibid. *Step FR9* (the one place a refutation could have lived: a constructed odd-`Λ`-cycle graph, 0/1024 legal colourings, vs. 4/4096 on the even-cycle control) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/patexist.py --validate` | 12 s | ibid. *Step FR9* ((FR-10)(i)/(ii): the component law and the `Λ`-proper-2-colouring equivalence, 8728 (split, colouring) pairs). **All six modes byte-identical under two `PYTHONHASHSEED` values**. **No Macaulay2 leaf was opened** — `m2/patexist.m2` was reserved and returned unused |
 
 ### `m2/` — the Macaulay2 symbolic layer
 
@@ -714,6 +720,17 @@ canonical descriptions.
    (constructed) plus `outerline --pool`'s field test (sampled), for
    `repin.star_generic`; see *The build plan* → *The adversarial test for scope
    (1)*.
+7. **No `outer.sweep_shapes` count anywhere in the arc is a count of
+   mathematical objects.** The pool overlaps named families
+   (`theta3`/`theta4`/`K4`/`K4+par` plus simple `\|V°\| ≤ 5` graphs) and
+   re-lists named habitats by design, so it carries isomorphic duplicates —
+   measured at **433 labelled shapes for 14 isomorphism classes** (~31×
+   average duplication, one class carried 49-fold; §(K-frame) continuation
+   *Step FR7*, (FR-14)). Every figure quoted straight off `sweep_shapes` (or a
+   census built on it) is therefore a **labelled-instance** count; read an
+   "N of M" or "N/M %" from it as a pool ratio, never a class-level one, until
+   it is re-keyed by isomorphism class — the correction §(K-ann) *Step A14*'s
+   histogram needed.
 
 ## Divergences — same name, different semantics: **do not merge**
 

@@ -767,7 +767,12 @@ supply is *Step G13*'s candidate supplier for J's witness half).
 
 ## Fifth fan-out — prepared 2026-08-07 (directions PEX / TCOL); dispatched SERIALLY, PEX → TCOL
 
-**Landing status: PREPARED, not yet dispatched.**
+**Landing status: PEX LANDED 2026-08-07** (§(K-frame) continuation, Steps
+FR7–FR11, (FR-8)–(FR-14) — the bare-cycle stratum proven **finite** and
+exhaustively enumerated (22 iso classes / 76 sites / 1976 labelled
+instances), **(FR-R1) PROVEN** with (FR-4)'s named (GR-5)-at-`G′` gap the
+sole rider; driver `w4/patexist.py`'s six modes coordinator-re-run, all
+byte-identical); **TCOL is next and last**.
 
 **User-adjudicated 2026-08-07**, this session, immediately after the fourth
 fan-out landed: presented with the *Hand-off* blockquote's five candidate

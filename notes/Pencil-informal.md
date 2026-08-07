@@ -81,8 +81,8 @@ section's own verdict block and the gap-map row, which stay authoritative.
 | §(K-Δ) | 9052–9318 | **NO HIT — the lead is discharged** | `DL-` |
 | §(K-bare-ext) | 9319–9358 | open, nothing being developed | `BE-` |
 | §(K-grid) | 9359–10528 | **reduction proven** — the tight-stratum residual of (AC-6) in final combinatorial form; since Steps G8–G13 (direction G) **(GR-4) is refuted-as-stated and repaired ((GR-8)/(GR-4′), off the critical path)** and the **tree-triple certificate theorem (GR-9)** discharges the geometry; since Steps G14–G18 (direction E) **the (GR-10) min-max is REFUTED as posed** ((GR-13) NP-completeness at balance + 18 habitat separators), (GR-10) itself surviving exhaustive enumeration, and the residual re-aims at **(GR-15)** (one-point-decidable per shape; per-block min-max = (GR-4′), counting-shaped), open | `GR-` |
-| §(K-frame) | 10529–11013 | *(new, 2026-08-07, direction J)* the shared chart-to-frame dominance residue: the lemma shape delivered in minimal form ((FR-1)); both bad divisors **combinatorial at grid points** ((FR-2)/(FR-3)); the transport works by **regridding at `G′`** ((FR-4), true-modulo-named-gap); the (ANH-14) residue **discharged at 1904/1904 enumerated sites** ((FR-5)); (OC-8)'s non-containment **inhabited by construction** at θ(3,4,5), the strict package 0/8 with the (AC-9) mechanism ((FR-6)); residue **(FR-R1)** (pattern-existence), open | `FR-` |
-| §(K-mech) | 11014–11394 | **both §(K-pure) *P8* anomalies mechanised** in one calculus (the load space `Ω`); **6v11e RESCUED** ((MX-7)) — the slide device closes it after all; the σ rider settled NO ((MX-8)); the `\|V°\| ≤ 6` predictor measured complete-and-sound ((MX-9)) | `MX-` |
+| §(K-frame) | 10529–11630 | residue **(FR-R1) PROVEN** since Steps FR7–FR11 (direction PEX); the bare-cycle stratum is finite (22 iso classes / 76 sites / 1976 labelled) and exhaustively enumerated; the only rider is (FR-4)'s named gap | `FR-` |
+| §(K-mech) | 11631–12011 | **both §(K-pure) *P8* anomalies mechanised** in one calculus (the load space `Ω`); **6v11e RESCUED** ((MX-7)) — the slide device closes it after all; the σ rider settled NO ((MX-8)); the `\|V°\| ≤ 6` predictor measured complete-and-sound ((MX-9)) | `MX-` |
 
 **Live vs settled**, using the division of the 2026-08-05 reorganization pass.
 Live: §(K-tight), §(K-Λ), §(K-σ), §(K-pure), **§(K-ann)** — whose live residue is
@@ -242,8 +242,8 @@ all in this file.
 | **(K-clos)** *(new, 2026-08-06)* | (K-clos) Z0–Z8 | **The field question of §(K-σ), settled — plus one construction REFUTED as a class statement and left OPEN only on the tight stratum.** Read the two halves separately. **Settled, proven-informally:** **(AC-1)** the polarity **generalizes** — bookkeeping, one section, and the general-`K` transport is already in tree (`BodyHingeFramework.mapSupport`, `Molecular/GenericLift/HingeGeneric.lean:462`, rank lemma `:544`), so `ProjectiveInvariance.lean`'s 19-declaration `ℝ`-fixed `mapExtensor` API needs **no** generalization (source-level, **not compiler-checked** — the dispatch carried a no-Lean constraint, and a ~20-line typecheck spike would settle it); **(AC-2)** the σ-fixed locus over `ℂ̄` is exactly the `P¹ × P¹` **grid** on the fixed quadric, with the conjugacy law `p ⬝ᵥ p′ = 2[s,s′][u,u′]`; **(AC-3)** those grids are **nondegenerate at the Tay target**, so §(K-σ) *Step σ6*'s "degenerate" is **REFUTED for the symmetric correlation** (it stands for the null one); **(AC-4)** the `⋆`-eigen decoupling `rank = rank₊ + rank₋` and the three conditions target rank forces (balance, both classes forests, both blocks isostatic); **(AC-5)** at a σ-fixed seed **route σ IS route A** (32/32, as subspaces), which is the **field-neutral replacement** for the `ℝ`-definiteness kill — so *"σ-equivariant seed recipes are DEAD" survives algebraic closure*; **(AC-7)** `hK` over `ℂ̄` **implies** `hK` over every infinite characteristic-0 field, converse **false**, so `ℝ` is the **narrowest** choice and the residual content of `[Infinite K]` is **positive characteristic only** — never probed; **(AC-8)** char 2 breaks the geometry (double plane, no splitting) but not (AC-1). **REFUTED as a class statement, OPEN on the tight stratum: (AC-6)** — the grids are a *combinatorial recipe* (a ruling 2-colouring of `E(G)`) for target-rank nondegenerate pencil realizations, reaching the target at **15/15 tight** shapes of a pinned 21-shape pool (all eight §(K-flank) flank shapes among them) and at the (K-res) inhabitant `W19` (1/1, rigid but not count-tight), 2/5 not-rigid, **18/21** overall. It **fails at three**, and the habitat attribution is the point: θ(1,2,9) and θ(2,3,7) are **out** of `hK`'s habitat (`hnoRigid` false) — θ(1,2,9)'s miss is *correct behaviour*, its triangle with two hubs already forbidden by `not_pencilNondegFeasible_of_triangle_two_hubs` — while **`C11`, a bare odd cycle, is IN the habitat and refutes the class statement by itself**. The mechanism is **parity and is complete**: no admissible colouring exists **iff** `G` has a bare odd cycle component (`C3…C14` → exactly `[3,5,7,9,11,13]`; 19/19 non-cycle pool shapes admit one) — and it **cannot** be the tight-stratum obstruction, since a tight shape has hubs and is never a bare cycle. **This row must not be read as "open" unqualified: the habitat-level statement is settled NEGATIVELY.** Chart-image membership for the grids is **proven and machine-verified** since 2026-08-06 (§(K-grid) (GR-5), 5/5 end-to-end) | for the *narrow* remainder only: the tight-stratum residual now lives in **§(K-grid)** (2026-08-06, direction T) — since direction G (Steps G8–G13) as a single geometry-free residual — since direction E (Steps G14–G18) **(GR-15)** (both-block generic `dim Z = 0` colouring existence; (GR-10)'s min-max is refuted as posed and (GR-10) stays open as the strictly stronger form; the former pair (GR-4)+(GR-6) is superseded, (GR-9) discharging the geometry wherever a triple exists). The direction-network statement this cell used to name ("isostatic whenever (AC-4)(i)–(ii) hold") is **refuted and corrected** there ((GR-2)/(GR-3): the mono-hub bond, and two proven counting families), the cheap-kill census is run and extended 15/15 → **907/907** (θ(2,5,5) + the exhaustive `K4` stratum included, no miss), and chart-image membership is proven ((GR-5)), so a target-rank grid **is** `hK`'s conclusion object. Discharging **(GR-15)** (equivalently (GR-10) with the proven (GR-9)) discharges `hK` on the tight stratum **directly**, then over every infinite characteristic-0 field by (AC-7). Nothing here would ever make the statement habitat-uniform: `C11` is permanent. **(AC-9), new 2026-08-06:** every σ-fixed body of degree `≥ 3` carries a **coincident hinge line** (pigeonhole against the two-ruling-lines cap), so the σ-fixed locus lies entirely inside the free-rotor locus and the composite guard accepts **0 of 64** `ds-K4` colourings — this **qualifies** (AC-3) (the four conjuncts and the Tay target still hold, so *Step σ6*'s claim stays refuted about that predicate) and forbids reading any σ-fixed witness as *generic* |
 | **(K-mech)** *(new, 2026-08-06, direction M)* | (K-mech) (MX-1)–(MX-9) | **Both §(K-pure) *P8* anomalies mechanised, in one calculus** — the realizable-load space `Ω := V_bc^{⊥_B}` and the α-confinement of slid chain spans ((MX-2), a per-line strengthening of (PC1)). 6v11e's `dim V_bc = 2` drop = a **forced welded flex**, two overlapping α-routes through the hub-5 meet ((MX-6)); the `K222` / `K4 (1,1,3,5,4,4)` incidence = a **forced pole-cluster load** through `pt(c)` ((MX-4)/(MX-5), bounds 2/2 met with equality; the all-`{3,4}` `K5` strong-containment branch is the bound-3 case); the chord obstruction (PC3) is the special case `ω = C_bc`. **6v11e RESCUED** ((MX-7)): omitting one far-side interior kills both routes, full (W1)–(W4) witnesses 3/3 seeds × 5 supports, 9/9 prediction table — the slide device closes it after all. σ rider settled **NO** within the probed family ((MX-8); the ℓ1 hub-hub chord is the one forced exception). (MX-9): the three-mechanism predictor measured complete-and-sound on `\|V°\| ≤ 6`, finding one **new** (W4)-failing shape (`\|E°\| = 11`, cluster bound 2) it had never seen | the **sufficiency** of the three decoration-free conditions ((K-chord) + cluster ≤ 1 + no flex route) beyond the sampled strata — a wider census could surface a fourth mechanism, which would be a finding, not a defect; class uniformity untouched |
 | **(K-grid)** *(new, 2026-08-06, direction T)* | (K-grid) G0–G18 | **The tight-stratum residual of (AC-6), reduced with proven reductions to two geometry-free gaps.** (GR-1) each `⋆`-eigen-block is a **conic direction network = generalized C¹-quadratic spline system** on the contracted multigraph, with the exact rank identity `rank = 3n_c − 3 − dim Z` verified 688/688 through two independent matrices; (GR-2) the former proof target "(AC-4)(i)–(ii) ⟹ both blocks isostatic" is **refuted** — 8 of `ds-K4`'s 64 colourings are balanced/both-forests at rank 89, mechanism a **bond of the contracted graph inside one ruling class** (mono hub = free rotor; the rank-costing boundary case of (AC-9)); (GR-3) two proven, mutually non-subsuming counting obstruction families bound `dim Z`; (GR-4) their max **equals** generic `dim Z` at all 688 pool instances (**true-modulo-named-gap** — the ≤ direction at conic labels; the construction's component-index labels are NOT generic, 10/688 special-value overshoots); (GR-5) chart-image membership **proven-informally class-uniformly + machine-verified 5/5 end-to-end** — a target-rank grid IS `hK`'s conclusion object (`Escape.lean:555`) over `ℚ(i)`, hence over every infinite char-0 field by (AC-7); census **907/907** (877 exhaustive `K4` + 6 + 21 sweeps + 3 thetas incl. the new θ(2,5,5)), first-hit 835 at the first filter-passing colouring. **Since Steps G8–G13 (2026-08-06, direction G): (GR-4) as stated is REFUTED** — the two (GR-3) families are incomplete (185 overshoots on the widened 4200-block pool, 59 filter-passing; every one exact against the proven unified sub-multigraph family **(GR-8)**, whose rank-1 members are exactly the ≤-2-class cycles), the repair **(GR-4′)** is true-modulo-named-gap (proven at ≤ 3 classes and singleton classes — the conic confinement is dissolved) and **off the critical path**; the **tree-triple certificate theorem (GR-9)** (proven) discharges the geometry outright — a both-block tree-triple colouring reaches the Tay target with no generic-arrangement input, hence `hK`'s conclusion via (GR-5)+(AC-7); **(GR-11)** is the proven ε-adic hierarchical fallback, undeveloped. **Since Steps G14–G18 (2026-08-07, direction E): the (GR-10) min-max is REFUTED as posed** — **(GR-12)** the certificate's three equivalent forms (tree-triple ⟺ three co-independent groups, sizes automatic ⟺ a class 3-colouring with every circuit of `H₊` polychromatic), with the `a = 0` + full-(GR-8) necessity re-derived **purely matroidally**; **(GR-13)** the triangle-chain family `C(Γ)` (triple-existence ⟺ 3-colourability of `Γ`), so the grouped packing is **NP-complete at exact balance** and no Edmonds-type min side — (GR-3)(b), the (GR-8) family, or any counting condition — can characterize the triple unless NP = coNP, with `C(K4)` an explicit counting-blind separator (exhaustive `max g = 0` over all 2^18 subsets, generic `dim Z = 0`, no triple); **18 separators ON THE HABITAT** (4 in V6m10(3¹⁰), 14 in V6m11(3⁸,4,4,4)): generic `dim Z = 0` proven at exact rational points yet no triple (the pinned exemplar's non-existence exhausted over all 3¹¹ class colourings, DFS-free), so the counting min side fails on real blocks; **(GR-14)** the rainbow-Δ-basis certificate (proves the chains), habitat applicability **measured nil** (0/400 + 0/18); **(GR-10) itself is NOT refuted** — exhaustive-colouring sweep (no probe cap) certifies 16600/17772 filter-passing colourings, scarcest shape 12/16, **no shape misses**; but per block the triple is strictly stronger than rank attainment, so any (GR-10) proof must be a colouring-existence argument (Step G12's branch bits), not a characterization | **(GR-15)** *(the re-aimed discharge residual, Step G17; the critical-path form since direction E — (GR-10) stays open as the strictly stronger statement, its min-max refuted as posed)* — every tight class shape admits an admissible colouring with generic `dim Z₊ = dim Z₋ = 0` in both blocks. Implied by (GR-10); **one-point-decidable per shape** ((GR-7) remark (i); τ-side analogue §(K-ann) (ANH-9)), so the census's 907/907 exact hits are already **per-shape proofs** and only the uniformity gap remains; its per-block min-max question is **(GR-4′)'s equality — counting-shaped and untouched by (GR-13)'s hardness** (the separators satisfy it exactly). Routes: a colouring-existence argument over Step G12's branch bits ("some admissible colouring has `a = 0 ∧ max g ≤ 0` in both blocks" + (GR-4′)), or (GR-11) hierarchical certificates developed on the 18 separators. With (GR-1)/§(K-clos) (AC-4), (GR-5) and (AC-7) it discharges `hK` on the tight stratum over every infinite characteristic-0 field |
-| **(K-frame)** *(new, 2026-08-07, direction J)* | (K-frame) FR0–FR6 | **The shared chart-to-frame dominance residue of directions O/Q/G, attacked via §(K-grid) *Step G13*'s lemma shape — which is delivered, and is smaller than its name.** **(FR-1)** proven: "dominance" over-asks — both residues are non-containment-in-one-hypersurface, settled by one witness point + irreducibility of the *source*; (ANH-14)'s source is the whole chart (irreducibility owned by §(K-ann) (ANH-9)(ii)), (OC-16)'s is the un-owned hard-stratum target-rank locus, needed **only** to combine separately-witnessed open conditions ((FR-7)). **(FR-2)/(FR-3)** proven: at a σ-fixed grid point every hinge line is a ruling line, the two families span complementary 3-spaces (= §(K-clos) (AC-4)'s `⋆`-eigenspaces, each a Veronese conic), and **any 6×6 hinge-line determinant — both bad divisors included — is nonzero ⟺ its edges are coloured 3–3 with pairwise-distinct components per family** (`det = 128·Vdm(s)·Vdm(u)`, an identity over the function field, `framedom.m2`); incidentally makes (AC-9) obvious with the coincident pair located exactly. **(FR-4)** true-modulo-named-gap (the (GR-5)-at-`G′` restatement, hypotheses machine-checked per instance): the transport works by **regridding at `G′ = G − v + ab`** (alternation makes `pt(a) ∈ M` automatic), and a *pattern colouring* yields an exact ℚ(i) chart witness proving the (ANH-R1) β-clause at its site via (ANH-9)(iii). **(FR-5)** measured: pattern availability **1904/1904** bare-cycle sites (census pin = (ANH-13)'s 1904), **30/30 exact end-to-end certificates** with negative controls. **(FR-6)** exact per point: at θ(3,4,5), 4/8 admissible colourings land on the hard stratum at target rank — the first **constructed** inhabitants — each a literal (OC-8) witness; the **strict** availability package is **0/8**, mechanism (AC-9) (structurality open). **No gap-map status moves; class uniformity untouched** | **(FR-R1)** — every bare-cycle site of every `k = 4` class triple admits a pattern colouring: a **colouring-existence question with no rank, no counting, no balance and no tree-triple content** (alternation around the cycle is nearly free; the content is keeping the three same-family edges in three distinct components + two placement-free legality clauses). Measured 1904/1904 over the `\|V°\| ≤ 5` sweep; Step G12's one-free-bit-per-branch structure applies verbatim, and girth 6 looks sufficient for a direct argument — the direction's chief hand-off. Proving it closes the (ANH-14) residue on the whole bare-cycle stratum *as an argument*; the (OC-16)-side residual ingredient (irreducibility of the hard-stratum locus, or a per-shape simultaneous witness) stays with §(K-out) (OC-8) |
-| **(K-ann)** *(new, 2026-08-06)* | (K-ann) A1–A17 | **A recipe delivered and an input relocated — read the two halves separately, and do not let the first warm up the second.** **Delivered, and the arc's first *formula* rather than a search** (`Pencil-strategy.md` §2.2's sense): **(ANH-2)** the reciprocity identity `dλ(π_P ω) = Σ_e ω_e B(τ_e, δC_e)`, local at the moved vertex, no genericity hypothesis, class-uniform, verified at 276 far-chart directions × 828 motions against an independent implicit differentiation; **(ANH-3)** at the named move (translate one non-hub 2-valent far body) it collapses to **one Klein pairing**, 192 single-vertex moves. Carry its caveat: *the formula's kernel is bounded-size and class-uniform; what it pairs against (`τ`, `ω`) is not* — so U1 is **half** delivered, the move and the formula but not the inputs. **Proven, and the mechanism behind (D2):** **(ANH-1)** `λ` **is a self-stress** — of the *contracted* framework `H/P` (weld the companion into one body), stress dimension exactly `k−3` (18 seeds, 9 habitats, `k = 3..6`), so (T5)/(D2) stop being measured bounds. **Proven, `k = 4`-only:** **(ANH-4)** `E(H/P)` is a **circuit of the generic Tay matroid**, from 5/6-sparsity + `hnoRigid`, the count `5k+10 ≤ 6k+6` tight exactly at `k = 4` — the same equality case as (D3)'s `k ≥ 4`; realized side, the support is the **whole** far edge set at 14/14 class seeds, so the named move needs **no support-location step**, with an off-class control (`hnoRigid` dropped) where the circuit is a proper 5-cycle and moves off it leave `V_bc` exactly fixed. **(ANH-7)**: on the **89 %** (3820/4296) of triples with a length-5 `H/P` branch the whole criterion is **one 4-point bracket**, correct 56/56. Corrections recorded here because they were written down before the pass ran: option B and U2 are **not** the same object (`λ` is a self-stress of the contracted **far** framework, not `[r]`); U2's cocircuit reading is the **dual** of what the recipe needs (`supp τ` is a *circuit*); and the pass's own `⟨C(z₁z₂)⟩` kill set is wrong at `dim U_y = 1`, the general criterion being `ρ_y ⊥_B (V_y ∧ U_y)`. **`k`-grading:** (ANH-1/2/3/5/6) and (SD-6) are length-free (`k = 3..6`); **(ANH-4) is provably `k = 4` only**, and with `k = 4` the `hnoRigid` equality case **no `k`-graded mechanism including this one can close the class** — the verdict `Pencil-strategy.md` §4.6 already carries. **No gap-map *status* moves; class uniformity untouched** | **(ANH-R1)** `τ_β ≠ 0` at the pencil placement — `H/P − β` (count exactly 0, generically isostatic) is **rigid** there. This is **relocation #4**, of a *different kind* for three reasons and *not thereby easier*: it crosses into a matroid that **has** a min-max (Tay, Phases 12–15) whose combinatorial half (ANH-4) **proves**; it lands on a **strictly smaller graph** (`\|E(G)\|−12` edges); and by §(K-ind) *Step I6* the welded body is not a pencil body, so it sits on the **mixed stratum** — not the same problem shrunk, and `Pencil-strategy.md` §4-C3's second concrete consumer after (OUT). It does **not** evade §2.3 (a rank *lower* bound): **limiting, not fatal** — the smaller graph's matroid is Tay's, where independence *is* combinatorially characterised, so the wall changes from "no matroid sees this" to "the matroid sees it and the pin may not respect the matroid" (the weak-map / specialization-stability lead of §4.6, which now has a statement to attach to). **"Easier or merely smaller" — SETTLED AS SCOPED (2026-08-06, Steps A10–A13, direction R): merely smaller in difficulty class**, with two structural gains and one proven loss. **(ANH-9)**: (ANH-R1) per triple ⟺ one exact rank computation at one rational chart point (weak-map formulation; `Pencil-strategy.md` §4.6's lead gets its precise statement); **(ANH-10)**: the pinned census probe is a clean negative at generic guarded seeds — 26/26 `dim S_pen = 1` with full support, 58/58 length-5-branch sites `τ_β ≠ 0`, so (ANH-R1) is **discharged at the generic point of every probed triple**; **(ANH-11)/(ANH-12)**: the bad locus is **INHABITED** — exact rational guard-accepted points (8/9 target-rank hard-stratum) where `H/P − β` goes dependent and `supp` strictly drops (11 → 6 at six exact witnesses) — so **the pencil pin respects Tay's matroid only generically, never pointwise, and no counting/matroid/placement-blind route to (ANH-R1) exists** (the τ-side analogue of (OC-3), by construction). Remaining: a **class-uniform independent-point recipe** ((ANH-9)(iii)) — the same missing technology as §(K-grid)'s residual (directions T and R converge; since direction G that residual is **(GR-10)**). The per-shape M2 identity `C(H/P − β) ≢ 0` was **RUN (2026-08-06, direction Q — Steps A14–A17): no shape refuted, and the "upgrade" reading was WRONG** ((ANH-16)(i): (ANH-9)(iii) already makes each census row a proof, so the identity is the pointwise restatement of (ANH-R1)); what survives is structure — **(ANH-13)** the branch-core normal form with the exact size law `deg C(H/P − β) = 12(c(G) − 2)`, bounded exactly on the finite part of the class; **(ANH-14)** the whole **bare-cycle stratum** (1904/6426 length-5-branch sites) governed by **ONE universal irreducible degree-12 bracket polynomial**, proven `≢ 0` over the function field with `det Gram = −C²`, so (ANH-R1) there is a **chart-to-frame dominance question with no rank condition left** (the **third** independent arrival at §(K-out) (OC-16)'s residue) — **since §(K-frame) (2026-08-07, direction J) that residue is replaced by (FR-R1)** (pattern-existence), discharged at **1904/1904** enumerated bare-cycle sites with 30 exact per-site proofs via (ANH-9)(iii), one named gap riding ((GR-5) restated at `G′`; §(K-frame) (FR-4)/(FR-5)) and, by irreducibility, **no (ANH-7)-style one-bracket recipe exists for (ANH-R1)'s own certificate**; **(ANH-15)** the bad locus **strictly contains** (ANH-11)'s transversal locus (a second, axis-free mechanism; all 9 (ANH-12) witnesses verified inside `{C = 0}`); **(ANH-16)** the M2 layer's reach bracketed from both sides (degree 12 in 24 indeterminates finishes at 578 s; the θ core at the generic point does not finish at 600 s). What it *would* close: the **length-4-companion stratum outright**, via §(K-Λ)'s Λ-completeness, since `dλ ≢ 0` makes `{λ = p⁺}` proper on an irreducible chart |
+| **(K-frame)** *(new, 2026-08-07, direction J)* | (K-frame) FR0–FR11 | **The shared chart-to-frame dominance residue of directions O/Q/G, attacked via §(K-grid) *Step G13*'s lemma shape — which is delivered, and is smaller than its name.** **(FR-1)** proven: "dominance" over-asks — both residues are non-containment-in-one-hypersurface, settled by one witness point + irreducibility of the *source*; (ANH-14)'s source is the whole chart (irreducibility owned by §(K-ann) (ANH-9)(ii)), (OC-16)'s is the un-owned hard-stratum target-rank locus, needed **only** to combine separately-witnessed open conditions ((FR-7)). **(FR-2)/(FR-3)** proven: at a σ-fixed grid point every hinge line is a ruling line, the two families span complementary 3-spaces (= §(K-clos) (AC-4)'s `⋆`-eigenspaces, each a Veronese conic), and **any 6×6 hinge-line determinant — both bad divisors included — is nonzero ⟺ its edges are coloured 3–3 with pairwise-distinct components per family** (`det = 128·Vdm(s)·Vdm(u)`, an identity over the function field, `framedom.m2`); incidentally makes (AC-9) obvious with the coincident pair located exactly. **(FR-4)** true-modulo-named-gap (the (GR-5)-at-`G′` restatement, hypotheses machine-checked per instance): the transport works by **regridding at `G′ = G − v + ab`** (alternation makes `pt(a) ∈ M` automatic), and a *pattern colouring* yields an exact ℚ(i) chart witness proving the (ANH-R1) β-clause at its site via (ANH-9)(iii). **(FR-5)** measured: pattern availability **1904/1904** bare-cycle sites (census pin = (ANH-13)'s 1904), **30/30 exact end-to-end certificates** with negative controls. **(FR-6)** exact per point: at θ(3,4,5), 4/8 admissible colourings land on the hard stratum at target rank — the first **constructed** inhabitants — each a literal (OC-8) witness; the **strict** availability package is **0/8**, mechanism (AC-9) (structurality open). **Since Steps FR7–FR11 (2026-08-07, direction PEX): (FR-R1) is PROVEN.** The bare-cycle stratum is **finite** (a bare-cycle site forces `c(G) = 3`, hence `n_hub ≤ 4`) and **exhaustively enumerated**: **22 isomorphism classes, 76 sites, 1976 labelled instances**, every one pattern-available, both by a uniform structural argument ((FR-9)–(FR-12): the frame's normal form, the component law, and vacuity of legality (i)) and independently by the exhaustive scan itself ((FR-8)). The former sweep-boundedness caveat **dissolves rather than widens**: `outer.sweep_shapes` covers 14 of the 22 iso classes (58 of 76 sites) and misses none of what it carries ((FR-14)). **No gap-map status moves; class uniformity — `hK`'s status — is untouched.** | With (FR-R1) proven, the residue is **(FR-4)'s named gap alone**: the (GR-5)-at-`G′` restatement (two lines of prose in §(K-grid); its hypotheses are already machine-checked per instance by `framedom.py --transport`). Closing it turns (FR-R1)+(FR-4) into an unconditional discharge of the (ANH-14) residue on the whole bare-cycle stratum. The (OC-16)-side residual ingredient (irreducibility of the hard-stratum locus, or a per-shape simultaneous witness) stays with §(K-out) (OC-8), untouched by this direction |
+| **(K-ann)** *(new, 2026-08-06)* | (K-ann) A1–A17 | **A recipe delivered and an input relocated — read the two halves separately, and do not let the first warm up the second.** **Delivered, and the arc's first *formula* rather than a search** (`Pencil-strategy.md` §2.2's sense): **(ANH-2)** the reciprocity identity `dλ(π_P ω) = Σ_e ω_e B(τ_e, δC_e)`, local at the moved vertex, no genericity hypothesis, class-uniform, verified at 276 far-chart directions × 828 motions against an independent implicit differentiation; **(ANH-3)** at the named move (translate one non-hub 2-valent far body) it collapses to **one Klein pairing**, 192 single-vertex moves. Carry its caveat: *the formula's kernel is bounded-size and class-uniform; what it pairs against (`τ`, `ω`) is not* — so U1 is **half** delivered, the move and the formula but not the inputs. **Proven, and the mechanism behind (D2):** **(ANH-1)** `λ` **is a self-stress** — of the *contracted* framework `H/P` (weld the companion into one body), stress dimension exactly `k−3` (18 seeds, 9 habitats, `k = 3..6`), so (T5)/(D2) stop being measured bounds. **Proven, `k = 4`-only:** **(ANH-4)** `E(H/P)` is a **circuit of the generic Tay matroid**, from 5/6-sparsity + `hnoRigid`, the count `5k+10 ≤ 6k+6` tight exactly at `k = 4` — the same equality case as (D3)'s `k ≥ 4`; realized side, the support is the **whole** far edge set at 14/14 class seeds, so the named move needs **no support-location step**, with an off-class control (`hnoRigid` dropped) where the circuit is a proper 5-cycle and moves off it leave `V_bc` exactly fixed. **(ANH-7)**: on the **89 %** (3820/4296) of triples with a length-5 `H/P` branch the whole criterion is **one 4-point bracket**, correct 56/56. Corrections recorded here because they were written down before the pass ran: option B and U2 are **not** the same object (`λ` is a self-stress of the contracted **far** framework, not `[r]`); U2's cocircuit reading is the **dual** of what the recipe needs (`supp τ` is a *circuit*); and the pass's own `⟨C(z₁z₂)⟩` kill set is wrong at `dim U_y = 1`, the general criterion being `ρ_y ⊥_B (V_y ∧ U_y)`. **`k`-grading:** (ANH-1/2/3/5/6) and (SD-6) are length-free (`k = 3..6`); **(ANH-4) is provably `k = 4` only**, and with `k = 4` the `hnoRigid` equality case **no `k`-graded mechanism including this one can close the class** — the verdict `Pencil-strategy.md` §4.6 already carries. **No gap-map *status* moves; class uniformity untouched** | **(ANH-R1)** `τ_β ≠ 0` at the pencil placement — `H/P − β` (count exactly 0, generically isostatic) is **rigid** there. This is **relocation #4**, of a *different kind* for three reasons and *not thereby easier*: it crosses into a matroid that **has** a min-max (Tay, Phases 12–15) whose combinatorial half (ANH-4) **proves**; it lands on a **strictly smaller graph** (`\|E(G)\|−12` edges); and by §(K-ind) *Step I6* the welded body is not a pencil body, so it sits on the **mixed stratum** — not the same problem shrunk, and `Pencil-strategy.md` §4-C3's second concrete consumer after (OUT). It does **not** evade §2.3 (a rank *lower* bound): **limiting, not fatal** — the smaller graph's matroid is Tay's, where independence *is* combinatorially characterised, so the wall changes from "no matroid sees this" to "the matroid sees it and the pin may not respect the matroid" (the weak-map / specialization-stability lead of §4.6, which now has a statement to attach to). **"Easier or merely smaller" — SETTLED AS SCOPED (2026-08-06, Steps A10–A13, direction R): merely smaller in difficulty class**, with two structural gains and one proven loss. **(ANH-9)**: (ANH-R1) per triple ⟺ one exact rank computation at one rational chart point (weak-map formulation; `Pencil-strategy.md` §4.6's lead gets its precise statement); **(ANH-10)**: the pinned census probe is a clean negative at generic guarded seeds — 26/26 `dim S_pen = 1` with full support, 58/58 length-5-branch sites `τ_β ≠ 0`, so (ANH-R1) is **discharged at the generic point of every probed triple**; **(ANH-11)/(ANH-12)**: the bad locus is **INHABITED** — exact rational guard-accepted points (8/9 target-rank hard-stratum) where `H/P − β` goes dependent and `supp` strictly drops (11 → 6 at six exact witnesses) — so **the pencil pin respects Tay's matroid only generically, never pointwise, and no counting/matroid/placement-blind route to (ANH-R1) exists** (the τ-side analogue of (OC-3), by construction). Remaining: a **class-uniform independent-point recipe** ((ANH-9)(iii)) — the same missing technology as §(K-grid)'s residual (directions T and R converge; since direction G that residual is **(GR-10)**). The per-shape M2 identity `C(H/P − β) ≢ 0` was **RUN (2026-08-06, direction Q — Steps A14–A17): no shape refuted, and the "upgrade" reading was WRONG** ((ANH-16)(i): (ANH-9)(iii) already makes each census row a proof, so the identity is the pointwise restatement of (ANH-R1)); what survives is structure — **(ANH-13)** the branch-core normal form with the exact size law `deg C(H/P − β) = 12(c(G) − 2)`, bounded exactly on the finite part of the class; **(ANH-14)** the whole **bare-cycle stratum** (1904/6426 length-5-branch sites) governed by **ONE universal irreducible degree-12 bracket polynomial**, proven `≢ 0` over the function field with `det Gram = −C²`, so (ANH-R1) there is a **chart-to-frame dominance question with no rank condition left** (the **third** independent arrival at §(K-out) (OC-16)'s residue) — **since §(K-frame) (2026-08-07, directions J/PEX) that residue is CLOSED AS AN ARGUMENT on the whole bare-cycle stratum**: (FR-R1) is **PROVEN** — the stratum is finite (22 iso classes / 76 sites / 1976 labelled instances) and exhaustively enumerated with a pattern colouring at every site — via (ANH-9)(iii) each such point is a proof of the (ANH-R1) β-clause at its site, so what remains is **(FR-4)'s one named gap alone** ((GR-5) restated at `G′`; §(K-frame) (FR-4)/(FR-5)), and, by irreducibility, **no (ANH-7)-style one-bracket recipe exists for (ANH-R1)'s own certificate**; **no gap-map status moves and `hK`'s status is untouched**; **(ANH-15)** the bad locus **strictly contains** (ANH-11)'s transversal locus (a second, axis-free mechanism; all 9 (ANH-12) witnesses verified inside `{C = 0}`); **(ANH-16)** the M2 layer's reach bracketed from both sides (degree 12 in 24 indeterminates finishes at 578 s; the θ core at the generic point does not finish at 600 s). What it *would* close: the **length-4-companion stratum outright**, via §(K-Λ)'s Λ-completeness, since `dλ ≢ 0` makes `{λ = p⁺}` proper on an irreducible chart |
 | **(K-out)** *(new, 2026-08-06)* | (K-out) O1–O12 | **(OUT)'s hypothesis, measured — and the headline is the NEGATIVE. Read the two halves separately, and do not let the second warm up the first.** **The negative, proven-informally and load-bearing: (OC-3)** on the pencil chart `C₁ = C(b,x₁)` is confined to the 2-dimensional pencil `L_b = α_{pt(b)} ∩ β_{Π(b)}` while the far relative twist space `R₁` does not see `pt(x₁)`, so `dim R₁ = 5` forces `dim(R₁ ∩ L_b) ≥ 5 + 2 − 6 = 1` — **`{λ₁ = 0}` is nonempty at every class shape in the enumerated scope**, exactly one marked direction of `x₁`'s pencil. Therefore **no counting argument, no matroid statement and no placement-blind argument can ever deliver (OUT)'s hypothesis**; measured on-chart `dim R = 5`, `dim(R ∩ L) = 1` (never 2) at 46/46 **sampled** frames, so the bad locus is also *proper* — though `dim(R ∩ L) = 2` **is reachable by construction** ((OC-14): the hub slide onto the explicit bad line `C₀`, 38/38 fully-nondegenerate target-rank points, 34 guard-accepted, **no coincident hinge**, the escape still holding — which **refutes (OC-7)'s necessity clause** while leaving every pool rate and the 318 / 299 denominators untouched). **The combinatorial half does NOT deliver availability: (OC-2)**'s uniform 4296-pair result (`χ = 0`, `def(H/X) = def(H/Y) = 0`, `(μ, dim R, A) = (1,5,0)` on both sides) collapses to **one** measured fact — rigidity of `H/X`, the rest being arithmetic — **since Steps O9–O12 (2026-08-06, direction O) a THEOREM, (OC-10)**: the availability map is *forced* at every class shape (`χ = 0`, `μ = 1`, `H/X`/`H/Y` isostatic, `dim R = 5`; girth-6 plus one `hnoRigid`-discharged boundary case, all four hypotheses load-bearing by adversarial witnesses), so *What would change this* items 1–2 are **struck as unrealizable** and θ(3,4,5) is the **unique theta class member**; `deficiency` stays the ***ambient*-generic** count, blind to the chart confinement. **The positives are pointwise, over two DISJOINT pinned pools, never aggregated: (OC-5)** POOL-G (4 habitats × seeds 200–299, 357 frames) distribution `322/17/17/1`, hypothesis **356/357**, conclusion separately verified **356/356**, (Λ0d) failing **0/357**; **(OC-6)** POOL-S (41 shapes / 90 splits / 270 frames) **270/270** with **0** silent (split, companion) pairs; **(OC-1)** *Step 5a*'s hinge-rate reading is exact and driver-asserted (`λ₁ = 0 ⟺ C₁ ∈ V_bc ⟺ dim W₁ = 1 ⟺ C₁ ∈ R₁`, 46 frames); **(OC-4)** the bad line is **reached by a legal chart move** at all four habitats — 3 of them with no coincident hinge line — keeping every (Λ0) clause, target rank, `dim R_a = 1` and all four `IsNondegPencilRealization` conjuncts, and with `deg_t Q(z(t)) = 4` there, so the escape holds exactly where (OUT) is blind. **(OUT) is therefore available, never automatic, and not contradicted.** **A HARNESS DEFECT, escalated: (OC-7)** — `widened.place_pencil_general`'s single-hub-interior sampler degenerates via `localtest.plane_basis` at **32 of 357** POOL-G frames (≈ 9 %) and that degeneracy **implies** `λᵢ = 0` (15/15 `b`-side, 18/18 `c`-side), uncaught by `flanks.star_span_ranks` (*documented* as the guard against exactly that artifact) and excluded by no `IsNondegPencilRealization` conjunct. **Standing rule: no `place_pencil_general` battery may be quoted as a *rate* or as evidence about a generic chart point** — POOL-G figures are quoted over the **318 coincidence-free** frames, never the raw 357. Second `plane_basis` contamination, **first with the documented guard failing**; `notes/scripts/README.md` *Harness debt* item 4. §(K-ann) is flagged for a **check, not an error**: its claims are identities and pointwise attainments, which degenerate frames make *harder* to satisfy (conservative); rates are what the defect distorts. **Verdict: availability, MEASURED, not proven. No gap-map *status* moves; class uniformity untouched** — the (K-wit) row's *what would close it* cell gains the (OC-3) caveat on (OUT) | **(OC-8)**: at every class shape, a hard-stratum target-rank point of the **whole-graph** chart with `L_b ⊄ R₁` or `L_c ⊄ R₄`. That is a rank **lower** bound at a pencil placement — `Pencil-strategy.md` §2.3's wall **relocated** onto the smaller `H/{e₂,e₃,e₄}` and **weakened, not crossed** — and (OC-3) says the relocation **cannot be discharged combinatorially**, so any proof must be a genericity argument on the whole-graph chart (needing its hard-stratum component not to lie inside `{λ₁ = 0} ∩ {λ₄ = 0}`), which the arc has never established because `λ` is a **far** datum. The one symbolically tractable piece — `L_b ⊄ R₁` as a polynomial non-vanishing (`Pencil-strategy.md` §5.3) — is **DELIVERED on the `ℓ_min = 5` stratum** ((OC-16): `Δ = [a,u,b] · C₀(pt b) ≢ 0` at the local frame's generic point, the bad line `C₀` in **closed form**) and **blocked off it** ((OC-15): the path-span form carries no information at `ℓ_min ≥ 6`; the stratum is 8 of 5226 pairs); at a **degree-3 hub** (3081/5226 pairs at the `b` end) (OC-8) restates with **no rank condition left** — availability ⟺ the hard-stratum target-rank locus `⊄ {pt(b) ∈ C₀}` — with **chart-to-frame dominance** the named residue ((OC-16)'s gap; *What would change this (Steps O9–O12)* item 4) — **since §(K-frame) (2026-08-07, direction J)**: the non-containment is **witnessed by construction** at θ(3,4,5) (4/8 admissible `G′`-colourings on the hard stratum at target rank, each with `Δ ≠ 0` at one end — §(K-frame) (FR-6)), the strict availability package is **0/8 at σ-fixed witnesses** with the (AC-9) coincidence the named mechanism (structurality open), and the evaluability question is answered: at grid points `Δ` is **combinatorial** ((FR-3)). **(OC-7) is CLEARED** (2026-08-06 re-baselining round S1/S2: the composite guard `repin.star_generic` exists, is adversarially tested on both a constructed and a sampled witness, and is adopted at every `w4/` acceptance site except this section's two measuring modes); **(OC-9)** measures that the guard rejects 58/357 and strictly contains the two-end diagnostic's 39 |
 | **(K-ind)** *(new, 2026-08-05)* | (K-ind) I0–I6 | **REFUTED as a route**, and not merely "no invariant found": the transport structure the question presupposes does not exist on the `hK` habitat. **(I1)** tight ⟺ `(|V|,|E|) = (5c+1, 6c)`, so two tight graphs of equal cycle rank have equal size and **no arm of `pencil_reduction` can relate them**; **(I2)** `splitOff` at a degree-2 vertex takes `index 0 → 1` preserving `c` and fixing the hub multigraph `G°`; **(I4)** inside one `G°` the class is a **finite antichain**, and the class's infinitude is entirely in the `G°` direction, which no move reaches. **(I0)**: the failure locus is a **divisor**, so its only numerical invariant is the single bit `codim F = 1`, which *is* `hK` — the question as posed is circular, and the image-side reading is (K-dom), already struck. One genuine positive by-product: **(I3)**, subdivision-monotonicity of `Image(V_bc)` — real, new, *and pointing the wrong way*, since the induction descends and every descent bottoms out at `k ≤ 3` where (D1) caps the rank at 4 | — refuted as a route. Any future "strengthen the inductive invariant" proposal must first exhibit a move relating two class members; `pencil_reduction`'s five arms supply none |
 | **(K-Δ)** *(new, 2026-08-05)* | (K-Δ) | **NO HIT — the literature lead is discharged**, not open. Two independently fatal hypothesis failures: **(M1)** the subject's objects are *totally isotropic* subspaces and `V_bc` never is (Klein Gram rank 3, or 2 on serial chains — an `O(6)`-invariant, not a frame choice), so it has no Wick vector and carries no Δ-matroid; **(M3)** the ground set is `[3]`, fixed by `dim Λ²K⁴ = 6`, and never grows with the graph — `Pencil-strategy.md` §2.2's ingredient-2 failure in the target literature's own terms. Recorded as a *pass*: the **form** matches exactly (transversality to two coordinate isotropics = two Wick coordinates nonzero). Buys two readings, not a route: **(N1)** the `ℓ = 3` criterion as five feasible pairs in the Dress–Havel metroid of the five lines, and **(N2)** the **pentagon** reading — `Q(z) ≠ 0` ⟺ no two non-consecutive edges of the closed chain `b–x–y–c–a–b` meet | — discharged. `Pencil-strategy.md` §7's "one unverified lead" is now a checked negative with the reason |
@@ -7126,8 +7126,10 @@ only valid when every reduced branch has `ℓ_j ≤ 5`. *(b)* The welded body `X
 interior), so at a bare-cycle site `X` always lies **on** the cycle.
 
 **Measured** (`anhr1.py --size`, placement-free, over the full 4296-triple pool
-of *Step A9*): 3820 triples carry a length-5 branch, giving **6426** sites;
-`c′` histogram `{0: 8, 1: 1904, 2: 3846, 3: 276, 4: 392}`; core-node histogram
+of *Step A9*): 3820 triples carry a length-5 branch, giving **6426** labelled
+instances of the pinned pool (not sites of the class — see the class-level
+figures below); `c′` histogram `{0: 8, 1: 1904, 2: 3846, 3: 276, 4: 392}`
+counts those same labelled instances; core-node histogram
 `{0: 1912, 1: 134, 2: 3812, 3: 568}`; equilibrium-block order `6(n−1)`
 histogram `{0: 142, 6: 5716, 12: 568}`. The identity `c′ = c(H/P) − 1` is
 **asserted at all 6426 sites**. Cross-check of (ii) against the landed
@@ -7136,6 +7138,18 @@ census pool, the `6m × 6m` matrix's corank equals the dimension of the
 `H/P − β` stress space rebuilt from scratch on the reduced edge list —
 **58/58**, corank 0 at every one, reproducing (ANH-10)'s discharge through a
 different matrix.
+
+**Framing repair (2026-08-07, direction PEX) — the numbers above do not
+change; every cell is a true labelled-instance count of the pinned pool.**
+At the **class** level (§(K-frame) (FR-8)/(FR-14)): `c′ = 0` (`c(G) = 2`) is
+**2** sites over **1** isomorphism class — θ(3,4,5), its unique inhabitant;
+`c′ = 1` (`c(G) = 3`, the bare-cycle stratum) is **76** sites over **22**
+isomorphism classes. At `c′ ≤ 1` the sweep above is **incomplete at the
+iso-class level**: it carries 14 of the 22 `c′ = 1` classes, and §(K-frame)
+(FR-8) supplies the complete list. The **29.6 %** ratio (`1904/6426`, *Step
+A17*'s Verification table) survives as a **pool** ratio and should be read
+as one — no class-level ratio is available, since the `c′ ≥ 2` cells sit
+where the `|V°| ≤ 5` sweep cap genuinely binds.
 
 **The boundedness is an artifact of the sweep, and the degree law is not.**
 `n ≤ 3` and order `≤ 12` hold over the pool only because `outer.sweep_shapes`
@@ -11022,6 +11036,611 @@ not needed at the informal tier, but the Lean-side chart objects exist
 mode is seconds — but a *wider* pattern scan (lifting `sweep_shapes`'
 `|V°| ≤ 5` cap) would move the (FR-5) boundary; a miss found there would
 be a genuine (FR-R1) counterexample and would re-aim item (i) at repair.
+
+**Continuation (2026-08-07, fifth fan-out direction PEX) — (FR-R1) is PROVEN: the bare-cycle stratum is *finite*, its frame has a normal form that makes the 3–3 split and the distinct-component clause automatic, the legality clauses are read exactly (one of them is a proper edge-2-colouring of the hub-hub graph, the *only* place a refutation could have lived), and the whole stratum is enumerated exhaustively (22 isomorphism classes, 76 sites, 1976 labelled instances, all pattern-available) — so (ANH-14)(b)'s boundedness caveat dissolves rather than widens, with the sweep's coverage measured at 14 of 22 classes and §(K-ann) *Step A14*'s `c′ ≤ 1` cells re-derived.**
+
+Answering `notes/Pencil-fanout.md` §"Fifth fan-out" → Direction PEX, i.e.
+§(K-frame) *Step FR4*'s residual **(FR-R1)** and *What would change this*
+item (i) — the section's own chief hand-off. Read against §(K-frame) *Steps
+FR0–FR3* ((FR-1)/(FR-3)/(FR-4)); §(K-ann) *Steps A14/A15* ((ANH-13)(i)/(iv),
+(ANH-14)(a)/(b)); §(K-grid) *Step G12*; and the *Shared dictionary*'s (R3)
+`def(C_k) = max(0, k−6)`, (R4) `hcard`, (SD-6) branch length ≤ 5, §(K-ind)
+*Step I2* (girth ≥ 7). Driver: `notes/scripts/w4/patexist.py` (new,
+untracked; imports `framedom` / `closure` / `outer` / `shrink` / `annih` /
+`nogood_subdiv` read-only). **No Macaulay2 leaf was opened** — the question
+is combinatorial and stayed combinatorial; the reserved `m2/patexist.m2` is
+returned unused.
+
+**Status, stated before the mathematics.**
+
+- **(FR-R1) is PROVEN on the bare-cycle stratum, and the proof is not a
+  wider battery.** Two independent halves. *(i)* A **uniform structural
+  argument** ((FR-9)–(FR-11)) that derives the 3–3 split and the
+  distinct-component clause outright, with no case left over, and reads
+  legality clause (ii) as an exact equivalence. *(ii)* An **exhaustive
+  enumeration of the whole stratum** — because the stratum is **finite**:
+  a bare-cycle site forces `c(G) = 3` ((ANH-13)(iv)), hence
+  `(|V|,|E|) = (16,18)`, `n_hub ≤ 4`, and finitely many branch-length
+  tuples. Four hub multigraphs; **22 isomorphism classes of shape carrying
+  a bare-cycle site, 76 sites among them**; enumerated as 470 labelled
+  shapes and **1976 labelled sites, 1976 pattern-available**, none scarcer
+  than 16 pattern colourings out of 32 admissible.
+- **(ANH-14)(b)'s boundedness caveat is not widened — it is discharged.**
+  (FR-5)'s 1904 sites came from `outer.sweep_shapes` (`|V°| ≤ 5` plus named
+  habitats). On this stratum the cap **cannot bind** (`n_hub ≤ 4`), and the
+  sweep's *shape* coverage was nevertheless incomplete, and (FR-14)
+  measures the shortfall at the only granularity that means anything —
+  **isomorphism classes of shapes**. Of the four possible hub multigraphs
+  the sweep carries **two** (`θ³`-at-`c = 2` aside, `θ⁴` contributes nothing
+  and `K4` contributes everything it has); the `n = 3` multigraph with
+  multiplicities `(1,2,2)` and the `n = 4` "C₄ with two opposite edges
+  doubled" are **outside the sweep entirely**. Result: the sweep pool covers
+  **14** of the stratum's **22** iso classes — all 14 inside the `K4` family
+  — carrying **58** of its **76** sites; the 8 unswept classes carry the
+  other **18**. **No iso class the pool knows is missing from the
+  enumeration (0/14).**
+- **Neither `1904` nor `1976` counts distinct mathematical objects, and
+  (FR-14) says so with the arithmetic.** Both are *labelled-instance* counts
+  over shape lists that carry isomorphic duplicates by design (the sweep
+  families overlap each other and `named_inventory` re-lists habitats): one
+  `K4` iso class alone is carried **49 times** in the pool. Exactly,
+  `1904 = 58 + 1846` and `1976 = 76 + 1900`, the second summand being the
+  duplicate-induced over-count in each. So the `1904` vs `1896` gap that
+  looked like eight missing sites is **a multiplicity artifact of two
+  differently-built lists over the same 14 classes** — neither census is
+  missing anything, and the canonical figures are **14 classes / 58 sites**
+  (swept) against **22 classes / 76 sites** (complete).
+- **The one place a refutation could have lived is named, constructed, and
+  then shown unrealizable.** Legality clause (ii) is **exactly** "the
+  hub-hub subgraph `Λ` of `G′` is properly edge-2-coloured" ((FR-10)(ii),
+  asserted over 8728 (split, colouring) pairs). So a shape whose `Λ` has an
+  **odd cycle** would have *no legal admissible colouring at all*, refuting
+  (FR-R1) at every one of its bare-cycle sites. The driver **constructs**
+  such a graph and confirms 0 legal colourings out of 1024, with an
+  even-cycle negative control at 4 of 4096 — parity, not size, is the
+  mechanism. It cannot happen here: a `Λ`-cycle is a cycle of `G` on hubs
+  only, of length ≥ 7 (girth), while `n_hub ≤ 4`.
+- **Legality clause (i) ("all bodies distinct") is *vacuous* on this
+  stratum**, not merely satisfied: over **every** admissible colouring of
+  **every** site of the complete stratum the collision count is **0**
+  ((FR-12)), and the characterization behind it (a collision is always a
+  pair of length-2-branch interiors) is asserted, not assumed. The uniform
+  reason is a short girth-7 + branch-length count, given in *Step FR11*.
+- **The recipe is a formula, not a search.** (FR-11) builds one colouring
+  per site from the site's combinatorics — frame branch bits forced to
+  alternate, `Λ` properly 2-coloured, every other bit the constant 0 — and
+  its **first** variant is a pattern colouring at **1904/1904** pool sites
+  and **1976/1976** stratum sites. The A/B swap and the second constant are
+  never needed.
+- **What does not move.** (FR-4)'s named gap — §(K-grid) (GR-5) restated at
+  `G′` — stays exactly as named; this direction does not touch it. The
+  (OC-16) side is untouched. **Class uniformity of `hK` is untouched**: what
+  closes is the (ANH-14) chart-to-frame residue *on the bare-cycle stratum*
+  — (ANH-13)'s `c′ = 1` column, 1904 of the swept 6426 length-5-branch
+  sites (29.6 %), i.e. the (ANH-R1) β-clause is now proven at those sites
+  and untouched at the other ~70 %.
+
+### Standing notation (on top of §(K-frame) *Standing notation*)
+
+`G` a `k = 4` class shape; `v` an eligible split with `b — v — a — c` the
+split branch (`deg v = deg a = 2`, `b, c` hubs); `G′ = G − v + ab`;
+`H = G − v − a = G′ − a`; `P = [b,x₁,x₂,x₃,c]` a length-4 companion; `X` the
+weld. A **hub** is a vertex of degree ≥ 3; a **branch** is a maximal path
+with degree-2 interior and hub ends; `G°` is the hub multigraph, `Λ` the
+hub-hub subgraph of `G′` (equivalently: the length-1 branches). `Γ_A`, `Γ_B`
+are the two colour classes of `Λ` under an admissible `col`. `n_hub = |V(G°)|`.
+`--frame` etc. name modes of `patexist.py`.
+
+### Step FR7 — (FR-8)/(FR-14): the bare-cycle stratum is FINITE, here is all of it, and here is what the sweep was missing
+
+> **(FR-8)** *(proven; census driver-asserted, `--strat`)* Every bare-cycle
+> site has `c(G) = 3`, and therefore:
+>
+> (i) `(|V(G)|, |E(G)|) = (16, 18)`; `Σ_{hubs} deg = 2c − 2 + 2n_hub` with
+> every hub of degree ≥ 3 gives **`n_hub ≤ 2c − 2 = 4`**; `G` has exactly
+> `c − 1 + n_hub = n_hub + 2` branches, of total length 18 and each of
+> length ≤ 5 ((SD-6)); and `G°` has **no loop** (a loop branch is a cycle of
+> `G` of length ≤ 5).
+>
+> (ii) Hence `G°` is one of exactly **four** connected loopless multigraphs
+> with `n + 2` edges and min degree 3 on `n ∈ {2,3,4}` vertices:
+> `n = 2` with a single 4-fold edge; `n = 3` with multiplicities `(1,2,2)`;
+> `n = 4` cubic — either `K4` or `C₄` with two opposite edges doubled.
+>
+> (iii) The `n = 2` family carries **no** `k = 4` triple (four branches of
+> total 18 with the split branch 3 and each ≤ 5 forces `(3,5,5,5)`, which
+> has no length-4 `b`–`c` companion). So the stratum lives over
+> `n_hub ∈ {3,4}`.
+>
+> (iv) Enumerating all branch-length tuples over (ii): **600** class shapes
+> carrying a (length-3 split branch, length-4 companion) pair; **470** of
+> them carry a bare-cycle site; **1976** bare-cycle sites in total. Every
+> shape met has `girth(G) = 7` and `girth(G′) = 6` exactly, and every branch
+> of every `G′` has length ≤ 5.
+
+*Why this is exhaustive, and where it exceeds `outer.sweep_shapes`.* Each
+filter the enumeration applies is a **necessary** condition of the object
+being enumerated — `c(G) = 3` ((ANH-13)(iv)); loopless and `n_hub ≤ 4` by
+(i); split branch of length exactly 3 (that is what `orient`/`split_data`
+means); a length-4 `b`–`c` companion (that is what `k = 4` means); branch
+lengths in `[1,5]` ((SD-6), and the driver runs `lmax = 6` and observes the
+maximum is 5, so the bound is not doing hidden work). `kslidecomb.shape_ok`
+is the *class* certification and its `hnoRigid` half is tested at branch
+granularity, i.e. it accepts a **superset** of class shapes — which is the
+safe direction for an exhaustiveness claim. The sweep, by contrast, runs
+`theta3` / `theta4` / `K4` / `K4+par` plus **simple** 5-hub graphs; at
+`c(G) = 3` only `theta4` and `K4` are in range, so the `n = 3` `(1,2,2)`
+multigraph and the `n = 4` doubled-`C₄` were never swept. Labelled site
+counts per family are `K4` 1896, doubled-`C₄` 48, `n = 3` 32; but **labelled
+counts are the wrong unit for comparing the two censuses** — see (FR-14).
+
+**This is the sentence (ANH-14)(b) and (FR-5) had to hedge, and it no longer
+needs hedging.** "Every class shape" *is* established on the bare-cycle
+stratum, because on that stratum "every class shape" is a finite list.
+
+> **(FR-14)** *(proven; asserted by `--recon`, which keys both censuses by
+> shape isomorphism class — canonical over the ≤ 24 hub permutations, exact
+> since `n_hub ≤ 4`)*
+>
+> (i) **The enumeration misses nothing.** Of the **14** isomorphism classes
+> the (ANH-9) pool carries with a bare-cycle site, **0** are absent from the
+> complete-stratum enumeration; all 14 lie inside the swept `K4` family. The
+> enumeration carries **22**, so the 8 extra classes — 4 over the `n = 3`
+> `(1,2,2)` multigraph, 4 over the `n = 4` doubled-`C₄` — are exactly what
+> the sweep never saw.
+>
+> (ii) **Site counts are class-level invariants; the published totals are
+> not.** The number of bare-cycle sites of a labelled shape depends only on
+> its isomorphism class (asserted). Summed over classes: **58** for the
+> pool's 14, **76** for the complete 22. The *labelled* totals are
+> `1904 = 58 + 1846` and `1976 = 76 + 1900`, the second summand in each
+> being the duplicate-induced over-count of a shape list that carries
+> isomorphic copies (433 labelled shapes for 14 classes; 470 for 22). One
+> `K4` class — hub multigraph `K4`, branch lengths `(1,1,3,5,3,5)`, 8 sites
+> — is carried **49 times** in the pool, once by `named_inventory` (as
+> `flank:K4 menu-blocked`) and 48 times by the `K4` sweep family.
+>
+> (iii) **Consequently the `1904` vs `1896` difference is a multiplicity
+> artifact, not a missing-site gap in either direction.** Both lists cover
+> the same 14 classes over the `K4` family; they weight them differently.
+>
+> (iv) **At `c(G) = 3` every length-5-branch site is a bare-cycle site**
+> (`other5 = 0`, and no `e0 is None` branch occurs), asserted over all 470
+> labelled shapes — which is (ANH-13)(iv) measured over the complete
+> stratum rather than over the sweep.
+
+**The `c′ ≤ 1` columns of §(K-ann) *Step A14*, re-derived over the complete
+strata** (`--recon` part 3). The `c′` histogram
+`{0: 8, 1: 1904, 2: 3846, 3: 276, 4: 392}` counts (shape, split, length-4
+companion, length-5 branch) instances over the same pinned pool, so its
+cells are labelled counts of the same kind:
+
+| cell | complete stratum, per iso class | complete stratum, labelled | the landed pool figure |
+|---|---|---|---|
+| `c′ = 0` (`c(G) = 2`) | **2**, over **1** iso class — `θ(3,4,5)`, 2 eligible splits × 1 companion × 1 loop branch | 4 | **8** |
+| `c′ = 1` (`c(G) = 3`) | **76**, over **22** iso classes | 1976 | **1904** |
+
+`c(G) = 2` has one hub multigraph (three parallel edges), and with the split
+branch pinned at 3, lengths ≤ 5 summing to 12 and a length-4 companion
+required, **θ(3,4,5) is its unique inhabitant** — which re-derives §(K-out)
+*Step O12*'s "unique theta class member" from the length arithmetic alone.
+
+**What this does to the landed histogram: a framing fix, not a number
+change.** Every cell is a *true statement about the pinned pool's labelled
+shape list*, which is what `anhr1.py --size` measures and what its own
+prose says ("over the full 4296-triple pool of *Step A9*"). It becomes wrong
+only under a class-level reading — "1904 bare-cycle sites *exist*", "8
+`c′ = 0` sites *exist*" — which the surrounding text does not quite make,
+but which a reader can easily take. The repair is therefore (a) say
+*labelled instances of the pinned pool*, not sites of the class; (b) record
+the class-level figures above alongside; (c) record that at `c′ ≤ 1` the
+sweep is **incomplete at the iso-class level** (14 of 22 at `c′ = 1`) and
+that (FR-8) supplies the complete list. The 29.6 % ratio (`1904/6426`)
+survives as a pool ratio and should be labelled as one; it is **not** a
+class-level ratio, and no class-level ratio is available, since the `c′ ≥ 2`
+cells sit where the `|V°| ≤ 5` cap genuinely binds.
+
+### Step FR8 — (FR-9): the frame's normal form in `G′`
+
+> **(FR-9)** *(proven; every clause asserted per site at 1904/1904 pool
+> sites (`--frame`) and 1976/1976 stratum sites (`--strat`))* At a
+> bare-cycle site:
+>
+> **(a) `H/P` is exactly (bare 6-cycle) ∪ β and nothing else.**
+> `|E(H/P)| = 11 = 6 + 5` and `|V(H/P)| = 10 = 6 + 4`; β is not a loop
+> (a loop of length 5 would be a 5-cycle of `H/P`, and `girth(H/P) ≥ 6`
+> off `|E(H/P)| = 5` — §(K-ann) *Step A9*). So β joins two distinct cycle
+> nodes, of `H/P`-degree 3; every other cycle node has degree 2.
+>
+> **(b) The frame is a 7-point open path in `G′`.** The cycle's nodes are
+> `X` (always on it, (ANH-13) trap (b)) and five far bodies `z₁…z₅`; far
+> bodies satisfy `deg_{G′} = deg_H = deg_{H/P}`. Reading the cycle from `X`
+> gives `x — z₁ — … — z₅ — x′` in `H ⊆ G′`, with `x, x′ ∈ P` the two
+> companion attachment points. (The closed-hexagon degeneration `x = x′` of
+> (ANH-14)(a) occurs **0 times** in the whole stratum; the argument below
+> does not depend on that.)
+>
+> **(c) `x` and `x′` are hubs of `G′`.** `b` and `c` are hubs by
+> `split_data`; an interior companion vertex carries two `P`-edges plus its
+> frame edge.
+>
+> **(d) `S := {i : deg_{G′}(z_i) ≥ 3}` has `|S| ∈ {1, 2}`.** `≤ 2` by (a);
+> `≥ 1` because the frame has length 6 while every branch of `G′` has length
+> ≤ 5 — `G′`'s branch multiset is `G`'s with the length-3 split branch
+> shortened to 2, and `G′` has the same hubs as `G`. Measured over the
+> stratum: `{1: 1928, 2: 48}`.
+>
+> **(e) Each hub `z_j` has all of its hub-hub edges on the frame.** Its
+> three `G′`-neighbours are its two frame neighbours and β's first interior
+> node, which has `H/P`-degree 2. So `z_j`'s `Λ`-edges are among
+> `{f_{j−1}, f_j}`, and are present only when the corresponding frame
+> neighbour is a hub — i.e. only at `j = 1` (`f₀ = x z₁`) or `j = 5`
+> (`f₅ = z₅ x′`).
+>
+> **(f) No `H`-edge joins two frame vertices except the six frame edges and
+> possibly the `P`-edge `x x′`.** Such an edge would be an extra
+> `H/P`-edge between two cycle nodes, contradicting (a) (β has length 5, not
+> 1); edges inside `P` are contracted away, and by girth the only `P`-chord
+> is a `P`-edge. (`x x′ ∈ E(H)` at **576** of the 1976 sites.)
+>
+> **(g) When `|S| = 2`, EVERY hub-hub edge of `G′` is a frame edge.** Then
+> both β-endpoints are far bodies, so `deg_{H/P}(X) = 2`, i.e.
+> `Σ_{p∈P} deg_H(p) = 10`, i.e. `deg_G(b) = deg_G(c) = 3` and
+> `deg_G(x_i) = 2`; hence `x = b`, `x′ = c`, the hubs are exactly
+> `{b, c} ∪ {z_j}_{j∈S}`, and by (e)/(f) every edge between two of them is a
+> frame edge.
+>
+> **(h) `Λ` is a disjoint union of paths on ≤ 4 vertices.** (R4) gives max
+> degree ≤ 2; a `Λ`-cycle would be a cycle of `G′` on hubs only, hence
+> (it cannot use `ab`, `a` having degree 2) a cycle of `G`, of length ≥ 7,
+> while `n_hub ≤ 4`. Measured: only paths on 2 or 3 vertices occur.
+>
+> **(i) The frame is exactly `|S| + 1 ∈ {2,3}` COMPLETE, pairwise-distinct
+> branches of `G′`.** Each maximal run between consecutive frame hubs has
+> degree-2 interior and hub ends, hence is a whole branch; two runs are
+> edge-disjoint and separated by a hub, so they are different branches.
+> Run-length profiles over the stratum: `(1,5) 368, (2,4) 368, (3,3) 464,
+> (4,2) 368, (5,1) 360` at `|S| = 1`, and `(1,2,3) (1,3,2) (1,4,1) (2,2,2)
+> (2,3,1) (3,2,1)` at 8 each at `|S| = 2`.
+
+### Step FR9 — (FR-10): the component law, and what the two legality clauses actually say
+
+> **(FR-10)** *(proven; both halves driver-asserted, `--validate`)*
+>
+> **(i) Only hub-hub edges propagate a ruling component.** Within a branch
+> the colours alternate ((AC-2) conjunct 4 / *Step G12*), so two same-family
+> edges of one branch are never adjacent. Consequently: two hubs lie in the
+> same `A`-component **iff** they are joined by a path of `A`-coloured
+> hub-hub edges; a frame edge with **no** hub endpoint is a **singleton**
+> ruling component; and every `A`-component is a star at a hub, a double
+> star across an `A`-coloured `Λ`-edge, or a single interior edge. (Asserted
+> hub-pairwise over every admissible colouring of every census split.)
+>
+> **(ii) Legality clause (ii) IS "`Λ` is properly edge-2-coloured".**
+> `closedHubNbhd u` has three members exactly when `u` is a hub with two hub
+> neighbours, and then it is `{u, w₁, w₂}` with `uw₁, uw₂ ∈ Λ`. If both are
+> `A`, all three sit in one `A`-component and the clause fails. Conversely
+> if no hub carries two same-family `Λ`-edges, `Γ_A` and `Γ_B` are
+> matchings, every `Γ_A`-component has ≤ 2 hubs, and `{u,w₁,w₂}` is never
+> mono. (Asserted as an **iff** over 8728 (split, colouring) pairs.)
+
+**The one place a refutation could have lived, and the constructed witness
+that shows the mechanism is real.** By (ii), a graph whose `Λ` contains an
+**odd cycle** admits *no legal admissible colouring whatsoever*, so (FR-R1)
+would fail at every one of its bare-cycle sites — a clean structural flank,
+of exactly the shape `Pencil-strategy.md` §2.3 warns to look for. `--kill`
+**constructs** such a graph (a 5-cycle of hubs, each with a pendant 2-path
+to a common body): 1024 admissible colourings, **0** legal; and its
+6-cycle-of-hubs control has 4 legal of 4096. So the mechanism fires and the
+mechanism is **parity**, not size. It is unrealizable on this stratum by
+(FR-9)(h) alone — and that is the whole of the argument's dependence on
+`hnoRigid` beyond the class definition.
+
+### Step FR10 — (FR-11): the recipe, and (FR-R1) proven
+
+> **(FR-11)** *(proven; the construction runs green at 1904/1904 pool sites
+> and 1976/1976 stratum sites, in its **first** variant every time)* At any
+> bare-cycle site define a colouring of `G′` by:
+>
+> 1. **frame branches** — set the `|S| + 1` free bits so that the frame path
+>    *alternates*: `col(f_i) = A ⟺ i` even;
+> 2. **`Λ`** — properly edge-2-colour it (alternate along each `Λ`-path),
+>    seeded by whatever step 1 already forced;
+> 3. **every other branch** — the bit 0.
+>
+> This is well defined (step 1 by (FR-9)(i); step 2 by (FR-9)(h) plus the
+> observation that the frame's `Λ`-edges are *consecutive* frame edges,
+> hence already alternating; step 3 vacuously), and it is a **pattern
+> colouring**: it meets (FR-4)'s (pattern) clause and both legality clauses.
+
+*Proof of the pattern clause.*
+
+**3–3.** The frame path has even length 6 and alternates. ∎
+
+**Three distinct components per family.** Say `A = {f₀, f₂, f₄}`. By
+(FR-10)(i) a frame edge with no hub endpoint is a singleton component, so it
+is automatically distinct from everything; only *anchored* frame edges (those
+with a hub endpoint) can collide, and two same-family anchored frame edges
+collide iff some hub of one and some hub of the other are joined by a path
+of same-family `Λ`-edges.
+
+*Case `|S| = 1`, `S = {j}`.* By (FR-9)(e):
+
+- `j ∈ {2,3,4}`: `z_j` has `Λ`-degree **0**, so its component is `{z_j}`.
+  The anchored `A`-edges are `f₀` (at `x`) and, when `f_{j−1}` or `f_j` is
+  `A`, that edge (at `z_j`); `x ≠ z_j`, so they are distinct. Mirror for `B`
+  with `x′`.
+- `j = 1`: `f₀ = x z₁` is `z₁`'s only `Λ`-edge and is `A`. Then `f₀` is the
+  **only** anchored `A`-edge (`f₂`, `f₄` have no hub endpoint), so there is
+  nothing to separate; and `Γ_B(z₁) = {z₁} ∌ x′`, so the anchored `B`-edges
+  `f₁` (at `z₁`) and `f₅` (at `x′`) are distinct.
+- `j = 5`: the mirror image.
+
+*Case `|S| = 2`.* By (FR-9)(g) every `Λ`-edge is a frame edge; consecutive
+frame edges alternate, so `Γ_A` and `Γ_B` are matchings, and a same-family
+`Λ`-edge joining the hubs of two anchored same-family frame edges would be a
+second same-family frame edge at a common frame vertex — impossible under
+alternation unless it *is* one of them, which forces the two anchored edges
+to coincide. ∎
+
+**Legality (ii)** is step 2 plus (FR-10)(ii). **Legality (i)** is *Step
+FR11*. ∎
+
+> **(FR-R1) — PROVEN.** *Every bare-cycle site of every `k = 4` class triple
+> admits a pattern colouring.* The pattern clause and legality (ii) hold by
+> (FR-11) uniformly; legality (i) holds by (FR-12); and independently of the
+> argument, the whole (finite) stratum is enumerated with a pattern
+> colouring exhibited at every one of its **1976** sites, the scarcest
+> having **16** of 32 admissible colourings pass.
+
+**What this buys, said exactly.** By §(K-frame) (FR-4), a pattern colouring
+at a site gives an exact ℚ(i) chart point of the triple with the universal
+polynomial `C ≠ 0` there, and by §(K-ann) (ANH-9)(iii) that **proves** the
+(ANH-R1) β-clause at that site. So **the (ANH-14) chart-to-frame dominance
+residue is discharged on the entire bare-cycle stratum as an argument** —
+1904 of §(K-ann)'s 6426 length-5-branch sites — with (FR-4)'s single named
+gap ((GR-5) restated at `G′`) riding along unchanged. Nothing here touches
+the other 4522 sites, the (OC-16) side, or class uniformity of `hK`.
+
+### Step FR11 — (FR-12): legality clause (i) is *vacuous* on this stratum
+
+> **(FR-12)** *(proven; characterization asserted and count measured over
+> **every** admissible colouring of **every** stratum site, `--strat`)*
+>
+> (i) **Characterization.** Two bodies of `G′` share a grid point iff they
+> lie in the same `A`-component and the same `B`-component. Such a pair is
+> always **two interiors of length-2 branches**: hubs never collide with
+> hubs (a `Γ_A`-link and a `Γ_B`-link would be the same `Λ`-edge in two
+> colours); a hub never collides with a non-hub, and two *adjacent*
+> non-hubs never collide, because each such configuration closes a cycle of
+> `G′` of length ≤ 4, hence a cycle of `G` of length ≤ 5; and a degree-2
+> body whose `A`-neighbour is a non-hub has `A`-component of size 2, which
+> forces the partner to be that neighbour.
+>
+> (ii) **Vacuity.** No such pair exists at any colouring of any bare-cycle
+> site. Let `u` (between hubs `p_A`, `p_B`) and `w` (between `q_A`, `q_B`)
+> collide. If `{p_A,p_B} = {q_A,q_B}` the two branches close a 4-cycle of
+> `G′` — impossible (`girth(G′) = 6`). Otherwise the `Γ_A`-path from `p_A`
+> to `q_A` (length `t ≥ 1`) and the `Γ_B`-path from `p_B` to `q_B` (length
+> `s ≥ 0`) close a cycle of `G′` of length `4 + t + s`, so `t + s ≥ 2`.
+> Every `Λ`-edge on those paths is a **length-1 branch**, and every hub it
+> meets is a distinct hub, so `t + s ≤ 3` by `n_hub ≤ 4`; and `t + s ≥ 3`
+> already needs ≥ 5 distinct hubs. So `t + s = 2`, the cycle has `G′`-length
+> 6 and therefore `G`-length 7 (it must run through the split branch, since
+> `girth(G) = 7`), and it consists of two length-2/3 branches and two
+> length-1 branches — total 7 of the 18 edge-lengths across 4 of the
+> `n_hub + 2 ≤ 6` branches, leaving ≤ 2 branches to carry 11 with each
+> ≤ 5. Contradiction. **Measured: 0 collisions.**
+
+*(Read (FR-12)(ii) as the uniform reason behind a measured 0, not as a
+substitute for it: the count is what the driver asserts; the argument is why
+it had to be 0. The two together are why legality (i) needs no repair step
+in the recipe.)*
+
+### The (`≤3`-closedHubNbhd) line — which side this argument sits on
+
+`notes/Phase39.md` *Blockers* records that feasibility propagation **as a
+proposition** is refuted for any purely combinatorial `≤3`-closedHubNbhd
+criterion (`not_pencilNondegFeasible_of_triangle_two_hubs`). **This
+direction's results sit entirely on the other side of that line, and
+(FR-10)(ii) is the clause that has to say so out loud.**
+
+- (FR-10)(ii) is an equivalence about **one constructed configuration**: it
+  says that the σ-fixed grid point built from a given `col` has, at each
+  3-member closed hub neighbourhood, three non-collinear quadric points
+  **iff** `col` 2-colours `Λ` properly. It quantifies over *colourings of a
+  fixed graph*, never over placements, and it concludes about a **point**,
+  never about `PencilNondegFeasible G`.
+- Nothing here propagates: (FR-11) *constructs* a witness and (FR-4) reads
+  its consequence through rank lower semicontinuity on the irreducible chart
+  ((ANH-9)(iii)), exactly as §(K-frame) already does. There is no step of
+  the form "the combinatorial criterion holds, therefore the graph is
+  feasible".
+- The two statements are in fact **logically independent**, and the
+  `--kill` witness makes that concrete: its odd-`Λ`-cycle graph is one where
+  *the σ-fixed grid construction can never be legal*, which says nothing
+  about whether that graph is `PencilNondegFeasible` (a question about all
+  placements). Reading (FR-10)(ii) as a feasibility criterion would be
+  exactly the move the landed refutation forbids — so **do not**; it is a
+  criterion for *this construction's* hypotheses.
+
+**The coordinator's flagged hypothesis (F14) is therefore confirmed as
+stated**, and the confirmation is sharper than the hypothesis: it is not
+merely that (FR-4)'s clause is checked at a constructed point, it is that
+the clause's exact combinatorial content ((FR-10)(ii)) is a statement about
+`Λ`'s edge-colouring — an object that only exists once a colouring is
+chosen, i.e. only downstream of the construction.
+
+### Verdict — what this buys, exactly
+
+- **§(K-frame) (FR-R1): PROVEN**, and the section's *What would change this*
+  item (i) is discharged in the affirmative. The route item (i) sketched —
+  "alternation is nearly free; the content is keeping the three same-family
+  edges in distinct components; *Step G12*'s branch bits plus girth 6 look
+  sufficient" — is **correct in shape and understated in strength**: the
+  three same-family edges are kept apart *automatically* once the frame's
+  normal form ((FR-9)(e)/(g)) is available, and the binding girth number is
+  **7**, not 6, which is what makes legality (i) vacuous ((FR-12)).
+- **§(K-ann) (ANH-14) / the (K-ann) gap-map cell**: the chart-to-frame
+  residue on the bare-cycle stratum is **closed as an argument**, with
+  (FR-4)'s named (GR-5)-at-`G′` gap the only rider. The residue sentence's
+  (FR-R1) form can be retired in favour of "proven; one named gap".
+  *Coordinator's call whether the cell moves; the status of `hK` does not.*
+- **(ANH-14)(b)'s boundedness caveat: DISCHARGED on this stratum** (not
+  widened). This is the first time in the arc that a "the pool is not the
+  class" caveat has been removed rather than enlarged, and the reason is
+  structural (`c(G) = 3` is finite), not computational.
+- **A latent sweep gap, measured and bounded**: `outer.sweep_shapes` misses
+  two of the four `c(G) = 3` hub multigraphs, i.e. **8 of the 22**
+  isomorphism classes of the bare-cycle stratum, carrying **18 of its 76**
+  class-level sites ((FR-14)(i)/(ii)). §(K-ann) *Step A14*'s `c′`
+  histogram is the place this shows: its `c′ = 0` and `c′ = 1` cells are
+  labelled pool counts, true as such and incomplete as class statements —
+  the repair is spelled out in *Step FR7* and is **framing, not
+  arithmetic**.
+- **An incidental §(K-ann) gain, worth recording where (ANH-14) lives.**
+  (ANH-14)(a) measured its "seven distinct points" clause at **6/6**
+  census-pool sites and explicitly noted that distinctness was *not*
+  measured over the full 1904. (FR-9)(b) measures it at **1904/1904** and
+  at **1976/1976** over the complete stratum — and the degenerate
+  closed-hexagon alternative `x = x′` **never occurs**. So (ANH-14)(a)'s
+  hedge ("either way one of two universal polynomials governs the site")
+  can be simplified: on this stratum it is always the **open 7-point
+  chain**, hence always the single irreducible degree-12 `C` of
+  (ANH-14)(c)/(d), never (e)'s closed-hexagon two-term form.
+- **Class uniformity is untouched. No gap-map *status* moves.**
+
+### Verification
+
+`notes/scripts/w4/patexist.py` (new, untracked; graph-combinatorial only —
+no placement is built, no arithmetic beyond graph search, so there is no
+sampled object to guard and no exactness question to raise; the single
+`random.Random` is `--kill`'s tie-break, seeded 20260807 and printed).
+Imports only catalogued primitives and owning drivers read-only:
+`exactcore` (`neighbors`), `kbare_common` (`verts_of`, `is_2ec`),
+`nogood_subdiv` (`hcard_ok`, `triangles`), `closure`
+(`alternation_classes`, `colourings`, `components`), `outer` (`split_data`,
+`eligible_splits`, `shapes_from`, `companions4`), `shrink` (`census_pool`),
+`annih` (`girth`, `path_edges`), `shrink` (`hp_edge_rows`), `anhr1`
+(`core_decompose`), `framedom` (`bare_sites`, `pool_splits`, `chn_sets`,
+`line_ids`, `crit_33`, `legality_free`). Seven local devices, each named as
+such in its docstring: `branches_with_ends` and `shape_key` (the canonical
+`closure.alternation_classes` returns a branch as an *edge set* with
+parities and does not name its two hub ends, which is exactly what an
+isomorphism key needs), `len5_sites` (`framedom.bare_sites` with the
+`e0 is None` arm counted rather than skipped — and asserted equal to it on
+the two arms they share), `frame_path` (the frame ordering — `bare_sites`
+returns the six edges in the *contracted* cycle's order, which does not say
+where the weld breaks them open), `lambda_graph` / `lam_components`,
+`c3_hub_multigraphs`, and `collisions` / `both_len2_interiors`. Nothing
+existing is modified (`git diff --name-only -- '*.py'` empty), so the
+figure-invariance gate discharges on that check alone. From the repo root:
+
+```
+PYTHONHASHSEED=0 python3 notes/scripts/w4/patexist.py --frame     # 12 s  (FR-9) at 1904/1904 pool sites
+PYTHONHASHSEED=0 python3 notes/scripts/w4/patexist.py --recipe    # 12 s  (FR-11) constructed, 1904/1904
+PYTHONHASHSEED=0 python3 notes/scripts/w4/patexist.py --strat     #  3 s  (FR-8)+(FR-12), the COMPLETE stratum, 1976/1976
+PYTHONHASHSEED=0 python3 notes/scripts/w4/patexist.py --recon     # 15 s  (FR-14) + the c' <= 1 cells re-derived
+PYTHONHASHSEED=0 python3 notes/scripts/w4/patexist.py --kill      # 12 s  cheap kill + the odd-Lambda-cycle witness/control
+PYTHONHASHSEED=0 python3 notes/scripts/w4/patexist.py --validate  # 12 s  (FR-10)(i)/(ii) + the free-bit dictionary
+```
+
+All six modes byte-identical under `PYTHONHASHSEED` 0 and 999; every
+invocation far inside the 600 s budget. Nothing gates on `repin.star_generic`
+(no placement is sampled anywhere), no figure is a `place_pencil_general`
+rate, and every claim is an exhaustive scan of a pinned finite object, an
+asserted equivalence, or a constructed witness.
+
+**Which driver mode tests which sentence (F11).**
+
+| claim | mode | what asserts *that sentence* |
+|---|---|---|
+| (FR-8)(i)–(iii) | — | **proof-level** (three lines of counting); the multigraph list it predicts is what (iv) enumerates |
+| (FR-8)(ii) | `--validate`, `--strat` | the multigraph census printed and pinned at 4, with multiplicities |
+| (FR-8)(iii)/(iv) | `--strat` | 0 shapes over the `n = 2` family; 600 shapes / 470 with sites / 1976 sites; `lmax = 6` with max branch 5; `(girth G, girth G') = (7,6)` at 470/470 |
+| (FR-9)(a)–(i) | `--frame`, `--strat` | every clause asserted **per site**, 1904/1904 and 1976/1976, 0 misses; the histograms are the by-product |
+| (FR-10)(i) | `--validate` | for every admissible colouring of every census split, `same A-component` == `connected in the A-coloured hub-hub graph`, hub-pairwise |
+| (FR-10)(ii) | `--validate` | legality clause (ii) == `Λ properly edge-2-coloured`, as an **iff**, 8728 (split, colouring) pairs |
+| the odd-`Λ`-cycle mechanism | `--kill` | a **constructed** odd-`Λ`-cycle graph: 0 legal of 1024; even-cycle control: 4 legal of 4096 (F13: the guard has a witness it must reject *and* a negative control) |
+| (FR-11) | `--recipe`, `--strat` | the recipe's colouring passes `crit_33` **and** `legality_free` at 1904/1904 and 1976/1976, in variant `(flip=False, other=0)` every time — i.e. no search |
+| (FR-12)(i) | `--strat` | every collision found over every colouring of every site is asserted to be a length-2-branch-interior pair (the assert stands whether or not any is found) |
+| (FR-12)(ii) | `--strat` | the collision count over the complete stratum: **0** |
+| (FR-14)(i) | `--recon` | both censuses keyed by iso class; `set(pool) − set(stratum)` **asserted empty**, and `set(pool) ⊆ K4-family classes` reported |
+| (FR-14)(ii) | `--recon` | site count asserted constant on each iso class; `labelled == iso total + duplicate over-count` asserted for both lists; the 49-fold duplicate exhibited |
+| (FR-14)(iv) | `--recon` | `other5 == 0` and `loop0 == 0` asserted at all 470 `c(G) = 3` labelled shapes; `len5_sites` asserted equal to `framedom.bare_sites` per split |
+| the `c′ ≤ 1` cells | `--recon` | the complete `c(G) ∈ {2,3}` strata enumerated and their `c′ = 0` / `c′ = 1` counts printed at both granularities |
+| (FR-R1) | `--strat` | the exhaustive colouring scan: **0** sites with zero pattern colourings, scarcest 16/32 |
+| (FR-4)'s named gap | — | **untouched and not driver-testable**: (GR-5) restated at `G′` is prose |
+
+### Confidence verdict
+
+| | claim | standing |
+|---|---|---|
+| **(FR-8)** | the bare-cycle stratum is finite: 4 hub multigraphs, 600 shapes, 470 with sites, **1976** sites | **proven** (counting + exhaustive enumeration; every filter a necessary condition, `shape_ok` accepting a superset) |
+| **(FR-9)** | the frame's normal form: 7-point path, hub ends, `\|S\| ∈ {1,2}`, hub `z_j`'s `Λ`-edges are frame edges, no other frame chords, 2-or-3 complete distinct branches | **proven** (from `\|E(H/P)\| = 11` and girth; every clause asserted at 3880 site-instances) |
+| **(FR-10)** | hub-hub edges are the only component propagators; legality (ii) **is** the proper edge-2-colouring of `Λ` | **proven** (both halves asserted as equivalences) |
+| **(FR-11)** | the recipe; pattern clause + legality (ii) | **proven-informally** (uniform case analysis, no residue; construction green 1976/1976 first variant) |
+| **(FR-12)** | legality (i) is vacuous on the stratum | **proven-informally** (girth-7 + branch-count argument), **measured 0** over every colouring of every site |
+| **(FR-14)** | the two censuses reconciled by isomorphism class: 0 missing, 14 of 22 swept, the gap a multiplicity artifact; the `c′ ≤ 1` cells re-derived | **proven** (canonical keying, exact at `n_hub ≤ 4`; every step asserted) |
+| **(FR-R1)** | class-uniform pattern-existence on the bare-cycle stratum | **PROVEN** — by (FR-11)+(FR-12) uniformly, and independently by exhaustive enumeration of the finite stratum |
+
+**Class uniformity of `hK` is untouched. No gap-map *status* moves.**
+
+### What would change this
+
+*(i)* **RESOLVED in this draft, by (FR-14) and *Step FR7*'s table.** The
+open item this slot carried — "a `c(G) = 3` figure quoted from
+`outer.sweep_shapes` is suspect" — is settled: the sweep's `c′ ≤ 1` figures
+are **correct as labelled pool counts** and **incomplete as class
+statements** (14 of 22 iso classes at `c′ = 1`; 1 of 1 but 4× duplicated at
+`c′ = 0`). The concrete edit to §(K-ann) *Step A14* is: keep the histogram,
+say *labelled instances of the pinned pool*, add the class-level line
+(`c′ = 0`: 2 sites over the single class θ(3,4,5); `c′ = 1`: 76 sites over
+22 classes), and mark the 29.6 % as a pool ratio. **No landed number is
+wrong.** What is *not* settled, and stays out of scope here, is the
+`c′ ≥ 2` cells: there `|V°| ≤ 5` genuinely binds and no complete
+enumeration is available (nor is one finite — `c(G) ≥ 4` shapes are
+unbounded in `n_hub`).
+
+*(i′)* **The duplication itself is worth a one-line note wherever pool
+figures are quoted.** `--recon` measures 433 labelled shapes for 14 iso
+classes (a 31× average, 49× at the worst class). That is by design — the
+sweep families overlap and `named_inventory` re-lists habitats — but it
+means **no pool count is a count of mathematical objects**, and any future
+"N of M" over `outer.sweep_shapes` inherits the same caveat. This is a
+`notes/scripts/README.md`-level observation, not a §(K-frame) one.
+
+*(ii)* **Closing (FR-4)'s named gap** — (GR-5) restated at `G′` — would turn
+(FR-R1)+(FR-4) into an unconditional discharge of the (ANH-14) residue on
+the bare-cycle stratum. Two lines of prose in §(K-grid); the hypotheses are
+already asserted per instance by `framedom.py --transport`.
+
+*(iii)* **The same technique on the `c′ ≥ 2` strata.** Everything above
+turns on `H/P` being *exactly* a 6-cycle plus one branch. At `c′ = 2`
+(3846 sites, the largest stratum) `H/P − β` has 12 edges and 11 nodes and is
+no longer bare, so (FR-9)(a) fails and the determinant law (FR-3) no longer
+reduces to a 6×6 pattern — the pure condition there is (ANH-13)'s
+`6m × 6m` branch-screw determinant. Whether a *pattern-colouring* analogue
+exists for that determinant is the natural successor question, and it is
+**not** a corollary of anything here.
+
+*(iv)* **A transfer to §(K-grid) (GR-15)** (direction TCOL's target). The
+transferable technique is not the recipe but its two enablers: *reduce the
+colouring question to a statement about `Λ` alone*, and *use `hcard` + girth
+to bound `Λ` so hard that the statement becomes vacuous*. (GR-15) carries a
+spline/rank side that (FR-R1) does not, and its shapes are tight (hence
+`c(G)` unbounded, hence `n_hub` unbounded), so the *finiteness* half — the
+decisive one here — does **not** transfer. Say so plainly to TCOL: the
+useful export is (FR-10)(i)'s component law and (FR-10)(ii)'s reading of the
+closed-hub-neighbourhood clause, both of which are statements about
+admissible colourings in general and hold verbatim at any shape.
+
+*(v)* **A refutation would have to come from the mechanism (FR-10)(ii)
+names** — an odd `Λ`-cycle, or a `Λ`-parity clash between two forced frame
+`Λ`-edges. Both are constructible as graphs (`--kill` builds the first) and
+both are excluded here by `n_hub ≤ 4`. Any future stratum with more hubs
+should be checked against them **first**; they are the cheap kill for this
+family of questions.
 
 ## §(K-mech) — the mechanisms of the residual (W2)/(W4) anomalies: the load space Ω, the α-confinement calculus, and the 6v11e rescue
 
