@@ -1,10 +1,9 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: first and second fan-outs COMPLETE; the THIRD (G/Q/O, §"Third
-fan-out") is DISPATCHED 2026-08-06.** The first (A/B/C below, prepared
-2026-08-05) landed 2026-08-05/06; the second (T/R/M, §"Second fan-out") landed
-2026-08-06 — T `fb84ab88` (§(K-grid)), M `72f05634` (§(K-mech)), R (the
-§(K-ann) Steps A10–A13 continuation). This file remains the dispatch-scoping
+**Status: ALL FOUR fan-outs COMPLETE.** The first (A/B/C below, prepared
+2026-08-05) landed 2026-08-05/06; the second (T/R/M, §"Second fan-out")
+2026-08-06; the third (G/Q/O, §"Third fan-out") 2026-08-06; the fourth (E/J,
+§"Fourth fan-out") 2026-08-07. This file remains the dispatch-scoping
 template for any future fan-out. Three independent research
 directions on kernel (K), specified here so a fresh session can dispatch them
 at S=1 without re-deriving the scoping. User-adjudicated this session (verbatim
@@ -583,7 +582,18 @@ folds into direction Q/G's prompts only if a hit actually landed.
 
 ## Fourth fan-out — prepared 2026-08-06 (directions E / J); dispatched SERIALLY, E → J
 
-**Landing status: direction E LANDED 2026-08-07** (§(K-grid) Steps G14–G18,
+**Landing status: COMPLETE — both directions LANDED 2026-08-07.**
+Direction J: the new workbook section **§(K-frame)** — *Step G13*'s lemma
+shape delivered in minimal form ((FR-1): one witness point + irreducibility
+of the source; "dominance" over-asks); both bad divisors **combinatorial at
+grid points** ((FR-2)/(FR-3), `det = 128·Vdm(s)·Vdm(u)`); the transport
+works by **regridding at `G′`** ((FR-4)); the (ANH-14) residue **discharged
+at 1904/1904 enumerated sites** with 30 exact certificates ((FR-5));
+(OC-8)'s non-containment **inhabited by construction** at θ(3,4,5), the
+strict package 0/8 with the (AC-9) mechanism named ((FR-6)); residue
+**(FR-R1)** (pattern-existence — no rank/count/balance/tree-triple
+content). All five Python modes + the M2 leaf coordinator-re-run, figures
+byte-identical. Direction E (landed first): §(K-grid) Steps G14–G18,
 labels (GR-12)–(GR-15) — the (GR-10) **min-max REFUTED as posed**: (GR-13)
 NP-completeness of the grouped packing at exact balance plus **18
 counting-blind separators on the habitat**; (GR-10) itself **survives
@@ -592,7 +602,7 @@ no shape misses — cheap kill (i) did not fire); the discharge residual
 **re-aimed at (GR-15)**, one-point-decidable per shape, its per-block
 min-max question (GR-4′), counting-shaped. Every driver mode
 coordinator-re-run, figures byte-identical; §(K-pack) not opened;
-`packmm.m2` not needed. **Direction J dispatches next.**)
+`packmm.m2` not needed.)
 
 **User-adjudicated 2026-08-06**, this session, immediately after the third
 fan-out landed: presented with the *Hand-off* blockquote's four candidate

@@ -562,6 +562,30 @@ arcs too.
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/outerline.py --pool` | 358 s | ibid. *Steps O1/O4/O5* ((OC-1) the welded model at 46 frames; (OC-5) the POOL-G distribution 322/17/17/1 and (OUT)'s conclusion at 356/356; **(OC-7)** the sampler defect; **(OC-9)** the FIELD half of the guard's adversarial test — the guard rejects 58/357 and strictly contains the two-end diagnostic's 39). **Quote its rates over the 318 coincidence-free frames or the 299 the guard accepts, never the raw 357** |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/outerline.py --shapes` | 322 s | ibid. *Step O7* ((OC-6): POOL-S, 41 shapes / 90 splits / **270 frames, disjoint from POOL-G** — 270/270, no silent pair). **Never aggregate with POOL-G** |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/outerline.py --build` | 10 s | ibid. *Steps O3/O6* ((OC-3) `dim(R ∩ L) = 1` on-chart; (OC-4) the constructed (OUT)-silent nondegenerate point at all 4 habitats, 3 coincidence-free). **All four modes byte-identical under two `PYTHONHASHSEED` values; `--pool` and `--shapes` do not fit one 600 s budget together** |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/outerwide.py --wide` | 122 s | workbook §(K-out) *Step O9* ((OC-10)'s corroboration: POOL-CW, 5226/5226 pairs with the proof's steps asserted per pair) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/outerwide.py --adv` | 0.2 s | ibid. *Step O9* ((OC-10)'s minimality: POOL-A, 8 adversarial non-class graphs, all four hypotheses load-bearing) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/outerwide.py --wrench` | 87 s | ibid. *Steps O10/O11* ((OC-11)/(OC-12)/(OC-13)/(OC-15) per end over POOL-W, 146/146 ends, 38/38 degree-3 ends) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/outerwide.py --slide` | 75 s | ibid. *Step O11* ((OC-14): POOL-SL, the hub slide onto `C₀` — 38/38 nondegenerate target-rank points, 34 guard-accepted). **All four modes byte-identical under two `PYTHONHASHSEED` values** |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/anhr1.py --types` | 62 s | workbook §(K-ann) *Step A14* ((ANH-13)(ii): the local-type census) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/anhr1.py --reduce` | 80 s | ibid. *Step A14* ((ANH-13)(ii) against the full solve) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/anhr1.py --size` | 12 s | ibid. *Steps A14/A15* ((ANH-13)(i)/(iii) the size law; (ANH-14)(b) the 1904-site bare-cycle census) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/anhr1.py --frame` | 63 s | ibid. *Step A15* ((ANH-14)(a)/(b) at the census sites) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/anhr1.py --witness` | 81 s | ibid. *Step A16* ((ANH-15)(c): all 9 (ANH-12) witnesses inside `{C = 0}`) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/anhr1.py --validate` | 1 s | ibid. (the machinery). **All six modes byte-identical under two `PYTHONHASHSEED` values** |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/gridwit.py --formula` | 11 s | workbook §(K-grid) *Step G8* ((GR-7) 1376/1376; (GR-8) max == max((a),(b),(c)) at all 688 pool blocks) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/gridwit.py --treetriple` | ~5 min | ibid. *Steps G10/G11* ((GR-9)/(GR-10): 907/907 both-block certificates, first-certified histogram 859/44/2/1/1, target rank asserted per certified shape) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/gridwit.py --wide` | ~3.5 min | ibid. *Step G9* (cheap kill (ii): 185/4200 overshoots, every one exact against the (GR-8) max, 0 unexplained) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/gridwit.py --validate` | ~8.5 min | ibid. (all three legs). **Exceeds the 600 s foreground budget — run the legs separately** |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/packmm.py --restate` | 2 s | workbook §(K-grid) *Step G14* ((GR-12): 212/212 balanced pool blocks, both witness directions cross-validated at 158) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/packmm.py --hard` | 10 s | ibid. *Step G15* ((GR-13): 6/6 Γ-chain equivalences; exhaustive `max g = 0` over all 2^18 / 2^15 subsets at `C(K4)`/`C(C5)`; `dim Z = 0` at labels + draws) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/packmm.py --sep` | 118 s | ibid. *Step G16* (exhaustive colouring sweep, 903 shapes: 16600/17772 certified, 1702 counting-visible + **18 separators**, no (GR-10) miss; fast/slow agreement at 532 blocks) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/packmm.py --exemplar` | 1 s | ibid. *Step G16* (the pinned separator: `dim Z = 0` proven at 3 exact points; the 3^11 polychromatic exhaust, DFS-free) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/packmm.py --validate` | ~2 min | ibid. (all four modes). **All modes byte-identical under two `PYTHONHASHSEED` values** |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/framedom.py --rulings` | 2 s | workbook §(K-frame) *Steps FR1/FR2* ((FR-2) + (FR-3) measured: ranks, det law at 20 draws, vanishing controls) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/framedom.py --pattern` | 13 s | ibid. *Step FR4* ((FR-5) availability: 1904/1904 sites, census pin = (ANH-13)'s 1904, 0 caps, 0 hypothesis failures) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/framedom.py --transport` | 25 s | ibid. *Steps FR3/FR4* ((FR-4)/(FR-5): 30/30 exact end-to-end certificates with negative controls) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/framedom.py --outer` | 5 s | ibid. *Step FR5* ((FR-6) at θ(3,4,5): the 8-colouring table, 4/8 on-stratum, strict package 0/8, 16/16 criterion equivalences) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/framedom.py --validate` | 2 s | ibid. (machinery + the cross-language pin 4608). **All five modes byte-identical under two `PYTHONHASHSEED` values** |
 
 ### `m2/` — the Macaulay2 symbolic layer
 
@@ -574,6 +598,9 @@ line and treated as part of the figure.
 |---|---|---|
 | `M2 --script notes/scripts/m2/lambda1.m2` | 1 s | workbook §(K-Λ) *Step 2* ((Λ1) as an identity over the function field) |
 | `M2 --script notes/scripts/m2/lambda0.m2` | 0.1 s | workbook §(K-Λ) *Standing notation* + *Step 3* ((Λ0) and the `a`-line spans at the generic point; the widened span criterion) |
+| `M2 --script notes/scripts/m2/anhr1.m2` | 1 s | workbook §(K-ann) *Steps A15/A16* ((ANH-14)(c)(d)(e), (ANH-15)(a)(b): the universal degree-12 polynomial, irreducibility, `det Gram = −C²`) |
+| `M2 --script notes/scripts/m2/outerwide.m2` | 0.5 s | workbook §(K-out) *Step O12* ((OC-16): `Δ ≢ 0` at the local frame's generic point; the factorization `Δ = [a,u,b]·C₀(pt b)`) |
+| `M2 --script notes/scripts/m2/framedom.m2` | 1 s | workbook §(K-frame) *Steps FR1/FR2* ((FR-M0)–(FR-M3): the determinant law over the function field, the pinned instance 4608, the Veronese ranks) |
 
 Per-driver prose — *what* each mode asserts — stays in the four per-directory
 READMEs (`escape/README.md`, `kbare/README.md`, `w4/README.md`,
@@ -716,6 +743,7 @@ Python figures are frozen, and §4 convention 5 applies.
 | `theta_edges` | `n9.theta_edges()` takes no argument and returns the hard-coded θ(4,4,3) on named vertices; `pitch.theta_edges(lengths)` is the general constructor. | Left in place (different arity). |
 | `provably_infeasible` | `no_good_search` returns a **bool**; `nogood_subdiv` returns a **reason string or `None`** (`'no-hcard'`, `'two-hub-triangle'`). Truthiness coincides, the values do not. | Left in place. `no_good_search` is superseded as evidence; use `nogood_subdiv`. |
 | `hcard_ok`, `is_spanning_c3`, `provably_feasible` | Same pair of files, independently written: `no_good_search`'s route through `kbare_common.closed_hub_nbhds` / `has_triangle`, `nogood_subdiv`'s through its own `hub_set` / `triangles`. Believed extensionally equal on the swept habitats; **not verified equal in general**. | Left in place. Do not assume equality; use `nogood_subdiv`'s. |
+| `chn_sets` (`framedom`) | Set-valued closed hub neighbourhoods; the catalogued `kbare_common.closed_hub_nbhds` returns **cardinalities only** — same predicate family, different value type. | Left in place (the set structure is what `framedom`'s component tests consume). Prefer the catalogued form when only counts are needed. |
 | `validate`, `witness`, `control`, `stratum`, `sweep`, `main`, `run_member`, `classify` | Driver-**mode entry points**, one per driver, named after the flag that selects them (`--validate`, `--witness`, …). Not primitives; each means something different per module. | Module-local by design. |
 | `dot3` (`kslidecl`) | A 3-vector special case of `exactcore.dot`, kept local to the tetrahedral-basis code. | Harmless; prefer `exactcore.dot` in new work. |
 | `build_fixed_config_params` (`grid`) vs `build_fixed_config` (`closure`) | Same job — build the σ-fixed grid configuration from a ruling colouring — but `grid.build_fixed_config_params` takes the per-class ruling parameters as **arguments** instead of hard-coding component indices; needed because the component-index point is **not generic** (§(K-grid) (GR-4): 10/688 special-value overshoots) and every census miss must be retried at random parameters before being called structural. | Left in place. `closure.build_fixed_config` figures are frozen; parameter-sensitive work uses the `grid` variant. |
