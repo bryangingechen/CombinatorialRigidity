@@ -13,8 +13,10 @@ user-adjudicated — landed: **§(K-grid)** (T — the tight stratum reduced to 
 **§(K-mech)** (M — both *P8* anomalies mechanised, 6v11e rescued), and the §(K-ann)
 continuation Steps A10–A13 (R — (ANH-R1) one-point-decidable, pointwise refuted). **The
 THIRD fan-out — G / Q / O, user-adjudicated 2026-08-06, dispatched SERIALLY O → Q → G — is
-IN FLIGHT: O LANDED** (§(K-out) Steps O9–O12 — the combinatorial half PROVEN, (OC-8) reduced
-to one explicit line), **Q is the next dispatch** (specs `notes/Pencil-fanout.md` §"Third
+IN FLIGHT: O and Q LANDED** (O: §(K-out) Steps O9–O12 — the combinatorial half PROVEN, (OC-8)
+reduced to one explicit line. Q: §(K-ann) Steps A14–A17 — no shape refuted, the bare-cycle
+stratum governed by ONE universal irreducible polynomial, the residue chart-to-frame
+dominance), **G is the next and last dispatch** (specs `notes/Pencil-fanout.md` §"Third
 fan-out"; see *Hand-off*).
 Fan-out direction letters are re-used across dates — **always date them**.
 
@@ -201,28 +203,23 @@ discharge (residue (iv)) is CLOSED too**. The landed successor
 > **BLOCKED by the standing 2026-08-05 Lean-hold adjudication (general, not W4-scoped)**; does
 > not open without a fresh user adjudication.
 >
-> **The FIRST 2026-08-06 fan-out is COMPLETE** (C `890ec4a6`, A `c9cf5792`, B `d2805253`) and
-> **the harness re-baselining round is CLOSED** (five commits; canonical home
-> `notes/scripts/README.md` *Harness debt* → the **CLOSED** block; no gap-map row moved) —
-> both one-lined in *Decisions made*. (OUT)'s cheapest continuation — the `--comb` widening —
-> is now part 1 of direction **O** below.
->
-> **The SECOND three-way fan-out (T / R / M, user-adjudicated 2026-08-06: *"OK, let's go with
-> 1+2+3 in parallel"*; route σ NOT selected) is COMPLETE** — T `fb84ab88` (**§(K-grid)**),
-> M `72f05634` (**§(K-mech)**), R `794b3603` (§(K-ann) Steps A10–A13); every landing's drivers
-> coordinator-re-run, each one-lined in *Decisions made*, its named workbook section the
-> canonical home. The 2026-08-05 adjudicated ordering is exhausted.
+> **The FIRST fan-out (A/B/C of 2026-08-05/06) and the harness re-baselining round are
+> COMPLETE/CLOSED** (canonical home `notes/scripts/README.md` *Harness debt*), and **the
+> SECOND fan-out (T / R / M) is COMPLETE** (T `fb84ab88`, M `72f05634`, R `794b3603`) — all
+> one-lined in *Decisions made*; the 2026-08-05 adjudicated ordering is exhausted.
 >
 > **The THIRD fan-out (G / Q / O, user-adjudicated 2026-08-06 — all four research leads of the
 > post-second-fan-out hand-off; route σ's Lean half NOT selected) is IN FLIGHT, dispatched
 > SERIALLY O → Q → G** — specs, rungs and the leads-3+4 merge rationale:
 > `notes/Pencil-fanout.md` §"Third fan-out"; label reservations: `notes/Pencil-labels.md`.
-> **O LANDED** (this commit — §(K-out) Steps O9–O12, one-lined in *Decisions made*, the
-> workbook section the canonical home). **The next dispatch is Q** = §(K-ann)'s per-shape M2
-> identity `C(H/P − β) ≢ 0` (decisive both ways for (ANH-R1) per shape; opus rung), then
-> **G** = §(K-grid)'s (GR-4)+(GR-6), the T/R convergence target (top rung) — discharging both
-> closes `hK` on the tight stratum. The coordinator lands each return (fan-out landing
-> checklist) before dispatching the next.
+> **O and Q LANDED** (§(K-out) Steps O9–O12 and §(K-ann) Steps A14–A17, one-lined in
+> *Decisions made*, each workbook section the canonical home; O `35e2ce91`, Q this commit).
+> **The next and last dispatch is G** = §(K-grid)'s (GR-4)+(GR-6), the T/R convergence target
+> (top rung) — discharging both closes `hK` on the tight stratum. Directions O and Q both
+> terminated at the SAME residue — **chart-to-frame dominance** (§(K-out) (OC-16); §(K-ann)
+> (ANH-14)) — the arc's now-fourth independent arrival at constructed-witness technology,
+> which is exactly what G attacks. The coordinator lands G's return (fan-out landing
+> checklist), then the fan-out closes and the next direction is a fresh user adjudication.
 >
 > Deliberate non-goals: (Λ0), (Λ1), the `g₁₄` clause, §(K-ind), §(K-Δ), **§(K-clos)'s field
 > question**, **§(K-ann)'s settled batch** ((ANH-1)–(ANH-6), (SD-6)) and **§(K-out)'s settled
@@ -288,6 +285,16 @@ survey — incl. IDENT-PANEL, the nearest neighbour — is `notes/IdeaBacklog.md
 Reverse-chronological, one line per landing; full derivations live in git,
 `notes/Phase39-design.md`, and (for the (K) arc) the workbook section named in each entry, which
 is the canonical home a successor reads.
+
+- **Third fan-out, direction Q LANDED — §(K-ann) Steps A14–A17: no shape refuted, the
+  dispatch's "upgrade" premise itself REFUTED, and the bare-cycle stratum reduced to
+  chart-to-frame dominance** (2026-08-06, `anhr1.py`/`anhr1.m2`; canonical home workbook
+  **§(K-ann)**). (ANH-16) the per-shape M2 identity is the *pointwise restatement* of (ANH-R1)
+  ((ANH-9)(iii) already makes census rows proofs) — *Step A13* item 4 struck as an upgrade
+  route; (ANH-13) branch-core normal form, `deg C = 12(c(G)−2)`; (ANH-14) ONE universal
+  irreducible degree-12 polynomial governs the whole bare-cycle stratum (1904/6426 sites), so
+  no (ANH-7)-style recipe exists for (ANH-R1)'s certificate; (ANH-15) the bad locus strictly
+  contains (ANH-11)'s. Third independent arrival at the dominance residue; uniformity untouched.
 
 - **Third fan-out, direction O LANDED — §(K-out) Steps O9–O12: the combinatorial half PROVEN,
   (OC-7)'s necessity clause REFUTED, (OC-8) reduced to one explicit line** (2026-08-06,
