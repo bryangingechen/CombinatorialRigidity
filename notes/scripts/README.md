@@ -592,6 +592,12 @@ arcs too.
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/patexist.py --recon` | 15 s | ibid. *Step FR7* ((FR-14): the pool and complete-stratum censuses reconciled by isomorphism class, 0 missing, 14/22 swept; the §(K-ann) *Step A14* `c′ ≤ 1` cells re-derived at the class level) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/patexist.py --kill` | 12 s | ibid. *Step FR9* (the one place a refutation could have lived: a constructed odd-`Λ`-cycle graph, 0/1024 legal colourings, vs. 4/4096 on the even-cycle control) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/patexist.py --validate` | 12 s | ibid. *Step FR9* ((FR-10)(i)/(ii): the component law and the `Λ`-proper-2-colouring equivalence, 8728 (split, colouring) pairs). **All six modes byte-identical under two `PYTHONHASHSEED` values**. **No Macaulay2 leaf was opened** — `m2/patexist.m2` was reserved and returned unused |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/gridcol.py --branch` | 130 s | workbook §(K-grid) continuation (direction TCOL) *Step G19* ((GR-16): the branch-level reduction, 57 840 colouring-blocks, identity exact at 115 680/115 680 through two structurally different matrices) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/gridcol.py --runs` | 24 s | ibid. *Step G20* ((GR-17): the circuit run law over 1 158 344 (circuit, colouring) instances; binding profiles all at `Σ(ℓ−1) = 4`; constructed `(2,2,3)` carrier + control) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/gridcol.py --pack` | 98 s | ibid. *Step G21* ((GR-18): Nash-Williams exhaustive at 907/907 shapes; every certificate a 6-tree decomposition of `Ĝ`) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/gridcol.py --hier` | 98 s | ibid. *Step G22* ((GR-19): collapse order 4 at 18/18 habitat separators; the exemplar's `r = 3` search exhausted, `r = 4` value-independent over 840 tuples) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/gridcol.py --wide` | 159 s | ibid. the cheap kill on 11 unswept hub-graph families: 7653/7653 shapes carry a good colouring, no flank |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/gridcol.py --validate` | 509 s | ibid. (all five modes). **All six modes byte-identical under two `PYTHONHASHSEED` values**. **No Macaulay2 leaf was opened** — `m2/gridcol.m2` was reserved and returned unused |
 
 ### `m2/` — the Macaulay2 symbolic layer
 

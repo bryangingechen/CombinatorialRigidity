@@ -1,9 +1,10 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: ALL FOUR fan-outs COMPLETE.** The first (A/B/C below, prepared
+**Status: ALL FIVE fan-outs COMPLETE.** The first (A/B/C below, prepared
 2026-08-05) landed 2026-08-05/06; the second (T/R/M, §"Second fan-out")
 2026-08-06; the third (G/Q/O, §"Third fan-out") 2026-08-06; the fourth (E/J,
-§"Fourth fan-out") 2026-08-07. This file remains the dispatch-scoping
+§"Fourth fan-out") 2026-08-07; the fifth (PEX/TCOL, §"Fifth fan-out")
+2026-08-07. This file remains the dispatch-scoping
 template for any future fan-out. Three independent research
 directions on kernel (K), specified here so a fresh session can dispatch them
 at S=1 without re-deriving the scoping. User-adjudicated this session (verbatim
@@ -767,12 +768,19 @@ supply is *Step G13*'s candidate supplier for J's witness half).
 
 ## Fifth fan-out — prepared 2026-08-07 (directions PEX / TCOL); dispatched SERIALLY, PEX → TCOL
 
-**Landing status: PEX LANDED 2026-08-07** (§(K-frame) continuation, Steps
-FR7–FR11, (FR-8)–(FR-14) — the bare-cycle stratum proven **finite** and
-exhaustively enumerated (22 iso classes / 76 sites / 1976 labelled
-instances), **(FR-R1) PROVEN** with (FR-4)'s named (GR-5)-at-`G′` gap the
-sole rider; driver `w4/patexist.py`'s six modes coordinator-re-run, all
-byte-identical); **TCOL is next and last**.
+**Landing status: BOTH DIRECTIONS LANDED 2026-08-07 — the fifth fan-out is
+COMPLETE.** PEX (§(K-frame) continuation, Steps FR7–FR11, (FR-8)–(FR-14) —
+the bare-cycle stratum proven **finite** and exhaustively enumerated (22 iso
+classes / 76 sites / 1976 labelled instances), **(FR-R1) PROVEN** with
+(FR-4)'s named (GR-5)-at-`G′` gap the sole rider; driver `w4/patexist.py`'s
+six modes coordinator-re-run, all byte-identical). TCOL (§(K-grid)
+continuation, Steps G19–G23, (GR-16)–(GR-20) — the branch-level reduction to
+a square system on the hub multigraph, the circuit run law, the
+6-spanning-tree packing statement, and a collapse-order-4 certificate at all
+18 habitat separators, all proven, but **(GR-15) stays OPEN, no flank
+found**; driver `w4/gridcol.py`'s six modes coordinator-re-run, all
+byte-identical). **Class uniformity of `hK` untouched by either; no
+gap-map status moves.**
 
 **User-adjudicated 2026-08-07**, this session, immediately after the fourth
 fan-out landed: presented with the *Hand-off* blockquote's five candidate

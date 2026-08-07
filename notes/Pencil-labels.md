@@ -188,15 +188,14 @@ their label reservations are the unclaimed tails of those sections' existing
 families and the owning section stays authoritative. Dispatch is **serial**
 (PEX → TCOL), which does not relax the reservation discipline:
 
-| direction | section | labels | steps | driver(s) | section name if needed |
-|---|---|---|---|---|---|
-| **TCOL** — (GR-15)/(GR-4′), colouring-existence on the tight stratum | §(K-grid) (live) | (GR-16)+ | Steps G19+ | `w4/gridcol.py`; `m2/gridcol.m2` optional | **§(K-pack)**, tag `PK-` (re-reserved from the pool, **third** time — returned unopened by directions G and E) |
-
-**Direction PEX has LANDED** (2026-08-07): its row is released into the
-registry — (FR-8)–(FR-14), Steps FR7–FR11, `w4/patexist.py`'s six modes now
-live in §(K-frame)'s row below. `m2/patexist.m2` was **not** needed (the
-question stayed combinatorial), and **§(K-pat)** / `PAT-` return to the pool
-unopened. TCOL remains reserved until it lands.
+**Both directions have LANDED and the reservation table is released**, each
+row moved into the registry below: PEX (2026-08-07) as (FR-8)–(FR-14), Steps
+FR7–FR11, `w4/patexist.py` (§(K-frame)'s row — `m2/patexist.m2` was never
+needed and **§(K-pat)** / `PAT-` return to the pool unopened); TCOL
+(2026-08-07) as (GR-16)–(GR-20), Steps G19–G23, `w4/gridcol.py` (§(K-grid)'s
+row — `m2/gridcol.m2` was never needed and **§(K-pack)** / `PK-` return to
+the pool unopened, for the **fourth** time — returned unopened by directions
+G, E and now TCOL).
 
 `PAT-` as a *label prefix* is 0-hit and reserved; the bare word `PAT` was
 rejected as a **direction code** under (L5)'s substring check, which is a
@@ -257,7 +256,7 @@ Status keywords are pointers to the owning section's verdict block and the
 | §(K-Δ) | `DL-` | **(M1)**, **(M2)**, **(M3)**; (N1), (N2) | the Δ-matroid literature hunt: (M1)–(M3) are the **three hypothesis tests**, (N1)/(N2) the two readings bought | NO HIT; discharged |
 | §(K-bare-ext) | `BE-` | (K-bare-ext) | the (K-bare) stub | open, nothing being developed |
 | §(K-mech) | `MX-` ✓ | (MX-1)–(MX-9); driver modes `--flex`/`--wide`/`--inc`/`--sigma`/`--sweep` (`mech.py`) | the mechanisms of the residual (W2)/(W4) anomalies: the realizable-load space `Ω`, α-confinement, pole-cluster loads, the welded flex, the 6v11e rescue, the σ rider | (MX-1)/(MX-2) proven; (MX-3)–(MX-7) proven-informally; (MX-8) settled-NO in the probed family; (MX-9) measured |
-| §(K-grid) | `GR-` ✓ | (GR-1)–(GR-6); Steps G0–G7; driver blocks GR-D1–GR-D5 (`grid.py`); **since 2026-08-06 (direction G)** (GR-7)–(GR-11) + the primed successor **(GR-4′)** (recorded under (GR-4) as its repaired form, per L4 no-renaming), Steps G8–G13, driver modes `--formula`/`--treetriple`/`--wide`/`--validate` (`gridwit.py`); **since 2026-08-07 (direction E)** (GR-12)–(GR-15), Steps G14–G18, driver modes `--restate`/`--hard`/`--sep`/`--exemplar`/`--validate` (`packmm.py`) | the tight-stratum residual of (AC-6): eigen-blocks as conic direction networks / generalized-spline systems, the counting obstruction families ((GR-3); unified as **(GR-8)** sub-multigraph cycle spaces), chart-image membership, the 907-shape census, the interpolation factorization (GR-7), the tree-triple certificate theorem (GR-9), the merged residual (GR-10), the ε-adic fallback (GR-11) | reduction proven; (GR-2) a proven refutation of the former (AC-6) close-route sentence; **(GR-4) refuted-as-stated, repaired as (GR-4′), off the critical path; (GR-9) proven; (GR-12)/(GR-13)/(GR-14) proven-informally — the (GR-10) min-max REFUTED as posed, (GR-10) itself open (exhaustively certified where swept); residual = (GR-15), open** |
+| §(K-grid) | `GR-` ✓ | (GR-1)–(GR-6); Steps G0–G7; driver blocks GR-D1–GR-D5 (`grid.py`); **since 2026-08-06 (direction G)** (GR-7)–(GR-11) + the primed successor **(GR-4′)** (recorded under (GR-4) as its repaired form, per L4 no-renaming), Steps G8–G13, driver modes `--formula`/`--treetriple`/`--wide`/`--validate` (`gridwit.py`); **since 2026-08-07 (direction E)** (GR-12)–(GR-15), Steps G14–G18, driver modes `--restate`/`--hard`/`--sep`/`--exemplar`/`--validate` (`packmm.py`); **since 2026-08-07 (direction TCOL)** (GR-16)–(GR-20), Steps G19–G23, driver modes `--branch`/`--runs`/`--pack`/`--hier`/`--wide`/`--validate` (`w4/gridcol.py`; `m2/gridcol.m2` not needed) | the tight-stratum residual of (AC-6): eigen-blocks as conic direction networks / generalized-spline systems, the counting obstruction families ((GR-3); unified as **(GR-8)** sub-multigraph cycle spaces), chart-image membership, the 907-shape census, the interpolation factorization (GR-7), the tree-triple certificate theorem (GR-9), the merged residual (GR-10), the ε-adic fallback (GR-11), the branch-level reduction to the hub multigraph (GR-16), the circuit run law (GR-17), the 6-spanning-tree packing statement (GR-18), the collapse-order hierarchy (GR-19) | reduction proven; (GR-2) a proven refutation of the former (AC-6) close-route sentence; **(GR-4) refuted-as-stated, repaired as (GR-4′), off the critical path; (GR-9) proven; (GR-12)/(GR-13)/(GR-14) proven-informally — the (GR-10) min-max REFUTED as posed, (GR-10) itself open (exhaustively certified where swept); (GR-16)–(GR-19) proven — the branch reduction, circuit run law, 6-tree packing and collapse hierarchy — collapse order 4 measured at all 18 habitat separators; residual = (GR-15), OPEN, no flank found** |
 | §(K-frame) | `FR-` ✓ | (FR-1)–(FR-7); the residual input **(FR-R1)**; Steps FR0–FR6; driver modes `--rulings`/`--pattern`/`--transport`/`--outer`/`--validate` (`framedom.py`) and M2 blocks (FR-M0)–(FR-M3) (`framedom.m2`); **since 2026-08-07 (direction PEX)** (FR-8)–(FR-14), Steps FR7–FR11, driver modes `--frame`/`--recipe`/`--strat`/`--kill`/`--validate`/`--recon` (`w4/patexist.py`; `m2/patexist.m2` not needed) | the shared chart-to-frame dominance residue of §(K-out) (OC-16) / §(K-ann) (ANH-14): the minimal non-containment lemma, the ruling decomposition and determinant law at grid points, the `G′`-regridding transport, the 1904-site pattern battery, the θ(3,4,5) constructed witnesses, and (since PEX) the bare-cycle stratum's finiteness + exhaustive enumeration | (FR-1)/(FR-2)/(FR-3) proven / proven-informally; (FR-4) true-modulo-named-gap; (FR-5) measured (each certificate a per-site proof); (FR-6) exact per point; **(FR-R1) PROVEN** (Steps FR7–FR11, direction PEX) — (FR-4)'s named gap is the sole rider |
 
 Gap names used arc-wide and owned by the *State of (K)* map: **(K-tight)**,
