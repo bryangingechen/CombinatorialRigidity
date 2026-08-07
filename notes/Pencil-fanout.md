@@ -583,6 +583,17 @@ folds into direction Q/G's prompts only if a hit actually landed.
 
 ## Fourth fan-out — prepared 2026-08-06 (directions E / J); dispatched SERIALLY, E → J
 
+**Landing status: direction E LANDED 2026-08-07** (§(K-grid) Steps G14–G18,
+labels (GR-12)–(GR-15) — the (GR-10) **min-max REFUTED as posed**: (GR-13)
+NP-completeness of the grouped packing at exact balance plus **18
+counting-blind separators on the habitat**; (GR-10) itself **survives
+exhaustive enumeration** (16600/17772 filter-passing colourings certified,
+no shape misses — cheap kill (i) did not fire); the discharge residual
+**re-aimed at (GR-15)**, one-point-decidable per shape, its per-block
+min-max question (GR-4′), counting-shaped. Every driver mode
+coordinator-re-run, figures byte-identical; §(K-pack) not opened;
+`packmm.m2` not needed. **Direction J dispatches next.**)
+
 **User-adjudicated 2026-08-06**, this session, immediately after the third
 fan-out landed: presented with the *Hand-off* blockquote's four candidate
 directions (no pre-selection), the user selected **(1) the (GR-10) min-max
