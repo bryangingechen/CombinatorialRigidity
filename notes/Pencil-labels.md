@@ -90,6 +90,26 @@ next collision.
   file and carries up to ~40 cross-references; renaming would churn far more
   than it buys, and this pass renamed **nothing**. Collisions among existing
   labels are resolved by (L3), not by renumbering.
+- **(L5) Direction codes are topic-tagged and multi-letter** *(user call,
+  2026-08-07; binds from the fifth fan-out on)*. A fan-out direction is named
+  by a short mnemonic token — `PEX`, `TCOL` — never by a bare single letter,
+  and the token is verified **0-hit as a raw substring** (not merely as a
+  whole token) across `*.md`, `*.tex`, `*.lean`, `*.py`, `*.m2` before it is
+  reserved. Two measurements forced this. *(a)* Four fan-outs plus the
+  harness round consumed A/B/C (×2), S1–S4, T/R/M, G/Q/O and E/J; of the
+  fourteen unused single letters exactly **two** were 0-hit across the pencil
+  doc set, so the pool was one fan-out from exhaustion. *(b)* Bare
+  single-letter direction codes have already produced two recorded hazards —
+  `(E)` doubling as §(SAFE-RES)'s gap token, and the A/B/C date-ambiguity
+  below — which is this file's own measured diagnosis (bare single-letter
+  families collide; topic-tagged ones have not) firing on the direction
+  letters themselves. The substring half of the check is not pedantry: the
+  third fan-out already had to replace an `m2` driver name whose token was a
+  substring of existing prose, and `PAT` was rejected here for the same
+  reason (46 substring hits inside "path" / "pattern" / "compatible").
+  **The single-letter era is grandfathered under (L4)** — nothing is
+  renamed, and every one of those letters stays dated wherever it is
+  written, per the hazard note at the end of this section.
 
 ## Reserved namespaces — the three incoming parallel dispatches
 
@@ -157,6 +177,25 @@ G14–G18, `packmm.py` (§(K-grid)'s row — `packmm.m2` was never needed and
 J (2026-08-07) as the new section **§(K-frame)**, tag `FR-` — (FR-1)–(FR-7),
 (FR-R1), Steps FR0–FR6, M2 blocks (FR-M0)–(FR-M3), `framedom.py` +
 `framedom.m2` (its `m2` leaf WAS needed, unlike E's).
+
+**Reserved 2026-08-07 for the FIFTH fan-out — directions PEX / TCOL**
+(`notes/Pencil-fanout.md` §"Fifth fan-out"). **The first fan-out under (L5)**:
+the codes are topic-tagged mnemonics (`PEX` = pattern-existence, `TCOL` =
+tight-stratum colouring), not letters, and each was verified **0-hit as a raw
+substring** across `*.md`, `*.tex`, `*.lean`, `*.py`, `*.m2` at reservation
+time — as were both driver names. Both directions *extend* live sections, so
+their label reservations are the unclaimed tails of those sections' existing
+families and the owning section stays authoritative. Dispatch is **serial**
+(PEX → TCOL), which does not relax the reservation discipline:
+
+| direction | section | labels | steps | driver(s) | section name if needed |
+|---|---|---|---|---|---|
+| **PEX** — (FR-R1), pattern-existence on the bare-cycle stratum | §(K-frame) (live) | (FR-8)+ | Steps FR7+ | `w4/patexist.py`; `m2/patexist.m2` if opened (not expected) | **§(K-pat)**, tag `PAT-` |
+| **TCOL** — (GR-15)/(GR-4′), colouring-existence on the tight stratum | §(K-grid) (live) | (GR-16)+ | Steps G19+ | `w4/gridcol.py`; `m2/gridcol.m2` optional | **§(K-pack)**, tag `PK-` (re-reserved from the pool, **third** time — returned unopened by directions G and E) |
+
+`PAT-` as a *label prefix* is 0-hit and reserved; the bare word `PAT` was
+rejected as a **direction code** under (L5)'s substring check, which is a
+distinct test from a prefixed label's — recorded so the two are not confused.
 
 **One naming hazard the second fan-out created, recorded rather than renamed
 (L4).** The **direction letters A/B/C are re-used** between the 2026-08-05 fan-out

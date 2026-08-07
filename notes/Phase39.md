@@ -7,19 +7,19 @@
 `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card` (`Molecule/Pencil/Escape.lean`):
 `hcontract` (W4), kernel `hK`, and kernel `hbareSplit` — see *Hand-off*. Kernel-(K) research
 is at its twenty-ninth docs+scripts-only pass (workbook `notes/Pencil-informal.md`; the settled
-W4-residual arc is `notes/Pencil-W4-informal.md`). **ALL FOUR earlier 2026-08-06 rounds are
-COMPLETE** (first fan-out A/B/C; the harness re-baselining round S1–S4; second fan-out T/R/M;
-third fan-out G/Q/O — net shape: the tight stratum hangs on **(GR-10) alone** with the geometry
-proven ((GR-9)), and directions O/Q terminated at one shared residue, **chart-to-frame
-dominance**). **The FOURTH fan-out — directions E ((GR-10) min-max) / J (the shared dominance
-lemma), user-adjudicated 2026-08-06, dispatched SERIALLY E → J at the top rung — is
-COMPLETE** (E: §(K-grid) Steps G14–G18 — the min-max REFUTED as posed, (GR-10) itself
-surviving exhaustive enumeration, the discharge residual re-aimed at **(GR-15)**.
-J: the new workbook section **§(K-frame)** — the dominance lemma delivered in minimal form,
-the §(K-ann) (ANH-14) residue discharged at 1904/1904 enumerated sites, §(K-out) (OC-8)'s
-non-containment inhabited by construction, residue **(FR-R1)**, pattern-existence).
-**The next direction awaits user adjudication** (see *Hand-off*).
-Fan-out direction letters are re-used across dates — **always date them**.
+W4-residual arc is `notes/Pencil-W4-informal.md`). **ALL FIVE earlier rounds are COMPLETE** —
+first fan-out A/B/C, the harness re-baselining round S1–S4, second fan-out T/R/M, third
+fan-out G/Q/O (2026-08-06), fourth fan-out E/J (2026-08-07). Net shape after the fourth: the
+two open residues are **BOTH pure colouring-existence questions over one branch-bit
+structure** — **(GR-15)** on the tight stratum (E refuted the (GR-10) min-max as posed;
+(GR-10) itself survives exhaustive enumeration) and **(FR-R1)** on the bare-cycle stratum
+(J's new workbook section **§(K-frame)** delivered the shared dominance lemma in minimal form
+and discharged the (ANH-14) residue at 1904/1904 sites). **Class uniformity remains untouched
+by every round.** **The FIFTH fan-out — directions PEX ((FR-R1)) / TCOL ((GR-15)/(GR-4′)),
+user-adjudicated 2026-08-07, serial PEX → TCOL — is IN FLIGHT** (see *Hand-off*).
+Direction codes are **multi-letter and topic-tagged from the fifth fan-out on**
+(`notes/Pencil-labels.md` clause **(L5)**); the grandfathered single letters are re-used
+across dates — **always date those**.
 
 ## Current state
 
@@ -51,12 +51,20 @@ constraints; the dated dispatch narrative is in *Decisions made* and git):
   follow-up: **dispatch serially, not in parallel** (token budget), O and Q at opus, G at the
   top rung. Coordinator merged leads 3+4 into direction **O** (one section's continuations).
   Specs + rationale: `notes/Pencil-fanout.md` §"Third fan-out".
-- **2026-08-06, fourth fan-out:** of the post-third-fan-out hand-off's four candidate
-  directions the user selected **(1) the (GR-10) min-max attack** and **(2) the shared
-  chart-to-frame dominance lemma**, and NOT the unselected leads (b)–(f) or the parked Lean
-  half (route σ / W4) — the Lean hold stands. Serial dispatch (the session default), order
-  E → J; both at the top rung (coordinator playbook application, recorded in the specs:
-  `notes/Pencil-fanout.md` §"Fourth fan-out"; reservations: `notes/Pencil-labels.md`).
+- **2026-08-06, fourth fan-out:** the user selected **(1) the (GR-10) min-max attack** and
+  **(2) the shared chart-to-frame dominance lemma**, and NOT the unselected leads (b)–(f) or
+  the parked Lean half. Serial E → J, both at the top rung. Specs:
+  `notes/Pencil-fanout.md` §"Fourth fan-out". **COMPLETE.**
+- **2026-08-07, fifth fan-out:** of the post-fourth-fan-out hand-off's five candidate
+  directions the user selected **(1) prove (FR-R1)** and **(2) the (GR-15)/(GR-4′) attack**,
+  and NOT (3) the (FR-6) follow-ons, (4) the unselected leads (b)–(f), or (5) the parked Lean
+  half (route σ / W4) — the Lean hold stands. Serial dispatch, order **PEX → TCOL** (the order
+  is load-bearing: both are colouring-existence over the same *Step G12* branch-bit structure,
+  and (FR-R1) is the one with no spline/rank side, so it feeds TCOL). Both mapped to the top
+  rung; **the top rung is unavailable this session** (same check-in), so both **substitute
+  opus**. Same check-in: the 10-dispatch cap is **lifted** and rescue §1 mechanical fixups are
+  **pre-authorized**. Specs: `notes/Pencil-fanout.md` §"Fifth fan-out"; reservations +
+  the new multi-letter direction-code rule (L5): `notes/Pencil-labels.md`.
 
 **Kernel-(K) research arc — twenty-eight docs+scripts-only dispatches, plus one strategy-only
 pass** (2026-08-02 → 08-07).
@@ -67,14 +75,10 @@ W4-residual verdicts are in `notes/Pencil-W4-informal.md`; strategy in
 canonical dispatch record — **neither the landings nor the per-gap statuses are restated
 here**. Net effect: the **disproof risk is removed**; every refuted route/gap is recorded in
 the gap map with its successor; the arc's structural positives are (Λ1), §(K-ann)'s recipe,
-§(K-out)'s **proven combinatorial half** ((OC-10)), and §(K-grid)'s **proven tree-triple
-theorem** ((GR-9)); the **tight stratum now hangs on the single geometry-free (GR-15)** (since direction E, which
-refuted (GR-10)'s min-max as posed); the
-third fan-out's three directions **converged on one missing technology — chart-to-frame
-dominance / uniform constructed witnesses** — which the fourth fan-out's direction J then
-**delivered in its minimal form** (§(K-frame): both bad divisors combinatorial at grid
-points, the (ANH-14) residue discharged at every enumerated site, residue (FR-R1)); and
-**class uniformity of the escape remains untouched by every one of them**.
+§(K-out)'s **proven combinatorial half** ((OC-10)), §(K-grid)'s **proven tree-triple theorem**
+((GR-9)), and §(K-frame)'s **minimal dominance lemma** ((FR-1)–(FR-4)); and **class uniformity
+of the escape remains untouched by every one of them** — which is exactly what the fifth
+fan-out attacks, both residues having reduced to colouring-existence.
 
 > **The one live candidate, and it is NOT settled — `notes/Pencil-informal.md` §(K-σ)** (the
 > canonical home; the four obligations, the `--hunt` findings, the validation scope and the
@@ -89,9 +93,8 @@ points, the (ANH-14) residue discharged at every enumerated site, residue (FR-R1
 > `hK` and `hbareSplit` stay carried as pinned; **W4 stays PARKED**; the phase does **not** close.
 
 The other candidate continuations, unselected, without preference; each has a canonical home
-that carries the detail, so they are **not** restated here. (The former items (a)/(g) of this
-list — the mechanisms pass and the (ANH-R1) probe — are **DONE**, landed as second-fan-out
-directions M and R; their letters survive only in cross-references.)
+that carries the detail, so they are **not** restated here. (Former items (a)/(g) — the
+mechanisms pass and the (ANH-R1) probe — are **DONE** as second-fan-out directions M and R.)
 
 - **(b)** **(K-wit)**, the single live form of the pitch route at companion splits (§(K-Λ);
   §(K-out)'s (OC-3) rules out any counting route to its (OUT) shortcut, and since direction O
@@ -212,25 +215,29 @@ discharge (residue (iv)) is CLOSED too**. The landed successor
 > coordinator-re-run.
 >
 > **The FOURTH fan-out (directions E / J, user-adjudicated 2026-08-06) is COMPLETE** — E
-> `cdd23d30` (§(K-grid) Steps G14–G18), J this commit (§(K-frame)); each one-lined in
+> `cdd23d30` (§(K-grid) Steps G14–G18), J `12edc305` (§(K-frame)); each one-lined in
 > *Decisions made*, its workbook section the canonical home, every driver coordinator-re-run.
-> **Next direction = user adjudication.** The fan-out's net shape, for that adjudication: the
-> tight stratum's residual is **(GR-15)** (both-block generic rank attainment — the census's
-> 907/907 exact hits are already per-shape proofs; the tree-triple min-max is refuted as
-> posed, so any (GR-10)-style proof must be colouring-existence over Step G12's branch bits),
-> and the bare-cycle chart-to-frame residue is **(FR-R1)** (pattern-existence — no rank,
-> count, balance or tree-triple content; 1904/1904 measured; §(K-frame) *What would change
-> this* item (i) sketches a direct argument from Step G12's branch bits + girth 6). The two
-> residues are now BOTH pure colouring-existence questions over the same branch-bit
-> structure. The natural candidate directions: (1) prove **(FR-R1)** (the fan-out's chief
-> hand-off — closes the (ANH-14) residue on the whole bare-cycle stratum as an argument;
-> looks directly provable), (2) the **(GR-15)/(GR-4′)** attack (colouring-existence for
-> `a = 0 ∧ max g ≤ 0` + the (GR-4′) equality, or a (GR-11) hierarchy on the 18 separators —
-> closes `hK` on the tight stratum), (3) the **(FR-6) follow-ons** (the `ℓ_min = 5` battery
-> beyond θ(3,4,5); the (FR-7) irreducibility foothold; the (AC-9) anti-correlation's
-> structurality — §(K-frame) *What would change this* items (ii)–(iv)), (4) anything from
-> the unselected leads (b)–(f) above, or (5) the parked Lean half of route σ / the W4 build
-> (each needs a fresh adjudication). No option is pre-selected.
+>
+> **The FIFTH fan-out (directions PEX / TCOL, user-adjudicated 2026-08-07) is IN FLIGHT.**
+> Serial **PEX → TCOL**, both at opus (top rung mapped, top rung unavailable this session).
+> Specs, grounding, cheap kills and cautions: `notes/Pencil-fanout.md` §"Fifth fan-out" —
+> the canonical home, **not restated here**. In one line each:
+> **PEX** attacks **(FR-R1)** (§(K-frame) continuation, labels (FR-8)+, driver
+> `w4/patexist.py`) — every bare-cycle site admits a pattern colouring; §(K-frame) *What
+> would change this* item (i) sketches the direct argument from *Step G12*'s branch bits +
+> girth 6, and proving it closes the (ANH-14) residue on the whole bare-cycle stratum **as
+> an argument**. **TCOL** attacks **(GR-15)** (§(K-grid) continuation, labels (GR-16)+,
+> driver `w4/gridcol.py`) — every tight class shape admits an admissible colouring with
+> generic `dim Z₊ = dim Z₋ = 0`, by either (GR-4′) + colouring-existence for
+> `a = 0 ∧ max g ≤ 0`, or (GR-11)'s hierarchy developed on the 18 separators; it closes `hK`
+> **on the tight stratum**. Both are proof attempts at 100 % measured records (1904/1904,
+> 907/907), so **widening a pool is evidence, not progress — the deliverable is the
+> argument**, and *"no proof, here is the precise obstruction"* is a fine outcome.
+>
+> **Not selected at the 2026-08-07 adjudication**, and so not open: the **(FR-6) follow-ons**
+> (§(K-frame) *What would change this* items (ii)–(iv) — the `ℓ_min = 5` battery beyond
+> θ(3,4,5), the (FR-7) irreducibility foothold, the (AC-9) anti-correlation's structurality),
+> the unselected leads (b)–(f) above, and the parked Lean half of route σ / the W4 build.
 >
 > Deliberate non-goals: (Λ0), (Λ1), the `g₁₄` clause, §(K-ind), §(K-Δ), **§(K-clos)'s field
 > question**, **§(K-ann)'s settled batch** ((ANH-1)–(ANH-6), (SD-6)) and **§(K-out)'s settled
@@ -297,67 +304,38 @@ Reverse-chronological, one line per landing; full derivations live in git,
 `notes/Phase39-design.md`, and (for the (K) arc) the workbook section named in each entry, which
 is the canonical home a successor reads.
 
-- **Fourth fan-out, direction J LANDED — the new workbook section §(K-frame): the shared
-  chart-to-frame dominance lemma DELIVERED in its minimal form, the §(K-ann) (ANH-14) residue
-  discharged at every enumerated bare-cycle site, §(K-out) (OC-8)'s non-containment inhabited
-  by construction** (2026-08-07, `framedom.py` + `framedom.m2`; canonical home workbook
-  **§(K-frame)**). (FR-1) "dominance" over-asks — one witness point + source irreducibility;
-  (FR-2)/(FR-3) both bad divisors combinatorial at grid points (`det = 128·Vdm·Vdm`);
-  (FR-4)/(FR-5) the `G′`-regridding transport, 1904/1904 sites + 30 exact certificates, one
-  named gap ((GR-5) at `G′`); (FR-6) θ(3,4,5): 4/8 constructed hard-stratum witnesses, strict
-  package 0/8, mechanism (AC-9). Residue **(FR-R1)** (pattern-existence). Uniformity untouched.
+- **The FOURTH fan-out — both directions LANDED 2026-08-07** (E `cdd23d30`, J `12edc305`;
+  canonical homes the workbook sections named, which carry every claim and its driver).
+  *E, §(K-grid) Steps G14–G18, `packmm.py`*: the (GR-10) **min-max REFUTED as posed** —
+  the grouped packing is NP-complete at exact balance ((GR-13)) and **18 counting-blind
+  separators live ON THE HABITAT** — while (GR-10) itself survives exhaustive enumeration;
+  residual re-aimed at **(GR-15)**, whose per-block min-max is the counting-shaped (GR-4′).
+  *J, the new section §(K-frame), `framedom.py` + `framedom.m2`*: the shared chart-to-frame
+  dominance lemma **delivered in minimal form** ((FR-1): one witness point + source
+  irreducibility — "dominance" over-asks), both bad divisors **combinatorial at grid points**
+  ((FR-3), `det = 128·Vdm·Vdm`), transport by **`G′`-regridding** ((FR-4), one named gap:
+  (GR-5) at `G′`), the (ANH-14) residue **discharged at 1904/1904 sites** with 30 exact
+  certificates ((FR-5)); residue **(FR-R1)**. Uniformity untouched by both.
 
-- **Fourth fan-out, direction E LANDED — §(K-grid) Steps G14–G18: the (GR-10) min-max REFUTED
-  as posed, (GR-10) itself survives exhaustive enumeration, the discharge residual re-aimed at
-  (GR-15)** (2026-08-07, `packmm.py`; canonical home workbook **§(K-grid)**). (GR-12) the
-  certificate's three equivalent forms (co-independent groups / polychromatic circuits) with
-  the full (GR-8) necessity made purely matroidal; (GR-13) triangle chains: the grouped packing
-  is **NP-complete at exact balance** (triple ⟺ 3-colourability), so no Edmonds-type min side
-  exists unless NP = coNP, and **18 counting-blind separators live ON THE HABITAT**; (GR-14)
-  the rainbow-Δ certificate, habitat applicability nil; (GR-15) one-point-decidable per shape,
-  907/907 already per-shape proofs, its per-block min-max (GR-4′). Uniformity untouched.
+- **The THIRD fan-out — all three directions LANDED 2026-08-06** (canonical homes the workbook
+  sections named). *G, §(K-grid) Steps G8–G13, `gridwit.py`*: (GR-4) refuted-as-stated and
+  repaired ((GR-8)/(GR-4′), off the critical path), and the **tree-triple certificate theorem
+  (GR-9) PROVEN** — it discharges the geometry with no generic-arrangement input.
+  *Q, §(K-ann) Steps A14–A17, `anhr1.py`/`anhr1.m2`*: the dispatch's own "upgrade" premise
+  refuted ((ANH-16)); **ONE universal irreducible degree-12 polynomial** governs the whole
+  bare-cycle stratum ((ANH-14)). *O, §(K-out) Steps O9–O12, `outerwide.py`/`outerwide.m2`*:
+  the availability map is **forced** ((OC-10), the combinatorial half proven), the bad locus is
+  one explicit panel line `C₀`, and (OC-8) survives as a containment question. All three
+  converged on **one missing technology, chart-to-frame dominance** — which the fourth
+  fan-out's direction J then delivered. Uniformity untouched by all three.
 
-- **Third fan-out, direction G LANDED — §(K-grid) Steps G8–G13: (GR-4) REFUTED as stated and
-  repaired, the tree-triple certificate theorem (GR-9) PROVEN, the tight-stratum residual
-  merged into (GR-10) alone** (2026-08-06, `gridwit.py`; canonical home workbook **§(K-grid)**).
-  Cheap kill (ii) fired — 185/4200 widened-pool overshoots, every one exact against the proven
-  unified family (GR-8) (sub-multigraph cycle spaces; rank-1 members = ≤-2-class cycles);
-  (GR-4′) the repair, off the critical path; (GR-9) three-group collapse + Vandermonde + no
-  bond-in-a-group ⟹ Tay target with no generic-arrangement input; (GR-10) measured 907/907,
-  min-max obstruction named exactly (grouped co-independence fails exchange). §2.3's
-  prediction landed on its informative branch; uniformity untouched pending (GR-10).
-
-- **Third fan-out, direction Q LANDED — §(K-ann) Steps A14–A17: no shape refuted, the
-  dispatch's "upgrade" premise itself REFUTED, and the bare-cycle stratum reduced to
-  chart-to-frame dominance** (2026-08-06, `anhr1.py`/`anhr1.m2`; canonical home workbook
-  **§(K-ann)**). (ANH-16) the per-shape M2 identity is the *pointwise restatement* of (ANH-R1)
-  ((ANH-9)(iii) already makes census rows proofs) — *Step A13* item 4 struck as an upgrade
-  route; (ANH-13) branch-core normal form, `deg C = 12(c(G)−2)`; (ANH-14) ONE universal
-  irreducible degree-12 polynomial governs the whole bare-cycle stratum (1904/6426 sites), so
-  no (ANH-7)-style recipe exists for (ANH-R1)'s certificate; (ANH-15) the bad locus strictly
-  contains (ANH-11)'s. Third independent arrival at the dominance residue; uniformity untouched.
-
-- **Third fan-out, direction O LANDED — §(K-out) Steps O9–O12: the combinatorial half PROVEN,
-  (OC-7)'s necessity clause REFUTED, (OC-8) reduced to one explicit line** (2026-08-06,
-  `outerwide.py`/`outerwide.m2`; canonical home workbook **§(K-out)**). (OC-10) the availability
-  map is forced (items 1–2 struck; θ(3,4,5) the unique theta member; an F11 self-caught proof
-  repair — `hnoRigid` load-bearing); (OC-12) at degree-3 hubs `λ₁ = 0 ⟺` coincident hinge off
-  `{p = pt(b)}`; (OC-13)/(OC-14) the bad locus is one panel line `C₀`, inhabited by 38/38
-  constructed nondegenerate points; (OC-16) `Δ = [a,u,b]·C₀(pt b) ≢ 0` at the `ℓ_min = 5`
-  frame's generic point. (OC-8) stays OPEN as a containment question; uniformity untouched.
-
-- **Second fan-out, direction R LANDED — §(K-ann) Steps A10–A13: (ANH-R1) one-point-decidable
-  per shape, discharged at every probed triple, pointwise REFUTED** (2026-08-06, `shrink.py`;
-  canonical home workbook **§(K-ann)**). Superseded in detail by direction Q's Steps A14–A17.
-
-- **Second fan-out, direction M LANDED — §(K-mech): both *P8* anomalies mechanised in one
-  calculus (the load space `Ω`), 6v11e RESCUED ((MX-7)), σ rider NO ((MX-8))** (2026-08-06,
-  `mech.py`; canonical home workbook **§(K-mech)**). Uniformity untouched.
-
-- **Second fan-out, direction T LANDED — §(K-grid): the tight stratum reduced, with proven
-  reductions, to two geometry-free gaps ((GR-1)–(GR-6))** (2026-08-06, `grid.py`; canonical
-  home workbook **§(K-grid)**). Superseded in detail by directions G (Steps G8–G13) and E
-  (Steps G14–G18).
+- **The SECOND fan-out — all three directions LANDED 2026-08-06** (canonical homes the workbook
+  sections named). *T, §(K-grid), `grid.py`*: the tight stratum reduced by proven reductions to
+  two geometry-free gaps — superseded in detail by G and E. *R, §(K-ann) Steps A10–A13,
+  `shrink.py`*: (ANH-R1) one-point-decidable per shape, pointwise refuted — superseded in
+  detail by Q. *M, §(K-mech), `mech.py`*: both §(K-pure) *P8* anomalies mechanised in one
+  calculus (the load space `Ω`), **6v11e RESCUED** ((MX-7)), σ rider NO ((MX-8)).
+  Uniformity untouched by all three.
 
 - **The harness re-baselining round — all four debt items CLEARED, round CLOSED** (2026-08-06,
   five commits `d5ae55aa`…S4; trigger dispatch-log **F13**). Canonical home:

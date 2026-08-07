@@ -764,3 +764,248 @@ direction** (serial order E → J); direction E's landing may move the
 (GR-10) cell of the §(K-grid) row, which the coordinator folds into
 direction J's prompt only if something actually landed (the grid witness
 supply is *Step G13*'s candidate supplier for J's witness half).
+
+## Fifth fan-out — prepared 2026-08-07 (directions PEX / TCOL); dispatched SERIALLY, PEX → TCOL
+
+**Landing status: PREPARED, not yet dispatched.**
+
+**User-adjudicated 2026-08-07**, this session, immediately after the fourth
+fan-out landed: presented with the *Hand-off* blockquote's five candidate
+directions (no pre-selection), the user selected **(1) prove (FR-R1)** and
+**(2) the (GR-15)/(GR-4′) attack**, and did **not** select (3) the (FR-6)
+follow-ons, (4) the unselected leads (b)–(f), or (5) the parked Lean half of
+route σ / the W4 build. The 2026-08-05 Lean-hold adjudication therefore
+stands untouched; W4 stays parked; `hK`/`hbareSplit` stay carried as pinned;
+option B in both kernel cases stays un-commissioned. Dispatch is **serial**
+(the standing session default), order **PEX → TCOL** — and here the order is
+load-bearing rather than merely the user's listing: both residues are
+colouring-existence statements over the *same* §(K-grid) *Step G12*
+branch-bit structure, and (FR-R1) is the one without a spline/rank side, so
+a technique that works there is the natural input to (GR-15). TCOL's prompt
+therefore folds in whatever PEX actually lands (never a prediction of it).
+
+**Direction codes are multi-letter from this fan-out on** (user call,
+2026-08-07). Four fan-outs plus the harness round consumed A/B/C (×2),
+S1–S4, T/R/M, G/Q/O and E/J; of the fourteen unused single letters only
+**two** were 0-hit across the pencil doc set, and the corpus already carries
+two recorded single-letter hazards (bare `(E)` = §(SAFE-RES)'s gap token;
+the A/B/C date-ambiguity). That is the registry's own measured diagnosis
+firing on the direction letters themselves — bare single-letter families
+collide, topic-tagged ones have not. `PEX` (pattern-existence) and `TCOL`
+(tight-stratum colouring) are verified **0-hit as raw substrings** across
+`*.md`, `*.tex`, `*.lean`, `*.py`, `*.m2` — the substring check, not just
+whole-token, because that is the trap that cost the third fan-out its first
+`m2` driver name. Recorded as minting clause **(L5)** in
+`notes/Pencil-labels.md`; the single-letter era is grandfathered under (L4)
+and stays dated wherever it is written.
+
+**Rung (coordinator, playbook application — not a user adjudication):** both
+directions are mapped to the **top rung** — each is a crux proof attempt on
+which a positive verdict settles new mathematics and re-routes the phase,
+the same trigger that put directions G, E and J there. **The top rung is
+unavailable this session** (user check-in, 2026-08-07: fable not
+dispatchable), so both **substitute opus** (`recon-opus`), per the playbook's
+*nearest available rung at or above the mapped one*. Recorded because it is a
+deviation from the four preceding fan-outs' rung, not a re-rating.
+
+**Shared mechanics: identical to the second fan-out's** (§"Second fan-out",
+including its three deltas — the reserved-namespace table is now the
+2026-08-07 **PEX/TCOL** table in `notes/Pencil-labels.md`; any battery quoted
+as a *rate* or as generic-chart-point evidence gates on `repin.star_generic`;
+the coordinator lands each return before dispatching the next, with a budget
+check between). Serial dispatch does not relax the mechanics: each dispatch
+is **read-only w.r.t. every shared file**, **commits NOTHING**, creates only
+its own pinned new driver(s) (untracked, for the coordinator to gate and
+commit), writes its full mathematics as a draft workbook section
+(`fanout-<PEX|TCOL>.md`, session scratchpad) in the workbook's register with
+an explicit confidence verdict and a "what would change this" line, and keeps
+the return message to a tight verdict. The F11 requirement binds ("forced" /
+"exhaustive" / "the only" are their own claim class needing their own
+driver), as do `notes/scripts/README.md`'s conventions (exact ℚ, seeded
+randomness, degeneracy guards + rank/dimension asserts, import from the
+canonical layer — check the *Divergences* table), and F15's over-ceiling
+shape for any invocation that cannot finish inside 600 s. A direction that
+opens Macaulay2 work reads `notes/scripts/m2/README.md` first and budgets per
+`Pencil-strategy.md` §5.3/§5.4 — neither direction here is expected to need
+it, both questions being combinatorial.
+
+**Both directions are proof attempts, and the deliverable is the ARGUMENT.**
+Each has a measured record already at 100 % over its enumerated pool
+(1904/1904 for PEX, 907/907 for TCOL), so *widening the pool is evidence,
+not progress*. `Pencil-strategy.md` §2.3's base-rate warning applies to both
+verbatim: every prior class-uniform combinatorial-existence claim of this arc
+was eventually either proven by a min-max or refuted by a structural flank.
+Run the cheap kill first; *"no proof, and here is the precise obstruction"* is
+a fine outcome for either.
+
+### Direction PEX — §(K-frame)'s (FR-R1): pattern-existence on the bare-cycle stratum
+
+**The question.** Prove **(FR-R1)** — every bare-cycle site of every `k = 4`
+class triple admits a *pattern colouring*, i.e. an admissible colouring of
+`G′` meeting (FR-4)'s hypotheses: the six frame edges coloured **3–3** with
+pairwise-distinct components per family, plus the two placement-free legality
+clauses (all bodies distinct — the `(comp_A, comp_B)` pairs injective — and no
+3-member closed hub neighbourhood mono-component in either family) — or refute
+it with a structural flank. Proving it closes the §(K-ann) (ANH-14)
+chart-to-frame residue on the **whole** bare-cycle stratum *as an argument*,
+upgrading (FR-5)'s 1904/1904 measured record to a theorem modulo (FR-4)'s one
+named gap.
+
+**Grounding (canonical §(K-frame) Steps FR0–FR4 + §(K-grid) *Step G12*; do
+not re-derive).** (FR-1): non-containment in the one named divisor needs
+**one witness point + irreducibility of the source**, and on the (ANH-14)
+side §(K-ann) (ANH-9)(ii) already owns the irreducibility — so the entire
+remaining content is the witness point, and (FR-4) reduces *that* to the
+colouring. (FR-3): at a σ-fixed grid configuration evaluation is **O(1)
+reading of the colouring** — `det₆ ≠ 0 ⟺` the colours split 3–3 with the
+three lines pairwise distinct in each family, on the nose
+`det₆ = 128 · Vdm(s₁,s₂,s₃) · Vdm(u₁,u₂,u₃)`. (FR-4): transport is by
+**regridding at `G′`**, where `a` has degree 2, alternation puts `(a,b)` and
+`(a,c)` in opposite families, and `pt(a) ∈ Π(b) ∩ Π(c) = M` is automatic.
+*Step G12*(i): admissible colourings are exactly **one free bit per branch**
+(alternation chains = branches, hubs break chains; `closure.alternation_classes`
+is the landed form).
+
+**The sketch this direction is commissioned to complete or kill**
+(§(K-frame) *What would change this* item (i), the section's own chief
+hand-off): alternation around the cycle is nearly free — forced at real
+degree-2 bodies, chosen at hubs — so the content is keeping the **three
+same-family edges in three distinct components**. *Step G12*'s
+one-free-bit-per-branch structure plus **girth 6** look sufficient for a
+direct argument. Test that; if it is sufficient, the proof is the
+deliverable, and if it is not, name exactly which configuration defeats it.
+
+**Cheap kill first.** A bare-cycle site whose *every* admissible colouring
+merges two non-adjacent frame edges in both families' component structures —
+refutes (FR-R1). None among the 1904 enumerated sites.
+
+**Cautions.**
+
+- **The legality clause is placement-free by design; do not upgrade it into a
+  feasibility criterion.** `notes/Phase39.md` *Blockers* records (verified,
+  this file's coordinator read it) that feasibility propagation *as a
+  proposition* is **refuted** for any purely combinatorial
+  (`≤3`-closedHubNbhd) criterion — the landed
+  `not_pencilNondegFeasible_of_triangle_two_hubs`. *Coordinator hypothesis,
+  flagged as such (F14):* the two are compatible because (FR-4)'s clause is a
+  sufficient condition **checked at a constructed point**, not a propagated
+  proposition. A proof of (FR-R1) that generalizes the clause into a criterion
+  would collide with that refutation, so **state explicitly which side of that
+  line the argument sits on** — and if the coordinator's reading is wrong, say
+  so, which is a fully successful outcome.
+- **The pool is not the class.** (ANH-14)(b)'s boundedness caveat transports
+  unchanged: the site pool is `outer.sweep_shapes` (`|V°| ≤ 5` families plus
+  the named habitats), so "every class shape" is **not** established by the
+  1904 record and a proof must not lean on it.
+- (FR-4)'s **named gap** — §(K-grid) (GR-5) restated at `G′` — stays named;
+  closing it is a bonus, not this direction's deliverable. Take it if the
+  argument makes it cheap, and say so.
+- No σ-fixed witness is read as generic (§(K-clos) (AC-9) — at grid points
+  that anti-correlation is *forced*: a σ-fixed body of degree ≥ 3 has two
+  same-colour edges, hence one coincident hinge line). Do not re-derive
+  §(K-frame)'s (FR-1)–(FR-7) or §(K-ann)'s settled batch
+  ((ANH-1)–(ANH-6), (SD-6)); the §(K-ann) and §(K-out) pools are pinned and
+  **disjoint**, never aggregated.
+
+**Driver** `notes/scripts/w4/patexist.py` (imports `framedom.py` /
+`closure.py` / `annih.py` / `shrink.py` / `outer.py` read-only). No M2 leaf
+expected — the question is combinatorial; if one is opened the reserved name
+is `notes/scripts/m2/patexist.m2`. **Labels** (FR-8)+, Steps FR7+ (reservation
+table in `notes/Pencil-labels.md`); if the argument needs its own section the
+reserved name is **§(K-pat)**, tag `PAT-`. Cross-references into
+§(K-ann)/§(K-grid) use the qualified form (L3); moving any gap-map cell is the
+coordinator's action at landing, never the draft's.
+
+### Direction TCOL — §(K-grid)'s (GR-15): colouring-existence on the tight stratum
+
+**The question.** Discharge **(GR-15)** — every tight class shape admits an
+admissible colouring with generic `dim Z₊ = dim Z₋ = 0` in **both** blocks
+(*Step G17*'s boxed statement; measured 907/907, and by (GR-7) remark (i)
+each exact hit is already a **per-shape proof**, so the gap is uniformity,
+not rigor) — by either route *Step G18* item 3 names: **(a)** prove
+**(GR-4′)** (`dim Z = a + max(0, max_P g(P))` at generic parameters) and give
+a colouring-existence argument for *"some admissible colouring has
+`a = 0 ∧ max g ≤ 0` in both blocks"*; or **(b)** develop **(GR-11)**'s ε-adic
+hierarchy on the **18 separators** into a certificate covering exactly where
+the tree-triple fails. Or refute (GR-15) with a structural flank.
+Discharging (GR-15), with (GR-1)/§(K-clos) (AC-4), (GR-5) and (AC-7),
+discharges `hK` **on the tight stratum**, over every infinite
+characteristic-0 field.
+
+**Grounding (canonical §(K-grid) Steps G11–G18; do not re-derive).**
+(GR-13): the grouped packing is **NP-complete at exact balance**
+(triple-existence ⟺ 3-colourability of `Γ`), so no counting condition can
+characterize the *triple* unless NP = coNP — that is what re-aimed the
+residual from (GR-10) to (GR-15), and it does **not** touch (GR-4′), which
+is counting-shaped and which the 18 separators satisfy **exactly**
+(`a = 0`, `max g = 0`, `dim Z = 0`). *Step G16*: those separators are **on
+the habitat** — 4 blocks of `V6m10(3¹⁰)`, 14 of `V6m11(3⁸,4,4,4)` — generic
+`dim Z = 0` proven at exact rational points yet no tree-triple; the pinned
+exemplar's non-existence is exhausted over all `3¹¹` class colourings,
+DFS-free, with a greedy unsatisfiable core of 13 circuit class-sets printed
+as the conflict structure. They are the **first natural test set** for a
+(GR-11)-style hierarchical certificate. (GR-4′) status: true-modulo-named-gap,
+proven at **≤ 3 classes** and at **singleton classes**, the conic confinement
+dissolved (any three distinct moment-curve points form a basis of `K³`) — the
+live gap is **only the class structure**. *Step G12*: the finite-object
+structure — one free bit per branch; the both-classes-forests constraint sees
+only the hub-hub subgraph of `G°`; balance is a signed subset-sum over
+odd-length branches; per hub multigraph `G°` a finite CSP parametrized by the
+length profile, so any uniform argument must be uniform **over `G°`**, not
+over subdivisions (§(K-ind) (I4)).
+
+**Cheap kill first.** A tight class shape whose *every* admissible colouring
+leaves, in some block, generic `dim Z > 0` — refutes (GR-15), and (GR-10)
+with it. None in 907 shapes under exhaustive enumeration (16600/17772
+filter-passing colourings certify; scarcest shape 12/16).
+
+**Cautions.**
+
+- **Do not re-attack the (GR-10) min-max.** (GR-13) closed it *as posed* and
+  *Step G18* item 1 records why; the productive question is
+  colouring-existence, not characterization. (GR-10) itself stays open as the
+  strictly stronger statement — proving it would also do, but it is not the
+  target.
+- (GR-14)'s rainbow-Δ certificate has **measured-nil** habitat applicability
+  (0/400 first-certified census blocks, 0/18 separators) — recorded so it is
+  not re-hunted.
+- Nothing here re-opens the habitat-level (AC-6) refutation: `C11` is
+  permanent (tight shapes have hubs and are never bare cycles). Do not
+  re-derive (GR-1)–(GR-9), (GR-4′)'s proven cases, or (GR-12)–(GR-15).
+- No σ-fixed witness is read as generic (§(K-clos) (AC-9)); a rank miss of
+  the literal `closure.build_fixed_config` construction at *one* parameter
+  point is not a miss of the recipe (*Step G4* item 1 — component-index
+  labels are not generic; retry at seeded random rational parameters before
+  calling anything structural).
+- *Coordinator hypothesis, flagged as such (F14):* direction PEX's technique
+  may transfer here, both residues being colouring-existence over the same
+  *Step G12* branch-bit structure. **Read PEX's landed §(K-frame) material
+  first** and say explicitly whether it transfers. It may well not —
+  (FR-R1) carries no spline/rank side at all, which is precisely why it was
+  ordered first.
+
+**Driver** `notes/scripts/w4/gridcol.py` (imports `packmm.py` / `gridwit.py`
+/ `grid.py` / `closure.py` read-only); optional M2 leaf
+`notes/scripts/m2/gridcol.m2`. **Labels** (GR-16)+, Steps G19+ (reservation
+table in `notes/Pencil-labels.md`); if the (GR-11) hierarchy development needs
+its own section, the reserved name is **§(K-pack)**, tag `PK-` — re-reserved
+from the pool for the **third** time, having been returned unopened by
+directions G and E.
+
+### Landing (coordinator, per returned direction)
+
+The first fan-out's landing checklist applies verbatim, plus:
+
+1. Move the direction's reservation row into the registry in the landing
+   commit (never delete it).
+2. **Add the new driver's rows to `notes/scripts/README.md` §3's invocation
+   table in the landing commit.** This is part of "commit the new script",
+   not an optional extra — four consecutive landings skipped it (the third
+   fan-out's three drivers plus `packmm.py`), caught only at direction J's
+   landing; reproducibility survived only because the workbook *Verification*
+   blocks carry the invocations.
+3. Land each return and re-check session budget **before dispatching the
+   next direction** (serial order PEX → TCOL).
+4. Fold PEX's landed result into TCOL's prompt **only if something actually
+   landed** — the transfer hypothesis above is a hypothesis, and a PEX
+   refutation is just as much an input to TCOL as a PEX proof.
