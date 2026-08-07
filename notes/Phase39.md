@@ -6,18 +6,16 @@
 (2026-07-30). Only three items remain, all carried by the landed successor
 `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card` (`Molecule/Pencil/Escape.lean`):
 `hcontract` (W4), kernel `hK`, and kernel `hbareSplit` — see *Hand-off*. Kernel-(K) research
-is at its twenty-fourth docs+scripts-only pass (workbook `notes/Pencil-informal.md`; the settled
-W4-residual arc is `notes/Pencil-W4-informal.md`). **BOTH 2026-08-06 fan-outs are COMPLETE**
-(and so is the harness re-baselining round between them, S1–S4). The second — **T / R / M**,
-user-adjudicated — landed: **§(K-grid)** (T — the tight stratum reduced to (GR-4) + (GR-6)),
-**§(K-mech)** (M — both *P8* anomalies mechanised, 6v11e rescued), and the §(K-ann)
-continuation Steps A10–A13 (R — (ANH-R1) one-point-decidable, pointwise refuted). **The
+is at its twenty-seventh docs+scripts-only pass (workbook `notes/Pencil-informal.md`; the settled
+W4-residual arc is `notes/Pencil-W4-informal.md`). **ALL THREE 2026-08-06 fan-outs are
+COMPLETE** (first A/B/C; the harness re-baselining round S1–S4; second T/R/M — §(K-grid),
+§(K-mech), §(K-ann) Steps A10–A13). **The
 THIRD fan-out — G / Q / O, user-adjudicated 2026-08-06, dispatched SERIALLY O → Q → G — is
-IN FLIGHT: O and Q LANDED** (O: §(K-out) Steps O9–O12 — the combinatorial half PROVEN, (OC-8)
-reduced to one explicit line. Q: §(K-ann) Steps A14–A17 — no shape refuted, the bare-cycle
-stratum governed by ONE universal irreducible polynomial, the residue chart-to-frame
-dominance), **G is the next and last dispatch** (specs `notes/Pencil-fanout.md` §"Third
-fan-out"; see *Hand-off*).
+COMPLETE** (O: §(K-out) Steps O9–O12 — the combinatorial half PROVEN, (OC-8) reduced to one
+explicit line. Q: §(K-ann) Steps A14–A17 — no shape refuted, ONE universal polynomial governs
+the bare-cycle stratum. G: §(K-grid) Steps G8–G13 — (GR-4) refuted-as-stated and repaired, the
+tree-triple theorem **(GR-9) proven**, the tight-stratum residual now **(GR-10) alone**).
+**The next direction awaits user adjudication** (see *Hand-off*).
 Fan-out direction letters are re-used across dates — **always date them**.
 
 ## Current state
@@ -51,27 +49,20 @@ constraints; the dated dispatch narrative is in *Decisions made* and git):
   top rung. Coordinator merged leads 3+4 into direction **O** (one section's continuations).
   Specs + rationale: `notes/Pencil-fanout.md` §"Third fan-out".
 
-**Kernel-(K) research arc — twenty-three docs+scripts-only dispatches, plus one strategy-only
+**Kernel-(K) research arc — twenty-six docs+scripts-only dispatches, plus one strategy-only
 pass** (2026-08-02 → 08-06).
 Mathematics: the workbook `notes/Pencil-informal.md`, whose **State of (K)** map is the entry
-point and the artifact a pass *updates*; settled W4-residual verdicts are in
-`notes/Pencil-W4-informal.md`; strategy in `notes/Pencil-strategy.md`. One line per landing in
-*Decisions made*, which with git is the canonical dispatch record — **not restated here**. Net
-effect: the **disproof risk is removed**; seven named gaps, routes or constructions moved from
-open to refuted-or-superseded ((K-slide-comb), (K-slide-cl) as stated, (K-Λ) as independent,
-C1/(K-dom) as a route, **(K-ind)**, **(K-Δ)**, and §(K-clos)'s grid recipe as a class
-statement), with **(K-chord)**/**(K-wit)** the successors; the arc gained its first
-**class-uniform positive** ((Λ1)) and, 2026-08-06, its first **recipe** — a formula, not a
-search — in §(K-ann), whose two inputs are *not* uniform; §(K-σ)'s **field scope is settled**;
-§(K-out) measured (OUT)'s hypothesis and **proved it can never be delivered by a count**
-((OC-3)); the 2026-08-06 direction-T landing reduced the **tight stratum** to two geometry-free
-gaps (**§(K-grid)**, (GR-4) + (GR-6)); the direction-M landing **mechanised both *P8* anomalies
-and rescued 6v11e** (**§(K-mech)** — the slide device's failure modes on the probed strata are
-now three named decoration-free conditions); the direction-R landing made **(ANH-R1)
-one-point-decidable per shape, discharged it at every probed triple, and REFUTED it pointwise**
-(§(K-ann) Steps A10–A13 — no placement-blind route exists; directions T and R **converge** on
-one missing technology, uniform constructed chart witnesses); and **class uniformity of the
-escape remains untouched by every one of them**.
+point, the canonical per-gap status home, and the artifact a pass *updates*; settled
+W4-residual verdicts are in `notes/Pencil-W4-informal.md`; strategy in
+`notes/Pencil-strategy.md`. One line per landing in *Decisions made*, which with git is the
+canonical dispatch record — **neither the landings nor the per-gap statuses are restated
+here**. Net effect: the **disproof risk is removed**; every refuted route/gap is recorded in
+the gap map with its successor; the arc's structural positives are (Λ1), §(K-ann)'s recipe,
+§(K-out)'s **proven combinatorial half** ((OC-10)), and §(K-grid)'s **proven tree-triple
+theorem** ((GR-9)); the **tight stratum now hangs on the single geometry-free (GR-10)**; the
+third fan-out's three directions **converged on one missing technology — chart-to-frame
+dominance / uniform constructed witnesses** (§(K-out) (OC-16), §(K-ann) (ANH-14), §(K-grid)
+Step G13); and **class uniformity of the escape remains untouched by every one of them**.
 
 > **The one live candidate, and it is NOT settled — `notes/Pencil-informal.md` §(K-σ)** (the
 > canonical home; the four obligations, the `--hunt` findings, the validation scope and the
@@ -212,14 +203,22 @@ discharge (residue (iv)) is CLOSED too**. The landed successor
 > post-second-fan-out hand-off; route σ's Lean half NOT selected) is IN FLIGHT, dispatched
 > SERIALLY O → Q → G** — specs, rungs and the leads-3+4 merge rationale:
 > `notes/Pencil-fanout.md` §"Third fan-out"; label reservations: `notes/Pencil-labels.md`.
-> **O and Q LANDED** (§(K-out) Steps O9–O12 and §(K-ann) Steps A14–A17, one-lined in
-> *Decisions made*, each workbook section the canonical home; O `35e2ce91`, Q this commit).
-> **The next and last dispatch is G** = §(K-grid)'s (GR-4)+(GR-6), the T/R convergence target
-> (top rung) — discharging both closes `hK` on the tight stratum. Directions O and Q both
-> terminated at the SAME residue — **chart-to-frame dominance** (§(K-out) (OC-16); §(K-ann)
-> (ANH-14)) — the arc's now-fourth independent arrival at constructed-witness technology,
-> which is exactly what G attacks. The coordinator lands G's return (fan-out landing
-> checklist), then the fan-out closes and the next direction is a fresh user adjudication.
+> **ALL THREE LANDED** — O `35e2ce91` (§(K-out) Steps O9–O12), Q `c5769c77` (§(K-ann)
+> Steps A14–A17), G this commit (§(K-grid) Steps G8–G13); each one-lined in *Decisions made*,
+> its workbook section the canonical home, every driver coordinator-re-run.
+> **Next direction = user adjudication.** The fan-out's net shape, for that adjudication:
+> the tight stratum now hangs on **ONE geometry-free statement, (GR-10)** (both-block
+> tree-triple colouring existence; 907/907 measured; the named min-max obstruction is the
+> grouped-exchange failure — a partition-constrained base packing one constraint from
+> Phases-12–15 machinery), with the geometry discharged by the proven **(GR-9)**; and
+> directions O and Q terminated at one shared residue, **chart-to-frame dominance**
+> (§(K-out) (OC-16); §(K-ann) (ANH-14)), for which G's Step G13 names a candidate lemma
+> shape ("explicit constructed point off the explicit bad divisor + irreducibility ⟹
+> dominance") whose witness half the grid technology could supply — the transport to the
+> contracted objects is the unattempted step. The natural candidate directions are therefore
+> (1) a min-max attack on (GR-10), (2) the shared dominance lemma, (3) anything from the
+> unselected leads (b)–(f) above, or (4) the parked Lean half of route σ / the W4 build (each
+> needs a fresh adjudication). No option is pre-selected.
 >
 > Deliberate non-goals: (Λ0), (Λ1), the `g₁₄` clause, §(K-ind), §(K-Δ), **§(K-clos)'s field
 > question**, **§(K-ann)'s settled batch** ((ANH-1)–(ANH-6), (SD-6)) and **§(K-out)'s settled
@@ -285,6 +284,16 @@ survey — incl. IDENT-PANEL, the nearest neighbour — is `notes/IdeaBacklog.md
 Reverse-chronological, one line per landing; full derivations live in git,
 `notes/Phase39-design.md`, and (for the (K) arc) the workbook section named in each entry, which
 is the canonical home a successor reads.
+
+- **Third fan-out, direction G LANDED — §(K-grid) Steps G8–G13: (GR-4) REFUTED as stated and
+  repaired, the tree-triple certificate theorem (GR-9) PROVEN, the tight-stratum residual
+  merged into (GR-10) alone** (2026-08-06, `gridwit.py`; canonical home workbook **§(K-grid)**).
+  Cheap kill (ii) fired — 185/4200 widened-pool overshoots, every one exact against the proven
+  unified family (GR-8) (sub-multigraph cycle spaces; rank-1 members = ≤-2-class cycles);
+  (GR-4′) the repair, off the critical path; (GR-9) three-group collapse + Vandermonde + no
+  bond-in-a-group ⟹ Tay target with no generic-arrangement input; (GR-10) measured 907/907,
+  min-max obstruction named exactly (grouped co-independence fails exchange). §2.3's
+  prediction landed on its informative branch; uniformity untouched pending (GR-10).
 
 - **Third fan-out, direction Q LANDED — §(K-ann) Steps A14–A17: no shape refuted, the
   dispatch's "upgrade" premise itself REFUTED, and the bare-cycle stratum reduced to

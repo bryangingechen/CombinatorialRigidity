@@ -129,15 +129,13 @@ sections, so the reservations are the unclaimed tails of the owning families
 — the owning section stays authoritative. Dispatch is **serial** (O → Q → G,
 a user adjudication), which does not relax the reservation discipline:
 
-| direction | extends | reserved labels | reserved driver path(s) | reserved section (only if needed) |
-|---|---|---|---|---|
-| **G** | §(K-grid) | (GR-7)+, Steps G8+ | `notes/scripts/w4/gridwit.py`, `notes/scripts/m2/gridwit.m2` | **§(K-pack)**, tag `PK-` |
-
-**Directions O and Q have LANDED** (2026-08-06): each row is released into the
-registry — O as (OC-10)–(OC-16), Steps O9–O12, `outerwide.py`'s four modes and
-`outerwide.m2` in §(K-out)'s row; Q as (ANH-13)–(ANH-16), Steps A14–A17,
-`anhr1.py`'s six modes and `anhr1.m2`'s (ANH-Q0)–(ANH-Q4) in §(K-ann)'s row.
-G remains reserved until it lands.
+**All three directions have LANDED** (2026-08-06) and the reservation table
+is released, each row moved into the registry below: O as (OC-10)–(OC-16),
+Steps O9–O12, `outerwide.py` + `outerwide.m2` (§(K-out)'s row); Q as
+(ANH-13)–(ANH-16), Steps A14–A17, `anhr1.py` + `anhr1.m2`'s
+(ANH-Q0)–(ANH-Q4) (§(K-ann)'s row); G as (GR-7)–(GR-11) + (GR-4′),
+Steps G8–G13, `gridwit.py` (§(K-grid)'s row — `gridwit.m2` was never needed
+and **§(K-pack)** / `PK-` return to the pool unopened).
 
 **One naming hazard this fan-out created, recorded rather than renamed (L4).**
 The **direction letters A/B/C are re-used** between the 2026-08-05 fan-out
@@ -194,7 +192,7 @@ Status keywords are pointers to the owning section's verdict block and the
 | §(K-Δ) | `DL-` | **(M1)**, **(M2)**, **(M3)**; (N1), (N2) | the Δ-matroid literature hunt: (M1)–(M3) are the **three hypothesis tests**, (N1)/(N2) the two readings bought | NO HIT; discharged |
 | §(K-bare-ext) | `BE-` | (K-bare-ext) | the (K-bare) stub | open, nothing being developed |
 | §(K-mech) | `MX-` ✓ | (MX-1)–(MX-9); driver modes `--flex`/`--wide`/`--inc`/`--sigma`/`--sweep` (`mech.py`) | the mechanisms of the residual (W2)/(W4) anomalies: the realizable-load space `Ω`, α-confinement, pole-cluster loads, the welded flex, the 6v11e rescue, the σ rider | (MX-1)/(MX-2) proven; (MX-3)–(MX-7) proven-informally; (MX-8) settled-NO in the probed family; (MX-9) measured |
-| §(K-grid) | `GR-` ✓ | (GR-1)–(GR-6); Steps G0–G7; driver blocks GR-D1–GR-D5 (`grid.py`) | the tight-stratum residual of (AC-6): eigen-blocks as conic direction networks / generalized-spline systems, the two counting obstruction families, chart-image membership, the 907-shape census | reduction proven; (GR-2) a proven refutation of the former (AC-6) close-route sentence; residual = (GR-4) + (GR-6), open |
+| §(K-grid) | `GR-` ✓ | (GR-1)–(GR-6); Steps G0–G7; driver blocks GR-D1–GR-D5 (`grid.py`); **since 2026-08-06 (direction G)** (GR-7)–(GR-11) + the primed successor **(GR-4′)** (recorded under (GR-4) as its repaired form, per L4 no-renaming), Steps G8–G13, driver modes `--formula`/`--treetriple`/`--wide`/`--validate` (`gridwit.py`) | the tight-stratum residual of (AC-6): eigen-blocks as conic direction networks / generalized-spline systems, the counting obstruction families ((GR-3); unified as **(GR-8)** sub-multigraph cycle spaces), chart-image membership, the 907-shape census, the interpolation factorization (GR-7), the tree-triple certificate theorem (GR-9), the merged residual (GR-10), the ε-adic fallback (GR-11) | reduction proven; (GR-2) a proven refutation of the former (AC-6) close-route sentence; **(GR-4) refuted-as-stated, repaired as (GR-4′), off the critical path; (GR-9) proven; residual = (GR-10) alone, open** |
 
 Gap names used arc-wide and owned by the *State of (K)* map: **(K-tight)**,
 (K-move), (K-pitch), (K-pitch-∞), (K-wit), (K-Λ), (K-slide), (K-slide-cl),

@@ -403,11 +403,14 @@ re-check session budget before dispatching nothing further / the next round.
 
 ## Third fan-out — prepared 2026-08-06 (directions G / Q / O); dispatched SERIALLY, O → Q → G
 
-**Landing status: O and Q LANDED 2026-08-06** (O: §(K-out) Steps O9–O12,
-(OC-10)–(OC-16). Q: §(K-ann) Steps A14–A17, (ANH-13)–(ANH-16) — the dispatch's
-"upgrade" premise refuted by (ANH-9)(iii), the surviving deliverable the
-bare-cycle universal polynomial; drivers coordinator-re-run, all modes
-byte-identical both times); **G is next and last**.
+**Landing status: COMPLETE — all three LANDED 2026-08-06** (O: §(K-out)
+Steps O9–O12, (OC-10)–(OC-16). Q: §(K-ann) Steps A14–A17, (ANH-13)–(ANH-16)
+— the dispatch's "upgrade" premise refuted by (ANH-9)(iii), the surviving
+deliverable the bare-cycle universal polynomial. G: §(K-grid) Steps G8–G13,
+(GR-7)–(GR-11) — cheap kill (ii) FIRED, (GR-4) refuted-as-stated and
+repaired, the tree-triple theorem (GR-9) proven, the tight-stratum residual
+merged into **(GR-10)** alone. Every direction's drivers coordinator-re-run,
+all modes byte-identical.)
 
 **User-adjudicated 2026-08-06**, this session, immediately after the second
 fan-out landed: presented with the *Hand-off* blockquote's five live leads
