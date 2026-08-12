@@ -1,7 +1,9 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
 **Status: ALL FIVE fan-outs COMPLETE; the SIXTH direction (CFLANK,
-§"Sixth direction") LANDED 2026-08-07.** The first (A/B/C
+§"Sixth direction") LANDED 2026-08-07; the SEVENTH direction (GCAP,
+§"Seventh direction") is PREPARED 2026-08-12, not yet dispatched.** The
+first (A/B/C
 below, prepared 2026-08-05) landed 2026-08-05/06; the second (T/R/M,
 §"Second fan-out") 2026-08-06; the third (G/Q/O, §"Third fan-out")
 2026-08-06; the fourth (E/J, §"Fourth fan-out") 2026-08-07; the fifth
@@ -10,8 +12,10 @@ direction") 2026-08-07 — no flank found, (GR-15) stays OPEN. CFLANK was a
 **single direction**, not a fan-out — its selection was a **coordinator
 delegation** (`notes/Phase39.md` *Current state*, the 2026-08-07 "keep
 going on my own judgment" adjudication), not a user pick from a candidate
-list. This file remains the dispatch-scoping template for any future
-fan-out or single direction. Three independent research directions on kernel (K), specified
+list; GCAP's selection was **delegated further to a top-rung fable
+recon** (the 2026-08-12 adjudication, verbatim in `notes/Phase39.md`
+*Current state*). This file remains the dispatch-scoping template for any
+future fan-out or single direction. Three independent research directions on kernel (K), specified
 here so a fresh session can dispatch them at S=1 without re-deriving the
 scoping. User-adjudicated this session (verbatim below). The mathematics
 lives in `notes/Pencil-informal.md` (the (K) workbook — start from its
@@ -1147,3 +1151,179 @@ The fifth fan-out's landing checklist applies verbatim (which is the first
 fan-out's plus its four additions) — including moving the reservation row
 into the registry and adding the driver's rows to
 `notes/scripts/README.md` §3's invocation table in the landing commit.
+
+## Seventh direction — GCAP (single direction, prepared 2026-08-12)
+
+**Status: PREPARED — adjudicated and prepped, not yet dispatched.** A
+**single direction**, not a fan-out. Its selection was made under the
+2026-08-12 refinement of the standing delegation (`notes/Phase39.md`
+*Current state*, verbatim there): the user delegated the
+seventh-direction call to a **top-rung fable recon**, whose verdict the
+coordinator verified and accepted; this section transcribes that
+verdict's dispatch-grade spec. No standing constraint changes.
+
+**Direction code GCAP** (g-cap: cap the structured (GR-8) family's
+`g`), minted under clause **(L5)**. Verified **0-hit as a raw
+substring**, case-insensitively, across
+`*.md`/`*.tex`/`*.lean`/`*.py`/`*.m2` in the prep commit — as are the
+driver name `gcap`, the reserved section name **§(K-gcap)** and tag
+**`GC-`**. Reserved in `notes/Pencil-labels.md`.
+
+### The question
+
+For tight class shapes at `D = 0` (reaching toward `Λ ≠ ∅`): does every
+shape admit an admissible colouring (balanced, both `Γ`-classes
+forests, no monochromatic hub) with `a = 0` and structured-(GR-8)
+`max_P g(P) ≤ 0` **in both blocks** — the general-`P` instance of
+§(K-grid) (GR-20)'s certificate 3, whose `P = circuit` instance CFLANK
+already solved ((GR-17) + (GR-22)–(GR-24))?
+
+**Why this target survives adjudication rather than being inherited.**
+CFLANK itself recommended this successor, and a successor proposed by a
+direction that just failed to find a flank is exactly the claim that
+needed independent adjudication — which it got. It stands on three
+independent grounds: (a) it is the **only** route in the (GR-15) cell
+backed by a positively witnessed obstruction datum — *Step G23*'s
+scoping probe found 16 of 572 balanced, no-mono-hub, NC1-satisfying
+blocks with generic `dim Z > 0`, each `a = 0` with structured (GR-8)
+maximum 1, so the non-circuit members of (GR-8) provably bite and NC1
+alone is provably not the colouring-existence target; (b) CFLANK did
+not fail at this question — it **proved the circuit instance**, so the
+successor is the next quantifier of the same induction, not a fresh
+bet; (c) the (GR-15) residual is **not** of the
+rank-lower-bound-on-a-contraction shape `notes/Pencil-strategy.md`
+§2.3's recorded prediction says to stop surveying — it is the
+"genuinely informative outcome" that prediction says deserves the
+attention a surprise deserves, while the alternative candidates
+(§(K-out) (OC-8), §(K-ann) (ANH-R1)) terminate at exactly the wall
+shape.
+
+**Three corrections to CFLANK's recommendation as written (adjudicated
+2026-08-12; each load-bearing, each with its grounding).**
+
+1. **A `Λ = ∅` scoping would miss the live obstruction data.** The
+   scoping probe's 16 hits were **all on `Λ ≠ ∅` shapes** (§(K-grid)
+   *Step G23*) — exactly the stratum where (GR-17)(d) is only measured
+   and where (GR-23)/(GR-24) are **proven only at `Λ = ∅`**. The
+   direction must carry CFLANK's *What would change this* item (v)
+   (the balance-preserving odd-pair flip) toward `Λ ≠ ∅`.
+2. **"Close (GR-15) at `D = 0` outright" overstates.** (GR-20)'s
+   certificate 3 implies (GR-15) **modulo (GR-4′)**, which stays open
+   (§(K-grid) *Step G23*, certificate 3); the closure chain below
+   carries the rider explicitly, and so must the return.
+3. **Cap-proof-first, flank-hunt-second** — inverting CFLANK's own
+   framing. After 907 (census) + 7653 (TCOL `--wide`) + 40 742
+   (CFLANK, exhaustive) verifications with zero shape-level misses,
+   the prior is strongly on (GR-15) TRUE; CFLANK ran flank-first and
+   spent its budget confirming absence. The deliverable priority is
+   the cap/repair theorem; the adversarial hunt is the falsification
+   control, not the headline.
+
+**Step 0 — MANDATORY load-bearing pin, before any derivation.** The
+adjudicating recon did **not** read the definitions this spec depends
+on; the dispatch must. Pin from §(K-grid) Steps G8–G13: the exact
+definition of `g(P)` and of "structured", and (GR-4′)'s proven-case
+boundary (≤ 3 classes, singleton classes) against the class counts
+that actually arise in admissible colourings' blocks. Then state the
+closure chain explicitly in the draft, with **both riders**: cap ⟹
+(GR-15) at `D = 0` **modulo (GR-4′)** ⟹ (with (GR-1)/§(K-clos)
+(AC-4), (GR-5), (AC-7)) `hK` on the tight `D = 0` stratum over every
+infinite characteristic-0 field; `D > 0` stays **unswept** (CFLANK
+item (iii)). Never "outright".
+
+### Decisive experiments, priority order
+
+1. **`--probe`** — re-establish *Step G23*'s scoping figure as
+   **committed evidence** (the original is recorded "measured, script
+   not retained"): over the census + the 4920-shape `D = 0` pool,
+   enumerate admissible, NC1-satisfying, `a = 0` blocks with generic
+   `dim Z > 0`; extract the certifying `P` per block; classify (cycle
+   rank, length profile, `Λ`-content). Decisive sub-question: is the
+   binding non-circuit `P`-family at `D = 0` finite/bounded, the way
+   (GR-17)(d) bounded circuits to two profiles?
+2. **`--law`** — a (GR-21)-style budget argument: charge each binding
+   non-circuit `P` against the constant length budget
+   `Σ_β(ℓ_β − 2) = 6` at `D = 0`; target a finite list of binding
+   `P`-profiles (the exact analogue of (GR-22)).
+3. **`--flip` / `--cap`** — extend the (GR-23) flip injection /
+   (GR-24) private-branch repair from binding circuits to the binding
+   `P`-profiles found in 2, **including item (v)'s odd-pair flip** so
+   the conclusion reaches `Λ ≠ ∅`. Target theorem: some admissible
+   colouring has `a = 0 ∧ max_P g(P) ≤ 0` in both blocks at every
+   `D = 0` class shape.
+4. **`--adv`** — the falsification control: targeted constructions
+   maximizing binding-`P` load at the cap's boundary. A claimed flank
+   must be exhaustive over the `2^M` bits (F11), **habitat-certified**
+   (the θ(1,2,9) precedent — state which certificate), and must say
+   which side of the `Λ = ∅` line it sits on.
+5. **Bonus, only if cheap:** CFLANK item (ii)'s mixed case, upgrading
+   (GR-24) to the unconditional "(NC1) is satisfiable at every
+   `D = 0`, `Λ = ∅` class shape".
+
+### Termination — what a MISS looks like
+
+The direction terminates after experiments 1–4 regardless of outcome —
+no open-ended widening ("widening a pool is evidence, not progress",
+standing rule). A MISS is: the budget law fails to bound the
+binding-`P` family (name the unbounded family and why the length
+budget does not charge it), **or** the repair fails at a named
+configuration with no flank constructible either (record that
+configuration, with its (GR-27)+ label, as the sharpest known (GR-15)
+obstruction). Either is a genuine deliverable. A **flank** — a
+habitat-certified shape where every admissible colouring leaves
+`max_P g(P) > 0`, exhaustive over bits — refutes (GR-15) outright and
+re-routes the phase, noting honestly that it kills the **grid route**
+to `hK`, not `hK` itself (grids are sufficient, not necessary). The
+line-level TERMINATION test that fires on GCAP's return is recorded in
+`notes/Phase39.md` *Hand-off*.
+
+### Cautions (binding)
+
+- Do not re-derive (GR-1)–(GR-26); do not re-attack the (GR-10)
+  min-max as a *characterization* ((GR-13): NP-complete at balance —
+  the cap is an existence bound, which is why it is not barred); all
+  of `notes/Phase39.md` *Hand-off*'s "Deliberate non-goals" bind.
+- The (K-res)/(GR-15) quantification question — whether (GR-15) as
+  quantified ("every tight class shape") also covers the `W19`-type
+  (K-res) sibling habitat — is **explicitly NOT this direction's
+  scope**; it is a coordinator hand-off note (`notes/Phase39.md`
+  *Hand-off*).
+- No σ-fixed witness is read as generic (§(K-clos) (AC-9)); a rank
+  miss of a literal construction at one parameter point is not a miss
+  of the recipe (*Step G4* item 1) — retry at seeded random rational
+  parameters before calling anything structural.
+
+**Driver** `notes/scripts/w4/gcap.py` (imports `cflank.py` /
+`gridcol.py` / `packmm.py` / `grid.py` read-only); suggested modes
+`--probe`/`--law`/`--cap`/`--flip`/`--adv`/`--validate`. **Labels**
+(GR-27)+, Steps G29+; section name if the argument outgrows §(K-grid):
+**§(K-gcap)**, tag `GC-` (do **not** reuse §(K-prof)/`PF-` — its
+"profile" semantics are circuit-specific). No M2 leaf expected (the
+question is combinatorial); `m2/gcap.m2` if a function-field identity
+appears.
+
+**Rung.** Mapped **top rung** (a crux proof/refutation attempt whose
+verdict re-routes the phase — the same trigger that put G, E, J, PEX,
+TCOL and CFLANK there); per the 2026-08-12 check-in all four rungs are
+dispatchable, so **fable** (opus substitutes only if the weekly scoped
+limit runs out).
+
+**Mechanics: identical to the sixth direction's.** Read-only w.r.t.
+every shared file; commits NOTHING; creates only its own pinned new
+driver (untracked, for the coordinator to gate and commit); writes its
+full mathematics as a draft workbook section `fanout-GCAP.md` in the
+session scratchpad, in the workbook's register, with an explicit
+confidence verdict and a "what would change this" line; keeps the
+return message to a tight verdict. F11 binds;
+`notes/scripts/README.md`'s conventions bind (exact ℚ, seeded
+randomness, degeneracy guards + rank/dimension asserts, import from
+the canonical layer — check the *Divergences* table); F15's
+over-ceiling shape applies to any invocation that cannot finish inside
+600 s.
+
+### Landing (coordinator)
+
+The fifth fan-out's landing checklist applies verbatim, as it did for
+CFLANK — including moving the reservation row into the registry and
+adding the driver's rows to `notes/scripts/README.md` §3's invocation
+table in the landing commit.

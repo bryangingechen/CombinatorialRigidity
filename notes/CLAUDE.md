@@ -80,9 +80,12 @@ for *organizing* this directory is here.
   (the Python harness is exact-pointwise with hand-rolled univariate
   interpolation only; its §5.4 **Macaulay2 layer is now LANDED** —
   `notes/scripts/m2/`, opened 2026-08-05 with `lambda1.m2`, which turned
-  §(K-Λ)'s (Λ1) into an identity over the function field — and the *next*
-  symbolic step, §5.3's first item, would upgrade §(K-Λ)'s 38-strata evidence to
-  a class-uniform proof). Strategy, **not** mathematics: every mathematical claim points at
+  §(K-Λ)'s (Λ1) into an identity over the function field — and **§5.3's first
+  item is likewise DELIVERED** (`m2/lambda0.m2`, same day: §(K-Λ)'s 38-strata
+  evidence upgraded to a class-uniform generic-point proof, plus the missing
+  `g₁₄` clause); what remains of §5.3 is item (i), the elimination question on
+  the image of the `V_bc` map, which is not far-graph-free and sits beyond
+  §5.3's own local-frame feasibility boundary). Strategy, **not** mathematics: every mathematical claim points at
   the workbook section that owns it, and its §§2–4 *diagnoses* carry no driver —
   they are arguments a successor should attack rather than assume. Read it
   before choosing the phase's direction; `notes/Phase39.md` *Current state* is

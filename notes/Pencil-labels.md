@@ -213,6 +213,25 @@ list (`notes/Phase39.md` *Current state*, the "keep going on my own
 judgment" adjudication). No flank found; (GR-15) stays OPEN, unchanged in
 status.
 
+**Reserved 2026-08-12 for the SEVENTH direction — GCAP**
+(`notes/Pencil-fanout.md` §"Seventh direction"; selection delegated to a
+top-rung fable recon under the 2026-08-12 refinement of the standing
+delegation — `notes/Phase39.md` *Current state*). The code **GCAP**
+(g-cap: cap the structured (GR-8) family's `g`) was verified **0-hit as
+a raw substring**, case-insensitively, across `*.md`, `*.tex`, `*.lean`,
+`*.py`, `*.m2` in the prep commit — as were the driver name `gcap`
+(`notes/scripts/w4/gcap.py`, suggested modes
+`--probe`/`--law`/`--cap`/`--flip`/`--adv`/`--validate`; optional M2
+leaf `m2/gcap.m2`, covered by the same 0-hit check), the reserved
+section name **§(K-gcap)** and tag **`GC-`**. The direction *extends*
+§(K-grid), so its primary reservation is the unclaimed tails of that
+section's live families — **(GR-27)+ and Steps G29+** — with
+§(K-gcap)/`GC-` to be opened **only if the argument outgrows
+§(K-grid)**; the owning section stays authoritative. **§(K-prof)/`PF-`
+stays unopened and is NOT reused** for this direction: its "profile"
+semantics are circuit-specific, and GCAP's subject is general
+sub-multigraphs.
+
 **One naming hazard the second fan-out created, recorded rather than renamed
 (L4).** The **direction letters A/B/C are re-used** between the 2026-08-05 fan-out
 (A = §(K-flank), B = §(K-Λ), C = §(K-pure)) and the 2026-08-06 one

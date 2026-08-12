@@ -13,10 +13,11 @@ second fan-out T/R/M, third fan-out G/Q/O (2026-08-06), fourth fan-out E/J (2026
 fifth fan-out PEX/TCOL (2026-08-07, PEX **(FR-R1) PROVEN**, TCOL four structural results
 proven but **(GR-15) stays OPEN — no flank found**), sixth direction CFLANK (2026-08-07,
 six more structural results proven, an exhaustive 40 742-shape hunt, **still no flank —
-(GR-15) stays OPEN**; full verdicts in *Decisions made*). **The user has delegated
-next-direction selection to the coordinator** ("keep going on my own judgment", 2026-08-07
-— see *Hand-off*); a **seventh direction is recommended but not yet prepped or
-dispatched** — see *Hand-off*. **Class uniformity remains untouched by every round.**
+(GR-15) stays OPEN**; full verdicts in *Decisions made*). The **seventh direction, GCAP,
+is ADJUDICATED and PREPPED — not yet dispatched** (2026-08-12; selection delegated by the
+user to a top-rung fable recon, verbatim in *Current state*; spec
+`notes/Pencil-fanout.md` §"Seventh direction"). **Class uniformity remains untouched by
+every round.**
 Direction codes are **multi-letter and topic-tagged from the fifth fan-out on**
 (`notes/Pencil-labels.md` clause **(L5)**); the grandfathered single letters are re-used
 across dates — **always date those**.
@@ -68,26 +69,38 @@ constraints; the dated dispatch narrative is in *Decisions made* and git):
   adjudication" sentence — the same check-in's top-rung/cap/rescue calls (above bullet)
   are otherwise unchanged. The coordinator's first pick under this delegation, the
   **sixth direction CFLANK**, LANDED 2026-08-07 (`notes/Pencil-fanout.md` §"Sixth
-  direction") — no flank found, (GR-15) stays OPEN. The recommended seventh direction
-  (a (GR-22)-style cap on the structured (GR-8) family, not yet prepped or dispatched)
-  is in *Hand-off*.
+  direction") — no flank found, (GR-15) stays OPEN. The seventh-direction pick went
+  through the 2026-08-12 delegation refinement below.
+- **2026-08-12, seventh-direction delegation (refines the 2026-08-07 mechanism; changes
+  no standing constraint).** Asked at the session-start check-in whether the standing
+  delegation still held for the seventh direction, the user answered, verbatim: *"Let's
+  have a fable subagent make the decision / do a reprioritization and then follow its
+  guidance."* Selection was therefore delegated to a **top-rung fable recon**, whose
+  verdict the coordinator verified and **accepted**: the next step is direction **GCAP**
+  — a (GR-22)-style budget/repair theorem for the structured (GR-8) family `max_P g(P)`
+  over **general sub-multigraphs** at `D = 0`, reaching toward `Λ ≠ ∅`, run
+  **cap-proof-first** — CFLANK's own successor recommendation, endorsed only after
+  scrutiny and with three recorded corrections. **Executable now**; dispatch-grade spec
+  `notes/Pencil-fanout.md` §"Seventh direction", namespace reserved in
+  `notes/Pencil-labels.md`. No standing constraint changes (phase OPEN; Lean hold stands;
+  W4 PARKED; `hK`/`hbareSplit` carried as pinned; option B un-commissioned in both kernel
+  cases). Same check-in: all four rungs are dispatchable this session, so **top rung =
+  fable** (opus substitutes only if the weekly scoped limit runs out); the 10-dispatch
+  cap is **lifted**; rescue §1 mechanical fixups are **pre-authorized**.
 
-**Kernel-(K) research arc — thirty-one docs+scripts-only dispatches, plus one strategy-only
-pass** (2026-08-02 → 08-07).
+**Kernel-(K) research arc — thirty-one docs+scripts-only dispatches, plus two strategy-only
+passes** (2026-08-02 → 08-12; the second strategy pass is the 2026-08-12 fable
+reprioritization recon above).
 Mathematics: the workbook `notes/Pencil-informal.md`, whose **State of (K)** map is the entry
 point, the canonical per-gap status home, and the artifact a pass *updates*; settled
 W4-residual verdicts are in `notes/Pencil-W4-informal.md`; strategy in
 `notes/Pencil-strategy.md`. One line per landing in *Decisions made*, which with git is the
 canonical dispatch record — **neither the landings nor the per-gap statuses are restated
-here**. Net effect: the **disproof risk is removed**; every refuted route/gap is recorded in
-the gap map with its successor; the arc's structural positives are (Λ1), §(K-ann)'s recipe,
-§(K-out)'s **proven combinatorial half** ((OC-10)), §(K-grid)'s **proven tree-triple theorem**
-((GR-9)), and §(K-frame)'s **minimal dominance lemma** ((FR-1)–(FR-4)), now discharged in
-full on the bare-cycle stratum by PEX ((FR-R1) PROVEN); TCOL added four more proven
-structural results on the tight stratum ((GR-16)–(GR-19)) without closing (GR-15); CFLANK
-added six more ((GR-21)–(GR-26)) and an exhaustive 40 742-shape hunt, closing TCOL's two
-named flank sites as routes without closing (GR-15) either; **class uniformity of the
-escape remains untouched by every one of the arc's thirty-one dispatches.**
+here**. Net effect: the **disproof risk is removed**; every refuted route/gap carries its
+successor in the gap map; the structural positives run (Λ1), §(K-ann)'s recipe, (OC-10),
+the tree-triple theorem (GR-9), (FR-1)–(FR-4) + **(FR-R1) PROVEN**, (GR-16)–(GR-19) and
+(GR-21)–(GR-26); **class uniformity of the escape remains untouched by every one of the
+arc's thirty-one dispatches.**
 
 > **The one live candidate, and it is NOT settled — `notes/Pencil-informal.md` §(K-σ)** (the
 > canonical home; the four obligations, the `--hunt` findings, the validation scope and the
@@ -101,9 +114,8 @@ escape remains untouched by every one of the arc's thirty-one dispatches.**
 > *narrowest* field choice. Standing consequences: **no gap-map status moves on account of route σ**;
 > `hK` and `hbareSplit` stay carried as pinned; **W4 stays PARKED**; the phase does **not** close.
 
-The other candidate continuations, unselected, without preference; each has a canonical home
-that carries the detail, so they are **not** restated here. (Former items (a)/(g) — the
-mechanisms pass and the (ANH-R1) probe — are **DONE** as second-fan-out directions M and R.)
+The other candidate continuations, unselected (items (a)/(g) are **DONE** as second-fan-out
+directions M and R); each has a canonical home carrying the detail, not restated here.
 
 - **(b)** **(K-wit)**, the single live form of the pitch route at companion splits (§(K-Λ);
   §(K-out)'s (OC-3) rules out any counting route to its (OUT) shortcut, and since direction O
@@ -114,9 +126,9 @@ mechanisms pass and the (ANH-R1) probe — are **DONE** as second-fan-out direct
   concrete unprobed item is `k ≥ 4` with a **parallel `G°` edge** (`P21`-type, §(K-pure) *P4*).
 - **(e)** the residual of §(K-Λ) item (vii): **two or more hubs on a length-4 companion's
   interior** — no swept family realizes one.
-- **(f)** `notes/Pencil-strategy.md` §4.6's ranked shortlist: U1 **half delivered**, U2's
-  ground set survives (its cocircuit/circuit duality corrected), **U3** (`hK` as a
-  non-existence) still unrun.
+- **(f)** `notes/Pencil-strategy.md` §4.6's ranked shortlist — **partially superseded for
+  the tight stratum by the 2026-08-12 adjudication** (durable negatives in *Hand-off*);
+  U3 (`hK` as a non-existence) still unrun.
 
 **Read `notes/Pencil-strategy.md` before choosing anything else** — the post-fan-out strategic
 record (why class uniformity resists, what the KT formalization yielded, the candidate stronger
@@ -124,11 +136,11 @@ invariants with **C1 run and struck**, §5's symbolic assessment); its header is
 contents. **Its §4.6** is the entry point for any attack on the crux: six refutations plus the
 ranked `U1`–`U3` shortlist, each with its cheapest decisive experiment.
 
-**Any (K)- or W4-side numerics dispatch starts from `notes/scripts/README.md`**, and a symbolic
-one also from `notes/scripts/m2/README.md`. Detail in *Blockers* — not restated here.
+**Any (K)- or W4-side numerics dispatch starts from `notes/scripts/README.md`** (a symbolic
+one also from `notes/scripts/m2/README.md`); detail in *Blockers*.
 
 File layout: `Molecule/Pencil.lean` split into `Molecule/Pencil/{Statement,Arms,Motive,Chart,
-Engine,Reseed,Witness,Steer,Pair,Pair2,Escape,Base}.lean`. Full per-leaf history:
+Engine,Reseed,Witness,Steer,Pair,Pair2,Escape,Base}.lean`; per-leaf history
 `notes/Phase39-design.md` §"W5 leaf decomposition" + §"W5-L7 research recon".
 
 ## The question
@@ -162,13 +174,11 @@ literature hunts (2026-07-30 rigidity-side, 2026-08-05 Δ-matroid-side) are both
 Full record, grounding, and the W0–W5 decomposition: **`notes/Phase39-design.md`**. One-line
 verdicts, kept because each still constrains statements:
 
-- **R1** — statement pinned in the Phase-35 containment model + a per-body homogeneous
-  concurrency point (`ExtensorThroughPoint`, dual of `ExtensorInPanel`); satisfiable for every
-  graph; self-dual on-stratum via `screwComplementIso` (in tree over `ℝ`; the polarity itself
-  **generalizes** — §(K-clos) (AC-1)). Dense `K4`/`K3,3`/θ(2,2,2): the stratum collapses.
-- **R2** — the conjecture survives all exact-rational rank tests; the deep all-coplanar locus is
-  deficient exactly when `2|E| < 3|V| − 3`, so the queued claim is *bar-joint-side*, **false**
-  for body-hinge on dense graphs.
+- **R1** — statement pinned in the Phase-35 containment model + `ExtensorThroughPoint`
+  (dual of `ExtensorInPanel`); satisfiable for every graph; self-dual on-stratum via
+  `screwComplementIso` (the polarity **generalizes** — §(K-clos) (AC-1)).
+- **R2** — the conjecture survives all exact-rational rank tests; the queued warmup claim
+  is *bar-joint-side*, **false** for body-hinge on dense graphs.
 - **R3** — KT Lemma 6.2 / Case II survive with pinned choices; three open cores: the outer
   Thm-5.6 strip-extend, the Case-I glue (Claim 6.4), Case III's Claim 6.12 span break.
 
@@ -178,7 +188,7 @@ verdicts, kept because each still constrains statements:
 record in `notes/Phase39-design.md` + git). **One residual note from the L5 cut arm still
 stands** because it constrains future statements: feasibility propagation *as a proposition* is
 refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
-(`not_pencilNondegFeasible_of_triangle_two_hubs`); it does not touch L6's own habitat claim.
+(`not_pencilNondegFeasible_of_triangle_two_hubs`).
 
 - **Open: kernels (K) and (K-bare), and W4 (`hcontract`)** — the entire remaining work of the
   phase; see *Hand-off* for the per-item route and the `notes/Phase39-design.md` pointers. W4 is
@@ -188,13 +198,12 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
   `notes/Pencil-W4-informal.md` §"`hnoGood'` vacuity", adjudication owed. **(SAFE-RES) is
   REFUTED** (same day); routes 1/3 now cost §(SAFE-RES)'s (T) + (V) + the reduced (E), with (T) a
   genuine research gap, plus **one** widened kernel (K-res).
-- The full biconditional transport `ExtensorThroughPoint C q ↔ ExtensorInPanel (screwComplementIso
-  C) q` (design doc's W0 pin) is landed only as its two forward implications; the reverse arms
-  need a `complementIso` involution lemma, not in tree — deferred, **off every critical path**
-  (§(K-σ) *Step σ6*: route σ does not need it, and sketches the route to it).
+- The full biconditional transport (design doc's W0 pin) is landed only as its two forward
+  implications; the reverse arms need a `complementIso` involution lemma, not in tree —
+  deferred, **off every critical path** (§(K-σ) *Step σ6*).
 - **Harness debt — CLEARED, round CLOSED** (2026-08-06, S1–S4; canonical home
-  `notes/scripts/README.md` *Harness debt* → **CLOSED**). Read it before any numerics dispatch;
-  treat any un-repointed copy of a lifted prohibition as stale.
+  `notes/scripts/README.md`). Read it before any numerics dispatch; treat any un-repointed
+  copy of a lifted prohibition as stale.
 
 ## Hand-off / next phase
 
@@ -233,16 +242,45 @@ discharge (residue (iv)) is CLOSED too**. The landed successor
 > TCOL's item (v) — **LANDED**: `notes/Pencil-fanout.md` §"Sixth direction";
 > `notes/Pencil-labels.md`. **No flank found; (GR-15) stays OPEN, unchanged in status.**
 >
-> **Recommended seventh direction, under the same standing delegation — NOT YET PREPPED OR
-> DISPATCHED.** CFLANK's own *What would change this* item (i): **a (GR-22)-style cap on
-> the structured (GR-8) family `max_P g(P)` over general sub-multigraphs `P`, not just on
-> circuits** — everything CFLANK proves is about circuits, and *Step G23*'s own scoping
-> probe already found `a = 0`, NC1-satisfied blocks with a nonzero structured (GR-8)
-> maximum. CFLANK's own text calls this "the successor target"; closing it would either
-> close (GR-15) at `D = 0` outright or locate the flank that (NC1) cannot see. A fresh
-> session either preps it (spec into `notes/Pencil-fanout.md` §"Seventh direction" +
-> namespace reservation in `notes/Pencil-labels.md`) or the user re-decides — the
-> recommendation is not itself a dispatch.
+> **The SEVENTH direction, GCAP, is ADJUDICATED and PREPPED — not yet dispatched**
+> (2026-08-12; selection delegated to a top-rung fable recon, verbatim adjudication in
+> *Current state*). Target: the **general-sub-multigraph instance of §(K-grid) (GR-20)'s
+> certificate 3** — a (GR-22)-style budget/repair theorem for the structured (GR-8) family
+> `max_P g(P)`, at `D = 0` and reaching toward `Λ ≠ ∅`, **cap-proof-first,
+> flank-hunt-second**. This is CFLANK's own successor recommendation, **endorsed after
+> independent scrutiny with three recorded corrections** (the `Λ ≠ ∅` scoping — *Step
+> G23*'s probe hits all live there; the closure is **modulo (GR-4′)**, never "outright";
+> the cap-first inversion) — the dispatch-grade spec, the mandatory step-0 pin, the five
+> experiments and the MISS/flank termination are `notes/Pencil-fanout.md` §"Seventh
+> direction", the namespace ((GR-27)+/Steps G29+; §(K-gcap)/`GC-` reserved) is in
+> `notes/Pencil-labels.md`. **The next concrete commit is the GCAP dispatch itself.**
+>
+> **Two durable negatives from the same adjudication — do not re-run:** (i) strategy
+> §4.6's shortlist is **partially superseded** for the tight stratum — U2's demand ("a
+> ground set that grows with the graph") is exactly what §(K-grid) (GR-16)'s
+> hub-multigraph reduction **delivered**, which is why the grid line is the one that
+> transformed the crux, and U3's negative-form insight is already exploited by the
+> cap/budget style; (ii) the symbolic meta-option ("upgrade §(K-Λ)'s 38-strata evidence
+> via M2") is **landed, not pending** (`m2/lambda0.m2`, 2026-08-05) — what remains of
+> strategy §5.3 is item (i), the whole-graph elimination question, which §5.3's own
+> local-frame feasibility boundary rules out.
+>
+> **TERMINATION test for the (GR-15)/grid line (checkable — the next coordinator does not
+> re-derive this call):** if GCAP returns with **no cap proven, no flank found, and no new
+> mechanism named** beyond the (GR-15) cell's existing route list, the line is exhausted —
+> the coordinator then surfaces a **phase-shape decision to the user
+> (USER-ADJUDICATION-REQUIRED)** rather than dispatching an eighth direction, with the
+> three honest options: package what is proven and stop the research arc; lift the
+> 2026-08-05 Lean hold (the arc now holds several standalone-significant informal results
+> — (FR-R1), (GR-9), (GR-16)–(GR-18) — which is what the hold was recorded as pending); or
+> commission the wall-level question per strategy §2.3. The line's **positive** termination
+> is equally concrete: cap + the `Λ ≠ ∅` flip + the `D > 0` lift + (GR-4′) = (GR-15)
+> proven = `hK` discharged on the tight stratum at char 0, leaving char `p` ((AC-7)'s
+> never-probed residual), `hbareSplit`, and the parked W4.
+>
+> **Coordinator hand-off note, explicitly NOT loaded onto GCAP:** whether (GR-15) as
+> quantified ("every tight class shape") also covers the `W19`-type **(K-res)** sibling
+> habitat is unresolved — pin it when the tight side closes, not before.
 >
 > **Not selected at the 2026-08-07 adjudication**, and so not open: the **(FR-6) follow-ons**
 > (§(K-frame) *What would change this* items (ii)–(iv) — the `ℓ_min = 5` battery beyond
@@ -282,9 +320,8 @@ The three carried items:
   open item. **Standing adjudication ("C: literature hunt + A", verbatim, 2026-07-30): keep
   carrying `hK` as pinned; option B is NOT authorized.** Both literature hunts are MISSes
   (2026-07-30 rigidity-side; 2026-08-05 Δ-matroid-side, §(K-Δ)). Since the 2026-08-02 W4
-  route-3(b) adjudication `hK` also carries the **(K-res)** residual habitat as a byte-identical
-  sibling — and §(K-ind) *I5* now gives that packaging a structural reading: **(K-res) is the
-  boundary of the class under the induction's own move.**
+  route-3(b) adjudication `hK` also carries the **(K-res)** residual habitat as a
+  byte-identical sibling (structural reading: §(K-ind) *I5*).
   **The mathematics is NOT restated here.** Canonical home: `notes/Pencil-informal.md` — its
   **State of (K)** gap map is one row per named gap, each with status, what would close it, and
   what it is conditional on, plus the uncovered-shape list and a *settled, do not re-derive*
@@ -315,137 +352,100 @@ Reverse-chronological, one line per landing; full derivations live in git,
 is the canonical home a successor reads.
 
 - **The SIXTH direction — CFLANK LANDED 2026-08-07** (`w4/cflank.py`; canonical home
-  §(K-grid) continuation Steps G24–G28). Coordinator-delegated pick of TCOL's own *What
-  would change this* item (v) — a targeted structural flank against **(GR-15)**. Six new
-  proven results: the excess law **(GR-21)** `Σ(ℓ−2) = 2D+6` pins the binding-circuit-rich
-  stratum to `D = 0`; five sparsity caps **(GR-22)**; the flip injection **(GR-23)**
-  (`4T+3Q < 12 ⟹` NC1 satisfiable); the private-branch repair theorem **(GR-24)** (no bound
-  on `T,Q`); the cut criterion **(GR-25)** (equivalent to the canonical oracle, reaching
-  18-hub targets); and the exhaustive **(GR-26)** 40 742-shape hunt — zero misses. TCOL's
-  two named flank sites are **CLOSED AS ROUTES**, but **(GR-15) stays OPEN, no flank
-  found**; recommended successor in *Hand-off*. `§(K-prof)`/`PF-` returned unopened.
-  Uniformity untouched.
+  §(K-grid) Steps G24–G28). Six proven results (GR-21)–(GR-26) — excess law, five sparsity
+  caps, flip injection, private-branch repair, cut criterion, the exhaustive 40 742-shape
+  hunt — close TCOL's two named flank sites **AS ROUTES**; **(GR-15) stays OPEN, no flank
+  found**. `§(K-prof)`/`PF-` returned unopened. Uniformity untouched.
 
 - **The FIRST through FIFTH fan-outs — all LANDED 2026-08-05…08-07** (canonical homes the
   workbook sections named; commits `d5ae55aa`…, `cdd23d30`, `12edc305`, `b32c1c2c`,
-  `cd0af9e1`). First (A `closure.py` §(K-clos): field question settled, `ℝ` narrowest; B
-  `outerline.py` §(K-out): (OUT) measured, (OC-3) the load-bearing negative; C `annih.py`
-  §(K-ann): the arc's first recipe) plus the harness re-baselining round (S1–S4, 260
-  invocations audited, 21 figures moved and repointed, **(AC-9)**/**(OC-9)** the two
-  mathematical moves) landed 2026-08-05/06. Second (T/R/M — T and R both later superseded in
-  detail, M mechanised both §(K-pure) *P8* anomalies) and third (G: (GR-4) refuted-and-repaired
-  as (GR-4′), tree-triple theorem (GR-9) PROVEN; Q: ONE universal irreducible degree-12
-  polynomial (ANH-14); O: availability map FORCED (OC-10)) landed 2026-08-06, all converging
-  on chart-to-frame dominance. Fourth (E: the (GR-10) min-max REFUTED as posed via NP-completeness
-  (GR-13), (GR-10) itself surviving exhaustive enumeration; J: the dominance lemma delivered
-  minimally (FR-1)–(FR-4)) and fifth (PEX: the bare-cycle stratum PROVEN finite and
-  exhaustively enumerated, **(FR-R1) PROVEN**; TCOL: four more proven structural results
-  (GR-16)–(GR-19), **(GR-15) stays OPEN**) landed 2026-08-07. **Class uniformity of `hK`
-  untouched by all thirteen directions across the five fan-outs.**
+  `cd0af9e1`). Thirteen directions: A/B/C (§(K-clos) field question settled, §(K-out)
+  (OC-3) the load-bearing negative, §(K-ann) the arc's first recipe) + the S1–S4 harness
+  re-baselining ((AC-9)/(OC-9)); T/R/M (M mechanised both §(K-pure) *P8* anomalies);
+  G/Q/O ((GR-4′), the tree-triple theorem **(GR-9) PROVEN**, (ANH-14), (OC-10)); E/J
+  ((GR-13) NP-completeness, the dominance lemma (FR-1)–(FR-4)); PEX/TCOL (**(FR-R1)
+  PROVEN**; (GR-16)–(GR-19), (GR-15) OPEN). **Class uniformity of `hK` untouched by all
+  thirteen.**
 
-- **Notes reorganization: label registry opened; workbook and design doc INDEXED, not split or
-  compressed** (2026-08-05, docs only). Canonical home **`notes/Pencil-labels.md`**. Two argued
-  skips: no `notes/pencil/` move; **`Phase39-design.md` FROZEN** (119 anchors).
+- **Notes reorganization** (2026-08-05, docs only): label registry opened
+  (**`notes/Pencil-labels.md`**, the canonical home); workbook + design doc indexed, not
+  split; **`Phase39-design.md` FROZEN** (119 anchors).
 
 - **Broad class-uniformity recon: five directions REFUTED, three live successors ranked**
-  (2026-08-05; canonical home `notes/Pencil-strategy.md` **§4.6**). Refuted: `∀λ`, the `Gr(3,6)`
-  cluster structure (a **third** ambient-ground-set MISS), moment-curve/positivity, the
-  codimension comparison, definable choice/QE, "choose the split to force `k = 4`". One new
-  derivation **(OUT)** → §(K-Λ) *Step 5a*. Calibration: **`k = 4` ⟺ `hnoRigid` is tight**.
+  (2026-08-05; canonical home `notes/Pencil-strategy.md` **§4.6**, incl. the (OUT)
+  derivation → §(K-Λ) *Step 5a* and the calibration **`k = 4` ⟺ `hnoRigid` is tight**).
 
-- **The route-σ arc — three landings; canonical home workbook §(K-σ)** (2026-08-05, `sigma.py`).
-  **Route σ a CANDIDATE** (route A at `σu`, `★r ∥ C(bc)`); σ-intertwining **REFUTED literally,
-  CONFIRMED covariantly** (§(K-Λ)'s failure locus is a σ-orbit); **σ-equivariant recipes DEAD**;
-  obligation 1's numerics half **DONE** (`--hunt`: dual conjuncts **NOT** implied — 53
-  counterexamples, an F11-class correction to *Step σ4*'s 63/63 — shrunk to two conditions,
-  steering exact, **(σ7)** proven); field scope **superseded 2026-08-06** by §(K-clos).
+- **The route-σ arc — three landings** (2026-08-05, `sigma.py`; canonical home §(K-σ)):
+  route σ a **CANDIDATE**; σ-intertwining refuted literally / confirmed covariantly;
+  σ-equivariant recipes **DEAD**; obligation 1's numerics half DONE ((σ7) proven); field
+  scope superseded 2026-08-06 by §(K-clos).
 
-- **(K-ind) REFUTED as a route — no move of the induction relates two class members**
-  (2026-08-05, workbook §(K-ind), no driver): tight ⟺ `(5c+1, 6c)`, `splitOff` fixes `G°`, the
-  class is a finite antichain, and the failure locus is a **divisor** whose only numerical
-  invariant *is* `hK` — circular as posed. **Correction: the pencil side does NOT run KT Thm 4.9**
-  — it is `Graph.pencil_reduction`, `hK` entering only via `pencilPair_of_splitOff_of_habitat`.
+- **(K-ind) REFUTED as a route** (2026-08-05, workbook §(K-ind)): no move of the induction
+  relates two class members; correction — the pencil side runs `Graph.pencil_reduction`,
+  not KT Thm 4.9.
 
-- **(K-Δ): the Δ-matroid / orthogonal-matroid lead is CHECKED AND REFUTED** (2026-08-05, workbook
-  §(K-Δ), literature only) — two fatal hypothesis failures (the subject's objects are *totally
-  isotropic*, `V_bc` never is; its ground set is `[3]` and never grows), so §7's lead is
-  discharged and §2.2 sharpens to **the missing ingredient is the ground set, not the min-max**.
+- **(K-Δ): the Δ-matroid lead CHECKED AND REFUTED** (2026-08-05, §(K-Δ), literature only)
+  — two fatal hypothesis failures; §2.2 sharpens to *the missing ingredient is the ground
+  set, not the min-max*.
 
 - **The `g₁₄` clause is NOT forced by any class habitat — Λ-completeness stands as written**
   (2026-08-05, `outer.py`; workbook §(K-Λ) *Step 3a*). Residual: ≥ 2 hubs on a companion interior.
 
-- **(Λ0) + the `a`-line spans PROVEN at the generic point, CLASS-UNIFORM; the recorded criterion
-  was INCOMPLETE** (2026-08-05, `m2/lambda0.m2`; §(K-Λ)) — **(Λ0f′)**; uniform because (Λ0) is
-  far-graph-free and (K-wit) is not.
+- **(Λ0) + the `a`-line spans PROVEN at the generic point, CLASS-UNIFORM; criterion widened
+  to (Λ0f′)** (2026-08-05, `m2/lambda0.m2`; §(K-Λ)).
 
-- **The Macaulay2 layer LANDED; (Λ1) is an IDENTITY over the function field** (2026-08-05,
-  `m2/lambda1.m2`; §5.4's conventions bind, ungauged expansion does not finish). Same commit made
-  the figure-invariance gate proportionate.
+- **The Macaulay2 layer LANDED; (Λ1) an IDENTITY over the function field** (2026-08-05,
+  `m2/lambda1.m2`; conventions §5.4 / `notes/scripts/m2/README.md`).
 
-- **The 2026-08-05 research day, sixth–ninth dispatches** (canonical homes §(K-flank), §(K-pure),
-  §(K-Λ), §(K-dom)): the conjecture HOLDS at every uncovered flank (851 shapes); the pure
-  condition is the WRONG INVARIANT ((PC-Z)/(K-chord) the successors); (K-Λ) REFUTED as an
-  independent gap (⟺ (K-wit) at `ℓ = 4`); dominance HOLDS but is NOT a route ((D1)–(D3)).
+- **The 2026-08-05 research day, sixth–ninth dispatches** (canonical homes §(K-flank),
+  §(K-pure), §(K-Λ), §(K-dom)): conjecture HOLDS at every uncovered flank (851 shapes);
+  pure condition the WRONG INVARIANT; (K-Λ) ⟺ (K-wit) at `ℓ = 4`; dominance HOLDS but
+  NOT a route.
 
-- **Harness + workbook prep** (2026-08-05, two commits; no mathematics, no verdict changes; 67/67
-  drivers re-run, 0 changed figures) — `notes/scripts/README.md`;
-  `notes/Pencil-W4-informal.md`; `W19`/`S29` + the *State of (K)* map.
+- **Harness + workbook prep** (2026-08-05, two commits; no mathematics; 67/67 drivers
+  re-run, 0 changed figures) — `notes/scripts/README.md`; `notes/Pencil-W4-informal.md`;
+  the *State of (K)* map.
 
-- **(K-slide-comb) REFUTED class-wide; the packing half made uniform ((C6)); (C2)'s length-4
-  entry corrected ((C7))** (2026-08-05, `kslidecomb.py`; workbook §(K-slide-comb)) — the
-  colouring premise fails inside the class; **(C6)** proven at every class shape (Edmonds), so
-  the packing is never the obstruction; **(C7)**: `K4` coverage 439→702/877.
+- **(K-slide-comb) REFUTED class-wide; packing half uniform ((C6)); (C7) corrected**
+  (2026-08-05, `kslidecomb.py`; workbook §(K-slide-comb)).
 
 - **(K-slide) (S1) PROVEN; (K-slide-cl) reduced to combinatorics** (2026-08-04,
-  `kslide.py`/`kslidecl.py`; workbooks §(K-slide), §(K-slide-cl)) — one exact limit witness
-  closes a split (23/23 pitched; parallel `G°`-edges order-0-obstructed, leaving `P21`).
+  `kslide.py`/`kslidecl.py`; workbooks §(K-slide), §(K-slide-cl)).
 
-- **(K-pitch) developed; naive collinear collapse REFUTED; (T5) extends companions to length 4**
-  (2026-08-04, `pitch.py`; workbook §(K-pitch)) — (T1)–(T4), the sign law, the five-bracket
-  monomial (θ(3,3,6) CLOSED; 29/29); weakest exact forms (K-wit)/(K-pitch-∞).
+- **(K-pitch) developed; naive collinear collapse REFUTED; (T5) extends companions to
+  length 4** (2026-08-04, `pitch.py`; workbook §(K-pitch); θ(3,3,6) CLOSED).
 
-- **(K-tight) KT pp. 684–691 re-pin DONE — carrier escape criterion proven+validated; every
-  recorded escape failure was a sampler artifact** (2026-08-02, `repin.py`; workbook
-  §(K-tight)); kernel narrowed to (K-move)/(K-pitch).
+- **(K-tight) KT pp. 684–691 re-pin DONE — carrier escape criterion proven+validated**
+  (2026-08-02, `repin.py`; workbook §(K-tight)); kernel narrowed to (K-move)/(K-pitch).
 
-- **W4 residual arc, three landings (2026-08-02; canonical home `notes/Pencil-W4-informal.md`).**
-  Kernel-widening **PRICED** — only `hK` widens, to **(K-res)** (`widened.py`); **(SAFE-RES)
-  REFUTED**, successor (SAFE-RES′) = (E) + (T) + (V), with **(T)** not landed-reachable (`S29`,
-  `saferes.py`); **`hnoGood'` vacuity REFUTED** via the Ear Lemma (`W19`, `nogood_subdiv.py`), so
-  branch 4 needs content and the residual **structure theorem** survives as route 3(b)'s pin.
+- **W4 residual arc, three landings** (2026-08-02; canonical home
+  `notes/Pencil-W4-informal.md`): kernel-widening PRICED (only `hK` widens, to
+  **(K-res)**); **(SAFE-RES) REFUTED** (successor (E)+(T)+(V)); **`hnoGood'` vacuity
+  REFUTED** (`W19`), so branch 4 needs content.
 
-- **The 2026-07-30 recon day (one-lined; every verdict is carried forward in the matching
-  *Hand-off* bullet — full record `notes/Phase39-design.md` + git).** *(K) non-constancy —
-  PARTIAL*: corank stratification by `index(G) = 5|E| − 6(|V|−1)`, leaving **(K-tight)** as the
-  hard kernel. *(K-bare) extension route — NO-GO on landed machinery*: minimal open statement
-  **(K-bare-ext)**. *W4 decomposition + W4-L4 identification*: minimality traded for feasibility,
-  W4-L4b pinned buildable, gates N8/N9/N10/N10b PASSED. User adjudications, verbatim:
-  **"C: literature hunt + A"** (K), **"C: cheap numerics extensions + A"** (K-bare), **"B: L4
-  recon first"** (W4). Option B in both kernel cases: **NOT commissioned.**
+- **The 2026-07-30 recon day** (full record `notes/Phase39-design.md` + git): corank
+  stratification leaves **(K-tight)**; (K-bare) extension NO-GO (**(K-bare-ext)**); W4
+  decomposed, W4-L4b pinned buildable, gates N8/N9/N10/N10b PASSED. User adjudications
+  verbatim: **"C: literature hunt + A"** (K), **"C: cheap numerics extensions + A"**
+  (K-bare), **"B: L4 recon first"** (W4); option B **NOT commissioned** in either case.
 
-- **(K) route-1 gate FIRED — locality REFUTED, NO-GO** (2026-07-30, `escape/localtest*.py`) —
-  with identical radius-1 chain data the escape's zero locus moves with the far graph, killing
-  route 1 and route 2's pointwise reuse; (K) reduced instead to *stress non-constancy*. (Since
-  **graded** by (D2): far-dependence is `3(k−3)`, and the gate was run at the maximal `k = 6`.)
+- **(K) route-1 gate FIRED — locality REFUTED, NO-GO** (2026-07-30,
+  `escape/localtest*.py`); (K) reduced to *stress non-constancy*; since graded by (D2)
+  (far-dependence `3(k−3)`; the gate ran at the maximal `k = 6`).
 
 - **The 2026-07-30 W5-L7 build day** (`hsplit` CLOSED IN FULL; canonical record
-  `notes/Phase39-design.md` + git): recon isolated kernel **(K)**; L7a–L7c landed six leaves
-  ending at `pencil_conjecture_of_hcontract_hK_hbareSplit`, then `hfresh`'s residue (iv) and
-  the consumer headline; `escapePoly` refuted by a BLOCKED build (dispatch-log F9 ×2).
+  `notes/Phase39-design.md` + git): kernel **(K)** isolated; six leaves landed ending at
+  `pencil_conjecture_of_hcontract_hK_hbareSplit`; `escapePoly` refuted by a BLOCKED build.
 
-- **Older W5-L5/L6 / W0–W4 entries (one-lined; canonical detail in `notes/Phase39-design.md`
-  + git).** W5-L6: L6b re-pinned **triangle-free** (the spike refuted the `hcard`-only pin),
-  headline `pencilNondegFeasible_of_ncard_closedHubNbhd_le_three_of_triangleFree` (`Steer.lean`);
-  L6a's invariant + safe-vertex transfer (the bare pin was **FALSE**, 10-vertex counterexample);
-  L6d's triangle-free split-off. W5-L5: the full cut arm (sub-cases i–v, `hcutPendant3` inline),
-  the user-adjudicated route-(b′) `PencilPair` restatement, base and loop arms; L4
-  `exists_pencilSeed_of_nondeg`; `Pencil.lean`→`Pencil/` split. W3: L7 `pencil_conjecture_of_arms`,
-  the L4 cut arm, L1/L2. W2/W1/W0: the extensor-pair layer, the statement layer, self-duality.
+- **Older W5-L5/L6 / W0–W4 entries** (one-lined; canonical detail
+  `notes/Phase39-design.md` + git): L6b re-pinned **triangle-free**; L6a's safe-vertex
+  transfer (the bare pin **FALSE**); W5-L5's full cut arm + the route-(b′) `PencilPair`
+  restatement; L4 `exists_pencilSeed_of_nondeg`; the `Pencil/` split; the W3/W2/W1/W0
+  layers.
 
-- **Promoted out of this phase** (one-line pointers; the cross-references carry the content):
-  TACTICS-GOLF §11/§22/§23; TACTICS-QUIRKS §46/§96/§99/§100/§101/§102/§103/§104; FRICTION
-  `exists_injOn_mapsTo_of_ncard_le` + `extensor_pair_smul` [mirror-candidate] and the
-  omega/`Set.ncard`-atom idiom.
+- **Promoted out of this phase** (pointers only): TACTICS-GOLF §11/§22/§23; TACTICS-QUIRKS
+  §46/§96/§99–§104; FRICTION `exists_injOn_mapsTo_of_ncard_le` + `extensor_pair_smul`
+  [mirror-candidate] and the omega/`Set.ncard`-atom idiom.
 
 ## Citations (transcribed, project-canonical sources)
 
