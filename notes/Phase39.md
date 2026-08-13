@@ -8,16 +8,13 @@
 `hcontract` (W4), kernel `hK`, and kernel `hbareSplit` — see *Hand-off*. Kernel-(K) research
 is at its thirty-fourth docs+scripts-only pass (workbook `notes/Pencil-informal.md`; the settled
 W4-residual arc is `notes/Pencil-W4-informal.md`). **ALL FIVE fan-outs plus the SIXTH,
-SEVENTH and EIGHTH directions are now COMPLETE** — first fan-out A/B/C, the harness
-re-baselining round S1–S4, second fan-out T/R/M, third fan-out G/Q/O (2026-08-06), fourth
-fan-out E/J (2026-08-07), fifth fan-out PEX/TCOL (2026-08-07, PEX **(FR-R1) PROVEN**, TCOL
-four structural results proven but **(GR-15) stays OPEN — no flank found**), sixth
-direction CFLANK (2026-08-07, six structural results proven, an exhaustive 40 742-shape
-hunt, still no flank), seventh direction GCAP (2026-08-13, (GR-27)/(GR-28)
-proven/true-modulo-named-gap, certificate-3 proven **per swept shape**), eighth direction
-GUNIF (2026-08-13, **REFUTED both of its targets**: (GR-28)(iv) at `k ≥ 3` refuted with an
-exact boundary — a theorem at `n_hub ≤ 6`, false from `n_hub = 8` — and the repair theorem
-unprovable as posed; full verdicts in *Decisions made*). **(GR-15) stays OPEN throughout;
+SEVENTH and EIGHTH directions are now COMPLETE** — A/B/C, the harness re-baselining
+round S1–S4, T/R/M, G/Q/O, E/J, PEX/TCOL, CFLANK, GCAP, GUNIF (2026-08-05 → 08-13);
+per-direction verdicts are one-lined in *Decisions made*, headline positives **(FR-R1)
+PROVEN** (PEX) and (GR-16)–(GR-28) (TCOL/CFLANK/GCAP), and GUNIF **REFUTED both of its
+targets** ((GR-28)(iv) at `k ≥ 3` with an exact boundary — a theorem at `n_hub ≤ 6`,
+false from `n_hub = 8` — and the repair theorem
+unprovable as posed). **(GR-15) stays OPEN throughout;
 class uniformity untouched by every round.** GUNIF's refutation kills the line's named
 **positive-termination path**, not (GR-15) itself — the coordinator is surfacing a
 **phase-shape decision to the user** before any further direction; see *Hand-off*.
@@ -94,15 +91,20 @@ W4-residual verdicts are in `notes/Pencil-W4-informal.md`; strategy in
 canonical dispatch record — **neither the landings nor the per-gap statuses are restated
 here**. Net effect: the **disproof risk is removed**; every refuted route/gap carries its
 successor in the gap map; the structural positives run (Λ1), §(K-ann)'s recipe, (OC-10),
-the tree-triple theorem (GR-9), (FR-1)–(FR-4) + **(FR-R1) PROVEN**, (GR-16)–(GR-19),
-(GR-21)–(GR-26), (GR-27)/(GR-28) and the (GR-29) budget ledger; **class uniformity of the
-escape remains untouched by every one of the arc's thirty-three dispatches.**
+the tree-triple theorem (GR-9), (FR-1)–(FR-4) + **(FR-R1) PROVEN**, (GR-16)–(GR-27),
+(GR-28)(i)–(iii) and the (GR-29) budget ledger; **class uniformity of the escape remains
+untouched by every one of the arc's thirty-three dispatches.**
 
-**Doc-debt, not to action now:** the §(K-grid) *State of (K)* gap-map row has
+**Doc-debt, not to action now:** (a) the §(K-grid) *State of (K)* gap-map row has
 accumulated seven directions' narrative clauses in one table cell (T, then six
 "Since Steps Gxx–Gyy" clauses from G/E/TCOL/CFLANK/GCAP/GUNIF) — against that
-map's own one-row-per-gap-with-status discipline. A compression slice is owed
-at the next cleanup round or at phase close, not now.
+map's own one-row-per-gap-with-status discipline; (b) the workbook's *Section
+index* line ranges were re-synced for §(K-grid)/§(K-frame)/§(K-mech) on
+2026-08-13 (they were ~936 lines stale — two landings appended to §(K-grid)
+without touching the index), but every row **above** §(K-grid) is still ~10
+lines stale from older drift. Both are compression/re-sync slices owed at the
+next cleanup round or at phase close, not now (the index's own header already
+says to grep the `## §(…)` heading as the durable anchor).
 
 > **The one live candidate, and it is NOT settled — `notes/Pencil-informal.md` §(K-σ)** (the
 > canonical home; the four obligations, the `--hunt` findings, the validation scope and the
@@ -240,17 +242,12 @@ discharge (residue (iv)) is CLOSED too**. The landed successor
 > Asked at check-in what to do once TCOL lands, the user selected **"Keep going on my own
 > judgment"** — the coordinator now picks the next direction and dispatches without
 > checking in (selection only; every standing constraint is unchanged — see *Current
-> state*). The coordinator's pick under this delegation, the **SIXTH direction, CFLANK**
-> — a single direction (not a fan-out) targeting a structural flank against **(GR-15)**,
-> TCOL's item (v) — **LANDED**: `notes/Pencil-fanout.md` §"Sixth direction";
-> `notes/Pencil-labels.md`. **No flank found; (GR-15) stays OPEN, unchanged in status.**
->
-> **The SEVENTH direction, GCAP, LANDED 2026-08-13** (`notes/Pencil-fanout.md`
-> §"Seventh direction"). Delivered **(GR-27)/(GR-28)**: exact computability of the
-> (GR-8) maximum, a `g ≤ 1` cap proven at `k = 2` and (then) measured at all `k`, and the
-> certificate-3 target **proven per swept shape**; the **uniform** statement stayed
-> open, (GR-15) unchanged. (Its own correction 1 was voided-but-harmless — recorded
-> there, not repeated here.)
+> state*). Its picks — the **SIXTH direction CFLANK** (single direction, a structural
+> flank against **(GR-15)** at TCOL's item (v)) and the **SEVENTH direction GCAP** —
+> both **LANDED**: `notes/Pencil-fanout.md` §§"Sixth"/"Seventh direction",
+> `notes/Pencil-labels.md`; deliveries, and GCAP's voided-but-harmless correction 1,
+> are recorded there and in *Decisions made*, not repeated here. **No flank found
+> either time; (GR-15) stays OPEN, unchanged in status.**
 >
 > **Two durable negatives from the same adjudication — do not re-run:** (i) strategy
 > §4.6's shortlist is **partially superseded** for the tight stratum — U2's demand is
@@ -364,18 +361,23 @@ is the canonical home a successor reads.
   with an exact boundary — theorem at `n_hub ≤ 6` (GR-29), false from `n_hub = 8`
   (GR-30); repair theorem unprovable as posed (GR-31). Per-shape (GR-15) HOLDS at
   every witness, itself **stays OPEN**; route DEAD; coordinator surfaces a
-  phase-shape decision, no ninth direction named.
+  phase-shape decision, no ninth direction named. **Coordinator corrective pass
+  2026-08-13, docs only** (one rung up, gate-invisible defects found in
+  verification): the (GR-28)(iv) status move completed inside the canonical
+  gap-map cell and two other §(K-grid) sites, GCAP's answered *What would change
+  this* leads marked, and **four merged draft-scaffolding blocks stripped** (E /
+  TCOL / GCAP / GUNIF) after auditing every action each listed — all verified
+  performed, so nothing was buried; prophylactic in `notes/Pencil-fanout.md`'s
+  landing checklist (item 6).
 
-- **The SEVENTH direction — GCAP LANDED 2026-08-13** (`w4/gcap.py`; canonical home
-  §(K-grid) Steps G29–G33). **(GR-27)**/**(GR-28)**: the (GR-8) family exactly
-  computable, `g ≤ 1` cap (proven `k = 2`, measured all `k`); certificate-3 target
-  **proven per swept shape** (4920+884+972, no MISS), CFLANK item (v) closed at
-  `Λ ≠ ∅` too. **(GR-15) stays OPEN**; `§(K-gcap)`/`GC-` unopened; uniformity untouched.
-
-- **The SIXTH direction — CFLANK LANDED 2026-08-07** (`w4/cflank.py`; canonical home
-  §(K-grid) Steps G24–G28). Six proven results (GR-21)–(GR-26) — excess law, sparsity
-  caps, flip injection, private-branch repair, cut criterion, an exhaustive 40 742-shape
-  hunt — close TCOL's two flank sites **AS ROUTES**; **(GR-15) stays OPEN**. Uniformity untouched.
+- **The SIXTH and SEVENTH directions — CFLANK LANDED 2026-08-07, GCAP LANDED
+  2026-08-13** (`w4/cflank.py`, `w4/gcap.py`; canonical homes §(K-grid) Steps
+  G24–G28 / G29–G33). Eight proven results (GR-21)–(GR-28): excess law, five sparsity
+  caps, flip injection, private-branch repair, cut criterion, a 40 742-shape exhaustive
+  hunt, exact computability of the (GR-8) maximum, the closed defect formula — TCOL's
+  two flank sites closed **AS ROUTES**, certificate-3 **proven per swept shape**;
+  GCAP's `g ≤ 1` cap at `k ≥ 3` **since REFUTED by GUNIF**. **(GR-15) stays OPEN**;
+  `§(K-gcap)`/`GC-` unopened; uniformity untouched.
 
 - **The FIRST through FIFTH fan-outs — all LANDED 2026-08-05…08-07** (canonical homes
   the workbook sections named; commits `d5ae55aa`…, `cdd23d30`, `12edc305`, `b32c1c2c`,
@@ -391,11 +393,10 @@ is the canonical home a successor reads.
   **CANDIDATE**; σ-intertwining refuted literally / confirmed covariantly; σ-equivariant
   recipes **DEAD**; obligation 1 DONE ((σ7) proven); field scope superseded by §(K-clos).
 
-- **(K-ind) REFUTED as a route** (2026-08-05, §(K-ind)): no induction move relates two
-  class members; correction — pencil side runs `Graph.pencil_reduction`, not KT Thm 4.9.
-
-- **(K-Δ): the Δ-matroid lead CHECKED AND REFUTED** (2026-08-05, §(K-Δ), literature only)
-  — two fatal hypothesis failures; missing ingredient is the ground set, not the min-max.
+- **(K-ind) and the Δ-matroid lead BOTH REFUTED as routes** (2026-08-05; §(K-ind), §(K-Δ)):
+  no induction move relates two class members (correction — pencil side runs
+  `Graph.pencil_reduction`, not KT Thm 4.9); (K-Δ) (literature only) fails on two
+  hypotheses, its missing ingredient the ground set, not the min-max.
 
 - **§(K-Λ) triad** (2026-08-05): `g₁₄` clause NOT forced, Λ-completeness stands
   (`outer.py` *Step 3a*); (Λ0) PROVEN class-uniform, criterion widened to (Λ0f′)
@@ -412,11 +413,10 @@ is the canonical home a successor reads.
 - **(K-slide-comb) REFUTED class-wide; packing half uniform ((C6)); (C7) corrected**
   (2026-08-05, `kslidecomb.py`; workbook §(K-slide-comb)).
 
-- **(K-slide) (S1) PROVEN; (K-slide-cl) reduced to combinatorics** (2026-08-04,
-  `kslide.py`/`kslidecl.py`; workbooks §(K-slide), §(K-slide-cl)).
-
-- **(K-pitch) developed; naive collinear collapse REFUTED; (T5) extends companions to
-  length 4** (2026-08-04, `pitch.py`; workbook §(K-pitch); θ(3,3,6) CLOSED).
+- **The 2026-08-04 pair** — (K-slide) (S1) PROVEN, (K-slide-cl) reduced to combinatorics
+  (`kslide.py`/`kslidecl.py`); (K-pitch) developed, naive collinear collapse REFUTED, (T5)
+  extends companions to length 4 (`pitch.py`; θ(3,3,6) CLOSED). Workbooks §(K-slide),
+  §(K-slide-cl), §(K-pitch).
 
 - **(K-tight) KT pp. 684–691 re-pin DONE — carrier escape criterion proven+validated**
   (2026-08-02, `repin.py`; workbook §(K-tight)); kernel narrowed to (K-move)/(K-pitch).

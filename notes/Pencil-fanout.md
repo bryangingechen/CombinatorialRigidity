@@ -10,8 +10,9 @@ below, prepared 2026-08-05) landed 2026-08-05/06; the second (T/R/M,
 2026-08-06; the fourth (E/J, §"Fourth fan-out") 2026-08-07; the fifth
 (PEX/TCOL, §"Fifth fan-out") 2026-08-07; the sixth (CFLANK, §"Sixth
 direction") 2026-08-07 — no flank found, (GR-15) stays OPEN; the seventh
-(GCAP, §"Seventh direction") 2026-08-13 — (GR-27)/(GR-28) proven /
-true-modulo-named-gap, the certificate-3 target proven per swept shape,
+(GCAP, §"Seventh direction") 2026-08-13 — (GR-27)/(GR-28)(i)–(iii)
+proven, (GR-28)(iv) then true-modulo-named-gap (**since REFUTED** — the
+eighth, below), the certificate-3 target proven per swept shape,
 still no flank, (GR-15) stays OPEN; the eighth (GUNIF, §"Eighth
 direction") 2026-08-13 — **REFUTED both of its targets**: (GR-28)(iv)
 at `k ≥ 3` is refuted with an exact boundary (theorem at `n_hub ≤ 6`,
@@ -277,6 +278,20 @@ whether it can be pursued under the standing adjudications.
 5. Keep `notes/Phase39.md` forward-weighted and under the ~500-line tripwire;
    the gap map is the canonical home for (K) status, so the phase note's
    kernel bullets stay thin pointers.
+6. **A draft's closing *"Coordinator actions at landing"* block is
+   scaffolding, not mathematics: execute it, then STRIP it — it must never
+   be merged into the workbook.** Merged, it reads as an outstanding to-do
+   list for work already done and will mislead the next reader into
+   thinking status moves are pending. Also *audit* it while executing:
+   verify each named action in tree (registry, gap map,
+   `notes/scripts/README.md` §3, reserved namespaces) rather than assuming
+   it was done — nothing here is gated. Four consecutive landings (E, TCOL,
+   GCAP, GUNIF) merged the block verbatim, caught only by the coordinator's
+   post-GUNIF verification sweep (2026-08-13). **Exact parallel to item 2 of
+   the fifth fan-out's landing block** (the `notes/scripts/README.md` §3
+   invocation rows), which was itself added after four consecutive landings
+   skipped it — the recurring shape is a per-landing chore that no gate
+   covers, so the checklist is the only mechanism.
 
 ---
 
