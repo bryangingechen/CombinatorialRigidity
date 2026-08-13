@@ -114,17 +114,63 @@ belongs in the Steps subsections (already there) and in git, not restated in
 the map cell. Whoever picks this up should diff the new cell's status claims
 against the old cell's, one label at a time, before committing.
 
-### D-3 — `notes/FRICTION.md`: 8 `[resolved]` entries ready to archive
+### D-3 — `notes/FRICTION.md`: 8 `[resolved]` entries ready to archive — DONE
 
 Mechanical, per `CLEANUP.md` §D: `grep -n '^### \[resolved\]' notes/FRICTION.md`
 → lines 285, 291, 303, 315, 347, 364, 4810, 4884 (Henneberg row-LI glue
 lemmas; `IsKDof` def-opacity accessor; CaseII orientation-agnostic row
 lemma; `simp_all` heartbeat multiplier; `neighborFinset` vs. `Set.toFinset`;
 two dot-notation/subst traps; `rw [heq]` motive-not-type-correct + term-mode
-projection "Unknown constant"; `RingHom.mapMatrix_apply`). Migrate verbatim
-to `notes/FRICTION-archive.md` (2656 lines currently) per `FRICTION.md`'s own
-filing rule — copy the entries, delete from `FRICTION.md`, no content
-change.
+projection "Unknown constant"; `RingHom.mapMatrix_apply`). Migrated verbatim
+to `notes/FRICTION-archive.md` (2656 lines before, 2762 after — a pure
+106-line relocation, `git diff` shows only matching `+`/`-` blocks, no
+rewording) per `FRICTION.md`'s own filing rule — copy the entries, delete
+from `FRICTION.md`, no content change.
+
+**Disposition.** All 8 boundary-checked programmatically (heading line
+`### [resolved] …`, trailing blank line) before deletion — no hand-counted
+line ranges. Appended in `FRICTION.md`'s original top-to-bottom order (the
+mechanical, judgment-free ordering; the archive's own history shows it is a
+migration-time append log, not phase-chronological — e.g. its last
+pre-existing entry is a Phase-23-cleanup item, while entries from Phases
+6–22 sit earlier, each block appended whole by whichever housekeeping pass
+migrated it). No "Migrated from `FRICTION.md` in …" note added to the moved
+entries — some earlier archive entries carry one, but it is not universal
+(the file's last several entries don't), and the coordinator's instruction
+for this round was explicit verbatim/no-content-change, so entries landed
+byte-identical to their `FRICTION.md` form.
+
+**Cross-reference check.** `grep`ed the tree for each entry's title and
+named artifacts (`rigidityRow_none_some_elim`, `oldSpan_le_ker_eval_elim`,
+`IsKDof.deficiency_eq`, `annihRow_neg`,
+`ofNormals_panelRow_eq_hingeRow_of_ends_or_swap`, …) plus a literal
+`FRICTION.md:<line>` line-number-anchor search. Found:
+- **3 bare `→ FRICTION [resolved] *title*` pointers** in `notes/Phase38.md`'s
+  own *Promoted to …* section (Henneberg row-LI, `IsKDof`/`IsMinimalKDof`,
+  CaseII orientation-agnostic row) and **1** in `TACTICS-GOLF.md` §21
+  (`simp_all` heartbeat multiplier). **Not repointed** — this convention
+  names the friction-log *system* by title, not a file path, and both
+  `TACTICS-QUIRKS.md` (line ~25) and `CombinatorialRigidity/CLAUDE.md`
+  (line ~40) instruct readers to grep *both* `FRICTION.md` and
+  `FRICTION-archive.md`. Confirmed as the established convention, not a
+  judgment call: a **live, unedited precedent already exists** —
+  `TACTICS-QUIRKS.md` §47 currently reads "See FRICTION [resolved]
+  *ℕ-subtraction…*" pointing at an entry that has **already** been
+  archived (present in `FRICTION-archive.md`, not `FRICTION.md`), left
+  exactly as-is. A `notes/Phase9-cleanup.md` D3 companion-check
+  independently reached the same verdict ("all 8 pointer lines still
+  resolve to live targets … FRICTION-archive entries … No drift; no
+  edit").
+- **One stale line-number anchor**, `notes/Phase8-cleanup.md:242`/`:393`
+  ("Verified at `notes/FRICTION.md:619`") — pre-existing, unrelated to any
+  of these 8 (its cited entry, "Extending a function on a subtype …", was
+  already migrated to the archive in an earlier round; the anchor was
+  already stale before this commit). Out of scope for D-3: a closed-round
+  audit snapshot, not a live pointer, and not one of this round's 8.
+- **No Lean doc-comment** references any of the 8 by title (only generic
+  `*Mirrored*` / `[mirror-candidate]` pointers unrelated to these entries).
+
+No repoints landed; none were live.
 
 ### D-4 — other pencil docs and the wider sweep: swept, nothing found
 
@@ -207,13 +253,12 @@ D-5 is a watch item. Land each fix as its own commit per `CLEANUP.md`
 
 ## Hand-off / next phase
 
-**Next concrete commit: D-3** (the FRICTION.md archive migration) — smallest,
-purely mechanical, zero interaction with the other three tasks. After that,
-**D-2 then D-1** — that order is forced, not a preference; see *Blockers*.
-D-5 is a watch-item, not a fix, and needs no commit unless it trips.  Once
-this round's task list is empty, hand back to `notes/Phase39.md` *Hand-off*
-for the tenth-direction selection — unblocked by this round, not gated on
-it.
+**D-3 landed** (the FRICTION.md archive migration). **Next concrete commit:
+D-2** (the §(K-grid) gap-map cell rewrite) — forced to precede D-1; see
+*Blockers*. D-5 is a watch-item, not a fix, and needs no commit unless it
+trips. Once this round's task list is empty, hand back to
+`notes/Phase39.md` *Hand-off* for the tenth-direction selection — unblocked
+by this round, not gated on it.
 
 ## Decisions made during this round
 
@@ -227,6 +272,14 @@ it.
   bounds) plus two non-uniform-drift exceptions the seed's uniform-offset
   framing would have gotten wrong. D-2 confirmed exactly as seeded. D-3, D-4,
   D-5 and the ROADMAP judgment call are this session's own sweep.
+- **D-3 landed** (2026-08-13): the 8 `[resolved]` `FRICTION.md` entries moved
+  to `FRICTION-archive.md` verbatim, appended in file order. The 4 bare
+  `→ FRICTION [resolved] *title*` pointers found (`Phase38.md` ×3,
+  `TACTICS-GOLF.md` §21 ×1) were **not** repointed — confirmed live
+  project convention (a same-shaped, currently-unedited pointer in
+  `TACTICS-QUIRKS.md` §47 already targets an archived entry; the
+  `Phase9-cleanup.md` D3 companion-check reached the same verdict). See the
+  D-3 task entry above for the full grep trail.
 
 ## Citations
 

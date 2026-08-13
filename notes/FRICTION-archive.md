@@ -2654,3 +2654,109 @@ rigidity-matrix row-functional plumbing). **Lifted to:** TACTICS-QUIRKS § 30.
   only ever rides as an informal label.
 - **Resolution:** Phase 23-cleanup task D2 settled the terminology dictionary (Phase 23-cleanup post-Phase-23 cleanup round, 2026-07): "brick" → "rank-addition lemma / rank bound (KT §6.1 language)". The entry appears in the canonical table at `blueprint/AUTHORING.md` *Audience & vocabulary*, the authoritative source for reader-facing prose in the molecular chapters. Phase 23-cleanup task P1 implemented the enforcing gate in `blueprint/lint.sh` (check 5a: banned project-internal words), which flags any remaining "brick" occurrences in reader-facing prose except when adjacent to the separator characters of a `\label{}`/`\lean{}`/`\cref{}`/`\uses{}` identifier token (the `intro.tex` carve-out belongs to sub-check 5b, phase self-description — not to 5a). All R-tasks (R0–R11) passed this gate green on 2026-07-05. Lean file/section names (e.g. `Bricks.lean`) remain invisible to blueprint readers and are unaffected by the terminology rule.
 - **Status:** resolved (Phase 23-cleanup D2 + P1, 2026-07-05).
+
+### [resolved] Top-level Henneberg row-LI lifts hand-wrote the same "elim-motion → scalar inner product" and "lifted-old-span ≤ ker(eval)" reductions — two glue lemmas in `RigidityMatroid.lean`
+- **Where it bit:** Phase 38 (FACTOR) T4, across the trio `typeI_edgeSetRowIndependent_extend` / `typeI_pendant_…` / `typeII_edgeSetRowIndependent_extend` (`MatroidIdentification.lean`).
+- **Friction:** each lift places the new vertex `none` at `q` (`p_ext = fun w => w.elim q p'`) and probes rows with the coordinate elim-motion `fun w => w.elim α 0`. Two shapes recurred verbatim: (1) reducing a new-edge row `rigidityRow p_ext ⟨s(none, some x), _⟩ (elim α 0)` to `⟪q - p' x, α⟫_ℝ` — hand-written as the 5-lemma micro-idiom `simp only [rigidityRow_apply, rigidityMap_apply, Option.elim_none, Option.elim_some, sub_zero]` at ~9 sites; (2) `span (lifted old rows) ≤ ker (Module.Dual.eval … (elim α 0))` — the `Submodule.span_le.mpr` + `rintro`-destructure + `induction … | h u v => simp [...]` block at 3 sites (~8 lines each).
+- **Proposed fix:** DONE. `rigidityRow_none_some_elim` and `oldSpan_le_ker_eval_elim` in `RigidityMatroid.lean` (right after the lift-glue `rigidityRow_lift_eq_funLeft_dualMap` / `linearIndependent_rigidityRow_of_lift` section, since both are `rigidityRow` facts). (1) replaces the 5-lemma micro-idiom with one name inside each `simp only`; (2) takes the old-edge set `S` with `hS : ∀ e ∈ S, ∃ e0, e.val = Sym2.map some e0` (each lift discharges `hS` in one line), collapsing the ~8-line block to a 3-line `have h_le := … ; simpa using h_le hf_old`. Project-internal (not upstream — both are rigidity-specific). Left the typeII `Function.update`-motion site (not an elim-motion) and the `h_f_eq` collinear-combo assembly (non-elim shape) untouched, per "extract the clean win".
+- **Status:** resolved (named artifacts: `rigidityRow_none_some_elim`, `oldSpan_le_ker_eval_elim`).
+
+### [resolved] `IsKDof` / `IsMinimalKDof` def-opacity for `linarith`/`omega`/`▸`/`rw` — body-surfacing accessor `.deficiency_eq`
+- **Where it bit:** standing friction since Phase-22i (`splitOff_isMinimalKDof_of_pos`), documented in TACTICS-GOLF §4; swept in Phase 38 (FACTOR) T3d across `Deficiency.lean`, `Induction/{Operations,ReducibleVertex,Contraction,ForestSurgery/Reduction}.lean`, `AlgebraicInduction/{CaseI,CaseII,Theorem55}.lean`.
+- **Friction:** `IsKDof G n k := G.deficiency n = k` and `IsMinimalKDof := IsKDof ∧ …` are non-reducible `def`s, so `linarith`/`omega`/`▸`/`rw` cannot see the deficiency equation. Every arithmetic site hand-surfaced it via `have hk : G.deficiency n = k := hG.1` or `rw [IsKDof] at h` — ~35 sites.
+- **Proposed fix:** DONE. `IsKDof.deficiency_eq` (`:= h`) and `IsMinimalKDof.deficiency_eq` (`:= h.1`) in `Deficiency.lean` (right after each `def`). Refactored all `have := hG.1` / `rw [hG.1]` / `rw [← hG.1]` / `hG.1 ▸` / `hG.1.symm(.trans)` / `rw [IsKDof] at h` surfacing sites to `hG.deficiency_eq`. **Left untouched:** sites passing `hG.1 : G.IsKDof n k` *as a k-dof value* to a lemma (e.g. `two_le_degree_of_isKDof_zero … hG.1`) — the accessor is only for surfacing the deficiency *equation*, not the k-dof-ness.
+- **Status:** resolved (named artifacts: `IsKDof.deficiency_eq`, `IsMinimalKDof.deficiency_eq`). **Lifted to:** TACTICS-GOLF §4 (note updated to point at the accessor).
+
+### [resolved] Orientation-agnostic fused *row* lemma collapses the CaseII `ends e = (u,w) ∨ (w,u)` double-branches — took `G ends q` all-explicit (the T1a lesson) + a missing `annihRow_neg`
+- **Where it bit:** Phase 38 (FACTOR) T3a, collapsing the panel-row orientation `rcases … with h|h` double-branches in `CaseII.case_II_realization_all_k` (`hrow_a_eq` / `hrow_b_eq` / `he₀_rows_mem`).
+- **Friction:** each site case-split on an edge's recorded orientation and re-proved a row identity twice, differing only by `panelSupportExtensor_swap` (extensor sign) + a hand-inlined `annihRow (-C) = -annihRow C` + `hingeRow_swap` (endpoint sign). Two API points were missing: (1) a fused row lemma composing the three sign-cancellations once, and (2) `annihRow_neg` — the `c = -1` companion of `annihRow_smul` (only `annihRow_add`/`annihRow_smul` existed). Minor build-cycle gotcha along the way: a bare `rw [neg_one_smul]` on a `Module.Dual`-valued smul is a no-op (`Did not find … -1 • ?x`); close the residual `-1 • x = -x` with `module`.
+- **Proposed fix:** DONE. `annihRow_neg` in `PanelLayer.lean` (next to `annihRow_smul`); `PanelHingeFramework.ofNormals_panelRow_eq_hingeRow_of_ends_or_swap` (keyed on `hends : ends e = (u,w) ∨ (w,u)`) in `PanelHinge.lean` (next to the T1a `ofNormals_supportExtensor_eq_panel_of_ends`). **Crucially it took `G ends q` all *explicit* — exactly the T1a idiom-entry lesson above** — so the `rw` fires without pinning implicits; the disjunction hypothesis lets one lemma serve both orientations. 3 sites collapsed (each merging a 2-way branch), the dead `hFG_eb` disjunction removed; `case_II_realization_all_k` 908 → 803 lines. Support-*extensor* sign/nonzero transports (`hFG_ea`, `hso_span`, `hne_G`) are a different (non-row) shape — left as-is per the T2c "extract the clean win" discipline.
+- **Status:** resolved (named artifacts: `annihRow_neg`, `ofNormals_panelRow_eq_hingeRow_of_ends_or_swap`).
+
+### [resolved] `simp_all` in a proof with big carrier-typed hypotheses is a heartbeat multiplier — the driver behind the last two `maxHeartbeats` overrides
+- **Where it bit:** `complementIso_smul_eq_extensor_join` and
+  `complementIso_extensor_mem_range_map_subtype` (`Molecular/Meet.lean`) — the two
+  `set_option maxHeartbeats 400000` overrides surviving the Phase-33 `ℝ→K` sweep.
+- **Friction:** the Phase-33 comments blamed a "diffuse" generic-`K` typeclass cost with "no
+  single heavy-carrier `whnf` site". In-context `trace.profiler` refuted this:
+  `complementIso_smul_eq_extensor_join` spent ~80 % (12.8 s / 15.8 s) in one `have` whose side
+  goal was closed by `(by intro j; fin_cases j <;> simp_all)`. With the theorem's context carrying
+  large `⋀[K]^2`-valued hypotheses (`Ω`, `Φ`, `hkills`, `hmem`), `simp_all` re-simplifies all of
+  them, so its cost scales with the context, not the trivial goal.
+- **Resolution:** goal-only `simp only [Fin.forall_fin_two, Matrix.cons_val_zero,
+  Matrix.cons_val_one]` + `exact ⟨hi_u, hj_u⟩`. Two matching gotchas: `fin_cases` leaves `Fin.mk`
+  indices the `Matrix.cons_val_*` lemmas don't match (use `Fin.forall_fin_two` for the `OfNat`
+  literals), and a `set`-bound basis `b` won't match `Pi.basisFun` under `simp` (close with
+  `exact`, defeq). For the second theorem the biggest single cost was instead a *context-free*
+  `have`, extracted to the reusable top-level `exteriorPower_map_two_extensor`. Result: **zero
+  `maxHeartbeats` overrides project-wide** (each removal confirmed by a reverted build).
+- **Status:** resolved.
+- **Lifted to:** TACTICS-GOLF § 21.
+
+### [resolved] Extracting a subset of `G.neighborSet v`: use `neighborFinset` + its API, not `Set.toFinset` with an ad-hoc `Fintype.ofFinite` instance
+- **Where it bit:** Phase 32, `JacobsZeroExtension.lean`'s `zero_extension_genericRank_add_min_le`
+  — picking three neighbours of `v` (`Finset.exists_subset_card_eq` on the neighbourhood).
+- **Friction:** first wrote `haveI : Fintype (H.neighborSet v) := Fintype.ofFinite _` and worked
+  through `(H.neighborSet v).toFinset` / `Set.mem_toFinset`. The `haveI` type-checks, `hcard` over
+  `(H.neighborSet v).toFinset.card` elaborates, but `Set.mem_toFinset.mp (htsub hu)` then fails with
+  *"failed to synthesize `Fintype ↑(H.1 v)`"* — `Set.mem_toFinset` re-synthesises the instance
+  against `neighborSet`'s **unfolded** form `↑(H.Adj v)` (`= ↑(H.1 v)`), which the ad-hoc
+  `Fintype.ofFinite _` instance (keyed on the folded `H.neighborSet v`) does not match.
+- **Proposed fix / resolution:** provide `[Fintype V]` + `[DecidableRel H.Adj]` (via `Fintype.ofFinite`
+  / `Classical.decRel`) and go through the **canonical** `H.neighborFinset v` with its own API —
+  `coe_neighborFinset` (+ `Set.ncard_coe_finset`) for the count bridge, `mem_neighborFinset` for
+  membership. Those lemmas are stated generically over `[Fintype (G.neighborSet v)]`, so they apply
+  under whatever instance is in scope and never re-key against the unfolded set.
+- **Status:** resolved.
+- **Lifted to:** TACTICS-QUIRKS § 83.
+
+### [resolved] Two dot-notation/subst traps hit assembling `thm:laman-square-count`
+- **Where it bit:** Phase 32, `JacobsCounting.lean`'s `laman_square_count` assembly (item 5) —
+  `squareSpecialCrossEdgesRootedAt_eq_edgesIn_neighborSet` and the theorem's tight-partition setup.
+- **Friction (1):** `obtain rfl := hsing v' hfv'` (`hfv' : f v' = f v`, giving `v' = v`) eliminated
+  `v` (the theorem's own bound variable) rather than the just-`rintro`'d `v'`, since `v` was the
+  *less-recently-introduced* free variable — Lean's default `subst` heuristic — leaving every
+  later `mem_neighborSet G v u` reference dangling with "Unknown identifier `v`". Already the
+  documented pattern in TACTICS-QUIRKS § 4; fixed with a variant of its named fix (flip via
+  `.symm` before `obtain rfl`, rather than renaming/`rw`).
+- **Friction (2):** `hf.sum_perPart_le`/`hf.foo` calls on `hf : G.shadowGraph.IsTightPartition 3
+  f` (obtained from `G.shadowGraph.exists_isTightPartition 3`) failed with *"the environment does
+  not contain `Eq.sum_perPart_le`"* — dot notation unfolded straight past both `IsTightPartition`
+  and the `IsSquareTightPartition` wrapper down to the ultimate `Eq` head, since it found no match
+  at either intermediate namespace. Fixed with `have hf : G.IsSquareTightPartition f := hf0` to
+  re-ascribe the wrapper type before dot-calling. A new variant of TACTICS-QUIRKS § 35's "value's
+  type is a `def : Prop` that unfolds to `Exists`" — same axis, `Eq` head instead, two wrapper
+  levels instead of one.
+- **Status:** resolved.
+- **Lifted to:** TACTICS-QUIRKS § 4 (the `.symm`-flip fix, added as a "cheapest fix" paragraph)
+  and § 35 (the `Eq`-headed variant, added as a new paragraph + symptom-index line).
+
+### [resolved] `rw [heq]` on a `set`-bound `ℕ` variable → "motive is not type correct"; and `lemma.le`/`.symm` term-mode projection on an explicit-arg lemma → "Unknown constant"
+- **Where it bit:** Phase 38 (FACTOR), `Molecular/Induction/ForestSurgery/EdgeSplitting.lean`,
+  extracting the shared `splitOff_reroute_packing` engine (both edge-splitting arms).
+- **Friction 1:** the full-fiber count guard `rw [hcountsum, hScard, hfull, hbHM]; omega` failed
+  *"motive is not type correct"* on the step eliminating the `set h' := (I' ∩ edgeFiber e₀ n).ncard`
+  variable (`hfull : h' = bodyHingeMult n`). Fix: `rw [hcountsum]; omega` — leave the `set` atom in
+  the goal and let `omega` consume `hfull`/`hbHM`/`hScard` as hypotheses.
+  **Lifted to: TACTICS-QUIRKS § 98.**
+- **Friction 2:** `(… ).trans edgeFiber_ncard.le` failed *"Unknown constant
+  `Graph.edgeFiber_ncard.le`"* — `edgeFiber_ncard : ∀ (e n), (edgeFiber e n).ncard = bodyHingeMult n`
+  has *explicit* args, so in term position `edgeFiber_ncard.le` resolves the dotted name as a
+  constant before the `Eq.le` projection can fire. Fix: supply the args (`edgeFiber_ncard e₀ n`) or
+  use a `calc`/`le_of_eq`; a bare `rw [edgeFiber_ncard]` works because `rw` infers the args. Same
+  family as the `h.lt_or_lt`/`lt_or_gt_of_ne` entry above (dot notation on an under-applied lemma).
+- **Status:** resolved in-proof (one build cycle each).
+
+### [resolved] `simp only [Matrix.map_apply, Matrix.of_apply, Matrix.cons_val_*]` doesn't reduce a `(ringHom).mapMatrix (Matrix.of ![…]) a b` goal — need `RingHom.mapMatrix_apply`
+- **Where it bit:** Phase 39 (PENCIL), `Molecular/Molecule/Pencil.lean`, `cross₃Poly_eval`
+  (W5-L3): after `(MvPolynomial.eval q).map_det` on a `4×4` `Matrix.of ![X,Y,Z,Pi.single i 1]`
+  determinant, `congr 1; ext a b; fin_cases a <;> simp only [Matrix.map_apply, Matrix.of_apply,
+  Matrix.cons_val_zero, …]` left the LHS stuck at `(MvPolynomial.eval q).mapMatrix (Matrix.of
+  ![…]) a b`, unreduced — the guessed lemma set unfolds the `Matrix.of`/`Matrix.cons` structure
+  but not the *ring-hom-bundled* `.mapMatrix`, which is a different name (`Matrix.map_apply` is
+  for the plain `Matrix.map`, not `RingHom.mapMatrix`).
+- **Fix:** `RingHom.mapMatrix_apply` (`f.mapMatrix M i j = f (M i j)`) unfolds the bundled form;
+  once included, plain `simp [RingHom.mapMatrix_apply, Pi.single_apply]` per `fin_cases` branch
+  closes the goal without needing the individual `Matrix.cons_val_*`/`Matrix.of_apply` names at
+  all (they're already simp-default).
+- **Status:** resolved in-proof (one build cycle).
