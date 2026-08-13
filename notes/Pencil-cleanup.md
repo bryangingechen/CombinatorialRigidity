@@ -188,17 +188,28 @@ one place `CLAUDE.md`'s reading order already sends an agent.
 
 ## Blockers / open questions
 
-None. Every task above is independently actionable; ordering is free except
-that D-1 and D-2 both edit `Pencil-informal.md`, in disjoint regions (D-2:
-the gap map, ~line 248; D-1: the *Section index* table, lines 63–85, plus
-whichever section headings the fix chooses to annotate, if any) — land them
-as separate commits per `CLEANUP.md` *Workflow* rule 3, in either order.
+**One hard ordering constraint: D-2 MUST land before D-1.** (Corrected
+2026-08-13 by the coordinator; this section previously said the order was
+free because the two edits touch disjoint regions. Disjointness is not the
+relevant property.) The *State of (K)* gap map occupies lines **204–448** —
+i.e. it sits **above every `## §(…)` heading in the file**, the first of
+which (§(K-tight)) starts at line 450. D-2 rewrites a cell inside it, and
+shrinking eight directions' changelog to a status statement necessarily
+changes that cell's length, shifting every subsequent section's start *and*
+end. So a D-1 table landed first is re-staled the moment D-2 lands, and the
+round would have re-incurred exactly the drift it exists to remove. Land
+D-2 first, then recompute D-1 from scratch against the post-D-2 file (per
+D-1's own fix instruction: never port this snapshot's deltas forward).
+
+Otherwise no blockers: D-3 is independent of both (different file), and
+D-5 is a watch item. Land each fix as its own commit per `CLEANUP.md`
+*Workflow* rule 3.
 
 ## Hand-off / next phase
 
 **Next concrete commit: D-3** (the FRICTION.md archive migration) — smallest,
 purely mechanical, zero interaction with the other three tasks. After that,
-D-1 and D-2 are independent fixes to `Pencil-informal.md` (either order);
+**D-2 then D-1** — that order is forced, not a preference; see *Blockers*.
 D-5 is a watch-item, not a fix, and needs no commit unless it trips.  Once
 this round's task list is empty, hand back to `notes/Phase39.md` *Hand-off*
 for the tenth-direction selection — unblocked by this round, not gated on
