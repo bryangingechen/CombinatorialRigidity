@@ -1,6 +1,7 @@
 # Pencil doc-set cleanup (ad-hoc round, category D only) (work log)
 
-**Status:** in progress — sweep complete; D-3 and D-2 landed, D-4 closed
+**Status:** in progress — sweep complete; D-3 and D-2 landed (D-2 with one
+corrective follow-up, see its task entry), D-4 closed
 (swept, nothing found), D-5 is a watch-item only. **D-1 is the sole
 remaining task**; see *Hand-off* for the next commit.
 
@@ -131,6 +132,33 @@ reappears in the new one with its recorded standing unchanged — verified
 label-by-label in the landing commit message. Cell size: 2858 → 1276 words
 (≈ 8381 → 8407 chars once two follow-up wording fixes restored two dropped
 "proven" tags — see commit). No `.py`/`.m2` files touched.
+
+**Follow-up (this commit) — one preservation-table row was false, and the
+underlying question is now settled.** The landing message's table recorded
+`(GR-4′)` as *"true-modulo-named-gap …, off critical path | unchanged"*, but
+the rewrite had **removed** "off the critical path" (replacing it with "which
+now feeds (GR-15)'s own per-block equality question", close to the opposite
+routing claim) and had also dropped the parenthetical "the conic confinement
+is dissolved". The `true-modulo-named-gap` verdict itself was genuinely
+unchanged; only the routing qualifier moved. Settled against the sources —
+*Step G4*'s gap (ii) ("DISSOLVED … the discharge path no longer consumes
+(GR-4′)"), *Step G9*/*Step G10* ((GR-9) "consumes no generic-arrangement
+statement: (GR-4)/(GR-4′) is bypassed, not assumed"), *Step G18* item 3 ("off
+the critical path **for direction G**"), TCOL's standing table and CFLANK's
+*What does NOT move*, GCAP's and GEXIST's Step-0 pins ("the (GR-4′) rider is
+genuinely load-bearing and never dissolves silently"), and
+`notes/Pencil-fanout.md` §"Ninth direction" route-ledger entry 2 ("open, off
+the critical path … **Unchanged**") — the verdict is: **both readings are true
+in named senses, and the cell must carry both.** (GR-4′) is off the critical
+path in that the *discharge* need never consume it ((GR-9)'s certificate, and
+routes (ii)–(iv), reach `dim Z = 0` without any generic-arrangement input),
+and simultaneously a load-bearing rider on the *counting* route (route
+(i)/certificate-3 gives (GR-15) only "modulo (GR-4′)", and its two proven
+cases cover no habitat block). No source anywhere retracts the qualifier; the
+old cell was internally in tension only in appearance. Cell repaired in place
+this commit; the false table row is recorded in `notes/dispatch-log.md`. The
+rest of the D-2 rewrite was coordinator-audited and stands — nothing else in
+the cell changes, and (GR-15) stays OPEN with no status move.
 
 ### D-3 — `notes/FRICTION.md`: 8 `[resolved]` entries ready to archive — DONE
 
@@ -283,8 +311,10 @@ D-5 is a watch item. Land each fix as its own commit per `CLEANUP.md`
 
 ## Hand-off / next phase
 
-**D-2 landed** (the §(K-grid) gap-map cell rewrite; D-3 landed earlier, the
-FRICTION.md archive migration). **Next concrete commit: D-1** (recompute the
+**D-2 landed**, plus its corrective follow-up (the §(K-grid) gap-map cell
+rewrite, and this commit's repair of its one false preservation-table row —
+(GR-4′)'s routing qualifier; D-3 landed earlier, the FRICTION.md archive
+migration). **Next concrete commit: D-1** (recompute the
 *Section index* table from scratch against the post-D-2 file — per D-1's own
 fix instruction, do not port forward either the original coordinator-seeded
 table or this round's now-superseded snapshot). D-5 is a watch-item, not a
@@ -322,6 +352,16 @@ tenth-direction selection — unblocked by this round, not gated on it.
   untouched as required. Cell: 2858 → 1276 words. Found, not anticipated: the
   row is a single physical markdown line before and after, so this shrink
   moves no subsequent line number — see *Blockers*' correction.
+- **D-2's preservation table had one false row; corrected 2026-08-13.** The
+  `(GR-4′)` row attested "off critical path | unchanged" for a routing
+  qualifier the same diff had removed. Settled rather than patched: the
+  qualifier is true **in a named sense** (the discharge never consumes
+  (GR-4′) — (GR-9) bypasses it) *and* so is its replacement (the counting
+  route carries it as a load-bearing rider), so the cell now carries both,
+  plus the restored "conic confinement is dissolved". Full source trail in
+  the D-2 task entry; the defect is logged in `notes/dispatch-log.md`.
+  Standing lesson: **a self-reported preservation table is an attestation
+  like any other — diff the artifact, do not read the table.**
 
 ## Citations
 
