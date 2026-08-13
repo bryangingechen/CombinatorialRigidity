@@ -246,6 +246,27 @@ stays OPEN, unchanged in status. **§(K-unif)/`GU-` was considered and
 is, again, deliberately NOT reserved** — verified 0-hit and recorded
 here so a successor does not mint them.
 
+**Reserved 2026-08-13 for the NINTH direction — GEXIST**
+(`notes/Pencil-fanout.md` §"Ninth direction"; PREPPED, dispatch
+pending). A **single direction**, not a fan-out — its selection was
+**delegated to a top-rung fable recon** by the user's 2026-08-13
+check-in pick of the option "Delegate to a fable recon (2026-08-12
+style)" (an option selection from a multiple-choice check-in, not
+free-text; `notes/Phase39.md` *Current state*), the same shape that
+selected GCAP. The direction extends §(K-grid)'s live families, so the
+reservation is their unclaimed tails — labels **(GR-32)+**, **Steps
+G38+**, driver `w4/gexist.py` — and the owning section stays
+authoritative. The code `GEXIST` and the driver basename `gexist` were
+verified **0-hit as raw substrings**, case-insensitively, across
+`*.md`, `*.tex`, `*.lean`, `*.py`, `*.m2` at reservation time; `GFULL`
+was considered and REJECTED under (L5)'s substring check (a hit inside
+the word "meaningfully" in `CombinatorialRigidity/CLAUDE.md` — the
+`PAT`-style hazard again). On outgrowth reuse the already-reserved
+**§(K-gcap)** / **`GC-`** (returned unopened by GCAP and again by
+GUNIF; available a third time — its g-family semantics are exactly this
+subject); **§(K-unif)/`GU-` stays deliberately not-minted**. No M2 leaf
+expected.
+
 **One naming hazard the second fan-out created, recorded rather than renamed
 (L4).** The **direction letters A/B/C are re-used** between the 2026-08-05 fan-out
 (A = §(K-flank), B = §(K-Λ), C = §(K-pure)) and the 2026-08-06 one

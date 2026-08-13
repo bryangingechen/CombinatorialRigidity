@@ -3,7 +3,8 @@
 **Status: ALL FIVE fan-outs COMPLETE; the SIXTH direction (CFLANK,
 §"Sixth direction") LANDED 2026-08-07; the SEVENTH direction (GCAP,
 §"Seventh direction") LANDED 2026-08-13; the EIGHTH direction (GUNIF,
-§"Eighth direction") LANDED 2026-08-13.** The
+§"Eighth direction") LANDED 2026-08-13; the NINTH direction (GEXIST,
+§"Ninth direction") PREPPED 2026-08-13 — dispatch pending.** The
 first (A/B/C
 below, prepared 2026-08-05) landed 2026-08-05/06; the second (T/R/M,
 §"Second fan-out") 2026-08-06; the third (G/Q/O, §"Third fan-out")
@@ -26,7 +27,9 @@ list; GCAP's selection was **delegated further to a top-rung fable
 recon** (the 2026-08-12 adjudication, verbatim in `notes/Phase39.md`
 *Current state*); GUNIF's selection follows the same standing delegation,
 from the TERMINATION test checked (and not fired) on GCAP's return
-(`notes/Phase39.md` *Hand-off*), not a fresh adjudication. This file
+(`notes/Phase39.md` *Hand-off*), not a fresh adjudication; GEXIST's
+selection was again **delegated to a top-rung fable recon**, per the
+user's 2026-08-13 check-in option pick (§"Ninth direction"). This file
 remains the dispatch-scoping template for any
 future fan-out or single direction. Three independent research directions on kernel (K), specified
 here so a fresh session can dispatch them at S=1 without re-deriving the
@@ -1649,3 +1652,298 @@ The fifth fan-out's landing checklist applies verbatim, as it did for
 CFLANK and GCAP — including moving the reservation row into the registry
 and adding the driver's rows to `notes/scripts/README.md` §3's
 invocation table in the landing commit.
+
+## Ninth direction — GEXIST (single direction, prepared 2026-08-13)
+
+**Status: PREPPED 2026-08-13 — dispatch pending.** A **single direction**,
+not a fan-out. Selection: at this session's check-in the user was asked how
+the ninth direction should be selected and **chose the option "Delegate to
+a fable recon (2026-08-12 style)" from a multiple-choice check-in** — an
+option selection, not free-text; the same shape that selected GCAP. The
+recon's read-only verdict (2026-08-13) picked this direction as a **merge**
+of the phase-note hand-off candidates (1)+(2)+(3), ranked every alternative
+(recorded below so no loser is re-proposed), refuted the coordinator's cost
+hypothesis on the `n_hub = 8` enumerator in source, and specified the route
+ledger + TERMINATION test recorded below; the coordinator verified the
+verdict under the top-rung tier and **ACCEPTED** it. The standing frame is
+the 2026-08-13 phase-shape adjudication (the research arc CONTINUES;
+`notes/Phase39.md` *Current state*).
+
+**Direction code GEXIST** (the deliverable is the uniform **EXIST**ence
+statement), minted under clause **(L5)**. Verified **0-hit as a raw
+substring**, case-insensitively, across `*.md`/`*.tex`/`*.lean`/`*.py`/
+`*.m2` in this prep commit — as is the driver basename `gexist`.
+Considered and REJECTED under the same substring check: `GFULL` (a hit
+inside the word "meaningfully" in `CombinatorialRigidity/CLAUDE.md` — the
+`PAT`-style hazard (L5) records).
+
+### The target — one statement, already on the books
+
+**Uniform fully-good existence at `Λ = ∅`, `D = 0`:** every tight
+`D = 0`, `Λ = ∅` class shape admits an admissible colouring with
+`a = 0 ∧ max_P g(P) ≤ 0` in **both** blocks.
+
+This is the existence half of §(K-grid) (GR-20)'s certificate 3,
+**cap-free**: it does not restate or lean on the `g ≤ 1` cap, which is
+FALSE from `n_hub = 8` on ((GR-30)). By the (GR-20) chain it implies
+(GR-15) at `Λ = ∅` `D = 0` **modulo (GR-4′)** — never more (*Riders*).
+
+**The single strongest justification, checkable:** the target statement is
+*verbatim* the workbook's own first-listed open route to (GR-15) in the
+§(K-grid) *State of (K)* gap-map row — "a colouring-existence argument
+over *Step G12*'s branch bits ('some admissible colouring has
+`a = 0 ∧ max g ≤ 0` in both blocks' + (GR-4′), free at 98.6% of circuits
+by (GR-17))". The direction takes a route already on the books rather
+than inventing one; what is new is the instrument (the (GR-29) ledger)
+and the post-refutation form (existence direct, no cap).
+
+**Provenance in the candidate set.** §(K-grid) *What would change this
+(Steps G34–G37)* item (ii) already names **both** admissible mechanism
+forms as alternatives ("e.g. 'distance ≤ g', **or** a proof that
+fully-good colourings always exist via the exact-alignment thinness of
+binding colourings"); *Step G37*'s surviving route material supplies the
+(GR-29) ledger as the tool; item (iii)'s g-flank is the honest-MISS shape.
+A HIT in **either** form counts:
+
+- **(existence direct)** the thinness/charging argument: charge the
+  structure the (GR-29) ledger prices — AA interiors with B-forced exits,
+  a (GR-25)-shaped boundary, a distinct A-majority balance partner per
+  forced-B-majority odd branch (*Step G36*'s corrected mechanism:
+  **structure, not excess**) — against (GR-21)'s constant excess-6
+  budget, showing binding configurations cannot cover the admissible
+  cube. The named open risk is the union bound: the argument must charge
+  the binding-subset *count*, not only each slice's thinness — the
+  (GR-21) move one level up.
+- **(repair form)** a distance-≤-`g` repair theorem in (GR-24)'s
+  two-part template (a simultaneous-flip argument under a privacy-style
+  hypothesis + a finite, budget-killed case analysis of the hypothesis's
+  failure modes), proving existence given (GR-23)/(GR-24)-side
+  NC1-satisfiability. Carry the evidence grade honestly: "distance ≤ g"
+  is measured at exactly four points, and *Step G36* itself demotes it to
+  "a suggestive pattern, not a claim".
+
+**This is the arc's second PROOF direction; GUNIF's three inverted
+working assumptions carry over verbatim** (§"Eighth direction",
+consequences (i)–(iii)): the deliverable is a proof at the workbook's
+proven-informally bar, not a sweep; the driver certifies the argument's
+case list rather than producing a headline figure (F11 becomes "which
+mode certifies that this case list is complete?"); and the honest-MISS
+shape is a named case or configuration, never "the argument is hard".
+
+### The risk, stated plainly — carried, not argued away
+
+The target's evidence base past `n_hub = 6` is exactly GUNIF's four
+(GR-30) witnesses (where per-shape (GR-15) holds, with abundant
+fully-good colourings). Everything else — (GR-26)'s 40 742 shapes,
+GCAP's 549 172 blocks — sits at `n_hub ∈ {2, 4, 6}`, the stratum
+(GR-29)'s corollary proves cannot host a binding-at-`g ≥ 2`
+configuration at all. So the direction attempts to prove **uniformly** a
+statement whose uniform truth is thinly evidenced exactly where it
+matters. A successor must not infer that uniformity is expected; the
+MISS design below is the deliberate answer to this risk, and W5 — zero
+excess, zero defect inside `S`, `g = 3` — is the witness any charging
+argument must price first.
+
+### Step 0 — mandatory load-bearing pin, before any derivation
+
+Pin from the landed Steps G34–G37 before writing a single line of
+argument (the GCAP/GUNIF Step-0 discipline):
+
+- **(GR-29)** — the cost-0/cost-1 dart menus, the ledger clauses
+  ((K-bal)/(K-cut)/(K-cut-inner)/(K-improper)/the singleton-outside
+  enumeration), and the corollary's exact boundary (a theorem at
+  `n_hub ≤ 6`; first survivors at `n = 8`, `k = 3`, singleton-outside
+  family).
+- **(GR-30)** — the four witnesses W3M/W3/W4/W5 as constructions, with
+  W5 the structural heart (an all-[ℓ2] corner cycle + [ℓ22] matching:
+  binding with zero excess and zero defect inside `S`).
+- ***Step G36*'s corrected mechanism** — binding at `g ≥ 2` costs
+  **structure**, not excess (*Step G33* item 1's "bought with excess" is
+  wrong as stated); the exact-alignment observation (a defect-≤1
+  configuration pins every [ℓ2] head and every interior dart) is the
+  thinness mechanism's seed and is currently **measured, not proven**.
+- **(GR-4′)'s proven-case boundary** (*Steps G29–G33*, Step 0): ≤ 3
+  classes total or all-singleton classes — **neither covers a single
+  habitat block**, so the rider is genuinely load-bearing and never
+  dissolves silently.
+
+### The route ledger and the TERMINATION test — recorded at prep
+
+**The route ledger** — the named ingredient list this direction
+advances; the coordinator updates each entry's status on landing:
+
+1. **Uniform fully-good existence at `Λ = ∅` `D = 0`** — THIS DIRECTION.
+2. **(GR-4′)** — open, off the critical path, proven cases exclude every
+   habitat block; the natural next proof target on a HIT.
+3. **The `Λ ≠ ∅` closed-form analogue** — unswept.
+4. **The `D > 0` lift** — unswept.
+
+Together: 1 + 2 = (GR-15) at `Λ = ∅` `D = 0`; adding 3 + 4 = (GR-15);
+(GR-15) + (GR-1)/§(K-clos) (AC-4) + (GR-5) + (AC-7) = `hK` on the tight
+`D = 0` stratum (the closure chain of *Steps G29–G33*, riders included).
+
+**The TERMINATION test (E1/E2/E3).** On this direction's landing the
+coordinator marks each ledger entry **proven / refuted /
+open-with-a-named-dispatchable-attack / adjudication-gated**, and
+**surfaces a phase-shape decision to the user instead of dispatching a
+tenth direction iff any of**:
+
+- **(E1)** the direction exhibits a g-flank — a `D = 0` shape whose
+  every admissible colouring is binding. That refutes **per-shape
+  (GR-15) itself** somewhere — the arc's first genuine counterexample on
+  the kernel route: unconditional, immediate escalation, whatever else
+  landed.
+- **(E2)** the direction's target is refuted or unprovable-as-posed
+  **and** the updated ledger has no entry left in state
+  open-with-a-named-dispatchable-attack.
+- **(E3)** the target is **proven** and every remaining ledger entry is
+  adjudication-gated (the Lean hold, option B, W4) rather than
+  dispatchable — success also escalates, because the next spend then
+  needs the user, not a dispatch.
+
+Otherwise dispatch the tenth: a MISS with a named sticking configuration
+routes to the `n_hub = 8` enumerator (ranking item 2 below), now aimed
+at a pruned finite target; a HIT routes to ledger entry 2 or 3.
+
+**Why this shape, recorded so the lesson persists.** GUNIF's recorded
+test ("a cap + new mechanisms named ⇒ keep going") tracked **artifacts**
+and did not fire even as the route died; what actually fired the
+2026-08-13 escalation was the death of the route's named ingredient list
+("cap + `Λ ≠ ∅` flip + `D > 0` lift + (GR-4′)"), whose first ingredient
+became refuted with no successor as specified. E1–E3 are stated over the
+ledger — **E2 would have fired literally on GUNIF's return** — and E3
+adds the success-side trigger the old test lacked.
+
+### The ranking record (recon verdict, coordinator-verified) — losers stay lost
+
+Recorded so no alternative is re-proposed without new information; GEXIST
+is item 1.
+
+2. **The `n_hub = 8` enumerator** (the phase note's former candidate (4);
+   CFLANK's *What would change this* item (iv), *Step G28*) — DEFERRED,
+   value now conditional: the natural **tenth** direction on a MISS
+   (the named sticking configuration prunes its target), not the ninth.
+   It moves the blindness boundary (`n ≤ 6` → `n ≤ 8`) rather than
+   removing it — the (GR-29) ledger already decides where `n ≥ 8`
+   failures live, at case-analysis cost, which is how GUNIF found the
+   witnesses without any `n = 8` sweep. And the "materially cheaper than
+   'build an enumerator'" hypothesis is **REFUTED in source**:
+   `gridcol.multigraphs` recurses over all weak compositions of `m` into
+   the `C(n,2)` pairs with the degree test only at the leaf (~3.9 × 10⁹
+   leaves at `(n, m) = (8, 12)`), carries a `cap=4000` default that
+   **silently truncates**, and its within-degree-class canonicalization
+   has zero pruning power on a cubic stratum (one degree class ⇒ the
+   full `8!`); `patexist.shape_key` is a ≤ 24-permutation brute force
+   documented for `n_hub ≤ 4` (`8! = 40 320` permutations per graph at
+   `n = 8`, across ~190 050 labelled cubic multigraphs). The invariant
+   itself (hub multigraph + lengths) is complete at every `n` and
+   survives as a small-`n` cross-validation reference; the engine must
+   be new engineering (canonical augmentation or invariant-refinement
+   dedup) plus a likely over-ceiling sweep.
+3. **The `Λ ≠ ∅` / `D > 0` ledger-and-witnesses analogue** (*What would
+   change this (Steps G34–G37)* item (i)) — right after ledger entry 1
+   lands; until then it extends the refutation's scope, not the positive
+   route.
+4. **The 117 894 unswept `|Λ| ≥ 2` length tuples at `n_hub = 6`**
+   (*Step G28* residual item 4) — "one longer run, not new mathematics";
+   a ride-along mode inside some future numerics dispatch, never a
+   direction.
+5. **A standalone distance-≤-`g` repair theorem** (the phase note's
+   former candidate (1)) — subsumed as GEXIST's repair form; standalone
+   it inherits GUNIF target (b)'s weakness (a four-point evidence base).
+6. **A `k ≥ 6` realization of the scaling family** (item (v)) — cosmetic
+   by the workbook's own words; closes no route.
+
+### Verification priority order — the driver's inverted role (NO new sweep)
+
+1. **`--charge`** — the charging/thinness case analysis: enumerate the
+   configurations the argument's case split produces and certify each is
+   charged, or name the sticking case.
+2. **`--exh`** — the case-list exhaustiveness certificate itself (F11's
+   "which mode certifies the case list is complete?" for the chosen
+   mechanism form).
+3. **`--repair`** — if the repair form is used: the simultaneous-flip
+   argument checked against *Step G32*'s 23 950-colouring pool and
+   (GR-31)'s 2/2/2/3 distances.
+4. **`--adv`** — falsification control at the argument's own worst case:
+   the four (GR-30) witnesses (W5 first) plus targeted constructions
+   past them, in CFLANK's/GUNIF's idiom.
+5. **`--validate`** — all modes, budgeted against the 600 s foreground
+   ceiling (F15); split into separate invocations if the combination
+   would exceed it.
+
+Cross-check pools (existing, never re-swept): GCAP's 549 172 blocks, the
+23 950-colouring repair pool, CFLANK's 40 742 shapes, the four (GR-30)
+witnesses. "Widening a pool is evidence, not progress" binds at full
+strength — a wider sweep with no case-list argument attached is not a
+deliverable. The direction sets the final mode list; the above is a
+suggestion, not a pin.
+
+### Riders — carried explicitly, required in the return
+
+Verbatim from the eighth direction:
+
+- The result is at **`Λ = ∅`**, **`D = 0`**, and **modulo (GR-4′)**.
+- The **`Λ ≠ ∅` closed-form analogue** stays **unswept**.
+- The **`D > 0` lift** stays **unswept**.
+- **Never write that this closes (GR-15).** At best it closes (GR-15) on
+  the `Λ = ∅`, `D = 0` stratum, modulo (GR-4′) — full (GR-15) quantifies
+  over every tight class shape.
+
+### Cautions (binding)
+
+- Do not re-derive (GR-1)–(GR-31); do not re-attack the (GR-10) min-max
+  as a *characterization* ((GR-13): NP-complete at balance); all of
+  `notes/Phase39.md` *Hand-off*'s "Deliberate non-goals" bind.
+- The (K-res)/(GR-15) quantification question is **explicitly NOT this
+  direction's scope**; it stays a coordinator hand-off note.
+- No σ-fixed witness is read as generic (§(K-clos) (AC-9)); a rank miss
+  of a literal construction at one parameter point is not a miss of the
+  recipe — retry at seeded random rational parameters before calling
+  anything structural.
+- An exhibited g-flank is a **REFUTATION of per-shape (GR-15)**, not a
+  MISS — headline it (TERMINATION clause E1), whatever else landed.
+
+**Driver** `notes/scripts/w4/gexist.py` (imports `gunif.py` / `gcap.py` /
+`cflank.py` / `gridcol.py` / `grid.py` read-only); suggested modes
+`--charge`/`--exh`/`--repair`/`--adv`/`--validate` — the direction sets
+the final list. **Labels**: mint under **(GR-32)+** and **Steps G38+**,
+the unclaimed tails of §(K-grid)'s live families (the owning section
+stays authoritative). **On outgrowth, reuse the already-reserved
+§(K-gcap) / `GC-`** — returned unopened by GCAP and again by GUNIF,
+available a third time, and its g-family semantics are exactly this
+subject. **Do not mint §(K-unif)/`GU-`** (considered twice, deliberately
+not minted — recorded in the registry). No M2 leaf expected — the target
+is a finite combinatorial statement.
+
+**Rung.** Mapped **top rung** — a crux proof attempt whose verdict
+re-routes the line (the same trigger that put G, E, J, PEX, TCOL, CFLANK,
+GCAP and GUNIF there); per the 2026-08-13 check-in all four rungs are
+dispatchable, so **fable** (opus substitutes only if the weekly scoped
+limit runs out — the same standing qualifier as GCAP's and GUNIF's).
+
+**Mechanics: identical to the eighth direction's.** Read-only w.r.t.
+every **tracked** file; commits **NOTHING**; creates only its own
+**untracked** driver at the pinned path above (importing the harness
+read-only, left untracked for the coordinator to gate and commit); writes
+its full mathematics as a **draft workbook section** `fanout-GEXIST.md`
+in the session scratchpad (not the repo), in the workbook's register,
+with an explicit confidence verdict (proven-informally /
+true-modulo-named-gap / open / refuted) and a "what would change this"
+line; keeps the **return message** to a tight verdict. F11 binds (doubly
+— the direction *is* an exhaustiveness claim); F15's over-ceiling shape
+applies to any invocation that cannot finish inside 600 s.
+`notes/scripts/README.md`'s conventions bind (exact ℚ, seeded
+randomness, degeneracy guards + rank/dimension asserts, import from the
+canonical layer — check the *Divergences* table).
+
+### Landing (coordinator)
+
+The fifth fan-out's landing checklist applies verbatim, as it did for
+CFLANK, GCAP and GUNIF — including moving the reservation row into the
+registry, adding the driver's rows to `notes/scripts/README.md` §3's
+invocation table in the landing commit, and checklist item 6's
+scaffolding audit. The landing commit additionally runs the route-ledger
+update and the E1/E2/E3 TERMINATION check above, recording the outcome
+in the phase note's *Hand-off* — as narrative, not as a scaffolding
+block.

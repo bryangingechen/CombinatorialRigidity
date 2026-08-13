@@ -11,8 +11,10 @@ roster in *Decisions made*'s FIRST-through-EIGHTH entries). Headline positives *
 PROVEN** and (GR-16)–(GR-28); GUNIF **REFUTED both of its targets** at `n_hub ≥ 8`, but
 **(GR-15) stays OPEN throughout; class uniformity untouched by every round.** The
 resulting phase-shape escalation was **RESOLVED 2026-08-13 — the research arc
-CONTINUES**, a ninth direction next (prep + dispatch belong to a **fresh session**; see
-*Current state* + *Hand-off*). Direction codes are **multi-letter and topic-tagged from
+CONTINUES**; the NINTH direction **GEXIST is PREPPED** (2026-08-13, selected by a
+top-rung fable recon under the user's check-in delegation; spec
+`notes/Pencil-fanout.md` §"Ninth direction") — **next commit: dispatch it, top rung**
+(see *Current state* + *Hand-off*). Direction codes are **multi-letter and topic-tagged from
 the fifth fan-out on** (`notes/Pencil-labels.md` (L5)); grandfathered single letters are
 re-used across dates — **always date those**.
 
@@ -81,12 +83,26 @@ constraints; the dated dispatch narrative is in *Decisions made* and git):
   stays un-commissioned in both kernel cases, the phase stays **OPEN**. Which handle was
   not specified, so selection falls back to the standing 2026-08-07 delegation (the
   2026-08-12 precedent that the pick may itself be delegated applies too). **"Not in this
-  session"** — the ninth direction's prep and dispatch are a **fresh session**'s task;
-  see *Hand-off* for the candidate set.
+  session"** — prep and dispatch fell to the next session: prep LANDED 2026-08-13 (next
+  bullet); dispatch is the next concrete commit (*Hand-off*).
+- **2026-08-13, ninth-direction selection (the fresh session's check-in; changes no
+  standing constraint).** Asked how the ninth direction should be selected, the user
+  **chose the option "Delegate to a fable recon (2026-08-12 style)" from a
+  multiple-choice check-in** — an option selection, not free-text; the same shape that
+  selected GCAP. Same check-in: all four rungs available (top rung = fable), the
+  10-dispatch cap **lifted**, rescue §1 mechanical fixups **pre-authorized**. The
+  recon's verdict — direction **GEXIST**: uniform fully-good existence at `Λ = ∅`
+  `D = 0` via the (GR-29) ledger, a merge of the hand-off candidates (1)+(2)+(3), the
+  arc's second PROOF direction — was verified under the top-rung tier and **ACCEPTED**
+  (the recon also refuted the coordinator's `n_hub = 8`-enumerator cost hypothesis in
+  source, and specified the recorded route ledger + E1/E2/E3 TERMINATION test). Spec,
+  ranking record, and the thin-evidence risk statement:
+  `notes/Pencil-fanout.md` §"Ninth direction"; reservation `notes/Pencil-labels.md`.
+  **PREPPED, not dispatched.**
 
-**Kernel-(K) research arc — thirty-three docs+scripts-only dispatches, plus two
-strategy-only passes** (2026-08-02 → 08-13; the second is the 2026-08-12 fable recon
-above). Canonical homes: workbook `notes/Pencil-informal.md` (**State of (K)** map =
+**Kernel-(K) research arc — thirty-three docs+scripts-only dispatches, plus three
+strategy-only passes** (2026-08-02 → 08-13; the second is the 2026-08-12 fable recon,
+the third the 2026-08-13 ninth-direction selection recon, both above). Canonical homes: workbook `notes/Pencil-informal.md` (**State of (K)** map =
 entry point), `notes/Pencil-W4-informal.md` (W4-residual), `notes/Pencil-strategy.md`
 (strategy); one line per landing in *Decisions made*, canonical with git — **not
 restated here**. Net effect: **disproof risk removed**, every refuted route/gap has a
@@ -233,41 +249,33 @@ discharge (residue (iv)) is CLOSED too**. The landed successor
 > symbolic meta-option ("upgrade §(K-Λ) via M2") is **landed, not pending** (`m2/lambda0.m2`) —
 > only §5.3 item (i) (whole-graph elimination) remains, ruled out by §5.3's own local-frame
 > feasibility boundary.
-> **Why the escalation fired though the literal TERMINATION test never did.** The naive test
-> ("a cap + new mechanisms named" ⇒ keep going) didn't fire on GCAP's return (which dispatched
-> the **EIGHTH direction, GUNIF**, **LANDED 2026-08-13, REFUTING BOTH TARGETS** —
-> `notes/Pencil-fanout.md` §"Eighth direction"; workbook §(K-grid) *Steps G34–G37*, one-lined in
-> *Decisions made*) or on GUNIF's own return ((GR-29) is itself a cap, new mechanisms were
-> named) — what fired was the **refutation of the line's named positive-termination path**:
-> "cap + the `Λ ≠ ∅` flip + the `D > 0` lift + (GR-4′) = (GR-15) proven = `hK` discharged" is
-> **DEAD AS SPECIFIED**, its first ingredient false in general from `n_hub = 8` on (GR-30).
-> **Per-shape (GR-15) HOLDS at every witness, itself stays OPEN, unchanged** — the refutation
-> kills the certificate-3 *uniformity route*, not the statement.
 > **The escalation is RESOLVED (2026-08-13, verbatim in *Current state*): the research arc
-> CONTINUES.** **The next concrete commit is a fresh session's: prep the NINTH direction** —
-> spec it into `notes/Pencil-fanout.md` §"Ninth direction" + reserve its namespace in
-> `notes/Pencil-labels.md` (the shape the seventh/eighth directions used), then dispatch top
-> rung; selection under the standing 2026-08-07 delegation (or a 2026-08-12-style recon).
->
-> **Candidate set, four items — the fourth changes the ranking; none is selected.**
-> GUNIF's own named handles (§(K-grid) *Step G37*): **(1)** a repair theorem
-> "distance ≤ `g`" (measured equal at all four (GR-30) witnesses); **(2)**
-> exact-alignment thinness of binding colourings (measured, not proven); **(3)**
-> the (GR-29) ledger itself as a **positive tool**, naming exactly where a
-> binding-at-`g ≥ 2` configuration must live. **(4)**, a coordinator finding of
-> this session not yet elsewhere in the docs: **build the `n_hub = 8`
-> enumerator** — a degree-pruned cubic-multigraph generator with isomorphism
-> rejection, opening the ~190 050 **labelled** cubic multigraphs there (CFLANK's
-> *What would change this* item (iv), §(K-grid) *Step G28*), dedup the whole
-> cost. **The argument, plainly:** GUNIF *proved* the arc's entire `D = 0`
-> evidence base — CFLANK's 40 742-shape hunt (GR-26) and GCAP's 549 172-block
-> sweep (GR-28) alike — was swept at `n_hub ∈ {2,4,6}` only, a stratum the
-> (GR-29) ledger shows *cannot* exhibit the (GR-28)(iv) failure, which appears
-> at the first size beyond it. The arc is **systematically blind past
-> `n_hub = 6`**, and (4) alone *removes* the blindness rather than working
-> inside it — **compute engineering, not mathematics**, but arguably the
-> **highest-value** of the four right now. Selection stays the fresh session's,
-> under the standing delegation.
+> CONTINUES, and the NINTH direction is PREPPED — GEXIST** (the EIGHTH, GUNIF, REFUTED both
+> targets — `notes/Pencil-fanout.md` §"Eighth direction", workbook *Steps G34–G37*; per-shape
+> (GR-15) HOLDS at every witness and (GR-15) itself stays OPEN, the refutation killing the
+> certificate-3 *uniformity route*, not the statement). GEXIST's target: **uniform fully-good
+> existence at `Λ = ∅` `D = 0`** — every tight class shape there admits an admissible
+> colouring with `a = 0 ∧ max_P g(P) ≤ 0` in both blocks — proven through the (GR-29) ledger;
+> the arc's second PROOF direction, verbatim the gap-map row's first-listed open route to
+> (GR-15). Canonical spec — target, Step-0 pin, both admissible mechanism forms, the
+> thin-evidence risk past `n_hub = 6`, riders, cautions, and the recorded **route ledger +
+> E1/E2/E3 TERMINATION test** (which replaces GUNIF's artifact-shaped test; why the old one
+> never fired while its route died is recorded there, not here) — is
+> `notes/Pencil-fanout.md` §"Ninth direction"; namespace reserved in `notes/Pencil-labels.md`
+> ((GR-32)+, Steps G38+, driver `w4/gexist.py`).
+> **The next concrete commit: dispatch GEXIST, top rung (fable)** — mechanics identical to
+> the eighth direction's; the dispatch prompt is the spec section itself.
+> **The candidate set that produced it is SUPERSEDED by the spec's ranking record.** The
+> four-item hand-off list was a strict subset of the workbook's named handles — *What would
+> change this (Steps G34–G37)* items (i) (the `Λ ≠ ∅`/`D > 0` analogue), (iii) (the g-flank
+> as target) and (v) (the `k ≥ 6` realization) were omitted; all alternatives are now ranked
+> in the spec with why each loses. One-lined so no loser is re-proposed: the `n_hub = 8`
+> enumerator is DEFERRED to conditional-tenth (its "materially cheaper than build" hypothesis
+> REFUTED in source — `gridcol.multigraphs` is structurally unusable at `n = 8` and silently
+> `cap`-truncated; `patexist.shape_key` is a ≤ 24-permutation brute force); item (i) waits on
+> a HIT; the 117 894-tuple `|Λ| ≥ 2` run is a ride-along mode, never a direction; a
+> standalone distance-≤-`g` theorem is subsumed as GEXIST's repair form; the `k ≥ 6`
+> realization is cosmetic.
 > **Coordinator hand-off note, still not loaded onto any direction:** whether (GR-15) as
 > quantified ("every tight class shape") also covers the `W19`-type **(K-res)** sibling
 > habitat is unresolved — pin it when the tight side closes, not before.
