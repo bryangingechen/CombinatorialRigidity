@@ -1,7 +1,8 @@
 # Pencil doc-set cleanup (ad-hoc round, category D only) (work log)
 
-**Status:** in progress — this commit is the log skeleton + task list only
-(`CLEANUP.md` *Workflow* rule 1). Sweep complete; **nothing fixed yet.**
+**Status:** in progress — sweep complete; D-3 and D-2 landed, D-4 closed
+(swept, nothing found), D-5 is a watch-item only. **D-1 is the sole
+remaining task**; see *Hand-off* for the next commit.
 
 Ad-hoc round, opened mid-Phase-39 (PENCIL stays OPEN throughout; this round
 does not close it and does not gate the tenth research direction). Chosen by
@@ -92,7 +93,7 @@ unmeasured, plus a check of every row's end bound, per its instruction):
   of this commit, and any other edit to the file before the fix lands could
   move it again.
 
-### D-2 — §(K-grid) *State of (K)* gap-map cell is a changelog, not a status statement
+### D-2 — §(K-grid) *State of (K)* gap-map cell is a changelog, not a status statement — DONE
 
 **Coordinator-verified.** `notes/Pencil-informal.md:248` — the *State of (K)*
 gap map's single row for gap `(K-grid)` (table starts at line 227) — is one
@@ -113,6 +114,23 @@ proven, what is open, and the residual *now* — the eight-direction history
 belongs in the Steps subsections (already there) and in git, not restated in
 the map cell. Whoever picks this up should diff the new cell's status claims
 against the old cell's, one label at a time, before committing.
+
+**Disposition.** Rewritten in place, still one markdown-table line (line 248,
+unchanged line number — the row was already confined to a single physical
+line before and after, so this edit shifts no subsequent line number; D-1
+still needs its own from-scratch recompute per that task's own instruction,
+independent of this fact). Reorganized from an eight-direction chronological
+narrative ("Since Steps Gxx–Gyy (direction …)") into three current-state
+buckets — *Proven / proven-informally*, *Refuted, and what replaced it*,
+*Measured, not proved* — followed by (GR-15)'s own open verdict; the
+*what would close it* cell keeps its existing shape (GR-15's substantive
+statement + the four live routes + the dead route + GEXIST's sharpened
+single-statement reduction), lightly trimmed rather than restructured. Every
+`(GR-1)`–`(GR-35)` token from the old cell (35 labels, `GR-6` never appears)
+reappears in the new one with its recorded standing unchanged — verified
+label-by-label in the landing commit message. Cell size: 2858 → 1276 words
+(≈ 8381 → 8407 chars once two follow-up wording fixes restored two dropped
+"proven" tags — see commit). No `.py`/`.m2` files touched.
 
 ### D-3 — `notes/FRICTION.md`: 8 `[resolved]` entries ready to archive — DONE
 
@@ -247,18 +265,32 @@ round would have re-incurred exactly the drift it exists to remove. Land
 D-2 first, then recompute D-1 from scratch against the post-D-2 file (per
 D-1's own fix instruction: never port this snapshot's deltas forward).
 
+**D-2 landed** (2026-08-13). One correction to the reasoning above, found
+while landing it: the (K-grid) row was, and remains, a single physical
+line (line 248) both before and after the rewrite — shrinking a cell's
+*character* length inside an already-single-line table row does not move
+any *line number*, so no subsequent `## §(…)` heading actually shifted.
+The ordering constraint itself (land D-2 first) was still the right call —
+it wasn't knowable in advance that the row was single-line-confined without
+checking, and had it *not* been, the constraint would have bitten — but
+D-1's own instruction stands regardless: recompute every row from scratch
+against the current file rather than trusting this observation or the old
+snapshot's deltas.
+
 Otherwise no blockers: D-3 is independent of both (different file), and
 D-5 is a watch item. Land each fix as its own commit per `CLEANUP.md`
 *Workflow* rule 3.
 
 ## Hand-off / next phase
 
-**D-3 landed** (the FRICTION.md archive migration). **Next concrete commit:
-D-2** (the §(K-grid) gap-map cell rewrite) — forced to precede D-1; see
-*Blockers*. D-5 is a watch-item, not a fix, and needs no commit unless it
-trips. Once this round's task list is empty, hand back to
-`notes/Phase39.md` *Hand-off* for the tenth-direction selection — unblocked
-by this round, not gated on it.
+**D-2 landed** (the §(K-grid) gap-map cell rewrite; D-3 landed earlier, the
+FRICTION.md archive migration). **Next concrete commit: D-1** (recompute the
+*Section index* table from scratch against the post-D-2 file — per D-1's own
+fix instruction, do not port forward either the original coordinator-seeded
+table or this round's now-superseded snapshot). D-5 is a watch-item, not a
+fix, and needs no commit unless it trips. Once this round's task list is
+empty (D-1 lands), hand back to `notes/Phase39.md` *Hand-off* for the
+tenth-direction selection — unblocked by this round, not gated on it.
 
 ## Decisions made during this round
 
@@ -280,6 +312,16 @@ by this round, not gated on it.
   `TACTICS-QUIRKS.md` §47 already targets an archived entry; the
   `Phase9-cleanup.md` D3 companion-check reached the same verdict). See the
   D-3 task entry above for the full grep trail.
+- **D-2 landed** (2026-08-13): `Pencil-informal.md:248`'s (K-grid) status
+  cell rewritten from an eight-direction chronological changelog into three
+  current-state buckets (proven / proven-informally, refuted-and-replaced,
+  measured-not-proved) plus (GR-15)'s own open verdict; the *what would close
+  it* cell kept its shape, lightly trimmed. All 35 `(GR-1)`–`(GR-35)` tokens
+  (`GR-6` absent throughout) verified label-by-label against the pre-commit
+  cell — every recorded standing unchanged, `(GR-15)`/`(GR-4′)`/`(GR-10)`
+  untouched as required. Cell: 2858 → 1276 words. Found, not anticipated: the
+  row is a single physical markdown line before and after, so this shrink
+  moves no subsequent line number — see *Blockers*' correction.
 
 ## Citations
 
