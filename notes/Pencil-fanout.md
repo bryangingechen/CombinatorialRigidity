@@ -4,7 +4,7 @@
 §"Sixth direction") LANDED 2026-08-07; the SEVENTH direction (GCAP,
 §"Seventh direction") LANDED 2026-08-13; the EIGHTH direction (GUNIF,
 §"Eighth direction") LANDED 2026-08-13; the NINTH direction (GEXIST,
-§"Ninth direction") PREPPED 2026-08-13 — dispatch pending.** The
+§"Ninth direction") LANDED 2026-08-13 — an honest MISS.** The
 first (A/B/C
 below, prepared 2026-08-05) landed 2026-08-05/06; the second (T/R/M,
 §"Second fan-out") 2026-08-06; the third (G/Q/O, §"Third fan-out")
@@ -19,7 +19,13 @@ direction") 2026-08-13 — **REFUTED both of its targets**: (GR-28)(iv)
 at `k ≥ 3` is refuted with an exact boundary (theorem at `n_hub ≤ 6`,
 false from `n_hub = 8`), the repair theorem is unprovable as posed;
 per-shape (GR-15) HOLDS at every new witness and (GR-15) itself stays
-OPEN, unchanged in status. CFLANK was a
+OPEN, unchanged in status; the ninth (GEXIST, §"Ninth direction")
+2026-08-13 — an honest **MISS**: three new theorems ((GR-32)/(GR-33)/
+(GR-35)) reduce the uniform target to a **minority-dart orientation
+problem** with one unit of slack at every proper chunk, (GR-34) refutes
+the uncorrelated union-bound mechanism by a constructed witness while a
+correlated rung-minority rule closes the ladder family; no g-flank
+found, the target and (GR-15) both stay OPEN. CFLANK was a
 **single direction**, not a fan-out — its selection was a **coordinator
 delegation** (`notes/Phase39.md` *Current state*, the 2026-08-07 "keep
 going on my own judgment" adjudication), not a user pick from a candidate
@@ -1655,19 +1661,40 @@ invocation table in the landing commit.
 
 ## Ninth direction — GEXIST (single direction, prepared 2026-08-13)
 
-**Status: PREPPED 2026-08-13 — dispatch pending.** A **single direction**,
-not a fan-out. Selection: at this session's check-in the user was asked how
-the ninth direction should be selected and **chose the option "Delegate to
-a fable recon (2026-08-12 style)" from a multiple-choice check-in** — an
-option selection, not free-text; the same shape that selected GCAP. The
-recon's read-only verdict (2026-08-13) picked this direction as a **merge**
-of the phase-note hand-off candidates (1)+(2)+(3), ranked every alternative
+**Status: LANDED 2026-08-13.** A **single direction**, not a fan-out.
+Selection: at this session's check-in the user was asked how the ninth
+direction should be selected and **chose the option "Delegate to a fable
+recon (2026-08-12 style)" from a multiple-choice check-in** — an option
+selection, not free-text; the same shape that selected GCAP. The recon's
+read-only verdict (2026-08-13) picked this direction as a **merge** of the
+phase-note hand-off candidates (1)+(2)+(3), ranked every alternative
 (recorded below so no loser is re-proposed), refuted the coordinator's cost
 hypothesis on the `n_hub = 8` enumerator in source, and specified the route
 ledger + TERMINATION test recorded below; the coordinator verified the
-verdict under the top-rung tier and **ACCEPTED** it. The standing frame is
-the 2026-08-13 phase-shape adjudication (the research arc CONTINUES;
-`notes/Phase39.md` *Current state*).
+verdict under the top-rung tier and **ACCEPTED** it. §(K-grid) continuation,
+Steps G38–G42: **an honest MISS, with three new theorems.** **(GR-32)**
+proven — the capacity theorem: the whole graph is exactly critical and
+every proper chunk carries one unit of slack (`cap(S) ≥ 7` off the whole
+graph, `= 6` at it), machine-certified at 220 038 chunks of all 4920 pool
+shapes, so a *pointwise* g-flank mechanism is impossible in habitat.
+**(GR-33)** proven — the weakness lemma: every hub has a unique minority
+dart, `defect_A(S) = N(S) − save_A(S)`, so binding needs `≥ 2` aligned
+per-hub weaknesses, and the all-even case is exactly an in-degree-{1,2}
+**orientation** problem on the hub multigraph. **(GR-34)** the route
+adjudication: the **uncorrelated union-bound mechanism is REFUTED** by a
+constructed witness (the ladder `CL10`, `E[#binding] = 3.23 > 1` and
+growing, while every member keeps a proven fully-good colouring), but a
+**correlated rung-minority rule** closes the whole ladder family by exact
+rank-certified colourings. **(GR-35)** proven — the uncrossing lemma (the
+defect formula is submodular), which organizes the binding family and
+localizes the guided repair; the **hot-dart census** (199 pool shapes)
+finds no hub with all three darts hot — the g-flank's necessary seed — so
+the minority-orientation CSP is loose exactly where everything is proven.
+**No g-flank found; the target stays OPEN, reduced to that orientation
+problem, and so does (GR-15), unchanged in status; no gap-map status
+moves.** The standing frame is the 2026-08-13 phase-shape adjudication (the
+research arc CONTINUES; `notes/Phase39.md` *Current state*); this landing
+does **not** open a tenth direction — the route ledger below records why.
 
 **Direction code GEXIST** (the deliverable is the uniform **EXIST**ence
 statement), minted under clause **(L5)**. Verified **0-hit as a raw
@@ -1773,10 +1800,16 @@ argument (the GCAP/GUNIF Step-0 discipline):
 advances; the coordinator updates each entry's status on landing:
 
 1. **Uniform fully-good existence at `Λ = ∅` `D = 0`** — THIS DIRECTION.
+   **LANDED 2026-08-13, an honest MISS: open-with-named-dispatchable-
+   attacks** — reduced to a minority-dart orientation problem (three
+   attacks named: the orientation theorem itself; the defect-≤ 1
+   intersection kill; the no-collateral clause for the guided repair;
+   plus the pruned `n_hub = 8` hot-hub enumeration as a fourth, cruder
+   option). No g-flank found.
 2. **(GR-4′)** — open, off the critical path, proven cases exclude every
-   habitat block; the natural next proof target on a HIT.
-3. **The `Λ ≠ ∅` closed-form analogue** — unswept.
-4. **The `D > 0` lift** — unswept.
+   habitat block; the natural next proof target on a HIT. **Unchanged.**
+3. **The `Λ ≠ ∅` closed-form analogue** — unswept. **Unchanged.**
+4. **The `D > 0` lift** — unswept. **Unchanged.**
 
 Together: 1 + 2 = (GR-15) at `Λ = ∅` `D = 0`; adding 3 + 4 = (GR-15);
 (GR-15) + (GR-1)/§(K-clos) (AC-4) + (GR-5) + (AC-7) = `hK` on the tight
@@ -1804,6 +1837,15 @@ tenth direction iff any of**:
 Otherwise dispatch the tenth: a MISS with a named sticking configuration
 routes to the `n_hub = 8` enumerator (ranking item 2 below), now aimed
 at a pruned finite target; a HIT routes to ledger entry 2 or 3.
+
+**On this landing: none of E1/E2/E3 fires.** No g-flank was exhibited
+(E1 does not fire); the target is a MISS but ledger entry 1 lands
+open-with-named-dispatchable-attacks, not refuted-with-no-successor (E2
+does not fire); the target is not proven (E3 does not fire). Per the
+"otherwise" clause the natural next step is a **tenth direction** — the
+sharpest form is the orientation theorem itself, or the pruned hot-hub
+`n_hub = 8` enumerator as the cruder fallback — but this landing commit
+does **not** dispatch or prep it; see `notes/Phase39.md` *Hand-off*.
 
 **Why this shape, recorded so the lesson persists.** GUNIF's recorded
 test ("a cap + new mechanisms named ⇒ keep going") tracked **artifacts**
