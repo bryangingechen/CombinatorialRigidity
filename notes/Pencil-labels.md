@@ -269,6 +269,27 @@ explicit rank-certified colourings. No g-flank found; the target stays
 **OPEN**, and so does **(GR-15)**, unchanged in status. **§(K-unif)/`GU-`
 stays, again, deliberately NOT reserved.**
 
+**Reserved 2026-08-13 for the TENTH direction — GORIENT**
+(`notes/Pencil-fanout.md` §"Tenth direction"; PREPPED, dispatch
+pending). A **single direction**, not a fan-out — its selection was
+**re-delegated to a top-rung fable recon** at the user's 2026-08-13
+check-in (the third use of the 2026-08-12 shape that selected GCAP and
+GEXIST; `notes/Phase39.md` *Current state*). The direction extends
+§(K-grid)'s live families, so the reservation is their unclaimed
+tails — labels **(GR-36)+**, **Steps G43+**, driver `w4/gorient.py` —
+and the owning section stays authoritative. The code `GORIENT` and the
+driver basename `gorient` were verified **0-hit as raw substrings**,
+case-insensitively, across `*.md`, `*.tex`, `*.lean`, `*.py`, `*.m2`
+at reservation time; `GMINOR` was considered and REJECTED under (L5)'s
+substring check (14 hits — 10 inside the `LeadingMinor*` identifiers of
+`CombinatorialRigidity/Molecular/AlgebraicInduction/PanelHinge.lean`,
+3 in `notes/Phase22a.md`, 1 in `notes/FRICTION.md` — the `PAT`-style
+hazard again). Checked 0-hit but not chosen, recorded so they stay
+checkable: `GHALL`, `GCSP`, `GHOT`, `GSAT`. On outgrowth reuse the
+already-reserved **§(K-gcap)** / **`GC-`** (returned unopened by GCAP,
+GUNIF and GEXIST; available a fourth time); **§(K-unif)/`GU-` stays
+deliberately not-minted**. No M2 leaf expected.
+
 **One naming hazard the second fan-out created, recorded rather than renamed
 (L4).** The **direction letters A/B/C are re-used** between the 2026-08-05 fan-out
 (A = §(K-flank), B = §(K-Λ), C = §(K-pure)) and the 2026-08-06 one
