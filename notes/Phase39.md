@@ -5,22 +5,17 @@
 (L0–L7) are COMPLETE — `hsplit` CLOSED IN FULL and `hfresh`'s counting discharge landed
 (2026-07-30). Only three items remain, all carried by the landed successor
 `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card` (`Molecule/Pencil/Escape.lean`):
-`hcontract` (W4), kernel `hK`, and kernel `hbareSplit` — see *Hand-off*. Kernel-(K) research
-is at its thirty-fourth docs+scripts-only pass (workbook `notes/Pencil-informal.md`; the settled
-W4-residual arc is `notes/Pencil-W4-informal.md`). **ALL FIVE fan-outs plus the SIXTH,
-SEVENTH and EIGHTH directions are now COMPLETE** — A/B/C, the harness re-baselining
-round S1–S4, T/R/M, G/Q/O, E/J, PEX/TCOL, CFLANK, GCAP, GUNIF (2026-08-05 → 08-13);
-per-direction verdicts are one-lined in *Decisions made*, headline positives **(FR-R1)
-PROVEN** (PEX) and (GR-16)–(GR-28) (TCOL/CFLANK/GCAP), and GUNIF **REFUTED both of its
-targets** ((GR-28)(iv) at `k ≥ 3` with an exact boundary — a theorem at `n_hub ≤ 6`,
-false from `n_hub = 8` — and the repair theorem
-unprovable as posed). **(GR-15) stays OPEN throughout;
-class uniformity untouched by every round.** GUNIF's refutation kills the line's named
-**positive-termination path**, not (GR-15) itself — the coordinator is surfacing a
-**phase-shape decision to the user** before any further direction; see *Hand-off*.
-Direction codes are **multi-letter and topic-tagged from the fifth fan-out on**
-(`notes/Pencil-labels.md` clause **(L5)**); the grandfathered single letters are re-used
-across dates — **always date those**.
+`hcontract` (W4), kernel `hK`, and kernel `hbareSplit` — see *Hand-off*. **ALL FIVE
+fan-outs plus the SIXTH, SEVENTH and EIGHTH directions are now COMPLETE** — thirteen
+fan-out directions (A/B/C+S1–S4, T/R/M, G/Q/O, E/J, PEX/TCOL) plus CFLANK, GCAP, GUNIF
+(2026-08-05 → 08-13); per-direction verdicts one-lined in *Decisions made*. Headline
+positives **(FR-R1) PROVEN** and (GR-16)–(GR-28); GUNIF **REFUTED both of its targets**
+at `n_hub ≥ 8`, but **(GR-15) stays OPEN throughout; class uniformity untouched by every
+round.** The resulting phase-shape escalation was **RESOLVED 2026-08-13 — the research
+arc CONTINUES**, a ninth direction next (prep + dispatch belong to a **fresh session**;
+see *Current state* + *Hand-off*). Direction codes are **multi-letter and topic-tagged
+from the fifth fan-out on** (`notes/Pencil-labels.md` (L5)); grandfathered single
+letters are re-used across dates — **always date those**.
 
 ## Current state
 
@@ -80,31 +75,39 @@ constraints; the dated dispatch narrative is in *Decisions made* and git):
   one-lined in *Decisions made*). Same check-in: top rung = fable (opus substitutes only
   if the weekly scoped limit runs out); the 10-dispatch cap is **lifted**; rescue §1
   mechanical fixups are **pre-authorized** — both still binding for the next dispatch.
+- **2026-08-13, phase-shape adjudication (RESOLVES the escalation below; changes no
+  standing constraint).** Asked to choose among the four options GUNIF's refutation
+  raised — lift the Lean hold; a ninth direction on a surviving handle; package the
+  arc and stop; attack strategy §2.3's wall — the user answered, verbatim: *"I think
+  we should continue with the research here, but perhaps not in this session. Are we
+  ready for handoff to a fresh session?"* **RESOLVED — the research arc CONTINUES**
+  (the "ninth direction" option); packaging-and-stopping was **not** chosen. **Not
+  lifted, not commissioned, not stopped:** the Lean hold **STANDS**, W4 stays
+  **PARKED**, option B stays un-commissioned in both kernel cases, the phase stays
+  **OPEN**. Which handle was not specified, so selection falls back to the standing
+  2026-08-07 delegation, with the 2026-08-12 precedent that the pick may itself be
+  delegated to a top-rung recon. **"Not in this session"** — the ninth direction's
+  prep and dispatch are a **fresh session**'s task; see *Hand-off* for the candidate
+  set.
 
 **Kernel-(K) research arc — thirty-three docs+scripts-only dispatches, plus two
 strategy-only passes** (2026-08-02 → 08-13; the second strategy pass is the 2026-08-12
-fable reprioritization recon above).
-Mathematics: the workbook `notes/Pencil-informal.md`, whose **State of (K)** map is the entry
-point, the canonical per-gap status home, and the artifact a pass *updates*; settled
-W4-residual verdicts are in `notes/Pencil-W4-informal.md`; strategy in
-`notes/Pencil-strategy.md`. One line per landing in *Decisions made*, which with git is the
-canonical dispatch record — **neither the landings nor the per-gap statuses are restated
-here**. Net effect: the **disproof risk is removed**; every refuted route/gap carries its
-successor in the gap map; the structural positives run (Λ1), §(K-ann)'s recipe, (OC-10),
-the tree-triple theorem (GR-9), (FR-1)–(FR-4) + **(FR-R1) PROVEN**, (GR-16)–(GR-27),
-(GR-28)(i)–(iii) and the (GR-29) budget ledger; **class uniformity of the escape remains
-untouched by every one of the arc's thirty-three dispatches.**
+fable reprioritization recon above). Mathematics: workbook `notes/Pencil-informal.md`
+(**State of (K)** map = entry point / canonical per-gap status home); W4-residual
+verdicts `notes/Pencil-W4-informal.md`; strategy `notes/Pencil-strategy.md`. One line
+per landing in *Decisions made*, canonical with git — **not restated here**. Net
+effect: the **disproof risk is removed**, every refuted route/gap carries its
+successor in the gap map, and several structural positives are proven (listed per
+landing in *Decisions made*); **class uniformity of the escape remains untouched by
+every one of the arc's thirty-three dispatches.**
 
-**Doc-debt, not to action now:** (a) the §(K-grid) *State of (K)* gap-map row has
-accumulated seven directions' narrative clauses in one table cell (T, then six
-"Since Steps Gxx–Gyy" clauses from G/E/TCOL/CFLANK/GCAP/GUNIF) — against that
-map's own one-row-per-gap-with-status discipline; (b) the workbook's *Section
-index* line ranges were re-synced for §(K-grid)/§(K-frame)/§(K-mech) on
-2026-08-13 (they were ~936 lines stale — two landings appended to §(K-grid)
-without touching the index), but every row **above** §(K-grid) is still ~10
-lines stale from older drift. Both are compression/re-sync slices owed at the
-next cleanup round or at phase close, not now (the index's own header already
-says to grep the `## §(…)` heading as the durable anchor).
+**Doc-debt, not to action now:** (a) §(K-grid)'s *State of (K)* gap-map row has
+accumulated seven directions' narrative clauses in one cell, against that map's own
+one-row-per-gap discipline; (b) the workbook's *Section index* line ranges were
+re-synced for §(K-grid)/§(K-frame)/§(K-mech) on 2026-08-13 (~936 lines stale before),
+but every row above §(K-grid) is still ~10 lines stale from older drift. Both are
+compression/re-sync slices owed at the next cleanup round or phase close (meanwhile
+grep the `## §(…)` heading as the durable anchor).
 
 > **The one live candidate, and it is NOT settled — `notes/Pencil-informal.md` §(K-σ)** (the
 > canonical home; the four obligations, the `--hunt` findings, the validation scope and the
@@ -234,20 +237,18 @@ discharge (residue (iv)) is CLOSED too**. The landed successor
 > **The FIRST through EIGHTH directions are ALL COMPLETE** — first (A/B/C), the harness
 > re-baselining round (S1–S4), second (T/R/M), third (G/Q/O), fourth (E `cdd23d30` / J
 > `12edc305`), fifth (PEX `b32c1c2c` / TCOL `cd0af9e1`), sixth (CFLANK `a46eb5c5`), seventh
-> (GCAP `b48cad79`), eighth (GUNIF, this commit); each direction one-lined in *Decisions
-> made* (with dates), its workbook section the canonical home, every driver
-> coordinator-re-run.
+> (GCAP `b48cad79`), eighth (GUNIF `77840be4`, corrective pass `0a13c228`); each
+> direction one-lined in *Decisions made* (with dates), its workbook section the
+> canonical home, every driver coordinator-re-run.
 >
 > **2026-08-07 delegation (supersedes "next direction awaits user adjudication" above).**
 > Asked at check-in what to do once TCOL lands, the user selected **"Keep going on my own
-> judgment"** — the coordinator now picks the next direction and dispatches without
-> checking in (selection only; every standing constraint is unchanged — see *Current
-> state*). Its picks — the **SIXTH direction CFLANK** (single direction, a structural
-> flank against **(GR-15)** at TCOL's item (v)) and the **SEVENTH direction GCAP** —
-> both **LANDED**: `notes/Pencil-fanout.md` §§"Sixth"/"Seventh direction",
-> `notes/Pencil-labels.md`; deliveries, and GCAP's voided-but-harmless correction 1,
-> are recorded there and in *Decisions made*, not repeated here. **No flank found
-> either time; (GR-15) stays OPEN, unchanged in status.**
+> judgment"** — the coordinator picks the next direction and dispatches without checking
+> in (selection only; every standing constraint unchanged — see *Current state*). Its
+> picks — **SIXTH CFLANK** (a structural flank against **(GR-15)** at TCOL's item (v)) and
+> **SEVENTH GCAP** — both **LANDED**: `notes/Pencil-fanout.md` §§"Sixth"/"Seventh
+> direction"; deliveries recorded there and in *Decisions made*, not repeated here. **No
+> flank found either time; (GR-15) stays OPEN, unchanged in status.**
 >
 > **Two durable negatives from the same adjudication — do not re-run:** (i) strategy
 > §4.6's shortlist is **partially superseded** for the tight stratum — U2's demand is
@@ -259,29 +260,46 @@ discharge (residue (iv)) is CLOSED too**. The landed successor
 >
 > **TERMINATION test for the (GR-15)/grid line — checked on GCAP's return, did NOT
 > fire** (a cap and new mechanisms were named), so the coordinator dispatched the
-> **EIGHTH direction, GUNIF** at *Step G33*'s two named successor items — **LANDED
-> 2026-08-13, and it REFUTED BOTH TARGETS** (`notes/Pencil-fanout.md` §"Eighth
-> direction"; workbook §(K-grid) *Steps G34–G37*). (GR-28)(iv) at `k ≥ 3` is refuted
-> with an **exact boundary** — a theorem at `n_hub ≤ 6` ((GR-29)'s ledger), false from
-> `n_hub = 8` on (four constructed witnesses, (GR-30)); the (GR-24)-analogue repair
-> theorem is unprovable as posed (same dead premise, its own measured conclusion also
-> false at `n_hub = 16`, GR-31). **Per-shape (GR-15) HOLDS at every new witness;
-> (GR-15) itself stays OPEN, unchanged** — the refutation kills the certificate-3
-> *uniformity route*, not the statement.
+> **EIGHTH direction, GUNIF**, **LANDED 2026-08-13, REFUTING BOTH TARGETS**
+> (`notes/Pencil-fanout.md` §"Eighth direction"; workbook §(K-grid) *Steps G34–G37*,
+> one-lined in *Decisions made* — the full (GR-29)/(GR-30)/(GR-31) detail not
+> repeated here). **Per-shape (GR-15) HOLDS at every new witness; (GR-15) itself
+> stays OPEN, unchanged** — the refutation kills the certificate-3 *uniformity
+> route*, not the statement.
 >
-> **The literal TERMINATION test still does not fire on GUNIF's return** — a cap *was*
-> proven ((GR-29), on its own stratum) and new mechanisms *were* named. **It is the
-> REFUTATION of the line's named positive-termination path, not the test, that
-> triggers the escalation here.** That path — "cap + the `Λ ≠ ∅` flip + the `D > 0`
-> lift + (GR-4′) = (GR-15) proven = `hK` discharged" — is **DEAD AS SPECIFIED**: its
-> first ingredient, the cap, is false in general. The coordinator is therefore
-> **surfacing a phase-shape decision to the user** before dispatching further — **no
-> ninth direction is prepped or named.** GUNIF's three named handles are **candidates,
-> not a selection**: (1) a repair theorem "distance ≤ `g`" (measured equal at every
-> witness); (2) exact-alignment thinness of binding colourings (measured, not proven);
-> (3) the (GR-29) ledger itself as a **positive tool**, naming exactly where a
-> binding-at-`g ≥ 2` configuration must live. None is selected; the user's call comes
-> first.
+> **The literal TERMINATION test still does not fire on GUNIF's return** (a cap
+> *was* proven, (GR-29), and new mechanisms *were* named) — **it is the
+> REFUTATION of the line's named positive-termination path that triggered the
+> escalation**: "cap + the `Λ ≠ ∅` flip + the `D > 0` lift + (GR-4′) = (GR-15)
+> proven = `hK` discharged" is **DEAD AS SPECIFIED**, its first ingredient false
+> in general (from `n_hub = 8` on, GR-30).
+>
+> **The escalation is RESOLVED (2026-08-13, verbatim in *Current state*): the
+> research arc CONTINUES.** **The next concrete commit is a fresh session's: prep
+> the NINTH direction** — spec it into `notes/Pencil-fanout.md` §"Ninth direction" +
+> reserve its namespace in `notes/Pencil-labels.md`, the shape the seventh and
+> eighth directions used — then dispatch top rung; selection under the standing
+> 2026-08-07 delegation (or its own 2026-08-12-style recon delegation).
+>
+> **Candidate set, four items — the fourth changes the ranking; none is selected.**
+> GUNIF's own named handles (§(K-grid) *Step G37*): **(1)** a repair theorem
+> "distance ≤ `g`" (measured equal at all four (GR-30) witnesses); **(2)**
+> exact-alignment thinness of binding colourings (measured, not proven); **(3)**
+> the (GR-29) ledger itself as a **positive tool**, naming exactly where a
+> binding-at-`g ≥ 2` configuration must live. **(4)**, a coordinator finding of
+> this session not yet elsewhere in the docs: **build the `n_hub = 8`
+> enumerator** — a degree-pruned cubic-multigraph generator with isomorphism
+> rejection, opening the ~190 050 **labelled** cubic multigraphs there (CFLANK's
+> *What would change this* item (iv), §(K-grid) *Step G28*), dedup the whole
+> cost. **The argument, plainly:** GUNIF *proved* the arc's entire `D = 0`
+> evidence base — CFLANK's 40 742-shape hunt (GR-26) and GCAP's 549 172-block
+> sweep (GR-28) alike — was swept at `n_hub ∈ {2,4,6}` only, a stratum the
+> (GR-29) ledger shows *cannot* exhibit the (GR-28)(iv) failure, which appears
+> at the first size beyond it. The arc is **systematically blind past
+> `n_hub = 6`**, and (4) alone *removes* the blindness rather than working
+> inside it — **compute engineering, not mathematics**, but arguably the
+> **highest-value** of the four right now. Selection stays the fresh session's,
+> under the standing delegation.
 >
 > **Coordinator hand-off note, still not loaded onto any direction:** whether (GR-15) as
 > quantified ("every tight class shape") also covers the `W19`-type **(K-res)** sibling
@@ -360,8 +378,8 @@ is the canonical home a successor reads.
   §(K-grid) Steps G34–G37). **REFUTED both targets**: (GR-28)(iv) at `k ≥ 3` refuted
   with an exact boundary — theorem at `n_hub ≤ 6` (GR-29), false from `n_hub = 8`
   (GR-30); repair theorem unprovable as posed (GR-31). Per-shape (GR-15) HOLDS at
-  every witness, itself **stays OPEN**; route DEAD; coordinator surfaces a
-  phase-shape decision, no ninth direction named. **Coordinator corrective pass
+  every witness, itself **stays OPEN**; route DEAD (candidate set + the 2026-08-13
+  "continue" adjudication: *Hand-off*). **Coordinator corrective pass
   2026-08-13, docs only** (one rung up, gate-invisible defects found in
   verification): the (GR-28)(iv) status move completed inside the canonical
   gap-map cell and two other §(K-grid) sites, GCAP's answered *What would change
