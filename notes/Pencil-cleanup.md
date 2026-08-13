@@ -1,9 +1,9 @@
 # Pencil doc-set cleanup (ad-hoc round, category D only) (work log)
 
-**Status:** in progress — D-1, D-2 and D-3 landed (D-2 with one corrective
-follow-up, see its task entry), D-4 closed (swept, nothing found), D-5 is a
-watch-item only. **D-6, found in coordinator verification of D-2, is the
-sole remaining task**; see *Hand-off* for the next commit.
+**Status: COMPLETE.** D-1 through D-4 and D-6 landed (D-2 with one
+corrective follow-up, see its task entry); D-5 stands as a watch-item, not a
+fix (see its own entry and *Hand-off*). All six tasks disposed; the round is
+closed.
 
 Ad-hoc round, opened mid-Phase-39 (PENCIL stays OPEN throughout; this round
 does not close it and does not gate the tenth research direction). Chosen by
@@ -277,7 +277,7 @@ citation), but a candidate for compression once later bullets subsume
 earlier ones. **Not actioned now** — flag for whoever's commit next tips the
 file past 500 or past a forward/finished ratio flip.
 
-### D-6 — the *Section index*'s own §(K-grid) status cell is a changelog, exactly like D-2's gap-map cell was
+### D-6 — the *Section index*'s own §(K-grid) status cell is a changelog, exactly like D-2's gap-map cell was — DONE
 
 **Surfaced in coordinator verification of D-2** (not this round's own sweep;
 appended here per `CLEANUP.md` *Per-round work log*'s mid-round-discovery
@@ -323,8 +323,45 @@ below §(K-grid)'s 401 — are also in scope for the compression, or are
 acceptably within ordinary variation for a section with more status detail
 to report. Left for whoever takes D-6 to adjudicate.
 
-**Not fixed in this commit** — recorded only, per this task's own
-instruction.
+**Disposition.** Recounted fresh against the live file (a Python
+escape-aware `|`-splitter over the table's 21 data rows, honoring
+backtick-embedded `\|`), per this task's own instruction not to trust
+either prior table's digits. Numbers differ slightly from both the
+coordinator's seed and the builder spot-check above (**this recount:
+§(K-grid) 393, §(K-ann) 64, §(K-out) 57, §(K-mech) 37, §(K-frame) 32,
+median of the other 20 rows 9**) but the qualitative shape is identical
+under every method tried: §(K-grid) sits alone, ~6× above the next
+row (64), while the rest form a smooth climb with no comparable gap. Safety
+check per `scope-pin` constraint 1: every substantive clause in the old
+401-word cell (the (GR-4)/(GR-4′) repair, (GR-9)'s tree-triple certificate,
+(GR-10)'s refuted min-max, (GR-16)–(GR-19), (GR-21)–(GR-26), (GR-27)/(GR-28),
+the (GR-29)/(GR-30)/(GR-31) exact-boundary refutation, (GR-32)–(GR-35))
+already appears, under the same label, in the §(K-grid) gap-map cell
+(`notes/Pencil-informal.md:248`, current post-D-2 form) — confirmed by a
+label-by-label read of both cells side by side. **Nothing was unique to the
+index cell; everything cut was already duplicated in the gap map, so nothing
+moved — the cell was pure deletion**, per `scope-pin`'s own license ("you
+may genuinely drop content rather than restate it — provided you first
+confirm it is not unique"). Line 83's status cell (column 3) rewritten in
+place, still one physical line: 393 → 38 words, naming the current verdict
+only (reduction proven to the single open gap (GR-15); the min-max form and
+the uniform `g ≤ 1` cap both refuted; no flank found; class uniformity
+untouched) with no per-direction "Since Steps …" history — that history
+stays in the gap-map cell and in git. `git diff --stat`: 1 file changed, 1
+insertion(+), 1 deletion(-); file still 14750 lines; the line-range table
+(D-1's table, lines 65–85) untouched byte-for-byte outside this one cell.
+
+**Sub-question SETTLED: §(K-ann) and §(K-out) are acceptable variation, not
+touched.** Reasoning: the outlier structure is a sharp discontinuity, not a
+gradient — sorted word counts across the 21 rows run …32, 37, 57, 64, [gap],
+393 — a ~6× jump separates §(K-grid) from everything else, while §(K-ann)
+and §(K-out) sit inside a smooth climb (32→37→57→64) with no comparable
+break from their neighbours. Both are single summarizing clauses about one
+section's own current state (a recipe + one residual; a measured negative +
+one residual), not an eight-direction chronological changelog — the defect
+D-2 and D-6 both fix is the *shape* (append-only history in a
+navigation-only cell), not raw length, and neither cell has that shape.
+Revisit only if either grows further or acquires a "since Steps …" clause.
 
 ## Judgment call — ROADMAP Status row
 
@@ -377,22 +414,47 @@ D-5 is a watch item. Land each fix as its own commit per `CLEANUP.md`
 
 ## Hand-off / next phase
 
-**D-1 landed** (2026-08-13): the *Section index* table (`Pencil-informal.md`
-line 83 header onward) recomputed from scratch against the post-D-2 file,
-confirmed byte-identical to D-1's own sweep-recorded "actual" column (no
-further drift — the two intervening commits touched only line 248). D-2 and
-D-3 landed earlier (D-2 with its corrective follow-up, the §(K-grid) gap-map
-cell rewrite and its one false preservation-table row repaired). **Next
-concrete commit: D-6** (the *Section index*'s own §(K-grid) status cell is
-the same changelog-in-a-navigation-table defect D-2 just fixed in the gap
-map — see its task entry for the measurements, the scoping constraint, and
-the open sub-question on §(K-ann)/§(K-out)). D-5 is a watch-item, not a fix,
-and needs no commit unless it trips. Once this round's task list is empty
-(D-6 lands), hand back to `notes/Phase39.md` *Hand-off* for the
-tenth-direction selection — unblocked by this round, not gated on it.
+**Round CLOSED (2026-08-13) — every task disposed.** D-1 (line-range
+resync), D-2 (gap-map (K-grid) cell rewrite, plus its corrective follow-up),
+D-3 (FRICTION archive migration) and D-6 (index (K-grid) status-cell
+compression) all **landed**; D-4 **swept clean** (nothing found); D-5
+(`Phase39.md` length/balance) is a **standing watch item, not a fix** — 492
+lines after this commit's own `Phase39.md` edits (the round-closing
+*Current state*/*Hand-off* update below), still under the ~500 tripwire and
+not finished-heavy by the forward/finished ratio (both edited sections are
+forward ones, net +1 line), but its *Current state* dated-adjudication list
+keeps growing one bullet per check-in; whoever's commit next tips the file
+past 500 lines or past the ratio should compress it then, not before. The
+ROADMAP judgment call (no Status row for this round) stands, reasoning in
+its own section above.
+
+**What carries over: nothing round-specific.** This round does not gate or
+unblock any research decision — Phase 39 stays OPEN throughout (standing
+constraints in `notes/Phase39.md` *Current state*: Lean hold STANDS, W4
+PARKED, `hK`/`hbareSplit` pinned, option B un-commissioned; none touched by
+this round). **Next concrete task, project-wide:** select and prep a TENTH
+kernel-(K) research direction from the four dispatchable attacks named in
+`notes/Pencil-fanout.md` §"Ninth direction"'s route ledger (the orientation
+theorem itself; the defect-≤ 1 intersection kill; the no-collateral clause
+for the guided repair; the pruned `n_hub = 8` hot-hub enumerator as a cruder
+fallback) — see `notes/Phase39.md` *Hand-off*, which this commit re-points
+at that selection now that the round no longer has open work ahead of it.
 
 ## Decisions made during this round
 
+- **D-6 landed, round CLOSED (2026-08-13).** `Pencil-informal.md:83`'s
+  §(K-grid) *Section index* status cell — the same eight-direction
+  changelog-in-a-navigation-cell defect D-2 fixed one table over — recounted
+  fresh (393 words this recount vs. the log's earlier 401; §(K-ann) 64/
+  §(K-out) 57 vs. 72/65 — digits differ, ranking doesn't) and compressed to
+  38 words (current verdict only: (GR-15) open, min-max and `g ≤ 1` cap both
+  refuted, class uniformity untouched). Every clause cut was already present
+  under the same label in the gap-map cell, so nothing moved — pure
+  deletion, per `scope-pin`'s license. §(K-ann)/§(K-out) left untouched: the
+  word-count distribution has a sharp ~6× break isolating §(K-grid) alone,
+  while they sit inside a smooth climb with their neighbours — acceptable
+  variation, not the same defect. Line 83 stays one physical line; file
+  still 14750 lines; line-range table (D-1's) untouched outside this cell.
 - **Round opened 2026-08-13, sweep-only commit.** Task list above populated
   from a full read of the pencil doc set (`Pencil-informal.md`,
   `Pencil-W4-informal.md`, `Pencil-labels.md`, `Pencil-fanout.md`,

@@ -109,16 +109,13 @@ restated here**. Net effect: **disproof risk removed**, every refuted route/gap 
 successor in the gap map, several structural positives proven; **class uniformity of
 the escape remains untouched by all thirty-four dispatches.**
 
-**Doc-debt — now an open ad-hoc cleanup round, `notes/Pencil-cleanup.md`**
-(opened 2026-08-13, category D only — no Lean/blueprint work). Seeds: (a)
-§(K-grid)'s *State of (K)* gap-map row has accumulated eight directions'
-narrative clauses in one cell, against that map's own one-row-per-gap
-discipline; (b) the workbook's *Section index* line ranges drift +9/+10
-below §(K-Λ) and +23/+24 below §(K-ann) (§(K-grid) on down is correctly
-resynced) — full corrected table and two non-uniform-drift exceptions in the
-log. Read that log before touching either; do not re-derive here (meanwhile
-grep the `## §(…)` heading as the durable anchor). **No tenth research
-direction is opened by this round.**
+**Doc-debt round CLOSED — `notes/Pencil-cleanup.md`** (2026-08-13, category D
+only — no Lean/blueprint work; six tasks D-1…D-6, all landed or swept-clean,
+D-5 left as a watch item). It resynced the workbook's *Section index* line
+ranges and compressed two changelog-shaped cells — the gap-map (K-grid) row,
+then the index's own (K-grid) status cell — back to the map's own
+one-row-per-gap discipline; full disposition and the watch item's status in
+the log. **No tenth research direction was opened by the round.**
 
 > **The one live candidate, and it is NOT settled — `notes/Pencil-informal.md` §(K-σ)** (the
 > canonical home for the four obligations, the `--hunt` findings, the validation scope and the
@@ -224,10 +221,15 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
 
 **The phase stays OPEN** (the 2026-07-24 adjudication — no phase-close; see *Current state*).
 
-**An ad-hoc cleanup round is open, `notes/Pencil-cleanup.md`** (category D
-only; sweep complete, task list populated, no fixes landed yet as of this
-commit). Its task list — not a tenth research direction — is the next
-concrete work; see that log's own *Hand-off* for the first fix.
+**The ad-hoc cleanup round CLOSED this commit, `notes/Pencil-cleanup.md`**
+(category D only; D-1 through D-6 all landed or swept-clean, D-5 left as a
+watch item, not a fix). **Next concrete task: select and prep a TENTH
+direction** from the four dispatchable attacks named in
+`notes/Pencil-fanout.md` §"Ninth direction"'s route ledger — the orientation
+theorem, the defect-≤ 1 intersection kill, the no-collateral clause, and the
+pruned `n_hub = 8` hot-hub enumerator as a cruder fallback — per the standing
+2026-08-07/08-12 delegation (*Current state*): selection may itself be
+delegated to a recon.
 
 **`hsplit` is CLOSED IN FULL** (W5-L7c-1…6, landed 2026-07-30) and **`hfresh`'s mechanical
 discharge (residue (iv)) is CLOSED too**. The landed successor
