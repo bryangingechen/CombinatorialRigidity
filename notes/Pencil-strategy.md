@@ -761,6 +761,12 @@ genuine proofs, not evidence) and can **refute** identical vanishing. It can
 > uniform-negatives/per-shape-positives table is the same fact seen from the
 > mathematics side.
 
+**A sharper failure mode than "not yet uniform"** (GUNIF, §(K-grid) *Steps
+G34–G35*): a sweep can be exhaustive over a stratum that structurally
+**cannot exhibit the failure** — indistinguishable from uniformity until
+proven; CFLANK's *Step G28* item (iv) had already flagged the tell in
+advance (`n_hub ≥ 8` unreachable), exactly where (GR-28)(iv) fails.
+
 ### 5.3 Where a CAS would buy something sampling cannot
 
 **The concrete one — RUN 2026-08-05, and it delivered.** §(K-Λ)'s (Λ0) argument

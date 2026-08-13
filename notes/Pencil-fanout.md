@@ -3,7 +3,7 @@
 **Status: ALL FIVE fan-outs COMPLETE; the SIXTH direction (CFLANK,
 §"Sixth direction") LANDED 2026-08-07; the SEVENTH direction (GCAP,
 §"Seventh direction") LANDED 2026-08-13; the EIGHTH direction (GUNIF,
-§"Eighth direction") is PREPARED 2026-08-13, not yet dispatched.** The
+§"Eighth direction") LANDED 2026-08-13.** The
 first (A/B/C
 below, prepared 2026-08-05) landed 2026-08-05/06; the second (T/R/M,
 §"Second fan-out") 2026-08-06; the third (G/Q/O, §"Third fan-out")
@@ -13,8 +13,11 @@ direction") 2026-08-07 — no flank found, (GR-15) stays OPEN; the seventh
 (GCAP, §"Seventh direction") 2026-08-13 — (GR-27)/(GR-28) proven /
 true-modulo-named-gap, the certificate-3 target proven per swept shape,
 still no flank, (GR-15) stays OPEN; the eighth (GUNIF, §"Eighth
-direction") 2026-08-13 — prepared, targeting *Step G33*'s own two
-named successor items, not yet dispatched. CFLANK was a
+direction") 2026-08-13 — **REFUTED both of its targets**: (GR-28)(iv)
+at `k ≥ 3` is refuted with an exact boundary (theorem at `n_hub ≤ 6`,
+false from `n_hub = 8`), the repair theorem is unprovable as posed;
+per-shape (GR-15) HOLDS at every new witness and (GR-15) itself stays
+OPEN, unchanged in status. CFLANK was a
 **single direction**, not a fan-out — its selection was a **coordinator
 delegation** (`notes/Phase39.md` *Current state*, the 2026-08-07 "keep
 going on my own judgment" adjudication), not a user pick from a candidate
@@ -1369,15 +1372,38 @@ table in the landing commit.
 
 ## Eighth direction — GUNIF (single direction, prepared 2026-08-13)
 
-**Status: PREPPED, not yet dispatched.** A **single direction**, not a
-fan-out. Its target is named in `notes/Phase39.md` *Hand-off*: the
-recorded TERMINATION test for the (GR-15)/grid line was checked on
-GCAP's return and did **not** fire (a cap was proven and new mechanisms
-were named), so the next step is an eighth direction, not a user
-escalation — selected under the standing 2026-08-07 delegation ("keep
-going on my own judgment") as refined 2026-08-12, the same standing
-delegation CFLANK and GCAP were selected under; no fresh adjudication
-was sought or needed. No standing constraint changes.
+**Status: LANDED 2026-08-13.** A **single direction**, not a fan-out.
+Its target was named in `notes/Phase39.md` *Hand-off*: the recorded
+TERMINATION test for the (GR-15)/grid line was checked on GCAP's return
+and did **not** fire (a cap was proven and new mechanisms were named),
+so the next step was an eighth direction, not a user escalation —
+selected under the standing 2026-08-07 delegation ("keep going on my
+own judgment") as refined 2026-08-12, the same standing delegation
+CFLANK and GCAP were selected under; no fresh adjudication was sought
+or needed. §(K-grid) continuation, Steps G34–G37: **(GR-29)** proven —
+the finite dart-menu case analysis and a budget ledger killing every
+`n_hub ≤ 6` parameter tuple by a named clause; **(GR-30)** proven —
+target (a), (GR-28)(iv) at `k ≥ 3`, is **REFUTED** by four constructed
+habitat witnesses (`n_hub = 8, 10, 12, 16`, `k = 3, 3, 4, 5`, exact
+`g(S) = 2, 2, 2, 3`), with the boundary exact ((GR-29)'s ledger kills
+every tuple below `n_hub = 8`); **(GR-31)** measured — per-shape
+(GR-15) HOLDS at all four witnesses, and the flip distance to a
+fully-good colouring (2/2/2/3) shows *Step G32*'s measured ≤ 2-flip
+repair law is sweep-local, breaking at `n_hub = 16`. Target (b), the
+(GR-24)-analogue repair theorem, is **unprovable as posed**: its
+premise is false from `n_hub = 8` on and its measured conclusion also
+fails independently at the same witness. **The salvage: the `g ≤ 1` cap
+is a THEOREM exactly on the swept `n_hub ≤ 6` stratum** — the 549
+172-block evidence was exhaustive over precisely the stratum that
+provably cannot contain a counter-configuration. **(GR-15) itself stays
+OPEN, unchanged in status** — the refutation kills the certificate-3
+*uniformity route*, not the statement; no gap-map status moves beyond
+recording (GR-28)(iv)'s own standing. No standing constraint changes;
+the coordinator's next step is a **phase-shape decision surfaced to the
+user** (`notes/Phase39.md` *Hand-off*), not a ninth direction — the
+line's positive-termination path (cap + `Λ ≠ ∅` flip + `D > 0` lift +
+(GR-4′) = (GR-15)) is dead as specified, since the cap is false in
+general.
 
 **Direction code GUNIF** (the deliverable is the **uniform**
 statement), minted under clause **(L5)**. Verified **0-hit as a raw
