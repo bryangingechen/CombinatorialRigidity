@@ -6,18 +6,19 @@
 (2026-07-30). Only three items remain, all carried by the landed successor
 `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card` (`Molecule/Pencil/Escape.lean`):
 `hcontract` (W4), kernel `hK`, and kernel `hbareSplit` — see *Hand-off*. Kernel-(K) research
-is at its thirty-second docs+scripts-only pass (workbook `notes/Pencil-informal.md`; the settled
-W4-residual arc is `notes/Pencil-W4-informal.md`). **ALL FIVE fan-outs plus the SIXTH
-direction are now COMPLETE** — first fan-out A/B/C, the harness re-baselining round S1–S4,
-second fan-out T/R/M, third fan-out G/Q/O (2026-08-06), fourth fan-out E/J (2026-08-07),
-fifth fan-out PEX/TCOL (2026-08-07, PEX **(FR-R1) PROVEN**, TCOL four structural results
-proven but **(GR-15) stays OPEN — no flank found**), sixth direction CFLANK (2026-08-07,
-six more structural results proven, an exhaustive 40 742-shape hunt, **still no flank —
-(GR-15) stays OPEN**; full verdicts in *Decisions made*). The **seventh direction, GCAP,
-is ADJUDICATED and PREPPED — not yet dispatched** (2026-08-12; selection delegated by the
-user to a top-rung fable recon, verbatim in *Current state*; spec
-`notes/Pencil-fanout.md` §"Seventh direction"). **Class uniformity remains untouched by
-every round.**
+is at its thirty-third docs+scripts-only pass (workbook `notes/Pencil-informal.md`; the settled
+W4-residual arc is `notes/Pencil-W4-informal.md`). **ALL FIVE fan-outs plus the SIXTH and
+SEVENTH directions are now COMPLETE** — first fan-out A/B/C, the harness re-baselining round
+S1–S4, second fan-out T/R/M, third fan-out G/Q/O (2026-08-06), fourth fan-out E/J
+(2026-08-07), fifth fan-out PEX/TCOL (2026-08-07, PEX **(FR-R1) PROVEN**, TCOL four
+structural results proven but **(GR-15) stays OPEN — no flank found**), sixth direction
+CFLANK (2026-08-07, six more structural results proven, an exhaustive 40 742-shape hunt,
+**still no flank — (GR-15) stays OPEN**), seventh direction GCAP (2026-08-13,
+(GR-27)/(GR-28) proven / true-modulo-named-gap, the certificate-3 target proven **per
+swept shape**, **still no flank — (GR-15) stays OPEN**; full verdicts in *Decisions
+made*). **Class uniformity remains untouched by every round.** The **TERMINATION test on
+GCAP's return did NOT fire** (a cap was proven and new mechanisms named) — the next step
+is an **eighth direction**, not a user escalation; see *Hand-off*.
 Direction codes are **multi-letter and topic-tagged from the fifth fan-out on**
 (`notes/Pencil-labels.md` clause **(L5)**); the grandfathered single letters are re-used
 across dates — **always date those**.
@@ -59,37 +60,29 @@ constraints; the dated dispatch narrative is in *Decisions made* and git):
   rescue §1 mechanical fixups **pre-authorized**. Specs + the (L5) direction-code rule:
   `notes/Pencil-fanout.md` §"Fifth fan-out", `notes/Pencil-labels.md`.
 - **2026-08-07, delegation adjudication (binds from the SIXTH direction on).** Asked at
-  the session-start check-in "TCOL is the fifth fan-out's last direction. When it lands,
-  what should I do?", the user selected **"Keep going on my own judgment"** — *"After
-  landing TCOL I pick the next direction from the hand-off's candidate list and continue
-  dispatching without checking in."* This delegates **selection only** and changes **no**
-  standing constraint: the phase stays OPEN, the 2026-08-05 Lean hold stands, W4 stays
-  PARKED, `hK`/`hbareSplit` stay carried as pinned, option B in both kernel cases stays
-  un-commissioned. Supersedes the *Hand-off*'s prior "next direction awaits user
-  adjudication" sentence — the same check-in's top-rung/cap/rescue calls (above bullet)
-  are otherwise unchanged. The coordinator's first pick under this delegation, the
-  **sixth direction CFLANK**, LANDED 2026-08-07 (`notes/Pencil-fanout.md` §"Sixth
-  direction") — no flank found, (GR-15) stays OPEN. The seventh-direction pick went
-  through the 2026-08-12 delegation refinement below.
-- **2026-08-12, seventh-direction delegation (refines the 2026-08-07 mechanism; changes
-  no standing constraint).** Asked at the session-start check-in whether the standing
-  delegation still held for the seventh direction, the user answered, verbatim: *"Let's
-  have a fable subagent make the decision / do a reprioritization and then follow its
-  guidance."* Selection was therefore delegated to a **top-rung fable recon**, whose
-  verdict the coordinator verified and **accepted**: the next step is direction **GCAP**
-  — a (GR-22)-style budget/repair theorem for the structured (GR-8) family `max_P g(P)`
-  over **general sub-multigraphs** at `D = 0`, reaching toward `Λ ≠ ∅`, run
-  **cap-proof-first** — CFLANK's own successor recommendation, endorsed only after
-  scrutiny and with three recorded corrections. **Executable now**; dispatch-grade spec
-  `notes/Pencil-fanout.md` §"Seventh direction", namespace reserved in
-  `notes/Pencil-labels.md`. No standing constraint changes (phase OPEN; Lean hold stands;
-  W4 PARKED; `hK`/`hbareSplit` carried as pinned; option B un-commissioned in both kernel
-  cases). Same check-in: all four rungs are dispatchable this session, so **top rung =
-  fable** (opus substitutes only if the weekly scoped limit runs out); the 10-dispatch
-  cap is **lifted**; rescue §1 mechanical fixups are **pre-authorized**.
+  the session-start check-in what to do once TCOL lands, the user selected **"Keep going
+  on my own judgment"** — *"After landing TCOL I pick the next direction from the
+  hand-off's candidate list and continue dispatching without checking in."* This
+  delegates **selection only** and changes **no** standing constraint (phase OPEN; Lean
+  hold stands; W4 PARKED; `hK`/`hbareSplit` carried as pinned; option B un-commissioned).
+  Supersedes the *Hand-off*'s prior "next direction awaits user adjudication" sentence;
+  the same check-in's top-rung/cap/rescue calls are otherwise unchanged. The coordinator's
+  picks under it, sixth direction **CFLANK** (2026-08-07) and — per the 2026-08-12
+  refinement below — seventh direction **GCAP** (2026-08-13), are one-lined in *Decisions
+  made*.
+- **2026-08-12, seventh-direction delegation (refines the above; changes no standing
+  constraint).** Asked whether the standing delegation still held for the seventh
+  direction, the user answered, verbatim: *"Let's have a fable subagent make the decision
+  / do a reprioritization and then follow its guidance."* Selection was delegated to a
+  **top-rung fable recon**, whose verdict — direction **GCAP**, CFLANK's own successor
+  recommendation with three recorded corrections — the coordinator verified and
+  **accepted**; LANDED 2026-08-13 (`notes/Pencil-fanout.md` §"Seventh direction",
+  one-lined in *Decisions made*). Same check-in: top rung = fable (opus substitutes only
+  if the weekly scoped limit runs out); the 10-dispatch cap is **lifted**; rescue §1
+  mechanical fixups are **pre-authorized** — both still binding for the next dispatch.
 
-**Kernel-(K) research arc — thirty-one docs+scripts-only dispatches, plus two strategy-only
-passes** (2026-08-02 → 08-12; the second strategy pass is the 2026-08-12 fable
+**Kernel-(K) research arc — thirty-two docs+scripts-only dispatches, plus two strategy-only
+passes** (2026-08-02 → 08-13; the second strategy pass is the 2026-08-12 fable
 reprioritization recon above).
 Mathematics: the workbook `notes/Pencil-informal.md`, whose **State of (K)** map is the entry
 point, the canonical per-gap status home, and the artifact a pass *updates*; settled
@@ -98,9 +91,9 @@ W4-residual verdicts are in `notes/Pencil-W4-informal.md`; strategy in
 canonical dispatch record — **neither the landings nor the per-gap statuses are restated
 here**. Net effect: the **disproof risk is removed**; every refuted route/gap carries its
 successor in the gap map; the structural positives run (Λ1), §(K-ann)'s recipe, (OC-10),
-the tree-triple theorem (GR-9), (FR-1)–(FR-4) + **(FR-R1) PROVEN**, (GR-16)–(GR-19) and
-(GR-21)–(GR-26); **class uniformity of the escape remains untouched by every one of the
-arc's thirty-one dispatches.**
+the tree-triple theorem (GR-9), (FR-1)–(FR-4) + **(FR-R1) PROVEN**, (GR-16)–(GR-19),
+(GR-21)–(GR-26) and (GR-27)/(GR-28); **class uniformity of the escape remains untouched by
+every one of the arc's thirty-two dispatches.**
 
 > **The one live candidate, and it is NOT settled — `notes/Pencil-informal.md` §(K-σ)** (the
 > canonical home; the four obligations, the `--hunt` findings, the validation scope and the
@@ -227,11 +220,11 @@ discharge (residue (iv)) is CLOSED too**. The landed successor
 > **BLOCKED by the standing 2026-08-05 Lean-hold adjudication (general, not W4-scoped)**; does
 > not open without a fresh user adjudication.
 >
-> **The FIRST through SIXTH directions are ALL COMPLETE** — first (A/B/C), the harness
+> **The FIRST through SEVENTH directions are ALL COMPLETE** — first (A/B/C), the harness
 > re-baselining round (S1–S4), second (T/R/M), third (G/Q/O), fourth (E `cdd23d30` / J
-> `12edc305`), fifth (PEX `b32c1c2c` / TCOL `cd0af9e1`), sixth (CFLANK, this commit); each
-> direction one-lined in *Decisions made* (with dates), its workbook section the canonical
-> home, every driver coordinator-re-run.
+> `12edc305`), fifth (PEX `b32c1c2c` / TCOL `cd0af9e1`), sixth (CFLANK `a46eb5c5`), seventh
+> (GCAP, this commit); each direction one-lined in *Decisions made* (with dates), its
+> workbook section the canonical home, every driver coordinator-re-run.
 >
 > **2026-08-07 delegation (supersedes "next direction awaits user adjudication" above).**
 > Asked at check-in what to do once TCOL lands, the user selected **"Keep going on my own
@@ -242,18 +235,17 @@ discharge (residue (iv)) is CLOSED too**. The landed successor
 > TCOL's item (v) — **LANDED**: `notes/Pencil-fanout.md` §"Sixth direction";
 > `notes/Pencil-labels.md`. **No flank found; (GR-15) stays OPEN, unchanged in status.**
 >
-> **The SEVENTH direction, GCAP, is ADJUDICATED and PREPPED — not yet dispatched**
-> (2026-08-12; selection delegated to a top-rung fable recon, verbatim adjudication in
-> *Current state*). Target: the **general-sub-multigraph instance of §(K-grid) (GR-20)'s
-> certificate 3** — a (GR-22)-style budget/repair theorem for the structured (GR-8) family
-> `max_P g(P)`, at `D = 0` and reaching toward `Λ ≠ ∅`, **cap-proof-first,
-> flank-hunt-second**. This is CFLANK's own successor recommendation, **endorsed after
-> independent scrutiny with three recorded corrections** (the `Λ ≠ ∅` scoping — *Step
-> G23*'s probe hits all live there; the closure is **modulo (GR-4′)**, never "outright";
-> the cap-first inversion) — the dispatch-grade spec, the mandatory step-0 pin, the five
-> experiments and the MISS/flank termination are `notes/Pencil-fanout.md` §"Seventh
-> direction", the namespace ((GR-27)+/Steps G29+; §(K-gcap)/`GC-` reserved) is in
-> `notes/Pencil-labels.md`. **The next concrete commit is the GCAP dispatch itself.**
+> **The SEVENTH direction, GCAP, LANDED 2026-08-13** (`notes/Pencil-fanout.md`
+> §"Seventh direction"; `notes/Pencil-labels.md`). Target: the **general-sub-multigraph
+> instance of §(K-grid) (GR-20)'s certificate 3** — delivered as **(GR-27)/(GR-28)** (exact
+> computability of the (GR-8) maximum; a `g ≤ 1` cap proven at `k = 2` and measured with 0
+> exceptions at all `k`, the `k ≥ 3` case the named gap). The certificate-3 target is
+> **proven per swept shape** (4920 + 884 + 972, no MISS, ≤ 2-flip repair, CFLANK's item (v)
+> closed at `Λ ≠ ∅` too) — but the **uniform** statement is not proven, and (GR-15) stays
+> **OPEN, unchanged in status**; no gap-map status moves. Of the three recorded corrections
+> to CFLANK's recommendation, **correction 1's premise was voided** by GCAP's own
+> `--probe` but **harmless in effect** (`notes/Pencil-fanout.md` §"Seventh direction"
+> records the fate); corrections 2 and 3 both held.
 >
 > **Two durable negatives from the same adjudication — do not re-run:** (i) strategy
 > §4.6's shortlist is **partially superseded** for the tight stratum — U2's demand ("a
@@ -265,18 +257,20 @@ discharge (residue (iv)) is CLOSED too**. The landed successor
 > strategy §5.3 is item (i), the whole-graph elimination question, which §5.3's own
 > local-frame feasibility boundary rules out.
 >
-> **TERMINATION test for the (GR-15)/grid line (checkable — the next coordinator does not
-> re-derive this call):** if GCAP returns with **no cap proven, no flank found, and no new
-> mechanism named** beyond the (GR-15) cell's existing route list, the line is exhausted —
-> the coordinator then surfaces a **phase-shape decision to the user
-> (USER-ADJUDICATION-REQUIRED)** rather than dispatching an eighth direction, with the
-> three honest options: package what is proven and stop the research arc; lift the
-> 2026-08-05 Lean hold (the arc now holds several standalone-significant informal results
-> — (FR-R1), (GR-9), (GR-16)–(GR-18) — which is what the hold was recorded as pending); or
-> commission the wall-level question per strategy §2.3. The line's **positive** termination
-> is equally concrete: cap + the `Λ ≠ ∅` flip + the `D > 0` lift + (GR-4′) = (GR-15)
-> proven = `hK` discharged on the tight stratum at char 0, leaving char `p` ((AC-7)'s
-> never-probed residual), `hbareSplit`, and the parked W4.
+> **TERMINATION test for the (GR-15)/grid line — checked on GCAP's return, and it did NOT
+> fire.** The test (no cap proven, no flank found, no new mechanism named ⟹ surface a
+> **phase-shape decision to the user (USER-ADJUDICATION-REQUIRED)** rather than dispatch an
+> eighth direction) does not fire: GCAP proved a cap ((GR-27)/(GR-28)) and named new
+> mechanisms (the ear-law handle of *Step G31*, the `Λ ≠ ∅` closed-form successor of
+> *Step G33*). **The next step is an eighth direction, not a user escalation, targeting
+> *Step G33*'s own top item:** closing **(GR-28)(iv)'s `k ≥ 3` case** (a finite dart-menu
+> argument; exhaustive at 549 172 blocks, 0 exceptions, is the evidence) **plus a repair
+> theorem** (the (GR-24) analogue for the g-family) — together these prove the
+> certificate-3 target uniformly on the `Λ = ∅` `D = 0` stratum, i.e. (GR-15) there modulo
+> (GR-4′) (§(K-grid) *Step G33*, *What would change this* (i)–(ii)). The line's
+> **positive** termination is otherwise unchanged: cap + the `Λ ≠ ∅` flip + the
+> `D > 0` lift + (GR-4′) = (GR-15) proven = `hK` discharged on the tight stratum at char 0,
+> leaving char `p` ((AC-7)'s never-probed residual), `hbareSplit`, and the parked W4.
 >
 > **Coordinator hand-off note, explicitly NOT loaded onto GCAP:** whether (GR-15) as
 > quantified ("every tight class shape") also covers the `W19`-type **(K-res)** sibling
@@ -350,6 +344,13 @@ survey — incl. IDENT-PANEL, the nearest neighbour — is `notes/IdeaBacklog.md
 Reverse-chronological, one line per landing; full derivations live in git,
 `notes/Phase39-design.md`, and (for the (K) arc) the workbook section named in each entry, which
 is the canonical home a successor reads.
+
+- **The SEVENTH direction — GCAP LANDED 2026-08-13** (`w4/gcap.py`; canonical home
+  §(K-grid) Steps G29–G33). **(GR-27)**/**(GR-28)** make the (GR-8) family exactly
+  computable with a `g ≤ 1` cap (proven at `k = 2`, measured 0 exceptions at all `k`); the
+  certificate-3 target **proven per swept shape** (4920+884+972, no MISS), CFLANK item (v)
+  closed at `Λ ≠ ∅` too, no flank; *Step G23*'s `Λ`-clause corrected in place. **(GR-15)
+  stays OPEN, unchanged**; `§(K-gcap)`/`GC-` unopened. Uniformity untouched.
 
 - **The SIXTH direction — CFLANK LANDED 2026-08-07** (`w4/cflank.py`; canonical home
   §(K-grid) Steps G24–G28). Six proven results (GR-21)–(GR-26) — excess law, five sparsity

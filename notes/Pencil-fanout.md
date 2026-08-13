@@ -2,13 +2,16 @@
 
 **Status: ALL FIVE fan-outs COMPLETE; the SIXTH direction (CFLANK,
 §"Sixth direction") LANDED 2026-08-07; the SEVENTH direction (GCAP,
-§"Seventh direction") is PREPARED 2026-08-12, not yet dispatched.** The
+§"Seventh direction") LANDED 2026-08-13.** The
 first (A/B/C
 below, prepared 2026-08-05) landed 2026-08-05/06; the second (T/R/M,
 §"Second fan-out") 2026-08-06; the third (G/Q/O, §"Third fan-out")
 2026-08-06; the fourth (E/J, §"Fourth fan-out") 2026-08-07; the fifth
 (PEX/TCOL, §"Fifth fan-out") 2026-08-07; the sixth (CFLANK, §"Sixth
-direction") 2026-08-07 — no flank found, (GR-15) stays OPEN. CFLANK was a
+direction") 2026-08-07 — no flank found, (GR-15) stays OPEN; the seventh
+(GCAP, §"Seventh direction") 2026-08-13 — (GR-27)/(GR-28) proven /
+true-modulo-named-gap, the certificate-3 target proven per swept shape,
+still no flank, (GR-15) stays OPEN. CFLANK was a
 **single direction**, not a fan-out — its selection was a **coordinator
 delegation** (`notes/Phase39.md` *Current state*, the 2026-08-07 "keep
 going on my own judgment" adjudication), not a user pick from a candidate
@@ -1154,13 +1157,43 @@ into the registry and adding the driver's rows to
 
 ## Seventh direction — GCAP (single direction, prepared 2026-08-12)
 
-**Status: PREPARED — adjudicated and prepped, not yet dispatched.** A
-**single direction**, not a fan-out. Its selection was made under the
-2026-08-12 refinement of the standing delegation (`notes/Phase39.md`
-*Current state*, verbatim there): the user delegated the
-seventh-direction call to a **top-rung fable recon**, whose verdict the
-coordinator verified and accepted; this section transcribes that
-verdict's dispatch-grade spec. No standing constraint changes.
+**Status: LANDED 2026-08-13.** A **single direction**, not a fan-out; its
+selection was made under the 2026-08-12 refinement of the standing
+delegation (`notes/Phase39.md` *Current state*, verbatim there): the user
+delegated the seventh-direction call to a **top-rung fable recon**, whose
+verdict the coordinator verified and accepted; this section transcribed
+that verdict's dispatch-grade spec. §(K-grid) continuation, Steps
+G29–G33: **(GR-27)** proven — block additivity + exact computability of
+the (GR-8) family, retiring the `structured_beta` proxy; **(GR-28)**
+proven / true-modulo-named-gap — a closed defect formula and `a = 0` at
+`Λ = ∅`, the `g ≤ 1` cap proven at `k = 2` and measured with 0 exceptions
+over 549 172 blocks at all `k`, the `k ≥ 3` case the named gap; the
+certificate-3 target (the general-`P` instance of (GR-20)'s third
+certificate) **proven per swept shape** at every `D = 0` shape checked
+(4920 + 884 + 972, no MISS), with a ≤2-flip repair and the odd-pair flip
+closing CFLANK item (v) at `Λ ≠ ∅` too; the falsification control (323
+exhaustive constructions) plus the F13 witness `θ(2,4,4)` found no flank.
+**(GR-15) stays OPEN — the uniform (all-`n_hub`) statement is not
+proven; no gap-map status moves.** Driver `w4/gcap.py`'s five modes
+coordinator-re-run, byte-identical under `PYTHONHASHSEED` 0 vs 999
+except each mode's own printed wall-clock annotation. No standing
+constraint changes.
+
+**Correction 1's honest fate.** This section's own correction 1 below —
+"a `Λ = ∅` scoping would miss the live obstruction data" — rested on
+*Step G23*'s recorded premise that the probe's 16 hits were all on
+`Λ ≠ ∅` shapes. GCAP's own `--probe` **voids that premise**: the full
+907-shape census has 955 such hits, 675 of them on `Λ = ∅` shapes (a
+sample-bias artifact of the probe's own 45-shape prefix, corrected in
+place at *Step G23*, canonical home *Step G30*). The correction was
+nonetheless **harmless in effect** — it only pushed the direction to
+reach `Λ ≠ ∅` in addition to `Λ = ∅`, which `--cap`/`--flip` did anyway
+(*Step G32*'s three-pool table covers both, and the odd-pair flip
+explicitly closes item (v) at `Λ ≠ ∅`). **Corrections 2 and 3 both
+held**: certificate 3 is stated throughout **modulo (GR-4′)**, never
+"outright" (correction 2), and the deliverable ran cap-proof-first with
+the adversarial hunt as the falsification control, not the headline
+(correction 3).
 
 **Direction code GCAP** (g-cap: cap the structured (GR-8) family's
 `g`), minted under clause **(L5)**. Verified **0-hit as a raw
