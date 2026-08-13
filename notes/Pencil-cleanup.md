@@ -1,9 +1,9 @@
 # Pencil doc-set cleanup (ad-hoc round, category D only) (work log)
 
-**Status:** in progress — sweep complete; D-3 and D-2 landed (D-2 with one
-corrective follow-up, see its task entry), D-4 closed
-(swept, nothing found), D-5 is a watch-item only. **D-1 is the sole
-remaining task**; see *Hand-off* for the next commit.
+**Status:** in progress — D-1, D-2 and D-3 landed (D-2 with one corrective
+follow-up, see its task entry), D-4 closed (swept, nothing found), D-5 is a
+watch-item only. **D-6, found in coordinator verification of D-2, is the
+sole remaining task**; see *Hand-off* for the next commit.
 
 Ad-hoc round, opened mid-Phase-39 (PENCIL stays OPEN throughout; this round
 does not close it and does not gate the tenth research direction). Chosen by
@@ -32,7 +32,7 @@ coordinator alongside this round).
 
 ## Task list
 
-### D-1 — `Pencil-informal.md` *Section index* line-range drift
+### D-1 — `Pencil-informal.md` *Section index* line-range drift — DONE
 
 **Coordinator-seeded, extended and corrected here.** Ground truth:
 `grep -n '^## ' notes/Pencil-informal.md` (durable anchor); the corrected
@@ -93,6 +93,23 @@ unmeasured, plus a check of every row's end bound, per its instruction):
   than porting this table's deltas forward — this snapshot is only valid as
   of this commit, and any other edit to the file before the fix lands could
   move it again.
+
+**Disposition.** Recomputed from scratch (not ported from the snapshot above,
+per the fix instruction): `grep -n '^## '` for every heading start, then for
+each row's end, walked backward from the next heading over any run of blank
+lines (the §(K-out) two-consecutive-blank-line trap re-verified at lines
+7532–7533, both blank, landing the end at 7531 exactly as the sweep found).
+Result was **byte-identical to this task entry's own "actual" column** —
+confirms the file did not drift between the sweep and this commit; the two
+intervening commits (`dc4ecc7b`, `97c9661c`) each touched only the single
+physical line 248, as their own diffs attest (`git diff --stat` on both:
+1 file changed, 1 insertion(+), 1 deletion(-)), so no `## §(…)` heading moved.
+File confirmed still 14750 lines (`wc -l`). All 20 non-zero-drift rows in
+`notes/Pencil-informal.md`'s *Section index* table (line 83, §(K-grid), is
+the one row already exact) updated to the *actual* values above; no other
+column (label, status, tag) touched. `git diff --stat` on the file: 1 file
+changed, 20 insertions(+), 20 deletions(-) — confirms no line added/removed,
+matching the file's unchanged 14750-line total.
 
 ### D-2 — §(K-grid) *State of (K)* gap-map cell is a changelog, not a status statement — DONE
 
@@ -260,6 +277,55 @@ citation), but a candidate for compression once later bullets subsume
 earlier ones. **Not actioned now** — flag for whoever's commit next tips the
 file past 500 or past a forward/finished ratio flip.
 
+### D-6 — the *Section index*'s own §(K-grid) status cell is a changelog, exactly like D-2's gap-map cell was
+
+**Surfaced in coordinator verification of D-2** (not this round's own sweep;
+appended here per `CLEANUP.md` *Per-round work log*'s mid-round-discovery
+allowance). The *Section index* table's own header states its rule (line
+60–61): *"statuses are one-word pointers to the section's own verdict block
+and the gap-map row, which stay authoritative."* Measured against that rule,
+coordinator-verified, word counts per row's *status* cell (column 3):
+
+- **§(K-grid) (line 83): 401 words.** Median across the other 20 rows:
+  **17**. Next largest: §(K-ann) 72, §(K-out) 65, §(K-mech) 45, §(K-frame)
+  40. Every other row is 12–31.
+- The 401 words are the same accretion D-2 just removed from the gap map —
+  the original direction-T material plus a "since Steps Gxx–Gyy (direction
+  …)" clause for each of G, E, TCOL, CFLANK, GCAP, GUNIF and GEXIST — sitting
+  in a table the header calls **navigation only**.
+
+**Builder-side spot check (this commit, not a fix):** a quick per-cell
+`wc`-style recount (honoring backtick-embedded escaped `\|` so cells split
+correctly — §(K-mech)'s cell contains a literal `` `\|V°\|` `` which a naive
+`|`-split misparses) reproduces the *same row ranking* — §(K-grid) far
+above §(K-ann) > §(K-out) > §(K-mech) > §(K-frame), all far above the rest —
+under every tokenization tried, with §(K-grid) consistently ~390–450 words
+against a same-method median of ~9–17. The exact digits above did not
+reproduce bit-for-bit under this commit's own tokenization (a smaller-scale
+version of the same "attestation vs. diffable artifact" gap D-2's
+preservation table hit); the qualitative violation — §(K-grid) is a ~20×–40×
+outlier in a column the header calls navigation-only — is robust to every
+method tried and is what D-6 is actually about. **Whoever fixes D-6 should
+recount fresh against the live file, not trust either table's digits.**
+
+**Scoping note for the fix — status-preserving, like D-2's.** Per this
+round's own scoping constraint on D-2 (same file, same discipline): the fix
+must not change what the cell says is true, only how compactly it says it —
+no `(GR-…)` label's recorded standing may move, and the fix must be
+**verified by diffing the cell** against its pre-fix form, one label at a
+time, not by a self-reported preservation table (D-2's own preservation
+table carried one false row, corrected in a follow-up commit — see that
+task entry above; the lesson is standing, not a one-off).
+
+**Open sub-question for D-6, not resolved here:** whether §(K-ann) (72
+words) and §(K-out) (65 words) — both well above the 17-word median but far
+below §(K-grid)'s 401 — are also in scope for the compression, or are
+acceptably within ordinary variation for a section with more status detail
+to report. Left for whoever takes D-6 to adjudicate.
+
+**Not fixed in this commit** — recorded only, per this task's own
+instruction.
+
 ## Judgment call — ROADMAP Status row
 
 **Not adding one.** `CLEANUP.md` *Per-round work log* scopes the ROADMAP
@@ -311,15 +377,18 @@ D-5 is a watch item. Land each fix as its own commit per `CLEANUP.md`
 
 ## Hand-off / next phase
 
-**D-2 landed**, plus its corrective follow-up (the §(K-grid) gap-map cell
-rewrite, and this commit's repair of its one false preservation-table row —
-(GR-4′)'s routing qualifier; D-3 landed earlier, the FRICTION.md archive
-migration). **Next concrete commit: D-1** (recompute the
-*Section index* table from scratch against the post-D-2 file — per D-1's own
-fix instruction, do not port forward either the original coordinator-seeded
-table or this round's now-superseded snapshot). D-5 is a watch-item, not a
-fix, and needs no commit unless it trips. Once this round's task list is
-empty (D-1 lands), hand back to `notes/Phase39.md` *Hand-off* for the
+**D-1 landed** (2026-08-13): the *Section index* table (`Pencil-informal.md`
+line 83 header onward) recomputed from scratch against the post-D-2 file,
+confirmed byte-identical to D-1's own sweep-recorded "actual" column (no
+further drift — the two intervening commits touched only line 248). D-2 and
+D-3 landed earlier (D-2 with its corrective follow-up, the §(K-grid) gap-map
+cell rewrite and its one false preservation-table row repaired). **Next
+concrete commit: D-6** (the *Section index*'s own §(K-grid) status cell is
+the same changelog-in-a-navigation-table defect D-2 just fixed in the gap
+map — see its task entry for the measurements, the scoping constraint, and
+the open sub-question on §(K-ann)/§(K-out)). D-5 is a watch-item, not a fix,
+and needs no commit unless it trips. Once this round's task list is empty
+(D-6 lands), hand back to `notes/Phase39.md` *Hand-off* for the
 tenth-direction selection — unblocked by this round, not gated on it.
 
 ## Decisions made during this round
@@ -362,6 +431,23 @@ tenth-direction selection — unblocked by this round, not gated on it.
   the D-2 task entry; the defect is logged in `notes/dispatch-log.md`.
   Standing lesson: **a self-reported preservation table is an attestation
   like any other — diff the artifact, do not read the table.**
+- **D-1 landed** (2026-08-13): the *Section index* table's 20 non-exact rows
+  (§(K-grid) was already exact) recomputed from scratch against the
+  post-D-2 file — heading starts by `grep`, each end by walking back over
+  blank-line runs from the next heading (the §(K-out) double-blank-line trap
+  re-verified). Result matched the sweep's own "actual" column exactly,
+  confirming the two intervening single-line commits (`dc4ecc7b`,
+  `97c9661c`) moved no heading. `git diff --stat`: 20 insertions/20
+  deletions, file still 14750 lines.
+- **D-6 appended** (2026-08-13, not fixed): the same *Section index* table's
+  own §(K-grid) *status* cell (column 3, line 83) is a changelog inside a
+  table the header calls navigation-only — the identical defect D-2 just
+  fixed one table over. Surfaced in coordinator verification of D-2, not
+  this round's sweep. Measurements recorded in the task entry; a
+  builder-side spot check this commit reproduced the same row ranking and
+  order-of-magnitude outlier under several tokenizations without matching
+  the given digits bit-for-bit — flagged for whoever fixes D-6 to recount
+  fresh rather than trust either table.
 
 ## Citations
 

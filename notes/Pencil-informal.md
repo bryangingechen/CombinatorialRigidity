@@ -62,27 +62,27 @@ section's own verdict block and the gap-map row, which stay authoritative.
 
 | § | lines | status (owner: the section's verdict block) | tag |
 |---|---|---|---|
-| *Shared dictionary* + test shapes `W19`/`S29` | 100–194 | serves **both** workbooks | `SD-` |
-| ***State of (K)* — the gap map** | 195–439 | **the entry point; a pass updates it in place** | — |
-| §(K-tight) | 440–699 | criterion proven-informally; **(K-tight) open — the phase's hardest item** | `KT-` |
-| §(K-pitch) | 700–1133 | (T1)–(T5) proven-informally; closed at `ℓ = 3`; uniform form open | `PT-` |
-| §(K-slide) | 1134–1425 | (S1) proven-informally; settled per member | `SL-` |
-| §(K-slide-cl) | 1426–1717 | reduction proven; **refuted as stated**; the `∃Σ` form open | `SC-` |
-| §(K-slide-comb) | 1718–2069 | **refuted as a class statement**; (C6)/(C7) proven-informally | `SB-` |
-| §(K-flank) | 2070–2642 | per shape, not a uniform gap; half 2 proven-informally | `FL-` |
-| §(K-pure) | 2643–3220 | direction C **refuted**; (PC-Z)/(PC-OBS) proven-informally; **(K-chord)** the successor | `PC-` |
-| §(K-Λ) | 3221–4181 | **refuted as an independent gap**; (Λ1) an identity; **(OUT)** lives here | `Λ` |
-| §(K-dom) | 4182–4589 | dominance holds at every probed habitat; **C1 not a route**; (D2) gains its mechanism from §(K-ann) | `DM-` |
-| §(K-σ) | 4590–5323 | **route σ a CANDIDATE** — the one live candidate; its *Field scope* is settled by §(K-clos), and two of its refutations reverse there | `σ` |
-| §(K-clos) | 5324–5998 | the field question **settled** ((AC-1)/(AC-7)); **(AC-6) refuted as a class statement**, open only on the tight stratum | `AC-` |
-| §(K-ann) | 6001–7509 | the **recipe** ((ANH-2)/(ANH-3)) and (ANH-1)/(ANH-4) proven; the residue is **(ANH-R1)**, relocation #4 — since Steps A10–A13 (direction R) **one-point-decidable per shape, discharged at every probed triple, pointwise REFUTED** ((ANH-12)); since Steps A14–A17 (direction Q) the M2 "upgrade" is **struck as redundant** ((ANH-16)), the bare-cycle stratum is governed by **one universal irreducible degree-12 polynomial** ((ANH-14)), and the residue is **chart-to-frame dominance, no rank condition left** | `ANH-` |
-| §(K-out) | 7510–8705 | (OUT)'s hypothesis **measured**: **(OC-3)** proves it is never automatic (no counting route); availability pointwise; **(OC-7)** a harness defect, its necessity clause **refuted** ((OC-14)); since Steps O9–O12 (direction O) the combinatorial half is **proven** ((OC-10), items 1–2 struck) and residue **(OC-8)** is a **containment** question — at degree-3 hubs the bad locus is the explicit panel line `C₀` | `OC-` |
-| §(K-ind) | 8706–9051 | **refuted as a route** | `IN-` |
-| §(K-Δ) | 9052–9318 | **NO HIT — the lead is discharged** | `DL-` |
-| §(K-bare-ext) | 9319–9358 | open, nothing being developed | `BE-` |
+| *Shared dictionary* + test shapes `W19`/`S29` | 109–202 | serves **both** workbooks | `SD-` |
+| ***State of (K)* — the gap map** | 204–448 | **the entry point; a pass updates it in place** | — |
+| §(K-tight) | 450–708 | criterion proven-informally; **(K-tight) open — the phase's hardest item** | `KT-` |
+| §(K-pitch) | 710–1142 | (T1)–(T5) proven-informally; closed at `ℓ = 3`; uniform form open | `PT-` |
+| §(K-slide) | 1144–1434 | (S1) proven-informally; settled per member | `SL-` |
+| §(K-slide-cl) | 1436–1726 | reduction proven; **refuted as stated**; the `∃Σ` form open | `SC-` |
+| §(K-slide-comb) | 1728–2078 | **refuted as a class statement**; (C6)/(C7) proven-informally | `SB-` |
+| §(K-flank) | 2080–2651 | per shape, not a uniform gap; half 2 proven-informally | `FL-` |
+| §(K-pure) | 2653–3229 | direction C **refuted**; (PC-Z)/(PC-OBS) proven-informally; **(K-chord)** the successor | `PC-` |
+| §(K-Λ) | 3231–4190 | **refuted as an independent gap**; (Λ1) an identity; **(OUT)** lives here | `Λ` |
+| §(K-dom) | 4192–4598 | dominance holds at every probed habitat; **C1 not a route**; (D2) gains its mechanism from §(K-ann) | `DM-` |
+| §(K-σ) | 4600–5332 | **route σ a CANDIDATE** — the one live candidate; its *Field scope* is settled by §(K-clos), and two of its refutations reverse there | `σ` |
+| §(K-clos) | 5334–6009 | the field question **settled** ((AC-1)/(AC-7)); **(AC-6) refuted as a class statement**, open only on the tight stratum | `AC-` |
+| §(K-ann) | 6011–7531 | the **recipe** ((ANH-2)/(ANH-3)) and (ANH-1)/(ANH-4) proven; the residue is **(ANH-R1)**, relocation #4 — since Steps A10–A13 (direction R) **one-point-decidable per shape, discharged at every probed triple, pointwise REFUTED** ((ANH-12)); since Steps A14–A17 (direction Q) the M2 "upgrade" is **struck as redundant** ((ANH-16)), the bare-cycle stratum is governed by **one universal irreducible degree-12 polynomial** ((ANH-14)), and the residue is **chart-to-frame dominance, no rank condition left** | `ANH-` |
+| §(K-out) | 7534–8728 | (OUT)'s hypothesis **measured**: **(OC-3)** proves it is never automatic (no counting route); availability pointwise; **(OC-7)** a harness defect, its necessity clause **refuted** ((OC-14)); since Steps O9–O12 (direction O) the combinatorial half is **proven** ((OC-10), items 1–2 struck) and residue **(OC-8)** is a **containment** question — at degree-3 hubs the bad locus is the explicit panel line `C₀` | `OC-` |
+| §(K-ind) | 8730–9074 | **refuted as a route** | `IN-` |
+| §(K-Δ) | 9076–9341 | **NO HIT — the lead is discharged** | `DL-` |
+| §(K-bare-ext) | 9343–9381 | open, nothing being developed | `BE-` |
 | §(K-grid) | 9383–13277 | **reduction proven** — the tight-stratum residual of (AC-6) in final combinatorial form; since Steps G8–G13 (direction G) **(GR-4) is refuted-as-stated and repaired ((GR-8)/(GR-4′), off the critical path)** and the **tree-triple certificate theorem (GR-9)** discharges the geometry; since Steps G14–G18 (direction E) **the (GR-10) min-max is REFUTED as posed** ((GR-13) NP-completeness at balance + 18 habitat separators), (GR-10) itself surviving exhaustive enumeration, and the residual re-aims at **(GR-15)**; since Steps G19–G23 (direction TCOL) the residual reduces to a **square system on the hub multigraph** ((GR-16)), the per-circuit necessity is a **run count** binding only at two length profiles ((GR-17)), the tree-triple is a **grouping of an always-existing 6-tree packing** ((GR-18)), and a **collapse-order-4 certificate covers all 18 habitat separators** ((GR-19)); since Steps G24–G28 (direction CFLANK) an exact **length-budget law** ((GR-21)) pins the binding-circuit-rich stratum to `D = 0`, **five caps** ((GR-22)), a **flip injection** ((GR-23)) and a **private-branch repair theorem** ((GR-24)) turn NC1-satisfiability from measured into proven, a **cut criterion** ((GR-25)) reaches 18 hubs, and an exhaustive **40 742-shape hunt** ((GR-26)) finds no flank; since Steps G29–G37 (directions GCAP/GUNIF) the (GR-8) maximum is **exactly computable** ((GR-27)) with a closed defect formula at `Λ = ∅` ((GR-28)(i)–(iii)), and the `g ≤ 1` cap at `k ≥ 3` is **REFUTED with an exact boundary** — a theorem exactly at `n_hub ≤ 6` ((GR-29)), false from `n_hub = 8` on ((GR-30)) — so the certificate-3 **uniformity route** is dead as specified — but **(GR-15) itself stays OPEN, no flank found** (per shape it holds at all four refutation witnesses, (GR-31)); since Steps G38–G42 (direction GEXIST) the uniform existence target **reduces to a minority-dart orientation problem**: a **capacity theorem** ((GR-32)) makes the whole graph exactly critical with every proper chunk one unit slack (a pointwise flank mechanism impossible in habitat), a **weakness lemma** ((GR-33)) makes binding an alignment of `≥ 2` scarce per-hub weaknesses and casts the all-even case as a pure in-degree-{1,2} orientation problem, the **uncorrelated union-bound mechanism is REFUTED by a constructed witness** (`CL10`, `E[#binding] = 3.23 > 1` and growing) while a correlated **rung-minority rule** ((GR-34)) closes the whole ladder family by exact rank-certified colourings, and an **uncrossing lemma** ((GR-35)) (defect submodular) organizes the binding family and localizes the guided repair — but no g-flank is found (the hot-dart census: 0 fully-hot hubs at `n_hub ≤ 6`) and **the target itself, with (GR-15), stays OPEN** | `GR-` |
-| §(K-frame) | 13278–14368 | residue **(FR-R1) PROVEN** since Steps FR7–FR11 (direction PEX); the bare-cycle stratum is finite (22 iso classes / 76 sites / 1976 labelled) and exhaustively enumerated; the only rider is (FR-4)'s named gap | `FR-` |
-| §(K-mech) | 14369–14749 | **both §(K-pure) *P8* anomalies mechanised** in one calculus (the load space `Ω`); **6v11e RESCUED** ((MX-7)) — the slide device closes it after all; the σ rider settled NO ((MX-8)); the `\|V°\| ≤ 6` predictor measured complete-and-sound ((MX-9)) | `MX-` |
+| §(K-frame) | 13279–14368 | residue **(FR-R1) PROVEN** since Steps FR7–FR11 (direction PEX); the bare-cycle stratum is finite (22 iso classes / 76 sites / 1976 labelled) and exhaustively enumerated; the only rider is (FR-4)'s named gap | `FR-` |
+| §(K-mech) | 14370–14750 | **both §(K-pure) *P8* anomalies mechanised** in one calculus (the load space `Ω`); **6v11e RESCUED** ((MX-7)) — the slide device closes it after all; the σ rider settled NO ((MX-8)); the `\|V°\| ≤ 6` predictor measured complete-and-sound ((MX-9)) | `MX-` |
 
 **Live vs settled**, using the division of the 2026-08-05 reorganization pass.
 Live: §(K-tight), §(K-Λ), §(K-σ), §(K-pure), **§(K-ann)** — whose live residue is
