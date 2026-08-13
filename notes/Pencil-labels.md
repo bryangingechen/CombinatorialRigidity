@@ -226,6 +226,28 @@ the 2026-08-12 refinement of the standing delegation (`notes/Phase39.md`
 *Current state*). No flank found; (GR-15) stays OPEN, unchanged in
 status.
 
+**Reserved 2026-08-13 for the EIGHTH direction — GUNIF**
+(`notes/Pencil-fanout.md` §"Eighth direction"; selected under the
+standing 2026-08-07 delegation as refined 2026-08-12 — the TERMINATION
+test checked on GCAP's return did **not** fire, `notes/Phase39.md`
+*Hand-off*, not a fresh adjudication). The code **GUNIF** (the
+deliverable is the **uniform** statement) was verified **0-hit as a raw
+substring**, case-insensitively, across `*.md`, `*.tex`, `*.lean`,
+`*.py`, `*.m2` in this prep commit — as was the driver name `gunif`
+(`notes/scripts/w4/gunif.py`; suggested modes
+`--menu`/`--exh`/`--repair`/`--adv`/`--validate`, left to the direction
+to finalize; no M2 leaf expected) — and, checked but **not** used,
+`GDART`/`gdart` and `K-unif`/`GU-` (see below). The direction *extends*
+§(K-grid), so its primary reservation is the unclaimed tails of that
+section's live families — **(GR-29)+ and Steps G34+** — with
+**§(K-gcap)/`GC-` the designated outgrowth section** should the
+argument need one: GCAP's own reservation of that pair returned it
+**unopened**, and its g-family-cap semantics are exactly GUNIF's
+subject, so reusing it is the correct call under this file's own
+anti-proliferation purpose (*Why this file exists*, above). **§(K-unif)/
+`GU-` was considered and is deliberately NOT reserved** — verified
+0-hit and recorded here so a successor does not mint them.
+
 **One naming hazard the second fan-out created, recorded rather than renamed
 (L4).** The **direction letters A/B/C are re-used** between the 2026-08-05 fan-out
 (A = §(K-flank), B = §(K-Λ), C = §(K-pure)) and the 2026-08-06 one

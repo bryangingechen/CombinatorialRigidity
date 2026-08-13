@@ -2,7 +2,8 @@
 
 **Status: ALL FIVE fan-outs COMPLETE; the SIXTH direction (CFLANK,
 §"Sixth direction") LANDED 2026-08-07; the SEVENTH direction (GCAP,
-§"Seventh direction") LANDED 2026-08-13.** The
+§"Seventh direction") LANDED 2026-08-13; the EIGHTH direction (GUNIF,
+§"Eighth direction") is PREPARED 2026-08-13, not yet dispatched.** The
 first (A/B/C
 below, prepared 2026-08-05) landed 2026-08-05/06; the second (T/R/M,
 §"Second fan-out") 2026-08-06; the third (G/Q/O, §"Third fan-out")
@@ -11,13 +12,18 @@ below, prepared 2026-08-05) landed 2026-08-05/06; the second (T/R/M,
 direction") 2026-08-07 — no flank found, (GR-15) stays OPEN; the seventh
 (GCAP, §"Seventh direction") 2026-08-13 — (GR-27)/(GR-28) proven /
 true-modulo-named-gap, the certificate-3 target proven per swept shape,
-still no flank, (GR-15) stays OPEN. CFLANK was a
+still no flank, (GR-15) stays OPEN; the eighth (GUNIF, §"Eighth
+direction") 2026-08-13 — prepared, targeting *Step G33*'s own two
+named successor items, not yet dispatched. CFLANK was a
 **single direction**, not a fan-out — its selection was a **coordinator
 delegation** (`notes/Phase39.md` *Current state*, the 2026-08-07 "keep
 going on my own judgment" adjudication), not a user pick from a candidate
 list; GCAP's selection was **delegated further to a top-rung fable
 recon** (the 2026-08-12 adjudication, verbatim in `notes/Phase39.md`
-*Current state*). This file remains the dispatch-scoping template for any
+*Current state*); GUNIF's selection follows the same standing delegation,
+from the TERMINATION test checked (and not fired) on GCAP's return
+(`notes/Phase39.md` *Hand-off*), not a fresh adjudication. This file
+remains the dispatch-scoping template for any
 future fan-out or single direction. Three independent research directions on kernel (K), specified
 here so a fresh session can dispatch them at S=1 without re-deriving the
 scoping. User-adjudicated this session (verbatim below). The mathematics
@@ -1360,3 +1366,245 @@ The fifth fan-out's landing checklist applies verbatim, as it did for
 CFLANK — including moving the reservation row into the registry and
 adding the driver's rows to `notes/scripts/README.md` §3's invocation
 table in the landing commit.
+
+## Eighth direction — GUNIF (single direction, prepared 2026-08-13)
+
+**Status: PREPPED, not yet dispatched.** A **single direction**, not a
+fan-out. Its target is named in `notes/Phase39.md` *Hand-off*: the
+recorded TERMINATION test for the (GR-15)/grid line was checked on
+GCAP's return and did **not** fire (a cap was proven and new mechanisms
+were named), so the next step is an eighth direction, not a user
+escalation — selected under the standing 2026-08-07 delegation ("keep
+going on my own judgment") as refined 2026-08-12, the same standing
+delegation CFLANK and GCAP were selected under; no fresh adjudication
+was sought or needed. No standing constraint changes.
+
+**Direction code GUNIF** (the deliverable is the **uniform**
+statement), minted under clause **(L5)**. Verified **0-hit as a raw
+substring**, case-insensitively, across
+`*.md`/`*.tex`/`*.lean`/`*.py`/`*.m2` in this prep commit — as is the
+driver basename `gunif`, and — checked but **not** used —
+`GDART`/`gdart` and `K-unif`/`GU-` (see *Labels* below).
+
+### The two targets
+
+Both from §(K-grid) *Step G33*'s *What would change this* items (i)–(ii)
+(§(K-grid) Steps G29–G33, `notes/Pencil-informal.md`):
+
+**(a)** Close **(GR-28)(iv)'s `k ≥ 3` case** — the finite dart-menu case
+analysis whose standing evidence is exhaustive at **549 172** NC1-passing
+blocks of the whole `Λ = ∅` `D = 0` stratum with **0 exceptions**, but
+which *Step G31* explicitly leaves open (the `k = 2` argument does not
+generalize — see *Step 0* below, the crux of the whole direction).
+
+**(b)** A **repair theorem** — the (GR-24) analogue for the g-family,
+turning the *measured* ≤ 2-flip repair locality of *Step G32* into a
+theorem. The measured figures: **23 950/23 950** binding NC1-passing
+colourings of the `Λ = ∅` stratum reach a fully-good colouring by
+balance-preserving flips of at most two even branches — **22 654** at
+distance 1, **1 296** at distance 2, **0** unrepaired.
+
+Together, (a) + (b) + (GR-23)/(GR-24) prove the certificate-3 target
+(*Step G32*'s target statement) **uniformly** on the `Λ = ∅`, `D = 0`
+stratum — i.e. **(GR-15) there, modulo (GR-4′)** (never "outright" — see
+*Riders* below).
+
+**This is the arc's first PROOF direction, not a numerics hunt, and
+three consequences follow that invert the previous seven directions'
+working assumptions — carry all three into the dispatch.**
+
+**(i) The deliverable is a proof at the workbook's proven-informally
+bar, not a sweep.** A wider `--law`/`--flip`-style sweep over more
+shapes, more `k`, or more blocks is explicitly **not progress** here:
+both pools are already exhaustive over the finite objects each target
+quantifies (549 172 blocks, 0 exceptions; 23 950 colourings, 0
+unrepaired). The deliverable is the *argument* that the finite dart-menu
+case list is complete (a) and the argument that the repair hypothesis
+holds universally (b).
+
+**(ii) The driver's role inverts.** Every prior direction's driver
+*produced* the headline figure (a census, a cap, a hunt). GUNIF's driver
+instead **verifies the case menu's exhaustiveness** — enumerating every
+dart menu *Step 0* below identifies, discharging each one, and checking
+machine-checked agreement against the existing 549 172-block pool — and
+**checks the repair theorem's hypothesis** at every configuration the
+argument's case split produces. Concretely: **F11 becomes "which mode
+certifies that this case list is complete?"**, not "which mode produces
+the figure?" — name that mode explicitly for each of (a) and (b).
+
+**(iii) The honest-MISS shape changes accordingly.** A MISS here is not
+"the pool has a counterexample" (the arc's usual shape) — it is either
+*"the case analysis has an irreducible case, named, with why the
+ear-law / budget handle fails to charge it"* or *"the repair fails at a
+named configuration"*. Either is a full deliverable on the same footing
+as a proof: name the case or the configuration precisely, with its
+(GR-29)+/Step G34+ label, as the sharpest known obstruction — do not
+report an inconclusive "the case analysis is hard" without naming the
+specific sticking case.
+
+### Step 0 — mandatory load-bearing pin, before any derivation
+
+Pin the following from the newly landed Steps G29–G33 before writing a
+single line of argument (the GCAP dispatch's own Step 0 discipline: if a
+prior dispatch has not read the definitions a spec depends on, the next
+one must).
+
+**The exact statement of (GR-28)(iv).** *"NC1 ⟹ `max_P g(P) ≤ 1` at all
+`k` (`D = 0`, `Λ = ∅`)"* — currently **true-modulo-named-gap**: the `k = 2`
+case (theta shapes) is proven (*Step G31* (iii)); the `k ≥ 3` case is
+measured exhaustively (549 172 blocks, 0 exceptions) but not argued.
+
+**What the `k = 2` proof does that `k ≥ 3` cannot reuse — name this
+explicitly, it is the crux of the whole direction.** *Step G31*'s proof
+of (iii): a **cost-0 path** has every branch length-1-in-`A` and every
+interior hub `AA`; two cost-0 paths between the same core-pair form a
+circuit whose own defect is `≤ 2` (cost `0 + 0` plus at most 2 non-`AA`
+corner indicators) — **already an NC1 violation by (i)**, because at
+`k = 2` the circuit *is* the whole theta, so a `defect(S) ≤ 1` hypothesis
+forcing both of its two paths to cost 0 is a *direct* contradiction with
+the standing NC1 hypothesis on the very same object. **At `k ≥ 3` this
+collapses**: forcing `defect(S) ≤ 1` only forces **at least
+`3(k−1) − 1` of the `k` core paths** to cost 0 (not all of them), and
+`3(k−1) − 1 > 2(k−1) − 1` forces **a circuit of cost-0 paths inside the
+core** of length `t`, but that circuit need not be the whole `S`
+(`2 ≤ t < k`, or the whole core). A `t = 2` sub-circuit is dead by the
+`k = 2` argument; but a `t ≥ 3` sub-circuit's defect is its non-`AA`
+**corner** count, and corners are **degree-3-in-`S` hubs, which
+contribute nothing to `defect_A(S)`** ((GR-28)(i)'s formula) — so NC1's
+own `defect ≥ 3` requirement on that *sub*-circuit does **not** propagate
+into a contradiction with `defect(S) ≤ 1` the way it did at `k = 2`,
+where the sub-circuit and the whole object coincided. Closing `k ≥ 3`
+needs a **finite dart-menu case analysis** at every `t ≥ 3` cost-0-path
+sub-circuit with `≥ 3` non-`AA` corners under the mono-hub ban — *Step
+G31* records that "every hand-attempt to realize `defect ≤ 1` died on
+it, but the... case analysis is **not closed**."
+
+**The ear-law handle (*Step G31*) and the named successor mechanisms
+(*Step G33*).** For an open ear `E` on a sub-multigraph `P`:
+`g(P ∪ E) = g(P) + 3 − #{X : X breaks E or separates its feet in P∖X}` —
+so `max g ≤ 0` propagates whenever every ear carries three "cutting"
+classes, with NC1 as the base case. *Step G33* names two successor
+mechanisms explicitly as the residual's raw material: (1) the **uniform
+existence gap** argument — the same constant-budget (GR-21) mechanism
+that killed the NC1 flank and the g-flank in the falsification control,
+stated as a theorem rather than a control; (2) the dart-menu
+localization above (a cost-0 core circuit with `≥ 3` non-`AA` corners,
+every core node mono-ban-fed by a single length-2 path) as the precise
+site any `k ≥ 3` counter-configuration would have to occupy.
+
+**(GR-24)'s proof shape — the template the repair theorem should
+follow.** *Step G27*'s (GR-24): given a **privacy hypothesis** (every
+binding circuit owns an even branch lying in no other binding circuit),
+take any admissible colouring and flip the private branch of every
+violated circuit **simultaneously**; each flip is (GR-23)'s singleton
+flip, so each repairs its own circuit and — by privacy — disturbs no
+other binding circuit's count; the no-monochromatic-hub property
+survives because the two darts at a third branch of the same hub still
+differ after the flip. The hypothesis's own **universality** is then
+argued by a **local-configuration case analysis bounded by the excess
+budget**: (GR-24)'s hypothesis can only fail at a local configuration
+that a direct computation shows forces a specific dense graph
+(`G° = Q₃` with all-length-2 branches, or an over-dense 6-set), which
+then violates the (GR-21)/(GR-25) length budget — the failure mode is
+itself finite and enumerable, and the budget rules it out. The
+g-family repair theorem should follow exactly this two-part shape: (1) a
+simultaneous-flip argument (using whichever move *Step G32*'s measured
+≤ 2-flip data identifies — a single even-branch flip, two independent
+even-branch flips, or the odd-pair flip) repairing independently-violated
+configurations without disturbing others under a privacy-style
+hypothesis; (2) a local-configuration case analysis, bounded by
+(GR-21)'s constant length budget, showing the hypothesis's failure mode
+is finite and does not survive the budget.
+
+### Verification priority order — the driver's inverted role
+
+1. **`--menu`** — enumerate and classify every `t ≥ 3` cost-0-path
+   sub-circuit dart menu under the mono-hub ban; machine-check against
+   the 549 172-block pool that no menu realizes `defect ≤ 1`.
+2. **`--exh`** — the case-menu exhaustiveness certificate itself: the
+   mode that answers F11's "which mode certifies the case list is
+   complete?" for target (a).
+3. **`--repair`** — construct and verify the repair theorem's
+   simultaneous-flip argument against *Step G32*'s ≤ 2-flip data, for
+   target (b); the mode that answers F11's certification question there.
+4. **`--adv`** — a falsification control on both the case analysis and
+   the repair hypothesis, in *Step G33*'s / CFLANK's idiom: targeted
+   constructions at the cap's / repair's own worst case.
+5. **`--validate`** — all modes, budgeted against the 600 s foreground
+   ceiling (F15); split into separate invocations if the combination
+   would exceed it, per every prior direction's `--validate` note.
+
+The direction sets the final mode list; the above is a suggestion, not a
+pin.
+
+### Riders — carried explicitly, required in the return
+
+- The result is at **`Λ = ∅`**, **`D = 0`**, and **modulo (GR-4′)**.
+- The **`Λ ≠ ∅` closed-form analogue** (the (GR-28) analogue with
+  `Γ`-merged classes, *Step G33*'s item (iii)) stays **unswept**.
+- The **`D > 0` lift** (*Step G33*'s item 3, CFLANK item (iii)) stays
+  **unswept**.
+- **Never write that this closes (GR-15).** At best it closes (GR-15)
+  on the `Λ = ∅`, `D = 0` stratum, modulo (GR-4′) — full (GR-15)
+  quantifies over every tight class shape, and `Λ ≠ ∅` / `D > 0` remain.
+
+### Cautions (binding)
+
+- Do not re-derive (GR-1)–(GR-28); do not re-attack the (GR-10) min-max
+  as a *characterization* ((GR-13): NP-complete at balance); all of
+  `notes/Phase39.md` *Hand-off*'s "Deliberate non-goals" bind.
+- The (K-res)/(GR-15) quantification question (whether (GR-15) as
+  quantified also covers the `W19`-type (K-res) sibling habitat) is
+  **explicitly NOT this direction's scope**; it is a coordinator
+  hand-off note (`notes/Phase39.md` *Hand-off*).
+- No σ-fixed witness is read as generic (§(K-clos) (AC-9)); a rank miss
+  of a literal construction at one parameter point is not a miss of the
+  recipe (*Step G4* item 1) — retry at seeded random rational parameters
+  before calling anything structural.
+- "Widening a pool is evidence, not progress" binds at its strongest
+  here (consequence (i) above) — a wider sweep with no case-list /
+  repair-hypothesis argument attached is not a deliverable.
+
+**Driver** `notes/scripts/w4/gunif.py` (imports `gcap.py` / `cflank.py` /
+`gridcol.py` / `grid.py` read-only); suggested modes
+`--menu`/`--exh`/`--repair`/`--adv`/`--validate` — the direction sets the
+final list. **Labels**: mint under **(GR-29)+** and **Steps G34+**, the
+unclaimed tails of §(K-grid)'s live families (the owning section stays
+authoritative). **On outgrowth, reuse the already-reserved §(K-gcap) /
+`GC-`** rather than minting anything new — GCAP returned that pair
+**unopened**, and its g-family-cap semantics are exactly GUNIF's
+subject, so reusing it is the correct call under the registry's
+anti-proliferation purpose. **Do not mint §(K-unif)/`GU-`** — considered
+and deliberately not minted; both verified 0-hit above and recorded here
+so a successor does not re-mint them. No M2 leaf expected — both targets
+are finite combinatorial statements.
+
+**Rung.** Mapped **top rung** — a crux proof attempt whose verdict
+re-routes the line (the same trigger that put G, E, J, PEX, TCOL, CFLANK
+and GCAP there); per the 2026-08-12 check-in all four rungs are
+dispatchable, so **fable** (opus substitutes only if the weekly scoped
+limit runs out — the same standing qualifier as GCAP's).
+
+**Mechanics: identical to the seventh direction's.** Read-only w.r.t.
+every **tracked** file; commits **NOTHING**; creates only its own
+**untracked** driver at the pinned path above (importing the harness
+read-only, left untracked for the coordinator to gate and commit);
+writes its full mathematics as a **draft workbook section**
+`fanout-GUNIF.md` in the session scratchpad (not the repo), in the
+workbook's register, with an explicit confidence verdict
+(proven-informally / true-modulo-named-gap / open / refuted) and a "what
+would change this" line; keeps the **return message** to a tight
+verdict. F11 binds ("forced"/"exhaustive"/"the only" are their own claim
+class needing their own driver — doubly so here, since the whole
+direction *is* an exhaustiveness claim); F15's over-ceiling shape
+applies to any invocation that cannot finish inside 600 s.
+`notes/scripts/README.md`'s conventions bind (exact ℚ, seeded
+randomness, degeneracy guards + rank/dimension asserts, import from the
+canonical layer — check the *Divergences* table).
+
+### Landing (coordinator)
+
+The fifth fan-out's landing checklist applies verbatim, as it did for
+CFLANK and GCAP — including moving the reservation row into the registry
+and adding the driver's rows to `notes/scripts/README.md` §3's
+invocation table in the landing commit.

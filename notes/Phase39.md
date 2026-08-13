@@ -17,8 +17,9 @@ CFLANK (2026-08-07, six more structural results proven, an exhaustive 40 742-sha
 (GR-27)/(GR-28) proven / true-modulo-named-gap, the certificate-3 target proven **per
 swept shape**, **still no flank — (GR-15) stays OPEN**; full verdicts in *Decisions
 made*). **Class uniformity remains untouched by every round.** The **TERMINATION test on
-GCAP's return did NOT fire** (a cap was proven and new mechanisms named) — the next step
-is an **eighth direction**, not a user escalation; see *Hand-off*.
+GCAP's return did NOT fire** (a cap was proven and new mechanisms named), so the
+**eighth direction, GUNIF, is PREPPED 2026-08-13** — not yet dispatched, targeting
+*Step G33*'s own two named successor items; see *Hand-off*.
 Direction codes are **multi-letter and topic-tagged from the fifth fan-out on**
 (`notes/Pencil-labels.md` clause **(L5)**); the grandfathered single letters are re-used
 across dates — **always date those**.
@@ -69,7 +70,9 @@ constraints; the dated dispatch narrative is in *Decisions made* and git):
   the same check-in's top-rung/cap/rescue calls are otherwise unchanged. The coordinator's
   picks under it, sixth direction **CFLANK** (2026-08-07) and — per the 2026-08-12
   refinement below — seventh direction **GCAP** (2026-08-13), are one-lined in *Decisions
-  made*.
+  made*; the coordinator's next pick under the **same** delegation (no fresh
+  adjudication), eighth direction **GUNIF**, is **PREPPED 2026-08-13, not yet
+  dispatched** — see *Hand-off*.
 - **2026-08-12, seventh-direction delegation (refines the above; changes no standing
   constraint).** Asked whether the standing delegation still held for the seventh
   direction, the user answered, verbatim: *"Let's have a fable subagent make the decision
@@ -94,6 +97,12 @@ successor in the gap map; the structural positives run (Λ1), §(K-ann)'s recipe
 the tree-triple theorem (GR-9), (FR-1)–(FR-4) + **(FR-R1) PROVEN**, (GR-16)–(GR-19),
 (GR-21)–(GR-26) and (GR-27)/(GR-28); **class uniformity of the escape remains untouched by
 every one of the arc's thirty-two dispatches.**
+
+**Doc-debt, not to action now:** the §(K-grid) *State of (K)* gap-map row has
+accumulated six directions' narrative clauses in one table cell (T, then five
+"Since Steps Gxx–Gyy" clauses from G/E/TCOL/CFLANK/GCAP — GUNIF's landing would
+make seven) — against that map's own one-row-per-gap-with-status discipline. A
+compression slice is owed at the next cleanup round or at phase close, not now.
 
 > **The one live candidate, and it is NOT settled — `notes/Pencil-informal.md` §(K-σ)** (the
 > canonical home; the four obligations, the `--hunt` findings, the validation scope and the
@@ -262,15 +271,20 @@ discharge (residue (iv)) is CLOSED too**. The landed successor
 > **phase-shape decision to the user (USER-ADJUDICATION-REQUIRED)** rather than dispatch an
 > eighth direction) does not fire: GCAP proved a cap ((GR-27)/(GR-28)) and named new
 > mechanisms (the ear-law handle of *Step G31*, the `Λ ≠ ∅` closed-form successor of
-> *Step G33*). **The next step is an eighth direction, not a user escalation, targeting
-> *Step G33*'s own top item:** closing **(GR-28)(iv)'s `k ≥ 3` case** (a finite dart-menu
-> argument; exhaustive at 549 172 blocks, 0 exceptions, is the evidence) **plus a repair
-> theorem** (the (GR-24) analogue for the g-family) — together these prove the
-> certificate-3 target uniformly on the `Λ = ∅` `D = 0` stratum, i.e. (GR-15) there modulo
-> (GR-4′) (§(K-grid) *Step G33*, *What would change this* (i)–(ii)). The line's
-> **positive** termination is otherwise unchanged: cap + the `Λ ≠ ∅` flip + the
-> `D > 0` lift + (GR-4′) = (GR-15) proven = `hK` discharged on the tight stratum at char 0,
-> leaving char `p` ((AC-7)'s never-probed residual), `hbareSplit`, and the parked W4.
+> *Step G33*).
+>
+> **The EIGHTH direction, GUNIF, is PREPPED 2026-08-13 — not yet dispatched**
+> (`notes/Pencil-fanout.md` §"Eighth direction"; `notes/Pencil-labels.md`), under the
+> same standing delegation (no fresh adjudication). Targets *Step G33*'s own top hand-off
+> items (i)–(ii): closing **(GR-28)(iv)'s `k ≥ 3` case** (a finite dart-menu argument;
+> exhaustive at 549 172 blocks, 0 exceptions, is the evidence) **plus a repair theorem**
+> (the (GR-24) analogue for the g-family) — together proving the certificate-3 target
+> **uniformly** on the `Λ = ∅` `D = 0` stratum, i.e. (GR-15) there **modulo (GR-4′)**
+> (never "outright"), with the `Λ ≠ ∅` closed form and the `D > 0` lift staying **unswept
+> riders**. The line's **positive** termination is otherwise unchanged: cap + the
+> `Λ ≠ ∅` flip + the `D > 0` lift + (GR-4′) = (GR-15) proven = `hK` discharged on the
+> tight stratum at char 0, leaving char `p` ((AC-7)'s never-probed residual),
+> `hbareSplit`, and the parked W4.
 >
 > **Coordinator hand-off note, explicitly NOT loaded onto GCAP:** whether (GR-15) as
 > quantified ("every tight class shape") also covers the `W19`-type **(K-res)** sibling
@@ -346,66 +360,47 @@ Reverse-chronological, one line per landing; full derivations live in git,
 is the canonical home a successor reads.
 
 - **The SEVENTH direction — GCAP LANDED 2026-08-13** (`w4/gcap.py`; canonical home
-  §(K-grid) Steps G29–G33). **(GR-27)**/**(GR-28)** make the (GR-8) family exactly
-  computable with a `g ≤ 1` cap (proven at `k = 2`, measured 0 exceptions at all `k`); the
-  certificate-3 target **proven per swept shape** (4920+884+972, no MISS), CFLANK item (v)
-  closed at `Λ ≠ ∅` too, no flank; *Step G23*'s `Λ`-clause corrected in place. **(GR-15)
-  stays OPEN, unchanged**; `§(K-gcap)`/`GC-` unopened. Uniformity untouched.
+  §(K-grid) Steps G29–G33). **(GR-27)**/**(GR-28)**: the (GR-8) family exactly
+  computable, `g ≤ 1` cap (proven `k = 2`, measured all `k`); certificate-3 target
+  **proven per swept shape** (4920+884+972, no MISS), CFLANK item (v) closed at
+  `Λ ≠ ∅` too. **(GR-15) stays OPEN**; `§(K-gcap)`/`GC-` unopened; uniformity untouched.
 
 - **The SIXTH direction — CFLANK LANDED 2026-08-07** (`w4/cflank.py`; canonical home
-  §(K-grid) Steps G24–G28). Six proven results (GR-21)–(GR-26) — excess law, five sparsity
-  caps, flip injection, private-branch repair, cut criterion, the exhaustive 40 742-shape
-  hunt — close TCOL's two named flank sites **AS ROUTES**; **(GR-15) stays OPEN, no flank
-  found**. `§(K-prof)`/`PF-` returned unopened. Uniformity untouched.
+  §(K-grid) Steps G24–G28). Six proven results (GR-21)–(GR-26) — excess law, sparsity
+  caps, flip injection, private-branch repair, cut criterion, an exhaustive 40 742-shape
+  hunt — close TCOL's two flank sites **AS ROUTES**; **(GR-15) stays OPEN**. Uniformity untouched.
 
-- **The FIRST through FIFTH fan-outs — all LANDED 2026-08-05…08-07** (canonical homes the
-  workbook sections named; commits `d5ae55aa`…, `cdd23d30`, `12edc305`, `b32c1c2c`,
-  `cd0af9e1`). Thirteen directions: A/B/C (§(K-clos) field question settled, §(K-out)
-  (OC-3) the load-bearing negative, §(K-ann) the arc's first recipe) + the S1–S4 harness
-  re-baselining ((AC-9)/(OC-9)); T/R/M (M mechanised both §(K-pure) *P8* anomalies);
-  G/Q/O ((GR-4′), the tree-triple theorem **(GR-9) PROVEN**, (ANH-14), (OC-10)); E/J
-  ((GR-13) NP-completeness, the dominance lemma (FR-1)–(FR-4)); PEX/TCOL (**(FR-R1)
-  PROVEN**; (GR-16)–(GR-19), (GR-15) OPEN). **Class uniformity of `hK` untouched by all
-  thirteen.**
+- **The FIRST through FIFTH fan-outs — all LANDED 2026-08-05…08-07** (canonical homes
+  the workbook sections named; commits `d5ae55aa`…, `cdd23d30`, `12edc305`, `b32c1c2c`,
+  `cd0af9e1`). Thirteen directions (A/B/C+S1–S4, T/R/M, G/Q/O, E/J, PEX/TCOL); headline
+  positives **(GR-9)**/**(FR-R1)** PROVEN, (GR-15) OPEN; uniformity untouched throughout.
 
-- **Notes reorganization** (2026-08-05, docs only): label registry opened
-  (**`notes/Pencil-labels.md`**, the canonical home); workbook + design doc indexed, not
-  split; **`Phase39-design.md` FROZEN** (119 anchors).
+- **2026-08-05 docs/strategy pair**: Notes reorganization (label registry
+  **`notes/Pencil-labels.md`**; `Phase39-design.md` **FROZEN**, 119 anchors) and the broad
+  class-uniformity recon (five directions REFUTED, three successors ranked —
+  `notes/Pencil-strategy.md` **§4.6**, incl. (OUT) → §(K-Λ) *Step 5a*, `k=4 ⟺ hnoRigid` tight).
 
-- **Broad class-uniformity recon: five directions REFUTED, three live successors ranked**
-  (2026-08-05; canonical home `notes/Pencil-strategy.md` **§4.6**, incl. the (OUT)
-  derivation → §(K-Λ) *Step 5a* and the calibration **`k = 4` ⟺ `hnoRigid` is tight**).
+- **The route-σ arc — three landings** (2026-08-05, `sigma.py`; §(K-σ)): route σ a
+  **CANDIDATE**; σ-intertwining refuted literally / confirmed covariantly; σ-equivariant
+  recipes **DEAD**; obligation 1 DONE ((σ7) proven); field scope superseded by §(K-clos).
 
-- **The route-σ arc — three landings** (2026-08-05, `sigma.py`; canonical home §(K-σ)):
-  route σ a **CANDIDATE**; σ-intertwining refuted literally / confirmed covariantly;
-  σ-equivariant recipes **DEAD**; obligation 1's numerics half DONE ((σ7) proven); field
-  scope superseded 2026-08-06 by §(K-clos).
-
-- **(K-ind) REFUTED as a route** (2026-08-05, workbook §(K-ind)): no move of the induction
-  relates two class members; correction — the pencil side runs `Graph.pencil_reduction`,
-  not KT Thm 4.9.
+- **(K-ind) REFUTED as a route** (2026-08-05, §(K-ind)): no induction move relates two
+  class members; correction — pencil side runs `Graph.pencil_reduction`, not KT Thm 4.9.
 
 - **(K-Δ): the Δ-matroid lead CHECKED AND REFUTED** (2026-08-05, §(K-Δ), literature only)
-  — two fatal hypothesis failures; §2.2 sharpens to *the missing ingredient is the ground
-  set, not the min-max*.
+  — two fatal hypothesis failures; missing ingredient is the ground set, not the min-max.
 
-- **The `g₁₄` clause is NOT forced by any class habitat — Λ-completeness stands as written**
-  (2026-08-05, `outer.py`; workbook §(K-Λ) *Step 3a*). Residual: ≥ 2 hubs on a companion interior.
+- **§(K-Λ) triad** (2026-08-05): `g₁₄` clause NOT forced, Λ-completeness stands
+  (`outer.py` *Step 3a*); (Λ0) PROVEN class-uniform, criterion widened to (Λ0f′)
+  (`m2/lambda0.m2`); Macaulay2 layer LANDED, (Λ1) an IDENTITY over the function field
+  (`m2/lambda1.m2`).
 
-- **(Λ0) + the `a`-line spans PROVEN at the generic point, CLASS-UNIFORM; criterion widened
-  to (Λ0f′)** (2026-08-05, `m2/lambda0.m2`; §(K-Λ)).
+- **The 2026-08-05 research day, sixth–ninth dispatches** (§(K-flank)/§(K-pure)/§(K-Λ)/
+  §(K-dom)): conjecture HOLDS at every uncovered flank (851 shapes); pure condition WRONG
+  INVARIANT; (K-Λ) ⟺ (K-wit) at `ℓ = 4`; dominance HOLDS but NOT a route.
 
-- **The Macaulay2 layer LANDED; (Λ1) an IDENTITY over the function field** (2026-08-05,
-  `m2/lambda1.m2`; conventions §5.4 / `notes/scripts/m2/README.md`).
-
-- **The 2026-08-05 research day, sixth–ninth dispatches** (canonical homes §(K-flank),
-  §(K-pure), §(K-Λ), §(K-dom)): conjecture HOLDS at every uncovered flank (851 shapes);
-  pure condition the WRONG INVARIANT; (K-Λ) ⟺ (K-wit) at `ℓ = 4`; dominance HOLDS but
-  NOT a route.
-
-- **Harness + workbook prep** (2026-08-05, two commits; no mathematics; 67/67 drivers
-  re-run, 0 changed figures) — `notes/scripts/README.md`; `notes/Pencil-W4-informal.md`;
-  the *State of (K)* map.
+- **Harness + workbook prep** (2026-08-05, two commits; no math; 67/67 drivers re-run,
+  0 changed figures) — `notes/scripts/README.md`; `Pencil-W4-informal.md`; *State of (K)* map.
 
 - **(K-slide-comb) REFUTED class-wide; packing half uniform ((C6)); (C7) corrected**
   (2026-08-05, `kslidecomb.py`; workbook §(K-slide-comb)).
@@ -419,30 +414,24 @@ is the canonical home a successor reads.
 - **(K-tight) KT pp. 684–691 re-pin DONE — carrier escape criterion proven+validated**
   (2026-08-02, `repin.py`; workbook §(K-tight)); kernel narrowed to (K-move)/(K-pitch).
 
-- **W4 residual arc, three landings** (2026-08-02; canonical home
-  `notes/Pencil-W4-informal.md`): kernel-widening PRICED (only `hK` widens, to
-  **(K-res)**); **(SAFE-RES) REFUTED** (successor (E)+(T)+(V)); **`hnoGood'` vacuity
-  REFUTED** (`W19`), so branch 4 needs content.
+- **W4 residual arc, three landings** (2026-08-02; `Pencil-W4-informal.md`):
+  kernel-widening PRICED (only `hK` widens, to **(K-res)**); **(SAFE-RES) REFUTED**
+  (successor (E)+(T)+(V)); **`hnoGood'`** vacuity REFUTED (`W19`), branch 4 needs content.
 
-- **The 2026-07-30 recon day** (full record `notes/Phase39-design.md` + git): corank
-  stratification leaves **(K-tight)**; (K-bare) extension NO-GO (**(K-bare-ext)**); W4
-  decomposed, W4-L4b pinned buildable, gates N8/N9/N10/N10b PASSED. User adjudications
-  verbatim: **"C: literature hunt + A"** (K), **"C: cheap numerics extensions + A"**
-  (K-bare), **"B: L4 recon first"** (W4); option B **NOT commissioned** in either case.
+- **The 2026-07-30 recon day** (`Phase39-design.md` + git): corank stratification leaves
+  **(K-tight)**; (K-bare) extension NO-GO (**(K-bare-ext)**); W4 decomposed, W4-L4b pinned
+  buildable, gates N8/N9/N10/N10b PASSED. Adjudications: **"C: literature hunt + A"** (K),
+  **"C: cheap numerics + A"** (K-bare), **"B: L4 recon first"** (W4); option B NOT commissioned.
 
-- **(K) route-1 gate FIRED — locality REFUTED, NO-GO** (2026-07-30,
-  `escape/localtest*.py`); (K) reduced to *stress non-constancy*; since graded by (D2)
-  (far-dependence `3(k−3)`; the gate ran at the maximal `k = 6`).
+- **(K) route-1 gate FIRED — locality REFUTED, NO-GO** (2026-07-30, `localtest*.py`):
+  (K) reduced to *stress non-constancy*; graded by (D2) (far-dependence `3(k−3)`, `k=6`).
 
-- **The 2026-07-30 W5-L7 build day** (`hsplit` CLOSED IN FULL; canonical record
-  `notes/Phase39-design.md` + git): kernel **(K)** isolated; six leaves landed ending at
-  `pencil_conjecture_of_hcontract_hK_hbareSplit`; `escapePoly` refuted by a BLOCKED build.
+- **The 2026-07-30 W5-L7 build day** (`hsplit` CLOSED IN FULL; `Phase39-design.md` + git):
+  kernel **(K)** isolated; six leaves landed; `escapePoly` refuted by a BLOCKED build.
 
-- **Older W5-L5/L6 / W0–W4 entries** (one-lined; canonical detail
-  `notes/Phase39-design.md` + git): L6b re-pinned **triangle-free**; L6a's safe-vertex
-  transfer (the bare pin **FALSE**); W5-L5's full cut arm + the route-(b′) `PencilPair`
-  restatement; L4 `exists_pencilSeed_of_nondeg`; the `Pencil/` split; the W3/W2/W1/W0
-  layers.
+- **Older W5-L5/L6 / W0–W4 entries** (one-lined; detail `Phase39-design.md` + git):
+  L6b triangle-free re-pin; L6a bare-pin **FALSE**; W5-L5 cut arm + `PencilPair`
+  restatement; L4 `exists_pencilSeed_of_nondeg`; `Pencil/` split; W0–W3 layers.
 
 - **Promoted out of this phase** (pointers only): TACTICS-GOLF §11/§22/§23; TACTICS-QUIRKS
   §46/§96/§99–§104; FRICTION `exists_injOn_mapsTo_of_ncard_le` + `extensor_pair_smul`
