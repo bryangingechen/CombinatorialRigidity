@@ -6,19 +6,18 @@
 (2026-07-30). Only three items remain, all carried by the landed successor
 `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card` (`Molecule/Pencil/Escape.lean`):
 `hcontract` (W4), kernel `hK`, and kernel `hbareSplit` — see *Hand-off*. **All thirteen
-fan-out directions plus CFLANK, GCAP, GUNIF and GEXIST are now COMPLETE** (2026-08-05 →
-08-13; roster in *Decisions made*'s FIRST-through-NINTH entries). Headline positives
-**(FR-R1) PROVEN** and (GR-16)–(GR-28); GUNIF **REFUTED both of its targets** at
+fan-out directions plus CFLANK, GCAP, GUNIF, GEXIST and GORIENT are now COMPLETE**
+(2026-08-05 → 08-13; roster in *Decisions made*'s FIRST-through-TENTH entries). Headline
+positives **(FR-R1) PROVEN** and (GR-16)–(GR-28); GUNIF **REFUTED both of its targets** at
 `n_hub ≥ 8`; GEXIST is an honest **MISS** — three new theorems ((GR-32)/(GR-33)/(GR-35))
-reduce the uniform existence target to a **minority-dart orientation problem** with one
-unit of slack at every proper chunk, but the target itself, and with it **(GR-15), stays
-OPEN throughout; class uniformity untouched by every round.** The research arc
-**CONTINUES**; the TENTH direction **GORIENT is PREPPED** (2026-08-13, selected by a
-top-rung fable recon under the user's re-delegation; spec `notes/Pencil-fanout.md`
-§"Tenth direction") — **next commit: dispatch it, top rung** (see *Current state* +
-*Hand-off*). Direction codes are **multi-letter and topic-tagged from the fifth fan-out
-on** (`notes/Pencil-labels.md` (L5)); grandfathered single letters are re-used across
-dates — **always date those**.
+reduce the uniform existence target to a **minority-dart orientation problem**; GORIENT,
+also an honest **MISS**, adds four more ((GR-36)–(GR-39)) and re-anchors the target on a
+**bounded-deviation selection principle** (W3 the sticking instance) — but the target
+itself, and with it **(GR-15), stays OPEN throughout; class uniformity untouched by every
+round.** The research arc **CONTINUES**; **no eleventh direction is selected or
+dispatched** — that selection is the next concrete task (see *Hand-off*). Direction codes
+are **multi-letter and topic-tagged from the fifth fan-out on** (`notes/Pencil-labels.md`
+(L5)); grandfathered single letters are re-used across dates — **always date those**.
 
 ## Current state
 
@@ -64,8 +63,8 @@ constraints; the dated dispatch narrative is in *Decisions made* and git):
   picks under it — sixth **CFLANK** (2026-08-07), seventh **GCAP** (2026-08-13, per the
   2026-08-12 refinement below), eighth **GUNIF** (2026-08-13, **LANDED, both targets
   REFUTED**), ninth **GEXIST** (2026-08-13, **LANDED, an honest MISS with three new
-  theorems** — see *Hand-off*), tenth **GORIENT** (2026-08-13, **PREPPED** — the
-  dated bullet below) — are one-lined in *Decisions made*.
+  theorems**), tenth **GORIENT** (2026-08-13, **LANDED, an honest MISS with four more**
+  — see *Hand-off*) — are one-lined in *Decisions made*.
 - **2026-08-12, seventh-direction delegation (refines the above; changes no standing
   constraint).** Asked whether the standing delegation still held for the seventh
   direction, the user answered, verbatim: *"Let's have a fable subagent make the decision
@@ -98,19 +97,13 @@ constraints; the dated dispatch narrative is in *Decisions made* and git):
   MISS** — see *Hand-off*.
 - **2026-08-13, tenth-direction selection (changes no standing constraint).** At this
   session's check-in the user **re-delegated the pick to a top-rung fable recon** (the
-  third use of the 2026-08-12 shape). The recon's verdict — direction **GORIENT**: the
-  orientation theorem (GEXIST's target in the (GR-33)(iv) orientation form, attacked as
-  a Hall/discharging argument over the capacity-tight chunk hypergraph), a merge of
-  GEXIST's named attacks (a)+(b), with (d) repriced as a targeted-construction
-  falsification control and (c) deliberately deferred — was verified under the top-rung
-  tier and **ACCEPTED**. The recon also **corrected the ninth spec's stale
-  evidence-base figure** (since GEXIST's landing the ladders CL6/CL8/CL10 are proven
-  per-shape positives at `n_hub = 12/16/20`) and recorded one deliberate template
-  deviation (the sharpened E3 — a HIT surfaces the Lean-hold question). Spec and
-  ranking record: `notes/Pencil-fanout.md` §"Tenth direction"; reservation
-  `notes/Pencil-labels.md`. **PREPPED, not dispatched.**
+  third use of the 2026-08-12 shape). Verdict — direction **GORIENT**: the orientation
+  theorem merged with the defect-≤ 1 intersection kill, attack (d) repriced as a
+  falsification control, (c) deferred to eleventh — verified and **ACCEPTED**; full
+  ranking record `notes/Pencil-fanout.md` §"Tenth direction". **LANDED, an honest MISS**
+  — see *Hand-off*.
 
-**Kernel-(K) research arc — thirty-four docs+scripts-only dispatches, plus four
+**Kernel-(K) research arc — thirty-five docs+scripts-only dispatches, plus four
 strategy-only passes** (2026-08-02 → 08-13; the second is the 2026-08-12 fable recon,
 the third and fourth the 2026-08-13 ninth- and tenth-direction selection recons, all
 above). Canonical homes: workbook `notes/Pencil-informal.md` (**State of (K)** map =
@@ -118,7 +111,7 @@ entry point), `notes/Pencil-W4-informal.md` (W4-residual), `notes/Pencil-strateg
 (strategy); one line per landing in *Decisions made*, canonical with git — **not
 restated here**. Net effect: **disproof risk removed**, every refuted route/gap has a
 successor in the gap map, several structural positives proven; **class uniformity of
-the escape remains untouched by all thirty-four dispatches.**
+the escape remains untouched by all thirty-five dispatches.**
 
 **Doc-debt round CLOSED — `notes/Pencil-cleanup.md`** (2026-08-13, category D
 only; six tasks D-1…D-6 all landed or swept-clean, D-5 a watch item; full
@@ -228,15 +221,6 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
 
 **The phase stays OPEN** (the 2026-07-24 adjudication — no phase-close; see *Current state*).
 
-**The TENTH direction, GORIENT, is PREPPED** (2026-08-13; spec
-`notes/Pencil-fanout.md` §"Tenth direction" — the orientation theorem, merged
-with the defect-≤ 1 intersection kill, the hot-hub adjudication as its
-falsification control; selection re-delegated to a top-rung fable recon,
-*Current state*). **Next concrete task: dispatch GORIENT, top rung (fable)**
-— the dispatch prompt is the spec section itself; mechanics identical to the
-ninth's; reservation (GR-36)+/Steps G43+/`w4/gorient.py` in
-`notes/Pencil-labels.md`.
-
 **`hsplit` is CLOSED IN FULL** (W5-L7c-1…6, landed 2026-07-30) and **`hfresh`'s mechanical
 discharge (residue (iv)) is CLOSED too**. The landed successor
 `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card` (`Molecule/Pencil/Escape.lean`) wraps
@@ -255,7 +239,7 @@ discharge (residue (iv)) is CLOSED too**. The landed successor
 > **BLOCKED by the standing 2026-08-05 Lean-hold adjudication (general, not W4-scoped)**; does
 > not open without a fresh user adjudication.
 >
-> **The FIRST through NINTH directions are ALL COMPLETE** — roll call (with commit hashes for
+> **The FIRST through TENTH directions are ALL COMPLETE** — roll call (with commit hashes for
 > the first five) is one-lined with dates in *Decisions made*; the 2026-08-07 delegation that
 > picked the SIXTH (CFLANK) and SEVENTH (GCAP) directions under it is in *Current state*'s
 > dated bullets; not repeated here. **No flank found by any of them; (GR-15) stays OPEN,
@@ -267,19 +251,34 @@ discharge (residue (iv)) is CLOSED too**. The landed successor
 > only §5.3 item (i) (whole-graph elimination) remains, ruled out by §5.3's own local-frame
 > feasibility boundary.
 > **The NINTH direction, GEXIST, LANDED 2026-08-13** (`notes/Pencil-fanout.md` §"Ninth
-> direction"; workbook §(K-grid) *Steps G38–G42*) — **an honest MISS, with three new
-> theorems** ((GR-32) capacity: every proper chunk one unit of slack, pointwise g-flank
-> impossible in habitat; (GR-33) weakness: binding needs `≥ 2` aligned per-hub weaknesses,
-> the all-even case an in-degree-{1,2} **orientation** problem; (GR-35) uncrossing: defect
-> submodular; (GR-34) **REFUTES** the uncorrelated union-bound mechanism by a constructed
-> witness while a correlated rung-minority rule closes the ladder family per shape). **No
-> g-flank found; the target — uniform fully-good existence at `Λ = ∅` `D = 0` — stays OPEN,
-> reduced to a minority-dart orientation problem, and so does (GR-15), unchanged, modulo
-> (GR-4′); no gap-map status moves.** The TERMINATION check (E1/E2/E3) did **NOT** fire on
-> its landing; per the ledger's "otherwise" clause the **TENTH direction, GORIENT, is now
-> PREPPED at the sharpest named attack** — its four-attack provenance and why every
-> alternative loses are the tenth spec's ranking record (`notes/Pencil-fanout.md` §"Tenth
-> direction"), not restated here.
+> direction"; workbook §(K-grid) *Steps G38–G42*) — an honest MISS: three new theorems
+> ((GR-32) capacity, (GR-33) weakness/orientation, (GR-35) uncrossing) reduced the target to
+> a minority-dart orientation problem over the **capacity-tight** chunk hypergraph; (GR-34)
+> refuted the uncorrelated union-bound mechanism. No g-flank found; (GR-15) unchanged.
+> **Superseded by GORIENT below** — the capacity-tight framing is a strict under-proxy of the
+> real obstruction family, corrected there.
+> **The TENTH direction, GORIENT, LANDED 2026-08-13** (`notes/Pencil-fanout.md` §"Tenth
+> direction"; workbook §(K-grid) *Steps G43–G47*) — also an honest **MISS**, with **four**
+> new theorems. **(GR-36)** the structural charge: interior adjacency costs defect in both
+> blocks, and the corrected **binding-capable** family strictly contains the capacity-tight
+> one (W5's own binding subset has `cap = 8`). **(GR-37)** the selection reduction:
+> admissible colourings are (majority, minority-dart) pairs, and a perfect matching's parity
+> obstruction is exactly the cut space of `G°`. **(GR-38)** the intersection kill: **settled
+> vacuously strong at `n_hub ≤ 6`** — crossing same-block binding chunks provably do not
+> exist there, binding is laminar. **(GR-39)** the hot-hub adjudication: a proven local
+> structure plus three kills close the all-triangle cell; **0 fully-hot hubs**, now
+> **exhaustive** over all 4920 shapes (was a 199-shape sample). **The target is re-anchored**:
+> every habitat shape has a fully-good colouring within a bounded number of deviations of
+> some perfect matching — measured `d ≤ 2` everywhere swept except **W3** (needs `d = 3`); no
+> uniform bound proven. **No g-flank found; the target stays OPEN, and so does (GR-15),
+> unchanged in status, modulo (GR-4′); no gap-map status moves.** The TERMINATION check
+> (E1/E2/E3) did **NOT** fire on its landing; per the ledger's "otherwise" clause the natural
+> next step is an **eleventh direction** at one of **four** named dispatchable attacks — (a)
+> the bounded-deviation selection theorem, W3 the test case; (b) a corner-side charge for the
+> W5-type family; (c) the `n_hub ≥ 8` AA-glue realizability question; (d) a realized-binding
+> fully-hot seed hunt at `n_hub ≥ 8` — **selecting one is the coordinator's call under the
+> standing delegation, not made in this commit**; full ledger and ranking record
+> `notes/Pencil-fanout.md` §"Tenth direction".
 > **Coordinator hand-off note, still not loaded onto any direction:** whether (GR-15) as
 > quantified ("every tight class shape") also covers the `W19`-type **(K-res)** sibling
 > habitat is unresolved — pin it when the tight side closes, not before.
@@ -348,14 +347,15 @@ Reverse-chronological, one line per landing; full derivations live in git,
 `notes/Phase39-design.md`, and (for the (K) arc) the workbook section named in each entry, which
 is the canonical home a successor reads.
 
-- **The TENTH direction — GORIENT PREPPED 2026-08-13** (spec `notes/Pencil-fanout.md`
-  §"Tenth direction"; reservation `notes/Pencil-labels.md`, (GR-36)+/Steps G43+/
-  `w4/gorient.py`; selection re-delegated by the user to a top-rung fable recon, third
-  use of the 2026-08-12 shape). Verdict — the orientation theorem, merged with the
-  defect-≤ 1 intersection kill, attack (d) repriced as a targeted-construction control,
-  attack (c) deliberately deferred to eleventh — verified and **ACCEPTED**; the recon
-  corrected the ninth spec's stale evidence-base figure (ladders proven per-shape at
-  `n_hub = 12/16/20`) and sharpened E3 (recorded deviation). **NOT dispatched.**
+- **The TENTH direction — GORIENT LANDED 2026-08-13** (`w4/gorient.py`; canonical home
+  §(K-grid) Steps G43–G47). **An honest MISS**, four new theorems: (GR-36) structural
+  charge (the binding-capable family corrects the capacity-tight one — W5's binding
+  subset alone has `cap = 8`); (GR-37) selection reduction (matching-based colourings,
+  parity obstruction exactly the cut space); (GR-38) intersection kill (settled
+  vacuously strong at `n_hub ≤ 6`, binding laminar); (GR-39) hot-hub adjudication
+  (census now exhaustive, still 0 fully-hot). Target re-anchored on a bounded-deviation
+  selection principle, sticking at W3 (`d = 3` vs `d ≤ 2` elsewhere); stays OPEN with
+  (GR-15); four dispatchable attacks named, no eleventh direction selected (*Hand-off*).
 
 - **The NINTH direction — GEXIST LANDED 2026-08-13** (`w4/gexist.py`; canonical home
   §(K-grid) Steps G38–G42). **An honest MISS**, three new theorems: (GR-32) capacity

@@ -5,8 +5,9 @@
 §"Seventh direction") LANDED 2026-08-13; the EIGHTH direction (GUNIF,
 §"Eighth direction") LANDED 2026-08-13; the NINTH direction (GEXIST,
 §"Ninth direction") LANDED 2026-08-13 — an honest MISS; the TENTH
-direction (GORIENT, §"Tenth direction") PREPPED 2026-08-13 — dispatch
-pending.** The
+direction (GORIENT, §"Tenth direction") LANDED 2026-08-13 — an honest
+MISS, the route re-anchored on a bounded-deviation selection principle,
+W3 the sticking instance; no eleventh direction dispatched.** The
 first (A/B/C
 below, prepared 2026-08-05) landed 2026-08-05/06; the second (T/R/M,
 §"Second fan-out") 2026-08-06; the third (G/Q/O, §"Third fan-out")
@@ -27,6 +28,17 @@ OPEN, unchanged in status; the ninth (GEXIST, §"Ninth direction")
 problem** with one unit of slack at every proper chunk, (GR-34) refutes
 the uncorrelated union-bound mechanism by a constructed witness while a
 correlated rung-minority rule closes the ladder family; no g-flank
+found, the target and (GR-15) both stay OPEN; the tenth (GORIENT,
+§"Tenth direction") 2026-08-13 — also an honest **MISS**: four new
+theorems ((GR-36)–(GR-39)) re-anchor the target on a
+**bounded-deviation selection principle** (a perfect matching plus
+`≤ d` deviations, parity obstruction exactly the cut space) and settle
+the intersection kill **vacuously strong** on the whole `n_hub ≤ 6`
+stratum (binding is laminar there); the corrected **binding-capable**
+obstruction family strictly contains the capacity-tight one and does
+carry fully-hot hubs, while the exact **realized-binding** family stays
+0/506; the principle holds at `d ≤ 2` everywhere measured except
+**W3**, which needs `d = 3` — no uniform bound proven, no g-flank
 found, the target and (GR-15) both stay OPEN. CFLANK was a
 **single direction**, not a fan-out — its selection was a **coordinator
 delegation** (`notes/Phase39.md` *Current state*, the 2026-08-07 "keep
@@ -1996,7 +2008,7 @@ block.
 
 ## Tenth direction — GORIENT (single direction, prepared 2026-08-13)
 
-**Status: PREPPED 2026-08-13 — dispatch pending.** A **single direction**,
+**Status: LANDED 2026-08-13.** A **single direction**,
 not a fan-out. Selection: at this session's check-in the user
 **re-delegated the pick to a top-rung fable recon** — the third use of the
 2026-08-12 shape that selected GCAP and GEXIST. The recon's read-only
@@ -2011,9 +2023,37 @@ the ninth spec's stale evidence-base figure** against the landed
 *Step G40* (adopted — see *The risk*), and specified the route ledger +
 TERMINATION test below, including **one deliberate template deviation
 (E3)**, recorded there with its reason. The coordinator verified the
-verdict under the top-rung tier and **ACCEPTED** it. The standing frame
-is the 2026-08-13 phase-shape adjudication (the research arc CONTINUES;
-`notes/Phase39.md` *Current state*).
+verdict under the top-rung tier and **ACCEPTED** it. §(K-grid)
+continuation, Steps G43–G47: **an honest MISS, with four new
+theorems.** **(GR-36)** proven — the structural charge: every unit of
+interior adjacency inside a chunk costs `≥ ½` a defect unit in **both**
+blocks, colouring-free; the **binding-capable** family it defines
+strictly contains and corrects the capacity-tight one (W5's own
+binding subset has `cap = 8`, invisible to the narrower census).
+**(GR-37)** proven — the selection reduction: admissible colourings are
+exactly (majority-colour, minority-dart) pairs, and a perfect
+matching's all-minority prescription is solvable iff its even-branch
+obstruction lies in the cut space of `G°` — the exact explanation of
+the rung-minority rule's parity limit; deviations from a matching reach
+every obstruction class. **(GR-38)** proven — the intersection kill: an
+exact slack identity plus an attachment lemma classify every crossing
+of chunks, and on the complete `n_hub ≤ 6` stratum no two same-block
+binding chunks ever cross — **settled vacuously strong**, binding is
+laminar there. **(GR-39)** proven — the hot-hub adjudication:
+capacity-tight chunks have a proven local structure and three
+proof-level kills close the all-triangle-type cell; still **0
+fully-hot hubs** found anywhere reached, now **exhaustive** over all
+4920 `n_hub ≤ 6` shapes. **The target is re-anchored**: prove every
+habitat shape has a fully-good colouring within a bounded number of
+deviations of some perfect matching — measured `d ≤ 2` everywhere
+swept except **W3**, which needs `d = 3` (no admissible screened
+colouring within 2 deviations of any of its 8 matchings). **No g-flank
+found; the target stays OPEN, re-anchored on this selection principle,
+and so does (GR-15), unchanged in status; no gap-map status moves.**
+The standing frame is the 2026-08-13 phase-shape adjudication (the
+research arc CONTINUES; `notes/Phase39.md` *Current state*); this
+landing does **not** open an eleventh direction — the route ledger
+below records why.
 
 **Direction code GORIENT** (the deliverable is the **ORIENT**ation
 theorem), minted under clause **(L5)**. Verified **0-hit as a raw
@@ -2159,15 +2199,25 @@ advances; the coordinator updates each entry's status on landing:
 
 1. **The orientation theorem** (= uniform fully-good existence at
    `Λ = ∅` `D = 0`, in the orientation form) — THIS DIRECTION.
-   Entering attacks: the Hall/discharging argument over the
-   capacity-tight chunk hypergraph; the defect-≤ 1 intersection kill;
-   the hot-hub adjudication. (The no-collateral/repair pair is the
-   standing fallback *direction* on a MISS, not a ledger ingredient; a
-   MISS re-derives entry 1's surviving attack list at landing.)
+   **LANDED 2026-08-13, an honest MISS: open-with-named-dispatchable-
+   attacks** — re-anchored on a **bounded-deviation selection
+   principle** (a perfect matching plus `≤ d` deviations, parity
+   obstruction exactly the cut space), with **four** named attacks:
+   (a) the bounded-deviation selection theorem, **W3** the named test
+   shape (needs `d = 3`, beyond the measured `d ≤ 2` everywhere else);
+   (b) a corner-side charge for corner-separated (W5-type) chunks
+   (`m_J = 0`, uncharged by the structural charge (GR-36)); (c) the
+   `n_hub ≥ 8` **AA-glue** realizability question (the intersection
+   kill's one surviving open case); (d) a realized-binding fully-hot
+   seed hunt at `n_hub ≥ 8` (not a flank by itself). **The intersection
+   kill LEAVES the attack list** — settled at `n_hub ≤ 6`, vacuously
+   strong: crossing same-block binding chunks provably do not exist
+   there (binding is laminar, 0 among 53 740 binding instances). No
+   g-flank found.
 2. **(GR-4′)** — open, proven cases exclude every habitat block; the
-   natural next proof target on a HIT.
-3. **The `Λ ≠ ∅` closed-form analogue** — unswept.
-4. **The `D > 0` lift** — unswept.
+   natural next proof target on a HIT. **Unchanged.**
+3. **The `Λ ≠ ∅` closed-form analogue** — unswept. **Unchanged.**
+4. **The `D > 0` lift** — unswept. **Unchanged.**
 
 Together: 1 + 2 = (GR-15) at `Λ = ∅` `D = 0`; adding 3 + 4 = (GR-15);
 (GR-15) + (GR-1)/§(K-clos) (AC-4) + (GR-5) + (AC-7) = `hK` on the tight
@@ -2209,6 +2259,18 @@ Otherwise dispatch the eleventh: a MISS with the Hall obstruction named
 routes to the repair-form pair (ranking item 2 below) or to the seed
 hunt at the named configuration, per what the landing names; a
 constructed-seed outcome routes to the CSP test at that seed.
+
+**On this landing: none of E1/E2/E3 fires.** No g-flank was exhibited —
+the swept stratum's binding family is laminar and the hot-dart census
+(now exhaustive) finds no fully-hot hub anywhere reached (E1 does not
+fire). The target is a MISS but ledger entry 1 lands
+open-with-named-dispatchable-attacks, not refuted-with-no-successor
+(E2 does not fire). The target is not proven (E3 does not fire; its
+sharpened conjunct — "every remaining entry adjudication-gated" — was
+never at risk, since entries 2–4 stay dispatchable regardless). Per the
+"otherwise" clause the natural next step is an **eleventh direction** —
+selecting among the four named attacks above — but this landing commit
+does **not** dispatch or prep it; see `notes/Phase39.md` *Hand-off*.
 
 ### The ranking record (recon verdict, coordinator-verified) — losers stay lost
 
