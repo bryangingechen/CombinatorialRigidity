@@ -113,9 +113,9 @@ restated here**. Net effect: **disproof risk removed**, every refuted route/gap 
 successor in the gap map, several structural positives proven; **class uniformity of
 the escape remains untouched by all thirty-five dispatches.**
 
-**Doc-debt round CLOSED — `notes/Pencil-cleanup.md`** (2026-08-13, category D
-only; six tasks D-1…D-6 all landed or swept-clean, D-5 a watch item; full
-disposition in the log). **No research direction was opened by the round.**
+**Doc-debt round CLOSED — `notes/Pencil-cleanup.md`** (2026-08-13, category D only; D-1…D-6
+all landed or swept-clean, D-5 a watch item; disposition in the log). Opened no research
+direction. **Its D-2 fix regressed at GORIENT's landing and was re-repaired** (`07f6f9b6`).
 
 > **The one live candidate, and it is NOT settled — `notes/Pencil-informal.md` §(K-σ)** (the
 > canonical home for the four obligations, the `--hunt` findings, the validation scope and the
@@ -221,6 +221,16 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
 
 **The phase stays OPEN** (the 2026-07-24 adjudication — no phase-close; see *Current state*).
 
+**Next concrete task: select the ELEVENTH kernel-(K) direction** — not selected, not prepped
+(the 2026-08-13 user call to stop at GORIENT's landing; the standing 2026-08-07 delegation
+still governs *how*, and the pick may itself be delegated to a recon per the 2026-08-12/08-13
+precedent). The four named dispatchable attacks, ranked and fully specified in
+`notes/Pencil-fanout.md` §"Tenth direction"'s route ledger: **(a)** the bounded-deviation
+selection theorem, **W3** the named test case (the sharpest); **(b)** a corner-side charge for
+`m_J = 0` (W5-type) chunks; **(c)** AA-glue realizability at `n_hub ≥ 8` (the intersection
+kill's only surviving general-`n` case); **(d)** a realized-binding fully-hot seed hunt at
+`n_hub ≥ 8` (not a flank by itself — E1's clarification).
+
 **`hsplit` is CLOSED IN FULL** (W5-L7c-1…6, landed 2026-07-30) and **`hfresh`'s mechanical
 discharge (residue (iv)) is CLOSED too**. The landed successor
 `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card` (`Molecule/Pencil/Escape.lean`) wraps
@@ -250,13 +260,10 @@ discharge (residue (iv)) is CLOSED too**. The landed successor
 > symbolic meta-option ("upgrade §(K-Λ) via M2") is **landed, not pending** (`m2/lambda0.m2`) —
 > only §5.3 item (i) (whole-graph elimination) remains, ruled out by §5.3's own local-frame
 > feasibility boundary.
-> **The NINTH direction, GEXIST, LANDED 2026-08-13** (`notes/Pencil-fanout.md` §"Ninth
-> direction"; workbook §(K-grid) *Steps G38–G42*) — an honest MISS: three new theorems
-> ((GR-32) capacity, (GR-33) weakness/orientation, (GR-35) uncrossing) reduced the target to
-> a minority-dart orientation problem over the **capacity-tight** chunk hypergraph; (GR-34)
-> refuted the uncorrelated union-bound mechanism. No g-flank found; (GR-15) unchanged.
-> **Superseded by GORIENT below** — the capacity-tight framing is a strict under-proxy of the
-> real obstruction family, corrected there.
+> **The NINTH direction, GEXIST, LANDED 2026-08-13** (workbook §(K-grid) *Steps G38–G42*) —
+> an honest MISS: (GR-32)/(GR-33)/(GR-35) proven, (GR-34) refuted the uncorrelated
+> union-bound mechanism, (GR-15) unchanged. **Its capacity-tight framing of the obstruction
+> family is SUPERSEDED** — a strict under-proxy, corrected by GORIENT below.
 > **The TENTH direction, GORIENT, LANDED 2026-08-13** (`notes/Pencil-fanout.md` §"Tenth
 > direction"; workbook §(K-grid) *Steps G43–G47*) — also an honest **MISS**, with **four**
 > new theorems. **(GR-36)** the structural charge: interior adjacency costs defect in both
@@ -273,12 +280,9 @@ discharge (residue (iv)) is CLOSED too**. The landed successor
 > uniform bound proven. **No g-flank found; the target stays OPEN, and so does (GR-15),
 > unchanged in status, modulo (GR-4′); no gap-map status moves.** The TERMINATION check
 > (E1/E2/E3) did **NOT** fire on its landing; per the ledger's "otherwise" clause the natural
-> next step is an **eleventh direction** at one of **four** named dispatchable attacks — (a)
-> the bounded-deviation selection theorem, W3 the test case; (b) a corner-side charge for the
-> W5-type family; (c) the `n_hub ≥ 8` AA-glue realizability question; (d) a realized-binding
-> fully-hot seed hunt at `n_hub ≥ 8` — **selecting one is the coordinator's call under the
-> standing delegation, not made in this commit**; full ledger and ranking record
-> `notes/Pencil-fanout.md` §"Tenth direction".
+> next step is an **eleventh direction** at one of four named dispatchable attacks — enumerated
+> once at the top of this section, ledger and ranking record `notes/Pencil-fanout.md`
+> §"Tenth direction".
 > **Coordinator hand-off note, still not loaded onto any direction:** whether (GR-15) as
 > quantified ("every tight class shape") also covers the `W19`-type **(K-res)** sibling
 > habitat is unresolved — pin it when the tight side closes, not before.
