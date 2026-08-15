@@ -7,7 +7,8 @@
 §"Ninth direction") LANDED 2026-08-13 — an honest MISS; the TENTH
 direction (GORIENT, §"Tenth direction") LANDED 2026-08-13 — an honest
 MISS, the route re-anchored on a bounded-deviation selection principle,
-W3 the sticking instance; no eleventh direction dispatched.** The
+W3 the sticking instance; the ELEVENTH direction (GDEV, §"Eleventh
+direction") PREPPED 2026-08-14, dispatch pending.** The
 first (A/B/C
 below, prepared 2026-08-05) landed 2026-08-05/06; the second (T/R/M,
 §"Second fan-out") 2026-08-06; the third (G/Q/O, §"Third fan-out")
@@ -51,7 +52,9 @@ from the TERMINATION test checked (and not fired) on GCAP's return
 selection was again **delegated to a top-rung fable recon**, per the
 user's 2026-08-13 check-in option pick (§"Ninth direction"); GORIENT's
 selection was re-delegated to a top-rung fable recon at the user's
-2026-08-13 check-in (§"Tenth direction"). This file
+2026-08-13 check-in (§"Tenth direction"); GDEV's selection was again
+delegated to a top-rung fable recon at the user's 2026-08-14 check-in,
+the fourth use of that shape (§"Eleventh direction"). This file
 remains the dispatch-scoping template for any
 future fan-out or single direction. Three independent research directions on kernel (K), specified
 here so a fresh session can dispatch them at S=1 without re-deriving the
@@ -2425,3 +2428,434 @@ update and the E1/E2/E3 TERMINATION check above — E3 in its sharpened
 form, with a HIT surfacing the Lean-hold question to the user — recording
 the outcome in the phase note's *Hand-off* as narrative, not as a
 scaffolding block.
+
+## Eleventh direction — GDEV (single direction, prepared 2026-08-14)
+
+**Status: PREPPED 2026-08-14; dispatch pending.** A **single
+direction**, not a fan-out. Selection: at this session's check-in the
+user **chose the option "Delegate to a fable recon" from a
+multiple-choice check-in** — an option selection, not free text; the
+**fourth** use of the 2026-08-12 shape that selected GCAP, GEXIST and
+GORIENT. The recon's read-only verdict (2026-08-14) picked this
+direction as a **merge** of GORIENT's named attacks **(a)+(b)** — the
+bounded-deviation selection theorem, with the corner-side charge for
+corner-separated (W5-type) chunks as its first named sub-deliverable —
+folding attack (d) in only as a **conditional, repriced falsification
+control** (re-armed by (b) if it lands; never the enumerator build) and
+deliberately leaving attack (c) out (ranked below). The recon
+adjudicated the tenth ranking's pre-registered item 2 head-on (recorded
+below so the loser stays lost), ranked every alternative, extended the
+TERMINATION test's E1 clause with a recorded reason, and surfaced one
+live prose defect (two unqualified "0 fully-hot" figures in
+`notes/Phase39.md`, repaired in this prep commit — the fanout header
+and the gap-map row were verified already correct). The coordinator
+re-verified every load-bearing pin (the 0-hit checks with a live-grep
+control; the *Step G47* anchors; the (GR-39) status-table family
+qualifiers; `gridcol.multigraphs`'s `cap=4000` at HEAD; `gorient.py`'s
+≤ 2-deviation exhaustive pass, disclosed cap-60 rank budget and
+1200-draw distance sampler; and the tenth routing clause's
+conditionality) and **ACCEPTED** the verdict.
+
+**Direction code GDEV** (the deliverable is the bounded-**DEV**iation
+selection theorem), minted under clause **(L5)**. Verified **0-hit as a
+raw substring**, case-insensitively, across `*.md`/`*.tex`/`*.lean`/
+`*.py`/`*.m2` at this prep — as is the driver basename `gdev`
+(control: `gorient` hits 7 files, `gexist` 9, so the grep was live).
+Checked 0-hit but not chosen, recorded so they stay checkable without a
+re-run: `GSEL` (rejected for naming the generic mechanism rather than
+the theorem's content — the *bound* on the deviation count), `GPM`,
+`GMATCH`, `GBOUND`, `GBDD`, `GANCHOR`, `GDEVI`. GORIENT-prep's
+checked-not-chosen list (`GHALL`/`GCSP`/`GHOT`/`GSAT`) was **not**
+re-used: the deliverable changed, and those checks are a landing old.
+
+### The two letter schemes, disambiguated once
+
+Two attack lists share the letters (a)–(d) and MUST be read against
+their own landing: **GEXIST's** ((a) the orientation theorem, (b) the
+defect-≤ 1 intersection kill, (c) the no-collateral clause, (d) the
+pruned hot-hub enumerator) and **GORIENT's** ((a) the bounded-deviation
+selection theorem, (b) the corner-side charge, (c) AA-glue
+realizability at `n_hub ≥ 8`, (d) the realized-binding fully-hot seed
+hunt at `n_hub ≥ 8`). The tenth ranking's pre-registered item 2 is
+stated in **GEXIST's** letters (its "(b)" is the intersection kill, now
+spent via (GR-38)); this direction and everything below is stated in
+**GORIENT's** letters.
+
+### The target — one statement, already on the books
+
+**The bounded-deviation selection theorem** (*Step G47*'s surviving
+route; the (K-grid) gap-map row's "best-understood target, sharper than
+(i)–(iv)"): every habitat shape — cubic `G°`, lengths `ℓ_β ∈ [2, 5]`
+((SD-6)), `Σ_β(ℓ_β − 2) = 6` ((GR-21)), satisfying the proven (GR-25)
+cut criterion; the `Λ = ∅`, `D = 0` tight stratum — has a fully-good
+colouring within a **shape-free** number `d` of deviations of some
+perfect matching of `G°` ((GR-37)'s anchor with the uniform bound
+proven). By the (GR-20) chain a HIT implies (GR-15) at `Λ = ∅` `D = 0`
+**modulo (GR-4′)** — never more (*Riders*).
+
+The target *statement* still delivers GEXIST's existence target — the
+selection principle is a strengthened form that implies it — and what
+is new is the **anchor** ((GR-37): perfect matchings anchor the
+minority map, the parity/balance obstruction is exactly the cut space
+of `G°`, deviations reach every obstruction class) and the **missing
+bound**, which is exactly the merged sub-deliverable (b).
+
+**The single strongest justification, checkable — the merge's textual
+warrant** (*Step G47*'s one-sentence route, verbatim): *"W3 is the
+first shape any such proof must price (then the W5 family, whose charge
+— corner A-dart scarcity — is the one missing bound)."* The workbook
+itself orders the two sub-deliverables in exactly this direction's
+order; *Step G47*(ii) independently calls the corner-side charge "the
+natural next theorem", and *Step G43*'s honest boundary proves why: the
+W5 family has `m_J = w45 = 0`, so the (GR-36) charge prices it
+**nothing** — what it costs is corner A-darts ((GR-29)(iii)), and no
+landed theorem charges that.
+
+**Provenance in the candidate set, and the scope of the merge.** The
+four dispatchable attacks this pick was made from are the tenth
+landing's (`notes/Phase39.md` *Hand-off*; workbook *Step G47* / *What
+would change this (Steps G43–G47)* items (i)–(iv)):
+
+- **(a) the bounded-deviation selection theorem** — the primary target,
+  above; **W3 priced FIRST** (the named test shape: `d ≤ 2` empty over
+  all 8 of its matchings, `d = 3` sufficient by a distance witness).
+- **(b) the corner-side charge** — MERGED IN as the first named
+  sub-deliverable, because it is *on the way*: a (GR-36)-style
+  two-block lower bound on `defect` in terms of corner count / A-dart
+  supply for `m_J = 0` chunks. It is the bound the (a)-proof needs at
+  the W5 family (the warrant above), and a standalone theorem on a MISS
+  (it would make the binding-capable family finite per shape in a
+  useful sense — *Step G47*(ii)).
+- **(d) the realized-binding fully-hot seed hunt** — folded in ONLY as
+  a **conditional** falsification control: GORIENT already ran the
+  un-re-armed capped hunt (the 10 984-completion digon-frame family, 0
+  found), so a plain repeat adds nothing; **if (b) lands**, use its
+  charge to re-arm ONE targeted, ledger-guided, capped construction
+  hunt at `n_hub ≥ 8` (GUNIF's idiom). **The enumerator build stays out
+  of scope** (its cost refutation stands, re-verified at HEAD for this
+  prep — ranking item 4).
+- **(c) AA-glue realizability at `n_hub ≥ 8`** — deliberately NOT
+  merged: either answer is structure (*What would change this* item
+  (iii)), but no live argument consumes laminarity at `n_hub ≥ 8` —
+  the selection route's machinery is parity/cut-space plus per-chunk
+  charges, not uncrossing; it stays ranked (item 3) for a MISS that
+  names family organization beyond the swept stratum as the missing
+  organizer.
+
+**This is the arc's fourth PROOF direction; GUNIF's three inverted
+working assumptions carry over verbatim** (§"Eighth direction",
+consequences (i)–(iii)): the deliverable is a proof at the workbook's
+proven-informally bar, not a sweep; the driver certifies the argument's
+case list (F11 becomes "which mode certifies that this case list is
+complete?"); and the honest-MISS shape is a named case or
+configuration, never "the argument is hard". The MISS deliverables,
+ranked: (1) the corner-side charge proven — a standalone
+(GR-36)-analogue theorem in its own right; (2) a named sticking
+configuration with a witness — a W3-successor needing `d ≥ 4`,
+standalone exactly as (GR-30)'s witnesses were; (3) a proven per-family
+bound (e.g. `d` bounded on the `m_J ≥ 1` family via (GR-36) + the
+charge), or a proven growth law for `d`.
+
+### The adjudication of the pre-registered eleventh — recorded so the loser stays lost
+
+The tenth ranking's item 2 pre-registered "the repair-form pair … the
+ranked ELEVENTH on a GORIENT MISS". It does NOT govern, for two
+independent reasons, each verified at HEAD:
+
+1. **Its routing condition never fired.** The tenth's "otherwise"
+   clause routes to the repair-form pair only on *"a MISS with the Hall
+   obstruction named … per what the landing names"*. The landing named
+   **no Hall obstruction configuration** — its MISS shape was the
+   re-anchoring on the bounded-deviation selection principle, with W3
+   the sticking instance and the corner-side charge the named missing
+   bound (*Step G47*). "Per what the landing names" therefore points at
+   (a)+(b), and the phase note's "(a) the sharpest" is the
+   landing-informed successor of the same record, not a contradiction
+   of it — "losers stay lost absent new information" is honored,
+   because the re-anchoring IS the named new information, produced by
+   the very direction whose ranking record item 2 sits in.
+2. **Its content halved under it** (its own third rationale — "GORIENT
+   consumes the intersection kill anyway" — was borne out): (GR-38)
+   settled the kill vacuously strong at `n_hub ≤ 6` and it LEFT the
+   attack list, so the pair collapses to the no-collateral clause
+   alone, serving the repair form — whose organizing niche the
+   selection principle now occupies — with the coverage weakness
+   unchanged (a HIT confined to `n_hub ≤ 6`, already exhaustively
+   certified per shape by (GR-26)).
+
+**Recorded either way:** the repair-form pair is no longer even the
+ranked next; the no-collateral clause survives only as an ingredient if
+a future landing routes back to the repair form **by name**.
+
+### The risk, stated plainly
+
+GDEV attempts to prove **uniformly** a bound whose measured support is
+thin exactly where it matters. The `d ≤ 2` figure rests on a
+**120-shape seeded subsample** of the 4920-shape pool (exact
+full-chunk scan, deliberately NOT exhaustive) plus three rank-certified
+witnesses (W3M/W4/W5) and the ladders at `d = 0`; **W3 already breaks
+it** (exhaustive over its 8 matchings: 0 candidates past the screen at
+`d ≤ 2`), and its `d = 3` sufficiency rests on **3 sampled**
+rank-certified fully-good maps at matching-distances 3/5/6 from a
+1200-draw sampler. The uniform bound may simply be **false** — `d` may
+grow — and "find the true growth law of `d`" is an acceptable
+honest-MISS shape. **Second risk, binding on every figure the direction
+quotes:** the honest Hall hypergraph — the **binding-capable** family —
+is NOT sparse (761 fully-capable-hot hubs vs 0 capacity-tight on a
+184-shape subsample; (GR-36)'s correction). Any "0 fully-hot hubs"
+figure MUST carry its family qualifier (capacity-tight / realized
+only); importing sparsity intuitions from the qualified zero into a
+charging argument is this direction's version of the ninth's
+stale-figure trap.
+
+### Step 0 — mandatory load-bearing pin, before any derivation
+
+Pin from the landed Steps G34–G47 before writing a single line of
+argument (the GCAP/GUNIF/GEXIST/GORIENT Step-0 discipline):
+
+- **(GR-37)** in full — the (c, m) model, the matching rule's exact
+  cut-space obstruction (with the bipartite / all-even reading and the
+  ladder-parity corollary), and deviation reachability *with its
+  recorded caveat* (the uniform deviation count is exactly what is
+  open; W3 needs 3).
+- **(GR-36)** — the charge form, AA-independence, the J path-forest
+  bound `defect_X ≥ w45 + Σ⌈m_i/2⌉` in both blocks, exit-sharing
+  exclusion, AND its honest boundary: the W5 family (`m_J = w45 = 0`)
+  is charged **nothing**; the binding-capable family
+  (`w45 + Σ⌈m_i/2⌉ ≤ 2`) strictly contains the capacity-tight one.
+- **(GR-29)(iii)** — corner A-dart scarcity, the raw material of the
+  merged sub-deliverable (b).
+- **(GR-38)'s exact scope** — laminarity is proven at `n_hub ≤ 6`
+  ONLY; the AA-glue case at `n_hub ≥ 8` is open (attack (c), not this
+  direction's).
+- **(GR-39)'s family-qualified census** — 0 fully-hot on the
+  capacity-tight and realized families, exhaustive at `n ≤ 6`; **761**
+  capable-hot on a subsample; general impossibility open past the
+  killed cells.
+- **(GR-30)/(GR-34)** — W5 the structural heart, CL10 the
+  uncorrelated-mechanism killer; price W3 FIRST, then the W5 family,
+  then the ladders, in any bound argument.
+- **(GR-4′)'s proven-case boundary** — covers no habitat block; the
+  rider never dissolves silently.
+
+### The route ledger and the TERMINATION test — recorded at prep
+
+**The route ledger** — the named ingredient list this direction
+advances; the coordinator updates each entry's status on landing:
+
+1. **The orientation theorem in its re-anchored bounded-deviation
+   form** (= uniform fully-good existence at `Λ = ∅` `D = 0` via a
+   shape-free deviation bound) — THIS DIRECTION; currently
+   open-with-named-dispatchable-attacks ((GR-37) anchor proven; the
+   bound open; W3 the test; the corner charge the missing bound).
+2. **(GR-4′)** — open, proven cases exclude every habitat block; the
+   natural next proof target on a HIT.
+3. **The `Λ ≠ ∅` closed-form analogue** — unswept.
+4. **The `D > 0` lift** — unswept.
+
+Together: 1 + 2 = (GR-15) at `Λ = ∅` `D = 0`; adding 3 + 4 = (GR-15);
+(GR-15) + (GR-1)/§(K-clos) (AC-4) + (GR-5) + (AC-7) = `hK` on the tight
+`D = 0` stratum (the closure chain of *Steps G29–G33*, riders
+included).
+
+**The TERMINATION test (E1/E2/E3).** On this direction's landing the
+coordinator marks each ledger entry **proven / refuted /
+open-with-a-named-dispatchable-attack / adjudication-gated**, and
+**surfaces a phase-shape decision to the user instead of dispatching a
+twelfth direction iff any of**:
+
+- **(E1)** the direction exhibits a g-flank — a habitat `D = 0` shape
+  whose **every** admissible colouring has a binding chunk: refutes
+  per-shape (GR-15) itself; unconditional, immediate escalation,
+  whatever else landed. Clarifications carried, plus **one deliberate
+  template extension with its reason recorded**: (i) a fully-hot hub of
+  ANY family is a seed, not a flank; (ii) capable-hot saturation is not
+  a flank ((GR-26)(iii): every such swept shape still carries a
+  fully-good colouring); (iii) **new with this spec** — a shape or
+  family needing large `d` fires NOTHING by itself: at a fixed shape,
+  fully-good existence implies finite `d`, so a deviation-count blowup
+  refutes the bounded-deviation *form*, never existence. Reason for
+  (iii): the re-anchored target's characteristic failure mode is
+  exactly that blowup, and without the clause an honest form-refutation
+  would masquerade as E1.
+- **(E2)** the bounded-deviation theorem is refuted or
+  unprovable-as-posed (e.g. a proven `d → ∞` family) **and** the
+  updated ledger has no entry left in state
+  open-with-a-named-dispatchable-attack. A proven-unbounded-`d` outcome
+  **with a successor named** — a re-anchoring of entry 1 back to
+  existence via another instrument, or attack (c) if family
+  organization is the named gap — does NOT fire E2.
+- **(E3)** the target is **proven** — full stop. **GORIENT's deliberate
+  template deviation is retained, with its reason re-recorded:** the
+  ninth's E3 conjunct ("every remaining ledger entry
+  adjudication-gated") provably cannot fire — entries 2–4 stay
+  dispatchable on any HIT — and a HIT meets the 2026-08-05 Lean hold's
+  own stated release condition, so the next spend after a HIT is a user
+  call, not a coordinator pick.
+
+Otherwise dispatch the twelfth per what the landing names: a
+corner-charge-landed-but-bound-stuck MISS routes to the named sticking
+configuration or to attack (c); a constructed `d ≥ 4` witness routes to
+the growth-law question at that family; a (b)-armed seed construction
+routes to the CSP test at that seed. The ledger-not-artifacts lesson
+stands: E1–E3 are stated over the ledger and the target's status, never
+over how many theorems landed.
+
+### The ranking record (recon verdict, coordinator-verified) — losers stay lost
+
+Recorded so no alternative is re-proposed without new information; GDEV
+is item 1.
+
+2. **The pre-registered repair-form pair** (the tenth ranking's item 2,
+   in GEXIST's letters) — loses per the adjudication above: its routing
+   condition never fired and its content halved under it. Re-proposal
+   bar: a landing that names the repair form's organizing gap by name.
+3. **Attack (c) standalone — AA-glue realizability at `n_hub ≥ 8`** —
+   loses: either answer is structure, but no live argument consumes
+   laminarity at `n_hub ≥ 8` (the selection route's machinery is
+   parity/cut-space + per-chunk charges, not uncrossing; laminarity
+   organizes the *realized* family, which only Hall/repair-style
+   arguments walk). Bounded and dispatchable — the natural next on a
+   GDEV MISS iff that MISS names family organization as the missing
+   organizer.
+4. **Attack (d) standalone / the `n_hub = 8` enumerator** — loses
+   standalone: GORIENT already ran the capped ledger-guided hunt (0
+   found), a seed is not a flank (E1), and re-arming needs exactly
+   (b)'s charge — so it enters GDEV only as the conditional control.
+   The enumerator build stays priced as genuinely new engineering
+   (re-verified at HEAD for this prep: `gridcol.multigraphs` still
+   carries the silently-truncating `cap=4000` and the leaf-blowup
+   recursion).
+5. **The `Λ ≠ ∅` / `D > 0` ledger-and-witnesses analogue** — unchanged:
+   "right after ledger entry 1 lands" still binds.
+6. **The 117 894 unswept `|Λ| ≥ 2` length tuples** — unchanged: a
+   ride-along mode, never a direction.
+7. **A `k ≥ 6` realization of the scaling family** — unchanged:
+   cosmetic by the workbook's own words.
+8. **Off the four named attacks**, checked against strategy §4.6 as the
+   prep discipline requires: **U1** — cheapest decisive experiments
+   DONE, answered the other way ((OC-2)/(OC-3)); **U2** — partially
+   superseded for the tight stratum (durable negative,
+   `notes/Phase39.md` *Hand-off*); **U3** — unrun, adjacent to the
+   un-commissioned option B, strictly behind the §(K-grid) reduction;
+   nothing GORIENT landed touches §4.6 and nothing since 2026-08-05
+   revives any of them. **Route σ's Lean half / the W4 build** —
+   BLOCKED by the standing Lean hold, not dispatchable. **The (FR-6)
+   follow-ons and leads (b)–(f)** — not selected 2026-08-07, no new
+   information.
+9. **No eleventh direction (a phase-shape escalation instead)** —
+   loses: the coordinator-verified E1/E2/E3 check on GORIENT's landing
+   did not fire, the 2026-08-13 adjudication already chose "continue
+   the research", and the tenth ledger's "otherwise" clause commands an
+   eleventh; escalating now would re-ask an answered question.
+
+### Verification priority order — the driver's inverted role (NO new sweep)
+
+1. **`--charge`** — the corner-side charge's case analysis (the merged
+   sub-deliverable (b)): enumerate the configurations its case split
+   produces over `m_J = 0` chunks and certify each is charged, or name
+   the sticking case.
+2. **`--bound`** — the deviation-bound argument's case list over
+   parity/balance classes and chunk families; W3 priced first, then the
+   W5 corner-separated family, then the ladders (F11's "which mode
+   certifies that this case list is complete?").
+3. **`--hunt`** — the conditional control: ONLY if (b) lands, one
+   (b)-re-armed targeted, ledger-guided, capped construction hunt at
+   `n_hub ≥ 8` (GUNIF's idiom; no enumerator, no blind sweep).
+4. **`--adv`** — falsification control at the argument's worst cases:
+   W3 first, then W5 and the ladders CL6/CL8/CL10, then targeted
+   constructions hunting a `d ≥ 4` shape.
+5. **`--validate`** — all modes, budgeted against the 600 s foreground
+   ceiling (F15); split into separate invocations if the combination
+   would exceed it.
+
+Cross-check pools (existing, never re-swept): GEXIST's 4920-shape /
+220 038-chunk stratum, GORIENT's 120-shape good-PM subsample and
+184-shape capable-family subsample, the four (GR-30) witnesses + the
+three ladders, CFLANK's 40 742 shapes. "Widening a pool is evidence,
+not progress" binds at full strength. The direction sets the final mode
+list; the above is a suggestion, not a pin.
+
+### Riders — carried explicitly, required in the return
+
+Verbatim from the eighth through tenth directions — the target lives
+exactly on the standing stratum, so none dissolves:
+
+- The result is at **`Λ = ∅`**, **`D = 0`**, and **modulo (GR-4′)**.
+- The **`Λ ≠ ∅` closed-form analogue** stays **unswept**.
+- The **`D > 0` lift** stays **unswept**.
+- **Never write that this closes (GR-15).** At best it closes (GR-15)
+  on the `Λ = ∅`, `D = 0` stratum, modulo (GR-4′) — full (GR-15)
+  quantifies over every tight class shape.
+
+### Cautions (binding)
+
+- Do not re-derive (GR-1)–(GR-39); do not re-attack the (GR-10) min-max
+  as a characterization ((GR-13)); do not re-attempt uncorrelated
+  charging ((GR-34)(i) refutes the class); all of `notes/Phase39.md`
+  *Hand-off*'s "Deliberate non-goals" bind.
+- **Every "0 fully-hot" figure carries its family qualifier** —
+  capacity-tight / realized only; the binding-capable family carries
+  761 on a subsample ((GR-36)); never import sparsity from the
+  qualified zero.
+- **No blind `n = 8` sweep and no enumerator build**; the hunt mode is
+  (b)-conditional targeted construction only (ranking item 4 prices the
+  alternative).
+- The (K-res)/(GR-15) quantification question is **explicitly NOT this
+  direction's scope**; it stays a coordinator hand-off note (GDEV does
+  not reach it).
+- Rank certification stays the README §4 convention (GF(p) lower bound,
+  every attaining draw re-checked in exact ℚ through both matrices); no
+  σ-fixed witness is read as generic (§(K-clos) (AC-9)).
+- An exhibited g-flank is a **REFUTATION of per-shape (GR-15)**, not a
+  MISS — headline it (E1), whatever else landed; a fully-hot hub of any
+  family is a SEED, and a deviation-count blowup is a FORM-refutation
+  (E1 clauses (i)–(iii) above).
+
+**Driver** `notes/scripts/w4/gdev.py` (imports `gorient.py` /
+`gexist.py` / `gunif.py` / `gcap.py` / `cflank.py` / `gridcol.py` /
+`grid.py` read-only); suggested modes `--charge`/`--bound`/`--hunt`/
+`--adv`/`--validate` — the direction sets the final list. **Labels**:
+mint under **(GR-40)+** and **Steps G48+**, the unclaimed tails of
+§(K-grid)'s live families (both verified 0-hit at this prep; the owning
+section stays authoritative). **On outgrowth, reuse the
+already-reserved §(K-gcap) / `GC-`** — returned unopened by GCAP,
+GUNIF, GEXIST and GORIENT, available a fifth time. **Do not mint
+§(K-unif)/`GU-`** (considered twice, deliberately not minted — recorded
+in the registry). No M2 leaf expected — the target is a finite
+combinatorial statement.
+
+**Rung.** Mapped **top rung** — a crux proof attempt whose verdict
+re-routes the line (the same trigger that put G, E, J, PEX, TCOL,
+CFLANK, GCAP, GUNIF, GEXIST and GORIENT there); per the standing
+2026-08-14 check-in all four rungs are dispatchable, so **fable** (opus
+substitutes only if the weekly scoped limit runs out — the same
+standing qualifier).
+
+**Mechanics: identical to the tenth direction's.** Read-only w.r.t.
+every **tracked** file; commits **NOTHING**; creates only its own
+**untracked** driver at the pinned path above (importing the harness
+read-only, left untracked for the coordinator to gate and commit);
+writes its full mathematics as a **draft workbook section**
+`fanout-GDEV.md` in the session scratchpad (not the repo), in the
+workbook's register, with an explicit confidence verdict
+(proven-informally / true-modulo-named-gap / open / refuted) and a
+"what would change this" line; keeps the **return message** to a tight
+verdict. F11 binds (doubly — the direction *is* an exhaustiveness
+claim); F15's over-ceiling shape applies to any invocation that cannot
+finish inside 600 s. `notes/scripts/README.md`'s conventions bind
+(exact ℚ, seeded randomness, degeneracy guards + rank/dimension
+asserts, import from the canonical layer — check the *Divergences*
+table).
+
+### Landing (coordinator)
+
+The fifth fan-out's landing checklist applies verbatim, as it did for
+CFLANK through GORIENT — including moving the reservation row into the
+registry, adding the driver's rows to `notes/scripts/README.md` §3's
+invocation table in the landing commit, and checklist item 6's
+scaffolding audit. The landing commit additionally runs the
+route-ledger update and the E1/E2/E3 TERMINATION check above — E3 in
+its retained deviated form, with a HIT surfacing the Lean-hold question
+to the user — recording the outcome in the phase note's *Hand-off* as
+narrative, not as a scaffolding block.

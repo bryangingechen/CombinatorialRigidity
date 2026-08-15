@@ -290,6 +290,28 @@ measured `d ≤ 2` elsewhere). No g-flank found; the target stays
 **OPEN**, and so does **(GR-15)**, unchanged in status. **§(K-unif)/`GU-`
 stays, again, deliberately NOT reserved.**
 
+**Reserved 2026-08-14 for the ELEVENTH direction — GDEV**
+(`notes/Pencil-fanout.md` §"Eleventh direction"; a **single direction**, not
+a fan-out — selection delegated to a top-rung fable recon at the user's
+2026-08-14 check-in, the fourth use of the 2026-08-12 shape; verdict verified
+and ACCEPTED, prepped but not yet dispatched). The code **GDEV** (the
+bounded-**DEV**iation selection theorem) was verified **0-hit as a raw
+substring**, case-insensitively, across `*.md`, `*.tex`, `*.lean`, `*.py`,
+`*.m2` at reservation time — as was the driver basename `gdev` (control
+tokens `gorient`/`gexist` hit 7/9 files, so the grep was live). Checked
+0-hit and **rejected**, recorded so they stay checkable without a re-run:
+`GSEL` (names the generic mechanism, not the theorem's content — the *bound*
+on the deviation count), `GPM`, `GMATCH`, `GBOUND`, `GBDD`, `GANCHOR`,
+`GDEVI`. GORIENT-prep's checked-not-chosen list (`GHALL`/`GCSP`/`GHOT`/
+`GSAT`) was **not** re-used: the deliverable changed, and those checks are a
+landing old. The direction *extends* §(K-grid), so its label reservation is
+the unclaimed tails of that section's live families — **(GR-40)+** and
+**Steps G48+**, both verified 0-hit at reservation time; the owning section
+stays authoritative. **On outgrowth, reuse §(K-gcap)/`GC-`** — returned
+unopened by GCAP, GUNIF, GEXIST and GORIENT, available a **fifth** time.
+**Do not mint §(K-unif)/`GU-`** (considered twice, deliberately not minted —
+recorded below). Driver `notes/scripts/w4/gdev.py`; no M2 leaf expected.
+
 **One naming hazard the second fan-out created, recorded rather than renamed
 (L4).** The **direction letters A/B/C are re-used** between the 2026-08-05 fan-out
 (A = §(K-flank), B = §(K-Λ), C = §(K-pure)) and the 2026-08-06 one
