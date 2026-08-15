@@ -95,10 +95,10 @@ constraints; the dated dispatch narrative is in *Decisions made* and git):
   verified and **ACCEPTED**; spec and ranking record `notes/Pencil-fanout.md`
   §"Eleventh direction". **PREPPED, not yet dispatched.**
 
-**Kernel-(K) research arc — thirty-five docs+scripts-only dispatches, plus four
-strategy-only passes** (2026-08-02 → 08-13; the second is the 2026-08-12 fable recon,
-the third and fourth the 2026-08-13 ninth- and tenth-direction selection recons, all
-above). Canonical homes: workbook `notes/Pencil-informal.md` (**State of (K)** map =
+**Kernel-(K) research arc — thirty-five docs+scripts-only dispatches, plus five
+strategy-only passes** (2026-08-02 → 08-14; the second is the 2026-08-12 fable recon,
+the third through fifth the 2026-08-13/08-14 ninth-, tenth- and eleventh-direction
+selection recons, all above). Canonical homes: workbook `notes/Pencil-informal.md` (**State of (K)** map =
 entry point), `notes/Pencil-W4-informal.md` (W4-residual), `notes/Pencil-strategy.md`
 (strategy); one line per landing in *Decisions made*, canonical with git — **not
 restated here**. Net effect: **disproof risk removed**, every refuted route/gap has a
