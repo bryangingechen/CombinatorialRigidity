@@ -39,15 +39,10 @@ constraints; the dated dispatch narrative is in *Decisions made* and git):
   the scripts we run to be committed for reproducibility"* — now a hard rule of the harness
   (`notes/scripts/README.md`). Every script the project runs is tracked, including probes
   whose answers reach a note.
-- **2026-08-05/06, dispatch ordering + second/third/fourth fan-outs (all COMPLETE).** The
-  user-adjudicated ordering resolved into the second fan-out (T/R/M, route σ not selected);
-  the third (G/Q/O, serial O→Q→G) took all four live leads, not route σ's Lean half; the
-  fourth (E/J, serial, top rung) the (GR-10) min-max attack + the shared dominance lemma
-  (`notes/Pencil-fanout.md` §§"Second"–"Fourth fan-out").
-- **2026-08-07, fifth fan-out (COMPLETE, PEX/TCOL):** the user selected (FR-R1) and the
-  (GR-15)/(GR-4′) attack (not the (FR-6) follow-ons, leads (b)–(f), or route σ / W4);
-  serial **PEX → TCOL**, top rung, **opus substituted** (fable unavailable); cap lifted,
-  rescue §1 pre-authorized (`notes/Pencil-fanout.md` §"Fifth fan-out").
+- **2026-08-05…07, second through fifth fan-outs (all COMPLETE; user-adjudicated).**
+  T/R/M, then G/Q/O (serial), then E/J, then PEX/TCOL (serial, opus substituted); route σ /
+  W4 / the (FR-6) follow-ons not selected at any of them; cap lifted, rescue §1
+  pre-authorized (`notes/Pencil-fanout.md` §§"Second"–"Fifth fan-out").
 - **2026-08-07, delegation adjudication (binds from the SIXTH direction on).** Asked at
   the session-start check-in what to do once TCOL lands, the user selected **"Keep going
   on my own judgment"** — *"After landing TCOL I pick the next direction from the
@@ -76,34 +71,25 @@ constraints; the dated dispatch narrative is in *Decisions made* and git):
   not specified, so selection falls back to the standing 2026-08-07 delegation (the
   2026-08-12 precedent that the pick may itself be delegated applies too); the ninth's
   prep and landing both fell to later sessions (next bullet; *Decisions made*).
-- **2026-08-13, ninth- and tenth-direction selections (change no standing constraint).**
-  Both picks **re-delegated to a top-rung fable recon** (the second and third uses of
-  the 2026-08-12 shape; the ninth chosen as a multiple-choice option, the same check-in
-  keeping all four rungs, the cap lifted and rescue §1 fixups pre-authorized). Verdicts
-  — **GEXIST** (a merge of the hand-off candidates (1)+(2)+(3)) and **GORIENT** (the
-  orientation theorem merged with the defect-≤ 1 intersection kill, attack (d) repriced
-  as a falsification control, (c) deferred) — both verified and **ACCEPTED**; specs and
-  ranking records `notes/Pencil-fanout.md` §§"Ninth"/"Tenth direction". **Both LANDED
-  2026-08-13, honest MISSes** — see *Hand-off*.
-- **2026-08-14, eleventh-direction selection (changes no standing constraint).** The
-  user **chose the option "Delegate to a fable recon" from a multiple-choice check-in**
-  (an option selection, not free text; the fourth use of the 2026-08-12 shape). Same
-  check-in: all four rungs available (top rung = fable), the dispatch cap **lifted**,
-  rescue §1 mechanical fixups **pre-authorized**. The recon's verdict — **GDEV**, the
-  bounded-deviation selection theorem (GORIENT attack (a)) merged with the corner-side
-  charge (attack (b)); (d) a (b)-conditional control only; (c) deliberately out — was
-  verified and **ACCEPTED**; spec and ranking record `notes/Pencil-fanout.md`
-  §"Eleventh direction". **PREPPED, not yet dispatched.**
+- **2026-08-13/14, ninth- through eleventh-direction selections (change no standing
+  constraint).** All three picks **re-delegated to a top-rung fable recon** (the second
+  through fourth uses of the 2026-08-12 shape, each a multiple-choice option pick; each
+  check-in kept all four rungs, the cap lifted, rescue §1 fixups pre-authorized).
+  Verdicts — **GEXIST**, **GORIENT**, **GDEV** — all verified and **ACCEPTED**; specs,
+  ranking records, route ledgers and TERMINATION records in `notes/Pencil-fanout.md`
+  §§"Ninth"–"Eleventh direction". GEXIST and GORIENT **LANDED 2026-08-13** (honest
+  MISSes); GDEV **LANDED 2026-08-15** (the bounded-deviation form refuted as posed,
+  successors named) — see *Hand-off*.
 
-**Kernel-(K) research arc — thirty-five docs+scripts-only dispatches, plus five
-strategy-only passes** (2026-08-02 → 08-14; the second is the 2026-08-12 fable recon,
+**Kernel-(K) research arc — thirty-six docs+scripts-only dispatches, plus five
+strategy-only passes** (2026-08-02 → 08-15; the second is the 2026-08-12 fable recon,
 the third through fifth the 2026-08-13/08-14 ninth-, tenth- and eleventh-direction
 selection recons, all above). Canonical homes: workbook `notes/Pencil-informal.md` (**State of (K)** map =
 entry point), `notes/Pencil-W4-informal.md` (W4-residual), `notes/Pencil-strategy.md`
 (strategy); one line per landing in *Decisions made*, canonical with git — **not
 restated here**. Net effect: **disproof risk removed**, every refuted route/gap has a
 successor in the gap map, several structural positives proven; **class uniformity of
-the escape remains untouched by all thirty-five dispatches.**
+the escape remains untouched by all thirty-six dispatches.**
 
 **Doc-debt round CLOSED — `notes/Pencil-cleanup.md`** (2026-08-13, category D only; D-1…D-6
 all landed or swept-clean, D-5 a watch item; disposition in the log). Opened no research
@@ -208,15 +194,14 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
 
 **The phase stays OPEN** (the 2026-07-24 adjudication — no phase-close; see *Current state*).
 
-**Next concrete task: dispatch GDEV, the ELEVENTH kernel-(K) direction** — selected and
-prepped 2026-08-14 (a fable-recon pick under the standing delegation, verified and
-**ACCEPTED**; full spec, ranking record, route ledger and TERMINATION test:
-`notes/Pencil-fanout.md` §"Eleventh direction"). **GDEV** = the bounded-deviation selection
-theorem (GORIENT attack (a); **W3** the named test shape) merged with the corner-side charge
-for `m_J = 0` (W5-type) chunks (attack (b)) as its first named sub-deliverable; attack (d)
-folded in only as a (b)-conditional targeted control; attack (c) deliberately out (ranked —
-losers stay lost). Top rung (fable); driver `notes/scripts/w4/gdev.py`; labels (GR-40)+ /
-Steps G48+.
+**Next concrete task: prep the TWELFTH kernel-(K) direction per GDEV's routing clause** —
+the eleventh's landed TERMINATION record (`notes/Pencil-fanout.md` §"Eleventh direction")
+routes it to **the growth-law question at the necklace family**: the ledger's named attacks
+**(a′)** the `d_fg = d_adm` law (fully-goodness free at the admissibility optimum — measured
+133/133) and **(b′)** the balance-layer bound (the W3 stick's layer), tested where the parity
+floor grows. Selection/prep under the standing 2026-08-07 delegation (the 2026-08-12
+fable-recon shape has now been used four times); labels **(GR-43)+ / Steps G53+** are the
+live tails (`notes/Pencil-labels.md`). No standing constraint moves with this.
 
 **`hsplit` is CLOSED IN FULL** (W5-L7c-1…6, landed 2026-07-30) and **`hfresh`'s mechanical
 discharge (residue (iv)) is CLOSED too**. The landed successor
@@ -252,26 +237,35 @@ discharge (residue (iv)) is CLOSED too**. The landed successor
 > union-bound mechanism, (GR-15) unchanged. **Its capacity-tight framing of the obstruction
 > family is SUPERSEDED** — a strict under-proxy, corrected by GORIENT below.
 > **The TENTH direction, GORIENT, LANDED 2026-08-13** (`notes/Pencil-fanout.md` §"Tenth
-> direction"; workbook §(K-grid) *Steps G43–G47*) — also an honest **MISS**, with **four**
-> new theorems. **(GR-36)** the structural charge: interior adjacency costs defect in both
-> blocks, and the corrected **binding-capable** family strictly contains the capacity-tight
-> one (W5's own binding subset has `cap = 8`). **(GR-37)** the selection reduction:
-> admissible colourings are (majority, minority-dart) pairs, and a perfect matching's parity
-> obstruction is exactly the cut space of `G°`. **(GR-38)** the intersection kill: **settled
-> vacuously strong at `n_hub ≤ 6`** — crossing same-block binding chunks provably do not
-> exist there, binding is laminar. **(GR-39)** the hot-hub adjudication: a proven local
-> structure plus three kills close the all-triangle cell; **0 fully-hot hubs on the
-> capacity-tight and realized-binding families** (the corrected **binding-capable** family
-> **does** carry them — 761 on a 184-shape subsample, (GR-36)), now **exhaustive** over all
-> 4920 shapes (was a 199-shape sample). **The target is re-anchored**:
-> every habitat shape has a fully-good colouring within a bounded number of deviations of
-> some perfect matching — measured `d ≤ 2` everywhere swept except **W3** (needs `d = 3`); no
-> uniform bound proven. **No g-flank found; the target stays OPEN, and so does (GR-15),
-> unchanged in status, modulo (GR-4′); no gap-map status moves.** The TERMINATION check
-> (E1/E2/E3) did **NOT** fire on its landing; per the ledger's "otherwise" clause the natural
-> next step is an **eleventh direction** — **selected and prepped 2026-08-14 as GDEV** (the
-> next-task slot at the top of this section; spec `notes/Pencil-fanout.md` §"Eleventh
-> direction"; the four attacks it was picked from stay recorded in the tenth's route ledger).
+> direction"; workbook §(K-grid) *Steps G43–G47*) — an honest **MISS**, four new theorems:
+> **(GR-36)** the structural charge (the **binding-capable** family corrects the
+> capacity-tight one; **0 fully-hot hubs on the capacity-tight and realized-binding
+> families**, exhaustive at `n ≤ 6`, while the binding-capable family DOES carry them);
+> **(GR-37)** the selection reduction (matching anchor; parity obstruction = the cut space);
+> **(GR-38)** the intersection kill (vacuously strong at `n_hub ≤ 6`, binding laminar);
+> **(GR-39)** the hot-hub adjudication. It re-anchored the target on the bounded-deviation
+> selection principle — **since REFUTED as posed by GDEV** (next paragraph).
+> **The ELEVENTH direction, GDEV, LANDED 2026-08-15** (`notes/Pencil-fanout.md` §"Eleventh
+> direction"; workbook §(K-grid) *Steps G48–G52*; driver `w4/gdev.py`) — **a
+> REFUTATION-with-successors**, all three ranked MISS deliverables landed. **(GR-40)** the
+> corner charge (sub-deliverable (b) as a standalone theorem — tight at W3M where (GR-36)
+> prices 0; the corner condition prunes the fully-capable-hot census 815 → 573 on a fresh
+> subsample, binding-capable family). **(GR-41)** the parity floor: every admissible
+> colouring sits ≥ `⌈φ*/2⌉` deviations from **every** perfect matching, `φ*` a colouring-free
+> coset invariant. **(GR-42)** the pentagon-necklace family: habitat by a polynomial
+> sufficiency lemma, `φ ≥ m`, every member rank-certified fully-good up to `n_hub = 50` —
+> so `d ≥ m/2` is unbounded and **the bounded-deviation selection theorem is FALSE as
+> posed** (a form-refutation, E1 clause (iii); never a flank). **Correction landed
+> prominently:** `φ*(W3) = 2` — the W3 stick is **NOT** parity but the **odd-branch balance
+> layer** (all 12 parity-consistent maps within 2 deviations die on balance); and the layer
+> split measures **`d_fg = d_adm` at 133/133 shapes** — the deviation cost is entirely
+> admissibility, never binding-chunk avoidance. The (b)-armed hunt found no
+> realized-binding fully-hot hub (caps disclosed). **No g-flank; (GR-15) stays OPEN,
+> unchanged, modulo (GR-4′); no gap-map status moves.** The TERMINATION check on this
+> landing: **E1 no** (form-refutation, members certified fully-good), **E2 no** (the prep's
+> carve-out — refuted **with successors named**, ledger attacks (a′)/(b′)/(c)/(d′)),
+> **E3 no**; the otherwise-clause routes the **twelfth** to the growth-law question at the
+> necklace family (the next-task slot at the top of this section; not prepped here).
 > **Coordinator hand-off note, still not loaded onto any direction:** whether (GR-15) as
 > quantified ("every tight class shape") also covers the `W19`-type **(K-res)** sibling
 > habitat is unresolved — pin it when the tight side closes, not before.
@@ -340,14 +334,14 @@ Reverse-chronological, one line per landing; full derivations live in git,
 `notes/Phase39-design.md`, and (for the (K) arc) the workbook section named in each entry, which
 is the canonical home a successor reads.
 
-- **The ELEVENTH direction — GDEV SELECTED + PREPPED 2026-08-14** (spec
-  `notes/Pencil-fanout.md` §"Eleventh direction"; a fable-recon pick, verified and
-  ACCEPTED): the bounded-deviation selection theorem (GORIENT attack (a), W3 the named
-  test) merged with the corner-side charge for W5-type `m_J = 0` chunks (attack (b));
-  attack (d) a (b)-conditional targeted control; (c) deliberately out; the tenth's
-  pre-registered "repair-form pair" adjudicated OUT (its routing condition never fired,
-  its content halved by (GR-38)). Fully-hot figures in this note re-qualified by family
-  per (GR-36)'s correction. Not dispatched.
+- **The ELEVENTH direction — GDEV LANDED 2026-08-15** (`w4/gdev.py`; canonical home
+  §(K-grid) Steps G48–G52; selected+prepped 2026-08-14, a fable-recon pick, verified and
+  ACCEPTED). **A REFUTATION-with-successors**: (GR-40) the corner charge (attack (b)
+  landed, tight at W3M); (GR-41) the parity floor; (GR-42) the pentagon-necklace family —
+  the bounded-deviation selection form REFUTED as posed (`d ≥ m/2` unbounded, every member
+  rank-certified fully-good — a form-refutation, never a flank). W3 stick located in the
+  balance layer (not parity); `d_fg = d_adm` measured 133/133. (GR-15) stays OPEN;
+  E1/E2/E3 none fired; the twelfth routed to the growth-law question (*Hand-off*).
 
 - **The TENTH direction — GORIENT LANDED 2026-08-13** (`w4/gorient.py`; canonical home
   §(K-grid) Steps G43–G47). **An honest MISS**, four new theorems: (GR-36) structural

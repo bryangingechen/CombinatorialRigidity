@@ -8,7 +8,9 @@
 direction (GORIENT, §"Tenth direction") LANDED 2026-08-13 — an honest
 MISS, the route re-anchored on a bounded-deviation selection principle,
 W3 the sticking instance; the ELEVENTH direction (GDEV, §"Eleventh
-direction") PREPPED 2026-08-14, dispatch pending.** The
+direction") LANDED 2026-08-15 — the bounded-deviation form **REFUTED as
+posed** with successors named, the corner charge (GR-40) proven, no
+flank.** The
 first (A/B/C
 below, prepared 2026-08-05) landed 2026-08-05/06; the second (T/R/M,
 §"Second fan-out") 2026-08-06; the third (G/Q/O, §"Third fan-out")
@@ -40,7 +42,15 @@ obstruction family strictly contains the capacity-tight one and does
 carry fully-hot hubs, while the exact **realized-binding** family stays
 0/506; the principle holds at `d ≤ 2` everywhere measured except
 **W3**, which needs `d = 3` — no uniform bound proven, no g-flank
-found, the target and (GR-15) both stay OPEN. CFLANK was a
+found, the target and (GR-15) both stay OPEN; the eleventh (GDEV,
+§"Eleventh direction") 2026-08-15 — the bounded-deviation form is
+**REFUTED as posed** ((GR-42): pentagon necklaces with an unbounded
+parity floor, every member still carrying a rank-certified fully-good
+colouring — a form-refutation, E1 clause (iii), never a flank), the
+corner charge **(GR-40)** lands (sub-deliverable (b), tight at W3M),
+the parity floor **(GR-41)** is proven, the W3 stick is located in the
+**balance layer** (not parity), and `d_fg = d_adm` measures 133/133 —
+(GR-15) stays OPEN, unchanged. CFLANK was a
 **single direction**, not a fan-out — its selection was a **coordinator
 delegation** (`notes/Phase39.md` *Current state*, the 2026-08-07 "keep
 going on my own judgment" adjudication), not a user pick from a candidate
@@ -2431,30 +2441,50 @@ scaffolding block.
 
 ## Eleventh direction — GDEV (single direction, prepared 2026-08-14)
 
-**Status: PREPPED 2026-08-14; dispatch pending.** A **single
-direction**, not a fan-out. Selection: at this session's check-in the
-user **chose the option "Delegate to a fable recon" from a
-multiple-choice check-in** — an option selection, not free text; the
-**fourth** use of the 2026-08-12 shape that selected GCAP, GEXIST and
-GORIENT. The recon's read-only verdict (2026-08-14) picked this
-direction as a **merge** of GORIENT's named attacks **(a)+(b)** — the
-bounded-deviation selection theorem, with the corner-side charge for
-corner-separated (W5-type) chunks as its first named sub-deliverable —
-folding attack (d) in only as a **conditional, repriced falsification
-control** (re-armed by (b) if it lands; never the enumerator build) and
-deliberately leaving attack (c) out (ranked below). The recon
-adjudicated the tenth ranking's pre-registered item 2 head-on (recorded
-below so the loser stays lost), ranked every alternative, extended the
-TERMINATION test's E1 clause with a recorded reason, and surfaced one
-live prose defect (two unqualified "0 fully-hot" figures in
-`notes/Phase39.md`, repaired in this prep commit — the fanout header
-and the gap-map row were verified already correct). The coordinator
-re-verified every load-bearing pin (the 0-hit checks with a live-grep
-control; the *Step G47* anchors; the (GR-39) status-table family
-qualifiers; `gridcol.multigraphs`'s `cap=4000` at HEAD; `gorient.py`'s
-≤ 2-deviation exhaustive pass, disclosed cap-60 rank budget and
-1200-draw distance sampler; and the tenth routing clause's
-conditionality) and **ACCEPTED** the verdict.
+**Status: LANDED 2026-08-15.** A **single direction**, not a fan-out.
+Selection: at the 2026-08-14 check-in the user **chose the option
+"Delegate to a fable recon" from a multiple-choice check-in** — an
+option selection, not free text; the **fourth** use of the 2026-08-12
+shape that selected GCAP, GEXIST and GORIENT. The recon's read-only
+verdict picked this direction as a **merge** of GORIENT's named attacks
+**(a)+(b)** — the bounded-deviation selection theorem, with the
+corner-side charge for corner-separated (W5-type) chunks as its first
+named sub-deliverable — folding attack (d) in only as a
+**(b)-conditional falsification control** and deliberately leaving
+attack (c) out (ranked below); it also adjudicated the tenth ranking's
+pre-registered item 2 (recorded below so the loser stays lost) and
+extended the TERMINATION test's E1 clause with a recorded reason. The
+coordinator re-verified every load-bearing pin at prep and **ACCEPTED**
+the verdict; the dispatch's own return was independently verified
+(figures reproduced exactly on a coordinator re-run) and ACCEPTED.
+§(K-grid) continuation, Steps G48–G52: **the target is REFUTED AS
+POSED, with all three ranked MISS deliverables landed.** **(GR-40)**
+proven — the corner charge: `defect_X ≥ w45 + ⌈(z + odd_cc − m_J −
+(k−1))/2⌉` in **both** blocks, sub-deliverable (b) as a standalone
+theorem, tight at W3M (where (GR-36) prices 0) and pruning the
+fully-capable-hot census 815 → 573 on a fresh subsample.  **(GR-41)**
+proven — the parity floor: every admissible colouring's minority map
+lies in the coset `[ℓ even] + Cut(G°)`, so its deviation distance from
+**every** perfect matching is `≥ ⌈φ*/2⌉` — the deviation count is
+bounded *below* by a colouring-free shape invariant.  **(GR-42)**
+proven + machine-certified — the pentagon-necklace family `NK(m)`:
+habitat by a new polynomial sufficiency lemma (cyclic
+4-edge-connectivity ⟹ the (GR-25) criterion), `φ ≥ m` by an
+odd-cycle packing, every member rank-certified fully-good (per-shape
+(GR-15) up to `n_hub = 50`) — so `d(NK(m)) ≥ m/2` grows without bound:
+**no shape-free deviation bound exists** (a FORM-refutation, exactly
+E1 clause (iii); never a flank).  **The honest surprise, landed as a
+correction:** `φ*(W3) = 2` — the parity floor does **NOT** explain the
+W3 stick (the prep's working reading); exhaustive layering shows all
+12 parity-consistent maps within 2 deviations die on the **odd-branch
+balance rider** — the W3 stick is the balance layer's.  And the layer
+split measures **`d_fg = d_adm` at 133/133 shapes**: the deviation
+cost of the selection is entirely about reaching admissibility, never
+about avoiding binding chunks.  The (b)-armed hunt ran (40 000 frames,
+3526 gated, 600 armed and exactly scanned, caps disclosed): **no
+realized-binding fully-hot hub**.  **No g-flank found; (GR-15) stays
+OPEN, unchanged in status; no gap-map status moves.**  The TERMINATION
+check on this landing is recorded below the route ledger.
 
 **Direction code GDEV** (the deliverable is the bounded-**DEV**iation
 selection theorem), minted under clause **(L5)**. Verified **0-hit as a
@@ -2645,9 +2675,17 @@ advances; the coordinator updates each entry's status on landing:
 
 1. **The orientation theorem in its re-anchored bounded-deviation
    form** (= uniform fully-good existence at `Λ = ∅` `D = 0` via a
-   shape-free deviation bound) — THIS DIRECTION; currently
-   open-with-named-dispatchable-attacks ((GR-37) anchor proven; the
-   bound open; W3 the test; the corner charge the missing bound).
+   shape-free deviation bound) — THIS DIRECTION.  **Landed 2026-08-15:
+   the bounded-deviation FORM is REFUTED** ((GR-42)); the entry
+   re-anchors as **open-with-named-dispatchable-attacks** on the
+   underlying existence statement: **(a′)** the `d_fg = d_adm` law
+   (fully-goodness free at the admissibility optimum — measured
+   133/133; with per-shape admissibility it recovers the existence
+   target with no deviation language left); **(b′)** the balance-layer
+   bound (`d_adm − d_par ≤ 2`, or a family where it grows — the W3
+   stick's layer); **(c)** AA-glue realizability at `n_hub ≥ 8`
+   (unchanged); **(d′)** the corner-armed realized-binding fully-hot
+   seed hunt past GDEV's caps.
 2. **(GR-4′)** — open, proven cases exclude every habitat block; the
    natural next proof target on a HIT.
 3. **The `Λ ≠ ∅` closed-form analogue** — unswept.
@@ -2700,6 +2738,25 @@ the growth-law question at that family; a (b)-armed seed construction
 routes to the CSP test at that seed. The ledger-not-artifacts lesson
 stands: E1–E3 are stated over the ledger and the target's status, never
 over how many theorems landed.
+
+**Checked on the landing (2026-08-15) — none fires.**  **E1 does NOT
+fire**: no g-flank — every refuting `NK(m)` member carries a
+rank-certified fully-good colouring, and the deviation blowup is
+exactly clause (iii)'s named non-event (a FORM-refutation, added at
+this prep with its reason recorded above; the clause did its job
+within one landing).  No seed either (the (b)-armed hunt found no
+realized-binding fully-hot hub).  **E2 does NOT fire**: the theorem is
+refuted-as-posed **with successors named** — quoting the prep's own
+carve-out, *"a proven-unbounded-`d` outcome **with a successor
+named** — a re-anchoring of entry 1 back to existence via another
+instrument … does NOT fire E2"* — and entry 1 above carries four named
+dispatchable attacks ((a′)/(b′)/(c)/(d′)).  **E3 does NOT fire** (the
+target is not proven; it is refuted).  Per the otherwise-clause — *"a
+constructed `d ≥ 4` witness routes to the growth-law question at that
+family"* — **the twelfth's routing is the growth-law question at the
+necklace family** (the `d_fg = d_adm` / balance-layer statements of
+entry 1's (a′)/(b′), tested where the floor grows).  Recorded as
+routing only: the twelfth is **not prepped and not dispatched** here.
 
 ### The ranking record (recon verdict, coordinator-verified) — losers stay lost
 
