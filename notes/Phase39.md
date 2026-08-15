@@ -6,17 +6,18 @@
 (2026-07-30). Only three items remain, all carried by the landed successor
 `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card` (`Molecule/Pencil/Escape.lean`):
 `hcontract` (W4), kernel `hK`, and kernel `hbareSplit` — see *Hand-off*. **All thirteen
-fan-out directions plus CFLANK, GCAP, GUNIF, GEXIST and GORIENT are now COMPLETE**
-(2026-08-05 → 08-13; roster in *Decisions made*'s FIRST-through-TENTH entries). Headline
+fan-out directions plus CFLANK, GCAP, GUNIF, GEXIST, GORIENT and GDEV are now COMPLETE**
+(2026-08-05 → 08-15; roster in *Decisions made*'s FIRST-through-ELEVENTH entries). Headline
 positives **(FR-R1) PROVEN** and (GR-16)–(GR-28); GUNIF **REFUTED both of its targets** at
 `n_hub ≥ 8`; GEXIST is an honest **MISS** — three new theorems ((GR-32)/(GR-33)/(GR-35))
 reduce the uniform existence target to a **minority-dart orientation problem**; GORIENT,
 also an honest **MISS**, adds four more ((GR-36)–(GR-39)) and re-anchors the target on a
-**bounded-deviation selection principle** (W3 the sticking instance) — but the target
-itself, and with it **(GR-15), stays OPEN throughout; class uniformity untouched by every
-round.** The research arc **CONTINUES**; the **ELEVENTH direction GDEV is selected and
-PREPPED (2026-08-14), not yet dispatched** — that dispatch is the next concrete task
-(see *Hand-off*). Direction codes
+**bounded-deviation selection principle** (W3 the sticking instance); **GDEV REFUTES that
+form as posed** ((GR-40)–(GR-42): a habitat family with an unbounded parity floor whose
+every member is still fully-good — a form-refutation, never a flank), re-anchoring it on
+the `d_fg = d_adm` law — but **(GR-15) stays OPEN throughout; class uniformity untouched
+by every round.** The research arc **CONTINUES**; **no twelfth direction is selected or
+prepped** — that prep is the next concrete task (see *Hand-off*). Direction codes
 are **multi-letter and topic-tagged from the fifth fan-out on** (`notes/Pencil-labels.md`
 (L5)); grandfathered single letters are re-used across dates — **always date those**.
 
