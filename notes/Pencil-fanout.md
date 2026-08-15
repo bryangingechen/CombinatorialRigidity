@@ -330,6 +330,24 @@ whether it can be pursued under the standing adjudications.
    invocation rows), which was itself added after four consecutive landings
    skipped it — the recurring shape is a per-landing chore that no gate
    covers, so the checklist is the only mechanism.
+7. **Sweep the four status surfaces as one deliberate pass**, not as a
+   side effect of editing the prose around them. They go stale
+   independently, they contradict each other when they do, and no gate
+   covers any of them: **(i)** `notes/Phase39.md`'s top `**Status:**`
+   header block — the COMPLETE roster, the date range, and its
+   "next concrete task" sentence; **(ii)** the *Hand-off* next-task slot
+   at the top of that section — **re-aim it, never delete it**;
+   **(iii)** *Current state*'s (K)-arc paragraph — the dispatch count,
+   the strategy-pass count, the date range; **(iv)** the ROADMAP Status
+   cell (thin: marker + one clause). Three consecutive landings each
+   missed a *different* one — GEXIST the ROADMAP cell, GORIENT the
+   Hand-off slot (deleted with the prep text it replaced), GDEV the
+   Status header — each caught only in coordinator verification, each
+   costing a follow-up commit. Third instance of the same shape as
+   item 2 of the fifth fan-out's block and item 6 above (dispatch-log
+   F17). The generalization worth carrying: **a document's own header is
+   a status surface, and it is precisely the part a section-scoped edit
+   does not re-read.**
 
 ---
 

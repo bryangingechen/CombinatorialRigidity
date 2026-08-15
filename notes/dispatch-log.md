@@ -106,6 +106,8 @@ keeps only what git cannot show.
 | 2026-08-13 | Phase39 cleanup round — coordinator-supplied premises (`153845d8`; the D-3 prompt) | — (coordinator) | **F14 twice in one session**: two coordinator premises asserted as verified, both false; one caught by a subagent, one by a subagent's successor | (i) A "hard ordering constraint" was *committed* claiming D-2's gap-map rewrite would shift every later line number, forcing D-2 before D-1. False — a markdown table row is ONE physical line; file length was unchanged. Harmless order, unsound reasoning. (ii) The D-3 prompt asserted surviving `→ FRICTION [resolved] *title*` pointers "must be repointed or they dangle"; the builder declined **with evidence** (`TACTICS-QUIRKS.md:25` tells readers to grep both files — the convention is title-based). Lesson: measure before writing a constraint into a durable log. |
 | 2026-08-13 | Phase39 ninth direction GEXIST — dispatch shape | fable (fresh launch, not a resume) | playbook deviation, deliberate: continuation-resume declined for verdict independence | The selection recon that picked GEXIST was resumable with intact route context — the playbook's continuation shape, and cheaper. Launched fresh anyway: this direction's honest-MISS is a *valuable* outcome, and the agent that argued for the pick would have been grading its own homework. Outcome: a clean MISS returned, with three new theorems, one self-refuted mechanism, and no reluctance to report the target unproven. Deviation judged correct here; continuation stays right where the *arc* continues, not where a *verdict* is being graded. |
 | 2026-08-13 | Phase39 GORIENT landing verification → corrective pass (`90e86ec1` → this commit) | fable (direction) → sonnet (landing, corrective) | gate-invisible defect caught in coordinator verification: the landing checklist's own gap-map update re-created a just-fixed changelog defect | GORIENT's landing checklist item 4 (gap-map update) re-created the D-2 changelog defect (`dc4ecc7b`) in the same §(K-grid) cell just fixed: appended "Since GORIENT..."/"GEXIST left the route in..." narrative rather than a current-state rewrite (1373 → 1811 words), plus a duplicate hot-dart-census figure split across the two cells. Caught in coordinator verification of `90e86ec1`, one landing after the cleanup round closed. Corrected here: recomputed from scratch in D-2's register, 1811 → 1731 — above D-2's 1300-1450 band since GORIENT added four new theorems (GR-36-39). |
+| 2026-08-14 | Phase39 eleventh direction GDEV prep (`0a38ffa0` → `a8294191`) | fable (selection recon, resumed to prep) | gate-invisible defect caught in coordinator verification: a compression left stale an accounting line the same commit had just falsified | The prep one-lined the settled *Current state* bullets **around** the "(K) arc — thirty-five dispatches, plus four strategy-only passes (… → 08-13)" paragraph but left the paragraph itself as untouched context, so its own selection recon — the fifth such pass — went uncounted in the commit that made it one. Caught by reading the diff's *context* lines, not its changed ones. Lesson: a compression pass must re-read the **counts adjacent to what it merges**; those are the sentences most likely to sit in context rather than in the diff. |
+| 2026-08-15 | Phase39 GDEV landing verification (`0e2bd9b7` → `1124910f`) | fable (direction + landing, same-agent resume) | gate-invisible defect caught in coordinator verification: the note's Status header left contradicting its own Hand-off — **third consecutive landing** with a stale status surface | The landing correctly updated *Current state*, *Hand-off*, *Decisions made*, the gap map, the fan-out spec, the labels and ROADMAP — but not the note's top `**Status:**` block, which still read "GDEV is selected and PREPPED …, not yet dispatched — that dispatch is the next concrete task" while *Hand-off* 200 lines below correctly aimed at the twelfth's prep. That header is the first paragraph a fresh session reads. Cf. GEXIST's landing (ROADMAP cell) and GORIENT's (deleted Hand-off slot). Mitigated by landing-checklist item 7; see F17. |
 
 ## Findings
 
@@ -408,3 +410,25 @@ At phase close, promote stable entries into the coordinator command's
   anything is still constrained. Corollary, and the reason this one was
   caught: a coordinator's site list is a starting point the builder
   re-derives, not a checklist it executes.
+- **F17 — a document's own header is a status surface, and it is exactly
+  what a section-scoped edit does not re-read (Phase 39, 2026-08-13…15).**
+  Three consecutive direction landings each updated the sections they were
+  told to update and left a *different* status surface stale: GEXIST's the
+  ROADMAP Status cell, GORIENT's the *Hand-off* next-task slot (deleted
+  outright, with the prep text it should have replaced), GDEV's the phase
+  note's top `**Status:**` block — which ended up asserting the direction
+  was "not yet dispatched" in the very commit that landed it. Each was
+  caught only in coordinator verification, each cost a follow-up commit,
+  and no gate covers any of them: they are prose, and prose that contradicts
+  other prose still builds green. The fix that has repeatedly worked here is
+  **a numbered checklist item enumerating the surfaces**, not a prose
+  exhortation to be careful — this is the third instance of the
+  per-landing-chore shape after the `notes/scripts/README.md` §3 invocation
+  rows (four landings skipped) and the scaffolding-block strip (four
+  landings merged it), both of which stopped recurring once itemized.
+  Mitigations: `notes/Pencil-fanout.md` landing-checklist item 7 (the
+  four-surface sweep) and CLAUDE.md's per-commit bullet, which now names the
+  status header alongside the sections. Coordinator corollary: verify the
+  surfaces a landing did **not** touch — the ones it did are self-reported
+  in the return, and a return that lists seven correct updates reads as
+  complete precisely when the eighth is missing.

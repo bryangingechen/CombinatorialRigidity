@@ -261,7 +261,16 @@ content change (docs commits):
 - **Update `notes/PhaseN.md`** — the active phase's *Current state*,
   *Decisions made*, *Blockers*, and *Hand-off / next phase* sections,
   so they reflect what this commit changes. A 2-line edit is fine;
-  silence is not. When writing *Hand-off / next phase*, name the
+  silence is not. **The note's own `**Status:**` header block counts as
+  one of those sections** — it carries the roster, the counts and the
+  "next concrete task" sentence, and it is the first paragraph a fresh
+  session reads. A section-scoped edit does not re-read the header, which
+  is exactly why it is the surface that goes stale: three consecutive
+  Phase-39 landings each left a *different* status surface contradicting
+  the body the same commit had just updated (dispatch-log F17). On any
+  commit that changes what the phase's next task is, re-read the header
+  and the ROADMAP Status cell as deliberately as the section you edited.
+  When writing *Hand-off / next phase*, name the
   **smallest concrete commit** that moves work forward, not the full
   target theorem. If you genuinely don't know whether the next lemma
   is one session's work or three, say so explicitly: "land the iso
