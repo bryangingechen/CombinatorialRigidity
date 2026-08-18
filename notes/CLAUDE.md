@@ -38,7 +38,14 @@ for *organizing* this directory is here.
   `Phase39-design.md`; this file carries only the mathematics. It holds the
   live **kernel-(K)** arc, the **Shared dictionary** both workbooks use, and
   the **State of (K)** gap map (the artifact a new pass *updates* rather than
-  re-summarizing).
+  re-summarizing). **The gap map's per-cell size is machine-gated**
+  (`notes/check-gapmap-cells.py`, the `check-log-rows.py` shape adapted to
+  this table): the `(K-grid)` row alone regressed from a changelog into a
+  current-state cell and back four times (dc4ecc7b → 2ab3c630, prose-only
+  repairs both times) before the cap replaced the prose rule. Run it
+  (default mode; no flags) before any commit that edits a gap-map row —
+  it checks only the rows that changed, so unrelated commits never block on
+  grandfathered ones.
 - **`Pencil-W4-informal.md`** — the same workbook's **W4 (`hcontract`)
   residual arc**, split out 2026-08-05: three sections closed *as arguments*
   (`hnoGood'` vacuity / (SAFE-RES) refuted, the kernel widening priced) and

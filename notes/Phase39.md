@@ -355,63 +355,35 @@ Reverse-chronological, one line per landing; full derivations live in git,
 `notes/Phase39-design.md`, and (for the (K) arc) the workbook section named in each entry, which
 is the canonical home a successor reads.
 
-- **The TWELFTH direction — GADM LANDED 2026-08-17** (`w4/gadm.py`; canonical home
-  §(K-grid) Steps G53–G57; the arc's first coordinator-authored prep, user-elected
-  2026-08-17; dispatched fable, return coordinator-verified and ACCEPTED). **An honest
-  MISS on (a′)-as-a-theorem carrying one theorem and a refutation**: (GR-43) the
-  odd-cycle-packing shift floor — `d_par = d_adm = d_fg = m` EXACTLY at NK(2)/6/8/10,
-  rank-certified at the optimum, so the shift-metric layer is UNBOUNDED and the growth
-  law's bounded-correction reading is REFUTED while the (a′) law SURVIVES its first
-  large-`d` test (plus a fresh 108-shape census, all `d_fg = d_adm`; sticking case named:
-  fixed-μ exchange insufficient at W3-type shapes). Entry 5 settled a SEPARATE OPEN
-  statement ((GR-37)(iii)'s balance clause statement-beyond-proof, flagged in place); (b′)
-  supported (gaps `{0, 1, 2}`; W3's stick corrected to a 1-shift + 1-balance split — two
-  Step-G49 defects fixed in place). (GR-15) stays OPEN; E1/E2/E3 none fired; the
-  thirteenth routes to the shift-metric layer (*Hand-off*). The landing also backfilled
-  GDEV's missing clause into the labels registry row.
+- **The ELEVENTH and TWELFTH directions — GDEV LANDED 2026-08-15, GADM LANDED
+  2026-08-17** (`w4/{gdev,gadm}.py`; canonical home §(K-grid) Steps G48–G57, full
+  statements in *Current state*/*Hand-off*). GDEV a REFUTATION-with-successors
+  ((GR-40)–(GR-42): the bounded-deviation selection form refuted as posed); GADM an
+  honest MISS carrying (GR-43) (shift-metric layer UNBOUNDED) and settling ledger
+  entry 5 OPEN. (GR-15) stays OPEN throughout; E1/E2/E3 none fired; thirteenth routes
+  to the shift-metric layer.
 
-- **The ELEVENTH direction — GDEV LANDED 2026-08-15** (`w4/gdev.py`; canonical home
-  §(K-grid) Steps G48–G52; a fable-recon pick). **A REFUTATION-with-successors**:
-  (GR-40) the corner charge (tight at W3M); (GR-41) the parity floor; (GR-42) the
-  pentagon necklaces — the bounded-deviation selection form REFUTED as posed (`d ≥ m/2`
-  unbounded, every member rank-certified fully-good; never a flank). `d_fg = d_adm`
-  measured 133/133; its balance-layer reading of W3 since corrected by GADM. (GR-15)
-  stays OPEN; E1/E2/E3 none fired.
-
-- **The TENTH direction — GORIENT LANDED 2026-08-13** (`w4/gorient.py`; canonical home
-  §(K-grid) Steps G43–G47). **An honest MISS**, four new theorems (GR-36)–(GR-39):
-  structural charge (binding-capable corrects capacity-tight), selection reduction
-  ((c,m)/cut-space), intersection kill (vacuously strong at `n_hub ≤ 6`), hot-hub
-  adjudication. Target re-anchored on a bounded-deviation selection principle, sticking
-  at W3; stays OPEN with (GR-15); four dispatchable attacks named.
-
-- **The NINTH direction — GEXIST LANDED 2026-08-13** (`w4/gexist.py`; canonical home
-  §(K-grid) Steps G38–G42). **An honest MISS**, three new theorems (GR-32)/(GR-33)/
-  (GR-35) — capacity, weakness, uncrossing — and (GR-34) refuting the uncorrelated
-  union-bound mechanism (`CL10`). Target reduced to a minority-dart orientation
-  problem, stays OPEN with (GR-15).
-
-- **The EIGHTH direction — GUNIF LANDED 2026-08-13** (`w4/gunif.py`; canonical home
-  §(K-grid) Steps G34–G37). **REFUTED both targets**: (GR-28)(iv) at `k ≥ 3` refuted
-  with an exact boundary — theorem at `n_hub ≤ 6` (GR-29), false from `n_hub = 8`
-  (GR-30); repair theorem unprovable as posed (GR-31). Per-shape (GR-15) HOLDS at
-  every witness, itself **stays OPEN**; route DEAD (candidate set + the 2026-08-13
-  "continue" adjudication: *Hand-off*). **Coordinator corrective pass, same day, docs
-  only** — gate-invisible defects fixed; prophylactic now landing-checklist item 6
-  (`notes/Pencil-fanout.md`).
+- **The EIGHTH through TENTH directions — GUNIF/GEXIST/GORIENT, all LANDED
+  2026-08-13** (`w4/{gunif,gexist,gorient}.py`; canonical home §(K-grid) Steps
+  G34–G47, full statements in *Current state*). GUNIF REFUTED both targets
+  ((GR-28)(iv) exact boundary, GR-29–31), route DEAD; GEXIST an honest MISS
+  ((GR-32)/(GR-33)/(GR-35) + (GR-34) refuting `CL10`) reducing the target to a
+  minority-dart orientation problem; GORIENT an honest MISS ((GR-36)–(GR-39))
+  re-anchoring it on a bounded-deviation selection principle sticking at W3, four
+  dispatchable attacks named. Per-shape (GR-15) holds throughout, stays OPEN.
+  Coordinator corrective pass same day (GUNIF), docs only — gate-invisible defects
+  fixed, prophylactic now landing-checklist item 6 (`notes/Pencil-fanout.md`).
 
 - **The SIXTH and SEVENTH directions — CFLANK LANDED 2026-08-07, GCAP LANDED
   2026-08-13** (`w4/cflank.py`, `w4/gcap.py`; canonical homes §(K-grid) Steps G24–G28 /
-  G29–G33). Eight proven results (GR-21)–(GR-28): excess law, five sparsity caps, flip
-  injection, private-branch repair, cut criterion, a 40 742-shape exhaustive hunt, exact
-  computability of the (GR-8) maximum, the closed defect formula — TCOL's two flank
-  sites closed **AS ROUTES**, certificate-3 **proven per swept shape**; GCAP's `g ≤ 1`
-  cap at `k ≥ 3` **since REFUTED by GUNIF**. **(GR-15) stays OPEN**; uniformity untouched.
+  G29–G33). Eight proven results (GR-21)–(GR-28) closed TCOL's two flank sites AS
+  ROUTES (certificate-3 proven per swept shape); GCAP's `g ≤ 1` cap at `k ≥ 3` since
+  REFUTED by GUNIF. (GR-15) stays OPEN; uniformity untouched.
 
 - **The FIRST through FIFTH fan-outs — all LANDED 2026-08-05…08-07** (canonical homes
   the workbook sections named; commits `d5ae55aa`…, `cdd23d30`, `12edc305`, `b32c1c2c`,
-  `cd0af9e1`). Thirteen directions (A/B/C+S1–S4, T/R/M, G/Q/O, E/J, PEX/TCOL); headline
-  positives **(GR-9)**/**(FR-R1)** PROVEN, (GR-15) OPEN; uniformity untouched throughout.
+  `cd0af9e1`; thirteen directions A/B/C+S1–S4, T/R/M, G/Q/O, E/J, PEX/TCOL). Headline
+  positives (GR-9)/(FR-R1) PROVEN, (GR-15) OPEN; uniformity untouched throughout.
 
 - **2026-08-05 docs/strategy pair**: Notes reorganization (label registry
   **`notes/Pencil-labels.md`**; `Phase39-design.md` **FROZEN**, 119 anchors) and the broad
