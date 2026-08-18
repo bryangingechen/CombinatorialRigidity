@@ -23,10 +23,12 @@ bounded-correction reading) while the **(a′) `d_fg = d_adm` law survives its f
 large-`d` test** (rank-certified at the optimum up to `n_hub = 50`) and ledger entry 5
 (per-shape admissibility) settles as a **separate OPEN statement** — but **(GR-15) stays
 OPEN throughout; class uniformity untouched by every round.** The research arc
-**CONTINUES**: per GADM's outcome-3 branch **the thirteenth routes to the shift-metric
-layer** (sharpen (GR-41)'s Hamming relaxation to the true shift metric; (GR-43) is the
-packing lower bound). **Prepping the thirteenth per that routing is the next concrete
-task** (see *Hand-off*). Direction codes
+**CONTINUES**: the THIRTEENTH direction is **GPSA** — **route-ledger entry 5**, per-shape
+admissibility in BOTH halves (the Hall/SDR parity step and the ≤ 6-odd-branch balance
+rider), (b′) the secondary — picked by a **top-rung fable recon** (2026-08-18, fifth use
+of the 2026-08-12 shape) whose verified verdict **OVERRODE** GADM's shift-metric routing
+clause; **PREPPED, not yet dispatched. Dispatching GPSA is the next concrete task**
+(see *Hand-off*). Direction codes
 are **multi-letter and topic-tagged from the fifth fan-out on** (`notes/Pencil-labels.md`
 (L5)); grandfathered single letters are re-used across dates — **always date those**.
 
@@ -50,9 +52,8 @@ constraints; the dated dispatch narrative is in *Decisions made* and git):
   (`notes/scripts/README.md`). Every script the project runs is tracked, including probes
   whose answers reach a note.
 - **2026-08-05…07, second through fifth fan-outs (all COMPLETE; user-adjudicated).**
-  T/R/M, then G/Q/O (serial), then E/J, then PEX/TCOL (serial, opus substituted); route σ /
-  W4 / the (FR-6) follow-ons not selected at any of them; cap lifted, rescue §1
-  pre-authorized (`notes/Pencil-fanout.md` §§"Second"–"Fifth fan-out").
+  T/R/M, G/Q/O, E/J, PEX/TCOL; route σ / W4 / the (FR-6) follow-ons not selected at any of
+  them; cap lifted, rescue §1 pre-authorized (`notes/Pencil-fanout.md` §§"Second"–"Fifth").
 - **2026-08-07, delegation adjudication (binds from the SIXTH direction on).** Asked at
   the session-start check-in what to do once TCOL lands, the user selected **"Keep going
   on my own judgment"** — *"After landing TCOL I pick the next direction from the
@@ -60,8 +61,7 @@ constraints; the dated dispatch narrative is in *Decisions made* and git):
   delegates **selection only** and changes **no** standing constraint (phase OPEN; Lean
   hold stands; W4 PARKED; `hK`/`hbareSplit` carried as pinned; option B un-commissioned);
   the same check-in's top-rung/cap/rescue calls are otherwise unchanged. The coordinator's
-  picks under it — the SIXTH through ELEVENTH directions (CFLANK, GCAP, GUNIF, GEXIST,
-  GORIENT, GDEV) — are one-lined in *Decisions made*.
+  picks under it (the SIXTH through ELEVENTH directions) are one-lined in *Decisions made*.
 - **2026-08-12, seventh-direction delegation (refines the above; changes no standing
   constraint).** The user, verbatim: *"Let's have a fable subagent make the decision /
   do a reprioritization and then follow its guidance."* — the precedent that the pick may
@@ -70,49 +70,53 @@ constraints; the dated dispatch narrative is in *Decisions made* and git):
   check-in: top rung = fable (opus only if the weekly limit runs out); the dispatch cap
   **lifted**; rescue §1 mechanical fixups **pre-authorized** — all still binding.
 - **2026-08-13, phase-shape adjudication (changes no standing constraint).** Offered the
-  four options GUNIF's refutation raised (lift the Lean hold / a ninth direction / package
-  the arc and stop / attack strategy §2.3's wall), the user answered, verbatim: *"I think we
+  four options GUNIF's refutation raised, the user answered, verbatim: *"I think we
   should continue with the research here, but perhaps not in this session. Are we ready for
-  handoff to a fresh session?"* — **RESOLVED: the research arc CONTINUES** (the
-  ninth-direction option, not packaging-and-stopping). Nothing else moved: Lean hold
-  **STANDS**, W4 **PARKED**, option B un-commissioned, phase **OPEN**; the handle was
-  unspecified, so selection fell back to the standing 2026-08-07 delegation (the 2026-08-12
-  delegate-the-pick precedent applying too).
+  handoff to a fresh session?"* — **RESOLVED: the research arc CONTINUES** (not
+  packaging-and-stopping); nothing else moved, and selection fell back to the standing
+  2026-08-07 delegation (the 2026-08-12 delegate-the-pick precedent applying too).
 - **2026-08-13/14, ninth- through eleventh-direction selections (change no standing
-  constraint).** All three picks **re-delegated to a top-rung fable recon** (the second
-  through fourth uses of the 2026-08-12 shape, each a multiple-choice option pick; each
-  check-in kept all four rungs, the cap lifted, rescue §1 fixups pre-authorized).
-  Verdicts — **GEXIST**, **GORIENT**, **GDEV** — all verified and **ACCEPTED**; specs,
-  ranking records, route ledgers and TERMINATION records in `notes/Pencil-fanout.md`
-  §§"Ninth"–"Eleventh direction". GEXIST and GORIENT **LANDED 2026-08-13** (honest
-  MISSes); GDEV **LANDED 2026-08-15** (the bounded-deviation form refuted as posed,
-  successors named) — see *Hand-off*.
+  constraint).** All three picks **re-delegated to a top-rung fable recon** (second through
+  fourth uses of the 2026-08-12 shape); verdicts — **GEXIST**, **GORIENT**, **GDEV** — all
+  verified and **ACCEPTED** (records in `notes/Pencil-fanout.md` §§"Ninth"–"Eleventh
+  direction"); GEXIST/GORIENT **LANDED 2026-08-13** (honest MISSes), GDEV **LANDED
+  2026-08-15** (the bounded-deviation form refuted as posed, successors named).
 - **2026-08-17, twelfth-direction selection (BREAKS the fable-recon streak; changes no
   standing constraint).** Offered three shapes, the user chose **coordinator-authored prep
   from GDEV's routing clause**, verbatim content *"take (a′) as the primary attack per
   GDEV's measured 133/133 `d_fg = d_adm` finding, (b′) as the secondary, and write the spec
   myself. Cheaper, but no independent ranking of the losers."* — so GADM's spec and ranking
   record are the coordinator's (cost disclosed in the spec's *Status*; a future top-rung
-  recon may overturn its bars freely). Same check-in: all four rungs dispatchable, cap
-  **lifted**, rescue §1 fixups **pre-authorized**. GADM **PREPPED and LANDED 2026-08-17**
-  (an honest MISS on (a′)-as-a-theorem carrying (GR-43) and a refutation of the growth
-  law's bounded-correction reading; entry 5 settled OPEN; no flank) — see *Decisions made*
-  and *Hand-off*.
+  recon may overturn its bars freely). GADM **PREPPED and LANDED 2026-08-17** (an honest
+  MISS on (a′)-as-a-theorem carrying (GR-43); entry 5 settled OPEN; no flank).
+- **2026-08-18, thirteenth-direction selection (returns to the fable-recon shape; changes
+  no standing constraint).** The user chose, from the multiple-choice options, **"Delegate
+  the pick to a fable recon"** — the **fifth** use of the 2026-08-12 shape, elected
+  specifically because the coordinator-authored twelfth prep had no independent ranking of
+  the losers. The recon's verdict — **GPSA**: route-ledger **entry 5** (per-shape
+  admissibility, BOTH halves), **(b′)** secondary — was **verified and ACCEPTED, including
+  its OVERRIDE of GADM's shift-metric routing clause** (the recorded closure chain consumes
+  no `d_par`; spec, full loser ranking with bars, amended TERMINATION test, and the
+  process finding — the clause contradicted GADM's own ranking principle, unread by any
+  second reader — all in `notes/Pencil-fanout.md` §"Thirteenth direction"). Every GADM
+  ranking bar was upheld; the override targets the routing clause only. Same check-in:
+  **all four rungs dispatchable**, cap **lifted**, rescue §1 fixups **pre-authorized**
+  (the standing configuration). **PREPPED 2026-08-18, not yet dispatched** — see *Hand-off*.
 
-**Kernel-(K) research arc — thirty-seven docs+scripts-only dispatches, plus five
-strategy-only passes** (2026-08-02 → 08-17; the second is the 2026-08-12 fable recon,
+**Kernel-(K) research arc — thirty-seven docs+scripts-only dispatches, plus six
+strategy-only passes** (2026-08-02 → 08-18; the second is the 2026-08-12 fable recon,
 the third through fifth the 2026-08-13/08-14 ninth-, tenth- and eleventh-direction
-selection recons, all above; **the twelfth's pick was coordinator-authored at the user's
-2026-08-17 election, so there is no sixth pass** — the count stays five). Canonical homes: workbook `notes/Pencil-informal.md` (**State of (K)** map =
+selection recons, the sixth the 2026-08-18 thirteenth-direction selection recon, all
+above; **the twelfth's pick was coordinator-authored at the user's 2026-08-17 election,
+so it contributed no pass**). Canonical homes: workbook `notes/Pencil-informal.md` (**State of (K)** map =
 entry point), `notes/Pencil-W4-informal.md` (W4-residual), `notes/Pencil-strategy.md`
 (strategy); one line per landing in *Decisions made*, canonical with git — **not
 restated here**. Net effect: **disproof risk removed**, every refuted route/gap has a
 successor in the gap map, several structural positives proven; **class uniformity of
 the escape remains untouched by all thirty-seven dispatches.**
 
-**Doc-debt round CLOSED — `notes/Pencil-cleanup.md`** (2026-08-13, category D only; D-1…D-6
-all landed or swept-clean, D-5 a watch item; disposition in the log). Opened no research
-direction. **Its D-2 fix regressed at GORIENT's landing and was re-repaired** (`07f6f9b6`).
+**Doc-debt round CLOSED — `notes/Pencil-cleanup.md`** (2026-08-13, category D only; D-5 a
+watch item; the D-2 fix regressed at GORIENT's landing, re-repaired `07f6f9b6`).
 
 > **The one live candidate, and it is NOT settled — `notes/Pencil-informal.md` §(K-σ)** (the
 > canonical home for the four obligations, the `--hunt` findings, the validation scope and the
@@ -213,21 +217,20 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
 
 **The phase stays OPEN** (the 2026-07-24 adjudication — no phase-close; see *Current state*).
 
-**Next concrete task: PREP the THIRTEENTH kernel-(K) direction per GADM's routing** — the
-**shift-metric layer**: sharpen (GR-41)'s Hamming relaxation to the true shift metric.
-**(GR-43)** (workbook §(K-grid) *Steps G53–G57*) is the packing lower bound — `d_par ≥` the
-vertex-disjoint odd-τ-parity cycle-packing number, exact at the necklaces — and the open
-half is the upper structure: whether `d_par` *equals* the packing number (min-max-shaped;
-the (GR-13) hardness caution binds) or at least admits a polynomial certificate the closure
-chain can consume; attack **(a′)** stays dispatchable at its now-concrete sticking case
-(fixed-μ fiber exchange is measurably insufficient at W3-type shapes; every measured
-failure sits at defect exactly 2). GADM's TERMINATION check fired nothing (E1/E2/E3 all
-NO — recorded with the route ledger in `notes/Pencil-fanout.md` §"Twelfth direction":
-entry 1 still open-with-named-attacks, **entry 5 SETTLED as a separate OPEN statement**).
-The selection shape for the prep is the coordinator's call under the standing
-2026-08-07/08-12 delegation unless the user elects otherwise at check-in. No standing
-constraint moves with this: phase OPEN, Lean hold STANDS, W4 PARKED, `hK`/`hbareSplit`
-pinned, option B un-commissioned.
+**Next concrete task: DISPATCH GPSA, the THIRTEENTH kernel-(K) direction** — spec ready
+in `notes/Pencil-fanout.md` §"Thirteenth direction" (prepped 2026-08-18; the pick a
+top-rung fable recon's, fifth use of the 2026-08-12 shape, which **OVERRODE** GADM's
+shift-metric routing clause — override verified and accepted, grounds in the spec).
+Target: **route-ledger entry 5 — per-shape admissibility (`d_adm < ∞`) in BOTH halves**:
+the Hall/SDR parity step (workbook *Step G53*'s undischarged caveat) and the
+≤ 6-odd-branch balance rider; **(b′)** (`d_adm − d_par ≤ 2`) the secondary. Rung: top
+(fable); labels **(GR-44)+ / Steps G58+** reserved (`notes/Pencil-labels.md`); driver
+`notes/scripts/w4/gpsa.py`. An entry-5 HIT does **NOT** fire E3 — it **arms** it: the
+fourteenth is then **(a′)** at its named sticking case (no re-proposal bar — the recon
+ranked it second on sequencing only); a `d_adm = ∞` shape is a g-flank and fires E1
+(new clause (v)). The shift-metric layer's bar and the full loser ranking are in the
+spec's ranking record. No standing constraint moves with this: phase OPEN, Lean hold
+STANDS, W4 PARKED, `hK`/`hbareSplit` pinned, option B un-commissioned.
 
 **`hsplit` is CLOSED IN FULL** (W5-L7c-1…6, landed 2026-07-30) and **`hfresh`'s mechanical
 discharge (residue (iv)) is CLOSED too**. The landed successor
@@ -285,8 +288,9 @@ discharge (residue (iv)) is CLOSED too**. The landed successor
 >   the statement site; the parity half stands) — so an (a′) HIT alone does NOT close the
 >   `Λ = ∅` `D = 0` existence target and would NOT fire E3.
 > - **GDEV's and GADM's TERMINATION checks both fired nothing** (E1/E2/E3 all NO); GADM's
->   outcome-3 branch routes the **thirteenth** to the shift-metric layer (§"Twelfth
->   direction"; the next-task slot at the top of this section carries the prep).
+>   outcome-3 branch routed the **thirteenth** to the shift-metric layer — **since
+>   OVERRIDDEN** by the accepted 2026-08-18 recon verdict (GPSA, §"Thirteenth direction";
+>   the next-task slot at the top of this section carries the dispatch).
 > **Coordinator hand-off note, still not loaded onto any direction:** whether (GR-15) as
 > quantified ("every tight class shape") also covers the `W19`-type **(K-res)** sibling
 > habitat is unresolved — pin it when the tight side closes, not before.
@@ -360,8 +364,8 @@ is the canonical home a successor reads.
   statements in *Current state*/*Hand-off*). GDEV a REFUTATION-with-successors
   ((GR-40)–(GR-42): the bounded-deviation selection form refuted as posed); GADM an
   honest MISS carrying (GR-43) (shift-metric layer UNBOUNDED) and settling ledger
-  entry 5 OPEN. (GR-15) stays OPEN throughout; E1/E2/E3 none fired; thirteenth routes
-  to the shift-metric layer.
+  entry 5 OPEN. (GR-15) stays OPEN throughout; E1/E2/E3 none fired; GADM's
+  shift-metric routing of the thirteenth was overridden 2026-08-18 (GPSA).
 
 - **The EIGHTH through TENTH directions — GUNIF/GEXIST/GORIENT, all LANDED
   2026-08-13** (`w4/{gunif,gexist,gorient}.py`; canonical home §(K-grid) Steps
