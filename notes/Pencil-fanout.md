@@ -10,7 +10,14 @@ MISS, the route re-anchored on a bounded-deviation selection principle,
 W3 the sticking instance; the ELEVENTH direction (GDEV, §"Eleventh
 direction") LANDED 2026-08-15 — the bounded-deviation form **REFUTED as
 posed** with successors named, the corner charge (GR-40) proven, no
-flank.** The
+flank; the TWELFTH direction (GADM, §"Twelfth direction") is **PREPPED
+2026-08-17, not yet dispatched** — the growth-law question at the
+necklace family, attack (a′) (`d_fg = d_adm`) primary and (b′) (the
+balance layer) secondary, and the arc's first **coordinator-authored
+prep commit** — the pick breaks a streak of four recon-delegated ones,
+and CFLANK's and GUNIF's coordinator picks were both written up by
+dispatched sonnet builders, so no earlier prep was the coordinator's
+own (user election, recorded in that section's *Status*).** The
 first (A/B/C
 below, prepared 2026-08-05) landed 2026-08-05/06; the second (T/R/M,
 §"Second fan-out") 2026-08-06; the third (G/Q/O, §"Third fan-out")
@@ -64,7 +71,13 @@ user's 2026-08-13 check-in option pick (§"Ninth direction"); GORIENT's
 selection was re-delegated to a top-rung fable recon at the user's
 2026-08-13 check-in (§"Tenth direction"); GDEV's selection was again
 delegated to a top-rung fable recon at the user's 2026-08-14 check-in,
-the fourth use of that shape (§"Eleventh direction"). This file
+the fourth use of that shape (§"Eleventh direction"); **GADM's pick
+broke that streak** — at the user's 2026-08-17 check-in the coordinator
+offered the fable-recon shape as the recommended option and the user
+instead elected **coordinator-authored prep from the routing clause**,
+so the twelfth's spec *and its ranking record* are the coordinator's,
+with that cost disclosed in the section's own *Status* (§"Twelfth
+direction"). This file
 remains the dispatch-scoping template for any
 future fan-out or single direction. Three independent research directions on kernel (K), specified
 here so a fresh session can dispatch them at S=1 without re-deriving the
@@ -2934,3 +2947,603 @@ route-ledger update and the E1/E2/E3 TERMINATION check above — E3 in
 its retained deviated form, with a HIT surfacing the Lean-hold question
 to the user — recording the outcome in the phase note's *Hand-off* as
 narrative, not as a scaffolding block.
+
+## Twelfth direction — GADM (single direction, prepared 2026-08-17)
+
+**Status: PREPPED, not dispatched.** A **single direction**, not a
+fan-out. §(K-grid) continuation, labels **(GR-43)+** / **Steps G53+**.
+The eleventh landing's otherwise-clause routes the twelfth to *"the
+growth-law question at the necklace family"*, and this prep takes that
+routing literally: the direction attacks ledger entry 1's re-anchored
+**growth-law** form through its two sharpest named attacks — **(a′)**
+the `d_fg = d_adm` law as the **primary** target and **(b′)** the
+balance-layer bound as the **secondary** — tested first in the one
+regime where the deviation count is known to be large, the
+pentagon necklaces `NK(m)` of (GR-42).
+
+**Selection shape — a deviation from the four prior picks, recorded
+because it bounds what this spec is worth.** At the 2026-08-17
+session-start check-in the coordinator offered three shapes for the
+twelfth's pick; the user selected, from the multiple-choice options,
+**"I prep it directly from the routing clause"**, whose stated content
+was *"Coordinator-authored prep: take (a′) as the primary attack per
+GDEV's measured 133/133 `d_fg = d_adm` finding, (b′) as the secondary,
+and write the spec myself. Cheaper, but no independent ranking of the
+losers."* So the **2026-08-12 fable-recon shape is deliberately NOT
+used here** (it was used four times, for GCAP / GEXIST / GORIENT /
+GDEV), and the user accepted its stated cost up front: **the ranking
+record below is coordinator-authored, not an independent recon
+verdict**, and its re-proposal bars are correspondingly the
+coordinator's. **What is and is not new, precisely:** the *pick* being
+the coordinator's is not new (CFLANK's and GUNIF's were, under the
+2026-08-07 delegation) — what is new is that **no dispatch wrote this
+prep**: CFLANK's and GUNIF's specs were landed by dispatched sonnet
+builders and GCAP-through-GDEV's by the agent recording the recon
+verdict, so this is the arc's first coordinator-authored prep commit,
+and the ranking record has had no second reader. Everything else at
+that check-in is the standing configuration — all four rungs dispatchable, the dispatch cap
+**lifted**, rescue §1 mechanical fixups **pre-authorized**. **No
+standing constraint moves:** phase **OPEN**, the 2026-08-05 Lean hold
+**STANDS**, W4 **PARKED**, `hK`/`hbareSplit` carried pinned, option B
+un-commissioned in both kernel cases.
+
+**Direction code GADM** (the deliverable is the `d_fg = d_`**ADM**` `
+law), minted under clause **(L5)**. Verified **0-hit as a raw
+substring**, case-insensitively, across `*.md`/`*.tex`/`*.lean`/
+`*.py`/`*.m2` at this prep — as is the driver basename `gadm`
+(controls: `gdev` hits 8 files, `gorient` 8, `gexist` 10, so the grep
+was live). **`GFREE` was checked and REJECTED for a live hit** —
+`Gfree` appears in `notes/scripts/m2/lambda1.m2:129` — the first time
+in this arc a candidate code lost to an actual substring collision
+rather than to a naming judgement; recorded because it is the
+check earning its keep. Checked 0-hit but **not chosen**, recorded so
+they stay checkable without a re-run: `GLAW` and `GGROW` (both name the
+growth *law* generically rather than which layer this direction
+proves — the `GSEL` rejection reason one landing back), `GLAYER`,
+`GBAL`, `GSPLIT`, `GLIFT`, `GFG`. GDEV-prep's checked-not-chosen list
+(`GSEL`/`GPM`/`GMATCH`/`GBOUND`/`GBDD`/`GANCHOR`/`GDEVI`) was **not**
+re-used: the deliverable changed, and those checks are a landing old.
+
+### The letter scheme — which list this direction is stated in
+
+Three attack lists now share letters in this file. This direction and
+everything below is stated in the **eleventh landing's primed letters**
+— **(a′)** the `d_fg = d_adm` law, **(b′)** the balance-layer bound,
+**(c)** AA-glue realizability at `n_hub ≥ 8`, **(d′)** the
+corner-armed realized-binding fully-hot seed hunt past GDEV's caps.
+The two unprimed predecessors must be read against their own landings
+and are **not** used here: **GEXIST's** ((a) the orientation theorem,
+(b) the defect-≤ 1 intersection kill, (c) the no-collateral clause,
+(d) the pruned hot-hub enumerator) and **GORIENT's** ((a) the
+bounded-deviation selection theorem — **refuted as posed**, (b) the
+corner-side charge — **landed as (GR-40)**, (c), (d)). Note that
+**(c)** is the same statement in all three lists and **(d′)** is
+GORIENT's (d) past new caps; only (a)/(b) actually changed content.
+
+### The target — two statements, both already on the books
+
+Both are the eleventh landing's, verbatim in substance
+(§"Eleventh direction" → *The route ledger* entry 1; workbook
+§(K-grid) *Step G52* and *What would change this (Steps G48–G52)*
+items (i)–(ii)). The three quantities are the eleventh's, unchanged:
+at a habitat shape, `d_par ≤ d_adm ≤ d_fg` are the least deviation
+counts at which some (perfect matching, deviation set) is
+parity-consistent / extends to an admissible colouring / extends to a
+fully-good one, and `⌈φ*/2⌉ ≤ d_par` is the proven (GR-41) floor.
+
+> **(a′) — PRIMARY. The `d_fg = d_adm` law.** At every habitat shape
+> (cubic `G°`, `ℓ_β ∈ [2, 5]` ((SD-6)), `Σ_β(ℓ_β − 2) = 6` ((GR-21)),
+> satisfying the proven (GR-25) cut criterion; the `Λ = ∅`, `D = 0`
+> tight stratum): `d_fg = d_adm`. Equivalently — **fully-goodness is
+> free at the admissibility optimum**: whenever a (matching, deviation
+> set) of size `d_adm` extends to an admissible colouring, **some**
+> such extension is fully good.
+
+> **(b′) — SECONDARY. The balance-layer bound.** At every habitat
+> shape, `d_adm − d_par ≤ 2` — **or** an explicit family where that
+> gap **grows**, which refutes the bound and re-ranks the successors
+> (*What would change this* item (ii)).
+
+**Two stronger variants the direction must NOT silently substitute**,
+because the measured support is for the weaker form only:
+
+- **(a′) is a `min`-over-matchings statement.** The per-matching form
+  — "for **every** perfect matching `M`, the least admissible distance
+  to `M` equals the least fully-good distance to `M`" — is **not**
+  what the 133 shapes measure, and may well be false. Proving or
+  refuting it is a separate recorded result; the `min` form is the one
+  the closure chain consumes.
+- **(b′)'s `2` is not a parity-free constant.** The pool's single
+  `d_adm − d_par = 2` resident and W3 both cost exactly 2, and the
+  balance rider is a **global count** condition (`#A-majority =
+  #B-majority`, (GR-37)(i)). A `≤ 2` proved for the wrong reason — by
+  an argument that would equally give `≤ 0` — is a failed proof, not a
+  sharp one; the constant has to come from the rider's global nature.
+
+### What (a′) buys, and the one input this prep does NOT pin
+
+The chain the eleventh landing records (*Step G52*, third bullet):
+(a′) **+ per-shape admissibility** ⟹ uniform fully-good existence at
+`Λ = ∅`, `D = 0` (GEXIST's target) ⟹ via (GR-1)/§(K-clos) (AC-4) +
+(GR-5) + (AC-7), **(GR-15) on that stratum modulo (GR-4′)** — never
+more (*Riders*). The deviation language leaves the critical path
+entirely: what survives is a statement about `(G°, ℓ)` parity and
+balance, with no rank, no genericity and no binding chunk in it.
+
+**The unpinned input, flagged rather than assumed.** Whether
+*per-shape admissibility* — every habitat shape carries **at least
+one** admissible colouring, i.e. `d_adm < ∞` — is already delivered by
+(GR-37)(iii)'s reachability clause (*"every obstruction class — parity
+and the balance rider alike — is reachable by finitely many
+deviations"*, over the perfect matching that (GR-37)(ii) guarantees
+exists) or is a **separate open statement** is **not settled by this
+prep and must not be assumed either way**. Step 0 makes settling it
+the direction's first task, because the answer decides what a HIT on
+(a′) is worth:
+
+- if (GR-37)(iii) already gives `d_adm < ∞` unconditionally, **(a′)
+  alone closes the `Λ = ∅` `D = 0` existence target** modulo (GR-4′),
+  and **E3 fires** on a HIT;
+- if it does not, a HIT on (a′) leaves per-shape admissibility as the
+  named successor and **E3 does not fire**.
+
+The coordinator states this as a question, not a reading: (GR-37)(iii)
+is proven as a *reachability* statement about the pair-shift subspace,
+and reading a bare **existence** corollary off it is exactly the
+docstring-grade inference the project's derivation guard exists to
+stop. It is carried as **ledger entry 5** below so it cannot be
+consumed silently.
+
+### The first decisive experiment — the necklace family's own layer split
+
+The routing clause names *the necklace family* as the test bed, and
+there is a specific reason it is the right one: **it is the only known
+regime where `d` is large.** The subsample that produced the
+`d_fg = d_adm` figure runs at `d ≤ 3`; the layer split was measured
+exactly at NK(**2**) only (`d_par = d_adm = d_fg = 2` against floor 1);
+and at NK(6)/NK(8)/NK(10) — `n_hub = 30/40/50`, floors `3/4/5` — GDEV
+certified habitat, `φ ≥ m` and fully-good **existence**, but **never
+computed a deviation count**. The 133/133 law has therefore never been
+tested where it could plausibly break.
+
+**An exact upper bound is already sitting in the landed driver.**
+`gdev.py --adv` builds, per member, a minority map with `μ = χ_F` (or
+`χ_{F ∪ chords}` at `m ≡ 0 mod 4`) via `realize_mu`, solves it
+(`cm_solve`), and rank-certifies a fully-good colouring among up to 30
+such realizations — but it never measures `dist(·, M)` for any of them.
+Measuring it is cheap and settles the layer stack in the large-`d`
+regime:
+
+- **the upper bound needs ONE matching, not the enumeration** — `d` is
+  a min over matchings while the (GR-41) floor holds against *every*
+  matching, so a single explicitly-constructed perfect matching of
+  `NK(m)` suffices. `perfect_matchings` is infeasible at
+  `n_hub = 30/40/50` and **must not be called there**;
+- compare `dist` of the constructed **admissible** map and of the
+  rank-certified **fully-good** map against `⌈φ*/2⌉ = ⌈m/2⌉`, and
+  measure `d_par` at the member rather than inferring it.
+
+**Three outcomes, all informative; the third is information the pool
+cannot produce.**
+
+1. **Both land at `⌈m/2⌉`** — the whole stack is tight in the large-`d`
+   regime (`d_par = d_adm = d_fg = ⌈φ*/2⌉` there), and the
+   construction is a candidate **proof template** for (a′): it
+   realizes the coset element optimally *by design*, and what makes it
+   fully good is then the thing to isolate.
+2. **The fully-good one sits strictly above the admissible one** —
+   *What would change this* item (iii): **the law dies**, the
+   binding-chunk layer returns to the critical path, and the
+   thirteenth is re-routed at that witness. This is **E2's refutation
+   branch, not E1** — see clause (iv).
+3. **Both sit strictly above `⌈m/2⌉` with the excess growing in `m`** —
+   then `d_fg = d_adm` may still hold while a *lower* layer is
+   unbounded, and which one matters: if `d_par` already exceeds the
+   floor, the **shift-metric layer** is unbounded (measured `≤ 1` on
+   the pool, with NK(2) showing the gap is real); if `d_par` sits at
+   the floor, the excess is the **balance layer** and (b′)'s `≤ 2` is
+   refuted. Measure `d_par` at the member; do not infer which. Either
+   way it re-ranks the successors — the growth law's
+   proven-exact-from-below term would no longer be the dominant one.
+
+### The risk, stated plainly
+
+**The primary target's support is the thinnest kind: a coincidence
+across 133 shapes, all at `d ≤ 3`.** `d_fg − d_adm = 0` at 131 pool
+subsample shapes + W3 + NK(2) is a *measured* regularity with **no
+mechanism attached** — nothing in the landed record explains *why*
+fully-goodness should be free once admissibility is reached. Each of
+the three preceding directions died exactly where a measured
+regularity was pushed past its sample: (GR-28)(iv)'s `g ≤ 1` cap (a
+theorem at `n_hub ≤ 6`, false from 8), (GR-31)'s flip-distance law
+(sweep-local, breaking at `n_hub = 16`), and the bounded-deviation
+bound itself (`d ≤ 2` at 120/120, refuted by (GR-42)). **Experiment 1
+is that same test applied to (a′)**, which is why it runs first: if
+the law breaks at `NK(m)` it breaks cheaply, before a proof attempt.
+
+**Second risk — the mechanism gap, and where the freedom is not.** A
+proof of (a′) must say something about *binding chunks*:
+fully-goodness is a rank condition, admissibility is not, so "free"
+cannot come from a parity/balance argument alone. The two landed
+charges ((GR-36), (GR-40)) are the only colouring-free instruments
+that price binding, and both are **lower** bounds on `defect`; turning
+them into "some admissibility-optimal extension avoids binding" needs
+a counting or exchange step. **Locate that step correctly:** at a
+**fixed** minority map `m` the branch system has **exactly two**
+solutions (`c` and its global complement — (GR-37)(ii)'s count), so
+there is essentially nothing to exchange at fixed `m`; all of the
+freedom lives in **which size-`d_adm` deviation set** is used. A route
+that reads the freedom as living in the `c`-extension has mis-located
+it — a cheap self-check to run on the argument before scaling it. The
+honest MISS may be *"the law is true and the exchange set is too small
+to prove it with"*, which is itself a named result.
+
+**Third risk, binding on every figure quoted:** GDEV's family
+qualifiers carry over verbatim. Every "0 fully-hot" figure is
+**capacity-tight / realized only**; the **binding-capable** family
+carries **761** fully-capable-hot hubs on a 184-shape subsample
+((GR-36)), and (GR-40)'s corner condition prunes the
+fully-capable-hot census 815 → 573 on a fresh 182-shape subsample — a
+**~30 % prune, not a zero**. Importing sparsity intuition from the
+qualified zero is this arc's recurring stale-figure trap (the ninth's,
+then the tenth's).
+
+### Step 0 — mandatory load-bearing pin, before any derivation
+
+Pin from the landed *Steps G43–G52* before writing a single line of
+argument (the GCAP/GUNIF/GEXIST/GORIENT/GDEV Step-0 discipline). The
+first item is a **question to settle**, not a fact to restate; the rest
+are facts to pin.
+
+- **SETTLE FIRST — per-shape admissibility (ledger entry 5).** Does
+  (GR-37)(iii)'s reachability clause already prove `d_adm < ∞` at
+  every habitat shape, or is that a separate open statement? State the
+  answer in the return with its justification; it decides whether a
+  HIT on (a′) fires E3. **Do not assume either way** — the coordinator
+  deliberately left it unpinned.
+- **(GR-41)** in full — the coset `Φ = τ + Cut(G°)` with
+  `τ = [ℓ even]`; the parity `wt(μ) ≡ n_hub (mod 2)`; `μ(M) = 0` for
+  **every** perfect matching; the floor `dist ≥ wt(μ)/2 ≥ φ*/2`; and
+  the two recorded loosenesses — the floor is a **Hamming**
+  relaxation of a **shift metric** (adjacent-pair moves, one per hub),
+  loose by ≤ 1 on the pool, with NK(2) showing the gap is real
+  (`d_par = 2` against floor 1).
+- **(GR-37)** in full — the (c, m) model with the branch equation
+  **and** the odd-branch balance rider; the matching rule's exact
+  cut-space obstruction (with the bipartite / all-even reading and the
+  ladder-parity corollary); **the exactly-two-solutions count at a
+  fixed `m`**; and deviation reachability *with its recorded caveat*.
+- **(GR-42)** — the family; the habitat sufficiency lemma (cubic +
+  3-edge-connected + cyclically 4-edge-connected + star excess ≤ 5 ⟹
+  (GR-25)(i)) with its **F13 prism must-reject witness**;
+  `φ(NK(m)) ≥ m`, with `φ = φ* = m` **exactly** at `m ≡ 2 (mod 4)` and
+  the exact `φ` **open** inside `[m, m + m/2]` at `m ≡ 0 (mod 4)` (the
+  refutation consumes only `φ ≥ m`); and the per-member fully-good
+  rank certification (per-shape (GR-15) up to `n_hub = 50`) — the
+  reason the family is **not** a flank.
+- **(GR-40)** and **(GR-36)** — the two charges, both **lower** bounds
+  on `defect`, in **both** blocks; (GR-40)'s colouring-free corner
+  condition `z + odd_cc − m_J ≤ (k−1) + 4 − 2·w45`; the recorded fact
+  that their naive **sum** is FALSE (816 violations measured) — `max`
+  is the theorem; and (GR-36)'s honest boundary (the W5 family,
+  `m_J = w45 = 0`, is charged **nothing**, correctly, since it binds).
+- **(GR-38)'s exact scope** — laminarity is proven at `n_hub ≤ 6`
+  **ONLY**; the AA-glue case at `n_hub ≥ 8` is attack (c), **not**
+  this direction's.
+- **The 133-shape figure's exact provenance** — 131 seeded pool
+  subsample shapes (exact full-chunk scan, deviations ≤ 3,
+  deliberately NOT exhaustive) + W3 + NK(2); `d_fg` at every other
+  NK member is **unmeasured**. Quote it with that qualifier or not at
+  all.
+- **(GR-4′)'s proven-case boundary** — covers no habitat block; the
+  rider never dissolves silently.
+
+### The route ledger and the TERMINATION test — recorded at prep
+
+**The route ledger** — carried forward from the eleventh with entry 1
+as GDEV left it; the coordinator updates each entry's status on
+landing:
+
+1. **Uniform fully-good existence at `Λ = ∅` `D = 0`, in its
+   growth-law re-anchoring** — **open with four named dispatchable
+   attacks** ((a′)/(b′)/(c)/(d′)); the bounded-deviation *form* is
+   **refuted** ((GR-42)). **THIS DIRECTION** takes **(a′) primary,
+   (b′) secondary**; (c) and (d′) stay named and unclaimed.
+2. **(GR-4′)** — open; proven cases exclude every habitat block; the
+   natural next proof target on a HIT.
+3. **The `Λ ≠ ∅` closed-form analogue** — unswept.
+4. **The `D > 0` lift** — unswept.
+5. **Per-shape admissibility** (`d_adm < ∞` at every habitat shape) —
+   **NEW entry, minted at this prep with its reason.** The (a′) chain
+   *consumes* it, and entries 1–4 do not cover it: entry 1 is about
+   **fully-good** existence, this is about **admissible** existence.
+   Status **UNDETERMINED at prep**; Step 0's first item settles
+   whether it is already a (GR-37)(iii) corollary or an open
+   statement. A consumed input hidden inside another entry is exactly
+   the deferred-obligation shape `CLAUDE.md`'s per-commit checklist
+   bans ("wiring is not a deferral category").
+
+Together: 1 + 2 = (GR-15) at `Λ = ∅` `D = 0`; adding 3 + 4 = (GR-15);
+(GR-15) + (GR-1)/§(K-clos) (AC-4) + (GR-5) + (AC-7) = `hK` on the
+tight `D = 0` stratum (the closure chain of *Steps G29–G33*, riders
+included).
+
+**The TERMINATION test (E1/E2/E3).** On this direction's landing the
+coordinator marks each ledger entry **proven / refuted /
+open-with-a-named-dispatchable-attack / adjudication-gated**, and
+**surfaces a phase-shape decision to the user instead of dispatching a
+thirteenth direction iff any of**:
+
+- **(E1)** the direction exhibits a **g-flank** — a habitat `D = 0`
+  shape whose **every** admissible colouring has a binding chunk:
+  refutes per-shape (GR-15) itself; unconditional, immediate
+  escalation, whatever else landed. GDEV's three clarifications carry
+  verbatim — (i) a fully-hot hub of ANY family is a **seed**, not a
+  flank; (ii) capable-hot saturation is not a flank ((GR-26)(iii));
+  (iii) a shape or family needing large `d` fires **nothing** by
+  itself (at a fixed shape, fully-good existence implies finite `d`,
+  so a deviation blowup refutes a *form*, never existence) — plus
+  **one deliberate extension with its reason recorded**:
+
+  **(iv) NEW with this spec — the `d_fg` dichotomy.** A shape with
+  `d_adm < d_fg < ∞` refutes **(a′)'s law**, never existence: the very
+  measurement that produced a finite `d_fg` *exhibits* a fully-good
+  colouring at that shape. It fires **E2's refutation branch, not
+  E1**. But a shape with `d_adm < ∞` and **`d_fg = ∞`** — no
+  fully-good colouring at any deviation count — **IS** exactly a
+  g-flank, and **E1 fires**. *Reason:* (a′)'s characteristic failure
+  mode is the finite inequality, and this direction's primary
+  measurement mode is precisely the one that could stumble onto the
+  infinite case; without the clause a law-refutation and the arc's one
+  unconditional escalation read **identically** off the same scan.
+  **Reporting requirement:** any scan reporting `d_fg > d_adm` must
+  state which of the two it found, and an `∞` claim must disclose the
+  deviation cap searched to — **an exhausted cap is not `∞`**.
+
+- **(E2)** **(a′) is refuted or unprovable-as-posed** (e.g. a shape or
+  family with `d_adm < d_fg < ∞`) **and** the updated ledger has no
+  entry left in state open-with-a-named-dispatchable-attack. GDEV's
+  carve-out is retained in this form: a refutation **with a successor
+  named** — the binding-chunk layer back on the critical path at a
+  named witness family, or (b′)/(c)/(d′) surviving, or entry 5 named —
+  does **NOT** fire E2.
+- **(E3)** the target is **proven** — full stop. Here "the target" is
+  **entry 1**, and Step 0's first item decides what proving (a′)
+  achieves: **(a′) + per-shape admissibility already proven ⟹ E3
+  fires**; **(a′) proven with entry 5 open ⟹ E3 does NOT fire**, and
+  the thirteenth is entry 5. GORIENT's deliberate template deviation
+  is retained with its reason re-recorded: the ninth's E3 conjunct
+  ("every remaining ledger entry adjudication-gated") provably cannot
+  fire — entries 2–4 stay dispatchable on any HIT — and a HIT meets
+  the 2026-08-05 Lean hold's own stated release condition, so the next
+  spend after a HIT is a **user call**, not a coordinator pick.
+
+Otherwise dispatch the thirteenth per what the landing names:
+
+- **(a′) proven, entry 5 open** → the thirteenth is **entry 5**, a
+  pure `(G°, ℓ)` parity/balance statement with no rank in it.
+- **(a′) refuted at a finite witness** → the **binding-chunk layer at
+  that witness family** — the layer this arc has spent five directions
+  trying to decouple, now back on the critical path with a concrete
+  instance to work at.
+- **(a′) stuck with a named sticking configuration** → that
+  configuration, or **attack (c)** if the landing names *family
+  organization beyond the swept stratum* as the missing organizer.
+- **(b′) refuted (a growing balance gap)** → the balance-layer
+  characterization at that family.
+- **experiment 1 outcome 3 with `d_par` above the floor** → the
+  **shift-metric layer**: sharpen (GR-41)'s Hamming relaxation to the
+  true shift metric.
+
+The ledger-not-artifacts lesson stands: E1–E3 are stated over the
+ledger and entry 1's status, **never** over how many theorems landed.
+
+### The ranking record (coordinator-authored, NOT an independent recon verdict)
+
+Recorded so no alternative is re-proposed without new information.
+**Read the *Status* disclaimer first:** the user elected a
+coordinator-authored prep and accepted, in the option's own words,
+that it comes with *"no independent ranking of the losers"* — so these
+bars are the **coordinator's judgement**, and a future top-rung recon
+may overturn any of them **without that counting as a re-proposal
+without new information**. GADM ((a′) primary + (b′) secondary) is
+item 1.
+
+2. **(b′) standalone** — loses as a direction, merged in as the
+   secondary instead: a balance-layer theorem bounds `d_adm − d_par`,
+   but with the top layer (`d_fg − d_adm`) unproven-free it bounds a
+   quantity that reaches **nothing** — the existence target needs the
+   `d_fg` layer, and only (a′) touches it. Re-proposal bar: (a′)
+   settled either way, leaving the balance layer load-bearing.
+3. **Attack (c) — AA-glue realizability at `n_hub ≥ 8`** — loses a
+   third time, reason unchanged: either answer is structure, but no
+   live argument consumes laminarity at `n_hub ≥ 8` (the layer route's
+   machinery is parity / cut space / per-chunk charges, not
+   uncrossing; laminarity organizes the *realized* family, which only
+   Hall/repair-style arguments walk). Re-proposal bar unchanged: a
+   landing that names family organization beyond the swept stratum as
+   the missing organizer.
+4. **Attack (d′) — the corner-armed seed hunt past GDEV's caps** —
+   loses standalone: a seed is not a flank (E1(i)), GDEV already ran
+   the (b)-armed capped ledger-guided hunt (40 000 frames, 3526 gated,
+   600 armed and exactly scanned; **0** realized-binding fully-hot
+   hubs), and the `n_hub = 8` enumerator build stays priced as
+   genuinely-new engineering (`gridcol.multigraphs`'s
+   silently-truncating `cap=4000` + the leaf-blowup recursion,
+   re-verified at HEAD by the eleventh prep). It enters GADM only as
+   an `--adv` control **if** the (a′) work names a hot configuration
+   of its own.
+5. **The `Λ ≠ ∅` / `D > 0` ledger-and-witnesses analogue** —
+   unchanged: "right after ledger entry 1 lands" still binds.
+6. **The 117 894 unswept `|Λ| ≥ 2` length tuples** — unchanged: a
+   ride-along mode, never a direction.
+7. **A `k ≥ 6` realization of the scaling family** — unchanged:
+   cosmetic by the workbook's own words.
+8. **Repairing the bounded-deviation form by enlarging the anchor
+   family** (near-perfect matchings, or any anchor class beyond
+   perfect matchings) — **checked at this prep and ranked below, not
+   refuted.** (GR-41)'s floor is driven by `μ(M) = 0`, which is
+   exactly (GR-37)(ii)'s cancellation identity **for matchings**; an
+   anchor class with `μ ≠ 0` evades the floor by construction, but it
+   discards the cancellation identity that gives the model its
+   content — so it is a **new model**, not a repair of this one.
+   Re-proposal bar: an explicit anchor class with (a) a solvable
+   prescription of its own and (b) a proven `μ`-spread covering `Φ`.
+9. **Off the four named attacks**, checked against strategy §4.6 as
+   the prep discipline requires: **U1** — cheapest decisive
+   experiments DONE, answered the other way ((OC-2)/(OC-3)); **U2** —
+   partially superseded for the tight stratum (durable negative,
+   `notes/Phase39.md` *Hand-off*); **U3** — unrun, adjacent to the
+   un-commissioned option B, strictly behind the §(K-grid) reduction.
+   Nothing GDEV landed touches §4.6 and nothing since 2026-08-05
+   revives any of them. **Route σ's Lean half / the W4 build** —
+   BLOCKED by the standing Lean hold, not dispatchable. **The (FR-6)
+   follow-ons and leads (b)–(f)** — not selected 2026-08-07, no new
+   information.
+10. **No twelfth direction (a phase-shape escalation instead)** —
+    loses: the coordinator-verified E1/E2/E3 check on GDEV's landing
+    did not fire, the 2026-08-13 adjudication already chose "continue
+    the research", and the eleventh ledger's otherwise-clause
+    **commands** a twelfth *and names its question*; escalating now
+    would re-ask an answered question.
+
+### Verification priority order — the driver's inverted role (NO new sweep)
+
+**Experiment 1 runs FIRST**: it is the cheapest thing that can kill
+the primary target, and it is the routing clause's own test bed.
+
+1. **`--nk`** — experiment 1: at NK(2)/NK(6)/NK(8)/NK(10) measure
+   `d_par`, `d_adm`, `d_fg` (or exact upper bounds against **one**
+   explicitly-constructed perfect matching — never `perfect_matchings`
+   at `n_hub ≥ 30`) against the floor `⌈m/2⌉`, and report which of the
+   three outcomes holds, `d_par` measured rather than inferred. Reuse
+   `gdev.realize_mu` / `cm_solve` / `cm_colouring` / `fully_good_rank`
+   read-only.
+2. **`--free`** — the (a′) argument's case list: over the
+   admissibility-optimal (matching, deviation set) classes, certify
+   that some extension is fully good, or **name the sticking case**
+   (F11: "which mode certifies that this case list is complete?").
+   Price the known hard instances in this order: **W3 first**
+   (`d_adm = d_fg = 3`, the balance-layer stick), then the W5
+   corner-separated family, then the ladders, then NK(2).
+3. **`--balance`** — (b′)'s case list over the odd-branch balance
+   rider: W3's 12 parity-consistent-at-`d ≤ 2` maps (all
+   balance-killed — the exhaustive re-derivation is landed, reuse it)
+   and the pool's single `d_adm − d_par = 2` resident, then a targeted
+   hunt for a growing gap.
+4. **`--adv`** — falsification controls, each with an **F13
+   must-reject witness**: a shape with `d_adm < d_fg < ∞` (item (iii),
+   kills the law); the **E1 discriminator** (`d_fg = ∞` at finite
+   `d_adm`, with the searched deviation cap disclosed); a growing
+   balance gap; a growing shift-metric excess.
+5. **`--validate`** — all modes, budgeted against the 600 s foreground
+   ceiling (F15); split into separate invocations if the combination
+   would exceed it.
+
+Cross-check pools (existing, never re-swept): GDEV's 131-shape layer
+subsample and its NK members, GORIENT's 120-shape good-PM subsample
+and 184-shape capable-family subsample, GEXIST's 4920-shape /
+220 038-chunk stratum, the four (GR-30) witnesses + the three ladders,
+CFLANK's 40 742 shapes. **"Widening a pool is evidence, not progress"
+binds at full strength — with one named exception this prep grants:
+measuring the layer split at NK(6)/NK(8)/NK(10) is NOT pool-widening.**
+It is the first measurement in the only known large-`d` regime, and the
+routing clause commissions exactly it. The direction sets the final
+mode list; the above is a suggestion, not a pin.
+
+### Riders — carried explicitly, required in the return
+
+Verbatim from the eighth through eleventh directions — the target lives
+exactly on the standing stratum, so none dissolves:
+
+- The result is at **`Λ = ∅`**, **`D = 0`**, and **modulo (GR-4′)**.
+- The **`Λ ≠ ∅` closed-form analogue** stays **unswept**.
+- The **`D > 0` lift** stays **unswept**.
+- **Never write that this closes (GR-15).** At best it closes (GR-15)
+  on the `Λ = ∅`, `D = 0` stratum, modulo (GR-4′) — full (GR-15)
+  quantifies over every tight class shape.
+- **New with this spec:** never write that (a′) alone closes the
+  existence target **until entry 5 is settled** (Step 0's first item).
+
+### Cautions (binding)
+
+- Do not re-derive (GR-1)–(GR-42); do not re-attack the (GR-10)
+  min-max as a characterization ((GR-13)); do not re-attempt
+  uncorrelated charging ((GR-34)(i) refutes the class); **do not
+  re-attack the bounded-deviation form** — a shape-free `d` is
+  **refuted** ((GR-42)), and the growth law is the live form (ranking
+  item 8 prices the one adjacent repair). All of `notes/Phase39.md`
+  *Hand-off*'s "Deliberate non-goals" bind.
+- **Every "0 fully-hot" figure carries its family qualifier** —
+  capacity-tight / realized only; the binding-capable family carries
+  761 on a subsample ((GR-36)) and (GR-40) prunes 815 → 573, a prune
+  and not a zero; never import sparsity from the qualified zero.
+- **The 133/133 `d_fg = d_adm` figure carries its provenance** (131
+  pool + W3 + NK(2), all at `d ≤ 3`, not exhaustive) wherever it is
+  quoted — including in the return message.
+- **No blind `n = 8` sweep and no enumerator build**; (d′) enters only
+  as a conditional `--adv` control (ranking item 4 prices the
+  alternative).
+- The (K-res)/(GR-15) quantification question is **explicitly NOT this
+  direction's scope**; it stays a coordinator hand-off note.
+- Rank certification stays the README §4 convention (GF(p) lower
+  bound, every attaining draw re-checked in exact ℚ through both
+  matrices); no σ-fixed witness is read as generic (§(K-clos) (AC-9)).
+- An exhibited g-flank is a **REFUTATION of per-shape (GR-15)**, not a
+  MISS — headline it (E1), whatever else landed; a fully-hot hub of
+  any family is a SEED; a deviation-count blowup is a
+  FORM-refutation; and a finite `d_fg > d_adm` is a LAW-refutation
+  (E1 clauses (i)–(iv)).
+
+**Driver** `notes/scripts/w4/gadm.py` (imports `gdev.py` /
+`gorient.py` / `gexist.py` / `gunif.py` / `gcap.py` / `cflank.py` /
+`gridcol.py` / `grid.py` read-only); suggested modes
+`--nk`/`--free`/`--balance`/`--adv`/`--validate` — the direction sets
+the final list. **Labels**: mint under **(GR-43)+** and **Steps G53+**,
+the unclaimed tails of §(K-grid)'s live families (both verified 0-hit
+at this prep apart from the tail *declarations* in
+`notes/Phase39.md` / `notes/Pencil-labels.md`, which are this
+reservation's own bookkeeping; the owning section stays authoritative).
+**On outgrowth, reuse the already-reserved §(K-gcap) / `GC-`** —
+returned unopened by GCAP, GUNIF, GEXIST, GORIENT and GDEV, available
+a **sixth** time. **Do not mint §(K-unif)/`GU-`** (considered twice,
+deliberately not minted — recorded in the registry). No M2 leaf
+expected — the target is a finite combinatorial statement.
+
+**Rung.** Mapped **top rung** — a crux proof attempt whose verdict
+re-routes the line (the same trigger that put G, E, J, PEX, TCOL,
+CFLANK, GCAP, GUNIF, GEXIST, GORIENT and GDEV there); per the standing
+2026-08-17 check-in all four rungs are dispatchable, so **fable**
+(opus substitutes only if the weekly scoped limit runs out — the same
+standing qualifier).
+
+**Mechanics: identical to the eleventh direction's.** Read-only w.r.t.
+every **tracked** file; commits **NOTHING**; creates only its own
+**untracked** driver at the pinned path above (importing the harness
+read-only, left untracked for the coordinator to gate and commit);
+writes its full mathematics as a **draft workbook section**
+`fanout-GADM.md` in the session scratchpad (not the repo), in the
+workbook's register, with an explicit confidence verdict
+(proven-informally / true-modulo-named-gap / open / refuted) and a
+"what would change this" line; keeps the **return message** to a tight
+verdict. F11 binds (doubly — (a′) *is* an exhaustiveness claim over
+extension classes); F15's over-ceiling shape applies to any invocation
+that cannot finish inside 600 s. `notes/scripts/README.md`'s
+conventions bind (exact ℚ, seeded randomness, degeneracy guards +
+rank/dimension asserts, import from the canonical layer — check the
+*Divergences* table).
+
+### Landing (coordinator)
+
+The fifth fan-out's landing checklist applies verbatim, as it did for
+CFLANK through GDEV — including moving the reservation row into the
+registry, adding the driver's rows to `notes/scripts/README.md` §3's
+invocation table in the landing commit, and checklist item 6's
+scaffolding audit. The landing commit additionally runs the
+route-ledger update and the E1/E2/E3 TERMINATION check above — E1 with
+clause (iv)'s dichotomy applied explicitly (which side of it the
+landing found), E3 in its retained deviated form with a HIT surfacing
+the Lean-hold question to the user — and **records entry 5's
+resolution** (proven-as-a-(GR-37)(iii)-corollary / open) as a ledger
+status, not as prose only. Outcome recorded in the phase note's
+*Hand-off* as narrative, not as a scaffolding block.

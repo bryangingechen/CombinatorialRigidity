@@ -330,6 +330,44 @@ the claim recorded at the top of this entry; the owning section stays
 authoritative. **Do not mint §(K-unif)/`GU-`** (considered twice,
 deliberately not minted — recorded below).
 
+**The TWELFTH direction — GADM — PREPPED 2026-08-17, NOT yet
+dispatched** (`notes/Pencil-fanout.md` §"Twelfth direction"), so this is
+a **live reservation**, not a landing record: **(GR-43)+** and **Steps
+G53+** — §(K-grid)'s unclaimed tails after GDEV consumed
+(GR-40)–(GR-42) / G48–G52 — are **RESERVED** for it, driver
+`w4/gadm.py`, suggested modes `--nk`/`--free`/`--balance`/`--adv`/
+`--validate` (the direction sets the final list; the registry row below
+is updated at *landing*, not now). A **single direction**, not a
+fan-out. **Selection shape differs from the four picks before it:** the
+user's 2026-08-17 check-in elected **coordinator-authored prep from the
+eleventh landing's routing clause** over the 2026-08-12 fable-recon
+shape, so the spec and its ranking record are the coordinator's, with
+the cost ("no independent ranking of the losers") disclosed in the
+spec's own *Status*. Target: the growth-law question at the pentagon
+necklaces — attack **(a′)** the `d_fg = d_adm` law (primary) and
+**(b′)** the balance-layer bound (secondary). The code **GADM** (the
+`d_fg = d_`**ADM** law) was verified **0-hit as a raw substring**,
+case-insensitively, across `*.md`, `*.tex`, `*.lean`, `*.py`, `*.m2` at
+reservation time — as was the driver basename `gadm` (controls `gdev`
+8 files, `gorient` 8, `gexist` 10, so the grep was live). **`GFREE` was
+checked and REJECTED for a LIVE hit** (`Gfree`,
+`notes/scripts/m2/lambda1.m2:129`) — the first candidate code in this
+arc to lose to an actual substring collision rather than to a naming
+judgement, recorded because it is clause L5's check earning its keep.
+Checked 0-hit and **not chosen**, recorded so they stay checkable
+without a re-run: `GLAW`, `GGROW` (both name the growth *law*
+generically rather than the layer this direction proves — the `GSEL`
+rejection reason one landing back), `GLAYER`, `GBAL`, `GSPLIT`,
+`GLIFT`, `GFG`. GDEV-prep's checked-not-chosen list was **not** re-used
+(the deliverable changed, and those checks are a landing old). The
+direction *extends* §(K-grid), so its reservation is that section's
+unclaimed tails and the owning section stays authoritative. **On
+outgrowth reuse the already-reserved §(K-gcap) / `GC-`** — returned
+unopened by GCAP, GUNIF, GEXIST, GORIENT and GDEV, available a
+**sixth** time. **Do not mint §(K-unif)/`GU-`** — considered twice,
+deliberately not minted, and this prep does not revive it. No M2 leaf
+expected.
+
 **One naming hazard the second fan-out created, recorded rather than renamed
 (L4).** The **direction letters A/B/C are re-used** between the 2026-08-05 fan-out
 (A = §(K-flank), B = §(K-Λ), C = §(K-pure)) and the 2026-08-06 one

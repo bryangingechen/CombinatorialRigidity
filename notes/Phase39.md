@@ -16,8 +16,13 @@ also an honest **MISS**, adds four more ((GR-36)–(GR-39)) and re-anchors the t
 form as posed** ((GR-40)–(GR-42): a habitat family with an unbounded parity floor whose
 every member is still fully-good — a form-refutation, never a flank), re-anchoring it on
 the `d_fg = d_adm` law — but **(GR-15) stays OPEN throughout; class uniformity untouched
-by every round.** The research arc **CONTINUES**; **no twelfth direction is selected or
-prepped** — that prep is the next concrete task (see *Hand-off*). Direction codes
+by every round.** The research arc **CONTINUES**: the **TWELFTH direction GADM is PREPPED**
+(2026-08-17, `notes/Pencil-fanout.md` §"Twelfth direction") — the growth-law question at the
+pentagon necklaces, attack (a′) (`d_fg = d_adm`) primary and (b′) (the balance layer)
+secondary, and the arc's first **coordinator-authored prep** (the pick breaks the streak of
+four recon-delegated ones; CFLANK's and GUNIF's coordinator picks were both written up by
+dispatched sonnet builders, so no prior prep commit was the coordinator's own).
+**Dispatching GADM is the next concrete task** (see *Hand-off*). Direction codes
 are **multi-letter and topic-tagged from the fifth fan-out on** (`notes/Pencil-labels.md`
 (L5)); grandfathered single letters are re-used across dates — **always date those**.
 
@@ -60,18 +65,15 @@ constraints; the dated dispatch narrative is in *Decisions made* and git):
   accepted and LANDED 2026-08-13 (`notes/Pencil-fanout.md` §"Seventh direction"). Same
   check-in: top rung = fable (opus only if the weekly limit runs out); the dispatch cap
   **lifted**; rescue §1 mechanical fixups **pre-authorized** — all still binding.
-- **2026-08-13, phase-shape adjudication (RESOLVES the escalation below; changes no
-  standing constraint).** Asked to choose among the four options GUNIF's refutation
-  raised — lift the Lean hold; a ninth direction on a surviving handle; package the
-  arc and stop; attack strategy §2.3's wall — the user answered, verbatim: *"I think
-  we should continue with the research here, but perhaps not in this session. Are we
-  ready for handoff to a fresh session?"* **RESOLVED — the research arc CONTINUES**
-  (the "ninth direction" option, not packaging-and-stopping). **Not lifted, not
-  commissioned, not stopped:** the Lean hold **STANDS**, W4 stays **PARKED**, option B
-  stays un-commissioned in both kernel cases, the phase stays **OPEN**. Which handle was
-  not specified, so selection falls back to the standing 2026-08-07 delegation (the
-  2026-08-12 precedent that the pick may itself be delegated applies too); the ninth's
-  prep and landing both fell to later sessions (next bullet; *Decisions made*).
+- **2026-08-13, phase-shape adjudication (changes no standing constraint).** Offered the
+  four options GUNIF's refutation raised (lift the Lean hold / a ninth direction / package
+  the arc and stop / attack strategy §2.3's wall), the user answered, verbatim: *"I think we
+  should continue with the research here, but perhaps not in this session. Are we ready for
+  handoff to a fresh session?"* — **RESOLVED: the research arc CONTINUES** (the
+  ninth-direction option, not packaging-and-stopping). Nothing else moved: Lean hold
+  **STANDS**, W4 **PARKED**, option B un-commissioned, phase **OPEN**; the handle was
+  unspecified, so selection fell back to the standing 2026-08-07 delegation (the 2026-08-12
+  delegate-the-pick precedent applying too).
 - **2026-08-13/14, ninth- through eleventh-direction selections (change no standing
   constraint).** All three picks **re-delegated to a top-rung fable recon** (the second
   through fourth uses of the 2026-08-12 shape, each a multiple-choice option pick; each
@@ -81,11 +83,24 @@ constraints; the dated dispatch narrative is in *Decisions made* and git):
   §§"Ninth"–"Eleventh direction". GEXIST and GORIENT **LANDED 2026-08-13** (honest
   MISSes); GDEV **LANDED 2026-08-15** (the bounded-deviation form refuted as posed,
   successors named) — see *Hand-off*.
+- **2026-08-17, twelfth-direction selection (BREAKS the fable-recon streak; changes no
+  standing constraint).** Offered three shapes for the pick — delegate to a fable recon
+  (the coordinator's recommendation, a fifth use of the 2026-08-12 shape), coordinator-
+  authored prep from GDEV's routing clause, or a user pick of the attack — the user chose
+  **coordinator-authored prep**, whose stated content was *"take (a′) as the primary attack
+  per GDEV's measured 133/133 `d_fg = d_adm` finding, (b′) as the secondary, and write the
+  spec myself. Cheaper, but no independent ranking of the losers."* So **GADM's spec and its
+  ranking record are the coordinator's, not a recon verdict**, and that cost is disclosed in
+  the spec's own *Status*; a future top-rung recon may overturn any of its re-proposal bars
+  without that counting as re-proposal-without-new-information. Same check-in: all four rungs
+  dispatchable, the cap **lifted**, rescue §1 fixups **pre-authorized**. GADM **PREPPED
+  2026-08-17, not yet dispatched** — see *Hand-off*.
 
 **Kernel-(K) research arc — thirty-six docs+scripts-only dispatches, plus five
 strategy-only passes** (2026-08-02 → 08-15; the second is the 2026-08-12 fable recon,
 the third through fifth the 2026-08-13/08-14 ninth-, tenth- and eleventh-direction
-selection recons, all above). Canonical homes: workbook `notes/Pencil-informal.md` (**State of (K)** map =
+selection recons, all above; **the twelfth's pick was coordinator-authored at the user's
+2026-08-17 election, so there is no sixth pass** — the count stays five). Canonical homes: workbook `notes/Pencil-informal.md` (**State of (K)** map =
 entry point), `notes/Pencil-W4-informal.md` (W4-residual), `notes/Pencil-strategy.md`
 (strategy); one line per landing in *Decisions made*, canonical with git — **not
 restated here**. Net effect: **disproof risk removed**, every refuted route/gap has a
@@ -195,14 +210,26 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
 
 **The phase stays OPEN** (the 2026-07-24 adjudication — no phase-close; see *Current state*).
 
-**Next concrete task: prep the TWELFTH kernel-(K) direction per GDEV's routing clause** —
-the eleventh's landed TERMINATION record (`notes/Pencil-fanout.md` §"Eleventh direction")
-routes it to **the growth-law question at the necklace family**: the ledger's named attacks
-**(a′)** the `d_fg = d_adm` law (fully-goodness free at the admissibility optimum — measured
-133/133) and **(b′)** the balance-layer bound (the W3 stick's layer), tested where the parity
-floor grows. Selection/prep under the standing 2026-08-07 delegation (the 2026-08-12
-fable-recon shape has now been used four times); labels **(GR-43)+ / Steps G53+** are the
-live tails (`notes/Pencil-labels.md`). No standing constraint moves with this.
+**Next concrete task: DISPATCH the twelfth kernel-(K) direction, GADM** — prepped
+2026-08-17, spec in `notes/Pencil-fanout.md` §"Twelfth direction", **top rung (fable)**,
+read-only w.r.t. tracked files (it commits nothing; the coordinator gates and lands its
+untracked driver `notes/scripts/w4/gadm.py` and its scratchpad draft). Target: GDEV's
+routing clause, **the growth-law question at the pentagon-necklace family** — attack
+**(a′)** the `d_fg = d_adm` law (fully-goodness free at the admissibility optimum, measured
+133/133) as the **primary** and **(b′)** the balance-layer bound (`d_adm − d_par ≤ 2`, the
+W3 stick's layer) as the **secondary**, with `--nk` running FIRST as the cheapest thing that
+can kill the primary: NK(6)/NK(8)/NK(10) are the only known large-`d` regime and their layer
+split is **unmeasured**. Two things the spec adds beyond the routing clause, both live for
+the landing: a **new ledger entry 5** (per-shape admissibility — the input the (a′) chain
+consumes, status UNDETERMINED at prep, Step 0's first task, and the switch that decides
+whether a HIT fires E3), and **E1 clause (iv)**, the `d_fg` dichotomy (finite
+`d_adm < d_fg` = a LAW-refutation → E2's branch; `d_fg = ∞` at finite `d_adm` = **exactly a
+g-flank** → E1 fires). Labels **(GR-43)+ / Steps G53+** are reserved
+(`notes/Pencil-labels.md`). **The spec's ranking record is coordinator-authored, not a recon
+verdict** (the user's 2026-08-17 election; cost disclosed in the spec's *Status*), so a
+future top-rung recon may overturn its bars freely. No standing constraint moves with this:
+phase OPEN, Lean hold STANDS, W4 PARKED, `hK`/`hbareSplit` pinned, option B
+un-commissioned.
 
 **`hsplit` is CLOSED IN FULL** (W5-L7c-1…6, landed 2026-07-30) and **`hfresh`'s mechanical
 discharge (residue (iv)) is CLOSED too**. The landed successor
@@ -222,51 +249,38 @@ discharge (residue (iv)) is CLOSED too**. The landed successor
 > **BLOCKED by the standing 2026-08-05 Lean-hold adjudication (general, not W4-scoped)**; does
 > not open without a fresh user adjudication.
 >
-> **The FIRST through TENTH directions are ALL COMPLETE** — roll call (with commit hashes for
-> the first five) is one-lined with dates in *Decisions made*; the 2026-08-07 delegation that
-> picked the SIXTH (CFLANK) and SEVENTH (GCAP) directions under it is in *Current state*'s
-> dated bullets; not repeated here. **No flank found by any of them; (GR-15) stays OPEN,
-> unchanged.**
+> **The FIRST through ELEVENTH directions are ALL COMPLETE** — roll call (with commit hashes
+> for the first five) is one-lined with dates in *Decisions made*; the delegations that picked
+> the SIXTH through ELEVENTH under them are in *Current state*'s dated bullets; not repeated
+> here. **No g-flank found by any of them; (GR-15) stays OPEN, unchanged, modulo (GR-4′); no
+> gap-map status moves.**
 > **Two durable negatives from the same adjudication — do not re-run:** (i) §4.6's shortlist
 > is **partially superseded** for the tight stratum (U2 delivered by (GR-16)'s hub-multigraph
 > reduction; U3's negative-form insight already exploited by the cap/budget style); (ii) the
 > symbolic meta-option ("upgrade §(K-Λ) via M2") is **landed, not pending** (`m2/lambda0.m2`) —
 > only §5.3 item (i) (whole-graph elimination) remains, ruled out by §5.3's own local-frame
 > feasibility boundary.
-> **The NINTH direction, GEXIST, LANDED 2026-08-13** (workbook §(K-grid) *Steps G38–G42*) —
-> an honest MISS: (GR-32)/(GR-33)/(GR-35) proven, (GR-34) refuted the uncorrelated
-> union-bound mechanism, (GR-15) unchanged. **Its capacity-tight framing of the obstruction
-> family is SUPERSEDED** — a strict under-proxy, corrected by GORIENT below.
-> **The TENTH direction, GORIENT, LANDED 2026-08-13** (`notes/Pencil-fanout.md` §"Tenth
-> direction"; workbook §(K-grid) *Steps G43–G47*) — an honest **MISS**, four new theorems:
-> **(GR-36)** the structural charge (the **binding-capable** family corrects the
-> capacity-tight one; **0 fully-hot hubs on the capacity-tight and realized-binding
-> families**, exhaustive at `n ≤ 6`, while the binding-capable family DOES carry them);
-> **(GR-37)** the selection reduction (matching anchor; parity obstruction = the cut space);
-> **(GR-38)** the intersection kill (vacuously strong at `n_hub ≤ 6`, binding laminar);
-> **(GR-39)** the hot-hub adjudication. It re-anchored the target on the bounded-deviation
-> selection principle — **since REFUTED as posed by GDEV** (next paragraph).
-> **The ELEVENTH direction, GDEV, LANDED 2026-08-15** (`notes/Pencil-fanout.md` §"Eleventh
-> direction"; workbook §(K-grid) *Steps G48–G52*; driver `w4/gdev.py`) — **a
-> REFUTATION-with-successors**, all three ranked MISS deliverables landed. **(GR-40)** the
-> corner charge (sub-deliverable (b) as a standalone theorem — tight at W3M where (GR-36)
-> prices 0; the corner condition prunes the fully-capable-hot census 815 → 573 on a fresh
-> subsample, binding-capable family). **(GR-41)** the parity floor: every admissible
-> colouring sits ≥ `⌈φ*/2⌉` deviations from **every** perfect matching, `φ*` a colouring-free
-> coset invariant. **(GR-42)** the pentagon-necklace family: habitat by a polynomial
-> sufficiency lemma, `φ ≥ m`, every member rank-certified fully-good up to `n_hub = 50` —
-> so `d ≥ m/2` is unbounded and **the bounded-deviation selection theorem is FALSE as
-> posed** (a form-refutation, E1 clause (iii); never a flank). **Correction landed
-> prominently:** `φ*(W3) = 2` — the W3 stick is **NOT** parity but the **odd-branch balance
-> layer** (all 12 parity-consistent maps within 2 deviations die on balance); and the layer
-> split measures **`d_fg = d_adm` at 133/133 shapes** — the deviation cost is entirely
-> admissibility, never binding-chunk avoidance. The (b)-armed hunt found no
-> realized-binding fully-hot hub (caps disclosed). **No g-flank; (GR-15) stays OPEN,
-> unchanged, modulo (GR-4′); no gap-map status moves.** The TERMINATION check on this
-> landing: **E1 no** (form-refutation, members certified fully-good), **E2 no** (the prep's
-> carve-out — refuted **with successors named**, ledger attacks (a′)/(b′)/(c)/(d′)),
-> **E3 no**; the otherwise-clause routes the **twelfth** to the growth-law question at the
-> necklace family (the next-task slot at the top of this section; not prepped here).
+> **The NINTH through ELEVENTH directions — GEXIST, GORIENT (both 2026-08-13, honest
+> MISSes) and GDEV (2026-08-15, a REFUTATION-with-successors) — landed the theorem block
+> (GR-32)–(GR-42).** Per-direction records are canonical in `notes/Pencil-fanout.md`
+> §§"Ninth"–"Eleventh direction", the mathematics in workbook §(K-grid) *Steps G38–G52* —
+> **not restated here**. What binds forward:
+> - **The bounded-deviation selection form is REFUTED as posed** ((GR-42), the pentagon
+>   necklaces `NK(m)`: `d ≥ m/2` unbounded while every member stays rank-certified
+>   fully-good) — a form-refutation, never a flank. **Do not re-attack a shape-free `d`**;
+>   the live successor is the growth law, which GADM attacks.
+> - **The obstruction family is binding-capable, NOT capacity-tight** — GEXIST's framing was
+>   a strict under-proxy, corrected by (GR-36) — so **every "0 fully-hot" figure carries its
+>   family qualifier**: the capable family carries 761 on a 184-shape subsample, and
+>   (GR-40)'s corner condition prunes 815 → 573, a prune and not a zero.
+> - **`φ*(W3) = 2`: the W3 stick is the odd-branch BALANCE layer, not parity**, and the layer
+>   split measures **`d_fg = d_adm` at 133/133 shapes** (131 pool + W3 + NK(2), all at
+>   `d ≤ 3`, not exhaustive — quote it with that provenance). That is the regularity GADM's
+>   attack (a′) tries to prove.
+> - **GDEV's TERMINATION check: E1 no, E2 no, E3 no**, and its otherwise-clause routes the
+>   **twelfth** to the growth-law question at the necklace family — **PREPPED as GADM
+>   2026-08-17** (§"Twelfth direction"; the next-task slot at the top of this section carries
+>   the dispatch).
 > **Coordinator hand-off note, still not loaded onto any direction:** whether (GR-15) as
 > quantified ("every tight class shape") also covers the `W19`-type **(K-res)** sibling
 > habitat is unresolved — pin it when the tight side closes, not before.
