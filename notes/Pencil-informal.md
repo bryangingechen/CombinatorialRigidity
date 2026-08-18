@@ -80,9 +80,9 @@ section's own verdict block and the gap-map row, which stay authoritative.
 | §(K-ind) | 8730–9074 | **refuted as a route** | `IN-` |
 | §(K-Δ) | 9076–9341 | **NO HIT — the lead is discharged** | `DL-` |
 | §(K-bare-ext) | 9343–9381 | open, nothing being developed | `BE-` |
-| §(K-grid) | 9383–14440 | **reduction proven** — (AC-6)'s tight-stratum residual reduces via seventeen proven results on `G°` to the single open gap **(GR-15)**; the min-max form, the uniform `g ≤ 1` cap and the bounded-deviation selection form are all refuted (the last by an explicit family with an unbounded parity floor); no flank found; class uniformity untouched | `GR-` |
-| §(K-frame) | 14442–15532 | residue **(FR-R1) PROVEN** since Steps FR7–FR11 (direction PEX); the bare-cycle stratum is finite (22 iso classes / 76 sites / 1976 labelled) and exhaustively enumerated; the only rider is (FR-4)'s named gap | `FR-` |
-| §(K-mech) | 15533–15913 | **both §(K-pure) *P8* anomalies mechanised** in one calculus (the load space `Ω`); **6v11e RESCUED** ((MX-7)) — the slide device closes it after all; the σ rider settled NO ((MX-8)); the `\|V°\| ≤ 6` predictor measured complete-and-sound ((MX-9)) | `MX-` |
+| §(K-grid) | 9383–14866 | **reduction proven** — (AC-6)'s tight-stratum residual reduces via eighteen proven results on `G°` to the single open gap **(GR-15)**; the min-max form, the uniform `g ≤ 1` cap, the bounded-deviation selection form and the growth law's bounded-shift-correction reading are all refuted (the last two at the necklace family — (GR-43) proves the shift-metric layer unbounded) while the `d_fg = d_adm` law survives rank-certified at `d = 10`; no flank found; class uniformity untouched | `GR-` |
+| §(K-frame) | 14868–15957 | residue **(FR-R1) PROVEN** since Steps FR7–FR11 (direction PEX); the bare-cycle stratum is finite (22 iso classes / 76 sites / 1976 labelled) and exhaustively enumerated; the only rider is (FR-4)'s named gap | `FR-` |
+| §(K-mech) | 15959–16339 | **both §(K-pure) *P8* anomalies mechanised** in one calculus (the load space `Ω`); **6v11e RESCUED** ((MX-7)) — the slide device closes it after all; the σ rider settled NO ((MX-8)); the `\|V°\| ≤ 6` predictor measured complete-and-sound ((MX-9)) | `MX-` |
 
 **Live vs settled**, using the division of the 2026-08-05 reorganization pass.
 Live: §(K-tight), §(K-Λ), §(K-σ), §(K-pure), **§(K-ann)** — whose live residue is
@@ -245,7 +245,7 @@ all in this file.
 | **(K-σ)** *(new, 2026-08-05)* | (K-σ) *Field scope*, σ0–σ6, σ4b | **four settled verdicts + one CANDIDATE, offered for adjudication; the FIELD-SCOPE caveat they carried is DISCHARGED** (§(K-clos), 2026-08-06 — see the row below and the sentence marked SETTLED here). `σ = screwComplementIso` exists in tree **only over `ℝ`** (`Duality.lean:69`), and so does the self-duality theorem the conjunct-1 freeness cites (`Statement.lean:257`), while **`hK` is quantified at the general `[Infinite K]`** of `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card` (`Escape.lean:555`). Whether the polarity generalizes is **SETTLED — YES** (§(K-clos) (AC-1), 2026-08-06): bookkeeping, one section, and the general-`K` **transport is already landed** as `BodyHingeFramework.mapSupport` with its rank lemma, so `ProjectiveInvariance.lean` needs no generalization; source-level, **not compiler-checked**. **(σ7) needs no polarity and is field-neutral outright**; (σ1)–(σ6) and route σ are field-neutral *modulo the polarity existing*, so they **port**; the two refutations below use `ℝ`-**definiteness** and do **not** port — indeed **both REVERSE over `ℂ̄`** (§(K-clos) (AC-2)/(AC-3): σ-fixed configurations exist and are nondegenerate at the Tay target), **and the verdict they support survives anyway** on the field-neutral §(K-clos) (AC-5). Settled: the σ-intertwining question is **REFUTED in its literal form** (`pt(a) ∈ π_a` forces `pt(a)·pt(a) = 0`, impossible over ℝ with the project's *definite* polarity — `Molecular/Meet.lean:88` records it is the Hodge star of the standard dot product) and **CONFIRMED covariantly** (`σ(α_p) = β_{p^⊥}`, `σ(β_π) = α_{pole(π)}`), which makes §(K-Λ)'s two-point failure locus **exactly a σ-orbit**; and **σ-equivariant seed recipes are DEAD** — no σ-fixed pencil configuration exists over ℝ, and a null polarity puts every hinge line in a linear line complex, giving a self-stress per cycle (**deficit exactly 1 at 6/6** on tight `C₆`). Fourth settled verdict, **new 2026-08-05** (`sigma.py --hunt`, three pools of its own, disjoint from the pinned 47): **(σ7)** *Step σ3*'s side condition `pt(b) ∉ Π(c)` is **FREE** — primal conjunct 4 at the split's middle body `a` forbids both halves of (Λ0d) from failing at once (39/39 witnesses that forcing both leaves `a` with no panel), settling *What would change this* (iv); **and, in the other direction, the dual conjuncts at `σu` are NOT implied** — 45 constructed hard-stratum, primally-nondegenerate seeds violate dual conjuncts 2 and 4 (coplanar-chain degeneration), so *Step σ4*'s 47/47 was genericity. Candidate: **route σ**, whose uniform-failure criterion `★r ∥ C(bc)` is the σ-image of routes A/B's `★r ∥ C(M)` and cannot hold simultaneously with it. Scope of the validation: `s₀ = 0`, `dim R_a = 1`, both ends hubs, tight control only (the hunt pools widen the *configurations*, not the shape) — `dim R_a = 0` **untouched**, (K-res) `s₀ = 2` **unsampled**; the criterion at `σu` is **imported, not re-derived**, and its failure direction is **unwitnessed** (`predAfalse = 0/47`); and the branch route σ closes has **never been observed nonempty**, so the gain is **evidence → argument**, never *bug fixed*. **No gap-map status moves on account of route σ** | obligation 1 of §(K-σ) *Step σ5* — now **sized, not just named** (all of it **at `ℝ`** — see the caveat opposite): conjunct 1 free by a landed theorem, conjunct 3 free by the primal conjuncts on no-adjacent-hub shapes, conjunct 2 at the two `a`-edges = two-sided (Λ0d), leaving two genuinely new conditions with a steering repair exhibited exactly (`bracket(τ) = τ·bracket(1)`). Route σ faces exactly **one** crux: the workbook's two kills of M₁ (§(K-tight) *Step 1* and *Step 2.6*) have the **same** stated reason, the `hinge(vb) := q(ab)` pinning |
 | **(K-clos)** *(new, 2026-08-06)* | (K-clos) Z0–Z8 | **The field question of §(K-σ), settled — plus one construction REFUTED as a class statement and left OPEN only on the tight stratum.** Read the two halves separately. **Settled, proven-informally:** **(AC-1)** the polarity **generalizes** — bookkeeping, one section, and the general-`K` transport is already in tree (`BodyHingeFramework.mapSupport`, `Molecular/GenericLift/HingeGeneric.lean:462`, rank lemma `:544`), so `ProjectiveInvariance.lean`'s 19-declaration `ℝ`-fixed `mapExtensor` API needs **no** generalization (source-level, **not compiler-checked** — the dispatch carried a no-Lean constraint, and a ~20-line typecheck spike would settle it); **(AC-2)** the σ-fixed locus over `ℂ̄` is exactly the `P¹ × P¹` **grid** on the fixed quadric, with the conjugacy law `p ⬝ᵥ p′ = 2[s,s′][u,u′]`; **(AC-3)** those grids are **nondegenerate at the Tay target**, so §(K-σ) *Step σ6*'s "degenerate" is **REFUTED for the symmetric correlation** (it stands for the null one); **(AC-4)** the `⋆`-eigen decoupling `rank = rank₊ + rank₋` and the three conditions target rank forces (balance, both classes forests, both blocks isostatic); **(AC-5)** at a σ-fixed seed **route σ IS route A** (32/32, as subspaces), which is the **field-neutral replacement** for the `ℝ`-definiteness kill — so *"σ-equivariant seed recipes are DEAD" survives algebraic closure*; **(AC-7)** `hK` over `ℂ̄` **implies** `hK` over every infinite characteristic-0 field, converse **false**, so `ℝ` is the **narrowest** choice and the residual content of `[Infinite K]` is **positive characteristic only** — never probed; **(AC-8)** char 2 breaks the geometry (double plane, no splitting) but not (AC-1). **REFUTED as a class statement, OPEN on the tight stratum: (AC-6)** — the grids are a *combinatorial recipe* (a ruling 2-colouring of `E(G)`) for target-rank nondegenerate pencil realizations, reaching the target at **15/15 tight** shapes of a pinned 21-shape pool (all eight §(K-flank) flank shapes among them) and at the (K-res) inhabitant `W19` (1/1, rigid but not count-tight), 2/5 not-rigid, **18/21** overall. It **fails at three**, and the habitat attribution is the point: θ(1,2,9) and θ(2,3,7) are **out** of `hK`'s habitat (`hnoRigid` false) — θ(1,2,9)'s miss is *correct behaviour*, its triangle with two hubs already forbidden by `not_pencilNondegFeasible_of_triangle_two_hubs` — while **`C11`, a bare odd cycle, is IN the habitat and refutes the class statement by itself**. The mechanism is **parity and is complete**: no admissible colouring exists **iff** `G` has a bare odd cycle component (`C3…C14` → exactly `[3,5,7,9,11,13]`; 19/19 non-cycle pool shapes admit one) — and it **cannot** be the tight-stratum obstruction, since a tight shape has hubs and is never a bare cycle. **This row must not be read as "open" unqualified: the habitat-level statement is settled NEGATIVELY.** Chart-image membership for the grids is **proven and machine-verified** since 2026-08-06 (§(K-grid) (GR-5), 5/5 end-to-end) | for the *narrow* remainder only: the tight-stratum residual now lives in **§(K-grid)** (2026-08-06, direction T) — since direction G (Steps G8–G13) as a single geometry-free residual — since direction E (Steps G14–G18) **(GR-15)** (both-block generic `dim Z = 0` colouring existence; (GR-10)'s min-max is refuted as posed and (GR-10) stays open as the strictly stronger form; the former pair (GR-4)+(GR-6) is superseded, (GR-9) discharging the geometry wherever a triple exists) — since direction TCOL (Steps G19–G23) reduced further to a pure statement about `(G°, ℓ, bits)` (the branch reduction (GR-16), the circuit run law (GR-17), the 6-tree packing statement (GR-18), and a collapse-order-4 certificate at all 18 separators (GR-19)), **(GR-15) itself unchanged in status: still open, no flank found**. The direction-network statement this cell used to name ("isostatic whenever (AC-4)(i)–(ii) hold") is **refuted and corrected** there ((GR-2)/(GR-3): the mono-hub bond, and two proven counting families), the cheap-kill census is run and extended 15/15 → **907/907** (θ(2,5,5) + the exhaustive `K4` stratum included, no miss), and chart-image membership is proven ((GR-5)), so a target-rank grid **is** `hK`'s conclusion object. Discharging **(GR-15)** (equivalently (GR-10) with the proven (GR-9)) discharges `hK` on the tight stratum **directly**, then over every infinite characteristic-0 field by (AC-7). Nothing here would ever make the statement habitat-uniform: `C11` is permanent. **(AC-9), new 2026-08-06:** every σ-fixed body of degree `≥ 3` carries a **coincident hinge line** (pigeonhole against the two-ruling-lines cap), so the σ-fixed locus lies entirely inside the free-rotor locus and the composite guard accepts **0 of 64** `ds-K4` colourings — this **qualifies** (AC-3) (the four conjuncts and the Tay target still hold, so *Step σ6*'s claim stays refuted about that predicate) and forbids reading any σ-fixed witness as *generic* |
 | **(K-mech)** *(new, 2026-08-06, direction M)* | (K-mech) (MX-1)–(MX-9) | **Both §(K-pure) *P8* anomalies mechanised, in one calculus** — the realizable-load space `Ω := V_bc^{⊥_B}` and the α-confinement of slid chain spans ((MX-2), a per-line strengthening of (PC1)). 6v11e's `dim V_bc = 2` drop = a **forced welded flex**, two overlapping α-routes through the hub-5 meet ((MX-6)); the `K222` / `K4 (1,1,3,5,4,4)` incidence = a **forced pole-cluster load** through `pt(c)` ((MX-4)/(MX-5), bounds 2/2 met with equality; the all-`{3,4}` `K5` strong-containment branch is the bound-3 case); the chord obstruction (PC3) is the special case `ω = C_bc`. **6v11e RESCUED** ((MX-7)): omitting one far-side interior kills both routes, full (W1)–(W4) witnesses 3/3 seeds × 5 supports, 9/9 prediction table — the slide device closes it after all. σ rider settled **NO** within the probed family ((MX-8); the ℓ1 hub-hub chord is the one forced exception). (MX-9): the three-mechanism predictor measured complete-and-sound on `\|V°\| ≤ 6`, finding one **new** (W4)-failing shape (`\|E°\| = 11`, cluster bound 2) it had never seen | the **sufficiency** of the three decoration-free conditions ((K-chord) + cluster ≤ 1 + no flex route) beyond the sampled strata — a wider census could surface a fourth mechanism, which would be a finding, not a defect; class uniformity untouched |
-| **(K-grid)** *(new, 2026-08-06, direction T)* | (K-grid) G0–G52 | **The tight-stratum residual of (AC-6) reduces, via a chain of proven results on the contracted multigraph `G°`, to one open geometry-free gap, (GR-15). Five other targets were refuted along the way — one outright, one repaired by a weaker true-modulo-named-gap form, one refuted only in its strongest (min-max) form while the underlying statement stays open, one refuted with an exact `n_hub` boundary, and the bounded-deviation selection form refuted by an explicit habitat family with an unbounded parity floor — and class uniformity remains untouched throughout.** **Proven / proven-informally.** (GR-1): each `⋆`-eigen-block is a generalized `C¹`-quadratic spline system on `G°`, exact rank identity `rank = 3n_c − 3 − dim Z` (verified 688/688 through two independent matrices). (GR-3): two proven counting-obstruction families bound `dim Z`, later unified as the proven **(GR-8)** family, whose rank-1 members are exactly the ≤-2-class cycles. (GR-5): chart-image membership — a target-rank grid IS `hK`'s conclusion object (`Escape.lean:555`) — proven-informally class-uniformly over every infinite char-0 field (via (AC-7)); census 907/907. (GR-9), proven: the tree-triple certificate theorem, in three equivalent forms (GR-12), re-derived purely matroidally. (GR-11): a proven ε-adic hierarchical fallback (undeveloped). (GR-16): `dim Z` reduces to an exact square `3c × 3c` system on `G°` alone. (GR-17): a circuit run-count identity forces `runs(γ) ≥ 3` whenever `dim Z = 0`, automatic outside two length profiles. (GR-18): `def(G) = 0` forces the hub multigraph to partition into exactly 6 spanning trees of `G°`, of which a both-block tree-triple is a length-compatible instance. (GR-19): the tree-triple's `r`-group collapse-hierarchy generalization certifies every census-pool separator at `r = 4` (order ≤ 4 measured on the pool, not proven in general). At `Λ = ∅` unless noted: the binding-circuit-rich stratum is exactly `D = 0` (GR-21, no `Λ` restriction); five sparsity caps hold at `D = 0` (GR-22, no `Λ` restriction); an injective flip repair bounds violated colourings (GR-23); an unbounded-`T,Q` repair applies when every binding circuit owns a private even branch, universality open in the mixed case (GR-24); a `2^{n_hub}` cut criterion is exactly the canonical oracle at `D = 0` (GR-25, no `Λ` restriction). (GR-27): `g` is proven-informally additive over 2-edge-connected blocks, an exact finite per-block computation retiring the structured proxy. (GR-28)(i)–(iii), at `Λ = ∅`: a closed defect formula, automatic `a = 0`, and NC1 `⟹ g = 1` at `k = 2`, all proven-informally. (GR-20)'s third certificate ("certificate-3"): proven per swept shape at every `D = 0` shape checked, `Λ = ∅` and `Λ ≠ ∅` alike; the uniform (all-`n_hub`) form is not proven. (GR-32)/(GR-33): the capacity theorem (machine-certified; forces `cap(S) ≥ 7` at every proper chunk in habitat) and the weakness lemma (binding needs `save_A ≥ N − 2` aligned weaknesses, reducing the all-even case to an in-degree-{1,2} orientation problem). (GR-35): the defect formula is proven submodular. (GR-36): a structural charge — every unit of interior adjacency inside a chunk costs `≥ ½` a defect unit in **both** blocks (`defect_X(S) ≥ w45(S) + Σ⌈m_i/2⌉`), colouring-free; the honest **binding-capable** family it defines (`m_J + w45 ≤ 2`) strictly contains and supersedes the capacity-tight one (a correction to *Steps G39/G41*'s framing: W5's own binding subset alone has `cap = 8`). (GR-37): admissible colourings are exactly (majority-colour, minority-dart) pairs, and any perfect matching's all-minority prescription is solvable iff its even-branch vector lies in the cut space of `G°` — the exact parity explanation of the rung-minority rule's even-`m` limit; deviations from a matching reach every obstruction class. (GR-38): an exact slack identity plus an attachment lemma classify every crossing of two chunks; on the complete `n_hub ≤ 6` stratum no two same-block binding chunks ever cross (0 among 53 740 binding instances, all 4920 shapes) — the maximal binding family is laminar there, settling the intersection kill vacuously strong. (GR-39): capacity-tight proper chunks have a proven local structure (chordless, `(z, exc) ∈ {(2,3), (3,1)}`, short exits), and three proof-level kills (K4-saturation, digon, corner-set) close the all-triangle-type cell. (GR-40): the corner charge — `defect_X(S) ≥ w45 + ⌈(z + odd_cc − m_J − (k−1))/2⌉` in **both** blocks (A-dart supply/demand at the corners), with the colouring-free **corner condition** `z + odd_cc − m_J ≤ (k−1) + 4 − 2·w45` at every binding chunk — the corner-separated analogue of (GR-36)(iii), tight at W3M where (GR-36) prices 0, pruning the fully-capable-hot census 815 → 573 on a fresh subsample. (GR-41): the parity floor — every admissible colouring's minority map lies in the coset `[ℓ even] + Cut(G°)`, so its deviation distance from **every** perfect matching is `≥ ⌈φ*/2⌉` for the computable coset invariant `φ*`: the deviation count of the (GR-37) selection is bounded *below*, not only reachable. (GR-42): a polynomial habitat-membership lemma (cubic + 3-edge-connected + cyclically-4-edge-connected + star excess ≤ 5 ⟹ the (GR-25) criterion) and the pentagon-necklace family `NK(m)` it certifies, with `φ(NK(m)) ≥ m` and every member carrying a rank-certified fully-good colouring (per-shape (GR-15) up to `n_hub = 50`, the largest instances certified in the arc). **Refuted, and what replaced it.** (GR-2): the original "(AC-4)(i)–(ii) ⟹ both blocks isostatic" target — refuted (a `ds-K4` counterexample). (GR-4): the (GR-3) bound equals generic `dim Z` — refuted as stated (the families are incomplete); repaired by **(GR-4′)**, true-modulo-named-gap (proven at ≤ 3 classes and at singleton classes — the conic confinement is dissolved, so the surviving named gap is the class structure alone). **(GR-4′) is off the critical path in one named sense and load-bearing in another**: the discharge never *has* to consume it — (GR-9)'s tree-triple certificate reaches the Tay target with no generic-arrangement input, hence `hK`'s conclusion via (GR-5) + (AC-7), and routes (ii)–(iv) of *what would close it* certify `dim Z = 0` the same way — but on the counting route it is a **genuinely load-bearing rider**: route (i)/certificate-3 yields (GR-15) only *modulo (GR-4′)*, and its two proven cases cover no habitat block, so that rider never dissolves silently. (GR-10): the min-max form is refuted as posed; **(GR-10) itself is not refuted and stays open**, needing a colouring-existence argument rather than a characterization — no Edmonds-type min side, via (GR-3)(b) or the (GR-8) family, can characterize the triple, since the naive grouped-packing problem is NP-complete at exact balance (GR-13). (GR-28)(iv): the `g ≤ 1` cap at all `k ≥ 3` — **refuted, with an exact boundary**: a THEOREM at `n_hub ≤ 6` (GR-29), and FALSE from `n_hub = 8` on via four explicit habitat witnesses through every canonical gate, the smallest (`n_hub = 8`) carrying no binding circuit at all (GR-30); per-shape (GR-15) still holds at all four witnesses (GR-31) — the refutation kills only the certificate-3-uniformity route, not (GR-15) itself, and the analogous (GR-24)-shaped repair theorem for this cap is unprovable as posed. (GR-34): the uncorrelated first-moment/union-bound mechanism is refuted by a constructed `CL10` witness (expected-binding count growing `0.20 → 1.55 → 3.23` at `CL6/CL8/CL10`, every member still fully-good); a correlated rung-minority rule closes the probed instances instead. The bounded-deviation selection form ((GR-37)'s sharpened conjecture, the tenth landing's re-anchored target): **REFUTED as posed** by (GR-41) + (GR-42) — `d(NK(m)) ≥ m/2` grows without bound while fully-good colourings persist at every member, so **no shape-free deviation bound exists**; a FORM-refutation, never a flank, replaced by the growth-law re-anchoring in *what would close it*. **Measured, not proved.** (GR-14): proven as a certificate, but nil habitat applicability (0/400 + 0/18). (GR-26): an exhaustive 40 742-shape sweep of the `D = 0` stratum, zero (GR-15) misses. (GR-31)'s flip-distance-≤-`g` law: sweep-local, breaking at `n_hub = 16`. (GR-39)'s hot-dart census, upgraded from a 199-shape sample to exhaustive over all 4920 `n_hub ≤ 6` shapes (superseding (GR-35)(iv)): zero fully-hot hubs on the **capacity-tight** family and 0 of 506 on the exact **realized-binding** family — but the true obstruction family is **binding-capable** (GR-36), where a 184-shape subsample already carries **761** fully-hot hubs against 2721 binding-capable exit darts (vs 252 capacity-tight ones): the capacity-tight zero undercounts the obstruction family, not evidence against a flank. (GR-37)'s good-perfect-matching selection: measured `d ≤ 2` at 120/120 sampled shapes and at W3M/W4/W5/the ladders, `d = 3` at W3 — the uniform bound is now **refuted, not merely unproven** ((GR-42)); the measured three-layer split (Steps G48–G52) has the parity floor loose by ≤ 1, the balance layer costing 0 or 2 (the whole W3 stick is the balance layer's — `φ*(W3) = 2`, and all 12 parity-consistent maps within 2 deviations die on balance), and **`d_fg = d_adm` at every one of 133 shapes measured** — fully-goodness never costs a deviation beyond admissibility. None of these upgrades the residual to a proof. **(GR-15) stays OPEN throughout, unchanged in status, with no gap-map status move** — the sole remaining open gap in this arc; see *what would close it* for its statement, its per-shape proof, and the live routes. | **(GR-15)** *(the re-aimed discharge residual, Step G17, the critical-path form — (GR-10) stays open as the strictly stronger statement, its min-max refuted as posed)* — every tight class shape admits an admissible colouring with generic `dim Z₊ = dim Z₋ = 0` in both blocks. Implied by (GR-10); one-point-decidable per shape ((GR-7) remark (i); τ-side analogue §(K-ann) (ANH-9)), so the census's 907/907 exact hits are already **per-shape proofs** and only the uniformity gap remains. Its per-block min-max question is **(GR-4′)'s equality** — counting-shaped and untouched by (GR-13)'s hardness — now a pure statement about `(G°, ℓ, bits)` alone (GR-16), **exhaustively swept to 40 742 shapes on the binding-circuit-rich `D = 0` stratum with no hit** (GR-26). **Four live routes, none closed:** (i) a colouring-existence argument over Step G12's branch bits ("some admissible colouring has `a = 0 ∧ max g ≤ 0` in both blocks" + (GR-4′)), free at 98.6% of circuits by (GR-17); (ii) a bound on the collapse order `κ` (measured `≤ 4` on the census pool by (GR-19), unproven in general); (iii) a characterization of which `r`-co-independent groupings certify beyond `r = 3`; (iv) an exchange argument on (GR-18)'s guaranteed 6-tree packing supplying a length-compatible 3+3 split. **Dead as specified:** the (GR-27)/(GR-28) exact computation and `g ≤ 1` cap on the structured (GR-8) family — (GR-28)(iv) is refuted with an exact boundary (a theorem only at `n_hub ≤ 6`, GR-29; false from `n_hub = 8` on, GR-30), and its (GR-24)-analogue repair theorem is unprovable as posed (same premise, plus its own measured conclusion also false at `n_hub = 16`) — so the certificate-3-uniformity route (cap + `Λ ≠ ∅` flip + `D > 0` lift + (GR-4′) = (GR-15)) no longer has a live cap to build on. **Candidates offered but not selected** (GR-31): a repair theorem in the post-refutation form "distance ≤ `g`" (measured equal at all four witnesses); the exact-alignment thinness of binding colourings (a defect-≤ 1 configuration pins every head/interior dart, so binding occupies an exponentially thin slice — measured, not proven); and the (GR-29) budget ledger itself as a **positive tool** (it says exactly where and how binding-at-`g ≥ 2` configurations must live). With (GR-1)/§(K-clos) (AC-4), (GR-5) and (AC-7), any successor route still needs to discharge `hK` on the tight stratum over every infinite characteristic-0 field. **The best-understood target, sharper than (i)–(iv), in its post-refutation form: prove that the deviation cost of the (GR-37) selection is exhausted by admissibility.** The bounded-deviation form itself is **REFUTED** ((GR-42): `d ≥ m/2` on the pentagon necklaces, no shape-free bound), and the measured decomposition (Steps G48–G52) localizes what remains: the deviation count splits into a proven parity floor (`⌈φ*/2⌉`, (GR-41)), a shift-metric layer (loose by ≤ 1 everywhere measured), a balance layer (0 or 2 everywhere measured — the whole W3 stick), and a fully-good layer measured **zero at 133/133 shapes**. The sharpest open statements are therefore (a′) the `d_fg = d_adm` law — fully-goodness is free at the admissibility optimum; with per-shape admissibility it recovers the uniform existence target with no deviation language left — and (b′) the balance-layer bound (`d_adm − d_par ≤ 2`, or a family where it grows). The corner-separated W5-type chunks now HAVE their charge ((GR-40): the corner condition, the fully-capable-hot census pruned 815 → 573 on a fresh subsample). The intersection kill (GR-38) is **settled vacuously strong at `n_hub ≤ 6`** (binding provably laminar there), leaving the `n_hub ≥ 8` AA-glue realizability question open. **Four named dispatchable attacks:** (a′) the `d_fg = d_adm` law; (b′) the balance-layer bound; (c) AA-glue realizability at `n_hub ≥ 8`; (d′) the corner-armed realized-binding fully-hot seed hunt past GDEV's caps (not a flank by itself, E1's clarification). |
+| **(K-grid)** *(new, 2026-08-06, direction T)* | (K-grid) G0–G57 | **The tight-stratum residual of (AC-6) reduces, via a chain of proven results on the contracted multigraph `G°`, to one open geometry-free gap, (GR-15). Six other targets were refuted along the way — one outright, one repaired by a weaker true-modulo-named-gap form, one refuted only in its strongest (min-max) form while the underlying statement stays open, one refuted with an exact `n_hub` boundary, the bounded-deviation selection form refuted by an explicit habitat family with an unbounded parity floor, and the growth law's bounded-shift-correction reading refuted by that family's exact optimum ((GR-43)) — and class uniformity remains untouched throughout.** **Proven / proven-informally.** (GR-1): each `⋆`-eigen-block is a generalized `C¹`-quadratic spline system on `G°`, exact rank identity `rank = 3n_c − 3 − dim Z` (verified 688/688 through two independent matrices). (GR-3): two proven counting-obstruction families bound `dim Z`, later unified as the proven **(GR-8)** family, whose rank-1 members are exactly the ≤-2-class cycles. (GR-5): chart-image membership — a target-rank grid IS `hK`'s conclusion object (`Escape.lean:555`) — proven-informally class-uniformly over every infinite char-0 field (via (AC-7)); census 907/907. (GR-9), proven: the tree-triple certificate theorem, in three equivalent forms (GR-12), re-derived purely matroidally. (GR-11): a proven ε-adic hierarchical fallback (undeveloped). (GR-16): `dim Z` reduces to an exact square `3c × 3c` system on `G°` alone. (GR-17): a circuit run-count identity forces `runs(γ) ≥ 3` whenever `dim Z = 0`, automatic outside two length profiles. (GR-18): `def(G) = 0` forces the hub multigraph to partition into exactly 6 spanning trees of `G°`, of which a both-block tree-triple is a length-compatible instance. (GR-19): the tree-triple's `r`-group collapse-hierarchy generalization certifies every census-pool separator at `r = 4` (order ≤ 4 measured on the pool, not proven in general). At `Λ = ∅` unless noted: the binding-circuit-rich stratum is exactly `D = 0` (GR-21, no `Λ` restriction); five sparsity caps hold at `D = 0` (GR-22, no `Λ` restriction); an injective flip repair bounds violated colourings (GR-23); an unbounded-`T,Q` repair applies when every binding circuit owns a private even branch, universality open in the mixed case (GR-24); a `2^{n_hub}` cut criterion is exactly the canonical oracle at `D = 0` (GR-25, no `Λ` restriction). (GR-27): `g` is proven-informally additive over 2-edge-connected blocks, an exact finite per-block computation retiring the structured proxy. (GR-28)(i)–(iii), at `Λ = ∅`: a closed defect formula, automatic `a = 0`, and NC1 `⟹ g = 1` at `k = 2`, all proven-informally. (GR-20)'s third certificate ("certificate-3"): proven per swept shape at every `D = 0` shape checked, `Λ = ∅` and `Λ ≠ ∅` alike; the uniform (all-`n_hub`) form is not proven. (GR-32)/(GR-33): the capacity theorem (machine-certified; forces `cap(S) ≥ 7` at every proper chunk in habitat) and the weakness lemma (binding needs `save_A ≥ N − 2` aligned weaknesses, reducing the all-even case to an in-degree-{1,2} orientation problem). (GR-35): the defect formula is proven submodular. (GR-36): a structural charge — every unit of interior adjacency inside a chunk costs `≥ ½` a defect unit in **both** blocks (`defect_X(S) ≥ w45(S) + Σ⌈m_i/2⌉`), colouring-free; the honest **binding-capable** family it defines (`m_J + w45 ≤ 2`) strictly contains and supersedes the capacity-tight one (a correction to *Steps G39/G41*'s framing: W5's own binding subset alone has `cap = 8`). (GR-37): admissible colourings are exactly (majority-colour, minority-dart) pairs, and any perfect matching's all-minority prescription is solvable iff its even-branch vector lies in the cut space of `G°` — the exact parity explanation of the rung-minority rule's even-`m` limit; deviations from a matching reach every obstruction class. (GR-38): an exact slack identity plus an attachment lemma classify every crossing of two chunks; on the complete `n_hub ≤ 6` stratum no two same-block binding chunks ever cross (0 among 53 740 binding instances, all 4920 shapes) — the maximal binding family is laminar there, settling the intersection kill vacuously strong. (GR-39): capacity-tight proper chunks have a proven local structure (chordless, `(z, exc) ∈ {(2,3), (3,1)}`, short exits), and three proof-level kills (K4-saturation, digon, corner-set) close the all-triangle-type cell. (GR-40): the corner charge — `defect_X(S) ≥ w45 + ⌈(z + odd_cc − m_J − (k−1))/2⌉` in **both** blocks (A-dart supply/demand at the corners), with the colouring-free **corner condition** `z + odd_cc − m_J ≤ (k−1) + 4 − 2·w45` at every binding chunk — the corner-separated analogue of (GR-36)(iii), tight at W3M where (GR-36) prices 0, pruning the fully-capable-hot census 815 → 573 on a fresh subsample. (GR-41): the parity floor — every admissible colouring's minority map lies in the coset `[ℓ even] + Cut(G°)`, so its deviation distance from **every** perfect matching is `≥ ⌈φ*/2⌉` for the computable coset invariant `φ*`: the deviation count of the (GR-37) selection is bounded *below*, not only reachable. (GR-42): a polynomial habitat-membership lemma (cubic + 3-edge-connected + cyclically-4-edge-connected + star excess ≤ 5 ⟹ the (GR-25) criterion) and the pentagon-necklace family `NK(m)` it certifies, with `φ(NK(m)) ≥ m` and every member carrying a rank-certified fully-good colouring (per-shape (GR-15) up to `n_hub = 50`, the largest instances certified in the arc). (GR-43): the odd-cycle-packing shift floor — `m` vertex-disjoint cycles, each carrying an odd number of even-length branches, force every parity-consistent minority map ≥ `m` deviations from **every** perfect matching; at the necklaces this doubles the (GR-41) floor and, met by constructed optima, gives `d_par = d_adm = d_fg = m` **exactly** at NK(2)/NK(6)/NK(8)/NK(10), rank-certified at the optimum — the shift-metric layer is UNBOUNDED while the (a′) law survives its first large-`d` test (Steps G53–G57). **Refuted, and what replaced it.** (GR-2): the original "(AC-4)(i)–(ii) ⟹ both blocks isostatic" target — refuted (a `ds-K4` counterexample). (GR-4): the (GR-3) bound equals generic `dim Z` — refuted as stated (the families are incomplete); repaired by **(GR-4′)**, true-modulo-named-gap (proven at ≤ 3 classes and at singleton classes — the conic confinement is dissolved, so the surviving named gap is the class structure alone). **(GR-4′) is off the critical path in one named sense and load-bearing in another**: the discharge never *has* to consume it — (GR-9)'s tree-triple certificate reaches the Tay target with no generic-arrangement input, hence `hK`'s conclusion via (GR-5) + (AC-7), and routes (ii)–(iv) of *what would close it* certify `dim Z = 0` the same way — but on the counting route it is a **genuinely load-bearing rider**: route (i)/certificate-3 yields (GR-15) only *modulo (GR-4′)*, and its two proven cases cover no habitat block, so that rider never dissolves silently. (GR-10): the min-max form is refuted as posed; **(GR-10) itself is not refuted and stays open**, needing a colouring-existence argument rather than a characterization — no Edmonds-type min side, via (GR-3)(b) or the (GR-8) family, can characterize the triple, since the naive grouped-packing problem is NP-complete at exact balance (GR-13). (GR-28)(iv): the `g ≤ 1` cap at all `k ≥ 3` — **refuted, with an exact boundary**: a THEOREM at `n_hub ≤ 6` (GR-29), and FALSE from `n_hub = 8` on via four explicit habitat witnesses through every canonical gate, the smallest (`n_hub = 8`) carrying no binding circuit at all (GR-30); per-shape (GR-15) still holds at all four witnesses (GR-31) — the refutation kills only the certificate-3-uniformity route, not (GR-15) itself, and the analogous (GR-24)-shaped repair theorem for this cap is unprovable as posed. (GR-34): the uncorrelated first-moment/union-bound mechanism is refuted by a constructed `CL10` witness (expected-binding count growing `0.20 → 1.55 → 3.23` at `CL6/CL8/CL10`, every member still fully-good); a correlated rung-minority rule closes the probed instances instead. The bounded-deviation selection form ((GR-37)'s sharpened conjecture, the tenth landing's re-anchored target): **REFUTED as posed** by (GR-41) + (GR-42) — `d(NK(m)) ≥ m/2` grows without bound while fully-good colourings persist at every member, so **no shape-free deviation bound exists**; a FORM-refutation, never a flank, replaced by the growth-law re-anchoring in *what would close it*. **Measured, not proved.** (GR-14): proven as a certificate, but nil habitat applicability (0/400 + 0/18). (GR-26): an exhaustive 40 742-shape sweep of the `D = 0` stratum, zero (GR-15) misses. (GR-31)'s flip-distance-≤-`g` law: sweep-local, breaking at `n_hub = 16`. (GR-39)'s hot-dart census, upgraded from a 199-shape sample to exhaustive over all 4920 `n_hub ≤ 6` shapes (superseding (GR-35)(iv)): zero fully-hot hubs on the **capacity-tight** family and 0 of 506 on the exact **realized-binding** family — but the true obstruction family is **binding-capable** (GR-36), where a 184-shape subsample already carries **761** fully-hot hubs against 2721 binding-capable exit darts (vs 252 capacity-tight ones): the capacity-tight zero undercounts the obstruction family, not evidence against a flank. (GR-37)'s good-perfect-matching selection: measured `d ≤ 2` at 120/120 sampled shapes and at W3M/W4/W5/the ladders, `d = 3` at W3 — the uniform bound is now **refuted, not merely unproven** ((GR-42)); the measured three-layer split (Steps G48–G52) had the parity floor loose by ≤ 1 on the pool — the looseness is now **proven unbounded** ((GR-43): shift excess ≥ m/4 at the necklaces) — the balance layer costing `{0, 1, 2}` everywhere probed including the odd-richest stratum (the W3 stick **splits** 1 shift-metric + 1 balance unit — `d_par(W3) = 2`, `d_adm = 3`, Steps G53–G57 correcting Step G49's "the whole stick is the balance layer's"), and **`d_fg = d_adm` at every shape ever measured** — 133 at `d ≤ 3` (Steps G48–G52) plus GADM's fresh 108-shape subsample and the four NK members at `d` up to **10**, rank-certified at the optimum — fully-goodness never costs a deviation beyond admissibility. None of these upgrades the residual to a proof. **(GR-15) stays OPEN throughout, unchanged in status, with no gap-map status move** — the sole remaining open gap in this arc; see *what would close it* for its statement, its per-shape proof, and the live routes. | **(GR-15)** *(the re-aimed discharge residual, Step G17, the critical-path form — (GR-10) stays open as the strictly stronger statement, its min-max refuted as posed)* — every tight class shape admits an admissible colouring with generic `dim Z₊ = dim Z₋ = 0` in both blocks. Implied by (GR-10); one-point-decidable per shape ((GR-7) remark (i); τ-side analogue §(K-ann) (ANH-9)), so the census's 907/907 exact hits are already **per-shape proofs** and only the uniformity gap remains. Its per-block min-max question is **(GR-4′)'s equality** — counting-shaped and untouched by (GR-13)'s hardness — now a pure statement about `(G°, ℓ, bits)` alone (GR-16), **exhaustively swept to 40 742 shapes on the binding-circuit-rich `D = 0` stratum with no hit** (GR-26). **Four live routes, none closed:** (i) a colouring-existence argument over Step G12's branch bits ("some admissible colouring has `a = 0 ∧ max g ≤ 0` in both blocks" + (GR-4′)), free at 98.6% of circuits by (GR-17); (ii) a bound on the collapse order `κ` (measured `≤ 4` on the census pool by (GR-19), unproven in general); (iii) a characterization of which `r`-co-independent groupings certify beyond `r = 3`; (iv) an exchange argument on (GR-18)'s guaranteed 6-tree packing supplying a length-compatible 3+3 split. **Dead as specified:** the (GR-27)/(GR-28) exact computation and `g ≤ 1` cap on the structured (GR-8) family — (GR-28)(iv) is refuted with an exact boundary (a theorem only at `n_hub ≤ 6`, GR-29; false from `n_hub = 8` on, GR-30), and its (GR-24)-analogue repair theorem is unprovable as posed (same premise, plus its own measured conclusion also false at `n_hub = 16`) — so the certificate-3-uniformity route (cap + `Λ ≠ ∅` flip + `D > 0` lift + (GR-4′) = (GR-15)) no longer has a live cap to build on. **Candidates offered but not selected** (GR-31): a repair theorem in the post-refutation form "distance ≤ `g`" (measured equal at all four witnesses); the exact-alignment thinness of binding colourings (a defect-≤ 1 configuration pins every head/interior dart, so binding occupies an exponentially thin slice — measured, not proven); and the (GR-29) budget ledger itself as a **positive tool** (it says exactly where and how binding-at-`g ≥ 2` configurations must live). With (GR-1)/§(K-clos) (AC-4), (GR-5) and (AC-7), any successor route still needs to discharge `hK` on the tight stratum over every infinite characteristic-0 field. **The best-understood target, sharper than (i)–(iv), in its post-refutation form: prove that the deviation cost of the (GR-37) selection is exhausted by admissibility.** The bounded-deviation form itself is **REFUTED** ((GR-42): `d ≥ m/2` on the pentagon necklaces, no shape-free bound), and the decomposition now reads (Steps G48–G57): a proven parity floor (`⌈φ*/2⌉`, (GR-41)); a shift-metric layer **proven unbounded** ((GR-43): the odd-cycle-packing floor gives `d_par = m` at the necklaces, twice the floor, so the growth law's bounded-correction reading is dead and the exact shift metric is the open quantitative half — whether `d_par` *equals* the packing number is min-max-shaped, (GR-13) caution); a balance layer measured `{0, 1, 2}` everywhere probed and structurally confined to ≤ 6 odd branches (the excess law); and a fully-good layer measured **zero everywhere ever probed, now including `d = 10`** (rank-certified at the optimum up to `n_hub = 50`). The sharpest open statements remain (a′) the `d_fg = d_adm` law — fully-goodness is free at the admissibility optimum, its sticking case now NAMED (fixed-μ fiber exchange is measurably insufficient at W3-type shapes: some optimal μ-classes carry no fully-good realization, so the proof needs an exchange *across* optimal μ-classes; every measured failure sits at defect exactly 2) — and (b′) the balance-layer bound (`d_adm − d_par ≤ 2`, supported: no growing gap found). Per-shape admissibility is **ledger entry 5, a separate OPEN statement** (Step G53: NOT a (GR-37)(iii) corollary — that statement's balance clause is statement-beyond-proof; vacuous at all-even shapes; a ≤ 6-branch balance condition elsewhere), so a proof of (a′) alone does not close the existence target. The corner-separated W5-type chunks now HAVE their charge ((GR-40): the corner condition, the fully-capable-hot census pruned 815 → 573 on a fresh subsample). The intersection kill (GR-38) is **settled vacuously strong at `n_hub ≤ 6`** (binding provably laminar there), leaving the `n_hub ≥ 8` AA-glue realizability question open. **Four named dispatchable attacks:** (a′) the `d_fg = d_adm` law; (b′) the balance-layer bound; (c) AA-glue realizability at `n_hub ≥ 8`; (d′) the corner-armed realized-binding fully-hot seed hunt past GDEV's caps (not a flank by itself, E1's clarification). |
 | **(K-frame)** *(new, 2026-08-07, direction J)* | (K-frame) FR0–FR11 | **The shared chart-to-frame dominance residue of directions O/Q/G, attacked via §(K-grid) *Step G13*'s lemma shape — which is delivered, and is smaller than its name.** **(FR-1)** proven: "dominance" over-asks — both residues are non-containment-in-one-hypersurface, settled by one witness point + irreducibility of the *source*; (ANH-14)'s source is the whole chart (irreducibility owned by §(K-ann) (ANH-9)(ii)), (OC-16)'s is the un-owned hard-stratum target-rank locus, needed **only** to combine separately-witnessed open conditions ((FR-7)). **(FR-2)/(FR-3)** proven: at a σ-fixed grid point every hinge line is a ruling line, the two families span complementary 3-spaces (= §(K-clos) (AC-4)'s `⋆`-eigenspaces, each a Veronese conic), and **any 6×6 hinge-line determinant — both bad divisors included — is nonzero ⟺ its edges are coloured 3–3 with pairwise-distinct components per family** (`det = 128·Vdm(s)·Vdm(u)`, an identity over the function field, `framedom.m2`); incidentally makes (AC-9) obvious with the coincident pair located exactly. **(FR-4)** true-modulo-named-gap (the (GR-5)-at-`G′` restatement, hypotheses machine-checked per instance): the transport works by **regridding at `G′ = G − v + ab`** (alternation makes `pt(a) ∈ M` automatic), and a *pattern colouring* yields an exact ℚ(i) chart witness proving the (ANH-R1) β-clause at its site via (ANH-9)(iii). **(FR-5)** measured: pattern availability **1904/1904** bare-cycle sites (census pin = (ANH-13)'s 1904), **30/30 exact end-to-end certificates** with negative controls. **(FR-6)** exact per point: at θ(3,4,5), 4/8 admissible colourings land on the hard stratum at target rank — the first **constructed** inhabitants — each a literal (OC-8) witness; the **strict** availability package is **0/8**, mechanism (AC-9) (structurality open). **Since Steps FR7–FR11 (2026-08-07, direction PEX): (FR-R1) is PROVEN.** The bare-cycle stratum is **finite** (a bare-cycle site forces `c(G) = 3`, hence `n_hub ≤ 4`) and **exhaustively enumerated**: **22 isomorphism classes, 76 sites, 1976 labelled instances**, every one pattern-available, both by a uniform structural argument ((FR-9)–(FR-12): the frame's normal form, the component law, and vacuity of legality (i)) and independently by the exhaustive scan itself ((FR-8)). The former sweep-boundedness caveat **dissolves rather than widens**: `outer.sweep_shapes` covers 14 of the 22 iso classes (58 of 76 sites) and misses none of what it carries ((FR-14)). **No gap-map status moves; class uniformity — `hK`'s status — is untouched.** | With (FR-R1) proven, the residue is **(FR-4)'s named gap alone**: the (GR-5)-at-`G′` restatement (two lines of prose in §(K-grid); its hypotheses are already machine-checked per instance by `framedom.py --transport`). Closing it turns (FR-R1)+(FR-4) into an unconditional discharge of the (ANH-14) residue on the whole bare-cycle stratum. The (OC-16)-side residual ingredient (irreducibility of the hard-stratum locus, or a per-shape simultaneous witness) stays with §(K-out) (OC-8), untouched by this direction |
 | **(K-ann)** *(new, 2026-08-06)* | (K-ann) A1–A17 | **A recipe delivered and an input relocated — read the two halves separately, and do not let the first warm up the second.** **Delivered, and the arc's first *formula* rather than a search** (`Pencil-strategy.md` §2.2's sense): **(ANH-2)** the reciprocity identity `dλ(π_P ω) = Σ_e ω_e B(τ_e, δC_e)`, local at the moved vertex, no genericity hypothesis, class-uniform, verified at 276 far-chart directions × 828 motions against an independent implicit differentiation; **(ANH-3)** at the named move (translate one non-hub 2-valent far body) it collapses to **one Klein pairing**, 192 single-vertex moves. Carry its caveat: *the formula's kernel is bounded-size and class-uniform; what it pairs against (`τ`, `ω`) is not* — so U1 is **half** delivered, the move and the formula but not the inputs. **Proven, and the mechanism behind (D2):** **(ANH-1)** `λ` **is a self-stress** — of the *contracted* framework `H/P` (weld the companion into one body), stress dimension exactly `k−3` (18 seeds, 9 habitats, `k = 3..6`), so (T5)/(D2) stop being measured bounds. **Proven, `k = 4`-only:** **(ANH-4)** `E(H/P)` is a **circuit of the generic Tay matroid**, from 5/6-sparsity + `hnoRigid`, the count `5k+10 ≤ 6k+6` tight exactly at `k = 4` — the same equality case as (D3)'s `k ≥ 4`; realized side, the support is the **whole** far edge set at 14/14 class seeds, so the named move needs **no support-location step**, with an off-class control (`hnoRigid` dropped) where the circuit is a proper 5-cycle and moves off it leave `V_bc` exactly fixed. **(ANH-7)**: on the **89 %** (3820/4296) of triples with a length-5 `H/P` branch the whole criterion is **one 4-point bracket**, correct 56/56. Corrections recorded here because they were written down before the pass ran: option B and U2 are **not** the same object (`λ` is a self-stress of the contracted **far** framework, not `[r]`); U2's cocircuit reading is the **dual** of what the recipe needs (`supp τ` is a *circuit*); and the pass's own `⟨C(z₁z₂)⟩` kill set is wrong at `dim U_y = 1`, the general criterion being `ρ_y ⊥_B (V_y ∧ U_y)`. **`k`-grading:** (ANH-1/2/3/5/6) and (SD-6) are length-free (`k = 3..6`); **(ANH-4) is provably `k = 4` only**, and with `k = 4` the `hnoRigid` equality case **no `k`-graded mechanism including this one can close the class** — the verdict `Pencil-strategy.md` §4.6 already carries. **No gap-map *status* moves; class uniformity untouched** | **(ANH-R1)** `τ_β ≠ 0` at the pencil placement — `H/P − β` (count exactly 0, generically isostatic) is **rigid** there. This is **relocation #4**, of a *different kind* for three reasons and *not thereby easier*: it crosses into a matroid that **has** a min-max (Tay, Phases 12–15) whose combinatorial half (ANH-4) **proves**; it lands on a **strictly smaller graph** (`\|E(G)\|−12` edges); and by §(K-ind) *Step I6* the welded body is not a pencil body, so it sits on the **mixed stratum** — not the same problem shrunk, and `Pencil-strategy.md` §4-C3's second concrete consumer after (OUT). It does **not** evade §2.3 (a rank *lower* bound): **limiting, not fatal** — the smaller graph's matroid is Tay's, where independence *is* combinatorially characterised, so the wall changes from "no matroid sees this" to "the matroid sees it and the pin may not respect the matroid" (the weak-map / specialization-stability lead of §4.6, which now has a statement to attach to). **"Easier or merely smaller" — SETTLED AS SCOPED (2026-08-06, Steps A10–A13, direction R): merely smaller in difficulty class**, with two structural gains and one proven loss. **(ANH-9)**: (ANH-R1) per triple ⟺ one exact rank computation at one rational chart point (weak-map formulation; `Pencil-strategy.md` §4.6's lead gets its precise statement); **(ANH-10)**: the pinned census probe is a clean negative at generic guarded seeds — 26/26 `dim S_pen = 1` with full support, 58/58 length-5-branch sites `τ_β ≠ 0`, so (ANH-R1) is **discharged at the generic point of every probed triple**; **(ANH-11)/(ANH-12)**: the bad locus is **INHABITED** — exact rational guard-accepted points (8/9 target-rank hard-stratum) where `H/P − β` goes dependent and `supp` strictly drops (11 → 6 at six exact witnesses) — so **the pencil pin respects Tay's matroid only generically, never pointwise, and no counting/matroid/placement-blind route to (ANH-R1) exists** (the τ-side analogue of (OC-3), by construction). Remaining: a **class-uniform independent-point recipe** ((ANH-9)(iii)) — the same missing technology as §(K-grid)'s residual (directions T and R converge; since direction G that residual is **(GR-10)**). The per-shape M2 identity `C(H/P − β) ≢ 0` was **RUN (2026-08-06, direction Q — Steps A14–A17): no shape refuted, and the "upgrade" reading was WRONG** ((ANH-16)(i): (ANH-9)(iii) already makes each census row a proof, so the identity is the pointwise restatement of (ANH-R1)); what survives is structure — **(ANH-13)** the branch-core normal form with the exact size law `deg C(H/P − β) = 12(c(G) − 2)`, bounded exactly on the finite part of the class; **(ANH-14)** the whole **bare-cycle stratum** (1904/6426 length-5-branch sites) governed by **ONE universal irreducible degree-12 bracket polynomial**, proven `≢ 0` over the function field with `det Gram = −C²`, so (ANH-R1) there is a **chart-to-frame dominance question with no rank condition left** (the **third** independent arrival at §(K-out) (OC-16)'s residue) — **since §(K-frame) (2026-08-07, directions J/PEX) that residue is CLOSED AS AN ARGUMENT on the whole bare-cycle stratum**: (FR-R1) is **PROVEN** — the stratum is finite (22 iso classes / 76 sites / 1976 labelled instances) and exhaustively enumerated with a pattern colouring at every site — via (ANH-9)(iii) each such point is a proof of the (ANH-R1) β-clause at its site, so what remains is **(FR-4)'s one named gap alone** ((GR-5) restated at `G′`; §(K-frame) (FR-4)/(FR-5)), and, by irreducibility, **no (ANH-7)-style one-bracket recipe exists for (ANH-R1)'s own certificate**; **no gap-map status moves and `hK`'s status is untouched**; **(ANH-15)** the bad locus **strictly contains** (ANH-11)'s transversal locus (a second, axis-free mechanism; all 9 (ANH-12) witnesses verified inside `{C = 0}`); **(ANH-16)** the M2 layer's reach bracketed from both sides (degree 12 in 24 indeterminates finishes at 578 s; the θ core at the generic point does not finish at 600 s). What it *would* close: the **length-4-companion stratum outright**, via §(K-Λ)'s Λ-completeness, since `dλ ≢ 0` makes `{λ = p⁺}` proper on an irreducible chart |
 | **(K-out)** *(new, 2026-08-06)* | (K-out) O1–O12 | **(OUT)'s hypothesis, measured — and the headline is the NEGATIVE. Read the two halves separately, and do not let the second warm up the first.** **The negative, proven-informally and load-bearing: (OC-3)** on the pencil chart `C₁ = C(b,x₁)` is confined to the 2-dimensional pencil `L_b = α_{pt(b)} ∩ β_{Π(b)}` while the far relative twist space `R₁` does not see `pt(x₁)`, so `dim R₁ = 5` forces `dim(R₁ ∩ L_b) ≥ 5 + 2 − 6 = 1` — **`{λ₁ = 0}` is nonempty at every class shape in the enumerated scope**, exactly one marked direction of `x₁`'s pencil. Therefore **no counting argument, no matroid statement and no placement-blind argument can ever deliver (OUT)'s hypothesis**; measured on-chart `dim R = 5`, `dim(R ∩ L) = 1` (never 2) at 46/46 **sampled** frames, so the bad locus is also *proper* — though `dim(R ∩ L) = 2` **is reachable by construction** ((OC-14): the hub slide onto the explicit bad line `C₀`, 38/38 fully-nondegenerate target-rank points, 34 guard-accepted, **no coincident hinge**, the escape still holding — which **refutes (OC-7)'s necessity clause** while leaving every pool rate and the 318 / 299 denominators untouched). **The combinatorial half does NOT deliver availability: (OC-2)**'s uniform 4296-pair result (`χ = 0`, `def(H/X) = def(H/Y) = 0`, `(μ, dim R, A) = (1,5,0)` on both sides) collapses to **one** measured fact — rigidity of `H/X`, the rest being arithmetic — **since Steps O9–O12 (2026-08-06, direction O) a THEOREM, (OC-10)**: the availability map is *forced* at every class shape (`χ = 0`, `μ = 1`, `H/X`/`H/Y` isostatic, `dim R = 5`; girth-6 plus one `hnoRigid`-discharged boundary case, all four hypotheses load-bearing by adversarial witnesses), so *What would change this* items 1–2 are **struck as unrealizable** and θ(3,4,5) is the **unique theta class member**; `deficiency` stays the ***ambient*-generic** count, blind to the chart confinement. **The positives are pointwise, over two DISJOINT pinned pools, never aggregated: (OC-5)** POOL-G (4 habitats × seeds 200–299, 357 frames) distribution `322/17/17/1`, hypothesis **356/357**, conclusion separately verified **356/356**, (Λ0d) failing **0/357**; **(OC-6)** POOL-S (41 shapes / 90 splits / 270 frames) **270/270** with **0** silent (split, companion) pairs; **(OC-1)** *Step 5a*'s hinge-rate reading is exact and driver-asserted (`λ₁ = 0 ⟺ C₁ ∈ V_bc ⟺ dim W₁ = 1 ⟺ C₁ ∈ R₁`, 46 frames); **(OC-4)** the bad line is **reached by a legal chart move** at all four habitats — 3 of them with no coincident hinge line — keeping every (Λ0) clause, target rank, `dim R_a = 1` and all four `IsNondegPencilRealization` conjuncts, and with `deg_t Q(z(t)) = 4` there, so the escape holds exactly where (OUT) is blind. **(OUT) is therefore available, never automatic, and not contradicted.** **A HARNESS DEFECT, escalated: (OC-7)** — `widened.place_pencil_general`'s single-hub-interior sampler degenerates via `localtest.plane_basis` at **32 of 357** POOL-G frames (≈ 9 %) and that degeneracy **implies** `λᵢ = 0` (15/15 `b`-side, 18/18 `c`-side), uncaught by `flanks.star_span_ranks` (*documented* as the guard against exactly that artifact) and excluded by no `IsNondegPencilRealization` conjunct. **Standing rule: no `place_pencil_general` battery may be quoted as a *rate* or as evidence about a generic chart point** — POOL-G figures are quoted over the **318 coincidence-free** frames, never the raw 357. Second `plane_basis` contamination, **first with the documented guard failing**; `notes/scripts/README.md` *Harness debt* item 4. §(K-ann) is flagged for a **check, not an error**: its claims are identities and pointwise attainments, which degenerate frames make *harder* to satisfy (conservative); rates are what the defect distorts. **Verdict: availability, MEASURED, not proven. No gap-map *status* moves; class uniformity untouched** — the (K-wit) row's *what would close it* cell gains the (OC-3) caveat on (OUT) | **(OC-8)**: at every class shape, a hard-stratum target-rank point of the **whole-graph** chart with `L_b ⊄ R₁` or `L_c ⊄ R₄`. That is a rank **lower** bound at a pencil placement — `Pencil-strategy.md` §2.3's wall **relocated** onto the smaller `H/{e₂,e₃,e₄}` and **weakened, not crossed** — and (OC-3) says the relocation **cannot be discharged combinatorially**, so any proof must be a genericity argument on the whole-graph chart (needing its hard-stratum component not to lie inside `{λ₁ = 0} ∩ {λ₄ = 0}`), which the arc has never established because `λ` is a **far** datum. The one symbolically tractable piece — `L_b ⊄ R₁` as a polynomial non-vanishing (`Pencil-strategy.md` §5.3) — is **DELIVERED on the `ℓ_min = 5` stratum** ((OC-16): `Δ = [a,u,b] · C₀(pt b) ≢ 0` at the local frame's generic point, the bad line `C₀` in **closed form**) and **blocked off it** ((OC-15): the path-span form carries no information at `ℓ_min ≥ 6`; the stratum is 8 of 5226 pairs); at a **degree-3 hub** (3081/5226 pairs at the `b` end) (OC-8) restates with **no rank condition left** — availability ⟺ the hard-stratum target-rank locus `⊄ {pt(b) ∈ C₀}` — with **chart-to-frame dominance** the named residue ((OC-16)'s gap; *What would change this (Steps O9–O12)* item 4) — **since §(K-frame) (2026-08-07, direction J)**: the non-containment is **witnessed by construction** at θ(3,4,5) (4/8 admissible `G′`-colourings on the hard stratum at target rank, each with `Δ ≠ 0` at one end — §(K-frame) (FR-6)), the strict availability package is **0/8 at σ-fixed witnesses** with the (AC-9) coincidence the named mechanism (structurality open), and the evaluability question is answered: at grid points `Δ` is **combinatorial** ((FR-3)). **(OC-7) is CLEARED** (2026-08-06 re-baselining round S1/S2: the composite guard `repin.star_generic` exists, is adversarially tested on both a constructed and a sampled witness, and is adopted at every `w4/` acceptance site except this section's two measuring modes); **(OC-9)** measures that the guard rejects 58/357 and strictly contains the two-end diagnostic's 39 |
@@ -13554,6 +13554,17 @@ under the structures the ledger prices.
 > recorded:* the constructive searches below always succeeded within 2
 > deviations on the pool; a proven uniform bound on the deviation count
 > is exactly what *Step G47* leaves open (W3 needs 3).
+>
+> *Second caveat — STATEMENT-BEYOND-PROOF, scoped to the balance
+> clause only (GADM, Step G53):* the words "and the balance rider
+> alike" are NOT delivered by the proof below.  The span argument
+> manipulates only classes in `GF(2)^{E(G°)}/Cut(G°)` — the parity
+> obstruction — and balance is not a class function: at a fixed
+> parity-consistent `m` the two `c`-solutions swap the odd-branch
+> majority counts, so balance is decided by `m` alone, which the
+> class-level argument never touches.  The parity half stands as
+> proven; per-shape admissibility is the fanout route ledger's
+> **entry 5**, a separate open statement.
 
 *Proof.* (i): given an admissible colouring, every hub is 2-1
 ((GR-33)(i)); conversely (c, m) determines every dart (`c(v)` off
@@ -13860,7 +13871,7 @@ re-derives everything.)
 |---|---|---|
 | **(GR-36)** | the structural charge: charge form, AA-independence, J path-forest, `defect_X ≥ w45 + Σ⌈m_i/2⌉` both blocks, exit-sharing exclusion | **proven-informally** (proofs above; asserted at 338 364 pairs) |
 | **(GR-37)(i)–(ii)** | the (c,m) model; the matching rule's obstruction = the even-branch class in the cut space; the ladder-parity explanation | **proven-informally** (proofs above; the vector identity machine-asserted at every matching; CL5–CL8 corollary asserted) |
-| **(GR-37)(iii)** | deviations reach every parity/balance class | **proven-informally** (span argument), with the uniform *count* of needed deviations **open** — measured ≤ 2 on the pool, = 3 at W3 |
+| **(GR-37)(iii)** | deviations reach every parity/balance class | **parity half proven-informally** (span argument); the "balance rider alike" clause is **statement-beyond-proof** (GADM *Step G53*: the argument moves only `GF(2)^E/Cut` classes, and balance is not a class function) — per-shape admissibility is fanout ledger **entry 5**, a separate open statement; the uniform *count* stays **open** — measured ≤ 2 on the pool, = 3 at W3 |
 | **(GR-38)(i)–(ii)** | the exact slack identity; the attachment lemma | **proven-informally** (per-hub cases; certified at 58 495 crossing pairs) |
 | **(GR-38)(iii)** | crossing same-block binding pairs at `n ≤ 6` | **settled by exhaustion — they do not exist** (0 over the complete stratum); binding laminarity holds at every admissible colouring there; the AA-glue case at `n ≥ 8` **open** |
 | **(GR-39)(i)** | the capacity-tight structure theorem | **proven-informally** (asserted at all 2400 pool instances) |
@@ -13898,7 +13909,7 @@ what a fully-good colouring buys. *(vi)* The **`Λ ≠ ∅` / `D > 0`
 analogues** — both strata stay unswept; (GR-37)'s algebra is
 length-parity-only and should transfer, but nothing here shows it.
 
-### Steps G48–G52 (2026-08-15, direction GDEV) — the bounded-deviation selection theorem is **REFUTED AS POSED** by an explicit habitat family with an unbounded **parity floor** (a proven, colouring-free lower bound on the deviation count of *every* admissible colouring from *every* perfect matching), the **corner-side charge lands** as the (GR-36)-analogue theorem for corner-separated chunks — tight at W3M, where (GR-36) prices 0 — the W3 stick is located in the **odd-branch balance layer** (not parity, not fully-goodness), and the deviation cost **measures as entirely an admissibility phenomenon** (`d_fg = d_adm` at every shape measured) — (GR-15) stays **OPEN**, per-shape (GR-15) gains rank-certified members up to `n_hub = 50`, and **no gap-map status moves**
+### Steps G48–G52 (2026-08-15, direction GDEV) — the bounded-deviation selection theorem is **REFUTED AS POSED** by an explicit habitat family with an unbounded **parity floor** (a proven, colouring-free lower bound on the deviation count of *every* admissible colouring from *every* perfect matching), the **corner-side charge lands** as the (GR-36)-analogue theorem for corner-separated chunks — tight at W3M, where (GR-36) prices 0 — the W3 stick is located in the **odd-branch balance layer** (not parity, not fully-goodness — *corrected by GADM Step G56: the stick SPLITS, one shift-metric unit + one balance unit*), and the deviation cost **measures as entirely an admissibility phenomenon** (`d_fg = d_adm` at every shape measured) — (GR-15) stays **OPEN**, per-shape (GR-15) gains rank-certified members up to `n_hub = 50`, and **no gap-map status moves**
 
 Answering `notes/Pencil-fanout.md` §"Eleventh direction — GDEV": the
 bounded-deviation selection theorem — *every habitat shape (cubic `G°`,
@@ -13995,6 +14006,10 @@ nothing below claims to.
   c-solutions fails the odd-branch BALANCE rider**; 0 admissible.  The
   W3 stick lives in the **balance layer**.  A fully-good colouring
   exists at `d = 3` (rank-certified), so `d_adm(W3) = d_fg(W3) = 3`.
+  *(Corrected by GADM, Step G56: `d_par(W3) = 2` exactly, so the stick
+  **splits** — one shift-metric unit above the floor plus one balance
+  unit above `d_par`; "lives in the balance layer" overstated the
+  balance share.)*
 - **The layer decomposition of the deviation cost (measured).**  On a
   131-shape seeded pool subsample, with `d_par ≤ d_adm ≤ d_fg` the
   least deviation counts at which some (matching, deviations) map is
@@ -14097,7 +14112,7 @@ Hall argument would have to feed.
 
 ---
 
-### Step G49 — (GR-41): the parity floor — the deviation count is bounded below by a coset weight, and the W3 stick is the balance layer's
+### Step G49 — (GR-41): the parity floor — the deviation count is bounded below by a coset weight, and the W3 stick is the balance layer's *(corrected by GADM Step G56: the stick splits 1 shift-metric + 1 balance unit)*
 
 > **(GR-41)** *(proven; certified per colouring at 373 admissible
 > colourings of the pool subsample — coset membership through a
@@ -14131,10 +14146,17 @@ only `d ≥ 1`).  The stick is re-derived and *layered* exhaustively
 (`--bound`): of the 1608 minority maps within 2 deviations of W3's 8
 perfect matchings, **12 are parity-consistent — and all of their
 c-solutions fail the odd-branch balance rider**; none reaches an
-admissible colouring.  So the W3 stick lives in the **balance layer**,
-between parity and admissibility.  A fully-good colouring is exhibited
+admissible colouring.  So the balance rider is what kills every
+parity-consistent map at `d ≤ 2`.  A fully-good colouring is exhibited
 at `d = 3` (rank-certified, both blocks, both matrices; 1 rank test),
-so `d_par(W3) ≤ 2 < d_adm(W3) = d_fg(W3) = 3`.  Witness consistency:
+so `d_par(W3) ≤ 2 < d_adm(W3) = d_fg(W3) = 3`.  *(Corrected by GADM,
+Step G56: `d_par(W3) = 2` **exactly** — no parity-consistent map
+exists at `d = 1` — so the stick **splits**: one shift-metric unit
+above the floor (`d_par − ⌈φ*/2⌉ = 1`) plus one balance unit
+(`d_adm − d_par = 1`).  "The stick is the balance layer's" and "W3
+costs 2 in the balance layer" were both wrong readings of the same
+data — GDEV's own recorded `d_par ≤ 2 < d_adm = 3` already forced a
+balance share ≤ 1.)*  Witness consistency:
 `φ* = 2` at W3M/W4/W5 (floor 1 ≤ the measured `d = 2`); ladders:
 `φ(CL_m) = 0` at even `m` (bipartite — the rung rule's freeness) and
 `2` at odd `m` (the parity floor restates (GR-37)(ii)'s parity limit
@@ -14155,7 +14177,10 @@ Three separate findings, all measured: the floor's Hamming relaxation
 is loose by ≤ 1 on the pool (the exact parity layer is a *shift
 metric*: adjacent-pair moves, one per hub — NK(2) below shows the gap
 is real, `d_par = 2` against floor 1); the balance layer costs 0 or 2
-(the `2` is a pool-resident W3-precursor; W3 itself costs 2 there);
+on this subsample (the `2` is a pool-resident W3-precursor; W3 itself
+costs **1** there — `d_par(W3) = 2`, `d_adm = 3`, corrected by GADM
+*Step G56*, so the balance gaps measured across everything probed are
+`{0, 1, 2}`);
 and **fully-goodness never costs a deviation beyond admissibility —
 anywhere measured** (131 pool shapes + W3 + NK(2)).  The deviation
 question is, empirically, an admissibility question about `(G°, ℓ)`
@@ -14283,8 +14308,9 @@ A found seed would have been a SEED, not a flank (E1 clause (i)).
   the three-layer split of the deviation cost (parity / balance /
   fully-good) with **`d_fg = d_adm` at every one of 133 shapes
   measured** — the fully-good layer is free, everywhere probed; the W3
-  stick located in the balance layer (12 parity-consistent maps at
-  `d ≤ 2`, all balance-killed); the (b)-recount of the
+  stick located above the parity floor (12 parity-consistent maps at
+  `d ≤ 2`, all balance-killed; GADM *Step G56* later splits it exactly:
+  1 shift-metric + 1 balance unit); the (b)-recount of the
   binding-capable family (fully-capable-hot hubs 815 → 573 on a fresh
   182-shape subsample).
 - **The surviving route, in one sentence**: the deviation question
@@ -14409,7 +14435,7 @@ everything.)
 | **(GR-42)(iii)** | fully-good existence at NK members | **certified per member run** (rank grade, `m = 2, 6, 8, 10`, i.e. `n_hub ≤ 50`); the all-`m` statement is **measured-shaped, open** (no per-member obstacle known) |
 | **the refutation** | no shape-free deviation bound exists | **REFUTED as posed** — follows from (GR-41) + (GR-42)(i)(ii) alone (proven), with (iii) certifying the members are not flanks |
 | the layer split | `d_fg = d_adm`; balance gap ≤ 2; shift gap ≤ 1 | **measured** (131-shape subsample + W3 + NK(2); no theorem claimed) |
-| the W3 stick | lives in the balance layer | **measured, exhaustively at W3** (12/0/0 layer counts over all 1608 maps) |
+| the W3 stick | lives in the balance layer | **corrected by GADM (*Step G56*)**: the 12/0/0 layer counts (all 1608 maps) stand, but `d_par(W3) = 2` exactly, so the stick SPLITS — 1 shift-metric + 1 balance unit |
 | the (b) recount | fully-capable-hot 815 → 573 | **measured** (fresh 182-shape subsample; binding-capable = necessary-condition family, qualified) |
 | the hunt | no realized fully-hot seed among armed candidates | **measured** (caps disclosed; not an impossibility claim) |
 | **the GDEV target** | the bounded-deviation selection theorem | **REFUTED AS POSED**; successor named (the growth-law / `d_fg = d_adm` re-anchoring); never read without the riders |
@@ -14438,6 +14464,406 @@ within `< m/2` deviations of a perfect matching** — impossible by
 *(v)* **A realized-binding fully-hot hub** from the corner-armed
 family past this pass's caps — a SEED for the CSP test, not a flank.
 
+
+---
+
+### Steps G53–G57 (2026-08-17, direction GADM) — experiment 1 lands OUTCOME 3 with `d_par` above the floor: the **shift-metric layer is UNBOUNDED** ((GR-43), the odd-cycle-packing floor `d ≥ m` at the necklaces, proven — so the growth law's bounded-correction reading dies), while the **`d_fg = d_adm` law (a′) SURVIVES its first large-`d` test** — `d_par = d_adm = d_fg = m` **exactly**, rank-certified at the optimum, at all four NK members up to `n_hub = 50`; ledger **entry 5 settles as a SEPARATE OPEN STATEMENT** ((GR-37)(iii)'s recorded proof covers only the cut-space class — its statement's "balance rider alike" clause is undelivered); the balance layer measures `≤ 2` everywhere probed including the odd-richest stratum, with a record correction: **W3's balance gap is 1, not 2** — (GR-15) stays **OPEN**, no gap-map status moves
+
+Answering `notes/Pencil-fanout.md` §"Twelfth direction — GADM": attack
+**(a′)** the `d_fg = d_adm` law (primary) and **(b′)** the balance-layer
+bound (secondary), tested first at the pentagon necklaces `NK(m)` of
+(GR-42) — the only known large-`d` regime, where the 133/133 figure (131
+seeded pool subsample + W3 + NK(2), all at `d ≤ 3`, not exhaustive) had
+never been tested.  Read against *Steps G48–G52* ((GR-40)–(GR-42)),
+*Steps G43–G47* ((GR-36)–(GR-39)), and the *Shared dictionary*'s (SD-6).
+
+**Step 0 pin (mandatory, discharged before any derivation).**  (GR-41) in
+full — the coset `Φ = τ + Cut(G°)`, `τ = [ℓ even]`; `wt(μ) ≡ n_hub
+(mod 2)`; `μ(M) = 0` at every perfect matching; `dist ≥ wt(μ)/2 ≥ φ*/2`;
+and the two recorded loosenesses (the floor is a Hamming relaxation of a
+shift metric, loose by ≤ 1 on the pool, NK(2) real at `d_par = 2` vs
+floor 1).  (GR-37) in full — the (c, m) model with the odd-branch balance
+rider, the cut-space obstruction, the exactly-two-solutions count at
+fixed `m`, and reachability with its caveat.  (GR-42) — the family, the
+cyclic-4-ec habitat lemma with its F13 prism witness, `φ(NK(m)) ≥ m` with
+`φ = φ* = m` exactly at `m ≡ 2 (mod 4)` and the exact `φ` OPEN in
+`[m, 3m/2]` at `m ≡ 0 (mod 4)`, per-member rank certification up to
+`n_hub = 50`.  (GR-40)/(GR-36) — both charges, both blocks, `max` not
+sum (816 sum violations), (GR-36)'s honest W5 boundary.  (GR-38) —
+laminarity at `n_hub ≤ 6` ONLY.  The 133-shape figure's provenance as
+above.  (GR-4′)'s proven-case boundary — covers no habitat block.
+
+---
+
+### Step G53 — ledger entry 5 settled as a reading: per-shape admissibility is NOT a (GR-37)(iii) corollary — it is a separate open statement, vacuous at all-even shapes and confined to ≤ 6 branches elsewhere
+
+**The question the spec pins first**: does (GR-37)(iii)'s reachability
+clause (*"every obstruction class — parity and the balance rider alike —
+is reachable by finitely many deviations"*) already prove `d_adm < ∞` at
+every habitat shape?
+
+**Answer: NO — the clause's recorded proof does not deliver its own
+statement's balance half.**  The proof as landed (*Step G44*) is: the
+pair-shift graph is connected, telescoping gives every `e_x + e_y`, and
+evens + cuts = everything.  Every object in that argument lives in
+`GF(2)^{E(G°)}/Cut(G°)` — it moves the class of the right-hand side
+`t(m) = τ + μ(m)`, i.e. it addresses exactly the **parity** obstruction.
+The **balance rider** is not a function of that class: at a fixed
+parity-consistent `m` the branch system has exactly two solutions
+(`c`, `c̄`) ((GR-37)(ii)), the odd-branch majority counts `(a, b)` swap
+under `c ↔ c̄`, and balance (`a = b`) is decided by `m` — a quantity the
+class-level span argument never touches.  Reading "the balance rider is
+reachable" as *proven* reduces, on inspection, to "any admissible
+minority map — if one exists — is finitely many deviations from any
+matching", which *consumes* existence rather than proving it.  This is a
+**statement-stronger-than-its-proof flag on (GR-37)(iii) as recorded**:
+the parity half is what the span argument supports; the "balance rider
+alike" clause should be read as unproven prose.
+
+*(One further bookkeeping caveat, flagged for whoever transcribes
+(GR-37)(iii): even the parity half needs the ≤-one-move-per-hub
+accounting done explicitly.  A cleaner route the draft verified as far
+as it goes: mod `Cut`, the star relation at hub `v` gives
+`e_{M(v)} + e_β ≡ e_γ` (γ = the third branch at `v`), so a deviating hub
+contributes `e_x` for either non-matching branch `x` at `v`; every class
+has a representative avoiding `M` (a cycle-space vector supported inside
+a matching is zero), leaving a system-of-distinct-representatives step
+(one end hub per representative branch) that is Hall-shaped and not
+discharged here.  Measured, `d_par < ∞` at every shape ever probed.)*
+
+**What entry 5 reduces to.**  (i) At **all-even shapes** (no odd
+branches — in particular every `NK(m)`) the balance rider is **vacuous**:
+admissible = parity-consistent, so `d_adm = d_par` and entry 5 holds
+there outright.  (ii) In general the excess law `Σ_β(ℓ_β − 2) = 6`
+((GR-21)) forces **≤ 6 odd branches at every habitat shape** (each odd
+length `ℓ ∈ {3,5}` costs `ℓ − 2 ≥ 1`), and their number is even
+(`#odd ≡ Σℓ ≡ 6 + 3n ≡ n ≡ 0 (mod 2)`).  So entry 5 is exactly: *a
+parity-consistent minority map with balanced majorities on a fixed set of
+≤ 6 odd branches exists* — a bounded-defect condition, not a growing one.
+Asserted at 72 sampled pool shapes (`--balance`).
+
+**Consequences for the TERMINATION test**: a HIT on (a′) does **NOT**
+fire E3 — entry 5 stays the named successor consuming input.  **Entry 5
+status: OPEN** (measured true everywhere probed; vacuously true on the
+all-even stratum; the balance half is the entire content).
+
+---
+
+### Step G54 — (GR-43): the odd-cycle-packing shift floor — the deviation count is bounded below by a *vertex-disjoint cycle packing*, and at the necklaces it DOUBLES the (GR-41) floor
+
+> **(GR-43)** *(proven; the accounting audited per constructed witness
+> and DP-confirmed at NK(2)/NK(6)/NK(8), `--nk`)*  Let `G°` be a habitat
+> hub multigraph and `C_1, …, C_m` **vertex-disjoint cycles** of `G°`
+> such that `|{β ∈ C_i : ℓ_β even}|` is **odd** for every `i`.  Then
+> every parity-consistent minority map — a fortiori every admissible
+> colouring — has deviation distance **≥ m** from **every** perfect
+> matching of `G°`:
+> > `d_par(shape) ≥ m = the packing number`.
+>
+> At `NK(m)` (and at any all-even-pentagon variant) the `m` pentagons
+> are such a packing, so `d(NK(m)) ≥ m` — **twice** the (GR-41) floor
+> `⌈φ*/2⌉ = m/2` at `m ≡ 2 (mod 4)`.
+
+*Proof.*  (1) For `μ ∈ Φ = τ + Cut(G°)`: cuts meet cycles evenly, so
+`|μ ∩ C_i| ≡ |τ ∩ C_i| ≡ 1 (mod 2)`.  (2) Anchored at a perfect matching
+`M`, `μ(M) = 0` ((GR-37)(ii)'s cancellation), so
+`μ(m) = Σ_{v ∈ D} (e_{M(v)} + e_{β(m(v))})` — one move per deviating
+hub, both flipped branches incident to that hub.  (3) A branch of `C_i`
+is incident only to `C_i`'s hubs, and the `C_i` are vertex-disjoint, so
+a move at `v` flips `C_i`-branches only for the (at most one) `i` with
+`v ∈ C_i`, and it flips 0, 1 or 2 of them.  Two-flips contribute 0
+(mod 2) to `|μ ∩ C_i|`; hence the number of moves at `C_i`-hubs flipping
+**exactly one** `C_i`-branch is `≡ |μ ∩ C_i| ≡ 1 (mod 2)`, so ≥ 1.
+These move sets are disjoint across `i`, so `|D| ≥ m`.  ∎
+
+**Why this is a shift-metric statement.**  (GR-41)'s floor `wt(μ)/2` is
+the Hamming price of `μ`: each move flips ≤ 2 branches.  (GR-43) prices
+the same moves **cycle-locally**: inside a packed cycle a move can pay
+its 2 flips only into ONE cycle, and a cycle needing odd change cannot
+be paid in 2-flip coins.  At `NK(m)` the minimum-weight coset element
+has weight `m` spread one-per-pentagon, so Hamming charges `m/2` while
+the packing charges `m` — the gap the pool measured as "loose by ≤ 1"
+is, in the large-`d` regime, **half the whole answer**.
+
+**What dies with it.**  *Step G52*'s growth-law form
+`d_fg = d_adm ≤ ⌈φ*/2⌉ + c_shift + c_balance` **with `c_shift` bounded**
+(measured ≤ 1 on the pool) is **REFUTED**: `c_shift(NK(m)) ≥ m − ⌈φ*/2⌉
+≥ m/4 → ∞`.  The floor's proven-exact-from-below term `⌈φ*/2⌉` is *not*
+the dominant term of `d_adm` — the shift metric is.  The (a′) law itself
+is untouched (below, it *survives*); what dies is only the reading in
+which the parity floor plus bounded corrections computes `d_adm`.
+
+**Tightness at the necklaces.**  `d = m` is attained: for every member
+run there is a perfect matching `M` and a size-`m` deviation set — one
+moving hub per pentagon at a shared "pairing" external branch, external
+flips cancelling in pairs, `μ` = one pentagon branch per pentagon, `μ`
+verified in `Φ` — that is parity-consistent (`--nk`, the paired search).
+DP over the cycle-syndrome space (exact per matching, dims 6/16/21)
+confirms the minimum at the construction's matching is exactly `m` at
+NK(2)/NK(6)/NK(8); at NK(10) (dim 26, past budget) the exact value
+stands on the proven lower bound + the constructed witness.  So, balance
+being vacuous at all-even shapes (Step G53):
+> `d_par(NK(m)) = d_adm(NK(m)) = m` **exactly**, for `m = 2, 6, 8, 10`.
+
+*(Whether `d_par` **equals** the maximum vertex-disjoint odd-τ-parity
+cycle packing in general is deliberately left as a question, not a
+claim: it is min-max-shaped, and (GR-13) is the standing caution about
+Edmonds-type readings in this arc.  The lower bound is proven; equality
+is measured only at the necklaces.)*
+
+---
+
+### Step G55 — experiment 1's verdict: OUTCOME 3 with `d_par` above the floor — and the (a′) law SURVIVES its first large-`d` test, rank-certified at the optimum at every member
+
+The spec's three-outcome experiment, run first (`--nk`):
+
+| member | `n_hub` | floor `⌈φ*/2⌉` | `d_par = d_adm` (exact) | `d_fg` |
+|---|---|---|---|---|
+| NK(2)  | 10 | 1 (exact, `2^10`) | 2 | **2** (rank; agrees with GDEV's exact 2/2/2) |
+| NK(6)  | 30 | 3 (`φ* = m`, (GR-42)(ii)) | 6 | **6** (rank at the optimum) |
+| NK(8)  | 40 | in [4, 6] (`φ*` OPEN in [8, 12]) | 8 | **8** (rank at the optimum, 19 tests) |
+| NK(10) | 50 | 5 (`φ* = m`) | 10 | **10** (rank at the optimum, 55 tests, cap 60) |
+
+- **Outcome 3 holds, in its `d_par`-above-the-floor branch**: the whole
+  stack sits at `d = m`, strictly above the floor, excess `≥ m/4`
+  growing.  `d_par` is *measured* (DP-exact at NK(2)/NK(6)/NK(8);
+  bounded exactly by (GR-43) + construction at NK(10)), not inferred,
+  and it equals `d_adm` because balance is vacuous — the excess is the
+  **shift-metric layer**, exactly the case the spec routes to *"sharpen
+  (GR-41)'s Hamming relaxation to the true shift metric"*.  (GR-43) is
+  the first instalment of that sharpening.
+- **The (a′) law holds at all four members**: at each, an
+  admissibility-**optimal** witness (deviation count exactly `m`)
+  carries a **rank-certified fully-good colouring** (both blocks, both
+  matrices, README §4 convention 2; caps: 12 optimal witnesses per
+  member, 60 at NK(10); rank tests used 1/1/19/55).  This is the first
+  test of the 133/133 regularity outside `d ≤ 3`, at deviation counts
+  up to 10, and it did not break.  E1 clause (iv)'s dichotomy: nothing
+  here found `d_adm < d_fg` (finite or otherwise); every `d_fg` above
+  is a certified equality, not an exhausted cap.
+
+**The (a′) census (`--free`) — where the exchange freedom lives.**  New
+measurement, not in GDEV's data: group the *optimal* admissible
+solutions (all matchings × all optimal deviation sets × both
+`c`-solutions) by their coset element `μ`.
+
+- Fresh 108-shape seeded pool subsample (rate 0.02, this driver's own
+  seed): **all 108 have `d_fg = d_adm`** (the law's measured support now
+  spans this fresh subsample + the four NK members + W3/W5/CL5/CL6).
+- At **107 of 108** shapes, **every optimal μ-class carries a fully-good
+  realization**: the freedom the (a′) proof needs lives *inside the
+  fiber of a fixed μ* — vary the deviation set (equivalently the
+  minority-dart positions) at fixed majority classes `c`.
+- At **1 pool shape** and at **W3** (27/34 optimal μ-classes fully-good
+  vs 34) some optimal μ-class carries **none**: there the fixed-μ
+  exchange is provably insufficient and the proof must also move μ (or
+  the matching).  **This is the named sticking case**: *a fixed-μ
+  fiber-exchange argument cannot prove (a′) alone; the argument needs a
+  second exchange axis across optimal μ-classes.*  (Consistent with the
+  spec's own caution: at fixed `m` the `c`-extension has no freedom —
+  and this measurement shows even the full fixed-μ fiber is sometimes
+  dead.)
+- Worst fully-good fraction among optima: 4/12 (shape recorded in the
+  driver output).  **Binding profile of the failing optima**: every
+  binding chunk at a failing optimum has **defect exactly 2** in its
+  bad block — never 0 or 1 (histogram over (min defect, #branches,
+  #interiors): all keys at min defect 2).  At the admissibility optimum
+  the colouring is never *deeply* bad; the (a′) repair only ever has to
+  buy one defect unit.  A proof-shaped restatement: *(a′) ⟺ at some
+  optimum, no chunk sits at defect ≤ 2 — and the measured failures are
+  all at the boundary defect 2.*
+
+**(a′) status: OPEN — measured true everywhere probed, now including
+the large-`d` regime; not proven.**  The honest MISS statement: the two
+landed charges ((GR-36)/(GR-40)) price binding from below
+colouring-freely, but converting them into "some optimal deviation set
+avoids all defect-≤ 2 chunks" needs a counting/exchange step over the
+optimal μ-classes jointly, and the census shows single-μ exchange does
+not suffice at W3-type shapes.
+
+---
+
+### Step G56 — (b′): the balance layer is structurally confined to ≤ 6 branches, measures ≤ 2 everywhere probed including the odd-richest stratum — and the record's "W3 costs 2" is corrected to **gap 1**
+
+- **The odd-branch cap (proven, elementary).**  Step G53(ii): every
+  habitat shape has ≤ 6 odd branches, an even number of them.  So the
+  balance rider's *imbalance* is ≤ 6 (≤ 3 repair units) at any shape —
+  the balance layer cannot grow through the imbalance itself; the only
+  way (b′) fails is a growing **repair cost per unit**, i.e. shapes
+  where re-balancing forces extra parity-consistent deviations.
+- **W3, layered exactly (`--balance`, all 8 matchings, exact):**
+  `d_par(W3) = 2`, `d_adm = d_fg = 3` — **the W3 balance gap is 1, not
+  2**.  *Step G49*'s prose ("W3 itself costs 2 there") is corrected:
+  W3's stack is floor 1 → shift +1 → balance +1.  The pool's single
+  `d_adm − d_par = 2` resident stands untouched; the measured balance
+  gaps are now `{0, 1, 2}` (so the gap is not parity-forced to be
+  even — the pool histogram's `{0, 2}` was a small-sample artifact).
+- **The odd-rich necklaces `NKo(m)`** (same graphs as NK(m), the
+  excess-6 moved onto odd branches — six `ℓ3` links at `m ≥ 6`; four
+  `ℓ3` links + the `ℓ4` chord at `m = 2` — pentagons kept all-even so
+  (GR-43) still applies; habitat by the (GR-42) lemma, machine-checked):
+  `NKo(2)`: exact `d_par = d_adm = d_fg = 2`, balance gap **0**.
+  `NKo(6)` (`n_hub = 30`, 6 odd branches — the first balance
+  measurement at a large member): `d_par(M) = 6` (DP-exact at one
+  constructed matching; ≥ 6 proven for every matching), and the first
+  sampled optimal witness is already **balanced, admissible, and
+  rank-certified fully good** — balance gap 0 and `d_fg = 6` at this
+  matching.
+- **The odd-6 pool hunt** (the odd-richest habitat stratum, 12 sampled
+  shapes, exact over all matchings at `dmax 4`): balance gap **0 at all
+  12**.
+- **No growing gap found anywhere** (a measured negative at the
+  disclosed caps, not a proof).  **(b′) status: OPEN as a theorem;
+  supported, sharpened** — the true conjecture the data now suggests is
+  `d_adm − d_par ≤ 2` with the constant coming from one repair unit of
+  the ≤ 6-branch global count condition, and the odd-rich stratum shows
+  no sign of a growing repair cost.
+
+---
+
+### Step G57 — where this leaves the target and the (GR-15) line (hand-off)
+
+- **The route ledger** (coordinator updates on landing):
+  **Entry 1** (uniform fully-good existence at `Λ = ∅` `D = 0`,
+  growth-law re-anchoring) — **open**; (a′) **survives its sharpest
+  test** (rank-certified at the optimum up to `n_hub = 50`) and stays
+  the primary dispatchable attack, now with the sticking case *named*
+  (fixed-μ exchange insufficient at W3-type shapes); (b′) sharpened and
+  supported; (c)/(d′) untouched.  The growth law's
+  **bounded-shift-correction form is REFUTED** ((GR-43)); its surviving
+  content is exactly (a′) + a shift-metric characterization of `d_adm`.
+  **Entry 5** — **OPEN, settled as a separate statement** (Step G53):
+  not a (GR-37)(iii) corollary; vacuous on the all-even stratum;
+  a ≤ 6-branch balance condition elsewhere.  Entries 2–4 unchanged.
+- **TERMINATION check** (coordinator's to run; the draft's reading):
+  **E1 does not fire** — no g-flank; every member measured carries a
+  rank-certified fully-good colouring at its optimum; clause (iv):
+  nothing found `d_adm < d_fg`, no `∞` claim anywhere (all caps
+  disclosed as caps).  **E2 does not fire** — (a′) is neither refuted
+  nor unprovable-as-posed; it survived where it was most likely to die.
+  **E3 does not fire** — nothing here closes entry 1 (and a future (a′)
+  HIT alone would not either, per Step G53).
+- **The thirteenth's natural routing** (per the spec's otherwise-clause,
+  outcome 3 with `d_par` above the floor): **the shift-metric layer** —
+  sharpen (GR-41) to the true shift metric.  (GR-43) is the packing
+  lower bound; the open question is the matching upper structure:
+  whether `d_par` equals the odd-τ-cycle packing number (min-max-shaped;
+  (GR-13) caution), or at least is computed by a polynomial certificate
+  the closure chain can consume.  The (a′) attack itself remains
+  dispatchable with its sticking case now concrete.
+- **Riders, verbatim**: everything lives at **`Λ = ∅`**, **`D = 0`**,
+  **modulo (GR-4′)** where a closure chain is concerned; the `Λ ≠ ∅`
+  closed-form analogue stays **unswept**; the `D > 0` lift stays
+  **unswept**; **none of this closes (GR-15)** — and per Step G53,
+  **(a′) alone would not close the existence target while entry 5 is
+  open**.  (GR-15) stays OPEN, unchanged in both directions; **no
+  gap-map status moves**.
+
+---
+
+### Verification (Steps G53–G57)
+
+`notes/scripts/w4/gadm.py` (**new with this pass**; imports —
+all read-only — `gdev` (`nk_specs`, `habitat_by_lemma`, `light_hm`,
+`phi_of`, `mu_of`, `in_coset`, `fundamental_cycles`, `min_dev`,
+`even_vec`), `gorient` (`cm_solve`, `cm_colouring`, `odd_balance`,
+`perfect_matchings`, `m_of_matching`, `prep_shape`, `fully_good_scan`,
+`fast_defects`, `darts_at`), `gexist` (`fully_good_rank`,
+`ladder_specs`), `gcap` (`branch_stats`, `pool_specs`), `cflank`
+(`admissible`, `cubic_habitat`), `gunif` (`WITNESSES`), `gridcol`
+(`subdivide`), `kbare_common.verts_of`; rank enters only through
+`gexist.fully_good_rank` — README §4 convention 2).  Local devices, none
+shadowing a §1 primitive: `cycle_masks`/`dp_pref`/`dp_walk` (the exact
+per-matching deviation DP over the cycle-syndrome space — the landed
+`gdev.min_dev` enumerates deviation sets and is infeasible past the
+pool), `mu_in_phi` (2-colouring coset test, cross-checked against
+`in_coset`), `pentagon_floor_audit` ((GR-43)'s accounting per witness,
+with the `μ(M) = 0` anchor gate), `complete_matching` (explicit perfect
+matchings — `perfect_matchings` is never called at `n_hub ≥ 30`),
+`nk_d_eq_m_witness`/`nk_d_eq_m_random` (the `d = m` constructions),
+`nko_specs`, `opt_census`.  Exact integers throughout; rngs seeded per
+mode, seeds printed; no `set` printed; nothing samples a placement
+(§(K-clos) (AC-9)).  No pool is new: the two pool legs subsample
+`gcap.pool_specs` behind the `cflank.cubic_habitat` gate at this
+driver's own seed (fresh subsamples, disclosed as such); NK/NKo members
+are targeted constructions.
+
+```
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gadm.py --nk        # ~15 s  experiment 1: (GR-43) audited; d=m witnesses; DP-exact; rank at the optimum
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gadm.py --free      #  ~4 s  the (a') census: W3/CL5/CL6/NK(2) exhaustive, W5 rank-light, 108-shape fresh pool
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gadm.py --balance   #  ~5 s  (b'): odd-branch cap; W3 layered; NKo(2)/NKo(6); the odd-6 hunt
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gadm.py --adv       #  ~1 s  six controls, each must-fire/-reject
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gadm.py --validate  # ~25 s  all four in one process (inside the 600 s budget)
+```
+
+**Which driver mode tests which sentence (F11).**
+
+| claim | mode | what asserts *that sentence* |
+|---|---|---|
+| (GR-43) accounting, per witness | `--nk` | `pentagon_floor_audit`: pentagons 5-cycles, vertex-disjoint, 2-own+1-external per hub, `μ(M) = 0` gate, per-pentagon b-move parity, `dist = m`, every b-count ≥ 1 |
+| (GR-43) floor vs DP | `--nk`, `--adv` | DP exact min ≥ m asserted at NK(2)/NK(6)/NK(8) and NKo(6); DP == `min_dev`'s `d_par` at NK(2) over all 8 matchings |
+| `d_par = d_adm = m` exact | `--nk` | constructed `d = m` witness parity-consistent + admissible; balance asserted vacuous (`odd_balance = (0,0)`); lower bound proven |
+| (a′) at the optimum | `--nk` | fully-good RANK certificates at deviation count exactly `m`, all four members; caps printed (12/12/12/60 witnesses; 1/1/19/55 rank tests) |
+| the (a′) census | `--free` | exhaustive optimal-solution enumeration at W3/CL5/CL6/NK(2) + 108 fresh pool shapes; `d_fg = d_adm` asserted per shape; per-μ availability counted |
+| the sticking case | `--free` | per-μ fully-good counts: 27/34 at W3, 107/108 pool shapes all-μ-good, 1 shape with a dead optimal μ-class; failing-optima defect profile all at defect 2 |
+| the odd-branch cap | `--balance` | `#odd ≤ 6` and even, asserted at 72 sampled pool shapes |
+| W3 balance gap = 1 | `--balance`, `--adv` | exact `min_dev` over all 8 matchings: (2, 3, 3); the gap ≥ 1 must-fire control |
+| NKo / odd-6 gaps | `--balance` | NKo(2) exact (gap 0); NKo(6) DP + walk-sampled balanced witness at +0, rank-certified; 12 odd-6 shapes exact at dmax 4, all gap 0; any gap > 2 asserts a HEADLINE failure |
+| coset test correctness | `--adv` | `mu_in_phi == in_coset` at 2000 random vectors |
+| anchor gate (ranking item 8) | `--adv` | a near-perfect-matching base map with `μ ≠ 0` REJECTED; a doctored non-5-cycle "pentagon" REJECTED |
+| cap discipline (E1 (iv)) | `--adv` | the W3 scan at `dmax 2` returns NOT-FOUND-WITHIN-CAP, never `∞` |
+| entry 5 / (GR-15) / (GR-4′) as statements | — | Step G53 is a reading of the landed proof text; not driver-testable |
+
+**Determinism.**  `--validate` was re-run by the coordinator at
+`PYTHONHASHSEED` 0 and 999 (both exit 0, ~25 s): the outputs differ in
+exactly one line — a `[5s]` vs `[6s]` wall-clock annotation, the
+recorded exception — and in no other byte.
+
+**Scratch probes (README's standing rule).**  None retained: every
+figure above is produced by a committed driver mode.  (Development
+iterations — a first witness search returning one witness instead of a
+list, a first NK(8) rank hunt with too thin a witness cap (2 tests),
+an odd-6 sampling rate of 0.02 raised to 0.08 — changed no mathematics;
+the final driver re-derives everything.)
+
+---
+
+### Confidence verdict (Steps G53–G57)
+
+| | claim | standing |
+|---|---|---|
+| **Step G53** | entry 5 is not a (GR-37)(iii) corollary; (GR-37)(iii)'s balance clause is statement-beyond-proof | **proven-informally as a reading of the landed proof text** (the recorded proof manipulates only `GF(2)^E/Cut`; balance is not a class function) |
+| entry 5 itself | per-shape admissibility | **OPEN**; vacuously true at all-even shapes (proven); confined to ≤ 6 branches (proven); measured true everywhere probed |
+| **(GR-43)** | the odd-cycle-packing floor `d_par ≥ m` against every PM | **proven-informally** (proof above; audited per witness; DP-confirmed at three members) |
+| the necklace stack | `d_par = d_adm = d_fg = m` exactly at NK(2)/6/8/10 | lower bound **proven**; upper **constructed + rank-certified per member** (caps disclosed); `d_adm = d_par` proven (balance vacuous) |
+| the growth law's bounded-shift form | `c_shift ≤ 1`-style corrections | **REFUTED** ((GR-43): `c_shift ≥ m/4 → ∞` at the necklaces) |
+| **(a′)** | `d_fg = d_adm` at every habitat shape | **OPEN — measured true everywhere probed, now including `d = 10`**; sticking case named (fixed-μ exchange insufficient at W3-type shapes); no counterexample |
+| **(b′)** | `d_adm − d_par ≤ 2` | **OPEN — supported**: gaps `{0, 1, 2}` measured (W3 corrected to 1); odd-richest stratum all 0; imbalance structurally ≤ 6 |
+| W3's balance gap | = 1 (record correction to *Step G49*'s "costs 2") | **measured, exact** (all 8 matchings) |
+| **(GR-15)** | | **OPEN — unchanged in both directions.**  No flank; no gap-map status moves; (GR-4′)/(GR-10) untouched |
+
+**Which side of the (`≤3`-closedHubNbhd) line this sits on.**  The same
+side as TCOL's through GDEV's: colourings of fixed graphs and exact
+ranks of constructed configurations, never `PencilNondegFeasible G`; no
+σ-fixed witness is read as generic (§(K-clos) (AC-9)).
+
+### What would change this (Steps G53–G57)
+
+*(i)* **A proof of (a′)** — the census says what it must contain: an
+exchange step that moves *between* optimal μ-classes (fixed-μ freedom is
+measured insufficient at W3-type shapes), and it only ever has to repair
+defect-exactly-2 chunks (no deeper failure was ever measured at an
+optimum).  *(ii)* **A shape with finite `d_adm < d_fg`** — kills the law
+(E2's branch); none exists among everything measured, now including the
+large-`d` regime.  *(iii)* **A `d_fg = ∞` at finite `d_adm`** — a
+g-flank, E1, unconditional; nothing of the kind was seen (every cap
+reported as a cap).  *(iv)* **A shift-metric upper structure** —
+a certificate matching (GR-43)'s packing lower bound would make `d_adm`
+computable and re-arm the growth law in exact form.  *(v)* **A balance
+gap > 2** — refutes (b′); the odd-rich stratum showed none.  *(vi)* **A
+proof of entry 5's balance half** — with (a′) it would close the
+`Λ = ∅` `D = 0` existence target modulo (GR-4′) (and only then would an
+(a′) HIT fire E3).
 
 ## §(K-frame) — the shared chart-to-frame dominance residue: the lemma shape delivered in its honest minimal form, both bad divisors made **combinatorial** at grid points, the **(ANH-14) residue discharged at every enumerated bare-cycle site by a colouring recipe** (1904/1904 + 30 exact certificates), and the (OC-16) residue's non-containment half witnessed **by construction** at θ(3,4,5) — with the strict availability package measured **0/8** and its (AC-9) mechanism named
 

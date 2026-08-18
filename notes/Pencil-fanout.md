@@ -10,14 +10,14 @@ MISS, the route re-anchored on a bounded-deviation selection principle,
 W3 the sticking instance; the ELEVENTH direction (GDEV, §"Eleventh
 direction") LANDED 2026-08-15 — the bounded-deviation form **REFUTED as
 posed** with successors named, the corner charge (GR-40) proven, no
-flank; the TWELFTH direction (GADM, §"Twelfth direction") is **PREPPED
-2026-08-17, not yet dispatched** — the growth-law question at the
-necklace family, attack (a′) (`d_fg = d_adm`) primary and (b′) (the
-balance layer) secondary, and the arc's first **coordinator-authored
-prep commit** — the pick breaks a streak of four recon-delegated ones,
-and CFLANK's and GUNIF's coordinator picks were both written up by
-dispatched sonnet builders, so no earlier prep was the coordinator's
-own (user election, recorded in that section's *Status*).** The
+flank; the TWELFTH direction (GADM, §"Twelfth
+direction") **LANDED 2026-08-17** — experiment 1 lands **outcome 3**:
+the shift-metric layer is **UNBOUNDED** ((GR-43): `d_par = d_adm =
+d_fg = m` **exactly** at the necklaces, rank-certified at the optimum
+up to `n_hub = 50`) and the growth law's bounded-correction reading is
+refuted, while the **(a′) `d_fg = d_adm` law survives its first
+large-`d` test**; ledger entry 5 settled as a separate OPEN statement;
+no flank.** The
 first (A/B/C
 below, prepared 2026-08-05) landed 2026-08-05/06; the second (T/R/M,
 §"Second fan-out") 2026-08-06; the third (G/Q/O, §"Third fan-out")
@@ -56,8 +56,18 @@ parity floor, every member still carrying a rank-certified fully-good
 colouring — a form-refutation, E1 clause (iii), never a flank), the
 corner charge **(GR-40)** lands (sub-deliverable (b), tight at W3M),
 the parity floor **(GR-41)** is proven, the W3 stick is located in the
-**balance layer** (not parity), and `d_fg = d_adm` measures 133/133 —
-(GR-15) stays OPEN, unchanged. CFLANK was a
+**balance layer** (not parity — *since corrected: the twelfth splits it
+1 shift-metric + 1 balance unit*), and `d_fg = d_adm` measures
+133/133 — (GR-15) stays OPEN, unchanged; the twelfth (GADM, §"Twelfth
+direction") 2026-08-17 — **(GR-43)** the odd-cycle-packing shift floor
+is proven (`d_par = d_adm = d_fg = m` **exactly** at NK(2)/6/8/10,
+rank-certified at the optimum): the **shift-metric layer is
+unbounded**, the growth law's bounded-correction reading is
+**refuted**, the **(a′) law survives its first large-`d` test**,
+ledger entry 5 (per-shape admissibility) settles as a **separate OPEN
+statement** ((GR-37)(iii)'s balance clause statement-beyond-proof),
+and (b′) is supported (balance gaps `{0, 1, 2}`; W3's stick corrected
+to a 1 + 1 split) — no g-flank, (GR-15) stays OPEN, unchanged. CFLANK was a
 **single direction**, not a fan-out — its selection was a **coordinator
 delegation** (`notes/Phase39.md` *Current state*, the 2026-08-07 "keep
 going on my own judgment" adjudication), not a user pick from a candidate
@@ -2508,7 +2518,9 @@ E1 clause (iii); never a flank).  **The honest surprise, landed as a
 correction:** `φ*(W3) = 2` — the parity floor does **NOT** explain the
 W3 stick (the prep's working reading); exhaustive layering shows all
 12 parity-consistent maps within 2 deviations die on the **odd-branch
-balance rider** — the W3 stick is the balance layer's.  And the layer
+balance rider** — the W3 stick is the balance layer's *(since
+corrected — the twelfth, below: `d_par(W3) = 2`, so the stick splits
+1 shift-metric + 1 balance unit)*.  And the layer
 split measures **`d_fg = d_adm` at 133/133 shapes**: the deviation
 cost of the selection is entirely about reaching admissibility, never
 about avoiding binding chunks.  The (b)-armed hunt ran (40 000 frames,
@@ -2950,8 +2962,47 @@ narrative, not as a scaffolding block.
 
 ## Twelfth direction — GADM (single direction, prepared 2026-08-17)
 
-**Status: PREPPED, not dispatched.** A **single direction**, not a
-fan-out. §(K-grid) continuation, labels **(GR-43)+** / **Steps G53+**.
+**Status: LANDED 2026-08-17.** A **single direction**, not a fan-out.
+§(K-grid) continuation, **Steps G53–G57**, label **(GR-43)** claimed
+(the tails move to (GR-44)+ / G58+, `notes/Pencil-labels.md`).
+Dispatched **top rung (fable)** the day it was prepped; the return was
+independently verified — the coordinator re-ran `--validate` at
+`PYTHONHASHSEED` 0 and 999 (both exit 0, ~25 s, outputs differing in
+exactly one wall-clock `[Ns]` line), re-derived (GR-43)'s accounting,
+confirmed the (GR-37)(iii) reading against the landed proof text (the
+A↔B swap preserves the balance counts, so balance is not even
+reachable between the two `c`-solutions at fixed μ), and confirmed
+W3's arithmetic was already forced by GDEV's own recorded numbers —
+and **ACCEPTED**.  **The verdict:** experiment 1 (`--nk`, run FIRST)
+lands **OUTCOME 3 in its `d_par`-above-the-floor branch**.  **(GR-43)
+proven** — the odd-cycle-packing shift floor: `m` vertex-disjoint
+cycles, each carrying an odd number of even-length branches, force
+`d_par ≥ m` against **every** perfect matching; constructed optima
+meet it, so `d_par = d_adm = d_fg = m` **exactly** at NK(2)/6/8/10
+(balance vacuous at all-even shapes; fully-good **rank-certified at
+the optimum** at every member, up to `n_hub = 50`).  The
+**shift-metric layer is UNBOUNDED** (excess ≥ m/4), so the growth
+law's bounded-correction reading is **REFUTED** — while the **(a′)
+`d_fg = d_adm` law SURVIVES its first large-`d` test**, plus a fresh
+108-shape pool census (all `d_fg = d_adm`; per-μ availability located:
+the exchange freedom lives in the fixed-μ fiber at 107/108 shapes, but
+W3-type shapes carry optimal μ-classes with **no** fully-good
+realization — the (a′) proof's **named sticking case**; every measured
+failure sits at defect exactly 2).  **Step 0's question settled: entry
+5 is a SEPARATE OPEN STATEMENT** — (GR-37)(iii)'s recorded proof moves
+only `GF(2)^E/Cut` classes and does not deliver its statement's
+"balance rider alike" clause (flagged at the statement site, scoped to
+that clause; the parity half stands) — so **an (a′) HIT would NOT fire
+E3**.  **(b′) supported**: balance gaps `{0, 1, 2}` everywhere probed,
+including the first odd-rich large-member measurements (NKo(6) gap 0;
+12 odd-6 pool shapes all 0), with the record correction that **W3's
+stick splits 1 shift-metric + 1 balance unit** (`d_par(W3) = 2`; Step
+G49's "costs 2 in the balance layer" and "the whole stick is the
+balance layer's" are both corrected in place).  **No g-flank; (GR-15)
+stays OPEN, unchanged; no gap-map status moves.**  The TERMINATION
+check on this landing is recorded below the route ledger.  The
+mathematics: workbook §(K-grid) *Steps G53–G57*; driver `w4/gadm.py`
+(rows in `notes/scripts/README.md` §3).
 The eleventh landing's otherwise-clause routes the twelfth to *"the
 growth-law question at the necklace family"*, and this prep takes that
 routing literally: the direction attacks ledger entry 1's re-anchored
@@ -3249,6 +3300,15 @@ landing:
    attacks** ((a′)/(b′)/(c)/(d′)); the bounded-deviation *form* is
    **refuted** ((GR-42)). **THIS DIRECTION** takes **(a′) primary,
    (b′) secondary**; (c) and (d′) stay named and unclaimed.
+   **Status at the GADM landing: still
+   open-with-named-dispatchable-attacks** — (a′) SURVIVED its sharpest
+   test (rank-certified at the optimum in the large-`d` regime) and
+   stays primary, its sticking case now named (fixed-μ fiber exchange
+   is measurably insufficient at W3-type shapes); (b′) supported
+   (gaps `{0, 1, 2}`, no growth found); (c)/(d′) still named and
+   unclaimed.  The growth law's bounded-shift-correction READING is
+   refuted ((GR-43)); the surviving quantitative half is the exact
+   shift-metric characterization of `d_par`.
 2. **(GR-4′)** — open; proven cases exclude every habitat block; the
    natural next proof target on a HIT.
 3. **The `Λ ≠ ∅` closed-form analogue** — unswept.
@@ -3259,7 +3319,14 @@ landing:
    **fully-good** existence, this is about **admissible** existence.
    Status **UNDETERMINED at prep**; Step 0's first item settles
    whether it is already a (GR-37)(iii) corollary or an open
-   statement. A consumed input hidden inside another entry is exactly
+   statement.  **Status at the GADM landing: SETTLED as a SEPARATE
+   OPEN STATEMENT** (Step G53) — NOT a (GR-37)(iii) corollary: that
+   statement's "balance rider alike" clause is statement-beyond-proof
+   (the recorded span argument moves only `GF(2)^E/Cut` classes;
+   flagged at the statement site, scoped to that clause).  Vacuously
+   true at all-even shapes; elsewhere a ≤ 6-odd-branch balance
+   condition.  So an (a′) HIT does not fire E3, and entry 5 is the
+   named successor consuming input. A consumed input hidden inside another entry is exactly
    the deferred-obligation shape `CLAUDE.md`'s per-commit checklist
    bans ("wiring is not a deferral category").
 
@@ -3337,6 +3404,25 @@ Otherwise dispatch the thirteenth per what the landing names:
 
 The ledger-not-artifacts lesson stands: E1–E3 are stated over the
 ledger and entry 1's status, **never** over how many theorems landed.
+
+**TERMINATION check at the GADM landing (2026-08-17,
+coordinator-verified).**  **E1 NO** — no g-flank; every member
+measured carries a rank-certified fully-good colouring at its optimum;
+clause (iv) applied explicitly: nothing found `d_adm < d_fg`, finite
+or infinite — every `d_fg` reported is a certified equality or a
+disclosed cap, and no `∞` was claimed anywhere.  **E2 NO** — (a′) is
+neither refuted nor unprovable-as-posed: it survived the large-`d`
+test (what died is the growth law's bounded-correction READING,
+(GR-43)), and the updated ledger keeps entry 1
+open-with-named-dispatchable-attacks.  **E3 NO** — nothing closes
+entry 1, and per entry 5's settlement a bare (a′) HIT would not
+either.  Per the otherwise-clause's outcome-3 branch, **the THIRTEENTH
+routes to the shift-metric layer** — sharpen (GR-41)'s Hamming
+relaxation to the true shift metric: (GR-43) is the packing lower
+bound; the open half is whether `d_par` *equals* the packing number
+(min-max-shaped; the (GR-13) caution binds) or at least admits a
+polynomial certificate — with (a′) still dispatchable at its
+now-concrete sticking case.
 
 ### The ranking record (coordinator-authored, NOT an independent recon verdict)
 
