@@ -18,12 +18,22 @@ up to `n_hub = 50`) and the growth law's bounded-correction reading is
 refuted, while the **(a′) `d_fg = d_adm` law survives its first
 large-`d` test**; ledger entry 5 settled as a separate OPEN statement;
 no flank; the THIRTEENTH direction (GPSA, §"Thirteenth direction")
-**PREPPED 2026-08-18, not yet dispatched** — target: **route-ledger
-entry 5** (per-shape admissibility, BOTH halves — the Hall/SDR parity
-step and the ≤ 6-odd-branch balance rider), **(b′)** the secondary;
-the pick was re-delegated to a **top-rung fable recon** (the fifth use
-of the 2026-08-12 shape) whose verified verdict **OVERRODE** GADM's
-shift-metric routing clause.** The
+**LANDED 2026-08-18** — **route-ledger entry 5** attacked in BOTH
+halves: half 1 (Hall/SDR parity) **PROVEN** ((GR-44): the SDR step
+automatic, `d_par(M) = w_M` exact), half 2 (balance)
+**TRUE-MODULO-NAMED-GAP** ((GR-45)'s cut-move calculus reduces it to a
+descent lemma, open exactly at a named stuck case) — entry 5 **NOT a
+HIT**, E3 not armed, no flank; the pick was re-delegated to a
+**top-rung fable recon** (the fifth use of the 2026-08-12 shape) whose
+verified verdict **OVERRODE** GADM's shift-metric routing clause; the
+FOURTEENTH direction (GDESC, §"Fourteenth direction") **PREPPED
+2026-08-18, not yet dispatched** — target: **the entry-5 descent
+lemma's STUCK CASE** (every majority-side odd branch dart-blocked; a
+finite local case analysis over ≤ 6 odd branches with the T1/T2 escape
+catalogue), **(b′)** the secondary; the routing was **fixed by GPSA's
+landed otherwise-clause**, so no new selection was made, and the prep
+itself was authored at **opus** by user adjudication to conserve the
+top-rung budget for the dispatch.** The
 first (A/B/C
 below, prepared 2026-08-05) landed 2026-08-05/06; the second (T/R/M,
 §"Second fan-out") 2026-08-06; the third (G/Q/O, §"Third fan-out")
@@ -374,7 +384,12 @@ whether it can be pursued under the standing adjudications.
    at the top of that section — **re-aim it, never delete it**;
    **(iii)** *Current state*'s (K)-arc paragraph — the dispatch count,
    the strategy-pass count, the date range; **(iv)** the ROADMAP Status
-   cell (thin: marker + one clause). Three consecutive landings each
+   cell (thin: marker + one clause); **(v)** **this file's own top
+   `**Status:**` header** — the per-direction roll call, added at the
+   fourteenth's prep (2026-08-18) after GPSA's landing updated its
+   section's Status to LANDED and left the header still calling the
+   same direction "PREPPED … not yet dispatched", the fifth instance of
+   the shape and the first in *this* file. Three consecutive landings each
    missed a *different* one — GEXIST the ROADMAP cell, GORIENT the
    Hand-off slot (deleted with the prep text it replaced), GDEV the
    Status header — each caught only in coordinator verification, each
@@ -4180,3 +4195,637 @@ retained deviated form — and records **both halves'** resolutions
 (Hall/SDR; balance) as ledger statuses, not as prose only. Outcome
 recorded in the phase note's *Hand-off* as narrative, not as a
 scaffolding block.
+
+## Fourteenth direction — GDESC (single direction, prepared 2026-08-18)
+
+**Status: PREPPED 2026-08-18, not yet dispatched.** A **single
+direction**, not a fan-out. §(K-grid) continuation, **Steps G63+**,
+labels **(GR-46)+** (§(K-grid)'s live unclaimed tails, reserved at this
+prep — `notes/Pencil-labels.md`). Target: **the entry-5 descent
+lemma's STUCK CASE** — the one open piece of route-ledger entry 5's
+balance half, named precisely by GPSA's landing (*Step G60*) — with
+**(b′)** riding again as the secondary. **Rung for the dispatch: top
+(fable)** — it is a crux proof attempt (see *Rung* below). The
+mathematics this direction extends: workbook §(K-grid) *Steps
+G58–G62*; the driver it builds on, `w4/gpsa.py` (rows in
+`notes/scripts/README.md` §3).
+
+**Selection provenance — no new selection was made, and none was
+needed.** GPSA's landed TERMINATION check routes the fourteenth
+deterministically through its own otherwise-clause: *"entry 5 stuck
+with a named blocking configuration → that configuration"* (§"Thirteenth
+direction", *The route ledger and the TERMINATION test*, verified
+against the landed text). The stuck branch was **instantiated by the
+landing itself** — *Step G60* names the blocking configuration, exhibits
+its 148-instance census, and reports every instance rescued — so the
+routing is a fact about landed mathematics, not a pre-landing guess.
+**This is the structural difference from the routing clause GPSA
+overrode**, and it is recorded here because the override is one landing
+old: GADM's clause was written at *prep*, mechanically, before the
+target it routed to existed; GPSA's stuck branch fires on a
+configuration its own landing constructed. The override's grounds
+(clause (i): the clause predates the landing that created the target)
+do not apply. **The primary was therefore NOT competitively ranked** —
+see *The ranking record*, which ranks the secondaries and the
+alternatives only, and states that limitation plainly.
+
+**Prep authorship — a recorded down-substitution.** This spec was
+authored at the **opus** rung by **explicit user adjudication** at the
+2026-08-18 session check-in, against a target the playbook maps to the
+top rung. The reason is budget, not scope: weekly_scoped sat at 83% and
+the **direction's own research dispatch is the spend worth protecting**,
+so fable is conserved for it. The deviation is logged
+(`notes/dispatch-log.md`, 2026-08-18 row). What it costs, disclosed the
+way the twelfth's coordinator-authored prep disclosed its own: this prep
+had no independent top-rung reader of its *ranking*, and a future
+top-rung recon may overturn any bar below freely. What it does **not**
+cost: the primary is fixed by the landed otherwise-clause, so the usual
+risk of an under-ranked prep (picking the wrong target) is not in play
+here.
+
+**Direction code GDESC** (the **DESC**ent lemma — the statement this
+direction closes, not the case it is stuck at), minted under clause
+**(L5)**. Verified **0-hit as a raw substring**, case-insensitively,
+across `*.md`/`*.tex`/`*.lean`/`*.py`/`*.m2` at this prep — as is the
+driver basename `gdesc` (controls: `gpsa` hits 7 files and `gadm` 9, so
+the grep was live). **`GDART` was checked and REJECTED for a hit** —
+it sits in §"Eighth direction"'s code-minting paragraph, the GUNIF
+prep's own checked-but-not-used list — a **bookkeeping** hit, like
+`GBAL`'s one prep ago, not a semantic one, and the second time clause (L5)'s
+"re-grep at prep" has fired on this arc's own records. Checked 0-hit
+and **not chosen**, recorded so they stay checkable without a re-run:
+`GSTUCK` (names the residual *case* rather than the theorem — and a
+code naming the obstruction reads as a MISS forecast; the deliverable
+is the lemma), `GESC`/`GESCAPE` (name the *method*, the escape
+catalogue — the `GSEL` rejection reason, twice applied), `GBLOCK`,
+`GDROP`, `GTRAP`, `GDESCENT` (redundant). GPSA-prep's
+checked-not-chosen list (`GODD`/`GADMIS`/`GBALANCE`) was **not**
+re-used: the deliverable changed, and those checks are a landing old.
+
+### The letter scheme — where this target sits
+
+The primed letters keep their §"Eleventh direction" meanings. **(a′)**
+(the `d_fg = d_adm` law) is deliberately **not** attempted here — it is
+the named **fifteenth** on a HIT, with **E3 then armed** (the
+TERMINATION test below). **(b′)** (the balance-layer bound) enters as
+the **secondary**, its third consecutive appearance in that role. The
+target itself is not a primed letter: it is the residual case of the
+**descent lemma** stated at *Step G60*, whose closure completes
+**route-ledger entry 5**.
+
+### The target — the descent lemma's stuck case, (b′) the secondary
+
+> **PRIMARY — the descent lemma at its STUCK CASE.** Let the shape be
+> any habitat shape (cubic `G°`, `ℓ_β ∈ [2, 5]` ((SD-6)),
+> `Σ_β(ℓ_β − 2) = 6` ((GR-21)), satisfying the proven (GR-25) cut
+> criterion; the `Λ = ∅`, `D = 0` tight stratum), let `O` be its set of
+> odd branches (`|O| = 2k ≤ 6`, evenly many — *Step G53*(ii)), and let
+> `(m, c)` be parity-consistent with imbalance
+> `δ = #A-majority − #B-majority` on `O`. **Prove:** if `δ ≠ 0` and
+> **every majority-side odd branch is dart-blocked** — holds a minority
+> dart at some end, so (GR-45)(iii)'s free T1 is unavailable at every
+> one of them — then some legal (GR-45) move still **strictly reduces
+> `|δ|`**. Together with the proven free-T1 case this closes the
+> descent lemma; with (GR-44) it makes **entry 5 PROVEN**
+> ((GR-44) + descent ⟹ entry 5, *Step G60*'s reduction).
+>
+> **The method named at prep** (the dispatch may replace it, but must
+> say so): a **finite local case analysis** over the ≤ 6 odd branches
+> and their dart obstructions, with the **T1/T2-family escape
+> catalogue** as the instrument — the even-branch **prep move** (a T1
+> at an even branch clears a dart off a majority-side odd `z` at zero
+> majority cost when its far-end condition `m(far) ∉ prep-branch`
+> holds) and the **T2 star moves** at a dart-holding hub (flipping
+> exactly `star(u) ∩ O`, with computable net effect). The **148
+> rescued census configurations** (*Step G60*, *Step G61*) are the test
+> bed the analysis is written against.
+>
+> **One notation warning, because the landed text carries the clash:**
+> `δ` is the **imbalance** `a − b` (Step G60/G61's usage) while `δ(S)`
+> is the **cut** of a hub set (GR-45's usage). They are unrelated; keep
+> them typographically distinct in any write-up.
+
+> **SECONDARY — (b′), the balance-layer bound**, verbatim from the
+> eleventh through thirteenth: at every habitat shape
+> `d_adm − d_par ≤ 2` — or an explicit family where that gap **grows**,
+> which refutes the bound and re-ranks the successors. GADM's
+> anti-triviality caution carries at full strength: a `≤ 2` proved by
+> an argument that would equally give `≤ 0` is a failed proof; the
+> constant has to come from the rider's global count nature
+> ((GR-37)(i)) — and (GR-45)'s repair unit is now the mechanism that
+> supplies it (one T1 = one unit priced at exactly 2 movements).
+
+**(b′) rides again, and the reason is recorded rather than inherited.**
+Three grounds, each checked against the landed record: (i) it shares
+this direction's machinery *exactly* — the (GR-45) repair-unit calculus
+is the mechanism under both statements, so the secondary is nearly free
+once the primary's catalogue exists; (ii) GPSA left (b′) with a
+**named proof-shaped decomposition** — *"(b′) ⟸ 'at some parity-optimal
+map `|δ| ≤ 2`' + 'one descent step available there'"* (*Step G61*) —
+whose first half is **explicitly unmeasured and flagged for the
+successor**, and whose second half is this direction's primary; (iii)
+its kill mode (a growing repair cost per unit) is the same event that
+would make the stuck case hard, so an early (b′) refutation **re-routes
+the primary** instead of wasting the dispatch. What (b′) does **not**
+buy is recorded too, upholding GADM's and GPSA's shared bar: (b′) is on
+**no** closure chain — it bounds a quantity that reaches nothing while
+the top layer is unproven — so it stays strictly secondary and must not
+consume the dispatch.
+
+### What a HIT buys, and what it does not
+
+**A HIT upgrades entry 5 to PROVEN and ARMS E3 — it does not fire it.**
+Precisely: entry 5 proven ⟹ a subsequent **(a′)** HIT closes **entry
+1** ⟹ E3 fires *then*. Today entry 5 is **not** a HIT and **E3 is not
+armed**; nothing in this prep changes either.
+
+**Entry 5 + (a′) ⟹ uniform fully-good existence at `Λ = ∅`, `D = 0`
+⟹ via (GR-1)/§(K-clos) (AC-4) + (GR-5) + (AC-7), (GR-15) on that
+stratum modulo (GR-4′) — never more** (*Riders*). **Never write that a
+stuck-case HIT closes the existence target while (a′) is open**, and
+**never write that any of this closes (GR-15)**.
+
+One further consequence, stated with its limit: a HIT would let
+(GR-37)(iii)'s **balance clause** be restated as a corollary of
+(GR-44) + the descent lemma rather than as unproven prose. That
+restatement is a **coordinator decision at landing**, not something the
+dispatch may assert. **Until then the arc's statement-beyond-proof flag
+stays HALF-retired — the parity half is repaired ((GR-44)), the balance
+clause is not — and it must never be written as retired.**
+
+### The risk, stated plainly — carried, not argued away
+
+- **Primary risk — "finite case analysis" is not the same as "small
+  case analysis".** The ≤ 6-odd-branch confinement bounds the *odd
+  branches*, not the dart-obstruction pattern space, not the μ-classes
+  the escape may have to cross, and not the T2 star moves, which reach
+  hubs anywhere in `G°`. Two landed facts say the analysis cannot stay
+  local by default: **descent must be able to cross μ-classes**
+  (638/1655 μ-classes carry no balanced pattern at all — *Step G60*),
+  and **lemma (L)'s full-cube form is REFUTED** (664/3620 (pattern,
+  flip) pairs missing), so "every majority pattern is achievable" is
+  **not** available as a step. If the uniform escape needs a structural
+  input — e.g. "some even branch is prep-available at every stuck
+  configuration" — that input may be as hard as entry 5 itself. The
+  honest MISS is then *"the escape exists at every configuration ever
+  censused, and the uniform argument needs input X"*, with **X named**.
+- **A named tuning trap, already sprung once in this arc.** Every stuck
+  configuration known today lives at a **small** shape — W3M (12/200
+  parity maps), W3 (120/876), NKo2v (16) — and **no sampled pool shape
+  produces one**. An analysis tuned to `n ≤ 10` is exactly the failure
+  mode that produced the `|δ| ≤ 2` reading GPSA had to refute at its
+  own NKo2v. **`|δ|` is NOT bounded by 2**: the exhaustive NKo2v
+  spectrum is `{0: 984, 2: 864, 4: 48}`, and **only the structural
+  `|δ| ≤ 6` is proven** — the case analysis must handle `|δ|` up to 6,
+  i.e. up to three repair units, not one.
+- **Secondary risk — too easy.** A two-page case analysis leaving the
+  dispatch idle; mitigated by (b′), by (b′)'s named unmeasured half
+  (`|δ|` at parity-**optimal** maps), and by the commissioned
+  stuck-case constructions below. A cheap HIT is a good outcome, not a
+  wasted one — it arms E3.
+- **MISS deliverables, named at prep** (each is a return-worthy result
+  even if the lemma does not close):
+  1. **The stuck-case catalogue** — dart-blocked configurations
+     classified by (odd-branch count, dart pattern, μ-class) with, per
+     class, which {T1, T2}-family move rescues it; machine-built over
+     the 148 known configurations and any newly constructed ones.
+  2. **The prep-move lemma** stated with its exact hypothesis
+     (`m(far) ∉ prep-branch`) and the **measured frequency of its
+     failure** — the first place a uniform argument breaks.
+  3. **A demotion witness or its absence**: whether a habitat stuck
+     configuration defeating **every** (GR-45) move exists (*Step G62*
+     *(ii)*'s named event — it demotes the descent route without
+     refuting entry 5) or is excluded at every censused shape at FULL
+     enumeration.
+  4. **`|δ|` measured at parity-OPTIMAL maps** — (b′)'s explicitly
+     unmeasured half (*Step G61*).
+  5. Any commissioned odd-rich / large-`n` stuck construction, with its
+     caps disclosed as caps.
+
+### Step 0 — mandatory load-bearing pin, before any derivation
+
+The standing Step-0 discipline, sharpened for this target: **pin from
+the landed bodies** in `notes/Pencil-informal.md` §(K-grid) *Steps
+G58–G62* and *Steps G53–G57* — the actual statement and proof text —
+**not** from this spec's restatements, not from any return summary, and
+not from the gap-map row. (This spec's own paraphrases are navigation
+aids; where they and the workbook differ, the workbook is right.)
+
+- **(GR-45) in full** (*Step G59*) — the definition of a **legal move
+  set** (distinct hubs `v_i`, targets `x_i ∋ v_i` with `m(v_i) ∉ x_i`,
+  `Σ_i e_{x_i} = δ(S) ∈ Cut(G°)`), the move action (each `m(v_i)` to
+  the **third** branch at `v_i`), clause (i) `Δ = δ(R △ S)` with
+  `c' = c + χ_{R△S}` (and its complement), clause (ii) the exact
+  **two-end-consistent** flip formula
+  `flip(γ) = χ_{R△S}(p) ⊕ [m(p) moved on/off γ]`, **(iii) T1** (the
+  double-swap at a branch `z` with BOTH end darts off `z`: flips
+  exactly `{z} ∩ O`, at ≤ 2 deviations) and **(iv) T2** (the star move
+  at a hub `u`: flips exactly `star(u) ∩ O`) — **all flip statements
+  mod the global A↔B swap, which negates `δ` and is free.** This is the
+  direction's instrument; derive the case analysis from these clauses'
+  bodies, never from the summary sentence.
+- **Step G60 in full** — the descent lemma's exact statement; the easy
+  case's proof; the **stuck case's exact wording**; and its four
+  measured findings with their qualifiers: the 148-configuration rescue
+  census (W3M 12/200, W3 120/876, NKo2v 16 — **none at any sampled pool
+  shape**), the fixed-μ insufficiency (638/1655), lemma (L)'s
+  **full-cube REFUTATION** (664/3620) with the **inward form** holding
+  exhaustively (0 failures — *that* is the proof-shaped statement, and
+  the full-cube route is dead, already checked), and the `|δ|`
+  spectrum.
+- **(GR-44)** (*Step G58*) — `d_par(shape, M) = w_M` **exactly**, the
+  Hall/SDR step **automatic** (off-matching support forces max degree 2
+  at every cubic hub, so Hall holds by the incidence count
+  `2|S| ≤ 2|N(S)|`; no marriage theorem). Consequence this direction
+  consumes: **the parity space is nonempty at every habitat shape** —
+  the descent's starting point. **Do not re-derive it**, and carry its
+  scope exactly: (GR-37)(iii)'s **parity half** is repaired to
+  statement-equals-proof; its **balance clause STAYS
+  statement-beyond-proof**.
+- **Step G53 in full** — the ≤ 6-odd-branch / even-count confinement
+  *with its derivation* (`Σ_β(ℓ_β − 2) = 6` forces ≤ 6 odd branches
+  since each odd `ℓ ∈ {3, 5}` costs `ℓ − 2 ≥ 1`; `#odd ≡ Σℓ ≡ 6 + 3n ≡
+  n ≡ 0 (mod 2)`), and **balance vacuous at all-even shapes** — so
+  every `NK(m)` member is a **control, not a test**, for this target.
+- **(GR-37)(i)/(ii)** — the (c, m) model and its per-branch equation
+  `c(u) ⊕ c(w) = [ℓ_β even] ⊕ [m(u) on β] ⊕ [m(w) on β]`; the
+  exactly-two-solutions count at fixed `m`, with the
+  coordinator-verified sharpening: the **A↔B swap swaps the balance
+  counts**, so balance is **not** reachable between the two
+  `c`-solutions at fixed `m` — the freedom lives entirely in moving
+  `m`, which is what makes the (GR-45) calculus the only instrument.
+- **(GR-41)** — the coset `Φ = τ + Cut(G°)`, `τ = [ℓ even]`;
+  `μ(M) = 0` at **every** perfect matching ((GR-37)(ii)'s
+  cancellation).
+- **The measured record with provenance — quote each with its qualifier
+  or not at all.** Entry 5 exhaustive at **97 censused shapes** (full
+  `3^n` per shape, the F11 completeness mode); the 907/907 census and
+  the 40 742-shape sweep are per-shape admissibility witnesses a
+  fortiori; **(b′) gaps `{0, 1, 2}`** (GADM's record, gap 0 at every
+  GPSA-commissioned stress member) — **a DIFFERENT quantity from
+  `|δ|`; do not conflate the two anywhere**; W3's exact stack floor 1 →
+  shift +1 → balance +1 (`d_par = 2`, `d_adm = d_fg = 3`); the pool's
+  single `d_adm − d_par = 2` resident.
+- **(GR-4′)'s proven-case boundary** — covers no habitat block; the
+  rider never dissolves silently.
+
+### The route ledger and the TERMINATION test — recorded at prep
+
+**The route ledger** — carried forward from the thirteenth with entry
+5's per-half statuses as landed; the coordinator updates each entry's
+status on landing:
+
+1. **Uniform fully-good existence at `Λ = ∅` `D = 0`, growth-law
+   re-anchoring** — open with named dispatchable attacks; **(a′)**
+   stays its primary and is **NOT attempted here** (it is the named
+   fifteenth on a HIT); **(b′)** enters as this direction's secondary;
+   **(c)**/**(d′)** stay named and unclaimed.
+2. **(GR-4′)** — open; proven cases exclude every habitat block.
+3. **The `Λ ≠ ∅` closed-form analogue** — unswept.
+4. **The `D > 0` lift** — unswept.
+5. **Per-shape admissibility** — **half 1 (Hall/SDR parity) PROVEN**
+   ((GR-44): the SDR automatic, `d_par(M) = w_M` exact); **half 2
+   (balance) TRUE-MODULO-NAMED-GAP** — reduced to the (GR-45) descent
+   lemma, proven in its free-T1 case, exhaustively true at 97 censused
+   shapes, **open exactly at the stuck case — THIS DIRECTION'S
+   TARGET**. Entry 5 as a whole: **OPEN, NOT a HIT.**
+
+Together, unchanged: 1 + 2 = (GR-15) at `Λ = ∅` `D = 0`; adding
+3 + 4 = (GR-15); (GR-15) + (GR-1)/§(K-clos) (AC-4) + (GR-5) + (AC-7)
+= `hK` on the tight `D = 0` stratum, riders included.
+
+**The TERMINATION test (E1/E2/E3), amended for this target.** On this
+direction's landing the coordinator marks each ledger entry and
+**surfaces a phase-shape decision to the user instead of dispatching a
+fifteenth iff any of**:
+
+- **(E1)** the direction exhibits a **g-flank** — a habitat `D = 0`
+  shape whose **every** admissible colouring has a binding chunk:
+  refutes per-shape (GR-15) itself; unconditional, immediate
+  escalation, whatever else landed. **GDEV's three clarifications carry
+  verbatim** — (i) a fully-hot hub of ANY family is a **seed**, not a
+  flank; (ii) capable-hot saturation is not a flank ((GR-26)(iii):
+  every such swept shape still carries a fully-good colouring);
+  (iii) a shape or family needing large `d` fires **nothing** by itself
+  (at a fixed shape, fully-good existence implies finite `d`, so a
+  deviation blowup refutes a *form*, never existence). **GADM's clause
+  (iv) carries verbatim** — *the `d_fg` dichotomy:* a shape with
+  `d_adm < d_fg < ∞` refutes **(a′)'s law**, never existence, and fires
+  **E2's refutation branch, not E1**; a shape with `d_adm < ∞` and
+  **`d_fg = ∞`** **IS** a g-flank and **E1 fires**; any scan reporting
+  `d_fg > d_adm` must state which of the two it found, and an `∞` claim
+  must disclose the deviation cap searched to — **an exhausted cap is
+  not `∞`**. **GPSA's clause (v) carries verbatim** — *the `d_adm`
+  dichotomy:* a shape with **`d_adm = ∞`** — no admissible colouring at
+  any deviation count, the searched cap disclosed, **an exhausted cap
+  is not `∞`** — implies `d_fg = ∞` and **IS** a g-flank (it refutes
+  per-shape (GR-15) outright): **E1 fires.** A finite-but-large `d_adm`
+  fires **nothing** (clause (iii)'s logic).
+
+  **No extension is added at this prep**, and that is deliberate: this
+  direction is rank-free and its measurement modes are the same ones
+  clause (v) was written for, so clauses (i)–(v) already cover both
+  sides of every dichotomy it can approach. (The one new event this
+  direction can produce — a configuration defeating every (GR-45) move
+  — is **not** an E1 event: it demotes the *route*, not the statement.
+  It is handled in the otherwise-clause below, where it belongs.)
+
+- **(E2)** **entry 5 is refuted or unprovable-as-posed** and the
+  updated ledger has no entry left in state
+  open-with-a-named-dispatchable-attack. The carve-out is retained: a
+  refutation **with a successor named** does not fire. The logic
+  GPSA recorded still holds and is worth re-reading before marking this
+  clause: entry 5's "refuted" means `d_adm = ∞` somewhere, which is E1
+  clause (v) anyway — so **E2's live content here is the
+  unprovable-as-posed branch**, with the missing machinery named. A
+  **demotion witness** (some configuration defeating every (GR-45)
+  move) does **NOT** fire E2 by itself: entry 5 stays open, the descent
+  *route* is what dies, and the successor is named in the
+  otherwise-clause.
+- **(E3)** **entry 1 is proven** — full stop. **A stuck-case HIT does
+  NOT fire E3**: it proves **entry 5**, which leaves (a′) open. What it
+  does do is **ARM E3** — with entry 5 proven, the fifteenth is **(a′)
+  at its named sticking case** (fixed-μ fiber exchange measurably
+  insufficient at W3-type shapes; every measured failure at defect
+  exactly 2; now also armed with GPSA's own fixed-μ-insufficiency
+  balance datum and the (GR-45) cross-μ move family), and **E3 fires on
+  that direction's HIT**. GORIENT's retained template deviation
+  carries: a HIT completing entry 1 surfaces the Lean-hold question to
+  the user — the next spend is a user call, not a coordinator pick.
+
+Otherwise dispatch the fifteenth per what the landing names:
+
+- **stuck case CLOSED (entry 5 proven)** → **(a′)** at its named
+  sticking case, **E3 armed**.
+- **stuck case closed only under an extra hypothesis** (e.g. only for
+  `|δ| ≤ 4`, or only when an even branch is prep-available) → **that
+  hypothesis as its own statement**, with the residual configurations
+  named.
+- **a demotion witness** (a habitat configuration defeating every
+  (GR-45) move) → **the balance-existence question at that
+  configuration's family**, by an instrument other than descent —
+  entry 5 stays open, and the (GR-45) calculus keeps its landed status
+  as a theorem about moves, not about existence.
+- **(b′) refuted (a growing balance gap)** → the balance-layer
+  characterization at that family.
+
+The ledger-not-artifacts lesson stands: E1–E3 are stated over the
+ledger and entry 1's status, never over how many theorems landed.
+
+### The ranking record — the primary was NOT competitively ranked
+
+**Stated plainly, because it is a departure from the last five preps:**
+the primary is **fixed** by GPSA's landed otherwise-clause (grounds in
+*Selection provenance*), so **no competitive ranking of the primary was
+performed** and none is recorded below. What is recorded is (a) the
+adversarial check that the routing survives, and (b) a full ranking of
+the **secondaries and alternatives**, with re-proposal bars. These bars
+are a **coordinator-authored opus prep's**, not an independent top-rung
+recon's — a future recon may overturn any of them freely.
+
+**The adversarial check on the fixed routing** (attempted refutation,
+per the recon discipline — a refutation would have been the more
+valuable outcome):
+
+- *Could the stuck case be better attacked inside an (a′) dispatch?*
+  **No.** (a′) is rank-touching and has MISSed; the stuck case is
+  rank-free, and the arc's record is unambiguous that rank-free
+  combinatorial targets on this stratum land as theorems.
+- *Is the residual actually small enough to be a direction of its own?*
+  **Yes, and it is the smallest open thing on the closure chain:** one
+  lemma, one case, over ≤ 6 branches, with a 148-instance rescue census
+  already built and every instance rescued by a **single** move.
+- *Does anything landed since the clause was written weaken it?*
+  **No** — the clause was written at GPSA's prep and its stuck branch
+  was instantiated by GPSA's own landing hours later; nothing has
+  landed since.
+- *Is there a cheaper way to get entry 5?* **None known.** *Step G60*'s
+  reduction is (GR-44) + descent; the alternative would be a
+  non-descent existence argument, which is exactly what the demotion
+  branch routes to **if** the descent route dies — and it has not.
+
+The ranking, then, over everything else that could have ridden or
+displaced the secondary:
+
+1. **(b′) as the secondary — TAKEN.** Three grounds recorded in *The
+   target* above (shared machinery; a named proof-shaped decomposition
+   with an unmeasured half this direction can measure; a kill mode that
+   re-routes the primary rather than wasting the dispatch). **It stays
+   strictly secondary** — GADM's and GPSA's shared bar is upheld: with
+   the top layer unproven, (b′) standalone bounds a quantity that
+   reaches nothing. **Bar (standalone): (a′) and entry 5 both settled,
+   leaving the balance quantity load-bearing.**
+2. **(a′) at its named sticking case** — loses the *fourteenth* slot,
+   and by a wider margin than it lost the thirteenth: entry 5 is now
+   **one case** from proven, and **only entry 5's closure makes an (a′)
+   HIT fire E3**. **Re-proposal bar: NONE — it is dispatchable now and
+   is the named FIFTEENTH on a HIT, with E3 then armed.** It stays
+   entry 1's primary attack.
+3. **A min-max / polynomial certificate for `w_M`** (the shift-metric
+   layer, the clause GPSA overrode) — loses a **second** time; GPSA's
+   bar is upheld verbatim and is now *sharper*, because (GR-44) made
+   the layer **exactly characterized**: what remains is
+   *computability*, and no ledger entry consumes it. (GR-44)'s own
+   *"what is deliberately NOT developed"* note says the same thing from
+   the theorem's side, and the (GR-13) caution stands. **Bar unchanged:
+   an (a′) attack that stalls specifically on not knowing the
+   shift-optimal μ-class structure; or entry 1 closing (leaving the
+   quantitative theory as the surviving open content); or a concrete
+   polynomial certificate with a named consumer.**
+4. **A demotion-first framing** — attack the stuck case by *hunting* a
+   configuration that defeats every (GR-45) move, rather than proving
+   the escape. **Loses as the framing**, on the landed evidence: the
+   inward form of lemma (L) held with **0 failures** everywhere
+   censused and **all 148** stuck configurations were rescued by a
+   single {T1, T2} move. But it does not lose entirely — it **rides as
+   the `--adv` falsification control** (F13 discipline), which is
+   exactly where a demotion witness would surface, and the
+   otherwise-clause already routes the fifteenth if one appears.
+5. **Attack (c) — AA-glue realizability at `n_hub ≥ 8`** — loses a
+   **fifth** time, reason unchanged: no live argument consumes
+   laminarity at `n_hub ≥ 8`. **Bar unchanged: a landing that names
+   family organization beyond the swept stratum as the missing
+   organizer.**
+6. **Attack (d′) — the corner-armed seed hunt past GDEV's caps** —
+   loses a **fourth** time; a seed is not a flank (E1(i)), the capped
+   hunt found 0, the `n_hub = 8` enumerator stays priced as
+   genuinely-new engineering. **Bar unchanged: enters only as an
+   `--adv` control if the primary work names a hot configuration of its
+   own.**
+7. **Anchor-family enlargement past perfect matchings** — GADM item-8
+   bar upheld verbatim (a new model, not a repair), and **strengthened
+   by (GR-44)**: the matching anchor is now *exact* (`d_par(M) = w_M`
+   at every `M`), so the anchor family is no longer a lossy device
+   anyone needs to widen. **Bar: an explicit anchor class with a
+   solvable prescription of its own and a proven μ-spread covering
+   `Φ`.**
+8. **Off the four named attacks**, swept against strategy §4.6 as the
+   prep discipline requires: **U1** — cheapest decisive experiments
+   DONE, answered the other way ((OC-2)/(OC-3)); **U2** — partially
+   superseded for the tight stratum (durable negative, `notes/Phase39.md`
+   *Hand-off*); **U3** — unrun, adjacent to the un-commissioned option
+   B, strictly behind the §(K-grid) reduction. **Nothing GPSA landed
+   touches §4.6** — verified against *Steps G58–G62*, which live
+   entirely inside the (c, m)/cut-space model. **Route σ's Lean half /
+   the W4 build** — BLOCKED by the standing Lean hold, not
+   dispatchable. **The (FR-6) follow-ons and leads (b)–(f)** — not
+   selected 2026-08-07, no new information.
+9. **No fourteenth direction (a phase-shape escalation instead)** —
+   loses: the coordinator-verified E1/E2/E3 check on GPSA's landing
+   fired nothing, and the 2026-08-13 adjudication already chose
+   "continue the research"; escalating now would re-ask an answered
+   question. Recorded so it is not misread: the 2026-08-18 opus
+   adjudication is a **budget** signal about *this prep*, not a
+   phase-shape adjudication.
+
+### Verification priority order (NO new sweep)
+
+The direction is **theorem-first**: the driver supports a proof
+attempt, it does not replace one. Suggested modes (the direction sets
+the final list):
+
+1. **`--stuck`** — the catalogue: rebuild the dart-blocked
+   configuration census over the **existing** pools plus the 148 known
+   instances, and for each emit the full {T1, T2}-family move list with
+   the exact `|δ|` change per move (the object the case analysis is
+   written against). Reuse `gpsa.py`'s `parity_census` / `all_moves` /
+   `predict_flips` read-only.
+2. **`--cases`** — the case analysis's own asserts: each case's
+   hypothesis and its escape stated as a machine-checkable predicate
+   and asserted per configuration (F11: say which mode certifies which
+   case; a case analysis with an unasserted case is an unproven case).
+3. **`--opt`** — **`|δ|` at parity-OPTIMAL maps**, (b′)'s named
+   unmeasured half, plus the balance gap at the existing pools. Caps
+   disclosed as caps.
+4. **`--adv`** — falsification controls, each with an F13 must-reject
+   witness: a doctored "escape" that does not reduce `|δ|` must be
+   REJECTED; a synthetic all-moves-fail configuration must be DETECTED
+   (the demotion-witness discriminator); the E1 clause-(v)
+   discriminator (`d_adm = ∞` vs an exhausted cap) carried forward from
+   GPSA.
+5. **`--validate`** — all modes, budgeted against the 600 s foreground
+   ceiling (F15); split invocations if the combination would exceed it.
+
+Cross-check pools (existing, never re-swept): GPSA's 97-shape
+exhaustive census, its 148-configuration stuck census and its
+NKo2v/NKp(6)/NK55(6) constructions; GADM's 108-shape census, 72-shape
+`--balance` assertion and odd-6 pool; GDEV's 131-shape layer subsample
+and the NK/NKo members; GORIENT's and GEXIST's subsamples; CFLANK's
+40 742 shapes. **"Widening a pool is evidence, not progress" binds —
+with the one named exception this prep grants, and it matters more here
+than it did at the thirteenth:** constructions built to exhibit a
+**stuck configuration at a large shape** are commissioned tests, not
+pool-widening. Every stuck instance known today sits at `n ≤ 10`, so a
+commissioned large stuck instance is this direction's single most
+valuable datum — and the check against the tuning trap named in *The
+risk*.
+
+### Riders — carried explicitly, required in the return
+
+- The result is at **`Λ = ∅`**, **`D = 0`**, and — where a closure
+  chain is concerned — **modulo (GR-4′)**.
+- The **`Λ ≠ ∅` closed-form analogue** stays **unswept**; the
+  **`D > 0` lift** stays **unswept**.
+- **Never write that this closes (GR-15).**
+- **Never write that a stuck-case HIT closes the existence target while
+  (a′) is open**; a HIT **arms** E3, it does not fire it.
+- **(GR-37)(iii)'s flag is HALF-retired, never retired** — the parity
+  half is repaired by (GR-44); the balance clause stays
+  statement-beyond-proof unless and until the coordinator restates it
+  at a landing.
+- Every "0 fully-hot" figure carries its family qualifier; the
+  `d_fg = d_adm` support carries its provenance (133 at `d ≤ 3` + the
+  108-shape census + the four NK members at `d` up to 10) wherever
+  quoted.
+
+### Cautions (binding)
+
+- Do not re-derive (GR-1)–(GR-45); do not re-attack the (GR-10) min-max
+  ((GR-13)); do not re-attack the bounded-deviation form ((GR-42));
+  **do not attack the shift-metric min-max / a `w_M` certificate**
+  (ranking item 3 — it lost with a bar, (GR-44)'s own "deliberately NOT
+  developed" note says the same, and the (GR-13) caution stands); all
+  of `notes/Phase39.md` *Hand-off*'s "Deliberate non-goals" bind.
+- **Do not silently attempt (a′).** It is the named fifteenth; any
+  (a′)-relevant finding (the cross-μ move data is expected to produce
+  them) is **reported as a finding**, not developed into a proof
+  attempt.
+- **Do not conflate `|δ|` with the balance gap.** `|δ|` is the
+  odd-branch imbalance — structural cap **6**, `≤ 2` REFUTED as a
+  general reading (NKo2v: `{0: 984, 2: 864, 4: 48}`). `d_adm − d_par`
+  is GADM's balance gap, measured `{0, 1, 2}`, untouched by GPSA. They
+  are different quantities; a sentence that slides between them is a
+  defect, and the `≤ 2` coincidence is exactly what makes the slide
+  easy.
+- **Do not write lemma (L)'s full-cube form as open.** It is
+  **REFUTED** (664/3620 pairs missing); the **inward** form is the live,
+  proof-shaped one and held exhaustively. The full-cube route is a dead
+  route already checked — do not re-check it.
+- **The target is rank-free — treat any rank computation as a scope
+  flag.** If a mode finds itself calling `fully_good_rank`, it has
+  drifted onto entry 1; report and stop. (Rank certification, if any
+  control needs it, stays the README §4 convention.)
+- An exhibited `d_adm = ∞` shape at FULL enumeration is a
+  **REFUTATION headline** (E1 clause (v)), not a MISS; an exhausted cap
+  is not `∞`.
+- A configuration defeating every (GR-45) move is a **demotion
+  witness**, not a refutation of entry 5 and not an E1 event — report
+  it as such.
+- The (K-res)/(GR-15) quantification question stays a coordinator
+  hand-off note, explicitly out of scope.
+
+**Driver** `notes/scripts/w4/gdesc.py` (imports `gpsa.py` / `gadm.py` /
+`gdev.py` / `gorient.py` / `gcap.py` / `cflank.py` / `gridcol.py` /
+`grid.py` read-only; **`gexist.fully_good_rank` must never be imported
+or called** — the rank-free scope flag above); suggested modes
+`--stuck`/`--cases`/`--opt`/`--adv`/`--validate` — the direction sets
+the final list. **Labels**: mint under **(GR-46)+** and **Steps G63+**,
+§(K-grid)'s live unclaimed tails (reserved at this prep,
+`notes/Pencil-labels.md`). **On outgrowth, reuse the already-reserved
+§(K-gcap) / `GC-`** — available an **eighth** time. **Do not mint
+§(K-unif)/`GU-`.** No M2 leaf expected — the target is a finite
+combinatorial statement.
+
+**Rung.** Mapped **top rung** — a crux proof attempt whose verdict
+routes the line (the same trigger as G through GPSA): a HIT arms E3 and
+puts the arc one direction from its terminal condition. Per the
+standing check-in configuration all four rungs are dispatchable, so
+**fable**. **Note the asymmetry with this prep**, which was authored at
+**opus** by user adjudication precisely so the weekly top-rung budget
+is spent on the *research* dispatch rather than on its spec; a
+substitution of opus for the direction itself would need a fresh user
+call.
+
+**Mechanics: identical to the thirteenth direction's.** Read-only
+w.r.t. every **tracked** file; commits **NOTHING**; creates only its
+own **untracked** driver at the pinned path above (left untracked for
+the coordinator to gate and commit); writes its full mathematics as a
+draft workbook section `fanout-GDESC.md` in the session scratchpad (not
+the repo), in the workbook's register, with an explicit confidence
+verdict (proven-informally / true-modulo-named-gap / open / refuted)
+for the descent lemma, for entry 5 as a whole, and for (b′), plus a
+"what would change this" line; keeps the return message to a tight
+verdict. **F11 binds with force here** — the primary is a case
+analysis, so state per case which mode asserts it, and never let an
+unasserted case ride as proven. F15's over-ceiling shape applies to any
+invocation that cannot finish inside 600 s. `notes/scripts/README.md`'s
+conventions bind (exact ℚ, seeded randomness, degeneracy guards, import
+from the canonical layer — check the *Divergences* table).
+
+### Landing (coordinator)
+
+The fifth fan-out's landing checklist applies verbatim, as it did for
+CFLANK through GPSA — including converting the registry's live
+reservation in place, adding the driver's rows to
+`notes/scripts/README.md` §3's invocation table in the landing commit,
+checklist item 6's scaffolding audit, and **item 7's status-surface
+sweep, now five surfaces** (this file's own top `**Status:**` header is
+the fifth, added at this prep after GPSA's landing left it reading
+"PREPPED … not yet dispatched" for a direction that had landed hours
+earlier). The landing commit additionally runs the route-ledger update
+and the amended E1/E2/E3 TERMINATION check above — E1 with clauses
+(iv) **and (v)** applied explicitly (which side of each dichotomy the
+landing found), E3 in its retained deviated form, and **explicitly
+whether a HIT armed E3** — and records **entry 5's resolution as a
+ledger status**, not as prose only. Outcome recorded in the phase
+note's *Hand-off* as narrative, not as a scaffolding block.
