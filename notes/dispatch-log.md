@@ -111,6 +111,12 @@ keeps only what git cannot show.
 | 2026-08-18 | Phase39 §(K-grid) gap-map cell fourth recompute + cap gate (`2ab3c630` → this commit) | sonnet (builder) | gate-invisible defect (four-peat): mechanical cap gate added instead of a fifth prose recompute | Fourth regression: §(K-grid)'s status cell went `dc4ecc7b` 1274 → `97c9661c` 1373 → `07f6f9b6` 1729 (repair #2) → `0e2bd9b7` 2066 (GDEV) → `2ab3c630` 2328 (GADM) words, each landing appending a since-direction-X clause instead of recomputing. Two prior prose-only repairs (D-2, repair #2) each regressed within 1-2 landings. This commit recomputes again (2328 → 1768 words, no facts/labels dropped) and adds `notes/check-gapmap-cells.py`, a per-cell word cap adapted from `check-log-rows.py`: a cell every landing appends to needs a mechanical gate, not a fifth recompute. |
 | 2026-08-18 | Phase39 fourteenth direction GDESC prep (`this commit`) | opus (prep; the direction itself stays mapped fable) | playbook deviation, deliberate: a top-rung-mapped prep dispatched one rung down by user adjudication | The fourteenth's routing was FIXED by GPSA's landed otherwise-clause, so this prep had no selection to make — only spec authoring. With weekly_scoped at 83% the user adjudicated it to opus and conserved fable for the direction's own dispatch (a crux proof attempt, the spend worth protecting). Cost disclosed in the spec exactly as the twelfth's coordinator-authored prep disclosed its own: no independent top-rung reader of the ranking record — cheap here only because the primary is fixed, not competitively ranked. Outcome judged at GDESC's landing. |
 | 2026-08-19 | Phase39 sixth fan-out — five concurrent directions (`46152836` … `6fd91065`) | opus ×5 (directions) → sonnet ×5 (landings) | playbook deviation, user-adjudicated: parallel multi-dispatch against the command's serial loop | User adjudicated a parallel wave. Coordinator shape: each agent wrote only NEW files (draft + driver at pinned paths), edited no tracked file and committed nothing; disjoint label ranges pre-allocated per direction; compute/theory tier split (2 licensed to sweep, 3 derivation-first). Outcome: zero collisions, zero tracked-file edits by any agent, all five drafts accepted on verification, five clean serial landings. Three findings were visible only ACROSS directions — see F18. The last landing correctly REFUSED to write this row (its core forbids editing this log); coordinator-authored. |
+| 2026-08-19 | Phase39 seventh fan-out — five concurrent directions (`7fbecfa5` … `8e4a3245`) | opus ×5 (directions) → sonnet ×5 (landings) | playbook deviation, user-adjudicated: second parallel multi-dispatch | User re-elected the multidispatch shape over a coordinator recommendation AGAINST it (92% `weekly_scoped`), then supplied the fact that overturned the recommendation — the scoped limit is fable-only. Sixth fan-out's mechanics repeated verbatim: new files only, nothing committed by any agent, disjoint label ranges, compute/derivation tier split. Zero collisions again; five clean serial landings; **two HITs** (CIRR, AGLU) against the arc's prior total of one. Directions were coordinator-picked — no independent ranking of the losers, disclosed in the prep per the twelfth's precedent. |
+| 2026-08-19 | Phase39 24th direction CIRR (`7fbecfa5`; draft repaired pre-landing) | opus (recon) → same-agent resume | gate-invisible defect: a claim duplicating a landed compiler-checked theorem | (CH-8) re-derived `not_pencilNondegFeasible_of_triangle_two_hubs` (`Motive.lean:563`), strictly stronger (two hubs, no `hcard`). No gate fires — it is an ADDITION, not a break — and the draft's own prose about `class_shape`'s *two-hub* triangle filter pointed straight at the theorem it duplicated. Caught in the coordinator's reasoning-scrutiny pass; a same-agent resume rewrote it as a pointer, and the duplicate sweep the resume mandated found a SECOND partial duplicate ((CH-6)(i), whose mechanism runs inline in that same landed proof). See F20. |
+| 2026-08-19 | Phase39 20th + 21st directions YLOC / BALB (`5fc24035`, `5ba6d299`) | opus ×2 | gate-invisible defect: two concurrent siblings derived the SAME identity | YLOC's (GR-65)(i) and BALB's (GR-67)(i) are one statement (`n − #agree = #differ`), independently derived and independently certified (2 270 294 vs 2 188 534 instances), each blind to the other. Label reservations prevent label COLLISION, not content DUPLICATION: both minted inside their disjoint reserved ranges, so no gate, checker or registry sees it. Coordinator landed (GR-65) as the general form and (GR-67)(i) as its matching-anchored instance, keeping the double certification as corroboration. See F20. |
+| 2026-08-19 | Phase39 seventh fan-out — three coordinator premises refuted by the directions they primed | opus ×3 (YLOC / AGLU / ZNEQ) | coordinator-authored spec defect ×3, each caught by the dispatch it misdirected | YLOC's (GR-63) refuted the predicted obstruction LOCATION — (GR-52)'s `2 e_H(S)` is a per-hub-subset count valid at every `S`, so it localizes for free and the break is two links earlier. AGLU's (GR-77) refuted the predicted CONSEQUENCE — 3 774 crossing pairs at `n_hub = 8`, so only the maximal family's uncrossing survives. ZNEQ sharpened an incomplete WORDING — a `Z = ∅` negative splits, and only one branch is the (K-tight) event specced; the other is a PENCIL event. One shared cause: extrapolating a landed result's scope to an unmeasured stratum. See F19. |
+| 2026-08-19 | Phase39 §(K-grid) cell FIFTH regression (`5ba6d299` → `4edd2143`) | sonnet (landing) → opus (coordinator) | gate-invisible defect: a recompute that PASSED its mechanical cap and accomplished nothing | Instructed to recompute rather than bump, BALB's landing recomputed the close-it cell to 872 words against a cap of 873 — compliant, gate-green, purposeless: the recompute existed to make room for AGLU, the fourth direction landing into that row. `check-gapmap-cells.py`, added at the fourth regression, catches OVERFLOW but not purposeless compliance. Coordinator redid it (872 → 619). A scripted label-set diff then caught `(GR-47)` missing from both cells — eyeballing would have shipped the hole. See F21. |
+| 2026-08-19 | Phase39 seventh-fan-out prep (`13ec1f0e` → `d2348090`) | opus (coordinator) | coordinator-authored artifact defects ×2, F17 class, flagged by a landing agent | The prep re-synced `Phase39.md` and the ROADMAP cell but never re-read the fan-out doc's OWN `**Status:**` header: stale by two whole fan-outs, still describing the file as scoping "three independent research directions" when there were twenty-four, and grown to 2139 words of per-direction changelog (recomputed to 209). The same commit nested the wave's five direction headings at `###` where every prior wave's sit at `##`, so `grep '^## .* direction'` silently omitted 20–24. Caught by ZNEQ's landing, not by the coordinator. See F19. |
 
 ## Findings
 
@@ -455,3 +461,49 @@ At phase close, promote stable entries into the coordinator command's
   value of a fan-out is actually realized; and choose directions in
   **different sections**, which is what made the independence real and
   kept the five drafts collision-free in one working tree.
+
+- **F19 — coordinator-authored artifacts need the same verification
+  tier as subagent returns (Phase 39, 2026-08-19).** Four of four
+  coordinator contributions this wave needed correction, and three were
+  caught by the directions or landings rather than by the coordinator: two
+  predicted obstructions refuted (rows above), one incomplete spec
+  wording sharpened, and two artifact defects in a single prep commit.
+  The playbook's verification tiers are written entirely for *subagent*
+  returns; nothing subjects the coordinator's own specs, predictions and
+  doc edits to the same reading. Two rules fall out, both cheap: a
+  **predicted obstruction written into a spec must name the stratum its
+  evidence comes from** — both false premises extrapolated a landed
+  result past the stratum where it had actually been measured, which is
+  visible on the face of the claim; and a **coordinator commit must run
+  the same F17 status-surface sweep it enforces on every landing**, since
+  the prep commit that skipped it is the one that went stale.
+
+- **F20 — label reservations prevent collisions, not duplication; two
+  checks are missing (Phase 39, 2026-08-19).** Both duplicate defects
+  this wave were **additions, not breaks**, so no gate, checker or
+  registry could see them. (i) **Against landed Lean:** any claim
+  statable in the project's own idiom may already be a green theorem —
+  and a zero-hit vocabulary grep makes the audit cheap rather than
+  exhaustive (the tree contains no algebraic geometry, so an
+  irreducibility claim cannot be duplicated at all, and the real audit
+  reduces to the claims about ranks and independence, which is exactly
+  where both duplicates sat). (ii) **Across concurrent siblings:** two
+  directions in one wave derived one identity in disjoint label ranges;
+  this belongs in F18's cross-return pass, which is where a fan-out's
+  compounding value is realized. Add both to the fan-out landing
+  checklist.
+
+- **F21 — a mechanical cap catches overflow, not purposeless
+  compliance (Phase 39, 2026-08-19).** The fifth regression on the
+  §(K-grid) gap-map row was the first where the *gate passed*: the cell
+  was recomputed to one word under its cap, which satisfies
+  `check-gapmap-cells.py` and defeats the point, since the recompute
+  existed to make room for a known-pending landing. A cap bounds growth;
+  it cannot express purpose. So **dispatch a recompute with a target**
+  — a word count that leaves room for the landings already queued into
+  that row — and **verify label preservation by a scripted set-diff, not
+  by eye** (the coordinator's own recompute dropped a label and only the
+  script caught it). The recurring mechanism behind all five regressions
+  is unchanged and now named in the row itself: the
+  "Since Steps X–Y (direction Z), W changed" construction, appended
+  rather than folded into current state.
