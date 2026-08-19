@@ -5668,7 +5668,7 @@ wave*, and a future top-rung recon may overturn the bars below freely.
 
 | direction | tier | target | status |
 |---|---|---|---|
-| **YLOC** | compute-licensed | input (Y), (a′)'s residual — GBAL's instrument localized to proper chunks | dispatched 2026-08-19 |
+| **YLOC** | compute-licensed | input (Y), (a′)'s residual — GBAL's instrument localized to proper chunks | **LANDED 2026-08-19** — an honest MISS (§"Twentieth direction") |
 | **BALB** | compute-licensed | (b′), the balance-layer bound `d_adm − d_par ≤ 2` | dispatched 2026-08-19 |
 | **AGLU** | compute-licensed | ledger attack (c) — AA-glue realizability at `n_hub ≥ 8` | dispatched 2026-08-19 |
 | **ZNEQ** | compute-licensed | (OC-19) input (a) — `Z ≠ ∅` at every class (shape, split) | dispatched 2026-08-19 |
@@ -5709,10 +5709,18 @@ clause alone, and traceable.
 
 ### Twentieth direction — YLOC (seventh fan-out)
 
-**Status: dispatched 2026-08-19, opus, COMPUTE tier.** Labels reserved:
-`GR-` **(GR-61)–(GR-66)**, **Steps G80–G85**; owning section **§(K-grid)**,
-which stays authoritative. Driver: **`notes/scripts/w4/yloc.py`** (new,
-untracked at draft time).
+**Status: LANDED 2026-08-19 — an honest MISS, with substantial positive
+content.** Second of the seventh fan-out's five directions to land, after
+CIRR; one of **five** concurrent directions (BALB/AGLU/ZNEQ still in flight),
+**compute-licensed** tier. §(K-grid) **extended**, **Steps G80–G85**, labels
+**(GR-61)–(GR-66) CLAIMED exactly** — the full reservation consumed, nothing
+returned to the pool (`(GR-64)(R1)`/`(GR-64)(R2)` are sub-items of (GR-64),
+not separate mints). Driver **`notes/scripts/w4/yloc.py`** (seven modes;
+`--validate` runs all seven but exceeds the 600 s foreground budget at
+~890 s, so the landing gate ran three invocations instead: `--loc` alone
+(274.7 s, coordinator-reproduced at landing), `--coll` alone (359.0 s,
+coordinator-reproduced), and the remaining five modes together (139.7 s,
+coordinator-reproduced) — `notes/scripts/README.md` §3).
 
 **The target — input (Y), (a′)'s named residual ((GR-60)), verbatim as landed:**
 *at every habitat shape there exist a perfect matching `M`, a minimum-weight
@@ -5750,6 +5758,16 @@ If the localization breaks there, say so in those terms and name what would
 replace the parity contradiction; that is a more valuable return than a
 measurement.
 
+> **REFUTED as stated — see (GR-63)(i), recorded rather than deleted.** The
+> predicted obstruction was **wrong**, and YLOC's refutation is **correct**:
+> in (GR-52)'s landed proof `S` already ranges over **hub subsets** (the
+> two-sided Hall violator), not chunks, and `Σ_{v∈R} a_v = 2 e_H(R)` is a
+> **per-subset** double count valid at *every* `R` (305 704 pairs, 0
+> failures). (GR-52) would localize for free. The chain breaks two links
+> **earlier**, at (GR-50)→(GR-51): full goodness is not a function of
+> `(odd pattern, in-degree vector)`, because in-degree fixes the majority
+> colour `c(v)` and both chunk terms read the minority-dart identity `m(v)`.
+
 **Calibrating opening cases** (GLAW's measurements, *Step G79*): the **965**
 stratum shapes whose worst optimal cell needs the `M` rung, and the **13**
 shapes at balance gap 2.
@@ -5767,6 +5785,70 @@ finding and do not develop it (GBAL's precedent with (a′)).
 is concerned; the `Λ ≠ ∅` closed-form analogue and the `D > 0` lift stay
 **unswept**; **none of this closes (GR-15)**; an (a′) HIT **fires E3** (ARMED by
 GBAL) — state the consequence, do not fire it.
+
+**The verdict, as landed: the localization FAILS and (Y) is NOT discharged.**
+**(GR-61)** carries the (GR-56) chunk invariants into the `z`-form exactly —
+step 1 of the pinned route succeeds, buying notation and one structural fact
+(`Z2(S) = ∅ ⟺ S = E(G°)`, the unique chunk whose inequality reads only the
+odd bits) but nothing more; the localization's *premise* — every chunk
+invariant a function of the odd pattern — survives on an exact **10-shape**
+exceptional family (nine one-even-branch θ shapes, the all-length-3 `K4`) and
+dies at all **4914** others. **(GR-62) REFUTES step 2 by witness:** full
+goodness is not a function of the (GR-50) degree data — two admissible
+balanced configurations share the same odd pattern and even-branch
+in-degree vector yet split on full goodness (7982 of 217 468 fibres, at
+1499/4924 shapes, the smallest witness rank-certified at `n_hub = 4`) — so
+**no (GR-51)-shaped criterion applies to the chunk system**. **Scoped
+honestly:** this excludes a *(GR-51)-shaped* criterion (feasible set cut out
+by in-degree bounds), not every conceivable existence criterion — a shape's
+existence question is trivially a function of its odd pattern alone. The
+positive content is **(GR-64)**, the collision bound — a colouring-free
+lower bound on `d_fg` pricing the coupling between (Y)'s distance quantifier
+and its chunk constraints, with a **proven `≤ 2` per-chunk ceiling**
+(attained), a packing form, and a **sound** 1250-of-24 671 anchor-matching
+prune (incompleteness 7856 disclosed) — and **(GR-65)**, the fit identity:
+`dist(m, M)` and `z_mono(S)` are the *same statistic* (the minority dart on
+a prescribed selection), naming what any successor instrument must control.
+**(GR-66)** measures GBAL's own certificate against (Y): it misses the
+distance optimum at 3514/4924 shapes and full goodness at 651/4924.
+**`min_M B(M) = 0` at every one of the 4924 inventory shapes is MEASURED,
+not proven** — named as sub-target **(GR-64)(R2)**, the sharpest cheap
+successor the pass produced. Input (Y) stays **OPEN**, (a′) is **NOT** hit,
+**E3 (ARMED by GBAL) does NOT fire**; (GR-15) **OPEN**, no gap-map status
+moves; class uniformity, `hK`, and the balance layer (route-ledger entry 5)
+all untouched.
+
+**Two coordinator adjudications on landing.** *(1)* The predicted-obstruction
+refutation above is genuine, not a partial hit: the prediction was **wrong**
+and (GR-63) is **right** — recorded plainly, not softened. *(2)* GLAW's
+*Step G79* routing override (§"The coordinator's one routing sharpening"
+above) is **SPLIT by this landing, not simply upheld**: the override was
+right to try GBAL's `z`-form first and right about the **chunk/balance**
+rung, but **GLAW's matching-flexibility clause is reinstated for the
+*distance* rung specifically** — exactly the rung GBAL's instrument
+dissolves and loses ((GR-65): distance and `z_mono` are one statistic;
+(GR-66): GBAL's own certificate sits above `d_adm` at 3514/4924 shapes).
+Neither clause is wrong; they address different rungs of one statement. The
+successor's natural routing, carried forward to BALB/the next primary:
+(GR-61)'s `z`-form for the chunk arithmetic, (GR-55)'s coset/SDR coordinates
+for the distance, (GR-65)'s `fit` as the bridge, and a Hall/deficiency
+condition over the tight-chunk hypergraph of exit selections (GORIENT
+*Step G43*'s frame) in place of degree-constrained orientation.
+
+**What did NOT move.** No gap-map status moves: (GR-15), class uniformity,
+`hK`, the balance layer and route-ledger entry 5 are exactly where they
+were. (GR-62)'s refutation is scoped honestly (excludes a (GR-51)-shaped
+criterion only). (GR-64)'s prune is sound but incomplete (1250 of 24 671
+kills, incompleteness 7856 — both numbers disclosed). **TERMINATION: E1, E2
+and E3 all NO; E3 stays ARMED (by GBAL) and does not fire.** One
+(b′)-relevant by-product reported and **not developed** (BALB's target this
+wave, per the bar): (GR-65)(ii) expresses the deviation count in the same
+dart-colour language (GR-49) that (GR-50) uses to decide balance, so
+`d_adm − d_par` becomes a statement about two `fit` counts on one colouring.
+**Not pre-empting BALB:** (GR-65)(i)'s identity (`n − #agree = #differ`) is
+the general statement, for any selection `β`; BALB's independently-derived
+perfect-matching-anchored instance is its own label, cross-cited from that
+side, not minted here.
 
 ### Twenty-first direction — BALB (seventh fan-out)
 
@@ -6015,9 +6097,10 @@ overturn any of it.
   **(GR-15)-flavoured, not (FR-R1)-flavoured** — a rank condition inside a
   pattern-colouring existence question — so it re-enters the arc's **oldest
   missing technology** rather than adding an independent idea. It is the natural
-  primary for the **next** wave if YLOC's localization succeeds, since a
-  chunk-level instrument is the same missing technology arriving from the other
-  side.
+  primary once a working chunk-level instrument for input (Y) exists — **YLOC's
+  own attempt (twentieth direction) was DEMOTED BY WITNESS, not a success**
+  (§"Twentieth direction"); the missing technology is still arriving from the
+  other side, just not yet.
 - **§(K-out) hand-off item 3** — `T_u^{⊥_B} ∩ β_b = 0` at the **1715**
   slide-legal `b` ends, where **(OC-21) makes it an iff**; measured
   `dim(T_u ∩ β_b) = 1` at 38/38 POOL-W degree-3 ends and 4/4 POOL-OC ones. A
