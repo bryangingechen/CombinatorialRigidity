@@ -349,7 +349,9 @@ Gates for any continuation: `lake build` (warning-clean) + `lake lint` when `.le
 is touched; **when `notes/scripts/` is touched**, figure invariance proportionate to what the
 commit modifies (`git diff --name-only -- '*.py' '*.m2'` empty ⇒ that check IS the discharge,
 stated in the commit message) — canonical home `notes/scripts/README.md` *Hard rule — figures do
-not move*; a **symbolic** dispatch adds `notes/scripts/m2/README.md`.
+not move*; a **symbolic** dispatch adds `notes/scripts/m2/README.md`;
+**`notes/check-gapmap-cells.py` before any gap-map edit — §(K-grid) is at 1297/1300 and 718/720,
+so the NEXT landing must RECOMPUTE that cell, never append.**
 
 ## Adjacent directions (orientation only, not this phase)
 
@@ -390,9 +392,8 @@ is the canonical home a successor reads.
   `cd0af9e1`; thirteen directions A/B/C+S1–S4, T/R/M, G/Q/O, E/J, PEX/TCOL). Headline
   positives (GR-9)/(FR-R1) PROVEN, (GR-15) OPEN; uniformity untouched throughout.
 
-- **2026-08-05 docs/strategy pair**: Notes reorganization (label registry
-  **`notes/Pencil-labels.md`**; `Phase39-design.md` **FROZEN**) and the broad class-uniformity
-  recon (five directions REFUTED, three successors ranked — `notes/Pencil-strategy.md` **§4.6**).
+- **2026-08-05 docs/strategy pair**: notes reorganization (registry `notes/Pencil-labels.md`;
+  `Phase39-design.md` **FROZEN**) + the class-uniformity recon (5 REFUTED, 3 ranked, strategy **§4.6**).
 
 - **The route-σ arc — three landings** (2026-08-05, `sigma.py`; §(K-σ)): route σ a
   **CANDIDATE**; σ-intertwining refuted literally / confirmed covariantly; σ-equivariant
