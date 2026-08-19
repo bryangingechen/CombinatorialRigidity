@@ -692,6 +692,56 @@ this entry — and the owning section stays authoritative. No M2 leaf was
 expected or opened — the target was an exact-ℚ derivation, not a symbolic
 one.
 
+**The EIGHTEENTH direction — LTWO — LANDED 2026-08-19** (fifth and last of
+the sixth fan-out's five to land, after GBAL/GLAW/FRES/OCON;
+`notes/Pencil-fanout.md` §"Eighteenth direction"), reservation converted in
+place in §(K-Λ)'s row above: **(Λ4)–(Λ8) and Steps Λ8–Λ12 are CLAIMED**; the
+tails move to **(Λ9)+ / Steps Λ13+**, §(K-Λ)'s live unclaimed range. One of
+**five** concurrent directions in the **sixth fan-out**
+(GBAL/GLAW/OCON/LTWO/FRES, `notes/Pencil-fanout.md` §"Sixth fan-out"), in the
+**derivation-first** tier. Dispatched **opus**. Target: §(K-Λ) item (vii) —
+class shapes with two or more hubs on a length-4 companion's interior.
+**Verdict: an honest MISS on the commissioned "prove the class forbids it"
+branch — item (vii) is REALIZED.** **(Λ4)** the branch calculus reduces class
+membership to a finite statement about the hub multigraph `G°` alone,
+re-deriving girth `≥ 7`, (SD-6)'s `ℓ ≤ 5` and §(K-dom) (D3)'s `k ≥ 4` in one
+line each — a reformulation, not new mathematics, but what makes the census
+below exhaustive rather than capped. **(Λ5)** the companion-cycle lemma: no
+branch outside the split-plus-companion `C₇` joins two of its hubs, the sole
+exception being θ(3,4,5) (agreeing with §(K-out) (OC-10)'s independent
+uniqueness proof — a cross-check, not re-derived). **(Λ6)** the size floor:
+`j` interior hubs force `n° ≥ j + 3`, so `|V| ≥ 21` at `j = 2` and
+`|V| ≥ 26` at `j = 3`, with the hub multigraph **forced** to the wheel at one
+non-frame hub. **(Λ7)** the witnesses `LT21a`/`LT21b`/`LT26` attain those
+floors exactly, each class-certified by the tracked oracles (at `|V| = 21`
+also by the `2^{21}` partition oracle, `hnoRigid` over every vertex subset)
+and each at a guarded hard-stratum target-rank chart point (`dim R_a = 1`)
+with (Λ0d)/(Λ0g) holding and `g₁₄ ≠ 0`/`d g₁₄ ≠ 0`. **(Λ8)** classifies
+(Λ0i)'s exact coverage: exactly the three patterns `(0,0,0)`/`(1,0,0)`/
+`(0,0,1)`, never a two-hub-interior companion. **The correction**:
+`outer.py --patterns`' recorded "4 of 8 patterns realized in scope" is a
+**cap artifact** — its `V5e8` leg caps at 400 shapes of 19 041 length tuples
+and terminates inside split index 0 of 8; uncapped at the exhaustive bound
+`ℓ ≤ 5` the same family list realizes **7 of 8** patterns, `(1,1,0)`/
+`(0,1,1)`/`(1,0,1)` at 80 each on the very hub multigraph `--patterns`
+enumerated; only `(1,1,1)` is genuinely out of `|V°| ≤ 5` scope, now by
+(Λ6), a theorem. The 7002 and "4 of 8" figures stay true **as measured**;
+`outer.py` is untouched. **Λ-completeness stands as written; the (K-wit) row's
+residual sentence is recomputed, not re-graded (status word unchanged); no
+gap-map status moves; class uniformity untouched; (GR-15) untouched; no
+g-flank.** E1/E2/E3 all NO; E3 stays ARMED (by GBAL's entry-5 HIT), not
+fired; entry 1 untouched. The direction *extended* §(K-Λ), so its reservation
+was that section's unclaimed tails — **(Λ4)+ / Steps Λ8+**, consumed exactly
+as **(Λ4)–(Λ8) / Steps Λ8–Λ12** per the claim recorded at the top of this
+entry — and the owning section stays authoritative. One driver added
+(`w4/ltwo.py`, four modes: `--witness`/`--floor`/`--census`/`--validate`); no
+M2 leaf was expected or opened — the target was an exact-ℚ derivation, not a
+symbolic one. The **`Λ`-prefixed step scheme** (*Step Λ8* … *Step Λ12*,
+distinct from the existing bare *Step 8*) is this direction's own convention,
+per `notes/Pencil-labels.md`'s clause-4 diagnosis that bare step numbers
+collide with claim labels — recorded in §(K-Λ)'s registry row above, not a
+new minting rule.
+
 **One naming hazard the second fan-out created, recorded rather than renamed
 (L4).** The **direction letters A/B/C are re-used** between the 2026-08-05 fan-out
 (A = §(K-flank), B = §(K-Λ), C = §(K-pure)) and the 2026-08-06 one
@@ -737,7 +787,7 @@ Status keywords are pointers to the owning section's verdict block and the
 | §(K-slide-comb) | `SB-` | **(C6)**, **(C7)**, (C8); Steps D0–D5 | the combinatorial residue; (C6) = the packing half, (C7) = the repaired length-4 entry | (C6)/(C7) proven-informally; section refuted as a class statement |
 | §(K-flank) | `FL-` | **(F1)**; Steps F0–F7 | adversarial rank test at the uncovered flanks | half 2 proven-informally per shape |
 | §(K-pure) | `PC-` ✓ | (PC1), (PC2), (PC3), (PC5), (PC6), (PC-Z), (PC-OBS); (K-chord) *(named here)*; Steps P0–P9 | the pure condition of the limit carrier | (PC-Z)/(PC-OBS) proven-informally; direction C refuted |
-| §(K-Λ) | `Λ` ✓ | (Λ0), (Λ0a)–(Λ0i), (Λ0′), (Λ0f′), (Λ1), (Λ2), (Λ3), **(OUT)**; **driver blocks (M1)–(M4)** (`lambda1.m2`) and **(P1)–(P7)** (`lambda0.m2`) | the Λ-compression's quadric; (OUT) = the outer-line criterion, *Step 5a* | (Λ1) an identity over the function field; (K-Λ) refuted as an independent gap |
+| §(K-Λ) | `Λ` ✓ | (Λ0), (Λ0a)–(Λ0i), (Λ0′), (Λ0f′), (Λ1), (Λ2), (Λ3), **(OUT)**; **driver blocks (M1)–(M4)** (`lambda1.m2`) and **(P1)–(P7)** (`lambda0.m2`); **since 2026-08-19 (direction LTWO)** (Λ4)–(Λ8), Steps Λ8–Λ12 (**`Λ`-prefixed step scheme**, per clause 4 — *Step Λ8* is NOT the existing *Step 8*), driver modes `--witness`/`--floor`/`--census`/`--validate` (`w4/ltwo.py`) | the Λ-compression's quadric; (OUT) = the outer-line criterion, *Step 5a*; (since LTWO) the branch calculus on `G°` alone, the companion-cycle lemma and the size floor realizing item (vii)'s two-hub-interior population at all four patterns | (Λ1) an identity over the function field; (K-Λ) refuted as an independent gap; **(Λ4)–(Λ8) proven-informally** (Steps Λ8–Λ12, direction LTWO) — item (vii) REALIZED at a proven size floor, `(K-wit)` residual recomputed not re-graded, Λ-completeness unchanged |
 | §(K-dom) | `DM-` | **(D1)**–(D4); Steps D0–D7 | the dominance spike, differential of `H ↦ V_bc` | (D1)–(D3) proven; C1 refuted as a route |
 | §(K-σ) | `σ` ✓ | (σ1)–(σ7); Steps σ0–σ6, σ4b; hunt pools H4/H5 | the polarity as a symmetry of the split; **route σ** | (σ7) proven; route σ a CANDIDATE (its field scope settled by §(K-clos)) |
 | §(K-clos) | `AC-` ✓ | (AC-1)–**(AC-9)**; Steps Z0–Z8; driver blocks AC-C0/AC-E/AC-S/AC-U/AC-X/AC-Q/AC-R2/AC-F/AC-2c/AC-P (`closure.py`) | the over-`ℂ̄` question: the polarity's field scope, the σ-fixed grid locus, the `⋆`-eigen decoupling, the route-σ collapse, the char-0 descent | (AC-6) **refuted** as a class statement, open on the tight stratum; the rest proven-informally. **(AC-9)** (minted 2026-08-06, re-baselining slice S2): every σ-fixed body of degree `≥ 3` carries a coincident hinge line — **proven** by pigeonhole against *Step Z3*'s two-ruling-lines cap, measured 0/64 by the composite guard; it **qualifies (AC-3)** without weakening it |

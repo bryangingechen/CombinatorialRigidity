@@ -71,7 +71,7 @@ section's own verdict block and the gap-map row, which stay authoritative.
 | §(K-slide-comb) | 1728–2078 | **refuted as a class statement**; (C6)/(C7) proven-informally | `SB-` |
 | §(K-flank) | 2080–2651 | per shape, not a uniform gap; half 2 proven-informally | `FL-` |
 | §(K-pure) | 2653–3229 | direction C **refuted**; (PC-Z)/(PC-OBS) proven-informally; **(K-chord)** the successor | `PC-` |
-| §(K-Λ) | 3231–4190 | **refuted as an independent gap**; (Λ1) an identity; **(OUT)** lives here | `Λ` |
+| §(K-Λ) | 3231–4579 | **refuted as an independent gap**; (Λ1) an identity; **(OUT)** lives here; item (vii) **REALIZED**, floor-classified | `Λ` |
 | §(K-dom) | 4192–4598 | dominance holds at every probed habitat; **C1 not a route**; (D2) gains its mechanism from §(K-ann) | `DM-` |
 | §(K-σ) | 4600–5332 | **route σ a CANDIDATE** — the one live candidate; its *Field scope* is settled by §(K-clos), and two of its refutations reverse there | `σ` |
 | §(K-clos) | 5334–6009 | the field question **settled** ((AC-1)/(AC-7)); **(AC-6) refuted as a class statement**, open only on the tight stratum | `AC-` |
@@ -230,7 +230,7 @@ all in this file.
 | **(K-tight)** | (K-tight) 5; (K-σ) | **open**, true with strong evidence; no genuine escape failure anywhere in the corrected numerics **on the hard stratum `dim R_a = 1`** (and above it) — the claim is **false without that qualifier**: §(K-flank) F5(d) exhibits 5 legal nondegenerate target-rank `G′` seeds at `P21` with `s₀ = 1`, `dim R_a = 0`, `dim U = 1`, which the Step-2.3 calculus *proves* fail at every placement (8/8 observed each); `hK`'s ∃-form is untouched (30/35 escape). **A CANDIDATE closure now exists and this row does NOT move on it**: §(K-σ)'s **route σ** (route A run at the dual seed `σu`) would close the hard stratum *length-free* via the 6-dimensional span `Λ²Π̂(b) + Λ²Π̂(c) + α_{pt(b)} = K⁶` (or its `c`-mirror — the side condition is **free** by (σ7)), but it rests on four named obligations, the first of which — σ-nondegeneracy of the transported seed — is **NOT implied**: 45 constructed hard-stratum, primally-nondegenerate seeds violate the dual conjuncts (`sigma.py --hunt`, 2026-08-05), so the earlier "observed 47/47" was genericity. Two of the four conjuncts are free **at `ℝ`** (1 by the landed `hasPencilPanelRealization_mapExtensor_screwComplementIso`, 3 by the primal conjuncts when no two hubs are adjacent) and the steering repair is exhibited exactly on a chart line. **FIELD-SCOPE CAVEAT (2026-08-05, recorded not settled):** route σ is an `ℝ`-only construction — `screwComplementIso` is `ScrewSpace ℝ 2 ≃ₗ[ℝ] ScrewSpace ℝ 2` — aimed at an `hK` quantified at general `[Infinite K]`, so this candidate closes the row only at `ℝ` unless the polarity generalizes (§(K-σ) *Field scope*) — **which since 2026-08-06 it DOES**, at the price of one section with every input landed (§(K-clos) (AC-1)), and `ℝ` is moreover the **narrowest** field choice rather than a safe default, since `hK` over `ℂ̄` implies it over every infinite characteristic-0 field and not conversely (§(K-clos) (AC-7)) | (K-move), (K-pitch), **or** discharging §(K-σ) *Step σ5* obligation 1 — the named repair is `exists_common_seed_pencilRow_and_polynomials` (`Engine.lean:476`), whose remaining design decisions are **which maximal minor** to fix per LI conjunct (they are unions of basic opens, not single hypersurface complements) **and at which field** (`ℝ`, instantiating the headline first, or general `K`, which needs a general-`K` polarity). **`exists_pencilSeed_of_nondeg` is NOT the bridge** — it takes obligation 1 as a hypothesis |
 | **(K-move)** | (K-tight) 5 | **open — the sharpest gap** on the stress side; N8 refutes block-determined `[r]` at both probed families | `[r]`-as-chart-rational-function infrastructure (option B, **not** commissioned) |
 | **(K-pitch)** | (K-pitch); (K-pure) P3; (K-Λ) | (T1)–(T5) **proven-informally**; **closed** at length-3-companion splits (bracket monomial, θ(3,3,6)); uniform form **open**. Step 2's (F-A)/(F-B) dichotomy is **upgraded to the algebraic form (PC-Z)** (§(K-pure), proven-informally): `Q(z) = 0 ⟺ V_bc` meets `α(a)` or `Λ²π̂`, the only two maximal totally isotropic 3-spaces containing `T` — the exact target of any future non-vanishing argument (its *reason* is Witt's theorem — §(K-Λ) *Step 1*). The `ℓ = 3` verdict is unchanged but now has a **two-line proof that *explains* its five brackets**: they are the coordinate form of `S ∩ α_a = S ∩ β_{π_a} = 0` (§(K-Λ) *Step 1*(i)). The bracket **closed form extends from `ℓ = 3` to `ℓ = 4`**, as a **product of two bracket-linear forms in the far covector** ((Λ1), since 2026-08-05 a **symbolic identity over the function field** — `M2 --script notes/scripts/m2/lambda1.m2`) — a positive standalone result, but **not** a non-vanishing theorem: its zero locus is nonempty exactly at the two structurally meaningful configurations | one seed with `Q(z) ≠ 0` per (graph, split), uniformly — by (PC-Z), one seed where `V_bc` misses **both** isotropic 3-spaces |
-| **(K-wit)** | (K-pitch) 3; (K-Λ) 3–6 | **open**; the weakest exact form — per habitat+split *equivalent* to the escape at a good seed — and now the **single live form of the pitch route at companion splits**: it inherits (K-Λ)'s status and gains a *necessary-and-sufficient* companion form (§(K-Λ) *Theorem (Λ-completeness at length-4 companions)*: the escape holds at some target-rank seed **iff** the pitch certificate is nonzero at some target-rank seed). The **two-point failure locus is this row's content** — `{V_bc ⊥_B C(M)}` (the failure itself) and `{V_bc ⊥_B C(bc)}` (route A escapes, `★r ∝ C(bc)`); since 2026-08-05 those two points are known to be **exactly a σ-orbit** (§(K-σ) (σ5)), so the recorded asymmetry between their consequences is a *one-frame artifact*, not a broken symmetry — and if §(K-σ)'s candidate route σ stands, this row's trichotomy loses its failure branch and (K-wit) leaves the escape's critical path. Two load-bearing side conditions are newly **named**, neither present in the prior formulation: **(Λ0d)** panel non-incidence in **both** directions (`pt(c) ∉ Π(b)` *and* `pt(b) ∉ Π(c)`; witness θ(3,4,5) seed 345, where `span_t ω⁻` collapses `3 → 1`) and **(Λ0f)**, now **PROVEN at the generic point and WIDER than first stated** (2026-08-05, `m2/lambda0.m2`): the exact criterion is **(Λ0f′)** `span_t ω⁺ = 3 ⟺ p⁺₂p⁺₃·g₁₃g₁₄g₂₄ ≠ 0` (and `q₂q₃·g₁₃g₁₄g₂₄ ≠ 0` for `ω⁻`), where `g₁₃g₂₄ ≠ 0` is `rank Q|_S = 4` and **`g₁₄ = [b,x₁,x₃,c] ≠ 0` was asserted nowhere** — the two outer companion lines must not meet. Since 2026-08-05 (§(K-Λ) *Step 3a*, `outer.py`) that clause is **located, not merely named**: geometrically it says the two marked points `C₁ ∩ M`, `C₄ ∩ M` of the meet line coincide **(Λ0g)**; wherever a companion end is free it is **implied by (Λ0d)** **(Λ0i)** (3628/4280 swept pairs); **no class habitat in scope forces it** (`g₁₄ ≠ 0` at 4280/4280 exact pairs over 1357 class shapes, `d g₁₄ ≠ 0` at 684/684 chart points), so **Λ-completeness stands as written**; but it *is* reachable at a target-rank `dim R_a = 1` seed of all four habitats by an explicit chart move, both spans dropping `3 → 2`, so the clause is load-bearing. Residual: class shapes with **two or more hubs on the companion interior**, which no swept family realizes. **New 2026-08-05, a sufficient condition rather than a status change:** since `p⁺` and `q` both have their *outer* entries vanishing structurally, the whole (Λ2) bad set lies on the single line `{λ₁ = λ₄ = 0}` of `P(S*)`, so **(OUT)** (§(K-Λ) *Step 5a*) — *either outer companion line not a relative twist* — already forces the escape by pitch at `k = 4`; it is conditional on (Λ0) in full. **Its hypothesis is MEASURED since 2026-08-06 (§(K-out)), and the measurement cuts both ways**: available pointwise (356/357 POOL-G, 270/270 POOL-S, every probed (split, companion) pair) but **never automatic** — (OC-3) proves `{λ₁ = 0}` is nonempty on *every* class shape's chart, so no counting argument can ever discharge (OUT), and the residual **(OC-8)** is a rank *lower* bound on the whole-graph chart | one `H`-motion pairing non-trivially with `C(M)`, uniformly — **or, at length-4 companions only, the strictly cheaper (OUT)**: `C₁ = C(b x₁) ∉ V_bc` or `C₄ = C(x₃ c) ∉ V_bc`, a far-side, panel-free, `a`-free condition (§(K-Λ) *Step 5a*; conditional on (Λ0d) + the widened (Λ0f′), sufficient and never necessary, and a rank *lower* bound so §2.3's asymmetry is relocated, not evaded). **Caveat, mandatory since 2026-08-06 — §(K-out) (OC-3):** (OUT)'s hypothesis is **never automatic**, its bad locus being nonempty on the chart of every class shape in scope (one marked direction of `x₁`'s pencil, since `dim R₁ = 5` and `dim L_b = 2`), so this route can be discharged only by a genericity argument on the whole-graph chart — **(OC-8)** — and **never by a count**; what is delivered is *availability*, measured pointwise, not uniformity — and since §(K-out) *Steps O9–O12* (2026-08-06, direction O) the bad locus at a **degree-3 hub** is exactly the coincident-hinge locus together with **one explicit line `C₀` of the panel** (§(K-out) (OC-12)/(OC-13)), the first rejected by every harness gate and the second **reachable by construction** (§(K-out) (OC-14)), so (OC-8) there is a containment question with no rank condition left. **New 2026-08-06, a second `k = 4`-only sufficient route: §(K-ann) (ANH-R1)** — `τ_β ≠ 0` at the pencil placement, i.e. `H/P − β` is pencil-rigid. Its consumer is the class-uniform **recipe** (ANH-7) (one named far-chart move, one 4-point bracket, 89 % coverage), and by §(K-Λ)'s Λ-completeness discharging it would close the **whole length-4-companion stratum**, not one shape. It is **relocation #4** and, like (OUT), a rank *lower* bound — §2.3 relocated onto a smaller contracted graph, not evaded; **whether it is easier than its parent or merely smaller is OPEN**. **Since §(K-out) *Steps O13–O18* (2026-08-19, direction OCON):** the genericity argument (OC-3) demands needs **no hard-stratum qualifier** ((OC-17)) — its incremental content is exactly one chart point, anywhere on the (shape, split) chart, at which the welded far framework `H/X` is infinitesimally rigid ((OC-18)/(OC-19)) |
+| **(K-wit)** | (K-pitch) 3; (K-Λ) 3–6 | **open**; the weakest exact form — per habitat+split *equivalent* to the escape at a good seed — and now the **single live form of the pitch route at companion splits**: it inherits (K-Λ)'s status and gains a *necessary-and-sufficient* companion form (§(K-Λ) *Theorem (Λ-completeness at length-4 companions)*: the escape holds at some target-rank seed **iff** the pitch certificate is nonzero at some target-rank seed). The **two-point failure locus is this row's content** — `{V_bc ⊥_B C(M)}` (the failure itself) and `{V_bc ⊥_B C(bc)}` (route A escapes, `★r ∝ C(bc)`); since 2026-08-05 those two points are known to be **exactly a σ-orbit** (§(K-σ) (σ5)), so the recorded asymmetry between their consequences is a *one-frame artifact*, not a broken symmetry — and if §(K-σ)'s candidate route σ stands, this row's trichotomy loses its failure branch and (K-wit) leaves the escape's critical path. Two load-bearing side conditions are newly **named**, neither present in the prior formulation: **(Λ0d)** panel non-incidence in **both** directions (`pt(c) ∉ Π(b)` *and* `pt(b) ∉ Π(c)`; witness θ(3,4,5) seed 345, where `span_t ω⁻` collapses `3 → 1`) and **(Λ0f)**, now **PROVEN at the generic point and WIDER than first stated** (2026-08-05, `m2/lambda0.m2`): the exact criterion is **(Λ0f′)** `span_t ω⁺ = 3 ⟺ p⁺₂p⁺₃·g₁₃g₁₄g₂₄ ≠ 0` (and `q₂q₃·g₁₃g₁₄g₂₄ ≠ 0` for `ω⁻`), where `g₁₃g₂₄ ≠ 0` is `rank Q|_S = 4` and **`g₁₄ = [b,x₁,x₃,c] ≠ 0` was asserted nowhere** — the two outer companion lines must not meet. Since 2026-08-05 (§(K-Λ) *Step 3a*, `outer.py`) that clause is **located, not merely named**: geometrically it says the two marked points `C₁ ∩ M`, `C₄ ∩ M` of the meet line coincide **(Λ0g)**; wherever a companion end is free it is **implied by (Λ0d)** **(Λ0i)** (3628/4280 swept pairs); **no class habitat in scope forces it** (`g₁₄ ≠ 0` at 4280/4280 exact pairs over 1357 class shapes, `d g₁₄ ≠ 0` at 684/684 chart points), so **Λ-completeness stands as written**; but it *is* reachable at a target-rank `dim R_a = 1` seed of all four habitats by an explicit chart move, both spans dropping `3 → 2`, so the clause is load-bearing. Residual **ANSWERED 2026-08-19** (§(K-Λ) *Steps Λ8–Λ12*): such shapes **EXIST**, at all four patterns, with a **proven size floor** ((Λ6): `|V| ≥ 21` at two interior hubs, `≥ 26` at three) attained by the witnesses `LT21a`/`LT21b`/`LT26` — each at a hard-stratum target-rank chart point with (Λ0d), (Λ0g), `g₁₄ ≠ 0` and `d g₁₄ ≠ 0`; **(Λ0i) covers none of them** ((Λ8)). Λ-completeness stands as written; the live residual is the **uniform** `g₁₄` statement over that named family. **New 2026-08-05, a sufficient condition rather than a status change:** since `p⁺` and `q` both have their *outer* entries vanishing structurally, the whole (Λ2) bad set lies on the single line `{λ₁ = λ₄ = 0}` of `P(S*)`, so **(OUT)** (§(K-Λ) *Step 5a*) — *either outer companion line not a relative twist* — already forces the escape by pitch at `k = 4`; it is conditional on (Λ0) in full. **Its hypothesis is MEASURED since 2026-08-06 (§(K-out)), and the measurement cuts both ways**: available pointwise (356/357 POOL-G, 270/270 POOL-S, every probed (split, companion) pair) but **never automatic** — (OC-3) proves `{λ₁ = 0}` is nonempty on *every* class shape's chart, so no counting argument can ever discharge (OUT), and the residual **(OC-8)** is a rank *lower* bound on the whole-graph chart | one `H`-motion pairing non-trivially with `C(M)`, uniformly — **or, at length-4 companions only, the strictly cheaper (OUT)**: `C₁ = C(b x₁) ∉ V_bc` or `C₄ = C(x₃ c) ∉ V_bc`, a far-side, panel-free, `a`-free condition (§(K-Λ) *Step 5a*; conditional on (Λ0d) + the widened (Λ0f′), sufficient and never necessary, and a rank *lower* bound so §2.3's asymmetry is relocated, not evaded). **Caveat, mandatory since 2026-08-06 — §(K-out) (OC-3):** (OUT)'s hypothesis is **never automatic**, its bad locus being nonempty on the chart of every class shape in scope (one marked direction of `x₁`'s pencil, since `dim R₁ = 5` and `dim L_b = 2`), so this route can be discharged only by a genericity argument on the whole-graph chart — **(OC-8)** — and **never by a count**; what is delivered is *availability*, measured pointwise, not uniformity — and since §(K-out) *Steps O9–O12* (2026-08-06, direction O) the bad locus at a **degree-3 hub** is exactly the coincident-hinge locus together with **one explicit line `C₀` of the panel** (§(K-out) (OC-12)/(OC-13)), the first rejected by every harness gate and the second **reachable by construction** (§(K-out) (OC-14)), so (OC-8) there is a containment question with no rank condition left. **New 2026-08-06, a second `k = 4`-only sufficient route: §(K-ann) (ANH-R1)** — `τ_β ≠ 0` at the pencil placement, i.e. `H/P − β` is pencil-rigid. Its consumer is the class-uniform **recipe** (ANH-7) (one named far-chart move, one 4-point bracket, 89 % coverage), and by §(K-Λ)'s Λ-completeness discharging it would close the **whole length-4-companion stratum**, not one shape. It is **relocation #4** and, like (OUT), a rank *lower* bound — §2.3 relocated onto a smaller contracted graph, not evaded; **whether it is easier than its parent or merely smaller is OPEN**. **Since §(K-out) *Steps O13–O18* (2026-08-19, direction OCON):** the genericity argument (OC-3) demands needs **no hard-stratum qualifier** ((OC-17)) — its incremental content is exactly one chart point, anywhere on the (shape, split) chart, at which the welded far framework `H/X` is infinitesimally rigid ((OC-18)/(OC-19)) |
 | **(K-pitch-∞)** | (K-pitch) 4 | **open**; sufficient for (K-pitch) at a split; all five quartic coefficients nonzero at 4/4 habitats | `Q(z_∞) ≢ 0` on the `a`-free chart |
 | **(K-Λ)** | (K-Λ) 1–6; (K-pitch) 5b | **REFUTED as an independent gap** (§(K-Λ), fan-out direction B): at a length-4-companion split it is *equivalent* to **(K-wit)** (Steps 3–5), so **closing (K-Λ) *is* closing (K-wit)** and no local argument can close it. `Φ_loc`'s non-degeneracy is **PROVEN, class-uniformly** — `Φ_loc` is always a **rank-2** form, the product of two distinct rational linear forms ((Λ1), an **identity over the function field** since 2026-08-05: `m2/lambda1.m2`, the harness's first Macaulay2 driver; it needs none of (Λ0) and none of the panel data) — so the previously-flagged "`Φ_loc ≡ 0`" degeneration is **impossible** and the "local quadric" is a pair of rational hyperplanes. Using (T4)'s `a`-line freedom, the far covectors bad for the whole line shrink to **two points**, with failure locus `{V_bc ⊥_B C(M)}` (= the genuine (T3) failure) and `{V_bc ⊥_B C(bc)}` (= route A escapes outright, `★r ∝ C(bc)`). Its exemplar θ(3,4,5) is separately closed by a reduced-support slide witness (§(K-pure) P7) | — refuted as an independent gap; the live form is **(K-wit)** (row above) |
 | **(K-slide)/(S1)** | (K-slide) 1–4 | **(S1) proven-informally**; per-member (K-slide) **witness-decidable and discharged at every probed member** (23/23, 7 members, 11 split-classes) — `K4`/`W4` control habitats closed at **every** split. Status unchanged by the sixth pass, but (S1) **remark (iii)'s support freedom is promoted from a proof convenience to *the* load-bearing parameter**: `E_chord(Σ)` shrinks with `Σ`, so the support choice alone decides whether the limit is pitched (§(K-pure) P1/P7) | — settled per member; the class form is (K-slide-cl) |
@@ -3887,6 +3887,339 @@ excluded at `k ≤ 5` by `C(M) ∉ S`, unavailable at `k = 6`. This remark is
 `rank Q|_{V_bc} = 3` and `C(M) ∈ S ⟺ k = 6` are; the ruled-surface case
 analysis is not). **It is recorded as a lead, not as a proven step.**
 
+> **Step numbering, flagged because it is new in this section.** §(K-Λ)'s
+> existing steps are bare numbers (*Step 0* … *Step 8*, plus *Step 3a* and
+> *Step 5a*), and `notes/Pencil-labels.md`'s measured diagnosis clause 4
+> records that bare step numbers collide with claim labels — §(K-Λ) already
+> mints driver blocks (P1)–(P7) against §(K-pure)'s *Steps P0–P9*. The steps
+> below therefore use the **`Λ`-prefixed form**: ***Step Λ8*** is a **new**
+> step and is **not** the existing *Step 8*. Cite them as *Step Λ8* … *Step
+> Λ12*, never as a bare parenthesized token ((L2)).
+
+### Step Λ8 — the branch calculus: class membership is a statement about `G°` alone
+
+Everything §(K-Λ) needs about *which* companion shapes exist is decided one
+level below the subdivision. Let `G` be feasible ((R4)) and 2-edge-connected,
+so that `G` is the subdivision of its **hub multigraph** `G°` (vertices = the
+hubs, `n° := |V°|`, edges = the branches, `e° := |E°|`) with branch lengths
+`ℓ : E° → ℤ_{≥1}`; write `c(F) := |F| − |W(F)| + comps(F)` for the cycle rank
+of a branch subset `F ⊆ E°` on its incident hub set `W(F)`, and
+`c° := c(E°) = e° − n° + 1`.
+
+> **(Λ4) the branch calculus** *(proven-informally; the reduction is the
+> classical one, the `G°`-form is what is new here)*. With the notation above:
+>
+> **(i)** `G` is **tight** (`5|E| = 6(|V| − 1)`) ⟺ `Σ_{e ∈ E°} ℓ_e = 6·c°`;
+> and then `|V| = 5c° + 1`, `|E| = 6c°`.
+> **(ii)** Given (i), `def(G) = 0` ⟺ `Σ_{e ∈ F} ℓ_e ≥ 6·c(F)` for **every**
+> branch subset `F ⊆ E°`.
+> **(iii)** Given (i) and (ii), `hnoRigid` ⟺ that inequality is **strict** for
+> every **proper** `F ⊊ E°`.
+>
+> So the class predicate — tight ∧ `def = 0` ∧ `hnoRigid` ∧ `hcard` ∧
+> triangle-free — is a finite statement about the pair `(G°, ℓ)`, with `hcard`
+> reading *"the length-1 branches form a subgraph of maximum degree ≤ 2"* and
+> triangle-freeness a **consequence**, not a hypothesis.
+
+*Proof.* Write `f(W) := 5|E(W)| − 6(|W| − 1)` (*Shared dictionary*). (i) is
+`f(V) = 0` rewritten: `|V| = n° + Σ(ℓ_e − 1)` and `|E| = Σℓ_e`.
+
+For (ii): `def(G) = 6(|V| − 1) − 5|E| + max_P Σ_{parts} f(part)` and, under
+(i), `f(V) = 0`, so `def(G) = 0` ⟺ `Σ_{parts} f ≤ 0` for every partition.
+Singletons have `f = 0`, so taking `P = {W} ∪ singletons` gives `f(W) ≤ 0` for
+every `W`, and conversely that suffices. Now `f(W ∖ {u}) = f(W) − 5·deg_{G[W]}(u)
++ 6`, so any `f`-maximizer has `deg_{G[W]} ≥ 2` throughout; a degree-2 vertex
+of `G` in such a `W` therefore brings both its neighbours, so `W` is a **union
+of whole branches**. On a branch union `F` one computes directly
+`f = 6·c(F) − Σ_F ℓ`. Hence `f ≤ 0` everywhere ⟺ `Σ_F ℓ ≥ 6c(F)` for every
+branch subset.
+
+For (iii): under (i)+(ii) every `W` has `f(W) ≤ 0`, so
+`def(G[W]) = −f(W)` and `G[W]` is rigid ⟺ `f(W) = 0`; the same maximizer
+argument makes every such `W` a branch union. ∎
+
+**Four consequences, one line each, and all of them are facts the arc already
+uses:**
+
+- **girth `≥ 7`.** `F` a cycle of `G°` has `c(F) = 1`, so `Σ_F ℓ ≥ 7` by
+  (iii) — i.e. every cycle of `G` has length `≥ 7`. (Sparsity alone gives
+  `≥ 6`; `hnoRigid` removes the rigid `C₆`.) In particular triangle-freeness
+  and simplicity of `G` are consequences, and `G°` is **loopless**.
+- **(SD-6) re-derived.** `F = E° ∖ {β}` has `c(F) = c° − 1` (no bridges, by the
+  same count), so `6c° − ℓ_β > 6(c° − 1)`, i.e. **`ℓ_β ≤ 5`**. This is
+  §(K-ann) (ANH-8)'s statement with a two-symbol proof.
+- **(D3) re-derived.** The split branch (length 3) plus a companion of length
+  `k` is a cycle, so `3 + k ≥ 7`, i.e. `k ≥ 4` — and `k = 4` is the
+  **equality** case, which is the calibration `hnoRigid` is tight at.
+- **parallel branches.** Two parallel branches have `Σℓ ≥ 7`; three have
+  `Σℓ ≥ 13`; so multiplicity is at most 5.
+
+*Standing of (Λ4).* It is a **reformulation**, not new mathematics: (ii)/(iii)
+are the branch-union reduction that `kslide.no_rigid_branch_union` already
+codes. What it buys is that the class predicate becomes cheap enough to
+enumerate **exhaustively** rather than sampled or capped — which is what
+*Step Λ11* does — and that *Step Λ9* can be stated as one inequality.
+
+### Step Λ9 — the companion-cycle lemma, and the size floor it forces
+
+Fix a class shape `G`, a **split** (a length-3 branch `e₀` whose two ends
+`b, c` are hubs — by *Standing notation* and `widened.orient`, eligible splits
+are exactly the length-3 branches between two hubs, in either orientation) and
+a **length-4 companion** `P = b–x₁–x₂–x₃–c`. Let
+
+> `Z := {e₀} ∪ {branches of P}`, `W₀ := ` its hub set, `j := #{i : x_i a hub}`.
+
+Because `P` traverses whole branches, `Z` has exactly `j + 2` branches on
+`j + 2` hubs, `c(Z) = 1`, and `Σ_Z ℓ = 3 + 4 = 7` — it is (D3)'s proper `C₇`,
+seen in `G°`.
+
+> **(Λ5) the companion-cycle lemma** *(proven-informally)*. **No branch of
+> `G°` outside `Z` has both of its ends in `W₀`** — unless `E° = Z ∪ {β}` and
+> `V° = W₀`, which forces `j = 0` and `G = θ(3,4,5)`.
+
+*Proof.* Let `β ∉ Z` have both ends in `W₀`. Then `F := Z ∪ {β}` is connected
+with `c(F) = 2` and `Σ_F ℓ = 7 + ℓ_β ≤ 12` by (Λ4)'s `ℓ ≤ 5`. (Λ4)(iii)
+demands `Σ_F ℓ > 12` whenever `F` is proper, so `F = E°` and `W₀ = V°`; then
+(Λ4)(i) gives `7 + ℓ_β = 6·c° = 12`, `ℓ_β = 5`, `c° = 2`, `|V| = 11`. Every
+hub of `W₀` has `Z`-degree 2 and gains at most 1 from `β`, so at most two hubs
+reach degree 3 — hence `|W₀| = j + 2 = 2`, `j = 0`, and `G` is a θ-graph with
+branch lengths `(3, 4, 5)`. ∎
+
+*(The exceptional case is not decoration: it is exactly **θ(3,4,5)**, the
+arc's own §(K-Λ) exemplar — `G°` is then three parallel branches of lengths
+3, 4, 5. Consistent with §(K-out) (OC-10), which reaches the same shape by an
+independent route; that is a cross-check, not a second result, and this pass
+does not re-derive (OC-10).)*
+
+> **(Λ6) the size floor** *(proven-informally)*. Off the θ(3,4,5) boundary,
+> put `t := n° − (j + 2)` and `m' := e° − (j + 2)`. Then
+>
+> `t ≥ 1`, `m' ≥ j + 2`, `2m' ≥ (j + 2) + 3t`,
+>
+> hence `n° ≥ j + 3` and `c° ≥ ⌈(2j + 7)/3⌉`, i.e. `|V| ≥ 5c° + 1` and
+> `|E| ≥ 6c°`:
+>
+> | `j` | `n° ≥` | `c° ≥` | `|V| ≥` | `|E| ≥` |
+> |---|---|---|---|---|
+> | 0 | 3 | 3 | 16 | 18 |
+> | 1 | 4 | 3 | 16 | 18 |
+> | **2** | **5** | **4** | **21** | **24** |
+> | **3** | **6** | **5** | **26** | **30** |
+>
+> (The `j = 0` row is the off-boundary bound; the (Λ5) boundary case itself is
+> θ(3,4,5), with `n° = 2`, `c° = 2`, `|V| = 11`.)
+>
+> Moreover at `t = 1` the hub multigraph is **forced**: the `j + 2` branches
+> outside `Z` all join the unique non-frame hub to the `j + 2` hubs of `Z`,
+> one each, so `e° = 2j + 4`, `n° = j + 3`, `c° = j + 2`, and `G°` is the
+> **wheel** on the `(j+2)`-cycle `Z` — for `j = 2` the wheel `W₄`, which is
+> `K5` minus a perfect matching (`pencil_escape.K5_minus_matching`'s base
+> graph), and for `j = 3` the wheel `W₅`.
+
+*Proof.* Each hub of `W₀` has `Z`-degree 2 and needs degree `≥ 3`, so carries
+a branch outside `Z`; by (Λ5) that branch's other end is off `W₀`, whence
+`t ≥ 1` and `m' ≥ |W₀| = j + 2` (each outside branch supplies at most one
+`W₀`-end). Counting ends of the `m'` outside branches: `2m' ≥ (j+2) + 3t`,
+since the `t` non-frame hubs draw all `≥ 3` of their incidences from outside
+`Z`. Now `c° = e° − n° + 1 = m' − t + 1`. The first bound gives
+`c° ≥ j + 3 − t`, i.e. `t ≥ j + 3 − c°`; substituting into
+`c° ≥ (j + 2 + 3t)/2 − t + 1 = (j + 4 + t)/2` gives `2c° ≥ j + 4 + j + 3 − c°`,
+i.e. `3c° ≥ 2j + 7`. At `t = 1` the only non-frame hub is `h`, `G°` is
+loopless (girth `≥ 7`), so every outside branch is `h`–`W₀`; `m' ≥ j + 2` and
+one per `W₀`-hub forces `m' = j + 2` exactly, with no parallel pair. ∎
+
+**What (Λ6) explains.** The families the arc swept are θ (`n° = 2`), `K4` and
+`K4 + parallel` (`n° = 4`), and the three simple hub graphs on `n° = 5`. By
+(Λ6) a `j = 2` companion needs `n° ≥ 5` **and** — combined with (Λ5) at
+`t = 1` — `e° = 8`, i.e. the wheel `W₄`; and a `j = 3` companion needs
+`n° ≥ 6`, so it **cannot** appear in any `|V°| ≤ 5` family at all. That is one
+half of the recorded "4 of 8 patterns" boundary turned into a theorem. The
+other half is *Step Λ11*'s cap.
+
+### Step Λ10 — the witnesses: item (vii) is REALIZED
+
+The (Λ6) floors are **attained**, at all four patterns, by class shapes that
+also carry a hard-stratum target-rank pencil-chart point.
+
+> **(Λ7) the two-hub-interior witnesses** *(constructed and harness-certified;
+> the class predicate is the tracked oracle's, the geometry is one guarded
+> chart point per split)*. The three shapes below are class shapes — tight,
+> `def = 0`, `hnoRigid`, triangle-free, `hcard` — and each carries a length-4
+> companion with `j ≥ 2` interior hubs at an eligible split:
+>
+> | name | `G°` | `|V|`, `|E|` | `n°`, `e°`, `c°` | patterns realized |
+> |---|---|---|---|---|
+> | **`LT21a`** | wheel `W₄` | 21, 24 | 5, 8, 4 | `(1,1,0)` and `(0,1,1)` |
+> | **`LT21b`** | wheel `W₄` | 21, 24 | 5, 8, 4 | `(1,0,1)` (both orientations) |
+> | **`LT26`** | wheel `W₅` | 26, 30 | 6, 10, 5 | `(1,1,1)` (both orientations) |
+>
+> In `kslidecomb`'s `specs` form (`specs[0]` the length-3 split branch,
+> hubs `b = 0`, `c = 1`, companion interior hubs `2, 3(, 4)`, non-frame hub
+> last):
+>
+> ```
+> LT21a  [(0,1,3), (0,2,1), (2,3,1), (3,1,2), (4,0,5), (4,2,5), (4,3,5), (4,1,2)]
+> LT21b  [(0,1,3), (0,2,1), (2,3,2), (3,1,1), (4,0,5), (4,2,5), (4,3,4), (4,1,3)]
+> LT26   [(0,1,3), (0,2,1), (2,3,1), (3,4,1), (4,1,1),
+>         (5,0,3), (5,2,5), (5,3,5), (5,4,5), (5,1,5)]
+> ```
+>
+> At each of the **6** (witness, split) pairs a guarded pencil-chart point of
+> `G′` — `outer.chart_point`, i.e. `widened.place_pencil_general` plus the
+> composite guard `repin.star_generic` plus `verify_pencil_witness` — is found
+> **on the first draw** from `random.Random(20260819)`, and there:
+>
+> - the placement is at **target rank** on the **hard stratum**,
+>   `dim R_a = 1` (`outer.stratum_at`: rank 114 at `|V| = 21`, 144 at 26);
+> - **(Λ0d)** holds in both directions;
+> - **(Λ0g)** is asserted in both directions (`outer.geom_checks`), so the
+>   *Step 3a* geometry is confirmed on the previously-unrealized patterns;
+> - **`g₁₄ ≠ 0`**, and **`d g₁₄ ≠ 0`** in 8–10 of the 46 (resp. 60) directions
+>   of the FIXED-scoping chart tangent space (`dominance.build_chart`).
+>
+> **Class membership is certified by more than one oracle, and for the two
+> `|V| = 21` witnesses `hnoRigid` is certified beyond branch granularity.**
+> All three pass `kslidecomb.shape_ok` (the pebble-game `def` oracle plus
+> `kslide.no_rigid_branch_union`), are 2-edge-connected, and have
+> `saferes.treepack_deficiency = 0` (the matroid-union oracle). At
+> `|V| = 21` the `2^|V|` partition oracle `kbare_common.exact_deficiency`
+> is affordable, and over **all** `2^21` vertex subsets it reports `def = 0`,
+> `f(V) = 0`, **zero** subsets with `f > 0` (full 5/6-sparsity), **zero**
+> proper subsets with `f = 0`, and `max f` over proper `|W| ≥ 2` equal to
+> **`−1`**. That is `hnoRigid` verified against every vertex subset, not only
+> against branch unions — an independent confirmation of (Λ4)'s reduction on
+> the witnesses. `LT26` (`|V| = 26`, `2^26` subsets) is **not** run through
+> that oracle: its `hnoRigid` rests on the two affordable oracles plus branch
+> granularity, and that is disclosed rather than smoothed over.
+>
+> `LT21a` / `LT21b` / `LT26` are keyed to `|V|`, **not** to `|E|`: their
+> `|E|` are 24, 24, 30, and the arc's `NT<|E|>` convention is already taken by
+> `NT24` and `NT30`.
+
+**The naming of the residual population, made exact.** Since `j ≥ 2` forces
+two of `x₁, x₂, x₃` to be hubs, at least one of `x₁, x₂` is a hub and at least
+one of `x₂, x₃` is. Reading *Step 3a*'s (Λ0i):
+
+> **(Λ8) (Λ0i)'s exact coverage** *(proven-informally; one line)*. `x₁` is
+> (Λ0i)-free ⟺ neither `x₁` nor `x₂` is a hub, and `x₃` is free ⟺ neither
+> `x₃` nor `x₂` is. So **(Λ0i) covers exactly the three patterns `(0,0,0)`,
+> `(1,0,0)`, `(0,0,1)`**, and it covers **no** companion with `j ≥ 2` and none
+> with `x₂` a hub. In particular the `g₁₄` clause of (Λ0f′) is **never**
+> implied by (Λ0d) at a two-hub-interior companion, and *Step 3a*'s 3628/4280
+> free-end discharge extends to none of them.
+
+*(This is the general classification behind *Step 3a*'s measured sentence
+"the 652 uncovered pairs are all the single hub pattern `x₂` a hub": that
+sentence is true **of the swept scope**, where — see *Step Λ11* — the `j ≥ 2`
+patterns were hidden by a cap. The (Λ0i)-uncovered class is five patterns, not
+one.)*
+
+### Step Λ11 — the exhaustive census, and the cap that hid three patterns
+
+`outer.py --patterns` reported *4 of 8 patterns realized, at a widened length
+bound of 8, cap 400 shapes per hub multigraph* — a coverage boundary, as it
+says. **Three of the four missing patterns were inside its own scope.**
+
+**The census, uncapped.** By (Λ4) the class predicate is a `2^{e°}` test on
+`(G°, ℓ)`, and by (Λ4)'s `ℓ ≤ 5` a length bound of 5 is **exhaustive**, not a
+cap. Running exactly the `--patterns` family list — θ3, θ4, `K4`,
+`K4 + parallel`, and the three simple hub graphs on 5 hubs — over **all**
+length assignments with a length-3 split branch (`ltwo.py --census`;
+convention: one row per (hub multigraph, length assignment, split **branch**,
+companion), so each length-3 branch is counted once rather than once per
+orientation — the totals are **not** comparable with `--patterns`' 7002):
+
+| leg | (shape, split) pairs with a length-4 companion | patterns |
+|---|---|---|
+| `theta3` | 6 | `(0,0,0)`: 6 |
+| `theta4` | 0 | — |
+| `K4` | 540 | `(1,0,0)`/`(0,1,0)`/`(0,0,1)`: 180 each |
+| `K4+par` | 740 | `(0,0,0)`: 380; the three one-hub patterns: 120 each |
+| **`V5e8`** (wheel `W₄`) | **7064** | `(1,0,0)`: 2268, `(0,1,0)`: 2280, `(0,0,1)`: 2276, **`(1,1,0)`: 80, `(0,1,1)`: 80, `(1,0,1)`: 80** |
+| `V5e9` | 15066 | the three one-hub patterns: 5022 each |
+| `V5e10` | 35370 | the three one-hub patterns: 11790 each |
+
+**7 of 8 patterns are realized inside the swept family list.** Only `(1,1,1)`
+is absent, and (Λ6) proves it **cannot** occur at `|V°| ≤ 5`. (Λ5) is
+asserted at all **58 786** (shape, split, companion) triples of the census:
+**0 failures**.
+
+**The cap, made reproducible.** `outer.shapes_from('V5e8', 5, E0, lmax=8,
+cap=400)` — the exact call `--patterns` makes on that leg — returns 400 shapes
+after 19 041 length tuples with `capped = True`, and **every one of the 400
+sits at split index 0 of 8**: split indices 1…7 are never reached. The witness
+shapes `LT21a` / `LT21b` live on that same hub multigraph (canonical-form
+match against `kslidecomb.candidate_graphs(5)`'s `|E°| = 8` graph, asserted).
+So the recorded "`(1,1,0)`, `(0,1,1)`, `(1,0,1)` unrealized **in scope**" is a
+**cap artifact**, not a `|V°| ≤ 5` boundary — while "`(1,1,1)` unrealized" is
+the genuine boundary, now with a proof.
+
+**Both halves of the floor are attained, exhaustively** (`ltwo.py --floor`).
+At `t = 1`, (Λ6) forces the wheel and the enumeration is finite: for `j = 2`,
+60 length tuples on `W₄`, of which **all 60** are class shapes carrying a
+`j = 2` companion (20 per pattern); for `j = 3`, 15 tuples on `W₅`, **all 15**
+class shapes carrying `(1,1,1)`. So the floors `|V| = 21` and `|V| = 26` are
+attained and are exactly the (Λ6) bounds.
+
+### Step Λ12 — what this does, and does not do, to Λ-completeness
+
+**It does not weaken the theorem.** Λ-completeness is stated *"under (Λ0) and
+the standing (T1)/(T5) hypotheses"*, and (Λ0)'s hypothesis package is
+**local-frame** data: (Λ0a)–(Λ0f′) mention only the points
+`{b, x₁, x₂, x₃, c, a}`, the panels `Π(b)`, `Π(c)`, `M` and `line(bc)`. Three
+facts make the two-hub-interior population no harder than the rest:
+
+1. **The local-frame machinery already quantifies over all eight patterns.**
+   `lambda.py`'s `HUBPATS` is the full `2³`, and `STRATA4 + STRATA4X` is
+   `8 × 3 + 7 × 2 = 38` — the recorded 38 strata of the `--span` battery.
+   `(1,1,0)`, `(0,1,1)`, `(1,0,1)` and `(1,1,1)` are among them and were
+   measured at `(span ω⁺, span ω⁻, deg ω⁺, deg ω⁻) = (3,3,3,2)` there.
+2. **`m2/lambda0.m2` block (P6)'s bridge reaches them on the same terms as
+   every other stratum.** Its construction gives a companion hub the panel
+   `plane(x_{i−1}, x_i, x_{i+1})` and places far hub neighbours freely inside
+   it, with `hcard` capping the count at 2. At a two-hub-interior companion an
+   interior hub has **two** hub neighbours already inside the frame, hence
+   **zero** far hub neighbours; `sample_local_frame`'s own
+   `nfar = min(nfar, 2 − #local hub neighbours)` is exactly that case, and the
+   normal space is 1-dimensional — the tightest stratum, not a degenerate one.
+   No (Λ0) quantity mentions an interior hub's panel, so no new constraint
+   enters the 14-coordinate slice. **The qualifier the verdict block already
+   carries rides unchanged:** (P6)'s *"every stratum arises this way"* half is
+   the reading of `sample_local_frame`'s model, not a computation. That
+   conditional is **uniform across all eight patterns** — the two-hub
+   population inherits it neither better nor worse than the six-of-eight the
+   arc has been quoting.
+3. **The clause the residual was really about — `g₁₄` — holds at the
+   witnesses.** *Step Λ10*: `g₁₄ ≠ 0` and `d g₁₄ ≠ 0` at all six
+   (witness, split) chart points.
+
+**It does change three things, and they are not cosmetic.**
+
+- **The residual is a live case, not a vacuity.** Before this pass "no swept
+  family realizes one" left open the reading that the population is empty and
+  the scope hole harmless by accident. It is non-empty, at `|V| = 21` — the
+  same size as `NT21` / `NT24`, and smaller than `NT30`.
+- **(Λ0i) provably never discharges it** ((Λ8)). At every two-hub-interior
+  companion **both** ends are pinned, so the cheap "implied by (Λ0d)" route of
+  *Step 3a* is unavailable by a theorem, not by an accident of sampling. The
+  `g₁₄` clause there rests on (Λ0f′)'s generic-point proof plus the tangent
+  certificate, and on nothing else.
+- **The measured record now reaches the population — barely, and that is the
+  honest scope.** *Step 3a*'s figures are `g₁₄ ≠ 0` at **4280/4280** exact
+  (split, companion) pairs over 1357 class shapes and `d g₁₄ ≠ 0` at
+  **684/684** chart points; **none** of those touch a `j ≥ 2` companion. This
+  pass adds **6** (split, companion) pairs at **3** shapes and **6** guarded
+  chart points. Six is a spot check, not a sweep, and must be quoted as one.
+
+**Verdict for item (vii): ANSWERED, in the negative direction for the
+"forbidden" branch.** The class does **not** forbid two or more hubs on a
+length-4 companion's interior; it forbids them only below `|V| = 21` (resp.
+`|V| = 26` for `(1,1,1)`), by (Λ6). *Step 3a*'s parenthetical "prove the
+pattern impossible inside tight + `hnoRigid` + `hcard` (the same shape of
+argument as §(K-slide) *Step 5*'s `ℓ₁ + ℓ₂ ≥ 7`)" is therefore **refuted as a
+route**: that argument shape *is* (Λ5), and what it delivers is a size floor,
+not an impossibility.
+
 ### Verification
 
 `notes/scripts/w4/lambda.py` (tracked, new this pass; exact-ℚ, on top of
@@ -3907,6 +4240,10 @@ PYTHONHASHSEED=0 python3 notes/scripts/w4/outer.py --habitat    # named inventor
 PYTHONHASHSEED=0 python3 notes/scripts/w4/outer.py --sweep      # the systematic sweep
 PYTHONHASHSEED=0 python3 notes/scripts/w4/outer.py --tangent    # d g₁₄ ≠ 0 on the chart
 PYTHONHASHSEED=0 python3 notes/scripts/w4/outer.py --patterns   # the coverage boundary
+PYTHONHASHSEED=0 python3 notes/scripts/w4/ltwo.py --witness   # (Λ7): the three witnesses
+PYTHONHASHSEED=0 python3 notes/scripts/w4/ltwo.py --floor     # (Λ6): the floor, attained
+PYTHONHASHSEED=0 python3 notes/scripts/w4/ltwo.py --census    # (Λ5) + Step Λ11's census
+PYTHONHASHSEED=0 python3 notes/scripts/w4/ltwo.py --validate  # (Λ4) vs the tracked oracle
 ```
 
 **(OUT) (*Step 5a*) carries no driver and adds no command line**: it is a
@@ -4001,6 +4338,12 @@ Per mode, what is asserted:
 | `outer.py --sweep`: (Λ0i) coverage | **3628 / 4280** covered by the free-end criterion alone; the 652 residual are all the single pattern `x₂` a hub |
 | `outer.py --tangent`: `d g₁₄` on the chart | nonzero at **684/684** chart points, including **all 652** (Λ0i)-uncovered companions — so `{g₁₄ = 0}` is a proper hypersurface |
 | `outer.py --patterns`: realizable hub patterns | **4 of 8** — `(0,0,0)`, `(0,0,1)`, `(1,0,0)`, `(0,1,0)`; **7002** companions. `(0,1,1)`, `(1,0,1)`, `(1,1,0)`, `(1,1,1)` unrealized **in scope** (a coverage boundary, not a theorem) |
+| `ltwo.py --witness`: the three two-hub-interior witnesses | **3 shapes / 6 (split, companion) pairs**, patterns `(1,1,0)`, `(0,1,1)`, `(1,0,1)`, `(1,1,1)`; every one at **target rank with `dim R_a = 1`**, (Λ0d) holding, (Λ0g) asserted both ways, `g₁₄ ≠ 0` and `d g₁₄ ≠ 0` (in 9/9/8/8/10/10 of 46/46/46/46/60/60 chart tangent directions); guarded chart point found on the **first** draw at all 6 |
+| `ltwo.py --witness`: independent class certification | all three: pebble `def = 0`, **`treepack_deficiency = 0`**, 2-edge-connected; the two `|V| = 21` witnesses additionally through the `2^21` **partition** oracle — `0` subsets with `f > 0`, `0` proper subsets with `f = 0`, `max f` over proper `\|W\| ≥ 2` = **`−1`** — so `hnoRigid` there is certified over **every** vertex subset, not only branch unions. `LT26` is **not** run through it (`2^26`); disclosed |
+| `ltwo.py --floor`: the (Λ6) floor, attained | `j = 2`: **60/60** length tuples on the wheel `W₄` are class shapes carrying a `j = 2` companion (20 per pattern), `|V| = 21`; `j = 3`: **15/15** on `W₅`, `|V| = 26` |
+| `ltwo.py --census`: the uncapped pattern census | **7 of 8** patterns realized over the `--patterns` family list at the exhaustive bound `ℓ ≤ 5`; `(1,1,0)`/`(0,1,1)`/`(1,0,1)` at **80 each, all on `V5e8`**; only `(1,1,1)` absent, and (Λ6) proves it needs `|V°| ≥ 6`. (Λ5) asserted at **58 786** triples, **0** failures |
+| `ltwo.py --census`: the `--patterns` cap, reproduced | `outer.shapes_from('V5e8', 5, E0, 8, cap=400)` returns **400 shapes after 19 041 tuples, `capped = True`**, all at **split index 0 of 8** — so the `V5e8` leg of `--patterns` never reached 7 of its 8 split positions |
+| `ltwo.py --validate`: (Λ4) against `shape_ok` + `triangles` + `hcard_ok` | **12 035/12 035** length tuples agree, **0** disagreements (θ3, θ4, `K4`, `K4+par` exhaustive; `V5e8` split-0 strided 1-in-8), plus the companion enumerator cross-checked against `outer.companions4`/`hub_pattern` at every eligible split of all three witnesses |
 
 **Confidence verdict.**
 
@@ -4028,9 +4371,19 @@ Per mode, what is asserted:
   **(Λ0i)**, so it is a new hypothesis only in the `x₂`-a-hub pattern; and
   **no class habitat in the searched scope forces it** — `g₁₄ ≠ 0` at all
   4280 swept (split, companion) pairs and `d g₁₄ ≠ 0` on the chart tangent
-  space at all 684 probed points. It is nevertheless **reachable at a good
-  seed** of every probed habitat by an explicit chart move, so the clause is
-  not decorative.
+  space at all 684 probed points.
+
+  > **Scope of those two figures, sharpened 2026-08-19 (*Steps Λ8–Λ12*):**
+  > neither denominator contains a companion with **two or more interior
+  > hubs** — that population is now known to be **non-empty** ((Λ7), three
+  > witnesses at `|V| = 21`, `21`, `26`), and by (Λ8) **(Λ0i) covers none of
+  > it**. Six further (split, companion) pairs at three shapes were measured
+  > there, all with `g₁₄ ≠ 0` and `d g₁₄ ≠ 0` at a guarded hard-stratum chart
+  > point; **six is a spot check, not a sweep**. The 4280 / 684 figures are
+  > unchanged and stay true as measured.
+
+  It is nevertheless **reachable at a good seed** of every probed habitat by
+  an explicit chart move, so the clause is not decorative.
   **Why this is uniform and not 38 symbolic strata:** the proof mentions no
   habitat, no stratum and no sample — it runs on **one irreducible variety**
   (explicitly parameterized, hence irreducible), and the strata enter only in
@@ -4146,9 +4499,15 @@ over the θ family, over `G° = K4` (lengths ≤ 5), and over `K4` + a parallel
 per-family bound, and — the sharpest boundary — **only 4 of the 8 companion
 hub patterns are realized by any class shape in scope** (`--patterns`, at a
 widened length bound of 8): the four with at most one hub among `x₁, x₂, x₃`.
-A class shape realizing `(1,0,1)`, `(0,1,1)`, `(1,1,0)` or `(1,1,1)` — two or
-more hubs on the companion interior — is **not** covered by anything above,
-and whether one exists is open. That is the residual form of item (vi).
+*Scope of that answer, corrected 2026-08-19 (*Step Λ11*).* The recorded
+`--patterns` reading *"only 4 of the 8 companion hub patterns are realized
+by any class shape in scope"* is **true of that run and false of the
+families it ran on**: its `V5e8` leg is capped at 400 shapes of 19 041
+length tuples and terminates inside split index 0 of 8. Uncapped at the
+exhaustive bound `ℓ ≤ 5`, the same family list realizes **7 of 8**
+patterns — `(1,1,0)`, `(0,1,1)` and `(1,0,1)` all occur on the `|V°| = 5`,
+`|E°| = 8` wheel. `(1,1,1)` is genuinely out of `|V°| ≤ 5` scope, by
+**(Λ6)**. The 7002-companion and 4-of-8 figures stay true **as measured**.
 
 *(viii)* **ANSWERED, 2026-08-06 (§(K-out), `outerline.py`): such a frame exists,
 is sampled *and* constructible, and the bad locus is nonempty on every class
@@ -4181,13 +4540,43 @@ POOL-G rate quoted from that section: **(OC-7)**, a harness defect —
 `widened.place_pencil_general`'s in-plane sampler degenerates at 32/357 frames
 and that degeneracy *implies* `λᵢ = 0`, uncaught by `star_span_ranks`.
 
-*(vii)* **A class shape whose length-4 companion carries two or more hubs**
-(pattern `(1,0,1)`, `(0,1,1)`, `(1,1,0)`, `(1,1,1)`), i.e. two or more
-hub-hub edges along the companion. None occurs in the swept families; the
-`g₁₄` argument above says nothing about such a shape, and neither does
-(Λ0i). Cheapest next probe: widen `outer.py --patterns` past `|V°| = 5`, or
-prove the pattern impossible inside tight + `hnoRigid` + `hcard` (the same
-shape of argument as §(K-slide) *Step 5*'s `ℓ₁ + ℓ₂ ≥ 7`).
+*(vii)* **ANSWERED, 2026-08-19 (*Steps Λ8–Λ12*, `ltwo.py`): a class shape
+whose length-4 companion carries two or more hubs on its interior EXISTS —
+at every one of the four patterns, at the exact size floor, and at a
+hard-stratum target-rank chart point.** Three findings, in decreasing
+strength:
+
+- **The floor is a theorem, and it is what the sweeps were seeing.**
+  (Λ5): no branch outside the split-plus-companion `C₇` joins two of its
+  hubs (else cycle rank 2 at total length `≤ 12`), the sole exception being
+  θ(3,4,5). (Λ6): hence `j` interior hubs force `n° ≥ j + 3` and
+  `c° ≥ ⌈(2j+7)/3⌉` — `|V| ≥ 21` at `j = 2`, `|V| ≥ 26` at `j = 3` — and at
+  one non-frame hub the hub multigraph is the **wheel**.
+- **The population is non-empty and reaches the floor.** (Λ7): `LT21a`
+  (`(1,1,0)`/`(0,1,1)`), `LT21b` (`(1,0,1)`), `LT26` (`(1,1,1)`), all
+  class-certified by the tracked oracles — and at `|V| = 21` by the `2^|V|`
+  partition oracle, so `hnoRigid` there holds over **every** vertex subset,
+  not only branch unions — each with a guarded chart point at
+  target rank with `dim R_a = 1`, (Λ0d) and (Λ0g) holding, `g₁₄ ≠ 0` and
+  `d g₁₄ ≠ 0`. **Λ-completeness stands as written on them** — the (Λ0)
+  package is local-frame data, `lambda.py`'s 38 strata already span all
+  eight hub patterns, and `lambda0.m2` (P6)'s bridge covers a companion hub
+  with zero far hub neighbours by construction.
+- **But (Λ0i) is provably unavailable there** ((Λ8)): both companion ends
+  are pinned at every `j ≥ 2` pattern, so the `g₁₄` clause is carried by
+  (Λ0f′)'s generic-point proof and a **six-point** spot check, not by the
+  3628/4280 free-end discharge and not by the 4280/684 sweeps.
+
+**The impossibility route named in the old item (vii) is refuted**: "prove
+the pattern impossible inside tight + `hnoRigid` + `hcard`" is exactly the
+argument (Λ5) runs, and what it yields is a size floor, not an
+impossibility. **What is still open** is the *uniform* statement — whether
+`g₁₄ ≠ 0` (equivalently, whether `{g₁₄ = 0}` stays a proper hypersurface)
+at **every** two-hub-interior class shape's chart, rather than at the three
+exhibited. That is the residual form of item (vii), and it is now a
+statement about a **named, non-empty, floor-classified** family: at `t = 1`
+the wheels `W_{j+2}` with `Σℓ = 6(j+2)`, exhaustively enumerated in
+*Step Λ11*; at `t ≥ 2` unenumerated.
 
 ## §(K-dom) — the dominance spike: the differential of `H ↦ V_bc`, and why C1 is not an inductive route (**dominance HOLDS at every class habitat probed; C1's two claimed values REFUTED; class uniformity untouched**)
 

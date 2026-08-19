@@ -236,6 +236,7 @@ before touching any of them.** `rvec3` likewise.
 | companion-length variants of the NT21 hub multigraph: length-3 companion (a (K-res) shape) and length-5 companion (a class shape) | `nt21c3`, `nt16k5` | `dominance` |
 | subdivision families D/E/F/G, core-ring, random short-branch | `family_d/e/g`, `family_core_ring`, `random_short`, `random_subdivision` | `nogood_subdiv`, `saferes` |
 | spider / theta+center / dangerous / DZ gadgets | `spider`, `dangerous_gadget`, `split_off`, `dz_gadget` | `kbare_common`, `danger` |
+| the three two-hub-interior companion witnesses `LT21a`/`LT21b`/`LT26` (§(K-Λ) item (vii), *Step Λ10*) | `WITNESSES` | `ltwo` |
 
 ### Habitat combinatorics
 
@@ -258,6 +259,8 @@ before touching any of them.** `rvec3` likewise.
 | vertex removal / split-off / chain orientation | `removeV`, `splitOff`, `orient` | `widened` |
 | matroid partition min-max for the 6-fold base packing ((C6)) | `packing_minmax`, `search_unrestricted` | `kslidecomb` |
 | proper / acyclic colourings, chromatic number of `G°` | `colorings`, `chrom`, `split_acyclic` | `kslidecomb` |
+| the (Λ4) class predicate on the hub multigraph `G°` alone (tight / `def = 0` / `hnoRigid` as branch-subset inequalities) | `hub_class_ok`, `branch_subsets` | `ltwo` |
+| length-4 companions and their hub patterns, computed on `G°` (not the subdivision) | `hub_companions4`, `companion_cycle` | `ltwo` |
 
 ## 2. Layering map, and the rule for new scripts
 
@@ -363,6 +366,16 @@ Three layers, plus one **language island**:
   `localtest.plane_basis` **as a diagnostic, never as a sampler** (aliased
   `DEGENERATE_PLANE_BASIS`): (OC-7) needs to know *when the degenerate basis
   fires*, which is the finding that put *Harness debt* item 4 on the list.
+  **`ltwo`** (§(K-Λ) item (vii) — the branch calculus on the hub multigraph
+  `G°` alone, the companion-cycle lemma, the size floor and the two-hub-
+  interior witnesses) is the **seventh** such leaf, importing
+  `kbare_common`'s `exact_deficiency`/`is_2ec`/`verts_of`,
+  `nogood_subdiv`'s `hcard_ok`/`triangles`, `saferes.treepack_deficiency`,
+  `kslidecomb`'s `candidate_graphs`/`canon`/`relabel`/`shape_data`/
+  `shape_ok`, and — through `importlib` — `outer` (for `companions4`,
+  `hub_pattern`, `shapes_from`, `chart_point` and friends) and, through
+  `outer`, `lambda`'s `HABITATS4`. It imports no private helper and
+  modifies nothing.
   **`star_span_ranks` MOVED DOWN to `repin` on 2026-08-06** (slice S1 of *The
   build plan*), once it had SIX consumers — past rule 2's own trigger — with a
   re-export from `flanks` so no recorded figure moved. The six: `flanks`
@@ -664,6 +677,10 @@ arcs too.
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/ocon.py --validate` | ~0.3 s | workbook §(K-out) continuation (direction OCON) *Step O13* ((OC-20)'s perp identity `dim(A ∩ β) = dim A + 3 − 6 + dim(A^{⊥_B} ∩ β)` asserted at 200 random spans of POOL-OV, `(dim A, dim(A ∩ β))` histogram printed; the constructed shape-level bad case — `T^{⊥_B} ∩ β ≠ 0`, `dim(T ∩ β) = 2` — and 60 negative controls — `T^{⊥_B} ∩ β = 0 ⟹ dim(T ∩ β) = 1` — both asserted) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/ocon.py --check` | ~17 s | ibid. *Steps O13–O16*, POOL-OC (4 habitats × seeds 200–201, 6 frames, 12 companion ends): (OC-17)'s ledger `(index(G), def(G′), corank(G′), s₀, dim R_a) = (0,0,1,0,1)` at 6/6; (OC-18)'s `H/X` rigid ⟹ `λᵢ ≠ 0` asserted per end, histogram `(6,True,0,False):11` / `(7,False,1,True):1`; (OC-20)/(OC-21) asserted at all 4 degree-3 ends, histogram `(2,1,0,False,True,False,True):4` |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/ocon.py --control` | ~4 s | ibid. *Steps O17–O19*, POOL-OZ: (OC-17)'s identity asserted at all 15 unfiltered θ(3,4,5) placements reaching target rank (15 in `Z`, 0 sampled off `Z`, boundary stated as one); the (OC-14) hub slide's **3 constructed** points at seeds 200–202, each `(rank, dim R_a) = (54,1)`, guard-accepted, coincidence-free, `L_b ⊆ R₁`, `dim Mot(H/X) = 7` (not rigid) — the adversarial witness that `Z ≠ ∅` alone does not give (OC-8) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/ltwo.py --witness` | ~4 s | workbook §(K-Λ) continuation (direction LTWO) *Step Λ10* ((Λ7) the three two-hub-interior witnesses `LT21a`/`LT21b`/`LT26`: all 6 (witness, split) guarded chart points found on the FIRST draw from `random.Random(20260819)`, each at target rank on the hard stratum (`dim R_a = 1`), (Λ0d) holding and (Λ0g) asserted both ways, `g₁₄ ≠ 0`; class membership certified by `kslidecomb.shape_ok` + `saferes.treepack_deficiency = 0` at all three, and at the two `|V| = 21` witnesses additionally by the `2^{21}` partition oracle `kbare_common.exact_deficiency` — 0 proper subsets with `f = 0`, `max f` over proper `\|W\| ≥ 2` = `−1`) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/ltwo.py --floor` | ~1 s | ibid. *Step Λ9*/*Step Λ11* ((Λ6)'s size floor attained exhaustively at `t = 1`: all 60/60 length tuples on the wheel `W₄` are class shapes carrying a `j = 2` companion (20 per pattern, `|V| = 21`), all 15/15 on `W₅` carry a `j = 3` companion (`|V| = 26`)) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/ltwo.py --census` | ~41 s | ibid. *Step Λ11* (the uncapped pattern census over the exact `--patterns` family list at the exhaustive length bound `ℓ ≤ 5`: 7 of 8 hub patterns realized, `(1,1,0)`/`(0,1,1)`/`(1,0,1)` at 80 each on `V5e8`, only `(1,1,1)` absent; (Λ5) asserted at all 58 786 (shape, split, companion) triples, 0 failures; the `--patterns` cap reproduced exactly — `outer.shapes_from('V5e8', 5, E0, lmax=8, cap=400)` returns 400 shapes after 19 041 tuples, `capped = True`, every one at split index 0 of 8) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/ltwo.py --validate` | ~18 s | ibid. *Step Λ8* ((Λ4) the branch calculus asserted against the tracked class oracle (`kslidecomb.shape_ok` + `nogood_subdiv.triangles`/`hcard_ok`) at 12 035/12 035 length tuples, 0 disagreements; the companion enumerator cross-checked against `outer.companions4`/`hub_pattern` at every eligible split of all three witnesses (10 splits total)) |
 
 ### `m2/` — the Macaulay2 symbolic layer
 
@@ -803,6 +820,31 @@ canonical descriptions.
    "N of M" or "N/M %" from it as a pool ratio, never a class-level one, until
    it is re-keyed by isomorphism class — the correction §(K-ann) *Step A14*'s
    histogram needed.
+8. **A cap/stride/sample bound must be disclosed wherever its result is
+   quoted — everywhere, not just in the driver's own output.** A mode that
+   truncates a search (a shape count, a stride, a sampled subset) can only
+   report on what it actually covered; a "not realized in scope" / "N of M"
+   reading taken from a capped mode is **evidence about the cap's boundary,
+   never about the family beyond it**, until the same search is re-run
+   uncapped or shown to be exhaustive by an independent argument. This has
+   now bitten the arc **twice**, in two different mechanisms, which is why it
+   is a standing rule and not a one-off fix: **(i)** the `notes/Phase39.md`
+   gates paragraph's *check-gapmap-cells.py* cell-size cap (recorded
+   2026-08-18/19) — a gap-map row silently approaching its character cap is
+   the same hazard shape (a bound whose exhaustion would have silently
+   constrained what the row could say) one level up, in documentation rather
+   than in a driver; **(ii)** §(K-out)'s `outer.py --patterns` (direction
+   LTWO, 2026-08-19, workbook §(K-Λ) *Step Λ11*): its recorded "only 4 of 8
+   companion hub patterns realized in scope" was quoted for two weeks as
+   evidence about the *family* of class shapes, when it was in fact evidence
+   about `outer.shapes_from`'s `cap=400` argument — the `V5e8` leg capped at
+   400 of 19 041 length tuples and never left split index 0 of 8, so 3 of the
+   4 "unrealized" patterns were sitting inside the very shapes the sweep
+   walked past. Uncapped at the exhaustive length bound the same family list
+   realized 7 of 8. **Do not repeat the fix by re-baselining the capped
+   driver** (`outer.py` was left untouched, per convention 5); the fix is a
+   **new, uncapped** driver mode plus a corrected reading in the workbook,
+   which is what *Step Λ11* did.
 
 ## Divergences — same name, different semantics: **do not merge**
 

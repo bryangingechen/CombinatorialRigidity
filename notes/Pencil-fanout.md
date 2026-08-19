@@ -118,7 +118,24 @@ rigid — one-point decidable, **two named inputs ADDED, not removed**
 and strip `x₁` from availability; **(OC-22)** places the residue in
 §(K-ann) (ANH-R1)'s object class. **(OC-8) stays OPEN, reshaped; no
 gap-map status move; class uniformity, (GR-15) and E3's arming all
-untouched.** **LTWO: draft returned, landing pending.** The
+untouched.** the EIGHTEENTH direction (LTWO, §"Eighteenth direction") —
+the fifth and last of the SIXTH FAN-OUT's five to land, after
+GBAL/GLAW/FRES/OCON — **LANDED 2026-08-19: an honest MISS on the
+commissioned "prove the class forbids it" branch, carrying three theorems
+and three witnesses.** **(Λ4)** the branch calculus reduces class
+membership to a finite statement about the hub multigraph `G°` alone;
+**(Λ5)** the companion-cycle lemma; **(Λ6)** the size floor — `j`
+interior hubs on a length-4 companion force `|V| ≥ 21` at `j = 2`,
+`|V| ≥ 26` at `j = 3`. **(Λ7)/(Λ8)**: the witnesses `LT21a`/`LT21b`/`LT26`
+attain those floors exactly, REALIZING all four two-hub-interior hub
+patterns at a hard-stratum target-rank chart point with `g₁₄ ≠ 0`, and
+`outer.py --patterns`' recorded "4 of 8 patterns realized in scope" is
+shown to be a **cap artifact** — uncapped, the same family list realizes
+**7 of 8**, only `(1,1,1)` genuinely out of `|V°| ≤ 5` scope by (Λ6).
+**Λ-completeness stands as written; the (K-wit) row's residual is
+recomputed, not re-graded — no gap-map status move; class uniformity,
+(GR-15) and E3's arming all untouched; no g-flank.** **The SIXTH FAN-OUT
+is now COMPLETE, all five directions landed 2026-08-19.** The
 first (A/B/C
 below, prepared 2026-08-05) landed 2026-08-05/06; the second (T/R/M,
 §"Second fan-out") 2026-08-06; the third (G/Q/O, §"Third fan-out")
@@ -5004,7 +5021,7 @@ whether a HIT armed E3** — and records **entry 5's resolution as a
 ledger status**, not as prose only. Outcome recorded in the phase
 note's *Hand-off* as narrative, not as a scaffolding block.
 
-## Sixth fan-out — dispatched 2026-08-19 (directions GBAL / GLAW / OCON / LTWO / FRES)
+## Sixth fan-out — dispatched 2026-08-19 (directions GBAL / GLAW / OCON / LTWO / FRES); **COMPLETE — all five directions LANDED 2026-08-19**
 
 Five directions dispatched **concurrently** — **GBAL**, **GLAW**, **OCON**,
 **LTWO**, **FRES** — each independent, each returning its own untracked
@@ -5027,7 +5044,7 @@ reservations** were **coordinator-set**, not separately user-adjudicated.
 | **GBAL** | compute-licensed | route-ledger entry 5 (input (X): balance existence, (GR-47) normal form) | **LANDED 2026-08-19** — a HIT (§"Fifteenth direction") |
 | **GLAW** | compute-licensed | (a′), the `d_fg = d_adm` law | **LANDED 2026-08-19** — an honest MISS (§"Sixteenth direction") |
 | **OCON** | derivation-first | §(K-out) (OC-8)'s hard-stratum target-rank qualifier | **LANDED 2026-08-19** — an honest MISS (§"Seventeenth direction") |
-| **LTWO** | derivation-first | recorded at its own landing | draft returned, landing pending |
+| **LTWO** | derivation-first | §(K-Λ) item (vii): two-or-more-hub-interior companion patterns | **LANDED 2026-08-19** — an honest MISS, item (vii) REALIZED (§"Eighteenth direction") |
 | **FRES** | derivation-first | §(K-frame) (FR-4)'s named gap (the (GR-5)-at-`G′` restatement) | **LANDED 2026-08-19** — (FR-4) CLOSED, no named gap (§"Nineteenth direction") |
 
 ## Fifteenth direction — GBAL (sixth fan-out)
@@ -5412,6 +5429,124 @@ all byte-identical at `PYTHONHASHSEED` 0 and 12345; one driver added, none
 modified, so the *figures-do-not-move* gate discharges by the check itself.
 POOL-OC is **6 frames / 12 ends** by design — every sentence under test is an
 identity, so no figure in this direction is a rate.
+
+## Eighteenth direction — LTWO (sixth fan-out)
+
+**Status: LANDED 2026-08-19 — fifth and last of the sixth fan-out's five
+directions to land, after GBAL/GLAW/FRES/OCON — an honest MISS on the
+commissioned "prove the class forbids it" branch, carrying three theorems,
+three witnesses and a correction to a landed scope sentence.** §(K-Λ)
+continuation, **Steps Λ8–Λ12**, labels **(Λ4)–(Λ8)** claimed (the reserved
+range is spent exactly; the tail (Λ9)+ / Steps Λ13+ returns to §(K-Λ)'s
+unclaimed pool, `notes/Pencil-labels.md`). **Theory tier**, derivation-first;
+the wave's compute licence sat with GBAL/GLAW, and this direction spent one
+light driver (`w4/ltwo.py`, four modes, ~68 s total across all four, no new
+pool and no geometric sweep).
+
+**The verdict: item (vii) is REALIZED.** The commissioned first-choice
+outcome — *prove the class forbids two or more hubs on a length-4
+companion's interior* — is **refuted**, and the commissioned second-choice
+outcome (*exhibit one, and say precisely what Λ-completeness does and does
+not assert there*) is delivered together with the dichotomy the third choice
+asked for. Three theorems:
+
+- **(Λ4) the branch calculus.** Class membership — tight ∧ `def = 0` ∧
+  `hnoRigid` ∧ `hcard` ∧ triangle-free — is a finite statement about the hub
+  multigraph and its branch lengths alone: `Σℓ = 6c(G°)`, and
+  `Σ_F ℓ ≥ 6c(F)` for every branch subset, strictly for every proper one. A
+  reformulation, not new mathematics (it is `kslide.no_rigid_branch_union`'s
+  reduction, stated on `G°`), but it re-derives **(SD-6)** (`ℓ ≤ 5`),
+  **girth ≥ 7** and **§(K-dom) (D3)** (`k ≥ 4`, with `k = 4` the equality
+  case — the dispatch's own calibration) in one line each, and it is what
+  makes the census below **exhaustive** rather than capped.
+- **(Λ5) the companion-cycle lemma.** The split branch plus a length-4
+  companion is (D3)'s proper `C₇`, seen in `G°`: `j + 2` branches on `j + 2`
+  hubs, cycle rank 1, total length 7. Any further branch with **both** ends on
+  it would give cycle rank 2 at total length `7 + ℓ ≤ 12 = 6·2`, contradicting
+  `hnoRigid`. So **no branch outside the companion cycle joins two of its
+  hubs** — the sole exception being `G° = Z + one branch`, which forces
+  `j = 0` and is exactly **θ(3,4,5)** (agreeing with §(K-out) (OC-10)'s
+  independent uniqueness proof).
+- **(Λ6) the size floor.** Hence every hub of the cycle needs an outside
+  branch to a hub *off* it, giving `n° ≥ j + 3` and `c° ≥ ⌈(2j+7)/3⌉`:
+  **`j = 2` needs `|V| ≥ 21` and `|V°| ≥ 5`; `j = 3` needs `|V| ≥ 26` and
+  `|V°| ≥ 6`.** At one non-frame hub the hub multigraph is **forced** to be
+  the wheel on the companion cycle.
+
+**(Λ7) the witnesses, and (Λ8) the coverage classification.** `LT21a`
+(patterns `(1,1,0)` and `(0,1,1)`), `LT21b` (`(1,0,1)`) and `LT26`
+(`(1,1,1)`) attain the (Λ6) floors exactly — `|V| = 21, 21, 26` on the wheels
+`W₄, W₄, W₅` — are class-certified by the **tracked** oracles
+(`kslidecomb.shape_ok` + `nogood_subdiv.triangles`/`hcard_ok` +
+`saferes.treepack_deficiency`, and at `|V| = 21` also the `2^|V|` partition
+oracle, which certifies `hnoRigid` over **every** vertex subset: `max f` over
+proper `|W| ≥ 2` is `−1`; `LT26`'s `2^26` is out of budget and disclosed), and
+each of
+the six (witness, split) pairs carries a guarded chart point, found on the
+**first** draw, that is at **target rank on the hard stratum (`dim R_a = 1`)**
+with **(Λ0d)** holding, **(Λ0g)** asserted in both directions, **`g₁₄ ≠ 0`**
+and **`d g₁₄ ≠ 0`** on the FIXED-scoping chart tangent space. **(Λ8)**: (Λ0i)
+is free at `x₁` iff neither `x₁` nor `x₂` is a hub, so it covers exactly the
+three patterns `(0,0,0)`, `(1,0,0)`, `(0,0,1)` and **no** two-hub-interior
+companion at all — the cheap "implied by (Λ0d)" discharge is unavailable
+there by a theorem.
+
+**The correction, and it is the part a future reader must not miss.**
+`outer.py --patterns`' recorded *"only 4 of the 8 companion hub patterns are
+realized by any class shape in scope"* is **true of that run and false of the
+families it ran on**. Its `V5e8` leg caps at 400 shapes of 19 041 length
+tuples and terminates **inside split index 0 of 8**; the uncapped census at
+the exhaustive length bound `ℓ ≤ 5` finds **7 of 8** patterns on exactly the
+same family list, with `(1,1,0)`/`(0,1,1)`/`(1,0,1)` at 80 each on the very
+hub multigraph `--patterns` enumerated. Only `(1,1,1)` is genuinely out of
+`|V°| ≤ 5` scope — and that is now (Λ6), a theorem, not a sweep. **The 7002
+and "4 of 8" figures stay true as measured**; what changes is the reading
+placed on them. (Λ5) is asserted at all **58 786** census triples, 0 failures.
+
+**What does NOT move.** **Λ-completeness stands as written** — its hypothesis
+package (Λ0) is local-frame data, `lambda.py`'s 38 strata (`HUBPATS` is the
+full `2³`) already span all eight hub patterns, and `m2/lambda0.m2` (P6)'s
+class-uniformity bridge covers a companion hub with zero far hub neighbours by
+construction. **No gap-map *status* moves**: the **(K-wit)** row's residual
+sentence is **recomputed**, not re-graded — it goes from *"which no swept
+family realizes"* to *"realized, floor-classified, and `g₁₄`-clean at three
+witnesses"*, which strictly increases what is known and closes nothing.
+**(K-Λ) stays refuted as an independent gap; (K-wit) stays open; (GR-15) stays
+open; class uniformity is untouched.** Nothing here bears on (OUT)'s
+hypothesis, on (OC-8), on §(K-grid) or on the (T5) frame at `ℓ ≥ 5`.
+
+**Bars respected.** No settled §(K-Λ) machinery re-derived or re-run
+((Λ0)/(Λ0a)–(Λ0i)/(Λ0f′)/(Λ1)–(Λ3), (M1)–(M4), (P1)–(P7) are cited, never
+recomputed); `lambda.py`'s figures untouched (it is imported read-only,
+through `outer`); no `GR-`/`FR-`/`OC-` label minted; no counting or matroid
+route to (OUT)'s hypothesis proposed; no Lean, no `lake build`; every claim
+carries the driver mode that tests it. The one deliberate overlap with a
+settled statement is *Step 3a*'s "the 652 uncovered pairs are all the `x₂`-a-
+hub pattern", which is **not** contradicted — it stays true of the swept
+scope — but is generalized by (Λ8).
+
+**Residual, named.** The *uniform* `g₁₄` statement over the two-hub-interior
+population: `{g₁₄ = 0}` a proper hypersurface at **every** such class shape's
+chart, not at the three exhibited. It is now a statement about a named,
+non-empty, floor-classified family (at one non-frame hub, the wheels
+`W_{j+2}` with `Σℓ = 6(j+2)`, exhaustively enumerated; at two or more,
+unenumerated). Cheapest next probe if it is ever wanted: run
+`outer.py --tangent`'s certificate over the `--floor` enumeration's 60 + 15
+shapes rather than over three of them.
+
+**Landing (coordinator).** Per §"Landing checklist". Re-ran all four
+`ltwo.py` modes myself (`--witness`/`--floor`/`--census`/`--validate`,
+`PYTHONHASHSEED=0`) and confirmed every headline figure the draft quotes,
+including the 6/6 hard-stratum guarded chart points at `dim R_a = 1`, the
+60/60 and 15/15 (Λ6) floor enumerations, the 7-of-8 pattern census with
+58 786/58 786 (Λ5) checks and 0 failures, the `outer.shapes_from('V5e8', 5,
+E0, 8, cap=400)` cap reproduction (400 shapes after 19 041 tuples, split
+index 0 of 8), and the 12 035/12 035 (Λ4)-vs-oracle agreement.
+`git diff --name-only -- '*.py' '*.m2'` (unstaged and `--cached`) was empty
+both before and after this commit — this commit **adds** `w4/ltwo.py` and
+modifies **no** tracked driver, so the *figures-do-not-move* gate discharges
+by that check alone. The draft's own *Coordinator actions at landing* block
+was executed against the tree, then stripped (not merged).
 
 ## Nineteenth direction — FRES (sixth fan-out)
 
