@@ -647,6 +647,51 @@ bare token is a substring of 19 unrelated hits, every one inside the word
 proposed**; (L5)'s substring check is stated repo-wide, so the reservation
 technically missed it, recorded so the next one greps the whole tree.
 
+**The SEVENTEENTH direction — OCON — LANDED 2026-08-19** (fourth of the
+sixth fan-out's five to land, after GBAL/GLAW/FRES; `notes/Pencil-fanout.md`
+§"Seventeenth direction"), reservation converted in place in §(K-out)'s row
+above: **(OC-17)–(OC-22) and Steps O13–O18 are CLAIMED**; the tails move to
+**(OC-23)+ / O19+**, §(K-out)'s live unclaimed range. One of **five**
+concurrent directions in the **sixth fan-out** (GBAL/GLAW/OCON/LTWO/FRES,
+`notes/Pencil-fanout.md` §"Sixth fan-out"), in the **derivation-first** tier.
+Dispatched **opus**. Target: §(K-out) (OC-8)'s hard-stratum target-rank
+qualifier. **Verdict: an honest MISS carrying three theorems and a
+reduction — (OC-8) stays OPEN, reshaped.** **(OC-17)** proves
+`dim R_a = corank(G′) − s₀` at every legal chart point with no genericity,
+so the hard-stratum target-rank locus `Z` is an intersection of two
+maximal-rank conditions — Zariski **open**, not a stratum — which **strikes**
+§(K-frame) (FR-7)'s (OC-16)-side un-owned-irreducibility sentence (`Z`'s
+irreducibility is the chart's, owned by (ANH-9)(ii)) and makes §(K-frame)
+*What would change this* item (iii) **unnecessary rather than open**; `Z ≠ ∅`
+is a separate input, and a prerequisite of the *whole* (K-tight) criterion,
+not (OUT)'s to pay. **(OC-18)** gives a degree-free sufficient condition —
+`H/X` infinitesimally rigid at a chart point ⟹ `L_b ⊄ R₁` — open, at **both**
+ends of **every** class pair (5226/5226 labelled POOL-CW pairs, vs (OC-12)'s
+3081/3702 and (OC-13)'s 1715). **(OC-19)** reduces (OC-8) at a (shape, split)
+to `Z ≠ ∅` + chart irreducibility + one chart point, anywhere, with `H/X`
+rigid — one-point decidable, **two named inputs ADDED, not removed**. The
+adversarial control is the sharp finding: `--control` lands **3 constructed**
+points **in `Z`**, guard-accepted, coincidence-free, `L_b ⊆ R₁`, `H/X`
+flexible — `Z` genuinely meets the bad divisor, so the reduction needs
+openness **plus** irreducibility **plus** a witness, and no two of the three
+suffice. **(OC-20)/(OC-21)** restate the shape-level bad case in perp form
+(`T_u^{⊥_B} ∩ β_b ≠ 0`) and strip `x₁` from the availability condition
+(`L_b ⊆ R₁ ⟺ C(b,a) ∈ R₁`). **(OC-22)** places the residue in §(K-ann)
+(ANH-R1)'s object class, the first arrival at the *same kind of object*
+rather than the same missing technology. **No gap-map status moves; class
+uniformity untouched; (GR-15) untouched; no g-flank.** E1/E2/E3 all NO; E3
+stays ARMED (by GBAL), not fired; entry 1 untouched. The code **OCON**
+(the direction's target being the **O**uter-line chart's **CON**tainment
+residue) was verified 0-hit as a raw substring, case-insensitively, across
+`*.md`, `*.tex`, `*.lean`, `*.py`, `*.m2` at reservation time and re-checked
+at landing (repo-wide, `*.py`/`*.m2`: 0 hits outside the driver's own
+filename). The direction *extended* §(K-out), so its reservation was that
+section's unclaimed tails — **(OC-17)+ / Steps O13+**, consumed exactly as
+**(OC-17)–(OC-22) / Steps O13–O18** per the claim recorded at the top of
+this entry — and the owning section stays authoritative. No M2 leaf was
+expected or opened — the target was an exact-ℚ derivation, not a symbolic
+one.
+
 **One naming hazard the second fan-out created, recorded rather than renamed
 (L4).** The **direction letters A/B/C are re-used** between the 2026-08-05 fan-out
 (A = §(K-flank), B = §(K-Λ), C = §(K-pure)) and the 2026-08-06 one
@@ -697,7 +742,7 @@ Status keywords are pointers to the owning section's verdict block and the
 | §(K-σ) | `σ` ✓ | (σ1)–(σ7); Steps σ0–σ6, σ4b; hunt pools H4/H5 | the polarity as a symmetry of the split; **route σ** | (σ7) proven; route σ a CANDIDATE (its field scope settled by §(K-clos)) |
 | §(K-clos) | `AC-` ✓ | (AC-1)–**(AC-9)**; Steps Z0–Z8; driver blocks AC-C0/AC-E/AC-S/AC-U/AC-X/AC-Q/AC-R2/AC-F/AC-2c/AC-P (`closure.py`) | the over-`ℂ̄` question: the polarity's field scope, the σ-fixed grid locus, the `⋆`-eigen decoupling, the route-σ collapse, the char-0 descent | (AC-6) **refuted** as a class statement, open on the tight stratum; the rest proven-informally. **(AC-9)** (minted 2026-08-06, re-baselining slice S2): every σ-fixed body of degree `≥ 3` carries a coincident hinge line — **proven** by pigeonhole against *Step Z3*'s two-ruling-lines cap, measured 0/64 by the composite guard; it **qualifies (AC-3)** without weakening it |
 | §(K-ann) | `ANH-` ✓ | (ANH-1)–(ANH-8); the two residual inputs **(ANH-R1)**, **(ANH-R2)**; Steps A1–A9; driver modes `--stress`/`--rate`/`--supp`/`--recipe`/`--census`/`--validate` (`annih.py`); **since 2026-08-06 (direction R)** (ANH-9)–(ANH-12), Steps A10–A13, and driver modes `--census`/`--bad`/`--comb`/`--validate` (`shrink.py`); **since 2026-08-06 (direction Q)** (ANH-13)–(ANH-16), Steps A14–A17, driver modes `--types`/`--reduce`/`--size`/`--frame`/`--witness`/`--validate` (`anhr1.py`) and M2 blocks (ANH-Q0)–(ANH-Q4) (`anhr1.m2`) | the annihilator as a self-stress of the contracted framework `H/P`: the reciprocity identity, the named move, the `k = 4` Tay circuit, the one-bracket recipe. **(ANH-8) is promoted to the *Shared dictionary* as (SD-6)** — that is the only copy | (ANH-1)–(ANH-6), (ANH-8) proven / proven-informally; (ANH-7) true-modulo-named-gap; **(ANH-R1) open** |
-| §(K-out) | `OC-` ✓ | (OC-1)–**(OC-16)**; Steps O1–O12; the **pools** POOL-C / POOL-G / POOL-S / POOL-B and (since direction O, 2026-08-06) POOL-CW / POOL-A / POOL-W / POOL-SL; driver modes `--comb`/`--pool`/`--shapes`/`--build` (`outerline.py`) and `--wide`/`--adv`/`--wrench`/`--slide` (`outerwide.py`) + `outerwide.m2` | (OUT)'s hypothesis measured: the exact hinge-rate reading, the ambient-generic map, the never-automatic negative, the constructed silent point, the two pool distributions, the sampler defect, and the residual | **(OC-3)** proven-informally and load-bearing; (OC-1) proven-informally; (OC-2)/(OC-5)/(OC-6)/(OC-7) measured; (OC-4) exhibited; **(OC-8) open**. **(OC-7) is a harness item**, `notes/scripts/README.md` *Harness debt* 4 — **CLEARED 2026-08-06** by the re-baselining round, whose slice S2 also minted **(OC-9)** here (the FIELD half of the coincident-hinge guard's adversarial test: the guard rejects 58/357 and its rejection set strictly contains the two-end diagnostic's 39) |
+| §(K-out) | `OC-` ✓ | (OC-1)–**(OC-16)**; Steps O1–O12; the **pools** POOL-C / POOL-G / POOL-S / POOL-B and (since direction O, 2026-08-06) POOL-CW / POOL-A / POOL-W / POOL-SL; driver modes `--comb`/`--pool`/`--shapes`/`--build` (`outerline.py`) and `--wide`/`--adv`/`--wrench`/`--slide` (`outerwide.py`) + `outerwide.m2`; **since 2026-08-19 (direction OCON)** (OC-17)–(OC-22), Steps O13–O18, driver modes `--validate`/`--check`/`--control` (`w4/ocon.py`), pools POOL-OV / POOL-OC / POOL-OZ | (OUT)'s hypothesis measured: the exact hinge-rate reading, the ambient-generic map, the never-automatic negative, the constructed silent point, the two pool distributions, the sampler defect, and the residual; (since OCON) the hard-stratum target-rank qualifier is free, and the (OC-8) residue reduces to a `Z ≠ ∅` + chart-irreducibility + one-chart-point reduction | **(OC-3)** proven-informally and load-bearing; (OC-1) proven-informally; (OC-2)/(OC-5)/(OC-6)/(OC-7) measured; (OC-4) exhibited; **(OC-8) open**. **(OC-7) is a harness item**, `notes/scripts/README.md` *Harness debt* 4 — **CLEARED 2026-08-06** by the re-baselining round, whose slice S2 also minted **(OC-9)** here (the FIELD half of the coincident-hinge guard's adversarial test: the guard rejects 58/357 and its rejection set strictly contains the two-end diagnostic's 39). **(OC-17)–(OC-21) proven-informally** (Steps O13–O16, direction OCON); **(OC-22) an assessment**; **(OC-8) OPEN, reshaped** — the hard-stratum qualifier struck as free, two named inputs (`Z ≠ ∅`, chart irreducibility) added rather than removed |
 | §(K-ind) | `IN-` | (I0)–(I4); Steps I0–I6 | numerical invariant along the generating moves | refuted as a route; (I3) a positive by-product |
 | §(K-Δ) | `DL-` | **(M1)**, **(M2)**, **(M3)**; (N1), (N2) | the Δ-matroid literature hunt: (M1)–(M3) are the **three hypothesis tests**, (N1)/(N2) the two readings bought | NO HIT; discharged |
 | §(K-bare-ext) | `BE-` | (K-bare-ext) | the (K-bare) stub | open, nothing being developed |

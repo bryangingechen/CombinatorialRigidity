@@ -98,7 +98,27 @@ two parametrizations' genericity loci coincide on the single clause
 (76 sites, 22 iso classes) with **no named gap**. No driver run
 (`fres.py` returned unused); no gap-map status move; `hK` class
 uniformity, §(K-grid) (GR-15) and route-ledger entries 1/5 all
-untouched. **OCON/LTWO: draft returned, landing pending.** The
+untouched. The SEVENTEENTH direction (OCON, §"Seventeenth
+direction") — the fourth of the sixth fan-out's five to land, after
+GBAL/GLAW/FRES — **LANDED 2026-08-19: an honest MISS carrying three
+theorems and a reduction.** **(OC-17)** proves the hard-stratum
+target-rank qualifier is FREE — the locus `Z` is Zariski-**open** in
+the whole pencil chart (an intersection of two maximal-rank
+conditions) — which **strikes** §(K-frame) (FR-7)'s (OC-16)-side
+un-owned-irreducibility sentence and makes its *What would change
+this* item (iii) unnecessary rather than open. **(OC-18)** gives a
+degree-free, open, ambient-nonempty sufficient condition (`H/X`
+infinitesimally rigid) at **both** ends of **every** class pair
+(5226/5226 labelled pairs). **(OC-19)** reduces (OC-8) at a (shape,
+split) to `Z ≠ ∅` + chart irreducibility + one chart point with `H/X`
+rigid — one-point decidable, **two named inputs ADDED, not removed**
+— and the adversarial control shows `Z ≠ ∅` alone does **not** suffice
+(3 constructed points **in** `Z`, guard-accepted, with `L_b ⊆ R₁` and
+`H/X` flexible). **(OC-20)/(OC-21)** restate the bad case in perp form
+and strip `x₁` from availability; **(OC-22)** places the residue in
+§(K-ann) (ANH-R1)'s object class. **(OC-8) stays OPEN, reshaped; no
+gap-map status move; class uniformity, (GR-15) and E3's arming all
+untouched.** **LTWO: draft returned, landing pending.** The
 first (A/B/C
 below, prepared 2026-08-05) landed 2026-08-05/06; the second (T/R/M,
 §"Second fan-out") 2026-08-06; the third (G/Q/O, §"Third fan-out")
@@ -5006,7 +5026,7 @@ reservations** were **coordinator-set**, not separately user-adjudicated.
 |---|---|---|---|
 | **GBAL** | compute-licensed | route-ledger entry 5 (input (X): balance existence, (GR-47) normal form) | **LANDED 2026-08-19** — a HIT (§"Fifteenth direction") |
 | **GLAW** | compute-licensed | (a′), the `d_fg = d_adm` law | **LANDED 2026-08-19** — an honest MISS (§"Sixteenth direction") |
-| **OCON** | derivation-first | recorded at its own landing | draft returned, landing pending |
+| **OCON** | derivation-first | §(K-out) (OC-8)'s hard-stratum target-rank qualifier | **LANDED 2026-08-19** — an honest MISS (§"Seventeenth direction") |
 | **LTWO** | derivation-first | recorded at its own landing | draft returned, landing pending |
 | **FRES** | derivation-first | §(K-frame) (FR-4)'s named gap (the (GR-5)-at-`G′` restatement) | **LANDED 2026-08-19** — (FR-4) CLOSED, no named gap (§"Nineteenth direction") |
 
@@ -5322,6 +5342,76 @@ instances of one inequality.
 reservation; nothing minted outside it, in any namespace. §(K-gcap) /
 `GC-` returned **unopened** (available an eleventh time). §(K-unif) / `GU-`
 **not** minted.
+
+## Seventeenth direction — OCON (sixth fan-out)
+
+**Status: LANDED 2026-08-19 — an honest MISS carrying three theorems and a
+reduction.** Fourth of the sixth fan-out's five directions to land, after
+GBAL/GLAW/FRES; one of **five** concurrent directions of the sixth fan-out
+(with GBAL, GLAW and FRES, all landed earlier the same day; LTWO still
+pending), **derivation-first** tier (the compute licence sat with GBAL/GLAW).
+§(K-out) continuation, **Steps O13–O18**, labels
+**(OC-17)–(OC-22)** claimed (the tails move to (OC-23)+ / O19+,
+`notes/Pencil-labels.md`). Driver `notes/scripts/w4/ocon.py`, 21 s total across
+three modes.
+
+**The verdict: (OC-8) stays OPEN, and its `hard-stratum target-rank` qualifier
+is FREE.** **(OC-17)**: `dim R_a = corank(G′) − s₀` at *every* legal chart point,
+so at `index(G) = 0`, `def(G′) = 0` the hard-stratum target-rank locus `Z` is
+the intersection of **two maximal-rank conditions** — a Zariski-**open** subset
+of the chart, not a stratum. Consequence: an open subset of an irreducible
+variety is irreducible and dense, so **§(K-frame) (FR-7)'s named un-owned
+object is struck** — `Z`'s irreducibility is the chart's, owned by §(K-ann)
+(ANH-9)(ii) — and §(K-frame) *What would change this* item (iii)'s foothold
+becomes **unnecessary rather than open**. **(OC-18)**: `H/X` infinitesimally
+rigid at a chart point forces `λ₁ ≠ 0` hence `L_b ⊄ R₁`, an **open** condition
+with **no degree hypothesis** — both ends of **every class pair** (POOL-CW's
+labelled comparison: 5226/5226, against (OC-12)'s 3081/3702 and (OC-13)'s
+slide-legal 1715); §(K-out) *What
+would change this (Steps O9–O12)* **item 2 is answered in a different shape**.
+**(OC-19)**: (OC-8) at a (shape, split) follows from `Z ≠ ∅` + chart
+irreducibility + **one chart point, anywhere, with `H/X` rigid** — one-point
+decidable, the `λ`-side analogue of (ANH-9)(iii) — and **`Z ≠ ∅` is not
+(OUT)'s to pay**: `dim R_a = 0` kills routes A *and* B at every placement
+(§(K-tight) *Step 2* item 3), so it is a hypothesis of the whole (K-tight)
+criterion. **(OC-20)**: `β_h^{⊥_B} = β_h` turns (OC-13)'s shape-level bad case
+into `T_u^{⊥_B} ∩ β_b ≠ 0`, and identifies (OC-11)'s marked point as `ρ`'s
+panel trace **as a functional** — with the "`p = ρ ∩ Π(h)`" reading **refuted**
+(`ρ` non-decomposable at 4/4 ends). **(OC-21)**: `L_b ⊆ R₁ ⟺ C(b,a) ∈ R₁` —
+`x₁` leaves the statement — and the slide dichotomy makes availability an
+**iff** in `T_u^{⊥_B} ∩ β_b = 0` at the 1715 slide-legal `b` ends.
+**(OC-22)**: the residue lands in §(K-ann) **(ANH-R1)**'s object class (same
+contraction tower, `H/P = (H/X)/(b ∼ v*)`), the **first arrival at the same
+kind of object** rather than the same missing technology; and strict
+alternation at `G′`-degree-2 bodies is the combinatorial reason the
+grid/bracket form stops at `ℓ_min = 5`.
+
+**What did NOT move.** **(OC-8) OPEN; class uniformity untouched; no gap-map
+status moves; (GR-15) untouched and no g-flank claimed.** The pass adds two
+**named inputs** rather than removing them: `Z ≠ ∅` per class (shape, split)
+(measured 90/90 POOL-S splits, never proven) and chart irreducibility (the
+arc's most-consumed un-driver-tested fact). Every bar held: no counting or
+matroid route was proposed (OC-3) stands as the standing kill; POOL-G/POOL-S
+were not re-sampled and (OC-1)–(OC-7) were not re-derived; no
+`place_pencil_general` figure is quoted as a rate; the (FR-6) follow-ons
+(ii)–(iv) were not entered — item (iii) is *struck as unnecessary*, which is
+the opposite of entering it; §(K-clos)'s field question was not reopened; the
+Lean hold, W4's parking, `hK`/`hbareSplit`'s pinning and route σ's block are
+untouched.
+
+**Honest boundary, stated by the direction itself.** The pass **reshapes**
+(OC-8); it does not close it. Its own successor list ranks input (c) — `H/X`
+rigid at one chart point, class-uniformly — first, and says plainly that the
+grid route to it **carries a rank condition** and is therefore
+(GR-15)-flavoured, not (FR-R1)-flavoured. The one-hub-neighbour extension of
+the slide is proven-informally, **not** driver-tested, and its census share is
+**not** measured.
+
+**Compute.** Three modes, `--validate` 0.3 s / `--check` 17 s / `--control` 4 s,
+all byte-identical at `PYTHONHASHSEED` 0 and 12345; one driver added, none
+modified, so the *figures-do-not-move* gate discharges by the check itself.
+POOL-OC is **6 frames / 12 ends** by design — every sentence under test is an
+identity, so no figure in this direction is a rate.
 
 ## Nineteenth direction — FRES (sixth fan-out)
 
