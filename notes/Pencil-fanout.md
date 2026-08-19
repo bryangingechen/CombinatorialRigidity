@@ -82,8 +82,23 @@ proof does **not** transfer — GBAL's argument is whole-graph-only, and
 (Y) stays open, a genuinely different quantifier. **(a′) did NOT HIT;
 entry 1 stays OPEN with (a′) still its primary and no bar; E3 stays
 ARMED (by GBAL's entry-5 HIT) but does NOT fire; no g-flank; (GR-15)
-stays OPEN, unchanged.** **OCON/LTWO/FRES: draft returned, landing
-pending.** The
+stays OPEN, unchanged.** the NINETEENTH direction (FRES, §"Nineteenth
+direction") — the third of the SIXTH FAN-OUT's five — **LANDED
+2026-08-19: §(K-frame) (FR-4)'s named gap CLOSED**, and the closing
+needed a clause the gap's own name did not carry: **(FR-15)** restates
+(GR-5) at `G′` verbatim (minus its target-rank clause), but (GR-5) is a
+chart-**MAP** statement (hub normals free, points derived) while
+(ANH-9)(iii)'s semicontinuity needs membership in the chart-**VARIETY**
+of (ANH-9)(ii) (hub points free, normals derived) — a different
+sentence, the direction's one genuine finding; **(FR-16)** supplies it,
+since at a σ-fixed configuration the normals *are* the points, so the
+two parametrizations' genericity loci coincide on the single clause
+`framedom.legality_free` already tests; **(FR-17)** then discharges the
+(ANH-R1) β-clause at every bare-cycle site of every `k = 4` class triple
+(76 sites, 22 iso classes) with **no named gap**. No driver run
+(`fres.py` returned unused); no gap-map status move; `hK` class
+uniformity, §(K-grid) (GR-15) and route-ledger entries 1/5 all
+untouched. **OCON/LTWO: draft returned, landing pending.** The
 first (A/B/C
 below, prepared 2026-08-05) landed 2026-08-05/06; the second (T/R/M,
 §"Second fan-out") 2026-08-06; the third (G/Q/O, §"Third fan-out")
@@ -4993,7 +5008,7 @@ reservations** were **coordinator-set**, not separately user-adjudicated.
 | **GLAW** | compute-licensed | (a′), the `d_fg = d_adm` law | **LANDED 2026-08-19** — an honest MISS (§"Sixteenth direction") |
 | **OCON** | derivation-first | recorded at its own landing | draft returned, landing pending |
 | **LTWO** | derivation-first | recorded at its own landing | draft returned, landing pending |
-| **FRES** | derivation-first | recorded at its own landing | draft returned, landing pending |
+| **FRES** | derivation-first | §(K-frame) (FR-4)'s named gap (the (GR-5)-at-`G′` restatement) | **LANDED 2026-08-19** — (FR-4) CLOSED, no named gap (§"Nineteenth direction") |
 
 ## Fifteenth direction — GBAL (sixth fan-out)
 
@@ -5307,3 +5322,99 @@ instances of one inequality.
 reservation; nothing minted outside it, in any namespace. §(K-gcap) /
 `GC-` returned **unopened** (available an eleventh time). §(K-unif) / `GU-`
 **not** minted.
+
+## Nineteenth direction — FRES (sixth fan-out)
+
+**Status: LANDED 2026-08-19 — (FR-4) CLOSED, and the closing needed a clause
+the gap's name did not carry.** §(K-frame) continuation, **Steps FR12–FR15**,
+labels **(FR-15)–(FR-17)** claimed; **(FR-18) reserved and returned UNUSED**
+(available for a later direction). One of **five** concurrent directions of
+the sixth fan-out (with GBAL and GLAW, both landed earlier the same day;
+OCON/LTWO still pending), in the **derivation-first** tier. Dispatched
+**opus**. Target: §(K-frame) (FR-4)'s single named gap — "the
+(GR-5)-at-`G′` restatement" — and *Steps FR0–FR6*'s *What would change this*
+item (v). The lightest and most sharply bounded target of the wave: a
+derivation, no compute licence, no new driver expected.
+
+**Verdict: (FR-4) CLOSED — outcome (2) of the dispatch's three, "it needs a
+stated extra hypothesis, which is discharged".** The dispatch instructed the
+direction not to assume outcome (1) because the record predicted it, and that
+instruction earned its keep: the record's "two lines of prose in §(K-grid)" is
+**right about the size and wrong about the target**.
+
+- **(FR-15)** *(proven-informally)* — the restatement as named. §(K-grid)
+  (GR-5) holds verbatim at `G′ = G − v + ab = G.splitOff v a b e₀`, minus its
+  final target-rank clause (which must be dropped: `G′` is not tight,
+  `f(V(G′)) = f(V(G)) + 1`). Three of its inputs come out **free**: `hcard` at
+  `G′` is a hypothesis `hK` already carries about `G′`
+  (`HasGenericPencilRealization K 3 (G.splitOff v a b e₀)` →
+  `IsNondegPencilRealization` → the landed
+  `ncard_closedHubNbhd_le_three_of_isNondegPencilRealization`), and
+  combinatorially §(K-ind) (I2) leaves the hub set and `Λ` untouched; the
+  non-hub **star-rank-3** condition **is** admissible alternation at a degree-2
+  body; and the 3-member-`closedNbhd` clause follows from
+  `girth(G′) ≥ girth(G) − 1 ≥ 6`.
+- **(FR-16)** *(proven-informally)* — **the finding.** (GR-5) is a
+  chart-**MAP** statement (hub normals free, points derived —
+  `Chart.lean`/`Engine.lean`), while (ANH-9)(iii)'s semicontinuity consumes
+  membership in the chart **VARIETY** of (ANH-9)(ii), whose parametrization runs
+  the **other** way (hub points free, panel normals derived — literally
+  `widened.place_pencil_general`, what `outer.chart_point` /
+  `dominance.base_seed` sample). Those are different sentences and the second
+  does not follow from the first. (FR-16) supplies it: at a σ-fixed
+  configuration the normals **are** the points, so the points-first
+  parametrization's two genericity conditions collapse onto the **single**
+  clause `{pt_w : w ∈ closedHubNbhd(u)}` LI — which is (GR-5)'s own hypothesis
+  and `framedom.legality_free`'s clauses (i)+(ii), already asserted per body at
+  all 30 built points by `--transport`. Reach: any `hcard` graph, no bare-cycle
+  or `k` hypothesis — so it also **retro-certifies** (FR-6)'s θ(3,4,5) points as
+  honest `G′`-chart points.
+- **(FR-17)** *(proven-informally, **no named gap**)* — the (ANH-R1) `β`-clause
+  at **every** bare-cycle site of **every** `k = 4` class triple: 76 class-level
+  sites over 22 iso classes. The witness is a **formula** — (FR-11)'s recipe
+  colouring plus any injective assignment of positive rationals to the ruling
+  components — so the exact `ℚ(i)` point is constructed, not searched.
+
+**Does (FR-R1)+(FR-4) now give an unconditional discharge? YES, with the word
+scoped.** No clause of the chain is left unwritten; the standing is the arc's
+ordinary **proven-informally** (weakest links: (ANH-14)(c), (ANH-9)(ii)/(iii),
+(FR-1), (FR-16)), none Lean-checked. "No named gap" and "machine-verified" are
+independent axes; this direction moves only the first.
+
+**Bars honoured.** No `GR-` label minted and §(K-grid) not edited; (OC-8) and
+§(K-Λ) item (vii) cited, not worked; the (FR-6) follow-ons (ii)/(iii)/(iv)
+untouched and un-commissioned; (FR-R1) not re-proven; §(K-ann)'s and §(K-out)'s
+settled batches not re-derived; §(K-clos)'s field question not re-opened.
+Labels minted: **(FR-15)–(FR-17)**; **(FR-18) returned UNUSED**. Steps
+**FR12–FR15**. `Λ = ∅`, `D = 0`, modulo (GR-4′) throughout.
+
+**Driver: NONE.** `notes/scripts/w4/fres.py` **returned unused and not
+created**; nothing tracked was modified. The dispatch's expectation held —
+every per-instance hypothesis the block consumes is already asserted by the
+landed `framedom.py --pattern`/`--transport`, and everything above them is
+proof, which no driver mode can test (F11).
+
+**Gap-map: NO status moves.** The **(K-frame)** row's *what would close it*
+cell changes from "(FR-4)'s named gap alone" to "**nothing on the (ANH-14)
+side**; (FR-17) is the unconditional discharge, no rider"; its status word
+stays. The **(K-ann)** row's §(K-frame) clause drops "what remains is
+(FR-4)'s one named gap alone". `hK` class uniformity untouched; §(K-grid)
+(GR-15) untouched; no `g`-flank claimed.
+
+**(L5) label note.** `FRES` was verified 0-hit as a raw substring across the
+pencil doc set at reservation time; repo-wide it is a substring of **19**
+unrelated hits, every one inside the word `FRESH`
+(`Molecular/Induction/Operations.lean`, `notes/dispatch-log.md`,
+`notes/model-experiment-archive.md`, `notes/Phase23-design.md`,
+`notes/coordinate-phase-rescue.md`) — harmless, and **no rename is
+proposed**; recorded so the next reservation greps the whole tree, not just
+the pencil doc set.
+
+**Landing (coordinator).** Per §"Landing checklist". Re-ran the *Verification*
+block's cited invocations (`framedom.py --pattern`/`--transport`/`--outer`/
+`--rulings`, `patexist.py --strat`/`--recipe`, `framedom.m2`) and confirmed
+every headline figure the draft quotes; `git diff --name-only` over the
+driver tree (unstaged and `--cached`) was empty both before and after this
+commit — no tracked driver modified, none added. The draft's own
+*Coordinator actions at landing* block was executed against the tree, then
+stripped (not merged).

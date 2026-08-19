@@ -5,9 +5,9 @@
 (L0–L7) are COMPLETE — `hsplit` CLOSED IN FULL and `hfresh`'s counting discharge landed
 (2026-07-30). Only three items remain, all carried by the landed successor
 `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card` (`Molecule/Pencil/Escape.lean`):
-`hcontract` (W4), kernel `hK`, and kernel `hbareSplit` — see *Hand-off*. **Sixteen
+`hcontract` (W4), kernel `hK`, and kernel `hbareSplit` — see *Hand-off*. **Seventeen
 kernel-(K) fan-out directions plus CFLANK, GCAP, GUNIF, GEXIST, GORIENT, GDEV, GADM, GPSA,
-GDESC, GBAL and GLAW are now COMPLETE** (2026-08-05 → 08-19; per-direction theorem chain in
+GDESC, GBAL, GLAW and FRES are now COMPLETE** (2026-08-05 → 08-19; per-direction theorem chain in
 *Decisions made*). Headline positives **(FR-R1) PROVEN** and the (GR-16)–(GR-60) theorem
 chain; GUNIF refuted both its targets; GEXIST/GORIENT/GDEV/GADM (honest MISSes /
 form-refutations) re-anchored the target on the growth-law form, shift-metric layer proven
@@ -15,18 +15,19 @@ UNBOUNDED; **GPSA** proved entry 5's parity half; **GDESC** reshaped the balance
 a matching-flexibility statement without closing it; **GBAL** (the FIFTEENTH direction,
 LANDED 2026-08-19) **PROVED (GR-54), the balance theorem: route-ledger entry 5 is PROVEN in
 both halves, a HIT** — discharging input (X) and re-deriving GPSA's parity half without
-Petersen. **GLAW** (the SIXTEENTH direction, LANDED 2026-08-19, one of five concurrent
-sixth-fan-out directions, `notes/Pencil-fanout.md` §"Sixth fan-out") is an **honest MISS
+Petersen. **GLAW** (the SIXTEENTH direction, LANDED 2026-08-19) is an **honest MISS
 carrying four theorems and one refutation on (a′)**: (GR-55)–(GR-58) give (a′) coordinates
 and verify it EXHAUSTIVELY on the whole `n_hub ≤ 6` stratum at no cap; (GR-59) REFUTES the
 stronger per-matching variant (`min_M` load-bearing); (GR-60) names the residual **input
 (Y)** — GBAL's input (X)'s whole-graph/proper-chunk counterpart by (GR-56)(iv), though
-GBAL's proof does **not** transfer to it. **E3 stays ARMED (by GBAL's HIT) but does NOT
+GBAL's proof does **not** transfer to it. **FRES** (the NINETEENTH direction, LANDED
+2026-08-19) **CLOSES §(K-frame) (FR-4)'s named gap** via (FR-15)–(FR-17), no named gap, no
+driver run — detail in *Decisions made*. **E3 stays ARMED (by GBAL's HIT) but does NOT
 fire**: entry 1's **(a′)** stays open, no bar. **(GR-15) stays OPEN throughout; class
-uniformity untouched by every round; no g-flank at any of the sixteen.** **Next concrete
-task: land the remaining three sixth-fan-out drafts, in order — FRES, then OCON, then
-LTWO** (OCON's landing depends on FRES's section existing; each already returned as its
-own untracked `notes/Pencil-draft-<CODE>.md`) — see *Hand-off*. Direction codes are
+uniformity untouched by every round; no g-flank at any of the seventeen.** **Next concrete
+task: land the remaining two sixth-fan-out drafts, in
+order — OCON, then LTWO** (each already returned as its own untracked
+`notes/Pencil-draft-<CODE>.md`) — see *Hand-off*. Direction codes are
 **multi-letter and topic-tagged from the fifth fan-out on** (`notes/Pencil-labels.md`
 (L5)); grandfathered single letters are re-used across dates — **always date those**.
 
@@ -112,9 +113,11 @@ constraints; the dated dispatch narrative is in *Decisions made* and git):
   route-ledger entry 5 PROVEN in both halves, a HIT, discharging input (X); E3 ARMED, not
   fired. **GLAW LANDED 2026-08-19** — an honest MISS: (a′) gets coordinates, an exhaustive
   verification and a proven constraint on any proof (`min_M` load-bearing); residual named
-  input (Y); E3 still not fired. OCON/LTWO/FRES: draft returned, landing pending.
+  input (Y); E3 still not fired. **FRES LANDED 2026-08-19** — §(K-frame) (FR-4)'s named gap
+  CLOSED via (FR-15)–(FR-17), no named gap, no driver run (detail in *Decisions made*).
+  OCON/LTWO: draft returned, landing pending.
 
-**Kernel-(K) research arc — forty-one docs+scripts-only dispatches, plus seven
+**Kernel-(K) research arc — forty-two docs+scripts-only dispatches, plus seven
 strategy-only passes** (2026-08-02 → 08-19; the second the 2026-08-12 fable recon, the third
 through fifth the 2026-08-13/08-14 ninth-, tenth- and eleventh-direction selection recons, the
 sixth the 2026-08-18 thirteenth-direction selection recon, the seventh the 2026-08-18
@@ -122,13 +125,14 @@ sixth the 2026-08-18 thirteenth-direction selection recon, the seventh the 2026-
 being fixed; **the twelfth's pick was coordinator-authored at the user's 2026-08-17 election,
 so it contributed no pass**; the sixth fan-out's multidispatch election is a user call on
 dispatch *shape*, not a selection recon, so it contributes no pass either). The count moves
-only on a landing; GBAL's is the fortieth, GLAW's the forty-first. Canonical homes: workbook
+only on a landing; GBAL's is the fortieth, GLAW's the forty-first, FRES's the
+forty-second. Canonical homes: workbook
 `notes/Pencil-informal.md` (**State of (K)** map = entry point), `notes/Pencil-W4-informal.md`
 (W4-residual), `notes/Pencil-strategy.md` (strategy); one line per landing in *Decisions
 made*, canonical with git — **not restated here**. Net effect: **disproof risk removed**,
 every refuted route/gap has a successor in the gap map, several structural positives
 proven, and **route-ledger entry 5 is PROVEN, the arc's first HIT**; **class uniformity of
-the escape remains untouched by all forty-one dispatches.**
+the escape remains untouched by all forty-two dispatches.**
 
 **Doc-debt round CLOSED — `notes/Pencil-cleanup.md`** (2026-08-13, category D only; D-5 a
 watch item; the D-2 fix regressed at GORIENT's landing, re-repaired `07f6f9b6`).
@@ -231,20 +235,22 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
 
 **The phase stays OPEN** (the 2026-07-24 adjudication — no phase-close; see *Current state*).
 
-**Next concrete task: LAND the remaining three sixth-fan-out drafts, in order — FRES, then
-OCON, then LTWO** (OCON's landing depends on FRES's section existing). All five directions
-of the sixth fan-out (dispatched 2026-08-19 by explicit user multidispatch adjudication,
-`notes/Pencil-fanout.md` §"Sixth fan-out") have returned; **GBAL and GLAW landed the same
-day** — full verdicts in this note's top `**Status:**` paragraph and in *Decisions made*,
-**not restated here** (in one clause: entry 5 PROVEN both halves, a HIT, input (X)
-discharged; (a′) an honest MISS with input (Y) named, `min_M`'s per-matching variant
-REFUTED; E3 ARMED, not fired). The remaining three (OCON/LTWO/FRES targets recorded at
-their own landings) are draft-complete, awaiting coordinator verification and serial
-landing per the standard checklist (`notes/Pencil-fanout.md` §"Landing checklist"). Labels
-claimed: GBAL **(GR-49)–(GR-54) / Steps G68–G73**, GLAW **(GR-55)–(GR-60) / Steps
-G74–G79**; the next unclaimed tail is **(GR-61)+ / Steps G80+** (`notes/Pencil-labels.md`).
-No standing constraint moves: phase OPEN, Lean hold STANDS, W4 PARKED, `hK`/`hbareSplit`
-pinned, option B un-commissioned.
+**Next concrete task: LAND the remaining two sixth-fan-out drafts, in order — OCON, then
+LTWO** (OCON's landing depends on FRES's section existing, which it now does). All five
+directions of the sixth fan-out (dispatched 2026-08-19 by explicit user multidispatch
+adjudication, `notes/Pencil-fanout.md` §"Sixth fan-out") have returned; **GBAL, GLAW and
+FRES landed the same day** — full verdicts in this note's top `**Status:**` paragraph and
+in *Decisions made*, **not restated here** (in one clause: entry 5 PROVEN both halves, a
+HIT, input (X) discharged; (a′) an honest MISS with input (Y) named, `min_M`'s per-matching
+variant REFUTED; E3 ARMED, not fired; §(K-frame) (FR-4)'s named gap CLOSED, no named gap,
+no driver run). The remaining two (OCON/LTWO targets recorded at their own landings) are
+draft-complete, awaiting coordinator verification and serial landing per the standard
+checklist (`notes/Pencil-fanout.md` §"Landing checklist"). Labels claimed: GBAL
+**(GR-49)–(GR-54) / Steps G68–G73**, GLAW **(GR-55)–(GR-60) / Steps G74–G79**, FRES
+**(FR-15)–(FR-17) / Steps FR12–FR15** ((FR-18) reserved and unused); the next unclaimed
+`GR-` tail is **(GR-61)+ / Steps G80+** (`notes/Pencil-labels.md`). No standing constraint
+moves: phase OPEN, Lean hold STANDS, W4 PARKED, `hK`/`hbareSplit` pinned, option B
+un-commissioned.
 
 **`hsplit` is CLOSED IN FULL** (W5-L7c-1…6, landed 2026-07-30) and **`hfresh`'s mechanical
 discharge (residue (iv)) is CLOSED too**. The landed successor
@@ -264,10 +270,12 @@ discharge (residue (iv)) is CLOSED too**. The landed successor
 > **BLOCKED by the standing 2026-08-05 Lean-hold adjudication (general, not W4-scoped)**; does
 > not open without a fresh user adjudication.
 >
-> **The FIRST through SIXTEENTH directions are ALL COMPLETE** — roll call (with commit
-> hashes for the first five) is one-lined with dates in *Decisions made*; the delegations
-> that picked the SIXTH through FIFTEENTH under them are in *Current state*'s dated
-> bullets; not repeated here. **No g-flank found by any of them; (GR-15) stays OPEN, unchanged, modulo (GR-4′); no
+> **The FIRST through SIXTEENTH directions are ALL COMPLETE, plus the NINETEENTH (FRES)** —
+> ordinals were assigned at dispatch, so landing order differs: **SEVENTEENTH (OCON)** and
+> **EIGHTEENTH (LTWO)** remain pending, landing after FRES. Roll call (with commit hashes for
+> the first five) is one-lined with dates in *Decisions made*; the delegations that picked the
+> SIXTH through FIFTEENTH under them are in *Current state*'s dated bullets; not repeated
+> here. **No g-flank found by any of them; (GR-15) stays OPEN, unchanged, modulo (GR-4′); no
 > gap-map status moves.**
 > **Two durable negatives from the same adjudication — do not re-run:** (i) §4.6's shortlist
 > is **partially superseded** for the tight stratum (U2 delivered by (GR-16)'s hub-multigraph
@@ -300,9 +308,9 @@ discharge (residue (iv)) is CLOSED too**. The landed successor
 >   **ARMS** E3, and **(a′)** (now also carrying input (Y)) is the *only* thing left.
 > - **Every direction's TERMINATION check fired nothing except arming E3** (E1/E2 NO
 >   throughout — GBAL's (GR-54) proves `d_adm = ∞` can **never** fire at `Λ = ∅`, `D = 0`;
->   GLAW's (GR-59) refutes only the per-matching variant, never (a′) itself). The **sixth
->   fan-out's remaining three drafts** are the next-task slot at the top of this section, not
->   a routing call.
+>   GLAW's (GR-59) refutes only the per-matching variant, never (a′) itself). FRES's landing
+>   (below) touches neither entry. The **sixth fan-out's remaining two drafts (OCON, LTWO)**
+>   are the next-task slot at the top of this section, not a routing call.
 > **Coordinator hand-off note, still not loaded onto any direction:** whether (GR-15) as
 > quantified ("every tight class shape") also covers the `W19`-type **(K-res)** sibling
 > habitat is unresolved — pin it when the tight side closes, not before.
@@ -374,36 +382,35 @@ Reverse-chronological, one line per landing; full derivations live in git,
 `notes/Phase39-design.md`, and (for the (K) arc) the workbook section named in each entry, which
 is the canonical home a successor reads.
 
-- **The FIFTEENTH and SIXTEENTH directions — GBAL and GLAW, both LANDED 2026-08-19**
-  (`w4/{gbal,glaw}.py`; canonical home §(K-grid) Steps G68–G79). Two of five concurrent
-  directions of a user-adjudicated **sixth fan-out** (GBAL/GLAW/OCON/LTWO/FRES,
-  `notes/Pencil-fanout.md` §"Sixth fan-out"). **GBAL is a HIT — the arc's first**: a z-form
-  change of coordinates chains ((GR-49)–(GR-53)) to **(GR-54), the balance theorem** —
-  route-ledger **entry 5 PROVEN in both halves**, discharging input (X), re-deriving GPSA's
-  parity half without Petersen; (GR-45)–(GR-48) subsumed, not contradicted. **GLAW is an
-  honest MISS** carrying four theorems and one refutation on **(a′)**: (GR-55)–(GR-58) give
-  (a′) coordinates and verify it EXHAUSTIVELY on the whole `n_hub ≤ 6` stratum at no cap;
-  (GR-59) REFUTES the per-matching variant (`min_M` load-bearing, no proof may fix its
-  anchor matching); (GR-60) names the residual **input (Y)** — by (GR-56)(iv) the
-  whole-graph/proper-chunk instances of one inequality together with GDESC's input (X),
-  though GBAL's proof does **not** transfer to (Y) (a different quantifier). **E3 ARMED,
-  not fired** — entry 1's (a′) stays open, no bar. (GR-15) OPEN, unchanged; no g-flank.
+- **The NINETEENTH direction — FRES, LANDED 2026-08-19** (no driver; canonical home
+  §(K-frame) *Steps FR12–FR15*, third of the sixth fan-out's five to land after GBAL/GLAW,
+  `notes/Pencil-fanout.md` §"Sixth fan-out"). **Closes §(K-frame) (FR-4)'s named gap**:
+  (FR-15) restates (GR-5) at `G′`; **(FR-16)** — the finding — supplies the
+  chart-MAP-vs-chart-VARIETY clause the gap's name omitted, free at σ-fixed configurations;
+  **(FR-17)** proves the (ANH-R1) β-clause at every bare-cycle site of every `k = 4` class
+  triple with **no named gap**. No `GR-` label minted; entries 1/5, `hK` uniformity, (GR-15)
+  untouched.
 
-- **The FIRST through FOURTEENTH fan-outs/directions — all LANDED 2026-08-05…08-18**
+- **The FIRST through SIXTEENTH fan-outs/directions — all LANDED 2026-08-05…08-19**
   (canonical homes the workbook sections named; commits `d5ae55aa`…, `cdd23d30`, `12edc305`,
   `b32c1c2c`, `cd0af9e1` for the first five; CFLANK/GCAP/GUNIF/GEXIST/GORIENT/GDEV/GADM/
-  GPSA/GDESC (`w4/{cflank,gcap,gunif,gexist,gorient,gdev,gadm,gpsa,gdesc}.py`, §(K-grid)
-  Steps G24–G67) the sixth–fourteenth). Twenty-two directions total (thirteen in the first
-  five fan-outs, one per ordinal from the sixth on): (GR-21)–(GR-28) closed
-  TCOL's two flank sites AS ROUTES; GCAP's `g ≤ 1` cap at `k ≥ 3` since REFUTED by GUNIF
-  (both of GUNIF's own targets refuted too, route DEAD); GEXIST/GORIENT honest MISSes
+  GPSA/GDESC/GBAL/GLAW (`w4/{cflank,gcap,gunif,gexist,gorient,gdev,gadm,gpsa,gdesc,gbal,
+  glaw}.py`, §(K-grid) Steps G24–G79) the sixth–sixteenth). Twenty-four directions total
+  (thirteen in the first five fan-outs, one per ordinal from the sixth on): (GR-21)–(GR-28)
+  closed TCOL's two flank sites AS ROUTES; GCAP's `g ≤ 1` cap at `k ≥ 3` since REFUTED by
+  GUNIF (both of GUNIF's own targets refuted too, route DEAD); GEXIST/GORIENT honest MISSes
   ((GR-32)–(GR-39)) re-anchoring the target on bounded-deviation selection; GDEV a
   REFUTATION-with-successors ((GR-40)–(GR-42)); GADM an honest MISS carrying (GR-43)
   (shift-metric UNBOUNDED), routing overridden by GPSA; GPSA proves entry 5's parity half
-  ((GR-44)); GDESC RESHAPES the balance half ((GR-45)–(GR-48)) into input (X), later
-  discharged by GBAL. (b′) supported; headline positives (GR-9)/(FR-R1) PROVEN, (GR-15)
-  OPEN throughout; uniformity untouched; E1/E2/E3 never fired. Coordinator corrective pass
-  same day as GUNIF (docs only) — landing-checklist item 6 (`notes/Pencil-fanout.md`).
+  ((GR-44)); GDESC RESHAPES the balance half ((GR-45)–(GR-48)) into input (X); **GBAL PROVES
+  it** ((GR-49)–(GR-54), the balance theorem — route-ledger entry 5 in BOTH halves, the arc's
+  first HIT, discharging (X), re-deriving GPSA's parity half without Petersen); **GLAW** an
+  honest MISS on **(a′)** ((GR-55)–(GR-58) coordinates + exhaustive `n_hub ≤ 6` verification;
+  (GR-59) REFUTES the per-matching variant; (GR-60) names residual input (Y) — GBAL's proof
+  does **not** transfer to it). (b′) supported; headline positives (GR-9)/(FR-R1) PROVEN,
+  (GR-15) OPEN throughout; uniformity untouched; E1/E2 never fired, **E3 ARMED by GBAL, not
+  fired**. Coordinator corrective pass same day as GUNIF (docs only) — landing-checklist
+  item 6 (`notes/Pencil-fanout.md`).
 
 - **The 2026-08-05 research cluster, one-lined** (all same day; full detail
   `Phase39-design.md` + git, workbook sections named): docs/strategy pair — notes
