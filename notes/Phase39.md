@@ -5,30 +5,23 @@
 (L0–L7) are COMPLETE — `hsplit` CLOSED IN FULL and `hfresh`'s counting discharge landed
 (2026-07-30). Only three items remain, all carried by the landed successor
 `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card` (`Molecule/Pencil/Escape.lean`):
-`hcontract` (W4), kernel `hK`, and kernel `hbareSplit` — see *Hand-off*. **All thirteen
-fan-out directions plus CFLANK, GCAP, GUNIF, GEXIST, GORIENT, GDEV and GADM are now
-COMPLETE** (2026-08-05 → 08-17; roster in *Decisions made*'s FIRST-through-TWELFTH
+`hcontract` (W4), kernel `hK`, and kernel `hbareSplit` — see *Hand-off*. **All fourteen
+fan-out directions plus CFLANK, GCAP, GUNIF, GEXIST, GORIENT, GDEV, GADM and GPSA are now
+COMPLETE** (2026-08-05 → 08-18; roster in *Decisions made*'s FIRST-through-THIRTEENTH
 entries). Headline
-positives **(FR-R1) PROVEN** and (GR-16)–(GR-28); GUNIF **REFUTED both of its targets** at
-`n_hub ≥ 8`; GEXIST is an honest **MISS** — three new theorems ((GR-32)/(GR-33)/(GR-35))
-reduce the uniform existence target to a **minority-dart orientation problem**; GORIENT,
-also an honest **MISS**, adds four more ((GR-36)–(GR-39)) and re-anchors the target on a
-**bounded-deviation selection principle** (W3 the sticking instance); **GDEV REFUTES that
-form as posed** ((GR-40)–(GR-42): a habitat family with an unbounded parity floor whose
-every member is still fully-good — a form-refutation, never a flank), re-anchoring it on
-the `d_fg = d_adm` law; **GADM** (LANDED 2026-08-17, the arc's first coordinator-authored
-prep) proves **(GR-43)** — the odd-cycle-packing shift floor: the **shift-metric layer is
-UNBOUNDED** (`d_par = d_adm = d_fg = m` exactly at the necklaces, killing the growth law's
-bounded-correction reading) while the **(a′) `d_fg = d_adm` law survives its first
-large-`d` test** (rank-certified at the optimum up to `n_hub = 50`) and ledger entry 5
-(per-shape admissibility) settles as a **separate OPEN statement** — but **(GR-15) stays
-OPEN throughout; class uniformity untouched by every round.** The research arc
-**CONTINUES**: the THIRTEENTH direction is **GPSA** — **route-ledger entry 5**, per-shape
-admissibility in BOTH halves (the Hall/SDR parity step and the ≤ 6-odd-branch balance
-rider), (b′) the secondary — picked by a **top-rung fable recon** (2026-08-18, fifth use
-of the 2026-08-12 shape) whose verified verdict **OVERRODE** GADM's shift-metric routing
-clause; **PREPPED, not yet dispatched. Dispatching GPSA is the next concrete task**
-(see *Hand-off*). Direction codes
+positives **(FR-R1) PROVEN** and the (GR-16)–(GR-45) theorem chain; GUNIF refuted both its
+targets; GEXIST/GORIENT/GDEV/GADM (honest MISSes / form-refutations, (GR-32)–(GR-43))
+leave the target as the growth-law form with the shift-metric layer proven UNBOUNDED and
+the (a′) `d_fg = d_adm` law surviving; **GPSA** (LANDED 2026-08-18, a fable-recon pick
+overriding GADM's routing clause) proves **(GR-44)** — the Hall/SDR step is **AUTOMATIC**
+and the parity layer is **EXACT**, `d_par(M) = w_M`, so **entry 5's parity half is
+PROVEN** ((GR-37)(iii) repaired there) — and **(GR-45)** (the balance-move calculus),
+reducing the balance half to a **descent lemma** that is exhaustively true at 97 censused
+shapes and open exactly at its named stuck case — **entry 5 NOT a HIT, E3 not armed** —
+but **(GR-15) stays OPEN throughout; class uniformity untouched by every round.** The
+research arc **CONTINUES**: per GPSA's landed otherwise-clause the FOURTEENTH direction is
+**the descent lemma's stuck case**. **Prepping and dispatching the FOURTEENTH is the next
+concrete task** (see *Hand-off*). Direction codes
 are **multi-letter and topic-tagged from the fifth fan-out on** (`notes/Pencil-labels.md`
 (L5)); grandfathered single letters are re-used across dates — **always date those**.
 
@@ -101,9 +94,12 @@ constraints; the dated dispatch narrative is in *Decisions made* and git):
   second reader — all in `notes/Pencil-fanout.md` §"Thirteenth direction"). Every GADM
   ranking bar was upheld; the override targets the routing clause only. Same check-in:
   **all four rungs dispatchable**, cap **lifted**, rescue §1 fixups **pre-authorized**
-  (the standing configuration). **PREPPED 2026-08-18, not yet dispatched** — see *Hand-off*.
+  (the standing configuration). GPSA **LANDED 2026-08-18** the same day: entry 5's parity
+  half PROVEN ((GR-44)), balance half true-modulo-named-gap ((GR-45) + the descent
+  lemma's stuck case) — NOT a HIT; E1/E2/E3 none fired, E3 not armed; the fourteenth
+  routes to the stuck case (see *Hand-off*).
 
-**Kernel-(K) research arc — thirty-seven docs+scripts-only dispatches, plus six
+**Kernel-(K) research arc — thirty-eight docs+scripts-only dispatches, plus six
 strategy-only passes** (2026-08-02 → 08-18; the second is the 2026-08-12 fable recon,
 the third through fifth the 2026-08-13/08-14 ninth-, tenth- and eleventh-direction
 selection recons, the sixth the 2026-08-18 thirteenth-direction selection recon, all
@@ -113,7 +109,7 @@ entry point), `notes/Pencil-W4-informal.md` (W4-residual), `notes/Pencil-strateg
 (strategy); one line per landing in *Decisions made*, canonical with git — **not
 restated here**. Net effect: **disproof risk removed**, every refuted route/gap has a
 successor in the gap map, several structural positives proven; **class uniformity of
-the escape remains untouched by all thirty-seven dispatches.**
+the escape remains untouched by all thirty-eight dispatches.**
 
 **Doc-debt round CLOSED — `notes/Pencil-cleanup.md`** (2026-08-13, category D only; D-5 a
 watch item; the D-2 fix regressed at GORIENT's landing, re-repaired `07f6f9b6`).
@@ -217,20 +213,21 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
 
 **The phase stays OPEN** (the 2026-07-24 adjudication — no phase-close; see *Current state*).
 
-**Next concrete task: DISPATCH GPSA, the THIRTEENTH kernel-(K) direction** — spec ready
-in `notes/Pencil-fanout.md` §"Thirteenth direction" (prepped 2026-08-18; the pick a
-top-rung fable recon's, fifth use of the 2026-08-12 shape, which **OVERRODE** GADM's
-shift-metric routing clause — override verified and accepted, grounds in the spec).
-Target: **route-ledger entry 5 — per-shape admissibility (`d_adm < ∞`) in BOTH halves**:
-the Hall/SDR parity step (workbook *Step G53*'s undischarged caveat) and the
-≤ 6-odd-branch balance rider; **(b′)** (`d_adm − d_par ≤ 2`) the secondary. Rung: top
-(fable); labels **(GR-44)+ / Steps G58+** reserved (`notes/Pencil-labels.md`); driver
-`notes/scripts/w4/gpsa.py`. An entry-5 HIT does **NOT** fire E3 — it **arms** it: the
-fourteenth is then **(a′)** at its named sticking case (no re-proposal bar — the recon
-ranked it second on sequencing only); a `d_adm = ∞` shape is a g-flank and fires E1
-(new clause (v)). The shift-metric layer's bar and the full loser ranking are in the
-spec's ranking record. No standing constraint moves with this: phase OPEN, Lean hold
-STANDS, W4 PARKED, `hK`/`hbareSplit` pinned, option B un-commissioned.
+**Next concrete task: PREP the FOURTEENTH kernel-(K) direction — the entry-5 descent
+lemma's STUCK CASE** — the routing is fixed by GPSA's landed otherwise-clause
+(`notes/Pencil-fanout.md` §"Thirteenth direction", TERMINATION check: *"entry 5 stuck
+with a named blocking configuration → that configuration"*), so no new selection is
+needed unless the user intervenes. The target: a finite local case analysis proving
+that from every parity-consistent configuration with every majority-side odd branch
+dart-blocked, some legal (GR-45) move still strictly reduces the imbalance (≤ 6 odd
+branches, evenly many; the T1/T2-family escape catalogue the method; the 148 rescued
+census configs — workbook *Step G60* — the test bed). A close upgrades entry 5 to
+proven and, with (a′), closes the `Λ = ∅` `D = 0` existence target modulo (GR-4′) —
+only then does an (a′) HIT fire E3. **(a′)** stays dispatchable behind it at its named
+sticking case, now also armed with GPSA's fixed-μ-insufficiency datum and the (GR-45)
+cross-μ move family. Labels: mint **(GR-46)+ / Steps G63+** (`notes/Pencil-labels.md`).
+No standing constraint moves with this: phase OPEN, Lean hold STANDS, W4 PARKED,
+`hK`/`hbareSplit` pinned, option B un-commissioned.
 
 **`hsplit` is CLOSED IN FULL** (W5-L7c-1…6, landed 2026-07-30) and **`hfresh`'s mechanical
 discharge (residue (iv)) is CLOSED too**. The landed successor
@@ -250,10 +247,10 @@ discharge (residue (iv)) is CLOSED too**. The landed successor
 > **BLOCKED by the standing 2026-08-05 Lean-hold adjudication (general, not W4-scoped)**; does
 > not open without a fresh user adjudication.
 >
-> **The FIRST through TWELFTH directions are ALL COMPLETE** — roll call (with commit hashes
-> for the first five) is one-lined with dates in *Decisions made*; the delegations that picked
-> the SIXTH through ELEVENTH under them are in *Current state*'s dated bullets; not repeated
-> here. **No g-flank found by any of them; (GR-15) stays OPEN, unchanged, modulo (GR-4′); no
+> **The FIRST through THIRTEENTH directions are ALL COMPLETE** — roll call (with commit
+> hashes for the first five) is one-lined with dates in *Decisions made*; the delegations
+> that picked the SIXTH through THIRTEENTH under them are in *Current state*'s dated
+> bullets; not repeated here. **No g-flank found by any of them; (GR-15) stays OPEN, unchanged, modulo (GR-4′); no
 > gap-map status moves.**
 > **Two durable negatives from the same adjudication — do not re-run:** (i) §4.6's shortlist
 > is **partially superseded** for the tight stratum (U2 delivered by (GR-16)'s hub-multigraph
@@ -261,36 +258,37 @@ discharge (residue (iv)) is CLOSED too**. The landed successor
 > symbolic meta-option ("upgrade §(K-Λ) via M2") is **landed, not pending** (`m2/lambda0.m2`) —
 > only §5.3 item (i) (whole-graph elimination) remains, ruled out by §5.3's own local-frame
 > feasibility boundary.
-> **The NINTH through TWELFTH directions — GEXIST, GORIENT (both 2026-08-13, honest
-> MISSes), GDEV (2026-08-15, a REFUTATION-with-successors) and GADM (2026-08-17, an honest
-> MISS carrying a theorem and a refutation) — landed the theorem block (GR-32)–(GR-43).**
-> Per-direction records are canonical in `notes/Pencil-fanout.md`
-> §§"Ninth"–"Twelfth direction", the mathematics in workbook §(K-grid) *Steps G38–G57* —
+> **The NINTH through THIRTEENTH directions — GEXIST, GORIENT (both 2026-08-13, honest
+> MISSes), GDEV (2026-08-15, a REFUTATION-with-successors), GADM (2026-08-17, an honest
+> MISS carrying a theorem and a refutation) and GPSA (2026-08-18: entry 5's parity half
+> PROVEN, its balance half true-modulo-named-gap) — landed the theorem block
+> (GR-32)–(GR-45).** Per-direction records are canonical in `notes/Pencil-fanout.md`
+> §§"Ninth"–"Thirteenth direction", the mathematics in workbook §(K-grid) *Steps G38–G62* —
 > **not restated here**. What binds forward:
-> - **The bounded-deviation selection form is REFUTED as posed** ((GR-42), the pentagon
->   necklaces `NK(m)`: `d ≥ m/2` unbounded while every member stays rank-certified
->   fully-good) — a form-refutation, never a flank. **Do not re-attack a shape-free `d`**;
->   and GADM split its growth-law successor: the bounded-shift-correction READING is
->   also refuted ((GR-43): the shift-metric layer is unbounded), while the (a′)
->   `d_fg = d_adm` half survives, open.
-> - **The obstruction family is binding-capable, NOT capacity-tight** — GEXIST's framing was
->   a strict under-proxy, corrected by (GR-36) — so **every "0 fully-hot" figure carries its
->   family qualifier**: the capable family carries 761 on a 184-shape subsample, and
->   (GR-40)'s corner condition prunes 815 → 573, a prune and not a zero.
+> - **The bounded-deviation selection form is REFUTED as posed** ((GR-42): `d ≥ m/2`
+>   unbounded at the necklaces, every member still fully-good — a form-refutation, never
+>   a flank; **do not re-attack a shape-free `d`**), and so is the growth law's
+>   bounded-shift-correction READING ((GR-43)); the (a′) `d_fg = d_adm` half survives, open.
+> - **The obstruction family is binding-capable, NOT capacity-tight** ((GR-36)'s correction
+>   of GEXIST's under-proxy) — so **every "0 fully-hot" figure carries its family
+>   qualifier**: the capable family carries 761 on a 184-shape subsample; (GR-40) prunes
+>   815 → 573, a prune and not a zero.
 > - **The W3 stick SPLITS: 1 shift-metric + 1 balance unit** (`d_par(W3) = 2`, `d_adm = 3`;
->   GADM's correction of GDEV's "the whole stick is the balance layer's" — fixed in place at
->   Step G49 and the gap-map row), and the `d_fg = d_adm` regularity now measures at
+>   GADM's in-place correction at Step G49), and the `d_fg = d_adm` regularity measures at
 >   **133 shapes (all `d ≤ 3`) + GADM's fresh 108-shape census + the four NK members at `d`
 >   up to 10, rank-certified at the optimum** — quote it with that provenance; it is attack
 >   (a′), still open as a theorem.
-> - **Ledger entry 5 (per-shape admissibility) is a SEPARATE OPEN statement** (GADM Step
->   G53): (GR-37)(iii)'s "balance rider alike" clause is statement-beyond-proof (flagged at
->   the statement site; the parity half stands) — so an (a′) HIT alone does NOT close the
->   `Λ = ∅` `D = 0` existence target and would NOT fire E3.
-> - **GDEV's and GADM's TERMINATION checks both fired nothing** (E1/E2/E3 all NO); GADM's
->   outcome-3 branch routed the **thirteenth** to the shift-metric layer — **since
->   OVERRIDDEN** by the accepted 2026-08-18 recon verdict (GPSA, §"Thirteenth direction";
->   the next-task slot at the top of this section carries the dispatch).
+> - **Ledger entry 5 (per-shape admissibility): half 1 PROVEN, half 2
+>   true-modulo-named-gap, NOT a HIT** (GPSA Steps G58–G62): (GR-44) proves the parity
+>   half — the Hall/SDR step automatic, `d_par(M) = w_M` exact — repairing (GR-37)(iii)
+>   there, while the balance clause STAYS statement-beyond-proof (the flag is
+>   *half*-retired); the balance half reduces to the (GR-45) descent lemma, open exactly
+>   at its stuck case — so an (a′) HIT alone still does NOT close the `Λ = ∅` `D = 0`
+>   existence target and would NOT fire E3.
+> - **GDEV's, GADM's and GPSA's TERMINATION checks all fired nothing** (E1/E2/E3 all NO;
+>   GPSA's E1 clause (v) explicitly on the safe side — no `d_adm = ∞` anywhere, every cap
+>   a cap; E3 NOT armed). GPSA's otherwise-clause routes the **fourteenth** to the descent
+>   lemma's stuck case (the next-task slot at the top of this section carries the prep).
 > **Coordinator hand-off note, still not loaded onto any direction:** whether (GR-15) as
 > quantified ("every tight class shape") also covers the `W19`-type **(K-res)** sibling
 > habitat is unresolved — pin it when the tight side closes, not before.
@@ -359,30 +357,33 @@ Reverse-chronological, one line per landing; full derivations live in git,
 `notes/Phase39-design.md`, and (for the (K) arc) the workbook section named in each entry, which
 is the canonical home a successor reads.
 
+- **The THIRTEENTH direction — GPSA LANDED 2026-08-18** (`w4/gpsa.py`; canonical home
+  §(K-grid) Steps G58–G62, full statements in *Current state*/*Hand-off*). Entry 5's
+  parity half PROVEN ((GR-44): Hall/SDR automatic, `d_par(M) = w_M` exact); balance half
+  true-modulo-named-gap ((GR-45) + the descent lemma's stuck case; exhaustive at 97
+  censused shapes) — NOT a HIT, E3 not armed; (b′) gap 0 at every commissioned stress
+  member. E1/E2/E3 none fired; the fourteenth routes to the stuck case.
+
 - **The ELEVENTH and TWELFTH directions — GDEV LANDED 2026-08-15, GADM LANDED
-  2026-08-17** (`w4/{gdev,gadm}.py`; canonical home §(K-grid) Steps G48–G57, full
-  statements in *Current state*/*Hand-off*). GDEV a REFUTATION-with-successors
-  ((GR-40)–(GR-42): the bounded-deviation selection form refuted as posed); GADM an
-  honest MISS carrying (GR-43) (shift-metric layer UNBOUNDED) and settling ledger
-  entry 5 OPEN. (GR-15) stays OPEN throughout; E1/E2/E3 none fired; GADM's
-  shift-metric routing of the thirteenth was overridden 2026-08-18 (GPSA).
+  2026-08-17** (`w4/{gdev,gadm}.py`; canonical home §(K-grid) Steps G48–G57). GDEV a
+  REFUTATION-with-successors ((GR-40)–(GR-42): the bounded-deviation selection form
+  refuted as posed); GADM an honest MISS carrying (GR-43) (shift-metric layer UNBOUNDED)
+  and settling ledger entry 5 OPEN. (GR-15) stays OPEN throughout; E1/E2/E3 none fired;
+  GADM's shift-metric routing of the thirteenth was overridden 2026-08-18 (GPSA).
 
 - **The EIGHTH through TENTH directions — GUNIF/GEXIST/GORIENT, all LANDED
   2026-08-13** (`w4/{gunif,gexist,gorient}.py`; canonical home §(K-grid) Steps
-  G34–G47, full statements in *Current state*). GUNIF REFUTED both targets
-  ((GR-28)(iv) exact boundary, GR-29–31), route DEAD; GEXIST an honest MISS
-  ((GR-32)/(GR-33)/(GR-35) + (GR-34) refuting `CL10`) reducing the target to a
-  minority-dart orientation problem; GORIENT an honest MISS ((GR-36)–(GR-39))
-  re-anchoring it on a bounded-deviation selection principle sticking at W3, four
-  dispatchable attacks named. Per-shape (GR-15) holds throughout, stays OPEN.
-  Coordinator corrective pass same day (GUNIF), docs only — gate-invisible defects
-  fixed, prophylactic now landing-checklist item 6 (`notes/Pencil-fanout.md`).
+  G34–G47). GUNIF REFUTED both targets ((GR-28)(iv) exact boundary, GR-29–31), route
+  DEAD; GEXIST an honest MISS ((GR-32)–(GR-35)) reducing the target to a minority-dart
+  orientation problem; GORIENT an honest MISS ((GR-36)–(GR-39)) re-anchoring it on
+  bounded-deviation selection. Per-shape (GR-15) holds throughout, stays OPEN.
+  Coordinator corrective pass same day (GUNIF, docs only) — now landing-checklist
+  item 6 (`notes/Pencil-fanout.md`).
 
 - **The SIXTH and SEVENTH directions — CFLANK LANDED 2026-08-07, GCAP LANDED
-  2026-08-13** (`w4/cflank.py`, `w4/gcap.py`; canonical homes §(K-grid) Steps G24–G28 /
-  G29–G33). Eight proven results (GR-21)–(GR-28) closed TCOL's two flank sites AS
-  ROUTES (certificate-3 proven per swept shape); GCAP's `g ≤ 1` cap at `k ≥ 3` since
-  REFUTED by GUNIF. (GR-15) stays OPEN; uniformity untouched.
+  2026-08-13** (`w4/{cflank,gcap}.py`; §(K-grid) Steps G24–G33). (GR-21)–(GR-28) closed
+  TCOL's two flank sites AS ROUTES; GCAP's `g ≤ 1` cap at `k ≥ 3` since REFUTED by
+  GUNIF. (GR-15) stays OPEN; uniformity untouched.
 
 - **The FIRST through FIFTH fan-outs — all LANDED 2026-08-05…08-07** (canonical homes
   the workbook sections named; commits `d5ae55aa`…, `cdd23d30`, `12edc305`, `b32c1c2c`,
@@ -390,9 +391,8 @@ is the canonical home a successor reads.
   positives (GR-9)/(FR-R1) PROVEN, (GR-15) OPEN; uniformity untouched throughout.
 
 - **2026-08-05 docs/strategy pair**: Notes reorganization (label registry
-  **`notes/Pencil-labels.md`**; `Phase39-design.md` **FROZEN**, 119 anchors) and the broad
-  class-uniformity recon (five directions REFUTED, three successors ranked —
-  `notes/Pencil-strategy.md` **§4.6**, incl. (OUT) → §(K-Λ) *Step 5a*, `k=4 ⟺ hnoRigid` tight).
+  **`notes/Pencil-labels.md`**; `Phase39-design.md` **FROZEN**) and the broad class-uniformity
+  recon (five directions REFUTED, three successors ranked — `notes/Pencil-strategy.md` **§4.6**).
 
 - **The route-σ arc — three landings** (2026-08-05, `sigma.py`; §(K-σ)): route σ a
   **CANDIDATE**; σ-intertwining refuted literally / confirmed covariantly; σ-equivariant

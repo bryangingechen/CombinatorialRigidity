@@ -3648,10 +3648,43 @@ status, not as prose only. Outcome recorded in the phase note's
 
 ## Thirteenth direction — GPSA (single direction, prepared 2026-08-18)
 
-**Status: PREPPED 2026-08-18, NOT yet dispatched.** A **single
-direction**, not a fan-out. §(K-grid) continuation; the tails
-**(GR-44)+ / Steps G58+** are reserved for it
-(`notes/Pencil-labels.md`).
+**Status: LANDED 2026-08-18.** A **single direction**, not a fan-out.
+§(K-grid) continuation, **Steps G58–G62**, labels **(GR-44)–(GR-45)**
+claimed (the tails move to (GR-46)+ / G63+, `notes/Pencil-labels.md`).
+Dispatched **top rung (fable)** the day it was prepped; the return was
+independently verified — the coordinator re-derived (GR-44)'s proof
+(both directions: the star-relation third-branch reduction, the
+`2|S| ≤ 2|N(S)|` Hall count, the orthogonality argument for M-avoiding
+representatives), re-ran `--validate` at `PYTHONHASHSEED` 0 and 999
+(both exit 0, ≈9 s, byte-identical including the wall-clock lines),
+checked the driver rank-free, and verified the labels unused outside
+their reservation — and **ACCEPTED**.  **The verdict, per half:**
+**half 1 (Hall/SDR parity) PROVEN** — **(GR-44)**: the SDR step is
+AUTOMATIC (off-matching support forces max degree 2; Hall needs no
+marriage theorem) and the parity layer collapses to the exact
+per-matching coset formula `d_par(M) = w_M` (the minimum weight of an
+M-avoiding representative of `[τ]`), certified with zero gap at 415
+(shape, matching) pairs — `d_par < ∞` proven, (GR-37)(iii)'s parity
+half repaired to statement-equals-proof (its balance clause STAYS
+statement-beyond-proof).  **Half 2 (balance)
+TRUE-MODULO-NAMED-GAP** — **(GR-45)** (the cut-move calculus: legal
+deviation-move sets are cut-indexed with an exact majority-flip
+formula; T1/T2 corollaries) reduces entry 5 to a **descent lemma**,
+proven in its free-T1 case, **exhaustively true at 97 censused shapes**
+(full `3^n` per shape, the F11 completeness mode), open exactly at the
+**named stuck case** (every majority-side odd branch dart-blocked; all
+148 censused stuck configs rescued by one {T1, T2} move).  **Entry 5
+is NOT a HIT; E3 is NOT armed.**  **(b′) supported at gap 0** on every
+commissioned odd-rich stress member (NKo2v exact; NKp(6)/NK55(6)
+witnesses at `d_par + 0`), no growing repair cost at the disclosed
+caps.  Also found and reported (not developed): the fixed-μ fiber is
+insufficient for balance (638/1655 μ-classes balance-free — an
+(a′)-relevant finding), and lemma-(L) full-cube pattern-completeness
+is refuted while its inward form holds exhaustively.  **No g-flank; no
+`d_adm = ∞` anywhere; (GR-15) stays OPEN, unchanged; no gap-map status
+moves.**  The TERMINATION check on this landing is recorded below the
+route ledger.  The mathematics: workbook §(K-grid) *Steps G58–G62*;
+driver `w4/gpsa.py` (rows in `notes/scripts/README.md` §3).
 
 **Selection provenance — the fable-recon shape returns, and this time
 it earned its fee.** At the 2026-08-18 session-start check-in the user
@@ -3879,7 +3912,12 @@ coordinator updates each entry's status on landing:
    settled as a separate statement at the GADM landing (*Step G53*):
    not a (GR-37)(iii) corollary; vacuous on the all-even stratum; a
    ≤ 6-branch balance condition elsewhere, plus the undischarged
-   Hall/SDR parity step.
+   Hall/SDR parity step.  **Landed statuses (GPSA, 2026-08-18):
+   half 1 (Hall/SDR parity) PROVEN** ((GR-44): the SDR automatic,
+   `d_par(M) = w_M` exact); **half 2 (balance) TRUE-MODULO-NAMED-GAP**
+   (reduced to the (GR-45) descent lemma; exhaustively true at 97
+   censused shapes; open exactly at the stuck case) — **entry 5 stays
+   OPEN as a uniform statement, NOT a HIT.**
 
 Together, unchanged: 1 + 2 = (GR-15) at `Λ = ∅` `D = 0`; adding
 3 + 4 = (GR-15); (GR-15) + (GR-1)/§(K-clos) (AC-4) + (GR-5) + (AC-7)
@@ -3935,6 +3973,31 @@ Otherwise dispatch the fourteenth per what the landing names:
 
 The ledger-not-artifacts lesson stands: E1–E3 are stated over the
 ledger and entry 1's status, never over how many theorems landed.
+
+**TERMINATION check at the GPSA landing (2026-08-18,
+coordinator-verified).**  **E1 NO** — no g-flank; clause (iv) applied
+explicitly: untouched on both sides of its dichotomy — the dispatch
+was rank-free and made no `d_fg` claim, so neither `d_adm < d_fg` nor
+its negation was approached; clause (v) applied explicitly: on the
+dichotomy's safe side — **no `d_adm = ∞` shape exists anywhere
+censused** (every censused shape carries balanced admissible
+colourings at FULL `3^n` enumeration, the genuine-`∞` test), and every
+capped search reported its cap as a CAP, never as `∞` (the `--adv`
+discriminator pair is the control).  **E2 NO** — entry 5 is neither
+refuted nor unprovable-as-posed: half of it is now proven and the
+other half carries a named finite gap; the updated ledger keeps its
+entries open-with-named-dispatchable-attacks.  **E3 NO, and NOT
+armed** (the retained deviated form): entry 1 is untouched and entry 5
+did **not** HIT — the balance half's uniform proof is open — so the
+arming clause's condition fails and no Lean-hold question surfaces.
+Per the otherwise-clause's stuck branch, **the FOURTEENTH is the
+descent lemma's stuck case** — the named blocking configuration (every
+majority-side odd branch dart-blocked; ≤ 6 odd branches, evenly many;
+the T1/T2-family escape catalogue as the method; the 148 rescued
+census configs as the test bed) — with **(a′)** still dispatchable at
+its named sticking case behind it, now also armed with the
+fixed-μ-insufficiency balance datum and the (GR-45) cross-μ move
+family.
 
 ### The ranking record (recon verdict, the fifth use of the 2026-08-12 shape)
 
