@@ -1,10 +1,9 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: SEVEN fan-outs and nine single directions dispatched; 31 of 32 directions
+**Status: SEVEN fan-outs and nine single directions dispatched; all 32 directions
 LANDED.** The seventh fan-out (YLOC / BALB / AGLU / ZNEQ / CIRR, §"Seventh fan-out") is
-closing: CIRR, YLOC, BALB and ZNEQ have landed and **AGLU is the one return still
-unlanded**. Ordinals run 1–24 and were assigned at dispatch, so landing order differs from
-ordinal order.
+**COMPLETE** — all five directions landed 2026-08-19. Ordinals run 1–24 and were assigned
+at dispatch, so landing order differs from ordinal order.
 
 **What this file is:** dispatch scoping only — the specs, bars, riders, tier splits and
 label reservations a direction is dispatched against, plus the per-direction landing
@@ -5471,7 +5470,7 @@ wave*, and a future top-rung recon may overturn the bars below freely.
 |---|---|---|---|
 | **YLOC** | compute-licensed | input (Y), (a′)'s residual — GBAL's instrument localized to proper chunks | **LANDED 2026-08-19** — an honest MISS (§"Twentieth direction") |
 | **BALB** | compute-licensed | (b′), the balance-layer bound `d_adm − d_par ≤ 2` | **LANDED 2026-08-19** — OPEN, NOT a HIT, half proven / half refuted with an exact boundary (§"Twenty-first direction") |
-| **AGLU** | compute-licensed | ledger attack (c) — AA-glue realizability at `n_hub ≥ 8` | dispatched 2026-08-19 |
+| **AGLU** | compute-licensed | ledger attack (c) — AA-glue realizability at `n_hub ≥ 8` | **LANDED 2026-08-19** — a HIT on the "not realizable" branch (§"Twenty-second direction") |
 | **ZNEQ** | compute-licensed | (OC-19) input (a) — `Z ≠ ∅` at every class (shape, split) | **LANDED 2026-08-19** — OPEN, NOT an independent gap; it factors and one half is dominated (§"Twenty-third direction") |
 | **CIRR** | derivation-first | chart irreducibility, written down once as a standalone statement | **LANDED 2026-08-19** — a HIT (§"Twenty-fourth direction") |
 
@@ -5805,9 +5804,14 @@ closure chain is concerned; `Λ ≠ ∅` and `D > 0` stay **unswept**.
 
 ## Twenty-second direction — AGLU (seventh fan-out)
 
-**Status: dispatched 2026-08-19, opus, COMPUTE tier.** Labels reserved:
-`GR-` **(GR-73)–(GR-78)**, **Steps G92–G97**; owning section **§(K-grid)**.
-Driver: **`notes/scripts/w4/aglu.py`**.
+**Status: LANDED 2026-08-19 — a HIT on the "not realizable" branch, with
+one correction to the dispatch's predicted consequence.** Fifth and last
+of the seventh fan-out's five directions to land, after CIRR, YLOC, BALB
+and ZNEQ — **this landing closes the seventh fan-out**. Labels reserved:
+`GR-` **(GR-73)–(GR-78) CLAIMED exactly**, **Steps G92–G97**; owning
+section **§(K-grid)** (extends). Driver: **`notes/scripts/w4/aglu.py`**
+(six modes `--pool`/`--pin`/`--kill8`/`--lam8`/`--adv`/`--val`, `--lam8`
+run in three slices `--slice i/3`).
 
 **The target — ledger attack (c): AA-glue realizability at `n_hub ≥ 8`**, the
 **only surviving case** of the (GR-38) intersection kill. (GR-38)(iii): a
@@ -5852,6 +5856,97 @@ this direction (E1's own clarification: not a flank by itself).
 **Riders.** As YLOC's, verbatim. Every obstruction figure carries its **family
 qualifier** — (GR-36)'s **binding-capable** family strictly contains the
 capacity-tight one, and (GR-40)'s 815 → 573 is a **prune, not a zero**.
+
+**The verdict.** **(GR-73)** proves `slack = 0` ⟺ no X-hub, pinning the
+crossing interface to a rigid `{2,3}`-degree subgraph with two disjoint
+`≥ 2`-member attachment families, and extends the J-charge from chunks to
+arbitrary branch sets. **(GR-74)** proves the AA-glue configuration at
+`n_hub = 8` has exactly **one** combinatorial template — `T` covers all 8
+hubs at 10 branches, `R`/`R′` single branches, `S ∪ S′ = E(G°)` —
+EXHAUSTIVE at all 44 premise-satisfying pairs of all 20 classes, and
+explains the `n_hub ≤ 6` vacuity combinatorially, before any colouring.
+**(GR-75)** proves the configuration and its whole kill residual (not just
+the named case) are **NOT realizable** at `n_hub = 8` — a four-line
+contradiction with (GR-32)(iii)'s balance identity, independently certified
+by an EXHAUSTIVE, uncapped scan of the complete stratum (39 689 shapes,
+9 617 854 admissible colourings, 0 instances) that also reproduces
+(GR-38)'s own `n_hub ≤ 6` headline exactly (4 920 / 284 512 / 53 740 / 0) —
+so the (GR-38) intersection kill is a **THEOREM at `n_hub = 8`,
+non-vacuously**, and the **maximal** binding chunk family of each block is
+laminar. **(GR-76)** derives a general-`n` charge `|W| ≥ |F₂| + q_T` that
+forces `n_hub ≥ 10` with no pinning needed — an `n`-free strengthening of
+(GR-75)(i) that also re-explains (GR-38)(iii)'s `n ≤ 6` vacuity — and
+narrows `n_hub = 10` to exactly **three** counting-satisfiable templates.
+
+**The correction, landed plainly, not softened.** The dispatch predicted
+*"NOT realizable ⟹ the intersection kill extends past its vacuous stratum and
+**binding laminarity becomes a theorem**."* **(GR-77) REFUTES that exactly as
+stated:** exhaustive over the complete `n_hub = 8` stratum, there are
+**3 774** crossing same-block binding chunk pairs (nested 457 244) against
+**0** over the whole `n_hub ≤ 6` stratum. **Outright binding laminarity is
+FALSE at `n_hub = 8`.** What (GR-75) actually buys is the **uncrossing**: the
+kill is a theorem non-vacuously, so the **maximal** binding family is
+laminar **per block** — 1 424 of the 3 774 pairs by exhaustive measurement
+(all at `slack + defect(T) = 2` exactly), the other 2 350 by the (F-c)
+charge bound, with no claim about their `(slack, defect(T))` distribution
+beyond `≥ 2`. This is the **second** coordinator-predicted consequence this
+wave to be refuted by the direction it primed (after YLOC's (GR-63)).
+
+**(GR-78), a real E1 detector, not an omission.** Every one of the **39 689**
+shapes of the complete `n_hub = 8` stratum carries a fully-good admissible
+colouring (`a = 0 ∧ max_P g ≤ 0`); **8 543 304 / 9 833 022** (86.9 %) of
+colourings are fully good, every shape `≥ 10`; `assert flank == 0` per
+shape, no g-flank. This yields per-shape (GR-15) at `n_hub = 8` on the
+complete stratum, **modulo (GR-4′)**, counting-side only — **no rank was
+computed anywhere in this pass** — a substantial positive that is **not** a
+(GR-15) status move: uniformity stays open.
+
+**Cap disclosure.** `n_hub ≥ 10` is **OPEN with no search run there and no
+cap exhausted** — (GR-76)(iv) narrows it to three templates, it does not
+search it. The **592 shapes skipped by `--kill8`**'s length filter are
+**proven residual-free by the (GR-36)/(F-c) charge bounds**, not budgeted
+away. The `--lam8` three slices are an exhaustive **partition** of the 11
+habitat-carrying classes, not a sample. The shape pool is the **complete**
+stratum (every iso class of connected loopless cubic multigraph on 8 hubs ×
+every excess profile, gated by the landed (GR-25) criterion). `--val` was
+run by the dispatch (not re-run at landing) and reproduced item 7's
+`n ≤ 6` headline exactly, which is what licenses this pass's `n_hub = 8`
+numbers; `--pool`/`--pin`/`--kill8`/`--lam8` (all three slices)/`--adv`
+were all independently re-run by the coordinator at landing and reproduced
+every quoted figure above.
+
+**Riders, verbatim.** Everything at `Λ = ∅`, `D = 0`, modulo (GR-4′)
+wherever (GR-15) is mentioned; `Λ ≠ ∅` and `D > 0` stay **unswept**. **None
+of this closes (GR-15)**; **no gap-map status move on `hK`**. Every
+obstruction figure carries its **family qualifier** — (GR-36)'s
+binding-capable family strictly contains the capacity-tight one, and
+(GR-40)'s 815 → 573 is a **prune, not a zero**. **(GR-74)** is exhaustive
+and colouring-free (all 44 premise-satisfying pairs across all 20 classes,
+nothing else).
+
+**TERMINATION: E1 does not fire (on the (GR-78) detector's evidence); E2
+does not fire — attack (c) narrows rather than dies, with (GR-76) named as
+its instrument, and (a′)/(b′)/(d′) stay dispatchable; E3 stays ARMED by
+GBAL and is neither fired nor disarmed.** (E1) — (GR-78) is a real
+exhaustive detector: every one of the 39 689 shapes carries a fully-good
+colouring, so no g-flank exists at `n_hub = 8`; nothing about the 3 774
+crossing pairs is a flank — they are pairs of binding chunks at
+*particular* colourings, and every one of their shapes still carries ≥ 10
+fully-good colourings. (E2) — attack (c) moves from "open at `n_hub ≥ 8`"
+to **"settled negative at `n_hub = 8`, open at `n_hub ≥ 10` with (GR-76) as
+the named instrument"** — a narrowing with a successor named, which the E2
+carve-out explicitly does not fire on; attacks (a′), (b′) and (d′) are
+untouched and remain dispatchable. (E3) — AGLU is a §(GR-38) pass and
+touches neither entry 1 nor (a′); the arming state is unchanged from GBAL's
+entry-5 HIT.
+
+**So: no escalation from this direction. The coordinator re-runs the
+check.**
+
+**The seventh fan-out is now COMPLETE — all five directions landed
+2026-08-19.** Full per-direction detail: CIRR §"Twenty-fourth direction",
+YLOC §"Twentieth direction", BALB §"Twenty-first direction", ZNEQ
+§"Twenty-third direction", above.
 
 ## Twenty-third direction — ZNEQ (seventh fan-out)
 

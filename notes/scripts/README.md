@@ -716,6 +716,27 @@ All four re-run **byte-identical** at `PYTHONHASHSEED` 0 and 12345 (modulo
 (`w4/zneq.py`), nothing existing modified. **No Macaulay2 leaf was opened**
 — none was expected (an exact-ℚ derivation, not a symbolic one).
 
+| invocation | ~time | cited by |
+|---|---|---|
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/aglu.py --pool` | 149 s | workbook §(K-grid) continuation (direction AGLU) *(no step; the pool count)* — the complete `n_hub = 8` habitat stratum counted exactly: 20 hub-multigraph classes (matching `gridcol.multigraphs` at `n = 2, 4, 6`: 1/2/6) × every excess profile, gated by (GR-25); **39 689** habitat shapes, 11 of the 20 classes carrying any |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/aglu.py --pin` | 120 s | ibid. *Steps G92–G93* ((GR-73)/(GR-74), colouring-free and exhaustive: crossing chunk pairs **92 / 2 675 / 82 201** at `n_hub = 4/6/8`; slack-0 pairs **7 / 285 / 9 263**; `deg_T = 1` hubs at slack 0, 0 of 82 201; at `n_hub = 8`, **44** J-free-intersection slack-0 pairs, all with profile `(8, 4, 4, 10, 1, 1, True)` and nothing else; (GR-76)(ii)/(iii) dart-count identities asserted at every slack-0 pair, `\|X\| ≤ 1` pairs split 5 327/1 942, every one `W = ∅`; the attachment lemma re-asserted through `gorient.attachment_check`) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/aglu.py --kill8` | 233 s | ibid. *Step G94* ((GR-75), the exhaustive `n_hub = 8` kill-residual scan, no cap: **39 689** shapes, **39 097** live after the length filter (592 proven residual-free, not skipped), **9 617 854** admissible colourings visited, **1 424** realized crossing same-block binding candidate pairs, slack histogram `{0: 912, 1: 512}`, `defect(T)` histogram `{1: 512, 2: 912}` — residual **0**, AA-glue **0**, kill failures **0**, union binding 1 424/1 424) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/aglu.py --lam8 --slice 0/3` | 184 s | ibid. *Steps G96–G97* ((GR-77)/(GR-78), slice 1 of 3: 4 classes, 7 044 shapes, 1 687 924 admissible colourings, 526 144 binding (chunk, block) instances, nested 84 068 / **crossing 532**; the E1 control fires on 0/7 044 shapes, 1 384 952 fully-good colourings) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/aglu.py --lam8 --slice 1/3` | 200 s | ibid. slice 2 of 3: 4 classes, 9 709 shapes, 2 361 578 admissible colourings, 608 028 binding instances, nested 114 088 / **crossing 586**; E1 fires on 0/9 709, 1 996 304 fully-good colourings |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/aglu.py --lam8 --slice 2/3` | 279 s | ibid. slice 3 of 3: 3 classes, 22 936 shapes, 5 783 520 admissible colourings, 986 272 binding instances, nested 259 088 / **crossing 2 656**; E1 fires on 0/22 936, 5 162 048 fully-good colourings. **Slice sum (the exhaustive partition):** 39 689 shapes, 9 833 022 colourings, 2 120 444 binding instances, 457 244 nested, **3 774 crossing**, 8 543 304 fully-good colourings (86.9 %) — 0 g-flanks over the complete stratum |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/aglu.py --adv` | 145 s | ibid. the three falsification controls, because "0 instances" is worthless without a detector that fires: `K4` (`n_hub = 4`) — 60 crossing pairs, 3 slack-0, first witness `jfree(T) = 2` (the two thetas of `K4` sharing a 4-circuit); `n_hub = 8`, all 20 classes — 9 263 slack-0, 44 J-free (both detectors fire); (GR-30)'s **W3M** — 3 binding (chunk, block) instances found by this driver's own devices (the binding detector fires at `n_hub = 8` too) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/aglu.py --val` | 240 s | ibid. every fast device cross-certified against its canonical counterpart (the graph generator vs `gridcol.multigraphs`; the chunk enumerator vs `gcap.two_ec_subsets(kmin=1)`; the defect vs `gexist.defect_direct`; the admissibility vs `cflank.admissible`, set-equal at all 4 920 `n ≤ 6` pool shapes / 299 420 colourings + 60 seeded `n_hub = 8` shapes; the slack vs `gorient.pair_slack` at 48 675 instances; the (GR-36) bound vs `gorient.jdata` at 229 411 chunk sets; the (GR-76) six-row case table); item 7 reproduces (GR-38)'s own `n ≤ 6` headline **exactly** through this driver's own devices: **4 920 / 284 512 / 53 740 / 0** crossing. Run by the dispatch (not re-run at landing, per the F15/foreground-budget precedent — its item 7 is what licenses the `n_hub = 8` figures above) |
+
+`--pool`/`--pin`/`--kill8`/`--lam8` (all three slices)/`--adv` re-run
+**byte-identical** by the coordinator at landing (`PYTHONHASHSEED=0`,
+foreground, exit 0, reproducing every figure above exactly); `--val` was run
+once by the dispatch and not re-run (240 s, exit 0). One driver added
+(`w4/aglu.py`), nothing existing modified. **No Macaulay2 leaf was opened**
+— none was expected (exact-integer combinatorics, not a symbolic
+derivation). Each mode pays a ~one-time `cubic_iso_classes(8)` enumeration
+(memoized per process, ~120–150 s), which is why even the counting-only
+`--pool` mode reads 149 s.
+
 ### `m2/` — the Macaulay2 symbolic layer
 
 Not Python: these run under `M2`, still from the repo root, and their output is
