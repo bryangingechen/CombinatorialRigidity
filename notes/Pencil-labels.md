@@ -742,6 +742,40 @@ per `notes/Pencil-labels.md`'s clause-4 diagnosis that bare step numbers
 collide with claim labels — recorded in §(K-Λ)'s registry row above, not a
 new minting rule.
 
+**Reserved 2026-08-19 for the SEVENTH fan-out — directions YLOC / BALB / AGLU /
+ZNEQ / CIRR** (`notes/Pencil-fanout.md` §"Seventh fan-out"; five concurrent
+opus directions, the second multidispatch). Codes are **multi-letter and
+topic-tagged** per clause (L5) — `YLOC` = input **(Y)** **LOC**alized, `BALB` =
+the **BAL**ance-layer **B**ound, `AGLU` = the **A**A-**GLU**e configuration,
+`ZNEQ` = **Z** **≠** ∅, `CIRR` = **C**hart **IRR**educibility. Every code, the
+new section name **§(K-chart)** and the new prefix **`CH-`** were verified
+**0-hit** across `*.md`, `*.tex`, `*.lean`, `*.py`, `*.m2` at reservation time.
+Four of the five *extend* live sections, so their reservations are the
+unclaimed tails of those sections' existing families and **the owning section
+stays authoritative**; only CIRR opens a section.
+
+| direction | section | reserved labels | reserved steps | driver |
+|---|---|---|---|---|
+| **YLOC** | §(K-grid) (extends) | **(GR-61)–(GR-66)** | **Steps G80–G85** | `w4/yloc.py` |
+| **BALB** | §(K-grid) (extends) | **(GR-67)–(GR-72)** | **Steps G86–G91** | `w4/balb.py` |
+| **AGLU** | §(K-grid) (extends) | **(GR-73)–(GR-78)** | **Steps G92–G97** | `w4/aglu.py` |
+| **ZNEQ** | §(K-out) (extends) | **(OC-23)–(OC-28)** | **Steps O19–O24** | `w4/zneq.py` |
+| **CIRR** | **§(K-chart)** (NEW) | **`CH-`**, (CH-1)+ | **Steps CH1–CH8** | `w4/cirr.py` *(reserved, expected unused)* |
+
+**Three directions share §(K-grid) this wave**, which the sixth fan-out already
+proved safe (GBAL took (GR-49)–(GR-54) / G68–G73 and GLAW (GR-55)–(GR-60) /
+G74–G79 concurrently, no rename): the protection is the **disjoint reserved
+range**, not the section. The `GR-`/`G`-step tails move to **(GR-79)+ /
+Steps G98+** once all three land; a direction that consumes fewer labels than it
+reserved **returns the remainder to the tail** in its landing commit, as GBAL's
+exact-consumption row records. **`CH-` uses the `Λ`-precedent step scheme**
+(*Step CH1* … *Step CH8*, prefixed so it cannot collide with a bare *Step 1*) —
+clause 4's diagnosis, not a new minting rule.
+
+No M2 leaf is expected or reserved for any of the five: four targets are exact-ℚ
+or combinatorial searches and the fifth is a derivation. A direction that finds
+it needs one asks the coordinator rather than minting a path.
+
 **One naming hazard the second fan-out created, recorded rather than renamed
 (L4).** The **direction letters A/B/C are re-used** between the 2026-08-05 fan-out
 (A = §(K-flank), B = §(K-Λ), C = §(K-pure)) and the 2026-08-06 one

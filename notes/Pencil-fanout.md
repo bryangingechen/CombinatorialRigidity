@@ -5643,3 +5643,418 @@ driver tree (unstaged and `--cached`) was empty both before and after this
 commit — no tracked driver modified, none added. The draft's own
 *Coordinator actions at landing* block was executed against the tree, then
 stripped (not merged).
+
+## Seventh fan-out — prepared and dispatched 2026-08-19 (directions YLOC / BALB / AGLU / ZNEQ / CIRR)
+
+Five directions dispatched **concurrently** — **YLOC**, **BALB**, **AGLU**,
+**ZNEQ**, **CIRR** — each independent, each returning its own untracked draft
+(`notes/Pencil-draft-<CODE>.md`) and its own new driver, landed one at a time by
+**separate serial coordinator commits**: the sixth fan-out's shape, repeated at
+five directions. **User adjudication authorizing the multidispatch** — asked at
+the session-start check-in how the twentieth direction's pick should be made
+(delegate to a fable recon / coordinator-authored prep / multidispatch again /
+coordinator picks under the standing 2026-08-07 delegation), the user elected
+**"Multidispatch fan-out again"**, over a coordinator recommendation *against*
+it on a 92 % `weekly_scoped` reading — then supplied the fact that overturned
+the recommendation: *"weekly_scoped is only for fable so multidispatch should be
+OK."* Same check-in: **rungs `sonnet` + `opus` only, top rung = opus** (fable
+conserved), cap **lifted**, rescue §1 fixups **pre-authorized**. The **tier
+split**, the **five directions themselves** and their **disjoint label
+reservations** are **coordinator-set** — so the twelfth direction's disclosure
+applies verbatim: *there is no independent top-rung ranking of the losers this
+wave*, and a future top-rung recon may overturn the bars below freely.
+
+**Roster** (updated per landing):
+
+| direction | tier | target | status |
+|---|---|---|---|
+| **YLOC** | compute-licensed | input (Y), (a′)'s residual — GBAL's instrument localized to proper chunks | dispatched 2026-08-19 |
+| **BALB** | compute-licensed | (b′), the balance-layer bound `d_adm − d_par ≤ 2` | dispatched 2026-08-19 |
+| **AGLU** | compute-licensed | ledger attack (c) — AA-glue realizability at `n_hub ≥ 8` | dispatched 2026-08-19 |
+| **ZNEQ** | compute-licensed | (OC-19) input (a) — `Z ≠ ∅` at every class (shape, split) | dispatched 2026-08-19 |
+| **CIRR** | derivation-first | chart irreducibility, written down once as a standalone statement | dispatched 2026-08-19 |
+
+**Shared mechanics: §"Shared mechanics (all three dispatches)" above binds
+verbatim**, at five directions instead of three, with three deltas. (1) Drafts
+go to **`notes/Pencil-draft-<CODE>.md`, untracked** (the sixth fan-out's
+convention, not the first's scratchpad path) — the coordinator merges and
+deletes. (2) The rung is **opus**, not fable: the mapping for a research recon
+settling new mirror mathematics is top rung, and top rung this session **is**
+opus. (3) Each direction runs the **TERMINATION check (E1/E2/E3) and reports its
+reading**; the coordinator re-runs it. **E3 is ARMED** by GBAL's entry-5 HIT, so
+**YLOC can fire it** — a direction that believes it has an (a′) HIT says so and
+states the E3 consequence, and does **not** fire it: firing is a coordinator
+action.
+
+### The coordinator's one routing sharpening, recorded because it overrides a landed hand-off clause
+
+GLAW's *Step G79* hand-off recommends attacking input (Y) *"with
+matching-flexibility instruments (alternating-cycle toggles on the `M`-avoiding
+coset space, whose affine structure and dimension `n/2 − 1` are now exact)
+rather than with local exchange."* **That clause was written blind to GBAL**,
+which landed the same day in the same wave and discharged (Y)'s sibling **input
+(X)** by an instrument that **absorbs the matching apparatus whole** — (GR-49)
+replaces the (c, m)/coset/SDR/matching data by **one bit per branch**, (GR-50)
+turns the question into a **degree-constrained orientation**, (GR-51) prices it
+by a **local weight inequality**. Since (GR-56)(iv) makes (X) and (Y) the
+whole-graph and proper-chunk instances of **one** inequality, the first thing to
+try on (Y) is **GBAL's instrument at the chunk level**, not GLAW's suggested
+toggles on the object GBAL's instrument dissolves. **YLOC is specced on that
+reading**, and GLAW's clause is thereby **overridden as a routing
+recommendation** — not contradicted as mathematics (the coset space's affine
+structure and dimension stay exactly as (GR-55) Cor. 1 landed them, and remain
+available as a fallback if the localization breaks). Same kind of override as
+GPSA's of GADM's shift-metric routing clause: recorded, scoped to the routing
+clause alone, and traceable.
+
+### Twentieth direction — YLOC (seventh fan-out)
+
+**Status: dispatched 2026-08-19, opus, COMPUTE tier.** Labels reserved:
+`GR-` **(GR-61)–(GR-66)**, **Steps G80–G85**; owning section **§(K-grid)**,
+which stays authoritative. Driver: **`notes/scripts/w4/yloc.py`** (new,
+untracked at draft time).
+
+**The target — input (Y), (a′)'s named residual ((GR-60)), verbatim as landed:**
+*at every habitat shape there exist a perfect matching `M`, a minimum-weight
+`M`-avoiding representative `y ∈ Φ`, and an injective end-selection `φ` of
+`supp(y)` — together with, when `d_adm > d_par`, an `M`-avoiding matching `Z`
+disjoint from `y` with `|y| + 2|Z| = d_adm` and `φ` avoiding `V(Z)` — such that
+the resulting minority map `m` is balanced and satisfies, for every proper chunk
+`S`, `z_mono(S) + |δ_S − σ_S| ≤ cap(S) − 6`.* (a′) is the only remaining
+entry-1 attack, carries **no bar**, and is **the only thing between the arc and
+E3**.
+
+**The route to try FIRST (coordinator-pinned; the sharpening above):** push
+GBAL's (GR-49)–(GR-54) chain down to the chunk level, in three steps.
+
+1. **Re-express the (GR-56) chunk invariants `cap(S)`, `z_mono(S)`, `δ_S`,
+   `σ_S` in (GR-49)'s one-bit-per-branch coordinate `z`.** GBAL proved the
+   *whole-graph* instance is `δ = 0` at a balanced `z`; the question is what the
+   *per-chunk* instance becomes in `z`. (GR-56)(v) already says
+   admissibility and full-goodness are functions of the minority map alone, and
+   (GR-49) says the minority map is `z` — so the translation should exist.
+2. **Ask whether (GR-50)'s degree-constrained orientation acquires per-chunk
+   in-degree constraints**, and whether **(GR-51)'s local weight inequality has
+   a per-chunk analogue whose only negative term is again a
+   monochromatic-pair hub.**
+3. **If it does, whether (GR-53)'s exhaustion over maximal constraint
+   structures still closes** with the chunk constraints added — the structures
+   were 1 / 44 / 4837 at `2k = 2/4/6`, so an enlarged exhaustion is a
+   compute question, not a new idea.
+
+**The obstruction to expect, and to report exactly if it bites:** GBAL's
+argument is whole-graph-only because **(GR-52)'s parity contradiction uses
+`2 e_H(S)` over the whole side** — a violating hub set would have odd total
+internal even-degree. At a *proper* chunk that global count is not available.
+If the localization breaks there, say so in those terms and name what would
+replace the parity contradiction; that is a more valuable return than a
+measurement.
+
+**Calibrating opening cases** (GLAW's measurements, *Step G79*): the **965**
+stratum shapes whose worst optimal cell needs the `M` rung, and the **13**
+shapes at balance gap 2.
+
+**Bars.** Do **not** re-attack (a′)'s **per-matching** variant — **REFUTED**
+((GR-59): `min_M` is load-bearing, no (a′) proof may fix its anchor matching).
+Do **not** re-run the bounded {T1, T2} descent (**DEMOTED by witness**,
+(GR-48)(iii)) or the extended {T1, T2, K3} catalogue. Do **not** re-derive
+(GR-58)'s census — it is landed and **exhaustive** at `n_hub ≤ 6` with no cap;
+extend it only if a genuinely new stratum is needed, and disclose the cap if so.
+**(b′) is BALB's target this wave** — report any (b′)-relevant by-product as a
+finding and do not develop it (GBAL's precedent with (a′)).
+
+**Riders, verbatim.** `Λ = ∅`, `D = 0`, and modulo (GR-4′) where a closure chain
+is concerned; the `Λ ≠ ∅` closed-form analogue and the `D > 0` lift stay
+**unswept**; **none of this closes (GR-15)**; an (a′) HIT **fires E3** (ARMED by
+GBAL) — state the consequence, do not fire it.
+
+### Twenty-first direction — BALB (seventh fan-out)
+
+**Status: dispatched 2026-08-19, opus, COMPUTE tier.** Labels reserved:
+`GR-` **(GR-67)–(GR-72)**, **Steps G86–G91**; owning section **§(K-grid)**.
+Driver: **`notes/scripts/w4/balb.py`**.
+
+**The target — (b′), the balance-layer bound `d_adm − d_par ≤ 2`.** OPEN and
+supported (no growing gap ever found); ridden as a *secondary* three times
+(GADM, GPSA, GDESC) and **never a primary**. This wave makes it one.
+
+**Why now.** (GR-54) proves `d_adm < ∞` and says **nothing** about the gap —
+GBAL's own scope line is explicit: *"It does not move (b′)."* What changed is
+the instrument, not the evidence: **(GR-50)** decides balance **exactly, in
+polynomial time**, over at most 20 odd-branch patterns, and **(GR-51)** prices
+feasibility by a **local weight inequality**. That is the first apparatus in
+the arc that could deliver a *bound* rather than a measurement.
+
+**Two halves — keep them distinct.**
+
+1. **Is `|δ|` at a parity-optimal map bounded by 2?** GDESC measured
+   `{0: 92, 2: 2}` at parity-optimal maps over 94 odd-carrying shapes, exact
+   gaps `{0: 92, 1: 2}`, 0 mechanism violations. A shape with a parity-optimal
+   floor `|δ| > 2` **refutes this half** (and is E1 clause (v)'s named
+   trigger — surface it as such).
+2. **Does repairing balance from a parity-optimal map cost `≤ 2` deviations?**
+   (GR-45) prices **one T1 at exactly 2 deviations**, so a single T1 repair
+   gives exactly 2 and the question is whether one T1 always suffices —
+   which **(GR-46)'s one-move transitivity makes precise** (any two
+   parity-consistent minority maps differ by a single legal move, so "one
+   move" is not a restriction on reachability, only on *cost*).
+
+**What counts as a HIT** — a proof of `≤ 2`; **or** a proof of a *different*
+constant **with the exact boundary named**: the (GR-29)/(GR-30) precedent makes
+an exact-boundary refutation a **valued outcome, not a failure** (a theorem at
+`n_hub ≤ 6`, false from `n_hub = 8`, with witnesses, is how (GR-28)(iv) landed);
+**or** a witness at gap `> 2`, which moves (b′) to refuted-with-successor.
+
+**Bars.** Entry 5 is **PROVEN** ((GR-54)) — do not re-attack it. **(a′) /
+input (Y) is YLOC's target this wave** — report any (Y)-relevant by-product as a
+finding and do not develop it. Do **not** re-open the bounded-deviation
+selection form (**REFUTED as posed**, (GR-41)+(GR-42): `d(NK(m)) ≥ m/2`
+unbounded while every member stays fully-good) — (b′) is a statement about the
+*gap between two layers*, not about the deviation count, and the necklaces are a
+test bed for it, not a refutation of it.
+
+**Riders.** As YLOC's, verbatim. Additionally: the shift-metric layer is
+**UNBOUNDED** ((GR-43), `d_par = d_adm = d_fg = m` exactly at the necklaces) —
+so (b′) must be stated as a bound on the **difference**, never on `d_adm`, and
+any figure quoting a necklace member carries that qualifier.
+
+### Twenty-second direction — AGLU (seventh fan-out)
+
+**Status: dispatched 2026-08-19, opus, COMPUTE tier.** Labels reserved:
+`GR-` **(GR-73)–(GR-78)**, **Steps G92–G97**; owning section **§(K-grid)**.
+Driver: **`notes/scripts/w4/aglu.py`**.
+
+**The target — ledger attack (c): AA-glue realizability at `n_hub ≥ 8`**, the
+**only surviving case** of the (GR-38) intersection kill. (GR-38)(iii): a
+crossing pair of same-block binding chunks forces
+`slack + defect(S ∩ S′) ≤ 1`, which forces the **AA-glue** configuration; over
+the **complete** `n_hub ≤ 6` stratum that configuration has **0 instances**
+(0 / 53 740 instances over 4920 shapes — binding is *provably laminar* there,
+so the kill is **vacuously strong**), and whether the configuration is
+**realizable** from `n_hub = 8` on is open.
+
+**The two outcomes, and what each buys — both are wins, say which you got.**
+
+- **NOT realizable** ⟹ the intersection kill extends past its vacuous stratum
+  and **binding laminarity becomes a theorem**, which organizes the whole
+  binding family that (GR-35)'s submodularity and (GR-36)/(GR-40)'s charges
+  already circle.
+- **Realizable** ⟹ the kill has a **real case**, and the charge apparatus must
+  handle it. Name the witness exactly, **rank-certify** it, and check whether it
+  is fully-good (a realized AA-glue that is still fully-good is a much weaker
+  event than one that is not).
+
+**Method.** An exhaustive-or-provably-complete search at `n_hub = 8`, using the
+landed oracles rather than new ones: **(GR-25)**'s `2^{n_hub}` cut criterion as
+the canonical `D = 0` membership oracle, `cflank.cubic_habitat` as the habitat
+gate, `cflank.admissible` for colouring acceptance, and (GR-42)'s polynomial
+habitat-membership criterion where a shortcut is wanted. **Cap disclosure is
+mandatory** — the §(K-grid) cap-exhaustion hazard is a recorded gate
+(`731b3e33`), and LTWO's *"4 of 8 patterns"* correction is the precedent for
+what a silently-capped leg costs: **an exhausted cap is not a proof of
+nonexistence.** If the search is capped, the return says "not found under cap
+C", never "does not exist".
+
+**Bars.** Do **not** re-open (GR-28)(iv)'s `g ≤ 1` cap — **REFUTED with an exact
+boundary** ((GR-29) a theorem at `n_hub ≤ 6`, (GR-30) false from `n_hub = 8`
+with four witnesses, per-shape (GR-15) holding at all four (GR-31)); its
+`n_hub = 8` witnesses are **available as constructions to reuse**, which is the
+one thing to take from it. Do **not** re-run the (GR-39)/(GR-40) fully-hot
+census (landed **exhaustive** over all 4920 `n_hub ≤ 6` shapes). **(d′)** — the
+corner-armed realized-binding fully-hot seed hunt past GDEV's caps — is **NOT**
+this direction (E1's own clarification: not a flank by itself).
+
+**Riders.** As YLOC's, verbatim. Every obstruction figure carries its **family
+qualifier** — (GR-36)'s **binding-capable** family strictly contains the
+capacity-tight one, and (GR-40)'s 815 → 573 is a **prune, not a zero**.
+
+### Twenty-third direction — ZNEQ (seventh fan-out)
+
+**Status: dispatched 2026-08-19, opus, COMPUTE tier.** Labels reserved:
+`OC-` **(OC-23)–(OC-28)**, **Steps O19–O24**; owning section **§(K-out)**.
+Driver: **`notes/scripts/w4/zneq.py`**.
+
+**The target — (OC-19) input (a), `Z ≠ ∅`, as a statement in its own right:**
+*at every class (shape, split), the chart carries a target-rank point with
+`s₀ = 0`.* OCON ranked this **#2 of its five** hand-off items and called it
+*"cheap to state and would clean up several rows at once"*; it is a prerequisite
+of the **whole (K-tight) criterion — not (OUT)'s to pay** — and is currently
+carried **implicitly by every route on the (K-wit) row**.
+
+**State, as landed.** Measured at **90/90 POOL-S splits**. The only recorded
+`dim R_a = 0` chart points anywhere in the arc are **§(K-flank) *F5(d)*'s five
+`P21` seeds**, and `P21` **carries no length-4 companion**. By **(OC-17)**,
+`dim R_a = corank(G′) − s₀` at **every legal chart point with no genericity**,
+so at `index(G) = 0`, `def(G′) = 0` the locus `Z` is an intersection of two
+maximal-rank conditions — Zariski **open**, not a stratum. Openness **plus**
+nonemptiness is what makes (OC-19)'s one-point reduction bite, and OCON's
+`--control` leg is the sharp reminder that neither alone suffices: it built
+**3 constructed points in `Z`**, guard-accepted and coincidence-free, with
+`L_b ⊆ R₁` and `H/X` **flexible** (`dim Mot = 7`). `Z` genuinely meets the bad
+divisor.
+
+**The cheap probe OCON named, verbatim:** *extend `--control`'s unfiltered leg
+to a POOL-S-style shape pool and report the `s₀` histogram per (shape, split)
+rather than per seed.* Start there; it is the measurement the claim needs and
+nobody has run.
+
+**What a HIT is** — a **proof** that `Z ≠ ∅` at every class (shape, split): a
+construction, or a dimension count off (OC-17)'s rank identity, or a
+transversality argument. **What a decisive negative is** — a class shape with
+`Z = ∅` at a **length-4-companion-bearing** split. That makes (OC-8) **false**
+there and **simultaneously kills routes A and B at that split** by §(K-tight)
+*Step 2* item 3, so it is **a (K-tight) event, not an (OUT) event** — surface it
+to the coordinator in exactly those words, because it changes the phase's
+routing, not just this section's.
+
+**Bars.** **(OC-19) input (c)** — `H/X` infinitesimally rigid class-uniformly —
+is **NOT** this direction: OCON's verdict is that it is
+**(GR-15)-flavoured, not (FR-R1)-flavoured** (a rank condition inside a
+pattern-colouring existence question), and it is deliberately deferred.
+**Chart irreducibility (input (b)) is CIRR's target this wave** — **cite** it,
+do not derive it. Do **not** push a constructed point to `p⁺` (§(K-out) *What
+would change this* item 4), do **not** run the coupled two-end slide (item 5),
+and do **not** touch any §(K-frame) *What would change this* item (ii)–(iv).
+Do **not** propose a counting / matroid route to (OUT)'s hypothesis —
+**(OC-3) refutes the whole class.**
+
+**Riders.** The standing **(OC-7) rule**: no `place_pencil_general` battery may
+be quoted as a **rate** or as evidence about a **generic** chart point; POOL-G
+figures are quoted over the **318 coincidence-free** frames, never the raw 357.
+Adopt the composite guard **`repin.star_generic`** at every acceptance site
+(the 2026-08-06 S1/S2 re-baselining adopted it everywhere in `w4/` except
+§(K-out)'s two measuring modes — a *new* mode is not one of those two). The two
+settled pools **POOL-G and POOL-S are pinned and disjoint** — do not aggregate
+them, and do not re-sample either.
+
+### Twenty-fourth direction — CIRR (seventh fan-out)
+
+**Status: dispatched 2026-08-19, opus, DERIVATION-FIRST tier.** Labels
+reserved: **new section §(K-chart)**, tag **`CH-`** — **(CH-1)+**, **Steps
+CH1–CH8**. Both the section name and the prefix were verified **0-hit** across
+`*.md`, `*.tex`, `*.lean`, `*.py`, `*.m2` at reservation time, as was the code
+`CIRR`. Driver: **`notes/scripts/w4/cirr.py` reserved, expected unused.**
+
+**The target — write chart irreducibility down, ONCE, as a standalone statement
+with a proof:** the pencil chart at a class (shape, split) — `G′ = G − v + ab`'s
+chart, i.e. `place_pencil_general(G′, …)`'s image — is an **irreducible**
+variety, presented as the **tower of affine-linear fibres** with the
+**constant-fibre-dimension clause made explicit**.
+
+**Why this is a direction and not a footnote.** The sixth fan-out found the same
+fact **twice, independently, neither direction seeing the other's half, on the
+same day.** **OCON** names it *"the arc's most-consumed un-driver-tested
+fact"* — load-bearing for **§(K-out) (OC-19) input (b)**, **§(K-slide)
+(S1)(e)**, **§(K-dom) (D4)** and **§(K-ann) (ANH-9)(ii)** at once — and its
+*What would change this* item 2 says a failure *"would break this pass,
+§(K-slide) (S1)(e), §(K-dom) (D4) and §(K-ann) (ANH-9)(ii) at once."*
+**FRES**, independently, found (ANH-9)(ii)'s own phrase *"irreducible rational
+parametrization"* **imprecise as landed**: literally true only on
+`place_pencil_general`'s **constant-fibre-dimension locus**, because off it the
+fibres jump and the phrase is not a parametrization. **No consumer is
+disturbed** — every one needs only irreducibility, which the restriction still
+supplies — but the fact is now **used by at least two independent routes and
+owned by nobody**, written down once in §(K-out)'s *What would change this* and
+never as a statement. OCON's own words for the deliverable: *"a pass that
+writes it down … would be cheap insurance for four sections."*
+
+**The deliverable, in three parts.**
+
+1. **The statement**, with the **constant-fibre-dimension hypothesis explicit**
+   and the **ambient named** — which variety, over which field, of which
+   `(shape, split)`.
+2. **The proof**, as *Step FR13*'s tower (FRES's own account of the ambient)
+   turned into an argument: hub points sampled free; hub normals from the
+   **nullspace of hub-neighbour differences**; non-hubs on
+   `meet_line` / `in_plane_point` / free; and the **`hcard` clause that makes
+   the "three independent hub neighbours" branch unreachable**. Each fibre
+   affine-linear over the previous stage is what buys irreducibility; the
+   constant-fibre-dimension restriction is what makes "fibre" well-defined.
+3. **A consumer audit** — for **each** of the four named consumers, the **exact
+   sentence** it needs and whether the statement as proven supplies it. **Flag
+   any consumer that needs more than irreducibility** (e.g. one that needs
+   *rational* parametrization, or irreducibility of a *different* variety, or
+   density of the constant-fibre-dimension locus). This audit is the half that
+   makes the pass insurance rather than bookkeeping.
+
+**Read the source facts off the landed definitions and the landed driver
+source, NOT their docstrings** — the CLAUDE.md *"docstrings are not evidence"*
+clause, and FRES's *Verification* table is the model to reproduce (a table of
+fact / where / what was read). The four pointers FRES already opened, reuse
+them rather than re-finding them: `Molecule/Pencil/Motive.lean:82`
+(`closedHubNbhd`, the **definition body**), `Chart.lean:393,412`
+(`pencilChartPoint`, `pencilChartNormal`), `Engine.lean:89`
+(`PencilSeed.ofCoord`, `fillNbr := fillHub`), and
+`notes/scripts/w4/widened.py:160` (`place_pencil_general` — **points-first**:
+hub points free, `nrm[h]` from the nullspace of hub-neighbour differences,
+`return None` at three independent hub neighbours, unreachable under `hcard`).
+Also confirmed landed and reusable: `outer.py:242` (`chart_point`),
+`dominance.py:547` (`base_seed`), `repin.py:225` (`seed_probe`) all call
+`place_pencil_general(Gp, …)` with `Gp = G − v + ab`, so **the chart is `G′`'s,
+not `G`'s** — do not restate it as `G`'s.
+
+**What a HIT is** — the statement **proven-informally with no named gap**, and
+**all four consumers audited clean**. **An honest MISS** is a **named gap** in
+the tower — the constant-fibre-dimension locus not dense, a fibre not
+affine-linear, or one consumer needing strictly more — with **which consumer**
+and **how badly** stated. Either is a good return; a vague "it is irreducible,
+as everyone assumed" is not.
+
+**Bars.** This is **not** a licence to re-open §(K-frame) *What would change
+this* item (iii), the **(FR-7) irreducibility foothold** — that is **struck as
+unnecessary** by §(K-out) **(OC-17)** (`Z`'s irreducibility is the *chart's*,
+owned by (ANH-9)(ii)), which is the **opposite** of entering it; no bar is
+crossed by staying out. This direction does **not** touch class uniformity,
+(GR-15), the `g`-detector, the balance layer or route-ledger entry 5, and it
+does **not** move any gap-map status by itself — writing down a consumed fact is
+**insurance, not a status move**. If you conclude a status *should* move, say so
+and leave it to the coordinator. If you conclude the fact belongs **inside**
+§(K-out) rather than in its own section, say that too and leave the section
+placement to the coordinator — but **mint under `CH-` regardless**, so no
+rename is needed either way.
+
+**Driver expectation.** `cirr.py` is **reserved and expected unused**:
+**FRES's precedent** is that a pass may legitimately return **no driver at all**
+when every hypothesis it consumes is already asserted by a landed driver and
+everything above them is proof, which no driver mode can test (F11). If a
+driver **is** written, F11 binds in full — each headline claim needs a mode that
+tests **that sentence**, and `notes/scripts/README.md` §3 owes an invocation
+row.
+
+### Not selected, and why — the coordinator's ranking of the losers
+
+Disclosed per the twelfth direction's precedent: **this ranking is the
+coordinator's, with no independent top-rung reader.** A future recon may
+overturn any of it.
+
+- **(OC-19) input (c), class-uniformly** (`H/X` infinitesimally rigid at one
+  chart point, at every class (shape, split, length-4 companion)) — OCON ranked
+  it **#1 by value** (*"This is the whole residue"*), and it is deliberately
+  **not** dispatched: OCON's own verdict says it is
+  **(GR-15)-flavoured, not (FR-R1)-flavoured** — a rank condition inside a
+  pattern-colouring existence question — so it re-enters the arc's **oldest
+  missing technology** rather than adding an independent idea. It is the natural
+  primary for the **next** wave if YLOC's localization succeeds, since a
+  chunk-level instrument is the same missing technology arriving from the other
+  side.
+- **§(K-out) hand-off item 3** — `T_u^{⊥_B} ∩ β_b = 0` at the **1715**
+  slide-legal `b` ends, where **(OC-21) makes it an iff**; measured
+  `dim(T_u ∩ β_b) = 1` at 38/38 POOL-W degree-3 ends and 4/4 POOL-OC ones. A
+  good, cheap, well-posed target; dropped **only** because ZNEQ already occupies
+  §(K-out) this wave and item 3 rides the same measurement infrastructure.
+  **Queue it.**
+- **§(K-out) hand-off item 4** — the one-hub-neighbour extension of the slide
+  ((OC-21)'s second bullet) and its census share. A `--wide`-style leg, **too
+  small to be a direction**; fold it into whichever §(K-out) direction runs
+  next.
+- **(d′)** — the corner-armed realized-binding fully-hot seed hunt past GDEV's
+  caps. **E1's own clarification says it is not a flank by itself**, so its best
+  outcome is a measurement. Lowest value of the six considered.
+- **Route σ's parked Lean half** and **the W4 build** — both **BLOCKED by the
+  standing 2026-08-05 Lean hold** (general, not W4-scoped). Not eligible without
+  a fresh user adjudication, and **none was sought** at this session's check-in.
+- **`Pencil-strategy.md` §4.6's U3** — still unrun, but the shortlist is
+  **partially superseded** for the tight stratum (U2 delivered by (GR-16)'s
+  reduction, U3's negative-form insight already exploited) and §5.3's own
+  local-frame feasibility boundary rules out the symbolic meta-option. Two
+  **durable negatives** — do not re-run.
