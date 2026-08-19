@@ -5669,7 +5669,7 @@ wave*, and a future top-rung recon may overturn the bars below freely.
 | direction | tier | target | status |
 |---|---|---|---|
 | **YLOC** | compute-licensed | input (Y), (a′)'s residual — GBAL's instrument localized to proper chunks | **LANDED 2026-08-19** — an honest MISS (§"Twentieth direction") |
-| **BALB** | compute-licensed | (b′), the balance-layer bound `d_adm − d_par ≤ 2` | dispatched 2026-08-19 |
+| **BALB** | compute-licensed | (b′), the balance-layer bound `d_adm − d_par ≤ 2` | **LANDED 2026-08-19** — OPEN, NOT a HIT, half proven / half refuted with an exact boundary (§"Twenty-first direction") |
 | **AGLU** | compute-licensed | ledger attack (c) — AA-glue realizability at `n_hub ≥ 8` | dispatched 2026-08-19 |
 | **ZNEQ** | compute-licensed | (OC-19) input (a) — `Z ≠ ∅` at every class (shape, split) | dispatched 2026-08-19 |
 | **CIRR** | derivation-first | chart irreducibility, written down once as a standalone statement | **LANDED 2026-08-19** — a HIT (§"Twenty-fourth direction") |
@@ -5852,9 +5852,15 @@ side, not minted here.
 
 ### Twenty-first direction — BALB (seventh fan-out)
 
-**Status: dispatched 2026-08-19, opus, COMPUTE tier.** Labels reserved:
-`GR-` **(GR-67)–(GR-72)**, **Steps G86–G91**; owning section **§(K-grid)**.
-Driver: **`notes/scripts/w4/balb.py`**.
+**Status: LANDED 2026-08-19 — (b′) stays OPEN, NOT a HIT, with its
+decomposition half proven and half refuted at an exact boundary.** Third
+of the seventh fan-out's five directions to land, after CIRR and YLOC
+(AGLU/ZNEQ still in flight), **compute-licensed** tier. §(K-grid)
+**extended**, **Steps G86–G91**, labels **(GR-67)–(GR-72) CLAIMED
+exactly** — the full reservation consumed, nothing returned to the pool.
+Driver **`notes/scripts/w4/balb.py`** (six modes;
+`--validate` runs all six inside the 600 s foreground budget, measured
+~105 s).
 
 **The target — (b′), the balance-layer bound `d_adm − d_par ≤ 2`.** OPEN and
 supported (no growing gap ever found); ridden as a *secondary* three times
@@ -5899,6 +5905,102 @@ test bed for it, not a refutation of it.
 **UNBOUNDED** ((GR-43), `d_par = d_adm = d_fg = m` exactly at the necklaces) —
 so (b′) must be stated as a bound on the **difference**, never on `d_adm`, and
 any figure quoting a necklace member carries that qualifier.
+
+**The verdict, as landed: (b′) stays OPEN, NOT a HIT — its decomposition is
+now half proven outright and half refuted at an exact boundary**, the
+(GR-29)/(GR-30)-shaped outcome named above as a valued result, not a
+failure. **(GR-67)** anchors the z-form at a perfect matching `M`: the
+deviation count from `M` is a **2-factor sign-change count**, and a
+one-line branch sum gives the **PARITY LAW** — every per-matching layer
+gap is EVEN, so per-matching (b′) is the dichotomy *gap 0 or gap ≥ 2*, and
+a counterexample must show a gap of 4, never 3. **(GR-68)** prices
+**every** legal move in closed form: matching branches and whole 2-factor
+cycles are FREE, and a single-path repair costs at most 2 **regardless of
+its length** — this **proves (b′)'s price half outright**, at every shape,
+with no cap and no length restriction. **(GR-69)** proves the imbalance
+ceiling `|δ| ≤ 2·min(k, ⌊n_hub/4⌋)` from the *necessity* half of
+(GR-51)(i)(a) alone, so `|δ| ≤ 2` is a **theorem at `n_hub ≤ 6`** — the
+whole stratum, hence *this row's own* and GDESC's *Step G66*'s measured
+`|δ|` figures there are arithmetic, not evidence — and **FALSE from
+`n_hub = 8`**, realized at the Wagner habitat shape **V8** (accepted by
+both `cflank.cubic_habitat` and `gdev.habitat_by_lemma`, `|δ| = 4` at 4 of
+418 configurations), tight at every rung reached. **(GR-70)** reduces
+per-matching (b′) to **one availability clause** (Clause A′) and verifies
+it **EXHAUSTIVELY** over the whole stratum (4780 shapes, 23 939 (shape,
+matching) pairs, all 96 930 unbalanced parity-optimal configurations, full
+`3^n` censuses, no cap) — while **REFUTING** the landed T1-only instance of
+that clause **from `n_hub = 8`**, with stuck witnesses at 32/15 088,
+120/16 502 and 52/15 904 configurations at `n = 8/10/12`, every one
+repaired at price **0** by a named **mixed-pair** move. **(GR-71)** carries
+(b′) to 536 exact shapes at `n_hub = 8/10/12` and to cap-free per-matching
+certificates at `n = 30`. **(b′) stays OPEN, NOT a HIT** — price half
+proven, availability half not; **(GR-15) stays OPEN, no gap-map status
+move on `hK` itself**.
+
+**E1(v)'s named trigger does NOT fire.** The V8 `|δ| = 4` configurations
+are **not parity-optimal** (they sit at `|δ| = 4` among a spectrum
+`{0: 230, 2: 184, 4: 4}`, none of the four the parity-optimal member) — a
+careless reading of "half 1 refuted" would think this fires it; it does
+not, and the pass says so explicitly.
+
+**Three coordinator adjudications on landing.** *(1)* **The
+cross-direction duplicate is a corroboration, not a rediscovery.**
+(GR-67)(i) and YLOC's landed (GR-65)(i) are **the same identity** —
+`dist(m, M) = #{v : the two non-M darts differ}` is exactly
+`n − #{v : they agree}` — derived independently by two directions blind to
+each other in the same concurrent fan-out. (GR-67)(i) lands as the
+**perfect-matching-anchored instance** of the landed (GR-65)(i), cross-cited
+in that qualified form, with the independent double-certification recorded
+as **corroboration** — the wave's third such convergence (after
+OCON/FRES, and now YLOC/BALB here). What (GR-67) adds beyond the shared
+identity is new: the parity law (ii) and the changeover parametrization
+(iii), both BALB's own. *(2)* **The flagged-unverified by-product is
+already verified.** BALB's report that (GR-67) Cor. 1 extends to
+`d_fg(M)` — hence `d_fg(M) − d_adm(M)` even, hence GLAW's (GR-59)
+per-matching (a′) witnesses must all carry a gap `≥ 2`, never exactly 1 —
+is **corroborated against a landed figure**, not left unverified: GLAW's
+own landed (GR-59) measurement of that very gap distribution is
+`{2: 1251, 4: 27}` — every one of the 1278 gaps is already even, from a
+different direction in an earlier wave. *(3)* **The retroactive
+reading-downgrade lands at the figures it downgrades, not only in BALB's
+own section.** (GR-69) proves `|δ| ≤ 2` is forced on the whole
+`n_hub ≤ 6` stratum, so GDESC *Step G66*'s `{0: 92, 2: 2}` and this pass's
+own exhaustive `{0: 4641, 2: 139}` carry **no evidential weight for
+`n_hub ≥ 8`** — the figures stand, only the *reading* is downgraded, and
+the annotation is recorded at *Step G66* itself in `Pencil-informal.md`,
+not only here.
+
+**The cap disclosed, with its reason.** The necklace leg stops at `m = 6`
+because `gadm.dp_pref`'s table is `2^dim` (dim 16/21/26/31 at
+`n = 30/40/50/60`, guarded by `assert dim ≤ 18`), and **GBAL's
+`n = 40..60` reach does not transfer**: (GR-54) needs only balance
+*existence*, decided polynomially by (GR-50), whereas any (b′) statement
+needs `d_par(M)`, the exponential object. An exhausted table is not `∞`
+and a `m = 6` leg is not an `m = 12` leg.
+
+**TERMINATION: E1, E2, E3 all NO.** No `g`-flank (rank-free throughout,
+no `d_fg` claim made); entry 5 (PROVEN, GR-54) is untouched, and (b′) —
+not a ledger entry in E2's sense — leaves an open, named, dispatchable
+attack either way. **E3 stays ARMED by GBAL and is neither fired nor
+disarmed** — its target is entry 1, (a′), which this pass does not
+attempt (YLOC's target this wave).
+
+**The residual, named exactly: *Clause A′*, doubly-blocked sub-clause.**
+The one-end-blocked case is nearly done — the mixed-pair mechanism prices
+it at the unblocked T1's price, because an `M`-branch is free. The
+doubly-blocked case, (GR-48)'s named kill realized at `n = 30`, is the
+real gap: the chain must be followed at both ends, and (GR-68) prices it
+only `≤ 4` unless both extra endpoints land on deviating hubs. **The
+recommended untried alternative:** minimizing `dist(·, M)` at a *fixed*
+balanced pattern is, by (GR-50), a min-cost degree-constrained
+orientation — polynomial; per-matching (b′) is then an exchange argument
+between two such flow problems (pattern-free vs pattern-fixed), and flow
+theory's exchange machinery is untried on this arc.
+
+**What did NOT move.** No gap-map status moves: (GR-15), class
+uniformity, `hK`, entry 5 and route-ledger entry 1/(a′) are exactly where
+they were. Every figure above at `Λ = ∅`, `D = 0`, modulo (GR-4′) where a
+closure chain is concerned; `Λ ≠ ∅` and `D > 0` stay **unswept**.
 
 ### Twenty-second direction — AGLU (seventh fan-out)
 
