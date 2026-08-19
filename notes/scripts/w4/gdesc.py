@@ -1,5 +1,5 @@
 """GDESC -- the fourteenth kernel-(K) direction: the entry-5 descent
-lemma's STUCK CASE (spec: notes/Pencil-fanout.md S"Fourteenth
+lemma's STUCK CASE (spec: notes/Pencil-fanout-archive.md S"Fourteenth
 direction").
 
 PRIMARY: close the descent lemma's stuck case -- from every

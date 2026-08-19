@@ -22,9 +22,9 @@ g-flank at any of the thirty-two directions. E3 is ARMED (by GBAL) and has NOT f
 Direction codes are **multi-letter and topic-tagged from the fifth fan-out on**
 (`notes/Pencil-labels.md` (L5)); grandfathered single letters are re-used across dates,
 **always date those**.
-**Next concrete task: doc-split round slice 2 — archive `Pencil-fanout.md`'s
-history — then discipline distillation** (`notes/Pencil-structure.md`; slice 1
-LANDED 2026-08-19; see *Hand-off*).
+**The doc-split round is COMPLETE** (slices 1 and 2 both LANDED 2026-08-19,
+`notes/Pencil-structure.md`). **Next concrete task: the discipline-distillation
+round** — see *Hand-off*.
 
 ## Current state
 
@@ -46,7 +46,7 @@ constraints; the dated dispatch narrative is in *Decisions made* and git):
   (`notes/scripts/README.md`); every script the project runs is tracked, probes included.
 - **2026-08-05…07, second through fifth fan-outs (all COMPLETE; user-adjudicated).**
   T/R/M, G/Q/O, E/J, PEX/TCOL; route σ / W4 / the (FR-6) follow-ons not selected at any of
-  them; cap lifted, rescue §1 pre-authorized (`notes/Pencil-fanout.md` §§"Second"–"Fifth").
+  them; cap lifted, rescue §1 pre-authorized (`notes/Pencil-fanout-archive.md` §§"Second"–"Fifth").
 - **2026-08-07, delegation adjudication (binds from the SIXTH direction on).** Asked at the
   session-start check-in what to do once TCOL lands, the user selected **"Keep going on my
   own judgment"** — *"After landing TCOL I pick the next direction from the hand-off's
@@ -58,11 +58,11 @@ constraints; the dated dispatch narrative is in *Decisions made* and git):
   constraint).** The user, verbatim: *"Let's have a fable subagent make the decision / do a
   reprioritization and then follow its guidance."* — the precedent that the pick may itself
   be delegated to a **top-rung fable recon**. Its verdict (GCAP) was verified, accepted and
-  LANDED 2026-08-13 (`notes/Pencil-fanout.md` §"Seventh direction"). Same check-in: top rung
+  LANDED 2026-08-13 (`notes/Pencil-fanout-archive.md` §"Seventh direction"). Same check-in: top rung
   = fable (opus only if the weekly limit runs out); cap **lifted**; rescue §1 mechanical
   fixups **pre-authorized** — all still binding.
 - **2026-08-13, phase-shape adjudication, then ninth- through fourteenth-direction
-  selections (none changed a standing constraint; full detail `notes/Pencil-fanout.md`
+  selections (none changed a standing constraint; full detail `notes/Pencil-fanout-archive.md`
   §§"Ninth"–"Fourteenth direction", the fable/opus rung deviation in
   `notes/dispatch-log.md`).** Offered a handoff-to-fresh-session option after GUNIF's
   refutation, the user **RESOLVED: the research arc CONTINUES**, selection falling back to
@@ -85,7 +85,7 @@ constraints; the dated dispatch narrative is in *Decisions made* and git):
   maximize the number of ideas we make progress on at once without getting interrupted."*
   Five directions dispatched concurrently — **GBAL**/**GLAW** (compute-licensed tier),
   **OCON**/**LTWO**/**FRES** (derivation-first tier), tier split and label reservations
-  coordinator-set (`notes/Pencil-fanout.md` §"Sixth fan-out"). **All five LANDED
+  coordinator-set (`notes/Pencil-fanout-archive.md` §"Sixth fan-out"). **All five LANDED
   2026-08-19; the fan-out is COMPLETE** — verdicts in the header and *Decisions made*.
 
 - **2026-08-19, seventh-fan-out dispatch — the multidispatch shape RE-ELECTED (changes no
@@ -224,8 +224,9 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
 
 **The sixth AND seventh fan-outs are both COMPLETE — all ten directions LANDED
 2026-08-19**; verdicts in the top `**Status:**` paragraph and the merged rollup in
-*Decisions made*, per-direction detail in `notes/Pencil-fanout.md` §§"Sixth
-fan-out"/"Seventh fan-out", labels claimed in `notes/Pencil-labels.md` — **none of it
+*Decisions made*, per-direction detail in `notes/Pencil-fanout-archive.md` §"Sixth
+fan-out" and `notes/Pencil-fanout.md` §"Seventh fan-out", labels claimed in
+`notes/Pencil-labels.md` — **none of it
 restated here.** No standing constraint moved: phase OPEN, Lean hold STANDS, W4 PARKED,
 `hK`/`hbareSplit` pinned, option B un-commissioned.
 
@@ -241,8 +242,8 @@ crossing pairs, pushing the open case to `n_hub ≥ 10`); canonical homes new §
 and §(K-out) *Steps O19–O24* (`notes/Pencil-informal.md`), §(K-grid) *Steps G80–G97*
 (now `notes/Pencil-informal-grid.md`), verdicts in `notes/Pencil-fanout.md`
 §§"Twenty-fourth"/"Twentieth"/"Twenty-first"/"Twenty-third"/"Twenty-second direction" —
-**not restated here**. **Next concrete task: doc-split slice 2, then discipline
-distillation — see *Hand-off*.**
+**not restated here**. **The doc-split round is now COMPLETE; next concrete task: open
+the discipline-distillation round (below).**
 
 **E3 is ARMED** (GBAL's entry-5 HIT) but **not fired by any of the ten** (a′ not hit,
 only its pinned route demoted by YLOC; firing is the coordinator's action). **"Chart
@@ -260,25 +261,19 @@ successor routing is in *Decisions made*); §(K-out) items 3/4; attack (c) at
 pool — carried forward unchanged.** ZNEQ names a `σ > 0`-everywhere
 hunt at class shapes whose `H` carries a short theta sub-multigraph — a hit is a
 **PENCIL event** (`hK` FALSE there), which the direction-A pivot rule
-(`notes/Pencil-fanout.md` §"Direction A") makes *"a phase-redefining event for the user to
-adjudicate, not a result to build on"* — excluded until adjudicated. The doc-split
-round's go-ahead **was** exercised this session (slice 1 landed, below); the
-discipline-distillation round's go-ahead is still only agreed in shape, not yet
-triggered. **A wave-closing exception-log commit to `notes/dispatch-log.md`
+(`notes/Pencil-fanout-archive.md` §"Direction A") makes *"a phase-redefining event for the user to
+adjudicate, not a result to build on"* — excluded until adjudicated. Opening the
+discipline-distillation round (below) is a coordinator call, not exercised by this
+commit. **A wave-closing exception-log commit to `notes/dispatch-log.md`
 is owed and is the coordinator's, not a build agent's** — not made in this commit.
 
-**The doc-split round is OPEN — `notes/Pencil-structure.md`.** *(1)* **Slice 1,
-LANDED 2026-08-19:** §(K-grid) (9883 lines, not the round-opening 8553 estimate)
-moved **verbatim** to the new `notes/Pencil-informal-grid.md`; the *State of (K)*
-gap map (incl. §(K-grid)'s row) stayed whole in `Pencil-informal.md`; its
-*Section index* row is now a **file** reference, cross-references repointed,
-§(K-frame)/§(K-chart)/§(K-mech)'s index rows now stale (recompute owed) — full
-detail in `notes/Pencil-structure.md`. *(2)* **Slice 2, NEXT:**
-`Pencil-fanout.md`'s ~6300 lines of landed history to an archive file (precedent:
-`FRICTION.md` → `FRICTION-archive.md`, `88436c0b`; its own top header,
-`notes/Pencil-fanout.md` line 3, has not moved since the sixth fan-out).
-*(3)* **Discipline distillation, immediately after**: promote this phase's
-research-arc
+**The doc-split round is COMPLETE — `notes/Pencil-structure.md`.** Slice 1 (§(K-grid),
+9883 lines, → `notes/Pencil-informal-grid.md`) and slice 2 (`Pencil-fanout.md`'s
+ordinals 1–19, 5279 lines of landed dispatch history, → `notes/Pencil-fanout-archive.md`
+— `FRICTION.md`→`FRICTION-archive.md` precedent, `88436c0b`) both LANDED 2026-08-19,
+verbatim relocations with cross-references swept and repointed; full mechanical-
+verification detail in the round log, not restated here. **Next: the
+discipline-distillation round.** Promote this phase's research-arc
 discipline into a new read-on-demand `RESEARCH-ARC.md` (alongside `CLEANUP.md`,
 `PHASE-BOUNDARIES.md`). **Ready** (three-plus waves): label reservations + the minting
 rule; serial coordinator landing, agents committing nothing, drafting outside the tree;
@@ -384,6 +379,10 @@ Reverse-chronological, one line per landing; full derivations live in git,
 `notes/Phase39-design.md`, and (for the (K) arc) the workbook section named in each entry, which
 is the canonical home a successor reads.
 
+- **Doc-split round COMPLETE (2026-08-19, both slices)** — §(K-grid) →
+  `Pencil-informal-grid.md` (slice 1); `Pencil-fanout.md`'s ordinals 1–19 →
+  `Pencil-fanout-archive.md` (slice 2, `FRICTION.md`→`FRICTION-archive.md` precedent).
+  Verbatim, repointed, `check-gapmap-cells.py` clean; detail `notes/Pencil-structure.md`.
 - **The FIRST through TWENTY-FOURTH fan-outs/directions — all LANDED 2026-08-05…08-19**
   (canonical homes: §(K-chart)/§(K-out) *Steps O19–O24* in the workbook, §(K-grid)
   *Steps G80–G97* now `notes/Pencil-informal-grid.md` — and `notes/Pencil-labels.md`

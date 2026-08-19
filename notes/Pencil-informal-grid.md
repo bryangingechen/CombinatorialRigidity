@@ -1204,7 +1204,7 @@ a purely combinatorial route to (GR-15) where triples fail.
 
 ### Steps G19–G23 (2026-08-07, fan-out direction TCOL) — (GR-15) is NOT proven, but the problem loses the subdivision: `dim Z` becomes a square system on the **hub multigraph**, the per-circuit necessity becomes a **run count** that girth 7 makes vacuous except at two length profiles, the tree-triple is exactly a **grouping of a 6-spanning-tree decomposition of `Ĝ` that always exists**, and the **collapse hierarchy at order 4 certifies all 18 habitat separators** — so the certificate theory is not stuck where the triple is
 
-Answering `notes/Pencil-fanout.md` §"Fifth fan-out" → Direction TCOL, i.e.
+Answering `notes/Pencil-fanout-archive.md` §"Fifth fan-out" → Direction TCOL, i.e.
 §(K-grid) *Step G18* items 1 and 3. Read against *Steps G7–G18*
 ((GR-4′)/(GR-7)/(GR-8)/(GR-9)/(GR-10)/(GR-12)/(GR-13)/(GR-15), *Step G12*'s
 finite-object notes and *Step G16*'s 18 separators); §(K-slide-comb) (C6);
@@ -1880,7 +1880,7 @@ colouring-existence statement about `a = 0 ∧ max_P g(P) ≤ 0` — which
 
 ### Steps G24–G28 (2026-08-07, direction CFLANK) — the targeted flank against (GR-15) does **not** exist where TCOL said to look, and the reason is an exact **length-budget law**: `Σ_β(ℓ_β − 2) = 2·Σ_v(deg v − 3) + 6` pins the binding-circuit-rich stratum to the **cubic** hub multigraphs, five caps bound how many binding circuits the habitat can carry there, a **flip injection** and a **private-branch repair theorem** turn NC1-satisfiability from *measured* into *proven* at every shape reached, and **40 742 class shapes** of that stratum — exhaustive over length profiles and over all `2^M` branch bits — every one carries an admissible colouring at generic `dim Z₊ = dim Z₋ = 0`
 
-Answering `notes/Pencil-fanout.md` §"Sixth direction — CFLANK", i.e. §(K-grid)
+Answering `notes/Pencil-fanout-archive.md` §"Sixth direction — CFLANK", i.e. §(K-grid)
 *Step G23*'s *What would change this* item **(v)** — "a targeted adversarial
 construction has not been attempted". Read against *Steps G19–G23*
 ((GR-16)/(GR-17)/(GR-18)/(GR-19)/(GR-20)), *Steps G8–G18* ((GR-7)/(GR-8)/
@@ -2453,7 +2453,7 @@ detector for the second does **not** exist yet — building it is item (i).
 
 ### Steps G29–G33 (2026-08-12/13, direction GCAP) — the (GR-8) family is exactly computable, *Step G23*'s probe becomes committed evidence **with its `Λ`-clause corrected**, a closed **defect formula** turns `max_P g(P)` into branch-bit arithmetic at `Λ = ∅`, NC1 caps the binding family at **`g = 1`** (proven at `k = 2`, exhaustive at all `k`), and the certificate-3 colouring-existence target holds at **every swept `D = 0` shape** with repair distance ≤ 2 — but the uniform existence statement, and with it (GR-15), stays **OPEN**
 
-Answering `notes/Pencil-fanout.md` §"Seventh direction — GCAP", i.e.
+Answering `notes/Pencil-fanout-archive.md` §"Seventh direction — GCAP", i.e.
 *Step G28* residual item 1 / *What would change this (Steps G24–G28)*
 item (i): the general-`P` instance of *Step G23* (GR-20)'s certificate 3,
 cap-proof-first. Read against *Steps G8–G13* ((GR-7)/(GR-8)/(GR-4′)),
@@ -3021,7 +3021,7 @@ every certificate above a rank statement outright.
 ### Step G34 — (GR-29): the dart menu and the budget ledger — the finite case analysis, machine-certified, with kills that are proofs
 
 Answering *Step G33*'s items 1–2 and the GUNIF spec's two targets
-(`notes/Pencil-fanout.md` §"Eighth direction"): (a) close (GR-28)(iv)'s
+(`notes/Pencil-fanout-archive.md` §"Eighth direction"): (a) close (GR-28)(iv)'s
 `k ≥ 3` case, (b) a repair theorem. **The crux, restated from *Step
 G31*.** At `defect(S) ≤ 1`, `k ≥ 3` forces a circuit of cost-0 core paths
 inside the core; a 2-path circuit is dead (the `k = 2` argument), but a
@@ -3388,7 +3388,7 @@ expected to realize every larger `k` but is machine-checked only to
 
 ### Steps G38–G42 (2026-08-13, direction GEXIST) — the target is reduced to a **minority-dart orientation problem** with one unit of structural slack at every proper chunk: a **capacity theorem** makes the whole graph exactly critical and every proper chunk strictly slack, a **weakness lemma** makes binding an alignment of ≥ 2 scarce per-hub weaknesses, the **first-moment/union-bound route is REFUTED by a constructed witness**, an **uncrossing lemma** (defect is submodular) organizes the binding family, and a correlated **rung-minority rule** closes the whole ladder family by explicit rank-certified colourings — but the uniform existence statement, and with it (GR-15), stays **OPEN**
 
-Answering `notes/Pencil-fanout.md` §"Ninth direction — GEXIST": the
+Answering `notes/Pencil-fanout-archive.md` §"Ninth direction — GEXIST": the
 uniform fully-good existence target at `Λ = ∅`, `D = 0` — *every tight
 class shape there admits an admissible colouring with
 `a = 0 ∧ max_P g(P) ≤ 0` in both blocks* — attacked through the (GR-29)
@@ -3841,7 +3841,7 @@ G45–G46*.
   "capacity-tight chunk" framing here is corrected to the
   binding-capable family, and the route is re-anchored on a
   bounded-deviation selection principle instead.
-- **For the route ledger** (`notes/Pencil-fanout.md` §"Ninth
+- **For the route ledger** (`notes/Pencil-fanout-archive.md` §"Ninth
   direction"): entry 1 (this direction) lands as
   **open-with-named-dispatchable-attacks** (the orientation theorem;
   the two sub-lemmas; the pruned hot-hub enumeration at `n = 8`) — a
@@ -3954,7 +3954,7 @@ of (GR-32)/(GR-33) — both strata stay unswept; the capacity proof uses
 
 ### Steps G43–G47 (2026-08-13, direction GORIENT) — the orientation target is re-anchored on a **selection principle** (perfect-matching minority + bounded deviation) whose parity obstruction is exactly the cut space, a **structural charge** bounds every chunk's defect from below by its interior-adjacency count, the **intersection kill lands vacuously-strong on the whole `n_hub ≤ 6` stratum** (crossing same-block binding pairs do not exist there at all), the **hot-dart census family is corrected and the census upgraded to the exhaustive stratum**, and **no fully-hot hub exists anywhere searched** — but the orientation theorem, and with it the target and (GR-15), stays **OPEN**, with the sticking instance named at W3
 
-Answering `notes/Pencil-fanout.md` §"Tenth direction — GORIENT": the
+Answering `notes/Pencil-fanout-archive.md` §"Tenth direction — GORIENT": the
 orientation theorem — *every habitat shape (cubic `G°`, `ℓ_β ∈ [2,5]`
 ((SD-6)), `Σ(ℓ_β − 2) = 6` ((GR-21)), the proven (GR-25) cut criterion;
 `Λ = ∅`, `D = 0`) admits an admissible colouring with `save_X(S) ≤ N(S) − 3`
@@ -4424,7 +4424,7 @@ carrying near-saturated hubs keeps abundant fully-good colourings.
   Subsumed and still open underneath: uniform NC1-satisfiability itself
   ((GR-24)'s mixed-case universality, *Step G28* item 3) — the `k = 1`
   stratum of the same Hall problem.
-- **For the route ledger** (`notes/Pencil-fanout.md` §"Tenth
+- **For the route ledger** (`notes/Pencil-fanout-archive.md` §"Tenth
   direction"): entry 1 (the orientation theorem) lands as
   **open-with-named-dispatchable-attacks** — (a) the bounded-deviation
   selection theorem (anchor proven, bound open, W3 the named test), (b)
@@ -4563,7 +4563,7 @@ length-parity-only and should transfer, but nothing here shows it.
 
 ### Steps G48–G52 (2026-08-15, direction GDEV) — the bounded-deviation selection theorem is **REFUTED AS POSED** by an explicit habitat family with an unbounded **parity floor** (a proven, colouring-free lower bound on the deviation count of *every* admissible colouring from *every* perfect matching), the **corner-side charge lands** as the (GR-36)-analogue theorem for corner-separated chunks — tight at W3M, where (GR-36) prices 0 — the W3 stick is located in the **odd-branch balance layer** (not parity, not fully-goodness — *corrected by GADM Step G56: the stick SPLITS, one shift-metric unit + one balance unit*), and the deviation cost **measures as entirely an admissibility phenomenon** (`d_fg = d_adm` at every shape measured) — (GR-15) stays **OPEN**, per-shape (GR-15) gains rank-certified members up to `n_hub = 50`, and **no gap-map status moves**
 
-Answering `notes/Pencil-fanout.md` §"Eleventh direction — GDEV": the
+Answering `notes/Pencil-fanout-archive.md` §"Eleventh direction — GDEV": the
 bounded-deviation selection theorem — *every habitat shape (cubic `G°`,
 `ℓ_β ∈ [2,5]` ((SD-6)), `Σ(ℓ_β − 2) = 6` ((GR-21)), the proven (GR-25)
 cut criterion; `Λ = ∅`, `D = 0`) has a fully-good colouring within a
@@ -4975,7 +4975,7 @@ A found seed would have been a SEED, not a flank (E1 clause (i)).
   `d_fg = d_adm` half (fully-goodness free once admissible) and the
   existence target of GEXIST follows from per-shape admissibility,
   with the deviation language stripped of its false uniformity.
-- **For the route ledger** (`notes/Pencil-fanout.md` §"Eleventh
+- **For the route ledger** (`notes/Pencil-fanout-archive.md` §"Eleventh
   direction"): entry 1 (the orientation theorem in its re-anchored
   bounded-deviation form) — the bounded-deviation FORM is **refuted**
   ((GR-42)); the entry re-anchors as
@@ -5121,7 +5121,7 @@ family past this pass's caps — a SEED for the CSP test, not a flank.
 
 ### Steps G53–G57 (2026-08-17, direction GADM) — experiment 1 lands OUTCOME 3 with `d_par` above the floor: the **shift-metric layer is UNBOUNDED** ((GR-43), the odd-cycle-packing floor `d ≥ m` at the necklaces, proven — so the growth law's bounded-correction reading dies), while the **`d_fg = d_adm` law (a′) SURVIVES its first large-`d` test** — `d_par = d_adm = d_fg = m` **exactly**, rank-certified at the optimum, at all four NK members up to `n_hub = 50`; ledger **entry 5 settles as a SEPARATE OPEN STATEMENT** ((GR-37)(iii)'s recorded proof covers only the cut-space class — its statement's "balance rider alike" clause is undelivered); the balance layer measures `≤ 2` everywhere probed including the odd-richest stratum, with a record correction: **W3's balance gap is 1, not 2** — (GR-15) stays **OPEN**, no gap-map status moves
 
-Answering `notes/Pencil-fanout.md` §"Twelfth direction — GADM": attack
+Answering `notes/Pencil-fanout-archive.md` §"Twelfth direction — GADM": attack
 **(a′)** the `d_fg = d_adm` law (primary) and **(b′)** the balance-layer
 bound (secondary), tested first at the pentagon necklaces `NK(m)` of
 (GR-42) — the only known large-`d` regime, where the 133/133 figure (131
@@ -5524,7 +5524,7 @@ proof of entry 5's balance half** — with (a′) it would close the
 
 ### Steps G58–G62 (2026-08-18, direction GPSA) — route-ledger entry 5 attacked in BOTH halves: the Hall/SDR step is **AUTOMATIC** and the parity layer collapses to an exact per-matching coset formula (**(GR-44)**: `d_par(M) = w_M` — **half 1 PROVEN**, (GR-37)(iii)'s parity half repaired to statement-equals-proof), while the balance rider reduces via a new cut-move calculus (**(GR-45)**) to a **descent lemma** proven in its free-T1 case and open exactly at a **named stuck case** — entry 5 holds **EXHAUSTIVELY at all 97 censused shapes** (full `3^n` per shape) yet is **NOT a HIT**; **(b′)** gap 0 at every commissioned odd-rich stress member — (GR-15) stays **OPEN**, no gap-map status moves
 
-Answering `notes/Pencil-fanout.md` §"Thirteenth direction — GPSA":
+Answering `notes/Pencil-fanout-archive.md` §"Thirteenth direction — GPSA":
 **route-ledger entry 5 — per-shape admissibility (`d_adm < ∞`) in
 BOTH halves** — half 1 the Hall/SDR realizability step (*Step G53*'s
 recorded, undischarged caveat), half 2 the ≤ 6-odd-branch balance
@@ -6027,7 +6027,7 @@ the growth law in exact form.
 
 ### Steps G63–G67 (2026-08-18, direction GDESC) — the entry-5 descent lemma's stuck case is **RESHAPED, not closed**: **(GR-46)** proves the (GR-45) legal-move family **one-move TRANSITIVE**, so the descent lemma over the FULL family is **equivalent to entry 5's balance half** (the descent framing was never a weakening, and the stuck case is not a smaller residual); **(GR-47)** puts parity-consistent maps in a (coset representative, SDR end-selection, perfect matching) **normal form** that turns balance into a matching-flexibility statement; **(GR-48)** is the escape catalogue — the exact reduction criterion, the K1/K2 rescues, a **PROVEN kill** of the {T1, T2} family at all-doubly-blocked configurations and the K3 pair-star extension that repairs it — with the kill **REALIZED at n = 30**, so the bounded {T1, T2} descent route is **DEMOTED by witness** while **entry 5 stays OPEN, NOT a HIT, E3 NOT armed**, its residual named as **input (X)**; **(b′)**'s named unmeasured half is measured (`|δ|` at parity-optimal maps `{0: 92, 2: 2}`) — (GR-15) stays **OPEN**, no gap-map status moves
 
-Answering `notes/Pencil-fanout.md` §"Fourteenth direction — GDESC":
+Answering `notes/Pencil-fanout-archive.md` §"Fourteenth direction — GDESC":
 **the entry-5 descent lemma's STUCK CASE** — the one open piece of
 route-ledger entry 5's balance half, named at *Step G60* — with
 **(b′)** the secondary and **(a′) deliberately NOT attempted** (it
@@ -6506,7 +6506,7 @@ entry 5 outright and calibrate the general (X) attack.
 
 ### Steps G68–G73 (2026-08-19, direction GBAL) — input (X) is **DISCHARGED**: **(GR-49)** replaces the whole (c, m)/coset/SDR/matching apparatus by ONE BIT PER BRANCH (parity-consistent configurations = **admissible dart colourings**, and the odd-branch pattern is literally that bit read on the odd branches); **(GR-50)** turns balance into a **degree-constrained orientation** of the even branches, decided EXACTLY in polynomial time; **(GR-51)** collapses its two-sided Hall condition to a **local weight inequality** whose only negative term sits at hubs carrying two odd branches of the same colour; **(GR-52)** proves by a **parity contradiction** that at most one such hub per side is harmless; **(GR-53)** proves by exhaustion over all maximal constraint structures that a balanced pattern with at most one such hub per side ALWAYS exists — and **(GR-54)** chains the five into a **THEOREM**: every connected cubic loop-free hub multigraph with evenly many `2k ≤ 6` odd branches carries a balanced admissible configuration. **Entry 5 is PROVEN in BOTH halves** (the parity half falls out — an admissible colouring IS a parity-consistent map), so **E3 is ARMED but does NOT fire** ((a′) is open); TERMINATION clause **E1(v) is now provably unfirable at `Λ = ∅`, `D = 0`**; the (GR-45)/(GR-46)/(GR-47)/(GR-48) apparatus is **subsumed, not contradicted**; route note (b)'s `2k = 2` dichotomy is **CORRECTED** (the exceptional side is the parallel pair, a *cycle*-space condition — not a 2-edge cut) and shown **VACUOUS at habitat shapes** — **(GR-15) stays OPEN, no gap-map status move on `hK` itself**
 
-Answering `notes/Pencil-fanout.md` §"Fifteenth direction — GBAL":
+Answering `notes/Pencil-fanout-archive.md` §"Fifteenth direction — GBAL":
 **input (X) — balance existence in the (GR-47) normal form**, the
 residual GDESC named when (GR-46) Cor. 1 closed the move-availability
 route. Rank-free throughout: no mode imports or calls
@@ -7166,7 +7166,7 @@ it.
 
 ### Steps G74–G79 (2026-08-19, direction GLAW) — attack **(a′)** gets **coordinates**, an **exhaustive** verification and a **refuted stronger variant**: **(GR-55)** puts every minority map at deviation distance `d` from a perfect matching `M` in a `(y, Z, φ)` normal form whose parity constraint involves `y` alone — so the whole deviation ladder becomes enumerable and the M-avoiding coset space is an affine space of dimension exactly `n/2 − 1`; **(GR-56)** adds the missing **SPLIT** identity `defect_A(S) − defect_B(S) = δ_S − σ_S` to (GR-32)(i)'s sum, collapsing full-goodness to **ONE inequality per chunk**, `z_mono(S) + |δ_S − σ_S| ≤ cap(S) − 6`, of which the **balance rider is exactly the whole-graph instance** — and makes admissibility and full-goodness **functions of the minority map alone**; **(GR-57)** is the SDR exchange calculus: the optimal stratum factors as a product over the path/cycle components of `supp(y)`, and the **elementary SDR shift is a distance-preserving 2-hub move that CROSSES μ-classes** — the second exchange axis GADM's census named as missing — with a measured **four-rung axis ladder**; **(GR-58)** verifies `d_fg = d_adm` at **ALL 4920 labelled shapes** of the `n_hub ≤ 6` habitat stratum (no subsample, no deviation cap) and at the first **odd-carrying** `n = 30` members NKp(6)/NK55(6), rank-certified at the optimum; **(GR-59)** **REFUTES** the **per-matching** variant of (a′) — 1278 of 24 638 (shape, matching) pairs carry a finite `d_adm(M) < d_fg(M)`, smallest witness at `n_hub = 4` — so `min_M` is **load-bearing** and no (a′) proof may fix its anchor matching; **(GR-60)** names the residual **input (Y)**, a joint matching-and-representative selection statement in the (GR-55) coordinates — **(a′) stays OPEN, NOT a HIT, E3 NOT armed; (GR-15) stays OPEN, no gap-map status moves**
 
-Answering `notes/Pencil-fanout.md` §"Sixteenth direction — GLAW":
+Answering `notes/Pencil-fanout-archive.md` §"Sixteenth direction — GLAW":
 **attack (a′), the `d_fg = d_adm` law** — route-ledger entry 1's primary,
 the growth-law form's surviving half, **dispatchable with no bar**.
 Read against *Steps G53–G57* ((GR-43), entry 5's settlement, the (a′)

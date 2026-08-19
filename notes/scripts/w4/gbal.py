@@ -1,5 +1,5 @@
 """GBAL -- the fifteenth kernel-(K) direction: INPUT (X), balance
-existence in the (GR-47) normal form (spec: notes/Pencil-fanout.md
+existence in the (GR-47) normal form (spec: notes/Pencil-fanout-archive.md
 S"Fifteenth direction -- GBAL (sixth fan-out)").
 
 TARGET: route-ledger entry 5's balance half -- per odd-carrying habitat

@@ -127,7 +127,7 @@ what each of the three landing commits did. The mechanics below stay because
 they bind the *next* parallel dispatch, not because one is in flight.
 
 **Reserved 2026-08-06 for the SECOND fan-out — directions T / R / M**
-(`notes/Pencil-fanout.md` §"Second fan-out"; letters chosen precisely to avoid
+(`notes/Pencil-fanout-archive.md` §"Second fan-out"; letters chosen precisely to avoid
 the A/B/C date-ambiguity below). Each token verified **0-hit** across `*.md`,
 `*.tex`, `*.lean`, `*.py`, `*.m2` at reservation time. T and R *extend* live
 sections, so their reservations are the unclaimed tails of those sections'
@@ -140,7 +140,7 @@ minted nothing in §(K-pure), as required), and (ANH-9)–(ANH-12)/Steps A10–A
 never minted, so both return to the pool).
 
 **Reserved 2026-08-06 for the THIRD fan-out — directions G / Q / O**
-(`notes/Pencil-fanout.md` §"Third fan-out"; letters dated — A/B/C and T/R/M
+(`notes/Pencil-fanout-archive.md` §"Third fan-out"; letters dated — A/B/C and T/R/M
 are taken above; G/Q/O chosen off the collision table's bare-token rows).
 Each token verified **0-hit** across `*.md`, `*.tex`, `*.lean`, `*.py`,
 `*.m2` at reservation time (`outerwide.m2` replaced a first candidate whose
@@ -158,7 +158,7 @@ Steps G8–G13, `gridwit.py` (§(K-grid)'s row — `gridwit.m2` was never needed
 and **§(K-pack)** / `PK-` return to the pool unopened).
 
 **Reserved 2026-08-06 for the FOURTH fan-out — directions E / J**
-(`notes/Pencil-fanout.md` §"Fourth fan-out"; letters dated — A/B/C (×2),
+(`notes/Pencil-fanout-archive.md` §"Fourth fan-out"; letters dated — A/B/C (×2),
 S1–S4, T/R/M and G/Q/O are taken above; E/J chosen off the collision
 table's bare-token rows). One recorded hazard, not a rename (L4): **(E)**
 bare remains §(SAFE-RES)'s gap token in the W4 workbook — the direction is
@@ -179,7 +179,7 @@ J (2026-08-07) as the new section **§(K-frame)**, tag `FR-` — (FR-1)–(FR-7)
 `framedom.m2` (its `m2` leaf WAS needed, unlike E's).
 
 **Reserved 2026-08-07 for the FIFTH fan-out — directions PEX / TCOL**
-(`notes/Pencil-fanout.md` §"Fifth fan-out"). **The first fan-out under (L5)**:
+(`notes/Pencil-fanout-archive.md` §"Fifth fan-out"). **The first fan-out under (L5)**:
 the codes are topic-tagged mnemonics (`PEX` = pattern-existence, `TCOL` =
 tight-stratum colouring), not letters, and each was verified **0-hit as a raw
 substring** across `*.md`, `*.tex`, `*.lean`, `*.py`, `*.m2` at reservation
@@ -202,7 +202,7 @@ rejected as a **direction code** under (L5)'s substring check, which is a
 distinct test from a prefixed label's — recorded so the two are not confused.
 
 **The SIXTH direction — CFLANK — LANDED 2026-08-07**
-(`notes/Pencil-fanout.md` §"Sixth direction"), reservation row moved into
+(`notes/Pencil-fanout-archive.md` §"Sixth direction"), reservation row moved into
 the registry above: (GR-21)–(GR-26), Steps G24–G28, `w4/cflank.py` (§(K-grid)'s
 row — the argument stayed inside §(K-grid)'s own family, so the reserved
 section name **§(K-prof)** and its tag **`PF-`** were never opened and
@@ -214,7 +214,7 @@ judgment" adjudication). No flank found; (GR-15) stays OPEN, unchanged in
 status.
 
 **The SEVENTH direction — GCAP — LANDED 2026-08-13**
-(`notes/Pencil-fanout.md` §"Seventh direction"), reservation row moved
+(`notes/Pencil-fanout-archive.md` §"Seventh direction"), reservation row moved
 into the registry above: (GR-27)–(GR-28), Steps G29–G33, `w4/gcap.py`
 (§(K-grid)'s row — the argument stayed inside §(K-grid)'s own family, so
 the reserved section name **§(K-gcap)** and its tag **`GC-`** were never
@@ -227,7 +227,7 @@ the 2026-08-12 refinement of the standing delegation (`notes/Phase39.md`
 status.
 
 **The EIGHTH direction — GUNIF — LANDED 2026-08-13**
-(`notes/Pencil-fanout.md` §"Eighth direction"), reservation row moved
+(`notes/Pencil-fanout-archive.md` §"Eighth direction"), reservation row moved
 into the registry above: (GR-29)–(GR-31), Steps G34–G37, `w4/gunif.py`
 (§(K-grid)'s row — the argument stayed inside §(K-grid)'s own family
 **again**, so the reserved section name **§(K-gcap)** and its tag
@@ -247,7 +247,7 @@ is, again, deliberately NOT reserved** — verified 0-hit and recorded
 here so a successor does not mint them.
 
 **The NINTH direction — GEXIST — LANDED 2026-08-13**
-(`notes/Pencil-fanout.md` §"Ninth direction"), reservation row moved
+(`notes/Pencil-fanout-archive.md` §"Ninth direction"), reservation row moved
 into the registry above: (GR-32)–(GR-35), Steps G38–G42, driver modes
 `--exh`/`--charge`/`--repair`/`--adv`/`--validate` (`w4/gexist.py`;
 §(K-grid)'s row — the argument stayed inside §(K-grid)'s own family
@@ -270,7 +270,7 @@ explicit rank-certified colourings. No g-flank found; the target stays
 stays, again, deliberately NOT reserved.**
 
 **The TENTH direction — GORIENT — LANDED 2026-08-13**
-(`notes/Pencil-fanout.md` §"Tenth direction"), reservation row moved
+(`notes/Pencil-fanout-archive.md` §"Tenth direction"), reservation row moved
 into the registry above: (GR-36)–(GR-39), Steps G43–G47, driver modes
 `--hall`/`--kill`/`--hot`/`--adv`/`--validate` (`w4/gorient.py`;
 §(K-grid)'s row — the argument stayed inside §(K-grid)'s own family
@@ -291,7 +291,7 @@ measured `d ≤ 2` elsewhere). No g-flank found; the target stays
 stays, again, deliberately NOT reserved.**
 
 **The ELEVENTH direction — GDEV — LANDED 2026-08-15**
-(`notes/Pencil-fanout.md` §"Eleventh direction"), reservation converted
+(`notes/Pencil-fanout-archive.md` §"Eleventh direction"), reservation converted
 in place: **(GR-40)–(GR-42) and Steps G48–G52 are CLAIMED**, leaving
 **(GR-43)+ and Steps G53+** as §(K-grid)'s live unclaimed tails; driver
 modes `--charge`/`--bound`/`--adv`/`--hunt`/`--validate`
@@ -331,7 +331,7 @@ authoritative. **Do not mint §(K-unif)/`GU-`** (considered twice,
 deliberately not minted — recorded below).
 
 **The TWELFTH direction — GADM — LANDED 2026-08-17**
-(`notes/Pencil-fanout.md` §"Twelfth direction"), reservation converted
+(`notes/Pencil-fanout-archive.md` §"Twelfth direction"), reservation converted
 in place: **(GR-43) and Steps G53–G57 are CLAIMED**, leaving
 **(GR-44)+ and Steps G58+** as §(K-grid)'s live unclaimed tails; driver
 modes `--nk`/`--free`/`--balance`/`--adv`/`--validate` (`w4/gadm.py`;
@@ -385,7 +385,7 @@ twice, deliberately not minted, and this landing does not revive it.
 No M2 leaf was expected or opened.
 
 **The THIRTEENTH direction — GPSA — LANDED 2026-08-18**
-(`notes/Pencil-fanout.md` §"Thirteenth direction"), reservation
+(`notes/Pencil-fanout-archive.md` §"Thirteenth direction"), reservation
 converted in place: **(GR-44)–(GR-45) and Steps G58–G62 are CLAIMED**,
 leaving **(GR-46)+ and Steps G63+** as §(K-grid)'s live unclaimed
 tails; driver modes `--sdr`/`--balance`/`--odd`/`--adv`/`--validate`
@@ -434,7 +434,7 @@ minted, and this prep does not revive it. No M2 leaf expected — the
 target is a finite combinatorial statement.
 
 **The FOURTEENTH direction — GDESC — LANDED 2026-08-18**
-(`notes/Pencil-fanout.md` §"Fourteenth direction"), reservation
+(`notes/Pencil-fanout-archive.md` §"Fourteenth direction"), reservation
 converted in place: **(GR-46)–(GR-48) and Steps G63–G67 are CLAIMED**,
 leaving **(GR-49)+ and Steps G68+** as §(K-grid)'s live unclaimed
 tails; driver modes `--stuck`/`--cases`/`--opt`/`--adv`/`--validate`
@@ -481,7 +481,7 @@ at) was verified **0-hit as a raw substring**, case-insensitively,
 across `*.md`, `*.tex`, `*.lean`, `*.py`, `*.m2` at reservation time —
 as was the driver basename `gdesc` (controls `gpsa` 7 files and `gadm`
 9, so the grep was live). **`GDART` was checked and REJECTED for a
-hit** — it sits in `notes/Pencil-fanout.md` §"Eighth direction"'s
+hit** — it sits in `notes/Pencil-fanout-archive.md` §"Eighth direction"'s
 code-minting paragraph (the GUNIF prep's own checked-but-not-used
 list): a **bookkeeping** hit like `GBAL`'s one prep ago, not a semantic
 one, and the second consecutive time clause L5's
@@ -503,7 +503,7 @@ minted, and this landing does not revive it. No M2 leaf was expected
 or opened — the target was a finite combinatorial statement.
 
 **The FIFTEENTH direction — GBAL — LANDED 2026-08-19**
-(`notes/Pencil-fanout.md` §"Fifteenth direction"), reservation
+(`notes/Pencil-fanout-archive.md` §"Fifteenth direction"), reservation
 converted in place: **(GR-49)–(GR-54) and Steps G68–G73 are CLAIMED**,
 leaving **(GR-55)+ and Steps G74+** as §(K-grid)'s live unclaimed
 tails; driver modes
@@ -536,7 +536,7 @@ habitat shapes**. No g-flank; **(GR-15) stays OPEN, unchanged in
 status.** **§(K-unif)/`GU-` stays, again, deliberately NOT reserved.**
 One of **five** concurrent directions in the **sixth fan-out**
 (GBAL/GLAW/OCON/LTWO/FRES, dispatched 2026-08-19 by explicit user
-adjudication, `notes/Pencil-fanout.md` §"Sixth fan-out"), not a serial
+adjudication, `notes/Pencil-fanout-archive.md` §"Sixth fan-out"), not a serial
 single direction — GBAL and GLAW ran in the **compute-licensed** tier,
 OCON/LTWO/FRES in the **derivation-first** tier (coordinator-set).
 Dispatched **opus**. Target: **input (X)** — balance existence in the
@@ -563,7 +563,7 @@ leaf was expected or opened — the target was a finite combinatorial
 statement.
 
 **The SIXTEENTH direction — GLAW — LANDED 2026-08-19**
-(`notes/Pencil-fanout.md` §"Sixteenth direction"), reservation
+(`notes/Pencil-fanout-archive.md` §"Sixteenth direction"), reservation
 converted in place: **(GR-55)–(GR-60) and Steps G74–G79 are CLAIMED**,
 leaving **(GR-61)+ and Steps G80+** as §(K-grid)'s live unclaimed
 tails; driver modes
@@ -595,7 +595,7 @@ whole-graph and proper-chunk instances of one inequality, but the
 proof does **not** transfer. **(a′) did NOT HIT; entry 1 stays OPEN,
 no bar; E3 stays ARMED (by GBAL) but does NOT fire**; no g-flank,
 (GR-15) stays OPEN. One of **five** concurrent directions in the
-**sixth fan-out** (GBAL/GLAW/OCON/LTWO/FRES, `notes/Pencil-fanout.md`
+**sixth fan-out** (GBAL/GLAW/OCON/LTWO/FRES, `notes/Pencil-fanout-archive.md`
 §"Sixth fan-out"), in the **compute-licensed** tier alongside GBAL.
 Dispatched **opus**. Target: **(a′)**, the `d_fg = d_adm` law, entry
 1's primary. **The direction code GLAW is the arc's first re-use of a
@@ -604,7 +604,7 @@ at GADM's prep (*"names the growth law generically rather than which
 layer this direction proves"*) — that ground no longer applies here,
 since this direction's deliverable *is* that law itself, so the code
 was taken; its only pre-existing occurrences are the two bookkeeping
-lines recording the earlier rejection (`notes/Pencil-fanout.md`
+lines recording the earlier rejection (`notes/Pencil-fanout-archive.md`
 §"Twelfth direction", this file above), a **bookkeeping** hit in the
 `GBAL`/`GDART` sense, not a semantic one. The direction *extended*
 §(K-grid), so its reservation was that section's unclaimed tails —
@@ -615,11 +615,11 @@ the owning section stays authoritative. **Do not mint §(K-unif)/`GU-`**
 revive it. No M2 leaf was expected or opened.
 
 **The NINETEENTH direction — FRES — LANDED 2026-08-19**
-(`notes/Pencil-fanout.md` §"Nineteenth direction"), reservation converted in
+(`notes/Pencil-fanout-archive.md` §"Nineteenth direction"), reservation converted in
 place in §(K-frame)'s row above: **(FR-15)–(FR-17) and Steps FR12–FR15 are
 CLAIMED**; **(FR-18) is reserved and returned UNUSED**, available for a
 later direction. One of **five** concurrent directions in the **sixth
-fan-out** (GBAL/GLAW/OCON/LTWO/FRES, `notes/Pencil-fanout.md` §"Sixth
+fan-out** (GBAL/GLAW/OCON/LTWO/FRES, `notes/Pencil-fanout-archive.md` §"Sixth
 fan-out"), in the **derivation-first** tier. Dispatched **opus**. Target:
 §(K-frame) (FR-4)'s single named gap (the (GR-5)-at-`G′` restatement).
 **Verdict: (FR-4) CLOSED — but not by the restatement alone.** (FR-15)
@@ -648,12 +648,12 @@ proposed**; (L5)'s substring check is stated repo-wide, so the reservation
 technically missed it, recorded so the next one greps the whole tree.
 
 **The SEVENTEENTH direction — OCON — LANDED 2026-08-19** (fourth of the
-sixth fan-out's five to land, after GBAL/GLAW/FRES; `notes/Pencil-fanout.md`
+sixth fan-out's five to land, after GBAL/GLAW/FRES; `notes/Pencil-fanout-archive.md`
 §"Seventeenth direction"), reservation converted in place in §(K-out)'s row
 above: **(OC-17)–(OC-22) and Steps O13–O18 are CLAIMED**; the tails move to
 **(OC-23)+ / O19+**, §(K-out)'s live unclaimed range. One of **five**
 concurrent directions in the **sixth fan-out** (GBAL/GLAW/OCON/LTWO/FRES,
-`notes/Pencil-fanout.md` §"Sixth fan-out"), in the **derivation-first** tier.
+`notes/Pencil-fanout-archive.md` §"Sixth fan-out"), in the **derivation-first** tier.
 Dispatched **opus**. Target: §(K-out) (OC-8)'s hard-stratum target-rank
 qualifier. **Verdict: an honest MISS carrying three theorems and a
 reduction — (OC-8) stays OPEN, reshaped.** **(OC-17)** proves
@@ -694,11 +694,11 @@ one.
 
 **The EIGHTEENTH direction — LTWO — LANDED 2026-08-19** (fifth and last of
 the sixth fan-out's five to land, after GBAL/GLAW/FRES/OCON;
-`notes/Pencil-fanout.md` §"Eighteenth direction"), reservation converted in
+`notes/Pencil-fanout-archive.md` §"Eighteenth direction"), reservation converted in
 place in §(K-Λ)'s row above: **(Λ4)–(Λ8) and Steps Λ8–Λ12 are CLAIMED**; the
 tails move to **(Λ9)+ / Steps Λ13+**, §(K-Λ)'s live unclaimed range. One of
 **five** concurrent directions in the **sixth fan-out**
-(GBAL/GLAW/OCON/LTWO/FRES, `notes/Pencil-fanout.md` §"Sixth fan-out"), in the
+(GBAL/GLAW/OCON/LTWO/FRES, `notes/Pencil-fanout-archive.md` §"Sixth fan-out"), in the
 **derivation-first** tier. Dispatched **opus**. Target: §(K-Λ) item (vii) —
 class shapes with two or more hubs on a length-4 companion's interior.
 **Verdict: an honest MISS on the commissioned "prove the class forbids it"

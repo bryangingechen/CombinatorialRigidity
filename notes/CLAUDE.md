@@ -83,7 +83,18 @@ for *organizing* this directory is here.
   its *Section index* is the navigation table (per-section line ranges + status,
   so a dispatch loads only the sections it needs).
   **The fan-out is COMPLETE** (all three landed 2026-08-05); its strategic
-  aftermath is the file below.
+  aftermath is the file below. Ordinals 1–19's dispatch specs and landing
+  write-ups are now archived (2026-08-19, `notes/Pencil-structure.md` slice 2)
+  in `Pencil-fanout-archive.md` below; this file keeps the mechanics, the
+  landing checklist, and the seventh fan-out (ordinals 20–24) as the worked
+  exemplar.
+- **`Pencil-fanout-archive.md`** — the landed dispatch history for ordinals
+  1–19 (the first through sixth fan-outs and the nine single directions in
+  between), split out of `Pencil-fanout.md` **verbatim** — same precedent as
+  `FRICTION.md` → `FRICTION-archive.md` (`88436c0b`): the specs and landing
+  write-ups moved unchanged, live cross-references repointed. Search-target
+  only, read when checking an old bar; the mechanics/checklist/exemplar stay
+  in the parent file above.
 - **`Pencil-strategy.md`** — the Phase-39 **strategic record** written after the
   fan-out landed: *why* class uniformity of the escape resists (a
   three-ingredient diagnosis of how rank conditions become combinatorial and

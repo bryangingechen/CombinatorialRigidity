@@ -1,5 +1,5 @@
 """GADM -- the twelfth kernel-(K) direction: the growth-law question at the
-pentagon necklaces (spec: notes/Pencil-fanout.md S"Twelfth direction").
+pentagon necklaces (spec: notes/Pencil-fanout-archive.md S"Twelfth direction").
 
 Primary target (a'): the d_fg = d_adm law -- fully-goodness is free at the
 admissibility optimum.  Measured support at prep: d_fg = d_adm at 133/133

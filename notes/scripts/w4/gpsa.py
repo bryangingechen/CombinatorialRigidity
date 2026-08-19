@@ -1,6 +1,6 @@
 """GPSA -- the thirteenth kernel-(K) direction: route-ledger entry 5,
 per-shape admissibility (d_adm < oo), in BOTH halves (spec:
-notes/Pencil-fanout.md S"Thirteenth direction").
+notes/Pencil-fanout-archive.md S"Thirteenth direction").
 
 PRIMARY, half 1 (the parity half): discharge Step G53's recorded,
 undischarged system-of-distinct-representatives step -- one end hub per

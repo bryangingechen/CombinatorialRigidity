@@ -1,14 +1,17 @@
 # PENCIL doc-split — structural round (work log)
 
-**Status:** in progress. **Slice 1 LANDED 2026-08-19** — §(K-grid) split out of
+**Status: COMPLETE.** **Slice 1 LANDED 2026-08-19** — §(K-grid) split out of
 `notes/Pencil-informal.md` into its own file, `notes/Pencil-informal-grid.md`.
-**Slice 2 NOT started** — archiving `notes/Pencil-fanout.md`'s landed direction
-history. This is a **structural** round (file layout / navigability), not a
-defect-cleanup round — hence the `Phase22-structure.md`-style name rather than
-`-cleanup`; round discipline is `CLEANUP.md`'s all the same (there is no
-separate structure-round manual). Opened and slice 1 executed in the same
-commit, per the coordinator's dispatch this session; agreed with the user at
-the seventh fan-out's close (`notes/Phase39.md` *Hand-off*).
+**Slice 2 LANDED 2026-08-19** — `notes/Pencil-fanout.md`'s ordinals-1–19 landed
+direction history archived to `notes/Pencil-fanout-archive.md`. This is a
+**structural** round (file layout / navigability), not a defect-cleanup
+round — hence the `Phase22-structure.md`-style name rather than `-cleanup`;
+round discipline is `CLEANUP.md`'s all the same (there is no separate
+structure-round manual). Opened and slice 1 executed in the same commit;
+slice 2 in a follow-up commit the same session. Agreed with the user at the
+seventh fan-out's close (`notes/Phase39.md` *Hand-off*). **Next: the
+discipline-distillation round** (opening it is a coordinator call, not yet
+exercised — `notes/Phase39.md` *Hand-off*).
 
 ## Why this round
 
@@ -39,21 +42,21 @@ that cost permanently for it.
   every cross-reference that named §(K-grid)'s old *location* (not its
   labels, which resolve via `Pencil-labels.md` regardless of file). Detail
   below.
-- [ ] **Slice 2 — archive `Pencil-fanout.md`'s landed direction history.**
+- [x] **Slice 2 — archive `Pencil-fanout.md`'s landed direction history.**
   Precedent: `notes/FRICTION.md` → `notes/FRICTION-archive.md` (`88436c0b`) —
-  verbatim relocation, live cross-references repointed. Scope to work out at
-  slice-2 time: which of the file's sections count as "landed direction
-  history" (the per-direction dispatch specs plus their landing write-ups,
-  roughly 5 100 of the file's 6 221 lines) versus the live dispatch-scoping
-  material (the non-collision mechanics, the landing checklist, the label
-  reservation table) that should stay in the live file. Not started.
+  verbatim relocation, live cross-references repointed. The split line was
+  coordinator-set at dispatch (not worked out fresh at slice-2 time): the
+  adjudication, *Shared mechanics*, the *Landing checklist* and the entire
+  seventh fan-out (the worked exemplar) STAY; the first fan-out's specs
+  (Direction A/B/C) and every fan-out/direction section for ordinals 1–19
+  MOVE. Detail below.
 - [ ] **Follow-up, not this round unless folded in:** recompute the *Section
   index*'s §(K-frame)/§(K-chart)/§(K-mech) line ranges, stale after slice 1's
   deletion shifted every row after §(K-grid) by −9 883 lines. Left explicitly
-  stale (below) rather than silently trusted.
-- [ ] **Discipline distillation** (immediately after slice 2, per
-  `notes/Phase39.md` *Hand-off*) — a separate round, not this one's task list;
-  named here only for the ordering.
+  stale (below) rather than silently trusted; slice 2 touched a different
+  file's line ranges and did not fold this in either.
+- [x] **Round CLOSED.** Discipline distillation (`notes/Phase39.md`
+  *Hand-off*) is a separate round, not this one's task list.
 
 ## Decisions made
 
@@ -145,26 +148,103 @@ that cost permanently for it.
   than by an empty diff: the change cannot move any figure because it
   changes no computation, confirmed by reading every changed line above.
 
-## Follow-up items (not this commit's job)
+## Slice 2 — Decisions made
+
+- **New file name: `notes/Pencil-fanout-archive.md`.** Matches the
+  `FRICTION.md`→`FRICTION-archive.md` precedent (`88436c0b`) exactly.
+- **The split line is coordinator-set, not heading-mechanical.** Unlike
+  FRICTION.md's `[resolved]` tag, `Pencil-fanout.md`'s sections carry no
+  archived/live marker, so the coordinator's invocation prompt named the
+  exact boundary: STAYS = *The adjudication that produced this*, *Shared
+  mechanics*, the *Landing checklist*, and the **entire seventh fan-out**
+  (its own section plus Twentieth/YLOC–Twenty-fourth/CIRR) as the worked
+  exemplar a future wave copies from; MOVES = *Why a fan-out now* + Direction
+  A/B/C (the first fan-out's specs) and every fan-out/direction section for
+  ordinals 1–19 (second through sixth fan-outs, the nine single directions).
+  Unlike slice 1's single contiguous range, STAYS and MOVES **interleave** —
+  9 STAYS sections and 23 MOVES sections, both preserved in original relative
+  order in their respective files (verified: each group's heading-start line
+  numbers were already monotonic in the source, so a straight partition-and-
+  concatenate needed no reordering).
+- **Exact accounting.** Header (lines 1–21) + STAYS body (921 lines) + MOVES
+  body (5 279 lines) = 6 221 = the pre-split file's total, cut at heading
+  boundaries. New parent = edited header (27 lines, +6 for a short paragraph
+  naming the archive plus one restored blank line before the first heading)
+  + STAYS body = 948 lines. New archive = new header (36 lines) + MOVES body
+  = 5 315 lines. 948 + 5315 = 6263 = 6221 + 6 (header growth) + 36 (archive's
+  new header) — accounted in full, no line unexplained.
+- **Live cross-references inside the moved/kept text itself, not just
+  elsewhere in the tree.** Because STAYS and MOVES interleave, six spots
+  needed a same-file "above"/bare-heading reference upgraded to a file-
+  qualified one so it resolves after the split: a STAYS section (ZNEQ) cited
+  "§'Direction A' above" (MOVED) and, separately, a "fifth fan-out's block"
+  item number (MOVED); two MOVES sections each cited "§'Landing checklist'"
+  (STAYS) with no file qualifier; one MOVES section said "identical to the
+  first fan-out's [mechanics] (top of this file)" — true before the split,
+  false after, since "this file" becomes the archive, which has no *Shared
+  mechanics* heading of its own; one MOVES section said "this file's own top
+  `**Status:**` header", also now false once "this file" is the archive
+  (its header is new prose, not the original Status block). All six fixed
+  by naming the correct file explicitly; no verdict, label or status word
+  touched — content is otherwise verbatim.
+- **Mechanical verification (all required, all run — not eyeballed):**
+  - *Heading-set diff.* `grep '^## '` on the pre-split file (32 headings) vs.
+    the two post-split files combined (32 headings, same multiset) —
+    **identical**, confirmed by `diff` on sorted lists, not eyeballing.
+  - *Line accounting* — above; confirmed by `wc -l` on all four inputs/outputs.
+  - *No dangling references.* Swept the whole `notes/` tree plus the eight
+    `.py` drivers that cite `Pencil-fanout.md` by name+section. Repointed
+    **62** cross-file citations: `Phase39.md` (6), `Pencil-informal.md` (9,
+    incl. one gap-map cell), `Pencil-informal-grid.md` (15), `Pencil-labels.md`
+    (25), `ROADMAP.md` (1 row rewrite) and 6 `.py` drivers — plus the six
+    same-file spots above — every one verified against the STAYS/MOVES
+    partition before touching it (not a blind string replace): a citation
+    naming a MOVED heading got `-archive.md`; a citation naming a STAYS
+    heading (Landing checklist, Shared mechanics, the adjudication, or
+    ordinals 20–24) was left alone.
+    Two false-positive traps caught: `notes/Pencil-cleanup.md` and
+    `notes/dispatch-log.md` cite several now-moved section names, but both
+    are **closed round logs** describing a past state — left untouched, same
+    call as slice 1 made for `Pencil-cleanup.md`.
+  - `python3 notes/check-gapmap-cells.py` — **0 gap-map row(s) checked
+    (changed vs HEAD); all within cap** (the one gap-map cell edited — the
+    (K-out) row's file-pointer repoint — changed no cell's *word count*, so
+    the change-detector correctly does not flag it; confirmed by inspecting
+    the diff directly, not trusting the 0 blindly). `--all` — **27 gap-map
+    row(s) checked (full table); all within cap.**
+- **`.py` driver scripts touched (6 files, docstring text only).** `gpsa.py`,
+  `gadm.py`, `gdesc.py`, `gunif.py`, `glaw.py`, `gbal.py` — every changed line
+  is a module-docstring file pointer; `balb.py`/`yloc.py` correctly left
+  alone (their sections, Twenty-first/Twentieth, stayed). No code, no
+  numeric literal, no figure touched — `git diff --name-only -- '*.py'
+  '*.m2'` lists exactly these 6, all comment-only, verified by reading the
+  full diff.
+
+## Follow-up items (not this round's job)
 
 - Recompute the *Section index*'s §(K-frame)/§(K-chart)/§(K-mech) line
-  ranges (shifted −9 883 by slice 1). Cheap; folding it into slice 2's own
-  commit (which will shift ranges again by removing `Pencil-fanout.md`
-  history, though that file's ranges are separate from `Pencil-informal.md`'s)
-  is as good a time as any, or a dedicated one-line follow-up commit.
-- No mathematical content defect was noticed while moving §(K-grid) — this
-  was a mechanical relocation with a boundary/reference audit, not a close
-  read of the section's 9 883 lines of mathematics, and none was owed.
+  ranges in `notes/Pencil-informal.md` (shifted −9 883 by slice 1). **Not**
+  folded into slice 2 — that file's line ranges are unrelated to
+  `Pencil-fanout.md`'s split — so it remains a standing, cheap, dedicated
+  one-line follow-up commit whenever someone next reads that table.
+- No mathematical content defect was noticed while moving §(K-grid) (slice 1)
+  or while sweeping `Pencil-fanout.md`'s cross-references (slice 2) — both
+  were mechanical relocations with a boundary/reference audit, not a close
+  read of the mathematics, and none was owed either time.
+- **One pre-existing, not-this-round defect noticed in passing (slice 2):**
+  `notes/scripts/w4/glaw.py`'s docstring cites its own spec as "Seventeenth
+  direction — GLAW"; GLAW is the **sixteenth** direction everywhere else
+  (`Pencil-labels.md`, the heading itself, `Phase39.md`). Predates this
+  round (confirmed by `git diff` showing only the file-pointer changed);
+  left verbatim per the "kept the pre-existing typo, fixed only the file
+  pointer" precedent (slice 1's `glaw.py` §(K-grid) fix).
 
 ## Hand-off / next phase
 
-**Next concrete task: slice 2** — archive `notes/Pencil-fanout.md`'s landed
-direction history to a new `notes/Pencil-fanout-archive.md` (name to confirm
-at slice-2 time against the file's actual section boundaries — live scoping
-material vs. landed history is not yet split by heading the way FRICTION.md's
-`[resolved]` tag made that file's split mechanical), following the
-`88436c0b` precedent: verbatim relocation, live cross-references repointed,
-mechanical nothing-lost + label-set-diff checks before commit. After slice 2
-closes this round (flip the ROADMAP row, compress this log's *Current state*
-to a verdict), the discipline-distillation round opens next (`RESEARCH-ARC.md`
-— detail in `notes/Phase39.md` *Hand-off*).
+**Both slices LANDED 2026-08-19; the round is COMPLETE.** ROADMAP's doc-split
+row flipped to ✓ Complete; this log's *Status* header is the verdict. **Next
+concrete task: open the discipline-distillation round** — promote this
+phase's research-arc discipline into a new read-on-demand `RESEARCH-ARC.md`
+(alongside `CLEANUP.md`, `PHASE-BOUNDARIES.md`); the Ready/NOT-yet/Deferred
+breakdown lives in `notes/Phase39.md` *Hand-off*, not duplicated here. Opening
+it is a coordinator call, not exercised by this commit.
