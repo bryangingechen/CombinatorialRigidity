@@ -44,6 +44,15 @@ the 2026-08-18 recompute's own size (1137 / 619 words) plus ~15% headroom,
 NOT at the generic default. Recomputing the row again legitimately (more
 theorems land) should come with a deliberate bump here, in the same commit,
 with a one-line reason -- not a silent regrowth past the cap.
+
+**2026-08-19 bump (direction GBAL).** Entry 5 (per-shape admissibility)
+lands as a HIT: six new theorems (GR-49)-(GR-54) -- the z-form bijection,
+the orientation criterion, the weight criterion, the parity theorem, the
+splitting lemma and the balance theorem itself -- are appended to the
+Proven list and the ledger-entry-5 sentences in both cells are rewritten
+to PROVEN, genuinely growing the row past its prior cap. Caps bumped to
+the 2026-08-19 recompute's own size (1504 / 759 words) plus ~15%
+headroom: 1730 / 873.
 """
 import re
 import subprocess
@@ -61,7 +70,7 @@ DEFAULT_CAP = 800  # per cell (status / close-it); largest ungrandfathered
 SPECIAL_CAPS = {
     # gap-key -> {"status": cap, "closeit": cap}. Combined-remainder fallback
     # (ambiguous pipe split) uses the sum of the two.
-    "K-grid": {"status": 1300, "closeit": 720},
+    "K-grid": {"status": 1730, "closeit": 873},
 }
 
 

@@ -44,7 +44,24 @@ stays **OPEN, NOT a HIT**, **E3 not armed**, its residual named
 parity-optimal maps `{0: 92, 2: 2}`); no g-flank, (GR-15) stays OPEN;
 the routing was **fixed by GPSA's landed otherwise-clause**, so no new
 selection was made, and the prep itself was authored at **opus** by
-user adjudication to conserve the top-rung budget for the dispatch. The
+user adjudication to conserve the top-rung budget for the dispatch; the
+FIFTEENTH direction (GBAL, §"Fifteenth direction") — one of **five**
+directions of the **SIXTH FAN-OUT** (GBAL/GLAW/OCON/LTWO/FRES, dispatched
+concurrently 2026-08-19 by explicit user adjudication, §"Sixth fan-out")
+— **LANDED 2026-08-19, a HIT: the arc's FIRST.** Input (X) is
+**DISCHARGED** and **route-ledger entry 5 is PROVEN in BOTH halves**
+(**(GR-49)–(GR-54)**: the z-form bijection, the orientation criterion,
+the weight criterion, the parity theorem, the splitting lemma and the
+balance theorem itself, chaining to a THEOREM at every `2k ≤ 6` habitat
+shape), re-deriving (GR-44)'s parity half **without Petersen** while its
+`d_par(M) = w_M` formula stays untouched; the (GR-45)–(GR-48) apparatus
+is **subsumed, not contradicted**, no landed figure moves; one in-place
+correction to route note (b) (the `2k = 2` exceptional side is the
+**parallel pair**, a cycle-space condition, not a 2-edge cut, and both
+readings are **vacuous at habitat shapes**). **E3 is ARMED but does NOT
+fire** — entry 1's **(a′)** stays open, no bar, GLAW's target this wave;
+no g-flank, (GR-15) stays OPEN, unchanged. **GLAW/OCON/LTWO/FRES: draft
+returned, landing pending.** The
 first (A/B/C
 below, prepared 2026-08-05) landed 2026-08-05/06; the second (T/R/M,
 §"Second fan-out") 2026-08-06; the third (G/Q/O, §"Third fan-out")
@@ -4929,3 +4946,134 @@ landing found), E3 in its retained deviated form, and **explicitly
 whether a HIT armed E3** — and records **entry 5's resolution as a
 ledger status**, not as prose only. Outcome recorded in the phase
 note's *Hand-off* as narrative, not as a scaffolding block.
+
+## Sixth fan-out — dispatched 2026-08-19 (directions GBAL / GLAW / OCON / LTWO / FRES)
+
+Five directions dispatched **concurrently** — **GBAL**, **GLAW**, **OCON**,
+**LTWO**, **FRES** — each independent, each returning its own untracked
+draft (`notes/Pencil-draft-<CODE>.md`) and its own new driver, landed one
+at a time by **separate serial coordinator commits**: the shape the second fan-out (T/R/M,
+2026-08-06) established, at five directions instead of three. **User
+adjudication authorizing the multidispatch, verbatim:** *"I'd like to try
+a multidispatch of opus agents here. Keep an eye on the 5h session limits
+and let's dispatch as many agents as we can on independent directions so
+that we can maximize the number of ideas we make progress on at once
+without getting interrupted."* The **tier split** — GBAL and GLAW in the
+**compute-licensed** tier, OCON/LTWO/FRES in the **derivation-first**
+tier — and the five directions' **disjoint per-direction label
+reservations** were **coordinator-set**, not separately user-adjudicated.
+
+**Roster** (updated per landing):
+
+| direction | tier | target | status |
+|---|---|---|---|
+| **GBAL** | compute-licensed | route-ledger entry 5 (input (X): balance existence, (GR-47) normal form) | **LANDED 2026-08-19** — a HIT (§"Fifteenth direction") |
+| **GLAW** | compute-licensed | (a′), the `d_fg = d_adm` law | draft returned, landing pending |
+| **OCON** | derivation-first | recorded at its own landing | draft returned, landing pending |
+| **LTWO** | derivation-first | recorded at its own landing | draft returned, landing pending |
+| **FRES** | derivation-first | recorded at its own landing | draft returned, landing pending |
+
+## Fifteenth direction — GBAL (sixth fan-out)
+
+**Status: LANDED 2026-08-19 — a HIT.** §(K-grid) continuation,
+**Steps G68–G73**, labels **(GR-49)–(GR-54)** claimed — the direction's
+full reserved range, consumed exactly (the tails move to (GR-55)+ /
+G74+, `notes/Pencil-labels.md`). Dispatched **opus**, in the
+**COMPUTE TIER** of the sixth fan-out alongside GLAW. **The verdict:
+input (X) is DISCHARGED and route-ledger entry 5 is PROVEN in both
+halves — the first HIT of the kernel-(K) arc.**
+
+The instrument is a **change of coordinates**, not a sharper search.
+**(GR-49)**: a parity-consistent minority map together with a chosen
+potential is exactly a **dart 2-colouring** given by ONE BIT PER
+BRANCH — `z_β`, with the far-end dart flipped iff `ℓ_β` is even —
+subject only to *no hub sees three equal dart colours*; and the
+odd-branch majority pattern **is** `z` restricted to the odd branches.
+The coset `Φ`, the representative `X`, the SDR `φ` and the
+complementary perfect matching `T` of (GR-47) are all absorbed, and
+with them the coupling that forced GDESC's toggles to repair three
+coordinates at once. **(GR-50)**: fixing the odd branches' colours by a
+balanced pattern turns the remaining freedom into an **orientation of
+the even branches** (each carries exactly one A-dart), with per-hub
+in-degree bounds — so balance is decided **exactly, in polynomial
+time**, over at most 20 patterns. **(GR-51)**: that orientation's
+two-sided Hall condition (proved here self-containedly, the classical
+degree-constrained orientation criterion of Hakimi 1965) collapses,
+via the cubic identity, to a **local weight inequality** whose only
+negative term — `−1` — sits at a hub carrying **two odd branches of
+the same colour**. **(GR-52)**: at most one such hub per side is
+harmless, by a **parity contradiction** (a violating hub set would
+have odd total internal even-degree, which is `2 e_H(S)`).
+**(GR-53)**: the constraint structure a shape imposes on its `≤ 6` odd
+branches is a multiset of pairs and triples in which **every odd
+branch lies in at most 2 constraints** (it has two ends), and every
+such structure admits a balanced split with no monochromatic triple
+and at most one monochromatic pair per side — **proved by exhaustion**
+over the maximal structures (1 / 44 / 4837 at `2k = 2/4/6`), the
+reduction to maximal ones being monotonicity. **(GR-54)** chains the
+five: *every connected cubic loop-free hub multigraph with evenly many
+`2k ≤ 6` odd branches carries a balanced admissible configuration.*
+
+**What lands with it.** Entry 5's **parity** half falls out too — an
+admissible colouring **is** a parity-consistent map — so (GR-44)'s
+nonemptiness is re-derived **without Petersen** (bridgelessness is not
+used anywhere in the proof), while (GR-44)'s quantitative content
+(`d_par(M) = w_M`) is untouched. TERMINATION clause **E1(v) becomes
+provably unfirable** at `Λ = ∅`, `D = 0`, and by (GR-46) Cor. 2 so does
+the full-family demotion branch. The whole (GR-45)–(GR-48) apparatus is
+**subsumed, not contradicted**: every landed statement survives
+verbatim and **no landed figure moves**; (GR-46) Cor. 1 — which closed
+move-availability as a route — was the input that pointed this pass at
+existence. The evidence base is also strictly widened: the
+`Λ = ∅`, `D = 0` pool is swept **EXHAUSTIVELY** for the first time in
+this arc (4920 habitat shapes, not a subsample), every certificate is
+accepted by `cflank.admissible`, and the `n = 30` families get their
+first **non-capped** verdicts — extended to `n = 40, 50, 60`.
+
+**One in-place CORRECTION this landing makes to the landed *Step G65*
+text** (the *Step G56*/*Step G60* marker precedent; scoped exactly, and
+it touches no measurement): route note (b)'s `2k = 2` dichotomy names
+the wrong exception. The cut-space projection `Φ → GF(2)^O` fails to be
+onto **iff the two odd branches are PARALLEL** (a *cycle*-space
+condition, `Cut^⊥ = Cycle`), **not** iff `{γ₁, γ₂}` is a 2-edge cut;
+the two sets are different (asserted shape by shape at 2722 shapes: 15
+parallel, 5 two-edge-cuts). The note's intuition is real but belongs to
+the *matching* axis — a 2-edge cut forces every perfect matching to
+take both or neither of its branches. **Both readings are moreover
+vacuous at habitat shapes** (0 and 0 over 2402), by the (GR-25) cut
+criterion against the excess law, so the dichotomy is **moot**:
+(GR-54) settles the minimal odd stratum with no case split at all.
+
+**(a′) was NOT attempted** (GLAW's target this wave); one
+(a′)-relevant by-product is reported as a finding and not developed.
+**No g-flank; no rank computed anywhere; (GR-15) stays OPEN,
+unchanged; no gap-map status move on `hK` itself** — the (K-grid) row's
+*entry 5* clause moves to PROVEN and its dispatchable-attack list
+loses input (X). **E3 is ARMED and does NOT fire**: the standing
+reading is *(a′) + per-shape admissibility already proven ⟹ E3 fires*,
+so E3 now fires on the next (a′) HIT and never before. The
+TERMINATION check on this landing is recorded in the workbook at
+*Step G73* and re-run by the coordinator below. The mathematics:
+workbook §(K-grid) *Steps G68–G73*; driver `w4/gbal.py` (rows in
+`notes/scripts/README.md` §3).
+
+**Riders honoured, verbatim.** `Λ = ∅`, `D = 0`, modulo (GR-4′) where a
+closure chain is concerned; the `Λ ≠ ∅` closed-form analogue and the
+`D > 0` lift stay **unswept** (the theorem's own boundary is named at
+*What would change this* (v)); this does **not** close (GR-15); an
+entry-5 HIT **arms** E3 and does not fire it; every obstruction figure
+carries its family qualifier ((GR-36): binding-capable, not
+capacity-tight); every count in this pass is an **exact decision**, and
+the section says so wherever a cap would otherwise be assumed.
+
+**Bars honoured.** The balance half was **not** re-attacked by
+move-availability analysis or bounded descent over {T1, T2} — both are
+closed as routes by (GR-46) Cor. 1/Cor. 2, and this pass consumes that
+closure as its starting point rather than testing it. No extended-
+catalogue defeat was hunted (it would demote only a local route);
+`d_adm = ∞` was neither found nor findable, and the section says why.
+
+**Driver** `notes/scripts/w4/gbal.py`; modes
+`--zform`/`--oracle`/`--two`/`--split`/`--thm`/`--adv`/`--validate`.
+Total `--validate` wall time ≈ 43 s at `PYTHONHASHSEED` 0, byte-
+identical at 999 modulo the `[Ns]` annotations.
