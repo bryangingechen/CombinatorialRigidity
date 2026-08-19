@@ -562,6 +562,58 @@ deliberately not minted, and this landing does not revive it. No M2
 leaf was expected or opened — the target was a finite combinatorial
 statement.
 
+**The SIXTEENTH direction — GLAW — LANDED 2026-08-19**
+(`notes/Pencil-fanout.md` §"Sixteenth direction"), reservation
+converted in place: **(GR-55)–(GR-60) and Steps G74–G79 are CLAIMED**,
+leaving **(GR-61)+ and Steps G80+** as §(K-grid)'s live unclaimed
+tails; driver modes
+`--law`/`--nf`/`--exh`/`--sdr`/`--big`/`--adv`/`--validate`
+(`w4/glaw.py`; §(K-grid)'s row — the argument stayed inside
+§(K-grid)'s own family **yet again**, so the reserved section name
+**§(K-gcap)** and its tag **`GC-`** were **still** never opened and
+return to the pool **unopened, reserved-but-unopened**, available an
+**eleventh** time; no M2 leaf was expected or opened). **GLAW is an
+honest MISS carrying four theorems and one refutation.** **(GR-55)**
+puts every minority map at deviation distance `d` from a perfect
+matching in a `(y, Z, φ)` normal form, parity-consistency a condition
+on `y` alone, the `M`-avoiding coset space affine of dimension
+`n/2 − 1`; **(GR-56)** supplies the missing SPLIT identity, collapsing
+full-goodness to ONE inequality per chunk of which the balance rider
+is exactly the whole-graph instance; **(GR-57)** is the SDR exchange
+calculus — the elementary shift is a distance-preserving 2-hub move
+that CROSSES μ-classes, GADM's named missing second exchange axis;
+**(GR-58)** verifies `d_fg = d_adm` EXHAUSTIVELY at all 4920
+`n_hub ≤ 6` habitat shapes at no deviation cap, and at the first
+odd-carrying `n = 30` tests. **(GR-59)** REFUTES the per-matching
+variant of (a′) — 1278 of 24 638 (shape, matching) pairs, smallest
+witness `n_hub = 4` — so `min_M` is load-bearing and no (a′) proof may
+fix its anchor matching; (a′) itself is untouched. **(GR-60)** names
+the residual **input (Y)**, a joint matching-and-representative
+selection statement. **A cross-entry finding:** by (GR-56)(iv),
+GDESC's input (X) (now PROVEN by GBAL) and this input (Y) are the
+whole-graph and proper-chunk instances of one inequality, but the
+proof does **not** transfer. **(a′) did NOT HIT; entry 1 stays OPEN,
+no bar; E3 stays ARMED (by GBAL) but does NOT fire**; no g-flank,
+(GR-15) stays OPEN. One of **five** concurrent directions in the
+**sixth fan-out** (GBAL/GLAW/OCON/LTWO/FRES, `notes/Pencil-fanout.md`
+§"Sixth fan-out"), in the **compute-licensed** tier alongside GBAL.
+Dispatched **opus**. Target: **(a′)**, the `d_fg = d_adm` law, entry
+1's primary. **The direction code GLAW is the arc's first re-use of a
+previously-rejected candidate**: `GLAW` was checked 0-hit and rejected
+at GADM's prep (*"names the growth law generically rather than which
+layer this direction proves"*) — that ground no longer applies here,
+since this direction's deliverable *is* that law itself, so the code
+was taken; its only pre-existing occurrences are the two bookkeeping
+lines recording the earlier rejection (`notes/Pencil-fanout.md`
+§"Twelfth direction", this file above), a **bookkeeping** hit in the
+`GBAL`/`GDART` sense, not a semantic one. The direction *extended*
+§(K-grid), so its reservation was that section's unclaimed tails —
+**(GR-55)+ / Steps G74+**, consumed exactly as **(GR-55)–(GR-60) /
+Steps G74–G79** per the claim recorded at the top of this entry — and
+the owning section stays authoritative. **Do not mint §(K-unif)/`GU-`**
+— considered twice, deliberately not minted, and this landing does not
+revive it. No M2 leaf was expected or opened.
+
 **One naming hazard the second fan-out created, recorded rather than renamed
 (L4).** The **direction letters A/B/C are re-used** between the 2026-08-05 fan-out
 (A = §(K-flank), B = §(K-Λ), C = §(K-pure)) and the 2026-08-06 one

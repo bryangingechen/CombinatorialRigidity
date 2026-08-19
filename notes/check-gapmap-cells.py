@@ -53,6 +53,17 @@ Proven list and the ledger-entry-5 sentences in both cells are rewritten
 to PROVEN, genuinely growing the row past its prior cap. Caps bumped to
 the 2026-08-19 recompute's own size (1504 / 759 words) plus ~15%
 headroom: 1730 / 873.
+
+**2026-08-19 second bump (direction GLAW, same day).** Six more theorems
+(GR-55)-(GR-60) land on attack (a') -- the deviation normal form, the
+SPLIT identity/one-inequality criterion, the SDR exchange calculus, the
+exhaustive stratum census, the per-matching refutation and the named
+residual input (Y) -- appended to the Proven/Refuted lists, and the
+close-it cell's (a') clause is rewritten from its old sticking-case
+description to the input-(Y) formulation; only the status cell exceeds
+its prior cap (1769 words). Bumped to this recompute's own size
+(1769 / 797 words) plus ~15% headroom: 2035 / 873 (close-it left as-is,
+still under its prior cap).
 """
 import re
 import subprocess
@@ -70,7 +81,7 @@ DEFAULT_CAP = 800  # per cell (status / close-it); largest ungrandfathered
 SPECIAL_CAPS = {
     # gap-key -> {"status": cap, "closeit": cap}. Combined-remainder fallback
     # (ambiguous pipe split) uses the sum of the two.
-    "K-grid": {"status": 1730, "closeit": 873},
+    "K-grid": {"status": 2035, "closeit": 873},
 }
 
 

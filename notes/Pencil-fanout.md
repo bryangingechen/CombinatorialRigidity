@@ -60,8 +60,30 @@ correction to route note (b) (the `2k = 2` exceptional side is the
 **parallel pair**, a cycle-space condition, not a 2-edge cut, and both
 readings are **vacuous at habitat shapes**). **E3 is ARMED but does NOT
 fire** — entry 1's **(a′)** stays open, no bar, GLAW's target this wave;
-no g-flank, (GR-15) stays OPEN, unchanged. **GLAW/OCON/LTWO/FRES: draft
-returned, landing pending.** The
+no g-flank, (GR-15) stays OPEN, unchanged; the SIXTEENTH direction
+(GLAW, §"Sixteenth direction") — the second of the SIXTH FAN-OUT's
+five — **LANDED 2026-08-19, an honest MISS carrying four theorems and
+one refutation.** **(GR-55)** puts every minority map at deviation
+distance from a perfect matching in a `(y, Z, φ)` normal form,
+parity-consistency a condition on `y` alone; **(GR-56)** supplies the
+missing SPLIT identity, collapsing full-goodness to ONE inequality per
+chunk, of which the balance rider is exactly the whole-graph instance;
+**(GR-57)** is the SDR exchange calculus — the elementary shift is a
+distance-preserving 2-hub move that CROSSES μ-classes, GADM's named
+missing second exchange axis; **(GR-58)** verifies `d_fg = d_adm`
+EXHAUSTIVELY at all 4920 `n_hub ≤ 6` habitat shapes at no cap, and at
+the first odd-carrying `n = 30` tests; **(GR-59)** REFUTES the
+per-matching variant of (a′) — so `min_M` is load-bearing and no (a′)
+proof may fix its anchor matching; **(GR-60)** names the residual
+**input (Y)**. **A cross-entry finding:** by (GR-56)(iv), GDESC's
+input (X) (now PROVEN by GBAL) and this **input (Y)** are the
+whole-graph and proper-chunk instances of one inequality, but the
+proof does **not** transfer — GBAL's argument is whole-graph-only, and
+(Y) stays open, a genuinely different quantifier. **(a′) did NOT HIT;
+entry 1 stays OPEN with (a′) still its primary and no bar; E3 stays
+ARMED (by GBAL's entry-5 HIT) but does NOT fire; no g-flank; (GR-15)
+stays OPEN, unchanged.** **OCON/LTWO/FRES: draft returned, landing
+pending.** The
 first (A/B/C
 below, prepared 2026-08-05) landed 2026-08-05/06; the second (T/R/M,
 §"Second fan-out") 2026-08-06; the third (G/Q/O, §"Third fan-out")
@@ -4968,7 +4990,7 @@ reservations** were **coordinator-set**, not separately user-adjudicated.
 | direction | tier | target | status |
 |---|---|---|---|
 | **GBAL** | compute-licensed | route-ledger entry 5 (input (X): balance existence, (GR-47) normal form) | **LANDED 2026-08-19** — a HIT (§"Fifteenth direction") |
-| **GLAW** | compute-licensed | (a′), the `d_fg = d_adm` law | draft returned, landing pending |
+| **GLAW** | compute-licensed | (a′), the `d_fg = d_adm` law | **LANDED 2026-08-19** — an honest MISS (§"Sixteenth direction") |
 | **OCON** | derivation-first | recorded at its own landing | draft returned, landing pending |
 | **LTWO** | derivation-first | recorded at its own landing | draft returned, landing pending |
 | **FRES** | derivation-first | recorded at its own landing | draft returned, landing pending |
@@ -5077,3 +5099,211 @@ catalogue defeat was hunted (it would demote only a local route);
 `--zform`/`--oracle`/`--two`/`--split`/`--thm`/`--adv`/`--validate`.
 Total `--validate` wall time ≈ 43 s at `PYTHONHASHSEED` 0, byte-
 identical at 999 modulo the `[Ns]` annotations.
+
+## Sixteenth direction — GLAW (sixth fan-out, 2026-08-19)
+
+**Status: RETURNED 2026-08-19 — an honest MISS carrying four theorems
+and one refutation.** §(K-grid) continuation, **Steps G74–G79**, labels
+**(GR-55)–(GR-60)** claimed (the tails move to (GR-61)+ / G80+,
+`notes/Pencil-labels.md`). One of **five concurrent directions** of the
+sixth fan-out (with GBAL, OCON, LTWO, FRES); GLAW is in the **compute
+tier**. Target: **(a′)**, the `d_fg = d_adm` law — route-ledger entry
+1's primary, the growth-law form's surviving half, **dispatchable with
+no bar**.
+
+**The verdict.** (a′) is **neither proven nor refuted**; what it gains
+is **coordinates, an exhaustive verification, and a proven constraint on
+any proof of it**. **(GR-55)** is the deviation normal form: every
+minority map at distance `d` from a perfect matching `M` is a
+`(y, Z, φ)` triple — an `M`-avoiding branch set `y`, an `M`-avoiding
+matching `Z` disjoint from it, and an injective end-selection `φ` of `y`
+off `V(Z)`, with `d = |y| + 2|Z|` — and **parity-consistency is the
+single condition `χ_y ∈ Φ`**; its corollaries make the `M`-avoiding
+coset space an affine space of dimension exactly `n/2 − 1` (so
+enumerable at `n = 30`), force every per-matching layer gap to be
+**even**, and give a closed form for the optimal stratum.
+**(GR-56)** supplies the identity the landed record was missing —
+`defect_A(S) − defect_B(S) = δ_S − σ_S`, the **difference** to
+(GR-32)(i)'s sum — collapsing full-goodness to **one inequality per
+chunk**, `z_mono(S) + |δ_S − σ_S| ≤ cap(S) − 6`; the **balance rider is
+exactly that inequality at the whole graph**, and admissibility and
+full-goodness are **functions of the minority map alone**.
+**(GR-57)** is the exchange calculus GADM asked for: the SDR space
+factors over the path/cycle components of `supp(y)`, and the
+**elementary SDR shift is a distance-preserving two-hub move that
+crosses μ-classes** — with a measured four-rung axis ladder
+(`φ / Z / y / M` needed at `3787 / 6 / 162 / 965` of the 4920 stratum
+shapes). **(GR-58)** verifies `d_fg = d_adm` at **every one of the 4920
+labelled shapes** of the `Λ = ∅` `D = 0` `n_hub ≤ 6` habitat stratum —
+**no subsample, no deviation cap** — and at the **first odd-carrying
+`n = 30` tests**, NKp(6) and NK55(6), rank-certified at the optimum
+(the matching sample disclosed as a CAP). **(GR-59)** **REFUTES** the
+**per-matching** variant of (a′) — the stronger reading GADM banned from
+silent substitution and flagged as *"a separate recorded result"* — with
+1278 witnesses among 24 638 (shape, matching) pairs at 1014 shapes,
+gaps exactly `{2, 4}` and the smallest witness at `n_hub = 4`; so
+`min_M` is **load-bearing** and **no (a′) proof may fix its anchor
+matching**. **(GR-60)** names the residual **input (Y)**: a joint
+matching-and-representative selection statement in the (GR-55)
+coordinates. **No g-flank; (GR-15) stays OPEN, unchanged; no gap-map
+status moves; entry 1 OPEN with (a′) still its primary and still with no
+bar; E3 NOT armed.** Mathematics: workbook §(K-grid) *Steps G74–G79*;
+driver `w4/glaw.py` (rows in `notes/scripts/README.md` §3).
+
+**Direction code GLAW** (the deliverable **is** the `d_fg = d_adm`
+**LAW**), minted under clause **(L5)**. Recorded because it is the
+first time this arc has *re-used* a previously-rejected candidate code:
+`GLAW` was checked 0-hit and **rejected at GADM's prep** on the ground
+that it *"names the growth law generically rather than which layer this
+direction proves"*. That ground no longer applies — this direction's
+deliverable is that law itself and nothing else — so the code is taken.
+Its only pre-existing occurrences are the two bookkeeping lines that
+recorded the rejection (`notes/Pencil-fanout.md` §"Twelfth direction",
+`notes/Pencil-labels.md`), which is a bookkeeping hit in the `GBAL` /
+`GDART` sense, not a semantic one.
+
+### The letter scheme — where this target sits
+
+The primed letters keep their §"Eleventh direction" meanings. **(a′)**
+(the `d_fg = d_adm` law) is **this direction's primary and its only
+target**: it had **no secondary** — (b′) rode as the secondary at the
+twelfth, thirteenth and fourteenth and is not carried here, though two
+(b′)-relevant by-products are reported at *Step G77* and deliberately
+not developed. **(c)** and **(d′)** stay named and unclaimed.
+
+### The target — one statement, no secondary
+
+> **(a′) — the `d_fg = d_adm` law.** At every habitat shape (cubic
+> `G°`, `ℓ_β ∈ [2, 5]` ((SD-6)), `Σ_β(ℓ_β − 2) = 6` ((GR-21)),
+> satisfying the proven (GR-25) cut criterion; the `Λ = ∅`, `D = 0`
+> tight stratum): `d_fg = d_adm`. Equivalently — **fully-goodness is
+> free at the admissibility optimum**.
+
+**The two stronger variants that must not be substituted**, carried
+verbatim from GADM's prep and now with one of them settled:
+
+- **(a′) is a `min`-over-matchings statement.** The per-matching form is
+  **REFUTED** by this direction ((GR-59)) — GADM's *"may well be
+  false"*, settled. The `min` form is the one the closure chain
+  consumes and it is untouched.
+- **(b′)'s `2` is not a parity-free constant** — unchanged; (b′) was
+  not carried.
+
+### What a HIT buys, and what it does not
+
+Unchanged from the prep, and it did not happen: **an (a′) HIT alone does
+NOT close the `Λ = ∅`, `D = 0` existence target and does NOT fire E3**
+— E3 is armed only by an **entry-5** HIT, never by (a′). Entry 5 + (a′)
+together give the existence target, modulo (GR-4′). **Never write that
+any of this closes (GR-15).**
+
+### The route ledger and the TERMINATION test — statuses at this landing
+
+1. **Uniform fully-good existence at `Λ = ∅` `D = 0`, growth-law
+   re-anchoring** — **OPEN, status unchanged**; **(a′) stays its primary
+   and still carries NO bar**. Evidentially it is now exhaustive on the
+   `n_hub ≤ 6` stratum at no deviation cap and true at the first
+   odd-carrying `n = 30` tests; structurally it has coordinates
+   ((GR-55)), a one-inequality criterion ((GR-56)), named and measured
+   exchange axes ((GR-57)), a **refuted** stronger variant ((GR-59))
+   and a named residual, **input (Y)** ((GR-60)). (b′)/(c)/(d′) stay
+   named and unclaimed.
+2. **(GR-4′)** — open; proven cases exclude every habitat block.
+3. **The `Λ ≠ ∅` closed-form analogue** — unswept.
+4. **The `D > 0` lift** — unswept.
+5. **Per-shape admissibility** — **NOT this direction's target** and
+   **untouched**: half 1 (parity) PROVEN ((GR-44)); half 2 (balance)
+   true-modulo-named-gap with the gap named **input (X)** ((GR-46)–
+   (GR-48)). Two by-products **reported, not developed**: every one of
+   the 4920 stratum shapes carries a balanced admissible colouring **at
+   its deviation optimum** (extending the exhaustive per-shape
+   `d_adm < ∞` record from 97 censused shapes), and (GR-56)(iv) shows
+   the balance rider is the **whole-graph instance** of the full-goodness
+   criterion — so inputs (X) and (Y) are the whole-graph and
+   proper-chunk instances of one inequality.
+
+**TERMINATION check (the direction's reading; the coordinator re-runs
+it).** **E1 NO** — no g-flank. Clause **(iv)** applied explicitly:
+**nothing found min-form `d_adm < d_fg`**, finite or infinite; every
+`d_fg` is an exact equality (full chunk scan) or a **rank-certified**
+equality at the optimum; the only finite `d_fg > d_adm` anywhere is
+(GR-59)'s **per-matching** quantity, a different statement, labelled as
+such and separated from the min-form by a dedicated `--adv` control.
+Clause **(v)** applied explicitly: **on the safe side** — **no
+`d_adm = ∞` anywhere**; every stratum shape carries a balanced
+admissible colouring at its optimum at full enumeration below `d_fg`,
+and the `n = 30` members carry them at every sampled matching; the
+matching sample and the `dmax` guard are **CAPS** (an exhausted cap is
+not `∞`; the guard was never approached — the largest stratum layer
+value is 2). **E2 NO** — (a′) is neither refuted nor
+unprovable-as-posed; (GR-59) refutes a **variant**, comes with a
+successor named (input (Y)), and leaves entry 1 open with (a′) carrying
+no bar, so the retained carve-out applies. **E3 NO, and NOT armed** —
+entry 1 unproven; E3's arming clause needs an **entry-5** HIT, which
+this direction neither sought nor produced.
+
+**What the landing names for a successor** (not a dispatch; the pick is
+a coordinator/user call): **input (Y)**, the joint `(M, y)` selection,
+attacked with matching-flexibility instruments on the now-explicit
+affine `M`-avoiding coset space rather than with local exchange; its
+calibrating families are the **965** stratum shapes whose worst optimal
+cell needs the `M` rung and the **13** shapes at balance gap 2. The
+cross-entry observation is recorded above: inputs (X) and (Y) are two
+instances of one inequality.
+
+### Riders — carried explicitly, as required
+
+- The result is at **`Λ = ∅`**, **`D = 0`**, and — where a closure chain
+  is concerned — **modulo (GR-4′)**.
+- The **`Λ ≠ ∅` closed-form analogue** stays **unswept**; the **`D > 0`
+  lift** stays **unswept**.
+- **This does not close (GR-15)**; no g-flank was found and none is
+  claimed.
+- **(a′) did not HIT**; an (a′) HIT would not have closed the existence
+  target while entry 5 is open, and would not have fired E3.
+- **(GR-37)(iii)'s flag stays HALF-retired**, never retired.
+- Every "0 fully-hot" figure keeps its **family qualifier**
+  (binding-capable, not capacity-tight; (GR-40)'s 815 → 573 is a prune,
+  not a zero). Every cap is disclosed as a **cap** — the `n = 30`
+  matching sample (40), the rank-test caps, and the `dmax` guard.
+- The `d_fg = d_adm` support is now quotable as: **exhaustive on the
+  `Λ = ∅` `D = 0` `n_hub ≤ 6` habitat stratum (4920 labelled shapes, no
+  deviation cap)**, plus W3M/W3/W4/NKo2v/NK(2) exhaustive off-pool, plus
+  CL5/CL6/W5 and the four NK members rank-certified, plus NKp(6) and
+  NK55(6) at `n = 30` **per matching** with the min over matchings not
+  computed. GADM's "133 shapes at `d ≤ 3` + a 108-shape census" remains
+  the correct provenance for the *earlier* record and is **superseded,
+  not contradicted**, on the `n_hub ≤ 6` stratum.
+
+### Cautions upheld (binding, and none violated)
+
+- No re-derivation of (GR-1)–(GR-54); (GR-32)(i), (GR-33)(ii),
+  (GR-37)(ii), (GR-41), (GR-44) and (GR-46) are **consumed** and cited,
+  never re-proved. The (GR-10) min-max was not attacked; the
+  shift-metric `w_M` min-max / polynomial certificate was **not**
+  attacked (ranking item 3's standing bar upheld — `w_M` is used here
+  only as a computed quantity, and no characterization of it is
+  claimed).
+- **No shape-free `d` was proposed.** Every deviation bound here is
+  shape-indexed or per-chunk; the bounded-deviation form stays refuted
+  ((GR-42)) and the growth law's bounded-shift-correction reading with
+  it ((GR-43)).
+- **Entry 5 was not attacked.** Its two by-products are reported as
+  findings and explicitly not developed.
+- **No new pool.** The 4920-shape stratum is the existing exhaustive one;
+  the seeded subsamples are of it; every other shape is a landed
+  construction.
+- Rank certification is the README §4 convention (rank enters only
+  through `gexist.fully_good_rank`); every `d_fg` figure is either
+  exact-combinatorial (`gorient.fully_good_scan`, the landed evaluator)
+  or **rank-certified at the optimum**, and each is labelled which.
+- No Lean was written and no `lake build` was run (the standing hold);
+  no tracked file was edited; nothing was committed.
+
+**Driver** `notes/scripts/w4/glaw.py`, modes
+`--law`/`--nf`/`--exh`/`--sdr`/`--big`/`--adv`/`--validate`
+(~81 s for `--validate`, inside the 600 s foreground budget).
+**Labels**: **(GR-55)–(GR-60)** and **Steps G74–G79**, exactly the
+reservation; nothing minted outside it, in any namespace. §(K-gcap) /
+`GC-` returned **unopened** (available an eleventh time). §(K-unif) / `GU-`
+**not** minted.
