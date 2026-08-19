@@ -1,223 +1,24 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: ALL FIVE fan-outs COMPLETE; the SIXTH direction (CFLANK,
-§"Sixth direction") LANDED 2026-08-07; the SEVENTH direction (GCAP,
-§"Seventh direction") LANDED 2026-08-13; the EIGHTH direction (GUNIF,
-§"Eighth direction") LANDED 2026-08-13; the NINTH direction (GEXIST,
-§"Ninth direction") LANDED 2026-08-13 — an honest MISS; the TENTH
-direction (GORIENT, §"Tenth direction") LANDED 2026-08-13 — an honest
-MISS, the route re-anchored on a bounded-deviation selection principle,
-W3 the sticking instance; the ELEVENTH direction (GDEV, §"Eleventh
-direction") LANDED 2026-08-15 — the bounded-deviation form **REFUTED as
-posed** with successors named, the corner charge (GR-40) proven, no
-flank; the TWELFTH direction (GADM, §"Twelfth
-direction") **LANDED 2026-08-17** — experiment 1 lands **outcome 3**:
-the shift-metric layer is **UNBOUNDED** ((GR-43): `d_par = d_adm =
-d_fg = m` **exactly** at the necklaces, rank-certified at the optimum
-up to `n_hub = 50`) and the growth law's bounded-correction reading is
-refuted, while the **(a′) `d_fg = d_adm` law survives its first
-large-`d` test**; ledger entry 5 settled as a separate OPEN statement;
-no flank; the THIRTEENTH direction (GPSA, §"Thirteenth direction")
-**LANDED 2026-08-18** — **route-ledger entry 5** attacked in BOTH
-halves: half 1 (Hall/SDR parity) **PROVEN** ((GR-44): the SDR step
-automatic, `d_par(M) = w_M` exact), half 2 (balance)
-**TRUE-MODULO-NAMED-GAP** ((GR-45)'s cut-move calculus reduces it to a
-descent lemma, open exactly at a named stuck case) — entry 5 **NOT a
-HIT**, E3 not armed, no flank; the pick was re-delegated to a
-**top-rung fable recon** (the fifth use of the 2026-08-12 shape) whose
-verified verdict **OVERRODE** GADM's shift-metric routing clause; the
-FOURTEENTH direction (GDESC, §"Fourteenth direction") **LANDED
-2026-08-18** — the entry-5 descent lemma's stuck case **RESHAPED, not
-closed**: **(GR-46)** proves the (GR-45) legal-move family **one-move
-transitive**, so the descent lemma over the FULL family is
-**equivalent to entry 5's balance half** (the stuck case is no smaller
-residual, and a full-family demotion witness would have been E1(v));
-**(GR-47)** is the (coset representative, SDR end-selection, perfect
-matching) **normal form** restating balance as a matching-flexibility
-statement; **(GR-48)** is the escape catalogue with a **PROVEN
-{T1, T2} kill** at all-doubly-blocked configurations, **realized at
-n = 30** — so the bounded {T1, T2} descent route is **DEMOTED by
-witness** (the extended {T1, T2, K3} catalogue unbeaten) while entry 5
-stays **OPEN, NOT a HIT**, **E3 not armed**, its residual named
-**input (X)**: balance existence in the (GR-47) normal form;
-**(b′)**'s named unmeasured half **measured** (`|δ|` at
-parity-optimal maps `{0: 92, 2: 2}`); no g-flank, (GR-15) stays OPEN;
-the routing was **fixed by GPSA's landed otherwise-clause**, so no new
-selection was made, and the prep itself was authored at **opus** by
-user adjudication to conserve the top-rung budget for the dispatch; the
-FIFTEENTH direction (GBAL, §"Fifteenth direction") — one of **five**
-directions of the **SIXTH FAN-OUT** (GBAL/GLAW/OCON/LTWO/FRES, dispatched
-concurrently 2026-08-19 by explicit user adjudication, §"Sixth fan-out")
-— **LANDED 2026-08-19, a HIT: the arc's FIRST.** Input (X) is
-**DISCHARGED** and **route-ledger entry 5 is PROVEN in BOTH halves**
-(**(GR-49)–(GR-54)**: the z-form bijection, the orientation criterion,
-the weight criterion, the parity theorem, the splitting lemma and the
-balance theorem itself, chaining to a THEOREM at every `2k ≤ 6` habitat
-shape), re-deriving (GR-44)'s parity half **without Petersen** while its
-`d_par(M) = w_M` formula stays untouched; the (GR-45)–(GR-48) apparatus
-is **subsumed, not contradicted**, no landed figure moves; one in-place
-correction to route note (b) (the `2k = 2` exceptional side is the
-**parallel pair**, a cycle-space condition, not a 2-edge cut, and both
-readings are **vacuous at habitat shapes**). **E3 is ARMED but does NOT
-fire** — entry 1's **(a′)** stays open, no bar, GLAW's target this wave;
-no g-flank, (GR-15) stays OPEN, unchanged; the SIXTEENTH direction
-(GLAW, §"Sixteenth direction") — the second of the SIXTH FAN-OUT's
-five — **LANDED 2026-08-19, an honest MISS carrying four theorems and
-one refutation.** **(GR-55)** puts every minority map at deviation
-distance from a perfect matching in a `(y, Z, φ)` normal form,
-parity-consistency a condition on `y` alone; **(GR-56)** supplies the
-missing SPLIT identity, collapsing full-goodness to ONE inequality per
-chunk, of which the balance rider is exactly the whole-graph instance;
-**(GR-57)** is the SDR exchange calculus — the elementary shift is a
-distance-preserving 2-hub move that CROSSES μ-classes, GADM's named
-missing second exchange axis; **(GR-58)** verifies `d_fg = d_adm`
-EXHAUSTIVELY at all 4920 `n_hub ≤ 6` habitat shapes at no cap, and at
-the first odd-carrying `n = 30` tests; **(GR-59)** REFUTES the
-per-matching variant of (a′) — so `min_M` is load-bearing and no (a′)
-proof may fix its anchor matching; **(GR-60)** names the residual
-**input (Y)**. **A cross-entry finding:** by (GR-56)(iv), GDESC's
-input (X) (now PROVEN by GBAL) and this **input (Y)** are the
-whole-graph and proper-chunk instances of one inequality, but the
-proof does **not** transfer — GBAL's argument is whole-graph-only, and
-(Y) stays open, a genuinely different quantifier. **(a′) did NOT HIT;
-entry 1 stays OPEN with (a′) still its primary and no bar; E3 stays
-ARMED (by GBAL's entry-5 HIT) but does NOT fire; no g-flank; (GR-15)
-stays OPEN, unchanged.** the NINETEENTH direction (FRES, §"Nineteenth
-direction") — the third of the SIXTH FAN-OUT's five — **LANDED
-2026-08-19: §(K-frame) (FR-4)'s named gap CLOSED**, and the closing
-needed a clause the gap's own name did not carry: **(FR-15)** restates
-(GR-5) at `G′` verbatim (minus its target-rank clause), but (GR-5) is a
-chart-**MAP** statement (hub normals free, points derived) while
-(ANH-9)(iii)'s semicontinuity needs membership in the chart-**VARIETY**
-of (ANH-9)(ii) (hub points free, normals derived) — a different
-sentence, the direction's one genuine finding; **(FR-16)** supplies it,
-since at a σ-fixed configuration the normals *are* the points, so the
-two parametrizations' genericity loci coincide on the single clause
-`framedom.legality_free` already tests; **(FR-17)** then discharges the
-(ANH-R1) β-clause at every bare-cycle site of every `k = 4` class triple
-(76 sites, 22 iso classes) with **no named gap**. No driver run
-(`fres.py` returned unused); no gap-map status move; `hK` class
-uniformity, §(K-grid) (GR-15) and route-ledger entries 1/5 all
-untouched. The SEVENTEENTH direction (OCON, §"Seventeenth
-direction") — the fourth of the sixth fan-out's five to land, after
-GBAL/GLAW/FRES — **LANDED 2026-08-19: an honest MISS carrying three
-theorems and a reduction.** **(OC-17)** proves the hard-stratum
-target-rank qualifier is FREE — the locus `Z` is Zariski-**open** in
-the whole pencil chart (an intersection of two maximal-rank
-conditions) — which **strikes** §(K-frame) (FR-7)'s (OC-16)-side
-un-owned-irreducibility sentence and makes its *What would change
-this* item (iii) unnecessary rather than open. **(OC-18)** gives a
-degree-free, open, ambient-nonempty sufficient condition (`H/X`
-infinitesimally rigid) at **both** ends of **every** class pair
-(5226/5226 labelled pairs). **(OC-19)** reduces (OC-8) at a (shape,
-split) to `Z ≠ ∅` + chart irreducibility + one chart point with `H/X`
-rigid — one-point decidable, **two named inputs ADDED, not removed**
-— and the adversarial control shows `Z ≠ ∅` alone does **not** suffice
-(3 constructed points **in** `Z`, guard-accepted, with `L_b ⊆ R₁` and
-`H/X` flexible). **(OC-20)/(OC-21)** restate the bad case in perp form
-and strip `x₁` from availability; **(OC-22)** places the residue in
-§(K-ann) (ANH-R1)'s object class. **(OC-8) stays OPEN, reshaped; no
-gap-map status move; class uniformity, (GR-15) and E3's arming all
-untouched.** the EIGHTEENTH direction (LTWO, §"Eighteenth direction") —
-the fifth and last of the SIXTH FAN-OUT's five to land, after
-GBAL/GLAW/FRES/OCON — **LANDED 2026-08-19: an honest MISS on the
-commissioned "prove the class forbids it" branch, carrying three theorems
-and three witnesses.** **(Λ4)** the branch calculus reduces class
-membership to a finite statement about the hub multigraph `G°` alone;
-**(Λ5)** the companion-cycle lemma; **(Λ6)** the size floor — `j`
-interior hubs on a length-4 companion force `|V| ≥ 21` at `j = 2`,
-`|V| ≥ 26` at `j = 3`. **(Λ7)/(Λ8)**: the witnesses `LT21a`/`LT21b`/`LT26`
-attain those floors exactly, REALIZING all four two-hub-interior hub
-patterns at a hard-stratum target-rank chart point with `g₁₄ ≠ 0`, and
-`outer.py --patterns`' recorded "4 of 8 patterns realized in scope" is
-shown to be a **cap artifact** — uncapped, the same family list realizes
-**7 of 8**, only `(1,1,1)` genuinely out of `|V°| ≤ 5` scope by (Λ6).
-**Λ-completeness stands as written; the (K-wit) row's residual is
-recomputed, not re-graded — no gap-map status move; class uniformity,
-(GR-15) and E3's arming all untouched; no g-flank.** **The SIXTH FAN-OUT
-is now COMPLETE, all five directions landed 2026-08-19.** The
-first (A/B/C
-below, prepared 2026-08-05) landed 2026-08-05/06; the second (T/R/M,
-§"Second fan-out") 2026-08-06; the third (G/Q/O, §"Third fan-out")
-2026-08-06; the fourth (E/J, §"Fourth fan-out") 2026-08-07; the fifth
-(PEX/TCOL, §"Fifth fan-out") 2026-08-07; the sixth (CFLANK, §"Sixth
-direction") 2026-08-07 — no flank found, (GR-15) stays OPEN; the seventh
-(GCAP, §"Seventh direction") 2026-08-13 — (GR-27)/(GR-28)(i)–(iii)
-proven, (GR-28)(iv) then true-modulo-named-gap (**since REFUTED** — the
-eighth, below), the certificate-3 target proven per swept shape,
-still no flank, (GR-15) stays OPEN; the eighth (GUNIF, §"Eighth
-direction") 2026-08-13 — **REFUTED both of its targets**: (GR-28)(iv)
-at `k ≥ 3` is refuted with an exact boundary (theorem at `n_hub ≤ 6`,
-false from `n_hub = 8`), the repair theorem is unprovable as posed;
-per-shape (GR-15) HOLDS at every new witness and (GR-15) itself stays
-OPEN, unchanged in status; the ninth (GEXIST, §"Ninth direction")
-2026-08-13 — an honest **MISS**: three new theorems ((GR-32)/(GR-33)/
-(GR-35)) reduce the uniform target to a **minority-dart orientation
-problem** with one unit of slack at every proper chunk, (GR-34) refutes
-the uncorrelated union-bound mechanism by a constructed witness while a
-correlated rung-minority rule closes the ladder family; no g-flank
-found, the target and (GR-15) both stay OPEN; the tenth (GORIENT,
-§"Tenth direction") 2026-08-13 — also an honest **MISS**: four new
-theorems ((GR-36)–(GR-39)) re-anchor the target on a
-**bounded-deviation selection principle** (a perfect matching plus
-`≤ d` deviations, parity obstruction exactly the cut space) and settle
-the intersection kill **vacuously strong** on the whole `n_hub ≤ 6`
-stratum (binding is laminar there); the corrected **binding-capable**
-obstruction family strictly contains the capacity-tight one and does
-carry fully-hot hubs, while the exact **realized-binding** family stays
-0/506; the principle holds at `d ≤ 2` everywhere measured except
-**W3**, which needs `d = 3` — no uniform bound proven, no g-flank
-found, the target and (GR-15) both stay OPEN; the eleventh (GDEV,
-§"Eleventh direction") 2026-08-15 — the bounded-deviation form is
-**REFUTED as posed** ((GR-42): pentagon necklaces with an unbounded
-parity floor, every member still carrying a rank-certified fully-good
-colouring — a form-refutation, E1 clause (iii), never a flank), the
-corner charge **(GR-40)** lands (sub-deliverable (b), tight at W3M),
-the parity floor **(GR-41)** is proven, the W3 stick is located in the
-**balance layer** (not parity — *since corrected: the twelfth splits it
-1 shift-metric + 1 balance unit*), and `d_fg = d_adm` measures
-133/133 — (GR-15) stays OPEN, unchanged; the twelfth (GADM, §"Twelfth
-direction") 2026-08-17 — **(GR-43)** the odd-cycle-packing shift floor
-is proven (`d_par = d_adm = d_fg = m` **exactly** at NK(2)/6/8/10,
-rank-certified at the optimum): the **shift-metric layer is
-unbounded**, the growth law's bounded-correction reading is
-**refuted**, the **(a′) law survives its first large-`d` test**,
-ledger entry 5 (per-shape admissibility) settles as a **separate OPEN
-statement** ((GR-37)(iii)'s balance clause statement-beyond-proof),
-and (b′) is supported (balance gaps `{0, 1, 2}`; W3's stick corrected
-to a 1 + 1 split) — no g-flank, (GR-15) stays OPEN, unchanged. CFLANK was a
-**single direction**, not a fan-out — its selection was a **coordinator
-delegation** (`notes/Phase39.md` *Current state*, the 2026-08-07 "keep
-going on my own judgment" adjudication), not a user pick from a candidate
-list; GCAP's selection was **delegated further to a top-rung fable
-recon** (the 2026-08-12 adjudication, verbatim in `notes/Phase39.md`
-*Current state*); GUNIF's selection follows the same standing delegation,
-from the TERMINATION test checked (and not fired) on GCAP's return
-(`notes/Phase39.md` *Hand-off*), not a fresh adjudication; GEXIST's
-selection was again **delegated to a top-rung fable recon**, per the
-user's 2026-08-13 check-in option pick (§"Ninth direction"); GORIENT's
-selection was re-delegated to a top-rung fable recon at the user's
-2026-08-13 check-in (§"Tenth direction"); GDEV's selection was again
-delegated to a top-rung fable recon at the user's 2026-08-14 check-in,
-the fourth use of that shape (§"Eleventh direction"); **GADM's pick
-broke that streak** — at the user's 2026-08-17 check-in the coordinator
-offered the fable-recon shape as the recommended option and the user
-instead elected **coordinator-authored prep from the routing clause**,
-so the twelfth's spec *and its ranking record* are the coordinator's,
-with that cost disclosed in the section's own *Status* (§"Twelfth
-direction"); **GPSA's selection returned to the fable-recon shape** —
-at the user's 2026-08-18 check-in, a multiple-choice election made
-specifically because the coordinator-authored prep carried no
-independent ranking of the losers — the **fifth** use, and the first
-whose verdict **overrode** a landing's routing clause, with the
-grounds and the process finding recorded in §"Thirteenth direction".
-This file
-remains the dispatch-scoping template for any
-future fan-out or single direction. Three independent research directions on kernel (K), specified
-here so a fresh session can dispatch them at S=1 without re-deriving the
-scoping. User-adjudicated this session (verbatim below). The mathematics
-lives in `notes/Pencil-informal.md` (the (K) workbook — start from its
-*State of (K)* gap map); this file is dispatch scoping only.
+**Status: SEVEN fan-outs and nine single directions dispatched; 31 of 32 directions
+LANDED.** The seventh fan-out (YLOC / BALB / AGLU / ZNEQ / CIRR, §"Seventh fan-out") is
+closing: CIRR, YLOC, BALB and ZNEQ have landed and **AGLU is the one return still
+unlanded**. Ordinals run 1–24 and were assigned at dispatch, so landing order differs from
+ordinal order.
+
+**What this file is:** dispatch scoping only — the specs, bars, riders, tier splits and
+label reservations a direction is dispatched against, plus the per-direction landing
+write-ups. It remains the **template for any future fan-out or single direction**. The
+mathematics lives in `notes/Pencil-informal.md` (the (K) workbook — start from its *State
+of (K)* gap map, which is authoritative for every status word). Label reservations and the
+minting rule live in `notes/Pencil-labels.md`.
+
+**Selection provenance is NOT duplicated here.** Which user adjudication or delegation
+picked each direction is canonical in `notes/Phase39.md` *Current state*, as dated bullets
+quoting the user verbatim, and in each direction's own section below. Do not restate it in
+this header — reproducing it is what grew this header to 2 139 words of changelog across
+thirteen directions, stale by two whole fan-outs, and still describing the file as scoping
+"three independent research directions" long after there were twenty-four.
 
 ## The adjudication that produced this
 
@@ -5707,7 +5508,7 @@ available as a fallback if the localization breaks). Same kind of override as
 GPSA's of GADM's shift-metric routing clause: recorded, scoped to the routing
 clause alone, and traceable.
 
-### Twentieth direction — YLOC (seventh fan-out)
+## Twentieth direction — YLOC (seventh fan-out)
 
 **Status: LANDED 2026-08-19 — an honest MISS, with substantial positive
 content.** Second of the seventh fan-out's five directions to land, after
@@ -5850,7 +5651,7 @@ the general statement, for any selection `β`; BALB's independently-derived
 perfect-matching-anchored instance is its own label, cross-cited from that
 side, not minted here.
 
-### Twenty-first direction — BALB (seventh fan-out)
+## Twenty-first direction — BALB (seventh fan-out)
 
 **Status: LANDED 2026-08-19 — (b′) stays OPEN, NOT a HIT, with its
 decomposition half proven and half refuted at an exact boundary.** Third
@@ -6002,7 +5803,7 @@ uniformity, `hK`, entry 5 and route-ledger entry 1/(a′) are exactly where
 they were. Every figure above at `Λ = ∅`, `D = 0`, modulo (GR-4′) where a
 closure chain is concerned; `Λ ≠ ∅` and `D > 0` stay **unswept**.
 
-### Twenty-second direction — AGLU (seventh fan-out)
+## Twenty-second direction — AGLU (seventh fan-out)
 
 **Status: dispatched 2026-08-19, opus, COMPUTE tier.** Labels reserved:
 `GR-` **(GR-73)–(GR-78)**, **Steps G92–G97**; owning section **§(K-grid)**.
@@ -6052,7 +5853,7 @@ this direction (E1's own clarification: not a flank by itself).
 qualifier** — (GR-36)'s **binding-capable** family strictly contains the
 capacity-tight one, and (GR-40)'s 815 → 573 is a **prune, not a zero**.
 
-### Twenty-third direction — ZNEQ (seventh fan-out)
+## Twenty-third direction — ZNEQ (seventh fan-out)
 
 **Status: LANDED 2026-08-19 — input (a) is OPEN as a class-uniform statement
 and is NOT an independent gap.** Fourth of the seventh fan-out's five
@@ -6210,7 +6011,7 @@ to make room for (OC-23)–(OC-28) rather than bumped past its cap; the
 close-it cell gained the two-half breakdown (323 → 438 words), still well
 under cap. `notes/check-gapmap-cells.py` passes on the changed row.
 
-### Twenty-fourth direction — CIRR (seventh fan-out)
+## Twenty-fourth direction — CIRR (seventh fan-out)
 
 **Status: LANDED 2026-08-19 — a HIT.** First of the seventh fan-out's five
 directions to land; one of **five** concurrent directions (YLOC/BALB/AGLU/
