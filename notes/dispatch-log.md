@@ -110,6 +110,7 @@ keeps only what git cannot show.
 | 2026-08-15 | Phase39 GDEV landing verification (`0e2bd9b7` → `1124910f`) | fable (direction + landing, same-agent resume) | gate-invisible defect caught in coordinator verification: the note's Status header left contradicting its own Hand-off — **third consecutive landing** with a stale status surface | The landing correctly updated *Current state*, *Hand-off*, *Decisions made*, the gap map, the fan-out spec, the labels and ROADMAP — but not the note's top `**Status:**` block, which still read "GDEV is selected and PREPPED …, not yet dispatched — that dispatch is the next concrete task" while *Hand-off* 200 lines below correctly aimed at the twelfth's prep. That header is the first paragraph a fresh session reads. Cf. GEXIST's landing (ROADMAP cell) and GORIENT's (deleted Hand-off slot). Mitigated by landing-checklist item 7; see F17. |
 | 2026-08-18 | Phase39 §(K-grid) gap-map cell fourth recompute + cap gate (`2ab3c630` → this commit) | sonnet (builder) | gate-invisible defect (four-peat): mechanical cap gate added instead of a fifth prose recompute | Fourth regression: §(K-grid)'s status cell went `dc4ecc7b` 1274 → `97c9661c` 1373 → `07f6f9b6` 1729 (repair #2) → `0e2bd9b7` 2066 (GDEV) → `2ab3c630` 2328 (GADM) words, each landing appending a since-direction-X clause instead of recomputing. Two prior prose-only repairs (D-2, repair #2) each regressed within 1-2 landings. This commit recomputes again (2328 → 1768 words, no facts/labels dropped) and adds `notes/check-gapmap-cells.py`, a per-cell word cap adapted from `check-log-rows.py`: a cell every landing appends to needs a mechanical gate, not a fifth recompute. |
 | 2026-08-18 | Phase39 fourteenth direction GDESC prep (`this commit`) | opus (prep; the direction itself stays mapped fable) | playbook deviation, deliberate: a top-rung-mapped prep dispatched one rung down by user adjudication | The fourteenth's routing was FIXED by GPSA's landed otherwise-clause, so this prep had no selection to make — only spec authoring. With weekly_scoped at 83% the user adjudicated it to opus and conserved fable for the direction's own dispatch (a crux proof attempt, the spend worth protecting). Cost disclosed in the spec exactly as the twelfth's coordinator-authored prep disclosed its own: no independent top-rung reader of the ranking record — cheap here only because the primary is fixed, not competitively ranked. Outcome judged at GDESC's landing. |
+| 2026-08-19 | Phase39 sixth fan-out — five concurrent directions (`46152836` … `6fd91065`) | opus ×5 (directions) → sonnet ×5 (landings) | playbook deviation, user-adjudicated: parallel multi-dispatch against the command's serial loop | User adjudicated a parallel wave. Coordinator shape: each agent wrote only NEW files (draft + driver at pinned paths), edited no tracked file and committed nothing; disjoint label ranges pre-allocated per direction; compute/theory tier split (2 licensed to sweep, 3 derivation-first). Outcome: zero collisions, zero tracked-file edits by any agent, all five drafts accepted on verification, five clean serial landings. Three findings were visible only ACROSS directions — see F18. The last landing correctly REFUSED to write this row (its core forbids editing this log); coordinator-authored. |
 
 ## Findings
 
@@ -434,3 +435,23 @@ At phase close, promote stable entries into the coordinator command's
   surfaces a landing did **not** touch — the ones it did are self-reported
   in the return, and a return that lists seven correct updates reads as
   complete precisely when the eighth is missing.
+
+- **F18 — a parallel fan-out surfaces findings no single agent can
+  see (Phase 39, 2026-08-19).** Five directions ran concurrently with no
+  contact between them, and three results existed only in the
+  *comparison* of their returns, not in any one of them: (i) GBAL's
+  now-proven input (X) and GLAW's newly-named input (Y) are the
+  whole-graph and proper-chunk instances of **one** inequality — and the
+  proof does not transfer, which is the next real question; (ii) FRES and
+  OCON independently landed on **chart irreducibility** as load-bearing
+  and owned by nobody, one via an imprecise landed definition
+  ((ANH-9)(ii)), the other as a required input of its own reduction
+  ((OC-19)); (iii) LTWO's `outer.py --patterns` cap artifact was the
+  *second* instance of the cap-exhaustion hazard recorded for §(K-grid)
+  one day earlier, which is what showed the hazard to be harness-wide and
+  promoted it to `notes/scripts/README.md` §4. Two coordinator
+  corollaries: budget verification time for an explicit **cross-return
+  pass**, not only per-return checks — that pass is where the compounding
+  value of a fan-out is actually realized; and choose directions in
+  **different sections**, which is what made the independence real and
+  kept the five drafts collision-free in one working tree.
