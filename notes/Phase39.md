@@ -5,24 +5,29 @@
 (L0–L7) are COMPLETE — `hsplit` CLOSED IN FULL and `hfresh`'s counting discharge landed
 (2026-07-30). Only three items remain, all carried by the landed successor
 `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card` (`Molecule/Pencil/Escape.lean`):
-`hcontract` (W4), kernel `hK`, and kernel `hbareSplit` — see *Hand-off*. **Twenty-seven
+`hcontract` (W4), kernel `hK`, and kernel `hbareSplit` — see *Hand-off*. **Twenty-eight
 kernel-(K) directions are now COMPLETE** (2026-08-05 → 08-19: thirteen across the first
-five fan-outs, one per ordinal from the sixth through the nineteenth, all fourteen now
-landed — roster and per-direction theorem chain in *Decisions made*). **The SIXTH FAN-OUT
-IS COMPLETE — all five directions (GBAL/GLAW/OCON/LTWO/FRES) LANDED 2026-08-19.** Headline
-positives **(FR-R1) PROVEN**, the (GR-16)–(GR-60) theorem chain, and
-**route-ledger entry 5 PROVEN in both halves, a HIT** (GBAL, discharging input (X)); **E3
-ARMED but does NOT fire** — entry 1's **(a′)** stays open (GLAW, residual **input (Y)**);
-§(K-frame) (FR-4)'s named gap **CLOSED with no rider** (FRES); §(K-out) (OC-8)'s
-hard-stratum qualifier now **FREE**, its residue reduced to two named inputs **ADDED, not
-removed** (OCON, an honest MISS); §(K-Λ) item (vii) **REALIZED at a proven size floor**, an
-honest MISS on the "class forbids it" branch, `(K-wit)`'s residual recomputed not re-graded
-(LTWO). **(GR-15) stays OPEN throughout; class uniformity untouched; no g-flank at any of
-the twenty-seven.** **The SEVENTH FAN-OUT is DISPATCHED** — five more concurrent opus
-directions (**YLOC** input (Y) localized / **BALB** (b′) / **AGLU** AA-glue at `n_hub ≥ 8` /
-**ZNEQ** `Z ≠ ∅` / **CIRR** chart irreducibility), ordinals twentieth–twenty-fourth, the
-second multidispatch, coordinator-specced (`notes/Pencil-fanout.md` §"Seventh fan-out").
-**Next concrete task: land the five returns SERIALLY, one commit each** — see *Hand-off*. Direction codes are **multi-letter and
+five fan-outs, fourteen more one per ordinal from the sixth through the nineteenth, plus
+**CIRR** (ordinal twenty-four) — roster and per-direction theorem chain in *Decisions
+made*). **The SIXTH FAN-OUT IS COMPLETE — all five directions (GBAL/GLAW/OCON/LTWO/FRES)
+LANDED 2026-08-19.** Headline positives **(FR-R1) PROVEN**, the (GR-16)–(GR-60) theorem
+chain, and **route-ledger entry 5 PROVEN in both halves, a HIT** (GBAL, discharging input
+(X)); **E3 ARMED but does NOT fire** — entry 1's **(a′)** stays open (GLAW, residual
+**input (Y)**); §(K-frame) (FR-4)'s named gap **CLOSED with no rider** (FRES); §(K-out)
+(OC-8)'s hard-stratum qualifier now **FREE**, its residue reduced to two named inputs
+**ADDED, not removed** (OCON, an honest MISS); §(K-Λ) item (vii) **REALIZED at a proven
+size floor**, an honest MISS on the "class forbids it" branch, `(K-wit)`'s residual
+recomputed not re-graded (LTWO). **(GR-15) stays OPEN throughout; class uniformity
+untouched; no g-flank at any of the twenty-eight.** **The SEVENTH FAN-OUT is IN
+PROGRESS — CIRR (chart irreducibility, ordinal twenty-four) LANDED 2026-08-19, a HIT**:
+new §(K-chart) proves the pencil chart irreducible once, all four consumers
+(§(K-out)/(K-slide)/(K-dom)/(K-ann)) audit clean, one hypothesis-list correction to
+§(K-frame) *Step FR13* (girth ≥ 4), and (CH-8) self-corrects to a pointer at a landed,
+strictly stronger Lean theorem. Four directions remain in flight — **YLOC** input (Y)
+localized / **BALB** (b′) / **AGLU** AA-glue at `n_hub ≥ 8` / **ZNEQ** `Z ≠ ∅` — ordinals
+twentieth–twenty-third, coordinator-specced (`notes/Pencil-fanout.md` §"Seventh
+fan-out"). **Next concrete task: land the remaining four returns SERIALLY, one commit
+each** — see *Hand-off*. Direction codes are **multi-letter and
 topic-tagged from the fifth fan-out on** (`notes/Pencil-labels.md` (L5)); grandfathered
 single letters are re-used across dates — **always date those**.
 
@@ -126,16 +131,17 @@ constraints; the dated dispatch narrative is in *Decisions made* and git):
   instrument that dissolves the matching apparatus — so YLOC is specced on **GBAL's
   instrument at the chunk level** instead.
 
-**Kernel-(K) research arc — forty-four docs+scripts-only dispatches, plus seven
+**Kernel-(K) research arc — forty-five docs+scripts-only dispatches, plus seven
 strategy-only passes** (2026-08-02 → 08-19). Which pass was which is one-lined in *Decisions
 made*; the rule is that the **dispatch** count moves only on a landing (GBAL/GLAW/FRES/OCON/
-LTWO are the fortieth through forty-fourth), and a **user call on dispatch *shape*** — either
-multidispatch election, or a coordinator-authored pick like the twelfth's — contributes **no**
-strategy pass. Canonical homes: workbook `notes/Pencil-informal.md` (**State of (K)** map =
-entry point), `notes/Pencil-W4-informal.md` (W4-residual), `notes/Pencil-strategy.md`
-(strategy). Net effect: **disproof risk removed**, every refuted route/gap has a successor in
-the gap map, several structural positives proven, and **route-ledger entry 5 is PROVEN, the
-arc's first HIT**; **class uniformity of the escape remains untouched by all forty-four.**
+LTWO are the fortieth through forty-fourth; CIRR the forty-fifth), and a **user call on
+dispatch *shape*** — either multidispatch election, or a coordinator-authored pick like the
+twelfth's — contributes **no** strategy pass. Canonical homes: workbook
+`notes/Pencil-informal.md` (**State of (K)** map = entry point), `notes/Pencil-W4-informal.md`
+(W4-residual), `notes/Pencil-strategy.md` (strategy). Net effect: **disproof risk removed**,
+every refuted route/gap has a successor in the gap map, several structural positives proven,
+and **route-ledger entry 5 is PROVEN, the arc's first HIT**; **class uniformity of the escape
+remains untouched by all forty-five.**
 **Doc-debt round CLOSED — `notes/Pencil-cleanup.md`** (2026-08-13, category D only; D-5 a
 watch item; the D-2 fix regressed at GORIENT's landing, re-repaired `07f6f9b6`).
 
@@ -244,8 +250,11 @@ fan-out", labels claimed in `notes/Pencil-labels.md` — **none of it restated h
 standing constraint moved: phase OPEN, Lean hold STANDS, W4 PARKED, `hK`/`hbareSplit`
 pinned, option B un-commissioned.
 
-**Next concrete task: land the SEVENTH FAN-OUT's five returns, SERIALLY — one coordinator
-commit per direction**, each merging that direction's untracked draft
+**CIRR (twenty-fourth, chart irreducibility) LANDED 2026-08-19 — a HIT**: canonical home the
+new §(K-chart) (`notes/Pencil-informal.md`), roster + verdict in `notes/Pencil-fanout.md`
+§"Twenty-fourth direction" — **not restated here**. **Next concrete task: land the
+SEVENTH FAN-OUT's remaining FOUR returns, SERIALLY — one coordinator commit per
+direction**, each merging that direction's untracked draft
 (`notes/Pencil-draft-<CODE>.md`) into the workbook, committing its driver, moving its
 reservation row into the `notes/Pencil-labels.md` registry, and recomputing the owning
 section's *State of (K)* gap-map row. Dispatched concurrently at **opus** 2026-08-19; specs,
@@ -258,13 +267,12 @@ fan-out", **not restated here**:
 | **BALB** | twenty-first | **(b′)**, `d_adm − d_par ≤ 2` — never a primary before; (GR-50) is the first instrument that could **bound** it | (GR-67)–(GR-72) / G86–G91 |
 | **AGLU** | twenty-second | ledger attack **(c)** — is the (GR-38) AA-glue configuration **realizable** at `n_hub ≥ 8`? | (GR-73)–(GR-78) / G92–G97 |
 | **ZNEQ** | twenty-third | **(OC-19) input (a)**, `Z ≠ ∅` at every class (shape, split) — a whole-(K-tight) input, not (OUT)'s | (OC-23)–(OC-28) / O19–O24 |
-| **CIRR** | twenty-fourth | **chart irreducibility** written down once — the fact OCON and FRES found independently, load-bearing for four sections, owned by nobody | new **§(K-chart)**, `CH-`, Steps CH1–CH8 |
 
 Two consequences to carry while they are in flight. **E3 is ARMED** (GBAL's entry-5 HIT) and
 **YLOC can fire it** — an (a′) HIT would; firing is the coordinator's action, not a
-direction's. **The forward item "chart irreducibility, un-owned" is now OWNED (CIRR)** — if
-CIRR misses, it returns to the candidate pool with a named gap rather than as an un-owned
-fact. **Not selected this wave and still queued** (ranking in the fan-out doc): (OC-19)
+direction's. **The forward item "chart irreducibility, un-owned" is now CLOSED (CIRR, a
+HIT, §(K-chart))** — all four consumers audit clean, no gap-map status moves.
+**Not selected this wave and still queued** (ranking in the fan-out doc): (OC-19)
 input (c) class-uniformly — OCON's #1 by value but **(GR-15)-flavoured**, the natural next
 primary if YLOC's localization succeeds; §(K-out) items 3 and 4; **(d′)**. **Not eligible:**
 route σ's Lean half and the W4 build, both **BLOCKED by the standing 2026-08-05 Lean hold**.
@@ -373,56 +381,43 @@ Reverse-chronological, one line per landing; full derivations live in git,
 `notes/Phase39-design.md`, and (for the (K) arc) the workbook section named in each entry, which
 is the canonical home a successor reads.
 
-- **The EIGHTEENTH direction — LTWO, LANDED 2026-08-19** (canonical home §(K-Λ) *Steps
-  Λ8–Λ12*, `w4/ltwo.py`; last of the sixth fan-out's five to land, closing the fan-out).
-  **Honest MISS on the "class forbids it" branch — item (vii) REALIZED**: **(Λ4)** the branch
-  calculus reduces class membership to a statement about `G°` alone; **(Λ5)/(Λ6)** the
-  companion-cycle lemma and size floor (`|V| ≥ 21` at `j = 2`, `≥ 26` at `j = 3`); **(Λ7)/(Λ8)**
-  witnesses `LT21a`/`LT21b`/`LT26` REALIZE all four two-hub-interior patterns at a hard-stratum
-  target-rank chart point, classifying (Λ0i)'s exact coverage. **Correction**: `outer.py
-  --patterns`'s "4 of 8" reading is a cap artifact (`V5e8` capped at 400/19 041 tuples, never
-  past split 0 of 8); uncapped, 7 of 8 realize. Λ-completeness stands; (K-wit)'s residual
-  recomputed not re-graded; no gap-map status move; no g-flank; (GR-15) untouched.
+- **The TWENTY-FOURTH direction — CIRR, LANDED 2026-08-19** (canonical home new §(K-chart)
+  `notes/Pencil-informal.md`, `w4/cirr.py`; first of the seventh fan-out's five to land,
+  `notes/Pencil-fanout.md` §"Twenty-fourth direction"). **A HIT**: **(CH-1)** proves the
+  pencil chart of `G′` (girth ≥ 4, not the stated ≥ 3 — **(CH-5)**'s correction to
+  §(K-frame) *Step FR13*) is irreducible, ℚ-rational, a tower of affine-linear fibres whose
+  constant-fibre-dimension clause **is** `IsNondegPencilRealization` conjunct 3 (**(CH-6)**);
+  **(CH-4)** makes the restriction cost no closure; all four consumers
+  (§(K-out)/(K-slide)/(K-dom)/(K-ann)) audit clean (**(CH-7)**). **(CH-8)** self-corrects to a
+  **pointer** at the landed, strictly stronger `not_pencilNondegFeasible_of_triangle_two_hubs`
+  (`Motive.lean:563`). No gap-map status moves; class uniformity, (GR-15), (OC-8), (ANH-R1),
+  entry 5 untouched; TERMINATION fires nothing.
 
-- **The SEVENTEENTH direction — OCON, LANDED 2026-08-19** (canonical home §(K-out) *Steps
-  O13–O18*, fourth of the sixth fan-out's five to land, after GBAL/GLAW/FRES;
-  `notes/Pencil-fanout.md` §"Sixth fan-out"). An **honest MISS carrying three theorems and a
-  reduction**: **(OC-17)** frees (OC-8)'s hard-stratum qualifier (`Z` Zariski-open in the
-  whole chart), striking §(K-frame) (FR-7)'s un-owned-irreducibility sentence; **(OC-18)**
-  gives a degree-free open sufficient condition at both ends of every class pair; **(OC-19)**
-  reduces (OC-8) to `Z ≠ ∅` + chart irreducibility + one rigid chart point — two inputs
-  **ADDED**, and the adversarial control shows `Z ≠ ∅` alone insufficient (3 constructed
-  points in `Z` with `L_b ⊆ R₁`); **(OC-22)** places the residue in §(K-ann) (ANH-R1)'s
-  object class. (OC-8) stays OPEN, reshaped; no gap-map status move; E3 untouched.
-
-- **The NINETEENTH direction — FRES, LANDED 2026-08-19** (no driver; canonical home
-  §(K-frame) *Steps FR12–FR15*, third of the sixth fan-out's five to land after GBAL/GLAW,
-  `notes/Pencil-fanout.md` §"Sixth fan-out"). **Closes §(K-frame) (FR-4)'s named gap**:
-  (FR-15) restates (GR-5) at `G′`; **(FR-16)** — the finding — supplies the
-  chart-MAP-vs-chart-VARIETY clause the gap's name omitted, free at σ-fixed configurations;
-  **(FR-17)** proves the (ANH-R1) β-clause at every bare-cycle site of every `k = 4` class
-  triple with **no named gap**. No `GR-` label minted; entries 1/5, `hK` uniformity, (GR-15)
-  untouched.
-
-- **The FIRST through SIXTEENTH fan-outs/directions — all LANDED 2026-08-05…08-19**
+- **The FIRST through NINETEENTH fan-outs/directions — all LANDED 2026-08-05…08-19**
   (canonical homes the workbook sections named; commits `d5ae55aa`…, `cdd23d30`, `12edc305`,
   `b32c1c2c`, `cd0af9e1` for the first five; CFLANK/GCAP/GUNIF/GEXIST/GORIENT/GDEV/GADM/
-  GPSA/GDESC/GBAL/GLAW (`w4/{cflank,gcap,gunif,gexist,gorient,gdev,gadm,gpsa,gdesc,gbal,
-  glaw}.py`, §(K-grid) Steps G24–G79) the sixth–sixteenth). Twenty-four directions total
-  (thirteen in the first five fan-outs, one per ordinal from the sixth on): (GR-21)–(GR-28)
-  closed TCOL's two flank sites AS ROUTES; GCAP's `g ≤ 1` cap at `k ≥ 3` since REFUTED by
-  GUNIF (both of GUNIF's own targets refuted too, route DEAD); GEXIST/GORIENT honest MISSes
-  ((GR-32)–(GR-39)) re-anchoring the target on bounded-deviation selection; GDEV a
-  REFUTATION-with-successors ((GR-40)–(GR-42)); GADM an honest MISS carrying (GR-43)
+  GPSA/GDESC/GBAL/GLAW/OCON/LTWO/FRES (`w4/{cflank,gcap,gunif,gexist,gorient,gdev,gadm,gpsa,
+  gdesc,gbal,glaw,ocon,ltwo}.py`; FRES no driver) the sixth–nineteenth). Twenty-seven
+  directions total (thirteen in the first five fan-outs, one per ordinal from the sixth on):
+  (GR-21)–(GR-28) closed TCOL's two flank sites AS ROUTES; GCAP's `g ≤ 1` cap at `k ≥ 3` since
+  REFUTED by GUNIF (both of GUNIF's own targets refuted too, route DEAD); GEXIST/GORIENT
+  honest MISSes ((GR-32)–(GR-39)) re-anchoring the target on bounded-deviation selection;
+  GDEV a REFUTATION-with-successors ((GR-40)–(GR-42)); GADM an honest MISS carrying (GR-43)
   (shift-metric UNBOUNDED), routing overridden by GPSA; GPSA proves entry 5's parity half
   ((GR-44)); GDESC RESHAPES the balance half ((GR-45)–(GR-48)) into input (X); **GBAL PROVES
   it** ((GR-49)–(GR-54), the balance theorem — route-ledger entry 5 in BOTH halves, the arc's
   first HIT, discharging (X), re-deriving GPSA's parity half without Petersen); **GLAW** an
   honest MISS on **(a′)** ((GR-55)–(GR-58) coordinates + exhaustive `n_hub ≤ 6` verification;
   (GR-59) REFUTES the per-matching variant; (GR-60) names residual input (Y) — GBAL's proof
-  does **not** transfer to it). (b′) supported; headline positives (GR-9)/(FR-R1) PROVEN,
-  (GR-15) OPEN throughout; uniformity untouched; E1/E2 never fired, **E3 ARMED by GBAL, not
-  fired**.
+  does **not** transfer to it); **OCON** an honest MISS freeing (OC-8)'s hard-stratum
+  qualifier ((OC-17)–(OC-22): `Z` Zariski-open not a stratum, (OC-8) reduced to `Z ≠ ∅` +
+  chart irreducibility + one rigid chart point, two inputs ADDED not removed); **LTWO** an
+  honest MISS on the "class forbids it" branch, §(K-Λ) item (vii) REALIZED at a proven size
+  floor ((Λ4)–(Λ8): `|V| ≥ 21`/`26`, witnesses `LT21a`/`LT21b`/`LT26`, Λ-completeness stands);
+  **FRES** closes §(K-frame) (FR-4)'s named gap with no rider ((FR-15)–(FR-17): the
+  chart-MAP-vs-chart-VARIETY clause, the (ANH-R1) β-clause at every bare-cycle site). (b′)
+  supported; headline positives (GR-9)/(FR-R1) PROVEN, (GR-15) OPEN throughout; uniformity
+  untouched; E1/E2 never fired, **E3 ARMED by GBAL, not fired**.
 
 - **The 2026-08-05 research cluster, one-lined** (all same day; full detail
   `Phase39-design.md` + git, workbook sections named): notes reorganization

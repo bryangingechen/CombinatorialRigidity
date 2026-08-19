@@ -5672,7 +5672,7 @@ wave*, and a future top-rung recon may overturn the bars below freely.
 | **BALB** | compute-licensed | (b′), the balance-layer bound `d_adm − d_par ≤ 2` | dispatched 2026-08-19 |
 | **AGLU** | compute-licensed | ledger attack (c) — AA-glue realizability at `n_hub ≥ 8` | dispatched 2026-08-19 |
 | **ZNEQ** | compute-licensed | (OC-19) input (a) — `Z ≠ ∅` at every class (shape, split) | dispatched 2026-08-19 |
-| **CIRR** | derivation-first | chart irreducibility, written down once as a standalone statement | dispatched 2026-08-19 |
+| **CIRR** | derivation-first | chart irreducibility, written down once as a standalone statement | **LANDED 2026-08-19** — a HIT (§"Twenty-fourth direction") |
 
 **Shared mechanics: §"Shared mechanics (all three dispatches)" above binds
 verbatim**, at five directions instead of three, with three deltas. (1) Drafts
@@ -5929,97 +5929,78 @@ them, and do not re-sample either.
 
 ### Twenty-fourth direction — CIRR (seventh fan-out)
 
-**Status: dispatched 2026-08-19, opus, DERIVATION-FIRST tier.** Labels
-reserved: **new section §(K-chart)**, tag **`CH-`** — **(CH-1)+**, **Steps
-CH1–CH8**. Both the section name and the prefix were verified **0-hit** across
-`*.md`, `*.tex`, `*.lean`, `*.py`, `*.m2` at reservation time, as was the code
-`CIRR`. Driver: **`notes/scripts/w4/cirr.py` reserved, expected unused.**
+**Status: LANDED 2026-08-19 — a HIT.** First of the seventh fan-out's five
+directions to land; one of **five** concurrent directions (YLOC/BALB/AGLU/
+ZNEQ still in flight), **derivation-first** tier. §(K-chart) **OPENED**,
+**Steps CH1–CH8**, labels **(CH-1)–(CH-8)** claimed exactly (nothing returned
+to the pool, `notes/Pencil-labels.md`). Driver `notes/scripts/w4/cirr.py`,
+three modes, ~1 s total — written, contrary to this direction's "expected
+unused" driver clause, because two of its sentences are sampler-behaviour
+claims no amount of prose settles (F11).
 
-**The target — write chart irreducibility down, ONCE, as a standalone statement
-with a proof:** the pencil chart at a class (shape, split) — `G′ = G − v + ab`'s
-chart, i.e. `place_pencil_general(G′, …)`'s image — is an **irreducible**
-variety, presented as the **tower of affine-linear fibres** with the
-**constant-fibre-dimension clause made explicit**.
+**The verdict: the pencil chart is irreducible, written down once, and all
+four consumers audit clean.** **(CH-1)** states it: for `Γ` loopless with
+`hcard`, min degree 2 and **girth ≥ 4**, the pencil incidence locus `𝒜(Γ)` is
+a nonempty, irreducible, ℚ-rational variety, and so is its image
+`Chart(Γ)` — a tower of affine-linear fibres (hub points free; hub normals in
+the nullspace of hub-neighbour differences; interiors on `meet_line` /
+`in_plane_point` / free), with `hcard` exactly the hypothesis that keeps the
+normal-space fibre nonzero. **(CH-6)** identifies the tower's
+constant-fibre-dimension restriction — the clause the dispatch asked to be
+made explicit — as **`IsNondegPencilRealization`'s own conjunct 3**
+(`LinearIndepOn K normal (closedHubNbhd v)`, `Motive.lean:110`), which `hK`'s
+hypothesis `HasGenericPencilRealization K 3 G′` and the harness guard
+`repin.star_generic` both already carry about `G′`. **(CH-4)** shows the
+restriction costs no closure — `𝒜(Γ) = \overline{𝒫(Γ)}`, so a legal
+realization off the restriction is still a point of the same irreducible
+variety, which is exactly what §(K-slide) (S1)(e) needs. **(CH-5)** is the
+one correction: *Step FR13*'s stated hypotheses (girth ≥ 3) do **not** give
+nonemptiness — a Λ-triangle carrying a non-hub on two of its hubs empties the
+tower's stage-3 locus at **every** seed (`Γ_bad`, 0/200 placeable, the reason
+asserted, not just the symptom) — and girth ≥ 4 does, free at `G′` **three**
+independent ways: the girth-6 table row, `gridcol.class_shape`'s two-hub-
+triangle filter, and (see below) the landed Lean theorem. **(CH-7)** audits
+all four named consumers — §(K-out) (OC-19) input (b), §(K-slide) (S1)(e),
+§(K-dom) (D4), §(K-ann) (ANH-9)(ii) — clean, with two needing strictly more
+than bare irreducibility (rationality; the closure clause (CH-4)) and both
+supplied.
 
-**Why this is a direction and not a footnote.** The sixth fan-out found the same
-fact **twice, independently, neither direction seeing the other's half, on the
-same day.** **OCON** names it *"the arc's most-consumed un-driver-tested
-fact"* — load-bearing for **§(K-out) (OC-19) input (b)**, **§(K-slide)
-(S1)(e)**, **§(K-dom) (D4)** and **§(K-ann) (ANH-9)(ii)** at once — and its
-*What would change this* item 2 says a failure *"would break this pass,
-§(K-slide) (S1)(e), §(K-dom) (D4) and §(K-ann) (ANH-9)(ii) at once."*
-**FRES**, independently, found (ANH-9)(ii)'s own phrase *"irreducible rational
-parametrization"* **imprecise as landed**: literally true only on
-`place_pencil_general`'s **constant-fibre-dimension locus**, because off it the
-fibres jump and the phrase is not a parametrization. **No consumer is
-disturbed** — every one needs only irreducibility, which the restriction still
-supplies — but the fact is now **used by at least two independent routes and
-owned by nobody**, written down once in §(K-out)'s *What would change this* and
-never as a statement. OCON's own words for the deliverable: *"a pass that
-writes it down … would be cheap insurance for four sections."*
+**One self-correction, recorded because it is the point the duplicate check
+(CH-8) itself introduced.** (CH-8) reached the coordinator as a new
+incidental claim (a triangle with two adjacent hubs makes the pin infeasible)
+and coordinator verification found it **subsumed by a landed,
+compiler-checked theorem** — `not_pencilNondegFeasible_of_triangle_two_hubs`
+(`Motive.lean:563`, not `Witness.lean`, whose hits are call sites) — in a
+**strictly stronger** form (two hubs, arbitrary third vertex, no `hcard`
+hypothesis at all). (CH-8) lands as a **pointer, not a claim**; this
+direction's own addition there is only the chart-side contrast the landed
+theorem does not state — `𝒜(Γ) ≠ ∅` at 174/200 seeds of a triangle-carrying
+control while `PencilNondegFeasible` is false there — and the duplicate check
+it forced across (CH-1)–(CH-7) found one further partial duplicate:
+(CH-6)(i)'s hub-side mechanism runs inline inside the landed theorem's proof,
+but only for the **triangle** configuration — the tower's own Λ-**path** case
+(`h₁ – x – h₂`, `h₁ ≁ h₂`) is outside the landed theorem's reach, and the
+driver carries a witness asserting the graph has **no** two-hub triangle so
+the non-duplication is itself driver-tested.
 
-**The deliverable, in three parts.**
+**What did NOT move.** No gap-map status moves: (OC-8), (ANH-R1), (GR-15),
+`hK`'s class uniformity, the balance layer and route-ledger entry 5 are
+exactly where they were — writing down a consumed fact is insurance, not a
+status move. §(K-frame) (FR-7) **stays struck** (not re-opened): (OC-17)
+already struck it as unnecessary, and (CH-1) is the chart's irreducibility
+that struck it, not a new foothold. Two wording-only cells the coordinator
+approved: §(K-out)'s (OC-19) confidence row now reads *"(b) proven,
+§(K-chart) (CH-1)"* in place of *"conditional on (b)"*; §(K-frame) (FR-16)'s
+rider list gains the girth ≥ 4 correction. Every bar held: no counting /
+matroid route was proposed, and (GR-15)/class uniformity/the `g`-detector/the
+balance layer were not touched. The TERMINATION check fires nothing: E1 (no
+g-flank, no colouring examined), E2 (entry 5 untouched) and E3 (stays ARMED
+for YLOC, not fired — (CH-1) is not a ledger entry) are all unchanged.
 
-1. **The statement**, with the **constant-fibre-dimension hypothesis explicit**
-   and the **ambient named** — which variety, over which field, of which
-   `(shape, split)`.
-2. **The proof**, as *Step FR13*'s tower (FRES's own account of the ambient)
-   turned into an argument: hub points sampled free; hub normals from the
-   **nullspace of hub-neighbour differences**; non-hubs on
-   `meet_line` / `in_plane_point` / free; and the **`hcard` clause that makes
-   the "three independent hub neighbours" branch unreachable**. Each fibre
-   affine-linear over the previous stage is what buys irreducibility; the
-   constant-fibre-dimension restriction is what makes "fibre" well-defined.
-3. **A consumer audit** — for **each** of the four named consumers, the **exact
-   sentence** it needs and whether the statement as proven supplies it. **Flag
-   any consumer that needs more than irreducibility** (e.g. one that needs
-   *rational* parametrization, or irreducibility of a *different* variety, or
-   density of the constant-fibre-dimension locus). This audit is the half that
-   makes the pass insurance rather than bookkeeping.
-
-**Read the source facts off the landed definitions and the landed driver
-source, NOT their docstrings** — the CLAUDE.md *"docstrings are not evidence"*
-clause, and FRES's *Verification* table is the model to reproduce (a table of
-fact / where / what was read). The four pointers FRES already opened, reuse
-them rather than re-finding them: `Molecule/Pencil/Motive.lean:82`
-(`closedHubNbhd`, the **definition body**), `Chart.lean:393,412`
-(`pencilChartPoint`, `pencilChartNormal`), `Engine.lean:89`
-(`PencilSeed.ofCoord`, `fillNbr := fillHub`), and
-`notes/scripts/w4/widened.py:160` (`place_pencil_general` — **points-first**:
-hub points free, `nrm[h]` from the nullspace of hub-neighbour differences,
-`return None` at three independent hub neighbours, unreachable under `hcard`).
-Also confirmed landed and reusable: `outer.py:242` (`chart_point`),
-`dominance.py:547` (`base_seed`), `repin.py:225` (`seed_probe`) all call
-`place_pencil_general(Gp, …)` with `Gp = G − v + ab`, so **the chart is `G′`'s,
-not `G`'s** — do not restate it as `G`'s.
-
-**What a HIT is** — the statement **proven-informally with no named gap**, and
-**all four consumers audited clean**. **An honest MISS** is a **named gap** in
-the tower — the constant-fibre-dimension locus not dense, a fibre not
-affine-linear, or one consumer needing strictly more — with **which consumer**
-and **how badly** stated. Either is a good return; a vague "it is irreducible,
-as everyone assumed" is not.
-
-**Bars.** This is **not** a licence to re-open §(K-frame) *What would change
-this* item (iii), the **(FR-7) irreducibility foothold** — that is **struck as
-unnecessary** by §(K-out) **(OC-17)** (`Z`'s irreducibility is the *chart's*,
-owned by (ANH-9)(ii)), which is the **opposite** of entering it; no bar is
-crossed by staying out. This direction does **not** touch class uniformity,
-(GR-15), the `g`-detector, the balance layer or route-ledger entry 5, and it
-does **not** move any gap-map status by itself — writing down a consumed fact is
-**insurance, not a status move**. If you conclude a status *should* move, say so
-and leave it to the coordinator. If you conclude the fact belongs **inside**
-§(K-out) rather than in its own section, say that too and leave the section
-placement to the coordinator — but **mint under `CH-` regardless**, so no
-rename is needed either way.
-
-**Driver expectation.** `cirr.py` is **reserved and expected unused**:
-**FRES's precedent** is that a pass may legitimately return **no driver at all**
-when every hypothesis it consumes is already asserted by a landed driver and
-everything above them is proof, which no driver mode can test (F11). If a
-driver **is** written, F11 binds in full — each headline claim needs a mode that
-tests **that sentence**, and `notes/scripts/README.md` §3 owes an invocation
-row.
+**Compute.** Three modes, `--empty`/`--guard`/`--fibre` (`--all` runs all
+three), ~1 s total, `PYTHONHASHSEED=0`; one driver added, nothing existing
+modified, so the figure-invariance gate discharges by that check alone.
+Invocation rows landed in `notes/scripts/README.md` §3.
 
 ### Not selected, and why — the coordinator's ranking of the losers
 
