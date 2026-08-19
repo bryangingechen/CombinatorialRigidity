@@ -22,8 +22,9 @@ g-flank at any of the thirty-two directions. E3 is ARMED (by GBAL) and has NOT f
 Direction codes are **multi-letter and topic-tagged from the fifth fan-out on**
 (`notes/Pencil-labels.md` (L5)); grandfathered single letters are re-used across dates,
 **always date those**.
-**Next concrete task: the two SCHEDULED rounds, in order — doc-split, then discipline
-distillation** (both agreed with the user this session; see *Hand-off*).
+**Next concrete task: doc-split round slice 2 — archive `Pencil-fanout.md`'s
+history — then discipline distillation** (`notes/Pencil-structure.md`; slice 1
+LANDED 2026-08-19; see *Hand-off*).
 
 ## Current state
 
@@ -236,11 +237,12 @@ half refuted at an exact `n_hub = 8` boundary, ZNEQ OPEN/NOT-an-independent-gap 
 half open at (OC-19)(c)'s shape), AGLU a HIT on the "not realizable" branch (the AA-glue
 configuration NOT realizable at `n_hub = 8`, the (GR-38) kill a non-vacuous THEOREM there
 — but the dispatch's own predicted binding-laminarity consequence REFUTED, 3 774
-crossing pairs, pushing the open case to `n_hub ≥ 10`); canonical homes new §(K-chart),
-§(K-grid) *Steps G80–G97* and §(K-out) *Steps O19–O24* (`notes/Pencil-informal.md`),
-verdicts in `notes/Pencil-fanout.md` §§"Twenty-fourth"/"Twentieth"/"Twenty-first"/
-"Twenty-third"/"Twenty-second direction" — **not restated here**. **Next concrete task:
-the two rounds SCHEDULED at the wave's close, below — the wave has now closed.**
+crossing pairs, pushing the open case to `n_hub ≥ 10`); canonical homes new §(K-chart)
+and §(K-out) *Steps O19–O24* (`notes/Pencil-informal.md`), §(K-grid) *Steps G80–G97*
+(now `notes/Pencil-informal-grid.md`), verdicts in `notes/Pencil-fanout.md`
+§§"Twenty-fourth"/"Twentieth"/"Twenty-first"/"Twenty-third"/"Twenty-second direction" —
+**not restated here**. **Next concrete task: doc-split slice 2, then discipline
+distillation — see *Hand-off*.**
 
 **E3 is ARMED** (GBAL's entry-5 HIT) but **not fired by any of the ten** (a′ not hit,
 only its pinned route demoted by YLOC; firing is the coordinator's action). **"Chart
@@ -255,23 +257,28 @@ successor routing is in *Decisions made*); §(K-out) items 3/4; attack (c) at
 **BLOCKED by the standing 2026-08-05 Lean hold**.
 
 **Awaiting user adjudication, NOT in the standing 2026-08-07 delegation's dispatchable
-pool — three items, carried forward unchanged.** *(1)* ZNEQ names a `σ > 0`-everywhere
+pool — carried forward unchanged.** ZNEQ names a `σ > 0`-everywhere
 hunt at class shapes whose `H` carries a short theta sub-multigraph — a hit is a
 **PENCIL event** (`hK` FALSE there), which the direction-A pivot rule
 (`notes/Pencil-fanout.md` §"Direction A") makes *"a phase-redefining event for the user to
-adjudicate, not a result to build on"* — excluded until adjudicated. *(2)–(3)* the
-go-ahead to run the two scheduled rounds below (agreed in shape this session; not yet
-explicitly triggered). **A wave-closing exception-log commit to `notes/dispatch-log.md`
+adjudicate, not a result to build on"* — excluded until adjudicated. The doc-split
+round's go-ahead **was** exercised this session (slice 1 landed, below); the
+discipline-distillation round's go-ahead is still only agreed in shape, not yet
+triggered. **A wave-closing exception-log commit to `notes/dispatch-log.md`
 is owed and is the coordinator's, not a build agent's** — not made in this commit.
 
-**Two rounds SCHEDULED at the wave's close — the wave has now closed, agreed with the
-user this session — do not skip.** *(1)* **Doc-split**: §(K-grid) (8553 lines, 39%
-of the 21851-line workbook) to its own file; `Pencil-fanout.md`'s ~6300 lines of landed
-history to an archive file (precedent: `FRICTION.md` → `FRICTION-archive.md`, `88436c0b`);
-the *Section index* becomes a **file** index, retiring the line-range staleness every
-landing recomputes (this file's own top header, `notes/Pencil-fanout.md` line 3, has not
-moved since the sixth fan-out — the split absorbs that debt rather than a piecemeal patch).
-*(2)* **Discipline distillation, immediately after**: promote this phase's research-arc
+**The doc-split round is OPEN — `notes/Pencil-structure.md`.** *(1)* **Slice 1,
+LANDED 2026-08-19:** §(K-grid) (9883 lines, not the round-opening 8553 estimate)
+moved **verbatim** to the new `notes/Pencil-informal-grid.md`; the *State of (K)*
+gap map (incl. §(K-grid)'s row) stayed whole in `Pencil-informal.md`; its
+*Section index* row is now a **file** reference, cross-references repointed,
+§(K-frame)/§(K-chart)/§(K-mech)'s index rows now stale (recompute owed) — full
+detail in `notes/Pencil-structure.md`. *(2)* **Slice 2, NEXT:**
+`Pencil-fanout.md`'s ~6300 lines of landed history to an archive file (precedent:
+`FRICTION.md` → `FRICTION-archive.md`, `88436c0b`; its own top header,
+`notes/Pencil-fanout.md` line 3, has not moved since the sixth fan-out).
+*(3)* **Discipline distillation, immediately after**: promote this phase's
+research-arc
 discipline into a new read-on-demand `RESEARCH-ARC.md` (alongside `CLEANUP.md`,
 `PHASE-BOUNDARIES.md`). **Ready** (three-plus waves): label reservations + the minting
 rule; serial coordinator landing, agents committing nothing, drafting outside the tree;
@@ -378,9 +385,9 @@ Reverse-chronological, one line per landing; full derivations live in git,
 is the canonical home a successor reads.
 
 - **The FIRST through TWENTY-FOURTH fan-outs/directions — all LANDED 2026-08-05…08-19**
-  (canonical homes the workbook sections — incl. new §(K-chart), §(K-grid) *Steps
-  G80–G97*, §(K-out) *Steps O19–O24* — and `notes/Pencil-labels.md` registry, full
-  per-direction label detail there, not restated here; drivers
+  (canonical homes: §(K-chart)/§(K-out) *Steps O19–O24* in the workbook, §(K-grid)
+  *Steps G80–G97* now `notes/Pencil-informal-grid.md` — and `notes/Pencil-labels.md`
+  registry, full per-direction label detail there, not restated here; drivers
   `w4/{cflank,gcap,gunif,gexist,gorient,gdev,gadm,gpsa,gdesc,gbal,glaw,ocon,ltwo,cirr,
   yloc,balb,zneq,aglu}.py`, FRES no driver). Thirty-two directions total (thirteen in
   the first five fan-outs, one per ordinal from the sixth on): CFLANK/GCAP/GUNIF closed

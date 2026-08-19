@@ -3,7 +3,7 @@
 (a'), the `d_fg = d_adm` LAW, at route-ledger entry 1.
 
 Answers `notes/Pencil-fanout.md` S"Seventeenth direction -- GLAW"; the
-mathematics is workbook S(K-grid) *Steps G74-G79*, labels (GR-55)-(GR-60).
+mathematics is `notes/Pencil-informal-grid.md` S(K-grid) *Steps G74-G79*, labels (GR-55)-(GR-60).
 
 Everything here is at `Lambda = empty`, `D = 0`, modulo (GR-4').  The
 target is entry 1's primary attack (a'): at every habitat shape the

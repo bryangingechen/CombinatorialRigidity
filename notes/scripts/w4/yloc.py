@@ -4,7 +4,7 @@ GBAL's (GR-49)-(GR-54) instrument LOCALIZE to proper chunks, and does it
 discharge input (Y) -- (a')'s named residual, §(K-grid) (GR-60)?
 
 Answers `notes/Pencil-fanout.md` §"Twentieth direction -- YLOC"; the
-mathematics is workbook §(K-grid) *Steps G80-G85*, labels (GR-61)-(GR-66).
+mathematics is `notes/Pencil-informal-grid.md` §(K-grid) *Steps G80-G85*, labels (GR-61)-(GR-66).
 
 Everything here is at `Lambda = empty`, `D = 0`, modulo (GR-4').  Nothing
 here closes (GR-15); (a') is NOT hit here, so E3 (ARMED by GBAL's

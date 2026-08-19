@@ -14,7 +14,7 @@ A `w4/` leaf beside `gcap.py`, importing `gcap.py` / `cflank.py` /
     PYTHONHASHSEED=0 python3 notes/scripts/w4/gunif.py --validate # all four in one process (~2 s -- inside the 600 s budget)
 
 Argument state: session draft `fanout-GUNIF.md` (to be merged into
-`notes/Pencil-informal.md` §(K-grid) as Steps G34+; labels (GR-29)+ per the
+`notes/Pencil-informal-grid.md` §(K-grid) as Steps G34+; labels (GR-29)+ per the
 2026-08-13 GUNIF prep in `notes/Pencil-fanout.md`).
 
 THE DERIVED STRUCTURE THE MODES REST ON (proofs in the draft; asserted here

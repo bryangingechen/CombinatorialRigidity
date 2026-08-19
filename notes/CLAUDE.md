@@ -36,9 +36,12 @@ for *organizing* this directory is here.
   (proven-informally / true-modulo-named-gap / open / refuted) plus a "what
   would change this" line. Dated recon history stays in
   `Phase39-design.md`; this file carries only the mathematics. It holds the
-  live **kernel-(K)** arc, the **Shared dictionary** both workbooks use, and
-  the **State of (K)** gap map (the artifact a new pass *updates* rather than
-  re-summarizing). **The gap map's per-cell size is machine-gated**
+  live **kernel-(K)** arc except §(K-grid) (split out 2026-08-19, see
+  `Pencil-informal-grid.md` below), the **Shared dictionary** both workbooks
+  use, and the **State of (K)** gap map — which stays whole here, including
+  §(K-grid)'s own row, since it is the phase's single status object (the
+  artifact a new pass *updates* rather than re-summarizing). **The gap map's
+  per-cell size is machine-gated**
   (`notes/check-gapmap-cells.py`, the `check-log-rows.py` shape adapted to
   this table): the `(K-grid)` row alone regressed from a changelog into a
   current-state cell and back four times (dc4ecc7b → 2ab3c630, prose-only
@@ -52,6 +55,13 @@ for *organizing* this directory is here.
   kept at full detail because they are the input to the eventual W4 build,
   which the route-3(b) adjudication parks. Same discipline; the (K) arc is
   the sibling file above.
+- **`Pencil-informal-grid.md`** — §(K-grid) of the same workbook, split out
+  2026-08-19 (`notes/Pencil-structure.md` slice 1) because the section alone
+  had grown to 9883 lines (39% of the parent file, six times the
+  next-largest section). Verbatim relocation — same editing discipline as
+  the sections that stayed behind; `Pencil-informal.md`'s *Section index*
+  points here, and its *State of (K)* gap map (incl. §(K-grid)'s own row)
+  did **not** move.
 - **`Pencil-labels.md`** — the Phase-39 **label registry and minting rule**: one
   index of every label token in use across the pencil doc set, the measured
   diagnosis of why bare single-letter families collide while topic-tagged ones

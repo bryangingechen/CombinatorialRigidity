@@ -17,7 +17,7 @@ route `packmm.py` takes).  Run from the repo root:
     PYTHONHASHSEED=0 python3 notes/scripts/w4/gcap.py --validate  # all five in one process -- OVER the 600 s foreground budget (~700 s); run the modes separately
 
 Argument state: session draft `fanout-GCAP.md` (to be merged into
-`notes/Pencil-informal.md` §(K-grid) as Steps G29+; labels (GR-27)+ per the
+`notes/Pencil-informal-grid.md` §(K-grid) as Steps G29+; labels (GR-27)+ per the
 2026-08-12 GCAP reservation in `notes/Pencil-labels.md`).
 
 THE TWO STRUCTURE THEOREMS THE MODES REST ON (proofs in the draft; both are

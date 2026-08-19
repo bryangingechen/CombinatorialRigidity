@@ -14,7 +14,7 @@ packmm -> gridwit -> grid).  Run from the repo root:
     PYTHONHASHSEED=0 python3 notes/scripts/w4/gridcol.py --validate  # all five
 
 Argument state: session draft `fanout-TCOL.md` (to be merged into
-`notes/Pencil-informal.md` §(K-grid) as Steps G19+; labels (GR-16)+ per the
+`notes/Pencil-informal-grid.md` §(K-grid) as Steps G19+; labels (GR-16)+ per the
 2026-08-07 PEX/TCOL reservation in `notes/Pencil-labels.md`).
 
 WHAT IS NEW HERE, in one paragraph.  §(K-grid) Steps G1-G18 work inside the

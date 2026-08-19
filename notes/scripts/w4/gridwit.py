@@ -9,7 +9,7 @@ the repo root:
     PYTHONHASHSEED=0 python3 notes/scripts/w4/gridwit.py --wide       # cheap kill (ii): generic dim Z vs max(bounds) on a widened colouring pool
     PYTHONHASHSEED=0 python3 notes/scripts/w4/gridwit.py --validate   # all three
 
-Argument state: `notes/Pencil-informal.md` §(K-grid) Steps G8–G13 /
+Argument state: `notes/Pencil-informal-grid.md` §(K-grid) Steps G8–G13 /
 labels (GR-7)–(GR-11) (fan-out direction G, landed 2026-08-06).
 
 WHAT EACH MODE TESTS, one sentence each (F11: the driver tests the exact

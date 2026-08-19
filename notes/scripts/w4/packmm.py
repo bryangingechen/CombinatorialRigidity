@@ -12,7 +12,7 @@ Run from the repo root:
     PYTHONHASHSEED=0 python3 notes/scripts/w4/packmm.py --validate # all four (~2 min)
 
 Argument state: session draft `fanout-E.md` (to be merged into
-`notes/Pencil-informal.md` §(K-grid) as Steps G14+; labels (GR-12)+ per the
+`notes/Pencil-informal-grid.md` §(K-grid) as Steps G14+; labels (GR-12)+ per the
 2026-08-06 E/J reservation in `notes/Pencil-labels.md`).
 
 WHAT EACH MODE TESTS, one sentence each (F11: the driver tests the exact

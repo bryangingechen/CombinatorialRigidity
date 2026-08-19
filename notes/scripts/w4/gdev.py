@@ -18,7 +18,7 @@ READ-ONLY (README §2).  Run from the repo root:
     PYTHONHASHSEED=0 python3 notes/scripts/w4/gdev.py --validate # all four in one process
 
 Argument state: session draft `fanout-GDEV.md` (to be merged into
-`notes/Pencil-informal.md` §(K-grid) as Steps G48+; labels (GR-40)+ per the
+`notes/Pencil-informal-grid.md` §(K-grid) as Steps G48+; labels (GR-40)+ per the
 2026-08-14 GDEV reservation in `notes/Pencil-labels.md`).
 
 THE DERIVED STRUCTURE THE MODES REST ON (proofs in the draft; asserted here

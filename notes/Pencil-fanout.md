@@ -1438,7 +1438,7 @@ driver basename `gunif`, and — checked but **not** used —
 ### The two targets
 
 Both from §(K-grid) *Step G33*'s *What would change this* items (i)–(ii)
-(§(K-grid) Steps G29–G33, `notes/Pencil-informal.md`):
+(§(K-grid) Steps G29–G33, `notes/Pencil-informal-grid.md`):
 
 **(a)** Close **(GR-28)(iv)'s `k ≥ 3` case** — the finite dart-menu case
 analysis whose standing evidence is exhaustive at **549 172** NC1-passing
@@ -2930,7 +2930,7 @@ G49's "costs 2 in the balance layer" and "the whole stick is the
 balance layer's" are both corrected in place).  **No g-flank; (GR-15)
 stays OPEN, unchanged; no gap-map status moves.**  The TERMINATION
 check on this landing is recorded below the route ledger.  The
-mathematics: workbook §(K-grid) *Steps G53–G57*; driver `w4/gadm.py`
+mathematics: `notes/Pencil-informal-grid.md` §(K-grid) *Steps G53–G57*; driver `w4/gadm.py`
 (rows in `notes/scripts/README.md` §3).
 The eleventh landing's otherwise-clause routes the twelfth to *"the
 growth-law question at the necklace family"*, and this prep takes that
@@ -3600,7 +3600,7 @@ insufficient for balance (638/1655 μ-classes balance-free — an
 is refuted while its inward form holds exhaustively.  **No g-flank; no
 `d_adm = ∞` anywhere; (GR-15) stays OPEN, unchanged; no gap-map status
 moves.**  The TERMINATION check on this landing is recorded below the
-route ledger.  The mathematics: workbook §(K-grid) *Steps G58–G62*;
+route ledger.  The mathematics: `notes/Pencil-informal-grid.md` §(K-grid) *Steps G58–G62*;
 driver `w4/gpsa.py` (rows in `notes/scripts/README.md` §3).
 
 **Selection provenance — the fable-recon shape returns, and this time
@@ -4142,7 +4142,7 @@ of its proof-shaped decomposition instantiated. **(a′) was not
 attempted.** **No g-flank; no `d_adm = ∞` anywhere at full
 enumeration; (GR-15) stays OPEN, unchanged; no gap-map status moves.**
 The TERMINATION check on this landing is recorded below the route
-ledger. The mathematics: workbook §(K-grid) *Steps G63–G67*; driver
+ledger. The mathematics: `notes/Pencil-informal-grid.md` §(K-grid) *Steps G63–G67*; driver
 `w4/gdesc.py` (rows in `notes/scripts/README.md` §3).
 
 **Two in-place corrections this landing makes to the landed *Step
@@ -4352,7 +4352,7 @@ clause is not — and it must never be written as retired.**
 ### Step 0 — mandatory load-bearing pin, before any derivation
 
 The standing Step-0 discipline, sharpened for this target: **pin from
-the landed bodies** in `notes/Pencil-informal.md` §(K-grid) *Steps
+the landed bodies** in `notes/Pencil-informal-grid.md` §(K-grid) *Steps
 G58–G62* and *Steps G53–G57* — the actual statement and proof text —
 **not** from this spec's restatements, not from any return summary, and
 not from the gap-map row. (This spec's own paraphrases are navigation
@@ -4928,7 +4928,7 @@ reading is *(a′) + per-shape admissibility already proven ⟹ E3 fires*,
 so E3 now fires on the next (a′) HIT and never before. The
 TERMINATION check on this landing is recorded in the workbook at
 *Step G73* and re-run by the coordinator below. The mathematics:
-workbook §(K-grid) *Steps G68–G73*; driver `w4/gbal.py` (rows in
+`notes/Pencil-informal-grid.md` §(K-grid) *Steps G68–G73*; driver `w4/gbal.py` (rows in
 `notes/scripts/README.md` §3).
 
 **Riders honoured, verbatim.** `Λ = ∅`, `D = 0`, modulo (GR-4′) where a
@@ -4999,7 +4999,7 @@ matching**. **(GR-60)** names the residual **input (Y)**: a joint
 matching-and-representative selection statement in the (GR-55)
 coordinates. **No g-flank; (GR-15) stays OPEN, unchanged; no gap-map
 status moves; entry 1 OPEN with (a′) still its primary and still with no
-bar; E3 NOT armed.** Mathematics: workbook §(K-grid) *Steps G74–G79*;
+bar; E3 NOT armed.** Mathematics: `notes/Pencil-informal-grid.md` §(K-grid) *Steps G74–G79*;
 driver `w4/glaw.py` (rows in `notes/scripts/README.md` §3).
 
 **Direction code GLAW** (the deliverable **is** the `d_fg = d_adm`

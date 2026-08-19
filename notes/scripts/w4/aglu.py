@@ -19,7 +19,7 @@ READ-ONLY (README §2).  Run from the repo root:
     PYTHONHASHSEED=0 python3 notes/scripts/w4/aglu.py --val      # every fast device cross-certified against the canonical layer
 
 Argument state: session draft `notes/Pencil-draft-AGLU.md` (to be merged into
-`notes/Pencil-informal.md` §(K-grid) as Steps G92+; labels (GR-73)-(GR-78) per
+`notes/Pencil-informal-grid.md` §(K-grid) as Steps G92+; labels (GR-73)-(GR-78) per
 the 2026-08-19 AGLU reservation in `notes/Pencil-labels.md`).
 
 THE DERIVED STRUCTURE THE MODES REST ON (proofs in the draft; ASSERTED here,
