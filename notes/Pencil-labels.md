@@ -15,6 +15,11 @@ below) and anyone unsure what a bare `(C6)`-style token refers to.
 `notes/Pencil-strategy.md`, `notes/Pencil-fanout.md`, `notes/Phase39.md`,
 `notes/Phase39-design.md`.
 
+**This file is the canonical detail for the general rule.** `RESEARCH-ARC.md`
+§1 promotes the reservation-plus-minting-rule pattern for any research-shaped
+phase and carries the *why*; this file stays authoritative for the mechanics
+and every label's meaning.
+
 ## Why this file exists — the measured diagnosis
 
 Six recorded confusion incidents motivated the 2026-08-05 reorganization pass.

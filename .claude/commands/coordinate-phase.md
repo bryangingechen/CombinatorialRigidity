@@ -287,7 +287,14 @@ CLAUDE.md at phase close.
    pair, dissolved in ONE spike). Recon is this workflow's
    highest-leverage move; trigger it **early**, before the next leaf
    (one phase burned ~4 leaf commits on an undischargeable core; the
-   2-leaf trigger is the floor).
+   2-leaf trigger is the floor). **When the research-shaped phase has
+   no Lean at all and runs as a multi-dispatch fan-out of its own**
+   (PENCIL's kernel-(K) shape — read-only recons, no blueprint
+   dep-graph, its own status object in place of green/red nodes),
+   read `RESEARCH-ARC.md` before scoping the wave: label reservations,
+   serial coordinator landing, the gap-map-as-status-object pattern,
+   the driver-per-headline-claim rule, and cap disclosure are all
+   distilled there so a fresh research phase does not reinvent them.
 2. **Rate S/P/B and pick the rung per the Dispatch playbook** (above);
    the rung is carried by the **agent type**, not the `model`
    parameter — dispatch the matching rung-pinned variant

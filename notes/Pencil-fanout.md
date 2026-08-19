@@ -96,26 +96,14 @@ the same-name-different-semantics traps).
 > **The protocol has now been exercised twice, and the second time at a NEW
 > shape (2026-08-05, second research day).** Three read-only recons ran
 > concurrently with **one *committing* dispatch**, all four in a **single working
-> tree**, with **zero collisions**: the committing dispatch's diff contained only
-> its own files, and `git status` stayed clean. The mechanic that made it safe is
-> exactly the one above — read-only agents commit nothing and draft **outside**
-> the repo — so the committing agent's staging area is never contended.
-> **Worktrees were explicitly NOT used, and that was the right call**: the
-> contention here is over *shared documents* (`Pencil-informal.md`, the *State of
-> (K)* map, `Phase39.md`), not over the tree, so a worktree would convert a
-> scheduling problem into a merge problem. Serial landing by the coordinator is
-> what resolves the document contention, and it is unaffected by where the agents
-> ran.
+> tree**, with **zero collisions**. The general rule this exercises (serial
+> coordinator landing; worktrees deliberately not used, and why) is promoted to
+> **`RESEARCH-ARC.md`** §2 — read there, not here.
 
-**And the F11 requirement** (dispatch-log): *each headline claim needs a driver
-that tests that sentence.* This arc's last three passes each corrected a
-predecessor's "proven piece", every one of which survived a coordinator
-scrutiny pass that reproduced the drivers faithfully — because the defects sat
-in claims no driver tested (a premise discharged against the wrong invariant,
-an exhaustiveness assertion backed only by per-instance asserts, a sampler
-whose degeneracy suppressed the phenomenon it sampled). Treat
-"forced" / "exhaustive" / "the only" as their own claim class needing their own
-driver. Do not state a claim more strongly than the driver that tests it.
+**And the F11 requirement** applies (dispatch-log): *each headline claim needs
+a driver that tests that sentence*, with "forced"/"exhaustive"/"the only"
+their own claim class. General statement and rationale: **`RESEARCH-ARC.md`**
+§4 / `notes/dispatch-log.md` **F11** — not restated here.
 
 ## Landing checklist (coordinator, per returned direction)
 

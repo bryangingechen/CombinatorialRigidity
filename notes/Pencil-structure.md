@@ -1,17 +1,23 @@
-# PENCIL doc-split — structural round (work log)
+# PENCIL doc-split / discipline-distillation — structural rounds (work log)
 
-**Status: COMPLETE.** **Slice 1 LANDED 2026-08-19** — §(K-grid) split out of
-`notes/Pencil-informal.md` into its own file, `notes/Pencil-informal-grid.md`.
-**Slice 2 LANDED 2026-08-19** — `notes/Pencil-fanout.md`'s ordinals-1–19 landed
-direction history archived to `notes/Pencil-fanout-archive.md`. This is a
-**structural** round (file layout / navigability), not a defect-cleanup
-round — hence the `Phase22-structure.md`-style name rather than `-cleanup`;
-round discipline is `CLEANUP.md`'s all the same (there is no separate
-structure-round manual). Opened and slice 1 executed in the same commit;
-slice 2 in a follow-up commit the same session. Agreed with the user at the
-seventh fan-out's close (`notes/Phase39.md` *Hand-off*). **Next: the
-discipline-distillation round** (opening it is a coordinator call, not yet
-exercised — `notes/Phase39.md` *Hand-off*).
+**Status: COMPLETE — all three slices LANDED 2026-08-19.** **Slice 1** —
+§(K-grid) split out of `notes/Pencil-informal.md` into its own file,
+`notes/Pencil-informal-grid.md`. **Slice 2** — `notes/Pencil-fanout.md`'s
+ordinals-1–19 landed direction history archived to
+`notes/Pencil-fanout-archive.md`. **Slice 3** — the phase's research-arc
+discipline, invented in-phase and referenced across six files with no
+promoted standing home, distilled into the new read-on-demand root manual
+**`RESEARCH-ARC.md`** (alongside `CLEANUP.md`, `PHASE-BOUNDARIES.md`; pointer
+added to `CLAUDE.md`'s read-on-demand list and to
+`.claude/commands/coordinate-phase.md`'s research-shaped-phase step). This is
+a **structural** round (file layout / navigability / cross-phase promotion),
+not a defect-cleanup round — hence the `Phase22-structure.md`-style name
+rather than `-cleanup`; round discipline is `CLEANUP.md`'s all the same
+(there is no separate structure-round manual). Slices 1–2 opened and landed
+in one session (2026-08-19); slice 3 landed in a follow-up session the same
+day. Agreed with the user at the seventh fan-out's close (`notes/Phase39.md`
+*Hand-off*). **Next: no queued structural work; the kernel-(K) research step
+is UNROUTED, awaiting a pick — see `notes/Phase39.md` *Hand-off*.**
 
 ## Why this round
 
@@ -55,8 +61,18 @@ that cost permanently for it.
   deletion shifted every row after §(K-grid) by −9 883 lines. Left explicitly
   stale (below) rather than silently trusted; slice 2 touched a different
   file's line ranges and did not fold this in either.
-- [x] **Round CLOSED.** Discipline distillation (`notes/Phase39.md`
-  *Hand-off*) is a separate round, not this one's task list.
+- [x] **Slice 3 — discipline distillation.** Write the new root manual
+  `RESEARCH-ARC.md`; per the adjudication, promote six items with
+  three-plus waves of evidence (label reservations + minting; serial
+  coordinator landing; the gap map as status object; F11's
+  driver-per-headline; cap disclosure; mechanical word caps/recompute-not-
+  bump), record three one-wave candidates as watched-not-promoted (pointing
+  at `notes/dispatch-log.md` F18–F21, not restated), and record three
+  genuinely unsettled questions as deferred with the question stated (fan-out
+  width; compute/derivation tier split; prose-recon vs compiler-checked
+  spike). Replace the duplicated general-rule prose in the six referencing
+  files with one-line pointers, per *Lift on promotion*. Detail below.
+- [x] **Round CLOSED.**
 
 ## Decisions made
 
@@ -220,6 +236,53 @@ that cost permanently for it.
   '*.m2'` lists exactly these 6, all comment-only, verified by reading the
   full diff.
 
+## Slice 3 — discipline distillation — Decisions made
+
+- **New file: `RESEARCH-ARC.md` at the repo root**, read-on-demand alongside
+  `CLEANUP.md`/`PHASE-BOUNDARIES.md` (pointer added to both `CLAUDE.md`'s
+  read-on-demand paragraph and `.claude/commands/coordinate-phase.md`'s
+  research-shaped-phase loop step). Not auto-loaded; read when scoping a
+  research-shaped phase.
+- **The three-tier split is the round's main content, not a formatting
+  choice.** A manual presenting all twelve candidate items as settled rules
+  would be worse than none, because a reader could not tell which are
+  load-bearing. **Ready** (six, three-plus waves each): label reservations +
+  minting rule; serial coordinator landing with worktrees deliberately not
+  used; the gap map as the phase's status object; F11's driver-per-headline
+  claim, with "exhaustive"/"forced"/"the only" their own claim class; cap
+  disclosure; mechanical word caps with recompute-not-bump (+ F21's
+  target-and-scripted-diff refinement). **Candidates, not yet promoted**
+  (one wave, 2026-08-19): the duplicate check against landed Lean and
+  concurrent siblings (F20); cross-direction convergence as corroboration
+  (F18/F19); the coordinator-predicted-obstruction category plus
+  coordinator artifacts needing the subagent verification tier (F19) — all
+  three point at `notes/dispatch-log.md` *Findings*, not restated in the
+  manual. **Genuinely unsettled**, deferred with the question stated, no
+  guidance invented: optimal fan-out width; the compute-licensed /
+  derivation-first tier split; when a prose recon beats a compiler-checked
+  spike.
+- **`notes/dispatch-log.md` untouched, by design** — its Findings (F11,
+  F17–F21) are the primary source the manual points at; rewriting them would
+  duplicate exactly what this round exists to stop.
+- **Lift-on-promotion applied to the six referencing files**, per the
+  adjudication's canonical-detail-stays-put rule: `notes/Pencil-labels.md`
+  and `notes/Pencil-informal.md`'s gap-map header and
+  `notes/scripts/README.md` convention 8 are each the **canonical detail**
+  for one promoted item (label reservations; the gap map; cap disclosure
+  respectively) — each gained a one-line pointer to `RESEARCH-ARC.md` for the
+  cross-phase generalization, with no content removed. `notes/Pencil-fanout.md`'s
+  *Shared mechanics* section carried the one genuine **duplicate** — the
+  worktree/serial-landing rationale and the "F11 requirement" paragraph,
+  both full restatements of the general rule inside a live (non-archived)
+  file — trimmed to one-line pointers, the historical fact (exercised twice,
+  zero collisions) kept, the rationale removed to its new canonical home.
+  `notes/dispatch-log.md` and `.claude/commands/coordinate-phase.md` are
+  covered above.
+- **`python3 notes/check-gapmap-cells.py`** — 0 gap-map row(s) checked
+  (changed vs HEAD); all within cap (the one sentence added to
+  `Pencil-informal.md`'s gap-map *header* prose is outside the table, so no
+  cell changed).
+
 ## Follow-up items (not this round's job)
 
 - Recompute the *Section index*'s §(K-frame)/§(K-chart)/§(K-mech) line
@@ -241,10 +304,13 @@ that cost permanently for it.
 
 ## Hand-off / next phase
 
-**Both slices LANDED 2026-08-19; the round is COMPLETE.** ROADMAP's doc-split
-row flipped to ✓ Complete; this log's *Status* header is the verdict. **Next
-concrete task: open the discipline-distillation round** — promote this
-phase's research-arc discipline into a new read-on-demand `RESEARCH-ARC.md`
-(alongside `CLEANUP.md`, `PHASE-BOUNDARIES.md`); the Ready/NOT-yet/Deferred
-breakdown lives in `notes/Phase39.md` *Hand-off*, not duplicated here. Opening
-it is a coordinator call, not exercised by this commit.
+**All three slices LANDED 2026-08-19; every structural round on PENCIL's doc
+set is now COMPLETE.** ROADMAP's doc-split row is ✓ Complete and carries a new
+sibling row for this round; this log's *Status* header is the verdict.
+`RESEARCH-ARC.md` exists and is linked from `CLAUDE.md` and
+`.claude/commands/coordinate-phase.md`. **No structural work is queued.**
+The phase's own next concrete task — the kernel-(K) research step — is
+**UNROUTED, awaiting a pick**; see `notes/Phase39.md` *Hand-off* (not
+duplicated here), which also carries, unchanged, ZNEQ's `σ > 0`-everywhere
+disproof hunt awaiting user adjudication and excluded from the standing
+2026-08-07 delegation's pool.

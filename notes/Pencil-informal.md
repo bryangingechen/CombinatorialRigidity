@@ -209,7 +209,10 @@ gap, each row derived from that section's own *Verdict* / *Confidence verdict*
 block. Nothing here is stated more strongly than its section states it, and a
 conditional verdict names what it is conditional on. **This map is the artifact
 a new pass updates** — edit these rows (together with the section's own verdict)
-rather than writing a fresh summary of the arc beside it.
+rather than writing a fresh summary of the arc beside it. (The general pattern
+— a single status object in place of a blueprint dep-graph, for any
+research-shaped phase with no Lean landing — is promoted to `RESEARCH-ARC.md`
+§3; this map stays the canonical instance.)
 
 The arc in one paragraph. `hK` is the escape `≢ 0` uniformity kernel of the
 split arm; the corank stratification (recon of 2026-07-30, `notes/Phase39.md`

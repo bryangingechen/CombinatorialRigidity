@@ -22,9 +22,12 @@ g-flank at any of the thirty-two directions. E3 is ARMED (by GBAL) and has NOT f
 Direction codes are **multi-letter and topic-tagged from the fifth fan-out on**
 (`notes/Pencil-labels.md` (L5)); grandfathered single letters are re-used across dates,
 **always date those**.
-**The doc-split round is COMPLETE** (slices 1 and 2 both LANDED 2026-08-19,
-`notes/Pencil-structure.md`). **Next concrete task: the discipline-distillation
-round** — see *Hand-off*.
+**The doc-split AND discipline-distillation rounds are BOTH COMPLETE**
+(all three slices, `notes/Pencil-structure.md`; the new `RESEARCH-ARC.md`
+promotes this phase's dispatch discipline). **Next: UNROUTED** — the
+kernel-(K) research step awaits a pick (candidates AGLU/ZNEQ, see
+*Hand-off*); ZNEQ's `σ > 0` disproof hunt stays excluded pending user
+adjudication.
 
 ## Current state
 
@@ -242,48 +245,44 @@ crossing pairs, pushing the open case to `n_hub ≥ 10`); canonical homes new §
 and §(K-out) *Steps O19–O24* (`notes/Pencil-informal.md`), §(K-grid) *Steps G80–G97*
 (now `notes/Pencil-informal-grid.md`), verdicts in `notes/Pencil-fanout.md`
 §§"Twenty-fourth"/"Twentieth"/"Twenty-first"/"Twenty-third"/"Twenty-second direction" —
-**not restated here**. **The doc-split round is now COMPLETE; next concrete task: open
-the discipline-distillation round (below).**
+**not restated here**. **The doc-split AND discipline-distillation rounds are now
+BOTH COMPLETE; the next concrete task is UNROUTED (below).**
 
 **E3 is ARMED** (GBAL's entry-5 HIT) but **not fired by any of the ten** (a′ not hit,
 only its pinned route demoted by YLOC; firing is the coordinator's action). **"Chart
 irreducibility, un-owned" is now CLOSED** (CIRR, a HIT, §(K-chart)). Ledger attack (c),
-**AA-glue realizability, is now SETTLED NEGATIVE at `n_hub = 8`** and narrows to
-`n_hub ≥ 10`, a three-template question (AGLU). **Not selected this wave, still
-queued** (ranking in the fan-out doc): (OC-19) input (c) class-uniformly — OCON's #1 by
-value but **(GR-15)-flavoured**, natural next primary once a chunk-level instrument for
-(Y) exists (YLOC's own attempt was DEMOTED BY WITNESS, not a success — its two-rung
-successor routing is in *Decisions made*); §(K-out) items 3/4; attack (c) at
-`n_hub ≥ 10`; **(d′)**. **Not eligible:** route σ's Lean half and the W4 build,
-**BLOCKED by the standing 2026-08-05 Lean hold**.
+**AA-glue realizability, is now SETTLED NEGATIVE at `n_hub = 8`**.
+
+**Next research step: UNROUTED, awaiting a pick — no candidate pre-selected.**
+Strongest candidates: **AGLU's `n_hub ≥ 10` three-template question**
+((GR-76)(iv), cheap, sharply specced) and **ZNEQ's cross-pool re-keying**
+(combinatorial, no new math — `notes/Pencil-fanout.md` §"Twenty-third
+direction", `notes/Pencil-informal.md` §(K-out) (OC-28)). Also queued: (OC-19)
+input (c) class-uniformly — OCON's #1 by value, **(GR-15)-flavoured**, needs a
+chunk-level instrument for (Y) first (YLOC's attempt DEMOTED BY WITNESS,
+successor routing in *Decisions made*); §(K-out) items 3/4; **(d′)**. **Not
+eligible:** route σ's Lean half and the W4 build, BLOCKED by the standing
+2026-08-05 Lean hold.
 
 **Awaiting user adjudication, NOT in the standing 2026-08-07 delegation's dispatchable
 pool — carried forward unchanged.** ZNEQ names a `σ > 0`-everywhere
 hunt at class shapes whose `H` carries a short theta sub-multigraph — a hit is a
 **PENCIL event** (`hK` FALSE there), which the direction-A pivot rule
 (`notes/Pencil-fanout-archive.md` §"Direction A") makes *"a phase-redefining event for the user to
-adjudicate, not a result to build on"* — excluded until adjudicated. Opening the
-discipline-distillation round (below) is a coordinator call, not exercised by this
-commit. **A wave-closing exception-log commit to `notes/dispatch-log.md`
+adjudicate, not a result to build on"* — excluded until adjudicated. **A
+wave-closing exception-log commit to `notes/dispatch-log.md`
 is owed and is the coordinator's, not a build agent's** — not made in this commit.
 
-**The doc-split round is COMPLETE — `notes/Pencil-structure.md`.** Slice 1 (§(K-grid),
-9883 lines, → `notes/Pencil-informal-grid.md`) and slice 2 (`Pencil-fanout.md`'s
-ordinals 1–19, 5279 lines of landed dispatch history, → `notes/Pencil-fanout-archive.md`
-— `FRICTION.md`→`FRICTION-archive.md` precedent, `88436c0b`) both LANDED 2026-08-19,
-verbatim relocations with cross-references swept and repointed; full mechanical-
-verification detail in the round log, not restated here. **Next: the
-discipline-distillation round.** Promote this phase's research-arc
-discipline into a new read-on-demand `RESEARCH-ARC.md` (alongside `CLEANUP.md`,
-`PHASE-BOUNDARIES.md`). **Ready** (three-plus waves): label reservations + the minting
-rule; serial coordinator landing, agents committing nothing, drafting outside the tree;
-the gap map as status object in place of a blueprint dep-graph; F11's driver-per-headline
-with "exhaustive"/"forced"/"the only" as their own claim class; cap disclosure; mechanical
-word caps, recompute-not-bump. **NOT yet** (one wave — to the exception log's *Findings*
-first): the duplicate check against landed Lean/concurrent siblings; cross-direction
-convergence as corroboration (three: OCON/FRES, YLOC/BALB, CIRR/ZNEQ); the
-coordinator-predicted-obstruction category (two now: YLOC's, AGLU's). Deferred: fan-out
-width, the compute/derivation tier split, prose-recon vs compiler-checked-spike.
+**The doc-split AND discipline-distillation rounds are both COMPLETE —
+`notes/Pencil-structure.md`** (all three slices LANDED 2026-08-19). Discipline
+distillation promoted this phase's research-arc discipline into the new
+read-on-demand root manual **`RESEARCH-ARC.md`** (alongside `CLEANUP.md`,
+`PHASE-BOUNDARIES.md`; linked from `CLAUDE.md` and
+`.claude/commands/coordinate-phase.md`) — six items ready, three candidates
+watched not promoted (`notes/dispatch-log.md` F18–F21), three genuinely
+unsettled and deferred with the question stated; full detail there, not
+restated here. **No structural work is queued; the research step above is
+the only open task.**
 
 **`hsplit` is CLOSED IN FULL** (W5-L7c-1…6, landed 2026-07-30) and **`hfresh`'s mechanical
 discharge (residue (iv)) is CLOSED too**. The landed successor
@@ -379,10 +378,12 @@ Reverse-chronological, one line per landing; full derivations live in git,
 `notes/Phase39-design.md`, and (for the (K) arc) the workbook section named in each entry, which
 is the canonical home a successor reads.
 
-- **Doc-split round COMPLETE (2026-08-19, both slices)** — §(K-grid) →
-  `Pencil-informal-grid.md` (slice 1); `Pencil-fanout.md`'s ordinals 1–19 →
-  `Pencil-fanout-archive.md` (slice 2, `FRICTION.md`→`FRICTION-archive.md` precedent).
-  Verbatim, repointed, `check-gapmap-cells.py` clean; detail `notes/Pencil-structure.md`.
+- **Doc-split + discipline-distillation rounds COMPLETE (2026-08-19, all three
+  slices)** — §(K-grid) → `Pencil-informal-grid.md`; `Pencil-fanout.md`'s
+  ordinals 1–19 → `Pencil-fanout-archive.md`; this phase's research-arc
+  discipline promoted to the new root manual `RESEARCH-ARC.md`. Verbatim
+  relocations, repointed, `check-gapmap-cells.py` clean; detail
+  `notes/Pencil-structure.md`.
 - **The FIRST through TWENTY-FOURTH fan-outs/directions — all LANDED 2026-08-05…08-19**
   (canonical homes: §(K-chart)/§(K-out) *Steps O19–O24* in the workbook, §(K-grid)
   *Steps G80–G97* now `notes/Pencil-informal-grid.md` — and `notes/Pencil-labels.md`

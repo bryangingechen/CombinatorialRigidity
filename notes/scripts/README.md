@@ -899,7 +899,10 @@ canonical descriptions.
    realized 7 of 8. **Do not repeat the fix by re-baselining the capped
    driver** (`outer.py` was left untouched, per convention 5); the fix is a
    **new, uncapped** driver mode plus a corrected reading in the workbook,
-   which is what *Step Λ11* did.
+   which is what *Step Λ11* did. (This convention's rule — "an exhausted cap
+   is not a proof of nonexistence" — is promoted for any research-shaped
+   phase to `RESEARCH-ARC.md` §5; this file stays the canonical detail for
+   the numerics harness.)
 
 ## Divergences — same name, different semantics: **do not merge**
 
