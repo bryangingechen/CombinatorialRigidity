@@ -752,14 +752,12 @@ new section name **§(K-chart)** and the new prefix **`CH-`** were verified
 **0-hit** across `*.md`, `*.tex`, `*.lean`, `*.py`, `*.m2` at reservation time.
 Four of the five *extend* live sections, so their reservations are the
 unclaimed tails of those sections' existing families and **the owning section
-stays authoritative**; only CIRR opened a section — **CIRR, YLOC and BALB
-have LANDED and their rows are released below**, the other two still in
-flight.
+stays authoritative**; only CIRR opened a section — **CIRR, YLOC, BALB and
+ZNEQ have LANDED and their rows are released below**, AGLU still in flight.
 
 | direction | section | reserved labels | reserved steps | driver |
 |---|---|---|---|---|
 | **AGLU** | §(K-grid) (extends) | **(GR-73)–(GR-78)** | **Steps G92–G97** | `w4/aglu.py` |
-| **ZNEQ** | §(K-out) (extends) | **(OC-23)–(OC-28)** | **Steps O19–O24** | `w4/zneq.py` |
 
 **The TWENTY-FOURTH direction — CIRR — LANDED 2026-08-19** (first of the
 seventh fan-out's five to land, `notes/Pencil-fanout.md` §"Twenty-fourth
@@ -870,6 +868,50 @@ six in ~135 s, inside the 600 s foreground budget). The code **BALB** was
 verified 0-hit as a raw substring across `*.md`, `*.tex`, `*.lean`, `*.py`,
 `*.m2` at reservation time. No M2 leaf was expected or opened.
 
+**The TWENTY-THIRD direction — ZNEQ — LANDED 2026-08-19** (fourth of the
+seventh fan-out's five to land, after CIRR, YLOC and BALB;
+`notes/Pencil-fanout.md` §"Twenty-third direction"), reservation released
+into §(K-out)'s existing registry row: **(OC-23)–(OC-28) and Steps O19–O24
+CLAIMED exactly** — the full reservation consumed, nothing returned to the
+pool; see the extension of §(K-out)'s row in the Registry below. Target:
+(OC-19) input (a), `Z ≠ ∅`, as a statement in its own right. **Verdict: input
+(a) is OPEN as a class-uniform statement and is NOT an independent gap.**
+**(OC-23)** peels the pendant edge `ac`: `s₀ = corank R(H)` at every legal
+chart point, `H = G − v − a`, so the `s₀` half of input (a) is independence
+of the far framework alone. **(OC-24)** proves the dichotomy — `Z ≠ ∅ ⟺`
+both halves nonempty, each one-point witnessable — and the sharper finding:
+`{σ = 0} = ∅` at a class shape would make `hK` **FALSE there**, a **PENCIL
+event**, strictly stronger than the (K-tight) event the dispatch named; the
+`s₀` half is therefore a **necessary condition** for `hK` and can never be
+the binding obstruction. **(OC-25)** shows the target-rank half **is**
+§(K-tight) *Step 2* item 1's own attainment criterion, one split down.
+**(OC-26)** derives the closed form of failure along the meet line — a
+**disjunction**, both branches forcing a codimension-2 Schubert jump — after
+**refuting its own first closed form by construction** (POOL-ZQ Case C: a
+nonsingular hyperplane with no pencil inside it, yet identical badness).
+**(OC-27)** measures **138/138** (shape, split) witnesses of `Z ≠ ∅`, no
+miss (POOL-ZN, caps disclosed). **(OC-28)** proves the `s₀` half is
+**dominated** by §(K-grid) (GR-10) — one grid point per shape covers every
+split at once, free at 907/907 of that pool, though the two pools are not
+re-keyed — and exhibits `{σ = 0}` as a **proper** open at the (K-res) shape
+`P21` (5 of 35 valid seeds off it). **Chart irreducibility (input (b)) is
+cited from §(K-chart) (CH-1), not re-derived** — CIRR landed mid-run, and its
+(CH-1)/(CH-2) turned this pass's one flagged structural input (the shared
+`G`/`G′` sub-tower, (OC-28)(i)) into a proof. No gap-map status moves;
+(OC-8) stays OPEN, reshaped; class uniformity untouched. **Cross-direction
+convergence, the wave's third** (after OCON/FRES in the sixth fan-out and
+YLOC/BALB in this one): ZNEQ wrote (OC-28)(i) blind to CIRR, flagging it as
+an open structural input; CIRR's same-day (CH-2) stage table discharged it
+outright. Driver `notes/scripts/w4/zneq.py` (four modes
+`--factor`/`--sweep`/`--reject`/`--transfer`, no `--validate`; ~521 s total,
+run individually rather than as one foreground call). The code **ZNEQ** was
+verified 0-hit as a raw substring across `*.md`, `*.tex`, `*.lean`, `*.py`,
+`*.m2` at reservation time. No M2 leaf was expected or opened — the target
+was an exact-ℚ derivation. **Harness debt recorded, not paid**: `ocon.meet`
+now has two consumers, `notes/scripts/README.md` §2 rule 2's own move-down
+trigger — the pass may not modify a landed file, so the move is recorded for
+a successor, not made (see the README's *Harness debt* list).
+
 **Three directions share §(K-grid) this wave**, which the sixth fan-out already
 proved safe (GBAL took (GR-49)–(GR-54) / G68–G73 and GLAW (GR-55)–(GR-60) /
 G74–G79 concurrently, no rename): the protection is the **disjoint reserved
@@ -934,7 +976,7 @@ Status keywords are pointers to the owning section's verdict block and the
 | §(K-σ) | `σ` ✓ | (σ1)–(σ7); Steps σ0–σ6, σ4b; hunt pools H4/H5 | the polarity as a symmetry of the split; **route σ** | (σ7) proven; route σ a CANDIDATE (its field scope settled by §(K-clos)) |
 | §(K-clos) | `AC-` ✓ | (AC-1)–**(AC-9)**; Steps Z0–Z8; driver blocks AC-C0/AC-E/AC-S/AC-U/AC-X/AC-Q/AC-R2/AC-F/AC-2c/AC-P (`closure.py`) | the over-`ℂ̄` question: the polarity's field scope, the σ-fixed grid locus, the `⋆`-eigen decoupling, the route-σ collapse, the char-0 descent | (AC-6) **refuted** as a class statement, open on the tight stratum; the rest proven-informally. **(AC-9)** (minted 2026-08-06, re-baselining slice S2): every σ-fixed body of degree `≥ 3` carries a coincident hinge line — **proven** by pigeonhole against *Step Z3*'s two-ruling-lines cap, measured 0/64 by the composite guard; it **qualifies (AC-3)** without weakening it |
 | §(K-ann) | `ANH-` ✓ | (ANH-1)–(ANH-8); the two residual inputs **(ANH-R1)**, **(ANH-R2)**; Steps A1–A9; driver modes `--stress`/`--rate`/`--supp`/`--recipe`/`--census`/`--validate` (`annih.py`); **since 2026-08-06 (direction R)** (ANH-9)–(ANH-12), Steps A10–A13, and driver modes `--census`/`--bad`/`--comb`/`--validate` (`shrink.py`); **since 2026-08-06 (direction Q)** (ANH-13)–(ANH-16), Steps A14–A17, driver modes `--types`/`--reduce`/`--size`/`--frame`/`--witness`/`--validate` (`anhr1.py`) and M2 blocks (ANH-Q0)–(ANH-Q4) (`anhr1.m2`) | the annihilator as a self-stress of the contracted framework `H/P`: the reciprocity identity, the named move, the `k = 4` Tay circuit, the one-bracket recipe. **(ANH-8) is promoted to the *Shared dictionary* as (SD-6)** — that is the only copy | (ANH-1)–(ANH-6), (ANH-8) proven / proven-informally; (ANH-7) true-modulo-named-gap; **(ANH-R1) open** |
-| §(K-out) | `OC-` ✓ | (OC-1)–**(OC-16)**; Steps O1–O12; the **pools** POOL-C / POOL-G / POOL-S / POOL-B and (since direction O, 2026-08-06) POOL-CW / POOL-A / POOL-W / POOL-SL; driver modes `--comb`/`--pool`/`--shapes`/`--build` (`outerline.py`) and `--wide`/`--adv`/`--wrench`/`--slide` (`outerwide.py`) + `outerwide.m2`; **since 2026-08-19 (direction OCON)** (OC-17)–(OC-22), Steps O13–O18, driver modes `--validate`/`--check`/`--control` (`w4/ocon.py`), pools POOL-OV / POOL-OC / POOL-OZ | (OUT)'s hypothesis measured: the exact hinge-rate reading, the ambient-generic map, the never-automatic negative, the constructed silent point, the two pool distributions, the sampler defect, and the residual; (since OCON) the hard-stratum target-rank qualifier is free, and the (OC-8) residue reduces to a `Z ≠ ∅` + chart-irreducibility + one-chart-point reduction | **(OC-3)** proven-informally and load-bearing; (OC-1) proven-informally; (OC-2)/(OC-5)/(OC-6)/(OC-7) measured; (OC-4) exhibited; **(OC-8) open**. **(OC-7) is a harness item**, `notes/scripts/README.md` *Harness debt* 4 — **CLEARED 2026-08-06** by the re-baselining round, whose slice S2 also minted **(OC-9)** here (the FIELD half of the coincident-hinge guard's adversarial test: the guard rejects 58/357 and its rejection set strictly contains the two-end diagnostic's 39). **(OC-17)–(OC-21) proven-informally** (Steps O13–O16, direction OCON); **(OC-22) an assessment**; **(OC-8) OPEN, reshaped** — the hard-stratum qualifier struck as free, two named inputs (`Z ≠ ∅`, chart irreducibility) added rather than removed |
+| §(K-out) | `OC-` ✓ | (OC-1)–**(OC-16)**; Steps O1–O12; the **pools** POOL-C / POOL-G / POOL-S / POOL-B and (since direction O, 2026-08-06) POOL-CW / POOL-A / POOL-W / POOL-SL; driver modes `--comb`/`--pool`/`--shapes`/`--build` (`outerline.py`) and `--wide`/`--adv`/`--wrench`/`--slide` (`outerwide.py`) + `outerwide.m2`; **since 2026-08-19 (direction OCON)** (OC-17)–(OC-22), Steps O13–O18, driver modes `--validate`/`--check`/`--control` (`w4/ocon.py`), pools POOL-OV / POOL-OC / POOL-OZ; **since 2026-08-19 (direction ZNEQ, seventh fan-out)** (OC-23)–(OC-28), Steps O19–O24, driver modes `--factor`/`--sweep`/`--reject`/`--transfer` (`w4/zneq.py`), pools POOL-ZF / POOL-ZQ / POOL-ZN / POOL-ZT / POOL-ZR | (OUT)'s hypothesis measured: the exact hinge-rate reading, the ambient-generic map, the never-automatic negative, the constructed silent point, the two pool distributions, the sampler defect, and the residual; (since OCON) the hard-stratum target-rank qualifier is free, and the (OC-8) residue reduces to a `Z ≠ ∅` + chart-irreducibility + one-chart-point reduction; (since ZNEQ) input (a) `Z ≠ ∅` itself factors into a necessary-for-`hK` half dominated by §(K-grid) (GR-10) and a target-rank half whose failure is a codimension-2 Schubert jump, with a self-refuted-and-corrected closed form and a 138/138 witness census | **(OC-3)** proven-informally and load-bearing; (OC-1) proven-informally; (OC-2)/(OC-5)/(OC-6)/(OC-7) measured; (OC-4) exhibited; **(OC-8) open**. **(OC-7) is a harness item**, `notes/scripts/README.md` *Harness debt* 4 — **CLEARED 2026-08-06** by the re-baselining round, whose slice S2 also minted **(OC-9)** here (the FIELD half of the coincident-hinge guard's adversarial test: the guard rejects 58/357 and its rejection set strictly contains the two-end diagnostic's 39). **(OC-17)–(OC-21) proven-informally** (Steps O13–O16, direction OCON); **(OC-22) an assessment**; **(OC-8) OPEN, reshaped** — the hard-stratum qualifier struck as free, two named inputs (`Z ≠ ∅`, chart irreducibility) added rather than removed. **(OC-23)–(OC-25) proven-informally, (OC-26) proven-informally (its own first closed form refuted by construction and corrected), (OC-27) measured (138/138 witnesses), (OC-28) proven-informally (a conditional domination on the open §(K-grid) gap (GR-10), the boundary exhibited at `P21`)** (Steps O19–O24, direction ZNEQ); **input (a) OPEN as a class-uniform statement, NOT an independent gap; (OC-8) OPEN, unchanged** |
 | §(K-ind) | `IN-` | (I0)–(I4); Steps I0–I6 | numerical invariant along the generating moves | refuted as a route; (I3) a positive by-product |
 | §(K-Δ) | `DL-` | **(M1)**, **(M2)**, **(M3)**; (N1), (N2) | the Δ-matroid literature hunt: (M1)–(M3) are the **three hypothesis tests**, (N1)/(N2) the two readings bought | NO HIT; discharged |
 | §(K-bare-ext) | `BE-` | (K-bare-ext) | the (K-bare) stub | open, nothing being developed |

@@ -5671,7 +5671,7 @@ wave*, and a future top-rung recon may overturn the bars below freely.
 | **YLOC** | compute-licensed | input (Y), (a′)'s residual — GBAL's instrument localized to proper chunks | **LANDED 2026-08-19** — an honest MISS (§"Twentieth direction") |
 | **BALB** | compute-licensed | (b′), the balance-layer bound `d_adm − d_par ≤ 2` | **LANDED 2026-08-19** — OPEN, NOT a HIT, half proven / half refuted with an exact boundary (§"Twenty-first direction") |
 | **AGLU** | compute-licensed | ledger attack (c) — AA-glue realizability at `n_hub ≥ 8` | dispatched 2026-08-19 |
-| **ZNEQ** | compute-licensed | (OC-19) input (a) — `Z ≠ ∅` at every class (shape, split) | dispatched 2026-08-19 |
+| **ZNEQ** | compute-licensed | (OC-19) input (a) — `Z ≠ ∅` at every class (shape, split) | **LANDED 2026-08-19** — OPEN, NOT an independent gap; it factors and one half is dominated (§"Twenty-third direction") |
 | **CIRR** | derivation-first | chart irreducibility, written down once as a standalone statement | **LANDED 2026-08-19** — a HIT (§"Twenty-fourth direction") |
 
 **Shared mechanics: §"Shared mechanics (all three dispatches)" above binds
@@ -6054,62 +6054,161 @@ capacity-tight one, and (GR-40)'s 815 → 573 is a **prune, not a zero**.
 
 ### Twenty-third direction — ZNEQ (seventh fan-out)
 
-**Status: dispatched 2026-08-19, opus, COMPUTE tier.** Labels reserved:
-`OC-` **(OC-23)–(OC-28)**, **Steps O19–O24**; owning section **§(K-out)**.
-Driver: **`notes/scripts/w4/zneq.py`**.
+**Status: LANDED 2026-08-19 — input (a) is OPEN as a class-uniform statement
+and is NOT an independent gap.** Fourth of the seventh fan-out's five
+directions to land, after CIRR, YLOC and BALB (AGLU still in flight),
+**compute-licensed** tier. §(K-out) **extended**, **Steps O19–O24**, labels
+**(OC-23)–(OC-28) CLAIMED exactly** — the full reservation consumed, nothing
+returned to the pool. Driver **`notes/scripts/w4/zneq.py`** (four modes,
+no `--validate`; `--factor` 97 s, `--sweep` 242 s, `--reject` 76 s,
+`--transfer` 106 s — run individually rather than as one foreground call,
+all byte-identical under `PYTHONHASHSEED` 0 and 12345 modulo `--sweep`'s
+wall-clock progress marks).
 
-**The target — (OC-19) input (a), `Z ≠ ∅`, as a statement in its own right:**
-*at every class (shape, split), the chart carries a target-rank point with
-`s₀ = 0`.* OCON ranked this **#2 of its five** hand-off items and called it
-*"cheap to state and would clean up several rows at once"*; it is a prerequisite
-of the **whole (K-tight) criterion — not (OUT)'s to pay** — and is currently
-carried **implicitly by every route on the (K-wit) row**.
+**The target — (OC-19) input (a), `Z ≠ ∅`, as a statement in its own
+right:** *at every class (shape, split), the chart carries a target-rank
+point with `s₀ = 0`.* OCON ranked this **#2 of its five** hand-off items and
+called it *"cheap to state and would clean up several rows at once"*; it is
+a prerequisite of the **whole (K-tight) criterion — not (OUT)'s to pay** —
+and is currently carried **implicitly by every route on the (K-wit) row**.
 
-**State, as landed.** Measured at **90/90 POOL-S splits**. The only recorded
-`dim R_a = 0` chart points anywhere in the arc are **§(K-flank) *F5(d)*'s five
-`P21` seeds**, and `P21` **carries no length-4 companion**. By **(OC-17)**,
-`dim R_a = corank(G′) − s₀` at **every legal chart point with no genericity**,
-so at `index(G) = 0`, `def(G′) = 0` the locus `Z` is an intersection of two
-maximal-rank conditions — Zariski **open**, not a stratum. Openness **plus**
-nonemptiness is what makes (OC-19)'s one-point reduction bite, and OCON's
-`--control` leg is the sharp reminder that neither alone suffices: it built
-**3 constructed points in `Z`**, guard-accepted and coincidence-free, with
-`L_b ⊆ R₁` and `H/X` **flexible** (`dim Mot = 7`). `Z` genuinely meets the bad
-divisor.
+**The verdict, as landed: input (a) FACTORS, and the two halves have very
+different severity.** **(OC-23)** peels the pendant edge `ac` exactly the
+way (OC-17) peels `ab`: `s₀ = corank R(H)` at **every** legal chart point,
+`H = G − v − a`, so the `s₀` half of input (a) contains no `v`, no `a`, no
+split edge — it is **independence of the far framework `H` alone**.
+**(OC-24)** proves the dichotomy the chart's irreducibility buys — with
+CIRR's **(CH-1)(a)** now proven rather than cited, `Z ≠ ∅ ⟺` both halves
+nonempty, each **one-point witnessable** — and the sharper finding the
+dispatch's wording did not anticipate: `{σ = 0} = ∅` at a class shape would
+make `hK` **FALSE there** (`E(H) ⊆ E(G)`, `G` tight with `def(G) = 0`, so a
+self-stress of `H` at every chart point is a self-stress of `G` that blocks
+its own Tay target). That branch is a **PENCIL event** — a disproof at that
+shape, §(K-flank) direction-A pivot class — **strictly stronger** than the
+`{target rank} = ∅` branch, which is exactly the **(K-tight) event** the
+dispatch named (routes A and B dead at that split, `hK` at the shape
+untouched). So the `s₀` half is a **necessary condition** for `hK` at the
+shape and can **never be the binding obstruction**: any proof of `hK`,
+including the grid route, hands it over for free. **(OC-25)** shows the
+target-rank half **is** §(K-tight) *Step 2* item 1's own attainment
+criterion, applied one split down (`(G, v, a, b) ↦ (G′, a, b, c)`), the
+regress terminating in one step because `orient`'s chain has exactly two
+interior vertices. **(OC-26)** derives the closed form of that half's
+failure: along the meet line `M = Π(b) ∩ Π(c)`, badness is three quadratics
+in one parameter, hence generically empty, and bad-at-every-`t` is a
+**disjunction** — `dim(D ∩ (M̂ ∧ W)) ≥ 3` or `M̂ ∧ w ⊆ D` for some `w ∈ W`
+— both forcing a **codimension-2 Schubert jump**. **This pass refuted its
+own first closed form by construction** (POOL-ZQ Case C: a nonsingular
+hyperplane of `M̂ ∧ W`, `dim(D ∩ M̂ ∧ W) = 3`, **no** pencil inside it, yet
+identical badness), correcting the single-containment reading to the
+disjunction — adversarial work against its own claim, landed as such, not
+tidied away. **(OC-27)** measures **138/138** (shape, split) witnesses of
+`Z ≠ ∅` (90 companion-bearing, 48 others), no miss — witnesses, never a
+rate, caps disclosed (shape cap 4/family, 6-seed window, stride 4; 142 of
+190 non-companion splits uncovered). **(OC-28)** proves the shared-sub-tower
+clause against §(K-chart) **(CH-2)**'s stage table (both chain interiors are
+non-hubs, so stage 2's hub-only dependence makes the `H`-projections of
+`G` and `G′`'s charts identical) and constructs 30/30 transfers, then shows
+the `s₀` half is **dominated** by §(K-grid) (GR-10): one grid point per
+shape covers **every** split at once, free at 907/907 of that pool — a
+**conditional** reduction to an open gap, not a discharge, since (GR-10)
+is itself open (its min-max form refuted as posed, the statement itself
+staying open, per §(K-grid)'s own row). `{σ = 0}` is exhibited as a
+**proper** open, not a tautology: at the (K-res) shape `P21` (fails
+`hnoRigid`), 5 of 35 valid seeds sit off it, the only recorded mechanism
+being a self-stress of a short theta sub-multigraph inside `H`.
 
-**The cheap probe OCON named, verbatim:** *extend `--control`'s unfiltered leg
-to a POOL-S-style shape pool and report the `s₀` histogram per (shape, split)
-rather than per seed.* Start there; it is the measurement the claim needs and
-nobody has run.
+**Four coordinator adjudications on landing.**
 
-**What a HIT is** — a **proof** that `Z ≠ ∅` at every class (shape, split): a
-construction, or a dimension count off (OC-17)'s rank identity, or a
-transversality argument. **What a decisive negative is** — a class shape with
-`Z = ∅` at a **length-4-companion-bearing** split. That makes (OC-8) **false**
-there and **simultaneously kills routes A and B at that split** by §(K-tight)
-*Step 2* item 3, so it is **a (K-tight) event, not an (OUT) event** — surface it
-to the coordinator in exactly those words, because it changes the phase's
-routing, not just this section's.
+1. **The spec's wording was incomplete, and ZNEQ's correction is right.**
+   The dispatch called a `Z = ∅` negative "a (K-tight) event, not an (OUT)
+   event" — true only for the target-rank branch. The `s₀` branch is a
+   **PENCIL event**, strictly stronger, and — the structural point — it can
+   never be the *binding* obstruction, because it is implied by `hK` at the
+   shape and its only known failure mechanism (§(K-flank) *F5(d)*'s theta
+   sub-multigraph at `P21`) sits outside `hK`'s habitat (`hnoRigid` false
+   there). This is why input (a) is **not an independent gap**: one branch
+   is dominated, the other is a disproof route. (OC-8)'s residue is
+   **sharpened, not shrunk** by this: the `s₀` half is dominated, and the
+   target-rank half — `(a₁)`, the Schubert non-jump
+   `dim(D ∩ M̂ ∧ W) ≤ 1` — remains a real open input of the same shape as
+   (OC-19)(c), one-point decidable with the recipe missing.
+2. **(OC-28)'s positive is CONDITIONAL, not a discharge.** §(K-grid) (GR-10)
+   is itself OPEN (its min-max refuted as posed, the statement staying open
+   as the strictly stronger form), so "(GR-10) ⟹ the `s₀` half at 907/907"
+   is a **reduction to an open gap**, per-shape evidence rather than
+   uniformity. The named cheap follow-on — a purely combinatorial cross-pool
+   re-keying of §(K-grid)'s 907 against §(K-out)'s class-shape population,
+   no new mathematics — is carried to the hand-off, not attempted here (the
+   two pools are labelled-instance pools with different keys and are
+   **not** re-keyed by this pass).
+3. **The wave's THIRD cross-direction convergence, recorded as a finding
+   about the fan-out shape itself.** ZNEQ wrote its mathematics **blind to
+   CIRR**, which landed mid-run, flagging (OC-28)(i)'s shared sub-tower as
+   "this pass's one structural input, owned by CIRR". CIRR's same-day
+   **(CH-2)** — the tower written down stage by stage — then turned that
+   flagged input into a proof outright, and its **(CH-1)(a)** supplied the
+   ℚ-descent step (OC-28)(iii) needed. This is the **same shape** as the
+   sixth fan-out's OCON/FRES pair and this wave's own YLOC/BALB pair on the
+   fit identity: three independent convergences in two waves, every one a
+   direction discovering it needs a fact another concurrent direction was
+   independently landing, neither seeing the other. **Worth naming as a
+   property of the fan-out shape**: a multidispatch surfaces cross-cutting
+   dependencies a single serial dispatch would have had to name explicitly
+   in advance or miss, and this wave found three without any coordinator
+   foresight.
+4. **The self-refutation stands, as adversarial work, not a hedge.** POOL-ZQ
+   Case C is a constructed counterexample to this pass's *own* first
+   derivation. It is landed in full in (OC-26)'s "refuted by construction"
+   clause above, not tidied into a footnote.
 
-**Bars.** **(OC-19) input (c)** — `H/X` infinitesimally rigid class-uniformly —
-is **NOT** this direction: OCON's verdict is that it is
-**(GR-15)-flavoured, not (FR-R1)-flavoured** (a rank condition inside a
-pattern-colouring existence question), and it is deliberately deferred.
-**Chart irreducibility (input (b)) is CIRR's target this wave** — **cite** it,
-do not derive it. Do **not** push a constructed point to `p⁺` (§(K-out) *What
-would change this* item 4), do **not** run the coupled two-end slide (item 5),
-and do **not** touch any §(K-frame) *What would change this* item (ii)–(iv).
-Do **not** propose a counting / matroid route to (OUT)'s hypothesis —
-**(OC-3) refutes the whole class.**
+**Not a dispatchable candidate — awaiting user adjudication.** *Step O24*
+names a `σ > 0`-everywhere hunt at class shapes whose `H` carries a short
+theta sub-multigraph as the only known failure mechanism for the necessary
+half. A hit there is a **PENCIL event**, which under the direction-A pivot
+rule (§"Direction A" above, *Pivot rule*) is *"a phase-redefining event for
+the user to adjudicate, not a result to build on."* It is named here and in
+the hand-off for completeness, and is explicitly **excluded** from the pool
+a future coordinator may pick from under the standing 2026-08-07 delegation
+until the user has adjudicated it.
 
-**Riders.** The standing **(OC-7) rule**: no `place_pencil_general` battery may
-be quoted as a **rate** or as evidence about a **generic** chart point; POOL-G
-figures are quoted over the **318 coincidence-free** frames, never the raw 357.
-Adopt the composite guard **`repin.star_generic`** at every acceptance site
-(the 2026-08-06 S1/S2 re-baselining adopted it everywhere in `w4/` except
-§(K-out)'s two measuring modes — a *new* mode is not one of those two). The two
-settled pools **POOL-G and POOL-S are pinned and disjoint** — do not aggregate
-them, and do not re-sample either.
+**The cap disclosed, with its reason.** POOL-ZN's shape cap is 4 per family,
+seed window 6, stride 4 on non-companion splits — 142 of 190 non-companion
+eligible splits, and every shape past each family's fourth, are **not
+covered**. This is a witness census, not a rate: each of the 138 hits is an
+individual proof that `Z ≠ ∅` at that (shape, split), so the cap bounds
+*coverage*, not *confidence* in what was measured.
+
+**TERMINATION: E1, E2, E3 all NO.** *(E1)* no g-flank: this direction
+touches no admissible colouring and exhibits no `D = 0` shape whose every
+admissible colouring is binding — per-shape §(K-grid) (GR-15) is untouched.
+*(E2)* the target is neither refuted nor unprovable-as-posed — it is
+**reduced**, with two named, one-point-decidable, dispatchable attacks
+(the re-keying job and the Schubert non-jump). *(E3)* the target is **not
+proven** class-uniformly; **E3 stays ARMED by GBAL's entry-5 HIT, neither
+fired nor disarmed**.
+
+**Harness debt recorded, not paid.** `ocon.meet` — the dimension-asserting
+wrapper of `lambda.span_meet` — now has **two** consumers (OCON's and this
+pass's), tripping `notes/scripts/README.md` §2 rule 2's own move-down
+trigger. This pass may not modify a landed file, so the move is recorded as
+a **new, dated, unpaid** debt item for a successor (README *Harness debt*)
+— that section is otherwise CLEARED / round CLOSED (S1–S4, 2026-08-06), and
+this is a **separate** entry, not a reopening of that round.
+
+**Riders, verbatim.** The standing **(OC-7) rule**: no `place_pencil_general`
+battery may be quoted as a **rate** or as evidence about a **generic** chart
+point; POOL-G figures are quoted over the **318 coincidence-free** frames,
+never the raw 357. The two settled pools **POOL-G and POOL-S are pinned and
+disjoint** — not aggregated, not re-sampled. ZNEQ's own **138/138** are
+**witnesses, never a rate**, caps disclosed as above.
+
+**What did NOT move.** No gap-map status moves: (OC-8), class uniformity,
+`hK`, (GR-15) and route-ledger entry 5 are exactly where they were. §(K-out)'s
+*State of (K)* status cell was **recomputed from scratch** (790 → 649 words)
+to make room for (OC-23)–(OC-28) rather than bumped past its cap; the
+close-it cell gained the two-half breakdown (323 → 438 words), still well
+under cap. `notes/check-gapmap-cells.py` passes on the changed row.
 
 ### Twenty-fourth direction — CIRR (seventh fan-out)
 

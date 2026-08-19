@@ -706,6 +706,15 @@ arcs too.
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/balb.py --big` | ~19 s | ibid. *Step G90* ((GR-71) exact `3^n` censuses past the stratum — `n_hub = 8` (325 shapes, shape gaps `{0: 313, 1: 9, 2: 3}`, T1 instance stuck at 32/15 088), `n_hub = 10` (149 shapes, stuck at 120/16 502), `n_hub = 12` (62 shapes, stuck at 52/15 904) — refuting the landed T1-only clause from `n_hub = 8`; named shapes W3M/W3/NKo2v; cap-free `n = 30` per-matching certificates via `gadm.dp_pref` at NKo(6)/NKp(6)/NK55(6)) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/balb.py --adv` | ~14 s | ibid. *Step G91* six F13/adversarial controls: the parity law's doctored-constant control fails at 36/36; the path-legality criterion never over-accepts (55 186 rejections re-checked); the (b′) assert is live (a synthetic gap-4 verdict fires it); the `n = 30` level-split probe (`dp_walk`, a capped sample) finds no stuck configuration at level 0 in any of NKo(6)/NKp(6)/NK55(6); the `n_hub = 8` stuck-at-optimum audit — 48 configurations with no dart-free majority branch, every one repaired at price 0 by a mixed-pair move (structure `{(1,1,1): 32, (1,2,2): 16}`); (GR-53)'s tight `2k = 4` case (854 stratum shapes) still capped at `\|δ\| ≤ 2` |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/balb.py --validate` | 105.2 s | all six modes above run together in one process — **inside** the 600 s foreground budget. **Coordinator-reproduced at landing**, foreground, exit 0: `PYTHONHASHSEED` 0 and 999 both exit 0, **byte-identical modulo the `[Ns]` wall-clock annotations**. Rank-free by design (`gexist.fully_good_rank` never imported or called, no `d_fg` claim anywhere). **No Macaulay2 leaf was opened** — none was expected |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/zneq.py --factor` | 97 s | workbook §(K-out) continuation (direction ZNEQ) *Steps O19–O22* ((OC-23) `s₀ = corank R(H)` asserted at 32/32 POOL-ZF frames; (OC-25)'s corank identity and `Z`-membership equivalence asserted per frame; (OC-26)'s three `2×2` minors, their ℚ[t]-GCD (degree 0 at 32/32, no bad `t` in any extension of ℚ), and the disjunction asserted against it; POOL-ZQ's three CONSTRUCTED must-reject cases (A: identical badness with a pencil; B: one bad point; **C: this pass's own first closed form REFUTED** — `dimK = 3`, no pencil, yet identical badness) plus 60 negative controls, `random.Random(20260819)`) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/zneq.py --sweep` | 242 s | ibid. *Step O23* ((OC-27) POOL-ZN — 19 named class shapes plus 4 shapes/family of `outer.sweep_shapes()` at seed window 400–405 — **138/138** (shape, split) pairs (90 companion-bearing, 48 others) each carrying an exact-ℚ certified point of `Z`, no miss; caps disclosed: shape cap 4/family, seed window 6, stride 4, 142 of 190 non-companion splits and every shape past each family's fourth **not covered**) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/zneq.py --reject` | 76 s | ibid. *Step O24*(iv) ((OC-28)(iv) POOL-ZR — `P21` (§(K-flank) *F5(d)*'s window, `flanks.P21_SPECS`, seeds 101–140): 30/35 valid seeds at `σ = 0` (in `Z`), **5 at `σ = 1`** (off `Z`, the arc's only recorded class-adjacent `σ = 1` witness — `P21` fails `hnoRigid`, a (K-res) shape not a tight class member); (OC-23)/(OC-25)'s ledger asserted at every seed including the 5 rejecting ones) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/zneq.py --transfer` | 106 s | ibid. *Step O24*(i)–(ii) ((OC-28)(i)/(ii) POOL-ZT — the 4 `lambda.habitat_specs` habitats × every eligible split × seeds 500–507 of the whole graph `G`: 30 target-rank `G`-chart points CONSTRUCTED, `pt(a)` slid onto `M` at one of 8 pinned rational parameters, all 30 guard-accepted for `G′` with `corank R(H)` unchanged and the landed point **in `Z`** — 30/30, 0 failures) |
+
+All four re-run **byte-identical** at `PYTHONHASHSEED` 0 and 12345 (modulo
+`--sweep`'s per-family `[Ns]` wall-clock progress marks). One driver added
+(`w4/zneq.py`), nothing existing modified. **No Macaulay2 leaf was opened**
+— none was expected (an exact-ℚ derivation, not a symbolic one).
 
 ### `m2/` — the Macaulay2 symbolic layer
 
@@ -1556,6 +1565,20 @@ second a latent defect on an unreachable path. Both are **recorded, not fixed**.
    full return dict** (a `.py` edit inside `lambda`'s closure, so it owes that
    closure's re-baseline; expected byte-identical, since no §3 row reads the
    full dict's `gram`).
+
+### New item (2026-08-19, direction ZNEQ) — `ocon.meet` needs to move down; **UNPAID**
+
+This is a **new, separate** debt item, opened after the S1–S4 round above
+**CLOSED** — it does not reopen that round. `ocon.meet` (the
+dimension-asserting wrapper of `lambda.span_meet`, added at OCON's landing)
+now has **two** consumers — OCON itself and `w4/zneq.py`, which imports it
+read-only — past §2 rule 2's own move-down trigger (the same trigger that
+moved `star_span_ranks` in S1 above). ZNEQ's own dispatch may not modify a
+landed file, so the move was recorded rather than made. **Unpaid**: the
+reason a move-down debt this small stays open is that `ocon.meet` is a
+*landed* file, and a move it touches is imported by at least one concurrent
+direction's driver (`zneq.py`), so the fix is a coordinator action between
+directions, not something either dispatch could do on its own.
 
 ## Deliberate non-goals
 
