@@ -745,6 +745,14 @@ derivation). Each mode pays a ~one-time `cubic_iso_classes(8)` enumeration
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/gtmpl.py --lam` | 2 s | ibid. *Step G103* ((GR-84), exhaustive over all 22 086 chunks in **both** blocks at **ONE** colouring: per block **19** binding / **3** maximal / **66** crossing binding pairs / **11** in the kill residual / **2** AA-glue / **9** kill failures, and **all 3** maximal pairs CROSSING at `(slack, defect(T), defect(union)) ∈ {(0,1,3), (1,0,3)}` — never quote these as an `n_hub = 16` rate) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/gtmpl.py --val` | 159 s | ibid. the four device cross-certifications: `chunks_via_complement` **set-equal** to `aglu.chunks_of` at all classes at `n_hub = 4, 6` and at seeded 6-of-20 at `n_hub = 8`; the `(c, e, bend)` table vs `gexist.defect_direct` + `gcap.branch_stats` over all six rows; every enumerated frame at `n_hub ≤ 32` consistent with the closed-form charges; the witness's headline 5-tuple `(0, 2, 2, 4, 0)` recomputed from scratch |
 
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/gflow.py --model` | 47 s | `notes/Pencil-informal-grid.md` §(K-grid) continuation (direction GFLOW) *Step G104* ((GR-85), the changeover-cost model: `dist = #{v : A(v) = 1}` asserted **set-equal** to the deviating set at **2 611 058** forward triples over the exhaustive `n_hub ≤ 6` stratum plus V8 and seeded `n = 8/10`, and the three local conditions asserted **iff**-realized at **1 035 572** converse assignments — converse capped at the first 120 shapes per leg, forward uncapped) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/gflow.py --chain` | 237 s | ibid. *Step G105* ((GR-86), the repair-chain theorem: chain-vs-oracle completeness with **0 disagreements** at **6 459 208** stratum (admissible `z`, odd branch) pairs and 11 704 at V8, 0 caps; price tabulated **by case** (the six-class bounds, `M-double` the only `+4`) **and by chain size `|J|`**, the value set `{−2,0,2,4}` at every size with `4` appearing only from `|J| = 3` — the length-independence claim tested directly) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/gflow.py --exact` | 102 s | ibid. *Steps G106–G107* ((GR-87)/(GR-88), exact `f(p)` by full `z`-cube: per-case price histograms giving sub-clause 1 (`M-free` maxes at 0, the rest at 2) and the `M-double` class reaching **exactly 4** (7472 stratum instances, never 6); the majority-side class census showing `M-double` **absent** on the `n_hub ≤ 6` stratum and first appearing at `n_hub = 8`; BALB's side condition **0/37 424** in its own scope on the stratum, **28/2932** at `n = 8`) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/gflow.py --desc` | 73 s | ibid. *Step G108* ((GR-89): clause **(R1)** 0 failures at 701 382 exhaustive stratum configurations (771 530 with the seeded legs); the greedy descent's **worst single step 2** and 0 stalls; the **(C2)** selection census 0 failures at **96 930** parity-optimal configurations; and the targeted hunt at the counting bound's first possible home — 0 of 132, **"not found under cap"**) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/gflow.py --big` | 33 s | ibid. cap-free (GR-86) certificates at `n_hub = 30/40/50/60` (one constructed matching + 30 walks per family per rung — **samples, not censuses**, but free of any `2^dim` table and of `d_par`, which is why they reach where GBAL's did not) plus the seeded exact legs |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/gflow.py --adv` | 11 s | ibid. five F13 falsification controls, all firing: the doctored model disagrees (10 441/11 888); the tightened `≤ 2` bound is violated **exactly** in `M-double`; route 2's naive 2-Lipschitz law is **REFUTED** (`0 → 4` at `n_hub = 4`); optimality **caps** `2\|W ∩ S\| ≤ \|W\|` at all 84 368 legal flip sets (route 1 directionally wrong); the (GR-68) price with a random hub set of equal size disagrees at 3378/10 008 |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/gflow.py --validate` | 471 s | ibid. all six above composed in one process, inside the 600 s budget. **Not separately re-run at landing** — the six were each re-run individually instead (the AGLU `--val` precedent), which covers it |
+
 **GTMPL (eighth fan-out, LANDED 2026-08-19).** All **eight** modes re-run in the
 foreground by the coordinator at landing (`PYTHONHASHSEED=0`, explicit timeout,
 one at a time, all exit 0, every quoted figure reproduced) — ~352 s in total,
@@ -756,6 +764,16 @@ note the two local devices (`chunks_via_complement`, a `2^n` replacement for
 `aglu.chunks_of`'s `2^M` prefix table at `M = 24`, and the `(c, e, bend)`
 table) are both `--val`-certified against canonical counterparts rather than
 taken on trust.
+
+**GFLOW (eighth fan-out, LANDED 2026-08-19).** The six modes re-run
+**individually** by the coordinator at landing (foreground, one at a time,
+explicit timeout, all exit 0, every quoted figure reproduced); `--validate` is
+those same six in one process and was not separately re-run. One driver added
+(`w4/gflow.py`), nothing existing modified. **No Macaulay2 leaf** — none
+expected. It imports downward only and reimplements nothing; note it
+**deliberately renames** (GR-68)'s overloaded `F` (the 2-factor keeps `F`,
+every flip set is written `J`), a notation fix recorded at its *Notation* block
+rather than a divergence.
 
 ### `m2/` — the Macaulay2 symbolic layer
 

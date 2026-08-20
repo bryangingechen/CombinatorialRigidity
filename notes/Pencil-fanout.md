@@ -1,11 +1,11 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: EIGHT fan-outs and nine single directions dispatched; 33 of 37 directions
+**Status: EIGHT fan-outs and nine single directions dispatched; 34 of 37 directions
 LANDED.** The seventh fan-out (YLOC / BALB / AGLU / ZNEQ / CIRR, §"Seventh fan-out") is
 **COMPLETE** — all five directions landed 2026-08-19. The **EIGHTH fan-out** (GTMPL / GFLOW /
-GCOLL / OSCHU / SIGZ, §"Eighth fan-out") was prepped and dispatched 2026-08-19: **GTMPL has
-LANDED** — an exact `n_hub` boundary for ledger attack (c)'s AA-glue case — and **the other
-four are in flight**; each direction's own Status line is authoritative for its state.
+GCOLL / OSCHU / SIGZ, §"Eighth fan-out") was prepped and dispatched 2026-08-19: **GTMPL and GFLOW have
+LANDED** — an exact `n_hub` boundary for ledger attack (c)'s AA-glue case, and (b′)'s first
+proven `n`-free constant — and **OSCHU / SIGZ / GCOLL are in flight**; each direction's own Status line is authoritative for its state.
 Ordinals run 1–29 (the eighth fan-out claims 25–29) and were assigned at dispatch, so
 landing order differs from ordinal order.
 
@@ -985,7 +985,7 @@ The *candidate pool* is the arc's; only the ranking is the coordinator's.
 | direction | ordinal | tier | owning § | target | status |
 |---|---|---|---|---|---|
 | **GTMPL** | 25th | compute-licensed | §(K-grid) | AA-glue realizability at `n_hub ≥ 10` — (GR-76)(iv)'s three templates | **LANDED 2026-08-19** — an EXACT BOUNDARY: impossible at every `n_hub ≤ 14`, REALIZED at 16 (§"Twenty-fifth direction") |
-| **GFLOW** | 26th | derivation-first | §(K-grid) | (b′)'s availability half — *Clause A′* sub-clause 2, the doubly-blocked case | **DISPATCHED 2026-08-19** |
+| **GFLOW** | 26th | derivation-first | §(K-grid) | (b′)'s availability half — *Clause A′* sub-clause 2, the doubly-blocked case | **LANDED 2026-08-19** — a HIT at a DIFFERENT CONSTANT: sub-clause 1 PROVEN, sub-clause 2 REFUTED as posed, gap `≤ 12` modulo (R1) (§"Twenty-sixth direction") |
 | **GCOLL** | 27th | compute-licensed | §(K-grid) | **(GR-64)(R2)** — every habitat shape carries an anchor matching with `B(M) = 0` | **DISPATCHED 2026-08-19** |
 | **OSCHU** | 28th | derivation-first | §(K-out) | **(a₁)** class-uniformly — the Schubert non-jump `dim(D ∩ M̂ ∧ W) ≤ 1` (+ the (a₂) re-keying leg) | **DISPATCHED 2026-08-19** |
 | **SIGZ** | 29th | compute-licensed | §(K-out) | the `σ > 0`-everywhere hunt — newly authorized, **pivot rule in force** | **DISPATCHED 2026-08-19** |
@@ -1190,6 +1190,95 @@ statement needs `d_par(M)`, the exponential object. An exhausted table is not
 **Reservation.** §(K-grid) **extends**; labels **(GR-85)–(GR-90)**, **Steps
 G104–G109**; driver **`notes/scripts/w4/gflow.py`**. Owning section stays
 authoritative; return any unconsumed remainder to the tail.
+
+### GFLOW — twenty-sixth direction (eighth fan-out)
+
+**Status: LANDED 2026-08-19 — a HIT of the third kind the spec names: a
+different constant, with the exact boundary named.** Second of the eighth
+fan-out's five to land. §(K-grid) **extended**, **Steps G104–G109**, labels
+**(GR-85)–(GR-90) CLAIMED EXACTLY**. Driver **`notes/scripts/w4/gflow.py`**
+(six modes plus `--validate`; the six re-run individually by the coordinator at
+landing, foreground, one at a time, all exit 0, every quoted figure reproduced
+— `--validate` is exactly those six composed in one process and was not
+separately re-run, the AGLU precedent).
+
+**The verdict.** **Sub-clause 1 is PROVEN** ((GR-87)) and in a *stronger* form
+than BALB projected: no far-end side condition at all, any chain length,
+`γ ∈ F` doubly-blocked included — and BALB's proposed side condition is
+exhaustively TRUE at `n_hub ≤ 6` but **FALSE from `n_hub = 8`** (28/2932), so
+the projection would not have survived. **Sub-clause 2 is REFUTED as posed**
+((GR-88)): a named, independently re-verified `n_hub = 8` witness where a
+doubly-blocked *matching* branch prices **exactly 4**, with 4 the exact
+ceiling. **Clause A′ itself survives** — at that very witness three other
+majority-side branches price `≤ 2` — so the residual is not a *repair*
+statement about a branch but a **selection** statement about the set of
+branches, which is the pass's structural contribution. The instrument is
+**(GR-86)**, the repair-chain theorem: a chain exists **iff** the flipped
+pattern is (GR-50)-feasible (0 disagreements at 6 459 208 stratum pairs) and
+its price **telescopes**, hence is **independent of chain length** — `n`-free
+by construction and certified cap-free to `n_hub = 60`, which is why it reaches
+past BALB's `m = 6` table. Iterated, it gives **(GR-89)**:
+`d_adm(M) − d_par(M) ≤ 4·min(k, ⌊n_hub/4⌋) ≤ 12`, **the arc's first proven
+bound of (b′)'s own shape**, modulo one named clause **(R1)**. **(b′) at the
+constant 2 stays OPEN**, its exact residual the selection clause **(C2)**.
+
+**Four coordinator adjudications on landing.** *(1)* **The spec's route-2
+instrument was wrong, and the correction is right — this is the wave's second
+defective spec clause, and again an inherited one.** The spec (from BALB's
+hand-off, transcribed by the coordinator) said minimizing `dist(·, M)` at a
+fixed balanced pattern is "a min-cost degree-constrained orientation — a
+min-cost flow, hence polynomial", and offered flow-exchange machinery as the
+route. **(GR-85)** shows the objective is a **parity** count
+`#{v : A(v) = 1}`, not a convex flow cost, so flow machinery does not apply on
+the cost side; `--adv` (3) independently refutes the naive 2-Lipschitz law a
+convex cost would give (a `0 → 4` jump at `n_hub = 4`). The direction then
+supplied the exchange instrument that does work. Same shape as GTMPL's
+correction one landing earlier: **an inherited hand-off clause, transcribed
+into a spec, defective, caught by the direction it primed.** *(2)* **Two
+landed BALB readings are corrected, both narrow and both right:** the
+doubly-blocked `W`-arithmetic needs **one** deviating extra endpoint for
+price `≤ 2`, not two ("both" is the price-**0** condition); and **route 1's
+named input runs the wrong way** — (GR-68)'s minimality corollary *caps*
+`2|W ∩ S| ≤ |W|` (0 violations at 84 368 legal flip sets), pushing against the
+conclusion route 1 wanted. Route 1 is refuted **as an implication**,
+independently of whether its conclusion is true. *(3)* **The bound is
+`modulo (R1)`, and the write-up says so everywhere** — (R1) has 0 failures at
+771 530 configurations and is **not proven**; the draft's own constants table
+lays out all five statements with their standing, which is the presentation to
+keep. *(4)* **The `n = 30..60` reach is real but narrow:** (GR-86) needs no
+`d_par`, which is exactly why it transfers where GBAL's reach did not — and
+**(b′) itself still needs `d_par(M)` and is still capped at `m = 6`**, which
+the pass states and does not blur.
+
+**Cap disclosure, verified at landing.** (GR-85)'s converse leg is capped at
+120 shapes per leg (the forward direction uncapped and exhaustive on the
+stratum); the `n = 30..60` legs are one constructed matching + 30 walks per
+family, samples not censuses; the `n = 8/10/12` pools are seeded; and the
+targeted (C2)-failure hunt at the counting bound's first possible home is
+**"not found under a 46-shape / 132-configuration cap — which is not a proof
+of nonexistence"**, in the pass's own words.
+
+**TERMINATION: E1, E2, E3 all NO** — coordinator-re-run and agreed. E1: the
+pass is rank-free and computes no `d_fg`; clause (v) is unfirable (`d_adm ≠ ∞`
+asserted at every pair swept). E2: entry 5 is PROVEN and consumed; what is
+demoted is BALB's repair route, with (C2)/(R1) named as successors. E3: a
+(b′) result, entry 1/(a′) untouched — **stays ARMED by GBAL, not fired.**
+
+**What did NOT move.** **(GR-15) OPEN**; **no gap-map status move on `hK`**;
+class uniformity untouched; no `g`-flank (rank-free throughout). Input (Y) and
+(GR-64)(R2) untouched — **GCOLL's target this wave** — with one (Y)-adjacent
+by-product *reported and not developed*: (GR-85)'s `(A(v))_v` is strictly
+finer than the (GR-50) degree data (GR-62) refuted, so it is offered as the
+coordinate YLOC's (GR-65) fit identity said an instrument must control. A
+by-product **corroboration** rather than a rediscovery: this pass computes
+`d_par`/`d_adm` from the full `2^{|E|}` `z`-cube, a construction independent of
+`gpsa.parity_census`/`gadm.dp_pref`, and reproduces (GR-70)(ii) exactly
+(`{0: 23 444, 2: 495}` over 23 939 pairs) — the wave's first cross-direction
+convergence, this time against a *landed* figure rather than a concurrent
+sibling. **§(K-grid)'s gap-map status cell is now at 2019 of its 2035-word
+cap**: GTMPL's recompute bought 305 words and this landing consumed 289 of
+them, so **GCOLL's landing owes a genuine recompute of that cell before adding
+its own content** — 16 words is not headroom.
 
 ### GCOLL — twenty-seventh direction (eighth fan-out)
 

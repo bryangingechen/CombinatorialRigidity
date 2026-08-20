@@ -8,12 +8,10 @@
 `hcontract` (W4), kernel `hK`, and kernel `hbareSplit` — see *Hand-off*. **Thirty-two
 kernel-(K) directions are now COMPLETE** (2026-08-05 → 08-19, ordinals 1–24; roster and
 per-direction theorem chain in *Decisions made*). **The SIXTH and SEVENTH FAN-OUTS ARE
-BOTH COMPLETE** (all ten directions LANDED 2026-08-19). **The arc's three HITs:**
+BOTH COMPLETE** (all ten directions LANDED 2026-08-19). **The arc's HITs through ordinal 24:**
 route-ledger **entry 5 PROVEN in both halves** (GBAL, discharging input (X)); **chart
-irreducibility PROVEN** (CIRR); the **AA-glue configuration NOT realizable at `n_hub = 8`**,
-the (GR-38) kill a non-vacuous THEOREM there (AGLU — its own dispatch-predicted
-binding-laminarity consequence REFUTED). Everything else landed as an honest MISS or an
-OPEN reshape; per-direction verdicts in *Decisions made* and
+irreducibility PROVEN** (CIRR); the **AA-glue configuration NOT realizable at `n_hub = 8`**
+(AGLU). Everything else an honest MISS or an OPEN reshape; verdicts in *Decisions made* and
 `notes/Pencil-fanout{,-archive}.md`, **not restated here**. **(GR-15) stays OPEN
 throughout; class uniformity untouched; no g-flank at any of the thirty-two directions.
 E3 is ARMED (by GBAL) and has NOT fired.** Direction codes are **multi-letter and
@@ -26,16 +24,15 @@ PREPPED AND DISPATCHED** (2026-08-19) — five concurrent opus directions,
 ordinals 25–29: **GTMPL** / **GFLOW** / **GCOLL** (§(K-grid)) and **OSCHU** /
 **SIGZ** (§(K-out)); specs, roster, tier split, label reservations and the
 losers' ranking all in `notes/Pencil-fanout.md` §"Eighth fan-out", not restated
-here. **GTMPL has LANDED** (2026-08-19, the arc's thirty-third direction) —
-ledger attack (c)'s **AA-glue case is settled at an EXACT BOUNDARY**:
-impossible at every `n_hub ≤ 14` by an `n`-free proof, and **REALIZED at
-`n_hub = 16`** by a rank-certified witness at which the (GR-38) kill **FAILS**
-— so both of the dispatch's two branches fired, on different strata. **The
-other four are in flight.** **ZNEQ's carried `σ > 0` disproof hunt
+here. **GTMPL and GFLOW have LANDED** (the arc's thirty-third and thirty-fourth
+directions) — attack (c)'s AA-glue case settled at an **exact `n_hub`
+boundary**, and **(b′) given its first proven `n`-free constant** (at 12, not
+2) — verdicts one-lined in *Decisions made*, detail in the fan-out doc.
+**OSCHU / SIGZ / GCOLL are in flight.** **ZNEQ's carried `σ > 0` disproof hunt
 is now AUTHORIZED** (user, this session — the first check-in since 2026-08-05
 to move a standing constraint) and is direction **SIGZ**, dispatched with the
 direction-A pivot rule in force. **The next concrete task is verifying and
-landing the wave's returns, one serial coordinator commit per direction.**
+landing the wave's remaining returns, one serial commit per direction.**
 
 ## Current state
 
@@ -281,20 +278,22 @@ spec, bar, rider, tier assignment and label reservation is in `notes/Pencil-fano
 | direction | owning § | target in one line |
 |---|---|---|
 | ~~**GTMPL**~~ | §(K-grid) | **LANDED** — attack (c)'s AA-glue case settled at an exact boundary (`≤ 14` impossible, 16 realized) |
-| **GFLOW** | §(K-grid) | (b′)'s availability half — *Clause A′* sub-clause 2, plus the untried min-cost-flow exchange route |
+| ~~**GFLOW**~~ | §(K-grid) | **LANDED** — (b′) a HIT at a different constant: gap `≤ 12` modulo (R1), constant 2 open with (C2) its residual |
 | **GCOLL** | §(K-grid) | **(GR-64)(R2)** — every habitat shape carries an anchor matching with `B(M) = 0` |
 | **OSCHU** | §(K-out) | **(a₁)** class-uniformly — the Schubert non-jump, with the (a₂) cross-pool re-keying folded in |
 | **SIGZ** | §(K-out) | the newly-authorized `σ > 0`-everywhere hunt — **pivot rule in force** |
 
-**Landing obligations.** §(K-grid)'s gap-map recompute is **DONE** (GTMPL's landing: 1706 →
-1730 words *while absorbing six new labels*, so the pre-existing content compressed ~13 %;
-79 labels in, 85 out, **zero dropped**, verified by a scripted set-diff; cap unbumped at
-2035, leaving **305 words** for GFLOW and GCOLL). §(K-out)'s is still owed: the **first
-§(K-out) landing recomputes that cell to `≤ 560` words** (649 of 800 used, two queued) —
-**recompute, never bump the cap**, label preservation by a scripted set-diff. A
-**wave-closing exception-log commit** to `notes/dispatch-log.md` is owed at the end, **the
-coordinator's, not a build agent's**; GTMPL's spec-clause correction and the two
-sibling-import debt items are its rows.
+**Landing obligations.** §(K-grid)'s cell was recomputed at GTMPL's landing (1706 → 1730
+words *while absorbing six new labels*, i.e. the pre-existing content compressed ~13 %; 79
+labels in, 85 out, **zero dropped**, scripted set-diff; cap unbumped) — and GFLOW then
+consumed 289 of the 305 words that bought, so the cell now sits at **2019 of 2035**.
+**GCOLL's landing therefore owes a genuine recompute of the §(K-grid) cell before adding its
+own content** — 16 words is not headroom, and the rule stays **recompute, never bump**.
+§(K-out)'s recompute is still owed at the **first §(K-out) landing** (`≤ 560` words; 649 of
+800 used, OSCHU and SIGZ queued). A **wave-closing exception-log commit** to
+`notes/dispatch-log.md` is owed at the end, **the coordinator's**; its rows are the two
+defective inherited spec clauses (GTMPL's, GFLOW's), the two sibling-import debt items, and
+the unescaped-pipe gate degradation this landing introduced and repaired.
 
 **Queued behind the wave:** (OC-19) input (c) class-uniformly (OCON's #1 by value,
 **(GR-15)-flavoured**, still waiting on a chunk-level instrument for (Y) — **GCOLL is this
@@ -322,18 +321,15 @@ discharge (residue (iv)) is CLOSED too**. The landed successor
 `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card` (`Molecule/Pencil/Escape.lean`) wraps
 `pencil_conjecture_of_hcontract_hK_hbareSplit` and carries exactly three open items, below.
 
-> **Route σ's remaining substance is its parked LEAN half** (obligation 1; the numerics half is
-> DONE — §(K-σ) *Steps σ3–σ5*, one-lined in *Decisions made*; obligation 1 shrank to two
-> conditions and **(σ7)** is proven). When adjudicated open, the smallest concrete commit steers
-> to a common seed via the landed `exists_common_seed_pencilRow_and_polynomials`
-> (`Engine.lean:476`; the chart is **total**), carrying two design decisions: (a) which maximal
-> minor per LI conjunct (the dual conjuncts are unions of basic opens); (b) which FIELD —
-> settled per *Current state*'s §(K-clos) note (`ℝ` the narrowest option), still a user call
-> as scope. **`exists_pencilSeed_of_nondeg`
-> (`Reseed.lean:65`) is NOT the bridge** (circular). Route σ faces exactly **one** crux (the
-> workbook's two kills of M₁ share one stated reason — the `hinge(vb) := q(ab)` pinning).
-> **BLOCKED by the standing 2026-08-05 Lean-hold adjudication (general, not W4-scoped)**; does
-> not open without a fresh user adjudication.
+> **Route σ's remaining substance is its parked LEAN half** (obligation 1, shrunk to two
+> conditions, **(σ7)** proven; the numerics half is DONE — §(K-σ) *Steps σ3–σ5*). When
+> adjudicated open, the smallest commit steers to a common seed via the landed
+> `exists_common_seed_pencilRow_and_polynomials` (`Engine.lean:476`, chart **total**),
+> carrying two design decisions — which maximal minor per LI conjunct, and which FIELD (`ℝ`
+> the narrowest, still a user call as scope). **`exists_pencilSeed_of_nondeg`
+> (`Reseed.lean:65`) is NOT the bridge** (circular); exactly **one** crux remains (the
+> `hinge(vb) := q(ab)` pinning). **BLOCKED by the standing 2026-08-05 Lean hold**; does not
+> open without a fresh user adjudication.
 >
 > **Directions 1–24 are ALL COMPLETE** — roll call and dates one-lined in *Decisions made*,
 > per-direction detail in `notes/Pencil-fanout{,-archive}.md`, the delegations that picked
@@ -414,16 +410,24 @@ is the canonical home a successor reads.
   discipline promoted to the new root manual `RESEARCH-ARC.md`. Verbatim
   relocations, repointed, `check-gapmap-cells.py` clean; detail
   `notes/Pencil-structure.md`.
-- **Direction 25, GTMPL — LANDED 2026-08-19** (eighth fan-out; §(K-grid) *Steps
-  G98–G103*, `w4/gtmpl.py`). Attack (c)'s **AA-glue case settled at an exact `n_hub`
-  boundary**: two new `n`-free charges (GR-80)/(GR-81) — the second pinning
-  `#{B-darts at X}` exactly, (GR-76)(i) being merely its `≥ 0` instance — chain to
-  `n_hub ≥ 16` (GR-82), killing the three (GR-76)(iv) templates; (GR-83) exhibits an
-  `n_hub = 16` witness where the (GR-38) kill FAILS; (GR-84) kills even (GR-75)(iii)'s
-  uncrossing from 16. A **finite bound, not a contradiction** — the
-  `slack + defect(T) = 1` residual stays open at `n_hub ≥ 10`. (GR-76)(iii)
-  **superseded, not refuted**; E1/E2/E3 all NO. Its correction of the spec's empty
-  "is it fully-good?" branch is the wave's first coordinator-artifact defect.
+- **The EIGHTH FAN-OUT, landing as it goes** (ordinals 25–29; specs and per-direction
+  verdicts `notes/Pencil-fanout.md` §"Eighth fan-out", **not restated here**; drivers
+  `w4/{gtmpl,gflow,gcoll,oschu,sigz}.py`).
+  **25 GTMPL** — attack (c)'s AA-glue case settled at an **exact `n_hub` boundary**: two new
+  `n`-free charges (GR-80)/(GR-81) chain to `n_hub ≥ 16` (GR-82), killing the three
+  (GR-76)(iv) templates; (GR-83) exhibits an `n_hub = 16` witness where the (GR-38) kill
+  FAILS; (GR-84) kills even (GR-75)(iii)'s uncrossing from 16. A finite bound, not a
+  contradiction — the `slack + defect(T) = 1` residual stays open at `n_hub ≥ 10`.
+  (GR-76)(iii) **superseded, not refuted**.
+  **26 GFLOW** — **(b′) a HIT at a different constant**: Clause A′ sub-clause 1 **PROVEN**
+  (GR-87), sub-clause 2 **REFUTED as posed** (GR-88, an `n_hub = 8` witness pricing exactly
+  4) while Clause A′ itself survives, so the residual becomes a **selection** clause (C2);
+  (GR-86)'s repair-chain price telescopes, giving (GR-89)
+  `d_adm − d_par ≤ 4·min(k, ⌊n_hub/4⌋) ≤ 12`, `n`-free, **modulo (R1)**. **(b′) at 2 stays
+  OPEN.**
+  **Both corrected a defective inherited spec clause** — GTMPL an empty "is it fully-good?"
+  branch, GFLOW the "min-cost flow, hence polynomial" instrument — the wave's recurring
+  coordinator-artifact shape. E1/E2/E3 NO at both; **E3 stays ARMED**.
 
 - **Directions 1–24 — ALL LANDED 2026-08-05…08-19** (thirteen across the first five
   fan-outs, one per ordinal from the sixth on; drivers `w4/{cflank,gcap,gunif,gexist,
