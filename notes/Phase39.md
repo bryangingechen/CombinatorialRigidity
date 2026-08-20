@@ -33,10 +33,13 @@ disproof** as a theorem, the pivot rule never triggering (SIGZ); **(a₁)
 half-proven, half-reduced to one 3×3 determinant** (OSCHU); and
 **(GR-64)(R2) REFUTED** by a Petersen witness family with **(R1) DELIVERED**
 (GCOLL) — the wave's **only** gap-map status move. Verdicts one-lined in
-*Decisions made*, detail in the fan-out doc. **The next concrete task is the
-wave-closing exception-log commit to `notes/dispatch-log.md`** (the
-coordinator's), after which the phase is UNROUTED again and the queued doc
-split below is the cheapest structural item.
+*Decisions made*, detail in the fan-out doc. The **wave-closing exception-log commit is DONE**
+(`notes/dispatch-log.md`: five rows, findings **F22–F24**). **The phase is now
+UNROUTED again** — the next concrete task is a pick, and the two cheapest
+structural items are the queued doc split below and the one deliberate harness
+move-down round the wave accumulated (five debt items across three landings,
+all sideways-import move-downs into landed files, best paid as a single round
+now that no direction is in flight).
 
 ## Current state
 
@@ -297,10 +300,13 @@ raised **2035 → 2715** having absorbed **eighteen** new theorems across the wa
 at SIGZ, a further ~65 off the oldest material at OSCHU) and then, the section having
 absorbed **eleven** new theorems ((OC-29)–(OC-39)), its cap was **deliberately bumped
 800 → 950** with the reason recorded in `notes/check-gapmap-cells.py` — recompute first,
-twice, then bump, the script's own sanctioned order. A **wave-closing exception-log commit** to
-`notes/dispatch-log.md` is owed at the end, **the coordinator's**; its rows are the two
-defective inherited spec clauses (GTMPL's, GFLOW's), the two sibling-import debt items, and
-the unescaped-pipe gate degradation this landing introduced and repaired.
+twice, then bump, the script's own sanctioned order. The **wave-closing exception-log commit is LANDED** —
+five rows plus findings **F22** (a fan-out multiplies the coordinator's spec errors, and
+inherited hand-off clauses are the main vector: eight refuted premises across two waves, none
+caught by a gate), **F23** (an unescaped pipe silently downgrades the gap-map cap gate, so a
+passing run proves nothing) and **F24** (a dispatch's criticism of coordinator work needs the
+same verification as its mathematics — and a repeated obligation must be worded identically at
+every site).
 
 **Queued behind the wave:** (OC-19) input (c) class-uniformly (OCON's #1 by value,
 **(GR-15)-flavoured**, still waiting on a chunk-level instrument for (Y) — **GCOLL is this

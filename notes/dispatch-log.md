@@ -117,6 +117,11 @@ keeps only what git cannot show.
 | 2026-08-19 | Phase39 seventh fan-out — three coordinator premises refuted by the directions they primed | opus ×3 (YLOC / AGLU / ZNEQ) | coordinator-authored spec defect ×3, each caught by the dispatch it misdirected | YLOC's (GR-63) refuted the predicted obstruction LOCATION — (GR-52)'s `2 e_H(S)` is a per-hub-subset count valid at every `S`, so it localizes for free and the break is two links earlier. AGLU's (GR-77) refuted the predicted CONSEQUENCE — 3 774 crossing pairs at `n_hub = 8`, so only the maximal family's uncrossing survives. ZNEQ sharpened an incomplete WORDING — a `Z = ∅` negative splits, and only one branch is the (K-tight) event specced; the other is a PENCIL event. One shared cause: extrapolating a landed result's scope to an unmeasured stratum. See F19. |
 | 2026-08-19 | Phase39 §(K-grid) cell FIFTH regression (`5ba6d299` → `4edd2143`) | sonnet (landing) → opus (coordinator) | gate-invisible defect: a recompute that PASSED its mechanical cap and accomplished nothing | Instructed to recompute rather than bump, BALB's landing recomputed the close-it cell to 872 words against a cap of 873 — compliant, gate-green, purposeless: the recompute existed to make room for AGLU, the fourth direction landing into that row. `check-gapmap-cells.py`, added at the fourth regression, catches OVERFLOW but not purposeless compliance. Coordinator redid it (872 → 619). A scripted label-set diff then caught `(GR-47)` missing from both cells — eyeballing would have shipped the hole. See F21. |
 | 2026-08-19 | Phase39 seventh-fan-out prep (`13ec1f0e` → `d2348090`) | opus (coordinator) | coordinator-authored artifact defects ×2, F17 class, flagged by a landing agent | The prep re-synced `Phase39.md` and the ROADMAP cell but never re-read the fan-out doc's OWN `**Status:**` header: stale by two whole fan-outs, still describing the file as scoping "three independent research directions" when there were twenty-four, and grown to 2139 words of per-direction changelog (recomputed to 209). The same commit nested the wave's five direction headings at `###` where every prior wave's sit at `##`, so `grep '^## .* direction'` silently omitted 20–24. Caught by ZNEQ's landing, not by the coordinator. See F19. |
+| 2026-08-19 | Phase39 eighth fan-out — five concurrent directions (`1f02f73a` … `b83fed26`) | opus ×5 (directions) → opus (coordinator landings) | playbook deviation, user-adjudicated: THIRD consecutive parallel multi-dispatch | Third wave of the shape, and the first whose check-in **moved a standing constraint** — ZNEQ's held-out `σ > 0` disproof hunt was authorized, becoming SIGZ, with the direction-A pivot rule in force and the adjudication moved from before-dispatch to at-return. All five landed; four reservations consumed exactly, SIGZ returning one label. Selection, tiers and reservations coordinator-set again, so the twelfth's no-independent-ranking disclosure applies a third time. No E-clause fired; E3 ARMED throughout. |
+| 2026-08-19 | Phase39 eighth fan-out — FIVE defective spec clauses (`1f02f73a`, `280e2e1f`, `5e8cb62c`, `ca862924`) | opus ×4 | coordinator-authored spec defect ×5, every one caught by the dispatch it primed | Four of five directions corrected a clause in their own spec: GTMPL an **empty** case (a binding chunk *is* an obstruction, so a realized AA-glue is never fully-good); GFLOW a wrong **instrument** (min-cost flow — the objective is a parity count); OSCHU an over-strong **restatement** (`dimK ≤ 1` sufficient, not equivalent) *and* a wrong **conditionality** (conditional on (GR-10) — false at directly-certified shapes); SIGZ an over-strong **consequence** ((a₂) free unconditionally — only the counting half closes). **Three inherited** from landed hand-offs, **two** written at prep. See F22. |
+| 2026-08-19 | Phase39 §(K-out) + §(K-grid) gap-map cells (`ca862924`, `b83fed26`) | opus (coordinator) | gate-invisible defect ×2: an unescaped pipe SILENTLY DOWNGRADES the cap gate | Twice in two landings, writing cardinality notation **unescaped** inside a gap-map row made `check-gapmap-cells.py` fall back from per-cell to combined-remainder capping — and the combined check **PASSED** while the status cell alone was 31, then 121, words over its own cap. Escaping restored `split` parsing and exposed the real overruns, which were then paid by trimming. **A passing run of this gate is not evidence a cell is within cap unless the row still parses as `split`.** See F23. |
+| 2026-08-19 | Phase39 eighth fan-out — both gap-map caps bumped after recompute (`ca862924`, `b83fed26`) | opus (coordinator) | playbook-adjacent: first same-day bump of BOTH capped rows, in the sanctioned order | §(K-out) 800→950 and §(K-grid) 2035→2715, each **after** an honest recompute rather than instead of one: §(K-out)'s pre-existing content went 649→431 (34%) at SIGZ then a further ~65 off at OSCHU; §(K-grid)'s went 1706→1730 while absorbing six new labels, each later landing trimming its own block. The rows absorbed **eleven** and **eighteen** new theorems in one day. Reasons recorded in the script itself, per its docstring. |
+| 2026-08-19 | Phase39 28th direction OSCHU — its criticism of a sibling landing, refuted (`ca862924`) | opus | dispatch-authored claim about coordinator work, wrong on verification | OSCHU reported that SIGZ's landing skipped the wave's mandated §(K-out) recompute, reading the cell's end state (666) against the spec's ≤ 560. The recompute **did** happen — pre-existing content 649→431, past target — after which SIGZ's own 235-word block brought the cell to 666. But the misreading was **invited** by the coordinator's asymmetric wording: the §(K-grid) obligation said "recompute … before adding its own content" and the §(K-out) one omitted that clause. Fix is to the spec, not the landing. See F24. |
 
 ## Findings
 
@@ -507,3 +512,55 @@ At phase close, promote stable entries into the coordinator command's
   is unchanged and now named in the row itself: the
   "Since Steps X–Y (direction Z), W changed" construction, appended
   rather than folded into current state.
+
+- **F22 — a fan-out multiplies the coordinator's spec errors, and
+  inherited clauses are the main vector (Phase 39, 2026-08-19).** Four of
+  the eighth fan-out's five directions corrected a defective clause in
+  their own spec — five clauses in all, and not one of them a
+  mathematical mistake by the direction: every one was the coordinator
+  asserting more than the source supported. **Three were inherited** —
+  transcribed verbatim from a *landed* hand-off (AGLU's "is it
+  fully-good?", BALB's "min-cost flow, hence polynomial", ZNEQ's
+  "equivalently the Schubert non-jump") and therefore already
+  twice-read, which is precisely why they survived a re-read. **Two were
+  written at prep.** The lesson is not "read the hand-off harder": a
+  landed hand-off clause carries the authority of a landed result and
+  gets copied with it. The lesson is that **a hand-off's
+  forward-looking clauses are conjectures, not results** — so a spec
+  should quote them *as* the previous direction's recommendation rather
+  than restate them as fact, letting the reader attack the clause
+  instead of inheriting it. Pair this with the seventh fan-out's row
+  (three coordinator premises refuted): across two waves **eight**
+  coordinator premises have been refuted by the directions they primed,
+  and **none** by a gate.
+
+- **F23 — an unescaped pipe silently downgrades the gap-map cap gate,
+  so a passing run proves nothing (Phase 39, 2026-08-19).**
+  `check-gapmap-cells.py` falls back to capping columns 3+4 *combined*
+  when a row's pipe count does not resolve to four columns — a
+  deliberate, documented choice (it will not guess a split point). What
+  is not documented is the consequence, which bit **twice in two
+  landings**: writing `|W|`-style cardinality notation unescaped inside
+  the row makes the gate pass on the *combined* cap while the status
+  cell alone sits 31, then 121, words over its own. Escaping restored
+  `split` parsing and exposed both overruns. **Check the parse mode, not
+  just the exit code** — if a row parses as `combined`, its per-cell
+  caps are not being enforced at all. Cheap standing fix for a
+  successor: have the script *warn* when a row it was asked to check
+  parses as `combined`.
+
+- **F24 — a dispatch's criticism of coordinator work needs the same
+  verification as its mathematics (Phase 39, 2026-08-19).** OSCHU
+  returned a confident, specific, numbered claim that a sibling landing
+  had skipped a mandated recompute. Checked against the commit it was
+  wrong: the recompute had over-delivered (34 % off the pre-existing
+  content), and the figure OSCHU quoted was the cell's *end* state after
+  the sibling's own content went in. Two lessons, pointing opposite
+  ways. **For the coordinator:** apply the reasoning-scrutiny tier to a
+  dispatch's *process* claims too, not only its theorems — taking this
+  one at face value would have produced a corrective commit repairing
+  nothing. **Against the coordinator:** the misreading was *invited*,
+  because one obligation was written two ways in one spec — "recompute …
+  before adding its own content" for one section, a bare word-count for
+  the other. State a repeated obligation **identically** at every site,
+  or the weaker wording becomes the one a careful reader enforces.
