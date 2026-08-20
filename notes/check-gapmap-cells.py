@@ -54,6 +54,20 @@ to PROVEN, genuinely growing the row past its prior cap. Caps bumped to
 the 2026-08-19 recompute's own size (1504 / 759 words) plus ~15%
 headroom: 1730 / 873.
 
+**2026-08-19, `(K-out)` promoted out of the default (eighth fan-out).** The
+section absorbed **eleven** new theorems in one day -- (OC-29)-(OC-34) from
+direction OSCHU and (OC-35)-(OC-39) from direction SIGZ -- taking it from
+(OC-1)-(OC-28) to (OC-1)-(OC-39). Its status cell was honestly recomputed
+**twice** in the same day before this bump: 649 -> 431 words of pre-existing
+content at SIGZ's landing (a 34% reduction), then a further ~65 words off the
+oldest (OC-1)-(OC-25) material at OSCHU's. What is left is 828 words carrying
+39 labelled results, i.e. ~21 words each -- comparable to `(K-grid)`'s density,
+and further compression would start deleting status rather than redundancy. Cap
+set at that recompute's own size plus ~15%: **950 / 873** (the close-it cap
+matches `(K-grid)`'s, the cell being at 497). This is the docstring's
+"row has genuinely grown" case, not a substitute for the recompute -- which was
+done first, twice.
+
 **2026-08-19 second bump (direction GLAW, same day).** Six more theorems
 (GR-55)-(GR-60) land on attack (a') -- the deviation normal form, the
 SPLIT identity/one-inequality criterion, the SDR exchange calculus, the
@@ -82,6 +96,7 @@ SPECIAL_CAPS = {
     # gap-key -> {"status": cap, "closeit": cap}. Combined-remainder fallback
     # (ambiguous pipe split) uses the sum of the two.
     "K-grid": {"status": 2035, "closeit": 873},
+    "K-out": {"status": 950, "closeit": 873},
 }
 
 

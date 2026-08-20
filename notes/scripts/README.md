@@ -769,6 +769,21 @@ is load-bearing, since the absorption of a degree-2 hub is exactly where
 `P21`'s length-6 topological path (and hence its one unit of span deficiency)
 lives.
 
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/oschu.py --restate` | 197 s | `notes/Pencil-informal.md` §(K-out) *Steps O25–O26* (direction OSCHU): (OC-29)'s `M̂ ∧ W = L_b ⊕ L_c` and its Klein perp, plus (OC-30)'s five-row bad-set classification, asserted at **104/104** POOL-OS chart points — every row `(dimK, bad set, #bad, rank(Q\|_D), ruling, deg GCD) = (1, none, 0, 3, False, 0)` — and the classification asserted **equal to ZNEQ's independent ℚ[t]-GCD route** at every frame |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/oschu.py --gtarget` | 466–515 s | ibid. *Steps O27–O28* ((OC-31)/(OC-32)): at **292/292** guard-accepted target-rank chart points of the **whole graph `G`** (POOL-OG) plus **174/174** POOL-OC2, every point at `dimK = 1` with `L_b ∩ D = L_c ∩ D = 0`; `corank(G) = 0 ⟹ corank(H) = 0`, `C(vb) ∈ L_b`, `C(ac) ∈ L_c` and the (OC-32) collapse asserted per point. **Runs 466–515 s alone**, which is why the census is a separate pair of modes |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/oschu.py --rekey` | 55 s | ibid. *Step O30* ((OC-34), the (a₂) leg): §(K-grid)'s **907** labelled certified shapes reduce to **75** isomorphism classes, covering **19** of §(K-out)'s **174** length-4-companion classes; the other **155 certified DIRECTLY, 155/155, 0 misses, 0 node-cap hits**, class predicate asserted per shape — so the `s₀` half is free at all 174 **without** (GR-10) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/oschu.py --census1` | 108–139 s | ibid. the (OC-33) per-class census, part 1 — every 2nd class by `(\|V\|, label)` order, **87** classes, **87** target-rank witnesses, 0 without one in the seed window, all at `(dimK, bad set, rank(Q\|_D), ruling) = (1, none, 3, False)`; a `bad set = none` row is an individual **proof** that input (a) holds at that (shape, split) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/oschu.py --census2` | 114–122 s | ibid. part 2 — the complementary **87** classes, same figures, so **174/174** classes carry a witness. Split from part 1 deliberately: a combined census plus `--gtarget` would breach the 600 s foreground budget |
+
+**OSCHU (eighth fan-out, LANDED 2026-08-19).** All five modes re-run in the
+foreground by the coordinator at landing, one at a time, explicit timeouts, all
+exit 0, every quoted figure reproduced (~979 s total). One driver added
+(`w4/oschu.py`), nothing existing modified. **No Macaulay2 leaf** — but see the
+`closure.Gauss` design item in *Harness debt*: the residual route needs exact
+`ℚ(i)`, which is precisely the scalar class `closure` keeps private, so the
+move-down is a **design decision**, not a mechanical one. Pools POOL-OS / OQ /
+OG / OR / OC2 are pinned and disjoint from every earlier pool.
+
 **GTMPL (eighth fan-out, LANDED 2026-08-19).** All **eight** modes re-run in the
 foreground by the coordinator at landing (`PYTHONHASHSEED=0`, explicit timeout,
 one at a time, all exit 0, every quoted figure reproduced) — ~352 s in total,
@@ -1657,6 +1672,33 @@ reason a move-down debt this small stays open is that `ocon.meet` is a
 *landed* file, and a move it touches is imported by at least one concurrent
 direction's driver (`zneq.py`), so the fix is a coordinator action between
 directions, not something either dispatch could do on its own.
+
+### New items (2026-08-19, direction OSCHU) — three more, one of them a DESIGN item; all **UNPAID**
+
+Recorded, not paid, for the standing reason: a dispatch may not modify a landed
+file, and the targets are landed files that concurrent directions of the same
+fan-out import.
+
+1. **`ocon.meet` gains a THIRD consumer** — OCON, `zneq.py`, and now
+   `oschu.py`. The item below/above is **re-dated**, not duplicated; its
+   move-down trigger was already tripped at two.
+2. **Six `zneq` primitives and `gridwit.tree_triple` each gain a SECOND
+   consumer** (`oschu.py`), tripping §2 rule 2 the same way `aglu.py`'s seven
+   devices did one landing earlier. The honest discharge is the same
+   catalogue-and-move, and it should be folded into one pass with the
+   `aglu.py` and `ocon.meet` moves once the eighth fan-out closes — three
+   separate small moves into one landed file are worse than one deliberate
+   round.
+3. **`closure.Gauss` is a DESIGN item, not a move-down.** §(K-out)'s residual
+   route (`rank(Q|_D) = 3` via `⋆`-eigen splitting) needs exact **`ℚ(i)`**, and
+   `closure` is deliberately *the only* driver whose scalars are not `ℚ` — §2
+   records that `Gauss` was **not** pushed down to `exactcore` on purpose
+   ("nothing else needs isotropic vectors, and moving it would re-baseline the
+   whole chain"). Something else now would. Whether to move it, or to keep the
+   route ℚ(i)-local inside `closure`, is a **design decision for the
+   coordinator/user**, and until it is made the route carries **no driver** —
+   the harness being ℚ-only is exactly why the route is labelled a route and
+   not a result.
 
 ### New item (2026-08-19, direction GTMPL) — `aglu.py`'s combinatorial devices need to move down; **UNPAID**
 

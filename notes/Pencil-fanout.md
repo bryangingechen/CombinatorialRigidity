@@ -1,12 +1,13 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: EIGHT fan-outs and nine single directions dispatched; 35 of 37 directions
+**Status: EIGHT fan-outs and nine single directions dispatched; 36 of 37 directions
 LANDED.** The seventh fan-out (YLOC / BALB / AGLU / ZNEQ / CIRR, §"Seventh fan-out") is
 **COMPLETE** — all five directions landed 2026-08-19. The **EIGHTH fan-out** (GTMPL / GFLOW /
-GCOLL / OSCHU / SIGZ, §"Eighth fan-out") was prepped and dispatched 2026-08-19: **GTMPL, GFLOW and SIGZ have
+GCOLL / OSCHU / SIGZ, §"Eighth fan-out") was prepped and dispatched 2026-08-19: **GTMPL, GFLOW, SIGZ and OSCHU have
 LANDED** — an exact `n_hub` boundary for ledger attack (c)'s AA-glue case, (b′)'s first
-proven `n`-free constant, and a **NO HIT** on the authorized disproof hunt that nonetheless
-kills the counting route to a disproof — and **GCOLL and OSCHU are in flight**; each direction's own Status line is authoritative for its state.
+proven `n`-free constant, a **NO HIT** on the authorized disproof hunt that nonetheless kills
+the counting route to a disproof, and (a₁) reduced to one determinant — and **GCOLL alone is
+in flight**; each direction's own Status line is authoritative for its state.
 Ordinals run 1–29 (the eighth fan-out claims 25–29) and were assigned at dispatch, so
 landing order differs from ordinal order.
 
@@ -988,7 +989,7 @@ The *candidate pool* is the arc's; only the ranking is the coordinator's.
 | **GTMPL** | 25th | compute-licensed | §(K-grid) | AA-glue realizability at `n_hub ≥ 10` — (GR-76)(iv)'s three templates | **LANDED 2026-08-19** — an EXACT BOUNDARY: impossible at every `n_hub ≤ 14`, REALIZED at 16 (§"Twenty-fifth direction") |
 | **GFLOW** | 26th | derivation-first | §(K-grid) | (b′)'s availability half — *Clause A′* sub-clause 2, the doubly-blocked case | **LANDED 2026-08-19** — a HIT at a DIFFERENT CONSTANT: sub-clause 1 PROVEN, sub-clause 2 REFUTED as posed, gap `≤ 12` modulo (R1) (§"Twenty-sixth direction") |
 | **GCOLL** | 27th | compute-licensed | §(K-grid) | **(GR-64)(R2)** — every habitat shape carries an anchor matching with `B(M) = 0` | **DISPATCHED 2026-08-19** |
-| **OSCHU** | 28th | derivation-first | §(K-out) | **(a₁)** class-uniformly — the Schubert non-jump `dim(D ∩ M̂ ∧ W) ≤ 1` (+ the (a₂) re-keying leg) | **DISPATCHED 2026-08-19** |
+| **OSCHU** | 28th | derivation-first | §(K-out) | **(a₁)** class-uniformly — the Schubert non-jump `dim(D ∩ M̂ ∧ W) ≤ 1` (+ the (a₂) re-keying leg) | **LANDED 2026-08-19** — (a₁) half-proven, half-reduced to one determinant; the (a₂) leg a HIT (§"Twenty-eighth direction") |
 | **SIGZ** | 29th | compute-licensed | §(K-out) | the `σ > 0`-everywhere hunt — newly authorized, **pivot rule in force** | **LANDED 2026-08-19** — **NO HIT**, and the counting route to a disproof is DEAD as a theorem (§"Twenty-ninth direction") |
 
 **Shared mechanics: §"Shared mechanics (all three dispatches)" above binds
@@ -1434,6 +1435,118 @@ share §(K-out) this wave** (OSCHU and SIGZ) — the protection is the **disjoin
 reserved range**, not the section, exactly as three directions shared §(K-grid)
 at the sixth and seventh fan-outs.
 
+### OSCHU — twenty-eighth direction (eighth fan-out)
+
+**Status: LANDED 2026-08-19 — (a₁) is half PROVEN and half reduced to ONE
+determinant; the (a₂) leg is a HIT that corrects a figure the arc has quoted
+since (OC-28).** Fourth of the eighth fan-out's five to land. §(K-out)
+**extended**, **Steps O25–O30**, labels **(OC-29)–(OC-34) CLAIMED EXACTLY**.
+Driver **`notes/scripts/w4/oschu.py`** (five modes, all re-run by the
+coordinator at landing in the foreground, one at a time, explicit timeouts, all
+exit 0, every quoted figure reproduced; the census is deliberately split across
+`--census1`/`--census2` because `--gtarget` alone runs 466–515 s and a combined
+mode would breach the 600 s budget).
+
+**The verdict.** **(OC-29)** shows the Schubert 4-space is not a new object at
+all: `M̂ ∧ W = L_b ⊕ L_c`, §(K-out)'s **own** hub pencils, with Klein perp
+`⟨C(M), C(bc)⟩` — from which `dimK ≥ 1` **always** (3 + 4 > 6), and §(K-tight)
+*Step 2* item 5's `★r ∥ C(M)` falls out inside the dictionary. **(OC-30)**
+identifies the bad set on `M` **exactly** — the transversals of `M` and `bc`
+lying in `D` — in a five-row classification that recovers (OC-26)(ii) by a
+route disjoint from ZNEQ's and is asserted equal to its ℚ[t]-GCD at every
+frame. **(OC-31)** is the pass's sharpest positive: at **every** target-rank
+chart point of the **whole graph `G`**, (CH-2)'s tower gives `pt(v) ∈ Π(b)` and
+`pt(a) ∈ Π(c)`, so `C(vb) ∈ L_b` and `C(ac) ∈ L_c` come **for free** — two
+lines of a projective plane always meet — forcing **`dimK ≤ 2`**. Hence **`hK`
+at ONE chart point of `G` kills (OC-26)(ii)'s `dimK ≥ 3` disjunct at every
+eligible split of that shape simultaneously**, and **(OC-32)** shows a third
+such generator is structurally unavailable, so the bound is exact rather than
+merely observed. **(OC-33)** reduces what is left to **one 3×3 determinant**:
+the surviving disjunct forces `Q|_D` degenerate, so `rank(Q|_D) = 3` at one
+target-rank `G`-point **implies input (a)** at that (shape, split) —
+`x₁`-free, `λ`-free, stratum-free, and evaluated at a point the grid route
+already constructs.
+
+**Four coordinator adjudications on landing.**
+
+*(1)* **Two more defective spec clauses, both accepted — taking the wave to
+five.** First: the spec restated (a₁) as *"equivalently the Schubert non-jump
+`dim(D ∩ M̂ ∧ W) ≤ 1`"*. Given (OC-29)'s `dimK ≥ 1`, that reads as `dimK = 1`
+exactly, which is **strictly sufficient, not equivalent**; the honest form is
+`dimK ≤ 2` **and** no ruling in `D`, and the pass constructs `dimK = 3` with
+`rank(Q|_D) = 3` all-bad to show (OC-33) genuinely needs (OC-31). This clause
+was **inherited from ZNEQ's landed hand-off** and transcribed by the
+coordinator — the same provenance as GTMPL's and GFLOW's. Second: the spec
+instructed the (a₂) leg to *"state plainly that the result stays CONDITIONAL on
+(GR-10)"*. **That is wrong at the shapes the pass certifies directly** —
+(OC-28)(iii) makes the `s₀` half free wherever a certificate is *exhibited*,
+and exhibiting it is precisely what (OC-34) does at 155 classes. Only the
+**class-uniform** statement still needs (GR-10). This one is the coordinator's
+own, written at prep.
+
+*(2)* **The (a₂) leg is a HIT, and it corrects an arc-wide figure.** §(K-grid)'s
+907 *labelled* certified shapes are only **75 isomorphism classes**, and they
+cover just **19** of §(K-out)'s **174** length-4-companion classes — **a factor
+of nine** smaller than the raw count suggests. The remaining **155 are
+certified directly, 155/155, 0 misses, 0 cap hits**, class predicate asserted
+per shape. So the `s₀` half is free at **all 174**, and the re-keying the
+coordinator commissioned as "cheap bookkeeping, no new mathematics" turned out
+to matter: quoting 907 as coverage of §(K-out)'s population was a category
+error between labelled shapes and isomorphism classes.
+
+*(3)* **The residue's cheapest attack stops on a FIELD obstruction, not a
+missing idea, and that is a design decision referred up.** What remains is
+`rank(Q|_D) = 3` class-uniformly. If `D` is `⋆`-invariant it splits into `±`
+eigen-blocks with `B = ±⟨·,·⟩`, so over a **real** field nondegeneracy is two
+lines — and `D` **is** `⋆`-invariant at a σ-fixed grid configuration
+((AC-2)/(AC-4)) — but those grids are **ℚ(i)-only** and no real σ-fixed
+configuration exists. The route therefore needs `closure.Gauss` (the arc's only
+non-`ℚ` scalar class, deliberately private to `closure`) moved down, which
+`notes/scripts/README.md` §2 explicitly calls a deliberate design choice rather
+than a mechanical move-down. Recorded as a **design item**, unpaid, and the
+route is labelled a route, not a result — it carries **no driver**, the harness
+being ℚ-only.
+
+*(4)* **The pass's criticism of the SIGZ landing is factually wrong, and the
+wording that invited it is the coordinator's.** OSCHU reports that "the wave's
+mandated §(K-out) status-cell recompute did not happen", reading the cell's end
+state (666) against the spec's "≤ 560". The recompute **did** happen: at SIGZ's
+landing the pre-existing content went **649 → 431 words, a 34 % reduction**,
+well past the target, after which SIGZ's own 235-word block brought the cell to
+666. The misreading is invited by the coordinator's own asymmetric wording —
+the §(K-grid) obligation said "recompute … **before adding its own content**"
+and the §(K-out) one omitted that clause — so the fix is to the spec, not to
+the landing. OSCHU is nonetheless right that the cell was tight, and this
+landing pays for itself: a further ~65 words came off the oldest
+(OC-1)–(OC-25) material before its own content was added.
+
+**Cap disclosure, verified at landing.** Every figure is a **witness, never a
+rate**; POOL-G/POOL-S untouched; POOL-OS/OQ/OG/OR/OC2 pinned and disjoint from
+every earlier pool. The E1 detector is real, not a formality — 155 certificate
+hunts, each carrying a filter-passing both-block-certified colouring, probe cap
+48 disclosed, 0 misses. The `--gtarget` and census legs take the **first**
+guard-accepted target-rank point per class, which is a witness per class and
+not a sample of the fibre.
+
+**TERMINATION: E1, E2, E3 all NO** — coordinator-re-run and agreed. E1: no
+g-flank, on a real detector. E2: the target is **reduced**, not refuted or
+unprovable-as-posed. E3: **stays ARMED by GBAL, neither fired nor disarmed.**
+
+**Event classification, as the spec required and the pass got right.** A
+non-jump failure is a **(K-tight) event at that split** — routes A and B dead
+there, `hK` at the shape **untouched** — and **not** a PENCIL event; only
+`{σ = 0} = ∅` is PENCIL. (OC-31) sharpens the (K-tight) side: wherever `hK`
+holds at even one point, the `dimK ≥ 3` route to failure is **closed**, leaving
+only `rank(Q|_D) ≤ 2`.
+
+**What did NOT move.** **No gap-map status moves**; `hK`, (OC-8), (GR-15) and
+class uniformity are exactly where they were. §(K-out)'s status cell was
+recomputed a second time in one day and then, the section having absorbed
+**eleven** new theorems ((OC-29)–(OC-39)) between SIGZ and OSCHU, its cap was
+**deliberately bumped** 800 → 950 with the reason recorded in
+`notes/check-gapmap-cells.py` — recompute first, twice, then bump, which is the
+script's own sanctioned order.
+
 ### SIGZ — twenty-ninth direction (eighth fan-out)
 
 **Newly authorized this session, and the arc's first authorized DISPROOF
@@ -1511,6 +1624,118 @@ whether the mechanism crosses into the habitat.
 **Reservation.** §(K-out) **extends**; labels **(OC-35)–(OC-40)**, **Steps
 O31–O36**; driver **`notes/scripts/w4/sigz.py`**. Owning section stays
 authoritative; return any unconsumed remainder to the tail.
+
+### OSCHU — twenty-eighth direction (eighth fan-out)
+
+**Status: LANDED 2026-08-19 — (a₁) is half PROVEN and half reduced to ONE
+determinant; the (a₂) leg is a HIT that corrects a figure the arc has quoted
+since (OC-28).** Fourth of the eighth fan-out's five to land. §(K-out)
+**extended**, **Steps O25–O30**, labels **(OC-29)–(OC-34) CLAIMED EXACTLY**.
+Driver **`notes/scripts/w4/oschu.py`** (five modes, all re-run by the
+coordinator at landing in the foreground, one at a time, explicit timeouts, all
+exit 0, every quoted figure reproduced; the census is deliberately split across
+`--census1`/`--census2` because `--gtarget` alone runs 466–515 s and a combined
+mode would breach the 600 s budget).
+
+**The verdict.** **(OC-29)** shows the Schubert 4-space is not a new object at
+all: `M̂ ∧ W = L_b ⊕ L_c`, §(K-out)'s **own** hub pencils, with Klein perp
+`⟨C(M), C(bc)⟩` — from which `dimK ≥ 1` **always** (3 + 4 > 6), and §(K-tight)
+*Step 2* item 5's `★r ∥ C(M)` falls out inside the dictionary. **(OC-30)**
+identifies the bad set on `M` **exactly** — the transversals of `M` and `bc`
+lying in `D` — in a five-row classification that recovers (OC-26)(ii) by a
+route disjoint from ZNEQ's and is asserted equal to its ℚ[t]-GCD at every
+frame. **(OC-31)** is the pass's sharpest positive: at **every** target-rank
+chart point of the **whole graph `G`**, (CH-2)'s tower gives `pt(v) ∈ Π(b)` and
+`pt(a) ∈ Π(c)`, so `C(vb) ∈ L_b` and `C(ac) ∈ L_c` come **for free** — two
+lines of a projective plane always meet — forcing **`dimK ≤ 2`**. Hence **`hK`
+at ONE chart point of `G` kills (OC-26)(ii)'s `dimK ≥ 3` disjunct at every
+eligible split of that shape simultaneously**, and **(OC-32)** shows a third
+such generator is structurally unavailable, so the bound is exact rather than
+merely observed. **(OC-33)** reduces what is left to **one 3×3 determinant**:
+the surviving disjunct forces `Q|_D` degenerate, so `rank(Q|_D) = 3` at one
+target-rank `G`-point **implies input (a)** at that (shape, split) —
+`x₁`-free, `λ`-free, stratum-free, and evaluated at a point the grid route
+already constructs.
+
+**Four coordinator adjudications on landing.**
+
+*(1)* **Two more defective spec clauses, both accepted — taking the wave to
+five.** First: the spec restated (a₁) as *"equivalently the Schubert non-jump
+`dim(D ∩ M̂ ∧ W) ≤ 1`"*. Given (OC-29)'s `dimK ≥ 1`, that reads as `dimK = 1`
+exactly, which is **strictly sufficient, not equivalent**; the honest form is
+`dimK ≤ 2` **and** no ruling in `D`, and the pass constructs `dimK = 3` with
+`rank(Q|_D) = 3` all-bad to show (OC-33) genuinely needs (OC-31). This clause
+was **inherited from ZNEQ's landed hand-off** and transcribed by the
+coordinator — the same provenance as GTMPL's and GFLOW's. Second: the spec
+instructed the (a₂) leg to *"state plainly that the result stays CONDITIONAL on
+(GR-10)"*. **That is wrong at the shapes the pass certifies directly** —
+(OC-28)(iii) makes the `s₀` half free wherever a certificate is *exhibited*,
+and exhibiting it is precisely what (OC-34) does at 155 classes. Only the
+**class-uniform** statement still needs (GR-10). This one is the coordinator's
+own, written at prep.
+
+*(2)* **The (a₂) leg is a HIT, and it corrects an arc-wide figure.** §(K-grid)'s
+907 *labelled* certified shapes are only **75 isomorphism classes**, and they
+cover just **19** of §(K-out)'s **174** length-4-companion classes — **a factor
+of nine** smaller than the raw count suggests. The remaining **155 are
+certified directly, 155/155, 0 misses, 0 cap hits**, class predicate asserted
+per shape. So the `s₀` half is free at **all 174**, and the re-keying the
+coordinator commissioned as "cheap bookkeeping, no new mathematics" turned out
+to matter: quoting 907 as coverage of §(K-out)'s population was a category
+error between labelled shapes and isomorphism classes.
+
+*(3)* **The residue's cheapest attack stops on a FIELD obstruction, not a
+missing idea, and that is a design decision referred up.** What remains is
+`rank(Q|_D) = 3` class-uniformly. If `D` is `⋆`-invariant it splits into `±`
+eigen-blocks with `B = ±⟨·,·⟩`, so over a **real** field nondegeneracy is two
+lines — and `D` **is** `⋆`-invariant at a σ-fixed grid configuration
+((AC-2)/(AC-4)) — but those grids are **ℚ(i)-only** and no real σ-fixed
+configuration exists. The route therefore needs `closure.Gauss` (the arc's only
+non-`ℚ` scalar class, deliberately private to `closure`) moved down, which
+`notes/scripts/README.md` §2 explicitly calls a deliberate design choice rather
+than a mechanical move-down. Recorded as a **design item**, unpaid, and the
+route is labelled a route, not a result — it carries **no driver**, the harness
+being ℚ-only.
+
+*(4)* **The pass's criticism of the SIGZ landing is factually wrong, and the
+wording that invited it is the coordinator's.** OSCHU reports that "the wave's
+mandated §(K-out) status-cell recompute did not happen", reading the cell's end
+state (666) against the spec's "≤ 560". The recompute **did** happen: at SIGZ's
+landing the pre-existing content went **649 → 431 words, a 34 % reduction**,
+well past the target, after which SIGZ's own 235-word block brought the cell to
+666. The misreading is invited by the coordinator's own asymmetric wording —
+the §(K-grid) obligation said "recompute … **before adding its own content**"
+and the §(K-out) one omitted that clause — so the fix is to the spec, not to
+the landing. OSCHU is nonetheless right that the cell was tight, and this
+landing pays for itself: a further ~65 words came off the oldest
+(OC-1)–(OC-25) material before its own content was added.
+
+**Cap disclosure, verified at landing.** Every figure is a **witness, never a
+rate**; POOL-G/POOL-S untouched; POOL-OS/OQ/OG/OR/OC2 pinned and disjoint from
+every earlier pool. The E1 detector is real, not a formality — 155 certificate
+hunts, each carrying a filter-passing both-block-certified colouring, probe cap
+48 disclosed, 0 misses. The `--gtarget` and census legs take the **first**
+guard-accepted target-rank point per class, which is a witness per class and
+not a sample of the fibre.
+
+**TERMINATION: E1, E2, E3 all NO** — coordinator-re-run and agreed. E1: no
+g-flank, on a real detector. E2: the target is **reduced**, not refuted or
+unprovable-as-posed. E3: **stays ARMED by GBAL, neither fired nor disarmed.**
+
+**Event classification, as the spec required and the pass got right.** A
+non-jump failure is a **(K-tight) event at that split** — routes A and B dead
+there, `hK` at the shape **untouched** — and **not** a PENCIL event; only
+`{σ = 0} = ∅` is PENCIL. (OC-31) sharpens the (K-tight) side: wherever `hK`
+holds at even one point, the `dimK ≥ 3` route to failure is **closed**, leaving
+only `rank(Q|_D) ≤ 2`.
+
+**What did NOT move.** **No gap-map status moves**; `hK`, (OC-8), (GR-15) and
+class uniformity are exactly where they were. §(K-out)'s status cell was
+recomputed a second time in one day and then, the section having absorbed
+**eleven** new theorems ((OC-29)–(OC-39)) between SIGZ and OSCHU, its cap was
+**deliberately bumped** 800 → 950 with the reason recorded in
+`notes/check-gapmap-cells.py` — recompute first, twice, then bump, which is the
+script's own sanctioned order.
 
 ### SIGZ — twenty-ninth direction (eighth fan-out)
 

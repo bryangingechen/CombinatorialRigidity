@@ -24,14 +24,15 @@ PREPPED AND DISPATCHED** (2026-08-19) — five concurrent opus directions,
 ordinals 25–29: **GTMPL** / **GFLOW** / **GCOLL** (§(K-grid)) and **OSCHU** /
 **SIGZ** (§(K-out)); specs, roster, tier split, label reservations and the
 losers' ranking all in `notes/Pencil-fanout.md` §"Eighth fan-out", not restated
-here. **GTMPL, GFLOW and SIGZ have LANDED** (the arc's thirty-third through
-thirty-fifth directions) — attack (c)'s AA-glue case settled at an **exact
+here. **GTMPL, GFLOW, SIGZ and OSCHU have LANDED** (the arc's thirty-third through
+thirty-sixth directions) — attack (c)'s AA-glue case settled at an **exact
 `n_hub` boundary**; **(b′) given its first proven `n`-free constant** (at 12,
-not 2); and the **authorized `σ > 0` disproof hunt a NO HIT** that nonetheless
+not 2); the **authorized `σ > 0` disproof hunt a NO HIT** that nonetheless
 **kills the counting route to a disproof** as a theorem, the pivot rule never
-triggering. Verdicts one-lined in *Decisions made*, detail in the fan-out doc.
-**GCOLL and OSCHU are in flight.** **The next concrete task is verifying and
-landing the wave's remaining two returns, one serial commit per direction.**
+triggering; and **(a₁) half-proven, half-reduced to one 3×3 determinant**.
+Verdicts one-lined in *Decisions made*, detail in the fan-out doc. **GCOLL
+alone is in flight. The next concrete task is verifying and landing it, then
+the wave-closing exception-log commit.**
 
 ## Current state
 
@@ -280,7 +281,7 @@ spec, bar, rider, tier assignment and label reservation is in `notes/Pencil-fano
 | ~~**GTMPL**~~ | §(K-grid) | **LANDED** — attack (c)'s AA-glue case settled at an exact boundary (`≤ 14` impossible, 16 realized) |
 | ~~**GFLOW**~~ | §(K-grid) | **LANDED** — (b′) a HIT at a different constant: gap `≤ 12` modulo (R1), constant 2 open with (C2) its residual |
 | **GCOLL** | §(K-grid) | **(GR-64)(R2)** — every habitat shape carries an anchor matching with `B(M) = 0` |
-| **OSCHU** | §(K-out) | **(a₁)** class-uniformly — the Schubert non-jump, with the (a₂) cross-pool re-keying folded in |
+| ~~**OSCHU**~~ | §(K-out) | **LANDED** — (a₁) half-proven, half-reduced to one 3×3 determinant; the (a₂) leg a HIT correcting an arc-wide figure |
 | ~~**SIGZ**~~ | §(K-out) | **LANDED** — NO HIT; the counting route to a disproof DEAD as a theorem, `P21`'s mechanism located as a sampler artifact |
 
 **Landing obligations.** §(K-grid)'s cell was recomputed at GTMPL's landing (1706 → 1730
@@ -289,9 +290,11 @@ labels in, 85 out, **zero dropped**, scripted set-diff; cap unbumped) — and GF
 consumed 289 of the 305 words that bought, so the cell now sits at **2019 of 2035**.
 **GCOLL's landing therefore owes a genuine recompute of the §(K-grid) cell before adding its
 own content** — 16 words is not headroom, and the rule stays **recompute, never bump**.
-§(K-out)'s recompute is **DONE** at SIGZ's landing (649 → 666 words while absorbing five new
-labels, so the pre-existing content compressed ~23 %; zero labels dropped) — 134 words remain
-for OSCHU. A **wave-closing exception-log commit** to
+§(K-out)'s cell was recomputed **twice in one day** (649 → 431 words of pre-existing content
+at SIGZ, a further ~65 off the oldest material at OSCHU) and then, the section having
+absorbed **eleven** new theorems ((OC-29)–(OC-39)), its cap was **deliberately bumped
+800 → 950** with the reason recorded in `notes/check-gapmap-cells.py` — recompute first,
+twice, then bump, the script's own sanctioned order. A **wave-closing exception-log commit** to
 `notes/dispatch-log.md` is owed at the end, **the coordinator's**; its rows are the two
 defective inherited spec clauses (GTMPL's, GFLOW's), the two sibling-import debt items, and
 the unescaped-pipe gate degradation this landing introduced and repaired.
@@ -439,10 +442,24 @@ is the canonical home a successor reads.
   `plane_basis` degeneracy locus (a set equality), which **corrects (OC-28)(iv)'s
   quantitative reading at all six sites** — the *proper-open* claim itself stands.
   **(OC-39)** certifies `{σ = 0} ≠ ∅` at 3368/3368 class pairs.
-  **All three corrected a defective spec clause** — GTMPL an empty "is it fully-good?"
-  branch, GFLOW the "min-cost flow, hence polynomial" instrument (both inherited from landed
-  hand-offs), SIGZ the coordinator's own over-strong "(a₂) free unconditionally" (only the
-  counting half closes). E1/E2/E3 NO at all three; **E3 stays ARMED**.
+  **28 OSCHU** — **(a₁) half-proven, half-reduced to one determinant.** (OC-29): the Schubert
+  4-space is §(K-out)'s **own** hub pencils `L_b ⊕ L_c`, so `dimK ≥ 1` always; (OC-30) pins
+  the bad set exactly; **(OC-31)**: at every target-rank chart point of the **whole graph
+  `G`** the tower gives `C(vb) ∈ L_b`, `C(ac) ∈ L_c` free, forcing `dimK ≤ 2` — so **`hK` at
+  ONE `G`-point kills (OC-26)(ii)'s `dimK ≥ 3` disjunct at every eligible split at once** —
+  and (OC-32) makes the bound exact; **(OC-33)** reduces the survivor to **one 3×3
+  determinant** `rank(Q|_D) = 3`, whose cheapest attack stops on a **field** obstruction
+  (needs exact `ℚ(i)`, a design item). **(OC-34)**: the (a₂) re-keying is a HIT and corrects
+  an arc-wide figure — §(K-grid)'s 907 *labelled* shapes are only **75 classes** covering
+  **19** of §(K-out)'s **174**; the other **155 certified directly**, so the `s₀` half is free
+  at all 174 **without** (GR-10).
+  **All four corrected a defective spec clause** — GTMPL an empty "is it fully-good?"
+  branch, GFLOW the "min-cost flow, hence polynomial" instrument, OSCHU both an inherited
+  "equivalently `dimK ≤ 1`" (sufficient, not equivalent) and the coordinator's own
+  "CONDITIONAL on (GR-10)" (wrong at directly-certified shapes), SIGZ the coordinator's own
+  over-strong "(a₂) free unconditionally" (only the counting half closes) — **five clauses
+  across four landings**, three inherited from landed hand-offs and two written at prep.
+  E1/E2/E3 NO at all four; **E3 stays ARMED**.
 
 - **Directions 1–24 — ALL LANDED 2026-08-05…08-19** (thirteen across the first five
   fan-outs, one per ordinal from the sixth on; drivers `w4/{cflank,gcap,gunif,gexist,
