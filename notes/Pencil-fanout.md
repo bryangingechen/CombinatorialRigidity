@@ -2201,3 +2201,117 @@ A future recon may overturn any of it.
   **partially superseded** for the tight stratum and §5.3's own local-frame
   feasibility boundary rules out the symbolic meta-option. Two **durable
   negatives** — do not re-run.
+
+---
+
+## Two probes SPECCED and AUTHORIZED 2026-08-20 (not yet dispatched)
+
+Both are **read-only recons**, both **docs+scripts-only**, and neither touches
+the Lean hold. They exist because the eighth fan-out closed with the phase
+UNROUTED and a user question exposed that the *architecture* had never been
+tested — only extended. **User adjudication, 2026-08-20:** asked what to do
+next, the user chose to clear the structural items first (done: slices 1–2),
+then, on being told `hbareSplit` was carried rather than settled, said *"I think
+we should plan to investigate hbareSplit as well; if it turns out that it's
+false then that weakens the case for working on hK as well"* — and, on the
+option space, *"Let's keep all these options that we discussed around and clear
+for a future session"* (the option board is `notes/Pencil-strategy.md` §8).
+
+**Dispatch order is not free: run KBARE-FALSIFY first.** Its answer can moot
+C3-AVOID and a great deal else — that is the whole point of running it.
+
+### Probe KBARE-FALSIFY — is `hbareSplit` actually true?
+
+**The question.** `hbareSplit` has been carried pinned since 2026-07-30 on
+evidence the recon itself scopes as *"one gadget, one sampler family"*. **Try to
+break it.** The target is **(K-bare-ext)**, the arbitrary-seed insertion lemma
+(§"(K-bare) extension-route recon" in `notes/Phase39-design.md`): for **every**
+bare pencil realization of `G′` attaining `target(G′)`, is there a placement
+`pt(v)` — off `line(pt a, pt b)`, inside the hub end's star plane when an end is
+a hub — whose induced realization of `G` attains `target(G)`?
+
+**Why this direction and this order.** Two independent reasons converge, and the
+coordinator should state both in the spec so the dispatch does not treat this as
+routine evidence-gathering: **(i)** `hbareSplit` is the **less-tested** of the
+two carried kernels — `hK` has 37 directions and 907/907 censuses behind it;
+`hbareSplit` has the gate's seven gadgets (all count-**independent**, a scope the
+recon flags itself) plus **DZ** as its single stressed-stratum witness. **(ii)**
+It is the one whose failure is **fatal to the route regardless of `hK`** — the
+induction's infeasible branch cannot be discharged without it. Weakest link,
+load-bearing.
+
+**What a hit means, stated before the run so it is not over-read.** A
+counterexample to (K-bare-ext) **does not refute the pencil conjecture.** It
+refutes *this induction*, so the consequence is re-architecture (§8.3's C3, or a
+different move set), not a dead target. It is therefore **not** a PENCIL event
+in the direction-A pivot rule's sense and does **not** stop the loop — but it
+**is** a phase-shape event and goes to the user with estimates.
+
+**Where to look, from the recon's own structure.** The evidence is thin exactly
+where the mathematics is hardest, so aim there. **(a)** New **stressed-stratum**
+gadgets beyond DZ — the recon's skeleton arithmetic gives the construction
+recipe (subdivide a cubic multigraph skeleton; `f`-constraints become per-sub-
+skeleton length bounds: every 2EC skeleton edge `≤ 4`, skeleton cycles through
+two apex edges `≥ 7` total, sub-thetas `≥ 13`), and it notes the `K3,3` skeleton
+is arithmetically **excluded at index 2**, so **larger skeletons are unprobed**.
+**(b)** The **`index ≥ 2`** danger-gadget existence search that option C left
+open. **(c)** Off-line failure-locus mapping past DZ: is the failure set
+**exactly** the line at corank ≥ 2, or does an off-line failure exist? DZ gave
+**0/15**; that is the number to try to break. **(d)** The **one-gadget** caveat
+on option C's C1 finding (target-rank policing the local chain degeneracy) —
+a second gadget either corroborates or kills it.
+
+**Bars.** Do **not** attempt option B (the insertion calculus) — un-commissioned
+and research-scale; this probe is a falsification hunt, not a proof attempt. Do
+**not** re-run the landed gate (seven gadgets, PASSED) or re-derive DZ's
+certification. Do **not** touch the Lean hold. Report **caps honestly**: an
+exhausted search is *"not found under cap C"*, never "`hbareSplit` is true" —
+the whole point is that the existing evidence was over-read once already.
+
+**Deliverable.** A draft workbook section (untracked
+`notes/Pencil-draft-<CODE>.md`), extending the design doc's (K-bare) section or
+a new workbook section as the coordinator reserves; a new driver at a reserved
+`notes/scripts/kbare/` path; an explicit confidence verdict; and the TERMINATION
+reading. **Rung: opus** (it settles a carried kernel's fate). Labels and section
+name to be reserved at prep per `notes/Pencil-labels.md` — **note that
+`notes/scripts/kbare/` is a different layer from `w4/`**, so §2's layering rule
+applies afresh.
+
+### Probe C3-AVOID — is the mixed-stratum target reachable?
+
+**The question, and it is purely combinatorial.** `notes/Pencil-strategy.md`
+§4's **C3** weakens the target: pin only a subset `S` of bodies to pencils,
+generic elsewhere. If at each reduction step the split vertex can be chosen
+**outside `S`**, KT's full freedom is intact there and the geometric crux never
+arises. So: **can the combinatorial reduction always avoid a prescribed subset
+`S`?** The risk C3 names itself is that *the reduction consumes vertices, so it
+may be forced into `S`* — a *"reduce avoiding `S`"* theorem is the thing to
+check, and it is a question about the **already-formalized** generation theorem
+(Thm 4.9, Phase 20), not about pencils.
+
+**Why it is worth a probe even though C3 is weaker than the target.** `S = V`
+recovers the full conjecture, so C3 is a **filtration, not a retreat** — a proof
+for general `S` *is* the theorem, and a proof for small `S` is a real result on
+the way. It is also the **chemically realistic** statement, since real molecules
+have some sp²-planar atoms rather than all. And it is the only option on the
+board that **relocates** the hard case instead of attacking it, which is why it
+survives the two filters that kill the invariant-strengthening candidates: it
+proposes no new invariant and no new ground set.
+
+**What a verdict looks like.** **GO** — a "reduce avoiding `S`" statement, with
+the constraint on `|S|` or on `S`'s structure that makes it true, plus the
+smallest `S` for which it fails. **NO-GO** — a configuration where every legal
+reduction is forced into `S`, which prices C3 out and is equally valuable.
+Either way, state the `|S|` threshold: C3's value is graded by how large an `S`
+survives, and *"only `|S| = 1`"* is a very different result from *"any
+independent `S`"*.
+
+**Bars.** Purely combinatorial — do **not** compute a rank, place a
+realization, or touch `hK`/`hbareSplit`. Do **not** re-derive the generation
+theorem; consume it. Do **not** widen scope into proving C3 itself: this probe
+prices its **gate**, nothing more.
+
+**Deliverable.** A draft design-pass section for `notes/Pencil-strategy.md` §4's
+C3 entry (or a new workbook section if the mathematics warrants one), a driver
+only if a search is needed, and an explicit verdict with the `|S|` threshold.
+**Rung: opus** (it can re-route the phase). Labels reserved at prep.

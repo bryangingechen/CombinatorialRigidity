@@ -30,6 +30,11 @@ a recon or a spike before it can be priced.
 > with its cheapest decisive experiment and what would kill it. Start there
 > before §4's C2/C3.
 
+> **Start at §8 (the option board, 2026-08-20)** if you are choosing a
+> direction. It prices every live route in one table set — including the two
+> filters that kill most candidates on sight — and points back here for the
+> mathematics. §§2–5 are the diagnosis and methodology it rests on.
+
 ## 1. The two questions this doc answers
 
 1. **Why does class uniformity resist?** Five structurally different routes have
@@ -910,8 +915,12 @@ direction is set:
   **not** implied — 45 constructed hard-stratum, primally-nondegenerate
   counterexamples (53 until the 2026-08-06 harness re-baseline shrank the
   pinned pool from 63 to 47; §(K-σ) *Step σ4*'s blockquote) — but two of the four are free **at `ℝ`**, one is the
-  already-named (Λ0d), and the steering is exhibited exactly. What is left is
-  **Lean**, and it is held by the standing Lean-hold adjudication.
+  already-named (Λ0d), and the steering is exhibited exactly. What is left **of
+  obligation 1** is **Lean**, held by the standing Lean-hold adjudication —
+  **but obligation 1 is one of four, and the other three are not Lean and not
+  blocked** (scope, the unwitnessed (σ6) failure direction, and the
+  never-observed-nonempty branch). Corrected 2026-08-20; see §8.4, and
+  `notes/Phase39.md` *Hand-off*'s route-σ blockquote for the split.
   **Before picking this direction, read §(K-σ) *Field scope*:** `σ` exists in
   tree only over `ℝ` while `hK` is quantified at general `[Infinite K]`, so the
   Lean half carries a second design decision — discharge at `ℝ` (instantiate the
@@ -1006,3 +1015,88 @@ it, flagged as such: `V_bc` is a **three-system of screws**, and the classical
 screw-theory literature (Ball; Hunt; Gibson–Hunt) studies the `O(6)`-geometry of
 such systems. It is geometric, not combinatorial, so it would not supply
 ingredient 2 either — **verify every citation from scratch before using it.**
+
+## 8. The option board (2026-08-20) — every live route, priced
+
+**Why this section exists.** After the eighth fan-out closed, a session's worth
+of conversation re-derived the option space from scratch because it was spread
+across §4 (candidate invariants), §4.6 (refutations + `U1`–`U3`), the phase
+note's carried items, and two workbooks. This section is the **single board** a
+fresh session reads to choose a direction. It adds no mathematics: every entry
+points at the section that owns it. **Status words here are pointers**; the
+owning section and `notes/Pencil-informal.md`'s *State of (K)* map remain
+authoritative.
+
+**Read the two filters first — most candidates die on one of them.**
+
+- **The growing-ground-set test** (§4.6): any proposed structure is a MISS
+  unless its index set is `E(G)` or derived from it. This retired both
+  literature hunts and two of §4.6's four seeds.
+- **Counting saturation** (§2.5): **no** count-expressible invariant can help,
+  which rules out `dim R_a ≥ 2` and its family. Reinforced from two directions
+  since: §(K-out) **(OC-3)** (no counting, matroid or placement-blind argument
+  can deliver (OUT)'s hypothesis) and, 2026-08-19, §(K-out) **(OC-37)** — the
+  counting route to a **disproof** is dead too. Counting is closed in *both*
+  directions.
+
+### 8.1 Continue the current architecture
+
+The induction is the framework (§4's framing correction); these are attacks on
+its named residuals, all slice-sized, none needing an adjudication.
+
+| option | what it would buy | owner |
+|---|---|---|
+| **§(K-grid) (R1)** *(GFLOW's clause — cite qualified, see `Pencil-labels.md`)* | upgrades (b′)'s proven `≤ 12` to a theorem; **cheapest item on the board** | §(K-grid) *Step G108* |
+| **§(K-grid) (C2)** *(GFLOW's; qualified)* | (b′) at the **target** constant 2; first possible failure pinned to `n_hub = 8`, `2k = 2` | ibid. |
+| one-unit-defect-budget redo of (GR-79)–(GR-82) | finishes ledger attack **(c)** past its `n_hub ≤ 14` boundary | §(K-grid) *Steps G98–G103* |
+| `rank(Q\|_D) = 3` class-uniformly | **(a₁)**, hence input (a); harness-unblocked since the `Gauss` move-down | §(K-out) *Step O29* |
+| collision dominance `min_M B(M) ≤ d_adm` | GCOLL's successor to the refuted (GR-64)(R2) | §(K-grid) *Step G115* |
+| (OC-19) input (c) class-uniformly | OCON's #1 by value — but **(GR-15)-flavoured**, so it re-enters the oldest missing technology | §(K-out) *Step O18* |
+
+### 8.2 Change the inductive invariant
+
+| option | status | note |
+|---|---|---|
+| **C1** dominance of the `V_bc` map | **STRUCK** 2026-08-05 | dominance *holds* (rank 9), but both stated reasons refuted and it does not reach uniformity (§(K-dom)) |
+| **C2** carry `V_bc` general position as a motive conjunct | **live, unpriced** | two honest problems: every existing conjunct is per-body/local while `V_bc` is global on a vertex-deleted subgraph; and a stronger motive can be **unsatisfiable** — needs a satisfiability trace first (the L6b/F10 precedent) |
+| **U1** retarget §2.4's image problem to the annihilator | **live, rank 1** | §4.6 |
+| **U2** hinge-rate / cycle-space presentation | **live, rank 2** | the only candidate *designed* to pass the growing-ground-set test |
+| **U3** restate `hK` as a **non-existence** | **live, rank 3** | makes §2.3's asymmetry (uniform negatives easy, per-shape positives hard) work *for* the prover; the first statement of the target in negative form |
+
+`U1`–`U3` **interlock** — one target, one machine, one logical form — rather
+than being independent bets (§4.6's own framing).
+
+### 8.3 Change the target
+
+| option | status | note |
+|---|---|---|
+| **C3** — pin only a subset `S` of bodies to pencils | **live, and PROMOTED here from "not on the phase's candidate list"** | Converts the geometric crux into a **combinatorial** question about already-formalized machinery: at each reduction step, can the split vertex be chosen **outside `S`**, where KT's full freedom is intact? `S = V` recovers the full conjecture, so it is a **filtration, not a retreat** — and it is the **chemically realistic** statement (real molecules have *some* sp²-planar atoms, not all). **Gating question, cheap and well-defined:** the reduction consumes vertices, so it may be forced into `S` — a *"reduce avoiding `S`"* theorem is the thing to check first. Spec: `notes/Pencil-fanout.md` §"Probe C3-AVOID". |
+
+### 8.4 Attack a kernel's own proof
+
+| option | status | note |
+|---|---|---|
+| **route σ** — the polarity applied to the seed | **candidate closure; obligation 1 Lean-blocked, obligations 2–4 open and NOT blocked** | Corrected 2026-08-20: only obligation 1 is Lean ("*not new mathematics*"). **(2)** scope — the `dim R_a = 0` stratum untouched and the **(K-res)** habitat unsampled, so **route σ is not a route to (K-res)**; **(3)** (σ6)'s failure direction unwitnessed; **(4)** the branch it closes has **never been observed nonempty**, so its value is **insurance, not repair**. Obligations 2 and 4 are decision-relevant *before* commissioning any Lean. §(K-σ) *Step σ5* |
+| **option B for `hK`** — the stress-function infrastructure | **NOT commissioned** (2026-07-30) | research-scale |
+| **option B for `hbareSplit`** — the insertion calculus | **NOT commissioned** (2026-07-30) | the *only* identified path to closing `hbareSplit`; needs the owed **KT pp. 684–691 re-pin** first, then a corank-stratified boundary-load lemma at arbitrary seeds, then (K-bare-ext) |
+| **(K-res)** | never attacked — **barred from eight consecutive direction specs** | a kernel of `hK`'s difficulty class on the complementary habitat, proof route *strictly harder*; W4 route 3 cannot close without it. Wave-sized; a user call |
+
+### 8.5 Test the architecture instead of extending it
+
+The move this board's own risk analysis recommends before more `hK` spend.
+
+| option | status | note |
+|---|---|---|
+| **`hbareSplit` falsification probe** | **AUTHORIZED 2026-08-20**, spec `notes/Pencil-fanout.md` §"Probe KBARE-FALSIFY" | `hbareSplit` is **both** the less-tested kernel (its evidence is *"one gadget, one sampler family"* against `hK`'s 37 directions and 907/907 censuses) **and** the one whose failure kills the route regardless of `hK`. Testing the weakest load-bearing link first is the correct order. **A disproof would not refute the pencil conjecture** — it would refute *this induction*, so the downside is re-architecture, not a dead target |
+| the geometric route to a disproof | open | the **counting** route is dead ((OC-37)); the geometric half of (a₂) is measured free but open class-uniformly |
+| **(T)** / **(V)** / **(E-loc)** | open, slice-sized, **no adjudication needed** | W4 route 3's informal costs; (T) is *"a genuine research gap, not a numerics gap"* and landed-**invisible** (the search's own certificate requires triangle-freeness) |
+
+### 8.6 Durable negatives — do not re-run
+
+§4.6's six refutations; §2.5's counting saturation; **C1**; both literature
+hunts (rigidity-side, Δ-matroid-side); §4.6's `U2` delivered by (GR-16)'s
+reduction and `U3`'s negative-form insight already exploited **for the tight
+stratum only** (the shortlist is *partially* superseded, not retired — U3's
+logical-form move is still live as an invariant change); the symbolic
+meta-option, landed as `m2/lambda0.m2`. §5.3 item (i) remains, ruled out by
+§5.3's own local-frame feasibility boundary.

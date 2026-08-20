@@ -1122,6 +1122,39 @@ SIGZ's subject matter is dense in bare tokens the corpus already owns — `σ`,
 which are its to re-mint. Every label it mints is `OC-`-prefixed inside its
 reserved range; everything else is **cited in the qualified form (L3)**.
 
+**Collision recorded 2026-08-20 — direction GFLOW minted three BARE tokens
+inside its reservation, and the coordinator missed it at landing.** GFLOW's
+(GR-89) names its residual clauses **`(R1)`**, **`(C1)`** and **`(C2)`**. All
+three are bare single letters, which clause L1 forbids and which this file's own
+diagnosis predicts will collide — and they do:
+
+- **`(R1)`** now has **five** owners: the *Shared dictionary*'s rigid-graph
+  facts (R1)–(R5), the opening recon questions R1–R3, `Pencil-strategy.md`
+  §4.6's refutations (R1)–(R6), **(GR-64)(R1)** (a sub-item, so qualified
+  already), and now §(K-grid)'s (R1).
+- **`(C1)`/`(C2)`** collide with `Pencil-strategy.md` §4's candidate invariants
+  C1/C2/C3, §`hnoGood'` vacuity's (C1)–(C6), and §(K-slide-cl)'s step/claim
+  pair — the same overload clause 4 names.
+
+**Disposition: QUALIFY, do not rename** — the minting rule's own remedy ("new
+collisions are resolved by qualification, not renumbering"). Cite them
+**always** as **§(K-grid) (R1)** / **§(K-grid) (C1)** / **§(K-grid) (C2)**,
+never bare; `Pencil-strategy.md` §8.1 and `Phase39.md` already do. **The
+rename option is left open for the user**, since the precedent cuts both ways:
+direction A's bare `(R1)`/`(R2)` *were* renamed to **(ANH-R1)**/**(ANH-R2)** at
+landing, before they propagated, and GFLOW's are only three commits old — the
+rename target would be `(GR-R1)`/`(GR-C1)`/`(GR-C2)`. Recorded rather than
+decided.
+
+**Why it got through, for the next prep.** The reservation was checked exactly
+as the rule requires — the *prefix* `GR-` and the *step range* G104–G109 were
+verified 0-hit — and that check cannot see a bare token minted **inside** the
+reservation for a sub-clause. This is clause L1's *"a reserved prefix protects a
+dispatch from its siblings, not from the existing corpus"* firing for the second
+time in the phase (direction A was the first), and the cheap fix for a future
+fan-out is a **landing-time** grep for bare `(X<digit>)` tokens in the returned
+draft, not a prep-time one.
+
 ## Registry — `notes/Pencil-informal.md` (the (K) workbook)
 
 Status keywords are pointers to the owning section's verdict block and the

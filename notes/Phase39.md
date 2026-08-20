@@ -296,17 +296,22 @@ fan-out", and the wave's process exceptions in `notes/dispatch-log.md` (five row
 *after* — never instead of — the recompute, with reasons in
 `notes/check-gapmap-cells.py` itself.
 
-**THE CANDIDATE LIST THE RESEARCH PICK DRAWS FROM — live now that slice 2 has landed.** New from the eighth fan-out, cheapest first: **(R1)**, GFLOW's named clause,
-which upgrades (b′)'s `≤ 12` from modulo-a-clause to a theorem; **(C2)**, (b′)'s selection
-residual, whose first possible failure is pinned to `n_hub = 8`, `2k = 2`; **redoing
-(GR-79)–(GR-82) with a one-unit defect budget** to finish attack (c) (GTMPL's own successor);
-**`rank(Q\|_D) = 3` class-uniformly**, OSCHU's residue, now unblocked on the harness side by
-the `Gauss` adjudication; and **collision dominance `min_M B(M) ≤ d_adm`**, GCOLL's successor
-to the refuted (R2). Carried from earlier waves: (OC-19) input (c) class-uniformly (OCON's #1
-by value, **(GR-15)-flavoured**, still waiting on a chunk-level instrument for (Y)); §(K-out)
-hand-off **item 3**; **(d′)**, lowest-value for a third wave and a candidate to strike rather
-than dispatch. **Not eligible:** route σ's Lean half and the W4 build, BLOCKED by the standing
-2026-08-05 Lean hold.
+**THE CANDIDATE LIST lives in `notes/Pencil-strategy.md` §8 — the option board** (new
+2026-08-20): every live route priced in one place, with the two filters that kill most
+candidates on sight (growing-ground-set; counting saturation, now closed in **both**
+directions by (OC-3)/(OC-37)). **Not restated here.** Cheapest entry: **§(K-grid) (R1)**,
+which upgrades (b′)'s `≤ 12` to a theorem. *Cite GFLOW's clauses **qualified** — bare
+`(R1)`/`(C1)`/`(C2)` collide four ways each, `notes/Pencil-labels.md`.* **Not eligible:**
+route σ's **obligation 1** and the W4 **build** — those, and only those, are held by the hold.
+
+**THE NEXT CONCRETE TASK — Probe KBARE-FALSIFY, then Probe C3-AVOID** (specced and authorized
+2026-08-20; full specs in `notes/Pencil-fanout.md` §"Two probes SPECCED and AUTHORIZED
+2026-08-20", **not restated here**). They **test the architecture rather than extend it**:
+KBARE-FALSIFY tries to *break* `hbareSplit` — the less-tested kernel *and* the one whose
+failure kills the route regardless of `hK` — and **run it first, since its answer can moot the
+other**; a hit there refutes *this induction*, **not** the pencil conjecture, so it is a
+phase-shape event for the user rather than a direction-A PENCIL event. C3-AVOID prices the one
+board option that **relocates** the hard case instead of attacking it.
 
 **Nothing is awaiting user adjudication as of 2026-08-19.** The one item that was —
 ZNEQ's `σ > 0`-everywhere hunt at class shapes whose `H` carries a short theta
@@ -337,15 +342,21 @@ discharge (residue (iv)) is CLOSED too**. The landed successor
 `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card` (`Molecule/Pencil/Escape.lean`) wraps
 `pencil_conjecture_of_hcontract_hK_hbareSplit` and carries exactly three open items, below.
 
-> **Route σ's remaining substance is its parked LEAN half** (obligation 1, shrunk to two
-> conditions, **(σ7)** proven; the numerics half is DONE — §(K-σ) *Steps σ3–σ5*). When
-> adjudicated open, the smallest commit steers to a common seed via the landed
-> `exists_common_seed_pencilRow_and_polynomials` (`Engine.lean:476`, chart **total**),
-> carrying two design decisions — which maximal minor per LI conjunct, and which FIELD (`ℝ`
-> the narrowest, still a user call as scope). **`exists_pencilSeed_of_nondeg`
-> (`Reseed.lean:65`) is NOT the bridge** (circular); exactly **one** crux remains (the
-> `hinge(vb) := q(ab)` pinning). **BLOCKED by the standing 2026-08-05 Lean hold**; does not
-> open without a fresh user adjudication.
+> **Route σ rests on FOUR obligations, and only the first is Lean.** Corrected 2026-08-20:
+> the earlier wording here named obligation 1 alone ("route σ's remaining substance is its
+> parked Lean half") and so read as though the hold parked the whole route. Canonical
+> statement of all four: §(K-σ) *Step σ5*; priced in `notes/Pencil-strategy.md` §8.4.
+> **Obligation 1 is genuinely the hold's** — §(K-σ)'s own verdict is *"Lean engineering
+> against a landed pattern, **not new mathematics**"*, with two design decisions (which
+> maximal minor per LI conjunct; which FIELD, `ℝ` the narrowest by (AC-7)). Smallest commit
+> when opened: `exists_common_seed_pencilRow_and_polynomials` (`Engine.lean:476`, chart
+> **total**); **`exists_pencilSeed_of_nondeg` (`Reseed.lean:65`) is NOT the bridge**
+> (circular). **Obligations 2–4 are NOT Lean, NOT blocked, and NOT in flight**, and two are
+> decision-relevant *before* any Lean is commissioned: **(2)** scope — the `dim R_a = 0`
+> stratum untouched and the **(K-res)** habitat unsampled, so **route σ is not a route to
+> (K-res)** even fully built; **(3)** (σ6)'s failure direction **unwitnessed**
+> (`predAfalse = 0/47`); **(4)** the branch it closes has **never been observed nonempty**, so
+> its value is **insurance, not repair**.
 >
 > **Directions 1–24 are ALL COMPLETE** — roll call and dates one-lined in *Decisions made*,
 > per-direction detail in `notes/Pencil-fanout{,-archive}.md`, the delegations that picked
@@ -370,7 +381,9 @@ discharge (residue (iv)) is CLOSED too**. The landed successor
 
 The three carried items:
 
-- **`hcontract`** (W4) — **fully decomposed, buildable, and PARKED** by the Lean hold. Route
+- **`hcontract`** (W4) — the **build** is fully decomposed, buildable, and PARKED by the Lean
+  hold; **four of route 3's other costs are informal and NOT parked** — see *Blockers*'
+  "What the Lean hold parks, and what it does NOT", the canonical scope statement. Route
   **ADJUDICATED 2026-08-02: route 3, packaging (b)**, with **(K-res)** a byte-identical
   sibling of `hK`; residual carry narrows to **`hnoGood'`**, whose vacuity conjecture is
   **REFUTED** (`|V| = 19`), so branch 4 needs content. When commissioned the next commit is
