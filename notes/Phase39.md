@@ -262,44 +262,27 @@ only its pinned route demoted by YLOC; firing is the coordinator's action). **"C
 irreducibility, un-owned" is now CLOSED** (CIRR, a HIT, §(K-chart)). Ledger attack (c),
 **AA-glue realizability, is now SETTLED NEGATIVE at `n_hub = 8`**.
 
-**THE EIGHTH FAN-OUT — verified and landed in full, one serial coordinator commit per
-direction.** Five concurrent opus directions were prepped and dispatched 2026-08-19
-(ordinals 25–29); **all five LANDED** (this stale-banner fix made in passing while
-landing SLICE 1, below — the table underneath already showed all five struck through
-as LANDED). Every spec, bar, rider, tier assignment and label reservation is in
-`notes/Pencil-fanout.md` §"Eighth fan-out" and **not restated here**:
+**THE EIGHTH FAN-OUT IS COMPLETE** — all five directions (ordinals 25–29) verified and
+landed 2026-08-19, one serial coordinator commit each, plus the wave-closing exception-log
+commit. Results are one-lined in *Decisions made*; every spec, bar, rider, tier assignment,
+label reservation and per-direction write-up is in `notes/Pencil-fanout.md` §"Eighth
+fan-out", and the wave's process exceptions in `notes/dispatch-log.md` (five rows, **F22–F24**)
+— **none of it restated here.** Both gap-map recomputes were done and both caps then bumped
+*after* — never instead of — the recompute, with reasons in
+`notes/check-gapmap-cells.py` itself.
 
-| direction | owning § | target in one line |
-|---|---|---|
-| ~~**GTMPL**~~ | §(K-grid) | **LANDED** — attack (c)'s AA-glue case settled at an exact boundary (`≤ 14` impossible, 16 realized) |
-| ~~**GFLOW**~~ | §(K-grid) | **LANDED** — (b′) a HIT at a different constant: gap `≤ 12` modulo (R1), constant 2 open with (C2) its residual |
-| ~~**GCOLL**~~ | §(K-grid) | **LANDED** — (R2) REFUTED by a Petersen witness family, (R1) DELIVERED; successor is collision dominance |
-| ~~**OSCHU**~~ | §(K-out) | **LANDED** — (a₁) half-proven, half-reduced to one 3×3 determinant; the (a₂) leg a HIT correcting an arc-wide figure |
-| ~~**SIGZ**~~ | §(K-out) | **LANDED** — NO HIT; the counting route to a disproof DEAD as a theorem, `P21`'s mechanism located as a sampler artifact |
-
-**Landing obligations.** **Both gap-map recomputes are DONE, and both rows then had their caps deliberately bumped
-after — never instead of — the recompute.** §(K-grid): recomputed at GTMPL's landing (1706 →
-1730 words while absorbing six new labels, the pre-existing content down ~13 %; zero labels
-dropped by scripted set-diff), each subsequent landing trimming its own block, then the cap
-raised **2035 → 2715** having absorbed **eighteen** new theorems across the wave.
-§(K-out)'s cell was recomputed **twice in one day** (649 → 431 words of pre-existing content
-at SIGZ, a further ~65 off the oldest material at OSCHU) and then, the section having
-absorbed **eleven** new theorems ((OC-29)–(OC-39)), its cap was **deliberately bumped
-800 → 950** with the reason recorded in `notes/check-gapmap-cells.py` — recompute first,
-twice, then bump, the script's own sanctioned order. The **wave-closing exception-log commit is LANDED** —
-five rows plus findings **F22** (a fan-out multiplies the coordinator's spec errors, and
-inherited hand-off clauses are the main vector: eight refuted premises across two waves, none
-caught by a gate), **F23** (an unescaped pipe silently downgrades the gap-map cap gate, so a
-passing run proves nothing) and **F24** (a dispatch's criticism of coordinator work needs the
-same verification as its mathematics — and a repeated obligation must be worded identically at
-every site).
-
-**Queued behind the wave:** (OC-19) input (c) class-uniformly (OCON's #1 by value,
-**(GR-15)-flavoured**, still waiting on a chunk-level instrument for (Y) — **GCOLL is this
-wave's bet on that supply line**); §(K-out) hand-off **item 3**; **(d′)**, lowest-value for
-a third wave and a candidate to strike rather than dispatch; and, new from GTMPL, **redoing
-(GR-79)–(GR-82) with a one-unit defect budget** to finish attack (c). **Not eligible:**
-route σ's Lean half and the W4 build, BLOCKED by the standing 2026-08-05 Lean hold.
+**Queued behind the wave — this is the candidate list the research pick draws from once
+slice 2 clears.** New from the eighth fan-out, cheapest first: **(R1)**, GFLOW's named clause,
+which upgrades (b′)'s `≤ 12` from modulo-a-clause to a theorem; **(C2)**, (b′)'s selection
+residual, whose first possible failure is pinned to `n_hub = 8`, `2k = 2`; **redoing
+(GR-79)–(GR-82) with a one-unit defect budget** to finish attack (c) (GTMPL's own successor);
+**`rank(Q\|_D) = 3` class-uniformly**, OSCHU's residue, now unblocked on the harness side by
+the `Gauss` adjudication; and **collision dominance `min_M B(M) ≤ d_adm`**, GCOLL's successor
+to the refuted (R2). Carried from earlier waves: (OC-19) input (c) class-uniformly (OCON's #1
+by value, **(GR-15)-flavoured**, still waiting on a chunk-level instrument for (Y)); §(K-out)
+hand-off **item 3**; **(d′)**, lowest-value for a third wave and a candidate to strike rather
+than dispatch. **Not eligible:** route σ's Lean half and the W4 build, BLOCKED by the standing
+2026-08-05 Lean hold.
 
 **Nothing is awaiting user adjudication as of 2026-08-19.** The one item that was —
 ZNEQ's `σ > 0`-everywhere hunt at class shapes whose `H` carries a short theta
@@ -311,17 +294,6 @@ accepted, quoted in *Current state*'s 2026-08-19 eighth-fan-out bullet). **A hit
 stops the loop and goes to the user**; it does not move a gap-map status by itself.
 
 **SLICE 1 — the phase-note doc split — DONE.** *Current state*'s dated adjudication
-bullets covering the archived ordinals 1–19 moved verbatim to the new
-`notes/Pencil-adjudications.md`, one thin pointer left behind; `notes/CLAUDE.md`'s
-file list, `notes/Pencil-structure.md` (§"Slice 4 — phase-note doc split — Decisions
-made") and ROADMAP's doc-split row all updated. This commit's net line count is
-in *Decisions made* (below), together with two pre-existing stale hand-off
-sentences fixed in passing — still above the ~500-line tripwire, honestly
-reported: the residual bulk is now live 2026-08-19 state (the three still-live
-wave-adjudication bullets, the eighth-fan-out hand-off detail below), not
-archivable material, so closing the rest of the gap needs a genuine compression
-pass, not another relocation — not this slice's job. Detail and verification:
-*Decisions made* and `notes/Pencil-structure.md`.
 
 **THE NEXT CONCRETE TASK — SLICE 2, the harness move-down round**, one deliberate pass paying all **five** debt items
 the wave accumulated (`notes/scripts/README.md` *Harness debt*): `ocon.meet` (three
@@ -423,79 +395,39 @@ Reverse-chronological, one line per landing; full derivations live in git,
 `notes/Phase39-design.md`, and (for the (K) arc) the workbook section named in each entry, which
 is the canonical home a successor reads.
 
-- **Second structural round, slice 1 (the phase-note doc split) LANDED
-  (2026-08-19)** — this note's *Current state* adjudication bullets covering
-  archived ordinals 1–19 (2026-08-05…07, 2026-08-07, 2026-08-12, 2026-08-13,
-  the 2026-08-19 sixth-fan-out dispatch) moved verbatim to the new
-  `notes/Pencil-adjudications.md`, one thin pointer left in their place; the
-  same commit also fixed two pre-existing stale hand-off sentences found
-  while re-reading this file's status surfaces (the top-status "next two
-  concrete commits" wording, and a since-superseded "four remaining
-  returns" eighth-fan-out banner). Verbatim diff confirmed, no dangling
-  references, `check-gapmap-cells.py` clean; net line count in
-  `notes/Pencil-structure.md` §"Slice 4 — phase-note doc split —
-  Decisions made" (this note stays above the ~500-line tripwire — the
-  residual bulk is live 2026-08-19 state, not archivable material).
-  **Slice 2 (harness move-down) is now the sole queued structural item**
-  (below).
+- **Second structural round, slice 1 — the phase-note doc split — LANDED
+  2026-08-19** (`f2862531`): the ordinals-1–19 adjudication bullets moved
+  **verbatim** to `notes/Pencil-adjudications.md` (relocation verified
+  byte-identical), one thin pointer left, and two pre-existing stale hand-off
+  sentences fixed in passing — one of them an eighth-fan-out banner still
+  claiming "four remaining returns" four landings after it stopped being true.
+  Full record: `notes/Pencil-structure.md` §"Slice 4".
 - **Doc-split + discipline-distillation rounds COMPLETE (2026-08-19, all three
   slices)** — §(K-grid) → `Pencil-informal-grid.md`; `Pencil-fanout.md`'s
   ordinals 1–19 → `Pencil-fanout-archive.md`; this phase's research-arc
   discipline promoted to the new root manual `RESEARCH-ARC.md`. Verbatim
   relocations, repointed, `check-gapmap-cells.py` clean; detail
   `notes/Pencil-structure.md`.
-- **The EIGHTH FAN-OUT, landing as it goes** (ordinals 25–29; specs and per-direction
-  verdicts `notes/Pencil-fanout.md` §"Eighth fan-out", **not restated here**; drivers
-  `w4/{gtmpl,gflow,gcoll,oschu,sigz}.py`).
-  **25 GTMPL** — attack (c)'s AA-glue case settled at an **exact `n_hub` boundary**: two new
-  `n`-free charges (GR-80)/(GR-81) chain to `n_hub ≥ 16` (GR-82), killing the three
-  (GR-76)(iv) templates; (GR-83)'s `n_hub = 16` witness has the (GR-38) kill **FAILING**;
-  (GR-84) kills even (GR-75)(iii)'s uncrossing from 16. A finite bound, not a contradiction
-  — the `slack + defect(T) = 1` residual stays open at `n_hub ≥ 10`; (GR-76)(iii)
-  **superseded, not refuted**.
-  **26 GFLOW** — **(b′) a HIT at a different constant**: Clause A′ sub-clause 1 **PROVEN**
-  (GR-87), sub-clause 2 **REFUTED as posed** (GR-88) while Clause A′ itself survives, so the
-  residual becomes a **selection** clause (C2); (GR-86)'s repair-chain price telescopes,
-  giving (GR-89) `d_adm − d_par ≤ 4·min(k, ⌊n_hub/4⌋) ≤ 12`, `n`-free, **modulo (R1)**.
-  **(b′) at 2 stays OPEN.**
-  **29 SIGZ** — the authorized disproof hunt: **NO HIT**, and the pivot rule never
-  triggered. (OC-35)/(OC-36) recast the pencil self-stress space as a **Kirchhoff flow on
-  topological paths** with `corank R(F) = Σδ + ρ − slack` in closed form, and **(OC-37)** is
-  the theorem: at a class shape `slack ≥ 0` with equality only at cycles/bouquets, so **no
-  `H`-supported stress in the habitat is combinatorially forced — the counting route to a
-  disproof is DEAD** (enumerated, no cap; the theta bound `Σ min(ℓᵢ,6) ≥ 13` tight).
-  **(OC-38)** locates `P21`'s mechanism as **one unit short** of the class *and* on the
-  `plane_basis` degeneracy locus (a set equality), which **corrects (OC-28)(iv)'s
-  quantitative reading at all six sites** — the *proper-open* claim itself stands.
-  **(OC-39)** certifies `{σ = 0} ≠ ∅` at 3368/3368 class pairs.
-  **28 OSCHU** — **(a₁) half-proven, half-reduced to one determinant.** (OC-29): the Schubert
-  4-space is §(K-out)'s **own** hub pencils `L_b ⊕ L_c`, so `dimK ≥ 1` always; (OC-30) pins
-  the bad set exactly; **(OC-31)**: at every target-rank chart point of the **whole graph
-  `G`** the tower gives `C(vb) ∈ L_b`, `C(ac) ∈ L_c` free, forcing `dimK ≤ 2` — so **`hK` at
-  ONE `G`-point kills (OC-26)(ii)'s `dimK ≥ 3` disjunct at every eligible split at once** —
-  and (OC-32) makes the bound exact; **(OC-33)** reduces the survivor to **one 3×3
-  determinant** `rank(Q|_D) = 3`, whose cheapest attack stops on a **field** obstruction
-  (needs exact `ℚ(i)`, a design item). **(OC-34)**: the (a₂) re-keying is a HIT and corrects
-  an arc-wide figure — §(K-grid)'s 907 *labelled* shapes are only **75 classes** covering
-  **19** of §(K-out)'s **174**; the other **155 certified directly**, so the `s₀` half is free
-  at all 174 **without** (GR-10).
-  **27 GCOLL** — **(GR-64)(R2) REFUTED, (R1) DELIVERED** — the wave's only gap-map status
-  move. (GR-91) puts the collision statistic in **slack** form (`s_M` always even), which
-  collapses the spec's three named attacks into one; **(GR-93)** makes violated chunks
-  **unions of 2-factor cycles**, so detection is `2^{c(F)}` with no chunk scan; **(GR-94)**
-  proves `B(M) = 0` under a Hamiltonian or cyclic-connectivity hypothesis covering the whole
-  4924 inventory and 39 687/39 689 at `n_hub = 8`; **(GR-95)** then refutes (R2) where that
-  hypothesis fails — **180 of the Petersen graph's 36 860 habitat assignments have
-  `min_M B(M) = 1`**, canonically certified. So **(GR-64) is a genuine floor on `d_fg`**;
-  (a′) is **not** refuted (`d_fg = d_adm` at all 180), and the successor is the weaker
-  **collision dominance `min_M B ≤ d_adm`**. **(GR-96)** delivers (R1) at 81 482 shapes.
-  **All four of the others corrected a defective spec clause** — GTMPL an empty "is it fully-good?"
-  branch, GFLOW the "min-cost flow, hence polynomial" instrument, OSCHU both an inherited
-  "equivalently `dimK ≤ 1`" (sufficient, not equivalent) and the coordinator's own
-  "CONDITIONAL on (GR-10)" (wrong at directly-certified shapes), SIGZ the coordinator's own
-  over-strong "(a₂) free unconditionally" (only the counting half closes) — **five clauses
-  across four landings**, three inherited from landed hand-offs and two written at prep.
-  E1/E2/E3 NO at all four; **E3 stays ARMED**.
+- **The EIGHTH FAN-OUT — COMPLETE, all five LANDED 2026-08-19** (ordinals 25–29; drivers
+  `w4/{gtmpl,gflow,gcoll,oschu,sigz}.py`). **Per-direction verdicts, bars and adjudications
+  are NOT restated here** — canonical home `notes/Pencil-fanout.md` §"Eighth fan-out" and its
+  five per-direction sections. The five results: **GTMPL** settles attack (c)'s AA-glue case
+  at an **exact `n_hub` boundary** (impossible `≤ 14` by an `n`-free proof, REALIZED at 16
+  where the (GR-38) kill FAILS; (GR-76)(iii) superseded, not refuted); **GFLOW** gives (b′)
+  its **first proven `n`-free constant** (`≤ 12`, modulo (R1)), Clause A′'s sub-clause 1
+  PROVEN and sub-clause 2 REFUTED as posed, the residual becoming a *selection* clause (C2)
+  — **(b′) at 2 stays OPEN**; **SIGZ**, the authorized disproof hunt, returns **NO HIT** with
+  the pivot rule never triggering, and kills the **counting route to a disproof** as a
+  theorem ((OC-37)), locating `P21`'s mechanism as one unit short *and* on the `plane_basis`
+  degeneracy locus — which corrected (OC-28)(iv)'s quantitative reading at six sites;
+  **OSCHU** leaves **(a₁) half-proven and half-reduced to one 3×3 determinant**, its (a₂) leg
+  correcting an arc-wide figure (907 labelled shapes = 75 classes, covering 19 of 174; the
+  other 155 certified directly, so the `s₀` half is free **without** (GR-10)); **GCOLL**
+  **REFUTES (GR-64)(R2)** by 180 Petersen witnesses and **DELIVERS (R1)** at 81 482 shapes —
+  the wave's **only** gap-map status move. **Four of the five corrected a defective spec
+  clause** (five in all, three inherited verbatim from landed hand-offs) — `notes/dispatch-
+  log.md` **F22**. E1/E2/E3 NO at every one; **E3 stays ARMED by GBAL, never fired**;
+  **(GR-15) OPEN, class uniformity untouched.**
 
 - **Directions 1–24 — ALL LANDED 2026-08-05…08-19** (thirteen across the first five
   fan-outs, one per ordinal from the sixth on; drivers `w4/{cflank,gcap,gunif,gexist,
