@@ -1706,16 +1706,23 @@ fan-out import.
    `aglu.py` and `ocon.meet` moves once the eighth fan-out closes — three
    separate small moves into one landed file are worse than one deliberate
    round.
-3. **`closure.Gauss` is a DESIGN item, not a move-down.** §(K-out)'s residual
-   route (`rank(Q|_D) = 3` via `⋆`-eigen splitting) needs exact **`ℚ(i)`**, and
-   `closure` is deliberately *the only* driver whose scalars are not `ℚ` — §2
-   records that `Gauss` was **not** pushed down to `exactcore` on purpose
-   ("nothing else needs isotropic vectors, and moving it would re-baseline the
-   whole chain"). Something else now would. Whether to move it, or to keep the
-   route ℚ(i)-local inside `closure`, is a **design decision for the
-   coordinator/user**, and until it is made the route carries **no driver** —
-   the harness being ℚ-only is exactly why the route is labelled a route and
-   not a result.
+3. **`closure.Gauss` — the design question is now ADJUDICATED: MOVE IT DOWN to
+   `exactcore`.** §(K-out)'s residual route (`rank(Q|_D) = 3` via `⋆`-eigen
+   splitting) needs exact **`ℚ(i)`**, and `closure` was deliberately *the only*
+   driver whose scalars are not `ℚ` — §2 records that `Gauss` was **not** pushed
+   down on purpose ("nothing else needs isotropic vectors, and moving it would
+   re-baseline the whole chain"). Something else now does, which is exactly the
+   condition that reasoning made the move conditional on. **User adjudication,
+   2026-08-19:** offered "decide it when the route is dispatched" / "keep the
+   route ℚ(i)-local inside `closure`" / "move `Gauss` down to `exactcore`", the
+   user selected **move it down**, accepting the re-baselining cost so the
+   residue's route — and anything later needing exact `ℚ(i)` — can use it
+   directly. Binding constraint on the move: **figures do not move.** `Gauss`
+   goes to `exactcore` with a **re-export from `closure`** so every existing
+   consumer keeps working and every recorded figure stays byte-identical at its
+   pinned `PYTHONHASHSEED`; that is the `star_span_ranks` precedent (slice S1),
+   and it is what makes a base-layer move safe rather than a re-baselining in
+   practice.
 
 ### New item (2026-08-19, direction GTMPL) — `aglu.py`'s combinatorial devices need to move down; **UNPAID**
 

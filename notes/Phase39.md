@@ -34,12 +34,15 @@ half-proven, half-reduced to one 3×3 determinant** (OSCHU); and
 **(GR-64)(R2) REFUTED** by a Petersen witness family with **(R1) DELIVERED**
 (GCOLL) — the wave's **only** gap-map status move. Verdicts one-lined in
 *Decisions made*, detail in the fan-out doc. The **wave-closing exception-log commit is DONE**
-(`notes/dispatch-log.md`: five rows, findings **F22–F24**). **The phase is now
-UNROUTED again** — the next concrete task is a pick, and the two cheapest
-structural items are the queued doc split below and the one deliberate harness
-move-down round the wave accumulated (five debt items across three landings,
-all sideways-import move-downs into landed files, best paid as a single round
-now that no direction is in flight).
+(`notes/dispatch-log.md`: five rows, findings **F22–F24**). **The research step
+is UNROUTED**, and per the **2026-08-19 user adjudication** the next two
+concrete commits are the queued **structural** items, in order: **slice 1**,
+the phase-note doc split (below); **slice 2**, one deliberate **harness
+move-down round** paying all five debt items the wave accumulated — including
+`closure.Gauss`, whose design question the same adjudication **settled: move it
+down to `exactcore`** (`notes/scripts/README.md` *Harness debt* item 3 carries
+the decision and its figures-do-not-move constraint). Only after those does the
+research pick come up again.
 
 ## Current state
 
@@ -115,6 +118,19 @@ constraints; the dated dispatch narrative is in *Decisions made* and git):
   its mathematics) and was then **SPLIT, not simply upheld, by YLOC's landing** — recorded
   in full at `notes/Pencil-fanout.md` §"The coordinator's one routing sharpening" and
   §"Twentieth direction", not restated here. **All five LANDED 2026-08-19; COMPLETE.**
+
+- **2026-08-19, post-wave adjudication (two calls; neither changes a kernel constraint).** With
+  the eighth fan-out closed and the phase UNROUTED, the user was offered four next steps
+  (clear the structural items / pick a direction / pause / a ninth fan-out) and selected
+  **"Clear the two structural items first"** — so the doc split and the harness move-down
+  round precede any further research pick. Asked separately about `closure.Gauss` — the exact
+  `ℚ(i)` class OSCHU's residual route needs, deliberately kept private to `closure` because
+  moving it "would re-baseline the whole chain" — the user selected **"Move `Gauss` down to
+  `exactcore`"**, over the offered alternatives of deciding later or keeping the route
+  ℚ(i)-local. That is a **design decision**, recorded in `notes/scripts/README.md` *Harness
+  debt* item 3 with the binding constraint that **figures do not move** (a re-export from
+  `closure`, the `star_span_ranks` precedent). Phase OPEN, Lean hold, W4 PARKED,
+  `hK`/`hbareSplit` pinned, option B un-commissioned — all unchanged.
 
 - **2026-08-19, EIGHTH-fan-out dispatch — the multidispatch shape RE-ELECTED a third time,
   AND the first standing-constraint move since 2026-08-05.** Offered four ways to make the
@@ -324,16 +340,32 @@ adjudication now happens at the return, not before the dispatch** (the terms the
 accepted, quoted in *Current state*'s 2026-08-19 eighth-fan-out bullet). **A hit therefore
 stops the loop and goes to the user**; it does not move a gap-map status by itself.
 
-**One structural item IS queued, recorded rather than improvised.** This note has sat at
-~510–530 lines through the eighth fan-out's landings, past its ~500-line tripwire, and three
-compression passes have each found genuine duplication and each been undone by the next
-landing. The residual bulk is **not** duplication: it is *Current state*'s eight dated
-adjudication bullets, whose verbatim user quotes are **canonically** here
-(`notes/CLAUDE.md`: selection provenance is not duplicated into the fan-out doc). The honest
-fix is therefore a **doc split** — the bullets covering archived ordinals 1–19 move to a
-`notes/Pencil-adjudications.md` with a pointer, on the `Pencil-fanout-archive.md` precedent —
-and that is a structural round, deliberately **not** attempted mid-wave while concurrent
-directions are returning. Queue it for after the eighth fan-out closes.
+**SLICE 1 — the phase-note doc split.** This note has sat past its ~500-line tripwire
+through all five landings of the eighth fan-out (peaking at 580), and four compression passes
+each found genuine duplication and were each undone by the next landing. The residual bulk is
+**not** duplication: it is *Current state*'s **nine** dated adjudication bullets, whose
+verbatim user quotes are **canonically here** (`notes/CLAUDE.md`: selection provenance is not
+duplicated into the fan-out doc). So the fix is a split, not another trim. **Exact scope:**
+create **`notes/Pencil-adjudications.md`** and move into it, **verbatim**, the dated bullets
+covering the *archived* ordinals 1–19 — the **2026-08-05…07**, **2026-08-07**, **2026-08-12**
+and **2026-08-13** bullets — leaving in *Current state* the standing kernel adjudications
+(2026-07-24, the two 2026-07-30s, 2026-08-02, 2026-08-05 reproducibility) and the three
+2026-08-19 bullets, plus **one thin pointer** to the new file. Precedent and shape:
+`Pencil-fanout-archive.md` (`88436c0b`) — verbatim relocation, live cross-references
+repointed, search-target only. Also update `notes/CLAUDE.md`'s file list, add the round's
+record to `notes/Pencil-structure.md`, and extend ROADMAP's doc-split row. **Target: the note
+back under 500 lines**, with the forward/finished ratio unharmed.
+
+**SLICE 2 — the harness move-down round**, one deliberate pass paying all **five** debt items
+the wave accumulated (`notes/scripts/README.md` *Harness debt*): `ocon.meet` (three
+consumers), `aglu.py`'s seven combinatorial devices, six `zneq` primitives,
+`gridwit.tree_triple`, and **`closure.Gauss` → `exactcore`** per the 2026-08-19 adjudication.
+Every item is a §2 rule-2 move-down into a **landed** file, which is exactly why no dispatch
+could pay it and why one round now — with nothing in flight — is the right shape. **Binding
+constraint: figures do not move.** Each primitive moves down *with a re-export from its old
+home* so every existing consumer keeps working unchanged (the `star_span_ranks` precedent,
+slice S1), and the round is not done until the affected drivers reproduce their recorded
+figures **byte-identical** at their pinned `PYTHONHASHSEED`.
 
 **No other structural or doc work is queued** — the doc-split and discipline-distillation rounds
 are both COMPLETE (`notes/Pencil-structure.md`, all three slices; `RESEARCH-ARC.md` is the
