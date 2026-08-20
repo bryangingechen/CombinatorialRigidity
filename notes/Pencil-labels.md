@@ -1173,7 +1173,7 @@ existed only to disambiguate.
 prefix/step-range reservation check cannot see one minted inside a
 reservation for a sub-clause.
 
-## Reserved namespace — probe KBARE-FALSIFY (2026-08-20, incoming)
+## Reserved namespace — probe KBARE-FALSIFY (2026-08-20, **USED — the probe landed**)
 
 **Reserved 2026-08-20 for probe KBARE-FALSIFY**, the first of the two
 architecture-testing probes specced and authorized 2026-08-20
@@ -1194,6 +1194,14 @@ protects against the *existing corpus* only; there are no siblings in flight.
 file's *Files in scope* plus `notes/Pencil-informal-grid.md`. `breakhunt` is
 additionally 0-hit as a **raw substring**, case-insensitively, across `*.md`,
 `*.tex`, `*.lean`, `*.py`, `*.m2`.
+
+**What was actually minted (2026-08-20, at landing).** §(K-bare-ext) opened
+with ***Steps BE1–BE8*** and tokens **(BE-1)–(BE-9)** — `(BE-10)` unused and
+therefore **still free** inside this tag. Driver `breakhunt.py` landed at the
+reserved path with six modes (`tiers|calc|arith|rzero|locus|c1b`); the two
+checked-0-hit alternates `stressgad` and `bexist` were **not** needed and stay
+available. No new section name was minted, and no label outside `BE-` was
+touched. The namespace is therefore closed as **used, within scope**.
 
 **Two disclosures, recorded rather than smoothed over.**
 

@@ -5,15 +5,15 @@
 (L0–L7) are COMPLETE — `hsplit` CLOSED IN FULL and `hfresh`'s counting discharge landed
 (2026-07-30). Only three items remain, all carried by the landed successor
 `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card` (`Molecule/Pencil/Escape.lean`):
-`hcontract` (W4), kernel `hK`, and kernel `hbareSplit` — see *Hand-off*. **Thirty-two
-kernel-(K) directions are now COMPLETE** (2026-08-05 → 08-19, ordinals 1–24; roster and
-per-direction theorem chain in *Decisions made*). **The SIXTH and SEVENTH FAN-OUTS ARE
-BOTH COMPLETE** (all ten directions LANDED 2026-08-19). **The arc's HITs through ordinal 24:**
+`hcontract` (W4), kernel `hK`, and kernel `hbareSplit` — see *Hand-off*. **Thirty-seven
+kernel-(K) directions are now COMPLETE** (2026-08-05 → 08-19, ordinals 1–29; roster and
+per-direction theorem chain in *Decisions made*). **The SIXTH, SEVENTH and EIGHTH FAN-OUTS
+ARE ALL COMPLETE** (all fifteen directions LANDED 2026-08-19). **The arc's HITs:**
 route-ledger **entry 5 PROVEN in both halves** (GBAL, discharging input (X)); **chart
 irreducibility PROVEN** (CIRR); the **AA-glue configuration NOT realizable at `n_hub = 8`**
 (AGLU). Everything else an honest MISS or an OPEN reshape; verdicts in *Decisions made* and
 `notes/Pencil-fanout{,-archive}.md`, **not restated here**. **(GR-15) stays OPEN
-throughout; class uniformity untouched; no g-flank at any of the thirty-two directions.
+throughout; class uniformity untouched; no g-flank at any of the thirty-seven directions.
 E3 is ARMED (by GBAL) and has NOT fired.** Direction codes are **multi-letter and
 topic-tagged from the fifth fan-out on** (`notes/Pencil-labels.md` (L5)); grandfathered
 single letters are re-used across dates, **always date those**.
@@ -25,22 +25,30 @@ ordinals 25–29: **GTMPL** / **GFLOW** / **GCOLL** (§(K-grid)) and **OSCHU** /
 **SIGZ** (§(K-out)); specs, roster, tier split, label reservations and the
 losers' ranking all in `notes/Pencil-fanout.md` §"Eighth fan-out", not restated
 here. **THE EIGHTH FAN-OUT IS COMPLETE — all five LANDED 2026-08-19** (the arc's
-thirty-third through thirty-seventh directions): attack (c)'s AA-glue case
-settled at an **exact `n_hub` boundary** (GTMPL); **(b′) given its first proven
-`n`-free constant**, at 12 rather than 2 (GFLOW); the **authorized `σ > 0`
-disproof hunt a NO HIT** that nonetheless **kills the counting route to a
-disproof** as a theorem, the pivot rule never triggering (SIGZ); **(a₁)
-half-proven, half-reduced to one 3×3 determinant** (OSCHU); and
-**(GR-64)(R2) REFUTED** by a Petersen witness family with **(GR-64)(R1) DELIVERED**
-(GCOLL) — the wave's **only** gap-map status move. Verdicts one-lined in
-*Decisions made*, detail in the fan-out doc. The **wave-closing exception-log commit is DONE**
-(`notes/dispatch-log.md`: five rows, findings **F22–F24**). **Both queued structural items are
-LANDED** — the phase-note doc split (2026-08-19) and the **harness move-down round
-(2026-08-20)**, which paid all five *Harness debt* move-downs, `closure.Gauss` →
-`exactcore` included, with **no recorded figure moved**. **NEXT CONCRETE TASK: DISPATCH Probe
-KBARE-FALSIFY, then Probe C3-AVOID** (specced and authorized 2026-08-20;
-KBARE-FALSIFY's namespace **reserved 2026-08-20**, so prep is done — see
-*Hand-off*) — nothing structural queued, nothing awaiting user adjudication. The
+thirty-third through thirty-seventh directions: GTMPL / GFLOW / GCOLL / OSCHU /
+SIGZ). One gap-map status move in the wave (GCOLL's), the pivot rule never
+triggering; **verdicts one-lined in *Decisions made*, per-direction detail in
+`notes/Pencil-fanout.md` §"Eighth fan-out" — not restated here**, and the
+wave-closing exception-log commit is DONE (`notes/dispatch-log.md`, five rows,
+**F22–F24**). **Both queued structural items are LANDED** — the phase-note doc
+split (2026-08-19) and the **harness move-down round (2026-08-20)**, which paid
+all five *Harness debt* move-downs with **no recorded figure moved**. **PROBE KBARE-FALSIFY IS LANDED (2026-08-20) AND IT IS A
+HIT, at tier T1: (K-bare-ext) — route A's arbitrary-seed insertion lemma — is
+REFUTED as stated**, by a legal target-rank `G′` seed at the option-C cube
+index-2 danger gadget from which **no** placement attains, exact and **cap-free**
+(all six minors of the criterion matrix vanish identically on the placement
+panel; observed rank 137 vs target 138). **`hbareSplit` itself is UNTOUCHED and
+still carried as pinned** — its consequent is an `∃` over frameworks and every
+probed gadget attains — so this is a **route** finding, not a kernel refutation
+and not a PENCIL event. Three results ride along: the §(K-tight) boundary-load
+calculus **transports** to this kernel (192/192, with its two `def = 0`-only
+identities now measured as such), the dependent stratum is **complete**
+(`index ∈ {1, 2}`, `corank(G′) ≤ 3`, correcting "caps it at 5"), and option-C's
+C1/C3 readings are corrected. `notes/Pencil-informal.md` §(K-bare-ext).
+**NEXT CONCRETE TASK: DISPATCH Probe C3-AVOID** (specced and authorized
+2026-08-20; its labels are reserved at prep, not yet) — nothing structural
+queued, nothing awaiting user adjudication, though the T1 hit is worth a user
+mention when the next check-in comes. The
 kernel-(K) RESEARCH PICK is a standing delegation **queued behind the probes**, not
 itself the next task; candidates in *Hand-off* (cheapest first: (GR-R1), (GR-C2), the
 one-unit-defect redo of (GR-79)–(GR-82), OSCHU's `rank(Q|_D) = 3` residue — now
@@ -138,13 +146,34 @@ constraints; the dated dispatch narrative is in *Decisions made* and git):
   verified 0-hit before minting; `notes/Pencil-labels.md`'s collision record is
   ADJUDICATED/RENAMED. Everything else stands unchanged.
 
-**Kernel-(K) research arc — forty-nine docs+scripts-only dispatches landed, five more
-dispatched and IN FLIGHT (the eighth fan-out), plus seven strategy-only passes**
-(2026-08-02 → 08-19). Which pass was which is one-lined in *Decisions
+- **2026-08-20, probe KBARE-FALSIFY landed — a T1 hit, and no standing constraint
+  moves.** The commissioned falsification hunt for `hbareSplit` returned a **HIT at
+  tier T1**: **(K-bare-ext) is REFUTED as stated** (`notes/Pencil-informal.md`
+  §(K-bare-ext) *Steps BE1–BE8*; driver `notes/scripts/kbare/breakhunt.py`). What
+  that does and does not mean, stated here because the distinction is the whole
+  point of the tiering: `hbareSplit`'s consequent `HasPencilRealization K 3 G` is an
+  **existential** over frameworks, and both danger gadgets **attain** their bare
+  target, so the **kernel is untouched** — what died is route A's *fixed-seed*
+  strategy, i.e. the `∀`-over-seeds shape of its discharge statement. The
+  2026-07-30 (K-bare) adjudication (*"C: cheap numerics extensions + A"*) therefore
+  **stands unchanged**: `hbareSplit` carried as pinned, option B still
+  un-commissioned. **One correction the probe returned about the tier semantics,
+  recorded because it changes who a future T2 decides:** `PencilPair`
+  (`Motive.lean:160`) carries `HasPencilRealization K n G` as an **unconditional**
+  second conjunct, so a T2 witness would falsify the conclusion of
+  `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card` — a **PENCIL event** with
+  the direction-A pivot rule in force, not the "phase-shape event, not a PENCIL
+  event" the probe's own spec predicted. No T2 candidate exists in the arc's gadget
+  stock and none is producible by this harness (T2 is a universal non-existence over
+  frameworks), so nothing turns on it operationally.
+
+**Kernel-(K) research arc — fifty-four docs+scripts-only dispatches landed, plus seven
+strategy-only passes** (2026-08-02 → 08-19) — and, **outside** that count because it tests
+the architecture rather than the (K) crux, **probe KBARE-FALSIFY** (2026-08-20). Which pass was which is one-lined in *Decisions
 made*; the rule is that the **dispatch** count moves only on a landing (GBAL/GLAW/FRES/OCON/
 LTWO are the fortieth through forty-fourth; CIRR the forty-fifth; YLOC the forty-sixth; BALB
 the forty-seventh; ZNEQ the forty-eighth; AGLU the forty-ninth; the eighth fan-out's five
-become the **fiftieth through fifty-fourth as they land**, not before), and a **user call on
+become the **fiftieth through fifty-fourth**, all landed 2026-08-19), and a **user call on
 dispatch *shape*** — either multidispatch election, or a coordinator-authored pick like the
 twelfth's — contributes **no** strategy pass, so the 2026-08-19 eighth-fan-out check-in adds
 none even though it moved a standing constraint.
@@ -152,7 +181,7 @@ Canonical homes: workbook `notes/Pencil-informal.md` (**State of (K)** map = ent
 `notes/Pencil-W4-informal.md` (W4-residual), `notes/Pencil-strategy.md` (strategy). Net
 effect: **disproof risk removed**, every refuted route/gap has a successor in the gap map,
 several structural positives proven, and **route-ledger entry 5 is PROVEN, the arc's first
-HIT**; **class uniformity of the escape remains untouched by all forty-nine.**
+HIT**; **class uniformity of the escape remains untouched by all fifty-four.**
 **Doc-debt round CLOSED — `notes/Pencil-cleanup.md`** (2026-08-13, category D only; D-5 a
 watch item; the D-2 fix's regression history is in `notes/check-gapmap-cells.py`'s docstring).
 
@@ -318,21 +347,30 @@ directions by (OC-3)/(OC-37)). **Not restated here.** Cheapest entry: **(GR-R1)*
 the 2026-08-20 adjudication, `notes/Pencil-labels.md`. **Not eligible:**
 route σ's **obligation 1** and the W4 **build** — those, and only those, are held by the hold.
 
-**THE NEXT CONCRETE TASK — Probe KBARE-FALSIFY, then Probe C3-AVOID** (specced and authorized
-2026-08-20; full specs in `notes/Pencil-fanout.md` §"Two probes SPECCED and AUTHORIZED
-2026-08-20", **not restated here**). They **test the architecture rather than extend it**:
-KBARE-FALSIFY tries to *break* `hbareSplit` — the less-tested kernel *and* the one whose
-failure kills the route regardless of `hK` — and **run it first, since its answer can moot the
-other**; a hit there refutes *this induction*, **not** the pencil conjecture, so it is a
-phase-shape event for the user rather than a direction-A PENCIL event. C3-AVOID prices the one
-board option that **relocates** the hard case instead of attacking it.
-**KBARE-FALSIFY is PREPPED as of 2026-08-20** — its namespace is reserved in
-`notes/Pencil-labels.md` §"Reserved namespace — probe KBARE-FALSIFY" (§(K-bare-ext) opens
-from its stub, tag `BE-`, tokens (BE-1)–(BE-10), *Steps BE1–BE8*, driver
-`notes/scripts/kbare/breakhunt.py`), with two disclosures recorded there: `BE-` is 0-hit
-only *within* this registry's files-in-scope, and the code `KBARE-FALSIFY` is a **deliberate
-narrow exception** to clause L5's raw-substring test. So the next concrete step is the
-**dispatch**, not further prep.
+**PROBE KBARE-FALSIFY IS LANDED (2026-08-20) — a T1 HIT.** (K-bare-ext) is **refuted as
+stated**; `hbareSplit` is **untouched** and still carried as pinned. Verdict, mechanism, the
+three enabling results and every figure are in `notes/Pencil-informal.md` §(K-bare-ext)
+*Steps BE1–BE8*, the landing record in `notes/Pencil-fanout.md` §"Two probes SPECCED and
+AUTHORIZED 2026-08-20", the label namespace closed as *used* in `notes/Pencil-labels.md`, the
+six driver rows in `notes/scripts/README.md` §3 — **none of it restated here.** Its one new
+**UNPAID** *Harness debt* item (the `kbare/` sibling imports, every consumer named) is the
+second outstanding item in that section. **What the hit leaves for whoever picks up
+`hbareSplit`:** the live statement is the **`∃`-seed form plus a seed-repair (deformation)
+obligation** inside `HasPencilRealization K 3 G′`'s attainment locus — with **no chart**,
+the habitat being infeasible by hypothesis — or, the probe's own suggestion, **bypass the
+antecedent** and prove `HasPencilRealization K 3 G` directly on the habitat (strictly
+stronger, but seed-free, and the hit says the antecedent supplies an object route A cannot
+use). Neither is commissioned; option B stays un-commissioned.
+
+**THE NEXT CONCRETE TASK — Probe C3-AVOID** (specced and authorized 2026-08-20; full spec in
+`notes/Pencil-fanout.md` §"Two probes SPECCED and AUTHORIZED 2026-08-20", **not restated
+here**). It prices the one board option that **relocates** the hard case instead of attacking
+it, and it is **purely combinatorial** — a question about the already-formalized generation
+theorem (Thm 4.9, Phase 20), not about pencils. **KBARE-FALSIFY did NOT moot it:** the hit is
+about route A's *seed quantifier*, not about the reduction, so C3-AVOID's question stands
+exactly as specced. **Prep owed before dispatch:** its labels are **not** reserved yet
+(`notes/Pencil-labels.md` has a namespace block for KBARE-FALSIFY only), so the dispatch is
+one prep step away, not zero.
 
 **Nothing is awaiting user adjudication as of 2026-08-19.** The one item that was —
 ZNEQ's `σ > 0`-everywhere hunt at class shapes whose `H` carries a short theta
@@ -459,6 +497,14 @@ ORIGAMI (`notes/Origami.md`, next queued) is the bar-joint-side analog; the wide
 survey — incl. IDENT-PANEL, the nearest neighbour — is `notes/IdeaBacklog.md`.
 
 ## Decisions made during this phase
+
+- **Probe KBARE-FALSIFY (2026-08-20, opus, docs+scripts only) — a T1 HIT.**
+  (K-bare-ext), route A's arbitrary-seed insertion lemma, is **refuted as stated** by
+  a legal target-rank `G′` seed with cap-free uniform failure; `hbareSplit` **untouched**
+  (its consequent is an `∃`; both gadgets attain). Enabling results: the §(K-tight)
+  boundary-load calculus **transports** (192/192, `def = 0` scope measured); the
+  dependent stratum is **complete** at `corank(G′) ≤ 3`; option-C C1/C3 corrected.
+  `notes/Pencil-informal.md` §(K-bare-ext); driver `notes/scripts/kbare/breakhunt.py`.
 
 Reverse-chronological, one line per landing; full derivations live in git,
 `notes/Phase39-design.md`, and (for the (K) arc) the workbook section named in each entry, which

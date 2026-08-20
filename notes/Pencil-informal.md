@@ -79,11 +79,11 @@ section's own verdict block and the gap-map row, which stay authoritative.
 | §(K-out) | 7939–11950 | (OUT)'s hypothesis **measured**: **(OC-3)** proves it is never automatic (no counting route); availability pointwise; **(OC-7)** a harness defect, its necessity clause **refuted** ((OC-14)); since Steps O9–O12 (direction O) the combinatorial half is **proven** ((OC-10), items 1–2 struck) and residue **(OC-8)** is a **containment** question — at degree-3 hubs the bad locus is the explicit panel line `C₀`; since Steps O13–O18 (direction OCON) **(OC-8) reshaped**: the hard-stratum qualifier is free ((OC-17)); since Steps O19–O24 (direction ZNEQ) chart irreducibility (CIRR) discharges input (b), and (OC-19) input (a) `Z ≠ ∅` itself **factors**: a necessary-for-`hK` half **dominated** by §(K-grid) (GR-10), and a target-rank half whose failure is a codimension-2 Schubert jump, measured 138/138 witnesses — **OPEN as a class-uniform statement, NOT an independent gap** | `OC-` |
 | §(K-ind) | 11952–12296 | **refuted as a route** | `IN-` |
 | §(K-Δ) | 12298–12563 | **NO HIT — the lead is discharged** | `DL-` |
-| §(K-bare-ext) | 12565–12603 | open, nothing being developed | `BE-` |
+| §(K-bare-ext) | 12565–12921 | **the `∀`-seed form REFUTED (tier T1, exact + cap-free); `hbareSplit` untouched**; the §(K-tight) calculus **transports** (192/192) and its `def = 0` scope is measured; the dependent stratum **complete** at `corank(G′) ≤ 3` | `BE-` |
 | §(K-grid) | `notes/Pencil-informal-grid.md` | **reduction proven** — (AC-6)'s tight-stratum residual reduces via a long chain of proven results on `G°` to the single open gap **(GR-15)**; the min-max form, the uniform `g ≤ 1` cap, the bounded-deviation selection form and the growth law's bounded-shift-correction reading are all refuted; (b′) gains a proven `n`-free constant (GR-89) but not the constant 2 (the last two at the necklace family — (GR-43) proves the shift-metric layer unbounded) while the `d_fg = d_adm` law is verified EXHAUSTIVELY on the whole `n_hub ≤ 6` habitat stratum ((GR-58)), its stronger per-matching variant REFUTED ((GR-59)); the parity layer is exactly `d_par(M) = w_M` with the Hall/SDR step automatic ((GR-44)), and **route-ledger entry 5 is PROVEN in both halves ((GR-49)–(GR-54)): balance existence is a degree-constrained-orientation theorem, discharging the named input (X)** — the (GR-45)–(GR-48) move-calculus apparatus is subsumed, not contradicted; since Steps G80–G85 (direction YLOC) **input (Y)'s pinned GBAL-localization route is DEMOTED BY WITNESS** — full goodness is not a function of the degree data at a proper chunk ((GR-62)), the coordinator's predicted break point REFUTED as stated and located two links earlier ((GR-63)) — leaving a colouring-free collision bound on `d_fg` ((GR-64)) and a coordinate-free fit identity ((GR-65)) as the positive residue; input (Y) stays OPEN, **E3 (ARMED by GBAL) does not fire**; since Steps G86–G91 (direction BALB) **(b′)'s PRICE half is PROVEN outright ((GR-68)) and its imbalance ceiling is a THEOREM at `n_hub ≤ 6`, FALSE from `n_hub = 8` at an exact boundary ((GR-69))** — its availability half reduces to one clause (GR-70), exhaustive on the stratum's landed T1 instance but REFUTED there from `n_hub = 8`, repaired at price 0 by a named successor; **(b′) stays OPEN, NOT a HIT**; no flank found; class uniformity untouched | `GR-` |
-| §(K-frame) | 12605–14286 | residue **(FR-R1) PROVEN** since Steps FR7–FR11 (direction PEX); the bare-cycle stratum is finite (22 iso classes / 76 sites / 1976 labelled) and exhaustively enumerated; since Steps FR12–FR15 (direction FRES) **(FR-4)'s named gap is CLOSED** — the discharge is unconditional on the whole bare-cycle stratum ((FR-17)) | `FR-` |
-| §(K-chart) | 14288–15111 | **new, 2026-08-19, direction CIRR — a HIT.** The pencil chart of `G′` is a proven, irreducible, ℚ-rational variety (a tower of affine-linear fibres), the constant-fibre-dimension clause identified as `IsNondegPencilRealization` conjunct 3, and all four consumers (§(K-out) (OC-19), §(K-slide) (S1)(e), §(K-dom) (D4), §(K-ann) (ANH-9)(ii)) audited clean; one correction to §(K-frame) *Step FR13*'s hypothesis list (girth ≥ 4, not ≥ 3, for nonemptiness) | `CH-` |
-| §(K-mech) | 15113–15493 | **both §(K-pure) *P8* anomalies mechanised** in one calculus (the load space `Ω`); **6v11e RESCUED** ((MX-7)) — the slide device closes it after all; the σ rider settled NO ((MX-8)); the `\|V°\| ≤ 6` predictor measured complete-and-sound ((MX-9)) | `MX-` |
+| §(K-frame) | 12922–14603 | residue **(FR-R1) PROVEN** since Steps FR7–FR11 (direction PEX); the bare-cycle stratum is finite (22 iso classes / 76 sites / 1976 labelled) and exhaustively enumerated; since Steps FR12–FR15 (direction FRES) **(FR-4)'s named gap is CLOSED** — the discharge is unconditional on the whole bare-cycle stratum ((FR-17)) | `FR-` |
+| §(K-chart) | 14605–15428 | **new, 2026-08-19, direction CIRR — a HIT.** The pencil chart of `G′` is a proven, irreducible, ℚ-rational variety (a tower of affine-linear fibres), the constant-fibre-dimension clause identified as `IsNondegPencilRealization` conjunct 3, and all four consumers (§(K-out) (OC-19), §(K-slide) (S1)(e), §(K-dom) (D4), §(K-ann) (ANH-9)(ii)) audited clean; one correction to §(K-frame) *Step FR13*'s hypothesis list (girth ≥ 4, not ≥ 3, for nonemptiness) | `CH-` |
+| §(K-mech) | 15430–15810 | **both §(K-pure) *P8* anomalies mechanised** in one calculus (the load space `Ω`); **6v11e RESCUED** ((MX-7)) — the slide device closes it after all; the σ rider settled NO ((MX-8)); the `\|V°\| ≤ 6` predictor measured complete-and-sound ((MX-9)) | `MX-` |
 
 **Live vs settled**, using the division of the 2026-08-05 reorganization pass.
 Live: §(K-tight), §(K-Λ), §(K-σ), §(K-pure), **§(K-ann)** — whose live residue is
@@ -256,7 +256,7 @@ all in this file.
 | **(K-out)** *(new, 2026-08-06)* | (K-out) O1–O36 | **(OUT)'s hypothesis, measured — the headline is the NEGATIVE.** **(OC-3)**, load-bearing: `{λ₁ = 0}` is nonempty at every class shape's chart, so **no counting, matroid or placement-blind argument can ever deliver (OUT)'s hypothesis**; the bad locus is proper (`dim(R ∩ L) = 1` at 46/46) though `2` is reachable by construction (**OC-14**, a hub slide onto `C₀`). **The combinatorial half alone does not deliver availability: (OC-2)**'s 4296-pair result collapses to **one** fact — rigidity of `H/X` — which **(OC-10)** proves **forced at every class shape**; θ(3,4,5) is the unique theta class member. **Positives are pointwise, over two disjoint pinned pools: (OC-5)** POOL-G, 356/357 and 356/356; **(OC-6)** POOL-S, 270/270; **(OC-1)**'s hinge-rate identity, exact; **(OC-4)** the bad line reached by a legal chart move at all four habitats. **(OUT) is available, never automatic, not contradicted. No `place_pencil_general` battery may be quoted as a rate or as evidence about a generic chart point** — POOL-G figures over the 318 coincidence-free frames, never the raw 357. **(OC-7) is CLEARED** (32/357, fixed by `repin.star_generic`); **(OC-9)**'s guard rejects 58/357 ⊋ 39. **(OC-17)** frees the hard-stratum qualifier (`dim R_a = corank(G′) − s₀` at **every** legal chart point, so `Z` is Zariski **open**); **(OC-18)**: `H/X` rigid at a chart point ⟹ `L_b ⊄ R₁`, degree-free, at both ends of every class pair (5226/5226). **(OC-19)** reduces (OC-8) at a (shape, split) to `Z ≠ ∅` + chart irreducibility + one `H/X`-rigid chart point; **`Z ≠ ∅` alone does NOT suffice** (`--control`: 3 points in `Z` with `L_b ⊆ R₁` — openness **plus** irreducibility **plus** a witness all needed). **(OC-20)/(OC-21)** restate the bad case in perp form and strip `x₁`; **(OC-22)** lands the residue in (ANH-R1)'s object class. **Chart irreducibility (input (b)) is PROVEN** (§(K-chart) **(CH-1)(a)**). **Input (a) factors: (OC-23)** its `s₀` half is independence of `H = G − v − a` alone, at every chart point; **(OC-24)** the dichotomy, and `{σ = 0} = ∅` would make `hK` **FALSE there** (a **PENCIL event**), so that half is **necessary for `hK`** and never the binding obstruction; **(OC-25)** the target-rank half **is** §(K-tight) *Step 2* item 1 one split down; **(OC-26)** its failure is a **disjunction**, both branches forcing a codimension-2 Schubert jump of `D`; **(OC-27)** 138/138 witnesses; **(OC-28)** the `s₀` half is **dominated** by §(K-grid) (GR-10), with `{σ = 0}` a **proper** open. **The `σ > 0`-everywhere hunt was AUTHORIZED and RAN (direction SIGZ): NO HIT, and the counting route to a disproof is DEAD.** **(OC-35)**: the self-stress space of any min-degree-≥2 subgraph is a **Kirchhoff flow on its topological paths** valued in the chain-span perps (§(K-pure) *P0*'s carrier read *off* the slide limit); **(OC-36)**: hence `corank R(F) = Σδ_Q + ρ_F − slack(F)`; **(OC-37)**, the theorem: at a class shape `slack(F) ≥ 0`, with equality **iff** `F` is a cycle or bouquet, so a stress needs `Σδ + ρ ≥ 2` at **every other topology, thetas included** — **no `H`-supported stress in the habitat is combinatorially forced** (enumerated, no cap: 2614 shapes, 215 906 supports, `slack < 0` **zero** times; theta corollary `Σ min(ℓᵢ,6) ≥ 13`, **tight**). **(OC-38)**: `P21` (**`hnoRigid`-FALSE**) is **one unit short** of what the class needs, and its five σ-jump seeds are **EXACTLY** the five where `localtest.plane_basis` degenerates — a set equality, so the arc's only exhibited instance sits on the (OC-7) coincidence locus; under `repin.star_generic`, `σ = 0` at all 360 gate-accepted seeds (cap 500). **(OC-39)**: `{σ = 0} ≠ ∅` carries an exact-ℚ **full-row-rank certificate at 3368/3368** class (shape, split) pairs over the **exhaustive `K4` stratum** — per-pair proofs, not a sample. **The target-rank half (a₁) is half-proven and half-reduced to ONE determinant (OSCHU).** **(OC-29)**: the Schubert 4-space is §(K-out)'s own hub pencils, `M̂ ∧ W = L_b ⊕ L_c`, Klein perp `⟨C(M), C(bc)⟩` — so **`dimK ≥ 1` always**. **(OC-30)**: the bad set on `M` is **exactly** the transversals of `M` and `bc` inside `D`, five rows, so `\|B\| ≤ 2` off the all-bad case. **(OC-31)**: at **every** target-rank chart point of the **whole graph `G`**, `C(vb) ∈ L_b` and `C(ac) ∈ L_c` come free from the tower, forcing **`dimK ≤ 2`** — so **`hK` at ONE `G`-point kills (OC-26)(ii)'s `dimK ≥ 3` disjunct at every eligible split at once** (292/292 + 174/174, all `dimK = 1`); **(OC-32)**: a third generator is structurally unavailable, so that bound is exact. **(OC-33)**: the surviving disjunct forces `Q\|_D` degenerate, so **`rank(Q\|_D) = 3` at one target-rank `G`-point ⟹ input (a) there** — one 3×3 determinant, `x₁`/`λ`/stratum-free, at a point the grid route already builds (570/570, 174/174). **(OC-34)**: the (a₂) re-keying is **DONE and corrects a figure quoted since (OC-28)** — §(K-grid)'s 907 *labelled* shapes are only **75 classes**, covering **19** of §(K-out)'s **174**; the other **155 are certified DIRECTLY, 0 misses**, so the `s₀` half is free at **all 174 and *without* (GR-10)** — only the **class-uniform** statement needs it. **Input (a) stays OPEN as a class-uniform statement and is NOT an independent gap; (OC-8) stays OPEN, reshaped; no gap-map status move.** | **(OC-8)**: at every class shape, a hard-stratum target-rank point of the **whole-graph** chart with `L_b ⊄ R₁` or `L_c ⊄ R₄`. That is a rank **lower** bound at a pencil placement — `Pencil-strategy.md` §2.3's wall **relocated** onto the smaller `H/{e₂,e₃,e₄}` and **weakened, not crossed** — and (OC-3) says the relocation **cannot be discharged combinatorially**, so any proof must be a genericity argument on the whole-graph chart (needing its hard-stratum component not to lie inside `{λ₁ = 0} ∩ {λ₄ = 0}`), which the arc has never established because `λ` is a **far** datum. The one symbolically tractable piece — `L_b ⊄ R₁` as a polynomial non-vanishing (`Pencil-strategy.md` §5.3) — is **DELIVERED on the `ℓ_min = 5` stratum** ((OC-16): `Δ = [a,u,b] · C₀(pt b) ≢ 0` at the local frame's generic point, the bad line `C₀` in **closed form**) and **blocked off it** ((OC-15): the path-span form carries no information at `ℓ_min ≥ 6`; the stratum is 8 of 5226 pairs); at a **degree-3 hub** (3081/5226 pairs at the `b` end) (OC-8) restates with **no rank condition left** — availability ⟺ the hard-stratum target-rank locus `⊄ {pt(b) ∈ C₀}` — with **chart-to-frame dominance** the named residue ((OC-16)'s gap); the non-containment is **witnessed by construction** at θ(3,4,5) (4/8 admissible `G′`-colourings on the hard stratum at target rank, each with `Δ ≠ 0` at one end — §(K-frame) (FR-6)), the strict availability package is **0/8 at σ-fixed witnesses** with the (AC-9) coincidence the named mechanism (structurality open), and at grid points `Δ` is **combinatorial** ((FR-3)). **The counting route to a disproof is DEAD** ((OC-37), direction SIGZ): no `H`-supported self-stress is combinatorially forced anywhere in `hK`'s habitat, so `{σ = 0} = ∅` can never be certified by a count — the *geometric* half (no forced chain-span or Kirchhoff drop) is measured free but **open class-uniformly**, one-point decidable per shape, in (OC-8)'s own object class. **Input (a), `Z ≠ ∅`, itself factors** (§(K-out) direction ZNEQ): a **necessary-for-`hK`** half — `H` independent at some chart point, equivalently at the generic one — **dominated** by §(K-grid) (GR-10), free at 907/907 of its pool once **re-keyed** against this section's class-shape population (a combinatorial cross-pool job, no new mathematics; the two pools are labelled-instance pools with different keys and are **not** re-keyed here); and a **target-rank** half, the Schubert **non-jump** `dim(D ∩ (M̂ ∧ W)) ≤ 1` (`D` the far framework `H`'s relative twist space, `W` the hub line's 2-space) — one-point decidable, `x₁`-free, `λ`-free, stratum-free, in the same object class as (OC-20)'s perp form; measured to fail nowhere (138/138 (shape, split) witnesses, (OC-27)) but a **recipe** is missing, exactly as for (OC-19) input (c). Neither half is proven class-uniformly. **The only known failure mechanism for the necessary half is a self-stress of a short theta sub-multigraph inside `H`** (§(K-flank) *F5(d)*'s support) — a hit there would make `hK` **FALSE** at that shape, a **PENCIL event**, not a (K-tight) one, and needs the direction-A pivot rule (`Pencil-fanout-archive.md` §"Direction A") in force before any dispatch.|
 | **(K-ind)** *(new, 2026-08-05)* | (K-ind) I0–I6 | **REFUTED as a route**, and not merely "no invariant found": the transport structure the question presupposes does not exist on the `hK` habitat. **(I1)** tight ⟺ `(|V|,|E|) = (5c+1, 6c)`, so two tight graphs of equal cycle rank have equal size and **no arm of `pencil_reduction` can relate them**; **(I2)** `splitOff` at a degree-2 vertex takes `index 0 → 1` preserving `c` and fixing the hub multigraph `G°`; **(I4)** inside one `G°` the class is a **finite antichain**, and the class's infinitude is entirely in the `G°` direction, which no move reaches. **(I0)**: the failure locus is a **divisor**, so its only numerical invariant is the single bit `codim F = 1`, which *is* `hK` — the question as posed is circular, and the image-side reading is (K-dom), already struck. One genuine positive by-product: **(I3)**, subdivision-monotonicity of `Image(V_bc)` — real, new, *and pointing the wrong way*, since the induction descends and every descent bottoms out at `k ≤ 3` where (D1) caps the rank at 4 | — refuted as a route. Any future "strengthen the inductive invariant" proposal must first exhibit a move relating two class members; `pencil_reduction`'s five arms supply none |
 | **(K-Δ)** *(new, 2026-08-05)* | (K-Δ) | **NO HIT — the literature lead is discharged**, not open. Two independently fatal hypothesis failures: **(M1)** the subject's objects are *totally isotropic* subspaces and `V_bc` never is (Klein Gram rank 3, or 2 on serial chains — an `O(6)`-invariant, not a frame choice), so it has no Wick vector and carries no Δ-matroid; **(M3)** the ground set is `[3]`, fixed by `dim Λ²K⁴ = 6`, and never grows with the graph — `Pencil-strategy.md` §2.2's ingredient-2 failure in the target literature's own terms. Recorded as a *pass*: the **form** matches exactly (transversality to two coordinate isotropics = two Wick coordinates nonzero). Buys two readings, not a route: **(N1)** the `ℓ = 3` criterion as five feasible pairs in the Dress–Havel metroid of the five lines, and **(N2)** the **pentagon** reading — `Q(z) ≠ 0` ⟺ no two non-consecutive edges of the closed chain `b–x–y–c–a–b` meet | — discharged. `Pencil-strategy.md` §7's "one unverified lead" is now a checked negative with the reason |
-| **(K-bare)/(K-bare-ext)** | (K-bare-ext) | **open**, nothing being developed; `hbareSplit` carried as pinned, off W4 routes 1/3's path; the (K-tight) re-pin fixes the criterion's shape and corrects "the failure set is exactly the line" to `line(a,b) ∪ P′` | (i) `dim R_a ≥ 1` at an adversarial IH seed and (ii) a rank-2 point in the confinement space — with no chart supplying genericity for either |
+| **(K-bare)/(K-bare-ext)** | (K-bare-ext) BE1–BE8 | **the `∀`-seed form is REFUTED** (2026-08-20, probe KBARE-FALSIFY, tier **T1** — a *route* finding: `hbareSplit`'s consequent is an `∃` over frameworks and every probed gadget attains, so the KERNEL is untouched and still carried as pinned). The witness is a legal target-rank `G′` bare realization at the C2 cube index-2 gadget's hub-end split from which **no** placement attains: exact and **cap-free** (all six `2×2` minors of the criterion matrix vanish IDENTICALLY on the placement panel), corroborated at observed rank `137 = 138 − 1`, mechanism `rank⟨U, Λ²Π̂(b)⟩ = 1` at 8/8 — i.e. §(K-tight) *Step 2.4*'s criterion at `dim R_a = 3`, where *Step 4*'s codimension count predicts *generic* escape. Three enabling results ride along: the §(K-tight) boundary-load **calculus TRANSPORTS** (corank identity scope-free, **192/192** placements over both strata) with `dim U = dim R_a + 1` and `dim R_a = index + 1 − s₀` measured **`def = 0`-only** (0/8 in the count-independent case, where the required rank is **0** so attainment is free); the dependent stratum is **COMPLETE** — `index ∈ {1, 2}`, `corank(G′) ≤ 3`, correcting "`index ≤ 4` caps it at 5", with a 216-member index-1 census on `≤ 6`-hub skeletons; and option-C **C3's "failure set is exactly the line" is corrected AT DZ** by a *constructed* off-line failure (rank 113), C1's policing reading **refuted as a principle** (two target-compatible strata, one carrying the hit). `dim R_a = 0` **not found** under 6 strata × 10 seeds × 5 cases — a cap report | the **`∃`-seed form + a seed-repair (deformation) obligation** inside `HasPencilRealization K 3 G′`'s attainment locus, with no chart (the habitat is infeasible by hypothesis); or the seed side condition `rank⟨U, Λ²Π̂(b)⟩ ≥ 2` (which reduces to the same supply lemma); or **bypass the antecedent** and prove `HasPencilRealization K 3 G` directly on the habitat — stronger, but seed-free |
 
 **Shapes no *class-uniform* mechanism covers** (the class program's uncovered
 flanks, all from §(K-slide-comb) *Step D5* + §(K-slide) *Step 5*): `χ(G°) ≥ 5` —
@@ -12562,45 +12562,362 @@ if they should.
 isotropics (already so cited in the workbook); the Plücker/spinor correspondence;
 `deg Gr(3,6) = 42`.
 
-## §(K-bare-ext) — stub
+## §(K-bare-ext) — the arbitrary-seed insertion lemma is **REFUTED as stated** (a legal target-rank seed where route A fails at *every* placement, exact and cap-free), the §(K-tight) boundary-load calculus **transports** to this kernel (192/192), and the dependent stratum is **complete** at `corank(G′) ≤ 3`
 
-The minimal open statement isolated by the (K-bare) extension-route recon:
-the arbitrary-seed insertion lemma, with the def-equal caveat folded into its
-`∃` as a line-avoidance side condition. Statement, the corank stratification
-that produced it, the DZ/cube/Wagner danger gadgets and the option-C probe
-results are in `notes/Phase39-design.md` §"(K-bare) extension-route recon".
+Probe **KBARE-FALSIFY** (`notes/Pencil-fanout.md` §"Two probes SPECCED and
+AUTHORIZED 2026-08-20"), the commissioned falsification hunt for `hbareSplit`.
+Read against `notes/Phase39-design.md` §"(K-bare) extension-route recon" (the
+statement, the corank stratification, the DZ/cube/Wagner danger gadgets, the
+option-C results) and §(K-tight) *Steps 2–4* (the boundary-load calculus this
+section transports). Driver `notes/scripts/kbare/breakhunt.py`
+(`tiers|calc|arith|rzero|locus|c1b`); all exact ℚ.
 
-**Scope note (2026-08-02).** W4 routes 1/3 do **not** touch this kernel: a
-residual is feasible by hypothesis, so the split producer's `hbareSplit`
-branch is unreachable there — `notes/Pencil-W4-informal.md` §"widened kernels
-(routes 1/3)" *Step 0*.
+**Status, stated before the mathematics.**
 
-**What the (K-tight) re-pin settles for this statement (2026-08-02,
-pointer-level).** Its named prerequisite — the KT pp. 684–691 boundary-load
-re-pin — is **done** (§(K-tight) Steps 0–2), and the calculus is exact at
-*any* target-rank seed, not just chart-generic ones. Consequences for the
-eventual statement:
+- **(K-bare-ext) as written is FALSE, and the witness is exact.** At the
+  option-C **C2 cube-skeleton index-2 danger gadget** (24v/28e, `def = 0`,
+  infeasible), at its KT-faithful **hub-end** split, there are legal
+  target-rank bare pencil realizations of `G′` from which **no** placement of
+  `v` attains `target(G)` — verified cap-free (every `2×2` minor of the
+  criterion matrix vanishes **identically** on the placement panel) and
+  corroborated by the observed exact rank `137 = target − 1` at every legal
+  placement drawn. **(BE-1)**.
+- **This is a route finding, tier T1 — `hbareSplit` is NOT refuted.** Its
+  consequent `HasPencilRealization K 3 G` is an **existential** over
+  frameworks (`Statement.lean:103`, re-read this pass), and the gadget
+  **attains** its bare target (138/138 here). What is refuted is route A's
+  *fixed-seed* strategy: the `∀`-over-seeds shape of the statement.
+- **The mechanism is §(K-tight)'s own, at a stratum Step 4 said escapes
+  generically.** All eight hit seeds have `rank⟨U, Λ²Π̂(b)⟩ = 1` — *Step
+  2.4*'s uniform-failure criterion `r ⊥ Λ²Π̂(b)` — at **`dim R_a = 3`**, where
+  the codimension count (`dim U = 4`, rank-≤1 locus of a `2 × 4` form matrix)
+  predicts a *generically* empty intersection with the 2-dimensional panel.
+  The seeds are legal and non-generic; the count is generic. **(BE-2)**.
+- **The calculus transports, and its scope is now measured, not assumed.**
+  The corank identity is **scope-free** (192/192 placements over four
+  (gadget, split) cases spanning both strata); `U ∩ C(ab)^⊥ = R_a` and
+  `R_a ⊆ U` hold everywhere; **`dim U = dim R_a + 1` and
+  `dim R_a = index + 1 − s₀` are `def = 0`-only** (0/8 in the
+  count-independent case). **(BE-3)**.
+- **The dependent stratum is COMPLETE: `index(G) ∈ {1, 2}`, so
+  `corank(G′) ≤ 3`** — a theorem by arithmetic, not a search. This
+  **corrects** the design doc's "`index ≤ 4` caps it at 5": the two inhabited
+  values are the only ones, and both are witnessed. **(BE-4)**.
+- **Two recorded claims corrected, and one corroborated.** Option-C C3's "the
+  failure set looks exactly like the line" fails **at DZ itself** — an
+  off-line failure point *constructed* (not sampled) and verified at exact
+  rank `113 = 114 − 1` **(BE-5)**; C1's "the rank antecedent polices the
+  degeneracy" is corroborated at a second gadget for three strata and
+  **refuted as a general reading** by the stratum that carries the hit
+  **(BE-6)**.
+- **No T2 candidate exists in the arc's gadget stock, and none could be
+  produced by this harness.** T2 needs `HasPencilRealization K 3 G` to fail —
+  a universal non-existence over all frameworks — which no sampler can
+  certify; every gadget probed attains. **(BE-7)**.
+- **Gap-map effect.** The `(K-bare)/(K-bare-ext)` row moves from *open,
+  nothing being developed* to *the `∀`-seed form REFUTED; the live statement
+  is the `∃`-seed form plus a seed-repair obligation*. `hbareSplit`'s own
+  status is **unchanged** — still carried as pinned, on the standing route-(a)
+  GO.
 
-- The right shape is the **determinantal criterion**: at a target-rank bare
-  seed, a placement attains ⟺ the two functionals `⟨·, C(va)⟩, ⟨·, C(vb)⟩`
-  are independent on the seed's obstruction space `U`, with
-  `dim U = dim R_a + 1` forced (`= corank(G′) − s₀ + 1`); higher corank
-  makes the failure locus thinner (rank-≤1 of a `2 × dim U` matrix of
-  linear forms), matching the C2/C3 corank-stability observations.
-- The C3 gloss "the failure set is exactly the line" is **corrected**: on
-  the `dim U = 2` stratum the route-A failure locus is
-  `line(a,b) ∪ P′` — a second line, exhibited at the control
-  (§(K-tight) Step 3). The `∃`-form side condition survives unchanged; a
-  `∀`-form "off-line ⟹ attains" would be false.
-- The genuinely open core is now sharply two-part: (i) at an adversarial
-  IH seed, show `dim R_a ≥ 1` — some `G′`-stress engages the fresh-edge
-  fiber; a `dim R_a = 0` seed fails at **every** placement — and (ii) a
-  rank-2 point exists in the confinement space (the criterion's
-  non-vanishing at that seed), with no chart available to supply
-  genericity for either part.
+### Standing notation
 
-**Verdict: open.** To be filled by the dispatch that attacks it; nothing is
-being developed here yet.
+`G` a habitat member of `hbareSplit` (`Escape.lean:351`: simple, `5 ≤ |V|`,
+2EC, no proper rigid subgraph at `d = 3`, `deg v = 2` with links to `a`, `b`,
+`hsafe` = at least one of `a`, `b` a non-hub, a fresh `e₀`, and
+`¬ PencilNondegFeasible K G`); `G′ = G.splitOff v a b e₀`; `index(G) := 5|E| −
+6(|V| − 1)`; `c_G := 5|E(G)| − target(G) = index(G) + def(G)`. `s₀`, `U`,
+`R_a`, `Λ²Π̂(b)` are §(K-tight) *Step 2*'s, restated in *Step BE2* against
+this carrier. Every rank is exact ℚ; GF(p) only as a certified lower bound.
+
+### Step BE1 — the hit criterion, sharpened off the Lean bodies
+
+`HasPencilRealization` (`Statement.lean:103`) and `PencilNondegFeasible`
+(`Motive.lean:133`) are **both `∃`-statements** (bodies read this pass), and
+`PencilPair` (`Motive.lean:160`) carries `HasPencilRealization K n G` as an
+**unconditional** second conjunct. Three consequences fix what a hit can be:
+
+> **(BE-1)** *(bookkeeping, load-bearing)* A candidate breaks into exactly
+> three tiers. **T1** — route A's *fixed-seed* insertion fails: this refutes
+> **(K-bare-ext)**, not `hbareSplit`, because a prover may also perturb the
+> rest of the seed. **T2** — `HasPencilRealization K 3 G` **fails** at a
+> habitat member: a universal non-existence over all frameworks and all
+> placements. **T3** — the `∀`-form "off-line ⟹ attains", already refuted at
+> the (K-tight) control (*Step 2.4*: the failure locus is `line(a,b) ∪ P′`).
+
+**A correction to the tier semantics, recorded because it changes who a T2
+decides.** A T2 witness would falsify `PencilPair K 3 G`'s second conjunct,
+hence the **conclusion** of `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card`
+(`Escape.lean:555`) at a spanning `G` — so it is not a "phase-shape event" but
+a **PENCIL event**: it would prove the conjunction
+`hcontract ∧ hK ∧ hbareSplit` false and kill the program's target as
+formalized, with the direction-A pivot rule in force. No T2 candidate was
+found (*Step BE7*), so nothing turns on this operationally; it is recorded so
+the next dispatch prices a T2 correctly.
+
+### Step BE2 — the boundary-load calculus on this carrier, and what a uniform failure is
+
+Derived from the row structure of the carrier (`kbare_common.build_rigidity`:
+five rows per link, `perp_basis(C_e)` in the `u`-block and its negative in the
+`v`-block), **not** imported as prose. Write `E(u)` for the column vector that
+is `u` in `a`'s block, `−u` in `b`'s block and `0` elsewhere; the orientation
+of the two `v`-links cancels, so `E` is sign-canonical.
+
+> **(BE-2)** *(proven-informally; exact, no genericity, no `def` hypothesis)*
+> With `U := {u ∈ K⁶ : E(u) ∈ rowspan(shared rows of G − v)} = {u : ⟨u, m(a) −
+> m(b)⟩ = 0 for every motion `m` of `G − v`}`, `s₀ :=` corank of the shared
+> rows, and `M(x) := [⟨u_i, C(va)⟩ ; ⟨u_i, C(vb)⟩]` the `2 × dim U` matrix at
+> placement `pt(v) = x`:
+>
+> 1. **`corank R(G) = s₀ + dim U − rank M(x)`** at every placement. (A
+>    `G`-stress's `v`-block forces antisymmetric fiber loads `±u`, its `a`/`b`
+>    blocks say `E(u) ∈ rowspan(shared)`, and the shared part is then free up
+>    to `s₀`.)
+> 2. Hence **attainment ⟺ `rank M(x) = s₀ + dim U − c_G`**, and since
+>    `rank M ≤ min(2, dim U)`, a **required rank above that bound is uniform
+>    failure by arithmetic alone**.
+> 3. `R_a := {Σ_j ν_j w_j}` over the `ab`-block `ν` of the `G′`-stresses
+>    (`w_j` the five `perp_basis(C_ab)` generators) satisfies
+>    **`corank(G′) = s₀ + dim R_a`** and `U ∩ C(ab)^⊥ = R_a`, `R_a ⊆ U`.
+> 4. In the **count-dependent** stratum (`def(G) = def(G′) = 0`, so
+>    `c_G = index`, `corank(G′) = index + 1` at a target-rank seed) items 2–3
+>    collapse to §(K-tight)'s form: `dim U = dim R_a + 1`,
+>    `dim R_a = index + 1 − s₀`, and **the required rank is exactly 2**.
+
+**Machine validation** (`breakhunt.py calc`, 118 s): four (gadget, split)
+cases — DZ non-hub-ends, DZ hub-end, the C2 cube index-2 gadget hub-end, and
+`theta(6,6,6)+center` (**count-INDEPENDENT**, `def = 3`) — 8 target-rank seeds
+each, **192/192** placements with predicted corank = observed exact corank.
+`Ra_subset_U` and `meet_eq_Ra` hold **32/32 seeds**. Item 4's two identities
+hold 24/24 in the dependent cases and **0/8** in the independent one, which is
+the scope statement: they are `def = 0`-only, and quoting them off that stratum
+is an error the old prose invited.
+
+> **(BE-3)** *(measured)* In the count-independent **def-drop** branch
+> (`corank(G′) = 0`) the observed `dim U = 0` at 8/8 seeds, so the required
+> rank is **0**: attainment is automatic at *every* legal placement. The
+> gate's seven-gadget extension result is therefore explained by an
+> **identity**, not by its sampling — and the def-equal branch
+> (`corank(G′) = 1`, `dim U = 1`) is where the recorded line-avoidance caveat
+> lives, its failure locus being the intersection of the **two** hyperplanes
+> `⟨u, · ∧ â⟩ = ⟨u, · ∧ b̂⟩ = 0`, i.e. a single line, equal to `line(a,b)`
+> exactly when `u ⊥ C_ab`.
+
+**Uniform failure is decidable per seed with no cap.** Every entry of `M(x)`
+is affine-linear in the placement parameters (`C(vx) = x̂ ∧ ŵ`), so every
+`2×2` minor is a quadratic form with finitely many coefficients: "fails at
+every placement of the domain" is an **identical-vanishing** test on those
+coefficients, not a sample. The placement domain is the affine chart when both
+split ends are non-hubs, and the hub end's panel `Π̂(b)` when one is a hub
+(forced: the seed fixes the hub's other neighbours, and `pt(a) ∈ Π̂(b)`
+already, `a` being `b`-adjacent in `G′` through the fresh edge). This is
+`breakhunt.uniform_failure_exact`; a grid test runs beside it and the two
+verdicts are **asserted equal** at every seed of every battery.
+
+### Step BE3 — the hunt, and the T1 hit
+
+Six sampler strata (robust generic; global hub-coplanar; apex-star collinear;
+every-hub-star collinear; **local flat**; global flat) × 10 seeds × five
+(gadget, split) cases, all through a new **general** BFS pencil sampler
+(`sample_pencil_bfs`: hub panels propagated over the hub-hub adjacency graph,
+robust plane sampling throughout — no call to the degenerate `plane_basis`
+family). `breakhunt.py rzero`, 322 s.
+
+The **local flat** stratum is the one that pays, and it exists because of a
+combinatorial fact worth naming on its own:
+
+> **(BE-4)** *(proven-informally; the pencil propagation rule)* If three
+> bodies of a hub's closed star lie in a plane `P` and span it, the hub's
+> panel **is** `P`, so its whole closed star lies in `P`. Hence forced
+> coplanarity spreads by the closure `S ↦ S ∪ closedStar(h)` over hubs `h`
+> with `|closedStar(h) ∩ S| ≥ 3`. The pencil stratum therefore has **no
+> local degenerations of the bar-joint kind** — but the closure is **proper**:
+> at DZ's `G′` a shortest cycle (7 bodies) closes on **11 of 19**.
+
+**The hit.** At the C2 cube-skeleton index-2 gadget's hub-end split, the local
+flat stratum yields **8 of 10** seeds that are legal `G′` pencil witnesses **at
+target rank 132**, each with `s₀ = 0`, `dim R_a = 3`, `dim U = 4`, required
+rank 2, and **all six `2×2` minors of `M` identically zero on the panel** —
+route A fails at **every** placement. Independent corroboration per seed:
+observed exact rank `137` at every legal placement drawn, `target(G) = 138`.
+Mechanism: `rank⟨U, Λ²Π̂(b)⟩ = 1` at **8/8** hit seeds.
+
+> **(BE-5)** *(refutation)* **(K-bare-ext) is false as stated.** There is a
+> habitat member `G`, a legal split, and a bare pencil realization of `G′`
+> attaining `target(G′)` such that **no** placement of `v` — off
+> `line(pt a, pt b)` or on it, inside the hub end's panel (and no placement
+> outside it is even a panel realization) — attains `target(G)`.
+
+**Why the seed is in scope, which is the whole point.** (K-bare-ext) may not
+add a nondegeneracy antecedent: `hbareSplit`'s own hypothesis is
+`¬ PencilNondegFeasible K G`, so **no** nondegenerate realization of `G` (or
+of `G′`, infeasibility propagating) exists at all, and every seed the lemma
+must handle is degenerate. The hit seeds are exactly that — legal, degenerate,
+target-rank. The design doc named this as a *worry* (its item (iii): the
+calculus's genericity step "is not automatic at an opaque IH seed"); it is now
+a **refutation**.
+
+**What the hunt did NOT find, under cap.** No seed with `dim R_a = 0` — the
+§(K-tight) *Step 2.3* mechanism, which here needs `s₀ = index + 1 ∈ {2, 3}`:
+every stress-raising stratum that reached `s₀ ≥ 1` fell **below**
+`target(G′)` and is excluded by (K-bare-ext)'s own rank antecedent (`s₀ = 1`
+at apex/star-collinear seeds, `s₀ ∈ {6, 9, 12}` at global flats). So the
+hard stratum `dim R_a ≤ 1` of this kernel is **uninhabited under cap** (6
+strata × 10 seeds × 5 cases), and the hit arrives by the *other* mechanism
+instead. *Not found under cap* — never "does not exist".
+
+### Step BE4 — the dependent stratum is complete: `index ∈ {1, 2}`
+
+> **(BE-6)** *(proven-informally; arithmetic, no cap)* Let `G` satisfy
+> `hbareSplit`'s antecedents with `E(G̃)` count-dependent (`index ≥ 1`) and
+> some degree-2 body. Then **`index(G) ≤ 2`**, hence
+> **`corank(G′) = index + 1 ≤ 3`** at a target-rank seed.
+>
+> *Proof.* (i) For a maximal degree-2 path of length `l ≥ 2`, deleting its
+> interiors leaves a **proper** vertex subset `W` with
+> `f(W) = 5|E(W)| − 6(|W| − 1) = index + l − 6`, so `hnoRigid` forces
+> **`l ≤ 5 − index`**. (ii) `index = 4` would force every `l ≤ 1`, i.e. no
+> degree-2 body, contradicting `hdeg2`. (iii) `index = 3` forces every
+> `l ≤ 2`, so `L ≤ 2E_s`; the index identity gives `L = 6E_s − 6H + 3`, hence
+> `4E_s ≤ 6H − 3`, while min-degree-3 of the suppressed skeleton gives
+> `2E_s ≥ 3H`, i.e. `4E_s ≥ 6H`. Contradiction. (A bare cycle has no
+> skeleton; `|V| ≥ 5` and `index ≥ 1` force `C₅`, `index 1`, which is not
+> `¬Feasible`-certifiable.) ∎
+
+**This corrects a recorded figure.** The design doc's option-C C2 bullet reads
+"the corank stratification is genuinely inhabited at least up to
+`corank(G′) = 3` (`index ≤ 4` caps it at 5)". The cap is **3**, and both
+values `{2, 3}` are witnessed (DZ and the cube/Wagner hits) — so the
+stratification of the dependent habitat is **complete**, not merely inhabited.
+
+**Enumerated corroboration** (`breakhunt.py arith`, 1 s). Over **every**
+connected loopless cubic multigraph skeleton on `≤ 6` hubs
+(`gridcol.cubic_iso_classes`), with the apex's three arcs pinned to length 1
+(the only known `¬PencilNondegFeasible` certificate: `closedHubNbhd(apex)`
+has 4 members) and the skeleton-level habitat check: **216** members at
+index 1, **0** at index 2, **0** at indices 3 and 4; longest arc **4**,
+exactly clause (i)'s bound. The two smallest are certified exactly
+(`|V| = 20`, `|E| = 23`, `def = 0`, `max f(W)` proper `= −1`, 2EC,
+`max closedHubNbhd = 4`) — so **DZ is one of a 216-member family**, and the
+spec's "larger skeletons are unprobed" is now a census rather than a gap. At
+8 and 10 hubs (cube, Wagner, Petersen) the arithmetic candidate count is
+`{1: 146808, 2: 360, 3: 0, 4: 0}` resp. `{1: 15015660, 2: 34320, 3: 0, 4: 0}`
+— indices 3/4 **empty before any habitat check**. **Cap:** the exhaustive
+*class* sweep stops at 6 hubs (`cubic_iso_classes(8)` alone costs ~110 s and
+the index-1 census on a 12-edge skeleton is combinatorially large); 8 and 10
+hubs are covered by the named skeletons and by (BE-6) itself, which is a
+proof.
+
+### Step BE5 — the failure locus, constructed rather than sampled (T3)
+
+Option-C C3 concluded from **179** random off-line placements at DZ that "as
+far as sampling shows the failure set is *exactly* the deleted hinge's line".
+The locus is a **curve** (`dim U = 3` there: the rank-≤1 locus of a `2 × 3`
+form matrix has codimension 2), and random sampling of a 3-dimensional domain
+**cannot** meet a curve — so the figure `0/179` was never evidence for the
+conclusion it was quoted for.
+
+Solving instead of sampling: on a line through an end, `A(â) = 0` makes the
+wedge system `t · (W₁ + t W₂) = 0`, whose non-anchor root solves a **linear**
+system exactly. `breakhunt.py locus` (11 s): at DZ's non-hub-ends split, one
+constructed line carries a legal solution, and it is **off** `line(a,b)` with
+observed exact rank **113 = 114 − 1**.
+
+> **(BE-7)** *(T3, corroboration — not a hit)* The route-A failure locus at
+> DZ's corank-2 seeds is **strictly larger** than `line(a,b)`. This is the
+> already-settled `∀`-form refutation (§(K-tight) *Step 2.4*'s `line(a,b) ∪
+> P′`) reproduced at the (K-bare) stratum; the `∃`-form side condition is
+> unaffected. What is new is only that C3's gloss is corrected **at DZ
+> itself**, by construction.
+
+### Step BE6 — the second gadget against option-C's C1
+
+C1's structural plus — "at these seeds the target-rank hypothesis itself
+polices exactly the local chain degeneracy the insertion calculus needs" —
+was flagged as one gadget, one sampler family. `breakhunt.py c1b` (19 s) runs
+four degeneration strata at the **cube index-2 gadget** and at DZ as control:
+
+| stratum | Q3 index-2 | DZ (control) |
+|---|---|---|
+| apex-star collinear | 0/8 at target′ (131) | 0/8 at target′ (107) |
+| every-hub-star collinear | 0/8 at target′ (131) | 0/8 at target′ (107) |
+| global hub-coplanar | **8/8 AT target′** (132) | **8/8 AT target′** (108) |
+| global flat | 0/7 at target′ (120) | 0/8 at target′ (98) |
+
+> **(BE-8)** *(measured)* C1's finding **corroborates at a second gadget** for
+> the collinear and global-flat strata, and its *general reading* is
+> **refuted**: two strata are target-compatible — the global hub-coplanar one
+> (already noted at DZ as C1's D4) and the **local flat**, which is where the
+> (BE-5) hit lives. "The rank antecedent polices the degeneracy" is a
+> stratum-by-stratum observation, never a principle.
+
+### Step BE7 — no T2 candidate, and why this harness cannot make one
+
+`breakhunt.py tiers` (1 s): DZ attains `114/114` and the cube index-2 gadget
+attains `138/138`, each exact-ℚ-confirmed, through a **different sampler**
+from the one that first recorded them — so both figures are independently
+reproduced and **neither gadget is a T2 candidate**. The gate's seven gadgets
+were already known to attain.
+
+> **(BE-9)** *(methodological, and a cap disclosure)* T2 is a **universal
+> non-existence** over frameworks; no sampler can certify it, and this
+> harness's witness class (affine points, hinges `hat(p u) ∧ hat(p v)`) is a
+> **subclass** of what `HasPencilRealization` quantifies over, so even a
+> universal non-attainment *within the class* would not be T2. A T2 witness
+> needs a **rank upper bound valid for all pencil configurations** of some
+> habitat member — an argument, not a search. (BE-4)'s propagation rule is
+> the natural place to look for one, and it points the other way: the closure
+> is proper, so the pencil coupling does **not** force a global collapse.
+
+**Harness disclosure, in the (OC-7) shape.** The recorded (K-bare) DZ figures
+are drawn through `danger.sample_dz_pencil`, which places the apex's three
+hub neighbours with `kbare_common.point_in_plane3` — the **known-degenerate**
+`plane_basis` member (`notes/scripts/README.md` *Divergences*): when the drawn
+normal's third coordinate is `0`, the three land on **one line**, i.e.
+silently on option-C's own D3 "apex star collinear" stratum. Measured over the
+58 seed draws behind the recorded DZ/C1/C2/C3 figures: it fires at **4**
+(`8201`, `11002`, `11103`, `13051`). Small, and disclosed rather than
+smoothed: one of `danger.py`'s corank-2 hub-end extension seeds and one of the
+C2 mini-gate's extension seeds sit on a deeper stratum than their labels say.
+No recorded figure is *moved* by this note (no landed driver was edited); this
+driver uses the robust sampler throughout, and `repin.star_generic` is
+recorded per seed rather than asserted, because in an infeasible habitat a
+nondegeneracy guard cannot be a gate.
+
+### Step BE8 — what the statement should now say, and what it costs
+
+The `∀`-seed form is dead, so the live shapes are:
+
+1. **The `∃`-seed form** — *some* target-rank bare realization of `G′` admits
+   an attaining insertion — **plus a seed-repair obligation**: from the
+   opaque seed `hbareSplit`'s antecedent hands you, produce a good one. This
+   is exactly the "arbitrary-seed/seed-repair extension of the calculus" the
+   design doc named as the new mathematics, now **forced** rather than
+   merely prudent. The repair is a deformation statement inside
+   `HasPencilRealization K 3 G′`'s own attainment locus, with **no chart
+   available** (the habitat is infeasible), which is the same wall §(K-tight)
+   *Step 5* meets one level up.
+2. **A seed side condition**, named by the mechanism: `rank⟨U, Λ²Π̂(b)⟩ ≥ 2`
+   (sufficient to defeat the exhibited failure, by (BE-2)). Any such
+   condition needs its own supply lemma, i.e. it reduces to shape 1.
+3. **Bypass the antecedent entirely** — prove `HasPencilRealization K 3 G`
+   directly on the habitat. Strictly stronger than `hbareSplit`, but
+   **seed-free**, and the hit says the antecedent is a liability rather than
+   an asset: it supplies an object route A cannot use.
+
+**Verdict: (K-bare-ext) REFUTED as stated (tier T1); `hbareSplit` OPEN and
+unchanged, carried as pinned.** *What would change this:* for the refutation,
+an error in the model-to-Lean dictionary (the five-rows-per-hinge carrier vs
+`BodyHingeFramework.rigidityRows`) — the same single point of failure
+§(K-tight) names, and the hit is stated in that carrier's terms; for
+`hbareSplit`, either a discharge along shape 1/3 above, or a T2 witness, which
+would be a **PENCIL event** and not this section's to declare.
+
+**Verification.** `python3 notes/scripts/kbare/breakhunt.py tiers` (1 s,
+(BE-9) + the two attainment figures); `calc` (118 s, (BE-2)/(BE-3), the
+192/192 corank identity); `arith` (1 s, (BE-6) and the 216-member census);
+`rzero` (322 s, the (BE-5) hit and the `dim R_a = 0` cap report); `locus`
+(11 s, (BE-7)); `c1b` (19 s, (BE-8)).
 
 ## §(K-frame) — the shared chart-to-frame dominance residue: the lemma shape delivered in its honest minimal form, both bad divisors made **combinatorial** at grid points, the **(ANH-14) residue discharged at every enumerated bare-cycle site by a colouring recipe** (1904/1904 + 30 exact certificates), and the (OC-16) residue's non-containment half witnessed **by construction** at θ(3,4,5) — with the strict availability package measured **0/8** and its (AC-9) mechanism named
 

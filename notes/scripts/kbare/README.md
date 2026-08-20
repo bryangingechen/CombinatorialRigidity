@@ -46,4 +46,19 @@ re-exported from `kbare_common` under their original names (`rank_exact` is
 | `danger.py` | The (K-bare) extension-route recon's danger-zone probe (added 2026-07-30, after the gate; NOT byte-faithful scratch — authored in place): audits the count status of every gate gadget (all count-INDEPENDENT — the gate never sampled the stressed stratum), constructs the count-DEPENDENT infeasible habitat gadget DZ (subdivided `K3,3` + apex hub, 20v/23e, index 1, def 0, spanning circuit), certifies its bare target attainment (114/114), and probes extension from its corank-**2** target-rank `G'` seeds, for both a non-hub-ends split and the KT-faithful hub-end split. | design doc §"(K-bare) extension-route recon" — the dependent-stratum existence + corank-2 extension findings |
 | `optc.py` | The user-adjudicated ("C: cheap numerics extensions + A") option-C probes (added 2026-07-30, authored in place; `python3 optc.py c1\|c2\|c3`): C1 adversarial deeper-degenerate corank-2 `G'` seeds at DZ (chain-local degenerations fall below `target(G')` — excluded by the rank antecedent; hub-coplanar stratum target-compatible, picture unchanged); C2 the index-2 danger-gadget search over subdivided cubic skeletons + apex (`K3,3` arithmetically excluded; cube `Q3`/Wagner `V8` 24v hits certified exactly, Petersen skeleton-level) with a mini-gate showing bare attainment 138/138 and the same extension picture from corank-**3** `G'` seeds; C3 the corank-2 failure-locus map (every sampled on-`line(a,b)` point fails by exactly 1, 0/179 exact-ℚ-confirmed off-line failures — the failure set looks exactly like the line). | design doc §"(K-bare) extension-route recon" — the "Option-C results" block |
 
+| `breakhunt.py` | Probe **KBARE-FALSIFY** (2026-08-20) — the commissioned falsification hunt for `hbareSplit` / (K-bare-ext), six modes (`tiers|calc|arith|rzero|locus|c1b`). Adds the boundary-load calculus on this carrier (`U`, `R_a`, `s0`, the **scope-free** corank identity, and `need_rank` — the required rank of the criterion matrix, from which uniform failure is decided **cap-free** by identical vanishing of the minors), a **general** BFS pencil sampler with an adversarial stratum battery, the pencil **coplanarity-propagation closure**, and a multigraph-safe skeleton habitat check. Imports four sibling leaves (`gate2`, `danger`, `optc`, and `repin`/`gridcol` from the `w4` chain) — in policy, and recorded as an UNPAID move-down item in `../README.md` *Harness debt*. | `notes/Pencil-informal.md` §(K-bare-ext) *Steps BE1–BE8* — the **T1 hit** ((BE-5): (K-bare-ext) refuted as stated), the calculus transport (192/192), the `index <= 2` theorem, the constructed off-line failure at DZ, and the C1 second gadget |
+
 Reproduce commands cited in the design doc, e.g. `python3 notes/scripts/kbare/gate1.py`, assume the repo root as the working directory.
+
+**This directory's standing rules, as `breakhunt.py` had to read them.** The
+2026-08-06 round's rule "a new sampler or battery asserts `repin.star_generic`"
+cannot be a **gate** in this arc: `hbareSplit`'s habitat is
+`¬ PencilNondegFeasible` by hypothesis, so no nondegenerate realization exists
+and a nondegeneracy guard would reject every legal seed. `breakhunt.py` therefore
+**records** `star_generic` per seed and gates on what (K-bare-ext) actually
+requires — `verify_pencil_witness` plus the target-rank antecedent. The other
+half of the rule is followed literally: no new work here calls the degenerate
+`kbare_common.plane_basis` family, in-plane sampling goes through
+`repin.robust_plane_basis`, and the rate at which the **old** figures rode the
+degenerate member is measured and disclosed rather than silently fixed
+(`breakhunt.py tiers`; 4 of 58 recorded DZ seed draws).

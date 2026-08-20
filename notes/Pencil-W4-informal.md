@@ -589,8 +589,11 @@ Read from the landed producer `pencilPair_of_splitOff_of_habitat`
   `hasPencilRealization_of_generic` of it).
 
 So at a residual the infeasible branch is discharged by `absurd`, and
-**`hbareSplit` is never instantiated**. Its `hnoRigid`, its corank
-stratification, and (K-bare-ext) all stand exactly as pinned. (For the record,
+**`hbareSplit` is never instantiated**. Its `hnoRigid` and its corank
+stratification stand exactly as pinned — the latter now **complete**
+(`index ∈ {1, 2}`, `corank(G′) ≤ 3`, `notes/Pencil-informal.md`
+§(K-bare-ext) (BE-6)) — while **(K-bare-ext) itself is REFUTED as stated**
+(ibid., (BE-5), 2026-08-20; a *route* finding, `hbareSplit` untouched). (For the record,
 what *would* break if it were reached: the (K-bare) count dichotomy
 "count-dependent ⟹ spanning circuit ⟹ `def(G) = 0`" needs vertex-properness to
 force the circuit to span. At a residual the core supplies a non-spanning
@@ -787,7 +790,12 @@ escape with the corrected sampler — `notes/Pencil-informal.md` §(K-tight)
   `def = 0`), so the (K) recon's *criterion* survives; it is only its
   derivation of `s₀ = 0` that dies.
 - On-line placements (`pt(v) ∈ line(pt a, pt b)`) fail 16/16 at `W19` and
-  14/14 at `S29`, reproducing (K-bare)'s C3 "failure set is exactly the line".
+  14/14 at `S29`, reproducing (K-bare)'s C3 gloss. **That gloss is corrected
+  (2026-08-20, probe KBARE-FALSIFY):** on-line failure is *structural*
+  (`C(va) ∥ C(vb)` there), but the failure set is **larger** than the line —
+  see `notes/Pencil-informal.md` §(K-bare-ext) *Step BE5*, where an off-line
+  failure is constructed at DZ itself. The 16/16 and 14/14 figures are
+  unaffected (they are on-line failures, the half that is structural).
 
 **The seed-442 caveat is RESOLVED (2026-08-02).** The re-pin this step's
 caveat asked for has been done — `notes/Pencil-informal.md` §(K-tight) — and
@@ -830,5 +838,8 @@ Reproduce: `python3 notes/scripts/w4/widened.py --validate | --witness |
   across the pinned and residual habitats (`notes/Pencil-informal.md`
   §(K-tight) Steps 2/5), so the two
   kernels share one uniform gap ((K-move)/(K-pitch)).
-- **`hbareSplit` / (K-bare-ext)** — **unchanged.** Not on routes 1/3's path
-  (Step 0); its adjudicated carry stands verbatim.
+- **`hbareSplit`** — **unchanged.** Not on routes 1/3's path (Step 0); its
+  adjudicated carry stands verbatim. **(K-bare-ext)**, its route-A discharge
+  statement, is **REFUTED as stated** since 2026-08-20
+  (`notes/Pencil-informal.md` §(K-bare-ext)); that does not reach this arm,
+  precisely because Step 0 keeps the branch unreachable here.

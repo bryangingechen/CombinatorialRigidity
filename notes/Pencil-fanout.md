@@ -2204,7 +2204,7 @@ A future recon may overturn any of it.
 
 ---
 
-## Two probes SPECCED and AUTHORIZED 2026-08-20 (not yet dispatched)
+## Two probes SPECCED and AUTHORIZED 2026-08-20 (KBARE-FALSIFY **LANDED**; C3-AVOID not yet dispatched)
 
 Both are **read-only recons**, both **docs+scripts-only**, and neither touches
 the Lean hold. They exist because the eighth fan-out closed with the phase
@@ -2219,6 +2219,28 @@ for a future session"* (the option board is `notes/Pencil-strategy.md` §8).
 
 **Dispatch order is not free: run KBARE-FALSIFY first.** Its answer can moot
 C3-AVOID and a great deal else — that is the whole point of running it.
+
+**LANDED 2026-08-20 (KBARE-FALSIFY, opus, one commit).** Outcome: a **HIT at
+tier T1** — **(K-bare-ext) is REFUTED as stated**, `hbareSplit` **untouched**
+and still carried as pinned. Verdict, mathematics and every figure:
+`notes/Pencil-informal.md` §(K-bare-ext) *Steps BE1–BE8*; driver
+`notes/scripts/kbare/breakhunt.py`. It does **not** moot C3-AVOID: the hit is a
+statement about route A's *seed* quantifier, not about the reduction, so
+C3-AVOID's purely combinatorial question stands exactly as specced. Four
+things this spec asked for that the landing answers, recorded so the next
+dispatch does not re-ask them: (a) larger stressed-stratum skeletons — now a
+**census** (216 index-1 members on `≤ 6`-hub skeletons, DZ one of them) with
+the stratum proved **complete** at `corank(G′) ≤ 3`; (b) the `index ≥ 2`
+existence search — subsumed, and the index bound makes `index ≥ 3` **empty**;
+(c) DZ's `0/15` off-line — **broken by construction**, and the reason the
+sampling figure was never evidence is recorded (the locus is a curve); (d) the
+one-gadget caveat on C1 — **second gadget run**, C1 corroborated per stratum
+and refuted as a principle. One correction to this spec's own framing: a **T2**
+witness would falsify `PencilPair`'s unconditional second conjunct, hence the
+headline theorem's conclusion, so it would be a **PENCIL event** rather than
+"not a PENCIL event" as written above — nothing turned on it (no T2 candidate
+exists in the arc's gadget stock), but a future dispatch should price it that
+way.
 
 ### Probe KBARE-FALSIFY — is `hbareSplit` actually true?
 

@@ -532,8 +532,17 @@ line; a non-zero exit or a missing `OK`/`PASSED` line is a failure.
 | `python3 notes/scripts/kbare/optc.py c1` | 3 s | ibid., "Option-C results" |
 | `python3 notes/scripts/kbare/optc.py c2` | 145 s | ibid. |
 | `python3 notes/scripts/kbare/optc.py c3` | 11 s | ibid. |
+| `python3 notes/scripts/kbare/breakhunt.py tiers` | 1 s | `notes/Pencil-informal.md` §(K-bare-ext) *Step BE7* ((BE-9): no T2 candidate — DZ 114/114 and the cube index-2 gadget 138/138 reproduced through a **different** sampler — plus the degenerate-`plane_basis` disclosure, 4 of 58 recorded DZ seed draws) |
+| `python3 notes/scripts/kbare/breakhunt.py calc` | 118 s | ibid. *Step BE2* ((BE-2)/(BE-3): the boundary-load calculus transported — corank identity **192/192** placements over four (gadget, split) cases, the three structure identities 32/32, and `dim U = dim R_a + 1` / `dim R_a = index + 1 − s₀` measured **`def = 0`-only**, 0/8 in the count-independent case) |
+| `python3 notes/scripts/kbare/breakhunt.py arith` | 1 s | ibid. *Step BE4* ((BE-6): `index ∈ {1, 2}`, `corank(G′) ≤ 3`; 216 index-1 members / 0 at indices 2–4 over every cubic multigraph skeleton on ≤ 6 hubs; zero index-3/4 candidates at the named 8/10-hub skeletons) |
+| `python3 notes/scripts/kbare/breakhunt.py rzero` | 322 s | ibid. *Step BE3* — **the T1 hit** ((BE-4)/(BE-5)): 8 legal target-rank seeds at the cube index-2 gadget's hub-end split where all six minors of `M` vanish identically (observed rank 137 vs target 138, `rank⟨U, Λ²Π̂(b)⟩ = 1` at 8/8), and the `dim R_a = 0` **cap report** (6 strata × 10 seeds × 5 cases, not found) |
+| `python3 notes/scripts/kbare/breakhunt.py locus` | 11 s | ibid. *Step BE5* ((BE-7), tier T3: a **constructed** off-line failure at DZ, exact rank 113 = 114 − 1, where option-C C3's 179 random off-line samples found none) |
+| `python3 notes/scripts/kbare/breakhunt.py c1b` | 19 s | ibid. *Step BE6* ((BE-8): the second gadget against option-C C1 — four strata × two gadgets; the global-hub-coplanar and local-flat strata are target-compatible) |
 
-`optc.py` with no argument (or `all`) runs c1+c2+c3.
+`optc.py` with no argument (or `all`) runs c1+c2+c3. `breakhunt.py` with no
+argument (or `all`) runs all six modes (~470 s together, so inside a 600 s
+foreground budget — but the recorded figures above come from the six separate
+invocations, which is what a re-run should reproduce).
 
 ### `w4/` — the `hcontract` arm **and** the whole kernel-(K) continuation
 
@@ -1109,6 +1118,8 @@ Python figures are frozen, and §4 convention 5 applies.
 | `repin.lambda2_plane` vs `sigma.lambda2_perp` | Same *space* — `Λ²` of a plane, 3-dimensional — from different data. `lambda2_plane(pt_h, nrm_h, rng)` takes an **affine** hub point + 3-normal, samples three in-plane points through `plane_pts`, and **consumes rng**; `lambda2_perp(nu)` takes a **homogeneous** 4-covector and wedges a basis of `nu^⊥`, deterministically. `sigma.py` works entirely in homogeneous data (at `σu` the "points" are another configuration's normals, which no affine hub datum expresses), so it cannot call the first; and swapping either way changes the rng stream. | Both stay. Use `lambda2_plane` inside the affine samplers, `lambda2_perp` in homogeneous code. |
 | `flanks.nondeg_conjuncts` vs `sigma.nondeg_conjuncts_hom` | Both test all four conjuncts of `IsNondegPencilRealization`. `nondeg_conjuncts(edges, placed)` takes an **affine placement** and *derives* the normals itself (through `kbare_common.verify_pencil_witness`), returning `(True, normals)` or a named failure; `nondeg_conjuncts_hom(edges, V, P, N, hubs)` takes homogeneous points **and** normals as independent inputs and returns a 4-tuple of bools. The first cannot express `σu` at all, since there the points *are* another configuration's normals and no affine placement produces them. | Both stay. The `_hom` suffix marks the homogeneous model; do not merge. |
 | pencil-frame samplers: `lambda.sample_local_frame` vs `widened.place_pencil_general` | Both place a pencil-generic configuration, and they are **not** interchangeable in two independent ways. **(a) Different in-plane sampler.** `sample_local_frame` uses the **robust** `repin.rob_in_plane` for every panel-constrained interior; `place_pencil_general` routes a **single-hub** interior through the *degenerate* `localtest.in_plane_point` (the `plane_basis` family above). Swapping either way changes which points are drawn, and in the degenerate direction it reintroduces exactly the defect that silently contaminated several passes' recorded escape figures. **(b) Different object.** `place_pencil_general` places a **whole graph**; `sample_local_frame` places only the *local frame* of a companion split (`b, x₁..x_{k−1}, c, a`, the two panels, the meet line `M`) and models the far graph by **synthetic** far-hub-neighbour normal constraints — which is precisely what §(K-Λ)'s class-uniformity claim over the 38 local strata needs, and what a whole-graph placement cannot express. | **Do not merge, and do not "unify" the sampler.** Habitat-level (K-Λ) frames go through `lambda.habitat_frame`, which calls `repin.seed_probe` (hence `place_pencil_general`) deliberately, so both samplers appear in one driver by design. |
+| skeleton habitat checks: `optc.skeleton_check` vs `breakhunt.skel_ok_multi` | Same predicate (every PROPER closed whole-path sub-multigraph has `f <= -1`) on **different data**. `skeleton_check(skel, apex, lengths)` keys lengths by the edge **pair**, so a parallel skeleton edge silently overwrites its twin — fine for the four **simple** skeletons `optc` probes, wrong for a multigraph. `skel_ok_multi(skel, lens)` takes lengths as a **list parallel to `skel`**, so it sees parallel edges, which is what `--arith`'s sweep over `gridcol.cubic_iso_classes` (whose classes are multigraphs) needs. | **Do not merge and do not "fix" `optc`.** Its recorded C2 figures are keyed to its own signature, and the two agree on every simple skeleton — which is the only input `optc` ever passes. A new multigraph consumer uses `skel_ok_multi`. |
+| pencil samplers, third member: `danger.sample_dz_pencil` vs `breakhunt.sample_pencil_bfs` | Both place a whole-graph pencil configuration in the `kbare` carrier. `sample_dz_pencil` hard-codes the apex name `'h0'`, places its hub neighbours through the **degenerate** `kbare_common.point_in_plane3`, and gives every other hub a panel through whatever is placed **already** — so it is correct only when no other hub has three already-placed hub neighbours, and it fails loudly otherwise. `sample_pencil_bfs` propagates panels by **BFS over the hub-hub adjacency graph** (so any hub-adjacency topology works), never calls the degenerate family, and takes a `degen=` stratum selector. | **Do not merge.** Swapping `sample_dz_pencil` for the BFS sampler would move every recorded DZ/C2 figure of `danger.py` and `optc.py`; the two agree on the *verdicts* at DZ (114/114, 138/138 reproduced independently in `breakhunt.py tiers`), which is the cross-check, not on the points drawn. |
 
 **One TRANSIENT exact duplicate — CLOSED by S2 (2026-08-06).**
 `repin.hinge_coincidences` (added by slice S1) and `outerline.hinge_coincidences`
@@ -1130,16 +1141,19 @@ figure-invariant): `rref`, `rank`/`rank_exact`, `nullspace`, `left_nullspace`,
 `neighbors` (`kbare_common`, `n9`); `K4`/`K5_minus_matching` (three copies:
 `localtest`, `probe_zero`, `run_habitats`).
 
-## Harness debt — two rounds PAID (S1–S4 2026-08-06; the move-down round 2026-08-20), **one item outstanding**
+## Harness debt — two rounds PAID (S1–S4 2026-08-06; the move-down round 2026-08-20), **two items outstanding**
 
-**One item is outstanding: `zneq.ledger`** (last subsection, deliberately
+**Two items are outstanding: `zneq.ledger`** (last subsection, deliberately
 deferred to a round that can re-run `oschu --gtarget` / `--census1` /
 `--census2`). Everything else is paid: the first round's four items are in the
 *ALL FOUR CLEARED* block immediately below (kept in the past tense as the record
 of what was wrong), and the five §2-rule-2 move-downs the sixth-to-eighth
 fan-outs accumulated are in the three *New item* subsections at the end, each
 marked **PAID 2026-08-20**, with the round's own write-up after them. Two
-*Recorded observations* also remain deliberately unfixed and say so.
+*Recorded observations* also remain deliberately unfixed and say so. The second
+outstanding item is the `kbare/` sibling-import set that probe KBARE-FALSIFY
+created (last subsection but one), **UNPAID** by the same rule that forbids a
+dispatch from moving a landed name.
 
 ### Round one — four items, **ALL FOUR CLEARED**; **CLOSED** (S1–S4, 2026-08-06)
 
@@ -1927,6 +1941,36 @@ discharged by re-running, not by inspection. Pay it in the next round that has
 room for those three modes, or fold it into a commit that has reason to re-run
 them anyway. Recording it here also fixes the list discrepancy: **seven** names,
 six moved 2026-08-20, `ledger` outstanding.
+
+### New item (2026-08-20, probe KBARE-FALSIFY) — the `kbare/` sibling imports; **UNPAID**
+
+`kbare/breakhunt.py` imports from four **sibling leaves** of its own layer, which
+is the documented sibling-import pattern and in policy, but trips §2 rule 2's
+move-down trigger. Recorded here with every consumer named, per that rule; a
+dispatch may **not** make the move (it would edit a landed driver another
+direction may be importing in flight).
+
+| name | current home | consumers |
+|---|---|---|
+| `line_of_two_planes` | `gate2` | `danger`, `optc`, **`breakhunt`** (3) |
+| `dz_gadget`, `sample_dz_pencil` | `danger` | `optc`, **`breakhunt`** (2) |
+| `SKELETONS`, `build_from_skeleton` | `optc` | **`breakhunt`** (1 — under the trigger, listed because the move-down of the other two would naturally take them) |
+| `report_graph` | `gate1` | `danger` (1 — pre-existing, unchanged) |
+
+**Where they should go:** `kbare_common`, the layer both `kbare/` leaves and
+`breakhunt` sit directly on. `line_of_two_planes` is the clear case (three
+consumers, pure geometry, no rng-free objection — it already takes an `rng`).
+`dz_gadget` is a **gadget constructor** and `kbare_common` already owns that job
+(`spider`, `dangerous_gadget`), so it belongs beside them; `sample_dz_pencil` is
+a **sampler**, and the layer already owns sampler primitives. Acceptance test if
+the move is made: re-run `danger.py` (8 s), `optc.py c1|c2|c3` (3 + 145 + 11 s)
+and all six `breakhunt` modes, byte-identical at `PYTHONHASHSEED=0`.
+
+**Also uncatalogued and worth a §1 row when it moves:** `breakhunt`'s own
+`need_rank` / `uniform_failure_exact` (the scope-free required-rank criterion)
+and `coplanar_closure` (the pencil propagation rule) are the two devices a
+second consumer would want; they are arc-specific today and stay in the driver
+per §2 rule 1.
 
 ## Deliberate non-goals
 

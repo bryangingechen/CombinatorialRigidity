@@ -3756,6 +3756,39 @@ sampling and exhibited at the control (`repin.py --control`); (K-bare-ext)'s `�
 side condition is unaffected. Implications for the statement:
 `notes/Pencil-informal.md` §(K-bare-ext).
 
+**Probe KBARE-FALSIFY pointer (2026-08-20) — this recon's central open statement is
+REFUTED as stated, and three of its figures are corrected.** The commissioned
+falsification hunt (`notes/Pencil-fanout.md` §"Two probes SPECCED and AUTHORIZED
+2026-08-20"; driver `notes/scripts/kbare/breakhunt.py`) landed **(K-bare-ext) REFUTED**
+at tier **T1** — a *route* finding, not a refutation of `hbareSplit`, whose consequent is
+an `∃` over frameworks and which is therefore **untouched and still carried as pinned**
+(the standing option-A adjudication is unchanged). Mathematics, verdict and all figures:
+`notes/Pencil-informal.md` §(K-bare-ext) *Steps BE1–BE8*. Three corrections **to this
+block**, recorded here because the claims are this block's own:
+
+- **Item 5 / option-C C3's "the observed failure set is exactly the line" and its
+  `0/15`.** Superseded twice over: once by the (K-tight) pointer above, and now **at DZ
+  itself** — the failure locus is a *curve* at `dim U = 3`, which random sampling of a
+  3-dimensional domain cannot meet, so `0/15` and C3's `0/179` were never evidence for
+  the conclusion they were quoted for. An off-line failure at DZ is **constructed** and
+  verified at exact rank 113 (§(K-bare-ext) (BE-7)).
+- **Option-C C2's "`index ≤ 4` caps it at 5".** The cap is **3**: `index(G) ∈ {1, 2}` in
+  the whole count-dependent habitat, by arithmetic (§(K-bare-ext) (BE-6)), so the corank
+  stratification is **complete** — `corank(G′) ∈ {2, 3}`, both witnessed — rather than
+  "inhabited at least up to 3". C2's own `K3,3`-excluded-at-index-2 finding generalizes:
+  **no** cubic multigraph skeleton on `≤ 6` hubs carries an index-2 member, and the
+  index-1 stratum there has **216** members, of which DZ is one.
+- **Option-C C1's "the target-rank hypothesis polices exactly the local chain
+  degeneracy".** Corroborated at a **second** gadget for the collinear and global-flat
+  strata, and **refuted as a general reading**: two strata are target-compatible, and one
+  of them (a *local* flat) is where the refuting seeds live (§(K-bare-ext) (BE-8)).
+
+Also new and enabling rather than corrective: the §(K-tight) boundary-load calculus
+**transports** to this kernel (corank identity scope-free, 192/192 placements), with item
+2's `dim R_a = index + 1 − s₀` measured **`def = 0`-only**; and the recorded DZ figures are
+disclosed as riding the degenerate `kbare_common.plane_basis` at 4 of 58 seed draws (the
+(OC-7) shape; no figure moved, no landed driver edited).
+
 **Numerics index (this recon).** `notes/scripts/kbare/danger.py` (see the directory README's
 row): probe 0 = gate-gadget count audit; probes 1–2 = DZ certification + bare attainment;
 probes 3a/3b = corank-2 extension, non-hub-ends and hub-end splits.
