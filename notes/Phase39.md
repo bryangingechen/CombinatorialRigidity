@@ -35,14 +35,15 @@ half-proven, half-reduced to one 3×3 determinant** (OSCHU); and
 (GCOLL) — the wave's **only** gap-map status move. Verdicts one-lined in
 *Decisions made*, detail in the fan-out doc. The **wave-closing exception-log commit is DONE**
 (`notes/dispatch-log.md`: five rows, findings **F22–F24**). **The research step
-is UNROUTED**, and per the **2026-08-19 user adjudication** the next two
-concrete commits are the queued **structural** items, in order: **slice 1**,
-the phase-note doc split (below); **slice 2**, one deliberate **harness
+is UNROUTED**, and per the **2026-08-19 user adjudication** the queued
+**structural** items are, in order: **slice 1**, the phase-note doc split —
+**LANDED** (`notes/Pencil-adjudications.md`; detail in *Decisions made* and
+`notes/Pencil-structure.md`); **slice 2**, one deliberate **harness
 move-down round** paying all five debt items the wave accumulated — including
 `closure.Gauss`, whose design question the same adjudication **settled: move it
 down to `exactcore`** (`notes/scripts/README.md` *Harness debt* item 3 carries
-the decision and its figures-do-not-move constraint). Only after those does the
-research pick come up again.
+the decision and its figures-do-not-move constraint) — **now the sole next
+concrete commit** (below). Only after it does the research pick come up again.
 
 ## Current state
 
@@ -62,45 +63,13 @@ constraints; the dated dispatch narrative is in *Decisions made* and git):
 - **2026-08-05, the standing reproducibility requirement:** *"in general, I would like all of
   the scripts we run to be committed for reproducibility"* — now a hard rule of the harness
   (`notes/scripts/README.md`); every script the project runs is tracked, probes included.
-- **2026-08-05…07, second through fifth fan-outs (all COMPLETE; user-adjudicated).**
-  T/R/M, G/Q/O, E/J, PEX/TCOL; route σ / W4 / the (FR-6) follow-ons not selected at any of
-  them; cap lifted, rescue §1 pre-authorized (`notes/Pencil-fanout-archive.md` §§"Second"–"Fifth").
-- **2026-08-07, delegation adjudication (binds from the SIXTH direction on).** Asked at the
-  session-start check-in what to do once TCOL lands, the user selected **"Keep going on my
-  own judgment"** — *"After landing TCOL I pick the next direction from the hand-off's
-  candidate list and continue dispatching without checking in."* This delegates **selection
-  only** and changes **no** standing constraint (phase OPEN; Lean hold stands; W4 PARKED;
-  `hK`/`hbareSplit` pinned; option B un-commissioned), the same check-in's top-rung/cap/
-  rescue calls unchanged; the SIXTH–ELEVENTH picks under it are one-lined in *Decisions made*.
-- **2026-08-12, seventh-direction delegation (refines the above; changes no standing
-  constraint).** The user, verbatim: *"Let's have a fable subagent make the decision / do a
-  reprioritization and then follow its guidance."* — the precedent that the pick may itself
-  be delegated to a **top-rung fable recon**. Its verdict (GCAP) was verified, accepted and
-  LANDED 2026-08-13 (`notes/Pencil-fanout-archive.md` §"Seventh direction"). Same check-in: top rung
-  = fable (opus only if the weekly limit runs out); cap **lifted**; rescue §1 mechanical
-  fixups **pre-authorized** — all still binding.
-- **2026-08-13, phase-shape adjudication, then the ninth- through fourteenth-direction
-  selections (none changed a standing constraint).** Offered a handoff-to-fresh-session
-  option after GUNIF's refutation, the user **RESOLVED: the research arc CONTINUES**,
-  selection falling back to the standing 2026-08-07 delegation. **Selection shapes, which is
-  what this bullet is canonical for:** ninth–eleventh **top-rung fable recon**
-  (GEXIST/GORIENT/GDEV, verdicts verified and ACCEPTED); twelfth **coordinator-authored
-  prep**, breaking the streak, with no independent ranking of the losers (GADM); thirteenth
-  **back to the fable recon** (GPSA, whose ACCEPTED verdict **overrode** GADM's shift-metric
-  routing clause); fourteenth **no selection pass at all** — GPSA's own landed
-  otherwise-clause routed it deterministically (GDESC, dispatched opus against a
-  top-rung-mapped task, a logged deviation) — and the **fifteenth left un-dispatched**.
-  Per-direction verdicts, dates and detail: `notes/Pencil-fanout-archive.md`
-  §§"Ninth"–"Fourteenth direction"; the rung deviation in `notes/dispatch-log.md`.
-- **2026-08-19, sixth-fan-out dispatch — a NEW shape (user-adjudicated multidispatch;
-  changes no standing constraint).** Asked how to proceed with the unrouted fifteenth, the
-  user elected a **multidispatch of five concurrent opus directions**, verbatim: *"I'd like
-  to try a multidispatch of opus agents here. Keep an eye on the 5h session limits and
-  let's dispatch as many agents as we can on independent directions so that we can
-  maximize the number of ideas we make progress on at once without getting interrupted."*
-  Five dispatched concurrently — **GBAL**/**GLAW** (compute-licensed), **OCON**/**LTWO**/
-  **FRES** (derivation-first), tier split and label reservations coordinator-set. **All five
-  LANDED 2026-08-19; COMPLETE** — `notes/Pencil-fanout-archive.md` §"Sixth fan-out".
+- **2026-08-05 → 08-19, the selection history for ordinals 1–19, archived.** The
+  dated adjudication/delegation bullets that picked the second through sixth
+  fan-outs and the single directions between them (2026-08-05…07, 2026-08-07,
+  2026-08-12, 2026-08-13, and the 2026-08-19 sixth-fan-out dispatch) moved
+  **verbatim** to `notes/Pencil-adjudications.md` (2026-08-19, the phase-note
+  doc split, `notes/Pencil-structure.md`); none of them changes a standing
+  constraint. Read there for the exact quotes.
 
 - **2026-08-19, seventh-fan-out dispatch — the multidispatch shape RE-ELECTED (changes no
   standing constraint).** Offered four ways to make the twentieth pick (fable recon /
@@ -293,11 +262,12 @@ only its pinned route demoted by YLOC; firing is the coordinator's action). **"C
 irreducibility, un-owned" is now CLOSED** (CIRR, a HIT, §(K-chart)). Ledger attack (c),
 **AA-glue realizability, is now SETTLED NEGATIVE at `n_hub = 8`**.
 
-**THE NEXT CONCRETE TASK — verify and land the EIGHTH FAN-OUT's four remaining returns, one
-serial coordinator commit per direction.** Five concurrent opus directions were prepped and
-dispatched 2026-08-19 (ordinals 25–29); **GTMPL has LANDED** and four are in flight. Every
-spec, bar, rider, tier assignment and label reservation is in `notes/Pencil-fanout.md`
-§"Eighth fan-out" and **not restated here**:
+**THE EIGHTH FAN-OUT — verified and landed in full, one serial coordinator commit per
+direction.** Five concurrent opus directions were prepped and dispatched 2026-08-19
+(ordinals 25–29); **all five LANDED** (this stale-banner fix made in passing while
+landing SLICE 1, below — the table underneath already showed all five struck through
+as LANDED). Every spec, bar, rider, tier assignment and label reservation is in
+`notes/Pencil-fanout.md` §"Eighth fan-out" and **not restated here**:
 
 | direction | owning § | target in one line |
 |---|---|---|
@@ -340,23 +310,20 @@ adjudication now happens at the return, not before the dispatch** (the terms the
 accepted, quoted in *Current state*'s 2026-08-19 eighth-fan-out bullet). **A hit therefore
 stops the loop and goes to the user**; it does not move a gap-map status by itself.
 
-**SLICE 1 — the phase-note doc split.** This note has sat past its ~500-line tripwire
-through all five landings of the eighth fan-out (peaking at 580), and four compression passes
-each found genuine duplication and were each undone by the next landing. The residual bulk is
-**not** duplication: it is *Current state*'s **nine** dated adjudication bullets, whose
-verbatim user quotes are **canonically here** (`notes/CLAUDE.md`: selection provenance is not
-duplicated into the fan-out doc). So the fix is a split, not another trim. **Exact scope:**
-create **`notes/Pencil-adjudications.md`** and move into it, **verbatim**, the dated bullets
-covering the *archived* ordinals 1–19 — the **2026-08-05…07**, **2026-08-07**, **2026-08-12**
-and **2026-08-13** bullets — leaving in *Current state* the standing kernel adjudications
-(2026-07-24, the two 2026-07-30s, 2026-08-02, 2026-08-05 reproducibility) and the three
-2026-08-19 bullets, plus **one thin pointer** to the new file. Precedent and shape:
-`Pencil-fanout-archive.md` (`88436c0b`) — verbatim relocation, live cross-references
-repointed, search-target only. Also update `notes/CLAUDE.md`'s file list, add the round's
-record to `notes/Pencil-structure.md`, and extend ROADMAP's doc-split row. **Target: the note
-back under 500 lines**, with the forward/finished ratio unharmed.
+**SLICE 1 — the phase-note doc split — DONE.** *Current state*'s dated adjudication
+bullets covering the archived ordinals 1–19 moved verbatim to the new
+`notes/Pencil-adjudications.md`, one thin pointer left behind; `notes/CLAUDE.md`'s
+file list, `notes/Pencil-structure.md` (§"Slice 4 — phase-note doc split — Decisions
+made") and ROADMAP's doc-split row all updated. This commit's net line count is
+in *Decisions made* (below), together with two pre-existing stale hand-off
+sentences fixed in passing — still above the ~500-line tripwire, honestly
+reported: the residual bulk is now live 2026-08-19 state (the three still-live
+wave-adjudication bullets, the eighth-fan-out hand-off detail below), not
+archivable material, so closing the rest of the gap needs a genuine compression
+pass, not another relocation — not this slice's job. Detail and verification:
+*Decisions made* and `notes/Pencil-structure.md`.
 
-**SLICE 2 — the harness move-down round**, one deliberate pass paying all **five** debt items
+**THE NEXT CONCRETE TASK — SLICE 2, the harness move-down round**, one deliberate pass paying all **five** debt items
 the wave accumulated (`notes/scripts/README.md` *Harness debt*): `ocon.meet` (three
 consumers), `aglu.py`'s seven combinatorial devices, six `zneq` primitives,
 `gridwit.tree_triple`, and **`closure.Gauss` → `exactcore`** per the 2026-08-19 adjudication.
@@ -367,10 +334,13 @@ home* so every existing consumer keeps working unchanged (the `star_span_ranks` 
 slice S1), and the round is not done until the affected drivers reproduce their recorded
 figures **byte-identical** at their pinned `PYTHONHASHSEED`.
 
-**No other structural or doc work is queued** — the doc-split and discipline-distillation rounds
-are both COMPLETE (`notes/Pencil-structure.md`, all three slices; `RESEARCH-ARC.md` is the
-promoted manual, six items ready / three watched / three deferred, detail there and in
-`notes/dispatch-log.md` F18–F21). **The eighth fan-out is the only open work.**
+**Slice 2 is the only structural item now queued.** The first structural round
+(doc-split slices 1–2 + the discipline-distillation slice 3) is COMPLETE
+(`notes/Pencil-structure.md`; `RESEARCH-ARC.md` is the promoted manual, six items
+ready / three watched / three deferred, detail there and in `notes/dispatch-log.md`
+F18–F21); the eighth fan-out is COMPLETE too (all five directions LANDED, above).
+**The kernel-(K) research pick stays UNROUTED until slice 2 clears** (the
+2026-08-19 post-wave adjudication's ordering).
 
 **`hsplit` is CLOSED IN FULL** (W5-L7c-1…6, landed 2026-07-30) and **`hfresh`'s mechanical
 discharge (residue (iv)) is CLOSED too**. The landed successor
@@ -453,6 +423,21 @@ Reverse-chronological, one line per landing; full derivations live in git,
 `notes/Phase39-design.md`, and (for the (K) arc) the workbook section named in each entry, which
 is the canonical home a successor reads.
 
+- **Second structural round, slice 1 (the phase-note doc split) LANDED
+  (2026-08-19)** — this note's *Current state* adjudication bullets covering
+  archived ordinals 1–19 (2026-08-05…07, 2026-08-07, 2026-08-12, 2026-08-13,
+  the 2026-08-19 sixth-fan-out dispatch) moved verbatim to the new
+  `notes/Pencil-adjudications.md`, one thin pointer left in their place; the
+  same commit also fixed two pre-existing stale hand-off sentences found
+  while re-reading this file's status surfaces (the top-status "next two
+  concrete commits" wording, and a since-superseded "four remaining
+  returns" eighth-fan-out banner). Verbatim diff confirmed, no dangling
+  references, `check-gapmap-cells.py` clean; net line count in
+  `notes/Pencil-structure.md` §"Slice 4 — phase-note doc split —
+  Decisions made" (this note stays above the ~500-line tripwire — the
+  residual bulk is live 2026-08-19 state, not archivable material).
+  **Slice 2 (harness move-down) is now the sole queued structural item**
+  (below).
 - **Doc-split + discipline-distillation rounds COMPLETE (2026-08-19, all three
   slices)** — §(K-grid) → `Pencil-informal-grid.md`; `Pencil-fanout.md`'s
   ordinals 1–19 → `Pencil-fanout-archive.md`; this phase's research-arc

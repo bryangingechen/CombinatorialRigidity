@@ -95,6 +95,17 @@ for *organizing* this directory is here.
   write-ups moved unchanged, live cross-references repointed. Search-target
   only, read when checking an old bar; the mechanics/checklist/exemplar stay
   in the parent file above.
+- **`Pencil-adjudications.md`** — the dated, verbatim-quoted user
+  adjudication/delegation bullets from `notes/Phase39.md` *Current state*
+  that selected the picks for ordinals 1–19 (2026-08-05…07, 2026-08-07,
+  2026-08-12, 2026-08-13, and the 2026-08-19 sixth-fan-out dispatch), split
+  out of `Phase39.md` **verbatim** (2026-08-19, the phase-note doc split,
+  `notes/Pencil-structure.md`) — same precedent as `Pencil-fanout-archive.md`
+  above: relocation only, no re-wording or re-verdicting. The standing kernel
+  GO/NO-GO constraints and the three still-live 2026-08-19 bullets stay in
+  `Phase39.md` *Current state*, since a fresh session must read them; this
+  file is selection provenance for the archived ordinals only, never
+  mathematics.
 - **`Pencil-strategy.md`** — the Phase-39 **strategic record** written after the
   fan-out landed: *why* class uniformity of the escape resists (a
   three-ingredient diagnosis of how rank conditions become combinatorial and

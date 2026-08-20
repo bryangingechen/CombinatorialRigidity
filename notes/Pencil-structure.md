@@ -1,6 +1,7 @@
 # PENCIL doc-split / discipline-distillation — structural rounds (work log)
 
-**Status: COMPLETE — all three slices LANDED 2026-08-19.** **Slice 1** —
+**Status: FIRST ROUND COMPLETE (slices 1–3, LANDED 2026-08-19); a SECOND
+ROUND opened the same day, slice 4 LANDED, slice 5 QUEUED.** **Slice 1** —
 §(K-grid) split out of `notes/Pencil-informal.md` into its own file,
 `notes/Pencil-informal-grid.md`. **Slice 2** — `notes/Pencil-fanout.md`'s
 ordinals-1–19 landed direction history archived to
@@ -16,8 +17,20 @@ rather than `-cleanup`; round discipline is `CLEANUP.md`'s all the same
 (there is no separate structure-round manual). Slices 1–2 opened and landed
 in one session (2026-08-19); slice 3 landed in a follow-up session the same
 day. Agreed with the user at the seventh fan-out's close (`notes/Phase39.md`
-*Hand-off*). **Next: no queued structural work; the kernel-(K) research step
-is UNROUTED, awaiting a pick — see `notes/Phase39.md` *Hand-off*.**
+*Hand-off*).
+
+**Second round, opened by the 2026-08-19 post-wave adjudication**
+(`notes/Phase39.md` *Current state*: "Clear the two structural items first"),
+numbered as a continuation (slices 4–5) rather than a new file, since this
+round is more of the same structural work, not a different kind. **Slice 4**
+— `notes/Phase39.md`'s own dated adjudication bullets covering the archived
+ordinals 1–19 moved verbatim to the new `notes/Pencil-adjudications.md`,
+same precedent as slice 2. **Slice 5, queued** — one harness move-down round
+paying the five debt items the eighth fan-out accumulated
+(`notes/scripts/README.md` *Harness debt*), including the `closure.Gauss` →
+`exactcore` move per the same post-wave adjudication. **Next: slice 5, the
+harness move-down round — see `notes/Phase39.md` *Hand-off* §"SLICE 2 — the
+harness move-down round" for its exact scope.**
 
 ## Why this round
 
@@ -72,7 +85,19 @@ that cost permanently for it.
   width; compute/derivation tier split; prose-recon vs compiler-checked
   spike). Replace the duplicated general-rule prose in the six referencing
   files with one-line pointers, per *Lift on promotion*. Detail below.
-- [x] **Round CLOSED.**
+- [x] **First round CLOSED.**
+- [x] **Slice 4 — the phase-note doc split.** Move `notes/Phase39.md`
+  *Current state*'s dated adjudication bullets covering the archived
+  ordinals 1–19 (2026-08-05…07, 2026-08-07, 2026-08-12, 2026-08-13, and the
+  2026-08-19 sixth-fan-out dispatch) verbatim to the new
+  `notes/Pencil-adjudications.md`. Precedent and shape: slice 2 above. Detail
+  below.
+- [ ] **Slice 5, queued — the harness move-down round.** One deliberate pass
+  paying all five debt items the eighth fan-out accumulated
+  (`ocon.meet`, `aglu.py`'s seven combinatorial devices, six `zneq`
+  primitives, `gridwit.tree_triple`, `closure.Gauss` → `exactcore`); exact
+  scope `notes/Phase39.md` *Hand-off* §"SLICE 2 — the harness move-down
+  round" (not restated here).
 
 ## Decisions made
 
@@ -283,6 +308,67 @@ that cost permanently for it.
   `Pencil-informal.md`'s gap-map *header* prose is outside the table, so no
   cell changed).
 
+## Slice 4 — phase-note doc split — Decisions made
+
+- **New file name: `notes/Pencil-adjudications.md`.** Sibling of
+  `notes/Pencil-fanout-archive.md`, same precedent
+  (`FRICTION.md`→`FRICTION-archive.md`, `88436c0b`): verbatim relocation,
+  live cross-references repointed, search-target only.
+- **Exact scope, coordinator-set at dispatch:** the five dated bullets in
+  `Phase39.md` *Current state* covering the archived ordinals 1–19 — the
+  2026-08-05…07 (second–fifth fan-outs), 2026-08-07 (delegation
+  adjudication), 2026-08-12 (seventh-direction delegation), 2026-08-13
+  (phase-shape adjudication + ninth–fourteenth selections) and the
+  2026-08-19 sixth-fan-out dispatch (ordinals 15–19) bullets. The last of
+  these was not named by date in the dispatching agent's illustrative list
+  (which enumerated only the four pre-08-19 bullets) but matches the
+  same stated principle — "covering the archived ordinals 1–19" — and its
+  inclusion is confirmed by the hand-off's own arithmetic check ("the three
+  2026-08-19 bullets" remaining): the file carries **four** 2026-08-19-dated
+  bullets (sixth-fan-out, seventh-fan-out, post-wave, eighth-fan-out), so
+  exactly one of them had to move for three to remain. Left in place: the
+  five standing kernel GO/NO-GO constraints (2026-07-24; the two 2026-07-30s;
+  2026-08-02; 2026-08-05 reproducibility) and the three still-live
+  2026-08-19 bullets (seventh-fan-out, post-wave, eighth-fan-out) — none of
+  which cover archived material.
+- **Exact boundary: lines 65–103 of the pre-split `Phase39.md`** (the
+  `- **2026-08-05…07` bullet through the end of the sixth-fan-out bullet),
+  cut at bullet boundaries, confirmed blank at line 104 both sides. 39 lines
+  moved, replaced by a single 7-line pointer bullet in `Phase39.md`.
+- **Mechanical verification (all run, not eyeballed):**
+  - *Verbatim diff.* `sed -n '65,103p'` of `git show HEAD:notes/Phase39.md`
+    (pre-commit) against the corresponding lines of the new file's bullet
+    body: **identical**, confirmed by `diff` returning no output.
+  - *No dangling references.* Grepped the whole tree for
+    `Pencil-adjudications.md` (resolves to the three files that cite it —
+    `Phase39.md`, `Pencil-structure.md`, `CLAUDE.md` — all intentional, no
+    stray) and for unique phrases from the moved bullets (e.g.
+    "seventh-direction delegation", "phase-shape adjudication, then the
+    ninth") outside the two files touched: **zero** hits, so no other file
+    in the tree cited these bullets by content and needed repointing.
+  - `python3 notes/check-gapmap-cells.py` — **0 gap-map row(s) checked
+    (changed vs HEAD); all within cap** (this slice touches no gap-map
+    cell). `--all` unaffected (no `.py`/`.m2` file touched, no gap-map
+    content moved).
+  - No `.lean`, `.tex`, `.py` or `.m2` file touched — no build/lint/
+    blueprint/figure-invariance gate applies; the empty
+    `git diff --name-only -- '*.py' '*.m2'` **is** the figure-invariance
+    discharge.
+- **Line count: `Phase39.md` 596 → 581.** The verbatim bullet move alone
+  nets 596 → 564; the same commit also fixed two pre-existing stale
+  hand-off/status sentences it found while re-reading this file's status
+  surfaces per the split's own caution (the top-status "next two concrete
+  commits" wording, and a since-superseded "four remaining returns"
+  eighth-fan-out banner), which added lines back. The file does not land
+  under its ~500-line tripwire from this slice alone — see *Hand-off*'s
+  honest note on why. New file `Pencil-adjudications.md` is 76
+  lines (39 moved + a 34-line header/provenance preamble + the `---`
+  separator).
+- **Forward/finished ratio.** Unharmed: the moved material was entirely
+  *Current state* (a finished/settled section), so the forward sections
+  (*Hand-off*, the open kernel items) are untouched and their share of the
+  note only grows as *Current state* shrinks.
+
 ## Follow-up items (not this round's job)
 
 - Recompute the *Section index*'s §(K-frame)/§(K-chart)/§(K-mech) line
@@ -304,13 +390,38 @@ that cost permanently for it.
 
 ## Hand-off / next phase
 
-**All three slices LANDED 2026-08-19; every structural round on PENCIL's doc
-set is now COMPLETE.** ROADMAP's doc-split row is ✓ Complete and carries a new
-sibling row for this round; this log's *Status* header is the verdict.
-`RESEARCH-ARC.md` exists and is linked from `CLAUDE.md` and
-`.claude/commands/coordinate-phase.md`. **No structural work is queued.**
-The phase's own next concrete task — the kernel-(K) research step — is
-**UNROUTED, awaiting a pick**; see `notes/Phase39.md` *Hand-off* (not
-duplicated here), which also carries, unchanged, ZNEQ's `σ > 0`-everywhere
-disproof hunt awaiting user adjudication and excluded from the standing
-2026-08-07 delegation's pool.
+**First round (slices 1–3) COMPLETE 2026-08-19; second round opened the same
+day (post-wave adjudication, "Clear the two structural items first") and
+slice 4 has now LANDED too. `RESEARCH-ARC.md` exists and is linked from
+`CLAUDE.md` and `.claude/commands/coordinate-phase.md`.**
+
+**Slice 4's honest line-count result.** `notes/Phase39.md` moved from 596 to
+581 lines — still above the ~500-line tripwire. The verbatim bullet move
+alone nets 596 → 564; the commit also fixed two pre-existing stale
+hand-off/status sentences caught while re-reading this file's status
+surfaces (the top-status "next two concrete commits" wording, and a
+since-superseded "four remaining returns" eighth-fan-out banner that
+pre-dated this slice and contradicted the table right below it), which
+added lines back. None of this is a defect in the slice's execution (the moved
+text is verified byte-identical, no cross-reference dangles): the note grew
+past the 580-line figure this round's own hand-off cited as current, adding
+a fourth 2026-08-19-dated bullet (the post-wave adjudication) and the
+eighth-fan-out landing detail *after* that figure was written, and all of
+that growth is **live** state a fresh session must read — not archivable
+ordinal-1–19 material — so this slice's scope (verbatim relocation of
+settled selection history, plus the status-surface fixes it turned up) has
+no further lever on the gap. Closing the rest would need a genuine
+compression pass on live prose (e.g. the *Kernel-(K) research arc*
+paragraph or the eighth-fan-out hand-off detail), which is a different,
+not-yet-commissioned kind of work — flagging it rather than improvising it.
+
+**Next: slice 5, the harness move-down round is QUEUED** — one deliberate
+pass paying the five debt items the eighth fan-out accumulated, including
+the `closure.Gauss` → `exactcore` move; exact scope
+`notes/Phase39.md` *Hand-off* §"SLICE 2 — the harness move-down round" (not
+duplicated here). ROADMAP's doc-split row carries this slice's record; this
+log's *Status* header is the verdict. The phase's own next-next concrete
+task — the kernel-(K) research step — stays **UNROUTED, awaiting a pick**
+until slice 5 clears; see `notes/Phase39.md` *Hand-off*, which also carries,
+unchanged, ZNEQ's `σ > 0`-everywhere disproof hunt awaiting user adjudication
+and excluded from the standing 2026-08-07 delegation's pool.
