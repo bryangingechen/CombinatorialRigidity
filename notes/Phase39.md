@@ -8,26 +8,29 @@
 `hcontract` (W4), kernel `hK`, and kernel `hbareSplit` — see *Hand-off*. **Thirty-two
 kernel-(K) directions are now COMPLETE** (2026-08-05 → 08-19, ordinals 1–24; roster and
 per-direction theorem chain in *Decisions made*). **The SIXTH and SEVENTH FAN-OUTS ARE
-BOTH COMPLETE** (all ten directions LANDED 2026-08-19). Headline HITs: **route-ledger
-entry 5 PROVEN in both halves**, the arc's first HIT (GBAL, discharging input (X));
-**chart irreducibility PROVEN**, all consumers clean (CIRR); **the AA-glue configuration
-NOT realizable at `n_hub = 8`, the (GR-38) kill a non-vacuous THEOREM there** (AGLU, a
-HIT on the "not realizable" branch — though its dispatch-predicted binding-laminarity
-consequence is itself REFUTED, 3 774 crossing pairs at `n_hub = 8`). Also landed:
-§(K-frame) (FR-4) CLOSED (FRES); §(K-out) (OC-8) reshaped (OCON, ZNEQ); §(K-Λ) item
-(vii) REALIZED (LTWO); (b′) OPEN/NOT-a-HIT with an exact `n_hub = 8` boundary (BALB);
-input (Y) an honest MISS with substantial positive content (YLOC) — full detail in
-*Decisions made*. **(GR-15) stays OPEN throughout; class uniformity untouched; no
-g-flank at any of the thirty-two directions. E3 is ARMED (by GBAL) and has NOT fired.**
-Direction codes are **multi-letter and topic-tagged from the fifth fan-out on**
-(`notes/Pencil-labels.md` (L5)); grandfathered single letters are re-used across dates,
-**always date those**.
+BOTH COMPLETE** (all ten directions LANDED 2026-08-19). **The arc's three HITs:**
+route-ledger **entry 5 PROVEN in both halves** (GBAL, discharging input (X)); **chart
+irreducibility PROVEN** (CIRR); the **AA-glue configuration NOT realizable at `n_hub = 8`**,
+the (GR-38) kill a non-vacuous THEOREM there (AGLU — its own dispatch-predicted
+binding-laminarity consequence REFUTED). Everything else landed as an honest MISS or an
+OPEN reshape; per-direction verdicts in *Decisions made* and
+`notes/Pencil-fanout{,-archive}.md`, **not restated here**. **(GR-15) stays OPEN
+throughout; class uniformity untouched; no g-flank at any of the thirty-two directions.
+E3 is ARMED (by GBAL) and has NOT fired.** Direction codes are **multi-letter and
+topic-tagged from the fifth fan-out on** (`notes/Pencil-labels.md` (L5)); grandfathered
+single letters are re-used across dates, **always date those**.
 **The doc-split AND discipline-distillation rounds are BOTH COMPLETE**
 (all three slices, `notes/Pencil-structure.md`; the new `RESEARCH-ARC.md`
-promotes this phase's dispatch discipline). **Next: UNROUTED** — the
-kernel-(K) research step awaits a pick (candidates AGLU/ZNEQ, see
-*Hand-off*); ZNEQ's `σ > 0` disproof hunt stays excluded pending user
-adjudication.
+promotes this phase's dispatch discipline). **Next: the EIGHTH FAN-OUT is
+PREPPED AND DISPATCHED** (2026-08-19) — five concurrent opus directions,
+ordinals 25–29, **none landed yet**: **GTMPL** / **GFLOW** / **GCOLL**
+(§(K-grid)) and **OSCHU** / **SIGZ** (§(K-out)); specs, roster, tier split,
+label reservations and the losers' ranking all in `notes/Pencil-fanout.md`
+§"Eighth fan-out", not restated here. **ZNEQ's carried `σ > 0` disproof hunt
+is now AUTHORIZED** (user, this session — the first check-in since 2026-08-05
+to move a standing constraint) and is direction **SIGZ**, dispatched with the
+direction-A pivot rule in force. **The next concrete task is verifying and
+landing the wave's returns, one serial coordinator commit per direction.**
 
 ## Current state
 
@@ -64,32 +67,28 @@ constraints; the dated dispatch narrative is in *Decisions made* and git):
   LANDED 2026-08-13 (`notes/Pencil-fanout-archive.md` §"Seventh direction"). Same check-in: top rung
   = fable (opus only if the weekly limit runs out); cap **lifted**; rescue §1 mechanical
   fixups **pre-authorized** — all still binding.
-- **2026-08-13, phase-shape adjudication, then ninth- through fourteenth-direction
-  selections (none changed a standing constraint; full detail `notes/Pencil-fanout-archive.md`
-  §§"Ninth"–"Fourteenth direction", the fable/opus rung deviation in
-  `notes/dispatch-log.md`).** Offered a handoff-to-fresh-session option after GUNIF's
-  refutation, the user **RESOLVED: the research arc CONTINUES**, selection falling back to
-  the standing 2026-08-07 delegation. Ninth–eleventh **re-delegated to a top-rung fable
-  recon** — **GEXIST**/**GORIENT**/**GDEV** verified and ACCEPTED, landed 08-13/13/15.
-  Twelfth **BROKE the fable-recon streak** — coordinator-authored prep from GDEV's
-  routing clause, no independent ranking of the losers — **GADM** PREPPED and LANDED
-  08-17. Thirteenth **returned to the fable-recon shape** — **GPSA** (entry 5 BOTH
-  halves) verified and ACCEPTED, **including its OVERRIDE of GADM's shift-metric routing
-  clause** (every GADM bar upheld). Fourteenth had **no selection pass** — GPSA's own
-  landed otherwise-clause routed it deterministically to the stuck blocking configuration,
-  dispatched at **opus** against a top-rung-mapped task (a logged deviation) — **GDESC**
-  LANDED 08-18; the **FIFTEENTH was left un-dispatched**, its routing a coordinator/user
-  call between input (X) and (a′).
+- **2026-08-13, phase-shape adjudication, then the ninth- through fourteenth-direction
+  selections (none changed a standing constraint).** Offered a handoff-to-fresh-session
+  option after GUNIF's refutation, the user **RESOLVED: the research arc CONTINUES**,
+  selection falling back to the standing 2026-08-07 delegation. **Selection shapes, which is
+  what this bullet is canonical for:** ninth–eleventh **top-rung fable recon**
+  (GEXIST/GORIENT/GDEV, verdicts verified and ACCEPTED); twelfth **coordinator-authored
+  prep**, breaking the streak, with no independent ranking of the losers (GADM); thirteenth
+  **back to the fable recon** (GPSA, whose ACCEPTED verdict **overrode** GADM's shift-metric
+  routing clause); fourteenth **no selection pass at all** — GPSA's own landed
+  otherwise-clause routed it deterministically (GDESC, dispatched opus against a
+  top-rung-mapped task, a logged deviation) — and the **fifteenth left un-dispatched**.
+  Per-direction verdicts, dates and detail: `notes/Pencil-fanout-archive.md`
+  §§"Ninth"–"Fourteenth direction"; the rung deviation in `notes/dispatch-log.md`.
 - **2026-08-19, sixth-fan-out dispatch — a NEW shape (user-adjudicated multidispatch;
   changes no standing constraint).** Asked how to proceed with the unrouted fifteenth, the
   user elected a **multidispatch of five concurrent opus directions**, verbatim: *"I'd like
   to try a multidispatch of opus agents here. Keep an eye on the 5h session limits and
   let's dispatch as many agents as we can on independent directions so that we can
   maximize the number of ideas we make progress on at once without getting interrupted."*
-  Five directions dispatched concurrently — **GBAL**/**GLAW** (compute-licensed tier),
-  **OCON**/**LTWO**/**FRES** (derivation-first tier), tier split and label reservations
-  coordinator-set (`notes/Pencil-fanout-archive.md` §"Sixth fan-out"). **All five LANDED
-  2026-08-19; the fan-out is COMPLETE** — verdicts in the header and *Decisions made*.
+  Five dispatched concurrently — **GBAL**/**GLAW** (compute-licensed), **OCON**/**LTWO**/
+  **FRES** (derivation-first), tier split and label reservations coordinator-set. **All five
+  LANDED 2026-08-19; COMPLETE** — `notes/Pencil-fanout-archive.md` §"Sixth fan-out".
 
 - **2026-08-19, seventh-fan-out dispatch — the multidispatch shape RE-ELECTED (changes no
   standing constraint).** Offered four ways to make the twentieth pick (fable recon /
@@ -103,20 +102,44 @@ constraints; the dated dispatch narrative is in *Decisions made* and git):
   twelfth's disclosure applies: **no independent top-rung ranking of the losers**, itemized
   in `notes/Pencil-fanout.md` §"Seventh fan-out". Same check-in: rungs **sonnet + opus only,
   top rung = opus** (fable conserved), cap **lifted**, rescue §1 fixups **pre-authorized**.
-  One coordinator sharpening is recorded there and **overrides GLAW's landed routing
-  clause** (routing only, not its mathematics): GLAW recommended matching-flexibility
-  toggles for input (Y) **blind to GBAL**, which discharged the sibling input (X) by an
-  instrument that dissolves the matching apparatus — so YLOC is specced on **GBAL's
-  instrument at the chunk level** instead. **All five LANDED 2026-08-19; the fan-out is
-  COMPLETE** — verdicts in the header and *Decisions made*.
+  **One coordinator sharpening overrode GLAW's landed routing clause** (routing only, not
+  its mathematics) and was then **SPLIT, not simply upheld, by YLOC's landing** — recorded
+  in full at `notes/Pencil-fanout.md` §"The coordinator's one routing sharpening" and
+  §"Twentieth direction", not restated here. **All five LANDED 2026-08-19; COMPLETE.**
 
-**Kernel-(K) research arc — forty-nine docs+scripts-only dispatches, plus seven
-strategy-only passes** (2026-08-02 → 08-19). Which pass was which is one-lined in *Decisions
+- **2026-08-19, EIGHTH-fan-out dispatch — the multidispatch shape RE-ELECTED a third time,
+  AND the first standing-constraint move since 2026-08-05.** Offered four ways to make the
+  twenty-fifth pick (top-rung recon / coordinator prep / multidispatch again / a user-named
+  single direction), the user selected **"Multidispatch fan-out again"** — an option
+  selection, not free text, and against a coordinator recommendation *for* the recon shape.
+  Five dispatched concurrently at **opus**: **GTMPL** / **GFLOW** / **GCOLL** (§(K-grid)),
+  **OSCHU** / **SIGZ** (§(K-out)). Tier split, direction selection and label reservations
+  **coordinator-set**, so the twelfth's disclosure applies for the **third consecutive
+  wave** — **no independent top-rung ranking of the losers**, itemized in
+  `notes/Pencil-fanout.md` §"Not selected — the eighth fan-out's losers"; what is *not* the
+  coordinator's is the candidate **pool**, since each of the five is a successor named by a
+  landed direction's own hand-off. Same check-in: rungs **sonnet + opus only, top rung =
+  opus** (fable conserved, `weekly_scoped` 92 %), cap **lifted**, rescue §1 fixups
+  **pre-authorized**. **The standing-constraint move:** on ZNEQ's carried `σ > 0` hunt the
+  user selected **"Authorize the hunt"**, whose offered terms — accepted as the terms of the
+  authorization — read *"Add it to the dispatchable pool. If it hits, `hK` is false at those
+  shapes and the phase's target needs redefinition — you would adjudicate that at the
+  return."* The item therefore **leaves the awaiting-adjudication pool** and is direction
+  **SIGZ**, with the direction-A pivot rule in force and the adjudication moved from
+  *before* the dispatch to *at the return*. **Everything else stands unchanged:** phase
+  OPEN, the 2026-08-05 Lean hold, W4 PARKED, `hK`/`hbareSplit` pinned, option B
+  un-commissioned.
+
+**Kernel-(K) research arc — forty-nine docs+scripts-only dispatches landed, five more
+dispatched and IN FLIGHT (the eighth fan-out), plus seven strategy-only passes**
+(2026-08-02 → 08-19). Which pass was which is one-lined in *Decisions
 made*; the rule is that the **dispatch** count moves only on a landing (GBAL/GLAW/FRES/OCON/
 LTWO are the fortieth through forty-fourth; CIRR the forty-fifth; YLOC the forty-sixth; BALB
-the forty-seventh; ZNEQ the forty-eighth; AGLU the forty-ninth), and a **user call on dispatch
-*shape*** — either multidispatch election, or a coordinator-authored pick like the twelfth's —
-contributes **no** strategy pass.
+the forty-seventh; ZNEQ the forty-eighth; AGLU the forty-ninth; the eighth fan-out's five
+become the **fiftieth through fifty-fourth as they land**, not before), and a **user call on
+dispatch *shape*** — either multidispatch election, or a coordinator-authored pick like the
+twelfth's — contributes **no** strategy pass, so the 2026-08-19 eighth-fan-out check-in adds
+none even though it moved a standing constraint.
 Canonical homes: workbook `notes/Pencil-informal.md` (**State of (K)** map = entry point),
 `notes/Pencil-W4-informal.md` (W4-residual), `notes/Pencil-strategy.md` (strategy). Net
 effect: **disproof risk removed**, every refuted route/gap has a successor in the gap map,
@@ -136,17 +159,17 @@ watch item; the D-2 fix's regression history is in `notes/check-gapmap-cells.py`
 > gap-map status moves on its account; `hK`/`hbareSplit` stay pinned; **W4 PARKED**; the phase
 > does **not** close.
 
-The other candidate continuations, unselected (items (a)/(g) are **DONE** as second-fan-out
-directions M and R); each has a canonical home carrying the detail, not restated here:
-**(b)** **(K-wit)**, the pitch route's single live form at companion splits (§(K-Λ); its
-(OC-8) residue reduces to `Z ≠ ∅` + chart irreducibility (**DONE**, CIRR) + one rigid chart
-point — `Z ≠ ∅` itself **FACTORS** (**DONE**, ZNEQ): a necessary-for-`hK` half dominated
-by §(K-grid) (GR-10), and a target-rank half open at the same shape as (OC-19)(c)); **(c)** the **W4 build**,
-decomposed and buildable, **PARKED** by the Lean hold; **(d)** the companion-length dichotomy
-frame (§(K-dom) *D7*) + the unprobed `k ≥ 4` parallel-edge item (§(K-pure) *P4*); **(e)**
-§(K-Λ) item (vii)'s residual — since LTWO a **named, non-empty, floor-classified** family (the
-uniform `g₁₄` statement over every two-hub-interior class shape's chart); **(f)** strategy
-§4.6's shortlist, **partially superseded** for the tight stratum; U3 still unrun.
+The other candidate continuations, unselected — items (a)/(g) **DONE** (second-fan-out
+directions M and R), each with a canonical home carrying the detail: **(b)** **(K-wit)**, the
+pitch route's single live form at companion splits (§(K-Λ)) — its (OC-8) residue now reduces
+to chart irreducibility (**DONE**, CIRR) plus input (a), which itself **FACTORS** (**DONE**,
+ZNEQ) into a dominated half and the target-rank half **OSCHU attacks this wave**; **(c)** the
+**W4 build**, decomposed and buildable, **PARKED** by the Lean hold; **(d)** the
+companion-length dichotomy frame (§(K-dom) *D7*) + the unprobed `k ≥ 4` parallel-edge item
+(§(K-pure) *P4*); **(e)** §(K-Λ) item (vii)'s residual, since LTWO a named, non-empty,
+floor-classified family; **(f)** strategy §4.6's shortlist, **partially superseded** for the
+tight stratum, U3 still unrun. **The eighth fan-out's own ranking of what it did not pick is
+`notes/Pencil-fanout.md` §"Not selected — the eighth fan-out's losers", not this list.**
 
 **Read `notes/Pencil-strategy.md` before choosing anything else** — the post-fan-out strategic
 record (why class uniformity resists, what the KT formalization yielded, the candidate stronger
@@ -233,56 +256,62 @@ fan-out" and `notes/Pencil-fanout.md` §"Seventh fan-out", labels claimed in
 restated here.** No standing constraint moved: phase OPEN, Lean hold STANDS, W4 PARKED,
 `hK`/`hbareSplit` pinned, option B un-commissioned.
 
-**CIRR (twenty-fourth), YLOC (twentieth), BALB (twenty-first), ZNEQ (twenty-third) and
-AGLU (twenty-second) all LANDED 2026-08-19** — CIRR a HIT, YLOC an honest MISS with
-substantial positive content, BALB OPEN/NOT-a-HIT with its decomposition half proven and
-half refuted at an exact `n_hub = 8` boundary, ZNEQ OPEN/NOT-an-independent-gap (input (a)
-`Z ≠ ∅` factors: a necessary-for-`hK` half dominated by §(K-grid) (GR-10), a target-rank
-half open at (OC-19)(c)'s shape), AGLU a HIT on the "not realizable" branch (the AA-glue
-configuration NOT realizable at `n_hub = 8`, the (GR-38) kill a non-vacuous THEOREM there
-— but the dispatch's own predicted binding-laminarity consequence REFUTED, 3 774
-crossing pairs, pushing the open case to `n_hub ≥ 10`); canonical homes new §(K-chart)
-and §(K-out) *Steps O19–O24* (`notes/Pencil-informal.md`), §(K-grid) *Steps G80–G97*
-(now `notes/Pencil-informal-grid.md`), verdicts in `notes/Pencil-fanout.md`
-§§"Twenty-fourth"/"Twentieth"/"Twenty-first"/"Twenty-third"/"Twenty-second direction" —
-**not restated here**. **The doc-split AND discipline-distillation rounds are now
-BOTH COMPLETE; the next concrete task is UNROUTED (below).**
+**The seventh fan-out's five verdicts** (CIRR a HIT; YLOC an honest MISS with substantial
+positive content; BALB OPEN/NOT-a-HIT, half proven / half refuted at an exact `n_hub = 8`
+boundary; ZNEQ OPEN/NOT-an-independent-gap; AGLU a HIT on the "not realizable" branch, with
+its own predicted binding-laminarity consequence REFUTED) are in the top `**Status:**`
+paragraph and, per-direction, in `notes/Pencil-fanout.md` §§"Twentieth"–"Twenty-fourth
+direction"; canonical mathematical homes are the new §(K-chart) and §(K-out) *Steps
+O19–O24* (`notes/Pencil-informal.md`) and §(K-grid) *Steps G80–G97*
+(`notes/Pencil-informal-grid.md`) — **none of it restated here.**
 
 **E3 is ARMED** (GBAL's entry-5 HIT) but **not fired by any of the ten** (a′ not hit,
 only its pinned route demoted by YLOC; firing is the coordinator's action). **"Chart
 irreducibility, un-owned" is now CLOSED** (CIRR, a HIT, §(K-chart)). Ledger attack (c),
 **AA-glue realizability, is now SETTLED NEGATIVE at `n_hub = 8`**.
 
-**Next research step: UNROUTED, awaiting a pick — no candidate pre-selected.**
-Strongest candidates: **AGLU's `n_hub ≥ 10` three-template question**
-((GR-76)(iv), cheap, sharply specced) and **ZNEQ's cross-pool re-keying**
-(combinatorial, no new math — `notes/Pencil-fanout.md` §"Twenty-third
-direction", `notes/Pencil-informal.md` §(K-out) (OC-28)). Also queued: (OC-19)
-input (c) class-uniformly — OCON's #1 by value, **(GR-15)-flavoured**, needs a
-chunk-level instrument for (Y) first (YLOC's attempt DEMOTED BY WITNESS,
-successor routing in *Decisions made*); §(K-out) items 3/4; **(d′)**. **Not
-eligible:** route σ's Lean half and the W4 build, BLOCKED by the standing
-2026-08-05 Lean hold.
+**THE NEXT CONCRETE TASK — verify and land the EIGHTH FAN-OUT's returns, one serial
+coordinator commit per direction.** Five concurrent opus directions were prepped and
+dispatched 2026-08-19 (ordinals 25–29), **none landed yet**; every spec, bar, rider, tier
+assignment and label reservation is in `notes/Pencil-fanout.md` §"Eighth fan-out" and
+**not restated here**:
 
-**Awaiting user adjudication, NOT in the standing 2026-08-07 delegation's dispatchable
-pool — carried forward unchanged.** ZNEQ names a `σ > 0`-everywhere
-hunt at class shapes whose `H` carries a short theta sub-multigraph — a hit is a
-**PENCIL event** (`hK` FALSE there), which the direction-A pivot rule
-(`notes/Pencil-fanout-archive.md` §"Direction A") makes *"a phase-redefining event for the user to
-adjudicate, not a result to build on"* — excluded until adjudicated. **A
-wave-closing exception-log commit to `notes/dispatch-log.md`
-is owed and is the coordinator's, not a build agent's** — not made in this commit.
+| direction | owning § | target in one line |
+|---|---|---|
+| **GTMPL** | §(K-grid) | AA-glue realizability at `n_hub ≥ 10` — (GR-76)(iv)'s three templates |
+| **GFLOW** | §(K-grid) | (b′)'s availability half — *Clause A′* sub-clause 2, plus the untried min-cost-flow exchange route |
+| **GCOLL** | §(K-grid) | **(GR-64)(R2)** — every habitat shape carries an anchor matching with `B(M) = 0` |
+| **OSCHU** | §(K-out) | **(a₁)** class-uniformly — the Schubert non-jump, with the (a₂) cross-pool re-keying folded in |
+| **SIGZ** | §(K-out) | the newly-authorized `σ > 0`-everywhere hunt — **pivot rule in force** |
 
-**The doc-split AND discipline-distillation rounds are both COMPLETE —
-`notes/Pencil-structure.md`** (all three slices LANDED 2026-08-19). Discipline
-distillation promoted this phase's research-arc discipline into the new
-read-on-demand root manual **`RESEARCH-ARC.md`** (alongside `CLEANUP.md`,
-`PHASE-BOUNDARIES.md`; linked from `CLAUDE.md` and
-`.claude/commands/coordinate-phase.md`) — six items ready, three candidates
-watched not promoted (`notes/dispatch-log.md` F18–F21), three genuinely
-unsettled and deferred with the question stated; full detail there, not
-restated here. **No structural work is queued; the research step above is
-the only open task.**
+**Two landing obligations the wave carries, both recorded in the spec:** the first
+§(K-grid) landing **recomputes** that row's gap-map status cell to `≤ 1550` words (1706 of
+2035 used, three landings queued) and the first §(K-out) landing to `≤ 560` (649 of 800,
+two queued) — **recompute, never bump the cap**, with label preservation verified by a
+scripted set-diff. And a **wave-closing exception-log commit** to `notes/dispatch-log.md`
+is owed at the end, **the coordinator's, not a build agent's**.
+
+**Queued behind the wave, unchanged:** (OC-19) input (c) class-uniformly — OCON's #1 by
+value, **(GR-15)-flavoured**, still waiting on a chunk-level instrument for (Y) (YLOC's
+attempt DEMOTED BY WITNESS; **GCOLL is this wave's bet on that supply line**); §(K-out)
+hand-off **item 3** (queued a second wave running — the cheapest thing on the board once
+one of OSCHU/SIGZ lands); **(d′)**, lowest-value for a third wave and a candidate to strike
+rather than dispatch. **Not eligible:** route σ's Lean half and the W4 build, BLOCKED by
+the standing 2026-08-05 Lean hold — no fresh adjudication was sought at this check-in.
+
+**Nothing is awaiting user adjudication as of 2026-08-19.** The one item that was —
+ZNEQ's `σ > 0`-everywhere hunt at class shapes whose `H` carries a short theta
+sub-multigraph — is **AUTHORIZED** and dispatched as **SIGZ**; the direction-A pivot rule
+(`notes/Pencil-fanout-archive.md` §"Direction A") stays in force, so a hit is *"a
+phase-redefining event for the user to adjudicate, not a result to build on"* — **the
+adjudication now happens at the return, not before the dispatch** (the terms the user
+accepted, quoted in *Current state*'s 2026-08-19 eighth-fan-out bullet). **A hit therefore
+stops the loop and goes to the user**; it does not move a gap-map status by itself.
+
+**No structural or doc work is queued** — the doc-split and discipline-distillation rounds
+are both COMPLETE (`notes/Pencil-structure.md`, all three slices; `RESEARCH-ARC.md` is the
+promoted manual, six items ready / three watched / three deferred, detail there and in
+`notes/dispatch-log.md` F18–F21). **The eighth fan-out is the only open work.**
 
 **`hsplit` is CLOSED IN FULL** (W5-L7c-1…6, landed 2026-07-30) and **`hfresh`'s mechanical
 discharge (residue (iv)) is CLOSED too**. The landed successor
@@ -302,13 +331,11 @@ discharge (residue (iv)) is CLOSED too**. The landed successor
 > **BLOCKED by the standing 2026-08-05 Lean-hold adjudication (general, not W4-scoped)**; does
 > not open without a fresh user adjudication.
 >
-> **The FIRST through NINETEENTH directions are ALL COMPLETE, the NINTH through SIXTEENTH
-> landing the theorem block (GR-32)–(GR-60)** — ordinals were assigned at dispatch, so
-> landing order differs from ordinal order; roll call, dates and full detail one-lined in
-> *Decisions made*, the delegations that picked them in *Current state*'s dated bullets.
-> **No g-flank found by any of them; (GR-15) stays OPEN, modulo (GR-4′); no status moves.**
-> Every TERMINATION check fired nothing except arming E3 (E1/E2 NO throughout).
-> **Two durable negatives from the same adjudication — do not re-run:** §4.6's shortlist is
+> **Directions 1–24 are ALL COMPLETE** — roll call and dates one-lined in *Decisions made*,
+> per-direction detail in `notes/Pencil-fanout{,-archive}.md`, the delegations that picked
+> them in *Current state*'s dated bullets. **No g-flank found by any of them; (GR-15) stays
+> OPEN, modulo (GR-4′).** Every TERMINATION check fired nothing except arming E3.
+> **Two durable negatives from the 2026-08-07 adjudication — do not re-run:** §4.6's shortlist is
 > **partially superseded** for the tight stratum (U2 delivered by (GR-16)'s reduction; U3's
 > negative-form insight already exploited); the symbolic meta-option ("upgrade §(K-Λ) via
 > M2") is **landed, not pending** (`m2/lambda0.m2`) — only §5.3 item (i) remains, ruled out by
@@ -384,40 +411,21 @@ is the canonical home a successor reads.
   discipline promoted to the new root manual `RESEARCH-ARC.md`. Verbatim
   relocations, repointed, `check-gapmap-cells.py` clean; detail
   `notes/Pencil-structure.md`.
-- **The FIRST through TWENTY-FOURTH fan-outs/directions — all LANDED 2026-08-05…08-19**
-  (canonical homes: §(K-chart)/§(K-out) *Steps O19–O24* in the workbook, §(K-grid)
-  *Steps G80–G97* now `notes/Pencil-informal-grid.md` — and `notes/Pencil-labels.md`
-  registry, full per-direction label detail there, not restated here; drivers
-  `w4/{cflank,gcap,gunif,gexist,gorient,gdev,gadm,gpsa,gdesc,gbal,glaw,ocon,ltwo,cirr,
-  yloc,balb,zneq,aglu}.py`, FRES no driver). Thirty-two directions total (thirteen in
-  the first five fan-outs, one per ordinal from the sixth on): CFLANK/GCAP/GUNIF closed
-  TCOL's flank sites as routes then REFUTED each other's `g ≤ 1` cap (route DEAD);
-  GEXIST/GORIENT honest MISSes re-anchoring the target on bounded-deviation selection;
-  GDEV a REFUTATION-with-successors; GADM an honest MISS carrying the shift-metric
-  UNBOUNDED (routing overridden by GPSA); GPSA proves entry 5's parity half; GDESC
-  RESHAPES the balance half into input (X); **GBAL PROVES it** (the balance theorem —
-  entry 5 in BOTH halves, the arc's first HIT, discharging (X)); **GLAW** an honest MISS
-  on **(a′)** (exhaustive `n_hub ≤ 6` verification, the per-matching variant REFUTED,
-  residual input (Y) named); **OCON** an honest MISS freeing (OC-8)'s hard-stratum
-  qualifier; **LTWO** realizes §(K-Λ) item (vii) at a proven size floor; **FRES** closes
-  §(K-frame) (FR-4)'s named gap with no rider — **the sixth fan-out's five, COMPLETE**;
-  then, **the seventh fan-out's five, also COMPLETE**: **CIRR** a HIT — chart
-  irreducibility proven once, all four consumers clean; **YLOC** an honest MISS with
-  substantial positive content — GBAL's chunk-level instrument for (Y) DEMOTED BY
-  WITNESS, its own predicted obstruction REFUTED as stated, a collision bound and a fit
-  identity the residue; **BALB** OPEN/NOT-a-HIT — price half PROVEN outright, imbalance
-  ceiling a THEOREM at `n_hub ≤ 6` FALSE from `n_hub = 8` at an exact V8 witness,
-  availability EXHAUSTIVE on the stratum but REFUTED there too, repaired at price 0;
-  **ZNEQ** OPEN/NOT-an-independent-gap — input (a) `Z ≠ ∅` FACTORS into a half dominated
-  by (GR-10) and a target-rank half one split down from (K-tight) *Step 2*; **AGLU** a
-  HIT on the "not realizable" branch — the AA-glue configuration pinned to a single
-  template and proven NOT realizable at `n_hub = 8`, EXHAUSTIVE with no cap, the (GR-38)
-  kill a non-vacuous THEOREM there — but its own predicted binding-laminarity
-  consequence REFUTED (3 774 crossing pairs), a general-`n` charge pushing the open case
-  to `n_hub ≥ 10`. Three cross-direction convergences (OCON/FRES, YLOC/BALB, CIRR/ZNEQ);
-  two coordinator-predicted obstructions refuted (YLOC's, AGLU's). Headline positives
-  (GR-9)/(FR-R1) PROVEN, entry 5 PROVEN (GBAL, a HIT), (GR-15) OPEN throughout;
-  uniformity untouched; E1/E2 never fired, **E3 ARMED by GBAL, not fired**.
+- **Directions 1–24 — ALL LANDED 2026-08-05…08-19** (thirteen across the first five
+  fan-outs, one per ordinal from the sixth on; drivers `w4/{cflank,gcap,gunif,gexist,
+  gorient,gdev,gadm,gpsa,gdesc,gbal,glaw,ocon,ltwo,cirr,yloc,balb,zneq,aglu}.py`, FRES no
+  driver). **Per-direction verdicts are NOT restated here** — canonical homes are
+  `notes/Pencil-fanout.md` §§"Twentieth"–"Twenty-fourth direction",
+  `notes/Pencil-fanout-archive.md` for ordinals 1–19, the mathematics in the workbook
+  sections each names, and the label detail in `notes/Pencil-labels.md`. **Net result: three
+  HITs** — entry 5 PROVEN in both halves (GBAL, discharging input (X)); chart irreducibility
+  PROVEN (CIRR); AA-glue NOT realizable at `n_hub = 8` (AGLU) — everything else an honest
+  MISS or an OPEN reshape, each with a named dispatchable successor. **Cross-cutting:** three
+  cross-direction convergences (OCON/FRES, YLOC/BALB, CIRR/ZNEQ) and **two
+  coordinator-predicted obstructions refuted** by the very directions they primed (YLOC's,
+  AGLU's) — both promoted as `RESEARCH-ARC.md` watch items. (GR-9)/(FR-R1) PROVEN;
+  **(GR-15) OPEN throughout, uniformity untouched; E1/E2 never fired; E3 ARMED by GBAL, not
+  fired.**
 
 - **The 2026-08-05 research cluster, one-lined** (all same day; full detail
   `Phase39-design.md` + git, workbook sections named): notes reorganization

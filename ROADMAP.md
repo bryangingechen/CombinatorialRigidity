@@ -153,7 +153,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 36. Proof automation: `grind` adoption + tactic-smell sweep (post-program) — AUTOMATE | `CombinatorialRigidity/` (internals-only) | ✓ Complete — build-neutral rw→simp/grind sweep, headline axioms unchanged (see `notes/Phase36.md`) |
 | 37. `Molecular/` fragility-zone tactic sweep (post-program) — AUTOMATE-Z | `Molecular/{AlgebraicInduction,RigidityMatrix}/` + ScrewSpace-carrier files (internals-only) | ✓ Complete — build-neutral rw→simp sweep (103 collapses / 17 reverts; going-in NO-GO overturned to GO), headline axioms unchanged (see `notes/Phase37.md`) |
 | 38. Long-proof de-duplication / missing-abstraction extraction (post-program) — FACTOR | `Molecular/` + top-level `Framework` API (internals-only) | ✓ Complete — shared engines/glue extracted from the 10 longest proofs (net −365 Lean lines; all 17 headline axioms unchanged, re-verified), no new mathematics (see `notes/Phase38.md`) |
-| 39. Hinge-pencil molecular conjecture (post-program) — PENCIL | `Molecular/Molecule/Pencil/` (+ `Meet.lean` adders), `pencil.tex` | ◐ In progress (three carried items remain — `hcontract` (W4, parked) and the kernels `hK` / `hbareSplit`; the kernel-(K) research arc continues, **thirty-two directions landed, the seventh fan-out COMPLETE** — CIRR (chart irreducibility, a HIT), YLOC (input (Y) localized, an honest MISS), BALB ((b′), OPEN/NOT-a-HIT), ZNEQ (input (a) `Z ≠ ∅` FACTORS, OPEN/NOT-an-independent-gap) and **AGLU** (ledger attack (c), AA-glue **NOT realizable** at `n_hub = 8`, a HIT, pushed to `n_hub ≥ 10`) all LANDED 2026-08-19; no flank, (GR-15) unchanged; the (K) research step is UNROUTED, awaiting a pick — see `notes/Phase39.md`) |
+| 39. Hinge-pencil molecular conjecture (post-program) — PENCIL | `Molecular/Molecule/Pencil/` (+ `Meet.lean` adders), `pencil.tex` | ◐ In progress (three carried items — `hcontract` (W4, parked) and the kernels `hK` / `hbareSplit`; the kernel-(K) research arc continues — **32 directions landed, the EIGHTH FAN-OUT dispatched 2026-08-19** — see `notes/Phase39.md`) |
 | ⋮ Doc-split round (Phase 39, PENCIL) | `notes/Pencil-{informal,informal-grid,fanout,fanout-archive}.md` doc set | ✓ Complete — slice 1 (§(K-grid), 9883 lines, → `notes/Pencil-informal-grid.md`) and slice 2 (`Pencil-fanout.md`'s ordinals 1–19, → `notes/Pencil-fanout-archive.md`) both LANDED (see `notes/Pencil-structure.md`) |
 | ⋮ Discipline-distillation round (Phase 39, PENCIL) | `RESEARCH-ARC.md` (new) + one-line pointer sweep of the six referencing files | ✓ Complete — the phase's research-arc discipline (invented in-phase, unpromoted) distilled into the new read-on-demand root manual, six items ready / three watched / three deferred (see `notes/Pencil-structure.md`) |
 
@@ -1160,15 +1160,23 @@ the standing Lean-hold adjudication; its **field scope is settled**
 rather than a restriction). A **harness re-baselining round** then cleared all
 four recorded numerics-harness debt items across four slices, re-running 260
 driver invocations and moving 21 figures, each repointed in the section that
-owns it. The research arc continued through a sixth (CFLANK), seventh (GCAP)
-and eighth (GUNIF) direction — GUNIF refuted the arc's named
-positive-termination path with an exact boundary (`n_hub ≤ 6`), but (GR-15)
-itself stays OPEN — and per the 2026-08-13 user adjudication the research
-continues — seventeen directions landed through 2026-08-19 (GBAL, GLAW and
-FRES, three of five concurrent directions of a sixth fan-out: GBAL proves
-route-ledger entry 5 in both halves, a HIT; GLAW is an honest MISS naming
-input (Y); FRES closes §(K-frame)'s named gap with no rider; E3 armed, not
-fired). Hand-off → `notes/Phase39.md`.
+owns it. The research arc has since run to **thirty-two landed
+directions** (2026-08-05 → 08-19), latterly as **multidispatch fan-outs of
+five concurrent directions** — a sixth (GBAL/GLAW/OCON/LTWO/FRES) and a
+seventh (YLOC/BALB/AGLU/ZNEQ/CIRR), both COMPLETE. Three of the thirty-two
+are HITs: route-ledger entry 5 PROVEN in both halves (GBAL), chart
+irreducibility PROVEN (CIRR), and the AA-glue configuration proven **NOT
+realizable** at `n_hub = 8` (AGLU); the rest are honest MISSes or open
+reshapes, each leaving a named dispatchable successor. **No g-flank has been
+found by any of them, (GR-15) stays OPEN, and class uniformity of the escape
+is untouched by all thirty-two.** An **eighth fan-out**
+(GTMPL/GFLOW/GCOLL/OSCHU/SIGZ) was dispatched 2026-08-19, one of its five
+being the arc's first **authorized disproof hunt** — a hit there would make
+the carried kernel false at that shape and is reserved for user adjudication.
+Two doc rounds also landed: a structural doc-split, and a discipline
+distillation promoting this phase's dispatch discipline into the new
+read-on-demand root manual `RESEARCH-ARC.md`. Hand-off →
+`notes/Phase39.md`.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 

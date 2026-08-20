@@ -874,7 +874,9 @@ seventh fan-out's five to land, after CIRR, YLOC and BALB;
 `notes/Pencil-fanout.md` §"Twenty-third direction"), reservation released
 into §(K-out)'s existing registry row: **(OC-23)–(OC-28) and Steps O19–O24
 CLAIMED exactly** — the full reservation consumed, nothing returned to the
-pool; see the extension of §(K-out)'s row in the Registry below. Target:
+pool; see the extension of §(K-out)'s row in the Registry below. (**Its
+successor tail (OC-29)–(OC-40) / Steps O25–O36 is now RESERVED, not free** —
+OSCHU and SIGZ, the eighth fan-out's block below.) Target:
 (OC-19) input (a), `Z ≠ ∅`, as a statement in its own right. **Verdict: input
 (a) is OPEN as a class-uniform statement and is NOT an independent gap.**
 **(OC-23)** peels the pendant edge `ac`: `s₀ = corank R(H)` at every legal
@@ -952,7 +954,9 @@ proved safe (GBAL took (GR-49)–(GR-54) / G68–G73 and GLAW (GR-55)–(GR-60) 
 G74–G79 concurrently, no rename): the protection is the **disjoint reserved
 range**, not the section. **The `GR-`/`G`-step tails have now moved to
 (GR-79)+ / Steps G98+** — all three of YLOC, BALB and AGLU have landed, each
-consuming its reservation exactly, none returning a remainder; a direction
+consuming its reservation exactly, none returning a remainder (**and
+(GR-79)–(GR-96) / Steps G98–G115 are now RESERVED, not free — see the eighth
+fan-out's block below**); a direction
 that consumes fewer labels than it reserved **returns the remainder to the
 tail** in its landing commit, as GBAL's exact-consumption row records. **`CH-`
 uses the `Λ`-precedent step scheme**
@@ -992,6 +996,68 @@ letter — `ANH-M1`, `ANH-M2` — rather than reaching for a bare letter.
 Existing gap names, statuses and section verdicts are **not** in a reserved
 dispatch's namespace: moving a status is a coordinator action, per the fan-out
 landing checklist.
+
+**Reserved 2026-08-19 for the EIGHTH FAN-OUT — directions GTMPL / GFLOW /
+GCOLL / OSCHU / SIGZ** (`notes/Pencil-fanout.md` §"Eighth fan-out"; five
+concurrent directions, the third consecutive multidispatch wave). All five
+*extend* live sections, so each reservation is a **disjoint sub-range of the
+owning section's unclaimed tail** and the owning section stays authoritative:
+
+| direction | owning § | labels reserved | steps reserved | driver |
+|---|---|---|---|---|
+| **GTMPL** | §(K-grid) | **(GR-79)–(GR-84)** | **G98–G103** | `w4/gtmpl.py` |
+| **GFLOW** | §(K-grid) | **(GR-85)–(GR-90)** | **G104–G109** | `w4/gflow.py` |
+| **GCOLL** | §(K-grid) | **(GR-91)–(GR-96)** | **G110–G115** | `w4/gcoll.py` |
+| **OSCHU** | §(K-out) | **(OC-29)–(OC-34)** | **O25–O30** | `w4/oschu.py` |
+| **SIGZ** | §(K-out) | **(OC-35)–(OC-40)** | **O31–O36** | `w4/sigz.py` |
+
+**Three directions share §(K-grid) and two share §(K-out)** — the sixth and
+seventh fan-outs both proved the shared-section shape safe, and the protection
+is the **disjoint reserved range**, not the section. On consumption the tails
+move to **(GR-97)+ / Steps G116+** and **(OC-41)+ / Steps O37+**; a direction
+that consumes fewer labels than it reserved **returns the remainder to the
+tail** in its landing commit.
+
+**Codes: all five verified 0-hit as raw substrings**, case-insensitively,
+across `*.md`, `*.tex`, `*.lean`, `*.py`, `*.m2` at reservation time — as were
+the five driver basenames (control token `aglu` hit 10 files, so the grep was
+live). Each label token was separately verified 0-hit: `(GR-96)`, `(OC-29)`,
+`(OC-40)`, *Step O31*, *Step G115* all 0 hits; **`(GR-79)` returned exactly
+one hit, this file's own live-tails bookkeeping line** — a bookkeeping hit in
+the `GBAL`/`GLAW` sense, not a semantic one.
+
+**Checked 0-hit and NOT chosen**, recorded so they stay checkable without a
+re-run: `SIGVOID`, `DEPEV`, `GTEN`, `TEMP10`. **Checked and REJECTED for live
+hits**, recorded because clause L5's substring check earned its keep four more
+times: **`THETA`** (46 files — the arc's own subject matter, the worst
+candidate collision recorded so far), **`SCHUB`** (7 files — "Schubert",
+inside the very statement OSCHU attacks), **`SZERO`** (10 files), **`GANCH`**
+(2 files — a substring of `GANCHOR`, itself a GDEV-prep checked-not-chosen
+entry, so the rejection is *caused by* an earlier prep's bookkeeping, the
+same mechanism that took `GBAL` out of the running at GPSA's prep).
+
+**No new section name was minted, and one was deliberately NOT minted.**
+**§(K-sig)** was considered as SIGZ's home and **rejected on two independent
+grounds**: it is **not 0-hit** (5 hits), and it would sit one character from
+the live **§(K-σ)** (route σ) — a reader-side collision the substring check
+does not even measure. SIGZ therefore *extends* §(K-out), which is also its
+honest home: the hunt is *Step O24*'s own named successor and (OC-24) owns the
+`{σ = 0}` dichotomy it tests. **On outgrowth reuse the already-reserved
+§(K-gcap) / `GC-`** — returned unopened by GCAP, GUNIF, GEXIST, GORIENT, GDEV,
+GADM, GPSA, GDESC, GBAL and GLAW, available a **twelfth** time. **Do not mint
+§(K-unif)/`GU-`** — considered twice, deliberately not minted, and this prep
+does not revive it.
+
+No M2 leaf is expected or reserved for any of the five: three targets are
+combinatorial or exact-ℚ searches and two are derivations. A direction that
+finds it needs one asks the coordinator rather than minting a path.
+
+**One clause-L1 reminder, aimed at SIGZ specifically.** A reserved prefix
+protects a dispatch from its **siblings**, not from the **existing corpus**.
+SIGZ's subject matter is dense in bare tokens the corpus already owns — `σ`,
+`s₀`, `θ(3,4,5)`, `P21`, the theta support `{12, 13, 23a, 23b}` — none of
+which are its to re-mint. Every label it mints is `OC-`-prefixed inside its
+reserved range; everything else is **cited in the qualified form (L3)**.
 
 ## Registry — `notes/Pencil-informal.md` (the (K) workbook)
 

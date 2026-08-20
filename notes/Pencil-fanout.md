@@ -1,9 +1,12 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: SEVEN fan-outs and nine single directions dispatched; all 32 directions
+**Status: EIGHT fan-outs and nine single directions dispatched; 32 of 37 directions
 LANDED.** The seventh fan-out (YLOC / BALB / AGLU / ZNEQ / CIRR, §"Seventh fan-out") is
-**COMPLETE** — all five directions landed 2026-08-19. Ordinals run 1–24 and were assigned
-at dispatch, so landing order differs from ordinal order.
+**COMPLETE** — all five directions landed 2026-08-19. The **EIGHTH fan-out (GTMPL / GFLOW /
+GCOLL / OSCHU / SIGZ, §"Eighth fan-out") was PREPPED AND DISPATCHED 2026-08-19 and none of
+its five has landed**; each direction's own Status line is authoritative for its state.
+Ordinals run 1–29 (the eighth fan-out claims 25–29) and were assigned at dispatch, so
+landing order differs from ordinal order.
 
 **Ordinals 1–19 are archived** (2026-08-19, `notes/Pencil-structure.md` slice 2) —
 their dispatch specs and landing write-ups moved verbatim to
@@ -934,3 +937,517 @@ overturn any of it.
   reduction, U3's negative-form insight already exploited) and §5.3's own
   local-frame feasibility boundary rules out the symbolic meta-option. Two
   **durable negatives** — do not re-run.
+
+---
+
+## Eighth fan-out — prepared and dispatched 2026-08-19 (directions GTMPL / GFLOW / GCOLL / OSCHU / SIGZ)
+
+Five directions dispatched **concurrently**, each independent, each returning its
+own untracked draft (`notes/Pencil-draft-<CODE>.md`) and its own new driver,
+landed one at a time by **separate serial coordinator commits**: the seventh
+fan-out's shape repeated, the **third consecutive** multidispatch wave.
+
+**User adjudication authorizing the multidispatch.** Asked at the session-start
+check-in how the twenty-fifth direction's pick should be made (top-rung recon /
+coordinator-authored prep / multidispatch again / a user-named single direction),
+the user elected **"Multidispatch fan-out again"** — an **option selection, not
+free text** (the GEXIST precedent for how such a pick is recorded), and against a
+coordinator recommendation *for* the recon shape. Same check-in: rungs
+**`sonnet` + `opus` only, top rung = opus** (fable conserved — `weekly_scoped`
+read 92 % at prep, and per the seventh fan-out's settling fact that limit gates
+fable alone), cap **lifted**, rescue §1 fixups **pre-authorized**.
+
+**And this check-in DOES move a standing constraint — the first check-in of the
+arc to do so since 2026-08-05.** On ZNEQ's carried `σ > 0`-everywhere item the
+user elected **"Authorize the hunt"**, whose offered text — accepted as the terms
+of the authorization — reads: *"Add it to the dispatchable pool. If it hits, `hK`
+is false at those shapes and the phase's target needs redefinition — you would
+adjudicate that at the return."* So the item leaves the awaiting-adjudication
+pool and becomes direction **SIGZ**, **with the direction-A pivot rule in force**
+and with the adjudication moved from *before* the dispatch to *at the return*.
+Everything else stands unchanged: phase OPEN, the 2026-08-05 Lean hold, W4
+PARKED, `hK`/`hbareSplit` pinned, option B un-commissioned.
+
+**Selection disclosure — the twelfth direction's, for the third consecutive
+wave.** The **five directions themselves**, the **tier split** and the **label
+reservations** are **coordinator-set**, so there is **no independent top-rung
+ranking of the losers** this wave either; a future top-rung recon may overturn
+§"Not selected — the eighth fan-out's losers" freely. What is **not** the
+coordinator's: every one of the five is a successor **named by a landed
+direction's own hand-off** — GTMPL by AGLU's hand-off item 1, GFLOW by BALB's
+*Clause A′ sub-clause 2* plus its untried third route, GCOLL by YLOC's
+**(GR-64)(R2)**, OSCHU by ZNEQ's input-(a) hand-off item 2, SIGZ by its item 3.
+The *candidate pool* is the arc's; only the ranking is the coordinator's.
+
+**Roster** (updated per landing):
+
+| direction | ordinal | tier | owning § | target | status |
+|---|---|---|---|---|---|
+| **GTMPL** | 25th | compute-licensed | §(K-grid) | AA-glue realizability at `n_hub ≥ 10` — (GR-76)(iv)'s three templates | **DISPATCHED 2026-08-19** |
+| **GFLOW** | 26th | derivation-first | §(K-grid) | (b′)'s availability half — *Clause A′* sub-clause 2, the doubly-blocked case | **DISPATCHED 2026-08-19** |
+| **GCOLL** | 27th | compute-licensed | §(K-grid) | **(GR-64)(R2)** — every habitat shape carries an anchor matching with `B(M) = 0` | **DISPATCHED 2026-08-19** |
+| **OSCHU** | 28th | derivation-first | §(K-out) | **(a₁)** class-uniformly — the Schubert non-jump `dim(D ∩ M̂ ∧ W) ≤ 1` (+ the (a₂) re-keying leg) | **DISPATCHED 2026-08-19** |
+| **SIGZ** | 29th | compute-licensed | §(K-out) | the `σ > 0`-everywhere hunt — newly authorized, **pivot rule in force** | **DISPATCHED 2026-08-19** |
+
+**Shared mechanics: §"Shared mechanics (all three dispatches)" above binds
+verbatim**, at five directions, with the seventh fan-out's three deltas
+unchanged (drafts to `notes/Pencil-draft-<CODE>.md` untracked, the coordinator
+merging and deleting; rung **opus**, top rung this session; each direction runs
+the **TERMINATION check (E1/E2/E3)** and reports its reading, the coordinator
+re-running it). **E3 stays ARMED** by GBAL's entry-5 HIT and is **not** fired by
+any of the five: GCOLL is the only one on the (a′) path and it attacks a
+sub-target strictly smaller than (a′), so a HIT there does **not** fire E3 —
+say so and do not fire it. **Firing is a coordinator action.**
+
+**On the tier split, recorded honestly.** `RESEARCH-ARC.md`'s *Genuinely
+unsettled* item 2 says the compute-licensed / derivation-first split is
+**untested** as a predictor of dispatch risk. It is used here for framing
+(what instrument a direction reaches for first), not as a rung input — all
+five are opus regardless — and this wave is **not** evidence either way.
+
+### Two status cells need a recompute inside this wave, with explicit targets
+
+`RESEARCH-ARC.md` §6's refinement — *a cap bounds growth but cannot express
+purpose; dispatch a recompute with an explicit target that leaves headroom for
+landings already queued into that row* — applies to this wave before its first
+landing, because two rows are carrying three and two queued landings against
+thin headroom. Measured at prep (`notes/check-gapmap-cells.py`, full table, all
+27 rows within cap):
+
+- **§(K-grid)**: status **1706 / 2035** words — **329 free against three
+  queued landings** (GTMPL, GFLOW, GCOLL). **The wave's FIRST §(K-grid)
+  landing recomputes the status cell to `≤ 1550` words** before adding its own
+  content, leaving ≥ 485 for the three. **Do not bump the cap** — the cap is
+  bumped only after an honest recompute, per the script's own docstring rule.
+- **§(K-out)**: status **649 / 800** words — **151 free against two queued
+  landings** (OSCHU, SIGZ). **The wave's FIRST §(K-out) landing recomputes to
+  `≤ 560` words**, leaving ≥ 240 for the two. ZNEQ recomputed this cell
+  790 → 649 one landing ago, so the target is deliberately a modest trim, not
+  a second aggressive compression.
+
+Both recomputes **verify label preservation by a scripted set-diff, never by
+eye** (§6's other clause — a coordinator hand-recompute once dropped a live
+label and only a script caught it).
+
+### GTMPL — twenty-fifth direction (eighth fan-out)
+
+**The target — AA-glue realizability at `n_hub ≥ 10`, ledger attack (c)'s only
+surviving case**, verbatim from AGLU's hand-off item 1: by **(GR-76)(iv)** the
+only possible profiles are `(|F₁|, |F₂|, |W|) ∈ {(4,0,1), (2,1,2), (0,2,3)}`
+with `(n_2, n_3, |X|) = (4,4,2)`, `|T| = 10`, `q_T ≤ 1`. **This is a
+three-template question, not a search.** The counting side is **satisfiable**
+there (a worked profile in §(K-grid) *Step G95*), so what must be added is the
+**colouring** side: the 2-1 dart pattern at each of the two `X` hubs, the
+mono-hub ban, and the (GR-25) cut criterion.
+
+**Why now.** AGLU settled `n_hub = 8` **negative as a non-vacuous theorem** and
+(GR-76) is an `n`-free charge that already forces `n_hub ≥ 10` with no pinning.
+Attack (c) is therefore one stratum from being closed outright, and (GR-76)(iv)
+is the arc's sharpest specification of a remaining case: **three templates,
+enumerated, with the counting already discharged.**
+
+**Method, and the cost check that comes FIRST.** AGLU's hand-off is explicit:
+*"Estimated cost is the one thing to check first — the `n_hub = 10` labelled
+enumeration is ~50× the `n_hub = 8` one, so the canonicalizer, not the scan, is
+the bottleneck. A `--pin`-style colouring-free pass restricted to the three
+templates avoids the pool entirely and is the cheap route."* Take that route
+first. `aglu.py` is `n`-generic apart from the pool (`cubic_iso_classes(8)` →
+`(10)`, `excess_profiles(12,6)` → `(15,6)` runs the same three modes), but do
+**not** launch the full pool scan before the template-restricted pass has said
+what it can. Use the landed oracles, not new ones: **(GR-25)**'s `2^{n_hub}` cut
+criterion as the `D = 0` membership oracle, `cflank.cubic_habitat` as the habitat
+gate, `cflank.admissible` for colouring acceptance, **(GR-42)**'s polynomial
+habitat-membership criterion where a shortcut is wanted.
+
+**The two outcomes, and what each buys — both are wins, say which you got.**
+
+- **NOT realizable at `n_hub = 10`** ⟹ attack (c) closes at `n_hub ≤ 10`, and
+  if the argument is `n`-free (as (GR-76)(iii) was) **attack (c) closes
+  outright**. State explicitly which of the two you got: an `n = 10`-specific
+  kill and an `n`-free kill are very different results.
+- **Realizable** ⟹ the (GR-38) kill has a **real case** at last. Name the
+  witness exactly, **rank-certify** it, say which of the three templates it
+  realizes, and check whether it is fully-good (a realized AA-glue that is
+  still fully-good is a much weaker event than one that is not).
+
+**Cap disclosure is mandatory** and is the standing hazard on this leg: an
+exhausted cap is **not** a proof of nonexistence. If any leg is capped the
+return says **"not found under cap C"**. AGLU's own `n_hub ≥ 10` line is the
+model — *"OPEN with no search run there and no cap exhausted"* — and LTWO's
+"4 of 8 patterns" correction is the precedent for what a silently-capped leg
+costs.
+
+**Bars.** Do **not** re-run the `n_hub = 8` scan — (GR-75) is **exhaustive and
+uncapped** over the complete stratum (39 689 shapes, 9 617 854 admissible
+colourings, 0 instances) and reproduces (GR-38)'s `n ≤ 6` headline exactly.
+Do **not** re-derive (GR-74)'s template classification at `n_hub = 8`
+(exhaustive, colouring-free, all 44 premise-satisfying pairs of all 20
+classes). Do **not** re-open (GR-28)(iv)'s `g ≤ 1` cap — **REFUTED with an
+exact boundary**; its `n_hub = 8` witnesses are available as **constructions to
+reuse**, which is the one thing to take from it. Do **not** attack **(d′)** (the
+corner-armed realized-binding fully-hot seed hunt) — not this direction, and
+E1's own clarification says it is not a flank by itself. AGLU's hand-off item 2
+(the `(slack, defect(T)) = (0,2)/(1,1)` tightness) is **available as a
+secondary** if the primary closes early; report it as a by-product, do not let
+it displace the primary.
+
+**Riders, verbatim.** Everything at `Λ = ∅`, `D = 0`, and **modulo (GR-4′)**
+wherever (GR-15) is mentioned; `Λ ≠ ∅` and `D > 0` stay **unswept**. **None of
+this closes (GR-15)**, and a counting-side result is not an `hK` status move.
+Every obstruction figure carries its **family qualifier** — (GR-36)'s
+binding-capable family strictly contains the capacity-tight one, and (GR-40)'s
+815 → 573 is a **prune, not a zero**. **(GR-77) stands:** outright binding
+laminarity is FALSE at `n_hub = 8` (3 774 crossing pairs), so do not quote
+(GR-75) as laminarity — it buys the **uncrossing** of the **maximal** binding
+family per block, nothing more.
+
+**Reservation.** §(K-grid) **extends**; labels **(GR-79)–(GR-84)**, **Steps
+G98–G103**; driver **`notes/scripts/w4/gtmpl.py`**. The owning section stays
+authoritative. Consume fewer than reserved ⇒ **return the remainder to the
+tail** in the landing commit.
+
+### GFLOW — twenty-sixth direction (eighth fan-out)
+
+**The target — (b′)'s availability half: *Clause A′*, sub-clause 2, the
+doubly-blocked case.** Clause A′ verbatim as BALB landed it: *at every
+unbalanced parity-optimal configuration there is a legal flip set `F` with
+`z + χ_F` balanced and `|W(F) ∖ S| − |W(F) ∩ S| ≤ 2`.* Sub-clause 1 (the
+one-end-blocked case) is **nearly done** — the mixed-pair mechanism prices it at
+the unblocked T1's price because an `M`-branch is free, leaving only the far-end
+side condition `m(w_β) ≠ β` for at least one of the two available `β`, *"a
+short, bounded derivation"* that covers **every** stuck witness BALB found
+(48/48 at `n = 8`, cheapest price 0). **Sub-clause 2 is the real residual:**
+(GR-48)'s named kill, realized at `n = 30`, where the chain must be followed at
+both ends, `t(F) = 2`, and (GR-68) gives only `≤ 4` unless both extra endpoints
+land on deviating hubs.
+
+**The two routes BALB names, in its order.**
+
+1. **What would close it directly:** *a proof that at a parity-optimal
+   configuration the second chain's endpoint is forced onto `S`.* (GR-68)'s own
+   minimality corollary is the named input — optimality already forbids
+   `Δdist < 0`, hence constrains where dart-free `F`-branches can sit.
+2. **The untried alternative, and the reason this direction is
+   derivation-first:** minimizing `dist(·, M)` over admissible `z` at a *fixed*
+   balanced pattern is, by **(GR-50)**, a **minimum-cost degree-constrained
+   orientation** — a min-cost flow, hence polynomial. Per-matching (b′) is then
+   an **exchange statement between two such flow problems** (pattern-free vs
+   pattern-fixed), and **flow theory's exchange machinery is untried on this
+   arc.** This is the first genuinely new instrument offered to the balance
+   layer since (GR-50); if it works it is worth more than the direct route,
+   because an exchange argument is `n`-free by construction.
+
+**Finish sub-clause 1 first, and say so separately.** It is a bounded
+derivation, it is a *theorem* the arc does not yet have, and landing it makes the
+residual exactly one clause. Do not fold it into the sub-clause-2 write-up.
+
+**What counts as a HIT** — a proof of Clause A′ (hence, with (GR-70)(i), of
+**per-matching (b′)**). Also valued, on the (GR-29)/(GR-30) precedent: a proof
+of a **different constant with the exact boundary named**, or a **witness at
+per-matching gap 4** (never 3 — **(GR-67) Cor. 1**'s parity law makes every
+per-matching layer gap **even**), which moves (b′) to refuted-with-successor.
+State which of the three you got.
+
+**Bars.** Entry 5 is **PROVEN** ((GR-54)) — do not re-attack it. Do **not**
+re-run BALB's stratum verification — **(GR-70)(ii)** is EXHAUSTIVE and uncapped
+(4780 shapes, 23 939 (shape, matching) pairs, all 96 930 unbalanced
+parity-optimal configurations, full `3^n` censuses). Do **not** re-derive
+(GR-68)'s move pricing or (GR-67)'s parity law — landed, and they are your
+inputs. Do **not** re-open the bounded-deviation **selection** form
+(**REFUTED as posed**, (GR-41)+(GR-42): `d(NK(m)) ≥ m/2` unbounded while every
+member stays fully-good) — (b′) is a statement about the **gap between two
+layers**, and the necklaces are a test bed for it, not a refutation of it. Do
+**not** attempt the `|δ| ≤ 2` half: **(GR-69)** settled it — a theorem at
+`n_hub ≤ 6`, **FALSE from `n_hub = 8`** at the Wagner shape **V8** — and E1
+clause (v) does **not** fire on those witnesses (they are not parity-optimal).
+**(GR-64)(R2) / input (Y) is GCOLL's target this wave** — report any
+(Y)-relevant by-product as a finding and **do not develop it** (YLOC/BALB's
+mutual precedent).
+
+**Riders, verbatim.** As GTMPL's, plus: the **shift-metric layer is UNBOUNDED**
+((GR-43), `d_par = d_adm = d_fg = m` exactly at the necklaces), so (b′) must be
+stated as a bound on the **difference**, never on `d_adm`, and any figure
+quoting a necklace member carries that qualifier. **Disclose the table cap:**
+BALB's necklace leg stops at `m = 6` because `gadm.dp_pref`'s table is `2^dim`
+(`assert dim ≤ 18`), and **GBAL's `n = 40..60` reach does not transfer** —
+(GR-54) needs only balance *existence* (polynomial by (GR-50)) whereas any (b′)
+statement needs `d_par(M)`, the exponential object. An exhausted table is not
+`∞`.
+
+**Reservation.** §(K-grid) **extends**; labels **(GR-85)–(GR-90)**, **Steps
+G104–G109**; driver **`notes/scripts/w4/gflow.py`**. Owning section stays
+authoritative; return any unconsumed remainder to the tail.
+
+### GCOLL — twenty-seventh direction (eighth fan-out)
+
+**The target — (GR-64)(R2), verbatim as YLOC named it:** *"every habitat shape
+carries an anchor matching `M` with `B(M) = 0`"* — **measured at all 4924
+inventory shapes, open as a theorem.** YLOC called it *the sharpest cheap
+successor the pass produced*, and stated exactly what it buys: **it would prove
+the collision mechanism can never obstruct (a′)**, and it is *"a statement about
+matchings and small-boundary hub sets alone: no colouring, no rank, no deviation
+ladder."*
+
+**Why now.** (a′) is entry 1's only remaining attack and **the only thing
+between the arc and E3**, and YLOC's localization failure ((GR-62): full
+goodness is not a function of the (GR-50) degree data) leaves the arc without a
+chunk-level instrument. (GR-64)(R2) is the one sub-target on that path that is
+**strictly smaller than (Y)**, colouring-free and rank-free — the cheapest
+genuine progress toward (a′) currently on the board.
+
+**Method.** The statistic is landed: `pack_bound` is (GR-64)'s, `dist_of` /
+`fit_M` are (GR-65)'s, and `yloc.py --coll` asserts (GR-64)(i)–(v) at
+**209 432 030** (shape, `z`, matching, proper chunk) instances with **3 449 374**
+tight. The question is a **proof**, not a bigger sweep: the object is a matching
+and the small-boundary hub sets, so the natural attacks are (a) an exchange
+argument on the anchor matching (swap along an alternating cycle and show the
+collision term cannot rise at every chunk simultaneously), (b) the parity
+constraint **(GR-64)(v)** `coll_M(S) ≡ |W_S| (mod 2)`, and (c) the **ceiling
+profile** — the per-chunk term reaches its proven maximum 2 **only** at
+`(z, exc) ∈ {(3,1), (4,0)}` with `coll = z` — which is a very thin extremal
+family to rule out at a well-chosen `M`.
+
+**The second, cruder deliverable, if the theorem resists: (GR-64)(R1)** — the
+large-`n` extension of the collision sweep as a **bounded-boundary enumeration**
+rather than a `2^M` scan. That converts the measurement from
+"exhaustive at `n_hub ≤ 6` plus four named shapes" into a statement with real
+reach, and it is a compute question, not a new idea. **Say which you delivered.**
+
+**What counts as a HIT** — a proof of (GR-64)(R2) at every habitat shape.
+Also valued: a **witness shape with `B(M) ≥ 1` at every matching**, which per
+YLOC's own reading turns (GR-64) into *"a genuine floor on `d_fg`"* — a
+strictly informative refutation, not a failure. **A HIT here does NOT fire
+E3**: (R2) is a sub-target of (Y), not (a′) itself. State the consequence for
+(a′) precisely and **do not fire E3**.
+
+**Bars.** **(b′) / Clause A′ is GFLOW's target this wave** — report any
+(b′)-relevant by-product as a finding and **do not develop it**. Do **not**
+re-attack (a′)'s **per-matching** variant — **REFUTED** ((GR-59): `min_M` is
+load-bearing, 1278 of 24 638 pairs, so no (a′) proof may fix its anchor
+matching); note the tension and use it, since (R2) is precisely a statement
+about the **existence** of a good anchor, not about fixing one. Do **not**
+re-run the bounded {T1, T2} descent (**DEMOTED by witness**, (GR-48)(iii)) or
+(GR-58)'s census (landed **exhaustive** at `n_hub ≤ 6`, no cap). Do **not**
+re-attempt the (GR-51)-shaped chunk criterion — **(GR-62) refutes it by
+witness** (7982 of 217 468 fibres, at 1499/4924 shapes, smallest witness
+rank-certified at `n_hub = 4`); the refutation is scoped to a
+*(GR-51)-shaped* criterion only, and that scope is **not** an invitation to
+re-run it.
+
+**Riders, verbatim.** As GTMPL's. Additionally: **(GR-64)(iii)'s prune is
+sound but INCOMPLETE** (1250 of 24 671 killed, incompleteness **7856**) — both
+numbers travel with any figure derived from it, and **disjointness is
+load-bearing** (the naive sum is unsound against a realized fully-good
+distance). **(GR-65)'s fit identity is the bridge** — `dist(m, M)` and
+`z_mono(S)` are the **same statistic** — and it is a landed input, not
+something to re-derive.
+
+**Reservation.** §(K-grid) **extends**; labels **(GR-91)–(GR-96)**, **Steps
+G110–G115**; driver **`notes/scripts/w4/gcoll.py`**. Owning section stays
+authoritative; return any unconsumed remainder to the tail.
+
+### OSCHU — twenty-eighth direction (eighth fan-out)
+
+**The target — (a₁) class-uniformly**, verbatim from ZNEQ's input-(a) hand-off:
+*at some pencil chart point where `H = G − v − a` has independent rows,
+`D = {m(b) − m(c) : m ∈ Mot(H)}` contains **no** pencil `M̂ ∧ w` with `w` on the
+line `pt(b) pt(c)`* — equivalently the **Schubert non-jump**
+`dim(D ∩ (M̂ ∧ W)) ≤ 1`, with `D` the far framework `H`'s relative twist space
+and `W` the hub line's 2-space. **One condition, `x₁`-free, `λ`-free,
+stratum-free, one-point decidable.** Measured to fail **nowhere** (GCD degree 0
+and `dim(D ∩ M̂ ∧ W) = 1` at 32/32 POOL-ZF frames). **A recipe is what is
+missing** — exactly as for (OC-19) input (c).
+
+**The route to try FIRST, from the same hand-off.** `D` is the relative twist
+space of `H` with **no** hinge deleted and **no** weld, so §(K-out) **(OC-18)**'s
+`H/X`-rigidity criterion and `D` are **near neighbours**: `H/X` rigid forces
+`W₁ = 0`, and `D` is the un-welded analogue. **Second:** `D` depends only on the
+`H`-part, so **(OC-28)(i)** makes this too a statement about `G`'s **own** chart
+— which is what would make it class-uniform rather than per-split.
+
+**Why now, and why this rather than (OC-19) input (c).** Input (c) is OCON's #1
+by value but is **(GR-15)-flavoured** — a rank condition inside a
+pattern-colouring existence question — so it re-enters the arc's oldest missing
+technology. (a₁) is the *same object class* ((OC-20)'s perp form, a
+subspace-meets-subspace count in `Λ²K⁴`) with **no colouring quantifier**, and
+after ZNEQ it is the **only** half of input (a) that can be the binding
+obstruction: the `s₀` half is **necessary for `hK`** and therefore
+**dominated** ((OC-24), (OC-28)).
+
+**The cheap secondary leg, folded in deliberately: the (a₂) cross-pool
+re-keying.** By **(OC-28)(iii)** the `s₀` half is implied by §(K-grid)
+**(GR-10)** and free at **907/907** of that pool, so the cheapest genuine
+progress there *"is **not** a new argument but a re-keying: check that every
+§(K-out) class shape carrying a length-4 companion is in §(K-grid)'s certified
+set (the two pools are keyed differently, (OC-28)(a))"* — **a combinatorial job
+with no new mathematics**, and the transfer itself is already **machinery**
+(`zneq --transfer` turns any target-rank chart point of `G` into a
+guard-accepted point of `Z` on every eligible split's `G′`-chart, 30/30). Run
+it, and state plainly that the result stays **CONDITIONAL** on (GR-10), which
+is itself **OPEN** (its min-max form refuted as posed, the statement standing).
+§(K-out) hand-off item 4 — the one-hub-neighbour extension of the slide,
+(OC-21)'s second bullet, *"a cheap `--wide`-style leg, too small to be a
+direction"* — may be folded in as a third leg if budget allows; it is the
+lowest priority of the three.
+
+**What counts as a HIT** — a class-uniform proof of (a₁) (with the (a₂) leg,
+that is input (a) reduced to (GR-10) alone). Also valued: a **shape where the
+non-jump fails**, which per (OC-25)/(OC-26) is a **(K-tight) event** at that
+split — routes A and B dead there, `hK` at the shape **untouched** — and which
+must be reported as such and **not** as a PENCIL event. Getting that distinction
+right is load-bearing: ZNEQ's own spec was corrected on exactly this point.
+
+**Bars.** Do **not** re-derive **chart irreducibility** — §(K-chart)
+**(CH-1)(a)** is PROVEN, unconditional at `Γ = G′`; **cite** it. Do **not**
+attack **(OC-19) input (c)** (`H/X` rigid class-uniformly) — OCON's verdict
+stands and it is deliberately not this wave's. Do **not** pursue any
+**counting / matroid route to (OUT)'s hypothesis** — **(OC-3)** refutes the
+whole class (`{λ₁ = 0}` is nonempty at every class shape's chart). Do **not**
+push a constructed point to `p⁺` (§(K-out) *What would change this* item 4),
+the coupled two-end slide (item 5), or any §(K-frame) *What would change this*
+item (ii)–(iv). Do **not** re-run (OC-27)'s witness census (138/138, caps
+disclosed). **The `σ > 0` hunt is SIGZ's target this wave** — if a by-product
+bears on it, report it as a finding and **do not develop it**.
+
+**Riders, verbatim.** The standing **(OC-7) rule**: no `place_pencil_general`
+battery may be quoted as a **rate** or as evidence about a **generic** chart
+point; POOL-G figures are quoted over the **318 coincidence-free** frames,
+never the raw 357. **POOL-G and POOL-S are pinned and disjoint** — not
+aggregated, not re-sampled. Any census this direction runs reports **witnesses,
+never a rate**, with caps disclosed. **`Z ≠ ∅` alone does NOT give (OC-8)**:
+the reduction needs openness **plus** irreducibility **plus** a witness, and
+`--control`'s three constructed points in `Z` with `L_b ⊆ R₁` are why.
+
+**Harness debt, carried in and payable here if convenient.** `ocon.meet` (the
+dimension-asserting wrapper of `lambda.span_meet`) now has **two** consumers,
+tripping `notes/scripts/README.md` §2 rule 2's move-down trigger — a dated
+**unpaid** debt item recorded by ZNEQ. This direction is the natural third
+consumer; if it uses `ocon.meet`, say so and either pay the debt or re-date it.
+
+**Reservation.** §(K-out) **extends**; labels **(OC-29)–(OC-34)**, **Steps
+O25–O30**; driver **`notes/scripts/w4/oschu.py`**. Owning section stays
+authoritative; return any unconsumed remainder to the tail. **Two directions
+share §(K-out) this wave** (OSCHU and SIGZ) — the protection is the **disjoint
+reserved range**, not the section, exactly as three directions shared §(K-grid)
+at the sixth and seventh fan-outs.
+
+### SIGZ — twenty-ninth direction (eighth fan-out)
+
+**Newly authorized this session, and the arc's first authorized DISPROOF
+direction.** It is ZNEQ's input-(a) hand-off item 3, held out of the
+dispatchable pool since 2026-08-19 pending adjudication, released by the
+user's **"Authorize the hunt"** selection at this session's check-in on the
+terms quoted in this fan-out's header. **The direction-A pivot rule is in
+force**, verbatim: *"If half 2 fails at any shape, **stop and report
+immediately**: the phase's target theorem would be false … That is a
+phase-redefining event for the user to adjudicate, not a result to build on."*
+Read for this direction: **a hit is reported and NOT built on.**
+
+**The target.** By **(OC-23)**, `s₀ = corank R(H)` at **every** legal chart
+point, so `{σ = 0}` is the locus where the far framework `H = G − v − a` has
+independent rows. By **(OC-24)**, **`{σ = 0} = ∅` at a class shape makes `hK`
+FALSE there** (`E(H) ⊆ E(G)`, `G` tight with `def(G) = 0`, so a self-stress of
+`H` at every chart point is a self-stress of `G` blocking its own Tay target).
+The hunt: **is there a class shape — inside `hK`'s habitat — at which
+`σ > 0` everywhere?** The only known failure mechanism is a **self-stress of a
+short theta sub-multigraph inside `H`** (§(K-flank) *F5(d)*: at `P21`, 5 of 35
+valid seeds, support the theta `{12, 13, 23a, 23b}`, **12 edges, line rank 6**,
+forcing `dim R_a = 0`).
+
+**The obstruction the hunt must confront head-on, and why this direction has
+two valuable outcomes rather than one.** `P21` **fails `hnoRigid`** — it is a
+**(K-res) residual, not a tight class member** — so *Step O24*'s only recorded
+mechanism sits **outside** `hK`'s habitat. And the gap map's `P21` row records
+more than that: **(S5)'s `(3,3)` row-dependence mechanism is proven impossible
+inside tight + `hnoRigid`**, because `C_k` rigid for `k ≤ 6` forces
+`ℓ₁ + ℓ₂ ≥ 7`. So:
+
+- **A HIT** — a class shape (tight, `def(G) = 0`, `hnoRigid`) with
+  `{σ = 0} = ∅` — is a **PENCIL event**: `hK` is FALSE there, the phase's
+  target needs restating, and the return **stops** at that and reports. Name
+  the shape, the split, the stress support, its line rank, and **rank-certify**
+  it; then stop. Do **not** develop consequences, do **not** re-plan the arc,
+  do **not** touch any gap-map status.
+- **A PROOF THAT THE MECHANISM CANNOT OCCUR inside tight + `hnoRigid`** —
+  i.e. pushing the `ℓ₁ + ℓ₂ ≥ 7` bound (or its theta-multigraph generalization)
+  to exclude *every* `H`-supported theta stress at a class shape — makes
+  **(a₂) free at class shapes unconditionally**, which is **strictly stronger
+  than (OC-28)'s conditional reduction** (that one is conditional on (GR-10),
+  itself open). **Say which of the two you got**, and if neither, say exactly
+  which theta lengths remain uncovered.
+
+**Method.** Exact ℚ throughout; the object is a self-stress space, so a
+**rank/corank assert on every sampled framework** is mandatory (the
+`plane_basis` precedent — a degenerate sampler silently contaminated several
+passes' recorded escape-failure figures). Enumerate class shapes by the theta
+sub-multigraphs their `H` can carry rather than by sampling seeds blindly: the
+theta's branch-length triple is the natural index, `ℓ₁ + ℓ₂ ≥ 7` is the landed
+constraint, and §(K-Λ) **(Λ4)**'s branch calculus reduces class membership to a
+finite statement about the hub multigraph `G°` alone. `{σ = 0}` is a **proper
+open** — witnessed as such at `P21` (5 of 35 valid seeds off it) — so
+`{σ = 0} = ∅` is a **closed** condition to certify, never something a finite
+sample can establish: a shape where every *sampled* seed has `σ > 0` is
+**"not found under cap C"**, not a hit. **State that boundary explicitly in the
+return.** A hit needs an argument (or an exhaustive, uncapped chart-level
+certificate), not a tally.
+
+**Bars.** Do **not** re-derive §(K-chart) (CH-1)/(CH-2) — landed; cite. Do
+**not** work the target-rank half of input (a) — **(a₁) is OSCHU's target this
+wave**; report by-products as findings and do not develop them. Do **not** move
+any gap-map status: `{σ = 0}`'s row, (OC-8), (GR-15), class uniformity and `hK`
+all stay exactly where they are, **whatever this direction finds** — a status
+move on a PENCIL event is a user adjudication, not a landing. Do **not** re-run
+the `P21` battery (`flanks.py --rzero`, landed: 30/5/5 seeds, `dim U = 1`, 8/8
+placements fail).
+
+**Riders, verbatim.** As OSCHU's, plus: every figure is a **witness, never a
+rate**, with the cap disclosed; and `P21` figures carry the **`hnoRigid`-false
+qualifier** in every sentence that quotes them, because the whole question is
+whether the mechanism crosses into the habitat.
+
+**Reservation.** §(K-out) **extends**; labels **(OC-35)–(OC-40)**, **Steps
+O31–O36**; driver **`notes/scripts/w4/sigz.py`**. Owning section stays
+authoritative; return any unconsumed remainder to the tail.
+
+### Not selected — the eighth fan-out's losers
+
+Disclosed per the twelfth direction's precedent: **this ranking is the
+coordinator's, with no independent top-rung reader** (third consecutive wave).
+A future recon may overturn any of it.
+
+- **(OC-19) input (c), class-uniformly** — OCON's **#1 by value** and, for the
+  second consecutive wave, deliberately **not** dispatched, on OCON's own
+  grounds: it is **(GR-15)-flavoured, not (FR-R1)-flavoured**, so it re-enters
+  the arc's oldest missing technology rather than adding an independent idea.
+  YLOC's chunk-level instrument attempt was **DEMOTED BY WITNESS**
+  ((GR-62)), so the technology is still not arriving. **GCOLL is this wave's
+  bet on that supply line** — (GR-64)(R2) is the smaller sub-target on the
+  same path.
+- **§(K-out) hand-off item 3** — `T_u^{⊥_B} ∩ β_b = 0` at the **1715**
+  slide-legal `b` ends, where **(OC-21)** makes it an **iff**; measured
+  `dim(T_u ∩ β_b) = 1` at 38/38 POOL-W degree-3 ends and 4/4 POOL-OC ones. A
+  good, cheap, well-posed target, **queued for the second consecutive wave**
+  and dropped for the same reason — §(K-out) already carries two directions
+  (OSCHU, SIGZ) and item 3 rides the same measurement infrastructure. **Queue
+  it again**, and note that a third §(K-out) direction is the cheapest thing
+  on the board once one of this wave's two lands.
+- **§(K-out) hand-off item 4** — folded into **OSCHU** as its lowest-priority
+  third leg, per the seventh fan-out's own instruction to *"fold it into
+  whichever §(K-out) direction runs next."*
+- **AGLU hand-off item 2**, the `(slack, defect(T)) = (0,2)/(1,1)` tightness —
+  folded into **GTMPL** as an optional secondary. If it is a theorem the
+  (GR-38) kill has an exact form (`= 2`, not `≥ 2`) on the candidate family.
+- **(d′)** — the corner-armed realized-binding fully-hot seed hunt past GDEV's
+  caps. **E1's own clarification says it is not a flank by itself**, so its
+  best outcome is a measurement. Lowest value for the third consecutive wave;
+  at some point it should either be dispatched cheaply or struck.
+- **(GR-64)(R1)** — folded into **GCOLL** as its cruder fallback deliverable.
+- **Route σ's parked Lean half** and **the W4 build** — both **BLOCKED by the
+  standing 2026-08-05 Lean hold** (general, not W4-scoped). Not eligible
+  without a fresh user adjudication, and none was sought at this check-in:
+  the check-in's one standing-constraint move was the `σ > 0` hunt, nothing
+  else.
+- **`Pencil-strategy.md` §4.6's U3** — still unrun; the shortlist is
+  **partially superseded** for the tight stratum and §5.3's own local-frame
+  feasibility boundary rules out the symbolic meta-option. Two **durable
+  negatives** — do not re-run.
