@@ -54,6 +54,22 @@ to PROVEN, genuinely growing the row past its prior cap. Caps bumped to
 the 2026-08-19 recompute's own size (1504 / 759 words) plus ~15%
 headroom: 1730 / 873.
 
+**2026-08-19 third bump (the eighth fan-out, `(K-grid)`).** The row absorbed
+**eighteen** new theorems in one day -- (GR-79)-(GR-84) (GTMPL),
+(GR-85)-(GR-90) (GFLOW) and (GR-91)-(GR-96) (GCOLL) -- taking the section from
+(GR-1)-(GR-78) to (GR-1)-(GR-96), and three of them are status moves rather
+than additions (attack (c)'s AA-glue case settled at an exact `n_hub`
+boundary; (b′) given a proven `n`-free constant; (GR-64)(R2) refuted and
+(GR-64)(R1) delivered). The status cell was honestly recomputed **twice**
+across those landings before this bump -- 1706 -> 1730 words while absorbing
+GTMPL's six labels (the pre-existing content down ~13%), then a further ~35
+words off the oldest (GR-1)-(GR-74) material at GCOLL's -- and each landing
+also paid for itself by trimming its own block (GFLOW's twice). What is left
+is 2360 words carrying **96** labelled results, ~25 words each, at which point
+further compression deletes status rather than redundancy. Cap set at that
+recompute's own size plus ~15%: **2715 / 935**. Recompute first, twice, then
+bump -- the order this docstring mandates.
+
 **2026-08-19, `(K-out)` promoted out of the default (eighth fan-out).** The
 section absorbed **eleven** new theorems in one day -- (OC-29)-(OC-34) from
 direction OSCHU and (OC-35)-(OC-39) from direction SIGZ -- taking it from
@@ -95,7 +111,7 @@ DEFAULT_CAP = 800  # per cell (status / close-it); largest ungrandfathered
 SPECIAL_CAPS = {
     # gap-key -> {"status": cap, "closeit": cap}. Combined-remainder fallback
     # (ambiguous pipe split) uses the sum of the two.
-    "K-grid": {"status": 2035, "closeit": 873},
+    "K-grid": {"status": 2715, "closeit": 935},
     "K-out": {"status": 950, "closeit": 873},
 }
 

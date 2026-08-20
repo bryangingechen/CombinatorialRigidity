@@ -24,15 +24,19 @@ PREPPED AND DISPATCHED** (2026-08-19) — five concurrent opus directions,
 ordinals 25–29: **GTMPL** / **GFLOW** / **GCOLL** (§(K-grid)) and **OSCHU** /
 **SIGZ** (§(K-out)); specs, roster, tier split, label reservations and the
 losers' ranking all in `notes/Pencil-fanout.md` §"Eighth fan-out", not restated
-here. **GTMPL, GFLOW, SIGZ and OSCHU have LANDED** (the arc's thirty-third through
-thirty-sixth directions) — attack (c)'s AA-glue case settled at an **exact
-`n_hub` boundary**; **(b′) given its first proven `n`-free constant** (at 12,
-not 2); the **authorized `σ > 0` disproof hunt a NO HIT** that nonetheless
-**kills the counting route to a disproof** as a theorem, the pivot rule never
-triggering; and **(a₁) half-proven, half-reduced to one 3×3 determinant**.
-Verdicts one-lined in *Decisions made*, detail in the fan-out doc. **GCOLL
-alone is in flight. The next concrete task is verifying and landing it, then
-the wave-closing exception-log commit.**
+here. **THE EIGHTH FAN-OUT IS COMPLETE — all five LANDED 2026-08-19** (the arc's
+thirty-third through thirty-seventh directions): attack (c)'s AA-glue case
+settled at an **exact `n_hub` boundary** (GTMPL); **(b′) given its first proven
+`n`-free constant**, at 12 rather than 2 (GFLOW); the **authorized `σ > 0`
+disproof hunt a NO HIT** that nonetheless **kills the counting route to a
+disproof** as a theorem, the pivot rule never triggering (SIGZ); **(a₁)
+half-proven, half-reduced to one 3×3 determinant** (OSCHU); and
+**(GR-64)(R2) REFUTED** by a Petersen witness family with **(R1) DELIVERED**
+(GCOLL) — the wave's **only** gap-map status move. Verdicts one-lined in
+*Decisions made*, detail in the fan-out doc. **The next concrete task is the
+wave-closing exception-log commit to `notes/dispatch-log.md`** (the
+coordinator's), after which the phase is UNROUTED again and the queued doc
+split below is the cheapest structural item.
 
 ## Current state
 
@@ -280,16 +284,15 @@ spec, bar, rider, tier assignment and label reservation is in `notes/Pencil-fano
 |---|---|---|
 | ~~**GTMPL**~~ | §(K-grid) | **LANDED** — attack (c)'s AA-glue case settled at an exact boundary (`≤ 14` impossible, 16 realized) |
 | ~~**GFLOW**~~ | §(K-grid) | **LANDED** — (b′) a HIT at a different constant: gap `≤ 12` modulo (R1), constant 2 open with (C2) its residual |
-| **GCOLL** | §(K-grid) | **(GR-64)(R2)** — every habitat shape carries an anchor matching with `B(M) = 0` |
+| ~~**GCOLL**~~ | §(K-grid) | **LANDED** — (R2) REFUTED by a Petersen witness family, (R1) DELIVERED; successor is collision dominance |
 | ~~**OSCHU**~~ | §(K-out) | **LANDED** — (a₁) half-proven, half-reduced to one 3×3 determinant; the (a₂) leg a HIT correcting an arc-wide figure |
 | ~~**SIGZ**~~ | §(K-out) | **LANDED** — NO HIT; the counting route to a disproof DEAD as a theorem, `P21`'s mechanism located as a sampler artifact |
 
-**Landing obligations.** §(K-grid)'s cell was recomputed at GTMPL's landing (1706 → 1730
-words *while absorbing six new labels*, i.e. the pre-existing content compressed ~13 %; 79
-labels in, 85 out, **zero dropped**, scripted set-diff; cap unbumped) — and GFLOW then
-consumed 289 of the 305 words that bought, so the cell now sits at **2019 of 2035**.
-**GCOLL's landing therefore owes a genuine recompute of the §(K-grid) cell before adding its
-own content** — 16 words is not headroom, and the rule stays **recompute, never bump**.
+**Landing obligations.** **Both gap-map recomputes are DONE, and both rows then had their caps deliberately bumped
+after — never instead of — the recompute.** §(K-grid): recomputed at GTMPL's landing (1706 →
+1730 words while absorbing six new labels, the pre-existing content down ~13 %; zero labels
+dropped by scripted set-diff), each subsequent landing trimming its own block, then the cap
+raised **2035 → 2715** having absorbed **eighteen** new theorems across the wave.
 §(K-out)'s cell was recomputed **twice in one day** (649 → 431 words of pre-existing content
 at SIGZ, a further ~65 off the oldest material at OSCHU) and then, the section having
 absorbed **eleven** new theorems ((OC-29)–(OC-39)), its cap was **deliberately bumped
@@ -453,7 +456,17 @@ is the canonical home a successor reads.
   an arc-wide figure — §(K-grid)'s 907 *labelled* shapes are only **75 classes** covering
   **19** of §(K-out)'s **174**; the other **155 certified directly**, so the `s₀` half is free
   at all 174 **without** (GR-10).
-  **All four corrected a defective spec clause** — GTMPL an empty "is it fully-good?"
+  **27 GCOLL** — **(GR-64)(R2) REFUTED, (R1) DELIVERED** — the wave's only gap-map status
+  move. (GR-91) puts the collision statistic in **slack** form (`s_M` always even), which
+  collapses the spec's three named attacks into one; **(GR-93)** makes violated chunks
+  **unions of 2-factor cycles**, so detection is `2^{c(F)}` with no chunk scan; **(GR-94)**
+  proves `B(M) = 0` under a Hamiltonian or cyclic-connectivity hypothesis covering the whole
+  4924 inventory and 39 687/39 689 at `n_hub = 8`; **(GR-95)** then refutes (R2) where that
+  hypothesis fails — **180 of the Petersen graph's 36 860 habitat assignments have
+  `min_M B(M) = 1`**, canonically certified. So **(GR-64) is a genuine floor on `d_fg`**;
+  (a′) is **not** refuted (`d_fg = d_adm` at all 180), and the successor is the weaker
+  **collision dominance `min_M B ≤ d_adm`**. **(GR-96)** delivers (R1) at 81 482 shapes.
+  **All four of the others corrected a defective spec clause** — GTMPL an empty "is it fully-good?"
   branch, GFLOW the "min-cost flow, hence polynomial" instrument, OSCHU both an inherited
   "equivalently `dimK ≤ 1`" (sufficient, not equivalent) and the coordinator's own
   "CONDITIONAL on (GR-10)" (wrong at directly-certified shapes), SIGZ the coordinator's own

@@ -11065,3 +11065,714 @@ re-runs it.**
   `n_hub = 8`, `2k = 2` cell as its adversarial control.
 
 ---
+
+---
+
+### Steps G110–G115 (2026-08-19, direction GCOLL) — **(GR-64)(R2) is REFUTED by witness**: **(GR-91)** rewrites the collision statistic in *slack* form — `coll_M(S) = z(S) − s_M(S)` with `s_M(S)` **always even**, so a positive (GR-64) term is exactly a **zero-slack** chunk and equals that chunk's *demand* `r(S) = 6 − z(S) − exc(S) ∈ {1,2}`, collapsing (GR-64)(iv)'s two ceiling values into one condition; **(GR-92)** classifies the demand exhaustively (six `(z, exc)` profiles, twelve with the chord/exit refinement of (GR-32)(ii), `r ≤ 2` proven again in one line, and a two-cut normal form); **(GR-93)** is the instrument: a violated chunk's hub set is a **union of cycles of the 2-factor `F = E ∖ M`**, so violation detection at a fixed `M` is a `2^{c(F)}` search with **no chunk scan** — exact against the landed `2^M` ground truth at all 24 671 (shape, matching) pairs; **(GR-94)** turns that into **two PROVEN sufficient conditions** for `B(M) = 0` (a Hamiltonian one, self-contained; a cyclic-edge-connectivity one, on Plesník 1972) which between them cover the **whole 4924-shape inventory** and **39 687 of the 39 689** `n_hub = 8` habitat shapes — so on those strata (R2) is a **theorem**, not a measurement; **(GR-95) REFUTES (R2) in general** — **180 of the Petersen graph's 36 860 habitat length assignments carry `min_M B(M) = 1`**, each certified habitat by the canonical oracle `gridcol.class_shape` and re-verified through the landed `2^M` scan, with exactly **two** mechanisms and a local criterion asserted at all 221 160 (Petersen shape, matching) pairs — so **(GR-64) is a genuine floor on `d_fg`** and the collision mechanism **can** obstruct; **(GR-96)** delivers **(GR-64)(R1)**, extending the sweep from `n_hub ≤ 6` + four named shapes to `n_hub = 8` (**complete**, 39 689 shapes), `n_hub = 10` (the Petersen graph, complete for that graph), W5 (`E = 24`) and the **eight** odd-rich necklaces (`n_hub = 30, 40`), **uncapped on the chunk side throughout**. **(a′) is NOT refuted:** the E1(iv)/E2 detector reports **0** — `d_adm ∈ {2, 3}` against `min_M B = 1` at every witness — and `d_fg = d_adm` at all 180 witnesses, so (a′) *holds* there (new territory, reported as a by-product). **Input (Y) stays OPEN, (a′) stays OPEN and still carries NO bar, E3 (ARMED by GBAL) does NOT fire; (GR-15) OPEN, and the only gap-map status move is (GR-64)(R2) → REFUTED, (GR-64)(R1) → DELIVERED.**
+
+**Notation** (on top of *Steps G74–G79* and *Steps G80–G85*). `G°` cubic,
+loop-free, bridgeless, `n = |V(G°)|` even; `M` a perfect matching of `G°`
+and `F := E(G°) ∖ M` its complementary **2-factor** (every component a
+circuit, since the host is cubic); `c(F)` the number of `F`-cycles. For a
+chunk `S`: `W_S` its hub set, `Z2(S)` its interiors (`S`-degree 2),
+`z(S) = |Z2(S)|`, `ch(S)` its chords (branches ∉ `S` with both ends in
+`W_S`), `∂(W_S)` its exits, `exc(S) = Σ_{β∈S}(ℓ_β − 2)`,
+`cap(S) = 2z(S) + exc(S)`; `β₃(v)` the free branch of an interior `v`.
+`Φ(S) := ∂(W_S) ⊔ ch(S)` is the **free-branch set**, weighted `w = 1` on
+exits and `w = 2` on chords, so `Σ_{Φ(S)} w = z(S)`. A chunk is **proper**
+when `S ≠ E(G°)`; `W_S` is **spanning** when `W_S = V(G°)` (then
+`∂(W_S) = ∅` and `S` is proper only by omitting chords). Every claim
+below is **colouring-free**: no admissible cube is enumerated anywhere in
+*Steps G110–G114*, which is exactly why they reach shapes (GR-64)
+disclosed as out of reach.
+
+---
+
+### Step G110 — (GR-91): the collision statistic in **slack** form, and the **parity collapse** that merges (GR-64)(iv)'s two ceiling values
+
+(GR-64) reads `coll_M(S)` as a count of collisions and bounds it above by
+`z(S)`. Read from the other end — how many interiors *fail* to collide —
+the statistic becomes a statement about how much of `Φ(S)` the matching
+**avoids**, and that quantity turns out to be constrained mod 2.
+
+> **(GR-91)** *(proven; (i)–(iv) asserted at **1 126 991** (inventory
+> shape, matching, proper chunk) triples against the landed
+> `yloc.collide` / `coll_terms` / `pack_bound`, **0** failures, **25 368**
+> at equality `coll = cap − 6`; `--slack`)*
+>
+> Let `M` be a perfect matching, `F = E ∖ M`, `S` a proper chunk. Put
+> > `s_M(S) := #{v ∈ Z2(S) : M(v) ≠ β₃(v)}`
+>
+> — the interiors matched **inside** `S` — and
+> > `r(S) := 6 − z(S) − exc(S) = z(S) + 6 − cap(S)`,
+>
+> the chunk's **demand**. Then
+>
+> **(i) Three forms of the collision count.**
+> > `coll_M(S) = |W_S| − 2|M ∩ S| = z(S) − s_M(S)`,
+>
+> and `s_M(S) = Σ_{β ∈ Φ(S) ∩ F} w(β) = |F ∩ ∂(W_S)| + 2|F ∩ ch(S)|`.
+>
+> **(ii) The slack is EVEN.** `s_M(S) ≡ 0 (mod 2)` at every `M` and every
+> chunk. (Equivalently: (GR-64)(v)'s parity is the special case
+> `coll_M(S) ≡ |W_S|`.)
+>
+> **(iii) The term is the demand minus the slack.** With
+> `term_M(S) := coll_M(S) − cap(S) + 6`,
+> > `term_M(S) = r(S) − s_M(S)`,
+>
+> so — since `r(S) ≤ 2` ((GR-92)(ii)) and `s_M(S)` is even —
+> > `term_M(S) > 0 ⟺ ( r(S) ≥ 1 and s_M(S) = 0 )`, and then
+> > `term_M(S) = r(S)`.
+>
+> **A chunk's (GR-64) term is therefore two-valued at each chunk:
+> either `0`-or-less, or exactly its demand.** (GR-64)(iv)'s distinction
+> between ceiling `1` and ceiling `2` is a property of the **chunk**,
+> not of the matching.
+>
+> **(iv) The collision set of a positive term is the whole interior
+> set.** `term_M(S) > 0 ⟹ Coll_M(S) = Z2(S)`.
+>
+> **(v) The packing bound, restated.** Hence
+> > `B(M) = max { Σ_{S ∈ 𝒫} r(S) : 𝒫 a family of DEMANDING chunks with
+> > `s_M(S) = 0`, pairwise disjoint INTERIOR sets }`,
+>
+> and `min_M B(M) = 0` iff some `M` leaves **every** demanding chunk with
+> `s_M(S) ≥ 1` — equivalently `≥ 2`, by (ii). **So (R2) is a weighted
+> avoidance statement about one matching and the small-boundary hub sets,
+> with no `r`-dependence at all.**
+
+*Proof.* (i): every hub of `W_S` is covered by exactly one `M`-branch; if
+that branch lies in `S` it is one of the `|M ∩ S|` branches with both
+ends in `W_S` (a hub of `S`-degree 3 has no branch outside `S`, so an
+`M`-branch with one end in `W_S` and one end outside meets `W_S` at an
+interior, and a chord meets it at two), and otherwise the hub is an
+interior whose matching branch is its free branch — which is (GR-64)'s
+`Coll_M(S)`. Counting `W_S` both ways gives the first equality, and
+`|W_S| − z(S) = |W_S ∖ Z2(S)|` with the second. The `Φ`-form is the same
+count read on the free branches. (ii): `F` is a 2-factor, so each of its
+circuits crosses the cut `∂(W_S)` an even number of times, whence
+`|F ∩ ∂(W_S)|` is even; the chord term carries a factor 2. (iii) is (i)
+plus `cap = 2z + exc`: `coll − cap + 6 = (z − s) − 2z − exc + 6 = r − s`.
+The equivalence uses only `r ≤ 2` and `2 | s`: if `s ≥ 2` then
+`term ≤ 0`. (iv): `s_M(S) = 0` says every interior's matching branch is
+its free branch. (v) is (GR-64)(iii) with (iii)–(iv) substituted. ∎
+
+**Reading.** Three things move.
+
+- **The `min_M` quantifier acquires a mechanism.** (GR-59) proved `min_M`
+  load-bearing without saying what it buys; (GR-91)(v) says exactly what:
+  the matching must **avoid** a positive weight of free branches at every
+  demanding hub set, and the demands are *thresholds on avoidance*, not
+  on collision.
+- **The parity collapse kills half of (GR-64)(iv).** The extremal family
+  (GR-64)(iv) isolates — `(z, exc) ∈ {(3,1), (4,0)}` with `coll = z`, the
+  "very thin extremal family" the dispatch offered as attack (c) — is
+  *not* thinner than the `r = 1` family for the purposes of (R2): both
+  are violated under exactly the same condition, `s_M(S) = 0`. The three
+  attacks the dispatch named therefore reduce to **one**: rule out
+  zero-slack demanding chunks. Attack (b), the (GR-64)(v) parity, is what
+  performs the reduction — it is (ii) here — so the parity constraint
+  *was* the productive one, but as a merger, not a contradiction.
+- **The statistic is now cheap.** Nothing in (i)–(v) mentions a
+  colouring, a rank or a deviation ladder — YLOC's own reading of what
+  (R2) should be — and the measured `B(M)` distribution over all 24 671
+  (inventory shape, matching) pairs, `{0: 19633, 1: 3482, 2: 1068,
+  3: 380, 4: 108}`, **reproduces (GR-64)'s landed figure exactly** from
+  the colouring-free side, as does `min_M B(M) = 0` at all 4924 shapes.
+  The slack census is `{0: 165 126, 2: 551 490, 4: 360 260, 6: 48 179,
+  8: 1662, 10: 258, 12: 16}` — every value even — and the positive terms
+  are `{1: 5329, 2: 1277}`, each equal to its chunk's demand.
+
+**Confidence: proven-informally** (three lines from (GR-64)'s own
+definitions; asserted at 1 126 991 triples with the landed evaluator as
+oracle). **What would change this:** an odd `s_M(S)` — which would mean
+`F` is not a 2-factor, i.e. the host is not cubic or `M` is not perfect.
+F13 control (1) exhibits odd slacks the moment the selection stops being
+a matching, so the parity claim is not vacuous.
+
+---
+
+### Step G111 — (GR-92): **which chunks can demand anything at all** — six profiles, twelve with chords, and the two-cut normal form
+
+> **(GR-92)** *(proven; (i)–(iv) asserted at **all 217 516** proper
+> chunks of the 4924-shape inventory, **0** failures; `--dem`)*
+>
+> Let `S` be a proper chunk of a habitat shape, `ch = |ch(S)|`,
+> `∂ = |∂(W_S)|`, so `z(S) = ∂ + 2ch`.
+>
+> **(i) The capacity floor, with the chord refinement.** If `W_S` is
+> **proper** then, by (GR-32)(ii),
+> > `cap(S) ≥ 7 + Σ_{γ ∈ ch(S)} (4 − exc(γ)) ≥ 7 + ch`;
+>
+> if `W_S` is **spanning** the same expression is an **identity**,
+> > `cap(S) = 6 + Σ_{γ ∈ ch(S)} (4 − exc(γ))`,
+>
+> because then `E(G°) ∖ S = ch(S)` and (GR-21) pins
+> `exc(E(G°)) = 6`. And `z(S) ≥ 2` always.
+>
+> **(ii) Six profiles, and `r ≤ 2`.** `r(S) ≥ 1` forces
+> > `(z(S), exc(S)) ∈ {(2,3), (3,1), (3,2), (4,0), (4,1), (5,0)}`,
+>
+> hence `r(S) ≤ 2`, with `r(S) = 2` **iff**
+> `(z, exc) ∈ {(3,1), (4,0)}`. *(This re-proves (GR-64)(iv)'s ceiling and
+> its extremal profile in one line, and — by (GR-91)(iii) — identifies
+> the ceiling-2 family with the chunks whose term, when positive, is 2.)*
+>
+> **(iii) The two-cut normal form.** A demanding chunk with `∂ = 2` and
+> no chords has `(z, exc) = (2, 3)`, `S = E(W_S)`, **both cut branches of
+> length exactly 2**, and complement excess exactly 3. Its demand is
+> `M ∩ ∂(W_S) = ∅`, i.e. the matching avoids the 2-cut outright.
+>
+> **(iv) A chord in a demanding chunk must be long.**
+> `Σ_{γ ∈ ch(S)} exc(γ) ≥ 2ch + 2 − ∂` when `W_S` is proper, and
+> `≥ 2ch + 1` when `W_S` is spanning. In particular a spanning demanding
+> chunk with one chord has that chord of **length 5**.
+>
+> **(v) The demand is weighted avoidance.** `s_M(S) ≥ r(S)` reads
+> `Σ_{β ∈ Φ(S) ∖ M} w(β) ≥ r(S)`; by (GR-91)(ii) it is equivalent to
+> `Φ(S) ⊄ M`.
+
+*Proof.* (i) is (GR-32)(ii) verbatim in the proper case, and its own
+computation `cap = 2z + exc(S) = 4ch + (6 − Σ_{ch} exc)` in the spanning
+case. (ii): `r = 6 − z − exc` with `exc ≥ 7 − 2z` (from `cap ≥ 7`, which
+covers the spanning case too since `ch ≥ 1` there) and `z ≥ 2` gives
+`r ≤ 6 − z − max(0, 7 − 2z)`, i.e. `≤ 1` at `z = 2`, `≤ 2` at `z ∈
+{3,4}`, `≤ 1` at `z = 5`, `≤ 0` at `z ≥ 6`; the profile list is the same
+inequality solved. `r = 2` needs `z + exc = 4` with `2z + exc ≥ 7`, i.e.
+`z ≥ 3`. (iii): `∂ = 2, ch = 0` gives `z = 2`, so `exc(S) = 3` by (ii);
+`E(W_S) = S` as `ch = 0`; the cut criterion at `W_S` and at its
+complement each demand excess `≥ 3` inside, and `exc(E(G°)) = 6` leaves
+nothing for the two cut branches. (iv) is (i) against `cap ≤ z + 5`
+(which is `r ≥ 1`). (v) is (GR-91)(i) and (ii). ∎
+
+**Reading.** The demand system is **small and local**. Exhaustively over
+the inventory: **15 470 of 217 516** proper chunks demand anything, in
+twelve `(z, exc, ch, ∂, r)` profiles —
+
+`{(2,3,0,2,1): 314, (2,3,1,0,1): 1946, (3,1,0,3,2): 2092,
+(3,2,0,3,1): 4273, (4,0,0,4,2): 1381, (4,0,1,2,2): 20,
+(4,0,2,0,2): 40, (4,1,0,4,1): 4643, (4,1,1,2,1): 32,
+(4,1,2,0,1): 488, (5,0,0,5,1): 8, (5,0,1,3,1): 233}`
+
+— with `∂ ≤ 5` and `ch ≤ 2` throughout, i.e. every demand lives at a
+**small-boundary hub set with at most two long chords**, per shape
+`{0: 150, 1: 774, 2: 896, 3: 1222, 4: 733, 5: 649, 6: 468, 7: 16, 8: 10,
+9: 4, 10: 1, 15: 1}`. All 314 two-exit chordless demands are in (iii)'s
+normal form. This is the precise sense in which YLOC's *"matchings and
+small-boundary hub sets alone"* is correct, and it is what makes
+(GR-64)(R1) a bounded enumeration rather than a `2^M` scan — though
+*Step G112* replaces the enumeration altogether.
+
+**Confidence: proven-informally** (arithmetic on the landed (GR-32)(ii)
+and (GR-21); asserted at all 217 516 inventory chunks). **What would
+change this:** a demanding chunk off the six profiles, which would
+contradict (GR-32)(ii) — the assertion is live at every chunk, and F13
+control (4) confirms the predicate is non-trivial (both `r ≥ 1` and
+`r ≤ 0` chunks coexist at 392 of 404 sampled shapes).
+
+---
+
+### Step G112 — (GR-93): the **2-factor criterion** — violated chunks are unions of `F`-cycles, so violation detection needs **no chunk scan**
+
+> **(GR-93)** *(proven; asserted **EQUAL** to the landed `2^M` ground
+> truth (`gcap.two_ec_subsets` at `kmin = 1`, via `gorient.prep_shape`)
+> at **all 24 671** (inventory shape, matching) pairs — **0**
+> disagreements over **6606** violated (shape, `M`, chunk) triples — and
+> every constructed branch set asserted to lie in the canonical chunk
+> family; `--tf`)*
+>
+> Let `M` be a perfect matching, `F = E ∖ M`. If `term_M(S) > 0` then
+>
+> **(i)** every hub of `W_S` has **both** its `F`-branches inside `W_S`,
+> so `W_S` is a **union of `F`-cycles**;
+>
+> **(ii)** `ch(S) ⊆ M`, and `S = E(W_S) ∖ C` for a **vertex-disjoint**
+> set `C = ch(S) ⊆ M ∩ E(W_S)` with `|C| ≤ 2`;
+>
+> **(iii)** `∂(W_S) ⊆ M` and `|∂(W_S)| + 2|C| = z(S) ≤ 5`;
+>
+> **(iv)** conversely every such `(W, C)` whose `E(W) ∖ C` is a chunk
+> `≠ E(G°)` with `r ≥ 1` **is** violated at `M`.
+>
+> Hence the set of positive-term chunks at `M` is computed by a search
+> over the `2^{c(F)} − 1` nonempty unions of `F`-cycles together with
+> their `≤ 2`-element internal-matching subsets — **no chunk
+> enumeration**, and the search is *complete*.
+>
+> **(v)** Every proper union of `F`-cycles is one side of a **cyclic**
+> edge cut of `G°` (both sides contain a circuit), so
+> `|∂(W)| ≥ λ_c(G°)`, the cyclic edge connectivity.
+
+*Proof.* (i): by (GR-91)(iii)–(iv) a positive term forces `s_M(S) = 0`,
+i.e. every interior's matching branch is its free branch; then an
+interior's two `F`-branches are its two `S`-branches, and a hub of
+`S`-degree 3 has its matching branch in `S` and its other two branches in
+`S` as well. So no `F`-branch leaves `W_S`, and `F` restricted to `W_S`
+is 2-regular. (ii)–(iii): the chords and exits are exactly the free
+branches, all in `M` by `s_M(S) = 0`; `z(S) ≤ 5` is `r(S) ≥ 1` with
+(GR-92)(ii); `2|C| ≤ z ≤ 5`. `E(W_S) ∖ S ⊆ ch(S)` by definition, and
+chords are pairwise vertex-disjoint (a hub has one free branch). (iv):
+such an `(W, C)` has every free branch in `M`, hence `s = 0`, hence
+`term = r ≥ 1`. (v): `W` and `V ∖ W` are each nonempty unions of
+`F`-cycles, so each contains a circuit. ∎
+
+**Reading.** This is the pass's instrument, and it is a genuine change of
+complexity class, not a constant-factor win. On the inventory
+`c(F) ∈ {1, 2}` (`{1: 22538, 2: 2133}` over the 24 671 pairs), so the
+**largest union search is 3 subsets** where the landed route scans up to
+`2^18 = 262 144` branch masks; and because the search's cost depends on
+`c(F)` — not on `|E|` — it runs unchanged at `n_hub = 40`. That is what
+makes *Step G115*'s reach possible, and it is also why the refutation in
+*Step G114* was findable at all: a `2^{15}`-chunk scan over 36 860
+Petersen length assignments is minutes of work per shape family, while
+this is milliseconds.
+
+Two structural corollaries used below: a violated chunk needs a
+**zero-excess-ish short `F`-cycle union**, and — via (v) — a shape whose
+cyclic edge connectivity is `≥ 6` has **no** violated chunk with a proper
+`W_S` at all, whatever `M` is.
+
+**Confidence: proven-informally** (the proof above; and exact against the
+landed ground truth at every (inventory shape, matching) pair, with the
+constructed sets asserted to be canonical chunks). **What would change
+this:** a violated chunk whose hub set is not `F`-cycle-closed — the
+`--tf` assertion is an equality of *sets*, so any such chunk fails it.
+F13 controls (2) and (3) show both branches of the search are
+load-bearing: dropping the spanning union `W = V` misses violations at
+255 (shape, `M`) pairs, dropping the chord option at 261.
+
+---
+
+### Step G113 — (GR-94): two **PROVEN** sufficient conditions for `B(M) = 0` — and they cover the whole inventory and `n_hub = 8`
+
+Let `X(G°)` be the set of **length-5** branches; `|X| ≤ 2` since (GR-21)
+pins the total excess at 6 and (SD-6) caps a branch at 5.
+
+> **(GR-94)** *(proven; both hypotheses' witnesses re-verified to give
+> `B(M) = 0` at every shape where they hold — **0** failures at 4924
+> inventory shapes and 39 689 `n_hub = 8` shapes; `--suff`, `--big8`)*
+>
+> Let `M` be a perfect matching of a habitat shape with `X ∩ M = ∅`.
+>
+> **(i) The spanning case is discharged by the length-5 proviso alone.**
+> No violated chunk has `W_S` spanning.
+>
+> **(ii) Hamiltonian condition.** If in addition `F = E ∖ M` is a
+> **single** circuit (a Hamiltonian cycle of `G°`), then `B(M) = 0`.
+>
+> **(iii) Cyclic-edge-connectivity condition.** If instead
+> `λ_c(G°) ≥ 6` — including the degenerate case of no cyclic edge cut at
+> all — then `B(M) = 0`.
+>
+> **(iv) Existence of the anchor.** Such an `M` exists at every habitat
+> shape: `G°` is a bridgeless cubic (multi)graph of even order and
+> `|X| ≤ 2`, so **Plesník 1972** supplies a perfect matching avoiding any
+> two prescribed branches.
+>
+> Hence **(R2) holds at every habitat shape satisfying (ii) or (iii)**.
+
+*Proof.* (i): a spanning `W_S` has `∂(W_S) = ∅`, so `z(S) = 2|C|` and
+`r(S) = Σ_{γ ∈ C} exc(γ) − 2|C|` by (GR-92)(i)'s identity; `r ≥ 1` with
+`|C| ≤ 2` ((GR-93)(iii)) forces `Σ_C exc ≥ 2|C| + 1`, i.e.
+`exc(γ) = 3` for some `γ ∈ C ⊆ M` — a length-5 branch in `M`, excluded.
+(ii): `c(F) = 1`, so the only union of `F`-cycles is `V(G°)` itself, and
+(i) applies. (iii): by (GR-93)(v) a violated chunk with proper `W_S` has
+`|∂(W_S)| ≥ λ_c ≥ 6`, so `z(S) ≥ 6` and `r(S) ≤ −exc(S) ≤ 0`; the
+spanning case is (i). (iv) is the cited theorem. ∎
+
+**Reading — and the measured coverage, which is the point.**
+
+- **(ii) covers the entire inventory: 4924 of 4924.** Every one of the
+  4924 shapes carries a Hamiltonian 2-factor whose complementary matching
+  misses every length-5 branch. So on the stratum where (GR-64) measured
+  `min_M B(M) = 0`, that value is now **proven**, shape by shape, by a
+  theorem plus a finite check of its hypothesis — not merely observed.
+- **(ii) covers 39 687 of the 39 689 `n_hub = 8` habitat shapes**, and
+  the remaining 2 have `min_M B(M) = 0` by the general (GR-93) test. So
+  (R2) is proven or verified across **both** exhaustive strata.
+- **(iii) covers 2844 of 4924** — precisely the shapes with *no* cyclic
+  edge cut. The measured cyclic-edge-connectivity census is
+  `{2: 141, 3: 1937, 4: 2, None: 2844}`: **no inventory shape** has
+  `4 < λ_c < ∞`, so (iii) is the weaker condition here and becomes the
+  interesting one only at larger `n`.
+- **(iv) is verified directly, not taken on trust.** Length-5 counts run
+  `{0: 3021, 1: 1860, 2: 43}` and **0** shapes fail to admit an
+  `X`-avoiding matching.
+
+**Confidence: (i)–(iii) proven-informally** (self-contained, three lines
+each on (GR-91)–(GR-93)). **(iv) true-modulo-a-named-gap:** Plesník's
+theorem — *"an `(m−1)`-edge-connected `m`-regular graph of even order has
+a 1-factor avoiding any prescribed `m−1` edges"*, Ján Plesník,
+*Connectivity of Regular Graphs and the Existence of 1-Factors*,
+Matematický časopis **22** (1972), no. 4, 310–318 — is stated for
+**graphs**, and habitat shapes are **multigraphs**; the multigraph
+reading is the named gap. It is not load-bearing on any figure here: the
+`X`-avoiding matching is *exhibited* at every shape this pass touches
+(4924 + 39 689 + 36 860), so (iv) is used only for the general statement.
+**What would change this:** for (ii)/(iii), a shape satisfying the
+hypothesis with `B(M) > 0` — asserted against at every covered shape;
+F13 control (5) shows the length-5 proviso is not decoration (a
+Hamiltonian 2-factor whose matching *does* contain a length-5 branch has
+`B(M) > 0` at 237 (shape, `M`) pairs).
+
+---
+
+### Step G114 — (GR-95): **(GR-64)(R2) is FALSE** — 180 habitat shapes on the Petersen graph where **every** anchor matching has `B(M) ≥ 1`
+
+(GR-94)(ii)'s hypothesis is not always satisfiable, and the first place
+it fails is the obvious one: a **non-Hamiltonian** host. The Petersen
+graph `P` is a habitat shape at **36 860 of the 36 960** length
+assignments (GR-21) allows, and which ones fail is itself a checkable
+sentence: `P` is cubic, loop-free, of girth 5, and its **only**
+3-edge-cuts are its vertex stars, so the only proper connected `W` with
+`|W| ≥ 2` and `∂(W) = 3` is a single hub's complement — at which (GR-25)
+demands `exc(E(W)) ≥ 1`. Hence the gate rejects **exactly** the 100
+profiles that pile all 6 excess units onto one hub's three branches
+(asserted in both directions), and every other cut is `∂ ≥ 4`, i.e.
+`2∂ ≥ 8 ≥ 7`, free of any length condition. `P` is off the swept
+inventory (`n_hub = 10`) and it is the natural test of the boundary
+*Step G113* draws.
+
+> **(GR-95)** *(**REFUTED** — a witness family, machine-certified two
+> independent ways; `--bigp`, `--wit`, `--dfg`)*
+>
+> **(i) The refutation.** Of the **36 860** habitat length assignments of
+> the Petersen graph (all `excess_profiles(15, 6)` distributions gated
+> through `cflank.cubic_habitat`; the 100 rejects are exactly the
+> star-concentrated profiles, asserted both ways), exactly **180**
+> satisfy
+> > `B(M) ≥ 1` **at every one of their 6 perfect matchings**, i.e.
+> > `min_M B(M) = 1`.
+>
+> The distribution is `{0: 36 680, 1: 180}`. **So (GR-64)(R2) is false:
+> not every habitat shape carries a collision-slack anchor matching**,
+> and by (GR-64)(iii) each of the 180 carries a **genuine floor**
+> `d_fg ≥ 1` from the collision bound alone, with no colouring input.
+>
+> **(ii) A local criterion at `P`.** Every 2-factor of `P` is a pair of
+> disjoint pentagons (asserted at all 6 matchings of all 36 860 shapes),
+> so `M` is the 5 branches between them, and
+> > `B(M) = 0` **iff** `X ∩ M = ∅` **and both pentagons of `F` carry
+> > excess `≥ 1``.
+>
+> Asserted at all **221 160** (Petersen habitat shape, matching) pairs,
+> 0 failures.
+>
+> **(iii) Exactly two mechanisms, both with demand 1.** Over all
+> witnesses and all their matchings the violated chunks are
+> `{(z, exc, ch) = (5, 0, 0): 720, (2, 3, 1): 360}` — a **zero-excess
+> pentagon of the 2-factor** (proper `W_S`, `∂ = 5`, chordless, `r = 1`),
+> and **`E(G°)` minus the length-5 branch** when that branch lies in `M`
+> (spanning `W_S`, one chord, `r = 1`). No `r = 2` mechanism appears.
+>
+> **(iv) The witnesses' shape.** Every witness has **exactly one**
+> length-5 branch and spreads the remaining 3 excess units over 2 or 3
+> further branches: long-branch length multisets
+> `{(5,4,3): 120, (5,3,3,3): 60}`. So the refutation needs the excess
+> **spread**, and is a property of the **length assignment**, not of the
+> graph — the same graph carries 36 680 assignments with
+> `min_M B(M) = 0` (F13 control (6)).
+>
+> **(v) Habitat membership is certified canonically, not by (GR-25)
+> alone.** `gridcol.class_shape` — the canonical certificate, which runs
+> `kslide.no_rigid_branch_union`, a `2^M` scan with an exact matroid rank
+> inside — accepts **all 180** witnesses (0 rejections, ~2 s each). And
+> `min_M B(M) = 1` is reproduced at all 180 by the **landed `2^M` chunk
+> scan** (`gcap.two_ec_subsets` via `gorient.prep_shape`), 0
+> disagreements with the (GR-93) route.
+>
+> **(vi) (a′) is NOT refuted, and the E1(iv)/E2 detector does NOT
+> fire.** At the 180 witnesses, computed exactly (exhaustive `z`-cube, no
+> deviation cap): `d_adm ∈ {2: 60, 3: 120}` — every one **finite**, and
+> every one `≥ min_M B(M) = 1`. Witnesses with `min_M B > d_adm`
+> (which would prove `d_adm < d_fg`): **0**.
+
+*Proof of (ii).* By (GR-93) the only unions of `F`-cycles are the two
+pentagons and `V(P)`. A pentagon `W` has `E(W) = W`'s five branches (no
+internal `M`-branch, since `M` joins the pentagons), so `S = E(W)` is a
+chunk of cycle rank 1 with `z = ∂ = 5` and `r = 1 − exc(S)`: violated iff
+`exc(S) = 0`. The spanning case is (GR-94)(i): violated iff some
+`γ ∈ C ⊆ M` has `exc(γ) = 3`, and with only one length-5 branch the
+`|C| = 2` sub-case (`Σ_C exc ≥ 5`) needs it too. ∎
+
+**Reading — what this costs and what it buys.**
+
+- **The (R2) route to (a′) is dead as posed.** YLOC's stated payoff was
+  *"it would prove the collision mechanism can never obstruct (a′)"*.
+  The mechanism **can** obstruct: there are habitat shapes where every
+  anchor matching pays. Any (a′) argument that wanted (R2) as a lemma
+  must be re-aimed.
+- **What survives is strictly weaker and strictly enough** — see
+  (GR-96)(iii): (a′) never needed `min_M B(M) = 0`, only
+  `min_M B(M) ≤ d_adm`, and *that* is unrefuted. Stated honestly: the
+  detector is **vacuous wherever `min_M B = 0`** — 81 302 of the 81 482
+  shapes measured — so the only **non-vacuous** test of dominance
+  anywhere is at these **180** witnesses, and there it passes with room
+  (`d_adm ∈ {2,3}` against a floor of 1). The refutation therefore
+  **sharpens** the target instead of closing the path, and supplies the
+  first shapes at which the dominance statement has content.
+- **(GR-64) is upgraded, not damaged.** At 180 shapes the bound is a
+  non-vacuous lower bound on `d_fg` — the first ones known. YLOC named
+  this outcome as *"a genuine floor on `d_fg`"* and it is exactly what
+  arrived.
+- **The boundary is Hamiltonicity, and it is sharp in both directions.**
+  (GR-94)(ii) covers every shape of both exhaustively-swept strata; the
+  refutation sits at a non-Hamiltonian host and needs, on top of that,
+  a *spread* excess profile (iv). Both hypotheses are necessary: the
+  Petersen graph with `(5,5)` lengths, or with the excess concentrated,
+  has `min_M B(M) = 0`.
+- **A by-product on (a′), reported and NOT developed.** At the 180
+  witnesses `d_fg` is also computed exactly, and `d_fg = d_adm` at
+  **every one** (`(d_adm, d_fg) ∈ {(2,2): 60, (3,3): 120}`). This is
+  **new territory for (a′)** — (GR-58)'s exhaustive census is
+  `n_hub ≤ 6` plus NKp(6)/NK55(6), and no `n_hub = 10` non-Hamiltonian
+  shape had been tested — and it is a *corroboration*, not a proof, and
+  not a re-run of (GR-58)'s census. The evaluator (`yloc.good_z`, the
+  (GR-56)(iii) criterion) is cross-checked against the landed
+  `gorient.fully_good_scan` at all 5640 admissible colourings of 3
+  seeded witnesses (F13 control (7)).
+
+**Confidence: REFUTED** — (GR-64)(R2) is false as a theorem. The
+witnesses are exhibited, canonically habitat-certified, and their
+`min_M B` re-derived by the landed `2^M` route; the matching enumeration
+is complete (6 of 6, no cap). **What would change this:** only a defect
+in the (GR-64) statistic itself — the witnesses are checked with the
+landed `yloc.collide`/`coll_terms`/`pack_bound` on the landed chunk
+family, so a repair would have to move (GR-64), not this step. Note
+what is *not* claimed: the 180 are **not** proven minimal at
+`n_hub = 10` (only the Petersen graph is swept there), and no claim is
+made about `n_hub = 12+`.
+
+---
+
+### Step G115 — (GR-96): **(GR-64)(R1) delivered** — the sweep's new reach, the successor residual, and where this leaves (a′), E3 and the (GR-15) line (hand-off)
+
+> **(GR-96)** *(measured, exhaustive where stated, caps disclosed;
+> `--big8`, `--bigp`)*
+>
+> **(i) The extension.** By (GR-93) the chunk side of the collision
+> sweep costs `2^{c(F)}`, not `2^M`, so (GR-64)'s disclosed cap lifts.
+> `min_M B(M)`, exact and **uncapped on the chunk side**:
+>
+> | stratum | shapes | `min_M B(M)` | completeness |
+> |---|---|---|---|
+> | `n_hub ≤ 6` habitat (the (GR-64) inventory) | 4920 | `0` at all | exhaustive |
+> | W3M / W3 / W4 / NKo2v | 4 | `0` at all | the named shapes |
+> | **`n_hub = 8` habitat** | **39 689** | **`0` at all** | **exhaustive** (AGLU's landed count) |
+> | **Petersen, `n_hub = 10`** | **36 860** | **`0` at 36 680, `1` at 180** | **exhaustive for that graph** |
+> | **W5, `n_hub = 16`** (`E = 24`) | 1 | `0` | out of reach for (GR-64) |
+> | **NK/NKo/NKp/NK55 at `m = 6`**, `n_hub = 30` (`E = 45`) | 4 | `0` at all | out of reach for (GR-64) |
+> | **NK/NKo/NKp/NK55 at `m = 8`**, `n_hub = 40` (`E = 60`) | 4 | `0` at all | out of reach for (GR-64) |
+>
+> **81 482 shapes** in total, row-wise (W3M's isomorphism class occurs
+> both as a named shape and inside the exhaustive `n_hub = 8` stratum),
+> against (GR-64)'s 4924.
+>
+> **(ii) What stays capped.** `n_hub = 10` **beyond the Petersen graph**
+> and `n_hub ≥ 12` beyond the four necklace families have **no search
+> run** — there is no habitat enumerator there (GDEV's standing finding,
+> now one stratum further out: `aglu.cubic_iso_classes(8)` costs ~116 s
+> and `(10)` is ~50× that). `gorient.perfect_matchings`' cap is
+> **disclosed as NOT bound** at every shape above (largest matching
+> count 772, at `n_hub = 40`). The Petersen sweep is complete for *that
+> graph*, not for `n_hub = 10`.
+>
+> **(iii) The successor residual — `min_M B(M) ≤ d_adm` ("collision
+> dominance").** This is what (a′) actually needs from the collision
+> layer, it is **weaker than (R2)**, and it is **unrefuted**: the
+> E1(iv)/E2 detector reports **0** firings at every shape measured. It is
+> **vacuous** wherever `min_M B(M) = 0` — 81 302 of the 81 482 shapes
+> above, including all of (GR-64)'s own 4924 — so its only **non-vacuous**
+> evaluation anywhere is at the **180** (GR-95) witnesses, where
+> `d_adm ∈ {2, 3}` against a floor of `1`, computed exactly. **OPEN as a
+> theorem**, and now with 180 shapes at which it has content. A proof would restore the whole
+> payoff YLOC wanted from (R2); a refutation would be `d_adm < d_fg`,
+> i.e. **an (a′) refutation and an E2 event**.
+
+**Reading — the route ledger, and the consequence for (a′) stated
+precisely (the dispatch required this).**
+
+- **Route ledger. Entry 1** (uniform fully-good existence at `Λ = ∅`,
+  `D = 0`) — **OPEN, unchanged in status**; **(a′) stays its primary and
+  still carries NO bar**. What moves is the map: input (Y)'s sub-target
+  **(GR-64)(R2) is REFUTED** (was: open, measured at 4924 shapes) and
+  **(GR-64)(R1) is DELIVERED** (was: a named residual), and the residual
+  the arc should carry forward on this leg is **(GR-96)(iii)**, not
+  (R2). **Entries 2–5 untouched**; entry 5 stays PROVEN by (GR-54).
+- **The consequence for (a′), exactly.** (R2) was a *sufficient*
+  condition for the collision mechanism never to obstruct (a′). Its
+  refutation removes that sufficiency but **refutes nothing about
+  (a′)**: the obstruction (GR-64) prices is a *lower bound on `d_fg`*,
+  and (a′) fails only if that bound (or anything else) pushes `d_fg`
+  **above `d_adm`**. At all 180 witnesses `d_adm` exceeds the floor and,
+  measured exactly, `d_fg = d_adm` — (a′) **holds** there. So the honest
+  statement is: **the collision layer is a real obstruction with a real
+  floor, and every shape ever measured still satisfies (a′)**; the
+  quantitative gap between the floor and `d_adm` is (GR-96)(iii).
+- **Input (Y)** stays **OPEN**. Its two-rung reading from (GR-65)–(GR-66)
+  is unchanged; what this pass adds is that the *chunk* rung's cheapest
+  named sub-target is settled negatively, and that the rung has a
+  **complete, polynomial decision procedure** at a fixed matching
+  ((GR-93)) — which is the first algorithmic handle the arc has on (Y)'s
+  matching quantifier.
+- **The (b′) bar was respected.** (GFLOW owns (b′) this wave.) One
+  by-product is reported and **not developed**: (GR-93)(v) says the
+  violated hub sets are sides of *cyclic* edge cuts, so the
+  cyclic-edge-connectivity census `{2: 141, 3: 1937, 4: 2, None: 2844}`
+  is available to whichever direction next needs a cut-connectivity
+  invariant on the stratum. Nothing here measures or claims anything
+  about (b′)'s availability half.
+- **Suggested successors, in order** (a coordinator/user call, not made
+  here): **(1)** (GR-96)(iii), collision dominance — the only sub-target
+  on the (a′) path that is both weaker than (Y) and still buys the
+  collision layer outright, and it is now cheap to *test* anywhere
+  (GR-93) runs; **(2)** an `n_hub = 10` habitat enumerator, which would
+  make the (GR-95) witness family a stratum-level statement rather than
+  one graph's, and is the standing structural blocker of the whole arc
+  (GDEV, re-confirmed); **(3)** input (Y)'s distance rung on (GR-55)'s
+  coset coordinates, unchanged from YLOC's hand-off.
+- **Riders, verbatim**: everything at **`Λ = ∅`**, **`D = 0`**, and
+  **modulo (GR-4′)** where a closure chain is concerned; the `Λ ≠ ∅`
+  closed-form analogue stays **unswept**; the `D > 0` lift stays
+  **unswept**; **none of this closes (GR-15)**; **(GR-15) OPEN,
+  unchanged in both directions**. (GR-64)(iii)'s prune stays **sound but
+  INCOMPLETE** — **1250 of 24 671** killed, incompleteness **7856** —
+  and both numbers travel with any figure derived from it; disjointness
+  stays load-bearing, and (GR-91)(v) only *restates* the packing, it does
+  not weaken the hypothesis. (GR-65)'s fit identity is consumed as a
+  landed input and not re-derived. No landed figure moves: (GR-64)'s
+  `B(M)` distribution and its `min_M B = 0` verdict on the inventory are
+  **reproduced exactly** here from the colouring-free side.
+
+**TERMINATION check (E1/E2/E3) — this draft's reading; the coordinator
+re-runs it.**
+
+- **E1 does NOT fire.** No g-flank; nothing here exhibits a shape whose
+  every admissible colouring binds — no colouring is enumerated at all
+  except in *Step G114*(vi)'s `d_adm`/`d_fg` computation and F13 control
+  (7). Clause **(iv)** applied explicitly: **nothing found min-form
+  `d_adm < d_fg`**, finite or infinite; the detector is run at the 180
+  refuting witnesses precisely because they are where a firing was most
+  plausible, and it reports **0**. Clause **(v)** applied explicitly:
+  `d_adm` is computed **exactly, by exhaustive `z`-cube enumeration with
+  no deviation cap**, at all 180 witnesses and is **finite at every
+  one** — corroboration of (GR-54)'s proof that (v) is unfirable at
+  `Λ = ∅`, `D = 0`, not a new claim. Clause (iii) respected: nothing
+  here is a large-`d` claim.
+- **E2 does NOT fire.** (a′) is neither refuted nor unprovable-as-posed.
+  What is refuted is a **sub-target** ((GR-64)(R2)) — a named residual of
+  input (Y), strictly smaller than (Y), which is itself strictly smaller
+  than (a′). A sub-target refutation with a live weaker successor
+  ((GR-96)(iii)) is a route event, and a route demotion is explicitly
+  **not** an E2 event.
+- **E3 is ARMED (by GBAL's entry-5 HIT) and does NOT fire.** E3's target
+  is **entry 1**, and (a′) did not HIT here — the dispatch said so in
+  advance and it is confirmed: (R2) is a sub-target of input (Y), not
+  (a′), so **even a (R2) HIT would not have fired E3**, and a (R2)
+  *refutation* fires it still less. **Firing is a coordinator action;
+  this draft does not fire it and must not.**
+
+---
+
+### Verification (Steps G110–G115)
+
+`notes/scripts/w4/gcoll.py` (**new with this pass**, untracked at draft
+time; imports — all **read-only** — `yloc` (`all_shapes`, `named_shapes`,
+`shape_ctx`, `matb`, `collide`, `coll_terms`, `pack_bound`, `adm_zs`,
+`is_balanced_z`, `dist_of`, `good_z`, `d_adm_exact`), `cflank`
+(`admissible`, `cubic_habitat`, `excess_profiles`), `gorient`
+(`cm_colouring`, `fully_good_scan`, `perfect_matchings`), `gbal`
+(`z_to_map`), `gcap` (`branch_stats`), `gridcol` (`class_shape`), `aglu`
+(`cubic_iso_classes`), `gpsa` (`branches_at`)). **No rank and no
+colouring is touched** except in *Step G114*(vi) (`d_adm`/`d_fg`, through
+the landed evaluators) and F13 control (7). Local devices, none shadowing
+a §1 primitive: `chunk_prof` / `slack_of` / `stat_of` (the (GR-91)–(GR-92)
+statistics), `f_cycles` (the 2-factor decomposition), `is_chunk` (the
+**only** duplicated canonical decision — the membership predicate of
+`gcap.two_ec_masks(kmin = 1)`, needed because (GR-93) decides chunk-hood
+for a *constructed* branch set without building the family; `--tf`
+asserts every set it accepts lies in `gcap.two_ec_subsets`' own family,
+at every violated chunk of every (inventory shape, matching) pair),
+`violated_2f` / `pack_of` / `min_B` (the (GR-93) search),
+`cyclic_edge_conn` / `_has_circuit`, `long5` / `ham_witness` /
+`avoid5_witness` (the (GR-94) hypotheses), `petersen_family` /
+`petersen_witnesses` / `stratum8` / `big_named` / `inventory` (shape
+inventories).
+
+**No geometry is sampled anywhere in this pass** — every object is a hub
+multigraph, a branch subset, a perfect matching or a 2-factor — so the
+standing `plane_basis` degeneracy guard has no sampled placement to
+protect. It is discharged instead by routing **every** structural verdict
+through a landed oracle and asserting agreement: `yloc.collide` /
+`coll_terms` / `pack_bound` for the (GR-64) statistic,
+`gcap.two_ec_subsets` (via `gorient.prep_shape`) for the chunk family,
+`cflank.cubic_habitat` **and** `gridcol.class_shape` for habitat
+membership, `gorient.perfect_matchings` for the matchings,
+`gorient.fully_good_scan` for full goodness, `yloc.d_adm_exact` for
+`d_adm`. Exact integers only; no floating point outside the self-timing
+prints; the single rng is seeded from `C_SEED = 20260819` and printed;
+the witness family is **deterministic** (no rng anywhere in *Step G114*).
+
+```
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gcoll.py --slack   #  ~25 s  (GR-91): 1 126 991 triples, the even slack, B(M) reproducing (GR-64)'s distribution
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gcoll.py --dem     #  ~21 s  (GR-92): all 217 516 proper chunks, the six profiles, the two-cut normal form
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gcoll.py --tf      #  ~23 s  (GR-93): set-equality with the 2^M ground truth at all 24 671 (shape, M) pairs
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gcoll.py --suff    #   ~6 s  (GR-94): coverage 4924/4924 (Hamiltonian), 2844/4924 (cyclic), 0 failures
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gcoll.py --big8    # ~226 s  (GR-96)(i): the complete n_hub = 8 stratum, 39 689 shapes
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gcoll.py --bigp    # ~241 s  (GR-95)/(GR-96): the Petersen family (36 860), the 180 witnesses, W5 + the eight necklaces
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gcoll.py --wit     # ~455 s  (GR-95)(iii)/(v): class_shape + the landed 2^M scan at all 180 witnesses
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gcoll.py --dfg     # ~311 s  (GR-95)(vi): exact d_adm and d_fg at all 180 witnesses; the E1(iv)/E2 detector
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gcoll.py --adv     # ~241 s  F13: seven controls, all must fire
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gcoll.py --validate  # ~1530 s -- WELL OVER the 600 s foreground budget
+```
+
+**Budget note for the landing dispatch** (the README's *Two invocations
+do not fit a 600 s foreground budget* row, extended): `--validate` runs
+~1530 s and does **not** fit a sitting. The nine modes fit as **three**
+foreground invocations: `--slack --dem --tf --suff` together (~75 s),
+then `--big8 --bigp` together (~467 s), then `--wit` alone (~455 s),
+then `--dfg --adv` together (~552 s) — four, if `--wit` is kept alone as
+measured. Every figure quoted in *Steps G110–G115* was produced at
+`PYTHONHASHSEED=0` and **re-confirmed per mode after the driver's last
+edit**.
+
+**The F11 table — which driver mode tests which sentence.**
+
+| sentence | mode | what is asserted |
+|---|---|---|
+| (GR-91)(i): `coll = |W_S| − 2|M ∩ S| = z − s` | `--slack` | both equalities at **1 126 991** (inventory shape, matching, proper chunk) triples, against the landed `yloc.collide` |
+| (GR-91)(ii): the slack is **even** | `--slack` | `s % 2 == 0` at every one of the same triples; census `{0, 2, 4, 6, 8, 10, 12}` |
+| (GR-91)(iii): `term = r − s`, so `term > 0 ⟺ (r ≥ 1 ∧ s = 0)` and `term = r` | `--slack` | all three at every triple; positive-term census `{1: 5329, 2: 1277}` |
+| (GR-91)(iv)–(v): the collision set is the interior set; `B(M)` unchanged | `--slack` | set-equality at every positive term; `pack_bound` of the reformulated terms equal to `yloc.coll_terms`' at every (shape, `M`) |
+| (GR-91) reproduces (GR-64)'s headline | `--slack` | `B(M)` distribution `{0: 19633, 1: 3482, 2: 1068, 3: 380, 4: 108}` over 24 671 pairs and `min_M B = 0` at all 4924 — (GR-64)'s landed figures, colouring-free |
+| (GR-92)(i): the capacity floor `cap ≥ 7 + Σ_ch(4 − exc)` / the spanning identity | `--dem` | both at **all 217 516** proper chunks of the inventory |
+| (GR-92)(ii): **only six** `(z, exc)` profiles demand; `r ≤ 2`; `r = 2` only at `(3,1)`/`(4,0)` | `--dem` | asserted per chunk (an unclassified profile aborts); 15 470 demanding chunks in twelve `(z, exc, ch, ∂, r)` profiles |
+| (GR-92)(iii): the two-cut normal form | `--dem` | at all **314** two-exit chordless demands: `(z, exc) = (2,3)`, both cut branches length 2, complement excess 3 |
+| (GR-92)(iv): a demanding chord is long | `--dem` | `Σ_ch exc ≥ 2ch + 2 − ∂` (proper) / `≥ 2ch + 1` (spanning) at every demanding chunk with a chord |
+| (GR-93): the 2-factor search is **exact and complete** | `--tf` | **set equality** with the `2^M` ground truth at all **24 671** (shape, `M`) pairs, 6606 violated triples, 0 disagreements |
+| (GR-93): the constructed sets are canonical chunks | `--tf` | membership in `gcap.two_ec_subsets`' family at every violated chunk found |
+| (GR-93): the search is `2^{c(F)}`, not `2^M` | `--tf` | `c(F)` census `{1: 22538, 2: 2133}`; largest union search **3** subsets against up to `2^18` masks |
+| (GR-94)(ii): Hamiltonian + no length-5 in `M` ⟹ `B(M) = 0` | `--suff`, `--big8` | the witness matching's `B(M)` computed and asserted `0` at all **4924** inventory shapes and **39 687** `n_hub = 8` shapes that satisfy the hypothesis |
+| (GR-94)(iii): `λ_c ≥ 6` + no length-5 in `M` ⟹ `B(M) = 0` | `--suff` | same, at the **2844** shapes satisfying it; `λ_c` computed exactly by a `2^n` cyclic-cut scan |
+| (GR-94)(iv): an `X`-avoiding matching exists | `--suff` | exhibited at **all 4924** shapes (0 failures); length-5 census `{0: 3021, 1: 1860, 2: 43}` |
+| (GR-94) coverage is total on both swept strata | `--suff`, `--big8` | `4924/4924`; `39 687/39 689`, remaining 2 at `min_M B = 0` by the general test |
+| **(GR-95)(i): (R2) is REFUTED** | `--bigp` | `min_M B(M)` over **all 36 860** Petersen habitat shapes: `{0: 36 680, 1: 180}`, matching enumeration complete (6 of 6, no cap) |
+| (GR-95)(ii): the Petersen local criterion | `--bigp` | asserted at all **221 160** (Petersen habitat shape, matching) pairs, plus "every 2-factor is two pentagons" at each |
+| (GR-95)(iii): exactly two mechanisms | `--wit` | violated-chunk census `{(5,0,0): 720, (2,3,1): 360}` over all witnesses × matchings; a third profile aborts |
+| (GR-95)(iv): the witnesses' excess profile | `--bigp` | long-branch multisets `{(5,4,3): 120, (5,3,3,3): 60}` |
+| the Petersen habitat gate's rejects are exactly the star-concentrated profiles | `--bigp` | both directions asserted over all **36 960** profiles: **100** rejected, each with a hub whose star carries all 6 units; **0** star-concentrated profiles accepted |
+| (GR-95)(v): the witnesses are habitat shapes, canonically | `--wit` | `gridcol.class_shape` accepts **all 180** (0 rejections); the landed `2^M` scan reproduces `min_M B = 1` at all 180 (0 disagreements) |
+| (GR-95)(vi): the E1(iv)/E2 detector does not fire | `--dfg` | exact uncapped `d_adm` at all 180 (`{2: 60, 3: 120}`), all finite; `min_M B > d_adm` at **0** |
+| the (a′) by-product: `d_fg = d_adm` at the witnesses | `--dfg` | exact `d_fg` at all 180; `(d_adm, d_fg)` pairs `{(2,2): 60, (3,3): 120}` |
+| (GR-96)(i): the extension's reach | `--big8`, `--bigp` | `39 689` (`n_hub = 8`, asserted equal to AGLU's landed count), `36 860` (Petersen), W5, four `m = 6` and four `m = 8` necklaces, each with its matching count and the cap shown unbound |
+| (GR-96)(ii): what stays capped | `--bigp` | printed as an explicit CAP DISCLOSED line naming the unswept strata |
+| F13 (1): the slack parity is not vacuous | `--adv` | **6753** odd slacks under a seeded one-hub perturbation off a matching |
+| F13 (2): the spanning union is load-bearing | `--adv` | dropping `W = V` misses a violation at **255** (shape, `M`) pairs |
+| F13 (3): the chord branch is load-bearing | `--adv` | dropping `C ≠ ∅` misses a violation at **261** pairs |
+| F13 (4): the demand predicate is non-trivial | `--adv` | both `r ≥ 1` and `r ≤ 0` proper chunks at **392 of 404** sampled shapes |
+| F13 (5): (GR-94)(ii)'s length-5 proviso is not decoration | `--adv` | a Hamiltonian 2-factor whose matching contains a length-5 branch has `B(M) > 0` at **237** pairs |
+| F13 (6): the refutation is a property of the **length assignment** | `--adv` | the Petersen graph carries **36 680** habitat assignments with `min_M B = 0` and **180** with `≥ 1` |
+| F13 (7): the (a′) by-product's evaluator is sound at `n_hub = 10` | `--adv` | `yloc.good_z` == `gorient.fully_good_scan` at all **5640** admissible colourings of 3 seeded witnesses |
+
+---

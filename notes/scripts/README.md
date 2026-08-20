@@ -784,6 +784,23 @@ exit 0, every quoted figure reproduced (~979 s total). One driver added
 move-down is a **design decision**, not a mechanical one. Pools POOL-OS / OQ /
 OG / OR / OC2 are pinned and disjoint from every earlier pool.
 
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/gcoll.py --slack --dem --tf --suff` | 75 s | `notes/Pencil-informal-grid.md` §(K-grid) continuation (direction GCOLL) *Steps G110–G113*: (GR-91)'s slack form and its **even-`s_M`** parity collapse asserted at **1 126 991** (inventory shape, matching, proper chunk) triples, colouring-free, 0 failures (25 368 at equality); (GR-92)'s demand classification; **(GR-93)'s `2^{c(F)}` criterion set-equal to the landed `2^M` ground truth at all 24 671 (shape, matching) pairs, 0 disagreements**; and (GR-94)'s two sufficient conditions |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/gcoll.py --big8 --bigp` | 467 s | ibid. *Step G115* ((GR-96), the (R1) sweep): `n_hub = 8` complete — 11 of 20 hub-multigraph classes carry a habitat assignment, **39 689** shapes (AGLU's landed count re-asserted), `min_M B(M) = {0: 39689}` with **39 687** covered by (GR-94)(ii)'s **proven** Hamiltonian condition; then Petersen at `n_hub = 10` — **36 860** habitat assignments of 36 960 profiles (the 100 rejects exactly the star-concentrated ones, asserted both ways), `min_M B(M) = {0: 36 680, 1: 180}`, and Hamiltonian coverage **0**, which is the prediction since Petersen is non-Hamiltonian |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/gcoll.py --wit` | 455 s | ibid. *Step G114* ((GR-95), the refutation): the **180** witnesses certified **four** ways — the landed `2^M` scan reproducing `min_M B` with 0 disagreements; **`gridcol.class_shape`**, the canonical habitat certificate with the matroid rank inside, accepting all 180 with 0 rejections; complete matching enumeration (6 of 6, no cap); and the local criterion at all **221 160** (shape, matching) pairs. Exactly two demand-1 mechanisms, `{(5,0,0): 720, (2,3,1): 360}` |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/gcoll.py --dfg --adv` | 552 s | ibid. the (a′) by-product and the **seven** F13 controls: `d_adm` (exhaustive `z`-cube, no deviation cap) and `d_fg` both `{2: 60, 3: 120}` at the 180 witnesses, so `d_fg = d_adm` at every one and the E1(iv)/E2 detector reports **0**; control (6) shows the refutation is a property of the **length assignment**, not the graph (36 680 assignments at `min_M B = 0` on the same graph); control (7) cross-checks `good_z` against `gorient.fully_good_scan` at 5640 colourings |
+
+**GCOLL (eighth fan-out, LANDED 2026-08-19).** `--validate` is **~1530 s** and
+does **not** fit a sitting, so it ran — by the dispatch and again by the
+coordinator at landing — as the **recorded four-invocation foreground split**
+above, one at a time, all exit 0, every quoted figure reproduced. One driver
+added (`w4/gcoll.py`), nothing existing modified. **No Macaulay2 leaf.** Its
+(GR-94)(iv) rests on **Plesník 1972** (*Connectivity of Regular Graphs and the
+Existence of 1-Factors*, Matematický časopis 22 (1972), no. 4, 310–318),
+coordinator-verified at EUDML; the theorem is stated for **graphs** while
+habitat shapes are **multigraphs**, which is a **named gap** and is not
+load-bearing — the avoiding matching is exhibited at every shape the pass
+touches.
+
 **GTMPL (eighth fan-out, LANDED 2026-08-19).** All **eight** modes re-run in the
 foreground by the coordinator at landing (`PYTHONHASHSEED=0`, explicit timeout,
 one at a time, all exit 0, every quoted figure reproduced) — ~352 s in total,

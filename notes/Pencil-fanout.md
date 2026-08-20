@@ -1,13 +1,13 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: EIGHT fan-outs and nine single directions dispatched; 36 of 37 directions
+**Status: EIGHT fan-outs and nine single directions dispatched; ALL 37 directions
 LANDED.** The seventh fan-out (YLOC / BALB / AGLU / ZNEQ / CIRR, §"Seventh fan-out") is
 **COMPLETE** — all five directions landed 2026-08-19. The **EIGHTH fan-out** (GTMPL / GFLOW /
-GCOLL / OSCHU / SIGZ, §"Eighth fan-out") was prepped and dispatched 2026-08-19: **GTMPL, GFLOW, SIGZ and OSCHU have
-LANDED** — an exact `n_hub` boundary for ledger attack (c)'s AA-glue case, (b′)'s first
-proven `n`-free constant, a **NO HIT** on the authorized disproof hunt that nonetheless kills
-the counting route to a disproof, and (a₁) reduced to one determinant — and **GCOLL alone is
-in flight**; each direction's own Status line is authoritative for its state.
+GCOLL / OSCHU / SIGZ, §"Eighth fan-out") is **COMPLETE** — all five landed 2026-08-19: an
+exact `n_hub` boundary for ledger attack (c)'s AA-glue case (GTMPL), (b′)'s first proven
+`n`-free constant (GFLOW), a **NO HIT** on the authorized disproof hunt that nonetheless
+kills the counting route to a disproof (SIGZ), (a₁) reduced to one determinant (OSCHU), and
+**(GR-64)(R2) REFUTED** with (R1) delivered (GCOLL).
 Ordinals run 1–29 (the eighth fan-out claims 25–29) and were assigned at dispatch, so
 landing order differs from ordinal order.
 
@@ -982,13 +982,13 @@ direction's own hand-off** — GTMPL by AGLU's hand-off item 1, GFLOW by BALB's
 **(GR-64)(R2)**, OSCHU by ZNEQ's input-(a) hand-off item 2, SIGZ by its item 3.
 The *candidate pool* is the arc's; only the ranking is the coordinator's.
 
-**Roster** (updated per landing):
+**Roster** — **all five LANDED 2026-08-19; the fan-out is COMPLETE**:
 
 | direction | ordinal | tier | owning § | target | status |
 |---|---|---|---|---|---|
 | **GTMPL** | 25th | compute-licensed | §(K-grid) | AA-glue realizability at `n_hub ≥ 10` — (GR-76)(iv)'s three templates | **LANDED 2026-08-19** — an EXACT BOUNDARY: impossible at every `n_hub ≤ 14`, REALIZED at 16 (§"Twenty-fifth direction") |
 | **GFLOW** | 26th | derivation-first | §(K-grid) | (b′)'s availability half — *Clause A′* sub-clause 2, the doubly-blocked case | **LANDED 2026-08-19** — a HIT at a DIFFERENT CONSTANT: sub-clause 1 PROVEN, sub-clause 2 REFUTED as posed, gap `≤ 12` modulo (R1) (§"Twenty-sixth direction") |
-| **GCOLL** | 27th | compute-licensed | §(K-grid) | **(GR-64)(R2)** — every habitat shape carries an anchor matching with `B(M) = 0` | **DISPATCHED 2026-08-19** |
+| **GCOLL** | 27th | compute-licensed | §(K-grid) | **(GR-64)(R2)** — every habitat shape carries an anchor matching with `B(M) = 0` | **LANDED 2026-08-19** — **(R2) REFUTED** by a Petersen witness family; (R1) DELIVERED (§"Twenty-seventh direction") |
 | **OSCHU** | 28th | derivation-first | §(K-out) | **(a₁)** class-uniformly — the Schubert non-jump `dim(D ∩ M̂ ∧ W) ≤ 1` (+ the (a₂) re-keying leg) | **LANDED 2026-08-19** — (a₁) half-proven, half-reduced to one determinant; the (a₂) leg a HIT (§"Twenty-eighth direction") |
 | **SIGZ** | 29th | compute-licensed | §(K-out) | the `σ > 0`-everywhere hunt — newly authorized, **pivot rule in force** | **LANDED 2026-08-19** — **NO HIT**, and the counting route to a disproof is DEAD as a theorem (§"Twenty-ninth direction") |
 
@@ -1350,6 +1350,105 @@ something to re-derive.
 G110–G115**; driver **`notes/scripts/w4/gcoll.py`**. Owning section stays
 authoritative; return any unconsumed remainder to the tail.
 
+### GCOLL — twenty-seventh direction (eighth fan-out)
+
+**Status: LANDED 2026-08-19 — (GR-64)(R2) is REFUTED by witness, and
+(GR-64)(R1) is DELIVERED. Both deliverables landed; the fifth and last of the
+eighth fan-out, which this closes.** §(K-grid) **extended**, **Steps
+G110–G115**, labels **(GR-91)–(GR-96) CLAIMED EXACTLY**. Driver
+**`notes/scripts/w4/gcoll.py`** (nine modes; `--validate` is ~1530 s and does
+**not** fit a sitting, so it ran — by the dispatch and again by the coordinator
+at landing — as a recorded **four-invocation foreground split**, one at a time,
+all exit 0, every quoted figure reproduced).
+
+**The three attacks the spec named collapsed into one.** (GR-91) rewrites the
+collision statistic in **slack** form: `coll_M(S) = z(S) − s_M(S)` with
+`s_M(S)` **always even** (a 2-factor crosses a cut evenly), so a positive
+(GR-64) term is exactly a **zero-slack** chunk and equals that chunk's demand
+`r(S) ∈ {1,2}`. That collapses attack (c) — the spec's "thin extremal family"
+at `(z,exc) ∈ {(3,1),(4,0)}` — into the same condition as the `r = 1` family:
+**not thinner, identical**. Attack (a), the exchange argument, was never
+needed, because **(GR-93)** supplies a better instrument: a violated chunk's
+hub set is a **union of cycles of the 2-factor**, so violation detection at a
+fixed `M` is a `2^{c(F)}` search with **no chunk scan** (max 3 subsets on the
+inventory against `2^18` masks), set-equal to the landed `2^M` ground truth at
+all 24 671 (shape, matching) pairs.
+
+**The positive half is a theorem, not a measurement.** **(GR-94)**: `B(M) = 0`
+whenever `M` avoids the (≤ 2) length-5 branches and either `E ∖ M` is
+Hamiltonian or the cyclic edge connectivity is ≥ 6. The Hamiltonian condition
+alone covers **4924/4924** inventory shapes and **39 687/39 689** of the
+complete `n_hub = 8` stratum — so on both exhaustively-swept strata (R2) is
+**proven**, and the refutation sits exactly where the hypothesis fails.
+
+**The refutation.** **(GR-95)**: of the Petersen graph's **36 860** habitat
+length assignments, **180** have `min_M B(M) = 1` — **every** anchor matching
+pays. Certified four ways: the landed `2^M` scan reproduces `min_M B` at all
+180 (0 disagreements); **`gridcol.class_shape`** — the *canonical* habitat
+certificate, with the matroid rank inside rather than merely (GR-25) —
+accepts all 180 (0 rejections); the matching enumeration is complete (6 of 6,
+no cap); and a local criterion is asserted at all **221 160** (shape, matching)
+pairs. Exactly **two** mechanisms, both demand 1. The refutation needs the
+excess **spread** and is a property of the **length assignment**, not of the
+graph — the same graph carries 36 680 assignments with `min_M B = 0`, which is
+F13 control (6). **(GR-96)** then delivers **(GR-64)(R1)**: `min_M B(M)` exact
+and uncapped on the chunk side at **81 482** shapes, including the ten cases
+(GR-64) had disclosed as out of reach.
+
+**Three coordinator adjudications on landing.**
+
+*(1)* **The consequence for (a′) is precisely bounded, and the pass got it
+right.** (R2) was *sufficient* for "the collision mechanism can never obstruct
+(a′)"; its refutation removes that sufficiency and **refutes nothing about
+(a′)**. The E1(iv)/E2 detector reports **0**: at every witness
+`d_adm ∈ {2,3}` (exact, uncapped `z`-cube) against a floor of 1. The successor
+is strictly weaker and strictly enough — **collision dominance
+`min_M B(M) ≤ d_adm`**, (GR-96)(iii), **OPEN**, now with its first 180 shapes
+of *non-vacuous* content and vacuous at the other 81 302. **This is a genuine
+gap-map status move**, the wave's only one: (R2) → REFUTED, (R1) → DELIVERED.
+
+*(2)* **The Plesník citation is coordinator-verified against a primary
+source.** (GR-94)(iv)'s existence clause rests on **Ján Plesník,
+*Connectivity of Regular Graphs and the Existence of 1-Factors*, Matematický
+časopis **22** (1972), no. 4, 310–318** — checked at EUDML: author, title,
+journal, volume, issue and page range all correct, and the quoted statement
+("an `(m−1)`-edge-connected `m`-regular graph of even order has a 1-factor
+avoiding any prescribed `m−1` edges") matches the paper's own abstract. The
+pass names its own gap correctly: the theorem is stated for **graphs** while
+habitat shapes are **multigraphs**, and it is **not load-bearing** — the
+`X`-avoiding matching is *exhibited* at every one of the 4924 + 39 689 + 36 860
+shapes touched, so (iv) is used only for the general statement. Recorded as
+true-modulo-a-named-gap, which is the right standing.
+
+*(3)* **The pass flagged the in-flight tree correctly, and did nothing about
+it.** GCOLL observed six shared files carrying uncommitted changes (a sibling
+landing of mine in progress) and confirmed its own label range was still 0-hit
+outside reservation bookkeeping rather than assuming it. That is the serial-
+landing protocol working as designed from the dispatch side.
+
+**Cap disclosure, verified at landing.** Still capped, and stated as such:
+`n_hub = 10` **beyond Petersen** and `n_hub ≥ 12` **beyond the necklaces** have
+**no search run** (no enumerator; `cubic_iso_classes(8)` alone costs ~116 s).
+The 180 witnesses are **not** claimed minimal at `n_hub = 10` — only Petersen
+is swept there. The `2^{c(F)}` cost claim is a statement about `c(F)`,
+**measured** `∈ {1,2}` on the inventory, not bounded in general. All seven F13
+controls fire.
+
+**TERMINATION: E1, E2, E3 all NO** — coordinator-re-run and agreed. E3 **stays
+ARMED by GBAL, not fired**; entry 1, (a′), input (Y) and (GR-15) take no status
+change.
+
+**What did NOT move.** (GR-15) OPEN; class uniformity untouched; (a′) still
+open and still carrying **no bar**. One by-product **reported, not developed**:
+`d_fg = d_adm` at all 180 witnesses, so **(a′) holds** at 180 `n_hub = 10`
+non-Hamiltonian shapes — new territory, since (GR-58)'s census is `n_hub ≤ 6`
+plus two necklaces — offered as corroboration, not a proof, with the evaluator
+cross-checked against `gorient.fully_good_scan` at 5640 colourings. The (b′)
+bar was respected (one noted by-product, undeveloped). §(K-grid)'s status cell
+was recomputed again before this landing's content went in and its cap then
+**deliberately bumped** 2035 → 2715, the row having absorbed **eighteen** new
+theorems across the wave; reason recorded in `notes/check-gapmap-cells.py`.
+
 ### OSCHU — twenty-eighth direction (eighth fan-out)
 
 **The target — (a₁) class-uniformly**, verbatim from ZNEQ's input-(a) hand-off:
@@ -1434,6 +1533,105 @@ authoritative; return any unconsumed remainder to the tail. **Two directions
 share §(K-out) this wave** (OSCHU and SIGZ) — the protection is the **disjoint
 reserved range**, not the section, exactly as three directions shared §(K-grid)
 at the sixth and seventh fan-outs.
+
+### GCOLL — twenty-seventh direction (eighth fan-out)
+
+**Status: LANDED 2026-08-19 — (GR-64)(R2) is REFUTED by witness, and
+(GR-64)(R1) is DELIVERED. Both deliverables landed; the fifth and last of the
+eighth fan-out, which this closes.** §(K-grid) **extended**, **Steps
+G110–G115**, labels **(GR-91)–(GR-96) CLAIMED EXACTLY**. Driver
+**`notes/scripts/w4/gcoll.py`** (nine modes; `--validate` is ~1530 s and does
+**not** fit a sitting, so it ran — by the dispatch and again by the coordinator
+at landing — as a recorded **four-invocation foreground split**, one at a time,
+all exit 0, every quoted figure reproduced).
+
+**The three attacks the spec named collapsed into one.** (GR-91) rewrites the
+collision statistic in **slack** form: `coll_M(S) = z(S) − s_M(S)` with
+`s_M(S)` **always even** (a 2-factor crosses a cut evenly), so a positive
+(GR-64) term is exactly a **zero-slack** chunk and equals that chunk's demand
+`r(S) ∈ {1,2}`. That collapses attack (c) — the spec's "thin extremal family"
+at `(z,exc) ∈ {(3,1),(4,0)}` — into the same condition as the `r = 1` family:
+**not thinner, identical**. Attack (a), the exchange argument, was never
+needed, because **(GR-93)** supplies a better instrument: a violated chunk's
+hub set is a **union of cycles of the 2-factor**, so violation detection at a
+fixed `M` is a `2^{c(F)}` search with **no chunk scan** (max 3 subsets on the
+inventory against `2^18` masks), set-equal to the landed `2^M` ground truth at
+all 24 671 (shape, matching) pairs.
+
+**The positive half is a theorem, not a measurement.** **(GR-94)**: `B(M) = 0`
+whenever `M` avoids the (≤ 2) length-5 branches and either `E ∖ M` is
+Hamiltonian or the cyclic edge connectivity is ≥ 6. The Hamiltonian condition
+alone covers **4924/4924** inventory shapes and **39 687/39 689** of the
+complete `n_hub = 8` stratum — so on both exhaustively-swept strata (R2) is
+**proven**, and the refutation sits exactly where the hypothesis fails.
+
+**The refutation.** **(GR-95)**: of the Petersen graph's **36 860** habitat
+length assignments, **180** have `min_M B(M) = 1` — **every** anchor matching
+pays. Certified four ways: the landed `2^M` scan reproduces `min_M B` at all
+180 (0 disagreements); **`gridcol.class_shape`** — the *canonical* habitat
+certificate, with the matroid rank inside rather than merely (GR-25) —
+accepts all 180 (0 rejections); the matching enumeration is complete (6 of 6,
+no cap); and a local criterion is asserted at all **221 160** (shape, matching)
+pairs. Exactly **two** mechanisms, both demand 1. The refutation needs the
+excess **spread** and is a property of the **length assignment**, not of the
+graph — the same graph carries 36 680 assignments with `min_M B = 0`, which is
+F13 control (6). **(GR-96)** then delivers **(GR-64)(R1)**: `min_M B(M)` exact
+and uncapped on the chunk side at **81 482** shapes, including the ten cases
+(GR-64) had disclosed as out of reach.
+
+**Three coordinator adjudications on landing.**
+
+*(1)* **The consequence for (a′) is precisely bounded, and the pass got it
+right.** (R2) was *sufficient* for "the collision mechanism can never obstruct
+(a′)"; its refutation removes that sufficiency and **refutes nothing about
+(a′)**. The E1(iv)/E2 detector reports **0**: at every witness
+`d_adm ∈ {2,3}` (exact, uncapped `z`-cube) against a floor of 1. The successor
+is strictly weaker and strictly enough — **collision dominance
+`min_M B(M) ≤ d_adm`**, (GR-96)(iii), **OPEN**, now with its first 180 shapes
+of *non-vacuous* content and vacuous at the other 81 302. **This is a genuine
+gap-map status move**, the wave's only one: (R2) → REFUTED, (R1) → DELIVERED.
+
+*(2)* **The Plesník citation is coordinator-verified against a primary
+source.** (GR-94)(iv)'s existence clause rests on **Ján Plesník,
+*Connectivity of Regular Graphs and the Existence of 1-Factors*, Matematický
+časopis **22** (1972), no. 4, 310–318** — checked at EUDML: author, title,
+journal, volume, issue and page range all correct, and the quoted statement
+("an `(m−1)`-edge-connected `m`-regular graph of even order has a 1-factor
+avoiding any prescribed `m−1` edges") matches the paper's own abstract. The
+pass names its own gap correctly: the theorem is stated for **graphs** while
+habitat shapes are **multigraphs**, and it is **not load-bearing** — the
+`X`-avoiding matching is *exhibited* at every one of the 4924 + 39 689 + 36 860
+shapes touched, so (iv) is used only for the general statement. Recorded as
+true-modulo-a-named-gap, which is the right standing.
+
+*(3)* **The pass flagged the in-flight tree correctly, and did nothing about
+it.** GCOLL observed six shared files carrying uncommitted changes (a sibling
+landing of mine in progress) and confirmed its own label range was still 0-hit
+outside reservation bookkeeping rather than assuming it. That is the serial-
+landing protocol working as designed from the dispatch side.
+
+**Cap disclosure, verified at landing.** Still capped, and stated as such:
+`n_hub = 10` **beyond Petersen** and `n_hub ≥ 12` **beyond the necklaces** have
+**no search run** (no enumerator; `cubic_iso_classes(8)` alone costs ~116 s).
+The 180 witnesses are **not** claimed minimal at `n_hub = 10` — only Petersen
+is swept there. The `2^{c(F)}` cost claim is a statement about `c(F)`,
+**measured** `∈ {1,2}` on the inventory, not bounded in general. All seven F13
+controls fire.
+
+**TERMINATION: E1, E2, E3 all NO** — coordinator-re-run and agreed. E3 **stays
+ARMED by GBAL, not fired**; entry 1, (a′), input (Y) and (GR-15) take no status
+change.
+
+**What did NOT move.** (GR-15) OPEN; class uniformity untouched; (a′) still
+open and still carrying **no bar**. One by-product **reported, not developed**:
+`d_fg = d_adm` at all 180 witnesses, so **(a′) holds** at 180 `n_hub = 10`
+non-Hamiltonian shapes — new territory, since (GR-58)'s census is `n_hub ≤ 6`
+plus two necklaces — offered as corroboration, not a proof, with the evaluator
+cross-checked against `gorient.fully_good_scan` at 5640 colourings. The (b′)
+bar was respected (one noted by-product, undeveloped). §(K-grid)'s status cell
+was recomputed again before this landing's content went in and its cap then
+**deliberately bumped** 2035 → 2715, the row having absorbed **eighteen** new
+theorems across the wave; reason recorded in `notes/check-gapmap-cells.py`.
 
 ### OSCHU — twenty-eighth direction (eighth fan-out)
 
@@ -1624,6 +1822,105 @@ whether the mechanism crosses into the habitat.
 **Reservation.** §(K-out) **extends**; labels **(OC-35)–(OC-40)**, **Steps
 O31–O36**; driver **`notes/scripts/w4/sigz.py`**. Owning section stays
 authoritative; return any unconsumed remainder to the tail.
+
+### GCOLL — twenty-seventh direction (eighth fan-out)
+
+**Status: LANDED 2026-08-19 — (GR-64)(R2) is REFUTED by witness, and
+(GR-64)(R1) is DELIVERED. Both deliverables landed; the fifth and last of the
+eighth fan-out, which this closes.** §(K-grid) **extended**, **Steps
+G110–G115**, labels **(GR-91)–(GR-96) CLAIMED EXACTLY**. Driver
+**`notes/scripts/w4/gcoll.py`** (nine modes; `--validate` is ~1530 s and does
+**not** fit a sitting, so it ran — by the dispatch and again by the coordinator
+at landing — as a recorded **four-invocation foreground split**, one at a time,
+all exit 0, every quoted figure reproduced).
+
+**The three attacks the spec named collapsed into one.** (GR-91) rewrites the
+collision statistic in **slack** form: `coll_M(S) = z(S) − s_M(S)` with
+`s_M(S)` **always even** (a 2-factor crosses a cut evenly), so a positive
+(GR-64) term is exactly a **zero-slack** chunk and equals that chunk's demand
+`r(S) ∈ {1,2}`. That collapses attack (c) — the spec's "thin extremal family"
+at `(z,exc) ∈ {(3,1),(4,0)}` — into the same condition as the `r = 1` family:
+**not thinner, identical**. Attack (a), the exchange argument, was never
+needed, because **(GR-93)** supplies a better instrument: a violated chunk's
+hub set is a **union of cycles of the 2-factor**, so violation detection at a
+fixed `M` is a `2^{c(F)}` search with **no chunk scan** (max 3 subsets on the
+inventory against `2^18` masks), set-equal to the landed `2^M` ground truth at
+all 24 671 (shape, matching) pairs.
+
+**The positive half is a theorem, not a measurement.** **(GR-94)**: `B(M) = 0`
+whenever `M` avoids the (≤ 2) length-5 branches and either `E ∖ M` is
+Hamiltonian or the cyclic edge connectivity is ≥ 6. The Hamiltonian condition
+alone covers **4924/4924** inventory shapes and **39 687/39 689** of the
+complete `n_hub = 8` stratum — so on both exhaustively-swept strata (R2) is
+**proven**, and the refutation sits exactly where the hypothesis fails.
+
+**The refutation.** **(GR-95)**: of the Petersen graph's **36 860** habitat
+length assignments, **180** have `min_M B(M) = 1` — **every** anchor matching
+pays. Certified four ways: the landed `2^M` scan reproduces `min_M B` at all
+180 (0 disagreements); **`gridcol.class_shape`** — the *canonical* habitat
+certificate, with the matroid rank inside rather than merely (GR-25) —
+accepts all 180 (0 rejections); the matching enumeration is complete (6 of 6,
+no cap); and a local criterion is asserted at all **221 160** (shape, matching)
+pairs. Exactly **two** mechanisms, both demand 1. The refutation needs the
+excess **spread** and is a property of the **length assignment**, not of the
+graph — the same graph carries 36 680 assignments with `min_M B = 0`, which is
+F13 control (6). **(GR-96)** then delivers **(GR-64)(R1)**: `min_M B(M)` exact
+and uncapped on the chunk side at **81 482** shapes, including the ten cases
+(GR-64) had disclosed as out of reach.
+
+**Three coordinator adjudications on landing.**
+
+*(1)* **The consequence for (a′) is precisely bounded, and the pass got it
+right.** (R2) was *sufficient* for "the collision mechanism can never obstruct
+(a′)"; its refutation removes that sufficiency and **refutes nothing about
+(a′)**. The E1(iv)/E2 detector reports **0**: at every witness
+`d_adm ∈ {2,3}` (exact, uncapped `z`-cube) against a floor of 1. The successor
+is strictly weaker and strictly enough — **collision dominance
+`min_M B(M) ≤ d_adm`**, (GR-96)(iii), **OPEN**, now with its first 180 shapes
+of *non-vacuous* content and vacuous at the other 81 302. **This is a genuine
+gap-map status move**, the wave's only one: (R2) → REFUTED, (R1) → DELIVERED.
+
+*(2)* **The Plesník citation is coordinator-verified against a primary
+source.** (GR-94)(iv)'s existence clause rests on **Ján Plesník,
+*Connectivity of Regular Graphs and the Existence of 1-Factors*, Matematický
+časopis **22** (1972), no. 4, 310–318** — checked at EUDML: author, title,
+journal, volume, issue and page range all correct, and the quoted statement
+("an `(m−1)`-edge-connected `m`-regular graph of even order has a 1-factor
+avoiding any prescribed `m−1` edges") matches the paper's own abstract. The
+pass names its own gap correctly: the theorem is stated for **graphs** while
+habitat shapes are **multigraphs**, and it is **not load-bearing** — the
+`X`-avoiding matching is *exhibited* at every one of the 4924 + 39 689 + 36 860
+shapes touched, so (iv) is used only for the general statement. Recorded as
+true-modulo-a-named-gap, which is the right standing.
+
+*(3)* **The pass flagged the in-flight tree correctly, and did nothing about
+it.** GCOLL observed six shared files carrying uncommitted changes (a sibling
+landing of mine in progress) and confirmed its own label range was still 0-hit
+outside reservation bookkeeping rather than assuming it. That is the serial-
+landing protocol working as designed from the dispatch side.
+
+**Cap disclosure, verified at landing.** Still capped, and stated as such:
+`n_hub = 10` **beyond Petersen** and `n_hub ≥ 12` **beyond the necklaces** have
+**no search run** (no enumerator; `cubic_iso_classes(8)` alone costs ~116 s).
+The 180 witnesses are **not** claimed minimal at `n_hub = 10` — only Petersen
+is swept there. The `2^{c(F)}` cost claim is a statement about `c(F)`,
+**measured** `∈ {1,2}` on the inventory, not bounded in general. All seven F13
+controls fire.
+
+**TERMINATION: E1, E2, E3 all NO** — coordinator-re-run and agreed. E3 **stays
+ARMED by GBAL, not fired**; entry 1, (a′), input (Y) and (GR-15) take no status
+change.
+
+**What did NOT move.** (GR-15) OPEN; class uniformity untouched; (a′) still
+open and still carrying **no bar**. One by-product **reported, not developed**:
+`d_fg = d_adm` at all 180 witnesses, so **(a′) holds** at 180 `n_hub = 10`
+non-Hamiltonian shapes — new territory, since (GR-58)'s census is `n_hub ≤ 6`
+plus two necklaces — offered as corroboration, not a proof, with the evaluator
+cross-checked against `gorient.fully_good_scan` at 5640 colourings. The (b′)
+bar was respected (one noted by-product, undeveloped). §(K-grid)'s status cell
+was recomputed again before this landing's content went in and its cap then
+**deliberately bumped** 2035 → 2715, the row having absorbed **eighteen** new
+theorems across the wave; reason recorded in `notes/check-gapmap-cells.py`.
 
 ### OSCHU — twenty-eighth direction (eighth fan-out)
 
