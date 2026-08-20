@@ -149,7 +149,6 @@ from gunif import WITNESSES, wit_colouring                             # noqa: E
 
 A_SEED = 20260819
 
-_ISO_CACHE = {}
 _POOL8 = [None]
 
 
@@ -161,225 +160,17 @@ _POOL8 = [None]
 # rationale is in its docstring) and the (GR-76) charge table.
 
 
-def cubic_iso_classes(n):
-    """Every connected loopless cubic multigraph on `n` hubs, ONE
-    representative per isomorphism class.
-
-    Local device, and the rationale is arithmetic: `gridcol.multigraphs(n, m)`
-    walks multiplicity vectors over all `C(n, 2)` pairs by composition, which
-    at `n = 8` is `C(39, 27) ~ 8e9` recursion branches -- out of reach.  This
-    one recurses on the LEAST-deficient hub (all of whose remaining darts must
-    go to higher-indexed hubs), so it enumerates each labelled graph exactly
-    once, and canonicalizes by a pruned minimum-adjacency-matrix search
-    refined by a Weisfeiler--Leman colouring.  `--val` asserts it returns the
-    same CLASS COUNT as `gridcol.multigraphs` at `n = 2, 4, 6` (1 / 2 / 6) and
-    that every class it emits is habitat-gate-consistent with that layer."""
-    labelled = []
-    rem = [3] * n
-    edges = []
-
-    def rec():
-        v = next((i for i in range(n) if rem[i] > 0), None)
-        if v is None:
-            labelled.append(tuple(edges))
-            return
-        cand = [u for u in range(v + 1, n) if rem[u] > 0]
-        for combo in combinations_with_replacement(cand, rem[v]):
-            cnt = {}
-            for u in combo:
-                cnt[u] = cnt.get(u, 0) + 1
-            if any(rem[u] < c for u, c in cnt.items()):
-                continue
-            for u in combo:
-                rem[u] -= 1
-                edges.append((v, u))
-            rem[v] -= len(combo)
-            rec()
-            rem[v] += len(combo)
-            for u in combo:
-                rem[u] += 1
-                edges.pop()
-    rec()
-    reps = {}
-    for es in labelled:
-        A = [[0] * n for _ in range(n)]
-        for (u, w) in es:
-            A[u][w] += 1
-            A[w][u] += 1
-        seen, st = {0}, [0]
-        while st:
-            x = st.pop()
-            for y in range(n):
-                if A[x][y] and y not in seen:
-                    seen.add(y)
-                    st.append(y)
-        if len(seen) != n:
-            continue
-        key = _canon(n, A)
-        if key not in reps:
-            reps[key] = es
-    out = [reps[k] for k in sorted(reps)]
-    _ISO_CACHE[n] = out
-    return out
-
-
-def _canon(n, A):
-    """Lexicographically minimal flattened adjacency matrix over all vertex
-    permutations, by DFS with prefix pruning."""
-    col = [tuple(sorted(A[v])) for v in range(n)]
-    for _ in range(n):
-        new = [(col[v], tuple(sorted((A[v][u], col[u]) for u in range(n)
-                                     if A[v][u]))) for v in range(n)]
-        vals = sorted(set(new))
-        m = {x: i for i, x in enumerate(vals)}
-        nc = [m[x] for x in new]
-        if nc == col:
-            break
-        col = nc
-    best = [None]
-    perm = [-1] * n
-    used = [False] * n
-    order = sorted(range(n), key=lambda v: (col[v], v))
-
-    def rec(i, part):
-        if i == n:
-            if best[0] is None or part < best[0]:
-                best[0] = part
-            return
-        for v in order:
-            if used[v]:
-                continue
-            nxt = part + tuple(A[v][perm[j]] for j in range(i))
-            if best[0] is not None and nxt > best[0][:len(nxt)]:
-                continue
-            used[v] = True
-            perm[i] = v
-            rec(i + 1, nxt)
-            used[v] = False
-            perm[i] = -1
-    rec(0, ())
-    return best[0]
-
-
-def chunks_of(n, ends):
-    """Every chunk of the hub multigraph `ends` as (branch-mask, branch
-    tuple, S-degree map): connected, bridgeless, all S-degrees in {2, 3}.
-    Includes `k = 1` circuits and the whole graph, exactly as
-    `gorient.prep_shape`'s `two_ec_subsets(hm, kmin=1)` does.
-
-    PERFORMANCE device: the canonical `gcap.two_ec_subsets` needs the
-    subdivision-level `hub_model`, so calling it per shape re-derives an
-    object that depends only on the hub multigraph.  This one is keyed on the
-    multigraph, so it is computed ONCE per graph class and shared by all
-    11 440 length assignments.  `--val` asserts the two agree, branch tuple
-    for branch tuple, at every n <= 6 pool shape and at seeded n = 8 shapes."""
-    M = len(ends)
-    low = sum(1 << (3 * i) for i in range(n))
-    inc = [(1 << (3 * ends[k][0])) + (1 << (3 * ends[k][1])) for k in range(M)]
-    ds = [0] * (1 << M)
-    for mask in range(1, 1 << M):
-        lb = mask & -mask
-        ds[mask] = ds[mask ^ lb] + inc[lb.bit_length() - 1]
-    out = []
-    for mask in range(1, 1 << M):
-        x = ds[mask]
-        if x & ~(x >> 1) & ~(x >> 2) & low:      # some hub has S-degree 1
-            continue
-        ks = tuple(k for k in range(M) if mask >> k & 1)
-        deg = {}
-        for k in ks:
-            for v in ends[k]:
-                deg[v] = deg.get(v, 0) + 1
-        vs = list(deg)
-        adj = {v: [] for v in vs}
-        for k in ks:
-            u, w = ends[k]
-            adj[u].append((w, k))
-            adj[w].append((u, k))
-        seen, st = {vs[0]}, [vs[0]]
-        while st:
-            v = st.pop()
-            for (u, _k) in adj[v]:
-                if u not in seen:
-                    seen.add(u)
-                    st.append(u)
-        if len(seen) != len(vs):
-            continue
-        bridge = False
-        for kd in ks:
-            r = ends[kd][0]
-            s2, st2 = {r}, [r]
-            while st2:
-                v = st2.pop()
-                for (u, k) in adj[v]:
-                    if k != kd and u not in s2:
-                        s2.add(u)
-                        st2.append(u)
-            if len(s2) != len(vs):
-                bridge = True
-                break
-        if bridge:
-            continue
-        out.append((mask, ks, deg))
-    return out
-
-
-def degmap(ends, ks):
-    deg = {}
-    for k in ks:
-        for v in ends[k]:
-            deg[v] = deg.get(v, 0) + 1
-    return deg
-
-
-def jfree(ends, ks, deg=None):
-    """The length-free half of the (GR-36)(iii) charge:
-    `Sum over J-components ceil(m_i / 2)`, `J` = the interior-interior
-    branches of the set (interior = degree 2 in the set).  Valid on ANY
-    branch set of a cubic host, not only chunks: J has max degree <= 2, a
-    J-cycle is a whole component of the set, and the run count on a cycle of
-    `m` edges is also `>= ceil(m/2)` (draft Step G92).  Adding `w45` gives
-    `gorient.jdata`'s `bound`, asserted equal in --val."""
-    if deg is None:
-        deg = degmap(ends, ks)
-    ints = {v for v, d in deg.items() if d == 2}
-    jed = [k for k in ks if ends[k][0] in ints and ends[k][1] in ints]
-    if not jed:
-        return 0
-    adj = {v: [] for v in ints}
-    for k in jed:
-        u, w = ends[k]
-        adj[u].append((w, k))
-        adj[w].append((u, k))
-    seen, tot = set(), 0
-    for v0 in sorted(ints):
-        if v0 in seen or not adj[v0]:
-            continue
-        cv, ce, st = {v0}, set(), [v0]
-        while st:
-            v = st.pop()
-            for (u, k) in adj[v]:
-                ce.add(k)
-                if u not in cv:
-                    cv.add(u)
-                    st.append(u)
-        seen |= cv
-        tot += (len(ce) + 1) // 2
-    return tot
-
-
-def xhubs(ends, ksa, dega, ksb, degb):
-    """The X-hubs of a chunk pair: shared hubs of S-degree 2 in BOTH with
-    different pairs.  `slack >= #X-hubs` and `slack = 0` iff there are none
-    ((GR-38)(i) -- both pairs AA at one hub would be a monochromatic hub)."""
-    out = []
-    for v in sorted(set(dega) & set(degb)):
-        if dega[v] == 2 and degb[v] == 2:
-            pa = frozenset(k for k in ksa if v in ends[k])
-            pb = frozenset(k for k in ksb if v in ends[k])
-            if pa != pb:
-                out.append(v)
-    return out
+# SEVEN OF THEM MOVED DOWN to `gridcol` on 2026-08-20 (the harness move-down
+# round, slice 2), with their private helpers `_canon` / `xhubs` / `_bits` and
+# the `_ISO_CACHE` memo: `gtmpl` imports all seven and `gcoll` the first, past
+# README §2 rule 2's trigger, and they are general n_hub-stratum
+# combinatorics rather than AGLU-private helpers.  Re-exported here, so this
+# module's own modes, `gtmpl`'s and `gcoll`'s import lines, and every recorded
+# figure are unchanged.  What stays local: `chunk_cache` / `fast_defects` /
+# `set_defects` / `_pool8` (one consumer each, this module).
+from gridcol import (_bits, _canon, admissible_bits,    # noqa: E402,F401
+                     chunks_of, crossing_pairs, cubic_iso_classes,
+                     dartmask, degmap, jfree, xhubs)
 
 
 def chunk_cache(ends, lens, mask, ks, deg):
@@ -405,21 +196,6 @@ def chunk_cache(ends, lens, mask, ks, deg):
                 m |= 1 << (2 * k + 1)
         prs.append(m)
     return (mask, ks, w45, oddm, tuple(prs), len(prs))
-
-
-def dartmask(lens, b):
-    """The 24-bit A-dart mask of the colouring bit vector `b` (bit `k` of `b`
-    = the u-end dart of branch `k` is A).  A branch's two end darts are equal
-    iff its length is odd (alternation)."""
-    ad = 0
-    for k, L in enumerate(lens):
-        if b >> k & 1:
-            ad |= 1 << (2 * k)
-            if L % 2:
-                ad |= 1 << (2 * k + 1)
-        elif L % 2 == 0:
-            ad |= 1 << (2 * k + 1)
-    return ad
 
 
 def fast_defects(cache, b, ad):
@@ -475,121 +251,6 @@ def set_defects(ends, lens, ks, b, ad):
         if (m & ad) != 0:
             dB += 1
     return dA, dB
-
-
-def admissible_bits(n, ends, lens):
-    """Every admissible colouring of the shape as a branch bit vector `b`
-    (bit `k` = the u-end dart of branch `k` is A), with its 24-bit A-dart
-    mask.
-
-    At `Lambda = empty` admissibility is exactly *balanced + no
-    monochromatic hub*: the two ruling-class forest conjuncts of
-    `cflank.admissible` are AUTOMATIC there, because every branch has an
-    interior subdivision vertex whose two edges alternate (so it has
-    own-colour degree <= 1) and there are no hub-hub edges, so no
-    own-colour cycle can exist.  And balance is exactly `#(A-majority odd
-    branches) = n_odd / 2`, since an even branch splits its length evenly.
-    PERFORMANCE device; `--val` asserts SET EQUALITY with
-    `cflank.admissible` on the subdivision at every one of the 4920
-    n <= 6 pool shapes and at seeded n = 8 shapes.
-
-    Enumerated by DFS over the branches in a hub-closing order, pruning at
-    each hub as soon as its three darts are assigned (the mono-hub ban) and
-    on the running A-majority-odd count (balance)."""
-    M = len(ends)
-    oddk = [k for k in range(M) if lens[k] % 2]
-    if len(oddk) % 2:
-        return []
-    need = len(oddk) // 2
-    isodd = [lens[k] % 2 == 1 for k in range(M)]
-    darts = {}
-    for k, (u, w) in enumerate(ends):
-        darts.setdefault(u, []).append((k, 0))
-        darts.setdefault(w, []).append((k, 1))
-    hubs = sorted(darts)
-    # hub-closing branch order: greedily take the branch that completes the
-    # most hubs next
-    order, left, cnt = [], set(range(M)), {v: 0 for v in hubs}
-    while left:
-        best, bv = None, None
-        for k in sorted(left):
-            c = 0
-            for v in ends[k]:
-                if cnt[v] == 2:
-                    c += 1
-            if best is None or c > best:
-                best, bv = c, k
-        order.append(bv)
-        left.discard(bv)
-        for v in ends[bv]:
-            cnt[v] += 1
-    pos = {k: i for i, k in enumerate(order)}
-    close = [[] for _ in range(M)]
-    for v in hubs:
-        last = max(darts[v], key=lambda kd: pos[kd[0]])[0]
-        close[last].append(tuple(darts[v]))
-    out = []
-    dc = [0] * (2 * M)
-
-    def rec(i, nA, ad):
-        if i == M:
-            if nA == need:
-                out.append((_bits(order[:M], dc, ends), ad))
-            return
-        k = order[i]
-        rem_odd = sum(1 for kk in order[i:] if isodd[kk])
-        if nA > need or nA + rem_odd < need:
-            return
-        for bit in (1, 0):
-            du = bit
-            dw = bit if isodd[k] else 1 - bit
-            dc[2 * k] = du
-            dc[2 * k + 1] = dw
-            nad = ad
-            if du:
-                nad |= 1 << (2 * k)
-            if dw:
-                nad |= 1 << (2 * k + 1)
-            ok = True
-            for tri in close[k]:
-                t = sum(dc[2 * kk + e] for (kk, e) in tri)
-                if t == 0 or t == 3:
-                    ok = False
-                    break
-            if ok:
-                rec(i + 1, nA + (1 if (isodd[k] and bit) else 0), nad)
-            dc[2 * k] = dc[2 * k + 1] = 0
-    rec(0, 0, 0)
-    return out
-
-
-def _bits(_order, dc, ends):
-    b = 0
-    for k in range(len(ends)):
-        if dc[2 * k]:
-            b |= 1 << k
-    return b
-
-
-def crossing_pairs(n, ends, chs):
-    """Every crossing chunk pair of the multigraph: share a hub, neither
-    contained in the other (exactly `gorient.leg_kill`'s pair predicate).
-    Returns (i, j, X-hub list, T branch tuple, jfree(T), deg_T map)."""
-    out = []
-    for i in range(len(chs)):
-        mi, ksi, di = chs[i]
-        for j in range(i + 1, len(chs)):
-            mj, ksj, dj = chs[j]
-            if not (set(di) & set(dj)):
-                continue
-            inter = mi & mj
-            if inter == mi or inter == mj:
-                continue
-            xs = xhubs(ends, ksi, di, ksj, dj)
-            T = tuple(k for k in ksi if mj >> k & 1)
-            dT = degmap(ends, T)
-            out.append((i, j, xs, T, jfree(ends, T, dT), dT))
-    return out
 
 
 def _pool8():

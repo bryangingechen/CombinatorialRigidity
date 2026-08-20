@@ -34,16 +34,14 @@ half-proven, half-reduced to one 3×3 determinant** (OSCHU); and
 **(GR-64)(R2) REFUTED** by a Petersen witness family with **(R1) DELIVERED**
 (GCOLL) — the wave's **only** gap-map status move. Verdicts one-lined in
 *Decisions made*, detail in the fan-out doc. The **wave-closing exception-log commit is DONE**
-(`notes/dispatch-log.md`: five rows, findings **F22–F24**). **The research step
-is UNROUTED**, and per the **2026-08-19 user adjudication** the queued
-**structural** items are, in order: **slice 1**, the phase-note doc split —
-**LANDED** (`notes/Pencil-adjudications.md`; detail in *Decisions made* and
-`notes/Pencil-structure.md`); **slice 2**, one deliberate **harness
-move-down round** paying all five debt items the wave accumulated — including
-`closure.Gauss`, whose design question the same adjudication **settled: move it
-down to `exactcore`** (`notes/scripts/README.md` *Harness debt* item 3 carries
-the decision and its figures-do-not-move constraint) — **now the sole next
-concrete commit** (below). Only after it does the research pick come up again.
+(`notes/dispatch-log.md`: five rows, findings **F22–F24**). **Both queued structural items are
+LANDED** — the phase-note doc split (2026-08-19) and the **harness move-down round
+(2026-08-20)**, which paid all five *Harness debt* move-downs, `closure.Gauss` →
+`exactcore` included, with **no recorded figure moved**. **NEXT CONCRETE TASK: the
+kernel-(K) RESEARCH PICK** — nothing structural queued, nothing awaiting user
+adjudication; candidates in *Hand-off* (cheapest first: (R1), (C2), the
+one-unit-defect redo of (GR-79)–(GR-82), OSCHU's `rank(Q|_D) = 3` residue — now
+unblocked on the harness side — and GCOLL's collision dominance).
 
 ## Current state
 
@@ -99,7 +97,9 @@ constraints; the dated dispatch narrative is in *Decisions made* and git):
   ℚ(i)-local. That is a **design decision**, recorded in `notes/scripts/README.md` *Harness
   debt* item 3 with the binding constraint that **figures do not move** (a re-export from
   `closure`, the `star_span_ranks` precedent). Phase OPEN, Lean hold, W4 PARKED,
-  `hK`/`hbareSplit` pinned, option B un-commissioned — all unchanged.
+  `hK`/`hbareSplit` pinned, option B un-commissioned — all unchanged. **Both calls are now
+  DISCHARGED:** slice 1 landed 2026-08-19, slice 2 (the move-down round, `Gauss` included)
+  landed 2026-08-20 — so the research pick this adjudication deferred is live again.
 
 - **2026-08-19, EIGHTH-fan-out dispatch — the multidispatch shape RE-ELECTED a third time,
   AND the first standing-constraint move since 2026-08-05.** Offered four ways to make the
@@ -230,11 +230,15 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
 - The full biconditional transport (design doc's W0 pin) is landed only as its two forward
   implications; the reverse arms need a `complementIso` involution lemma, not in tree —
   deferred, **off every critical path** (§(K-σ) *Step σ6*).
-- **Harness debt** — the S1–S4 round is CLOSED (2026-08-06), but **two new dated UNPAID
-  items** stand, both sideways-import move-downs recorded rather than paid because the target
-  is a landed file a concurrent direction imports: `ocon.meet` (ZNEQ) and `aglu.py`'s seven
-  combinatorial devices (GTMPL). Canonical home `notes/scripts/README.md` *Harness debt* —
-  read before any numerics dispatch. Cheapest discharge: fold both once the wave is complete.
+- **Harness debt — both rounds PAID** (S1–S4 CLOSED 2026-08-06; the five sideways-import
+  move-downs of the sixth-to-eighth fan-outs PAID 2026-08-20 by slice 2), with **one item
+  left open on purpose**: `zneq.ledger`, a seventh name the round found mis-listed across
+  two copies of the same debt entry, deferred to a commit that can re-run `oschu --gtarget`
+  / `--census1` / `--census2` (figure invariance is discharged by re-running, not by
+  inspection). Canonical home `notes/scripts/README.md` *Harness debt* — read before any
+  numerics dispatch: it also carries the two deliberately-unfixed *Recorded observations*
+  and the rule for a dispatch that trips §2 rule 2 again (record the item naming every
+  consumer; do **not** modify the landed file).
 
 ## Hand-off / next phase
 
@@ -271,8 +275,7 @@ fan-out", and the wave's process exceptions in `notes/dispatch-log.md` (five row
 *after* — never instead of — the recompute, with reasons in
 `notes/check-gapmap-cells.py` itself.
 
-**Queued behind the wave — this is the candidate list the research pick draws from once
-slice 2 clears.** New from the eighth fan-out, cheapest first: **(R1)**, GFLOW's named clause,
+**THE CANDIDATE LIST THE RESEARCH PICK DRAWS FROM — live now that slice 2 has landed.** New from the eighth fan-out, cheapest first: **(R1)**, GFLOW's named clause,
 which upgrades (b′)'s `≤ 12` from modulo-a-clause to a theorem; **(C2)**, (b′)'s selection
 residual, whose first possible failure is pinned to `n_hub = 8`, `2k = 2`; **redoing
 (GR-79)–(GR-82) with a one-unit defect budget** to finish attack (c) (GTMPL's own successor);
@@ -293,26 +296,20 @@ adjudication now happens at the return, not before the dispatch** (the terms the
 accepted, quoted in *Current state*'s 2026-08-19 eighth-fan-out bullet). **A hit therefore
 stops the loop and goes to the user**; it does not move a gap-map status by itself.
 
-**SLICE 1 — the phase-note doc split — DONE.** *Current state*'s dated adjudication
+**BOTH STRUCTURAL ROUNDS ARE COMPLETE — nothing structural is queued.** Round 1 (doc-split
+slices 1–2 + discipline-distillation slice 3, `RESEARCH-ARC.md` the promoted manual) and
+round 2 (slice 4 the phase-note split, **slice 5/"slice 2" the harness move-down round,
+2026-08-20** — all five debt items paid, no recorded figure moved) are both closed;
+`notes/Pencil-structure.md` and `notes/scripts/README.md` *Harness debt* carry the records,
+`notes/dispatch-log.md` F18–F21 the process findings. **One consequence for the pick:**
+OSCHU's `rank(Q|_D) = 3` residue is no longer blocked on the harness — exact `ℚ(i)`
+(`exactcore.Gauss`) is now a base-layer primitive.
 
-**THE NEXT CONCRETE TASK — SLICE 2, the harness move-down round**, one deliberate pass paying all **five** debt items
-the wave accumulated (`notes/scripts/README.md` *Harness debt*): `ocon.meet` (three
-consumers), `aglu.py`'s seven combinatorial devices, six `zneq` primitives,
-`gridwit.tree_triple`, and **`closure.Gauss` → `exactcore`** per the 2026-08-19 adjudication.
-Every item is a §2 rule-2 move-down into a **landed** file, which is exactly why no dispatch
-could pay it and why one round now — with nothing in flight — is the right shape. **Binding
-constraint: figures do not move.** Each primitive moves down *with a re-export from its old
-home* so every existing consumer keeps working unchanged (the `star_span_ranks` precedent,
-slice S1), and the round is not done until the affected drivers reproduce their recorded
-figures **byte-identical** at their pinned `PYTHONHASHSEED`.
-
-**Slice 2 is the only structural item now queued.** The first structural round
-(doc-split slices 1–2 + the discipline-distillation slice 3) is COMPLETE
-(`notes/Pencil-structure.md`; `RESEARCH-ARC.md` is the promoted manual, six items
-ready / three watched / three deferred, detail there and in `notes/dispatch-log.md`
-F18–F21); the eighth fan-out is COMPLETE too (all five directions LANDED, above).
-**The kernel-(K) research pick stays UNROUTED until slice 2 clears** (the
-2026-08-19 post-wave adjudication's ordering).
+**THE NEXT CONCRETE TASK — the kernel-(K) RESEARCH PICK**, the arc's ninth step: pick from
+the candidate list above (the standing 2026-08-07 delegation covers the pick; the *shape* —
+single direction, recon-first, or another multidispatch fan-out — is a user call, the eighth
+wave's dispatch bullet being the precedent), reserve labels in `notes/Pencil-labels.md`, and
+spec it in `notes/Pencil-fanout.md`.
 
 **`hsplit` is CLOSED IN FULL** (W5-L7c-1…6, landed 2026-07-30) and **`hfresh`'s mechanical
 discharge (residue (iv)) is CLOSED too**. The landed successor
@@ -395,6 +392,14 @@ Reverse-chronological, one line per landing; full derivations live in git,
 `notes/Phase39-design.md`, and (for the (K) arc) the workbook section named in each entry, which
 is the canonical home a successor reads.
 
+- **Second structural round, slice 2 — the harness MOVE-DOWN ROUND — LANDED
+  2026-08-20**: all five *Harness debt* items paid in one pass — `ocon.meet` →
+  `lambda`, six `zneq` §(K-out) devices → `ocon`, `aglu.py`'s seven
+  `n_hub`-stratum devices → `gridcol`, `gridwit.tree_triple` → `grid`, and the
+  adjudicated `closure.Gauss` → `exactcore` — each re-exported from its old home,
+  so no consumer changed. Gate was figure invariance, not imports: 18 driver
+  modes re-run in the foreground, 12 byte-identical against pre-edit baselines,
+  6 against §3's figures. Record: `notes/scripts/README.md` *Harness debt*.
 - **Second structural round, slice 1 — the phase-note doc split — LANDED
   2026-08-19** (`f2862531`): the ordinals-1–19 adjudication bullets moved
   **verbatim** to `notes/Pencil-adjudications.md` (relocation verified

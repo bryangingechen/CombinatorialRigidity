@@ -128,6 +128,23 @@ def span_meet(A, B):
     return span_basis(out)
 
 
+# `meet` moved down here from `ocon.py:132` on 2026-08-20 (the harness
+# move-down round, slice 2) once it had THREE consumers -- `ocon` itself,
+# `zneq` and `oschu` -- past README §2 rule 2's own trigger.  It belongs beside
+# the `span_meet` it wraps, which is the function README §1's *meet of two
+# spans* row already points here for; `ocon` re-exports it, so all three
+# consumers and every recorded figure are unchanged.
+
+def meet(A, B):
+    """A basis of `span(A) cap span(B)`; `span_meet` above with a dimension
+    assert, so every sampled meet carries one."""
+    m = span_meet(A, B) if (A and B) else []
+    m = span_basis(m)
+    assert len(m) == rank(A) + rank(B) - rank(list(A) + list(B)), \
+        "meet dimension is not the Grassmann count"
+    return m
+
+
 def lambda2_plane_pts(p0, p1, p2):
     """Basis of Lambda^2 (the plane through three affine points) -- three
     lines of the plane.  Asserts the points span it."""

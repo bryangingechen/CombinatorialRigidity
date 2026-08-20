@@ -75,73 +75,15 @@ from nogood_subdiv import (deficiency, hcard_ok, hub_set,        # noqa: E402
 
 
 # ---------------------------------------------------------------- ℚ(i) ----
-
-class Gauss:
-    """Exact Gaussian rationals ℚ(i).  Coerces int / Fraction on every op."""
-    __slots__ = ('re', 'im')
-
-    def __init__(self, re=0, im=0):
-        self.re = F(re)
-        self.im = F(im)
-
-    @staticmethod
-    def _c(z):
-        return z if isinstance(z, Gauss) else Gauss(z, 0)
-
-    def __add__(self, o):
-        o = Gauss._c(o)
-        return Gauss(self.re + o.re, self.im + o.im)
-    __radd__ = __add__
-
-    def __neg__(self):
-        return Gauss(-self.re, -self.im)
-
-    def __sub__(self, o):
-        return self + (-Gauss._c(o))
-
-    def __rsub__(self, o):
-        return Gauss._c(o) + (-self)
-
-    def __mul__(self, o):
-        o = Gauss._c(o)
-        return Gauss(self.re * o.re - self.im * o.im,
-                     self.re * o.im + self.im * o.re)
-    __rmul__ = __mul__
-
-    def _inv(self):
-        n = self.re * self.re + self.im * self.im
-        assert n != 0, "division by zero in ℚ(i)"
-        return Gauss(self.re / n, -self.im / n)
-
-    def __truediv__(self, o):
-        return self * Gauss._c(o)._inv()
-
-    def __rtruediv__(self, o):
-        return Gauss._c(o) * self._inv()
-
-    def __eq__(self, o):
-        if not isinstance(o, (int, F, Gauss)):
-            return NotImplemented
-        o = Gauss._c(o)
-        return self.re == o.re and self.im == o.im
-
-    def __ne__(self, o):
-        r = self.__eq__(o)
-        return r if r is NotImplemented else (not r)
-
-    def __bool__(self):
-        return self.re != 0 or self.im != 0
-
-    def __hash__(self):
-        return hash((self.re, self.im))
-
-    def __repr__(self):
-        if self.im == 0:
-            return str(self.re)
-        if self.re == 0:
-            return f"{self.im}i"
-        return f"({self.re}{'+' if self.im > 0 else '-'}{abs(self.im)}i)"
-
+#
+# `Gauss` MOVED DOWN to `exactcore` on 2026-08-20 (the harness move-down
+# round, slice 2), by the 2026-08-19 user adjudication recorded in
+# `notes/scripts/README.md` *Harness debt*: §(K-out)'s residual route needs
+# exact ℚ(i) too, which is exactly the condition the original "do not push it
+# down" reasoning made the move conditional on.  Re-exported here, so every
+# consumer (`grid`'s import list, this module's own `I` / `g` / `grid_point`
+# / …) keeps working unchanged and no recorded figure moves.
+from exactcore import Gauss                                        # noqa: E402,F401
 
 I = Gauss(0, 1)
 

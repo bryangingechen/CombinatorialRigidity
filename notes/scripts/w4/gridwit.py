@@ -231,42 +231,12 @@ def leg_formula():
 
 # ------------------------------- (GR-9)/(GR-10): the tree-triple hunt -----
 
-def tree_triple(bd, node_cap=250000):
-    """A partition of the classes into three groups whose pairwise unions
-    are acyclic (at a balanced tight block: spanning trees) — or None.
-    DFS over classes (largest first), incremental acyclicity pruning on the
-    two affected pair-unions.  Returns (groups, capped)."""
-    cids = sorted(set(bd['cls']))
-    edges_of = {c: [] for c in cids}
-    for k in range(len(bd['E'])):
-        edges_of[bd['cls'][k]].append(bd['ced'][k])
-    order = sorted(cids, key=lambda c: -len(edges_of[c]))
-    nodes = bd['nodes']
-    budget = [node_cap]
-    groups = [[], [], []]           # edge lists of the three groups
-
-    def ok_pair(g1, g2):
-        return cycle_rank(nodes, groups[g1] + groups[g2]) == 0
-
-    def dfs(i):
-        if budget[0] <= 0:
-            return None
-        budget[0] -= 1
-        if i == len(order):
-            return [list(g) for g in groups]
-        c = order[i]
-        gmax = 3 if i > 1 else (1 if i == 0 else 2)   # symmetry breaking
-        for g in range(gmax):
-            groups[g].extend(edges_of[c])
-            if ok_pair(g, (g + 1) % 3) and ok_pair(g, (g + 2) % 3):
-                res = dfs(i + 1)
-                if res is not None:
-                    return res
-            del groups[g][len(groups[g]) - len(edges_of[c]):]
-        return None
-
-    res = dfs(0)
-    return res, budget[0] <= 0
+# `tree_triple` MOVED DOWN to `grid` on 2026-08-20 (the harness move-down
+# round, slice 2): three consumers -- this module, `gridcol`, `packmm` (and
+# `oschu`'s local import) -- past README §2 rule 2's trigger.  Re-exported
+# here, so every `from gridwit import tree_triple` keeps working and this
+# module's own (GR-9)/(GR-10) figures are unchanged.
+from grid import tree_triple                                          # noqa: E402,F401
 
 
 def leg_treetriple(cap_probe=48, col_cap=1 << 16):

@@ -134,7 +134,13 @@ needs `importlib.import_module('lambda')`. The invocation path is frozen (see
 the top of this file), so the file is **not** renamed; if a `lambda` primitive
 is needed by a second driver, that is the signal to move it one layer down
 (`exactcore` for `span_meet` / `pluck_of`) per §2's rule 2, re-exporting from
-`lambda` so its recorded figures do not move.
+`lambda` so its recorded figures do not move. **One correction to that
+sentence, found while paying the 2026-08-20 move-down round:** `span_meet`
+cannot go to `exactcore` as it stands — it calls `repin.span_basis`, and the
+base layer may not import a driver. So `lambda` is itself a *receiving* layer
+for span algebra until `span_basis` moves down too, which is why the round put
+`meet` (the dimension-asserting wrapper of `span_meet`) **into** `lambda`
+rather than into `exactcore`.
 
 ### Exact linear algebra
 
@@ -149,6 +155,9 @@ is needed by a second driver, that is the signal to move it one layer down
 | basis of a span, via `rref` pivots | `span_basis` | `repin` |
 | span membership test | `in_span` | `repin` |
 | **meet** of two spans in ℚ⁶ → a basis of the intersection | `span_meet` | `lambda` |
+| the same meet **with the Grassmann dimension assert** — the one to use on a sampled pair | `meet` | `lambda` (re-exported by `ocon`) |
+| monic GCD in `ℚ[t]` of little-endian coefficient tuples (degree 0 ⟺ no common root in any extension of ℚ); helpers `poly_trim` / `aff_mul` | `poly_gcd` | `ocon` (re-exported by `zneq`) |
+| exact **Gaussian rationals ℚ(i)** — the harness's one non-ℚ scalar type | **`Gauss`** | `exactcore` (re-exported by `closure`) |
 | coordinate (Euclidean) pairing, any length | **`dot`** | `exactcore` |
 | cross product on ℚ³ | **`cross3`** (re-exported as `cross` by `repin`) | `exactcore` |
 
@@ -173,6 +182,7 @@ is needed by a second driver, that is the signal to move it one layer down
 | job | canonical | module |
 |---|---|---|
 | rigidity matrix from a **config dict** `{edges, V, pt}` → `(rows, er, C, idx, n)` | `build_rigidity` | `pencil_escape` |
+| corank `5|E| − rank` in exact ℚ at an explicit vertex list, rank asserted against its row bound | `corank_at` | `ocon` (re-exported by `zneq`) |
 | rigidity matrix from **`(edges, pt)`** (kbare model) | `build_rigidity` | `kbare_common` |
 | rigidity rows from **explicit hinge extensors** | `build_rigidity_extensors` | `hybrid_gates` |
 | rigidity rows from **explicit hinge lines** (the slide-limit systems) | `rows_from_lines` | `pitch` |
@@ -267,12 +277,36 @@ before touching any of them.** `rvec3` likewise.
 | proper / acyclic colourings, chromatic number of `G°` | `colorings`, `chrom`, `split_acyclic` | `kslidecomb` |
 | the (Λ4) class predicate on the hub multigraph `G°` alone (tight / `def = 0` / `hnoRigid` as branch-subset inequalities) | `hub_class_ok`, `branch_subsets` | `ltwo` |
 | length-4 companions and their hub patterns, computed on `G°` (not the subdivision) | `hub_companions4`, `companion_cycle` | `ltwo` |
+| every connected loopless **cubic multigraph** on `n` hubs, one representative per iso class (the fast mirror of `multigraphs`; helper `_canon`) | `cubic_iso_classes` | `gridcol` (re-exported by `aglu`) |
+| every **chunk** of a hub multigraph as `(branch-mask, branch tuple, S-degree map)` — connected, bridgeless, S-degrees in `{2,3}` (the multigraph-keyed mirror of `gcap.two_ec_subsets(kmin=1)`) | `chunks_of` | `gridcol` (re-exported by `aglu`) |
+| S-degree map of a branch set; the X-hubs of a chunk pair | `degmap`, `xhubs` | `gridcol` (re-exported by `aglu`) |
+| the length-free half of the (GR-36)(iii) charge, `Σ_J ⌈m_i/2⌉` over J-components | `jfree` | `gridcol` (re-exported by `aglu`) |
+| every **admissible colouring** of a shape as a branch bit vector + its 24-bit A-dart mask (the bit-level mirror of `cflank.admissible`; helper `_bits`) | `admissible_bits` | `gridcol` (re-exported by `aglu`) |
+| the 24-bit A-dart mask of one colouring bit vector | `dartmask` | `gridcol` (re-exported by `aglu`) |
+| every **crossing chunk pair** of a multigraph, with X-hubs, `T`, `jfree(T)`, `deg_T` (`gorient.leg_kill`'s pair predicate) | `crossing_pairs` | `gridcol` (re-exported by `aglu`) |
+| a partition of a block's classes into three groups with pairwise-acyclic unions — the (GR-9) **tree-triple certificate** | `tree_triple` | `grid` (re-exported by `gridwit`) |
+
+### §(K-out) chart devices (the `ocon` layer)
+
+The shared layer under `zneq` and `oschu`; `zneq` re-exports all of it, so
+`zneq.<name>` remains a live path.
+
+| job | canonical | module |
+|---|---|---|
+| the relative-twist space `D = {m(b) − m(c)}` of `H` at a chart point, and its Euclidean perp `U_H`, with *Step 2*'s `dim D = 3 + σ` / `dim U_H = 3 − σ` asserted | `u_space` | `ocon` (re-exported by `zneq`) |
+| `V^{⊥_B}` under the Klein form `B`, dimension asserted | `perp_B` | `ocon` |
+| the `2 × dim U_H` matrix of the two placement functionals, its rank, and `dim(U_H ∩ C(ab)^⊥ ∩ C(ac)^⊥)` | `func_matrix` | `ocon` (re-exported by `zneq`) |
+| (OC-26)'s `2×2` minors as **quadratics in the meet-line parameter** `t` | `bad_t_polys` | `ocon` (re-exported by `zneq`) |
+| (OC-26)'s Schubert quantities `dimK` / `pencil` at one frame | `schubert_data` | `ocon` (re-exported by `zneq`) |
+| the parameter `t` with `placed[x] = M0 + t·Md`, or `None` off the meet line | `meet_param_of` | `ocon` (re-exported by `zneq`) |
+| `5|E| − rank_modp`, the GF(p) **screen** for a corank (never a witness) | `corank_modp` | `zneq` |
 
 ## 2. Layering map, and the rule for new scripts
 
 ```
                     scriptpath.py          (path bootstrap; imported by all)
                     exactcore.py           BASE: exact ℚ/Plücker primitives
+                                           (+ `Gauss`, exact ℚ(i), since 2026-08-20)
                           |
         +-----------------+-----------------+
         |                                   |
@@ -299,7 +333,11 @@ before touching any of them.** `rvec3` likewise.
 Three layers, plus one **language island**:
 
 - **Base** — `exactcore.py`. Pure, deterministic, rng-free primitives. No
-  harness imports except `scriptpath`.
+  harness imports except `scriptpath` — which is why a primitive that calls a
+  driver function (`lambda.span_meet` → `repin.span_basis`) **cannot** come
+  here, however pure it looks. Exact ℚ except for one type: `Gauss`
+  (exact ℚ(i)), moved down from `closure` on 2026-08-20; nothing here returns a
+  `Gauss` unless it was handed one.
 - **Model** — `escape/pencil_escape.py` and `kbare/kbare_common.py`. Two
   *parallel* carriers of the body-hinge model, not a stack: they were developed
   independently for kernel (K) and kernel (K-bare), and their samplers and
@@ -339,10 +377,15 @@ Three layers, plus one **language island**:
   `hybrid_gates.build_rigidity_extensors`, `repin`'s `hodge_star` /
   `lambda2_through`, `pitch.theta_edges`, `widened.W19`,
   `nogood_subdiv`'s deficiency + habitat oracles and `kbare_common.rank_modp`.
-  It is the **only** driver whose scalars are not ℚ: its `Gauss` class is exact
-  `ℚ(i)`, private to it and deliberately *not* pushed down to `exactcore`
-  (nothing else needs isotropic vectors, and moving it would re-baseline the
-  whole chain).
+  It is the driver whose scalars are not ℚ: its work is over exact `ℚ(i)`.
+  **`Gauss` MOVED DOWN to `exactcore` on 2026-08-20** (the harness move-down
+  round; user adjudication 2026-08-19, *Harness debt* item 3 of the OSCHU
+  batch). It had been kept private here on the recorded ground that "nothing
+  else needs isotropic vectors, and moving it would re-baseline the whole
+  chain" — §(K-out)'s residual route now does need exact `ℚ(i)`, which is the
+  condition that reasoning made the move conditional on. `closure` re-exports
+  it (as do `closure.I` / `closure.g`, which stay here), so `grid`'s import
+  list and every recorded figure of both drivers are unchanged.
   **`annih`** (§(K-ann) — the annihilator as a self-stress of the contracted
   framework `H/P`: the reciprocity identity for `dλ`, the named single-vertex
   move, the `k = 4` Tay circuit, the one-bracket recipe) is the **fifth** such
@@ -394,6 +437,33 @@ Three layers, plus one **language island**:
   (`annih.py:67`). (Counted as *four* here and in *Harness debt* item 3 until
   2026-08-06; `closure` and `outerline` were missing from both lists.)
   The new composite guard `star_generic` lives beside it in `repin`.
+  **FIVE MORE MOVE-DOWNS LANDED 2026-08-20** — the harness move-down round,
+  paying the five *Harness debt* items the sixth-to-eighth fan-outs
+  accumulated. Each is the `star_span_ranks` shape exactly: the name moves one
+  layer down and its **old home re-exports it**, so every `from <old> import
+  <name>` and every recorded figure is untouched (18 driver modes re-run to
+  prove it — see the debt entries). (i) `ocon.meet` → **`lambda`**, beside the
+  `span_meet` it wraps (three consumers: `ocon`, `zneq`, `oschu`); not to
+  `exactcore`, because `span_meet` itself cannot go there (see the *Base*
+  bullet). (ii) Six §(K-out) devices — `corank_at`, `u_space`, `poly_gcd`,
+  `schubert_data`, `meet_param_of`, `bad_t_polys`, plus the helpers
+  `func_matrix` / `aff_mul` / `poly_trim` — `zneq` → **`ocon`**, which is the
+  layer under both `zneq` and `oschu` (`zneq` imports `ocon`); `corank_modp`
+  stays in `zneq` (one consumer, and it needs `build_rigidity`). (iii) Seven
+  `n_hub`-stratum devices — `cubic_iso_classes`, `chunks_of`, `degmap`,
+  `jfree`, `dartmask`, `admissible_bits`, `crossing_pairs`, plus `_canon` /
+  `xhubs` / `_bits` and the `_ISO_CACHE` memo — `aglu` → **`gridcol`**, the
+  (K-grid) arc's hub-multigraph layer (it owns `multigraphs`, the canonical
+  generator `cubic_iso_classes` is the fast mirror of, plus `subdivide` and
+  `branch_decomp`), reached by `aglu`, `gtmpl` and `gcoll` alike.
+  (iv) `gridwit.tree_triple` → **`grid`** (consumers `gridwit`, `gridcol`,
+  `packmm`, plus `oschu`'s local import). (v) `closure.Gauss` → **`exactcore`**,
+  above. The relevant order for (iii)/(iv) is the **(K-grid) arc's own chain**,
+  which this map does not otherwise draw: `closure` → `grid` → `gridwit` →
+  `packmm` → `gridcol` → `cflank` → `gcap` → `gunif` → `gexist` → `gorient` →
+  and then the direction leaves (`aglu`, `gtmpl`, `gcoll`, `gdev`, `gadm`,
+  `gpsa`, `gbal`, `glaw`, `gdesc`, `yloc`, `balb`, `gflow`, …), each importing
+  downward only.
 - **The M2 island** — `m2/`. Macaulay2, not Python, so there is **no import
   edge** in either direction: an M2 driver cannot reuse a §1 primitive and must
   re-derive the ones it needs. That is a licensed exception to rule 3 below and
@@ -412,7 +482,15 @@ Three layers, plus one **language island**:
 2. Never import **sideways into another driver's private helper**. If you need
    something a sibling driver defines, that is a signal it belongs one layer
    down; move it down (and re-export from the old home so existing consumers
-   keep working, as `pitch.cross3` and `localtest.K4` now do).
+   keep working, as `pitch.cross3` and `localtest.K4` now do — and, since
+   2026-08-20, `flanks.star_span_ranks`, `ocon.meet`, `zneq`'s six §(K-out)
+   devices, `aglu`'s seven `n_hub`-stratum devices, `gridwit.tree_triple` and
+   `closure.Gauss`). **A dispatch may not make the move** (it would modify a
+   landed file another direction may be importing in flight): record it as a
+   *Harness debt* item naming every consumer, and the coordinator pays it in a
+   between-waves round. **Cataloguing in §1 is not optional** — every one of
+   the 2026-08-20 items was uncatalogued, which is exactly how a second
+   consumer arrived without anyone noticing the trigger.
 3. Never reimplement a name that §1 already lists. If your version must
    differ, it is a **different function**: give it a different name and add a
    *Divergences* row saying why.
@@ -780,8 +858,11 @@ foreground by the coordinator at landing, one at a time, explicit timeouts, all
 exit 0, every quoted figure reproduced (~979 s total). One driver added
 (`w4/oschu.py`), nothing existing modified. **No Macaulay2 leaf** — but see the
 `closure.Gauss` design item in *Harness debt*: the residual route needs exact
-`ℚ(i)`, which is precisely the scalar class `closure` keeps private, so the
-move-down is a **design decision**, not a mechanical one. Pools POOL-OS / OQ /
+`ℚ(i)`, which was precisely the scalar class `closure` kept private, so the
+move-down was a **design decision**, not a mechanical one. It was adjudicated
+(move it down) and **PAID on 2026-08-20**: `Gauss` now lives in `exactcore`, so
+the residual route may use exact `ℚ(i)` directly, and `--restate` / `--rekey`
+were both re-run byte-identical / figure-identical in that round. Pools POOL-OS / OQ /
 OG / OR / OC2 are pinned and disjoint from every earlier pool.
 
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/gcoll.py --slack --dem --tf --suff` | 75 s | `notes/Pencil-informal-grid.md` §(K-grid) continuation (direction GCOLL) *Steps G110–G113*: (GR-91)'s slack form and its **even-`s_M`** parity collapse asserted at **1 126 991** (inventory shape, matching, proper chunk) triples, colouring-free, 0 failures (25 368 at equality); (GR-92)'s demand classification; **(GR-93)'s `2^{c(F)}` criterion set-equal to the landed `2^M` ground truth at all 24 671 (shape, matching) pairs, 0 disagreements**; and (GR-94)'s two sufficient conditions |
@@ -807,7 +888,9 @@ one at a time, all exit 0, every quoted figure reproduced) — ~352 s in total,
 each mode inside the 600 s budget, so no split was needed. One driver added
 (`w4/gtmpl.py`), nothing existing modified. **No Macaulay2 leaf** — none
 expected. It imports read-only from eleven modules, including **seven devices
-from the sibling leaf `aglu.py`**; see the new *Harness debt* item below, and
+from the sibling leaf `aglu.py`** (all seven MOVED DOWN to `gridcol` on
+2026-08-20, `aglu` re-exporting them, so this driver's import line and figures
+are unchanged); see the *Harness debt* item below, and
 note the two local devices (`chunks_via_complement`, a `2^n` replacement for
 `aglu.chunks_of`'s `2^M` prefix table at `M = 24`, and the `(c, e, bend)`
 table) are both `--val`-certified against canonical counterparts rather than
@@ -1047,7 +1130,18 @@ figure-invariant): `rref`, `rank`/`rank_exact`, `nullspace`, `left_nullspace`,
 `neighbors` (`kbare_common`, `n9`); `K4`/`K5_minus_matching` (three copies:
 `localtest`, `probe_zero`, `run_habitats`).
 
-## Harness debt — four items, **ALL FOUR CLEARED**; the round is **CLOSED** (S1–S4, 2026-08-06)
+## Harness debt — two rounds PAID (S1–S4 2026-08-06; the move-down round 2026-08-20), **one item outstanding**
+
+**One item is outstanding: `zneq.ledger`** (last subsection, deliberately
+deferred to a round that can re-run `oschu --gtarget` / `--census1` /
+`--census2`). Everything else is paid: the first round's four items are in the
+*ALL FOUR CLEARED* block immediately below (kept in the past tense as the record
+of what was wrong), and the five §2-rule-2 move-downs the sixth-to-eighth
+fan-outs accumulated are in the three *New item* subsections at the end, each
+marked **PAID 2026-08-20**, with the round's own write-up after them. Two
+*Recorded observations* also remain deliberately unfixed and say so.
+
+### Round one — four items, **ALL FOUR CLEARED**; **CLOSED** (S1–S4, 2026-08-06)
 
 Named as a list (2026-08-05; item 4 added 2026-08-06) so a successor does not
 rediscover them one at a time. **The debt was one-directional and it
@@ -1676,7 +1770,7 @@ second a latent defect on an unreachable path. Both are **recorded, not fixed**.
    closure's re-baseline; expected byte-identical, since no §3 row reads the
    full dict's `gram`).
 
-### New item (2026-08-19, direction ZNEQ) — `ocon.meet` needs to move down; **UNPAID**
+### New item (2026-08-19, direction ZNEQ) — `ocon.meet` needs to move down; **PAID 2026-08-20**
 
 This is a **new, separate** debt item, opened after the S1–S4 round above
 **CLOSED** — it does not reopen that round. `ocon.meet` (the
@@ -1690,7 +1784,12 @@ reason a move-down debt this small stays open is that `ocon.meet` is a
 direction's driver (`zneq.py`), so the fix is a coordinator action between
 directions, not something either dispatch could do on its own.
 
-### New items (2026-08-19, direction OSCHU) — three more, one of them a DESIGN item; all **UNPAID**
+**PAID 2026-08-20:** `meet` moved to **`lambda`**, beside the `span_meet` it
+wraps; `ocon` re-exports it. Not to `exactcore` — `span_meet` cannot live there
+(it calls `repin.span_basis`, and the base layer imports no driver), which is a
+correction to §1's own `lambda` caveat, made in the same commit.
+
+### New items (2026-08-19, direction OSCHU) — three more, one of them a DESIGN item; all **PAID 2026-08-20**
 
 Recorded, not paid, for the standing reason: a dispatch may not modify a landed
 file, and the targets are landed files that concurrent directions of the same
@@ -1724,7 +1823,17 @@ fan-out import.
    and it is what makes a base-layer move safe rather than a re-baselining in
    practice.
 
-### New item (2026-08-19, direction GTMPL) — `aglu.py`'s combinatorial devices need to move down; **UNPAID**
+**PAID 2026-08-20, all three.** (1)+(2): `corank_at`, `u_space`, `poly_gcd`,
+`schubert_data`, `meet_param_of` and `bad_t_polys` moved from `zneq` to
+**`ocon`** — the layer under both `zneq` and `oschu` — with their private
+helpers `func_matrix` / `aff_mul` / `poly_trim`; `corank_modp` stayed (one
+consumer, needs `build_rigidity`). `gridwit.tree_triple` moved to **`grid`**.
+(3): `Gauss` moved to **`exactcore`** as adjudicated; `closure.I` / `closure.g`
+stayed beside the re-export, being one-liners over the moved class. Every old
+name is re-exported, and all five items are catalogued in §1 — which is where
+this whole batch went wrong in the first place.
+
+### New item (2026-08-19, direction GTMPL) — `aglu.py`'s combinatorial devices need to move down; **PAID 2026-08-20**
 
 The same shape as the ZNEQ item above, one landing later and larger. `w4/gtmpl.py`
 imports **seven** read-only devices from the sibling leaf `w4/aglu.py` —
@@ -1747,6 +1856,77 @@ two concurrent directions of the eighth fan-out (GFLOW, GCOLL) may import from
 it while in flight, so it is a coordinator action **between** waves, not
 something a dispatch may do. Cheapest honest discharge: fold it in with the
 `ocon.meet` move once the eighth fan-out is complete.
+
+**PAID 2026-08-20**, exactly that way: all seven moved to **`gridcol`** — the
+(K-grid) arc's hub-multigraph layer, which already owns the canonical
+`multigraphs` that `cubic_iso_classes` is the fast mirror of, plus `subdivide`
+and `branch_decomp` — together with the private helpers `_canon` / `xhubs` /
+`_bits` and the `_ISO_CACHE` memo, since a moved body may not reach back up.
+`aglu` re-exports all ten names, so its own modes and `gtmpl`'s and `gcoll`'s
+import lines are unchanged. `chunk_cache` / `fast_defects` / `set_defects` /
+`_pool8` stayed in `aglu`: one consumer each.
+
+### The move-down round — what it did, and the acceptance test it passed (2026-08-20)
+
+Second structural round, slice 2; the coordinator action the three items above
+each said they were waiting for. One commit, **five items, ten-plus names, zero
+new mathematics**: every moved body is byte-verbatim except `meet`, whose
+`LAM.span_meet(A, B)` became `span_meet(A, B)` — the same function object, now
+local to its new home. Full move list in §2's layering narrative; §1 catalogues
+every moved name in the layer that now owns it.
+
+**The gate was figure invariance, not the imports resolving.** Eighteen driver
+modes were re-run in the foreground, one at a time, `PYTHONHASHSEED=0`, and
+every one exited 0:
+
+- **byte-identical against a pre-edit baseline run of the same mode** (timing
+  annotations excepted, which §4 convention 3 already treats as
+  non-deterministic): `ocon --validate` / `--check` / `--control`,
+  `grid --mech` / `--chart`, `packmm --restate`, `gtmpl --charge` / `--frame`,
+  `closure --validate` (all eight legs), `zneq --factor`, `aglu --pin`,
+  `oschu --restate`;
+- **figures checked against this file's §3 row** (no pre-edit baseline taken):
+  `gridwit --treetriple` (907/907, first-certified histogram 859/44/2/1/1),
+  `grid --census` (907/907, histogram 835/60/9/2/1), `gridcol --pack`
+  (907/907), `oschu --rekey` (907 → 75 classes, 19 + 155 of 174),
+  `gcoll --big8 --bigp` (11 of 20 classes, 39 689 shapes),
+  `framedom --rulings` / `--validate` (the 4608 cross-language pin).
+
+That set covers **every consumer of every moved name**, not just one mode per
+primitive.
+
+**Two things the round found, recorded because neither was predicted.**
+(i) A moved body's *imports* do not move with it: `cubic_iso_classes` uses
+`combinations_with_replacement`, which `aglu` imported and `gridcol` did not, so
+the first post-move run of `gtmpl --charge` died with a `NameError`. It was a
+loud failure at the first driver run, not a silent figure move — but it is the
+reason the acceptance test is *runs*, not *imports resolve*: a static
+re-export check passes on that tree. The generalization now applied to all
+twenty-one moved bodies: every global a moved body reads must resolve in the
+new module (checked mechanically, not by eye). (ii) `ocon.perp_B` has had **two**
+consumers (`ocon`, `oschu`) since OSCHU landed and was never recorded as a
+rule-2 item — but it needs no move, since `ocon` is now itself the shared layer
+and `oschu` imports it downward. It is catalogued in §1 with the rest.
+
+### New item, noticed while paying the round (2026-08-20) — `zneq.ledger`; **UNPAID, deliberately**
+
+The OSCHU debt item above lists **six** `zneq` names, and so does `oschu.py`'s own
+docstring: `u_space` / `bad_t_polys` / `poly_gcd` / `corank_at` / `schubert_data` /
+`meet_param_of`. The workbook's copy of the same item
+(`notes/Pencil-informal.md`, OSCHU's *Steps O25–O30* debt paragraph) lists a
+**different six** — it has `ledger` and not `u_space`. The union is **seven**:
+`zneq.ledger` has two consumers (`zneq`, and `oschu.py:447`) and trips §2 rule 2
+exactly like the six that moved.
+
+**It was NOT moved, on purpose**, and the reason is the acceptance test rather
+than the mechanics: `ledger` reads only `verts_of`, `corank_at` and `u_space`
+(all of which now live in `ocon`), so the move is a two-line edit — but its
+consumers are `oschu --gtarget` (466–515 s) and `--census1` / `--census2`, whose
+pre-edit baselines this round did not take, and *figures do not move* is
+discharged by re-running, not by inspection. Pay it in the next round that has
+room for those three modes, or fold it into a commit that has reason to re-run
+them anyway. Recording it here also fixes the list discrepancy: **seven** names,
+six moved 2026-08-20, `ledger` outstanding.
 
 ## Deliberate non-goals
 

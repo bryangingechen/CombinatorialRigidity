@@ -11768,7 +11768,11 @@ a **second** consumer — the same trigger, a **new** unpaid item. *(c)*
 `gridwit.tree_triple` gains a **second** consumer — same trigger, new unpaid
 item. *(d)* the `⋆`-invariance route of *Step O29* needs `closure`'s private
 `Gauss` (`ℚ(i)`) arithmetic one layer down; that is a **design decision**, not a
-mechanical move-down, and is recorded as such.
+mechanical move-down, and is recorded as such. **All four PAID 2026-08-20** by
+the harness move-down round: `meet` → `lambda`, the six `zneq` devices →
+`ocon`, `tree_triple` → `grid`, and (adjudicated) `Gauss` → `exactcore`, each
+re-exported from its old home, so every figure above stands unchanged and
+*Step O29*'s route may now use exact `ℚ(i)` directly.
 
 **Pools, pinned; every figure above is quoted over exactly one of them, and none
 is aggregated with POOL-C / POOL-G / POOL-S / POOL-B / POOL-CW / POOL-A /

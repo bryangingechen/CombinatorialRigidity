@@ -17,7 +17,9 @@ where they are and catalogued in `README.md` *Divergences*; merging any of
 them would move recorded figures.
 
 Exact ℚ throughout (`fractions.Fraction`); no floating point anywhere in the
-harness.
+harness.  The one enlargement is `Gauss`, exact ℚ(i), moved down here from
+`w4/closure.py` on 2026-08-20 (which re-exports it) once a second arc needed
+isotropic vectors.
 """
 import scriptpath  # noqa: F401  -- present so this module is import-order-safe
 from fractions import Fraction as F
@@ -103,6 +105,86 @@ def cross3(u, v):
     """Cross product on ℚ³.  (`repin` exposes this as `cross`.)"""
     return [u[1] * v[2] - u[2] * v[1], u[2] * v[0] - u[0] * v[2],
             u[0] * v[1] - u[1] * v[0]]
+
+
+# ---------------- exact ℚ(i) ----------------
+#
+# `Gauss` moved down here from `closure.py:79` on 2026-08-20 (the harness
+# move-down round, slice 2).  `closure` was deliberately the only driver whose
+# scalars are not ℚ and kept this class private, on the recorded ground that
+# "nothing else needs isotropic vectors"; §(K-out)'s residual route
+# (`rank(Q|_D) = 3` via ⋆-eigen splitting) now does, which is the condition
+# that reasoning made the move conditional on, and the user adjudicated the
+# move down (2026-08-19, `notes/scripts/README.md` *Harness debt*).  `closure`
+# re-exports it, so every recorded figure of `closure` and `grid` is unchanged.
+# It is the ONE non-ℚ scalar type in the base layer: nothing here returns a
+# `Gauss` unless it was handed one.
+
+class Gauss:
+    """Exact Gaussian rationals ℚ(i).  Coerces int / Fraction on every op."""
+    __slots__ = ('re', 'im')
+
+    def __init__(self, re=0, im=0):
+        self.re = F(re)
+        self.im = F(im)
+
+    @staticmethod
+    def _c(z):
+        return z if isinstance(z, Gauss) else Gauss(z, 0)
+
+    def __add__(self, o):
+        o = Gauss._c(o)
+        return Gauss(self.re + o.re, self.im + o.im)
+    __radd__ = __add__
+
+    def __neg__(self):
+        return Gauss(-self.re, -self.im)
+
+    def __sub__(self, o):
+        return self + (-Gauss._c(o))
+
+    def __rsub__(self, o):
+        return Gauss._c(o) + (-self)
+
+    def __mul__(self, o):
+        o = Gauss._c(o)
+        return Gauss(self.re * o.re - self.im * o.im,
+                     self.re * o.im + self.im * o.re)
+    __rmul__ = __mul__
+
+    def _inv(self):
+        n = self.re * self.re + self.im * self.im
+        assert n != 0, "division by zero in ℚ(i)"
+        return Gauss(self.re / n, -self.im / n)
+
+    def __truediv__(self, o):
+        return self * Gauss._c(o)._inv()
+
+    def __rtruediv__(self, o):
+        return Gauss._c(o) * self._inv()
+
+    def __eq__(self, o):
+        if not isinstance(o, (int, F, Gauss)):
+            return NotImplemented
+        o = Gauss._c(o)
+        return self.re == o.re and self.im == o.im
+
+    def __ne__(self, o):
+        r = self.__eq__(o)
+        return r if r is NotImplemented else (not r)
+
+    def __bool__(self):
+        return self.re != 0 or self.im != 0
+
+    def __hash__(self):
+        return hash((self.re, self.im))
+
+    def __repr__(self):
+        if self.im == 0:
+            return str(self.re)
+        if self.re == 0:
+            return f"{self.im}i"
+        return f"({self.re}{'+' if self.im > 0 else '-'}{abs(self.im)}i)"
 
 
 # ---------------- Plücker / exterior ----------------

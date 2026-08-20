@@ -1703,7 +1703,11 @@ non-`ℚ` scalar class, deliberately private to `closure`) moved down, which
 `notes/scripts/README.md` §2 explicitly calls a deliberate design choice rather
 than a mechanical move-down. Recorded as a **design item**, unpaid, and the
 route is labelled a route, not a result — it carries **no driver**, the harness
-being ℚ-only.
+being ℚ-only. **The harness half is UNBLOCKED as of 2026-08-20:** the design
+item was adjudicated (move it down) and PAID by the harness move-down round —
+`Gauss` now lives in `exactcore`, re-exported by `closure`, so this route may
+use exact `ℚ(i)` directly. Everything else about it is unchanged: still a
+route, still driverless.
 
 *(4)* **The pass's criticism of the SIGZ landing is factually wrong, and the
 wording that invited it is the coordinator's.** OSCHU reports that "the wave's
@@ -1992,7 +1996,11 @@ non-`ℚ` scalar class, deliberately private to `closure`) moved down, which
 `notes/scripts/README.md` §2 explicitly calls a deliberate design choice rather
 than a mechanical move-down. Recorded as a **design item**, unpaid, and the
 route is labelled a route, not a result — it carries **no driver**, the harness
-being ℚ-only.
+being ℚ-only. **The harness half is UNBLOCKED as of 2026-08-20:** the design
+item was adjudicated (move it down) and PAID by the harness move-down round —
+`Gauss` now lives in `exactcore`, re-exported by `closure`, so this route may
+use exact `ℚ(i)` directly. Everything else about it is unchanged: still a
+route, still driverless.
 
 *(4)* **The pass's criticism of the SIGZ landing is factually wrong, and the
 wording that invited it is the coordinator's.** OSCHU reports that "the wave's

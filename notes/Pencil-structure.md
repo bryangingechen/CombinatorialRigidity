@@ -1,7 +1,9 @@
 # PENCIL doc-split / discipline-distillation — structural rounds (work log)
 
-**Status: FIRST ROUND COMPLETE (slices 1–3, LANDED 2026-08-19); a SECOND
-ROUND opened the same day, slice 4 LANDED, slice 5 QUEUED.** **Slice 1** —
+**Status: BOTH ROUNDS COMPLETE — first round slices 1–3 LANDED 2026-08-19;
+second round slices 4–5 LANDED (slice 4 2026-08-19, slice 5 2026-08-20).
+Nothing structural is queued; the phase's next concrete task is the kernel-(K)
+research pick (`notes/Phase39.md` *Hand-off*).** **Slice 1** —
 §(K-grid) split out of `notes/Pencil-informal.md` into its own file,
 `notes/Pencil-informal-grid.md`. **Slice 2** — `notes/Pencil-fanout.md`'s
 ordinals-1–19 landed direction history archived to
@@ -25,12 +27,16 @@ numbered as a continuation (slices 4–5) rather than a new file, since this
 round is more of the same structural work, not a different kind. **Slice 4**
 — `notes/Phase39.md`'s own dated adjudication bullets covering the archived
 ordinals 1–19 moved verbatim to the new `notes/Pencil-adjudications.md`,
-same precedent as slice 2. **Slice 5, queued** — one harness move-down round
-paying the five debt items the eighth fan-out accumulated
-(`notes/scripts/README.md` *Harness debt*), including the `closure.Gauss` →
-`exactcore` move per the same post-wave adjudication. **Next: slice 5, the
-harness move-down round — see `notes/Phase39.md` *Hand-off* §"SLICE 2 — the
-harness move-down round" for its exact scope.**
+same precedent as slice 2. **Slice 5, LANDED 2026-08-20** — the harness
+move-down round, paying all five debt items the sixth-to-eighth fan-outs
+accumulated (`notes/scripts/README.md` *Harness debt*, now **BOTH ROUNDS
+PAID**), including the adjudicated `closure.Gauss` → `exactcore` move: `meet` →
+`lambda`, six `zneq` devices → `ocon`, seven `aglu` devices → `gridcol`,
+`tree_triple` → `grid`, `Gauss` → `exactcore`, each re-exported from its old
+home so no consumer changed and **no recorded figure moved** (18 driver modes
+re-run; the round's write-up is in that file's *Harness debt*). **Next: nothing
+here — the phase's next concrete task is the kernel-(K) research pick
+(`notes/Phase39.md` *Hand-off*, "Queued behind the wave").**
 
 ## Why this round
 
@@ -92,12 +98,15 @@ that cost permanently for it.
   2026-08-19 sixth-fan-out dispatch) verbatim to the new
   `notes/Pencil-adjudications.md`. Precedent and shape: slice 2 above. Detail
   below.
-- [ ] **Slice 5, queued — the harness move-down round.** One deliberate pass
-  paying all five debt items the eighth fan-out accumulated
-  (`ocon.meet`, `aglu.py`'s seven combinatorial devices, six `zneq`
-  primitives, `gridwit.tree_triple`, `closure.Gauss` → `exactcore`); exact
-  scope `notes/Phase39.md` *Hand-off* §"SLICE 2 — the harness move-down
-  round" (not restated here).
+- [x] **Slice 5 — the harness move-down round (LANDED 2026-08-20).** One pass
+  paying all five debt items (`ocon.meet` → `lambda`; `aglu.py`'s seven
+  combinatorial devices → `gridcol`; six `zneq` primitives → `ocon`;
+  `gridwit.tree_triple` → `grid`; `closure.Gauss` → `exactcore`), each with a
+  re-export from its old home, so every consumer's import line is untouched.
+  Acceptance test was figure invariance, not the build: 18 driver modes re-run
+  in the foreground, 12 byte-identical against pre-edit baselines and 6 checked
+  against §3's recorded figures. Record: `notes/scripts/README.md` *Harness
+  debt* → *The move-down round* (not restated here).
 
 ## Decisions made
 
@@ -415,13 +424,9 @@ compression pass on live prose (e.g. the *Kernel-(K) research arc*
 paragraph or the eighth-fan-out hand-off detail), which is a different,
 not-yet-commissioned kind of work — flagging it rather than improvising it.
 
-**Next: slice 5, the harness move-down round is QUEUED** — one deliberate
-pass paying the five debt items the eighth fan-out accumulated, including
-the `closure.Gauss` → `exactcore` move; exact scope
-`notes/Phase39.md` *Hand-off* §"SLICE 2 — the harness move-down round" (not
-duplicated here). ROADMAP's doc-split row carries this slice's record; this
-log's *Status* header is the verdict. The phase's own next-next concrete
-task — the kernel-(K) research step — stays **UNROUTED, awaiting a pick**
-until slice 5 clears; see `notes/Phase39.md` *Hand-off*, which also carries,
-unchanged, ZNEQ's `σ > 0`-everywhere disproof hunt awaiting user adjudication
-and excluded from the standing 2026-08-07 delegation's pool.
+**Slice 5, the harness move-down round, LANDED 2026-08-20** — the five debt
+items paid in one pass, `closure.Gauss` → `exactcore` included, with no
+recorded figure moved. ROADMAP's doc-split row carries this slice's record;
+this log's *Status* header is the verdict. **With it the structural work is
+finished**, and the phase's next concrete task — the kernel-(K) research pick —
+is now live rather than blocked; see `notes/Phase39.md` *Hand-off*.

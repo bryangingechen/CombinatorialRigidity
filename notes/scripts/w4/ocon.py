@@ -97,7 +97,8 @@ import os, sys
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import scriptpath  # noqa: F401,E402  -- canonical harness path bootstrap
 
-from exactcore import hat, neighbors, nullspace, rank, wedge2      # noqa: E402
+from exactcore import (dot, hat, neighbors, nullspace,             # noqa: E402
+                       rank, wedge2)
 from kbare_common import verts_of                                  # noqa: E402
 from nogood_subdiv import deficiency                               # noqa: E402
 from pitch import klein                                            # noqa: E402
@@ -129,14 +130,171 @@ def perp_B(V):
     return out
 
 
-def meet(A, B):
-    """A basis of `span(A) cap span(B)`; `lambda.span_meet` with a dimension
-    assert, so every sampled meet carries one."""
-    m = LAM.span_meet(A, B) if (A and B) else []
-    m = span_basis(m)
-    assert len(m) == rank(A) + rank(B) - rank(list(A) + list(B)), \
-        "meet dimension is not the Grassmann count"
-    return m
+# `meet` MOVED DOWN to `lambda` on 2026-08-20 (the harness move-down round,
+# slice 2): it had three consumers -- this module, `zneq` and `oschu` -- past
+# README §2 rule 2's trigger, and it belongs beside the `span_meet` it wraps.
+# Re-exported here, so `ocon.meet` still resolves for both importers and no
+# recorded figure moves.
+meet = LAM.meet
+
+# ---------------- the ZNEQ primitives, moved down here 2026-08-20 -----------
+#
+# `corank_at`, `u_space`, `poly_gcd`, `schubert_data`, `meet_param_of` and
+# `bad_t_polys` moved down here from `zneq.py:185ff` in the harness move-down
+# round (slice 2): each had gained a second consumer (`oschu`), past README §2
+# rule 2's trigger, and this module is the layer under both `zneq` and `oschu`.
+# Their private helpers `func_matrix` / `aff_mul` / `poly_trim` came with them,
+# since a moved body may not reach back up.  `zneq` re-exports all nine, so
+# every `zneq.<name>` call site and every recorded figure is unchanged.  The
+# text below is verbatim, `zneq`'s own §(K-out) *Steps O19–O24* devices; two of
+# them (`poly_gcd` / `poly_trim`) are pure ℚ[t] algebra and would belong in
+# `exactcore` the day a non-(K-out) consumer appears.
+
+def corank_at(edges, placed, V):
+    """`corank R(edges) = 5|edges| - rank` in exact Q at an explicit vertex
+    list, with the rank asserted against its own row bound."""
+    rk, _rows, _er, _idx = rank_at_V(edges, placed, V)
+    assert 0 <= rk <= 5 * len(edges), "rank outside its row bound"
+    return 5 * len(edges) - rk, rk
+
+
+def u_space(Hed, VH, placed, b, c, sigma):
+    """`(U_H, D)` at one chart point: `D` a basis of the relative twist space
+    `{m(b) - m(c)}` of `H` and `U_H = D^perp` in the Euclidean pairing --
+    section (K-tight) *Step 2*'s obstruction space `U` at the substituted
+    instance `(G', a)`.  Computed by the motion-perp formula
+    `repin.seed_probe` uses inline (that code is not exported, so this is a
+    second site, not a reimplementation of a catalogued name); the name
+    differs because the instance does.
+
+    Asserts *Step 2* item 3's counts at the substituted instance:
+    `dim D = 3 + sigma` and `dim U_H = 3 - sigma`."""
+    mot, idx = OL.weld_motions(Hed, VH, placed, [])
+    D = OL.rel_span(mot, idx, b, c)
+    U = nullspace(D) if D else [[F(1) if k == i else F(0) for k in range(6)]
+                                for i in range(6)]
+    U = span_basis(U)
+    assert len(U) == 6 - len(D), "U_H is not the perp of D"
+    assert len(D) == 3 + sigma, \
+        f"dim{{m(b)-m(c)}} = {len(D)} != 3 + corank(H) = {3 + sigma}"
+    assert len(U) == 3 - sigma, \
+        f"dim U_H = {len(U)} != 3 - corank(H) = {3 - sigma}"
+    return U, D
+
+
+def func_matrix(U, Cab, Cac):
+    """The 2 x dim(U_H) matrix of the two placement functionals
+    `u -> <u, C(ab)>`, `u -> <u, C(ac)>` in the `U_H` basis, and the
+    dimension of `U_H cap C(ab)^perp cap C(ac)^perp`."""
+    A = [[dot(u, Cab) for u in U], [dot(u, Cac) for u in U]]
+    rk = rank(A)
+    assert rk <= min(2, len(U)), "functional matrix rank out of range"
+    return A, rk, len(U) - rk
+
+
+def aff_mul(p, q):
+    """(a0 + a1 t)(b0 + b1 t) as `(c0, c1, c2)`."""
+    return (p[0] * q[0], p[0] * q[1] + p[1] * q[0], p[1] * q[1])
+
+
+def poly_trim(p):
+    """Drop trailing zero coefficients (little-endian coefficient list)."""
+    q = list(p)
+    while q and q[-1] == 0:
+        q.pop()
+    return q
+
+
+def poly_gcd(polys):
+    """The monic GCD in `Q[t]` of a list of little-endian coefficient tuples,
+    as a coefficient list; `[]` when every polynomial is identically zero.
+    Degree 0 means the polynomials have NO common root in any extension of
+    `Q`; degree d > 0 means the common root set is that GCD's."""
+    def gcd2(u, w):
+        u, w = poly_trim(u), poly_trim(w)
+        while w:
+            # u mod w
+            while len(u) >= len(w):
+                f = u[-1] / w[-1]
+                sh = len(u) - len(w)
+                for i in range(len(w)):
+                    u[sh + i] -= f * w[i]
+                u = poly_trim(u)
+                if not u:
+                    break
+            u, w = w, u
+        return poly_trim(u)
+    g = []
+    for p in polys:
+        g = gcd2(g, list(p)) if g else poly_trim(list(p))
+    if g:
+        lead = g[-1]
+        g = [x / lead for x in g]
+    return g
+
+
+def schubert_data(U, Mhat, W):
+    """(OC-26)'s Schubert quantities at one frame, from `U = U_H` (so
+    `D = U^perp`), the meet-line 2-space `Mhat` and the hub-line 2-space
+    `W = <pt(b)^, pt(c)^>`:
+
+      `dimK`   dim(D cap (Mhat ^ W)) -- generically 1 in `Gr(3,6)`;
+      `pencil` whether some `w` in `W` has `Mhat ^ w subseteq D`, decided
+               EXACTLY by one rank computation: the map
+               `w -> (Phi(P0 ^ w), Phi(Pd ^ w))` on the 2-space `W` has a
+               kernel iff its rank is <= 1.
+
+    `Phi(x) := <., x>|_U`, so `x in D <=> Phi(x) = 0`.  By (OC-26)(ii) the
+    meet line is bad at EVERY `t` iff `dimK >= 3` (rank Phi <= 1) or
+    `pencil`; both force `dimK >= 2`, a codimension-2 Schubert jump."""
+    MW = span_basis([wedge2(q, w) for q in Mhat for w in W])
+    assert len(MW) == 4, f"Mhat ^ W is {len(MW)}-dimensional, not 4"
+    D = span_basis(nullspace(U)) if U else []
+    assert len(D) == 6 - len(U), "D is not U^perp"
+    dimK = len(D) + len(MW) - rank(list(D) + list(MW))
+    A = [[dot(u, wedge2(Mhat[0], w)) for w in W] for u in U] + \
+        [[dot(u, wedge2(Mhat[1], w)) for w in W] for u in U]
+    return {'dimK': dimK, 'pencil': rank(A) <= 1}
+
+
+def meet_param_of(placed, M0, Md, x):
+    """The parameter `t` with `placed[x] = M0 + t*Md`, asserted exactly, or
+    None when `placed[x]` is off the meet line."""
+    i = next((k for k in range(3) if Md[k] != 0), None)
+    assert i is not None, "degenerate meet-line direction"
+    t = (placed[x][i] - M0[i]) / Md[i]
+    if any(placed[x][k] != M0[k] + t * Md[k] for k in range(3)):
+        return None
+    return t
+
+
+def bad_t_polys(U, M0, Md, pb, pc):
+    """(OC-26): the 2x2 minors of the functional matrix as QUADRATICS in the
+    meet-line parameter `t`, exploiting that `C(ab)` and `C(ac)` are
+    affine-linear along `M` -- so the matrix is recovered from its values at
+    `t = 0` and `t = 1` with no symbolic wedge.  Returns the list of minors as
+    `(c0, c1, c2)`, each asserted to reproduce the exact rank at `t = 0`."""
+    def mat(t):
+        p = [M0[k] + t * Md[k] for k in range(3)]
+        return func_matrix(U, wedge2(hat(p), hat(pb)),
+                           wedge2(hat(p), hat(pc)))[0]
+    A0, A1 = mat(F(0)), mat(F(1))
+    n = len(U)
+    ent = [[(A0[r][j], A1[r][j] - A0[r][j]) for j in range(n)]
+           for r in range(2)]
+    # a spot check that the affine reconstruction is exact, at t = 2
+    A2 = mat(F(2))
+    for r in range(2):
+        for j in range(n):
+            assert ent[r][j][0] + 2 * ent[r][j][1] == A2[r][j], \
+                "C(ab)/C(ac) are not affine-linear along M"
+    out = []
+    for i in range(n):
+        for j in range(i + 1, n):
+            p = aff_mul(ent[0][i], ent[1][j])
+            q = aff_mul(ent[0][j], ent[1][i])
+            out.append(tuple(p[k] - q[k] for k in range(3)))
+    return out
 
 
 # ---------------- --validate: the pure algebra ------------------------------

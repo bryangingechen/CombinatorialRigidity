@@ -265,6 +265,54 @@ def class_union_bounds(edges, allverts, bd, subset_cap=18):
     return bound_cls, bound_cnt, partial
 
 
+# ------------------------------- the tree-triple certificate (moved down) --
+#
+# `tree_triple` moved down here from `gridwit.py:234` on 2026-08-20 (the
+# harness move-down round, slice 2) once it had THREE consumers -- `gridwit`
+# itself, `gridcol` and `packmm`, plus `oschu`'s local import -- past README §2
+# rule 2's own trigger.  It reads nothing but a block-data dict and
+# `closure.cycle_rank`, both of which live at or below this layer, and every
+# consumer of it already imports this module.  `gridwit` re-exports it, so all
+# of them are unchanged and no recorded figure moves.
+
+def tree_triple(bd, node_cap=250000):
+    """A partition of the classes into three groups whose pairwise unions
+    are acyclic (at a balanced tight block: spanning trees) — or None.
+    DFS over classes (largest first), incremental acyclicity pruning on the
+    two affected pair-unions.  Returns (groups, capped)."""
+    cids = sorted(set(bd['cls']))
+    edges_of = {c: [] for c in cids}
+    for k in range(len(bd['E'])):
+        edges_of[bd['cls'][k]].append(bd['ced'][k])
+    order = sorted(cids, key=lambda c: -len(edges_of[c]))
+    nodes = bd['nodes']
+    budget = [node_cap]
+    groups = [[], [], []]           # edge lists of the three groups
+
+    def ok_pair(g1, g2):
+        return cycle_rank(nodes, groups[g1] + groups[g2]) == 0
+
+    def dfs(i):
+        if budget[0] <= 0:
+            return None
+        budget[0] -= 1
+        if i == len(order):
+            return [list(g) for g in groups]
+        c = order[i]
+        gmax = 3 if i > 1 else (1 if i == 0 else 2)   # symmetry breaking
+        for g in range(gmax):
+            groups[g].extend(edges_of[c])
+            if ok_pair(g, (g + 1) % 3) and ok_pair(g, (g + 2) % 3):
+                res = dfs(i + 1)
+                if res is not None:
+                    return res
+            del groups[g][len(groups[g]) - len(edges_of[c]):]
+        return None
+
+    res = dfs(0)
+    return res, budget[0] <= 0
+
+
 # --------------------------------- parameterized σ-fixed config (variant) --
 
 def dn_sparsity_bound(bd, node_cap=16):

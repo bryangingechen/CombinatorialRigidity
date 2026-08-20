@@ -1041,7 +1041,9 @@ debt*: `ocon.meet` gains a **third** consumer (re-dated), six `zneq` primitives
 and `gridwit.tree_triple` each gain a **second**, and **`closure.Gauss`** is
 flagged as a *design* item rather than a mechanical move-down — the residual
 route needs exact `ℚ(i)`, and `closure` is deliberately the only driver whose
-scalars are not `ℚ`.
+scalars are not `ℚ`. **All three PAID 2026-08-20** (the harness move-down
+round; `Gauss` adjudicated down to `exactcore`), each with a re-export from its
+old home, so no figure of any eighth-fan-out direction moved.
 
 **SIGZ LANDED third, 2026-08-19, returning one label to the tail** —
 (OC-35)–(OC-39) and Steps O31–O36 CLAIMED, **(OC-40) reserved and returned
