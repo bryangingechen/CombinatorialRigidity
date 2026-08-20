@@ -46,7 +46,8 @@ identities now measured as such), the dependent stratum is **complete**
 (`index ∈ {1, 2}`, `corank(G′) ≤ 3`, correcting "caps it at 5"), and option-C's
 C1/C3 readings are corrected. `notes/Pencil-informal.md` §(K-bare-ext).
 **NEXT CONCRETE TASK: DISPATCH Probe C3-AVOID** (specced and authorized
-2026-08-20; its labels are reserved at prep, not yet) — nothing structural
+2026-08-20; **namespace RESERVED 2026-08-20**, so prep is done — §(K-avoid) / `AV-`,
+tokens (AV-1)–(AV-8), *Steps AV1–AV6*, conditional driver `w4/avoidgen.py`) — nothing structural
 queued, nothing awaiting user adjudication, though the T1 hit is worth a user
 mention when the next check-in comes. The
 kernel-(K) RESEARCH PICK is a standing delegation **queued behind the probes**, not
@@ -160,10 +161,16 @@ constraints; the dated dispatch narrative is in *Decisions made* and git):
   un-commissioned. **One correction the probe returned about the tier semantics,
   recorded because it changes who a future T2 decides:** `PencilPair`
   (`Motive.lean:160`) carries `HasPencilRealization K n G` as an **unconditional**
-  second conjunct, so a T2 witness would falsify the conclusion of
-  `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card` — a **PENCIL event** with
-  the direction-A pivot rule in force, not the "phase-shape event, not a PENCIL
-  event" the probe's own spec predicted. No T2 candidate exists in the arc's gadget
+  second conjunct, so a T2 witness would make **`PencilPair K 3 G` itself false** at
+  that `G` — the phase's *target motive*, not merely the induction that reaches it.
+  Stated precisely, because the loose form of this claim misleads: the landed
+  `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card` **derives** `PencilPair K 3 G`
+  from the three carried hypotheses, so a T2 witness does **not** break that theorem —
+  it proves **`hbareSplit` false**, leaving the theorem true and unusable. What makes a
+  T2 a **PENCIL event**, with the direction-A pivot rule in force, is the *other* half:
+  `PencilPair K 3 G` failing at a `G` in scope refutes **what** the phase is trying to
+  prove, not merely **how**. Either way this is not the "phase-shape event, not a PENCIL
+  event" the probe's own spec predicted (corrected in the spec too). No T2 candidate exists in the arc's gadget
   stock and none is producible by this harness (T2 is a universal non-existence over
   frameworks), so nothing turns on it operationally.
 
@@ -291,6 +298,20 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
   **(T)/(V)/(E-loc) are slice-sized and need no adjudication; (K-res) is wave-sized and is a
   user call.**
 
+- **Doc debt, dated 2026-08-20 — this note is 6xx lines against the ~500 tripwire, and the
+  relief is a NAMED slice, not a vague "compress later".** The note is genuinely
+  *forward*-weighted (CLAUDE.md's actual test): *Hand-off* 186 lines + *Current state* 163
+  are live forward state, while the finished part (*Decisions made*) is only 88 — so the
+  overage is not bloat and one-lining settled entries will not fix it. The concrete relief
+  is a **third doc-split slice** on the precedent of slice 1 (2026-08-19): move *Current
+  state*'s three now-SPENT dated wave bullets — the seventh-fan-out dispatch, the post-wave
+  adjudication (both calls DISCHARGED) and the eighth-fan-out dispatch (its `σ > 0`
+  authorization spent on SIGZ) — **verbatim** to `notes/Pencil-adjudications.md`, leaving
+  thin pointers. Deliberately **not** done piecemeal by a coordinator commit: *Hand-off*
+  cites the eighth-fan-out bullet by name for the authorization's accepted terms, and slice
+  2's own experience was that repointing is where this doc set breaks (68 cross-references in
+  one slice), so it wants a scoped dispatch that greps the tree. Until then the overage is
+  **acknowledged, not silent**; full relief remains phase close.
 - The full biconditional transport (design doc's W0 pin) is landed only as its two forward
   implications; the reverse arms need a `complementIso` involution lemma, not in tree —
   deferred, **off every critical path** (§(K-σ) *Step σ6*).
@@ -368,9 +389,12 @@ here**). It prices the one board option that **relocates** the hard case instead
 it, and it is **purely combinatorial** — a question about the already-formalized generation
 theorem (Thm 4.9, Phase 20), not about pencils. **KBARE-FALSIFY did NOT moot it:** the hit is
 about route A's *seed quantifier*, not about the reduction, so C3-AVOID's question stands
-exactly as specced. **Prep owed before dispatch:** its labels are **not** reserved yet
-(`notes/Pencil-labels.md` has a namespace block for KBARE-FALSIFY only), so the dispatch is
-one prep step away, not zero.
+exactly as specced. **Prep is DONE (2026-08-20):** `notes/Pencil-labels.md`
+§"Reserved namespace — probe C3-AVOID" reserves **§(K-avoid)** (new, to be opened only if the
+mathematics warrants a workbook section — the spec's default deliverable is a design-pass on
+`notes/Pencil-strategy.md` §4's C3 entry), tag **`AV-`** with tokens **(AV-1)–(AV-8)**,
+***Steps AV1–AV6***, and the **conditional** driver `notes/scripts/w4/avoidgen.py` (the spec
+makes a driver optional). So the next step is the **dispatch**, zero prep away.
 
 **Nothing is awaiting user adjudication as of 2026-08-19.** The one item that was —
 ZNEQ's `σ > 0`-everywhere hunt at class shapes whose `H` carries a short theta

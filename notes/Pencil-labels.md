@@ -1239,6 +1239,42 @@ debt item naming every consumer, and do **not** modify the landed sibling in
 the same commit (the `ocon.meet` / `aglu.py` precedents). The one debt item
 open on purpose, **`zneq.ledger`**, is not this probe's to disturb.
 
+## Reserved namespace — probe C3-AVOID (2026-08-20, incoming)
+
+**Reserved 2026-08-20 for probe C3-AVOID**, the second of the two
+architecture-testing probes authorized 2026-08-20 (`notes/Pencil-fanout.md`
+§"Two probes SPECCED and AUTHORIZED 2026-08-20"). Coordinator-set, single
+dispatch. **KBARE-FALSIFY ran first and did NOT moot it** (its T1 hit is a
+route finding on the *other* kernel), so this reservation goes live as written.
+
+| what | reserved | note |
+|---|---|---|
+| section | **§(K-avoid)** | **new**, 0-hit; open it only if the mathematics warrants a workbook section — the spec's default deliverable is a design-pass on `notes/Pencil-strategy.md` §4's C3 entry |
+| tag / labels | **`AV-`**, tokens **(AV-1)–(AV-8)** | 0-hit |
+| steps | ***Steps AV1–AV6*** | 0-hit |
+| driver | **`notes/scripts/w4/avoidgen.py`** — *only if a search is needed* | the spec makes the driver conditional; the question is combinatorial on the **landed** generation theorem (Thm 4.9, Phase 20), so a leaf that consumes `nogood_subdiv`'s combinatorial oracles sits on the `w4/` stack |
+| M2 leaf | **none** — not expected, not reserved | purely combinatorial; ask the coordinator rather than minting a path |
+
+**0-hit verification, at reservation time.** `K-avoid`, `AV-`, `(AV-1)`,
+`(AV-8)`, `AV1`, `AV6`, *Step AV* and `avoidgen` were each verified **0-hit** as
+raw substrings, case-insensitively, across the tracked tree (`.git` and `.lake`
+excluded — an unfiltered first pass reported phantom hits for `AV-` and *Step
+AV* from build artifacts, which is worth knowing for the next prep: **exclude
+`.git`/`.lake` or the check lies to you in the conservative direction**).
+
+**One disclosure, the same shape as KBARE-FALSIFY's.** The code **`C3-AVOID`**
+embeds the strategy doc's own **§4 candidate-invariant label `C3`**, so it is
+not 0-hit as a raw substring; the **full token** hits exactly 3 files, all of
+them its own authorizing bookkeeping (`Pencil-fanout.md`, `Pencil-strategy.md`,
+`Phase39.md`). Deliberate and self-naming, exactly like `KBARE-FALSIFY`'s
+`kbare`, and it falls inside the narrow exception that reservation recorded —
+the substring hit **is** the dispatch's declared subject. Not renamed.
+
+**Checked 0-hit and NOT chosen**, recorded so they stay checkable without a
+re-run: `csavoid`, `reduceout`, `sdodge`, `AVD-`. **Checked and rejected for
+live hits:** the bare word **`avoid`** (139 files — ordinary English throughout
+the corpus, so it can never be a code or basename here) and **`dodge`** (22).
+
 ## Registry — `notes/Pencil-informal.md` (the (K) workbook)
 
 Status keywords are pointers to the owning section's verdict block and the

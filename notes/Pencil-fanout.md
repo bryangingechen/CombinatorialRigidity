@@ -2236,9 +2236,13 @@ existence search — subsumed, and the index bound makes `index ≥ 3` **empty**
 sampling figure was never evidence is recorded (the locus is a curve); (d) the
 one-gadget caveat on C1 — **second gadget run**, C1 corroborated per stratum
 and refuted as a principle. One correction to this spec's own framing: a **T2**
-witness would falsify `PencilPair`'s unconditional second conjunct, hence the
-headline theorem's conclusion, so it would be a **PENCIL event** rather than
-"not a PENCIL event" as written above — nothing turned on it (no T2 candidate
+witness would falsify `PencilPair`'s unconditional second conjunct — i.e.
+`PencilPair K 3 G` itself, the phase's *target motive* — so it would be a
+**PENCIL event** rather than "not a PENCIL event" as written above. It would
+**not** break the headline theorem, which *derives* `PencilPair` from the three
+carried hypotheses and so would merely become true-and-unusable with
+`hbareSplit` refuted; the PENCIL-event reading comes from the target failing,
+not from the theorem failing — nothing turned on it (no T2 candidate
 exists in the arc's gadget stock), but a future dispatch should price it that
 way.
 
