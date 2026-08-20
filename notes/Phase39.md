@@ -223,10 +223,31 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
 - **Open: kernels (K) and (K-bare), and W4 (`hcontract`)** — the entire remaining work of the
   phase, with the per-item route in *Hand-off*'s three carried items and **not duplicated
   here.** Two W4 facts that constrain future statements: **`hnoGood'` is known NON-vacuous**
-  (2026-08-02), so branch 4 needs content (routes in `notes/Pencil-W4-informal.md`
-  §"`hnoGood'` vacuity"; adjudication owed), and **(SAFE-RES) is REFUTED** the same day, so
-  routes 1/3 cost (T) + (V) + the reduced (E) — (T) a genuine research gap — plus **one**
-  widened kernel (K-res).
+  (2026-08-02), so branch 4 needs content, and **(SAFE-RES) is REFUTED** the same day, so the
+  adjudicated route 3 costs (T) + (V) + the reduced (E) plus **one** widened kernel (K-res)
+  (`notes/Pencil-W4-informal.md` §§"`hnoGood'` vacuity"/"(SAFE-RES)"). **No adjudication is
+  owed here** — route 3, packaging (b) was adjudicated the same day, 2026-08-02; a stale
+  "adjudication owed" flag stood in this bullet for eighteen days and is corrected 2026-08-20.
+
+- **What the Lean hold parks, and what it does NOT — corrected 2026-08-20, because this
+  bullet read as though it parked all of W4.** The hold parks **Lean**: the W4 build (W4-L4b
+  onward), the `noRigid`-free Lean leaf (E) reduced to, and route σ's steering commit. It does
+  **not** park route 3's other four costs, every one **informal mathematics dispatchable
+  today** — which the hold's own wording ("hold off on more Lean until we have an informal
+  proof") is an argument *for*: **(T)** `G` triangle-free, *"a genuine research gap, not a
+  numerics gap"*, landed-**invisible** because the search's own feasibility certificate (L6b)
+  requires triangle-freeness, so a triangle-carrying residual can never appear in a certified
+  sweep; **(V)** the local choice, elementary given (E) and (T) but needing two `C₄`-carrying
+  branch shapes ruled out at *every* `≥ 2`-interior branch; **(E-loc)**, the combinatorial gap
+  (E) reduced to (255/255, unproven); and **(K-res)**, a kernel of `hK`'s difficulty class on
+  the complementary habitat whose proof route is *strictly harder* (its habitat sits wholesale
+  in the `dim R_a = 1` stratum where the (K) recon found no landed-brick route). **(K-res) has
+  never been attacked** — it appears in the dispatch docs only as a **bar**, excluded from
+  eight consecutive direction specs with one deferral, *"pin it when the tight side closes"*,
+  sound when the tight side looked close and now eighteen days and thirty-seven directions old.
+  **(T)/(V)/(E-loc) are slice-sized and need no adjudication; (K-res) is wave-sized and is a
+  user call.**
+
 - The full biconditional transport (design doc's W0 pin) is landed only as its two forward
   implications; the reverse arms need a `complementIso` involution lemma, not in tree —
   deferred, **off every critical path** (§(K-σ) *Step σ6*).
@@ -367,8 +388,23 @@ The three carried items:
 - **`hbareSplit`** (kernel (K-bare), research) — the bare-half-off-feasibility kernel,
   **carried as pinned** ("C: cheap numerics extensions + A", 2026-07-30; option B NOT
   commissioned), extension route recon'd **NO-GO on landed machinery**. Minimal open
-  statement **(K-bare-ext)**; status row in the gap map, full record in the design doc
-  §"(K-bare) extension-route recon", numerics `notes/scripts/kbare/{danger,optc}.py`.
+  statement **(K-bare-ext)**, the arbitrary-seed insertion lemma; status row in the gap map,
+  full record in the design doc §"(K-bare) extension-route recon", numerics
+  `notes/scripts/kbare/{danger,optc}.py`.
+  **Why it is *carried* rather than proven or disproven.** The recon answers this in full
+  (design doc §"(K-bare) extension-route recon") and the answer is **not** "nobody tried": the
+  NO-GO is **definitional** — `PencilNondegFeasible` *is* "a nondegenerate realization exists",
+  so at `¬PencilNondegFeasible` the chart/reseed/engine apparatus has **nothing to consume** on
+  either side of the split, leaving only the 2–3-dim `pt(v)` placement freedom — and the one
+  identified calculus is unlanded, needs the owed **KT pp. 684–691 re-pin** first, and was built
+  for chart-*generic* seeds. **That research is option B, declined 2026-07-30.** Versus `hK`:
+  easier on uniformity, **harder on the seed side**, habitat reaching **corank 2** (DZ), so
+  `¬Feasible` buys no corank control. Evidence is **strong** (at DZ: every off-line placement
+  attains, every on-line one fails by exactly 1, 0/15 off-line failures) — a well-evidenced
+  statement with an un-commissioned proof route, not a hedge on a doubtful one. **The live
+  asymmetry:** both kernels' option Bs were declined, but `hK` absorbed thirty-seven directions
+  of other attacks and (K-bare) **none** — *"open, nothing being developed"*, in the gap map's
+  own words. That gap is dispatch attention, not adjudication.
 
 Gates for any continuation: `lake build` (warning-clean) + `lake lint` when `.lean` is touched;
 `blueprint/verify.sh` + `blueprint/lint.sh` (vocabulary gate bans "stratum"/"strata") when `.tex`
