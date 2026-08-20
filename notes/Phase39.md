@@ -31,14 +31,15 @@ settled at an **exact `n_hub` boundary** (GTMPL); **(b′) given its first prove
 disproof hunt a NO HIT** that nonetheless **kills the counting route to a
 disproof** as a theorem, the pivot rule never triggering (SIGZ); **(a₁)
 half-proven, half-reduced to one 3×3 determinant** (OSCHU); and
-**(GR-64)(R2) REFUTED** by a Petersen witness family with **(R1) DELIVERED**
+**(GR-64)(R2) REFUTED** by a Petersen witness family with **(GR-64)(R1) DELIVERED**
 (GCOLL) — the wave's **only** gap-map status move. Verdicts one-lined in
 *Decisions made*, detail in the fan-out doc. The **wave-closing exception-log commit is DONE**
 (`notes/dispatch-log.md`: five rows, findings **F22–F24**). **Both queued structural items are
 LANDED** — the phase-note doc split (2026-08-19) and the **harness move-down round
 (2026-08-20)**, which paid all five *Harness debt* move-downs, `closure.Gauss` →
-`exactcore` included, with **no recorded figure moved**. **NEXT CONCRETE TASK: Probe
-KBARE-FALSIFY, then Probe C3-AVOID** (specced and authorized 2026-08-20; see
+`exactcore` included, with **no recorded figure moved**. **NEXT CONCRETE TASK: DISPATCH Probe
+KBARE-FALSIFY, then Probe C3-AVOID** (specced and authorized 2026-08-20;
+KBARE-FALSIFY's namespace **reserved 2026-08-20**, so prep is done — see
 *Hand-off*) — nothing structural queued, nothing awaiting user adjudication. The
 kernel-(K) RESEARCH PICK is a standing delegation **queued behind the probes**, not
 itself the next task; candidates in *Hand-off* (cheapest first: (GR-R1), (GR-C2), the
@@ -325,6 +326,13 @@ failure kills the route regardless of `hK` — and **run it first, since its ans
 other**; a hit there refutes *this induction*, **not** the pencil conjecture, so it is a
 phase-shape event for the user rather than a direction-A PENCIL event. C3-AVOID prices the one
 board option that **relocates** the hard case instead of attacking it.
+**KBARE-FALSIFY is PREPPED as of 2026-08-20** — its namespace is reserved in
+`notes/Pencil-labels.md` §"Reserved namespace — probe KBARE-FALSIFY" (§(K-bare-ext) opens
+from its stub, tag `BE-`, tokens (BE-1)–(BE-10), *Steps BE1–BE8*, driver
+`notes/scripts/kbare/breakhunt.py`), with two disclosures recorded there: `BE-` is 0-hit
+only *within* this registry's files-in-scope, and the code `KBARE-FALSIFY` is a **deliberate
+narrow exception** to clause L5's raw-substring test. So the next concrete step is the
+**dispatch**, not further prep.
 
 **Nothing is awaiting user adjudication as of 2026-08-19.** The one item that was —
 ZNEQ's `σ > 0`-everywhere hunt at class shapes whose `H` carries a short theta
@@ -492,7 +500,7 @@ is the canonical home a successor reads.
   **OSCHU** leaves **(a₁) half-proven and half-reduced to one 3×3 determinant**, its (a₂) leg
   correcting an arc-wide figure (907 labelled shapes = 75 classes, covering 19 of 174; the
   other 155 certified directly, so the `s₀` half is free **without** (GR-10)); **GCOLL**
-  **REFUTES (GR-64)(R2)** by 180 Petersen witnesses and **DELIVERS (R1)** at 81 482 shapes —
+  **REFUTES (GR-64)(R2)** by 180 Petersen witnesses and **DELIVERS (GR-64)(R1)** at 81 482 shapes —
   the wave's **only** gap-map status move. **Four of the five corrected a defective spec
   clause** (five in all, three inherited verbatim from landed hand-offs) — `notes/dispatch-
   log.md` **F22**. E1/E2/E3 NO at every one; **E3 stays ARMED by GBAL, never fired**;

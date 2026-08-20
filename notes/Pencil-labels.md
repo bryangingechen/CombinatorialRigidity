@@ -74,8 +74,9 @@ physical reorganization.
 
 ## The minting rule
 
-Four clauses. They are cheap; clause 1 is the one that actually prevents the
-next collision.
+Six clauses. They are cheap; clause 1 is the one that actually prevents the
+next collision, and (L6) is the landing-time backstop for the one case L1
+structurally cannot see.
 
 - **(L1) Uniqueness, checked against this file.** Before minting a label, grep
   this registry for the token. If it is taken, **prefix it with your section's
@@ -95,6 +96,14 @@ next collision.
   file and carries up to ~40 cross-references; renaming would churn far more
   than it buys, and this pass renamed **nothing**. Collisions among existing
   labels are resolved by (L3), not by renumbering.
+  **Scope, sharpened 2026-08-20 — L4 covers the GRANDFATHERED corpus, not a
+  fresh mint.** A bare token caught within a few commits of the landing that
+  minted it is **renamed**, not qualified: direction A's `(R1)`/`(R2)` →
+  `(ANH-R1)`/`(ANH-R2)` at landing, and GFLOW's `(R1)`/`(C1)`/`(C2)` →
+  `(GR-R1)`/`(GR-C1)`/`(GR-C2)` by user adjudication three commits after
+  (the collision record below). The two clauses do not conflict — L4 prices
+  churn against ~40 existing references, and (L6) exists to catch a token
+  before it has three.
 - **(L5) Direction codes are topic-tagged and multi-letter** *(user call,
   2026-08-07; binds from the fifth fan-out on)*. A fan-out direction is named
   by a short mnemonic token — `PEX`, `TCOL` — never by a bare single letter,
@@ -1163,6 +1172,64 @@ existed only to disambiguate.
 **(L6)** above — a landing-time grep for bare `(X<digit>)` tokens, since the
 prefix/step-range reservation check cannot see one minted inside a
 reservation for a sub-clause.
+
+## Reserved namespace — probe KBARE-FALSIFY (2026-08-20, incoming)
+
+**Reserved 2026-08-20 for probe KBARE-FALSIFY**, the first of the two
+architecture-testing probes specced and authorized 2026-08-20
+(`notes/Pencil-fanout.md` §"Two probes SPECCED and AUTHORIZED 2026-08-20").
+Coordinator-set, single dispatch — **not** a fan-out, so this reservation
+protects against the *existing corpus* only; there are no siblings in flight.
+
+| what | reserved | note |
+|---|---|---|
+| section | **§(K-bare-ext)** (`notes/Pencil-informal.md`) | **already registered, currently a stub** — the probe OPENS it; no new section name is minted |
+| tag / labels | **`BE-`**, tokens **(BE-1)–(BE-10)** | the registered tag for §(K-bare-ext); no `BE-` token has ever been minted in the pencil doc set |
+| steps | ***Steps BE1–BE8*** | first steps the section has had |
+| driver | **`notes/scripts/kbare/breakhunt.py`** | new leaf on the `kbare/` model layer |
+| M2 leaf | **none** — not expected, not reserved | a probe that finds it needs one asks the coordinator rather than minting a path |
+
+**0-hit verification, at reservation time.** `(BE-1)`, `(BE-2)`, `(BE-10)`,
+*Step BE*, `BE1` and `breakhunt` were each verified **0-hit** across this
+file's *Files in scope* plus `notes/Pencil-informal-grid.md`. `breakhunt` is
+additionally 0-hit as a **raw substring**, case-insensitively, across `*.md`,
+`*.tex`, `*.lean`, `*.py`, `*.m2`.
+
+**Two disclosures, recorded rather than smoothed over.**
+
+- **`BE-` is not globally 0-hit** — `notes/Phase23-design.md` carries `BE-1`,
+  `BE-2`, `BE-3` and `notes/model-experiment-archive.md` carries `BE-2`/`BE-5`.
+  Those files are **outside** this registry's *Files in scope* (a different
+  phase's design doc and the frozen experiment log), and `BE-` is the tag the
+  §(K-bare-ext) row has carried since 2026-08-05. Not re-minted, not renamed.
+- **The code `KBARE-FALSIFY` fails clause L5's raw-substring test on its first
+  five characters** — `kbare` hits 68 files, being both the arc's subject
+  matter and the script layer's own directory name. This is the shape that got
+  `SCHUB` rejected in favour of `OSCHU` at the eighth fan-out's prep, and it is
+  recorded here as a **deliberate exception**, not an oversight: the code was
+  minted in the authorizing spec (`877fcee7`), the **full token** is 0-hit
+  outside its own three bookkeeping files, and the collision is *self-naming*
+  rather than accidental — no reader will confuse `KBARE-FALSIFY` with
+  `kbare_common`. Renaming it would churn a user-facing, already-authorized
+  probe name for no disambiguation gain. **Precedent set narrowly:** an
+  exception is available when the substring hit is the dispatch's own declared
+  subject and the full code is unique — not merely when a candidate is
+  convenient.
+
+**Two checked-and-rejected driver basenames**, recorded so they stay checkable
+without a re-run: **`falsify`** (4 live files — HEAD's own spec prose, so the
+obvious basename is taken) and **`snap`** (8 files). **Checked 0-hit and NOT
+chosen:** `stressgad`, `bexist` — available if the probe needs a second leaf.
+
+**Layering, per `notes/scripts/README.md` §2.** `kbare/` drivers sit
+**directly** on the model layer `kbare/kbare_common.py` (plus base
+`exactcore.py`); unlike `w4/` they are not a chain. If `breakhunt.py` imports
+from a sibling leaf (`danger.py`, `optc.py`, `stress_extra.py`, `gate1.py`,
+`gate2.py`) that is the documented sibling-import pattern and **in policy**,
+but it **trips §2 rule 2's move-down trigger** — record a new dated **UNPAID**
+debt item naming every consumer, and do **not** modify the landed sibling in
+the same commit (the `ocon.meet` / `aglu.py` precedents). The one debt item
+open on purpose, **`zneq.ledger`**, is not this probe's to disturb.
 
 ## Registry — `notes/Pencil-informal.md` (the (K) workbook)
 
