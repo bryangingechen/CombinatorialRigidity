@@ -1,11 +1,12 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: EIGHT fan-outs and nine single directions dispatched; 34 of 37 directions
+**Status: EIGHT fan-outs and nine single directions dispatched; 35 of 37 directions
 LANDED.** The seventh fan-out (YLOC / BALB / AGLU / ZNEQ / CIRR, §"Seventh fan-out") is
 **COMPLETE** — all five directions landed 2026-08-19. The **EIGHTH fan-out** (GTMPL / GFLOW /
-GCOLL / OSCHU / SIGZ, §"Eighth fan-out") was prepped and dispatched 2026-08-19: **GTMPL and GFLOW have
-LANDED** — an exact `n_hub` boundary for ledger attack (c)'s AA-glue case, and (b′)'s first
-proven `n`-free constant — and **OSCHU / SIGZ / GCOLL are in flight**; each direction's own Status line is authoritative for its state.
+GCOLL / OSCHU / SIGZ, §"Eighth fan-out") was prepped and dispatched 2026-08-19: **GTMPL, GFLOW and SIGZ have
+LANDED** — an exact `n_hub` boundary for ledger attack (c)'s AA-glue case, (b′)'s first
+proven `n`-free constant, and a **NO HIT** on the authorized disproof hunt that nonetheless
+kills the counting route to a disproof — and **GCOLL and OSCHU are in flight**; each direction's own Status line is authoritative for its state.
 Ordinals run 1–29 (the eighth fan-out claims 25–29) and were assigned at dispatch, so
 landing order differs from ordinal order.
 
@@ -988,7 +989,7 @@ The *candidate pool* is the arc's; only the ranking is the coordinator's.
 | **GFLOW** | 26th | derivation-first | §(K-grid) | (b′)'s availability half — *Clause A′* sub-clause 2, the doubly-blocked case | **LANDED 2026-08-19** — a HIT at a DIFFERENT CONSTANT: sub-clause 1 PROVEN, sub-clause 2 REFUTED as posed, gap `≤ 12` modulo (R1) (§"Twenty-sixth direction") |
 | **GCOLL** | 27th | compute-licensed | §(K-grid) | **(GR-64)(R2)** — every habitat shape carries an anchor matching with `B(M) = 0` | **DISPATCHED 2026-08-19** |
 | **OSCHU** | 28th | derivation-first | §(K-out) | **(a₁)** class-uniformly — the Schubert non-jump `dim(D ∩ M̂ ∧ W) ≤ 1` (+ the (a₂) re-keying leg) | **DISPATCHED 2026-08-19** |
-| **SIGZ** | 29th | compute-licensed | §(K-out) | the `σ > 0`-everywhere hunt — newly authorized, **pivot rule in force** | **DISPATCHED 2026-08-19** |
+| **SIGZ** | 29th | compute-licensed | §(K-out) | the `σ > 0`-everywhere hunt — newly authorized, **pivot rule in force** | **LANDED 2026-08-19** — **NO HIT**, and the counting route to a disproof is DEAD as a theorem (§"Twenty-ninth direction") |
 
 **Shared mechanics: §"Shared mechanics (all three dispatches)" above binds
 verbatim**, at five directions, with the seventh fan-out's three deltas
@@ -1510,6 +1511,123 @@ whether the mechanism crosses into the habitat.
 **Reservation.** §(K-out) **extends**; labels **(OC-35)–(OC-40)**, **Steps
 O31–O36**; driver **`notes/scripts/w4/sigz.py`**. Owning section stays
 authoritative; return any unconsumed remainder to the tail.
+
+### SIGZ — twenty-ninth direction (eighth fan-out)
+
+**Status: LANDED 2026-08-19 — NO HIT on the disproof, and the second outcome
+delivered as a THEOREM in its counting half.** Third of the eighth fan-out's
+five to land, and **the arc's first authorized disproof direction**. §(K-out)
+**extended**, **Steps O31–O36**, labels **(OC-35)–(OC-39) CLAIMED** with
+**(OC-40) returned UNUSED** to the tail. Driver
+**`notes/scripts/w4/sigz.py`**; `--validate` measured 693–747 s, so it ran as a
+**recorded two-invocation foreground split** (`--reduce --spans --budget
+--slack --theta --p21`, then `--hunt`) — both re-run by the coordinator at
+landing, exit 0, every quoted figure reproduced.
+
+**The pivot rule did NOT trigger.** There is no hit: no class shape with
+`σ > 0` everywhere was found, and — the point of the spec's boundary clause —
+none could have been *certified* by a sample anyway, which the pass states and
+respects throughout. `--slack` is the search that would have fired it (a
+single negative-`slack` support is a combinatorially forced stress, i.e. a
+PENCIL event); it returns **0** over 215 906 enumerated supports.
+
+**The verdict, and it is the spec's second outcome in its counting half.**
+**(OC-35)** re-derives the pencil self-stress space of any min-degree-≥2
+subgraph as a **Kirchhoff flow on its topological paths** valued in the
+chain-span perps — §(K-pure) *P0*'s limit carrier read **off** the slide
+limit, which is the whole delta and is what lets §(K-Λ) (Λ4) be spent on `σ`.
+**(OC-36)** turns that into the closed form
+`corank R(F) = Σδ_Q + ρ_F − slack(F)`. **(OC-37)** is the theorem: at a class
+shape `slack(F) ≥ 0`, **with equality iff `F` is a cycle or a bouquet of
+cycles**, so a stress needs `Σδ + ρ ≥ 2` at **every other topology, thetas
+included** — hence **no `H`-supported self-stress anywhere in `hK`'s habitat
+is combinatorially forced, and the counting route to a disproof is DEAD.** It
+is the general form of the gap map's own `ℓ₁ + ℓ₂ ≥ 7` at `P21` and of
+§(K-dom) (D3)'s `k ≥ 4`: the whole family of such exclusions is one
+inequality, and it never fails. The theta corollary `Σ min(ℓᵢ, 6) ≥ 13` is
+**tight** (measured minimum exactly 13), and the honest answer to the spec's
+"which theta lengths remain uncovered" is **none, at the level of the count**.
+**(OC-39)** then certifies `{σ = 0} ≠ ∅` with an exact-ℚ **full-row-rank
+certificate at 3368/3368** class (shape, split) pairs over the **exhaustive
+`K4` stratum** — per-pair proofs, not a census.
+
+**Three coordinator adjudications on landing.**
+
+*(1)* **The spec's second-outcome clause was too strong, and the pass was
+right to decline it — the wave's THIRD defective spec clause, and this one is
+the coordinator's own.** The spec said a proof that the mechanism cannot cross
+into tight + `hnoRigid` "makes **(a₂) free at class shapes
+unconditionally**". It does not: (OC-37) closes the **counting** half, while
+the **geometric** half — no forced chain-span drop and no Kirchhoff drop — is
+*measured* free (444/444 paths at `dim S = min(ℓ,6)`, 978/978 `c ≤ 2` supports
+at corank 0) and stays **open class-uniformly**, one-point decidable per
+shape, in (OC-8)'s own object class. So **(OC-28)(iii)'s reduction to (GR-10)
+remains the best uniform statement on the `s₀` half, unchanged**, and the
+draft says so. Unlike GTMPL's and GFLOW's, this clause was not inherited from
+a landed hand-off — it was written by the coordinator at prep, which makes it
+the cleanest instance of the wave's recurring shape.
+
+*(2)* **The harness finding is accepted, and the reading correction is made at
+every site — the adjudication SIGZ referred up.** **(OC-38)**(iii) reports a
+**set equality**: §(K-flank) *F5(d)*'s five σ-jump seeds at `P21` are
+**exactly** the five at which `localtest.plane_basis` degenerates at hub `c`,
+each with the single coincident pair `(c, 113, 115)` that drops the length-6
+topological path's span from 6 to 5. So the arc's **only** exhibited instance
+of the `{σ = 0}`-failure mechanism sits on the degeneracy locus that
+`notes/scripts/README.md` §4 convention 1, *Harness debt* item 4 and §(K-out)
+**(OC-7)** all name; under the composite gate `repin.star_generic`, `σ = 0` at
+**all 360** gate-accepted seeds (cap 500, disclosed). **What survives:** the
+mathematics of *F5(d)* is untouched — the five seeds are **legal** chart points
+(`flanks.nondeg_conjuncts` green at all five, a coincident hinge pair not being
+excluded by `IsNondegPencilRealization` — (OC-7)'s own finding), `dim U = 1`,
+and §(K-tight) *Step 2.3*'s prediction holds at them exactly as recorded; and
+**(OC-28)(iv)'s *proper-open* claim stands**. **What falls:** its
+*quantitative* reading, *"the complement of `{σ = 0}` is not thin in the
+sampler's rational range (5/35)"* — at `P21` that complement **is** the
+coincidence locus, a proper closed subset, and the ≈ 14 % rate is a property
+of `plane_basis`, not of the variety. **Coordinator ruling on quotation, since
+SIGZ asked for one:** every future quotation of "5 of 35" carries the
+`plane_basis`-degeneracy qualifier in the same sentence. The correction is
+propagated to **all six sites** in this landing (dispatch-log **F12**'s
+discipline — a map correction is presumptively a body-prose correction too):
+§(K-flank) *F5(d)*'s own bullet and its *Step F7* item 6 (which asked exactly
+this question and is now **closed as posed**), the §(K-out) *Step O24* text,
+**(OC-28)(iv)** itself, and the gap map's `P21` row and `(K-tight)`-adjacent
+mention.
+
+*(3)* **`P21` is quantitatively one unit short, which is why it never
+threatened the habitat.** (OC-38)(i)/(ii): the recorded theta support has
+`slack = 0` at **two** nodes — which (OC-37)(ii) forbids in the class — and
+its `σ = 1` decomposes as `(slack, Σδ, ρ) = (0, 1, 0)`. Inside the class the
+same support needs `Σδ + ρ ≥ 2`; the mechanism supplies **1**, and the missing
+unit is exactly what `hnoRigid` buys. The single failing inequality is
+`(Λ4)(iii)` at the pair `{23a, 23b}` (`3 + 3 = 6 < 7`), i.e. a rigid `C₆` —
+`hnoRigid` failing, precisely.
+
+**Cap disclosure, verified at landing.** `--slack` **enumerates and does not
+sample** — no rng, no placement, no cap on the supports (2614 shapes, 215 906
+(support, split) instances), which is what makes the `slack < 0` zero a real
+negative rather than an unexhausted search. `--hunt` resolves **0 pairs under
+cap**. The `repin.star_generic` leg is a **witness count at cap 500**, never a
+rate. The geometric-half figures (444/444, 978/978) are **measurements**, and
+the draft never upgrades them to the class-uniform statement.
+
+**TERMINATION: E1, E2, E3 all NO** — coordinator-re-run and agreed. E1: nothing
+on the `D = 0` line. E2: a MISS on a *disproof* direction is the expected
+outcome, not refuted-with-no-successor — (a₁) (OSCHU) and (a₂)-via-(GR-10) stay
+dispatchable. E3: **stays ARMED by GBAL, neither fired nor disarmed.**
+
+**What did NOT move.** `hK`, (OC-8), (GR-15), `{σ = 0}`'s row and class
+uniformity are exactly where they were; **no gap-map status move**, and none
+was available to a pass with no hit. §(K-out)'s status cell was **RECOMPUTED**
+(649 → 666 words while absorbing five new labels, i.e. the pre-existing content
+compressed ~23 %; zero labels dropped by scripted set-diff) rather than bumped,
+discharging the obligation the wave's spec placed on its first §(K-out)
+landing and leaving 134 words for OSCHU. Two (a₁)-adjacent by-products
+**reported and not developed** (OSCHU's target): the flow form survives
+welding, giving (OC-18)'s `H/X` criterion a `G°`-level form, and `D` is dual to
+the flow (`dim D = 3 + σ`), so an (a₁) recipe must control a `ρ`-style
+deficiency at `H°`'s nodes.
 
 ### Not selected — the eighth fan-out's losers
 

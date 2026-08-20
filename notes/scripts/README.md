@@ -753,6 +753,22 @@ derivation). Each mode pays a ~one-time `cubic_iso_classes(8)` enumeration
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/gflow.py --adv` | 11 s | ibid. five F13 falsification controls, all firing: the doctored model disagrees (10 441/11 888); the tightened `≤ 2` bound is violated **exactly** in `M-double`; route 2's naive 2-Lipschitz law is **REFUTED** (`0 → 4` at `n_hub = 4`); optimality **caps** `2\|W ∩ S\| ≤ \|W\|` at all 84 368 legal flip sets (route 1 directionally wrong); the (GR-68) price with a random hub set of equal size disagrees at 3378/10 008 |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/gflow.py --validate` | 471 s | ibid. all six above composed in one process, inside the 600 s budget. **Not separately re-run at landing** — the six were each re-run individually instead (the AGLU `--val` precedent), which covers it |
 
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/sigz.py --reduce --spans --budget --slack --theta --p21` | 239–292 s | `notes/Pencil-informal.md` §(K-out) *Steps O31–O36* (direction SIGZ): (OC-35)'s Kirchhoff-flow reduction (flow corank == direct rigidity-matrix corank at 400/400 instances, 10 with corank ≥ 1); the span claim (444 topological paths at `dim S = min(ℓ,6)`); the (OC-36) ledger; **(OC-37)'s search — `slack < 0` would be a combinatorially FORCED stress, i.e. a PENCIL event, and it ENUMERATES rather than samples: 2614 class shapes, 215 906 (support, split) instances, no rng, no cap, `slack < 0` ZERO times, `slack = 0` at 83 634 all of node count 1**; the theta corollary's measured minimum exactly 13; and (OC-38)'s `P21` ledger `(0,1,0)` with the **set equality** `σ`-jump == `plane_basis`-degenerate-at-`c` (seeds 101/111/128/136/138) plus the 360 `star_generic`-gated seeds at `σ = 0` (cap 500) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/sigz.py --hunt` | 454–455 s | ibid. *Step O35* ((OC-39)): the hunt proper — 882 class shapes (`K4` stratum **EXHAUSTIVE** at 877, plus 5 named), **3368** class (shape, split) pairs, an exact-ℚ **full-row-rank certificate at 3368/3368** so `{σ = 0} ≠ ∅` at every one (per-pair proofs by (OC-24)(i), not a sample), 40/40 `G′`-chart cross-checks, **0 pairs unresolved under cap** |
+
+**SIGZ (eighth fan-out, LANDED 2026-08-19).** `--validate` measures **693–747 s**
+and does **not** fit the 600 s single-call budget, so it ran — by the dispatch
+and again by the coordinator at landing — as the **recorded two-invocation
+foreground split** above, one at a time, never backgrounded. One driver added
+(`w4/sigz.py`), nothing existing modified; imports downward only. **No Macaulay2
+leaf.** One **Divergences** entry belongs to it: **`sigz.topo_reduce` is NOT
+`nogood_subdiv.branch_decomposition`** — it reduces an arbitrary *subgraph* at
+its own `F`-degree-≥3 vertices, whereas `branch_decomposition` reduces `G` at
+its hubs. Different function, correctly given a different name; the distinction
+is load-bearing, since the absorption of a degree-2 hub is exactly where
+`P21`'s length-6 topological path (and hence its one unit of span deficiency)
+lives.
+
 **GTMPL (eighth fan-out, LANDED 2026-08-19).** All **eight** modes re-run in the
 foreground by the coordinator at landing (`PYTHONHASHSEED=0`, explicit timeout,
 one at a time, all exit 0, every quoted figure reproduced) — ~352 s in total,

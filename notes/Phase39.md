@@ -24,15 +24,14 @@ PREPPED AND DISPATCHED** (2026-08-19) — five concurrent opus directions,
 ordinals 25–29: **GTMPL** / **GFLOW** / **GCOLL** (§(K-grid)) and **OSCHU** /
 **SIGZ** (§(K-out)); specs, roster, tier split, label reservations and the
 losers' ranking all in `notes/Pencil-fanout.md` §"Eighth fan-out", not restated
-here. **GTMPL and GFLOW have LANDED** (the arc's thirty-third and thirty-fourth
-directions) — attack (c)'s AA-glue case settled at an **exact `n_hub`
-boundary**, and **(b′) given its first proven `n`-free constant** (at 12, not
-2) — verdicts one-lined in *Decisions made*, detail in the fan-out doc.
-**OSCHU / SIGZ / GCOLL are in flight.** **ZNEQ's carried `σ > 0` disproof hunt
-is now AUTHORIZED** (user, this session — the first check-in since 2026-08-05
-to move a standing constraint) and is direction **SIGZ**, dispatched with the
-direction-A pivot rule in force. **The next concrete task is verifying and
-landing the wave's remaining returns, one serial commit per direction.**
+here. **GTMPL, GFLOW and SIGZ have LANDED** (the arc's thirty-third through
+thirty-fifth directions) — attack (c)'s AA-glue case settled at an **exact
+`n_hub` boundary**; **(b′) given its first proven `n`-free constant** (at 12,
+not 2); and the **authorized `σ > 0` disproof hunt a NO HIT** that nonetheless
+**kills the counting route to a disproof** as a theorem, the pivot rule never
+triggering. Verdicts one-lined in *Decisions made*, detail in the fan-out doc.
+**GCOLL and OSCHU are in flight.** **The next concrete task is verifying and
+landing the wave's remaining two returns, one serial commit per direction.**
 
 ## Current state
 
@@ -229,19 +228,20 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
 (`not_pencilNondegFeasible_of_triangle_two_hubs`).
 
 - **Open: kernels (K) and (K-bare), and W4 (`hcontract`)** — the entire remaining work of the
-  phase; see *Hand-off* for the per-item route and the `notes/Phase39-design.md` pointers. W4 is
-  fully decomposed (recons of 2026-07-30): buildable leaves W4-L4b/L1/L2/L3′/L5 plus the carried
-  `hKc`/`hbareContract`/`hnoGood'`; the build sequence awaits commissioning. **`hnoGood'` is
-  known NON-vacuous** (2026-08-02) — branch 4 needs content; routes in
-  `notes/Pencil-W4-informal.md` §"`hnoGood'` vacuity", adjudication owed. **(SAFE-RES) is
-  REFUTED** (same day); routes 1/3 now cost §(SAFE-RES)'s (T) + (V) + the reduced (E), with (T) a
-  genuine research gap, plus **one** widened kernel (K-res).
+  phase, with the per-item route in *Hand-off*'s three carried items and **not duplicated
+  here.** Two W4 facts that constrain future statements: **`hnoGood'` is known NON-vacuous**
+  (2026-08-02), so branch 4 needs content (routes in `notes/Pencil-W4-informal.md`
+  §"`hnoGood'` vacuity"; adjudication owed), and **(SAFE-RES) is REFUTED** the same day, so
+  routes 1/3 cost (T) + (V) + the reduced (E) — (T) a genuine research gap — plus **one**
+  widened kernel (K-res).
 - The full biconditional transport (design doc's W0 pin) is landed only as its two forward
   implications; the reverse arms need a `complementIso` involution lemma, not in tree —
   deferred, **off every critical path** (§(K-σ) *Step σ6*).
-- **Harness debt — CLEARED, round CLOSED** (2026-08-06, S1–S4; canonical home
-  `notes/scripts/README.md` — read before any numerics dispatch; treat any un-repointed
-  copy of a lifted prohibition as stale).
+- **Harness debt** — the S1–S4 round is CLOSED (2026-08-06), but **two new dated UNPAID
+  items** stand, both sideways-import move-downs recorded rather than paid because the target
+  is a landed file a concurrent direction imports: `ocon.meet` (ZNEQ) and `aglu.py`'s seven
+  combinatorial devices (GTMPL). Canonical home `notes/scripts/README.md` *Harness debt* —
+  read before any numerics dispatch. Cheapest discharge: fold both once the wave is complete.
 
 ## Hand-off / next phase
 
@@ -281,7 +281,7 @@ spec, bar, rider, tier assignment and label reservation is in `notes/Pencil-fano
 | ~~**GFLOW**~~ | §(K-grid) | **LANDED** — (b′) a HIT at a different constant: gap `≤ 12` modulo (R1), constant 2 open with (C2) its residual |
 | **GCOLL** | §(K-grid) | **(GR-64)(R2)** — every habitat shape carries an anchor matching with `B(M) = 0` |
 | **OSCHU** | §(K-out) | **(a₁)** class-uniformly — the Schubert non-jump, with the (a₂) cross-pool re-keying folded in |
-| **SIGZ** | §(K-out) | the newly-authorized `σ > 0`-everywhere hunt — **pivot rule in force** |
+| ~~**SIGZ**~~ | §(K-out) | **LANDED** — NO HIT; the counting route to a disproof DEAD as a theorem, `P21`'s mechanism located as a sampler artifact |
 
 **Landing obligations.** §(K-grid)'s cell was recomputed at GTMPL's landing (1706 → 1730
 words *while absorbing six new labels*, i.e. the pre-existing content compressed ~13 %; 79
@@ -289,8 +289,9 @@ labels in, 85 out, **zero dropped**, scripted set-diff; cap unbumped) — and GF
 consumed 289 of the 305 words that bought, so the cell now sits at **2019 of 2035**.
 **GCOLL's landing therefore owes a genuine recompute of the §(K-grid) cell before adding its
 own content** — 16 words is not headroom, and the rule stays **recompute, never bump**.
-§(K-out)'s recompute is still owed at the **first §(K-out) landing** (`≤ 560` words; 649 of
-800 used, OSCHU and SIGZ queued). A **wave-closing exception-log commit** to
+§(K-out)'s recompute is **DONE** at SIGZ's landing (649 → 666 words while absorbing five new
+labels, so the pre-existing content compressed ~23 %; zero labels dropped) — 134 words remain
+for OSCHU. A **wave-closing exception-log commit** to
 `notes/dispatch-log.md` is owed at the end, **the coordinator's**; its rows are the two
 defective inherited spec clauses (GTMPL's, GFLOW's), the two sibling-import debt items, and
 the unescaped-pipe gate degradation this landing introduced and repaired.
@@ -311,7 +312,18 @@ adjudication now happens at the return, not before the dispatch** (the terms the
 accepted, quoted in *Current state*'s 2026-08-19 eighth-fan-out bullet). **A hit therefore
 stops the loop and goes to the user**; it does not move a gap-map status by itself.
 
-**No structural or doc work is queued** — the doc-split and discipline-distillation rounds
+**One structural item IS queued, recorded rather than improvised.** This note has sat at
+~510–530 lines through the eighth fan-out's landings, past its ~500-line tripwire, and three
+compression passes have each found genuine duplication and each been undone by the next
+landing. The residual bulk is **not** duplication: it is *Current state*'s eight dated
+adjudication bullets, whose verbatim user quotes are **canonically** here
+(`notes/CLAUDE.md`: selection provenance is not duplicated into the fan-out doc). The honest
+fix is therefore a **doc split** — the bullets covering archived ordinals 1–19 move to a
+`notes/Pencil-adjudications.md` with a pointer, on the `Pencil-fanout-archive.md` precedent —
+and that is a structural round, deliberately **not** attempted mid-wave while concurrent
+directions are returning. Queue it for after the eighth fan-out closes.
+
+**No other structural or doc work is queued** — the doc-split and discipline-distillation rounds
 are both COMPLETE (`notes/Pencil-structure.md`, all three slices; `RESEARCH-ARC.md` is the
 promoted manual, six items ready / three watched / three deferred, detail there and in
 `notes/dispatch-log.md` F18–F21). **The eighth fan-out is the only open work.**
@@ -354,33 +366,26 @@ discharge (residue (iv)) is CLOSED too**. The landed successor
 
 The three carried items:
 
-- **`hcontract`** (W4) — **fully decomposed, buildable, and PARKED.** Canonical home:
-  `notes/Phase39-design.md` §"W4 decomposition recon" + §"W4-L4 identification recon" (leaf
-  list there), residual mathematics `notes/Pencil-W4-informal.md`. State: the L4 verdict
-  trades minimality for the pencil habitat's `hcard` bound, so the co-1 case closes
-  minimality-free and KT's non-simple-contraction trigger reduces to it; residual carry
-  narrows to **`hnoGood'`**, whose vacuity conjecture is **REFUTED** (2026-08-02, `|V| = 19`),
-  so branch 4 needs content. **Route ADJUDICATED (2026-08-02): route 3, packaging (b)** — the
-  structure-theorem-pinned dispatch invariant (§(SAFE-RES)'s (C7)/(C8) split, collision with
-  §(K-slide-comb) registered in `notes/Pencil-labels.md`), with **(K-res)** a sibling of the
-  byte-identical `hK`. **Recorded, not built — W4 stays parked**; when commissioned the next
-  commit is **W4-L4b** (`exists_degree_two_of_co1_rigid`, pinned + spike-elaborated), then
-  order-flexibly W4-L1/L2/L3′/W4-L5. Gates N8/N9(+rank-29 control)/N10/N10b all PASSED
-  (`notes/scripts/w4/hybrid_gates.py`).
+- **`hcontract`** (W4) — **fully decomposed, buildable, and PARKED** by the Lean hold. Route
+  **ADJUDICATED 2026-08-02: route 3, packaging (b)**, with **(K-res)** a byte-identical
+  sibling of `hK`; residual carry narrows to **`hnoGood'`**, whose vacuity conjecture is
+  **REFUTED** (`|V| = 19`), so branch 4 needs content. When commissioned the next commit is
+  **W4-L4b** (`exists_degree_two_of_co1_rigid`, pinned + spike-elaborated), then
+  order-flexibly W4-L1/L2/L3′/L5; gates N8/N9/N10/N10b all PASSED. Canonical homes:
+  `notes/Phase39-design.md` §§"W4 decomposition recon"/"W4-L4 identification recon" (the leaf
+  list) and `notes/Pencil-W4-informal.md` (the residual mathematics) — **not restated here.**
 - **`hK`** (kernel (K), research) — the escape `≢ 0` uniformity kernel, the phase's hardest
-  open item. **Standing adjudication ("C: literature hunt + A", 2026-07-30): keep carrying
-  `hK` as pinned; option B NOT authorized.** Both literature hunts are MISSes (2026-07-30
-  rigidity-side; 2026-08-05 Δ-matroid-side, §(K-Δ)). Since the 2026-08-02 W4 route-3(b)
-  adjudication `hK` also carries **(K-res)** as a byte-identical sibling habitat. **The
-  mathematics is NOT restated here** — canonical home `notes/Pencil-informal.md`'s **State of
-  (K)** gap map (one row per gap: status, what would close it, the uncovered-shape list, a
-  *settled, do not re-derive* block); read that map, not this bullet, before any (K) work.
-- **`hbareSplit`** (kernel (K-bare), research) — the bare-half-off-feasibility kernel, **carried
-  as pinned** (the standing GO, "C: cheap numerics extensions + A", verbatim 2026-07-30; option B
-  NOT commissioned), with its **extension route recon'd NO-GO on landed machinery** the same day.
-  Minimal open statement: **(K-bare-ext)**; status row in the workbook's *State of (K)* map, full
-  record in the design doc §"(K-bare) extension-route recon", numerics
-  `notes/scripts/kbare/{danger,optc}.py`.
+  open item, and what the whole research arc attacks. **Standing adjudication ("C: literature
+  hunt + A", 2026-07-30): carry `hK` pinned; option B NOT authorized**; both literature hunts
+  are MISSes, and since 2026-08-02 it also carries **(K-res)**. **The mathematics is NOT
+  restated here** — canonical home is `notes/Pencil-informal.md`'s **State of (K)** gap map
+  (per gap: status, what would close it, uncovered shapes, a *settled, do not re-derive*
+  block). Read that map, not this bullet, before any (K) work.
+- **`hbareSplit`** (kernel (K-bare), research) — the bare-half-off-feasibility kernel,
+  **carried as pinned** ("C: cheap numerics extensions + A", 2026-07-30; option B NOT
+  commissioned), extension route recon'd **NO-GO on landed machinery**. Minimal open
+  statement **(K-bare-ext)**; status row in the gap map, full record in the design doc
+  §"(K-bare) extension-route recon", numerics `notes/scripts/kbare/{danger,optc}.py`.
 
 Gates for any continuation: `lake build` (warning-clean) + `lake lint` when `.lean` is touched;
 `blueprint/verify.sh` + `blueprint/lint.sh` (vocabulary gate bans "stratum"/"strata") when `.tex`
@@ -415,19 +420,29 @@ is the canonical home a successor reads.
   `w4/{gtmpl,gflow,gcoll,oschu,sigz}.py`).
   **25 GTMPL** — attack (c)'s AA-glue case settled at an **exact `n_hub` boundary**: two new
   `n`-free charges (GR-80)/(GR-81) chain to `n_hub ≥ 16` (GR-82), killing the three
-  (GR-76)(iv) templates; (GR-83) exhibits an `n_hub = 16` witness where the (GR-38) kill
-  FAILS; (GR-84) kills even (GR-75)(iii)'s uncrossing from 16. A finite bound, not a
-  contradiction — the `slack + defect(T) = 1` residual stays open at `n_hub ≥ 10`.
-  (GR-76)(iii) **superseded, not refuted**.
+  (GR-76)(iv) templates; (GR-83)'s `n_hub = 16` witness has the (GR-38) kill **FAILING**;
+  (GR-84) kills even (GR-75)(iii)'s uncrossing from 16. A finite bound, not a contradiction
+  — the `slack + defect(T) = 1` residual stays open at `n_hub ≥ 10`; (GR-76)(iii)
+  **superseded, not refuted**.
   **26 GFLOW** — **(b′) a HIT at a different constant**: Clause A′ sub-clause 1 **PROVEN**
-  (GR-87), sub-clause 2 **REFUTED as posed** (GR-88, an `n_hub = 8` witness pricing exactly
-  4) while Clause A′ itself survives, so the residual becomes a **selection** clause (C2);
-  (GR-86)'s repair-chain price telescopes, giving (GR-89)
-  `d_adm − d_par ≤ 4·min(k, ⌊n_hub/4⌋) ≤ 12`, `n`-free, **modulo (R1)**. **(b′) at 2 stays
-  OPEN.**
-  **Both corrected a defective inherited spec clause** — GTMPL an empty "is it fully-good?"
-  branch, GFLOW the "min-cost flow, hence polynomial" instrument — the wave's recurring
-  coordinator-artifact shape. E1/E2/E3 NO at both; **E3 stays ARMED**.
+  (GR-87), sub-clause 2 **REFUTED as posed** (GR-88) while Clause A′ itself survives, so the
+  residual becomes a **selection** clause (C2); (GR-86)'s repair-chain price telescopes,
+  giving (GR-89) `d_adm − d_par ≤ 4·min(k, ⌊n_hub/4⌋) ≤ 12`, `n`-free, **modulo (R1)**.
+  **(b′) at 2 stays OPEN.**
+  **29 SIGZ** — the authorized disproof hunt: **NO HIT**, and the pivot rule never
+  triggered. (OC-35)/(OC-36) recast the pencil self-stress space as a **Kirchhoff flow on
+  topological paths** with `corank R(F) = Σδ + ρ − slack` in closed form, and **(OC-37)** is
+  the theorem: at a class shape `slack ≥ 0` with equality only at cycles/bouquets, so **no
+  `H`-supported stress in the habitat is combinatorially forced — the counting route to a
+  disproof is DEAD** (enumerated, no cap; the theta bound `Σ min(ℓᵢ,6) ≥ 13` tight).
+  **(OC-38)** locates `P21`'s mechanism as **one unit short** of the class *and* on the
+  `plane_basis` degeneracy locus (a set equality), which **corrects (OC-28)(iv)'s
+  quantitative reading at all six sites** — the *proper-open* claim itself stands.
+  **(OC-39)** certifies `{σ = 0} ≠ ∅` at 3368/3368 class pairs.
+  **All three corrected a defective spec clause** — GTMPL an empty "is it fully-good?"
+  branch, GFLOW the "min-cost flow, hence polynomial" instrument (both inherited from landed
+  hand-offs), SIGZ the coordinator's own over-strong "(a₂) free unconditionally" (only the
+  counting half closes). E1/E2/E3 NO at all three; **E3 stays ARMED**.
 
 - **Directions 1–24 — ALL LANDED 2026-08-05…08-19** (thirteen across the first five
   fan-outs, one per ordinal from the sixth on; drivers `w4/{cflank,gcap,gunif,gexist,
