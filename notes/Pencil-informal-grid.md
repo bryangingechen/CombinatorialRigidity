@@ -9605,6 +9605,17 @@ criterion. **The general question is OPEN**, and it is now a *three-template*
 question at `n_hub = 10`, cheap for a successor to settle either way — see
 *Step G97* hand-off item 1.
 
+> **SETTLED by direction GTMPL (*Steps G98–G103*), and this bound is
+> SUPERSEDED — not refuted.** (GR-76)(iii)'s `n_hub ≥ 10` stands as proven,
+> from an independent argument; **(GR-82)** derives the strictly stronger
+> `n_hub ≥ 4(n_2 + q_T) ≥ 16` from two further charges, so the three templates
+> above are **NOT realizable** and this section's "cheap for a successor to
+> settle either way" was right. (GR-76)(i) turns out to be the `≥ 0` instance
+> of an **exact** count, `#{B-darts at X} = (3|X| − n_2 − 2q_T)/2`
+> ((GR-81)(iii)) — which is why the dart pattern at the `X` hubs, named in this
+> section's own *What would change this* as the unexploited candidate, was the
+> ingredient that closed it.
+
 ---
 
 ### Step G96 — (GR-77): binding is NOT laminar at `n_hub = 8` — the census, and the corrected reading of (GR-38)(iii)
@@ -9914,4 +9925,324 @@ sampler draws a **graph**, not a placement.
   in any of them would move `--kill8`'s and `--lam8`'s figures, so `--val` is
   the mode to re-run first if anything looks wrong.
 
+---
 
+### Steps G98–G103 (2026-08-19, direction GTMPL) — ledger attack (c) closes at an **EXACT BOUNDARY**, and the second half of the boundary is a **HIT**: **(GR-79)** reads the whole `slack = 0`, `defect_A(T) = 0` frame off `gexist.defect_direct` — every `T`-branch has `A(β) = 1`, so `ℓ ∈ {2,3}` with the `ℓ = 3` ones B-majority, every interior is AA, there is **no** interior-interior `T`-branch ((GR-74)(i) re-derived with no extra input), every interior-incident `T`-branch is `ℓ = 2` and delivers a **B** dart at its corner, and the corner ledger `2p = 3n_3 − 2n_2 − 2q_T` follows before any colouring is chosen; **(GR-80)** is the **CORNER CHARGE** `n_3 ≥ 2n_2 + 2q_T` — the mono-hub 2-1 pattern at a `T`-corner, whose only A-dart supply is the `p` A-ends of the `ℓ = 2` corner-corner branches — a factor-3 strengthening of (GR-74)(iii)'s `2n_2 ≤ 3n_3` that kills the `n_hub = 8` template a **third** independent way; **(GR-81)** is the **X CHARGE** `|X| ≥ n_2 + 2q_T`, from the universal dart identity `bend(β) = e(β) − 2c(β) + 1` (proved for every branch, asserted at **2 545 902** (colouring, branch) instances of the complete `n_hub ≤ 6` stratum) which pins `#(B-darts at X) = (3|X| − n_2 − 2q_T)/2` **exactly** — (GR-76)(i) is the `≥ 0` instance of that count and this is the per-hub instance; **(GR-82)** chains them into the `n`-free bound **`n_hub ≥ 4(n_2 + q_T) ≥ 16`**, so the AA-glue configuration is impossible at **every `n_hub ≤ 14`** — all three (GR-76)(iv) templates are **DEAD**, each killed independently by *either* charge alone and again by an X-hub dart enumeration run with both charges switched off; and **(GR-83)** shows the bound is **TIGHT** by an explicit **`n_hub = 16` WITNESS** — habitat-gated by the landed (GR-25) criterion, admissible by `cflank.admissible`, with two crossing same-block binding chunks at `slack = 0`, `defect_A(T) = 0` and a **proper non-binding union of defect 4**, so the **(GR-38) intersection kill FAILS at `n_hub = 16`**, rank-certified by `gridwit.subgraph_g` and an exact rational `dim Z = 3 > 0` at generic labels; **(GR-84)** measures what else breaks there — the **whole** kill residual is inhabited (not just its AA-glue case), and **(GR-75)(iii)'s laminarity corollary FAILS**: three crossing pairs of **maximal** binding chunks per block at the witness colouring — while the witness shape still carries a fully-good colouring, so **E1 does not fire**. **(GR-15) stays OPEN, unchanged in both directions; no gap-map status move on `hK` itself; class uniformity untouched.**
+
+**Notation** (on top of *Steps G43–G47*'s (GR-38) and *Steps G92–G97*'s AA-glue frame, whose `T := S ∩ S′`, `R := S ∖ S′`, `R′ := S′ ∖ S`, `n_2`/`n_3` and `q_T` are used verbatim). Write `X` for the hub set **off** `T`, and add two counters for the `T`-frame's corner-corner branches: `p` for those of length 2 and `q_T` for those of length 3 (*Step G98* shows there are no others). For a branch `β` write `c(β) = A(β) − 1`, `e(β) = ℓ_β − 2`, and — new here —
+
+> `bend(β) := #{end darts of β carrying B} ∈ {0, 1, 2}`.
+
+Throughout, "AA" at a degree-2-in-`P` hub means both `P`-darts are A, exactly as `gexist.defect_direct` computes it, and "binding in A" is `defect_A ≤ 2` (`g = 3 − defect ≥ 1`).
+
+---
+
+### Step G98 — (GR-79): the B-flooded frame — what `defect_A(T) = 0` forces, read straight off the defect formula, before any length is chosen
+
+> **(GR-79)** *(proven; the corner ledger asserted EXHAUSTIVELY at every
+> slack-0 crossing chunk pair with a J-free intersection of every
+> hub-multigraph class at `n_hub = 4, 6, 8` — 7 / 285 / 9 263 slack-0 pairs,
+> 0 / 0 / 44 J-free, `--frame`)* Let `S, S′` be crossing chunks of a habitat
+> shape with `slack = 0` and `defect_A(T) = 0` at an admissible colouring
+> (the AA-glue configuration, any `n_hub`). Then
+>
+> **(i)** every `T`-branch has `A(β) = 1`, i.e. `ℓ ∈ {2, 3}` with the
+> `ℓ = 3` ones **B-majority** (pattern B A B), and every `T`-interior is
+> **AA** with its free dart carrying **B**;
+>
+> **(ii)** there is **no interior-interior `T`-branch** — which is
+> (GR-74)(i), re-derived here with no input beyond (i);
+>
+> **(iii)** every interior-incident `T`-branch has `ℓ = 2` and delivers a
+> **B** dart at its corner end. Hence the `q_T` branches of length 3 in `T`
+> all join two corners, and with `p := #{ℓ = 2 corner-corner branches}`,
+>
+> > `|T| = 2n_2 + p + q_T`  and  `2|T| = 2n_2 + 3n_3`,  so
+> > **`2p = 3n_3 − 2n_2 − 2q_T`**  (the **corner ledger**);
+>
+> **(iv)** the **A**-darts at corners are exactly the `p` A-ends of the
+> `ℓ = 2` corner-corner branches, **one apiece** — so there are `p` of them,
+> and the corners carry `2n_2 + p + 2q_T` B-darts.
+
+*Proof.* (i): (GR-28)(i) is `defect_A(P) = Σ_{β∈P}(A(β) − 1) + #{non-AA degree-2-in-`P` hubs}`, and at `Λ = ∅` every branch has `ℓ ≥ 2`, hence at least one A-edge and one B-edge under alternation, so **every term is `≥ 0`**. `defect_A(T) = 0` therefore forces each term to vanish: `A(β) = 1` on every `T`-branch, and no non-AA interior. `A(β) = 1` allows only `ℓ = 2` (pattern A B or B A) and `ℓ = 3` with pattern B A B; `ℓ ≥ 4` has `A(β) ≥ 2`. At an AA interior the two `T`-darts are A, so the third dart is B by the mono-hub ban ((GR-33): every hub of an admissible colouring carries a 2-1 dart pattern). (ii): a `T`-branch joining two interiors has A at both ends; at `ℓ = 2` the two end darts differ, and at `ℓ = 3` they agree but then the branch is A-majority, i.e. `A(β) = 2`, excluded by (i). (iii): by (GR-73)(ii) every `T`-hub has `deg_T ∈ {2, 3}` and by (ii) an interior's `T`-branches all reach corners; such a branch has A at the interior end, so by (i) it is not the B A B pattern, hence `ℓ = 2` and its far dart is B. The two displayed identities are the branch count and the degree sum; subtracting gives the ledger. (iv): a corner has `deg_T = 3`, so **all three** of its darts are `T`-darts. Of the branch types available by (i)+(iii) — interior-corner (`ℓ = 2`, B at the corner), corner-corner `ℓ = 3` (B at both ends), corner-corner `ℓ = 2` (one A end, one B end) — only the last supplies an A-dart, and exactly one. ∎
+
+**Why this is the load-bearing step, and why it was available all along.** (GR-74) extracted the `n_hub = 8` template from `defect_A(T) = 0` by counting *hubs*; (GR-76) extracted a charge from counting *branch excess*. Neither looked at what the same hypothesis does to the **corner darts**, and that is where the whole `T`-frame is pinned: `defect_A(T) = 0` floods the corners with B. The frame is then so rigid that the mono-hub ban — which the arc has used since (GR-33) and which costs nothing — becomes a hard inequality (*Step G99*). Everything in *Steps G99–G101* is bookkeeping on (GR-79).
+
+**The machine half.** "Every slack-0 J-free pair satisfies the ledger" is an *exhaustiveness* claim, so it gets its own mode. `--frame` walks **every** crossing chunk pair of **every** hub-multigraph iso class at `n_hub = 4, 6, 8` (92 / 2 675 / 82 201 pairs — reproducing AGLU's `--pin` counts exactly), asserts (GR-73)(ii) at each of the 7 / 285 / 9 263 slack-0 pairs, and then asserts (ii)+(iii)'s branch classification and the ledger at each pair whose intersection is J-free. The premise's surrogate is AGLU's own — `#X-hubs = 0` and `jfree(T) = 0`, both *implied* by `slack = 0 ∧ defect_A(T) = 0` — so the ledger is asserted on a **superset** of the pairs it claims, never a subset. At `n_hub = 8` the 44 J-free pairs all carry `(n_2, n_3, |T|, #corner-corner) = (4, 4, 10, 2)` and nothing else, which is (GR-74)(iii) reproduced through a second driver.
+
+---
+
+### Step G99 — (GR-80): the corner charge `n_3 ≥ 2n_2 + 2q_T` — the mono-hub ban at a `T`-corner, and a third independent proof of the `n_hub = 8` kill
+
+> **(GR-80)** *(proven; the kill of AGLU's 44-pair `n_hub = 8` template
+> asserted at all 44, `--frame`)* In any AA-glue configuration,
+>
+> > **`p ≥ n_3`**,  equivalently  **`n_3 ≥ 2n_2 + 2q_T`**.
+
+*Proof.* By (GR-33) every hub carries a 2-1 dart pattern, so every corner has **at least one A-dart** among its three `T`-darts. By (GR-79)(iv) the A-darts at corners are the `p` A-ends of the `ℓ = 2` corner-corner branches, one per branch, so `p ≥ n_3`. Substituting the corner ledger `2p = 3n_3 − 2n_2 − 2q_T` gives `3n_3 − 2n_2 − 2q_T ≥ 2n_3`. ∎
+
+**How much stronger this is than what was available.** (GR-74)(iii)'s `n`-free half gives `2n_2 ≤ 3n_3`, i.e. `n_3 ≥ ⅔ n_2`; (GR-80) gives `n_3 ≥ 2n_2` — a **factor 3**. The reason is that (GR-74)(iii) counts only *how many* darts interiors send to corners, while (GR-80) also knows *what colour they are*: all B, by (GR-79)(iii), and each one crowds out the corner's A-quota.
+
+**A third independent proof of (GR-75)(i), and the falsification control it doubles as.** At `n_hub = 8` the (GR-74) template has `n_2 = n_3 = 4` and `p + q_T = 2`, so `p ≤ 2 < 4 = n_3`: some corner receives three B-darts and is **monochromatic**. `--frame` asserts exactly that at all 44 premise-satisfying pairs. AGLU already had two proofs of (GR-75)(i) — the (GR-74)-pinning-plus-balance argument of *Step G94* and (GR-76)(iii)'s charge — and this is a third, from a third ingredient. That it reproduces a landed theorem is the control that the new charge is not an artifact: **a charge that did not kill `n_hub = 8` would be wrong, not new.**
+
+---
+
+### Step G100 — (GR-81): the X charge `|X| ≥ n_2 + 2q_T` — the universal dart identity, and the exact B-dart count at the hubs off `T`
+
+> **(GR-81)** *(proven; the identity asserted at EVERY branch of EVERY
+> admissible colouring of the complete `n_hub ≤ 6` stratum — 2 545 902
+> (colouring, branch) instances over 284 512 colourings of 4920 shapes,
+> `--charge` — and the B-dart counts asserted at the witness, `--wit`)*
+>
+> **(i) The universal dart identity.** For **every** branch of **every**
+> admissible colouring,
+>
+> > **`bend(β) = e(β) − 2c(β) + 1`.**
+>
+> **(ii) Two global corollaries.** `#{B-darts} = #{A-darts} = M`, and
+> exactly `n_hub / 2` hubs are A-majority.
+>
+> **(iii) The exact count off `T`.** In any AA-glue configuration,
+>
+> > **`#{B-darts at X hubs} = (3|X| − n_2 − 2q_T) / 2`**  exactly.
+>
+> **(iv) The charge.** Hence, by the mono-hub ban at each X hub,
+>
+> > **`|X| ≥ n_2 + 2q_T`.**
+
+*Proof.* (i): if `ℓ` is even the two end darts differ, so `bend = 1`, and `A(β) = ℓ/2`, so `e − 2c + 1 = (ℓ − 2) − (ℓ − 2) + 1 = 1`. If `ℓ` is odd the end darts agree; when they are A, `A(β) = (ℓ+1)/2` and `bend = 0 = (ℓ − 2) − (ℓ − 1) + 1`; when they are B, `A(β) = (ℓ−1)/2` and `bend = 2 = (ℓ − 2) − (ℓ − 3) + 1`. (ii): sum (i) over all `M` branches — `Σe = 6` by the excess law (GR-21) at `D = 0` and `Σc = 3` by (GR-32)(iii) at balance, so `Σ bend = 6 − 6 + M = M`; then `#{A-darts} = 3n_hub − M = M` too, and since each hub contributes 2 or 1 A-darts, `#{A-darts} = n_hub + #{A-majority hubs}` forces `#{A-majority hubs} = M − n_hub = n_hub/2`. (iii): B-darts split over the three hub classes. Interiors: one each, their free darts, by (GR-79)(i) — `n_2`. Corners: `2n_2 + p + 2q_T` by (GR-79)(iv). So
+
+  `#{B-darts at X} = M − n_2 − (2n_2 + p + 2q_T) = M − 3n_2 − p − 2q_T`,
+
+and substituting `M = 3(n_2 + n_3 + |X|)/2` and `2p = 3n_3 − 2n_2 − 2q_T` gives `(3|X| − n_2 − 2q_T)/2`. (iv): by (GR-33) each X hub — all three of whose darts lie off `T` — has at least one B-dart, so the count in (iii) is `≥ |X|`, i.e. `3|X| − n_2 − 2q_T ≥ 2|X|`. ∎
+
+**What this does to (GR-76)(i), stated precisely.** (GR-76)(i) reads `|W| ≥ |F₂| + q_T`. Its right-hand side is not an accident: with `n_2 = |F₁| + 2|F₂|` and `3|X| = |F₁| + 2|W|` ((GR-76)(ii)),
+
+> `|W| − |F₂| − q_T = (3|X| − n_2 − 2q_T)/2 = #{B-darts at X hubs}`,
+
+so **(GR-76)(i) is exactly the statement that this count is `≥ 0`** — the aggregate instance — while (GR-81)(iv) is the **per-hub** instance, `≥ 1` at each of the `|X|` hubs. The two are the same identity read against two different lower bounds, and the second is free: the mono-hub ban is already in `cflank.admissible`. AGLU's own *"What would change this"* named the missing ingredient correctly — *"the obvious candidate is the dart pattern at the `X` hubs, which this pass did not exploit"* — and this is that candidate, cashed.
+
+**The machine half.** (i) and (ii) are asserted at **every** branch of **every** admissible colouring of the **complete** `n_hub ≤ 6` stratum (`--charge`): 4 920 shapes, 284 512 admissible colourings — AGLU's and (GR-38)'s own stratum figures, reproduced exactly through this driver's pool builder, which is the check that licenses the rest. The same mode asserts the 2-1 pattern at every hub of every one of those colourings (`{1, 2}` A-darts, never `{0, 3}`), `Σe = 6`, `Σc = 3`, `Σ bend = M`, and `#{A-majority hubs} = n_hub/2`. (iii) is asserted at the witness in `--wit` (`4 = (12 − 4 − 0)/2` at the X hubs, `16 = 2·4 + 8 + 0` at the corners, `8 = p` A-darts at the corners).
+
+---
+
+### Step G101 — (GR-82): the bound `n_hub ≥ 16` — the (GR-76)(iv) three-template question settled NEGATIVE, and `n_hub = 12, 14` with it
+
+> **(GR-82)** *(proven; the three templates ENUMERATED empty down to
+> per-X-hub dart colours and per-corner A-dart assignments, and the whole
+> aggregate system searched exhaustively over `n_hub ≤ 40`, `--tpl` /
+> `--min`)* In any AA-glue configuration,
+>
+> > **`n_hub = n_2 + n_3 + |X| ≥ n_2 + (2n_2 + 2q_T) + (n_2 + 2q_T)
+> >  = 4(n_2 + q_T) ≥ 16`**,
+>
+> using `n_2 ≥ 4` ((GR-74)(ii), i.e. (GR-38)(ii) via (GR-73)(iii)). Hence
+>
+> **(i)** the AA-glue configuration is impossible at **every `n_hub ≤ 14`**;
+> **(ii)** in particular all three (GR-76)(iv) templates —
+> `(|F₁|, |F₂|, |W|) ∈ {(4,0,1), (2,1,2), (0,2,3)}` on
+> `(n_2, n_3, |X|) = (4,4,2)` — are **NOT realizable**, and each is killed
+> **independently** by (GR-80) alone and by (GR-81) alone;
+> **(iii)** `n_hub = 12` and `n_hub = 14` are dead too, so the bound is not
+> a `n_hub = 10` statement;
+> **(iv)** at `n_hub = 16` the system forces `(n_2, n_3, |X|, q_T, p) =
+> (4, 8, 4, 0, 8)` — all three charges tight — with
+> `(|F₁|, |F₂|, |W|) ∈ {(0,2,6), (2,1,5), (4,0,4)}`.
+
+*Proof.* The displayed chain is (GR-80) and (GR-81)(iv) substituted into `n_hub = n_2 + n_3 + |X|`; `n_2 ≥ 4` and `q_T ≥ 0` close it. (ii): at `(4,4,2)`, (GR-80) needs `n_3 ≥ 8` and (GR-81) needs `|X| ≥ 4`; both fail at every `q_T`. (iii): `n_2 ≥ 4` alone forces `n_3 ≥ 8` and `|X| ≥ 4`, so `n_hub ≥ 16`. (iv): equality throughout forces `n_2 = 4`, `q_T = 0`, `n_3 = 8`, `|X| = 4`, then `p = 8` from the ledger, and `(|F₁|, |F₂|, |W|)` from (GR-76)(ii). ∎
+
+**Three independent kills of the dispatched question, because "the only" is its own claim class.** `--tpl` reports, per template and per `q_T ∈ {0,1,2}`: the corner charge's verdict, the X charge's verdict, the number of `(c, e)`-consistent off-`T` type multisets, and the number of survivors of a **raw enumeration with both charges switched off** — every branch's `(ℓ, majority)` type, every split of the `Σc = 3` / `Σe = 6 − q_T` budget across the three roles, every orientation of the even `W` branches, and every assignment of the `F₁` X-ends to the two X hubs, tested against the mono-hub ban at both. The result is `0` survivors at all nine (template, `q_T`) cells, with **6 / 2 / 0**, **11 / 3 / 0** and **3 / 1 / 0** type multisets examined respectively — so the zeros are **not vacuous**, and the `q_T = 2` column's zeros are the counting side's own kill, which is why (GR-76)(iv) says `q_T ≤ 1`.
+
+**The bound is exhaustively searched, not just derived.** `--min` walks the whole aggregate system — `(n_2, n_3, |X|, q_T, p, |F₁|, |F₂|, |W|)` under the ledger, the (GR-76)(ii) dart identities, the branch total, and both charges in their *enumerated* per-hub forms — at every even `n_hub ≤ 40`, and reports the feasible list `[(16, 3), (18, 6), (20, 15), (22, 24), (24, 43), (26, 62), (28, 95), (30, 128), …]`. **The least feasible `n_hub` is 16**, and `--val` item 3 asserts that no enumerated frame anywhere in `n_hub ≤ 32` violates the closed-form charges — the derivation and the enumeration agree in the direction that matters.
+
+**The falsification control the enumerator needs.** A search that returns `0` at `n_hub = 10, 12, 14` is worthless if it returns `0` everywhere. It does not: at `n_hub = 16` it returns **3** aggregate frames and **59** full solutions, at 18 six and 121, at 20 fifteen and 269. And the `n_hub = 16` frames are *exactly* the tight profile of (iv) — which is where *Step G102* goes looking.
+
+**What (GR-82) is and is not.** It is a statement about **necessary** conditions: the aggregate system's *emptiness* below 16 is a genuine kill, but its *non-emptiness* at 16 proves nothing on its own — a solution of the counting system need not be a graph, a habitat shape, an admissible colouring, or a crossing pair of binding chunks. That gap is closed by exhibiting all four at once.
+
+---
+
+### Step G102 — (GR-83): the bound is TIGHT — an explicit `n_hub = 16` witness, and the (GR-38) kill FAILS there
+
+> **(GR-83)** *(a WITNESS, constructed and verified through the canonical
+> layer; rank-certified; `--wit` / `--e1`)* There is a habitat shape at
+> `n_hub = 16` with an admissible colouring carrying a crossing pair of
+> same-block binding chunks with `slack = 0` and `defect_A(T) = 0`. So
+>
+> **(i)** the AA-glue configuration **IS realizable**, at `n_hub = 16`;
+> **(ii)** the **(GR-38) intersection kill FAILS there**: `S ∪ S′` is a
+> **proper** chunk of `defect_A = 4`, hence **not binding**;
+> **(iii)** (GR-82)'s bound is **EXACT** — a theorem at `n_hub ≤ 14`, false
+> from `n_hub = 16`, with all three charges tight at the witness;
+> **(iv)** the witness shape still carries a **fully-good** admissible
+> colouring, so it is **not** a g-flank and **E1 does not fire**.
+
+**The shape.** 16 hubs: eight **corners** `c_0 … c_7` forming an 8-cycle of `ℓ = 2` branches; four **interiors** `u_0 … u_3`, with `u_j` joined by `ℓ = 2` branches to two corners under the perfect assignment `u_0 ↦ \{c_0, c_2\}`, `u_1 ↦ \{c_1, c_3\}`, `u_2 ↦ \{c_4, c_6\}`, `u_3 ↦ \{c_5, c_7\}` (each corner hit exactly once, and each interior's two corners at cycle-distance 2, so the shortest circuit through an interior has `Σℓ = 8 ≥ 7`); four **X hubs** `x_0 … x_3` forming a 4-cycle of branches of lengths `(3, 5, 4, 2)` in cycle order; and four `ℓ = 2` branches `u_t – x_t`. That is `M = 24` branches, total excess `1 + 3 + 2 + 0 = 6` ✓, `|V| = 46` in the subdivision, `5|E| = 270 = 6(|V| − 1)` ✓. **`cflank.cubic_habitat(16, …) = True`** — the landed (GR-25) cut criterion, the same `D = 0` membership oracle AGLU's exhaustive `n_hub = 8` scan is gated by. Independently, `nogood_subdiv.deficiency = 0` (the polynomial Lee–Streinu pebble game), `hcard_ok = True`, and no two-hub triangle: three of the four conjuncts of the canonical certificate `gridcol.class_shape`, re-run directly. *(The fourth, `kslide.no_rigid_branch_union`, is a `2^M` scan with a matroid rank inside — out of reach at `M = 24`, which is exactly why (GR-25) is the arc's oracle past `n_hub = 6`.)*
+
+**The colouring.** All 16 `T`-branches (the 8-cycle plus the eight interior-corner branches) are `ℓ = 2`; the interiors are AA, so their interior-corner branches carry A at the interior and **B** at the corner, and the 8-cycle is **consistently oriented** so that each corner receives exactly one A-dart and one B-dart from it — every corner is therefore `(A, B, B)`, B-majority. Each interior's free dart is its `u_t – x_t` branch, carrying **B** at `u_t` and A at `x_t`. The four `W` branches are `x_0x_1` at `ℓ = 3` **B-majority**, `x_1x_2` at `ℓ = 5` **A-majority**, `x_2x_3` at `ℓ = 4` with **B at `x_2`**, and `x_3x_0` at `ℓ = 2` with **B at `x_3`** — giving each X hub exactly one B-dart. **`cflank.admissible(…) = True`**, and every one of the 16 hubs carries a 2-1 pattern.
+
+**The pair.** `T` = the 16 `T`-branches; `R = \{u_0x_0, u_1x_1, x_0x_1\}`; `R′ = \{u_2x_2, u_3x_3, x_2x_3\}`; `S = T ∪ R`, `S′ = T ∪ R′`. Through the canonical evaluators (`gexist.defect_direct`, `gorient.pair_slack`, `gorient.attachment_check`):
+
+| set | branches | `defect_A` | `g` | chunk | binding |
+|---|---|---|---|---|---|
+| `T = S ∩ S′` | 16 | **0** | 3 | yes | yes |
+| `S` | 19 | **2** | 1 | yes | **yes** |
+| `S′` | 19 | **2** | 1 | yes | **yes** |
+| `S ∪ S′` | 22 (**proper**) | **4** | −1 | yes | **NO** |
+
+`slack = 0` both ways — `gorient.pair_slack` returns `#X-hubs = 0`, and the (GR-38)(i) identity closes as `2 + 2 = 4 + 0 + 0`. `gorient.attachment_check` reports one component per side, each attached at exactly **2** hubs, all of type `'23'`: `R′` at `\{u_2, u_3\}`, `R` at `\{u_0, u_1\}` — two disjoint 2-member AA `(2,3)`-families, which is (GR-38)(iii)'s own description of the AA-glue configuration, met literally.
+
+**The charges, all tight.** `n_2 = 4`, `n_3 = 8`, `|X| = 4`, `q_T = 0`, `p = 8`, `|T| = 16`; `2p = 16 = 3·8 − 2·4 − 0` ✓; B-darts at the X hubs `4 = (3·4 − 4 − 0)/2` ✓; B-darts at the corners `16 = 2·4 + 8 + 0` ✓; A-darts at the corners `8 = p` ✓. So `n_3 = 2n_2 + 2q_T`, `|X| = n_2 + 2q_T`, `n_hub = 4(n_2 + q_T) = 16` — **every inequality of (GR-80)/(GR-81)/(GR-82) is an equality**, which is what makes the boundary exact rather than merely bracketed. The witness realizes the `(|F₁|, |F₂|, |W|) = (4, 0, 4)` member of (GR-82)(iv)'s three profiles.
+
+**Rank certification.** The binding verdicts above come from the (GR-28)(i) *formula*; they are re-derived here **without** it. `gridwit.subgraph_g` computes `g` by pure cycle-rank arithmetic on the contracted multigraph of block A (`|E_A| = 27`, cycle rank `h = 9`, `n_c = 19`) and returns `g(T) = 3`, `g(S) = g(S′) = 1`, `g(S ∪ S′) = −1` — the formula's four predictions, exactly. And the obstruction is real, not a formula artifact: the exact rational `grid.dim_Z` in block A is **3**, and `grid.dim_Z_generic` — the **minimum** over seeded random label draws, so no σ-fixed special value is read as generic (§(K-clos) (AC-9)) — is **3** as well. `dim Z = 3 > 0` in block A at generic labels.
+
+**Which of the three templates it realizes: none of them.** The three (GR-76)(iv) templates live at `n_hub = 10` and are dead by (GR-82). The witness realizes the `n_hub = 16` analogue `(4, 0, 4)`. This is worth saying plainly because the dispatch's two branches were posed as alternatives: **both fired**, on different strata, and that is the result — not a hedge between them.
+
+**"Is it fully good?" — the question as posed has an empty answer, and the meaningful version is E1.** A binding chunk *is* a `g ≥ 1` obstruction, and "fully good" is `a = 0 ∧ max_P g(P) ≤ 0`; so a realized AA-glue configuration can **never** sit at a fully-good colouring. The dispatch's *"a realized AA-glue that is still fully-good is a much weaker event"* names an **empty** case, not a weaker one. What is *not* empty, and is the E1 question, is whether the witness **shape** still carries a fully-good colouring somewhere. It does: over the shape's **123 740** admissible colourings and its **22 086** chunks (**1 541** in the (GR-36)/(F-b) binding-capable family, an exact family), the **first** colouring the enumerator emits is already fully good in both blocks. One fully-good colouring settles E1 for a shape, so this is a complete answer with no cap attached.
+
+**Not a knife edge.** Over a family of 5 interior-corner assignments × 6 `W`-length rotations (30 members), **8** give a habitat-gated, admissible AA-glue configuration with the kill failing — 6 fail the habitat gate and 16 fail admissibility (the `first`-dart pattern is not re-tuned per rotation, so those are construction misses, not obstructions). Their `(defect_A(S), defect_A(S′), defect_A(T), defect_A(S ∪ S′))` split as `(2,2,0,4)` and `(2,1,0,3)`. The phenomenon survives perturbation of both free parameters.
+
+---
+
+### Step G103 — (GR-84): what else breaks at `n_hub = 16` — the whole residual, and the laminarity corollary — and the hand-off
+
+> **(GR-84)** *(measured, EXHAUSTIVE over all 22 086 chunks of the witness
+> graph in BOTH blocks, at **ONE** colouring — the witness colouring; not a
+> stratum scan, `--lam`)* At the witness colouring, in **each** block:
+> **19** binding chunks, **3** of them **maximal**; **66** crossing binding
+> pairs, of which **11** lie in the kill residual `slack + defect(T) ≤ 1`,
+> **2** are **AA-glue** (`slack = 0 ∧ defect(T) = 0`), and **9** are **kill
+> failures** (proper union, not binding). All **3** pairs of **maximal**
+> binding chunks **CROSS**, with `(slack, defect(T), defect(union))`
+> histogram `{(0,1,3): 1, (1,0,3): 2}`. Hence
+>
+> **(i)** the **whole** kill residual is inhabited at `n_hub = 16`, not only
+> its AA-glue case — the `n_hub = 16` analogue of (GR-75)(ii) is **false**;
+> **(ii)** **(GR-75)(iii)'s corollary fails to extend**: the **maximal**
+> binding family of a block is **not** laminar at `n_hub = 16`.
+
+**Reading (ii) precisely, because it is a corollary that fails and not a theorem that is refuted.** (GR-75)(iii) is an `n_hub = 8` statement and stands verbatim: there, the residual is empty, so every crossing binding pair has a binding union, so two *maximal* binding chunks cannot cross. (GR-77) already corrected the reading of what that buys — outright binding laminarity is false at `n_hub = 8` (3 774 crossing pairs), and what survives is the **uncrossing** of the maximal family. (GR-84)(ii) says that survivor does **not** reach `n_hub = 16`. So the sequence of readings is: laminar outright at `n_hub ≤ 6` (by emptiness of crossing, (GR-38)(iii)); maximal-laminar at `n_hub = 8` (by emptiness of the residual, (GR-75)(iii)); **neither**, from `n_hub = 16`. A successor that wants laminar targets past `n_hub = 14` cannot get them from the kill, and (GR-35)(ii)'s reading of the uncrossing as manufacturing (GR-24)'s privacy hypothesis loses its supply there.
+
+**What this does and does not do to the arc's target.** Nothing about it is a (GR-15) move. A binding chunk is a property of a *colouring*, and the witness shape carries fully-good colourings in abundance (*Step G102*); the target is *existence* of a fully-good colouring per shape, and no shape has been shown to lack one. What dies is an **organizational** tool — the uncrossing — which (GR-35)(ii)/(GR-38)(iii)/(GR-75)(iii) had been supplying to the charge apparatus. That is a real loss for the (a′)/(b′) machinery's *bookkeeping*, and it is not a loss for `hK`.
+
+**Hand-off — the four things a successor should take, in order.**
+
+1. **The `n_hub` boundary is exact for the AA-glue case; the residual's other two cases are NOT bounded.** (GR-82) bounds `slack = 0 ∧ defect(T) = 0`. The residual `slack + defect(T) = 1` — cases `(0,1)` and `(1,0)` — is bounded **only at `n_hub = 8`**, and only by (GR-75)(ii)'s exhaustive scan; nothing in this pass or in (GR-76) touches it at `n_hub ≥ 10`, and (GR-84) shows both cases are **realized** at `n_hub = 16`. Redoing *Steps G98–G101* with a one-unit defect budget `δ = defect_A(T) ≤ 1` is the natural next pass: (GR-79)'s per-term vanishing becomes "at most one term is 1", each charge loosens by a bounded amount (each A-dart at a corner beyond the `p` supply, and each interior-interior `T`-branch, has to be paid for out of `δ`), and the question is whether the resulting bound is still finite. Cheap, self-contained, and the honest completion of attack (c).
+2. **Is `n_hub = 16` the true first realization, or only the first that the counting system permits?** (GR-82)(iv) leaves three profiles at `n_hub = 16` and *Step G102* realizes one of them. Whether the other two — `(0,2,6)` and `(2,1,5)` — are realizable, and whether the `n_hub = 16` AA-glue instances form one family or several, is an `n_hub = 16` census question. The pool is out of reach as a whole (the `n_hub = 16` labelled stratum is far past the `n_hub = 10` one that already costs ~50× `n_hub = 8`), but a **template-restricted** pass in this direction's idiom — build the frame, vary the free parameters, gate through `cubic_habitat` — is affordable and is how *Step G102*'s witness family was produced.
+3. **What the charge apparatus should do now that the uncrossing is gone.** (GR-84)(ii) removes the laminar-targets supply that (GR-35)(ii) was providing to the (GR-24) privacy route past `n_hub = 14`. The two visible options are (a) find a *different* sufficient condition for simultaneous guided repair that does not need laminarity, or (b) re-derive laminarity for a **smaller** family than "maximal binding" — the `--lam` census says the 3 maximal chunks per block pairwise cross at *this* colouring, but says nothing about, e.g., the capacity-tight family. Option (b) is measurable with `--lam`'s machinery at one extra filter.
+4. **The witness is a reusable object, and the first `n_hub = 16` habitat shape the arc has built.** `gtmpl.witness_specs()` / `build_witness()` produce a habitat-gated 16-hub shape with 24 branches, 46 subdivision vertices, 123 740 admissible colourings and 22 086 chunks, all enumerable in seconds, with an exact `dim Z` computation that runs. Several arc questions currently pinned at `n_hub ≤ 8` for pool reasons are testable *at a shape* here even where they are not testable *over a stratum* — the same role (GR-30)'s `W3M` has played at `n_hub = 8`.
+
+---
+
+### Verification (Steps G98–G103)
+
+`notes/scripts/w4/gtmpl.py` (**new with this pass**; imports — all read-only — `kbare_common` (`verts_of`), `gridcol` (`subdivide`), `cflank` (`admissible`, `cubic_habitat`, `excess_profiles`, `hub_model`), `gcap` (`branch_stats`, `subset_eidx`), `gexist` (`defect_direct`, `incidence`), `gorient` (`attachment_check`, `pair_slack`), `gridwit` (`subgraph_g`), `grid` (`block_data`, `dim_Z`, `dim_Z_generic`), `gunif` (`wit_colouring`), `nogood_subdiv` (`deficiency`, `hcard_ok`, `hub_set`, `triangles`), and `aglu` (`admissible_bits`, `chunks_of`, `crossing_pairs`, `cubic_iso_classes`, `dartmask`, `degmap`, `jfree`) — the last group being the direction immediately below this one in the (K-grid) chain, whose devices are the landed ones for this exact question and each cross-certified against the canonical layer in `aglu --val`; reimplementing them would have been a divergence). **Two local devices**, both with a stated rationale and both cross-certified in `--val`: `chunks_via_complement` (a performance replacement for `aglu.chunks_of` at `M = 24`, where the latter's `2^M` prefix table is 16.7 M entries — a chunk is exactly a set of `deg_S = 0` hubs plus a matching of the rest, so this is a `2^n` scan; asserted **set-equal** to `aglu.chunks_of` at every class at `n_hub = 4, 6` and at seeded classes at `n_hub = 8`) and the `TYPES` table (the `(ℓ, majority) → (c, e, bend)` dictionary, asserted against `gexist.defect_direct` + `gcap.branch_stats` on constructed single-branch instances covering all six rows). Exact integers throughout; nothing samples a placement, so `repin.star_generic` gates nothing (§(K-clos) (AC-9)'s discipline, as for `aglu.py` / `gorient.py` / `cflank.py`); the one rank computation is `grid.dim_Z_generic`, which takes the **minimum** over seeded random label draws precisely so no σ-fixed special value is read as generic. Rngs seeded per mode (seed printed); every printed collection is sorted. Wall-clock `[Ns]` annotations are inherently non-deterministic; every other byte is seed-stable.
+
+```
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gtmpl.py --charge   #   5 s
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gtmpl.py --frame    # 176 s
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gtmpl.py --tpl      #   0 s
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gtmpl.py --min      #   0 s
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gtmpl.py --wit      #   0 s
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gtmpl.py --e1       #   9 s
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gtmpl.py --lam      #   2 s
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gtmpl.py --val      # 160 s
+```
+
+Every invocation was run **in the foreground, one at a time, with an explicit timeout**; each fits the 600 s budget alone, so no mode needed splitting, and the eight together total ~352 s.
+
+**What each invocation produced.** `--charge`: the six-row table's identity; then, over the complete `n_hub ≤ 6` stratum — **4 920** habitat shapes (10 / 312 / 4 598 at `n_hub = 2 / 4 / 6`) and **284 512** admissible colourings (42 / 4 818 / 279 652), reproducing (GR-38)'s own stratum figures exactly — the per-branch identity and the 2-1 pattern at **2 545 902** (colouring, branch) instances, plus `Σe = 6`, `Σc = 3`, `Σ bend = M` and `#{A-maj hubs} = n_hub/2` at every colouring. `--frame`: **92 / 2 675 / 82 201** crossing chunk pairs at `n_hub = 4 / 6 / 8`, **7 / 285 / 9 263** at slack 0 (both matching AGLU's `--pin`), **0 / 0 / 44** with a J-free intersection, all 44 with `(n_2, n_3, |T|, #cc) = (4, 4, 10, 2)` and nothing else, and (GR-80)'s kill asserted at all 44. `--tpl`: the nine (template, `q_T`) cells, each with both charges FAILING, **6/2/0**, **11/3/0**, **3/1/0** `(c, e)`-consistent type multisets examined and **0** survivors; then **0** aggregate frames and **0** full solutions at `n_hub = 10, 12, 14`, **3** frames / **59** solutions at 16, **6/121** at 18, **15/269** at 20. `--min`: the feasible list from `n_hub = 16` up, and the three `n_hub = 16` frames all on `(4, 8, 4, 0, 8)`. `--wit`: the witness's habitat gate, tightness `270 = 270`, `deficiency = 0`, `hcard_ok`, 0 two-hub triangles, admissibility, `{1,2}` A-darts at all 16 hubs, the four-row defect table, the slack identity `2+2 = 4+0+0`, `#X-hubs = 0`, the attachment classification, all three charges tight, the four exact `subgraph_g` values, and `dim Z = 3` at both label choices. `--e1`: 22 086 chunks / 1 541 binding-capable / 123 740 admissible colourings, a fully-good colouring at the first one tried, and 8 of 30 family members realizing the configuration. `--lam`: the per-block census of *Step G103*. `--val`: the four cross-certifications.
+
+**CAP DISCLOSURE — mandatory, per the §(K-grid) cap-exhaustion gate (`731b3e33`) and LTWO's *"4 of 8 patterns"* precedent. An exhausted cap is not a proof of nonexistence, and none of the negatives below rests on one.**
+
+- **(GR-82)'s negative takes NO cap.** It is a **proof** (an inequality chain on (GR-79)/(GR-80)/(GR-81)), and the machine side is a walk of a **finite** parameter box, not a sample: `--tpl`'s per-template enumeration is complete over the `(c, e)` budget splits, the type multisets, the even-`W` orientations and the `F₁` X-end splits; `--min`'s search is complete over every even `n_hub ≤ 40` and, at each, over the full `(n_2, n_3, |X|, q_T, p, |F₁|, |F₂|, |W|)` range the identities allow. **`n_hub ≤ 14` is settled by proof, and separately by exhaustion of a finite box — not by a budget.**
+- **`--min`'s `n_hub ≤ 40` window is a WINDOW, and it is not load-bearing.** The bound `n_hub ≥ 16` is proven for all `n_hub`; the window only exhibits where the system first becomes feasible. Nothing is claimed about `n_hub > 40`.
+- **No `n_hub = 10` or `n_hub = 16` labelled stratum was enumerated, and none is claimed.** The dispatch's cost check came first and the answer was the one AGLU predicted: the `n_hub = 10` pool is ~50× the `n_hub = 8` one with the canonicalizer as the bottleneck, and `n_hub = 16` is far past that. **The template-restricted route was taken instead, exactly as directed, and it turned out to need no pool at all.** So: (GR-82) is pool-free; (GR-83) is a **single constructed witness** plus a 30-member parametrized family, **not** a census; (GR-84) is exhaustive over the witness graph's chunks but at **ONE colouring** of **ONE shape**.
+- **What (GR-84) does NOT say.** It makes no claim about the witness shape's other **123 739** admissible colourings, none about other `n_hub = 16` shapes, and none about the distribution of `(slack, defect(T))` beyond the 66 crossing pairs it measures. In particular *"11 residual / 2 AA-glue / 9 kill failures"* is a count **at one colouring**, and must never be quoted as an `n_hub = 16` rate.
+- **The E1 answer is a POSITIVE and therefore cap-free**: one fully-good colouring exists, exhibited. The complementary negative — *"every colouring of every `n_hub = 16` habitat shape is …"* — is neither claimed nor attempted.
+- **`--val`'s `n_hub = 8` chunk-enumerator check is a seeded 6-of-20 subsample** (the `n_hub = 4, 6` checks are complete over all classes). Disclosed here rather than carried into a headline.
+- **The one habitat conjunct not re-run at the witness** is `kslide.no_rigid_branch_union` (`2^M` with a matroid rank inside, out of reach at `M = 24`). The (GR-25) criterion `cflank.cubic_habitat` is the arc's oracle in its place — the same one AGLU's exhaustive `n_hub = 8` scan is gated by, proven equivalent to `gridcol.class_shape` on the entire `n_hub ≤ 6` pool by `cflank --law` — and three of `class_shape`'s four conjuncts (tightness, `deficiency = 0`, `hcard` + no two-hub triangle) are re-run directly at the witness as an independent cross-check.
+- **No rank claim beyond the witness.** `dim Z` was computed at **one** colouring of **one** shape. Per-shape (GR-15) is not claimed anywhere in this pass, at any `n_hub`.
+- **Not re-opened, not re-run, not attempted:** (GR-28)(iv)'s `g ≤ 1` cap; the (GR-39)/(GR-40) fully-hot census; the `n_hub = 8` (GR-75) scan (AGLU's is exhaustive and uncapped, and *Step G99* reproduces its verdict by a third route without re-running it); **(d′)**. AGLU's hand-off item 2 (the `(slack, defect(T)) = (0,2)/(1,1)` tightness) was **NOT** attacked — it needs a stratum, and the primary's route deliberately avoided one; it stays open exactly as AGLU left it, with the added datum that at `n_hub = 16` the values `(0,1)` and `(1,0)` occur, so a `= 2` law would be `n_hub = 8`-specific.
+
+**The F11 table — which driver mode tests which sentence.** ("Exhaustive", "the only", "forced" and "not realizable" are their own claim class and get their own modes.)
+
+| sentence | mode | what is asserted |
+|---|---|---|
+| (GR-81)(i) `bend = e − 2c + 1` at **every** branch — universal claim | `--charge` | the identity per branch at **all 2 545 902** (colouring, branch) instances of the complete `n_hub ≤ 6` stratum, together with `bend == (end darts that are B)` read off `aglu.dartmask`, and the alternation fact `du == dw ⟺ ℓ odd` |
+| (GR-33)'s 2-1 pattern (the hypothesis both charges use) | `--charge` | `A-dart count ∈ {1, 2}` at **every hub** of **every** admissible colouring of the stratum; `{0, 3}` would abort |
+| (GR-81)(ii) the two global corollaries | `--charge` | `Σ bend == M` and `#{A-majority hubs} == n_hub/2` at every colouring, alongside `Σe == 6` ((GR-21)) and `Σc == 3` ((GR-32)(iii)) |
+| the pool is the landed one | `--charge` | `assert shapes == 4920 and ncol == 284512` — (GR-38)'s own stratum figures, reproduced through this driver's own pool builder |
+| (GR-79)(ii) no interior-interior `T`-branch — **exhaustiveness claim** | `--frame` | asserted at **every** slack-0 J-free crossing pair of **every** class at `n_hub = 4, 6, 8` |
+| (GR-79)(iii) the corner ledger `2p = 3n_3 − 2n_2 − 2q_T` | `--frame` | `len(ic) == 2n_2`, `len(T) == 2n_2 + len(cc)`, `2 len(T) == 2n_2 + 3n_3`, `2 len(cc) == 3n_3 − 2n_2` asserted at every such pair |
+| (GR-73)(ii) `deg_T ∈ {2,3}` at slack 0 (re-asserted, borrowed) | `--frame` | at all 7 / 285 / 9 263 slack-0 pairs |
+| (GR-74)(iii)'s `n_hub = 8` pinning reproduced through a second driver | `--frame` | the profile histogram `{(4,4,10,2): 44}` asserted exactly — a second row would print |
+| (GR-80) kills `n_hub = 8` — the third proof of (GR-75)(i) | `--frame` | `assert pq < n3` at all 44 premise-satisfying pairs |
+| (GR-82)(ii) the three templates are **NOT realizable** | `--tpl` | per (template, `q_T`): both charges asserted to FAIL, **and** a raw enumeration with both charges switched off asserted to return **0** survivors |
+| the `0` survivors are **not vacuous** | `--tpl` | the number of `(c, e)`-consistent type multisets is printed per cell and asserted `> 0` in aggregate over `q_T ≤ 1`; `q_T = 2` asserted to have **none**, which is (GR-76)(iv)'s own `q_T ≤ 1` |
+| (GR-82)(i)/(iii) `n_hub ≤ 14` all dead | `--tpl`, `--min` | `assert not frames and not solutions` at `n_hub = 10, 12, 14`; the full search over every even `n_hub ≤ 40` reports 16 as the least feasible |
+| the enumerator **fires** (non-vacuity) | `--tpl` | `assert frames and solutions` at `n_hub = 16` — 3 frames / 59 solutions, printed |
+| (GR-82)(iv) the `n_hub = 16` profile is **forced** | `--min` | every enumerated `n_hub = 16` frame asserted equal to `(n_2, n_3, |X|, q_T, p) = (4, 8, 4, 0, 8)` |
+| derivation ≡ enumeration | `--val` (3) | no enumerated frame at `n_hub ≤ 32` violates the closed-form (GR-80)/(GR-81)/(GR-82) charges |
+| (GR-83) the witness is in the **habitat** | `--wit` | `cflank.cubic_habitat` (the landed (GR-25) oracle) plus three of `gridcol.class_shape`'s four conjuncts run directly (`5\|E\| = 6(\|V\|−1)`, `nogood_subdiv.deficiency == 0`, `hcard_ok`, 0 two-hub triangles) |
+| (GR-83) the colouring is **admissible** | `--wit` | `cflank.admissible` on the subdivision — the canonical predicate, not a local device |
+| (GR-83)(i) it **IS** the AA-glue configuration | `--wit` | `gexist.defect_direct`: `defect_A(T) == 0`, `defect_A(S) ≤ 2`, `defect_A(S′) ≤ 2`; `gorient.pair_slack` `== (0, 0)`; the (GR-38)(i) identity asserted; `gorient.attachment_check` asserted to give two disjoint 2-member `'23'` families |
+| (GR-83)(ii) the **kill FAILS** | `--wit` | `assert len(union) < M` and `assert defect_A(union) > 2` — proper and not binding |
+| (GR-83)(iii) the bound is **TIGHT** | `--wit` | `n_3 == 2n_2 + 2q_T`, `\|X\| == n_2 + 2q_T`, `n_hub == 4(n_2 + q_T) == 16` asserted, plus the two B-dart counts of (GR-81)(iii) |
+| the binding verdict is **rank-certified**, not a formula artifact | `--wit` | `gridwit.subgraph_g` (pure cycle-rank arithmetic on the contracted multigraph, **independent** of (GR-28)(i)) asserted equal to `3 − defect` at all four sets; and `grid.dim_Z_generic > 0` — an exact rational rank at generic labels |
+| (GR-83)(iv) **E1 does not fire** | `--e1` | a fully-good admissible colouring of the witness shape exhibited (no binding chunk in either block over the exact binding-capable family) |
+| the witness is a **family**, not a coincidence | `--e1` | `assert ok >= 2` over 30 parametrized members; 8 realize it |
+| (GR-84)(i)/(ii) the residual is inhabited and maximal laminarity **fails** | `--lam` | exhaustive over all 22 086 chunks in both blocks at the witness colouring: `assert aaglue >= 1 and killfail >= 1` and `assert crossmax >= 1`, with the `(slack, defect(T), defect(union))` histogram printed |
+| chunk enumerator ≡ `aglu.chunks_of` | `--val` (1) | **set** equality at every class at `n_hub = 4, 6`; seeded 6-of-20 at `n_hub = 8` |
+| the `(c, e, bend)` table ≡ the canonical evaluators | `--val` (2) | `gcap.branch_stats` + `gexist.defect_direct` on constructed single-branch instances, all six rows |
+| the witness figures have not drifted | `--val` (4) | the headline 5-tuple `(0, 2, 2, 4, 0)` recomputed from scratch |
+
+---
+
+### Confidence verdict (Steps G98–G103)
+
+| | claim | standing |
+|---|---|---|
+| **(GR-79)** | the B-flooded frame: `A(β) = 1` on `T`, interiors AA with B free darts, no interior-interior `T`-branch, interior-incident branches `ℓ = 2` with B at the corner, the corner ledger, and the `p` corner A-darts | **proven** — a per-term non-negativity argument on the landed (GR-28)(i) formula plus one dart case check; the ledger machine-asserted at **every** slack-0 J-free crossing pair at `n_hub = 4, 6, 8`. Clause (ii) is (GR-74)(i) **re-derived**, not re-cited |
+| **(GR-80)** | the corner charge `n_3 ≥ 2n_2 + 2q_T` | **proven** (one pigeonhole on (GR-79)(iv) plus (GR-33)); its `n_hub = 8` kill machine-asserted at all 44 premise-satisfying pairs. **General-`n`**, `n_hub`-free |
+| **(GR-81)(i)–(ii)** | the universal dart identity and its two global corollaries | **proven** (three length/majority cases); asserted at **2 545 902** (colouring, branch) instances over the **complete** `n_hub ≤ 6` stratum, with the pool reproducing (GR-38)'s own figures exactly |
+| **(GR-81)(iii)–(iv)** | the exact B-dart count at the X hubs, hence `\|X\| ≥ n_2 + 2q_T` | **proven** (bookkeeping on (i)+(GR-79)); **strictly stronger than (GR-76)(i)**, which is the same count's `≥ 0` instance. **General-`n`** |
+| **(GR-82)(i)–(iii)** | `n_hub ≥ 4(n_2 + q_T) ≥ 16`; the AA-glue configuration is impossible at **every `n_hub ≤ 14`**; the three (GR-76)(iv) templates are **NOT realizable** | **proven**, and **`n`-free**; independently certified by an exhaustive walk of a **finite** parameter box (no cap, no sample), and by a raw per-X-hub dart enumeration run with both charges switched off. Subsumes (GR-76)(iii) and, through *Step G99*, (GR-75)(i) |
+| **(GR-82)(iv)** | the `n_hub = 16` profile is forced to `(4, 8, 4, 0, 8)` with three `(\|F₁\|, \|F₂\|, \|W\|)` options | **proven** (equality analysis) and machine-asserted over the enumerated frames |
+| **(GR-83)(i)–(ii)** | the AA-glue configuration **IS realizable** at `n_hub = 16`, and the **(GR-38) kill FAILS** there | **proven by witness** — the strongest kind of positive: an explicit habitat-gated shape, an explicit admissible colouring, both verified by the **canonical** predicates (`cflank.cubic_habitat`, `cflank.admissible`), and the defects/slack/attachment by the **canonical** evaluators (`gexist.defect_direct`, `gorient.pair_slack`, `gorient.attachment_check`) |
+| **(GR-83)(iii)** | the bound is **EXACT**: theorem at `n_hub ≤ 14`, false from `n_hub = 16` | **proven** — both halves; all three charges hold with **equality** at the witness |
+| the binding verdict at the witness | | **rank-certified**: `gridwit.subgraph_g` reproduces all four `g` values by cycle-rank arithmetic independent of (GR-28)(i), and `grid.dim_Z_generic` gives an exact rational `dim Z = 3 > 0` in block A at generic labels |
+| **(GR-83)(iv)** | the witness shape is **not** a g-flank; **E1 does not fire** | **proven by witness** (a fully-good colouring exhibited). Cap-free, being a positive |
+| "a realized AA-glue that is still fully good" | | **an EMPTY case, not a weaker one** — a binding chunk *is* a `g ≥ 1` obstruction. The dispatch's dichotomy is corrected here, plainly |
+| **(GR-84)(i)** | the **whole** kill residual is inhabited at `n_hub = 16` | **measured**, exhaustive over all 22 086 chunks of the witness graph in both blocks, at **ONE** colouring. The **existence** statement is therefore proven by witness; the **counts** are one-colouring measurements and must not be read as rates |
+| **(GR-84)(ii)** | (GR-75)(iii)'s laminarity corollary **fails** at `n_hub = 16` | **proven by witness** (three crossing pairs of maximal binding chunks per block). Note the crossing maximal pairs sit at `(slack, defect(T)) ∈ {(0,1), (1,0)}`, **not** at the AA-glue's `(0,0)` |
+| the `slack + defect(T) = 1` residual at `n_hub ≥ 10` | — | **OPEN, and untouched by this pass** — (GR-82) bounds only the AA-glue case. Named as hand-off item 1 with the exact modification the charges need |
+| AGLU's hand-off item 2 (the `(0,2)/(1,1)` tightness) | — | **NOT attempted.** Datum added: at `n_hub = 16` the crossing maximal pairs realize `slack + defect(T) = 1`, so any `= 2` law is `n_hub = 8`-specific |
+| **(GR-15)** | | **OPEN**, unchanged in both directions; **no gap-map status move on `hK`**. No rank claim beyond the witness's own `dim Z`; class uniformity untouched |
+| **(GR-38)(i)/(ii)/(iii)** | | **untouched as mathematics.** (i) and (ii) are re-asserted at the witness (a stratum never asserted on before); (iii)'s dichotomy is *satisfied* by the witness, on its residual branch. What is corrected is the **reading** of what (iii)'s kill buys past `n_hub = 8` — by (GR-84), not by contradicting any landed figure |
+| **(GR-75)/(GR-76)/(GR-77)** | | **untouched as mathematics**, and (GR-75)(i) gains a third proof. (GR-76)(iii)'s `n_hub ≥ 10` is **superseded** by the stronger `n_hub ≥ 16`, not refuted; (GR-76)(iv)'s three-template list is **confirmed as a pinning** and then **emptied** |
+
+**Which side of the (`≤3`-closedHubNbhd) line this sits on.** The same side as TCOL's through AGLU's: exact GF(2) / integer combinatorics on constructed hub multigraphs, never `PencilNondegFeasible G`. The one departure from AGLU is that this pass **does** compute a rank — `grid.dim_Z` / `dim_Z_generic` at the witness — and it is a **grid**-model rank on the σ-fixed configuration's contracted multigraph, taken at **generic** labels via the min-over-draws device, so no σ-fixed special value is read as generic (§(K-clos) (AC-9)). No sampler draws a placement anywhere.
+
+### What would change this (Steps G98–G103)
+
+- **(GR-80) or (GR-81) overturned** would need a defect in the one landed input each leans on beyond (GR-79): (GR-33)'s mono-hub 2-1 pattern for both, plus (GR-21)'s excess law and (GR-32)(iii)'s balance identity for (GR-81)(ii). All three are re-asserted at **every** admissible colouring of the complete `n_hub ≤ 6` stratum in `--charge`, whose pool reproduces (GR-38)'s own figures exactly — the strongest single check available. A subtler failure mode is a **frame** claim: if some AA-glue configuration had a `T`-hub of `deg_T ∉ {2,3}` (refuting (GR-73)(ii)) or an interior-interior `T`-branch (refuting (GR-79)(ii)), the corner ledger would change. `--frame` asserts against both at every slack-0 pair at `n_hub = 4, 6, 8`; at larger `n_hub` they are proven, not measured.
+- **(GR-82) sharpened.** Both charges use only the *existence* of one A-dart (resp. one B-dart) per hub. The 2-1 pattern says more — a hub has **exactly** one minority dart — and the `save`/weakness frame of (GR-33) prices exactly which darts those are. Pushing the bound past 16 therefore needs a constraint that couples the corner side to the X side; the visible candidate is that (GR-83)'s witness forces **every** corner B-majority and **every** X hub A-majority, i.e. the `n_hub/2` A-majority budget of (GR-81)(ii) is *also* tight there. Whether that is forced or accidental is one `--min` filter away.
+- **(GR-83) overturned** would need the witness to fail a gate. The four that matter are `cflank.cubic_habitat` (the (GR-25) criterion — cross-checked by three of `gridcol.class_shape`'s four conjuncts, the fourth being the `2^M` scan (GR-25) exists to replace), `cflank.admissible` (the canonical predicate, run on the subdivision), `gexist.defect_direct` (the canonical evaluator, cross-checked by `gridwit.subgraph_g`'s independent cycle-rank computation), and the chunk-ness of `S`, `S′` (connected, bridgeless, degrees in `{2,3}` — the `aglu.chunks_of` family, whose enumerator is `--val`-certified). A **fifth** possibility, and the honest one to name: if the arc's habitat notion at `n_hub ≥ 10` were ever found to need a conjunct that `cubic_habitat` does not express, this witness and AGLU's `n_hub = 8` scan would both need re-gating — they rest on the same oracle.
+- **(GR-84)(ii) sharpened** by asking the same question of a **smaller** family than "maximal binding" (capacity-tight, or the `(GR-36)` binding-capable family intersected with a size bound), and over **more than one colouring** of the witness shape. `--lam` does both at one extra filter and one extra loop; the cost is that the second is a 123 740-colouring scan, which needs slicing.
+- **The residual `slack + defect(T) = 1` is where this could all still be `n_hub ≤ 14`-shaped and turn out to matter less than it looks.** (GR-82) is a clean exact boundary for the AA-glue *case*; if the residual's other two cases are realizable well **below** `n_hub = 16` — and nothing rules that out at `n_hub = 10, 12, 14` — then the (GR-38) kill already fails there for a reason this pass did not look at, and the "attack (c) closes at `n_hub ≤ 14`" headline would need the qualifier *"for the AA-glue case"* doing more work than it looks like it is doing. **That qualifier is carried explicitly in every statement above, and hand-off item 1 is exactly this.**
+
+---
+
+### TERMINATION check (E1/E2/E3) — this direction's reading; the coordinator re-runs it
+
+**E1 does NOT fire.** E1 needs a **g-flank** — a `D = 0` shape whose *every* admissible colouring is binding. This pass exhibits the opposite at the one new shape it built: the `n_hub = 16` witness shape carries a fully-good admissible colouring (the *first* one its enumerator emits), so it is not a g-flank. Nothing else in the pass is a flank candidate: the witness colouring's 19 binding chunks per block, its 2 AA-glue instances and its 9 kill failures are all properties of **one particular colouring** at a shape that has 123 740 of them, and a binding chunk at one colouring is not a flank. (This is exactly (GR-77)'s distinction, carried forward.)
+
+**E2 does NOT fire.** E2 needs the direction's target refuted-or-unprovable-as-posed **and** no ledger entry left in state open-with-a-named-dispatchable-attack. Neither half holds. The target — AA-glue realizability at `n_hub ≥ 10` — is **settled**, not unprovable: negative at `n_hub ≤ 14` by an `n`-free proof, positive at `n_hub = 16` by witness. Attack (c) therefore moves from *"open at `n_hub ≥ 10`, three templates"* to *"the AA-glue case is settled with an exact boundary; the `slack + defect(T) = 1` residual is open at `n_hub ≥ 10` with a named, cheap, self-contained successor"* — a **narrowing with a successor named**, which the E2 carve-out explicitly does not fire on. Attacks (a′), (b′) and (d′) are untouched and remain dispatchable.
+
+**E3 stays ARMED and is NOT fired.** E3 is armed by GBAL's entry-5 HIT and fires only when the target is **proven** with every remaining ledger entry adjudication-gated. GTMPL is on the §(GR-38)/attack-(c) path, not the (a′) path; it proves nothing about (GR-15), computes no uniformity claim, and leaves (a′)/(b′) dispatchable. The arming state is **unchanged**. **Firing is a coordinator action; this direction does not fire it.**
+
+**So: no escalation from this direction.** The one thing worth surfacing to the coordinator as a *reading* rather than a trigger: (GR-84)(ii) removes an **organizational** tool the charge apparatus had been using (the uncrossing / laminar targets) at every `n_hub ≥ 16`. That is not an E-clause event — it costs no ledger entry its dispatchable state — but it does change what a successor on the (a′)/(b′) path can assume, and hand-off item 3 names the two visible replacements.
+
+**Riders, verbatim.** Everything at `Λ = ∅`, `D = 0`, and **modulo (GR-4′)** wherever (GR-15) is mentioned; `Λ ≠ ∅` and `D > 0` stay **unswept**. **None of this closes (GR-15)**, and a counting-side result is not an `hK` status move; the one rank computed here is a single witness's `dim Z`, not a per-shape (GR-15) claim. Every obstruction figure carries its **family qualifier** — (GR-36)'s **binding-capable** family strictly contains the capacity-tight one, and (GR-40)'s 815 → 573 is a **prune, not a zero**. **(GR-77) stands:** outright binding laminarity is FALSE at `n_hub = 8` (3 774 crossing pairs), so (GR-75) is never quoted here as laminarity — it buys the **uncrossing** of the **maximal** binding family per block, and (GR-84)(ii) shows even that does not reach `n_hub = 16`.
+
+---

@@ -1,10 +1,11 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: EIGHT fan-outs and nine single directions dispatched; 32 of 37 directions
+**Status: EIGHT fan-outs and nine single directions dispatched; 33 of 37 directions
 LANDED.** The seventh fan-out (YLOC / BALB / AGLU / ZNEQ / CIRR, §"Seventh fan-out") is
-**COMPLETE** — all five directions landed 2026-08-19. The **EIGHTH fan-out (GTMPL / GFLOW /
-GCOLL / OSCHU / SIGZ, §"Eighth fan-out") was PREPPED AND DISPATCHED 2026-08-19 and none of
-its five has landed**; each direction's own Status line is authoritative for its state.
+**COMPLETE** — all five directions landed 2026-08-19. The **EIGHTH fan-out** (GTMPL / GFLOW /
+GCOLL / OSCHU / SIGZ, §"Eighth fan-out") was prepped and dispatched 2026-08-19: **GTMPL has
+LANDED** — an exact `n_hub` boundary for ledger attack (c)'s AA-glue case — and **the other
+four are in flight**; each direction's own Status line is authoritative for its state.
 Ordinals run 1–29 (the eighth fan-out claims 25–29) and were assigned at dispatch, so
 landing order differs from ordinal order.
 
@@ -983,7 +984,7 @@ The *candidate pool* is the arc's; only the ranking is the coordinator's.
 
 | direction | ordinal | tier | owning § | target | status |
 |---|---|---|---|---|---|
-| **GTMPL** | 25th | compute-licensed | §(K-grid) | AA-glue realizability at `n_hub ≥ 10` — (GR-76)(iv)'s three templates | **DISPATCHED 2026-08-19** |
+| **GTMPL** | 25th | compute-licensed | §(K-grid) | AA-glue realizability at `n_hub ≥ 10` — (GR-76)(iv)'s three templates | **LANDED 2026-08-19** — an EXACT BOUNDARY: impossible at every `n_hub ≤ 14`, REALIZED at 16 (§"Twenty-fifth direction") |
 | **GFLOW** | 26th | derivation-first | §(K-grid) | (b′)'s availability half — *Clause A′* sub-clause 2, the doubly-blocked case | **DISPATCHED 2026-08-19** |
 | **GCOLL** | 27th | compute-licensed | §(K-grid) | **(GR-64)(R2)** — every habitat shape carries an anchor matching with `B(M) = 0` | **DISPATCHED 2026-08-19** |
 | **OSCHU** | 28th | derivation-first | §(K-out) | **(a₁)** class-uniformly — the Schubert non-jump `dim(D ∩ M̂ ∧ W) ≤ 1` (+ the (a₂) re-keying leg) | **DISPATCHED 2026-08-19** |
@@ -1030,6 +1031,18 @@ eye** (§6's other clause — a coordinator hand-recompute once dropped a live
 label and only a script caught it).
 
 ### GTMPL — twenty-fifth direction (eighth fan-out)
+
+**Status: LANDED 2026-08-19 — BOTH dispatched outcomes fired, on different strata.** First of the eighth fan-out's five to land. §(K-grid) **extended**, **Steps G98–G103**, labels **(GR-79)–(GR-84) CLAIMED EXACTLY** — nothing returned to the tail. Driver **`notes/scripts/w4/gtmpl.py`** (eight modes `--charge`/`--frame`/`--tpl`/`--min`/`--wit`/`--e1`/`--lam`/`--val`, ~352 s total, each inside the 600 s foreground budget with no split needed; all eight re-run by the coordinator at landing, every quoted figure reproduced).
+
+**The verdict.** The dispatched three-template question is **NOT realizable**, by two new `n`-free charges each of which kills all three independently: **(GR-80)** the corner charge `n_3 ≥ 2n_2 + 2q_T` (a factor-3 strengthening of (GR-74)(iii), and a **third** independent proof of (GR-75)(i)) and **(GR-81)** the X charge `|X| ≥ n_2 + 2q_T`, resting on a universal dart identity that pins `#{B-darts at X}` **exactly** — of which **(GR-76)(i) is the `≥ 0` instance**, so this is precisely the ingredient AGLU's own *What would change this* named as unexploited. **(GR-82)** chains them to the `n`-free `n_hub ≥ 4(n_2 + q_T) ≥ 16`, killing `n_hub = 10, 12, 14` as well — **a finite bound, not a contradiction, so attack (c) does NOT close outright**, the distinction the spec asked to be precise about. And **(GR-83)** shows the bound is **EXACT**: a constructed `n_hub = 16` witness, habitat-gated by (GR-25), admissible by the canonical predicate, all three charges tight, rank-certified twice over — at which **the (GR-38) kill FAILS** (proper 22-branch union of defect 4). **(GR-84)** measures what else goes: the **whole** kill residual is inhabited there and **(GR-75)(iii)'s maximal-family uncrossing does not reach `n_hub = 16`** — all three maximal binding pairs cross — which costs the charge apparatus an **organizational** tool but no ledger entry its dispatchable state. **No pool was ever built**: the spec's cost-check-first instruction was followed and the template-restricted route needed none.
+
+**Three coordinator adjudications on landing.** *(1)* **The spec's own dichotomy was defective and the correction is right.** It asked, on the realizable branch, *"whether it is fully-good"* — but a binding chunk **is** a `g ≥ 1` obstruction, so a realized AA-glue can never sit at a fully-good colouring: the case is **empty**, not weaker. The meaningful question is E1 (does the witness *shape* still carry a fully-good colouring?), and it does — the first of its 123 740. This is the **second** consecutive wave in which a coordinator-authored spec clause needed correcting by the direction it primed (ZNEQ's `(K-tight)`-vs-PENCIL-event wording was the first), and it is inherited from AGLU's spec verbatim, which is how it survived a re-read. *(2)* **(GR-76)(iii) is SUPERSEDED, not refuted** — its proof is independent and stands; a one-line forward pointer is added at *Step G95* rather than editing it, the arc's practice for a superseded-not-refuted bound. *(3)* **The sibling-import call was the coordinator's to make and is recorded, not defaulted:** `gtmpl.py` imports seven read-only devices from `aglu.py`, none catalogued in `notes/scripts/README.md` §1 — in policy as the documented sibling-import pattern, but tripping §2 rule 2's move-down trigger, so a new dated **UNPAID** debt item is recorded there on ZNEQ's `ocon.meet` precedent.
+
+**Cap disclosure, verified at landing.** No cap is exhausted anywhere and no negative rests on one: (GR-82) is a proof plus an exhaustive walk of a **finite** parameter box, `--min`'s `n_hub ≤ 40` is a display window over a bound proven for all `n`, and no `n_hub = 10` or `16` stratum was enumerated or claimed. (GR-83) is **one constructed witness** plus a 30-member family, not a census; **(GR-84)'s counts are at ONE colouring of ONE shape and must never be quoted as an `n_hub = 16` rate**; `--val`'s `n_hub = 8` chunk-enumerator check is a seeded 6-of-20 subsample. The witness's habitat rests on the (GR-25) oracle, `kslide.no_rigid_branch_union` being a `2^M` scan out of reach at `M = 24` — **the same dependency AGLU's exhaustive `n_hub = 8` scan already has**, cross-checked by three of `gridcol.class_shape`'s four conjuncts run directly.
+
+**TERMINATION: E1, E2, E3 all NO** — coordinator-re-run and agreed. E1: the witness shape carries a fully-good colouring, so no g-flank; binding chunks at one colouring are not flanks ((GR-77)'s distinction). E2: the target is **settled**, not unprovable, and narrows with a named successor; (a′)/(b′)/(d′) untouched. E3: GTMPL is on the §(GR-38) path, not (a′) — **stays ARMED by GBAL, not fired.**
+
+**What did NOT move.** **(GR-15) OPEN**, unchanged in both directions; **no gap-map status move on `hK`**; class uniformity untouched; the one rank computed is a single witness's `dim Z`, not a per-shape (GR-15) claim. §(K-grid)'s gap-map status cell was **RECOMPUTED** (1706 → 1730 words while absorbing six new labels, i.e. the pre-existing content compressed ~13%) rather than bumped, with label preservation verified by a **scripted set-diff** — 79 labels in, 85 out, zero dropped; the cap stays 2035, leaving 305 words for GFLOW and GCOLL. AGLU's hand-off item 2 was **not** attempted (it needs a stratum); the datum added is that `(0,1)`/`(1,0)` occur at `n_hub = 16`, so a `= 2` law would be `n_hub = 8`-specific.
 
 **The target — AA-glue realizability at `n_hub ≥ 10`, ledger attack (c)'s only
 surviving case**, verbatim from AGLU's hand-off item 1: by **(GR-76)(iv)** the

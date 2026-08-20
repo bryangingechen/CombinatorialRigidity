@@ -736,6 +736,26 @@ once by the dispatch and not re-run (240 s, exit 0). One driver added
 derivation). Each mode pays a ~one-time `cubic_iso_classes(8)` enumeration
 (memoized per process, ~120–150 s), which is why even the counting-only
 `--pool` mode reads 149 s.
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/gtmpl.py --charge` | 5 s | `notes/Pencil-informal-grid.md` §(K-grid) continuation (direction GTMPL) *Step G100* ((GR-81)(i)–(ii), the universal dart identity `bend = e − 2c + 1` and the 2-1 pattern asserted at **2 545 902** (colouring, branch) instances over **284 512** admissible colourings of **4 920** shapes — the complete `n_hub ≤ 6` stratum, reproducing (GR-38)'s own figures exactly, which is what licenses the rest; plus `Σe = 6`, `Σc = 3`, `Σ bend = M`, `#{A-maj hubs} = n_hub/2`) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/gtmpl.py --frame` | 176 s | ibid. *Steps G98–G99* ((GR-79)/(GR-80): crossing chunk pairs **92 / 2 675 / 82 201** and slack-0 **7 / 285 / 9 263** at `n_hub = 4/6/8` — both reproducing `aglu --pin` — with **0 / 0 / 44** J-free intersections, all 44 on profile `(n_2, n_3, |T|, #cc) = (4, 4, 10, 2)` and nothing else, the corner ledger asserted at every such pair, and (GR-80)'s `n_hub = 8` kill asserted at all 44) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/gtmpl.py --tpl` | 0 s | ibid. *Step G101* ((GR-82)(ii): the three (GR-76)(iv) templates × `q_T ∈ {0,1,2}` — both charges FAIL at all nine cells, and a raw X-hub dart enumeration **with both charges switched off** returns **0** survivors, over **6/2/0**, **11/3/0**, **3/1/0** `(c,e)`-consistent type multisets, so the zeros are non-vacuous; 0 frames at `n_hub = 10, 12, 14`, **3 frames / 59 solutions** at 16 — the falsification control firing) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/gtmpl.py --min` | 0 s | ibid. ((GR-82): the whole aggregate system walked at every even `n_hub ≤ 40` — a **window**, not the bound, which is proven for all `n` — feasible list from `(16, 3)`, so **16 is the least feasible**, and all three `n_hub = 16` frames forced onto `(n_2, n_3, |X|, q_T, p) = (4, 8, 4, 0, 8)`) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/gtmpl.py --wit` | 0 s | ibid. *Step G102* ((GR-83), the `n_hub = 16` **WITNESS**: `cflank.cubic_habitat` True plus three of `gridcol.class_shape`'s four conjuncts run directly (`5\|E\| = 270 = 6(\|V\|−1)`, `deficiency = 0`, `hcard_ok`, 0 two-hub triangles); `cflank.admissible` True; defect table `(T, S, S′, S∪S′) = (0, 2, 2, 4)` with the union **proper** (22 of 24 branches) hence **not binding** — the **(GR-38) kill FAILING**; slack identity `2+2 = 4+0+0`; all three charges TIGHT; `gridwit.subgraph_g` reproducing `3/1/1/−1` independently of the (GR-28) formula; exact `dim Z = 3 > 0` at generic labels) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/gtmpl.py --e1` | 10 s | ibid. ((GR-83)(iv), the E1 control: the witness graph's **22 086** chunks, **1 541** binding-capable, **123 740** admissible colourings, a **fully-good** colouring found at the first one tried — so no g-flank — and **8 of 30** parametrized family members realizing the configuration) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/gtmpl.py --lam` | 2 s | ibid. *Step G103* ((GR-84), exhaustive over all 22 086 chunks in **both** blocks at **ONE** colouring: per block **19** binding / **3** maximal / **66** crossing binding pairs / **11** in the kill residual / **2** AA-glue / **9** kill failures, and **all 3** maximal pairs CROSSING at `(slack, defect(T), defect(union)) ∈ {(0,1,3), (1,0,3)}` — never quote these as an `n_hub = 16` rate) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/gtmpl.py --val` | 159 s | ibid. the four device cross-certifications: `chunks_via_complement` **set-equal** to `aglu.chunks_of` at all classes at `n_hub = 4, 6` and at seeded 6-of-20 at `n_hub = 8`; the `(c, e, bend)` table vs `gexist.defect_direct` + `gcap.branch_stats` over all six rows; every enumerated frame at `n_hub ≤ 32` consistent with the closed-form charges; the witness's headline 5-tuple `(0, 2, 2, 4, 0)` recomputed from scratch |
+
+**GTMPL (eighth fan-out, LANDED 2026-08-19).** All **eight** modes re-run in the
+foreground by the coordinator at landing (`PYTHONHASHSEED=0`, explicit timeout,
+one at a time, all exit 0, every quoted figure reproduced) — ~352 s in total,
+each mode inside the 600 s budget, so no split was needed. One driver added
+(`w4/gtmpl.py`), nothing existing modified. **No Macaulay2 leaf** — none
+expected. It imports read-only from eleven modules, including **seven devices
+from the sibling leaf `aglu.py`**; see the new *Harness debt* item below, and
+note the two local devices (`chunks_via_complement`, a `2^n` replacement for
+`aglu.chunks_of`'s `2^M` prefix table at `M = 24`, and the `(c, e, bend)`
+table) are both `--val`-certified against canonical counterparts rather than
+taken on trust.
 
 ### `m2/` — the Macaulay2 symbolic layer
 
@@ -1603,6 +1623,30 @@ reason a move-down debt this small stays open is that `ocon.meet` is a
 *landed* file, and a move it touches is imported by at least one concurrent
 direction's driver (`zneq.py`), so the fix is a coordinator action between
 directions, not something either dispatch could do on its own.
+
+### New item (2026-08-19, direction GTMPL) — `aglu.py`'s combinatorial devices need to move down; **UNPAID**
+
+The same shape as the ZNEQ item above, one landing later and larger. `w4/gtmpl.py`
+imports **seven** read-only devices from the sibling leaf `w4/aglu.py` —
+`admissible_bits`, `chunks_of`, `crossing_pairs`, `cubic_iso_classes`,
+`dartmask`, `degmap`, `jfree` — **none of which is catalogued in §1**, so each
+now has two consumers and each trips §2 rule 2's move-down trigger.
+
+**Why it was recorded rather than paid, and why it is nonetheless in policy.**
+The sibling-import pattern is the documented practice of every recent `w4/`
+leaf (§2's layering narrative: `dominance`←`flanks`, `outer`←`dominance`+
+`lambda`, `annih`←`dominance`+`outer`, `outerline`←`outer`, …), and
+reimplementing these devices would have created exactly the same-name-different-
+semantics divergence rule 3 forbids — so GTMPL's choice was right, and the
+coordinator confirmed it deliberately rather than by default. What is owed is
+the **catalogue-and-move**: these are general `n_hub`-stratum combinatorics for
+the whole (GR-38)/(K-grid) sub-arc, not AGLU-private helpers, and they belong
+one layer down with a re-export from `aglu` so no recorded figure moves. The
+move is **unpaid** for the ZNEQ reason exactly: `aglu.py` is a landed file and
+two concurrent directions of the eighth fan-out (GFLOW, GCOLL) may import from
+it while in flight, so it is a coordinator action **between** waves, not
+something a dispatch may do. Cheapest honest discharge: fold it in with the
+`ocon.meet` move once the eighth fan-out is complete.
 
 ## Deliberate non-goals
 
