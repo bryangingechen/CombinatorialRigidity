@@ -1046,8 +1046,8 @@ its named residuals, all slice-sized, none needing an adjudication.
 
 | option | what it would buy | owner |
 |---|---|---|
-| **§(K-grid) (R1)** *(GFLOW's clause — cite qualified, see `Pencil-labels.md`)* | upgrades (b′)'s proven `≤ 12` to a theorem; **cheapest item on the board** | §(K-grid) *Step G108* |
-| **§(K-grid) (C2)** *(GFLOW's; qualified)* | (b′) at the **target** constant 2; first possible failure pinned to `n_hub = 8`, `2k = 2` | ibid. |
+| **(GR-R1)** (§(K-grid), GFLOW's clause) | upgrades (b′)'s proven `≤ 12` to a theorem; **cheapest item on the board** | §(K-grid) *Step G108* |
+| **(GR-C2)** (§(K-grid), GFLOW's) | (b′) at the **target** constant 2; first possible failure pinned to `n_hub = 8`, `2k = 2` | ibid. |
 | one-unit-defect-budget redo of (GR-79)–(GR-82) | finishes ledger attack **(c)** past its `n_hub ≤ 14` boundary | §(K-grid) *Steps G98–G103* |
 | `rank(Q\|_D) = 3` class-uniformly | **(a₁)**, hence input (a); harness-unblocked since the `Gauss` move-down | §(K-out) *Step O29* |
 | collision dominance `min_M B(M) ≤ d_adm` | GCOLL's successor to the refuted (GR-64)(R2) | §(K-grid) *Step G115* |

@@ -79,7 +79,7 @@ degree-constrained-orientation problems) and lands the following chain.
       d_adm(M) - d_par(M) <= 4 * min(k, floor(n_hub/4))  ( <= 12 ),
 
   the FIRST proven n-free bound of (b')'s own shape -- modulo ONE named
-  clause (R1): at every unbalanced admissible configuration some
+  clause (GR-R1): at every unbalanced admissible configuration some
   majority-side odd branch has a (GR-50)-feasible flip.  With |delta| <= 2
   at some parity-optimal configuration the same chain gives <= 4.  The
   residual for the constant 2 is now a SELECTION statement, not a repair
@@ -101,7 +101,7 @@ Modes:
              by full z-cube over the whole stratum and seeded n = 8/10/12;
              the price-4 witness named; BALB's two-branch side condition
              counted where it fails.
-  --desc     (GR-89): clause (R1), the greedy descent to balance, the
+  --desc     (GR-89): clause (GR-R1), the greedy descent to balance, the
              selection-clause census and the counting bound.
   --big      beyond the stratum: seeded exact n = 8/10/12, V8, and CAP-FREE
              chain certificates on the necklaces at n = 30/40/50/60.
@@ -729,10 +729,10 @@ def leg_exact():
 # -------------------------------------------------- [GFL-4] --desc ----------
 
 def leg_desc():
-    """[GFL-4] (GR-89): clause (R1), the greedy descent, the selection-clause
+    """[GFL-4] (GR-89): clause (GR-R1), the greedy descent, the selection-clause
     census and the counting bound."""
     t0 = time.time()
-    print("[GFL-4] (GR-89) the descent: clause (R1), the greedy descent to "
+    print("[GFL-4] (GR-89) the descent: clause (GR-R1), the greedy descent to "
           "balance, and the SELECTION clause that replaces the repair "
           "residual")
     rng = random.Random(R_SEED + 4)
@@ -838,7 +838,7 @@ def leg_desc():
                     step[worst] += 1
         print(f"  {tag}: {nunb} unbalanced admissible configurations"
               + (f", {capped} caps hit" if capped else ", no cap hit"))
-        print(f"    (R1) no majority-side odd branch has a feasible flip: "
+        print(f"    (GR-R1) no majority-side odd branch has a feasible flip: "
               f"{r1fail}")
         print(f"    greedy descent-to-balance: total price {hist(tot)}, "
               f"worst single step {hist(step)}, {dfail} descents stalled")

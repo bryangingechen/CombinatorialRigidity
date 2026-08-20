@@ -37,9 +37,11 @@ half-proven, half-reduced to one 3×3 determinant** (OSCHU); and
 (`notes/dispatch-log.md`: five rows, findings **F22–F24**). **Both queued structural items are
 LANDED** — the phase-note doc split (2026-08-19) and the **harness move-down round
 (2026-08-20)**, which paid all five *Harness debt* move-downs, `closure.Gauss` →
-`exactcore` included, with **no recorded figure moved**. **NEXT CONCRETE TASK: the
-kernel-(K) RESEARCH PICK** — nothing structural queued, nothing awaiting user
-adjudication; candidates in *Hand-off* (cheapest first: (R1), (C2), the
+`exactcore` included, with **no recorded figure moved**. **NEXT CONCRETE TASK: Probe
+KBARE-FALSIFY, then Probe C3-AVOID** (specced and authorized 2026-08-20; see
+*Hand-off*) — nothing structural queued, nothing awaiting user adjudication. The
+kernel-(K) RESEARCH PICK is a standing delegation **queued behind the probes**, not
+itself the next task; candidates in *Hand-off* (cheapest first: (GR-R1), (GR-C2), the
 one-unit-defect redo of (GR-79)–(GR-82), OSCHU's `rank(Q|_D) = 3` residue — now
 unblocked on the harness side — and GCOLL's collision dominance).
 
@@ -123,6 +125,17 @@ constraints; the dated dispatch narrative is in *Decisions made* and git):
   *before* the dispatch to *at the return*. **Everything else stands unchanged:** phase
   OPEN, the 2026-08-05 Lean hold, W4 PARKED, `hK`/`hbareSplit` pinned, option B
   un-commissioned.
+
+- **2026-08-20, the GFLOW bare-token collision — RENAME, not qualify.** HEAD's landing
+  recorded GFLOW's three residual clauses (GR-89)'s bare `(R1)`/`(C1)`/`(C2)` as
+  **"Disposition: QUALIFY, do not rename"**, with the rename left open for the user as one
+  of a small option selection. The user selected, verbatim, **"Rename to
+  (GR-R1)/(GR-C1)/(GR-C2)"** — *"Follows the direction-A precedent (bare (R1)/(R2) →
+  (ANH-R1)/(ANH-R2) at landing). They are only three commits old, so the repoint is
+  small."* An option selection, not free text, so the QUALIFY disposition is superseded:
+  GFLOW's three tokens are `(GR-R1)`/`(GR-C1)`/`(GR-C2)` everywhere in the corpus now,
+  verified 0-hit before minting; `notes/Pencil-labels.md`'s collision record is
+  ADJUDICATED/RENAMED. Everything else stands unchanged.
 
 **Kernel-(K) research arc — forty-nine docs+scripts-only dispatches landed, five more
 dispatched and IN FLIGHT (the eighth fan-out), plus seven strategy-only passes**
@@ -299,9 +312,9 @@ fan-out", and the wave's process exceptions in `notes/dispatch-log.md` (five row
 **THE CANDIDATE LIST lives in `notes/Pencil-strategy.md` §8 — the option board** (new
 2026-08-20): every live route priced in one place, with the two filters that kill most
 candidates on sight (growing-ground-set; counting saturation, now closed in **both**
-directions by (OC-3)/(OC-37)). **Not restated here.** Cheapest entry: **§(K-grid) (R1)**,
-which upgrades (b′)'s `≤ 12` to a theorem. *Cite GFLOW's clauses **qualified** — bare
-`(R1)`/`(C1)`/`(C2)` collide four ways each, `notes/Pencil-labels.md`.* **Not eligible:**
+directions by (OC-3)/(OC-37)). **Not restated here.** Cheapest entry: **(GR-R1)**
+(§(K-grid)), which upgrades (b′)'s `≤ 12` to a theorem — renamed from bare `(R1)` at
+the 2026-08-20 adjudication, `notes/Pencil-labels.md`. **Not eligible:**
 route σ's **obligation 1** and the W4 **build** — those, and only those, are held by the hold.
 
 **THE NEXT CONCRETE TASK — Probe KBARE-FALSIFY, then Probe C3-AVOID** (specced and authorized
@@ -331,11 +344,13 @@ round 2 (slice 4 the phase-note split, **slice 5/"slice 2" the harness move-down
 OSCHU's `rank(Q|_D) = 3` residue is no longer blocked on the harness — exact `ℚ(i)`
 (`exactcore.Gauss`) is now a base-layer primitive.
 
-**THE NEXT CONCRETE TASK — the kernel-(K) RESEARCH PICK**, the arc's ninth step: pick from
-the candidate list above (the standing 2026-08-07 delegation covers the pick; the *shape* —
-single direction, recon-first, or another multidispatch fan-out — is a user call, the eighth
-wave's dispatch bullet being the precedent), reserve labels in `notes/Pencil-labels.md`, and
-spec it in `notes/Pencil-fanout.md`.
+**THE STANDING RESEARCH-PICK DELEGATION — queued behind the probes above, not itself the
+next concrete task.** Once KBARE-FALSIFY (then C3-AVOID) return, the kernel-(K) RESEARCH
+PICK is the arc's ninth step: pick from the candidate list above (the standing 2026-08-07
+delegation covers the pick; the *shape* — single direction, recon-first, or another
+multidispatch fan-out — is a user call, the eighth wave's dispatch bullet being the
+precedent), reserve labels in `notes/Pencil-labels.md`, and spec it in
+`notes/Pencil-fanout.md`.
 
 **`hsplit` is CLOSED IN FULL** (W5-L7c-1…6, landed 2026-07-30) and **`hfresh`'s mechanical
 discharge (residue (iv)) is CLOSED too**. The landed successor
@@ -468,8 +483,8 @@ is the canonical home a successor reads.
   five per-direction sections. The five results: **GTMPL** settles attack (c)'s AA-glue case
   at an **exact `n_hub` boundary** (impossible `≤ 14` by an `n`-free proof, REALIZED at 16
   where the (GR-38) kill FAILS; (GR-76)(iii) superseded, not refuted); **GFLOW** gives (b′)
-  its **first proven `n`-free constant** (`≤ 12`, modulo (R1)), Clause A′'s sub-clause 1
-  PROVEN and sub-clause 2 REFUTED as posed, the residual becoming a *selection* clause (C2)
+  its **first proven `n`-free constant** (`≤ 12`, modulo (GR-R1)), Clause A′'s sub-clause 1
+  PROVEN and sub-clause 2 REFUTED as posed, the residual becoming a *selection* clause (GR-C2)
   — **(b′) at 2 stays OPEN**; **SIGZ**, the authorized disproof hunt, returns **NO HIT** with
   the pivot rule never triggering, and kills the **counting route to a disproof** as a
   theorem ((OC-37)), locating `P21`'s mechanism as one unit short *and* on the `plane_basis`

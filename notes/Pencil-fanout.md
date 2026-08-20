@@ -987,7 +987,7 @@ The *candidate pool* is the arc's; only the ranking is the coordinator's.
 | direction | ordinal | tier | owning § | target | status |
 |---|---|---|---|---|---|
 | **GTMPL** | 25th | compute-licensed | §(K-grid) | AA-glue realizability at `n_hub ≥ 10` — (GR-76)(iv)'s three templates | **LANDED 2026-08-19** — an EXACT BOUNDARY: impossible at every `n_hub ≤ 14`, REALIZED at 16 (§"Twenty-fifth direction") |
-| **GFLOW** | 26th | derivation-first | §(K-grid) | (b′)'s availability half — *Clause A′* sub-clause 2, the doubly-blocked case | **LANDED 2026-08-19** — a HIT at a DIFFERENT CONSTANT: sub-clause 1 PROVEN, sub-clause 2 REFUTED as posed, gap `≤ 12` modulo (R1) (§"Twenty-sixth direction") |
+| **GFLOW** | 26th | derivation-first | §(K-grid) | (b′)'s availability half — *Clause A′* sub-clause 2, the doubly-blocked case | **LANDED 2026-08-19** — a HIT at a DIFFERENT CONSTANT: sub-clause 1 PROVEN, sub-clause 2 REFUTED as posed, gap `≤ 12` modulo (GR-R1) (§"Twenty-sixth direction") |
 | **GCOLL** | 27th | compute-licensed | §(K-grid) | **(GR-64)(R2)** — every habitat shape carries an anchor matching with `B(M) = 0` | **LANDED 2026-08-19** — **(R2) REFUTED** by a Petersen witness family; (R1) DELIVERED (§"Twenty-seventh direction") |
 | **OSCHU** | 28th | derivation-first | §(K-out) | **(a₁)** class-uniformly — the Schubert non-jump `dim(D ∩ M̂ ∧ W) ≤ 1` (+ the (a₂) re-keying leg) | **LANDED 2026-08-19** — (a₁) half-proven, half-reduced to one determinant; the (a₂) leg a HIT (§"Twenty-eighth direction") |
 | **SIGZ** | 29th | compute-licensed | §(K-out) | the `σ > 0`-everywhere hunt — newly authorized, **pivot rule in force** | **LANDED 2026-08-19** — **NO HIT**, and the counting route to a disproof is DEAD as a theorem (§"Twenty-ninth direction") |
@@ -1221,8 +1221,8 @@ its price **telescopes**, hence is **independent of chain length** — `n`-free
 by construction and certified cap-free to `n_hub = 60`, which is why it reaches
 past BALB's `m = 6` table. Iterated, it gives **(GR-89)**:
 `d_adm(M) − d_par(M) ≤ 4·min(k, ⌊n_hub/4⌋) ≤ 12`, **the arc's first proven
-bound of (b′)'s own shape**, modulo one named clause **(R1)**. **(b′) at the
-constant 2 stays OPEN**, its exact residual the selection clause **(C2)**.
+bound of (b′)'s own shape**, modulo one named clause **(GR-R1)**. **(b′) at the
+constant 2 stays OPEN**, its exact residual the selection clause **(GR-C2)**.
 
 **Four coordinator adjudications on landing.** *(1)* **The spec's route-2
 instrument was wrong, and the correction is right — this is the wave's second
@@ -1244,7 +1244,7 @@ named input runs the wrong way** — (GR-68)'s minimality corollary *caps*
 `2|W ∩ S| ≤ |W|` (0 violations at 84 368 legal flip sets), pushing against the
 conclusion route 1 wanted. Route 1 is refuted **as an implication**,
 independently of whether its conclusion is true. *(3)* **The bound is
-`modulo (R1)`, and the write-up says so everywhere** — (R1) has 0 failures at
+`modulo (GR-R1)`, and the write-up says so everywhere** — (GR-R1) has 0 failures at
 771 530 configurations and is **not proven**; the draft's own constants table
 lays out all five statements with their standing, which is the presentation to
 keep. *(4)* **The `n = 30..60` reach is real but narrow:** (GR-86) needs no
@@ -1256,14 +1256,14 @@ the pass states and does not blur.
 120 shapes per leg (the forward direction uncapped and exhaustive on the
 stratum); the `n = 30..60` legs are one constructed matching + 30 walks per
 family, samples not censuses; the `n = 8/10/12` pools are seeded; and the
-targeted (C2)-failure hunt at the counting bound's first possible home is
+targeted (GR-C2)-failure hunt at the counting bound's first possible home is
 **"not found under a 46-shape / 132-configuration cap — which is not a proof
 of nonexistence"**, in the pass's own words.
 
 **TERMINATION: E1, E2, E3 all NO** — coordinator-re-run and agreed. E1: the
 pass is rank-free and computes no `d_fg`; clause (v) is unfirable (`d_adm ≠ ∞`
 asserted at every pair swept). E2: entry 5 is PROVEN and consumed; what is
-demoted is BALB's repair route, with (C2)/(R1) named as successors. E3: a
+demoted is BALB's repair route, with (GR-C2)/(GR-R1) named as successors. E3: a
 (b′) result, entry 1/(a′) untouched — **stays ARMED by GBAL, not fired.**
 
 **What did NOT move.** **(GR-15) OPEN**; **no gap-map status move on `hK`**;
