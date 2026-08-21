@@ -271,9 +271,14 @@ lemma the tree did not need (once).
 | 1 × overlapping instances, `Search/DFS.lean` (item 4c) | drop the `variable`-line instances, re-add them inline on "the ~4 downstream `_sound`/`_complete` lemmas" (really **11** declarations) | **move the `variable` line to *below* the one def that carries inline binders** — two lines, zero signature changes anywhere |
 | 3 × overlapping instances, `Induction/Operations.lean` (item 4c) | `section`-scope the `omit`/re-`variable` dance, then "re-derive which of the four `omit … in` clauses are still needed" | the `section` scoping, as predicted — and the four `omit … in` clauses needed **no** change at all |
 
-**Where this stands (2026-08-21).** The work sits on the local branch
-`bump/lean-4.34.0-rc1` (10 commits) and has **deliberately not been pushed** — so
-**CI has still never validated this stack**. Both gates are verified locally
+**Where this stands (2026-08-21).** The 10-commit stack is **merged into local
+`master`** (fast-forward from `bump/lean-4.34.0-rc1`, which still exists as a
+ref) and is **still unpushed**: `origin/master` sits at `0920772` (Phase-38
+close, 2026-07-23), leaving local master **281 commits ahead**. So **CI has
+still never validated this stack** — and note the consequence for item 5: the
+hopscotch workflow runs against `origin/master`, i.e. the *pre-fix* lakefile, so
+it will keep re-stamping issue #2 until master is pushed. Both gates are
+verified locally
 *after* the require-order reorder (`lake build` 2948 jobs — the same job count as
 the pre-reorder run — 0 errors, 0 warnings, 0 cache failures; `lake lint`
 "Linting passed"), as are the two bump-specific checks: all 17
@@ -284,12 +289,22 @@ the pre-reorder run — 0 errors, 0 warnings, 0 cache failures; `lake lint`
 axioms — the reorder changed no Lean source and left `lake-manifest.json`
 byte-identical, since our pins were already synced).
 
-**Next concrete task: open the PR** and let CI run this stack for the first time
-(PRs build + lint but skip the Pages deploy, so this is the safe first exposure —
-merging to `master` publishes). The cleanup queue no longer blocks it at all:
-everything mechanical is done and item 5 closed with the reorder, so what remains
-is post-merge tidying — closing issue #2 / PR #1, and the optional upstream
-report the user is still weighing (item 5).
+**Next concrete task: get CI onto this stack, then push `master`.** Nothing in
+the queue blocks it — everything mechanical is done and item 5 closed with the
+reorder. Two routes, and the ordering is a real choice rather than a formality:
+
+- **CI first (safer).** Push `bump/lean-4.34.0-rc1` and open a PR against
+  `master`; PRs build + lint but **skip** the Pages deploy. The diff is large
+  (281 commits, since `origin/master` is at Phase-38 close) but the point is the
+  build, not the review.
+- **Push `master` directly.** Simplest, and the local gates are green — but
+  every green `master` push **publishes** (blueprint, docs, upstreaming
+  dashboard via `docgen-action`). There is no "deploy later" knob, so this is
+  the first CI run *and* the deploy in one step.
+
+Then the post-merge tidying: close issue #2 / PR #1 (both stale false-positive
+artifacts), and the optional upstream report the user is still weighing
+(item 5).
 
 All of the below is **mechanical and separable** from the bump itself: no new
 proofs, and the only statement changes are item 0's 63 declarations, all in the
