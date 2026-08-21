@@ -225,7 +225,20 @@ unexamined. Sized for a follow-up session, cheapest first:
 | 1 × overlapping instances | `Search/DFS.lean` (item 4c) | contained: move instances off the `variable` line onto the ~4 lemmas that need them |
 | 3 × overlapping instances | `Induction/Operations.lean` (item 4c) | a bounded refactor: `section`-scope one 1,550-line namespace's `omit`/re-`variable` dance |
 
-Items 5 and 6 below are untouched and are the higher-value work.
+Item 5 (unstick hopscotch) is **deferred by user decision** with its research
+done — see that item for why configuration cannot fix it and for the three
+priced options. Item 6 is optional and untouched.
+
+**End-of-session state (2026-08-20).** The work sits on the local branch
+`bump/lean-4.34.0-rc1` (7 commits, +2830/−1649 across 111 files) and has
+**deliberately not been pushed** — so **CI has never validated this stack**.
+Both gates were verified locally (`lake build` 2948 jobs, 0 errors, 0 cache
+failures; `lake lint` "Linting passed"), plus the two bump-specific checks: all
+17 `formalization.yaml` headline declarations at
+`[propext, Classical.choice, Quot.sound]` with no `sorryAx`, and all 11
+`PebbleGame/Examples.lean` `#eval`s reproducing their documented values. A
+follow-up session's first move should be a PR run (PRs build + lint but skip the
+Pages deploy), since merging to `master` publishes.
 
 All of the below is **mechanical and separable** from the bump itself: no
 statement changes, no new proofs. Ordered by value.
@@ -622,23 +635,48 @@ easy to confuse it with (§ 1 `omega`/`grind` atoms, § 6 `set` of a lambda,
 § 98 `rw [heq]` motive failures), since the distinguishing feature is that
 nothing was wrong with the proof — only simp's default unfolding moved.
 
-### 5. Unstick hopscotch — the highest-leverage item
+### 5. Unstick hopscotch — the highest-leverage item, DEFERRED by user decision (2026-08-20)
 
-Without this, the next bump is another multi-version jump. Options, cheapest
-first:
+Without this, the next bump is another multi-version jump. **Deferred to a
+follow-up session with the research done**, so that session can decide rather
+than re-investigate.
 
-- Add a workflow step that runs a **full** `lake update` (or the pin-sync in
-  the *Playbook* above) after hopscotch rewrites the mathlib pin, so the
-  transitive pins never go stale.
-- Report the single-package-update behaviour upstream to
-  `leanprover-community/hopscotch-action` — the diagnosis above is precise
-  enough to file as-is.
-- Failing both, bump manually on a cadence (weekly) using the *Playbook*;
-  one-commit bumps are vastly cheaper to debug than four-version jumps.
+**Settled by reading the upstream docs: this CANNOT be fixed by configuration.**
+`hopscotch` runs `lake update <dependency-name>` for the *single* dependency
+being tested — that is documented behaviour, not a bug — and neither `hopscotch`
+nor `hopscotch-action` exposes any flag to sync transitive pins to the target's
+own manifest, or anything addressing `lake exe cache get` hash mismatches. The
+action's `extra-args` passes through to `hopscotch dep`, which has no such
+option either. So the first bullet this section used to carry — "add a workflow
+step *after* hopscotch rewrites the pin" — **is not available**: the action is
+monolithic (bump, build, PR/issue all inside one step), so there is nowhere to
+inject.
 
-Also worth closing out: issue #2 and PR #1 in this repo are both stale
-artifacts of the false positive and should be closed/superseded once the
-bump lands.
+The three real options, priced:
+
+1. **Add our own bump workflow and keep hopscotch only for bisection.**
+   `scripts/bump-mathlib.sh` already does exactly the pin-sync hopscotch gets
+   wrong, so a weekly job is: checkout → `scripts/bump-mathlib.sh master
+   --apply` → `leanprover/lean-action` with `build: true, lint: true` (the same
+   action `push_pr.yml` uses) → open/update a PR. Set `open-issue: false` on the
+   existing hopscotch workflow so it stops filing phantom regressions while its
+   bisection stays available for a real break. Keeps one source of pin-sync
+   logic, so CI and a hand bump cannot diverge. **Irreducible risk: a workflow
+   cannot be validated locally — the first real test is the first cron run.**
+2. **Report upstream and bump by hand on a weekly cadence** using the *Playbook*.
+   Zero CI risk; costs a standing manual habit, which is precisely what let this
+   repo drift four Lean versions.
+3. Some mix — e.g. report upstream now, add the workflow once the report's
+   outcome is known.
+
+**Sequencing note (this is why the GitHub cleanup is blocked, not forgotten).**
+Issue #2 and PR #1 are both stale artifacts of the false positive and want
+closing — but *what to say when closing them* depends on which option above is
+taken (option 1 supersedes hopscotch's issue-filing entirely; option 2 leaves
+it live and the issue should say so). Likewise the upstream report is only worth
+filing if we are not simply routing around the action. **So: decide hopscotch
+first, then close #2 / PR #1 / file upstream in the same pass.** All three were
+deliberately deferred on 2026-08-20 for this reason, not overlooked.
 
 ### 6. Optional: audit the remaining `convert` sites
 
