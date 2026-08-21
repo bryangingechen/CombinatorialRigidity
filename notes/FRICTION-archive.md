@@ -249,7 +249,7 @@ mirrored upstream candidates — see [`FRICTION.md`](FRICTION.md).
   exist upstream, so no mirror).
 
 ### [resolved] Lifting subtype-Sym2 equality to underlying-value equality
-- **Where it bit:** `typeII_iso_of_three_neighbors` `(some, some)` arm.
+- **Where it bit:** `isoTypeIIOfThreeNeighbors` `(some, some)` arm.
 - **Friction:** The arm needs to reject `s(⟨u, _⟩, ⟨w, _⟩) = s(⟨a, _⟩,
   ⟨b, _⟩)` (an equality of `Sym2 (Subtype _)`) by reducing to `s(u, w) =
   s(a, b)` (`Sym2 V`) and contradicting `¬G.Adj a b`. The original proof

@@ -706,7 +706,7 @@ the pure-`v`-column row the eq.-(6.29) pin-block (`linearIndependent_sum_pinned_
 consumes: operating by `columnOp` (`col_a += col_v`, KT eqs. (6.14)–(6.15)) makes `w ∘ Φ` depend
 only on `v`'s screw column — the missing `+1` lifting the stratum-1 brick `D(|V|−1) − 1`
 (`case_II_placement_eq612`) to full `D(|V|−1)`. -/
-theorem PanelHingeFramework.exists_candidate_row_eq612 [Finite α]
+theorem PanelHingeFramework.exists_candidate_row_eq612
     (G Gab : Graph α β) (ends : β → α × α) {q : α × Fin (k + 2) → K}
     {e₀ e_b : β} {v a b : α} {t : K}
     (hends_e0 : ends e₀ = (a, b)) (hends_eb : ends e_b = (v, b))
@@ -2045,8 +2045,7 @@ the base block `W`. The three corner-data obligations close with NO `hS`, NO `h�
   6.62, the index-shift iso `funLeft σ` is a linear automorphism preserving finrank) — the route-4
   NEW LEAF 1 (`rigidityRows_ofNormals_relabel` general-`d` SET-image) discharges it. NOT an
   unsatisfiable hypothesis like route B's `hG_eb_cand`: the candidate seed genuinely has this. -/
-theorem PanelHingeFramework.exists_seed_base_block [DecidableEq α] [DecidableEq β] [Finite α]
-    [Finite β]
+theorem PanelHingeFramework.exists_seed_base_block [DecidableEq α] [DecidableEq β]
     (G Gvi : Graph α β) (endsρ : β → α × α) (qρ : α × Fin (k + 2) → K)
     {vi ai bi : α} {e_a e_b : β} (n' : Fin (k + 2) → K)
     (hGvi : Gvi = G.removeVertex vi)

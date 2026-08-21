@@ -401,7 +401,7 @@ subfamily independent. Consumes witness (i) (`Witness.lean`) after transporting 
 the subtype shape. A direct instance of `exists_polynomial_ne_zero_of_linearIndependent_at_reindex`
 with `W := Fin 4 → K`, coordinate polynomials `pencilChartPointPoly`, and identification
 `hg := pencilChartPointPoly_eval`. -/
-theorem exists_polynomial_ne_zero_of_linearIndependent_pencilChartPoint [Finite α]
+theorem exists_polynomial_ne_zero_of_linearIndependent_pencilChartPoint
     {ι : Type*} [Finite ι] (hubSel : α → Fin 3 → Option α) (ends : ι → α)
     {q₀ : α × Fin 4 × Fin 4 → K} {s : Set ι}
     (h : LinearIndependent K
@@ -424,7 +424,7 @@ nonzero at `q₀` whose non-roots keep it independent. Consumes witness (ii) (`W
 `LinearIndepOn K (pencilChartNormal …) (closedHubNbhd v)` conclusion is this shape at `ι := α`,
 `ends := id`, `s := closedHubNbhd v`. A direct instance of the reindexed engine with coordinate
 polynomials `pencilChartNormalPoly` and `hg := pencilChartNormalPoly_eval`. -/
-theorem exists_polynomial_ne_zero_of_linearIndependent_pencilChartNormal [Finite α]
+theorem exists_polynomial_ne_zero_of_linearIndependent_pencilChartNormal
     {ι : Type*} [Finite ι] (hubSel nbrSel : α → Fin 3 → Option α) (G : Graph α β) (ends : ι → α)
     {q₀ : α × Fin 4 × Fin 4 → K} {s : Set ι}
     (h : LinearIndependent K

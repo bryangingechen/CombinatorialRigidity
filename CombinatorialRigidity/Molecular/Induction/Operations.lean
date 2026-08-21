@@ -558,7 +558,7 @@ Edmonds). It fixes
 the framing of the Katoh–Tanigawa forest surgery: a "forest" is a `(G̃).cycleMatroid`-independent
 fiber set, and the surgery of KT Lemma 4.1 reroutes each of these `D` forests across the
 degree-2 vertex. -/
-theorem matroidMG_indep_iff_exists_forest_packing [DecidableEq β] [Finite α] [Finite β]
+theorem matroidMG_indep_iff_exists_forest_packing [DecidableEq β] [Finite β]
     (G : Graph α β) (n : ℕ) {I : Set (β × Fin (bodyHingeMult n))} :
     (G.matroidMG n).Indep I ↔ I ⊆ E(G.mulTilde n) ∧
       ∃ Fs : Fin (bodyBarDim n) → Set (β × Fin (bodyHingeMult n)),

@@ -261,7 +261,7 @@ placement `p : Framework (Option V) 2` with `p ∘ some = p'` at which every edg
 The blueprint statement `lem:pendant-rowIndependent-lift`: picks any `q ≠ p' a` (exists since
 `EuclideanSpace ℝ (Fin 2)` is nontrivial) and applies
 `typeI_pendant_edgeSetRowIndependent_extend`. Consumed by Phase 7's `|E|`-induction pendant
-branch alongside the canonical iso `typeI_iso_of_two_neighbors` at `a = b` (the unique
+branch alongside the canonical iso `isoTypeIOfTwoNeighbors` at `a = b` (the unique
 neighbour of the degree-1 vertex). -/
 theorem typeI_pendant_edgeSetRowIndependent_lift {G' : SimpleGraph V}
     {p' : Framework V 2} (h : G'.EdgeSetRowIndependent p' Set.univ) (a : V) :
@@ -768,7 +768,7 @@ branch, the corresponding row-LI lift (`typeI_pendant_edgeSetRowIndependent_lift
 `typeI_edgeSetRowIndependent_lift` / `typeII_edgeSetRowIndependent_lift`) reconstructs a
 row-LI placement of the Henneberg extension `typeI H' a a` (or `typeI H' a b`, or
 `typeII H' x y c`), and `EdgeSetRowIndependent.iso` transports back to `H` via the iso from
-`Henneberg.typeI_iso_of_two_neighbors` / `Henneberg.typeII_iso_of_three_neighbors`. The Type I
+`Henneberg.isoTypeIOfTwoNeighbors` / `Henneberg.isoTypeIIOfThreeNeighbors`. The Type I
 branch additionally feeds `p'` through `exists_distinct_rowIndependent_placement_dim_two` to
 ensure `p' a ≠ p' b` (the LI hypothesis of `typeI_edgeSetRowIndependent_lift`). -/
 theorem IsSparse.exists_rowIndependent_placement :
@@ -800,7 +800,7 @@ theorem IsSparse.exists_rowIndependent_placement :
         have hN_iff_aa : ∀ w : V, H.Adj v w ↔ w = a.val ∨ w = a.val := fun w => by
           rw [hN_iff]; tauto
         have φ : H ≃g Henneberg.typeI (H.comap (Subtype.val : {w : V // w ≠ v} → V)) a a :=
-          Henneberg.typeI_iso_of_two_neighbors (H.ne_of_adj ha_adj) (H.ne_of_adj ha_adj)
+          Henneberg.isoTypeIOfTwoNeighbors (H.ne_of_adj ha_adj) (H.ne_of_adj ha_adj)
             hN_iff_aa
         exact ⟨p_lift ∘ φ, EdgeSetRowIndependent.iso φ hp_lift_LI⟩
       · -- Type I branch (degree 2): two distinct neighbours `a ≠ b` of `v`.
@@ -812,7 +812,7 @@ theorem IsSparse.exists_rowIndependent_placement :
         have ha_adj : H.Adj v a.val := (hN_iff a.val).mpr (Or.inl rfl)
         have hb_adj : H.Adj v b.val := (hN_iff b.val).mpr (Or.inr rfl)
         have φ : H ≃g Henneberg.typeI (H.comap (Subtype.val : {w : V // w ≠ v} → V)) a b :=
-          Henneberg.typeI_iso_of_two_neighbors (H.ne_of_adj ha_adj) (H.ne_of_adj hb_adj)
+          Henneberg.isoTypeIOfTwoNeighbors (H.ne_of_adj ha_adj) (H.ne_of_adj hb_adj)
             hN_iff
         exact ⟨p_lift ∘ φ, EdgeSetRowIndependent.iso φ hp_lift_LI⟩
       · -- Type II branch (degree 3): three neighbours `x, y, c` with non-adj `(x, y)`.
@@ -826,7 +826,7 @@ theorem IsSparse.exists_rowIndependent_placement :
         obtain ⟨p_lift, hp_lift_LI⟩ :=
           Henneberg.typeII_edgeSetRowIndependent_lift hp' h_bridge hcx.symm hcy.symm
         have φ : H ≃g Henneberg.typeII H' x y c :=
-          Henneberg.typeII_iso_of_three_neighbors x.property.symm y.property.symm c.property.symm
+          Henneberg.isoTypeIIOfThreeNeighbors x.property.symm y.property.symm c.property.symm
             (fun heq => hxy (Subtype.ext heq)) hN_iff hnxy
         exact ⟨p_lift ∘ φ, EdgeSetRowIndependent.iso φ hp_lift_LI⟩
     · -- Base case: `H.edgeSet = ∅`, the empty family of rows is LI.

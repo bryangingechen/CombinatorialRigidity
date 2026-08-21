@@ -815,7 +815,7 @@ This is the exact count the `+D` rank-lift `rankHypothesis_withNormal_iff_finran
 needs: the extended panel framework's `v`-pinned dimension is the inductive realization's, so the
 1-extension lifts the realized rank by exactly `D`. Immediate from
 `toBodyHinge_pinnedMotions_withGraph_eq`. -/
-theorem finrank_toBodyHinge_pinnedMotions_withGraph_eq [Finite α]
+theorem finrank_toBodyHinge_pinnedMotions_withGraph_eq
     (P : PanelHingeFramework K k α β) (v : α) {G' : Graph α β} (hle : G' ≤ P.graph)
     (hnew : ∀ S ∈ (P.withGraph G').toBodyHinge.pinnedMotions v, ∀ e u w,
       P.graph.IsLink e u w → ¬G'.IsLink e u w → P.toBodyHinge.hingeConstraint S e u w) :

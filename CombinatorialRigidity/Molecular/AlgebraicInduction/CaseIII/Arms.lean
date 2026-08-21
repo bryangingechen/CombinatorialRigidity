@@ -835,7 +835,7 @@ binders when the triangle floor was folded in — the `4 ≤ |V|` floor no longe
 theorem PanelHingeFramework.cycle_realization [Infinite K]
     [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
     (hn : Graph.bodyBarDim n = screwDim k)
-    {G : Graph α β} (hG : G.IsMinimalKDof n 0) [G.Simple]
+    {G : Graph α β} (hG : G.IsMinimalKDof n 0)
     (cy : G.CycleData) (hm : cy.m ≤ n) :
     PanelHingeFramework.HasGenericFullRankRealization K k n G := by
   classical

@@ -304,8 +304,8 @@ attempt for any flagged divergence.
   DESIGN.md's wording. All 12 pinned declarations resolve; statement
   forms (`typeI_edgeSet` via `Sym2.map some ''`, both preservation
   thms, `typeI_isLaman_iff`, the flat-form reverse decomposition with
-  iso constructors `typeI_iso_of_two_neighbors` /
-  `typeII_iso_of_three_neighbors`) match prose. Chapter's "flat /
+  iso constructors `isoTypeIOfTwoNeighbors` /
+  `isoTypeIIOfThreeNeighbors`) match prose. Chapter's "flat /
   operation" wording (lines 14–21, 278–286) is consistent with
   DESIGN.md *Statement-form conventions*. Cross-refs to
   `sec:rigidity-matroid-lifts` and `sec:laman-theorem` resolve. No

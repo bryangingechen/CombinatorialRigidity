@@ -1025,7 +1025,7 @@ theorem _root_.Graph.closedHubNbhd_induce_of_forall_isLink_mem [Finite β] {G : 
 /-- **A `G`-adjacency-closed set's induced closed neighbourhood agrees with `G`'s own**
 (Phase 39 W5-L5 disjoint-sides structure layer): the `closedHubNbhd` lemma above without the hub
 filter, hence no ambient-membership hypothesis needed. -/
-theorem _root_.Graph.closedNbhd_induce_of_forall_isLink_mem [Finite β] {G : Graph α β}
+theorem _root_.Graph.closedNbhd_induce_of_forall_isLink_mem {G : Graph α β}
     {S : Set α} (hS : ∀ e x y, G.IsLink e x y → x ∈ S → y ∈ S) {v : α} (hv : v ∈ S) :
     (G.induce S).closedNbhd v = G.closedNbhd v := by
   ext w

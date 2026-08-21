@@ -448,7 +448,7 @@ end Henneberg
 
 end SimpleGraph
 
--- Iso constructors (`typeI_iso_of_two_neighbors`, `typeII_iso_of_three_neighbors`), the
+-- Iso constructors (`isoTypeIOfTwoNeighbors`, `isoTypeIIOfThreeNeighbors`), the
 -- flat-form Henneberg reverse decomposition (`IsLaman.exists_typeI_or_typeII_reverse`),
 -- and the K₄-minus-one-edge worked example live in
 -- `CombinatorialRigidity/HennebergReverse.lean`. Files that only need the forward

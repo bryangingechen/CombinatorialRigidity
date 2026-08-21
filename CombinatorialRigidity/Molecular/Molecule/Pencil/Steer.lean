@@ -152,7 +152,7 @@ of free slots `(univ \ s).card`; `linearIndepOn_insert` certifies each single-sl
 Upstream-eligible (a general `LinearIndepOn`-extension fact, no rigidity content); kept local to
 this file pending a mirror — see `notes/FRICTION.md`. -/
 theorem exists_extend_linearIndependent {V : Type*} [AddCommGroup V] [Module K V]
-    [FiniteDimensional K V] {n : ℕ} (hn : n ≤ Module.finrank K V)
+    {n : ℕ} (hn : n ≤ Module.finrank K V)
     (g₀ : Fin n → V) (s₀ : Finset (Fin n)) (hs₀ : LinearIndepOn K g₀ (s₀ : Set (Fin n))) :
     ∃ g' : Fin n → V, (∀ i ∈ s₀, g' i = g₀ i) ∧ LinearIndependent K g' := by
   classical
@@ -1268,7 +1268,7 @@ and read off the chart realization
 subgraph. `[G.Loopless]` is genuinely required: at a loop `G.IsLink e v v` the fifth WF conjunct
 `LinearIndependent K ![point v, point v]` is unsatisfiable, so the conclusion is false there (the
 honest split-arm producer supplies it via `G′.Simple`, L6c). -/
-theorem pencilNondegFeasible_of_selectors_of_satisfiable [Finite α] [Finite β] [Infinite K]
+theorem pencilNondegFeasible_of_selectors_of_satisfiable [Finite α] [Infinite K]
     [Inhabited α] {G : Graph α β} [G.Loopless]
     (hubSel nbrSel : α → Fin 3 → Option α)
     (hHubSel : ∀ v, IsFin3SelectorOf (G.closedHubNbhd v) (hubSel v))

@@ -278,6 +278,9 @@ bound underlying the not-2-edge-connected induction case.
 Proof: the two side-spans are disjoint (V₁/V₂ projection argument), the cut block is
 disjoint from their join (flow-sum argument). The three pieces jointly embed into the full
 span, giving the rank lower bound by `Submodule.finrank_sup_of_inf_eq_bot` (disjoint sups). -/
+-- `unusedArguments` FALSE POSITIVE: the `Fintype.ofFinite` bridge in the proof body
+-- needs this instance to elaborate; it does not survive into the proof term.
+@[nolint unusedArguments]
 theorem le_finrank_span_rigidityRows_of_cut [Finite α] [Finite β]
     (F : BodyHingeFramework K k α β) {V₁ : Set α} {C : Set β}
     (hC_ncard : C.ncard ≤ 1)
@@ -524,6 +527,9 @@ Proof: rank-nullity for `D` restricted to `S` gives
 `SH ≤ S ⊓ ker D` (from `hFH_le` and `hFH_ker`) bounds the kernel term below by `finrank SH`.
 `hFc_surv_le` and `hInj` bound the image term below by `finrank Sc`.
 Adding gives the conclusion. -/
+-- `unusedArguments` FALSE POSITIVE: the `Fintype.ofFinite` bridge in the proof body
+-- needs this instance to elaborate; it does not survive into the proof term.
+@[nolint unusedArguments]
 theorem le_finrank_span_rigidityRows_of_splice [Finite α] [Finite β]
     (F FH Fc : BodyHingeFramework K k α β)
     (D : Module.Dual K (α → ScrewSpace K k) →ₗ[K] Module.Dual K (α → ScrewSpace K k))
@@ -607,7 +613,7 @@ conclusion keys on `span F.rigidityRows` membership, **not** literal `F.rigidity
 every real reduction graph (collapse / `splitOff` / relabel — which land rows only in the span)
 fits. Carrier-free at the block level (the row functionals are arbitrary duals); the
 `ofNormals`/`withGraph` defeq trap (TACTICS-QUIRKS §38) does not bite. -/
-theorem le_finrank_span_rigidityRows_of_pinned_placement [Finite α] [Finite β]
+theorem le_finrank_span_rigidityRows_of_pinned_placement [Finite α]
     [DecidableEq α] {ιn ιo : Type*} [Finite ιn] [Finite ιo] (F : BodyHingeFramework K k α β) {v : α}
     {rn : ιn → Module.Dual K (α → ScrewSpace K k)} {ro : ιo → Module.Dual K (α → ScrewSpace K k)}
     (hold : ∀ (j : ιo) (x : ScrewSpace K k),
@@ -653,7 +659,7 @@ by `linearIndependent_sum_pinned_block_augment`; its span lies in `span F.rigidi
 (`Nat.card (ιn ⊕ Unit) + Nat.card ιo = Nat.card ιn + 1 + Nat.card ιo`). The `Unit` summand is the
 extra candidate row. Same span-transport interface, callers, and carrier-freeness as the unaugmented
 brick. -/
-theorem le_finrank_span_rigidityRows_of_pinned_placement_augment [Finite α] [Finite β]
+theorem le_finrank_span_rigidityRows_of_pinned_placement_augment [Finite α]
     [DecidableEq α] {ιn ιo : Type*} [Finite ιn] [Finite ιo] (F : BodyHingeFramework K k α β) {v : α}
     {rn : ιn → Module.Dual K (α → ScrewSpace K k)} {ro : ιo → Module.Dual K (α → ScrewSpace K k)}
     {w : Module.Dual K (α → ScrewSpace K k)}

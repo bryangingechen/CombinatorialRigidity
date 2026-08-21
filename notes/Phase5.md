@@ -276,7 +276,7 @@ decomposition asserting `G'.IsLaman` (Tay–Whiteley 1985; Jordán 2016
   the `∩` equality is independently useful.
 
 - **typeII reverse blocker: edge count via the Phase 3 iso, not by
-  hand.** The blocker proof reuses `typeII_iso_of_three_neighbors` to
+  hand.** The blocker proof reuses `isoTypeIIOfThreeNeighbors` to
   get `h_iso : G ≃g typeII G' xs ys cs`, transfers `G.IsLaman` via
   `IsLaman.iso`, and reads the count off `typeII_edgeSet_ncard` plus
   `Finite.card_option`. Saves ~20 lines and the direct `comap`-edge-count

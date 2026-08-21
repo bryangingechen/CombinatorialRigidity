@@ -720,8 +720,8 @@ contract.
   attribute-tagged-helper convention (mathlib's preference) is to
   ship it as non-`private` rather than via opt-in.
 - `HennebergReverse.lean` (3 sites): path (a) — file demoted to
-  `public section`. The iso constructors (`typeI_iso_of_two_neighbors`
-  / `typeII_iso_of_three_neighbors`) and their internal helper
+  `public section`. The iso constructors (`isoTypeIOfTwoNeighbors`
+  / `isoTypeIIOfThreeNeighbors`) and their internal helper
   `isoOfOptionSubtypeNe` are consumed downstream only as values
   (called for the iso, no body unfolding), so the demotion is
   net-zero for downstream and the `private` opt-ins drop out.

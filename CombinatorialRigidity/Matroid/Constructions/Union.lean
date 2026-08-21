@@ -238,10 +238,7 @@ lemma union_indep_iff' [DecidableEq α] [Finite α] {M₁ : Matroid α} {M₂ : 
     tauto
 
 /-- The neighbourhood of a single right-vertex `v` under `Adj`. -/
-def N_singleton (Adj : α → β → Prop) (v : β) := {u | Adj u v}
-
-/-- The neighbourhood of a set of right-vertices `V` under `Adj`. -/
-def N (Adj : α → β → Prop) (V : Set β) := {u | ∃ v ∈ V, Adj u v}
+def nbhd (Adj : α → β → Prop) (v : β) := {u | Adj u v}
 
 /-- The matroid `M.adjMap Adj univ` is the matroid of the polymatroid rank
 function `f Y = r_M (N Adj Y)`; this is the polymatroid-of-submodular
@@ -279,7 +276,7 @@ theorem polymatroid_of_adjMap [DecidableEq β] [Finite α] [Finite β] (M : Matr
     · simp only
       intro Y
       simp only [eq_empty_of_isEmpty, M.rk_empty, Nat.cast_zero]
-  · set N := fun i ↦ (N_singleton Adj i).toFinset with hN
+  · set N := fun i ↦ (nbhd Adj i).toFinset with hN
     set f := fun I : Finset β ↦ (M.rk (I.biUnion N) : ℤ) with hf
     have hf_poly : PolymatroidFn f := by
       refine ⟨fun X Y ↦ hf ▸ ?_, ?_, ?_⟩
@@ -289,7 +286,7 @@ theorem polymatroid_of_adjMap [DecidableEq β] [Finite α] [Finite β] (M : Matr
         have hsub : ((X ∩ Y).biUnion N : Set α) ⊆
             (X.biUnion N : Set α) ∩ (Y.biUnion N : Set α) := by
           simp only [Finset.coe_biUnion, Finset.coe_inter, mem_inter_iff, Finset.mem_coe,
-            N_singleton, subset_inter_iff, iUnion_subset_iff, and_imp,
+            nbhd, subset_inter_iff, iUnion_subset_iff, and_imp,
             toFinset_ofPred, Finset.coe_filter, Finset.mem_univ, true_and, hN]
           refine ⟨fun x h1 _ y h3 ↦ ?_, fun x _ h2 y h3 ↦ ?_⟩
           · simp only [mem_iUnion, mem_ofPred_eq, exists_prop]
@@ -328,10 +325,10 @@ theorem polymatroid_of_adjMap [DecidableEq β] [Finite α] [Finite β] (M : Matr
             refine fun x hx ↦ mem_ofPred_eq ▸ ?_
             rw [← BijOn.image_eq (IsMatching.bijOn h''), image, mem_ofPred_eq] at hx
             obtain ⟨u, hu, hadj⟩ := hx
-            simp only [← Finset.mem_def, Finset.mem_biUnion, N_singleton, hN]
+            simp only [← Finset.mem_def, Finset.mem_biUnion, nbhd, hN]
             refine ⟨u, hu, ?_⟩
             exact Set.mem_toFinset.mpr (hadj ▸ IsMatching.adj h'' hu)
-      obtain h := (rado M <| fun i : ↑I ↦ (N_singleton Adj i).toFinset).mpr
+      obtain h := (rado M <| fun i : ↑I ↦ (nbhd Adj i).toFinset).mpr
       simp only [hf, Nat.cast_le] at hp
       have hp : ∀ I' ⊆ I, I'.card ≤ M.rk ↑(I'.biUnion N) := by
         intro I' hI'
@@ -339,7 +336,7 @@ theorem polymatroid_of_adjMap [DecidableEq β] [Finite α] [Finite β] (M : Matr
         · simp only [Finset.card_empty, Finset.biUnion_empty, Finset.coe_empty, rk_empty, le_refl]
         · exact hp I' hI' <| Finset.nonempty_of_ne_empty hem
       have : ∀ (K : Finset { x // x ∈ I }), K.card ≤
-        M.rk ↑(K.biUnion fun i ↦ (N_singleton Adj ↑i).toFinset) := by
+        M.rk ↑(K.biUnion fun i ↦ (nbhd Adj ↑i).toFinset) := by
         intro K
         have hsub : Finset.image Subtype.val K ⊆ I := by
           refine fun x hx ↦ ?_
@@ -378,13 +375,13 @@ theorem polymatroid_of_adjMap [DecidableEq β] [Finite α] [Finite β] (M : Matr
           simp only [Finset.mem_coe] at hv
           specialize hin ⟨v, hv⟩
           simp only [hv, ↓reduceDIte, e']
-          exact (Set.mem_toFinset (s := N_singleton Adj v)).mp hin
+          exact (Set.mem_toFinset (s := nbhd Adj v)).mp hin
     have h_eq' : (ofPolymatroidFn hf_poly) = M.adjMap Adj univ := by
       refine ext_indep rfl (fun J _ ↦ ?_)
       simpa using heq J.toFinset
     have : ∀ Y, f Y = M.rk {v | ∃ u ∈ Y, Adj v u} := by
       intro Y
-      simp only [N_singleton, Set.coe_toFinset, Finset.coe_biUnion, Finset.mem_coe,
+      simp only [nbhd, Set.coe_toFinset, Finset.coe_biUnion, Finset.mem_coe,
         Nat.cast_inj, f, N]
       have : (⋃ x ∈ Y, {x_2 | Adj x_2 x}) = {v | ∃ u ∈ Y, Adj v u} := by
         refine subset_antisymm (fun x ↦ ?_) (fun x ↦ ?_)

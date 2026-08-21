@@ -174,7 +174,7 @@ factor as `Lφ.toLinearMap.dualMap ∘ H.rigidityRow q ∘ φ.mapEdgeSet`, where
 φ.symm). LI of the H-rows transports through the bijection `φ.mapEdgeSet` and the injective
 linear map `Lφ.toLinearMap.dualMap` (dualMap of a linear equiv). Used by Phase 7's
 `|E|`-induction at each Henneberg branch (`MatroidIdentification.lean`). -/
-theorem EdgeSetRowIndependent.iso {V W : Type*} [Finite V] [Finite W] {d : ℕ}
+theorem EdgeSetRowIndependent.iso {V W : Type*} {d : ℕ}
     {G : SimpleGraph V} {H : SimpleGraph W} (φ : G ≃g H)
     {q : Framework W d} (h : H.EdgeSetRowIndependent q Set.univ) :
     G.EdgeSetRowIndependent (q ∘ φ) Set.univ := by

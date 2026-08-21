@@ -2693,7 +2693,7 @@ the inverse of the component-to-label map, so the labels at least count the comp
 This is the reverse of the `numParts ≤ c` inequality inside
 `rk_cycleMatroid_within_parts_le`, and it gives the *exact* `r_cycle(Y) + numParts f = |V|`
 for the component labeling. -/
-private theorem numberOfComponents_le_numParts [Finite α] [Finite β] [Nonempty α] (G : Graph α β)
+private theorem numberOfComponents_le_numParts [Finite α] [Nonempty α] (G : Graph α β)
     (n : ℕ) {Y : Set (β × Fin (bodyHingeMult n))} :
     c((G.mulTilde n) ↾ Y) ≤ (G.numParts (componentLabel ((G.mulTilde n) ↾ Y)) : ℕ∞) := by
   classical

@@ -578,7 +578,7 @@ s(a, b)` is on the whiteboard, any `Sym2 V`-fact (here `¬G.Adj a b`)
 applies directly.
 
 This pattern recurs whenever `Sym2` wraps a sub-typed pair. The
-`typeII_iso_of_three_neighbors` `(some, some)` arm is the canonical
+`isoTypeIIOfThreeNeighbors` `(some, some)` arm is the canonical
 example in this directory.
 
 ### Unfolding a bounded `∀` / `∈` over an explicit `Sym2.mk`

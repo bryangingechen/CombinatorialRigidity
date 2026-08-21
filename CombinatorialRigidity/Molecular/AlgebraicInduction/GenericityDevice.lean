@@ -358,7 +358,7 @@ theorem PanelHingeFramework.hasFullRankRealization_of_independent_panelRow_index
     [Finite α] [Finite β] (G : Graph α β) (ends : β → α × α)
     (hends : ∀ e, G.IsLink e (ends e).1 (ends e).2) (hne : V(G).Nonempty)
     {q₀ : α × Fin (k + 2) → K}
-    {ι : Type*} [Finite ι]
+    {ι : Type*}
     {j : ι → β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k}
     (hj : Function.Injective j)
     (hindep : LinearIndependent K
@@ -717,6 +717,9 @@ only `hends`/transversality `hne`, no rigidity), so the rank bound transports to
 family, which is then *cut to its first `N` members* through `Fin.castLE hN` (a subfamily of a
 linearly independent family stays linearly independent), and each member is re-indexed by its
 underlying `(linking edge, ⋀^k-pair)`. -/
+-- `unusedArguments` FALSE POSITIVE: the `Fintype.ofFinite` bridge in the proof body
+-- needs this instance to elaborate; it does not survive into the proof term.
+@[nolint unusedArguments]
 theorem BodyHingeFramework.exists_independent_panelRow_subfamily_of_le_finrank
     [Finite α] [Finite β] (F : BodyHingeFramework K k α β) {ends : β → α × α}
     (hends : ∀ e u v, F.graph.IsLink e u v → F.graph.IsLink e (ends e).1 (ends e).2)
@@ -1048,7 +1051,7 @@ leg IHs (transported to the parent selector by `hasGenericRealization_transport_
 stated in the leg-native `ofNormals GH ends q₀` form by `ofNormals_withGraph` /
 `toBodyHinge_withGraph` (both `rfl`), matching the shape that brick delivers. -/
 theorem PanelHingeFramework.hasGenericFullRankRealization_of_splice_ofNormals
-    [Finite α] [Finite β] (G : Graph α β) (ends : β → α × α)
+    [Finite α] (G : Graph α β) (ends : β → α × α)
     (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
     {q₀ : α × Fin (k + 2) → K}
     (hgp : (PanelHingeFramework.ofNormals G ends q₀).IsGeneralPosition)

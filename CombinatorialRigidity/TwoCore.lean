@@ -79,7 +79,7 @@ theorem twoCore_minDegree (G : SimpleGraph V) [Finite V] :
   exact (hH.2 v ⟨w, hadj⟩).trans (Set.ncard_le_ncard (neighborSet_mono hHle v))
 
 /-- A graph of minimum degree at least two on its own support is its own core. -/
-theorem twoCore_eq_self_of_minDegree (G : SimpleGraph V) [Finite V]
+theorem twoCore_eq_self_of_minDegree (G : SimpleGraph V)
     (hmin : ∀ v ∈ G.support, 2 ≤ (G.neighborSet v).ncard) : G.twoCore = G :=
   le_antisymm G.twoCore_le (G.le_twoCore le_rfl hmin)
 

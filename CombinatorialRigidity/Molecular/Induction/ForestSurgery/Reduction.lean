@@ -372,7 +372,7 @@ assembly recon caught). `hG0`'s *only* use above is the crossing-edges bound
 `exists_adjacent_degree_two_pair_of_edgeBound` (`ReducibleVertex.lean:1068`). Mechanical copy
 of the proof above with that one step re-sourced from `h2ec` via `cutEdges_eq_crossingEdges_
 cutLabeling` + `crossingEdges_cutLabeling_singleton_subset`. -/
-theorem exists_splitOff_data_of_degree_eq_two_of_twoEdgeConnected [Finite α] [Finite β]
+theorem exists_splitOff_data_of_degree_eq_two_of_twoEdgeConnected [Finite β]
     {G : Graph α β} (h2ec : G.TwoEdgeConnected) {v b₀ : α}
     (hvG : v ∈ V(G)) (hb₀G : b₀ ∈ V(G)) (hb₀v : b₀ ≠ v) (hdeg : G.degree v = 2) :
     ∃ (a b : α) (eₐ e_b : β), a ≠ v ∧ b ≠ v ∧ a ∈ V(G) ∧ b ∈ V(G) ∧ eₐ ≠ e_b ∧
@@ -1195,7 +1195,7 @@ This is the corrected construction (the superseded `forest_surgery_split` was va
 away the `dᶠ(v) = 1` forests): every forest shrinks by exactly one because a degree-`2` forest
 loses two `v`-fibers and gains one `ã̃b`-copy while a degree-`1` forest loses one and gains none.
 See the section preamble. -/
-theorem forest_surgery_count [DecidableEq β] [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
+theorem forest_surgery_count [DecidableEq β] [Finite β] {G : Graph α β} {n : ℕ}
     (hD : 2 ≤ bodyBarDim n) {v a b : α} {eₐ e_b e₀ : β}
     (hab : a ≠ b) (hav : a ≠ v) (hbv : b ≠ v) (heab : eₐ ≠ e_b)
     (haV : a ∈ V(G)) (hbV : b ∈ V(G)) (he₀ : e₀ ∉ E(G))

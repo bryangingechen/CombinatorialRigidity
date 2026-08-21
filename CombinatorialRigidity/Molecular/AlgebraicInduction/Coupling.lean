@@ -573,7 +573,7 @@ the block-triangular splice glue `isInfinitesimallyRigidOn_of_splice` is generic
 body-set-rigid legs, so realizing at the GP seed `q₀` itself keeps the rigidity (from the glue) and
 the general position (`hgp`, by hypothesis). No device round-trip. -/
 theorem PanelHingeFramework.hasGenericFullRankRealization_of_splice_set_ofNormals
-    [Finite α] [Finite β] (G : Graph α β) (ends : β → α × α)
+    [Finite α] (G : Graph α β) (ends : β → α × α)
     (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
     {q₀ : α × Fin (k + 2) → K}
     (hgp : (PanelHingeFramework.ofNormals G ends q₀).IsGeneralPosition)
@@ -1100,7 +1100,7 @@ content KT (6.5) invokes through Lemma 5.1: deleting the single shared body `r`'
 `V(G) ∩ proj = {r}`) preserves rank because the only `Z`-motion lost to the projection is the
 trivial `S r`-shift, recovered by the constant-on-`V(G)` motion `z`. -/
 theorem infinitesimalMotions_sup_range_extProj_eq_top_of_inter_eq_singleton
-    [Finite α] (F : BodyHingeFramework K k α β) {proj : Set α} {r : α}
+    (F : BodyHingeFramework K k α β) {proj : Set α} {r : α}
     (hinter : F.graph.vertexSet ∩ proj = {r}) :
     F.infinitesimalMotions ⊔ LinearMap.range (extProj (K := K) (k := k) proj) = ⊤ := by
   classical

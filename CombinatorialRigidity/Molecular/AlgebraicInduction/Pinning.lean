@@ -1405,7 +1405,7 @@ from `pinnedMotionsOn_eq_bot_of_isInfinitesimallyRigid` and `finrank_bot`. This 
 `finrank` form the Case-I accounting iff (`rankHypothesis_iff_finrank_pinnedMotionsOn`) reads off:
 a full-rank realization of the contraction pins the rigid block to dimension `0`, so the remaining
 Case-I obligation is the count and the realization itself, not the block pin. -/
-theorem finrank_pinnedMotionsOn_eq_zero_of_isInfinitesimallyRigid [Finite α]
+theorem finrank_pinnedMotionsOn_eq_zero_of_isInfinitesimallyRigid
     (F : BodyHingeFramework K k α β) {s : Set α} (hs : s.Nonempty)
     (hrig : F.IsInfinitesimallyRigid) :
     Module.finrank K (F.pinnedMotionsOn s) = 0 := by
@@ -1814,7 +1814,7 @@ unconditional inequality `finrank_pinnedMotions_le_withGraph` into the exact cou
 rank-lift
 needs: the extended framework's `v`-pinned dimension is the inductive realization's, so the
 1-extension lifts the rank by exactly `D`. Immediate from `pinnedMotions_withGraph_eq`. -/
-theorem finrank_pinnedMotions_withGraph_eq [Finite α] (F : BodyHingeFramework K k α β) (v : α)
+theorem finrank_pinnedMotions_withGraph_eq (F : BodyHingeFramework K k α β) (v : α)
     {G' : Graph α β} (hle : G' ≤ F.graph)
     (hnew : ∀ S ∈ (F.withGraph G').pinnedMotions v, ∀ e u w, F.graph.IsLink e u w →
       ¬G'.IsLink e u w → F.hingeConstraint S e u w) :

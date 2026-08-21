@@ -21,8 +21,8 @@ import `Henneberg.lean` alone; files that need the reverse decomposition
 
 ## Main definitions / theorems
 
-* `SimpleGraph.Henneberg.typeI_iso_of_two_neighbors`,
-  `SimpleGraph.Henneberg.typeII_iso_of_three_neighbors` — canonical iso
+* `SimpleGraph.Henneberg.isoTypeIOfTwoNeighbors`,
+  `SimpleGraph.Henneberg.isoTypeIIOfThreeNeighbors` — canonical iso
   constructors from neighbourhood data at a chosen vertex.
 * `SimpleGraph.Henneberg.IsLaman.exists_typeI_or_typeII_reverse` — every
   Laman graph on `n ≥ 3` vertices admits a Henneberg reverse.
@@ -46,7 +46,7 @@ namespace Henneberg
 
 /-! ### Decomposition iso constructors
 
-`typeI_iso_of_two_neighbors` and `typeII_iso_of_three_neighbors` package, given neighborhood
+`isoTypeIOfTwoNeighbors` and `isoTypeIIOfThreeNeighbors` package, given neighborhood
 data at a chosen vertex `v`, the canonical iso `G ≃g typeI G' a b` (resp.
 `G ≃g typeII G' a b c`) along the equivalence `(Equiv.optionSubtypeNe v).symm`. They are the
 bridge between flat-form reverse decomposition theorems (which describe the smaller graph
@@ -85,7 +85,7 @@ private def isoOfOptionSubtypeNe [DecidableEq V] {G : SimpleGraph V} (v : V)
 
 /-- Iso from `G` to a Type I move applied to its induced subgraph on `{w // w ≠ v}`, when `v` is a
 degree-2 vertex with neighbors `a, b`. The membership-style hypothesis `hN` says `N(v) = {a, b}`. -/
-def typeI_iso_of_two_neighbors [DecidableEq V] {G : SimpleGraph V} {v a b : V}
+def isoTypeIOfTwoNeighbors [DecidableEq V] {G : SimpleGraph V} {v a b : V}
     (hva : v ≠ a) (hvb : v ≠ b) (hN : ∀ w, G.Adj v w ↔ w = a ∨ w = b) :
     G ≃g typeI (G.comap (Subtype.val : {w : V // w ≠ v} → V))
       ⟨a, hva.symm⟩ ⟨b, hvb.symm⟩ :=
@@ -95,7 +95,7 @@ def typeI_iso_of_two_neighbors [DecidableEq V] {G : SimpleGraph V} {v a b : V}
 
 /-- Iso from `G` to a Type II move applied to (induced subgraph + bridging edge `s(a, b)`), when
 `v` has degree 3 with neighbors `a, b, c` and `a, b` are non-adjacent in `G`. -/
-def typeII_iso_of_three_neighbors [DecidableEq V] {G : SimpleGraph V} {v a b c : V}
+def isoTypeIIOfThreeNeighbors [DecidableEq V] {G : SimpleGraph V} {v a b c : V}
     (hva : v ≠ a) (hvb : v ≠ b) (hvc : v ≠ c) (hab : a ≠ b)
     (hN : ∀ w, G.Adj v w ↔ w = a ∨ w = b ∨ w = c) (hnab : ¬ G.Adj a b) :
     G ≃g typeII (G.comap (Subtype.val : {w : V // w ≠ v} → V) ⊔
@@ -125,7 +125,7 @@ and bumps `G'.IsSparse 2 3` to `G'.IsLaman` via the typeI iso combined with `typ
 12), so the Laman shell here drops the pendant branch (`G.degree v = 1`) by contradicting
 `IsLaman.two_le_degree`; the surviving Type I / Type II branches consume the sparse 3-way
 exactly as before. Callers reconstruct the iso to `typeI G' a b` / `typeII G' a b c` via
-`typeI_iso_of_two_neighbors` / `typeII_iso_of_three_neighbors` at the callsite, before invoking
+`isoTypeIOfTwoNeighbors` / `isoTypeIIOfThreeNeighbors` at the callsite, before invoking
 the operation-form forward-preservation theorems (`typeI_isGenericallyRigidInj_two` /
 `typeII_isGenericallyRigidInj_two`) and transporting along the iso. See `DESIGN.md`
 *Statement-form conventions* for the forward = operation / reverse = flat split. -/
@@ -181,7 +181,7 @@ theorem IsLaman.exists_typeI_or_typeII_reverse [Fintype V]
     have hb_adj : G.Adj v b.val := (hN_iff b.val).mpr (Or.inr rfl)
     have hG'_laman : (G.comap (Subtype.val : {w : V // w ≠ v} → V)).IsLaman :=
       (typeI_isLaman_iff hab).mp
-        (IsLaman.iso (typeI_iso_of_two_neighbors (G.ne_of_adj ha_adj) (G.ne_of_adj hb_adj)
+        (IsLaman.iso (isoTypeIOfTwoNeighbors (G.ne_of_adj ha_adj) (G.ne_of_adj hb_adj)
           hN_iff) h)
     exact Or.inl ⟨hdeg2, a, b, hab, hN_iff, hG'_laman⟩
   · -- Type II branch. Build the typeII iso, transport `G.IsLaman` to `(typeII G' x y c).IsLaman`,
@@ -191,7 +191,7 @@ theorem IsLaman.exists_typeI_or_typeII_reverse [Fintype V]
       G.comap (Subtype.val : {w : V // w ≠ v} → V) ⊔
         fromEdgeSet ({s(x, y)} : Set _) with hG'_def
     have h_iso : G ≃g typeII G' x y c :=
-      typeII_iso_of_three_neighbors x.property.symm y.property.symm c.property.symm
+      isoTypeIIOfThreeNeighbors x.property.symm y.property.symm c.property.symm
         (fun heq => hxy (Subtype.ext heq)) hN hnxy
     have h_typeII_laman : (typeII G' x y c).IsLaman := IsLaman.iso h_iso h
     have h_count := h_typeII_laman.edgeSet_ncard

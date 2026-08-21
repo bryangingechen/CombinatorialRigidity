@@ -121,7 +121,7 @@ def IsSquareTightPartition (G : SimpleGraph V) (f : V → V) : Prop :=
 
 /-- Adjacency in the shadow carrier is exactly adjacency in `G`: `G.shadowGraph.Adj u v ↔
 G.Adj u v`. Unfolds `Graph.Adj` to `∃ e, IsLink e u v` and applies `shadowGraph_isLink_iff`. -/
-theorem shadowGraph_adj_iff [Finite V] (u v : V) : G.shadowGraph.Adj u v ↔ G.Adj u v := by
+theorem shadowGraph_adj_iff (u v : V) : G.shadowGraph.Adj u v ↔ G.Adj u v := by
   rw [Graph.Adj]
   exact shadowGraph_isLink_iff G u v
 
@@ -143,7 +143,7 @@ theorem IsSquareTightPartition.eq_of_common_nbr [Finite V] {f : V → V}
 
 /-- Helper for the pair-multiplicity and triangle-exclusion transports below: an edge of `G`
 between vertices carrying two labels in `S` is a shadow-graph crossing edge within `S`. -/
-private theorem mem_crossingEdgesWithin_shadowGraph [Finite V] {f : V → V} {S : Set V} {x y : V}
+private theorem mem_crossingEdgesWithin_shadowGraph {f : V → V} {S : Set V} {x y : V}
     (hxy : G.Adj x y) (hx : f x ∈ S) (hy : f y ∈ S) (hne : f x ≠ f y) :
     (Sum.inl s(x, y) : Sym2 V ⊕ Fin (6 * (Nat.card V - 1) + 1)) ∈
       G.shadowGraph.crossingEdgesWithin f S :=
@@ -1133,7 +1133,7 @@ exactly its vertex's degree, and a normal cross edge to never root at a small (n
 part `{v}` (`f v = a`, `∀ x, f x = a → x = v`), every `G`-edge at `v` is automatically a cut edge
 of `a` — its other endpoint lies outside the singleton part — and conversely; so `gCutEdges f a`
 bijects with `G.neighborSet v` via `w ↦ s(v, w)`, giving `(gCutEdges f a).ncard = deg_G(v)`. -/
-theorem gCutEdges_singleton_part_ncard_eq_degree [Finite V] {f : V → V} {a v : V}
+theorem gCutEdges_singleton_part_ncard_eq_degree {f : V → V} {a v : V}
     [Fintype (G.neighborSet v)] (hfv : f v = a) (hsing : ∀ x, f x = a → x = v) :
     (G.gCutEdges f a).ncard = G.degree v := by
   have himg : G.gCutEdges f a = (fun w => s(v, w)) '' G.neighborSet v := by
@@ -1430,7 +1430,7 @@ theorem partLabels_card_eq_numParts [Finite V] (f : V → V) :
 /-- **The counting bound for Laman squares; Jackson–Jordán 2008 Theorem 5.3**
 (`thm:laman-square-count`). Let `G` be a simple graph of minimum degree at least two on a finite
 nonempty vertex set `V`, and suppose `G²` is Laman. Then `|E(G²)| ≤ 3|V| - 6 - def(G̃)`. -/
-theorem laman_square_count {V : Type*} [Fintype V] [Nonempty V] (G : SimpleGraph V)
+theorem laman_square_count {V : Type*} [Fintype V] (G : SimpleGraph V)
     [DecidableRel G.Adj] (hmin : ∀ v, 2 ≤ G.degree v) (hlaman : G.square.IsLaman3) :
     (G.square.edgeSet.ncard : ℤ) ≤ 3 * (Nat.card V : ℤ) - 6 - G.shadowGraph.deficiency 3 := by
   obtain ⟨f, hf0⟩ := G.shadowGraph.exists_isTightPartition 3

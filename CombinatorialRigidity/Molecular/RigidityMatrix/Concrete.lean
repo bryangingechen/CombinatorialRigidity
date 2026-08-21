@@ -98,7 +98,7 @@ instance) so that BOTH the flat-basis rigidity bridge `rigidityMatrix_rank` and 
 product-basis bridge `rigidityMatrixProd_rank` (A4.5) are one-line instances with no proof
 duplication. -/
 theorem Matrix.rank_of_coordEquiv {M : Type*} [AddCommGroup M] [Module K M]
-    [FiniteDimensional K M] {κ : Type*} [Fintype κ]
+    {κ : Type*} [Fintype κ]
     (coordEquiv : Module.Dual K M ≃ₗ[K] (κ → K))
     {ι : Type*} [Finite ι] (w : ι → Module.Dual K M) :
     (Matrix.of (fun i => coordEquiv (w i))).rank
@@ -1227,6 +1227,9 @@ block `{e // e = ea} × Fin (D−1)` has exactly `D − 1 = screwDim k − 1` ro
 panel rows) — KT's per-edge hinge-row block dimension (`finrank_hingeRowBlock`). `Fintype.card_prod`
 reduces it to `(card {e // e = ea}) · (card (Fin (D−1)))`; the `= ea` subtype is a singleton
 (card `1`) and `Fin (D−1)` has card `D − 1`. -/
+-- `unusedArguments` FALSE POSITIVE: the `Fintype.ofFinite` bridge in the proof body
+-- needs this instance to elaborate; it does not survive into the proof term.
+@[nolint unusedArguments]
 theorem edgeRowSplit_corner_card [Finite β] {G : Graph α β} (ea : {e // e ∈ G.edgeSet}) :
     Fintype.card ({e : {e // e ∈ G.edgeSet} // e = ea} × Fin (screwDim k - 1))
       = screwDim k - 1 := by
@@ -1258,7 +1261,7 @@ membership (the §(4.18)–(4.30) wall), it is a literal rank-invariant right-mu
 `rigidityMatrixProd` (A4.5/A5), whose columns literally factor as `α × Fin D` so that block split
 is an honest product reindex; the flat column index here does not factor that way. -/
 theorem BodyHingeFramework.rigidityMatrix_mul_rank (F : BodyHingeFramework K k α β)
-    (ends : β → α × α) (hgp : ∀ e, F.supportExtensor e ≠ 0) [Finite α] [Finite β]
+    (ends : β → α × α) (hgp : ∀ e, F.supportExtensor e ≠ 0) [Finite α]
     (U : Matrix (Fin (Module.finrank K (Module.Dual K (α → ScrewSpace K k))))
       (Fin (Module.finrank K (Module.Dual K (α → ScrewSpace K k)))) K)
     (hU : IsUnit U.det) :

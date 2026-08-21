@@ -213,49 +213,118 @@ match mathlib's manifest — and the mismatch warning disappeared.
 All of the below is **mechanical and separable** from the bump itself: no
 statement changes, no new proofs. Ordered by value.
 
-### 0. `lake lint` is RED — 64 `unusedArguments` errors (do this first)
+### 0. `lake lint` — ✓ DONE (green; two linters, seven false positives, three cascade rounds)
 
-⚠️ **This is an actual failing gate, not a warning**, so CI (`lint: true` in
-both workflows) will be red until it is fixed. It is the one item here that
-blocks a green PR.
+**Landed 2026-08-20.** `lake lint` (batteries `runLinter`) had 64 errors. Two
+corrections to how this section originally recorded them, both worth keeping
+because both were wrong in a way a reader would have relied on:
 
-`lake lint` (batteries `runLinter`) reports **64 errors in 32 files**, all from
-the `unusedArguments` linter, and almost all of the shape:
+- **It was two linters, not one.** 59 `unusedArguments` **plus 5
+  `defsWithUnderscore`** — the second went unmentioned, so a reader planning
+  the fix would have under-scoped it.
+- **"The 32 lint-failing files and the 31 files this bump edited are *disjoint*
+  — zero overlap" is false.** Eleven files are in both. The *conclusion*
+  ("pre-existing code meeting a changed linter") survives, but only on the
+  stronger check the claim should have made in the first place: per
+  **declaration**, not per file. Of the 64 flagged declarations exactly **one**
+  was edited by the bump — `trivialMotionFamily_linearIndependent`, whose
+  `simpa` gained `trivialMotionFamily` (a zeta-delta fix). The other 63 were
+  untouched. **Lesson: file-level overlap is the wrong granularity for a
+  "not our edits" claim**; a file can be edited in one proof and carry a
+  vestigial binder forty lines away.
 
-```
-error: @SimpleGraph.EdgeSetRowIndependent.iso 2 unused arguments:
-  argument 3: [Finite V]
-  argument 4: [Finite W]
-```
+#### `unusedArguments` (59 declarations, 65 binders)
 
-**Not caused by the bump's edits.** The 32 lint-failing files and the 31 files
-this bump edited are *disjoint* sets — zero overlap. This is pre-existing code
-meeting a changed linter: `batteries` moved from `v4.30.0-rc2` to a 2026-08
-revision, and the proof terms mathlib's tactics now produce no longer mention
-these instance arguments, so the linter correctly reports them as unused.
+Disposition, per user adjudication: **drop the binder**, then let the build
+find the exceptions. `DESIGN.md`'s *Typeclass shape for finiteness on `V`*
+resolution is **not** in conflict — see the amendment there; its rule is "state
+at the weakest typeclass the *statement* uses", and dropping is that rule
+applied, not a reversal of it. Prep worth reusing: all 65 binders were declared
+**inline on their own declaration** (no `variable` block anywhere), so no
+`omit [...] in` was needed.
 
-**Why it was not fixed inside the bump commit.** Dropping an unused
-`[Finite V]` *generalizes the lemma's statement* — it is an API change across
-64 declarations, not a mechanical rename, and it collides with a settled
-project decision: `DESIGN.md`'s *Typeclass shape for finiteness on `V`* resolved
-to **keep all `[Finite V]` signatures as-is** for uniformity, on the grounds
-that the boilerplate is "the cost of stating theorems at maximum generality".
-That resolution predates this linter firing, so the two need reconciling
-deliberately rather than by sed.
+**Seven turned out to be linter FALSE POSITIVES**, and this is the finding to
+carry forward. `unusedArguments` reads the *proof term*; the project's standard
+`haveI : Fintype X := Fintype.ofFinite X` bridge idiom needs `Finite X` to
+**elaborate** but does not leave it in the term. So the linter reports a binder
+the declaration cannot be stated without:
 
-Three dispositions to choose between (probably a mix):
+| declaration | binder |
+|---|---|
+| `Matrix.rank_ge_of_isUnit_mul_reindex_fromBlocks` | `[Finite p]` |
+| `Graph.BodyBarFramework.finrank_realBlockPiSpanOn` | `[Finite α]` |
+| `…BodyHingeFramework.le_finrank_span_rigidityRows_of_cut` | `[Finite β]` |
+| `…BodyHingeFramework.le_finrank_span_rigidityRows_of_splice` | `[Finite β]` |
+| `…BodyHingeFramework.exists_independent_panelRow_subfamily_of_le_finrank` | `[Finite α]` |
+| `…Molecular.edgeRowSplit_corner_card` | `[Finite β]` |
+| `SimpleGraph.trivialMotionFamily_linearIndependent` | `[Finite V]` |
 
-1. **Drop the argument** where it is genuinely vestigial — strictly
-   generalizes, and call sites are unaffected.
-2. **Rename to `_inst`** (the linter allows a leading underscore) where the
-   argument is kept deliberately for signature uniformity across a family.
-3. **`@[nolint unusedArguments]`** where uniformity is the whole point and a
-   rename would be noise — the escape hatch batteries itself uses.
+Each keeps its binder under `@[nolint unusedArguments]` with a two-line comment
+naming the bridge — precedence rule 2 in `CombinatorialRigidity/CLAUDE.md`
+*Fix warnings at the source* (a construct semantically required but invisible
+to the linter), and the same disposition the tree already used at 4 pre-existing
+sites (`Framework.lean`'s `IsInfinitesimallyRigid`, `RigidityMatrix/Basic.lean`,
+`BodyBar/Framework.lean`). `[_inst : …]` was the adjudicated fallback but reads
+as *deliberately unused*, which is the wrong story for a false positive.
 
-Recommended: sample one family first (the `[Finite V]` cluster in
-`Sparsity.lean` / `TwoCore.lean` / `TrivialMotions.lean`), settle the
-disposition with the user, then apply it family-by-family. Re-read the
-`DESIGN.md` entry before starting; if the decision changes, update it there.
+**`unusedArguments` CASCADES — iterate `lake lint` to a fixed point.** This is
+the single most important thing to know before starting. Dropping a binder from
+a lemma removes it from that lemma's proof term, which removes it from its
+**callers'** proof terms too — so a caller whose only use of `Finite α` was
+passing it down becomes newly unused. It took **three rounds** to converge here:
+**64 → 9 → 2 → 0** errors. Budget for that, and do not read
+the first report as the size of the job. The tell is unmistakable: round 2's
+`Theorem55.lean` hits were exactly the four non-`_gen` callers of the four
+`_gen` producers round 1 had just generalized, and round 3's two hits were
+callers of round 2's `splitOff_reroute_packing`. Each round costs a full build
+plus a `lake lint` (~10 and ~15 min here), so the cost is in the iteration, not
+the edits.
+
+**Screening heuristic for next time, and its limit.** Grepping each flagged
+declaration's body for `Fintype.ofFinite` predicted **15** at-risk of 59 — a
+useful pre-filter (every one of the seven was in it), but it over-predicts by 8, because the bridge often converts
+a *different* type variable than the dropped one. It also cannot tell you which
+8: `Fintype.ofFinite _` with an underscore hides the dependency
+(`edgeRowSplit_corner_card` needs `Finite β` only to reach
+`Finite {e // e ∈ E(G)}`). Cheapest reliable loop, once the tree is otherwise
+green: drop everything, then `lake env lean <file>` on the at-risk files — its
+errors are trustworthy and it is ~1 min/file against ~10 min for a full build.
+
+Net across all three rounds: **63 declarations became strictly more general** (52 in round 1, 9 in round 2, 2 in round 3) (weaker hypotheses, and no
+call site changed since instance arguments are inferred).
+
+#### `defsWithUnderscore` (5 declarations)
+
+Four renames and one deletion, the naming settled with the user:
+
+- `typeI_iso_of_two_neighbors` → **`isoTypeIOfTwoNeighbors`**, and
+  `typeII_iso_of_three_neighbors` → **`isoTypeIIOfThreeNeighbors`**. Leading
+  with `iso` is what makes these work: the direct camelCase-ification gives
+  `typeIIsoOfTwoNeighbors` and `typeIIIsoOfThreeNeighbors`, where `typeIIso` /
+  `IIIso` is genuinely ambiguous against the sibling `typeI` / `typeII` defs.
+  It also matches the file's existing `isoOfOptionSubtypeNe`. 23 occurrences,
+  including prose back-ticks in ROADMAP / DESIGN / TACTICS-GOLF / five notes
+  files — repointed in the same commit per the retirement rule.
+- `Matroid.PartialTransversal.of_fun` → **`ofFun`** (19 sites: the def, its
+  `@[simps]` projection lemma, and the hand-written `of_fun_*` family). Matches
+  the upstream `Matroid.ofFun` the project already imports.
+- `Matroid.N_singleton` → **`nbhd`**, *and its sibling `def N` deleted* — `N`
+  had zero references anywhere in the tree or blueprint, was mentioned only in
+  its own docstring, and was **shadowed** by a `set N := …` inside the one
+  proof that docstring points at. Both vendored, so both are recorded in the
+  file's Modifications note.
+- `Matroid.instDecidablePredProdMatch_84PropMemFinsetOfDecidableEq` — **deleted
+  outright, no rename needed.** It was an *anonymous* `instance` (the whole
+  underscore, `Match_84` and all, is Lean's auto-generated name, not something
+  an author wrote), and it existed only because `PartialTransversal.move`
+  filtered with a **pattern** lambda `fun ⟨i, x⟩ ↦ x ∈ B i`, which elaborates
+  to a `match` instance synthesis cannot see through. Its body was a no-op
+  rewrap of `decidableMem`. Switching `move` to the **projection** lambda
+  `fun e ↦ e.2 ∈ B e.1` — the form the very next lemma, `move_edges`, already
+  states and proves by `rfl` — makes synthesis fire and the instance
+  unnecessary. **General shape worth remembering: an "anonymous instance with a
+  mangled name" is usually a signal that a nearby pattern lambda should be a
+  projection lambda.**
 
 ### 1. Deprecation rename sweep — ✓ DONE (846 renames, 70 files)
 

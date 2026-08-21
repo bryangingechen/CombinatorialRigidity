@@ -94,7 +94,7 @@ private theorem IsLaman.isGenericallyRigidInj_two_of_card :
         have ih_G' : (G.comap (Subtype.val : {w : V // w ≠ v} → V)).IsGenericallyRigidInj 2 :=
           ih _ hcard_lt rfl hG'_lam
         have φ : G ≃g Henneberg.typeI (G.comap (Subtype.val : {w : V // w ≠ v} → V)) a b :=
-          Henneberg.typeI_iso_of_two_neighbors a.property.symm b.property.symm hN_iff
+          Henneberg.isoTypeIOfTwoNeighbors a.property.symm b.property.symm hN_iff
         exact (Henneberg.typeI_isGenericallyRigidInj_two ih_G' hab).iso φ.symm
       · -- Type II: build `G ≃g typeII (G.comap _ ⊔ fromEdgeSet {s(x, y)}) x y c` and transport.
         have ih_G' :
@@ -104,7 +104,7 @@ private theorem IsLaman.isGenericallyRigidInj_two_of_card :
         have φ : G ≃g Henneberg.typeII
             (G.comap (Subtype.val : {w : V // w ≠ v} → V) ⊔
               fromEdgeSet ({s(x, y)} : Set _)) x y c :=
-          Henneberg.typeII_iso_of_three_neighbors x.property.symm y.property.symm c.property.symm
+          Henneberg.isoTypeIIOfThreeNeighbors x.property.symm y.property.symm c.property.symm
             (fun heq => hxy (Subtype.ext heq)) hN_iff hnxy
         exact (Henneberg.typeII_isGenericallyRigidInj_two ih_G' hxy hcx.symm hcy.symm).iso φ.symm
     · -- Base case: `Fintype.card V ≤ 2`. The `≤ 1` sub-cases contradict Laman

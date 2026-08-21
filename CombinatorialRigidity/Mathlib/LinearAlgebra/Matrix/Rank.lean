@@ -190,7 +190,7 @@ reflection along `φ` is used — that would be false when `φ` has a nontrivial
 routes through the minor's determinant instead. -/
 theorem linearIndependent_rows_of_specialized_submatrix_det_ne_zero
     {ι κ R S : Type*} [Fintype ι] [DecidableEq ι] [CommRing R] [IsDomain R]
-    [CommRing S] [Nontrivial S] (M : ι → κ → R) (φ : R →+* S) (e : ι → κ)
+    [CommRing S] (M : ι → κ → R) (φ : R →+* S) (e : ι → κ)
     (hdet : φ (Matrix.of (fun i j : ι => M i (e j))).det ≠ 0) :
     LinearIndependent R M := by
   have hRne : (Matrix.of (fun i j : ι => M i (e j))).det ≠ 0 := fun h => hdet (by rw [h, map_zero])
@@ -463,6 +463,9 @@ bottom-block `R(G₁ ＼ row, q₁)` — both with linearly independent rows —
 exactly what the realization arm supplies. The rigidity-matrix consumer is
 `BodyHingeFramework.rigidityMatrix_mul_rank` (`Molecular/RigidityMatrix/Concrete.lean`), the
 column-op rank-invariance specialized to `R(G,p)`. -/
+-- `unusedArguments` FALSE POSITIVE: the `Fintype.ofFinite` bridge in the proof body
+-- needs this instance to elaborate; it does not survive into the proof term.
+@[nolint unusedArguments]
 theorem rank_ge_of_isUnit_mul_reindex_fromBlocks
     {K p q m₁ m₂ n₁ n₂ : Type*} [Field K] [Finite p] [Fintype q] [DecidableEq q]
     [Fintype m₁] [Fintype m₂] [Finite n₁] [Finite n₂]
@@ -506,7 +509,7 @@ This mirrors `rank_fromBlocks_zero₂₁_ge_of_linearIndependent_rows`'s *column
 The proof is the same `calc` as the `reindex` form, with `Matrix.rank_submatrix_le` (a row submatrix
 can only drop the rank) in place of the rank-preserving `rank_reindex`. -/
 theorem rank_ge_of_isUnit_mul_submatrix_fromBlocks
-    {K p q m₁ m₂ n₁ n₂ : Type*} [Field K] [Finite p] [Fintype q] [DecidableEq q]
+    {K p q m₁ m₂ n₁ n₂ : Type*} [Field K] [Fintype q] [DecidableEq q]
     [Fintype m₁] [Fintype m₂] [Finite n₁] [Finite n₂]
     (M : Matrix p q K) (U : Matrix q q K) (hU : IsUnit U.det)
     (re : m₁ ⊕ m₂ → p) (en : (n₁ ⊕ n₂) ≃ q)
@@ -1096,7 +1099,7 @@ to row independence. The LI of vectors ↔ LI of `φ`-coordinate rows is the sam
 brick the Phase-22 Case-I seed witness-transfer couples across its two legs (Katoh–Tanigawa 2011
 §6.2, eq. (6.6)). -/
 theorem exists_polynomial_ne_zero_of_linearIndependent_at
-    {K ι W σ : Type*} [Field K] [Finite ι] [AddCommGroup W] [Module K W] [Module.Finite K W]
+    {K ι W σ : Type*} [Field K] [Finite ι] [AddCommGroup W] [Module K W]
     (g : (σ → K) → ι → W) (c : ι → Fin (Module.finrank K W) → MvPolynomial σ K)
     (φ : W ≃ₗ[K] (Fin (Module.finrank K W) → K))
     (hg : ∀ p i j, φ (g p i) j = MvPolynomial.eval p (c i j))
@@ -1149,7 +1152,7 @@ whatever type `b` itself is indexed by, not by `Fin (finrank K W)` up to defeq. 
 lemma by precomposing `φ` with the index reindexing `LinearEquiv.funCongrLeft K K e` and pulling `c`
 back along `e`, exactly as `exists_good_realization_reindex` does. -/
 theorem exists_polynomial_ne_zero_of_linearIndependent_at_reindex
-    {K ι W σ ν : Type*} [Field K] [Finite ι] [AddCommGroup W] [Module K W] [Module.Finite K W]
+    {K ι W σ ν : Type*} [Field K] [Finite ι] [AddCommGroup W] [Module K W]
     (e : Fin (Module.finrank K W) ≃ ν)
     (g : (σ → K) → ι → W) (c : ι → ν → MvPolynomial σ K)
     (φ : W ≃ₗ[K] (ν → K))

@@ -45,8 +45,8 @@ wrong, revisit there.
   `../DESIGN.md` *Statement-form conventions* and the blueprint aside
   at `chapter/rigidity-matroid.tex` §3.1. `IsSparse.exists_typeI_or_typeII_reverse`
   lands flat; row-LI lifts land in operation form; the inductive
-  proof bridges via `typeI_iso_of_two_neighbors` /
-  `typeII_iso_of_three_neighbors` per step.
+  proof bridges via `isoTypeIOfTwoNeighbors` /
+  `isoTypeIIOfThreeNeighbors` per step.
 
 - **`maxBlock` anchored on a Finset, not on a pair** (Commit 17b,
   user-directed). `IsSparse.maxBlock` takes `X : Finset V`; the
@@ -187,8 +187,8 @@ Per-file effect of Phase 7's 22 commits.
   `maxBlock_eq_of_subset_maxBlock`, and `exists_aug_of_lt_two_mul`).
   Added import `Mathlib.Data.Set.Card.Arithmetic`.
 - **Phase 5 reflows.** `Henneberg.lean` lost ~280 LoC of the old
-  Laman-only reverse machinery; `typeI_iso_of_two_neighbors` /
-  `typeII_iso_of_three_neighbors` un-privatized, as were
+  Laman-only reverse machinery; `isoTypeIOfTwoNeighbors` /
+  `isoTypeIIOfThreeNeighbors` un-privatized, as were
   `exists_off_line_off_finite_dim_two` and
   `exists_not_mem_span_singleton_dim_two` in `HennebergRigidity.lean`.
   `RigidityMatroid.lean` gained `EdgeSetRowIndependent.{eventually, iso}`

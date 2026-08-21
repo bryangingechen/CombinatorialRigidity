@@ -290,7 +290,7 @@ support): `|E(G̃)| = bodyHingeMult n · |E(G)| = (D − 1)·|E(G)|`, since the 
 by `D − 1 = bodyHingeMult n` parallel fiber copies. Immediate from
 `edgeMultiply_edgeSet_ncard`. This bridges the matroidal corank of `M(G̃)` (which counts
 fibers of `E(G̃)`) to the graph-level edge count `|E(G)|` of the KT 4.5(i)/4.6 edge bound. -/
-theorem mulTilde_edgeSet_ncard [Finite β] (G : Graph α β) (n : ℕ) :
+theorem mulTilde_edgeSet_ncard (G : Graph α β) (n : ℕ) :
     E(G.mulTilde n).ncard = bodyHingeMult n * E(G).ncard := by
   rw [mulTilde, edgeMultiply_edgeSet_ncard]
 
@@ -764,7 +764,7 @@ argument: a parallel pair `e₁ ≠ e₂` from `x` to `y` makes the two-vertex i
 `G.induce {x, y}` a `0`-dof-graph (`isKDof_zero_of_parallel_pair`) with `2 ≤ |V(H)|` and
 `V(H) ⊊ V(G)` (proper because `3 ≤ |V(G)|`), contradicting `hnp` — only the source of
 looplessness differs (supplied directly instead of derived from `IsMinimalKDof`). -/
-theorem simple_of_loopless_of_noRigid [Finite α] [Finite β]
+theorem simple_of_loopless_of_noRigid [Finite α]
     {G : Graph α β} {n : ℕ}
     (hD : 2 ≤ bodyBarDim n) (hV : 3 ≤ V(G).ncard) (hloop : G.Loopless)
     (hnp : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) : G.Simple where

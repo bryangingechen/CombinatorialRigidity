@@ -148,8 +148,8 @@ executed) during Phase 8-cleanup's bucket E:
 - [x] **F2.2:** Split executed. `Henneberg.lean` 647 → 454 LoC;
   new file `CombinatorialRigidity/HennebergReverse.lean` at 246 LoC
   carries the *Decomposition iso constructors* block
-  (`isoOfOptionSubtypeNe`, `typeI_iso_of_two_neighbors`,
-  `typeII_iso_of_three_neighbors`), the *Flat-form Henneberg reverse
+  (`isoOfOptionSubtypeNe`, `isoTypeIOfTwoNeighbors`,
+  `isoTypeIIOfThreeNeighbors`), the *Flat-form Henneberg reverse
   decomposition* block (`IsLaman.exists_typeI_or_typeII_reverse`),
   and the *K₄ minus one edge is Laman* worked example
   (`Henneberg.fin4equiv`, `Henneberg.fin4iso`,
@@ -442,7 +442,7 @@ machinery in its own file, matching the blueprint chapter split).
 **F2 — Henneberg.lean L444 split.** `Henneberg.lean` 647 → 454 LoC;
 new file `HennebergReverse.lean` at 246 LoC carries the
 *Decomposition iso constructors* block (`isoOfOptionSubtypeNe`,
-`typeI_iso_of_two_neighbors`, `typeII_iso_of_three_neighbors`), the
+`isoTypeIOfTwoNeighbors`, `isoTypeIIOfThreeNeighbors`), the
 *Flat-form Henneberg reverse decomposition* block
 (`IsLaman.exists_typeI_or_typeII_reverse`), and the *K₄ minus one
 edge is Laman* worked example. `LamanTheorem.lean` and

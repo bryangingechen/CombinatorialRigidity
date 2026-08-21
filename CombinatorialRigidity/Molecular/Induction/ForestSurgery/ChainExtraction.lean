@@ -67,7 +67,7 @@ the path's vertex/edge `Nodup` (via `WList.idxOf_get` / `List.Nodup.getElem_inj_
 per-index `DInc` fact (`WList.DInc_get_get_succ` + `IsWalk.isLink_of_dInc`), and `deg_two` at an
 interior index `0 < i < d` from `hdeg` + `isLink_eq_of_degree_eq_two` applied to the two path edges
 flanking that vertex (`P.edge[i-1]`, oriented in via `.symm`, and `P.edge[i]`, oriented out). -/
-theorem chainData_of_isPath [Finite α] [Finite β] {G : Graph α β} [G.Loopless] {n : ℕ}
+theorem chainData_of_isPath [Finite β] {G : Graph α β} [G.Loopless] {n : ℕ}
     {P : WList α β} (hP : G.IsPath P) (hlen : P.length = n) (hn : 1 ≤ n)
     (hdeg : ∀ x ∈ P, x ≠ P.first → x ≠ P.last → G.degree x = 2)
     {e₀ : β} (he₀ : e₀ ∉ E(G)) :
@@ -379,7 +379,7 @@ cycle disjunct; ENTRY leaf E2d-3, `notes/Phase23-design.md` §(4.107.G.5)). Comb
 `Fin`-cyclic data with E2d-2's confinement (`closed_path_degree_two_spanning`) to discharge
 `CycleData`'s two surjectivity fields: `V(G) = {x | x ∈ P} = Set.range vtx` and likewise for
 `E(G)`, so every `G`-vertex (resp. edge) is a cycle vertex (resp. edge). -/
-theorem cycleData_of_closed_path [Finite α] [Finite β] {G : Graph α β} [G.Loopless]
+theorem cycleData_of_closed_path [Finite β] {G : Graph α β} [G.Loopless]
     {P : WList α β} (hP : G.IsPath P) (h2 : 2 ≤ P.length) {f : β}
     (hf : G.IsLink f P.last P.first) (hfP : f ∉ P.edge)
     (hdeg : ∀ x ∈ P, G.degree x = 2) (hconn : G.Preconnected) :

@@ -609,7 +609,7 @@ surviving-row independence in the exact shape the bounded packaging
 `exists_rankPolynomial_of_rigidOn_linking_set_proj` (N-22b-2) consumes for its `hsupp`/`hcount`/
 `hindep` hypotheses (over `G.deleteEdges E(H)` at the parent selector `ends`, projecting away the
 rigid-block columns `V(H)`). Composing the two (N-22b-3) discharges the composer's `hclaim64`. -/
-theorem PanelHingeFramework.rigidContract_exterior_rank_transport [Finite α] [Finite β]
+theorem PanelHingeFramework.rigidContract_exterior_rank_transport [Finite α]
     (G H : Graph α β) (ends : β → α × α) {r : α}
     (n : ℕ) (hne : V(G.rigidContract H r).Nonempty) (hdef : (G.rigidContract H r).deficiency n = 0)
     (hQ : PanelHingeFramework.HasGenericFullRankRealization K k n (G.rigidContract H r))
@@ -1706,7 +1706,7 @@ coordinatization of the rows — the candidate `d = 3` `+1` row `hingeRow v b r�
 shape `hsub` admits. This is the keystone the corrected `d = 3` candidate-completion route turns on
 (C2/C3). -/
 theorem PanelHingeFramework.hasFullRankRealization_of_independent_rigidityRow
-    [Finite α] [Finite β] (G : Graph α β) (ends : β → α × α) (hne : V(G).Nonempty)
+    [Finite α] (G : Graph α β) (ends : β → α × α) (hne : V(G).Nonempty)
     {q₀ : α × Fin (k + 2) → K} {ι : Type*} [Finite ι]
     {f : ι → Module.Dual K (α → ScrewSpace K k)} (hLI : LinearIndependent K f)
     (hsub : Submodule.span K (Set.range f)
@@ -1743,7 +1743,7 @@ decomposition. The selector `hsel` is consumed at the producer's witness line (t
 criterion at `C(L) = pᵢ ∨ pⱼ`, Leaf 2/3); the brick is graph-free except the concrete `ofNormals`
 carrier C1 fixes (TACTICS-QUIRKS §38). -/
 theorem PanelHingeFramework.hasFullRankRealization_of_candidateSelector
-    [Finite α] [Finite β] (G : Graph α β) (ends : β → α × α) (hne : V(G).Nonempty)
+    [Finite α] (G : Graph α β) (ends : β → α × α) (hne : V(G).Nonempty)
     {q₀ : α × Fin (k + 2) → K} {κ : Type*} [Finite κ]
     {fam : κ → Module.Dual K (α → ScrewSpace K k)}
     {r : Module.Dual K (ScrewSpace K k)} {C : ScrewSpace K k}

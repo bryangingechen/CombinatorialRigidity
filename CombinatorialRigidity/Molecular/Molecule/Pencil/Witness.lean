@@ -1573,7 +1573,7 @@ hub-neighbourhoods' overlap to `{p.1, p.2}`, so `exists_idx_dtgt_pair` builds th
 maps the general-position core `exists_coord_linearIndepOn_pencilChartPoint_of_idx` consumes; the
 `≤ 3` bound is `hcard`. -/
 theorem exists_coord_linearIndepOn_pencilChartPoint_adjacentPair
-    [Finite α] [Finite β] {G : Graph α β} [G.Loopless]
+    [Finite α] {G : Graph α β} [G.Loopless]
     (hcard : ∀ v, (G.closedHubNbhd v).ncard ≤ 3)
     (htf : ∀ e₁ e₂ e₃ x y z, x ≠ y → y ≠ z → x ≠ z →
       G.IsLink e₁ x y → G.IsLink e₂ y z → G.IsLink e₃ z x → False)

@@ -253,8 +253,8 @@ form** — the smaller G' is given by its edges (`G.comap` /
 The theorem is *about an arbitrary G* and produces a witness; the
 operation is incidental.
 
-**Iso constructors** — `typeI_iso_of_two_neighbors`,
-`typeII_iso_of_three_neighbors`. These genuinely *are* iso content;
+**Iso constructors** — `isoTypeIOfTwoNeighbors`,
+`isoTypeIIOfThreeNeighbors`. These genuinely *are* iso content;
 they live in Henneberg.lean as project-internal bridges between the
 two forms.
 
@@ -1961,6 +1961,38 @@ to a fixed section above once a question is answered.
   same cost mathlib pays. The audit's value is **verification that
   the project already follows mathlib style**; no API changes
   needed. The 12 bridge sites and 41 `classical` calls all stay.
+
+  **Amendment (2026-08-20, v4.34.0-rc1 bump cleanup).** The bump moved
+  `batteries` to a 2026-08 revision, and its `unusedArguments` linter
+  began reporting **65 instance binders across 59 declarations** —
+  `[Finite β]` ×25, `[Finite α]` ×20, `[Finite V]` ×8, and ten
+  singletons (`[Nonempty V]`, `[Nontrivial V]`, `[G.Simple]`, three
+  `FiniteDimensional`, …) — as used in **neither the statement nor the
+  proof term**. All 65 were **dropped**. That is not a reversal of the
+  resolution above: this entry's own rule is "state every signature at
+  the weakest typeclass its *statement* genuinely uses", and the
+  weakest typeclass a statement that never mentions finiteness uses is
+  *none*. Dropping moves in the direction this entry already chose
+  (weaker hypothesis = more general theorem), one step further; what
+  the resolution rejected was **strengthening** `[Finite V]` to
+  `[Fintype V]`, the opposite move. No call site changed — instance
+  arguments are inferred — so 59 theorems became strictly more general
+  for free.
+
+  Two things worth keeping for the next linter drift. First,
+  **uniformity across a lemma family is not a reason to carry a
+  vestigial binder**: the `_inst`-rename and
+  `@[nolint unusedArguments]` escape hatches were both considered and
+  both leave a reader looking at a hypothesis that does nothing
+  (`CombinatorialRigidity/CLAUDE.md` *Fix warnings at the source*
+  reserves the suppression for an instance genuinely required by a
+  definition's contract, which these are not). Second, **the linter
+  reads the proof term, not the statement**, so a *proof-side* edit can
+  make a binder vestigial: exactly one of the 65,
+  `SimpleGraph.trivialMotionFamily_linearIndependent`, was flagged
+  because the bump's own zeta-delta fix added `trivialMotionFamily` to
+  a `simpa` set. When a bump edits a proof, expect this linter to have
+  an opinion about that declaration's signature.
 - ~~**Phase 8: `apnelson1/Matroid` dependency.**~~ **Resolved (Phase 8
   open):** added to `lakefile.toml` at revision
   `e6852cec65742d1ddce7a66122f842b791b1dd37` (apnelson1/Matroid

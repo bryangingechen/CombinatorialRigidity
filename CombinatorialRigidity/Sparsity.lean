@@ -499,7 +499,7 @@ theorem IsTightOn.union_with_bonus [Finite V] [DecidableEq V] {G : SimpleGraph V
 vertex `w ∉ S` can be added with at least `k` "new" edges `F ⊆ edgesIn (insert w S)` disjoint from
 `edgesIn S`, then `insert w S` is itself `(k, ℓ)`-tight. The `|F| ≥ k` hypothesis is exactly the
 edge-count needed to absorb the extra vertex while staying on the sparsity locus. -/
-theorem IsTightOn.insert_vertex_with_edges [Finite V] [DecidableEq V] {G : SimpleGraph V}
+theorem IsTightOn.insert_vertex_with_edges [DecidableEq V] {G : SimpleGraph V}
     {k ℓ : ℕ} {S : Finset V} (h : G.IsTightOn k ℓ S) (hG : G.IsSparse k ℓ)
     {w : V} (hw : w ∉ S) {F : Set (Sym2 V)}
     (hF_sub : F ⊆ G.edgesIn (↑(insert w S) : Set V))
@@ -569,7 +569,7 @@ lemma edgeSet_fromEdgeSet_insert {I : Set (Sym2 V)} {u v : V} (huv : u ≠ v) :
 `fromEdgeSet I` is `(k, ℓ)`-sparse but adding a single off-diagonal edge `s(u, v) ∉ I`
 breaks sparsity, then there is a `(fromEdgeSet I)`-tight Finset containing both `u` and `v`
 — the "I-block" that the `(k, ℓ)`-count matroid augmentation argument anchors on. -/
-theorem IsSparse.exists_isTightOn_of_insert_not_sparse [Finite V]
+theorem IsSparse.exists_isTightOn_of_insert_not_sparse
     {k ℓ : ℕ} {I : Set (Sym2 V)} (hI : (fromEdgeSet I).IsSparse k ℓ)
     {u v : V} (huv : u ≠ v) (he_notin : s(u, v) ∉ I)
     (h_violation : ¬ (fromEdgeSet (insert s(u, v) I)).IsSparse k ℓ) :
@@ -1178,8 +1178,8 @@ The sparse analogue of Phase 5 milestone 1's `IsLaman.exists_typeI_or_typeII_rev
 in flat form: the smaller graphs are described by their explicit edge constructions rather
 than via the typeI / typeII Henneberg operations (see `DESIGN.md` *Statement-form
 conventions*). Phase 7's row-LI lift consumers reconstruct the operation form at each step
-via `typeI_iso_of_two_neighbors` / `typeII_iso_of_three_neighbors` in `Henneberg.lean`. The
-pendant branch invokes `typeI_iso_of_two_neighbors` at `a = b` (the unique neighbour);
+via `isoTypeIOfTwoNeighbors` / `isoTypeIIOfThreeNeighbors` in `Henneberg.lean`. The
+pendant branch invokes `isoTypeIOfTwoNeighbors` at `a = b` (the unique neighbour);
 `typeI G' a a` joins the new vertex to a single old vertex, modelling the pendant
 attachment used by Lovász–Yemini to reverse a degree-1 vertex. -/
 theorem IsSparse.exists_typeI_or_typeII_reverse [Fintype V]

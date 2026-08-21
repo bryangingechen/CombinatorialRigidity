@@ -247,7 +247,7 @@ inside `E(G̃)` is `(D − 1)` times the number of `G`-edges incident to `v`:
 of `G` (exactly two incident edges) this is `2(D − 1)`, the total fiber count the surgery
 distributes among the `D` forests and counts the `h' ≤ D − 2` short-circuit copies
 against. -/
-lemma fiberAtVertex_inter_edgeSet_ncard [Finite β] {G : Graph α β} {n : ℕ} {v : α} :
+lemma fiberAtVertex_inter_edgeSet_ncard {G : Graph α β} {n : ℕ} {v : α} :
     (G.fiberAtVertex n v ∩ E(G.mulTilde n)).ncard
       = bodyHingeMult n * {e | G.Inc e v}.ncard := by
   rw [fiberAtVertex_inter_edgeSet]
@@ -972,7 +972,7 @@ of `I'`, reroute each fresh short-circuit copy back to its two `v`-edges, and �
 `I ∖ (ẽₐ ∪ ẽ_b) = I' ∖ ã̃b`, and both arms' counts guarded by the fiber-fullness dichotomy
 (`= D − 1` full-fiber vs `< D − 1` partial-fiber). Both public arms are thin wrappers selecting
 the relevant guard. Private; see the two wrappers for the KT-4.2(ii)/(i) statements. -/
-private theorem splitOff_reroute_packing [DecidableEq β] [Finite α] [Finite β]
+private theorem splitOff_reroute_packing [DecidableEq β] [Finite β]
     {G : Graph α β} {n : ℕ} (hD : 2 ≤ bodyBarDim n) {v a b : α} {eₐ e_b e₀ : β}
     (hab : a ≠ b) (hav : a ≠ v) (hbv : b ≠ v) (heab : eₐ ≠ e_b)
     (hla : G.IsLink eₐ v a) (hlb : G.IsLink e_b v b) (he₀ : e₀ ∉ E(G))
@@ -1468,7 +1468,7 @@ Given an `M(G̃_v^{ab})`-independent fiber set `I'` that **contains the whole fr
 This is KT 4.2's `h' = D − 1` arm: every one of the `D − 1` short-circuit copies of `I'` is
 traded back for the `v`-edges it short-circuited. A thin wrapper over `splitOff_reroute_packing`
 (the shared reroute-packing engine), selecting the full-fiber guard. See the section preamble. -/
-theorem splitOff_indep_extend_of_fiber_subset [DecidableEq β] [Finite α] [Finite β]
+theorem splitOff_indep_extend_of_fiber_subset [DecidableEq β] [Finite β]
     {G : Graph α β} {n : ℕ} (hD : 2 ≤ bodyBarDim n) {v a b : α} {eₐ e_b e₀ : β}
     (hab : a ≠ b) (hav : a ≠ v) (hbv : b ≠ v) (heab : eₐ ≠ e_b)
     (hla : G.IsLink eₐ v a) (hlb : G.IsLink e_b v b)
@@ -1500,7 +1500,7 @@ This is KT 4.2's `h' < D − 1` arm. The `h'` short-circuit copies of `I'` are s
 with no `−1`
 correction. A thin wrapper over `splitOff_reroute_packing` (the shared reroute-packing engine),
 selecting the partial-fiber guard. See the section preamble. -/
-theorem splitOff_indep_extend_of_fiber_lt [DecidableEq β] [Finite α] [Finite β]
+theorem splitOff_indep_extend_of_fiber_lt [DecidableEq β] [Finite β]
     {G : Graph α β} {n : ℕ} (hD : 2 ≤ bodyBarDim n) {v a b : α} {eₐ e_b e₀ : β}
     (hab : a ≠ b) (hav : a ≠ v) (hbv : b ≠ v) (heab : eₐ ≠ e_b)
     (hla : G.IsLink eₐ v a) (hlb : G.IsLink e_b v b)

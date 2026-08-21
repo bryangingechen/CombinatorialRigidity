@@ -797,7 +797,7 @@ noncomputable def PartialTransversal.encard (T : PartialTransversal A) : ℕ∞ 
 
 /-- The partial transversal whose edges are the graph of an injective partial
 representative function `f : ↑I → α`. -/
-@[simps] def PartialTransversal.of_fun [DecidableEq (ι × α)] {I : Finset ι} {f : ↑I → α}
+@[simps] def PartialTransversal.ofFun [DecidableEq (ι × α)] {I : Finset ι} {f : ↑I → α}
     (h : ∀ i : I, f i ∈ A i) (hf : f.Injective) : PartialTransversal A where
   edges := Finset.image (fun i ↦ ⟨i.val, f i⟩) Finset.univ
   mem := by
@@ -813,57 +813,51 @@ representative function `f : ↑I → α`. -/
     rintro e ⟨i, rfl⟩ f ⟨j, rfl⟩ h
     rw [hf h]
 
-lemma PartialTransversal.of_fun_mem_edges_iff [DecidableEq (ι × α)] {I : Finset ι}
+lemma PartialTransversal.ofFun_mem_edges_iff [DecidableEq (ι × α)] {I : Finset ι}
     {f : ↑I → α} {h : ∀ i : I, f i ∈ A i} {hf : f.Injective} {i : ι} {x : α} :
-    (i, x) ∈ (PartialTransversal.of_fun h hf).edges ↔ ∃ hi, f ⟨i, hi⟩ = x := by
-  simp only [of_fun_edges, mem_image, mem_univ, true_and, Prod.mk.injEq, Subtype.exists,
+    (i, x) ∈ (PartialTransversal.ofFun h hf).edges ↔ ∃ hi, f ⟨i, hi⟩ = x := by
+  simp only [ofFun_edges, mem_image, mem_univ, true_and, Prod.mk.injEq, Subtype.exists,
     exists_and_left, exists_eq_left]
 
-lemma PartialTransversal.of_fun_mem_dom [DecidableEq (ι × α)] {I : Finset ι} {f : ↑I → α}
+lemma PartialTransversal.ofFun_mem_dom [DecidableEq (ι × α)] {I : Finset ι} {f : ↑I → α}
     {h : ∀ i : ↑I, f i ∈ A i}
-    {hf : f.Injective} {i : ι} {x : α} (hix : (i, x) ∈ (PartialTransversal.of_fun h hf).edges) :
+    {hf : f.Injective} {i : ι} {x : α} (hix : (i, x) ∈ (PartialTransversal.ofFun h hf).edges) :
     i ∈ I := by
-  simp only [of_fun_mem_edges_iff] at hix
+  simp only [ofFun_mem_edges_iff] at hix
   obtain ⟨hi, _⟩ := hix; use hi
 
-@[simp] lemma PartialTransversal.of_fun_total_iff [Fintype ι] [DecidableEq (ι × α)] {I : Finset ι}
+@[simp] lemma PartialTransversal.ofFun_total_iff [Fintype ι] [DecidableEq (ι × α)] {I : Finset ι}
     {f : ↑I → α} {h : ∀ i : ↑I, f i ∈ A i}
-    {hf : f.Injective} : (PartialTransversal.of_fun h hf).Total ↔ I = univ := by
-  simp only [Total, of_fun_mem_edges_iff]
+    {hf : f.Injective} : (PartialTransversal.ofFun h hf).Total ↔ I = univ := by
+  simp only [Total, ofFun_mem_edges_iff]
   refine ⟨fun h' ↦ ?_, fun h' i ↦ ?_⟩
   · refine univ_subset_iff.mp (fun i _ ↦ ?_)
     obtain ⟨x, hi, _⟩ := h' i; use hi
   have h_mem : i ∈ I := by simp only [h', mem_univ i]
   use f ⟨i, h_mem⟩, h_mem
 
-@[simp] lemma PartialTransversal.of_fun_left_eq [DecidableEq ι] [DecidableEq (ι × α)]
+@[simp] lemma PartialTransversal.ofFun_left_eq [DecidableEq ι] [DecidableEq (ι × α)]
     {I : Finset ι}
     {f : ↑I → α} {h : ∀ i : ↑I, f i ∈ A i}
-    {hf : f.Injective} : (PartialTransversal.of_fun h hf).left = I := by
+    {hf : f.Injective} : (PartialTransversal.ofFun h hf).left = I := by
   ext i
-  simp only [mem_left_iff, of_fun_mem_edges_iff]
+  simp only [mem_left_iff, ofFun_mem_edges_iff]
   refine ⟨fun ⟨_, hi, _⟩ ↦ hi, fun a ↦ BEx.intro (f ⟨i, a⟩) a rfl⟩
 
-@[simp] lemma PartialTransversal.of_fun_right_eq [DecidableEq α] [DecidableEq (ι × α)]
+@[simp] lemma PartialTransversal.ofFun_right_eq [DecidableEq α] [DecidableEq (ι × α)]
     {I : Finset ι}
     {f : ↑I → α} {h : ∀ i : ↑I, f i ∈ A i}
-    {hf : f.Injective} : (PartialTransversal.of_fun h hf).right = image f univ := by
+    {hf : f.Injective} : (PartialTransversal.ofFun h hf).right = image f univ := by
   ext x
-  simp only [mem_right_iff, of_fun_mem_edges_iff, mem_image, mem_univ, true_and]
+  simp only [mem_right_iff, ofFun_mem_edges_iff, mem_image, mem_univ, true_and]
   refine ⟨fun ⟨i, hi, h⟩ ↦ ⟨⟨i, hi⟩, h⟩, fun ⟨a, h⟩ ↦ ⟨a.1, a.2, h⟩⟩
-
-instance [DecidableEq α] {B : ι → Finset α} :
-    DecidablePred ((fun ⟨i, x⟩ ↦ x ∈ B i) : ι × α → Prop) :=
-  fun ⟨i, x⟩ ↦ match decidableMem x (B i) with
-  | isTrue hp => isTrue hp
-  | isFalse hp => isFalse hp
 
 /-- Restrict a partial transversal of `A` to a partial transversal of `B` by
 keeping only the edges valid for `B`. -/
 def PartialTransversal.move [DecidableEq α] {A : ι → Finset α} (B : ι → Finset α)
     (T : PartialTransversal A) :
     PartialTransversal B where
-  edges := T.edges.filter (fun ⟨i, x⟩ ↦ x ∈ B i)
+  edges := T.edges.filter (fun e ↦ e.2 ∈ B e.1)
   mem := by
     simp only [mem_filter, and_imp, imp_self, implies_true]
   uniq := by
@@ -988,9 +982,9 @@ theorem rado_v2 [Finite ι] [Finite α] [DecidableEq α] (M : Matroid α)
       Nat.lt_add_one_iff, ← ENat.natCast_le_natCast, cast_rk_eq, card_singleton, Nat.cast_one]
     refine (M.eRk_le_encard {e j}).trans (by simp only [Set.encard_singleton, le_refl])
   have he'_inj : e'.Injective := fun i j hij ↦ SetCoe.ext (he_inj (by simpa only [e'] using hij))
-  use PartialTransversal.of_fun (fun i ↦ he_mem i) he'_inj
-  refine ⟨by simp only [PartialTransversal.of_fun_total_iff], ?_⟩
-  simp only [PartialTransversal.of_fun_right_eq,
+  use PartialTransversal.ofFun (fun i ↦ he_mem i) he'_inj
+  refine ⟨by simp only [PartialTransversal.ofFun_total_iff], ?_⟩
+  simp only [PartialTransversal.ofFun_right_eq,
     indep_iff_eRk_eq_encard_of_finite <| finite_toSet _]
   refine le_antisymm (M.eRk_le_encard _) ?_
   have : (image e' univ) = (image e univ) := by

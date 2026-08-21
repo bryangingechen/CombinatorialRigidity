@@ -121,7 +121,6 @@ spans no more than itself" and "two points span at most a line" — useful for r
 `affineSpan k s = ⊤` from a cardinality bound, e.g., the proper-affine-subspaces
 side-condition of `AffineSubspace.biUnion_ne_univ_of_top_notMem`. -/
 theorem AffineSubspace.affineSpan_ne_top_of_ncard_le_finrank
-    [FiniteDimensional k V] [Nontrivial V]
     {s : Set V} (hsf : s.Finite) (hs : s.ncard ≤ finrank k V) :
     affineSpan k s ≠ ⊤ := by
   intro h_top

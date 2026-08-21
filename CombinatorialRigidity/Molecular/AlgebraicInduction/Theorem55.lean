@@ -146,7 +146,7 @@ The all-zero-extensor framework `F := ⟨G, fun _ => 0⟩` fires no hinge constr
 panel-normal conjunct. No `Fin 4` / `⋀²ℝ⁴` geometry enters — the empty arm is pure bookkeeping, so
 the lift is a verbatim numeral pass (`Fin 4 → Fin (k + 2)`, `screwDim 2 → screwDim k`); the `hn`
 hypothesis carries the `bodyBarDim n = screwDim k` arithmetic the rank target needs. -/
-theorem theorem_55_base_producer_empty_gen [DecidableEq β] [Finite α] {n : ℕ}
+theorem theorem_55_base_producer_empty_gen [DecidableEq β] {n : ℕ}
     (hn : Graph.bodyBarDim n = screwDim k)
     (G : Graph α β) (hE : E(G) = ∅)
     (hG : G.IsMinimalKDof n ((Graph.bodyBarDim n : ℤ) * ((V(G).ncard : ℤ) - 1))) :
@@ -195,7 +195,7 @@ the all-`k` base producer at `d = 3`: a minimal-`k`-dof graph on `1 ≤ |V| ≤ 
 set** carries a genuine-hinge panel realization at rank `D(|V|−1) − def = 0`. The work is the
 grade-general `theorem_55_base_producer_empty_gen`; this wrapper specializes `k := 2` (`Fin 4`,
 `screwDim 2 = 6`) for use at `d = 3`. -/
-theorem theorem_55_base_producer_empty [DecidableEq β] [Finite α] {n : ℕ}
+theorem theorem_55_base_producer_empty [DecidableEq β] {n : ℕ}
     (hn : Graph.bodyBarDim n = screwDim 2)
     (G : Graph α β) (hE : E(G) = ∅)
     (hG : G.IsMinimalKDof n ((Graph.bodyBarDim n : ℤ) * ((V(G).ncard : ℤ) - 1))) :
@@ -220,7 +220,7 @@ identity. The whole proof is the verbatim numeral pass over the d=3 body — `Fi
 `ScrewSpace K 2 → ScrewSpace K k`, `screwDim 2 → screwDim k`, with the `1 ≤ screwDim k`
 cast supplied by
 `one_le_screwDim`. The d=3 `theorem_55_base_producer_single_edge` is now its `k := 2` wrapper. -/
-theorem theorem_55_base_producer_single_edge_gen [DecidableEq β] [Finite α] {n : ℕ}
+theorem theorem_55_base_producer_single_edge_gen [DecidableEq β] {n : ℕ}
     (hk : 1 ≤ k)
     (G : Graph α β) {x y : α} {e : β}
     (hxy : x ≠ y) (hVG : V(G) = {x, y}) (hEG : E(G) = {e})
@@ -309,7 +309,7 @@ bookkeeping arm of the all-`k` base producer at `d = 3`: a minimal-`1`-dof graph
 `D(|V|−1) − def = D·1 − 1 = D − 1 = 5` (at `d = 3`, `D = 6`). The work is the grade-general
 `theorem_55_base_producer_single_edge_gen`; this wrapper specializes `k := 2` (`Fin 4`,
 `screwDim 2 = 6`) for use at `d = 3`. -/
-theorem theorem_55_base_producer_single_edge [DecidableEq β] [Finite α] {n : ℕ}
+theorem theorem_55_base_producer_single_edge [DecidableEq β] {n : ℕ}
     (G : Graph α β) {x y : α} {e : β}
     (hxy : x ≠ y) (hVG : V(G) = {x, y}) (hEG : E(G) = {e})
     (hl : G.IsLink e x y) (hG : G.IsMinimalKDof n 1) :
@@ -332,7 +332,7 @@ general position. The rigidity-row span is `⊥` (no links fire,
 geometry** — verbatim numeral pass over the d=3 body (`Fin 4 → Fin (k + 2)`, `screwDim 2 → screwDim
 k`). The d=3 `theorem_55_base_producer_empty_gp` is now its `k := 2` wrapper. -/
 theorem theorem_55_base_producer_empty_gp_gen
-    [Infinite K] [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
+    [Infinite K] [DecidableEq β] [Finite α] {n : ℕ}
     (hn : Graph.bodyBarDim n = screwDim k)
     (G : Graph α β) (hE : E(G) = ∅) (hne : V(G).Nonempty)
     (hG : G.IsMinimalKDof n ((Graph.bodyBarDim n : ℤ) * ((V(G).ncard : ℤ) - 1))) :
@@ -384,7 +384,7 @@ theorem theorem_55_base_producer_empty_gp_gen
 (`HasGenericFullRankRealization`) at rank `D(|V|−1) − def = 0`. The work is the grade-general
 `theorem_55_base_producer_empty_gp_gen`; this wrapper specializes `k := 2` (`Fin 4`,
 `screwDim 2 = 6`) for use at `d = 3`. -/
-theorem theorem_55_base_producer_empty_gp [Infinite K] [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
+theorem theorem_55_base_producer_empty_gp [Infinite K] [DecidableEq β] [Finite α] {n : ℕ}
     (hn : Graph.bodyBarDim n = screwDim 2)
     (G : Graph α β) (hE : E(G) = ∅) (hne : V(G).Nonempty)
     (hG : G.IsMinimalKDof n ((Graph.bodyBarDim n : ℤ) * ((V(G).ncard : ℤ) - 1))) :
@@ -412,7 +412,7 @@ and the single-hinge-row block has rank `D − 1` (`span_panelRow_linking_eq_rig
 `one_le_screwDim` replacing the d=3 `decide`-cast `1 ≤ screwDim 2`. The d=3
 `theorem_55_base_producer_single_edge_gp` is now its `k := 2` wrapper. -/
 theorem theorem_55_base_producer_single_edge_gp_gen
-    [Infinite K] [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
+    [Infinite K] [DecidableEq β] [Finite α] {n : ℕ}
     (G : Graph α β) {x y : α} {e : β}
     (hxy : x ≠ y) (hVG : V(G) = {x, y}) (hEG : E(G) = {e})
     (hl : G.IsLink e x y) (hG : G.IsMinimalKDof n 1) :
@@ -498,7 +498,7 @@ the `k = 2` wrapper of `theorem_55_base_producer_single_edge_gp_gen`). The GP-co
 `theorem_55_base_producer_single_edge_gp_gen`; this wrapper specializes `k := 2` (`Fin 4`,
 `screwDim 2 = 6`) for use at `d = 3`. -/
 theorem theorem_55_base_producer_single_edge_gp
-    [Infinite K] [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
+    [Infinite K] [DecidableEq β] [Finite α] {n : ℕ}
     (G : Graph α β) {x y : α} {e : β}
     (hxy : x ≠ y) (hVG : V(G) = {x, y}) (hEG : E(G) = {e})
     (hl : G.IsLink e x y) (hG : G.IsMinimalKDof n 1) :

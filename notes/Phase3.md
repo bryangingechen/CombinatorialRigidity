@@ -27,8 +27,8 @@ Supporting helpers added this phase:
   given a degree-3 neighborhood `{a, b, c}` of `v` in a Laman graph,
   some pair is non-adjacent (sparsity at `{v, a, b, c}` minus the
   three `v`-edges bounds edges among `{a, b, c}` by 2).
-* `Henneberg.typeI_iso_of_two_neighbors`,
-  `Henneberg.typeII_iso_of_three_neighbors` (private, in
+* `Henneberg.isoTypeIOfTwoNeighbors`,
+  `Henneberg.isoTypeIIOfThreeNeighbors` (private, in
   `Henneberg.lean`) — the iso constructions, parameterised on
   `hN : ∀ w, G.Adj v w ↔ w = a ∨ w = b (∨ w = c)`. Underlying equiv
   is `(Equiv.optionSubtypeNe v).symm`. Both factor through the
@@ -128,8 +128,8 @@ there.
 ### Decomposition iso (this session)
 - [x] `IsLaman.exists_nonadj_among_three_neighbors` (in `Laman.lean`)
   — supporting helper for the typeII branch.
-- [x] `Henneberg.typeI_iso_of_two_neighbors`,
-  `Henneberg.typeII_iso_of_three_neighbors` — private iso helpers.
+- [x] `Henneberg.isoTypeIOfTwoNeighbors`,
+  `Henneberg.isoTypeIIOfThreeNeighbors` — private iso helpers.
 - [x] `IsLaman.exists_typeI_or_typeII_iso` — main result. Picks `v`
   with `2 ≤ G.degree v ≤ 3`, lifts neighbors via
   `Finset.card_eq_two/three.mp`, and for the typeII branch rotates
@@ -183,7 +183,7 @@ explanations live in TACTICS-GOLF / TACTICS-QUIRKS, FRICTION, or DESIGN.)
   conjunct via the `¬ G.Adj a b` hypothesis on its own.
 
 - **Extract `isoOfOptionSubtypeNe` from the two iso constructors.**
-  `typeI_iso_of_two_neighbors` and `typeII_iso_of_three_neighbors`
+  `isoTypeIOfTwoNeighbors` and `isoTypeIIOfThreeNeighbors`
   both built `G ≃g (move-graph)` along
   `(Equiv.optionSubtypeNe v).symm`, with identical 4-case `by_cases`
   scaffolding modulo the `Adj` lemma name. Factored the scaffolding
@@ -192,8 +192,8 @@ explanations live in TACTICS-GOLF / TACTICS-QUIRKS, FRICTION, or DESIGN.)
   (cases 2 / 3 by symmetry), and
   `H.Adj (some ⟨u, hu⟩) (some ⟨w, hw⟩) ↔ G.Adj u w` (case 4 with
   any move-specific bridging logic). After extraction
-  `typeI_iso_of_two_neighbors` is a 6-line term-mode definition;
-  `typeII_iso_of_three_neighbors` keeps the bridging-edge logic in
+  `isoTypeIOfTwoNeighbors` is a 6-line term-mode definition;
+  `isoTypeIIOfThreeNeighbors` keeps the bridging-edge logic in
   its `(some, some)` argument. Net 14 lines saved.
 
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
@@ -251,7 +251,7 @@ per-file effect.
   by `typeI_isLaman` and `typeII_isLaman`); `typeI_branch_of_two_neighbors`
   and `typeII_branch_of_nonadj` (the existential-witness construction
   in `IsLaman.exists_typeI_or_typeII_iso`). Plus tightening of the
-  `(some, some)` arm of `typeII_iso_of_three_neighbors` via
+  `(some, some)` arm of `isoTypeIIOfThreeNeighbors` via
   `congrArg (Sym2.map Subtype.val)` (TACTICS-GOLF § 5).
 - **Pass 2 (`grind` workflow).** ~15 lines saved across four files
   by replacing closing `omega` / `simp` / `tauto` with `grind only`
@@ -260,7 +260,7 @@ per-file effect.
   `edgesIn_compl_singleton`, `IsLaman.exists_nonadj_among_three_neighbors`,
   `top_fin_two_isLaman`, the `typeII_isLaman` `h_or` and `hT'_le_2`
   blocks, and the `(some, some)` arm of
-  `typeII_iso_of_three_neighbors`. Things `grind` did *not* close
+  `isoTypeIIOfThreeNeighbors`. Things `grind` did *not* close
   (and where the proof reverted): full `Iso.image_edgesIn`
   (existentials need a named witness; grind picks the wrong one),
   Sym2-pattern disjointness (TACTICS-GOLF § 1).

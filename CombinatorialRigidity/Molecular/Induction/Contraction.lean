@@ -253,7 +253,7 @@ restrict-then-contract commutes to contract-then-restrict because `E(H̃) ⊆ E(
 (`Matroid.restrict_contract_eq_contract_restrict`). Together with `matroidMG_rigidContract_eq`
 (the matching union-of-contractions form for `M(K̃)`), this leaves N4c as the single
 union↔contraction equality on `E(G̃) \ E(H̃)`; see the section docstring. -/
-lemma matroidMG_contract_eq_restrict [DecidableEq β] [Finite α] [Finite β] {H G : Graph α β}
+lemma matroidMG_contract_eq_restrict [DecidableEq β] {H G : Graph α β}
     (hle : H ≤ G) (n : ℕ) :
     (G.matroidMG n) ／ E(H.mulTilde n) =
       (Matroid.Union (fun _ : Fin (bodyBarDim n) ↦ (G.mulTilde n).cycleMatroid)
@@ -269,7 +269,7 @@ factor `K̃.cycleMatroid = G̃.cycleMatroid ／ E(H̃)`) with `edgeSet_mulTilde_
 ground `E(K̃) = E(G̃) \ E(H̃)`). Paired with `matroidMG_contract_eq_restrict`, the two sides of
 N4c sit over the same ground and differ only by union↔contraction order; see the section
 docstring. -/
-lemma matroidMG_rigidContract_eq [DecidableEq β] [Finite α] [Finite β] {H G : Graph α β}
+lemma matroidMG_rigidContract_eq [DecidableEq β] {H G : Graph α β}
     (hle : H ≤ G) {r : α} (hr : r ∈ V(H)) (n : ℕ) (hconn : (H.mulTilde n).Preconnected) :
     (G.rigidContract H r).matroidMG n =
       (Matroid.Union (fun _ : Fin (bodyBarDim n) ↦
@@ -638,7 +638,7 @@ ground `E(G̃) \ E(H̃)`). Picking an `M(G̃)`-basis `J` of `E(H̃)`, the union 
 base of `M(G̃)` (`Matroid.IsBase.union_isBasis_of_contract`), so `G`'s minimality gives
 `(B' ∪ J) ∩ ẽ ≠ ∅`. The surviving fiber `ẽ` (with `e ∉ E(H)`) is disjoint from `E(H̃) ⊇ J`
 (`p ∈ E(H̃) ↔ p.1 ∈ E(H)`, but `p.1 = e ∉ E(H)`), so the witness lands in `B'`. -/
-theorem contract_minimality_transport [DecidableEq β] [Finite α] [Finite β] {H G : Graph α β}
+theorem contract_minimality_transport [DecidableEq β] {H G : Graph α β}
     {n : ℕ} {k : ℤ} (hG : G.IsMinimalKDof n k) {B' : Set (β × Fin (bodyHingeMult n))}
     (hB' : ((G.matroidMG n) ／ E(H.mulTilde n)).IsBase B') {e : β} (heG : e ∈ E(G))
     (heH : e ∉ E(H)) : (B' ∩ edgeFiber e n).Nonempty := by

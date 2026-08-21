@@ -284,7 +284,7 @@ independent.** If `Fs : Fin (bodyBarDim n) → Set β` is a *disjoint* packing o
 (`stdFramework_rigidityRow_eq`), and the block-diagonal family is linearly independent
 over `ℝ` by `specRow_linearIndependent` (`Graph.orientation.isAcyclicSet_linearIndepOn`),
 reindexed along the disjoint-cover bijection `Set.unionEqSigmaOfDisjoint`. -/
-theorem stdFramework_rigidityRow_linearIndependent [Finite α] [Finite β] {G : Graph α β}
+theorem stdFramework_rigidityRow_linearIndependent [Finite α] {G : Graph α β}
     {Fs : Fin (bodyBarDim n) → Set β} (hcover : ⋃ i, Fs i = E(G))
     (hdisj : Pairwise (Function.onFun Disjoint Fs)) (hacyc : ∀ i, G.IsAcyclicSet (Fs i))
     (j : E(G) → Fin (bodyBarDim n)) (hj : ∀ e : E(G), (e : β) ∈ Fs (j e))
@@ -334,7 +334,7 @@ subfamily indexed by `E'ₛ = Subtype.val ⁻¹' E'`: the disjoint cover `⋃ i,
 `e ∈ E'` in its forest (`hj` is vacuous off `E'`). This is what `lem:endpoint-witness` needs: the
 witness only assigns standard-basis extensors to the bars of a sparse subset `E'`, not to all of
 `E(G)`. -/
-theorem stdFramework_rigidityRow_linearIndependent_restrict [Finite α] [Finite β] {G : Graph α β}
+theorem stdFramework_rigidityRow_linearIndependent_restrict [Finite α] {G : Graph α β}
     {E' : Set β} (hE' : E' ⊆ E(G))
     {Fs : Fin (bodyBarDim n) → Set β} (hcover : ⋃ i, Fs i = E')
     (hdisj : Pairwise (Function.onFun Disjoint Fs)) (hacyc : ∀ i, G.IsAcyclicSet (Fs i))
@@ -467,6 +467,9 @@ bar set `E'` is `d` times the cycle-matroid rank `r(E')`. The real analogue of
 `ℝ`); the chosen orientation is replaced by `G.orientation_nonempty.some` via
 `span_signedIncMatrix_image_eq_of_orientation`. This caps the row span in the converse rank bound
 `finrank_rigidityRow_span_le`. -/
+-- `unusedArguments` FALSE POSITIVE: the `Fintype.ofFinite` bridge in the proof body
+-- needs this instance to elaborate; it does not survive into the proof term.
+@[nolint unusedArguments]
 theorem finrank_realBlockPiSpanOn [Finite α] [Finite β] {G : Graph α β}
     (D : Graph.orientation G) (E' : Set β) :
     letI : DecidableEq α := Classical.decEq α
@@ -597,7 +600,7 @@ linearly independent family in `Module.Dual ℝ (Motion n α)`. The rows span `r
 `ℝ`-dimension equals `rank (rigidityMap D)` (`span_range_rigidityRow` +
 `finrank_range_dualMap_eq_finrank_range`); independence makes this `|E(F.graph)| = #rows`, so the
 spanning family of `#rows` rows is a basis, hence linearly independent. -/
-theorem rigidityRow_linearIndependent [Finite α] [Finite β] {F : BodyBarFramework n α β}
+theorem rigidityRow_linearIndependent [Finite β] {F : BodyBarFramework n α β}
     {D : Graph.orientation F.graph} (hindep : F.IsIndependent D) :
     LinearIndependent ℝ (F.rigidityRow D) := by
   haveI : Fintype E(F.graph) := Fintype.ofFinite _
@@ -611,7 +614,7 @@ by the same row-rank identity read the other way (`stdFramework_finrank_range`'s
 generalized from the standard-basis witness to an arbitrary framework). Needed by the generic
 body-bar Tay pair (`GenericLift.lean`, `cor:bodybar-generic-tay`) to bridge the endpoint-genericity
 theorem's row-independence conclusion into the rank-valued `IsIndependent`. -/
-theorem isIndependent_iff_linearIndependent_rigidityRow [Finite α] [Finite β]
+theorem isIndependent_iff_linearIndependent_rigidityRow [Finite β]
     {F : BodyBarFramework n α β} {D : Graph.orientation F.graph} :
     F.IsIndependent D ↔ LinearIndependent ℝ (F.rigidityRow D) := by
   haveI : Fintype E(F.graph) := Fintype.ofFinite _
