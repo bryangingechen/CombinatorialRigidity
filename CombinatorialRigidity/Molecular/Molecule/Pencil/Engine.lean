@@ -301,11 +301,11 @@ theorem pencilAnnihRowPoly_eval (hubSel : α → Fin 3 → Option α) (u v : α)
     mul_ite, mul_one, mul_zero]
   congr 1
   · rcases eq_or_ne t₂ s with h | h
-    · rw [if_pos h, if_pos h.symm]
-    · rw [if_neg h, if_neg fun h' => h h'.symm]
+    · rw [ite_eq_left h, ite_eq_left h.symm]
+    · rw [ite_eq_right h, ite_eq_right fun h' => h h'.symm]
   · rcases eq_or_ne t₁ s with h | h
-    · rw [if_pos h, if_pos h.symm]
-    · rw [if_neg h, if_neg fun h' => h h'.symm]
+    · rw [ite_eq_left h, ite_eq_left h.symm]
+    · rw [ite_eq_right h, ite_eq_right fun h' => h h'.symm]
 
 /-- **The graph-free annihilator-row family of a seed-coordinate point** (Phase 39 W5-L3, the
 pencil analogue of `PanelHingeFramework.normalRow`): for an endpoint selector `ends : β → α × α`
@@ -372,7 +372,7 @@ theorem exists_polynomial_ne_zero_of_linearIndependent_pencilRow [Finite α] [Fi
     rw [pencilRow, BodyHingeFramework.hingeRow_apply, MvPolynomial.smul_eval,
       pencilAnnihRowPoly_eval, Pi.single_apply, Pi.single_apply]
     by_cases hu : (ends i.1).1 = a <;> by_cases hv : (ends i.1).2 = a <;>
-      simp only [hu, hv, if_true, if_false, sub_zero, zero_sub, sub_self, map_zero,
+      simp only [hu, hv, ite_true, ite_false, sub_zero, zero_sub, sub_self, map_zero,
         map_neg, one_mul, neg_mul, zero_mul]
   obtain ⟨Q, hQ0, hQ⟩ :=
     exists_polynomial_ne_zero_of_linearIndependent_at_reindex e g c φ hg (p₀ := q₀) (s := s) h
@@ -610,11 +610,11 @@ theorem exists_smul_cross₃_pi_single {a b c d : Fin 4} (had : a ≠ d) (hbd : 
     have := congrFun h d
     simp at this
   have hq1 : (Pi.single d (1 : K) : Fin 4 → K) ⬝ᵥ Pi.single a (1 : K) = 0 := by
-    rw [dotProduct_single_one, Pi.single_apply, if_neg had]
+    rw [dotProduct_single_one, Pi.single_apply, ite_eq_right had]
   have hq2 : (Pi.single d (1 : K) : Fin 4 → K) ⬝ᵥ Pi.single b (1 : K) = 0 := by
-    rw [dotProduct_single_one, Pi.single_apply, if_neg hbd]
+    rw [dotProduct_single_one, Pi.single_apply, ite_eq_right hbd]
   have hq3 : (Pi.single d (1 : K) : Fin 4 → K) ⬝ᵥ Pi.single c (1 : K) = 0 := by
-    rw [dotProduct_single_one, Pi.single_apply, if_neg hcd]
+    rw [dotProduct_single_one, Pi.single_apply, ite_eq_right hcd]
   exact exists_smul_cross₃_eq_of_linearIndependent hLI hd_ne hq1 hq2 hq3
 
 /-! ## W5-L4: the exact perp-sweeps at arity `2`/`1`/`0` (Phase 39 PENCIL, D6,
@@ -1015,7 +1015,7 @@ theorem exists_hubSlotOf_isNondegPencilRealization [Finite α]
     · intro w hw
       have hempty : G.closedHubNbhd v = ∅ := by
         ext w
-        simp only [Graph.closedHubNbhd, Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]
+        simp only [Graph.closedHubNbhd, Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false]
         rintro ⟨hPencilHub, rfl | ⟨e, hlink⟩⟩
         · exact hv hPencilHub.1
         · exact hv hlink.left_mem
@@ -1355,7 +1355,7 @@ theorem exists_nbrSlotOf_isNondegPencilRealization [Finite α] [Finite β]
           exact hcxyz
     · have heq : G.closedNbhd v = {v} := by
         ext w
-        simp only [Graph.closedNbhd, Set.mem_setOf_eq, Set.mem_singleton_iff]
+        simp only [Graph.closedNbhd, Set.mem_ofPred_eq, Set.mem_singleton_iff]
         constructor
         · rintro (rfl | ⟨e, hlink⟩)
           · rfl

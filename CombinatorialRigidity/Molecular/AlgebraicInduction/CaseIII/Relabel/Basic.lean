@@ -548,7 +548,7 @@ theorem PanelHingeFramework.ofNormals_relabel [DecidableEq α] [DecidableEq β]
     · exact hu               -- otherwise fixed
   -- ρ maps V(G) \ {a} to V(G) \ {v} bijectively.
   have hρ_diff : ∀ u : α, u ∈ V(G) \ {a} → ρ u ∈ V(G) \ {v} := fun u hu => by
-    refine Set.mem_diff_of_mem (hρmemV u hu.1) ?_
+    refine Set.mem_sdiff_of_mem (hρmemV u hu.1) ?_
     intro h
     have hρa : ρ a = v := by rw [hρ_def]; exact Equiv.swap_apply_left a v
     have hua : u = a := ρ.injective ((Set.mem_singleton_iff.mp h).trans hρa.symm)
@@ -1577,7 +1577,7 @@ theorem _root_.Graph.ChainData.shiftBodyFrameworkTotal_eq {G : Graph α β} {n :
     (cd : G.ChainData n) (ends : β → α × α) (q : α × Fin (k + 2) → K) {s : ℕ}
     (hs : s + 1 < cd.d + 1) :
     cd.shiftBodyFrameworkTotal ends q s = cd.shiftBodyFramework hs ends q := by
-  rw [Graph.ChainData.shiftBodyFrameworkTotal, dif_pos hs]
+  rw [Graph.ChainData.shiftBodyFrameworkTotal, dite_eq_left hs]
 
 /-- **The cycle-W9a membership half** (CHAIN-2c-ii-transport-W9a route B, the genuinely-new crux;
 `notes/Phase23-design.md` §(o″)). The iterated W9a transport over the moved-body list
@@ -1644,7 +1644,7 @@ theorem _root_.Graph.ChainData.shiftBodyList_foldr_mem_span_rigidityRows
   -- The per-step edge `ec s = edge s` (in range, `s < cd.d`): resolve the `dite` to the predecessor
   -- edge `e_c = vₛ₊₁vₛ` of the W9a step.
   have hec : (if h : s < cd.d then cd.edge ⟨s, h⟩
-      else cd.edge ⟨0, by have := cd.hd; omega⟩) = cd.edge ⟨s, by omega⟩ := dif_pos (by omega)
+      else cd.edge ⟨0, by have := cd.hd; omega⟩) = cd.edge ⟨s, by omega⟩ := dite_eq_left (by omega)
   simp only [hFs1, hFs, hbody, hec]
   -- The six `hstep` conjuncts off the landed graph/framework accessors (the moved-body geometry).
   refine ⟨⟨cd.shiftBody_pred_ne hsi hiv, cd.shiftBody_pred_ne_succ hsi hiv⟩, ?_, ?_, ?_, ?_, ?_⟩

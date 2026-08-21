@@ -279,7 +279,7 @@ and has a single part, so its `D`-deficiency is `0`. This is the witness that
 theorem partitionDef_one (G : Graph α β) (n : ℕ) (a : α) (hne : V(G).Nonempty) :
     G.partitionDef n (fun _ => a) = 0 := by
   have hcross : G.crossingEdges (fun _ => a) = ∅ := by
-    simp only [crossingEdges, Set.eq_empty_iff_forall_notMem, Set.mem_setOf_eq, not_and]
+    simp only [crossingEdges, Set.eq_empty_iff_forall_notMem, Set.mem_ofPred_eq, not_and]
     rintro e _ ⟨x, y, _, hxy⟩
     exact hxy rfl
   have hparts : G.numParts (fun _ => a) = 1 := by
@@ -338,7 +338,7 @@ theorem deficiency_deleteEdges_singleton_eq_of_isLoopAt {G : Graph α β} {n : �
     intro f
     have hcross : (G ＼ ({e} : Set β)).crossingEdges f = G.crossingEdges f := by
       ext e'
-      simp only [crossingEdges, Set.mem_setOf_eq, edgeSet_deleteEdges, Set.mem_diff,
+      simp only [crossingEdges, Set.mem_ofPred_eq, edgeSet_deleteEdges, Set.mem_sdiff,
         Set.mem_singleton_iff, deleteEdges_isLink]
       constructor
       · rintro ⟨⟨he'G, -⟩, x, y, ⟨hlink, -⟩, hxy⟩
@@ -544,19 +544,19 @@ theorem isKDof_zero_of_triangle [Finite α] {H : Graph α β} {n : ℕ}
   -- An edge of `H` crosses `P_f` iff its two endpoints disagree under `f`; the three edges
   -- are distinct, so each crossing condition is decided independently.
   have hmem_exy : exy ∈ H.crossingEdges f ↔ f x ≠ f y := by
-    simp only [crossingEdges, Set.mem_setOf_eq, hEH, Set.mem_insert_iff, Set.mem_singleton_iff,
+    simp only [crossingEdges, Set.mem_ofPred_eq, hEH, Set.mem_insert_iff, Set.mem_singleton_iff,
       true_or, true_and]
     refine ⟨fun ⟨p, q, hl, hd⟩ ↦ ?_, fun hd ↦ ⟨x, y, hxy, hd⟩⟩
     obtain ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ := hxy.eq_and_eq_or_eq_and_eq hl
     exacts [hd, fun h ↦ hd h.symm]
   have hmem_eyz : eyz ∈ H.crossingEdges f ↔ f y ≠ f z := by
-    simp only [crossingEdges, Set.mem_setOf_eq, hEH, Set.mem_insert_iff, Set.mem_singleton_iff,
+    simp only [crossingEdges, Set.mem_ofPred_eq, hEH, Set.mem_insert_iff, Set.mem_singleton_iff,
       or_true, true_or, true_and]
     refine ⟨fun ⟨p, q, hl, hd⟩ ↦ ?_, fun hd ↦ ⟨y, z, hyz, hd⟩⟩
     obtain ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ := hyz.eq_and_eq_or_eq_and_eq hl
     exacts [hd, fun h ↦ hd h.symm]
   have hmem_exz : exz ∈ H.crossingEdges f ↔ f x ≠ f z := by
-    simp only [crossingEdges, Set.mem_setOf_eq, hEH, Set.mem_insert_iff, Set.mem_singleton_iff,
+    simp only [crossingEdges, Set.mem_ofPred_eq, hEH, Set.mem_insert_iff, Set.mem_singleton_iff,
       or_true, true_and]
     refine ⟨fun ⟨p, q, hl, hd⟩ ↦ ?_, fun hd ↦ ⟨x, z, hxz, hd⟩⟩
     obtain ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ := hxz.eq_and_eq_or_eq_and_eq hl
@@ -685,13 +685,13 @@ theorem isKDof_zero_of_parallel_pair [Finite α] {H : Graph α β} {n : ℕ}
       exacts [⟨x, Or.inl rfl, rfl⟩, ⟨y, Or.inr rfl, rfl⟩]
   -- The two crossing-edge membership biconditionals.
   have hmem₁ : e₁ ∈ H.crossingEdges f ↔ f x ≠ f y := by
-    simp only [crossingEdges, Set.mem_setOf_eq, hEH, Set.mem_insert_iff, Set.mem_singleton_iff,
+    simp only [crossingEdges, Set.mem_ofPred_eq, hEH, Set.mem_insert_iff, Set.mem_singleton_iff,
       true_or, true_and]
     refine ⟨fun ⟨p, q, hl, hd⟩ ↦ ?_, fun hd ↦ ⟨x, y, hl₁, hd⟩⟩
     obtain ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ := hl₁.eq_and_eq_or_eq_and_eq hl
     exacts [hd, fun h ↦ hd h.symm]
   have hmem₂ : e₂ ∈ H.crossingEdges f ↔ f x ≠ f y := by
-    simp only [crossingEdges, Set.mem_setOf_eq, hEH, Set.mem_insert_iff, Set.mem_singleton_iff,
+    simp only [crossingEdges, Set.mem_ofPred_eq, hEH, Set.mem_insert_iff, Set.mem_singleton_iff,
       or_true, true_and]
     refine ⟨fun ⟨p, q, hl, hd⟩ ↦ ?_, fun hd ↦ ⟨x, y, hl₂, hd⟩⟩
     obtain ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ := hl₂.eq_and_eq_or_eq_and_eq hl
@@ -774,7 +774,7 @@ theorem isKDof_zero_of_cycle [Finite α] {H : Graph α β} {n : ℕ}
   -- `crossingEdges H f = edge '' {i | col i ≠ col (i + 1)}`.
   have hcross : H.crossingEdges f = edge '' {i : Fin m | col i ≠ col (i + 1)} := by
     ext e
-    simp only [crossingEdges, Set.mem_setOf_eq, Set.mem_image]
+    simp only [crossingEdges, Set.mem_ofPred_eq, Set.mem_image]
     constructor
     · rintro ⟨heE, x, y, hlxy, hfxy⟩
       rw [hEH] at heE
@@ -811,7 +811,7 @@ theorem isKDof_zero_of_cycle [Finite α] {H : Graph α β} {n : ℕ}
       have hsub : Set.range col ⊆ col '' {i : Fin m | col i ≠ col (i + 1)} := by
         rintro c ⟨j, rfl⟩
         by_contra hnotin
-        simp only [Set.mem_image, Set.mem_setOf_eq, not_exists, not_and] at hnotin
+        simp only [Set.mem_image, Set.mem_ofPred_eq, not_exists, not_and] at hnotin
         -- The color class of `col j` is forward-closed, so `col` is constant.
         have hcl : ∀ i : Fin m, col i = col j → col (i + 1) = col j := by
           intro i hi
@@ -1031,8 +1031,8 @@ theorem isSparse_diff_singleton_of_isCircuit [DecidableEq β] [Finite α] [Finit
     (hX : (G.matroidMG n).IsCircuit X) {e : β × Fin (bodyHingeMult n)} (he : e ∈ X) :
     ((G.mulTilde n) ↾ (X \ {e})).IsSparse (bodyBarDim n) (bodyBarDim n) ∧
       (G.matroidMG n).IsBasis (X \ {e}) X :=
-  ⟨(matroidMG_indep_iff G n).mp (hX.diff_singleton_indep he) |>.2,
-    hX.diff_singleton_isBasis he⟩
+  ⟨(matroidMG_indep_iff G n).mp (hX.sdiff_singleton_indep he) |>.2,
+    hX.sdiff_singleton_isBasis he⟩
 
 /-! ## Two-edge-connectivity (`lem:two-edge-conn`; KT Lemma 3.1)
 
@@ -1123,7 +1123,7 @@ lemma crossingEdges_cutLabeling_singleton_subset {G : Graph α β} {v a b : α}
   rintro e ⟨heG, x, y, hlink, hfxy⟩
   -- `f x ≠ f y` with `f = cutLabeling {v} a b` forces exactly one of `x, y` to equal `v`.
   simp only [cutLabeling, Set.mem_singleton_iff] at hfxy
-  rw [Set.mem_setOf_eq]
+  rw [Set.mem_ofPred_eq]
   by_cases hx : x = v
   · -- `x = v`, so `y ≠ v` (else `f x = f y`); `e` is a nonloop at `v` via the link `v, y`.
     subst hx
@@ -1176,24 +1176,24 @@ lemma cutEdges_eq_crossingEdges_cutLabeling {G : Graph α β} {V' : Set α} {a b
     G.cutEdges V' = G.crossingEdges (cutLabeling V' a b) := by
   have hab : a ≠ b := fun h => hb (h ▸ ha)
   ext e
-  simp only [cutEdges, crossingEdges, Set.mem_setOf_eq]
+  simp only [cutEdges, crossingEdges, Set.mem_ofPred_eq]
   constructor
   · rintro ⟨heG, x, y, hlink, hxV', hyV'⟩
     exact ⟨heG, x, y, hlink,
-      by simp only [cutLabeling, if_pos hxV', if_neg hyV']; exact hab⟩
+      by simp only [cutLabeling, ite_eq_left hxV', ite_eq_right hyV']; exact hab⟩
   · rintro ⟨heG, x, y, hlink, hfxy⟩
     -- Case-split on `x ∈ V'` to determine which endpoint is in `V'`.
     by_cases hxV' : x ∈ V'
     · -- `f x = a`; `f y = a` would give `f x = f y`, so `y ∉ V'`.
       have hyV' : y ∉ V' := by
         intro hyV'
-        simp only [cutLabeling, if_pos hxV', if_pos hyV'] at hfxy
+        simp only [cutLabeling, ite_eq_left hxV', ite_eq_left hyV'] at hfxy
         exact hfxy rfl
       exact ⟨heG, x, y, hlink, hxV', hyV'⟩
     · -- `f x = b`; `f y = b` would give `f x = f y`, so `y ∈ V'`. Use `hlink.symm`.
       have hyV' : y ∈ V' := by
         by_contra hy
-        simp only [cutLabeling, if_neg hxV', if_neg hy] at hfxy
+        simp only [cutLabeling, ite_eq_right hxV', ite_eq_right hy] at hfxy
         exact hfxy rfl
       exact ⟨heG, y, x, hlink.symm, hyV', hxV'⟩
 
@@ -1394,7 +1394,7 @@ and `deficiency_eq_of_cutEdges_ncard_le_one` (KT Lemma 3.6). The ¬2EC packaging
 private lemma crossingEdges_congr {G : Graph α β} {f g : α → α}
     (h : Set.EqOn f g V(G)) : G.crossingEdges f = G.crossingEdges g := by
   ext e
-  simp only [crossingEdges, Set.mem_setOf_eq]
+  simp only [crossingEdges, Set.mem_ofPred_eq]
   constructor <;> rintro ⟨heE, x, y, hlink, hne⟩
   · exact ⟨heE, x, y, hlink, by rwa [h hlink.left_mem, h hlink.right_mem] at hne⟩
   · exact ⟨heE, x, y, hlink, by rwa [← h hlink.left_mem, ← h hlink.right_mem] at hne⟩
@@ -1423,7 +1423,7 @@ lemma partitionDef_comp_of_injOn {G : Graph α β} {n : ℕ} {f g : α → α}
     rw [Set.image_comp, hg.ncard_image]
   have hce : G.crossingEdges (g ∘ f) = G.crossingEdges f := by
     ext e
-    simp only [crossingEdges, Function.comp, Set.mem_setOf_eq]
+    simp only [crossingEdges, Function.comp, Set.mem_ofPred_eq]
     constructor <;> rintro ⟨heE, x, y, hlink, hne⟩
     · exact ⟨heE, x, y, hlink, fun h => hne (congr_arg g h)⟩
     · exact ⟨heE, x, y, hlink,
@@ -1438,7 +1438,7 @@ private lemma crossingEdges_induce {G : Graph α β} {X : Set α} {g : α → α
     (G.induce X).crossingEdges g =
       {e ∈ E(G) | ∃ x y, G.IsLink e x y ∧ x ∈ X ∧ y ∈ X ∧ g x ≠ g y} := by
   ext e
-  simp only [crossingEdges, Graph.edgeSet_induce, Graph.induce_isLink, Set.mem_setOf_eq]
+  simp only [crossingEdges, Graph.edgeSet_induce, Graph.induce_isLink, Set.mem_ofPred_eq]
   constructor
   · rintro ⟨⟨x, y, hlink, hxX, hyX⟩, x', y', ⟨hlink', _, _⟩, hne⟩
     obtain ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ := hlink.eq_and_eq_or_eq_and_eq hlink'
@@ -1473,7 +1473,7 @@ lemma partitionDef_split_of_sides [Finite α] [Finite β]
         + (bodyBarDim n : ℤ) - ((bodyBarDim n : ℤ) - 1) * (G.cutEdges V₁).ncard := by
   -- Step 1: Decompose numParts.
   -- The image of V(G) under g splits as the disjoint union of the images of V₁ and V(G) ∖ V₁.
-  have hVun : V(G) = V₁ ∪ (V(G) \ V₁) := (Set.union_diff_cancel hsub).symm
+  have hVun : V(G) = V₁ ∪ (V(G) \ V₁) := (Set.union_sdiff_cancel hsub).symm
   have hdisj_img : Disjoint (g '' V₁) (g '' (V(G) \ V₁)) := by
     rw [Set.disjoint_left]
     rintro w ⟨x, hxV₁, rfl⟩ ⟨y, hyV, hgy⟩
@@ -1495,7 +1495,7 @@ lemma partitionDef_split_of_sides [Finite α] [Finite β]
         ∪ (G.induce (V(G) \ V₁)).crossingEdges g ∪ G.cutEdges V₁ := by
     ext e
     rw [Set.mem_union, Set.mem_union, crossingEdges_induce, crossingEdges_induce]
-    simp only [Set.mem_setOf_eq, crossingEdges, cutEdges]
+    simp only [Set.mem_ofPred_eq, crossingEdges, cutEdges]
     constructor
     · rintro ⟨heE, x, y, hlink, hne⟩
       by_cases hxV₁ : x ∈ V₁
@@ -1592,25 +1592,25 @@ lemma exists_sides_separated_partitionDef_le [Finite α] [Finite β] {G : Graph 
   constructor
   · -- Side-separation: x ∈ V₁ and y ∈ V(G) \ V₁ → g x ≠ g y.
     intro x hxV₁ y ⟨hyV, hyV₁⟩
-    simp only [g, if_pos (hsub hxV₁), if_pos hyV]
+    simp only [g, ite_eq_left (hsub hxV₁), ite_eq_left hyV]
     intro heq
     -- ι(pair x) = ι(pair y), and ι is injective on pair '' V(G).
     have hpair : pair x = pair y :=
       hιinj (Set.mem_image_of_mem pair (hsub hxV₁)) (Set.mem_image_of_mem pair hyV) heq
     -- pair x = pair y means (f x, 0) = (f y, 1): second coordinates must match.
-    simp only [pair, side, if_pos hxV₁, if_neg hyV₁] at hpair
+    simp only [pair, side, ite_eq_left hxV₁, ite_eq_right hyV₁] at hpair
     simp [Prod.ext_iff] at hpair
   · -- `partitionDef G n f ≤ partitionDef G n g`.
     simp only [partitionDef]
     -- Bound crossingEdges: G.crossingEdges g ⊆ G.crossingEdges f ∪ G.cutEdges V₁.
     have hcross_sub : G.crossingEdges g ⊆ G.crossingEdges f ∪ G.cutEdges V₁ := by
       intro e he
-      simp only [crossingEdges, cutEdges, Set.mem_setOf_eq] at he ⊢
+      simp only [crossingEdges, cutEdges, Set.mem_ofPred_eq] at he ⊢
       obtain ⟨heE, x, y, hlink, hne⟩ := he
-      simp only [Set.mem_union, Set.mem_setOf_eq]
+      simp only [Set.mem_union, Set.mem_ofPred_eq]
       -- g x ≠ g y; unfold g at x and y.
-      have hgx : g x = ι (pair x) := by simp only [g, if_pos hlink.left_mem]
-      have hgy : g y = ι (pair y) := by simp only [g, if_pos hlink.right_mem]
+      have hgx : g x = ι (pair x) := by simp only [g, ite_eq_left hlink.left_mem]
+      have hgy : g y = ι (pair y) := by simp only [g, ite_eq_left hlink.right_mem]
       rw [hgx, hgy] at hne
       -- ι injectivity: pair x ≠ pair y.
       have hpair_ne : pair x ≠ pair y := by
@@ -1626,16 +1626,16 @@ lemma exists_sides_separated_partitionDef_le [Finite α] [Finite β] {G : Graph 
         simp only [side] at hside
         -- case split on membership
         by_cases hxV₁ : x ∈ V₁ <;> by_cases hyV₁ : y ∈ V₁
-        · simp [if_pos hxV₁, if_pos hyV₁] at hside
+        · simp [ite_eq_left hxV₁, ite_eq_left hyV₁] at hside
         · exact Or.inr ⟨heE, x, y, hlink, hxV₁, hyV₁⟩
         · exact Or.inr ⟨heE, y, x, hlink.symm, hyV₁, hxV₁⟩
-        · simp [if_neg hxV₁, if_neg hyV₁] at hside
+        · simp [ite_eq_right hxV₁, ite_eq_right hyV₁] at hside
       · exact Or.inl ⟨heE, x, y, hlink, hf⟩
     -- crossingEdges f ⊆ crossingEdges g (f-crossing edges remain g-crossing).
     have hcross_mono : G.crossingEdges f ⊆ G.crossingEdges g := by
       intro e ⟨heE, x, y, hlink, hne⟩
       refine ⟨heE, x, y, hlink, ?_⟩
-      simp only [g, if_pos hlink.left_mem, if_pos hlink.right_mem]
+      simp only [g, ite_eq_left hlink.left_mem, ite_eq_left hlink.right_mem]
       intro heqι
       -- ι is injective on pair '' V(G), so pair x = pair y.
       have hpair_eq : pair x = pair y :=
@@ -1648,9 +1648,9 @@ lemma exists_sides_separated_partitionDef_le [Finite α] [Finite β] {G : Graph 
       ext y
       constructor
       · rintro ⟨x, hxV, rfl⟩
-        exact ⟨pair x, Set.mem_image_of_mem pair hxV, by simp only [g, if_pos hxV]⟩
+        exact ⟨pair x, Set.mem_image_of_mem pair hxV, by simp only [g, ite_eq_left hxV]⟩
       · rintro ⟨p, ⟨x, hxV, rfl⟩, rfl⟩
-        exact ⟨x, hxV, by simp only [g, if_pos hxV]⟩
+        exact ⟨x, hxV, by simp only [g, ite_eq_left hxV]⟩
     -- numParts g = |ι '' (pair '' V(G))| = |pair '' V(G)| (ι injective).
     have hnumParts_g : G.numParts g = (pair '' V(G)).ncard := by
       simp only [numParts, hg_img]
@@ -1662,11 +1662,11 @@ lemma exists_sides_separated_partitionDef_le [Finite α] [Finite β] {G : Graph 
       have h1 : (fun c : α => (c, (0 : Fin 2))) '' (f '' V₁) ⊆ pair '' V(G) := by
         rintro ⟨c, s⟩ ⟨c', ⟨x, hxV₁, rfl⟩, h⟩
         simp only [Prod.mk.injEq] at h
-        exact ⟨x, hsub hxV₁, by simp [pair, side, if_pos hxV₁, h.1, ← h.2]⟩
+        exact ⟨x, hsub hxV₁, by simp [pair, side, ite_eq_left hxV₁, h.1, ← h.2]⟩
       have h2 : (fun c : α => (c, (1 : Fin 2))) '' (f '' (V(G) \ V₁)) ⊆ pair '' V(G) := by
         rintro ⟨c, s⟩ ⟨c', ⟨x, ⟨hxV, hxV₁⟩, rfl⟩, h⟩
         simp only [Prod.mk.injEq] at h
-        exact ⟨x, hxV, by simp [pair, side, if_neg hxV₁, h.1, ← h.2]⟩
+        exact ⟨x, hxV, by simp [pair, side, ite_eq_right hxV₁, h.1, ← h.2]⟩
       have hdisj12 : Disjoint ((fun c : α => (c, (0 : Fin 2))) '' (f '' V₁))
           ((fun c : α => (c, (1 : Fin 2))) '' (f '' (V(G) \ V₁))) := by
         rw [Set.disjoint_left]
@@ -1687,7 +1687,7 @@ lemma exists_sides_separated_partitionDef_le [Finite α] [Finite β] {G : Graph 
         _ ≤ (pair '' V(G)).ncard :=
             Set.ncard_le_ncard (Set.union_subset h1 h2)
     -- |f '' V₁| + |f '' (V\V₁)| = |f '' V(G)| + |straddle|.
-    have hVsplit : V(G) = V₁ ∪ (V(G) \ V₁) := (Set.union_diff_cancel hsub).symm
+    have hVsplit : V(G) = V₁ ∪ (V(G) \ V₁) := (Set.union_sdiff_cancel hsub).symm
     have hfVsplit : f '' V(G) = f '' V₁ ∪ f '' (V(G) \ V₁) := by
       conv_lhs => rw [hVsplit]
       exact Set.image_union f V₁ (V(G) \ V₁)
@@ -1710,17 +1710,17 @@ lemma exists_sides_separated_partitionDef_le [Finite α] [Finite β] {G : Graph 
       have hfxy : f x = f y := by
         by_contra hfne
         exact hef ⟨heE, x, y, hlink, hfne⟩
-      simp only [g, if_pos hlink.left_mem, if_pos hlink.right_mem] at hne_g
+      simp only [g, ite_eq_left hlink.left_mem, ite_eq_left hlink.right_mem] at hne_g
       have hpair_ne : pair x ≠ pair y := by
         intro h; exact hne_g (congrArg ι h)
       simp only [pair, hfxy, ne_eq, Prod.mk.injEq, true_and] at hpair_ne
       -- side x ≠ side y: one is in V₁, the other is not.
       simp only [side] at hpair_ne
       by_cases hxV₁ : x ∈ V₁ <;> by_cases hyV₁ : y ∈ V₁
-      · simp [if_pos hxV₁, if_pos hyV₁] at hpair_ne
+      · simp [ite_eq_left hxV₁, ite_eq_left hyV₁] at hpair_ne
       · exact ⟨heE, x, y, hlink, hxV₁, hyV₁⟩
       · exact ⟨heE, y, x, hlink.symm, hyV₁, hxV₁⟩
-      · simp [if_neg hxV₁, if_neg hyV₁] at hpair_ne
+      · simp [ite_eq_right hxV₁, ite_eq_right hyV₁] at hpair_ne
     have hnew_cross_bound : (G.crossingEdges g \ G.crossingEdges f).ncard ≤ straddle.ncard := by
       by_cases hs : straddle.ncard = 0
       · have hempty : G.crossingEdges g \ G.crossingEdges f = ∅ := by
@@ -1741,7 +1741,7 @@ lemma exists_sides_separated_partitionDef_le [Finite α] [Finite β] {G : Graph 
     have hcross_g_ncard_le : (G.crossingEdges g).ncard ≤
         (G.crossingEdges f).ncard + straddle.ncard := by
       have h1 : G.crossingEdges g = G.crossingEdges f ∪ (G.crossingEdges g \ G.crossingEdges f) :=
-        (Set.union_diff_cancel hcross_mono).symm
+        (Set.union_sdiff_cancel hcross_mono).symm
       calc (G.crossingEdges g).ncard
           = (G.crossingEdges f ∪ (G.crossingEdges g \ G.crossingEdges f)).ncard := by rw [← h1]
         _ ≤ (G.crossingEdges f).ncard + (G.crossingEdges g \ G.crossingEdges f).ncard :=
@@ -1837,7 +1837,7 @@ theorem deficiency_eq_of_cutEdges_ncard_le_one [Finite α] [Finite β] {G : Grap
     -- The images are in V₁ and V(G)\V₁ respectively, which are disjoint.
     have hh_sep : ∀ x ∈ V₁, ∀ y ∈ V(G) \ V₁, h x ≠ h y := by
       intro x hxV₁ y ⟨hyV, hyV₁⟩
-      simp only [h, dif_pos hxV₁, dif_neg hyV₁, dif_pos hyV]
+      simp only [h, dite_eq_left hxV₁, dite_eq_right hyV₁, dite_eq_left hyV]
       -- h x = ι₁ ... ∈ V₁; h y = ι₂ ... ∈ V(G)\V₁; V₁ ∩ (V(G)\V₁) = ∅.
       intro heq
       have hx_in : ι₁ (f₁ x) ∈ V₁ :=
@@ -1852,14 +1852,14 @@ theorem deficiency_eq_of_cutEdges_ncard_le_one [Finite α] [Finite β] {G : Grap
     -- Since h agrees with ι₁ ∘ f₁ on V₁, partitionDef_congr transfers.
     have hh_eq_g₁_on_V₁ : Set.EqOn h (ι₁ ∘ f₁) V₁ := by
       intro x hxV₁
-      simp only [h, dif_pos hxV₁, Function.comp]
+      simp only [h, dite_eq_left hxV₁, Function.comp]
     have hh_V₁_def : (G.induce V₁).partitionDef n h = (G.induce V₁).partitionDef n f₁ := by
       rw [partitionDef_congr (G := G.induce V₁) (by simpa using hh_eq_g₁_on_V₁)]
       exact hg₁_def_eq
     -- Show (G.induce (V(G)\V₁)).partitionDef n h = (G.induce (V(G)\V₁)).partitionDef n f₂.
     have hh_eq_g₂_on_compl : Set.EqOn h (ι₂ ∘ f₂) (V(G) \ V₁) := by
       intro x ⟨hxV, hxV₁⟩
-      simp only [h, dif_neg hxV₁, dif_pos hxV, Function.comp]
+      simp only [h, dite_eq_right hxV₁, dite_eq_left hxV, Function.comp]
     have hh_compl_def : (G.induce (V(G) \ V₁)).partitionDef n h =
         (G.induce (V(G) \ V₁)).partitionDef n f₂ := by
       rw [partitionDef_congr (G := G.induce (V(G) \ V₁)) (by simpa using hh_eq_g₂_on_compl)]
@@ -1892,7 +1892,7 @@ theorem exists_cut_decomposition_of_not_twoEdgeConnected [DecidableEq β] [Finit
   have hdef_eq := deficiency_eq_of_cutEdges_ncard_le_one hD hne hssub hcut
   -- Sides-minimal via subgraph_minimality.
   have hle₁ : G.induce V₁ ≤ G := G.induce_le hssub.subset
-  have hle₂ : G.induce (V(G) \ V₁) ≤ G := G.induce_le (Set.diff_subset)
+  have hle₂ : G.induce (V(G) \ V₁) ≤ G := G.induce_le (Set.sdiff_subset)
   -- Get deficiency of each side.
   have hk₁def : (G.induce V₁).IsKDof n ((G.induce V₁).deficiency n) := rfl
   have hk₂def : (G.induce (V(G) \ V₁)).IsKDof n ((G.induce (V(G) \ V₁)).deficiency n) := rfl
@@ -1955,7 +1955,7 @@ private lemma image_const_of_subset {T S : Set α} {c : α → α} {a : α}
     (hS : S ⊆ T) (ha : a ∈ S) (hc_mem : ∀ y ∈ S, c y = a) (hc_not_mem : ∀ y ∉ S, c y = y) :
     c '' T = insert a (T \ S) := by
   ext y
-  simp only [Set.mem_image, Set.mem_insert_iff, Set.mem_diff]
+  simp only [Set.mem_image, Set.mem_insert_iff, Set.mem_sdiff]
   constructor
   · rintro ⟨x, hxT, rfl⟩
     by_cases hxS : x ∈ S
@@ -1990,14 +1990,14 @@ theorem partitionDef_merge [Finite α] [Finite β] {G : Graph α β} {n : ℕ} {
     rw [himg, Set.ncard_insert_of_notMem ha_notin]
   have hnp' : (f '' V(G) \ S).ncard + S.ncard = G.numParts f := by
     unfold numParts
-    exact Set.ncard_diff_add_ncard_of_subset hS
+    exact Set.ncard_sdiff_add_ncard_of_subset hS
   -- Step 2: `crossingEdges` of the coarsened labeling.
   have hwithin_sub : G.crossingEdgesWithin f S ⊆ G.crossingEdges f := by
     rintro e ⟨heE, x, y, hlink, hxS, hyS, hfne⟩
     exact ⟨heE, x, y, hlink, hfne⟩
   have hce : G.crossingEdges (c ∘ f) = G.crossingEdges f \ G.crossingEdgesWithin f S := by
     ext e
-    simp only [crossingEdges, crossingEdgesWithin, Function.comp, Set.mem_setOf_eq, Set.mem_diff]
+    simp only [crossingEdges, crossingEdgesWithin, Function.comp, Set.mem_ofPred_eq, Set.mem_sdiff]
     constructor
     · rintro ⟨heE, x, y, hlink, hcne⟩
       have hfne : f x ≠ f y := fun he => hcne (congrArg c he)
@@ -2021,7 +2021,7 @@ theorem partitionDef_merge [Finite α] [Finite β] {G : Graph α β} {n : ℕ} {
           exact hfne
   have hce_ncard : (G.crossingEdges (c ∘ f)).ncard + (G.crossingEdgesWithin f S).ncard
       = (G.crossingEdges f).ncard := by
-    rw [hce]; exact Set.ncard_diff_add_ncard_of_subset hwithin_sub
+    rw [hce]; exact Set.ncard_sdiff_add_ncard_of_subset hwithin_sub
   -- Step 3: assemble.
   simp only [partitionDef]
   rw [hnp, ← hnp', ← hce_ncard]
@@ -2042,7 +2042,7 @@ theorem IsTightPartition.subfamily_le [Finite α] [Finite β] {G : Graph α β} 
   classical
   obtain ⟨a, ha⟩ := Set.nonempty_of_ncard_ne_zero (by omega : S.ncard ≠ 0)
   have hmerge := partitionDef_merge (n := n) (c := fun x => if x ∈ S then a else x) hS ha
-    (fun y hy => if_pos hy) (fun y hy => if_neg hy)
+    (fun y hy => ite_eq_left hy) (fun y hy => ite_eq_right hy)
   have hle : G.partitionDef n ((fun x => if x ∈ S then a else x) ∘ f) ≤ G.deficiency n :=
     G.partitionDef_le_deficiency n _
   have hf' : G.partitionDef n f = G.deficiency n := hf
@@ -2058,13 +2058,13 @@ private theorem exists_fresh_label [Finite α] (G : Graph α β) (f : α → α)
     (hv : v ∈ V(G)) (hw : w ∈ V(G)) (hvw : v ≠ w) (hfw : f w = f v) :
     ∃ b, b ∉ f '' V(G) := by
   have himg : f '' V(G) = f '' (V(G) \ {w}) := by
-    refine subset_antisymm ?_ (Set.image_mono Set.diff_subset)
+    refine subset_antisymm ?_ (Set.image_mono Set.sdiff_subset)
     rintro _ ⟨x, hx, rfl⟩
     by_cases hxw : x = w
-    · exact ⟨v, Set.mem_diff_singleton.mpr ⟨hv, hvw⟩, ((congrArg f hxw).trans hfw).symm⟩
-    · exact ⟨x, Set.mem_diff_singleton.mpr ⟨hx, hxw⟩, rfl⟩
+    · exact ⟨v, Set.mem_sdiff_singleton.mpr ⟨hv, hvw⟩, ((congrArg f hxw).trans hfw).symm⟩
+    · exact ⟨x, Set.mem_sdiff_singleton.mpr ⟨hx, hxw⟩, rfl⟩
   have hcard_le : (f '' V(G)).ncard ≤ (V(G) \ {w}).ncard := himg ▸ Set.ncard_image_le
-  have hcard_diff : (V(G) \ {w}).ncard = V(G).ncard - 1 := Set.ncard_diff_singleton_of_mem hw
+  have hcard_diff : (V(G) \ {w}).ncard = V(G).ncard - 1 := Set.ncard_sdiff_singleton_of_mem hw
   have hVpos : 0 < V(G).ncard := (show V(G).Nonempty from ⟨v, hv⟩).ncard_pos
   have hVle : V(G).ncard ≤ Nat.card α := by
     rw [← Set.ncard_univ α]; exact Set.ncard_le_ncard (Set.subset_univ _)
@@ -2115,12 +2115,12 @@ theorem IsTightPartition.parts [Finite α] [Finite β] {G : Graph α β} {n : �
     · exact ⟨v, hv, hf'_v⟩
     · exact ⟨w, hw, (hf'_ne w hvw).trans hfw⟩
   have hmerge := partitionDef_merge (n := n) (f := f') (c := fun x => if x ∈ S then f v else x)
-    hS_sub ha_mem (fun y hy => if_pos hy) (fun y hy => if_neg hy)
+    hS_sub ha_mem (fun y hy => ite_eq_left hy) (fun y hy => ite_eq_right hy)
   have heq : Set.EqOn ((fun x => if x ∈ S then f v else x) ∘ f') f V(G) := by
     intro x hx
     simp only [Function.comp_apply]
     by_cases hxv : x = v
-    · rw [hxv, hf'_v, if_pos hb_mem]
+    · rw [hxv, hf'_v, ite_eq_left hb_mem]
     · rw [hf'_ne x hxv]
       exact hc_fix (f x) (fun h => hb (h ▸ ⟨x, hx, rfl⟩))
   have hfeq : G.partitionDef n ((fun x => if x ∈ S then f v else x) ∘ f') = G.partitionDef n f :=
@@ -2148,7 +2148,7 @@ theorem IsTightPartition.parts [Finite α] [Finite β] {G : Graph α β} {n : �
   have hset_eq : G.crossingEdgesWithin f' S =
       {e ∈ E(G) | ∃ y, y ≠ v ∧ f y = f v ∧ G.IsLink e v y} := by
     ext e'
-    simp only [crossingEdgesWithin, Set.mem_setOf_eq]
+    simp only [crossingEdgesWithin, Set.mem_ofPred_eq]
     constructor
     · rintro ⟨heE, x, y, hlink, hxS, hyS, hne⟩
       by_cases hxv : x = v
@@ -2178,7 +2178,7 @@ theorem IsTightPartition.parts [Finite α] [Finite β] {G : Graph α β} {n : �
   have hφ_spec : ∀ e' ∈ T, φ e' ≠ v ∧ f (φ e') = f v ∧ G.IsLink e' v (φ e') := by
     intro e' he'
     have hex := hφ_exists e' he'
-    simp only [φ, dif_pos hex]
+    simp only [φ, dite_eq_left hex]
     exact hex.choose_spec
   have hφ_maps : ∀ e' ∈ T, φ e' ∈ {x ∈ V(G) | f x = f v} \ {v} := by
     intro e' he'
@@ -2194,7 +2194,7 @@ theorem IsTightPartition.parts [Finite α] [Finite β] {G : Graph α β} {n : �
     Set.ncard_le_ncard_of_injOn φ hφ_maps hφ_inj (Set.toFinite _)
   have hv_mem_fiber : v ∈ {x ∈ V(G) | f x = f v} := ⟨hv, rfl⟩
   have hdiff_card : ({x ∈ V(G) | f x = f v} \ {v}).ncard =
-      {x ∈ V(G) | f x = f v}.ncard - 1 := Set.ncard_diff_singleton_of_mem hv_mem_fiber
+      {x ∈ V(G) | f x = f v}.ncard - 1 := Set.ncard_sdiff_singleton_of_mem hv_mem_fiber
   have hfiber_pos : 0 < {x ∈ V(G) | f x = f v}.ncard :=
     (show ({x ∈ V(G) | f x = f v} : Set α).Nonempty from ⟨v, hv_mem_fiber⟩).ncard_pos
   omega
@@ -2589,7 +2589,7 @@ theorem rank_add_partitionDef_le [DecidableEq β] [Finite α] [Finite β] (G : G
   -- `E(G̃) ∖ Y = {p | p.1 ∈ crossingEdges}`: crossing edges have `p.1 ∈ E(G)`.
   have hdiff : E(G.mulTilde n) \ Y = {p : β × Fin (bodyHingeMult n) | p.1 ∈ G.crossingEdges f} := by
     ext p
-    simp only [hY, Set.mem_diff, mem_edgeSet_mulTilde, Set.mem_setOf_eq, not_and,
+    simp only [hY, Set.mem_sdiff, mem_edgeSet_mulTilde, Set.mem_ofPred_eq, not_and,
       not_not]
     constructor
     · rintro ⟨hpE, h⟩; exact h hpE
@@ -2672,7 +2672,7 @@ private noncomputable def componentLabel {α γ : Type*} [Nonempty α] (H : Grap
 
 private theorem pickVertex_mem {α γ : Type*} [Nonempty α] {K : Graph α γ} (h : V(K).Nonempty) :
     pickVertex K ∈ V(K) := by
-  rw [pickVertex]; classical rw [dif_pos h]; exact h.choose_spec
+  rw [pickVertex]; classical rw [dite_eq_left h]; exact h.choose_spec
 
 private theorem connBetween_componentLabel {α γ : Type*} [Nonempty α] {H : Graph α γ} {x : α}
     (hx : x ∈ V(H)) : H.ConnBetween x (componentLabel H x) :=
@@ -2974,7 +2974,7 @@ theorem exists_isMinimalKDof_spanning_subgraph [DecidableEq β] [Finite α] [Fin
   have hVG'' : V(G'') = V(G) := by rw [hG''_def, vertexSet_restrict, hVG']
   have hne'' : V(G'').Nonempty := hVG'' ▸ hne
   have hEG'' : E(G'') = F₁ := by
-    rw [hG''_def, edgeSet_restrict, hEG', Set.inter_eq_right.mpr Set.diff_subset]
+    rw [hG''_def, edgeSet_restrict, hEG', Set.inter_eq_right.mpr Set.sdiff_subset]
   -- `B ⊆ E(G̃'')`: every `p ∈ B` has `p.1 ∈ F₀` (ground) and `p.1 ≠ e` (avoids the fiber).
   have hBfiber : ∀ p ∈ B, p ∉ edgeFiber e n := fun p hp hpf ↦ by
     rw [Set.eq_empty_iff_forall_notMem] at hBe; exact hBe p ⟨hp, hpf⟩
@@ -3010,13 +3010,13 @@ theorem exists_isMinimalKDof_spanning_subgraph [DecidableEq β] [Finite α] [Fin
   have hdef_eq : G''.deficiency n = G'.deficiency n := le_antisymm hdef_le hdef_ge
   -- So `F₁ = F₀ ∖ {e} ∈ S` with strictly smaller cardinality — contradicting minimality.
   have hF₁S : F₁ ∈ S := by
-    refine ⟨Set.diff_subset.trans hF₀sub, ?_⟩
+    refine ⟨Set.sdiff_subset.trans hF₀sub, ?_⟩
     have : (G ↾ F₁).deficiency n = G''.deficiency n := by
-      rw [hG''_def, hG'_def, restrict_restrict, Set.inter_eq_right.mpr Set.diff_subset]
+      rw [hG''_def, hG'_def, restrict_restrict, Set.inter_eq_right.mpr Set.sdiff_subset]
     rw [this, hdef_eq, hF₀def]
   have hlt : F₁.ncard < F₀.ncard := by
     rw [hF₁_def]
-    exact Set.ncard_diff_singleton_lt_of_mem heF₀ (Set.toFinite F₀)
+    exact Set.ncard_sdiff_singleton_lt_of_mem heF₀ (Set.toFinite F₀)
   exact absurd (hF₀min F₁ hF₁S) (not_le.mpr hlt)
 
 /-- **A rigid subgraph's multiplied graph packs `D` edge-disjoint forests on a base**
@@ -3185,7 +3185,7 @@ theorem deficiency_of_edgeSet_empty [Finite α] {G : Graph α β} {n : ℕ}
   classical
   haveI : Nonempty (α → α) := ⟨id⟩
   have hcross : ∀ f : α → α, G.crossingEdges f = ∅ := fun f ↦ by
-    simp only [crossingEdges, hE, Set.mem_empty_iff_false, false_and, Set.setOf_false]
+    simp only [crossingEdges, hE, Set.mem_empty_iff_false, false_and, Set.ofPred_false]
   refine le_antisymm ?_ ?_
   · -- `def ≤ D(|V| − 1)`: each partition is at most the discrete one.
     rw [deficiency]
@@ -3229,7 +3229,7 @@ theorem deficiency_of_single_edge [Finite α] {G : Graph α β} {n : ℕ}
         exacts [⟨x, Or.inl rfl, rfl⟩, ⟨y, Or.inr rfl, rfl⟩]
     -- membership in crossingEdges
     have hmem : e ∈ G.crossingEdges f ↔ f x ≠ f y := by
-      simp only [crossingEdges, Set.mem_setOf_eq, hE, Set.mem_singleton_iff, true_and]
+      simp only [crossingEdges, Set.mem_ofPred_eq, hE, Set.mem_singleton_iff, true_and]
       refine ⟨fun ⟨p, q, hl', hd⟩ ↦ ?_, fun hd ↦ ⟨x, y, hl, hd⟩⟩
       obtain ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ := hl.eq_and_eq_or_eq_and_eq hl'
       exacts [hd, fun h ↦ hd h.symm]
@@ -3267,7 +3267,7 @@ theorem deficiency_of_single_edge [Finite α] {G : Graph α β} {n : ℕ}
       · intro e' he'
         rw [Set.mem_singleton_iff] at he'; subst he'
         refine ⟨hl.edge_mem, x, y, hl, ?_⟩
-        simp only [hf₀_def, if_pos rfl, if_neg hxy.symm]; exact hxy
+        simp only [hf₀_def, ite_eq_left rfl, ite_eq_right hxy.symm]; exact hxy
     have hfun : G.partitionDef n f₀ = 1 := by
       rw [partitionDef, numParts, hf₀img, hf₀cross, Set.ncard_pair hxy, Set.ncard_singleton]
       push_cast; ring

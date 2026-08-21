@@ -666,7 +666,7 @@ theorem span_rigidityRows_eq_of_supportExtensor_agree {k : ℕ} {Gᵢ : Graph α
     Submodule.span K (⟨Gᵢ, sideExt⟩ : BodyHingeFramework K k α β).rigidityRows
       = Submodule.span K Fᵢ.rigidityRows := by
   congr 1; ext φ
-  simp only [BodyHingeFramework.rigidityRows, Set.mem_setOf_eq]
+  simp only [BodyHingeFramework.rigidityRows, Set.mem_ofPred_eq]
   constructor
   · rintro ⟨e, u, v, hl, r, hr, rfl⟩
     refine ⟨e, u, v, hFᵢg ▸ hl, r, ?_, rfl⟩
@@ -713,7 +713,7 @@ theorem finrank_span_rigidityRows_cutEdge_eq [Finite α] [Finite β] {k n : ℕ}
   have hFE₁ : ∀ e u v, F.graph.IsLink e u v → e ∉ G.cutEdges V₁ →
       u ∈ V₁ ∧ v ∈ V₁ ∨ u ∉ V₁ ∧ v ∉ V₁ := by
     intro e u v hl hnotcut
-    simp only [Graph.cutEdges, not_and, Set.mem_setOf_eq] at hnotcut
+    simp only [Graph.cutEdges, not_and, Set.mem_ofPred_eq] at hnotcut
     rw [hFgraph] at hl
     by_cases hu₁ : u ∈ V₁
     · left; refine ⟨hu₁, ?_⟩
@@ -807,7 +807,7 @@ theorem hasPencilRealization_of_not_twoEdgeConnected [Finite α] [Finite β] {n 
   have hne₂ : V₂.Nonempty := Set.nonempty_of_ssubset hssub
   -- Vertex-card bookkeeping (`V(G.induce V₁) = V₁` definitionally).
   have hVcard : V₁.ncard + V₂.ncard = V(G).ncard := by
-    have hunion : V₁ ∪ V₂ = V(G) := Set.union_diff_cancel hssub.subset
+    have hunion : V₁ ∪ V₂ = V(G) := Set.union_sdiff_cancel hssub.subset
     have hdisj : Disjoint V₁ V₂ := Set.disjoint_sdiff_right
     rw [← hunion, Set.ncard_union_eq hdisj (Set.toFinite V₁) (Set.toFinite V₂)]
   have hVeq₁ : V(G.induce V₁).ncard = V₁.ncard := rfl
@@ -874,12 +874,12 @@ theorem hasPencilRealization_of_not_twoEdgeConnected [Finite α] [Finite β] {n 
           · by_cases hv₁ : v ∈ V₁
             · exact hE₁ ⟨u, v, (Graph.induce_isLink G V₁ e u v).mpr ⟨hl, hu₁, hv₁⟩⟩
             · have hmem : e ∈ G.cutEdges V₁ := by
-                simp only [Graph.cutEdges, Set.mem_setOf_eq]
+                simp only [Graph.cutEdges, Set.mem_ofPred_eq]
                 exact ⟨hl.edge_mem, u, v, hl, hu₁, hv₁⟩
               simp [hC0] at hmem
           · by_cases hv₁ : v ∈ V₁
             · have hmem : e ∈ G.cutEdges V₁ := by
-                simp only [Graph.cutEdges, Set.mem_setOf_eq]
+                simp only [Graph.cutEdges, Set.mem_ofPred_eq]
                 exact ⟨hl.edge_mem, v, u, hl.symm, hv₁, hu₁⟩
               simp [hC0] at hmem
             · exact hE₂ ⟨u, v, (Graph.induce_isLink G V₂ e u v).mpr
@@ -937,7 +937,7 @@ theorem hasPencilRealization_of_not_twoEdgeConnected [Finite α] [Finite β] {n 
       hpoint_nz, hpoint_inc,
       fun e u v hl => ⟨(hlinks e u v hl).2.2.1, (hlinks e u v hl).2.2.2⟩⟩, hrank_eq⟩
   · -- ── Case |C| = 1: reposition the `V₂` side and take the crossing hinge. ──────────────────
-    simp only [Graph.cutEdges, Set.mem_setOf_eq] at he_c
+    simp only [Graph.cutEdges, Set.mem_ofPred_eq] at he_c
     obtain ⟨-, u_c, v_c, hl_c, hu_c, hv_c⟩ := he_c
     have hv_c₂ : v_c ∈ V₂ := ⟨hl_c.right_mem, hv_c⟩
     -- Repositioning automorphism meeting the two cross-incidences.
@@ -975,12 +975,12 @@ theorem hasPencilRealization_of_not_twoEdgeConnected [Finite α] [Finite β] {n 
     set F : BodyHingeFramework K 2 α β := ⟨G, extF⟩
     -- Uniqueness of the crossing edge (at most one, by `hcut_le`).
     have hec_mem : e_c ∈ G.cutEdges V₁ := by
-      simp only [Graph.cutEdges, Set.mem_setOf_eq]
+      simp only [Graph.cutEdges, Set.mem_ofPred_eq]
       exact ⟨hl_c.edge_mem, u_c, v_c, hl_c, hu_c, hv_c⟩
     have hcut_uniq : ∀ e' u' v', G.IsLink e' u' v' → u' ∈ V₁ → v' ∉ V₁ → e' = e_c := by
       intro e' u' v' hle hu' hv'
       have hmem : e' ∈ G.cutEdges V₁ := by
-        simp only [Graph.cutEdges, Set.mem_setOf_eq]
+        simp only [Graph.cutEdges, Set.mem_ofPred_eq]
         exact ⟨hle.edge_mem, u', v', hle, hu', hv'⟩
       exact (Set.ncard_le_one (Set.toFinite _)).mp hcut_le e' hmem e_c hec_mem
     have hlinks : ∀ e u v, G.IsLink e u v →
@@ -1070,7 +1070,7 @@ theorem hasPencilRealization_of_not_twoEdgeConnected [Finite α] [Finite β] {n 
       fun e _ _ _ => hextF_nz e
     have hFcut : ∀ e ∈ G.cutEdges V₁, ∃ a b, F.graph.IsLink e a b ∧ a ∈ V₁ ∧ b ∉ V₁ := by
       intro e he
-      simp only [Graph.cutEdges, Set.mem_setOf_eq] at he
+      simp only [Graph.cutEdges, Set.mem_ofPred_eq] at he
       obtain ⟨-, a, b, hlab, ha, hb⟩ := he
       exact ⟨a, b, hlab, ha, hb⟩
     have hFVne : V(F.graph).Nonempty := ⟨u₀, hssub.subset hu₀⟩
@@ -1346,7 +1346,7 @@ theorem pencil_conjecture_of_arms [Nonempty α] [Finite α] [Finite β] [Decidab
     · rw [Graph.vertexSet_deleteEdges]; exact ⟨x, hloopAt.left_mem⟩
     · rw [Graph.vertexSet_deleteEdges]
     · rw [Graph.edgeSet_deleteEdges]
-      exact Set.ncard_diff_singleton_lt_of_mem hloopAt.edge_mem
+      exact Set.ncard_sdiff_singleton_lt_of_mem hloopAt.edge_mem
   have hbase_arm : ∀ G : Graph α β, G.Loopless → V(G).Nonempty → V(G).ncard ≤ 2 →
       HasPencilRealization K 3 G :=
     fun G hloop hne hV2 => hasPencilRealization_of_ncard_le_two hloop hne hV2

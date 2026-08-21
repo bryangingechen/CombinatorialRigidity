@@ -257,7 +257,7 @@ theorem IsSparse.exists_aug_of_lt_two_mul {k ℓ : ℕ} (hℓ : ℓ < 2 * k)
       ((⊤ : SimpleGraph V).not_isDiag_of_mem_edgeSet (hJ_off he_diff.1))).ge
   -- (Step 2) Comps: the Finset of distinct I-components of edges in J \ I.
   -- Using J as the indexing source; for e ∉ J\I we'll see this never matters.
-  have hdiff_fin : (J \ I).Finite := hJ_fin.subset Set.diff_subset
+  have hdiff_fin : (J \ I).Finite := hJ_fin.subset Set.sdiff_subset
   set diff_fin : Finset (Sym2 V) := hdiff_fin.toFinset with hdiff_def
   set Comps : Finset (Finset V) :=
     diff_fin.image (fun e => (fromEdgeSet I).maxBlock k ℓ e.toFinset) with hComps_def
@@ -337,7 +337,7 @@ theorem IsSparse.exists_aug_of_lt_two_mul {k ℓ : ℕ} (hℓ : ℓ < 2 * k)
   -- (Step 8a) Partition each X = (X ∩ CompsUnion) ⊔ (X \ CompsUnion).
   have h_split : ∀ {X : Set (Sym2 V)}, X.Finite →
       X.ncard = (X ∩ CompsUnion).ncard + (X \ CompsUnion).ncard := fun {X} hX_fin =>
-    (Set.ncard_inter_add_ncard_diff_eq_ncard X CompsUnion hX_fin).symm
+    (Set.ncard_inter_add_ncard_sdiff_eq_ncard X CompsUnion hX_fin).symm
   -- (Step 8b) X ∩ CompsUnion = ⋃_C (X ∩ ↑C.sym2); pairwise disjoint by edge-uniqueness.
   -- Therefore (X ∩ CompsUnion).ncard = ∑_C (X ∩ ↑C.sym2).ncard.
   have h_compsUnion_ncard : ∀ {X : Set (Sym2 V)}, X ⊆ (⊤ : SimpleGraph V).edgeSet → X.Finite →
@@ -382,7 +382,7 @@ theorem IsSparse.exists_aug_of_lt_two_mul {k ℓ : ℕ} (hℓ : ℓ < 2 * k)
   have hJ_split := h_split hJ_fin
   have hI_split := h_split hI_fin
   have h_diff_le : (J \ CompsUnion).ncard ≤ (I \ CompsUnion).ncard :=
-    Set.ncard_le_ncard h_free_sub (hI_fin.subset Set.diff_subset)
+    Set.ncard_le_ncard h_free_sub (hI_fin.subset Set.sdiff_subset)
   have h_sum_le : ∑ C ∈ Comps, (J ∩ (↑C : Set V).sym2).ncard ≤
       ∑ C ∈ Comps, (I ∩ (↑C : Set V).sym2).ncard :=
     Finset.sum_le_sum h_C_ineq

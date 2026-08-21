@@ -426,7 +426,7 @@ lemma IsPath.card_arcsFinset_filter_fst {u w : V} {p : DirectedWalk R u w}
     · -- The inserted arc `(u_out, u_int)` hits the filter; `q`-part is empty
       -- because `u_out ∉ q.vertices` rules out arcs of `q` sourced at `u_out`.
       have h_pred : (u_out, u_int).1 = v := hvu.symm
-      rw [if_pos h_pred]
+      rw [ite_eq_left h_pred]
       have hq_empty : q.arcsFinset.filter (·.1 = v) = ∅ := by
         rw [Finset.filter_eq_empty_iff]
         rintro ⟨a, b⟩ hmem hab
@@ -440,10 +440,10 @@ lemma IsPath.card_arcsFinset_filter_fst {u w : V} {p : DirectedWalk R u w}
         intro h_eq
         exact h_uout_not_in (h_eq ▸ tail_mem_vertices q)
       have h_v_mem : v ∈ u_out :: q.vertices := hvu ▸ List.mem_cons_self
-      rw [if_pos ⟨h_v_mem, h_v_ne_w⟩]
+      rw [ite_eq_left ⟨h_v_mem, h_v_ne_w⟩]
     · -- The inserted arc misses the filter; recurse via the IH on `q`.
       have h_pred : (u_out, u_int).1 ≠ v := fun h => hvu h.symm
-      rw [if_neg h_pred, ih hq_path]
+      rw [ite_eq_right h_pred, ih hq_path]
       -- The two `if`-conditions disagree only when `v = u_out`; we ruled that out.
       have h_mem_iff : (v = u_out ∨ v ∈ q.vertices) ↔ v ∈ q.vertices :=
         ⟨fun h => h.resolve_left hvu, Or.inr⟩
@@ -502,7 +502,7 @@ lemma IsPath.card_reversedArcsFinset_filter_fst {u w : V} {p : DirectedWalk R u 
     · -- The inserted reversed arc `(u_int, u_out)` hits the filter; the `q`-part
       -- of `(·.1 = u_int)` is empty because `u_int = q.initial` is not a target.
       have h_pred : (u_int, u_out).1 = v := hvi.symm
-      rw [if_pos h_pred]
+      rw [ite_eq_left h_pred]
       have h_q_filter : q.reversedArcsFinset.filter (·.1 = v) = ∅ := by
         rw [Finset.filter_eq_empty_iff]
         rintro ⟨a, b⟩ hmem hab
@@ -515,10 +515,10 @@ lemma IsPath.card_reversedArcsFinset_filter_fst {u w : V} {p : DirectedWalk R u 
       have h_v_ne_u : v ≠ u_out := hvi ▸ h_uint_ne_uout
       have h_v_mem : v ∈ u_out :: q.vertices :=
         List.mem_cons_of_mem _ (hvi ▸ h_uint_mem)
-      rw [if_pos ⟨h_v_mem, h_v_ne_u⟩]
+      rw [ite_eq_left ⟨h_v_mem, h_v_ne_u⟩]
     · -- The inserted reversed arc misses the filter; recurse via IH on `q`.
       have h_pred : (u_int, u_out).1 ≠ v := fun h => hvi h.symm
-      rw [if_neg h_pred, ih hq_path]
+      rw [ite_eq_right h_pred, ih hq_path]
       by_cases hvu : v = u_out
       · subst hvu
         simp [h_uout_not_in]
@@ -619,12 +619,12 @@ theorem reachableFindingAux_sound (succ : V → List V) (P : V → Bool) :
   | case1 visited v hvis =>
     -- Visited-revisit branch returns `none`, contradicting `= some _`.
     rintro ⟨w, p⟩ hres
-    rw [reachableFindingAux, dif_pos hvis] at hres
+    rw [reachableFindingAux, dite_eq_left hvis] at hres
     exact absurd hres (by simp)
   | case2 visited v hvis hP =>
     -- `P v = true` branch returns `some ⟨v, .nil v⟩`.
     rintro ⟨w, p⟩ hres
-    rw [reachableFindingAux, dif_neg hvis, if_pos hP, Option.some.injEq,
+    rw [reachableFindingAux, dite_eq_right hvis, ite_eq_left hP, Option.some.injEq,
         Sigma.mk.injEq] at hres
     obtain ⟨rfl, hh⟩ := hres
     cases hh
@@ -636,7 +636,7 @@ theorem reachableFindingAux_sound (succ : V → List V) (P : V → Bool) :
   | case3 visited v hvis hP ih =>
     -- Recursive branch: `findSome?` over `(succ v).attach` returned a match.
     rintro ⟨w, p⟩ hres
-    rw [reachableFindingAux, dif_neg hvis, if_neg hP] at hres
+    rw [reachableFindingAux, dite_eq_right hvis, ite_eq_right hP] at hres
     obtain ⟨⟨u, hu⟩, _, hmap⟩ := List.exists_of_findSome?_eq_some hres
     rw [Option.map_eq_some_iff] at hmap
     obtain ⟨⟨w', p'⟩, hrec, hwp⟩ := hmap
@@ -688,11 +688,11 @@ private theorem reachableFindingAux_complete (succ : V → List V) (P : V → Bo
     exact hpV v hv_in hvis
   | case2 visited v hvis hP =>
     intro hres
-    rw [reachableFindingAux, dif_neg hvis, if_pos hP] at hres
+    rw [reachableFindingAux, dite_eq_right hvis, ite_eq_left hP] at hres
     exact absurd hres (by simp)
   | case3 visited v hvis hP ih =>
     intro hres
-    rw [reachableFindingAux, dif_neg hvis, if_neg hP] at hres
+    rw [reachableFindingAux, dite_eq_right hvis, ite_eq_right hP] at hres
     intro n
     induction n with
     | zero =>

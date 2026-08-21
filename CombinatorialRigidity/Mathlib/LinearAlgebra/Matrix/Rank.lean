@@ -290,9 +290,9 @@ theorem finite_setOf_not_linearIndependent_rows_along_affine_path
     rw [hQ0, Polynomial.eval_zero] at this
     exact he this.symm
   -- The bad-`t` set is contained in `Q`'s finite root set.
-  refine (Polynomial.finite_setOf_isRoot hQ_ne).subset fun t ht => ?_
-  rw [Set.mem_setOf_eq] at ht
-  rw [Set.mem_setOf_eq, Polynomial.IsRoot, hQ_eval]
+  refine (Polynomial.finite_setOfPred_isRoot hQ_ne).subset fun t ht => ?_
+  rw [Set.mem_ofPred_eq] at ht
+  rw [Set.mem_ofPred_eq, Polynomial.IsRoot, hQ_eval]
   by_contra h_ne
   exact ht (linearIndependent_rows_of_specialized_submatrix_det_ne_zero
     (A + t • B).row (RingHom.id K) e (by rwa [RingHom.id_apply]))
@@ -330,9 +330,9 @@ theorem finite_setOf_not_linearIndependent_rows_of_polynomial
     have := hQ_eval t₀
     rw [hQ0, Polynomial.eval_zero] at this
     exact he this.symm
-  refine (Polynomial.finite_setOf_isRoot hQ_ne).subset fun t ht => ?_
-  rw [Set.mem_setOf_eq] at ht
-  rw [Set.mem_setOf_eq, Polynomial.IsRoot, hQ_eval]
+  refine (Polynomial.finite_setOfPred_isRoot hQ_ne).subset fun t ht => ?_
+  rw [Set.mem_ofPred_eq] at ht
+  rw [Set.mem_ofPred_eq, Polynomial.IsRoot, hQ_eval]
   by_contra h_ne
   exact ht (linearIndependent_rows_of_specialized_submatrix_det_ne_zero
     (P.map (Polynomial.evalRingHom t)).row (RingHom.id K) e (by rwa [RingHom.id_apply]))
@@ -897,7 +897,7 @@ theorem LinearIndependent.finite_setOf_not_along_affine_path
   -- Apply the matrix-form helper.
   refine (Matrix.finite_setOf_not_linearIndependent_rows_along_affine_path A B
     ((h_iff t₀).mp h)).subset fun t ht => ?_
-  rw [Set.mem_setOf_eq] at ht ⊢
+  rw [Set.mem_ofPred_eq] at ht ⊢
   rwa [← h_iff]
 
 /-- **Rank lower semicontinuity along an affine path.** For a finite-dim `W`-vector space over a
@@ -929,7 +929,7 @@ theorem LinearIndependent.le_finrank_span_along_affine_path_cofinite
   haveI : Fintype s := Fintype.ofFinite s
   refine (LinearIndependent.finite_setOf_not_along_affine_path
     (a := fun i : s => a i) (b := fun i : s => b i) (t₀ := t₀) h).subset (fun t ht => ?_)
-  rw [Set.mem_setOf_eq] at ht ⊢
+  rw [Set.mem_ofPred_eq] at ht ⊢
   intro hLI
   have hcard : Module.finrank K (Submodule.span K (Set.range (fun i : s => a i + t • b i)))
       = Nat.card s := by
@@ -966,7 +966,7 @@ theorem LinearIndependent.finrank_dualCoannihilator_along_affine_path_cofinite
       (Submodule.span K (Set.range (fun i => a i + t • b i))).dualCoannihilator}.Finite := by
   classical
   refine (h.le_finrank_span_along_affine_path_cofinite (a := a) (b := b)).subset (fun t ht => ?_)
-  rw [Set.mem_setOf_eq] at ht ⊢
+  rw [Set.mem_ofPred_eq] at ht ⊢
   -- complementary-dimension identity: coann finrank + span finrank = finrank V, at this `t`.
   set Φ : Subspace K (Module.Dual K V) :=
     Submodule.span K (Set.range (fun i => a i + t • b i)) with hΦ
@@ -1226,14 +1226,14 @@ theorem LinearIndependent.exists_notMem_of_polynomial_repr
   have hfin : {t : K | ¬ LinearIndependent K (g t)}.Finite := by
     refine (Matrix.finite_setOf_not_linearIndependent_rows_of_polynomial Pm
       (t₀ := 0) ((hiff 0).mp h0)).subset fun t ht => ?_
-    rw [Set.mem_setOf_eq] at ht ⊢
+    rw [Set.mem_ofPred_eq] at ht ⊢
     rwa [hiff] at ht
   -- `K` is infinite, so there is a `t` outside the finite union of bad sets.
   have hbad : ({t : K | ¬ LinearIndependent K (g t)}
       ∪ ((bad : Set K) ∪ {0})).Finite :=
     hfin.union (bad.finite_toSet.union (Set.finite_singleton 0))
   obtain ⟨t, ht⟩ := hbad.infinite_compl.nonempty
-  rw [Set.mem_compl_iff, Set.mem_union, Set.mem_union, Set.mem_setOf_eq, not_or, not_or,
+  rw [Set.mem_compl_iff, Set.mem_union, Set.mem_union, Set.mem_ofPred_eq, not_or, not_or,
     not_not, Finset.mem_coe, Set.mem_singleton_iff] at ht
   exact ⟨t, ht.2.1, ht.2.2, ht.1⟩
 

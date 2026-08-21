@@ -100,7 +100,7 @@ theorem splitOff_deficiency_le [Finite α] [Finite β] {G : Graph α β} {n : �
       rintro e ⟨heG, x, y, hlink, hxy⟩
       by_cases hev : e = e_b
       · -- `e_b` ↦ `e₀`: `e₀` links `a, b` in `H`, and `f' a ≠ f' b` (since `e_b` crosses).
-        simp only [if_pos hev]
+        simp only [ite_eq_left hev]
         rw [hev] at hlink
         -- The endpoints `{x, y}` of `e_b` are `{v, b}`, so `f x ≠ f y` gives `f' a ≠ f' b`.
         have hab' : f' a ≠ f' b := by
@@ -112,7 +112,7 @@ theorem splitOff_deficiency_le [Finite α] [Finite β] {G : Graph α β} {n : �
           exact Or.inr ⟨rfl, hav, hbv, haV, hbV, Or.inl ⟨rfl, rfl⟩⟩
         exact ⟨hl₀.edge_mem, a, b, hl₀, hab'⟩
       · -- `e ≠ e_b`: `e` avoids `v`, survives in `H`, crosses with the same labels.
-        simp only [if_neg hev]
+        simp only [ite_eq_right hev]
         -- `e` is not incident to `v`: else `e ∈ {eₐ, e_b}` and `eₐ`/`e_b`-incident edges
         -- through `v` get equal labels or contradict `e ≠ e_b`.
         have hxv : x ≠ v ∧ y ≠ v := by
@@ -145,11 +145,11 @@ theorem splitOff_deficiency_le [Finite α] [Finite β] {G : Graph α β} {n : �
       by_cases h1 : e1 = e_b <;> by_cases h2 : e2 = e_b
       · rw [h1, h2]
       · -- `g e1 = e₀ = e2`, but `e2 ∈ E(G)` and `e₀ ∉ E(G)`.
-        rw [if_pos h1, if_neg h2] at hg
+        rw [ite_eq_left h1, ite_eq_right h2] at hg
         exact absurd (hg ▸ hmemG he2) he₀
-      · rw [if_neg h1, if_pos h2] at hg
+      · rw [ite_eq_right h1, ite_eq_left h2] at hg
         exact absurd (hg.symm ▸ hmemG he1) he₀
-      · rwa [if_neg h1, if_neg h2] at hg
+      · rwa [ite_eq_right h1, ite_eq_right h2] at hg
     · exact Set.toFinite _
   -- Combine: `partitionDef_G(f) ≥ partitionDef_H(f')`, then bound by the supremum.
   have hmono : H.partitionDef n f' ≤ G.partitionDef n f := by
@@ -260,15 +260,15 @@ theorem splitOff_deficiency_ge [Finite α] [Finite β] {G : Graph α β} {n : �
             rcases hxy' with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
             · exact hxy
             · exact fun h => hxy h.symm
-          simp only [if_pos hee₀]
+          simp only [ite_eq_left hee₀]
           by_cases hfva : f v = f a
           · -- map to `e_b`: `e_b` links `v, b`, `f v = f a ≠ f b`, so `e_b` crosses.
-            simp only [if_pos hfva]
+            simp only [ite_eq_left hfva]
             exact ⟨hebG, v, b, hlb, by rw [hfva]; exact hab⟩
           · -- map to `eₐ`: `eₐ` links `v, a`, `f v ≠ f a`, so `eₐ` crosses.
-            simp only [if_neg hfva]
+            simp only [ite_eq_right hfva]
             exact ⟨heaG, v, a, hla, hfva⟩
-        · simp only [if_neg hee₀]
+        · simp only [ite_eq_right hee₀]
           rw [hH, splitOff_isLink] at hlink
           rcases hlink with ⟨_, hl, _, _⟩ | ⟨rfl, _⟩
           · exact ⟨hl.edge_mem, x, y, hl, hxy⟩
@@ -281,13 +281,13 @@ theorem splitOff_deficiency_ge [Finite α] [Finite β] {G : Graph α β} {n : �
             e ≠ (if f v = f a then e_b else eₐ) := by
           rintro e ⟨heH, -⟩ - rfl
           by_cases hfva : f v = f a
-          · rw [if_pos hfva] at heH; exact hebH heH
-          · rw [if_neg hfva] at heH; exact heaH heH
+          · rw [ite_eq_left hfva] at heH; exact hebH heH
+          · rw [ite_eq_right hfva] at heH; exact heaH heH
         by_cases h1 : e1 = e₀ <;> by_cases h2 : e2 = e₀
         · rw [h1, h2]
-        · rw [if_pos h1, if_neg h2] at hg; exact absurd hg.symm (hne he2 h2)
-        · rw [if_neg h1, if_pos h2] at hg; exact absurd hg (hne he1 h1)
-        · rwa [if_neg h1, if_neg h2] at hg
+        · rw [ite_eq_left h1, ite_eq_right h2] at hg; exact absurd hg.symm (hne he2 h2)
+        · rw [ite_eq_right h1, ite_eq_left h2] at hg; exact absurd hg (hne he1 h1)
+        · rwa [ite_eq_right h1, ite_eq_right h2] at hg
     rw [partitionDef, partitionDef, hparts]
     nlinarith [Int.ofNat_le.mpr hcross]
   · -- Case: `v` is isolated in its part (`f v` carried only by `v`).
@@ -325,12 +325,12 @@ theorem splitOff_deficiency_ge [Finite α] [Finite β] {G : Graph α β} {n : �
         · obtain ⟨heH', x, y, hlink, hxy⟩ := he'
           by_cases hee₀ : e' = e₀
           · -- `e₀` crosses ⟹ `f a ≠ f b` ⟹ `e_b` crosses (map `e₀ ↦ e_b`).
-            simp only [if_pos hee₀]
+            simp only [ite_eq_left hee₀]
             rw [hH, splitOff_isLink, hee₀] at hlink
             rcases hlink with ⟨hne, _⟩ | ⟨_, _, _, _, _, hxy'⟩
             · exact absurd rfl hne
             exact heb_cross
-          · simp only [if_neg hee₀]
+          · simp only [ite_eq_right hee₀]
             rw [hH, splitOff_isLink] at hlink
             rcases hlink with ⟨_, hl, _, _⟩ | ⟨rfl, _⟩
             · exact ⟨hl.edge_mem, x, y, hl, hxy⟩
@@ -342,15 +342,15 @@ theorem splitOff_deficiency_ge [Finite α] [Finite β] {G : Graph α β} {n : �
           rintro e ⟨heH, -⟩ - rfl; exact hebH heH
         by_cases h1 : e1 = e₀ <;> by_cases h2 : e2 = e₀
         · rw [h1, h2]
-        · rw [if_pos h1, if_neg h2] at hg; exact absurd hg.symm (hne he2 h2)
-        · rw [if_neg h1, if_pos h2] at hg; exact absurd hg (hne he1 h1)
-        · rwa [if_neg h1, if_neg h2] at hg
+        · rw [ite_eq_left h1, ite_eq_right h2] at hg; exact absurd hg.symm (hne he2 h2)
+        · rw [ite_eq_right h1, ite_eq_left h2] at hg; exact absurd hg (hne he1 h1)
+        · rwa [ite_eq_right h1, ite_eq_right h2] at hg
       have hnotmem : eₐ ∉ (fun e => if e = e₀ then e_b else e) '' H.crossingEdges f := by
         rintro ⟨e', he', hg⟩
         dsimp only at hg
         by_cases hee₀ : e' = e₀
-        · rw [if_pos hee₀] at hg; exact heab hg.symm
-        · rw [if_neg hee₀] at hg; exact heaH (hg ▸ he'.1)
+        · rw [ite_eq_left hee₀] at hg; exact heab hg.symm
+        · rw [ite_eq_right hee₀] at hg; exact heaH (hg ▸ he'.1)
       have := Set.ncard_le_ncard hsub (Set.toFinite _)
       rw [Set.ncard_insert_of_notMem hnotmem (Set.toFinite _), hinj.ncard_image] at this
       omega

@@ -79,12 +79,12 @@ theorem zero_extension_genericRank_add_degree {V : Type*} [Finite V] {H : Simple
     edgeSet_mono (deleteIncidenceSet_le H v)
   have hB_eq : H.edgeSet \ (H.deleteIncidenceSet v).edgeSet = H.incidenceSet v := by
     rw [edgeSet_deleteIncidenceSet]
-    exact Set.diff_diff_cancel_left (H.incidenceSet_subset v)
+    exact Set.sdiff_sdiff_cancel_left (H.incidenceSet_subset v)
   have hB_card :
       (H.edgeSet \ (H.deleteIncidenceSet v).edgeSet).ncard = (H.neighborSet v).ncard := by
     rw [hB_eq]; exact Set.ncard_congr' (H.incidenceSetEquivNeighborSet v)
   have hunion : (H.deleteIncidenceSet v).edgeSet ∪ (H.edgeSet \ (H.deleteIncidenceSet v).edgeSet)
-      = H.edgeSet := Set.union_diff_cancel hHsub
+      = H.edgeSet := Set.union_sdiff_cancel hHsub
   have hB_disj : Disjoint (H.deleteIncidenceSet v).edgeSet
       (H.edgeSet \ (H.deleteIncidenceSet v).edgeSet) := Set.disjoint_sdiff_right
   set M := genericRigidityMatroid V 3 with hM_def
@@ -135,7 +135,7 @@ theorem zero_extension_genericRank_add_degree {V : Type*} [Finite V] {H : Simple
     -- The graph `H₃` carrying `J`'s edges together with the full star at `v`.
     set H₃ : SimpleGraph V := H.deleteEdges ((H.deleteIncidenceSet v).edgeSet \ J) with hH₃_def
     have hH₃edge : H₃.edgeSet = (H.edgeSet \ (H.deleteIncidenceSet v).edgeSet) ∪ J := by
-      simp only [hH₃_def, edgeSet_deleteEdges, Set.diff_diff_right, Set.inter_eq_right.mpr hJHE]
+      simp only [hH₃_def, edgeSet_deleteEdges, Set.sdiff_sdiff_right, Set.inter_eq_right.mpr hJHE]
     have hH₃inc : H₃.incidenceSet v = H.edgeSet \ (H.deleteIncidenceSet v).edgeSet := by
       apply Set.Subset.antisymm
       · rintro e ⟨heEdge, hve⟩
@@ -147,7 +147,7 @@ theorem zero_extension_genericRank_add_degree {V : Type*} [Finite V] {H : Simple
         refine ⟨by rw [hH₃edge]; exact Or.inl heB, ?_⟩
         rw [hB_eq] at heB; exact heB.2
     have hH₃delInc : (H₃.deleteIncidenceSet v).edgeSet = J := by
-      rw [edgeSet_deleteIncidenceSet, hH₃edge, hH₃inc, Set.union_diff_left]
+      rw [edgeSet_deleteIncidenceSet, hH₃edge, hH₃inc, Set.union_sdiff_left]
       exact hJdisjB.sdiff_eq_left
     have hH₃nbr : H₃.neighborSet v = H.neighborSet v := by
       ext u
@@ -229,12 +229,12 @@ theorem zero_extension_indep_iff_of_degree_le_three {V : Type*} [Finite V] {H : 
     edgeSet_mono (deleteIncidenceSet_le H v)
   have hB_eq : H.edgeSet \ (H.deleteIncidenceSet v).edgeSet = H.incidenceSet v := by
     rw [edgeSet_deleteIncidenceSet]
-    exact Set.diff_diff_cancel_left (H.incidenceSet_subset v)
+    exact Set.sdiff_sdiff_cancel_left (H.incidenceSet_subset v)
   have hB_card :
       (H.edgeSet \ (H.deleteIncidenceSet v).edgeSet).ncard = (H.neighborSet v).ncard := by
     rw [hB_eq]; exact Set.ncard_congr' (H.incidenceSetEquivNeighborSet v)
   have hunion : (H.deleteIncidenceSet v).edgeSet ∪ (H.edgeSet \ (H.deleteIncidenceSet v).edgeSet)
-      = H.edgeSet := Set.union_diff_cancel hHsub
+      = H.edgeSet := Set.union_sdiff_cancel hHsub
   have hB_disj : Disjoint (H.deleteIncidenceSet v).edgeSet
       (H.edgeSet \ (H.deleteIncidenceSet v).edgeSet) := Set.disjoint_sdiff_right
   have hcard : H.edgeSet.ncard =
@@ -301,15 +301,15 @@ theorem zero_extension_genericRank_add_min_le {V : Type*} [Finite V] {H : Simple
       exact (H.mk'_mem_incidenceSet_left_iff).mpr (htnbr u hu)
     set D : Set (Sym2 V) := H.incidenceSet v \ starEdges with hD_def
     have hmem_D : ∀ e, e ∈ D ↔ e ∈ H.incidenceSet v ∧ e ∉ starEdges := fun e => by
-      rw [hD_def]; exact Set.mem_diff e
-    have hunion : D ∪ starEdges = H.incidenceSet v := Set.diff_union_of_subset hstar_sub
+      rw [hD_def]; exact Set.mem_sdiff e
+    have hunion : D ∪ starEdges = H.incidenceSet v := Set.sdiff_union_of_subset hstar_sub
     set H₃ : SimpleGraph V := H.deleteEdges D with hH₃_def
     have hH₃edge : H₃.edgeSet = H.edgeSet \ D := by rw [hH₃_def, edgeSet_deleteEdges]
-    have hH₃sub : H₃.edgeSet ⊆ H.edgeSet := by rw [hH₃edge]; exact Set.diff_subset
+    have hH₃sub : H₃.edgeSet ⊆ H.edgeSet := by rw [hH₃edge]; exact Set.sdiff_subset
     -- `E_{H₃}(v) = starEdges`.
     have hinc₃ : H₃.incidenceSet v = starEdges := by
       ext e
-      simp only [SimpleGraph.incidenceSet, hH₃edge, Set.mem_diff]
+      simp only [SimpleGraph.incidenceSet, hH₃edge, Set.mem_sdiff]
       constructor
       · rintro ⟨⟨heH, heD⟩, hve⟩
         by_contra hns
@@ -319,7 +319,7 @@ theorem zero_extension_genericRank_add_min_le {V : Type*} [Finite V] {H : Simple
         exact ⟨⟨hincH.1, fun hD => ((hmem_D e).mp hD).2 he_star⟩, hincH.2⟩
     -- `H₃ - E_{H₃}(v)` and `H - E_H(v)` have the same edge set.
     have hdel : (H₃.deleteIncidenceSet v).edgeSet = (H.deleteIncidenceSet v).edgeSet := by
-      simp only [edgeSet_deleteIncidenceSet, hinc₃, hH₃edge, Set.diff_diff, hunion]
+      simp only [edgeSet_deleteIncidenceSet, hinc₃, hH₃edge, Set.sdiff_sdiff, hunion]
     -- `N_{H₃}(v) = t`, so `d_{H₃}(v) = 3`.
     have hnbr : H₃.neighborSet v = (↑t : Set V) := by
       ext u
@@ -393,7 +393,7 @@ private theorem indep_zero_extension_star {V : Type*} [Finite V] {H' : SimpleGra
     Set.disjoint_left.mpr fun e he hes => hH'_mem_v e he (hstar_mem_v e hes)
   have hHinc : H.incidenceSet v = star.edgeSet := by
     ext e
-    simp only [SimpleGraph.incidenceSet, hHedge, Set.mem_setOf_eq, Set.mem_union]
+    simp only [SimpleGraph.incidenceSet, hHedge, Set.mem_ofPred_eq, Set.mem_union]
     constructor
     · rintro ⟨heH' | heStar, hve⟩
       · exact absurd hve (hH'_mem_v e heH')
@@ -401,7 +401,8 @@ private theorem indep_zero_extension_star {V : Type*} [Finite V] {H' : SimpleGra
     · intro heStar
       exact ⟨Or.inr heStar, hstar_mem_v e heStar⟩
   have hHdel : (H.deleteIncidenceSet v).edgeSet = H'.edgeSet := by
-    simp only [edgeSet_deleteIncidenceSet, hHedge, hHinc, Set.union_diff_right, hdisj.sdiff_eq_left]
+    simp only [edgeSet_deleteIncidenceSet, hHedge, hHinc, Set.union_sdiff_right,
+      hdisj.sdiff_eq_left]
   have hHnbr : H.neighborSet v = (↑T : Set V) := by
     ext u
     rw [mem_neighborSet, hH_def, sup_adj]
@@ -441,7 +442,7 @@ private theorem incidenceSet_sup_star_eq_empty {V : Type*} {H' : SimpleGraph V} 
   have hstar_edge : (fromEdgeSet ((fun u => s(v, u)) '' (↑T : Set V))).edgeSet
       = (fun u => s(v, u)) '' (↑T : Set V) := edgeSet_fromEdgeSet_of_off_diag hoffdiag
   ext e
-  simp only [SimpleGraph.incidenceSet, edgeSet_sup, hstar_edge, Set.mem_setOf_eq, Set.mem_union,
+  simp only [SimpleGraph.incidenceSet, edgeSet_sup, hstar_edge, Set.mem_ofPred_eq, Set.mem_union,
     Set.mem_empty_iff_false, iff_false]
   rintro ⟨heH' | ⟨u, hu, rfl⟩, hxe⟩
   · have : e ∈ H'.incidenceSet x := ⟨heH', hxe⟩
@@ -800,15 +801,15 @@ theorem zero_extension_genericRank_add_min_of_isClique {V : Type*} [Finite V] {H
       exact (H.mk'_mem_incidenceSet_left_iff).mpr (htnbr u hu)
     set D : Set (Sym2 V) := H.incidenceSet v \ starEdges with hD_def
     have hmem_D : ∀ e, e ∈ D ↔ e ∈ H.incidenceSet v ∧ e ∉ starEdges := fun e => by
-      rw [hD_def]; exact Set.mem_diff e
-    have hunion : D ∪ starEdges = H.incidenceSet v := Set.diff_union_of_subset hstar_sub
+      rw [hD_def]; exact Set.mem_sdiff e
+    have hunion : D ∪ starEdges = H.incidenceSet v := Set.sdiff_union_of_subset hstar_sub
     have hD_sub : D ⊆ H.incidenceSet v := fun e he => ((hmem_D e).mp he).1
     set H₃ : SimpleGraph V := H.deleteEdges D with hH₃_def
     have hH₃edge : H₃.edgeSet = H.edgeSet \ D := by rw [hH₃_def, edgeSet_deleteEdges]
-    have hH₃sub : H₃.edgeSet ⊆ H.edgeSet := by rw [hH₃edge]; exact Set.diff_subset
+    have hH₃sub : H₃.edgeSet ⊆ H.edgeSet := by rw [hH₃edge]; exact Set.sdiff_subset
     have hinc₃ : H₃.incidenceSet v = starEdges := by
       ext e
-      simp only [SimpleGraph.incidenceSet, hH₃edge, Set.mem_diff]
+      simp only [SimpleGraph.incidenceSet, hH₃edge, Set.mem_sdiff]
       constructor
       · rintro ⟨⟨heH, heD⟩, hve⟩
         by_contra hns
@@ -817,7 +818,7 @@ theorem zero_extension_genericRank_add_min_of_isClique {V : Type*} [Finite V] {H
         have hincH : e ∈ H.incidenceSet v := hstar_sub he_star
         exact ⟨⟨hincH.1, fun hD => ((hmem_D e).mp hD).2 he_star⟩, hincH.2⟩
     have hdel : (H₃.deleteIncidenceSet v).edgeSet = (H.deleteIncidenceSet v).edgeSet := by
-      simp only [edgeSet_deleteIncidenceSet, hinc₃, hH₃edge, Set.diff_diff, hunion]
+      simp only [edgeSet_deleteIncidenceSet, hinc₃, hH₃edge, Set.sdiff_sdiff, hunion]
     have hnbr : H₃.neighborSet v = (↑t : Set V) := by
       ext u
       simp only [mem_neighborSet, hH₃_def, deleteEdges_adj, Finset.mem_coe]
@@ -855,7 +856,7 @@ theorem zero_extension_genericRank_add_min_of_isClique {V : Type*} [Finite V] {H
       exact edgeSet_mono le_top
     have hH'_sub_H₃ : (H.deleteIncidenceSet v).edgeSet ⊆ H₃.edgeSet := by
       rw [edgeSet_deleteIncidenceSet, hH₃edge]
-      exact Set.diff_subset_diff_right hD_sub
+      exact Set.sdiff_subset_sdiff_right hD_sub
     have hthree_sub_star : ({s(v, u₁), s(v, u₂), s(v, u₃)} : Set (Sym2 V)) ⊆ starEdges := by
       intro e he
       simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at he

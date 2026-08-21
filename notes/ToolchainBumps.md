@@ -257,11 +257,22 @@ Recommended: sample one family first (the `[Finite V]` cluster in
 disposition with the user, then apply it family-by-family. Re-read the
 `DESIGN.md` entry before starting; if the decision changes, update it there.
 
-### 1. Deprecation rename sweep — ~648 lines, script ready
+### 1. Deprecation rename sweep — ✓ DONE (846 renames, 70 files)
 
-The bump commit deliberately leaves mathlib's deprecated *aliases* in place;
-they still elaborate, so the build is green, but each use emits a warning and
-the project gate wants warning-clean builds.
+**Landed 2026-08-20.** The bump commit deliberately left mathlib's deprecated
+*aliases* in place; they still elaborated, so the build was green, but each use
+emitted a warning and the project gate wants warning-clean builds. The sweep
+took the tree from **920 deprecation warnings to 0** (total warnings 1441 →
+approx. 515), and needed three things beyond running the script:
+
+- **8 hand sites** the script correctly refused (below).
+- **The 5 `le_eq_subset` sites**, which have no replacement name — dropped from
+  their simp sets, since the linter separately reported each as an unused simp
+  argument.
+- **13 lines rewrapped.** `if_neg` → `ite_eq_right` is *six* characters longer,
+  and `Set.diff_*` → `Set.sdiff_*` / `*setOf*` → `*ofPred*` one; thirteen lines
+  crossed mathlib's 100-character limit. Worth expecting on any future
+  rename sweep: the style linter, not the sweep, is what tells you.
 
 A vetted sweep script lives at **`scripts/sweep-deprecations.py`**. It applies
 only **pure renames** — every pair where mathlib emitted no *"the updated
@@ -282,36 +293,70 @@ the reported position also removes the need for boundary heuristics
 qualification depth (`mem_setOf_eq` → `mem_ofPred_eq`, not the fully qualified
 form).
 
-Three renames are **excluded** because their types changed and they need
-hand-inspection:
+Three renames are **excluded** because their types changed; how each resolved:
 
-- `SimpleGraph.isClique_iff_induce_eq` → `SimpleGraph.induce_eq_top`
-  (the iff is *flipped*: `induce s G = ⊤ ↔ G.IsClique s`)
-- `cond_true` → `Bool.cond_true`, `cond_false` → `Bool.cond_false`
-  (argument explicitness changed)
+- `SimpleGraph.isClique_iff_induce_eq` → `SimpleGraph.induce_eq_top` (1 site) —
+  the iff is *flipped* (`induce s G = ⊤ ↔ G.IsClique s`) **and** every argument
+  became implicit, so `(isClique_iff_induce_eq G).mp h` became
+  `induce_eq_top.mpr h`. A prose back-tick reference in the same docstring had
+  to be repointed in the same commit (nothing gates a docstring reference).
+- `cond_true`/`cond_false` → `Bool.cond_*` (6 sites) — the type change is
+  argument *explicitness*, which is irrelevant to a **simp argument**, so all
+  six were plain renames after all. Worth knowing: an explicitness-only change
+  is safe wherever the name is used as a simp/rw lemma rather than applied.
 
-Two more have no replacement and need the simp *call* reconsidered, not
-renamed — `Finset.le_eq_subset` and `Set.le_eq_subset` are now syntactic
-equalities, so `simp only [le_eq_subset]` is a no-op that **errors** with
-`simp made no progress`. Three such sites were already fixed in the bump; a
-grep will find any that remain.
+Plus one **skip**, which is the interesting one: at `Henneberg.lean:445` the
+deprecated name sat inside a `grind only [!a, !b, …]` list, and Lean reported
+the warning at the position of the **`grind` token**, not the identifier (which
+was on the next line). A position-driven sweep cannot fix that; it reported the
+skip and the site was fixed by hand. Expect roughly one of these per sweep.
 
-Highest-volume renames, for a sense of scale: `if_neg` (34), `if_pos` (30),
-`Set.mem_setOf_eq` (36 → `Set.mem_ofPred_eq`), `dif_neg` (20), `dif_pos` (16).
-The `Set.diff_*` → `Set.sdiff_*` and `*setOf*` → `*ofPred*` families are the
-long tail.
+Two lemmas have no replacement at all and needed the simp *call* reconsidered:
+`Finset.le_eq_subset` and `Set.le_eq_subset` are now syntactic equalities, so
+`simp only [le_eq_subset]` is a no-op. Three sites were fixed in the bump; the
+remaining **5** were dropped in the sweep commit (they were also reported by
+`linter.unusedSimpArgs`, which is the reliable way to find them).
 
-**Do this as its own commit**, and re-run a full build after: a 648-line sweep
-touching simp sets can surface `simp made no progress` where a renamed lemma
-now duplicates something already in the default set.
+Highest-volume renames, measured (the figures this section carried before the
+sweep — 34 / 30 / 36 / 20 / 16 — were **low by a factor of ~5**; they had come
+from an early partial build, which is the "cached modules do not re-emit
+warnings" trap the *Two verification traps* section above now records as
+superseded):
 
-### 2. `haveI`/`letI` style-linter sweep — 155+ sites
+| rename | sites |
+|---|---|
+| `if_neg` → `ite_eq_right` | 181 |
+| `if_pos` → `ite_eq_left` | 167 |
+| `Set.mem_setOf_eq` → `Set.mem_ofPred_eq` | 154 |
+| `dif_pos` → `dite_eq_left` | 48 |
+| `Set.diff_subset` → `Set.sdiff_subset` | 45 |
+| `Set.ncard_diff_singleton_of_mem` → `…_sdiff_…` | 32 |
+| `Set.mem_diff` → `Set.mem_sdiff` | 29 |
+| `dif_neg` → `dite_eq_right` | 28 |
+
+The rest of the `Set.diff_*` → `Set.sdiff_*` and `*setOf*` → `*ofPred*` families
+are the long tail (≤ 14 each, 50-odd distinct pairs).
+
+Those are **site** counts, cross-checked against the diff. Count sites, not
+warning *lines*: one source position can be reported several times in a build
+log (`if_true` shows 39 warning lines at 12 distinct positions), so a raw
+`grep -c` over-counts. The script dedupes by `(file, line, col)`.
+
+It **was** done as its own commit with a full build after, which is what caught
+the 13 over-long lines. Nothing surfaced `simp made no progress`, the failure
+mode this section had warned about.
+
+### 2. `haveI`/`letI` style-linter sweep — 475 sites (468 `haveI`, 7 `letI`)
 
 Mathlib's `linter.style.haveILetI` now fires on `haveI`/`letI` where the goal
 is a `Prop`. Each hit is a `Try this:` suggestion with an exact line/column,
 so this is scriptable off a full-build log rather than by hand. The linter
 only fires where the change is safe (Prop goals), so it is a pure rename of
-`haveI` → `have` / `letI` → `let` at the reported positions.
+`haveI` → `have` / `letI` → `let` at the reported positions. (The "155+"
+figure this section used to carry was another partial-build undercount — see
+item 1's table.) The suggestion payload is literally the token with a
+combining strikethrough on the `I`, so the edit is: delete one character at the
+reported column + 5.
 
 Do **not** blanket-sed `haveI` → `have`: the two differ for genuine instance
 bindings, and only the flagged sites are known-safe.

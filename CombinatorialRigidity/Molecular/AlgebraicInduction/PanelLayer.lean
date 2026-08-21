@@ -803,9 +803,9 @@ theorem exists_shear_linearIndependent_pair [Infinite K] (n_a n' n_b : Fin (k + 
   have hbad := setOf_not_shear_linearIndependent_subsingleton n_a n' n_b hgab
   have hfin : ({0} ∪ {t : K | ¬ LinearIndependent K ![n_a + t • n', n_b]}).Finite :=
     (Set.finite_singleton _).union hbad.finite
-  obtain ⟨t, ht⟩ := (Set.infinite_univ (α := K)).diff hfin |>.nonempty
-  simp only [Set.mem_diff, Set.mem_univ, true_and, Set.mem_union, Set.mem_singleton_iff,
-    Set.mem_setOf_eq, not_or, not_not] at ht
+  obtain ⟨t, ht⟩ := (Set.infinite_univ (α := K)).sdiff hfin |>.nonempty
+  simp only [Set.mem_sdiff, Set.mem_univ, true_and, Set.mem_union, Set.mem_singleton_iff,
+    Set.mem_ofPred_eq, not_or, not_not] at ht
   exact ⟨t, ht.1, ht.2⟩
 
 /-- **A panel support extensor family factors through the complement iso** (`def:panel-support-
@@ -1249,13 +1249,13 @@ private theorem normalsJoin_basisFun_eq_sign_smul {i j : Fin (k + 2)} (h : i ≠
           exteriorPower.ιMulti_family K 2 (Pi.basisFun K (Fin (k + 2)))
             ⟨{i, j}, Finset.card_pair h⟩ := by
   by_cases hlt : i < j
-  · rw [if_pos hlt, one_smul]
+  · rw [ite_eq_left hlt, one_smul]
     exact normalsJoin_eq_ιMulti_family_pair hlt
   · have hji : j < i := (lt_or_gt_of_ne h).resolve_left hlt
     have hset : (⟨{j, i}, Finset.card_pair (Fin.ne_of_lt hji)⟩ :
           Set.powersetCard (Fin (k + 2)) 2) = ⟨{i, j}, Finset.card_pair h⟩ :=
       Subtype.ext (Finset.pair_comm j i)
-    rw [if_neg hlt, normalsJoin_swap, normalsJoin_eq_ιMulti_family_pair hji, hset,
+    rw [ite_eq_right hlt, normalsJoin_swap, normalsJoin_eq_ιMulti_family_pair hji, hset,
       Units.smul_def, Units.val_mk0]
     module
 
@@ -1571,13 +1571,13 @@ theorem span_annihRow_eq_dualAnnihilator (C : ScrewSpace K k) (hC : C ≠ 0) :
             = f (screwBasis k x) / (screwBasis k).repr C s
                 * ((screwBasis k).repr C s * (if s = x then (1 : K) else 0))
               - f (screwBasis k x) / (screwBasis k).repr C s * (screwBasis k).repr C x := by
-          intro x; rw [if_pos rfl, mul_one]; ring
+          intro x; rw [ite_eq_left rfl, mul_one]; ring
         rw [Finset.sum_congr rfl fun x _ => hsplit x, Finset.sum_sub_distrib]
         have h1 : ∑ x, f (screwBasis k x) / (screwBasis k).repr C s
             * ((screwBasis k).repr C s * (if s = x then (1 : K) else 0)) = f (screwBasis k s) := by
           rw [Finset.sum_eq_single s]
-          · rw [if_pos rfl, mul_one, div_mul_cancel₀ _ ht₀]
-          · intro x _ hxs; rw [if_neg (fun h => hxs h.symm), mul_zero, mul_zero]
+          · rw [ite_eq_left rfl, mul_one, div_mul_cancel₀ _ ht₀]
+          · intro x _ hxs; rw [ite_eq_right (fun h => hxs h.symm), mul_zero, mul_zero]
           · intro h; exact absurd (Finset.mem_univ s) h
         have h2 : ∑ x, f (screwBasis k x) / (screwBasis k).repr C s
             * (screwBasis k).repr C x = 0 := by
@@ -1590,10 +1590,10 @@ theorem span_annihRow_eq_dualAnnihilator (C : ScrewSpace K k) (hC : C ≠ 0) :
           rw [hreorg, hfC', zero_div]
         rw [h1, h2, sub_zero]
       · rw [Finset.sum_eq_single s]
-        · rw [if_pos rfl, if_neg hs, mul_zero, sub_zero, mul_one,
+        · rw [ite_eq_left rfl, ite_eq_right hs, mul_zero, sub_zero, mul_one,
             div_mul_cancel₀ _ ht₀]
         · intro t _ hts
-          rw [if_neg (fun h => hts h.symm), if_neg hs]; ring
+          rw [ite_eq_right (fun h => hts h.symm), ite_eq_right hs]; ring
         · intro h; exact absurd (Finset.mem_univ s) h
     rw [hsum]
     refine Submodule.sum_mem _ fun t _ => Submodule.smul_mem _ _ ?_
@@ -1628,11 +1628,11 @@ theorem annihRowPoly_eval {α : Type*} (u v : α) (q : α × Fin (k + 2) → K)
     mul_ite, mul_one, mul_zero, ← screwBasis_repr_apply, ← screwBasis_repr_apply]
   congr 1
   · rcases eq_or_ne t₂ s with h | h
-    · rw [if_pos h, if_pos h.symm]
-    · rw [if_neg h, if_neg fun h' => h h'.symm]
+    · rw [ite_eq_left h, ite_eq_left h.symm]
+    · rw [ite_eq_right h, ite_eq_right fun h' => h h'.symm]
   · rcases eq_or_ne t₁ s with h | h
-    · rw [if_pos h, if_pos h.symm]
-    · rw [if_neg h, if_neg fun h' => h h'.symm]
+    · rw [ite_eq_left h, ite_eq_left h.symm]
+    · rw [ite_eq_right h, ite_eq_right fun h' => h h'.symm]
 
 /-- The panel-coordinatized annihilator polynomial `annihRowPoly` is **degree-2**
 (`totalDegree ≤ 2`): a difference of two `if`-guarded copies of the degree-2 panel-support
@@ -2142,12 +2142,13 @@ every link of `G` has both endpoints in `V(G)` (`IsLink.left_mem`, `IsLink.right
 theorem crossingEdges_complement_sep (G : Graph α β) (f : α → α) :
     G.crossingEdges (fun x => if x ∈ G.vertexSet then f x else x) = G.crossingEdges f := by
   ext e
-  simp only [Graph.crossingEdges, Set.mem_setOf_eq]
+  simp only [Graph.crossingEdges, Set.mem_ofPred_eq]
   constructor
   · rintro ⟨heE, u, v, hlink, hne⟩
-    exact ⟨heE, u, v, hlink, by rwa [if_pos hlink.left_mem, if_pos hlink.right_mem] at hne⟩
+    exact ⟨heE, u, v, hlink,
+      by rwa [ite_eq_left hlink.left_mem, ite_eq_left hlink.right_mem] at hne⟩
   · rintro ⟨heE, u, v, hlink, hne⟩
-    exact ⟨heE, u, v, hlink, by rwa [if_pos hlink.left_mem, if_pos hlink.right_mem]⟩
+    exact ⟨heE, u, v, hlink, by rwa [ite_eq_left hlink.left_mem, ite_eq_left hlink.right_mem]⟩
 
 open Classical in
 /-- **Complement-separation range count** (Phase 22i L0c): for a labeling `f : α → α` with
@@ -2167,11 +2168,11 @@ theorem range_complement_sep_card [Finite α] (G : Graph α β) (f : α → α)
     constructor
     · rintro ⟨x, hx⟩
       by_cases hxV : x ∈ G.vertexSet
-      · left; exact ⟨x, hxV, by rwa [if_pos hxV] at hx⟩
-      · right; rw [if_neg hxV] at hx; rw [← hx]; exact hxV
+      · left; exact ⟨x, hxV, by rwa [ite_eq_left hxV] at hx⟩
+      · right; rw [ite_eq_right hxV] at hx; rw [← hx]; exact hxV
     · rintro (⟨x, hxV, rfl⟩ | hyVc)
-      · exact ⟨x, by rw [if_pos hxV]⟩
-      · exact ⟨y, by rw [if_neg hyVc]⟩
+      · exact ⟨x, by rw [ite_eq_left hxV]⟩
+      · exact ⟨y, by rw [ite_eq_right hyVc]⟩
   -- The two parts are disjoint: `f '' G.vertexSet ⊆ G.vertexSet` and `G.vertexSet.compl` disjoint.
   have hdisj : Disjoint (f '' G.vertexSet) G.vertexSet.compl :=
     Set.disjoint_left.mpr fun y hy hyc => hyc (hf hy)
@@ -2207,7 +2208,7 @@ theorem screwDim_mul_compl_add_deficiency_le_finrank_infinitesimalMotions
   -- `g '' VG ⊆ VG`: for x ∈ VG, g x = ι₀ (f₀ x) ∈ VG since f₀ x ∈ f₀ '' VG and ι₀ maps into VG.
   have hg_img : g '' VG ⊆ VG := by
     rintro y ⟨x, hxV, rfl⟩
-    simp only [hg_def, if_pos hxV]
+    simp only [hg_def, ite_eq_left hxV]
     exact hι₀maps (Set.mem_image_of_mem f₀ hxV)
   -- `numParts G g = numParts G f₀`: g '' VG = ι₀ '' (f₀ '' VG); ι₀ is injective on f₀ '' VG.
   have hnumParts : F.graph.numParts g = F.graph.numParts f₀ := by
@@ -2218,30 +2219,30 @@ theorem screwDim_mul_compl_add_deficiency_le_finrank_infinitesimalMotions
       simp only [Set.mem_image]
       constructor
       · rintro ⟨x, hxV, rfl⟩
-        rw [if_pos hxV]
+        rw [ite_eq_left hxV]
         exact Set.mem_image_of_mem ι₀ (Set.mem_image_of_mem f₀ hxV)
       · rintro ⟨_, ⟨x, hxV, rfl⟩, rfl⟩
-        exact ⟨x, hxV, by rw [if_pos hxV]⟩
+        exact ⟨x, hxV, by rw [ite_eq_left hxV]⟩
     rw [himg]
     exact hι₀inj.ncard_image
   -- `crossingEdges G g = crossingEdges G f₀`: g u ≠ g v ↔ ι₀(f₀ u) ≠ ι₀(f₀ v) ↔ f₀ u ≠ f₀ v
   -- (since ι₀ is injective on f₀ '' VG and f₀ u, f₀ v ∈ f₀ '' VG for u, v ∈ VG).
   have hcross : F.graph.crossingEdges g = F.graph.crossingEdges f₀ := by
     ext e
-    simp only [Graph.crossingEdges, Set.mem_setOf_eq]
+    simp only [Graph.crossingEdges, Set.mem_ofPred_eq]
     constructor
     · rintro ⟨heE, u, v, hlink, hne⟩
       refine ⟨heE, u, v, hlink, ?_⟩
       -- `hne : g u ≠ g v`; after unfolding g at u and v, this is `ι₀ (f₀ u) ≠ ι₀ (f₀ v)`.
-      have hu : g u = ι₀ (f₀ u) := if_pos hlink.left_mem
-      have hv : g v = ι₀ (f₀ v) := if_pos hlink.right_mem
+      have hu : g u = ι₀ (f₀ u) := ite_eq_left hlink.left_mem
+      have hv : g v = ι₀ (f₀ v) := ite_eq_left hlink.right_mem
       rw [hu, hv] at hne
       exact fun h => hne (congrArg ι₀ h)
     · rintro ⟨heE, u, v, hlink, hne⟩
       refine ⟨heE, u, v, hlink, ?_⟩
       -- `hne : f₀ u ≠ f₀ v`; show `g u ≠ g v` via injectivity of ι₀.
-      have hu : g u = ι₀ (f₀ u) := if_pos hlink.left_mem
-      have hv : g v = ι₀ (f₀ v) := if_pos hlink.right_mem
+      have hu : g u = ι₀ (f₀ u) := ite_eq_left hlink.left_mem
+      have hv : g v = ι₀ (f₀ v) := ite_eq_left hlink.right_mem
       rw [hu, hv]
       exact fun h => hne (hι₀inj (Set.mem_image_of_mem f₀ hlink.left_mem)
         (Set.mem_image_of_mem f₀ hlink.right_mem) h)
@@ -2257,7 +2258,7 @@ theorem screwDim_mul_compl_add_deficiency_le_finrank_infinitesimalMotions
       · rintro ⟨x, rfl⟩
         by_cases hx : x ∈ VG
         · exact Or.inl ⟨x, hx, rfl⟩
-        · right; simp only [hg_def, if_neg hx]; exact hx
+        · right; simp only [hg_def, ite_eq_right hx]; exact hx
       · rintro (⟨x, hxV, rfl⟩ | hx)
         · exact ⟨x, rfl⟩
         · exact ⟨y, by simp [hg_def, hx]⟩

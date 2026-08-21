@@ -85,7 +85,7 @@ theorem degree_deleteIncidenceSet_of_ne_of_ne {v u w : V} [Fintype (G.neighborSe
     intro hadj
     exact hw2 (eq_of_adj_of_degree_le_one hv.le hadj.symm hu)
   rw [← ncard_neighborSet_eq_degree, ← ncard_neighborSet_eq_degree,
-      neighborSet_deleteIncidenceSet_of_ne hw1, Set.diff_singleton_eq_self hnotMem]
+      neighborSet_deleteIncidenceSet_of_ne hw1, Set.sdiff_singleton_eq_self hnotMem]
 
 /-- Peeling a vertex `v` adjacent to `u` drops `u`'s degree by exactly one. -/
 theorem degree_deleteIncidenceSet_add_one_of_adj {v u : V} [Fintype (G.neighborSet u)]
@@ -93,7 +93,7 @@ theorem degree_deleteIncidenceSet_add_one_of_adj {v u : V} [Fintype (G.neighborS
     (G.deleteIncidenceSet v).degree u + 1 = G.degree u := by
   rw [← ncard_neighborSet_eq_degree, ← ncard_neighborSet_eq_degree,
       neighborSet_deleteIncidenceSet_of_ne hu.ne']
-  exact Set.ncard_diff_singleton_add_one ((mem_neighborSet G u v).mpr hu.symm)
+  exact Set.ncard_sdiff_singleton_add_one ((mem_neighborSet G u v).mpr hu.symm)
 
 /-- Peeling `v`'s own incidence set drops `v`'s degree to zero. -/
 theorem degree_deleteIncidenceSet_self {v : V}
@@ -152,7 +152,7 @@ theorem setOf_degree_eq_one_deleteIncidenceSet_of_three_le_degree {v u : V}
     (hv : G.degree v = 1) (hu : G.Adj v u) (h3 : 3 ≤ G.degree u) :
     {w | (G.deleteIncidenceSet v).degree w = 1} = {w | G.degree w = 1} \ {v} := by
   ext w
-  simp only [Set.mem_setOf_eq, Set.mem_diff, Set.mem_singleton_iff]
+  simp only [Set.mem_ofPred_eq, Set.mem_sdiff, Set.mem_singleton_iff]
   by_cases hwv : w = v
   · subst hwv
     exact iff_of_false (by simp [degree_deleteIncidenceSet_self]) (by simp)
@@ -171,7 +171,7 @@ theorem setOf_degree_eq_one_deleteIncidenceSet_of_degree_eq_two {v u : V}
     (hv : G.degree v = 1) (hu : G.Adj v u) (h2 : G.degree u = 2) :
     {w | (G.deleteIncidenceSet v).degree w = 1} = insert u ({w | G.degree w = 1} \ {v}) := by
   ext w
-  simp only [Set.mem_setOf_eq, Set.mem_insert_iff, Set.mem_diff, Set.mem_singleton_iff]
+  simp only [Set.mem_ofPred_eq, Set.mem_insert_iff, Set.mem_sdiff, Set.mem_singleton_iff]
   by_cases hwv : w = v
   · subst hwv
     exact iff_of_false (by simp [degree_deleteIncidenceSet_self]) (by simp [hu.ne])

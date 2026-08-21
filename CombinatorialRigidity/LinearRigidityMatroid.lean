@@ -184,7 +184,7 @@ theorem exists_uniform_rowIndependent_placement_dim_two {V : Type*} [Finite V] :
       rw [h_iff t_w I] at h_w
       refine (LinearIndependent.finite_setOf_not_along_affine_path h_w).subset ?_
       intro t ht
-      simp only [Set.mem_setOf_eq] at ht ⊢
+      simp only [Set.mem_ofPred_eq] at ht ⊢
       exact fun hLI => ht ((h_iff t I).mpr hLI)
     -- The union of bad-`t` sets across `I ∈ insert I₀ F'` is finite (finite union of finites).
     let bad : Set ℝ :=

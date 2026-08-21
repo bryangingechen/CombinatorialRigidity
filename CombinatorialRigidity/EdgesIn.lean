@@ -211,7 +211,7 @@ keystone for sparsity arguments. -/
 lemma ncard_edgesIn_compl_singleton_add_ncard_incidenceSet [Finite V] (v : V) :
     (G.edgesIn ({v}ᶜ : Set V)).ncard + (G.incidenceSet v).ncard = G.edgeSet.ncard := by
   rw [edgesIn_compl_singleton]
-  exact Set.ncard_diff_add_ncard_of_subset (G.incidenceSet_subset v) G.edgeSet.toFinite
+  exact Set.ncard_sdiff_add_ncard_of_subset (G.incidenceSet_subset v) G.edgeSet.toFinite
 
 /-! ### Modularity: edges-in on the intersection / union lattice
 
@@ -252,7 +252,7 @@ lemma edgesIn_ncard_add_le [Finite V] (S T : Set V) :
 
 The edges induced on a clique are exactly the two-element subsets of it: transport
 `edgesIn` to the induced subgraph (`ncard_edgesIn_eq_ncard_induce_edgeSet`), which is
-complete on a clique (`isClique_iff_induce_eq`), and count the complete graph's edges
+complete on a clique (`induce_eq_top`), and count the complete graph's edges
 (`ncard_edgeSet_top_eq_card_choose_two`). -/
 
 /-- A clique's edge count: if `X : Finset V` is a clique of `G` (every two distinct vertices
@@ -260,7 +260,7 @@ of `X` adjacent), the edges of `G` inside `X` number exactly `C(#X, 2)`. -/
 theorem IsClique.ncard_edgesIn {X : Finset V} (h : G.IsClique (↑X : Set V)) :
     (G.edgesIn (↑X : Set V)).ncard = X.card.choose 2 := by
   classical
-  rw [ncard_edgesIn_eq_ncard_induce_edgeSet, (isClique_iff_induce_eq G).mp h,
+  rw [ncard_edgesIn_eq_ncard_induce_edgeSet, induce_eq_top.mpr h,
     ncard_edgeSet_top_eq_card_choose_two]
   simp
 

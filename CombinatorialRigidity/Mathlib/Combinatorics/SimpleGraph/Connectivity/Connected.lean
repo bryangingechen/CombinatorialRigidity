@@ -94,7 +94,7 @@ theorem two_le_degree_of_adj_degree_eq_one {v u : V} [Fintype (G.neighborSet v)]
   have hvmem : v ∈ G.support := (mem_support G).mpr ⟨u, hu⟩
   have humem : u ∈ G.support := (mem_support G).mpr ⟨v, hu.symm⟩
   have hex : (G.support \ {v, u}).Nonempty := by
-    rw [Set.diff_nonempty]
+    rw [Set.sdiff_nonempty]
     intro hsub
     have hle : G.support.ncard ≤ ({v, u} : Set V).ncard := Set.ncard_le_ncard hsub
     have h2 : ({v, u} : Set V).ncard ≤ 2 := Set.ncard_pair_le v u

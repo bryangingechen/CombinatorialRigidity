@@ -139,7 +139,7 @@ the `(k, ℓ)`-sparsity count (which lives on `spanningVerts`). -/
 lemma vertexSet_deleteVerts_isolatedSet_restrict {G : Graph α β} {E' : Set β} :
     V(G ↾ E') \ Isol(G ↾ E') = G.spanningVerts E' := by
   ext x
-  simp only [mem_diff, mem_isolatedSet_iff, mem_spanningVerts]
+  simp only [mem_sdiff, mem_isolatedSet_iff, mem_spanningVerts]
   constructor
   · rintro ⟨hxV, hxiso⟩
     rw [not_isolated_iff hxV] at hxiso
@@ -254,7 +254,7 @@ vertices removes no bars (`setincEdges_isolatedSet`). The edge-side companion of
 `vertexSet_deleteVerts_isolatedSet_restrict`. -/
 lemma edgeSet_deleteVerts_isolatedSet_restrict {G : Graph α β} {Y : Set β} (hY : Y ⊆ E(G)) :
     E((G ↾ Y) - Isol(G ↾ Y)) = Y := by
-  simp only [deleteVerts_edgeSet_diff, setincEdges_isolatedSet, diff_empty, edgeSet_restrict,
+  simp only [deleteVerts_edgeSet_diff, setincEdges_isolatedSet, sdiff_empty, edgeSet_restrict,
     inter_eq_right.mpr hY]
 
 /-- For a connected component `C` of the isolated-vertex-deleted restriction
@@ -278,7 +278,7 @@ lemma spanningVerts_edgeSet_eq_vertexSet_of_isCompOf {G : Graph α β} {Y : Set 
     have hxH : x ∈ V(H) := hC.le.vertexSet_mono hxC
     have hxnotiso : ¬ (G ↾ Y).Isolated x := by
       have : x ∈ V((G ↾ Y) - Isol(G ↾ Y)) := hxH
-      rw [deleteVerts_vertexSet, mem_diff, mem_isolatedSet_iff] at this
+      rw [deleteVerts_vertexSet, mem_sdiff, mem_isolatedSet_iff] at this
       exact this.2
     have hxGYmem : x ∈ V(G ↾ Y) := (deleteVerts_le.vertexSet_mono hxH)
     obtain ⟨e, hince⟩ := (not_isolated_iff hxGYmem).mp hxnotiso

@@ -563,7 +563,7 @@ of `fromEdgeSet`. The `fromEdgeSet` constructor drops diagonals; the `u ≠ v` h
 lemma edgeSet_fromEdgeSet_insert {I : Set (Sym2 V)} {u v : V} (huv : u ≠ v) :
     (fromEdgeSet (insert s(u, v) I)).edgeSet = insert s(u, v) (fromEdgeSet I).edgeSet := by
   rw [edgeSet_fromEdgeSet, edgeSet_fromEdgeSet,
-      Set.insert_diff_of_notMem _ (Sym2.mem_diagSet.not.mpr (Sym2.mk_isDiag_iff.not.mpr huv))]
+      Set.insert_sdiff_of_notMem _ (Sym2.mem_diagSet.not.mpr (Sym2.mk_isDiag_iff.not.mpr huv))]
 
 /-- **I-block extraction from a sparsity violation (matroidal building block).** If
 `fromEdgeSet I` is `(k, ℓ)`-sparse but adding a single off-diagonal edge `s(u, v) ∉ I`
@@ -1071,7 +1071,7 @@ theorem IsSparse.typeII_reverse_blocker
       rcases he_edge with hin_comap | hin_bridge
       · exact Or.inl (mem_edgesIn.mpr ⟨hin_comap, he_sub⟩)
       · rw [edgeSet_fromEdgeSet] at hin_bridge
-        exact Or.inr (Set.diff_subset hin_bridge)
+        exact Or.inr (Set.sdiff_subset hin_bridge)
     have h_ncard_bound : (G'.edgesIn (↑s' : Set _)).ncard ≤
         (G.edgesIn (↑S : Set V)).ncard + 1 :=
       calc (G'.edgesIn (↑s' : Set _)).ncard
@@ -1100,7 +1100,7 @@ theorem IsSparse.typeII_reverse_blocker
       rw [hG'_def, edgeSet_sup] at he_edge
       rcases he_edge with hin_comap | hin_bridge
       · exact hin_comap
-      · rw [edgeSet_fromEdgeSet, Set.mem_diff, Set.mem_singleton_iff] at hin_bridge
+      · rw [edgeSet_fromEdgeSet, Set.mem_sdiff, Set.mem_singleton_iff] at hin_bridge
         obtain ⟨rfl, _⟩ := hin_bridge
         rw [hbridge_def, Sym2.coe_mk, Set.insert_subset_iff,
             Set.singleton_subset_iff, Finset.mem_coe, Finset.mem_coe] at he_sub

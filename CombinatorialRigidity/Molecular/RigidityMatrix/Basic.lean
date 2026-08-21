@@ -1063,7 +1063,7 @@ theorem infinitesimalMotions_eq_dualCoannihilator (F : BodyHingeFramework K k α
   apply SetLike.coe_injective
   rw [Submodule.coe_dualCoannihilator_span]
   ext S
-  simp only [SetLike.mem_coe, mem_infinitesimalMotions, Set.mem_setOf_eq]
+  simp only [SetLike.mem_coe, mem_infinitesimalMotions, Set.mem_ofPred_eq]
   constructor
   · rintro hS φ ⟨e, u, v, he, r, hr, rfl⟩
     rw [hingeRow_apply]
@@ -1223,7 +1223,7 @@ theorem span_rigidityRows_diff_singleton_eq_of_mem_span
     (F : BodyHingeFramework K k α β) {rhat : Module.Dual K (α → ScrewSpace K k)}
     (hrhat : rhat ∈ Submodule.span K (F.rigidityRows \ {rhat})) :
     Submodule.span K (F.rigidityRows \ {rhat}) = Submodule.span K F.rigidityRows := by
-  refine le_antisymm (Submodule.span_mono Set.diff_subset) (Submodule.span_le.mpr fun x hx => ?_)
+  refine le_antisymm (Submodule.span_mono Set.sdiff_subset) (Submodule.span_le.mpr fun x hx => ?_)
   by_cases hxr : x = rhat
   · exact hxr ▸ hrhat
   · exact Submodule.subset_span ⟨hx, hxr⟩

@@ -1805,10 +1805,10 @@ theorem BodyHingeFramework.submatrix_columnOp_toBlocks₂₂_eq_mixedBottom [Fin
   · -- A genuine `Gv` row: both endpoints `≠ v`, the column op is invisible.
     rw [F.rigidityMatrixEdge_mul_columnOp_apply_off_pin ends hgp hva _ _ _ hfst (hbot2 i).symm,
       F.rigidityMatrixEdge_apply ends hgp _ _ _, BodyHingeFramework.rigidityRowFunEdge,
-      if_neg (Ne.symm hfst)]
+      ite_eq_right (Ne.symm hfst)]
   · -- The `e_b` row: FIRST endpoint `= v`, reads the `a`-shifted `hingeRow`.
     rw [F.rigidityMatrixEdge_mul_columnOp_apply_eB_off_pin ends hgp hva _ _ _ hfst (hbot2 i) hb,
-      if_pos hfst]
+      ite_eq_left hfst]
 
 /-- **D-CAN-2 — the operated MIXED bottom block equals the IH framework's `a`-shifted rows as a
 LITERAL `Matrix`** (Phase 23f D-CAN-2, `notes/Phase23-design.md` §(4.71.4); Katoh–Tanigawa 2011
@@ -1994,8 +1994,8 @@ theorem BodyHingeFramework.rank_columnOp_toBlocks₂₂_eq_finrank_span_mixedBot
       exact (hbot2 i)
     · -- the (`a`-shifted) `.1` endpoint `≠ v`
       rcases hbot1 i with h | h
-      · rw [if_neg (Ne.symm h)]; exact Ne.symm h
-      · rw [if_pos h]; exact Ne.symm hva
+      · rw [ite_eq_right (Ne.symm h)]; exact Ne.symm h
+      · rw [ite_eq_left h]; exact Ne.symm hva
   rw [Matrix.rank_submatrix_inr_of_zero_left_cols _ hzero]
   -- The surviving column reindex `(columnSplit v).symm` is rank-preserving.
   have hreindex : Nfull.submatrix id (columnSplit (k := k) v).symm
@@ -2134,8 +2134,8 @@ theorem BodyHingeFramework.rank_columnOp_toBlocks₂₂_eq_finrank_span_Gab [Fin
       exact (hbot2 i)
     · -- the (`a`-shifted) `.1` endpoint `≠ v`
       rcases hbot1 i with h | h
-      · rw [if_neg (Ne.symm h)]; exact Ne.symm h
-      · rw [if_pos h]; exact Ne.symm hva
+      · rw [ite_eq_right (Ne.symm h)]; exact Ne.symm h
+      · rw [ite_eq_left h]; exact Ne.symm hva
   rw [Matrix.rank_submatrix_inr_of_zero_left_cols _ hzero]
   -- The surviving column reindex `(columnSplit v).symm` is rank-preserving.
   have hreindex : Nfull.submatrix id (columnSplit (k := k) v).symm
@@ -2293,7 +2293,7 @@ theorem BodyHingeFramework.span_range_aShifted_blockBasisOn_eq_rigidityRows
           (F₂.blockBasisOn hgp₂ p.1.2 p.2 : Module.Dual K (ScrewSpace K k)))
       = fun p => hingeRow (k := k) (ends₂ p.1.1).1 (ends₂ p.1.1).2
           (F₂.blockBasisOn hgp₂ p.1.2 p.2 : Module.Dual K (ScrewSpace K k)) := by
-    funext p; rw [if_neg (hfirst₂ p.1)]
+    funext p; rw [ite_eq_right (hfirst₂ p.1)]
   rw [hcollapse]
   exact span_range_hingeRow_crossFramework_eq_rigidityRows F₂ F₂ ends₂ id Function.surjective_id
     (fun e => fun j => (F₂.blockBasisOn hgp₂ e.2 j : Module.Dual K (ScrewSpace K k)))
@@ -2802,9 +2802,9 @@ theorem BodyHingeFramework.submatrix_columnOp_toBlocks₁₁_sub_mul_toBlocks₂
     intro i'
     rw [Matrix.toBlocks₂₁, Matrix.of_apply, Matrix.submatrix_apply, hcol]
     by_cases hfst : (ends (re (Sum.inr i')).1.1).1 = body
-    · rw [if_pos hfst, F.rigidityMatrixEdge_mul_columnOp_apply_corner ends hgp hva
+    · rw [ite_eq_left hfst, F.rigidityMatrixEdge_mul_columnOp_apply_corner ends hgp hva
         (re (Sum.inr i')) c hfst (hb i')]
-    · rw [if_neg hfst, F.rigidityMatrixEdge_mul_columnOp_apply_pin_zero ends hgp hva
+    · rw [ite_eq_right hfst, F.rigidityMatrixEdge_mul_columnOp_apply_pin_zero ends hgp hva
         (re (Sum.inr i')) c (Ne.symm hfst) (Ne.symm (hb i')), LinearMap.zero_apply]
   -- Assemble: `(A − L₀·C) i (⟨body,_⟩, c) = (blockBasisOn(corner i) − ∑ L₀ • χ) (finScrewBasis c)`,
   -- which is `φ i (finScrewBasis c) = coordEquiv (φ i) (⟨body,_⟩, c)`.

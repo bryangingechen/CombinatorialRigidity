@@ -152,7 +152,7 @@ theorem exists_isGenericNormals_abundance [Finite α] [Finite β] (ends : β →
     rw [normalRow, BodyHingeFramework.hingeRow_apply, MvPolynomial.smul_eval, annihRowPoly_eval,
       Pi.single_apply, Pi.single_apply]
     by_cases hu : (ends i.1).1 = a <;> by_cases hv : (ends i.1).2 = a <;>
-      simp only [hu, hv, if_true, if_false, sub_zero, zero_sub, sub_self, map_zero,
+      simp only [hu, hv, ite_true, ite_false, sub_zero, zero_sub, sub_self, map_zero,
         map_neg, one_mul, neg_mul, zero_mul]
   -- Per subfamily `s`: a nonzero witnessing polynomial (the constant `1` for the vacuous case).
   have key : ∀ s : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k),
@@ -243,8 +243,8 @@ theorem supportExtensor_ofNormals_ne_zero_of_isGenericNormals (hk1 : 1 ≤ k)
   obtain ⟨t1, ht1⟩ := Fintype.exists_ne_of_one_lt_card h1lt t0
   -- `annihRow C₀ t0 t1` is nonzero: it reads off `C₀`'s `t0`-coordinate at `screwBasis k t1`.
   have hrow_ne : annihRow C₀ t0 t1 (screwBasis k t1) ≠ 0 := by
-    rw [annihRow_apply, Module.Basis.repr_self_apply, Module.Basis.repr_self_apply, if_pos rfl,
-      if_neg ht1, mul_one, mul_zero, sub_zero]
+    rw [annihRow_apply, Module.Basis.repr_self_apply, Module.Basis.repr_self_apply, ite_eq_left rfl,
+      ite_eq_right ht1, mul_one, mul_zero, sub_zero]
     exact ht0
   -- Transported by `hingeRow`, the row is nonzero (`screwDiff` is surjective at `u ≠ v`).
   have hhinge_ne : BodyHingeFramework.hingeRow (k := k) u v (annihRow C₀ t0 t1) ≠ 0 := by

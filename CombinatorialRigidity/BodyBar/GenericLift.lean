@@ -321,7 +321,7 @@ private theorem homLift_coordPoint (n : ℕ) (a x : Fin (n + 1)) :
   induction x using Fin.cases with
   | zero => simp
   | succ x' =>
-    simp only [homLift_succ, if_neg (Fin.succ_ne_zero x')]
+    simp only [homLift_succ, ite_eq_right (Fin.succ_ne_zero x')]
     induction a using Fin.cases with
     | zero => simp [coordPoint]
     | succ a' =>
@@ -384,13 +384,13 @@ private theorem twoExtensor_coordPoint_succ {n : ℕ} {h k : Fin (n + 1)}
   clear_value a b
   clear ha_def hb_def
   rcases eq_or_ne a 0 with ha0 | ha0
-  · simp only [ha0, h0h.ne, hbne0, true_and, false_and, if_true, if_false]
+  · simp only [ha0, h0h.ne, hbne0, true_and, false_and, ite_true, ite_false]
     ring
   · have himp : ¬(b = h ∧ a = k) := by
       rintro ⟨hbh, hak⟩
       rw [hbh, hak] at hab
       exact absurd hhk (lt_asymm hab)
-    simp only [ha0, hbne0, if_false]
+    simp only [ha0, hbne0, ite_false]
     split_ifs <;> simp_all
 
 /-- **The coordinate-segment two-extensors form a basis** (`lem:coordinate-extensor-basis`;
@@ -479,7 +479,8 @@ two-sided-inverse identities are the contravariant adjoint-of-composition law
 mirror, closed by `LinearMap.adjoint_id`. -/
 private noncomputable def adjointEquiv {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
     [FiniteDimensional ℝ E] (M : E ≃ₗ[ℝ] E) : E ≃ₗ[ℝ] E :=
-  LinearEquiv.ofLinear (LinearMap.adjoint (M : E →ₗ[ℝ] E)) (LinearMap.adjoint (M.symm : E →ₗ[ℝ] E))
+  LinearEquiv.ofLinearMap (LinearMap.adjoint (M : E →ₗ[ℝ] E))
+    (LinearMap.adjoint (M.symm : E →ₗ[ℝ] E))
     (by
       have h1 : (M.symm : E →ₗ[ℝ] E).comp (M : E →ₗ[ℝ] E) = LinearMap.id := by
         ext x; simp
@@ -621,12 +622,12 @@ theorem exists_endpoints_linearIndependent_rigidityRow [Finite α] [Finite β] {
         = coordPoint n ((pairIdxEquiv n).symm (j e)).1.1 := by
       funext i
       rw [hq_def]
-      simp only [dif_pos e.2, cond_false]
+      simp only [dite_eq_left e.2, Bool.cond_false]
     have htrue : (fun i => q ((e : β), true, i))
         = coordPoint n ((pairIdxEquiv n).symm (j e)).1.2 := by
       funext i
       rw [hq_def]
-      simp only [dif_pos e.2, cond_true]
+      simp only [dite_eq_left e.2, Bool.cond_true]
     rw [hpe, hMapply, hb_def, ofEndpoints_placement, hfalse, htrue]
   have hrow_eq : ∀ e : E(G), ((stdFramework G n j).mapPlacement M).rigidityRow D e
       = (ofEndpoints G q).rigidityRow D e := by

@@ -961,7 +961,7 @@ theorem chainWalk_charging [Finite α] [Finite β]
   have hDomCard : Dom.ncard = 2 * X₂.ncard := by
     have hUnion : Dom = ⋃ v ∈ X₂, ({v} : Set α) ×ˢ E(G, v) := by
       ext ⟨v, e⟩
-      simp only [hDomDef, Set.mem_setOf_eq, Set.mem_iUnion, Set.mem_prod, Set.mem_singleton_iff,
+      simp only [hDomDef, Set.mem_ofPred_eq, Set.mem_iUnion, Set.mem_prod, Set.mem_singleton_iff,
         mem_incEdges_iff]
       constructor
       · rintro ⟨hv, he⟩; exact ⟨v, hv, rfl, he⟩
@@ -1045,7 +1045,7 @@ theorem chainWalk_charging [Finite α] [Finite β]
       Φ (v, e) = ((destE v hincv.other e hincv.isLink_other,
           destU v hincv.other e hincv.isLink_other),
         (Tfun v hincv.other e hincv.isLink_other).length) :=
-    fun v e hvX₂ hincv => dif_pos ⟨hvX₂, hincv⟩
+    fun v e hvX₂ hincv => dite_eq_left ⟨hvX₂, hincv⟩
   have hMapsTo : ∀ p ∈ Dom, Φ p ∈ Tgt := by
     rintro ⟨v, e⟩ ⟨hvX₂, hincv⟩
     rw [hΦeval v e hvX₂ hincv, hTgtDef, Set.mem_prod]
@@ -1143,7 +1143,7 @@ theorem chainWalk_terminated_contradiction [DecidableEq β] [Finite α] [Finite 
   set Vge3 : Set α := {u ∈ V(G) | 3 ≤ G.degree u} with hVge3def
   have hpart : V(G) = X₂ ∪ Vge3 := by
     ext v
-    simp only [hX₂def, hVge3def, Set.mem_union, Set.mem_setOf_eq]
+    simp only [hX₂def, hVge3def, Set.mem_union, Set.mem_ofPred_eq]
     constructor
     · intro hv
       have h2 := two_le_degree_of_isKDof_zero hD1 hG.1 hv hV2
@@ -1326,7 +1326,7 @@ theorem chainData_extract [DecidableEq β] [Finite α] [Finite β]
     refine ⟨cd, hd2, ?_, ?_, ?_, ?_⟩
     · exact splitOff_isMinimalKDof hD2 hV3 hav hbv haG hbG hvG heab hlea hleb hclv he₀' hG hnoRigid
     · exact splitOff_simple_of_noRigid_of_card hD3 heab hlea hleb hV4 hnoRigid
-    · rw [vertexSet_splitOff, Set.ncard_diff (by simpa using hvG) (Set.toFinite _),
+    · rw [vertexSet_splitOff, Set.ncard_sdiff (by simpa using hvG) (Set.toFinite _),
         Set.ncard_singleton]
       omega
     · exact splitOff_vertexSet_ncard_lt hvG

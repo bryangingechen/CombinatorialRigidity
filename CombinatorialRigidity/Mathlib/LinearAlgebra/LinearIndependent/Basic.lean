@@ -122,7 +122,7 @@ theorem exists_smul_combination_eq_sub_of_mem_span_image_compl {R M ι : Type*} 
       rw [Finset.sum_subtype (p := fun j => j ≠ i) (Finset.univ.filter (· ≠ i))
         (fun x => by simp) (fun j => c' j • v j), ← hc]
       refine Finset.sum_congr rfl (fun a _ => ?_)
-      simp only [hc'def, dif_neg a.2, Subtype.coe_eta]
+      simp only [hc'def, dite_eq_right a.2, Subtype.coe_eta]
     rw [← key]
     refine (Finset.sum_subset (Finset.filter_subset _ _) (fun j _ hj => ?_)).symm
     simp only [Finset.mem_filter, Finset.mem_univ, true_and, not_not] at hj

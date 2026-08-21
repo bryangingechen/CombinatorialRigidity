@@ -408,7 +408,7 @@ lemma runPebbleGameWith_witness_bridges {k ℓ : ℕ}
     obtain ⟨u, v⟩ := p
     rw [runPebbleGameWith] at h
     by_cases hcond : u ≠ v ∧ (u, v) ∉ D.arcs ∧ (v, u) ∉ D.arcs
-    · simp only [dif_pos hcond] at h
+    · simp only [dite_eq_left hcond] at h
       split at h
       next Dmid h_step =>
         -- accept branch: recurse with Dmid (whose underline ⊆ G.edgeFinset by IH-prep)
@@ -445,7 +445,7 @@ lemma runPebbleGameWith_witness_bridges {k ℓ : ℕ}
               hcond.2.1 hcond.2.2 hD h_step
           rw [h_w_underline]
           exact hsub
-    · simp only [dif_neg hcond] at h
+    · simp only [dite_eq_right hcond] at h
       have h_mem_es : ∀ p ∈ es, s(p.1, p.2) ∈ G.edgeFinset := fun p hp =>
         hmem p (List.mem_cons_of_mem _ hp)
       exact ih hD h_mem_es hsub h

@@ -215,7 +215,7 @@ theorem exists_mem_sup_span_image_compl_of_finrank_lt {K V : Type*} [Field K] [A
     rw [Function.comp_apply, hmemiff i (Set.univ \ {i})] at hmem
     convert hmem using 4
     ext j
-    simp only [Set.mem_setOf_eq, Set.mem_diff, Set.mem_univ, Set.mem_singleton_iff, true_and]
+    simp only [Set.mem_ofPred_eq, Set.mem_sdiff, Set.mem_univ, Set.mem_singleton_iff, true_and]
   -- An independent family's span has finrank `|ι|`; translate back to the ambient finrank.
   have hcard : Module.finrank K (Submodule.span K (Set.range (W.mkQ ∘ g))) = Fintype.card ι :=
     finrank_span_eq_card hLI

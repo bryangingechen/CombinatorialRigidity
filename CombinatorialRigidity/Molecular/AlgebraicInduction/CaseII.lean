@@ -161,10 +161,10 @@ theorem PanelHingeFramework.case_II_placement_eq612 [DecidableEq α] [Finite α]
   have hq₀v : (fun i => q₀ (v, i)) = n_a + t • n_b := by
     funext i; rw [hq₀]; simp
   have hq₀b : (fun i => q₀ (b, i)) = n_b := by
-    funext i; rw [hq₀, hn_b]; simp only [if_neg hvb.symm]
+    funext i; rw [hq₀, hn_b]; simp only [ite_eq_right hvb.symm]
   have hva : v ≠ a := fun h => hvVc (h ▸ haVc)
   have hq₀a : (fun i => q₀ (a, i)) = n_a := by
-    funext i; rw [hq₀, hn_a]; simp only [if_neg hva.symm]
+    funext i; rw [hq₀, hn_a]; simp only [ite_eq_right hva.symm]
   -- The `va`-hinge `e_a` stays a nondegenerate line `L ⊂ Π(a)` (KT eq. (6.12), `t ≠ 0`).
   have hane : FG.supportExtensor e_a ≠ 0 := by
     rw [PanelHingeFramework.ofNormals_supportExtensor_eq_panel_of_ends _ e_a hends_ea]
@@ -503,9 +503,9 @@ theorem PanelHingeFramework.case_II_realization_all_k
   have hva : v ≠ a := hav.symm
   have hvb : v ≠ b := hbv.symm
   have hq₀a : (fun i => q₀ (a, i)) = n_a := by
-    funext i; rw [hq₀_def, hn_a]; simp only [if_neg hva.symm]
+    funext i; rw [hq₀_def, hn_a]; simp only [ite_eq_right hva.symm]
   have hq₀b : (fun i => q₀ (b, i)) = n_b := by
-    funext i; rw [hq₀_def, hn_b]; simp only [if_neg hvb.symm]
+    funext i; rw [hq₀_def, hn_b]; simp only [ite_eq_right hvb.symm]
   -- ── Step 9: Transport IH rank bound from q to q₀ (at Gab). ─────────────────────────────────
   -- Override v's normal in ofNormals Gab doesn't change the motion space (v ∉ V(Gab)).
   have hvVGab : v ∉ V(Gab) := by
@@ -778,7 +778,7 @@ theorem PanelHingeFramework.case_II_realization_all_k
   -- New block adds D-1 rows from the e_b hinge (|V(Gab)| = |V(G)|-1, so |V(G)| - 1 ≥ 2).
   have hVGab_card : V(Gab).ncard = V(G).ncard - 1 := by
     rw [hGab_def, Graph.vertexSet_splitOff]
-    exact Set.ncard_diff_singleton_of_mem hvG
+    exact Set.ncard_sdiff_singleton_of_mem hvG
   -- screwDim k = D (from hn).
   have hD_eq : (Graph.bodyBarDim n : ℤ) = screwDim k := by exact_mod_cast hn
   -- N = D*(|V(G)|-2) - (c-1)

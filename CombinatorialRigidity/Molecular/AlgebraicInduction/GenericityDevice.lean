@@ -227,7 +227,7 @@ theorem PanelHingeFramework.exists_good_realization_ofParam [Infinite K] [Fintyp
     -- then settle the boole arithmetic `[u=a] − [v=a]` per case.
     rw [Pi.single_apply, Pi.single_apply]
     by_cases hu : (ends i.1).1 = a <;> by_cases hv : (ends i.1).2 = a <;>
-      simp only [hu, hv, if_true, if_false, sub_zero, zero_sub, sub_self, map_zero,
+      simp only [hu, hv, ite_true, ite_false, sub_zero, zero_sub, sub_self, map_zero,
         map_neg, one_mul, neg_mul, zero_mul]
   -- The span containment `hcoord`: the panel rows lie in the rigidity rows (no transversality
   -- needed for `⊆`), so their span is contained and the coannihilator reversed. The seed's
@@ -1376,7 +1376,7 @@ theorem PanelHingeFramework.exists_rankPolynomial_of_rigidOn [Finite α] [Finite
       PanelHingeFramework.ofNormals_normal, MvPolynomial.smul_eval, annihRowPoly_eval]
     rw [Pi.single_apply, Pi.single_apply]
     by_cases hu : (ends i.1).1 = a <;> by_cases hv : (ends i.1).2 = a <;>
-      simp only [hu, hv, if_true, if_false, sub_zero, zero_sub, sub_self, map_zero,
+      simp only [hu, hv, ite_true, ite_false, sub_zero, zero_sub, sub_self, map_zero,
         map_neg, one_mul, neg_mul, zero_mul]
   -- Extract the witnessing rank polynomial via the mirror lemma; re-phrase its conclusion.
   obtain ⟨Q, hQ₀, hQ⟩ :=
@@ -1472,7 +1472,7 @@ theorem PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking [Finite α]
       PanelHingeFramework.ofNormals_normal, MvPolynomial.smul_eval, annihRowPoly_eval]
     rw [Pi.single_apply, Pi.single_apply]
     by_cases hu : (ends i.1).1 = a <;> by_cases hv : (ends i.1).2 = a <;>
-      simp only [hu, hv, if_true, if_false, sub_zero, zero_sub, sub_self, map_zero,
+      simp only [hu, hv, ite_true, ite_false, sub_zero, zero_sub, sub_self, map_zero,
         map_neg, one_mul, neg_mul, zero_mul]
   -- Extract the witnessing rank polynomial via the mirror lemma; re-phrase its conclusion.
   obtain ⟨Q, hQ₀, hQ⟩ :=
@@ -1562,7 +1562,7 @@ theorem PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking [Finite 
       PanelHingeFramework.ofNormals_normal, MvPolynomial.smul_eval, annihRowPoly_eval]
     rw [Pi.single_apply, Pi.single_apply]
     by_cases hu : (ends i.1).1 = a <;> by_cases hv : (ends i.1).2 = a <;>
-      simp only [hu, hv, if_true, if_false, sub_zero, zero_sub, sub_self, map_zero,
+      simp only [hu, hv, ite_true, ite_false, sub_zero, zero_sub, sub_self, map_zero,
         map_neg, one_mul, neg_mul, zero_mul]
   -- Extract the witnessing rank polynomial via the mirror lemma.
   obtain ⟨Q, hQ₀, hQ⟩ :=
@@ -1676,7 +1676,7 @@ theorem PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set [Finite
       PanelHingeFramework.ofNormals_normal, MvPolynomial.smul_eval, annihRowPoly_eval]
     rw [Pi.single_apply, Pi.single_apply]
     by_cases hu : (ends i.1).1 = a <;> by_cases hv : (ends i.1).2 = a <;>
-      simp only [hu, hv, if_true, if_false, sub_zero, zero_sub, sub_self, map_zero,
+      simp only [hu, hv, ite_true, ite_false, sub_zero, zero_sub, sub_self, map_zero,
         map_neg, one_mul, neg_mul, zero_mul]
   -- Extract the witnessing rank polynomial via the mirror lemma; re-phrase its conclusion.
   obtain ⟨Q, hQ₀, hQ⟩ :=

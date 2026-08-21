@@ -89,7 +89,7 @@ private lemma exists_minimal_satisfying_subset (P : Finset α → Prop)
     intro a ha; simp only [mem_coe, mem_powerset]; exact ha.1)
   have hne : Set.Nonempty S := ⟨e, he, hP⟩
   obtain ⟨a, h₁, h₂⟩ := h_fin.toFinset.exists_minimal (h_fin.toFinset_nonempty.mpr hne)
-  simp only [Set.Finite.mem_toFinset, S, Set.mem_setOf_eq, and_imp] at h₁ h₂
+  simp only [Set.Finite.mem_toFinset, S, Set.mem_ofPred_eq, and_imp] at h₁ h₂
   refine ⟨a, h₁.1, h₁.2, fun a' hPa' ha' ↦ ?_⟩
   exact h₂ (ha'.trans h₁.1) hPa' ha'
 
@@ -275,7 +275,7 @@ theorem ofPolymatroidFn_nonempty_indep_le [DecidableEq α] {f : Finset α → �
 /-- The constantly-zero function on `Finset α` is a polymatroid rank function. -/
 theorem PolymatroidFn_of_zero [DecidableEq α] : PolymatroidFn (fun _ : Finset α ↦ (0 : ℤ)) where
   submodular := by simp only [Submodular, add_zero, le_refl, implies_true]
-  mono := by simp only [Monotone, le_eq_subset, le_refl, implies_true]
+  mono := by simp only [Monotone, le_refl, implies_true]
   zero_at_bot := by simp only
 
 /-- The polymatroid rank formula restricted to an independent set `X`: the rank
@@ -287,7 +287,7 @@ private theorem polymatroid_rank_eq_on_indep [DecidableEq α] {f : Finset α →
     ∀ Y' ⊆ X, f Y + (X \ Y).card ≤ f Y' + (X \ Y').card) := by
   set M := ofPolymatroidFn hf
   unfold rk
-  rw [hX_indep.eRk_eq_encard, Set.encard_coe_eq_coe_finsetCard, ENat.toNat_coe]
+  rw [hX_indep.eRk_eq_encard, Set.encard_coe_eq_coe_finsetCard, ENat.toNat_natCast]
   use ∅
   simp only [empty_subset, sdiff_empty, true_and]
   rw [hf.zero_at_empty]
@@ -591,7 +591,7 @@ theorem generalized_halls_marriage {ι : Type*} [Finite ι] [DecidableEq α]
           f ((K₁.erase i).biUnion A ∩ (K₂.erase i).biUnion A) := by
         simp only [add_le_add_iff_left, Nat.cast_le]
         apply hf_mono
-        simp only [le_eq_subset, erase_inter_distrib]
+        simp only [erase_inter_distrib]
         exact finset_biUnion_inter (K₁.erase i) (K₂.erase i) A
       _ ≤ f (K₁.biUnion A'₁ ∪ K₂.biUnion A'₂) +
           f ((K₁.erase i).biUnion A'₁ ∩ (K₂.erase i).biUnion A'₂) := by
@@ -960,7 +960,7 @@ theorem rado_v2 [Finite ι] [Finite α] [DecidableEq α] (M : Matroid α)
     exact IsRkFinite.submod (M.isRkFinite_of_finite <| finite_toSet a) (b : Set α)
   have hf_mono : Monotone f := by
     intro a b hab
-    simp only [le_eq_subset, ← coe_subset] at hab
+    simp only [← coe_subset] at hab
     rw [← IsRkFinite.eRk_le_eRk_iff
       (M.isRkFinite_of_finite <| finite_toSet a) (M.isRkFinite_of_finite <| finite_toSet b)]
     exact M.eRk_mono hab
@@ -985,7 +985,7 @@ theorem rado_v2 [Finite ι] [Finite α] [DecidableEq α] (M : Matroid α)
     use {i, j}
     simp only [image_insert, image_singleton, coe_insert, coe_singleton, hij, Set.mem_singleton_iff,
       Set.insert_eq_of_mem, card_insert_of_notMem <| notMem_singleton.mpr he_card,
-      Nat.lt_add_one_iff, ← ENat.coe_le_coe, cast_rk_eq, card_singleton, Nat.cast_one]
+      Nat.lt_add_one_iff, ← ENat.natCast_le_natCast, cast_rk_eq, card_singleton, Nat.cast_one]
     refine (M.eRk_le_encard {e j}).trans (by simp only [Set.encard_singleton, le_refl])
   have he'_inj : e'.Injective := fun i j hij ↦ SetCoe.ext (he_inj (by simpa only [e'] using hij))
   use PartialTransversal.of_fun (fun i ↦ he_mem i) he'_inj
@@ -1120,7 +1120,7 @@ theorem rado [Finite ι] [DecidableEq α] (M : Matroid α) (A : ι → Finset α
     exact IsRkFinite.submod (M.isRkFinite_of_finite <| finite_toSet a) (b : Set α)
   have hf_mono : Monotone f := by
     intro a b hab
-    simp only [le_eq_subset, ← coe_subset] at hab
+    simp only [← coe_subset] at hab
     rw [← IsRkFinite.eRk_le_eRk_iff
       (M.isRkFinite_of_finite <| finite_toSet a) (M.isRkFinite_of_finite <| finite_toSet b)]
     exact M.eRk_mono hab
@@ -1133,7 +1133,7 @@ theorem rado [Finite ι] [DecidableEq α] (M : Matroid α) (A : ι → Finset α
   · intro K
     simp only [← card_image_of_injective K he_inj]
     have h_indep : M.Indep (image e K : Set α) := he_indep.subset coe_image_subset_range
-    rw [← ENat.coe_le_coe, ← Set.encard_coe_eq_coe_finsetCard (image e K),
+    rw [← ENat.natCast_le_natCast, ← Set.encard_coe_eq_coe_finsetCard (image e K),
       M.cast_rk_eq_eRk_of_finite <| finite_toSet (image e K), h_indep.eRk_eq_encard]
   refine ⟨⟨?_, he_mem⟩, ?_⟩
   · intro a b hab
@@ -1141,13 +1141,13 @@ theorem rado [Finite ι] [DecidableEq α] (M : Matroid α) (A : ι → Finset α
     use {a, b}
     simp only [image_insert, image_singleton, coe_insert, coe_singleton, hab]
     simp only [Set.mem_singleton_iff, Set.insert_eq_of_mem, card_pair he]
-    rw [← ENat.coe_lt_coe, M.cast_rk_eq_eRk_of_finite <| Set.finite_singleton (e b),
+    rw [← ENat.natCast_lt_natCast, M.cast_rk_eq_eRk_of_finite <| Set.finite_singleton (e b),
       Nat.cast_two]
     have := Set.encard_singleton (e b) ▸ M.eRk_le_encard {e b}
     refine this.trans_lt Nat.one_lt_ofNat
   specialize he univ
   simp only [coe_image, coe_univ, Set.image_univ] at he
-  rw [← ENat.coe_le_coe, M.cast_rk_eq_eRk_of_finite <| Set.finite_range e] at he
+  rw [← ENat.natCast_le_natCast, M.cast_rk_eq_eRk_of_finite <| Set.finite_range e] at he
   rw [indep_iff_eRk_eq_encard_of_finite <| Set.finite_range e]
   refine le_antisymm (eRk_le_encard M (Set.range e)) ?_
   refine le_trans ?_ he

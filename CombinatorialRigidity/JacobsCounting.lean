@@ -279,15 +279,15 @@ def squareSpecialCrossEdges (G : SimpleGraph V) (f : V → V) : Set (Sym2 V) :=
 
 theorem mem_squareInPartEdges {f : V → V} {u w : V} :
     s(u, w) ∈ G.squareInPartEdges f ↔ G.square.Adj u w ∧ f u = f w := by
-  simp only [squareInPartEdges, Set.mem_setOf_eq, mem_edgeSet, Sym2.map_mk, Sym2.mk_isDiag_iff]
+  simp only [squareInPartEdges, Set.mem_ofPred_eq, mem_edgeSet, Sym2.map_mk, Sym2.mk_isDiag_iff]
 
 theorem mem_squareGCrossEdges {f : V → V} {u w : V} :
     s(u, w) ∈ G.squareGCrossEdges f ↔ G.Adj u w ∧ f u ≠ f w := by
-  simp only [squareGCrossEdges, Set.mem_setOf_eq, mem_edgeSet, Sym2.map_mk, Sym2.mk_isDiag_iff]
+  simp only [squareGCrossEdges, Set.mem_ofPred_eq, mem_edgeSet, Sym2.map_mk, Sym2.mk_isDiag_iff]
 
 theorem mem_squareCrossEdges {f : V → V} {u w : V} :
     s(u, w) ∈ G.squareCrossEdges f ↔ G.square.Adj u w ∧ f u ≠ f w ∧ ¬ G.Adj u w := by
-  simp only [squareCrossEdges, Set.mem_setOf_eq, mem_edgeSet, Sym2.map_mk, Sym2.mk_isDiag_iff]
+  simp only [squareCrossEdges, Set.mem_ofPred_eq, mem_edgeSet, Sym2.map_mk, Sym2.mk_isDiag_iff]
 
 /-! ## The classification (disjoint-union half)
 
@@ -301,7 +301,7 @@ at graph distance exactly two, which by definition of the square share a neighbo
 theorem exists_apex_of_mem_squareCrossEdges {f : V → V} {e : Sym2 V}
     (h : e ∈ G.squareCrossEdges f) : ∃ v, ∀ z ∈ e, G.Adj z v := by
   induction e with | h u w =>
-  simp only [squareCrossEdges, Set.mem_setOf_eq, mem_edgeSet, square_adj] at h
+  simp only [squareCrossEdges, Set.mem_ofPred_eq, mem_edgeSet, square_adj] at h
   obtain ⟨⟨_, hor⟩, _, hnadj⟩ := h
   rcases hor with hadj | hcn
   · exact absurd hadj hnadj
@@ -334,7 +334,7 @@ theorem square_edgeSet_eq_union (f : V → V) :
       G.squareInPartEdges f ∪ G.squareGCrossEdges f ∪ G.squareCrossEdges f := by
   ext e
   simp only [squareInPartEdges, squareGCrossEdges, squareCrossEdges, Set.mem_union,
-    Set.mem_setOf_eq]
+    Set.mem_ofPred_eq]
   constructor
   · intro he
     by_cases hdiag : (e.map f).IsDiag
@@ -353,7 +353,7 @@ not (special). -/
 theorem squareCrossEdges_eq_union (f : V → V) :
     G.squareCrossEdges f = G.squareNormalCrossEdges f ∪ G.squareSpecialCrossEdges f := by
   ext e
-  simp only [squareNormalCrossEdges, squareSpecialCrossEdges, Set.mem_union, Set.mem_setOf_eq]
+  simp only [squareNormalCrossEdges, squareSpecialCrossEdges, Set.mem_union, Set.mem_ofPred_eq]
   constructor
   · intro he
     obtain ⟨v, hv⟩ := exists_apex_of_mem_squareCrossEdges he
@@ -388,7 +388,7 @@ theorem squareGCrossEdges_ncard_eq_crossingEdges (f : V → V) :
   have himg : G.shadowGraph.crossingEdges f =
       (Sum.inl : Sym2 V → Sym2 V ⊕ Fin (6 * (Nat.card V - 1) + 1)) '' (G.squareGCrossEdges f) := by
     ext e
-    simp only [Graph.crossingEdges, squareGCrossEdges, Set.mem_setOf_eq, Set.mem_image]
+    simp only [Graph.crossingEdges, squareGCrossEdges, Set.mem_ofPred_eq, Set.mem_image]
     constructor
     · rintro ⟨_, x, y, ⟨hadj, hlink⟩, hne⟩
       exact ⟨s(x, y), ⟨hadj, hne⟩, hlink⟩
@@ -426,7 +426,7 @@ theorem IsSquareTightPartition.parts [Finite V] {f : V → V} (hf : G.IsSquareTi
     have himg : T_e = (fun y : V => (Sum.inl s(v, y) :
         Sym2 V ⊕ Fin (6 * (Nat.card V - 1) + 1))) '' T_v := by
       ext e
-      simp only [hTe, hTv, Set.mem_setOf_eq, Set.mem_image]
+      simp only [hTe, hTv, Set.mem_ofPred_eq, Set.mem_image]
       constructor
       · rintro ⟨_, y, hyv, hfy, hadj, hlink⟩
         exact ⟨y, ⟨hadj, hfy⟩, hlink⟩
@@ -456,7 +456,7 @@ theorem squareSpecialCrossEdges_singleton_part [Finite V] {f : V → V}
     ∀ x, f x = f v → x = v := by
   classical
   haveI : Fintype ↥(G.neighborSet v) := Fintype.ofFinite _
-  rw [squareSpecialCrossEdges, Set.mem_setOf_eq] at he
+  rw [squareSpecialCrossEdges, Set.mem_ofPred_eq] at he
   obtain ⟨hcross, v', hapex', hfv'⟩ := he
   rw [mem_squareCrossEdges] at hcross
   obtain ⟨hsq, hfuw, hnadj⟩ := hcross
@@ -499,7 +499,7 @@ theorem squareNormalCrossEdges_part_three_le [Finite V] {f : V → V}
     {u w v : V} (he : s(u, w) ∈ G.squareNormalCrossEdges f)
     (huv : G.Adj u v) (hwv : G.Adj w v) :
     3 ≤ {x | f x = f v}.ncard ∧ ((f u = f v ∧ f w ≠ f v) ∨ (f w = f v ∧ f u ≠ f v)) := by
-  rw [squareNormalCrossEdges, Set.mem_setOf_eq] at he
+  rw [squareNormalCrossEdges, Set.mem_ofPred_eq] at he
   obtain ⟨hcross, v', hapex', hfv'⟩ := he
   rw [mem_squareCrossEdges] at hcross
   obtain ⟨hsq, hfuw, hnadj⟩ := hcross
@@ -550,7 +550,7 @@ theorem IsSquareTightPartition.mem_squareSpecialCrossEdges_of_singleton_part [Fi
   have hsqadj : G.square.Adj u w := isClique_neighborSet_square G v hu hw huw
   have hcross : s(u, w) ∈ G.squareCrossEdges f := mem_squareCrossEdges.mpr ⟨hsqadj, hfuw, hnadj⟩
   have hspecial : s(u, w) ∈ G.squareSpecialCrossEdges f := by
-    rw [squareSpecialCrossEdges, Set.mem_setOf_eq]
+    rw [squareSpecialCrossEdges, Set.mem_ofPred_eq]
     refine ⟨hcross, v, ?_, ?_⟩
     · simp only [Sym2.mem_iff, forall_eq_or_imp, forall_eq]
       exact ⟨hvu.symm, hvw.symm⟩
@@ -576,7 +576,7 @@ theorem exists_unique_singleton_part_of_mem_squareSpecialCrossEdges [Finite V] {
     ∃! v, (∀ x, f x = f v → x = v) ∧ e ∈ G.square.edgesIn (G.neighborSet v) := by
   induction e with | h u w =>
   have he' := he
-  rw [squareSpecialCrossEdges, Set.mem_setOf_eq] at he'
+  rw [squareSpecialCrossEdges, Set.mem_ofPred_eq] at he'
   obtain ⟨hcross, v, hapex, hfv⟩ := he'
   simp only [Sym2.mem_iff, forall_eq_or_imp, forall_eq] at hapex
   obtain ⟨hsqadj, hfuw, hnadj⟩ := mem_squareCrossEdges.mp hcross
@@ -656,7 +656,7 @@ theorem IsSquareTightPartition.ncard_inPartNeighbors_eq_two [Finite V] {f : V �
   have hunion : {u | G.Adj v u ∧ f u = f v} ∪ {u | G.Adj v u ∧ f u ≠ f v}
       = G.neighborSet v := by
     ext u
-    simp only [Set.mem_union, Set.mem_setOf_eq, mem_neighborSet]
+    simp only [Set.mem_union, Set.mem_ofPred_eq, mem_neighborSet]
     constructor
     · rintro (⟨h, _⟩ | ⟨h, _⟩) <;> exact h
     · intro h
@@ -702,14 +702,14 @@ theorem IsSquareTightPartition.mk_mem_squareNormalCrossEdgesRootedAt [Finite V] 
     hf.not_adj_adj_of_same_part hfw hfu.symm hw.symm hadj.symm hu.ne
   have hcross : s(u, w) ∈ G.squareCrossEdges f := mem_squareCrossEdges.mpr ⟨hsqadj, hfuw, hnadj⟩
   have hnormal : s(u, w) ∈ G.squareNormalCrossEdges f := by
-    rw [squareNormalCrossEdges, Set.mem_setOf_eq]
+    rw [squareNormalCrossEdges, Set.mem_ofPred_eq]
     refine ⟨hcross, v, ?_, ?_⟩
     · simp only [Sym2.mem_iff, forall_eq_or_imp, forall_eq]
       exact ⟨hu.symm, hw.symm⟩
     · rw [Sym2.map_mk, Sym2.mem_iff]
       exact Or.inl hfu.symm
   refine ⟨?_, ?_⟩
-  · rw [squareNormalCrossEdgesRootedAt, Set.mem_setOf_eq]
+  · rw [squareNormalCrossEdgesRootedAt, Set.mem_ofPred_eq]
     refine ⟨hnormal, v, ?_, rfl⟩
     simp only [Sym2.mem_iff, forall_eq_or_imp, forall_eq]
     exact ⟨hu.symm, hw.symm⟩
@@ -748,13 +748,13 @@ theorem IsSquareTightPartition.ncard_normalCrossEdges_of_crossing_eq_two [Finite
     simp only [Sym2.eq_iff] at heq
     rcases heq with ⟨h, -⟩ | ⟨h1, -⟩
     · exact h
-    · simp only [Set.mem_setOf_eq] at hu1
+    · simp only [Set.mem_ofPred_eq] at hu1
       exact absurd (h1 ▸ hu1.2) hfw
   refine ⟨?_, ?_⟩
   · rw [hinj.ncard_image]
     exact hf.ncard_inPartNeighbors_eq_two hlaman hv₀ hfv₀ hvw hfw
   · rintro e ⟨u, hu, rfl⟩
-    simp only [Set.mem_setOf_eq] at hu
+    simp only [Set.mem_ofPred_eq] at hu
     exact (hf.mk_mem_squareNormalCrossEdgesRootedAt hu.1 hu.2 hvw hfw).1
 
 /-! ## The disjoint cover of the rooted normal cross edges (`lem:normal-cross-count`, steps iii–iv)
@@ -791,7 +791,7 @@ theorem ncard_squareCutPairs_eq_gCutEdges (f : V → V) (a : V) :
     · exact absurd (h1 ▸ hfv) hfw'
   have himg : (fun p : V × V => s(p.1, p.2)) '' G.squareCutPairs f a = G.gCutEdges f a := by
     ext e
-    simp only [squareCutPairs, gCutEdges, Set.mem_image, Set.mem_setOf_eq, Prod.exists]
+    simp only [squareCutPairs, gCutEdges, Set.mem_image, Set.mem_ofPred_eq, Prod.exists]
     constructor
     · rintro ⟨v, w, ⟨hfv, hfw, hadj⟩, rfl⟩
       exact ⟨G.mem_edgeSet.mpr hadj, v, w, rfl, hfv, hfw⟩
@@ -814,7 +814,7 @@ theorem IsSquareTightPartition.squareNormalCrossEdgesRootedAt_eq_biUnion [Finite
       ⋃ p ∈ G.squareCutPairs f a, (fun u => s(u, p.2)) '' {u | G.Adj p.1 u ∧ f u = f p.1} := by
   ext e
   induction e with | h u w =>
-  simp only [Set.mem_iUnion, Set.mem_image, Set.mem_setOf_eq, exists_prop, squareCutPairs]
+  simp only [Set.mem_iUnion, Set.mem_image, Set.mem_ofPred_eq, exists_prop, squareCutPairs]
   constructor
   · intro he
     obtain ⟨hnormal, v, hv, hfv⟩ := he
@@ -838,10 +838,10 @@ theorem IsSquareTightPartition.squareCutPairs_pairwiseDisjoint [Finite V] {f : V
     (G.squareCutPairs f a).PairwiseDisjoint
       (fun p => (fun u => s(u, p.2)) '' {u | G.Adj p.1 u ∧ f u = f p.1}) := by
   rintro ⟨v, w⟩ hp ⟨v', w'⟩ hq hpq
-  simp only [squareCutPairs, Set.mem_setOf_eq] at hp hq
+  simp only [squareCutPairs, Set.mem_ofPred_eq] at hp hq
   obtain ⟨hfv, hfw, hvw⟩ := hp
   obtain ⟨hfv', hfw', hv'w'⟩ := hq
-  simp only [Function.onFun, Set.disjoint_left, Set.mem_image, Set.mem_setOf_eq]
+  simp only [Function.onFun, Set.disjoint_left, Set.mem_image, Set.mem_ofPred_eq]
   rintro e ⟨u, ⟨hvu, hfu⟩, rfl⟩ ⟨u', ⟨hv'u', hfu'⟩, heq⟩
   have hfua : f u = a := hfu.trans hfv
   have hfu'a : f u' = a := hfu'.trans hfv'
@@ -871,11 +871,11 @@ theorem IsSquareTightPartition.ncard_normalCrossEdgesRootedAt_eq_two_mul_gCutEdg
   have hfiber : ∀ p ∈ G.squareCutPairs f a,
       ((fun u => s(u, p.2)) '' {u | G.Adj p.1 u ∧ f u = f p.1}).ncard = 2 := by
     rintro ⟨v, w⟩ hp
-    simp only [squareCutPairs, Set.mem_setOf_eq] at hp
+    simp only [squareCutPairs, Set.mem_ofPred_eq] at hp
     obtain ⟨hfv, hfw, hadj⟩ := hp
     obtain ⟨v₀, hv₀mem, hv₀ne⟩ :=
       Set.exists_ne_of_one_lt_ncard (by omega : 1 < {x | f x = a}.ncard) v
-    rw [Set.mem_setOf_eq] at hv₀mem
+    rw [Set.mem_ofPred_eq] at hv₀mem
     have hfv₀ : f v₀ = f v := by rw [hv₀mem, hfv]
     exact (hf.ncard_normalCrossEdges_of_crossing_eq_two hlaman hv₀ne hfv₀ hadj
       (by rw [hfv]; exact hfw)).1
@@ -1039,7 +1039,7 @@ theorem squareInPartEdges_eq_biUnion [Finite V] (f : V → V) :
   ext e
   induction e with | h u w =>
   simp only [mem_squareInPartEdges, Set.mem_iUnion, exists_prop, mem_edgesIn,
-    mem_edgeSet, Sym2.coe_mk, Set.insert_subset_iff, Set.singleton_subset_iff, Set.mem_setOf_eq]
+    mem_edgeSet, Sym2.coe_mk, Set.insert_subset_iff, Set.singleton_subset_iff, Set.mem_ofPred_eq]
   constructor
   · rintro ⟨hadj, hfe⟩
     exact ⟨f u, (mem_partLabels f (f u)).mpr ⟨u, rfl⟩, hadj, rfl, hfe.symm⟩
@@ -1054,7 +1054,7 @@ theorem squareInPartEdges_pairwiseDisjoint [Finite V] (f : V → V) :
   rintro e hea hea'
   induction e with | h u w =>
   simp only [mem_edgesIn, Sym2.coe_mk, Set.insert_subset_iff, Set.singleton_subset_iff,
-    Set.mem_setOf_eq] at hea hea'
+    Set.mem_ofPred_eq] at hea hea'
   exact hne (hea.2.1.symm.trans hea'.2.1)
 
 /-- **`squareInPartEdges` sums to the per-part in-part edge counts.** The 1-to-1 analogue of the
@@ -1092,13 +1092,13 @@ theorem squareNormalCrossEdges_eq_biUnion [Finite V] (f : V → V) :
   constructor
   · intro he
     have he' := he
-    rw [squareNormalCrossEdges, Set.mem_setOf_eq] at he'
+    rw [squareNormalCrossEdges, Set.mem_ofPred_eq] at he'
     obtain ⟨-, v, hv, hfv⟩ := he'
     refine ⟨f v, (mem_partLabels f (f v)).mpr ⟨v, rfl⟩, ?_⟩
-    rw [squareNormalCrossEdgesRootedAt, Set.mem_setOf_eq]
+    rw [squareNormalCrossEdgesRootedAt, Set.mem_ofPred_eq]
     exact ⟨he, v, hv, rfl⟩
   · rintro ⟨a, -, ha⟩
-    rw [squareNormalCrossEdgesRootedAt, Set.mem_setOf_eq] at ha
+    rw [squareNormalCrossEdgesRootedAt, Set.mem_ofPred_eq] at ha
     exact ha.1
 
 /-- **Distinct parts give disjoint rooted normal cross edge sets.** Immediate from the root's
@@ -1138,7 +1138,7 @@ theorem gCutEdges_singleton_part_ncard_eq_degree [Finite V] {f : V → V} {a v :
     (G.gCutEdges f a).ncard = G.degree v := by
   have himg : G.gCutEdges f a = (fun w => s(v, w)) '' G.neighborSet v := by
     ext e
-    simp only [gCutEdges, Set.mem_setOf_eq, Set.mem_image, mem_neighborSet]
+    simp only [gCutEdges, Set.mem_ofPred_eq, Set.mem_image, mem_neighborSet]
     constructor
     · rintro ⟨he, x, y, rfl, hfx, hfy⟩
       obtain rfl := hsing x hfx
@@ -1164,7 +1164,7 @@ theorem squareNormalCrossEdgesRootedAt_eq_empty_of_lt_three [Finite V] {f : V �
   rw [Set.eq_empty_iff_forall_notMem]
   intro e he
   induction e with | h u w =>
-  rw [squareNormalCrossEdgesRootedAt, Set.mem_setOf_eq] at he
+  rw [squareNormalCrossEdgesRootedAt, Set.mem_ofPred_eq] at he
   obtain ⟨hnormal, v, hv, hfv⟩ := he
   simp only [Sym2.mem_iff, forall_eq_or_imp, forall_eq] at hv
   obtain ⟨h3, -⟩ := squareNormalCrossEdges_part_three_le hf hnormal hv.1 hv.2
@@ -1216,13 +1216,13 @@ theorem squareSpecialCrossEdges_eq_biUnion [Finite V] (f : V → V) :
   constructor
   · intro he
     have he' := he
-    rw [squareSpecialCrossEdges, Set.mem_setOf_eq] at he'
+    rw [squareSpecialCrossEdges, Set.mem_ofPred_eq] at he'
     obtain ⟨-, v, hv, hfv⟩ := he'
     refine ⟨f v, (mem_partLabels f (f v)).mpr ⟨v, rfl⟩, ?_⟩
-    rw [squareSpecialCrossEdgesRootedAt, Set.mem_setOf_eq]
+    rw [squareSpecialCrossEdgesRootedAt, Set.mem_ofPred_eq]
     exact ⟨he, v, hv, rfl⟩
   · rintro ⟨a, -, ha⟩
-    rw [squareSpecialCrossEdgesRootedAt, Set.mem_setOf_eq] at ha
+    rw [squareSpecialCrossEdgesRootedAt, Set.mem_ofPred_eq] at ha
     exact ha.1
 
 /-- **Distinct parts give disjoint rooted special cross edge sets.** Mirrors
@@ -1279,7 +1279,7 @@ theorem IsSquareTightPartition.squareSpecialCrossEdgesRootedAt_eq_edgesIn_neighb
     obtain rfl := (hsing v' hfv').symm
     simp only [Sym2.mem_iff, forall_eq_or_imp, forall_eq] at hv'
     have hspecial' := hspecial
-    rw [squareSpecialCrossEdges, Set.mem_setOf_eq] at hspecial'
+    rw [squareSpecialCrossEdges, Set.mem_ofPred_eq] at hspecial'
     obtain ⟨hcross, -⟩ := hspecial'
     obtain ⟨hsq, -, -⟩ := mem_squareCrossEdges.mp hcross
     exact mk_mem_edgesIn hsq ((mem_neighborSet G v u).mpr hv'.1.symm)

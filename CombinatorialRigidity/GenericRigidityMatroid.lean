@@ -126,7 +126,7 @@ theorem exists_isGenericPlacement {V : Type*} [Finite V] (d : ℕ) :
       rw [h_iff t_w I] at h_w
       refine (LinearIndependent.finite_setOf_not_along_affine_path h_w).subset ?_
       intro t ht
-      simp only [Set.mem_setOf_eq] at ht ⊢
+      simp only [Set.mem_ofPred_eq] at ht ⊢
       exact fun hLI => ht ((h_iff t I).mpr hLI)
     -- The union of bad-`t` sets across `I ∈ insert I₀ F'` is finite; `ℝ` is infinite, so there's
     -- a `t` outside it, and the placement `p₀ + t • r` works on every `I ∈ insert I₀ F'`.
@@ -516,7 +516,7 @@ theorem genericRigidityMatroid_indep_image_iff {V : Type*} [Finite V] {d : ℕ} 
   constructor
   · rintro ⟨p, hp⟩
     set p_ext : Framework V d := fun v => if hv : v ∈ S then p ⟨v, hv⟩ else 0 with hp_ext_def
-    have hcompat : ∀ s : ↥S, p_ext (φ s) = p s := fun s => dif_pos s.property
+    have hcompat : ∀ s : ↥S, p_ext (φ s) = p s := fun s => dite_eq_left s.property
     refine ⟨p_ext, ?_⟩
     -- Choice function picking, for each `Himg`-edge, its (unique) `H`-preimage.
     have hex : ∀ i : Himg.edgeSet, ∃ x : H.edgeSet, Sym2.map φ x.val = i.val := by

@@ -869,10 +869,10 @@ theorem PanelHingeFramework.case_III_old_new_blocks [DecidableEq α] [Finite α]
   have hq₀v : (fun i => q₀ (v, i)) = n_a + t • n_b := by
     funext i; rw [hq₀]; simp
   have hq₀b : (fun i => q₀ (b, i)) = n_b := by
-    funext i; rw [hq₀, hn_b]; simp only [if_neg hvb.symm]
+    funext i; rw [hq₀, hn_b]; simp only [ite_eq_right hvb.symm]
   have hva : v ≠ a := fun h => hvVc (h ▸ haVc)
   have hq₀a : (fun i => q₀ (a, i)) = n_a := by
-    funext i; rw [hq₀, hn_a]; simp only [if_neg hva.symm]
+    funext i; rw [hq₀, hn_a]; simp only [ite_eq_right hva.symm]
   -- The `va`-hinge `e_a` stays a nondegenerate line `L ⊂ Π(a)` (KT eq. (6.12), `t ≠ 0`).
   have hane : FG.supportExtensor e_a ≠ 0 := by
     rw [PanelHingeFramework.toBodyHinge_supportExtensor, PanelHingeFramework.ofNormals_ends,
@@ -1203,13 +1203,13 @@ theorem PanelHingeFramework.caseIIICandidate_panelRow_eq_add_smul [DecidableEq �
       zero_smul, add_zero, panelSupportExtensor_add_left, panelSupportExtensor_smul_left,
       annihRow_add, annihRow_smul, BodyHingeFramework.hingeRow_eq_dualMap,
       BodyHingeFramework.hingeRow_eq_dualMap, BodyHingeFramework.hingeRow_eq_dualMap, map_add,
-      map_smul, if_pos rfl]
+      map_smul, ite_eq_left rfl]
   · -- Any other hinge: the extensor is `t`-independent, so the `t`-row equals the `t = 0` row.
     rcases eq_or_ne e e_c with rfl | hne_c
-    · simp only [caseIIICandidate_supportExtensor_candidate _ _ _ _ _ _ _ hcr, if_neg hne_r,
+    · simp only [caseIIICandidate_supportExtensor_candidate _ _ _ _ _ _ _ hcr, ite_eq_right hne_r,
         smul_zero, add_zero]
-    · simp only [caseIIICandidate_supportExtensor_of_ne _ _ _ _ _ _ _ _ _ hne_c hne_r, if_neg hne_r,
-        smul_zero, add_zero]
+    · simp only [caseIIICandidate_supportExtensor_of_ne _ _ _ _ _ _ _ _ _ hne_c hne_r,
+        ite_eq_right hne_r, smul_zero, add_zero]
 
 /-- **The one-variable rank transfer at the `t`-family** (W6f, the W3 KT-Lemma-5.2 transfer brick
 specialized to `caseIIICandidate`; Katoh–Tanigawa 2011 §6.4.1, the certify-then-rebase step of
@@ -1395,10 +1395,10 @@ theorem PanelHingeFramework.case_III_old_new_blocks_of_line [DecidableEq α] [Fi
   have hq₀v : (fun i => q₀ (v, i)) = n_a + t • n' := by
     funext i; rw [hq₀]; simp
   have hq₀b : (fun i => q₀ (b, i)) = n_b := by
-    funext i; rw [hq₀, hn_b]; simp only [if_neg hvb.symm]
+    funext i; rw [hq₀, hn_b]; simp only [ite_eq_right hvb.symm]
   have hva : v ≠ a := fun h => hvVc (h ▸ haVc)
   have hq₀a : (fun i => q₀ (a, i)) = n_a := by
-    funext i; rw [hq₀, hn_a]; simp only [if_neg hva.symm]
+    funext i; rw [hq₀, hn_a]; simp only [ite_eq_right hva.symm]
   -- The `va`-hinge `e_a` is the line `L = n_a ∧ n' ⊂ Π(a)` (KT eq. (6.12), `t ≠ 0`): its support is
   -- `(-t) · panelSupportExtensor n_a n'`, nonzero since `![n_a, n']` is independent.
   have hane : FG.supportExtensor e_a ≠ 0 := by

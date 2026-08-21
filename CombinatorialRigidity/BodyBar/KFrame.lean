@@ -454,9 +454,9 @@ theorem forestEval_kFrameRowR_eq_single (Fs : Fin k → Set β)
     (fun p : β × Fin k => if p.1 ∈ Fs p.2 then (1 : ℚ) else 0)) D e]
   by_cases hj : j = j₀
   · subst hj
-    simp only [if_pos he, one_mul, Pi.single_eq_same]
+    simp only [ite_eq_left he, one_mul, Pi.single_eq_same]
   · have hne : e ∉ Fs j := fun hmem => (hdisj hj).ne_of_mem hmem he rfl
-    simp only [if_neg hne, zero_mul, Pi.single_eq_of_ne hj, Pi.zero_apply]
+    simp only [ite_eq_right hne, zero_mul, Pi.single_eq_of_ne hj, Pi.zero_apply]
 
 /-- **Forest decomposition ⟹ generic independence** (`lem:k-frame-specialize-forest`, the reverse
 half of Whiteley §2.1). If the edge-restriction `G ↾ E'` is `(k, k)`-sparse, then the generic

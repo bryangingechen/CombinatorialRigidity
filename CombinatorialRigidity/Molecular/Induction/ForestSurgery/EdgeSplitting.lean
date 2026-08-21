@@ -63,7 +63,7 @@ lemma mulTilde_splitOff_deleteFiber_le {G : Graph α β} {v a b : α} {e₀ : β
   · -- Vertex sets: `V(G̃_v^{ab}) = V(G) \ {v} ⊆ V(G) = V(G̃)`.
     intro x hx
     simp only [vertexSet_deleteEdges] at hx
-    exact Set.diff_subset hx
+    exact Set.sdiff_subset hx
   · -- Links: a surviving link of `G̃_v^{ab}` (`p.1 ≠ e₀`) is a link of `G̃`.
     intro p x y hp
     simp only [deleteEdges_isLink, mulTilde_isLink, splitOff_isLink] at hp
@@ -121,10 +121,10 @@ lemma edgeSet_mulTilde_splitOff_diff_fiber {G : Graph α β} {v a b : α} {e₀ 
     (he₀ : e₀ ∉ E(G)) :
     E((G.splitOff v a b e₀).mulTilde n) \ edgeFiber e₀ n = E((G.removeVertex v).mulTilde n) := by
   ext p
-  simp only [Set.mem_diff, mem_edgeFiber, mem_edgeSet_mulTilde,
+  simp only [Set.mem_sdiff, mem_edgeFiber, mem_edgeSet_mulTilde,
     edgeSet_splitOff, Set.mem_union]
   rw [removeVertex, edgeSet_deleteVerts]
-  simp only [Set.mem_setOf_eq, Set.mem_singleton_iff]
+  simp only [Set.mem_ofPred_eq, Set.mem_singleton_iff]
   constructor
   · rintro ⟨(⟨rfl, _⟩ | ⟨_, x, y, hl, hx, hy⟩), hpne⟩
     · exact absurd rfl hpne
@@ -180,7 +180,7 @@ lemma isAcyclicSet_mulTilde_of_splitOff_of_disjoint {G : Graph α β} {v a b : �
       by
     refine ⟨?_, fun C hC hCF ↦ ?_⟩
     · rw [edgeSet_deleteEdges]
-      exact Set.subset_diff.mpr ⟨hF.1, hdisj⟩
+      exact Set.subset_sdiff.mpr ⟨hF.1, hdisj⟩
     · -- A cyclic walk in the deleted subgraph is one in `G̃_v^{ab}`, contradicting `hF`.
       exact hF.2 C (hC.of_le (deleteEdges_le)) hCF
   -- Transport acyclicity up the subgraph `… ＼ ã̃b ≤ G̃`.
@@ -226,7 +226,7 @@ lemma mulTilde_inc {G : Graph α β} {n : ℕ} {p : β × Fin (bodyHingeMult n)}
 @[simp]
 lemma mem_fiberAtVertex {G : Graph α β} {n : ℕ} {v : α} {p : β × Fin (bodyHingeMult n)} :
     p ∈ G.fiberAtVertex n v ↔ G.Inc p.1 v := by
-  rw [fiberAtVertex, Set.mem_setOf_eq, mulTilde_inc]
+  rw [fiberAtVertex, Set.mem_ofPred_eq, mulTilde_inc]
 
 /-- **The fibers at `v` are the copies of `v`'s incident edges**
 (`lem:forest-surgery-split`, degree substrate): inside `E(G̃)`, the fibers incident to
@@ -237,7 +237,7 @@ lemma fiberAtVertex_inter_edgeSet {G : Graph α β} {n : ℕ} {v : α} :
       {p : β × Fin (bodyHingeMult n) | p.1 ∈ {e | G.Inc e v}} := by
   ext p
   simp only [Set.mem_inter_iff, mem_fiberAtVertex, mem_edgeSet_mulTilde,
-    Set.mem_setOf_eq]
+    Set.mem_ofPred_eq]
   exact ⟨fun ⟨hinc, _⟩ ↦ hinc, fun hinc ↦ ⟨hinc, hinc.edge_mem⟩⟩
 
 /-- **Count of the fibers at `v`** (`lem:forest-surgery-split`, degree substrate;
@@ -314,7 +314,7 @@ lemma isAcyclicSet_splitOff_of_diff_fiberAtVertex {G : Graph α β} {v a b : α}
     rw [mem_edgeSet_mulTilde] at hpE
     obtain ⟨x, y, hl⟩ := exists_isLink_of_mem_edgeSet hpE
     rw [mem_edgeSet_mulTilde, removeVertex,
-      edgeSet_deleteVerts, Set.mem_setOf_eq]
+      edgeSet_deleteVerts, Set.mem_ofPred_eq]
     exact ⟨x, y, hl, fun hx ↦ hpv (hx ▸ hl.inc_left), fun hy ↦ hpv (hy ▸ hl.inc_right)⟩
   -- Acyclic in `(G_v)̃` (subset of the `G̃`-forest, restricted to the smaller ground set),
   -- then lift to `G̃_v^{ab}`.
@@ -322,7 +322,7 @@ lemma isAcyclicSet_splitOff_of_diff_fiberAtVertex {G : Graph α β} {v a b : α}
   rw [cycleMatroid_indep]
   have hle : (G.removeVertex v).mulTilde n ≤ G.mulTilde n :=
     edgeMultiply_mono (by rw [removeVertex]; exact deleteVerts_le) _
-  have hanti := hF.anti (Set.diff_subset (t := G.fiberAtVertex n v))
+  have hanti := hF.anti (Set.sdiff_subset (t := G.fiberAtVertex n v))
   have := hanti.anti_inter hle
   rwa [Set.inter_eq_self_of_subset_right hsub] at this
 
@@ -722,13 +722,13 @@ lemma isAcyclicSet_mulTilde_of_splitOff_reroute {G : Graph α β} {v a b : α} {
     exact hpr (Set.mem_singleton_iff.mpr (hsubsing hpinter hrf))
   have hdiffGv : (F' \ {r}) ⊆ E((G.removeVertex v).mulTilde n) := by
     rw [← edgeSet_mulTilde_splitOff_diff_fiber n he₀]
-    exact Set.subset_diff.mpr ⟨fun p hp ↦ hF'.1 hp.1, hdiffdisj⟩
+    exact Set.subset_sdiff.mpr ⟨fun p hp ↦ hF'.1 hp.1, hdiffdisj⟩
   -- The swapped set lies in `E(K)`.
   have hSE : insert pa (insert pb (F' \ {r})) ⊆ E(K) := by
     refine Set.insert_subset hpaEK (Set.insert_subset hpbEK ?_)
     intro p hp
     exact (mulTilde_splitOff_deleteFiber_le n).edgeSet_mono
-      (Set.mem_diff_of_mem (hF'.1 hp.1) (Set.disjoint_left.mp hdiffdisj hp))
+      (Set.mem_sdiff_of_mem (hF'.1 hp.1) (Set.disjoint_left.mp hdiffdisj hp))
   -- The core fibers avoid `v` (they live in `(G_v)̃`, which omits `v`).
   have hvnotinc : ∀ p ∈ F' \ {r}, ¬ K.Inc p v := by
     intro p hp hinc
@@ -923,7 +923,7 @@ lemma isAcyclicSet_mulTilde_insert_vfiber_of_splitOff {G : Graph α β} {v a b :
   have hFGv : F ⊆ E((G.removeVertex v).mulTilde n) := by
     rw [← edgeSet_mulTilde_splitOff_diff_fiber n he₀]
     rw [cycleMatroid_indep] at hF
-    exact Set.subset_diff.mpr ⟨hF.1, hdisj⟩
+    exact Set.subset_sdiff.mpr ⟨hF.1, hdisj⟩
   have hFv : ∀ p ∈ F, ¬ (G.mulTilde n).Inc p v := by
     intro p hp hinc
     have hpE : p ∈ E((G.removeVertex v).mulTilde n) := hFGv hp
@@ -1014,7 +1014,7 @@ private theorem splitOff_reroute_packing [DecidableEq β] [Finite α] [Finite β
   have hrOf_mem : ∀ i ∈ S, rOf i ∈ Ds i ∩ edgeFiber e₀ n := by
     intro i hi
     have hne := (hSiff i).mp hi
-    simp only [hrOf, dif_pos hne]; exact hne.choose_spec
+    simp only [hrOf, dite_eq_left hne]; exact hne.choose_spec
   have hrOf1 : ∀ i ∈ S, (rOf i).1 = e₀ := fun i hi ↦ by
     have := (hrOf_mem i hi).2; rwa [mem_edgeFiber] at this
   set h' : ℕ := (I' ∩ edgeFiber e₀ n).ncard with hh'
@@ -1031,12 +1031,12 @@ private theorem splitOff_reroute_packing [DecidableEq β] [Finite α] [Finite β
     have hterm : ∀ i, (Ds i ∩ edgeFiber e₀ n).ncard = if i ∈ S then 1 else 0 := by
       intro i
       by_cases hi : i ∈ S
-      · rw [if_pos hi]
+      · rw [ite_eq_left hi]
         exact (Set.ncard_le_one_iff_subsingleton.mpr (hsubsing i)).antisymm
           (Set.Nonempty.ncard_pos (Set.toFinite _) ((hSiff i).mp hi))
       · have hemp : Ds i ∩ edgeFiber e₀ n = ∅ :=
           Set.not_nonempty_iff_eq_empty.mp (by rw [← hSiff i]; exact hi)
-        rw [if_neg hi, hemp, Set.ncard_empty]
+        rw [ite_eq_right hi, hemp, Set.ncard_empty]
     simp only [hterm, Finset.sum_ite_mem, Finset.univ_inter, Finset.sum_const, smul_eq_mul,
       mul_one] at hsum
     exact hsum
@@ -1141,23 +1141,23 @@ private theorem splitOff_reroute_packing [DecidableEq β] [Finite α] [Finite β
       intro i
       simp only [hFs]
       by_cases hi : i ∈ S
-      · rw [if_pos hi]
+      · rw [ite_eq_left hi]
         exact isAcyclicSet_mulTilde_of_splitOff_reroute hab hav hbv haV hbV (hDsindep i)
           (hpaℓ i) (hpbℓ i) (hrOf1 i hi) (hrOf_mem i hi).1 he₀
-      · rw [if_neg hi]
+      · rw [ite_eq_right hi]
         exact isAcyclicSet_mulTilde_of_splitOff_of_disjoint (hDsindep i) (hDs_disj_fib i hi)
     have hFsmem : ∀ k p, p ∈ Fs k →
         (k ∈ S ∧ p = paOf k) ∨ (k ∈ S ∧ p = pbOf k) ∨ p ∈ Ds k := by
       intro k p hp
       simp only [hFs] at hp
       by_cases hk : k ∈ S
-      · rw [if_pos hk] at hp
+      · rw [ite_eq_left hk] at hp
         rcases Set.mem_insert_iff.mp hp with rfl | hp'
         · exact Or.inl ⟨hk, rfl⟩
         rcases Set.mem_insert_iff.mp hp' with rfl | hp''
         · exact Or.inr (Or.inl ⟨hk, rfl⟩)
         · exact Or.inr (Or.inr hp''.1)
-      · rw [if_neg hk] at hp; exact Or.inr (Or.inr hp)
+      · rw [ite_eq_right hk] at hp; exact Or.inr (Or.inr hp)
     have hcore_of_ne : ∀ i p, p ∈ Fs i → p.1 ≠ eₐ → p.1 ≠ e_b → p ∈ Ds i := by
       intro i p hp hpa hpb
       rcases hFsmem i p hp with ⟨_, rfl⟩ | ⟨_, rfl⟩ | hc
@@ -1168,14 +1168,14 @@ private theorem splitOff_reroute_packing [DecidableEq β] [Finite α] [Finite β
       intro i p hpi hp0
       simp only [hFs]
       by_cases hi : i ∈ S
-      · rw [if_pos hi]
+      · rw [ite_eq_left hi]
         refine Set.mem_insert_iff.mpr (Or.inr (Set.mem_insert_iff.mpr (Or.inr ⟨hpi, ?_⟩)))
         rw [Set.mem_singleton_iff]
         intro h; exact hp0 (h ▸ hrOf1 i hi)
-      · rw [if_neg hi]; exact hpi
+      · rw [ite_eq_right hi]; exact hpi
     have hrOf_notin : ∀ i ∈ S, rOf i ∉ Fs i := by
       intro i hiS hmem
-      simp only [hFs, if_pos hiS] at hmem
+      simp only [hFs, ite_eq_left hiS] at hmem
       rcases Set.mem_insert_iff.mp hmem with hpa' | hmem'
       · exact heane₀ (((hrOf1 i hiS).symm.trans (congrArg Prod.fst hpa')).trans (hpaOf_fst i)).symm
       rcases Set.mem_insert_iff.mp hmem' with hpb' | hmem''
@@ -1201,18 +1201,18 @@ private theorem splitOff_reroute_packing [DecidableEq β] [Finite α] [Finite β
     have hshrink : ∀ i, (Fs i).ncard = (Ds i).ncard + (if i ∈ S then 1 else 0) := by
       intro i
       by_cases hi : i ∈ S
-      · simp only [hFs, if_pos hi]
+      · simp only [hFs, ite_eq_left hi]
         have hpaD : paOf i ∉ insert (pbOf i) (Ds i \ {rOf i}) := by
           rw [Set.mem_insert_iff, not_or]
           exact ⟨hpa_ne_pb i, fun h ↦ hpa_notDs i i h.1⟩
         have hpbD : pbOf i ∉ Ds i \ {rOf i} := fun h ↦ hpb_notDs i i h.1
         rw [Set.ncard_insert_of_notMem hpaD (Set.toFinite _),
           Set.ncard_insert_of_notMem hpbD (Set.toFinite _),
-          Set.ncard_diff_singleton_of_mem (hrOf_mem i hi).1]
+          Set.ncard_sdiff_singleton_of_mem (hrOf_mem i hi).1]
         have hpos : 0 < (Ds i).ncard :=
           Set.Nonempty.ncard_pos (Set.toFinite _) ⟨rOf i, (hrOf_mem i hi).1⟩
         omega
-      · simp only [hFs, if_neg hi, add_zero]
+      · simp only [hFs, ite_eq_right hi, add_zero]
     obtain ⟨hindU, hsurv, hcountsum⟩ := hfinish Fs (fun i => if i ∈ S then 1 else 0)
       hindep' hdisj' hshrink hcore_of_ne hDscore hrOf_notin
     simp only [Finset.sum_ite_mem, Finset.univ_inter, Finset.sum_const, smul_eq_mul,
@@ -1256,10 +1256,10 @@ private theorem splitOff_reroute_packing [DecidableEq β] [Finite α] [Finite β
     set cb : Fin (bodyHingeMult n) := U.min' hUne with hcb
     have hcbU : cb ∈ U := U.min'_mem hUne
     have hpcU : ∀ i ∈ Ta, pc i ∈ U := by
-      intro i hi; simp only [hpc, dif_pos hi]; exact (pcEquiv ⟨i, hi⟩).2
+      intro i hi; simp only [hpc, dite_eq_left hi]; exact (pcEquiv ⟨i, hi⟩).2
     have hpc_inj : ∀ i ∈ Ta, ∀ j ∈ Ta, pc i = pc j → i = j := by
       intro i hi j hj heq
-      simp only [hpc, dif_pos hi, dif_pos hj] at heq
+      simp only [hpc, dite_eq_left hi, dite_eq_left hj] at heq
       have : pcEquiv ⟨i, hi⟩ = pcEquiv ⟨j, hj⟩ := Subtype.ext heq
       have := pcEquiv.injective this
       exact congrArg Subtype.val this
@@ -1280,15 +1280,15 @@ private theorem splitOff_reroute_packing [DecidableEq β] [Finite α] [Finite β
       intro i
       simp only [hFs]
       by_cases hi : i ∈ S
-      · rw [if_pos hi]
+      · rw [ite_eq_left hi]
         exact isAcyclicSet_mulTilde_of_splitOff_reroute hab hav hbv haV hbV (hDsindep i)
           (hpaℓ i) (hpbℓ i) (hrOf1 i hi) (hrOf_mem i hi).1 he₀
-      · rw [if_neg hi]
+      · rw [ite_eq_right hi]
         by_cases hia : i ∈ Ta
-        · rw [if_pos hia]
+        · rw [ite_eq_left hia]
           exact isAcyclicSet_mulTilde_insert_vfiber_of_splitOff he₀ (hDsindep i)
             (hDs_disj_fib i hi) (hqaℓ i) hav
-        · rw [if_neg hia]
+        · rw [ite_eq_right hia]
           exact isAcyclicSet_mulTilde_insert_vfiber_of_splitOff he₀ (hDsindep i)
             (hDs_disj_fib i hi) hqbℓ hbv
     have hqaOf_fst : ∀ k, (qaOf k).1 = eₐ := fun k ↦ by rw [hqaOf]
@@ -1303,19 +1303,19 @@ private theorem splitOff_reroute_packing [DecidableEq β] [Finite α] [Finite β
       intro k p hp
       simp only [hFs] at hp
       by_cases hk : k ∈ S
-      · rw [if_pos hk] at hp
+      · rw [ite_eq_left hk] at hp
         rcases Set.mem_insert_iff.mp hp with rfl | hp'
         · exact Or.inl ⟨hk, rfl⟩
         rcases Set.mem_insert_iff.mp hp' with rfl | hp''
         · exact Or.inr (Or.inl ⟨hk, rfl⟩)
         · exact Or.inr (Or.inr (Or.inr (Or.inr hp''.1)))
-      · rw [if_neg hk] at hp
+      · rw [ite_eq_right hk] at hp
         by_cases hka : k ∈ Ta
-        · rw [if_pos hka] at hp
+        · rw [ite_eq_left hka] at hp
           rcases Set.mem_insert_iff.mp hp with rfl | hp'
           · exact Or.inr (Or.inr (Or.inl ⟨hka, rfl⟩))
           · exact Or.inr (Or.inr (Or.inr (Or.inr hp')))
-        · rw [if_neg hka] at hp
+        · rw [ite_eq_right hka] at hp
           rcases Set.mem_insert_iff.mp hp with rfl | hp'
           · exact Or.inr (Or.inr (Or.inr (Or.inl ⟨hnotSnotTa hk hka, rfl⟩)))
           · exact Or.inr (Or.inr (Or.inr (Or.inr hp')))
@@ -1370,36 +1370,36 @@ private theorem splitOff_reroute_packing [DecidableEq β] [Finite α] [Finite β
     have hshrink : ∀ i, (Fs i).ncard = (Ds i).ncard + 1 := by
       intro i
       by_cases hi : i ∈ S
-      · simp only [hFs, if_pos hi]
+      · simp only [hFs, ite_eq_left hi]
         have hpaD : paOf i ∉ insert (pbOf i) (Ds i \ {rOf i}) := by
           rw [Set.mem_insert_iff, not_or]
           exact ⟨hpa_ne_pb i, fun h ↦ hpa_notDs i i h.1⟩
         have hpbD : pbOf i ∉ Ds i \ {rOf i} := fun h ↦ hpb_notDs i i h.1
         rw [Set.ncard_insert_of_notMem hpaD (Set.toFinite _),
           Set.ncard_insert_of_notMem hpbD (Set.toFinite _),
-          Set.ncard_diff_singleton_of_mem (hrOf_mem i hi).1]
+          Set.ncard_sdiff_singleton_of_mem (hrOf_mem i hi).1]
         have hpos : 0 < (Ds i).ncard :=
           Set.Nonempty.ncard_pos (Set.toFinite _) ⟨rOf i, (hrOf_mem i hi).1⟩
         omega
-      · simp only [hFs, if_neg hi]
+      · simp only [hFs, ite_eq_right hi]
         by_cases hia : i ∈ Ta
-        · rw [if_pos hia, Set.ncard_insert_of_notMem (hqa_notDs i i) (Set.toFinite _)]
-        · rw [if_neg hia, Set.ncard_insert_of_notMem (hqb_notDs i) (Set.toFinite _)]
+        · rw [ite_eq_left hia, Set.ncard_insert_of_notMem (hqa_notDs i i) (Set.toFinite _)]
+        · rw [ite_eq_right hia, Set.ncard_insert_of_notMem (hqb_notDs i) (Set.toFinite _)]
     have hDscore : ∀ i p, p ∈ Ds i → p.1 ≠ e₀ → p ∈ Fs i := by
       intro i p hpi hp0
       simp only [hFs]
       by_cases hi : i ∈ S
-      · rw [if_pos hi]
+      · rw [ite_eq_left hi]
         refine Set.mem_insert_iff.mpr (Or.inr (Set.mem_insert_iff.mpr (Or.inr ⟨hpi, ?_⟩)))
         rw [Set.mem_singleton_iff]
         intro h; exact hp0 (h ▸ hrOf1 i hi)
-      · rw [if_neg hi]
+      · rw [ite_eq_right hi]
         by_cases hia : i ∈ Ta
-        · rw [if_pos hia]; exact Set.mem_insert_of_mem _ hpi
-        · rw [if_neg hia]; exact Set.mem_insert_of_mem _ hpi
+        · rw [ite_eq_left hia]; exact Set.mem_insert_of_mem _ hpi
+        · rw [ite_eq_right hia]; exact Set.mem_insert_of_mem _ hpi
     have hrOf_notin : ∀ i ∈ S, rOf i ∉ Fs i := by
       intro i hiS hmem
-      simp only [hFs, if_pos hiS] at hmem
+      simp only [hFs, ite_eq_left hiS] at hmem
       rcases Set.mem_insert_iff.mp hmem with hpa' | hmem'
       · exact heane₀ (((hrOf1 i hiS).symm.trans (congrArg Prod.fst hpa')).trans (hpaOf_fst i)).symm
       rcases Set.mem_insert_iff.mp hmem' with hpb' | hmem''
@@ -1413,12 +1413,12 @@ private theorem splitOff_reroute_packing [DecidableEq β] [Finite α] [Finite β
       have hpbmem : ∀ i ∈ S, pbOf i ∈ (⋃ k, Fs k) := by
         intro i hi
         refine Set.mem_iUnion.mpr ⟨i, ?_⟩
-        simp only [hFs, if_pos hi]
+        simp only [hFs, ite_eq_left hi]
         exact Set.mem_insert_of_mem _ (Set.mem_insert _ _)
       have hqbmem : qb ∈ (⋃ k, Fs k) := by
         refine Set.mem_iUnion.mpr ⟨i_b, ?_⟩
         have : i_b ∉ Ta := Finset.notMem_erase i_b T
-        simp only [hFs, if_neg hi_bnotS, if_neg this]
+        simp only [hFs, ite_eq_right hi_bnotS, ite_eq_right this]
         exact Set.mem_insert _ _
       have hEb : (⋃ k, Fs k) ∩ edgeFiber e_b n =
           (pbOf '' (↑S : Set (Fin (bodyBarDim n)))) ∪ {qb} := by

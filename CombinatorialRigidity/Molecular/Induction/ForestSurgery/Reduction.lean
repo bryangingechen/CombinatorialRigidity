@@ -76,7 +76,7 @@ theorem circuit_splitOff_meets_fiber [DecidableEq β] [Finite α] [Finite β] {G
   have hXdisj : Disjoint X (edgeFiber e₀ n) := Set.disjoint_iff_inter_eq_empty.mpr hXe
   have hXsubGv : X ⊆ E((G.removeVertex v).mulTilde n) := by
     rw [← edgeSet_mulTilde_splitOff_diff_fiber n he₀]
-    exact Set.subset_diff.mpr ⟨hXground, hXdisj⟩
+    exact Set.subset_sdiff.mpr ⟨hXground, hXdisj⟩
   -- `G_v ≤ G_v^{ab}` at the graph level (every `v`-avoiding `G`-link survives, `e₀` being fresh).
   have hleGvSplit : G.removeVertex v ≤ G.splitOff v a b e₀ := by
     refine ⟨fun x hx => hx, fun p x y hp => ?_⟩
@@ -177,7 +177,7 @@ theorem splitOff_isMinimalKDof [DecidableEq β] [Finite α] [Finite β] {G : Gra
   have hVne : V(G').Nonempty := by rw [hVeq]; exact ⟨a, haV, by simpa using hav⟩
   have hVvne : V(Gv).Nonempty := by rw [hVveq]; exact ⟨a, haV, by simpa using hav⟩
   have hVv2 : 2 ≤ V(Gv).ncard := by
-    rw [hVveq, Set.ncard_diff (by simpa using hvG) (Set.toFinite _), Set.ncard_singleton]
+    rw [hVveq, Set.ncard_sdiff (by simpa using hvG) (Set.toFinite _), Set.ncard_singleton]
     omega
   -- `Gv ≤ G` a proper subgraph (`v ∈ V(G)` is dropped); under no-proper-rigid, `def(G̃v) > 0`.
   have hleGvG : Gv ≤ G := by rw [hGvdef, removeVertex]; exact deleteVerts_le
@@ -186,7 +186,7 @@ theorem splitOff_isMinimalKDof [DecidableEq β] [Finite α] [Finite β] {G : Gra
     · exact h
     · exfalso
       refine hnp Gv ⟨⟨hleGvG, h.symm⟩, hVv2, ?_⟩
-      rw [hVveq]; exact Set.diff_singleton_ssubset.mpr hvG
+      rw [hVveq]; exact Set.sdiff_singleton_ssubset.mpr hvG
   -- 0-dof half: `def(G̃') = 0` from `dof_tracking` squeezed against `def(G̃) = 0` and `def ≥ 0`.
   have hdofG : G.deficiency n = 0 := hG.deficiency_eq
   have htrack := dof_tracking hD hav hbv heab hla hlb hdeg2 he₀
@@ -218,7 +218,7 @@ theorem splitOff_isMinimalKDof [DecidableEq β] [Finite α] [Finite β] {G : Gra
       have hpGv : p ∈ E(Gv.mulTilde n) := hCsub hpC
       rw [← hsplit_ground] at hpGv
       exact hpGv.2 hpfib
-    · rw [matroidMG, Matroid.restrict_ground_eq, ← hsplit_ground]; exact Set.diff_subset
+    · rw [matroidMG, Matroid.restrict_ground_eq, ← hsplit_ground]; exact Set.sdiff_subset
   have hleGvG' : Gv ≤ G' := by
     rw [hGvdef, hG'def]
     refine ⟨fun x hx => hx, fun p x y hp => ?_⟩
@@ -244,7 +244,7 @@ theorem splitOff_isMinimalKDof [DecidableEq β] [Finite α] [Finite β] {G : Gra
       subst he
       have hB'sub : B' ⊆ E(Gv.mulTilde n) := by
         rw [← hsplit_ground]
-        refine Set.subset_diff.mpr ⟨hB'ground, Set.disjoint_left.mpr fun p hpB' hpfib => ?_⟩
+        refine Set.subset_sdiff.mpr ⟨hB'ground, Set.disjoint_left.mpr fun p hpB' hpfib => ?_⟩
         exact absurd (Set.eq_empty_iff_forall_notMem.mp hBe p ⟨hpB', hpfib⟩) id
       exact Set.ncard_le_ncard hB'sub (Set.toFinite _)
     · -- `e ≠ e₀`: split `B'` into `B' ∩ ã̃b` (≤ D−1) and `B' ∩ E(G̃v) ⊆ E(G̃v) ∖ ẽ`.
@@ -271,13 +271,13 @@ theorem splitOff_isMinimalKDof [DecidableEq β] [Finite α] [Finite β] {G : Gra
           _ = bodyHingeMult n := edgeFiber_ncard e₀ n
       have h2 : (B' ∩ E(Gv.mulTilde n)).ncard ≤ E(Gv.mulTilde n).ncard - bodyHingeMult n := by
         have hsub : B' ∩ E(Gv.mulTilde n) ⊆ E(Gv.mulTilde n) \ edgeFiber e n := by
-          refine Set.subset_diff.mpr ⟨Set.inter_subset_right, Set.disjoint_left.mpr ?_⟩
+          refine Set.subset_sdiff.mpr ⟨Set.inter_subset_right, Set.disjoint_left.mpr ?_⟩
           intro p hpB' hpfib
           exact absurd (Set.eq_empty_iff_forall_notMem.mp hBe p ⟨hpB'.1, hpfib⟩) id
         calc (B' ∩ E(Gv.mulTilde n)).ncard ≤ (E(Gv.mulTilde n) \ edgeFiber e n).ncard :=
               Set.ncard_le_ncard hsub (Set.toFinite _)
           _ = E(Gv.mulTilde n).ncard - (edgeFiber e n).ncard :=
-              Set.ncard_diff heGv (Set.toFinite _)
+              Set.ncard_sdiff heGv (Set.toFinite _)
           _ = E(Gv.mulTilde n).ncard - bodyHingeMult n := by rw [edgeFiber_ncard]
       have hcoverle : B'.ncard ≤ (B' ∩ edgeFiber e₀ n).ncard + (B' ∩ E(Gv.mulTilde n)).ncard := by
         calc B'.ncard ≤ ((B' ∩ edgeFiber e₀ n) ∪ (B' ∩ E(Gv.mulTilde n))).ncard := by
@@ -724,7 +724,7 @@ theorem minimal_kdof_reduction [DecidableEq β] [Finite α] [Finite β] {n : ℕ
       have hsplit2 : 2 ≤ V(G.splitOff v a b e₀).ncard := by
         rw [vertexSet_splitOff]
         have hdv : (V(G) \ {v}).ncard = V(G).ncard - 1 := by
-          rw [Set.ncard_diff (by simpa using hvG) (Set.toFinite _), Set.ncard_singleton]
+          rw [Set.ncard_sdiff (by simpa using hvG) (Set.toFinite _), Set.ncard_singleton]
         omega
       exact hsplit G v a b eₐ e_b e₀ hG hrig hvG hav hbv haV hbV heab hla hlb hdeg2 he₀
         (IH _ hsmaller _ rfl hsplitMin hsplit2)
@@ -1088,7 +1088,7 @@ theorem exists_balanced_forest_packing [DecidableEq β] [Finite α] [Finite β] 
           rcases Set.mem_insert_iff.mp hk with rfl | hk'
           · exact hxB
           · exact hssubB k hk'
-        · simp only [hFs', if_neg hkj] at hk; exact hssubB k hk.1
+        · simp only [hFs', ite_eq_right hkj] at hk; exact hssubB k hk.1
       · rw [← hcover]
         rintro p hp
         rw [Set.mem_iUnion] at hp ⊢
@@ -1098,32 +1098,32 @@ theorem exists_balanced_forest_packing [DecidableEq β] [Finite α] [Finite β] 
         · by_cases hkj : k = j
           · subst hkj
             exact ⟨k, by simp only [hFs', ↓reduceIte]; exact Set.mem_insert_iff.mpr (Or.inr hk)⟩
-          · exact ⟨k, by simp only [hFs', if_neg hkj]; exact ⟨hk, by simpa using hpx⟩⟩
+          · exact ⟨k, by simp only [hFs', ite_eq_right hkj]; exact ⟨hk, by simpa using hpx⟩⟩
     have hindep' : ∀ k, ((G.mulTilde n).cycleMatroid).Indep (Fs' k) := by
       intro k
       by_cases hkj : k = j
       · subst hkj
         simp only [hFs', ↓reduceIte]
         exact acyclicSet_insert_vfiber_of_not_inc (hindep k) hxvw hwv hFjv
-      · simp only [hFs', if_neg hkj]; exact (hindep k).subset Set.diff_subset
+      · simp only [hFs', ite_eq_right hkj]; exact (hindep k).subset Set.sdiff_subset
     have hdisj' : Pairwise (Function.onFun Disjoint Fs') := by
       intro k l hkl
       simp only [Function.onFun, hFs']
       rcases eq_or_ne k j with rfl | hk
-      · simp only [↓reduceIte, if_neg (Ne.symm hkl), Set.disjoint_left]
+      · simp only [↓reduceIte, ite_eq_right (Ne.symm hkl), Set.disjoint_left]
         rintro p hpins ⟨hpFl, hpx⟩
         rcases Set.mem_insert_iff.mp hpins with rfl | hpFj
         · exact hpx rfl
         · exact (hdisj (Ne.symm hkl)).le_bot ⟨hpFl, hpFj⟩
-      · simp only [if_neg hk]
+      · simp only [ite_eq_right hk]
         rcases eq_or_ne l j with rfl | hl
         · simp only [↓reduceIte, Set.disjoint_right]
           rintro p hpins ⟨hpFk, hpx⟩
           rcases Set.mem_insert_iff.mp hpins with rfl | hpFj
           · exact hpx rfl
           · exact (hdisj hk).le_bot ⟨hpFk, hpFj⟩
-        · simp only [if_neg hl]
-          exact (hdisj hkl).mono Set.diff_subset Set.diff_subset
+        · simp only [ite_eq_right hl]
+          exact (hdisj hkl).mono Set.sdiff_subset Set.sdiff_subset
     -- The `v`-avoiding count strictly drops: `j` leaves it; `i` and others don't enter it.
     -- `x ∈ Fs' j ∩ vfib`, so `j` no longer avoids `v`.
     have hxFs'j : x ∈ Fs' j ∩ vfib :=
@@ -1133,13 +1133,13 @@ theorem exists_balanced_forest_packing [DecidableEq β] [Finite α] [Finite β] 
       constructor
       · -- `{k | Fs' k ∩ vfib = ∅} ⊆ {k | Fs k ∩ vfib = ∅}`.
         intro k hk
-        simp only [Set.mem_setOf_eq] at hk ⊢
+        simp only [Set.mem_ofPred_eq] at hk ⊢
         by_cases hkj : k = j
         · subst hkj
           -- `Fs' j ⊇ {x}`, `x ∈ vfib`, so `Fs' j ∩ vfib ≠ ∅` — `hk` is impossible.
           exact absurd (hk ▸ hxFs'j) (Set.notMem_empty x)
         · -- `Fs' k = Fs k \ {x}`. Show `Fs k ∩ vfib = ∅`.
-          simp only [hFs', if_neg hkj] at hk
+          simp only [hFs', ite_eq_right hkj] at hk
           rw [Set.eq_empty_iff_forall_notMem] at hk ⊢
           intro p hp
           rcases eq_or_ne p x with hpx | hpx
@@ -1286,7 +1286,7 @@ theorem forest_surgery_count [DecidableEq β] [Finite α] [Finite β] {G : Graph
       paOf i ∈ Fs i ∩ edgeFiber eₐ n := by
     intro i hi
     have hsing := (hdeg2_split i hi).choose_spec.choose_spec.1
-    simp only [hpaOf, dif_pos hi]
+    simp only [hpaOf, dite_eq_left hi]
     exact hsing.ge (Set.mem_singleton _)
   -- `r` is injective across the `dᶠ = 2` forests: distinct `eₐ`-copies in disjoint forests have
   -- distinct second coordinates.
@@ -1328,7 +1328,7 @@ theorem forest_surgery_count [DecidableEq β] [Finite α] [Finite β] {G : Graph
     intro i
     simp only [hFs']
     by_cases hi : (Fs i ∩ G.fiberAtVertex n v).ncard = 2
-    · rw [if_pos hi]
+    · rw [ite_eq_left hi]
       obtain ⟨pa, pb, hSpa, hSpb⟩ := hdeg2_split i hi
       have hpaF : pa ∈ Fs i := (hSpa ▸ Set.mem_singleton pa).1
       have hpbF : pb ∈ Fs i := (hSpb ▸ Set.mem_singleton pb).1
@@ -1354,7 +1354,7 @@ theorem forest_surgery_count [DecidableEq β] [Finite α] [Finite β] {G : Graph
         · exact Or.inr (hSpb ▸ hqb : q ∈ ({pb} : Set _))
       have hdiff : Fs i \ G.fiberAtVertex n v = Fs i \ {pa, pb} := by
         ext q
-        simp only [Set.mem_diff, mem_fiberAtVertex, Set.mem_insert_iff, Set.mem_singleton_iff]
+        simp only [Set.mem_sdiff, mem_fiberAtVertex, Set.mem_insert_iff, Set.mem_singleton_iff]
         constructor
         · rintro ⟨hqF, hqv⟩
           refine ⟨hqF, fun hq ↦ hqv ?_⟩
@@ -1366,13 +1366,13 @@ theorem forest_surgery_count [DecidableEq β] [Finite α] [Finite β] {G : Graph
       rw [hdiff]
       exact isAcyclicSet_splitOff_reroute hav hbv haV hbV (hindep i) hpaℓ hpbℓ hpaF hpbF hpab
         hall (hr1 i) he₀
-    · rw [if_neg hi]
+    · rw [ite_eq_right hi]
       exact isAcyclicSet_splitOff_of_diff_fiberAtVertex he₀ (hindep i)
   -- `r i` lies in `Fs' i` only when `Fs i` has `v`-degree `2` (else `Fs' i ⊆ Fs i`, `r i ∉ Fs i`).
   have hrmem : ∀ i, r i ∈ Fs' i → (Fs i ∩ G.fiberAtVertex n v).ncard = 2 := by
     intro i hri
     by_contra hi
-    simp only [hFs', if_neg hi] at hri
+    simp only [hFs', ite_eq_right hi] at hri
     exact hr_notin i i hri.1
   -- Pairwise disjoint: the `v`-free cores are disjoint, and `r i ∈ Fs' i` forces `dᶠ(i) = 2`,
   -- where `r` is injective.
@@ -1400,19 +1400,19 @@ theorem forest_surgery_count [DecidableEq β] [Finite α] [Finite β] {G : Graph
   have hpart_i : ∀ i, (Fs i \ G.fiberAtVertex n v).ncard + (Fs i ∩ G.fiberAtVertex n v).ncard
       = (Fs i).ncard := fun i ↦ by
     rw [add_comm]
-    exact Set.ncard_inter_add_ncard_diff_eq_ncard (Fs i) (G.fiberAtVertex n v) (Set.toFinite _)
+    exact Set.ncard_inter_add_ncard_sdiff_eq_ncard (Fs i) (G.fiberAtVertex n v) (Set.toFinite _)
   -- `r i ∉ Fs i \ fib`, so the insert adds exactly one.
   have hrnotcore : ∀ i, r i ∉ Fs i \ G.fiberAtVertex n v := fun i hri ↦ hr_notin i i hri.1
   have hshrink : ∀ i, (Fs' i).ncard + 1 = (Fs i).ncard := by
     intro i
     by_cases hi : (Fs i ∩ G.fiberAtVertex n v).ncard = 2
     · have hcard' : (Fs' i).ncard = (Fs i \ G.fiberAtVertex n v).ncard + 1 := by
-        simp only [hFs', if_pos hi]
+        simp only [hFs', ite_eq_left hi]
         rw [Set.ncard_insert_of_notMem (hrnotcore i) (Set.toFinite _)]
       have := hpart_i i; omega
     · have h1 : (Fs i ∩ G.fiberAtVertex n v).ncard = 1 := (hdeg i).resolve_right hi
       have hcard' : (Fs' i).ncard = (Fs i \ G.fiberAtVertex n v).ncard := by
-        simp only [hFs', if_neg hi]
+        simp only [hFs', ite_eq_right hi]
       have := hpart_i i; omega
   -- `∑ |Fs' i| + D = ∑ |Fs i| = |I|`.
   have hsumFs' : ∑ i, (Fs' i).ncard = (⋃ i, Fs' i).ncard :=
@@ -1441,7 +1441,7 @@ theorem forest_surgery_count [DecidableEq β] [Finite α] [Finite β] {G : Graph
     rcases Set.mem_insert_iff.mp (hFs'sub j hpj) with hrj | hcj
     · -- `p = r j`; `r j ∈ Fs' j` forces `dᶠ(j) = 2`, so `j ∈ S`.
       have hjS : j ∈ (S : Set (Fin (bodyBarDim n))) := by
-        simp only [hS, Finset.coe_filter, Set.mem_setOf_eq, Finset.mem_univ, true_and]
+        simp only [hS, Finset.coe_filter, Set.mem_ofPred_eq, Finset.mem_univ, true_and]
         exact hrmem j (hrj ▸ hpj)
       exact ⟨j, hjS, hrj.symm⟩
     · -- core member: `p.1 ∈ E(G)`, contradicting `p.1 = e₀ ∉ E(G)`.
@@ -1456,8 +1456,8 @@ theorem forest_surgery_count [DecidableEq β] [Finite α] [Finite β] {G : Graph
       have hterm : ∀ i, (Fs i ∩ G.fiberAtVertex n v).ncard
           = 1 + (if (Fs i ∩ G.fiberAtVertex n v).ncard = 2 then 1 else 0) := by
         intro i; rcases hdeg i with h1 | h2
-        · rw [h1, if_neg (by omega)]
-        · rw [h2, if_pos rfl]
+        · rw [h1, ite_eq_right (by omega)]
+        · rw [h2, ite_eq_left rfl]
       calc ∑ i, (Fs i ∩ G.fiberAtVertex n v).ncard
           = ∑ i, (1 + (if (Fs i ∩ G.fiberAtVertex n v).ncard = 2 then 1 else 0)) :=
             Finset.sum_congr rfl (fun i _ ↦ hterm i)
@@ -1551,7 +1551,7 @@ theorem forest_surgery_split [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
   have hBrank := G.isBase_ncard_add_deficiency_eq n hD1 hVne hB
   have hHrank := H.rank_add_deficiency_eq n hD1 hVHne
   have hVHcard : (V(H).ncard : ℤ) = (V(G).ncard : ℤ) - 1 := by
-    rw [hH, vertexSet_splitOff, Set.ncard_diff_singleton_of_mem hvG]
+    rw [hH, vertexSet_splitOff, Set.ncard_sdiff_singleton_of_mem hvG]
     have : 0 < V(G).ncard := Set.ncard_pos (Set.toFinite _) |>.mpr hVne
     omega
   rw [hVHcard, mul_sub, mul_one] at hHrank
@@ -1608,7 +1608,7 @@ theorem splitOff_exists_base_inter_fiber_lt [DecidableEq β] [Finite α] [Finite
   have hBrank := G.isBase_ncard_add_deficiency_eq n hD1 hVne hB
   rw [hG] at hBrank
   have hVHcard : (V(H).ncard : ℤ) = (V(G).ncard : ℤ) - 1 := by
-    rw [hHdef, vertexSet_splitOff, Set.ncard_diff_singleton_of_mem hvG]
+    rw [hHdef, vertexSet_splitOff, Set.ncard_sdiff_singleton_of_mem hvG]
     have : 0 < V(G).ncard := Set.ncard_pos (Set.toFinite _) |>.mpr hVne
     omega
   -- `|I'| = |base| − D = D(|V|−1) − k − D = D(|V|−2) − k = rank M(H̃)`.
@@ -1684,9 +1684,9 @@ theorem splitOff_removeVertex_minimalKDof [DecidableEq β] [Finite α] [Finite �
   -- `B' ∖ ãb ⊆ E(G̃_v)` (surviving fibers) and independent in `M(G̃_v)`.
   have hdiffsub : B' \ edgeFiber e₀ n ⊆ E(Gv.mulTilde n) := by
     rw [hGvdef, ← edgeSet_mulTilde_splitOff_diff_fiber n he₀]
-    exact Set.diff_subset_diff_left hB'.subset_ground
+    exact Set.sdiff_subset_sdiff_left hB'.subset_ground
   have hdiffindepGv : (Gv.matroidMG n).Indep (B' \ edgeFiber e₀ n) := by
-    have hindepH : (H.matroidMG n).Indep (B' \ edgeFiber e₀ n) := hB'.indep.subset diff_subset
+    have hindepH : (H.matroidMG n).Indep (B' \ edgeFiber e₀ n) := hB'.indep.subset sdiff_subset
     rw [hGvdef] at hdiffsub ⊢
     rw [← matroidMG_restrict_mulTilde (G.removeVertex_le_splitOff he₀) n,
       Matroid.restrict_indep_iff]
@@ -1695,7 +1695,7 @@ theorem splitOff_removeVertex_minimalKDof [DecidableEq β] [Finite α] [Finite �
     exact_mod_cast hdiffindepGv.ncard_le_rank
   -- `|B' ∖ ãb| = |B'| − |B' ∩ ãb|`.
   have hsplit : (B' ∩ edgeFiber e₀ n).ncard + (B' \ edgeFiber e₀ n).ncard = B'.ncard :=
-    Set.ncard_inter_add_ncard_diff_eq_ncard B' _ (Set.toFinite _)
+    Set.ncard_inter_add_ncard_sdiff_eq_ncard B' _ (Set.toFinite _)
   have hsplitZ : ((B' ∩ edgeFiber e₀ n).ncard : ℤ) + ((B' \ edgeFiber e₀ n).ncard : ℤ)
       = (B'.ncard : ℤ) := by exact_mod_cast hsplit
   -- The def = corank identity for `G̃_v`; `V(G_v) = V(H) = V(G) ∖ {v}`.
@@ -1745,7 +1745,7 @@ theorem splitOff_isKDof_of_exists_base_inter_fiber_lt [DecidableEq β] [Finite �
   -- def = corank both sides: `|B'| + def(H̃) = D(|V|−2)`, `rank M(G̃) + k = D(|V|−1)`.
   have hB'card := (G.splitOff v a b e₀).isBase_ncard_add_deficiency_eq n hD1 hVHne hB'
   have hVHcard : (V(G.splitOff v a b e₀).ncard : ℤ) = (V(G).ncard : ℤ) - 1 := by
-    rw [vertexSet_splitOff, Set.ncard_diff_singleton_of_mem hvG]
+    rw [vertexSet_splitOff, Set.ncard_sdiff_singleton_of_mem hvG]
     have : 0 < V(G).ncard := Set.ncard_pos (Set.toFinite _) |>.mpr hVne
     omega
   rw [hVHcard, mul_sub, mul_one] at hB'card
@@ -1814,7 +1814,7 @@ theorem exists_isBase_vb_fiber_eq_one_of_removeVertex_isKDof [DecidableEq β] [F
   have hB'card := (G.removeVertex v).isBase_ncard_add_deficiency_eq n hD1 hVvne hB'
   rw [hGv] at hB'card
   have hVvcard : (V(G.removeVertex v).ncard : ℤ) = (V(G).ncard : ℤ) - 1 := by
-    rw [vertexSet_removeVertex, Set.ncard_diff_singleton_of_mem hvG]
+    rw [vertexSet_removeVertex, Set.ncard_sdiff_singleton_of_mem hvG]
     have : 0 < V(G).ncard := Set.ncard_pos (Set.toFinite _) |>.mpr hVne
     omega
   rw [hVvcard, mul_sub, mul_one] at hB'card
@@ -1883,11 +1883,11 @@ theorem removeVertex_deficiency_gt_of_noRigid [DecidableEq β] [Finite α] [Fini
     subst hk0
     refine hnp (G.removeVertex v) ⟨⟨G.removeVertex_le v, hGv⟩, ?_, ?_⟩
     · -- `2 ≤ |V(G_v)| = |V(G)| − 1` from `hV3`.
-      rw [vertexSet_removeVertex, Set.ncard_diff_singleton_of_mem hvG]
+      rw [vertexSet_removeVertex, Set.ncard_sdiff_singleton_of_mem hvG]
       omega
     · -- `V(G) \ {v} ⊊ V(G)` since `v ∈ V(G)`.
       rw [vertexSet_removeVertex]
-      exact Set.diff_singleton_ssubset.mpr hvG
+      exact Set.sdiff_singleton_ssubset.mpr hvG
 
 /-! ## Splitting-off carries minimal `k`-dof to minimal `(k−1)`-dof for `k > 0`
     (`lem:reduction-step-pos`, KT Lemma 4.8(ii))
@@ -2011,7 +2011,7 @@ theorem splitOff_isMinimalKDof_of_pos [DecidableEq β] [Finite α] [Finite β]
     -- Commuting square: `K = G.induce (insert v V(G'))` with `K.splitOff v a b e₀ = G'`.
     have hVHeq : V(H) = V(G) \ {v} := hHdef ▸ vertexSet_splitOff G v a b e₀
     have hinsub : insert v V(G') ⊆ V(G) :=
-      Set.insert_subset hvG (hVG'sub.trans (hVHeq ▸ Set.diff_subset))
+      Set.insert_subset hvG (hVG'sub.trans (hVHeq ▸ Set.sdiff_subset))
     set K := G.induce (insert v V(G')) with hKdef
     have hKspl : K.splitOff v a b e₀ = G' := by
       have hstep : (G.splitOff v a b e₀).induce V(G') = G' := by
@@ -2022,10 +2022,10 @@ theorem splitOff_isMinimalKDof_of_pos [DecidableEq β] [Finite α] [Finite β]
       subset_edgeSet_mulTilde_inducedSpan (by
         have := hXcirc.subset_ground
         rwa [matroidMG, Matroid.restrict_ground_eq] at this)
-    have hIindepH : (H.matroidMG n).Indep (X \ {p}) := hXcirc.diff_singleton_indep hpX
+    have hIindepH : (H.matroidMG n).Indep (X \ {p}) := hXcirc.sdiff_singleton_indep hpX
     have hIindepG' : (G'.matroidMG n).Indep (X \ {p}) := by
       rw [← matroidMG_restrict_mulTilde hG'le n, Matroid.restrict_indep_iff]
-      exact ⟨hIindepH, Set.diff_subset.trans hXsub⟩
+      exact ⟨hIindepH, Set.sdiff_subset.trans hXsub⟩
     -- `|I| = D(|V(G')|−1)` from `circuit_induces_isTight`.
     have hItight : (X \ {p}).ncard + bodyBarDim n = bodyBarDim n * (H.fiberSpan n X).ncard :=
       circuit_induces_isTight hXcirc hpX
@@ -2097,7 +2097,7 @@ theorem splitOff_isMinimalKDof_of_pos [DecidableEq β] [Finite α] [Finite β]
     subst he
     have hB'sub : B' ⊆ E((G.removeVertex v).mulTilde n) := by
       rw [← edgeSet_mulTilde_splitOff_diff_fiber n he₀]
-      exact Set.subset_diff.mpr ⟨hB'.subset_ground, by
+      exact Set.subset_sdiff.mpr ⟨hB'.subset_ground, by
         rw [Set.disjoint_left]; intro q hqB' hqfib
         exact Set.notMem_empty q (hB'fib ▸ ⟨hqB', hqfib⟩)⟩
     -- `B'` is `M(G̃ᵥ)`-independent.
@@ -2131,7 +2131,7 @@ theorem splitOff_isMinimalKDof_of_pos [DecidableEq β] [Finite α] [Finite β]
       -- `|J| + 1 = |B'| + D = D(|V|−1) − (k−1) + D = D(|V|−1) − k + 1`,
       -- so `|J| = D(|V|−1) − k`.
       have hVHcard : (V(H).ncard : ℤ) = (V(G).ncard : ℤ) - 1 := by
-        rw [hHdef, vertexSet_splitOff, Set.ncard_diff_singleton_of_mem hvG]
+        rw [hHdef, vertexSet_splitOff, Set.ncard_sdiff_singleton_of_mem hvG]
         have : 0 < V(G).ncard := Set.ncard_pos (Set.toFinite _) |>.mpr hVne
         omega
       have hB'card := H.isBase_ncard_add_deficiency_eq n hD1 hVHne hB'
@@ -2202,7 +2202,7 @@ theorem splitOff_isMinimalKDof_of_pos [DecidableEq β] [Finite α] [Finite β]
             ≤ (edgeFiber e₀ n \ {q}).ncard :=
               Set.ncard_le_ncard (fun r ⟨hrB', hrfib⟩ =>
                 ⟨hrfib, fun h => hqnB' (h ▸ hrB')⟩) (Set.toFinite _)
-          _ < (edgeFiber e₀ n).ncard := Set.ncard_diff_singleton_lt_of_mem hqfib (Set.toFinite _)
+          _ < (edgeFiber e₀ n).ncard := Set.ncard_sdiff_singleton_lt_of_mem hqfib (Set.toFinite _)
           _ = bodyHingeMult n := edgeFiber_ncard e₀ n
       have hHk : H.deficiency n = k :=
         splitOff_isKDof_of_exists_base_inter_fiber_lt hD2 hab hav hbv heab hla hlb

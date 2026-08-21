@@ -636,11 +636,11 @@ theorem exists_affinelySpanning_of_eventually [Finite V] {d : ℕ}
     have h_bad_sub : {t : ℝ | ¬ AffineIndependent ℝ (fun i => pt t (q i))} ⊆
         {t : ℝ | P.IsRoot t} := by
       intros t ht
-      simp only [Set.mem_setOf_eq, Polynomial.IsRoot, hP_eval] at *
+      simp only [Set.mem_ofPred_eq, Polynomial.IsRoot, hP_eval] at *
       by_contra h_det_ne
       exact ht (affineIndependent_of_difference_det_ne_zero (fun i => pt t (q i))
         (by rw [← h_rows t]; exact h_det_ne))
-    exact (Polynomial.finite_setOf_isRoot hP_ne).subset h_bad_sub
+    exact (Polynomial.finite_setOfPred_isRoot hP_ne).subset h_bad_sub
   -- Step 6: assemble the global bad set as a finite union over injective `(d+1)`-tuples.
   let tuples : Finset (Fin (d + 1) → V) :=
     (Finset.univ : Finset (Fin (d + 1) → V)).filter Function.Injective
@@ -653,7 +653,7 @@ theorem exists_affinelySpanning_of_eventually [Finite V] {d : ℕ}
     exact h_per_tuple q hq.2
   -- Step 7: pick `t ∈ (0, ε) \ bad`.
   have h_nonempty : ((Set.Ioo (0 : ℝ) ε) \ bad).Nonempty :=
-    ((Set.Ioo_infinite hε_pos).diff h_bad_finite).nonempty
+    ((Set.Ioo_infinite hε_pos).sdiff h_bad_finite).nonempty
   obtain ⟨t, ⟨ht_pos, ht_lt⟩, ht_good⟩ := h_nonempty
   -- Step 8: assemble the witness.
   refine ⟨pt t, ?_, ?_⟩

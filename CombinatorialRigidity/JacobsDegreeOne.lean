@@ -80,7 +80,7 @@ theorem genericRank_single_edge {G : SimpleGraph V} [Finite V] {x y : V} (hxy : 
   have hdel : (G.deleteIncidenceSet x).edgeSet = ∅ := by
     rw [edgeSet_deleteIncidenceSet, hE]
     ext e
-    simp only [Set.mem_diff, Set.mem_singleton_iff, Set.mem_empty_iff_false, iff_false]
+    simp only [Set.mem_sdiff, Set.mem_singleton_iff, Set.mem_empty_iff_false, iff_false]
     rintro ⟨rfl, hnotinc⟩
     exact hnotinc (G.mk'_mem_incidenceSet_left_iff.mpr hadj)
   have hdelrank : (G.deleteIncidenceSet x).genericRank 3 = 0 := by
@@ -152,7 +152,7 @@ private theorem degree_one_rank_tree_of_ncard [Fintype V] :
       have hu2 : 2 ≤ G.degree u := two_le_degree_of_adj_degree_eq_one hconn h3 hv1 hu
       have hproper : (G.deleteIncidenceSet v).edgeSet ⊂ G.edgeSet := by
         rw [edgeSet_deleteIncidenceSet]
-        exact Set.ssubset_iff_of_subset Set.diff_subset |>.mpr
+        exact Set.ssubset_iff_of_subset Set.sdiff_subset |>.mpr
           ⟨s(v, u), hu, fun hc => hc.2 (G.mem_incidenceSet v u |>.mpr hu)⟩
       have hcard_lt : (G.deleteIncidenceSet v).edgeSet.ncard < n := by
         rw [← hn]; exact Set.ncard_lt_ncard hproper
@@ -165,7 +165,7 @@ private theorem degree_one_rank_tree_of_ncard [Fintype V] :
         exact reachable_deleteIncidenceSet hv1.le hx.2 hy.2 (hconn x hx.1 y hy.1)
       have hac' : (G.deleteIncidenceSet v).IsAcyclic := hac.anti (G.deleteIncidenceSet_le v)
       have hsupp_card : (G.deleteIncidenceSet v).support.ncard + 1 = G.support.ncard := by
-        rw [hsupp']; exact Set.ncard_diff_singleton_add_one hvsupp
+        rw [hsupp']; exact Set.ncard_sdiff_singleton_add_one hvsupp
       have h2' : 2 ≤ (G.deleteIncidenceSet v).support.ncard := by omega
       have hIH := ih (G.deleteIncidenceSet v).edgeSet.ncard hcard_lt (G.deleteIncidenceSet v) rfl
         hconn' hac' h2'
@@ -175,19 +175,19 @@ private theorem degree_one_rank_tree_of_ncard [Fintype V] :
         have hminEq : min 3 (G.degree u) = 2 := by omega
         have hunotmem : u ∉ ({w | G.degree w = 1} \ {v}) := by
           rintro ⟨h1, -⟩
-          simp only [Set.mem_setOf_eq] at h1
+          simp only [Set.mem_ofPred_eq] at h1
           omega
         have hcardEq : {w | (G.deleteIncidenceSet v).degree w = 1}.ncard =
             {w | G.degree w = 1}.ncard := by
           rw [setOf_degree_eq_one_deleteIncidenceSet_of_degree_eq_two hv1 hu hueq2,
             Set.ncard_insert_of_notMem hunotmem]
-          exact Set.ncard_diff_singleton_add_one hv1
+          exact Set.ncard_sdiff_singleton_add_one hv1
         omega
       · have hminEq : min 3 (G.degree u) = 3 := by omega
         have hcardEq : {w | (G.deleteIncidenceSet v).degree w = 1}.ncard + 1 =
             {w | G.degree w = 1}.ncard := by
           rw [setOf_degree_eq_one_deleteIncidenceSet_of_three_le_degree hv1 hu hge3]
-          exact Set.ncard_diff_singleton_add_one hv1
+          exact Set.ncard_sdiff_singleton_add_one hv1
         omega
     · -- Base case: exactly two support vertices.
       have heq2 : G.support.ncard = 2 := by omega
@@ -246,7 +246,7 @@ private theorem degree_one_rank_tree_of_ncard [Fintype V] :
         rw [← ncard_neighborSet_eq_degree, hnbr_b, Set.ncard_singleton]
       have hset_eq : {w | G.degree w = 1} = ({a, b} : Set V) := by
         ext w
-        simp only [Set.mem_setOf_eq]
+        simp only [Set.mem_ofPred_eq]
         constructor
         · intro hw
           have hwmem : w ∈ G.support := (G.degree_pos_iff_mem_support w).mp (by omega)
@@ -316,10 +316,10 @@ private theorem degree_one_rank_of_ncard [Fintype V] :
         have hne1 : G.degree w ≠ 1 := fun h => Set.eq_empty_iff_forall_notMem.mp h1 w h
         rw [ncard_neighborSet_eq_degree]
         omega
-      simp only [twoCore_eq_self_of_minDegree G hmin, Set.diff_self, Set.ncard_empty, h1]
+      simp only [twoCore_eq_self_of_minDegree G hmin, Set.sdiff_self, Set.ncard_empty, h1]
       omega
     · -- Peel a leaf `v` with neighbor `u`.
-      simp only [Set.mem_setOf_eq] at hv1
+      simp only [Set.mem_ofPred_eq] at hv1
       obtain ⟨u, hu⟩ := (G.degree_pos_iff_exists_adj v).mp (by omega)
       have hvsupp : v ∈ G.support := (mem_support G).mpr ⟨u, hu⟩
       have husupp : u ∈ G.support := (mem_support G).mpr ⟨v, hu.symm⟩
@@ -380,36 +380,36 @@ private theorem degree_one_rank_of_ncard [Fintype V] :
         rw [hsupp'] at hx hy
         exact reachable_deleteIncidenceSet hv1.le hx.2 hy.2 (hconn x hx.1 y hy.1)
       have hsupp_card : (G.deleteIncidenceSet v).support.ncard + 1 = G.support.ncard := by
-        rw [hsupp']; exact Set.ncard_diff_singleton_add_one hvsupp
+        rw [hsupp']; exact Set.ncard_sdiff_singleton_add_one hvsupp
       have hedge' : (G.deleteIncidenceSet v).support.ncard ≤
           (G.deleteIncidenceSet v).edgeSet.ncard := by omega
       have hcard_lt : (G.deleteIncidenceSet v).edgeSet.ncard < n := by omega
       have hIH := ih (G.deleteIncidenceSet v).edgeSet.ncard hcard_lt (G.deleteIncidenceSet v)
         rfl hconn' hedge'
-      rw [hcore, hsupp', Set.diff_diff_comm] at hIH
+      rw [hcore, hsupp', Set.sdiff_sdiff_comm] at hIH
       have hvmem_diff : v ∈ G.support \ G.twoCore.support := ⟨hvsupp, hvnotcore⟩
       have hncore : ((G.support \ G.twoCore.support) \ {v}).ncard + 1 =
           (G.support \ G.twoCore.support).ncard :=
-        Set.ncard_diff_singleton_add_one hvmem_diff
+        Set.ncard_sdiff_singleton_add_one hvmem_diff
       have hpeel := genericRank_square_peel (G := G) hv1 hu
       rcases lt_or_ge (G.degree u) 3 with hlt3 | hge3
       · have hueq2 : G.degree u = 2 := by omega
         have hminEq : min 3 (G.degree u) = 2 := by omega
         have hunotmem : u ∉ ({w | G.degree w = 1} \ {v}) := by
           rintro ⟨h1, -⟩
-          simp only [Set.mem_setOf_eq] at h1
+          simp only [Set.mem_ofPred_eq] at h1
           omega
         have hcardEq : {w | (G.deleteIncidenceSet v).degree w = 1}.ncard =
             {w | G.degree w = 1}.ncard := by
           rw [setOf_degree_eq_one_deleteIncidenceSet_of_degree_eq_two hv1 hu hueq2,
             Set.ncard_insert_of_notMem hunotmem]
-          exact Set.ncard_diff_singleton_add_one hv1
+          exact Set.ncard_sdiff_singleton_add_one hv1
         omega
       · have hminEq : min 3 (G.degree u) = 3 := by omega
         have hcardEq : {w | (G.deleteIncidenceSet v).degree w = 1}.ncard + 1 =
             {w | G.degree w = 1}.ncard := by
           rw [setOf_degree_eq_one_deleteIncidenceSet_of_three_le_degree hv1 hu hge3]
-          exact Set.ncard_diff_singleton_add_one hv1
+          exact Set.ncard_sdiff_singleton_add_one hv1
         omega
 
 /-- **The degree-one rank formula** (`thm:degree-one-rank`; JJ Lemma 4.2(b)). Let `G` be a
@@ -443,6 +443,6 @@ theorem degree_one_rank {G : SimpleGraph V} [Fintype V] [DecidableRel G.Adj]
     have hEcard : G.edgeSet.ncard = Nat.card G.edgeSet := (Nat.card_coe_set_eq _).symm
     omega
   have hmain := degree_one_rank_of_ncard G.edgeSet.ncard G rfl hconn' hedge
-  rwa [hsupp_univ, ← Set.compl_eq_univ_diff] at hmain
+  rwa [hsupp_univ, ← Set.compl_eq_univ_sdiff] at hmain
 
 end SimpleGraph

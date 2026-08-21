@@ -133,10 +133,10 @@ theorem exists_isNondegPencilRealization_parallel_pair
       hq₀_ne h00 h11 h01 h10
   set normal : α → Fin 4 → K := fun v' => if v' = x then n₀ else n₁ with hnormaldef
   set point : α → Fin 4 → K := fun v' => if v' = x then q₀ else q₁ with hpointdef
-  have hnormalx : normal x = n₀ := if_pos rfl
-  have hnormaly : normal y = n₁ := if_neg (Ne.symm hxy)
-  have hpointx : point x = q₀ := if_pos rfl
-  have hpointy : point y = q₁ := if_neg (Ne.symm hxy)
+  have hnormalx : normal x = n₀ := ite_eq_left rfl
+  have hnormaly : normal y = n₁ := ite_eq_right (Ne.symm hxy)
+  have hpointx : point x = q₀ := ite_eq_left rfl
+  have hpointy : point y = q₁ := ite_eq_right (Ne.symm hxy)
   -- A unary bundle: every fact any single body in `{x, y}` needs, sidestepping which-side-is-which.
   have hmem : ∀ v' ∈ ({x, y} : Set α), normal v' ≠ 0 ∧ ExtensorInPanel C (normal v') ∧
       point v' ≠ 0 ∧ point v' ⬝ᵥ normal v' = 0 ∧ ExtensorThroughPoint C (point v') := by
@@ -319,10 +319,10 @@ theorem pencilPair_of_ncard_le_two [Finite α] [Finite β] {G : Graph α β}
           hq₀_ne h00 h11 h01 h10
       set normal : α → Fin 4 → K := fun v' => if v' = x then n₀ else n₁ with hnormaldef
       set point : α → Fin 4 → K := fun v' => if v' = x then q₀ else q₁ with hpointdef
-      have hnormalx : normal x = n₀ := if_pos rfl
-      have hnormaly : normal y = n₁ := if_neg (Ne.symm hxy)
-      have hpointx : point x = q₀ := if_pos rfl
-      have hpointy : point y = q₁ := if_neg (Ne.symm hxy)
+      have hnormalx : normal x = n₀ := ite_eq_left rfl
+      have hnormaly : normal y = n₁ := ite_eq_right (Ne.symm hxy)
+      have hpointx : point x = q₀ := ite_eq_left rfl
+      have hpointy : point y = q₁ := ite_eq_right (Ne.symm hxy)
       have hmem : ∀ v' ∈ ({x, y} : Set α), normal v' ≠ 0 ∧ ExtensorInPanel C (normal v') ∧
           point v' ≠ 0 ∧ point v' ⬝ᵥ normal v' = 0 ∧ ExtensorThroughPoint C (point v') := by
         rintro v' (rfl | rfl)
@@ -438,7 +438,7 @@ theorem hasGenericPencilRealization_of_cutEdges_eq_empty [Finite α] [Finite β]
   set V₂ := V(G) \ V₁ with hV₂def
   have hne₂ : V₂.Nonempty := Set.nonempty_of_ssubset hssub
   have hVcard : V₁.ncard + V₂.ncard = V(G).ncard := by
-    have hunion : V₁ ∪ V₂ = V(G) := Set.union_diff_cancel hssub.subset
+    have hunion : V₁ ∪ V₂ = V(G) := Set.union_sdiff_cancel hssub.subset
     have hdisj : Disjoint V₁ V₂ := Set.disjoint_sdiff_right
     rw [← hunion, Set.ncard_union_eq hdisj (Set.toFinite V₁) (Set.toFinite V₂)]
   have hVeq₁ : V(G.induce V₁).ncard = V₁.ncard := rfl
@@ -463,12 +463,12 @@ theorem hasGenericPencilRealization_of_cutEdges_eq_empty [Finite α] [Finite β]
     rw [hC0] at hmem; exact hmem
   -- ── Side simplicity and feasibility (no demotion at all). ────────────────────────────────
   have hSimple₁ : (G.induce V₁).Simple := hSimple.mono (Graph.induce_le hssub.subset)
-  have hSimple₂ : (G.induce V₂).Simple := hSimple.mono (Graph.induce_le Set.diff_subset)
+  have hSimple₂ : (G.induce V₂).Simple := hSimple.mono (Graph.induce_le Set.sdiff_subset)
   have hfeas₁ : PencilNondegFeasible K (G.induce V₁) :=
     hfeas.mono (Graph.induce_le hssub.subset) (fun v hv hGhub => Or.inl ⟨hv, by
       rw [Graph.degree_induce_of_forall_isLink_mem hAdj₁ hv]; exact hGhub.2⟩)
   have hfeas₂ : PencilNondegFeasible K (G.induce V₂) :=
-    hfeas.mono (Graph.induce_le Set.diff_subset) (fun v hv hGhub => Or.inl ⟨hv, by
+    hfeas.mono (Graph.induce_le Set.sdiff_subset) (fun v hv hGhub => Or.inl ⟨hv, by
       rw [Graph.degree_induce_of_forall_isLink_mem hAdj₂ hv]; exact hGhub.2⟩)
   -- ── IH's generic halves on both sides. ───────────────────────────────────────────────────
   obtain ⟨F₁, normal₁, point₁, hnd₁, hrank₁⟩ :=
@@ -602,7 +602,7 @@ theorem hasGenericPencilRealization_of_cutEdges_eq_empty [Finite α] [Finite β]
       have hxV₁ : x ∈ V₁ := hx.1.1
       simp only [normal, hxV₁, ↓reduceIte]
     · have hv₂ : v ∈ V₂ := ⟨hv, hv₁⟩
-      rw [← Graph.closedHubNbhd_induce_of_forall_isLink_mem Set.diff_subset hAdj₂ hv₂]
+      rw [← Graph.closedHubNbhd_induce_of_forall_isLink_mem Set.sdiff_subset hAdj₂ hv₂]
       refine (hhubLI₂ v hv₂).congr (fun x hx => ?_)
       have hxV₂ : x ∈ V₂ := hx.1.1
       simp only [normal, hxV₂.2, ↓reduceIte, hxV₂]
@@ -793,7 +793,7 @@ theorem hasGenericPencilRealization_of_isNondegPencilRealization_induce_union_si
   set V₂ := V(G) \ V₁ with hV₂def
   have hv_c₂ : v_c ∈ V₂ := ⟨hl_c.right_mem, hv_c⟩
   have hu_notin₂ : u_c ∉ V₂ := fun hmem => hmem.2 hu_c
-  have hV₂sub : V₂ ⊆ V(G) := Set.diff_subset
+  have hV₂sub : V₂ ⊆ V(G) := Set.sdiff_subset
   have hcut₂ : (G.cutEdges V₂).ncard ≤ 1 :=
     le_trans (Set.ncard_le_ncard (Graph.cutEdges_diff_subset G V₁) (Set.toFinite _)) hcut
   have huv_ne : u_c ≠ v_c := fun heq => G.not_isLoopAt e_c v_c (heq ▸ hl_c)
@@ -837,7 +837,7 @@ theorem hasGenericPencilRealization_of_isNondegPencilRealization_induce_union_si
       have h3 : (G.closedHubNbhd u_c).ncard ≤ 3 :=
         ncard_closedHubNbhd_le_three_of_isNondegPencilRealization hnd₀ (hV₁ hu_c)
       have h2 : (G.closedHubNbhd u_c \ {v_c}).ncard ≤ 2 := by
-        have := Set.ncard_diff_singleton_lt_of_mem hmem (Set.toFinite _)
+        have := Set.ncard_sdiff_singleton_lt_of_mem hmem (Set.toFinite _)
         omega
       obtain ⟨a, b, hab⟩ := exists_subset_pair_of_ncard_le_two (Set.toFinite _) h2
       exact ⟨normal₁ a, normal₁ b, fun _ => by
@@ -850,7 +850,7 @@ theorem hasGenericPencilRealization_of_isNondegPencilRealization_induce_union_si
       have h3 : (G.closedHubNbhd v_c).ncard ≤ 3 :=
         ncard_closedHubNbhd_le_three_of_isNondegPencilRealization hnd₀ hl_c.right_mem
       have h2 : (G.closedHubNbhd v_c \ {u_c}).ncard ≤ 2 := by
-        have := Set.ncard_diff_singleton_lt_of_mem hmem (Set.toFinite _)
+        have := Set.ncard_sdiff_singleton_lt_of_mem hmem (Set.toFinite _)
         omega
       obtain ⟨a, b, hab⟩ := exists_subset_pair_of_ncard_le_two (Set.toFinite _) h2
       exact ⟨normal₂ a, normal₂ b, fun _ => by
@@ -865,7 +865,7 @@ theorem hasGenericPencilRealization_of_isNondegPencilRealization_induce_union_si
       have h3 : (G.closedNbhd u_c).ncard ≤ 3 :=
         ncard_closedNbhd_le_three_of_not_pencilHub hu_hub
       have h2 : (G.closedNbhd u_c \ {v_c}).ncard ≤ 2 := by
-        have := Set.ncard_diff_singleton_lt_of_mem hmem (Set.toFinite _)
+        have := Set.ncard_sdiff_singleton_lt_of_mem hmem (Set.toFinite _)
         omega
       obtain ⟨a, b, hab⟩ := exists_subset_pair_of_ncard_le_two (Set.toFinite _) h2
       refine ⟨point₁ a, point₁ b, ?_,
@@ -882,7 +882,7 @@ theorem hasGenericPencilRealization_of_isNondegPencilRealization_induce_union_si
       have h3 : (G.closedNbhd v_c).ncard ≤ 3 :=
         ncard_closedNbhd_le_three_of_not_pencilHub hv_hub
       have h2 : (G.closedNbhd v_c \ {u_c}).ncard ≤ 2 := by
-        have := Set.ncard_diff_singleton_lt_of_mem hmem (Set.toFinite _)
+        have := Set.ncard_sdiff_singleton_lt_of_mem hmem (Set.toFinite _)
         omega
       obtain ⟨a, b, hab⟩ := exists_subset_pair_of_ncard_le_two (Set.toFinite _) h2
       exact ⟨point₂ a, point₂ b, fun _ => by
@@ -1022,7 +1022,7 @@ theorem hasGenericPencilRealization_of_isNondegPencilRealization_induce_union_si
   have hlb₂ := hlb_induce_of_isNondegPencilRealization_induce_union_singleton
     (n := n) hD1 hl_c.symm hv_c₂ hu_notin₂ hcut₂ hnd₂' hrank₂' hagree₂
   have hVcard : V₁.ncard + V₂.ncard = V(G).ncard := by
-    have hunion : V₁ ∪ V₂ = V(G) := Set.union_diff_cancel hV₁
+    have hunion : V₁ ∪ V₂ = V(G) := Set.union_sdiff_cancel hV₁
     have hdisj : Disjoint V₁ V₂ := Set.disjoint_sdiff_right
     rw [← hunion, Set.ncard_union_eq hdisj (Set.toFinite V₁) (Set.toFinite V₂)]
   have hdef : G.deficiency n = (G.induce V₁).deficiency n + (G.induce V₂).deficiency n
@@ -1033,7 +1033,7 @@ theorem hasGenericPencilRealization_of_isNondegPencilRealization_induce_union_si
     fun e _ _ _ => hextF_nz e
   have hFcut : ∀ e ∈ G.cutEdges V₁, ∃ a b, F.graph.IsLink e a b ∧ a ∈ V₁ ∧ b ∉ V₁ := by
     intro e he
-    simp only [Graph.cutEdges, Set.mem_setOf_eq] at he
+    simp only [Graph.cutEdges, Set.mem_ofPred_eq] at he
     obtain ⟨-, a, b, hlab, ha, hb⟩ := he
     exact ⟨a, b, hlab, ha, hb⟩
   have hFVne : V(F.graph).Nonempty := ⟨u_c, hV₁ hu_c⟩
@@ -1087,7 +1087,7 @@ theorem hasGenericPencilRealization_of_isNondegPencilRealization_induce_union_si
           · exact absurd (heq.symm ▸ hv₁) hv_c
           · exact (hcross_eq e v v_c hl hv₁ hv_c).2.1
         have hset : G.closedHubNbhd v = insert v_c (G.closedHubNbhd v \ {v_c}) := by
-          rw [Set.insert_diff_singleton, Set.insert_eq_of_mem hvc_mem]
+          rw [Set.insert_sdiff_singleton, Set.insert_eq_of_mem hvc_mem]
         rw [hset]
         refine hbase.insert ?_
         intro hmem
@@ -1099,7 +1099,7 @@ theorem hasGenericPencilRealization_of_isNondegPencilRealization_induce_union_si
           rw [hnx]
           exact hscov hv_hub' ⟨x, hveq ▸ hx, rfl⟩
         exact havoid1 (Submodule.span_mono himg hmem)
-      · rw [← Set.diff_singleton_eq_self hvc_mem]
+      · rw [← Set.sdiff_singleton_eq_self hvc_mem]
         exact hbase
     · have hv₂ : v ∈ V₂ := ⟨hv, hv₁⟩
       have hbase : LinearIndepOn K normal (G.closedHubNbhd v \ {u_c}) := by
@@ -1117,7 +1117,7 @@ theorem hasGenericPencilRealization_of_isNondegPencilRealization_induce_union_si
           · exact absurd (heq.symm ▸ hv₂) hu_notin₂
           · exact (hcross_eq e u_c v hl.symm hu_c hv₂.2).2.2
         have hset : G.closedHubNbhd v = insert u_c (G.closedHubNbhd v \ {u_c}) := by
-          rw [Set.insert_diff_singleton, Set.insert_eq_of_mem huc_mem]
+          rw [Set.insert_sdiff_singleton, Set.insert_eq_of_mem huc_mem]
         rw [hset]
         refine hbase.insert ?_
         intro hmem
@@ -1134,7 +1134,7 @@ theorem hasGenericPencilRealization_of_isNondegPencilRealization_induce_union_si
           · rw [Set.mem_singleton_iff] at h1
             rw [h1]; exact Set.mem_insert_of_mem _ (Set.mem_singleton _)
         exact havoid2 (Submodule.span_mono himg hmem)
-      · rw [← Set.diff_singleton_eq_self huc_mem]
+      · rw [← Set.sdiff_singleton_eq_self huc_mem]
         exact hbase
   -- ── Conjunct 4: non-hub closed-neighbourhood point LI. ───────────────────────────────────
   have hnbhdLI_glued : ∀ v ∈ V(G), ¬ G.PencilHub v →
@@ -1150,7 +1150,7 @@ theorem hasGenericPencilRealization_of_isNondegPencilRealization_induce_union_si
         have hId := Graph.closedNbhd_induce_union_singleton hl_c hu_c hv_c hcut hv₁
         have hLI := hnbhdLI₁ v (Set.mem_union_left _ hv₁) hnothub₁
         rw [hId] at hLI
-        refine (hLI.mono Set.diff_subset).congr (fun x hx => ?_)
+        refine (hLI.mono Set.sdiff_subset).congr (fun x hx => ?_)
         have hxV₁ : x ∈ V₁ := hmemV₁ hv₁ hx.1 hx.2
         simp only [point, hxV₁, ↓reduceIte]
       by_cases hvc_mem : v_c ∈ G.closedNbhd v
@@ -1159,7 +1159,7 @@ theorem hasGenericPencilRealization_of_isNondegPencilRealization_induce_union_si
           · exact absurd (heq.symm ▸ hv₁) hv_c
           · exact (hcross_eq e v v_c hl hv₁ hv_c).2.1
         have hset : G.closedNbhd v = insert v_c (G.closedNbhd v \ {v_c}) := by
-          rw [Set.insert_diff_singleton, Set.insert_eq_of_mem hvc_mem]
+          rw [Set.insert_sdiff_singleton, Set.insert_eq_of_mem hvc_mem]
         rw [hset]
         refine hbase.insert ?_
         intro hmem
@@ -1171,7 +1171,7 @@ theorem hasGenericPencilRealization_of_isNondegPencilRealization_induce_union_si
           rw [hpx]
           exact hqcov (hveq ▸ hnothub) ⟨x, hveq ▸ hx, rfl⟩
         exact havoid3 (Submodule.span_mono himg hmem)
-      · rw [← Set.diff_singleton_eq_self hvc_mem]
+      · rw [← Set.sdiff_singleton_eq_self hvc_mem]
         exact hbase
     · have hv₂ : v ∈ V₂ := ⟨hv, hv₁⟩
       have hnothub₂ : ¬ (G.induce (V₂ ∪ {u_c})).PencilHub v := by
@@ -1184,7 +1184,7 @@ theorem hasGenericPencilRealization_of_isNondegPencilRealization_induce_union_si
         have hId := Graph.closedNbhd_induce_union_singleton hl_c.symm hv_c₂ hu_notin₂ hcut₂ hv₂
         have hLI := hnbhdLI₂' v (Set.mem_union_left _ hv₂) hnothub₂
         rw [hId] at hLI
-        refine (hLI.mono Set.diff_subset).congr (fun x hx => ?_)
+        refine (hLI.mono Set.sdiff_subset).congr (fun x hx => ?_)
         have hxV₂ : x ∈ V₂ := hmemV₂ hv₂ hx.1 hx.2
         simp only [point, hxV₂.2, ↓reduceIte, hxV₂]
       by_cases huc_mem : u_c ∈ G.closedNbhd v
@@ -1193,7 +1193,7 @@ theorem hasGenericPencilRealization_of_isNondegPencilRealization_induce_union_si
           · exact absurd (heq.symm ▸ hv₂) hu_notin₂
           · exact (hcross_eq e u_c v hl.symm hu_c hv₂.2).2.2
         have hset : G.closedNbhd v = insert u_c (G.closedNbhd v \ {u_c}) := by
-          rw [Set.insert_diff_singleton, Set.insert_eq_of_mem huc_mem]
+          rw [Set.insert_sdiff_singleton, Set.insert_eq_of_mem huc_mem]
         rw [hset]
         refine hbase.insert ?_
         intro hmem
@@ -1210,7 +1210,7 @@ theorem hasGenericPencilRealization_of_isNondegPencilRealization_induce_union_si
           · rw [Set.mem_singleton_iff] at h1
             rw [h1]; exact Set.mem_insert_of_mem _ (Set.mem_singleton _)
         exact havoid4 (Submodule.span_mono himg hmem)
-      · rw [← Set.diff_singleton_eq_self huc_mem]
+      · rw [← Set.sdiff_singleton_eq_self huc_mem]
         exact hbase
   exact ⟨F, normal, point,
     ⟨⟨⟨rfl, hnorm_nz, hextF_nz,

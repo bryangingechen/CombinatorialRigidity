@@ -210,7 +210,7 @@ theorem blockPairing_injective {α : Type*} [Fintype α] {d : ℕ} :
     simp [hc']
   · simp
   · intro x' _ hx'
-    rw [if_neg hx']
+    rw [ite_eq_right hx']
     simp
   · simp
 
@@ -247,7 +247,7 @@ theorem rigidityRow_eq [Fintype α] [DecidableEq α] {F : BodyBarFramework n α 
       = (F.placement e).ofLp c * (m (D.dInc e).2).ofLp c
         - (F.placement e).ofLp c * (m (D.dInc e).1).ofLp c from by
       simp only [mul_assoc, ← Finset.mul_sum, mul_sub, sub_mul, ite_mul, one_mul, zero_mul,
-        Finset.sum_sub_distrib, Finset.sum_ite_eq', Finset.mem_univ, if_true]]
+        Finset.sum_sub_distrib, Finset.sum_ite_eq', Finset.mem_univ, ite_true]]
   ring
 
 /-- **The standard-basis rigidity row is the block-pairing of a block-`single` incidence
@@ -271,8 +271,8 @@ theorem stdFramework_rigidityRow_eq [Fintype α] [DecidableEq α] {G : Graph α 
   refine congrArg (fun w => -(blockPairing α (bodyBarDim n) w)) (funext fun c => ?_)
   rw [stdFramework_placement, stdPlacement, PiLp.single_apply]
   rcases eq_or_ne c (j e) with h | h
-  · subst h; rw [if_pos rfl, one_smul, Pi.single_eq_same]; congr 1
-  · simp only [if_neg h, Pi.single_eq_of_ne h, zero_smul]
+  · subst h; rw [ite_eq_left rfl, one_smul, Pi.single_eq_same]; congr 1
+  · simp only [ite_eq_right h, Pi.single_eq_of_ne h, zero_smul]
 
 /-- **The standard-basis rigidity rows of a disjoint forest packing are linearly
 independent.** If `Fs : Fin (bodyBarDim n) → Set β` is a *disjoint* packing of `G` into

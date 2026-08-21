@@ -598,8 +598,8 @@ theorem exists_homogeneousIncidence_of_normals_gen {k : ℕ}
       (∀ j, j ≠ i → pbar i.succ ⬝ᵥ n j = 0) ∧ pbar i.succ ⬝ᵥ n i ≠ 0 := by
     intro i
     refine ⟨fun j hj => ?_, ?_⟩
-    · simp only [hpbar, Fin.cons_succ, hpsucc i j, if_neg hj]
-    · rw [hpbar, Fin.cons_succ, hpsucc i i, if_pos rfl]; exact one_ne_zero
+    · simp only [hpbar, Fin.cons_succ, hpsucc i j, ite_eq_right hj]
+    · rw [hpbar, Fin.cons_succ, hpsucc i i, ite_eq_left rfl]; exact one_ne_zero
   refine ⟨pbar, ?_, hb0, hbi⟩
   -- Linear independence: the triangular argument on the incidence matrix.
   rw [Fintype.linearIndependent_iff]
@@ -613,9 +613,9 @@ theorem exists_homogeneousIncidence_of_normals_gen {k : ℕ}
     simp only [smul_dotProduct, smul_eq_mul, hb0 u, mul_zero, zero_add] at hzero
     -- `∑ i, g i.succ * (psucc i ⬝ᵥ n u) = ∑ i, g i.succ * δ_{iu} = g u.succ`.
     rw [Finset.sum_eq_single u] at hzero
-    · rwa [hpbar, Fin.cons_succ, hpsucc u u, if_pos rfl, mul_one] at hzero
+    · rwa [hpbar, Fin.cons_succ, hpsucc u u, ite_eq_left rfl, mul_one] at hzero
     · intro i _ hiu
-      simp only [hpbar, Fin.cons_succ, hpsucc i u, if_neg (Ne.symm hiu), mul_zero]
+      simp only [hpbar, Fin.cons_succ, hpsucc i u, ite_eq_right (Ne.symm hiu), mul_zero]
     · intro h; exact absurd (Finset.mem_univ u) h
   -- With all `g (i+1) = 0`, `hg` reduces to `g 0 • p0 = 0`, and `p0 ≠ 0` forces `g 0 = 0`.
   have hg0 : g 0 = 0 := by

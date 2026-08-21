@@ -1308,7 +1308,7 @@ theorem _root_.Graph.ChainData.chainData_freshEdge_perp_transport_base_to_candid
     simpa only [ite_true, PanelHingeFramework.toBodyHinge_supportExtensor,
       PanelHingeFramework.ofNormals_ends, PanelHingeFramework.ofNormals_normal] using hbase
   · rw [cd.shiftEdgePerm_apply_edge_interior i hs0 hs1i]
-    simpa only [if_neg (by omega : ¬ s = 0), PanelHingeFramework.toBodyHinge_supportExtensor,
+    simpa only [ite_eq_right (by omega : ¬ s = 0), PanelHingeFramework.toBodyHinge_supportExtensor,
       PanelHingeFramework.ofNormals_ends, PanelHingeFramework.ofNormals_normal] using hbase
 
 /-- **STEP 1 ∘ STEP 2 — the per-edge perp the slot core consumes, from A-1's base data**
@@ -1366,8 +1366,8 @@ theorem _root_.Graph.ChainData.chainData_freshEdge_slot_perp
     (Gb := G.removeVertex (cd.vtx ⟨1, by omega⟩)) (ends₀ := ends₀) (q := q) ?_
   -- STEP 1 supplies the base perp: `e₀` at the head (`hρe₀`), `edge (s+1)` interior (`s ≥ 1`).
   rcases Nat.eq_zero_or_pos s with hs0 | hs0
-  · subst hs0; rw [if_pos rfl]; exact hρe₀
-  · rw [if_neg (by omega : ¬ s = 0)]
+  · subst hs0; rw [ite_eq_left rfl]; exact hρe₀
+  · rw [ite_eq_right (by omega : ¬ s = 0)]
     -- STEP 1 (`chainData_freshEdge_perp_of_baseRedundancy`) at base index `⟨1⟩`, edge index `s+1`.
     exact cd.chainData_freshEdge_perp_of_baseRedundancy h3 ⟨1, by omega⟩ (s + 1) (by omega)
       (by have := i.isLt; omega) c ev uv vv rv hlink hrv hcomb hdeg1

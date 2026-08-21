@@ -243,7 +243,7 @@ the two sides of N4c are matched on. -/
 lemma edgeSet_mulTilde_rigidContract (G H : Graph α β) (r : α) (n : ℕ) :
     E((G.rigidContract H r).mulTilde n) = E(G.mulTilde n) \ E(H.mulTilde n) := by
   ext p
-  simp only [mem_edgeSet_mulTilde, rigidContract, edgeSet_map, edgeSet_deleteEdges, Set.mem_diff]
+  simp only [mem_edgeSet_mulTilde, rigidContract, edgeSet_map, edgeSet_deleteEdges, Set.mem_sdiff]
 
 /-- **The contraction side of N4c reduces to a restricted contraction-of-union** (N4c brick).
 For `H ≤ G`, the matroid contraction `M(G̃) ／ E(H̃)` is the `D`-fold cycle-matroid union of `G̃`,
@@ -395,7 +395,7 @@ lemma Union_pow_contract_eq_contract_of_rk_saturated [DecidableEq α] [Finite α
       · exact absurd h hx.2
       · exact h
     have hWsubC : W ⊆ C := hWsubJ'.trans hJ'sub
-    have hYW : Z = Y ∪ W := by rw [hYdef, hWdef, Set.inter_union_diff]
+    have hYW : Z = Y ∪ W := by rw [hYdef, hWdef, Set.inter_union_sdiff]
     have hdisjYW : Disjoint Y W := (Set.disjoint_sdiff_right).mono_left Set.inter_subset_right
     -- count on `Y` (via `(M ／ C).rk Y = M.rk (Y ∪ C) − M.rk C`)
     have hLY : (Y.ncard : ℤ) ≤ k * (M.rk (Y ∪ C) - M.rk C) := by
@@ -615,10 +615,10 @@ theorem _root_.Matroid.IsBase.union_isBasis_of_contract {γ : Type*} {M : Matroi
     refine fun x hx ↦ ⟨hx.1, fun hxc ↦ hx.2 ⟨hCcl ⟨hxc.1, hx.1.1⟩, hxc.2⟩⟩
   -- So `(M ／ J).E \ (C \ J)` is spanning in `M ／ J`, making `B'` a base of `M ／ J`.
   have hsp : (M ／ J).Spanning ((M ／ J).E \ (C \ J)) := by
-    rw [Matroid.spanning_iff_closure_eq Set.diff_subset]
+    rw [Matroid.spanning_iff_closure_eq Set.sdiff_subset]
     refine subset_antisymm (Matroid.closure_subset_ground _ _) ?_
     calc (M ／ J).E = (M ／ J).closure ((M ／ J).E \ (M ／ J).loops) := by
-            rw [Matroid.closure_diff_loops_eq, Matroid.closure_ground]
+            rw [Matroid.closure_sdiff_loops_eq, Matroid.closure_ground]
       _ ⊆ (M ／ J).closure ((M ／ J).E \ (C \ J)) := Matroid.closure_subset_closure _ hsub
   have hBJ : (M ／ J).IsBase B' := hB'.isBase_of_spanning hsp
   rw [hJ.indep.contract_isBase_iff] at hBJ
@@ -649,7 +649,7 @@ theorem contract_minimality_transport [DecidableEq β] [Finite α] [Finite β] {
     rwa [Matroid.contract_ground, matroidMG, Matroid.restrict_ground_eq] at this
   -- The surviving fiber `ẽ` is disjoint from `E(H̃)` (its edges all have `.1 = e ∉ E(H)`).
   have hfiberdisj : edgeFiber e n ⊆ {p | p.1 ∉ E(H)} := by
-    intro p hp; rw [Set.mem_setOf_eq, (show p.1 = e from hp)]; exact heH
+    intro p hp; rw [Set.mem_ofPred_eq, (show p.1 = e from hp)]; exact heH
   -- Pick an `M(G̃)`-basis `J` of `E(H̃)`; then `B' ∪ J` is a base of `M(G̃)`.
   obtain ⟨J, hJ⟩ := (G.matroidMG n).exists_isBasis' E(H.mulTilde n)
   have hbase : (G.matroidMG n).IsBase (B' ∪ J) := hB'.union_isBasis_of_contract hJ
@@ -758,7 +758,7 @@ theorem rigidContract_isMinimalKDof [DecidableEq β] [Finite α] [Finite β] {H 
   · -- Deficiency half: `def((G/E(H))̃) = k` via the def=corank bridge.
     have hVKne : V(G.rigidContract H r).Nonempty := by
       rw [vertexSet_rigidContract]
-      exact ⟨r, r, hHsub hr, by unfold collapseTo; rw [if_pos hr]⟩
+      exact ⟨r, r, hHsub hr, by unfold collapseTo; rw [ite_eq_left hr]⟩
     have hbridge := (G.rigidContract H r).rank_add_deficiency_eq n hD hVKne
     rw [hN4c] at hbridge
     -- `|V(G/E(H))| − 1 = |V(G)| − |V(H)|`, so the ambient matches the conserved rank.
@@ -820,7 +820,7 @@ theorem rigidContract_deficiency_eq [DecidableEq β] [Finite α] [Finite β] {H 
   -- def = corank for the contracted graph, transported through `hN4c`.
   have hVKne : V(G.rigidContract H r).Nonempty := by
     rw [vertexSet_rigidContract]
-    exact ⟨r, r, hHsub hr, by unfold collapseTo; rw [if_pos hr]⟩
+    exact ⟨r, r, hHsub hr, by unfold collapseTo; rw [ite_eq_left hr]⟩
   have hbridge := (G.rigidContract H r).rank_add_deficiency_eq n hD hVKne
   rw [hN4c] at hbridge
   -- `|V(G/E(H))| − 1 = |V(G)| − |V(H)|`, matching `hcons`'s ambient.
@@ -845,9 +845,9 @@ lemma collapseTo_eq_imp_mem_of_ne {r : α} {S : Set α} (hr : r ∈ S) {x y : α
   simp only [collapseTo] at heq
   by_cases hx : x ∈ S <;> by_cases hy : y ∈ S
   · exact ⟨hx, hy⟩
-  · simp only [if_pos hx, if_neg hy] at heq; exact absurd (heq ▸ hr) hy
-  · simp only [if_neg hx, if_pos hy] at heq; exact absurd (heq ▸ hr) hx
-  · simp only [if_neg hx, if_neg hy] at heq; exact absurd heq hne
+  · simp only [ite_eq_left hx, ite_eq_right hy] at heq; exact absurd (heq ▸ hr) hy
+  · simp only [ite_eq_right hx, ite_eq_left hy] at heq; exact absurd (heq ▸ hr) hx
+  · simp only [ite_eq_right hx, ite_eq_right hy] at heq; exact absurd heq hne
 
 /-- **A non-simple rigid-subgraph contraction of an induced rigid subgraph yields a vertex with
 two edges into the subgraph** (Katoh–Tanigawa 2011 Claim 6.6, p. 676–677, step 2; the genuinely

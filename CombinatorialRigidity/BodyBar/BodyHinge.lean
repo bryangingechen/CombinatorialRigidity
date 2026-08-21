@@ -73,7 +73,7 @@ def edgeMultiply (G : Graph α β) (m : ℕ) : Graph α (β × Fin m) where
     exact h.left_eq_or_eq h'
   edge_mem_iff_exists_isLink := by
     rintro ⟨e, i⟩
-    simp only [Set.mem_setOf_eq]
+    simp only [Set.mem_ofPred_eq]
     exact ⟨fun he ↦ by obtain ⟨x, y, h⟩ := exists_isLink_of_mem_edgeSet he; exact ⟨x, y, h⟩,
       fun ⟨x, y, h⟩ ↦ h.edge_mem⟩
   left_mem_of_isLink := by
@@ -106,7 +106,7 @@ multiplication. Requires `m ≠ 0` so each `G`-edge has at least one parallel co
 lemma spanningVerts_edgeMultiply (G : Graph α β) (m : ℕ) [NeZero m] (E' : Set β) :
     (G.edgeMultiply m).spanningVerts {p : β × Fin m | p.1 ∈ E'} = G.spanningVerts E' := by
   ext x
-  simp only [mem_spanningVerts, edgeMultiply_inc, Set.mem_setOf_eq]
+  simp only [mem_spanningVerts, edgeMultiply_inc, Set.mem_ofPred_eq]
   constructor
   · rintro ⟨p, hp, hinc⟩; exact ⟨p.1, hp, hinc⟩
   · rintro ⟨e, he, hinc⟩; exact ⟨(e, ⟨0, Nat.pos_of_ne_zero (NeZero.ne m)⟩), he, hinc⟩

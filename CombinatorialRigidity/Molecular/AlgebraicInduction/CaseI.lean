@@ -533,7 +533,7 @@ theorem PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set_proj [F
       PanelHingeFramework.ofNormals_normal, MvPolynomial.smul_eval, annihRowPoly_eval]
     rw [Pi.single_apply, Pi.single_apply]
     by_cases hu : (ends i.1).1 = a <;> by_cases hv : (ends i.1).2 = a <;>
-      simp only [hu, hv, if_true, if_false, sub_zero, zero_sub, sub_self, map_zero,
+      simp only [hu, hv, ite_true, ite_false, sub_zero, zero_sub, sub_self, map_zero,
         map_neg, one_mul, neg_mul, zero_mul]
   -- The matrix `M` of `φ ∘ D ∘ φ⁻¹` in the dual-standard basis: `M j l = φ (D (φ⁻¹ (eₗ))) j`.
   set M : Fin (Module.finrank K (Module.Dual K (α → ScrewSpace K k)))
@@ -669,12 +669,12 @@ theorem _root_.Graph.rigidContract_vertexSet_inter_eq_singleton {α β : Type*}
   classical
   rw [Graph.vertexSet_rigidContract]
   apply Set.eq_singleton_iff_unique_mem.2
-  refine ⟨⟨⟨r, hHsub hr, by unfold Graph.collapseTo; rw [if_pos hr]⟩, hr⟩, ?_⟩
+  refine ⟨⟨⟨r, hHsub hr, by unfold Graph.collapseTo; rw [ite_eq_left hr]⟩, hr⟩, ?_⟩
   rintro x ⟨⟨y, _, rfl⟩, hxH⟩
   unfold Graph.collapseTo at hxH ⊢
   split_ifs with hyH
   · rfl
-  · rw [if_neg hyH] at hxH; exact absurd hxH hyH
+  · rw [ite_eq_right hyH] at hxH; exact absurd hxH hyH
 
 /-- **KT Claim 6.4 discharged: the contraction's generic IH yields the exterior-projected
 surviving-row witness `htransport`** (`lem:claim-6-4`, the U4 assembly; Katoh–Tanigawa 2011 §6.2,
@@ -741,7 +741,7 @@ theorem PanelHingeFramework.rigidContract_exterior_rank_transport_htransport
     rw [hF', PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph]; rfl
   have hr' : r ∈ F'.graph.vertexSet := by
     rw [hF'g, Graph.vertexSet_rigidContract]
-    exact ⟨r, hHsub hr, by unfold Graph.collapseTo; rw [if_pos hr]⟩
+    exact ⟨r, hHsub hr, by unfold Graph.collapseTo; rw [ite_eq_left hr]⟩
   have hinter : F'.graph.vertexSet ∩ V(H) = {r} := by
     rw [hF'g]; exact Graph.rigidContract_vertexSet_inter_eq_singleton G H hr hHsub
   have hnev : F'.graph.vertexSet.Nonempty := ⟨r, hr'⟩
@@ -775,7 +775,7 @@ theorem PanelHingeFramework.rigidContract_exterior_rank_transport_htransport
   have hF'sc : F'.graph.vertexSet = (V(G) \ V(H)) ∪ {r} := by
     rw [hF'g, Graph.vertexSet_rigidContract]
     ext x
-    simp only [Set.mem_image, Set.mem_union, Set.mem_diff, Set.mem_singleton_iff]
+    simp only [Set.mem_image, Set.mem_union, Set.mem_sdiff, Set.mem_singleton_iff]
     constructor
     · rintro ⟨y, hy, rfl⟩
       unfold Graph.collapseTo
@@ -783,8 +783,8 @@ theorem PanelHingeFramework.rigidContract_exterior_rank_transport_htransport
       · exact Or.inr rfl
       · exact Or.inl ⟨hy, hyH⟩
     · rintro (⟨hx, hxH⟩ | hxr)
-      · exact ⟨x, hx, by unfold Graph.collapseTo; rw [if_neg hxH]⟩
-      · exact ⟨r, hHsub hr, by unfold Graph.collapseTo; rw [if_pos hr, hxr]⟩
+      · exact ⟨x, hx, by unfold Graph.collapseTo; rw [ite_eq_right hxH]⟩
+      · exact ⟨r, hHsub hr, by unfold Graph.collapseTo; rw [ite_eq_left hr, hxr]⟩
   -- The witness seed `q₀ := degeneratePlacement r V(H) nrm'` (KT's `p2`), `nrm'` the body-curried
   -- U3a placement. U2 carries the projected-collapsed independence back to the
   -- projected-uncollapsed rows of `ofNormals Gc ends q₀`.
@@ -911,7 +911,7 @@ theorem PanelHingeFramework.exists_rankPolynomial_of_IH_relabel_linking_set_proj
   have hF'sc : F'.graph.vertexSet = (V(G) \ V(H)) ∪ {r} := by
     rw [hF'g, Graph.vertexSet_rigidContract]
     ext x
-    simp only [Set.mem_image, Set.mem_union, Set.mem_diff, Set.mem_singleton_iff]
+    simp only [Set.mem_image, Set.mem_union, Set.mem_sdiff, Set.mem_singleton_iff]
     constructor
     · rintro ⟨y, hy, rfl⟩
       unfold Graph.collapseTo
@@ -919,8 +919,8 @@ theorem PanelHingeFramework.exists_rankPolynomial_of_IH_relabel_linking_set_proj
       · exact Or.inr rfl
       · exact Or.inl ⟨hy, hyH⟩
     · rintro (⟨hx, hxH⟩ | hxr)
-      · exact ⟨x, hx, by unfold Graph.collapseTo; rw [if_neg hxH]⟩
-      · exact ⟨r, hHsub hr, by unfold Graph.collapseTo; rw [if_pos hr, hxr]⟩
+      · exact ⟨x, hx, by unfold Graph.collapseTo; rw [ite_eq_right hxH]⟩
+      · exact ⟨r, hHsub hr, by unfold Graph.collapseTo; rw [ite_eq_left hr, hxr]⟩
   have hNval : (N : ℤ) = screwDim k * (((V(G) \ V(H)) ∪ {r}).ncard - 1) - k' := by
     -- After the `endsM`/`N` `set`s, the shared core's `hrank_eq` reads
     -- `(N : ℤ) = D(|V(Gc.map f)|−1) − def`; `V(Gc.map f) = V(F'.graph) = sc` (`hF'sc`) and

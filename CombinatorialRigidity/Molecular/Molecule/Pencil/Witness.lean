@@ -451,16 +451,16 @@ theorem exists_coord_linearIndependent_pencilChartPoint_of_pendant_deg3
     · rw [hidx_u, hidx_2] at hxy; exact absurd hxy (by decide)
     · rcases hidx_vor with h | h <;> rw [h, hidx_u] at hxy <;> exact absurd hxy (by decide)
     · rfl
-    · rw [hidx_v, hidx_1, if_pos hy.1] at hxy; exact absurd hxy (by decide)
+    · rw [hidx_v, hidx_1, ite_eq_left hy.1] at hxy; exact absurd hxy (by decide)
     · have hnh1 : ¬ G.PencilHub w₁ := fun h => hnotall ⟨hx.1, h, hy.1⟩
-      rw [hidx_v, hidx_2, if_neg hnh1] at hxy; exact absurd hxy (by decide)
+      rw [hidx_v, hidx_2, ite_eq_right hnh1] at hxy; exact absurd hxy (by decide)
     · rw [hidx_1, hidx_u] at hxy; exact absurd hxy (by decide)
-    · rw [hidx_1, hidx_v, if_pos hx.1] at hxy; exact absurd hxy (by decide)
+    · rw [hidx_1, hidx_v, ite_eq_left hx.1] at hxy; exact absurd hxy (by decide)
     · rfl
     · rw [hidx_1, hidx_2] at hxy; exact absurd hxy (by decide)
     · rw [hidx_2, hidx_u] at hxy; exact absurd hxy (by decide)
     · have hnh1 : ¬ G.PencilHub w₁ := fun h => hnotall ⟨hy.1, h, hx.1⟩
-      rw [hidx_2, hidx_v, if_neg hnh1] at hxy; exact absurd hxy (by decide)
+      rw [hidx_2, hidx_v, ite_eq_right hnh1] at hxy; exact absurd hxy (by decide)
     · rw [hidx_2, hidx_1] at hxy; exact absurd hxy (by decide)
     · rfl
   have hd_1 : ∀ x ∈ G.closedHubNbhd w₁, idx x ≠ (2 : Fin 4) := by
@@ -983,7 +983,7 @@ theorem exists_coord_linearIndependent_pencilChartNormal_of_pendant_deg3
   -- `H.closedNbhd u_c = {u_c, w₁, w₂}`, so `nbrSel u_c` is fully assigned.
   have hNH_uc : (G.induce V₁).closedNbhd u_c = ({u_c, w₁, w₂} : Set α) := by
     ext x
-    simp only [Graph.closedNbhd, Set.mem_setOf_eq, Set.mem_insert_iff, Set.mem_singleton_iff]
+    simp only [Graph.closedNbhd, Set.mem_ofPred_eq, Set.mem_insert_iff, Set.mem_singleton_iff]
     constructor
     · rintro (rfl | ⟨e, he⟩)
       · exact Or.inl rfl
@@ -1036,15 +1036,19 @@ theorem exists_coord_linearIndependent_pencilChartNormal_of_pendant_deg3
   have hcs_ne : ∀ i, cs i ≠ 0 := by
     intro i; simp only [hcs_def]
     rcases hmem_mem i with h | h | h
-    · rw [if_pos h]; exact hcu0
-    · rw [if_neg (by rw [h]; exact hw1u), if_pos h]; exact hc10
-    · rw [if_neg (by rw [h]; exact hw2u), if_neg (by rw [h]; exact Ne.symm hw12)]; exact hc20
+    · rw [ite_eq_left h]; exact hcu0
+    · rw [ite_eq_right (by rw [h]; exact hw1u), ite_eq_left h]; exact hc10
+    · rw [ite_eq_right (by rw [h]; exact hw2u),
+        ite_eq_right (by rw [h]; exact Ne.symm hw12)]
+      exact hc20
   have hT_ne : ∀ i, T i ≠ (0 : Fin 4) := by
     intro i; simp only [hT_def, htgt_def]
     rcases hmem_mem i with h | h | h
-    · rw [if_pos h]; decide
-    · rw [if_neg (by rw [h]; exact hw1u), if_pos h]; decide
-    · rw [if_neg (by rw [h]; exact hw2u), if_neg (by rw [h]; exact Ne.symm hw12)]; decide
+    · rw [ite_eq_left h]; decide
+    · rw [ite_eq_right (by rw [h]; exact hw1u), ite_eq_left h]; decide
+    · rw [ite_eq_right (by rw [h]; exact hw2u),
+        ite_eq_right (by rw [h]; exact Ne.symm hw12)]
+      decide
   have hT_val : ∀ i, (mem i = u_c ∧ T i = 3) ∨ (mem i = w₁ ∧ T i = 2) ∨
       (mem i = w₂ ∧ T i = 1) := by
     intro i
@@ -1098,7 +1102,7 @@ theorem exists_coord_linearIndependent_pencilChartNormal_of_pendant_deg3
       intro i
       rw [hnsp_eq i, dotProduct_smul, dotProduct_single_one]
       simp only [Pi.single_apply]
-      rw [if_neg (hT_ne i), smul_zero]
+      rw [ite_eq_right (hT_ne i), smul_zero]
     obtain ⟨cc, hcc, hcross⟩ :=
       exists_smul_cross₃_eq_of_linearIndependent hLI3 he0_ne (horth 0) (horth 1) (horth 2)
     exact ⟨cc, hcc, hcross⟩
@@ -1114,7 +1118,7 @@ theorem exists_coord_linearIndependent_pencilChartNormal_of_pendant_deg3
         = cfam x • (Pi.single (idx x) 1 : Fin 4 → K) := by
     intro x hxhub _
     by_cases hxu : x = u_c
-    · subst hxu; rw [hNu_eq]; simp only [hcfam_def, if_pos rfl, hidx_u]
+    · subst hxu; rw [hNu_eq]; simp only [hcfam_def, ite_eq_left rfl, hidx_u]
     · have hxV₁ : x ∈ V₁ := by
         have hxVG : x ∈ V(G) := hxhub.1
         rw [hVG] at hxVG
@@ -1125,7 +1129,7 @@ theorem exists_coord_linearIndependent_pencilChartNormal_of_pendant_deg3
         refine ⟨hVH_mem x hxV₁, ?_⟩
         rw [Graph.degree_induce_eq_of_ne hl_c hu_c hv_c hcut hxV₁ hxu]; exact hxhub.2
       rw [pencilChartNormal_of_pencilHub _ _ _ hxHhub, hHubN]
-      simp only [hcfam_def, if_neg hxu, one_smul]
+      simp only [hcfam_def, ite_eq_right hxu, one_smul]
   refine ⟨q, fun v hv => ?_⟩
   simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hv
   have hval' : ∀ x ∈ G.closedHubNbhd v,
@@ -1269,10 +1273,10 @@ theorem exists_injOn_mapsTo_of_ncard_le {γ δ : Type*} [Inhabited δ] {T : Set 
   obtain ⟨e⟩ := Function.Embedding.nonempty_of_card_le hc
   refine ⟨fun x => if h : x ∈ T then (e ⟨x, h⟩ : δ) else default, ?_, ?_⟩
   · intro x hx y hy hxy
-    simp only [dif_pos hx, dif_pos hy] at hxy
+    simp only [dite_eq_left hx, dite_eq_left hy] at hxy
     exact Subtype.ext_iff.mp (e.injective (Subtype.ext hxy))
   · intro x hx
-    simp only [dif_pos hx]
+    simp only [dite_eq_left hx]
     exact (e ⟨x, hx⟩).2
 
 /-- **The direction/target maps for an adjacent pair** (Phase 39 W5-L6b-ii combinatorial core): for
@@ -1321,12 +1325,12 @@ theorem exists_idx_dtgt_pair [Finite α] {u v : α} (huv : u ≠ v) {U V : Set �
   obtain ⟨hdtgtv2, hdtgtv_img⟩ := hdtgtv
   set Y := insert dtgtv (fu '' (U ∩ V)) with hY_def
   have hVU_add : (V \ U).ncard + m = V.ncard := by
-    rw [hm_def, ← Set.diff_self_inter (s := V) (t := U), Set.inter_comm V U]
-    exact Set.ncard_diff_add_ncard_of_subset Set.inter_subset_right (Set.toFinite _)
+    rw [hm_def, ← Set.sdiff_self_inter (s := V) (t := U), Set.inter_comm V U]
+    exact Set.ncard_sdiff_add_ncard_of_subset Set.inter_subset_right (Set.toFinite _)
   have hY_card : Y.ncard = m + 1 := by
     rw [hY_def, Set.ncard_insert_of_notMem hdtgtv_img (Set.toFinite _), hfuimg]
   have hPv_add : (Set.univ \ Y).ncard + Y.ncard = 4 := by
-    have h := Set.ncard_diff_add_ncard_of_subset (Set.subset_univ Y)
+    have h := Set.ncard_sdiff_add_ncard_of_subset (Set.subset_univ Y)
       (Set.toFinite (Set.univ : Set (Fin 4)))
     rwa [Set.ncard_univ, Nat.card_eq_fintype_card, Fintype.card_fin] at h
   obtain ⟨gv, hgv_inj, hgv_map⟩ :=
@@ -1341,10 +1345,10 @@ theorem exists_idx_dtgt_pair [Finite α] {u v : α} (huv : u ≠ v) {U V : Set �
   -- The maps, with evaluation lemmas.
   set idx : α → Fin 4 := fun x => if x ∈ U then fu x else gv x with hidx_def
   set dtgt : α → Fin 4 := fun x => if x = u then (2 : Fin 4) else dtgtv with hdtgt_def
-  have hidxU : ∀ x, x ∈ U → idx x = fu x := fun x hx => by rw [hidx_def]; exact if_pos hx
-  have hidxnU : ∀ x, x ∉ U → idx x = gv x := fun x hx => by rw [hidx_def]; exact if_neg hx
-  have hdtu : dtgt u = 2 := by rw [hdtgt_def]; exact if_pos rfl
-  have hdtv : dtgt v = dtgtv := by rw [hdtgt_def]; exact if_neg huv.symm
+  have hidxU : ∀ x, x ∈ U → idx x = fu x := fun x hx => by rw [hidx_def]; exact ite_eq_left hx
+  have hidxnU : ∀ x, x ∉ U → idx x = gv x := fun x hx => by rw [hidx_def]; exact ite_eq_right hx
+  have hdtu : dtgt u = 2 := by rw [hdtgt_def]; exact ite_eq_left rfl
+  have hdtv : dtgt v = dtgtv := by rw [hdtgt_def]; exact ite_eq_right huv.symm
   refine ⟨idx, dtgt, ?_, ?_, ?_, ?_, ?_⟩
   · intro x hx y hy hxy
     simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hx hy
@@ -1445,12 +1449,12 @@ theorem exists_idx_dtgt_triple [Finite α] {v a b : α}
   -- The `dtgt b`-avoiding palette for the disjoint remainder `Xb \ Xa`.
   set Y := insert db (fa '' (Xa ∩ Xb)) with hY_def
   have hbXa_add : (Xb \ Xa).ncard + m = Xb.ncard := by
-    rw [hm_def, ← Set.diff_self_inter (s := Xb) (t := Xa), Set.inter_comm Xa Xb]
-    exact Set.ncard_diff_add_ncard_of_subset Set.inter_subset_left (Set.toFinite _)
+    rw [hm_def, ← Set.sdiff_self_inter (s := Xb) (t := Xa), Set.inter_comm Xa Xb]
+    exact Set.ncard_sdiff_add_ncard_of_subset Set.inter_subset_left (Set.toFinite _)
   have hY_card : Y.ncard = m + 1 := by
     rw [hY_def, Set.ncard_insert_of_notMem hdb_img (Set.toFinite _), hfaimg]
   have hPrem_add : (Set.univ \ Y).ncard + Y.ncard = 4 := by
-    have h := Set.ncard_diff_add_ncard_of_subset (Set.subset_univ Y)
+    have h := Set.ncard_sdiff_add_ncard_of_subset (Set.subset_univ Y)
       (Set.toFinite (Set.univ : Set (Fin 4)))
     rwa [Set.ncard_univ, Nat.card_eq_fintype_card, Fintype.card_fin] at h
   obtain ⟨gb, hgb_inj, hgb_map⟩ :=
@@ -1464,8 +1468,8 @@ theorem exists_idx_dtgt_triple [Finite α] {v a b : α}
     exact h
   -- The index map, with evaluation lemmas.
   set idx : α → Fin 4 := fun x => if x ∈ Xa then fa x else gb x with hidx_def
-  have hidxXa : ∀ x, x ∈ Xa → idx x = fa x := fun x hx => by rw [hidx_def]; exact if_pos hx
-  have hidxnXa : ∀ x, x ∉ Xa → idx x = gb x := fun x hx => by rw [hidx_def]; exact if_neg hx
+  have hidxXa : ∀ x, x ∈ Xa → idx x = fa x := fun x hx => by rw [hidx_def]; exact ite_eq_left hx
+  have hidxnXa : ∀ x, x ∉ Xa → idx x = gb x := fun x hx => by rw [hidx_def]; exact ite_eq_right hx
   have hidxb : idx b = gb b := hidxnXa b hbXa
   -- `dtgt v` avoiding `{3, db, idx b}`.
   obtain ⟨dv, hdv⟩ : ∃ d : Fin 4, d ∉ ({3, db, idx b} : Set (Fin 4)) := by
@@ -1483,10 +1487,11 @@ theorem exists_idx_dtgt_triple [Finite α] {v a b : α}
   -- The target map, with evaluation lemmas.
   set dtgt : α → Fin 4 := fun x => if x = v then dv else if x = a then (3 : Fin 4) else db
     with hdtgt_def
-  have hdtv : dtgt v = dv := by rw [hdtgt_def]; exact if_pos rfl
-  have hdta : dtgt a = 3 := by rw [hdtgt_def]; exact (if_neg (Ne.symm hva)).trans (if_pos rfl)
+  have hdtv : dtgt v = dv := by rw [hdtgt_def]; exact ite_eq_left rfl
+  have hdta : dtgt a = 3 := by
+    rw [hdtgt_def]; exact (ite_eq_right (Ne.symm hva)).trans (ite_eq_left rfl)
   have hdtb : dtgt b = db := by
-    rw [hdtgt_def]; exact (if_neg (Ne.symm hvb)).trans (if_neg (Ne.symm hab))
+    rw [hdtgt_def]; exact (ite_eq_right (Ne.symm hvb)).trans (ite_eq_right (Ne.symm hab))
   refine ⟨idx, dtgt, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
   · -- `dtgt` injective on `{v, a, b}`.
     intro x hx y hy hxy
@@ -1581,7 +1586,7 @@ theorem exists_coord_linearIndepOn_pencilChartPoint_adjacentPair
   classical
   obtain ⟨u, v⟩ := p
   by_cases hadj : G.Adj u v
-  · rw [if_pos hadj]
+  · rw [ite_eq_left hadj]
     obtain ⟨e_uv, hl_uv⟩ := hadj
     have huv : u ≠ v := hl_uv.ne
     -- Triangle-freeness confines the two hub-neighbourhoods' overlap to `{u, v}`.
@@ -1609,7 +1614,7 @@ theorem exists_coord_linearIndepOn_pencilChartPoint_adjacentPair
       rcases hs with rfl | rfl
       · exact hinj_u
       · exact hinj_v
-  · rw [if_neg hadj]
+  · rw [ite_eq_right hadj]
     exact ⟨fun _ => 0, linearIndepOn_empty K _⟩
 
 /-! ## The per-body somewhere-witness (Phase 39 W5-L6b-ii)
@@ -1674,9 +1679,9 @@ theorem exists_coord_linearIndepOn_pencilChartPoint_perBody
         (if G.PencilHub v then ({v} : Set α) else G.closedNbhd v) := by
   classical
   by_cases hv : G.PencilHub v
-  · rw [if_pos hv]
+  · rw [ite_eq_left hv]
     exact exists_coord_linearIndepOn_pencilChartPoint_hubSingleton hcard hubSel hHubSel v
-  · rw [if_neg hv]
+  · rw [ite_eq_right hv]
     -- `v` non-hub: `closedNbhd v = insert v N(G,v)`, `|N(G,v)| ≤ 2`.
     have hdeg : G.degree v ≤ 2 := by
       by_contra hcon
@@ -1773,14 +1778,14 @@ theorem exists_coord_linearIndepOn_pencilChartPoint_perBody
         refine (Set.ncard_le_ncard hsub (Set.toFinite _)).trans ?_
         by_cases hha : G.PencilHub a
         · have haa : a ∈ G.closedHubNbhd a := ⟨hha, Or.inl rfl⟩
-          rw [Set.ncard_diff_singleton_of_mem haa]
+          rw [Set.ncard_sdiff_singleton_of_mem haa]
           have := hcard a; omega
         · have haCN : a ∈ G.closedNbhd a := Or.inl rfl
           have hsub2 : G.closedHubNbhd a \ {a} ⊆ G.closedNbhd a \ {a} := by
             intro w hw
             exact ⟨hw.1.2, hw.2⟩
           refine (Set.ncard_le_ncard hsub2 (Set.toFinite _)).trans ?_
-          rw [Set.ncard_diff_singleton_of_mem haCN]
+          rw [Set.ncard_sdiff_singleton_of_mem haCN]
           have := ncard_closedNbhd_le_three_of_not_pencilHub hha
           omega
       obtain ⟨idx, dtgt, hdinj, hav_v, hav_a, hav_b, hinj_v, hinj_a, hinj_b⟩ :=

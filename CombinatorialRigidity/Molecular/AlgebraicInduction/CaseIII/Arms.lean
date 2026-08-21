@@ -159,13 +159,13 @@ theorem PanelHingeFramework.case_III_realization_of_rank [Infinite K]
   set FG₀ := (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge with hFG₀
   have hq₀v : (fun i => q₀ (v, i)) = na + t • n' := by funext i; rw [hq₀def]; simp
   have hq₀a : (fun i => q₀ (a, i)) = na := by
-    funext i; rw [hq₀def, hna]; simp only [if_neg hva.symm]
+    funext i; rw [hq₀def, hna]; simp only [ite_eq_right hva.symm]
   have hq₀b : (fun i => q₀ (b, i)) = nb := by
-    funext i; rw [hq₀def, hnb]; simp only [if_neg hvb.symm]
+    funext i; rw [hq₀def, hnb]; simp only [ite_eq_right hvb.symm]
   -- Off `v`, `q₀` agrees with `q`, so the `ofNormals G ends q₀` extensor of any edge avoiding `v`
   -- equals the `ofNormals G ends q` one (= `F₀`/`Ft`'s seed off `{e_a, e_b}`).
   have hq₀_off : ∀ u, u ≠ v → (fun i => q₀ (u, i)) = (fun i => q (u, i)) := by
-    intro u hu; funext i; rw [hq₀def]; simp only [if_neg hu]
+    intro u hu; funext i; rw [hq₀def]; simp only [ite_eq_right hu]
   -- The genuine `FG₀`-extensors at the three relevant kinds of edge.
   have hFG₀_ea : FG₀.supportExtensor e_a = (-t) • panelSupportExtensor na n' := by
     rw [hFG₀, PanelHingeFramework.toBodyHinge_supportExtensor, PanelHingeFramework.ofNormals_ends,

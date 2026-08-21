@@ -145,7 +145,7 @@ private lemma exists_pairwiseDisjoint_iUnion_eq (s : ι → Set α) :
   refine ⟨fun i j hij ↦ Set.disjoint_left.2 ?_,
     subset_antisymm (iUnion_mono <| fun _ _ h ↦ h.1) ?_,
     fun i ↦ by simp only [sep_subset]⟩
-  · simp only [mem_setOf_eq, not_and, not_exists, and_imp, forall_exists_index]
+  · simp only [mem_ofPred_eq, not_and, not_exists, and_imp, forall_exists_index]
     exact fun a _ hfa hfi _ hfj haj ↦ hij <| by rw [← hfi, haj]
   · simp only [iUnion_subset_iff]
     exact fun i x hxi ↦ mem_iUnion.2 ⟨f x (mem_iUnion_of_mem i hxi), by simp [hf x _]⟩
@@ -188,7 +188,7 @@ lemma union_indep_aux' [DecidableEq α] [Finite α] {Ms : ι → Matroid α} {I 
     · simp only [true_or]
     · simp only [h, exists_and_left, false_or, sum'_indep_iff]
       refine ⟨{(i, v) | (i ∈ univ) ∧ v ∈ Is i}, fun i ↦ ?_, ?_⟩
-      · simp only [mem_univ, true_and, preimage_setOf_eq, setOf_mem_eq, hI.2 i]
+      · simp only [mem_univ, true_and, preimage_ofPred_eq, ofPred_mem_eq, hI.2 i]
       simp_rw [IsMatching, mem_univ, true_and]
       set f := fun x : ι × α ↦ x.2 with hf
       have himage : I = f '' {x : ι × α | x.2 ∈ Is x.1} := by
@@ -198,11 +198,11 @@ lemma union_indep_aux' [DecidableEq α] [Finite α] {Ms : ι → Matroid α} {I 
         subst left
         simp_all only [iUnion_eq_empty, not_forall]
         ext1 x
-        simp_all only [mem_iUnion, mem_image, mem_setOf_eq, Prod.exists, exists_eq_right]
+        simp_all only [mem_iUnion, mem_image, mem_ofPred_eq, Prod.exists, exists_eq_right]
       have hinj: InjOn f {x : ι × α | x.2 ∈ Is x.1} := by
         refine fun x hx y hy hxy ↦ ?_
         simp only [hf] at hxy
-        simp only [mem_setOf_eq] at hx hy
+        simp only [mem_ofPred_eq] at hx hy
         obtain h := PairwiseDisjoint.elim_set hD (mem_univ x.1)
           (mem_univ y.1) x.2 hx (hxy ▸ hy)
         obtain ⟨_, _⟩ := x
@@ -231,10 +231,10 @@ lemma union_indep_iff' [DecidableEq α] [Finite α] {M₁ : Matroid α} {M₂ : 
   refine Iff.intro (fun ⟨Is, hI, hI1, hI2⟩ ↦ ⟨Is false, Is true, hI ▸ ?_, hI1, hI2⟩)
     (fun ⟨I₁, I₂, hI, hI1, hI2⟩ ↦ ⟨fun i ↦ bif i then I₂ else I₁, hI ▸ ?_, hI1, hI2⟩)
   · ext1 x
-    simp only [mem_iUnion, Bool.exists_bool, cond_false, cond_true]
+    simp only [mem_iUnion, Bool.exists_bool, Bool.cond_false, Bool.cond_true]
     tauto
   · ext1 x
-    simp only [mem_iUnion, Bool.exists_bool, cond_false, cond_true]
+    simp only [mem_iUnion, Bool.exists_bool, Bool.cond_false, Bool.cond_true]
     tauto
 
 /-- The neighbourhood of a single right-vertex `v` under `Adj`. -/
@@ -290,11 +290,11 @@ theorem polymatroid_of_adjMap [DecidableEq β] [Finite α] [Finite β] (M : Matr
             (X.biUnion N : Set α) ∩ (Y.biUnion N : Set α) := by
           simp only [Finset.coe_biUnion, Finset.coe_inter, mem_inter_iff, Finset.mem_coe,
             N_singleton, subset_inter_iff, iUnion_subset_iff, and_imp,
-            toFinset_setOf, Finset.coe_filter, Finset.mem_univ, true_and, hN]
+            toFinset_ofPred, Finset.coe_filter, Finset.mem_univ, true_and, hN]
           refine ⟨fun x h1 _ y h3 ↦ ?_, fun x _ h2 y h3 ↦ ?_⟩
-          · simp only [mem_iUnion, mem_setOf_eq, exists_prop]
+          · simp only [mem_iUnion, mem_ofPred_eq, exists_prop]
             exact ⟨x, ⟨h1, h3⟩⟩
-          · simp only [mem_iUnion, mem_setOf_eq, exists_prop]
+          · simp only [mem_iUnion, mem_ofPred_eq, exists_prop]
             exact ⟨x, ⟨h2, h3⟩⟩
         calc M.rk ↑((X ∩ Y).biUnion N) + M.rk ↑((X ∪ Y).biUnion N)
             ≤ M.rk ((X.biUnion N : Set α) ∩ (Y.biUnion N : Set α))
@@ -304,7 +304,7 @@ theorem polymatroid_of_adjMap [DecidableEq β] [Finite α] [Finite β] (M : Matr
               · rw [hunion, Finset.coe_union]
           _ ≤ M.rk ↑(X.biUnion N) + M.rk ↑(Y.biUnion N) := M.rk_submod _ _
       · refine fun X Y h ↦ hf ▸ Nat.cast_le.mpr (M.rk_mono ?_)
-        simp only [le_eq_subset, Finset.coe_biUnion, Finset.mem_coe, iUnion_subset_iff]
+        simp only [Finset.coe_biUnion, Finset.mem_coe, iUnion_subset_iff]
         refine fun x h1 y h2 ↦ ?_
         simp only [mem_iUnion, exists_prop]
         exact ⟨x, h h1, h2⟩
@@ -325,8 +325,8 @@ theorem polymatroid_of_adjMap [DecidableEq β] [Finite α] [Finite β] (M : Matr
           · obtain h := IsMatching.card_eq h''
             rw [← h, ← ncard_coe_finset I₀, ← Indep.rk_eq_ncard h']
             apply rk_mono
-            refine fun x hx ↦ mem_setOf_eq ▸ ?_
-            rw [← BijOn.image_eq (IsMatching.bijOn h''), image, mem_setOf_eq] at hx
+            refine fun x hx ↦ mem_ofPred_eq ▸ ?_
+            rw [← BijOn.image_eq (IsMatching.bijOn h''), image, mem_ofPred_eq] at hx
             obtain ⟨u, hu, hadj⟩ := hx
             simp only [← Finset.mem_def, Finset.mem_biUnion, N_singleton, hN]
             refine ⟨u, hu, ?_⟩
@@ -388,8 +388,8 @@ theorem polymatroid_of_adjMap [DecidableEq β] [Finite α] [Finite β] (M : Matr
         Nat.cast_inj, f, N]
       have : (⋃ x ∈ Y, {x_2 | Adj x_2 x}) = {v | ∃ u ∈ Y, Adj v u} := by
         refine subset_antisymm (fun x ↦ ?_) (fun x ↦ ?_)
-        · simp only [mem_iUnion, mem_setOf_eq, exists_prop, imp_self]
-        · simp only [mem_setOf_eq, mem_iUnion, exists_prop, imp_self]
+        · simp only [mem_iUnion, mem_ofPred_eq, exists_prop, imp_self]
+        · simp only [mem_ofPred_eq, mem_iUnion, exists_prop, imp_self]
       convert congrArg M.rk this using 2
       exact iUnion₂_congr fun x _ => Set.coe_toFinset _
     exact ⟨f, hf_poly, h_eq', this⟩
@@ -409,16 +409,16 @@ theorem sum'_eRk_eq_eRk_sum_on_indep {α ι : Type*} [Fintype ι] [Finite α]
     = (Finset.filter (fun v ↦ (i, v) ∈ I) Finset.univ) := by
     refine fun i ↦ subset_antisymm ?_ ?_
     · simp only [Finset.coe_filter, Finset.mem_univ, true_and, image_subset_iff,
-        preimage_setOf_eq, setOf_subset_setOf, and_imp, Prod.forall, f]
+        preimage_ofPred_eq, ofPred_subset_ofPred, and_imp, Prod.forall, f]
       refine fun a b h h' ↦ mem_toFinset.mp (h' ▸ h)
     · refine fun x hx ↦ ?_
-      simp only [Finset.coe_filter, mem_image, mem_setOf_eq, Prod.exists, exists_eq_right, f]
-      simp only [Finset.coe_filter, Finset.mem_univ, true_and, mem_setOf_eq] at hx
+      simp only [Finset.coe_filter, mem_image, mem_ofPred_eq, Prod.exists, exists_eq_right, f]
+      simp only [Finset.coe_filter, Finset.mem_univ, true_and, mem_ofPred_eq] at hx
       exact mem_toFinset.mpr hx
   have hinj : ∀ i : ι, InjOn (fun x : ι × α ↦ x.2) (Finset.filter (fun x ↦ f x = i) I.toFinset)
     := by
     intro i x hx y hy hxy
-    simp only [Finset.coe_filter, mem_setOf_eq, f] at hx hy
+    simp only [Finset.coe_filter, mem_ofPred_eq, f] at hx hy
     simp only at hxy
     obtain ⟨_, _⟩ := x
     obtain ⟨_, _⟩ := y
@@ -431,7 +431,7 @@ theorem sum'_eRk_eq_eRk_sum_on_indep {α ι : Type*} [Fintype ι] [Finite α]
     (Finset.filter (fun x_1 ↦ (i, x_1) ∈ I) Finset.univ).card := by
     intro i
     rw [ncard_eq_toFinset_card']
-    simp only [toFinset_setOf]
+    simp only [toFinset_ofPred]
   simp only [← Finite.cast_ncard_eq {x_1 | (_, x_1) ∈ I}.toFinite, this, hcard, Nat.cast_sum]
 
 @[simp] theorem sum'_eRk_eq_eRk_sum {α ι : Type*} [Fintype ι] [Finite α]
@@ -499,7 +499,7 @@ theorem matroid_partition' [DecidableEq α] [Fintype α]
   obtain ⟨⟨Y, hY⟩, hle⟩ :=
     adjMap_rank_eq (Matroid.sum' fun t ↦ Bool.rec M₁ M₂ t) (fun x y ↦ x.2 = y)
   simp_rw [sum'_rk_eq_rk_sum] at hY hle
-  simp only [exists_eq_right', preimage_setOf_eq, Finset.setOf_mem, Fintype.sum_bool] at hY hle
+  simp only [exists_eq_right', preimage_ofPred_eq, Finset.setOfPred_mem, Fintype.sum_bool] at hY hle
   exact ⟨⟨Y, by omega⟩, fun Y ↦ by have := hle Y; omega⟩
 
 /-- The `eRk`-valued form of Edmonds' matroid-partition rank formula for the
@@ -528,7 +528,7 @@ theorem Union_rank_eq [DecidableEq α] [Fintype α] [Fintype ι] (Ms : ι → Ma
   simp only [Matroid.Union]
   obtain ⟨⟨Y, hY⟩, hle⟩ := adjMap_rank_eq (Matroid.sum' Ms) (fun x y ↦ x.2 = y)
   simp_rw [sum'_rk_eq_rk_sum] at hY hle
-  simp only [exists_eq_right', preimage_setOf_eq, Finset.setOf_mem] at hY hle
+  simp only [exists_eq_right', preimage_ofPred_eq, Finset.setOfPred_mem] at hY hle
   exact ⟨⟨Y, by convert hY using 3⟩, fun Y ↦ by have := hle Y; convert this using 3⟩
 
 /-- Per-set form of Edmonds' matroid-partition rank formula in `adjMap` form
@@ -564,7 +564,7 @@ theorem Union_pow_rk_eq [DecidableEq α] [Finite α] (M : Matroid α) (k : ℕ) 
   simp only [Matroid.Union]
   obtain ⟨⟨Y, hYsub, hY⟩, hle⟩ :=
     adjMap_rk_eq (Matroid.sum' (fun _ : Fin k ↦ M)) (fun x y ↦ x.2 = y) Xf
-  simp_rw [sum'_rk_eq_rk_sum, preimage_setOf_eq, exists_eq_right', Finset.setOf_mem,
+  simp_rw [sum'_rk_eq_rk_sum, preimage_ofPred_eq, exists_eq_right', Finset.setOfPred_mem,
     Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul] at hY hle
   have hcard : ∀ Y : Finset α, Y ⊆ Xf → ((Xf : Set α) \ (Y : Set α)).ncard = (Xf \ Y).card := by
     intro Y _; rw [← Finset.coe_sdiff, ncard_coe_finset]
@@ -602,7 +602,7 @@ theorem Union_pow_indep_iff_count [DecidableEq α] [Finite α] (M : Matroid α) 
   have hsplit : ∀ Y ⊆ E', (Y.ncard ≤ k * M.rk Y ↔ E'.ncard ≤ k * M.rk Y + (E' \ Y).ncard) := by
     intro Y hY
     have : (E' \ Y).ncard + Y.ncard = E'.ncard := by
-      rw [ncard_diff_add_ncard_of_subset hY hfin]
+      rw [ncard_sdiff_add_ncard_of_subset hY hfin]
     omega
   rw [hindep]
   constructor

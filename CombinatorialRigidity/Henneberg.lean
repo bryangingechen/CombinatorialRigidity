@@ -12,7 +12,6 @@ public import CombinatorialRigidity.Mathlib.Data.Set.Card
 public import CombinatorialRigidity.Mathlib.Data.Sym.Sym2
 public import Mathlib.Combinatorics.SimpleGraph.DeleteEdges
 public import Mathlib.Combinatorics.SimpleGraph.Maps
-public import Mathlib.Data.Finite.Card
 public import Mathlib.Logic.Equiv.Option
 
 /-!
@@ -406,7 +405,7 @@ theorem typeII_isLaman [Finite V] {G : SimpleGraph V} (h : G.IsLaman) {a b c : V
         have hG := h.isSparse s' (by omega)
         by_cases h_ab_in : s(a, b) ∈ G.edgesIn (↑s' : Set V)
         · -- `s(a, b) ∈ G.edgesIn ↑s'`: deletion removes one, `T'.ncard ≤ 3` works.
-          have hdiff := Set.ncard_diff_singleton_of_mem h_ab_in (s := G.edgesIn (↑s' : Set V))
+          have hdiff := Set.ncard_sdiff_singleton_of_mem h_ab_in (s := G.edgesIn (↑s' : Set V))
           have hG_ne_zero : (G.edgesIn (↑s' : Set V)).ncard ≠ 0 :=
             Set.ncard_ne_zero_of_mem h_ab_in
           omega
@@ -415,7 +414,7 @@ theorem typeII_isLaman [Finite V] {G : SimpleGraph V} (h : G.IsLaman) {a b c : V
           -- Hence `T'.ncard ≤ 2`.
           have hdiff : (G.edgesIn (↑s' : Set V) \ {s(a, b)}).ncard =
               (G.edgesIn (↑s' : Set V)).ncard := by
-            rw [Set.diff_singleton_eq_self h_ab_in]
+            rw [Set.sdiff_singleton_eq_self h_ab_in]
           -- Since `s(a, b) ∈ G.edgeSet` (from `hG_ab`) but not in `G.edgesIn ↑s'`,
           -- it must fail the subset condition: `a ∉ s'` or `b ∉ s'`.
           have h_or : a ∉ s' ∨ b ∉ s' := by
@@ -438,12 +437,12 @@ theorem typeII_isLaman [Finite V] {G : SimpleGraph V} (h : G.IsLaman) {a b c : V
       have hG := h.isSparse s' (by omega)
       have hdiff_le : (G.edgesIn (↑s' : Set V) \ {s(a, b)}).ncard ≤
           (G.edgesIn (↑s' : Set V)).ncard :=
-        Set.ncard_diff_singleton_le _ _
+        Set.ncard_sdiff_singleton_le _ _
       omega
   · -- Tightness.
     have hab_in : s(a, b) ∈ G.edgeSet := hG_ab
     grind only [!typeII_edgeSet_ncard, !Finite.card_option,
-      !Set.ncard_diff_singleton_of_mem, h.edgeSet_ncard]
+      !Set.ncard_sdiff_singleton_of_mem, h.edgeSet_ncard]
 
 end Henneberg
 

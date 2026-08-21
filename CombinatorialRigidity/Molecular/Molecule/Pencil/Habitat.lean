@@ -129,7 +129,7 @@ theorem ncard_closedHubNbhd_splitOff_le_three_of_safe
     calc E(G', u).ncard
         ≤ (insert e₀ (E(G, u) \ {e'})).ncard := Set.ncard_le_ncard hsub (Set.toFinite _)
       _ ≤ (E(G, u) \ {e'}).ncard + 1 := Set.ncard_insert_le _ _
-      _ = E(G, u).ncard := Set.ncard_diff_singleton_add_one hmemS
+      _ = E(G, u).ncard := Set.ncard_sdiff_singleton_add_one hmemS
   -- Degree monotonicity everywhere.
   have hD : ∀ u, G'.degree u ≤ G.degree u := by
     intro u
@@ -161,7 +161,7 @@ theorem ncard_closedHubNbhd_splitOff_le_three_of_safe
   · -- Hub case: `G′.closedHubNbhd w ⊆ G.closedHubNbhd w`.
     refine le_trans (Set.ncard_le_ncard ?_ (Set.toFinite _)) (hcard w)
     intro u hu
-    simp only [Graph.closedHubNbhd, Set.mem_setOf_eq] at hu ⊢
+    simp only [Graph.closedHubNbhd, Set.mem_ofPred_eq] at hu ⊢
     obtain ⟨huhub, hadj⟩ := hu
     have hGhub : G.PencilHub u := hH u huhub
     rcases hadj with rfl | ⟨e, he⟩
@@ -178,8 +178,8 @@ theorem ncard_closedHubNbhd_splitOff_le_three_of_safe
   · -- Non-hub case: `G′.closedHubNbhd w ⊆ G′.closedNbhd w`, of cardinality `≤ 3`.
     have hsub : G'.closedHubNbhd w ⊆ G'.closedNbhd w := by
       intro u hu
-      simp only [Graph.closedHubNbhd, Set.mem_setOf_eq] at hu
-      simp only [Graph.closedNbhd, Set.mem_setOf_eq]
+      simp only [Graph.closedHubNbhd, Set.mem_ofPred_eq] at hu
+      simp only [Graph.closedNbhd, Set.mem_ofPred_eq]
       exact hu.2
     exact le_trans (Set.ncard_le_ncard hsub (Set.toFinite _))
       (ncard_closedNbhd_le_three_of_not_pencilHub hwhub)

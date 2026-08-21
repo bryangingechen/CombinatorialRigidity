@@ -578,9 +578,9 @@ theorem PanelHingeFramework.case_III_candidate_dispatch [Infinite K]
         · exact Or.inr (Or.inl rfl)
       · exact Or.inr (Or.inr (by rw [hGv, Graph.removeVertex_isLink]; exact ⟨hlink, hu, hw⟩))
   have hVone : 1 ≤ V(Gv).ncard := by
-    rw [hGv, Graph.vertexSet_removeVertex, Set.ncard_diff_singleton_of_mem hvG]; omega
+    rw [hGv, Graph.vertexSet_removeVertex, Set.ncard_sdiff_singleton_of_mem hvG]; omega
   have hVcard : V(G).ncard = V(Gv).ncard + 1 := by
-    rw [hGv, Graph.vertexSet_removeVertex, Set.ncard_diff_singleton_of_mem hvG]; omega
+    rw [hGv, Graph.vertexSet_removeVertex, Set.ncard_sdiff_singleton_of_mem hvG]; omega
   -- The M₁/M₂ arm `ends₁`-stated selector facts.
   have hends_ea₁ : ends₁ e_a = (v, a) := by
     rw [hends₁, Function.update_of_ne heab, Function.update_self]
@@ -701,7 +701,7 @@ theorem PanelHingeFramework.case_III_candidate_dispatch [Infinite K]
       hends₃_ec hends₃_ea hends₃_eb hends₃_off hends_Gva hne_Gva hV3 hpair (hgp_seed c a hca)
       hgate hρ0e₀ hρ0Gv (ιb := _) (w := w) ?_ hw ?_ hdef
     · have hGabcard : V(Gab).ncard = V(G).ncard - 1 := by
-        rw [hGab, Graph.vertexSet_splitOff, Set.ncard_diff_singleton_of_mem hvG]
+        rw [hGab, Graph.vertexSet_splitOff, Set.ncard_sdiff_singleton_of_mem hvG]
       rw [Nat.card_fin, hGabcard, Nat.sub_sub]
     · intro j
       rcases hw0mem j with hgen | hcand
@@ -783,7 +783,7 @@ theorem PanelHingeFramework.exists_nested_rankPolynomial_lower_all_k
     ⟨a, by rw [Graph.vertexSet_removeVertex]; exact ⟨hlea.right_mem, hav⟩⟩
   have hGvlt : V(G.removeVertex v).ncard < V(G).ncard := by
     rw [Graph.vertexSet_removeVertex,
-      Set.ncard_diff_singleton_of_mem (hlea.left_mem : v ∈ V(G))]; omega
+      Set.ncard_sdiff_singleton_of_mem (hlea.left_mem : v ∈ V(G))]; omega
   have hQv : PanelHingeFramework.HasGenericFullRankRealization K k n (G.removeVertex v) :=
     (hIH _ (G.removeVertex v) hGvmin hGvne hGvlt).1 hGvSimple
   haveI hGvloop : (G.removeVertex v).Loopless := hGvSimple.toLoopless
@@ -797,7 +797,7 @@ theorem PanelHingeFramework.exists_nested_rankPolynomial_lower_all_k
   have hDge2 : 2 ≤ screwDim k := two_le_screwDim hk1
   have hGab2 : 2 ≤ V(G.splitOff v a b e₀).ncard := by
     rw [hcard, Graph.vertexSet_removeVertex,
-      Set.ncard_diff_singleton_of_mem (hlea.left_mem : v ∈ V(G))]; omega
+      Set.ncard_sdiff_singleton_of_mem (hlea.left_mem : v ∈ V(G))]; omega
   have hcardZ : (V(G.splitOff v a b e₀).ncard : ℤ) = V(G.removeVertex v).ncard := by
     exact_mod_cast hcard
   have hD_eq : (screwDim k : ℤ) = Graph.bodyBarDim n := by omega
@@ -1304,9 +1304,9 @@ theorem PanelHingeFramework.chainData_split_realization [Infinite K]
         · exact Or.inr (Or.inl rfl)
       · exact Or.inr (Or.inr (by rw [hGv, Graph.removeVertex_isLink]; exact ⟨hlink, hu, hw⟩))
   have hVone : 1 ≤ V(Gv).ncard := by
-    rw [hGv, Graph.vertexSet_removeVertex, Set.ncard_diff_singleton_of_mem hvG]; omega
+    rw [hGv, Graph.vertexSet_removeVertex, Set.ncard_sdiff_singleton_of_mem hvG]; omega
   have hVcard : V(G).ncard = V(Gv).ncard + 1 := by
-    rw [hGv, Graph.vertexSet_removeVertex, Set.ncard_diff_singleton_of_mem hvG]; omega
+    rw [hGv, Graph.vertexSet_removeVertex, Set.ncard_sdiff_singleton_of_mem hvG]; omega
   have hcard : V(G.splitOff v a b cd.e₀).ncard = V(Gv).ncard := by
     rw [hGv, Graph.vertexSet_splitOff, Graph.vertexSet_removeVertex]
   -- The M₁ arm selector `ends₁` overriding `ends` at the two re-inserted hinges `e_a`, `e_b`.
@@ -1503,7 +1503,7 @@ theorem PanelHingeFramework.chainData_interior_realization_hρGv [Infinite K]
   have hsplitG : ∀ e u w, G.IsLink e u w → e = e_a ∨ e = e_b ∨ Gv.IsLink e u w :=
     fun e u w hlink => cd.isLink_eq_succ_or_pred_or_removeVertex h0i hlink
   have hcard_Gv : V(Gv).ncard = V(G).ncard - 1 := by
-    rw [hGv, Graph.vertexSet_removeVertex, Set.ncard_diff_singleton_of_mem hvG]
+    rw [hGv, Graph.vertexSet_removeVertex, Set.ncard_sdiff_singleton_of_mem hvG]
   have hVone : 1 ≤ V(Gv).ncard := (Set.ncard_pos (Set.toFinite _)).mpr ⟨a, haVc⟩
   have hVcard : V(G).ncard = V(Gv).ncard + 1 := by rw [hcard_Gv]; omega
   -- The two chain edges miss every `Gv`-link (each links the removed body `v ∉ V(Gv)`), so the
@@ -2347,7 +2347,7 @@ theorem PanelHingeFramework.chainData_dispatch_interior_of_discriminator [Infini
   have hcard_Gab : V(G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
       (cd.vtx ⟨2, by omega⟩) cd.e₀).ncard = V(G).ncard - 1 := by
     rw [Graph.vertexSet_splitOff,
-      Set.ncard_diff_singleton_of_mem (cd.vtx_mem ⟨1, by omega⟩)]
+      Set.ncard_sdiff_singleton_of_mem (cd.vtx_mem ⟨1, by omega⟩)]
   have hwcard : Nat.card (Fin (screwDim k *
       (V(G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
         (cd.vtx ⟨2, by omega⟩) cd.e₀).ncard - 1))) = screwDim k * (V(G).ncard - 2) := by
@@ -2493,7 +2493,7 @@ theorem PanelHingeFramework.chainData_dispatch_floor_of_discriminator [Infinite 
         · exact Or.inr (Or.inl rfl)
       · exact Or.inr (Or.inr (by rw [hGv, Graph.removeVertex_isLink]; exact ⟨hlink, hu, hw⟩))
   have hVone : 1 ≤ V(Gv).ncard := by
-    rw [hGv, Graph.vertexSet_removeVertex, Set.ncard_diff_singleton_of_mem hvG]
+    rw [hGv, Graph.vertexSet_removeVertex, Set.ncard_sdiff_singleton_of_mem hvG]
     have h2 : 2 ≤ V(G).ncard := by
       calc 2 = ({cd.vtx (⟨0, by omega⟩ : Fin (cd.d + 1)), cd.vtx ⟨2, by omega⟩} : Set α).ncard := by
             rw [Set.ncard_pair hba.symm]
@@ -2502,7 +2502,7 @@ theorem PanelHingeFramework.chainData_dispatch_floor_of_discriminator [Infinite 
             rcases hx with rfl | rfl <;> [exact haG; exact hbG]) (Set.toFinite _)
     omega
   have hVcard : V(G).ncard = V(Gv).ncard + 1 := by
-    rw [hGv, Graph.vertexSet_removeVertex, Set.ncard_diff_singleton_of_mem hvG]
+    rw [hGv, Graph.vertexSet_removeVertex, Set.ncard_sdiff_singleton_of_mem hvG]
     have : 1 ≤ V(G).ncard := Set.ncard_pos (Set.toFinite _) |>.mpr ⟨_, hvG⟩
     omega
   have hcard : V(G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)

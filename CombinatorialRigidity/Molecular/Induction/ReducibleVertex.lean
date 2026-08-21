@@ -94,7 +94,7 @@ theorem isBase_vfiber_ncard_ge [DecidableEq β] [Finite α] [Finite β] {G : Gra
     have hlinkH : H.IsLink p.1 x y := by rw [hH, removeVertex_isLink]; exact ⟨hlink, hxv, hyv⟩
     rw [mem_edgeSet_mulTilde]; exact hlinkH.edge_mem
   -- Step 2: `B ∖ v-fibers` is independent in `M((G_v)̃)`, so `|B ∖ v-fibers| ≤ rank M((G_v)̃)`.
-  have hdiffindepG : (G.matroidMG n).Indep (B \ vfib) := hB.indep.subset diff_subset
+  have hdiffindepG : (G.matroidMG n).Indep (B \ vfib) := hB.indep.subset sdiff_subset
   have hdiffindepH : (H.matroidMG n).Indep (B \ vfib) := by
     rw [← matroidMG_restrict_mulTilde hle n, Matroid.restrict_indep_iff]
     exact ⟨hdiffindepG, hdiffsub⟩
@@ -105,13 +105,13 @@ theorem isBase_vfiber_ncard_ge [DecidableEq β] [Finite α] [Finite β] {G : Gra
   have hHrank := H.rank_add_deficiency_eq n hD1 hVHne
   have hVGpos : 0 < V(G).ncard := Set.ncard_pos (Set.toFinite _) |>.mpr hVne
   have hVHcard : (V(H).ncard : ℤ) = (V(G).ncard : ℤ) - 1 := by
-    rw [hH, vertexSet_removeVertex, Set.ncard_diff_singleton_of_mem hvG]
+    rw [hH, vertexSet_removeVertex, Set.ncard_sdiff_singleton_of_mem hvG]
     omega
   rw [hVHcard] at hHrank
   -- Step 4: combine. `|B ∩ vfib| = |B| − |B ∖ vfib| ≥ D + (def(G̃ᵥ) − def(G̃)) ≥ D`.
   have hremoval := removeVertex_deficiency_ge hD hav hbv heab hla hlb hdeg2
   have hsplit : (B ∩ vfib).ncard + (B \ vfib).ncard = B.ncard :=
-    Set.ncard_inter_add_ncard_diff_eq_ncard B vfib (Set.toFinite _)
+    Set.ncard_inter_add_ncard_sdiff_eq_ncard B vfib (Set.toFinite _)
   have hsplitZ : ((B ∩ vfib).ncard : ℤ) + ((B \ vfib).ncard : ℤ) = (B.ncard : ℤ) := by
     exact_mod_cast hsplit
   -- `hdiffleZ : |B∖vfib| ≤ rank M(G̃ᵥ)`; `hHrank : rank M(G̃ᵥ) + def(G̃ᵥ) = D(|V(G)|−1)`;
@@ -245,29 +245,29 @@ theorem exists_packing_move_of_not_inc {G : Graph α β} {n : ℕ}
       obtain ⟨i, hi⟩ := hp
       by_cases hij : i = j
       · subst hij
-        rw [if_pos rfl] at hi
+        rw [ite_eq_left rfl] at hi
         rcases Set.mem_insert_iff.mp hi with rfl | hi'
         · exact hxI
         · rw [← hcover]; exact Set.mem_iUnion.mpr ⟨i, hi'⟩
-      · simp only [if_neg hij] at hi
+      · simp only [ite_eq_right hij] at hi
         rw [← hcover]; exact Set.mem_iUnion.mpr ⟨i, hi.1⟩
     · rw [← hcover]
       rintro p hp
       rw [Set.mem_iUnion] at hp ⊢
       obtain ⟨i, hi⟩ := hp
       by_cases hpx : p = x
-      · exact ⟨j, by rw [if_pos rfl]; exact Set.mem_insert_iff.mpr (Or.inl hpx)⟩
+      · exact ⟨j, by rw [ite_eq_left rfl]; exact Set.mem_insert_iff.mpr (Or.inl hpx)⟩
       · by_cases hij : i = j
         · subst hij
-          exact ⟨i, by rw [if_pos rfl]; exact Set.mem_insert_iff.mpr (Or.inr hi)⟩
-        · exact ⟨i, by simp only [if_neg hij]; exact ⟨hi, by simpa using hpx⟩⟩
+          exact ⟨i, by rw [ite_eq_left rfl]; exact Set.mem_insert_iff.mpr (Or.inr hi)⟩
+        · exact ⟨i, by simp only [ite_eq_right hij]; exact ⟨hi, by simpa using hpx⟩⟩
   · intro i
     by_cases hij : i = j
     · subst hij
       simp only [↓reduceIte]
       exact acyclicSet_insert_vfiber_of_not_inc (hindep i) hxvw hwv hFjv
-    · simp only [if_neg hij]
-      exact (hindep i).subset Set.diff_subset
+    · simp only [ite_eq_right hij]
+      exact (hindep i).subset Set.sdiff_subset
   · simp only [↓reduceIte]; exact Set.mem_insert _ _
 
 /-! ### Total fiber count of `G̃` (`lem:no-rigid-edge-count`, support)
@@ -356,12 +356,12 @@ theorem no_rigid_edge_count [DecidableEq β] [Finite α] [Finite β] {G : Graph 
   have hbasesFin : {B | M.IsBase B}.Finite := by
     apply Set.Finite.subset ((Set.toFinite E(G.mulTilde n)).finite_subsets)
     intro B hB
-    rw [Set.mem_setOf_eq] at hB
+    rw [Set.mem_ofPred_eq] at hB
     exact hB.subset_ground
   have hbasesNe : {B | M.IsBase B}.Nonempty := M.exists_isBase
   obtain ⟨Bs, hBsmem, hBsmin⟩ :=
     Set.exists_min_image {B | M.IsBase B} (fun B => (edgeFiber e n ∩ B).ncard) hbasesFin hbasesNe
-  rw [Set.mem_setOf_eq] at hBsmem
+  rw [Set.mem_ofPred_eq] at hBsmem
   set hstar := (edgeFiber e n ∩ Bs).ncard with hhstar
   -- `h* ≥ 1` from minimality: every base meets `ẽ`.
   have hstarpos : 1 ≤ hstar := by
@@ -393,7 +393,7 @@ theorem no_rigid_edge_count [DecidableEq β] [Finite α] [Finite β] {G : Graph 
       intro hXe
       obtain ⟨ej, hej⟩ := hXcirc.nonempty
       -- `X − ej` is independent of size `D(|V|−1)`.
-      have hindep : M.Indep (X \ {ej}) := hXcirc.diff_singleton_indep hej
+      have hindep : M.Indep (X \ {ej}) := hXcirc.sdiff_singleton_indep hej
       have htight : (X \ {ej}).ncard + bodyBarDim n = bodyBarDim n * (G.fiberSpan n X).ncard :=
         circuit_induces_isTight (hM ▸ hXcirc) hej
       have hVpos : 1 ≤ V(G).ncard := hVne.ncard_pos
@@ -431,7 +431,7 @@ theorem no_rigid_edge_count [DecidableEq β] [Finite α] [Finite β] {G : Graph 
         exact absurd (Set.mem_empty_iff_false p |>.mp (hXe ▸ ⟨hp, hpe⟩)) id
       have hmeet := hG.2 (X \ {ej}) (hM ▸ hbase) e he
       obtain ⟨q, hq⟩ := hmeet
-      exact (hXsub (Set.diff_subset hq.1)).2 hq.2
+      exact (hXsub (Set.sdiff_subset hq.1)).2 hq.2
     -- Step 4: `ej ∈ X ∩ ẽ`; exchange `B = insert f (Bs − ej)` drops `|B ∩ ẽ|` below `h*`.
     obtain ⟨ej, hejX, hejfib⟩ := hXmeet
     have hpcl : f ∈ M.closure Bs := by rw [hBsmem.closure_eq]; exact hfE
@@ -440,7 +440,7 @@ theorem no_rigid_edge_count [DecidableEq β] [Finite α] [Finite β] {G : Graph 
     -- `f ∉ ẽ` (since `f ∈ E(G̃) ∖ ẽ`), so `f ≠ ej` (as `ej ∈ ẽ`).
     have hfne : f ≠ ej := fun h => hf.2 (h ▸ hejfib)
     have hinsert_eq : insert f (Bs \ {ej}) = insert f Bs \ {ej} := by
-      rw [Set.insert_diff_of_notMem _ (by simp [hfne])]
+      rw [Set.insert_sdiff_of_notMem _ (by simp [hfne])]
     have hBnew : M.IsBase (insert f (Bs \ {ej})) :=
       hBsmem.exchange_isBase_of_indep hfB (hinsert_eq ▸ hejdiff)
     -- `|ẽ ∩ B_new| < h*`: removing `ej ∈ ẽ` and adding `f ∉ ẽ` strictly drops the count.
@@ -448,7 +448,7 @@ theorem no_rigid_edge_count [DecidableEq β] [Finite α] [Finite β] {G : Graph 
       have hfnotfib : f ∉ edgeFiber e n := hf.2
       have heq : edgeFiber e n ∩ insert f (Bs \ {ej}) = (edgeFiber e n ∩ Bs) \ {ej} := by
         ext p
-        simp only [Set.mem_inter_iff, Set.mem_insert_iff, Set.mem_diff, Set.mem_singleton_iff]
+        simp only [Set.mem_inter_iff, Set.mem_insert_iff, Set.mem_sdiff, Set.mem_singleton_iff]
         constructor
         · rintro ⟨hpfib, rfl | ⟨hpBs, hpne⟩⟩
           · exact absurd hpfib hfnotfib
@@ -456,7 +456,7 @@ theorem no_rigid_edge_count [DecidableEq β] [Finite α] [Finite β] {G : Graph 
         · rintro ⟨⟨hpfib, hpBs⟩, hpne⟩
           exact ⟨hpfib, Or.inr ⟨hpBs, hpne⟩⟩
       rw [heq, hhstar]
-      refine Set.ncard_diff_singleton_lt_of_mem ⟨hejfib, ?_⟩ ((Set.toFinite _))
+      refine Set.ncard_sdiff_singleton_lt_of_mem ⟨hejfib, ?_⟩ ((Set.toFinite _))
       -- `ej ∈ Bs`: `ej ∈ X ⊆ insert f Bs` and `ej ≠ f` (else `ej = f ∉ ẽ`, but `ej ∈ ẽ`).
       have hejins : ej ∈ insert f Bs := (M.fundCircuit_subset_insert f Bs) hejX
       rcases hejins with hejf | hejBs
@@ -467,7 +467,7 @@ theorem no_rigid_edge_count [DecidableEq β] [Finite α] [Finite β] {G : Graph 
   have hBssub : Bs ⊆ E(G.mulTilde n) := by rw [hM] at hBsmem; exact hBsmem.subset_ground
   -- `|E(G̃) ∖ Bs| + |Bs| = |E(G̃)|`.
   have hsplit : (E(G.mulTilde n) \ Bs).ncard + Bs.ncard = E(G.mulTilde n).ncard :=
-    Set.ncard_diff_add_ncard_of_subset hBssub
+    Set.ncard_sdiff_add_ncard_of_subset hBssub
   -- `E(G̃) ∖ Bs ⊆ ẽ ∖ Bs` (since `E(G̃) ∖ ẽ ⊆ Bs`).
   have hdiffsub : E(G.mulTilde n) \ Bs ⊆ edgeFiber e n \ Bs := by
     intro p hp
@@ -478,7 +478,7 @@ theorem no_rigid_edge_count [DecidableEq β] [Finite α] [Finite β] {G : Graph 
     Set.ncard_le_ncard hdiffsub (Set.toFinite _)
   -- `|ẽ ∩ Bs| + |ẽ ∖ Bs| = |ẽ| = D − 1`.
   have hfibersplit : (edgeFiber e n ∩ Bs).ncard + (edgeFiber e n \ Bs).ncard = bodyHingeMult n := by
-    rw [Set.ncard_inter_add_ncard_diff_eq_ncard _ _ (Set.toFinite _), edgeFiber_ncard]
+    rw [Set.ncard_inter_add_ncard_sdiff_eq_ncard _ _ (Set.toFinite _), edgeFiber_ncard]
   -- Assemble: cast to ℤ and close by linear arithmetic.
   have hVpos : 1 ≤ V(G).ncard := hVne.ncard_pos
   rw [hEcard] at hsplit
@@ -851,7 +851,7 @@ theorem not_simple_of_isMinimalKDof_of_ncard_two
   -- Each crossing edge links u to v: by V(G) = {u, v}, the only crossing pair is (u, v).
   have isLink_of_cross : ∀ e, e ∈ G.crossingEdges (cutLabeling {u} u v) → G.IsLink e u v := by
     intro e he
-    simp only [crossingEdges, Set.mem_setOf_eq] at he
+    simp only [crossingEdges, Set.mem_ofPred_eq] at he
     obtain ⟨_, x, y, hxy, hfne⟩ := he
     -- x, y ∈ V(G) = {u, v}
     have hxV : x = u ∨ x = v := by
@@ -1279,10 +1279,10 @@ theorem edgeBound_of_noRigid_of_degree_two
   have hHM : (bodyHingeMult n : ℤ) = (bodyBarDim n : ℤ) - 1 := by rw [bodyHingeMult]; omega
   -- `Ev`: the edges of `G` avoiding `v`; `|Ev| + 2 = |E|` since `deg v = 2`.
   set Ev : Set β := E(G) \ E(G, v) with hEvdef
-  have hEvsub : Ev ⊆ E(G) := diff_subset
+  have hEvsub : Ev ⊆ E(G) := sdiff_subset
   have hδcard : E(G, v).ncard = 2 := by rw [← degree_eq_ncard_inc]; exact hdeg
   have hEvcard : Ev.ncard + 2 = E(G).ncard := by
-    rw [hEvdef, ← hδcard]; exact ncard_diff_add_ncard_of_subset (incEdges_subset G v)
+    rw [hEvdef, ← hδcard]; exact ncard_sdiff_add_ncard_of_subset (incEdges_subset G v)
   -- `E'`: the `(D − 1)`-fold fiber of `Ev` in the multiplied graph.
   set E' : Set (β × Fin (bodyHingeMult n)) := {p | p.1 ∈ Ev} with hE'def
   have hE'prod : E' = Ev ×ˢ (Set.univ : Set (Fin (bodyHingeMult n))) := by
@@ -1322,7 +1322,7 @@ theorem edgeBound_of_noRigid_of_degree_two
       exact hspanC_sub.trans hspan_sub
     have hvnotH : v ∉ V(H) := fun hvH ↦ (hVHsub hvH).2 rfl
     have hVHssub : V(H) ⊂ V(G) :=
-      (ssubset_iff_of_subset (hVHsub.trans diff_subset)).mpr ⟨v, hvV, hvnotH⟩
+      (ssubset_iff_of_subset (hVHsub.trans sdiff_subset)).mpr ⟨v, hvV, hvnotH⟩
     exact hnp H ⟨hHrigid, hVH2, hVHssub⟩
   -- Count: `Ev = ∅` closes directly (`|E| = 2`); else sparsity of `E'` on itself gives the bound.
   rcases eq_empty_or_nonempty Ev with hEvempty | hEvne
@@ -1346,7 +1346,8 @@ theorem edgeBound_of_noRigid_of_degree_two
     have hsp := hsparse E' hE'edge hE'ne
     rw [spanningVerts_restrict_of_subset (subset_refl E')] at hsp
     have hspancard : ((G.mulTilde n).spanningVerts E').ncard ≤ V(G).ncard - 1 :=
-      (Set.ncard_le_ncard hspan_sub (Set.toFinite _)).trans_eq (Set.ncard_diff_singleton_of_mem hvV)
+      (Set.ncard_le_ncard hspan_sub (Set.toFinite _)).trans_eq
+        (Set.ncard_sdiff_singleton_of_mem hvV)
     have hVpos : 1 ≤ V(G).ncard := hVne.ncard_pos
     have hsp' : (E'.ncard : ℤ) + (bodyBarDim n : ℤ) ≤
         (bodyBarDim n : ℤ) * (((G.mulTilde n).spanningVerts E').ncard : ℤ) := by exact_mod_cast hsp
@@ -1489,7 +1490,7 @@ lemma rigidContract_vertexSet_ncard_lt [Finite α] {G H : Graph α β} {r : α}
         simp [Set.ncard_singleton]
     _ < V(G).ncard := by
         have h1 : (V(G) \ V(H)).ncard = V(G).ncard - V(H).ncard :=
-          Set.ncard_diff hHsub (Set.toFinite _)
+          Set.ncard_sdiff hHsub (Set.toFinite _)
         have hVH : V(H).ncard ≤ V(G).ncard := Set.ncard_le_ncard hHsub (Set.toFinite _)
         omega
 
@@ -1506,7 +1507,7 @@ lemma rigidContract_vertexSet_ncard [Finite α] {G H : Graph α β} {r : α} (hr
   have hrG : r ∈ V(G) := hHsub hr
   have himg : collapseTo r V(H) '' V(G) = (V(G) \ V(H)) ∪ {r} := by
     ext x
-    simp only [Set.mem_image, Set.mem_union, Set.mem_diff, Set.mem_singleton_iff]
+    simp only [Set.mem_image, Set.mem_union, Set.mem_sdiff, Set.mem_singleton_iff]
     constructor
     · rintro ⟨y, hy, rfl⟩
       unfold collapseTo
@@ -1514,11 +1515,11 @@ lemma rigidContract_vertexSet_ncard [Finite α] {G H : Graph α β} {r : α} (hr
       · exact Or.inr rfl
       · exact Or.inl ⟨hy, hyH⟩
     · rintro (⟨hx, hxH⟩ | hxr)
-      · exact ⟨x, hx, by unfold collapseTo; rw [if_neg hxH]⟩
-      · exact ⟨r, hrG, by unfold collapseTo; rw [if_pos hr]; exact hxr.symm⟩
+      · exact ⟨x, hx, by unfold collapseTo; rw [ite_eq_right hxH]⟩
+      · exact ⟨r, hrG, by unfold collapseTo; rw [ite_eq_left hr]; exact hxr.symm⟩
   rw [himg, Set.ncard_union_eq (by
-    simp only [Set.disjoint_singleton_right, Set.mem_diff, not_and, not_not]; exact fun _ ↦ hr)
-    (Set.toFinite _) (Set.toFinite _), Set.ncard_singleton, Set.ncard_diff hHsub (Set.toFinite _)]
+    simp only [Set.disjoint_singleton_right, Set.mem_sdiff, not_and, not_not]; exact fun _ ↦ hr)
+    (Set.toFinite _) (Set.toFinite _), Set.ncard_singleton, Set.ncard_sdiff hHsub (Set.toFinite _)]
 
 /-- **The edge set of a rigid-subgraph contraction** (graph-side brick of
 `lem:rigidContract-isMinimalKDof`). `rigidContract = (G ＼ E(H)).map (collapseTo r V(H))` is a

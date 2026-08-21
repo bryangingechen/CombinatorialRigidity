@@ -730,7 +730,7 @@ theorem PanelHingeFramework.case_I_realization_h65_gen
   have haVGv : a ∈ V(Gv) := by
     rw [hGv_def, Graph.vertexSet_removeVertex]; exact ⟨haG, hav⟩
   have hVcard : V(G).ncard = V(Gv).ncard + 1 := by
-    rw [hGv_def, Graph.vertexSet_removeVertex, Set.ncard_diff_singleton_of_mem hvG]; omega
+    rw [hGv_def, Graph.vertexSet_removeVertex, Set.ncard_sdiff_singleton_of_mem hvG]; omega
   have hGvlt : V(Gv).ncard < V(G).ncard := by omega
   have hGvV2 : 2 ≤ V(Gv).ncard := by omega
   have hGvne : V(Gv).Nonempty := ⟨a, haVGv⟩
@@ -1138,7 +1138,7 @@ theorem PanelHingeFramework.rankHypothesis_deficiency_of_theorem_55_d3
     simp only [Q', reaim, toBodyHinge_supportExtensor]
     by_cases hlink : ∃ u v, G.IsLink e u v
     · -- Link case: `Q'.ends e = Q.ends e`; use link-recording + looplessness + GP.
-      rw [dif_pos hlink]
+      rw [dite_eq_left hlink]
       obtain ⟨u, v, hle⟩ := hlink
       rw [panelSupportExtensor_ne_zero_iff]
       -- From link-recording: `(Q.ends e) = (u,v)` or `(v,u)`.
@@ -1146,7 +1146,7 @@ theorem PanelHingeFramework.rankHypothesis_deficiency_of_theorem_55_d3
       · rw [h1, h2]; exact hQgp u v hle.ne
       · rw [h1, h2]; exact hQgp v u hle.ne.symm
     · -- Non-link case: `Q'.ends e = (x₀, y₀)`.
-      rw [dif_neg hlink]
+      rw [dite_eq_right hlink]
       simp only [panelSupportExtensor_ne_zero_iff]
       exact hQgp x₀ y₀ hxy.symm
   -- Nonemptiness.
@@ -1229,7 +1229,7 @@ private lemma cutEdge_finrank_assemble [DecidableEq β] [Finite α] [Finite β] 
   have hFE₁ : ∀ e u v, F.graph.IsLink e u v → e ∉ G.cutEdges V₁ →
       u ∈ V₁ ∧ v ∈ V₁ ∨ u ∉ V₁ ∧ v ∉ V₁ := by
     intro e u v hl hnotcut
-    simp only [Graph.cutEdges, not_and, Set.mem_setOf_eq] at hnotcut
+    simp only [Graph.cutEdges, not_and, Set.mem_ofPred_eq] at hnotcut
     rw [hFgraph] at hl
     by_cases hu₁ : u ∈ V₁
     · left; refine ⟨hu₁, ?_⟩
@@ -1279,7 +1279,7 @@ private lemma span_rigidityRows_side_eq {Gᵢ : Graph α β}
     Submodule.span K (⟨Gᵢ, sideExt⟩ : BodyHingeFramework K k α β).rigidityRows
       = Submodule.span K Fᵢ.rigidityRows := by
   congr 1; ext φ
-  simp only [BodyHingeFramework.rigidityRows, Set.mem_setOf_eq]
+  simp only [BodyHingeFramework.rigidityRows, Set.mem_ofPred_eq]
   constructor
   · rintro ⟨e, u, v, hl, r, hr, rfl⟩
     refine ⟨e, u, v, hFᵢg ▸ hl, r, ?_, rfl⟩
@@ -1338,7 +1338,7 @@ theorem case_cut_edge_realization_gen [DecidableEq β] [Finite α] [Finite β] {
     Set.ncard_lt_ncard hV₁sub (Set.toFinite _)
   -- Vertex partition: V₁ ⊔ V₂ = V(G), both nonempty.
   have hVcard : V₁.ncard + V₂.ncard = V(G).ncard := by
-    have hunion : V₁ ∪ V₂ = V(G) := Set.union_diff_cancel hV₁sub.subset
+    have hunion : V₁ ∪ V₂ = V(G) := Set.union_sdiff_cancel hV₁sub.subset
     have hdisj : Disjoint V₁ V₂ := Set.disjoint_sdiff_right
     rw [← hunion, Set.ncard_union_eq hdisj (Set.toFinite V₁) (Set.toFinite V₂)]
   have hVeq₁ : V(G.induce V₁).ncard = V₁.ncard := rfl
@@ -1405,13 +1405,13 @@ theorem case_cut_edge_realization_gen [DecidableEq β] [Finite α] [Finite β] {
             · exact hE₁ ⟨u, v, (Graph.induce_isLink G V₁ e u v).mpr ⟨hl, hu₁, hv₁⟩⟩
             · -- e is a cut edge (u ∈ V₁, v ∉ V₁), contradicting hC0.
               have hmem : e ∈ G.cutEdges V₁ := by
-                simp only [Graph.cutEdges, Set.mem_setOf_eq]
+                simp only [Graph.cutEdges, Set.mem_ofPred_eq]
                 exact ⟨hl.edge_mem, u, v, hl, hu₁, hv₁⟩
               simp [hC0] at hmem
           · by_cases hv₁ : v ∈ V₁
             · -- e is a cut edge (v ∈ V₁, u ∉ V₁), i.e. hl.symm witnesses it.
               have hmem : e ∈ G.cutEdges V₁ := by
-                simp only [Graph.cutEdges, Set.mem_setOf_eq]
+                simp only [Graph.cutEdges, Set.mem_ofPred_eq]
                 exact ⟨hl.edge_mem, v, u, hl.symm, hv₁, hu₁⟩
               simp [hC0] at hmem
             · exact hE₂ ⟨u, v, (Graph.induce_isLink G V₂ e u v).mpr
@@ -1448,7 +1448,7 @@ theorem case_cut_edge_realization_gen [DecidableEq β] [Finite α] [Finite β] {
     exact ⟨F, normal, rfl, hnorm_ne, hlinks, hrank_eq⟩
   · -- ── Case |C| = 1 ─────────────────────────────────────────────────────────────────
     -- Extract the unique cut edge's endpoints.
-    simp only [Graph.cutEdges, Set.mem_setOf_eq] at he_c
+    simp only [Graph.cutEdges, Set.mem_ofPred_eq] at he_c
     obtain ⟨_, u_c, v_c, hl_c, hu_c, hv_c⟩ := he_c
     -- The cut-edge count is exactly 1 (at most 1 by hcut_le, at least 1 by he_c nonempty).
     -- Pick C_cut in both endpoint normals.
@@ -1463,12 +1463,12 @@ theorem case_cut_edge_realization_gen [DecidableEq β] [Finite α] [Finite β] {
     -- For any cut edge e with G.IsLink e u v, since |C| ≤ 1 and e_c is the unique cut edge,
     -- e = e_c, so the endpoints are {u_c, v_c} up to swap.
     have hec_mem : e_c ∈ G.cutEdges V₁ := by
-      simp only [Graph.cutEdges, Set.mem_setOf_eq]
+      simp only [Graph.cutEdges, Set.mem_ofPred_eq]
       exact ⟨hl_c.edge_mem, u_c, v_c, hl_c, hu_c, hv_c⟩
     have hcut_uniq : ∀ e u v, G.IsLink e u v → u ∈ V₁ → v ∉ V₁ → e = e_c := by
       intro e u v hle hu hv
       have hmem : e ∈ G.cutEdges V₁ := by
-        simp only [Graph.cutEdges, Set.mem_setOf_eq]
+        simp only [Graph.cutEdges, Set.mem_ofPred_eq]
         exact ⟨hle.edge_mem, u, v, hle, hu, hv⟩
       -- cutEdges has at most 1 element by hcut_le; e_c is also in cutEdges; so e = e_c.
       exact (Set.ncard_le_one (Set.toFinite _)).mp hcut_le e hmem e_c hec_mem
@@ -1546,7 +1546,7 @@ theorem case_cut_edge_realization_gen [DecidableEq β] [Finite α] [Finite β] {
       fun e u v hl => (hlinks e u v hl).1
     have hFcut : ∀ e ∈ G.cutEdges V₁, ∃ a b, F.graph.IsLink e a b ∧ a ∈ V₁ ∧ b ∉ V₁ := by
       intro e he
-      simp only [Graph.cutEdges, Set.mem_setOf_eq] at he
+      simp only [Graph.cutEdges, Set.mem_ofPred_eq] at he
       obtain ⟨_, a, b, hlab, ha, hb⟩ := he
       exact ⟨a, b, hlab, ha, hb⟩
     have hFVne : V(F.graph).Nonempty := ⟨u₀, hV₁sub.subset hu₀⟩
@@ -1620,7 +1620,7 @@ theorem case_cut_edge_realization_gp_gen [Infinite K] [DecidableEq β] [Finite �
   have hV₁ncard : V(G.induce V₁).ncard < V(G).ncard :=
     Set.ncard_lt_ncard hV₁sub (Set.toFinite _)
   have hVcard : V₁.ncard + V₂.ncard = V(G).ncard := by
-    have hunion : V₁ ∪ V₂ = V(G) := Set.union_diff_cancel hV₁sub.subset
+    have hunion : V₁ ∪ V₂ = V(G) := Set.union_sdiff_cancel hV₁sub.subset
     have hdisj : Disjoint V₁ V₂ := Set.disjoint_sdiff_right
     rw [← hunion, Set.ncard_union_eq hdisj (Set.toFinite V₁) (Set.toFinite V₂)]
   have hVeq₁ : V(G.induce V₁).ncard = V₁.ncard := rfl
@@ -1632,7 +1632,7 @@ theorem case_cut_edge_realization_gp_gen [Infinite K] [DecidableEq β] [Finite �
   have hSimple₁ : (G.induce V₁).Simple :=
     hSimple.mono (G.induce_le hV₁sub.subset)
   have hSimple₂ : (G.induce V₂).Simple :=
-    hSimple.mono (G.induce_le Set.diff_subset)
+    hSimple.mono (G.induce_le Set.sdiff_subset)
   -- ── Step 4: Side GP frameworks from IH ─────────────────────────────────────────────────
   obtain ⟨QF₁, hQF₁g, hQF₁gp, hQF₁rank, hQF₁rec⟩ :=
     (hIH c₁ (G.induce V₁) hG₁ hV₁ne hV₁ncard).1 hSimple₁
@@ -1694,7 +1694,7 @@ theorem case_cut_edge_realization_gp_gen [Infinite K] [DecidableEq β] [Finite �
       ((QF₂.ends e).1 = (G.endsOf e).1 ∧ (QF₂.ends e).2 = (G.endsOf e).2) ∨
       ((QF₂.ends e).1 = (G.endsOf e).2 ∧ (QF₂.ends e).2 = (G.endsOf e).1) :=
     PanelHingeFramework.recordsLinks_swap_endsOf
-      (G.induce_le Set.diff_subset) QF₂.ends hQF₂rec
+      (G.induce_le Set.sdiff_subset) QF₂.ends hQF₂rec
   have hmot₂ :
       (PanelHingeFramework.ofNormals (G.induce V₂) G.endsOf q₀₂).toBodyHinge.infinitesimalMotions
       = (PanelHingeFramework.ofNormals (G.induce V₂) QF₂.ends q₀₂).toBodyHinge.infinitesimalMotions
@@ -1737,7 +1737,7 @@ theorem case_cut_edge_realization_gp_gen [Infinite K] [DecidableEq β] [Finite �
     let P₂ := PanelHingeFramework.ofNormals (G.induce V₂) G.endsOf q₀₂
     apply P₂.supportExtensor_ne_zero_of_isGeneralPosition hgp₂'
     rw [PanelHingeFramework.ofNormals_ends]
-    exact G.endsOf_fst_ne_snd (he.of_le (G.induce_le Set.diff_subset)).edge_mem
+    exact G.endsOf_fst_ne_snd (he.of_le (G.induce_le Set.sdiff_subset)).edge_mem
   -- Rank bounds at q₀ᵢ from QFᵢ rank equality + finrank equality.
   have hN₁ : Module.finrank K (Submodule.span K QF₁.toBodyHinge.rigidityRows) ≤
       Module.finrank K (Submodule.span K
@@ -1832,7 +1832,7 @@ theorem case_cut_edge_realization_gp_gen [Infinite K] [DecidableEq β] [Finite �
     exact hQFext e u v hl
   -- Cut count is kept abstract in the shared assembly tail, so no `rcases` on `G.cutEdges V₁`.
   have hFcut : ∀ e ∈ G.cutEdges V₁, ∃ a b, F.graph.IsLink e a b ∧ a ∈ V₁ ∧ b ∉ V₁ := by
-    intro e he; simp only [Graph.cutEdges, Set.mem_setOf_eq] at he
+    intro e he; simp only [Graph.cutEdges, Set.mem_ofPred_eq] at he
     obtain ⟨_, a, b, hlab, ha, hb⟩ := he
     exact ⟨a, b, by simp [F, hlab], ha, hb⟩
   have hFVne : V(F.graph).Nonempty := by
@@ -2021,7 +2021,7 @@ theorem case_I_realization_nonsimple_gen [DecidableEq β] [Finite α] [Finite β
   have hFH_le : Submodule.span K FH.rigidityRows ≤ Submodule.span K F.rigidityRows := by
     apply Submodule.span_mono
     intro φ hφ
-    simp only [BodyHingeFramework.rigidityRows, Set.mem_setOf_eq] at hφ ⊢
+    simp only [BodyHingeFramework.rigidityRows, Set.mem_ofPred_eq] at hφ ⊢
     obtain ⟨e, u, v, hlink, r, hr, rfl⟩ := hφ
     exact ⟨e, u, v, hH'leG.isLink_mono hlink, r,
       by simpa [BodyHingeFramework.hingeRowBlock, FH, F] using hr, rfl⟩
@@ -2029,7 +2029,7 @@ theorem case_I_realization_nonsimple_gen [DecidableEq β] [Finite α] [Finite β
   have hFH_ker : Submodule.span K FH.rigidityRows ≤ LinearMap.ker Dmap := by
     apply Submodule.span_le.mpr
     intro φ hφ
-    simp only [BodyHingeFramework.rigidityRows, Set.mem_setOf_eq] at hφ
+    simp only [BodyHingeFramework.rigidityRows, Set.mem_ofPred_eq] at hφ
     obtain ⟨e, u, v, hlink, r, hr, rfl⟩ := hφ
     have hu : u ∈ t := by simp only [ht_def]; exact hFHg ▸ hlink.left_mem
     have hv : v ∈ t := by simp only [ht_def]; exact hFHg ▸ hlink.right_mem
@@ -2053,7 +2053,7 @@ theorem case_I_realization_nonsimple_gen [DecidableEq β] [Finite α] [Finite β
     rw [Submodule.map_span, Submodule.map_span]
     apply Submodule.span_mono
     intro ψ hψ
-    simp only [Set.mem_image, BodyHingeFramework.rigidityRows, Set.mem_setOf_eq] at hψ
+    simp only [Set.mem_image, BodyHingeFramework.rigidityRows, Set.mem_ofPred_eq] at hψ
     obtain ⟨φ, ⟨e', u', v', hlink', r', hr', rfl⟩, rfl⟩ := hψ
     -- Unpack the rigidContract link: hlink' : Fc_fw.graph.IsLink e' u' v'.
     rw [hFcg, Graph.rigidContract, Graph.map_isLink] at hlink'
@@ -2073,7 +2073,7 @@ theorem case_I_realization_nonsimple_gen [DecidableEq β] [Finite α] [Finite β
       simp only [Dmap, LinearMap.dualMap_apply']
       exact hingeRow_collapseTo_comp_extProj_eq ha_t u v r'
     have hrowF : BodyHingeFramework.hingeRow u v r' ∈ F.rigidityRows := by
-      simp only [BodyHingeFramework.rigidityRows, Set.mem_setOf_eq]
+      simp only [BodyHingeFramework.rigidityRows, Set.mem_ofPred_eq]
       exact ⟨e', u, v, hFg ▸ hGlink, r', hr'F, rfl⟩
     -- Dmap(hingeRow u' v' r') = Dmap(hingeRow u v r') ∈ Dmap '' F.rigidityRows.
     exact ⟨BodyHingeFramework.hingeRow u v r', hrowF, hrow_eq.symm⟩
@@ -2656,13 +2656,13 @@ theorem PanelHingeFramework.rankHypothesis_genuine_of_theorem_55_gen [Infinite K
     intro e
     simp only [Q, reaimSub, toBodyHinge_supportExtensor]
     by_cases hlink : ∃ u v, G'.IsLink e u v
-    · rw [dif_pos hlink]
+    · rw [dite_eq_left hlink]
       obtain ⟨u, v, hle⟩ := hlink
       rw [panelSupportExtensor_ne_zero_iff]
       rcases hQ'rec e u v (hQ'g ▸ hle) with ⟨h1, h2⟩ | ⟨h1, h2⟩
       · rw [h1, h2]; exact hQ'gp u v hle.ne
       · rw [h1, h2]; exact hQ'gp v u hle.ne.symm
-    · rw [dif_neg hlink]
+    · rw [dite_eq_right hlink]
       rw [panelSupportExtensor_ne_zero_iff]
       exact hQ'gp x₀ y₀ hxy.symm
   -- `hgen`: re-adding edges only shrinks the null space, so `dim Z(G) ≤ dim Z(G') = D + def`.
@@ -2750,14 +2750,14 @@ theorem PanelHingeFramework.rankHypothesis_genuine_recordsLinks_of_theorem_55_ge
     intro e u v he
     simp only [Q, reaimSubLink]
     by_cases hlink : ∃ u' v', G'.IsLink e u' v'
-    · rw [dif_pos hlink]
+    · rw [dite_eq_left hlink]
       obtain ⟨u', v', hle'⟩ := hlink
       rcases hQ'rec e u' v' (hQ'g ▸ hle') with ⟨h1, h2⟩ | ⟨h1, h2⟩
       · rw [h1, h2]; exact hle'.of_le hG'le
       · rw [h1, h2]; exact hle'.symm.of_le hG'le
-    · rw [dif_neg hlink]
+    · rw [dite_eq_right hlink]
       have hGlink : ∃ u' v', G.IsLink e u' v' := ⟨u, v, he⟩
-      rw [dif_pos hGlink]
+      rw [dite_eq_left hGlink]
       exact hGlink.choose_spec.choose_spec
   -- `hC`: every supporting extensor is nonzero (GP on `G'`-links and re-added `G`-links; the
   -- explicit distinct pair `(x₀, y₀)` off-edge).
@@ -2765,18 +2765,18 @@ theorem PanelHingeFramework.rankHypothesis_genuine_recordsLinks_of_theorem_55_ge
     intro e
     simp only [Q, reaimSubLink, toBodyHinge_supportExtensor]
     by_cases hlink : ∃ u v, G'.IsLink e u v
-    · rw [dif_pos hlink]
+    · rw [dite_eq_left hlink]
       obtain ⟨u, v, hle⟩ := hlink
       rw [panelSupportExtensor_ne_zero_iff]
       rcases hQ'rec e u v (hQ'g ▸ hle) with ⟨h1, h2⟩ | ⟨h1, h2⟩
       · rw [h1, h2]; exact hQ'gp u v hle.ne
       · rw [h1, h2]; exact hQ'gp v u hle.ne.symm
-    · rw [dif_neg hlink]
+    · rw [dite_eq_right hlink]
       by_cases hGlink : ∃ u v, G.IsLink e u v
-      · rw [dif_pos hGlink]
+      · rw [dite_eq_left hGlink]
         rw [panelSupportExtensor_ne_zero_iff]
         exact hQ'gp _ _ hGlink.choose_spec.choose_spec.ne
-      · rw [dif_neg hGlink]
+      · rw [dite_eq_right hGlink]
         rw [panelSupportExtensor_ne_zero_iff]
         exact hQ'gp x₀ y₀ hxy.symm
   -- `dim Z(G') = D + def(G̃')` via the rigidity-row/motion complement (verbatim base form).
@@ -3127,7 +3127,7 @@ theorem theorem_55_6_multigraph_of_two_le [Infinite K]
     with hends_def
   have hends_link : ∀ e, (∃ u v, G.IsLink e u v) → G.IsLink e (ends e).1 (ends e).2 := by
     intro e he
-    simp only [hends_def, dif_pos he]
+    simp only [hends_def, dite_eq_left he]
     exact he.choose_spec.choose_spec
   -- The extended framework on `G`: keep `F'` on `G'`-links, a two-panel extensor elsewhere.
   set F : BodyHingeFramework K k α β :=
@@ -3139,11 +3139,11 @@ theorem theorem_55_6_multigraph_of_two_le [Infinite K]
     with hF
   have hFg : F.graph = G := rfl
   have hFse_pos : ∀ e, (∃ u v, G'.IsLink e u v) → F.supportExtensor e = F'.supportExtensor e := by
-    intro e h; simp only [hF, dif_pos h]
+    intro e h; simp only [hF, dite_eq_left h]
   have hFse_neg : ∀ e, ¬ (∃ u v, G'.IsLink e u v) →
       F.supportExtensor e =
         (exists_extensor_in_two_panels_grade (normal' (ends e).1) (normal' (ends e).2)).choose := by
-    intro e h; simp only [hF, dif_neg h]
+    intro e h; simp only [hF, dite_eq_right h]
   -- `hC`: every supporting extensor is nonzero (bare `F'` on `G'`-links, two-panel extensor else).
   have hC : ∀ e, F.supportExtensor e ≠ 0 := by
     intro e

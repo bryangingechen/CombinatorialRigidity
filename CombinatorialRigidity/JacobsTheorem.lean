@@ -95,7 +95,7 @@ private theorem jacobs_of_isLaman3_of_ncard {V : Type*} [Finite V] :
         exact hHlaman.degree_le_three u
       have hproper : (G.deleteIncidenceSet v).edgeSet ⊂ G.edgeSet := by
         rw [edgeSet_deleteIncidenceSet]
-        exact Set.ssubset_iff_of_subset Set.diff_subset |>.mpr
+        exact Set.ssubset_iff_of_subset Set.sdiff_subset |>.mpr
           ⟨s(v, u), hu, fun hc => hc.2 (G.mem_incidenceSet v u |>.mpr hu)⟩
       have hcard_lt : (G.deleteIncidenceSet v).edgeSet.ncard < n := by
         rw [← hn]

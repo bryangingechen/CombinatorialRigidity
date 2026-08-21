@@ -798,12 +798,12 @@ noncomputable def extProj (t : Set α) :
 theorem extProj_apply_mem {t : Set α} {a : α} (ha : a ∈ t) (S : α → ScrewSpace K k) :
     extProj t S a = 0 := by
   classical
-  simp only [extProj, LinearMap.pi_apply, if_pos ha, LinearMap.zero_apply]
+  simp only [extProj, LinearMap.pi_apply, ite_eq_left ha, LinearMap.zero_apply]
 
 theorem extProj_apply_not_mem {t : Set α} {a : α} (ha : a ∉ t) (S : α → ScrewSpace K k) :
     extProj t S a = S a := by
   classical
-  simp only [extProj, LinearMap.pi_apply, if_neg ha, LinearMap.proj_apply]
+  simp only [extProj, LinearMap.pi_apply, ite_eq_right ha, LinearMap.proj_apply]
 
 /-- **The exterior-column projection is invariant under the collapse relabel**
 (`lem:claim-6-4`, the U2 collapse-relabel reconciliation core; Katoh–Tanigawa 2011 §6.2, eq. (6.7),
@@ -1112,7 +1112,8 @@ theorem infinitesimalMotions_sup_range_extProj_eq_top_of_inter_eq_singleton
     fun a => if a ∈ F.graph.vertexSet then S a - S r else 0, ?_, ?_⟩
   · -- `z` is an infinitesimal motion: every edge's endpoints lie in `V(G)`, where `z = S r`.
     intro e u v he
-    rw [BodyHingeFramework.hingeConstraint, if_pos he.left_mem, if_pos he.right_mem, sub_self]
+    rw [BodyHingeFramework.hingeConstraint, ite_eq_left he.left_mem, ite_eq_left he.right_mem,
+      sub_self]
     exact Submodule.zero_mem _
   · -- The residual lies in `W = range (extProj proj) = ⨅ i ∈ proj, ker (proj i)`.
     rw [extProj_range_eq_iInf_ker_proj, Submodule.mem_iInf]
@@ -1123,15 +1124,15 @@ theorem infinitesimalMotions_sup_range_extProj_eq_top_of_inter_eq_singleton
     -- A body of `proj` is either `r` (where the residual is `S r − S r = 0`) or outside `V(G)`
     -- (where it is `0` by the `else` branch), since `V(G) ∩ proj = {r}`.
     by_cases hiV : i ∈ F.graph.vertexSet
-    · rw [if_pos hiV]
+    · rw [ite_eq_left hiV]
       have : i = r := (Set.ext_iff.1 hinter i).1 ⟨hiV, hi⟩ |>.symm ▸ rfl
       rw [this, sub_self]
-    · rw [if_neg hiV]
+    · rw [ite_eq_right hiV]
   · -- `z + residual = S` pointwise.
     funext a
     by_cases haV : a ∈ F.graph.vertexSet
-    · simp only [Pi.add_apply, if_pos haV, add_sub_cancel]
-    · simp only [Pi.add_apply, if_neg haV, add_zero]
+    · simp only [Pi.add_apply, ite_eq_left haV, add_sub_cancel]
+    · simp only [Pi.add_apply, ite_eq_right haV, add_zero]
 
 /-- **The exterior-column projection is injective on the rigidity-row span — at ANY rank, no
 rigidity** (`lem:rigidityRows-splice-rank-add`, the L5a `hInj` injectivity; Katoh–Tanigawa 2011

@@ -418,14 +418,14 @@ noncomputable def pencilChartNormal (seed : PencilSeed K α) (hubSel nbrSel : α
 theorem pencilChartNormal_of_pencilHub (seed : PencilSeed K α)
     (hubSel nbrSel : α → Fin 3 → Option α) {G : Graph α β} {v : α} (hv : G.PencilHub v) :
     pencilChartNormal seed hubSel nbrSel G v = seed.hubNormal v :=
-  if_pos hv
+  ite_eq_left hv
 
 theorem pencilChartNormal_of_not_pencilHub (seed : PencilSeed K α)
     (hubSel nbrSel : α → Fin 3 → Option α) {G : Graph α β} {v : α} (hv : ¬ G.PencilHub v) :
     pencilChartNormal seed hubSel nbrSel G v =
       cross₃ (nbrSlotPoint seed hubSel nbrSel v 0) (nbrSlotPoint seed hubSel nbrSel v 1)
         (nbrSlotPoint seed hubSel nbrSel v 2) :=
-  if_neg hv
+  ite_eq_right hv
 
 /-- **Chart well-formedness** (`PencilChartWF`; Phase 39 W5-L2, verdict 2, **corrected 2026-07-24
 per the W5-L4 re-seeding lemma's assembly, twice**): the pencil analogue of
@@ -753,7 +753,7 @@ theorem pencilChartFramework_supportExtensor_of_mem_edgeSet [Inhabited α] (seed
     (pencilChartFramework seed hubSel G).supportExtensor e =
       ScrewSpace.mk (extensor ![pencilChartPoint seed hubSel (G.endsOf e).1,
         pencilChartPoint seed hubSel (G.endsOf e).2]) (extensor_mem_exteriorPower _) :=
-  if_pos he
+  ite_eq_left he
 
 /-- **The pencil chart framework's supporting extensor off `E(G)`** (Phase 39 W5-L2 remainder):
 unfolds the `dite` at `e ∉ E(G)` to the fixed standard-basis fallback. -/
@@ -763,7 +763,7 @@ theorem pencilChartFramework_supportExtensor_of_not_mem_edgeSet [Inhabited α]
     (pencilChartFramework seed hubSel G).supportExtensor e =
       ScrewSpace.mk (extensor ![(![1, 0, 0, 0] : Fin 4 → K), (![0, 1, 0, 0] : Fin 4 → K)])
         (extensor_mem_exteriorPower _) :=
-  if_neg he
+  ite_eq_right he
 
 /-- **The standard-basis fallback join is nonzero** (Phase 39 W5-L2 remainder): the two standard
 basis vectors `![1,0,0,0]` and `![0,1,0,0]` are linearly independent (a direct coordinate check,

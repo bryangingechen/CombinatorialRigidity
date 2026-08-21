@@ -139,7 +139,7 @@ theorem PanelHingeFramework.case_III_arm_realization_M3 [Infinite K]
   have hc_mem : c ∈ V(G) := hG_ec.right_mem
   have hv_mem : v ∈ V(G) := hG_ea.left_mem
   have hcard_Gva : V(G.removeVertex a).ncard = V(G).ncard - 1 := by
-    rw [Graph.vertexSet_removeVertex, Set.ncard_diff_singleton_of_mem ha_mem]
+    rw [Graph.vertexSet_removeVertex, Set.ncard_sdiff_singleton_of_mem ha_mem]
   refine PanelHingeFramework.case_III_arm_realization (k := k) G (G.removeVertex a) ends₃
     (q := qρ) (v := a) (a := c) (b := v) (e_a := e_c) (e_b := e_a) (n' := n''')
     ?hvVc ?haVc ?hbVc hG_ec hG_ea.symm hends₃_ec hends₃_ea heac.symm

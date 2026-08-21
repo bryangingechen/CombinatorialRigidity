@@ -137,7 +137,7 @@ theorem hasGenericPencilRealization_of_splitOff_of_safe
   have hV'ne : V(G.splitOff v a b e₀).Nonempty := by
     refine ⟨a, ?_⟩
     rw [Graph.vertexSet_splitOff]
-    exact Set.mem_diff_singleton.mpr ⟨hG_ea.right_mem, hG_ea.ne.symm⟩
+    exact Set.mem_sdiff_singleton.mpr ⟨hG_ea.right_mem, hG_ea.ne.symm⟩
   exact (hIH _ hV'ne hV'lt).1 hG'simple hG'feas
 
 /-! ## W5-L7b: the rank-to-generic steering assembly (Phase 39 PENCIL)
@@ -256,9 +256,9 @@ theorem hasGenericPencilRealization_of_independent_pencilRow_target
   have hptnz : ∀ v, pencilChartPoint (PencilSeed.ofCoord q) hubSel v ≠ 0 := by
     intro v
     by_cases hv : G.PencilHub v
-    · have h := hcondA v; rw [if_pos hv] at h
+    · have h := hcondA v; rw [ite_eq_left hv] at h
       exact (linearIndepOn_singleton_iff K).mp h
-    · have h := hcondA v; rw [if_neg hv] at h
+    · have h := hcondA v; rw [ite_eq_right hv] at h
       exact (linearIndepOn_singleton_iff K).mp (h.mono (Set.singleton_subset_iff.mpr (Or.inl rfl)))
   have hhub_LI : ∀ v, LinearIndependent K
       ![hubSlotNormal (PencilSeed.ofCoord q) hubSel v 0,
@@ -272,14 +272,14 @@ theorem hasGenericPencilRealization_of_independent_pencilRow_target
       ![pencilChartPoint (PencilSeed.ofCoord q) hubSel u,
         pencilChartPoint (PencilSeed.ofCoord q) hubSel v] := by
     intro e u v hl
-    have h := hcondB u v; rw [if_pos hl.adj] at h
+    have h := hcondB u v; rw [ite_eq_left hl.adj] at h
     rw [LinearIndependent.pair_iff]
     exact (LinearIndepOn.pair_iff (pencilChartPoint (PencilSeed.ofCoord q) hubSel) hl.ne).mp h
   have hnbr_some : ∀ v, ¬ G.PencilHub v →
       LinearIndepOn K (nbrSlotPoint (PencilSeed.ofCoord q) hubSel nbrSel v)
         {i | (nbrSel v i).isSome} := by
     intro v hv
-    have h := hcondA v; rw [if_neg hv] at h
+    have h := hcondA v; rw [ite_eq_right hv] at h
     exact linearIndepOn_nbrSlotPoint_isSome_of_pencilChartPoint (PencilSeed.ofCoord q)
       (hNbrSel v hv) h
   obtain ⟨seed', hhub_eq, hfill_eq, hWF'⟩ :=
@@ -392,7 +392,7 @@ theorem pencilPair_of_splitOff_of_habitat
   have hV'ne : V(G.splitOff v a b e₀).Nonempty := by
     refine ⟨a, ?_⟩
     rw [Graph.vertexSet_splitOff]
-    exact Set.mem_diff_singleton.mpr ⟨hea.right_mem, hea.ne.symm⟩
+    exact Set.mem_sdiff_singleton.mpr ⟨hea.right_mem, hea.ne.symm⟩
   by_cases hfeas : PencilNondegFeasible K G
   · -- Feasible: L7a's `G′`-generic output, fed through `hK` (identical shape to L7b's `hEsc`)
     -- into L7b, forgets to the bare half.

@@ -135,7 +135,7 @@ theorem exists_isGeneralPositionPlacement [Finite V] :
   have ht_inj : Function.Injective t := by
     intro i i' hii'
     by_cases hi : i.val < k <;> by_cases hi' : i'.val < k <;>
-      simp only [t, hi, hi', dif_pos] at hii'
+      simp only [t, hi, hi', dite_eq_left] at hii'
     · apply Fin.ext
       have h1 : (eS.symm ⟨i.val, hi⟩ : (s : Finset V)) = eS.symm ⟨i'.val, hi'⟩ :=
         Subtype.ext (Sum.inl_injective hii')
@@ -159,7 +159,7 @@ theorem exists_isGeneralPositionPlacement [Finite V] :
     have ht_eq : t (f x) = Sum.inl x.val := by
       change (if h : (f x).val < k then Sum.inl (eS.symm ⟨(f x).val, h⟩ : (s : Finset V)).val
           else Sum.inr (f x)) = Sum.inl x.val
-      rw [dif_pos hlt]
+      rw [dite_eq_left hlt]
       congr 1
       have heq : (⟨(f x).val, hlt⟩ : Fin k) = eS x := by
         apply Fin.ext
@@ -211,7 +211,7 @@ theorem exists_isGenericPlacement_isGeneralPositionPlacement [Finite V] :
     have h0 : (⊤ : SimpleGraph V).EdgeSetRowIndependent (pt 0) I := h_pt_zero ▸ hp₀ I hI
     rw [h_row_iff 0] at h0
     refine (LinearIndependent.finite_setOf_not_along_affine_path h0).subset fun t ht => ?_
-    simp only [Set.mem_setOf_eq] at ht ⊢
+    simp only [Set.mem_ofPred_eq] at ht ⊢
     exact fun hLI => ht ((h_row_iff t I).mpr hLI)
   haveI : Finite (Sym2 V) := inferInstance
   haveI : Finite ((⊤ : SimpleGraph V).edgeSet : Type _) := Set.Finite.to_subtype (Set.toFinite _)
@@ -231,7 +231,7 @@ theorem exists_isGenericPlacement_isGeneralPositionPlacement [Finite V] :
         ⟨fun a b => Subtype.ext (Finset.card_le_one.mp h1 a.val a.2 b.val b.2)⟩
       have : {t : ℝ | ¬ AffineIndependent ℝ (fun i : s => pt t i)} = ∅ := by
         ext t
-        simp only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false, not_not]
+        simp only [Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false, not_not]
         exact affineIndependent_of_subsingleton ℝ _
       simp [this]
     · obtain ⟨i1, hi1⟩ := Finset.card_pos.mp (by omega : 0 < s.card)
@@ -249,7 +249,7 @@ theorem exists_isGenericPlacement_isGeneralPositionPlacement [Finite V] :
       have h1w : AffineIndependent ℝ (fun i : s => pt 1 i) := h_pt_one ▸ hq s hs
       rw [h_iff 1] at h1w
       refine (LinearIndependent.finite_setOf_not_along_affine_path h1w).subset fun t ht => ?_
-      simp only [Set.mem_setOf_eq] at ht ⊢
+      simp only [Set.mem_ofPred_eq] at ht ⊢
       exact fun hAI => ht ((h_iff t).mpr hAI)
   let S : Finset (Finset V) := (Finset.univ : Finset (Finset V)).filter (·.card ≤ 4)
   have hS_bad_finite : ∀ s ∈ S, {t : ℝ | ¬ AffineIndependent ℝ (fun i : s => pt t i)}.Finite := by

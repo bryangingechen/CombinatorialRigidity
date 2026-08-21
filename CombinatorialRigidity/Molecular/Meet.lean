@@ -1084,7 +1084,8 @@ theorem exteriorPower_basis_toDual_eq_pairingDual_comp_map_grade {d : ℕ} (n : 
       (Set.powersetCard.mem_range_ofFinEmbEquiv_symm_iff_mem t x).2 hxt
     refine (Matrix.det_eq_zero_of_row_eq_zero i₀ fun j => ?_).symm
     simp only [Matrix.of_apply, hi₀]
-    exact if_neg fun h => hxs ((Set.powersetCard.mem_range_ofFinEmbEquiv_symm_iff_mem s x).1 ⟨j, h⟩)
+    exact ite_eq_right fun h =>
+      hxs ((Set.powersetCard.mem_range_ofFinEmbEquiv_symm_iff_mem s x).1 ⟨j, h⟩)
 
 /-- **N3b-recon (`d=3` instance): the coordinate `toDual` of `⋀ⁿK⁴` is the Gram-determinant
 pairing** (`lem:case-III-claim612-line-in-panel-union`). The `d=3` instance (ambient `Fin 4`) of the
@@ -1882,7 +1883,7 @@ theorem complementIso_extensor_mem_range_map_subtype
       · exact hg0.symm
       · exact hg1.symm
     rw [hnj, hgh, Module.Basis.toDual_apply]
-    refine if_neg fun hcontra => ?_
+    refine ite_eq_right fun hcontra => ?_
     fin_cases j
     · exact htne.1 hcontra
     · exact htne.2 hcontra

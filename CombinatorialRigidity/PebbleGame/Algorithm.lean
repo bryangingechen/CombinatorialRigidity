@@ -484,7 +484,7 @@ lemma tryAddEdgeWith_reachable {k ℓ : ℕ} {u v : V} (huv : u ≠ v)
     generalizing D'
   case case1 D hnotin hnotin_rev hD hthr hpu_pos =>
     -- Threshold met, free pebble at `u`: result is `.inr (D.addArc u v ...)`.
-    rw [tryAddEdgeWith, dif_pos hthr, if_pos hpu_pos] at h
+    rw [tryAddEdgeWith, dite_eq_left hthr, ite_eq_left hpu_pos] at h
     have h_out_u : D.out u < k := by
       have h1 := hD.out_le u
       have h2 : D.peb k u = k - D.out u := rfl
@@ -493,7 +493,7 @@ lemma tryAddEdgeWith_reachable {k ℓ : ℕ} {u v : V} (huv : u ≠ v)
     exact Reachable.addArc hD huv hnotin hnotin_rev h_out_u hthr
   case case2 D hnotin hnotin_rev hD hthr hpu_neg =>
     -- Threshold met, no free pebble at `u`: result is `.inr (D.addArc v u ...)`.
-    rw [tryAddEdgeWith, dif_pos hthr, if_neg hpu_neg] at h
+    rw [tryAddEdgeWith, dite_eq_left hthr, ite_eq_right hpu_neg] at h
     have hpu_zero : D.peb k u = 0 := Nat.eq_zero_of_not_pos hpu_neg
     have h_out_v : D.out v < k := by
       have h1 := hD.out_le v
@@ -506,7 +506,7 @@ lemma tryAddEdgeWith_reachable {k ℓ : ℕ} {u v : V} (huv : u ≠ v)
   case case3 D hnotin hnotin_rev hD hthr P r hr_eq ih =>
     -- Below threshold, u-DFS succeeds: recurse on `r.newOrient`.
     rw [tryAddEdgeWith] at h
-    simp only [dif_neg hthr] at h
+    simp only [dite_eq_right hthr] at h
     split at h
     · -- u-DFS = `some r'`: substitute r' = r via `r'_eq.symm.trans hr_eq` and recurse.
       next r' r'_eq =>
@@ -518,7 +518,7 @@ lemma tryAddEdgeWith_reachable {k ℓ : ℕ} {u v : V} (huv : u ≠ v)
   case case4 D hnotin hnotin_rev hD hthr P hu_none r hr_eq ih =>
     -- Below threshold, u-DFS fails, v-DFS succeeds: recurse on `r.newOrient`.
     rw [tryAddEdgeWith] at h
-    simp only [dif_neg hthr] at h
+    simp only [dite_eq_right hthr] at h
     split at h
     · -- u-DFS = `some _`: contradicts `hu_none`.
       next r' r'_eq =>
@@ -534,7 +534,7 @@ lemma tryAddEdgeWith_reachable {k ℓ : ℕ} {u v : V} (huv : u ≠ v)
   case case5 D hnotin hnotin_rev hD hthr P hu_none hv_none =>
     -- Both DFS attempts fail: result is `.inl ...`, contradicting `h : ... = .inr D'`.
     rw [tryAddEdgeWith] at h
-    simp only [dif_neg hthr] at h
+    simp only [dite_eq_right hthr] at h
     split at h
     · next r' r'_eq => exact (nomatch (r'_eq.symm.trans hu_none))
     · split at h
@@ -570,19 +570,19 @@ lemma tryAddEdgeWith_underline {k ℓ : ℕ} {u v : V} (huv : u ≠ v)
     generalizing D'
   case case1 D hnotin hnotin_rev hD hthr hpu_pos =>
     -- Threshold met, free pebble at `u`: insert `(u, v)`.
-    rw [tryAddEdgeWith, dif_pos hthr, if_pos hpu_pos] at h
+    rw [tryAddEdgeWith, dite_eq_left hthr, ite_eq_left hpu_pos] at h
     cases h
     exact D.underline_addArc u v huv hnotin_rev
   case case2 D hnotin hnotin_rev hD hthr hpu_neg =>
     -- Threshold met, no free pebble at `u`: insert `(v, u)`. `s(v, u) = s(u, v)`.
-    rw [tryAddEdgeWith, dif_pos hthr, if_neg hpu_neg] at h
+    rw [tryAddEdgeWith, dite_eq_left hthr, ite_eq_right hpu_neg] at h
     cases h
     rw [D.underline_addArc v u huv.symm hnotin, Sym2.eq_swap]
   case case3 D hnotin hnotin_rev hD hthr P r hr_eq ih =>
     -- Below threshold, u-DFS succeeds: recurse on `r.newOrient`, transport via
     -- `underline_newOrient_eq`.
     rw [tryAddEdgeWith] at h
-    simp only [dif_neg hthr] at h
+    simp only [dite_eq_right hthr] at h
     split at h
     · next r' r'_eq =>
       have : r = r' := Option.some.inj (hr_eq.symm.trans r'_eq)
@@ -591,7 +591,7 @@ lemma tryAddEdgeWith_underline {k ℓ : ℕ} {u v : V} (huv : u ≠ v)
     · next h_none => exact (nomatch (h_none.symm.trans hr_eq))
   case case4 D hnotin hnotin_rev hD hthr P hu_none r hr_eq ih =>
     rw [tryAddEdgeWith] at h
-    simp only [dif_neg hthr] at h
+    simp only [dite_eq_right hthr] at h
     split at h
     · next r' r'_eq =>
       exact (nomatch (r'_eq.symm.trans hu_none))
@@ -603,7 +603,7 @@ lemma tryAddEdgeWith_underline {k ℓ : ℕ} {u v : V} (huv : u ≠ v)
       · next h_none => exact (nomatch (h_none.symm.trans hr_eq))
   case case5 D hnotin hnotin_rev hD hthr P hu_none hv_none =>
     rw [tryAddEdgeWith] at h
-    simp only [dif_neg hthr] at h
+    simp only [dite_eq_right hthr] at h
     split at h
     · next r' r'_eq => exact (nomatch (r'_eq.symm.trans hu_none))
     · split at h
@@ -629,14 +629,14 @@ lemma tryAddEdgeWith_witness_uv {k ℓ : ℕ} {u v : V} (huv : u ≠ v)
     tryAddEdgeWith.induct (k := k) (ℓ := ℓ) (huv := huv)
       (toSucc := toSucc) (h_toSucc := h_toSucc)
   case case1 D hnotin hnotin_rev hD hthr hpu_pos =>
-    rw [tryAddEdgeWith, dif_pos hthr, if_pos hpu_pos] at h
+    rw [tryAddEdgeWith, dite_eq_left hthr, ite_eq_left hpu_pos] at h
     exact nomatch h
   case case2 D hnotin hnotin_rev hD hthr hpu_neg =>
-    rw [tryAddEdgeWith, dif_pos hthr, if_neg hpu_neg] at h
+    rw [tryAddEdgeWith, dite_eq_left hthr, ite_eq_right hpu_neg] at h
     exact nomatch h
   case case3 D hnotin hnotin_rev hD hthr P r hr_eq ih =>
     rw [tryAddEdgeWith] at h
-    simp only [dif_neg hthr] at h
+    simp only [dite_eq_right hthr] at h
     split at h
     · next r' r'_eq =>
       have : r = r' := Option.some.inj (hr_eq.symm.trans r'_eq)
@@ -645,7 +645,7 @@ lemma tryAddEdgeWith_witness_uv {k ℓ : ℕ} {u v : V} (huv : u ≠ v)
     · next h_none => exact (nomatch (h_none.symm.trans hr_eq))
   case case4 D hnotin hnotin_rev hD hthr P hu_none r hr_eq ih =>
     rw [tryAddEdgeWith] at h
-    simp only [dif_neg hthr] at h
+    simp only [dite_eq_right hthr] at h
     split at h
     · next r' r'_eq => exact (nomatch (r'_eq.symm.trans hu_none))
     · split at h
@@ -656,7 +656,7 @@ lemma tryAddEdgeWith_witness_uv {k ℓ : ℕ} {u v : V} (huv : u ≠ v)
       · next h_none => exact (nomatch (h_none.symm.trans hr_eq))
   case case5 D hnotin hnotin_rev hD hthr P hu_none hv_none =>
     rw [tryAddEdgeWith] at h
-    simp only [dif_neg hthr] at h
+    simp only [dite_eq_right hthr] at h
     split at h
     · next r' r'_eq => exact (nomatch (r'_eq.symm.trans hu_none))
     · split at h
@@ -686,14 +686,14 @@ lemma tryAddEdgeWith_witness_underline_eq {k ℓ : ℕ} {u v : V} (huv : u ≠ v
     tryAddEdgeWith.induct (k := k) (ℓ := ℓ) (huv := huv)
       (toSucc := toSucc) (h_toSucc := h_toSucc)
   case case1 D hnotin hnotin_rev hD hthr hpu_pos =>
-    rw [tryAddEdgeWith, dif_pos hthr, if_pos hpu_pos] at h
+    rw [tryAddEdgeWith, dite_eq_left hthr, ite_eq_left hpu_pos] at h
     exact nomatch h
   case case2 D hnotin hnotin_rev hD hthr hpu_neg =>
-    rw [tryAddEdgeWith, dif_pos hthr, if_neg hpu_neg] at h
+    rw [tryAddEdgeWith, dite_eq_left hthr, ite_eq_right hpu_neg] at h
     exact nomatch h
   case case3 D hnotin hnotin_rev hD hthr P r hr_eq ih =>
     rw [tryAddEdgeWith] at h
-    simp only [dif_neg hthr] at h
+    simp only [dite_eq_right hthr] at h
     split at h
     · next r' r'_eq =>
       have : r = r' := Option.some.inj (hr_eq.symm.trans r'_eq)
@@ -702,7 +702,7 @@ lemma tryAddEdgeWith_witness_underline_eq {k ℓ : ℕ} {u v : V} (huv : u ≠ v
     · next h_none => exact (nomatch (h_none.symm.trans hr_eq))
   case case4 D hnotin hnotin_rev hD hthr P hu_none r hr_eq ih =>
     rw [tryAddEdgeWith] at h
-    simp only [dif_neg hthr] at h
+    simp only [dite_eq_right hthr] at h
     split at h
     · next r' r'_eq => exact (nomatch (r'_eq.symm.trans hu_none))
     · split at h
@@ -713,7 +713,7 @@ lemma tryAddEdgeWith_witness_underline_eq {k ℓ : ℕ} {u v : V} (huv : u ≠ v
       · next h_none => exact (nomatch (h_none.symm.trans hr_eq))
   case case5 D hnotin hnotin_rev hD hthr P hu_none hv_none =>
     rw [tryAddEdgeWith] at h
-    simp only [dif_neg hthr] at h
+    simp only [dite_eq_right hthr] at h
     split at h
     · next r' r'_eq => exact (nomatch (r'_eq.symm.trans hu_none))
     · split at h
@@ -816,7 +816,7 @@ lemma runPebbleGameWith_reachable {k ℓ : ℕ}
   | (u, v) :: es, D, hD, D', h => by
     rw [runPebbleGameWith] at h
     by_cases hcond : u ≠ v ∧ (u, v) ∉ D.arcs ∧ (v, u) ∉ D.arcs
-    · simp only [dif_pos hcond] at h
+    · simp only [dite_eq_left hcond] at h
       split at h
       next Dmid h_step =>
         have hR_mid : Reachable k ℓ Dmid :=
@@ -824,7 +824,7 @@ lemma runPebbleGameWith_reachable {k ℓ : ℕ}
             hD h_step
         exact runPebbleGameWith_reachable toSucc h_toSucc es hR_mid h
       next _ _ => exact nomatch h
-    · simp only [dif_neg hcond] at h
+    · simp only [dite_eq_right hcond] at h
       exact runPebbleGameWith_reachable toSucc h_toSucc es hD h
 
 /-- `runPebbleGameWith` tracks the underlying unoriented edge set across the
@@ -858,7 +858,7 @@ lemma runPebbleGameWith_underline_subset {k ℓ : ℕ}
   | (u, v) :: es, D, hD, D', h => by
     rw [runPebbleGameWith] at h
     by_cases hcond : u ≠ v ∧ (u, v) ∉ D.arcs ∧ (v, u) ∉ D.arcs
-    · simp only [dif_pos hcond] at h
+    · simp only [dite_eq_left hcond] at h
       split at h
       next Dmid h_step =>
         have h_mid : Dmid.underline = insert s(u, v) D.underline :=
@@ -879,7 +879,7 @@ lemma runPebbleGameWith_underline_subset {k ℓ : ℕ}
             Finset.mem_insert] at he' ⊢
           tauto
       next _ _ => exact nomatch h
-    · simp only [dif_neg hcond] at h
+    · simp only [dite_eq_right hcond] at h
       obtain ⟨ih_mono, ih_upper⟩ :=
         runPebbleGameWith_underline_subset toSucc h_toSucc es _ h
       refine ⟨ih_mono, ?_⟩
@@ -925,7 +925,7 @@ lemma runPebbleGameWith_mem_underline {k ℓ : ℕ}
       ⟨h_uv_ne, h_uv_arc, h_vu_arc⟩
     obtain ⟨hpw_head, hpw_tail⟩ := List.pairwise_cons.mp hpairwise
     rw [runPebbleGameWith] at h
-    simp only [dif_pos hcond] at h
+    simp only [dite_eq_left hcond] at h
     split at h
     next Dmid h_step =>
       have h_underline_mid : Dmid.underline = insert s(u, v) D.underline :=

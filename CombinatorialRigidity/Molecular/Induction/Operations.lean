@@ -90,7 +90,7 @@ per-edge `obtain ⟨x, y, hlink⟩` choice once and for all. -/
 lemma isLink_endsOf [Inhabited α] (G : Graph α β) {e : β} (he : e ∈ E(G)) :
     G.IsLink e (G.endsOf e).1 (G.endsOf e).2 := by
   have h : ∃ x y, G.IsLink e x y := exists_isLink_of_mem_edgeSet he
-  rw [endsOf, dif_pos h]
+  rw [endsOf, dite_eq_left h]
   exact h.choose_spec.choose_spec
 
 /-- **The canonical endpoint selector orients along a given link** (`def:graph-operations`): if
@@ -152,9 +152,9 @@ theorem circuit_ncard_gt [DecidableEq β] [Finite α] [Finite β] {G : Graph α 
       push Not at h
       exact hne (subset_antisymm hE'' h)
     have hsub : E'' ⊆ X \ {e} := fun p hp ↦ ⟨hE'' hp, fun hpe ↦ heE'' (hpe ▸ hp)⟩
-    have hsparse := ((matroidMG_indep_iff G n).mp (hX.diff_singleton_indep heX)).2
+    have hsparse := ((matroidMG_indep_iff G n).mp (hX.sdiff_singleton_indep heX)).2
     have hE''edge : E'' ⊆ E(G.mulTilde n ↾ (X \ {e})) := by
-      rw [edgeSet_restrict, inter_eq_right.mpr (diff_subset.trans hXg)]
+      rw [edgeSet_restrict, inter_eq_right.mpr (sdiff_subset.trans hXg)]
       exact hsub
     have hsp := hsparse E'' hE''edge hE''ne
     rwa [spanningVerts_restrict_of_subset hsub] at hsp
@@ -179,16 +179,16 @@ theorem circuit_induces_isTight [DecidableEq β] [Finite α] [Finite β] {G : Gr
   -- `|X| = |X − e| + 1`.
   have hfinX : X.Finite := X.toFinite
   have hcardX : X.ncard = (X \ {e}).ncard + 1 := by
-    rw [Set.ncard_diff_singleton_add_one he hfinX]
+    rw [Set.ncard_sdiff_singleton_add_one he hfinX]
   -- Lower bound: `circuit_ncard_gt` (`|X| > D(|V(X)| − 1)`).
   have hlower := circuit_ncard_gt hX
   rw [hcardX] at hlower
   -- Upper bound: `X − e` independent ⟹ `(G̃ ↾ (X − e))` is `(D,D)`-sparse; apply to `X − e`.
   have hsparse := (isSparse_diff_singleton_of_isCircuit hX he).1
-  have hXe_sub : X \ {e} ⊆ E(G.mulTilde n) := diff_subset.trans hX.subset_ground
+  have hXe_sub : X \ {e} ⊆ E(G.mulTilde n) := sdiff_subset.trans hX.subset_ground
   have hupper : (X \ {e}).ncard + bodyBarDim n ≤ bodyBarDim n * (G.fiberSpan n X).ncard := by
     have hmono : (G.mulTilde n).spanningVerts (X \ {e}) ⊆ G.fiberSpan n X :=
-      fun x ⟨p, hp, hinc⟩ ↦ ⟨p, diff_subset hp, hinc⟩
+      fun x ⟨p, hp, hinc⟩ ↦ ⟨p, sdiff_subset hp, hinc⟩
     have hcardle : ((G.mulTilde n).spanningVerts (X \ {e})).ncard ≤ (G.fiberSpan n X).ncard :=
       Set.ncard_le_ncard hmono (Set.toFinite _)
     rcases (X \ {e}).eq_empty_or_nonempty with hem | hne
@@ -265,8 +265,8 @@ theorem circuit_induces_isRigidSubgraph [DecidableEq β] [Finite α] [Finite β]
     H.rank_matroidMG_le n hVne
   -- Lower bound: `X − e` is independent in `M(H̃)` of size `D(|V(X)| − 1)`.
   have hXe_sub : X \ {e} ⊆ E(H.mulTilde n) :=
-    diff_subset.trans (subset_edgeSet_mulTilde_inducedSpan hXground)
-  have hXe_indepG : (G.matroidMG n).Indep (X \ {e}) := hX.diff_singleton_indep heX
+    sdiff_subset.trans (subset_edgeSet_mulTilde_inducedSpan hXground)
+  have hXe_indepG : (G.matroidMG n).Indep (X \ {e}) := hX.sdiff_singleton_indep heX
   have hXe_indepH : (H.matroidMG n).Indep (X \ {e}) := by
     rw [← matroidMG_restrict_mulTilde hle n, Matroid.restrict_indep_iff]
     exact ⟨hXe_indepG, hXe_sub⟩
@@ -428,10 +428,10 @@ theorem exists_isProperRigidSubgraph_of_three_le_degree
   have hHandshake : δ * V(G).ncard ≤ 2 * E(G).ncard := hMinDeg.le_ncard_edgeSet
   -- `Ev`: the edges of `G` avoiding `v`.
   set Ev : Set β := E(G) \ E(G, v) with hEvdef
-  have hEvsub : Ev ⊆ E(G) := diff_subset
+  have hEvsub : Ev ⊆ E(G) := sdiff_subset
   have hδcard : E(G, v).ncard = δ := degree_eq_ncard_inc.symm
   have hEvcard : Ev.ncard + δ = E(G).ncard := by
-    rw [hEvdef, ← hδcard]; exact ncard_diff_add_ncard_of_subset (incEdges_subset G v)
+    rw [hEvdef, ← hδcard]; exact ncard_sdiff_add_ncard_of_subset (incEdges_subset G v)
   -- `E'`: the `(D − 1)`-fold fiber of `Ev` in the multiplied graph.
   set E' : Set (β × Fin (bodyHingeMult n)) := {p | p.1 ∈ Ev} with hE'def
   have hE'prod : E' = Ev ×ˢ (Set.univ : Set (Fin (bodyHingeMult n))) := by
@@ -492,7 +492,8 @@ theorem exists_isProperRigidSubgraph_of_three_le_degree
     have hsp := hsparse E' (by rw [edgeSet_restrict, Set.inter_eq_right.mpr hE'sub]) hE'ne
     rw [spanningVerts_restrict_of_subset (subset_refl E')] at hsp
     have hspancard : ((G.mulTilde n).spanningVerts E').ncard ≤ V(G).ncard - 1 :=
-      (Set.ncard_le_ncard hspan_sub (Set.toFinite _)).trans_eq (Set.ncard_diff_singleton_of_mem hvV)
+      (Set.ncard_le_ncard hspan_sub (Set.toFinite _)).trans_eq
+        (Set.ncard_sdiff_singleton_of_mem hvV)
     have hsp' : (E'.ncard : ℤ) + (bodyBarDim n : ℤ) ≤
         (bodyBarDim n : ℤ) * (((G.mulTilde n).spanningVerts E').ncard : ℤ) := by exact_mod_cast hsp
     have hVpos : 1 ≤ V(G).ncard := hVne.ncard_pos
@@ -527,7 +528,7 @@ theorem exists_isProperRigidSubgraph_of_three_le_degree
     exact hspanC_sub.trans hspan_sub
   have hvnotH : v ∉ V(H) := fun hvH ↦ (hVHsub hvH).2 rfl
   have hVHssub : V(H) ⊂ V(G) :=
-    (ssubset_iff_of_subset (hVHsub.trans diff_subset)).mpr ⟨v, hvV, hvnotH⟩
+    (ssubset_iff_of_subset (hVHsub.trans sdiff_subset)).mpr ⟨v, hvV, hvnotH⟩
   exact ⟨H, hHrigid, hVH2, hVHssub⟩
 
 /-! ## Forest-packing decomposition of `M(G̃)`-independent sets (`lem:forest-surgery-split`)
@@ -805,7 +806,7 @@ no-proper-rigid-subgraph case): each reduction step lands on a strictly smaller 
 lemma splitOff_vertexSet_ncard_lt [Finite α] {G : Graph α β} {v a b : α} {e₀ : β}
     (hv : v ∈ V(G)) : V(G.splitOff v a b e₀).ncard < V(G).ncard := by
   rw [vertexSet_splitOff]
-  exact Set.ncard_diff_singleton_lt_of_mem hv (Set.toFinite _)
+  exact Set.ncard_sdiff_singleton_lt_of_mem hv (Set.toFinite _)
 
 @[simp]
 lemma splitOff_isLink {G : Graph α β} {v a b : α} {e₀ : β} {e : β} {x y : α} :
@@ -842,8 +843,8 @@ lemma edgeSet_splitOff {G : Graph α β} {v a b : α} {e₀ : β} :
       {e | e = e₀ ∧ a ≠ v ∧ b ≠ v ∧ a ∈ V(G) ∧ b ∈ V(G)} ∪
         {e | e ≠ e₀ ∧ ∃ x y, G.IsLink e x y ∧ x ≠ v ∧ y ≠ v} := by
   ext e
-  rw [edgeSet_eq_setOf_exists_isLink]
-  simp only [splitOff_isLink, Set.mem_setOf_eq, Set.mem_union]
+  rw [edgeSet_eq_setOfPred_exists_isLink]
+  simp only [splitOff_isLink, Set.mem_ofPred_eq, Set.mem_union]
   constructor
   · rintro ⟨x, y, (⟨hne, h, hx, hy⟩ | ⟨rfl, ha, hb, haV, hbV, _⟩)⟩
     · exact Or.inr ⟨hne, x, y, h, hx, hy⟩
@@ -1205,7 +1206,7 @@ theorem exists_isLink_of_isMinimalKDof_card_three [DecidableEq β] [Finite α] [
   have hne2 : (E(G) \ {eₐ, e_b}).Nonempty := by
     by_contra h
     simp only [Set.not_nonempty_iff_eq_empty] at h
-    have hpair : E(G) ⊆ {eₐ, e_b} := Set.diff_eq_empty.mp h
+    have hpair : E(G) ⊆ {eₐ, e_b} := Set.sdiff_eq_empty.mp h
     have h2 : ({eₐ, e_b} : Set β).ncard = 2 := by
       rw [ncard_insert_of_notMem (by simp [heab]) (Set.finite_singleton _), ncard_singleton]
     exact absurd (Set.ncard_le_ncard hpair (Set.toFinite _)) (by omega)
@@ -1531,7 +1532,7 @@ lemma induce_insert_splitOff {G : Graph α β} {v a b : α} {e₀ : β} {S : Set
   · -- Vertex sets: both are `S`.
     simp only [vertexSet_splitOff]
     ext x
-    simp only [Set.mem_diff, Set.mem_singleton_iff]
+    simp only [Set.mem_sdiff, Set.mem_singleton_iff]
     exact ⟨fun ⟨hxins, hxnv⟩ => Or.resolve_left hxins hxnv,
            fun hxS => ⟨Or.inr hxS, fun h => hvS (h ▸ hxS)⟩⟩
   · -- Link relations: unfold both sides.
@@ -3140,14 +3141,14 @@ def candidateVtx (cd : G.ChainData n) (i : Fin cd.d) : α :=
 omit [DecidableEq α] [DecidableEq β] in
 /-- The panel→vertex selector at the head panel `Π₀` is the chain base `v₀ = vtx 0`. -/
 @[simp] lemma candidateVtx_zero (cd : G.ChainData n) (i : Fin cd.d) (hi : (i : ℕ) = 0) :
-    cd.candidateVtx i = cd.vtx 0 := by rw [candidateVtx, if_pos hi]
+    cd.candidateVtx i = cd.vtx 0 := by rw [candidateVtx, ite_eq_left hi]
 
 omit [DecidableEq α] [DecidableEq β] in
 /-- The panel→vertex selector at an interior panel `Πᵢ` (`0 < i`) is the chain vertex `v_{i+1} =
 vtx ⟨i+1, _⟩` (i.e. `vtx i.succ` as a `Fin (cd.d + 1)` index). -/
 @[simp] lemma candidateVtx_succ (cd : G.ChainData n) {i : Fin cd.d} (hi : 0 < (i : ℕ)) :
     cd.candidateVtx i = cd.vtx ⟨(i : ℕ) + 1, by omega⟩ := by
-  rw [candidateVtx, if_neg (by omega)]
+  rw [candidateVtx, ite_eq_right (by omega)]
 
 omit [DecidableEq α] [DecidableEq β] in
 /-- **The panel→vertex selector is injective** (CHAIN-2c-iii): the chain vertices `v₀, v₂, …, v_d`

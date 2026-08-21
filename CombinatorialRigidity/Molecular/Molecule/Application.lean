@@ -141,7 +141,7 @@ theorem molecule_rank_upper_bound {V : Type*} [Fintype V] [Nonempty V] (G : Simp
       G.shadowGraph.IsLink e (ends e).1 (ends e).2 := by
     intro e u v huv
     have hex : ∃ x y, G.shadowGraph.IsLink e x y := ⟨u, v, huv⟩
-    rw [hends_eq, dif_pos hex]
+    rw [hends_eq, dite_eq_left hex]
     exact hex.choose_spec.choose_spec
   have hshadow : ∀ u v, u ≠ v → ((∃ e, G.shadowGraph.IsLink e u v) ↔ G.Adj u v) :=
     fun u v _ => shadowGraph_isLink_iff G u v
@@ -332,7 +332,7 @@ theorem molecule_generic_square_packing {V : Type*} [Finite V] [Nonempty V] (G :
     haveI := G.shadowGraph_simple
     have hNeq : N(G.shadowGraph, v) = G.neighborSet v := by
       ext y
-      simp only [Graph.Neighbor, Set.mem_setOf_eq, SimpleGraph.mem_neighborSet, Graph.Adj,
+      simp only [Graph.Neighbor, Set.mem_ofPred_eq, SimpleGraph.mem_neighborSet, Graph.Adj,
         shadowGraph_isLink_iff]
     rwa [Graph.degree_eq_ncard_adj, hNeq, ncard_neighborSet_eq_degree] at h2
   exact G.molecule_generic_rigid hmin hdef hp

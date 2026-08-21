@@ -109,7 +109,7 @@ theorem hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant
       exact ⟨by rw [hVG]; exact Set.mem_union_right _ rfl, hv_c⟩
   have hV₂edgeless : E(G.induce (V(G) \ V₁)) = ∅ := by
     ext e
-    simp only [Graph.edgeSet_induce, Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]
+    simp only [Graph.edgeSet_induce, Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false]
     rintro ⟨a, b, hl, ha, hb⟩
     rw [hV₂eq, Set.mem_singleton_iff] at ha hb
     rw [ha, hb] at hl
@@ -468,7 +468,8 @@ theorem hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant
     (Set.ssubset_iff_of_subset hV₁sub).mpr ⟨v_c, by rw [hVG]; exact Set.mem_union_right _ rfl, hv_c⟩
   have hVcard : V₁.ncard + (V(G) \ V₁).ncard = V(G).ncard := by
     have hdisj : Disjoint V₁ (V(G) \ V₁) := Set.disjoint_sdiff_right
-    rw [← Set.ncard_union_eq hdisj (Set.toFinite V₁) (Set.toFinite _), Set.union_diff_cancel hV₁sub]
+    rw [← Set.ncard_union_eq hdisj (Set.toFinite V₁) (Set.toFinite _),
+      Set.union_sdiff_cancel hV₁sub]
   have hD1 : 1 ≤ Graph.bodyBarDim n := by omega
   have hdef : G.deficiency n = (G.induce V₁).deficiency n + (G.induce (V(G) \ V₁)).deficiency n
       + (Graph.bodyBarDim n : ℤ) - ((Graph.bodyBarDim n : ℤ) - 1) * (G.cutEdges V₁).ncard :=
@@ -476,7 +477,7 @@ theorem hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant
   have hFext : ∀ e u v, F.graph.IsLink e u v → F.supportExtensor e ≠ 0 := fun e _ _ _ => hextF_nz e
   have hFcut : ∀ e ∈ G.cutEdges V₁, ∃ a b, F.graph.IsLink e a b ∧ a ∈ V₁ ∧ b ∉ V₁ := by
     intro e he
-    simp only [Graph.cutEdges, Set.mem_setOf_eq] at he
+    simp only [Graph.cutEdges, Set.mem_ofPred_eq] at he
     obtain ⟨-, a, b, hlab, ha, hb⟩ := he
     exact ⟨a, b, hlab, ha, hb⟩
   have hFVne : V(F.graph).Nonempty := ⟨u_c, hV₁sub hu_c⟩
@@ -602,7 +603,7 @@ theorem hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant_
       exact ⟨by rw [hVG]; exact Set.mem_union_right _ rfl, hv_c⟩
   have hV₂edgeless : E(G.induce (V(G) \ V₁)) = ∅ := by
     ext e
-    simp only [Graph.edgeSet_induce, Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]
+    simp only [Graph.edgeSet_induce, Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false]
     rintro ⟨a, b, hl, ha, hb⟩
     rw [hV₂eq, Set.mem_singleton_iff] at ha hb
     rw [ha, hb] at hl
@@ -809,7 +810,7 @@ theorem hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant_
           · exact htriple (Set.mem_insert_of_mem _ (Set.mem_insert_of_mem _ rfl))
         have hHeq : G.closedHubNbhd v = (G.induce V₁).closedHubNbhd v := by
           ext w
-          simp only [Graph.closedHubNbhd, Set.mem_setOf_eq]
+          simp only [Graph.closedHubNbhd, Set.mem_ofPred_eq]
           constructor
           · rintro ⟨hwhub, hcase⟩
             have hwne_vc : w ≠ v_c := fun h => hvc_not_hub (h ▸ hwhub)
@@ -911,7 +912,8 @@ theorem hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant_
     (Set.ssubset_iff_of_subset hV₁sub).mpr ⟨v_c, by rw [hVG]; exact Set.mem_union_right _ rfl, hv_c⟩
   have hVcard : V₁.ncard + (V(G) \ V₁).ncard = V(G).ncard := by
     have hdisj : Disjoint V₁ (V(G) \ V₁) := Set.disjoint_sdiff_right
-    rw [← Set.ncard_union_eq hdisj (Set.toFinite V₁) (Set.toFinite _), Set.union_diff_cancel hV₁sub]
+    rw [← Set.ncard_union_eq hdisj (Set.toFinite V₁) (Set.toFinite _),
+      Set.union_sdiff_cancel hV₁sub]
   have hD1 : 1 ≤ Graph.bodyBarDim n := by omega
   have hdef : G.deficiency n = (G.induce V₁).deficiency n + (G.induce (V(G) \ V₁)).deficiency n
       + (Graph.bodyBarDim n : ℤ) - ((Graph.bodyBarDim n : ℤ) - 1) * (G.cutEdges V₁).ncard :=
@@ -919,7 +921,7 @@ theorem hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant_
   have hFext : ∀ e u v, F.graph.IsLink e u v → F.supportExtensor e ≠ 0 := fun e _ _ _ => hextF_nz e
   have hFcut : ∀ e ∈ G.cutEdges V₁, ∃ a b, F.graph.IsLink e a b ∧ a ∈ V₁ ∧ b ∉ V₁ := by
     intro e he
-    simp only [Graph.cutEdges, Set.mem_setOf_eq] at he
+    simp only [Graph.cutEdges, Set.mem_ofPred_eq] at he
     obtain ⟨-, a, b, hlab, ha, hb⟩ := he
     exact ⟨a, b, hlab, ha, hb⟩
   have hFVne : V(F.graph).Nonempty := ⟨u_c, hV₁sub hu_c⟩
@@ -993,7 +995,7 @@ theorem hasGenericPencilRealization_pendant_deg3_of_IH [Finite α] [Finite β] [
     rw [← Graph.degree_eq_ncard_adj (G := G) (x := u_c), hdeg]
   have hvc_mem : v_c ∈ N(G, u_c) := hl_c.adj
   have hdiff2 : (N(G, u_c) \ {v_c}).ncard = 2 := by
-    rw [Set.ncard_diff_singleton_of_mem hvc_mem, hNcard]
+    rw [Set.ncard_sdiff_singleton_of_mem hvc_mem, hNcard]
   obtain ⟨w₁, w₂, hw12, hdiffeq⟩ := Set.ncard_eq_two.mp hdiff2
   have hw₁mem : w₁ ∈ N(G, u_c) \ {v_c} := by rw [hdiffeq]; exact Set.mem_insert _ _
   have hw₂mem : w₂ ∈ N(G, u_c) \ {v_c} := by rw [hdiffeq]; exact Set.mem_insert_of_mem _ rfl
@@ -1083,7 +1085,7 @@ theorem pencilPair_of_not_twoEdgeConnected [Finite α] [Finite β] [Infinite K] 
   · -- ── `|C| = 1`: sub-cases 1/3/4, dispatched on which side (if either) is a pendant. ───────
     have hne₂ : V₂.Nonempty := Set.nonempty_of_ssubset hssub
     have hVcard : V₁.ncard + V₂.ncard = V(G).ncard := by
-      have hunion : V₁ ∪ V₂ = V(G) := Set.union_diff_cancel hssub.subset
+      have hunion : V₁ ∪ V₂ = V(G) := Set.union_sdiff_cancel hssub.subset
       have hdisj : Disjoint V₁ V₂ := Set.disjoint_sdiff_right
       rw [← hunion, Set.ncard_union_eq hdisj (Set.toFinite V₁) (Set.toFinite V₂)]
     have hV₁ne : V(G.induce V₁).Nonempty := hne
@@ -1093,11 +1095,11 @@ theorem pencilPair_of_not_twoEdgeConnected [Finite α] [Finite β] [Infinite K] 
     have hV₂ncard : V(G.induce V₂).ncard < V(G).ncard := by
       have hV₁pos : 0 < V₁.ncard := hne.ncard_pos
       rw [hVeq₂]; omega
-    simp only [Graph.cutEdges, Set.mem_setOf_eq] at he_c
+    simp only [Graph.cutEdges, Set.mem_ofPred_eq] at he_c
     obtain ⟨-, u_c, v_c, hl_c, hu_c, hv_c⟩ := he_c
     have hv_c₂ : v_c ∈ V₂ := ⟨hl_c.right_mem, hv_c⟩
     have hu_notin₂ : u_c ∉ V₂ := fun h => h.2 hu_c
-    have hV₂sub : V₂ ⊆ V(G) := Set.diff_subset
+    have hV₂sub : V₂ ⊆ V(G) := Set.sdiff_subset
     have hcut₂ : (G.cutEdges V₂).ncard ≤ 1 :=
       le_trans (Set.ncard_le_ncard (Graph.cutEdges_diff_subset G V₁) (Set.toFinite _)) hcut_le
     by_cases hV₂one : V₂.ncard = 1
@@ -1108,7 +1110,7 @@ theorem pencilPair_of_not_twoEdgeConnected [Finite α] [Finite β] [Infinite K] 
         rw [Set.mem_singleton_iff] at hav
         rw [ha, hav]
       have hVG : V(G) = V₁ ∪ {v_c} := by
-        rw [← hV₂eq]; exact (Set.union_diff_cancel hssub.subset).symm
+        rw [← hV₂eq]; exact (Set.union_sdiff_cancel hssub.subset).symm
       by_cases hdeg3 : G.degree u_c = 3
       · exact hasGenericPencilRealization_pendant_deg3_of_IH hD hn hSimple hfeas hl_c hu_c hv_c hVG
           hcut_le hdeg3 hIH
@@ -1135,7 +1137,7 @@ theorem pencilPair_of_not_twoEdgeConnected [Finite α] [Finite β] [Infinite K] 
           rw [Set.mem_singleton_iff] at hau
           rw [ha, hau]
         have hVG' : V(G) = V₂ ∪ {u_c} := by
-          rw [← hV₁eq]; exact (Set.diff_union_of_subset hssub.subset).symm
+          rw [← hV₁eq]; exact (Set.sdiff_union_of_subset hssub.subset).symm
         by_cases hdeg3' : G.degree v_c = 3
         · exact hasGenericPencilRealization_pendant_deg3_of_IH hD hn hSimple hfeas hl_c.symm hv_c₂
             hu_notin₂ hVG' hcut₂ hdeg3' hIH
@@ -1250,7 +1252,7 @@ theorem pencil_conjecture_of_arms_pair [Nonempty α] [Finite α] [Finite β] [De
     · rw [Graph.vertexSet_deleteEdges]; exact ⟨x, hloopAt.left_mem⟩
     · rw [Graph.vertexSet_deleteEdges]
     · rw [Graph.edgeSet_deleteEdges]
-      exact Set.ncard_diff_singleton_lt_of_mem hloopAt.edge_mem
+      exact Set.ncard_sdiff_singleton_lt_of_mem hloopAt.edge_mem
   have hbase_arm : ∀ G : Graph α β, G.Loopless → V(G).Nonempty → V(G).ncard ≤ 2 →
       PencilPair K 3 G :=
     fun G hloop hne hV2 => pencilPair_of_ncard_le_two hloop hne hV2

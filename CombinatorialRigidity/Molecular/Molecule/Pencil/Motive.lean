@@ -744,12 +744,12 @@ theorem _root_.Graph.degree_induce_union_singleton_far [Finite β] {G : Graph α
   have huw : u₀ ≠ w₀ := fun h => hw₀ (h ▸ hu₀)
   have hloops : {e | (G.induce (V₁ ∪ {w₀})).IsLoopAt e w₀} = ∅ := by
     ext e
-    simp only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]
+    simp only [Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false]
     exact fun h =>
       G.not_isLoopAt e w₀ ((Graph.induce_isLink G (V₁ ∪ {w₀}) e w₀ w₀).mp h).1
   have hnonloops : {e | (G.induce (V₁ ∪ {w₀})).IsNonloopAt e w₀} = {e₀} := by
     ext e
-    simp only [Set.mem_setOf_eq, Set.mem_singleton_iff]
+    simp only [Set.mem_ofPred_eq, Set.mem_singleton_iff]
     constructor
     · rintro ⟨y, hyw, hl⟩
       obtain ⟨hlG, -, hy⟩ := (Graph.induce_isLink G (V₁ ∪ {w₀}) e w₀ y).mp hl
@@ -834,7 +834,7 @@ theorem _root_.Graph.deficiency_induce_union_singleton [Finite α] [Finite β] {
       ⟨u₀, Set.mem_union_left _ hu₀, fun h => hw₀ (h ▸ hu₀)⟩
   have hcut' : Gp.cutEdges {w₀} = {e₀} := by
     ext e
-    simp only [Graph.cutEdges, Set.mem_setOf_eq, Set.mem_singleton_iff]
+    simp only [Graph.cutEdges, Set.mem_ofPred_eq, Set.mem_singleton_iff]
     constructor
     · rintro ⟨-, x, y, hl, hx, hy⟩
       obtain ⟨hlG, -, hyV⟩ := (Graph.induce_isLink G (V₁ ∪ {w₀}) e x y).mp hl
@@ -850,12 +850,12 @@ theorem _root_.Graph.deficiency_induce_union_singleton [Finite α] [Finite β] {
     (by rw [hcut', Set.ncard_singleton])
   have hdiff : V(Gp) \ {w₀} = V₁ := by
     ext x
-    simp only [Set.mem_diff, Set.mem_singleton_iff]
+    simp only [Set.mem_sdiff, Set.mem_singleton_iff]
     exact ⟨fun ⟨hx, hxw⟩ => (hx.resolve_right hxw : x ∈ V₁),
       fun hx => ⟨Set.mem_union_left _ hx, fun h => hw₀ (h ▸ hx)⟩⟩
   have hE : E(Gp.induce {w₀}) = ∅ := by
     ext e
-    simp only [Graph.edgeSet_induce, Set.mem_setOf_eq, Set.mem_singleton_iff,
+    simp only [Graph.edgeSet_induce, Set.mem_ofPred_eq, Set.mem_singleton_iff,
       Set.mem_empty_iff_false, iff_false]
     rintro ⟨x, y, hl, hx, hy⟩
     rw [hx, hy] at hl
@@ -1094,11 +1094,11 @@ theorem _root_.Graph.degree_eq_degree_induce_succ [Finite β] {G : Graph α β} 
     G.degree u₀ = (G.induce V₁).degree u₀ + 1 := by
   have hloopG : {e | G.IsLoopAt e u₀} = ∅ := by
     ext e
-    simp only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]
+    simp only [Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false]
     exact G.not_isLoopAt e u₀
   have hloopH : {e | (G.induce V₁).IsLoopAt e u₀} = ∅ := by
     ext e
-    simp only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]
+    simp only [Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false]
     intro h
     exact G.not_isLoopAt e u₀ ((Graph.induce_isLink G V₁ e u₀ u₀).mp h).1
   have hwu : w₀ ≠ u₀ := fun h => hw₀ (h ▸ hu₀)
@@ -1110,7 +1110,7 @@ theorem _root_.Graph.degree_eq_degree_induce_succ [Finite β] {G : Graph α β} 
   have hnonloop_eq :
       {e | G.IsNonloopAt e u₀} = insert e₀ {e | (G.induce V₁).IsNonloopAt e u₀} := by
     ext e
-    simp only [Set.mem_setOf_eq, Set.mem_insert_iff]
+    simp only [Set.mem_ofPred_eq, Set.mem_insert_iff]
     constructor
     · rintro ⟨y, hyu, hl⟩
       by_cases hy₁ : y ∈ V₁

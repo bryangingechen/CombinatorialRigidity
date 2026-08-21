@@ -58,7 +58,7 @@ noncomputable def _root_.Graph.ChainData.shiftSeedSwap [DecidableEq α] {G : Gra
 theorem _root_.Graph.ChainData.shiftSeedSwap_eq [DecidableEq α] {G : Graph α β} {n : ℕ}
     (cd : G.ChainData n) {s : ℕ} (hs : s + 2 < cd.d + 1) :
     cd.shiftSeedSwap s = Equiv.swap (cd.vtx ⟨s + 2, hs⟩) (cd.vtx ⟨s + 1, by omega⟩) := by
-  rw [Graph.ChainData.shiftSeedSwap, dif_pos hs]
+  rw [Graph.ChainData.shiftSeedSwap, dite_eq_left hs]
 
 /-- **The ascending (base→candidate) seed accumulator** (CHAIN-2c-ii-arm; KT 2011 §6.4.2 eq.~(6.62),
 the seed-advance recursion). The seed at chain step `s`: the base seed `q` post-composed (on the
@@ -141,7 +141,7 @@ theorem _root_.Graph.ChainData.shiftBodyFrameworkAscTotal_eq [DecidableEq α] {G
     {n : ℕ} (cd : G.ChainData n) (ends : β → α × α) (q : α × Fin (k + 2) → K) {s : ℕ}
     (hs : s + 1 < cd.d + 1) :
     cd.shiftBodyFrameworkAscTotal ends q s = cd.shiftBodyFrameworkAsc hs ends q := by
-  rw [Graph.ChainData.shiftBodyFrameworkAscTotal, dif_pos hs]
+  rw [Graph.ChainData.shiftBodyFrameworkAscTotal, dite_eq_left hs]
 
 /-- **The concrete ascending (base→candidate) seed-advancing fold** (CHAIN-2c-ii-arm, the membership
 half feeding the `foldl` core; `notes/Phase23-design.md` §(o‴)(H.10)). The seed-advancing analogue
@@ -206,7 +206,7 @@ theorem _root_.Graph.ChainData.shiftBodyListAsc_foldl_mem_span_rigidityRows
       = (cd.vtx ⟨s + 1, by omega⟩, cd.vtx ⟨s + 2, by omega⟩, cd.vtx ⟨s + 3, by omega⟩) :=
     cd.getElem_shiftBodyListAsc i s (by rw [cd.length_shiftBodyListAsc]; omega)
   have hec : (if h : s + 2 < cd.d then cd.edge ⟨s + 2, h⟩
-      else cd.edge ⟨0, by have := cd.hd; omega⟩) = cd.edge ⟨s + 2, hsd⟩ := dif_pos hsd
+      else cd.edge ⟨0, by have := cd.hd; omega⟩) = cd.edge ⟨s + 2, hsd⟩ := dite_eq_left hsd
   -- Resolve the total chain `F (s+1)`/`F s`/`ec s` to the partial chain and read the moved-body
   -- triple `(shiftBodyListAsc i)[s] = (vₛ₊₁, vₛ₊₂, vₛ₊₃)`. The `foldl` core's per-step `hstep` then
   -- reads the gate's `(v, a, c) = (vtx (s+1), vtx (s+2), vtx (s+3))` roles.

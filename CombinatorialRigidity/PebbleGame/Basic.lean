@@ -418,8 +418,8 @@ lemma out_reverse_of_not_endpoint
   have h_eq : (if v ∈ p.vertices ∧ v ≠ w then 1 else 0 : ℕ) =
       (if v ∈ p.vertices ∧ v ≠ u then 1 else 0) := by
     by_cases hmem : v ∈ p.vertices
-    · rw [if_pos ⟨hmem, hw⟩, if_pos ⟨hmem, hu⟩]
-    · rw [if_neg (fun h => hmem h.1), if_neg (fun h => hmem h.1)]
+    · rw [ite_eq_left ⟨hmem, hw⟩, ite_eq_left ⟨hmem, hu⟩]
+    · rw [ite_eq_right (fun h => hmem h.1), ite_eq_right (fun h => hmem h.1)]
   omega
 
 /-- Head endpoint: the initial vertex of a non-nil reversed path loses one
@@ -432,7 +432,7 @@ lemma out_reverse_head
   have h := D.out_reverse_add p hp u
   have h_mem : u ∈ p.vertices := p.head_mem_vertices
   have h_ne : u ≠ w := hp.head_ne_tail_of_pos hpos
-  rw [if_pos ⟨h_mem, h_ne⟩, if_neg (fun ⟨_, h⟩ => h rfl)] at h
+  rw [ite_eq_left ⟨h_mem, h_ne⟩, ite_eq_right (fun ⟨_, h⟩ => h rfl)] at h
   omega
 
 /-- Tail endpoint: the terminal vertex of a non-nil reversed path gains one
@@ -445,7 +445,7 @@ lemma out_reverse_tail
   have h := D.out_reverse_add p hp w
   have h_mem : w ∈ p.vertices := p.tail_mem_vertices
   have h_ne : w ≠ u := (hp.head_ne_tail_of_pos hpos).symm
-  rw [if_neg (fun ⟨_, h⟩ => h rfl), if_pos ⟨h_mem, h_ne⟩] at h
+  rw [ite_eq_right (fun ⟨_, h⟩ => h rfl), ite_eq_left ⟨h_mem, h_ne⟩] at h
   omega
 
 /-- The pebble count is unchanged at vertices distinct from both endpoints of
@@ -661,7 +661,7 @@ lemma out_addArc_source (u v : V) (huv : u ≠ v) (hnotin_rev : (v, u) ∉ D.arc
     (hnotin : (u, v) ∉ D.arcs) :
     (D.addArc u v huv hnotin_rev).out u = D.out u + 1 := by
   simp only [out_eq_card_filter_fst, arcs_addArc]
-  rw [Finset.filter_insert, if_pos rfl]
+  rw [Finset.filter_insert, ite_eq_left rfl]
   exact Finset.card_insert_of_notMem
     (by rw [Finset.mem_filter]; exact fun h => hnotin h.1)
 
@@ -672,7 +672,7 @@ lemma out_addArc_of_ne_source (u v : V) (huv : u ≠ v) (hnotin_rev : (v, u) ∉
     {x : V} (hxu : x ≠ u) :
     (D.addArc u v huv hnotin_rev).out x = D.out x := by
   simp only [out_eq_card_filter_fst, arcs_addArc]
-  rw [Finset.filter_insert, if_neg (fun h => hxu h.symm)]
+  rw [Finset.filter_insert, ite_eq_right (fun h => hxu h.symm)]
 
 /-- Adding the arc `(u, v)` to `D` drops the pebble count at `u` by `1`,
 under the precondition `D.out u < k` (a free pebble at `u`; cf.
@@ -709,11 +709,11 @@ lemma span_addArc (u v : V) (huv : u ≠ v) (hnotin_rev : (v, u) ∉ D.arcs)
       = D.span V' + (if u ∈ V' ∧ v ∈ V' then 1 else 0) := by
   simp only [span, spanArcs, arcs_addArc, Finset.filter_insert]
   by_cases h : u ∈ V' ∧ v ∈ V'
-  · rw [if_pos h, if_pos h]
+  · rw [ite_eq_left h, ite_eq_left h]
     refine Finset.card_insert_of_notMem ?_
     rw [Finset.mem_filter]
     exact fun ⟨h_in, _⟩ => hnotin h_in
-  · rw [if_neg h, if_neg h, Nat.add_zero]
+  · rw [ite_eq_right h, ite_eq_right h, Nat.add_zero]
 
 /-- Out-boundary of `V'` rises by `1` exactly when the inserted arc has its
 source in `V'` and its head outside `V'`, and is unchanged otherwise. -/
@@ -723,11 +723,11 @@ lemma outOn_addArc (u v : V) (huv : u ≠ v) (hnotin_rev : (v, u) ∉ D.arcs)
       = D.outOn V' + (if u ∈ V' ∧ v ∉ V' then 1 else 0) := by
   simp only [outOn, boundaryArcs, arcs_addArc, Finset.filter_insert]
   by_cases h : u ∈ V' ∧ v ∉ V'
-  · rw [if_pos h, if_pos h]
+  · rw [ite_eq_left h, ite_eq_left h]
     refine Finset.card_insert_of_notMem ?_
     rw [Finset.mem_filter]
     exact fun ⟨h_in, _⟩ => hnotin h_in
-  · rw [if_neg h, if_neg h, Nat.add_zero]
+  · rw [ite_eq_right h, ite_eq_right h, Nat.add_zero]
 
 /-- Total pebble count on `V'` drops by `1` exactly when the source vertex `u`
 lies in `V'`, and is unchanged otherwise. Stated additively (so that ℕ-
@@ -743,7 +743,7 @@ lemma pebOn_addArc (u v : V) (huv : u ≠ v) (hnotin_rev : (v, u) ∉ D.arcs)
     -- residual sum over `V'.erase u` agrees between `D` and `D.addArc …` by
     -- `peb_addArc_of_ne_source`; the `u`-term shifts by `1` by
     -- `peb_addArc_source` (under `D.out u < k`).
-    rw [if_pos hu]
+    rw [ite_eq_left hu]
     simp only [pebOn]
     rw [← Finset.add_sum_erase _ _ hu, ← Finset.add_sum_erase _ _ hu]
     have h_peb_u : (D.addArc u v huv hnotin_rev).peb k u + 1 = D.peb k u := by
@@ -756,7 +756,7 @@ lemma pebOn_addArc (u v : V) (huv : u ≠ v) (hnotin_rev : (v, u) ∉ D.arcs)
     rw [h_peb_rest]
     omega
   · -- `u ∉ V'`: every `x ∈ V'` has `x ≠ u`, so new `peb` agrees with old.
-    rw [if_neg hu, Nat.add_zero]
+    rw [ite_eq_right hu, Nat.add_zero]
     refine Finset.sum_congr rfl (fun x hx => ?_)
     exact D.peb_addArc_of_ne_source u v huv hnotin_rev k (fun heq => hu (heq ▸ hx))
 
@@ -949,10 +949,10 @@ lemma Reachable.pebOn_add_outOn_ge {D : PartialOrientation V}
     have h_combined :=
       D'.pebOn_add_outOn_addArc_add a b hab hnotin_rev hnotin ha_out V'
     by_cases hboth : a ∈ V' ∧ b ∈ V'
-    · rw [if_pos hboth] at h_combined
+    · rw [ite_eq_left hboth] at h_combined
       have h_pair := peb_pair_le_pebOn D' k hab hboth.1 hboth.2
       omega
-    · rw [if_neg hboth] at h_combined
+    · rw [ite_eq_right hboth] at h_combined
       omega
 
 /-- L-S Invariant (4): on a reachable orientation, `span V' + ℓ ≤ k * V'.card`

@@ -201,7 +201,7 @@ theorem IsLaman.exists_typeI_or_typeII_reverse [Fintype V]
       rw [hG'_def, sup_adj]
       exact Or.inr ((fromEdgeSet_adj _).mpr ⟨rfl, hxy⟩)
     have h_diff : (G'.edgeSet \ {s(x, y)}).ncard + 1 = G'.edgeSet.ncard :=
-      Set.ncard_diff_singleton_add_one hbridge (Set.toFinite _)
+      Set.ncard_sdiff_singleton_add_one hbridge (Set.toFinite _)
     exact ⟨hG'sparse, by omega⟩
 
 end Henneberg

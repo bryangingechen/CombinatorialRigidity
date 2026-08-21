@@ -181,11 +181,11 @@ theorem hingeAnnihRowPoly_eval (e : β) (q : β × Fin k × Fin (k + 1) → K)
     mul_ite, mul_one, mul_zero]
   congr 1
   · rcases eq_or_ne t₂ s with h | h
-    · rw [if_pos h, if_pos h.symm]
-    · rw [if_neg h, if_neg fun h' => h h'.symm]
+    · rw [ite_eq_left h, ite_eq_left h.symm]
+    · rw [ite_eq_right h, ite_eq_right fun h' => h h'.symm]
   · rcases eq_or_ne t₁ s with h | h
-    · rw [if_pos h, if_pos h.symm]
-    · rw [if_neg h, if_neg fun h' => h h'.symm]
+    · rw [ite_eq_left h, ite_eq_left h.symm]
+    · rw [ite_eq_right h, ite_eq_right fun h' => h h'.symm]
 
 /-- **A hinge-point assignment generic for row independence** (`def:generic-hinge-points`; the
 Phase-24 transfer form, Jackson–Jordán 2010 §6, Phase 34). The assignment `q` is *generic* when
@@ -260,7 +260,7 @@ theorem exists_isGenericHingePoints_abundance [Finite α] [Finite β] (ends : β
     rw [hingePointRow, hingeRow_apply, MvPolynomial.smul_eval, hingeAnnihRowPoly_eval,
       Pi.single_apply, Pi.single_apply]
     by_cases hu : (ends i.1).1 = a <;> by_cases hv : (ends i.1).2 = a <;>
-      simp only [hu, hv, if_true, if_false, sub_zero, zero_sub, sub_self, map_zero,
+      simp only [hu, hv, ite_true, ite_false, sub_zero, zero_sub, sub_self, map_zero,
         map_neg, one_mul, neg_mul, zero_mul]
   -- Per subfamily `s`: a nonzero witnessing polynomial (the constant `1` for the vacuous case).
   have key : ∀ s : Set (β × Set.powersetCard (Fin (k + 2)) k
@@ -413,8 +413,8 @@ theorem supportExtensor_ofHinge_ne_zero_of_isGenericHingePoints (hk1 : 1 ≤ k)
   -- `annihRow refExt tref t1` is nonzero: it reads off `refExt`'s `tref`-coordinate at
   -- `screwBasis k t1`.
   have hrow_ne : annihRow refExt tref t1 (screwBasis k t1) ≠ 0 := by
-    rw [annihRow_apply, Module.Basis.repr_self_apply, Module.Basis.repr_self_apply, if_pos rfl,
-      if_neg ht1, mul_one, mul_zero, sub_zero]
+    rw [annihRow_apply, Module.Basis.repr_self_apply, Module.Basis.repr_self_apply, ite_eq_left rfl,
+      ite_eq_right ht1, mul_one, mul_zero, sub_zero]
     exact htref
   -- Transported by `hingeRow`, the row is nonzero (`screwDiff` is surjective at `u ≠ v`).
   have hhinge_ne : hingeRow (k := k) (ends e).1 (ends e).2 (annihRow refExt tref t1) ≠ 0 := by
@@ -670,7 +670,7 @@ private theorem screwSpace_equivExteriorPower_mk {k : ℕ} (v : ExteriorAlgebra 
 flagged: an equiv from `map g ∘ map g⁻¹ = id`. -/
 noncomputable def screwEquivOfLinearEquiv (g : (Fin (k + 2) → K) ≃ₗ[K] (Fin (k + 2) → K)) :
     ScrewSpace K k ≃ₗ[K] ScrewSpace K k :=
-  LinearEquiv.ofLinear
+  LinearEquiv.ofLinearMap
     ((ScrewSpace.equivExteriorPower K k).symm.toLinearMap ∘ₗ exteriorPower.map k g.toLinearMap ∘ₗ
       (ScrewSpace.equivExteriorPower K k).toLinearMap)
     ((ScrewSpace.equivExteriorPower K k).symm.toLinearMap ∘ₗ

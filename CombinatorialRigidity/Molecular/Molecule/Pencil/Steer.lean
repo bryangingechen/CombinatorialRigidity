@@ -453,21 +453,21 @@ theorem pencilNondegFeasible_induce_of_pendant_deg3 [Finite α] [Finite β] [Inf
         refine ⟨seed₀.toCoord, ?_⟩
         rw [hpt_eq]
         by_cases hv : G.PencilHub v
-        · rw [if_pos hv]
+        · rw [ite_eq_left hv]
           exact (linearIndepOn_singleton_iff K).mpr (pencilChartPoint_ne_zero seed₀ (hWF₀.2.2.1 v))
-        · rw [if_neg hv]
+        · rw [ite_eq_right hv]
           exact linearIndepOn_pencilChartPoint_closedNbhd seed₀ (hWF₀.2.1 v hv) (hWF₀.2.2.2.1 v hv)
       · -- conjunct 5 (adjacent pairs): satisfiable at the flattening.
         change ∃ q, LinearIndepOn K (pencilChartPoint (PencilSeed.ofCoord q) hubSel)
           (if G.Adj u v then ({u, v} : Set α) else ∅)
         by_cases hadj : G.Adj u v
-        · rw [if_pos hadj]
+        · rw [ite_eq_left hadj]
           obtain ⟨e, he⟩ := hadj
           refine ⟨seed₀.toCoord, ?_⟩
           rw [hpt_eq]
           exact (LinearIndepOn.pair_iff (pencilChartPoint seed₀ hubSel) he.ne).mpr
             (LinearIndependent.pair_iff.mp (hWF₀.2.2.2.2 e u v he))
-        · rw [if_neg hadj]
+        · rw [ite_eq_right hadj]
           exact ⟨seed₀.toCoord, linearIndepOn_empty K _⟩
       · -- the demoted triple: satisfiable at witness (i)'s seed.
         change ∃ q, LinearIndepOn K (pencilChartPoint (PencilSeed.ofCoord q) hubSel)
@@ -483,11 +483,11 @@ theorem pencilNondegFeasible_induce_of_pendant_deg3 [Finite α] [Finite β] [Inf
     by_cases hv : G.PencilHub v
     · have h : LinearIndepOn K (pencilChartPoint seed hubSel)
           (if G.PencilHub v then ({v} : Set α) else G.closedNbhd v) := hq (Sum.inl v)
-      rw [if_pos hv] at h
+      rw [ite_eq_left hv] at h
       exact (linearIndepOn_singleton_iff K).mp h
     · have h : LinearIndepOn K (pencilChartPoint seed hubSel)
           (if G.PencilHub v then ({v} : Set α) else G.closedNbhd v) := hq (Sum.inl v)
-      rw [if_neg hv] at h
+      rw [ite_eq_right hv] at h
       exact (linearIndepOn_singleton_iff K).mp (h.mono (Set.singleton_subset_iff.mpr (Or.inl rfl)))
   have hhub_LI : ∀ v, LinearIndependent K
       ![hubSlotNormal seed hubSel v 0, hubSlotNormal seed hubSel v 1,
@@ -501,7 +501,7 @@ theorem pencilNondegFeasible_induce_of_pendant_deg3 [Finite α] [Finite β] [Inf
     intro e u v hl
     have h : LinearIndepOn K (pencilChartPoint seed hubSel)
         (if G.Adj u v then ({u, v} : Set α) else ∅) := hq (Sum.inr (Sum.inl (u, v)))
-    rw [if_pos hl.adj] at h
+    rw [ite_eq_left hl.adj] at h
     rw [LinearIndependent.pair_iff]
     exact (LinearIndepOn.pair_iff (pencilChartPoint seed hubSel) hl.ne).mp h
   have hnbr_some : ∀ v, ¬ G.PencilHub v → LinearIndepOn K (nbrSlotPoint seed hubSel nbrSel v)
@@ -509,7 +509,7 @@ theorem pencilNondegFeasible_induce_of_pendant_deg3 [Finite α] [Finite β] [Inf
     intro v hv
     have h : LinearIndepOn K (pencilChartPoint seed hubSel)
         (if G.PencilHub v then ({v} : Set α) else G.closedNbhd v) := hq (Sum.inl v)
-    rw [if_neg hv] at h
+    rw [ite_eq_right hv] at h
     exact linearIndepOn_nbrSlotPoint_isSome_of_pencilChartPoint seed (hWF₀.2.1 v hv) h
   -- Post-steering `fillNbr` re-choice: full `PencilChartWF` at a point-preserving seed.
   obtain ⟨seed', hhub_eq, hfill_eq, hWF'⟩ :=
@@ -1090,9 +1090,9 @@ theorem exists_isNondegPencilRealization_induce_promotedNormal_of_pendant_deg3
         (if (G.induce V₁).PencilHub v then ({v} : Set α) else (G.induce V₁).closedNbhd v) := by
       rw [hpt_eq]
       by_cases hv : (G.induce V₁).PencilHub v
-      · rw [if_pos hv]
+      · rw [ite_eq_left hv]
         exact (linearIndepOn_singleton_iff K).mpr (pencilChartPoint_ne_zero seed₁ (hWF₁.2.2.1 v))
-      · rw [if_neg hv]
+      · rw [ite_eq_right hv]
         exact linearIndepOn_pencilChartPoint_closedNbhd seed₁ (hWF₁.2.1 v hv) (hWF₁.2.2.2.1 v hv)
     obtain ⟨Q, hQ0, hQ⟩ :=
       exists_polynomial_ne_zero_of_linearIndependent_pencilChartPoint hubSel id hwit
@@ -1107,12 +1107,12 @@ theorem exists_isNondegPencilRealization_induce_promotedNormal_of_pendant_deg3
     have hwit : LinearIndepOn K (pencilChartPoint (PencilSeed.ofCoord seed₁.toCoord) hubSel)
         (if (G.induce V₁).Adj u v then ({u, v} : Set α) else ∅) := by
       by_cases hadj : (G.induce V₁).Adj u v
-      · rw [if_pos hadj]
+      · rw [ite_eq_left hadj]
         obtain ⟨e, he⟩ := hadj
         rw [hpt_eq]
         exact (LinearIndepOn.pair_iff (pencilChartPoint seed₁ hubSel) he.ne).mpr
           (LinearIndependent.pair_iff.mp (hWF₁.2.2.2.2 e u v he))
-      · rw [if_neg hadj]; exact linearIndepOn_empty K _
+      · rw [ite_eq_right hadj]; exact linearIndepOn_empty K _
     obtain ⟨Q, hQ0, hQ⟩ :=
       exists_polynomial_ne_zero_of_linearIndependent_pencilChartPoint hubSel id hwit
     exact ⟨Q, ⟨seed₁.toCoord, hQ0⟩, fun q hq => hQ q hq⟩
@@ -1160,9 +1160,9 @@ theorem exists_isNondegPencilRealization_induce_promotedNormal_of_pendant_deg3
   have hptnz : ∀ v, pencilChartPoint (PencilSeed.ofCoord q) hubSel v ≠ 0 := by
     intro v
     by_cases hv : (G.induce V₁).PencilHub v
-    · have h := hcondA v; rw [if_pos hv] at h
+    · have h := hcondA v; rw [ite_eq_left hv] at h
       exact (linearIndepOn_singleton_iff K).mp h
-    · have h := hcondA v; rw [if_neg hv] at h
+    · have h := hcondA v; rw [ite_eq_right hv] at h
       exact (linearIndepOn_singleton_iff K).mp (h.mono (Set.singleton_subset_iff.mpr (Or.inl rfl)))
   have hhub_LI : ∀ v, LinearIndependent K
       ![hubSlotNormal (PencilSeed.ofCoord q) hubSel v 0,
@@ -1176,14 +1176,14 @@ theorem exists_isNondegPencilRealization_induce_promotedNormal_of_pendant_deg3
       ![pencilChartPoint (PencilSeed.ofCoord q) hubSel u,
         pencilChartPoint (PencilSeed.ofCoord q) hubSel v] := by
     intro e u v hl
-    have h := hcondB u v; rw [if_pos hl.adj] at h
+    have h := hcondB u v; rw [ite_eq_left hl.adj] at h
     rw [LinearIndependent.pair_iff]
     exact (LinearIndepOn.pair_iff (pencilChartPoint (PencilSeed.ofCoord q) hubSel) hl.ne).mp h
   have hnbr_some : ∀ v, ¬ (G.induce V₁).PencilHub v →
       LinearIndepOn K (nbrSlotPoint (PencilSeed.ofCoord q) hubSel nbrSel v)
         {i | (nbrSel v i).isSome} := by
     intro v hv
-    have h := hcondA v; rw [if_neg hv] at h
+    have h := hcondA v; rw [ite_eq_right hv] at h
     exact linearIndepOn_nbrSlotPoint_isSome_of_pencilChartPoint (PencilSeed.ofCoord q)
       (hWF₁.2.1 v hv) h
   -- ── Post-steering `fillNbr` re-choice: full `PencilChartWF` at a point-preserving seed. ────────
@@ -1295,11 +1295,11 @@ theorem pencilNondegFeasible_of_selectors_of_satisfiable [Finite α] [Finite β]
     by_cases hv : G.PencilHub v
     · have h : LinearIndepOn K (pencilChartPoint seed hubSel)
           (if G.PencilHub v then ({v} : Set α) else G.closedNbhd v) := hq (Sum.inl v)
-      rw [if_pos hv] at h
+      rw [ite_eq_left hv] at h
       exact (linearIndepOn_singleton_iff K).mp h
     · have h : LinearIndepOn K (pencilChartPoint seed hubSel)
           (if G.PencilHub v then ({v} : Set α) else G.closedNbhd v) := hq (Sum.inl v)
-      rw [if_neg hv] at h
+      rw [ite_eq_right hv] at h
       exact (linearIndepOn_singleton_iff K).mp (h.mono (Set.singleton_subset_iff.mpr (Or.inl rfl)))
   have hhub_LI : ∀ v, LinearIndependent K
       ![hubSlotNormal seed hubSel v 0, hubSlotNormal seed hubSel v 1,
@@ -1313,7 +1313,7 @@ theorem pencilNondegFeasible_of_selectors_of_satisfiable [Finite α] [Finite β]
     intro e u v hl
     have h : LinearIndepOn K (pencilChartPoint seed hubSel)
         (if G.Adj u v then ({u, v} : Set α) else ∅) := hq (Sum.inr (u, v))
-    rw [if_pos hl.adj] at h
+    rw [ite_eq_left hl.adj] at h
     rw [LinearIndependent.pair_iff]
     exact (LinearIndepOn.pair_iff (pencilChartPoint seed hubSel) hl.ne).mp h
   have hnbr_some : ∀ v, ¬ G.PencilHub v → LinearIndepOn K (nbrSlotPoint seed hubSel nbrSel v)
@@ -1321,7 +1321,7 @@ theorem pencilNondegFeasible_of_selectors_of_satisfiable [Finite α] [Finite β]
     intro v hv
     have h : LinearIndepOn K (pencilChartPoint seed hubSel)
         (if G.PencilHub v then ({v} : Set α) else G.closedNbhd v) := hq (Sum.inl v)
-    rw [if_neg hv] at h
+    rw [ite_eq_right hv] at h
     exact linearIndepOn_nbrSlotPoint_isSome_of_pencilChartPoint seed (hNbrSel v hv) h
   obtain ⟨seed', hhub_eq, hfill_eq, hWF'⟩ :=
     exists_fillNbr_pencilChartWF_of_standing hHubSel hNbrSel hhub_LI hpt_LI hnbr_some

@@ -706,7 +706,7 @@ theorem omitTwoExtensor_linearIndependent_of_li {e : ℕ} (v : Fin (e + 2) → F
     · obtain ⟨rfl, rfl⟩ : c = a ∧ d = b := by
         simpa [Subtype.ext_iff, Prod.ext_iff] using hq
       simp [hq]
-    · rw [if_neg hq]
+    · rw [ite_eq_right hq]
       -- `{a, b} ≠ {c, d}` as finsets, since the ordered pairs differ (both increasing).
       have hne : ({a, b} : Finset (Fin (e + 2))) ≠ {c, d} := by
         intro h
@@ -719,7 +719,7 @@ theorem omitTwoExtensor_linearIndependent_of_li {e : ℕ} (v : Fin (e + 2) → F
       rw [join_pair_omitTwo_other_eq_zero v hab (ne_of_lt hcdlt) hne, smul_zero]
   rw [Finset.sum_congr rfl (fun q _ => hterm q), Finset.sum_ite_eq' Finset.univ
     (⟨(a, b), hablt⟩ : {q : Fin (e + 2) × Fin (e + 2) // q.1 < q.2})] at key
-  simp only [Finset.mem_univ, if_true] at key
+  simp only [Finset.mem_univ, ite_true] at key
   -- `g q₀ • T = 0` with `T ≠ 0` forces `g q₀ = 0`.
   exact (smul_eq_zero.mp key).resolve_right (join_pair_omitTwo_self_ne_zero hv hab)
 

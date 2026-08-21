@@ -194,7 +194,7 @@ theorem neighborSet_square_of_degree_eq_one {G : SimpleGraph V} {v u : V}
     [Fintype (G.neighborSet v)] (hdeg : G.degree v = 1) (hu : G.Adj v u) :
     G.square.neighborSet v = G.closedNeighborSet u \ {v} := by
   ext w
-  simp only [mem_neighborSet, square_adj, Set.mem_diff, mem_closedNeighborSet,
+  simp only [mem_neighborSet, square_adj, Set.mem_sdiff, mem_closedNeighborSet,
     Set.mem_singleton_iff]
   constructor
   · rintro ⟨hvw, hadj | hcn⟩
@@ -216,7 +216,7 @@ theorem ncard_neighborSet_square_of_degree_eq_one {G : SimpleGraph V} {v u : V}
     (G.square.neighborSet v).ncard = G.degree u := by
   classical
   rw [neighborSet_square_of_degree_eq_one hdeg hu,
-    Set.ncard_diff_singleton_of_mem (mem_closedNeighborSet.mpr (Or.inr hu.symm)),
+    Set.ncard_sdiff_singleton_of_mem (mem_closedNeighborSet.mpr (Or.inr hu.symm)),
     ncard_closedNeighborSet]
   omega
 
@@ -227,7 +227,7 @@ theorem isClique_neighborSet_square_of_degree_eq_one {G : SimpleGraph V} {v u : 
     [Fintype (G.neighborSet v)] (hdeg : G.degree v = 1) (hu : G.Adj v u) :
     G.square.IsClique (G.square.neighborSet v) := by
   rw [neighborSet_square_of_degree_eq_one hdeg hu]
-  exact (isClique_closedNeighborSet_square G u).subset Set.diff_subset
+  exact (isClique_closedNeighborSet_square G u).subset Set.sdiff_subset
 
 /-! ## Restriction to a support-covering vertex set
 

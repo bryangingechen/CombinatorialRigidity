@@ -76,11 +76,11 @@ private noncomputable def zeroOutsideV₁ (V₁ : Set α) :
 
 @[simp]
 private lemma zeroOutsideV₁_mem (V₁ : Set α) (S : α → ScrewSpace K k) {a : α} (ha : a ∈ V₁) :
-    zeroOutsideV₁ V₁ S a = S a := if_pos ha
+    zeroOutsideV₁ V₁ S a = S a := ite_eq_left ha
 
 @[simp]
 private lemma zeroOutsideV₁_not_mem (V₁ : Set α) (S : α → ScrewSpace K k) {a : α} (ha : a ∉ V₁) :
-    zeroOutsideV₁ V₁ S a = 0 := if_neg ha
+    zeroOutsideV₁ V₁ S a = 0 := ite_eq_right ha
 
 /-- A hinge row with both endpoints in `V₁` commutes with the V₁-projection: the row value
 is unchanged when the screw assignment is zeroed outside `V₁`. -/
@@ -125,7 +125,7 @@ private lemma mem_span_rigidityRows_induce_comp_zeroOutsideV₁_eq_zero
   induction hφ using Submodule.span_induction with
   | mem φ hφ =>
     obtain ⟨e, u, v, he, r, _, rfl⟩ := hφ
-    simp only [Graph.induce_isLink, Set.mem_diff] at he
+    simp only [Graph.induce_isLink, Set.mem_sdiff] at he
     exact hingeRow_comp_zeroOutsideV₁_of_not_mem V₁ he.2.1.2 he.2.2.2 r
   | zero => ext; simp
   | add x y _ _ hx hy =>
@@ -260,7 +260,7 @@ private lemma flowSum_mem_span_induce_V₂_eq_zero [Fintype α]
   induction hφ using Submodule.span_induction with
   | mem φ hφ =>
     obtain ⟨e, u, v, he, r, _, rfl⟩ := hφ
-    simp only [Graph.induce_isLink, Set.mem_diff] at he
+    simp only [Graph.induce_isLink, Set.mem_sdiff] at he
     exact flowSum_hingeRow_both_not_mem he.2.1.2 he.2.2.2 r
   | zero => simp only [map_zero]
   | add x y _ _ hx hy =>
@@ -346,7 +346,7 @@ theorem le_finrank_span_rigidityRows_of_cut [Finite α] [Finite β]
             φ = (screwDiff u₀ v₀).dualMap r} =
             (screwDiff (k := k) (α := α) u₀ v₀).dualMap '' ↑(F.hingeRowBlock e_cut) := by
           ext ψ
-          simp only [Set.mem_setOf_eq, Set.mem_image]
+          simp only [Set.mem_ofPred_eq, Set.mem_image]
           exact ⟨fun ⟨r, hr, h⟩ => ⟨r, hr, h.symm⟩,
                  fun ⟨r, hr, h⟩ => ⟨r, hr, h.symm⟩⟩
         rw [hset, Submodule.span_image, Submodule.span_eq]
