@@ -208,7 +208,24 @@ match mathlib's manifest — and the mismatch warning disappeared.
 
 ---
 
-## Scheduled cleanup (next session)
+## Scheduled cleanup
+
+**State of play (2026-08-20).** Items 0, 1, 2, 3, 4a and 4b are **DONE**; both
+gates are **green** (`lake build` 2948 jobs, 0 errors; `lake lint` "Linting
+passed"), and warnings are **1441 → 5**.
+
+**The 5 remaining warnings gate nothing** — the build exits 0 and `lake lint` is
+clean, so CI is green. They are the project's own warning-clean standard, not a
+blocker, and each has been investigated to a diagnosis rather than left
+unexamined. Sized for a follow-up session, cheapest first:
+
+| what | where | shape of the fix |
+|---|---|---|
+| 1 × `linter.flexible` | `Claim612.lean` (item 4) | a mirror lemma for `![a,b,c] (Fin.castPred 2 ⋯)`; four other routes tried and dead |
+| 1 × overlapping instances | `Search/DFS.lean` (item 4c) | contained: move instances off the `variable` line onto the ~4 lemmas that need them |
+| 3 × overlapping instances | `Induction/Operations.lean` (item 4c) | a bounded refactor: `section`-scope one 1,550-line namespace's `omit`/re-`variable` dance |
+
+Items 5 and 6 below are untouched and are the higher-value work.
 
 All of the below is **mechanical and separable** from the bump itself: no
 statement changes, no new proofs. Ordered by value.
@@ -447,15 +464,132 @@ list. Mostly fallout from the same drift: a simp arg that used to be
 load-bearing is now redundant (or is one of the syntactic-equality lemmas
 above).
 
-### 4. `flexible` linter polish in `Claim612.lean`
+### 4. `flexible` linter in `Claim612.lean` — ⚠️ STILL OPEN, and it RESISTS the linter's own suggestion
 
-The bump's fix for `Fin.snoc`/`Fin.castPred` there ends a `simp` with a rigid
-`rfl` / `exact one_ne_zero`, which `linter.flexible` flags. The edited sites
-are currently warning-free, so this is latent rather than open — but if it
-resurfaces, the linter emits the exact `simp only [...]` list to substitute.
-Recorded because the underlying nuisance is real: `![0, 0, 0] (Fin.castPred 2 ⋯)`
-does not reduce under simp any more, and neither `Fin.castPred` (max recursion)
-nor `Fin.castPred_mk` (does not match an `OfNat` literal index) fixes it.
+One warning, the tree's last. This section previously called the site "latent
+rather than open" because "the edited sites are currently warning-free". **That
+was wrong — it fires.** Three attempts, all recorded because each looks like it
+should work:
+
+1. **Substitute the linter's suggested `simp only [...]`.** It *makes no
+   progress at all* — `lean_goal` shows all three goals of the `<;>` unchanged,
+   because the suggested list omits `homogenize`, `Fin.snoc`, `dotProduct`,
+   `Fin.sum_univ_succ`, the very lemmas doing the work. **Diagnosis worth
+   keeping: `simp?`'s suggestion was captured against a different branch than
+   the `<;>` produces**, so `refine ⟨?_, ?_, ?_⟩ <;> simp` is exactly where the
+   flexible linter's advice is least trustworthy.
+2. **`simp only` with the original argument list**, or `norm_num`. Leaves the
+   residual goal unclosed.
+3. **Fold the closer into the simp set** (`simp [..., one_ne_zero]`). `simp`
+   leaves `¬![0, 0, 1] (Fin.castPred 2 ⋯) = 0` — the documented non-reduction —
+   so `one_ne_zero` never fires and is itself then reported unused.
+
+**Attempt 3 is what reveals why the existing proof is right.** `exact
+one_ne_zero` closes that residual **by defeq** (`![0,0,1] (Fin.castPred 2 ⋯)` is
+defeq to `1`) where no simp set reduces it syntactically — an instance of the
+*reach for `exact`* pattern (TACTICS-QUIRKS § 106), not a defect. Forcing the
+linter quiet would make a working proof worse, so per
+`CombinatorialRigidity/CLAUDE.md` precedence rule 3 this is **surfaced rather
+than silenced**. The underlying nuisance is unchanged: `![0, 0, 0]
+(Fin.castPred 2 ⋯)` does not reduce under simp any more, and neither
+`Fin.castPred` (max recursion) nor `Fin.castPred_mk` (does not match an `OfNat`
+literal index) fixes it.
+
+4. **Just add `only`** (same argument list — `simp only` is not a flexible
+   tactic, so this would be a one-word fix). Dead: under `simp only` that list
+   unfolds into a `dite`/`Fin.succ`/`cast` thicket
+   (`if h : ↑(Fin.succ 0).succ < 3 then cast ⋯ … else cast ⋯ 1`, and an unexpanded
+   `∑ i, …`). **Only the *default* simp set reaches the tidy residual**, which is
+   precisely why the tactic here is flexible and why it cannot simply be pinned.
+
+Best remaining route: **a mirror lemma** reducing `![a, b, c] (Fin.castPred 2 ⋯)`
+(more generally, `Matrix.cons` applied to a `Fin.castPred` of an `OfNat`
+literal) — upstream-eligible, so it belongs under
+`CombinatorialRigidity/Mathlib/` per the mirror-directory discipline. With that
+in the simp set, `simp only` could reach the residual and the warning goes away
+at the source. Otherwise: `suffices` to state the simplified form (the linter's
+other suggestion, untried), or a justified
+`set_option linter.flexible false in` citing this analysis.
+
+### 4a. Warning classes this queue never enumerated — ✓ DONE (18 of 22 sites)
+
+Found by reading the build log's warning *taxonomy* rather than this note. None
+came from the deprecation drift, which is why the note missed them — worth a
+taxonomy pass on the next bump rather than working only from the queue:
+
+- **17 no-op tactics** (`linter.unusedTactic`): nine multi-line `change` blocks
+  in `Molecule/Pencil/Engine.lean`, four single-line ones in
+  `CaseIII/Relabel/Basic.lean`, one in `Matrix/Rank.lean`, two `push_cast`, and
+  one `(first | rfl | simp)` whose `simp` branch is never executed — its sibling
+  two lines up genuinely needs it, so fix only the flagged site. The Engine
+  blocks share one shape (`· change …` over exactly three lines, then a `have`),
+  so the transform is "delete three lines, hoist the `have` onto the bullet" —
+  and that hoist preserves the following continuation lines' indentation
+  exactly, since `· ` is two characters and the `have` sat two deeper.
+- **1 redundant `@[expose]`** (`Jacobs.lean`'s `IsLaman3`) — exposed by default.
+
+### 4c. `linter.overlappingInstances` — ⚠️ 4 sites INVESTIGATED and deliberately LEFT
+
+Both duplications are **real**, and in both cases the obvious removal **breaks
+the build**. Recorded in full because each failure is a trap worth knowing, and
+because someone will otherwise "fix" these again.
+
+**`Search/DFS.lean`'s `reachableFindingAux`** (2 × `[Fintype V]`,
+2 × `[DecidableEq V]`) restates its section's `variable [Fintype V]
+[DecidableEq V]` inline. Deleting the inline pair produces:
+
+```
+error: failed to synthesize instance of type class Fintype V
+error: MVar does not look like a recursive call:
+  {V : Type u} → [DecidableEq V] → (V → List V) → (V → Bool) → Finset V → V → Fintype V
+error: Unknown constant `…reachableFindingAux.induct`
+```
+
+**Why: a section `variable` instance is inserted where it is first
+*referenced*, not where the binder list would put it.** `Fintype V` is first
+referenced inside the body's termination measure, so it lands at the **end** of
+the telescope (visible in that error), which changes the recursive-call shape
+and takes the well-founded-recursion machinery — and the generated `.induct`
+principle two proofs use — down with it. The inline binders are load-bearing
+*for the recursion*, not decoration. (Neighbouring quirk: TACTICS-QUIRKS § 16 on
+`termination_by`/`decreasing_by`.) A deletion also *adds* four new
+`unusedFintypeInType`-style warnings on the downstream `_sound`/`_complete`
+lemmas — a net loss.
+
+**`Induction/Operations.lean`'s three `candidate*` defs** (2 × `[DecidableEq α]`).
+This is **not** a naive duplicate `variable` — it is an `omit`/re-introduce
+interaction across one 1,550-line namespace (`ChainData`, lines 1634–3183):
+
+```
+1882  variable [DecidableEq α]                    ← introduce
+2087  omit [DecidableEq α]                        ← turn off for the rest
+2402  omit [DecidableEq α]                        ← redundant (already off)
+2472  variable [DecidableEq β]
+2636  variable [DecidableEq α]                    ← re-introduce: ADDS A SECOND BINDER
+3141  omit [DecidableEq α] [DecidableEq β] in     ← ×4, each omits one of the two
+3183  end ChainData
+```
+
+**The key fact: a bare `omit [C]` does not remove the variable from the
+section's list, so a later `variable [C]` adds a *second* binder rather than
+un-omitting the first.** Hence two copies downstream of 2636, and the four
+`omit … in` statements at 3141+ each drop one and keep the other. Deleting the
+2636 line therefore gives `cannot omit referenced section variable inst✝¹` ×4:
+each `omit` now targets the only copy, which *is* referenced.
+
+**Fix (a real but bounded refactor, and the reason this belongs in its own
+session):** replace the omit/re-introduce dance with genuine `section`/`end`
+scoping — wrap the `DecidableEq α`-needing region (1882–2086) in its own
+section, drop both bare `omit [DecidableEq α]` lines, keep 2636 as the single
+introduction for the tail, then re-derive which of the four `omit … in` clauses
+are still needed. Five edit sites, no statement changes, low risk — but each
+attempt costs a build, so it is iteration-bound rather than hard.
+
+**Fix for DFS (contained, not a refactor):** drop the instances from the
+**`variable` line at 551** and leave the def's inline binders alone (they are
+what the recursion needs), then add them inline to the ~4 downstream
+`_sound`/`_complete` lemmas that reference them. Check first what else after
+line 551 uses them.
 
 ### 4b. Three general fixes deferred from the bump session — ✓ DONE
 

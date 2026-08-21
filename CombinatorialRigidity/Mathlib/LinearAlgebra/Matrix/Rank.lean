@@ -366,7 +366,6 @@ theorem exists_linearIndependent_rows_specialize {K σ : Type*} [Field K] [Infin
   have hQ_eval : ∀ p : σ → K, MvPolynomial.eval p Q
       = (Matrix.of (fun i j : m => (P.map (MvPolynomial.eval p)) i (e j))).det := by
     intro p
-    change (MvPolynomial.eval p) Q = _
     rw [(MvPolynomial.eval p).map_det, RingHom.mapMatrix_apply]
     congr 1
   have hQ_ne : Q ≠ 0 := by

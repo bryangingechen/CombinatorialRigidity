@@ -556,7 +556,7 @@ theorem typeII_edgeSetRowIndependent_extend {G' : SimpleGraph V}
       have h_combo := typeII_collinear_inner_combo (a := a) (b := b) hcoll x
       have h_rowAB : restrictMap.dualMap (G'.rigidityRow p' eAB) x =
           ⟪p' a - p' b, x (some a) - x (some b)⟫_ℝ := by
-        simp [rigidityRow_apply, rigidityMap_apply, heAB_def]
+        simp [rigidityRow_apply, heAB_def]
         rfl
       simp only [LinearMap.add_apply, LinearMap.smul_apply, smul_eq_mul,
         rigidityRow_apply, rigidityMap_apply, hp_ext_def, hA_def, hB_def,

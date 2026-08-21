@@ -1203,23 +1203,23 @@ theorem exists_triangle_normals (hk : 1 ≤ k) :
     fin_cases i <;> fin_cases j
     · rfl
     · change s₀₁ = s₁₂ at hij
-      exfalso; simp only [s₀₁, s₁₂, Subtype.mk.injEq] at hij
+      exfalso; simp only [s₀₁, s₁₂] at hij
       have := Finset.ext_iff.mp (Subtype.mk_eq_mk.mp hij) ⟨0, by omega⟩; simp at this
     · change s₀₁ = s₀₂ at hij
-      exfalso; simp only [s₀₁, s₀₂, Subtype.mk.injEq] at hij
+      exfalso; simp only [s₀₁, s₀₂] at hij
       have := Finset.ext_iff.mp (Subtype.mk_eq_mk.mp hij) ⟨1, by omega⟩; simp at this
     · change s₁₂ = s₀₁ at hij
-      exfalso; simp only [s₁₂, s₀₁, Subtype.mk.injEq] at hij
+      exfalso; simp only [s₁₂, s₀₁] at hij
       have := Finset.ext_iff.mp (Subtype.mk_eq_mk.mp hij) ⟨0, by omega⟩; simp at this
     · rfl
     · change s₁₂ = s₀₂ at hij
-      exfalso; simp only [s₁₂, s₀₂, Subtype.mk.injEq] at hij
+      exfalso; simp only [s₁₂, s₀₂] at hij
       have := Finset.ext_iff.mp (Subtype.mk_eq_mk.mp hij) ⟨1, by omega⟩; simp at this
     · change s₀₂ = s₀₁ at hij
-      exfalso; simp only [s₀₂, s₀₁, Subtype.mk.injEq] at hij
+      exfalso; simp only [s₀₂, s₀₁] at hij
       have := Finset.ext_iff.mp (Subtype.mk_eq_mk.mp hij) ⟨1, by omega⟩; simp at this
     · change s₀₂ = s₁₂ at hij
-      exfalso; simp only [s₀₂, s₁₂, Subtype.mk.injEq] at hij
+      exfalso; simp only [s₀₂, s₁₂] at hij
       have := Finset.ext_iff.mp (Subtype.mk_eq_mk.mp hij) ⟨1, by omega⟩; simp at this
     · rfl
 

@@ -286,12 +286,11 @@ theorem polymatroid_of_adjMap [DecidableEq β] [Finite α] [Finite β] (M : Matr
         have hsub : ((X ∩ Y).biUnion N : Set α) ⊆
             (X.biUnion N : Set α) ∩ (Y.biUnion N : Set α) := by
           simp only [Finset.coe_biUnion, Finset.coe_inter, mem_inter_iff, Finset.mem_coe,
-            nbhd, subset_inter_iff, iUnion_subset_iff, and_imp,
-            toFinset_ofPred, Finset.coe_filter, Finset.mem_univ, true_and, hN]
+            nbhd, subset_inter_iff, iUnion_subset_iff, and_imp, hN]
           refine ⟨fun x h1 _ y h3 ↦ ?_, fun x _ h2 y h3 ↦ ?_⟩
-          · simp only [mem_iUnion, mem_ofPred_eq, exists_prop]
+          · simp only [mem_iUnion, exists_prop]
             exact ⟨x, ⟨h1, h3⟩⟩
-          · simp only [mem_iUnion, mem_ofPred_eq, exists_prop]
+          · simp only [mem_iUnion, exists_prop]
             exact ⟨x, ⟨h2, h3⟩⟩
         calc M.rk ↑((X ∩ Y).biUnion N) + M.rk ↑((X ∪ Y).biUnion N)
             ≤ M.rk ((X.biUnion N : Set α) ∩ (Y.biUnion N : Set α))
@@ -381,7 +380,7 @@ theorem polymatroid_of_adjMap [DecidableEq β] [Finite α] [Finite β] (M : Matr
       simpa using heq J.toFinset
     have : ∀ Y, f Y = M.rk {v | ∃ u ∈ Y, Adj v u} := by
       intro Y
-      simp only [nbhd, Set.coe_toFinset, Finset.coe_biUnion, Finset.mem_coe,
+      simp only [nbhd, Finset.coe_biUnion, Finset.mem_coe,
         Nat.cast_inj, f, N]
       have : (⋃ x ∈ Y, {x_2 | Adj x_2 x}) = {v | ∃ u ∈ Y, Adj v u} := by
         refine subset_antisymm (fun x ↦ ?_) (fun x ↦ ?_)

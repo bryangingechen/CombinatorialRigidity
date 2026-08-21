@@ -918,18 +918,12 @@ theorem exists_hubSlotOf_isNondegPencilRealization [Finite α]
       · intro w hw; rw [heq] at hw
         simp only [Set.mem_singleton_iff] at hw; exact ⟨0, by simp [hw]⟩
       · intro i j w hi hj; fin_cases i <;> fin_cases j <;> simp_all
-      · change LinearIndependent K ![hubSlotOf normal ![some a, none, none] ![0,y,z] 0,
-          hubSlotOf normal ![some a, none, none] ![0,y,z] 1,
-          hubSlotOf normal ![some a, none, none] ![0,y,z] 2]
-        have heqf : (![hubSlotOf normal ![some a, none, none] ![0,y,z] 0,
+      · have heqf : (![hubSlotOf normal ![some a, none, none] ![0,y,z] 0,
             hubSlotOf normal ![some a, none, none] ![0,y,z] 1,
             hubSlotOf normal ![some a, none, none] ![0,y,z] 2] : Fin 3 → Fin 4 → K)
             = ![normal a, y, z] := by funext i; fin_cases i <;> rfl
         rw [heqf]; exact hLIyz
-      · change cross₃ (hubSlotOf normal ![some a, none, none] ![0,y,z] 0)
-          (hubSlotOf normal ![some a, none, none] ![0,y,z] 1)
-          (hubSlotOf normal ![some a, none, none] ![0,y,z] 2) = (1:K) • point v
-        have hh0 : hubSlotOf normal ![some a, none, none] ![0,y,z] 0 = normal a := rfl
+      · have hh0 : hubSlotOf normal ![some a, none, none] ![0,y,z] 0 = normal a := rfl
         have hh1 : hubSlotOf normal ![some a, none, none] ![0,y,z] 1 = y := rfl
         have hh2 : hubSlotOf normal ![some a, none, none] ![0,y,z] 2 = z := rfl
         rw [hh0, hh1, hh2, one_smul]
@@ -954,18 +948,12 @@ theorem exists_hubSlotOf_isNondegPencilRealization [Finite α]
         · exact ⟨0, rfl⟩
         · exact ⟨1, rfl⟩
       · intro i j w hi hj; fin_cases i <;> fin_cases j <;> simp_all
-      · change LinearIndependent K ![hubSlotOf normal ![some x, some y, none] ![0,0,z] 0,
-          hubSlotOf normal ![some x, some y, none] ![0,0,z] 1,
-          hubSlotOf normal ![some x, some y, none] ![0,0,z] 2]
-        have heqf : (![hubSlotOf normal ![some x, some y, none] ![0,0,z] 0,
+      · have heqf : (![hubSlotOf normal ![some x, some y, none] ![0,0,z] 0,
             hubSlotOf normal ![some x, some y, none] ![0,0,z] 1,
             hubSlotOf normal ![some x, some y, none] ![0,0,z] 2] : Fin 3 → Fin 4 → K)
             = ![normal x, normal y, z] := by funext i; fin_cases i <;> rfl
         rw [heqf]; exact hLI3
-      · change cross₃ (hubSlotOf normal ![some x, some y, none] ![0,0,z] 0)
-          (hubSlotOf normal ![some x, some y, none] ![0,0,z] 1)
-          (hubSlotOf normal ![some x, some y, none] ![0,0,z] 2) = (1:K) • point v
-        have hh0 : hubSlotOf normal ![some x, some y, none] ![0,0,z] 0 = normal x := rfl
+      · have hh0 : hubSlotOf normal ![some x, some y, none] ![0,0,z] 0 = normal x := rfl
         have hh1 : hubSlotOf normal ![some x, some y, none] ![0,0,z] 1 = normal y := rfl
         have hh2 : hubSlotOf normal ![some x, some y, none] ![0,0,z] 2 = z := rfl
         rw [hh0, hh1, hh2, one_smul]
@@ -991,18 +979,12 @@ theorem exists_hubSlotOf_isNondegPencilRealization [Finite α]
         · exact ⟨1, rfl⟩
         · exact ⟨2, rfl⟩
       · intro i j w hi hj; fin_cases i <;> fin_cases j <;> simp_all
-      · change LinearIndependent K ![hubSlotOf normal ![some x, some y, some z] ![0,0,0] 0,
-          hubSlotOf normal ![some x, some y, some z] ![0,0,0] 1,
-          hubSlotOf normal ![some x, some y, some z] ![0,0,0] 2]
-        have heqf : (![hubSlotOf normal ![some x, some y, some z] ![0,0,0] 0,
+      · have heqf : (![hubSlotOf normal ![some x, some y, some z] ![0,0,0] 0,
             hubSlotOf normal ![some x, some y, some z] ![0,0,0] 1,
             hubSlotOf normal ![some x, some y, some z] ![0,0,0] 2] : Fin 3 → Fin 4 → K)
             = ![normal x, normal y, normal z] := by funext i; fin_cases i <;> rfl
         rw [heqf]; exact hLI3
-      · change cross₃ (hubSlotOf normal ![some x, some y, some z] ![0,0,0] 0)
-          (hubSlotOf normal ![some x, some y, some z] ![0,0,0] 1)
-          (hubSlotOf normal ![some x, some y, some z] ![0,0,0] 2) = c • point v
-        have hh0 : hubSlotOf normal ![some x, some y, some z] ![0,0,0] 0 = normal x := rfl
+      · have hh0 : hubSlotOf normal ![some x, some y, some z] ![0,0,0] 0 = normal x := rfl
         have hh1 : hubSlotOf normal ![some x, some y, some z] ![0,0,0] 1 = normal y := rfl
         have hh2 : hubSlotOf normal ![some x, some y, some z] ![0,0,0] 2 = normal z := rfl
         rw [hh0, hh1, hh2]
@@ -1203,10 +1185,7 @@ theorem exists_nbrSlotOf_isNondegPencilRealization [Finite α] [Finite β]
               hubSlotOf pt ![some a, none, none] ![0,y,z] 2] : Fin 3 → Fin 4 → K)
               = ![pt a, y, z] := by funext i; fin_cases i <;> rfl
           rw [heqf]; exact hLIyz
-        · change cross₃ (hubSlotOf pt ![some a, none, none] ![0,y,z] 0)
-            (hubSlotOf pt ![some a, none, none] ![0,y,z] 1)
-            (hubSlotOf pt ![some a, none, none] ![0,y,z] 2) = (1:K) • normal v
-          have hh0 : hubSlotOf pt ![some a, none, none] ![0,y,z] 0 = pt a := rfl
+        · have hh0 : hubSlotOf pt ![some a, none, none] ![0,y,z] 0 = pt a := rfl
           have hh1 : hubSlotOf pt ![some a, none, none] ![0,y,z] 1 = y := rfl
           have hh2 : hubSlotOf pt ![some a, none, none] ![0,y,z] 2 = z := rfl
           rw [hh0, hh1, hh2, one_smul]
@@ -1269,10 +1248,7 @@ theorem exists_nbrSlotOf_isNondegPencilRealization [Finite α] [Finite β]
               hubSlotOf pt ![some x, some y, none] ![0,0,z] 2] : Fin 3 → Fin 4 → K)
               = ![pt x, pt y, z] := by funext i; fin_cases i <;> rfl
           rw [heqf]; exact hLI3
-        · change cross₃ (hubSlotOf pt ![some x, some y, none] ![0,0,z] 0)
-            (hubSlotOf pt ![some x, some y, none] ![0,0,z] 1)
-            (hubSlotOf pt ![some x, some y, none] ![0,0,z] 2) = (1:K) • normal v
-          have hh0 : hubSlotOf pt ![some x, some y, none] ![0,0,z] 0 = pt x := rfl
+        · have hh0 : hubSlotOf pt ![some x, some y, none] ![0,0,z] 0 = pt x := rfl
           have hh1 : hubSlotOf pt ![some x, some y, none] ![0,0,z] 1 = pt y := rfl
           have hh2 : hubSlotOf pt ![some x, some y, none] ![0,0,z] 2 = z := rfl
           rw [hh0, hh1, hh2, one_smul]
@@ -1345,10 +1321,7 @@ theorem exists_nbrSlotOf_isNondegPencilRealization [Finite α] [Finite β]
               hubSlotOf pt ![some x, some y, some z] ![0,0,0] 2] : Fin 3 → Fin 4 → K)
               = ![pt x, pt y, pt z] := by funext i; fin_cases i <;> rfl
           rw [heqf]; exact hLI3'
-        · change cross₃ (hubSlotOf pt ![some x, some y, some z] ![0,0,0] 0)
-            (hubSlotOf pt ![some x, some y, some z] ![0,0,0] 1)
-            (hubSlotOf pt ![some x, some y, some z] ![0,0,0] 2) = d • normal v
-          have hh0 : hubSlotOf pt ![some x, some y, some z] ![0,0,0] 0 = pt x := rfl
+        · have hh0 : hubSlotOf pt ![some x, some y, some z] ![0,0,0] 0 = pt x := rfl
           have hh1 : hubSlotOf pt ![some x, some y, some z] ![0,0,0] 1 = pt y := rfl
           have hh2 : hubSlotOf pt ![some x, some y, some z] ![0,0,0] 2 = pt z := rfl
           rw [hh0, hh1, hh2]

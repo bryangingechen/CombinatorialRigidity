@@ -169,10 +169,8 @@ theorem PanelHingeFramework.ofNormals_relabel_perm {Gs Gt : Graph α β}
     have hfQ : Gs.IsLink (σ e') (ρ u) (ρ w) := (hiso e' u w).mp he'
     rcases hQrec (σ e') (ρ u) (ρ w) hfQ with h1 | h1
     · refine Or.inl ?_
-      change (ρ.symm (ends₀ (σ e')).1, ρ.symm (ends₀ (σ e')).2) = (u, w)
       rw [h1]; exact Prod.ext (ρ.symm_apply_apply u) (ρ.symm_apply_apply w)
     · refine Or.inr ?_
-      change (ρ.symm (ends₀ (σ e')).1, ρ.symm (ends₀ (σ e')).2) = (w, u)
       rw [h1]; exact Prod.ext (ρ.symm_apply_apply w) (ρ.symm_apply_apply u)
 
 /-- **The graph-iso genuine-row correspondence (CHAIN-2c-ii-arm, the genuine-row arm): an arbitrary
@@ -612,10 +610,8 @@ theorem PanelHingeFramework.ofNormals_relabel [DecidableEq α] [DecidableEq β]
         heab heac hclv hcla he₀ he₁ he₁₀).mp he'
     rcases hQrec (σ e') (ρ u) (ρ w) hfQ with h1 | h1
     · refine Or.inl ?_
-      change (ρ (ends₀ (σ e')).1, ρ (ends₀ (σ e')).2) = (u, w)
       rw [h1]; exact Prod.ext (hρρ u) (hρρ w)
     · refine Or.inr ?_
-      change (ρ (ends₀ (σ e')).1, ρ (ends₀ (σ e')).2) = (w, u)
       rw [h1]; exact Prod.ext (hρρ w) (hρρ u)
 
 /-- **G4c-ii (row-space correspondence): the relabelled `a`-split framework's rigidity rows are the

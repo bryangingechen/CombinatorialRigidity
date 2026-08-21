@@ -58,7 +58,7 @@ least three vertices spans at most `3|X| - 6` edges. Not an instance of `IsSpars
 `(3, 6)`: that predicate's guard `ℓ ≤ k * #s` also admits `#s = 2`, where the bound
 `3 * 2 - 6 = 0` fails on every graph with an edge, while this condition constrains only
 `#s ≥ 3` and holds vacuously on `K₂`. Phrased additively to avoid `ℕ`-subtraction. -/
-@[expose] def IsLaman3 (G : SimpleGraph V) : Prop :=
+def IsLaman3 (G : SimpleGraph V) : Prop :=
   ∀ s : Finset V, 3 ≤ s.card → (G.edgesIn ↑s).ncard + 6 ≤ 3 * s.card
 
 /-- **Monotonicity.** A subgraph of a Laman graph is Laman: the edge counts inside any

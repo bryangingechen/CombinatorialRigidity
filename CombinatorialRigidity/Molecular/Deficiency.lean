@@ -3193,7 +3193,7 @@ theorem deficiency_of_edgeSet_empty [Finite α] {G : Graph α β} {n : ℕ}
     rw [partitionDef, hcross f, Set.ncard_empty, Nat.cast_zero, mul_zero, sub_zero, numParts]
     apply mul_le_mul_of_nonneg_left _ (by positivity)
     have := Set.ncard_image_le (f := f) (s := V(G)) (Set.toFinite _)
-    push_cast at *; linarith
+    linarith
   · -- `def ≥ D(|V| − 1)`: `f = id` achieves the bound.
     have hid : G.partitionDef n id = (bodyBarDim n : ℤ) * ((V(G).ncard : ℤ) - 1) := by
       rw [partitionDef, hcross id, Set.ncard_empty, Nat.cast_zero, mul_zero, sub_zero,

@@ -2030,7 +2030,7 @@ theorem splitOff_isMinimalKDof_of_pos [DecidableEq β] [Finite α] [Finite β]
     have hItight : (X \ {p}).ncard + bodyBarDim n = bodyBarDim n * (H.fiberSpan n X).ncard :=
       circuit_induces_isTight hXcirc hpX
     have hIcard : ((X \ {p}).ncard : ℤ) = bodyBarDim n * ((V(G').ncard : ℤ) - 1) := by
-      rw [hG'def, vertexSet_inducedSpan]; push_cast at hItight ⊢; linarith
+      rw [hG'def, vertexSet_inducedSpan]; linarith
     -- `|I ∩ ẽ₀| ≤ |B' ∩ ẽ₀| < D−1`: `X ⊆ insert p B'` and `I = X ∖ {p} ⊆ B'`.
     have hIsub : X \ {p} ⊆ B' := by
       intro q ⟨hqX, hqp⟩

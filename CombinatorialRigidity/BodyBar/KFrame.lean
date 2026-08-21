@@ -384,7 +384,7 @@ theorem signedIncMatrix_map {R S : Type*} [CommRing R] [CommRing S]
       Graph.orientation.signedIncMatrix_apply_of_mem he]
     simp only [Pi.sub_apply, map_sub]
     by_cases hx1 : x = (D.dInc ⟨e, he⟩).1 <;> by_cases hx2 : x = (D.dInc ⟨e, he⟩).2 <;>
-      simp_all [Function.update_apply]
+      simp_all
   · rw [Graph.orientation.signedIncMatrix_apply_of_not_mem he,
       Graph.orientation.signedIncMatrix_apply_of_not_mem he]
     simp

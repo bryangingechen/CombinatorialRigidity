@@ -790,7 +790,7 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_triangle [Infinite 
       convert h using 1; funext i; fin_cases i <;> (first | rfl | simp)
     · have h := hLI_neg (Units.mk0 (-1 : K) (by norm_num)) (Units.mk0 (-1 : K) (by norm_num))
             (Units.mk0 (-1 : K) (by norm_num))
-      convert h using 1; funext i; fin_cases i <;> (first | rfl | simp)
+      convert h using 1; funext i; fin_cases i <;> rfl
   -- T2: rigidity on `{v,a,b}` via `theorem_55_triangle`.
   have hFgraph : F.graph = G := by
     simp only [hFdef, PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph]
