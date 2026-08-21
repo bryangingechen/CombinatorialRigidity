@@ -134,6 +134,8 @@ failing pattern and the working fix.
 - A `have`/lemma statement `¬ ∃ x, P x → (conclusion)` elaborates but a later application fails with the *wrong* hypothesis's type reported as expected (the intended final hypothesis is missing an arrow) → § 104 (the `∃`-binder's body extends past the `→`, so `¬` swallows the whole implication into its scope; parenthesize the negated existential: `(¬ ∃ x, P x) → (conclusion)`)
 - A bare `simp`/`simpa` that **used to close** a goal stops finding its pattern, in a proof that opens `set x := … with hx` (or `let x := …`), typically right after a mathlib/Lean bump → § 105 (simp's default **zeta-delta** unfolding tightened: pass the defining equation, `simp [hx]` / `simpa [hx] using h`. These cluster — one `set` can account for every failure in a file. Distinguish § 1 `omega`/`grind` atoms, § 6 `set` of a *lambda*, § 98 `rw [heq]` motive failures)
 - A `convert … using N`, or a term-mode `by simpa … using X`, **breaks on a mathlib bump** — especially if it fails leaving *instance-path* goals like `Real.instRing.toSemiring = Real.semiring` → § 106 (the statement was definitionally true all along and the tactic was doing unification mathlib's unifier no longer performs: try plain `exact X` FIRST, or drop the `by simpa … using` wrapper entirely, before debugging the `convert`)
+- `simp` on concrete `![…]`/`Matrix.cons` coordinate arithmetic (typically via `homogenize`/`Fin.snoc`) leaves a residual like `¬![0, 0, 1] (Fin.castPred 2 ⋯) = 0` that only `exact one_ne_zero` / `rfl` closes — and `linter.flexible` then reports that closer → § 107 (the index is one unfolding short of a `Fin.mk` literal: add **`Fin.castLT`** to the simp set. `Fin.castPred_mk` makes no progress and plain `Fin.castPred` hits max recursion, which is what sends you looking for a mirror lemma you don't need)
+- `linter.overlappingInstances` reports *"There are 2 `[C α]` instances; one is sufficient"*, and deleting the duplicate breaks the build — with `cannot omit referenced section variable inst✝¹`, or `MVar does not look like a recursive call` + `Unknown constant …induct` → § 108 (a bare `omit [C]` does *not* remove `C` from the section's variable list, so a later `variable [C]` puts a **second copy in scope**; and a section `variable` instance is inserted where it is first *referenced*, which for a well-founded recursion is inside the termination measure — at the *end* of the telescope. Fix by **scoping**, never by deleting a binder: `section`/`end` the region that needs it, or move the `variable` line *below* the def whose inline binders the recursion needs. The linter counts copies *in scope*, not arguments in the signature, so the fix changes no signature — verify with `#check`)
 
 ## Sections
 
@@ -3938,5 +3940,131 @@ Standing exposure: the tree still carries 25 `convert … using N` plus 7 bare
 worth it, but if a future bump breaks several again, converting the survivors
 that are definitionally true to `exact` / `simpa only` would retire a recurring
 cost.
+
+---
+
+## 107. `simp` leaves `![0, 0, 1] (Fin.castPred 2 ⋯) = 0` unreduced — add `Fin.castLT`, not a mirror lemma
+
+**Symptom.** A `simp` doing concrete `![…]` coordinate arithmetic — the usual
+source is `homogenize`, or anything built from `Fin.snoc` / `Fin.cons` — closes
+most conjuncts but stalls on one, leaving a goal whose index is a `Fin.castPred`
+(or `Fin.castLT`) rather than a numeral:
+
+```
+⊢ ¬![0, 0, 1] (Fin.castPred 2 ⋯) = 0
+```
+
+The goal is *definitionally* `¬(1 = 0)`, so `exact one_ne_zero` (or `rfl`) closes
+it — and then `linter.flexible` reports that rigid closer, because it acts on a
+goal the flexible `simp` just rewrote.
+
+**Fix: add `Fin.castLT` to the same simp set.** `simp` normalized the `Fin.snoc`
+index to `Fin.castPred k ⋯`; unfolding that one more step to a `Fin.mk` literal
+is what lets the `Fin` numeral simprocs evaluate `![0, 0, 1] 2 = 1`. With
+`Fin.castLT` in the set the residual never appears, the rigid closer is deleted,
+and the `flexible` warning goes with it — at the source, with no new lemma.
+
+**The three near-misses, because each is the obvious thing to try:**
+
+| tried | outcome |
+|---|---|
+| `simp [Fin.castPred_mk]` | *"`simp` made no progress"* — the lemma does not match an `OfNat` literal index |
+| `simp [Fin.castPred]` | maximum recursion depth |
+| `norm_num [Fin.castPred]` | unfolds to `Fin.castLT 2 ⋯` and stops there — the `Fin.reduceCastLT` simproc does not fire on it |
+| `simp [Fin.castPred, Fin.castLT]` | works, but `linter.unusedSimpArgs` reports `Fin.castPred` unused — **`Fin.castLT` alone is the fix** |
+
+**Two lessons worth more than the fix.** First, a `simp` residual that a defeq
+`exact`/`rfl` closes is not automatically an instance of § 106's *reach for
+`exact`* — ask whether `simp` stopped because the goal is irreducible or because
+it is **one unfolding short**. § 106 applies to the former; this § to the latter,
+and the tell is a coercion-shaped function (`Fin.castPred`, `Fin.castSucc`,
+`Fin.castLT`) sitting where a numeral should be. Second, `rfl` after a flexible
+`simp` is **not** reported by `linter.flexible` while `exact` is, so a file can
+carry the same latent defect at several sites with only one of them flagged: when
+you fix the flagged one, check its siblings. In the worked case
+(`Claim612.lean`'s `exists_affineIndependent_panel_incidence`, v4.34.0-rc1 bump
+cleanup) one `exact one_ne_zero` was reported and three `rfl`s were not; the one
+simp argument retired all four.
+
+---
+
+## 108. `linter.overlappingInstances` on a duplicated `[C α]` — fix by *scoping*, never by deleting a binder
+
+**Symptom.** `linter.overlappingInstances` reports
+
+```
+Overlapping instance parameters in `foo`:
+⚠️ There are 2 `[DecidableEq α]` instances; one is sufficient.
+```
+
+and every obvious deletion breaks the build. Two distinct mechanisms produce
+this, with two different errors when you "fix" it wrong.
+
+**Mechanism 1: a bare `omit [C]` does not remove `C` from the section's variable
+list.** So a later `variable [C]` in the same namespace adds a **second** binder
+rather than un-omitting the first, and every declaration downstream carries both.
+Deleting the later `variable [C]` line then gives
+
+```
+error: cannot omit referenced section variable inst✝¹
+```
+
+×N — because each downstream `omit [C] in` had been silently dropping the *spare*
+copy, and now targets the only one, which is referenced.
+
+**Fix: real `section`/`end` scoping.** Wrap the region that genuinely needs `C`
+in its own `section`, drop the bare `omit [C]` lines entirely, and keep the later
+`variable [C]` as the single introduction for the tail. Do **not** try to
+re-derive the downstream `omit … in` clauses first — in the worked case all four
+of them needed no change at all.
+
+**What the linter counts — and why fixing it changes no signature.** It counts
+duplicated instances **in scope for the declaration**, not duplicated arguments
+in the resulting telescope. Lean abstracts only the section variables a
+declaration actually *references*, so the spare copy never reached the signature:
+`#check @Foo` gives byte-identical output before and after the fix, and a
+declaration the linter reports as having "2 `[DecidableEq α]` instances" may have
+**one, or even none**, in its real signature (a `def` that mentions no
+decidability at all still gets reported). Treat it as a scoping-hygiene warning,
+not an over-hypothesised statement — which is the reassuring half (the fix cannot
+break a call site) and also why it is worth clearing rather than suppressing:
+with two copies in scope a reader cannot tell which one a declaration uses, and
+any downstream `omit [C] in` is silently dropping the spare rather than doing
+what it says.
+
+**Mechanism 2: a section `variable` instance is inserted where it is first
+*referenced*, not where the binder list would put it.** When a def restates its
+section's instances inline, the inline pair can be load-bearing *for the
+recursion*: if `Fintype V` is first referenced inside a `termination_by` measure,
+the section copy lands at the **end** of the telescope, which changes the
+recursive-call shape and takes the well-founded-recursion machinery down with it:
+
+```
+error: failed to synthesize instance of type class Fintype V
+error: MVar does not look like a recursive call:
+  {V : Type u} → [DecidableEq V] → (V → List V) → (V → Bool) → Finset V → V → Fintype V
+error: Unknown constant `…reachableFindingAux.induct`
+```
+
+(the `.induct` principle downstream proofs use is generated from that shape;
+neighbouring quirk: § 16 on `termination_by`/`decreasing_by`). Deleting the
+inline binders also *adds* fresh unused-instance warnings on the downstream
+lemmas — a net loss.
+
+**Fix: move the `variable` line to *below* the def.** Two lines, no signature
+change anywhere: the def keeps its inline binders (which is what the recursion
+needs), and every later declaration picks the instances up from the section as
+before. Leave a comment saying why the line is out of order, or someone will
+tidy it back.
+
+**What does *not* work, so you don't spend a build on it:**
+`omit [Fintype V] [DecidableEq V] in` before the def. It has to go *above* the
+docstring (between docstring and `def` it is a parse error, *"unexpected token
+'omit'; expected 'lemma'"*), and even placed correctly the linter still fires —
+the inline binders and the section copies both survive.
+
+Worked cases: `Search/DFS.lean`'s `reachableFindingAux` (mechanism 2) and
+`Molecular/Induction/Operations.lean`'s three `candidate*` defs (mechanism 1),
+both in the v4.34.0-rc1 bump cleanup — `notes/ToolchainBumps.md` item 4c.
 
 ---

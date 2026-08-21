@@ -262,11 +262,19 @@ theorem exists_affineIndependent_panel_incidence :
     · simpa [Fin.sum_univ_succ] using hg' 0
     · simpa [Fin.sum_univ_succ] using hg' 1
     · simpa [Fin.sum_univ_succ] using hg' 2
-  · intro u; fin_cases u <;> simp [homogenize, Fin.snoc, dotProduct, Fin.sum_univ_succ]; rfl
-  · refine ⟨?_, ?_, ?_⟩ <;> simp [homogenize, Fin.snoc, dotProduct, Fin.sum_univ_succ]
-    exact one_ne_zero
-  · refine ⟨?_, ?_, ?_⟩ <;> simp [homogenize, Fin.snoc, dotProduct, Fin.sum_univ_succ]; rfl
-  · refine ⟨?_, ?_, ?_⟩ <;> simp [homogenize, Fin.snoc, dotProduct, Fin.sum_univ_succ]; rfl
+  -- The four incidence bullets are pure coordinate arithmetic. `Fin.castLT` is the load-bearing
+  -- simp argument: `simp` normalizes the `Fin.snoc` index of `homogenize` to `Fin.castPred k ⋯`,
+  -- and unfolding that to a `Fin.mk` literal is what lets the numeral simprocs evaluate
+  -- `![0, 0, 1] 2 = 1`. Without it each bullet stalls on a `Fin`-defeq residual
+  -- (`¬![0, 0, 1] (Fin.castPred 2 ⋯) = 0` and friends) closable only by a rigid defeq closer
+  -- *after* the flexible `simp`. `linter.flexible` reports the `exact one_ne_zero` that used to
+  -- close the second bullet but not the sibling bullets' `rfl`s, so folding the reduction into the
+  -- simp set fixes the reported site and three unreported ones of the same shape at once.
+  -- TACTICS-QUIRKS § 107.
+  · intro u; fin_cases u <;> simp [homogenize, Fin.snoc, dotProduct, Fin.sum_univ_succ, Fin.castLT]
+  · refine ⟨?_, ?_, ?_⟩ <;> simp [homogenize, Fin.snoc, dotProduct, Fin.sum_univ_succ, Fin.castLT]
+  · refine ⟨?_, ?_, ?_⟩ <;> simp [homogenize, Fin.snoc, dotProduct, Fin.sum_univ_succ, Fin.castLT]
+  · refine ⟨?_, ?_, ?_⟩ <;> simp [homogenize, Fin.snoc, dotProduct, Fin.sum_univ_succ, Fin.castLT]
 
 /-- **The kept-points tabulation of the `D` spanning joins, general `d`**
 (`lem:case-III-claim612`, the producer-direction (R1-affine) form; Katoh–Tanigawa 2011 §6.4.1

@@ -167,6 +167,25 @@ to be re-derived by re-reading entries later.
   `cross₃_ne_zero_iff_linearIndependent`); mirror if a third consumer needs it.
 - **Status:** open.
 
+### [mirror-candidate] No simp-normal form for `Fin.castPred` of a numeral — `![a, b, c] (Fin.castPred 2 ⋯)` stalls where `Fin.castSucc`/`Fin.succ` reduce
+- **Where it bit:** the v4.34.0-rc1 bump cleanup, `Molecular/RigidityMatrix/Claim612.lean`'s
+  `exists_affineIndependent_panel_incidence` (four incidence bullets). `simp` normalizes
+  `homogenize`'s `Fin.snoc` index to `Fin.castPred 2 ⋯` and then has nothing that evaluates
+  `![0, 0, 1] (Fin.castPred 2 ⋯)`, leaving a residual only a defeq `exact one_ne_zero` / `rfl`
+  closes — which is then a `linter.flexible` site.
+- **Friction:** `Fin.castPred_mk` does not match an `OfNat` literal index ("`simp` made no
+  progress"); plain `simp [Fin.castPred]` hits max recursion; `norm_num [Fin.castPred]` unfolds to
+  `Fin.castLT 2 ⋯` and stops, so the `Fin.reduceCastLT` simproc does not fire there either. The
+  working local fix is to put **`Fin.castLT`** in the simp set, i.e. unfold one layer by hand so the
+  `Fin.mk` numeral simprocs can take over.
+- **Proposed fix:** upstream, a `Fin.reduceCastPred` simproc alongside the existing
+  `Fin.reduceCastSucc` / `Fin.reduceCastLT` family — or, project-side, a `Mathlib/` mirror lemma
+  reducing `Matrix.cons` applied to a `Fin.castPred`/`Fin.castLT` of an `OfNat` literal. **Neither
+  is mirrored, deliberately:** one simp argument covers every site in the tree today, so a mirror
+  would be more machinery than the problem. File it if a second file needs the same unfolding.
+- **Status:** open (worked around at the only call site; the general rescue pattern is
+  TACTICS-QUIRKS § 107).
+
 ### [mirror-candidate] `induce`-link endpoint-membership helpers are private in `Theorem55.lean` — re-derived in `Pencil.lean`
 - **Where it bit:** Phase 39 (PENCIL) W3-L4 cut-arm assembly (`Molecular/Molecule/Pencil.lean`, `hasPencilRealization_of_not_twoEdgeConnected`). The panel-side sibling `case_cut_edge_realization_gen` (`AlgebraicInduction/Theorem55.lean`) uses `mem_V₁_of_induce_isLink_left`/`_right` — "a `G`-link sharing its edge with `(G.induce V₁).IsLink e a b` has both its endpoints in `V₁`" — but they are `private`, so unavailable across files.
 - **Friction:** re-derived the two one-liners locally as `mem_of_induce_isLink_left`/`_right` (same body: `(G.eq_or_eq_of_isLink_of_isLink hl hl₁.1).elim (· ▸ hl₁.2.1) (· ▸ hl₁.2.2)`). No build-failure iteration (preemptive), but it's a genuine second copy of a generic induce-API helper with no rigidity content.

@@ -1879,6 +1879,14 @@ lemma shiftCycle_eq_cons (cd : G.ChainData n) (i : Fin (cd.d + 1)) (hi : 1 ≤ (
   | 0 => simp
   | m + 1 => rw [List.getElem_cons_succ, List.getElem_ofFn]
 
+-- The vertex-side `DecidableEq α` is needed only by the `shiftPerm` block (`List.formPerm`); it is
+-- `section`-scoped rather than turned off by a bare `omit` below, because a bare `omit [C]` does
+-- *not* remove `C` from the section's variable list — so a later `variable [C]` puts a *second copy
+-- in scope* instead of un-omitting the first, which is what `linter.overlappingInstances` reports.
+-- (It counts copies in scope, not arguments in the signature: the duplicate never reached any
+-- telescope, so this scoping is hygiene — TACTICS-QUIRKS § 108.)
+section ShiftPerm
+
 variable [DecidableEq α]
 
 /-- The **index-shift permutation** `ρᵢ` (KT eq. 6.54): the `i`-cycle
@@ -2066,6 +2074,8 @@ theorem seedShift_pred_castSucc (cd : G.ChainData n) {i : Fin cd.d} (h2i : 2 ≤
     show (⟨((i : ℕ) - 1) + 1, by have := i.isLt; omega⟩ : Fin (cd.d + 1)) = i.castSucc from
       Fin.ext (by simp only [Fin.val_castSucc]; omega)]
 
+end ShiftPerm
+
 /-! ### The cycle-W9a moved-body list `shiftBodyList` (CHAIN-2c-ii-transport-W9a)
 
 The cycle `shiftPerm i` (`v₁ → ⋯ → vᵢ → v₁`) moves the chain of `i − 1` adjacent degree-2 bodies
@@ -2081,10 +2091,6 @@ cut). The `foldr` applies the head body last, matching the head-peel
 `shiftPerm i = (vtx 1 vtx 2) * (tail)` (`shiftPerm_eq_swap_mul`): the head body `[0] = (v₂, v₁, v₀)`
 is the leading transposition `(v₁ v₂)`'s degree-2 body `v₁`. Graph-free over the chain vertices
 (pure `vtx` indexing), mirroring `shiftCycle`/`shiftEdgeCycle`. -/
-
--- The moved-body list is pure `vtx` indexing on `α`, never the `shiftPerm`-block `DecidableEq α`
--- (re-introduced after the `shiftEdgePerm` block for the graphiso brick).
-omit [DecidableEq α]
 
 /-- The moved-body list `[(v₂, v₁, v₀), (v₃, v₂, v₁), …, (vᵢ, v_{i−1}, v_{i−2})]` of the cycle
 `shiftPerm i` (length `i − 1`, one `(v, a, c)` triple per moved degree-2 body), for a top index
@@ -2397,9 +2403,8 @@ degenerate `i = 2` instance, where the cycle is the transposition piece of the b
 `Equiv.swap e_b e₀ * Equiv.swap e₁ e_c`. -/
 
 -- The edge-relabel layer is on the *edge* type only; the vertex-side `DecidableEq α` from the
--- `shiftPerm` block above is not used here. `DecidableEq β` is introduced just before
+-- `shiftPerm` section above is out of scope here. `DecidableEq β` is introduced just before
 -- `shiftEdgePerm` (only `List.formPerm` needs it; the cycle list + its `Nodup` do not).
-omit [DecidableEq α]
 
 /-- The edges of the index-shift cycle `[edge 0, e₀, edge i, edge 1, …, edge (i−1)]` (the support of
 `shiftEdgePerm i`), for an interior candidate index `i : Fin cd.d`. The head index `0` is in range

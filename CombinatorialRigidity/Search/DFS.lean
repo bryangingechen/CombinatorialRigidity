@@ -548,8 +548,15 @@ end DirectedWalk
 `succ`-arcs, returning the first vertex `w` reachable from `v` with
 `P w`, packaged with a simple walk from `v` to `w`. -/
 
-variable [Fintype V] [DecidableEq V]
-
+-- `Fintype V` / `DecidableEq V` are bound **inline** on this one declaration,
+-- and the section `variable` line for them deliberately sits *below* it
+-- (`linter.overlappingInstances` fires if both apply). A section `variable`
+-- instance is inserted where it is first *referenced*, and `Fintype V` is first
+-- referenced in the termination measure — so it lands at the *end* of the
+-- telescope, which changes the recursive-call shape and takes the
+-- well-founded-recursion machinery (and the `.induct` principle the two
+-- invariant proofs below use) down with it. The inline binders are load-bearing
+-- *for the recursion*, not decoration; see `notes/ToolchainBumps.md` item 4c.
 /-- DFS body for `reachableFinding`: search for a `P`-satisfying vertex
 reachable from `v` along `succ`-arcs, skipping vertices already in
 `visited`. Returns the first match packaged with a witness walk from
@@ -589,6 +596,9 @@ def reachableFindingAux [Fintype V] [DecidableEq V]
       (Finset.Subset.refl _) (Finset.subset_insert _ _)) |>.mpr ⟨v, ?_, ?_⟩
     · simp [_hv]
     · simp
+
+-- Below `reachableFindingAux` on purpose — see the comment above it.
+variable [Fintype V] [DecidableEq V]
 
 /-- Depth-first search for a `P`-satisfying vertex reachable from `v`
 along the relation `fun a b => b ∈ succ a`.
