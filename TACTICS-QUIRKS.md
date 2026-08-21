@@ -132,6 +132,8 @@ failing pattern and the working fix.
 - `simp only [someDef, h.choose_spec]` (or `(hex i).choose_spec`) fails with *"maximum recursion depth has been reached"*, where `someDef` is a `match`-def being reduced against a `some (…​.choose)` witness — even though the identical `simp only [someDef, hi]` with a *plain* witness `hi` compiles instantly → § 102 (the opaque `Exists.choose` term makes `simp`'s match-reduction loop; hoist a plain witness function with the **`choose` tactic** — `choose wsel hwsel using hex` — then `simp only [someDef, hwsel i]`)
 - `rcases h with h | h | h` on `h : e ∈ A ∪ B ∪ C` fails with *"`h✝ : … C` is not an inductive datatype"* → § 103 (`∪` is left-associative, so the membership is `(e∈A ∨ e∈B) ∨ e∈C`; the flat 3-pattern assumes right-nesting — write `(h | h) | h` to match, or state the union right-nested)
 - A `have`/lemma statement `¬ ∃ x, P x → (conclusion)` elaborates but a later application fails with the *wrong* hypothesis's type reported as expected (the intended final hypothesis is missing an arrow) → § 104 (the `∃`-binder's body extends past the `→`, so `¬` swallows the whole implication into its scope; parenthesize the negated existential: `(¬ ∃ x, P x) → (conclusion)`)
+- A bare `simp`/`simpa` that **used to close** a goal stops finding its pattern, in a proof that opens `set x := … with hx` (or `let x := …`), typically right after a mathlib/Lean bump → § 105 (simp's default **zeta-delta** unfolding tightened: pass the defining equation, `simp [hx]` / `simpa [hx] using h`. These cluster — one `set` can account for every failure in a file. Distinguish § 1 `omega`/`grind` atoms, § 6 `set` of a *lambda*, § 98 `rw [heq]` motive failures)
+- A `convert … using N`, or a term-mode `by simpa … using X`, **breaks on a mathlib bump** — especially if it fails leaving *instance-path* goals like `Real.instRing.toSemiring = Real.semiring` → § 106 (the statement was definitionally true all along and the tactic was doing unification mathlib's unifier no longer performs: try plain `exact X` FIRST, or drop the `by simpa … using` wrapper entirely, before debugging the `convert`)
 
 ## Sections
 
@@ -3874,3 +3876,67 @@ needs explicit parens around the whole quantifier — never rely on binder-vs-`�
 **Worked case:** Phase 39 (PENCIL) W5-L7c-4, `Molecular/Molecule/Pencil/Base.lean`'s `hboth`
 case-split helper (caught by the very first build attempt's "Application type mismatch" against
 `hboth z x y w hV_zxyw hdeg_z hzw_no`).
+
+---
+
+## 105. A `simp`/`simpa` that used to see through a `set`/`let`-bound local stops unfolding it — name the defining equation
+
+Lean/mathlib tightened `simp`'s default **zeta-delta** unfolding (the
+v4.30→v4.34 jump, `notes/ToolchainBumps.md`). A proof that opens
+`set x := e with hx` (or a plain `let x := e`) and then closes a goal with a
+bare `simp` / `simpa` now leaves the local folded, so the tactic no longer
+finds the pattern it used to.
+
+**Fix:** pass the defining equation to the simp set — `simp [hx]` /
+`simpa [hx] using h` — or, for a `let`, the local's own name (`simp [x]`).
+Nothing about the mathematics changes; the tactic just has to be told.
+
+This was the joint-largest breakage group of the v4.34.0-rc1 bump (13 sites),
+and it clusters hard: **all eight** failures in
+`Molecular/AlgebraicInduction/GenericityDevice.lean` came from a *single*
+`set F := … with hF`, and adding `[hF]` fixed every one. So on a bump, don't
+fix these one at a time — find the `set` the failing goals share.
+
+Do not confuse the three neighbouring `set` entries:
+
+- **§ 1** — `omega`/`grind` treat the alias and the expanded form as unrelated
+  *atoms*. Fix is a `rw [← name_def]`, not a simp argument.
+- **§ 6** — `set name := fun t => …` (a *lambda* body): `simp [name]` fails
+  structurally, and the fix is to restructure to `let` + explicit `have`
+  reduction lemmas rather than to pass an equation.
+- **§ 98** — `rw [heq]` on the bound variable reports *"motive is not type
+  correct"*; feed the equation to `omega`/`linarith` instead of rewriting the
+  atom away.
+
+§ 105 is the one where the proof was fine and only simp's default unfolding
+moved.
+
+---
+
+## 106. `convert … using N` / `simpa … using h` breaks on a mathlib bump — try plain `exact` **first**
+
+A `convert X using N` (or a term-mode `by simpa … using X`) that stops working
+after a mathlib bump is usually not a proof that needs repairing: the statement
+was **definitionally true all along**, and the tactic was doing unification
+work mathlib's unifier no longer performs. Deleting the tactic is the whole fix.
+
+**Fix, in order:**
+1. `exact X` — or, in term mode, drop the `by simpa … using` wrapper entirely.
+2. Only if that fails, debug the `convert`.
+
+**The diagnostic tell:** a `convert` that fails leaving *instance-path* goals
+(`Real.instRing.toSemiring = Real.semiring` and friends) is telling you the two
+sides are already defeq and `exact` will close it.
+
+This was the other joint-largest group of the v4.34.0-rc1 bump (13 sites), and
+the gaps `exact` closed for free are worth knowing, because each one looks like
+it needs a lemma: `Matrix.of`, `Matrix.row`, `LinearIndepOn` versus its
+unfolding, eta-expansion of a `∘`, and `(b :: rest)[s + 1]` versus `rest[s]`.
+
+Standing exposure: the tree still carries 25 `convert … using N` plus 7 bare
+`convert`, and ~10% of them broke on that one jump. A speculative sweep is not
+worth it, but if a future bump breaks several again, converting the survivors
+that are definitionally true to `exact` / `simpa only` would retire a recurring
+cost.
+
+---

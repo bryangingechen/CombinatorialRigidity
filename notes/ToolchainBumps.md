@@ -614,11 +614,13 @@ cheap. Landed 2026-08-20.
    here — an operational requirement that belongs in the file every
    Lean-touching session auto-loads.
 
-**Still open:** the two `TACTICS-QUIRKS.md` rescue entries the *What actually
-broke* section above says are "written up" — the **zeta-delta / `set`-binding**
-entry and the **reach-for-`exact`-before-`convert`** entry. Both are described
-in full there; they need transcribing into the symptom-indexed format with a
-section number.
+~~**Still open:** the two `TACTICS-QUIRKS.md` rescue entries…~~ — **done.**
+The **zeta-delta / `set`-binding** entry is now **§ 105** and the
+**reach-for-`exact`-before-`convert`** entry **§ 106**, both with *Symptom
+index* lines. § 105 cross-references the three neighbouring `set` entries it is
+easy to confuse it with (§ 1 `omega`/`grind` atoms, § 6 `set` of a lambda,
+§ 98 `rw [heq]` motive failures), since the distinguishing feature is that
+nothing was wrong with the proof — only simp's default unfolding moved.
 
 ### 5. Unstick hopscotch — the highest-leverage item
 
