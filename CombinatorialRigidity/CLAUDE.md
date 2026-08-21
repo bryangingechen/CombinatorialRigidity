@@ -93,15 +93,17 @@ files**. The how-to — converting a file, the `module`/`@[expose]`/
 (do not add one) — is in **`LEAN-OPS.md`** *Module-system conversion*;
 per-file dispositions are in `../notes/PERFORMANCE.md`.
 
-## Editing the `apnelson1/Matroid` fork → `LEAN-OPS.md`
+## Patching the `Matroid` dependency → `LEAN-OPS.md`
 
-The `Matroid` dependency is the user's editable fork; you may edit it when
-a proof needs a `cycleMatroid`/`Graph`/union API that isn't there. **Two
-non-negotiables:** prefer the project-side route (a `CombinatorialRigidity/Matroid/`
-or `Mathlib/<path>` mirror) first, and **never push the fork or bump its
-`rev` in `lake-manifest.json`/`lakefile.toml` unprompted** (flag any pending
-fork edit in the commit summary + `notes/PhaseN.md`, or the next checkout
-breaks). Full mechanics: **`LEAN-OPS.md`** *Editing the Matroid fork*.
+⚠️ The `Matroid` dependency is **plain upstream `apnelson1/Matroid`** as of the
+v4.34.0-rc1 bump — the user's editable fork is **retired**
+(`notes/ToolchainBumps.md`). So there is no sanctioned way to patch the
+dependency mid-session: prefer the project-side route (a
+`CombinatorialRigidity/Matroid/` or `Mathlib/<path>` mirror), and **never bump
+its `rev` in `lake-manifest.json`/`lakefile.toml` unprompted** — that is a
+dependency bump, a human decision. If a dependency-side patch looks
+unavoidable, surface it to the user (upstream PR vs re-forking is their call).
+Full mechanics: **`LEAN-OPS.md`** *Patching the Matroid dependency*.
 
 ## Lean LSP MCP — reach for it
 

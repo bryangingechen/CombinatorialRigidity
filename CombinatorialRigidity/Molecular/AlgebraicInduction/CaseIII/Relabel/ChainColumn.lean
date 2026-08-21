@@ -1304,7 +1304,8 @@ theorem _root_.Graph.ChainData.chainData_freshEdge_perp_transport_base_to_candid
   · subst hs0
     rw [cd.shiftEdgePerm_apply_edge_zero i hi]
     -- Bridge the base graph `G − vᵢ` to `Gb`: `supportExtensor` reads only `ends₀`/`q`.
-    simpa only [if_pos rfl, PanelHingeFramework.toBodyHinge_supportExtensor,
+    -- `if_pos rfl` no longer applies: simp normalizes the `0 = 0` condition to `True` first.
+    simpa only [ite_true, PanelHingeFramework.toBodyHinge_supportExtensor,
       PanelHingeFramework.ofNormals_ends, PanelHingeFramework.ofNormals_normal] using hbase
   · rw [cd.shiftEdgePerm_apply_edge_interior i hs0 hs1i]
     simpa only [if_neg (by omega : ¬ s = 0), PanelHingeFramework.toBodyHinge_supportExtensor,

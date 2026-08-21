@@ -70,10 +70,10 @@ they are already adjacent in `G`, or when they share a common neighbor in `G` (i
 graph distance exactly two). Katoh–Tanigawa 2011, p. 650. -/
 def square (G : SimpleGraph V) : SimpleGraph V where
   Adj u v := u ≠ v ∧ (G.Adj u v ∨ (G.commonNeighbors u v).Nonempty)
-  symm u v := by
+  symm := ⟨fun u v => by
     rintro ⟨hne, hc | hc⟩
     · exact ⟨hne.symm, Or.inl hc.symm⟩
-    · exact ⟨hne.symm, Or.inr (by rwa [commonNeighbors_symm])⟩
+    · exact ⟨hne.symm, Or.inr (by rwa [commonNeighbors_symm])⟩⟩
   loopless := ⟨fun u h => h.1 rfl⟩
 
 @[simp]

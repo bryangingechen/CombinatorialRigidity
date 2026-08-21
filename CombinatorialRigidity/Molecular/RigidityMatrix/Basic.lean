@@ -186,8 +186,8 @@ noncomputable def ScrewSpace.equivExteriorPower (K : Type*) [Field K] (k : ℕ) 
     ScrewSpace K k ≃ₗ[K] ↥(⋀[K]^k (Fin (k + 2) → K)) where
   toFun C := cast (ScrewSpace_def K k) C
   invFun C := cast (ScrewSpace_def K k).symm C
-  left_inv C := by simp [ScrewSpace_def]
-  right_inv C := by simp [ScrewSpace_def]
+  left_inv C := by simp only [cast_cast, cast_eq]
+  right_inv C := by simp only [cast_cast, cast_eq]
   map_add' C D := rfl
   map_smul' c C := rfl
 
@@ -639,8 +639,8 @@ theorem linearIndependent_hingeRow {ι : Type*} {u v : α} (huv : u ≠ v)
     LinearIndependent K (fun i => hingeRow (k := k) (α := α) u v (r i)) := by
   have hinj : Function.Injective (screwDiff (K := K) (k := k) (α := α) u v).dualMap :=
     LinearMap.dualMap_injective_of_surjective (screwDiff_surjective huv)
-  simpa only [hingeRow_eq_dualMap] using hr.map' (screwDiff (K := K) (k := k) (α := α) u v).dualMap
-    (LinearMap.ker_eq_bot.2 hinj)
+  simpa only [hingeRow_eq_dualMap, Function.comp_def] using
+    hr.map' (screwDiff (K := K) (k := k) (α := α) u v).dualMap (LinearMap.ker_eq_bot.2 hinj)
 
 /-- The **rows of the panel-hinge rigidity matrix `R(G,p)`** (`def:rigidity-matrix`): the set of
 all row functionals `hingeRow u v r` over every link `e = uv` of `G` and every row `r` of the

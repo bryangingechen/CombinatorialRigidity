@@ -34,39 +34,33 @@ rev = "master"
 # Phase 8: linear-matroid framing. `apnelson1/Matroid` provides
 # `Matroid.ofFun` and `Module.matroid` (the matroid of a linear
 # function), which sit on top of mathlib's `IndepMatroid.ofFinitaryCardAugment`
-# but aren't yet upstreamed. Pinned to a specific revision so future
-# `lake update` runs are deliberate; the lakefile's mathlib pin
-# takes precedence over the transitive one from this dep. See
-# `notes/Phase8.md` *Architectural choices made up front* and
-# `DESIGN.md` *Phase 8: `apnelson1/Matroid` dependency*.
+# but aren't yet upstreamed. Phases 13+ additionally import `Matroid.Graphic`
+# (`Graph.cycleMatroid`) for tree-packing, and Phases 16+ the `Matroid.Graph.*`
+# API. Pinned to a specific revision so future `lake update` runs are
+# deliberate; the lakefile's mathlib pin takes precedence over the transitive
+# one from this dep. See `notes/Phase8.md` *Architectural choices made up
+# front* and `DESIGN.md` *Phase 8: `apnelson1/Matroid` dependency*.
 #
-# Phase 13: pinned to a fork off the upstream pin (`e6852ce`), branch
-# `combinatorial-rigidity-fix`, carrying (1) a single proof fix —
-# `unifOn_rankPos_iff` in `Matroid/Uniform/Basic.lean`, whose `simp` no
-# longer closed under our mathlib pin (mathlib-master drift). The fix is
-# a transitive prerequisite of `Matroid.Graphic` (`Graph.cycleMatroid`),
-# which Phase 13 onward imports for tree-packing; nothing earlier
-# imported it, so the breakage went unexercised through Phase 12. No
-# upstream PR by request (trivial; upstream tracks mathlib master and
-# will resolve it).
+# **The local fork is retired** (v4.34.0-rc1 bump, 2026-08-20): this pin is
+# plain upstream `apnelson1/Matroid`, at a revision with green CI. The fork
+# (`bryangingechen/Matroid`, branch `combinatorial-rigidity-fix`) had carried
+# two patches, and neither justifies a fork any more:
 #
-# Phase 23g adds (2) the `deleteVerts` notation-precedence fix: the
-# upstream `scoped notation:51 G:100 " - " S:100` made ordinary
-# `-`-continuations (`i - 1 + 1`, `x - a - b`) unparseable wherever the
-# Graph scope is open (TACTICS-QUIRKS § 48); the RESULT level is raised
-# to the standard subtraction level (`notation:65`, operands kept at
-# 100 so previously-valid arithmetic elaborates untouched — a first
-# attempt that also loosened the operands to 65/66 broke a CaseI.lean
-# coercion-sensitive rewrite). Upstream-proposable.
+#   1. the `unifOn_rankPos_iff` simp-drift fix is OBSOLETE — upstream
+#      re-greened that proof independently;
+#   2. the `deleteVerts` notation-precedence fix is STILL ABSENT upstream, but
+#      the poisoning it avoided (TACTICS-QUIRKS § 48 — a scoped `notation:51`
+#      for `G - S` that makes `-`-continuations like `i - 1 + 1` unparseable
+#      wherever a `Graph`/`WList`-typed variable is in scope) costs only FOUR
+#      sites in this tree, each with a cheap local workaround.
 #
-# Retire the fork (back to a direct apnelson1 pin) once upstream
-# re-greens against a compatible mathlib and the notation fix lands
-# there. See `notes/Phase13.md` *Blockers* and `DESIGN.md` *Phase 8:
-# `apnelson1/Matroid` dependency*.
+# So § 48's workarounds are load-bearing again here. Proposing the precedence
+# fix upstream (widen the RESULT level to 65; leave the operands at 100) would
+# retire them; § 48 carries the analysis. See `notes/ToolchainBumps.md`.
 [[require]]
 name = "Matroid"
-git = "https://github.com/bryangingechen/Matroid.git"
-rev = "cb3be622bb5328a4e81d88390c89480a9d413978"
+git = "https://github.com/apnelson1/Matroid.git"
+rev = "f44939ff4c4c03740f9e2d13e3429ab92d2edcd1"
 
 [[lean_lib]]
 name = "CombinatorialRigidity"

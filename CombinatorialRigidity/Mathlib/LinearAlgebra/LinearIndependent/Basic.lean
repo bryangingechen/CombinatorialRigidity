@@ -209,7 +209,7 @@ theorem linearIndependent_sumElim_block_swap {ιc : Type*}
   have hbaseP : ∀ i, base i ∈ P := fun i => Submodule.subset_span ⟨i, rfl⟩
   set f : ι → P := fun i => ⟨base i, hbaseP i⟩ with hf
   have hfindep : LinearIndependent K f :=
-    LinearIndependent.of_comp P.subtype (by simpa [hf] using hbase)
+    LinearIndependent.of_comp P.subtype (by simpa [hf, Function.comp_def] using hbase)
   -- The quotient map `π : M → M ⧸ P`.
   set π := P.mkQ with hπ
   -- In the quotient `Q = M ⧸ P`, the candidate block's image is independent.

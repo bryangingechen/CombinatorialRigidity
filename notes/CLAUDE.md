@@ -27,6 +27,15 @@ for *organizing* this directory is here.
 - **`PERFORMANCE.md`** — performance investigations and structural
   options (Lean module system, import boundaries). Its own header
   explains the format.
+- **`ToolchainBumps.md`** — the canonical home for **toolchain / mathlib /
+  `Matroid` dependency bumps**: the playbook (how to run one here, given that
+  `lake update` is hook-denied), the environment requirements (notably
+  `LAKE_CACHE_DIR`, without which Lean 4.34+ reports cache-write failures as
+  *build failures* and silently truncates coverage), the two verification traps
+  (cached modules don't re-emit warnings; `lake env lean` skips the style
+  linters), a per-bump record with the fix taxonomy, and the standing
+  **scheduled-cleanup** queue. Read it before attempting a bump; it is
+  maintenance, not a phase, so it outlives whatever phase is active.
 - **`Pencil-informal.md`** — the Phase-39 (PENCIL) **informal-mathematics
   workbook**: proofs under development for the kernels and branch arms the
   phase carries as hypotheses, staged *before* blueprint transcription

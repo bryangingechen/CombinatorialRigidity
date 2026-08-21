@@ -210,8 +210,7 @@ lemma exists_tripleLI_polynomial
         (fun i j => q (![a, b, c] i, Fin.castLE h3 j)) := by
       have := Matrix.mvPolynomialX_mapMatrix_eval
         (Matrix.of (fun i j : Fin 3 => q (![a, b, c] i, Fin.castLE h3 j)))
-      simp only [Matrix.of_apply] at this
-      convert this using 2
+      exact this
     have hBdet : Matrix.det (fun i j => q (![a, b, c] i, Fin.castLE h3 j)) =
         MvPolynomial.eval (fun p : Fin 3 × Fin 3 => (q ∘ f) p)
           (Matrix.mvPolynomialX (Fin 3) (Fin 3) K).det := by
@@ -271,8 +270,7 @@ lemma exists_tupleLI_polynomial
         (fun i j => q (cand i, Fin.castSucc j)) := by
       have := Matrix.mvPolynomialX_mapMatrix_eval
         (Matrix.of (fun i j : Fin (k + 1) => q (cand i, Fin.castSucc j)))
-      simp only [Matrix.of_apply] at this
-      convert this using 2
+      exact this
     have hBdet : Matrix.det (fun i j => q (cand i, Fin.castSucc j)) =
         MvPolynomial.eval (fun p : Fin (k + 1) × Fin (k + 1) => (q ∘ f) p)
           (Matrix.mvPolynomialX (Fin (k + 1)) (Fin (k + 1)) K).det := by

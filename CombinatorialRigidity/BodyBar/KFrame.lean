@@ -539,12 +539,12 @@ theorem linearIndepOn_kFrameRow_of_isSparse_restrict [Finite α] [Finite β]
     -- Maximal minor: a column selection with nonzero specialized det.
     obtain ⟨c, hc⟩ :=
       Matrix.exists_submatrix_det_ne_zero_of_linearIndependent_rows (M := Matrix.of Mspec)
-        (by simpa [Matrix.row] using hMspec_LI)
+        hMspec_LI
     -- Feed the engine: `φ (det of R-minor) = det of specialized minor ≠ 0`.
     refine Matrix.linearIndependent_rows_of_specialized_submatrix_det_ne_zero
       (fun e : E' => fun jx : Fin k × α => kFrameRowR k D (e : β) jx.1 jx.2) φ c ?_
     rw [RingHom.map_det]
-    convert hc using 2
+    exact hc
   -- STEP 2: transfer the uncurried R-LI to the nested K-valued `kFrameRow`.
   rw [linearIndepOn_kFrameRow_iff_over_polyRing, LinearIndepOn]
   -- `kFrameRow ∘ (↑) = ψ ∘ (uncurried R rows)` for an injective `R`-linear `ψ`.

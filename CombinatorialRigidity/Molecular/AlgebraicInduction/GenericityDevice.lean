@@ -936,7 +936,7 @@ theorem PanelHingeFramework.hasFullRankRealization_of_splice_of_supportExtensor 
   -- `D(|V(G)|−1)` independent panel rows.
   obtain ⟨s, hscard, hsindep⟩ :=
     F.exists_independent_panelRow_subfamily_of_rigidOn (ends := ends)
-      (by simpa using hends) hsupp (by simpa using hne) (by simpa using hrig)
+      (by simpa [hF] using hends) hsupp (by simpa [hF] using hne) (by simpa [hF] using hrig)
   -- (iii) The genericity device lifts the witnessed corank at the seed `q₀` to a generic placement.
   exact PanelHingeFramework.hasFullRankRealization_of_independent_panelRow G ends hends hne
     (q₀ := q₀) (s := s) hsindep (le_of_eq hscard.symm)
@@ -1151,7 +1151,7 @@ theorem PanelHingeFramework.hasFullRankRealization_of_splice_set_of_supportExten
   -- `D(|V(G)|−1)` independent panel rows.
   obtain ⟨s, hscard, hsindep⟩ :=
     F.exists_independent_panelRow_subfamily_of_rigidOn (ends := ends)
-      (by simpa using hends) hsupp (by simpa using hne) (by simpa using hrig)
+      (by simpa [hF] using hends) hsupp (by simpa [hF] using hne) (by simpa [hF] using hrig)
   -- (iii) The genericity device lifts the witnessed corank at the seed `q₀` to a generic placement.
   exact PanelHingeFramework.hasFullRankRealization_of_independent_panelRow G ends hends hne
     (q₀ := q₀) (s := s) hsindep (le_of_eq hscard.symm)
@@ -1248,7 +1248,7 @@ theorem PanelHingeFramework.hasFullRankRealization_of_rigidOn_seed
       (by simpa using hne_ends e)
   obtain ⟨s, hscard, hsindep⟩ :=
     F.exists_independent_panelRow_subfamily_of_rigidOn (ends := ends)
-      (by simpa using hends) hsupp (by simpa using hne) (by simpa using hrig)
+      (by simpa [hF] using hends) hsupp (by simpa [hF] using hne) (by simpa [hF] using hrig)
   -- The genericity device lifts the witnessed corank at the seed `q₀` to a generic placement.
   exact PanelHingeFramework.hasFullRankRealization_of_independent_panelRow G ends hends hne
     (q₀ := q₀) (s := s) hsindep (le_of_eq hscard.symm)
@@ -1331,7 +1331,8 @@ theorem PanelHingeFramework.exists_rankPolynomial_of_rigidOn [Finite α] [Finite
   -- N7b-0: the rigid leg carries a full-size `D(|V(G)|−1)` independent panel-row subfamily at `q₀`.
   obtain ⟨s, hscard, hsindep⟩ :=
     F.exists_independent_panelRow_subfamily_of_rigidOn
-      (ends := ends) (by simpa using hends) hne (by simpa using hnev) (by simpa using hrig)
+      (ends := ends) (by simpa [hF] using hends) hne (by simpa [hF] using hnev)
+      (by simpa [hF] using hrig)
   -- The standard basis of `α → ScrewSpace K k`, its dual-basis identification `φ`, and the
   -- bridge to
   -- the canonical `Fin (finrank …)` index that the mirror lemma's `c`/`φ` require.
@@ -1428,8 +1429,9 @@ theorem PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking [Finite α]
   -- subfamily at `q₀`, *every member of which links* in `G`.
   obtain ⟨s, hsupp, hscard, hsindep⟩ :=
     F.exists_independent_panelRow_subfamily_of_rigidOn_linking
-      (ends := ends) (by simpa using hends) (by simpa using hne) (by simpa using hnev)
-      (by simpa using hrig)
+      (ends := ends) (by simpa [hF] using hends) (by simpa [hF] using hne)
+      (by simpa [hF] using hnev)
+      (by simpa [hF] using hrig)
   -- The standard basis of `α → ScrewSpace K k`, its dual-basis identification `φ`, and the
   -- bridge to
   -- the canonical `Fin (finrank …)` index that the mirror lemma's `c`/`φ` require.
@@ -1519,7 +1521,7 @@ theorem PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking [Finite 
   -- at `q₀`.
   obtain ⟨s, hsupp, hscard, hsindep⟩ :=
     F.exists_independent_panelRow_subfamily_of_le_finrank
-      (ends := ends) (by simpa using hends) (by simpa using hne) (by simpa using hN)
+      (ends := ends) (by simpa [hF] using hends) (by simpa [hF] using hne) (by simpa [hF] using hN)
   -- The standard basis of `α → ScrewSpace K k`, its dual-basis identification `φ`, and the
   -- bridge to
   -- the canonical `Fin (finrank …)` index that the mirror lemma's `c`/`φ` require.
@@ -1632,7 +1634,8 @@ theorem PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set [Finite
   -- `q₀`, *every member of which links* in `G`.
   obtain ⟨t, hsupp, hscard, hsindep⟩ :=
     F.exists_independent_panelRow_subfamily_of_rigidOn_linking_set
-      (ends := ends) (s := s) (by simpa using hends) (by simpa using hne) hnes (by simpa using hrig)
+      (ends := ends) (s := s) (by simpa [hF] using hends) (by simpa [hF] using hne)
+      hnes (by simpa [hF] using hrig)
   -- The standard basis of `α → ScrewSpace K k`, its dual-basis identification `φ`, and the
   -- bridge to
   -- the canonical `Fin (finrank …)` index that the mirror lemma's `c`/`φ` require.

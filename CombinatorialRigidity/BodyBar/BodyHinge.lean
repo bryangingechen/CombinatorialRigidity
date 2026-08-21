@@ -66,8 +66,8 @@ def edgeMultiply (G : Graph α β) (m : ℕ) : Graph α (β × Fin m) where
   IsLink p x y := G.IsLink p.1 x y
   edgeSet := {p | p.1 ∈ E(G)}
   isLink_symm := by
-    rintro ⟨e, i⟩ he x y h
-    exact h.symm
+    rintro ⟨e, i⟩ he
+    exact ⟨fun x y h => h.symm⟩
   eq_or_eq_of_isLink_of_isLink := by
     rintro ⟨e, i⟩ x y v w h h'
     exact h.left_eq_or_eq h'

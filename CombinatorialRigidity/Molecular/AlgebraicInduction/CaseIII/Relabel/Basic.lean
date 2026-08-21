@@ -1285,7 +1285,7 @@ theorem BodyHingeFramework.wstep_foldr_mem_span_rigidityRows
     -- transports `φ` (top of the chain, `span (F (rest.length + 1))`) down through `rest` over the
     -- *shifted* chain `F (· + 1)` to land in `span (F 1)`, then the head step drops `F 1 → F 0`.
     have htail := ih (fun s => F (s + 1)) (fun s => ec (s + 1))
-      (fun s hs => by simpa using hstep (s + 1) (by simpa using hs))
+      (fun s hs => hstep (s + 1) (by simpa using hs))
       (by simpa using hφ)
     -- The head step's single-swap W9a transport `F 1 → F 0`, fed the tail output (in `span (F 1)`).
     obtain ⟨⟨hca, hcv⟩, hlink_ec, hdeg2, hdeg2r, hnov, htrans⟩ := hstep 0 (by simp)

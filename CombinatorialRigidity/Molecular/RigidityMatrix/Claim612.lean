@@ -251,7 +251,7 @@ theorem exists_affineIndependent_panel_incidence :
     rw [affineIndependent_fin_iff_det_homogenize,
       show (Matrix.of fun i => homogenize ((![![0, 0, 0], ![0, 0, 1], ![1, 0, 0], ![0, 1, 0]] :
           Fin 4 → Fin 3 → K) i)) = !![(0 : K), 0, 0, 1; 0, 0, 1, 1; 1, 0, 0, 1; 0, 1, 0, 1] from by
-        ext i j; fin_cases i <;> fin_cases j <;> simp [homogenize, Fin.snoc]]
+        ext i j; fin_cases i <;> fin_cases j <;> simp [homogenize, Fin.snoc] <;> rfl]
     rw [Matrix.det_succ_row_zero]
     simp [Fin.sum_univ_succ, Matrix.det_fin_three, Fin.succAbove]
   · -- The three coordinate covectors are linearly independent.
@@ -262,10 +262,11 @@ theorem exists_affineIndependent_panel_incidence :
     · simpa [Fin.sum_univ_succ] using hg' 0
     · simpa [Fin.sum_univ_succ] using hg' 1
     · simpa [Fin.sum_univ_succ] using hg' 2
-  · intro u; fin_cases u <;> simp [homogenize, Fin.snoc, dotProduct, Fin.sum_univ_succ]
+  · intro u; fin_cases u <;> simp [homogenize, Fin.snoc, dotProduct, Fin.sum_univ_succ]; rfl
   · refine ⟨?_, ?_, ?_⟩ <;> simp [homogenize, Fin.snoc, dotProduct, Fin.sum_univ_succ]
-  · refine ⟨?_, ?_, ?_⟩ <;> simp [homogenize, Fin.snoc, dotProduct, Fin.sum_univ_succ]
-  · refine ⟨?_, ?_, ?_⟩ <;> simp [homogenize, Fin.snoc, dotProduct, Fin.sum_univ_succ]
+    exact one_ne_zero
+  · refine ⟨?_, ?_, ?_⟩ <;> simp [homogenize, Fin.snoc, dotProduct, Fin.sum_univ_succ]; rfl
+  · refine ⟨?_, ?_, ?_⟩ <;> simp [homogenize, Fin.snoc, dotProduct, Fin.sum_univ_succ]; rfl
 
 /-- **The kept-points tabulation of the `D` spanning joins, general `d`**
 (`lem:case-III-claim612`, the producer-direction (R1-affine) form; Katoh–Tanigawa 2011 §6.4.1

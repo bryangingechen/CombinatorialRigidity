@@ -139,7 +139,7 @@ lemma IsSparse.maxBlock_isTightOn {G : SimpleGraph V} {k ℓ : ℕ}
     rcases hT₁ with hT₁ | ⟨hT₁_tight, hT₁_X⟩
     · subst hT₁; simpa using hT₂
     · rcases hT₂ with hT₂ | ⟨hT₂_tight, hT₂_X⟩
-      · subst hT₂; simpa using Or.inr ⟨hT₁_tight, hT₁_X⟩
+      · subst hT₂; simpa [P] using Or.inr ⟨hT₁_tight, hT₁_X⟩
       · refine Or.inr ⟨?_, hT₁_X.trans Finset.subset_union_left⟩
         exact (hT₁_tight.union_inter_of_pair hℓ hT₂_tight hI huv
           (hT₁_X hu) (hT₁_X hv) (hT₂_X hu) (hT₂_X hv)).1

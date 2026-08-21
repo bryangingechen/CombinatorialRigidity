@@ -358,7 +358,7 @@ theorem extensor_ne_zero_iff_linearIndependent {d k : ℕ}
     have hne := hfam.ne_zero s
     apply hne
     have hid : ⇑(Set.powersetCard.ofFinEmbEquiv.symm s) = (id : Fin k → Fin k) := by
-      rw [Set.powersetCard.ofFinEmbEquiv_symm_apply, Finset.univ_orderEmbOfFin]
+      simp only [Set.powersetCard.ofFinEmbEquiv_symm_apply, hs]; exact Finset.univ_orderEmbOfFin _
     apply Subtype.ext
     rw [exteriorPower.ιMulti_family_apply_coe, ZeroMemClass.coe_zero]
     change ExteriorAlgebra.ιMulti K k (v ∘ ⇑(Set.powersetCard.ofFinEmbEquiv.symm s)) = 0

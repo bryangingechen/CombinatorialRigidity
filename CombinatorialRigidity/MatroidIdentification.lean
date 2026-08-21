@@ -640,8 +640,8 @@ private lemma exists_nonCollinear_rowIndependent_placement_dim_two [Finite V]
   have hab_distinct : p₀ a ≠ p₀ b := by
     intro heq
     apply h_row_ab_ne
-    ext motion
-    simp [rigidityRow_apply, rigidityMap_apply, heq]
+    refine LinearMap.ext fun motion => ?_
+    exact (rigidityMap_apply G' p₀ motion a b h_ab).trans (by simp [heq])
   have hd_ne_zero : p₀ b - p₀ a ≠ 0 := sub_ne_zero.mpr (Ne.symm hab_distinct)
   obtain ⟨w, hw_outside⟩ := exists_not_mem_span_singleton_dim_two hd_ne_zero
   -- Row-LI preservation along the `Function.update`-perturbation, by continuity.
@@ -893,7 +893,7 @@ theorem edgeSet_rowIndependent_iff_isSparse_dim_two {V : Type*} [Finite V]
     -- corresponding edges are definitionally equal (both reduce through `Sym2.lift` to the
     -- same `edgeRow p (u, v)` on the same `Sym2`-value), so `convert ... using 1` closes both
     -- the LI carrier and the index reindex via `toH`.
-    convert hp.comp toH htoH_inj using 1
+    exact hp.comp toH htoH_inj
 
 /-! ### The planar rigidity matroid
 

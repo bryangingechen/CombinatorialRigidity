@@ -89,7 +89,7 @@ private theorem affineIndependent_of_diffMatrix3_det_ne_zero
     ← linearIndependent_equiv (finSuccAboveEquiv 0),
     ← (WithLp.linearEquiv 2 ℝ (Fin 3 → ℝ)).toLinearMap.linearIndependent_iff
       (LinearEquiv.ker _)]
-  convert h_LI_rows using 1
+  exact h_LI_rows
 
 /-- **Four moment-curve points at distinct parameters are affinely independent.** The difference
 matrix determinant is the Vandermonde product `Matrix.det_powerDifferences`, nonzero because `φ`

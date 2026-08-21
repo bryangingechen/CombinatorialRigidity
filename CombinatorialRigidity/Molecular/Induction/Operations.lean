@@ -773,7 +773,9 @@ def splitOff (G : Graph α β) (v a b : α) (e₀ : β) : Graph α β where
       (e = e₀ ∧ a ≠ v ∧ b ≠ v ∧ a ∈ V(G) ∧ b ∈ V(G) ∧
         ((x = a ∧ y = b) ∨ (x = b ∧ y = a)))
   isLink_symm := by
-    rintro e he x y (⟨hne, h, hx, hy⟩ | ⟨he₀, ha, hb, haV, hbV, hxy⟩)
+    rintro e he
+    refine ⟨fun x y h => ?_⟩
+    rcases h with ⟨hne, h, hx, hy⟩ | ⟨he₀, ha, hb, haV, hbV, hxy⟩
     · exact Or.inl ⟨hne, h.symm, hy, hx⟩
     · exact Or.inr ⟨he₀, ha, hb, haV, hbV, hxy.symm.imp (fun ⟨p, q⟩ ↦ ⟨q, p⟩)
         (fun ⟨p, q⟩ ↦ ⟨q, p⟩)⟩

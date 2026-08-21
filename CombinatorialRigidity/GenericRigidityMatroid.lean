@@ -205,7 +205,8 @@ theorem exists_isGenericPlacement_abundance (V : Type*) [Finite V] (d : ℕ) :
     · obtain ⟨q, hq⟩ := h
       have hLI : LinearIndependent ℝ (fun i : I => g (ψ q) i) := by
         rw [edgeSetRowIndependent_iff_linearIndepOn_rigidityRow] at hq
-        simpa only [hg_def, LinearEquiv.symm_apply_apply] using hq
+        simpa only [hg_def, LinearEquiv.symm_apply_apply, LinearIndepOn,
+          Function.comp_def] using hq
       have hWfr : Module.finrank ℝ (Module.Dual ℝ (Framework V d)) = n := by
         rw [hn_def]; exact Subspace.dual_finrank_eq
       obtain ⟨Q, hQ0, hQ⟩ :=
@@ -222,7 +223,8 @@ theorem exists_isGenericPlacement_abundance (V : Type*) [Finite V] (d : ℕ) :
     (Finset.prod_ne_zero_iff.mp hp) I (Finset.mem_univ I)
   have hLIp : LinearIndependent ℝ (fun i : I => g (ψ p) i) := hQ I (ψ p) hQI hI
   rw [edgeSetRowIndependent_iff_linearIndepOn_rigidityRow]
-  simpa only [hg_def, LinearEquiv.symm_apply_apply] using hLIp
+  simpa only [hg_def, LinearEquiv.symm_apply_apply, LinearIndepOn,
+    Function.comp_def] using hLIp
 
 /-! ### The generic rigidity matroid and its rank function
 

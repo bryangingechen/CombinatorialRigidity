@@ -528,7 +528,7 @@ private lemma affineIndependent_of_difference_det_ne_zero {d : ℕ}
     ← linearIndependent_equiv (finSuccAboveEquiv 0),
     ← (WithLp.linearEquiv 2 ℝ (Fin d → ℝ)).toLinearMap.linearIndependent_iff
       (LinearEquiv.ker _)]
-  convert h_LI_rows using 1
+  exact h_LI_rows
 
 /-- **Affinely-spanning perturbation under an eventually-true placement property, d-general.**
 Given any property `P : Framework V d → Prop` that holds on a neighborhood of some placement

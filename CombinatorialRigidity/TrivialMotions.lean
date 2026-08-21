@@ -269,7 +269,8 @@ theorem trivialMotionFamily_linearIndependent [Finite V] {p : Framework V d}
     simp [ht_def, Pi.single_apply]
   -- Step 1: at every `v`, `t + S (p v) = 0`. Evaluate `hc` at `v` and split the index sum.
   have h_combine : ∀ v : V, t + S (p v) = 0 := fun v => by
-    simpa [hS_def, ht_def, Fintype.sum_sum_type, LinearMap.sum_apply] using congrFun hc v
+    simpa [hS_def, ht_def, trivialMotionFamily, Fintype.sum_sum_type,
+      LinearMap.sum_apply] using congrFun hc v
   -- Step 2: `S` vanishes on differences `p v - p w`.
   have h_S_diff : ∀ v w : V, S (p v - p w) = 0 := fun v w => by
     rw [map_sub, eq_neg_of_add_eq_zero_right (h_combine v),

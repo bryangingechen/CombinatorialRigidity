@@ -330,9 +330,7 @@ theorem polymatroid_of_adjMap [DecidableEq β] [Finite α] [Finite β] (M : Matr
             obtain ⟨u, hu, hadj⟩ := hx
             simp only [← Finset.mem_def, Finset.mem_biUnion, N_singleton, hN]
             refine ⟨u, hu, ?_⟩
-            simp only [toFinset_setOf, Finset.mem_filter,
-              Finset.mem_univ, true_and]
-            exact hadj ▸ (IsMatching.adj h'' hu)
+            exact Set.mem_toFinset.mpr (hadj ▸ IsMatching.adj h'' hu)
       obtain h := (rado M <| fun i : ↑I ↦ (N_singleton Adj i).toFinset).mpr
       simp only [hf, Nat.cast_le] at hp
       have hp : ∀ I' ⊆ I, I'.card ≤ M.rk ↑(I'.biUnion N) := by
@@ -379,21 +377,21 @@ theorem polymatroid_of_adjMap [DecidableEq β] [Finite α] [Finite β] (M : Matr
         · intro v hv
           simp only [Finset.mem_coe] at hv
           specialize hin ⟨v, hv⟩
-          simp only [N_singleton, toFinset_setOf, Finset.mem_filter,
-            Finset.mem_univ, true_and] at hin
-          simp only [hv, ↓reduceDIte, e', hin]
+          simp only [hv, ↓reduceDIte, e']
+          exact (Set.mem_toFinset (s := N_singleton Adj v)).mp hin
     have h_eq' : (ofPolymatroidFn hf_poly) = M.adjMap Adj univ := by
       refine ext_indep rfl (fun J _ ↦ ?_)
       simpa using heq J.toFinset
     have : ∀ Y, f Y = M.rk {v | ∃ u ∈ Y, Adj v u} := by
       intro Y
-      simp only [N_singleton, toFinset_setOf, Finset.coe_biUnion, Finset.mem_coe,
-        Finset.coe_filter, Finset.mem_univ, true_and, Nat.cast_inj, f, N]
+      simp only [N_singleton, Set.coe_toFinset, Finset.coe_biUnion, Finset.mem_coe,
+        Nat.cast_inj, f, N]
       have : (⋃ x ∈ Y, {x_2 | Adj x_2 x}) = {v | ∃ u ∈ Y, Adj v u} := by
         refine subset_antisymm (fun x ↦ ?_) (fun x ↦ ?_)
         · simp only [mem_iUnion, mem_setOf_eq, exists_prop, imp_self]
         · simp only [mem_setOf_eq, mem_iUnion, exists_prop, imp_self]
-      rw [this]
+      convert congrArg M.rk this using 2
+      exact iUnion₂_congr fun x _ => Set.coe_toFinset _
     exact ⟨f, hf_poly, h_eq', this⟩
 
 theorem sum'_eRk_eq_eRk_sum_on_indep {α ι : Type*} [Fintype ι] [Finite α]

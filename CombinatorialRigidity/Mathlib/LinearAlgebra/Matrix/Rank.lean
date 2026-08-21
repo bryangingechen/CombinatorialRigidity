@@ -1130,7 +1130,7 @@ theorem exists_polynomial_ne_zero_of_linearIndependent_at
   -- The witnessing minor polynomial `Q := det (P selected on columns `e`)`.
   refine ⟨(Matrix.of (fun i j : s => P i (e j))).det, ?_, fun p hp => ?_⟩
   · -- `eval p₀ Q = det ((P.map (eval p₀)) selected on `e`) ≠ 0` by `he`.
-    rw [heval p₀]; convert he using 2
+    rw [heval p₀]; exact he
   · -- At any non-root `p`, the specialized minor is nonsingular, so the rows are LI.
     rw [hiff p]
     refine Matrix.linearIndependent_rows_of_specialized_submatrix_det_ne_zero

@@ -146,7 +146,7 @@ theorem typeI_isInfinitesimallyRigid_extend [Finite V] {G : SimpleGraph V}
       have h_some : s(some u, some v) ∈ (typeI G a b).edgeSet := he
       have key := congr_fun hx ⟨s(some u, some v), h_some⟩
       simp only [rigidityMap_apply, Pi.zero_apply] at key
-      simpa [rigidityMap_apply] using key
+      simpa [rigidityMap_apply, hp_ext_def] using key
   -- Kernel-to-kernel linear map: precomposition by `some`, restricted to send `ker (typeI _)`
   -- into `ker G`.
   let restrict : LinearMap.ker ((typeI G a b).RigidityMap p_ext) →ₗ[ℝ]
@@ -389,7 +389,7 @@ theorem typeII_isInfinitesimallyRigid_extend [Finite V] {G : SimpleGraph V}
           show (typeII G a b c).Adj (some u) (some v) from ⟨h_uv, h_eq⟩
         have key := congr_fun hx ⟨s(some u, some v), h_typeII⟩
         simp only [rigidityMap_apply, Pi.zero_apply] at key
-        simpa [rigidityMap_apply, Function.comp_apply] using key
+        simpa [rigidityMap_apply, Function.comp_apply, hp_ext_def] using key
   -- Kernel-to-kernel linear map: precomposition by `some`, restricted to send
   -- `ker (typeII _)` into `ker G`.
   let restrict : LinearMap.ker ((typeII G a b c).RigidityMap p_ext) →ₗ[ℝ]

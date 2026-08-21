@@ -617,7 +617,7 @@ theorem exists_extensor_eq_panelSupportExtensor_gen [NeZero k] {n₁ n₂ : Fin 
       rw [← hc]; exact (inv_smul_smul₀ hcne _).symm
     rw [panelSupportExtensor_eq_complementIso_extensor]
     have := congrArg (Subtype.val (p := fun x => x ∈ ⋀[K]^k (Fin (k + 2) → K))) hc'
-    simpa only [Submodule.coe_smul] using this
+    simpa only [Submodule.coe_smul, ScrewSpace.val] using this
   refine ⟨Function.update q 0 (c⁻¹ • q 0), ?_, fun i => ?_⟩
   · -- `(panelSupportExtensor n₁ n₂).val = extensor (update q 0 (c⁻¹ • q 0))`.
     rw [extensor_update_smul]; exact hcomp
@@ -1204,23 +1204,23 @@ theorem exists_triangle_normals (hk : 1 ≤ k) :
     · rfl
     · change s₀₁ = s₁₂ at hij
       exfalso; simp only [s₀₁, s₁₂, Subtype.mk.injEq] at hij
-      have := Finset.ext_iff.mp hij ⟨0, by omega⟩; simp at this
+      have := Finset.ext_iff.mp (Subtype.mk_eq_mk.mp hij) ⟨0, by omega⟩; simp at this
     · change s₀₁ = s₀₂ at hij
       exfalso; simp only [s₀₁, s₀₂, Subtype.mk.injEq] at hij
-      have := Finset.ext_iff.mp hij ⟨1, by omega⟩; simp at this
+      have := Finset.ext_iff.mp (Subtype.mk_eq_mk.mp hij) ⟨1, by omega⟩; simp at this
     · change s₁₂ = s₀₁ at hij
       exfalso; simp only [s₁₂, s₀₁, Subtype.mk.injEq] at hij
-      have := Finset.ext_iff.mp hij ⟨0, by omega⟩; simp at this
+      have := Finset.ext_iff.mp (Subtype.mk_eq_mk.mp hij) ⟨0, by omega⟩; simp at this
     · rfl
     · change s₁₂ = s₀₂ at hij
       exfalso; simp only [s₁₂, s₀₂, Subtype.mk.injEq] at hij
-      have := Finset.ext_iff.mp hij ⟨1, by omega⟩; simp at this
+      have := Finset.ext_iff.mp (Subtype.mk_eq_mk.mp hij) ⟨1, by omega⟩; simp at this
     · change s₀₂ = s₀₁ at hij
       exfalso; simp only [s₀₂, s₀₁, Subtype.mk.injEq] at hij
-      have := Finset.ext_iff.mp hij ⟨1, by omega⟩; simp at this
+      have := Finset.ext_iff.mp (Subtype.mk_eq_mk.mp hij) ⟨1, by omega⟩; simp at this
     · change s₀₂ = s₁₂ at hij
       exfalso; simp only [s₀₂, s₁₂, Subtype.mk.injEq] at hij
-      have := Finset.ext_iff.mp hij ⟨1, by omega⟩; simp at this
+      have := Finset.ext_iff.mp (Subtype.mk_eq_mk.mp hij) ⟨1, by omega⟩; simp at this
     · rfl
 
 -- Private helpers for `exists_cycle_normals` below.
@@ -1307,7 +1307,8 @@ theorem exists_cycle_normals {m : ℕ} [NeZero m] (hm3 : 3 ≤ m) (hmk : m ≤ k
         (⟨{Fin.castLE hmk i, Fin.castLE hmk (i + 1)}, Finset.card_pair (hne i)⟩ :
           Set.powersetCard (Fin (k + 2)) 2)) := by
       intro a b hab
-      rw [Subtype.mk.injEq] at hab
+      replace hab : ({Fin.castLE hmk a, Fin.castLE hmk (a + 1)} : Finset (Fin (k + 2)))
+          = {Fin.castLE hmk b, Fin.castLE hmk (b + 1)} := congrArg Subtype.val hab
       have hma : Fin.castLE hmk a ∈
           ({Fin.castLE hmk b, Fin.castLE hmk (b + 1)} : Finset (Fin (k + 2))) := by
         rw [← hab]; exact Finset.mem_insert_self _ _

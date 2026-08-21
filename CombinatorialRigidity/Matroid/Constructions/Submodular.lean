@@ -181,7 +181,7 @@ with `f C < C.card`. -/
           _ ≤ f (C.erase e) :=
             indep_f_ge_card hC (erase_ssubset he) <| (erase_nonempty he).mpr hC_non
           _ ≤ f C := by
-            apply h_mono; simp only [le_eq_subset]; exact erase_subset e C
+            apply h_mono; exact erase_subset e C
       calc f D
         _ ≤ f (C₁ ∪ C₂) := h_mono (erase_subset e <| C₁ ∪ C₂)
         _ ≤ f C₁ + f C₂ - f (C₁ ∩ C₂) := by
@@ -551,7 +551,6 @@ theorem generalized_halls_marriage {ι : Type*} [Finite ι] [DecidableEq α]
       _ ≤ f (K₁.biUnion A'₁ ∪ K₂.biUnion A'₂) + f (((K₁ ∩ K₂).erase i).biUnion A) := by
         simp only [add_le_add_iff_right, Nat.cast_le]
         apply hf_mono
-        simp only [le_eq_subset]
         intro x hx
         simp only [mem_union, mem_biUnion] at hx
         obtain ⟨j, hj, hx⟩ | ⟨j, hj, hx⟩ := hx
@@ -598,7 +597,6 @@ theorem generalized_halls_marriage {ι : Type*} [Finite ι] [DecidableEq α]
           f ((K₁.erase i).biUnion A'₁ ∩ (K₂.erase i).biUnion A'₂) := by
         simp only [add_le_add_iff_left, Nat.cast_le]
         apply hf_mono
-        simp only [le_eq_subset]
         refine inter_subset_inter ?_ ?_
         <;> rw [biUnion_subset_iff_forall_subset]
         <;> intro j hj

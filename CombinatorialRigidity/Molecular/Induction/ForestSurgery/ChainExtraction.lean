@@ -558,7 +558,7 @@ theorem chainWalk_trichotomy [DecidableEq β] [Finite α] [Finite β] {G : Graph
         have hentry : G.IsLink entry_edge (P.get (P.length - 1)) P.last := by
           rw [hentry_def]
           have h := hlinkAt P hP.isWalk (P.length - 1) (by omega)
-          have heq1 : P.length - 1 + 1 = P.length := by omega
+          have heq1 := Nat.sub_add_cancel (show 1 ≤ P.length by omega)
           rwa [heq1, WList.get_length] at h
         have hentry_ne : P.get (P.length - 1) ≠ P.last := hentry.ne
         obtain ⟨x, g, -, hgne, hgx, -⟩ := hexit hPlastG hentry_ne hentry.symm hdeg2
@@ -575,7 +575,7 @@ theorem chainWalk_trichotomy [DecidableEq β] [Finite α] [Finite β] {G : Graph
           by_cases hklast : k = P.length - 1
           · apply hgne
             rw [hklast] at hkey
-            have heq1 : P.length - 1 + 1 = P.length := by omega
+            have heq1 := Nat.sub_add_cancel (show 1 ≤ P.length by omega)
             rw [heq1, WList.get_length] at hkey
             exact hkey.unique_edge hentry
           · have hlt1 : P.get k ≠ P.last := by
@@ -684,7 +684,7 @@ theorem chainWalk_trichotomy [DecidableEq β] [Finite α] [Finite β] {G : Graph
               have hin : G.IsLink (P.edge[P.idxOf x - 1]'(by rw [WList.length_edge]; omega)) x
                   (P.get (P.idxOf x - 1)) := by
                 have h := hlinkAt P hP.isWalk (P.idxOf x - 1) (by omega)
-                have heq1 : P.idxOf x - 1 + 1 = P.idxOf x := by omega
+                have heq1 := Nat.sub_add_cancel (show 1 ≤ P.idxOf x by omega)
                 rw [heq1, hgetj] at h
                 exact h.symm
               have hout : G.IsLink (P.edge[P.idxOf x]'(by rw [WList.length_edge]; exact hjlt)) x

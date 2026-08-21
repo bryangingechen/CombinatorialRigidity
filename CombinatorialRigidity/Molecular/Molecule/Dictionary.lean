@@ -335,15 +335,12 @@ theorem molecular_finrank_motions_eq_square_ker {G : SimpleGraph V} {G' : Graph 
   refine (LinearEquiv.ofBijective Φ ⟨?_, ?_⟩).finrank_eq
   · rw [injective_iff_map_eq_zero]
     intro S hS0
-    have hval : molecularVel c S.val = 0 := by
-      have := congrArg Subtype.val hS0
-      simpa [Φ, LinearMap.codRestrict_apply, LinearMap.domRestrict_apply] using this
+    have hval : molecularVel c S.val = 0 := congrArg Subtype.val hS0
     apply Subtype.ext
     rw [ZeroMemClass.coe_zero]
     exact eq_zero_of_molecularVel_eq_zero hshadow hends hmin hgp S.2 hval
   · intro y
     obtain ⟨S, hSmem, hSeq⟩ := exists_molecularVel_eq hshadow hends hmin hgp y.2
-    exact ⟨⟨S, hSmem⟩, Subtype.ext (by
-      simpa [Φ, LinearMap.codRestrict_apply, LinearMap.domRestrict_apply] using hSeq)⟩
+    exact ⟨⟨S, hSmem⟩, Subtype.ext hSeq⟩
 
 end CombinatorialRigidity.Molecular

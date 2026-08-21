@@ -2152,22 +2152,35 @@ omega)` (E2d-1's `chainData_of_isPath`, `ChainExtraction.lean`). Phase 22i L1i
 (`ForestSurgery.lean`); Phase 23g E2d-1 (`ChainExtraction.lean`).
 See FRICTION [resolved] *Chained subtraction fails to parse in Graph scope*.
 
-**Root fix (2026-07-02, user-directed).** The poison is FIXED at the source from the Matroid
-fork pin `cb3be62` onward (`bryangingechen/Matroid`, branch `combinatorial-rigidity-fix`): the
-notation's RESULT level is raised to the standard subtraction level
-(`scoped notation:65 G:100 " - " S:100`) — operands stay at 100, so the graph alternative fires
-in exactly the same positions as before and previously-valid arithmetic elaborates untouched.
-`-`-continuations now parse normally in Graph scope (verified: `i - 1 + 1 = i := by omega` and
-chained `x - 1 - 1`), so this section's workarounds are no longer needed in THIS repo;
-graph-typed chains still need parens (`(G - S) - T`), as before. ⚠️ A first attempt that also
-loosened the OPERANDS (`G:65 " - " S:66`) created new parse alternatives inside ordinary
-arithmetic (`X * Y - Z`) and broke a coercion-sensitive `rw` chain in `CaseI.lean` — precedence
-fixes to an overloaded token must widen only the result level, never the operand levels. Also:
-an IN-PLACE edit under `.lake/packages/` is NOT an honest gate (git-pinned package traces are
-rev-keyed, so downstream project modules may not rebuild — the 65/66 defect passed a full
-`lake build` that way); only a pin-bump rebuild verifies a package patch. The symptom/workaround
-text above is retained for older checkouts, other repos on the upstream package, and as the
-analysis to cite when proposing the fix upstream (apnelson1/Matroid).
+**Fork-era root fix, and its RETIREMENT (2026-08-20).** From 2026-07-02 the poison was
+fixed at the source by a one-commit fork pin (`bryangingechen/Matroid`, branch
+`combinatorial-rigidity-fix`, `cb3be62`): the notation's RESULT level was raised to the standard
+subtraction level (`scoped notation:65 G:100 " - " S:100`) — operands left at 100, so the graph
+alternative fires in exactly the same positions and previously-valid arithmetic elaborates
+untouched. During that window this section's workarounds were unnecessary in this repo.
+
+⚠️ **The fork was retired at the v4.34.0-rc1 bump, so the workarounds above are LOAD-BEARING
+AGAIN.** The pin is now plain upstream `apnelson1/Matroid`, where the notation is still
+`notation:51`. The measured cost of the poison across this tree is FOUR sites, all repaired at
+that bump: one parenthesization in a *theorem signature*
+(`BodyBar/GenericLift.lean`, `twoExtensor_coordPoint_succ` — `a - b + c` in the statement, which
+fails with `unexpected token '+'; expected ':=', 'where' or '|'`) and three
+`Nat.sub_add_cancel` rewrites in tactic blocks
+(`Molecular/Induction/ForestSurgery/ChainExtraction.lean` ×3). Retiring the fork was judged worth
+those four workarounds: the pin becomes a plain upstream revision with green CI and nothing to
+rebase. See `notes/ToolchainBumps.md` *The `Matroid` fork is retired*.
+
+⚠️ Two traps recorded from the fork era, still relevant if the fix is ever re-attempted or
+proposed upstream: a first attempt that also loosened the OPERANDS (`G:65 " - " S:66`) created new
+parse alternatives inside ordinary arithmetic (`X * Y - Z`) and broke a coercion-sensitive `rw`
+chain in `CaseI.lean` — precedence fixes to an overloaded token must widen only the result level,
+never the operand levels. And an IN-PLACE edit under `.lake/packages/` is NOT an honest gate
+(git-pinned package traces are rev-keyed, so downstream project modules may not rebuild — the
+65/66 defect passed a full `lake build` that way); only a pin-bump rebuild verifies a package
+patch.
+
+The analysis above is what to cite when proposing the fix upstream (apnelson1/Matroid); landing it
+there would let this repo drop the four workarounds again.
 
 
 ## 49. `Pi.single w y u` type-inference failure and `▸` in `Pi.single_eq_of_ne` lambda

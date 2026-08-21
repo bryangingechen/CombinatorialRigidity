@@ -1978,21 +1978,35 @@ to a fixed section above once a question is answered.
   bumped — apnelson1's master tracks mathlib master, so a stale pin
   drifting behind ours is the recurrent failure mode to watch.
 
-  **The predicted drift materialized (Phase 13).** Phase 13 is the
-  first phase to import `Matroid.Graphic` (for `Graph.cycleMatroid`);
-  nothing earlier touched it, so a mathlib-master-drift breakage in a
-  transitive dependency (`Matroid/Uniform/Basic.lean`,
-  `unifOn_rankPos_iff` — a `simp` that no longer closed) went
-  unexercised through Phase 12. Pin-bumping does not help (upstream
-  HEAD leaves the broken proof unchanged); local vendoring of
-  `cycleMatroid` is impractical (~2280-job transitive closure). The
-  pin therefore points at a **one-commit fork** off `e6852ce`
-  (`bryangingechen/Matroid` `combinatorial-rigidity-fix`, `08d517f`)
-  carrying just the one-line proof fix. mathlib rev is unchanged, so
-  Phases 1–12 are unaffected. No upstream PR (trivial; upstream will
-  re-green on its own). **Retire the fork** — back to a direct
-  apnelson1 pin — once upstream builds clean against a compatible
-  mathlib. See `notes/Phase13.md` *Blockers*.
+  **The predicted drift materialized (Phase 13), and then resolved itself
+  (v4.34.0-rc1 bump, 2026-08-20).** Phase 13 was the first phase to import
+  `Matroid.Graphic` (for `Graph.cycleMatroid`); nothing earlier touched it, so
+  a mathlib-master-drift breakage in a transitive dependency
+  (`Matroid/Uniform/Basic.lean`, `unifOn_rankPos_iff` — a `simp` that no
+  longer closed) went unexercised through Phase 12. Pin-bumping did not help
+  at the time (upstream HEAD left the broken proof unchanged), and local
+  vendoring of `cycleMatroid` was impractical (~2280-job transitive closure),
+  so the pin pointed at a fork (`bryangingechen/Matroid`
+  `combinatorial-rigidity-fix`) carrying that one-line fix — joined in Phase
+  23g by a second patch, the `deleteVerts` notation-precedence fix
+  (TACTICS-QUIRKS § 48).
+
+  **The fork is now retired; the pin is plain upstream again.** At the
+  v4.34.0-rc1 bump the two patches were re-examined separately: upstream had
+  re-greened `unifOn_rankPos_iff` independently (patch 1 obsolete), while the
+  notation fix is still absent upstream but costs only **four** local
+  workarounds across the whole tree. Four workarounds was judged a better
+  trade than owning a fork that must be rebased on every bump — especially
+  since upstream `apnelson1/Matroid` tracks mathlib master closely and had
+  green CI at the pinned revision. The recurrent failure mode this entry was
+  created to watch (a stale fork drifting behind our mathlib) is therefore
+  closed by construction: there is no fork to go stale.
+
+  **Still open:** track upstream merges of `Matroid.ofFun` into mathlib (which
+  would obsolete the dep entirely), and consider proposing the § 48 notation
+  fix to `apnelson1/Matroid` so the four workarounds can go. Full record and
+  bump playbook in `notes/ToolchainBumps.md`; the workaround sites are listed
+  in TACTICS-QUIRKS § 48.
 - **Migrating Phases 1–11 from `SimpleGraph` to mathlib's `Graph`.**
   **Decided against wholesale migration (2026-06); keep Phases 1–11
   on `SimpleGraph`.** Context: Phase 12 (body-bar) adopts mathlib's

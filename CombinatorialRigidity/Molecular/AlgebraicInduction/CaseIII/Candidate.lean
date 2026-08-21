@@ -503,7 +503,7 @@ theorem BodyHingeFramework.exists_candidateRow_bottomRows_of_rigidOn
         (ends e₀).1 (ends e₀).2) := by
       have := LinearMap.dualMap_injective_of_surjective
         (BodyHingeFramework.screwDiff_surjective (K := K) (k := k) (α := α) huv)
-      simpa only [← BodyHingeFramework.hingeRow_eq_dualMap] using this
+      exact this
     apply hinj
     have hrhs : BodyHingeFramework.hingeRow (ends e₀).1 (ends e₀).2 (∑ j, lam j • rab j)
         = ∑ j, lam j • r j := by

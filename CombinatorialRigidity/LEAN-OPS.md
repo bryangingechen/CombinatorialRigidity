@@ -48,16 +48,26 @@ implicitly at EOF; existing `namespace/end` pairs unchanged).
 Per-file `@[expose]`/`public` dispositions, the conversion audit, and
 the eliminated opt-ins: `notes/PERFORMANCE.md` *Module system* / *F3.4–F3.5*.
 
-## Editing the `apnelson1/Matroid` fork
+## Patching the `Matroid` dependency
 
-The project's `Matroid` dependency is **the user's fork**
-(`github.com/bryangingechen/Matroid`, pinned by `lake-manifest.json` +
-`lakefile.toml`, checked out at `.lake/packages/Matroid/`) — *not* upstream
-`apnelson1/Matroid` — maintained precisely so the project can patch it. **You
-are authorized to edit it** when a proof genuinely needs a `cycleMatroid` /
-`Matroid.Graph` / union API that does not yet exist there. (This is distinct
-from the *local* vendored mirror under `CombinatorialRigidity/Matroid/`, which
-is plain project source — see top-level `CLAUDE.md` *Vendored provenance*.)
+⚠️ **As of the v4.34.0-rc1 bump (2026-08-20) the `Matroid` dependency is plain
+upstream `apnelson1/Matroid`** (pinned by `lake-manifest.json` +
+`lakefile.toml`, checked out at `.lake/packages/Matroid/`). The user's fork
+`github.com/bryangingechen/Matroid` is **retired** — see
+`notes/ToolchainBumps.md` *The `Matroid` fork is retired* for why, and
+`lakefile.toml`'s require comment for the short version.
+
+So the default answer to "can I patch the dependency?" is now **no**: there is
+no fork to carry the patch, and a local edit under `.lake/packages/` would be
+silently lost on the next checkout (git-pinned package traces are rev-keyed —
+see TACTICS-QUIRKS § 48's note on why such an edit is not an honest gate).
+Take the project-side route below. If a patch is genuinely unavoidable, raise
+it with the user: the options are an upstream PR to `apnelson1/Matroid` or
+re-standing-up a fork, and both are the user's call, not a mid-session one.
+
+(All of this is distinct from the *local* vendored mirror under
+`CombinatorialRigidity/Matroid/`, which is plain project source and freely
+editable — see top-level `CLAUDE.md` *Vendored provenance*.)
 
 - **Prefer the project-side route first.** A new lemma in
   `CombinatorialRigidity/Matroid/` or a `Mathlib/<exact path>` mirror travels
@@ -65,11 +75,13 @@ is plain project source — see top-level `CLAUDE.md` *Vendored provenance*.)
   the project-side route genuinely can't reach the internals you need. (Often
   it can: Phase 22's N4b looked like it needed a fork-side `cycleMatroid`-under-
   collapse lemma, but the vendored `cycleMatroid_contract` applied directly.)
-- **Mechanics — it is a separate git repo.** Edit + commit under
-  `.lake/packages/Matroid/` in *that* repo's own history. Do **not** push the
-  fork or bump its `rev`/`inputRev` in `lake-manifest.json` / `lakefile.toml`
-  unprompted — both are outward-facing, cross-repo steps; surface them to the
-  user as a follow-up. **Flag any pending fork edit** in the commit summary and
-  the active `notes/PhaseN.md`: a local-only fork edit will not travel with a
-  `git push` of this repo until the pin is bumped, so an unflagged one silently
-  breaks the build for the next checkout.
+- **Never bump the pin unprompted.** Changing `rev`/`inputRev` in
+  `lake-manifest.json` / `lakefile.toml` is a dependency bump — a human
+  decision, and gated by the same discipline as a toolchain bump (`CLAUDE.md`
+  *Build discipline*, playbook in `notes/ToolchainBumps.md`).
+- **Historical note (fork era, 2026-06 → 2026-08).** While the pin pointed at
+  the user's fork, editing `.lake/packages/Matroid/` in *that* repo's own
+  history was authorized, and the standing rule was to flag any pending fork
+  edit in the commit summary + active `notes/PhaseN.md`, since a local-only
+  fork edit does not travel with a `git push` of this repo until the pin is
+  bumped. Retained for reading older phase notes; not a live workflow.

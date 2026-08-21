@@ -62,12 +62,12 @@ move preserves the Laman property only under `a ≠ b`. -/
     | some u, none => u = a ∨ u = b
     | none, some v => v = a ∨ v = b
     | none, none => False
-  symm := by
+  symm := ⟨by
     rintro (_ | u) (_ | v) h
     · exact h
     · exact h
     · exact h
-    · exact h.symm
+    · exact h.symm⟩
   loopless := ⟨fun
     | none => id
     | some u => G.loopless.irrefl u⟩
@@ -84,12 +84,12 @@ only under `a ≠ b`, `c ≠ a`, `c ≠ b`, and `G.Adj a b`. -/
     | some u, none => u = a ∨ u = b ∨ u = c
     | none, some v => v = a ∨ v = b ∨ v = c
     | none, none => False
-  symm := by
+  symm := ⟨by
     rintro (_ | u) (_ | v) h
     · exact h
     · exact h
     · exact h
-    · exact ⟨h.1.symm, fun heq => h.2 (Sym2.eq_swap.trans heq)⟩
+    · exact ⟨h.1.symm, fun heq => h.2 (Sym2.eq_swap.trans heq)⟩⟩
   loopless := ⟨fun
     | none => id
     | some u => fun h => G.loopless.irrefl u h.1⟩

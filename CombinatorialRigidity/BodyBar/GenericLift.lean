@@ -370,8 +370,8 @@ needed. -/
 private theorem twoExtensor_coordPoint_succ {n : ℕ} {h k : Fin (n + 1)}
     (h0h : (0 : Fin (n + 1)) < h) (hhk : h < k) :
     twoExtensor (coordPoint n h) (coordPoint n k) =
-      EuclideanSpace.single (pairIdxEquiv n ⟨(h, k), hhk⟩) (1 : ℝ)
-        - EuclideanSpace.single (pairIdxEquiv n ⟨(0, h), h0h⟩) (1 : ℝ)
+      (EuclideanSpace.single (pairIdxEquiv n ⟨(h, k), hhk⟩) (1 : ℝ)
+        - EuclideanSpace.single (pairIdxEquiv n ⟨(0, h), h0h⟩) (1 : ℝ))
         + EuclideanSpace.single (pairIdxEquiv n ⟨(0, k), h0h.trans hhk⟩) (1 : ℝ) := by
   ext m
   rw [twoExtensor_apply]

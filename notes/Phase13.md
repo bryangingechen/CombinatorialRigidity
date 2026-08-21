@@ -143,8 +143,11 @@ tree-packing nodes as of phase open).
   `rw` chain. `lakefile.toml` + `lake-manifest.json` now pin that fork;
   **mathlib rev is unchanged (`21b745f`)**, so Phases 1–12 are unaffected.
   No upstream PR by request (trivial; upstream tracks mathlib master and
-  will resolve it eventually). Retire the fork once upstream re-greens.
-  The fix verified: `Matroid.Graphic` and the full project build green.
+  will resolve it eventually). The fix verified: `Matroid.Graphic` and the
+  full project build green. **Closed out 2026-08-20:** upstream re-greened
+  `unifOn_rankPos_iff` on its own, so this patch became obsolete and the fork
+  was retired at the v4.34.0-rc1 bump — the pin is plain upstream
+  `apnelson1/Matroid` again (`notes/ToolchainBumps.md`).
 - **`Graph.cycleMatroid` rank formula — RESOLVED.** The needed `r(E') = |V'| − c(E')`
   identity landed as `cycleMatroid_eRk_add_numberOfComponents_restrict` (`eRk`/`encard`
   form, `r(E') + c(G ↾ E') = |V|`). It specializes `Graphic.lean`'s

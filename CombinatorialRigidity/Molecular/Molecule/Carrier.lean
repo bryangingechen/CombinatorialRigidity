@@ -57,8 +57,8 @@ def shadowGraph (G : SimpleGraph V) :
     Graph V (Sym2 V ⊕ Fin (6 * (Nat.card V - 1) + 1)) where
   vertexSet := Set.univ
   IsLink e x y := G.Adj x y ∧ Sum.inl s(x, y) = e
-  isLink_symm e _ x y h :=
-    ⟨h.1.symm, (congrArg Sum.inl (Sym2.eq_swap (a := y) (b := x))).trans h.2⟩
+  isLink_symm e _ := ⟨fun x y h =>
+    ⟨h.1.symm, (congrArg Sum.inl (Sym2.eq_swap (a := y) (b := x))).trans h.2⟩⟩
   eq_or_eq_of_isLink_of_isLink e x y v w h1 h2 := by
     have hs : s(x, y) = s(v, w) := Sum.inl_injective (h1.2.trans h2.2.symm)
     rcases Sym2.eq_iff.mp hs with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
