@@ -1326,6 +1326,7 @@ was missed from this sentence; added here with (K-ann) and (K-out).)
 |---|---|---|
 | strategy §4 | **C1**, **C2**, **C3** | the three candidate stronger inductive invariants (C1 = dominance of the `V_bc` map, run and struck) |
 | strategy §4.6 | **U1**, **U2**, **U3** | the three ranked live class-uniformity successors |
+| strategy §9 | tag **`ZH-`**, tokens **(ZH-1)–(ZH-6)** | the six external-technique-transfer candidates from the Zheng body–pin preprint (minted 2026-08-21, verified 0-hit across `*.md`, `*.tex`, `*.lean`, `*.py`, `*.m2`; **unpriced** and not on §8's board — the owning section is authoritative, and the source is unrefereed) |
 | `Phase39.md` / design doc | **R1**, **R2**, **R3** | the three **opening recon questions** (statement/satisfiability, truth sanity, which KT case breaks) |
 | `Phase39.md` / design doc | W0–W5; L0–L7 (+ `L5-cut-*`, `L6a`–`L6d`, `L7a`–`L7c`) | the phase's **work packages** and their **leaves**; **W4 = `hcontract`** |
 | `notes/scripts/w4/hybrid_gates.py` | **N8**, **N9**, **N10**, **N10b** | the W4 numeric gates |

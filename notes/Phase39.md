@@ -51,7 +51,9 @@ tokens (AV-1)–(AV-8), *Steps AV1–AV6*, conditional driver `w4/avoidgen.py`) 
 queued, nothing awaiting user adjudication, though the T1 hit is worth a user
 mention when the next check-in comes. The
 kernel-(K) RESEARCH PICK is a standing delegation **queued behind the probes**, not
-itself the next task; candidates in *Hand-off* (cheapest first: (GR-R1), (GR-C2), the
+itself the next task; candidates in *Hand-off* — plus, as of 2026-08-21, the separate
+**unpriced** `notes/Pencil-strategy.md` §9 shelf **(ZH-1)–(ZH-6)**, not eligible for the
+standing pick — (cheapest first: (GR-R1), (GR-C2), the
 one-unit-defect redo of (GR-79)–(GR-82), OSCHU's `rank(Q|_D) = 3` residue — now
 unblocked on the harness side — and GCOLL's collision dominance).
 
@@ -367,6 +369,13 @@ directions by (OC-3)/(OC-37)). **Not restated here.** Cheapest entry: **(GR-R1)*
 (§(K-grid)), which upgrades (b′)'s `≤ 12` to a theorem — renamed from bare `(R1)` at
 the 2026-08-20 adjudication, `notes/Pencil-labels.md`. **Not eligible:**
 route σ's **obligation 1** and the W4 **build** — those, and only those, are held by the hold.
+
+**A SEPARATE, UNPRICED SHELF opened 2026-08-21 — `notes/Pencil-strategy.md` §9**, six
+candidates **(ZH-1)–(ZH-6)** from a project-new *unrefereed* external source (Zheng's
+body–pin preprint) whose Split–Klein form is **the same quadratic form** as
+§(K-pitch)'s pitch quadric `Q`. **Deliberately not on §8's board and NOT a next task**
+(source unchecked; (ZH-2)/(ZH-3) owe a §2.5 filter check; idea source, never a
+citation). **Not restated here** — strategy §9 owns provenance, caveats and order.
 
 **PROBE KBARE-FALSIFY IS LANDED (2026-08-20) — a T1 HIT.** (K-bare-ext) is **refuted as
 stated**; `hbareSplit` is **untouched** and still carried as pinned. Verdict, mechanism, the

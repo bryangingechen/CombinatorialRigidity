@@ -16,7 +16,9 @@ claim below points at the workbook section that owns it.
 **Labels.** §4's **C1/C2/C3** (candidate invariants) and §4.6's **U1/U2/U3** are
 this file's own family; `C1`–`C3` collide with two unrelated `(C·)` families in
 the workbooks, which is why §4.6 minted `U1`–`U3` rather than continuing the
-letter. The registry and the minting rule are **`notes/Pencil-labels.md`**.
+letter. §9's **(ZH-1)–(ZH-6)** are the third, minted 2026-08-21 and topic-tagged
+per clause (L5). The registry and the minting rule are
+**`notes/Pencil-labels.md`**.
 
 **Nothing here is adjudicated.** The phase direction was with the user when this
 was written. §4's candidates are *derivations*, not verified routes — each needs
@@ -33,7 +35,9 @@ a recon or a spike before it can be priced.
 > **Start at §8 (the option board, 2026-08-20)** if you are choosing a
 > direction. It prices every live route in one table set — including the two
 > filters that kill most candidates on sight — and points back here for the
-> mathematics. §§2–5 are the diagnosis and methodology it rests on.
+> mathematics. §§2–5 are the diagnosis and methodology it rests on. **§9 is a
+> separate unpriced shelf** (external-technique transfer, 2026-08-21) and is
+> deliberately *not* part of the board.
 
 ## 1. The two questions this doc answers
 
@@ -1027,6 +1031,12 @@ points at the section that owns it. **Status words here are pointers**; the
 owning section and `notes/Pencil-informal.md`'s *State of (K)* map remain
 authoritative.
 
+**Not on this board: §9's six candidates (ZH-1)–(ZH-6)**, from a project-new
+external source read 2026-08-21. They are deliberately *unpriced* — (ZH-2) and
+(ZH-3) owe a §2.5 filter check, and the source itself is unrefereed — so a session
+choosing from this board should read §9 as a separate, unvetted shelf rather
+than as rows omitted here.
+
 **Read the two filters first — most candidates die on one of them.**
 
 - **The growing-ground-set test** (§4.6): any proposed structure is a MISS
@@ -1100,3 +1110,192 @@ stratum only** (the shortlist is *partially* superseded, not retired — U3's
 logical-form move is still live as an invariant change); the symbolic
 meta-option, landed as `m2/lambda0.m2`. §5.3 item (i) remains, ruled out by
 §5.3's own local-frame feasibility boundary.
+
+## 9. External technique transfer — the Zheng body–pin preprint (2026-08-21)
+
+**What this is.** A read of a project-new external source against the kernel-(K)
+arc, producing six named candidates **(ZH-1)–(ZH-6)** for a future direction
+pick. Same discipline as the rest of this file: strategy, not mathematics — no
+claim here is a verdict, none carries a driver, and every one is an argument a
+successor should attack rather than assume. **None of the six is priced into
+§8's board**; they are raw candidates, and two of them — (ZH-2) and (ZH-3) —
+owe a §2.5 counting-saturation check before they are worth a slice.
+
+**Provenance and status caveat.** D. Zheng, *Stress Degeneracy of Direction
+Complexes of (2,2)-Sparse Graphs and Three-Dimensional Body–Pin Rigidity*,
+preprint dated August 2026, read in full from
+`.refs/zheng-2026-body_pin_partition_collinearity_flag_en_20260816.pdf`. It
+claims the Király–Tanigawa body–pin partition conjecture (their Conjecture 5;
+Jackson–Jordán–Villányi Conjecture 7.6) in `ℝ³`. **It is unrefereed**, its own
+acknowledgment credits an AI assistant with *"the refinement of proof details,
+the Lean formalization and its verification"*, and its appendix names a Lean 4
+formalization repository (handle `DongzheZheng`, Lean 4.29.0 plus a pinned
+mathlib commit) — note that the byline reads *Denzel Zheng* while the repository
+handle differs. **Neither the paper nor the repository has been independently
+checked by this project.** Per top-level `CLAUDE.md` *Referencing prior work*
+and `DESIGN.md` *Formalize everything the argument uses*, nothing below may be
+cited as established: these are **idea sources**, and anything load-bearing
+would be a formalization target. **This does not disturb §8.6's two durable
+literature-hunt negatives** — those hunted for the pencil statement and for
+Δ-matroid structure; this source was not found by a hunt and is about neither.
+
+**Where the load sits in the source, if a successor does go read it.** Its whole
+induction turns on the interaction of its Lemma 3.4 with its Proposition 3.3,
+and a dimensional analysis done at read time shows Lemma 3.4 sits *exactly* on
+its boundary at `d = 3` (the identity `2(d−1) = d+1`, which fails at `d ≥ 4`).
+There is no slack in that count, so an error there would be structural rather
+than repairable. Read its §3 before trusting its §5.
+
+### 9.1 The one identity — its quadratic form IS ours
+
+Not an analogy. §(K-pitch) *Step 0* sets `B(x,y) = ⟨x, ★y⟩` and the pitch
+quadric `Q(x) = B(x,x)`, with `Q(x) = 0` ⟺ `x` is a line extensor. The source's
+§5 sets `q(ω,b) = ω·b` on `k³ ⊕ k³`, names it the **Split–Klein form**, and its
+Lemma 6.2 gives `q(X) = 0` ⟺ the twist has a fixed point. Same form, same
+vanishing locus, same meaning (zero pitch = rotation about a line, not a screw).
+
+The logical roles coincide too. §(K-pitch)'s route needs `Q(r̃) ≢ 0` on the seed
+variety **uniformly over the class**, one scalar polynomial per (graph, split);
+the source's Theorem 1.3 asserts that the `|E_F|` polynomials `q(X_u − X_v)`,
+indexed by the edges of a `(2,2)`-sparse graph, cut codimension exactly `|E_F|`
+on the locus where the `X`s are pairwise distinct — a **class-uniform
+non-degeneracy statement for the same quadric, indexed by a graph, over any
+infinite field**. That is the arc's open thing, in the arc's own object.
+
+Relevant adjacency: §7 already lists **Witt's theorem** and the α/β
+classification of the Klein quadric's maximal isotropics among the classical
+facts in use here, so the machinery below sits next door to machinery already in
+play — a successor should first check whether it is *already* implicitly
+available rather than new.
+
+### 9.2 The six candidates
+
+**(ZH-1) The Witt shear as a uniformity device.** The source's Lemma 5.1: the
+orthogonal group of `q` contains unipotent shears `Φ_S(ω,b) = (ω, b + Sω)` for
+`S` skew, which fix **each generator individually** (not merely the ideal),
+because `ωᵀSω = 0`. Its uniformity argument is then: for each pair, the bad `S`
+form a **proper affine subspace** of `so₃(k)`; finitely many proper affine
+subspaces cannot cover an affine space over an infinite field; so a good `S`
+exists. That converts *"exhibit a good seed"* into *"avoid finitely many proper
+subspaces"*, with the number of subspaces irrelevant.
+
+*What it would buy.* (i) A **propagation mechanism** the arc lacks: under a group
+fixing every generator, one witness certifies a 3-parameter orbit, whereas today
+`P ≢ 0` is re-established per habitat. (ii) It **dissolves** rather than pays the
+field-scope problem — §8.4's route σ is an `ℝ`-only construction
+(`screwComplementIso`) aimed at an `hK` quantified at general `[Infinite K]`, and
+generalizing its polarity cost a whole section; Lemma 5.1 needs only that `k` be
+infinite, which is exactly `hK`'s hypothesis.
+
+*The cheap decisive test, and the honest risk.* §(K-flank) *Step F5(d)* exhibits
+five legal nondegenerate target-rank `G′` seeds at `P21` with `s₀ = 1`,
+`dim R_a = 0`, `dim U = 1` that the *Step 2.3* calculus **proves** fail at every
+placement. Those are known escape failures and therefore the right adversarial
+bed: apply a random `S ∈ so₃` and ask whether the criterion matrix's minors move
+while the target-rank condition survives. **If that failure locus turns out
+shear-invariant, (ZH-1) dies immediately — and dies for exactly §4.6's
+growing-ground-set reason**, since `so₃(k)` is a *fixed*-dimensional group and so
+cannot see the graph. A new committed driver
+(`notes/scripts/w4/shear.py` or equivalent) would be required by the standing
+reproducibility rule.
+
+**(ZH-2) A transcendence-degree potential function — the deepest reframe.** The
+source never works at a point. It works at the generic point of a family over
+`K = k(Y)` and carries the additive potential
+`∆ = (self-stress dim) + trdeg_k K − 3|V|`, target `∆ ≤ 0`, with a
+vertex-deletion increment and the tower law for `trdeg`. Its entire proof is
+*"the increment is ≤ 0 at every reduction step, with one exception, which you
+decorate and carry"*.
+
+*Why it targets the open thing.* The arc's criterion is **pointwise** (*"one
+witness seed decides a split"*, §(K-pitch) *Step 0*), and class uniformity is
+precisely the difficulty of producing a point for every member of an infinite
+class. A potential function would never exhibit a seed. The arc already has the
+combinatorial arithmetic for reductions — the *Shared dictionary*'s **(SD-6)**
+computes `f(V(G′)) = f(V(G)) − 5ℓ + 6(ℓ−1) = ℓ − 6`, exactly such a per-step
+count; what it lacks is a *geometric* quantity riding along on it, and `trdeg` of
+the pencil realization's coordinate field is the natural candidate.
+
+*Filter check owed before spending.* `∆` is indexed by `V(G)`/`E(G)` and grows
+with the graph, so it passes §4.6's growing-ground-set test. **It has NOT been
+checked against §2.5's counting saturation** — `trdeg` is a dimension rather than
+a count of combinatorial objects, but it is still a numerical invariant, and
+§2.5's argument must be read against it before a slice is spent. Highest
+ceiling, highest risk: this is a reformulation of the kernel, not a route inside
+the current one.
+
+**(ZH-3) A rank lower bound from a codimension count.** The source's
+Theorem 1.2, read contrapositively: a stratum of codimension `c` has generic
+self-stress dimension `≤ c`, hence **rank `≥ m − c`** — a rank lower bound
+derived from nothing but the codimension of the stratum. The arc has no tool of
+this type; every rank lower bound in it comes from an explicit witness or from a
+bracket-monomial closed form (§(K-pitch) *Step 5*).
+
+*Why it is not free.* The source's theorem is for `(2,2)`-sparse **bar–joint**
+graphs; this phase's carrier is body–hinge at multiplicity 5. **No theorem
+transfers.** What transfers is a target to seek: a *"stress degeneracy costs
+codimension"* theorem for the body–hinge carrier, whose sparsity class would be
+the Tay packing class rather than `(2,2)`. Whether that is tractable is a real
+open question, and §2.5's filter is owed here too.
+
+**(ZH-4) Escape failure as a singular locus — the Jacobian route.** The source's
+Theorem 4.2 is a scheme-theoretic upgrade of exactly the White–Whiteley
+pure-condition material §(K-pure) works by hand: degeneracy loci as
+determinantal subschemes of a two-term complex, the universal
+infinitesimal-motion cone a local complete intersection of the expected
+codimension (hence Cohen–Macaulay and equidimensional), and — the usable part —
+the identification of the first degeneracy locus with the **singular locus of
+that cone along its zero section**, via the Jacobian criterion.
+
+*What it would buy.* If the escape-failure locus can be presented as such a
+singular locus, then *"escape fails only on a proper closed subset"* becomes
+*"the cone is generically smooth along its zero section"* — a Jacobian-rank
+computation rather than a witness hunt. §(K-pure)'s chord obstruction and
+isotropic completions (**(PC1)**–**(PC3)**, **(PC-Z)**) are already local
+computations at a limit carrier, so this looks like a repackaging with real
+leverage and no filter problem on its face. The more concrete of
+(ZH-2)/(ZH-4).
+
+**(ZH-5) The collinearity-flag pattern, as a design template.** The source's §3
+solves a problem structurally identical to one this phase has — *an induction in
+which one exceptional geometric degeneracy must survive every recursive step* —
+with a four-part template worth stealing whole: **(a)** decorate rather than
+discard (the degeneracy becomes a combinatorial object: support triple,
+distinguished missing edge, auxiliary vertex); **(b)** test consistency by
+requiring the *simultaneous* completion of all decorations to stay in the
+sparsity class, one combinatorial check standing in for a system of geometric
+conditions; **(c)** prove the **incidence graph of the decorations is a forest**,
+which is what makes codimensions *add* rather than merely bound; **(d)** match
+the ledgers — combinatorial cost of a decoration equals its geometric
+codimension (both 2, in every dimension), which is why the accounting closes.
+
+Part **(c)** is the one to emphasize. The arc has repeatedly hit *"the conditions
+might not be independent"* walls — §(K-slide-comb)'s class-wide refutation, its
+starvation bound, its matroid-intersection menu. A forest structure theorem on
+the **incidence of degeneracies**, rather than on the degeneracies themselves, is
+a move the arc has not made.
+
+**(ZH-6) Orientation, not a route — why our counting works and theirs does not.**
+The source's partition condition and this phase's `def(H)` are the same template
+with different capacity functions. Body–hinge: `Σ 5·d(P_i,P_j) ≥ 6(t−1)`,
+capacity `5m`, **additive**. Body–pin: `Σ ℓ(d(P_i,P_j)) ≥ 6(t−1)` with
+`ℓ ∈ {0,3,5,6}`, capacity `2m+1` **saturating** at 6. The additivity is exactly
+what puts body–hinge in matroid-union land — Nash-Williams/Tutte's
+`k·d(P) ≥ r(|P|−1)` ⟺ `kH` packs `r` trees, which is Tay's theorem and this
+phase's `def(H) = 0` criterion. A saturating capacity is not the rank function of
+any union of graphic matroids on the multigraph, which is why the source must
+first collapse to a simple support graph and only then use two copies. Useful
+when the phase writes up why its own counting is available; **not a direction.**
+
+*(The saturation also explains the source's `2`: its needed equation count is
+bounded by `2(t−1)`, exactly the `(2,2)`-tight bound on `t` vertices. Recorded
+for orientation; nothing in the arc turns on it.)*
+
+### 9.3 Suggested order, if a direction is ever spent here
+
+Cheapest-decisive first, matching §8's convention: **(ZH-1)** (a yes/no question
+with a cheap adversarial pre-test at §(K-flank) *Step F5(d)*'s five proven
+failures, and field-generic if it survives), then **(ZH-4)** (concrete, no filter
+problem visible), then **(ZH-5)** as a design note feeding a fan-out's direction
+selection, with **(ZH-2)** and **(ZH-3)** held until their §2.5 filter checks are
+done. **(ZH-6)** is write-up material, never a dispatch.
