@@ -76,7 +76,7 @@ private theorem jacobs_of_isLaman3_of_ncard {V : Type*} [Finite V] :
     ∀ n : ℕ, ∀ G : SimpleGraph V, G.edgeSet.ncard = n → G.square.IsLaman3 →
       (genericRigidityMatroid V 3).Indep G.square.edgeSet := by
   classical
-  haveI : Fintype V := Fintype.ofFinite V
+  have : Fintype V := Fintype.ofFinite V
   intro n
   induction n using Nat.strong_induction_on with
   | _ n ih =>
@@ -116,7 +116,7 @@ private theorem jacobs_of_isLaman3_of_ncard {V : Type*} [Finite V] :
         rw [hSquareEmpty]
         exact (genericRigidityMatroid V 3).empty_indep
       · -- Restrict to the support `S`, apply the minimum-degree-two case, transport back.
-        haveI : Nonempty ↥G.support := hNonempty.to_subtype
+        have : Nonempty ↥G.support := hNonempty.to_subtype
         have hGs_sq : (G.induce G.support).square = G.square.induce G.support :=
           square_induce_of_support_subset Set.Subset.rfl
         have hGs_laman : (G.induce G.support).square.IsLaman3 := by

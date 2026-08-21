@@ -309,7 +309,7 @@ theorem finrank_span_panelRow_edge (F : BodyHingeFramework K k α β) {ends : β
     Module.finrank K (Submodule.span K (Set.range (fun p : Set.powersetCard (Fin (k + 2)) k
         × Set.powersetCard (Fin (k + 2)) k => F.panelRow ends (e, p.1, p.2))))
       = screwDim k - 1 := by
-  haveI : FiniteDimensional K (ScrewSpace K k) := inferInstance
+  have : FiniteDimensional K (ScrewSpace K k) := inferInstance
   rw [span_panelRow_edge_eq F e hne, (Submodule.equivMapOfInjective _
     (LinearMap.dualMap_injective_of_surjective (screwDiff_surjective (K := K) huv))
     (F.hingeRowBlock e)).finrank_eq.symm]
@@ -408,7 +408,7 @@ theorem exists_independent_panelRow_of_edge (F : BodyHingeFramework K k α β) {
       LinearIndependent K r ∧
       ∀ i, r i ∈ Submodule.span K (Set.range (fun p : Set.powersetCard (Fin (k + 2)) k
         × Set.powersetCard (Fin (k + 2)) k => F.panelRow ends (e, p.1, p.2))) := by
-  haveI : FiniteDimensional K (ScrewSpace K k) := inferInstance
+  have : FiniteDimensional K (ScrewSpace K k) := inferInstance
   -- A basis of the `(D−1)`-dimensional hinge-row block, coerced out as ambient functionals.
   obtain ⟨c, hc, hmem⟩ := (F.hingeRowBlock e).exists_linearIndependent_fin_of_finrank_eq
     (F.finrank_hingeRowBlock he)
@@ -446,10 +446,10 @@ theorem exists_independent_panelRow_subfamily_of_edge (F : BodyHingeFramework K 
     ∃ s : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k),
       (∀ i ∈ s, (i : β × _ × _).1 = e) ∧ Nat.card s = screwDim k - 1 ∧
       LinearIndependent K (fun i : s => F.panelRow ends (i : β × _ × _)) := by
-  haveI : FiniteDimensional K (ScrewSpace K k) := inferInstance
+  have : FiniteDimensional K (ScrewSpace K k) := inferInstance
   set T := Set.range (fun p : Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k =>
     F.panelRow ends (e, p.1, p.2)) with hT
-  haveI : Module.Finite K (Submodule.span K T) :=
+  have : Module.Finite K (Submodule.span K T) :=
     Module.Finite.span_of_finite K (Set.finite_range _)
   -- The per-edge panel-row span has dimension `D − 1` (the `hingeRow u v` image of `r(p(e))`).
   have hfin : Module.finrank K (Submodule.span K T) = screwDim k - 1 := by
@@ -554,13 +554,13 @@ theorem span_panelRow_comp_single_of_edge [DecidableEq α]
     (hindep : LinearIndependent K (fun i : s => F.panelRow ends (i : β × _ × _))) :
     Submodule.span K (Set.range (fun i : s => (F.panelRow ends (i : β × _ × _)).comp
       (LinearMap.single K (fun _ : α => ScrewSpace K k) (ends e).1))) = F.hingeRowBlock e := by
-  haveI : FiniteDimensional K (ScrewSpace K k) := inferInstance
+  have : FiniteDimensional K (ScrewSpace K k) := inferInstance
   -- The pinned family is independent in the (finite-dimensional) small dual
   -- `Dual K (ScrewSpace K k)`, so `↥s` is finite; this gives the `Fintype ↥s` the `finrank` count
   -- needs.
   have hpinindep := F.linearIndependent_panelRow_comp_single_of_edge hev hs hindep
-  haveI : Finite ↥s := hpinindep.finite
-  haveI : Fintype ↥s := Fintype.ofFinite ↥s
+  have : Finite ↥s := hpinindep.finite
+  have : Fintype ↥s := Fintype.ofFinite ↥s
   refine Submodule.eq_of_le_of_finrank_eq ?_ ?_
   · -- `⊆`: each pinned row is the bare annihilator functional `annihRow (C(p(e))) i.2.1 i.2.2`
     -- (`single (ends e).1` puts the test screw on `(ends e).1`, the distinct other endpoint reads
@@ -632,7 +632,7 @@ theorem exists_independent_pinned_two_edge_span_full [DecidableEq α]
         (fun i : ιn => (rn i).comp (LinearMap.single K (fun _ : α => ScrewSpace K k) v)) ∧
       (∀ i : ιn, rn i ∈ Submodule.span K F.rigidityRows) := by
   classical
-  haveI : FiniteDimensional K (ScrewSpace K k) := inferInstance
+  have : FiniteDimensional K (ScrewSpace K k) := inferInstance
   -- Endpoint orientation facts: both edges have first endpoint `v`, distinct from the other end.
   have hea1 : (ends eₐ).1 = v := by rw [hva]
   have hea2 : (ends eₐ).2 = a := by rw [hva]
@@ -749,7 +749,7 @@ uses that the trivial motions are a `D`-dimensional subspace of the null space
 (`trivialMotions_le_infinitesimalMotions`) whose codimension-zero containment forces equality. -/
 theorem rankHypothesis_zero_iff [Nonempty α] [Finite α] (F : BodyHingeFramework K k α β) :
     F.RankHypothesis 0 ↔ F.IsInfinitesimallyRigid := by
-  haveI : Fintype α := Fintype.ofFinite α
+  have : Fintype α := Fintype.ofFinite α
   rw [RankHypothesis, ← F.infinitesimalMotions_eq_trivialMotions_iff]
   constructor
   · intro h
@@ -1152,7 +1152,7 @@ theorem screwDim_add_finrank_pinnedMotionsOn_le [Nonempty α] [Finite α]
     (F : BodyHingeFramework K k α β) {s : Set α} (hs : s.Nonempty) :
     screwDim k + Module.finrank K (F.pinnedMotionsOn s) ≤
       Module.finrank K F.infinitesimalMotions := by
-  haveI : Fintype α := Fintype.ofFinite α
+  have : Fintype α := Fintype.ofFinite α
   have hdisj : F.trivialMotions ⊓ F.pinnedMotionsOn s = ⊥ :=
     F.trivialMotions_inf_pinnedMotionsOn_eq_bot hs
   have hle : F.trivialMotions ⊔ F.pinnedMotionsOn s ≤ F.infinitesimalMotions :=
@@ -1201,7 +1201,7 @@ theorem finrank_pinnedMotionsOn_vertexSet [Finite α] (F : BodyHingeFramework K 
     Module.finrank K (F.pinnedMotionsOn F.graph.vertexSet)
       = screwDim k * (F.graph.vertexSet)ᶜ.ncard := by
   classical
-  haveI : Fintype α := Fintype.ofFinite α
+  have : Fintype α := Fintype.ofFinite α
   -- The block pin on `V(G)` is the kernel of the projections onto `V(G)` coordinates.
   rw [F.pinnedMotionsOn_vertexSet_eq_iInf_ker_proj]
   -- Transport across `iInfKerProjEquiv`: that kernel is the product over the complement.
@@ -1228,7 +1228,7 @@ theorem finrank_iInf_ker_proj_eq [Finite α] (s : Set α) :
           Submodule K (α → ScrewSpace K k)))
       = screwDim k * sᶜ.ncard := by
   classical
-  haveI : Fintype α := Fintype.ofFinite α
+  have : Fintype α := Fintype.ofFinite α
   have hd : Disjoint sᶜ s := disjoint_compl_left
   have hu : Set.univ ⊆ sᶜ ∪ s := by simp [Set.compl_union_self]
   rw [(LinearMap.iInfKerProjEquiv K (fun _ : α => ScrewSpace K k) hd hu).finrank_eq,
@@ -1268,7 +1268,7 @@ null space *above*, so it yields *at least* `D(|s|−1)` independent rows. -/
 theorem finrank_pinnedMotionsOn_le [Finite α] (F : BodyHingeFramework K k α β) (s : Set α) :
     Module.finrank K (F.pinnedMotionsOn s) ≤ screwDim k * sᶜ.ncard := by
   classical
-  haveI : Fintype α := Fintype.ofFinite α
+  have : Fintype α := Fintype.ofFinite α
   calc Module.finrank K (F.pinnedMotionsOn s)
       ≤ Module.finrank K
           ((⨅ i ∈ s, LinearMap.ker (LinearMap.proj i : (α → ScrewSpace K k) →ₗ[K] ScrewSpace K k) :
@@ -1346,7 +1346,7 @@ theorem finrank_pinnedMotionsOn_of_isInfinitesimallyRigidOn_vertexSet_inter_eq_s
     Module.finrank K (F.pinnedMotionsOn t)
       = screwDim k * ((F.graph.vertexSet)ᶜ.ncard + 1 - t.ncard) := by
   classical
-  haveI : Fintype α := Fintype.ofFinite α
+  have : Fintype α := Fintype.ofFinite α
   have hrt : r ∈ t := ((Set.ext_iff.1 hinter r).2 rfl).2
   -- Pinning `t` equals pinning `V(G) ∪ t`: rigidity propagates `S r = 0` to all of `V(G)`.
   have hpin : F.pinnedMotionsOn t = F.pinnedMotionsOn (F.graph.vertexSet ∪ t) := by
@@ -1520,9 +1520,9 @@ theorem isInfinitesimallyRigidOn_vertexSet_of_finrank_le [Finite α] (F : BodyHi
     (hcount : Module.finrank K F.infinitesimalMotions
       ≤ screwDim k * ((F.graph.vertexSet)ᶜ.ncard + 1)) :
     F.IsInfinitesimallyRigidOn F.graph.vertexSet := by
-  haveI : Fintype α := Fintype.ofFinite α
+  have : Fintype α := Fintype.ofFinite α
   obtain ⟨v₀, hv₀⟩ := hne
-  haveI : Nonempty α := ⟨v₀⟩
+  have : Nonempty α := ⟨v₀⟩
   -- Read rigidity off the Case-I bridge at the trivially-rigid singleton block `{v₀}`.
   rw [F.isInfinitesimallyRigidOn_iff_pinnedMotionsOn_le (s := {v₀})
     (Set.singleton_nonempty v₀) (Set.singleton_subset_iff.2 hv₀)
@@ -1563,9 +1563,9 @@ theorem isInfinitesimallyRigidOn_of_finrank_le_set [Finite α] (F : BodyHingeFra
     (hpin : Module.finrank K (F.pinnedMotionsOn s) = screwDim k * sᶜ.ncard)
     (hcount : Module.finrank K F.infinitesimalMotions ≤ screwDim k * (sᶜ.ncard + 1)) :
     F.IsInfinitesimallyRigidOn s := by
-  haveI : Fintype α := Fintype.ofFinite α
+  have : Fintype α := Fintype.ofFinite α
   obtain ⟨v₀, hv₀⟩ := hne
-  haveI : Nonempty α := ⟨v₀⟩
+  have : Nonempty α := ⟨v₀⟩
   -- Read rigidity off the Case-I bridge at the trivially-rigid singleton block `{v₀}`.
   rw [F.isInfinitesimallyRigidOn_iff_pinnedMotionsOn_le (s := {v₀})
     (Set.singleton_nonempty v₀) (Set.singleton_subset_iff.2 hv₀)

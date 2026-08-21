@@ -160,7 +160,7 @@ theorem zero_extension_genericRank_add_degree {V : Type*} [Finite V] {H : Simple
           Set (⊤ : SimpleGraph V).edgeSet) = I := by rw [hH₃delInc]
       rw [hpre]; exact hI_rowIndep
     -- Affine independence of the (≤ three) neighbor images under general position.
-    haveI hFinNbr : Fintype ↥(H.neighborSet v) := Fintype.ofFinite _
+    have hFinNbr : Fintype ↥(H.neighborSet v) := Fintype.ofFinite _
     have hcard_eq : Fintype.card ↥(H.neighborSet v) = (H.neighborSet v).ncard := by
       rw [Set.ncard_eq_toFinset_card', Set.toFinset_card]
     have hAI : AffineIndependent ℝ (fun u : H₃.neighborSet v => p u.val) := by
@@ -176,7 +176,7 @@ theorem zero_extension_genericRank_add_degree {V : Type*} [Finite V] {H : Simple
         funext u; simp [Equiv.toEmbedding]
       rw [heq] at hAI1
       rw [hH₃nbr]; exact hAI1
-    haveI hFinNbr₃ : Fintype ↥(H₃.neighborSet v) := hH₃nbr ▸ hFinNbr
+    have hFinNbr₃ : Fintype ↥(H₃.neighborSet v) := hH₃nbr ▸ hFinNbr
     have hdeg₃ : Fintype.card ↥(H₃.neighborSet v) ≤ 3 := by
       have hc : Fintype.card ↥(H₃.neighborSet v) = Fintype.card ↥(H.neighborSet v) :=
         Fintype.card_congr (Equiv.setCongr hH₃nbr)
@@ -282,8 +282,8 @@ theorem zero_extension_genericRank_add_min_le {V : Type*} [Finite V] {H : Simple
     rw [zero_extension_genericRank_add_degree hle]; omega
   · -- `d ≥ 4`: restrict the star at `v` to three of its edges.
     have hgt : 3 < (H.neighborSet v).ncard := by omega
-    haveI : Fintype V := Fintype.ofFinite V
-    haveI : DecidableRel H.Adj := Classical.decRel _
+    have : Fintype V := Fintype.ofFinite V
+    have : DecidableRel H.Adj := Classical.decRel _
     have hcard : 3 ≤ (H.neighborFinset v).card := by
       have hbridge : (H.neighborFinset v).card = (H.neighborSet v).ncard := by
         rw [← Set.ncard_coe_finset, coe_neighborFinset]
@@ -781,8 +781,8 @@ theorem zero_extension_genericRank_add_min_of_isClique {V : Type*} [Finite V] {H
     have hmin3 : min 3 (H.neighborSet v).ncard = 3 := by omega
     rw [hmin3]
     have hgt : 3 < (H.neighborSet v).ncard := by omega
-    haveI : Fintype V := Fintype.ofFinite V
-    haveI : DecidableRel H.Adj := Classical.decRel _
+    have : Fintype V := Fintype.ofFinite V
+    have : DecidableRel H.Adj := Classical.decRel _
     have hcard : 3 ≤ (H.neighborFinset v).card := by
       have hbridge : (H.neighborFinset v).card = (H.neighborSet v).ncard := by
         rw [← Set.ncard_coe_finset, coe_neighborFinset]

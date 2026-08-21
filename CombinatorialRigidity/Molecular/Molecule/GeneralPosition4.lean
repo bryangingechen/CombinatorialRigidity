@@ -195,7 +195,7 @@ theorem exists_generalPosition4_polynomial [Finite α] (G : Graph α β) (ends :
       ∀ q : α × Fin 4 → ℝ, MvPolynomial.eval q Q ≠ 0 →
         (PanelHingeFramework.ofNormals (k := 2) G ends q).IsGeneralPosition4 := by
   classical
-  haveI : Fintype α := Fintype.ofFinite α
+  have : Fintype α := Fintype.ofFinite α
   set I2 := (Finset.univ : Finset (Fin 2 → α)).filter Function.Injective with hI2
   set I3 := (Finset.univ : Finset (Fin 3 → α)).filter Function.Injective with hI3
   set I4 := (Finset.univ : Finset (Fin 4 → α)).filter Function.Injective with hI4
@@ -242,11 +242,11 @@ theorem exists_generalPosition4_polynomial [Finite α] (G : Graph α β) (ends :
     rcases (show s.card = 0 ∨ s.card = 1 ∨ s.card = 2 ∨ s.card = 3 ∨ s.card = 4 from by omega)
       with hc | hc | hc | hc | hc
     · -- card 0: empty family.
-      haveI : IsEmpty (s : Finset α) :=
+      have : IsEmpty (s : Finset α) :=
         Fintype.card_eq_zero_iff.mp (by rw [Fintype.card_coe]; exact hc)
       exact linearIndependent_empty_type
     · -- card 1: singleton, independent since the normal is nonzero.
-      haveI : Unique (s : Finset α) :=
+      have : Unique (s : Finset α) :=
         (Fintype.equivFinOfCardEq (by rw [Fintype.card_coe, hc])).unique
       rw [linearIndependent_unique_iff]
       simp only [PanelHingeFramework.ofNormals_normal]

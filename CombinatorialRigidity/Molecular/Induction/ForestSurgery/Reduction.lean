@@ -167,7 +167,7 @@ theorem splitOff_isMinimalKDof [DecidableEq β] [Finite α] [Finite β] {G : Gra
     (hG : G.IsMinimalKDof n 0) (hnp : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) :
     (G.splitOff v a b e₀).IsMinimalKDof n 0 := by
   classical
-  haveI : G.Loopless := loopless_of_isMinimalKDof hG
+  have : G.Loopless := loopless_of_isMinimalKDof hG
   have hD1 : 1 ≤ bodyBarDim n := le_trans (by norm_num) hD
   set G' := G.splitOff v a b e₀ with hG'def
   set Gv := G.removeVertex v with hGvdef
@@ -476,16 +476,16 @@ theorem exists_chain_data_of_noRigid [DecidableEq β] [Finite α] [Finite β]
       (∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b) ∧
       (∀ e x, G.IsLink e a x → e = eₐ ∨ e = e_c) := by
   classical
-  haveI : Fintype α := Fintype.ofFinite _
-  haveI : Fintype β := Fintype.ofFinite _
+  have : Fintype α := Fintype.ofFinite _
+  have : Fintype β := Fintype.ofFinite _
   have hD3 : 3 ≤ bodyBarDim n := by linarith
   have hD2 : 2 ≤ bodyBarDim n := by linarith
   have hD1 : 1 ≤ bodyBarDim n := by linarith
   have hV3 : 3 ≤ V(G).ncard := by linarith
   have hVne : V(G).Nonempty := Set.nonempty_of_ncard_ne_zero (by omega)
   -- G0: G is simple.
-  haveI hsimp : G.Simple := simple_of_isMinimalKDof_of_noRigid hD2 hV3 hG hnp
-  haveI hLl : G.Loopless := loopless_of_isMinimalKDof hG
+  have hsimp : G.Simple := simple_of_isMinimalKDof_of_noRigid hD2 hV3 hG hnp
+  have hLl : G.Loopless := loopless_of_isMinimalKDof hG
   -- G4a-i: get adjacent degree-2 vertices v, a with edge eₐ.
   obtain ⟨v, a, hvG, haG, hdegv, hdega, eₐ, hlaG⟩ :=
     exists_adjacent_degree_two_pair hD hV3 hG hnp
@@ -979,7 +979,7 @@ theorem exists_balanced_forest_packing [DecidableEq β] [Finite α] [Finite β] 
         (Pairwise (Function.onFun Disjoint Fs)) ∧
         (∀ i, ∃ p ∈ Fs i, (G.mulTilde n).Inc p v) := by
   classical
-  haveI : Nonempty (Fin (bodyBarDim n)) := ⟨⟨0, lt_of_lt_of_le (by norm_num) hD⟩⟩
+  have : Nonempty (Fin (bodyBarDim n)) := ⟨⟨0, lt_of_lt_of_le (by norm_num) hD⟩⟩
   set vfib := edgeFiber eₐ n ∪ edgeFiber e_b n with hvfib
   have hBE : B ⊆ E(G.mulTilde n) := by
     have := hB.subset_ground; rwa [matroidMG] at this
@@ -1274,7 +1274,7 @@ theorem forest_surgery_count [DecidableEq β] [Finite β] {G : Graph α β} {n :
     obtain ⟨pb, hpb⟩ := Set.ncard_eq_one.mp (by omega : (Fs i ∩ edgeFiber e_b n).ncard = 1)
     exact ⟨pa, pb, hpa, hpb⟩
   -- A fixed inhabitant of the fiber type (the else-branch placeholder; `Fs 0` meets `v`).
-  haveI : Nonempty (β × Fin (bodyHingeMult n)) := ⟨(hmeet ⟨0, by omega⟩).choose⟩
+  have : Nonempty (β × Fin (bodyHingeMult n)) := ⟨(hmeet ⟨0, by omega⟩).choose⟩
   -- Choose, per `dᶠ = 2` forest, the swapped-out pair; `r i := (e₀, (paOf i).2)` is the fresh copy.
   set paOf : Fin (bodyBarDim n) → β × Fin (bodyHingeMult n) := fun i =>
     if h : (Fs i ∩ G.fiberAtVertex n v).ncard = 2 then (hdeg2_split i h).choose
@@ -1527,7 +1527,7 @@ theorem forest_surgery_split [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
     (he₀ : e₀ ∉ E(G)) :
     (G.splitOff v a b e₀).deficiency n ≤ G.deficiency n := by
   classical
-  haveI : Nonempty α := ⟨a⟩
+  have : Nonempty α := ⟨a⟩
   have hD1 : 1 ≤ bodyBarDim n := le_trans (by norm_num) hD
   have haV : a ∈ V(G) := hla.right_mem
   have hbV : b ∈ V(G) := hlb.right_mem
@@ -1586,7 +1586,7 @@ theorem splitOff_exists_base_inter_fiber_lt [DecidableEq β] [Finite α] [Finite
     ∃ B', ((G.splitOff v a b e₀).matroidMG n).IsBase B' ∧
       (B' ∩ edgeFiber e₀ n).ncard < bodyHingeMult n := by
   classical
-  haveI : Nonempty α := ⟨a⟩
+  have : Nonempty α := ⟨a⟩
   have hD1 : 1 ≤ bodyBarDim n := le_trans (by norm_num) hD
   have haV : a ∈ V(G) := hla.right_mem
   have hbV : b ∈ V(G) := hlb.right_mem
@@ -1618,7 +1618,7 @@ theorem splitOff_exists_base_inter_fiber_lt [DecidableEq β] [Finite α] [Finite
     rw [hVHcard, mul_sub, mul_one] at hHrank
     linarith [hcountZ, hBrank, hHrank]
   have hIcard : (H.matroidMG n).rank ≤ (⋃ i, Fs' i).ncard := by omega
-  haveI : (H.matroidMG n).Finite := Matroid.finite_of_finite (M := H.matroidMG n)
+  have : (H.matroidMG n).Finite := Matroid.finite_of_finite (M := H.matroidMG n)
   exact hMindep.isBase_of_ncard hIcard
 
 /-! ### The Gap-3 combinatorial shell — `G − v` is a minimal `k'`-dof-graph with `k' ≤ D − 2`
@@ -1657,7 +1657,7 @@ theorem splitOff_removeVertex_minimalKDof [DecidableEq β] [Finite α] [Finite �
       0 ≤ (G.removeVertex v).deficiency n ∧
       (G.removeVertex v).deficiency n ≤ (bodyBarDim n : ℤ) - 2 := by
   classical
-  haveI : Nonempty α := ⟨a⟩
+  have : Nonempty α := ⟨a⟩
   have hD1 : 1 ≤ bodyBarDim n := le_trans (by norm_num) hD
   have haV : a ∈ V(G) := hla.right_mem
   have hvG : v ∈ V(G) := hla.left_mem
@@ -1728,7 +1728,7 @@ theorem splitOff_isKDof_of_exists_base_inter_fiber_lt [DecidableEq β] [Finite �
     (hlt : (B' ∩ edgeFiber e₀ n).ncard < bodyHingeMult n) :
     (G.splitOff v a b e₀).IsKDof n k := by
   classical
-  haveI : Nonempty α := ⟨a⟩
+  have : Nonempty α := ⟨a⟩
   have hD1 : 1 ≤ bodyBarDim n := le_trans (by norm_num) hD
   have haV : a ∈ V(G) := hla.right_mem
   have hvG : v ∈ V(G) := hla.left_mem
@@ -1779,7 +1779,7 @@ theorem exists_isBase_vb_fiber_eq_one_of_removeVertex_isKDof [DecidableEq β] [F
     (hG : G.IsKDof n k) (hGv : (G.removeVertex v).IsKDof n k) :
     ∃ B, (G.matroidMG n).IsBase B ∧ (B ∩ edgeFiber e_b n).ncard = 1 := by
   classical
-  haveI : Nonempty α := ⟨a⟩
+  have : Nonempty α := ⟨a⟩
   have hD1 : 1 ≤ bodyBarDim n := le_trans (by norm_num) hD
   have haV : a ∈ V(G) := hla.right_mem
   have hvG : v ∈ V(G) := hla.left_mem
@@ -1824,7 +1824,7 @@ theorem exists_isBase_vb_fiber_eq_one_of_removeVertex_isKDof [DecidableEq β] [F
   have hIrank : (I.ncard : ℤ) = ((G.matroidMG n).rank : ℤ) := by
     linarith [hB'card, hGrank, hIeq]
   have hIle : (G.matroidMG n).rank ≤ I.ncard := by omega
-  haveI : (G.matroidMG n).Finite := Matroid.finite_of_finite (M := G.matroidMG n)
+  have : (G.matroidMG n).Finite := Matroid.finite_of_finite (M := G.matroidMG n)
   exact ⟨I, hIindep.isBase_of_ncard hIle, by rw [hIfib, hB'fib, Set.ncard_empty]⟩
 
 /-! ### KT 4.7 all-`k`: the strict removal gap (`lem:removal-deficiency-strict`)
@@ -1851,7 +1851,7 @@ theorem removeVertex_deficiency_gt_of_noRigid [DecidableEq β] [Finite α] [Fini
     (hG : G.IsMinimalKDof n k) (hnp : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) :
     k < (G.removeVertex v).deficiency n := by
   classical
-  haveI : Nonempty α := ⟨a⟩
+  have : Nonempty α := ⟨a⟩
   have hD2 : 2 ≤ bodyBarDim n := le_trans (by norm_num) hD
   have hvG : v ∈ V(G) := hla.left_mem
   have hVne : V(G).Nonempty := ⟨v, hvG⟩
@@ -1929,7 +1929,7 @@ theorem splitOff_isMinimalKDof_of_pos [DecidableEq β] [Finite α] [Finite β]
     (hG : G.IsMinimalKDof n k) (hnp : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) :
     (G.splitOff v a b e₀).IsMinimalKDof n (k - 1) := by
   classical
-  haveI : G.Loopless := loopless_of_isMinimalKDof hG
+  have : G.Loopless := loopless_of_isMinimalKDof hG
   have hD2 : 2 ≤ bodyBarDim n := le_trans (by norm_num) hD
   have hD1 : 1 ≤ bodyBarDim n := le_trans (by norm_num) hD
   set H := G.splitOff v a b e₀ with hHdef
@@ -1983,7 +1983,7 @@ theorem splitOff_isMinimalKDof_of_pos [DecidableEq β] [Finite α] [Finite β]
       refine hVG'sub.ssubset_of_ne (fun heq => ?_)
       have hrankG' : ((G'.matroidMG n).rank : ℤ) = bodyBarDim n * ((V(H).ncard : ℤ) - 1) := by
         rw [← heq]; exact rank_matroidMG_of_isKDof_zero hD1 hVG'ne hG'kd
-      haveI hHFin : (H.matroidMG n).RankFinite := Matroid.rankFinite_of_finite (M := H.matroidMG n)
+      have hHFin : (H.matroidMG n).RankFinite := Matroid.rankFinite_of_finite (M := H.matroidMG n)
       have hrestr : H.matroidMG n ↾ E(G'.mulTilde n) = G'.matroidMG n :=
         matroidMG_restrict_mulTilde hG'le n
       have hrankle : ((G'.matroidMG n).rank : ℤ) ≤ ((H.matroidMG n).rank : ℤ) := by
@@ -2063,7 +2063,7 @@ theorem splitOff_isMinimalKDof_of_pos [DecidableEq β] [Finite α] [Finite β]
       have hJZ : (J.ncard : ℤ) = (X \ {p}).ncard + bodyBarDim n := by exact_mod_cast hJcard
       rw [hJZ, hIcard, hVKcard]; ring
     have hKVne : V(K).Nonempty := ⟨v, by rw [hKdef]; simp⟩
-    haveI hKFin : (K.matroidMG n).RankFinite := Matroid.rankFinite_of_finite (M := K.matroidMG n)
+    have hKFin : (K.matroidMG n).RankFinite := Matroid.rankFinite_of_finite (M := K.matroidMG n)
     have hKrank_eq := K.rank_add_deficiency_eq n hD1 hKVne
     have hKdefle : K.deficiency n ≤ 0 := by
       have hJle : (J.ncard : ℤ) ≤ (K.matroidMG n).rank := by
@@ -2142,7 +2142,7 @@ theorem splitOff_isMinimalKDof_of_pos [DecidableEq β] [Finite α] [Finite β]
       -- `|J| = rank M(G̃)`, so `J` is a base of `M(G̃)`.
       have hGrank := G.rank_add_deficiency_eq n hD1 hVne
       rw [hG.deficiency_eq, mul_sub, mul_one] at hGrank
-      haveI hGFin : (G.matroidMG n).RankFinite := Matroid.rankFinite_of_finite (M := G.matroidMG n)
+      have hGFin : (G.matroidMG n).RankFinite := Matroid.rankFinite_of_finite (M := G.matroidMG n)
       have hJbase : (G.matroidMG n).IsBase J := by
         apply hJindep.isBase_of_ncard
         have : ((G.matroidMG n).rank : ℤ) ≤ J.ncard := by linarith [hJcardZ, hGrank]

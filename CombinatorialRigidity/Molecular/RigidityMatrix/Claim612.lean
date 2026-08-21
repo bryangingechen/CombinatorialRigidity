@@ -84,7 +84,7 @@ theorem span_omitTwoExtensor_eq_top {k : ℕ} {pbar : Fin (k + 2) → Fin (k + 2
   have hcard : Fintype.card {q : Fin (k + 2) × Fin (k + 2) // q.1 < q.2}
       = Module.finrank K (ScrewSpace K k) := by
     rw [screwSpace_finrank, Fintype.card_subtype_fst_lt_snd, Fintype.card_fin]
-  haveI : Nonempty {q : Fin (k + 2) × Fin (k + 2) // q.1 < q.2} :=
+  have : Nonempty {q : Fin (k + 2) × Fin (k + 2) // q.1 < q.2} :=
     ⟨⟨(0, 1), by simp [Fin.lt_def]⟩⟩
   have hbasis := (basisOfLinearIndependentOfCardEqFinrank hLI hcard).span_eq
   rwa [coe_basisOfLinearIndependentOfCardEqFinrank] at hbasis

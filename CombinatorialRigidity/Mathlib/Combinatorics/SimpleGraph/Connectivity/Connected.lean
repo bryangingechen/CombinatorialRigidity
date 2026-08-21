@@ -123,7 +123,7 @@ another visited vertex (`mem_support_of_mem_walk_support`), hence itself has pos
 theorem connected_induce_support (hconn : ∀ x ∈ G.support, ∀ y ∈ G.support, G.Reachable x y)
     (hne : G.support.Nonempty) : (G.induce G.support).Connected := by
   classical
-  haveI : Nonempty ↥G.support := hne.to_subtype
+  have : Nonempty ↥G.support := hne.to_subtype
   refine ⟨fun a b => ?_⟩
   by_cases heq : a.val = b.val
   · have hab : a = b := Subtype.ext heq

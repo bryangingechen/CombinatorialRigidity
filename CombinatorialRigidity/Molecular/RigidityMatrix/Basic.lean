@@ -1086,7 +1086,7 @@ of the Case-I splice can read the rigidity-row span off the motions alone. -/
 theorem span_rigidityRows_eq_dualAnnihilator_infinitesimalMotions [Finite α]
     (F : BodyHingeFramework K k α β) :
     Submodule.span K F.rigidityRows = F.infinitesimalMotions.dualAnnihilator := by
-  haveI : Fintype α := Fintype.ofFinite α
+  have : Fintype α := Fintype.ofFinite α
   rw [F.infinitesimalMotions_eq_dualCoannihilator,
     Subspace.dualCoannihilator_dualAnnihilator_eq]
 
@@ -1122,7 +1122,7 @@ block. -/
 theorem exists_finite_spanning_rigidityRows [Finite α] (F : BodyHingeFramework K k α β) :
     ∃ (n : ℕ) (a : Fin n → Module.Dual K (α → ScrewSpace K k)),
       Submodule.span K (Set.range a) = Submodule.span K F.rigidityRows := by
-  haveI : Fintype α := Fintype.ofFinite α
+  have : Fintype α := Fintype.ofFinite α
   have hfg : (Submodule.span K F.rigidityRows).FG :=
     IsNoetherian.noetherian (Submodule.span K F.rigidityRows)
   obtain ⟨n, a, ha⟩ := Submodule.fg_iff_exists_fin_generating_family.1 hfg
@@ -1166,7 +1166,7 @@ theorem exists_independent_rigidityRows_of_edge (F : BodyHingeFramework K k α �
     (huv : u ≠ v) (hlink : F.graph.IsLink e u v) (he : F.supportExtensor e ≠ 0) :
     ∃ r : Fin (screwDim k - 1) → Module.Dual K (α → ScrewSpace K k),
       LinearIndependent K r ∧ ∀ i, r i ∈ F.rigidityRows := by
-  haveI : FiniteDimensional K (ScrewSpace K k) := inferInstance
+  have : FiniteDimensional K (ScrewSpace K k) := inferInstance
   -- A basis of the `(D−1)`-dimensional hinge-row block, coerced out as ambient functionals.
   obtain ⟨c, hc, hmem⟩ := (F.hingeRowBlock e).exists_linearIndependent_fin_of_finrank_eq
     (F.finrank_hingeRowBlock he)
@@ -1203,7 +1203,7 @@ theorem exists_genuine_linearIndependent_basis_of_rigidityRows_diff [Finite α]
         Module.Dual K (α → ScrewSpace K k)),
       LinearIndependent K f ∧ (∀ i, f i ∈ F.rigidityRows) ∧ (∀ i, f i ≠ rhat) ∧
         Submodule.span K (Set.range f) = Submodule.span K (F.rigidityRows \ {rhat}) := by
-  haveI : Fintype α := Fintype.ofFinite α
+  have : Fintype α := Fintype.ofFinite α
   obtain ⟨f, hmem, hspan, hLI⟩ :=
     Submodule.exists_fun_fin_finrank_span_eq K (F.rigidityRows \ {rhat})
   exact ⟨f, hLI, fun i => (hmem i).1, fun i => (hmem i).2, hspan⟩
@@ -1412,8 +1412,8 @@ theorem linearIndependent_hingeRow_star {J : Type*} [Finite J] {I : J → Type*}
     {r : ∀ j, I j → Module.Dual K (ScrewSpace K k)} (hr : ∀ j, LinearIndependent K (r j)) :
     LinearIndependent K (fun p : Σ j, I j => hingeRow (k := k) (α := α) (w p.1) v (r p.1 p.2)) := by
   classical
-  haveI : Fintype J := Fintype.ofFinite J
-  haveI : ∀ j, Fintype (I j) := fun j => Fintype.ofFinite (I j)
+  have : Fintype J := Fintype.ofFinite J
+  have : ∀ j, Fintype (I j) := fun j => Fintype.ofFinite (I j)
   rw [Fintype.linearIndependent_iff]
   intro g hg k₀
   obtain ⟨j₀, i₀⟩ := k₀
@@ -1466,8 +1466,8 @@ theorem linearIndependent_sum_pinned_block {ιn ιo : Type*} [Finite ιn] [Finit
     (holdindep : LinearIndependent K ro) :
     LinearIndependent K (Sum.elim rn ro) := by
   classical
-  haveI : Fintype ιn := Fintype.ofFinite ιn
-  haveI : Fintype ιo := Fintype.ofFinite ιo
+  have : Fintype ιn := Fintype.ofFinite ιn
+  have : Fintype ιo := Fintype.ofFinite ιo
   rw [Fintype.linearIndependent_iff]
   intro g hg
   -- Split the index sum over `ιn ⊕ ιo`.
@@ -1599,8 +1599,8 @@ theorem linearIndependent_sum_restriction_block {ιt ιb : Type*} [Finite ιt] [
           - (LinearMap.single K (fun _ : α => ScrewSpace K k) v).comp (LinearMap.proj v)))) :
     LinearIndependent K (Sum.elim top bot) := by
   classical
-  haveI : Fintype ιt := Fintype.ofFinite ιt
-  haveI : Fintype ιb := Fintype.ofFinite ιb
+  have : Fintype ιt := Fintype.ofFinite ιt
+  have : Fintype ιb := Fintype.ofFinite ιb
   -- The off-`v` projection `P_v S = Function.update S v 0` (`id − single v ∘ proj v`).
   set P : (α → ScrewSpace K k) →ₗ[K] (α → ScrewSpace K k) :=
     (LinearMap.id : (α → ScrewSpace K k) →ₗ[K] (α → ScrewSpace K k))
@@ -2026,8 +2026,8 @@ theorem linearIndependent_hingeRow_forest {J : Type*} [Finite J] {I : J → Type
     LinearIndependent K
       (fun p : Σ j, I j => hingeRow (k := k) (α := α) (u p.1) (other p.1) (r p.1 p.2)) := by
   classical
-  haveI : Fintype J := Fintype.ofFinite J
-  haveI : ∀ j, Fintype (I j) := fun j => Fintype.ofFinite (I j)
+  have : Fintype J := Fintype.ofFinite J
+  have : ∀ j, Fintype (I j) := fun j => Fintype.ofFinite (I j)
   rw [Fintype.linearIndependent_iff]
   intro g hg k₀
   obtain ⟨j₀, i₀⟩ := k₀
@@ -2081,7 +2081,7 @@ theorem exists_independent_rigidityRows_of_forest (F : BodyHingeFramework K k α
     ∃ r : (Σ _ : J, Fin (screwDim k - 1)) → Module.Dual K (α → ScrewSpace K k),
       LinearIndependent K r ∧ ∀ p, r p ∈ F.rigidityRows := by
   classical
-  haveI : FiniteDimensional K (ScrewSpace K k) := inferInstance
+  have : FiniteDimensional K (ScrewSpace K k) := inferInstance
   -- Per-edge basis of the `(D−1)`-dimensional hinge-row block `r(p(e j))`.
   choose c hc hmem using fun j =>
     (F.hingeRowBlock (e j)).exists_linearIndependent_fin_of_finrank_eq
@@ -2413,7 +2413,7 @@ theorem finrank_pinnedMotions_add_screwDim [Nonempty α] [Finite α]
     (F : BodyHingeFramework K k α β) (v : α) :
     Module.finrank K (F.pinnedMotions v) + screwDim k =
       Module.finrank K F.infinitesimalMotions := by
-  haveI : Fintype α := Fintype.ofFinite α
+  have : Fintype α := Fintype.ofFinite α
   have hdisj : F.trivialMotions ⊓ F.pinnedMotions v = ⊥ :=
     F.trivialMotions_inf_pinnedMotions_eq_bot v
   have hsup : F.trivialMotions ⊔ F.pinnedMotions v = F.infinitesimalMotions :=

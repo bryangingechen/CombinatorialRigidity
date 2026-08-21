@@ -533,7 +533,7 @@ theorem exists_pencilPanelRealization_cycle
       HasPencilPanelRealization G F normal point ∧ F.IsInfinitesimallyRigidOn V(G) := by
   classical
   have hm3 : 3 ≤ cy.m := cy.hm
-  haveI : NeZero cy.m := ⟨by omega⟩
+  have : NeZero cy.m := ⟨by omega⟩
   -- E5a: the cyclic shared-normal family (`3 ≤ cy.m ≤ 4 = k + 2` at `k = 2`).
   obtain ⟨nrm, hjoin, hLI⟩ := exists_cycle_normals (K := K) (k := 2) cy.hm hm4
   -- Each consecutive normal pair is independent (its grade-2 join is nonzero).

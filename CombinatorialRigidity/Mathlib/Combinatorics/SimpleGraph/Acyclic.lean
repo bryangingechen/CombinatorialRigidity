@@ -52,7 +52,7 @@ theorem exists_degree_eq_one [Fintype V] [DecidableRel G.Adj]
     ∃ v ∈ G.support, G.degree v = 1 := by
   classical
   have hne : G.support.Nonempty := Set.nonempty_of_ncard_ne_zero (by omega)
-  haveI : Nontrivial ↥G.support := Set.nontrivial_coe_sort.mpr (by
+  have : Nontrivial ↥G.support := Set.nontrivial_coe_sort.mpr (by
     rw [← Set.one_lt_ncard_iff_nontrivial]; omega)
   have htree : (G.induce G.support).IsTree :=
     ⟨connected_induce_support hconn hne, hac.induce G.support⟩

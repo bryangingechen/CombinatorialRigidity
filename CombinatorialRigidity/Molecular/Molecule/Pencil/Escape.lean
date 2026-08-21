@@ -104,7 +104,7 @@ theorem hasGenericPencilRealization_of_splitOff_of_safe
     (hIH : ∀ G' : Graph α β, V(G').Nonempty → V(G').ncard < V(G).ncard → PencilPair K 3 G') :
     HasGenericPencilRealization K 3 (G.splitOff v a b e₀) := by
   classical
-  haveI : Inhabited α := Classical.inhabited_of_nonempty inferInstance
+  have : Inhabited α := Classical.inhabited_of_nonempty inferInstance
   have hab : a ≠ b := fun h => heab (Graph.Simple.eq_of_isLink hG_ea (h ▸ hG_eb))
   have hexa : ∃ eₐ, G.IsLink eₐ v a := ⟨eₐ, hG_ea⟩
   have hexb : ∃ e_b, G.IsLink e_b v b := ⟨e_b, hG_eb⟩
@@ -128,7 +128,7 @@ theorem hasGenericPencilRealization_of_splitOff_of_safe
       (G.splitOff v a b e₀).IsLink e₁ x y → (G.splitOff v a b e₀).IsLink e₂ y z →
       (G.splitOff v a b e₀).IsLink e₃ z x → False :=
     Graph.splitOff_triangleFree_of_noRigid (by omega) hV hnoRigid hdeg hexa hexb hab
-  haveI hG'simple : (G.splitOff v a b e₀).Simple :=
+  have hG'simple : (G.splitOff v a b e₀).Simple :=
     Graph.splitOff_simple_of_noRigid_of_card (by omega) heab hG_ea hG_eb (by omega) hnoRigid
   have hG'feas : PencilNondegFeasible K (G.splitOff v a b e₀) :=
     pencilNondegFeasible_of_ncard_closedHubNbhd_le_three_of_triangleFree hcard' htf'
@@ -197,7 +197,7 @@ theorem hasGenericPencilRealization_of_independent_pencilRow_target
       LinearIndependent K (fun i : s => pencilRow hubSel G.endsOf q (i : β × _ × _))) :
     HasGenericPencilRealization K 3 G := by
   classical
-  haveI : G.Loopless := ‹G.Simple›.toLoopless
+  have : G.Loopless := ‹G.Simple›.toLoopless
   obtain ⟨hubSel, q₀, s, hHubSel, hslink, hscard, hsLI⟩ := hEsc
   -- Global non-hub neighbour selectors (needed for the fourth `PencilChartWF` conjunct).
   have hnbr : ∀ v, ∃ sel : Fin 3 → Option α,
@@ -361,8 +361,8 @@ theorem pencilPair_of_splitOff_of_habitat
   have hD6 : (6 : ℕ) ≤ Graph.bodyBarDim 3 := Graph.six_le_bodyBarDim (by norm_num)
   have hSimple : G.Simple :=
     Graph.simple_of_loopless_of_noRigid (n := 3) (by omega) (by omega) hloop hnoRigid
-  haveI : G.Simple := hSimple
-  haveI : G.Loopless := hloop
+  have : G.Simple := hSimple
+  have : G.Loopless := hloop
   obtain ⟨e₀, he₀⟩ := hfresh
   obtain ⟨v, a₀, hvV, ha₀V, hvdeg, ha₀deg, elink, helink⟩ :=
     Graph.exists_adjacent_degree_two_pair_of_noRigid_of_degree_two hD6 (by omega) h2ec hnoRigid
@@ -520,7 +520,7 @@ theorem freshEdgeSupply_of_card_lt_of_noRigid_of_degree_two
       (∃ v ∈ V(G'), G'.degree v = 2) → 3 ≤ V(G').ncard → ∃ e₀ : β, e₀ ∉ E(G') := by
   classical
   intro G' hloop hnoRigid hdeg2 hV
-  haveI : G'.Loopless := hloop
+  have : G'.Loopless := hloop
   by_contra hcon
   push Not at hcon
   have hEuniv : E(G') = Set.univ := Set.eq_univ_of_forall hcon

@@ -71,7 +71,7 @@ theorem splitOff_deficiency_le [Finite α] [Finite β] {G : Graph α β} {n : �
   have haV : a ∈ V(G) := hla.right_mem
   have hbV : b ∈ V(G) := hlb.right_mem
   -- It suffices to bound each partition `P'` of `H` by `def(G̃)`.
-  haveI : Nonempty α := ⟨a⟩
+  have : Nonempty α := ⟨a⟩
   rw [deficiency]
   refine ciSup_le fun f' => ?_
   -- Extend `f'` to a partition `f` of `V(G)` by dropping `v` into `a`'s block.
@@ -209,7 +209,7 @@ theorem splitOff_deficiency_ge [Finite α] [Finite β] {G : Graph α β} {n : �
     have : (1 : ℤ) ≤ (bodyBarDim n : ℤ) := by exact_mod_cast hD
     linarith
   -- Pick a partition `f` of `V(G)` attaining `def(G̃)` (finite supremum).
-  haveI : Nonempty α := ⟨a⟩
+  have : Nonempty α := ⟨a⟩
   obtain ⟨f, hf⟩ := exists_eq_ciSup_of_finite (f := G.partitionDef n)
   rw [deficiency, ← hf]
   -- It suffices to bound the same labeling `f` (restricted to `V(H) = V(G) ∖ {v}`) below.
@@ -416,7 +416,7 @@ theorem removeVertex_deficiency_ge [Finite α] [Finite β] {G : Graph α β} {n 
     have : (1 : ℤ) ≤ (bodyBarDim n : ℤ) := by exact_mod_cast (le_trans (by norm_num) hD)
     linarith
   -- Pick a partition `f` of `V(G)` attaining `def(G̃)` (finite supremum).
-  haveI : Nonempty α := ⟨a⟩
+  have : Nonempty α := ⟨a⟩
   obtain ⟨f, hf⟩ := exists_eq_ciSup_of_finite (f := G.partitionDef n)
   rw [deficiency, ← hf]
   -- It suffices to bound the same labeling `f` on `V(H) = V(G) ∖ {v}` below.

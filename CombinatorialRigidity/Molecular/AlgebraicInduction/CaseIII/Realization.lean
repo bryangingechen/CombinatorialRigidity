@@ -349,14 +349,14 @@ theorem PanelHingeFramework.case_III_candidate_dispatch [Infinite K]
     (hsplitGP : PanelHingeFramework.HasGenericFullRankRealization K 2 n (G.splitOff v a b e₀)) :
     PanelHingeFramework.HasGenericFullRankRealization K 2 n G := by
   classical
-  haveI : Fintype α := Fintype.ofFinite α
-  haveI hGloop : G.Loopless := hsimple.toLoopless
+  have : Fintype α := Fintype.ofFinite α
+  have hGloop : G.Loopless := hsimple.toLoopless
   set Gab := G.splitOff v a b e₀ with hGab
   set Gv := G.removeVertex v with hGv
-  haveI : Gv.Loopless := hGloop.mono (hGv ▸ Graph.removeVertex_le G v)
+  have : Gv.Loopless := hGloop.mono (hGv ▸ Graph.removeVertex_le G v)
   -- `Gab` is loopless: a surviving `G`-edge inherits `G`'s looplessness, the fresh `e₀` joins the
   -- distinct `a ≠ b`.
-  haveI hGabloop : Gab.Loopless := by
+  have hGabloop : Gab.Loopless := by
     rw [Graph.loopless_iff_forall_ne_of_adj]
     rintro x y ⟨e, hlink⟩
     rw [hGab, Graph.splitOff_isLink] at hlink
@@ -647,7 +647,7 @@ theorem PanelHingeFramework.case_III_candidate_dispatch [Infinite K]
       intro e hea heb hec
       simp only [hends₃, Function.update_of_ne heb, Function.update_of_ne hea,
         Function.update_of_ne hec]
-    haveI : (G.removeVertex a).Loopless := hGloop.mono (Graph.removeVertex_le G a)
+    have : (G.removeVertex a).Loopless := hGloop.mono (Graph.removeVertex_le G a)
     set qρ : α × Fin 4 → K := fun p => q (Equiv.swap a v p.1, p.2) with hqρ
     have hrecGv : ∀ e x y, Gv.IsLink e x y → Q.ends e = (x, y) ∨ Q.ends e = (y, x) :=
       fun e x y hlink => hrec' e x y (hle e x y hlink)
@@ -786,7 +786,7 @@ theorem PanelHingeFramework.exists_nested_rankPolynomial_lower_all_k
       Set.ncard_sdiff_singleton_of_mem (hlea.left_mem : v ∈ V(G))]; omega
   have hQv : PanelHingeFramework.HasGenericFullRankRealization K k n (G.removeVertex v) :=
     (hIH _ (G.removeVertex v) hGvmin hGvne hGvlt).1 hGvSimple
-  haveI hGvloop : (G.removeVertex v).Loopless := hGvSimple.toLoopless
+  have hGvloop : (G.removeVertex v).Loopless := hGvSimple.toLoopless
   -- L7a: extract the rank polynomial `P` — the `P_v` factor, `q`-free.
   obtain ⟨N, hNeq, P, hPne, hPtrans⟩ :=
     PanelHingeFramework.exists_rankPolynomial_of_IH_linking (G.removeVertex v) ends hQv
@@ -938,12 +938,12 @@ theorem PanelHingeFramework.chainData_split_w6b_gates [Infinite K]
       -- `chainData_bottom_relabel` can read the genuine base recording at `ends₀`.
       (∀ e u w, (G.splitOff v a b e₀).IsLink e u w → ends e = (u, w) ∨ ends e = (w, u)) := by
   classical
-  haveI : Fintype α := Fintype.ofFinite α
+  have : Fintype α := Fintype.ofFinite α
   set Gab := G.splitOff v a b e₀ with hGab
   set Gv := G.removeVertex v with hGv
   -- `Gab` is loopless: a surviving `G`-edge inherits `G`'s looplessness, the fresh `e₀` joins the
   -- distinct `a ≠ b`.
-  haveI hGabloop : Gab.Loopless := by
+  have hGabloop : Gab.Loopless := by
     rw [Graph.loopless_iff_forall_ne_of_adj]
     rintro x y ⟨e, hlink⟩
     rw [hGab, Graph.splitOff_isLink] at hlink
@@ -1227,7 +1227,7 @@ theorem PanelHingeFramework.chainData_split_realization [Infinite K]
         ρ (panelSupportExtensor (fun j => q (cd.vtx i.succ, j)) n') ≠ 0) :
     PanelHingeFramework.HasGenericFullRankRealization K k n G := by
   classical
-  haveI : Fintype α := Fintype.ofFinite α
+  have : Fintype α := Fintype.ofFinite α
   -- The interior-split tuple `(v, a, b, e_a, e_b)` read off the `ChainData` accessors.
   set v := cd.vtx i.castSucc with hv
   set a := cd.vtx i.succ with ha
@@ -1252,9 +1252,9 @@ theorem PanelHingeFramework.chainData_split_realization [Infinite K]
   have haG : a ∈ V(G) := cd.vtx_mem _
   have hbG : b ∈ V(G) := cd.vtx_mem _
   have he₀ : cd.e₀ ∉ E(G) := cd.e₀_fresh
-  haveI hGloop : G.Loopless := hSimple.toLoopless
+  have hGloop : G.Loopless := hSimple.toLoopless
   set Gv := G.removeVertex v with hGv
-  haveI : Gv.Loopless := hGloop.mono (hGv ▸ Graph.removeVertex_le G v)
+  have : Gv.Loopless := hGloop.mono (hGv ▸ Graph.removeVertex_le G v)
   -- The eq.-(6.22) nested-IH rank bound at `Gv`, in polynomial form (RELAX slice (b)), for the
   -- W6b producer's `h622lb` slot.
   have h622lb := PanelHingeFramework.exists_nested_rankPolynomial_lower_all_k hk1 hn G v a b
@@ -1474,7 +1474,7 @@ theorem PanelHingeFramework.chainData_interior_realization_hρGv [Infinite K]
     (hdef : G.deficiency n = 0) :
     PanelHingeFramework.HasGenericFullRankRealization K k n G := by
   classical
-  haveI : Fintype α := Fintype.ofFinite α
+  have : Fintype α := Fintype.ofFinite α
   have h0i : 0 < (i : ℕ) := by omega
   -- The interior-split tuple `(v, a, b, e_a, e_b)` read off the `ChainData` accessors.
   set v := cd.vtx i.castSucc with hv
@@ -1944,7 +1944,7 @@ theorem PanelHingeFramework.chainData_dispatch_interior [Infinite K]
     (hdef : G.deficiency n = 0) :
     PanelHingeFramework.HasGenericFullRankRealization K k n G := by
   classical
-  haveI : Fintype α := Fintype.ofFinite α
+  have : Fintype α := Fintype.ofFinite α
   have h0i : 0 < (i : ℕ) := by omega
   have hid : (i : ℕ) < cd.d := i.isLt
   -- The interior-split tuple `(v, a, b, e_a, e_b)` and seed `qρ`.
@@ -1955,8 +1955,8 @@ theorem PanelHingeFramework.chainData_dispatch_interior [Infinite K]
   set e_b := cd.edge ⟨(i : ℕ) - 1, by omega⟩ with heb
   set qρ : α × Fin (k + 2) → K := fun p => q (cd.shiftPerm i.castSucc p.1, p.2) with hqρ
   set Gv := G.removeVertex v with hGv
-  haveI hGloop : G.Loopless := hSimple.toLoopless
-  haveI : Gv.Loopless := hGloop.mono (hGv ▸ Graph.removeVertex_le G v)
+  have hGloop : G.Loopless := hSimple.toLoopless
+  have : Gv.Loopless := hGloop.mono (hGv ▸ Graph.removeVertex_le G v)
   -- The two chain edges out of `v`, their distinctness.
   have hlea : G.IsLink e_a v a := cd.isLink_succ_edge i
   have hleb : G.IsLink e_b v b := cd.isLink_pred_edge h0i
@@ -2201,8 +2201,8 @@ theorem PanelHingeFramework.chainData_dispatch_interior_of_discriminator [Infini
     (hdef : G.deficiency n = 0) :
     PanelHingeFramework.HasGenericFullRankRealization K k n G := by
   classical
-  haveI : Fintype α := Fintype.ofFinite α
-  haveI hGloop : G.Loopless := hSimple.toLoopless
+  have : Fintype α := Fintype.ofFinite α
+  have hGloop : G.Loopless := hSimple.toLoopless
   -- The three chain-vertex names (bare `Fin (cd.d+1)` indices, as the interior branch states them).
   -- They are NOT `set`-abbreviated: `w`'s type mentions `cd.vtx ⟨0/1/2, _⟩`, so `set` would shadow
   -- the discriminator's `w`-stated hypotheses (`hw`/`hwmem'`) against the final `exact`.
@@ -2415,14 +2415,14 @@ theorem PanelHingeFramework.chainData_dispatch_floor_of_discriminator [Infinite 
     (hdef : G.deficiency n = 0) :
     PanelHingeFramework.HasGenericFullRankRealization K k n G := by
   classical
-  haveI : Fintype α := Fintype.ofFinite α
-  haveI hGloop : G.Loopless := hSimple.toLoopless
+  have : Fintype α := Fintype.ofFinite α
+  have hGloop : G.Loopless := hSimple.toLoopless
   -- The base split tuple `(v, a, b) = (vtx 1, vtx 0, vtx 2)`, `(e_a, e_b) = (edge 0, edge 1)`. The
   -- chain vertices are NOT `set`-abbreviated: `w`'s type mentions `cd.vtx ⟨0/1/2, _⟩` (inside
   -- `V(G.splitOff …)`), so `set` would shadow the `w`-stated hypotheses (`hw`/`hwmem'`); only `Gv`
   -- (which does not appear in `w`'s type) is abbreviated.
   set Gv := G.removeVertex (cd.vtx (⟨1, by omega⟩ : Fin (cd.d + 1))) with hGv
-  haveI : Gv.Loopless := hGloop.mono (hGv ▸ Graph.removeVertex_le G (cd.vtx ⟨1, by omega⟩))
+  have : Gv.Loopless := hGloop.mono (hGv ▸ Graph.removeVertex_le G (cd.vtx ⟨1, by omega⟩))
   -- The two chain edges out of `v = vtx 1`, distinctness, and the degree-2 closure (the
   -- `chainData_fire_discriminator` setup, verbatim).
   have hlea : G.IsLink (cd.edge ⟨0, by omega⟩) (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩) := by

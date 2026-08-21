@@ -351,9 +351,9 @@ theorem EdgeSetRowIndependent.eventually [Finite V] {G : SimpleGraph V}
     {p₀ : Framework V d} {I : Set G.edgeSet}
     (h₀ : G.EdgeSetRowIndependent p₀ I) :
     ∀ᶠ p in 𝓝 p₀, G.EdgeSetRowIndependent p I := by
-  haveI : Fintype V := Fintype.ofFinite V
-  haveI : Fintype G.edgeSet := Set.Finite.fintype G.edgeSet.toFinite
-  haveI : Fintype I := Fintype.ofFinite _
+  have : Fintype V := Fintype.ofFinite V
+  have : Fintype G.edgeSet := Set.Finite.fintype G.edgeSet.toFinite
+  have : Fintype I := Fintype.ofFinite _
   rw [edgeSetRowIndependent_iff_linearIndepOn_rigidityRow] at h₀
   set n := Module.finrank ℝ (Framework V d)
   set b := Module.finBasis ℝ (Framework V d) with hb_def
@@ -448,12 +448,12 @@ theorem exists_edgeSetRowIndependent_of_finrank_range_ge_dim_two [Fintype V]
       Module.finrank ℝ (LinearMap.range (G.RigidityMap p)) + 3) :
     ∃ I : Set G.edgeSet,
       I.ncard = 2 * Fintype.card V - 3 ∧ G.EdgeSetRowIndependent p I := by
-  haveI : Fintype G.edgeSet := Set.Finite.fintype G.edgeSet.toFinite
+  have : Fintype G.edgeSet := Set.Finite.fintype G.edgeSet.toFinite
   -- Extend ∅ to a row-LI subset `b ⊆ univ` whose image spans the whole row family.
   obtain ⟨b, _hb_sub, _, h_range_sub, hb_li⟩ :=
     exists_linearIndepOn_extension (linearIndepOn_empty ℝ (G.rigidityRow p))
       (Set.empty_subset (Set.univ : Set G.edgeSet))
-  haveI : Fintype ↥b := Fintype.ofFinite _
+  have : Fintype ↥b := Fintype.ofFinite _
   -- The span of `rigidityRow '' b` equals `range R.dualMap`: forward inclusion is monotonicity
   -- of `span` (from `rigidityRow '' b ⊆ Set.range rigidityRow`) plus `span_range_rigidityRow`;
   -- reverse uses the `rigidityRow '' univ ⊆ span ...` output of `exists_linearIndepOn_extension`.
@@ -559,7 +559,7 @@ theorem exists_affinelySpanning_of_eventually [Finite V] {d : ℕ}
       ∀ S : Set V, d + 1 ≤ S.ncard →
         affineSpan ℝ (Set.range (fun v : S => p v.val)) = ⊤ := by
   classical
-  haveI : Fintype V := Fintype.ofFinite V
+  have : Fintype V := Fintype.ofFinite V
   -- Step 1: pick `φ : V → ℝ` injective.
   let ψ : V ≃ Fin (Fintype.card V) := Fintype.equivFin V
   let φ : V → ℝ := fun v => ((ψ v).val : ℝ)

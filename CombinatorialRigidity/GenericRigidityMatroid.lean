@@ -66,15 +66,15 @@ non-vanishing of a one-variable polynomial in `t` (the affine-path helper
 members and at `t = 1` for `I₀`; a `t` avoiding the finitely many roots enlarges the subfamily. -/
 theorem exists_isGenericPlacement {V : Type*} [Finite V] (d : ℕ) :
     ∃ p : Framework V d, IsGenericPlacement p := by
-  haveI : Fintype V := Fintype.ofFinite V
+  have : Fintype V := Fintype.ofFinite V
   -- Auxiliary: for any finite family `F` of edge subsets each row-independent at some
   -- placement, there is a single placement `p` simultaneously row-independent on every `I ∈ F`.
   suffices h_aux : ∀ F : Finset (Set (⊤ : SimpleGraph V).edgeSet),
       (∀ I ∈ F, ∃ q : Framework V d, (⊤ : SimpleGraph V).EdgeSetRowIndependent q I) →
       ∃ p : Framework V d, ∀ I ∈ F, (⊤ : SimpleGraph V).EdgeSetRowIndependent p I by
     -- `{I | ∃ q, row-LI at q}` is a subset of the finite type `Set (⊤).edgeSet`, hence finite.
-    haveI : Finite (Sym2 V) := inferInstance
-    haveI : Finite ((⊤ : SimpleGraph V).edgeSet : Type _) :=
+    have : Finite (Sym2 V) := inferInstance
+    have : Finite ((⊤ : SimpleGraph V).edgeSet : Type _) :=
       Set.Finite.to_subtype (Set.toFinite _)
     let F : Finset (Set (⊤ : SimpleGraph V).edgeSet) :=
       (Set.toFinite
@@ -164,10 +164,10 @@ theorem exists_isGenericPlacement_abundance (V : Type*) [Finite V] (d : ℕ) :
         MvPolynomial.eval ((Module.finBasis ℝ (Framework V d)).equivFun p) P ≠ 0 →
           IsGenericPlacement p := by
   classical
-  haveI : Fintype V := Fintype.ofFinite V
-  haveI : Finite ((⊤ : SimpleGraph V).edgeSet : Type _) := Set.Finite.to_subtype (Set.toFinite _)
-  haveI : Fintype ((⊤ : SimpleGraph V).edgeSet : Type _) := Fintype.ofFinite _
-  haveI : Fintype (Set ((⊤ : SimpleGraph V).edgeSet)) := Fintype.ofFinite _
+  have : Fintype V := Fintype.ofFinite V
+  have : Finite ((⊤ : SimpleGraph V).edgeSet : Type _) := Set.Finite.to_subtype (Set.toFinite _)
+  have : Fintype ((⊤ : SimpleGraph V).edgeSet : Type _) := Fintype.ofFinite _
+  have : Fintype (Set ((⊤ : SimpleGraph V).edgeSet)) := Fintype.ofFinite _
   set n := Module.finrank ℝ (Framework V d) with hn_def
   set b := Module.finBasis ℝ (Framework V d) with hb_def
   set ψ : Framework V d ≃ₗ[ℝ] (Fin n → ℝ) := b.equivFun with hψ_def
@@ -327,7 +327,7 @@ theorem genericRank_eq_finrank_span {V : Type*} [Finite V] {d : ℕ} {p : Framew
     H.genericRank d = Module.finrank ℝ (Submodule.span ℝ
       ((⊤ : SimpleGraph V).rigidityRow p '' (Subtype.val ⁻¹' H.edgeSet :
         Set (⊤ : SimpleGraph V).edgeSet))) := by
-  haveI hMFin : (Matroid.ofFun ℝ (⊤ : SimpleGraph V).edgeSet (linearRigidityRow p)).Finite :=
+  have hMFin : (Matroid.ofFun ℝ (⊤ : SimpleGraph V).edgeSet (linearRigidityRow p)).Finite :=
     Matroid.ofFun_finite _ _ (Set.toFinite _)
   set v := Matroid.repOfFun ℝ (⊤ : SimpleGraph V).edgeSet (linearRigidityRow p) with hv_def
   have hrep := v.finrank_span_image_eq_rk H.edgeSet
@@ -368,7 +368,7 @@ theorem finrank_span_rigidityRow_le_genericRank {V : Type*} [Finite V] {d : ℕ}
     Module.finrank ℝ (Submodule.span ℝ
       ((⊤ : SimpleGraph V).rigidityRow p '' (Subtype.val ⁻¹' H.edgeSet :
         Set (⊤ : SimpleGraph V).edgeSet))) ≤ H.genericRank d := by
-  haveI hMFin : (Matroid.ofFun ℝ (⊤ : SimpleGraph V).edgeSet (linearRigidityRow p)).Finite :=
+  have hMFin : (Matroid.ofFun ℝ (⊤ : SimpleGraph V).edgeSet (linearRigidityRow p)).Finite :=
     Matroid.ofFun_finite _ _ (Set.toFinite _)
   set v := Matroid.repOfFun ℝ (⊤ : SimpleGraph V).edgeSet (linearRigidityRow p) with hv_def
   have hrep := v.finrank_span_image_eq_rk H.edgeSet
@@ -389,8 +389,8 @@ theorem finrank_span_rigidityRow_le_genericRank {V : Type*} [Finite V] {d : ℕ}
     exact linearRigidityRow_subtype_val p e
   rw [← himg, hrep]
   change (linearRigidityMatroid V d p).rk H.edgeSet ≤ H.genericRank d
-  haveI : (linearRigidityMatroid V d p).Finite := hMFin
-  haveI hMFinG : (genericRigidityMatroid V d).Finite :=
+  have : (linearRigidityMatroid V d p).Finite := hMFin
+  have hMFinG : (genericRigidityMatroid V d).Finite :=
     Matroid.ofFun_finite _ _ (Set.toFinite _)
   rw [genericRank, Matroid.rk_le_iff]
   intro I hI_sub hI_indep
@@ -420,8 +420,8 @@ private theorem finrank_range_rigidityMap_eq_finrank_span_rigidityRow {V : Type*
     Module.finrank ℝ (LinearMap.range (H.RigidityMap p)) = Module.finrank ℝ (Submodule.span ℝ
       ((⊤ : SimpleGraph V).rigidityRow p '' (Subtype.val ⁻¹' H.edgeSet :
         Set (⊤ : SimpleGraph V).edgeSet))) := by
-  haveI : Fintype V := Fintype.ofFinite V
-  haveI : Fintype H.edgeSet := Set.Finite.fintype H.edgeSet.toFinite
+  have : Fintype V := Fintype.ofFinite V
+  have : Fintype H.edgeSet := Set.Finite.fintype H.edgeSet.toFinite
   have hHE : H.edgeSet ⊆ (⊤ : SimpleGraph V).edgeSet := edgeSet_mono le_top
   have hset : Set.range (H.rigidityRow p) =
       (⊤ : SimpleGraph V).rigidityRow p '' (Subtype.val ⁻¹' H.edgeSet :
@@ -568,8 +568,8 @@ theorem genericRank_eq_rk_image {V : Type*} [Finite V] {d : ℕ} {S : Set V} (H 
       exact fun e heI' hdiag => not_isDiag_of_mem_edgeSet H (hI' heI') hdiag
     have hiff := genericRigidityMatroid_indep_image_iff (d := d) (fromEdgeSet I' : SimpleGraph ↥S)
     rwa [hI'_eq] at hiff
-  haveI hMSFin : MS.Finite := Matroid.ofFun_finite _ _ (Set.toFinite _)
-  haveI hMVFin : MV.Finite := Matroid.ofFun_finite _ _ (Set.toFinite _)
+  have hMSFin : MS.Finite := Matroid.ofFun_finite _ _ (Set.toFinite _)
+  have hMVFin : MV.Finite := Matroid.ofFun_finite _ _ (Set.toFinite _)
   refine le_antisymm ?_ ?_
   · rw [genericRank, Matroid.rk_le_iff]
     intro I' hI'_sub hI'_indep

@@ -716,7 +716,7 @@ theorem PanelHingeFramework.case_I_realization_h65_gen
         HasPanelRealization K k n G') :
     PanelHingeFramework.HasGenericFullRankRealization K k n G := by
   classical
-  haveI : Fintype α := Fintype.ofFinite α
+  have : Fintype α := Fintype.ofFinite α
   -- Step 1 (L8a / KT Claim 6.6): degree-2 vertex `v` with `G − v` minimal `0`-dof + simple.
   obtain ⟨v, a, b, eₐ, e_b, hav, hbv, hab, heab, hlea, hleb, hclv, hGvmin, hGvSimple⟩ :=
     Graph.exists_degree_two_removeVertex_of_no_simple_contraction (by omega) hV3 hG hSimple hrig
@@ -743,7 +743,7 @@ theorem PanelHingeFramework.case_I_realization_h65_gen
   obtain ⟨Q_v, _, _, _, hQvrec⟩ := id hQv
   have hGvdef : Gv.deficiency n = 0 := hGvmin.deficiency_eq
   have h1Gv : 1 ≤ V(Gv).ncard := (Set.ncard_pos (Set.toFinite _)).2 hGvne
-  haveI hGvloop : Gv.Loopless := hGvSimple.toLoopless
+  have hGvloop : Gv.Loopless := hGvSimple.toLoopless
   -- `Q_v.ends` records every `Gv`-link (single-link form).
   have hends_Gv : ∀ e u w, Gv.IsLink e u w → Gv.IsLink e (Q_v.ends e).1 (Q_v.ends e).2 := by
     intro e u w he
@@ -934,8 +934,8 @@ theorem PanelHingeFramework.case_I_realization_h65_gen
     exacts [hnew_span i, hold_span j]
   -- Step 9: the combined family forces rigidity on `V(G)`.
   have hFGne : FG.graph.vertexSet.Nonempty := hFG_graph ▸ ⟨v, hvG⟩
-  haveI : Finite ιn := inferInstance
-  haveI : Finite so := Set.Finite.to_subtype (Set.toFinite so)
+  have : Finite ιn := inferInstance
+  have : Finite so := Set.Finite.to_subtype (Set.toFinite so)
   have hcard : screwDim k * (FG.graph.vertexSet.ncard - 1) ≤ Nat.card (ιn ⊕ so) := by
     rw [Nat.card_sum, hιn_card, hso_card, hFG_graph, hVcard, Nat.add_sub_cancel]
     have hD1 : 1 ≤ screwDim k := one_le_screwDim
@@ -1094,7 +1094,7 @@ theorem PanelHingeFramework.rankHypothesis_deficiency_of_theorem_55_d3
     (hGP : PanelHingeFramework.HasGenericFullRankRealization K 2 3 G) :
     ∃ Q : PanelHingeFramework K 2 α β, Q.graph = G ∧
       Q.toBodyHinge.RankHypothesis (G.deficiency 3) := by
-  haveI : Fintype α := Fintype.ofFinite α
+  have : Fintype α := Fintype.ofFinite α
   -- Extract the GP realization.
   obtain ⟨Q, hQg, hQgp, hQrank, hQrec⟩ := hGP
   -- Derive rigidity from the rank hypothesis.
@@ -1131,7 +1131,7 @@ theorem PanelHingeFramework.rankHypothesis_deficiency_of_theorem_55_d3
         (hmotions ▸ (BodyHingeFramework.mem_infinitesimalMotions Q'.toBodyHinge S).mpr hS)
     exact hQrig S hS' u hu v hv
   -- Looplessness from minimality.
-  haveI hloop : G.Loopless := Graph.loopless_of_isMinimalKDof hG
+  have hloop : G.Loopless := Graph.loopless_of_isMinimalKDof hG
   -- `hC`: every edge's supporting extensor is nonzero.
   have hC : ∀ e, Q'.toBodyHinge.supportExtensor e ≠ 0 := by
     intro e
@@ -1615,7 +1615,7 @@ theorem case_cut_edge_realization_gp_gen [Infinite K] [DecidableEq β] [Finite �
     Graph.exists_cut_decomposition_of_not_twoEdgeConnected (by omega) hG hntec
   set V₂ := V(G) \ V₁ with hV₂def
   -- Inhabited instance for G.endsOf (needs a vertex)
-  haveI : Inhabited α := ⟨hV₁ne.choose⟩
+  have : Inhabited α := ⟨hV₁ne.choose⟩
   -- ── Step 2: Cardinality helpers ─────────────────────────────────────────────────────────
   have hV₁ncard : V(G.induce V₁).ncard < V(G).ncard :=
     Set.ncard_lt_ncard hV₁sub (Set.toFinite _)
@@ -1890,9 +1890,9 @@ theorem case_I_realization_nonsimple_gen [DecidableEq β] [Finite α] [Finite β
       V(G').ncard < V(G).ncard → HasPanelRealization K k n G') :
     HasPanelRealization K k n G := by
   classical
-  haveI : NeZero (Graph.bodyHingeMult n) := ⟨by rw [Graph.bodyHingeMult]; omega⟩
+  have : NeZero (Graph.bodyHingeMult n) := ⟨by rw [Graph.bodyHingeMult]; omega⟩
   -- ── Step 1: Extract looplessness + parallel pair ─────────────────────────────────────────
-  haveI hloop : G.Loopless := Graph.loopless_of_isMinimalKDof hG
+  have hloop : G.Loopless := Graph.loopless_of_isMinimalKDof hG
   -- ¬G.Simple + G.Loopless gives a parallel pair.
   have hpairs : ∃ e_edge f_edge : β, ∃ a b : α,
       G.IsLink e_edge a b ∧ G.IsLink f_edge a b ∧ e_edge ≠ f_edge := by
@@ -2212,17 +2212,17 @@ theorem PanelHingeFramework.case_I_realization_all_k_gen
         HasPanelRealization K k n G') :
     PanelHingeFramework.HasGenericFullRankRealization K k n G := by
   classical
-  haveI : NeZero (Graph.bodyHingeMult n) := ⟨by rw [Graph.bodyHingeMult]; omega⟩
+  have : NeZero (Graph.bodyHingeMult n) := ⟨by rw [Graph.bodyHingeMult]; omega⟩
   obtain ⟨⟨hle, hKDof⟩, hVH2', hVHss⟩ := hH
   have hHsub : V(H) ⊆ V(G) := hle.vertexSet_mono
   have hVHlt : V(H).ncard < V(G).ncard := Set.ncard_lt_ncard hVHss (Set.toFinite _)
   -- Manufacture the canonical parent endpoint selector `ends = G.endsOf`.
-  haveI : Inhabited α := ⟨r⟩
+  have : Inhabited α := ⟨r⟩
   set ends := G.endsOf with hendsDef
   have hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2 := by
     rw [hendsDef]; exact fun e _ _ h => G.isLink_endsOf h.edge_mem
   have hHprop : H.IsProperRigidSubgraph G n := ⟨⟨hle, hKDof⟩, hVH2', hVHss⟩
-  haveI : G.Loopless := hSimple.toLoopless
+  have : G.Loopless := hSimple.toLoopless
   have hne_ends : ∀ e, G.IsLink e (ends e).1 (ends e).2 → (ends e).1 ≠ (ends e).2 :=
     fun e hlink => G.endsOf_fst_ne_snd hlink.edge_mem
   obtain ⟨hGH, hGc, _, _, _, _, _⟩ :=
@@ -2275,7 +2275,7 @@ theorem PanelHingeFramework.case_I_realization_all_k_gen
   -- (L5b-ii-b) The deficiency-aware `_proj` rank polynomial for the surviving block.
   -- Uses `exists_rankPolynomial_of_IH_relabel_linking_set_proj` (the all-k mirror of the rigid
   -- `rigidContract_exterior_rank_transport_htransport` + `_proj` packaging).
-  haveI hcLoop : (G.rigidContract H r).Loopless := hcSimple.toLoopless
+  have hcLoop : (G.rigidContract H r).Loopless := hcSimple.toLoopless
   obtain ⟨Qc, hQc_ne, hsc_proj_indep⟩ :=
     PanelHingeFramework.exists_rankPolynomial_of_IH_relabel_linking_set_proj
       G H ends hr hHsub hKmin hQcf hcLoop hendsGc
@@ -2334,8 +2334,8 @@ theorem case_I_dispatch_gen [Infinite K] [DecidableEq β] [Finite α] [Finite β
     (G.Simple → PanelHingeFramework.HasGenericFullRankRealization K k n G) ∧
       HasPanelRealization K k n G := by
   classical
-  haveI : NeZero k := ⟨by omega⟩
-  haveI hloop : G.Loopless := Graph.loopless_of_isMinimalKDof hG
+  have : NeZero k := ⟨by omega⟩
+  have hloop : G.Loopless := Graph.loopless_of_isMinimalKDof hG
   by_cases hSimple : G.Simple
   · -- simple branch: GP conjunct + M4 forgetful bare
     have hGP : PanelHingeFramework.HasGenericFullRankRealization K k n G := by
@@ -2376,8 +2376,8 @@ theorem case_I_hcontract_gen [Infinite K] [DecidableEq β] [Finite α] [Finite �
     (G.Simple → PanelHingeFramework.HasGenericFullRankRealization K k n G) ∧
       HasPanelRealization K k n G := by
   classical
-  haveI : NeZero k := ⟨by omega⟩
-  haveI hloop : G.Loopless := Graph.loopless_of_isMinimalKDof hG
+  have : NeZero k := ⟨by omega⟩
+  have hloop : G.Loopless := Graph.loopless_of_isMinimalKDof hG
   by_cases hc : c = 0
   · -- c = 0: `case_I_dispatch_gen`.
     exact case_I_dispatch_gen hk hD hn G (hc ▸ hG) hV3 hrig hIH
@@ -2490,17 +2490,17 @@ theorem PanelHingeFramework.theorem_55_minimalKDof_k_all_k
     hcontract_k
     -- hsplitPos: Case II (c > 0, 2EC, no rigid). G0 → simple; `case_II_realization_all_k` + M4.
     (fun c G hG hcpos hV3 htec hnoRigid hIH => by
-      haveI hSimple : G.Simple :=
+      have hSimple : G.Simple :=
         Graph.simple_of_isMinimalKDof_of_noRigid (by omega) hV3 hG hnoRigid
-      haveI hloop : G.Loopless := hSimple.toLoopless
+      have hloop : G.Loopless := hSimple.toLoopless
       have hGP := PanelHingeFramework.case_II_realization_all_k hk1 hn
         G (hfresh c G hG) hG hcpos hV3 htec hnoRigid hIH
       exact ⟨fun _ => hGP, hforget_k G hloop (by omega) hGP⟩)
     -- hsplitZero: Case III (c = 0, 2EC, no rigid). G0 → simple; `case_III_realization_all_k` + M4.
     (fun G hG hV3 _htec hnoRigid hIH => by
-      haveI hSimple : G.Simple :=
+      have hSimple : G.Simple :=
         Graph.simple_of_isMinimalKDof_of_noRigid (by omega) hV3 hG hnoRigid
-      haveI hloop : G.Loopless := hSimple.toLoopless
+      have hloop : G.Loopless := hSimple.toLoopless
       have hGP := PanelHingeFramework.case_III_realization_all_k hk1 hD hn G (hfresh 0 G hG) hG hV3
         hnoRigid hSimple hIH
       exact ⟨fun _ => hGP, hforget_k G hloop (by omega) hGP⟩)
@@ -2545,8 +2545,8 @@ theorem PanelHingeFramework.theorem_55_minimalKDof_gen
     -- hforget_k: M4 forgetful map `hasPanelRealization_of_generic` (`NeZero k` from `hk1`; loopless
     -- supplied at the arm).
     (fun G hloop hV2 hGP => by
-      haveI : NeZero k := ⟨by omega⟩
-      haveI := hloop
+      have : NeZero k := ⟨by omega⟩
+      have := hloop
       exact hasPanelRealization_of_generic hV2 hGP)
     G hG hV
 
@@ -2628,7 +2628,7 @@ theorem PanelHingeFramework.rankHypothesis_genuine_of_theorem_55_gen [Infinite K
     ∃ Q : PanelHingeFramework K k α β, Q.graph = G ∧
       (∀ e, Q.toBodyHinge.supportExtensor e ≠ 0) ∧
       Q.toBodyHinge.RankHypothesis (G.deficiency n) := by
-  haveI : Fintype α := Fintype.ofFinite α
+  have : Fintype α := Fintype.ofFinite α
   have hne : V(G).Nonempty := by rw [hspan]; exact Set.univ_nonempty
   -- Strip `G` to a minimal `k`-dof spanning subgraph and re-add the deleted edges (KT p. 670).
   obtain ⟨G', hG'le, hG'V, hG'min⟩ :=
@@ -2722,8 +2722,8 @@ theorem PanelHingeFramework.rankHypothesis_genuine_recordsLinks_of_theorem_55_ge
       (∀ e u v, G.IsLink e u v → G.IsLink e (Q.ends e).1 (Q.ends e).2) ∧
       (∀ e, Q.toBodyHinge.supportExtensor e ≠ 0) ∧
       Q.toBodyHinge.RankHypothesis (G.deficiency n) := by
-  haveI : Fintype α := Fintype.ofFinite α
-  haveI hloop : G.Loopless := hSimple.toLoopless
+  have : Fintype α := Fintype.ofFinite α
+  have hloop : G.Loopless := hSimple.toLoopless
   have hne : V(G).Nonempty := by rw [hspan]; exact Set.univ_nonempty
   -- Strip `G` to a minimal `k`-dof spanning subgraph and re-add the deleted edges (KT p. 670).
   obtain ⟨G', hG'le, hG'V, hG'min⟩ :=
@@ -2851,7 +2851,7 @@ theorem PanelHingeFramework.rankHypothesis_of_theorem_55_gen [Infinite K]
     (G : Graph α β) (hne : V(G).Nonempty) (hspan : V(G) = Set.univ) (hSimple : G.Simple) :
     ∃ Q : PanelHingeFramework K (n - 1) α β, Q.graph = G ∧
       Q.toBodyHinge.RankHypothesis (G.deficiency n) := by
-  haveI : Fintype α := Fintype.ofFinite α
+  have : Fintype α := Fintype.ofFinite α
   have hD : 6 ≤ Graph.bodyBarDim n := Graph.six_le_bodyBarDim hd
   have hn : Graph.bodyBarDim n = screwDim (n - 1) :=
     Graph.bodyBarDim_eq_screwDim_sub_one (by omega)
@@ -2868,7 +2868,7 @@ theorem PanelHingeFramework.rankHypothesis_of_theorem_55_gen [Infinite K]
     have hV1 : V(G).ncard = 1 := by
       rcases (Set.ncard_pos (Set.toFinite _)).2 hne with h
       omega
-    haveI hsub : Subsingleton α := by
+    have hsub : Subsingleton α := by
       rw [hspan, Set.ncard_univ, Nat.card_eq_fintype_card] at hV1
       exact Fintype.card_le_one_iff_subsingleton.mp (by omega)
     -- A trivial framework on `G`.
@@ -2995,7 +2995,7 @@ theorem PanelHingeFramework.molecular_conjecture [Infinite K]
       ↔ (∃ Q : PanelHingeFramework K (n - 1) α β, Q.graph = G ∧
         (∀ e, Q.toBodyHinge.supportExtensor e ≠ 0) ∧
           Q.toBodyHinge.IsInfinitesimallyRigid) := by
-  haveI : Fintype α := Fintype.ofFinite α
+  have : Fintype α := Fintype.ofFinite α
   have hne : V(G).Nonempty := by rw [hspan]; exact Set.univ_nonempty
   have hD : 6 ≤ Graph.bodyBarDim n := Graph.six_le_bodyBarDim hd
   have hn : Graph.bodyBarDim n = screwDim (n - 1) :=
@@ -3110,7 +3110,7 @@ theorem theorem_55_6_multigraph_of_two_le [Infinite K]
     ∃ (F : BodyHingeFramework K k α β) (normal : α → Fin (k + 2) → K),
       HasCoplanarPanelRealization G F normal ∧ F.RankHypothesis (G.deficiency n) := by
   classical
-  haveI : Fintype α := Fintype.ofFinite α
+  have : Fintype α := Fintype.ofFinite α
   have hne : V(G).Nonempty := by rw [hspan]; exact Set.univ_nonempty
   obtain ⟨x₀⟩ := ‹Nonempty α›
   -- Strip `G` to a minimal `k`-dof spanning subgraph and re-add the deleted edges (KT p. 670).
@@ -3233,7 +3233,7 @@ theorem theorem_55_6_multigraph [Infinite K]
     ∃ (F : BodyHingeFramework K k α β) (normal : α → Fin (k + 2) → K),
       HasCoplanarPanelRealization G F normal ∧ F.RankHypothesis (G.deficiency n) := by
   classical
-  haveI : Fintype α := Fintype.ofFinite α
+  have : Fintype α := Fintype.ofFinite α
   have hne : V(G).Nonempty := by rw [hspan]; exact Set.univ_nonempty
   by_cases hV2 : 2 ≤ V(G).ncard
   · exact theorem_55_6_multigraph_of_two_le hk1 hD hn hfresh G hV2 hspan
@@ -3241,7 +3241,7 @@ theorem theorem_55_6_multigraph [Infinite K]
     have hV1 : V(G).ncard = 1 := by
       have hpos : 0 < V(G).ncard := (Set.ncard_pos (Set.toFinite _)).2 hne
       omega
-    haveI hsub : Subsingleton α := by
+    have hsub : Subsingleton α := by
       rw [hspan, Set.ncard_univ, Nat.card_eq_fintype_card] at hV1
       exact Fintype.card_le_one_iff_subsingleton.mp (by omega)
     -- A constant nonzero normal and a nonzero extensor lying in its (single) panel.
@@ -3391,7 +3391,7 @@ theorem molecular_conjecture_multigraph [Infinite K]
         (∀ e, F.supportExtensor e ≠ 0) ∧ F.IsInfinitesimallyRigid)
       ↔ (∃ (F : BodyHingeFramework K (n - 1) α β) (normal : α → Fin ((n - 1) + 2) → K),
         HasCoplanarPanelRealization G F normal ∧ F.IsInfinitesimallyRigid) := by
-  haveI : Fintype α := Fintype.ofFinite α
+  have : Fintype α := Fintype.ofFinite α
   have hne : V(G).Nonempty := by rw [hspan]; exact Set.univ_nonempty
   have hn : Graph.bodyBarDim n = screwDim (n - 1) :=
     Graph.bodyBarDim_eq_screwDim_sub_one (by omega)

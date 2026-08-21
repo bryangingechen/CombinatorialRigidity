@@ -518,7 +518,7 @@ theorem isKDof_zero_of_triangle [Finite α] {H : Graph α β} {n : ℕ}
   classical
   have hDpos : (1 : ℤ) ≤ (bodyBarDim n : ℤ) := by exact_mod_cast (by omega : 1 ≤ bodyBarDim n)
   have hne : V(H).Nonempty := ⟨x, by rw [hVH]; exact Set.mem_insert x _⟩
-  haveI : Nonempty (α → α) := ⟨id⟩
+  have : Nonempty (α → α) := ⟨id⟩
   rw [IsKDof]
   refine le_antisymm ?_ (H.deficiency_nonneg n hne)
   -- `def(H̃) = ⨆_f def_{H̃}(P_f) ≤ 0`: each partition's deficiency is `≤ 0`.
@@ -670,7 +670,7 @@ theorem isKDof_zero_of_parallel_pair [Finite α] {H : Graph α β} {n : ℕ}
   have hDpos : (1 : ℤ) ≤ (bodyBarDim n : ℤ) := by exact_mod_cast (by omega : 1 ≤ bodyBarDim n)
   have hD2 : (2 : ℤ) ≤ (bodyBarDim n : ℤ) := by exact_mod_cast hD
   have hne_v : V(H).Nonempty := ⟨x, by rw [hVH]; exact Set.mem_insert x _⟩
-  haveI : Nonempty (α → α) := ⟨id⟩
+  have : Nonempty (α → α) := ⟨id⟩
   rw [IsKDof]
   refine le_antisymm ?_ (H.deficiency_nonneg n hne_v)
   rw [deficiency]
@@ -748,9 +748,9 @@ theorem isKDof_zero_of_cycle [Finite α] {H : Graph α β} {n : ℕ}
     (hVH : V(H) = Set.range vtx) (hEH : E(H) = Set.range edge) :
     H.IsKDof n 0 := by
   classical
-  haveI : NeZero m := ⟨by omega⟩
-  haveI : Nonempty (Fin m) := ⟨⟨0, by omega⟩⟩
-  haveI : Nonempty (α → α) := ⟨id⟩
+  have : NeZero m := ⟨by omega⟩
+  have : Nonempty (Fin m) := ⟨⟨0, by omega⟩⟩
+  have : Nonempty (α → α) := ⟨id⟩
   -- `⟨1, _⟩ = (1 : Fin m)`, so the links speak of the cyclic successor `i + 1`.
   have hone : (⟨1, by omega⟩ : Fin m) = 1 := by
     rw [Fin.ext_iff, Fin.val_one', Nat.mod_eq_of_lt (show (1 : ℕ) < m by omega)]
@@ -933,7 +933,7 @@ theorem deficiency_le_deficiency_of_le_vertexSet_eq [Finite α] [Finite β]
     H'.deficiency n ≤ H.deficiency n := by
   -- The key: for every labeling `f`, `partitionDef H' n f ≤ partitionDef H n f`.
   -- Then `deficiency = ⨆ f, partitionDef n f` is antitone.
-  haveI : Nonempty (α → α) := ⟨id⟩
+  have : Nonempty (α → α) := ⟨id⟩
   rw [deficiency]
   refine ciSup_le fun f ↦ ?_
   -- Step 1: crossing counts satisfy `|crossingEdges H f| ≤ |crossingEdges H' f|`.
@@ -1569,14 +1569,14 @@ lemma exists_sides_separated_partitionDef_le [Finite α] [Finite β] {G : Graph 
     ∃ g : α → α, (∀ x ∈ V₁, ∀ y ∈ V(G) \ V₁, g x ≠ g y) ∧
       G.partitionDef n f ≤ G.partitionDef n g := by
   classical
-  haveI : Fintype α := Fintype.ofFinite α
+  have : Fintype α := Fintype.ofFinite α
   -- When V(G) is empty, g = f works trivially (no vertices, no side-separation obligations).
   by_cases hVne : V(G).Nonempty
   swap
   · push Not at hVne
     exact ⟨f, fun x hxV₁ => absurd (hsub hxV₁) (hVne ▸ Set.notMem_empty _), le_refl _⟩
   -- V(G) is nonempty, so α is nonempty (needed for exists_injOn_of_encard_le).
-  haveI : Nonempty α := ⟨hVne.choose⟩
+  have : Nonempty α := ⟨hVne.choose⟩
   -- Define the piece-labeling: x ↦ (f x, side x) where side x = 0 if x ∈ V₁, else 1.
   let side : α → Fin 2 := fun x => if x ∈ V₁ then 0 else 1
   let pair : α → α × Fin 2 := fun x => (f x, side x)
@@ -1770,13 +1770,13 @@ theorem deficiency_eq_of_cutEdges_ncard_le_one [Finite α] [Finite β] {G : Grap
     G.deficiency n
       = (G.induce V₁).deficiency n + (G.induce (V(G) \ V₁)).deficiency n
         + (bodyBarDim n : ℤ) - ((bodyBarDim n : ℤ) - 1) * (G.cutEdges V₁).ncard := by
-  haveI : Fintype α := Fintype.ofFinite α
-  haveI : Fintype β := Fintype.ofFinite β
+  have : Fintype α := Fintype.ofFinite α
+  have : Fintype β := Fintype.ofFinite β
   -- hD is part of the public API (used by callers); not needed in this proof.
   have _ := hD
   -- α is nonempty (needed for ciSup_le and exists_eq_ciSup_of_finite on α → α).
-  haveI : Nonempty α := ⟨hne.choose⟩
-  haveI : Nonempty (α → α) := ⟨id⟩
+  have : Nonempty α := ⟨hne.choose⟩
+  have : Nonempty (α → α) := ⟨id⟩
   apply le_antisymm
   · -- Direction `≤`: for any labeling f, partitionDef G f ≤ RHS.
     -- Refine f to a side-separated g (refinement bound), then split by partitionDef_split_of_sides.
@@ -1828,7 +1828,7 @@ theorem deficiency_eq_of_cutEdges_ncard_le_one [Finite α] [Finite β] {G : Grap
     -- - outside V(G): arbitrary.
     -- The images are disjoint since ι₁ maps into V₁ and ι₂ maps into V(G)\V₁.
     -- Let's define h directly.
-    letI := Classical.propDecidable
+    let := Classical.propDecidable
     let h : α → α := fun x =>
       if hxV₁ : x ∈ V₁ then ι₁ (f₁ x)
       else if hxV : x ∈ V(G) then ι₂ (f₂ x)
@@ -1939,7 +1939,7 @@ even for `α` empty the unique labeling trivially attains the — possibly negat
 deficiency). -/
 theorem exists_isTightPartition [Finite α] (G : Graph α β) (n : ℕ) :
     ∃ f, G.IsTightPartition n f := by
-  haveI : Nonempty (α → α) := ⟨id⟩
+  have : Nonempty (α → α) := ⟨id⟩
   obtain ⟨f, hf⟩ := Finite.exists_max (G.partitionDef n)
   exact ⟨f, le_antisymm (G.partitionDef_le_deficiency n f) (ciSup_le hf)⟩
 
@@ -2326,7 +2326,7 @@ theorem IsTightPartition.eq_of_common_nbr [Finite α] [Finite β] {G : Graph α 
     {u w v v' : α} (hfuw : f u ≠ f w)
     (huv : G.Adj u v) (hvw : G.Adj v w) (huv' : G.Adj u v') (hv'w : G.Adj v' w) :
     v = v' := by
-  haveI := hG.toLoopless
+  have := hG.toLoopless
   by_contra hne
   obtain ⟨e_uv, h_uv⟩ := huv
   obtain ⟨e_vw, h_vw⟩ := hvw
@@ -2494,7 +2494,7 @@ theorem rk_cycleMatroid_within_parts_le [Finite α] [Finite β] (G : Graph α β
     (n : ℕ) {Y : Set (β × Fin (bodyHingeMult n))} (hYE : Y ⊆ E(G.mulTilde n)) {f : α → α}
     (hY : ∀ p ∈ Y, ∀ x y, (G.mulTilde n).IsLink p x y → f x = f y) :
     (G.mulTilde n).cycleMatroid.rk Y + G.numParts f ≤ V(G).ncard := by
-  haveI : Fintype α := Fintype.ofFinite α
+  have : Fintype α := Fintype.ofFinite α
   classical
   set H := G.mulTilde n with hH
   have hVH : V(H) = V(G) := by rw [hH, mulTilde]; rfl
@@ -2573,7 +2573,7 @@ rk_Union(E(G̃)) ≤ D·r_cycle(Y) + |E(G̃) ∖ Y|`, where `r_cycle(Y) ≤ |V| 
 theorem rank_add_partitionDef_le [DecidableEq β] [Finite α] [Finite β] (G : Graph α β)
     (n : ℕ) (hD : 1 ≤ bodyBarDim n) (hne : V(G).Nonempty) (f : α → α) :
     (G.matroidMG n).rank + G.partitionDef n f ≤ bodyBarDim n * ((V(G).ncard : ℤ) - 1) := by
-  haveI : Fintype α := Fintype.ofFinite α
+  have : Fintype α := Fintype.ofFinite α
   classical
   -- `rank M(G̃) = (Union).rk E(G̃)` (restrict to the ground set is the rank).
   have hrank : (G.matroidMG n).rank =
@@ -2637,7 +2637,7 @@ partition attaining the rank) is the remaining JJ09 min–max content. -/
 theorem rank_add_deficiency_le [DecidableEq β] [Finite α] [Finite β] (G : Graph α β)
     (n : ℕ) (hD : 1 ≤ bodyBarDim n) (hne : V(G).Nonempty) :
     (G.matroidMG n).rank + G.deficiency n ≤ bodyBarDim n * ((V(G).ncard : ℤ) - 1) := by
-  haveI : Nonempty (α → α) := ⟨fun _ => hne.choose⟩
+  have : Nonempty (α → α) := ⟨fun _ => hne.choose⟩
   rw [deficiency]
   -- `⨆ def_P ≤ bound - rank` by `ciSup_le` on `rank_add_partitionDef_le`.
   have hbound : ⨆ f : α → α, G.partitionDef n f ≤
@@ -2783,8 +2783,8 @@ vertices, so `Y₀` is non-crossing and `r_cycle(Y₀) + numParts f = |V|`
 theorem le_rank_add_deficiency [DecidableEq β] [Finite α] [Finite β] (G : Graph α β)
     (n : ℕ) (hD : 1 ≤ bodyBarDim n) (hne : V(G).Nonempty) :
     bodyBarDim n * ((V(G).ncard : ℤ) - 1) ≤ (G.matroidMG n).rank + G.deficiency n := by
-  haveI : Fintype α := Fintype.ofFinite α
-  haveI : Nonempty α := ⟨hne.choose⟩
+  have : Fintype α := Fintype.ofFinite α
+  have : Nonempty α := ⟨hne.choose⟩
   classical
   -- `rank M(G̃) = (Union).rk E(G̃)`.
   have hrank : (G.matroidMG n).rank =
@@ -2892,7 +2892,7 @@ theorem eq_of_isMinimalKDof_of_le_of_vertexSet_eq_of_isKDof [DecidableEq β] [Fi
     exact ⟨x, hlink.left_mem⟩
   have hne_G'' : V(G'').Nonempty := hV ▸ hne_G
   -- Get a base `B''` of `M(G̃'')`.
-  haveI hMFin : (G.matroidMG n).Finite := Matroid.finite_of_finite (M := G.matroidMG n)
+  have hMFin : (G.matroidMG n).Finite := Matroid.finite_of_finite (M := G.matroidMG n)
   obtain ⟨B'', hB''⟩ := (G''.matroidMG n).exists_isBase
   -- `B''` is `M(G̃)`-independent via the restriction identity `M(G̃) ↾ E(G̃'') = M(G̃'')`.
   have hBindep : (G.matroidMG n).Indep B'' := by
@@ -2998,7 +2998,7 @@ theorem exists_isMinimalKDof_spanning_subgraph [DecidableEq β] [Finite α] [Fin
   have hdef_ge : G'.deficiency n ≤ G''.deficiency n :=
     deficiency_le_deficiency_of_le_vertexSet_eq hD hG''le (hVG''.trans hVG'.symm)
   -- `|B| ≤ rank M(G̃'') = D(|V| − 1) − def(G̃'')`, so `def(G̃'') ≤ def(G̃')`, forcing equality.
-  haveI : (G''.matroidMG n).Finite := Matroid.finite_of_finite (M := G''.matroidMG n)
+  have : (G''.matroidMG n).Finite := Matroid.finite_of_finite (M := G''.matroidMG n)
   have hBrank : (B.ncard : ℤ) ≤ (G''.matroidMG n).rank := by exact_mod_cast hBindep''.ncard_le_rank
   have hrankdef'' : ((G''.matroidMG n).rank : ℤ) + G''.deficiency n =
       bodyBarDim n * ((V(G).ncard : ℤ) - 1) := by
@@ -3123,12 +3123,12 @@ theorem deficiency_eq_zero_iff_exists_spanningTrees [DecidableEq β] [Finite α]
       exact hdisjFs hij
   · rintro ⟨Ts, hspan, htree, hdisjTs⟩
     have hVeq : V(G.mulTilde n) = V(G) := by rw [mulTilde]; rfl
-    haveI hMTfin : (G.mulTilde n).Finite :=
+    have hMTfin : (G.mulTilde n).Finite :=
       { edgeSet_finite := Set.toFinite _, vertexSet_finite := Set.toFinite _ }
     have hTfin : ∀ i, (Ts i).Finite := fun i => hMTfin.mono (hspan i).le
     have hTcard : ∀ i, (E(Ts i)).ncard = V(G).ncard - 1 := by
       intro i
-      haveI := hTfin i
+      have := hTfin i
       have hnv := (htree i).ncard_vertexSet
       rw [(hspan i).vertexSet_eq, hVeq] at hnv
       omega
@@ -3183,7 +3183,7 @@ theorem deficiency_of_edgeSet_empty [Finite α] {G : Graph α β} {n : ℕ}
     (hE : E(G) = ∅) :
     G.deficiency n = (bodyBarDim n : ℤ) * ((V(G).ncard : ℤ) - 1) := by
   classical
-  haveI : Nonempty (α → α) := ⟨id⟩
+  have : Nonempty (α → α) := ⟨id⟩
   have hcross : ∀ f : α → α, G.crossingEdges f = ∅ := fun f ↦ by
     simp only [crossingEdges, hE, Set.mem_empty_iff_false, false_and, Set.ofPred_false]
   refine le_antisymm ?_ ?_
@@ -3212,7 +3212,7 @@ theorem deficiency_of_single_edge [Finite α] {G : Graph α β} {n : ℕ}
     (hl : G.IsLink e x y) (hV : V(G) = {x, y}) (hE : E(G) = {e}) :
     G.deficiency n = 1 := by
   classical
-  haveI : Nonempty (α → α) := ⟨id⟩
+  have : Nonempty (α → α) := ⟨id⟩
   have hne : V(G).Nonempty := ⟨x, by rw [hV]; exact Set.mem_insert x _⟩
   have hD1 : (1 : ℤ) ≤ (bodyBarDim n : ℤ) := by exact_mod_cast hD
   refine le_antisymm ?_ ?_
@@ -3288,7 +3288,7 @@ theorem edgeSet_ncard_le_two_of_isMinimalKDof_of_ncard_two [DecidableEq β] [Fin
     (hG : G.IsMinimalKDof n k) (hV : V(G).ncard = 2) : E(G).ncard ≤ 2 := by
   by_contra hlt
   push Not at hlt
-  haveI hLl := loopless_of_isMinimalKDof hG
+  have hLl := loopless_of_isMinimalKDof hG
   obtain ⟨x, y, hne, hVG⟩ := Set.ncard_eq_two.mp hV
   -- Extract three distinct edges using Set.ncard_eq_three.
   obtain ⟨t, htE, ht3⟩ := Set.exists_subset_card_eq (s := E(G)) (n := 3) (by omega)
@@ -3347,7 +3347,7 @@ theorem edgeSet_ncard_le_two_of_isMinimalKDof_of_ncard_two [DecidableEq β] [Fin
     G.rank_add_deficiency_eq n hD1 hne_G
   have hk_val : k = G.deficiency n := hG.deficiency_eq.symm
   -- rank M(G̃) ≥ D: B_H is D-element independent.
-  haveI hMFin : (G.matroidMG n).Finite := Matroid.finite_of_finite (M := G.matroidMG n)
+  have hMFin : (G.matroidMG n).Finite := Matroid.finite_of_finite (M := G.matroidMG n)
   have hrank_ge : (bodyBarDim n : ℤ) ≤ (G.matroidMG n).rank := by
     have hle := hBindep.ncard_le_rank
     have : (B_H.ncard : ℤ) ≤ ((G.matroidMG n).rank : ℤ) := by exact_mod_cast hle
@@ -3398,7 +3398,7 @@ theorem isMinimalKDof_ncard_le_two_trichotomy [DecidableEq β] [Finite α] [Fini
       G.IsLink e x y ∧ G.IsLink f x y ∧ k = 0) := by
   classical
   have hD1 : 1 ≤ bodyBarDim n := by omega
-  haveI hLl := loopless_of_isMinimalKDof hG
+  have hLl := loopless_of_isMinimalKDof hG
   -- Dispatch on |V| = 1 vs. |V| = 2.
   have hVpos : 0 < V(G).ncard := hne.ncard_pos
   rcases Nat.lt_or_eq_of_le (Nat.succ_le_of_lt hVpos) with hV1 | hV1

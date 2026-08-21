@@ -225,9 +225,9 @@ theorem exists_isGenericHingePoints_abundance [Finite α] [Finite β] (ends : β
       ∀ q, MvPolynomial.eval q P ≠ 0 → IsGenericHingePoints ends q ∧
         ∀ e, AffineIndependent K fun i : Fin k => (fun b => q (e, i, b)) := by
   classical
-  haveI : Fintype α := Fintype.ofFinite α
-  haveI : Fintype β := Fintype.ofFinite β
-  haveI : Fintype (Set (β × Set.powersetCard (Fin (k + 2)) k
+  have : Fintype α := Fintype.ofFinite α
+  have : Fintype β := Fintype.ofFinite β
+  have : Fintype (Set (β × Set.powersetCard (Fin (k + 2)) k
     × Set.powersetCard (Fin (k + 2)) k)) := Fintype.ofFinite _
   -- The standard basis of `α → ScrewSpace K k` and the dual-basis identification `φ`.
   set B : Module.Basis (Σ _ : α, Set.powersetCard (Fin (k + 2)) k) K (α → ScrewSpace K k) :=
@@ -378,7 +378,7 @@ theorem supportExtensor_ofHinge_ne_zero_of_isGenericHingePoints (hk1 : 1 ≤ k)
     (hq : IsGenericHingePoints ends q) :
     ∀ e, (ofHinge G fun e' a b => q (e', a, b)).supportExtensor e ≠ 0 := by
   classical
-  haveI : G.Loopless := hloop
+  have : G.Loopless := hloop
   intro e hzero
   have huv : (ends e).1 ≠ (ends e).2 := (hends e).ne
   -- The fixed affinely-independent reference point family (as in the abundance proof).
@@ -597,7 +597,7 @@ theorem exists_linearEquiv_forall_last_ne_zero [Infinite K] {ι : Type*} [Finite
     ∃ g : (Fin (k + 2) → K) ≃ₗ[K] (Fin (k + 2) → K),
       ∀ e, g (w e) (Fin.last (k + 1)) ≠ 0 := by
   classical
-  haveI : Fintype ι := Fintype.ofFinite ι
+  have : Fintype ι := Fintype.ofFinite ι
   rcases isEmpty_or_nonempty ι with hι | hι
   · exact ⟨LinearEquiv.refl K _, fun e => (hι.false e).elim⟩
   -- The abundance polynomial: the product of the linear forms `⟨w e, ·⟩`, and its non-root `n₀`.
@@ -774,7 +774,7 @@ theorem exists_hingePoints_independent_hingePointRow [Infinite K]
       (Nat.card s : ℤ) = screwDim k * (V(G).ncard - 1 : ℤ) - G.deficiency n ∧
         LinearIndependent K fun i : s => hingePointRow ends q₀ i := by
   classical
-  haveI : NeZero k := ⟨by omega⟩
+  have : NeZero k := ⟨by omega⟩
   -- The genuine link-recording Theorem-5.6 producer, over OUR carrier `G`.
   obtain ⟨Q0, hQ0g, hQ0ends, hQ0C, hQ0rank⟩ :=
     PanelHingeFramework.rankHypothesis_genuine_recordsLinks_of_theorem_55_gen (K := K) (k := k)
@@ -916,7 +916,7 @@ theorem finrank_span_rigidityRows_ofHinge_of_isGenericHingePoints [Infinite K]
         (ofHinge G fun e a b => q (e, a, b)).rigidityRows) : ℤ)
       = screwDim k * (V(G).ncard - 1 : ℤ) - G.deficiency n := by
   classical
-  haveI hloop : G.Loopless := hSimple.toLoopless
+  have hloop : G.Loopless := hSimple.toLoopless
   -- The witness assembly: `q₀` and an independent subfamily `s` of exactly the target rank.
   obtain ⟨q₀, s, hscard, hsli⟩ :=
     exists_hingePoints_independent_hingePointRow (K := K) (k := k) (n := n)
@@ -937,7 +937,7 @@ theorem finrank_span_rigidityRows_ofHinge_of_isGenericHingePoints [Infinite K]
     rw [hingePointRow_eq_panelRow G ends q]
     exact (ofHinge G fun e a b => q (e, a, b)).panelRow_mem_rigidityRows_of_link
       (ends := ends) (e := e) (u := (ends e).1) (w := (ends e).2) rfl (hends e) t₁ t₂
-  haveI : Fintype s := Fintype.ofFinite s
+  have : Fintype s := Fintype.ofFinite s
   have hlbN : Nat.card s
       ≤ Module.finrank K (Submodule.span K (ofHinge G fun e a b => q (e, a, b)).rigidityRows) := by
     calc Nat.card s
@@ -1028,7 +1028,7 @@ theorem isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees 
       ↔ ∃ Ts : Fin (Graph.bodyBarDim n) → Graph α (β × Fin (Graph.bodyHingeMult n)),
           (∀ i, Ts i ≤s G.mulTilde n) ∧ (∀ i, (Ts i).IsTree) ∧
             Pairwise (Function.onFun Disjoint fun i => E(Ts i)) := by
-  haveI : NeZero (Graph.bodyHingeMult n) := ⟨by rw [Graph.bodyHingeMult]; omega⟩
+  have : NeZero (Graph.bodyHingeMult n) := ⟨by rw [Graph.bodyHingeMult]; omega⟩
   have hne : V(G).Nonempty := by rw [hspan]; exact Set.univ_nonempty
   rw [isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff hk1 hD hn hfresh G hV hspan
     hSimple ends hends]

@@ -986,7 +986,7 @@ private theorem splitOff_reroute_packing [DecidableEq β] [Finite β]
         I.ncard = I'.ncard + bodyBarDim n ∧
         (I ∩ edgeFiber e_b n).ncard = (I' ∩ edgeFiber e₀ n).ncard + 1) := by
   classical
-  haveI : Nonempty (Fin (bodyBarDim n)) := ⟨⟨0, lt_of_lt_of_le (by norm_num) hD⟩⟩
+  have : Nonempty (Fin (bodyBarDim n)) := ⟨⟨0, lt_of_lt_of_le (by norm_num) hD⟩⟩
   have haV : a ∈ V(G) := hla.right_mem
   have hbV : b ∈ V(G) := hlb.right_mem
   have heane₀ : eₐ ≠ e₀ := fun h ↦ he₀ (h ▸ hla.edge_mem)
@@ -1005,7 +1005,7 @@ private theorem splitOff_reroute_packing [DecidableEq β] [Finite β]
     {i | (Ds i ∩ edgeFiber e₀ n).Nonempty} with hS
   have hSiff : ∀ i, i ∈ S ↔ (Ds i ∩ edgeFiber e₀ n).Nonempty := by
     intro i; simp only [hS, Finset.mem_filter, Finset.mem_univ, true_and]
-  haveI : Nonempty (β × Fin (bodyHingeMult n)) := by
+  have : Nonempty (β × Fin (bodyHingeMult n)) := by
     obtain ⟨p, hp⟩ : (edgeFiber e₀ n).Nonempty := by
       rw [← Set.ncard_pos (Set.toFinite _), edgeFiber_ncard, bodyHingeMult]; omega
     exact ⟨p⟩

@@ -344,7 +344,7 @@ theorem exists_polynomial_ne_zero_of_linearIndependent_pencilRow [Finite α] [Fi
       ∀ q, MvPolynomial.eval q Q ≠ 0 →
         LinearIndependent K fun i : s => pencilRow hubSel ends q i := by
   classical
-  haveI : Fintype α := Fintype.ofFinite α
+  have : Fintype α := Fintype.ofFinite α
   set B : Module.Basis (Σ _ : α, Set.powersetCard (Fin 4) 2) K (α → ScrewSpace K 2) :=
     Pi.basis (fun _ : α => screwBasis 2) with hB
   set φ : Module.Dual K (α → ScrewSpace K 2)
@@ -450,7 +450,7 @@ theorem exists_common_eval_ne_zero_of_forall_exists [Infinite K] {σ ι : Type*}
     (P : ι → MvPolynomial σ K) (h : ∀ i, ∃ q : σ → K, MvPolynomial.eval q (P i) ≠ 0) :
     ∃ q : σ → K, ∀ i, MvPolynomial.eval q (P i) ≠ 0 := by
   classical
-  haveI : Fintype ι := Fintype.ofFinite ι
+  have : Fintype ι := Fintype.ofFinite ι
   have hPne : ∀ i, P i ≠ 0 := fun i => by
     obtain ⟨q, hq⟩ := h i
     intro h0

@@ -95,7 +95,7 @@ theorem exists_rankHypothesis_isGeneralPosition4_of_two_le
       Q.toBodyHinge.RankHypothesis (G.deficiency 3) ∧
       Q.IsGeneralPosition4 := by
   classical
-  haveI hloop : G.Loopless := hSimple.toLoopless
+  have hloop : G.Loopless := hSimple.toLoopless
   -- Numerics for `n = 3`, `k = 2`.
   have hD : (6 : ℕ) ≤ Graph.bodyBarDim 3 := Graph.six_le_bodyBarDim (by norm_num)
   have hn : Graph.bodyBarDim 3 = screwDim 2 := Graph.bodyBarDim_eq_screwDim_sub_one (by norm_num)
@@ -220,11 +220,11 @@ theorem exists_rankHypothesis_isGeneralPosition4
   · exact exists_rankHypothesis_isGeneralPosition4_of_two_le hcard G hV2 hspan hSimple
   · -- Single-body branch: `|V| = 1`, so `α` is a subsingleton and `G` is edgeless.
     classical
-    haveI : Fintype α := Fintype.ofFinite α
-    haveI hloop : G.Loopless := hSimple.toLoopless
+    have : Fintype α := Fintype.ofFinite α
+    have hloop : G.Loopless := hSimple.toLoopless
     have hpos : 0 < V(G).ncard := (Set.ncard_pos (Set.toFinite _)).2 hne
     have hV1 : V(G).ncard = 1 := by omega
-    haveI hsub : Subsingleton α := by
+    have hsub : Subsingleton α := by
       rw [hspan, Set.ncard_univ, Nat.card_eq_fintype_card] at hV1
       exact Fintype.card_le_one_iff_subsingleton.mp (by omega)
     -- A subsingleton loopless graph has no `G`-links, hence no edges.

@@ -103,7 +103,7 @@ theorem PanelHingeFramework.case_II_placement_eq612 [DecidableEq α] [Finite α]
       LinearIndependent K (fun i : s =>
         (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.panelRow ends i) := by
   classical
-  haveI : Fintype α := Fintype.ofFinite α
+  have : Fintype α := Fintype.ofFinite α
   set FG := (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge with hFG
   set n_a : Fin (k + 2) → K := fun i => q (a, i) with hn_a
   set n_b : Fin (k + 2) → K := fun i => q (b, i) with hn_b
@@ -306,15 +306,15 @@ theorem PanelHingeFramework.case_II_realization_all_k
         HasPanelRealization K k n G') :
     PanelHingeFramework.HasGenericFullRankRealization K k n G := by
   classical
-  haveI : Fintype α := Fintype.ofFinite α
+  have : Fintype α := Fintype.ofFinite α
   -- Auxiliary bounds: the graph-side `bodyBarDim` floors come from `hn` + the `screwDim`
   -- arithmetic kit (the `d = 3` line discharged `3 ≤ bodyBarDim n` by `omega` on `screwDim 2 = 6`).
   have hD3 : 3 ≤ Graph.bodyBarDim n := hn ▸ three_le_screwDim hk1
   have hD2 : 2 ≤ Graph.bodyBarDim n := le_trans (by norm_num) hD3
   -- G is simple (G0).
-  haveI hsimple : G.Simple :=
+  have hsimple : G.Simple :=
     Graph.simple_of_isMinimalKDof_of_noRigid hD2 hV3 hG hnoRigid
-  haveI hGloop : G.Loopless := hsimple.toLoopless
+  have hGloop : G.Loopless := hsimple.toLoopless
   -- ── Step 1: Degree-2 vertex v with two distinct neighbours a, b. ──────────────────────────────
   have hV2 : 2 ≤ V(G).ncard := by omega
   obtain ⟨v, hvG, hdegv⟩ :=
@@ -424,7 +424,7 @@ theorem PanelHingeFramework.case_II_realization_all_k
         Graph.isKDof_zero_of_triangle hD3 hva hab hvb hG_ea hf hG_eb hVeq hEG'
       -- But G.IsMinimalKDof n k means G.deficiency n = k > 0. Contradiction.
       exact absurd (hG.deficiency_eq.symm.trans hG0) (by omega)
-  haveI hGab_simple : Gab.Simple :=
+  have hGab_simple : Gab.Simple :=
     Graph.splitOff_simple_of_noRigid heab hG_ea hG_eb hnoRigid
       (fun f hf => False.elim (h_no_fab f hf))
   -- Gab is minimal (k-1)-dof by KT 4.8 (splitOff_isMinimalKDof_of_pos).
@@ -452,7 +452,7 @@ theorem PanelHingeFramework.case_II_realization_all_k
     simp only [hq_def, hn_a, hn_b] at *
     convert this using 2
   -- ── Step 6: Inhabited α (needed for G.endsOf). ───────────────────────────────────────────────
-  haveI : Inhabited α := ⟨v⟩
+  have : Inhabited α := ⟨v⟩
   set ends := G.endsOf with hendsDef
   -- ── Step 7: Rank lower bound from the IH at Gab. ─────────────────────────────────────────────
   -- N := D(|V(Gab)|−1) − (c−1) as a natural number (the IH's ℤ-rank equality; `c` = dof).
@@ -549,7 +549,7 @@ theorem PanelHingeFramework.case_II_realization_all_k
     apply PanelHingeFramework.supportExtensor_ne_zero_of_isGeneralPosition _ (hQeq ▸ hQgp)
     rw [PanelHingeFramework.ofNormals_ends]
     -- (Q.ends e).1 ≠ (Q.ends e).2: Gab is loopless (from hGab_simple) and Gab.IsLink e at Q.ends.
-    haveI : Gab.Loopless := hGab_simple.toLoopless
+    have : Gab.Loopless := hGab_simple.toLoopless
     exact (hQ_ends_Gab e _ _ he).ne
   have hne₀ : ∀ e, Gab.IsLink e (Q.ends e).1 (Q.ends e).2 →
       (PanelHingeFramework.ofNormals Gab Q.ends
@@ -914,8 +914,8 @@ theorem PanelHingeFramework.case_II_realization_all_k
   -- `hNpD : N + (D−1) = D(|V|−1)−k`, this is the required ℤ rank lower bound for G.
   have hrank_lb : screwDim k * ((V(G).ncard : ℤ) - 1) - c ≤
       Module.finrank K ↥(Submodule.span K FG.rigidityRows) := by
-    haveI : Fintype sn := Fintype.ofFinite sn
-    haveI : Fintype so := Fintype.ofFinite so
+    have : Fintype sn := Fintype.ofFinite sn
+    have : Fintype so := Fintype.ofFinite so
     -- Name the NEW (e_b, pinned through v) and OLD (so, the IH's N Gab-rows) blocks as fvars so the
     -- brick application unifies against opaque families rather than the heavy `ofNormals` lambdas.
     set rn : sn → Module.Dual K (α → ScrewSpace K k) :=

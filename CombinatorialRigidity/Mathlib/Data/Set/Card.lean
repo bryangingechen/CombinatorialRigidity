@@ -66,7 +66,7 @@ theorem exists_injective_fin_of_le_ncard {s : Set α} {n : ℕ} (hns : n ≤ s.n
   · subst hn
     exact ⟨Fin.elim0, fun i => i.elim0, fun i => i.elim0⟩
   · have ht_fin : t.Finite := Set.finite_of_ncard_pos (hcard ▸ hn)
-    haveI : Fintype t := ht_fin.fintype
+    have : Fintype t := ht_fin.fintype
     have h_card_eq : Fintype.card t = n := (Set.ncard_eq_card_coe t).symm.trans hcard
     let e : Fin n ≃ t := (Fintype.equivFinOfCardEq h_card_eq).symm
     exact ⟨fun i => (e i).val, fun _ _ hij => e.injective (Subtype.ext hij),

@@ -455,7 +455,7 @@ theorem squareSpecialCrossEdges_singleton_part [Finite V] {f : V → V}
     (huv : G.Adj u v) (hwv : G.Adj w v) :
     ∀ x, f x = f v → x = v := by
   classical
-  haveI : Fintype ↥(G.neighborSet v) := Fintype.ofFinite _
+  have : Fintype ↥(G.neighborSet v) := Fintype.ofFinite _
   rw [squareSpecialCrossEdges, Set.mem_ofPred_eq] at he
   obtain ⟨hcross, v', hapex', hfv'⟩ := he
   rw [mem_squareCrossEdges] at hcross
@@ -651,7 +651,7 @@ theorem IsSquareTightPartition.ncard_inPartNeighbors_eq_two [Finite V] {f : V �
     (hvw : G.Adj v w) (hfw : f w ≠ f v) :
     {u | G.Adj v u ∧ f u = f v}.ncard = 2 := by
   classical
-  haveI : Fintype ↥(G.neighborSet v) := Fintype.ofFinite _
+  have : Fintype ↥(G.neighborSet v) := Fintype.ofFinite _
   have hlow : 2 ≤ {u | G.Adj v u ∧ f u = f v}.ncard := (hf.parts hv₀ hfv₀).2
   have hunion : {u | G.Adj v u ∧ f u = f v} ∪ {u | G.Adj v u ∧ f u ≠ f v}
       = G.neighborSet v := by

@@ -124,7 +124,7 @@ theorem exists_linearIndependent_fin_of_finrank_eq {K V : Type*} [Field K] [AddC
     [Module K V] (W : Submodule K V) [Module.Finite K W] {n : ℕ}
     (hn : Module.finrank K W = n) :
     ∃ f : Fin n → V, LinearIndependent K f ∧ ∀ i, f i ∈ W := by
-  haveI : Module.Free K W := Module.Free.of_divisionRing K W
+  have : Module.Free K W := Module.Free.of_divisionRing K W
   let b : Module.Basis (Fin n) K W := Module.finBasisOfFinrankEq K W hn
   exact ⟨fun i => (b i : V), b.linearIndependent.map' W.subtype (Submodule.ker_subtype _),
     fun i => (b i).2⟩

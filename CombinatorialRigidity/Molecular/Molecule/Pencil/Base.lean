@@ -64,8 +64,8 @@ theorem pencilPair_of_habitat_ncard_eq_three [Finite α] [Finite β] {G : Graph 
     (hloop : G.Loopless) (hV : V(G).ncard = 3) (h2ec : G.TwoEdgeConnected)
     (hnoRigid : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G 3) : PencilPair K 3 G := by
   classical
-  haveI := hloop
-  haveI hSimple : G.Simple :=
+  have := hloop
+  have hSimple : G.Simple :=
     Graph.simple_of_loopless_of_noRigid (by decide) (by omega) hloop hnoRigid
   obtain ⟨x, y, z, hxy, hxz, hyz, hVeq⟩ := Set.ncard_eq_three.mp hV
   -- ── Identification: an edge exists between every named pair (2EC + Simple; no third
@@ -571,8 +571,8 @@ theorem pencilPair_of_habitat_ncard_eq_four [Finite α] [Finite β] {G : Graph �
     (hloop : G.Loopless) (hV : V(G).ncard = 4) (h2ec : G.TwoEdgeConnected)
     (hnoRigid : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G 3) : PencilPair K 3 G := by
   classical
-  haveI := hloop
-  haveI hSimple : G.Simple :=
+  have := hloop
+  have hSimple : G.Simple :=
     Graph.simple_of_loopless_of_noRigid (by decide) (by omega) hloop hnoRigid
   obtain ⟨w, x, y, z, hwx, hwy, hwz, hxy, hxz, hyz, hVeq⟩ := Set.ncard_eq_four.mp hV
   -- ── A vertex `v` with three named other vertices `a, b, c` (`V(G) = {v,a,b,c}`) has degree

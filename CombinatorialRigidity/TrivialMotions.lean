@@ -257,7 +257,7 @@ leaving the translation part identifiable coord-by-coord. -/
 theorem trivialMotionFamily_linearIndependent [Finite V] {p : Framework V d}
     (hp : affineSpan ℝ (Set.range p) = ⊤) :
     LinearIndependent ℝ (trivialMotionFamily p) := by
-  haveI : Fintype V := Fintype.ofFinite V
+  have : Fintype V := Fintype.ofFinite V
   obtain ⟨_, v₀, rfl⟩ := AffineSubspace.nonempty_of_affineSpan_eq_top _ _ _ hp
   rw [Fintype.linearIndependent_iff]
   intro c hc
@@ -279,7 +279,7 @@ theorem trivialMotionFamily_linearIndependent [Finite V] {p : Framework V d}
     rw [map_sub, eq_neg_of_add_eq_zero_right (h_combine v),
       eq_neg_of_add_eq_zero_right (h_combine w), sub_self]
   -- Step 3: `S = 0` as a linear map (vanishes on the vector span of `Set.range p`).
-  haveI : Nonempty V := ⟨v₀⟩
+  have : Nonempty V := ⟨v₀⟩
   have h_S_zero : S = 0 := by
     have hvspan : Submodule.span ℝ ((Set.range p) -ᵥ (Set.range p)) = ⊤ := by
       rw [← vectorSpan_def]
@@ -327,7 +327,7 @@ and `d (d - 1) / 2` elementary skew rotations and shows it is linearly independe
 theorem trivialMotions_finrank_ge_of_affinelySpanning [Finite V]
     {p : Framework V d} (hp : affineSpan ℝ (Set.range p) = ⊤) :
     d * (d + 1) / 2 ≤ Module.finrank ℝ (trivialMotions p) := by
-  haveI : Fintype V := Fintype.ofFinite V
+  have : Fintype V := Fintype.ofFinite V
   -- Lift the trivial-motion family into the `trivialMotions p` submodule.
   let f : (Fin d ⊕ Σ i : Fin d, Fin i.val) → (trivialMotions p) :=
     fun s => ⟨trivialMotionFamily p s, trivialMotionFamily_mem_trivialMotions p s⟩

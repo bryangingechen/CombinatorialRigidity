@@ -431,7 +431,7 @@ theorem exists_generalPosition_polynomial [Finite α] (G : Graph α β) (ends : 
       ∀ q : α × Fin (k + 2) → K, MvPolynomial.eval q Q ≠ 0 →
         (PanelHingeFramework.ofNormals (k := k) G ends q).IsGeneralPosition := by
   classical
-  haveI : Fintype α := Fintype.ofFinite α
+  have : Fintype α := Fintype.ofFinite α
   refine ⟨∏ p ∈ Finset.univ.offDiag, pairLeadingMinorPoly p.1 p.2, ?_, ?_⟩
   · -- Nonzero at every moment-curve seed: each factor is the Vandermonde determinant.
     intro param hparam

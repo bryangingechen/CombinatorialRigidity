@@ -296,8 +296,8 @@ theorem le_finrank_span_rigidityRows_of_cut [Finite α] [Finite β]
           BodyHingeFramework K k α β).rigidityRows) ≤
     Module.finrank K (Submodule.span K F.rigidityRows) := by
   classical
-  haveI : Fintype α := Fintype.ofFinite α
-  haveI : Fintype β := Fintype.ofFinite β
+  have : Fintype α := Fintype.ofFinite α
+  have : Fintype β := Fintype.ofFinite β
   set F₁ : BodyHingeFramework K k α β := ⟨F.graph.induce V₁, F.supportExtensor⟩
   set F₂ : BodyHingeFramework K k α β := ⟨F.graph.induce (V(F.graph) \ V₁), F.supportExtensor⟩
   set S₁ := Submodule.span K F₁.rigidityRows
@@ -462,7 +462,7 @@ theorem finrank_span_rigidityRows_le_add_of_links_subset {k : ℕ} [Finite α]
       ≤ Module.finrank K (Submodule.span K
         (⟨Gs, ext⟩ : BodyHingeFramework K k α β).rigidityRows) + (screwDim k - 1) := by
   classical
-  haveI : Fintype α := Fintype.ofFinite α
+  have : Fintype α := Fintype.ofFinite α
   set F' : BodyHingeFramework K k α β := ⟨G', ext⟩ with hF'def
   set Fs : BodyHingeFramework K k α β := ⟨Gs, ext⟩ with hFsdef
   set Ss := Submodule.span K Fs.rigidityRows with hSsdef
@@ -542,9 +542,9 @@ theorem le_finrank_span_rigidityRows_of_splice [Finite α] [Finite β]
     Module.finrank K ↥(Submodule.span K FH.rigidityRows) +
     Module.finrank K ↥(Submodule.span K Fc.rigidityRows) ≤
     Module.finrank K ↥(Submodule.span K F.rigidityRows) := by
-  haveI : Fintype α := Fintype.ofFinite α
-  haveI : Fintype β := Fintype.ofFinite β
-  haveI : FiniteDimensional K (Module.Dual K (α → ScrewSpace K k)) := inferInstance
+  have : Fintype α := Fintype.ofFinite α
+  have : Fintype β := Fintype.ofFinite β
+  have : FiniteDimensional K (Module.Dual K (α → ScrewSpace K k)) := inferInstance
   set SH := Submodule.span K FH.rigidityRows with hSH_def
   set Sc := Submodule.span K Fc.rigidityRows with hSc_def
   set S := Submodule.span K F.rigidityRows with hS_def
@@ -557,7 +557,7 @@ theorem le_finrank_span_rigidityRows_of_splice [Finite α] [Finite β]
       Module.finrank K ↥S := by
     -- letI (not haveI) forces AddCommGroup ↥S to shadow the global AddCommMonoid ↥S instance,
     -- enabling Ring/AddCommGroup paths for domRestrict and finrank_quotient_add_finrank.
-    letI hSAG : AddCommGroup ↥S := S.addCommGroup
+    let hSAG : AddCommGroup ↥S := S.addCommGroup
     have hq : Module.finrank K (↥S ⧸ (D.domRestrict S).ker) +
         Module.finrank K ↥(D.domRestrict S).ker = Module.finrank K ↥S :=
       (D.domRestrict S).ker.finrank_quotient_add_finrank
@@ -624,9 +624,9 @@ theorem le_finrank_span_rigidityRows_of_pinned_placement [Finite α]
     (hnew_span : ∀ i : ιn, rn i ∈ Submodule.span K F.rigidityRows)
     (hold_span : ∀ j : ιo, ro j ∈ Submodule.span K F.rigidityRows) :
     Nat.card ιn + Nat.card ιo ≤ Module.finrank K ↥(Submodule.span K F.rigidityRows) := by
-  haveI : Fintype α := Fintype.ofFinite α
-  haveI : Fintype ιn := Fintype.ofFinite ιn
-  haveI : Fintype ιo := Fintype.ofFinite ιo
+  have : Fintype α := Fintype.ofFinite α
+  have : Fintype ιn := Fintype.ofFinite ιn
+  have : Fintype ιo := Fintype.ofFinite ιo
   -- The combined family `Sum.elim rn ro` is independent by the pin-a-body block split.
   have hunion : LinearIndependent K (Sum.elim rn ro) :=
     linearIndependent_sum_pinned_block (v := v) hold hnewpin holdindep
@@ -673,9 +673,9 @@ theorem le_finrank_span_rigidityRows_of_pinned_placement_augment [Finite α]
     (hw_span : w ∈ Submodule.span K F.rigidityRows)
     (hold_span : ∀ j : ιo, ro j ∈ Submodule.span K F.rigidityRows) :
     Nat.card ιn + 1 + Nat.card ιo ≤ Module.finrank K ↥(Submodule.span K F.rigidityRows) := by
-  haveI : Fintype α := Fintype.ofFinite α
-  haveI : Fintype ιn := Fintype.ofFinite ιn
-  haveI : Fintype ιo := Fintype.ofFinite ιo
+  have : Fintype α := Fintype.ofFinite α
+  have : Fintype ιn := Fintype.ofFinite ιn
+  have : Fintype ιo := Fintype.ofFinite ιo
   -- The augmented combined family is independent by the augmented pin-a-body split.
   have hunion : LinearIndependent K (Sum.elim (Sum.elim rn (fun _ : Unit => w)) ro) :=
     linearIndependent_sum_pinned_block_augment (v := v) hold hnewpinaug holdindep

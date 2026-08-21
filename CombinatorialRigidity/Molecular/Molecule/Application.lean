@@ -254,7 +254,7 @@ theorem molecule_generic_square_packing {V : Type*} [Finite V] [Nonempty V] (G :
     {p : Framework V 3} (hp : IsGenericPlacement p) :
     G.square.IsInfinitesimallyRigid p := by
   classical
-  haveI := Fintype.ofFinite V
+  have := Fintype.ofFinite V
   by_cases hV1 : Nat.card V = 1
   · -- Trivial case: the ambient framework space has dimension `≤ 3 ≤ 6` regardless of `G`.
     have hker : Module.finrank ℝ (LinearMap.ker (G.square.RigidityMap p)) ≤
@@ -269,14 +269,14 @@ theorem molecule_generic_square_packing {V : Type*} [Finite V] [Nonempty V] (G :
     omega
   have hne : V(G.shadowGraph).Nonempty := by rw [shadowGraph_vertexSet]; exact Set.univ_nonempty
   -- Finiteness of the ambient multiplied shadow graph, inherited by each tree.
-  haveI hMTfin : (G.shadowGraph.mulTilde 3).Finite :=
+  have hMTfin : (G.shadowGraph.mulTilde 3).Finite :=
     { edgeSet_finite := Set.toFinite _, vertexSet_finite := Set.toFinite _ }
   have hTfin : ∀ i, (Ts i).Finite := fun i => hMTfin.mono (hspan i).le
   have hVeq : V(G.shadowGraph.mulTilde 3) = (Set.univ : Set V) := rfl
   -- Each spanning tree has exactly `|V| - 1` edges.
   have hTcard : ∀ i, (E(Ts i)).ncard = Nat.card V - 1 := by
     intro i
-    haveI := hTfin i
+    have := hTfin i
     have hnv := (hTtree i).ncard_vertexSet
     rw [(hspan i).vertexSet_eq, hVeq, Set.ncard_univ] at hnv
     omega
@@ -329,7 +329,7 @@ theorem molecule_generic_square_packing {V : Type*} [Finite V] [Nonempty V] (G :
       Graph.two_le_degree_of_isKDof_zero (n := 3) hbD hdef
         (v := v) (by rw [shadowGraph_vertexSet]; trivial)
         (by rw [shadowGraph_vertexSet, Set.ncard_univ]; exact hV2)
-    haveI := G.shadowGraph_simple
+    have := G.shadowGraph_simple
     have hNeq : N(G.shadowGraph, v) = G.neighborSet v := by
       ext y
       simp only [Graph.Neighbor, Set.mem_ofPred_eq, SimpleGraph.mem_neighborSet, Graph.Adj,

@@ -564,7 +564,7 @@ theorem hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant_
       LinearIndepOn K normal₁ (G.closedHubNbhd v)) :
     HasGenericPencilRealization K n G := by
   classical
-  haveI := hSimple.toLoopless
+  have := hSimple.toLoopless
   -- ── Basic structural facts: `v_c` is a pendant; `u_c` demotes (`G`-hub, `H`-non-hub). ─────────
   have hGeq : G.induce (V₁ ∪ {v_c}) = G := by rw [← hVG]; exact Graph.induce_vertexSet G
   have hvc_deg : G.degree v_c = 1 := by
@@ -989,7 +989,7 @@ theorem hasGenericPencilRealization_pendant_deg3_of_IH [Finite α] [Finite β] [
     (hIH : ∀ G' : Graph α β, V(G').Nonempty → V(G').ncard < V(G).ncard → PencilPair K n G') :
     HasGenericPencilRealization K n G := by
   classical
-  haveI := hSimple
+  have := hSimple
   -- ── Extract `u_c`'s two `V₁`-links `e₁ : u_c–w₁`, `e₂ : u_c–w₂` from `G.degree u_c = 3`. ──────
   have hNcard : N(G, u_c).ncard = 3 := by
     rw [← Graph.degree_eq_ncard_adj (G := G) (x := u_c), hdeg]
@@ -1074,7 +1074,7 @@ theorem pencilPair_of_not_twoEdgeConnected [Finite α] [Finite β] [Infinite K] 
     hasPencilRealization_of_not_twoEdgeConnected hD hn hntec
       (fun G' hne' hlt' => (hIH G' hne' hlt').2)⟩
   classical
-  haveI := hSimple.toLoopless
+  have := hSimple.toLoopless
   simp only [Graph.TwoEdgeConnected, not_forall, not_le, exists_prop] at hntec
   obtain ⟨V₁, hne, hssub, hcut_lt2⟩ := hntec
   have hcut_le : (G.cutEdges V₁).ncard ≤ 1 := Nat.lt_succ_iff.mp hcut_lt2

@@ -484,8 +484,8 @@ theorem chainWalk_trichotomy [DecidableEq β] [Finite α] [Finite β] {G : Graph
     by_contra h
     have h' : n < 2 := by omega
     interval_cases n <;> omega
-  haveI hsimp : G.Simple := simple_of_isMinimalKDof_of_noRigid hD2 hV3 hG hnp
-  haveI hloop : G.Loopless := loopless_of_isMinimalKDof hG
+  have hsimp : G.Simple := simple_of_isMinimalKDof_of_noRigid hD2 hV3 hG hnp
+  have hloop : G.Loopless := loopless_of_isMinimalKDof hG
   have hconn : G.Preconnected := preconnected_of_isKDof_zero hD1 hG.1
   have hnD : n ≤ bodyBarDim n := le_bodyBarDim n
   have hv₀G : v₀ ∈ V(G) := hf.left_mem
@@ -615,7 +615,7 @@ theorem chainWalk_trichotomy [DecidableEq β] [Finite α] [Finite β] {G : Graph
               have hstart3 : 3 ≤ G.degree P.first := by omega
               obtain ⟨vtx, edge, hvtx_inj, hedge_inj, hlink, hvtx0, hrv, -⟩ :=
                 exists_cyclic_data_of_closed_path hP hlen2 hgx hgP
-              haveI : NeZero (P.length + 1) := ⟨by omega⟩
+              have : NeZero (P.length + 1) := ⟨by omega⟩
               have hdeg' : ∀ y ∈ P, y ≠ P.first → G.degree y = 2 := by
                 intro y hy hyfirst
                 by_cases hylast : y = P.last
@@ -1133,9 +1133,9 @@ theorem chainWalk_terminated_contradiction [DecidableEq β] [Finite α] [Finite 
   have hD1 : 1 ≤ bodyBarDim n := by omega
   have hVne : V(G).Nonempty := Set.nonempty_of_ncard_ne_zero (by omega)
   have hV2 : 2 ≤ V(G).ncard := by omega
-  haveI hsimp : G.Simple := simple_of_isMinimalKDof_of_noRigid hD2 hV3 hG hnp
-  haveI hloop : G.Loopless := loopless_of_isMinimalKDof hG
-  haveI hGfin : G.Finite := { edgeSet_finite := Set.toFinite _, vertexSet_finite := Set.toFinite _ }
+  have hsimp : G.Simple := simple_of_isMinimalKDof_of_noRigid hD2 hV3 hG hnp
+  have hloop : G.Loopless := loopless_of_isMinimalKDof hG
+  have hGfin : G.Finite := { edgeSet_finite := Set.toFinite _, vertexSet_finite := Set.toFinite _ }
   -- The charging bound (E2d-6), folded against the min-degree-`2` partition `V(G) = X₂ ⊔ V₊`
   -- (E2a) once named — `set` retroactively folds `hcharge`'s literal set-builders.
   have hcharge := chainWalk_charging hG.1 hD hV2 hterm

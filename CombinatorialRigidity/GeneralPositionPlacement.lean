@@ -115,7 +115,7 @@ restricted to `V` via `Sum.inl`. -/
 theorem exists_isGeneralPositionPlacement [Finite V] :
     ∃ p : Framework V 3, IsGeneralPositionPlacement p := by
   classical
-  haveI : Fintype V := Fintype.ofFinite V
+  have : Fintype V := Fintype.ofFinite V
   let ψ : V ⊕ Fin 4 ≃ Fin (Fintype.card (V ⊕ Fin 4)) := Fintype.equivFin _
   let φ : V ⊕ Fin 4 → ℝ := fun a => ((ψ a).val : ℝ)
   have hφ_inj : Function.Injective φ := by
@@ -180,7 +180,7 @@ sets works for both. -/
 theorem exists_isGenericPlacement_isGeneralPositionPlacement [Finite V] :
     ∃ p : Framework V 3, IsGenericPlacement p ∧ IsGeneralPositionPlacement p := by
   classical
-  haveI : Fintype V := Fintype.ofFinite V
+  have : Fintype V := Fintype.ofFinite V
   obtain ⟨p₀, hp₀⟩ := exists_isGenericPlacement (V := V) 3
   obtain ⟨q, hq⟩ := exists_isGeneralPositionPlacement (V := V)
   set r : Framework V 3 := q - p₀ with hr_def
@@ -213,8 +213,8 @@ theorem exists_isGenericPlacement_isGeneralPositionPlacement [Finite V] :
     refine (LinearIndependent.finite_setOf_not_along_affine_path h0).subset fun t ht => ?_
     simp only [Set.mem_ofPred_eq] at ht ⊢
     exact fun hLI => ht ((h_row_iff t I).mpr hLI)
-  haveI : Finite (Sym2 V) := inferInstance
-  haveI : Finite ((⊤ : SimpleGraph V).edgeSet : Type _) := Set.Finite.to_subtype (Set.toFinite _)
+  have : Finite (Sym2 V) := inferInstance
+  have : Finite ((⊤ : SimpleGraph V).edgeSet : Type _) := Set.Finite.to_subtype (Set.toFinite _)
   let F : Finset (Set (⊤ : SimpleGraph V).edgeSet) :=
     (Set.toFinite
       {I | ∃ q' : Framework V 3, (⊤ : SimpleGraph V).EdgeSetRowIndependent q' I}).toFinset

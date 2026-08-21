@@ -267,7 +267,7 @@ at `n := G.edgeSet.ncard`, gives exactly this. -/
 theorem degree_one_rank_tree {G : SimpleGraph V} [Fintype V] [DecidableRel G.Adj] (hG : G.IsTree)
     (h2 : 2 ≤ Fintype.card V) :
     G.square.genericRank 3 + 5 = 2 * Fintype.card V + {w | G.degree w = 1}.ncard := by
-  haveI : Nontrivial V := Fintype.one_lt_card_iff_nontrivial.mp (by omega)
+  have : Nontrivial V := Fintype.one_lt_card_iff_nontrivial.mp (by omega)
   have hsupp_univ : G.support = Set.univ := hG.connected.preconnected.support_eq_univ
   have hconn : ∀ x ∈ G.support, ∀ y ∈ G.support, G.Reachable x y :=
     fun x _ y _ => hG.connected x y
@@ -426,10 +426,10 @@ theorem degree_one_rank {G : SimpleGraph V} [Fintype V] [DecidableRel G.Adj]
     (hconn : G.Connected) (hnt : ¬ G.IsTree) :
     G.square.genericRank 3 = G.twoCore.square.genericRank 3
       + 2 * (G.twoCore.supportᶜ).ncard + {w | G.degree w = 1}.ncard := by
-  haveI : Nontrivial V := by
+  have : Nontrivial V := by
     by_contra h
     rw [not_nontrivial_iff_subsingleton] at h
-    haveI : Nonempty V := hconn.nonempty
+    have : Nonempty V := hconn.nonempty
     exact hnt IsTree.of_subsingleton
   have hsupp_univ : G.support = Set.univ := hconn.preconnected.support_eq_univ
   have hconn' : ∀ x ∈ G.support, ∀ y ∈ G.support, G.Reachable x y :=

@@ -999,7 +999,7 @@ theorem infinitesimalMotions_sup_range_extProj_eq_top
     (hr : r ∈ F.graph.vertexSet) (hinter : F.graph.vertexSet ∩ proj = {r}) :
     F.infinitesimalMotions ⊔ LinearMap.range (extProj (K := K) (k := k) proj) = ⊤ := by
   classical
-  haveI : Fintype α := Fintype.ofFinite α
+  have : Fintype α := Fintype.ofFinite α
   -- The three confirmed dimensions of the §1.22 inclusion–exclusion.
   have hZ : Module.finrank K F.infinitesimalMotions
       = screwDim k * ((F.graph.vertexSet)ᶜ.ncard + 1) :=
@@ -1066,7 +1066,7 @@ theorem BodyHingeFramework.injOn_extProj_dualMap_rigidityRows
     (hr : r ∈ F.graph.vertexSet) (hinter : F.graph.vertexSet ∩ proj = {r}) :
     Set.InjOn (extProj (K := K) (k := k) proj).dualMap (Submodule.span K F.rigidityRows) := by
   classical
-  haveI : Fintype α := Fintype.ofFinite α
+  have : Fintype α := Fintype.ofFinite α
   -- `Φ = Z.dualAnnihilator` (double annihilator) and `ker D = W.dualAnnihilator`, so
   -- `Φ ⊓ ker D = (Z ⊔ W).dualAnnihilator = ⊤.dualAnnihilator = ⊥`.
   have hΦeq : Submodule.span K F.rigidityRows
@@ -1151,7 +1151,7 @@ theorem BodyHingeFramework.injOn_extProj_dualMap_rigidityRows_of_inter_eq_single
     (hinter : F.graph.vertexSet ∩ proj = {r}) :
     Set.InjOn (extProj (K := K) (k := k) proj).dualMap (Submodule.span K F.rigidityRows) := by
   classical
-  haveI : Fintype α := Fintype.ofFinite α
+  have : Fintype α := Fintype.ofFinite α
   have hΦeq : Submodule.span K F.rigidityRows
       = F.infinitesimalMotions.dualAnnihilator := by
     rw [F.infinitesimalMotions_eq_dualCoannihilator,
@@ -1185,7 +1185,7 @@ theorem BodyHingeFramework.finrank_span_rigidityRows_map_extProj_dualMap_of_inte
     Module.finrank K ↥(Submodule.span K F.rigidityRows) =
       Module.finrank K
         ↥((Submodule.span K F.rigidityRows).map (extProj (K := K) (k := k) proj).dualMap) := by
-  haveI : Fintype α := Fintype.ofFinite α
+  have : Fintype α := Fintype.ofFinite α
   set Sc := Submodule.span K F.rigidityRows with hSc_def
   set D := (extProj (K := K) (k := k) proj).dualMap with hD_def
   -- Injectivity on `Sc` is `Sc ⊓ ker D = ⊥`; rank-nullity for `D|Sc` then gives the equality.
@@ -1194,7 +1194,7 @@ theorem BodyHingeFramework.finrank_span_rigidityRows_map_extProj_dualMap_of_inte
       (F.injOn_extProj_dualMap_rigidityRows_of_inter_eq_singleton hinter))
   -- Rank-nullity for `D` restricted to `Sc`: `finrank (Sc.map D) + finrank (Sc ⊓ ker D)`
   -- `= finrank Sc`, and the kernel term is `0` by `hdisj`.
-  letI hScAG : AddCommGroup ↥Sc := Sc.addCommGroup
+  let hScAG : AddCommGroup ↥Sc := Sc.addCommGroup
   have hq : Module.finrank K (↥Sc ⧸ (D.domRestrict Sc).ker) +
       Module.finrank K ↥(D.domRestrict Sc).ker = Module.finrank K ↥Sc :=
     (D.domRestrict Sc).ker.finrank_quotient_add_finrank

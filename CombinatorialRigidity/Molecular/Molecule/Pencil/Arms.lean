@@ -265,7 +265,7 @@ theorem exists_contragredient_linearEquiv {n : ℕ} (g : (Fin n → K) ≃ₗ[K]
       show (g : (Fin n → K) →ₗ[K] (Fin n → K)) ∘ₗ (g.symm : (Fin n → K) →ₗ[K] (Fin n → K))
         = LinearMap.id from by ext x; simp, LinearMap.toMatrix'_id]
   have hAu : IsUnit A.det := Matrix.isUnit_det_of_right_inverse hrinv
-  haveI : Invertible ((A⁻¹)ᵀ) :=
+  have : Invertible ((A⁻¹)ᵀ) :=
     ((A⁻¹)ᵀ).invertibleOfIsUnitDet (by
       rw [Matrix.det_transpose, isUnit_iff_ne_zero, Matrix.det_nonsing_inv, Ring.inverse_eq_inv]
       exact inv_ne_zero (isUnit_iff_ne_zero.mp hAu))
@@ -1113,7 +1113,7 @@ theorem hasPencilRealization_of_ncard_le_two [Finite α] [Finite β] {G : Graph 
     (hloop : G.Loopless) (hne : V(G).Nonempty) (hV2 : V(G).ncard ≤ 2) :
     HasPencilRealization K 3 G := by
   classical
-  haveI := hloop
+  have := hloop
   have hb6 : Graph.bodyBarDim 3 = screwDim 2 := Graph.bodyBarDim_eq_screwDim_sub_one (by norm_num)
   -- A fixed nonzero panel normal, and the pencil pair (independent hinges through a common point)
   -- reused across the single-edge and parallel-class cases.

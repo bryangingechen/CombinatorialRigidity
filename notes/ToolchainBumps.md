@@ -415,7 +415,7 @@ It **was** done as its own commit with a full build after, which is what caught
 the 13 over-long lines. Nothing surfaced `simp made no progress`, the failure
 mode this section had warned about.
 
-### 2. `haveI`/`letI` style-linter sweep — 475 sites (468 `haveI`, 7 `letI`)
+### 2. `haveI`/`letI` style-linter sweep — ✓ DONE (475 sites: 468 `haveI`, 7 `letI`)
 
 Mathlib's `linter.style.haveILetI` now fires on `haveI`/`letI` where the goal
 is a `Prop`. Each hit is a `Try this:` suggestion with an exact line/column,
@@ -429,6 +429,16 @@ reported column + 5.
 
 Do **not** blanket-sed `haveI` → `have`: the two differ for genuine instance
 bindings, and only the flagged sites are known-safe.
+
+**Landed 2026-08-20**, position-driven off the build log exactly like the
+deprecation sweep (same reason: the reported column is authoritative and a
+whole-tree text match is not). Zero skips, zero errors, and warnings fell
+**515 → 40**. Two things worth knowing next time: the seven `letI` hits become
+*anonymous* `let : DecidableEq α := Classical.decEq α`, which is fine — the
+`haveI`/`letI` vs `have`/`let` difference is value *inlining*, not instance
+visibility, and a local binder of class type is an instance candidate either
+way; and `haveI` → `have` only shortens lines, so unlike the rename sweep it
+cannot push anything past the 100-character limit.
 
 ### 3. Unused-simp-argument cleanup — ~15-20 sites
 

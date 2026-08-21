@@ -112,7 +112,7 @@ theorem exists_uniform_rowIndependent_placement_dim_two {V : Type*} [Finite V] :
       ∀ I : Set (⊤ : SimpleGraph V).edgeSet,
         (SimpleGraph.fromEdgeSet (Subtype.val '' I)).IsSparse 2 3 →
           (⊤ : SimpleGraph V).EdgeSetRowIndependent p I := by
-  haveI : Fintype V := Fintype.ofFinite V
+  have : Fintype V := Fintype.ofFinite V
   -- Auxiliary: for any finite family `F` of sparse-bearing edge subsets, there is a single
   -- placement `p` simultaneously row-LI on every `I ∈ F`. The main statement follows by
   -- taking `F` to be the (finite) family of *all* sparse-bearing subsets.
@@ -120,8 +120,8 @@ theorem exists_uniform_rowIndependent_placement_dim_two {V : Type*} [Finite V] :
       (∀ I ∈ F, (SimpleGraph.fromEdgeSet (Subtype.val '' I)).IsSparse 2 3) →
       ∃ p : Framework V 2, ∀ I ∈ F, (⊤ : SimpleGraph V).EdgeSetRowIndependent p I by
     -- `{I | sparse}` is a subset of the finite type `Set (⊤).edgeSet`, hence finite.
-    haveI : Finite (Sym2 V) := inferInstance
-    haveI : Finite ((⊤ : SimpleGraph V).edgeSet : Type _) :=
+    have : Finite (Sym2 V) := inferInstance
+    have : Finite ((⊤ : SimpleGraph V).edgeSet : Type _) :=
       Set.Finite.to_subtype (Set.toFinite _)
     let F : Finset (Set (⊤ : SimpleGraph V).edgeSet) :=
       (Set.toFinite

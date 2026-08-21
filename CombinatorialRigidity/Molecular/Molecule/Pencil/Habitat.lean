@@ -106,7 +106,7 @@ theorem ncard_closedHubNbhd_splitOff_le_three_of_safe
     · exact h.ne
     · exact hab
     · exact hab.symm
-  haveI hG'L : G'.Loopless :=
+  have hG'L : G'.Loopless :=
     ⟨fun e x h => hloop e x x (Graph.isLink_self_iff.mpr h) rfl⟩
   -- Degree monotonicity for a vertex `u` adjacent to `v` (the tight case at `a`, `b`): `u` trades
   -- its single `v`-edge for the fresh `e₀`, so `E(G′, u) ⊆ insert e₀ (E(G, u) \ {e'})` and the
@@ -307,7 +307,7 @@ theorem splitOff_triangleFree_of_noRigid
       (G.splitOff v a b e₀).IsLink e₁ x y → (G.splitOff v a b e₀).IsLink e₂ y z →
       (G.splitOff v a b e₀).IsLink e₃ z x → False := by
   classical
-  haveI : G.Loopless := ‹G.Simple›.toLoopless
+  have : G.Loopless := ‹G.Simple›.toLoopless
   obtain ⟨eₐ, hea⟩ := heₐ
   obtain ⟨e_b, heb⟩ := e_b
   have hne_ab : eₐ ≠ e_b := fun h => hab (hea.right_unique (h ▸ heb))

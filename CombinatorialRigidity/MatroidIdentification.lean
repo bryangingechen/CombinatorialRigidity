@@ -831,7 +831,7 @@ theorem IsSparse.exists_rowIndependent_placement :
         exact ⟨p_lift ∘ φ, EdgeSetRowIndependent.iso φ hp_lift_LI⟩
     · -- Base case: `H.edgeSet = ∅`, the empty family of rows is LI.
       rw [Set.not_nonempty_iff_eq_empty] at hE
-      haveI : IsEmpty (H.edgeSet : Type _) := Set.isEmpty_coe_sort.mpr hE
+      have : IsEmpty (H.edgeSet : Type _) := Set.isEmpty_coe_sort.mpr hE
       refine ⟨0, ?_⟩
       rw [edgeSetRowIndependent_iff_linearIndepOn_rigidityRow, linearIndepOn_univ_iff]
       exact linearIndependent_empty_type
@@ -862,7 +862,7 @@ theorem edgeSet_rowIndependent_iff_isSparse_dim_two {V : Type*} [Finite V]
     (G : SimpleGraph V) (I : Set G.edgeSet) :
     (∃ p : Framework V 2, G.EdgeSetRowIndependent p I) ↔
       (fromEdgeSet (Subtype.val '' I) : SimpleGraph V).IsSparse 2 3 := by
-  haveI : Fintype V := Fintype.ofFinite V
+  have : Fintype V := Fintype.ofFinite V
   refine ⟨?_, ?_⟩
   · -- (⇒) Perturb the row-LI witness to be affinely-spanning, then apply the easy direction.
     rintro ⟨p, hp⟩
@@ -942,7 +942,7 @@ sentinel) is documented in `CombinatorialRigidity/CLAUDE.md` *Engineering conven
 theorem _root_.SimpleGraph.IsLaman.exists_rowIndependent_placement
     {V : Type*} [Finite V] {H : SimpleGraph V} (h : H.IsLaman) :
     ∃ p : Framework V 2, H.EdgeSetRowIndependent p Set.univ := by
-  haveI : Fintype V := Fintype.ofFinite V
+  have : Fintype V := Fintype.ofFinite V
   exact IsSparse.exists_rowIndependent_placement _ rfl h.isSparse
 
 end SimpleGraph

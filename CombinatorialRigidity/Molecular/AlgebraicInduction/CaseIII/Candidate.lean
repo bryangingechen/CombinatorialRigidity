@@ -82,8 +82,8 @@ theorem BodyHingeFramework.exists_redundant_panelRow_of_edge_of_finrank_lt
         Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k =>
           F.panelRow ends (e, p.1, p.2))) ∧
       ∃ i, r i ∈ W ⊔ Submodule.span K (r '' {j | j ≠ i}) := by
-  haveI : Fintype α := Fintype.ofFinite α
-  haveI : FiniteDimensional K (ScrewSpace K k) := inferInstance
+  have : Fintype α := Fintype.ofFinite α
+  have : FiniteDimensional K (ScrewSpace K k) := inferInstance
   set Eblk := Submodule.span K (Set.range (fun p : Set.powersetCard (Fin (k + 2)) k
     × Set.powersetCard (Fin (k + 2)) k => F.panelRow ends (e, p.1, p.2))) with hEblk
   -- The `D − 1` independent panel rows of the transversal hinge `e` (N7b-1, `Fin`-indexed form).
@@ -150,7 +150,7 @@ theorem BodyHingeFramework.exists_redundant_panelRow_ab_of_finrank_eq
       ∃ i, r i ∈ Submodule.span K
           (PanelHingeFramework.ofNormals Gv ends q).toBodyHinge.rigidityRows
         ⊔ Submodule.span K (r '' {j | j ≠ i}) := by
-  haveI : FiniteDimensional K (ScrewSpace K k) := inferInstance
+  have : FiniteDimensional K (ScrewSpace K k) := inferInstance
   set Fab := (PanelHingeFramework.ofNormals Gab ends q).toBodyHinge with hFab
   set Fv := (PanelHingeFramework.ofNormals Gv ends q).toBodyHinge with hFv
   set W := Submodule.span K Fv.rigidityRows with hW
@@ -540,7 +540,7 @@ theorem BodyHingeFramework.exists_candidateRow_bottomRows_of_rigidOn
         exact Submodule.sum_mem _ fun j' hj' => Submodule.smul_mem _ _ <| Submodule.subset_span
           ⟨j', Finset.ne_of_mem_erase hj', rfl⟩
       · exact Submodule.mem_sup_right (Submodule.subset_span ⟨j, hji, rfl⟩)
-  haveI : Fintype α := Fintype.ofFinite α
+  have : Fintype α := Fintype.ofFinite α
   -- The span has finrank `D(m − 1)` (W2 at the rigid `Gab`; the `hgraph := rfl` idiom of W5).
   have hgraph : Fab.graph = Gab := rfl
   have hfin : Module.finrank K (Submodule.span K S) = screwDim k * (m - 1) := by
@@ -811,7 +811,7 @@ theorem PanelHingeFramework.case_III_old_new_blocks [DecidableEq α] [Finite α]
           (i : β × _ × _)).comp
           (LinearMap.single K (fun _ : α => ScrewSpace K k) v)) := by
   classical
-  haveI : Fintype α := Fintype.ofFinite α
+  have : Fintype α := Fintype.ofFinite α
   set FG := (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge with hFG
   set n_a : Fin (k + 2) → K := fun i => q (a, i) with hn_a
   set n_b : Fin (k + 2) → K := fun i => q (b, i) with hn_b
@@ -1337,7 +1337,7 @@ theorem PanelHingeFramework.case_III_old_new_blocks_of_line [DecidableEq α] [Fi
           (i : β × _ × _)).comp
           (LinearMap.single K (fun _ : α => ScrewSpace K k) v)) := by
   classical
-  haveI : Fintype α := Fintype.ofFinite α
+  have : Fintype α := Fintype.ofFinite α
   set FG := (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge with hFG
   set n_a : Fin (k + 2) → K := fun i => q (a, i) with hn_a
   set n_b : Fin (k + 2) → K := fun i => q (b, i) with hn_b
@@ -1501,7 +1501,7 @@ theorem PanelHingeFramework.case_III_full_family_of_line [DecidableEq α]
   -- bare `single v` form) and span the whole hinge block (`span_panelRow_comp_single_of_edge`, L2).
   have hpin := F.linearIndependent_panelRow_comp_single_of_edge (ends := ends) (e := e_a)
     hev hsn_e hsn_indep
-  haveI : Finite ↥sn := hpin.finite
+  have : Finite ↥sn := hpin.finite
   have hspan := F.span_panelRow_comp_single_of_edge (ends := ends) (e := e_a)
     hev hane hsn_e hsn_card hsn_indep
   rw [h1v] at hpin hspan
@@ -1578,7 +1578,7 @@ theorem PanelHingeFramework.case_III_full_family_restriction [DecidableEq α]
   -- The pinned NEW-block rows are independent and span the whole hinge block.
   have hpin := F.linearIndependent_panelRow_comp_single_of_edge (ends := ends) (e := e_a)
     hev hsn_e hsn_indep
-  haveI : Finite ↥sn := hpin.finite
+  have : Finite ↥sn := hpin.finite
   have hspan := F.span_panelRow_comp_single_of_edge (ends := ends) (e := e_a)
     hev hane hsn_e hsn_card hsn_indep
   rw [h1v] at hpin hspan
@@ -1684,8 +1684,8 @@ theorem PanelHingeFramework.case_III_rank_certification
           (PanelHingeFramework.caseIIICandidate G ends q e_a e_b
             (fun i => q (a, i)) n' (fun i => q (b, i)) 0).rigidityRows) := by
   classical
-  haveI : Fintype α := Fintype.ofFinite α
-  haveI : Fintype ιb := Fintype.ofFinite ιb
+  have : Fintype α := Fintype.ofFinite α
+  have : Fintype ιb := Fintype.ofFinite ιb
   set na := (fun i => q (a, i)) with hna
   set nb := (fun i => q (b, i)) with hnb
   set F₀ := PanelHingeFramework.caseIIICandidate G ends q e_a e_b na n' nb 0 with hF₀
@@ -1802,12 +1802,12 @@ theorem PanelHingeFramework.case_III_rank_certification
     rw [Submodule.span_le]; rintro _ ⟨x, rfl⟩; exact hmem x
   -- (iv) Count: the family is `(sn ⊕ Unit) ⊕ ιb` of card `D·(|V(G)|−1)`. The index is finite (an
   -- LI family in the finite-dimensional dual `Module.Dual K (α → ScrewSpace K k)`).
-  haveI hfin_idx : Finite ((↥sn ⊕ Unit) ⊕ ιb) := hfam.finite
-  haveI : Finite ↥sn :=
+  have hfin_idx : Finite ((↥sn ⊕ Unit) ⊕ ιb) := hfam.finite
+  have : Finite ↥sn :=
     Finite.of_injective (fun x : ↥sn => (Sum.inl (Sum.inl x) : (↥sn ⊕ Unit) ⊕ ιb))
       (fun _ _ h => by simpa using h)
-  haveI : Fintype ↥sn := Fintype.ofFinite _
-  haveI : Fintype ((↥sn ⊕ Unit) ⊕ ιb) := Fintype.ofFinite _
+  have : Fintype ↥sn := Fintype.ofFinite _
+  have : Fintype ((↥sn ⊕ Unit) ⊕ ιb) := Fintype.ofFinite _
   have hcard : Nat.card ((↥sn ⊕ Unit) ⊕ ιb) = screwDim k * (V(G).ncard - 1) := by
     rw [Nat.card_sum, Nat.card_sum, hsn_card, hwcard, Nat.card_unique, hVcard]
     -- `D ≥ 1` (`(k+2).choose 2 ≥ 1`) and `m_v ≥ 1`: write `m_v = m' + 1`, expand `D·(m'+1)`.
@@ -1854,7 +1854,7 @@ theorem BodyHingeFramework.finrank_span_rigidityRows_ge_of_corner [Finite α]
     (hLI : LinearIndependent K (W.mkQ ∘ g)) :
     Module.finrank K W + Fintype.card ι
       ≤ Module.finrank K (Submodule.span K F.rigidityRows) := by
-  haveI : Fintype α := Fintype.ofFinite α
+  have : Fintype α := Fintype.ofFinite α
   exact Submodule.finrank_add_card_le_of_linearIndependent_mkQ hWS hg hLI
 
 /-- **The relabel-image base block, packaged as a subspace of the candidate rigidity-row span**

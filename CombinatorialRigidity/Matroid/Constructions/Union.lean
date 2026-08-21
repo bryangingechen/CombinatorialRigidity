@@ -78,7 +78,7 @@ def AdjIndep' (M : Matroid α) (Adj : α → β → Prop) (I : Set β) :=
 @[simp] lemma adjMap_indep_iff' [DecidableEq β] [Finite β] (M : Matroid α) (Adj : α → β → Prop)
     (E : Set β) {I : Set β} : (M.adjMap Adj E).Indep I ↔ M.AdjIndep' Adj I ∧ (I : Set β) ⊆ E := by
   classical
-  haveI : Fintype β := Fintype.ofFinite β
+  have : Fintype β := Fintype.ofFinite β
   simp only [adjMap, IndepMatroid.ofFinset, AdjIndep, exists_and_left, restrict_indep_iff,
     IndepMatroid.matroid_Indep, IndepMatroid.ofFinitaryCardAugment_indep, AdjIndep',
     and_congr_left_iff]
@@ -116,7 +116,7 @@ protected def union [DecidableEq α] (M : Matroid α) (N : Matroid α) : Matroid
   -- With `ι` empty, the matching target type `ι × α` is empty, so the only
   -- finite independent set of the `adjMap` is `∅`; finitarity lifts this to all
   -- independent sets.
-  haveI : IsEmpty (ι × α) := by infer_instance
+  have : IsEmpty (ι × α) := by infer_instance
   rw [Matroid.Union, eq_loopyOn_iff]
   refine ⟨adjMap_ground_eq .., fun X _ hX ↦ ?_⟩
   by_contra hne
@@ -248,8 +248,8 @@ theorem polymatroid_of_adjMap [DecidableEq β] [Finite α] [Finite β] (M : Matr
   (Adj : α → β → Prop) : ∃ f, ∃ h : (PolymatroidFn f), ofPolymatroidFn h = M.adjMap Adj univ ∧
   ∀ Y, f Y = M.rk {v | ∃ u ∈ Y, Adj v u} := by
   classical
-  haveI : Fintype α := Fintype.ofFinite α
-  haveI : Fintype β := Fintype.ofFinite β
+  have : Fintype α := Fintype.ofFinite α
+  have : Fintype β := Fintype.ofFinite β
   obtain hα | hα := isEmpty_or_nonempty α
   · refine ⟨fun _ : Finset β ↦ (0 : ℤ), PolymatroidFn_of_zero, ext_indep rfl
       (fun J _ ↦ ?_), ?_⟩
@@ -395,7 +395,7 @@ theorem sum'_eRk_eq_eRk_sum_on_indep {α ι : Type*} [Fintype ι] [Finite α]
   {Ms : ι → Matroid α} {I : Set (ι × α)} (h : (Matroid.sum' Ms).Indep I) :
   (Matroid.sum' Ms).eRk I = ∑ i : ι, (Ms i).eRk (Prod.mk i ⁻¹' I) := by
   classical
-  haveI : Fintype α := Fintype.ofFinite α
+  have : Fintype α := Fintype.ofFinite α
   rw [Indep.eRk_eq_encard h]
   simp only [sum'_indep_iff] at h
   simp_rw [Indep.eRk_eq_encard (h _)]
@@ -462,7 +462,7 @@ theorem sum'_eRk_eq_eRk_sum_on_indep {α ι : Type*} [Fintype ι] [Finite α]
 @[simp] theorem sum'_rk_eq_rk_sum {α ι : Type*} [Fintype ι] [Finite α]
   (Ms : ι → Matroid α) (X : Set (ι × α)) :
   (Matroid.sum' Ms).rk X = ∑ i : ι, (Ms i).rk (Prod.mk i ⁻¹' X) := by
-  haveI : Fintype α := Fintype.ofFinite α
+  have : Fintype α := Fintype.ofFinite α
   obtain h := sum'_eRk_eq_eRk_sum Ms X
   rw [← Nat.cast_inj (R := ENat)]
   convert h
@@ -476,7 +476,7 @@ theorem adjMap_rank_eq [DecidableEq β] [Finite α] [Fintype β] (M : Matroid α
   (Adj : α → β → Prop) :
   (∃ Y, M.rk {v | ∃ u ∈ Y, Adj v u} + (Finset.univ \ Y).card ≤ (M.adjMap Adj univ).rank) ∧
   (∀ Y, (M.adjMap Adj univ).rank ≤ M.rk {v | ∃ u ∈ Y, Adj v u} + (Finset.univ \ Y).card) := by
-  haveI : Fintype α := Fintype.ofFinite α
+  have : Fintype α := Fintype.ofFinite α
   obtain ⟨f, hf_poly, heq, hf⟩ := polymatroid_of_adjMap M Adj
   rw [← heq]
   zify
@@ -504,7 +504,7 @@ binary union (`thm:matroid-partition-rank`). -/
 theorem matroid_partition_eRk' [DecidableEq α] [Finite α]
   (M₁ : Matroid α) (M₂ : Matroid α) : ∃ Y : Set α, M₁.eRk Y + M₂.eRk Y + (univ \ Y).encard =
     (Matroid.union M₁ M₂).eRank := by
-  haveI : Fintype α := Fintype.ofFinite α
+  have : Fintype α := Fintype.ofFinite α
   obtain ⟨⟨Y, hY⟩, h⟩ := matroid_partition' M₁ M₂
   have : ∀ Y : Finset α, (Finset.univ \ Y).card = (univ \ (Y : Set α)).ncard := by
     intro Y
@@ -537,7 +537,7 @@ theorem adjMap_rk_eq [DecidableEq β] [Finite α] [Finite β] (M : Matroid α)
     (Adj : α → β → Prop) (X : Finset β) :
     (∃ Y ⊆ X, M.rk {v | ∃ u ∈ Y, Adj v u} + (X \ Y).card ≤ (M.adjMap Adj univ).rk X) ∧
     (∀ Y ⊆ X, (M.adjMap Adj univ).rk X ≤ M.rk {v | ∃ u ∈ Y, Adj v u} + (X \ Y).card) := by
-  haveI : Fintype α := Fintype.ofFinite α
+  have : Fintype α := Fintype.ofFinite α
   obtain ⟨f, hf_poly, heq, hf⟩ := polymatroid_of_adjMap M Adj
   rw [← heq]
   zify
@@ -555,7 +555,7 @@ count condition (`thm:unionPow-cycle-indep-iff-sparse`) consumes this directly.
 theorem Union_pow_rk_eq [DecidableEq α] [Finite α] (M : Matroid α) (k : ℕ) (X : Set α) :
     (∃ Y ⊆ X, k * M.rk Y + (X \ Y).ncard ≤ (Matroid.Union (fun _ : Fin k ↦ M)).rk X) ∧
     (∀ Y ⊆ X, (Matroid.Union (fun _ : Fin k ↦ M)).rk X ≤ k * M.rk Y + (X \ Y).ncard) := by
-  haveI : Fintype α := Fintype.ofFinite α
+  have : Fintype α := Fintype.ofFinite α
   classical
   obtain ⟨Xf, rfl⟩ := (X.toFinite).exists_finset_coe
   simp only [Matroid.Union]

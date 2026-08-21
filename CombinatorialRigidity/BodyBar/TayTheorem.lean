@@ -265,7 +265,7 @@ theorem stdFramework_rigidityRow_eq [Fintype α] [DecidableEq α] {G : Graph α 
     (stdFramework G n j).rigidityRow D e =
       -(blockPairing α (bodyBarDim n)
         (Pi.single (j e) (D.signedIncMatrix ℝ (e : β)))) := by
-  haveI : DecidablePred (· ∈ E((stdFramework G n j).graph)) := ‹DecidablePred (· ∈ E(G))›
+  have : DecidablePred (· ∈ E((stdFramework G n j).graph)) := ‹DecidablePred (· ∈ E(G))›
   rw [rigidityRow_eq]
   -- `(stdFramework).placement e c = (e_{j(e)})_c = δ_{c, j(e)}`: smul collapses to `Pi.single`.
   refine congrArg (fun w => -(blockPairing α (bodyBarDim n) w)) (funext fun c => ?_)
@@ -291,7 +291,7 @@ theorem stdFramework_rigidityRow_linearIndependent [Finite α] {G : Graph α β}
     (D : Graph.orientation G) :
     LinearIndependent ℝ ((stdFramework G n j).rigidityRow D) := by
   classical
-  haveI : Fintype α := Fintype.ofFinite α
+  have : Fintype α := Fintype.ofFinite α
   -- The disjoint cover gives `↥E(G) ≃ Σ i, Fs i`; the index `(eqv e).1` is the forest of `e`.
   let eqv : E(G) ≃ Σ i : Fin (bodyBarDim n), (Fs i : Set β) :=
     (Equiv.setCongr hcover.symm).trans (Set.unionEqSigmaOfDisjoint hdisj)
@@ -343,7 +343,7 @@ theorem stdFramework_rigidityRow_linearIndependent_restrict [Finite α] {G : Gra
     LinearIndependent ℝ
       (fun e : (Subtype.val ⁻¹' E' : Set E(G)) => (stdFramework G n j).rigidityRow D e) := by
   classical
-  haveI : Fintype α := Fintype.ofFinite α
+  have : Fintype α := Fintype.ofFinite α
   set E'ₛ : Set E(G) := Subtype.val ⁻¹' E' with hE'ₛ
   have himg : Subtype.val '' E'ₛ = E' := by
     rw [hE'ₛ, Subtype.image_preimage_coe]
@@ -397,8 +397,8 @@ theorem stdFramework_finrank_range [Finite α] [Finite β] {G : Graph α β}
     (j : E(G) → Fin (bodyBarDim n)) (hj : ∀ e : E(G), (e : β) ∈ Fs (j e))
     (D : Graph.orientation G) :
     Module.finrank ℝ (LinearMap.range ((stdFramework G n j).rigidityMap D)) = E(G).ncard := by
-  haveI : Fintype E(G) := Fintype.ofFinite _
-  haveI : Fintype E((stdFramework G n j).graph) := Fintype.ofFinite _
+  have : Fintype E(G) := Fintype.ofFinite _
+  have : Fintype E((stdFramework G n j).graph) := Fintype.ofFinite _
   have hLI := stdFramework_rigidityRow_linearIndependent hcover hdisj hacyc j hj D
   -- finrank (range R) = finrank (range R.dualMap) = finrank (span rows) = #E(G) = |E(G)|.
   rw [← LinearMap.finrank_range_dualMap_eq_finrank_range,
@@ -480,8 +480,8 @@ theorem finrank_realBlockPiSpanOn [Finite α] [Finite β] {G : Graph α β}
           Submodule ℝ (Fin (bodyBarDim n) → α → ℝ))
       = bodyBarDim n * G.cycleMatroid.rk E' := by
   classical
-  haveI : Fintype α := Fintype.ofFinite α
-  haveI : Module.Finite ℝ (span ℝ ((D.signedIncMatrix ℝ) '' E')) :=
+  have : Fintype α := Fintype.ofFinite α
+  have : Module.Finite ℝ (span ℝ ((D.signedIncMatrix ℝ) '' E')) :=
     Module.Finite.span_of_finite _ ((Set.toFinite E').image _)
   rw [Graph.finrank_constPiSpan]
   congr 1
@@ -503,16 +503,16 @@ theorem finrank_rigidityRow_span_le [Finite α] [Finite β] (F : BodyBarFramewor
     (D : Graph.orientation F.graph) (E' : Set E(F.graph)) :
     Module.finrank ℝ (span ℝ (F.rigidityRow D '' E')) ≤ bodyBarDim n * F.graph.cycleMatroid.rk
       (Subtype.val '' E') := by
-  haveI : Fintype α := Fintype.ofFinite α
-  letI : DecidableEq α := Classical.decEq α
-  letI : DecidablePred (· ∈ E(F.graph)) := Classical.decPred _
+  have : Fintype α := Fintype.ofFinite α
+  let : DecidableEq α := Classical.decEq α
+  let : DecidablePred (· ∈ E(F.graph)) := Classical.decPred _
   set W : Submodule ℝ (Fin (bodyBarDim n) → α → ℝ) :=
     Submodule.pi Set.univ
       (fun _ : Fin (bodyBarDim n) => span ℝ ((D.signedIncMatrix ℝ) '' (Subtype.val '' E')))
     with hW
-  haveI : Module.Finite ℝ (span ℝ ((D.signedIncMatrix ℝ) '' (Subtype.val '' E'))) :=
+  have : Module.Finite ℝ (span ℝ ((D.signedIncMatrix ℝ) '' (Subtype.val '' E'))) :=
     Module.Finite.span_of_finite _ ((Set.toFinite _).image _)
-  haveI : Module.Finite ℝ W := by rw [hW]; exact inferInstance
+  have : Module.Finite ℝ W := by rw [hW]; exact inferInstance
   -- The pushed-back row vectors `w_e = fun c ↦ (b_e)_c • signedIncMatrix e` all lie in `W`.
   have hmem : ∀ e : E(F.graph), e ∈ E' →
       (fun c => F.placement e c • D.signedIncMatrix ℝ (e : β)) ∈ W := by
@@ -603,7 +603,7 @@ spanning family of `#rows` rows is a basis, hence linearly independent. -/
 theorem rigidityRow_linearIndependent [Finite β] {F : BodyBarFramework n α β}
     {D : Graph.orientation F.graph} (hindep : F.IsIndependent D) :
     LinearIndependent ℝ (F.rigidityRow D) := by
-  haveI : Fintype E(F.graph) := Fintype.ofFinite _
+  have : Fintype E(F.graph) := Fintype.ofFinite _
   rw [linearIndependent_iff_card_eq_finrank_span, Set.finrank, span_range_rigidityRow,
     LinearMap.finrank_range_dualMap_eq_finrank_range, hindep, ← Nat.card_coe_set_eq,
     Nat.card_eq_fintype_card]
@@ -617,7 +617,7 @@ theorem's row-independence conclusion into the rank-valued `IsIndependent`. -/
 theorem isIndependent_iff_linearIndependent_rigidityRow [Finite β]
     {F : BodyBarFramework n α β} {D : Graph.orientation F.graph} :
     F.IsIndependent D ↔ LinearIndependent ℝ (F.rigidityRow D) := by
-  haveI : Fintype E(F.graph) := Fintype.ofFinite _
+  have : Fintype E(F.graph) := Fintype.ofFinite _
   refine ⟨rigidityRow_linearIndependent, fun hLI => ?_⟩
   change Module.finrank ℝ (LinearMap.range (F.rigidityMap D)) = E(F.graph).ncard
   rw [← LinearMap.finrank_range_dualMap_eq_finrank_range, ← span_range_rigidityRow F D,
@@ -636,12 +636,12 @@ bound `cycleMatroid_rk_add_one_le_spanningVerts_ncard` gives `r(E') + 1 ≤ |V'|
 theorem isSparse_of_isIndependent [Finite α] [Finite β] {F : BodyBarFramework n α β}
     {D : Graph.orientation F.graph} (hindep : F.IsIndependent D) :
     F.graph.IsSparse (bodyBarDim n) (bodyBarDim n) := by
-  haveI : Fintype E(F.graph) := Fintype.ofFinite _
+  have : Fintype E(F.graph) := Fintype.ofFinite _
   have hLI := rigidityRow_linearIndependent hindep
   intro E' hE'G hne
   -- Pull `E' : Set β` back to `E'ₛ : Set ↥E(F.graph)`; `Subtype.val '' E'ₛ = E'` since `E' ⊆ E(G)`.
   set E'ₛ : Set E(F.graph) := Subtype.val ⁻¹' E' with hE'ₛ
-  haveI : Fintype E'ₛ := Fintype.ofFinite _
+  have : Fintype E'ₛ := Fintype.ofFinite _
   have himg : Subtype.val '' E'ₛ = E' := by
     rw [hE'ₛ, Subtype.image_preimage_coe]
     exact Set.inter_eq_right.mpr hE'G
@@ -680,14 +680,14 @@ theorem isSparse_of_isIndependent_restrict [Finite α] [Finite β] {F : BodyBarF
     (hLI : LinearIndependent ℝ
       (fun e : (Subtype.val ⁻¹' E' : Set E(F.graph)) => F.rigidityRow D e)) :
     (F.graph ↾ E').IsSparse (bodyBarDim n) (bodyBarDim n) := by
-  haveI : Fintype E(F.graph) := Fintype.ofFinite _
+  have : Fintype E(F.graph) := Fintype.ofFinite _
   intro E'' hE''sub hne
   -- `E(F.graph ↾ E') = E'` (`E' ⊆ E(F.graph)`); so `E'' ⊆ E'` and `E'' ⊆ E(F.graph)`.
   rw [edgeSet_restrict, Set.inter_eq_right.mpr hE'] at hE''sub
   have hE''G : E'' ⊆ E(F.graph) := hE''sub.trans hE'
   set E'ₛ : Set E(F.graph) := Subtype.val ⁻¹' E' with hE'ₛ
   set E''ₛ : Set E(F.graph) := Subtype.val ⁻¹' E'' with hE''ₛ
-  haveI : Fintype E''ₛ := Fintype.ofFinite _
+  have : Fintype E''ₛ := Fintype.ofFinite _
   have himg : Subtype.val '' E''ₛ = E'' := by
     rw [hE''ₛ, Subtype.image_preimage_coe]
     exact Set.inter_eq_right.mpr hE''G

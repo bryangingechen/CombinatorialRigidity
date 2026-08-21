@@ -427,10 +427,10 @@ theorem pencilNondegFeasible_induce_of_pendant_deg3 [Finite α] [Finite β] [Inf
     (hw₁ : w₁ ∈ V₁) (hw₂ : w₂ ∈ V₁) (hw12 : w₁ ≠ w₂) :
     PencilNondegFeasible K (G.induce V₁) := by
   classical
-  haveI := hSimple
-  haveI := hSimple.toLoopless
-  haveI : Inhabited α := ⟨u_c⟩
-  haveI : G.LocallyFinite := inferInstance
+  have := hSimple
+  have := hSimple.toLoopless
+  have : Inhabited α := ⟨u_c⟩
+  have : G.LocallyFinite := inferInstance
   have hv1 : v_c ≠ w₁ := by rintro rfl; exact hv_c hw₁
   have hv2 : v_c ≠ w₂ := by rintro rfl; exact hv_c hw₂
   -- The re-seeded feasibility witness of `G`.
@@ -704,7 +704,7 @@ theorem finrank_span_rigidityRows_pencilChartFramework_eq_of_independent_pencilR
         (pencilChartFramework (PencilSeed.ofCoord q) hubSel G).rigidityRows) : ℤ)
       = screwDim 2 * ((V(G).ncard : ℤ) - 1) - G.deficiency n := by
   classical
-  haveI : Fintype s := Fintype.ofFinite s
+  have : Fintype s := Fintype.ofFinite s
   -- Lower bound: the independent `pencilRow` subfamily lands in the chart's rigidity-row span.
   have hsub : Submodule.span K
         (Set.range fun i : s => pencilRow hubSel G.endsOf q (i : β × _ × _))
@@ -1012,10 +1012,10 @@ theorem exists_isNondegPencilRealization_induce_promotedNormal_of_pendant_deg3
         = screwDim 2 * ((V₁.ncard : ℤ) - 1) - (G.induce V₁).deficiency n ∧
       ∀ v ∈ ({u_c, w₁, w₂} : Set α), LinearIndepOn K normal (G.closedHubNbhd v) := by
   classical
-  haveI := hSimple
-  haveI := hSimple.toLoopless
-  haveI : Inhabited α := ⟨u_c⟩
-  haveI : G.LocallyFinite := inferInstance
+  have := hSimple
+  have := hSimple.toLoopless
+  have : Inhabited α := ⟨u_c⟩
+  have : G.LocallyFinite := inferInstance
   have hv1 : v_c ≠ w₁ := by rintro rfl; exact hv_c hw₁
   have hv2 : v_c ≠ w₂ := by rintro rfl; exact hv_c hw₂
   -- ── Structural facts about `H := G.induce V₁`. ────────────────────────────────────────────────
@@ -1348,7 +1348,7 @@ theorem pencilNondegFeasible_of_ncard_closedHubNbhd_le_three_of_triangleFree
       G.IsLink e₁ x y → G.IsLink e₂ y z → G.IsLink e₃ z x → False) :
     PencilNondegFeasible K G := by
   classical
-  haveI : G.Loopless := ‹G.Simple›.toLoopless
+  have : G.Loopless := ‹G.Simple›.toLoopless
   choose hubSel hHubSel using
     fun v => exists_isFin3SelectorOf_of_ncard_le_three (Set.toFinite _) (hcard v)
   have hnbr : ∀ v, ∃ sel : Fin 3 → Option α,

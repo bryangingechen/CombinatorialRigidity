@@ -273,7 +273,7 @@ theorem PencilNondegFeasible.mono {G H : Graph α β} [G.LocallyFinite]
     (hfeas : PencilNondegFeasible K G) (hle : H ≤ G)
     (hhub : ∀ v ∈ V(H), G.PencilHub v → H.PencilHub v ∨ H.degree v ≤ 1) :
     PencilNondegFeasible K H := by
-  haveI : H.LocallyFinite := ‹G.LocallyFinite›.mono hle
+  have : H.LocallyFinite := ‹G.LocallyFinite›.mono hle
   obtain ⟨F, normal, point, hnd⟩ := hfeas
   have hadj := hnd.2.1
   have hpnz := hnd.1.2.1
@@ -426,7 +426,7 @@ theorem ncard_closedHubNbhd_le_three_of_isNondegPencilRealization
   have hspan_le : Module.finrank K (Submodule.span K (normal '' G.closedHubNbhd v)) ≤ 3 := by
     have hmono := Submodule.finrank_mono hsub
     rwa [hVdim] at hmono
-  haveI : Fintype (G.closedHubNbhd v) := Fintype.ofFinite _
+  have : Fintype (G.closedHubNbhd v) := Fintype.ofFinite _
   have hspan_eq : Module.finrank K
       (Submodule.span K (Set.range (fun x : G.closedHubNbhd v => normal x)))
       = Fintype.card (G.closedHubNbhd v) := finrank_span_eq_card hLI
@@ -1166,7 +1166,7 @@ theorem _root_.Graph.neighbor_eq_of_degree_eq_three [Finite α] {G : Graph α β
     (h₁ : G.IsLink e₁ u v₁) (h₂ : G.IsLink e₂ u v₂) (h₃ : G.IsLink e₃ u v₃)
     (h₁₂ : v₁ ≠ v₂) (h₁₃ : v₁ ≠ v₃) (h₂₃ : v₂ ≠ v₃) (hdeg : G.degree u = 3) :
     N(G, u) = ({v₁, v₂, v₃} : Set α) := by
-  haveI := hSimple
+  have := hSimple
   have hsub : ({v₁, v₂, v₃} : Set α) ⊆ N(G, u) := by
     rintro w (rfl | rfl | rfl)
     · exact h₁.adj

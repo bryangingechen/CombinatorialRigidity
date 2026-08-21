@@ -417,7 +417,7 @@ theorem exists_isProperRigidSubgraph_of_three_le_degree
     (hdeg : ∀ v ∈ V(G), 3 ≤ G.degree v) :
     ∃ H : Graph α β, H.IsProperRigidSubgraph G n := by
   classical
-  haveI hGfin : G.Finite := { edgeSet_finite := Set.toFinite _, vertexSet_finite := Set.toFinite _ }
+  have hGfin : G.Finite := { edgeSet_finite := Set.toFinite _, vertexSet_finite := Set.toFinite _ }
   -- A minimum-degree vertex `v`, degree `δ ≥ 3`.
   have hVne : V(G).Nonempty := Set.nonempty_of_ncard_ne_zero (by omega)
   obtain ⟨v, hvV, hvmin⟩ := exists_min_image V(G) G.degree (Set.toFinite V(G)) hVne
@@ -1089,7 +1089,7 @@ lemma cycle_isProperRigidSubgraph [Finite α] [Finite β] {G : Graph α β} [G.S
     (hdeg : 3 ≤ G.degree (vtx i₀)) :
     ∃ H : Graph α β, H.IsProperRigidSubgraph G n := by
   classical
-  haveI : NeZero m := ⟨by omega⟩
+  have : NeZero m := ⟨by omega⟩
   -- `range vtx ⊆ V(G)`: each vertex is the source-end of its outgoing cyclic edge.
   have hsub : Set.range vtx ⊆ V(G) := by
     rintro x ⟨i, rfl⟩

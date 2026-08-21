@@ -565,7 +565,7 @@ theorem matroidMG_rigidContract_eq_contract [DecidableEq β] [Finite α] [Finite
     (hrigid : H.IsKDof n 0) (hVHne : V(H).Nonempty) :
     (G.rigidContract H r).matroidMG n = (G.matroidMG n) ／ E(H.mulTilde n) := by
   classical
-  haveI : (G.mulTilde n).cycleMatroid.RankFinite :=
+  have : (G.mulTilde n).cycleMatroid.RankFinite :=
     haveI : (G.mulTilde n).EdgeFinite := ⟨Set.toFinite _⟩
     inferInstance
   have hconn : (H.mulTilde n).Preconnected := mulTilde_preconnected_of_isKDof_zero hrigid

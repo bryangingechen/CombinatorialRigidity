@@ -104,8 +104,8 @@ theorem exists_finCard_linearIndependent_selection
     (hrank : Module.finrank K (Submodule.span K (Set.range χ)) = N) :
     ∃ sel : Fin N → ι, Function.Injective sel ∧ LinearIndependent K (χ ∘ sel) := by
   classical
-  haveI : Fintype ι := Fintype.ofFinite ι
-  haveI : FiniteDimensional K (Submodule.span K (Set.range χ)) :=
+  have : Fintype ι := Fintype.ofFinite ι
+  have : FiniteDimensional K (Submodule.span K (Set.range χ)) :=
     FiniteDimensional.span_of_finite K (Set.finite_range χ)
   -- A linearly independent subfamily `χ ∘ a` spanning `span (range χ)` (mathlib's
   -- `exists_linearIndependent'`), corestricted into that finite-dimensional submodule.
@@ -134,7 +134,7 @@ theorem exists_finCard_linearIndependent_selection
     · intro c y _ hy; exact Submodule.smul_mem _ c hy
   -- It is a basis of the submodule, so `κ` has exactly `N` elements: `Fin N ≃ κ`.
   let b : Module.Basis κ K (Submodule.span K (Set.range χ)) := Module.Basis.mk hli' (by rw [hsp'])
-  haveI : Fintype κ := FiniteDimensional.fintypeBasisIndex b
+  have : Fintype κ := FiniteDimensional.fintypeBasisIndex b
   have hcardκ : Fintype.card κ = N := by rw [← hrank, ← Module.finrank_eq_card_basis b]
   let e : Fin N ≃ κ := (Fintype.equivFinOfCardEq hcardκ).symm
   refine ⟨a ∘ e, ha_inj.comp e.injective, ?_⟩
@@ -217,7 +217,7 @@ theorem exists_submatrix_det_ne_zero_of_linearIndependent_rows
     (h : LinearIndependent K M.row) :
     ∃ e : m → n, (Matrix.of (fun i j : m => M i (e j))).det ≠ 0 := by
   classical
-  haveI : Fintype n := Fintype.ofFinite n
+  have : Fintype n := Fintype.ofFinite n
   -- The columns of `M` (= rows of `Mᵀ`) span all of `m → K`.
   have hrank : Module.finrank K (Submodule.span K (Set.range Mᵀ.row)) = Fintype.card m := by
     rw [← Mᵀ.rank_eq_finrank_span_row, rank_transpose, h.rank_matrix]
@@ -228,7 +228,7 @@ theorem exists_submatrix_det_ne_zero_of_linearIndependent_rows
   rw [hspan] at hsp
   -- It is a basis of `m → K`, so it has exactly `#m` elements: `κ ≃ m`.
   let b : Module.Basis κ K (m → K) := Module.Basis.mk hli (by rw [hsp])
-  haveI : Fintype κ := FiniteDimensional.fintypeBasisIndex b
+  have : Fintype κ := FiniteDimensional.fintypeBasisIndex b
   have hcard : Fintype.card κ = Fintype.card m := by
     rw [← Module.finrank_eq_card_basis b, Module.finrank_fintype_fun_eq_card]
   let em : m ≃ κ := (Fintype.equivOfCardEq hcard).symm
@@ -261,8 +261,8 @@ theorem finite_setOf_not_linearIndependent_rows_along_affine_path
     (h : LinearIndependent K (A + t₀ • B).row) :
     {t : K | ¬ LinearIndependent K (A + t • B).row}.Finite := by
   classical
-  haveI : Fintype m := Fintype.ofFinite m
-  haveI : Fintype n := Fintype.ofFinite n
+  have : Fintype m := Fintype.ofFinite m
+  have : Fintype n := Fintype.ofFinite n
   -- Column selection witnessing LI at `t₀`.
   obtain ⟨e, he⟩ := exists_submatrix_det_ne_zero_of_linearIndependent_rows h
   -- Polynomial-entry matrix `P` whose evaluation at `t` is `A + t • B`.
@@ -316,8 +316,8 @@ theorem finite_setOf_not_linearIndependent_rows_of_polynomial
     (h : LinearIndependent K (P.map (Polynomial.evalRingHom t₀)).row) :
     {t : K | ¬ LinearIndependent K (P.map (Polynomial.evalRingHom t)).row}.Finite := by
   classical
-  haveI : Fintype m := Fintype.ofFinite m
-  haveI : Fintype n := Fintype.ofFinite n
+  have : Fintype m := Fintype.ofFinite m
+  have : Fintype n := Fintype.ofFinite n
   obtain ⟨e, he⟩ := exists_submatrix_det_ne_zero_of_linearIndependent_rows h
   let Q : Polynomial K := (Matrix.of (fun i j : m => P i (e j))).det
   have hQ_eval : ∀ t : K, Q.eval t
@@ -359,8 +359,8 @@ theorem exists_linearIndependent_rows_specialize {K σ : Type*} [Field K] [Infin
     (h : LinearIndependent K (P.map (MvPolynomial.eval p₀)).row) :
     ∃ p : σ → K, LinearIndependent K (P.map (MvPolynomial.eval p)).row := by
   classical
-  haveI : Fintype m := Fintype.ofFinite m
-  haveI : Fintype n := Fintype.ofFinite n
+  have : Fintype m := Fintype.ofFinite m
+  have : Fintype n := Fintype.ofFinite n
   obtain ⟨e, he⟩ := exists_submatrix_det_ne_zero_of_linearIndependent_rows h
   let Q : MvPolynomial σ K := (Matrix.of (fun i j : m => P i (e j))).det
   have hQ_eval : ∀ p : σ → K, MvPolynomial.eval p Q
@@ -476,9 +476,9 @@ theorem rank_ge_of_isUnit_mul_reindex_fromBlocks
     (hA : LinearIndependent K A.row) (hD : LinearIndependent K D.row) :
     Fintype.card m₁ + Fintype.card m₂ ≤ M.rank := by
   classical
-  haveI : Fintype p := Fintype.ofFinite p
-  haveI : Fintype n₁ := Fintype.ofFinite n₁
-  haveI : Fintype n₂ := Fintype.ofFinite n₂
+  have : Fintype p := Fintype.ofFinite p
+  have : Fintype n₁ := Fintype.ofFinite n₁
+  have : Fintype n₂ := Fintype.ofFinite n₂
   calc Fintype.card m₁ + Fintype.card m₂
       ≤ (fromBlocks A B 0 D).rank :=
         rank_fromBlocks_zero₂₁_ge_of_linearIndependent_rows B hA hD
@@ -518,8 +518,8 @@ theorem rank_ge_of_isUnit_mul_submatrix_fromBlocks
     (hA : LinearIndependent K A.row) (hD : LinearIndependent K D.row) :
     Fintype.card m₁ + Fintype.card m₂ ≤ M.rank := by
   classical
-  haveI : Fintype n₁ := Fintype.ofFinite n₁
-  haveI : Fintype n₂ := Fintype.ofFinite n₂
+  have : Fintype n₁ := Fintype.ofFinite n₁
+  have : Fintype n₂ := Fintype.ofFinite n₂
   calc Fintype.card m₁ + Fintype.card m₂
       ≤ (fromBlocks A B 0 D).rank :=
         rank_fromBlocks_zero₂₁_ge_of_linearIndependent_rows B hA hD
@@ -613,8 +613,8 @@ theorem rank_ge_of_isUnit_mul_submatrix_fromBlocks_zero₁₂
     (hA : LinearIndependent K A.row) (hD : LinearIndependent K D.row) :
     Fintype.card m₁ + Fintype.card m₂ ≤ M.rank := by
   classical
-  haveI : Fintype n₁ := Fintype.ofFinite n₁
-  haveI : Fintype n₂ := Fintype.ofFinite n₂
+  have : Fintype n₁ := Fintype.ofFinite n₁
+  have : Fintype n₂ := Fintype.ofFinite n₂
   calc Fintype.card m₁ + Fintype.card m₂
       ≤ (fromBlocks A 0 C D).rank :=
         rank_fromBlocks_zero₁₂_ge_of_linearIndependent_rows C hA hD
@@ -712,8 +712,8 @@ theorem exists_rowOp_of_strictInjection {K p m₁ m₂ : Type*} [Field K] [Finty
         Matrix.fromBlocks (1 : Matrix m₁ m₁ K) (-L₀) 0 (1 : Matrix m₂ m₂ K) ∧
       (∀ (i : m₁ ⊕ m₂) (x : p), x ∉ Set.range re → Lrow (re i) x = 0) := by
   classical
-  haveI : Fintype m₁ := Fintype.ofFinite m₁
-  haveI : Fintype m₂ := Fintype.ofFinite m₂
+  have : Fintype m₁ := Fintype.ofFinite m₁
+  have : Fintype m₂ := Fintype.ofFinite m₂
   -- the inner block op on the extended index `(m₁ ⊕ m₂) ⊕ ↥(range re)ᶜ`
   set B₀ : Matrix (m₁ ⊕ m₂) (m₁ ⊕ m₂) K :=
     Matrix.fromBlocks (1 : Matrix m₁ m₁ K) (-L₀) 0 (1 : Matrix m₂ m₂ K) with hB₀
@@ -780,7 +780,7 @@ theorem rowOp_strictInjection_submatrix_eq_fromBlocks_zero₁₂
     (hM' : M'.submatrix re en = Matrix.fromBlocks A B C D) (hB : B = L₀ * D) :
     (Lrow * M').submatrix re en = Matrix.fromBlocks (A - L₀ * C) 0 C D := by
   classical
-  haveI : Fintype m₁ := Fintype.ofFinite m₁
+  have : Fintype m₁ := Fintype.ofFinite m₁
   -- split the product entrywise through the injection: `(Lrow * M').submatrix re en = B₀ * (…)`
   have hsplit : (Lrow * M').submatrix re en
       = Matrix.fromBlocks (1 : Matrix m₁ m₁ K) (-L₀) 0 (1 : Matrix m₂ m₂ K) *
@@ -878,7 +878,7 @@ theorem LinearIndependent.finite_setOf_not_along_affine_path
     (h : LinearIndependent K (fun i => a i + t₀ • b i)) :
     {t : K | ¬ LinearIndependent K (fun i => a i + t • b i)}.Finite := by
   classical
-  haveI : Fintype ι := Fintype.ofFinite ι
+  have : Fintype ι := Fintype.ofFinite ι
   -- Pick a basis of `W` and identify `W` with `Fin n → K`.
   let φ : W ≃ₗ[K] (Fin (Module.finrank K W) → K) := (Module.finBasis K W).equivFun
   let A : Matrix ι (Fin (Module.finrank K W)) K := Matrix.of (fun i j => φ (a i) j)
@@ -928,8 +928,8 @@ theorem LinearIndependent.le_finrank_span_along_affine_path_cofinite
     {t : K | Module.finrank K (Submodule.span K
       (Set.range (fun i => a i + t • b i))) < Nat.card s}.Finite := by
   classical
-  haveI : Fintype ι := Fintype.ofFinite ι
-  haveI : Fintype s := Fintype.ofFinite s
+  have : Fintype ι := Fintype.ofFinite ι
+  have : Fintype s := Fintype.ofFinite s
   refine (LinearIndependent.finite_setOf_not_along_affine_path
     (a := fun i : s => a i) (b := fun i : s => b i) (t₀ := t₀) h).subset (fun t ht => ?_)
   rw [Set.mem_ofPred_eq] at ht ⊢
@@ -1006,7 +1006,7 @@ theorem exists_le_finrank_span_polynomial
     (h : LinearIndependent K (fun i : s => g p₀ i)) :
     ∃ p : σ → K, Nat.card s ≤ Module.finrank K (Submodule.span K (Set.range (g p))) := by
   classical
-  haveI : Fintype s := Fintype.ofFinite s
+  have : Fintype s := Fintype.ofFinite s
   -- Submatrix on `s`: rows indexed by `s`, columns by `Fin (finrank K W)`.
   let P : Matrix s (Fin (Module.finrank K W)) (MvPolynomial σ K) :=
     Matrix.of (fun i j => c (i : ι) j)
@@ -1108,7 +1108,7 @@ theorem exists_polynomial_ne_zero_of_linearIndependent_at
     ∃ Q : MvPolynomial σ K, MvPolynomial.eval p₀ Q ≠ 0 ∧
       ∀ p : σ → K, MvPolynomial.eval p Q ≠ 0 → LinearIndependent K (fun i : s => g p i) := by
   classical
-  haveI : Fintype s := Fintype.ofFinite s
+  have : Fintype s := Fintype.ofFinite s
   -- Submatrix on `s`: rows indexed by `s`, columns by `Fin (finrank K W)`.
   let P : Matrix s (Fin (Module.finrank K W)) (MvPolynomial σ K) :=
     Matrix.of (fun i j => c (i : ι) j)
@@ -1210,8 +1210,8 @@ theorem LinearIndependent.exists_notMem_of_polynomial_repr
     (h0 : LinearIndependent K (g 0)) (bad : Finset K) :
     ∃ t : K, t ∉ bad ∧ t ≠ 0 ∧ LinearIndependent K (g t) := by
   classical
-  haveI : Fintype ι := Fintype.ofFinite ι
-  haveI : Fintype κ := Fintype.ofFinite κ
+  have : Fintype ι := Fintype.ofFinite ι
+  have : Fintype κ := Fintype.ofFinite κ
   -- Basis identification `φ : M ≃ₗ[K] (κ → K)` and the polynomial-entry matrix `Pm := of P`.
   let φ : M ≃ₗ[K] (κ → K) := b.equivFun
   let Pm : Matrix ι κ (Polynomial K) := Matrix.of P

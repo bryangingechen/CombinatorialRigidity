@@ -130,7 +130,7 @@ placement) — see `IsLaman.isGenericallyRigidInj_two_of_card`.
 **Phase 5 milestone 3.** -/
 theorem IsLaman.isGenericallyRigid_two [Finite V] {G : SimpleGraph V}
     (h : G.IsLaman) : G.IsGenericallyRigid 2 := by
-  haveI : Fintype V := Fintype.ofFinite V
+  have : Fintype V := Fintype.ofFinite V
   exact (IsLaman.isGenericallyRigidInj_two_of_card _ rfl h).toIsGenericallyRigid
 
 /-- Every graph that is generically rigid in dimension 2 contains a Laman

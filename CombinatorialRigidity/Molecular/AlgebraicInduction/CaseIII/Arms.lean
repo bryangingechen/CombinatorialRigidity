@@ -87,7 +87,7 @@ theorem PanelHingeFramework.case_III_realization_of_rank [Infinite K]
     {n : ℕ} (hdef : G.deficiency n = 0) :
     PanelHingeFramework.HasGenericFullRankRealization K k n G := by
   classical
-  haveI : Fintype α := Fintype.ofFinite α
+  have : Fintype α := Fintype.ofFinite α
   set na := (fun i => q (a, i)) with hna
   set nb := (fun i => q (b, i)) with hnb
   have hva : v ≠ a := fun h => hvVc (h ▸ haVc)
@@ -141,7 +141,7 @@ theorem PanelHingeFramework.case_III_realization_of_rank [Infinite K]
   obtain ⟨s, hs_link, hs_card, hs_indep⟩ :=
     F₀.exists_independent_panelRow_subfamily_of_le_finrank (ends := ends) hends_G hne_F₀ hrank
   -- (iii) W6f: transfer the re-extracted family to a good `t^* ≠ 0` outside the GAP-3 bad set.
-  haveI : Finite ↥s := Set.Finite.to_subtype (Set.toFinite s)
+  have : Finite ↥s := Set.Finite.to_subtype (Set.toFinite s)
   set bad : Finset K :=
     (setOf_not_shear_linearIndependent_subsingleton na n' nb hgab).finite.toFinset with hbad
   obtain ⟨t, ht_bad, ht_ne, ht_li⟩ :=
@@ -593,7 +593,7 @@ theorem PanelHingeFramework.case_III_realization_of_line [DecidableEq α] [Finit
   -- `Sum.elim (Sum.elim rn {hingeRow v a r}) ro` is linearly independent (witness `hr`).
   obtain ⟨sn, hsn_e, hsn_card, hfam⟩ :=
     PanelHingeFramework.case_III_full_family_of_line F ends hva hends_ea hane hold holdindep r hr
-  haveI : Finite ↥sn := Set.Finite.to_subtype (Set.toFinite sn)
+  have : Finite ↥sn := Set.Finite.to_subtype (Set.toFinite sn)
   -- (2) Each row of the family lies in `span rigidityRows`: the `sn`-rows are panelRows of `e_a`
   -- (which links `v a` in `G`, by `hsn_e`/`hends_ea`); the `Unit` candidate row is `hcand_mem`;
   -- the OLD-block rows are `hro_mem`.
@@ -668,7 +668,7 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_triangle [Infinite 
   have hne₂₀ : panelSupportExtensor (k := k) n₂ n₀ ≠ 0 :=
     (panelSupportExtensor_ne_zero_iff n₂ n₀).mpr ((normalsJoin_ne_zero_iff n₂ n₀).mp hn₂₀)
   -- `G.endsOf` needs `Inhabited α`.
-  haveI : Inhabited α := ⟨v⟩
+  have : Inhabited α := ⟨v⟩
   -- Build the seed `q₀`: vertex `v ↦ n₀`, `a ↦ n₁`, `b ↦ n₂`, junk elsewhere.
   let q₀ : α × Fin (k + 2) → K :=
     fun p => if p.1 = v then n₀ p.2 else if p.1 = a then n₁ p.2 else if p.1 = b then n₂ p.2 else 0
@@ -840,8 +840,8 @@ theorem PanelHingeFramework.cycle_realization [Infinite K]
     PanelHingeFramework.HasGenericFullRankRealization K k n G := by
   classical
   have hm3 : 3 ≤ cy.m := cy.hm
-  haveI : NeZero cy.m := ⟨by omega⟩
-  haveI : Inhabited α := ⟨cy.vtx 0⟩
+  have : NeZero cy.m := ⟨by omega⟩
+  have : Inhabited α := ⟨cy.vtx 0⟩
   -- The record's cyclic successor `⟨1, _⟩` is the OfNat `1` (design §(4.108.C).2).
   have hlink : ∀ i : Fin cy.m, G.IsLink (cy.edge i) (cy.vtx i) (cy.vtx (i + 1)) := by
     intro i
@@ -992,7 +992,7 @@ theorem PanelHingeFramework.case_III_hsplit_producer_all_k
   have hD3 : 3 ≤ Graph.bodyBarDim n := by omega
   have hD2 : 2 ≤ Graph.bodyBarDim n := by omega
   have hD1 : 1 ≤ Graph.bodyBarDim n := by omega
-  haveI := hsimple
+  have := hsimple
   -- Dichotomy on `|V(G)|`: the triangle base (`= 3`) versus the chain arm (`≥ 4`).
   rcases eq_or_lt_of_le hV3 with hV3eq | hV4
   · -- **Triangle base (`|V(G)| = 3`).** Pick an adjacent degree-2 pair and its two `v`-edges, then

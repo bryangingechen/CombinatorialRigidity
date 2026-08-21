@@ -224,7 +224,7 @@ theorem pencilPair_of_ncard_le_two [Finite α] [Finite β] {G : Graph α β}
     PencilPair K 3 G := by
   refine ⟨fun hSimple _ => ?_, hasPencilRealization_of_ncard_le_two hloop hne hV2⟩
   classical
-  haveI := hloop
+  have := hloop
   have hb6 : Graph.bodyBarDim 3 = screwDim 2 := Graph.bodyBarDim_eq_screwDim_sub_one (by norm_num)
   by_cases hE : E(G) = ∅
   · -- Edgeless: nondegenerate for free (every `closedHubNbhd`/`closedNbhd` collapses to `⊆ {v}`).
@@ -434,7 +434,7 @@ theorem hasGenericPencilRealization_of_cutEdges_eq_empty [Finite α] [Finite β]
     (hIH : ∀ G' : Graph α β, V(G').Nonempty → V(G').ncard < V(G).ncard → PencilPair K n G') :
     HasGenericPencilRealization K n G := by
   classical
-  haveI := hSimple.toLoopless
+  have := hSimple.toLoopless
   set V₂ := V(G) \ V₁ with hV₂def
   have hne₂ : V₂.Nonempty := Set.nonempty_of_ssubset hssub
   have hVcard : V₁.ncard + V₂.ncard = V(G).ncard := by
@@ -789,7 +789,7 @@ theorem hasGenericPencilRealization_of_isNondegPencilRealization_induce_union_si
         - (G.induce ((V(G) \ V₁) ∪ {u_c})).deficiency n) :
     HasGenericPencilRealization K n G := by
   classical
-  haveI : Nonempty α := ⟨u_c⟩
+  have : Nonempty α := ⟨u_c⟩
   set V₂ := V(G) \ V₁ with hV₂def
   have hv_c₂ : v_c ∈ V₂ := ⟨hl_c.right_mem, hv_c⟩
   have hu_notin₂ : u_c ∉ V₂ := fun hmem => hmem.2 hu_c

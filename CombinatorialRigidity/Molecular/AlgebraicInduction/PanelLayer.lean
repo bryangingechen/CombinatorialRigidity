@@ -1728,8 +1728,8 @@ the surjection `f' : α ↠ range f` (`partitionConstant_eq_range_funLeft`,
 theorem finrank_partitionConstant [Finite α] (f : α → α) :
     Module.finrank K (partitionConstant (K := K) (k := k) f) =
       screwDim k * Nat.card (Set.range f) := by
-  haveI : Fintype α := Fintype.ofFinite α
-  haveI : Fintype (Set.range f) := Fintype.ofFinite _
+  have : Fintype α := Fintype.ofFinite α
+  have : Fintype (Set.range f) := Fintype.ofFinite _
   rw [partitionConstant_eq_range_funLeft,
     LinearMap.finrank_range_of_inj
       (LinearMap.funLeft_injective_of_surjective K (ScrewSpace K k) _
@@ -1909,8 +1909,8 @@ theorem finrank_partitionCutMap_codomain [Finite β]
     (hC : ∀ e ∈ F.graph.crossingEdges f, F.supportExtensor e ≠ 0) :
     Module.finrank K ((↥(F.graph.crossingEdges f) → ScrewSpace K k) ⧸ F.crossingSpanPi f)
       = (screwDim k - 1) * (F.graph.crossingEdges f).ncard := by
-  haveI : Fintype β := Fintype.ofFinite β
-  haveI : Fintype ↥(F.graph.crossingEdges f) := Fintype.ofFinite _
+  have : Fintype β := Fintype.ofFinite β
+  have : Fintype ↥(F.graph.crossingEdges f) := Fintype.ofFinite _
   classical
   -- The single `Submodule.pi` quotient splits as the product of fiber quotients
   -- `∀ e, ScrewSpace K k ⧸ span C(e)`, each of dimension `D − 1` (genuine hinge `C(e) ≠ 0`).
@@ -1948,8 +1948,8 @@ theorem screwDim_mul_numParts_sub_le_finrank_partitionMotions [Finite α] [Finit
     (screwDim k : ℤ) * F.graph.numParts f
         - (screwDim k - 1 : ℤ) * (F.graph.crossingEdges f).ncard
       ≤ (Module.finrank K (F.partitionMotions f) : ℤ) := by
-  haveI : Fintype α := Fintype.ofFinite α
-  haveI : Fintype ↥(F.graph.crossingEdges f) := Fintype.ofFinite _
+  have : Fintype α := Fintype.ofFinite α
+  have : Fintype ↥(F.graph.crossingEdges f) := Fintype.ofFinite _
   -- Work with the **full** cut `partitionCutMap f` on `α → ScrewSpace K k` (a plain pi, light
   -- instances), combining its rank-nullity with the `ker ⊓ W_f` dimension inequality.
   -- Rank-nullity: `finrank (range) + finrank (ker) = finrank (α → ScrewSpace K k) = D·|α|`.
@@ -2040,7 +2040,7 @@ theorem screwDim_add_deficiency_le_finrank_infinitesimalMotions [Nonempty α] [F
     (F : BodyHingeFramework K k α β) (hC : ∀ e, F.supportExtensor e ≠ 0) :
     (screwDim k : ℤ) + F.graph.deficiency (k + 1)
       ≤ (Module.finrank K F.infinitesimalMotions : ℤ) := by
-  haveI : Fintype α := Fintype.ofFinite α
+  have : Fintype α := Fintype.ofFinite α
   -- `D = screwDim k = bodyBarDim (k+1)` reconciles the screw-space and body-bar `D` conventions.
   have hDcast : (Graph.bodyBarDim (k + 1) : ℤ) = (screwDim k : ℤ) := by
     have : Graph.bodyBarDim (k + 1) = screwDim k := by
@@ -2069,7 +2069,7 @@ brick). -/
 theorem screwDim_le_finrank_infinitesimalMotions [Nonempty α] [Finite α]
     (F : BodyHingeFramework K k α β) :
     screwDim k ≤ Module.finrank K F.infinitesimalMotions := by
-  haveI : Fintype α := Fintype.ofFinite α
+  have : Fintype α := Fintype.ofFinite α
   rw [← F.finrank_trivialMotions]
   exact Submodule.finrank_mono F.trivialMotions_le_infinitesimalMotions
 
@@ -2100,8 +2100,8 @@ theorem screwDim_mul_range_card_sub_le_finrank_partitionMotions [Finite α] [Fin
     (screwDim k : ℤ) * Nat.card (Set.range f)
         - (screwDim k - 1 : ℤ) * (F.graph.crossingEdges f).ncard
       ≤ (Module.finrank K (F.partitionMotions f) : ℤ) := by
-  haveI : Fintype α := Fintype.ofFinite α
-  haveI : Fintype ↥(F.graph.crossingEdges f) := Fintype.ofFinite _
+  have : Fintype α := Fintype.ofFinite α
+  have : Fintype ↥(F.graph.crossingEdges f) := Fintype.ofFinite _
   have hfull : Module.finrank K (LinearMap.range (F.partitionCutMap f))
       + Module.finrank K (LinearMap.ker (F.partitionCutMap f)) = screwDim k * Fintype.card α := by
     rw [LinearMap.finrank_range_add_finrank_ker, finrank_screwAssignment]
@@ -2192,8 +2192,8 @@ theorem screwDim_mul_compl_add_deficiency_le_finrank_infinitesimalMotions
     (hC : ∀ e u v, F.graph.IsLink e u v → F.supportExtensor e ≠ 0) :
     (screwDim k : ℤ) * (F.graph.vertexSet.compl.ncard + 1) + F.graph.deficiency n
       ≤ (Module.finrank K F.infinitesimalMotions : ℤ) := by
-  haveI : Fintype α := Fintype.ofFinite α
-  haveI : Nonempty α := ⟨hne.some⟩
+  have : Fintype α := Fintype.ofFinite α
+  have : Nonempty α := ⟨hne.some⟩
   set VG := F.graph.vertexSet
   -- Pick the def-attaining partition `f₀`.
   obtain ⟨f₀, hf₀⟩ := exists_eq_ciSup_of_finite (f := F.graph.partitionDef n)

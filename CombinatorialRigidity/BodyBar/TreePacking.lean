@@ -65,7 +65,7 @@ idiom: the rank of `Matroid.Union (fun _ : Fin k ↦ M)` attains
 theorem Union_pow_rank_eq [DecidableEq α] [Finite α] (M : Matroid α) (k : ℕ) :
     (∃ Y : Set α, k * M.rk Y + (univ \ Y).ncard ≤ (Matroid.Union (fun _ : Fin k ↦ M)).rank) ∧
     (∀ Y : Set α, (Matroid.Union (fun _ : Fin k ↦ M)).rank ≤ k * M.rk Y + (univ \ Y).ncard) := by
-  haveI : Fintype α := Fintype.ofFinite α
+  have : Fintype α := Fintype.ofFinite α
   classical
   obtain ⟨⟨Y, hY⟩, hle⟩ := Union_rank_eq (fun _ : Fin k ↦ M)
   have hsum : ∀ Y : Finset α, (∑ _i : Fin k, M.rk (Y : Set α)) = k * M.rk (Y : Set α) := by
@@ -322,7 +322,7 @@ lemma le_mul_cycleMatroid_rk_of_isSparse_restrict [Finite α] [Finite β] {G : G
   have hEH : E(H) = Y := edgeSet_deleteVerts_isolatedSet_restrict hYG
   have hCompFin : H.Components.Finite := by
     rw [components_eq_walkable_image]; exact (Set.toFinite V(H)).image _
-  haveI : Fintype H.Components := hCompFin.fintype
+  have : Fintype H.Components := hCompFin.fintype
   -- `H.cycleMatroid` is `G.cycleMatroid` restricted to `Y`; ranks agree on bar subsets of `Y`
   have hHcm : H.cycleMatroid = G.cycleMatroid.restrict Y := by
     simp only [hH, cycleMatroid_deleteVerts_isolatedSet, cycleMatroid_restrict,
@@ -432,7 +432,7 @@ a cover, so the two existentials agree. -/
 theorem tutte_nash_williams [Finite α] [Finite β] {G : Graph α β} {k : ℕ} :
     G.IsForestPacking k ↔ G.IsSparse k k := by
   classical
-  haveI : Fintype β := Fintype.ofFinite β
+  have : Fintype β := Fintype.ofFinite β
   -- the union-independence iff, specialized to the full edge set `E(G)` (where `G ↾ E(G) = G`)
   have hiff : (Matroid.Union (fun _ : Fin k ↦ G.cycleMatroid)).Indep E(G) ↔ G.IsSparse k k := by
     rw [unionPow_cycleMatroid_indep_iff_isSparse_restrict subset_rfl, restrict_self]
@@ -482,7 +482,7 @@ theorem isMaximalAcyclicSet_of_isForestPacking_of_isTight [Finite α] [Finite β
     (hdisj : Pairwise (Function.onFun Disjoint Fs)) (hacyc : ∀ i, G.IsAcyclicSet (Fs i))
     (i : Fin k) : G.IsMaximalAcyclicSet (Fs i) := by
   classical
-  haveI : Fintype β := Fintype.ofFinite β
+  have : Fintype β := Fintype.ofFinite β
   set M := G.cycleMatroid with hM
   -- each forest is independent in the cycle matroid
   have hindep : ∀ j, M.Indep (Fs j) := fun j ↦ by rw [hM, cycleMatroid_indep]; exact hacyc j

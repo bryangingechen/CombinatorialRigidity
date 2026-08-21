@@ -115,7 +115,7 @@ lemma IsSparse.maxBlock_isTightOn {G : SimpleGraph V} {k ℓ : ℕ}
   -- a separate auxiliary lemma path, then run `Finset.sup_mem`.
   -- Strategy: use a noncomputable Fintype instance to express the family as a
   -- `Finset (Finset V)`, then prove the maxBlock coincides with its `Finset.sup`.
-  letI : Fintype V := Fintype.ofFinite V
+  let : Fintype V := Fintype.ofFinite V
   classical
   set F : Finset (Finset V) := (Finset.univ : Finset (Finset V)).filter
     (fun S => G.IsTightOn k ℓ S ∧ X ⊆ S) with hF_def
@@ -233,7 +233,7 @@ theorem IsSparse.exists_aug_of_lt_two_mul {k ℓ : ℕ} (hℓ : ℓ < 2 * k)
   by_contra h_no_aug
   push Not at h_no_aug
   -- Setup: V is a Fintype, top.edgeSet is finite, so I, J are finite.
-  letI : Fintype V := Fintype.ofFinite V
+  let : Fintype V := Fintype.ofFinite V
   classical
   have h_top_fin : ((⊤ : SimpleGraph V).edgeSet).Finite := (⊤ : SimpleGraph V).edgeSet.toFinite
   have hI_fin : I.Finite := h_top_fin.subset hI_off

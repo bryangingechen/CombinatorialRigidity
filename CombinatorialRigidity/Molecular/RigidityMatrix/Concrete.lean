@@ -104,7 +104,7 @@ theorem Matrix.rank_of_coordEquiv {M : Type*} [AddCommGroup M] [Module K M]
     (Matrix.of (fun i => coordEquiv (w i))).rank
       = Module.finrank K (Submodule.span K (Set.range w)) := by
   classical
-  haveI : Fintype ι := Fintype.ofFinite ι
+  have : Fintype ι := Fintype.ofFinite ι
   rw [Matrix.rank_eq_finrank_span_row]
   have hrow : Set.range (Matrix.of (fun i => coordEquiv (w i))).row
       = coordEquiv '' Set.range w := by
@@ -1185,8 +1185,8 @@ the composition core's `Fintype.card m₁ = D` rewrite reads, via the `en` block
 theorem columnSplit_corner_card [Finite α] (a : α) :
     Fintype.card ({body : α // body = a} × Fin (Module.finrank K (ScrewSpace K k)))
       = screwDim k := by
-  haveI : Fintype α := Fintype.ofFinite α
-  haveI : Fintype {body : α // body = a} := Fintype.ofFinite _
+  have : Fintype α := Fintype.ofFinite α
+  have : Fintype {body : α // body = a} := Fintype.ofFinite _
   simp only [Fintype.card_prod, Fintype.card_fin, screwSpace_finrank,
     Fintype.card_subtype_eq, one_mul]
 
@@ -1233,8 +1233,8 @@ reduces it to `(card {e // e = ea}) · (card (Fin (D−1)))`; the `= ea` subtype
 theorem edgeRowSplit_corner_card [Finite β] {G : Graph α β} (ea : {e // e ∈ G.edgeSet}) :
     Fintype.card ({e : {e // e ∈ G.edgeSet} // e = ea} × Fin (screwDim k - 1))
       = screwDim k - 1 := by
-  haveI : Fintype {e // e ∈ G.edgeSet} := Fintype.ofFinite _
-  haveI : Fintype {e : {e // e ∈ G.edgeSet} // e = ea} := Fintype.ofFinite _
+  have : Fintype {e // e ∈ G.edgeSet} := Fintype.ofFinite _
+  have : Fintype {e : {e // e ∈ G.edgeSet} // e = ea} := Fintype.ofFinite _
   simp only [Fintype.card_prod, Fintype.card_fin, Fintype.card_subtype_eq, one_mul]
 
 /-! ## A4 — the (6.61) column operation on the concrete matrix
@@ -2684,7 +2684,7 @@ theorem BodyHingeFramework.linearIndependent_toBlocks₁₁_row_of_corner_gate [
             * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
                 (columnOp (K := K) (k := k) hva).symm).toLinearMap)ᵀ).submatrix re
           (columnSplit (k := k) v).symm).toBlocks₁₁).row := by
-  haveI : Unique {body : α // body = v} := Unique.subtypeEq v
+  have : Unique {body : α // body = v} := Unique.subtypeEq v
   set e : ({body : α // body = v} × Fin (Module.finrank K (ScrewSpace K k)))
       ≃ Fin (Module.finrank K (ScrewSpace K k)) :=
     Equiv.uniqueProd (Fin (Module.finrank K (ScrewSpace K k))) {body : α // body = v} with he
@@ -2775,7 +2775,7 @@ theorem BodyHingeFramework.submatrix_columnOp_toBlocks₁₁_sub_mul_toBlocks₂
                 (columnOp (K := K) (k := k) hva).symm).toLinearMap)ᵀ).submatrix re
           (columnSplit (k := k) v).symm).toBlocks₂₁)
       = Matrix.of (fun i j => coordEquiv (φ i) j) := by
-  haveI : Unique {body : α // body = v} := Unique.subtypeEq v
+  have : Unique {body : α // body = v} := Unique.subtypeEq v
   -- The shared pin-column read: `(columnSplit v).symm (Sum.inl (⟨v, rfl⟩, c)) = (v, c)`.
   ext i x
   obtain ⟨⟨body, hbody⟩, c⟩ := x

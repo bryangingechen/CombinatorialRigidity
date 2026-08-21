@@ -235,9 +235,9 @@ theorem exists_isGenericEndpoints_abundance [Finite α] [Finite β] (G : Graph �
     ∃ P : MvPolynomial (β × Bool × Fin n) ℝ, P ≠ 0 ∧
       ∀ q, MvPolynomial.eval q P ≠ 0 → IsGenericEndpoints G D q := by
   classical
-  haveI : Fintype α := Fintype.ofFinite α
-  haveI : Fintype E(G) := Fintype.ofFinite _
-  haveI : Fintype (Set ↥E(G)) := Fintype.ofFinite _
+  have : Fintype α := Fintype.ofFinite α
+  have : Fintype E(G) := Fintype.ofFinite _
+  have : Fintype (Set ↥E(G)) := Fintype.ofFinite _
   -- The standard basis of body motions and the dual-basis identification `φ`.
   set B : Module.Basis (Σ _ : α, Fin (bodyBarDim n)) ℝ (Motion n α) :=
     Pi.basis (fun _ : α => (EuclideanSpace.basisFun (Fin (bodyBarDim n)) ℝ).toBasis) with hB
@@ -559,7 +559,7 @@ theorem exists_endpoints_linearIndependent_rigidityRow [Finite α] [Finite β] {
   rcases E'.eq_empty_or_nonempty with hE'0 | hE'ne
   · -- `E' = ∅`: any `q` works, the indexed family is vacuous.
     subst hE'0
-    haveI : IsEmpty (Subtype.val ⁻¹' (∅ : Set β) : Set ↥E(G)) := by
+    have : IsEmpty (Subtype.val ⁻¹' (∅ : Set β) : Set ↥E(G)) := by
       simp [Set.isEmpty_coe_sort]
     exact ⟨fun _ => 0, linearIndependent_empty_type⟩
   -- A disjoint forest packing covering `E'`

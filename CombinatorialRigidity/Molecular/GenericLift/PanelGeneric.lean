@@ -117,8 +117,8 @@ theorem exists_isGenericNormals_abundance [Finite α] [Finite β] (ends : β →
     ∃ P : MvPolynomial (α × Fin (k + 2)) K, P ≠ 0 ∧
       ∀ q, MvPolynomial.eval q P ≠ 0 → IsGenericNormals ends q := by
   classical
-  haveI : Fintype α := Fintype.ofFinite α
-  haveI : Fintype (Set (β × Set.powersetCard (Fin (k + 2)) k
+  have : Fintype α := Fintype.ofFinite α
+  have : Fintype (Set (β × Set.powersetCard (Fin (k + 2)) k
     × Set.powersetCard (Fin (k + 2)) k)) := Fintype.ofFinite _
   -- The standard basis of `α → ScrewSpace K k` and the dual-basis identification `φ`.
   set B : Module.Basis (Σ _ : α, Set.powersetCard (Fin (k + 2)) k) K (α → ScrewSpace K k) :=
@@ -210,7 +210,7 @@ theorem supportExtensor_ofNormals_ne_zero_of_isGenericNormals (hk1 : 1 ≤ k)
     (hq : IsGenericNormals ends q) :
     ∀ e, (ofNormals G ends q).toBodyHinge.supportExtensor e ≠ 0 := by
   classical
-  haveI : G.Loopless := hloop
+  have : G.Loopless := hloop
   intro e hzero
   have huv : (ends e).1 ≠ (ends e).2 := (hends e).ne
   set u := (ends e).1
@@ -408,7 +408,7 @@ theorem finrank_span_rigidityRows_ofNormals_of_isGenericNormals [Infinite K]
         (ofNormals G ends q).toBodyHinge.rigidityRows) : ℤ)
       = screwDim k * (V(G).ncard - 1 : ℤ) - G.deficiency n := by
   classical
-  haveI hloop : G.Loopless := hSimple.toLoopless
+  have hloop : G.Loopless := hSimple.toLoopless
   -- The genuine link-recording Theorem-5.6 producer, over OUR carrier `G`.
   obtain ⟨Q0, hQ0g, hQ0ends, hQ0C, hQ0rank⟩ :=
     rankHypothesis_genuine_recordsLinks_of_theorem_55_gen (K := K) (k := k) (n := n)
@@ -446,7 +446,7 @@ theorem finrank_span_rigidityRows_ofNormals_of_isGenericNormals [Infinite K]
     rw [normalRow_eq_panelRow G ends q]
     exact (ofNormals G ends q).toBodyHinge.panelRow_mem_rigidityRows_of_link
       (ends := ends) (e := e) (u := (ends e).1) (w := (ends e).2) rfl (hends e) t₁ t₂
-  haveI : Fintype s := Fintype.ofFinite s
+  have : Fintype s := Fintype.ofFinite s
   have hlbN : Module.finrank K (Submodule.span K Q0.toBodyHinge.rigidityRows)
       ≤ Module.finrank K (Submodule.span K (ofNormals G ends q).toBodyHinge.rigidityRows) := by
     calc Module.finrank K (Submodule.span K Q0.toBodyHinge.rigidityRows)

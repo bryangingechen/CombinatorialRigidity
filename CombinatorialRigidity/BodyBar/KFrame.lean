@@ -204,7 +204,7 @@ theorem _root_.Matroid.Rep.finrank_span_image_eq_rk {γ K W : Type*} [Field K] [
   obtain ⟨I, hI⟩ := M.exists_isBasis' Y
   obtain ⟨_, hindep, hsub⟩ := v.isBasis'_iff.mp hI
   have hfinI : I.Finite := hI.indep.finite
-  haveI : Fintype (v '' I) := (hfinI.image v).fintype
+  have : Fintype (v '' I) := (hfinI.image v).fintype
   have hspan : Submodule.span K (v '' Y) = Submodule.span K (v '' I) :=
     le_antisymm (Submodule.span_le.mpr hsub)
       (Submodule.span_mono (Set.image_mono hI.subset))
@@ -227,7 +227,7 @@ theorem finrank_span_signedIncMatrix_eq_cycleMatroid_rk [Finite β] (K : Type*) 
         (Submodule.span K ((G.orientation_nonempty.some.signedIncMatrix K) '' Y))
       = G.cycleMatroid.rk Y := by
   classical
-  haveI : G.EdgeFinite := by
+  have : G.EdgeFinite := by
     rw [edgeFinite_iff]; exact Set.toFinite _
   have hrep := (G.cycleMatroidRep K).finrank_span_image_eq_rk Y
   have he : ⇑(G.cycleMatroidRep K) = G.orientation_nonempty.some.signedIncMatrix K := rfl
@@ -243,7 +243,7 @@ theorem finrank_blockPiSpanOn [Finite β] (Y : Set β) :
         (blockPiSpanOn G k (G.orientation_nonempty.some) Y)
       = k * G.cycleMatroid.rk Y := by
   classical
-  haveI : Module.Finite (KFrameField β k)
+  have : Module.Finite (KFrameField β k)
       (span (KFrameField β k)
         ((G.orientation_nonempty.some.signedIncMatrix (KFrameField β k)) '' Y)) :=
     Module.Finite.span_of_finite _ ((Set.toFinite Y).image _)
@@ -268,16 +268,16 @@ theorem forest_count_of_linearIndepOn_kFrameRow [Finite β] {E' : Set β}
   set v := kFrameRow k (G := G) D with hv
   have hLIY : LinearIndepOn (KFrameField β k) v Y := hLI.mono hYE'
   -- `Y.ncard = finrank (span (v '' Y))`, via the LI image cardinality.
-  haveI : Fintype (v '' Y) := (Set.toFinite (v '' Y)).fintype
+  have : Fintype (v '' Y) := (Set.toFinite (v '' Y)).fintype
   have hcard : Module.finrank (KFrameField β k) (span (KFrameField β k) (v '' Y)) = Y.ncard := by
     simp only [finrank_span_set_eq_card hLIY.id_image, ← Set.ncard_eq_toFinset_card',
       hLIY.injOn.ncard_image]
   -- The block-product subspace is finite-dimensional (transport along `constPiSpanEquiv`).
-  haveI : Module.Finite (KFrameField β k)
+  have : Module.Finite (KFrameField β k)
       (span (KFrameField β k)
         ((D.signedIncMatrix (KFrameField β k)) '' Y)) :=
     Module.Finite.span_of_finite _ ((Set.toFinite Y).image _)
-  haveI : Module.Finite (KFrameField β k) (blockPiSpanOn G k D Y) := by
+  have : Module.Finite (KFrameField β k) (blockPiSpanOn G k D Y) := by
     rw [blockPiSpanOn]
     exact Module.Finite.equiv (constPiSpanEquiv k _).symm
   -- `finrank (span (v '' Y)) ≤ finrank (blockPiSpanOn) = k · r(Y)`.
@@ -479,9 +479,9 @@ theorem linearIndepOn_kFrameRow_of_isSparse_restrict [Finite α] [Finite β]
     {E' : Set β} (hE' : E' ⊆ E(G)) (hsparse : (G ↾ E').IsSparse k k) :
     LinearIndepOn (KFrameField β k) (kFrameRow k (G.orientation_nonempty.some)) E' := by
   classical
-  haveI : Fintype β := Fintype.ofFinite β
-  haveI : Fintype α := Fintype.ofFinite α
-  haveI : Fintype E' := (Set.toFinite E').fintype
+  have : Fintype β := Fintype.ofFinite β
+  have : Fintype α := Fintype.ofFinite α
+  have : Fintype E' := (Set.toFinite E').fintype
   set D := G.orientation_nonempty.some with hD
   set R := MvPolynomial (β × Fin k) ℚ with hR
   -- A disjoint forest packing covering `E'`.

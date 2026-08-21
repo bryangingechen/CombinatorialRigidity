@@ -65,7 +65,7 @@ theorem isBase_vfiber_ncard_ge [DecidableEq β] [Finite α] [Finite β] {G : Gra
     {B : Set (β × Fin (bodyHingeMult n))} (hB : (G.matroidMG n).IsBase B) :
     bodyBarDim n ≤ (B ∩ (edgeFiber eₐ n ∪ edgeFiber e_b n)).ncard := by
   classical
-  haveI : Nonempty α := ⟨a⟩
+  have : Nonempty α := ⟨a⟩
   have hD1 : 1 ≤ bodyBarDim n := le_trans (by norm_num) hD
   set H := G.removeVertex v with hH
   have hle : H ≤ G := by rw [hH, removeVertex]; exact G.deleteVerts_le
@@ -333,7 +333,7 @@ theorem no_rigid_edge_count [DecidableEq β] [Finite α] [Finite β] {G : Graph 
     (bodyHingeMult n : ℤ) * E(G).ncard
       < bodyBarDim n * ((V(G).ncard : ℤ) - 1) - k + bodyHingeMult n := by
   classical
-  haveI : G.Loopless := loopless_of_isMinimalKDof hG
+  have : G.Loopless := loopless_of_isMinimalKDof hG
   have hD1 : 1 ≤ bodyBarDim n := le_trans (by norm_num) hD
   have hHM : (bodyHingeMult n : ℤ) = (bodyBarDim n : ℤ) - 1 := by rw [bodyHingeMult]; omega
   set M := G.matroidMG n with hM
@@ -518,7 +518,7 @@ theorem indep_edgeSet_mulTilde_of_noRigid_of_pos [DecidableEq β] [Finite α] [F
     (hnp : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) :
     (G.matroidMG n).Indep E(G.mulTilde n) := by
   classical
-  haveI hLl : G.Loopless := loopless_of_isMinimalKDof hG
+  have hLl : G.Loopless := loopless_of_isMinimalKDof hG
   have hD1 : 1 ≤ bodyBarDim n := le_trans (by norm_num) hD
   -- Suppose for contradiction `E(G̃)` is dependent.
   by_contra hindep
@@ -564,8 +564,8 @@ theorem indep_edgeSet_mulTilde_of_noRigid_of_pos [DecidableEq β] [Finite α] [F
   have hrestrict : H.matroidMG n = (G.matroidMG n) ↾ E(H.mulTilde n) :=
     (matroidMG_restrict_mulTilde hHle n).symm
   -- `M(G̃)` is `RankFinite` (ground set is finite).
-  haveI hMGFin : (G.matroidMG n).Finite := Matroid.finite_of_finite (M := G.matroidMG n)
-  haveI hMGRF : (G.matroidMG n).RankFinite := Matroid.rankFinite_of_finite _
+  have hMGFin : (G.matroidMG n).Finite := Matroid.finite_of_finite (M := G.matroidMG n)
+  have hMGRF : (G.matroidMG n).RankFinite := Matroid.rankFinite_of_finite _
   -- A base of `M(H̃)` is also independent in `M(G̃)`.
   obtain ⟨B, hBbase⟩ := (H.matroidMG n).exists_isBase
   have hBindepG : (G.matroidMG n).Indep B := by
@@ -629,7 +629,7 @@ theorem exists_degree_le_two [DecidableEq β] [Finite α] [Finite β] {G : Graph
     (hnp : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) :
     ∃ v ∈ V(G), G.degree v ≤ 2 := by
   classical
-  haveI : G.Finite := { edgeSet_finite := Set.toFinite _, vertexSet_finite := Set.toFinite _ }
+  have : G.Finite := { edgeSet_finite := Set.toFinite _, vertexSet_finite := Set.toFinite _ }
   have hD2 : 2 ≤ bodyBarDim n := le_trans (by norm_num) hD
   -- The all-`k` KT 4.5(i) edge bound: `(D−1)|E| < D(|V|−1) − k + (D−1)`.
   have hedge := no_rigid_edge_count hD2 hVne hG hnp
@@ -701,14 +701,14 @@ theorem simple_of_isMinimalKDof_of_noRigid [Finite α] [Finite β] [DecidableEq 
     (hG : G.IsMinimalKDof n k)
     (hnp : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) : G.Simple where
   not_isLoopAt e x hloop := by
-    haveI := loopless_of_isMinimalKDof hG
+    have := loopless_of_isMinimalKDof hG
     exact this.not_isLoopAt e x hloop
   eq_of_isLink := by
     intro e f x y hle hlf
     -- Assume `e ≠ f` (parallel edges) and derive contradiction via `hnp`.
     by_contra hne
     -- Basic facts.
-    haveI hLl := loopless_of_isMinimalKDof hG
+    have hLl := loopless_of_isMinimalKDof hG
     have hxy : x ≠ y := hle.ne
     have hxG : x ∈ V(G) := hle.left_mem
     have hyG : y ∈ V(G) := hle.right_mem
@@ -897,10 +897,10 @@ theorem exists_adjacent_degree_two_pair [DecidableEq β] [Finite α] [Finite β]
     (hnp : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) :
     ∃ v a : α, v ∈ V(G) ∧ a ∈ V(G) ∧ G.degree v = 2 ∧ G.degree a = 2 ∧ ∃ e, G.IsLink e v a := by
   classical
-  haveI hFin : G.Finite := { edgeSet_finite := Set.toFinite _, vertexSet_finite := Set.toFinite _ }
-  haveI : Fintype α := Fintype.ofFinite _
-  haveI : Fintype β := Fintype.ofFinite _
-  haveI hLl : G.Loopless := loopless_of_isMinimalKDof hG
+  have hFin : G.Finite := { edgeSet_finite := Set.toFinite _, vertexSet_finite := Set.toFinite _ }
+  have : Fintype α := Fintype.ofFinite _
+  have : Fintype β := Fintype.ofFinite _
+  have hLl : G.Loopless := loopless_of_isMinimalKDof hG
   have hD2 : 2 ≤ bodyBarDim n := by linarith
   have hD1 : 1 ≤ bodyBarDim n := by linarith
   have hDi : (6 : ℤ) ≤ (bodyBarDim n : ℤ) := by exact_mod_cast hD
@@ -1072,9 +1072,9 @@ theorem exists_adjacent_degree_two_pair_of_edgeBound [Finite α] [Finite β]
       < bodyBarDim n * ((V(G).ncard : ℤ) - 1) + bodyHingeMult n) :
     ∃ v a : α, v ∈ V(G) ∧ a ∈ V(G) ∧ G.degree v = 2 ∧ G.degree a = 2 ∧ ∃ e, G.IsLink e v a := by
   classical
-  haveI hFin : G.Finite := { edgeSet_finite := Set.toFinite _, vertexSet_finite := Set.toFinite _ }
-  haveI : Fintype α := Fintype.ofFinite _
-  haveI : Fintype β := Fintype.ofFinite _
+  have hFin : G.Finite := { edgeSet_finite := Set.toFinite _, vertexSet_finite := Set.toFinite _ }
+  have : Fintype α := Fintype.ofFinite _
+  have : Fintype β := Fintype.ofFinite _
   have hDi : (6 : ℤ) ≤ (bodyBarDim n : ℤ) := by exact_mod_cast hD
   have hHM : (bodyHingeMult n : ℤ) = (bodyBarDim n : ℤ) - 1 := by rw [bodyHingeMult]; omega
   have hVne : V(G).Nonempty := Set.nonempty_of_ncard_ne_zero (by omega)

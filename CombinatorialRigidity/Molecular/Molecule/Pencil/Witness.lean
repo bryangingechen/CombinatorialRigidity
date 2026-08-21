@@ -256,7 +256,7 @@ theorem exists_coord_linearIndependent_pencilChartPoint_of_pendant_deg3
           pencilChartPoint (PencilSeed.ofCoord q) hubSel w₁,
           pencilChartPoint (PencilSeed.ofCoord q) hubSel w₂] := by
   classical
-  haveI := hSimple
+  have := hSimple
   -- Distinctness of the four named vertices, and `u_c`'s hub status.
   have hw1u : w₁ ≠ u_c := hl₁.ne.symm
   have hw2u : w₂ ≠ u_c := hl₂.ne.symm
@@ -684,8 +684,8 @@ theorem exists_coord_linearIndependent_pencilChartNormal_of_pendant_deg3
           (pencilChartNormal (PencilSeed.ofCoord q) hubSel nbrSel (G.induce V₁))
           (G.closedHubNbhd v) := by
   classical
-  haveI := hSimple
-  haveI : G.LocallyFinite := inferInstance
+  have := hSimple
+  have : G.LocallyFinite := inferInstance
   -- Distinctness and `u_c`'s ambient hub status.
   have hw1u : w₁ ≠ u_c := hl₁.ne.symm
   have hw2u : w₂ ≠ u_c := hl₂.ne.symm
@@ -1264,8 +1264,8 @@ theorem exists_injOn_mapsTo_of_ncard_le {γ δ : Type*} [Inhabited δ] {T : Set 
     (hT : T.Finite) (hP : P.Finite) (hle : T.ncard ≤ P.ncard) :
     ∃ f : γ → δ, Set.InjOn f T ∧ ∀ x ∈ T, f x ∈ P := by
   classical
-  haveI := hT.fintype
-  haveI := hP.fintype
+  have := hT.fintype
+  have := hP.fintype
   have hc : Fintype.card T ≤ Fintype.card P := by
     rw [← Nat.card_eq_fintype_card, ← Nat.card_eq_fintype_card, Nat.card_coe_set_eq,
       Nat.card_coe_set_eq]

@@ -60,7 +60,7 @@ neighborhood. -/
 theorem Injective.eventually_of_continuousAt {F : X → V → α}
     (hcont : ∀ v, ContinuousAt (fun x => F x v) x₀) (hinj : Injective (F x₀)) :
     ∀ᶠ x in 𝓝 x₀, Injective (F x) := by
-  haveI : Fintype V := Fintype.ofFinite V
+  have : Fintype V := Fintype.ofFinite V
   have h_each : ∀ uv ∈ (Finset.univ : Finset (V × V)),
       ∀ᶠ x in 𝓝 x₀, uv.1 ≠ uv.2 → F x uv.1 ≠ F x uv.2 := by
     rintro ⟨u, v⟩ _

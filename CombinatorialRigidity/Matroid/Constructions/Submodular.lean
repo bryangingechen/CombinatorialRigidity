@@ -935,8 +935,8 @@ theorem rado_v2 [Finite ι] [Finite α] [DecidableEq α] (M : Matroid α)
     (∃ T : PartialTransversal A, T.Total ∧ M.Indep T.right) ↔
     (∀ K : Finset ι, K.card ≤ M.rk (K.biUnion A)) := by
   classical
-  haveI : Fintype ι := Fintype.ofFinite ι
-  haveI : Fintype α := Fintype.ofFinite α
+  have : Fintype ι := Fintype.ofFinite ι
+  have : Fintype α := Fintype.ofFinite α
   by_cases hA_nonempty : ∀ i, (A i).Nonempty; swap
   · simp only [not_forall, not_nonempty_iff_eq_empty] at hA_nonempty
     obtain ⟨i, hAi⟩ := hA_nonempty
@@ -1096,7 +1096,7 @@ theorem rado [Finite ι] [DecidableEq α] (M : Matroid α) (A : ι → Finset α
     (∃ e, Transversal e A ∧ M.Indep (Set.range e)) ↔
     (∀ K : Finset ι, K.card ≤ M.rk (K.biUnion A)) := by
   classical
-  haveI : Fintype ι := Fintype.ofFinite ι
+  have : Fintype ι := Fintype.ofFinite ι
   by_cases hA_nonempty : ∀ i, (A i).Nonempty; swap
   · simp only [not_forall, not_nonempty_iff_eq_empty] at hA_nonempty
     obtain ⟨i, hAi⟩ := hA_nonempty

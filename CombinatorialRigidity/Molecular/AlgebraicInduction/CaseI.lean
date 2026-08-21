@@ -292,7 +292,7 @@ theorem PanelHingeFramework.exists_rankPolynomial_of_IH_relabel_linking
     intro e he
     apply PanelHingeFramework.supportExtensor_ne_zero_of_isGeneralPosition _ hgp
     rw [PanelHingeFramework.ofNormals_ends]
-    haveI : (Gc.map f).Loopless := hloop
+    have : (Gc.map f).Loopless := hloop
     exact he.ne
   -- Step 4: apply the L4b-1 deficiency-aware rank polynomial at `nrm` with `hN := le_refl`.
   obtain ⟨Q, hQne, hQtrans⟩ :=
@@ -412,7 +412,7 @@ theorem PanelHingeFramework.exists_rankPolynomial_of_IH_linking
     intro e he
     apply PanelHingeFramework.supportExtensor_ne_zero_of_isGeneralPosition _ hgp
     rw [PanelHingeFramework.ofNormals_ends]
-    haveI : Gv.Loopless := hloop
+    have : Gv.Loopless := hloop
     exact he.ne
   -- Step 4: apply the L4b-1 deficiency-aware rank polynomial at `nrm` with `hN := le_refl`.
   obtain ⟨Q, hQne, hQtrans⟩ :=
@@ -491,7 +491,7 @@ theorem PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set_proj [F
             ((PanelHingeFramework.ofNormals G ends q).toBodyHinge.panelRow ends
               (i : β × _ × _))) := by
   classical
-  haveI : Fintype α := Fintype.ofFinite α
+  have : Fintype α := Fintype.ofFinite α
   set D := (extProj (K := K) (k := k) proj).dualMap with hDdef
   -- The standard basis of `α → ScrewSpace K k`, its dual-basis identification `φ`, and the
   -- bridge to
@@ -761,7 +761,7 @@ theorem PanelHingeFramework.rigidContract_exterior_rank_transport_htransport
     intro e he
     -- The linking edge has distinct endpoints: `F'.graph = G.rigidContract H r` is simple, so
     -- loopless. General position then gives the support extensor nonzero.
-    haveI : (G.rigidContract H r).Loopless := hcSimple.toLoopless
+    have : (G.rigidContract H r).Loopless := hcSimple.toLoopless
     rw [hF'g] at he
     have hne' : (endsM e).1 ≠ (endsM e).2 := he.ne
     refine (PanelHingeFramework.ofNormals (Gc.map f) endsM
@@ -899,7 +899,7 @@ theorem PanelHingeFramework.exists_rankPolynomial_of_IH_relabel_linking_set_proj
     rwa [hendsM]
   have hneF' : ∀ e, F'.graph.IsLink e (endsM e).1 (endsM e).2 → F'.supportExtensor e ≠ 0 := by
     intro e he
-    haveI : (G.rigidContract H r).Loopless := hcLoop
+    have : (G.rigidContract H r).Loopless := hcLoop
     rw [hF'g] at he
     have hne' : (endsM e).1 ≠ (endsM e).2 := he.ne
     refine (PanelHingeFramework.ofNormals (Gc.map f) endsM
@@ -1004,8 +1004,8 @@ theorem BodyHingeFramework.isInfinitesimallyRigidOn_vertexSet_of_span_le_rigidit
     (hcard : screwDim k * (F.graph.vertexSet.ncard - 1) ≤ Nat.card ι) :
     F.IsInfinitesimallyRigidOn F.graph.vertexSet := by
   classical
-  haveI : Fintype α := Fintype.ofFinite α
-  haveI : Fintype ι := Fintype.ofFinite ι
+  have : Fintype α := Fintype.ofFinite α
+  have : Fintype ι := Fintype.ofFinite ι
   -- The independent family spans a subspace of the rigidity-row span of dimension `Nat.card ι`.
   have hrows : Nat.card ι ≤ Module.finrank K (Submodule.span K F.rigidityRows) := by
     rw [Nat.card_eq_fintype_card, ← finrank_span_eq_card hLI]
@@ -1111,7 +1111,7 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_blockTriangu
     (n : ℕ) (hdef : G.deficiency n = 0) :
     PanelHingeFramework.HasGenericFullRankRealization K k n G := by
   classical
-  haveI : Fintype α := Fintype.ofFinite α
+  have : Fintype α := Fintype.ofFinite α
   -- The parent's edge-restricted `hends` weakens to the `H`-leg (the only leg running the
   -- rank-polynomial round-trip).
   have hendsH : ∀ e u v, GH.IsLink e u v → GH.IsLink e (ends e).1 (ends e).2 := fun e u v h =>
@@ -1264,7 +1264,7 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_blockTriangu
     (hdef : G.deficiency n = k') :
     PanelHingeFramework.HasGenericFullRankRealization K k n G := by
   classical
-  haveI : Fintype α := Fintype.ofFinite α
+  have : Fintype α := Fintype.ofFinite α
   have hendsH : ∀ e u v, GH.IsLink e u v → GH.IsLink e (ends e).1 (ends e).2 := fun e u v h =>
     (Graph.IsSubgraph.isLink_iff hGH h.edge_mem).mpr
       (hends e u v ((Graph.IsSubgraph.isLink_iff hGH h.edge_mem).mp h))
@@ -1349,7 +1349,7 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_blockTriangu
   -- Lower bound: the `hunion` family is LI and lies in `span rigidityRows` (via `hmem`).
   have hlb : screwDim k * ((V(G).ncard : ℤ) - 1) - k' ≤
       (Module.finrank K (Submodule.span K F.rigidityRows) : ℤ) := by
-    haveI : Fintype (↑rsH ⊕ ↑rsc) := Fintype.ofFinite _
+    have : Fintype (↑rsH ⊕ ↑rsc) := Fintype.ofFinite _
     have hli_lb : Nat.card (rsH ⊕ rsc) ≤ Module.finrank K (Submodule.span K F.rigidityRows) := by
       rw [Nat.card_eq_fintype_card, ← finrank_span_eq_card hunion]
       exact Submodule.finrank_mono (Submodule.span_le.2 (fun _ ⟨i, hi⟩ =>
@@ -1533,14 +1533,14 @@ theorem PanelHingeFramework.case_I_realization
         HasPanelRealization K k n G') :
     PanelHingeFramework.HasGenericFullRankRealization K k n G := by
   classical
-  haveI : NeZero (Graph.bodyHingeMult n) := ⟨by rw [Graph.bodyHingeMult]; omega⟩
+  have : NeZero (Graph.bodyHingeMult n) := ⟨by rw [Graph.bodyHingeMult]; omega⟩
   obtain ⟨⟨hle, hKDof⟩, hVH2', hVHss⟩ := hH
   have hHsub : V(H) ⊆ V(G) := hle.vertexSet_mono
   have hVHlt : V(H).ncard < V(G).ncard := Set.ncard_lt_ncard hVHss (Set.toFinite _)
   -- Manufacture the parent endpoint selector from `G` alone via the canonical `endsOf` (G3c-iii-a):
   -- it links every edge (`isLink_endsOf`), exactly the edge-restricted `hends` the body-set generic
   -- coupling needs (the all-`β` form is unsatisfiable for a label type with non-edges).
-  haveI : Inhabited α := ⟨r⟩
+  have : Inhabited α := ⟨r⟩
   set ends := G.endsOf with hendsDef
   have hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2 := by
     rw [hendsDef]; exact fun e _ _ h => G.isLink_endsOf h.edge_mem
@@ -1551,7 +1551,7 @@ theorem PanelHingeFramework.case_I_realization
   -- `G`), and the leg-`hswap` is the strengthened-motive link-recording conjunct of the IH
   -- realization composed with `endsOf`'s link-recording (`recordsLinks_swap_endsOf`), applied per
   -- leg below. So `hbundle` now carries only the irreducible Claim-6.4 transport `htransport`.
-  haveI : G.Loopless := hSimple.toLoopless
+  have : G.Loopless := hSimple.toLoopless
   have hne_ends : ∀ e, G.IsLink e (ends e).1 (ends e).2 → (ends e).1 ≠ (ends e).2 :=
     fun e hlink => G.endsOf_fst_ne_snd hlink.edge_mem
   -- The geometric inputs of the coupling for legs `H` / `G ＼ E(H)` sharing `r` (G3b); the cover is
@@ -1903,7 +1903,7 @@ theorem hglue_of_forest [Infinite K] [Fintype α] [Nonempty α] {J : Type*} [Fin
     (Module.finrank K F₀.infinitesimalMotions : ℤ) ≤
       screwDim k + Module.finrank K (F₀.pinnedMotionsOn sblk) := by
   classical
-  haveI : Fintype J := Fintype.ofFinite J
+  have : Fintype J := Fintype.ofFinite J
   obtain ⟨r, hr, hmem⟩ := F₀.exists_independent_rigidityRows_of_forest hu hsep hlink he
   -- `Nat.card (Σ _ : J, Fin (screwDim k − 1)) = |J|·(D − 1)`.
   have hcard : Nat.card ((_ : J) × Fin (screwDim k - 1)) = Nat.card J * (screwDim k - 1) := by

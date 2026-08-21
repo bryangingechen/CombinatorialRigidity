@@ -129,8 +129,8 @@ theorem AffineSubspace.affineSpan_ne_top_of_ncard_le_finrank
     exact AffineSubspace.bot_ne_top _ _ _ ((AffineSubspace.span_empty k V V) ▸ h_top)
   · -- `s` nonempty: `finrank (vectorSpan k s) + 1 ≤ s.ncard`, but `vectorSpan = ⊤` from
     -- `h_top` would force `finrank V + 1 ≤ s.ncard ≤ finrank V`, contradiction.
-    haveI : Fintype s := hsf.fintype
-    haveI : Nonempty s := hs_ne.to_subtype
+    have : Fintype s := hsf.fintype
+    have : Nonempty s := hs_ne.to_subtype
     have h_le : finrank k (vectorSpan k s) + 1 ≤ s.ncard := by
       have h := finrank_vectorSpan_range_add_one_le k (Subtype.val : s → V)
       rw [Subtype.range_val] at h

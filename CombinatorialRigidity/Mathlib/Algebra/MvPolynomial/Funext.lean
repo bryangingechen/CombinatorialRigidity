@@ -58,7 +58,7 @@ are the ergonomic wrappers for the small arities that occur in practice. -/
 theorem exists_eval_ne_zero_of_forall_ne_zero {ι : Type*} [Finite ι]
     (p : ι → MvPolynomial σ R) (hp : ∀ i, p i ≠ 0) :
     ∃ x : σ → R, ∀ i, MvPolynomial.eval x (p i) ≠ 0 := by
-  haveI := Fintype.ofFinite ι
+  have := Fintype.ofFinite ι
   obtain ⟨x, hx⟩ :=
     exists_eval_ne_zero (Finset.prod_ne_zero_iff.mpr fun i _ => hp i : ∏ i, p i ≠ 0)
   rw [map_prod] at hx
