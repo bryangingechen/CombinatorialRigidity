@@ -31,11 +31,15 @@ for *organizing* this directory is here.
   `Matroid` dependency bumps**: the playbook (how to run one here, given that
   `lake update` is hook-denied), the environment requirements (notably
   `LAKE_CACHE_DIR`, without which Lean 4.34+ reports cache-write failures as
-  *build failures* and silently truncates coverage), the two verification traps
-  (cached modules don't re-emit warnings; `lake env lean` skips the style
-  linters), a per-bump record with the fix taxonomy, and the standing
-  **scheduled-cleanup** queue. Read it before attempting a bump; it is
-  maintenance, not a phase, so it outlives whatever phase is active.
+  *build failures* and silently truncates coverage), the verification traps
+  (`lake env lean` skips the style linters; and the superseded "cached modules
+  don't re-emit warnings" — with `LAKE_CACHE_DIR` set they do), a per-bump
+  record with the fix taxonomy, and the standing **scheduled-cleanup** queue.
+  It also owns the two bump scripts' rationale — `scripts/bump-mathlib.sh`
+  (transitive-pin sync, the sanctioned `lake update` escape hatch) and
+  `scripts/sweep-deprecations.py` (build-log-driven rename sweep). Read it
+  before attempting a bump; it is maintenance, not a phase, so it outlives
+  whatever phase is active.
 - **`Pencil-informal.md`** — the Phase-39 (PENCIL) **informal-mathematics
   workbook**: proofs under development for the kernels and branch arms the
   phase carries as hypotheses, staged *before* blueprint transcription

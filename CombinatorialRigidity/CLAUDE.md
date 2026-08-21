@@ -255,6 +255,39 @@ portable layer:
   Toolchain and dependency bumps are a human decision and arrive
   via the hopscotch workflow (*Automated mathlib bumps* below),
   never mid-session.
+
+  **Escape hatch, for a bump the user actually asked for.** The hook
+  has no bypass, and for three months that left a *requested* bump
+  with no sanctioned path — half of why this repo sat four Lean
+  versions behind. Two routes, neither of which runs `lake update`
+  from an agent:
+  1. **`scripts/bump-mathlib.sh <rev> --apply`** — reads mathlib's own
+     `lake-manifest.json` at the target rev and copies its transitive
+     pins (`batteries`, `aesop`, `Qq`, `Cli`, `proofwidgets`,
+     `importGraph`, `plausible`, `LeanSearchClient`) plus its
+     `lean-toolchain` into ours, leaving non-mathlib deps (`Matroid`,
+     `checkdecls`, `loogle`) alone. Deterministic, reviewable in the
+     diff, and it fixes the one thing `lake update mathlib` gets wrong
+     (see *Automated mathlib bumps*). Dry-run first — it is dry by
+     default.
+  2. **The human runs it** — `! lake update` in the Claude Code
+     prompt, or a normal shell. Simplest when a human is present.
+
+  Either way the `lean-toolchain` / `lake-manifest.json` modification
+  is then *expected*, and the "stop and report" rule below does not
+  apply. Full process: `../notes/ToolchainBumps.md` *Playbook*.
+
+- **`LAKE_CACHE_DIR` is mandatory on this machine** (Lean 4.34+).
+  Lake's artifact cache defaults to a directory under the elan
+  toolchain that the agent harness cannot write, and **Lake reports the
+  failed cache write as a build failure** — so a build looks like it
+  covered the tree while silently stopping at the first blocked target
+  and its reverse-dependencies (the first v4.34.0-rc1 build compiled 36
+  of 122 modules and reported a correspondingly flattering error
+  count). Run every build as `LAKE_CACHE_DIR=<writable-dir> lake build`
+  and check `grep -c 'failed to cache artifact'` is `0`.
+  `--no-cache` does *not* help — it disables cache *downloads*, not the
+  local write.
 - **One `lake build` at a time, in the foreground.** Never start a
   second build while one is running, never poll a slow build by
   re-running it in a loop, never `&`-background a build inside a
@@ -283,9 +316,14 @@ warnings (`unusedSimpArgs`, `flexible`, `unusedDecidableInType`,
 exact gap shipped warnings into a Phase 12 vendored-port commit before
 the post-commit gate caught them). **Before each commit, scan the full
 `lake build` output for `warning:`** (e.g. `lake build <module> 2>&1 |
-grep -nE 'warning:'`) and drive the count to zero. Touch the file
-first (`touch X.lean`) if the build is cached, since cached modules
-don't re-emit warnings.
+grep -nE 'warning:'`) and drive the count to zero.
+
+With `LAKE_CACHE_DIR` set (mandatory, above) a cache hit shows as
+`⚠ Replayed <module>` and **replays the stored warnings**, so a
+whole-tree count is honest without touching anything — the older
+"`touch X.lean` first, cached modules don't re-emit warnings" advice
+is obsolete as of Lean 4.34. A build with **no** writable cache dir is
+the case that under-reports, and it under-reports *errors* too.
 
 The `declaration uses 'sorry'` warning is the no-sorry gate's signal —
 **a `sorry` never rides in a commit**; carry an undischarged crux as an

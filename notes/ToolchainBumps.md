@@ -18,22 +18,31 @@ hook (`.claude/hooks/block-lake-update.sh`), added after an OOM incident. That
 hook is right to exist, but it has no built-in escape hatch, so a *deliberate,
 requested* bump needs one of:
 
-1. **Human runs it** — `! lake update` in the Claude Code prompt, or a normal
-   shell. Simplest when a human is present.
-2. **Hand-write `lake-manifest.json`** — deterministic, reviewable in the diff,
-   and needs no hook bypass. This is what the v4.34.0-rc1 bump did. The recipe:
-   - Read mathlib's own `lake-manifest.json` at the target rev.
+1. **`scripts/bump-mathlib.sh <rev>`** — dry by default, `--apply` to write.
+   Deterministic, reviewable in the diff, no hook bypass. This automates by
+   script what the v4.34.0-rc1 bump did by hand:
+   - Resolve `<rev>` (SHA, branch, or tag) against mathlib's GitHub API, then
+     read mathlib's own `lake-manifest.json` and `lean-toolchain` at it.
    - Copy **its** transitive pins (`batteries`, `aesop`, `Qq`, `Cli`,
      `proofwidgets`, `importGraph`, `plausible`, `LeanSearchClient`) verbatim
      into ours — rev *and* `inputRev`.
    - Set our `mathlib` rev to the target, and `lean-toolchain` to mathlib's.
    - Non-mathlib deps (`Matroid`, `checkdecls`, and `loogle` which comes in
-     transitively via `Matroid`) keep their own pins.
-   - Verify with `lake env lean --version`: it materializes every dep and
+     transitively via `Matroid`) keep their own pins — it skips any package
+     mathlib's manifest doesn't mention.
+   - Warn if mathlib has grown a transitive dep we don't carry (that one needs
+     a hand-edit; the script won't invent a `require`).
+   - Then verify with `lake env lean --version`: it materializes every dep and
      fails loudly if the manifest is inconsistent with the lakefile.
+2. **Human runs `lake update`** — `! lake update` in the Claude Code prompt, or
+   a normal shell. Simplest when a human is present, and the only route that
+   also re-resolves the non-mathlib deps.
 
 **Copying mathlib's transitive pins is the whole trick, and it is what
-hopscotch gets wrong** — see *The hopscotch false positive* below.
+hopscotch gets wrong** — see *The hopscotch false positive* below. Running
+`scripts/bump-mathlib.sh` against the pin we already have is a cheap check that
+the invariant still holds: it prints `already in sync` when it does, and names
+the drifted packages when it doesn't.
 
 ### Environment: `LAKE_CACHE_DIR` is mandatory on this machine
 
@@ -61,16 +70,22 @@ works) for every build — `LAKE_CACHE_DIR=<writable-dir> lake build`.
 not the local write. `LAKE_CACHE_DIR=""` disables the cache entirely.)
 
 Sanity check after any build: `grep -c 'failed to cache artifact' <log>`
-should be `0`, and the count of `Built CombinatorialRigidity.` lines plus
-cached modules should account for all 122 files.
+should be `0`, and the `Built` + `Replayed` `CombinatorialRigidity.` lines
+together should account for all 122 files.
 
 ### Two verification traps
 
-- **Cached modules do not re-emit warnings.** A warning count from an
-  incremental build is a *delta*, not a total. During the v4.34.0-rc1 bump the
-  per-build figures read 337 → 389 → 543 while the real surface never changed.
-  For a true count, touch the tree first, or read the count off a from-scratch
-  build.
+- ~~**Cached modules do not re-emit warnings.**~~ **Superseded — the cache
+  replays them.** The trap as originally recorded (a warning count off an
+  incremental build is a *delta*, not a total; the v4.34.0-rc1 bump's per-build
+  figures read 337 → 389 → 543 while the real surface never changed) was
+  observed *without* `LAKE_CACHE_DIR`. With it set, a cache hit prints
+  `⚠ Replayed <module>` and re-emits that module's stored warnings, so a
+  whole-tree count off a fully-cached build is honest — the 2026-08-20 cleanup
+  session read 1441 warnings off a build that compiled nothing. No `touch`
+  needed. (This cuts the other way too: the *first* v4.34.0-rc1 build's
+  flattering error count above was a no-cache-dir build, and a build with no
+  writable cache dir under-reports errors as well as warnings.)
 - **`lake env lean <file>` does not apply the lakefile's `leanOptions`.** It is
   a ~10s-per-file iteration loop (vs minutes for a targeted `lake build`) and
   its *errors* are trustworthy, but it silently skips the whole mathlib style
@@ -248,12 +263,24 @@ The bump commit deliberately leaves mathlib's deprecated *aliases* in place;
 they still elaborate, so the build is green, but each use emits a warning and
 the project gate wants warning-clean builds.
 
-A vetted sweep script lives at `scripts/sweep-deprecations.py` (landed in the
-follow-up commit to the bump). It applies only **pure renames** — every pair where
-mathlib emitted no *"the updated constant has a different type"* note — and
-uses `(?<![\w.])name(?![\w])` boundaries so `if_pos` never matches inside
-`dif_pos`. Run `python3 scripts/sweep-deprecations.py` for a dry run,
-`--apply` to write.
+A vetted sweep script lives at **`scripts/sweep-deprecations.py`**. It applies
+only **pure renames** — every pair where mathlib emitted no *"the updated
+constant has a different type"* note. Usage:
+`python3 scripts/sweep-deprecations.py <build-log>` for a dry run, `--apply` to
+write.
+
+**It is driven by the build log's `file:line:col` positions, not by a regex over
+the tree**, and that is a correctness point rather than a style one. Lean's
+warning names the *fully qualified* old constant (`Set.mem_setOf_eq`) while its
+position points at the identifier **as written**, which here is very often the
+unqualified suffix under an `open Set` — for `Set.mem_setOf_eq` that was **all
+154** sites. A regex on the qualified name would have silently swept none of
+them; the boundary-regex design this section originally specced would have
+reported success while leaving the largest single family untouched. Editing at
+the reported position also removes the need for boundary heuristics
+(`if_pos` inside `dif_pos` can't arise) and preserves the author's
+qualification depth (`mem_setOf_eq` → `mem_ofPred_eq`, not the fully qualified
+form).
 
 Three renames are **excluded** because their types changed and they need
 hand-inspection:
@@ -306,31 +333,33 @@ Recorded because the underlying nuisance is real: `![0, 0, 0] (Fin.castPred 2 �
 does not reduce under simp any more, and neither `Fin.castPred` (max recursion)
 nor `Fin.castPred_mk` (does not match an `OfNat` literal index) fixes it.
 
-### 4b. Three general fixes deferred from the bump session
+### 4b. Three general fixes deferred from the bump session — ✓ DONE
 
-Specced but not written (the bump session ran long); all three came out of
-diagnosing *this* bump and are what make the next one cheap.
+All three came out of diagnosing *this* bump and are what make the next one
+cheap. Landed 2026-08-20.
 
-1. **`scripts/bump-mathlib.sh`** — automate the *Playbook* pin-sync: read
-   mathlib's `lake-manifest.json` at a target rev, copy its transitive pins
-   and `lean-toolchain` into ours, leave non-mathlib deps alone. This is the
-   step hopscotch gets wrong; ~30 lines.
-2. **`scripts/sweep-deprecations.py`** — the vetted rename sweep for item 1
-   above. The rename table (pure renames only, type-changed pairs excluded by
-   name) is recorded in item 1; the working version used in this session
-   applied 648 lines across the tree from a `(?<![\w.])name(?![\w])`-bounded
-   regex.
-3. **A `lake update` escape hatch** in `CombinatorialRigidity/CLAUDE.md`
-   *Build discipline*. The hook is right to exist, but right now a
-   user-requested bump has no sanctioned path, which is half of why this repo
-   sat 3 months behind. Document the two routes from the *Playbook* (human
-   runs `! lake update`, or hand-write the manifest) so the next agent does
-   not have to rediscover them.
+1. ~~**`scripts/bump-mathlib.sh`**~~ — **done.** Resolves a rev (SHA / branch /
+   tag) via mathlib's GitHub API, copies its transitive pins and
+   `lean-toolchain` into ours, skips any package mathlib's manifest doesn't
+   mention (so `Matroid`, `checkdecls`, `loogle` keep their pins), warns about a
+   new mathlib transitive dep we don't carry, and is dry-run by default. Run
+   against the pin we already have it prints `already in sync`, which is how the
+   bump commit's invariant is now checkable in one command. *Playbook* above is
+   rewritten around it.
+2. ~~**`scripts/sweep-deprecations.py`**~~ — **done**, and *not* the specced
+   regex: see item 1 for why the log-position design is the correct one and
+   what the regex would have missed.
+3. ~~**A `lake update` escape hatch**~~ — **done**, in
+   `CombinatorialRigidity/CLAUDE.md` *Build discipline*, on the
+   never-`lake update` bullet itself (both routes, script first). That section
+   also gained the **`LAKE_CACHE_DIR` mandate**, which had been recorded only
+   here — an operational requirement that belongs in the file every
+   Lean-touching session auto-loads.
 
-Plus the two `TACTICS-QUIRKS.md` rescue entries the *What actually broke*
-section above says are "written up" — the **zeta-delta / `set`-binding** entry
-and the **reach-for-`exact`-before-`convert`** entry. Both are described in
-full there; they need transcribing into the symptom-indexed format with a
+**Still open:** the two `TACTICS-QUIRKS.md` rescue entries the *What actually
+broke* section above says are "written up" — the **zeta-delta / `set`-binding**
+entry and the **reach-for-`exact`-before-`convert`** entry. Both are described
+in full there; they need transcribing into the symptom-indexed format with a
 section number.
 
 ### 5. Unstick hopscotch — the highest-leverage item
