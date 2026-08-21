@@ -19,9 +19,6 @@ linter.style.header = false
 # complements the per-decl `#print axioms` (`sorryAx`) check.
 warn.sorry = true
 
-[[require]]
-name = "mathlib"
-git = "https://github.com/leanprover-community/mathlib4.git"
 
 # `checkdecls` provides `lake exe checkdecls`, which the docgen-action
 # invokes to verify that every \lean{...} reference in the blueprint
@@ -38,8 +35,10 @@ rev = "master"
 # (`Graph.cycleMatroid`) for tree-packing, and Phases 16+ the `Matroid.Graph.*`
 # API. Pinned to a specific revision so future `lake update` runs are
 # deliberate; the lakefile's mathlib pin takes precedence over the transitive
-# one from this dep. See `notes/Phase8.md` *Architectural choices made up
-# front* and `DESIGN.md` *Phase 8: `apnelson1/Matroid` dependency*.
+# one from this dep — but *only* because `require mathlib` sits below this
+# block, see the comment on that require. See `notes/Phase8.md`
+# *Architectural choices made up front* and `DESIGN.md`
+# *Phase 8: `apnelson1/Matroid` dependency*.
 #
 # **The local fork is retired** (v4.34.0-rc1 bump, 2026-08-20): this pin is
 # plain upstream `apnelson1/Matroid`, at a revision with green CI. The fork
@@ -61,6 +60,21 @@ rev = "master"
 name = "Matroid"
 git = "https://github.com/apnelson1/Matroid.git"
 rev = "f44939ff4c4c03740f9e2d13e3429ab92d2edcd1"
+
+# **`require mathlib` MUST STAY LAST.** Lake visits a package's requires in
+# REVERSE order, and `addDependencyEntries` stores a transitive pin only if the
+# name is not already present (`Lake/Load/Resolve.lean` -- "later requires
+# should shadow earlier definitions"), so the LAST require's transitive pins
+# win. With `mathlib` first, `Matroid`'s frozen manifest planted `batteries`
+# and `proofwidgets` before mathlib's own manifest was read, so
+# `lake update mathlib` left them stale, `lake exe cache get` hashed over a
+# dependency set mathlib never tested, and the cache fetch failed -- reported
+# upstream by hopscotch as a phantom "would break the build" regression, which
+# wedged that workflow from 2026-05-15 to 2026-08-21. Measured both ways on
+# identical trees; see `notes/ToolchainBumps.md` *The hopscotch false positive*.
+[[require]]
+name = "mathlib"
+git = "https://github.com/leanprover-community/mathlib4.git"
 
 [[lean_lib]]
 name = "CombinatorialRigidity"

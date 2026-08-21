@@ -38,8 +38,12 @@ requested* bump needs one of:
    a normal shell. Simplest when a human is present, and the only route that
    also re-resolves the non-mathlib deps.
 
-**Copying mathlib's transitive pins is the whole trick, and it is what
-hopscotch gets wrong** — see *The hopscotch false positive* below. Running
+**Copying mathlib's transitive pins is the whole trick** — and since
+2026-08-21 `lake update mathlib` does it *for us*, because `require mathlib` now
+sits **last** in `lakefile.toml` (see *The hopscotch false positive* below; that
+ordering is load-bearing and the require carries a comment saying so). The
+script remains the deterministic route to a *specific* rev without a full
+re-resolve. Running
 `scripts/bump-mathlib.sh` against the pin we already have is a cheap check that
 the invariant still holds: it prints `already in sync` when it does, and names
 the drifted packages when it doesn't.
@@ -191,31 +195,68 @@ This will cause `lake exe cache get` to compute wrong hashes.
 error: mathlib: failed to fetch cache
 ```
 
-`lake update mathlib` bumps **only** mathlib, leaving `batteries` (and the
-rest) at the revisions mathlib *used to* want. `lake exe cache get` hashes
-over the whole dependency set, so the hash misses, the cache fetch fails, and
-mathlib would have to build from source — which the runner cannot do.
+**Root cause: our own `require` order — not hopscotch, and not `lake`.**
+`lake update mathlib` re-resolves mathlib's transitive deps *by design*:
+`reuseManifest` re-pins an old entry only `unless entry.inherited ||
+toUpdate.contains entry.name`, and every transitive entry in our manifest is
+`inherited=true`. It then runs `addDependencyEntries` on each materialized dep,
+adopting that dep's **own** `lake-manifest.json` pins — but only for names *not
+already stored*. **First writer wins.** And Lake visits a package's requires in
+**reverse** order (`Lake/Load/Resolve.lean`: *"later requires should shadow
+earlier definitions"*), so `require mathlib` sitting **first** meant it was read
+**last**: `Matroid` — pinned to a fixed rev, hence carrying a frozen manifest —
+planted `batteries`/`proofwidgets` first and mathlib's own pins were silently
+dropped. `lake exe cache get` then hashes over a dependency set mathlib never
+tested, the hash misses, the cache fetch fails, and mathlib would have to build
+from source — which the runner cannot do.
 
 Every mathlib commit from `0fb2045` onward fails identically, so hopscotch
 bisected to it and stopped. The project therefore sat at 2026-05-13 mathlib
 for three months with no signal about *real* code compatibility.
 
-**The fix is to sync the transitive pins, not to reorder the requires.** The
-mathlib warning suggests putting `require mathlib` last; that is a red herring
-for this failure. Evidence: the v4.34.0-rc1 bump left the require order
-untouched (mathlib is still first) and only rewrote the transitive pins to
-match mathlib's manifest — and the mismatch warning disappeared.
+**The fix is to move `require mathlib` LAST — mathlib's own warning was
+right all along.** This section previously asserted the opposite ("sync the
+transitive pins, not the require order; the warning's advice is a red herring"),
+on the evidence that the v4.34.0-rc1 bump left the order untouched and the
+mismatch warning still disappeared. That evidence is **confounded**:
+`bump-mathlib.sh` had already hand-synced every pin, so all sources agreed and
+order stopped mattering. It never tested order.
+
+**Measured both ways (2026-08-21).** Two copy-on-write clones of the post-bump
+tree, identical but for the position of the mathlib require, each running
+`MATHLIB_NO_CACHE_ON_UPDATE=1 lake update mathlib` against mathlib `51458cb7`
+(chosen because it carries our toolchain, so no elan restart, and moves two
+packages):
+
+| package | mathlib require FIRST | mathlib require LAST | mathlib@`51458cb7` pins |
+|---|---|---|---|
+| `batteries` | `f207b55c` (stale) | **`36cc05ca`** | `36cc05ca` |
+| `proofwidgets` | `99e8adee` (stale) | **`ebeca04e`** | `ebeca04e` |
+
+Every other package identical in both arms, and `Matroid` / `checkdecls` /
+`loogle` kept their own pins either way — a selective update does not disturb
+them. So the reorder makes every `lake update mathlib` (ours, a human's, or
+hopscotch's) adopt mathlib's tested pins, and the drift cannot form.
+
+**Reproduction recipe, worth keeping.** `MATHLIB_NO_CACHE_ON_UPDATE=1` is the
+guard in mathlib's `post_update` hook that skips `lake exe cache get`, so a
+probe costs a `git fetch` instead of a multi-GB olean download — and the
+manifest is still written either way (Lake's `writeManifest` runs *before* the
+hooks), which is the only thing the test needs to read. Clone the tree with
+`cp -Rc` (APFS copy-on-write: instant, no disk cost) so the verified working
+tree is never at risk.
 
 ---
 
 ## Scheduled cleanup
 
-**State of play (2026-08-21).** Items 0, 1, 2, 3, 4, 4a, 4b and 4c are
+**State of play (2026-08-21).** Items 0, 1, 2, 3, 4, 4a, 4b, 4c **and 5** are
 **DONE**; both gates are **green** (`lake build` 2948 jobs, 0 errors; `lake lint`
-"Linting passed"), and warnings are **1441 → 0**. Item 5 (unstick hopscotch) is
-**deferred by user decision** with its research done — see that item for why
-configuration cannot fix it and for the three priced options. Item 6 is optional
-and untouched.
+"Linting passed"), and warnings are **1441 → 0**. Item 5 (unstick hopscotch) was
+**not** the multi-option strategy call this note had it queued as: the root cause
+was our own `require` order, and it closed with a one-line `lakefile.toml`
+reorder — measured both ways, see *The hopscotch false positive*. Item 6 is
+optional and untouched.
 
 **All three of the last-five warning sites resisted the fix this note predicted
 for them, and in each case the cheaper route was the right one.** Worth reading
@@ -231,22 +272,24 @@ lemma the tree did not need (once).
 | 3 × overlapping instances, `Induction/Operations.lean` (item 4c) | `section`-scope the `omit`/re-`variable` dance, then "re-derive which of the four `omit … in` clauses are still needed" | the `section` scoping, as predicted — and the four `omit … in` clauses needed **no** change at all |
 
 **Where this stands (2026-08-21).** The work sits on the local branch
-`bump/lean-4.34.0-rc1` (9 commits across 112 files) and has **deliberately not
-been pushed** — so **CI has still never validated this stack**. Both gates are
-verified locally (`lake build` 2948 jobs, 0 errors, 0 warnings, 0 cache failures;
-`lake lint` "Linting passed"), as are the two bump-specific checks: all 17
+`bump/lean-4.34.0-rc1` (10 commits) and has **deliberately not been pushed** — so
+**CI has still never validated this stack**. Both gates are verified locally
+*after* the require-order reorder (`lake build` 2948 jobs — the same job count as
+the pre-reorder run — 0 errors, 0 warnings, 0 cache failures; `lake lint`
+"Linting passed"), as are the two bump-specific checks: all 17
 `formalization.yaml` headline declarations at
 `[propext, Classical.choice, Quot.sound]` with no `sorryAx`, and all 11
 `PebbleGame/Examples.lean` `#eval`s reproducing their documented values (the
-2026-08-20 run; the warning cleanup since then touched no `#eval` and no headline
-declaration's axioms).
+2026-08-20 run; nothing since has touched an `#eval` or a headline declaration's
+axioms — the reorder changed no Lean source and left `lake-manifest.json`
+byte-identical, since our pins were already synced).
 
 **Next concrete task: open the PR** and let CI run this stack for the first time
 (PRs build + lint but skip the Pages deploy, so this is the safe first exposure —
-merging to `master` publishes). The cleanup queue no longer blocks it: everything
-mechanical is done, and the one live decision left is item 5 (hopscotch), which
-is the user's call and is sequenced *ahead of* closing issue #2 / PR #1 and
-filing the upstream report — not ahead of the PR.
+merging to `master` publishes). The cleanup queue no longer blocks it at all:
+everything mechanical is done and item 5 closed with the reorder, so what remains
+is post-merge tidying — closing issue #2 / PR #1, and the optional upstream
+report the user is still weighing (item 5).
 
 All of the below is **mechanical and separable** from the bump itself: no new
 proofs, and the only statement changes are item 0's 63 declarations, all in the
@@ -716,48 +759,51 @@ easy to confuse it with (§ 1 `omega`/`grind` atoms, § 6 `set` of a lambda,
 § 98 `rw [heq]` motive failures), since the distinguishing feature is that
 nothing was wrong with the proof — only simp's default unfolding moved.
 
-### 5. Unstick hopscotch — the highest-leverage item, DEFERRED by user decision (2026-08-20)
+### 5. Unstick hopscotch — ✓ DONE (2026-08-21, a one-line `lakefile.toml` reorder)
 
-Without this, the next bump is another multi-version jump. **Deferred to a
-follow-up session with the research done**, so that session can decide rather
-than re-investigate.
+**Fixed by moving `require mathlib` LAST.** The root cause was our own require
+order, measured both ways — see *The hopscotch false positive* above for the
+mechanism and the numbers. The three priced options this section used to carry
+(own bump workflow / hand-bump cadence / a mix) are **moot**: hopscotch now
+works as designed, so there is no new workflow to write, no `open-issue: false`
+to set, and nothing to route around.
 
-**Settled by reading the upstream docs: this CANNOT be fixed by configuration.**
-`hopscotch` runs `lake update <dependency-name>` for the *single* dependency
-being tested — that is documented behaviour, not a bug — and neither `hopscotch`
-nor `hopscotch-action` exposes any flag to sync transitive pins to the target's
-own manifest, or anything addressing `lake exe cache get` hash mismatches. The
-action's `extra-args` passes through to `hopscotch dep`, which has no such
-option either. So the first bullet this section used to carry — "add a workflow
-step *after* hopscotch rewrites the pin" — **is not available**: the action is
-monolithic (bump, build, PR/issue all inside one step), so there is nowhere to
-inject.
+Kept because it still bears on the upstream report: **the action cannot be
+configured around this.** `hopscotch` runs `lake update <dependency-name>` for
+the single dependency under test (documented behaviour), and neither `hopscotch`
+nor `hopscotch-action` exposes a flag to sync transitive pins or to address a
+`lake exe cache get` hash mismatch; `extra-args` forwards to `hopscotch dep`,
+which has no such option. The action is monolithic (bump, build, PR/issue in one
+step), so there is nowhere to inject a fix-up step. That was never the fix — but
+it is why a downstream with the losing require order has no escape short of
+editing its lakefile.
 
-The three real options, priced:
+**Blast radius, measured.** Only three repos run the action: this one,
+`bryangingechen/autoformaltemplate` (mathlib + `checkdecls`, whose manifest is
+empty), and `chrisflav/proetale` (mathlib + `upstreamer`, likewise empty). So
+neither of the others has a second pin-writer to lose to, and proetale's own
+hopscotch issue (#116) is a **genuine** break — duplicate declarations after
+mathlib upstreamed them. That is why three months of this went unreported.
 
-1. **Add our own bump workflow and keep hopscotch only for bisection.**
-   `scripts/bump-mathlib.sh` already does exactly the pin-sync hopscotch gets
-   wrong, so a weekly job is: checkout → `scripts/bump-mathlib.sh master
-   --apply` → `leanprover/lean-action` with `build: true, lint: true` (the same
-   action `push_pr.yml` uses) → open/update a PR. Set `open-issue: false` on the
-   existing hopscotch workflow so it stops filing phantom regressions while its
-   bisection stays available for a real break. Keeps one source of pin-sync
-   logic, so CI and a hand bump cannot diverge. **Irreducible risk: a workflow
-   cannot be validated locally — the first real test is the first cron run.**
-2. **Report upstream and bump by hand on a weekly cadence** using the *Playbook*.
-   Zero CI risk; costs a standing manual habit, which is precisely what let this
-   repo drift four Lean versions.
-3. Some mix — e.g. report upstream now, add the workflow once the report's
-   outcome is known.
+**Still open, and no longer blocked by a strategy decision:**
 
-**Sequencing note (this is why the GitHub cleanup is blocked, not forgotten).**
-Issue #2 and PR #1 are both stale artifacts of the false positive and want
-closing — but *what to say when closing them* depends on which option above is
-taken (option 1 supersedes hopscotch's issue-filing entirely; option 2 leaves
-it live and the issue should say so). Likewise the upstream report is only worth
-filing if we are not simply routing around the action. **So: decide hopscotch
-first, then close #2 / PR #1 / file upstream in the same pass.** All three were
-deliberately deferred on 2026-08-20 for this reason, not overlooked.
+- **Close issue #2 and PR #1.** Both are stale artifacts of the false positive,
+  and closing them is now sayable on the merits: a false positive caused by our
+  require order, fixed by the reorder. (PR #1 bumps to `888dee7`, long
+  superseded.)
+- **Optional: report upstream** — user deciding as of 2026-08-21. Two defects
+  survive the local fix, and they are the action's rather than ours: (i) a
+  **bump**-phase failure is presented as a build incompatibility, under a
+  *"Build failure log"* heading, with no Lean having compiled — even though
+  hopscotch's own README says the two phases are recorded distinguishably;
+  (ii) such a failure reproduces on every later commit, so bisect latches onto
+  it permanently and the tracking issue can never self-close, leaving a daily
+  workflow silently wedged. Context for the report: **zero** issues have ever
+  been filed on either repo, and the closest PR
+  (`leanprover-community/hopscotch#2`, adding `--cache`, open since 2026-04-20)
+  is *not* this fix — it prepends `lake cache get` to the **verify** array and
+  logs failure as a warning, whereas our failure is fatal in the **bump** step
+  and never reaches verify.
 
 ### 6. Optional: audit the remaining `convert` sites
 
