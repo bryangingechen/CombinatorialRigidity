@@ -1,7 +1,8 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: EIGHT fan-outs and TWELVE single directions dispatched; ALL 40
-directions LANDED.** **OQRANK (ordinal 32, §"OQRANK") LANDED 2026-08-25, same
+**Status: EIGHT fan-outs and THIRTEEN single directions; 40 of 41 directions
+LANDED — GPRICE (ordinal 33, §"GPRICE") is PREPPED 2026-08-25, dispatch is
+the next action.** **OQRANK (ordinal 32, §"OQRANK") LANDED 2026-08-25, same
 day as its dispatch — a graded HIT of the first kind: the ⋆-eigen-block
 mechanism completed, the naive single-colouring form REFUTED as a class
 statement (27/174, incl. the (OC-42) WALL), and the hunted form GREEN —
@@ -25,13 +26,13 @@ exact `n_hub` boundary for ledger attack (c)'s AA-glue case (GTMPL), (b′)'s fi
 `n`-free constant (GFLOW), a **NO HIT** on the authorized disproof hunt that nonetheless
 kills the counting route to a disproof (SIGZ), (a₁) reduced to one determinant (OSCHU), and
 **(GR-64)(R2) REFUTED** with (R1) delivered (GCOLL).
-Ordinals run 1–32 (the eighth fan-out claims 25–29; GFLIP is 30; GCHEAP is 31;
-OQRANK is 32) and were assigned at dispatch, so landing order differs from
-ordinal order.
+Ordinals run 1–33 (the eighth fan-out claims 25–29; GFLIP is 30; GCHEAP is 31;
+OQRANK is 32; GPRICE is 33) and were assigned at dispatch, so landing order
+differs from ordinal order.
 
 **The two architecture-testing PROBES are also both LANDED** (§"Two probes SPECCED and
 AUTHORIZED 2026-08-20"). They carry **no ordinal** — they test the architecture rather
-than the (K) crux, so they are outside the 37-direction count. **KBARE-FALSIFY**
+than the (K) crux, so they are outside the direction/ordinal count. **KBARE-FALSIFY**
 (2026-08-20): a **HIT at tier T1**, (K-bare-ext) refuted as stated, `hbareSplit`
 untouched. **C3-AVOID** (2026-08-24): the *"reduce avoiding `S`"* gate **decided** —
 universal threshold **exactly `|S| ≤ 2`**, exact ceiling `2 μ(G)`, so board option **C3
@@ -2850,3 +2851,103 @@ landed rank-3 ℚ-points; the L6 bare-token grep clean on the merged
 draft; `check-gapmap-cells.py` green on the recomputed §(K-out) row
 (trimmed to a current-state statement, no cap bump); the Section index's
 19 stale line ranges recomputed as a rider.
+
+---
+
+## GPRICE — thirty-third ordinal, the forty-first direction (single dispatch, prepped 2026-08-25)
+
+**Selection provenance:** the standing 2026-08-07 delegation; shape adjudicated
+at the **fourth** 2026-08-25 check-in — **"Single direction,
+front-runner-first"** (an option selection; `notes/Phase39.md` *Current state*,
+the fourth 2026-08-25 bullet). Front-runner-first is the 2026-08-25 re-rank's
+own order with its rank 1 (the O29 ℚ(i) eigen-block leg) landed by OQRANK:
+**(GR-104)(i)**, the re-rank's rank 2 and the board's highest unlanded entry
+(`notes/Pencil-strategy.md` §8). Dispatched **un-named, single, top rung**
+(`recon-fable` — fable is dispatchable this session per the same check-in).
+Derivation-first tier. **The shared mechanics and landing checklist above
+apply in full** — read-only w.r.t. every shared file, commit nothing, draft to
+the untracked `notes/Pencil-draft-GPRICE.md`, tight return verdict.
+
+**The target — (GR-104)(i), the price form of the selection clause; it is the
+whole remaining gap between the proven constant 4 and (b′)'s target constant
+2.** Verbatim as GCHEAP minted it (§(K-grid) *Step G124*,
+`notes/Pencil-informal-grid.md`):
+
+> **(i) The price form.** *At some parity-optimal configuration with
+> `|δ| ≤ 2` — balanced ones qualifying vacuously — some majority-side flip
+> has `f(p + χ_γ) ≤ f(p) + 2`.*
+
+This is what the constant 2 actually consumes ((GR-C2) was only ever its
+sufficient certificate, via (GR-86)); it strictly relaxes (GR-C2) — a
+doubly-blocked matching branch is allowed if its two repair chains happen to
+price `≤ 0`. Standing: a **theorem at `n ≤ 10`** (by (GR-101)(ii) + (GR-86));
+at the three audited `n = 12` stall pairs it holds with **price 0 at the
+stalled configurations themselves** (measured, NOT a theorem); **OPEN from
+`n = 12`**. What a proof buys (*Step G124*'s own what-would-change-this
+(iii)): **(b′) at the constant 2, modulo (GR-C1) alone, at every `n`** — the
+last constant gap on the GFLOW descent chain.
+
+**The named inputs (landed; consume, do not re-derive).** (i) **(GR-100)'s
+lone-dart identity + blocked-end capacity** and **(GR-101)'s selection
+corollary** prove the `n < 6|δ|` half, the boundary exact by (GR-103).
+(ii) **(GR-102), the stall tax** `dist(z, M) ≥ |a_M − b_M + δ|`: a refuting
+(shape, M) pair needs ALL parity-optimal configurations unbalanced and ALL
+price-stalled, and (GR-102) forces `d_par(M) ≥ 2|δ| − b_M` at such a pair —
+none of the three audited pairs comes close (all have balanced optima in
+bulk). (iii) **The adversarial control**: the `n = 12`, `2k = 2` stall pairs
+((GR-103), driver `w4/gcheap.py --bnd`, shapes/matchings/`z` printed for
+independent reconstruction) are where any hunt should grow from. (iv) **The
+open mechanism question is the natural first attack** (*Step G124*'s
+what-would-change-this (iii)): the audits suggest the stalled configurations'
+repair chains may *always* price `≤ 0` at parity-optimality — *why* is the
+open question; the price `f` and the repair chains are §(K-grid)'s defined
+terms, and the demand form (GR-97) / counting lemma (GR-98) / selection
+theorem (GR-99) are the landed instruments the (GR-R1) and (GR-C2)(every-step)
+proofs actually used. Treat any sketch as a candidate, not a pin — if it
+dies, say where.
+
+**What counts as a HIT** — a proof of (GR-104)(i) unconditional in `n` (state
+the exact quantifier delivered: per-configuration price bound, existential
+over flips, any hypotheses carried). Also valued, on the (GR-29)/(GR-30)
+precedent: a **refutation by witness** — a (shape, M) pair whose
+parity-optimal configurations are ALL unbalanced and ALL price-stalled (this
+kills the constant-2 route and leaves the proven 4 standing — state exactly
+what survives, in particular whether (GR-102)'s confinement localizes the
+failure and what the interpolation (GR-104)(ii) still gives); or a **proof
+under a restricted quantifier with the exact boundary named** (e.g. a bound
+past `n = 12`, a `2k` stratum, or a sharper price constant between 0 and 2).
+State which of the three you got.
+
+**Bars.** Do **not** attack (GR-C1) — a separate residual (GPSA's first
+clause; (GR-69) its exact `n ≤ 6` boundary). (GR-R1) and (GR-C2)'s settled
+halves are **landed** — consume, do not re-attack; the per-configuration
+refutation (GR-103) stands — do not try to repair it. Do not re-derive
+(GR-49)–(GR-54), (GR-67)–(GR-72), (GR-85)–(GR-90), or (GR-97)–(GR-104)'s
+landed parts. Do **not** re-run the exhaustive censuses or the three
+full-cube audits — cite them; a *new* driver mode that tests a *new* sentence
+is fine, a re-measurement of a landed figure is not. (GR-15) and class
+uniformity are out of scope. No `.lean` is touched (the standing Lean hold).
+
+**Riders, verbatim from GCHEAP's.** TERMINATION check E1/E2/E3 at the return
+(E3 is ARMED by GBAL — firing is the coordinator's action; report, never
+fire). Cap disclosure: an exhausted cap is *"not found under cap C"*, never
+nonexistence. F11: every headline claim needs a driver that tests that
+sentence, and "exhaustive"/"forced"/"the only" are their own claim class. The
+shift-metric layer is UNBOUNDED ((GR-43)) — any bound is on a **difference**.
+All figures exact ℚ, seeded, degeneracy-guarded, imported from the canonical
+layer (`notes/scripts/README.md` binds; the *Divergences* table names the
+same-name-different-semantics traps) — **the balance layer is
+`w4/gridbal_common`**: import the moved devices from there directly, never
+via the sibling re-exports (GCHEAP's residual sibling imports are already a
+recorded *Harness debt* item — do not extend it).
+
+**Driver — conditional, at the pinned path `notes/scripts/w4/gprice.py`.** A
+purely derivational proof consuming only landed figures needs no new driver —
+then state that disposition explicitly in the draft. Any new measured or
+exhaustion claim mints the driver at the pinned path, importing the harness
+read-only, left untracked for the coordinator to gate and commit.
+
+**Reservation** (`notes/Pencil-labels.md` §"Reserved namespace — direction
+GPRICE"): §(K-grid) **extends** — no new section; labels
+**(GR-105)–(GR-109)**, **Steps G125–G129**; owning section stays
+authoritative; return any unconsumed remainder to the tail.

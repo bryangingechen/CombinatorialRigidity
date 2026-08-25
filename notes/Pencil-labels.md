@@ -1409,6 +1409,36 @@ REJECTED for live hits:** `QRANK` (7 files). `EIGB`/`STARB` name the
 OSCHU's landed labels — already minted, **not** in this reservation; OQRANK
 *cites* them and mints its own results at (OC-40)+.
 
+## Reserved namespace — direction GPRICE (2026-08-25)
+
+**Reserved 2026-08-25 for the single direction GPRICE** (ordinal 33, the
+arc's forty-first direction; `notes/Pencil-fanout.md` §"GPRICE"), the
+standing research pick made at the fourth 2026-08-25 check-in (single
+direction, front-runner-first → **(GR-104)(i)**, the 2026-08-25 re-rank's
+rank 2 and its highest unlanded entry, rank 1 having landed as OQRANK the
+same day). One direction, no siblings — the reservation still binds because
+it protects the *next* dispatch's prep from this one's labels.
+
+| direction | owning § | labels reserved | steps reserved | driver |
+|---|---|---|---|---|
+| **GPRICE** | §(K-grid) — **extends**, no new section | **(GR-105)–(GR-109)** | **G125–G129** | `w4/gprice.py` (conditional — see the spec) |
+
+The reservation is the head of §(K-grid)'s unclaimed tail (declared
+**(GR-105)+ / Step G125+** at GCHEAP's landing above).
+
+**Code and basename verified 0-hit** as raw substrings, case-insensitively,
+across `*.md`, `*.tex`, `*.lean`, `*.py`, `*.m2` with `.git`/`.lake`
+excluded, control token `aglu` live at 14 files. Label tokens `(GR-110)`
+and *Step G130* each 0-hit; `(GR-105)` and *Step G125* hit only GCHEAP's
+live-tails bookkeeping above (the `(GR-97)` precedent). **Checked 0-hit and
+NOT chosen:** `GSTALL`, `GTAX`, `GPFORM` — the stall and the tax name
+(GR-102)/(GR-103)'s landed *instruments*, not the target (the `GSEL`
+rejection reason). **`GPRICE` names the theorem's content** — the *price*
+`f(p + χ_γ) − f(p)` of a majority-side flip, the quantity (GR-104)(i)
+bounds. The target token **(GR-104)** is GCHEAP's landed label — already
+minted, **not** in this reservation; GPRICE *cites* it and mints its own
+results at (GR-105)+.
+
 ## Registry — `notes/Pencil-informal.md` (the (K) workbook)
 
 Status keywords are pointers to the owning section's verdict block and the
