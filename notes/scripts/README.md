@@ -959,6 +959,16 @@ OG / OR / OC2 are pinned and disjoint from every earlier pool.
 post-move (never via the sibling re-exports). Its remaining sibling imports
 are a recorded *Harness debt* item (see below).
 
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/oqrank.py --controls` | 1 s | `notes/Pencil-informal.md` §(K-out) *Step O38* (direction OQRANK; the (OC-41) must-reject controls: a planted ruling-line generator, a genuine tangent plane (exact derivative), a clean secant/secant pass, and a `(2,1)`-split with a planted isotropic `Y`-line — 4/4 detected) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/oqrank.py --range A B` | see note | ibid. *Steps O37–O41* ((OC-40)–(OC-44)): the census over `oschu.out_classes()`'s 174 classes, run as **nine foreground chunks** of the single global class order (`0 30 / 30 60 / 60 90 / 90 115 / 115 140 / 140 150 / 150 160 / 160 167 / 167 174`; 151–557 s each, every one inside the 600 s budget; per-class seeds keyed by GLOBAL class index, so chunk boundaries move no figure — the SIGZ multi-invocation precedent). Aggregate: 174 classes probed, **174 rank-3 witnesses, 0 misses** (hit rows all `(3, T, 2, 1, F, secant, secant)`); naive first-point rows `147 / 7 (wall) / 20 (second confinement)`; every (OC-40)/(OC-41)/(OC-42) clause asserted per standing point |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/oqrank.py --census1` / `--census2` | ~19 / ~21 min | ibid. the same 174 split by parity — identical figures, for a re-run under a longer single-call budget; NOT used at landing (the nine chunks were) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/oqrank.py --validate` | ~90 s | ibid. controls + 3 + 3 classes — a smoke gate, **not** the census (the chunks above are the landing gate) |
+
+**OQRANK (single direction, LANDED 2026-08-25).** One driver added
+(`w4/oqrank.py`), nothing existing modified; imports downward only, exact
+`ℚ(i)` via `exactcore.Gauss` (the first research driver to consume the
+2026-08-20 move-down). Its two sibling-import debt items are recorded below.
+
 **C3-AVOID (probe, LANDED 2026-08-24).** All seven modes (`--all`, ~36 s total,
 inside the 600 s foreground budget in one call) run by the dispatch, exit 0,
 **byte-identical at `PYTHONHASHSEED` 0 and 12345**. One driver added
@@ -2155,6 +2165,23 @@ combinatorics of the same layer; `perfect_matchings` and `cubic_habitat`
 are candidates for §1 cataloguing in place. Same acceptance test as the
 2026-08-25 payment: re-run every consumer's validate mode byte-identical
 at `PYTHONHASHSEED=0` against pre-move baselines.
+
+### New items (2026-08-25, direction OQRANK) — two second/third-consumer arrivals; **UNPAID**
+
+`w4/oqrank.py` imports from ten modules, downward only and in policy; two
+of its imports trip §2 rule 2's move-down trigger (recorded with every
+consumer named, per the rule; a dispatch may not make the move):
+
+| name | current home | consumers (besides the home) |
+|---|---|---|
+| `out_classes`, `shape_key` | `oschu` | **`oqrank`** (the isomorphism-class key and pinned-split population — a SECOND consumer for what is becoming the §(K-out) class registry) |
+| `tree_triple` | `gridwit` | `grid`, `oschu`, **`oqrank`** (a THIRD consumer, re-dated — the certificate-colouring filter every grid-point pass needs) |
+
+**Where they should go if paid:** the class key + pinned splits are a
+§(K-out)-side analogue of the `gridbal_common` balance layer (a
+`outclasses_common` or a §1-catalogued promotion in place);
+`tree_triple` is a `grid`-layer primitive and a candidate for §1
+cataloguing in place. Same acceptance test as the 2026-08-25 payment.
 
 ## Deliberate non-goals
 

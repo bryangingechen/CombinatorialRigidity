@@ -5,8 +5,8 @@
 (L0–L7) are COMPLETE — `hsplit` CLOSED IN FULL and `hfresh`'s counting discharge landed
 (2026-07-30). Only three items remain, all carried by the landed successor
 `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card` (`Molecule/Pencil/Escape.lean`):
-`hcontract` (W4), kernel `hK`, and kernel `hbareSplit` — see *Hand-off*. **Thirty-nine
-kernel-(K) directions are now COMPLETE** (2026-08-05 → 08-25, ordinals 1–31; roster and
+`hcontract` (W4), kernel `hK`, and kernel `hbareSplit` — see *Hand-off*. **Forty
+kernel-(K) directions are now COMPLETE** (2026-08-05 → 08-25, ordinals 1–32; roster and
 per-direction theorem chain in *Decisions made*). **The SIXTH, SEVENTH and EIGHTH FAN-OUTS
 ARE ALL COMPLETE** (all fifteen directions LANDED 2026-08-19). **The arc's HITs:**
 route-ledger **entry 5 PROVEN in both halves** (GBAL, discharging input (X)); **chart
@@ -15,7 +15,10 @@ irreducibility PROVEN** (CIRR); the **AA-glue configuration NOT realizable at `n
 is a THEOREM, the arc's first unconditional bound of (b′)'s shape); **(GR-C2) settled
 per-configuration in both directions** (GCHEAP, 2026-08-25 — **(b′) at the constant 2
 a THEOREM on the whole `n_hub ≤ 6` stratum**, the per-configuration form refuted from
-`n_hub = 12`, residual reshaped to (GR-104)(i)).
+`n_hub = 12`, residual reshaped to (GR-104)(i)); **input (a) delivered at all 174
+certified classes** (OQRANK, 2026-08-25 — the ⋆-eigen-block mechanism completed with
+a combinatorial WALL found, the naive form refuted as a class statement,
+per-class-generic quantifier, zero (K-tight)-event rulings).
 Everything else an honest MISS or an OPEN reshape; verdicts in *Decisions made* and
 `notes/Pencil-fanout{,-archive}.md`, **not restated here**. **(GR-15) stays OPEN
 throughout; class uniformity untouched; no g-flank at any of the thirty-eight directions.
@@ -74,18 +77,23 @@ is reshaped to **(GR-104)(i), the price form**. Canonical home §(K-grid) *Steps
 G120–G124* (`notes/Pencil-informal-grid.md`), landing record `notes/Pencil-fanout.md`
 §"GCHEAP", driver `w4/gcheap.py`. GFLIP's harness-debt item is **PAID** (2026-08-25,
 the `gridbal_common` move-down); GCHEAP's own residual sibling imports are the new
-recorded *Harness debt* item. **THE NEXT PICK IS MADE (2026-08-25, third check-in, two option selections):
-direction OQRANK — ordinal 32, the arc's fortieth direction — IS PREPPED AND
-DISPATCHED** on the re-ranked board's rank-1 front-runner: the **ℚ(i) eigen-block leg
-of §(K-out) *Step O29*** (`rank(Q|_D) = 3` → (a₁) → input (a) at all 174 certified
-classes; decisive both ways — a miss is a candidate (K-tight) event). Spec, bars,
-riders and HIT criteria in `notes/Pencil-fanout.md` §"OQRANK"; reservation
-((OC-40)–(OC-44), Steps O37–O41, conditional driver `w4/oqrank.py`) in
-`notes/Pencil-labels.md`. **NEXT CONCRETE TASK: land OQRANK's return** per the
-fan-out landing checklist. The board re-rank is the eighth strategy-only pass
-(`notes/Pencil-strategy.md` §8, `f72cbb35`); the §9 shelf **(ZH-1)–(ZH-6)** stays
-unpriced and ineligible. Nothing else structural queued, nothing awaiting user
-adjudication.
+recorded *Harness debt* item. **DIRECTION OQRANK (ordinal 32) IS LANDED — dispatched and landed 2026-08-25, a graded
+HIT of the first kind.** Picked at the third 2026-08-25 check-in (recon-first → the
+eighth strategy-only pass's board re-rank `f72cbb35` → its rank-1 front-runner). The
+⋆-eigen-block route of *Step O29* is **completed as a mechanism** ((OC-40)/(OC-41));
+its naive single-colouring form is **REFUTED as a class statement** (27/174 — 7 by the
+new combinatorial **WALL** (OC-42), 20 by a second uncharacterized confinement); the
+hunted form is **GREEN at 174/174**: **input (a) holds at every certified class**, at
+an exhibited exact ℚ(i) σ-fixed grid point and every sufficiently generic draw of the
+exhibited colouring ((OC-43)/(OC-44)) — NOT class-uniform, which stays OPEN. Zero
+rulings: **the (K-tight)-event branch never fired.** New named residuals:
+wall-avoiding-colouring existence ((OC-44)(iii)) and the second confinement's
+mechanism. Canonical home §(K-out) *Steps O37–O41* (`notes/Pencil-informal.md`),
+landing record `notes/Pencil-fanout.md` §"OQRANK", driver `w4/oqrank.py`. **NEXT
+CONCRETE TASK: the next standing research pick** (the 2026-08-07 delegation; the
+*shape* is a user call) — candidate list in *Hand-off*; the §9 shelf
+**(ZH-1)–(ZH-6)** stays unpriced and ineligible. Nothing else structural queued,
+nothing awaiting user adjudication.
 
 ## Current state
 
@@ -247,15 +255,15 @@ constraints; the dated dispatch narrative is in *Decisions made* and git):
   **Everything else stands unchanged:** phase OPEN, the 2026-08-05 Lean hold, W4
   PARKED, `hK`/`hbareSplit` pinned, option B un-commissioned.
 
-**Kernel-(K) research arc — fifty-six docs+scripts-only dispatches landed, plus eight
+**Kernel-(K) research arc — fifty-seven docs+scripts-only dispatches landed, plus eight
 strategy-only passes** (2026-08-02 → 08-25) — and, **outside** that count because they test
 the architecture rather than the (K) crux, the **two probes**: **KBARE-FALSIFY**
 (2026-08-20) and **C3-AVOID** (2026-08-24), both landed. Which pass was which is one-lined in *Decisions
 made*; the rule is that the **dispatch** count moves only on a landing (GBAL/GLAW/FRES/OCON/
 LTWO are the fortieth through forty-fourth; CIRR the forty-fifth; YLOC the forty-sixth; BALB
 the forty-seventh; ZNEQ the forty-eighth; AGLU the forty-ninth; the eighth fan-out's five
-the **fiftieth through fifty-fourth**, all landed 2026-08-19; **GFLIP the fifty-fifth**
-and **GCHEAP the fifty-sixth**, both 2026-08-25), and a **user call on
+the **fiftieth through fifty-fourth**, all landed 2026-08-19; **GFLIP the fifty-fifth**,
+**GCHEAP the fifty-sixth** and **OQRANK the fifty-seventh**, all 2026-08-25), and a **user call on
 dispatch *shape*** — either multidispatch election, or a coordinator-authored pick like the
 twelfth's — contributes **no** strategy pass, so the 2026-08-19 eighth-fan-out check-in adds
 none even though it moved a standing constraint.
@@ -263,7 +271,7 @@ Canonical homes: workbook `notes/Pencil-informal.md` (**State of (K)** map = ent
 `notes/Pencil-W4-informal.md` (W4-residual), `notes/Pencil-strategy.md` (strategy). Net
 effect: **disproof risk removed**, every refuted route/gap has a successor in the gap map,
 several structural positives proven, and **route-ledger entry 5 is PROVEN, the arc's first
-HIT**; **class uniformity of the escape remains untouched by all fifty-six.**
+HIT**; **class uniformity of the escape remains untouched by all fifty-seven.**
 **Doc-debt round CLOSED — `notes/Pencil-cleanup.md`** (2026-08-13, category D only; D-5 a
 watch item; the D-2 fix's regression history is in `notes/check-gapmap-cells.py`'s docstring).
 
@@ -479,22 +487,23 @@ neighbours' incidences and every capacity unit above 2 is bought by a **Case-I g
 whose pencil-compatibility is geometry the probe was barred from. **§(K-avoid) was never
 opened** and no gap-map status moved.
 
-**THE NEXT CONCRETE TASK — land direction OQRANK's return** (the pick is MADE, see
-the top `**Status:**` block; per-direction spec `notes/Pencil-fanout.md` §"OQRANK"):
-re-run any driver the draft cites, apply the F11 question to each proven piece,
-merge the draft into §(K-out) (`notes/Pencil-informal.md`), update the gap-map
-row(s) (`notes/check-gapmap-cells.py` first), one-line the verdict in *Decisions
-made*, and sweep the status surfaces — the full landing checklist in
-`notes/Pencil-fanout.md`. **The candidate list for the pick AFTER OQRANK** is the
-2026-08-25 re-ranked board (`notes/Pencil-strategy.md` §8, the canonical home):
-**(GR-104)(i)** (rank 2 — the price form, GCHEAP's reshaped residual and the whole
-remaining gap to (b′)'s constant 2, the `n = 12`, `2k = 2` stall pairs the
-adversarial control), then **(K-bare) at the seed-free direct-attainment shape**
+**THE NEXT CONCRETE TASK — the next standing research pick** (OQRANK is LANDED, see
+the top `**Status:**` block and *Decisions made*; landing record
+`notes/Pencil-fanout.md` §"OQRANK"). The candidate list — the 2026-08-25 re-ranked
+board (`notes/Pencil-strategy.md` §8, the canonical home) with OQRANK's rank-1 slot
+now landed, plus its two new named residuals:
+**(GR-104)(i)** (the re-rank's rank 2 — the price form, GCHEAP's reshaped residual
+and the whole remaining gap to (b′)'s constant 2, the `n = 12`, `2k = 2` stall pairs
+the adversarial control), then **(K-bare) at the seed-free direct-attainment shape**
 (rank 3 — the KBARE-FALSIFY successor priced on §8.4's board; NOT option B, which
 stays un-commissioned; this is where the standing attention asymmetry says a
-dispatch soon belongs), then the one-unit-defect redo of (GR-79)–(GR-82), GCOLL's
-collision dominance, and (OC-19) input (c) class-uniformly — the *shape* of the
-pick stays a user call under the standing 2026-08-07 delegation. The harness item GFLIP added is **PAID 2026-08-25**
+dispatch soon belongs), then OQRANK's residuals — **the wall-avoiding-colouring
+existence** ((OC-44)(iii), the (GR-10)-shaped combinatorial-existence question whose
+proof would make the 174/174 delivery uniformly-stated) and **the second
+confinement's mechanism** (would make the whole `X`-condition an O(1) read) — then
+the one-unit-defect redo of (GR-79)–(GR-82), GCOLL's collision dominance, and
+(OC-19) input (c) class-uniformly — the *shape* of the pick stays a user call under
+the standing 2026-08-07 delegation. The harness item GFLIP added is **PAID 2026-08-25**
 (`gridbal_common`); the recorded successor debt item is GCHEAP's residual sibling
 imports (`notes/scripts/README.md` *Harness debt*, ten devices, coordinator-paid
 between waves like its predecessors).
@@ -517,10 +526,10 @@ round 2 (slice 4 the phase-note split, **slice 5/"slice 2" the harness move-down
 OSCHU's `rank(Q|_D) = 3` residue is no longer blocked on the harness — exact `ℚ(i)`
 (`exactcore.Gauss`) is now a base-layer primitive.
 
-**THE STANDING RESEARCH-PICK DELEGATION — SPENT on OQRANK for this round**
-(2026-08-25, third check-in, recon-first then the re-rank's front-runner; see the top
-`**Status:**` block and *Current state*'s third 2026-08-25 bullet). The delegation
-itself stands for the pick after OQRANK lands; its shape is again a user call.
+**THE STANDING RESEARCH-PICK DELEGATION — live again: OQRANK is landed** (2026-08-25,
+third check-in, recon-first then the re-rank's front-runner, dispatched and landed the
+same day; see the top `**Status:**` block and *Current state*'s third 2026-08-25
+bullet). The delegation covers the next pick; its shape is again a user call.
 
 **`hsplit` is CLOSED IN FULL** (W5-L7c-1…6, landed 2026-07-30) and **`hfresh`'s mechanical
 discharge (residue (iv)) is CLOSED too**. The landed successor
@@ -626,6 +635,18 @@ survey — incl. IDENT-PANEL, the nearest neighbour — is `notes/IdeaBacklog.md
 
 ## Decisions made during this phase
 
+- **Direction OQRANK (ordinal 32, 2026-08-25, fable, docs+scripts only) — input (a)
+  DELIVERED at all 174 certified classes, a graded HIT of the first kind.** The
+  ⋆-eigen-block route of *Step O29* completed as a mechanism: forced (1,2) split
+  profile ((OC-40)), the per-block criterion + Veronese dictionary ((OC-41)), and a
+  combinatorial **WALL** ((OC-42): a single-class `b`–`c` `X`-path forces
+  `rank(Q|_D) = 2` at every draw) — the naive first-colouring route REFUTED as a
+  class statement (27/174: 7 wall, 20 by a second uncharacterized confinement); the
+  hunted form GREEN at 174/174 in exact ℚ(i), per-class/per-colouring-generic by
+  openness ((OC-43)/(OC-44)); zero rulings — the (K-tight)-event branch never fired.
+  New residuals: (OC-44)(iii) wall-avoiding-colouring existence; the second
+  confinement. Canonical home §(K-out) *Steps O37–O41*; driver `w4/oqrank.py`.
+  **Input (a) class-uniform OPEN; (GR-15) OPEN; E3 ARMED, not fired.**
 - **Direction GCHEAP (ordinal 31, 2026-08-25, fable, docs+scripts only) — (GR-C2)
   settled per-configuration in both directions, a graded double outcome.** The
   every-step form is PROVEN for `n_hub < 6|δ|` (lone-dart capacity (GR-100) +

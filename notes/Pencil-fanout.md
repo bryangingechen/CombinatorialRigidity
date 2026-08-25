@@ -1,9 +1,12 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: EIGHT fan-outs and TWELVE single directions dispatched; 39 of 40
-directions LANDED — OQRANK (ordinal 32, §"OQRANK") PREPPED AND DISPATCHED
-2026-08-25, targeting (a₁)'s `rank(Q|_D) = 3` residue via the ℚ(i)
-⋆-eigen-block leg, in flight.** **GCHEAP (ordinal 31, §"GCHEAP") LANDED 2026-08-25, same
+**Status: EIGHT fan-outs and TWELVE single directions dispatched; ALL 40
+directions LANDED.** **OQRANK (ordinal 32, §"OQRANK") LANDED 2026-08-25, same
+day as its dispatch — a graded HIT of the first kind: the ⋆-eigen-block
+mechanism completed, the naive single-colouring form REFUTED as a class
+statement (27/174, incl. the (OC-42) WALL), and the hunted form GREEN —
+**input (a) holds at all 174 certified classes**, per-class-generic, with
+zero (K-tight)-event rulings.** **GCHEAP (ordinal 31, §"GCHEAP") LANDED 2026-08-25, same
 day as its dispatch — a graded double outcome: (GR-C2)'s every-step form
 PROVEN for `n_hub < 6|δ|` via the lone-dart capacity (GR-100)/(GR-101), so
 **(b′) at the constant 2 is a THEOREM on the whole `n_hub ≤ 6` stratum**, and
@@ -2789,3 +2792,61 @@ OQRANK"): §(K-out) **extends** — no new section; labels
 **(OC-40)–(OC-44)** ((OC-40) is SIGZ's returned label, re-claimed as the
 head of the tail), **Steps O37–O41**; owning section stays authoritative;
 return any unconsumed remainder to the tail.
+
+### OQRANK — landing write-up (LANDED 2026-08-25, recon-fable, one serial coordinator commit)
+
+**Verdict: a graded HIT of the first kind, with the exact quantifier
+stated.** The ⋆-eigen-block route Step O29 named is **completed as a
+mechanism**: at a σ-fixed target-rank grid point `D` splits ⋆-invariantly
+with a **forced (1,2) profile** ((OC-40)), the one-determinant residue
+factors as `rank(Q|_D) = [Q(g) ≠ 0] + rank Gram(D_Y)` with a full
+Veronese/apolarity dictionary and parameter-free secant positives
+((OC-41)), and the `X`-condition hits a **combinatorial WALL** — a
+single-class `b`–`c` `X`-path forces `rank(Q|_D) = 2` at every draw
+((OC-42)) — so the **naive first-colouring route is REFUTED as a class
+statement** (27 of 174: 7 by the proven wall, 20 by a second,
+uncharacterized confinement, persistent 4/4 draws each). The **hunted
+route is GREEN at 174/174**: every certified class carries an exact ℚ(i)
+σ-fixed target-rank grid chart point with `rank(Q|_D) = 3`, all in the
+parameter-free secant/secant configuration, never past the fourth
+colouring ((OC-43)); openness lifts each witness to every sufficiently
+generic draw of its colouring, so **input (a) holds at every certified
+class, per-class/per-exhibited-colouring-generic** ((OC-44)) — NOT
+class-uniform (out of scope), NOT every-colouring (refuted). The `Y`-block
+never degenerated (297/297); **zero rulings, so the (K-tight)-event branch
+never fires** — every rank-2 point still individually witnesses input (a)
+via (OC-30)(ii). New named residuals: the **wall-avoiding-colouring
+existence** ((OC-44)(iii), the (GR-10)-shaped successor) and the **second
+confinement's mechanism**. **Bars honoured:** landed chains consumed, not
+re-derived; no pool re-run (the new pool is POOL-OQ2, the landed 570/174
+figures cited); (OC-7) witness-not-rate discipline; no `.lean`. **E1/E2/E3
+all NO — E3 stays ARMED by GBAL, not fired.** Canonical home §(K-out)
+*Steps O37–O41* (`notes/Pencil-informal.md`); driver `w4/oqrank.py`
+(controls + nine-chunk census); labels (OC-40)–(OC-44) all claimed.
+
+**Two process exceptions at this dispatch, recorded (dispatch-log rows
+follow at the wave close):** (i) the dispatch initially parked its census
+in a **background run with a monitor** — the recurring F6 park shape, here
+on a *research* dispatch whose prompt carried the foreground mandate in
+prose but not the validated one-line F6 reminder; the coordinator's
+resume message killed the background run and mandated the chunked
+foreground split, and **every quoted figure comes from foreground runs
+witnessed complete** (the agent's own disclosure, verified). (ii) The
+dispatch was also killed once mid-turn by a **spend limit** and resumed
+rung-stable after reset (the F4/F5 killed-dispatch-resume pattern, second
+use this session after the debt-payment builder's API-timeout kill).
+
+**Coordinator verification at landing:** `--controls` re-run (4/4
+must-rejects) and the census re-run IN FULL as the nine foreground
+`--range` chunks, each with an explicit timeout (one chunk re-issued
+alone after a shared-budget cut) — aggregate figures reproduced exactly:
+174 probed / 174 rank-3 witnesses / 0 misses; hit rows all
+`(3, T, 2, 1, F, secant, secant)`; naive first-point rows 147 / 7 (wall)
+/ 20 (second confinement). The (OC-40) eigen-split dimension count, the
+(OC-41) Veronese Gram argument, the (OC-42) telescoping confinement and
+the (OC-44) openness lift re-walked line-by-line; the scope line's
+no-(K-tight)-event reading independently confirmed against POOL-OC2's
+landed rank-3 ℚ-points; the L6 bare-token grep clean on the merged
+draft; `check-gapmap-cells.py` green on the recomputed §(K-out) row
+(trimmed to a current-state statement, no cap bump); the Section index's
+19 stale line ranges recomputed as a rider.
