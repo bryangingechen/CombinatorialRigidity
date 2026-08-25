@@ -590,12 +590,16 @@ The three carried items:
   identified calculus is unlanded, needs the owed **KT pp. 684–691 re-pin** first, and was built
   for chart-*generic* seeds. **That research is option B, declined 2026-07-30.** Versus `hK`:
   easier on uniformity, **harder on the seed side**, habitat reaching **corank 2** (DZ), so
-  `¬Feasible` buys no corank control. Evidence is **strong** (at DZ: every off-line placement
-  attains, every on-line one fails by exactly 1, 0/15 off-line failures) — a well-evidenced
-  statement with an un-commissioned proof route, not a hedge on a doubtful one. **The live
-  asymmetry:** both kernels' option Bs were declined, but `hK` absorbed thirty-seven directions
+  `¬Feasible` buys no corank control. Evidence is **strong but sample-scoped** (at DZ the
+  original sweep saw 0/15 off-line failures with every on-line placement failing by exactly
+  1 — but KBARE-FALSIFY later **constructed** an off-line failure there, rank 113,
+  correcting option-C C3's "failure set is exactly the line": the sample record stands, the
+  locus claim does not — gap-map row (K-bare)) — still a well-evidenced statement with an
+  un-commissioned proof route, not a hedge on a doubtful one. **The live
+  asymmetry:** both kernels' option Bs were declined, but `hK` absorbed thirty-nine directions
   of other attacks and (K-bare) **none** — *"open, nothing being developed"*, in the gap map's
-  own words. That gap is dispatch attention, not adjudication.
+  own words. That gap is dispatch attention, not adjudication; the 2026-08-25 board re-rank
+  prices its cheapest shape at **rank 3** (strategy §8.4, the (K-bare) development row).
 
 Gates for any continuation: `lake build` (warning-clean) + `lake lint` when `.lean` is touched;
 `blueprint/verify.sh` + `blueprint/lint.sh` (vocabulary gate bans "stratum"/"strata") when `.tex`
