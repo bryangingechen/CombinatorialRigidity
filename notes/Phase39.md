@@ -57,11 +57,16 @@ selection theorem (GR-99) — canonical home §(K-grid) *Steps G116–G119*
 (`notes/Pencil-informal-grid.md`), landing record `notes/Pencil-fanout.md` §"GFLIP",
 driver `w4/gflip.py`. (GR-C2) stays the whole constant-2 residual, with a sharpened
 hypothesis reported. Both probe verdicts were surfaced to the user at the same
-check-in — that flag is discharged. **NEXT CONCRETE TASK: the next standing research
-pick** (the 2026-08-07 delegation; the *shape* is a user call) — candidate list in
-*Hand-off*, cheapest now **(GR-C2)**; the `notes/Pencil-strategy.md` §9
-shelf **(ZH-1)–(ZH-6)** stays unpriced and ineligible. Nothing else structural queued,
-nothing awaiting user adjudication.
+check-in — that flag is discharged. **THE NEXT PICK IS MADE (2026-08-25, second
+check-in): direction GCHEAP — ordinal 31, the arc's thirty-ninth direction — IS
+PREPPED AND DISPATCHED**, single and cheapest on **(GR-C2)** (the whole constant-2
+residual, carrying GFLIP's sharpened hypothesis). Spec, bars, riders and HIT criteria
+in `notes/Pencil-fanout.md` §"GCHEAP"; reservation ((GR-100)–(GR-104), Steps
+G120–G124, conditional driver `w4/gcheap.py`) in `notes/Pencil-labels.md`. **NEXT
+CONCRETE TASK: land GCHEAP's return** per the fan-out landing checklist. GFLIP's
+harness-debt item is **PAID** (2026-08-25, the `gridbal_common` move-down). The
+`notes/Pencil-strategy.md` §9 shelf **(ZH-1)–(ZH-6)** stays unpriced and ineligible.
+Nothing else structural queued, nothing awaiting user adjudication.
 
 ## Current state
 
@@ -194,6 +199,20 @@ constraints; the dated dispatch narrative is in *Decisions made* and git):
   C3 NO-GO) were surfaced at this check-in, discharging the "mention at next check-in"
   flag. **Everything else stands unchanged:** phase OPEN, the 2026-08-05 Lean hold, W4
   PARKED, `hK`/`hbareSplit` pinned, option B un-commissioned.
+
+- **2026-08-25 (second check-in), the next research pick — the same shape RE-ELECTED
+  (changes no standing constraint).** With GFLIP landed the same day, the user was
+  offered four shapes for the next standing pick (single direction cheapest-first /
+  ninth multidispatch fan-out / top-rung recon-first / a user-named direction) and
+  selected **"Single direction, cheapest first"** — an option selection, not free
+  text — which resolves to **(GR-C2)** by §8.1's own ranking ((GR-R1) struck by
+  GFLIP), dispatched as **GCHEAP** (ordinal 31) at top rung (`recon-fable`). Same
+  check-in: rungs **all four dispatchable, fable included**, cap **lifted**, rescue
+  §1 fixups **pre-authorized**. Before the prep, the coordinator had GFLIP's
+  harness-debt item paid (the `w4/` balance layer → `gridbal_common`, one sonnet
+  dispatch, 2026-08-25 — `notes/scripts/README.md` *Harness debt*). **Everything
+  else stands unchanged:** phase OPEN, the 2026-08-05 Lean hold, W4 PARKED,
+  `hK`/`hbareSplit` pinned, option B un-commissioned.
 
 **Kernel-(K) research arc — fifty-five docs+scripts-only dispatches landed, plus seven
 strategy-only passes** (2026-08-02 → 08-25) — and, **outside** that count because they test
@@ -427,17 +446,17 @@ neighbours' incidences and every capacity unit above 2 is bought by a **Case-I g
 whose pencil-compatibility is geometry the probe was barred from. **§(K-avoid) was never
 opened** and no gap-map status moved.
 
-**THE NEXT CONCRETE TASK — the next standing research pick** (GFLIP is LANDED, see the
-top `**Status:**` block and *Decisions made*; landing record `notes/Pencil-fanout.md`
-§"GFLIP"). The candidate list, cheapest first:
-**(GR-C2)** — now the cheapest board entry, the whole gap between the proven constant 4
-and (b′)'s 2, carrying GFLIP's sharpened hypothesis (a failure needs **every** one of
-the `≥ |δ|` *feasible* majority branches to be a doubly-blocked matching branch; first
-possible home `n_hub = 8`, `2k = 2`, *Step G108*(v)) — then the one-unit-defect redo of
-(GR-79)–(GR-82), OSCHU's
-`rank(Q|_D) = 3` residue (harness-unblocked since the move-down round), GCOLL's collision
-dominance, and (OC-19) input (c) class-uniformly — the *shape* of the pick stays a
-user call under the standing 2026-08-07 delegation. Both probe verdicts (KBARE-FALSIFY,
+**THE NEXT CONCRETE TASK — land direction GCHEAP's return** (the pick is MADE, see the
+top `**Status:**` block; per-direction spec `notes/Pencil-fanout.md` §"GCHEAP"): re-run
+any driver the draft cites, apply the F11 question to each proven piece, merge the
+draft into §(K-grid) (`notes/Pencil-informal-grid.md`), update the gap-map row
+(`notes/check-gapmap-cells.py` first), one-line the verdict in *Decisions made*, and
+sweep the status surfaces — the full landing checklist in `notes/Pencil-fanout.md`.
+**The candidate list for the pick AFTER GCHEAP**, cheapest first, unchanged: the
+one-unit-defect redo of (GR-79)–(GR-82), OSCHU's `rank(Q|_D) = 3` residue
+(harness-unblocked since the move-down round), GCOLL's collision dominance, and
+(OC-19) input (c) class-uniformly — the *shape* of that next pick stays a user call
+under the standing 2026-08-07 delegation. Both probe verdicts (KBARE-FALSIFY,
 C3-AVOID) were surfaced to the user 2026-08-25; nothing is owed a mention. The harness
 item GFLIP added — the `w4/` balance-layer sibling-import set, eleven devices
 (`notes/scripts/README.md` *Harness debt*) — is **PAID 2026-08-25**: all eleven moved
@@ -462,10 +481,10 @@ round 2 (slice 4 the phase-note split, **slice 5/"slice 2" the harness move-down
 OSCHU's `rank(Q|_D) = 3` residue is no longer blocked on the harness — exact `ℚ(i)`
 (`exactcore.Gauss`) is now a base-layer primitive.
 
-**THE STANDING RESEARCH-PICK DELEGATION — live again: GFLIP is landed** (2026-08-25,
-shape adjudicated single-direction-cheapest-first, dispatched and landed the same day;
-see the top `**Status:**` block and *Current state*'s 2026-08-25 bullet). The delegation
-covers the next pick; its shape is again a user call.
+**THE STANDING RESEARCH-PICK DELEGATION — SPENT on GCHEAP for this round** (2026-08-25,
+second check-in, shape adjudicated single-direction-cheapest-first; see the top
+`**Status:**` block and *Current state*'s second 2026-08-25 bullet). The delegation
+itself stands for the pick after GCHEAP lands; its shape is again a user call.
 
 **`hsplit` is CLOSED IN FULL** (W5-L7c-1…6, landed 2026-07-30) and **`hfresh`'s mechanical
 discharge (residue (iv)) is CLOSED too**. The landed successor

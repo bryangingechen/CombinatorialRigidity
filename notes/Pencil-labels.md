@@ -1338,6 +1338,36 @@ candidate since `THETA`; recorded because "feasible" is exactly the concept a
 **On outgrowth reuse the already-reserved §(K-gcap) / `GC-`** (returned
 unopened fourteen times); **do not mint §(K-unif)/`GU-`**.
 
+## Reserved namespace — direction GCHEAP (2026-08-25, in flight)
+
+**Reserved 2026-08-25 for the single direction GCHEAP** (ordinal 31, the
+arc's thirty-ninth direction; `notes/Pencil-fanout.md` §"GCHEAP"), the
+standing research pick made at the second 2026-08-25 check-in (single
+direction, cheapest first → **(GR-C2)**, §8.1's cheapest board entry with
+(GR-R1) struck by GFLIP). One direction, no siblings — the reservation still
+binds because it protects the *next* dispatch's prep from this one's labels.
+
+| direction | owning § | labels reserved | steps reserved | driver |
+|---|---|---|---|---|
+| **GCHEAP** | §(K-grid) — **extends**, no new section | **(GR-100)–(GR-104)** | **G120–G124** | `w4/gcheap.py` (conditional — see the spec) |
+
+The reservation is the head of §(K-grid)'s unclaimed tail (declared
+**(GR-100)+ / Step G120+** at GFLIP's landing above); the live tail during
+this reservation is therefore **(GR-105)+ / Step G125+**.
+
+**Code and basename verified 0-hit** as raw substrings, case-insensitively,
+across `*.md`, `*.tex`, `*.lean`, `*.py`, `*.m2` with `.git`/`.lake`
+excluded, control token `aglu` live at 14 files. Label tokens `(GR-104)`,
+`(GR-105)`, *Step G124*, *Step G125* each 0-hit; `(GR-100)` and *Step G120*
+hit only the GFLIP reservation's live-tails bookkeeping above and its landing
+record (the `(GR-97)` precedent). **Checked 0-hit and NOT chosen:** `GCTWO`,
+`GRESID`, `CHEAPB`, `GBRANCH`. `GSEL` was already REJECTED at an earlier prep
+for naming the generic mechanism; **`GCHEAP` names the theorem's content** —
+the *cheap branch* is *Step G108*(iv)'s own defined term, the object (GR-C2)
+selects. The target token **(GR-C2)** is GFLOW's landed clause (renamed at
+the 2026-08-20 adjudication) — already minted, **not** in this reservation;
+GCHEAP *cites* it and mints its own results at (GR-100)+.
+
 ## Registry — `notes/Pencil-informal.md` (the (K) workbook)
 
 Status keywords are pointers to the owning section's verdict block and the

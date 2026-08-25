@@ -1,7 +1,8 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: EIGHT fan-outs and TEN single directions dispatched; ALL 38 directions
-LANDED.** **GFLIP (ordinal 30, §"GFLIP") LANDED 2026-08-25, same day as its dispatch —
+**Status: EIGHT fan-outs and ELEVEN single directions dispatched; 38 of 39
+directions LANDED — GCHEAP (ordinal 31, §"GCHEAP") PREPPED AND DISPATCHED
+2026-08-25, targeting (GR-C2), in flight.** **GFLIP (ordinal 30, §"GFLIP") LANDED 2026-08-25, same day as its dispatch —
 a HIT of the first kind: (GR-R1) is PROVEN**, strengthened to the selection theorem
 (GR-99) (`≥ |δ|` feasible majority flips, no habitat/`2k`/connectivity hypothesis), so
 (b′)'s `n`-free `≤ 12` bound (GR-89)(ii) is now a **theorem** and (GR-C2) is the whole
@@ -13,8 +14,8 @@ exact `n_hub` boundary for ledger attack (c)'s AA-glue case (GTMPL), (b′)'s fi
 `n`-free constant (GFLOW), a **NO HIT** on the authorized disproof hunt that nonetheless
 kills the counting route to a disproof (SIGZ), (a₁) reduced to one determinant (OSCHU), and
 **(GR-64)(R2) REFUTED** with (R1) delivered (GCOLL).
-Ordinals run 1–30 (the eighth fan-out claims 25–29; GFLIP is 30) and were assigned at
-dispatch, so landing order differs from ordinal order.
+Ordinals run 1–31 (the eighth fan-out claims 25–29; GFLIP is 30; GCHEAP is 31) and
+were assigned at dispatch, so landing order differs from ordinal order.
 
 **The two architecture-testing PROBES are also both LANDED** (§"Two probes SPECCED and
 AUTHORIZED 2026-08-20"). They carry **no ordinal** — they test the architecture rather
@@ -2538,3 +2539,96 @@ cannot see merely-feasible hypotheses) and found the demand-form route instead.
 (GR-98)/(GR-99) derivations re-walked line-by-line (the cubic count, coverage
 submodularity, lone-A-end injectivity); label set-diff scripted, L6 grep
 clean; `check-gapmap-cells.py` green on the recomputed §(K-grid) row.
+
+---
+
+## GCHEAP — thirty-first ordinal, the thirty-ninth direction (single dispatch, prepped 2026-08-25)
+
+**Selection provenance:** the standing 2026-08-07 delegation; shape adjudicated
+at the **second** 2026-08-25 check-in — **"Single direction, cheapest first"**
+(an option selection; `notes/Phase39.md` *Current state*, the second 2026-08-25
+bullet). Cheapest first is §8.1's own ranking with (GR-R1) struck by GFLIP:
+**(GR-C2)**, now the cheapest item on the option board. Dispatched **un-named,
+single, top rung** (`recon-fable` — fable is dispatchable this session per the
+same check-in). Derivation-first tier. **The shared mechanics and landing
+checklist above apply in full** — read-only w.r.t. every shared file, commit
+nothing, draft to the untracked `notes/Pencil-draft-GCHEAP.md`, tight return
+verdict.
+
+**The target — (GR-C2), the selection clause; it is the whole gap between the
+proven constant 4 and (b′)'s target constant 2.** Verbatim as GFLOW landed it
+(§(K-grid) *Step G108*(iv), restated at *Step G109* residual item 1):
+
+> **(GR-C2)** at some parity-optimal configuration with `|δ| ≤ 2`, some
+> majority-side odd branch is **cheap** — its flip is feasible and it is not
+> a doubly-blocked matching branch.
+
+Measured with **0 failures** at all **96 930** unbalanced parity-optimal
+`|δ| = 2` configurations of the stratum (exhaustive), 0 at 2114 seeded
+`n = 8` and 0 at 371 seeded `n = 10` — and **not proven**. What a proof buys,
+per (GR-90)'s constant table: with (GR-C1), **(b′) at the constant 2**
+((GR-C1) is GPSA's landed first clause, a theorem at `n_hub ≤ 6` by (GR-69),
+open beyond — so a full constant-2 theorem on that stratum); and the
+**every-step variant** (the analogue of how (GR-R1) entered the descent)
+makes the `n`-free `d_adm − d_par ≤ 2·min(k, ⌊n_hub/4⌋) ≤ 6` a theorem
+**outright**, (GR-R1) being proven. State explicitly WHICH form any proof
+delivers (as-posed / at every descent step).
+
+**The named inputs (landed; consume, do not re-derive).** (i) **(GR-89)(iii)'s
+counting bound** proves (GR-C2) below `n_hub = 3k + 5|δ|/2` — the whole
+`n_hub ≤ 6` stratum — and pins the first possible failure to `n_hub = 8`,
+`2k = 2`, **both** odd branches doubly-blocked matching branches (*Step
+G108*(v)'s cell, swept empty under a 46-shape / 132-configuration cap).
+(ii) **GFLIP's sharpened hypothesis** (*Step G119*, offered to this successor
+with no figure): (GR-99)(ii) gives `≥ |δ| ≥ 2` *feasible* majority branches
+at every unbalanced configuration, so a (GR-C2) failure needs **every one**
+of them to be a doubly-blocked matching branch — the "every **feasible**
+majority branch" variant of (GR-89)(iii) is **OPEN** and is the natural first
+attack. (iii) The **demand form** (GR-97) and **counting lemma** (GR-98) are
+the landed instruments (GR-R1)'s proof actually used; (GR-52)/(GR-53) are a
+sufficient-condition calculus that **cannot see merely-feasible hypotheses**
+(*Step G118*'s post-mortem — do not repeat that detour). Treat the sketch as
+a candidate, not a pin — if it dies, say where.
+
+**What counts as a HIT** — a proof of (GR-C2), either form (name it). Also
+valued, on the (GR-29)/(GR-30) precedent: a **refutation by witness** — a
+parity-optimal `|δ| ≤ 2` configuration at which every feasible majority-side
+odd branch is a doubly-blocked matching branch (this demotes the constant-2
+route back to a measured bound and leaves the proven 4 standing — state
+exactly what survives, in particular whether (GR-89)(iii)'s counting
+localizes the failure); or a **proof under a restricted quantifier with the
+exact boundary named** (e.g. a stratum bound past `n_hub = 8`, or a
+matching-branch-count-bounded case). State which of the three you got.
+
+**Bars.** Do **not** attack (GR-C1) — a separate residual (GPSA's first
+clause). (GR-R1) is **PROVEN** ((GR-99)) — consume, do not re-attack. Do not
+re-derive (GR-49)–(GR-54), (GR-67)–(GR-72), (GR-85)–(GR-90), or
+(GR-97)–(GR-99) — landed, and they are your inputs. Do **not** re-run the
+exhaustive censuses ((GR-89)(iv)'s 96 930-configuration census, G108's
+701 382-configuration sweep, (GR-70)(ii)) — cite them; a *new* driver mode
+that tests a *new* sentence is fine, a re-measurement of a landed figure is
+not. (GR-15) and class uniformity are out of scope. No `.lean` is touched
+(the standing Lean hold).
+
+**Riders, verbatim from GFLIP's.** TERMINATION check E1/E2/E3 at the return
+(E3 is ARMED by GBAL — firing is the coordinator's action; report, never
+fire). Cap disclosure: an exhausted cap is *"not found under cap C"*, never
+nonexistence. F11: every headline claim needs a driver that tests that
+sentence, and "exhaustive"/"forced"/"the only" are their own claim class. The
+shift-metric layer is UNBOUNDED ((GR-43)) — any bound is on a **difference**.
+All figures exact ℚ, seeded, degeneracy-guarded, imported from the canonical
+layer (`notes/scripts/README.md` binds; the *Divergences* table names the
+same-name-different-semantics traps) — **the balance layer is now
+`w4/gridbal_common`** (moved down 2026-08-25, §1-catalogued): import the
+eleven moved devices from there directly, not via the sibling re-exports.
+
+**Driver — conditional, at the pinned path `notes/scripts/w4/gcheap.py`.** A
+purely derivational proof consuming only landed figures needs no new driver —
+then state that disposition explicitly in the draft. Any new measured or
+exhaustion claim mints the driver at the pinned path, importing the harness
+read-only, left untracked for the coordinator to gate and commit.
+
+**Reservation** (`notes/Pencil-labels.md` §"Reserved namespace — direction
+GCHEAP"): §(K-grid) **extends** — no new section; labels
+**(GR-100)–(GR-104)**, **Steps G120–G124**; owning section stays
+authoritative; return any unconsumed remainder to the tail.
