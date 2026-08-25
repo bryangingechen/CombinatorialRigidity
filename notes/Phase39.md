@@ -75,10 +75,14 @@ G120–G124* (`notes/Pencil-informal-grid.md`), landing record `notes/Pencil-fan
 §"GCHEAP", driver `w4/gcheap.py`. GFLIP's harness-debt item is **PAID** (2026-08-25,
 the `gridbal_common` move-down); GCHEAP's own residual sibling imports are the new
 recorded *Harness debt* item. **NEXT CONCRETE TASK: the next standing research
-pick** (the 2026-08-07 delegation; the *shape* is a user call) — candidate list in
-*Hand-off*, the natural front-runner now **(GR-104)(i)**; the
-`notes/Pencil-strategy.md` §9 shelf **(ZH-1)–(ZH-6)** stays unpriced and ineligible.
-Nothing else structural queued, nothing awaiting user adjudication.
+pick** (the 2026-08-07 delegation; the *shape* is a user call) — the option board is
+**RE-RANKED 2026-08-25** (the eighth strategy-only pass, `notes/Pencil-strategy.md`
+§8): front-runner the **ℚ(i) eigen-block leg of §(K-out) *Step O29***
+(`rank(Q|_D) = 3` → (a₁), decisive both ways), then **(GR-104)(i)**, then
+**(K-bare) at the seed-free direct-attainment shape** — candidate list in
+*Hand-off*; the `notes/Pencil-strategy.md` §9 shelf **(ZH-1)–(ZH-6)** stays
+unpriced and ineligible. Nothing else structural queued, nothing awaiting user
+adjudication.
 
 ## Current state
 
@@ -226,7 +230,7 @@ constraints; the dated dispatch narrative is in *Decisions made* and git):
   else stands unchanged:** phase OPEN, the 2026-08-05 Lean hold, W4 PARKED,
   `hK`/`hbareSplit` pinned, option B un-commissioned.
 
-**Kernel-(K) research arc — fifty-six docs+scripts-only dispatches landed, plus seven
+**Kernel-(K) research arc — fifty-six docs+scripts-only dispatches landed, plus eight
 strategy-only passes** (2026-08-02 → 08-25) — and, **outside** that count because they test
 the architecture rather than the (K) crux, the **two probes**: **KBARE-FALSIFY**
 (2026-08-20) and **C3-AVOID** (2026-08-24), both landed. Which pass was which is one-lined in *Decisions
@@ -460,15 +464,27 @@ opened** and no gap-map status moved.
 
 **THE NEXT CONCRETE TASK — the next standing research pick** (GCHEAP is LANDED, see
 the top `**Status:**` block and *Decisions made*; landing record
-`notes/Pencil-fanout.md` §"GCHEAP"). The candidate list, front-runner first:
-**(GR-104)(i)** — the price form of the selection clause, GCHEAP's reshaped residual
-and the whole remaining gap between the proven constant 4 and (b′)'s 2 (theorem at
-`n ≤ 10`, measured intact at the three audited `n = 12` stall pairs where the flips
-price 0; a refuting pair must have ALL parity-optima unbalanced and price-stalled,
-confined by the stall tax (GR-102) to `d_par(M) ≥ 2|δ| − b_M`; the `n = 12`, `2k = 2`
-stall pairs are the adversarial control a hunt grows from) — then the one-unit-defect
-redo of (GR-79)–(GR-82), OSCHU's `rank(Q|_D) = 3` residue (harness-unblocked since
-the move-down round), GCOLL's collision dominance, and (OC-19) input (c)
+`notes/Pencil-fanout.md` §"GCHEAP"). The candidate list — **re-ranked 2026-08-25 by
+the eighth strategy-only pass** (`notes/Pencil-strategy.md` §8's dated re-rank block,
+the canonical home for the reasons; each candidate's inputs re-derived at its owning
+workbook step), front-runner first:
+**the ℚ(i) eigen-block leg of §(K-out) *Step O29*** — OSCHU's `rank(Q|_D) = 3`
+residue, O29's own *"single cheapest open step"*, harness-unblocked since the
+`Gauss` → `exactcore` move-down; decisive both ways (a HIT closes (a₁), hence
+input (a), at all 174 certified isomorphism classes and chains with CIRR into
+(OC-8)/(K-wit) per-class; a miss exhibits the first `rank(Q|_D) ≤ 2` class point,
+a candidate (K-tight) event) — then **(GR-104)(i)** — the price form of the
+selection clause, GCHEAP's reshaped residual and the whole remaining gap between
+the proven constant 4 and (b′)'s 2 (theorem at `n ≤ 10`, measured intact at the
+three audited `n = 12` stall pairs where the flips price 0; a refuting pair must
+have ALL parity-optima unbalanced and price-stalled, confined by the stall tax
+(GR-102) to `d_par(M) ≥ 2|δ| − b_M`; the `n = 12`, `2k = 2` stall pairs are the
+adversarial control a hunt grows from) — then **(K-bare) at the seed-free
+direct-attainment shape** (the KBARE-FALSIFY successor priced on §8.4's board:
+bypass the antecedent, attack `HasPencilRealization K 3 G` directly on the
+habitat; NOT option B, which stays un-commissioned — this is where the standing
+attention asymmetry says a dispatch now belongs), then the one-unit-defect
+redo of (GR-79)–(GR-82), GCOLL's collision dominance, and (OC-19) input (c)
 class-uniformly — the *shape* of the pick stays a user call under the standing
 2026-08-07 delegation. The harness item GFLIP added is **PAID 2026-08-25**
 (`gridbal_common`); the recorded successor debt item is GCHEAP's residual sibling

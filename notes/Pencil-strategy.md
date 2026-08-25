@@ -1252,6 +1252,57 @@ than as rows omitted here.
   counting route to a **disproof** is dead too. Counting is closed in *both*
   directions.
 
+**RE-RANKED 2026-08-25** (the eighth strategy-only pass, post-GFLIP/GCHEAP;
+each candidate's stated inputs re-derived against its owning workbook step, not
+quoted from a hand-off — the dispatch-log F22 discipline). Cheapest-decisive
+first, the board's own convention; both filters applied (none of the three is
+an invariant proposal, so neither filter bites):
+
+1. **The ℚ(i) eigen-block leg of §(K-out) *Step O29*** (`rank(Q|_D) = 3` →
+   **(a₁)**). O29's own landing calls it *"the single cheapest open step this
+   pass leaves"*; harness-unblocked since the adjudicated `Gauss` →
+   `exactcore` move-down (*"Step O29's route may now use exact `ℚ(i)`
+   directly"*). Decisive **both ways**: it either closes (a₁) — hence, with
+   (OC-34)'s 174/174 certificates and (OC-31), **input (a)** — at every
+   certified isomorphism class, or exhibits the arc's first
+   `rank(Q|_D) ≤ 2` class point, a candidate **(K-tight) event** (routes A
+   and B dead at that split — the most informative negative available). A
+   HIT chains with CIRR's chart irreducibility into (OC-8), i.e. **(K-wit)**,
+   the single live form of the pitch route, discharged per-class over the
+   widest keyed population the arc has — and by a *mechanism*
+   (⋆-eigen-block decoupling), §2.2's recipe sense, not a search.
+2. **(GR-104)(i)** — the price form at `n ≥ 12` (§(K-grid) *Step G124*).
+   Machinery landed (`w4/gcheap.py` + `gridbal_common`), the adversarial
+   controls named (the `n = 12`, `2k = 2` stall pairs), and (GR-102) confines
+   any refuting pair to `d_par(M) ≥ 2|δ| − b_M`. A HIT makes (b′) at the
+   constant 2 `n`-free — the last constant gap on the GFLOW descent chain.
+   Ranked below the O29 leg because it is a residual-of-a-residual inside the
+   (a′)/(b′) ledger and does not touch a named `hK` gap.
+3. **(K-bare) at the seed-free direct-attainment shape** — bypass the
+   antecedent and attack `HasPencilRealization K 3 G` directly on the
+   habitat (the KBARE-FALSIFY probe's own suggestion; **not option B**, which
+   stays un-commissioned). This is where the standing attention asymmetry
+   (39 directions on `hK`, zero on (K-bare)) says a dispatch now belongs, and
+   this is the cheapest of the gap-map row's three named shapes: the
+   `∃`-seed + deformation-repair shape has no chart to work in, and the
+   supply-lemma shape reduces to it. Two probe-delivered enablers make it
+   newly affordable: the §(K-tight) boundary-load calculus **transports**
+   (192/192) and the dependent stratum is **complete** at `corank(G′) ≤ 3`.
+   Ranked third, not first, because its first slice is exploratory (no named
+   one-step residue), where ranks 1–2 each attack one.
+
+Below the top three, unchanged in relative order: the one-unit-defect redo of
+(GR-79)–(GR-82) (*Step G103* hand-off item 1 — *"cheap, self-contained, and
+the honest completion of attack (c)"*, but bookkeeping-grade: (GR-84) already
+realizes both unbounded residual cases at `n_hub = 16`); collision dominance
+(*Step G115* (GR-96)(iii) — non-vacuous at only the 180 Petersen witnesses,
+and no mechanism identified); (OC-19) input (c) ((GR-15)-flavoured, the
+oldest missing technology). §8.2's C2/U1/U3 and §8.4's route-σ obligations
+2–4 keep their standing notes. **One filter note owed on §9's shelf, recorded
+without pricing:** the §2.5 counting-saturation check that (ZH-2)/(ZH-3) owe
+is a cheap prose-only slice and worth running opportunistically — it moves
+nothing onto this board by itself, and the shelf stays off-board either way.
+
 ### 8.1 Continue the current architecture
 
 The induction is the framework (§4's framing correction); these are attacks on
@@ -1261,9 +1312,9 @@ its named residuals, all slice-sized, none needing an adjudication.
 |---|---|---|
 | ~~**(GR-R1)**~~ (§(K-grid), GFLOW's clause) | **DONE — PROVEN 2026-08-25 (direction GFLIP, ordinal 30)**, strengthened to `≥ \|δ\|` feasible majority flips; (b′)'s `n`-free `≤ 12` is now a **theorem** | §(K-grid) *Steps G116–G119* |
 | ~~**(GR-C2)**~~ (§(K-grid), GFLOW's) | **SETTLED per-configuration in both directions 2026-08-25 (direction GCHEAP, ordinal 31)**: every-step form PROVEN for `n_hub < 6\|δ\|` — **(b′) at the constant 2 is a THEOREM on the whole `n_hub ≤ 6` stratum** — and per-configuration form REFUTED from `n_hub = 12`, boundary exact both ways | §(K-grid) *Steps G120–G124* |
-| **(GR-104)(i)** (§(K-grid), GCHEAP's) | the **price form** of the selection clause — the whole remaining gap between the proven constant 4 and (b′)'s 2 (theorem at `n ≤ 10`, measured intact at `n = 12` where the stalled flips price 0; a refuting pair needs ALL parity-optima unbalanced and price-stalled, confined by the stall tax (GR-102)) | §(K-grid) *Step G124* |
+| **(GR-104)(i)** (§(K-grid), GCHEAP's) | **RANK 2 on the 2026-08-25 re-rank.** The **price form** of the selection clause — the whole remaining gap between the proven constant 4 and (b′)'s 2 (theorem at `n ≤ 10`, measured intact at `n = 12` where the stalled flips price 0; a refuting pair needs ALL parity-optima unbalanced and price-stalled, confined by the stall tax (GR-102)) | §(K-grid) *Step G124* |
 | one-unit-defect-budget redo of (GR-79)–(GR-82) | finishes ledger attack **(c)** past its `n_hub ≤ 14` boundary | §(K-grid) *Steps G98–G103* |
-| `rank(Q\|_D) = 3` class-uniformly | **(a₁)**, hence input (a); harness-unblocked since the `Gauss` move-down | §(K-out) *Step O29* |
+| `rank(Q\|_D) = 3` — the **ℚ(i) eigen-block leg** | **RANK 1 on the 2026-08-25 re-rank.** **(a₁)**, hence input (a) (via (OC-33)(ii) + (OC-31)); harness-unblocked since the `Gauss` move-down; decisive both ways (close (a₁) at all 174 certified classes, or exhibit the first `rank(Q\|_D) ≤ 2` class point). **Scope corrected 2026-08-25:** the earlier "class-uniformly" framing here was the *ceiling*, not the deliverable — the ⋆-eigen-block split works at σ-fixed grid configurations over `ℚ(i)`, and whether its two per-block nondegeneracy conditions are combinatorial at a grid point is O29's own open caveat | §(K-out) *Step O29* |
 | collision dominance `min_M B(M) ≤ d_adm` | GCOLL's successor to the refuted (GR-64)(R2) | §(K-grid) *Step G115* |
 | (OC-19) input (c) class-uniformly | OCON's #1 by value — but **(GR-15)-flavoured**, so it re-enters the oldest missing technology | §(K-out) *Step O18* |
 
@@ -1292,7 +1343,8 @@ than being independent bets (§4.6's own framing).
 |---|---|---|
 | **route σ** — the polarity applied to the seed | **candidate closure; obligation 1 Lean-blocked, obligations 2–4 open and NOT blocked** | Corrected 2026-08-20: only obligation 1 is Lean ("*not new mathematics*"). **(2)** scope — the `dim R_a = 0` stratum untouched and the **(K-res)** habitat unsampled, so **route σ is not a route to (K-res)**; **(3)** (σ6)'s failure direction unwitnessed; **(4)** the branch it closes has **never been observed nonempty**, so its value is **insurance, not repair**. Obligations 2 and 4 are decision-relevant *before* commissioning any Lean. §(K-σ) *Step σ5* |
 | **option B for `hK`** — the stress-function infrastructure | **NOT commissioned** (2026-07-30) | research-scale |
-| **option B for `hbareSplit`** — the insertion calculus | **NOT commissioned** (2026-07-30) | the *only* identified path to closing `hbareSplit`; needs the owed **KT pp. 684–691 re-pin** first, then a corank-stratified boundary-load lemma at arbitrary seeds, then (K-bare-ext) |
+| **option B for `hbareSplit`** — the insertion calculus | **NOT commissioned** (2026-07-30) | was recorded here as *the only identified path* to closing `hbareSplit` — **no longer true since 2026-08-20**: KBARE-FALSIFY refuted its (K-bare-ext) target as stated *and* named two successor shapes (next row). Option B itself needs the owed **KT pp. 684–691 re-pin** first, then a corank-stratified boundary-load lemma at arbitrary seeds |
+| **(K-bare) development, post-probe** — the two KBARE-FALSIFY successor shapes | **live, un-commissioned; RANK 3 on the 2026-08-25 re-rank at the seed-free shape** | (i) the **`∃`-seed form + a seed-repair (deformation) obligation** inside `HasPencilRealization K 3 G′`'s attainment locus — no chart, the habitat infeasible by hypothesis, so new machinery; (ii) **bypass the antecedent**: attack `HasPencilRealization K 3 G` directly on the habitat — strictly stronger but **seed-free**, and newly affordable (the §(K-tight) calculus transports 192/192; the dependent stratum complete at `corank(G′) ≤ 3`). Neither is option B. Gap-map row: `(K-bare)/(K-bare-ext)`, §(K-bare-ext) *Steps BE1–BE8* |
 | **(K-res)** | never attacked — **barred from eight consecutive direction specs** | a kernel of `hK`'s difficulty class on the complementary habitat, proof route *strictly harder*; W4 route 3 cannot close without it. Wave-sized; a user call |
 
 ### 8.5 Test the architecture instead of extending it
@@ -1301,7 +1353,7 @@ The move this board's own risk analysis recommends before more `hK` spend.
 
 | option | status | note |
 |---|---|---|
-| **`hbareSplit` falsification probe** | **AUTHORIZED 2026-08-20**, spec `notes/Pencil-fanout.md` §"Probe KBARE-FALSIFY" | `hbareSplit` is **both** the less-tested kernel (its evidence is *"one gadget, one sampler family"* against `hK`'s 37 directions and 907/907 censuses) **and** the one whose failure kills the route regardless of `hK`. Testing the weakest load-bearing link first is the correct order. **A disproof would not refute the pencil conjecture** — it would refute *this induction*, so the downside is re-architecture, not a dead target |
+| ~~**`hbareSplit` falsification probe**~~ | **LANDED 2026-08-20 — a T1 HIT**: (K-bare-ext) **refuted as stated**, `hbareSplit` itself untouched (its consequent is an `∃`; every probed gadget attains) | §(K-bare-ext) *Steps BE1–BE8*; landing record `notes/Pencil-fanout.md` §"Probe KBARE-FALSIFY". The successor shapes it named are priced on §8.4's board (the (K-bare) development row) |
 | the geometric route to a disproof | open | the **counting** route is dead ((OC-37)); the geometric half of (a₂) is measured free but open class-uniformly |
 | **(T)** / **(V)** / **(E-loc)** | open, slice-sized, **no adjudication needed** | W4 route 3's informal costs; (T) is *"a genuine research gap, not a numerics gap"* and landed-**invisible** (the search's own certificate requires triangle-freeness) |
 
