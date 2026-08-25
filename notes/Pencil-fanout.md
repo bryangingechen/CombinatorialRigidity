@@ -11,6 +11,15 @@ kills the counting route to a disproof (SIGZ), (a₁) reduced to one determinant
 Ordinals run 1–29 (the eighth fan-out claims 25–29) and were assigned at dispatch, so
 landing order differs from ordinal order.
 
+**The two architecture-testing PROBES are also both LANDED** (§"Two probes SPECCED and
+AUTHORIZED 2026-08-20"). They carry **no ordinal** — they test the architecture rather
+than the (K) crux, so they are outside the 37-direction count. **KBARE-FALSIFY**
+(2026-08-20): a **HIT at tier T1**, (K-bare-ext) refuted as stated, `hbareSplit`
+untouched. **C3-AVOID** (2026-08-24): the *"reduce avoiding `S`"* gate **decided** —
+universal threshold **exactly `|S| ≤ 2`**, exact ceiling `2 μ(G)`, so board option **C3
+is NO-GO as a crux-avoidance route**; mathematics in `notes/Pencil-strategy.md` §4.7,
+§(K-avoid) never opened, **no gap-map status moved**.
+
 **Ordinals 1–19 are archived** (2026-08-19, `notes/Pencil-structure.md` slice 2) —
 their dispatch specs and landing write-ups moved verbatim to
 `notes/Pencil-fanout-archive.md`. This file keeps the adjudication, the *Shared
@@ -2204,7 +2213,7 @@ A future recon may overturn any of it.
 
 ---
 
-## Two probes SPECCED and AUTHORIZED 2026-08-20 (KBARE-FALSIFY **LANDED**; C3-AVOID not yet dispatched)
+## Two probes SPECCED and AUTHORIZED 2026-08-20 — **BOTH LANDED** (KBARE-FALSIFY 2026-08-20; C3-AVOID 2026-08-24)
 
 Both are **read-only recons**, both **docs+scripts-only**, and neither touches
 the Lean hold. They exist because the eighth fan-out closed with the phase
@@ -2219,6 +2228,9 @@ for a future session"* (the option board is `notes/Pencil-strategy.md` §8).
 
 **Dispatch order is not free: run KBARE-FALSIFY first.** Its answer can moot
 C3-AVOID and a great deal else — that is the whole point of running it.
+**Both have now landed** — KBARE-FALSIFY 2026-08-20 (a T1 hit; it did **not**
+moot the second), C3-AVOID 2026-08-24 (the gate decided at threshold
+`|S| ≤ 2`). Per-probe records in the two subsections below.
 
 **LANDED 2026-08-20 (KBARE-FALSIFY, opus, one commit).** Outcome: a **HIT at
 tier T1** — **(K-bare-ext) is REFUTED as stated**, `hbareSplit` **untouched**
@@ -2303,7 +2315,7 @@ name to be reserved at prep per `notes/Pencil-labels.md` — **note that
 `notes/scripts/kbare/` is a different layer from `w4/`**, so §2's layering rule
 applies afresh.
 
-### Probe C3-AVOID — is the mixed-stratum target reachable?
+### Probe C3-AVOID — is the mixed-stratum target reachable? (**LANDED 2026-08-24, opus, one commit**)
 
 **The question, and it is purely combinatorial.** `notes/Pencil-strategy.md`
 §4's **C3** weakens the target: pin only a subset `S` of bodies to pencils,
@@ -2341,3 +2353,59 @@ prices its **gate**, nothing more.
 C3 entry (or a new workbook section if the mathematics warrants one), a driver
 only if a search is needed, and an explicit verdict with the `|S|` threshold.
 **Rung: opus** (it can re-route the phase). Labels reserved at prep.
+
+**The verdict, as landed: the gate is DECIDED, and the threshold is EXACTLY
+`|S| ≤ 2`.** Mathematics, proofs, figures and caps: **`notes/Pencil-strategy.md`
+§4.7** (the canonical home — labels **(AV-1)–(AV-8)**, ***Steps AV1–AV6***);
+driver `notes/scripts/w4/avoidgen.py` (seven modes, `--all` ~36 s,
+byte-identical at `PYTHONHASHSEED` 0 and 12345). **§(K-avoid) was NOT opened**
+and returns to the pool unopened: the mathematics is about the *generation
+theorem*, not kernel (K), so it has no gap-map row and moves no gap-map status.
+Headline chain:
+
+* **(AV-1)** the LOCAL gate never fails — at every Case-II node
+  `#{deg = 2} ≥ ⌈((D−3)|V|+4)/(D−1)⌉`, i.e. **more than half** the vertices at
+  `D = 6` (0 violations over the 140-node `μ ≤ 3` census, tight at 6).
+* **(AV-2)/(AV-4)** a **conservation law** decides it instead: every reduction
+  tree has `#leaves = μ(G) = |E|−|V|+1` (so `#contractions = μ−1`,
+  `#splits = |V|−μ−1`), each leaf holds 2 vertices, hence
+  **`capacity(G) ≤ 2 μ(G)`** — verified with 0 violations over the pool **and**
+  exhaustively over all **476** simple 2EC minimal `0`-dof graphs at `|V| ≤ 6`
+  (451 attain equality).
+* **(AV-3)** **GO at `|S| ≤ 2`, unconditionally; NO-GO from `|S| = 3`** —
+  the counterexamples being `C_3 … C_6`, where **every** 3-subset fails.
+* **(AV-5)** **no structural hypothesis on `S` lifts the threshold** (the
+  independent triples `{0,2,4}`, `{1,3,5}` of `C_6` are as unavoidable as
+  `{0,1,2}`) — so the spec's *"any independent `S`"* end of the calibration is
+  **refuted**, and the answer sits at the *"only `|S| = 1`"* end.
+* **(AV-6)** the contraction-free reductions are **exactly** the cycles
+  (`μ` is split-invariant, the base has `μ = 1`), which is why the `|S| = 3`
+  counterexamples are exactly `C_3 … C_6` and every other graph already has
+  ceiling `≥ 4`.
+* **(AV-7)** — the honest scope line — **the gate is necessary, not
+  sufficient.** `splitOff`'s definition body rewires the incidences of *both
+  neighbours* `a`, `b`, so an `S`-body next to a split vertex has its pencil
+  condition re-imposed anyway; and every capacity unit above 2 is bought by a
+  **Case-I gluing** whose pencil-compatibility is geometry this probe is barred
+  from. That arm is the live successor.
+* **(AV-8)** board verdict: **C3 is NO-GO as a crux-avoidance route** and stays
+  on the board only **re-scoped**, with `μ` grading what it buys.
+
+**One guess of the pass's own, refuted by its own driver and recorded rather
+than smoothed over.** (AV-1)'s Case-II count suggests `5|E| ≤ 6(|V|−1) + 4` in
+general, which would cap `μ ≤ (|V|+3)/5` and give a quotable *"at most ~40 % of
+the bodies"*. Exhaustively at `|V| ≤ 6` the count reaches `10` and the capacity
+ratio reaches **80 %**, so the guess is **FALSE** without the
+no-proper-rigid-subgraph hypothesis and the `|V|`-relative headline is
+withdrawn; only the exact `2μ` ceiling stands.
+
+**Caps.** Case-II census exhaustive **for `μ ≤ 3` only** (`|V| ≤ 16`); the
+`--betti`/`--count` sweeps exhaustive over **simple 2EC graphs on `|V| ≤ 6`**;
+the per-`S` avoidance sweep runs to `|V| ≤ 12`. `μ ≥ 4` was not searched — an
+exhausted cap is not a nonexistence claim. Everything at `D = 6`; (AV-1) and
+(AV-3) are the only claims stated for general `D`.
+
+**Bars honoured.** No rank computed, no realization placed, `hK`/`hbareSplit`
+untouched, **no `.lean` edited**, the generation theorem consumed and not
+re-derived, and scope kept to the gate — C3 itself is not attempted. **TERMINATION: E1, E2, E3 all NO**; E3 stays ARMED by GBAL,
+neither fired nor disarmed (this probe touches neither entry 1 nor (a′)).

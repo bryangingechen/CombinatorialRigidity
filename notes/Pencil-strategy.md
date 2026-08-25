@@ -411,10 +411,21 @@ combinatorial question about the already-formalized generation theorem.
 
 This is strictly weaker than the conjecture and follows from nothing already
 proved. But it is the **chemically realistic** statement (real molecules have
-*some* sp²/planar-bonded atoms, not all), and `S = V` recovers the full case. It
-is not on the phase's candidate list. The obvious risk: the reduction consumes
-vertices, so it may be forced into `S` — a "reduce avoiding `S`" theorem is the
-thing to check first.
+*some* sp²/planar-bonded atoms, not all), and `S = V` recovers the full case.
+The obvious risk it names itself: the reduction consumes vertices, so it may be
+forced into `S`.
+
+> **GATE PRICED, 2026-08-24 (probe C3-AVOID) — §4.7 below is the canonical
+> home.** The risk is real and sharper than expected. The *local* gate never
+> fails (**(AV-1)**: more than half of every Case-II node's vertices are legal
+> split choices), but a **conservation law** (**(AV-2)**/**(AV-4)**) caps
+> avoidance at `2 μ(G)`, `μ = |E| − |V| + 1`: the universal threshold is
+> **exactly `|S| ≤ 2`** (**(AV-3)**), no structural hypothesis on `S` lifts it
+> (**(AV-5)**), and the `|S| = 3` counterexamples are exactly the cycles
+> `C_3 … C_6` (**(AV-6)**). C3 is therefore **NO-GO as a crux-avoidance route**
+> and stays on the board only **re-scoped**, `μ` measuring how much it buys
+> (**(AV-8)**) — and even a passed gate is necessary, not sufficient
+> (**(AV-7)**).
 
 ### Ruled out
 
@@ -734,6 +745,198 @@ with no verified pointer, explicitly weaker than §7's screw-theory pointer and
 subject to the same "verify from scratch" rule. §7's standing verdict — *the
 right pointer for a successor is "Coxeter matroids, and the reason they don't
 apply"* — is unchanged.
+
+### 4.7 C3's gate PRICED — probe C3-AVOID (specced 2026-08-20, LANDED 2026-08-24)
+
+**Status: the gate is DECIDED, with a sharp threshold and a clean parameter.**
+This subsection is the canonical home for the mathematics; `notes/Pencil-fanout.md`
+§"Probe C3-AVOID" carries the dispatch record only, and the C3 entry above is a
+pointer. Labels **(AV-1)–(AV-8)**, ***Steps AV1–AV6***; driver
+`notes/scripts/w4/avoidgen.py`. **Purely combinatorial** — no rank is computed,
+no realization placed, `hK` / `hbareSplit` untouched, no Lean edited. The
+reserved workbook section **§(K-avoid) was NOT opened**: this is strategy about
+the *generation theorem*, not kernel-(K) mathematics, so it has no gap-map row.
+
+**The question, verbatim from the spec.** C3 pins only a subset `S ⊆ V` of
+bodies to pencils. *If at each reduction step the split vertex can be chosen
+outside `S`, KT's full freedom is intact there and the geometric crux never
+arises.* So: **can the reduction always avoid a prescribed `S`, and up to what
+`|S|`?**
+
+#### *Step AV1* — the reduction, restated from the landed Lean (not from prose)
+
+`Graph.minimal_kdof_reduction` (KT Thm 4.9, Phase 20,
+`Molecular/Induction/ForestSurgery/Reduction.lean`) dispatches a minimal
+`0`-dof-graph `G` with `2 ≤ |V|` three ways, at `D = bodyBarDim n ≥ 3`:
+
+* `|V| = 2` — **BASE**, the two-vertex double edge;
+* `|V| ≥ 3` with a proper rigid subgraph — **CASE I**, `hcontract`; the landed
+  docstring records that Case I *"genuinely consumes the IH at two objects, the
+  block and the contraction"*, i.e. the consumer recurses on `H` **and** on
+  `G/H`;
+* `|V| ≥ 3` with none — **CASE II**, `hsplit` at a vertex of degree exactly `2`
+  (`exists_degree_eq_two`, KT Lemma 4.6).
+
+Two facts read off the **definition bodies**, not the docstrings.
+`splitOff v a b e₀` has `vertexSet = V(G) \ {v}` and edge relation *"every edge
+of `G` missing `v`, plus one fresh `e₀` joining `a` and `b`"*
+(`Molecular/Induction/Operations.lean:770`) — so a split removes **exactly one
+vertex and exactly one edge**, and **every degree except `v`'s is preserved**.
+`IsProperRigidSubgraph H G n := H ≤ G ∧ H.IsKDof n 0 ∧ 2 ≤ |V(H)| ∧ V(H) ⊂ V(G)`
+(`Molecular/Deficiency.lean:483`) — so the Case-I test is *"some `W` with
+`2 ≤ |W| < |V|` and `def(G[W]) = 0`"*, `H` induced without loss (extra induced
+edges only lower the deficiency).
+
+#### *Step AV2* — **(AV-1)** the supply lemma: the LOCAL gate is never the obstruction
+
+**(AV-1).** At every Case-II node, writing `t = #{v : deg v = 2}`,
+`t ≥ ⌈((D−3)|V| + 4)/(D−1)⌉`; at the molecular `D = 6` that is
+**`t ≥ ⌈(3|V|+4)/5⌉ > |V|/2`**.
+
+*Proof.* `no_rigid_edge_count` (KT 4.5(i), landed, and it is exactly the
+no-proper-rigid-subgraph branch) gives `(D−1)|E| < D(|V|−1) − k + (D−1)`, so at
+`k = 0`, `(D−1)|E| ≤ D|V| − 2`. `twoEdgeConnected_of_isKDof_zero` plus
+`two_le_degree_of_twoEdgeConnected` put every degree at `≥ 2`, so the handshake
+gives `2|E| = Σ deg ≥ 2t + 3(|V| − t)`, i.e. `t ≥ 3|V| − 2|E|`. Substitute. ∎
+
+So **more than half** the vertices of a Case-II node are legal split choices,
+and a step can dodge any `S` with `|S| < t`. Verified `0` violations over the
+**140** Case-II nodes of the `μ ≤ 3` census (`--supply`), tight at 6 of them
+(`|V| = 2, 3, 4` and the three `|V| = 14` shapes). **The gate does not fail
+locally** — which is why the risk C3 names itself needed a different answer than
+"the reduction may run out of choices".
+
+#### *Step AV3* — **(AV-2)** the conservation law, and **(AV-4)** the capacity ceiling
+
+Every reduction *tree* ends at 2-vertex leaves. Track the vertex budget:
+
+**(AV-2) CONSERVATION LAW.** For every reduction tree of `G` (any strategy
+consistent with the dispatch),
+
+    #leaves = μ(G) := |E(G)| − |V(G)| + 1,   #contractions = μ − 1,
+    #splits = |V| − μ − 1.
+
+*Proof.* `μ` is invariant under a Case-II split (one vertex and one edge go).
+`μ` is **additive** at a Case-I node: `|V(G/H)| = |V| − |V(H)| + 1` and
+`|E(G/H)| = |E| − |E(H)|` (`H` induced), so `μ(H) + μ(G/H) = μ(G)`. The base has
+`μ = 1`. Induct. ∎
+
+**(AV-4) CAPACITY CEILING.** An original vertex avoids being a split vertex iff
+it survives at some leaf, and a leaf holds 2 vertices, so
+
+    capacity(G) := max{ |S| : some reduction of G avoids S } ≤ 2 μ(G).
+
+The **parameter** of the whole question is therefore the **cyclomatic number
+`μ = |E| − |V| + 1`** — equivalently, by (AV-2), the number of rigid blocks the
+reduction's laminar Case-I family cuts `G` into. Verified: `0` violations of
+both statements over the named pool **and** exhaustively over all **476** simple
+2-edge-connected minimal `0`-dof graphs on `|V| ≤ 6`, with **451** of the 476
+attaining `capacity = 2μ` (`--betti`). Equality is *not* universal — the
+`|V| = 6`, `|E| = 8`, `μ = 3` graphs top out at capacity `4 < 6`, and one
+`|V| = 5`, `μ = 2` class at `3 < 4`.
+
+#### *Step AV4* — **(AV-3)** the threshold: GO at `|S| ≤ 2`, NO-GO from `|S| = 3`
+
+**(AV-3) THRESHOLD THEOREM.** For `D ≥ 4` (so for the molecular `n = 3`):
+
+* **GO, `|S| ≤ 2`, unconditionally.** For every minimal `0`-dof-graph `G` and
+  every `S` with `|S| ≤ 2`, a reduction avoiding `S` exists. *Proof.* The
+  invariant `|S ∩ V(node)| ≤ 2` is preserved (Case I sends `S ∩ V(H)` to the
+  block and `S \ V(H)` to the contraction; the merge vertex is never in `S`). At
+  a Case-II node with `|V| ≥ 3`, (AV-1) gives `t ≥ 3`, so some degree-2 vertex
+  lies outside `S`. Leaves need no choice. ∎
+* **NO-GO from `|S| = 3`.** `C_3, C_4, C_5, C_6` are minimal `0`-dof-graphs with
+  `μ = 1`, hence capacity `2`; **every** 3-element subset fails
+  (`0/1`, `0/4`, `0/10`, `0/20` respectively, `--avoid`).
+
+So the threshold the spec asked for is **exactly `|S| ≤ 2`**, and it is *the
+weak end* of the spec's own calibration — nearer *"only `|S| = 1`"* than
+*"any independent `S`"*.
+
+#### **(AV-5)** — no structural hypothesis on `S` lifts it, and what *does*
+
+**(AV-5).** The obstruction is a **cardinality conservation law**, so
+independence, spread, or any other property of `S` buys nothing: at `C_6` the
+independent triples `{0,2,4}` and `{1,3,5}` are as unavoidable as `{0,1,2}`
+(`--avoid`, explicit). What *does* lift the threshold is a hypothesis on the
+**graph**: capacity is graded by `μ`, and above `|S| = 2` the surviving
+statement is per-graph, not universal —
+
+    a reduction avoiding S exists  ⟹  |S| ≤ 2 μ(G),
+    and S must spread ≤ 2 per block of the laminar Case-I family.
+
+Measured shape of the failure above the threshold: at the `μ = 2` members most
+larger `S` still work but a positive fraction does not — `Θ(3,4,4)` avoids
+`114/120` triples and `117/210` 4-sets; `Θ(3,3,4)` only `63/84` and `45/126`;
+the `C_6` cactus `145/165` and `200/330`. All `|S| ≥ 5` fail at every `μ ≤ 2`
+member, as (AV-4) forces.
+
+#### *Step AV5* — **(AV-6)** where the ceiling is 2, exactly
+
+**(AV-6).** A reduction that never contracts exists **iff `μ(G) = 1`**, i.e.
+**iff `G` is a cycle**; and the `0`-dof cycles at `D = 6` are exactly
+`C_2 … C_6` (`5L ≥ 6(L−1) ⟺ L ≤ 6`, driver-confirmed: `def(C_L) = 0` for
+`L ≤ 6`, `1` at `L = 7`, `2` at `L = 8`). *Proof.* `μ` is split-invariant and
+the base has `μ = 1`; conversely a `μ = 1` two-edge-connected graph is a cycle
+and every cycle `C_L`, `L ≤ 6`, has no proper rigid subgraph, so its whole
+reduction is Case II. ∎ So the `|S| = 3` counterexamples are **exactly the
+cycles**, and for every *other* minimal `0`-dof-graph Case I must fire at least
+once and the ceiling is already `≥ 4`.
+
+**A guess this pass had to refute, recorded rather than smoothed over.** The
+Case-II count of (AV-1) suggests `5|E| ≤ 6(|V|−1) + 4` in general, which would
+cap `μ ≤ (|V|+3)/5` and give the quotable headline *"at most ~40 % of the bodies
+can be pinned"*. **That is FALSE without the no-proper-rigid-subgraph
+hypothesis:** exhaustively over `|V| ≤ 6` the count reaches `s = 10`
+(`|V| = 6`, `|E| = 8`, `μ = 3`), and capacity reaches `4/5 = 80 %` of the bodies
+at `|V| = 5`, `|E| = 6` (`--count`). So `μ` is **not** bounded by the Case-II
+arithmetic, and the honest ceiling is the exact `2μ` of (AV-4) with no `|V|`-
+relative headline attached.
+
+#### *Step AV6* — **(AV-7)** the gate is NECESSARY, not sufficient
+
+**(AV-7).** Passing the gate does **not** establish that *"the geometric crux
+never arises"*. From `splitOff`'s definition body: re-inserting `v` deletes the
+fresh edge `e₀ : a–b` and adds `eₐ : v–a`, `e_b : v–b`, so the **incidence sets
+of both neighbours `a` and `b` change at every step**, `v`'s freedom
+notwithstanding. Being a pencil is a condition on a body's *whole* hinge-line
+set, so an `S`-body adjacent to a split vertex has its pencil condition
+**re-imposed** at that step. Two further arms the gate says nothing about: the
+two `S`-bodies that reach the base still need a pencil realization *there*, and
+every capacity unit above 2 is bought by a **Case-I gluing**, whose
+pencil-compatibility is exactly the geometry this probe is barred from. **(AV-7)
+is combinatorial; its geometric consequence is OPEN and out of this probe's
+scope** — flagged, not forced.
+
+#### **(AV-8)** the verdict for the option board
+
+**(AV-8).** **C3's gate is priced, and the price is high.** As a *crux-avoidance*
+route C3 is **NO-GO**: the universal statement stops at `|S| ≤ 2`, a threshold
+that pins two bodies out of `|V|` and is nowhere near the *"real molecules have
+some sp²-planar atoms"* motivation the option was promoted on. What survives,
+and is worth carrying, is **(AV-4)'s parameter**: C3's gate passes exactly to
+`2μ(G)`, so C3 is viable only on **Case-I-rich** graphs and only for `S` spread
+`≤ 2` per rigid block — and on exactly those graphs (AV-7)'s Case-I arm is the
+unpriced half. C3 therefore **stays on the board, re-scoped**: not as "relocate
+the hard case", but as *"the hard case relocates into Case-I gluing, at a rate
+`μ` measures"*. **Nothing here touches `hK`, `hbareSplit`, (GR-15) or class
+uniformity, and no gap-map status moves.**
+
+**Caps, disclosed.** The Case-II census is exhaustive **only for `μ ≤ 3`**
+(hence `|V| ≤ 16`); `μ ≥ 4` was not searched and an exhausted cap is not a
+nonexistence claim. The `--betti` / `--count` exhaustive sweeps are **simple
+2EC graphs on `|V| ≤ 6`**. The per-`S` avoidance sweep runs to `|V| ≤ 12`;
+larger pool members report the DP capacity only. Everything at `D = 6`
+(`n = 3`); (AV-1) and (AV-3) are stated and proved for general `D` and are the
+only claims here that are.
+
+**Verification.** `python3 notes/scripts/w4/avoidgen.py --all` (~36 s, seven
+modes: `--supply --census --betti --forced --avoid --count --validate`),
+byte-identical under `PYTHONHASHSEED` 0 and 12345. `--validate` cross-checks the
+`(6,6)` pebble-game deficiency against `kbare_common.exact_deficiency`
+(0 mismatches) and the branch enumeration of rigid vertex sets against the
+brute-force subset sweep (0 mismatches). Per-mode rows in
+`notes/scripts/README.md` §3.
 
 ## 5. Methodology — symbolic computation
 
@@ -1080,7 +1283,7 @@ than being independent bets (§4.6's own framing).
 
 | option | status | note |
 |---|---|---|
-| **C3** — pin only a subset `S` of bodies to pencils | **live, and PROMOTED here from "not on the phase's candidate list"** | Converts the geometric crux into a **combinatorial** question about already-formalized machinery: at each reduction step, can the split vertex be chosen **outside `S`**, where KT's full freedom is intact? `S = V` recovers the full conjecture, so it is a **filtration, not a retreat** — and it is the **chemically realistic** statement (real molecules have *some* sp²-planar atoms, not all). **Gating question, cheap and well-defined:** the reduction consumes vertices, so it may be forced into `S` — a *"reduce avoiding `S`"* theorem is the thing to check first. Spec: `notes/Pencil-fanout.md` §"Probe C3-AVOID". |
+| **C3** — pin only a subset `S` of bodies to pencils | **GATE PRICED 2026-08-24 (probe C3-AVOID) — NO-GO as a crux-avoidance route; live only RE-SCOPED** | The *"reduce avoiding `S`"* gate is decided: universal threshold **exactly `|S| ≤ 2`**, capped by a conservation law at `2 μ(G)` with `μ = \|E\| − \|V\| + 1`, no structural hypothesis on `S` lifting it, `\|S\| = 3` failing at the cycles `C_3 … C_6`. So C3 does **not** relocate the hard case for a chemically meaningful `S`; what survives is `μ` as the exact grading, and the relocation is into **Case-I gluing**, which the probe did not price. Full mathematics + caps: **§4.7**; landing record `notes/Pencil-fanout.md` §"Probe C3-AVOID". |
 
 ### 8.4 Attack a kernel's own proof
 
@@ -1109,7 +1312,12 @@ reduction and `U3`'s negative-form insight already exploited **for the tight
 stratum only** (the shortlist is *partially* superseded, not retired — U3's
 logical-form move is still live as an invariant change); the symbolic
 meta-option, landed as `m2/lambda0.m2`. §5.3 item (i) remains, ruled out by
-§5.3's own local-frame feasibility boundary.
+§5.3's own local-frame feasibility boundary. **Added 2026-08-24:** C3's
+*"reduce avoiding `S`"* gate — settled at threshold `|S| ≤ 2` with the exact
+ceiling `2 μ(G)` (§4.7, **(AV-3)**/**(AV-4)**); do not re-open it as a
+cardinality question, and do not look for a structural hypothesis on `S`
+(**(AV-5)** refutes that class). What is *not* a durable negative and is the
+live successor: **(AV-7)**'s Case-I gluing arm, unpriced.
 
 ## 9. External technique transfer — the Zheng body–pin preprint (2026-08-21)
 

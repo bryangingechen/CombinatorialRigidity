@@ -425,6 +425,16 @@ Three layers, plus one **language island**:
   `hub_pattern`, `shapes_from`, `chart_point` and friends) and, through
   `outer`, `lambda`'s `HABITATS4`. It imports no private helper and
   modifies nothing.
+  **`avoidgen`** (probe C3-AVOID, 2026-08-24 — `notes/Pencil-strategy.md` §4.7:
+  the *"reduce avoiding `S`"* gate of board option C3) is the **eighth** such
+  leaf and the **shallowest**: it sits directly on `nogood_subdiv` (the bottom
+  of this chain) plus `kbare_common`, and touches nothing else, because its
+  question is purely combinatorial — no rigidity matrix, no sampler, no
+  placement. Imports `nogood_subdiv`'s `deficiency` / `is_rigid` /
+  `rigid_vertex_sets{,_bruteforce}` / `induced_edges` / `D_BODY` / `MULT` and
+  `kbare_common`'s `verts_of` / `degrees` / `is_2ec` / `split_off` /
+  `exact_deficiency`, all §1-catalogued; reimplements nothing; adds no debt
+  item.
   **`star_span_ranks` MOVED DOWN to `repin` on 2026-08-06** (slice S1 of *The
   build plan*), once it had SIX consumers — past rule 2's own trigger — with a
   re-export from `flanks` so no recorded figure moved. The six: `flanks`
@@ -878,6 +888,33 @@ OG / OR / OC2 are pinned and disjoint from every earlier pool.
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/gcoll.py --big8 --bigp` | 467 s | ibid. *Step G115* ((GR-96), the (R1) sweep): `n_hub = 8` complete — 11 of 20 hub-multigraph classes carry a habitat assignment, **39 689** shapes (AGLU's landed count re-asserted), `min_M B(M) = {0: 39689}` with **39 687** covered by (GR-94)(ii)'s **proven** Hamiltonian condition; then Petersen at `n_hub = 10` — **36 860** habitat assignments of 36 960 profiles (the 100 rejects exactly the star-concentrated ones, asserted both ways), `min_M B(M) = {0: 36 680, 1: 180}`, and Hamiltonian coverage **0**, which is the prediction since Petersen is non-Hamiltonian |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/gcoll.py --wit` | 455 s | ibid. *Step G114* ((GR-95), the refutation): the **180** witnesses certified **four** ways — the landed `2^M` scan reproducing `min_M B` with 0 disagreements; **`gridcol.class_shape`**, the canonical habitat certificate with the matroid rank inside, accepting all 180 with 0 rejections; complete matching enumeration (6 of 6, no cap); and the local criterion at all **221 160** (shape, matching) pairs. Exactly two demand-1 mechanisms, `{(5,0,0): 720, (2,3,1): 360}` |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/gcoll.py --dfg --adv` | 552 s | ibid. the (a′) by-product and the **seven** F13 controls: `d_adm` (exhaustive `z`-cube, no deviation cap) and `d_fg` both `{2: 60, 3: 120}` at the 180 witnesses, so `d_fg = d_adm` at every one and the E1(iv)/E2 detector reports **0**; control (6) shows the refutation is a property of the **length assignment**, not the graph (36 680 assignments at `min_M B = 0` on the same graph); control (7) cross-checks `good_z` against `gorient.fully_good_scan` at 5640 colourings |
+
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/avoidgen.py --supply` | 5 s | strategy §4.7 (AV-1) — the degree-2 supply bound at Case-II nodes, 140 nodes, 0 violations, 6 tight |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/avoidgen.py --census` | 5 s | ibid. — the Case-II class EXHAUSTIVE for `mu <= 3` (5 / 4 / 127 iso classes at `mu` = 1 / 2 / 3) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/avoidgen.py --betti` | 4 s | ibid. (AV-2)/(AV-4) — `#leaves = mu`, `capacity <= 2 mu`; 12 pool members + all 476 simple 2EC minimal `0`-dof graphs at `\|V\| <= 6`, 0 violations, 451 attaining equality |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/avoidgen.py --forced` | 5 s | ibid. (AV-6) — `mu`-invariance over the whole census (0 violations), the contraction-free classification (exactly the cycles), and `def(C_L)` for `L = 2..8` (`0` through `L = 6`, then `1`, `2`) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/avoidgen.py --avoid` | 28 s | ibid. (AV-3)/(AV-5) — the avoidance game: `\|S\| <= 2` avoidable everywhere, `\|S\| = 3` failing (0/20 at `C_6`, independent triples included) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/avoidgen.py --count` | 4 s | ibid. — the refuted `s <= 4` guess (`s` reaches 10 at `\|V\| = 6`, capacity ratio 80 % at `\|V\| = 5`) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/avoidgen.py --validate` | 21 s | ibid. — pebble game vs `exact_deficiency`, branch enumeration vs brute force, both 0 mismatches |
+
+**C3-AVOID (probe, LANDED 2026-08-24).** All seven modes (`--all`, ~36 s total,
+inside the 600 s foreground budget in one call) run by the dispatch, exit 0,
+**byte-identical at `PYTHONHASHSEED` 0 and 12345**. One driver added
+(`w4/avoidgen.py`), **nothing existing modified** — so the *figures do not move*
+gate discharges by the `git diff --name-only -- '*.py' '*.m2'` check alone
+(empty), per the first bullet of that rule. **No Macaulay2 leaf** — none
+expected, none reserved. It imports **downward only** — `nogood_subdiv`'s
+`deficiency` / `is_rigid` / `rigid_vertex_sets{,_bruteforce}` / `induced_edges`
+(the bottom of the `w4/` chain, all catalogued in §1) and `kbare_common`'s
+`verts_of` / `degrees` / `is_2ec` / `split_off` / `exact_deficiency` (the model
+layer) — reimplements nothing, and adds **no** *Harness debt* item: the
+`annih` / `outerline` / `ltwo` precedent is exactly this import shape. Its one
+local device, a **deterministically-named** contraction (`contract`, merge
+vertex keyed by the contracted set), exists because
+`nogood_subdiv.contraction`'s fixed `'v*'` label collides under **nested**
+contraction and would silently corrupt a memo key; it is arc-specific and stays
+in the driver per §2 rule 1, and it is **not** a *Divergences* case (different
+name, and its docstring says why).
 
 **GCOLL (eighth fan-out, LANDED 2026-08-19).** `--validate` is **~1530 s** and
 does **not** fit a sitting, so it ran — by the dispatch and again by the

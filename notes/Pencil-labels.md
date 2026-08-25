@@ -1239,7 +1239,7 @@ debt item naming every consumer, and do **not** modify the landed sibling in
 the same commit (the `ocon.meet` / `aglu.py` precedents). The one debt item
 open on purpose, **`zneq.ledger`**, is not this probe's to disturb.
 
-## Reserved namespace — probe C3-AVOID (2026-08-20, incoming)
+## Reserved namespace — probe C3-AVOID (2026-08-20, **USED — the probe landed 2026-08-24; §(K-avoid) RELEASED unopened**)
 
 **Reserved 2026-08-20 for probe C3-AVOID**, the second of the two
 architecture-testing probes authorized 2026-08-20 (`notes/Pencil-fanout.md`
@@ -1274,6 +1274,30 @@ the substring hit **is** the dispatch's declared subject. Not renamed.
 re-run: `csavoid`, `reduceout`, `sdodge`, `AVD-`. **Checked and rejected for
 live hits:** the bare word **`avoid`** (139 files — ordinary English throughout
 the corpus, so it can never be a code or basename here) and **`dodge`** (22).
+
+**What was actually minted (2026-08-24, at landing).** Tokens **(AV-1)–(AV-8)
+CLAIMED exactly** — the full reservation consumed, nothing returned to the pool
+— together with ***Steps AV1–AV6***, all of them **inside
+`notes/Pencil-strategy.md` §4.7**, which is their owning section. The driver
+landed at the reserved path `notes/scripts/w4/avoidgen.py` with seven modes
+(`--supply|--census|--betti|--forced|--avoid|--count|--validate`, plus `--all`).
+
+**The reserved section name §(K-avoid) was NOT opened and RETURNS TO THE POOL
+unopened** — the deliberate branch the reservation itself provided for. The
+mathematics is about the **generation theorem** (Thm 4.9, Phase 20), not about
+kernel (K): it has no *State of (K)* gap-map row, moves no gap-map status, and
+putting it in the (K) workbook would have mis-filed it. `notes/Pencil-strategy.md`
+§4 is the canonical home for the C3 option, so §4.7 is where its gate's pricing
+belongs. **`§(K-avoid)` and a *fresh* `AV-` tag stay available** for any future
+kernel-side avoidance question — but the `AV-` **tokens (AV-1)–(AV-8) are spent**
+and a successor mints (AV-9) onward under clause (L4)'s no-renaming rule.
+
+**One consequence for the registry, executed here:** because the labels live in
+`notes/Pencil-strategy.md` rather than a workbook, the **strategy registry table
+below carries the `AV-` row** — not the (K) workbook table. That is the first
+time this registry has had to route a reservation's labels to the strategy
+document, and it is the general rule: **a namespace is registered where its
+labels actually land, not where they were reserved.**
 
 ## Registry — `notes/Pencil-informal.md` (the (K) workbook)
 
@@ -1325,6 +1349,7 @@ was missed from this sentence; added here with (K-ann) and (K-out).)
 | owner | labels in use | what the family is |
 |---|---|---|
 | strategy §4 | **C1**, **C2**, **C3** | the three candidate stronger inductive invariants (C1 = dominance of the `V_bc` map, run and struck) |
+| strategy §4.7 | tag **`AV-`**, tokens **(AV-1)–(AV-8)**; ***Steps AV1–AV6***; driver modes `--supply`/`--census`/`--betti`/`--forced`/`--avoid`/`--count`/`--validate` (`w4/avoidgen.py`) | probe **C3-AVOID**'s pricing of C3's *"reduce avoiding `S`"* gate against the landed generation theorem (Thm 4.9): the degree-2 supply lemma (AV-1), the conservation law and the `2 μ(G)` capacity ceiling (AV-2)/(AV-4), the `\|S\| ≤ 2` threshold theorem (AV-3), the refutation of every structural hypothesis on `S` (AV-5), the contraction-free classification (AV-6), the necessary-not-sufficient scope line (AV-7), the board verdict (AV-8). **Reservation consumed exactly; §(K-avoid) never opened.** Owning section is authoritative |
 | strategy §4.6 | **U1**, **U2**, **U3** | the three ranked live class-uniformity successors |
 | strategy §9 | tag **`ZH-`**, tokens **(ZH-1)–(ZH-6)** | the six external-technique-transfer candidates from the Zheng body–pin preprint (minted 2026-08-21, verified 0-hit across `*.md`, `*.tex`, `*.lean`, `*.py`, `*.m2`; **unpriced** and not on §8's board — the owning section is authoritative, and the source is unrefereed) |
 | `Phase39.md` / design doc | **R1**, **R2**, **R3** | the three **opening recon questions** (statement/satisfiability, truth sanity, which KT case breaks) |

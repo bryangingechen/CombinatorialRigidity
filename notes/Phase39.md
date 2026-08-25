@@ -32,26 +32,28 @@ triggering; **verdicts one-lined in *Decisions made*, per-direction detail in
 wave-closing exception-log commit is DONE (`notes/dispatch-log.md`, five rows,
 **F22–F24**). **Both queued structural items are LANDED** — the phase-note doc
 split (2026-08-19) and the **harness move-down round (2026-08-20)**, which paid
-all five *Harness debt* move-downs with **no recorded figure moved**. **PROBE KBARE-FALSIFY IS LANDED (2026-08-20) AND IT IS A
-HIT, at tier T1: (K-bare-ext) — route A's arbitrary-seed insertion lemma — is
-REFUTED as stated**, by a legal target-rank `G′` seed at the option-C cube
-index-2 danger gadget from which **no** placement attains, exact and **cap-free**
-(all six minors of the criterion matrix vanish identically on the placement
-panel; observed rank 137 vs target 138). **`hbareSplit` itself is UNTOUCHED and
-still carried as pinned** — its consequent is an `∃` over frameworks and every
-probed gadget attains — so this is a **route** finding, not a kernel refutation
-and not a PENCIL event. Three results ride along: the §(K-tight) boundary-load
-calculus **transports** to this kernel (192/192, with its two `def = 0`-only
-identities now measured as such), the dependent stratum is **complete**
-(`index ∈ {1, 2}`, `corank(G′) ≤ 3`, correcting "caps it at 5"), and option-C's
-C1/C3 readings are corrected. `notes/Pencil-informal.md` §(K-bare-ext).
-**NEXT CONCRETE TASK: DISPATCH Probe C3-AVOID** (specced and authorized
-2026-08-20; **namespace RESERVED 2026-08-20**, so prep is done — §(K-avoid) / `AV-`,
-tokens (AV-1)–(AV-8), *Steps AV1–AV6*, conditional driver `w4/avoidgen.py`) — nothing structural
-queued, nothing awaiting user adjudication, though the T1 hit is worth a user
-mention when the next check-in comes. The
-kernel-(K) RESEARCH PICK is a standing delegation **queued behind the probes**, not
-itself the next task; candidates in *Hand-off* — plus, as of 2026-08-21, the separate
+all five *Harness debt* move-downs with **no recorded figure moved**.
+**BOTH ARCHITECTURE-TESTING PROBES ARE NOW LANDED, and each returned a verdict.**
+**KBARE-FALSIFY (2026-08-20) — a T1 HIT:** (K-bare-ext), route A's arbitrary-seed
+insertion lemma, is **REFUTED as stated**, exactly and **cap-free**; **`hbareSplit`
+itself is UNTOUCHED and still carried as pinned** (its consequent is an `∃` over
+frameworks and every probed gadget attains), so this is a **route** finding, not a
+kernel refutation and not a PENCIL event. Detail, the three enabling results and every
+figure: `notes/Pencil-informal.md` §(K-bare-ext) *Steps BE1–BE8* — not restated here.
+**C3-AVOID (2026-08-24) — the gate DECIDED at threshold `|S| ≤ 2`**, so board option
+**C3 is NO-GO as a crux-avoidance route**: the local gate never fails, but a
+conservation law caps avoidance at `2 μ(G)`, `μ = |E| − |V| + 1`, `|S| = 3` fails at the
+cycles `C_3 … C_6`, and no structural hypothesis on `S` lifts it. Mathematics, proofs
+and caps: `notes/Pencil-strategy.md` §4.7 ((AV-1)–(AV-8), driver `w4/avoidgen.py`) —
+**§(K-avoid) never opened, no gap-map status moved**, `hK`/`hbareSplit`/(GR-15)/class
+uniformity untouched.
+**NEXT CONCRETE TASK: the standing kernel-(K) RESEARCH PICK** — both probes are
+now landed, so the delegation that was queued behind them is the next step: pick a
+direction, reserve labels in `notes/Pencil-labels.md`, spec it in
+`notes/Pencil-fanout.md` (cheapest-first candidates in *Hand-off*). Nothing structural
+queued, nothing awaiting user adjudication, though KBARE-FALSIFY's T1 hit **and**
+C3-AVOID's C3 verdict are both worth a user mention at the next check-in. The
+pick's candidate list is in *Hand-off* — plus, as of 2026-08-21, the separate
 **unpriced** `notes/Pencil-strategy.md` §9 shelf **(ZH-1)–(ZH-6)**, not eligible for the
 standing pick — (cheapest first: (GR-R1), (GR-C2), the
 one-unit-defect redo of (GR-79)–(GR-82), OSCHU's `rank(Q|_D) = 3` residue — now
@@ -177,8 +179,9 @@ constraints; the dated dispatch narrative is in *Decisions made* and git):
   frameworks), so nothing turns on it operationally.
 
 **Kernel-(K) research arc — fifty-four docs+scripts-only dispatches landed, plus seven
-strategy-only passes** (2026-08-02 → 08-19) — and, **outside** that count because it tests
-the architecture rather than the (K) crux, **probe KBARE-FALSIFY** (2026-08-20). Which pass was which is one-lined in *Decisions
+strategy-only passes** (2026-08-02 → 08-19) — and, **outside** that count because they test
+the architecture rather than the (K) crux, the **two probes**: **KBARE-FALSIFY**
+(2026-08-20) and **C3-AVOID** (2026-08-24), both landed. Which pass was which is one-lined in *Decisions
 made*; the rule is that the **dispatch** count moves only on a landing (GBAL/GLAW/FRES/OCON/
 LTWO are the fortieth through forty-fourth; CIRR the forty-fifth; YLOC the forty-sixth; BALB
 the forty-seventh; ZNEQ the forty-eighth; AGLU the forty-ninth; the eighth fan-out's five
@@ -392,18 +395,29 @@ antecedent** and prove `HasPencilRealization K 3 G` directly on the habitat (str
 stronger, but seed-free, and the hit says the antecedent supplies an object route A cannot
 use). Neither is commissioned; option B stays un-commissioned.
 
-**THE NEXT CONCRETE TASK — Probe C3-AVOID** (specced and authorized 2026-08-20; full spec in
-`notes/Pencil-fanout.md` §"Two probes SPECCED and AUTHORIZED 2026-08-20", **not restated
-here**). It prices the one board option that **relocates** the hard case instead of attacking
-it, and it is **purely combinatorial** — a question about the already-formalized generation
-theorem (Thm 4.9, Phase 20), not about pencils. **KBARE-FALSIFY did NOT moot it:** the hit is
-about route A's *seed quantifier*, not about the reduction, so C3-AVOID's question stands
-exactly as specced. **Prep is DONE (2026-08-20):** `notes/Pencil-labels.md`
-§"Reserved namespace — probe C3-AVOID" reserves **§(K-avoid)** (new, to be opened only if the
-mathematics warrants a workbook section — the spec's default deliverable is a design-pass on
-`notes/Pencil-strategy.md` §4's C3 entry), tag **`AV-`** with tokens **(AV-1)–(AV-8)**,
-***Steps AV1–AV6***, and the **conditional** driver `notes/scripts/w4/avoidgen.py` (the spec
-makes a driver optional). So the next step is the **dispatch**, zero prep away.
+**PROBE C3-AVOID IS LANDED (2026-08-24) — the gate is DECIDED, and board option C3 is
+NO-GO as a crux-avoidance route.** The whole mathematics lives in
+`notes/Pencil-strategy.md` §4.7 — labels (AV-1)–(AV-8), *Steps AV1–AV6*, driver
+`notes/scripts/w4/avoidgen.py` (seven modes), the landing record in
+`notes/Pencil-fanout.md` §"Probe C3-AVOID", the namespace closed in
+`notes/Pencil-labels.md` — **none of it restated here.** Three things a successor needs:
+the **threshold is exactly `|S| ≤ 2`** and no structural hypothesis on `S` lifts it (the
+obstruction is a cardinality conservation law), the **parameter** is `μ(G) = |E| − |V| + 1`
+with exact ceiling `capacity ≤ 2 μ`, and the **live successor** is (AV-7)'s unpriced arm —
+even a passed gate is *necessary, not sufficient*, because `splitOff` rewires both
+neighbours' incidences and every capacity unit above 2 is bought by a **Case-I gluing**
+whose pencil-compatibility is geometry the probe was barred from. **§(K-avoid) was never
+opened** and no gap-map status moved.
+
+**THE NEXT CONCRETE TASK — the standing kernel-(K) RESEARCH PICK**, now that both probes
+have returned. Pick from the candidate list below under the standing 2026-08-07
+delegation (the *shape* — single direction, recon-first, or another multidispatch fan-out
+— is a user call, the eighth wave's dispatch bullet being the precedent), reserve labels
+in `notes/Pencil-labels.md`, and spec it in `notes/Pencil-fanout.md`. Cheapest first:
+**(GR-R1)**, **(GR-C2)**, the one-unit-defect redo of (GR-79)–(GR-82), OSCHU's
+`rank(Q|_D) = 3` residue (harness-unblocked since the move-down round), GCOLL's collision
+dominance, and (OC-19) input (c) class-uniformly. Two things to mention at the next
+check-in but **not** wait on: KBARE-FALSIFY's T1 hit and C3-AVOID's C3 verdict.
 
 **Nothing is awaiting user adjudication as of 2026-08-19.** The one item that was —
 ZNEQ's `σ > 0`-everywhere hunt at class shapes whose `H` carries a short theta
@@ -423,13 +437,10 @@ round 2 (slice 4 the phase-note split, **slice 5/"slice 2" the harness move-down
 OSCHU's `rank(Q|_D) = 3` residue is no longer blocked on the harness — exact `ℚ(i)`
 (`exactcore.Gauss`) is now a base-layer primitive.
 
-**THE STANDING RESEARCH-PICK DELEGATION — queued behind the probes above, not itself the
-next concrete task.** Once KBARE-FALSIFY (then C3-AVOID) return, the kernel-(K) RESEARCH
-PICK is the arc's ninth step: pick from the candidate list above (the standing 2026-08-07
-delegation covers the pick; the *shape* — single direction, recon-first, or another
-multidispatch fan-out — is a user call, the eighth wave's dispatch bullet being the
-precedent), reserve labels in `notes/Pencil-labels.md`, and spec it in
-`notes/Pencil-fanout.md`.
+**THE STANDING RESEARCH-PICK DELEGATION — no longer queued: both probes have returned
+(2026-08-20, 2026-08-24), so this IS the next concrete task**, restated at the top of this
+section with its candidate list. The standing 2026-08-07 delegation covers the pick; the
+*shape* is a user call.
 
 **`hsplit` is CLOSED IN FULL** (W5-L7c-1…6, landed 2026-07-30) and **`hfresh`'s mechanical
 discharge (residue (iv)) is CLOSED too**. The landed successor
@@ -531,6 +542,16 @@ survey — incl. IDENT-PANEL, the nearest neighbour — is `notes/IdeaBacklog.md
 
 ## Decisions made during this phase
 
+- **Probe C3-AVOID (2026-08-24, opus, docs+scripts only) — C3's gate PRICED, and the
+  price kills it as a crux-avoidance route.** The *"reduce avoiding `S`"* question is
+  decided against the landed generation theorem: the **local** gate never fails
+  ((AV-1)), but a **conservation law** — every reduction tree has `#leaves = μ(G)` and
+  each leaf holds 2 vertices — caps avoidance at `2 μ(G)` ((AV-2)/(AV-4)), giving the
+  **universal threshold `|S| ≤ 2`** ((AV-3)), failing from `|S| = 3` at the cycles
+  `C_3 … C_6` ((AV-6)), with **no structural hypothesis on `S`** able to lift it
+  ((AV-5)). The gate is also only **necessary, not sufficient** ((AV-7)) — the live
+  successor. Canonical home `notes/Pencil-strategy.md` §4.7; driver
+  `notes/scripts/w4/avoidgen.py`. **§(K-avoid) never opened; no gap-map status moved.**
 - **Probe KBARE-FALSIFY (2026-08-20, opus, docs+scripts only) — a T1 HIT.**
   (K-bare-ext), route A's arbitrary-seed insertion lemma, is **refuted as stated** by
   a legal target-rank `G′` seed with cap-free uniform failure; `hbareSplit` **untouched**
