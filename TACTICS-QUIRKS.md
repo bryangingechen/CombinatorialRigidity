@@ -3972,6 +3972,7 @@ and the `flexible` warning goes with it — at the source, with no new lemma.
 | `simp [Fin.castPred]` | maximum recursion depth |
 | `norm_num [Fin.castPred]` | unfolds to `Fin.castLT 2 ⋯` and stops there — the `Fin.reduceCastLT` simproc does not fire on it |
 | `simp [Fin.castPred, Fin.castLT]` | works, but `linter.unusedSimpArgs` reports `Fin.castPred` unused — **`Fin.castLT` alone is the fix** |
+| the `flexible` linter's own suggested `simp only [...]` | *makes no progress at all* — see the third lesson below |
 
 **Two lessons worth more than the fix.** First, a `simp` residual that a defeq
 `exact`/`rfl` closes is not automatically an instance of § 106's *reach for
@@ -3985,6 +3986,19 @@ you fix the flagged one, check its siblings. In the worked case
 (`Claim612.lean`'s `exists_affineIndependent_panel_incidence`, v4.34.0-rc1 bump
 cleanup) one `exact one_ne_zero` was reported and three `rfl`s were not; the one
 simp argument retired all four.
+
+**Third lesson: under `<;>`, do not trust the `flexible` linter's suggested
+`simp only [...]`.** Substituting it verbatim left all three goals of the
+`refine ⟨?_, ?_, ?_⟩ <;> simp` unchanged, because the suggestion omitted
+`homogenize`, `Fin.snoc`, `dotProduct` and `Fin.sum_univ_succ` — the very lemmas
+doing the work. The list is captured against *a* branch, and a `<;>` runs the
+tactic on several, so `refine … <;> simp` is exactly where the linter's advice
+is least trustworthy. Read the suggestion as evidence about one branch, never as
+a drop-in replacement. (Related, in the other direction: `simp only` is not a
+flexible tactic, so "just add `only`" looks like a one-word fix — but here the
+original argument list under `simp only` unfolds into a `dite`/`Fin.succ`/`cast`
+thicket, since only the *default* simp set reaches the tidy residual. That is
+why the tactic is flexible and cannot simply be pinned.)
 
 ---
 

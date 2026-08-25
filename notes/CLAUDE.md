@@ -33,9 +33,13 @@ for *organizing* this directory is here.
   `LAKE_CACHE_DIR`, without which Lean 4.34+ reports cache-write failures as
   *build failures* and silently truncates coverage), the verification traps
   (`lake env lean` skips the style linters; and the superseded "cached modules
-  don't re-emit warnings" — with `LAKE_CACHE_DIR` set they do), a per-bump
-  record with the fix taxonomy, and the standing **scheduled-cleanup** queue.
-  It also owns the two bump scripts' rationale — `scripts/bump-mathlib.sh`
+  don't re-emit warnings" — with `LAKE_CACHE_DIR` set they do), the gate set to
+  re-run after a bump, and a per-bump record with the fix taxonomy. Its
+  **first** section is the hand-off (current pins, push state, next concrete
+  task); the rc1 cleanup queue is closed and compressed to a one-table summary,
+  with its forward-looking lessons lifted into *What the cleanup after a big
+  bump costs*. It also owns the two bump scripts' rationale —
+  `scripts/bump-mathlib.sh`
   (transitive-pin sync, the sanctioned `lake update` escape hatch) and
   `scripts/sweep-deprecations.py` (build-log-driven rename sweep). Read it
   before attempting a bump; it is maintenance, not a phase, so it outlives

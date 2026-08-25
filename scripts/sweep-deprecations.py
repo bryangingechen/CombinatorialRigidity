@@ -18,6 +18,22 @@ instead is exact: no boundary heuristics, no false positives inside longer
 identifiers (``if_pos`` inside ``dif_pos``), and unqualified uses are
 rewritten to the correspondingly unqualified new name.
 
+One position the log cannot give you
+-----------------------------------
+When the deprecated name sits inside a ``grind only [!a, !b, ...]`` list, Lean
+reports the warning at the position of the **``grind`` token**, not the
+identifier (which may be lines away). A position-driven sweep cannot fix those:
+the script reports them as skips and they are fixed by hand. Expect roughly one
+per sweep -- the v4.34.0-rc1 sweep had exactly one, at ``Henneberg.lean:445``.
+
+Renames can also make a line too long
+-------------------------------------
+``if_neg`` -> ``ite_eq_right`` is six characters longer, and the
+``Set.diff_*`` -> ``Set.sdiff_*`` / ``*setOf*`` -> ``*ofPred*`` families one.
+Thirteen lines crossed mathlib's 100-character limit in the v4.34.0-rc1 sweep.
+The style linter -- i.e. a full ``lake build`` after the sweep -- is what tells
+you; the sweep itself cannot.
+
 What is deliberately NOT swept
 ------------------------------
 ``EXCLUDED`` below lists renames whose replacement has a *different type*, so
