@@ -10249,7 +10249,7 @@ Every invocation was run **in the foreground, one at a time, with an explicit ti
 
 ---
 
-### Steps G104–G109 (2026-08-19, direction GFLOW) — (b′)'s availability half is **RESHAPED, and (b′) gains its first proven `n`-free constant**: **(GR-85)** turns `dist(·, M)` at a fixed odd pattern into a **changeover count** `#{v : A(v) = 1}` over the even-branch orientations *inside the 2-factor*, with `M` entering only as three local conditions per matching branch — and reads off the correction that route 3's own instrument is wrong (the objective is a **parity** count, not a flow cost, so "min-cost degree-constrained orientation, hence polynomial" does not apply to the *cost* side); **(GR-86)** is the exchange instrument that does work — the **repair-chain theorem**: flipping one odd branch leaves the configuration inadmissible exactly at that branch's blocked ends, each is repaired by a chain of even-branch flips, a chain exists **iff** the flipped pattern is (GR-50)-feasible (0 disagreements at 6 459 208 pairs), and the chain's price telescopes so that it is **independent of the chain's length** and equals (start contributions) + (terminus contributions) — giving `Δdist ≤ 2` in **five of the six** blocking cases and `≤ 4` in the sixth; **(GR-87)** therefore **PROVES sub-clause 1** with **no** far-end side condition — BALB's residual `m(w_β) ≠ β` is not needed, and in its own scope it is **exhaustively TRUE at `n_hub ≤ 6` and FALSE from `n_hub = 8`**; **(GR-88) REFUTES sub-clause 2 as posed** by an exact witness — a doubly-blocked **matching** branch whose one-flip price is **exactly 4**, named at `n_hub = 8`, and never 6 — and corrects two readings of the landed prose (the (1,2,2) price is `|W| − 2|W ∩ S|`, so **one** deviating extra endpoint already gives `≤ 2`, and route 1's named input runs the **wrong way**: optimality *caps* `|W ∩ S| ≤ |W|/2`); **(GR-89)** iterates (GR-86) into the arc's **first proven `n`-free bound of (b′)'s own shape**, `d_adm(M) − d_par(M) ≤ 4·min(k, ⌊n_hub/4⌋) ≤ 12`, modulo one named clause (GR-R1), and **reshapes the residual from a repair statement into a SELECTION statement** — some majority-side odd branch is not a doubly-blocked matching branch — which a **counting bound proves outright whenever `n_hub < 3k + 5|δ|/2`, in particular on the WHOLE `n_hub ≤ 6` stratum**, and which measures with **zero** failures at 96 930 exhaustive stratum configurations and everywhere beyond; **(GR-90)** the status. **(b′) is a HIT of the third kind — a different constant with the exact boundary named — and is NOT proven at the constant 2; (GR-15) stays OPEN, no gap-map status move on `hK` itself; E3 stays ARMED and does NOT fire.**
+### Steps G104–G109 (2026-08-19, direction GFLOW) — (b′)'s availability half is **RESHAPED, and (b′) gains its first proven `n`-free constant**: **(GR-85)** turns `dist(·, M)` at a fixed odd pattern into a **changeover count** `#{v : A(v) = 1}` over the even-branch orientations *inside the 2-factor*, with `M` entering only as three local conditions per matching branch — and reads off the correction that route 3's own instrument is wrong (the objective is a **parity** count, not a flow cost, so "min-cost degree-constrained orientation, hence polynomial" does not apply to the *cost* side); **(GR-86)** is the exchange instrument that does work — the **repair-chain theorem**: flipping one odd branch leaves the configuration inadmissible exactly at that branch's blocked ends, each is repaired by a chain of even-branch flips, a chain exists **iff** the flipped pattern is (GR-50)-feasible (0 disagreements at 6 459 208 pairs), and the chain's price telescopes so that it is **independent of the chain's length** and equals (start contributions) + (terminus contributions) — giving `Δdist ≤ 2` in **five of the six** blocking cases and `≤ 4` in the sixth; **(GR-87)** therefore **PROVES sub-clause 1** with **no** far-end side condition — BALB's residual `m(w_β) ≠ β` is not needed, and in its own scope it is **exhaustively TRUE at `n_hub ≤ 6` and FALSE from `n_hub = 8`**; **(GR-88) REFUTES sub-clause 2 as posed** by an exact witness — a doubly-blocked **matching** branch whose one-flip price is **exactly 4**, named at `n_hub = 8`, and never 6 — and corrects two readings of the landed prose (the (1,2,2) price is `|W| − 2|W ∩ S|`, so **one** deviating extra endpoint already gives `≤ 2`, and route 1's named input runs the **wrong way**: optimality *caps* `|W ∩ S| ≤ |W|/2`); **(GR-89)** iterates (GR-86) into the arc's **first proven `n`-free bound of (b′)'s own shape**, `d_adm(M) − d_par(M) ≤ 4·min(k, ⌊n_hub/4⌋) ≤ 12`, modulo one named clause (GR-R1), and **reshapes the residual from a repair statement into a SELECTION statement** — some majority-side odd branch is not a doubly-blocked matching branch — which a **counting bound proves outright whenever `n_hub < 3k + 5|δ|/2`, in particular on the WHOLE `n_hub ≤ 6` stratum**, and which measures with **zero** failures at 96 930 exhaustive stratum configurations and everywhere beyond; **(GR-90)** the status. **(b′) is a HIT of the third kind — a different constant with the exact boundary named — and is NOT proven at the constant 2; (GR-15) stays OPEN, no gap-map status move on `hK` itself; E3 stays ARMED and does NOT fire.** **[Update 2026-08-25: (GR-89)'s one named clause (GR-R1) is PROVEN at *Steps G116–G119* (direction GFLIP), so the `n`-free `≤ 12` bound is now a THEOREM; the standing tables below carry the updated rows.]**
 
 Answering `notes/Pencil-fanout.md` §"GFLOW — twenty-sixth direction
 (eighth fan-out)": **Clause A′ sub-clause 2, the doubly-blocked case**, and
@@ -10682,7 +10682,9 @@ residual is therefore not a repair statement about a branch but a
 >
 > (GR-R1) is **measured with 0 failures** at all 701 382 unbalanced stratum
 > configurations, at V8, and at 47 628 + 21 204 configurations of seeded
-> `n = 8/10` habitat shapes. It is **not proven.**
+> `n = 8/10` habitat shapes. ~~It is **not proven.**~~ **[PROVEN at *Steps
+> G116–G119* (direction GFLIP, 2026-08-25), with `≥ |δ|` feasible majority
+> flips — so this bound is now a THEOREM.]**
 >
 > **(iii) The counting bound — a proof, not a measurement.** Suppose at some
 > admissible configuration **every** majority-side odd branch is a
@@ -10737,9 +10739,9 @@ state of (b′).**
 |---|---|---|
 | (b′) as posed | `2` | **OPEN** |
 | (b′) with (GR-C1) + (GR-C2) | `2` | reduced to the **selection** clause (GR-C2); (GR-C1) proven at `n ≤ 6` |
-| (b′) with (GR-C1) + (GR-R1) | `4` | **PROVEN modulo (GR-R1)** ((GR-86) + one descent step) |
-| (b′) with (GR-R1) alone | `4·min(k, ⌊n/4⌋) ≤ 12` | **PROVEN modulo (GR-R1)**, `n`-free |
-| (b′) with (GR-R1) + (GR-C2) at every step | `2·min(k, ⌊n/4⌋) ≤ 6` | proven modulo both |
+| (b′) with (GR-C1) + (GR-R1) | `4` | **PROVEN modulo (GR-C1) alone** ((GR-86) + one descent step; (GR-R1) PROVEN at *Steps G116–G119*) — a full theorem on the `n_hub ≤ 6` stratum |
+| (b′) with (GR-R1) alone | `4·min(k, ⌊n/4⌋) ≤ 12` | **PROVEN**, `n`-free ((GR-R1) PROVEN at *Steps G116–G119*) |
+| (b′) with (GR-R1) + (GR-C2) at every step | `2·min(k, ⌊n/4⌋) ≤ 6` | proven modulo (GR-C2) alone |
 
 **Why the naive exchange had to be anchored, recorded as the route-3
 post-mortem.** The obvious `n`-free form of route 3 is *"`f` is 2-Lipschitz
@@ -10791,12 +10793,14 @@ configuration rather than at optimality, which is why it iterates.
    pinned to `n_hub = 8`, `2k = 2`, both odd branches doubly-blocked matching
    branches — a **two-branch** condition, small enough for a proof attempt.
 2. **(GR-R1)** — *at every unbalanced admissible configuration some
-   majority-side odd branch has a feasible flip.* Zero failures at 771 530
-   configurations, unproven. It is a (GR-51)-shaped statement (flipping `γ`
-   A → B can only create **B**-monochromatic-pair hubs), so (GR-52)'s parity
-   contradiction and (GR-53)'s exhaustion are the natural instruments; it is
-   plausibly the cheaper of the two and it is what upgrades (GR-89)(ii) from
-   *modulo a named clause* to a theorem.
+   majority-side odd branch has a feasible flip.* **PROVEN at *Steps
+   G116–G119* (direction GFLIP, 2026-08-25)** — via the demand form and the
+   selection theorem (GR-99), not via (GR-52)/(GR-53), which turned out to be
+   a sufficient-condition calculus that cannot see merely-feasible
+   hypotheses. **[Gloss corrected at *Step G118*: flipping `γ` A → B can
+   create B-side demand of either kind — a new B-monochromatic-pair hub or a
+   B-monochromatic **triple** at a `q_v = 3` end, and the triple case is the
+   stratum's dominant blocking mechanism.]** (GR-89)(ii) is now a theorem.
 3. **(GR-C1) past the stratum** — GPSA's first clause; unchanged by this pass,
    and (GR-69) is its exact `n ≤ 6` boundary.
 
@@ -10978,11 +10982,11 @@ driver's `--exact` price table as their in-driver counterpart.
 | **(GR-88)(iii)** | the (1,2,2) price is `\|W\| − 2\|W ∩ S\|`, so **one** deviating extra endpoint gives `≤ 2` | **proven** (arithmetic) and asserted at 904 656 legal instances — a correction of the landed prose's "both" |
 | **(GR-88)(iv)** | route 1's named input is **directionally wrong** | **proven** ((GR-68) minimality gives `2\|W ∩ S\| ≤ \|W\|`); asserted over all `2^{\|E\|}` legal flip sets at 84 368 instances |
 | **(GR-88)(v)** | the case first occurs at `n_hub = 8` | **proven** by (GR-89)(iii) below `n_hub = 3k + 5\|δ\|/2`, and **measured**: 546 majority-side instances at `n = 8`, priced `{0: 100, 2: 56, 4: 2, None: 2}` on `--big`'s independent pool |
-| **(GR-89)(i)/(ii)** | `d_adm(M) − d_par(M) ≤ 4·min(k, ⌊n_hub/4⌋) ≤ 12`, uniform in `n` | **true-modulo-named-gap** — the gap is exactly **(GR-R1)**, measured 0/771 530 and unproven. Given (GR-R1) the bound is a **theorem**, and it is the arc's **first proven `n`-free bound of (b′)'s shape** |
+| **(GR-89)(i)/(ii)** | `d_adm(M) − d_par(M) ≤ 4·min(k, ⌊n_hub/4⌋) ≤ 12`, uniform in `n` | **THEOREM** — the one named gap was exactly **(GR-R1)**, **PROVEN at *Steps G116–G119*** (GFLIP, 2026-08-25); the arc's **first proven `n`-free bound of (b′)'s shape**, residual confidence qualifier now (GR-86)(iii)/(iv)'s own landed status |
 | **(GR-89)(iii)** | the counting bound `n_hub ≥ 3k + 5\|δ\|/2` for a total failure | **proven** (a five-line count off (GR-85)(iv)); a live guard in the driver |
 | **(GR-89)(iv)** | **(GR-C2)**, the selection clause | **OPEN** — the whole residual for the constant 2. Proven by (iii) on the entire `n_hub ≤ 6` stratum; **0 failures** at 96 930 exhaustive stratum configurations and at seeded `n = 8/10`; greedy-descent worst step `2` everywhere |
-| **(GR-R1)** | some majority-side flip is always feasible | **OPEN, measured 0/771 530** — the cheaper of the two residuals, with (GR-52)/(GR-53) the named instruments |
-| **(b′)** | `d_adm − d_par ≤ 2` | **a HIT of the third kind — a different constant with the exact boundary named.** Constant `4` (and `n`-free `≤ 12`) **PROVEN modulo (GR-R1)**; constant `2` **OPEN**, residual **(GR-C2)**; sub-clause 1 proven, sub-clause 2 refuted as posed |
+| **(GR-R1)** | some majority-side flip is always feasible | **PROVEN at *Steps G116–G119*** (GFLIP, 2026-08-25; the selection theorem (GR-99), with `≥ |δ|` feasible majority flips — (GR-52)/(GR-53) turned out not to be the instruments) |
+| **(b′)** | `d_adm − d_par ≤ 2` | **a HIT of the third kind — a different constant with the exact boundary named.** Constant `4` **PROVEN modulo (GR-C1)** and `n`-free `≤ 12` **PROVEN outright** ((GR-R1) closed at *Steps G116–G119*); constant `2` **OPEN**, residual **(GR-C2)**; sub-clause 1 proven, sub-clause 2 refuted as posed |
 | (GR-67)/(GR-68)/(GR-69)/(GR-70) | BALB's chain | **untouched and consumed**; (GR-70)(ii)'s figures **independently reproduced** from the `z`-cube; (GR-68) re-derived once inside the model as a consistency check, never replaced |
 | (GR-49)–(GR-54) | the z-form and the balance theorem | **untouched and consumed**; (GR-50)'s decision is *corroborated* at the one-flip level by the chain search's 0 disagreements |
 | **(a′)** / **input (Y)** / **(GR-64)(R2)** | | **OPEN — not attempted.** One coordinate observation reported, no figure, no rank |
@@ -11774,5 +11778,481 @@ edit**.
 | F13 (5): (GR-94)(ii)'s length-5 proviso is not decoration | `--adv` | a Hamiltonian 2-factor whose matching contains a length-5 branch has `B(M) > 0` at **237** pairs |
 | F13 (6): the refutation is a property of the **length assignment** | `--adv` | the Petersen graph carries **36 680** habitat assignments with `min_M B = 0` and **180** with `≥ 1` |
 | F13 (7): the (a′) by-product's evaluator is sound at `n_hub = 10` | `--adv` | `yloc.good_z` == `gorient.fully_good_scan` at all **5640** admissible colourings of 3 seeded witnesses |
+
+---
+
+### Steps G116–G119 (2026-08-25, direction GFLIP) — **(GR-R1) is PROVEN**: **(GR-97)** completes (GR-69)(i)/(ii) into a two-sided **DEMAND FORM** of the (GR-51) weight criterion — a pattern is feasible **iff** every hub set's incident even branches cover both its all-A-demand count and its no-A-demand count, `inc_H(S) ≥ max(N_A(S), N_B(S))` — under which both Hall functionals are **manifestly even** and a flip's damage is an exact demand increment `e_γ(S) ∈ {0, 1, 2}`; **(GR-98)** is a four-line **counting lemma** off cubicity alone, `b ≥ n₁(S) − s(S)` for EVERY hub set at EVERY pattern with no monochromatic-A triple; **(GR-99)** chains them through submodularity of the slack into the **SELECTION THEOREM** — at every feasible pattern of ANY cubic loop-free hub multigraph (no habitat gate, no `2k` cap, no connectivity), **at most `b` A-branches are blocked and at most `a` B-branches are** — whose corollary at an unbalanced pattern is **at least `|δ| ≥ 2` feasible majority-side flips**, i.e. (GR-R1) with room to spare. **(GR-89)(ii)'s `n`-free bound `d_adm(M) − d_par(M) ≤ 4·min(k, ⌊n_hub/4⌋) ≤ 12` loses its one named gap and is now a THEOREM** (at (GR-86)'s own landed confidence), and (GR-90)'s constant-4 row drops to *modulo (GR-C1) alone*. One landed prose clause is **CORRECTED** (the flip can also create a B-monochromatic **triple**, and that is the stratum's dominant blocking mechanism); **(GR-C2) is NOT attacked** and stays the whole residual for the constant 2 — **(GR-15) stays OPEN, no gap-map status move on `hK` itself; E3 stays ARMED and does NOT fire.**
+
+Answering `notes/Pencil-fanout.md` §"GFLIP — thirtieth ordinal": **prove,
+refute by witness, or prove-under-a-restricted-quantifier the clause
+(GR-R1)** — *at every unbalanced admissible configuration, some
+majority-side odd branch has a (GR-50)-feasible flip* (*Step G108*(ii)).
+**The outcome is the first kind: a proof, with no restriction** — the
+statement holds at every feasible pattern of every cubic loop-free hub
+multigraph, with no `2k ≤ 6` cap, no habitat gate, no connectivity or
+bridgelessness hypothesis, and the count of feasible majority flips is at
+least `|δ|`, not merely one. Rank-free throughout: nothing imports or calls
+`gexist.fully_good_rank` and no `d_fg` claim is made anywhere ((a′) / input
+(Y) untouched). Read against *Steps G68–G73* ((GR-49)–(GR-54), esp. *Step
+G70*'s (GR-51)), *Step G88* ((GR-69)) and *Steps G104–G109*
+((GR-85)–(GR-90), esp. *Step G108*).
+
+**Where the named route sketch survives and where it dies.** The spec's
+candidate route — (GR-52)'s parity contradiction plus (GR-53)'s exhaustion
+over maximal constraint structures — is **not** the proof found, and the
+death is informative: (GR-52)/(GR-53) argue about *how many
+monochromatic-pair hubs a pattern has*, which is a sufficient-condition
+calculus ((GR-52) is one-directional), while (GR-R1) quantifies over
+patterns that are merely *feasible* and may already carry many
+monochromatic-pair hubs on the flipped-to side — so the pair-count
+instruments do not see the hypothesis. What survives is the sketch's
+*counting spirit*: the (GR-52)-style even/odd bookkeeping becomes the
+observation that both Hall functionals are manifestly even in the demand
+form ((GR-97)(ii)), and the "cannot block all of them at once" step becomes
+the (GR-98) count. Nothing here re-derives (GR-52)/(GR-53) — they are
+consumed unchanged inside (GR-54), which this pass cites and never
+re-proves — and no exhaustion over structures is needed, which is why the
+result carries no `2k ≤ 6` cap.
+
+***Notation, inherited unchanged.*** `δ = a − b` is the odd-branch
+imbalance and nothing else; `O` the odd branches, `a` of them A and `b` B
+at the pattern under discussion; `H` the even branches; cuts written
+`∂(S)`, and `∂_H(S)` / `e_H(S)` the even branches crossing / inside `S`;
+`z ∈ GF(2)^E` is (GR-49)'s one bit per branch, colour **0 = A**; per hub,
+`q_v` odd darts, `o_v` A-coloured ones, `b_v = q_v − o_v`, `d_v = 3 − q_v`;
+(GR-50)'s `l_v = max(0, 1 − o_v)`, `u_v = min(d_v, 2 − o_v)`. **New here:**
+`inc_H(S) := e_H(S) + ∂_H(S)` (even branches **meeting** `S`),
+`N_A(S) := #{v ∈ S : o_v = q_v}`, `N_B(S) := #{v ∈ S : o_v = 0}` (a `q = 0`
+hub counts in **both**), `n_j(S) := #{v ∈ S : o_v = j}`, the **slack**
+`s(S) := inc_H(S) − N_B(S)`, and for an A-branch `γ`,
+`e_γ(S) := #{ends v of γ in S : o_v = 1}` (its **lone-A ends** in `S`). A
+pattern `p` is **feasible** if some admissible `z` has `z|_O = p`
+((GR-50)); an odd branch is **blocked** at `p` if `p + χ_γ` is infeasible.
+
+**Step 0 pin (mandatory, discharged before any derivation).**
+(GR-49)–(GR-51) in full — in particular (GR-51)(i)'s two-sided Hall
+criterion with its (a)/(b) inequalities and (GR-51)(ii)'s weight form,
+consumed as the feasibility criterion and **not re-derived** (the proof
+below is a change of variables in its statement, certified against the
+(GR-50) oracle). (GR-52)/(GR-53)/(GR-54) consumed unchanged and not
+re-attacked. (GR-69)(i) (`u_v = d_v − [b_v = 0]`) and (GR-69)(ii) (the
+count `#{v ∈ S : b_v = 0} ≤ e_H(S) + ∂_H(S)`, i.e. the **necessity half of
+the A-side demand inequality below, already landed**) — credited, and
+extended here rather than rediscovered. (GR-85)–(GR-90) in full, in
+particular *Step G108*(i)/(ii)'s descent and its named clause (GR-R1),
+*Step G108*(iv)'s (GR-C2), and the measured record: (GR-R1) at 0 failures /
+771 530 configurations (701 382 stratum + 1316 V8 + 47 628 + 21 204 seeded
+`n = 8/10`). **Bars honoured:** (GR-C2) is not attacked (one by-product
+line is *reported* at *Step G119*, not developed); no landed census is
+re-run — the driver tests **pattern-level** sentences (new figures at a
+different quantifier level; the equivalence to the configuration level is
+(GR-49)/(GR-50), cited, not re-measured); (GR-15) / class uniformity
+untouched; no `.lean` touched.
+
+---
+
+### Step G116 — (GR-97): the demand form — feasibility is two covering conditions, `inc_H(S) ≥ N_A(S)` and `inc_H(S) ≥ N_B(S)`, the Hall functionals are manifestly even, and a flip is an exact demand increment
+
+**Why the pass starts here.** (GR-51)'s weight table is optimized for the
+question GBAL asked — *which hubs can hurt* — and its `−1` entries make
+every argument a bookkeeping of exceptional hubs. (GR-R1)'s question is
+*how many branches can be blocked at once*, and for that the right
+coordinates are demands, not weights.
+
+> **(GR-97)** *(proven — a substitution in (GR-51); certified against the
+> (GR-50) oracle at 57 232 (shape, pattern) pairs — ALL `2^{2k}` patterns
+> per shape, ALL `2^n` hub sets per pattern — over the EXHAUSTIVE stratum,
+> V8 and seeded `n = 8/10`, 0 disagreements; `--form`)*
+>
+> Let `G°` be a cubic loop-free hub multigraph, `p` any colouring of its
+> odd branches.
+>
+> **(i) Closed forms.** `l_v = [o_v = 0]` and `u_v = d_v − [o_v = q_v]`
+> (the `u`-half is (GR-69)(i) verbatim, since `b_v = 0 ⟺ o_v = q_v`; it
+> holds at monochromatic triples too, where it reads `u_v = −1`).
+>
+> **(ii) The demand form.** (GR-51)(ii)'s two weight functionals are
+> exactly
+> > `W_A(S) = 2·(inc_H(S) − N_A(S))`,  `W_B(S) = 2·(inc_H(S) − N_B(S))`,
+>
+> so `p` is **feasible iff** for every hub set `S`
+> > `inc_H(S) ≥ N_A(S)`  and  `inc_H(S) ≥ N_B(S)`.
+>
+> *Reading:* each even branch supplies exactly one A-dart to one of its
+> ends; a hub with **no** A-odd dart demands one (`N_B` counts these), a
+> hub with **only** A-odd darts (or none) can absorb at most `d_v − 1`
+> (`N_A` counts these); feasibility says every hub set's demands are
+> covered by the even branches meeting it. The necessity half of the
+> A-side inequality is (GR-69)(ii)'s landed count; the equivalence is
+> (GR-51)(i)+(ii). Both functionals carry a **manifest factor 2** — the
+> evenness that (GR-52)'s parity contradiction extracted by hand is
+> structural in these coordinates ((GR-52) itself is untouched).
+>
+> **(iii) The flip increment.** Flip an A-branch `γ` to B, giving
+> `p′ = p + χ_γ`. Then `{v : o_v = q_v}` only **shrinks** (its ends with
+> `o_v = q_v` leave; nothing enters), and `{v : o_v = 0}` **grows by
+> exactly the lone-A ends of `γ`**:
+> > `N_A′(S) ≤ N_A(S)`  and  `N_B′(S) = N_B(S) + e_γ(S)` for every `S`.
+>
+> **(iv) The block criterion.** If `p` is feasible, then
+> > `p + χ_γ` is **infeasible ⟺ some `S` has `s(S) ≤ e_γ(S) − 1`**
+>
+> (with `e_γ(S) ≥ 1` forced, since `s ≥ 0`); the possible witness shapes
+> are `(s, e_γ) ∈ {(0, 1), (0, 2), (1, 2)}`. The A-side never obstructs
+> the flip, by (iii) and feasibility of `p`.
+
+*Proof.* (i) is the two-case evaluation of `max(0, 1 − o_v)` and
+`min(d_v, 2 − o_v)` ((GR-69)(i)'s proof, quoted). (ii): by (i),
+`w_A(v) = 2u_v − d_v = d_v − 2[o_v = q_v]` and
+`w_B(v) = d_v − 2l_v = d_v − 2[o_v = 0]`; summing over `S` with the
+handshake `Σ_{v∈S} d_v = 2e_H(S) + ∂_H(S) = inc_H(S) + e_H(S)` gives
+`Σ_S w_A + ∂_H(S) = (2e_H + ∂_H) − 2N_A + ∂_H = 2(inc_H − N_A)` and its
+`B`-twin; (GR-51)(i)+(ii) say feasibility ⟺ both are `≥ 0` at every `S`
+(a monochromatic-A triple is caught by the A-side singleton,
+`N_A({v}) = 1 > 0 = inc_H({v})`, so no separate `l ≤ u` clause is
+needed). (iii): flipping `γ` lowers `o_v` by one at each of its two ends
+and changes nothing else; `o_v − 1 = q_v` is impossible, so nothing
+enters `{o = q}`; `o_v − 1 = 0 ⟺ o_v = 1`, and an `{o = 0}` hub is not
+an end of an A-branch, so nothing leaves. (iv): by (iii) the `p′`-A-side
+inequality is implied by the `p`-A-side one, and the `p′`-B-side
+inequality at `S` reads `inc_H(S) ≥ N_B(S) + e_γ(S)`, i.e.
+`s(S) ≥ e_γ(S)`. ∎
+
+**The `q = 0` clause is load-bearing, measured.** `N_A`/`N_B` count the
+odd-dart-free hubs on **both** sides (such a hub demands one incoming
+A-dart and one incoming B-dart from its three even branches). The
+doctored variant that drops them — a strict relaxation — wrongly declares
+**1648** stratum patterns feasible (`--form`; 0 at V8, 0/4 at the seeded
+`n = 8/10` legs), so the clause is not a convention but a constraint.
+
+---
+
+### Step G117 — (GR-98): the counting lemma — `b ≥ n₁(S) − s(S)` at every hub set, off cubicity alone
+
+> **(GR-98)** *(proven; the identity and both inequalities asserted at
+> 3 458 768 (shape, pattern, hub set) triples — every pattern of every
+> stratum shape and of V8, feasible AND infeasible, every hub set —
+> `--lemma`)*
+>
+> Let `p` be any colouring with `o_v ≤ 2` at every hub (in particular any
+> feasible `p`), `S` any hub set. Then, with `s(S) = inc_H(S) − n₀(S)`:
+>
+> **(i) The exact identity.**
+> > `Σ_{v∈S} b_v = 2n₀(S) + 2n₁(S) + n₂(S) − s(S) − e_H(S)`.
+>
+> **(ii) The count.** `2b = Σ_{v∈V} b_v ≥ Σ_{v∈S} b_v` and
+> `e_H(S) ≤ inc_H(S) = n₀(S) + s(S)` give
+> > `2b ≥ n₀(S) + 2n₁(S) + n₂(S) − 2s(S)`, in particular
+> > **`b ≥ n₁(S) − s(S)`**.
+>
+> Symmetrically (colour swap, `o ↔ b`): `a ≥ #{v ∈ S : b_v = 1} − s_A(S)`
+> with `s_A(S) := inc_H(S) − N_A... ` — precisely, with
+> `m_j(S) := #{v ∈ S : b_v = j}` and `s_A(S) := inc_H(S) − m₀(S)`,
+> `a ≥ m₁(S) − s_A(S)` whenever `b_v ≤ 2` everywhere.
+
+*Proof.* Cubicity: `d_v = 3 − o_v − b_v`, so
+`Σ_S b_v = 3|S| − Σ_S o_v − Σ_S d_v`. With `o_v ≤ 2`,
+`|S| = n₀ + n₁ + n₂` and `Σ_S o_v = n₁ + 2n₂`; the handshake gives
+`Σ_S d_v = inc_H(S) + e_H(S) = n₀ + s + e_H`. Substituting,
+`Σ_S b_v = 3(n₀ + n₁ + n₂) − (n₁ + 2n₂) − (n₀ + s + e_H)
+= 2n₀ + 2n₁ + n₂ − s − e_H`, which is (i). (ii) is `e_H ≤ e_H + ∂_H`
+plus `b_v ≥ 0` off `S`, then discarding `n₀ + n₂ ≥ 0`. The symmetric form
+is the global A↔B swap `z ↦ z + 𝟙`, under which `o ↔ b`. ∎
+
+**Reading.** A hub with exactly one A-odd dart forces B-darts nearby: it
+has `b_v = q_v − 1` B-odd darts and its remaining even branches deliver
+their B-darts elsewhere. (i) makes that exact: every `o = 1` hub in `S`
+contributes **2** to the B-odd-dart count of `S`, discounted only by the
+slack and by the internal even branches — and there are only `2b` B-odd
+darts in the whole graph. Feasibility is **not** a hypothesis; the lemma
+is pure cubic bookkeeping, which is what lets the theorem below apply it
+to a *union* of witness sets without re-checking anything.
+
+---
+
+### Step G118 — (GR-99): the selection theorem — at most `b` A-branches are blocked; corollary: (GR-R1), with `≥ |δ|` feasible majority flips
+
+> **(GR-99)** *(proven; asserted at 57 586 feasible patterns over six legs
+> — the stratum EXHAUSTIVE (45 592 feasible patterns, all `2^{2k}` swept),
+> V8, seeded `n = 8/10`, the named large shapes to `n_hub = 60` (patterns
+> sampled, disclosed) and beyond-habitat random cubic shapes at
+> `2k = 8/10` — 0 violations; the bound is TIGHT (18 stratum instances per
+> side attain `#blocked = opposite count > 0`) and the corollary's `|δ|`
+> is attained (minimum feasible-majority-flip count over the stratum's
+> unbalanced patterns is exactly 2 = `|δ|`); `--thm`, `--wit`)*
+>
+> Let `G°` be a cubic loop-free hub multigraph and `p` a **feasible**
+> colouring of its odd branches, `a` of them A and `b` of them B. Then
+>
+> **(i)** at most **`b`** A-branches are blocked, and at most **`a`**
+> B-branches are.
+>
+> **(ii) Corollary — (GR-R1), strengthened.** If `p` is unbalanced with
+> majority side A (`a > b`), then at least `a − b = |δ| ≥ 2` A-branches
+> have (GR-50)-feasible flips. By (GR-49)/(GR-50) the same statement reads
+> at configurations: **at every unbalanced admissible configuration, at
+> least `|δ|` majority-side odd branches have (GR-50)-feasible flips** —
+> in particular some one does, which is (GR-R1) verbatim.
+>
+> No habitat gate, no bound on `2k`, no connectivity, no bridgelessness:
+> the hypotheses are exactly *cubic, loop-free, `p` feasible*.
+
+*Proof of (i) (A side; the B side is the colour swap).* Let
+`γ₁, …, γ_m` be blocked A-branches. By (GR-97)(iv) each has a witness
+`S_t` with `s(S_t) ≤ e_t − 1`, where `e_t := e_{γ_t}(S_t) ∈ {1, 2}`.
+
+*The slack is submodular and nonnegative.* `inc_H` is a coverage function
+(a sum over even branches of `S ↦ [the branch meets S]`, each summand
+submodular), `n₀` is modular, so `s = inc_H − n₀` is submodular; and
+`s ≥ 0` at every set because `p` is feasible ((GR-97)(ii)). Hence for the
+union `U := S_1 ∪ ⋯ ∪ S_m`, by induction on `m`
+(`s(X ∪ Y) ≤ s(X) + s(Y) − s(X ∩ Y) ≤ s(X) + s(Y)`),
+> `s(U) ≤ Σ_t s(S_t) ≤ Σ_t (e_t − 1)`.
+
+*The counted ends are distinct hubs.* Each end counted by `e_t` is a hub
+`v ∈ S_t ⊆ U` with `o_v = 1`. Within one branch the two ends are distinct
+hubs (`G°` loop-free). Across branches: a hub with `o_v = 1` carries
+exactly one A-odd dart, so it is an end of exactly **one** A-branch —
+no hub is counted for two different `γ_t`. Hence
+> `n₁(U) ≥ Σ_t e_t`.
+
+*Count.* By (GR-98)(ii) applied at `U` (legitimate: `p` feasible gives
+`o_v ≤ 2` everywhere),
+> `b ≥ n₁(U) − s(U) ≥ Σ_t e_t − Σ_t (e_t − 1) = m`. ∎
+
+*(ii)* is immediate: `#feasible A-flips ≥ a − b = δ ≥ 2` (`δ` even). The
+configuration form: an unbalanced admissible configuration is an
+admissible `z` ((GR-49)); its pattern is feasible (witnessed by `z`
+itself), unbalancedness, majority side and flip-feasibility are functions
+of the pattern alone, so the configuration-level quantifier factors
+through the pattern level exactly. ∎
+
+**Both inequalities are sharp, and blocked branches are real.** Blocked
+majority instances exist in quantity (32 608 blocked (feasible pattern,
+branch) instances on the stratum, up to **3** blocked at the
+beyond-habitat `2k = 8/10` legs), so the theorem is not counting an empty
+family; the bound `≤ b` is attained with `b > 0` at 18 stratum instances
+per side; and the corollary's `≥ |δ|` is attained (stratum minimum
+exactly 2 at `|δ| = 2`). The `b = 0` corner is the sharpest prediction —
+*at an all-A feasible pattern no flip is ever blocked* — and the stratum
+sweep confirms it exhaustively (every `#blocked = 0` cell of the
+`(a, 0)`-pattern census).
+
+**Witness anatomy — the proof's two shapes, realized.** At every one of
+the 32 608 blocked stratum instances the minimal demand-form violator has
+the shape (GR-97)(iv) predicts (`--wit`, all asserted):
+`(s, e_γ, |S|)` histogram `{(0,1,1): 15 804, (0,1,2): 3480, (0,1,3): 996,
+(0,1,4): 528, (1,2,2): 36, (1,2,3): 144, (1,2,4): 132, (1,2,6): 11 488}`
+— i.e. either a **tight set swallowing one lone-A end** (`s = 0`) or a
+**slack-1 set swallowing both** (`s = 1, e = 2`), exactly the two cases
+the union argument prices.
+
+**A landed prose clause CORRECTED, scoped exactly (the *Step G56*/*Step
+G60* marker precedent; it touches no measurement).** *Step G109*'s
+residual item 2 (and the dispatch spec quoting it) glosses (GR-R1) as
+(GR-51)-shaped because *"flipping `γ` A → B can only create
+**B**-monochromatic-pair hubs"*. That is **incomplete**: the flip can
+also create a **B-monochromatic triple**, at an end `v` with `q_v = 3`,
+`o_v = 1` — and the anatomy histogram shows this singleton case
+(`|S| = 1`, forced `d_v = 0 < 1`) is the stratum's **dominant** blocking
+mechanism (15 804 of 32 608 minimal violators). The corrected gloss:
+flipping `γ` A → B can only create **B-side demand** — a new
+B-monochromatic-pair hub or a B-monochromatic triple — and (GR-97)(iii)
+is its exact form. Nothing downstream of the landed gloss moves: it was
+motivation prose, not an input to any landed derivation.
+
+---
+
+### Step G119 — what (GR-R1)'s proof upgrades, what it does not touch, and the hand-off
+
+- **(GR-89)(ii) is now a THEOREM**: `d_adm(M) − d_par(M) ≤
+  4·min(k, ⌊n_hub/4⌋) ≤ 12`, uniform in `n`, with **no named gap left**.
+  The chain is (GR-99)(ii) (pick a feasible majority flip — one exists at
+  every unbalanced admissible configuration, including every intermediate
+  configuration of the descent) + (GR-86) (each such flip repairs at price
+  `≤ 4`) + (GR-69)(iii) (the starting imbalance is `≤ 2·min(k, ⌊n/4⌋)` at
+  a parity-optimal configuration). Its confidence is the chain's weakest
+  link, which is now **(GR-86)(iii)/(iv)'s own landed status**
+  (proven-informally; the degenerate chain coincidences machine-checked,
+  the one named gap of that step) — (GR-R1) is no longer a qualifier
+  anywhere.
+- **(GR-90)'s constant table, updated.** Row 4 ((b′) at `4·min(k, ⌊n/4⌋)`,
+  was *PROVEN modulo (GR-R1)*) → **PROVEN**. Row 3 ((b′) at the constant
+  4, was *proven modulo (GR-C1) + (GR-R1)*) → **PROVEN modulo (GR-C1)
+  alone** — hence a full theorem on the `n_hub ≤ 6` stratum, where
+  (GR-C1) is (GR-69)'s arithmetic. Row 5 (`2·min(k, ⌊n/4⌋)`) → proven
+  modulo (GR-C2) alone. **(b′) at the constant 2 is UNCHANGED**: (GR-C2)
+  is still the whole residual, per the standing bar it was not attacked.
+- **One (GR-C2)-adjacent by-product, reported and NOT developed** (the
+  spec's bar): (GR-99)(ii) gives `≥ |δ| ≥ 2` *feasible* majority branches
+  at every unbalanced configuration, so a (GR-C2) failure now needs
+  **every one of ≥ 2 feasible majority branches** to be a doubly-blocked
+  matching branch — a strictly smaller target than *Step G108*(v)'s
+  already-narrow cell, and a counting hypothesis ((GR-89)(iii) covers
+  "every majority branch"; the "every **feasible** majority branch"
+  variant is open). Offered to the (GR-C2) successor as a sharpened
+  hypothesis, with no figure attached.
+- **The greedy descent's stall count 0 is now a theorem, not a
+  measurement**: *Step G108*(iv)'s "0 stalls at 771 530 configurations"
+  is implied by (GR-99)(ii) at every intermediate configuration.
+- **What is NOT touched.** Entry 5 ((GR-54)) — consumed, unchanged.
+  Entry 1 / (a′) / input (Y) — not attempted; no rank computed anywhere.
+  (GR-64) rows — GCOLL's, unchanged. (GR-15) — **OPEN, unchanged in both
+  directions**; no flank, no class-uniformity claim. The shift-metric
+  layer stays **UNBOUNDED** ((GR-43)); every statement here is a bound on
+  a **difference** or a count of flips, never on `d_adm`.
+- **Riders, verbatim.** Everything is at **`Λ = ∅`**, **`D = 0`**, and
+  **modulo (GR-4′)** where a closure chain is concerned; the **`Λ ≠ ∅`
+  closed-form analogue** and the **`D > 0` lift** stay **unswept**.
+  (GR-97)/(GR-98) use cubicity throughout (`d_v = 3 − q_v`, the handshake
+  with three darts per hub), so a `D > 0` lift must redo both; (GR-99)'s
+  proof would survive any carrier in which (GR-51) and the cubic
+  handshake do.
+
+**The residual, as this landing leaves it (successor order).**
+1. **(GR-C2)** — unchanged, the whole gap between the proven constant 4
+   and (b′)'s 2, now with the sharpened "every *feasible* majority branch
+   doubly-blocked" hypothesis above and *Step G108*(v)'s `n_hub = 8`,
+   `2k = 2` cell as the first possible home.
+2. **(GR-C1) past the stratum** — unchanged (GPSA's first clause;
+   (GR-69) is its exact `n ≤ 6` boundary).
+
+---
+
+### Verification (Steps G116–G119)
+
+`notes/scripts/w4/gflip.py` (**new with this pass**; imports — all
+read-only — `balb` (`stratum_cases`, `v8_specs`), `gbal` (`bounds_of`,
+`feasible_at`, `named_cases`, `odd_idx`, `random_cases`), `gdesc`
+(`imb_of`), `gflow` (`feas_flip`, `seeded_shapes`), `gpsa`
+(`branches_at`)). **Rank-free**: `gexist.fully_good_rank` is never
+imported or called and no `d_fg` claim is made anywhere. Local devices,
+none shadowing a §1 primitive (checked against the README index and the
+*Divergences* table): `odd_profile` ((o, q) off a bitmask pattern),
+`even_masks`, `demand_data`/`demand_ok` ((GR-97), with the doctored
+variant as the F13 control), `blocked_of`, `wit_anatomy` (the (GR-99)
+witness extraction and shape asserts), `hist`, `seeded_legs`. Exact
+integers over GF(2) throughout; no floating point; rngs seeded per mode
+with the seed printed; no `set` printed (the one set comprehension is a
+sampling dedup, never printed). **No pool is new**: the stratum is
+`balb.stratum_cases` (= `gbal.pool_cases` behind the (GR-25) cut
+criterion, EXHAUSTIVE), V8 is `balb.v8_specs`, the seeded `n = 8/10`
+pools are `gflow.seeded_shapes` (= `balb.rand_habitat`), the named large
+shapes are `gbal.named_cases`, and the beyond-habitat shapes are
+`gbal.random_cases` — all reused read-only.
+
+```
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gflip.py --form      # ~10 s (GR-97): closed forms + demand-form <=> oracle, 57232 pairs, + doctored control
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gflip.py --lemma     # ~25 s (GR-98): the identity and both inequalities at 3458768 triples
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gflip.py --thm       # ~10 s (GR-99): the bound + the corollary at 57586 feasible patterns, six legs
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gflip.py --wit       # ~8 s  witness anatomy at all 32608 blocked stratum instances + controls
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gflip.py --validate  # ~44 s all four in one process
+```
+
+**Which driver mode tests which sentence (F11).**
+
+| claim | mode | what asserts *that sentence* |
+|---|---|---|
+| (GR-97)(i) the closed `l`/`u` forms | `--form` | asserted per hub against `gbal.bounds_of` at every (shape, pattern) pair of every leg |
+| (GR-97)(ii) the demand form is **exactly** feasibility | `--form` | `demand_ok` (all `2^n` hub sets) asserted `==` the (GR-50) oracle (`gbal.feasible_at`) at all 57 232 pairs — stratum EXHAUSTIVE at both quantifiers, 0 disagreements |
+| (GR-97) the `q = 0` clause is load-bearing | `--form` | the doctored variant (odd-dart-free hubs dropped) asserted a relaxation, and its wrong-feasible count printed: **1648** on the stratum |
+| (GR-97)(iii) flip monotonicity (kept side) | `--wit` | `inc_H(S) ≥ N_A′(S)` asserted at **every** hub set of **every** blocked instance |
+| (GR-97)(iv) the block criterion's witness shapes | `--wit` | every violator asserted to satisfy `e_γ ≥ 1`, `s ≤ e_γ − 1`, `s ≥ 0`; a violator asserted to **exist** whenever the oracle says blocked |
+| (GR-98)(i)/(ii) the identity and both counts | `--lemma` | asserted at 3 458 768 (shape, pattern, hub set) triples, **feasible and infeasible patterns alike**; the `o = 3` skips counted and printed (2991 per side, all infeasible by (GR-97)) |
+| (GR-99)(i) `#blocked ≤` opposite count, both sides | `--thm` | `assert len(bA) <= b` and `assert len(bB) <= a` at all 57 586 feasible patterns of six legs, 0 violations |
+| (GR-99)(ii) `≥ \|δ\|` feasible majority flips | `--thm` | asserted at every unbalanced feasible pattern (32 822 across the legs); the minimum realized count printed (2 on the stratum = `\|δ\|`, so the corollary is tight) |
+| (GR-R1), pattern form | `--thm` | `assert nf >= 1` at every unbalanced feasible pattern; the configuration form is the (GR-49)/(GR-50) factoring, **cited not re-measured** |
+| the bound is TIGHT | `--thm` | `#blocked = opposite count > 0` counted: 18 per side on the stratum |
+| blocked branches exist (the theorem is not vacuous) | `--thm`, `--wit` | 32 608 blocked stratum instances; up to 3 blocked per pattern at `2k = 8/10`; the naive "never blocked" sentence reported REFUTED |
+| the corrected gloss (triples, not only pair hubs) | `--wit` | the singleton (`\|S\| = 1`) anatomy class — exactly the created-B-triple case — counted: 15 804 of 32 608 |
+| no `2k` cap | `--thm` | the beyond-habitat leg: seeded random cubic shapes at `2k = 8/10` (NOT excess-6), 9864 feasible patterns, 0 violations |
+| (a′) / `d_fg` / input (Y) / (GR-15) | — | **not attempted**; no mode computes a rank |
+
+**Determinism.** `--validate` run at `PYTHONHASHSEED` 0 and 999: byte-identical
+except the `[Ns]` wall-clock annotations. Every leg prints its seed.
+
+**Caps, disclosed in full — an exhausted cap is not a proof of
+nonexistence.** (1) Only the `n_hub ≤ 6` stratum is exhaustive — at
+**both** quantifier levels (all `2^{2k}` patterns, all `2^n` hub sets);
+V8 is one shape, complete. (2) The `n = 8/10` legs are **seeded samples**
+(`gflow.seeded_shapes`, tries 200/90, seeds printed) — and each leg's
+sample differs across modes because each mode seeds its own rng (offsets
++1/+3, printed). (3) The named large shapes (`n_hub` to 60) have their
+patterns **SAMPLED** (300 seeded draws per shape) whenever `2k > 8`;
+the sampled-shape count is printed. (4) The beyond-habitat leg is a
+seeded sample (6 tries per size at `n = 12/16`, `2k ∈ {8, 10}`); those
+shapes are **deliberately outside** the excess-6 habitat scope, since the
+theorem carries no `2k` cap. (5) No search caps exist in any assertion
+path and none was hit. **None of these caps qualifies the proof** — they
+qualify only the machine cross-check's reach; the proof itself has no
+cap.
+
+**Scratch probes (README's standing rule).** One exploratory probe was
+run during the derivation (the first-stratum-shape smoke test of the
+demand form); it is **not retained** — its content is subsumed by
+`--form`'s first leg, which asserts the same sentence at every stratum
+shape. Every figure quoted above is produced by `gflip.py`.
+
+---
+
+### Confidence verdict (Steps G116–G119)
+
+| | claim | standing |
+|---|---|---|
+| **(GR-97)** | the demand form — closed `l`/`u`, `W = 2(inc − N)`, feasibility ⟺ two covering conditions, the flip increment | **proven** (a substitution in (GR-51), with (GR-69)(i)/(ii) as the landed half, credited); certified against the oracle at 57 232 pairs, 0 disagreements, with the doctored control separating the `q = 0` clause |
+| **(GR-98)** | the counting lemma `b ≥ n₁(S) − s(S)` (and its exact identity) | **proven** (four lines off cubicity; feasibility not needed); asserted at 3 458 768 triples including infeasible patterns |
+| **(GR-99)(i)** | at most `b` A-branches blocked, at most `a` B-branches | **proven** (submodular union of (GR-97) witnesses + injectivity of lone-A ends + (GR-98)); 0 violations at 57 586 feasible patterns over six legs; **tight** (18 stratum instances per side) |
+| **(GR-99)(ii)** | `≥ \|δ\|` feasible majority flips at every unbalanced admissible configuration | **proven** (arithmetic corollary + the (GR-49)/(GR-50) pattern factoring); tight (minimum 2 realized at `\|δ\| = 2`) |
+| **(GR-R1)** | *some majority-side odd branch has a (GR-50)-feasible flip* | **PROVEN** — the graded outcome of the first kind, with no restricted quantifier and no habitat/`2k`/connectivity hypothesis. The measured 0/771 530 record is explained, not extended |
+| **(GR-89)(ii)** | `d_adm(M) − d_par(M) ≤ 4·min(k, ⌊n_hub/4⌋) ≤ 12`, `n`-free | **upgraded: true-modulo-named-gap → THEOREM** (the named gap was exactly (GR-R1)); residual confidence qualifier = (GR-86)(iii)/(iv)'s own landed status (its degenerate coincidences are machine-checked, as recorded at *Steps G104–G109*) |
+| **(GR-90) table** | rows 3/4/5 | row 4 **PROVEN**; row 3 **PROVEN modulo (GR-C1) alone** (a theorem on the `n ≤ 6` stratum); row 5 proven modulo (GR-C2) alone |
+| the corrected gloss | the flip can create a B-**triple**, not only B-pair hubs | **proven** ((GR-97)(iii) singleton case) and **measured dominant** (15 804 / 32 608); a prose correction, no landed measurement moves |
+| **(GR-C2)** | the selection clause for the constant 2 | **OPEN — not attacked** (standing bar); one sharpened hypothesis reported as a by-product, no figure |
+| **(a′)** / input (Y) / (GR-64) rows | | **OPEN — not attempted**; no rank computed anywhere |
+| **(GR-15)** | | **OPEN — unchanged in both directions**; no flank, no class-uniformity claim |
+
+**Which side of the (`≤3`-closedHubNbhd) line this sits on.** The same
+side as GBAL's through GFLOW's: exact GF(2) / integer combinatorics on
+constructed hub multigraphs, never `PencilNondegFeasible G`; no rank is
+computed anywhere; no σ-fixed witness is read as generic (§(K-clos)
+(AC-9)); the only samplers draw **graphs**, not placements.
+
+### What would change this (Steps G116–G119)
+
+*(i)* **An error in (GR-51)** would undermine (GR-97) and everything
+after; the demand form is however certified against the independent
+(GR-50) oracle at every pattern of the whole stratum, so an error would
+have to live in both. *(ii)* **A blocked-count witness above the bound**
+— a feasible pattern with more blocked A-branches than `b` — refutes
+(GR-99)(i); none exists on the exhaustive stratum, and the bound is
+attained there, so any counterexample lives off the stratum and past the
+sampled legs. *(iii)* **The `D > 0` lift** must redo (GR-97)/(GR-98)
+(cubicity is used in both); the `Λ ≠ ∅` analogue stays unswept by
+standing rider. *(iv)* **(GR-C2)** is untouched: proving it (or the
+sharpened "every feasible majority branch" variant reported at *Step
+G119*) closes (b′) at the constant 2 given (GR-C1); refuting it kills the
+descent route to 2 but not the now-proven constant 4. *(v)* **A Lean
+transcription** of (GR-97)–(GR-99) would be small (finite counting on a
+multigraph, one submodularity lemma); nothing here pins a carrier choice
+beyond what (GR-49)–(GR-51) already pin.
+
+**TERMINATION check (E1/E2/E3) — this direction's reading; the
+coordinator re-runs it.**
+
+- **(E1) NOT FIRED.** No g-flank; the pass is rank-free and computes no
+  rank, so clauses (i)–(iv) cannot fire on it. Clause (v) (`d_adm = ∞`)
+  fires on nothing: every stratum shape's balanced patterns include a
+  feasible one ((GR-54), consumed), and this pass adds a demand-form
+  witness of feasibility at 45 592 stratum patterns.
+- **(E2) NOT FIRED.** Entry 5 is PROVEN ((GR-54)) and consumed untouched;
+  nothing here demotes any route — on the contrary, (GR-R1)'s proof
+  removes a qualifier from a landed bound. The one correction (the
+  triple-creation gloss) is prose, with successors named in place.
+- **(E3) ARMED (by GBAL), DOES NOT FIRE, and this direction does not fire
+  it.** E3 fires only on a HIT completing **entry 1** — i.e. (a′). This
+  pass does not attempt (a′), computes no rank, and makes no `d_fg`
+  claim. The HIT here is on **(b′)'s availability layer** ((GR-R1) →
+  (GR-89)(ii) a theorem), which is not entry 1 and arms nothing. **Firing
+  is a coordinator action; reported, not fired.**
 
 ---

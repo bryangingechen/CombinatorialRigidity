@@ -1,10 +1,11 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: EIGHT fan-outs and TEN single directions dispatched; 37 directions LANDED,
-ONE IN FLIGHT.** **GFLIP (ordinal 30, §"GFLIP") is PREPPED AND DISPATCHED 2026-08-25** —
-the standing research pick, made single-direction-cheapest-first at the 2026-08-25
-check-in: prove **(GR-R1)**, the flip-availability clause, upgrading (b′)'s `n`-free
-`≤ 12` bound (GR-89)(ii) to a theorem. The seventh fan-out (YLOC / BALB / AGLU / ZNEQ /
+**Status: EIGHT fan-outs and TEN single directions dispatched; ALL 38 directions
+LANDED.** **GFLIP (ordinal 30, §"GFLIP") LANDED 2026-08-25, same day as its dispatch —
+a HIT of the first kind: (GR-R1) is PROVEN**, strengthened to the selection theorem
+(GR-99) (`≥ |δ|` feasible majority flips, no habitat/`2k`/connectivity hypothesis), so
+(b′)'s `n`-free `≤ 12` bound (GR-89)(ii) is now a **theorem** and (GR-C2) is the whole
+constant-2 residual. The seventh fan-out (YLOC / BALB / AGLU / ZNEQ /
 CIRR, §"Seventh fan-out") is
 **COMPLETE** — all five directions landed 2026-08-19. The **EIGHTH fan-out** (GTMPL / GFLOW /
 GCOLL / OSCHU / SIGZ, §"Eighth fan-out") is **COMPLETE** — all five landed 2026-08-19: an
@@ -2494,3 +2495,46 @@ coordinator to gate and commit.
 GFLIP"): §(K-grid) **extends** — no new section; labels **(GR-97)–(GR-101)**,
 **Steps G116–G120**; owning section stays authoritative; return any
 unconsumed remainder to the tail.
+
+### GFLIP — landing write-up (LANDED 2026-08-25, recon-fable, one serial coordinator commit)
+
+**Verdict: a HIT of the first kind — (GR-R1) is PROVEN, with no restricted
+quantifier**, and strengthened: at every unbalanced admissible configuration at
+least `|δ| ≥ 2` majority-side odd branches have (GR-50)-feasible flips, as the
+corollary of a **selection theorem** ((GR-99): at any feasible pattern of any
+cubic loop-free hub multigraph, at most `b` A-branches are blocked and at most
+`a` B-branches — no habitat gate, no `2k` cap, no connectivity). Chain: the
+**demand form** (GR-97) (feasibility ⟺ `inc_H(S) ≥ max(N_A(S), N_B(S))`,
+certified against the (GR-50) oracle at 57 232 pairs at BOTH quantifier levels,
+0 disagreements), the **counting lemma** (GR-98) (`b ≥ n₁(S) − s(S)` off
+cubicity alone, 3 458 768 triples), and the submodular-union argument closing
+(GR-99) (0 violations at 57 586 feasible patterns over six legs; tight at 18
+stratum instances per side). **Consequences:** (GR-89)(ii)'s `n`-free `≤ 12`
+bound loses its one named gap and is a THEOREM; (GR-90)'s constant-4 row drops
+to *modulo (GR-C1) alone* (a full theorem on `n_hub ≤ 6`); the greedy descent's
+0-stall record becomes a theorem. **Bars honoured:** (GR-C2) not attacked (one
+sharpened hypothesis reported, no figure); rank-free throughout; entry 5 /
+(GR-64) rows / (GR-15) untouched; no `.lean` touched. **E1/E2 NO; E3 stays
+ARMED by GBAL, not fired** (the HIT is on (b′)'s availability layer, not
+entry 1). Canonical home: §(K-grid) *Steps G116–G119*
+(`notes/Pencil-informal-grid.md`); driver `w4/gflip.py` (five modes, ~44 s);
+labels (GR-97)–(GR-99) claimed, (GR-100)/(GR-101)/Step G120 returned.
+
+**One spec clause found defective, corrected at *Step G118* (the fourth
+consecutive wave-or-single with at least one — F22's pattern holds).** The
+spec's route note quoted *Step G109* residual item 2's gloss — *"flipping `γ`
+A → B can only create B-monochromatic-pair hubs"* — which is **incomplete**:
+the flip can also create a **B-monochromatic triple** at a `q_v = 3` end, and
+that singleton case is the stratum's *dominant* blocking mechanism (15 804 of
+32 608 minimal violators). Corrected in place at *Step G109* with a marker.
+The named instruments ((GR-52)/(GR-53)) also turned out not to be the proof's
+— the spec's "treat the sketch as a candidate, not a pin" clause did its job:
+the direction recorded where the sketch dies (a sufficient-condition calculus
+cannot see merely-feasible hypotheses) and found the demand-form route instead.
+
+**Coordinator verification at landing:** `--validate` re-run in full plus
+`--form` separately (all headline figures reproduced: 57 232 / 3 458 768 /
+45 592 / 32 608 / the anatomy histogram / minimum 2 / tight 18 per side); the
+(GR-98)/(GR-99) derivations re-walked line-by-line (the cubic count, coverage
+submodularity, lone-A-end injectivity); label set-diff scripted, L6 grep
+clean; `check-gapmap-cells.py` green on the recomputed §(K-grid) row.

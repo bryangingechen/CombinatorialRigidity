@@ -5,15 +5,17 @@
 (L0–L7) are COMPLETE — `hsplit` CLOSED IN FULL and `hfresh`'s counting discharge landed
 (2026-07-30). Only three items remain, all carried by the landed successor
 `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card` (`Molecule/Pencil/Escape.lean`):
-`hcontract` (W4), kernel `hK`, and kernel `hbareSplit` — see *Hand-off*. **Thirty-seven
-kernel-(K) directions are now COMPLETE** (2026-08-05 → 08-19, ordinals 1–29; roster and
+`hcontract` (W4), kernel `hK`, and kernel `hbareSplit` — see *Hand-off*. **Thirty-eight
+kernel-(K) directions are now COMPLETE** (2026-08-05 → 08-25, ordinals 1–30; roster and
 per-direction theorem chain in *Decisions made*). **The SIXTH, SEVENTH and EIGHTH FAN-OUTS
 ARE ALL COMPLETE** (all fifteen directions LANDED 2026-08-19). **The arc's HITs:**
 route-ledger **entry 5 PROVEN in both halves** (GBAL, discharging input (X)); **chart
 irreducibility PROVEN** (CIRR); the **AA-glue configuration NOT realizable at `n_hub = 8`**
-(AGLU). Everything else an honest MISS or an OPEN reshape; verdicts in *Decisions made* and
+(AGLU); **(GR-R1) PROVEN** (GFLIP, 2026-08-25 — so (b′)'s `n`-free `≤ 12` bound (GR-89)(ii)
+is a THEOREM, the arc's first unconditional bound of (b′)'s shape).
+Everything else an honest MISS or an OPEN reshape; verdicts in *Decisions made* and
 `notes/Pencil-fanout{,-archive}.md`, **not restated here**. **(GR-15) stays OPEN
-throughout; class uniformity untouched; no g-flank at any of the thirty-seven directions.
+throughout; class uniformity untouched; no g-flank at any of the thirty-eight directions.
 E3 is ARMED (by GBAL) and has NOT fired.** Direction codes are **multi-letter and
 topic-tagged from the fifth fan-out on** (`notes/Pencil-labels.md` (L5)); grandfathered
 single letters are re-used across dates, **always date those**.
@@ -46,19 +48,20 @@ cycles `C_3 … C_6`, and no structural hypothesis on `S` lifts it. Mathematics,
 and caps: `notes/Pencil-strategy.md` §4.7 ((AV-1)–(AV-8), driver `w4/avoidgen.py`) —
 **§(K-avoid) never opened, no gap-map status moved**, `hK`/`hbareSplit`/(GR-15)/class
 uniformity untouched.
-**THE RESEARCH PICK IS MADE (2026-08-25): direction GFLIP — ordinal 30, the arc's
-thirty-eighth direction — IS PREPPED AND DISPATCHED.** The shape was adjudicated at the
-2026-08-25 check-in (*Current state*, the 2026-08-25 bullet): **single direction,
-cheapest first** → **(GR-R1)**, §8.1's cheapest board entry — prove the
-flip-availability clause and upgrade (b′)'s `n`-free `≤ 12` bound (GR-89)(ii) from
-*modulo a named clause* to a theorem. Spec, bars, riders and HIT criteria in
-`notes/Pencil-fanout.md` §"GFLIP"; reservation ((GR-97)–(GR-101), Steps G116–G120,
-conditional driver `w4/gflip.py`) in `notes/Pencil-labels.md`. **NEXT CONCRETE TASK:
-land GFLIP's return** per the fan-out landing checklist (serial coordinator landing).
-Both probe verdicts were surfaced to the user at the same check-in — that flag is
-discharged. Nothing else structural queued, nothing awaiting user adjudication. The
-rest of the candidate list stays in *Hand-off*; the `notes/Pencil-strategy.md` §9
-shelf **(ZH-1)–(ZH-6)** stays unpriced and ineligible.
+**DIRECTION GFLIP (ordinal 30) IS LANDED — dispatched and landed 2026-08-25, a HIT of
+the first kind.** The shape was adjudicated at the 2026-08-25 check-in (*Current state*,
+the 2026-08-25 bullet): single direction, cheapest first → **(GR-R1)**. The direction
+**PROVED it**, strengthened (`≥ |δ|` feasible majority flips, no habitat/`2k`/
+connectivity hypothesis), via the demand form (GR-97) + counting lemma (GR-98) +
+selection theorem (GR-99) — canonical home §(K-grid) *Steps G116–G119*
+(`notes/Pencil-informal-grid.md`), landing record `notes/Pencil-fanout.md` §"GFLIP",
+driver `w4/gflip.py`. (GR-C2) stays the whole constant-2 residual, with a sharpened
+hypothesis reported. Both probe verdicts were surfaced to the user at the same
+check-in — that flag is discharged. **NEXT CONCRETE TASK: the next standing research
+pick** (the 2026-08-07 delegation; the *shape* is a user call) — candidate list in
+*Hand-off*, cheapest now **(GR-C2)**; the `notes/Pencil-strategy.md` §9
+shelf **(ZH-1)–(ZH-6)** stays unpriced and ineligible. Nothing else structural queued,
+nothing awaiting user adjudication.
 
 ## Current state
 
@@ -192,14 +195,15 @@ constraints; the dated dispatch narrative is in *Decisions made* and git):
   flag. **Everything else stands unchanged:** phase OPEN, the 2026-08-05 Lean hold, W4
   PARKED, `hK`/`hbareSplit` pinned, option B un-commissioned.
 
-**Kernel-(K) research arc — fifty-four docs+scripts-only dispatches landed, plus seven
-strategy-only passes** (2026-08-02 → 08-19) — and, **outside** that count because they test
+**Kernel-(K) research arc — fifty-five docs+scripts-only dispatches landed, plus seven
+strategy-only passes** (2026-08-02 → 08-25) — and, **outside** that count because they test
 the architecture rather than the (K) crux, the **two probes**: **KBARE-FALSIFY**
 (2026-08-20) and **C3-AVOID** (2026-08-24), both landed. Which pass was which is one-lined in *Decisions
 made*; the rule is that the **dispatch** count moves only on a landing (GBAL/GLAW/FRES/OCON/
 LTWO are the fortieth through forty-fourth; CIRR the forty-fifth; YLOC the forty-sixth; BALB
 the forty-seventh; ZNEQ the forty-eighth; AGLU the forty-ninth; the eighth fan-out's five
-become the **fiftieth through fifty-fourth**, all landed 2026-08-19), and a **user call on
+the **fiftieth through fifty-fourth**, all landed 2026-08-19; **GFLIP the fifty-fifth**,
+2026-08-25), and a **user call on
 dispatch *shape*** — either multidispatch election, or a coordinator-authored pick like the
 twelfth's — contributes **no** strategy pass, so the 2026-08-19 eighth-fan-out check-in adds
 none even though it moved a standing constraint.
@@ -423,18 +427,21 @@ neighbours' incidences and every capacity unit above 2 is bought by a **Case-I g
 whose pencil-compatibility is geometry the probe was barred from. **§(K-avoid) was never
 opened** and no gap-map status moved.
 
-**THE NEXT CONCRETE TASK — land direction GFLIP's return** (the pick is MADE, see the
-top `**Status:**` block; per-direction spec `notes/Pencil-fanout.md` §"GFLIP"): re-run
-any driver the draft cites, apply the F11 question to each proven piece, merge the
-draft into §(K-grid) (`notes/Pencil-informal-grid.md`), update the gap-map row
-(`notes/check-gapmap-cells.py` first), one-line the verdict in *Decisions made*, and
-sweep the status surfaces — the full landing checklist in `notes/Pencil-fanout.md`.
-**The candidate list for the pick AFTER GFLIP**, cheapest first, unchanged:
-**(GR-C2)**, the one-unit-defect redo of (GR-79)–(GR-82), OSCHU's
+**THE NEXT CONCRETE TASK — the next standing research pick** (GFLIP is LANDED, see the
+top `**Status:**` block and *Decisions made*; landing record `notes/Pencil-fanout.md`
+§"GFLIP"). The candidate list, cheapest first:
+**(GR-C2)** — now the cheapest board entry, the whole gap between the proven constant 4
+and (b′)'s 2, carrying GFLIP's sharpened hypothesis (a failure needs **every** one of
+the `≥ |δ|` *feasible* majority branches to be a doubly-blocked matching branch; first
+possible home `n_hub = 8`, `2k = 2`, *Step G108*(v)) — then the one-unit-defect redo of
+(GR-79)–(GR-82), OSCHU's
 `rank(Q|_D) = 3` residue (harness-unblocked since the move-down round), GCOLL's collision
-dominance, and (OC-19) input (c) class-uniformly — the *shape* of that next pick stays a
+dominance, and (OC-19) input (c) class-uniformly — the *shape* of the pick stays a
 user call under the standing 2026-08-07 delegation. Both probe verdicts (KBARE-FALSIFY,
-C3-AVOID) were surfaced to the user 2026-08-25; nothing is owed a mention.
+C3-AVOID) were surfaced to the user 2026-08-25; nothing is owed a mention. One unpaid
+harness item GFLIP added: the `w4/` balance-layer sibling-import set
+(`notes/scripts/README.md` *Harness debt*, eleven devices, coordinator-paid
+between waves like its predecessors).
 
 **Nothing is awaiting user adjudication as of 2026-08-19.** The one item that was —
 ZNEQ's `σ > 0`-everywhere hunt at class shapes whose `H` carries a short theta
@@ -454,10 +461,10 @@ round 2 (slice 4 the phase-note split, **slice 5/"slice 2" the harness move-down
 OSCHU's `rank(Q|_D) = 3` residue is no longer blocked on the harness — exact `ℚ(i)`
 (`exactcore.Gauss`) is now a base-layer primitive.
 
-**THE STANDING RESEARCH-PICK DELEGATION — SPENT on GFLIP for this round** (2026-08-25,
-shape adjudicated single-direction-cheapest-first; see the top `**Status:**` block and
-*Current state*'s 2026-08-25 bullet). The delegation itself stands for the pick after
-GFLIP lands; its shape is again a user call.
+**THE STANDING RESEARCH-PICK DELEGATION — live again: GFLIP is landed** (2026-08-25,
+shape adjudicated single-direction-cheapest-first, dispatched and landed the same day;
+see the top `**Status:**` block and *Current state*'s 2026-08-25 bullet). The delegation
+covers the next pick; its shape is again a user call.
 
 **`hsplit` is CLOSED IN FULL** (W5-L7c-1…6, landed 2026-07-30) and **`hfresh`'s mechanical
 discharge (residue (iv)) is CLOSED too**. The landed successor
@@ -559,6 +566,16 @@ survey — incl. IDENT-PANEL, the nearest neighbour — is `notes/IdeaBacklog.md
 
 ## Decisions made during this phase
 
+- **Direction GFLIP (ordinal 30, 2026-08-25, fable, docs+scripts only) — (GR-R1) is
+  PROVEN, a HIT of the first kind.** The flip-availability clause holds strengthened —
+  `≥ |δ|` feasible majority flips at every unbalanced admissible configuration, no
+  habitat/`2k`/connectivity hypothesis — via the demand form (GR-97), the cubic counting
+  lemma (GR-98) and the selection theorem (GR-99), so **(GR-89)(ii)'s `n`-free `≤ 12`
+  bound is a THEOREM** and (GR-90)'s constant-4 row is *modulo (GR-C1) alone*. One landed
+  gloss corrected in place (*Step G109*: the flip can also create a B-monochromatic
+  **triple** — the dominant mechanism). Canonical home §(K-grid) *Steps G116–G119*;
+  driver `w4/gflip.py`. **(GR-C2) untouched (bar honoured); (GR-15) OPEN; E3 ARMED, not
+  fired.**
 - **Probe C3-AVOID (2026-08-24, opus, docs+scripts only) — C3's gate PRICED, and the
   price kills it as a crux-avoidance route.** The *"reduce avoiding `S`"* question is
   decided against the landed generation theorem: the **local** gate never fails

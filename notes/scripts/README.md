@@ -896,6 +896,11 @@ OG / OR / OC2 are pinned and disjoint from every earlier pool.
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/avoidgen.py --avoid` | 28 s | ibid. (AV-3)/(AV-5) — the avoidance game: `\|S\| <= 2` avoidable everywhere, `\|S\| = 3` failing (0/20 at `C_6`, independent triples included) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/avoidgen.py --count` | 4 s | ibid. — the refuted `s <= 4` guess (`s` reaches 10 at `\|V\| = 6`, capacity ratio 80 % at `\|V\| = 5`) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/avoidgen.py --validate` | 21 s | ibid. — pebble game vs `exact_deficiency`, branch enumeration vs brute force, both 0 mismatches |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/gflip.py --form` | 10 s | `notes/Pencil-informal-grid.md` §(K-grid) continuation (direction GFLIP) *Step G116* ((GR-97), the demand form: `demand_ok` over all `2^n` hub sets asserted `==` the (GR-50) oracle at **57 232** (shape, pattern) pairs — the `n_hub ≤ 6` stratum EXHAUSTIVE at both quantifier levels (55 756 pairs), V8, seeded `n = 8/10` — 0 disagreements; the doctored `q = 0`-dropped control wrongly accepts **1648** stratum patterns) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/gflip.py --lemma` | 25 s | ibid. *Step G117* ((GR-98), the counting lemma: the exact identity and both inequalities asserted at **3 458 768** (shape, pattern, hub set) triples, feasible AND infeasible patterns; the 2991-per-side `o = 3` skips counted, all infeasible by (GR-97)) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/gflip.py --thm` | 10 s | ibid. *Step G118* ((GR-99), the selection theorem: `#blocked ≤` opposite count at **57 586** feasible patterns over six legs incl. beyond-habitat `2k = 8/10`, 0 violations, tight at 18 stratum instances per side; `≥ \|δ\|` feasible majority flips at all 32 822 unbalanced patterns, stratum minimum exactly 2 — (GR-R1)'s pattern form asserted) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/gflip.py --wit` | 8 s | ibid. witness anatomy: every one of the **32 608** blocked stratum instances has a demand-form violator of the exact proof shape (`s ≤ e_γ − 1`, kept side monotone); the `(s, e_γ, \|S\|)` histogram, singleton (created-B-triple) class dominant at 15 804 |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/gflip.py --validate` | 44 s | ibid. all four in one process; byte-identical at `PYTHONHASHSEED` 0 and 999 modulo wall-clock |
 
 **C3-AVOID (probe, LANDED 2026-08-24).** All seven modes (`--all`, ~36 s total,
 inside the 600 s foreground budget in one call) run by the dispatch, exit 0,
@@ -1180,17 +1185,18 @@ figure-invariant): `rref`, `rank`/`rank_exact`, `nullspace`, `left_nullspace`,
 
 ## Harness debt — two rounds PAID (S1–S4 2026-08-06; the move-down round 2026-08-20), **two items outstanding**
 
-**Two items are outstanding: `zneq.ledger`** (last subsection, deliberately
-deferred to a round that can re-run `oschu --gtarget` / `--census1` /
-`--census2`). Everything else is paid: the first round's four items are in the
+**Three items are outstanding: `zneq.ledger`** (deliberately deferred to a
+round that can re-run `oschu --gtarget` / `--census1` / `--census2`), **the
+`kbare/` sibling-import set** that probe KBARE-FALSIFY created, and **the
+`w4/gflip.py` sibling-import set** that direction GFLIP created (last
+subsection) — the latter two **UNPAID** by the same rule that forbids a
+dispatch from moving a landed name. Everything else is paid: the first
+round's four items are in the
 *ALL FOUR CLEARED* block immediately below (kept in the past tense as the record
 of what was wrong), and the five §2-rule-2 move-downs the sixth-to-eighth
 fan-outs accumulated are in the three *New item* subsections at the end, each
 marked **PAID 2026-08-20**, with the round's own write-up after them. Two
-*Recorded observations* also remain deliberately unfixed and say so. The second
-outstanding item is the `kbare/` sibling-import set that probe KBARE-FALSIFY
-created (last subsection but one), **UNPAID** by the same rule that forbids a
-dispatch from moving a landed name.
+*Recorded observations* also remain deliberately unfixed and say so.
 
 ### Round one — four items, **ALL FOUR CLEARED**; **CLOSED** (S1–S4, 2026-08-06)
 
@@ -2008,6 +2014,41 @@ and all six `breakhunt` modes, byte-identical at `PYTHONHASHSEED=0`.
 and `coplanar_closure` (the pencil propagation rule) are the two devices a
 second consumer would want; they are arc-specific today and stay in the driver
 per §2 rule 1.
+
+### New item (2026-08-25, direction GFLIP) — the `w4/` balance-layer device set; **UNPAID**
+
+`w4/gflip.py` imports **eleven** read-only devices from **five sibling
+leaves** — the documented sibling-import pattern, in policy, but tripping §2
+rule 2's move-down trigger, and this time the trip is not marginal: **none of
+the eleven is §1-catalogued and most already had 2+ consumers before GFLIP
+arrived** (the exact "second consumer arrived without anyone noticing"
+mechanism the 2026-08-20 write-up warned about). Recorded with every consumer
+named, per the rule; a dispatch may **not** make the move.
+
+| name | current home | consumers (besides the home) |
+|---|---|---|
+| `stratum_cases`, `v8_specs` | `balb` | `gflow`, **`gflip`** (2 each) |
+| `bounds_of` | `gbal` | `balb`, **`gflip`** (2) |
+| `feasible_at` | `gbal` | `gflow`, **`gflip`** (2) |
+| `named_cases` | `gbal` | `balb`, **`gflip`** (2) |
+| `odd_idx` | `gbal` | `balb`, `gflow`, `yloc`, **`gflip`** (4) |
+| `random_cases` | `gbal` | **`gflip`** (1 — under the trigger, listed because the move of the other `gbal` devices would naturally take it) |
+| `imb_of` | `gdesc` | `balb`, `gflow`, **`gflip`** (3) |
+| `feas_flip`, `seeded_shapes` | `gflow` | **`gflip`** (1 each — same rider as `random_cases`) |
+| `branches_at` | `gpsa` | `balb`, `gbal`, `gdesc`, `gcoll`, `gflow`, `glaw`, `yloc`, **`gflip`** (**8** — the widest uncatalogued fan-in in the harness) |
+
+**Where they should go:** a `w4/` **balance-layer common module** (working
+name `gridbal_common`) one layer below the per-direction leaves — the pool /
+shape suppliers (`stratum_cases`, `v8_specs`, `named_cases`, `random_cases`,
+`seeded_shapes`), the (GR-49)/(GR-50) oracle surface (`bounds_of`,
+`feasible_at`, `odd_idx`, `feas_flip`), and the pattern combinatorics
+(`imb_of`, `branches_at`) are one coherent job (the `G°` balance layer that
+every direction since GBAL consumes). Each moves with a re-export from its
+old home so no consumer changes (`star_span_ranks` precedent), and **each
+gets a §1 row** — cataloguing is not optional. Acceptance test if the move is
+made: re-run the six consumers' full validate modes (`gbal`, `balb`, `gdesc`,
+`gflow`, `gcoll --slack --dem --tf --suff`, `glaw`, `yloc`, `gpsa`, `gflip`)
+byte-identical at `PYTHONHASHSEED=0` against pre-move baselines.
 
 ## Deliberate non-goals
 
