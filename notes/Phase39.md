@@ -5,14 +5,17 @@
 (L0–L7) are COMPLETE — `hsplit` CLOSED IN FULL and `hfresh`'s counting discharge landed
 (2026-07-30). Only three items remain, all carried by the landed successor
 `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card` (`Molecule/Pencil/Escape.lean`):
-`hcontract` (W4), kernel `hK`, and kernel `hbareSplit` — see *Hand-off*. **Thirty-eight
-kernel-(K) directions are now COMPLETE** (2026-08-05 → 08-25, ordinals 1–30; roster and
+`hcontract` (W4), kernel `hK`, and kernel `hbareSplit` — see *Hand-off*. **Thirty-nine
+kernel-(K) directions are now COMPLETE** (2026-08-05 → 08-25, ordinals 1–31; roster and
 per-direction theorem chain in *Decisions made*). **The SIXTH, SEVENTH and EIGHTH FAN-OUTS
 ARE ALL COMPLETE** (all fifteen directions LANDED 2026-08-19). **The arc's HITs:**
 route-ledger **entry 5 PROVEN in both halves** (GBAL, discharging input (X)); **chart
 irreducibility PROVEN** (CIRR); the **AA-glue configuration NOT realizable at `n_hub = 8`**
 (AGLU); **(GR-R1) PROVEN** (GFLIP, 2026-08-25 — so (b′)'s `n`-free `≤ 12` bound (GR-89)(ii)
-is a THEOREM, the arc's first unconditional bound of (b′)'s shape).
+is a THEOREM, the arc's first unconditional bound of (b′)'s shape); **(GR-C2) settled
+per-configuration in both directions** (GCHEAP, 2026-08-25 — **(b′) at the constant 2
+a THEOREM on the whole `n_hub ≤ 6` stratum**, the per-configuration form refuted from
+`n_hub = 12`, residual reshaped to (GR-104)(i)).
 Everything else an honest MISS or an OPEN reshape; verdicts in *Decisions made* and
 `notes/Pencil-fanout{,-archive}.md`, **not restated here**. **(GR-15) stays OPEN
 throughout; class uniformity untouched; no g-flank at any of the thirty-eight directions.
@@ -57,14 +60,23 @@ selection theorem (GR-99) — canonical home §(K-grid) *Steps G116–G119*
 (`notes/Pencil-informal-grid.md`), landing record `notes/Pencil-fanout.md` §"GFLIP",
 driver `w4/gflip.py`. (GR-C2) stays the whole constant-2 residual, with a sharpened
 hypothesis reported. Both probe verdicts were surfaced to the user at the same
-check-in — that flag is discharged. **THE NEXT PICK IS MADE (2026-08-25, second
-check-in): direction GCHEAP — ordinal 31, the arc's thirty-ninth direction — IS
-PREPPED AND DISPATCHED**, single and cheapest on **(GR-C2)** (the whole constant-2
-residual, carrying GFLIP's sharpened hypothesis). Spec, bars, riders and HIT criteria
-in `notes/Pencil-fanout.md` §"GCHEAP"; reservation ((GR-100)–(GR-104), Steps
-G120–G124, conditional driver `w4/gcheap.py`) in `notes/Pencil-labels.md`. **NEXT
-CONCRETE TASK: land GCHEAP's return** per the fan-out landing checklist. GFLIP's
-harness-debt item is **PAID** (2026-08-25, the `gridbal_common` move-down). The
+check-in — that flag is discharged.
+**DIRECTION GCHEAP (ordinal 31) IS LANDED — dispatched and landed 2026-08-25, a graded
+double outcome.** The shape was re-elected at the second 2026-08-25 check-in (single
+direction, cheapest first → **(GR-C2)**). The direction **settled (GR-C2)
+per-configuration in both directions**: the every-step form is **PROVEN for
+`n_hub < 6|δ|`** via the lone-dart capacity (GR-100)/(GR-101) — so **(b′) at the
+constant 2 is a THEOREM on the whole `n_hub ≤ 6` stratum** (modulo (GR-C1) alone at
+`n = 8, 10`) — and the per-configuration form is **REFUTED from `n_hub = 12`** by an
+explicit witness (GR-103), the boundary `6|δ|` exact both ways; the as-posed
+existential survives at every audited pair (stalled flips price 0) and the residual
+is reshaped to **(GR-104)(i), the price form**. Canonical home §(K-grid) *Steps
+G120–G124* (`notes/Pencil-informal-grid.md`), landing record `notes/Pencil-fanout.md`
+§"GCHEAP", driver `w4/gcheap.py`. GFLIP's harness-debt item is **PAID** (2026-08-25,
+the `gridbal_common` move-down); GCHEAP's own residual sibling imports are the new
+recorded *Harness debt* item. **NEXT CONCRETE TASK: the next standing research
+pick** (the 2026-08-07 delegation; the *shape* is a user call) — candidate list in
+*Hand-off*, the natural front-runner now **(GR-104)(i)**; the
 `notes/Pencil-strategy.md` §9 shelf **(ZH-1)–(ZH-6)** stays unpriced and ineligible.
 Nothing else structural queued, nothing awaiting user adjudication.
 
@@ -214,15 +226,15 @@ constraints; the dated dispatch narrative is in *Decisions made* and git):
   else stands unchanged:** phase OPEN, the 2026-08-05 Lean hold, W4 PARKED,
   `hK`/`hbareSplit` pinned, option B un-commissioned.
 
-**Kernel-(K) research arc — fifty-five docs+scripts-only dispatches landed, plus seven
+**Kernel-(K) research arc — fifty-six docs+scripts-only dispatches landed, plus seven
 strategy-only passes** (2026-08-02 → 08-25) — and, **outside** that count because they test
 the architecture rather than the (K) crux, the **two probes**: **KBARE-FALSIFY**
 (2026-08-20) and **C3-AVOID** (2026-08-24), both landed. Which pass was which is one-lined in *Decisions
 made*; the rule is that the **dispatch** count moves only on a landing (GBAL/GLAW/FRES/OCON/
 LTWO are the fortieth through forty-fourth; CIRR the forty-fifth; YLOC the forty-sixth; BALB
 the forty-seventh; ZNEQ the forty-eighth; AGLU the forty-ninth; the eighth fan-out's five
-the **fiftieth through fifty-fourth**, all landed 2026-08-19; **GFLIP the fifty-fifth**,
-2026-08-25), and a **user call on
+the **fiftieth through fifty-fourth**, all landed 2026-08-19; **GFLIP the fifty-fifth**
+and **GCHEAP the fifty-sixth**, both 2026-08-25), and a **user call on
 dispatch *shape*** — either multidispatch election, or a coordinator-authored pick like the
 twelfth's — contributes **no** strategy pass, so the 2026-08-19 eighth-fan-out check-in adds
 none even though it moved a standing constraint.
@@ -230,7 +242,7 @@ Canonical homes: workbook `notes/Pencil-informal.md` (**State of (K)** map = ent
 `notes/Pencil-W4-informal.md` (W4-residual), `notes/Pencil-strategy.md` (strategy). Net
 effect: **disproof risk removed**, every refuted route/gap has a successor in the gap map,
 several structural positives proven, and **route-ledger entry 5 is PROVEN, the arc's first
-HIT**; **class uniformity of the escape remains untouched by all fifty-four.**
+HIT**; **class uniformity of the escape remains untouched by all fifty-six.**
 **Doc-debt round CLOSED — `notes/Pencil-cleanup.md`** (2026-08-13, category D only; D-5 a
 watch item; the D-2 fix's regression history is in `notes/check-gapmap-cells.py`'s docstring).
 
@@ -446,22 +458,22 @@ neighbours' incidences and every capacity unit above 2 is bought by a **Case-I g
 whose pencil-compatibility is geometry the probe was barred from. **§(K-avoid) was never
 opened** and no gap-map status moved.
 
-**THE NEXT CONCRETE TASK — land direction GCHEAP's return** (the pick is MADE, see the
-top `**Status:**` block; per-direction spec `notes/Pencil-fanout.md` §"GCHEAP"): re-run
-any driver the draft cites, apply the F11 question to each proven piece, merge the
-draft into §(K-grid) (`notes/Pencil-informal-grid.md`), update the gap-map row
-(`notes/check-gapmap-cells.py` first), one-line the verdict in *Decisions made*, and
-sweep the status surfaces — the full landing checklist in `notes/Pencil-fanout.md`.
-**The candidate list for the pick AFTER GCHEAP**, cheapest first, unchanged: the
-one-unit-defect redo of (GR-79)–(GR-82), OSCHU's `rank(Q|_D) = 3` residue
-(harness-unblocked since the move-down round), GCOLL's collision dominance, and
-(OC-19) input (c) class-uniformly — the *shape* of that next pick stays a user call
-under the standing 2026-08-07 delegation. Both probe verdicts (KBARE-FALSIFY,
-C3-AVOID) were surfaced to the user 2026-08-25; nothing is owed a mention. The harness
-item GFLIP added — the `w4/` balance-layer sibling-import set, eleven devices
-(`notes/scripts/README.md` *Harness debt*) — is **PAID 2026-08-25**: all eleven moved
-to a new `gridbal_common` layer, re-exported from their five old homes, nine driver
-invocations re-run byte-identical modulo wall-clock.
+**THE NEXT CONCRETE TASK — the next standing research pick** (GCHEAP is LANDED, see
+the top `**Status:**` block and *Decisions made*; landing record
+`notes/Pencil-fanout.md` §"GCHEAP"). The candidate list, front-runner first:
+**(GR-104)(i)** — the price form of the selection clause, GCHEAP's reshaped residual
+and the whole remaining gap between the proven constant 4 and (b′)'s 2 (theorem at
+`n ≤ 10`, measured intact at the three audited `n = 12` stall pairs where the flips
+price 0; a refuting pair must have ALL parity-optima unbalanced and price-stalled,
+confined by the stall tax (GR-102) to `d_par(M) ≥ 2|δ| − b_M`; the `n = 12`, `2k = 2`
+stall pairs are the adversarial control a hunt grows from) — then the one-unit-defect
+redo of (GR-79)–(GR-82), OSCHU's `rank(Q|_D) = 3` residue (harness-unblocked since
+the move-down round), GCOLL's collision dominance, and (OC-19) input (c)
+class-uniformly — the *shape* of the pick stays a user call under the standing
+2026-08-07 delegation. The harness item GFLIP added is **PAID 2026-08-25**
+(`gridbal_common`); the recorded successor debt item is GCHEAP's residual sibling
+imports (`notes/scripts/README.md` *Harness debt*, ten devices, coordinator-paid
+between waves like its predecessors).
 
 **Nothing is awaiting user adjudication as of 2026-08-19.** The one item that was —
 ZNEQ's `σ > 0`-everywhere hunt at class shapes whose `H` carries a short theta
@@ -481,10 +493,11 @@ round 2 (slice 4 the phase-note split, **slice 5/"slice 2" the harness move-down
 OSCHU's `rank(Q|_D) = 3` residue is no longer blocked on the harness — exact `ℚ(i)`
 (`exactcore.Gauss`) is now a base-layer primitive.
 
-**THE STANDING RESEARCH-PICK DELEGATION — SPENT on GCHEAP for this round** (2026-08-25,
-second check-in, shape adjudicated single-direction-cheapest-first; see the top
-`**Status:**` block and *Current state*'s second 2026-08-25 bullet). The delegation
-itself stands for the pick after GCHEAP lands; its shape is again a user call.
+**THE STANDING RESEARCH-PICK DELEGATION — live again: GCHEAP is landed** (2026-08-25,
+second check-in, shape adjudicated single-direction-cheapest-first, dispatched and
+landed the same day; see the top `**Status:**` block and *Current state*'s second
+2026-08-25 bullet). The delegation covers the next pick; its shape is again a user
+call.
 
 **`hsplit` is CLOSED IN FULL** (W5-L7c-1…6, landed 2026-07-30) and **`hfresh`'s mechanical
 discharge (residue (iv)) is CLOSED too**. The landed successor
@@ -586,6 +599,18 @@ survey — incl. IDENT-PANEL, the nearest neighbour — is `notes/IdeaBacklog.md
 
 ## Decisions made during this phase
 
+- **Direction GCHEAP (ordinal 31, 2026-08-25, fable, docs+scripts only) — (GR-C2)
+  settled per-configuration in both directions, a graded double outcome.** The
+  every-step form is PROVEN for `n_hub < 6|δ|` (lone-dart capacity (GR-100) +
+  selection corollary (GR-101)), so **(b′) at the constant 2 is a THEOREM on the
+  whole `n_hub ≤ 6` stratum** (modulo (GR-C1) alone at `n = 8, 10`); the
+  per-configuration form is REFUTED from `n_hub = 12` by an explicit witness
+  ((GR-103)), boundary exact both ways; the as-posed existential survives at every
+  audited pair (stalled flips price 0), residual reshaped to **(GR-104)(i)**, the
+  price form. One landed inference corrected in place (*Step G108*(v)'s marker: the
+  spec-inherited "(iii) proves (GR-C2)" conflated hypotheses). Canonical home
+  §(K-grid) *Steps G120–G124*; driver `w4/gcheap.py`. **(GR-15) OPEN; E3 ARMED, not
+  fired.**
 - **Direction GFLIP (ordinal 30, 2026-08-25, fable, docs+scripts only) — (GR-R1) is
   PROVEN, a HIT of the first kind.** The flip-availability clause holds strengthened —
   `≥ |δ|` feasible majority flips at every unbalanced admissible configuration, no

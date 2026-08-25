@@ -1,8 +1,14 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: EIGHT fan-outs and ELEVEN single directions dispatched; 38 of 39
-directions LANDED — GCHEAP (ordinal 31, §"GCHEAP") PREPPED AND DISPATCHED
-2026-08-25, targeting (GR-C2), in flight.** **GFLIP (ordinal 30, §"GFLIP") LANDED 2026-08-25, same day as its dispatch —
+**Status: EIGHT fan-outs and ELEVEN single directions dispatched; ALL 39
+directions LANDED.** **GCHEAP (ordinal 31, §"GCHEAP") LANDED 2026-08-25, same
+day as its dispatch — a graded double outcome: (GR-C2)'s every-step form
+PROVEN for `n_hub < 6|δ|` via the lone-dart capacity (GR-100)/(GR-101), so
+**(b′) at the constant 2 is a THEOREM on the whole `n_hub ≤ 6` stratum**, and
+its per-configuration form REFUTED from `n_hub = 12` by an explicit witness
+(GR-103), the boundary exact both ways; the as-posed existential survives at
+every audited pair and the residual is reshaped to (GR-104)(i), the price
+form.** **GFLIP (ordinal 30, §"GFLIP") LANDED 2026-08-25, same day as its dispatch —
 a HIT of the first kind: (GR-R1) is PROVEN**, strengthened to the selection theorem
 (GR-99) (`≥ |δ|` feasible majority flips, no habitat/`2k`/connectivity hypothesis), so
 (b′)'s `n`-free `≤ 12` bound (GR-89)(ii) is now a **theorem** and (GR-C2) is the whole
@@ -2632,3 +2638,58 @@ read-only, left untracked for the coordinator to gate and commit.
 GCHEAP"): §(K-grid) **extends** — no new section; labels
 **(GR-100)–(GR-104)**, **Steps G120–G124**; owning section stays
 authoritative; return any unconsumed remainder to the tail.
+
+### GCHEAP — landing write-up (LANDED 2026-08-25, recon-fable, one serial coordinator commit)
+
+**Verdict: a graded outcome of the third kind AND the second kind
+simultaneously — (GR-C2) proven under a restricted quantifier with the exact
+boundary named in both directions, plus the spec's named refutation witness
+at that boundary.** The lone-dart identity + blocked-end capacity (GR-100)
+and the selection corollary (GR-101) — consuming (GR-99)(ii) as the
+feasibility supply — prove the **every-step form for `n_hub < 6|δ|`** (all
+of `n ≤ 10` at `|δ| = 2`; the landed 96 930/2 114/371 censuses become
+theorems; *Step G108*(v)'s hunt cell provably empty; **(b′) at the constant
+2 a THEOREM on the whole `n_hub ≤ 6` stratum**, modulo (GR-C1) alone at
+`n = 8, 10`); an explicit `cubic_habitat`-gated, full-cube-verified
+parity-optimal witness at `n_hub = 12 = 6|δ|` **refutes the
+per-configuration form**, the boundary exact both ways. The as-posed
+existential **survives at every audited pair** (per-matching gap 0, the
+stalled flips price `[0, 0]`), so the residual is reshaped to
+**(GR-104)(i), the price form** (theorem at `n ≤ 10`, measured intact at
+`n = 12`, OPEN beyond), plus the stall tax (GR-102) and the descent
+interpolation (GR-104)(ii) (row 5's `2·min(k, ⌊n/4⌋) ≤ 6` outright at
+`n ≤ 10`). **Bars honoured:** (GR-C1) consumed, not attacked; rank-free
+throughout; no landed census re-run (the driver's quantifiers are strictly
+larger, and gflow's denominators are reproduced from an independent
+construction); (GR-15) / class uniformity untouched; no `.lean` touched.
+**E1/E2 NO; E3 stays ARMED by GBAL, not fired** (the HITs are on (b′)'s
+selection layer, not entry 1). Canonical home §(K-grid) *Steps G120–G124*
+(`notes/Pencil-informal-grid.md`); driver `w4/gcheap.py` (four modes,
+~40 s); labels (GR-100)–(GR-104) and Steps G120–G124 all claimed, none
+returned.
+
+**One landed inference found incomplete, corrected in place (the FIFTH
+consecutive wave-or-single with at least one — F22's pattern holds), and
+this time the SPEC inherited it verbatim:** the spec's input clause
+*"(GR-89)(iii) proves (GR-C2) below `3k + 5|δ|/2` … first possible failure
+`n_hub = 8`"* conflated the all-majority-DBM hypothesis with the
+feasible-majority-DBM one a (GR-C2) failure actually gives (they coincide
+only at `b = 0`); corrected at *Step G108*(v)'s marker, every conclusion
+re-proven true by (GR-101) with the LARGER boundary `6|δ|`. The offered
+route sketch — *Step G119*'s "every **feasible** majority branch" counting
+variant — is exactly what landed, at a new dart level (all three darts, the
+`M`-inclusive analogue of (GR-85)(iv)'s `T`-identity).
+
+**Coordinator verification at landing:** `--validate` re-run in full at
+`PYTHONHASHSEED` 0 AND 999 (byte-identical modulo wall-clock; all headline
+figures reproduced: 449 446 / 154 750 / 874 244 / 23 939 / 701 382 / gap-0
+attainment on every leg / min #cheap 2 on the stratum / the witness
+`dist = 4 = d_par(M)` / three full-cube audits at 4 stalls each, prices
+`[0, 0]`); the (GR-100)/(GR-101)/(GR-102) derivations re-walked
+line-by-line (the branchwise-vs-hubwise A-dart count, the blocked-end
+injection, the deviation-set algebra, the interpolation arithmetic); the
+L6 bare-token grep clean on the merged draft; `check-gapmap-cells.py`
+green on the recomputed §(K-grid) row (trimmed to a current-state
+statement per the checker's own guidance, no cap bump needed); the
+driver's import list verified against the file itself (one consumer-list
+correction made in the recorded *Harness debt* item: `perfect_matchings`).

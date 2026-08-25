@@ -1260,7 +1260,8 @@ its named residuals, all slice-sized, none needing an adjudication.
 | option | what it would buy | owner |
 |---|---|---|
 | ~~**(GR-R1)**~~ (§(K-grid), GFLOW's clause) | **DONE — PROVEN 2026-08-25 (direction GFLIP, ordinal 30)**, strengthened to `≥ \|δ\|` feasible majority flips; (b′)'s `n`-free `≤ 12` is now a **theorem** | §(K-grid) *Steps G116–G119* |
-| **(GR-C2)** (§(K-grid), GFLOW's) | (b′) at the **target** constant 2; first possible failure pinned to `n_hub = 8`, `2k = 2`; **now the cheapest item on the board**, carrying GFLIP's sharpened every-feasible-majority-branch hypothesis | §(K-grid) *Step G108*, *Step G119* |
+| ~~**(GR-C2)**~~ (§(K-grid), GFLOW's) | **SETTLED per-configuration in both directions 2026-08-25 (direction GCHEAP, ordinal 31)**: every-step form PROVEN for `n_hub < 6\|δ\|` — **(b′) at the constant 2 is a THEOREM on the whole `n_hub ≤ 6` stratum** — and per-configuration form REFUTED from `n_hub = 12`, boundary exact both ways | §(K-grid) *Steps G120–G124* |
+| **(GR-104)(i)** (§(K-grid), GCHEAP's) | the **price form** of the selection clause — the whole remaining gap between the proven constant 4 and (b′)'s 2 (theorem at `n ≤ 10`, measured intact at `n = 12` where the stalled flips price 0; a refuting pair needs ALL parity-optima unbalanced and price-stalled, confined by the stall tax (GR-102)) | §(K-grid) *Step G124* |
 | one-unit-defect-budget redo of (GR-79)–(GR-82) | finishes ledger attack **(c)** past its `n_hub ≤ 14` boundary | §(K-grid) *Steps G98–G103* |
 | `rank(Q\|_D) = 3` class-uniformly | **(a₁)**, hence input (a); harness-unblocked since the `Gauss` move-down | §(K-out) *Step O29* |
 | collision dominance `min_M B(M) ≤ d_adm` | GCOLL's successor to the refuted (GR-64)(R2) | §(K-grid) *Step G115* |

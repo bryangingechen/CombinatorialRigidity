@@ -948,6 +948,17 @@ OG / OR / OC2 are pinned and disjoint from every earlier pool.
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/gflip.py --wit` | 8 s | ibid. witness anatomy: every one of the **32 608** blocked stratum instances has a demand-form violator of the exact proof shape (`s ≤ e_γ − 1`, kept side monotone); the `(s, e_γ, \|S\|)` histogram, singleton (created-B-triple) class dominant at 15 804 |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/gflip.py --validate` | 44 s | ibid. all four in one process; byte-identical at `PYTHONHASHSEED` 0 and 999 modulo wall-clock |
 
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/gcheap.py --cap` | 14 s | `notes/Pencil-informal-grid.md` §(K-grid) *Step G120* (direction GCHEAP; (GR-100), the lone-dart identity + blocked-end capacity: the identity asserted at **449 446** admissible configurations of four legs — the stratum EXHAUSTIVE (408 688 configurations over 4 780 odd-carrying shapes, full cube), V8, seeded `n = 8/10` — and the capacity at all **154 750** unbalanced ones, gap 0 attained on every leg; F13 control: the doctored bound (capacity − 1) fails there, so the constant is exact) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/gcheap.py --sel` | 18 s | ibid. *Steps G121–G122* ((GR-101)/(GR-102): the cheap bound `#cheap ≥ \|δ\| − ⌊(n − 2\|δ\|)/4⌋` and the stall tax asserted at **874 244** unbalanced (configuration, matching) instances — the stratum EXHAUSTIVE at both quantifiers, 23 939 pairs / 701 382 instances reproducing gflow's landed denominators from an independent construction — min slack **0** (tight) on every leg; stratum feasible-doubly-blocked-matching histogram `{0: 701 382}`) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/gcheap.py --bnd` | 5 s | ibid. *Step G123* ((GR-103): the constructed `n_hub = 12` witness — `cubic_habitat`-gated, `δ = 2`, both majority branches feasible doubly-blocked matching branches, 0 cheap, `dist = 4 = d_par(M)`, parity-optimal by full cube — the seeded hunt (3 further witnesses from 400 tries, cap disclosed), and three full `2^{18}`-cube parity audits: per-matching gap 0 at all three, 4 stalls each, stalled one-flip prices `[0, 0]`) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/gcheap.py --validate` | 40 s | ibid. all three in one process; byte-identical at `PYTHONHASHSEED` 0 and 999 modulo wall-clock |
+
+**GCHEAP (single direction, LANDED 2026-08-25).** One driver added
+(`w4/gcheap.py`), nothing existing modified; imports downward only — the
+**first consumer to import the balance layer directly from `gridbal_common`**
+post-move (never via the sibling re-exports). Its remaining sibling imports
+are a recorded *Harness debt* item (see below).
+
 **C3-AVOID (probe, LANDED 2026-08-24).** All seven modes (`--all`, ~36 s total,
 inside the 600 s foreground budget in one call) run by the dispatch, exit 0,
 **byte-identical at `PYTHONHASHSEED` 0 and 12345**. One driver added
@@ -2117,6 +2128,33 @@ invocations named above all re-ran byte-identical modulo wall-clock at
 foreground budget (README's standing note), so it ran as the
 already-documented three-invocation split (`--coll`, `--loc`, `--fibre
 --par --fit --cert --adv`) instead, covering the same ground.
+
+### New item (2026-08-25, direction GCHEAP) — `gcheap.py`'s residual sibling imports; **UNPAID**
+
+`w4/gcheap.py` imports the moved balance layer **directly from
+`gridbal_common`** (the intended post-move pattern) but also pulls **ten**
+read-only devices from **five sibling leaves** — the documented
+sibling-import pattern, in policy, recorded here per §2 rule 2 with every
+consumer named (a dispatch may not make the move):
+
+| name | current home | consumers (besides the home) |
+|---|---|---|
+| `assign_feasible`, `z_of_orientation` | `gbal` | `gridbal_common` (deferred import, from the move-down), **`gcheap`** (2 each — the move-down write-up predicted exactly this "second consumer" arrival) |
+| `z_admissible`, `z_pattern`, `z_to_map` | `gbal` | **`gcheap`** (1 each) |
+| `majority_of` | `gdesc` | `gflow`, **`gcheap`** (2) |
+| `adm_cube`, `block_ends_at`, `f_layers` | `gflow` | **`gcheap`** (1 each) |
+| `perfect_matchings` | `gorient` | `gdesc`, `gflow`, `yloc`, **`gcheap`** (4) |
+| `cubic_habitat` | `cflank` | many (the standing habitat gate — arguably already canonical-by-usage, but never §1-catalogued) |
+
+**Where they should go if paid:** the (GR-49)/(GR-50) z-form surface
+(`assign_feasible`, `z_of_orientation`, `z_admissible`, `z_pattern`,
+`z_to_map`) belongs beside `bounds_of`/`feasible_at` in `gridbal_common`
+(the deferred-import wrinkle dissolves if the whole surface moves);
+`majority_of`, `adm_cube`, `block_ends_at`, `f_layers` are pattern/cube
+combinatorics of the same layer; `perfect_matchings` and `cubic_habitat`
+are candidates for §1 cataloguing in place. Same acceptance test as the
+2026-08-25 payment: re-run every consumer's validate mode byte-identical
+at `PYTHONHASHSEED=0` against pre-move baselines.
 
 ## Deliberate non-goals
 

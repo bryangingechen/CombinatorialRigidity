@@ -10722,7 +10722,10 @@ residual is therefore not a repair statement about a branch but a
 > the **greedy** descent — take the cheapest available majority-side branch
 > at each step — has **worst single step 2** and **total price `≤ 2`** at
 > every one of the 701 382 + 1316 + 47 628 + 21 204 unbalanced configurations
-> swept, with **0** stalls.
+> swept, with **0** stalls. **[Censuses → theorems at *Steps G120–G124*
+> (2026-08-25, direction GCHEAP): the every-step form of (GR-C2) is PROVEN
+> for `n_hub < 6|δ|` ((GR-101)(ii)), covering every configuration counted
+> here.]**
 >
 > **(v) The sharpest hunt, and it comes up empty under its cap.** By (iii)
 > the first possible total failure of (GR-C2) sits at `n_hub = 8`, `2k = 2`, with
@@ -10731,6 +10734,15 @@ residual is therefore not a repair statement about a branch but a
 > unbalanced parity-optimal configurations at an all-odd-in-`M` matching,
 > **0** with both majority branches doubly blocked. **Not found under this
 > cap — which is not a proof of nonexistence.**
+> **[Corrected and settled at *Steps G120–G124* (2026-08-25, direction
+> GCHEAP; the *Step G56*/*G60*/*G118* marker precedent): the inference
+> "(iii) proves (GR-C2) below `3k + 5|δ|/2`" is INCOMPLETE as stated —
+> (iii)'s hypothesis is every-majority-DBM while a (GR-C2) failure gives
+> only every-*feasible*-majority-DBM; the readings coincide only at
+> `b = 0`, this cell. (GR-101) re-proves every conclusion with the correct
+> feasible-only hypothesis and the LARGER boundary `n = 6|δ|`: this hunt
+> cell is provably EMPTY, and the true first failure is `n_hub = 12`,
+> realized by (GR-103)'s explicit witness.]**
 
 **The constants, laid out, because the difference between them is the whole
 state of (b′).**
@@ -10738,10 +10750,10 @@ state of (b′).**
 | statement | constant | standing |
 |---|---|---|
 | (b′) as posed | `2` | **OPEN** |
-| (b′) with (GR-C1) + (GR-C2) | `2` | reduced to the **selection** clause (GR-C2); (GR-C1) proven at `n ≤ 6` |
+| (b′) with (GR-C1) + (GR-C2) | `2` | reduced to the **selection** clause (GR-C2); (GR-C1) proven at `n ≤ 6` — **(GR-C2) PROVEN at `n ≤ 10` (*Steps G120–G124*), so a full THEOREM on the `n ≤ 6` stratum, theorem modulo (GR-C1) alone at `n = 8, 10`** |
 | (b′) with (GR-C1) + (GR-R1) | `4` | **PROVEN modulo (GR-C1) alone** ((GR-86) + one descent step; (GR-R1) PROVEN at *Steps G116–G119*) — a full theorem on the `n_hub ≤ 6` stratum |
 | (b′) with (GR-R1) alone | `4·min(k, ⌊n/4⌋) ≤ 12` | **PROVEN**, `n`-free ((GR-R1) PROVEN at *Steps G116–G119*) |
-| (b′) with (GR-R1) + (GR-C2) at every step | `2·min(k, ⌊n/4⌋) ≤ 6` | proven modulo (GR-C2) alone |
+| (b′) with (GR-R1) + (GR-C2) at every step | `2·min(k, ⌊n/4⌋) ≤ 6` | **the every-step form is PROVEN for `n < 6|δ|` and REFUTED from `n = 12` (*Steps G120–G124*)**: this row is a THEOREM outright at `n ≤ 10`, OPEN beyond via the successor **(GR-104)(i)** (the price form); the interpolation (GR-104)(ii) improves the chain below `n = 12·(δ_M/2)` |
 
 **Why the naive exchange had to be anchored, recorded as the route-3
 post-mortem.** The obvious `n`-free form of route 3 is *"`f` is 2-Lipschitz
@@ -10792,6 +10804,13 @@ configuration rather than at optimality, which is why it iterates.
    proves it below `n_hub = 3k + 5|δ|/2`, and its first possible failure is
    pinned to `n_hub = 8`, `2k = 2`, both odd branches doubly-blocked matching
    branches — a **two-branch** condition, small enough for a proof attempt.
+   **[Settled at *Steps G120–G124* (2026-08-25, direction GCHEAP): PROVEN
+   at `n ≤ 10` in the every-step form ((GR-101)(ii)); the per-configuration
+   form REFUTED from `n_hub = 12` by an explicit witness ((GR-103)), the
+   boundary `n = 6|δ|` exact in both directions — the "(iii) proves it" /
+   "first failure `n = 8`" clauses above carry *Step G108*(v)'s correction
+   marker; the as-posed existential is proven at `n ≤ 10` and OPEN beyond,
+   with successor **(GR-104)(i)**, the price form.]**
 2. **(GR-R1)** — *at every unbalanced admissible configuration some
    majority-side odd branch has a feasible flip.* **PROVEN at *Steps
    G116–G119* (direction GFLIP, 2026-08-25)** — via the demand form and the
@@ -10984,9 +11003,9 @@ driver's `--exact` price table as their in-driver counterpart.
 | **(GR-88)(v)** | the case first occurs at `n_hub = 8` | **proven** by (GR-89)(iii) below `n_hub = 3k + 5\|δ\|/2`, and **measured**: 546 majority-side instances at `n = 8`, priced `{0: 100, 2: 56, 4: 2, None: 2}` on `--big`'s independent pool |
 | **(GR-89)(i)/(ii)** | `d_adm(M) − d_par(M) ≤ 4·min(k, ⌊n_hub/4⌋) ≤ 12`, uniform in `n` | **THEOREM** — the one named gap was exactly **(GR-R1)**, **PROVEN at *Steps G116–G119*** (GFLIP, 2026-08-25); the arc's **first proven `n`-free bound of (b′)'s shape**, residual confidence qualifier now (GR-86)(iii)/(iv)'s own landed status |
 | **(GR-89)(iii)** | the counting bound `n_hub ≥ 3k + 5\|δ\|/2` for a total failure | **proven** (a five-line count off (GR-85)(iv)); a live guard in the driver |
-| **(GR-89)(iv)** | **(GR-C2)**, the selection clause | **OPEN** — the whole residual for the constant 2. Proven by (iii) on the entire `n_hub ≤ 6` stratum; **0 failures** at 96 930 exhaustive stratum configurations and at seeded `n = 8/10`; greedy-descent worst step `2` everywhere |
+| **(GR-89)(iv)** | **(GR-C2)**, the selection clause | **settled per-configuration in both directions at *Steps G120–G124*** (2026-08-25, GCHEAP): every-step form **PROVEN for `n < 6|δ|`** — all `n ≤ 10` at `|δ| = 2`, the censuses now theorems — and **REFUTED from `n_hub = 12`** by witness; as-posed proven `n ≤ 10`, OPEN beyond; successor **(GR-104)(i)**. The "proven by (iii)" clause here was the incomplete inference *Step G108*(v)'s marker corrects |
 | **(GR-R1)** | some majority-side flip is always feasible | **PROVEN at *Steps G116–G119*** (GFLIP, 2026-08-25; the selection theorem (GR-99), with `≥ |δ|` feasible majority flips — (GR-52)/(GR-53) turned out not to be the instruments) |
-| **(b′)** | `d_adm − d_par ≤ 2` | **a HIT of the third kind — a different constant with the exact boundary named.** Constant `4` **PROVEN modulo (GR-C1)** and `n`-free `≤ 12` **PROVEN outright** ((GR-R1) closed at *Steps G116–G119*); constant `2` **OPEN**, residual **(GR-C2)**; sub-clause 1 proven, sub-clause 2 refuted as posed |
+| **(b′)** | `d_adm − d_par ≤ 2` | **a HIT of the third kind — a different constant with the exact boundary named.** Constant `4` **PROVEN modulo (GR-C1)** and `n`-free `≤ 12` **PROVEN outright** ((GR-R1) closed at *Steps G116–G119*); constant `2` **a THEOREM on the whole `n ≤ 6` stratum and modulo (GR-C1) alone at `n = 8, 10`** (*Steps G120–G124*), **OPEN from `n = 12`**, residual **(GR-104)(i)** (the price form, superseding (GR-C2) as the certificate); sub-clause 1 proven, sub-clause 2 refuted as posed |
 | (GR-67)/(GR-68)/(GR-69)/(GR-70) | BALB's chain | **untouched and consumed**; (GR-70)(ii)'s figures **independently reproduced** from the `z`-cube; (GR-68) re-derived once inside the model as a consistency check, never replaced |
 | (GR-49)–(GR-54) | the z-form and the balance theorem | **untouched and consumed**; (GR-50)'s decision is *corroborated* at the one-flip level by the chain search's 0 disagreements |
 | **(a′)** / **input (Y)** / **(GR-64)(R2)** | | **OPEN — not attempted.** One coordinate observation reported, no figure, no rank |
@@ -12113,7 +12132,11 @@ motivation prose, not an input to any landed derivation.
 1. **(GR-C2)** — unchanged, the whole gap between the proven constant 4
    and (b′)'s 2, now with the sharpened "every *feasible* majority branch
    doubly-blocked" hypothesis above and *Step G108*(v)'s `n_hub = 8`,
-   `2k = 2` cell as the first possible home.
+   `2k = 2` cell as the first possible home. **[Settled at *Steps
+   G120–G124* (2026-08-25, direction GCHEAP), which took exactly this
+   hypothesis: proven at `n ≤ 10`, per-configuration form refuted from
+   `n_hub = 12` (the `n = 8` cell is provably empty — *Step G108*(v)'s
+   correction marker); successor **(GR-104)(i)**.]**
 2. **(GR-C1) past the stratum** — unchanged (GPSA's first clause;
    (GR-69) is its exact `n ≤ 6` boundary).
 
@@ -12256,3 +12279,464 @@ coordinator re-runs it.**
   is a coordinator action; reported, not fired.**
 
 ---
+
+### Steps G120–G124 (2026-08-25, direction GCHEAP) — **(GR-C2) is settled in its per-configuration readings and reshaped in its as-posed one**: **(GR-100)** is the **lone-dart identity** — at every admissible configuration `#{v : exactly one A-dart} = n/2 − δ` exactly — and its **blocked-end capacity**: the majority side's blocked ends occupy distinct lone-majority-dart hubs, so majority branches carry **at most `n/2 − |δ|` blocked ends** and at most `⌊(n − 2|δ|)/4⌋` of them are **doubly blocked** (sharpening (GR-89)(iii)'s counting from `n ≥ 4a − b` to `n ≥ 6a − 2b`); **(GR-101)** chains that through (GR-99)(ii) into the **selection corollary** — at every unbalanced admissible configuration and EVERY perfect matching, `#cheap majority branches ≥ |δ| − ⌊(n − 2|δ|)/4⌋` — so the **every-step form of (GR-C2) is a THEOREM for `n_hub < 6|δ|`**, i.e. everywhere `n_hub ≤ 10` at `|δ| = 2`: the landed 96 930 + 2 114 + 371 censuses become theorems, *Step G108*(v)'s hunt cell is **provably empty**, and **per-matching (b′) at the constant 2 is a THEOREM on the whole `n_hub ≤ 6` stratum** (and at `n_hub = 8, 10` modulo (GR-C1) alone); **(GR-102)** is the **stall tax** `dist(z, M) ≥ |a_M − b_M + δ|`, localizing any failure to matchings with `d_par(M) ≥ 2|δ| − b_M`; **(GR-103)** shows the boundary is **TIGHT**: an explicit constructed habitat shape at `n_hub = 12 = 6|δ|`, `2k = 2`, carries a **parity-optimal** `|δ| = 2` configuration at which **every feasible majority branch is a doubly-blocked matching branch** — the spec's named refutation object, killing the per-configuration and every-step forms at `n ≥ 12` — while the **as-posed existential form survives at every audited pair** (gap `d_adm − d_par = 0`, and the stalled configurations' one-flip prices are exactly `[0, 0]`: the **descent step survives the stall**, only the cheapness *certificate* dies); **(GR-104)** mints the reshaped residual — the **price form** of the selection clause — and the **descent interpolation** `d_adm(M) − d_par(M) ≤ δ_M + 2·min(δ_M/2, ⌊n/12⌋)`, improving (GR-89)(ii) below `n = 12·(δ_M/2)`. **(GR-15) stays OPEN, no gap-map status move on `hK` itself; E3 stays ARMED and does NOT fire.**
+
+Answering `notes/Pencil-fanout.md` §"GCHEAP — thirty-first ordinal": **prove,
+refute by witness, or prove-under-a-restricted-quantifier the clause (GR-C2)**
+(*Step G108*(iv)). **The outcome is graded, and the grading is the finding**:
+the strongest per-configuration reading is **proven for `n_hub ≤ 10` and
+refuted by witness at `n_hub = 12`, with `n = 6|δ|` the exact boundary in both
+directions**; the as-posed existential reading is **proven for `n_hub ≤ 10`
+and OPEN beyond**, with the refutation witnesses *failing to refute it* at
+every audited pair — and the reason they fail (the stalled flips price 0) is
+minted as the successor statement (GR-104). Rank-free throughout: nothing
+imports or calls `gexist.fully_good_rank` and no `d_fg` claim is made anywhere
+((a′) / input (Y) untouched). Read against *Steps G104–G109*
+((GR-85)–(GR-90), esp. *Step G108*), *Steps G116–G119* ((GR-97)–(GR-99)) and
+*Steps G68–G73* ((GR-49)–(GR-51)).
+
+**Where the offered route sketch survives and where it goes further.** GFLIP's
+*Step G119* offered the *"every **feasible** majority branch"* variant of
+(GR-89)(iii)'s counting as the natural first attack. That is exactly what
+lands — but at a **different dart level** than either predecessor: (GR-89)(iii)
+counts `A(v)` over the two `F`-darts and (GR-97)/(GR-98) count odd darts per
+hub, while the decisive count is over **all three darts** ((GR-100)(i) is the
+`M`-inclusive analogue of (GR-85)(iv)'s `T`-identity). The demand instruments
+(GR-97)/(GR-98) are consumed only through (GR-99), never re-derived.
+
+***Notation, inherited unchanged, with one deliberate new symbol.*** `δ = a − b`
+signed; `O`, `H`, `M`, `F = G° ∖ M`, `z`, colour **0 = A**, `m(v)`, blocked
+ends, dart-free / one-end-blocked / doubly blocked, `d_par(M)`, `d_adm(M)`,
+`f(p)` — all as at *Steps G104–G109*. A majority-side branch is **cheap**
+(*Step G108*(iv)) iff its flip is (GR-50)-feasible and it is not a
+doubly-blocked matching branch; a configuration is **stalled** iff it is
+unbalanced and carries **no** cheap majority branch. **New:**
+`α(v) ∈ {1, 2}` is the number of A-darts at `v` among **all three** darts —
+deliberately *not* written `A(v)`, which *Steps G104–G109* reserve for the
+two-`F`-dart count (`α(v) = A(v) + m_v` in that notation); `N₁ := {v : α(v) = 1}`
+the **lone-A hubs**; `a_M, b_M, e_M` the A-odd / B-odd / even branch counts
+**inside `M`** (`a_M + b_M + e_M = n/2`); `f₀` the number of majority-side
+branches that are feasible **and** doubly-blocked matching branches;
+`δ_M := min{|δ(z)| : z parity-optimal for M}`.
+
+**Step 0 pin (mandatory, discharged before any derivation).** (GR-49) in full
+(admissibility = no monochromatic hub, i.e. `α(v) ∈ {1, 2}`; the flip-set
+legality test). (GR-50)/(GR-51) consumed as the feasibility oracle, not
+re-derived. (GR-86) in full — in particular (i)'s blocked-end characterization
+(*the ends at which `γ` carries the minority dart*) and the price ledger
+(cheap ⟹ one-flip price `≤ 2`; doubly-blocked matching ⟹ `≤ 4`). (GR-89) in
+full — the descent, (iii)'s counting bound (strengthened below, not
+contradicted), (iv)'s cheap/(GR-C2) definitions and censuses, (v)'s hunt cell.
+(GR-99)(ii) — **`≥ |δ|` feasible majority flips at every unbalanced admissible
+configuration** — the landed selection theorem, consumed as the feasibility
+supply. **Bars honoured:** (GR-C1) not attacked ((GR-102)/(GR-104) *consume*
+it as a hypothesis exactly where the landed rows do); (GR-R1)/(GR-99) consumed,
+not re-attacked; (GR-49)–(GR-54), (GR-67)–(GR-72), (GR-85)–(GR-90),
+(GR-97)–(GR-99) not re-derived; no landed census re-run — the driver's
+sentences quantify over **all unbalanced admissible configurations** (a
+strictly larger set than the landed parity-optimal censuses) and over new
+`n = 12` pairs, and the landed figures are cited, not re-measured; (GR-15) /
+class uniformity untouched; no `.lean` touched.
+
+---
+
+### Step G120 — (GR-100): the lone-dart identity and the blocked-end capacity — the majority side can host at most `n/2 − |δ|` blocked ends, at any admissible configuration whatsoever
+
+> **(GR-100)** *(proven; the identity asserted at all 449 446 admissible
+> configurations of four legs — the stratum EXHAUSTIVE (408 688
+> configurations over all 4 780 odd-carrying shapes, full `2^{|E|}` cube),
+> V8, seeded `n = 8/10` — and the capacity at all 154 750 unbalanced ones,
+> with attainment (gap 0) realized on every leg; `--cap`)*
+>
+> Let `G°` be a cubic loop-free hub multigraph, `z` admissible, `δ = a − b`.
+>
+> **(i) The identity.** Every hub has `α(v) ∈ {1, 2}`, and
+> > `|N₁| = #{v : α(v) = 1} = n/2 − δ`  (signed; by colour swap
+> > `#{v : exactly one B-dart} = n/2 + δ`).
+>
+> In particular **`|δ| ≤ n/2` at every admissible configuration**.
+>
+> **(ii) The injection.** A blocked end `v` of a **majority-side** branch is
+> a lone-majority-dart hub (`v ∈ N₁` when A is the majority), and every hub
+> is a blocked end of **at most one** branch (its minority dart is unique).
+>
+> **(iii) The capacity.** Summing (ii) over the majority side,
+> > `Σ_{γ majority-side} #blocked ends(γ) ≤ n/2 − |δ|`,
+>
+> so at most `⌊(n − 2|δ|)/4⌋` majority-side branches are **doubly blocked**
+> — of *any* kind, matching or 2-factor.
+>
+> **(iv) The strengthened total-failure count.** If **every** majority-side
+> branch is doubly blocked (the hypothesis of (GR-89)(iii), matching-ness
+> not even needed), then `2a ≤ n/2 − δ`, i.e.
+> > `n ≥ 4a + 2δ = 6a − 2b`,
+>
+> which strictly sharpens (GR-89)(iii)'s `n ≥ 4a − b` (by `2a − b > 0`).
+
+*Proof.* (i) Admissibility is `α(v) ∈ {1, 2}` ((GR-49): three darts, both
+colours present). Counting A-darts branchwise: an even branch carries exactly
+one (its two darts differ), an A-odd branch two, a B-odd branch none, so
+`Σ_v α(v) = |H| + 2a = (3n/2 − a − b) + 2a = 3n/2 + δ`. Counting hubwise,
+`Σ_v α(v) = |N₁| + 2(n − |N₁|) = 2n − |N₁|`. Equate. Nonnegativity of both
+lone-dart counts gives `|δ| ≤ n/2`. (ii) By (GR-86)(i) a blocked end `v` of
+`γ` has `m(v)` on `γ`; a majority-side (A-coloured) `γ` has an A-dart at `v`,
+and a minority dart is the colour appearing **once**, so `α(v) = 1`. The
+minority dart at `v` is unique, so `v` blocks at most one branch. (iii) The
+sum counts distinct hubs of `N₁` (majority A; the B-majority case is the
+colour swap through the second identity), and a doubly-blocked branch
+consumes two. (iv) `2k` branches with two blocked ends each: `2a` ends are
+distinct hubs by (ii) (loop-freeness makes a branch's own two ends distinct),
+all in `N₁`. ∎
+
+**Reading.** This is (GR-85)(iv)'s bookkeeping extended from the 2-factor to
+**all three darts**: the `M`-side A-darts, which the `T`-identity deliberately
+ignores, are exactly what a doubly-blocked *matching* branch spends — its
+lone A-darts at both ends are `M`-darts. The identity says the whole graph
+has only `n/2 − |δ|` lone-A hubs to spend, an imbalance-*decreasing* budget;
+the majority side wants many flips exactly when the budget is smallest. That
+tension is the entire content of the next step.
+
+---
+
+### Step G121 — (GR-101): the selection corollary — the every-step form of (GR-C2) is a THEOREM for `n_hub < 6|δ|`, the landed censuses become theorems, and (b′) at the constant 2 is a theorem on the whole stratum
+
+> **(GR-101)** *(proven; asserted at all 874 244 unbalanced (configuration,
+> matching) instances of four legs — the stratum EXHAUSTIVE at both
+> quantifiers (23 939 pairs, 701 382 instances, reproducing gflow's landed
+> denominators exactly), V8, seeded `n = 8/10` (matchings capped at 6 per
+> shape, disclosed) — with the bound TIGHT (minimum slack 0 on every leg);
+> `--sel`)*
+>
+> Let `z` be admissible and unbalanced, `M` any perfect matching. Then
+>
+> **(i)** `#cheap majority branches ≥ |δ| − ⌊(n − 2|δ|)/4⌋`.
+>
+> **(ii) The every-step form of (GR-C2).** If `n < 6|δ|` then a cheap
+> majority branch exists at `z` — with **no** parity-optimality, habitat,
+> or `2k` hypothesis. At `|δ| = 2` that is all of `n ≤ 10`; on the
+> `n ≤ 6` stratum the count is `≥ 2` and **no feasible majority branch is
+> ever a doubly-blocked matching branch** (capacity 0), proving *Step
+> G107*/*G108*(v)'s parity-optimal class observation at every admissible
+> configuration.
+>
+> **(iii) Censuses → theorems.** (GR-89)(iv)'s 0-failure record (96 930
+> stratum + 2 114 `n = 8` + 371 `n = 10` parity-optimal configurations) and
+> the greedy descent's 0-stall record at `n ≤ 10` are implied outright;
+> *Step G108*(v)'s `n_hub = 8`, `2k = 2` hunt cell is **provably empty**
+> (a failure needs `n ≥ 12`), so its cap disclosure can be retired.
+>
+> **(iv) (b′) at the constant 2, restricted.** With one cheap step from
+> (GR-C1)'s parity-optimal `|δ| ≤ 2` configuration (price `≤ 2` by
+> (GR-86)): `d_adm(M) − d_par(M) ≤ 2` **modulo (GR-C1) alone at every
+> `n ≤ 10`**, hence — (GR-C1) being a theorem at `n ≤ 6` by (GR-69) — a
+> **full theorem on the whole stratum**, where the landed per-matching gap
+> histogram `{0: 23 444, 2: 495}` ((GR-70)(ii), cited) shows the constant
+> 2 is exact. Its confidence is the chain's weakest link, which is
+> (GR-86)(iii)/(iv)'s own landed status (the degenerate chain
+> coincidences machine-checked — exactly the qualifier *Step G119*
+> records for the constant-4 theorem).
+
+*Proof.* (i) (GR-99)(ii) supplies `≥ |δ|` feasible majority flips;
+(GR-100)(iii) caps the doubly-blocked majority branches (a superset of the
+feasible doubly-blocked **matching** ones) at `⌊(n − 2|δ|)/4⌋`; a feasible,
+not-doubly-blocked-matching branch is cheap by definition. (ii)–(iv) are
+arithmetic and the citations named. ∎
+
+**A landed inference CORRECTED, scoped exactly (the *Step G56*/*G60*/*G118*
+marker precedent; it touches no measurement and no landed conclusion is
+false).** *Step G108*(v), *Step G109* residual item 1 and (GR-89)(iv)'s
+confidence row all read *"(GR-89)(iii) proves (GR-C2) below
+`n = 3k + 5|δ|/2`"*. As stated that inference is **incomplete**: a (GR-C2)
+failure makes every **feasible** majority branch a doubly-blocked matching
+branch, while (iii)'s hypothesis needs **every** majority branch to be one —
+and pre-(GR-99) nothing bounded the infeasible remainder (post-(GR-99) the
+two readings coincide only at `b = 0`, which rigorizes exactly the
+`2k = 2` cell of *Step G108*(v) and nothing else). Every conclusion drawn
+from the inference is nevertheless **true**, by (GR-101)(ii) — with the
+correct feasible-only hypothesis and a boundary (`6|δ|`) that is *larger*
+than the one claimed. Nothing downstream moves.
+
+---
+
+### Step G122 — (GR-102): the stall tax — a stalled configuration is expensive, so stalls live only at matchings with large `d_par(M)`
+
+> **(GR-102)** *(proven; asserted at every (configuration, matching)
+> instance of `--sel`'s four legs and every configuration of `--bnd`'s
+> full-cube audits, 0 violations, with equality realized at the (GR-103)
+> witness)*
+>
+> **(i) The tax.** At every admissible `z` and every perfect matching `M`,
+> > `dist(z, M) ≥ |a_M − b_M + δ|`.
+>
+> **(ii) Stall localization.** At a stalled configuration with majority A,
+> every feasible majority branch lies in `M` (A-coloured), so
+> `a_M ≥ f₀ ≥ |δ|` (the last by (GR-99)(ii)), and
+> > `dist(z, M) ≥ f₀ + |δ| − b_M ≥ 2|δ| − b_M`.
+>
+> A **stalled parity-optimal** configuration therefore needs
+> `d_par(M) ≥ 2|δ| − b_M` — at `2k = 2`, `|δ| = 2`: `d_par(M) ≥ 4`.
+
+*Proof.* (i) Let `μ := #{v : m_v = 1} = 2a_M + e_M` (hubwise count of
+`M`-side A-darts, branchwise: two per A-odd, one per even, none per B-odd
+matching branch) and `ν := |N₁| = n/2 − δ` ((GR-100)(i)), and
+`t := #{v ∈ N₁ : m_v = 1}`. The deviation set is
+`S = {v : α(v) = 2, m_v = 1} ⊔ {v : α(v) = 1, m_v = 0}` (in *Step G104*'s
+notation `A(v) = α(v) − m_v`), so `dist = (μ − t) + (ν − t) ≥ |μ − ν|`, and
+`μ − ν = 2a_M + e_M − n/2 + δ = a_M − b_M + δ` by `e_M = n/2 − a_M − b_M`.
+(ii) Substitute `a_M ≥ f₀ ≥ |δ|`, `b_M ≤ b`. ∎
+
+*(Possible overlap, recorded: (i) is a per-pattern floor on `dist(·, M)`
+and may re-express (GR-44)'s anchored-weight layer at a fixed pattern; left
+as its own statement — it is consumed here only as the input to (ii)'s
+localization.)*
+
+---
+
+### Step G123 — (GR-103): the boundary is TIGHT — an explicit `n_hub = 12` habitat witness, parity-optimal, at which every feasible majority branch is a doubly-blocked matching branch — and what survives it
+
+> **(GR-103)** *(refutation by explicit, habitat-gated, independently
+> re-checkable witness; three further seeded witnesses (7 candidate shapes
+> from 400 tries, cap disclosed); full `2^{18}` cube audits at three
+> witness (shape, matching) pairs; `--bnd`)*
+>
+> **(i) The witness.** The `n_hub = 12` shape (gated by
+> `cflank.cubic_habitat`, excess 6, `2k = 2`)
+> > `specs = [(0,4,2), (4,1,2), (1,5,2), (5,2,2), (2,6,2), (6,3,2), (3,7,2), (7,8,2), (8,9,4), (9,10,2), (10,11,4), (11,0,2), (0,1,3), (2,3,3), (4,8,2), (5,9,2), (6,10,2), (7,11,2)]`
+>
+> (the 2-factor `F` is the 12-cycle `0,4,1,5,2,6,3,7,8,9,10,11`; the two
+> **odd** branches are `γ₁ = (0,1)`, `γ₂ = (2,3)`), with the perfect
+> matching `M = {γ₁, γ₂, (4,8), (5,9), (6,10), (7,11)}` (branch indices
+> `{12, …, 17}`) and the admissible configuration
+> > `z = [1,0,1,0,1,0,1,1,1,1,1,0,0,0,1,1,1,0]`
+>
+> (the all-A pattern, `δ = 2`; every even branch delivers its A-dart off
+> `U = {0,1,2,3}`, in-load exactly 2 elsewhere — the (GR-100)-extremal
+> profile, `|N₁| = 4` tight). At `z` **both** majority branches are
+> feasible ((GR-99)'s `b = 0` corner, oracle-asserted) **and both are
+> doubly-blocked matching branches**: zero cheap branches. Moreover
+> `dist(z, M) = 4 = d_par(M)` — the witness is **parity-optimal**, meeting
+> (GR-102)'s tax floor with equality.
+>
+> **(ii) What it refutes.** The **per-configuration** form of (GR-C2) —
+> *every parity-optimal `|δ| = 2` configuration carries a cheap majority
+> branch* — is **FALSE from `n_hub = 12`**, and with (GR-101)(ii) the
+> boundary `n = 6|δ|` is **exact in both directions**. The every-step
+> variant (*Step G119*'s residual gloss, spec-named as the route to
+> `2·min(k, ⌊n/4⌋)` at every `n`) dies with it.
+>
+> **(iii) What survives, measured.** At all three audited pairs (the
+> constructed witness and two seeded ones): `d_par(M) = d_adm(M) = 4` —
+> **per-matching gap 0** — with 160/200/68 *balanced* parity-optimal
+> configurations, 104/72/52 parity-optimal `|δ| = 2` ones of which exactly
+> **4 stalled each**, and the stalled configurations' exact majority
+> one-flip prices are **`[0, 0]`**: the doubly-blocked flips are FREE
+> there. **(GR-C2) as posed — the existential over parity-optimal
+> configurations — HOLDS at every audited pair**, twice over (cheap-
+> carrying optima exist in bulk, and balanced optima make the gap 0
+> without any flip).
+>
+> **(iv) What the counting still localizes** (the spec's question). Any
+> per-configuration failure needs `n ≥ 6|δ|` ((GR-101), sharper than
+> (GR-89)(iii)); any **stalled parity-optimal** configuration needs
+> `d_par(M) ≥ 2|δ| − b_M` ((GR-102)); at `n = 12`, `2k = 2` the stalled
+> configurations are **exactly** the (GR-100)-extremal profile (capacity
+> met with equality, `|N₁| = 2f₀`), which is why they are rare (4 per
+> pair) and expensive. The proven constant-4 chain ((GR-99) + (GR-86) +
+> (GR-69)(iii)) is untouched.
+
+*Construction check (hand-verifiable, machine-asserted).* At `z`: each of
+the four `γ`-ends has its lone A-dart on its `γ` (both `F`-darts B), so both
+`γ`'s are doubly blocked; every other hub has two A-darts, so
+`|N₁| = 4 = n/2 − δ` ✓. `dist = 4`: the deviation set is exactly the four
+delivery ends `{7, 8, 9, 10}` of the even matching branches.
+Parity-optimality and the flip prices are cube-computed (`--bnd`), not
+argued. ∎
+
+---
+
+### Step G124 — (GR-104): the reshaped residual — the PRICE form of the selection clause — the descent interpolation, and the hand-off
+
+> **(GR-104)** *(the reshaped residual, minted; its `n ≤ 10` half proven,
+> its `n ≥ 12` half measured at the three audited pairs; the
+> interpolation proven)*
+>
+> **(i) The price form.** *At some parity-optimal configuration with
+> `|δ| ≤ 2` — balanced ones qualifying vacuously — some majority-side flip
+> has `f(p + χ_γ) ≤ f(p) + 2`.* This is what the constant 2 actually
+> consumes ((GR-C2) was only ever its sufficient certificate, via
+> (GR-86)); it is a **theorem at `n ≤ 10`** (by (GR-101)(ii) + (GR-86)),
+> and at the three audited `n = 12` stall pairs it holds with **price 0
+> at the stalled configurations themselves**. It strictly relaxes
+> (GR-C2): a doubly-blocked matching branch is allowed if its two repair
+> chains happen to price `≤ 0`.
+>
+> **(ii) The descent interpolation.** From the cheapest parity-optimal
+> start (`δ_M := min |δ|` over parity-optimal configurations), each
+> descent step at current imbalance `d` is cheap when `n < 6d`
+> ((GR-101)(ii)) and prices `≤ 4` otherwise ((GR-86) + (GR-99)), so
+> > `d_adm(M) − d_par(M) ≤ δ_M + 2·min(δ_M/2, ⌊n/12⌋)`,
+>
+> unconditional in everything but `δ_M`. With the same (GR-69)(iii)
+> input (GR-89)(ii) consumes (`δ_M ≤ 2·min(k, ⌊n/4⌋)`), this improves the
+> landed `n`-free chain whenever `δ_M/2 > ⌊n/12⌋`: the gap is `≤ δ_M` for
+> `n ≤ 11` (row 5's constant `2·min(k, ⌊n/4⌋) ≤ 6` **outright** at
+> `n ≤ 10`), `≤ δ_M + 2` for `n ≤ 23`, `≤ δ_M + 4` for `n ≤ 35`, and
+> `≤ 2δ_M ≤ 12` only from `n = 36` (at the habitat's `2k ≤ 6`).
+>
+> **(iii) The residual, in successor order.**
+> 1. **The price form (i) at `n ≥ 12`** — the whole remaining gap between
+>    the proven constant 4 and (b′)'s 2. A refutation now needs a
+>    (shape, M) whose parity-optimal configurations are ALL unbalanced
+>    and ALL price-stalled — (GR-102) forces `d_par(M) ≥ 2|δ| − b_M` at
+>    such a pair, and none of the three audited pairs comes close (all
+>    have balanced optima in bulk). The `n = 12`, `2k = 2` stall pairs
+>    are the adversarial control the hunt should grow from.
+> 2. **(GR-C1) past the stratum** — unchanged (GPSA's first clause;
+>    (GR-69) is its exact `n ≤ 6` boundary).
+
+---
+
+### Verification (Steps G120–G124)
+
+`notes/scripts/w4/gcheap.py` (**new with this pass**; imports — all
+read-only — the moved balance layer **directly from `gridbal_common`**
+(`branches_at`, `feas_flip`, `feasible_at`, `imb_of`, `odd_idx`,
+`seeded_shapes`, `stratum_cases`, `v8_specs`; the 2026-08-25 move-down, not
+the sibling re-exports), plus `gbal` (`assign_feasible`, `z_admissible`,
+`z_of_orientation`, `z_pattern`, `z_to_map`), `gdesc` (`majority_of`),
+`gflow` (`adm_cube`, `block_ends_at`, `f_layers`), `gorient`
+(`perfect_matchings`), `cflank` (`cubic_habitat`)). **Rank-free**:
+`gexist.fully_good_rank` is never imported or called and no `d_fg` claim is
+made anywhere. Local devices, none shadowing a §1 primitive (checked against
+the README index and the *Divergences* table): `lone_hubs` (the identity's
+count, read off the cube's majority map `c`), `maj_data` (the per-
+configuration majority blocked-end census), `cheap_of` (*Step G108*(iv)'s
+cheap list at one (configuration, matching), feasibility cached per
+pattern), `tight_specs`/`tight_z` ((GR-103)(i)'s construction), `audit_pair`
+(the full-cube parity audit), `legs`, `hist`. Exact integers over GF(2)
+throughout; no floating point; rngs seeded per mode with the seed printed;
+no `set` iteration printed. **No pool is new**: the stratum is
+`stratum_cases` (EXHAUSTIVE), V8 is `v8_specs`, the seeded `n = 8/10/12`
+pools are `seeded_shapes` (= `balb.rand_habitat` behind the (GR-25) cut
+criterion, tries 200/90/400, seeds printed); the one new *shape* is
+(GR-103)(i)'s constructed witness, gated by the canonical `cubic_habitat`
+before any claim is made on it.
+
+```
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gcheap.py --cap       # ~15 s (GR-100): identity + capacity at 449446 configurations, 4 legs
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gcheap.py --sel       # ~18 s (GR-101)/(GR-102): cheap bound + stall tax at 874244 (configuration, matching) instances
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gcheap.py --bnd       # ~5 s  (GR-103): the n = 12 witness, the seeded hunt, three full-cube parity audits
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gcheap.py --validate  # ~40 s all three in one process
+```
+
+**Which driver mode tests which sentence (F11).**
+
+| claim | mode | what asserts *that sentence* |
+|---|---|---|
+| (GR-100)(i) the identity | `--cap` | `#{v : c(v) = B-majority} == n/2 − δ` (and the B-side twin) asserted at every admissible configuration of every leg — 449 446 configurations, the stratum cube EXHAUSTIVE |
+| (GR-100)(ii) the injection | `--cap` | per hub: every blocked end of a majority branch asserted to be a lone-majority-dart hub, and the hub list asserted repeat-free, at all 154 750 unbalanced configurations |
+| (GR-100)(iii) the capacity | `--cap` | `Σ blocked ends ≤ n/2 − \|δ\|` and `#doubly-blocked ≤ ⌊(n − 2\|δ\|)/4⌋` asserted per configuration; the attainment count printed per leg |
+| (GR-100) capacity is exact | `--cap` | F13 control: gap 0 attained on **every** leg, so the doctored bound (capacity − 1) fails there |
+| (GR-100)(iv) `n ≥ 6a − 2b` | — | arithmetic corollary of (iii) at total blocking; not separately driver-testable (its hypothesis is provably empty on every swept leg — that emptiness IS (iii)'s assert) |
+| (GR-101)(i) the cheap bound | `--sel` | `#cheap ≥ \|δ\| − ⌊(n − 2\|δ\|)/4⌋` asserted at all 874 244 unbalanced (configuration, matching) instances; minimum slack printed: **0 on every leg** (tight) |
+| (GR-101)(ii) every-step (GR-C2) at `n < 6\|δ\|` | `--sel` | `#cheap ≥ 1` asserted whenever `n < 6\|δ\|` — every instance of every leg qualifies; a NEW quantifier (all unbalanced configurations; the landed censuses are parity-optimal-only and are cited, not re-run) |
+| (GR-101)(ii) capacity 0 on the stratum | `--sel`, `--cap` | the feasible-doubly-blocked-matching histogram: `{0: 701 382}` on the stratum; `--cap`'s doubly-blocked histogram `{0: 137 202}` |
+| (GR-99)(ii) consumed | `--sel` | `#feasible majority ≥ \|δ\|` re-asserted at every instance (corroboration of the landed theorem, not a re-proof) |
+| (GR-102)(i) the stall tax | `--sel`, `--bnd` | `dist ≥ \|a_M − b_M + δ\|` asserted at every (configuration, matching) instance and at every configuration of the three full-cube audits; equality realized at the (GR-103) witness |
+| (GR-103)(i) the witness | `--bnd` | `cubic_habitat` gate, admissibility, `δ = 2`, both majority branches doubly-blocked matching branches, both flips oracle-feasible, 0 cheap, `dist = 4 = d_par(M)` — each a separate assert; the shape, matching and `z` printed for independent re-verification |
+| (GR-103)(iii) the audits | `--bnd` | full `2^{18}` cube at three (shape, matching) pairs: `d_par`, `d_adm`, the balanced/unbalanced parity-optimal counts, the stall counts, the stalled one-flip prices `[0, 0]` — printed, and the as-posed verdict computed from them |
+| (GR-103) more witnesses exist | `--bnd` | the seeded hunt: 7 candidate shapes from 400 tries (CAP disclosed), 3 further witnesses, each with the same asserts |
+| (GR-104)(i) at `n = 12` | `--bnd` | the stalled prices `[0, 0]` (measured, three pairs — NOT a theorem) |
+| (GR-104)(ii) the interpolation | — | arithmetic from (GR-101)(ii) + (GR-86) + (GR-99); its `n ≤ 10` collapse is `--sel`'s every-step assert |
+| landed denominators reproduced | `--sel`, `--cap` | 23 939 stratum (shape, matching) pairs and 701 382 unbalanced instances — equal to gflow's landed figures, from an independent construction |
+| (a′) / `d_fg` / input (Y) / (GR-15) | — | **not attempted**; no mode computes a rank |
+
+**Determinism.** `--validate` run at `PYTHONHASHSEED` 0 and 999:
+byte-identical except the `[Ns]` wall-clock annotations. Every seeded leg
+prints its seed.
+
+**Caps, disclosed in full — an exhausted cap is not a proof of
+nonexistence.** (1) Only the `n_hub ≤ 6` stratum is exhaustive (full
+`2^{|E|}` cube per shape, all perfect matchings); V8 is one shape, its cube
+complete but its matchings capped at 6 in `--sel`. (2) The `n = 8/10` legs
+are seeded samples (tries 200/90), matchings capped at 6 per shape
+(13/23 shapes capped, printed). (3) The `n = 12` hunt is a seeded sample
+(400 tries → 7 shapes at `2k = 2`); the three full-cube audits are complete
+**at those (shape, matching) pairs only** — the as-posed form at `n ≥ 12`
+is measured there and nowhere else, and its OPEN status does not move on
+this evidence. (4) No search caps exist in any assertion path.
+**None of these caps qualifies (GR-100)–(GR-102) or the (GR-103)(i)–(ii)
+refutation** — those are proofs and an explicit witness; the caps qualify
+only the machine cross-checks and the (GR-103)(iii)/(GR-104)(i)
+measurements.
+
+**Scratch probes (README's standing rule).** None were run: the constructed
+witness was derived by hand from (GR-100)'s extremal profile and entered the
+driver directly as `tight_specs`/`tight_z`; every figure quoted above is
+produced by `gcheap.py`.
+
+---
+
+### Confidence verdict (Steps G120–G124)
+
+| | claim | standing |
+|---|---|---|
+| **(GR-100)(i)** | the lone-dart identity `\|N₁\| = n/2 − δ`; `\|δ\| ≤ n/2` | **proven** (four lines off (GR-49) and cubicity); asserted at 449 446 configurations |
+| **(GR-100)(ii)/(iii)** | the blocked-end injection and capacity `⌊(n − 2\|δ\|)/4⌋` | **proven**; asserted at 154 750 unbalanced configurations, attained on every leg |
+| **(GR-100)(iv)** | total blocking forces `n ≥ 6a − 2b` | **proven** (strictly sharpens (GR-89)(iii), which stays true) |
+| **(GR-101)(i)** | `#cheap ≥ \|δ\| − ⌊(n − 2\|δ\|)/4⌋`, every configuration, every matching | **proven** ((GR-100) + (GR-99)(ii) consumed); tight (slack 0) on every leg |
+| **(GR-101)(ii)** | **every-step (GR-C2) for `n < 6\|δ\|`** — all of `n ≤ 10` at `\|δ\| = 2` | **PROVEN** — the graded outcome of the third kind, with the boundary exact by (GR-103); the landed 0-failure censuses are explained, not extended |
+| **(GR-101)(iv)** | per-matching (b′) at the constant 2 | **THEOREM on the whole `n ≤ 6` stratum**; theorem modulo (GR-C1) alone at `n = 8, 10` |
+| the corrected inference | "(GR-89)(iii) proves (GR-C2) below `3k + 5\|δ\|/2`" | **incomplete as landed** (feasible-only vs all-majority hypothesis); every conclusion re-proven true by (GR-101); a prose scoping correction, no measurement moves |
+| **(GR-102)** | the stall tax; stalls need `d_par(M) ≥ 2\|δ\| − b_M` | **proven**; asserted everywhere swept; possible overlap with (GR-44) flagged for the coordinator |
+| **(GR-103)(i)/(ii)** | the **per-configuration form of (GR-C2) is REFUTED from `n_hub = 12`**, by a named, habitat-gated, parity-optimal witness; `n = 6\|δ\|` exact | **refuted by witness** — the spec's second graded outcome, at the first counting-permitted cell |
+| **(GR-103)(iii)** | the as-posed existential survives; gap 0; stalled flips price 0 | **measured** (three full-cube audits) — evidence, not proof |
+| **(GR-104)(i)** | the price form — the reshaped residual | **minted**: theorem at `n ≤ 10`, measured intact at `n = 12`, OPEN beyond |
+| **(GR-104)(ii)** | `d_adm − d_par ≤ δ_M + 2·min(δ_M/2, ⌊n/12⌋)` | **proven** (improves (GR-89)(ii)'s chain for `n < 12·δ_M/2`; row 5's constant outright at `n ≤ 10`) |
+| **(GR-C2) as posed** | | **proven at `n ≤ 10`; OPEN at `n ≥ 12`** — no longer the right residual: (GR-104)(i) supersedes it as the successor target |
+| (GR-49)–(GR-51), (GR-86), (GR-89), (GR-99) | | **untouched and consumed**; gflow's stratum denominators independently reproduced |
+| **(a′)** / input (Y) / (GR-64) rows / **(GR-15)** | | **OPEN — not attempted**; no rank computed anywhere; no flank; no class-uniformity claim |
+
+**Which side of the (`≤3`-closedHubNbhd) line this sits on.** The same side
+as GBAL's through GFLIP's: exact GF(2) / integer combinatorics on
+constructed hub multigraphs, never `PencilNondegFeasible G`; no rank is
+computed anywhere; no σ-fixed witness is read as generic (§(K-clos) (AC-9));
+the only samplers draw **graphs**, not placements.
+
+### What would change this (Steps G120–G124)
+
+*(i)* **An error in (GR-99)(ii)** would void (GR-101)/(GR-104)'s feasibility
+supply — it is however a landed proven theorem, certified independently
+here at 874 244 instances. *(ii)* **A stalled parity-optimal pair with no
+balanced optimum and all `|δ| = 2` optima price-stalled** refutes the price
+form (GR-104)(i) and with it the constant-2 route; (GR-102) confines such a
+pair to `d_par(M) ≥ 2|δ| − b_M`, and the three audited pairs are nowhere
+near. *(iii)* **A proof of (GR-104)(i)** closes (b′) at the constant 2
+modulo (GR-C1) at every `n` — the audits suggest the stalled configurations'
+chain pairs may *always* price `≤ 0` at optimality, and why is the open
+mechanism question. *(iv)* **The `Λ ≠ ∅` / `D > 0` lifts** stay unswept by
+standing rider; (GR-100) uses cubicity (three darts per hub) and `M` perfect
+throughout, so a `D > 0` lift must redo it. *(v)* **A Lean transcription**
+of (GR-100)–(GR-102) would be small (finite dart counting on a multigraph);
+nothing here pins a carrier beyond what (GR-49)–(GR-51) already pin.
+
+**TERMINATION check (E1/E2/E3) — this direction's reading; the coordinator
+re-runs it.**
+
+- **(E1) NOT FIRED.** No g-flank; the pass is rank-free and computes no
+  rank, so clauses (i)–(iv) cannot fire. Clause (v) (`d_adm = ∞`) fires on
+  nothing: every audited pair has finite `d_adm` (printed), and the swept
+  legs consume (GR-54) unchanged.
+- **(E2) NOT FIRED.** Entry 5 is PROVEN ((GR-54)) and consumed untouched.
+  The route demoted here — (GR-C2) as the constant-2 certificate beyond
+  `n = 10` — is demoted **with its successor named in place**
+  ((GR-104)(i), plus the proven `n ≤ 10` half), which is the retained
+  carve-out; no board entry loses a route without a successor.
+- **(E3) ARMED (by GBAL), DOES NOT FIRE, and this direction does not fire
+  it.** E3 fires only on a HIT completing **entry 1** — i.e. (a′). This
+  pass does not attempt (a′), computes no rank, and makes no `d_fg` claim.
+  The HITs here are on **(b′)'s selection layer** ((GR-C2) settled
+  per-configuration in both directions, (b′) at the constant 2 a stratum
+  theorem), which is not entry 1 and arms nothing. **Firing is a
+  coordinator action; reported, not fired.**
