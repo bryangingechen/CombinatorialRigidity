@@ -1,15 +1,19 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: EIGHT fan-outs and nine single directions dispatched; ALL 37 directions
-LANDED.** The seventh fan-out (YLOC / BALB / AGLU / ZNEQ / CIRR, §"Seventh fan-out") is
+**Status: EIGHT fan-outs and TEN single directions dispatched; 37 directions LANDED,
+ONE IN FLIGHT.** **GFLIP (ordinal 30, §"GFLIP") is PREPPED AND DISPATCHED 2026-08-25** —
+the standing research pick, made single-direction-cheapest-first at the 2026-08-25
+check-in: prove **(GR-R1)**, the flip-availability clause, upgrading (b′)'s `n`-free
+`≤ 12` bound (GR-89)(ii) to a theorem. The seventh fan-out (YLOC / BALB / AGLU / ZNEQ /
+CIRR, §"Seventh fan-out") is
 **COMPLETE** — all five directions landed 2026-08-19. The **EIGHTH fan-out** (GTMPL / GFLOW /
 GCOLL / OSCHU / SIGZ, §"Eighth fan-out") is **COMPLETE** — all five landed 2026-08-19: an
 exact `n_hub` boundary for ledger attack (c)'s AA-glue case (GTMPL), (b′)'s first proven
 `n`-free constant (GFLOW), a **NO HIT** on the authorized disproof hunt that nonetheless
 kills the counting route to a disproof (SIGZ), (a₁) reduced to one determinant (OSCHU), and
 **(GR-64)(R2) REFUTED** with (R1) delivered (GCOLL).
-Ordinals run 1–29 (the eighth fan-out claims 25–29) and were assigned at dispatch, so
-landing order differs from ordinal order.
+Ordinals run 1–30 (the eighth fan-out claims 25–29; GFLIP is 30) and were assigned at
+dispatch, so landing order differs from ordinal order.
 
 **The two architecture-testing PROBES are also both LANDED** (§"Two probes SPECCED and
 AUTHORIZED 2026-08-20"). They carry **no ordinal** — they test the architecture rather
@@ -2409,3 +2413,84 @@ exhausted cap is not a nonexistence claim. Everything at `D = 6`; (AV-1) and
 untouched, **no `.lean` edited**, the generation theorem consumed and not
 re-derived, and scope kept to the gate — C3 itself is not attempted. **TERMINATION: E1, E2, E3 all NO**; E3 stays ARMED by GBAL,
 neither fired nor disarmed (this probe touches neither entry 1 nor (a′)).
+
+---
+
+## GFLIP — thirtieth ordinal, the thirty-eighth direction (single dispatch, prepped 2026-08-25)
+
+**Selection provenance:** the standing 2026-08-07 delegation; shape adjudicated
+at the 2026-08-25 check-in — **"Single direction, cheapest first"** (an option
+selection; `notes/Phase39.md` *Current state*, the 2026-08-25 bullet). Cheapest
+first is §8.1's own ranking: **(GR-R1)**, the cheapest item on the option
+board. Dispatched **un-named, single, top rung** (`recon-fable` — fable is
+dispatchable this session per the same check-in; the fan-out mechanics' rung
+rule applies unchanged to a single direction). Derivation-first tier. **The
+shared mechanics and landing checklist above apply in full** — read-only
+w.r.t. every shared file, commit nothing, draft to the untracked
+`notes/Pencil-draft-GFLIP.md`, tight return verdict.
+
+**The target — (GR-R1), the flip-availability clause; proving it upgrades the
+arc's first `n`-free (b′)-shaped bound from *modulo a named clause* to a
+theorem.** Verbatim as GFLOW landed it (§(K-grid) *Step G108*(ii)):
+
+> **(GR-R1)** at every unbalanced admissible configuration, some
+> majority-side odd branch has a (GR-50)-feasible flip.
+
+Measured with **0 failures** at all 701 382 unbalanced stratum configurations
+(exhaustive on the stratum), at V8, and at 47 628 + 21 204 configurations of
+seeded `n = 8/10` habitat shapes — and **not proven**. Given (GR-R1),
+(GR-89)(ii)'s `d_adm(M) − d_par(M) ≤ 4·min(k, ⌊n_hub/4⌋) ≤ 12` is a theorem
+(`n`-free), and with (GR-C1) on its `n_hub ≤ 6` stratum the constant-4 form
+follows ((GR-86) + one descent step). (b′) at the constant 2 is **NOT** this
+direction's target — its residual is (GR-C2), a separate board entry.
+
+**The named route (G108's own, stated as the residual's item 2):** (GR-R1) is
+a **(GR-51)-shaped statement** — flipping a majority-side odd branch `γ` from
+A to B can only create **B**-monochromatic-pair hubs — so **(GR-52)**'s parity
+contradiction and **(GR-53)**'s exhaustion over maximal constraint structures
+(§(K-grid) *Step G71*) are the natural instruments. The route sketch to attack
+or refute: an unbalanced configuration has a majority side with `≥ |δ|/2 + k`
+odd branches; show the (GR-51) local weight inequality cannot block **all** of
+them at once, by the (GR-52) counting mechanism. Treat the sketch as a
+candidate, not a pin — if it dies, say where.
+
+**What counts as a HIT** — a proof of (GR-R1). Also valued, on the
+(GR-29)/(GR-30) precedent: a **refutation by witness** (which demotes
+(GR-89)(i)/(ii) back to a measured bound and reshapes the residual — state
+exactly what survives, in particular whether the greedy-descent evidence
+localizes the failure), or a **proof under a restricted quantifier with the
+exact boundary named** (e.g. parity-optimal configurations only — which is all
+(GR-89)(ii)'s descent actually consumes at its first step — or a stratum
+bound). State which of the three you got.
+
+**Bars.** Do **not** attack (GR-C2) — a separate board item; report any
+by-product as a finding and do not develop it (the YLOC/BALB mutual
+precedent). Entry 5 is **PROVEN** ((GR-54)) — do not re-attack. Do **not**
+re-derive (GR-49)–(GR-54), (GR-67)–(GR-70), or (GR-85)–(GR-90) — landed, and
+they are your inputs. Do **not** re-run the exhaustive censuses ((GR-70)(ii),
+G108's 701 382-configuration sweep) — cite them; a *new* driver mode that
+tests a *new* sentence is fine, a re-measurement of a landed figure is not.
+(GR-15) and class uniformity are out of scope. No `.lean` is touched (the
+standing Lean hold).
+
+**Riders, verbatim from the eighth fan-out's.** TERMINATION check E1/E2/E3 at
+the return (E3 is ARMED by GBAL — firing is the coordinator's action; report,
+never fire). Cap disclosure: an exhausted cap is *"not found under cap C"*,
+never nonexistence. F11: every headline claim needs a driver that tests that
+sentence, and "exhaustive"/"forced"/"the only" are their own claim class. The
+shift-metric layer is UNBOUNDED ((GR-43)) — any bound is on a **difference**.
+All figures exact ℚ, seeded, degeneracy-guarded, imported from the canonical
+layer (`notes/scripts/README.md` binds; the *Divergences* table names the
+same-name-different-semantics traps).
+
+**Driver — conditional, at the pinned path `notes/scripts/w4/gflip.py`.** A
+purely derivational proof consuming only landed figures needs no new driver —
+then state that disposition explicitly in the draft. Any new measured or
+exhaustion claim (a (GR-53)-style case analysis included) mints the driver at
+the pinned path, importing the harness read-only, left untracked for the
+coordinator to gate and commit.
+
+**Reservation** (`notes/Pencil-labels.md` §"Reserved namespace — direction
+GFLIP"): §(K-grid) **extends** — no new section; labels **(GR-97)–(GR-101)**,
+**Steps G116–G120**; owning section stays authoritative; return any
+unconsumed remainder to the tail.

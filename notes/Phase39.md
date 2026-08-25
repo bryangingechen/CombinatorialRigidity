@@ -19,12 +19,11 @@ topic-tagged from the fifth fan-out on** (`notes/Pencil-labels.md` (L5)); grandf
 single letters are re-used across dates, **always date those**.
 **The doc-split AND discipline-distillation rounds are BOTH COMPLETE**
 (all three slices, `notes/Pencil-structure.md`; the new `RESEARCH-ARC.md`
-promotes this phase's dispatch discipline). **Next: the EIGHTH FAN-OUT is
-PREPPED AND DISPATCHED** (2026-08-19) — five concurrent opus directions,
-ordinals 25–29: **GTMPL** / **GFLOW** / **GCOLL** (§(K-grid)) and **OSCHU** /
-**SIGZ** (§(K-out)); specs, roster, tier split, label reservations and the
-losers' ranking all in `notes/Pencil-fanout.md` §"Eighth fan-out", not restated
-here. **THE EIGHTH FAN-OUT IS COMPLETE — all five LANDED 2026-08-19** (the arc's
+promotes this phase's dispatch discipline).
+**THE EIGHTH FAN-OUT IS COMPLETE — all five LANDED 2026-08-19** — five
+concurrent opus directions, ordinals 25–29; specs, roster, tier split, label
+reservations and the losers' ranking all in `notes/Pencil-fanout.md` §"Eighth
+fan-out", not restated here (the arc's
 thirty-third through thirty-seventh directions: GTMPL / GFLOW / GCOLL / OSCHU /
 SIGZ). One gap-map status move in the wave (GCOLL's), the pivot rule never
 triggering; **verdicts one-lined in *Decisions made*, per-direction detail in
@@ -47,17 +46,19 @@ cycles `C_3 … C_6`, and no structural hypothesis on `S` lifts it. Mathematics,
 and caps: `notes/Pencil-strategy.md` §4.7 ((AV-1)–(AV-8), driver `w4/avoidgen.py`) —
 **§(K-avoid) never opened, no gap-map status moved**, `hK`/`hbareSplit`/(GR-15)/class
 uniformity untouched.
-**NEXT CONCRETE TASK: the standing kernel-(K) RESEARCH PICK** — both probes are
-now landed, so the delegation that was queued behind them is the next step: pick a
-direction, reserve labels in `notes/Pencil-labels.md`, spec it in
-`notes/Pencil-fanout.md` (cheapest-first candidates in *Hand-off*). Nothing structural
-queued, nothing awaiting user adjudication, though KBARE-FALSIFY's T1 hit **and**
-C3-AVOID's C3 verdict are both worth a user mention at the next check-in. The
-pick's candidate list is in *Hand-off* — plus, as of 2026-08-21, the separate
-**unpriced** `notes/Pencil-strategy.md` §9 shelf **(ZH-1)–(ZH-6)**, not eligible for the
-standing pick — (cheapest first: (GR-R1), (GR-C2), the
-one-unit-defect redo of (GR-79)–(GR-82), OSCHU's `rank(Q|_D) = 3` residue — now
-unblocked on the harness side — and GCOLL's collision dominance).
+**THE RESEARCH PICK IS MADE (2026-08-25): direction GFLIP — ordinal 30, the arc's
+thirty-eighth direction — IS PREPPED AND DISPATCHED.** The shape was adjudicated at the
+2026-08-25 check-in (*Current state*, the 2026-08-25 bullet): **single direction,
+cheapest first** → **(GR-R1)**, §8.1's cheapest board entry — prove the
+flip-availability clause and upgrade (b′)'s `n`-free `≤ 12` bound (GR-89)(ii) from
+*modulo a named clause* to a theorem. Spec, bars, riders and HIT criteria in
+`notes/Pencil-fanout.md` §"GFLIP"; reservation ((GR-97)–(GR-101), Steps G116–G120,
+conditional driver `w4/gflip.py`) in `notes/Pencil-labels.md`. **NEXT CONCRETE TASK:
+land GFLIP's return** per the fan-out landing checklist (serial coordinator landing).
+Both probe verdicts were surfaced to the user at the same check-in — that flag is
+discharged. Nothing else structural queued, nothing awaiting user adjudication. The
+rest of the candidate list stays in *Hand-off*; the `notes/Pencil-strategy.md` §9
+shelf **(ZH-1)–(ZH-6)** stays unpriced and ineligible.
 
 ## Current state
 
@@ -177,6 +178,19 @@ constraints; the dated dispatch narrative is in *Decisions made* and git):
   event" the probe's own spec predicted (corrected in the spec too). No T2 candidate exists in the arc's gadget
   stock and none is producible by this harness (T2 is a universal non-existence over
   frameworks), so nothing turns on it operationally.
+
+- **2026-08-25, the research pick — shape adjudicated: SINGLE DIRECTION, CHEAPEST FIRST
+  (changes no standing constraint).** At the session check-in the user was offered four
+  shapes for the standing pick (single direction cheapest-first / ninth multidispatch
+  fan-out / top-rung recon-first / a user-named direction) and selected **"Single
+  direction, cheapest first"** — an option selection, not free text — which resolves to
+  **(GR-R1)** by §8.1's own ranking, dispatched as **GFLIP** (ordinal 30) at top rung
+  (`recon-fable`). Same check-in: rungs **all four dispatchable, fable included** (the
+  first session since the sixth fan-out with fable unconserved), cap **lifted**, rescue
+  §1 fixups **pre-authorized**. Both probe verdicts (KBARE-FALSIFY's T1 hit, C3-AVOID's
+  C3 NO-GO) were surfaced at this check-in, discharging the "mention at next check-in"
+  flag. **Everything else stands unchanged:** phase OPEN, the 2026-08-05 Lean hold, W4
+  PARKED, `hK`/`hbareSplit` pinned, option B un-commissioned.
 
 **Kernel-(K) research arc — fifty-four docs+scripts-only dispatches landed, plus seven
 strategy-only passes** (2026-08-02 → 08-19) — and, **outside** that count because they test
@@ -409,15 +423,18 @@ neighbours' incidences and every capacity unit above 2 is bought by a **Case-I g
 whose pencil-compatibility is geometry the probe was barred from. **§(K-avoid) was never
 opened** and no gap-map status moved.
 
-**THE NEXT CONCRETE TASK — the standing kernel-(K) RESEARCH PICK**, now that both probes
-have returned. Pick from the candidate list below under the standing 2026-08-07
-delegation (the *shape* — single direction, recon-first, or another multidispatch fan-out
-— is a user call, the eighth wave's dispatch bullet being the precedent), reserve labels
-in `notes/Pencil-labels.md`, and spec it in `notes/Pencil-fanout.md`. Cheapest first:
-**(GR-R1)**, **(GR-C2)**, the one-unit-defect redo of (GR-79)–(GR-82), OSCHU's
+**THE NEXT CONCRETE TASK — land direction GFLIP's return** (the pick is MADE, see the
+top `**Status:**` block; per-direction spec `notes/Pencil-fanout.md` §"GFLIP"): re-run
+any driver the draft cites, apply the F11 question to each proven piece, merge the
+draft into §(K-grid) (`notes/Pencil-informal-grid.md`), update the gap-map row
+(`notes/check-gapmap-cells.py` first), one-line the verdict in *Decisions made*, and
+sweep the status surfaces — the full landing checklist in `notes/Pencil-fanout.md`.
+**The candidate list for the pick AFTER GFLIP**, cheapest first, unchanged:
+**(GR-C2)**, the one-unit-defect redo of (GR-79)–(GR-82), OSCHU's
 `rank(Q|_D) = 3` residue (harness-unblocked since the move-down round), GCOLL's collision
-dominance, and (OC-19) input (c) class-uniformly. Two things to mention at the next
-check-in but **not** wait on: KBARE-FALSIFY's T1 hit and C3-AVOID's C3 verdict.
+dominance, and (OC-19) input (c) class-uniformly — the *shape* of that next pick stays a
+user call under the standing 2026-08-07 delegation. Both probe verdicts (KBARE-FALSIFY,
+C3-AVOID) were surfaced to the user 2026-08-25; nothing is owed a mention.
 
 **Nothing is awaiting user adjudication as of 2026-08-19.** The one item that was —
 ZNEQ's `σ > 0`-everywhere hunt at class shapes whose `H` carries a short theta
@@ -437,10 +454,10 @@ round 2 (slice 4 the phase-note split, **slice 5/"slice 2" the harness move-down
 OSCHU's `rank(Q|_D) = 3` residue is no longer blocked on the harness — exact `ℚ(i)`
 (`exactcore.Gauss`) is now a base-layer primitive.
 
-**THE STANDING RESEARCH-PICK DELEGATION — no longer queued: both probes have returned
-(2026-08-20, 2026-08-24), so this IS the next concrete task**, restated at the top of this
-section with its candidate list. The standing 2026-08-07 delegation covers the pick; the
-*shape* is a user call.
+**THE STANDING RESEARCH-PICK DELEGATION — SPENT on GFLIP for this round** (2026-08-25,
+shape adjudicated single-direction-cheapest-first; see the top `**Status:**` block and
+*Current state*'s 2026-08-25 bullet). The delegation itself stands for the pick after
+GFLIP lands; its shape is again a user call.
 
 **`hsplit` is CLOSED IN FULL** (W5-L7c-1…6, landed 2026-07-30) and **`hfresh`'s mechanical
 discharge (residue (iv)) is CLOSED too**. The landed successor

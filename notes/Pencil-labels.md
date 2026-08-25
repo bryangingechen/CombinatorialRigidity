@@ -1299,6 +1299,40 @@ time this registry has had to route a reservation's labels to the strategy
 document, and it is the general rule: **a namespace is registered where its
 labels actually land, not where they were reserved.**
 
+## Reserved namespace — direction GFLIP (2026-08-25, **IN FLIGHT**)
+
+**Reserved 2026-08-25 for the single direction GFLIP** (ordinal 30, the arc's
+thirty-eighth direction; `notes/Pencil-fanout.md` §"GFLIP"), the standing
+research pick made at the 2026-08-25 check-in (single direction, cheapest
+first → **(GR-R1)**, §8.1's cheapest board entry). One direction, no siblings
+— the reservation still binds because it protects the *next* dispatch's prep
+from this one's labels.
+
+| direction | owning § | labels reserved | steps reserved | driver |
+|---|---|---|---|---|
+| **GFLIP** | §(K-grid) — **extends**, no new section | **(GR-97)–(GR-101)** | **G116–G120** | `w4/gflip.py` (conditional — see the spec) |
+
+The reservation is the head of §(K-grid)'s unclaimed tail (declared **(GR-97)+
+/ Steps G116+** at the eighth fan-out's release above); on consumption the
+tail moves to **(GR-102)+ / Steps G121+**, and a remainder returns to the tail
+in the landing commit per the standing rule. The target token **(GR-R1)** is
+GFLOW's landed clause — already minted, renamed by the 2026-08-20
+adjudication, and **not** in this reservation; GFLIP *cites* it and mints its
+own results at (GR-97)+.
+
+**Code and basename verified 0-hit** as raw substrings, case-insensitively,
+across `*.md`, `*.tex`, `*.lean`, `*.py`, `*.m2` with `.git`/`.lake` excluded
+(the unfiltered-grep lesson of C3-AVOID's prep), control token `aglu` live at
+14 files. Label tokens `(GR-101)`, *Step G116*, *Step G120* each 0-hit;
+`(GR-97)` hits only this file's own live-tails bookkeeping line (the
+`(GR-79)` precedent). **Checked 0-hit and NOT chosen:** `GRONE`, `GMAJ`,
+`MAJFL`. **Checked and REJECTED for live hits:** **`GFEAS`** (26 files — a
+case-insensitive substring of `PencilNondegFeasible`, the worst rejected
+candidate since `THETA`; recorded because "feasible" is exactly the concept a
+(GR-R1) direction reaches for, so the next prep will be tempted by it too).
+**On outgrowth reuse the already-reserved §(K-gcap) / `GC-`** (returned
+unopened fourteen times); **do not mint §(K-unif)/`GU-`**.
+
 ## Registry — `notes/Pencil-informal.md` (the (K) workbook)
 
 Status keywords are pointers to the owning section's verdict block and the
