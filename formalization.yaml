@@ -1,4 +1,5 @@
-# formalization.yaml (v0.3): repo-root metadata for formalization projects.
+# yaml-language-server: $schema=https://raw.githubusercontent.com/mathlib-initiative/formalization.yaml/main/schema/formalization.schema.json
+# formalization.yaml (v0.4): repo-root metadata for formalization projects.
 # Schema: https://github.com/mathlib-initiative/formalization.yaml
 # Requiredness/conformance:
 #   - Fields marked [required] should be present and filled.
@@ -6,73 +7,97 @@
 #   - Projects may add extra YAML keys at any level. Readers should tolerate unknown keys.
 # This is a lightweight reporting schema, not a closed validation schema.
 
-version: "v0.3"
+version: "v0.4"
 
 # project - the formalization itself (not the source).
 project:
   name: "CombinatorialRigidity"                                  # [required]
   authors: ["Bryan Gin-ge Chen"]                                 # [required] who did the formalization
+  responsible_maintainers: ["Bryan Gin-ge Chen"]                 # responsible for this repository
   license: "Apache-2.0"                                          # [required]
   repository: "https://github.com/bryangingechen/CombinatorialRigidity"
   website: "https://bryangingechen.github.io/CombinatorialRigidity/"
   blueprint: "https://bryangingechen.github.io/CombinatorialRigidity/blueprint/"
 
-# sources - what was formalized. List of papers/textbooks/blueprints/etc.
+# The top-level `repository:` key (v0.4) is deliberately omitted: this repository is
+# the substantive development, which is the schema's default when the key is absent.
+# (`project.repository` above is just this repo's URL - a different, project-scoped field.)
+
+# sources - what was formalized. Sources may be articles, books, web posts, folklore,
+# conversations, or anything else.
 sources:                                                          # [required] list of sources
   - title: "On graphs and rigidity of plane skeletal structures"
     authors: ["G. Laman"]
     id: "doi:10.1007/BF01534980"
-    type: "journal article"
-    author_contacted: "n/a"                                      # classical (1970), author deceased
+    type: "article"
+    location: "main theorem"
+    relationship: "formalizes"
+    author_endorsement: "n/a"                                    # classical (1970), author deceased
 
   - title: "On generic rigidity in the plane"
     authors: ["L. Lovász", "Y. Yemini"]
     id: "doi:10.1137/0603009"
-    type: "journal article"
-    author_contacted: "n/a"
+    type: "article"
+    location: "main theorem (rigidity matroid = (2,3)-count matroid)"
+    relationship: "formalizes"
+    author_endorsement: "not-contacted"
 
   - title: "Pebble game algorithms and sparse graphs"
     authors: ["A. Lee", "I. Streinu"]
     id: "doi:10.1016/j.disc.2007.07.104"
-    type: "journal article"
-    author_contacted: "no"
-    prior_work: "Generalizes the original (2,3) pebble game of Jacobs-Hendrickson 1997, doi:10.1006/jcph.1997.5809"
+    type: "article"
+    location: "pebble-game correctness in the matroidal regime l < 2k (Theorem 5(4) for the free-edge count)"
+    relationship: "formalizes"
+    author_endorsement: "not-contacted"
+    note: "Generalizes the original (2,3) pebble game of Jacobs-Hendrickson 1997, doi:10.1006/jcph.1997.5809 (mathematical antecedent, not formalized separately)."
 
   - title: "On the problem of decomposing a graph into n connected factors"
     authors: ["W. T. Tutte"]
     id: "doi:10.1112/jlms/s1-36.1.221"
-    type: "journal article"
-    author_contacted: "n/a"
+    type: "article"
+    location: "main theorem (tree packing)"
+    relationship: "formalizes"
+    author_endorsement: "n/a"                                    # classical (1961), author deceased
 
   - title: "Edge-disjoint spanning trees of finite graphs"
     authors: ["C. St. J. A. Nash-Williams"]
     id: "doi:10.1112/jlms/s1-36.1.445"
-    type: "journal article"
-    author_contacted: "n/a"
+    type: "article"
+    location: "main theorem (tree packing)"
+    relationship: "formalizes"
+    author_endorsement: "n/a"                                    # classical (1961), author deceased
 
   - title: "The union of matroids and the rigidity of frameworks"
     authors: ["W. Whiteley"]
     id: "doi:10.1137/0401025"
-    type: "journal article"
-    author_contacted: "no"
+    type: "article"
+    location: "Theorem 1 (k-frame matroid = k-fold cycle-matroid union), Theorem 8 (body-bar), Proposition 6"
+    relationship: "formalizes"
+    author_endorsement: "not-contacted"
 
   - title: "Rigidity of multi-graphs. I. Linking rigid bodies in n-space"
     authors: ["T.-S. Tay"]
     id: "doi:10.1016/0095-8956(84)90016-9"
-    type: "journal article"
-    author_contacted: "no"
+    type: "article"
+    location: "main theorem (body-bar)"
+    relationship: "formalizes"
+    author_endorsement: "not-contacted"
 
   - title: "Linking (n-2)-dimensional panels in n-space II: (n-2,2)-frameworks and body and hinge structures"
     authors: ["T.-S. Tay"]
     id: "doi:10.1007/BF01788678"
-    type: "journal article"
-    author_contacted: "no"
+    type: "article"
+    location: "main theorem (body-hinge / panel-hinge)"
+    relationship: "formalizes"
+    author_endorsement: "not-contacted"
 
   - title: "The generic rank of body-bar-and-hinge frameworks"
     authors: ["B. Jackson", "T. Jordán"]
     id: "doi:10.1016/j.ejc.2009.03.030"
-    type: "journal article"
-    author_contacted: "no"
+    type: "article"
+    location: "Thm 6.1 / Cor 6.2 (def = corank); §5 (body-bar), §6-§7 (body-hinge / panel-hinge: Thm 6.1, Cor 6.3, Thm 7.2), p. 586"
+    relationship: "formalizes"
+    author_endorsement: "not-contacted"
     note: >-
       Source of the def = corank bridge (Thm 6.1 / Cor 6.2) and, in phase 34, of the
       coordinate route to the generic ("almost all realizations") form of the realization
@@ -83,8 +108,10 @@ sources:                                                          # [required] l
   - title: "A proof of the molecular conjecture"
     authors: ["N. Katoh", "S. Tanigawa"]
     id: "doi:10.1007/s00454-011-9348-6"
-    type: "journal article"
-    author_contacted: "no"
+    type: "article"
+    location: "Conjecture 1.2, Lemma 2.1, Theorem 4.9, Theorem 5.5, Theorem 5.6, Corollary 5.7; §2.5/§5.1 (multigraph and panel conventions), footnote 6"
+    relationship: "formalizes"
+    author_endorsement: "not-contacted"
     note: >-
       The longest-horizon target and the project's largest single undertaking (phases 17-26);
       fully formalized, including the molecular conjecture itself (Conjecture 1.2) and the
@@ -95,151 +122,97 @@ sources:                                                          # [required] l
   - title: "On the rigidity of molecular graphs"
     authors: ["B. Jackson", "T. Jordán"]
     id: "doi:10.1007/s00493-008-2287-z"
-    type: "journal article"
-    author_contacted: "no"
+    type: "article"
+    location: "Lemma 4.2, §5 (Conjecture 5.1, Theorem 5.3, Theorem 5.4)"
+    relationship: "formalizes"
+    author_endorsement: "not-contacted"
     note: "Primary source for the molecule rank formula r(G^2) = 3|V| - 6 - def(G~) (= KT Corollary 5.7, phase 26); its Thm 5.4 (Jacobs' conjecture, made unconditional) and Lemma 4.2 (degree-1 rank formula) are formalized in phase 32."
 
   - title: "Generic rigidity in three-dimensional bond-bending networks"
     authors: ["D. J. Jacobs"]
     id: "J. Phys. A: Math. Gen. 31 (1998), 6653-6668"
-    type: "journal article"
-    author_contacted: "no"
+    type: "article"
+    relationship: "adapts"
+    author_endorsement: "not-contacted"
     note: "Origin of Jacobs' conjecture (phase 32); the statement formalized is Jackson-Jordán 2008's Conjecture 5.1 / Theorem 5.4 form."
 
   - title: "Generic rigidity of molecular graphs via ear decomposition"
     authors: ["D. S. Franzblau"]
     id: "doi:10.1016/S0166-218X(99)00188-2"
-    type: "journal article"
-    author_contacted: "no"
+    type: "article"
+    relationship: "adapts"
+    author_endorsement: "not-contacted"
     note: "The tree case of the degree-1 rank formula (phase 32); formalized through Jackson-Jordán 2008 Lemma 4.2(a)'s statement."
 
   - title: "Statics of frameworks and motions of panel structures: a projective geometric introduction"
     authors: ["H. Crapo", "W. Whiteley"]
     id: "Structural Topology 6 (1982), 43-82"
-    type: "journal article"
-    author_contacted: "no"
+    type: "article"
+    location: "Proposition 3.4"
+    relationship: "formalizes"
+    author_endorsement: "not-contacted"
     note: "Projective invariance of infinitesimal rigidity (phase 25)."
 
   - title: "Combinatorial Rigidity: Graphs and Matroids in the Theory of Rigid Frameworks"
     authors: ["T. Jordán"]
     id: "doi:10.2969/msjmemoirs/03401C020"
-    type: "survey (MSJ Memoirs 34)"
-    author_contacted: "n/a"
+    type: "book"                                                # survey monograph, MSJ Memoirs 34
+    relationship: "background"
+    author_endorsement: "n/a"
     note: "Presentation followed and the project's cross-check for rigidity-theory attributions; not itself a formalized result."
 
   - title: "Matroid Theory (2nd ed., Oxford Graduate Texts in Mathematics 21)"
     authors: ["J. G. Oxley"]
     id: "isbn:978-0-19-856694-6"
-    type: "textbook"
-    author_contacted: "n/a"
+    type: "book"
+    location: "Thm 11.2.2"
+    relationship: "background"
+    author_endorsement: "n/a"
     note: "Cross-check for abstract matroid-theory attributions (Edmonds 1965/1970, Nash-Williams 1966); presentation reference."
+
+# related_formalizations - prior or parallel formalizations, if known.
+related_formalizations:
+  - id: "https://github.com/apnelson1/Matroid"
+    relationship: "builds-on"
+    note: >-
+      Peter Nelson's Lean 4 matroid package (Apache-2.0). The matroid-union / Edmonds-partition
+      subsystem under CombinatorialRigidity/Matroid/ is ported from it - rebased from its shelved
+      WIP/{Submodular,Union}.lean onto the package's live FiniteCircuitMatroid constructor - and it
+      also supplies Matroid.ofFun and Graph.cycleMatroid. Each vendored file carries an upstream
+      copyright header with a provenance + modifications note. No prior formalization of
+      combinatorial rigidity theory (Laman, Tay-Whiteley, or the molecular conjecture) is known.
+
+# classification - what area of mathematics the formalized result belongs to.
+classification:
+  # arXiv taxonomy (https://arxiv.org/category_taxonomy)
+  arxiv: ["math.CO", "math.MG", "cs.CG"]
+  # MSC2020 (https://msc2020.org/): 52C25 rigidity and flexibility of structures;
+  # 05B35 combinatorial aspects of matroids; 05C70 edge subsets with special properties
+  # (tree packing); 15A75 exterior/Grassmann algebras (the extensor calculus);
+  # 68R10 graph theory in computer science (the pebble-game decision procedure);
+  # 92E10 molecular structure, graph-theoretic methods (the molecule application).
+  msc2020: ["52C25", "05B35", "05C70", "15A75", "68R10", "92E10"]
 
 # project status
 status:
   scope: >-
-    A Lean 4 / mathlib4 formalization of combinatorial rigidity theory, organized in
-    four arcs. (1) Laman's theorem (1970): for n >= 2, a graph is generically rigid in
-    the plane iff it contains a (2,3)-tight spanning subgraph; proved both directions via
-    the Henneberg construction. (2) The planar rigidity matroid (Lovász-Yemini, both the
-    combinatorial (2,3)-count form and the linear-matroid form) and an executable,
-    certificate-carrying (k,l)-sparsity decision procedure - the Lee-Streinu pebble game -
-    with Decidable instances for IsSparse / IsTight / IsLaman and a `lake exe pebble-game`
-    CLI emitting inline witnesses. (3) Abstract matroid-union / Edmonds-partition machinery
-    (ported locally from apnelson1/Matroid), Tutte-Nash-Williams tree-packing, the k-frame
-    matroid as a k-fold cycle-matroid union (Whiteley 1988), and Tay's body-bar theorem and
-    the body-hinge / panel-hinge Tay-Whiteley theorem, both in existence-of-realization form.
-    (4) Katoh-Tanigawa's 2011 proof of the molecular conjecture together with its molecule
-    application - the Grassmann-Cayley extensor algebra (Lemma 2.1), the panel-hinge rigidity
-    matrix R(G,p), the deficiency matroid M(G~), the combinatorial induction (Theorem 4.9),
-    the algebraic induction realizing that reduction at the rigidity-matrix rank (Theorem 5.5,
-    all three cases including the hardest, Case III; Theorem 5.6), the molecular conjecture
-    itself (Conjecture 1.2) at every dimension n >= 3, and the molecule application: the 3-D
-    generic bar-joint rigidity matroid, the projective-duality + square-graph modelling
-    equivalence, and the capstone molecule rank formula r(G^2) = 3|V| - 6 - def(G~)
-    (Corollary 5.7). All four arcs (phases 1-26) are complete and sorry-free; the post-program
-    exposition-and-synthesis phases (27-29, closed 2026-07-09) changed no mathematical state.
-    A post-program algebraic-independence relaxation (phase 30, closed 2026-07-10) simplified
-    the molecular-conjecture proof's internals: the inductive seed is now chosen as a non-root
-    of a finite product of rank/determinant polynomials instead of being assumed algebraically
-    independent over the rationals (Katoh-Tanigawa's footnote-6 device), removing all
-    algebraic-independence machinery from the development; the theorem statements above are
-    unchanged. A first proof-study phase (31, closed 2026-07-10) landed small internal
-    simplifications - an unconsumed rationality hypothesis removed from the general-position
-    producers, and the |V| = 3 triangle base folded into Katoh-Tanigawa's Lemma 5.4 cycle
-    realization as its smallest instance - plus reconnaissance verdicts: the proof's
-    three-case structure is source-shaped (no case merge exists), and the planar (d = 2)
-    analogue of the Case III adjacent-degree-2 count is false (K_{2,3}), closing that track.
-    Headline statements are unchanged (axioms re-verified at close). A new-mathematics phase
-    (32, closed 2026-07-16) formalized two further Jackson-Jordán 2008 corollaries on top of
-    the molecule rank formula: Jacobs' conjecture (their Conjecture 5.1 / Thm 5.4 - the square
-    graph G^2 is independent in the 3-D generic rigidity matroid iff G^2 satisfies their
-    Laman-type 3|V| - 6 sparsity counts - now an unconditional theorem, SimpleGraph.jacobs)
-    and their Lemma 4.2 degree-1 rank formula (explicit r(G^2) for connected graphs with
-    degree-1 vertices, where the rank formula's min-degree hypothesis fails: the tree case
-    r(G^2) = 2|V| - 5 + |V_1|, SimpleGraph.degree_one_rank_tree, and the non-tree reduction
-    to the square of the two-core, SimpleGraph.degree_one_rank). A field-generality phase
-    (33, closed 2026-07-17) generalized the core Katoh-Tanigawa chain from the reals to an
-    arbitrary infinite field of any characteristic: Theorems 5.5/5.6 and the molecular
-    conjecture itself are now stated and proved over any infinite field K (typeclass
-    hypotheses [Field K] [Infinite K], the latter threaded per-declaration), with KT's
-    original real statements as the K = R specialization; the extensor / Grassmann-Cayley
-    meet / rigidity-matrix foundations hold over any field. The two formerly ℝ-bound proof
-    chokepoints were reproved field-general (the Gram-Schmidt-backed meet-duality crux via
-    contragredient equivariance, metric-free; the genericity engine via the maximal-minor
-    rank characterization instead of the ordered-field Gram-determinant one). This
-    chain-level field generality appears to be new (Whiteley 1988 proves the matroid-union
-    layer over any infinite field); headline statement names are unchanged and their axioms
-    were re-verified at close. The molecule application (phases 24-26) stays over ℝ
-    (three-dimensional physical geometry). A generic-realization strengthening phase
-    (34, closed 2026-07-18) upgraded the existence-of-realization statements to their
-    generic ("almost all realizations") form via Jackson-Jordán's 2010 coordinate route,
-    avoiding Whiteley 1988's variety-irreducibility argument: a realization is generic
-    (for row independence) when every rigidity-row family independent at some realization
-    is independent at it, and in each framework class one nonzero polynomial in the
-    realization parameters confines the non-generic realizations to its zero set. Four
-    statement surfaces landed: every generic bar-joint realization of G^2 in R^3 realizes
-    the molecule rank formula and is rigid whenever 5G packs six edge-disjoint spanning
-    trees (SimpleGraph.molecule_generic_square_packing); the deficiency rank and the
-    rigidity characterization at every generic panel-normal assignment, over any infinite
-    field (JJ Thm 7.2, sharpened to an iff); Tay's theorem at every generic choice of bar
-    endpoints over R (JJ section 5); and the capstone body-hinge form over any infinite
-    field - a framework at every generic choice of hinge positions is infinitesimally
-    rigid iff (D-1)G packs D edge-disjoint spanning trees (JJ Thm 6.1 / Cor 6.3 with the
-    existential quantifier upgraded to every generic realization). A multigraph-strength
-    phase (35, closed 2026-07-18) stated the panel side of the molecular conjecture in
-    Katoh-Tanigawa's own hinge-coplanar panel model - each hinge required only to lie in a
-    panel at each endpoint body, rather than being the meet of the two endpoint panels -
-    and proved Conjecture 1.2 and Theorem 5.6 at full multigraph strength, parallel edges
-    and loops admitted (Molecular.molecular_conjecture_multigraph,
-    Molecular.theorem_55_6_multigraph): the formalized molecular conjecture above is the
-    simple-graph case, retained as the stronger concrete statement for simple graphs; its
-    meet-based panel model forces parallel edges to share a hinge, and the multigraph iff
-    is provably false in that model. A proof-automation phase (36, closed 2026-07-22)
-    changed no mathematical state: a measured grind-adoption recon (the global @[grind]
-    annotation set resolves to empty under the project's `grind only` idiom, which ignores
-    ambient tags) plus a strict build-neutral tactic-smell sweep of the non-fragile files
-    (66 collapses of multi-argument rw chains to `simp only` / `grind only`, three
-    defeq-fragility shapes reverted); all seventeen headline theorems were re-verified at
-    the three standard axioms at close, and the molecular defeq-fragility zone was deferred
-    to a queued follow-on. That follow-on ran as a further internals-only phase (37, closed
-    2026-07-22): a strict build-neutral tactic sweep of the molecular defeq-fragility zone
-    itself (103 further collapses of multi-argument rw chains to `simp only`, 17 reverted at
-    the raw-carrier-coercion sites that form the defeq wall - not the carrier-cluster files,
-    and not carrier-adjacent chains routed through packaged API, which collapse); the
-    seventeen headline theorems were again re-verified at the three standard axioms at close.
-    A third internals-only phase (38, closed 2026-07-23) de-duplicated the ten longest proofs
-    into shared parameterized helper lemmas (a net reduction of 365 Lean lines, every
-    blueprint-pinned name preserved as a thin wrapper, no mathematical state change); the
-    seventeen headline theorems were once more re-verified at the three standard axioms at
-    close. A new-mathematics phase (39, opened 2026-07-23, recon-first - no mathematical
-    state change yet) is in progress: the hinge-pencil molecular conjecture - whether a
-    body-hinge framework in 3-space achieves its generic (tree-packing) rank on the stratum
-    where each body's hinges are simultaneously concurrent and coplanar (a pencil of lines
-    through a point in a plane; in the molecular reading, molecules whose atoms have coplanar
-    bond-stars). No literature result on this stratum is known, so the phase opens with a
-    reconnaissance of the statement and its truth, and a grounded refutation is a legitimate
-    close. Mathlib upstreaming of
-    the mirrored lemmas remains queued and unscheduled.
+    A Lean 4 / mathlib4 formalization of combinatorial rigidity theory, in four arcs.
+    (1) Laman's theorem (1970): a graph on >= 2 vertices is generically rigid in the plane
+    iff it contains a (2,3)-tight spanning subgraph, both directions via the Henneberg
+    construction. (2) The planar rigidity matroid (Lovász-Yemini) in both its combinatorial
+    (2,3)-count and linear-matroid forms, plus an executable, certificate-carrying
+    (k,l)-sparsity decision procedure - the Lee-Streinu pebble game - with Decidable
+    instances and a `lake exe pebble-game` CLI. (3) Matroid union / Edmonds partition
+    (ported from apnelson1/Matroid), Tutte-Nash-Williams tree packing, Whiteley's k-frame
+    matroid, and the Tay-Whiteley body-bar and body-hinge / panel-hinge theorems.
+    (4) Katoh-Tanigawa's 2011 proof of the molecular conjecture - the Grassmann-Cayley
+    extensor algebra, the deficiency matroid, and the combinatorial and algebraic
+    inductions - together with its molecule application, the rank formula
+    r(G^2) = 3|V| - 6 - def(G~). All four arcs are complete and sorry-free; later phases
+    strengthened these results without changing their shape (an arbitrary infinite field in
+    place of R, multigraphs, "every generic realization" in place of "some realization")
+    and drew further consequences of the rank formula. See status.main_results for the
+    headline statements and fidelity.divergences for how they differ from their sources.
   sorry_count: 0
   sorry_in_definitions: 0
   axioms: ["propext", "Classical.choice", "Quot.sound"]          # only Lean/mathlib standard axioms; no project-specific axioms
@@ -505,60 +478,23 @@ automation:                                                      # [required]
 # fidelity
 fidelity:
   divergences: >-
-    The body-bar (tay_witness) and body-hinge (body_hinge_tay) theorems are formalized in
-    existence-of-realization form with an explicit standard-basis witness (degenerate
-    realizations permitted): "there exists an independent/isostatic realization iff the count
-    holds." Their "almost all realizations" strengthenings are formalized separately
-    (phase 34) via Jackson-Jordán 2010's coordinate route rather than Whiteley's
-    irreducible-variety argument: "generic" is the transfer form (every rigidity-row family
-    independent at some parameter choice is independent at the generic one) - a definition
-    every realization generic in Jackson-Jordán's max-rank sense of section 5 satisfies,
-    with "almost all" delivered as one nonzero polynomial per framework class confining the
-    non-generic parameters to its zero set (over R this gives a dense open complement; the
-    Lebesgue-null form is not formalized). The generic body-bar/body-hinge statements
-    quantify over Jackson-Jordán's parameter spaces (bar endpoints; k points spanning each
-    hinge) rather than over all abstract frameworks - extensors at infinity are genuinely
-    outside those parameter spaces, which is why the witnesses are re-placed inside them. The (k,l)-count matroid and the pebble game are
-    developed in the matroidal regime l < 2k (which covers the (2,3) Laman case); the general
-    l >= 2k regime is out of scope. The k-frame / cycle-matroid-union identity holds after
-    restriction to E(G) (`|^ E(G)`), forced because the vendored Matroid.Union has ground set
-    `univ` and carries every non-edge as a loop. Many results are stated more generally than
-    their classical sources - over mathlib's multigraph `Graph alpha beta` and/or general
-    dimension - rather than for the specific graph/dimension in the original paper. The
-    matroid-union / Edmonds-partition subsystem under CombinatorialRigidity/Matroid/ is ported
-    from Peter Nelson's apnelson1/Matroid (Apache-2.0), rebased onto the package's live
-    FiniteCircuitMatroid constructor; it is formalized, not assumed. The def = corank bridge
-    is the project's in-repo framing of Jackson-Jordán 2009 Thm 6.1 / Cor 6.2, proved
-    axiom-free via weak duality plus an Edmonds-optimal reverse. The molecular program
-    (Katoh-Tanigawa 2011, phases 17-26) is fully formalized at full KT strength (all degrees
-    of freedom, genuine hinges), with Theorems 5.5/5.6 and Conjecture 1.2 formalized at every
-    dimension n >= 3 (equivalently D = (n+1 choose 2) >= 6); smaller dimensions are out of
-    scope. Since phase 33 those statements are additionally proved over any infinite field of
-    any characteristic (KT's real statements are the K = R specialization) - a generalization,
-    not a weakening; the molecule application (phases 24-26) remains over R. The phase-35
-    multigraph statements (Conjecture 1.2 / Theorem 5.6 in KT's hinge-coplanar containment
-    model) diverge from KT in two directions, both strengthenings: they admit self-loops,
-    which KT's multigraph convention excludes (their section 2.5), and they admit panels and
-    hinges through the hyperplane at infinity, which KT reach via projective invariance. Unlike
-    the simple-graph statement, they carry no >= 2-body hypothesis, matching KT Conjecture 1.2:
-    on a single body the containment model still has a hinge-coplanar realization (a constant
-    nonzero normal with a nonzero in-panel extensor), whereas the meet model does not. One
-    deliberate method divergence (phase 30): Katoh-Tanigawa fix the inductive
-    realization's coordinates algebraically independent over the rationals (their footnote 6),
-    so one seed is generic for every rank polynomial at once; the formalization instead
-    chooses, at each composition, a seed off the zero locus of the finitely many polynomials
-    that composition tests (a product of rank and determinant polynomials fixed before the
-    seed) - the statements proved are the same. The molecule
-    modelling equivalence (phase 25) is delivered at the rank / motion-space-dimension level -
-    the linear isomorphism between molecular motions of G and bar-joint motions of (G^2, c) -
-    not as the realizability-iff package of the survey literature; that level is exactly what
-    Corollary 5.7 consumes. The molecule rank formula holds for simple graphs of minimum
-    degree >= 2, matching its source (Jackson-Jordán 2008). In phase 32, Jackson-Jordán's
-    three-dimensional Laman condition is a standalone predicate with their |X| >= 3 guard
-    (not an instance of the project's (k,l)-sparsity family, whose guard admits |X| = 2 at
-    (3,6), where the count fails on any edge), and the two degree-1 rank formulas are proved
-    by support-relative induction on a fixed vertex set (the peeled leaf remains as an
-    isolated vertex); both statements match Jackson-Jordán 2008 Lemma 4.2 / Theorem 5.4.
+    Most statements are more general than their classical sources - over mathlib's multigraph
+    `Graph alpha beta`, at arbitrary dimension, and (for the Katoh-Tanigawa chain) over any
+    infinite field rather than R, with the original real statements as the K = R case. Two
+    scope restrictions run the other way: the (k,l)-count matroid and the pebble game are
+    developed only in the matroidal regime l < 2k, which covers the (2,3) Laman case, and the
+    molecular results only at dimension n >= 3. The body-bar and body-hinge realization
+    theorems are formalized twice: in existence-of-realization form with an explicit witness,
+    and in a generic form following Jackson-Jordán 2010's coordinate route, where "almost all"
+    is delivered as one nonzero polynomial per framework class rather than as a measure-zero
+    statement. One deliberate method divergence: where Katoh-Tanigawa fix coordinates
+    algebraically independent over the rationals (their footnote 6), the formalization chooses
+    each inductive seed off the zero locus of the finitely many polynomials that composition
+    tests; the statements proved are the same. Nothing is cited in place of a proof - every
+    result the arguments use is formalized, the vendored matroid-union subsystem included. The
+    blueprint (project.blueprint above) states each result in the exact form proved and
+    discusses its departures from the source in the chapter that proves it; its appendix,
+    "Notes on the formalization", records the wrong turns the development took.
 
 # review status
 review:
