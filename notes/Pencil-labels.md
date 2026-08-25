@@ -1373,6 +1373,38 @@ selects. The target token **(GR-C2)** is GFLOW's landed clause (renamed at
 the 2026-08-20 adjudication) — already minted, **not** in this reservation;
 GCHEAP *cites* it and mints its own results at (GR-100)+.
 
+## Reserved namespace — direction OQRANK (2026-08-25, in flight)
+
+**Reserved 2026-08-25 for the single direction OQRANK** (ordinal 32, the
+arc's fortieth direction; `notes/Pencil-fanout.md` §"OQRANK"), the standing
+research pick made at the third 2026-08-25 check-in via two option
+selections (recon-first → the eighth strategy-only pass's board re-rank
+`f72cbb35`; then its rank-1 front-runner, the ℚ(i) eigen-block leg of
+§(K-out) *Step O29*). One direction, no siblings — the reservation still
+binds because it protects the *next* dispatch's prep from this one's labels.
+
+| direction | owning § | labels reserved | steps reserved | driver |
+|---|---|---|---|---|
+| **OQRANK** | §(K-out) — **extends**, no new section | **(OC-40)–(OC-44)** | **O37–O41** | `w4/oqrank.py` (conditional — see the spec) |
+
+The reservation is the head of §(K-out)'s unclaimed tail (declared
+**(OC-40)** — SIGZ's returned label — **then (OC-41)+ / Steps O37+** at the
+eighth fan-out's close above); the live tail during this reservation is
+therefore **(OC-45)+ / Step O42+**.
+
+**Code and basename verified 0-hit** as raw substrings, case-insensitively,
+across `*.md`, `*.tex`, `*.lean`, `*.py`, `*.m2` with `.git`/`.lake`
+excluded, control token `aglu` live at 14 files. Label tokens `(OC-44)`,
+`(OC-45)`, *Step O41*, *Step O42* each 0-hit; `(OC-40)`/`(OC-41)`/*Step
+O37* hit only the live-tails bookkeeping lines (the `(GR-97)` precedent).
+**Checked 0-hit and NOT chosen:** `QDBLK`, `EIGB`, `STARB`. **Checked and
+REJECTED for live hits:** `QRANK` (7 files). `EIGB`/`STARB` name the
+*mechanism* (the eigen-block split — the `GSEL` rejection reason);
+**`OQRANK` names the theorem's content** — the rank of the pitch form
+`Q|_D`, §(K-out)'s own object. The target tokens **(OC-33)**/(a₁) are
+OSCHU's landed labels — already minted, **not** in this reservation; OQRANK
+*cites* them and mints its own results at (OC-40)+.
+
 ## Registry — `notes/Pencil-informal.md` (the (K) workbook)
 
 Status keywords are pointers to the owning section's verdict block and the

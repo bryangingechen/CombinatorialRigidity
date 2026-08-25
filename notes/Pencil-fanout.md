@@ -1,7 +1,9 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: EIGHT fan-outs and ELEVEN single directions dispatched; ALL 39
-directions LANDED.** **GCHEAP (ordinal 31, §"GCHEAP") LANDED 2026-08-25, same
+**Status: EIGHT fan-outs and TWELVE single directions dispatched; 39 of 40
+directions LANDED — OQRANK (ordinal 32, §"OQRANK") PREPPED AND DISPATCHED
+2026-08-25, targeting (a₁)'s `rank(Q|_D) = 3` residue via the ℚ(i)
+⋆-eigen-block leg, in flight.** **GCHEAP (ordinal 31, §"GCHEAP") LANDED 2026-08-25, same
 day as its dispatch — a graded double outcome: (GR-C2)'s every-step form
 PROVEN for `n_hub < 6|δ|` via the lone-dart capacity (GR-100)/(GR-101), so
 **(b′) at the constant 2 is a THEOREM on the whole `n_hub ≤ 6` stratum**, and
@@ -20,8 +22,9 @@ exact `n_hub` boundary for ledger attack (c)'s AA-glue case (GTMPL), (b′)'s fi
 `n`-free constant (GFLOW), a **NO HIT** on the authorized disproof hunt that nonetheless
 kills the counting route to a disproof (SIGZ), (a₁) reduced to one determinant (OSCHU), and
 **(GR-64)(R2) REFUTED** with (R1) delivered (GCOLL).
-Ordinals run 1–31 (the eighth fan-out claims 25–29; GFLIP is 30; GCHEAP is 31) and
-were assigned at dispatch, so landing order differs from ordinal order.
+Ordinals run 1–32 (the eighth fan-out claims 25–29; GFLIP is 30; GCHEAP is 31;
+OQRANK is 32) and were assigned at dispatch, so landing order differs from
+ordinal order.
 
 **The two architecture-testing PROBES are also both LANDED** (§"Two probes SPECCED and
 AUTHORIZED 2026-08-20"). They carry **no ordinal** — they test the architecture rather
@@ -2693,3 +2696,96 @@ green on the recomputed §(K-grid) row (trimmed to a current-state
 statement per the checker's own guidance, no cap bump needed); the
 driver's import list verified against the file itself (one consumer-list
 correction made in the recorded *Harness debt* item: `perfect_matchings`).
+
+---
+
+## OQRANK — thirty-second ordinal, the fortieth direction (single dispatch, prepped 2026-08-25)
+
+**Selection provenance:** the standing 2026-08-07 delegation; two option
+selections at the third 2026-08-25 check-in (`notes/Phase39.md` *Current
+state*, the third 2026-08-25 bullet): first **"Top-rung recon-first"** —
+producing the eighth strategy-only pass's board re-rank (`f72cbb35`,
+strategy §8's dated re-rank block) — then **"Rank 1: O29 ℚ(i) leg"**,
+accepting that re-rank's front-runner. Dispatched **un-named, single, top
+rung** (`recon-fable`). Derivation-first with a **ℚ(i)-compute-licensed
+leg** (exact `ℚ(i)` is a base-layer primitive since the 2026-08-20
+move-down: `exactcore.Gauss`). **The shared mechanics and landing checklist
+above apply in full** — read-only w.r.t. every shared file, commit nothing,
+draft to the untracked `notes/Pencil-draft-OQRANK.md`, tight return verdict.
+
+**The target — (a₁)'s one-determinant residue, at the ⋆-eigen-block route
+Step O29 names; a HIT closes input (a) at all 174 certified classes.**
+Verbatim as OSCHU landed it (§(K-out) *Step O29*, (OC-33)(ii)): at a
+target-rank chart point of `G`,
+
+> `rank(Q|_D) = 3` ⟹ some point of `M` is good ⟹ **input (a) holds at
+> that (shape, split)** —
+
+a single `3 × 3` determinant: `x₁`-free, `λ`-free, stratum-free, one-point
+decidable, evaluable at the very point the grid route constructs. Measured
+`rank(Q|_D) = 3` at **570/570** points (104 POOL-OS + 292 POOL-OG + 174
+POOL-OC2) and **174/174** isomorphism classes — witnesses, never a rate
+((OC-7) discipline) — and **not proven**. A HIT chains with CIRR's chart
+irreducibility ((CH-1)(a)) through (OC-19) into (OC-8)/(K-wit) per-class,
+by a *mechanism* (the ⋆-eigen-block decoupling), the pitch route's first
+recipe-shaped positive.
+
+**The named route (Step O29's own "route, not a result" paragraph —
+consume, complete, or kill it; if it dies, say where).** At a σ-fixed grid
+configuration `D` is ⋆-invariant ((AC-2)/(AC-4)'s decoupling applied to
+`Mot(H)`), so `D = D₊ ⊕ D₋` inside the `±1` eigenspaces of `⋆` ((FR-2)(iii))
+with `B|_D = ⟨·,·⟩|_{D₊} ⊕ (−⟨·,·⟩|_{D₋})`, the blocks `B`-orthogonal. Over
+`ℝ` definiteness would finish in two lines, but the grids are **`ℚ(i)`-only**
+((AC-2) needs isotropic vectors; no σ-fixed real configuration exists) — so
+the residue splits into **two independent per-eigen-block nondegeneracy
+conditions**, and whether those are combinatorial at a grid point in
+(FR-3)'s sense is **the genuine open piece**: `D` is a motion-derived space,
+not a span of hinge lines, so (FR-3) does not apply as stated. That
+per-block nondegeneracy argument is this direction's informal-proof
+component; the compute leg is exact `ℚ(i)` (`exactcore.Gauss`), which the
+O29-landing pass did not have.
+
+**What counts as a HIT** — a proof of `rank(Q|_D) = 3` at (at least) one
+target-rank chart point of **every** certified class (state the exact
+quantifier delivered; the **class-uniform** statement of input (a) is NOT
+the target and stays out of scope). Also valued: a **refutation by
+witness** — the arc's first `rank(Q|_D) ≤ 2` class point ("What would
+change this (Steps O25–O30)" item 1: if it also carries the ruling
+`M̂ ∧ w` with `w` off `{pt(b), pt(c)}`, and at **every** `σ = 0` chart
+point of that shape, it is the arc's first **(K-tight) event** — routes A
+and B dead at that split, `hK` at the shape **untouched**, NOT a PENCIL
+event; report the reading, fire nothing); or a **proof under a restricted
+quantifier with the exact boundary named** (e.g. a per-eigen-block result
+on a named sub-population). State which you got.
+
+**Bars.** (OC-29)–(OC-34), (OC-31)'s tower input, (CH-1)/(CH-2),
+(AC-1)–(AC-8), (FR-2)/(FR-3) — landed; consume, do not re-derive. Do
+**not** re-run the landed pools (the 570-point record, the 174-class
+census (OC-34)) — cite them; new sentences at new points are fine.
+`place_pencil_general` batteries are never quoted as a rate or as evidence
+about a generic chart point ((OC-7)); `repin.star_generic` gates any seed
+you draw. Input (a)'s class-uniform statement, (GR-15) and class
+uniformity are out of scope. No `.lean` is touched (the standing Lean
+hold).
+
+**Riders, verbatim from GCHEAP's.** TERMINATION check E1/E2/E3 at the
+return (E3 is ARMED by GBAL — report, never fire). Cap disclosure: an
+exhausted cap is *"not found under cap C"*, never nonexistence. F11: every
+headline claim needs a driver that tests that sentence, and
+"exhaustive"/"forced"/"the only" are their own claim class. All figures
+exact (ℚ or `ℚ(i)` via `exactcore.Gauss`), seeded, degeneracy-guarded,
+imported from the canonical layer (`notes/scripts/README.md` binds; a
+symbolic (M2) leg, if any, adds `notes/scripts/m2/README.md`).
+
+**Driver — conditional, at the pinned path `notes/scripts/w4/oqrank.py`.**
+A purely derivational proof consuming only landed figures needs no new
+driver — then state that disposition explicitly in the draft. Any new
+measured or exhaustion claim mints the driver at the pinned path, importing
+the harness read-only, left untracked for the coordinator to gate and
+commit.
+
+**Reservation** (`notes/Pencil-labels.md` §"Reserved namespace — direction
+OQRANK"): §(K-out) **extends** — no new section; labels
+**(OC-40)–(OC-44)** ((OC-40) is SIGZ's returned label, re-claimed as the
+head of the tail), **Steps O37–O41**; owning section stays authoritative;
+return any unconsumed remainder to the tail.
