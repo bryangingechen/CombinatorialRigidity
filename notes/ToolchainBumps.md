@@ -48,6 +48,18 @@ re-resolve. Running
 the invariant still holds: it prints `already in sync` when it does, and names
 the drifted packages when it doesn't.
 
+**`lake exe cache get` doubles as a pin check — run it before the build.** Read
+the *total*, not just the exit code: a full hit (all 8779 files at the
+v4.34.0-rc2 bump, zero misses) means the whole dependency set hashes to exactly
+what mathlib CI built, so no transitive pin is stale. A partial or failed fetch
+is the very signal *The hopscotch false positive* is about — the fix is to
+correct the pins, never to let it build mathlib from source.
+
+**Check whether the two deps already agree before reconciling anything.** One
+`curl` of `apnelson1/Matroid`'s `lake-manifest.json` against mathlib's own at
+the target rev says whether their transitive pins are identical. At the
+v4.34.0-rc2 bump they were, which reduced the pin work to a single script run.
+
 ### Environment: `LAKE_CACHE_DIR` is mandatory on this machine
 
 Lean 4.34 routes build artifacts through a new Lake cache that defaults to
@@ -95,6 +107,89 @@ together should account for all 122 files.
   its *errors* are trustworthy, but it silently skips the whole mathlib style
   linter set — it reported clean on three lines that were over the
   100-character limit. Lint cleanliness is only established by `lake build`.
+
+---
+
+## Bump record: v4.34.0-rc1 → v4.34.0-rc2 (2026-08-24)
+
+| | before | after |
+|---|---|---|
+| `lean-toolchain` | `v4.34.0-rc1` | `v4.34.0-rc2` |
+| mathlib | `653c36f0` (2026-08-14) | `8b36e867` (2026-08-24) |
+| `Matroid` | `f44939ff` | `2b92ee39` |
+
+**Nothing broke — zero source fixes.** The first `lake build` after the pin
+edit was green: 2964 jobs, 0 errors, 0 warnings, 0 `failed to cache artifact`,
+and all **122** of our modules genuinely recompiled (`Built`, not `Replayed`,
+so the clean warning count is not a cache-replay artifact). `lake lint` passed
+on its first run too. The contrast with the four-version rc1 jump (~39 fixes
+across 28 files plus a six-item cleanup queue) is the durable lesson: a
+**one-rc bump taken promptly costs a build, not a session** — which is the
+argument for tracking rc's as they land rather than letting them pile up.
+
+### Pin choices
+
+Same rule as the rc1 bump: mathlib is pinned to **the exact revision
+`apnelson1/Matroid` HEAD is tested against** (`8b36e867`), not to the
+`v4.34.0-rc2` tag (`85e3a25e`, 54 commits behind). Two pre-build checks made
+that safe:
+
+- **`Matroid`'s manifest and mathlib's own manifest at `8b36e867` carry
+  identical transitive pins** — `batteries` `d54dddc5`, `proofwidgets`
+  `a8acbfd8`, `aesop` `18889deb`, `Qq` `507746ab`, `Cli` `ab3a82db`
+  (`inputRev` `v4.34.0-rc2`), `importGraph` `d8823026`, `plausible`
+  `d9598f07`, `LeanSearchClient` `ba67e212`. So there was no pin set to
+  reconcile: `scripts/bump-mathlib.sh` writing mathlib's pins *is* writing
+  Matroid's. Worth checking first on any bump — it is one `curl` per manifest
+  and it tells you whether the two deps even agree.
+- **`lake exe cache get` hit all 8779 files with zero misses.** That is the
+  strongest cheap confirmation that the pin set is exactly what mathlib CI
+  built: one stale transitive pin changes the hash and the fetch fails, which
+  is precisely the mechanism behind *The hopscotch false positive* below. Run
+  it *before* the build and read the total, not just the exit code.
+
+`Matroid`'s default branch is **`main`**, not `master` — `git ls-remote
+refs/heads/master` returns nothing there and reads alarmingly like a deleted
+branch. Its HEAD `2b92ee39` is 6 commits past the old pin, `build` CI green.
+
+### Two claims re-checked rather than assumed
+
+- **The `Matroid` churn missed us by luck, not by design.** Those 6 commits
+  touch 80 files. None is one of our 8 imported modules — but ~30 sit in their
+  transitive closure, and the set includes a `Graph/Hom.lean` rename and four
+  *removed* `Graph/Iso/*` files. Only the green build settled it; the
+  changed-file list on its own could not.
+- **§ 48 is still load-bearing.** `scoped notation:51 G:100 " - " S:100` is
+  unchanged at `Matroid/Graph/Subgraph/Defs.lean:66` in the new rev, so the
+  `deleteVerts` parse poisoning and its four local workarounds stand exactly as
+  the rc1 record describes. `lakefile.toml`'s comment asserting this is
+  therefore still accurate, and the upstream precedence proposal is still
+  unfiled and still worth doing.
+
+### Gates, all re-run on this tree
+
+| check | result |
+|---|---|
+| `lake build` | 2964 jobs, 0 errors, 0 warnings, 0 cache failures; 122/122 modules `Built` |
+| `lake lint` | "Linting passed" |
+| `lake build pebble-game` | green (2542 jobs) |
+| `lake exe checkdecls blueprint/lean_decls` | exit 0, silent — all 758 pinned declarations resolve |
+| 17 `formalization.yaml` headline decls | all `[propext, Classical.choice, Quot.sound]`, no `sorryAx` |
+| 11 `PebbleGame/Examples.lean` `#eval`s | all reproduce their documented values |
+| 4 `examples/*.txt` via `lake exe pebble-game` | all reproduce their documented verdict + witness lines exactly |
+
+**The last row is new to this checklist and worth keeping.** The CLI is a
+*compiled* artifact, so it is the only gate that exercises codegen rather than
+elaboration, and each example file carries its expected output in its own
+header — so the check is a diff against the tree, costing seconds. One trap:
+read the whole output, not `tail -1`. The verdict line (`LAMAN` /
+`SPARSE_NOT_TIGHT` / `NOT_SPARSE`) comes **first**, ahead of the
+`ARCS`/`VERTEX`/`BLOCKING` witness lines, so tailing shows a witness line and
+reads as a wrong answer.
+
+**No cleanup queue opened.** *Scheduled cleanup* below belongs to the rc1 bump
+and is closed; this bump found no deprecation warnings, no lint hits and no
+style residue, so there is nothing queued behind it.
 
 ---
 
@@ -250,10 +345,13 @@ tree is never at risk.
 
 ## Scheduled cleanup
 
-**State of play (2026-08-21).** Items 0, 1, 2, 3, 4, 4a, 4b, 4c **and 5** are
-**DONE**; both gates are **green** (`lake build` 2948 jobs, 0 errors; `lake lint`
-"Linting passed"), and warnings are **1441 → 0**. Item 5 (unstick hopscotch) was
-**not** the multi-option strategy call this note had it queued as: the root cause
+**State of play (2026-08-21; queue closed).** Items 0, 1, 2, 3, 4, 4a, 4b, 4c
+**and 5** are **DONE**; both gates were **green on the rc1 tree** (`lake build`
+2948 jobs, 0 errors; `lake lint` "Linting passed"), and warnings are
+**1441 → 0**. (Those figures are this queue's closing state; the current tree is
+the rc2 one — 2964 jobs, same clean result, see the rc2 bump record above.)
+Item 5 (unstick hopscotch) was **not** the multi-option strategy call this note
+had it queued as: the root cause
 was our own `require` order, and it closed with a one-line `lakefile.toml`
 reorder — measured both ways, see *The hopscotch false positive*. Item 6 is
 optional and untouched.
@@ -271,31 +369,25 @@ lemma the tree did not need (once).
 | 1 × overlapping instances, `Search/DFS.lean` (item 4c) | drop the `variable`-line instances, re-add them inline on "the ~4 downstream `_sound`/`_complete` lemmas" (really **11** declarations) | **move the `variable` line to *below* the one def that carries inline binders** — two lines, zero signature changes anywhere |
 | 3 × overlapping instances, `Induction/Operations.lean` (item 4c) | `section`-scope the `omit`/re-`variable` dance, then "re-derive which of the four `omit … in` clauses are still needed" | the `section` scoping, as predicted — and the four `omit … in` clauses needed **no** change at all |
 
-**Where this stands (2026-08-21).** The 10-commit stack is **merged into local
-`master`** (fast-forward from `bump/lean-4.34.0-rc1`, which still exists as a
-ref) and is **still unpushed**: `origin/master` sits at `0920772` (Phase-38
-close, 2026-07-23), leaving local master **281 commits ahead**. So **CI has
-still never validated this stack** — and note the consequence for item 5: the
-hopscotch workflow runs against `origin/master`, i.e. the *pre-fix* lakefile, so
-it will keep re-stamping issue #2 until master is pushed. Both gates are
-verified locally
-*after* the require-order reorder (`lake build` 2948 jobs — the same job count as
-the pre-reorder run — 0 errors, 0 warnings, 0 cache failures; `lake lint`
-"Linting passed"), as are the two bump-specific checks: all 17
-`formalization.yaml` headline declarations at
-`[propext, Classical.choice, Quot.sound]` with no `sorryAx`, and all 11
-`PebbleGame/Examples.lean` `#eval`s reproducing their documented values (the
-2026-08-20 run; nothing since has touched an `#eval` or a headline declaration's
-axioms — the reorder changed no Lean source and left `lake-manifest.json`
-byte-identical, since our pins were already synced).
+**Where this stands (2026-08-24).** The rc1 stack (10 commits) is **merged into
+local `master`** — fast-forward from `bump/lean-4.34.0-rc1`, which still exists
+as a ref — and the **rc2 bump sits on top of it**, on `bump/lean-4.34.0-rc2`.
+The whole thing is **still unpushed**: `origin/master` sits at `0920772`
+(Phase-38 close, 2026-07-23), leaving local master **284 commits ahead**. So
+**CI has still never validated any of it** — and note the consequence for item
+5: the hopscotch workflow runs against `origin/master`, i.e. the *pre-fix*
+lakefile, so it will keep re-stamping issue #2 until master is pushed. Every
+gate is verified locally on the rc2 tree (the table in the rc2 bump record
+above; two of those checks — the CLI examples and `checkdecls` — the rc1
+verification never ran).
 
-**Next concrete task: get CI onto this stack, then push `master`.** Nothing in
-the queue blocks it — everything mechanical is done and item 5 closed with the
-reorder. Two routes, and the ordering is a real choice rather than a formality:
+**Next concrete task: get CI onto this stack, then push `master`.** Unchanged by
+the rc2 bump, and nothing blocks it. Two routes, and the ordering is a real
+choice rather than a formality:
 
-- **CI first (safer).** Push `bump/lean-4.34.0-rc1` and open a PR against
+- **CI first (safer).** Push `bump/lean-4.34.0-rc2` and open a PR against
   `master`; PRs build + lint but **skip** the Pages deploy. The diff is large
-  (281 commits, since `origin/master` is at Phase-38 close) but the point is the
+  (284 commits, since `origin/master` is at Phase-38 close) but the point is the
   build, not the review.
 - **Push `master` directly.** Simplest, and the local gates are green — but
   every green `master` push **publishes** (blueprint, docs, upstreaming
