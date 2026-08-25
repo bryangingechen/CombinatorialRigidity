@@ -110,6 +110,17 @@ from gadm import nko_specs                                             # noqa: E
 from gpsa import (branches_at, is_bridgeless, delta_of, parity_census,  # noqa: E402
                   pattern_of, nkp_specs, nk55_specs, nko2v_specs)
 
+# `odd_idx`/`bounds_of`/`feasible_at`/`named_cases`/`random_cases` MOVED
+# DOWN to `gridbal_common` on 2026-08-25 (README *Harness debt*, direction
+# GFLIP): `gflip` imports all five, past §2 rule 2's trigger, alongside six
+# sibling devices from `balb`/`gdesc`/`gflow`/`gpsa`.  Re-exported here, so
+# this module's own modes and `balb`'s/`gflow`'s import lines are
+# unchanged.  `assign_feasible`/`z_of_orientation`/`pool_cases`/
+# `rand_cubic` stay HERE (one consumer each, this module and the moved
+# bodies via a deferred import) -- a moved body may not reach back up.
+from gridbal_common import (bounds_of, feasible_at, named_cases,       # noqa: E402
+                            odd_idx, random_cases)
+
 R_SEED = 20260819
 
 
@@ -124,11 +135,6 @@ R_SEED = 20260819
 # `maximal_structures` the (GR-53) combinatorics; `rand_cubic` a seeded
 # random connected bridgeless cubic multigraph sampler (a GRAPH sampler --
 # no placement is drawn, so S(K-clos) (AC-9) does not apply).
-
-
-def odd_idx(specs):
-    """The odd-branch indices, in gpsa.parity_census's own order."""
-    return [i for i, (_u, _w, L) in enumerate(specs) if L % 2 == 1]
 
 
 def dart_col(specs, z, v, i):
@@ -190,25 +196,6 @@ def flip_legal(specs, n, binc, m, F):
         if (m[v][0] in F) != (deg >= 2):
             return False
     return True
-
-
-def bounds_of(specs, n, oidx, p):
-    """(GR-50): (o, q, d, lo, hi) for the pattern `p` (p[j] = the colour
-    of oidx[j]; colour 0 = A).  lo/hi bound the number of even branches
-    at v whose A-end is v."""
-    o = [0] * n
-    q = [0] * n
-    for j, i in enumerate(oidx):
-        (u, w, _L) = specs[i]
-        for v in (u, w):
-            q[v] += 1
-            if p[j] == 0:
-                o[v] += 1
-    d = [3 - q[v] for v in range(n)]
-    assert all(x >= 0 for x in d), "hub with more than three odd branches"
-    lo = [max(0, 1 - o[v]) for v in range(n)]
-    hi = [min(d[v], 2 - o[v]) for v in range(n)]
-    return o, q, d, lo, hi
 
 
 def assign_feasible(nv, edges, lo, hi):
@@ -289,20 +276,6 @@ def z_of_orientation(specs, oidx, p, even, asg):
         (u, _w, _L) = specs[i]
         z[i] = 0 if asg[t] == u else 1
     return z
-
-
-def feasible_at(specs, n, oidx, p):
-    """The (GR-50) decision at ONE pattern: returns z or None."""
-    _o, _q, _d, lo, hi = bounds_of(specs, n, oidx, p)
-    if any(hi[v] < lo[v] for v in range(n)):
-        return None
-    oset = set(oidx)
-    even = [i for i in range(len(specs)) if i not in oset]
-    edges = [(specs[i][0], specs[i][1]) for i in even]
-    asg, _R = assign_feasible(n, edges, lo, hi)
-    if asg is None:
-        return None
-    return z_of_orientation(specs, oidx, p, even, asg)
 
 
 def balanced_patterns(k2):
@@ -528,61 +501,6 @@ def pool_cases():
             continue
         out.append((n, [tuple(s) for s in specs]))
     return out
-
-
-def named_cases():
-    """The named large shapes: GUNIF's W-witnesses and GPSA/GADM's
-    commissioned odd-rich necklace constructions (reused read-only)."""
-    out = []
-    by_tag = {w[0].split()[0]: w for w in WITNESSES}
-    for tag in ('W3M', 'W3', 'W4', 'W5'):
-        (_nm, n, specs, _f, _S, _e) = by_tag[tag]
-        out.append((tag, n, [tuple(s) for s in specs]))
-    specs, _pent = nko2v_specs()
-    out.append(('NKo2v', 10, specs))
-    for m in (6, 8, 10, 12):
-        sp, _pent = nkp_specs(m)
-        out.append((f'NKp({m})', 5 * m, sp))
-        sp, _pent = nk55_specs(m)
-        out.append((f'NK55({m})', 5 * m, sp))
-        sp, _pent, _F, _ch = nk_specs(m)
-        out.append((f'NK({m})', 5 * m, sp))
-        out.append((f'NKo({m})', 5 * m, nko_specs(m)[0]))
-    return out
-
-
-def random_cases(rng, sizes, per, k2s, conc_rate):
-    """Seeded random cubic bridgeless shapes with prescribed odd counts;
-    `conc_rate` of the placements are deliberately CONCENTRATED on one
-    hub's neighbourhood (the adversarial side of the sweep)."""
-    out = []
-    conc = 0
-    for n in sizes:
-        for _t in range(per):
-            es = rand_cubic(n, rng)
-            if es is None:
-                continue
-            M = len(es)
-            for k2 in k2s:
-                if M < k2:
-                    continue
-                sp = [[u, w, 2] for (u, w) in es]
-                if rng.random() < conc_rate:
-                    v0 = rng.randrange(n)
-                    pref = sorted(
-                        range(M),
-                        key=lambda i: (v0 not in es[i], rng.random()))
-                    idxs = pref[:k2]
-                    conc += 1
-                else:
-                    idxs = rng.sample(range(M), k2)
-                for i in idxs:
-                    sp[i][2] = 3
-                sp = [tuple(s) for s in sp]
-                if len(odd_idx(sp)) != k2:
-                    continue
-                out.append((f'rand(n={n},2k={k2})', n, sp))
-    return out, conc
 
 
 # ------------------------------------------------- [GBL-1] --zform ----------

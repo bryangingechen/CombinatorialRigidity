@@ -119,6 +119,13 @@ from gpsa import (branches_at, is_bridgeless, delta_of,                # noqa: E
                   t1_move, all_moves, nkp_specs, nk55_specs,
                   nko2v_specs)
 
+# `imb_of` MOVED DOWN to `gridbal_common` on 2026-08-25 (README *Harness
+# debt*, direction GFLIP): `gflip` imports it, past §2 rule 2's trigger,
+# alongside ten sibling devices from `balb`/`gbal`/`gflow`/`gpsa`.
+# Re-exported here, so this module's own modes and `balb`'s/`gflow`'s
+# import lines are unchanged.
+from gridbal_common import imb_of                                      # noqa: E402
+
 R_SEED = 20260818
 
 
@@ -132,11 +139,6 @@ R_SEED = 20260818
 # `rescue_scan`/`verify_escape` the escape search and its adversarial
 # verifier; `census_layers` the exact per-shape d_par/d_adm/|imb|-at-
 # optimum computation off the full census.
-
-
-def imb_of(k2, p):
-    """Signed imbalance a - b (#A-majority - #B-majority; bit 1 = B)."""
-    return k2 - 2 * bin(p).count('1')
 
 
 def majority_of(oidx, p, sgn):

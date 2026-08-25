@@ -301,6 +301,27 @@ The shared layer under `zneq` and `oschu`; `zneq` re-exports all of it, so
 | the parameter `t` with `placed[x] = M0 + t·Md`, or `None` off the meet line | `meet_param_of` | `ocon` (re-exported by `zneq`) |
 | `5|E| − rank_modp`, the GF(p) **screen** for a corank (never a witness) | `corank_modp` | `zneq` |
 
+### The `gridbal_common` layer (the `w4` balance layer)
+
+The shared layer under `balb`/`gbal`/`gdesc`/`gflow`/`gpsa`, one level below
+those five direction leaves; each re-exports its own moved names, so
+`<old home>.<name>` remains a live path for every existing consumer,
+`gflip` included.
+
+| job | canonical | module |
+|---|---|---|
+| the Wagner shape V8: 8-cycle plus four long chords | `v8_specs` | `gridbal_common` (re-exported by `balb`) |
+| every odd-carrying habitat shape of the `Λ = ∅`, `D = 0` stratum | `stratum_cases` | `gridbal_common` (re-exported by `balb`) |
+| the named large shapes: GUNIF's W-witnesses + GPSA/GADM's necklaces | `named_cases` | `gridbal_common` (re-exported by `gbal`) |
+| seeded random cubic bridgeless shapes with prescribed odd counts, an adversarially concentrated fraction | `random_cases` | `gridbal_common` (re-exported by `gbal`) |
+| seeded habitat shapes at `n` hubs (`balb.rand_habitat` behind the (GR-25) cut criterion) | `seeded_shapes` | `gridbal_common` (re-exported by `gflow`) |
+| the odd-branch indices of a shape | `odd_idx` | `gridbal_common` (re-exported by `gbal`) |
+| (GR-50): per-hub bounds `(o, q, d, lo, hi)` for one odd-branch pattern | `bounds_of` | `gridbal_common` (re-exported by `gbal`) |
+| (GR-50): the feasibility decision at one pattern — returns `z` or `None` | `feasible_at` | `gridbal_common` (re-exported by `gbal`) |
+| is the pattern with one odd branch recoloured (GR-50)-feasible? | `feas_flip` | `gridbal_common` (re-exported by `gflow`) |
+| signed imbalance `a − b` of an odd-branch pattern | `imb_of` | `gridbal_common` (re-exported by `gdesc`) |
+| hub → the 3 incident branch indices (the widest fan-in recorded: 8 consumers before this move) | `branches_at` | `gridbal_common` (re-exported by `gpsa`) |
+
 ## 2. Layering map, and the rule for new scripts
 
 ```
@@ -474,6 +495,29 @@ Three layers, plus one **language island**:
   and then the direction leaves (`aglu`, `gtmpl`, `gcoll`, `gdev`, `gadm`,
   `gpsa`, `gbal`, `glaw`, `gdesc`, `yloc`, `balb`, `gflow`, …), each importing
   downward only.
+  **A SIXTH MOVE-DOWN LANDED 2026-08-25** — the coordinator-commissioned
+  payment of the GFLIP debt item below, its own dedicated dispatch (not a
+  side effect of other primary work), with nothing else in flight over
+  `balb`/`gbal`/`gdesc`/`gflow`/`gpsa`: eleven read-only devices — `v8_specs` /
+  `stratum_cases` (from `balb`), `bounds_of` / `feasible_at` / `odd_idx` /
+  `named_cases` / `random_cases` (from `gbal`), `imb_of` (from `gdesc`),
+  `feas_flip` / `seeded_shapes` (from `gflow`), `branches_at` (from `gpsa`,
+  the widest fan-in recorded — 8 consumers) — moved to a **new** shared
+  layer, `gridbal_common`, one level below the five direction leaves that
+  used to own them. Same shape as the five above: every old home
+  re-exports its moved names, so no consumer's import line changed, and
+  every body is byte-verbatim except for the deferred (function-body-local)
+  imports five of them needed to reach a name that stayed BEHIND in their
+  old home (`gbal.pool_cases`/`rand_cubic`/`assign_feasible`/
+  `z_of_orientation`, `balb.rand_habitat`, `gpsa.nkp_specs`/`nk55_specs`/
+  `nko2v_specs`) — a top-level import of those would have been a genuine
+  cycle, since the old home now imports `gridbal_common` back to
+  re-export. Eleven driver invocations re-run at landing, all
+  byte-identical modulo wall-clock: `gbal`/`balb`/`gdesc`/`gpsa`/`gflip`
+  `--validate`, `gcoll --slack --dem --tf --suff`, `glaw --validate`,
+  `gflow --validate`, and `yloc`'s three-invocation split (`--coll`,
+  `--loc`, `--fibre --par --fit --cert --adv`) that its own `--validate`
+  does not fit in the 600 s budget.
 - **The M2 island** — `m2/`. Macaulay2, not Python, so there is **no import
   edge** in either direction: an M2 driver cannot reuse a §1 primitive and must
   re-derive the ones it needs. That is a licensed exception to rule 3 below and
@@ -495,7 +539,9 @@ Three layers, plus one **language island**:
    keep working, as `pitch.cross3` and `localtest.K4` now do — and, since
    2026-08-20, `flanks.star_span_ranks`, `ocon.meet`, `zneq`'s six §(K-out)
    devices, `aglu`'s seven `n_hub`-stratum devices, `gridwit.tree_triple` and
-   `closure.Gauss`). **A dispatch may not make the move** (it would modify a
+   `closure.Gauss`; and, since 2026-08-25, `gridbal_common`'s eleven balance-
+   layer devices out of `balb`/`gbal`/`gdesc`/`gflow`/`gpsa`). **A dispatch
+   may not make the move** (it would modify a
    landed file another direction may be importing in flight): record it as a
    *Harness debt* item naming every consumer, and the coordinator pays it in a
    between-waves round. **Cataloguing in §1 is not optional** — every one of
@@ -1183,19 +1229,19 @@ figure-invariant): `rref`, `rank`/`rank_exact`, `nullspace`, `left_nullspace`,
 `neighbors` (`kbare_common`, `n9`); `K4`/`K5_minus_matching` (three copies:
 `localtest`, `probe_zero`, `run_habitats`).
 
-## Harness debt — two rounds PAID (S1–S4 2026-08-06; the move-down round 2026-08-20), **two items outstanding**
+## Harness debt — three rounds PAID (S1–S4 2026-08-06; the move-down round 2026-08-20; the GFLIP balance-layer move-down 2026-08-25), **two items outstanding**
 
-**Three items are outstanding: `zneq.ledger`** (deliberately deferred to a
-round that can re-run `oschu --gtarget` / `--census1` / `--census2`), **the
-`kbare/` sibling-import set** that probe KBARE-FALSIFY created, and **the
-`w4/gflip.py` sibling-import set** that direction GFLIP created (last
-subsection) — the latter two **UNPAID** by the same rule that forbids a
-dispatch from moving a landed name. Everything else is paid: the first
-round's four items are in the
+**Two items are outstanding: `zneq.ledger`** (deliberately deferred to a
+round that can re-run `oschu --gtarget` / `--census1` / `--census2`) and
+**the `kbare/` sibling-import set** that probe KBARE-FALSIFY created —
+**UNPAID** by the same rule that forbids a dispatch from moving a landed
+name. Everything else is paid: the first round's four items are in the
 *ALL FOUR CLEARED* block immediately below (kept in the past tense as the record
-of what was wrong), and the five §2-rule-2 move-downs the sixth-to-eighth
-fan-outs accumulated are in the three *New item* subsections at the end, each
-marked **PAID 2026-08-20**, with the round's own write-up after them. Two
+of what was wrong), the five §2-rule-2 move-downs the sixth-to-eighth
+fan-outs accumulated are in the three *New item* subsections after it, each
+marked **PAID 2026-08-20** with the round's own write-up after them, and
+the eleven-device GFLIP balance-layer move (last subsection) is marked
+**PAID 2026-08-25**, its own dedicated payment commit. Two
 *Recorded observations* also remain deliberately unfixed and say so.
 
 ### Round one — four items, **ALL FOUR CLEARED**; **CLOSED** (S1–S4, 2026-08-06)
@@ -2015,7 +2061,7 @@ and `coplanar_closure` (the pencil propagation rule) are the two devices a
 second consumer would want; they are arc-specific today and stay in the driver
 per §2 rule 1.
 
-### New item (2026-08-25, direction GFLIP) — the `w4/` balance-layer device set; **UNPAID**
+### New item (2026-08-25, direction GFLIP) — the `w4/` balance-layer device set; **PAID 2026-08-25**
 
 `w4/gflip.py` imports **eleven** read-only devices from **five sibling
 leaves** — the documented sibling-import pattern, in policy, but tripping §2
@@ -2049,6 +2095,28 @@ gets a §1 row** — cataloguing is not optional. Acceptance test if the move is
 made: re-run the six consumers' full validate modes (`gbal`, `balb`, `gdesc`,
 `gflow`, `gcoll --slack --dem --tf --suff`, `glaw`, `yloc`, `gpsa`, `gflip`)
 byte-identical at `PYTHONHASHSEED=0` against pre-move baselines.
+
+**PAID 2026-08-25**, exactly that way, as its own dedicated payment commit
+(nothing else in flight over the five old homes, so — unlike KBARE-FALSIFY
+above — this one did not have to wait for a between-waves round): all
+eleven moved to **`gridbal_common`**, byte-verbatim, with the three-way
+grouping above kept as its module docstring's structure and as this
+section's own §1 subsection (*The `gridbal_common` layer*). Five of the
+eleven needed a **deferred** (function-body-local, not top-level) import
+to reach a name that stayed behind in their old home — `gbal.pool_cases`
+(read by `stratum_cases`), `gbal.rand_cubic` (by `random_cases`),
+`gbal.assign_feasible` / `z_of_orientation` (both by `feasible_at`), and
+`balb.rand_habitat` (by `seeded_shapes`) and `gpsa.nkp_specs` /
+`nk55_specs` / `nko2v_specs` (all three by `named_cases`) — because the
+old home now imports `gridbal_common` back to re-export, and a top-level
+import in the other direction would have been a genuine cycle at
+module-load time; `WITNESSES` (`gunif`), `nk_specs` (`gdev`) and
+`nko_specs` (`gadm`) are not cyclic and stay top-level. The nine driver
+invocations named above all re-ran byte-identical modulo wall-clock at
+`PYTHONHASHSEED=0`; `yloc`'s own `--validate` does not fit the 600 s
+foreground budget (README's standing note), so it ran as the
+already-documented three-invocation split (`--coll`, `--loc`, `--fibre
+--par --fit --cert --adv`) instead, covering the same ground.
 
 ## Deliberate non-goals
 

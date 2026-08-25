@@ -438,10 +438,11 @@ possible home `n_hub = 8`, `2k = 2`, *Step G108*(v)) — then the one-unit-defec
 `rank(Q|_D) = 3` residue (harness-unblocked since the move-down round), GCOLL's collision
 dominance, and (OC-19) input (c) class-uniformly — the *shape* of the pick stays a
 user call under the standing 2026-08-07 delegation. Both probe verdicts (KBARE-FALSIFY,
-C3-AVOID) were surfaced to the user 2026-08-25; nothing is owed a mention. One unpaid
-harness item GFLIP added: the `w4/` balance-layer sibling-import set
-(`notes/scripts/README.md` *Harness debt*, eleven devices, coordinator-paid
-between waves like its predecessors).
+C3-AVOID) were surfaced to the user 2026-08-25; nothing is owed a mention. The harness
+item GFLIP added — the `w4/` balance-layer sibling-import set, eleven devices
+(`notes/scripts/README.md` *Harness debt*) — is **PAID 2026-08-25**: all eleven moved
+to a new `gridbal_common` layer, re-exported from their five old homes, nine driver
+invocations re-run byte-identical modulo wall-clock.
 
 **Nothing is awaiting user adjudication as of 2026-08-19.** The one item that was —
 ZNEQ's `σ > 0`-everywhere hunt at class shapes whose `H` carries a short theta

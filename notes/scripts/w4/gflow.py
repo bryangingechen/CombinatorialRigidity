@@ -136,6 +136,13 @@ from gdev import habitat_by_lemma, nk_specs                               # noqa
 from gorient import m_of_matching, perfect_matchings                      # noqa: E402
 from gpsa import branches_at, nk55_specs, nkp_specs, pattern_of           # noqa: E402
 
+# `feas_flip`/`seeded_shapes` MOVED DOWN to `gridbal_common` on 2026-08-25
+# (README *Harness debt*, direction GFLIP): `gflip` imports both, past §2
+# rule 2's trigger, alongside nine sibling devices from `balb`/`gbal`/
+# `gdesc`/`gpsa`.  Re-exported here, so this module's own modes and
+# `gflip`'s import line are unchanged.
+from gridbal_common import feas_flip, seeded_shapes                       # noqa: E402
+
 R_SEED = 20260819
 
 
@@ -347,13 +354,6 @@ def seeds_at(specs, n, oidx):
     return out
 
 
-def feas_flip(specs, n, oidx, pat, j):
-    """Is the pattern with odd branch oidx[j] recoloured (GR-50)-feasible?"""
-    p2 = [(pat >> t) & 1 for t in range(len(oidx))]
-    p2[j] ^= 1
-    return feasible_at(specs, n, oidx, p2) is not None
-
-
 def necklaces(ms=(6, 8, 10, 12)):
     """The commissioned odd-rich necklace families, reused read-only, gated
     by the POLYNOMIAL habitat criterion ((GR-42), gdev.habitat_by_lemma) --
@@ -383,12 +383,6 @@ def hist(d):
 def hist2(d):
     return dict(sorted(d.items(), key=lambda t: (t[0][0], t[0][1] is None,
                                                  t[0][1])))
-
-
-def seeded_shapes(n, tries, rng):
-    """Seeded habitat shapes at n hubs (balb.rand_habitat, behind the (GR-25)
-    cut criterion).  A GRAPH sampler; no placement is drawn."""
-    return [s for s in rand_habitat(n, rng, tries) if odd_idx(s)]
 
 
 # ------------------------------------------------- [GFL-1] --model ----------

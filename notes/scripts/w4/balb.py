@@ -124,6 +124,13 @@ from gorient import prep_shape                                        # noqa: E4
 from gpsa import (branches_at, is_bridgeless, nk55_specs, nkp_specs,     # noqa: E402
                   parity_census, pattern_of, t1_move)
 
+# `stratum_cases`/`v8_specs` MOVED DOWN to `gridbal_common` on 2026-08-25
+# (README *Harness debt*, direction GFLIP): `gflip` imports both, past §2
+# rule 2's trigger, alongside nine sibling devices from `gbal`/`gdesc`/
+# `gflow`/`gpsa`.  Re-exported here, so this module's own modes and
+# `gflow`'s import line are unchanged.
+from gridbal_common import stratum_cases, v8_specs                     # noqa: E402
+
 R_SEED = 20260819
 
 
@@ -374,30 +381,6 @@ def rand_habitat(n, rng, tries, gate=True):
         if gate and not cubic_habitat(n, es, lens):
             continue
         out.append(specs)
-    return out
-
-
-def v8_specs(long_chord=False):
-    """The Wagner shape V8: the 8-cycle 0..7 plus the four long chords
-    (i, i+4), the chords ODD.  Habitat (asserted at use): cubic,
-    loop-free, 3-connected, cyclically 4-edge-connected, excess 6."""
-    cyc = [(i, (i + 1) % 8) for i in range(8)]
-    ch = [(0, 4), (1, 5), (2, 6), (3, 7)]
-    if long_chord:
-        return [(u, w, 2) for (u, w) in cyc] + \
-            [(0, 4, 5), (1, 5, 3), (2, 6, 3), (3, 7, 3)]
-    return [(u, w, 4 if j == 0 else 2) for j, (u, w) in enumerate(cyc)] + \
-        [(u, w, 3) for (u, w) in ch]
-
-
-def stratum_cases():
-    """Every odd-carrying habitat shape of the Lambda = empty, D = 0
-    stratum -- EXHAUSTIVE (gbal.pool_cases behind the (GR-25) cut
-    criterion), all-even shapes dropped (balance is vacuous there)."""
-    out = []
-    for j, (n, sp) in enumerate(pool_cases()):
-        if any(L % 2 == 1 for (_u, _w, L) in sp):
-            out.append((f'pool#{j + 1}', n, sp))
     return out
 
 

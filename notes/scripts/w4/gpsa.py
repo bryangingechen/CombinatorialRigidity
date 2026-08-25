@@ -97,6 +97,15 @@ from gdev import (nk_specs, habitat_by_lemma, light_hm,                # noqa: E
 from gadm import (cycle_masks, dp_pref, dp_walk, mu_in_phi,            # noqa: E402
                   complete_matching, nko_specs)
 
+# `branches_at` MOVED DOWN to `gridbal_common` on 2026-08-25 (README
+# *Harness debt*, direction GFLIP): eight consumers before this move --
+# `balb`, `gbal`, `gdesc`, `gcoll`, `gflow`, `glaw`, `yloc`, `gflip` --
+# the widest fan-in recorded, past §2 rule 2's trigger, alongside ten
+# sibling devices from `balb`/`gbal`/`gdesc`/`gflow`.  Re-exported here,
+# so this module's own modes and every consumer's import line are
+# unchanged.
+from gridbal_common import branches_at                                # noqa: E402
+
 R_SEED = 20260818
 
 
@@ -110,18 +119,6 @@ R_SEED = 20260818
 # accumulator; `apply_cut_move`/`predict_flips` are the (GR-45) calculus;
 # `nkp_specs`/`nk55_specs`/`nko2v_specs` are the commissioned odd-rich
 # stress constructions.
-
-
-def branches_at(specs, n):
-    """hub -> the 3 incident branch indices (cubic, loop-free asserted)."""
-    inc = {v: [] for v in range(n)}
-    for i, (u, w, _L) in enumerate(specs):
-        assert u != w, "loop in hub multigraph"
-        inc[u].append(i)
-        inc[w].append(i)
-    for v in range(n):
-        assert len(inc[v]) == 3, "hub not cubic"
-    return inc
 
 
 def is_bridgeless(specs, n):
