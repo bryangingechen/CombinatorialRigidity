@@ -10753,7 +10753,7 @@ state of (b′).**
 | (b′) with (GR-C1) + (GR-C2) | `2` | reduced to the **selection** clause (GR-C2); (GR-C1) proven at `n ≤ 6` — **(GR-C2) PROVEN at `n ≤ 10` (*Steps G120–G124*), so a full THEOREM on the `n ≤ 6` stratum, theorem modulo (GR-C1) alone at `n = 8, 10`** |
 | (b′) with (GR-C1) + (GR-R1) | `4` | **PROVEN modulo (GR-C1) alone** ((GR-86) + one descent step; (GR-R1) PROVEN at *Steps G116–G119*) — a full theorem on the `n_hub ≤ 6` stratum |
 | (b′) with (GR-R1) alone | `4·min(k, ⌊n/4⌋) ≤ 12` | **PROVEN**, `n`-free ((GR-R1) PROVEN at *Steps G116–G119*) |
-| (b′) with (GR-R1) + (GR-C2) at every step | `2·min(k, ⌊n/4⌋) ≤ 6` | **the every-step form is PROVEN for `n < 6|δ|` and REFUTED from `n = 12` (*Steps G120–G124*)**: this row is a THEOREM outright at `n ≤ 10`, OPEN beyond via the successor **(GR-104)(i)** (the price form); the interpolation (GR-104)(ii) improves the chain below `n = 12·(δ_M/2)` |
+| (b′) with (GR-R1) + (GR-C2) at every step | `2·min(k, ⌊n/4⌋) ≤ 6` | **the every-step form is PROVEN for `n < 6|δ|` and REFUTED from `n = 12` (*Steps G120–G124*)**: this row is a THEOREM outright at `n ≤ 10`, OPEN beyond via the successor **(GR-104)(i)** (the price form — since *Steps G125–G129* (GPRICE) a theorem at `2k = 2`, every `n`, modulo the balance law (GR-108)); the interpolation (GR-104)(ii) improves the chain below `n = 12·(δ_M/2)` |
 
 **Why the naive exchange had to be anchored, recorded as the route-3
 post-mortem.** The obvious `n`-free form of route 3 is *"`f` is 2-Lipschitz
@@ -11005,7 +11005,7 @@ driver's `--exact` price table as their in-driver counterpart.
 | **(GR-89)(iii)** | the counting bound `n_hub ≥ 3k + 5\|δ\|/2` for a total failure | **proven** (a five-line count off (GR-85)(iv)); a live guard in the driver |
 | **(GR-89)(iv)** | **(GR-C2)**, the selection clause | **settled per-configuration in both directions at *Steps G120–G124*** (2026-08-25, GCHEAP): every-step form **PROVEN for `n < 6|δ|`** — all `n ≤ 10` at `|δ| = 2`, the censuses now theorems — and **REFUTED from `n_hub = 12`** by witness; as-posed proven `n ≤ 10`, OPEN beyond; successor **(GR-104)(i)**. The "proven by (iii)" clause here was the incomplete inference *Step G108*(v)'s marker corrects |
 | **(GR-R1)** | some majority-side flip is always feasible | **PROVEN at *Steps G116–G119*** (GFLIP, 2026-08-25; the selection theorem (GR-99), with `≥ |δ|` feasible majority flips — (GR-52)/(GR-53) turned out not to be the instruments) |
-| **(b′)** | `d_adm − d_par ≤ 2` | **a HIT of the third kind — a different constant with the exact boundary named.** Constant `4` **PROVEN modulo (GR-C1)** and `n`-free `≤ 12` **PROVEN outright** ((GR-R1) closed at *Steps G116–G119*); constant `2` **a THEOREM on the whole `n ≤ 6` stratum and modulo (GR-C1) alone at `n = 8, 10`** (*Steps G120–G124*), **OPEN from `n = 12`**, residual **(GR-104)(i)** (the price form, superseding (GR-C2) as the certificate); sub-clause 1 proven, sub-clause 2 refuted as posed |
+| **(b′)** | `d_adm − d_par ≤ 2` | **a HIT of the third kind — a different constant with the exact boundary named.** Constant `4` **PROVEN modulo (GR-C1)** and `n`-free `≤ 12` **PROVEN outright** ((GR-R1) closed at *Steps G116–G119*); constant `2` **a THEOREM on the whole `n ≤ 6` stratum and modulo (GR-C1) alone at `n = 8, 10`** (*Steps G120–G124*), **OPEN from `n = 12`**, residual **(GR-104)(i)** (the price form, superseding (GR-C2) as the certificate — since *Steps G125–G129* (GPRICE) a **theorem at `2k = 2`, every `n`, modulo the balance law (GR-108) alone**, its `2k ∈ {4, 6}` `O ⊄ M` corner OPEN); sub-clause 1 proven, sub-clause 2 refuted as posed |
 | (GR-67)/(GR-68)/(GR-69)/(GR-70) | BALB's chain | **untouched and consumed**; (GR-70)(ii)'s figures **independently reproduced** from the `z`-cube; (GR-68) re-derived once inside the model as a consistency check, never replaced |
 | (GR-49)–(GR-54) | the z-form and the balance theorem | **untouched and consumed**; (GR-50)'s decision is *corroborated* at the one-flip level by the chain search's 0 disagreements |
 | **(a′)** / **input (Y)** / **(GR-64)(R2)** | | **OPEN — not attempted.** One coordinate observation reported, no figure, no rank |
@@ -12740,3 +12740,455 @@ re-runs it.**
   per-configuration in both directions, (b′) at the constant 2 a stratum
   theorem), which is not entry 1 and arms nothing. **Firing is a
   coordinator action; reported, not fired.**
+
+---
+
+### Steps G125–G129 (2026-08-25, direction GPRICE) — **(GR-104)(i) is RESHAPED at the boundary stratum, with everything around the reshaping proven**: **(GR-105)** is the **colour-swap identity at the `f`-layer** — the global bit-complement `z ↦ 1 ⊕ z` is a dist-preserving admissibility involution at EVERY perfect matching, so `f(p) = f(p̄)` for every pattern and in particular the two majority one-flip prices at a `2k = 2` stall are **equal** ((GR-103)(iii)'s measured `[0, 0]` symmetry explained in one line); **(GR-106)** is the **reversal-set normal form** — at any matching with ALL odd branches inside `M` (the only cell a (GR-104)(i) failure can occupy at `2k = 2`), an admissible configuration is EXACTLY a set `R` of reversal hubs meeting every `F`-cycle evenly, labelled sink/source alternately, with no even matching pair mono-labelled and each A-end a source / B-end a sink, and `dist(z, M) = n − |R|` — making `f(p)` computable in `2^n` instead of `2^{3n/2}` (cube-asserted at 1 054 pairs, reaching `n = 18` where the cube stops at 12); **(GR-107)** is the **reachability theorem** — the patterns at which one reversal set stays valid form an affine subspace `p ⊕ L`, `L` spanned by end-free branches and block flips, giving the exact obstruction to price `≤ 0` (the flip branch γ-**linked** through a component chain) and the **2k = 2 reduction**: (GR-104)(i) at `2k = 2` holds **outright when some odd branch is off `M`**, and otherwise follows from **(GR-108)**; **(GR-108)** is the minted **BALANCE LAW** — *at every `O ⊆ M` matching, `d_par(M)` is attained at a balanced pattern* — measured with **0 violations at all 1 431 swept pairs** (the stratum sub-cell EXHAUSTIVE at 1 034, the (GR-103) control, seeded `n = 8/10/12`, and a new cell-targeted sampler to `n = 18`, `2k ∈ {2, 4}`), its **strong form** (every maximum reversal set reaches balance) proven-by-exhaustion on the stratum and **failing from exactly `n = 12`** (65/101 at the (GR-103) control) — so a proof must exchange between maximum reversal sets, and the failure boundary coincides with (GR-101)'s; **(GR-109)** the status: **(GR-104)(i) is a THEOREM at `2k = 2`, every `n`, modulo (GR-108) alone**, the refutation hunt is EMPTY to `n = 18` under disclosed caps, and the residual is (GR-108) plus the `2k ∈ {4, 6}`, `O ⊄ M` corner. **(GR-15) stays OPEN, no gap-map status move on `hK` itself; E3 stays ARMED and does NOT fire.**
+
+Answering `notes/Pencil-fanout.md` §"GPRICE — thirty-third ordinal": **prove,
+refute by witness, or settle under a restricted quantifier the price form
+(GR-104)(i)**. **The outcome is the third kind, with the restriction exactly
+named**: the price form is **proven on the whole `2k = 2` stratum at every
+`n` modulo one minted law** ((GR-108), the balance law), whose own standing
+is *measured* (1 431/1 431, the `n ≤ 6` sub-cell exhaustive) — and the
+refutation object the spec names (a pair with all parity-optimal
+configurations unbalanced and all price-stalled) is **not found**: every
+swept `O ⊆ M` pair, at every `n ≤ 18` reached, has a **balanced**
+parity-optimal configuration outright. Rank-free throughout: nothing imports
+or calls `gexist.fully_good_rank` and no `d_fg` claim is made anywhere
+((a′) / input (Y) untouched). Read against *Steps G104–G109*
+((GR-85)–(GR-90)), *Steps G116–G119* ((GR-97)–(GR-99)) and *Steps G120–G124*
+((GR-100)–(GR-104)).
+
+**Where the offered mechanism question lands.** *Step G124*'s
+what-would-change-this (iii) asked *why* the stalled configurations' repair
+chains price `≤ 0` at parity-optimality. The answer this pass finds is that
+the question dissolves one level up: at every `O ⊆ M` pair ever swept, a
+**balanced** pattern already attains `d_par(M)` — the stalled `|δ| = 2`
+optima are never the *only* optima — and the observed price 0 is forced by
+that plus (GR-105) (`f(p + χ_{γ₁}) = f(p + χ_{γ₂})`, and each is trapped in
+`[d_par, d_par + 4]` with the balanced value `d_par` available). The open
+mechanism is re-aimed at the balance law itself, whose exact obstruction
+family (GR-107) names.
+
+***Notation, inherited unchanged, with two deliberate new terms.*** `δ`,
+`O`, `H`, `M`, `F = G° ∖ M`, `z`, colour **0 = A**, `m(v)`, blocked ends,
+`d_par(M)`, `d_adm(M)`, `f(p)` (= the minimum of `dist(·, M)` over
+admissible configurations at odd pattern `p`) — all as at *Steps G104–G109*;
+`α(v)` (all-three-dart A-count) as at *Steps G120–G124*. **New:** at an
+`O ⊆ M` pair, a hub `v` is a **reversal hub** of `z` iff its two `F`-darts
+are equal-coloured — a **sink** (both A, i.e. `A(v) = 2`) or a **source**
+(both B, `A(v) = 0`); `R(z)` is the set of reversal hubs. `p̄` is the
+pattern with every odd branch's colour flipped. An **end** is a hub of an
+odd (matching) branch; all other hubs are **inner** (their matching branch
+is even).
+
+**Step 0 pin (mandatory, discharged before any derivation).** (GR-49)
+(admissibility, one bit per branch, `α(v) ∈ {1, 2}`). (GR-50)/(GR-51)
+consumed as the feasibility oracle. (GR-85) in full — `A(v)`, the
+`dist = #{v : A(v) = 1}` objective, the three local matching conditions,
+the free even-`M` bit. (GR-86) in full (the repair-chain price ledger:
+cheap `⟹ ≤ 2`, doubly-blocked matching `⟹ ≤ 4`). (GR-89)(iv) (cheap,
+(GR-C1)/(GR-C2)), (GR-99)(ii) (`≥ |δ|` feasible majority flips — consumed
+as the feasibility supply, exactly as (GR-101) consumed it), and
+(GR-100)–(GR-104) in full ((GR-103)(i)'s printed witness re-entered for
+independent reconstruction, its landed audit figures asserted as a control,
+not re-derived). **Bars honoured:** (GR-C1) not attacked (consumed as a
+hypothesis exactly where (GR-104) consumes it); (GR-R1)/(GR-99), (GR-C2)'s
+settled halves, (GR-103)'s refutation all consumed, none re-attacked or
+repaired; (GR-49)–(GR-54), (GR-67)–(GR-72), (GR-85)–(GR-90),
+(GR-97)–(GR-104)'s landed parts not re-derived; no landed census or
+full-cube audit re-run — the driver's sentences quantify over the **new**
+`O ⊆ M` (shape, matching) cell decomposition and over new `n = 14/16/18`
+pools, and every landed figure is cited, not re-measured; (GR-15) / class
+uniformity untouched; no `.lean` touched (the standing Lean hold).
+
+---
+
+### Step G125 — (GR-105): the colour-swap identity at the `f`-layer — `f(p) = f(p̄)` at every matching, so a `2k = 2` stall's two majority prices are EQUAL
+
+> **(GR-105)** *(proven, one line off (GR-49); asserted at every pattern of
+> every `O ⊆ M` pair of every leg — 1 431 pairs; `--cell`, `--seed`,
+> `--hunt`)*
+>
+> Let `M` be ANY perfect matching and `p` any feasible odd pattern. The
+> global bit-complement `z ↦ 1 ⊕ z` (flip every branch bit) maps the
+> admissible configurations at `p` bijectively onto those at `p̄`, and
+> **preserves `dist(·, M)`**. Hence
+> > `f(p) = f(p̄)` for every pattern, and the `f`-spectrum is symmetric
+> > under `δ ↦ −δ`.
+>
+> **Corollary (the `[0, 0]` symmetry).** At `2k = 2` the two balanced
+> patterns are each other's complements, so the two majority one-flip
+> prices from an unbalanced pattern are **equal**:
+> `f(p + χ_{γ₁}) = f(p + χ_{γ₂})`. (GR-103)(iii)'s measured stall prices
+> `[0, 0]` could never have been `[0, 2]`.
+
+*Proof.* Complementing every bit flips both darts of every branch, so each
+hub's dart colour vector complements: `α(v) ↦ 3 − α(v)`, and `{1, 2}` is
+complement-closed — admissibility is preserved. The minority dart is the
+colour appearing once; complementing the 2–1 split leaves the **same
+branch** carrying the singleton, so `m(v)` is unchanged hub by hub, and
+`dist(z, M) = #{v : m(v) ≠ M(v)}` is preserved exactly. The odd pattern
+maps to `p̄`; the map is an involution. ∎
+
+*(This is (GR-100)(i)'s "by colour swap" read one layer up — at the
+`f`-layer rather than the identity layer; recorded because the price
+symmetry it forces was left as a measured curiosity at *Step G123*.)*
+
+---
+
+### Step G126 — (GR-106): the reversal-set normal form at `O ⊆ M` — an admissible configuration IS an alternating sink/source set, `dist = n − |R|`, and `f` is computable in `2^n`
+
+**Why this cell.** At `2k = 2` a (GR-104)(i) failure can only live at a
+matching containing **both** odd branches: at any `|δ| = 2` optimal pattern
+both majority branches are feasible ((GR-99)(ii), `a = 2`), and a feasible
+majority branch off `M` is **cheap** by definition, pricing the flip `≤ 2`
+at any optimal configuration ((GR-86)) — see (GR-107)(iii). So the open
+territory is exactly the `O ⊆ M` pairs, where the 2-factor `F` is
+**all-even** and the following exact model exists.
+
+> **(GR-106)** *(proven; asserted `f`-value-by-`f`-value against the landed
+> full-cube `f` (`gflow.adm_cube` + `f_layers`) at **1 054** (shape,
+> matching) pairs — the stratum sub-cell EXHAUSTIVE, V8, the (GR-103)
+> control, seeded `n = 8/10/12`; `--cell`, `--seed`)*
+>
+> Let `M` be a perfect matching with `O ⊆ M`, `F = G° ∖ M` the all-even
+> 2-factor. For admissible `z` let `R(z)` be its reversal hubs (sinks
+> `A(v) = 2`, sources `A(v) = 0`; every other hub has `A(v) = 1`). Then:
+>
+> **(i) Alternation.** `R(z)` meets every `F`-cycle in an even set, and
+> sinks and sources alternate in each cycle's cyclic order.
+>
+> **(ii) The matching exclusions.** No even matching branch has both ends
+> sinks, and none has both ends sources.
+>
+> **(iii) The end forcings.** An end of an **A**-coloured odd branch lying
+> in `R(z)` is a **source**; an end of a **B**-coloured one is a **sink**.
+> (Ends off `R(z)` are unconstrained.)
+>
+> **(iv) The distance identity.** `dist(z, M) = n − |R(z)|` **exactly**.
+>
+> **(v) Completeness.** Conversely, every labelled set `R` satisfying
+> (i)–(iii) arises from an admissible configuration with pattern `p`; the
+> fibre over `(R, labels)` is exactly the free orientations of the even
+> matching branches with both ends off `R` ((GR-85)(iii)'s free bit).
+>
+> **(vi) The algorithm.** Hence `f(p) = n − max{|R| : R satisfies
+> (i)–(iii) for p}`, computable by a `2^{n}`-enumeration with a linear
+> validity check — independent of branch lengths, and reaching `n = 18`
+> where the `2^{3n/2}` cube stops at `n = 12`.
+
+*Proof.* Orient each even branch toward the end receiving its A-dart; odd
+branches (all in `M`) deliver nothing. Each hub has exactly two `F`-darts,
+both on even branches, so `A(v) = ` its `F`-in-degree `∈ {0, 1, 2}`, and
+`Σ_v A(v) = |F| = n`. On one `F`-cycle, a hub with `A(v) ∈ {0, 2}` is
+exactly a point where the walking direction reverses; reversal points are
+even in number and alternate in–in (sink) / out–out (source) — (i), and
+conversely any even alternating set is realized by orienting each arc
+between consecutive reversal points consistently. Admissibility
+(`α(v) = o_v + indeg(v) ∈ {1, 2}`, (GR-49)): at an **inner** hub, `o_v = 0`
+and the matching branch can deliver, so `indeg ∈ [1, 2]` forces: a source
+(`F`-in 0) must receive its matching dart — excluding a source partner at
+the far end, since the branch delivers to only one end — and a sink
+(`F`-in 2) must not receive it — excluding a sink partner, since the
+branch must deliver to one end; a (source, sink) or (·, through) pair is
+realizable with the delivery direction forced, and a (through, through)
+pair leaves the bit free — (ii), (v).
+At an **end**, the matching branch is the odd `γ`: an A-`γ` supplies one
+A-dart (`o_v = 1`), so `α ≤ 2` forbids `F`-in 2 (sink) and `α ≥ 1` allows
+`F`-in 0 (source); colour-swapped for B — (iii). For (iv): at a through
+hub the two `F`-darts differ, so the minority dart is on an `F`-branch
+`≠ M(v)` — deviating; at a sink the darts are (A, A, B-on-`M`) (the
+matching dart is B by (ii)'s delivery arithmetic, or the odd branch is
+B-coloured by (iii)), so `m(v) = M(v)` — not deviating; colour-swapped at
+a source. Hence `dist = #through = n − |R|`. ∎
+
+**The stall dictionary, for the record.** At `2k = 2`, pattern all-A: a
+majority branch `γ = uw` is doubly blocked at `z` iff **both `u, w ∈ R(z)`
+as sources**; a stalled configuration is one with all four ends sources.
+(GR-103)(i)'s witness `z` is the reversal set `R = {0, 1, 2, 3` (sources)`,
+4, 5, 6, 11` (sinks)`}` with `dist = 12 − 8 = 4` — the model re-derives its
+whole audit row, and the driver asserts it.
+
+---
+
+### Step G127 — (GR-107): the reachability theorem — one reversal set serves an affine subspace of patterns, the price-`≤ 0` obstruction is a LINKAGE, and (GR-104)(i) at `2k = 2` reduces to the balance law
+
+> **(GR-107)** *(proven; the composed criterion is what `--cell`/`--seed`
+> assert against the cube at 1 054 pairs, since the driver's per-pattern
+> validity check IS this theorem)*
+>
+> Fix an `O ⊆ M` pair and a set `R` satisfying (GR-106)(i)–(ii) whose
+> labelling is encoded by the aux graph `aux(R)` — one even cycle per
+> `F`-cycle through `R`'s members in cyclic order, plus an edge per even
+> matching pair inside `R` — with `R` **structurally valid** iff `aux(R)`
+> is bipartite and no odd branch has its two ends in one component with
+> **opposite** parity classes (equal classes are required there, since both
+> ends carry the same forced label). Each component `X` has two labelings (`o(X) ∈
+> GF(2)`); an odd branch `γ` with a resident end `e ∈ X` must satisfy
+> `colour(γ) = κ(e) ⊕ o(X)`.
+>
+> **(i) The affine structure.** The patterns at which `R` is valid form
+> `p ⊕ L`, where `L ≤ GF(2)^O` is spanned by (a) `χ_γ` for every **free**
+> branch (no end in `R`), and (b) `χ_{S(W)}` for every **block** `W` — an
+> equivalence class of components under *sharing a resident branch* — with
+> `S(W)` its resident branches.
+>
+> **(ii) Balance reachability.** With `d_W := ` the imbalance of `S(W)` at
+> one orientation and `t := #free branches`, `R` reaches a balanced
+> pattern iff some signing has `|Σ_W ε_W d_W| ≤ t` (the parity match is
+> automatic).
+>
+> **(iii) The `2k = 2` reduction.** At `2k = 2`, whenever a parity-optimal
+> configuration with `|δ| ≤ 2` exists ((GR-C1)'s conclusion, consumed):
+> - if some odd branch is **off `M`**: (GR-104)(i) **holds outright** —
+>   at a balanced optimum vacuously; at an all-A optimum the off-`M`
+>   majority branch is feasible ((GR-99)(ii)) and cheap, so its flip
+>   prices `≤ 2` ((GR-86));
+> - if `O ⊆ M`: (GR-104)(i) **holds whenever the balance law (GR-108)
+>   does** — a balanced pattern attains `d_par(M)`, and a balanced
+>   parity-optimal configuration qualifies vacuously.
+>
+> So a (GR-104)(i) failure at `2k = 2` is exactly a failure of (GR-108)
+> at an `O ⊆ M` pair — and at such a pair the failure is the statement
+> `f(AB) ≥ f(AA) + 4`, since `f(AB) = f(BA)` by (GR-105) and (GR-86) caps
+> the gap at 4.
+>
+> **(iv) The price-`≤ 0` obstruction, named.** If at some `f(p)`-optimal
+> `R` the majority branch `γ` is free, or every component holding an end
+> of `γ` holds no end of another odd branch, then `p + χ_γ ∈ p ⊕ L` and
+> `f(p + χ_γ) ≤ f(p)` — **price `≤ 0`**. The obstruction is `γ` being
+> **linked**: a chain of aux components and resident branches forcing
+> `colour(γ)` equal to another branch's. At `2k = 2`: `f(AB) > f(AA)` at
+> an `O ⊆ M` pair iff **every** structurally-maximum `R` is `γ₁`–`γ₂`
+> linked.
+>
+> **(v) One repair is always affordable.** Removing an aux-cycle-adjacent
+> pair from one `F`-cycle of `R` preserves structural validity (the
+> shortened cyclic order keeps its 2-colouring; components only split), so
+> a linkage confined to one removable pair costs `≤ 2` — the (GR-86)
+> ledger's chain arithmetic recovered inside the model.
+
+*Proof.* (i) Validity at `q` is solvability of `colour(γ) = κ(e) ⊕ o(X(e))`
+over all resident ends — a linear system over GF(2) in the `o(X)` and the
+`colour(γ)`; its solution set in the colour coordinates is empty or affine,
+and it is nonempty (it contains `p`). The homogeneous solutions: flipping a
+set of component orientations must flip each resident branch's colour
+consistently, which ties together exactly the components sharing a resident
+branch — the blocks — and leaves branches with no resident end free.
+(ii) Choosing orientations independently per block contributes `± d_W` to
+the imbalance and each free branch `± 1`; `Σ d_W + t ≡ 2k (mod 2)` makes
+the parity automatic. (iii) Assembles (GR-99)(ii), (GR-86), (GR-105) and
+the definitions as displayed; at `2k = 2` and `|δ| = 2` both odd branches
+are majority-side, so "some odd branch off `M`" is "some majority branch
+off `M`". (iv)–(v) are direct. ∎
+
+---
+
+### Step G128 — (GR-108): the BALANCE LAW — at every `O ⊆ M` matching a balanced pattern attains `d_par(M)`; measured with 0 violations to `n = 18`, exhaustive on the stratum sub-cell, its strong form failing from exactly `n = 12`
+
+> **(GR-108)** *(MINTED, the reshaped residual; measured, NOT a theorem:
+> 0 violations at all **1 431** swept `O ⊆ M` pairs — the `n ≤ 6` stratum
+> sub-cell EXHAUSTIVE (1 034 pairs, every `O ⊆ M` matching of every
+> odd-carrying shape, cube-asserted), V8's chord matching, the (GR-103)
+> control pair, seeded habitat shapes at `n = 8/10/12/14`, and the NEW
+> cell-targeted `(F, M)` sampler at `n = 12/14/16/18`, `2k ∈ {2, 4}`;
+> `--cell`, `--seed`, `--hunt`, `--mech`)*
+>
+> *At every perfect matching `M` of a cubic loop-free hub multigraph with
+> all odd branches inside `M`, the parity optimum is attained at a
+> **balanced** pattern:* `d_adm(M) = d_par(M)`.
+>
+> **(i) What it says in the model.** Some structurally-maximum reversal
+> set reaches a balanced pattern ((GR-107)(ii) with `M* = n − d_par`).
+>
+> **(ii) What was measured.** Gap histogram `{0: 1 431}` — no `O ⊆ M`
+> pair with gap 2 or 4 exists anywhere swept, at any `n ≤ 18`, `2k ≤ 6`
+> reached; in particular the landed stratum gap-2 pairs ((GR-70)(ii)'s
+> 495) all live at `O ⊄ M` matchings. The `f`-spread across patterns is
+> genuinely nonzero (up to 8 at V8) — the law is about the *minimum*, not
+> pattern-independence.
+>
+> **(iii) The strong form, and its exact boundary.** *Every*
+> structurally-maximum `R` reaches balance at **all 1 034** stratum
+> pairs — but only **65 of 101** at the (GR-103) control (`n = 12`; worst
+> seeded ratio 32/66): the `γ`-linked maximum family is exactly the
+> stalled-optimum family and first inhabits `n = 12`, the same boundary
+> (GR-101)/(GR-103) pinned. So the law is **not** a per-maximum-set fact
+> from `n = 12` on: any proof must produce the balance-reaching maximum
+> from a linked one — an exchange between maximum reversal sets, which is
+> the exact open mechanism.
+>
+> **(iv) What refutes it.** An `O ⊆ M` pair at which every
+> structurally-maximum `R` fails (GR-107)(ii) — at `2k = 2`: every
+> maximum `R` linked with forced-equal colours. By (GR-107)(iii) that
+> pair refutes (GR-104)(i) as well, and by (GR-102) it needs
+> `d_par(M) ≥ 2|δ| − b_M` at its stalled optima.
+
+---
+
+### Step G129 — (GR-109): where (GR-104)(i) now stands, and the hand-off
+
+> **(GR-109)** *(the status statement; no new mathematics)* **(GR-104)(i)
+> is settled under a restricted quantifier with the restriction exactly
+> named, and its `2k = 2` content is reshaped onto one clean law.**
+>
+> | statement | standing after this pass |
+> |---|---|
+> | (GR-104)(i) at `n ≤ 10` | **theorem** ((GR-101)(ii) + (GR-86), landed — untouched) |
+> | (GR-104)(i) at `2k = 2`, any `n`, some odd branch off `M` | **PROVEN** ((GR-107)(iii), off (GR-99) + (GR-86)) |
+> | (GR-104)(i) at `2k = 2`, any `n`, `O ⊆ M` | **theorem modulo (GR-108) alone** ((GR-107)(iii)); unconditional proof NOT delivered |
+> | (GR-108), the balance law | **minted; measured 1 431/1 431** (stratum sub-cell exhaustive; to `n = 18` under disclosed caps); strong form fails from exactly `n = 12` |
+> | the spec's refutation object (all optima unbalanced ∧ all price-stalled) | **not found** — every swept `O ⊆ M` pair has a balanced optimum outright; an exhausted cap is *not found under cap*, never nonexistence |
+> | (GR-104)(i) at `2k ∈ {4, 6}` | theorem at `n ≤ 10` (landed); at the `O ⊆ M` sub-cell it follows from (GR-108) wherever the law holds (measured, incl. V8); the `O ⊄ M` corner (every feasible majority branch a DBM while some odd branch sits off `M`, infeasible or minority) is **untouched and OPEN** |
+>
+> **The residual, in successor order.**
+> 1. **Prove (GR-108)** — the whole remaining gap at `2k = 2`. The proof
+>    shape is pinned by (GR-108)(iii): an exchange producing a
+>    balance-reaching maximum reversal set from a linked one; the linked
+>    family is nonempty from `n = 12`, so nothing per-set works. The
+>    model's freedom inventory: adjacent-pair removal is free
+>    ((GR-107)(v)), and at a maximum `R` every same-gap through-pair
+>    insertion is blocked only by a matching obstruction — the two moves a
+>    surgery would combine.
+> 2. **The `2k ∈ {4, 6}`, `O ⊄ M` corner** of (GR-104)(i) — no landed or
+>    new instrument addresses it beyond `n ≤ 10`; it needs either a
+>    (GR-106)-style model with odd `F`-branches as fixed darts (the
+>    reversal-point calculus survives; the colour-swap identity (GR-105)
+>    survives; the alternation bookkeeping gains base offsets) or a
+>    different reduction.
+> 3. **(GR-C1) past the stratum** — unchanged (GPSA's first clause;
+>    (GR-69) its exact `n ≤ 6` boundary).
+
+---
+
+### Verification (Steps G125–G129)
+
+`notes/scripts/w4/gprice.py` (**new with this pass**, at the spec's pinned
+path; imports — all read-only — the balance layer **directly from
+`gridbal_common`** (`branches_at`, `imb_of`, `odd_idx`, `seeded_shapes`,
+`stratum_cases`, `v8_specs`; never via the sibling re-exports), plus
+`gbal.z_admissible`, `gflow` (`adm_cube`, `f_layers`), `gorient`
+(`perfect_matchings`), `cflank` (`cubic_habitat`)). **Rank-free**:
+`gexist.fully_good_rank` is never imported or called and no `d_fg` claim is
+made anywhere. Local devices, none shadowing a §1 primitive (checked
+against the README index and the *Divergences* table): `f_cycles` /
+`cell_data` (the 2-factor cycle extraction), `rmodel_f` ((GR-106)(vi)'s
+`2^n` computation of `f` at every pattern, with (GR-107)'s validity
+criterion as the inner check), `rmodel_diag` ((GR-108)(iii)'s
+maximum-family census), `cube_f` (the landed full-cube `f`, for the
+cross-assert), `price_verdict` (the (GR-104)(i) sentence at one
+`f`-table), `gr103_specs` ((GR-103)(i)'s **printed** witness, re-entered
+for independent reconstruction and used as a control), `cell_shapes` (the
+**NEW** cell-targeted sampler: draws `(F, M)` directly — random 2-factor +
+random matching avoiding `F`-parallels, odd lengths placed inside `M`,
+excess topped to 6 with `ℓ = 4`, `Λ = ∅` respected — each candidate gated
+by the canonical `cflank.cubic_habitat` before any claim), `sweep_pair` /
+`pairs_of` / `report`. Exact integers / GF(2) throughout; no floating
+point; rngs seeded per mode with the seed printed; no `set` iteration
+printed.
+
+```
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gprice.py --cell      # ~5 s  (GR-105)/(GR-106)/(GR-107) asserted vs the cube: stratum EXHAUSTIVE + V8 + the (GR-103) control
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gprice.py --seed      # ~5 s  seeded n = 8/10/12 (n <= 10 all cube-asserted; n = 12 first 6)
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gprice.py --hunt      # ~53 s the refutation hunt to n = 18: seeded pool + cell-targeted pool, 2k in {2, 4}
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gprice.py --mech      # ~4 s  (GR-108)(iii): the maximum-family balance census
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gprice.py --validate  # ~67 s all four in one process
+```
+
+**Which driver mode tests which sentence (F11).**
+
+| claim | mode | what asserts *that sentence* |
+|---|---|---|
+| (GR-105) `f(p) = f(p̄)` | all | asserted at every pattern of every `O ⊆ M` pair, 1 431 pairs, 0 violations |
+| (GR-106)(i)–(v) the normal form | `--cell`, `--seed` | `rmodel_f` (built on (i)–(iii) alone) asserted **equal to the landed cube `f`** at every pattern of 1 054 pairs — stratum EXHAUSTIVE, V8, the (GR-103) control, seeded `n = 8/10`, first 6 of `n = 12`; the criterion inside `rmodel_f` is (GR-107), so the same assert covers both |
+| (GR-106) dist identity at the (GR-103) witness | `--cell` | the control re-finds `d_par = 4`, gap 0, `f = {4, 4, 4, 4}` — (GR-103)(iii)'s landed row, asserted |
+| (GR-104)(i) at every swept pair | all | `price_verdict`: 'vacuous' or min flip price `≤ 2` at 1 431/1 431; the `REFUTATION` counter (any strict pair with all flips `≥ 4`) is **0** and any hit would print the full (shape, matching, `f`-table) |
+| (GR-108) the balance law | all | gap histogram `{0: 1 431}` — the sentence *some balanced pattern attains `d_par`* asserted per pair in `--mech`'s legs, measured in the rest |
+| (GR-108)(ii) `f`-spread ≠ 0 (the law is not pattern-independence) | `--cell`, `--seed` | spread histograms printed: stratum `{0: 16, 2: 865, 4: 153}`, V8 `{8: 1}` |
+| (GR-108)(iii) the strong form and its boundary | `--mech` | every maximum reversal set reaches balance at 1 034/1 034 stratum pairs; **65/101** at the (GR-103) control; worst seeded `n = 12` ratio 32/66 |
+| the hunt (refutation object) | `--hunt` | 373 pairs at `n = 12/14/16/18`, `2k ∈ {2, 4}` (86 + 96 + 60 + 73 + 25 + 20 + 4 cell-sampled + 9 seeded `n = 14`): kinds `{'vacuous': all}`, 0 candidates — **not found under the disclosed caps** |
+| (GR-107) proper | `--cell`, `--seed` | not separately driver-testable as an isolated sentence: it is the inner validity criterion of `rmodel_f`, so the 1 054-pair cube assert exercises it at every pattern; its (iii)/(iv)/(v) clauses are derivations from landed theorems, cited above |
+
+**Determinism.** `--validate` run at `PYTHONHASHSEED` 0 and 999:
+byte-identical except the `[Ns]` wall-clock annotations. Every seeded leg
+prints its seed.
+
+**Caps, disclosed in full — an exhausted cap is not a proof of
+nonexistence.** (1) Only the `n ≤ 6` stratum sub-cell is exhaustive (every
+`O ⊆ M` matching of every odd-carrying shape). (2) The seeded legs use
+`seeded_shapes` tries 200/90/400/300 at `n = 8/10/12/14` (matching caps
+6/6/4/none, binding on 0 shapes — disclosed by the driver). (3) The
+cell-targeted sampler runs tries 400/300/200/150/60 with pair caps
+30/20/4 on the `n = 16` (2k = 2), `n = 16` (2k = 4) and `n = 18` legs
+(the first not reached at 25 pairs; the latter two reached exactly);
+`n = 18` sweeps only 4 pairs. (4) `--mech`'s `n = 12` pool is 120 tries.
+(5) No search caps exist in any assertion path; `perfect_matchings`'s
+internal cap 500 never binds at the sizes swept. **None of these caps
+qualifies (GR-105)–(GR-107)** — those are proofs; the caps qualify
+(GR-108)'s measured standing and the hunt's emptiness only.
+
+**Scratch probes (README's standing rule).** None were run: every figure
+quoted above is produced by `gprice.py`.
+
+---
+
+### Confidence verdict (Steps G125–G129)
+
+| | claim | standing |
+|---|---|---|
+| **(GR-105)** | the colour-swap identity `f(p) = f(p̄)`, every matching; equal `2k = 2` prices | **proven** (one line off (GR-49)); asserted at 1 431 pairs |
+| **(GR-106)** | the reversal-set normal form at `O ⊆ M`; `dist = n − \|R\|`; the `2^n` algorithm | **proven**; cube-asserted at 1 054 pairs to `n = 12`, then load-bearing to `n = 18` |
+| **(GR-107)(i)/(ii)** | reachable patterns are affine; the balance-reachability signing criterion | **proven** (GF(2) linear algebra) |
+| **(GR-107)(iii)** | the `2k = 2` reduction: off-`M` case outright; `O ⊆ M` case ⟸ (GR-108) | **proven** ((GR-99) + (GR-86) + (GR-105) consumed) |
+| **(GR-107)(iv)/(v)** | the linkage obstruction to price `≤ 0`; adjacent-pair removal free | **proven** |
+| **(GR-108)** | the balance law at `O ⊆ M` | **minted; measured** — 1 431/1 431, stratum sub-cell EXHAUSTIVE, 0 violations to `n = 18`; **NOT a theorem**; strong form fails from exactly `n = 12`, so a proof must exchange between maximum reversal sets |
+| **(GR-104)(i)** | the price form | **theorem at `n ≤ 10`** (landed, untouched); **NEW: theorem at `2k = 2`, every `n`, modulo (GR-108) alone**; refutation object **not found** to `n = 18` under disclosed caps; `2k ∈ {4, 6}` `O ⊄ M` corner untouched and OPEN |
+| (GR-103) audits, (GR-70)(ii), (GR-99)–(GR-102) | | **untouched and consumed**; the control pair's landed row independently re-derived by the new model |
+| **(a′)** / input (Y) / (GR-64) rows / **(GR-15)** | | **OPEN — not attempted**; no rank computed anywhere; no flank; no class-uniformity claim |
+
+**Which side of the (`≤3`-closedHubNbhd) line this sits on.** The same side
+as GBAL's through GCHEAP's: exact GF(2) / integer combinatorics on
+constructed hub multigraphs, never `PencilNondegFeasible G`; no rank is
+computed anywhere; no σ-fixed witness is read as generic (§(K-clos)
+(AC-9)); the only samplers draw **graphs**, not placements.
+
+### What would change this (Steps G125–G129)
+
+*(i)* **A proof of (GR-108)** makes (GR-104)(i) a theorem on the whole
+`2k = 2` stratum at every `n`, closing (b′) at the constant 2 there modulo
+(GR-C1) alone; the pinned proof shape is the maximum-set exchange of
+(GR-108)(iii), and the two free moves of (GR-107)(v) and the blocked-gap
+structure at maximality are its inventory. *(ii)* **A refuting `O ⊆ M`
+pair** (every maximum reversal set signing-blocked) kills the balance law
+AND the price form at `2k = 2` in one object — (GR-102) confines it to
+`d_par(M) ≥ 2|δ| − b_M` and this pass adds that every maximum reversal set
+must be linked; nothing of the kind appeared to `n = 18`. *(iii)* **An
+error in (GR-99)(ii)** would void (GR-107)(iii)'s off-`M` half — it is a
+landed proven theorem. *(iv)* **The `2k ∈ {4, 6}`, `O ⊄ M` corner** is
+named open above; a (GR-106) extension with fixed odd-`F` darts is the
+natural instrument. *(v)* **The `Λ ≠ ∅` / `D > 0` lifts** stay unswept by
+standing rider; (GR-106) uses cubicity and `M` perfect throughout.
+*(vi)* **A Lean transcription** of (GR-105)/(GR-106) would be small
+(finite dart counting plus a cycle-orientation bijection); nothing here
+pins a carrier beyond what (GR-49)–(GR-51) already pin.
+
+**TERMINATION check (E1/E2/E3) — this direction's reading; the coordinator
+re-runs it.**
+
+- **(E1) NOT FIRED.** No g-flank; the pass is rank-free and computes no
+  rank, so clauses (i)–(iv) cannot fire. Clause (v) (`d_adm = ∞`) fires on
+  nothing: every swept pair has finite `d_adm` (gap 0 at every `O ⊆ M`
+  pair; `O ⊄ M` pairs not re-measured).
+- **(E2) NOT FIRED.** Entry 5 is PROVEN ((GR-54)) and consumed untouched.
+  No route is demoted: (GR-104)(i) keeps its landed `n ≤ 10` theorem and
+  gains a conditional `2k = 2` theorem; the residual is narrowed to
+  (GR-108) + one named corner, each with its successor instrument named in
+  place.
+- **(E3) ARMED (by GBAL), DOES NOT FIRE, and this direction does not fire
+  it.** E3 fires only on a HIT completing **entry 1** — i.e. (a′). This
+  pass does not attempt (a′), computes no rank, and makes no `d_fg` claim.
+  The movement here is on **(b′)'s selection layer** ((GR-104)(i) reshaped
+  onto (GR-108) at `2k = 2`), which is not entry 1 and arms nothing.
+  **Firing is a coordinator action; reported, not fired.**

@@ -969,6 +969,17 @@ are a recorded *Harness debt* item (see below).
 `ℚ(i)` via `exactcore.Gauss` (the first research driver to consume the
 2026-08-20 move-down). Its two sibling-import debt items are recorded below.
 
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/gprice.py --cell` | 5 s | `notes/Pencil-informal-grid.md` §(K-grid) *Steps G125–G127* (direction GPRICE; (GR-105)/(GR-106)/(GR-107): the reversal-set model `rmodel_f` asserted **equal to the landed cube `f` at every pattern** of the EXHAUSTIVE `n ≤ 6` `O ⊆ M` sub-cell (1 034 pairs), V8 and the (GR-103) control — whose landed `d_par = 4`, gap 0, prices `[0, 0]` row is independently re-derived; gap histogram `{0: …}` and `f`-spread printed per leg; 0 refutation candidates) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/gprice.py --seed` | 5 s | ibid. seeded `n = 8/10/12` `O ⊆ M` pairs (22; `n ≤ 10` all cube-asserted, `n = 12` first 6), same asserts, 0 candidates |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/gprice.py --hunt` | 53 s | ibid. *Step G128* ((GR-108) hunt: 373 pairs at `n = 12/14/16/18`, `2k ∈ {2, 4}` — seeded pool + the NEW cell-targeted `(F, M)` sampler, every candidate `cubic_habitat`-gated; gap histogram `{0: 373}`, the spec's refutation object NOT FOUND under disclosed caps) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/gprice.py --mech` | 4 s | ibid. *Step G128*(iii) ((GR-108)'s strong form: every structurally-maximum reversal set reaches balance at 1 034/1 034 stratum pairs, but 65/101 at the (GR-103) control and worst 32/66 at seeded `n = 12` — the exchange boundary exactly `n = 12`) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/gprice.py --validate` | 67 s | ibid. all four in one process; byte-identical at `PYTHONHASHSEED` 0 and 999 modulo wall-clock |
+
+**GPRICE (single direction, LANDED 2026-08-25).** One driver added
+(`w4/gprice.py`), nothing existing modified; imports downward only — the
+balance layer directly from `gridbal_common` (never via the sibling
+re-exports). Its five sibling-import arrivals are recorded below.
+
 **C3-AVOID (probe, LANDED 2026-08-24).** All seven modes (`--all`, ~36 s total,
 inside the 600 s foreground budget in one call) run by the dispatch, exit 0,
 **byte-identical at `PYTHONHASHSEED` 0 and 12345**. One driver added
@@ -2182,6 +2193,19 @@ consumer named, per the rule; a dispatch may not make the move):
 `outclasses_common` or a §1-catalogued promotion in place);
 `tree_triple` is a `grid`-layer primitive and a candidate for §1
 cataloguing in place. Same acceptance test as the 2026-08-25 payment.
+
+### New item (2026-08-25, direction GPRICE) — five further-consumer arrivals; **UNPAID**
+
+`w4/gprice.py` imports the balance layer directly from `gridbal_common` (the
+intended post-move pattern) plus **five** read-only devices from **four
+sibling leaves** — every one already on GCHEAP's table above, so this item
+records the new consumer arrivals rather than new names (per §2 rule 2; a
+dispatch may not make the move): `z_admissible` (`gbal` — **`gprice`** joins
+`gcheap`), `adm_cube`, `f_layers` (`gflow` — **`gprice`** joins `gcheap`),
+`perfect_matchings` (`gorient` — **`gprice`** is the FIFTH consumer),
+`cubic_habitat` (`cflank` — the standing habitat gate). **Where they should
+go if paid:** unchanged from GCHEAP's item — pay the two items together; the
+consumer lists there should be read as including `gprice` from this date.
 
 ## Deliberate non-goals
 

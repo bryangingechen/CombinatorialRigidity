@@ -1,8 +1,13 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: EIGHT fan-outs and THIRTEEN single directions; 40 of 41 directions
-LANDED — GPRICE (ordinal 33, §"GPRICE") is PREPPED 2026-08-25, dispatch is
-the next action.** **OQRANK (ordinal 32, §"OQRANK") LANDED 2026-08-25, same
+**Status: EIGHT fan-outs and THIRTEEN single directions dispatched; ALL 41
+directions LANDED.** **GPRICE (ordinal 33, §"GPRICE") LANDED 2026-08-25, same
+day as its dispatch — a graded outcome of the third kind: (GR-104)(i) is a
+theorem at `2k = 2`, every `n`, modulo the minted balance law (GR-108) alone
+(measured 1 431/1 431, `n ≤ 6` sub-cell exhaustive, hunt empty to `n = 18`),
+via the reversal-set normal form (GR-106) and reachability theorem (GR-107);
+residual (GR-108) + the `2k ∈ {4, 6}` `O ⊄ M` corner.**
+**OQRANK (ordinal 32, §"OQRANK") LANDED 2026-08-25, same
 day as its dispatch — a graded HIT of the first kind: the ⋆-eigen-block
 mechanism completed, the naive single-colouring form REFUTED as a class
 statement (27/174, incl. the (OC-42) WALL), and the hunted form GREEN —
@@ -2951,3 +2956,55 @@ read-only, left untracked for the coordinator to gate and commit.
 GPRICE"): §(K-grid) **extends** — no new section; labels
 **(GR-105)–(GR-109)**, **Steps G125–G129**; owning section stays
 authoritative; return any unconsumed remainder to the tail.
+
+### GPRICE — landing write-up (LANDED 2026-08-25, recon-fable, one serial coordinator commit)
+
+**Verdict: a graded outcome of the third kind — (GR-104)(i) proven under a
+restricted quantifier with the restriction exactly named — plus an empty
+refutation hunt to `n = 18`.** The colour-swap identity (GR-105), the
+reversal-set normal form (GR-106) (`dist = n − |R|` exact at every `O ⊆ M`
+pair; `f` computable in `2^n`, reaching `n = 18` where the cube stops at 12)
+and the reachability theorem (GR-107) (affine pattern-subspaces; the linkage
+obstruction to price `≤ 0`) prove: (GR-104)(i) holds **outright at `2k = 2`,
+every `n`, whenever some odd branch is off `M`**, and at the `O ⊆ M` cell it
+is a **theorem modulo the minted balance law (GR-108) alone** — every
+`2k = 2` failure of the price form is a **gap-4** failure of (GR-108) at an
+`O ⊆ M` pair. (GR-108) itself is **measured, not proven**: 0 violations at
+1 431 swept pairs (the `n ≤ 6` sub-cell EXHAUSTIVE at 1 034; the spec's
+refutation object — all optima unbalanced ∧ all price-stalled — NOT FOUND,
+every swept pair carrying a balanced optimum outright), its strong form
+failing from exactly `n = 12` (65/101 at the (GR-103) control), so a proof
+must exchange between maximum reversal sets — the re-aimed mechanism
+question. Residual, in successor order: prove (GR-108); the `2k ∈ {4, 6}`
+`O ⊄ M` corner (untouched beyond the landed `n ≤ 10`); (GR-C1) past the
+stratum. **Bars honoured:** (GR-C1)/(GR-103)/(GR-99) consumed, not attacked;
+rank-free throughout; no landed census or full-cube audit re-run (the
+driver's quantifiers are the NEW `O ⊆ M` cell decomposition and new
+`n = 14/16/18` pools); (GR-15) / class uniformity untouched; no `.lean`
+touched. **E1/E2 NO; E3 stays ARMED by GBAL, not fired** (the movement is on
+(b′)'s selection layer, not entry 1). Canonical home §(K-grid) *Steps
+G125–G129* (`notes/Pencil-informal-grid.md`); driver `w4/gprice.py` (five
+modes, ~67 s); labels (GR-105)–(GR-109) and Steps G125–G129 all claimed,
+none returned.
+
+**One scope note recorded at landing (no defect in the operative claims):**
+the draft's reduction prose reads "a (GR-104)(i) failure at `2k = 2` is
+exactly a failure of (GR-108)"; the operative direction is
+(GR-108) ⟹ (GR-104)(i) (the (GR-109) status table's "modulo (GR-108)
+alone"), and the converse holds in the **gap-4 form** the draft itself
+states — a gap-**2** failure of (GR-108) would leave (GR-104)(i) intact
+(the flip prices exactly 2). No swept pair exhibits any nonzero gap, so
+nothing measured turns on the distinction.
+
+**Coordinator verification at landing:** every mode re-run individually in
+the foreground (`--cell`/`--seed`/`--mech`/`--hunt`) plus `--validate` at
+`PYTHONHASHSEED` 0 AND 999 (byte-identical modulo wall-clock; all headline
+figures reproduced: 1 034 stratum pairs / gap `{0: …}` on every leg /
+`f`-spread histograms / the control's `d_par = 4`, prices `[0, 0]` /
+65/101 and 32/66 strong-form ratios / 373 hunt pairs, 0 candidates); the
+(GR-105) involution and (GR-106) orientation/reversal-point derivations
+re-walked; the driver's import list verified against the file itself
+(direct `gridbal_common`, rank-free — `fully_good_rank` absent); the L6
+bare-token grep clean on the merged draft; `check-gapmap-cells.py` green
+on the recomputed §(K-grid) row (trimmed to a current-state statement per
+the checker's own guidance, no cap bump).
