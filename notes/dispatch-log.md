@@ -126,6 +126,10 @@ keeps only what git cannot show.
 | 2026-08-25 | Phase39 40th direction OQRANK (`090899f1`, `a3f3cb90`) | fable | F6 park on a RESEARCH dispatch + a spend-limit kill; both cured by resume | The dispatch parked its ~40-min census in a background run with a monitor and returned a mid-flight status instead of a verdict — the F6 shape's first appearance on a *research* dispatch. Its prompt carried the foreground mandate in prose, but NOT the validated one-line F6 reminder, which the playbook specifies for build dispatches only. A corrective resume mandated the chunked foreground split (SIGZ precedent); a later spend-limit kill resumed rung-stable. All figures re-verified from foreground runs. **Lesson: put the F6 line on any dispatch with a compute leg, not only builds.** |
 | 2026-08-26 | Phase39 gap-map status-cell staleness, repaired at the GBLAW landing (`e8676558`) | fable (coordinator) | gate-invisible defect caught in verification (F17 shape, new surface) | The §(K-grid) row's STATUS cell still read "≤ 12 modulo (GR-R1) … (GR-C2) stays OPEN" three landings after GFLIP/GCHEAP/GPRICE settled both — each landing updated only the close-it cell, so the row contradicted itself internally. No gate reads one cell against the other (`check-gapmap-cells.py` caps size only), and the fresh-session reader hits the status cell first. Caught by the coordinator's landing re-read; repaired in the same commit. **Lesson: a landing that edits a gap-map row edits BOTH cells or states why not — the two-cell row is one more two-copy surface of the F17 family.** |
 
+| 2026-08-26 | Phase39 44th direction GHWIT (`abe0d46a`, `ef0c8907`) | opus | rung substitution — first single direction below top rung; outcome a HIT | Fable conserved at the user's session-config selection (`weekly_scoped` 92 % critical), so the playbook's nearest-available substitute ran: `recon-opus`, against six `recon-fable` predecessors as the calibration baseline. It **refuted (GR-104)(i)**, closing the four-direction GPRICE→GBLAW→GXESC→GHWIT thread negatively. The agent's own read: the win came from a cheap bitset re-implementation making 6.2M exhaustive instances affordable plus a climb on a new objective, not a deeper derivation. **One data point that a compute-shaped research leg is not rung-limited.** |
+| 2026-08-26 | Phase39 GHWIT verification-bar overclaim (`ef0c8907`) | opus | gate-invisible defect caught in verification → corrective resume, closed | The draft claimed **four** independent exact models and pinned a `max\|R\|` quadruple; the shipped driver implemented **three** and its own docstring said so, and nothing in the tree produced that figure. Every gate was green — the defect sat in the *verification-bar sentence itself*, the load-bearing claim for a refutation. Root cause the agent named: it wrote the bar from what it had **run** (a scratchpad probe) rather than what it had **shipped**. Resume landed the model as an asserting device. See F25. |
+| 2026-08-26 | Phase39 GHWIT — coordinator shaping block refuted by the direction it primed (`ef0c8907`) | opus (coordinator) | coordinator-predicted-obstruction category, SECOND instance | The dispatch's `route` block asserted the clause "reduces to *some maximum has `\|h\| = 2`*", derived by the coordinator from (GR-115)(iii). False: a landed witness has `min \|h\| = 3` across its whole maximum family, and the refuting pair defeats even `\|h\| ≤ 3`. Harmless here — the agent tested rather than assumed it — but it is the second phase instance of `RESEARCH-ARC.md`'s watched candidate (a coordinator prediction refuted by the direction it primed). **Two instances now; promotion-eligible at a third.** |
+
 ## Findings
 
 (Distill recurring lessons here — one entry per lesson, rows cite it.
@@ -567,3 +571,23 @@ At phase close, promote stable entries into the coordinator command's
   before adding its own content" for one section, a bare word-count for
   the other. State a repeated obligation **identically** at every site,
   or the weaker wording becomes the one a careful reader enforces.
+
+- **F25 — the verification-bar sentence is itself a headline claim, and it
+  is the one F11 is most likely to miss.** GHWIT (2026-08-26) shipped a
+  correct, four-times-checked refutation whose *description of its own
+  checking* was wrong: "four independent exact models" plus a pinned
+  `max|R|` figure, against a driver implementing three — its own docstring
+  saying so. Every gate passed, the mathematics was sound, and the three
+  shipped models already met the project's (GR-83)/(GR-113) bar, so nothing
+  failed except the sentence claiming more. The mechanism is specific and
+  repeatable: a model written as a **scratchpad probe**, run, believed, then
+  written up from memory of the *session* rather than a re-read of the
+  *deliverable* — which is also how the draft's own "probes promoted"
+  paragraph came to assert five promotions where three had happened. The
+  agent's diagnosis is the rule: **write that sentence by re-reading the
+  driver, never by recalling the session.** Coordinator-side the catch is
+  cheap and mechanical — grep the driver for the claimed model count and for
+  any figure the prose pins, before accepting a refutation. F11 says every
+  headline claim needs a driver testing that sentence; this is the reminder
+  that *"we checked it N ways"* is one of them, and on a refutation it is
+  the load-bearing one.
