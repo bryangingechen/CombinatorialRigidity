@@ -415,9 +415,10 @@ constraints; the dated dispatch narrative is in *Decisions made* and git):
   five *proven* escape failures at `P21`) — plus the **owed §2.5 counting-saturation filter
   check on (ZH-2)/(ZH-3)**, which §8's board had recorded as *"a cheap prose-only slice and
   worth running opportunistically"*. **The provenance bar is unchanged and is the hard bar:**
-  the source is unrefereed, AI-assisted, its byline and repository handle differ, and neither
-  has been independently checked — it is an **idea source, never a citation**, and no theorem
-  of it may be imported. (ZH-4)/(ZH-5) stay unopened, (ZH-6) stays write-up material, and
+  the source is unrefereed, its own acknowledgment credits an AI assistant with the proof
+  details and the Lean verification, and neither paper nor repository has been independently
+  checked — it is an **idea source, never a citation**, and no theorem of it may be
+  imported. (ZH-4)/(ZH-5) stay unopened, (ZH-6) stays write-up material, and
   **the shelf stays off §8's board either way**. Non-collision with BZAVOID is structural:
   different sections, disjoint tags (`BE-` vs `SH-`), serial coordinator landing.
   **(4) Session config — fable CONSERVED for the second consecutive session.** The user

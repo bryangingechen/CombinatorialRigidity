@@ -4341,10 +4341,9 @@ off-board either way.
 
 **Bars — the provenance bar is the hard one.** The source is a **preprint,
 unrefereed**, its own acknowledgment credits an AI assistant with *"the
-refinement of proof details, the Lean formalization and its verification"*, its
-byline (*Denzel Zheng*) and its named repository handle (`DongzheZheng`) differ,
-and **neither the paper nor the repository has been independently checked by
-this project**. Per top-level `CLAUDE.md` *Referencing prior work* and
+refinement of proof details, the Lean formalization and its verification"*, and
+**neither the paper nor the repository has been independently checked by this
+project**. Per top-level `CLAUDE.md` *Referencing prior work* and
 `DESIGN.md` *Formalize everything the argument uses*: it is an **IDEA SOURCE,
 never a citation**, and **no theorem of it may be imported, assumed, or leaned
 on**. Your deliverable must stand on (a) **classical facts** — Witt's theorem

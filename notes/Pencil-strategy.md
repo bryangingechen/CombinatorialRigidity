@@ -1390,10 +1390,9 @@ claims the Király–Tanigawa body–pin partition conjecture (their Conjecture 
 Jackson–Jordán–Villányi Conjecture 7.6) in `ℝ³`. **It is unrefereed**, its own
 acknowledgment credits an AI assistant with *"the refinement of proof details,
 the Lean formalization and its verification"*, and its appendix names a Lean 4
-formalization repository (handle `DongzheZheng`, Lean 4.29.0 plus a pinned
-mathlib commit) — note that the byline reads *Denzel Zheng* while the repository
-handle differs. **Neither the paper nor the repository has been independently
-checked by this project.** Per top-level `CLAUDE.md` *Referencing prior work*
+formalization repository (Lean 4.29.0 plus a pinned mathlib commit).
+**Neither the paper nor the repository has been independently checked by this
+project.** Per top-level `CLAUDE.md` *Referencing prior work*
 and `DESIGN.md` *Formalize everything the argument uses*, nothing below may be
 cited as established: these are **idea sources**, and anything load-bearing
 would be a formalization target. **This does not disturb §8.6's two durable
