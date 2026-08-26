@@ -1444,6 +1444,38 @@ bounds. The target token **(GR-104)** is GCHEAP's landed label — already
 minted, **not** in this reservation; GPRICE *cites* it and mints its own
 results at (GR-105)+.
 
+## Reserved namespace — direction GBLAW (2026-08-25)
+
+**Reserved 2026-08-25 for the single direction GBLAW** (ordinal 34, the
+arc's forty-second direction; `notes/Pencil-fanout.md` §"GBLAW"), the
+standing research pick made at the fifth 2026-08-25 check-in (single
+direction, front-runner-first → **(GR-108)**, the balance law — GPRICE's
+residual #1 and the head of *Step G129*'s successor order, the re-rank's
+ranks 1 and 2 both having landed the same day as OQRANK / GPRICE). One
+direction, no siblings — the reservation still binds because it protects
+the *next* dispatch's prep from this one's labels.
+
+| direction | owning § | labels reserved | steps reserved | driver |
+|---|---|---|---|---|
+| **GBLAW** | §(K-grid) — **extends**, no new section | **(GR-110)–(GR-114)** | **G130–G134** | `w4/gblaw.py` (conditional — see the spec) |
+
+The reservation is the head of §(K-grid)'s unclaimed tail (declared
+**(GR-110)+ / Step G130+** at GPRICE's landing above).
+
+**Code and basename verified 0-hit** as raw substrings, case-insensitively,
+across `*.md`, `*.tex`, `*.lean`, `*.py`, `*.m2` with `.git`/`.lake`
+excluded, control token `aglu` live at 14 files. Label tokens
+`(GR-111)`–`(GR-115)` and *Steps G131–G135* each 0-hit; `(GR-110)` and
+*Step G130* hit only GPRICE's live-tails bookkeeping above (the `(GR-97)`
+precedent). **Checked 0-hit and NOT chosen:** `GXCH`, `GEXCH` — they name
+the pinned proof *mechanism* (the exchange between maximum reversal sets),
+not the target (the `GSEL`/`GSTALL` rejection reason); `GRLAW` — reads as a
+`(GR-…)` label token, inviting exactly the bare-token ambiguity this
+registry exists to prevent. **`GBLAW` names the theorem's content** — the
+*balance law* (GR-108), the statement the direction proves or refutes. The
+target token **(GR-108)** is GPRICE's landed label — already minted, **not**
+in this reservation; GBLAW *cites* it and mints its own results at (GR-110)+.
+
 ## Registry — `notes/Pencil-informal.md` (the (K) workbook)
 
 Status keywords are pointers to the owning section's verdict block and the

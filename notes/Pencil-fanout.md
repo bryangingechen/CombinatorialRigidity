@@ -1,7 +1,8 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: EIGHT fan-outs and THIRTEEN single directions dispatched; ALL 41
-directions LANDED.** **GPRICE (ordinal 33, §"GPRICE") LANDED 2026-08-25, same
+**Status: EIGHT fan-outs and FOURTEEN single directions; 41 of 42 directions
+LANDED — GBLAW (ordinal 34, §"GBLAW") is PREPPED 2026-08-25, dispatch is
+the next action.** **GPRICE (ordinal 33, §"GPRICE") LANDED 2026-08-25, same
 day as its dispatch — a graded outcome of the third kind: (GR-104)(i) is a
 theorem at `2k = 2`, every `n`, modulo the minted balance law (GR-108) alone
 (measured 1 431/1 431, `n ≤ 6` sub-cell exhaustive, hunt empty to `n = 18`),
@@ -31,8 +32,8 @@ exact `n_hub` boundary for ledger attack (c)'s AA-glue case (GTMPL), (b′)'s fi
 `n`-free constant (GFLOW), a **NO HIT** on the authorized disproof hunt that nonetheless
 kills the counting route to a disproof (SIGZ), (a₁) reduced to one determinant (OSCHU), and
 **(GR-64)(R2) REFUTED** with (R1) delivered (GCOLL).
-Ordinals run 1–33 (the eighth fan-out claims 25–29; GFLIP is 30; GCHEAP is 31;
-OQRANK is 32; GPRICE is 33) and were assigned at dispatch, so landing order
+Ordinals run 1–34 (the eighth fan-out claims 25–29; GFLIP is 30; GCHEAP is 31;
+OQRANK is 32; GPRICE is 33; GBLAW is 34) and were assigned at dispatch, so landing order
 differs from ordinal order.
 
 **The two architecture-testing PROBES are also both LANDED** (§"Two probes SPECCED and
@@ -3008,3 +3009,123 @@ re-walked; the driver's import list verified against the file itself
 bare-token grep clean on the merged draft; `check-gapmap-cells.py` green
 on the recomputed §(K-grid) row (trimmed to a current-state statement per
 the checker's own guidance, no cap bump).
+
+## GBLAW — thirty-fourth ordinal, the forty-second direction (single dispatch, prepped 2026-08-25)
+
+**Selection provenance:** the standing 2026-08-07 delegation; shape adjudicated
+at the **fifth** 2026-08-25 check-in — **"Single direction,
+front-runner-first"** (an option selection; `notes/Phase39.md` *Current state*,
+the fifth 2026-08-25 bullet). With the 2026-08-25 re-rank's ranks 1 and 2 both
+landed the same day (OQRANK / GPRICE), the front-runner is GPRICE's own
+residual #1, the head of *Step G129*'s successor order and the first entry of
+`notes/Phase39.md` *Hand-off*'s candidate list: **(GR-108), the balance law**
+— the whole remaining gap to (GR-104)(i) at `2k = 2`. The same check-in
+scoped the GCHEAP/GPRICE harness-debt payment to precede this dispatch (paid,
+`782e8bcd`). Dispatched **un-named, single, top rung** (`recon-fable` — fable
+is dispatchable this session per the same check-in). Derivation-first tier —
+the proof shape is pinned and the sweeps are landed; new measurement is the
+conditional, not the default. **The shared mechanics and landing checklist
+above apply in full** — read-only w.r.t. every shared file, commit nothing,
+draft to the untracked `notes/Pencil-draft-GBLAW.md`, tight return verdict.
+
+**The target — (GR-108), the balance law; it is the whole remaining gap to
+(GR-104)(i) at `2k = 2`, every `n`.** Verbatim as GPRICE minted it
+(§(K-grid) *Step G128*, `notes/Pencil-informal-grid.md`):
+
+> *At every perfect matching `M` of a cubic loop-free hub multigraph with
+> all odd branches inside `M`, the parity optimum is attained at a
+> **balanced** pattern:* `d_adm(M) = d_par(M)`.
+
+In the (GR-106) model this says some structurally-maximum reversal set
+reaches a balanced pattern ((GR-107)(ii) with `M* = n − d_par`). Standing:
+**minted, measured, NOT a theorem** — 0 violations at all 1 431 swept
+`O ⊆ M` pairs (the `n ≤ 6` stratum sub-cell EXHAUSTIVE at 1 034,
+cube-asserted; V8; the (GR-103) control; seeded `n = 8`–`14`; the
+cell-targeted sampler to `n = 18`, `2k ∈ {2, 4}`). What a proof buys
+((GR-109)'s successor list, entry 1): **(GR-104)(i) becomes a theorem at
+`2k = 2`, every `n`, unconditionally** — with the off-`M` case already
+proven outright ((GR-107)(iii)), this closes the `2k = 2` stratum entirely,
+leaving (b′) at the constant 2 resting on (GR-C1) plus the `2k ∈ {4, 6}`
+`O ⊄ M` corner alone.
+
+**The named inputs (landed; consume, do not re-derive).** (i) **The
+reversal-set normal form (GR-106)**: at an `O ⊆ M` matching an admissible
+configuration IS a set `R` of reversal hubs meeting every `F`-cycle evenly,
+sink/source alternately labelled, no even matching pair mono-labelled, each
+A-end a source / B-end a sink, with `dist(z, M) = n − |R|` — the exact
+combinatorial carrier the proof works in. (ii) **The reachability theorem
+(GR-107)**: the patterns at which one reversal set stays valid form an
+affine subspace `p ⊕ L` (`L` spanned by end-free branches and block flips);
+its clause (v) is half the freedom inventory — **adjacent-pair removal is
+free**, and at a maximum `R` every same-gap through-pair insertion is
+blocked only by a matching obstruction — the two moves a surgery would
+combine. (iii) **The colour-swap identity (GR-105)** — the global
+bit-complement is a dist-preserving admissibility involution at every
+matching, so `f(p) = f(p̄)`; any balance argument gets this symmetry free.
+(iv) **The strong form's exact boundary (GR-108)(iii) is the pinned proof
+shape and the reason nothing per-set works**: *every* structurally-maximum
+`R` reaches balance at all 1 034 stratum pairs, but only 65/101 at the
+(GR-103) control (`n = 12`, worst seeded ratio 32/66) — the γ-linked
+maximum family is exactly the stalled-optimum family and first inhabits
+`n = 12`, the same boundary (GR-101)/(GR-103) pinned. **Any proof must
+produce the balance-reaching maximum from a linked one — an exchange
+between maximum reversal sets.** (v) **The adversarial control**: the
+`n = 12` (GR-103) pairs and the 36/101 strong-form failures there are where
+any refutation hunt or exchange-blocking analysis should grow from
+(`w4/gprice.py --mech` prints the maximum-family balance census; shapes /
+matchings / `z` reconstructible via `w4/gcheap.py --bnd`). Treat any
+exchange sketch as a candidate, not a pin — if it dies, say where.
+
+**What counts as a HIT** — a proof of (GR-108) (state the exact quantifier
+delivered: which maximum reversal set is produced, what the exchange
+consumes, any hypotheses carried beyond `O ⊆ M` + cubic loop-free). Also
+valued, on the (GR-29)/(GR-30) precedent: a **refutation by witness** per
+(GR-108)(iv) — an `O ⊆ M` pair at which every structurally-maximum `R`
+fails (GR-107)(ii) (at `2k = 2`: every maximum `R` linked with forced-equal
+colours) — which by (GR-107)(iii) refutes (GR-104)(i) as well and by
+(GR-102) needs `d_par(M) ≥ 2|δ| − b_M` at its stalled optima (state exactly
+what survives, in particular the proven `n ≤ 10` theorem and the constant-4
+chain); or a **proof under a restricted quantifier with the exact boundary
+named** (e.g. a `2k` stratum, an `n` bound past 12, or the strong form
+restored under a named structural hypothesis on the linked family). State
+which of the three you got.
+
+**Bars.** Do **not** attack (GR-C1) — a separate residual (GPSA's first
+clause; (GR-69) its exact `n ≤ 6` boundary). Do **not** attack the
+`2k ∈ {4, 6}` `O ⊄ M` corner — it is (GR-109)'s successor entry 2, a
+separate direction needing its own model extension. (GR-105)–(GR-107) and
+(GR-97)–(GR-104)'s landed parts are **landed** — consume, do not re-derive;
+the (GR-103) per-configuration refutation stands — do not try to repair it.
+Do not re-derive (GR-49)–(GR-54), (GR-67)–(GR-72), or (GR-85)–(GR-90). Do
+**not** re-run the exhaustive censuses, the full-cube audits, or GPRICE's
+1 431-pair sweep — cite them; a *new* driver mode that tests a *new*
+sentence is fine, a re-measurement of a landed figure is not. (GR-15) and
+class uniformity are out of scope. No `.lean` is touched (the standing Lean
+hold).
+
+**Riders, verbatim from GPRICE's.** TERMINATION check E1/E2/E3 at the return
+(E3 is ARMED by GBAL — firing is the coordinator's action; report, never
+fire). Cap disclosure: an exhausted cap is *"not found under cap C"*, never
+nonexistence. F11: every headline claim needs a driver that tests that
+sentence, and "exhaustive"/"forced"/"the only" are their own claim class. The
+shift-metric layer is UNBOUNDED ((GR-43)) — any bound is on a **difference**.
+All figures exact ℚ, seeded, degeneracy-guarded, imported from the canonical
+layer (`notes/scripts/README.md` binds; the *Divergences* table names the
+same-name-different-semantics traps) — **the balance layer is
+`w4/gridbal_common`**, extended 2026-08-25 by the GCHEAP/GPRICE debt payment
+(the (GR-49)/(GR-50) z-form surface, `majority_of`, and the cube
+combinatorics `adm_cube`/`block_ends_at`/`f_layers` all live there now):
+import the moved devices from there directly, never via the sibling
+re-exports, and record any new §2-rule-2 trip as a *Harness debt* item —
+do not make the move.
+
+**Driver — conditional, at the pinned path `notes/scripts/w4/gblaw.py`.** A
+purely derivational proof consuming only landed figures needs no new driver —
+then state that disposition explicitly in the draft. Any new measured or
+exhaustion claim mints the driver at the pinned path, importing the harness
+read-only, left untracked for the coordinator to gate and commit.
+
+**Reservation** (`notes/Pencil-labels.md` §"Reserved namespace — direction
+GBLAW"): §(K-grid) **extends** — no new section; labels
+**(GR-110)–(GR-114)**, **Steps G130–G134**; owning section stays
+authoritative; return any unconsumed remainder to the tail.

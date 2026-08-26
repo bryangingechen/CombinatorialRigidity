@@ -98,10 +98,14 @@ balance law (GR-108) alone** — the reversal-set normal form (GR-106) makes
 (GR-108)'s strong form fails from exactly `n = 12`, so a proof must exchange
 between maximum reversal sets. Canonical home §(K-grid) *Steps G125–G129*
 (`notes/Pencil-informal-grid.md`), landing record `notes/Pencil-fanout.md`
-§"GPRICE", driver `w4/gprice.py`. **NEXT CONCRETE TASK: the next standing
-research pick** (the 2026-08-07 delegation; the *shape* is a user call) —
-candidate list in *Hand-off*; the §9 shelf **(ZH-1)–(ZH-6)** stays unpriced
-and ineligible. Nothing else structural queued, nothing awaiting user
+§"GPRICE", driver `w4/gprice.py`. **DIRECTION GBLAW (ordinal 34) IS PREPPED
+— the fifth 2026-08-25 check-in's front-runner pick, (GR-108) the balance
+law** (GPRICE's residual #1, the whole remaining gap to (GR-104)(i) at
+`2k = 2`; the same check-in had the GCHEAP/GPRICE harness debt paid first,
+`782e8bcd`). **NEXT CONCRETE TASK: dispatch direction GBLAW** (spec
+`notes/Pencil-fanout.md` §"GBLAW"; labels (GR-110)–(GR-114) / Steps
+G130–G134 reserved) — the §9 shelf **(ZH-1)–(ZH-6)** stays unpriced and
+ineligible. Nothing else structural queued, nothing awaiting user
 adjudication.
 
 ## Current state
@@ -276,6 +280,25 @@ constraints; the dated dispatch narrative is in *Decisions made* and git):
   fable included**, cap **lifted**, rescue §1 fixups **pre-authorized**.
   **Everything else stands unchanged:** phase OPEN, the 2026-08-05 Lean hold, W4
   PARKED, `hK`/`hbareSplit` pinned, option B un-commissioned.
+
+- **2026-08-25 (fifth check-in), the pick after GPRICE — the front-runner shape
+  RE-ELECTED, and the harness debt paid first (changes no standing constraint).**
+  With GPRICE landed, the user was offered four shapes (single direction
+  front-runner-first → (GR-108) / single direction at (K-bare)'s rank-3 shape /
+  ninth multidispatch fan-out / top-rung recon-first) and selected **"Single
+  direction, front-runner-first → (GR-108)"** — an option selection, not free
+  text — which resolves to **(GR-108), the balance law**: GPRICE's residual #1,
+  the head of *Step G129*'s successor order and the first entry of *Hand-off*'s
+  candidate list (the 2026-08-25 re-rank's ranks 1 and 2 both landed the same
+  day). Dispatched as **GBLAW** (ordinal 34) at top rung (`recon-fable`). Asked
+  separately about the recorded harness debt, the user selected **"Pay first,
+  one sonnet dispatch"** — GCHEAP's residual sibling imports and GPRICE's five
+  consumer arrivals, paid together per the GPRICE item's own instruction
+  (`782e8bcd`, before the GBLAW prep). Same check-in: rungs **all four
+  dispatchable, fable included**, cap **lifted**, rescue §1 fixups
+  **pre-authorized**. **Everything else stands unchanged:** phase OPEN, the
+  2026-08-05 Lean hold, W4 PARKED, `hK`/`hbareSplit` pinned, option B
+  un-commissioned.
 
 **Kernel-(K) research arc — fifty-eight docs+scripts-only dispatches landed, plus eight
 strategy-only passes** (2026-08-02 → 08-25) — and, **outside** that count because they test
@@ -510,14 +533,15 @@ neighbours' incidences and every capacity unit above 2 is bought by a **Case-I g
 whose pencil-compatibility is geometry the probe was barred from. **§(K-avoid) was never
 opened** and no gap-map status moved.
 
-**THE NEXT CONCRETE TASK — the next standing research pick** (GPRICE is
-LANDED, see the top `**Status:**` block and *Decisions made*; landing record
-`notes/Pencil-fanout.md` §"GPRICE"). The candidate list — the 2026-08-25
+**THE NEXT CONCRETE TASK — dispatch direction GBLAW** (ordinal 34, PREPPED
+2026-08-25: the fifth check-in's front-runner pick, **(GR-108), the balance
+law** — GPRICE's residual #1, the whole remaining gap to (GR-104)(i) at
+`2k = 2`, proof shape pinned by (GR-108)(iii), an exchange between maximum
+reversal sets; spec `notes/Pencil-fanout.md` §"GBLAW", labels
+(GR-110)–(GR-114) / Steps G130–G134 reserved, then land the return per the
+fan-out landing checklist). The candidate list behind it — the 2026-08-25
 re-ranked board (`notes/Pencil-strategy.md` §8, the canonical home) with both
-its rank-1 and rank-2 slots now landed (OQRANK / GPRICE), plus GPRICE's
-reshaped residual: **prove (GR-108), the balance law** (the whole remaining
-gap to (GR-104)(i) at `2k = 2` — proof shape pinned by (GR-108)(iii), an
-exchange between maximum reversal sets; §(K-grid) *Steps G125–G129*), then
+its rank-1 and rank-2 slots landed (OQRANK / GPRICE): after GBLAW,
 **(K-bare) at the seed-free direct-attainment shape** (rank 3 — the
 KBARE-FALSIFY successor priced on §8.4's board; NOT option B, which stays
 un-commissioned; this is where the standing attention asymmetry says a
@@ -555,11 +579,11 @@ round 2 (slice 4 the phase-note split, **slice 5/"slice 2" the harness move-down
 OSCHU's `rank(Q|_D) = 3` residue is no longer blocked on the harness — exact `ℚ(i)`
 (`exactcore.Gauss`) is now a base-layer primitive.
 
-**THE STANDING RESEARCH-PICK DELEGATION — live again: GPRICE is landed**
-(2026-08-25, fourth check-in, single direction front-runner-first →
-(GR-104)(i), dispatched and landed the same day; see the top `**Status:**`
-block and *Current state*'s fourth 2026-08-25 bullet). The delegation covers
-the next pick; its shape is again a user call.
+**THE STANDING RESEARCH-PICK DELEGATION — spent on GBLAW for this round**
+(2026-08-25, fifth check-in, single direction front-runner-first →
+(GR-108), prepped as ordinal 34; see the top `**Status:**` block and
+*Current state*'s fifth 2026-08-25 bullet). The delegation covers the pick
+after GBLAW lands; its shape is again a user call then.
 
 **`hsplit` is CLOSED IN FULL** (W5-L7c-1…6, landed 2026-07-30) and **`hfresh`'s mechanical
 discharge (residue (iv)) is CLOSED too**. The landed successor
