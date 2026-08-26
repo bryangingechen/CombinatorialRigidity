@@ -1,7 +1,13 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: EIGHT fan-outs and NINETEEN single directions dispatched; ALL 47
-directions LANDED.** **BATTAIN (ordinal 39, §"BATTAIN") LANDED 2026-08-26 —
+**Status: EIGHT fan-outs and TWENTY-ONE single directions dispatched; 47
+LANDED, TWO IN FLIGHT.** **BZAVOID (ordinal 40, §"BZAVOID") and ZSHEAR
+(ordinal 41, §"ZSHEAR") were DISPATCHED 2026-08-26, concurrently, at
+`recon-opus` — BZAVOID at (BE-14)'s full statement (`Y° ⊄ Z(G)`, the hard step
+that would discharge `hbareSplit` *and* `PencilPair`'s unconditional conjunct),
+ZSHEAR as the session's side line and the **first direction strategy §9's
+external-technique shelf has ever produced** ((ZH-1), the Witt shear). Neither
+has returned; flip both to LANDED here at landing.** **BATTAIN (ordinal 39, §"BATTAIN") LANDED 2026-08-26 —
 the arc's first direction ever aimed at `hbareSplit`, and it paid: the motive
 characterized off the Lean bodies, bare realizability proved UNCONDITIONAL,
 the first universal pencil-stratum rank cap produced BY AN ARGUMENT, the
@@ -68,8 +74,8 @@ exact `n_hub` boundary for ledger attack (c)'s AA-glue case (GTMPL), (b′)'s fi
 `n`-free constant (GFLOW), a **NO HIT** on the authorized disproof hunt that nonetheless
 kills the counting route to a disproof (SIGZ), (a₁) reduced to one determinant (OSCHU), and
 **(GR-64)(R2) REFUTED** with (R1) delivered (GCOLL).
-Ordinals run 1–39 (the eighth fan-out claims 25–29; GFLIP is 30; GCHEAP is 31;
-OQRANK is 32; GPRICE is 33; GBLAW is 34; GXESC is 35; GHWIT is 36; GMINM is 37; OGEOM is 38; BATTAIN is 39) and were assigned at dispatch, so landing order
+Ordinals run 1–41 (the eighth fan-out claims 25–29; GFLIP is 30; GCHEAP is 31;
+OQRANK is 32; GPRICE is 33; GBLAW is 34; GXESC is 35; GHWIT is 36; GMINM is 37; OGEOM is 38; BATTAIN is 39; BZAVOID is 40; ZSHEAR is 41) and were assigned at dispatch, so landing order
 differs from ordinal order.
 
 **The two architecture-testing PROBES are also both LANDED** (§"Two probes SPECCED and
@@ -4117,3 +4123,262 @@ and `def₂` is exact only to `|V| ≤ 16`.
 
 **TERMINATION: E1, E2, E3 all NO** — coordinator-re-run and agreed. E3 stays
 **ARMED by GBAL, not fired**.
+
+## BZAVOID — fortieth ordinal, the forty-eighth direction (single dispatch, prepped 2026-08-26)
+
+**Selection provenance: a USER OPTION SELECTION, not a coordinator pick** — the
+2026-08-26 **ninth check-in**, where the BATTAIN landing's offered
+slice-shape adjudication was put to the user as the next dispatch and the
+answer was **"(BE-14) full statement — hbareSplit"**, over BATTAIN's own
+offered `def₂ = def₃` proof-of-concept and over two non-(BE-14) alternatives.
+The **option set** was coordinator-authored, so the twelfth's disclosure
+applies to the *alternatives* (no independent top-rung ranking of them); the
+**pick between them is the user's**. Dispatched **un-named, single**, at
+**`recon-opus`** (fable conserved this session — the user left *"all four
+rungs dispatchable"* unselected, `weekly_scoped` 92 % critical corroborating).
+
+**This is the direction the phase's own target ranking puts first.** Under the
+2026-08-26 eighth-check-in directive (*"prioritizing work that makes headway on
+the phase target one way or the other"*), *Hand-off*'s candidate list is ordered
+by distance to `PencilPair K 3 G`, and (BE-14) is its head: it discharges
+**`hbareSplit`** *and* **`PencilPair`'s unconditional second conjunct** at once,
+as a **standalone theorem**, without touching `hcontract` or `hK`. Nothing else
+on the board does that.
+
+**The target, and it is one sentence.** (BE-14) (§(K-bare-ext) *Step BE12*):
+
+> *For every graph `G`, the pencil stratum of the panel-hinge realization space
+> attains the body-hinge target `6(|V|−1) − def₃(G)`.*
+
+Katoh–Tanigawa give the **panel-hinge** half; the pencil stratum adds
+**concurrency**, one determinant per hub, cutting a subvariety of codimension
+`Σ_{hubs}(deg v − 2)` out of `(P³*)^V`. **The hard step, isolated by BATTAIN
+and the whole of this dispatch:** *the hub concurrency conditions do not force
+the configuration into the rank-drop locus* — **`Y° ⊄ Z(G)`**, where `Z(G)` is
+the locus whose complement KT's theorem certifies nonempty. Nothing in the arc
+bounds `Z(G)`: §(K-tight)'s boundary-load calculus is **split-local** and does
+not see the whole-graph locus, and the chart/reseed/engine apparatus is
+unavailable by hypothesis.
+
+**What is LANDED and must be CITED, not re-derived.** All four of BATTAIN's
+results are in tree (*Steps BE9–BE13*, driver `notes/scripts/w4/battain.py`):
+**(BE-10)** the exact motive characterization, derived off the Lean bodies;
+**(BE-11)** bare pencil realizability is **UNCONDITIONAL**, so
+`HasPencilRealization` has **no existence content — all of it is the rank**;
+**(BE-12)** the pencil condition is carried entirely by the hubs, one
+determinant each, vacuous at degree `≤ 2`, and `Y°`'s generic rank is
+well-defined; **(BE-13)** the cone law `rank(cone) = 6(|V|−1) − def₂(G)` with
+`def₂` the **planar** deficiency, exact at 68/68. Do not re-run BATTAIN's 774
+certificates or re-measure its figures — **cite them**. (BE-13) is
+**proven-informally**, not formally; if your argument leans on it, say which
+step of its splitting argument you are leaning on.
+
+**A coordinator reading of the geometry, offered to be TESTED and not
+inherited** (F19: a coordinator-predicted obstruction is refuted about as often
+as it holds, so the stratum its evidence comes from is named). (BE-11) hands
+the arc a **uniform, graph-independent point of `Y`** — the cone — and (BE-13)
+prices it exactly: it sits at `6(|V|−1) − def₂(G)`, hence **inside `Z(G)`
+whenever `def₂(G) > def₃(G)`**, which is the generic situation (DZ:
+`def₂ = 11 > 0 = def₃`). So the shape of the problem is *not* "find a point of
+`Y°`" — it is **"deform off the canonical point"**, with a uniform starting
+configuration already in hand and its exact rank defect known. Whether the
+natural first move is a **dimension/transversality count** (codim `Z(G)` in the
+panel stratum against `Σ_{hubs}(deg v − 2)`) or a **direct construction** is
+yours to decide; the evidence behind this reading is (BE-11)/(BE-13) plus the
+68/68 cone measurements, i.e. the *cone* stratum only, and it says nothing
+about transversality.
+
+**What counts as a HIT — three shapes, state which you got.**
+
+1. **(BE-14) PROVEN, or reduced with the residual named and quantified.** A
+   proof of `Y° ⊄ Z(G)` class-uniformly is the phase-target result. A
+   *reduction* to a named finite/decidable/combinatorial residual, with the
+   exact quantifier written out, is a real result — but say plainly what is
+   left and over what class it is quantified.
+2. **A falsification arm the arc has NOT run, and it is cheap — report it first
+   if it fires.** (BE-14) as stated quantifies over **every graph `G`**, not
+   only over the `hnoRigid` habitat. BATTAIN's own mechanism makes the
+   refutation criterion **decidable**: a forced cone plus `def₂ > def₃` caps the
+   rank below target. BATTAIN then argued no *habitat* member can force the cone
+   because **forcing needs a triangle** (three shared closed-star normals ⇒ a
+   common neighbour of two adjacent bodies) and the habitat is **triangle-free**
+   by `hnoRigid` (coordinator-verified in the Lean source, `Escape.lean:411–418`,
+   via `Graph.triangle_isProperRigidSubgraph`). **Off the habitat, triangles are
+   legal.** So: **hunt a triangle-carrying `G` whose `Y` is forced to the cone
+   with `def₂(G) > def₃(G)`.** Such a witness would refute **(BE-14) as stated
+   for all `G`**, narrowing the true statement to the habitat — which leaves
+   `hbareSplit` and `PencilPair` **untouched** and is therefore *not* a PENCIL
+   event, but it does re-scope the theorem being aimed at, and it is the single
+   cheapest decisive experiment this spec can name. State the classification
+   explicitly either way.
+3. **An honest OPEN with the route priced** — what `Y° ⊄ Z(G)` needs that the
+   arc does not have, and whether the `∃`-seed + deformation-repair alternative
+   (which still meets §(K-tight) *Step 5*'s chartless wall) has become cheaper
+   or dearer relative to it.
+
+**The declined partial is NOT the deliverable.** BATTAIN offered
+**(BE-14) restricted to `def₂ = def₃`** — where the cone attains in closed form
+by (BE-13), giving the arc's first *proved* `HasPencilRealization` result — and
+the user **declined it in favour of the full statement**, on the ground that it
+does not discharge `hbareSplit` (DZ has `def₂ = 11`). You may use the
+restricted case as a **lemma, base case, or sanity check**; you may **not**
+deliver it as the result and call the dispatch done. A return that reaches only
+the restricted case is an **honest partial** — say so in those words, and price
+the remaining distance.
+
+**Bars.** **Option B (the insertion calculus) stays un-commissioned** (2026-07-30,
+standing) — do not drift into it, cost it, or propose it as the route. Do not
+attack `hK`, (GR-15), class uniformity of the escape, or §(K-grid)'s (a′)/(b′)
+ledger — all separate items, and the ledger thread is **closed negatively**
+(GHWIT/GMINM); in particular **do not re-open** per-matching (b′) or the `min_M`
+reading. Do not touch W4 / `hcontract` (parked by the Lean hold). **No `.lean`**
+— the standing 2026-08-05 Lean hold. Do not re-litigate (K-bare-ext)'s
+refutation: it is a *route* finding, `hbareSplit` is untouched and still pinned.
+
+**Riders.** TERMINATION check E1/E2/E3 at the return (**E3 ARMED by GBAL** —
+report, never fire). **The direction-A pivot rule applies to shape 2**, with its
+stop clause superseded 2026-08-26 (a confirmed hit is worked up in-phase, not
+halted) but its **classification requirement intact and mandatory**: state
+whether what you have refutes `PencilPair K 3 G` itself, refutes only
+(BE-14)-for-all-`G`, or refutes only a route — and do not overstate a single
+witness ("confirmed" is the (GR-83)/(GR-113) bar: every figure re-derived
+through independent exact models). **F11:** every headline claim needs a driver
+testing **that sentence**, and "forced" / "exhaustive" / "the only" are their
+own claim class needing an *enumerating* driver. **F25:** state your
+verification bar by re-reading the shipped driver; a scratchpad probe that is
+not in the driver does not count, and **every script you run is committed**.
+**Cap disclosure mandatory** — an exhausted search reports *"not found under cap
+C"*, never *"does not exist"*, and the disclosure travels with the figure.
+All figures exact ℚ (or exact `ℚ(i)` via `exactcore.Gauss`), seeded,
+degeneracy-guarded; `notes/scripts/README.md` binds. The `kbare/` sibling-import
+set is **recorded UNPAID debt** — extend its consumer list in your draft, make
+no move.
+
+**Driver — conditional, at the pinned path `notes/scripts/w4/bzavoid.py`.** A
+purely derivational result needs no new driver; state that disposition
+explicitly. Shape 2's hunt, if you run it, **does** need one. Read-only
+imports; leave it untracked for the coordinator to gate and commit.
+
+**Reservation** (`notes/Pencil-labels.md` §"Reserved namespace — direction
+BZAVOID"): §(K-bare-ext) **extends**, no new section; labels
+**(BE-15)–(BE-19)**, **Steps BE14–BE18**; return any unconsumed remainder to
+the tail.
+
+## ZSHEAR — forty-first ordinal, the forty-ninth direction (single dispatch, prepped 2026-08-26, **the side line**)
+
+**Selection provenance: USER-INITIATED, unprompted free text** — 2026-08-26,
+mid-turn: *"I'm also curious about whether the ideas inspired by Zheng's
+body-pin project are worth pursuing. Perhaps we can look at that on the
+side?"* This is the **first direction the §9 shelf has ever produced**, and
+the first ever dispatched as an explicit **side line** concurrent with the
+main pick. Dispatched **un-named**, concurrently with BZAVOID, at
+**`recon-opus`** (fable conserved). Ordinal assigned: it attacks **class
+uniformity**, the (K) crux, so unlike the two architecture-testing probes it
+is **inside** the direction/ordinal count.
+
+**Why this one of the six, and why the other five are barred.**
+`notes/Pencil-strategy.md` §9.3's own cheapest-decisive-first order puts
+**(ZH-1)** first, and it is the only one of the six that is a **yes/no question
+with an adversarial bed already in tree**. (ZH-2) and (ZH-3) **owe a §2.5
+counting-saturation filter check** and are held until it is done; (ZH-4) is
+concrete but dearer; (ZH-5) is a design template for a future fan-out's
+*selection*, not a result; (ZH-6) is **write-up material, never a dispatch**
+(§9.3's own words).
+
+**The candidate.** §9.1's finding is that the source's **Split–Klein form** is
+**not an analogy but the same form** as §(K-pitch) *Step 0*'s pitch quadric
+`Q(x) = ⟨x, ★x⟩`, with the same vanishing locus and the same meaning (zero
+pitch = rotation about a line). (ZH-1) is the device: the orthogonal group of
+`q` contains unipotent **shears** `Φ_S(ω,b) = (ω, b + Sω)` for `S` skew, which
+fix **each generator individually** (not merely the ideal), because `ωᵀSω = 0`.
+The uniformity argument built on it replaces *"exhibit a good seed"* with
+*"avoid finitely many proper affine subspaces of `so₃(k)`"*, over any infinite
+field — which is exactly `hK`'s hypothesis.
+
+**What it would buy, if it survives.** (i) A **propagation mechanism the arc
+does not have**: under a group fixing every generator, one witness certifies a
+whole orbit, whereas today `P ≢ 0` is re-established per habitat. (ii) It
+**dissolves rather than pays** the field-scope problem — route σ's polarity is
+an `ℝ`-only construction aimed at an `hK` quantified at general `[Infinite K]`,
+and generalizing it cost a whole section.
+
+**The cheap decisive test, already specified in tree, and run it FIRST.**
+§(K-flank) *Step F5(d)* exhibits **five legal nondegenerate target-rank `G′`
+seeds at `P21`** with `s₀ = 1`, `dim R_a = 0`, `dim U = 1` that *Step 2.3*'s
+calculus **proves** fail at every placement. Those are **known** escape
+failures and therefore the right adversarial bed: apply a random `S ∈ so₃` and
+ask whether the criterion matrix's minors move **while the target-rank
+condition survives**.
+
+**The predicted death, and you must confront it head-on rather than discover it
+at the end.** If that failure locus is **shear-invariant, (ZH-1) dies
+immediately — and dies for exactly §4.6's growing-ground-set reason**, since
+`so₃(k)` is a **fixed-dimensional** group and therefore *cannot see the graph*.
+§9.1 records this as the honest risk; §4.6's filter is the arc's most reliable
+killer. **A coordinator reading, offered to be tested and not inherited:** the
+obvious repair is to make the group **graph-indexed** — a shear per body or per
+hinge, i.e. an action of `so₃(k)^{V}` or `so₃(k)^{E}` rather than one global
+`S` — which would pass the growing-ground-set test by construction. Whether
+such a product action still preserves the form generator-wise is the question
+that decides (ZH-1)'s repair, and the evidence behind this reading is only the
+single-`S` computation `ωᵀSω = 0`, i.e. nothing about the product action at all.
+**A precise, well-grounded "(ZH-1) is dead, and here is the exact reason"
+closes a standing shelf item and is a perfectly good outcome** — better than a
+hedge. Report the death as a HIT of the negative kind, with the shelf row moved.
+
+**Secondary deliverable, bounded and prose-only — the OWED filter check.**
+§8's board records one debt against the shelf: *"the §2.5 counting-saturation
+check that (ZH-2)/(ZH-3) owe is a cheap prose-only slice and worth running
+opportunistically."* Run it. **(ZH-2)**'s potential `∆ = (self-stress dim) +
+trdeg_k K − 3|V|` passes §4.6's growing-ground-set test (it is indexed by
+`V(G)`/`E(G)`) but has **never** been read against §2.5's counting saturation —
+`trdeg` is a *dimension* rather than a count of combinatorial objects, which is
+precisely why the check is non-obvious and owed. **(ZH-3)**'s codimension-count
+rank lower bound owes the same. **No driver, no new labels beyond the
+reservation, no pricing onto §8's board** — a verdict of the form *"survives
+§2.5 / dies by §2.5, because …"* for each, and nothing more. The shelf stays
+off-board either way.
+
+**Bars — the provenance bar is the hard one.** The source is a **preprint,
+unrefereed**, its own acknowledgment credits an AI assistant with *"the
+refinement of proof details, the Lean formalization and its verification"*, its
+byline (*Denzel Zheng*) and its named repository handle (`DongzheZheng`) differ,
+and **neither the paper nor the repository has been independently checked by
+this project**. Per top-level `CLAUDE.md` *Referencing prior work* and
+`DESIGN.md` *Formalize everything the argument uses*: it is an **IDEA SOURCE,
+never a citation**, and **no theorem of it may be imported, assumed, or leaned
+on**. Your deliverable must stand on (a) **classical facts** — Witt's theorem
+and the α/β classification of the Klein quadric's maximal isotropics are
+already in §7's in-use list, so **check first whether the shear is already
+implicitly available** rather than treating it as new — and (b) **this
+project's own drivers**. If a step needs the source's Lemma 3.4 or
+Proposition 3.3, that step is **not delivered**; say so. (§9's own dimensional
+note, for orientation only: its Lemma 3.4 sits *exactly* on its boundary at
+`d = 3` via `2(d−1) = d+1`, which fails at `d ≥ 4`, so an error there would be
+structural rather than repairable.) Do not attack (ZH-2)/(ZH-3) beyond the
+filter check above, do not open (ZH-4)/(ZH-5), do not write up (ZH-6). Do not
+touch `hbareSplit`/(BE-14) — **BZAVOID owns it concurrently**. Do not touch
+W4 / `hcontract`. **No `.lean`** — the standing Lean hold. **This dispatch is
+read-only w.r.t. every shared file and commits NOTHING** (RESEARCH-ARC §2).
+
+**Riders.** TERMINATION check E1/E2/E3 at the return (**E3 ARMED by GBAL** —
+report, never fire). **F11:** every headline claim needs a driver testing
+**that sentence**; *"the failure locus is shear-invariant"* is an
+**invariance** claim and needs a driver that tests invariance, not one that
+samples a few `S`. **F25:** state your verification bar off the shipped
+driver; every script you run is committed. **Cap disclosure mandatory.** All
+figures exact ℚ, seeded, degeneracy-guarded — the `plane_basis` precedent (a
+degenerate sampler silently contaminated several passes' escape-failure
+figures) is exactly this bed, so guard the `P21` seeds explicitly and assert
+their `s₀`/`dim R_a`/`dim U` against *Step F5(d)*'s recorded values before
+drawing any conclusion from them. `notes/scripts/README.md` binds.
+
+**Driver — expected, at the pinned path `notes/scripts/w4/zshear.py`.** The
+adversarial pre-test is a measured claim and needs one. Read-only imports;
+untracked, for the coordinator to gate and commit.
+
+**Reservation** (`notes/Pencil-labels.md` §"Reserved namespace — direction
+ZSHEAR"): **new section §(K-shear)** in `notes/Pencil-informal.md`, tag
+**`SH-`** (globally 0-hit, cleaner than `BE-`); labels **(SH-1)–(SH-6)**,
+**Steps SH1–SH5**; return any unconsumed remainder to the tail. If (ZH-1) dies,
+the section is still minted — a recorded death is the deliverable.

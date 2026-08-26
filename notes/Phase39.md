@@ -11,7 +11,8 @@ with **`hsplit` CLOSED IN FULL** and `hfresh`'s counting discharge landed
 (2026-07-30).
 
 **The kernel-(K) research arc: 47 directions COMPLETE** (2026-08-05 → 08-26,
-ordinals 1–39), plus eight strategy-only passes and two architecture probes.
+ordinals 1–39), plus eight strategy-only passes and two architecture probes;
+**ordinals 40–41 (BZAVOID / ZSHEAR) are IN FLIGHT**, dispatched 2026-08-26.
 **Per-direction verdicts are NOT restated here** — each has a landing write-up
 at `notes/Pencil-fanout.md` §"<CODE>" and a canonical mathematical home in the
 workbooks. **The arc's standing result, unchanged by all 47: `hK` is not
@@ -32,26 +33,29 @@ the arc's first-ever look at `hbareSplit`, **bare realizability proved
 UNCONDITIONAL** plus the first pencil-stratum rank cap produced by an argument
 (BATTAIN, (BE-11)/(BE-13)).
 
-**NEXT CONCRETE TASK — the next direction, coordinator-picked from *Hand-off*'s
-candidate list, which is ordered by DISTANCE TO THE PHASE TARGET** (the
-2026-08-26 user directive; see *Current state*'s eighth-check-in bullet). Its
-head is **(BE-14)**, direct attainment, whose hard step is one sentence —
-`Y° ⊄ Z(G)` — and which would discharge `hbareSplit` *and* `PencilPair`'s
-unconditional conjunct at once.
+**NEXT CONCRETE TASK — verify and land the two directions DISPATCHED
+2026-08-26 (ninth check-in), then pick the next.** **BZAVOID** (ordinal 40)
+takes *Hand-off*'s head — **(BE-14) at the FULL statement**, hard step
+`Y° ⊄ Z(G)`, which would discharge `hbareSplit` *and* `PencilPair`'s
+unconditional conjunct at once — and **ZSHEAR** (ordinal 41) runs concurrently
+as the session's **side line**, the first direction ever produced by strategy
+§9's external-technique shelf ((ZH-1), the Witt shear as a uniformity device,
+plus the owed §2.5 filter check on (ZH-2)/(ZH-3)). Specs, bars and riders:
+`notes/Pencil-fanout.md` §§"BZAVOID"/"ZSHEAR"; reservations
+`notes/Pencil-labels.md`. **Queued behind them: the (K-res) scoping slice**
+(one direction, adjudicated 2026-08-26 — see *Current state*).
 
-> **TWO ITEMS AWAIT USER ADJUDICATION** (both opened 2026-08-26; this replaces
-> the "nothing awaiting adjudication" standing of 2026-08-19):
-> 1. **(K-res) — commission it or not.** Wave-sized, **never attacked**,
->    present in the dispatch docs only as a *bar* across eight consecutive
->    specs, and **W4 route 3 cannot close without it**. Its "pin it when the
->    tight side closes" deferral is stale by this note's own admission. The
->    coordinator will **price it, not commission it**.
-> 2. **The (BE-14) slice shape.** BATTAIN offered a deliberately partial
->    proof-of-concept — (BE-14) restricted to `def₂ = def₃`, where the cone
->    attains in closed form, giving the arc's first *proved*
->    `HasPencilRealization` result but **not** discharging `hbareSplit` (DZ has
->    `def₂ = 11`) — versus going at the full statement. A user call on how much
->    partiality is worth buying.
+> **BOTH ADJUDICATIONS ARE DISCHARGED** (opened 2026-08-26 at the BATTAIN
+> landing, answered the same day at the ninth check-in; verbatim record in
+> *Current state*). **(1) (K-res)** — the user selected the **cheap scoping
+> slice**, not the wave and not a re-deferral: one direction asking whether
+> (GR-15)/§(K-grid) transports to the `W19`-type (K-res) habitat, which retires
+> the stale *"pin it when the tight side closes"* deferral without committing a
+> wave at an `hK`-class kernel. **Queued behind the two in flight.**
+> **(2) The (BE-14) slice shape** — the user selected the **full statement**,
+> declining BATTAIN's `def₂ = def₃` proof-of-concept on the ground that it does
+> not discharge `hbareSplit`. Dispatched as **BZAVOID**. **Nothing now awaits
+> adjudication.**
 
 **Conventions.** Direction codes are multi-letter and topic-tagged from the
 fifth fan-out on (`notes/Pencil-labels.md` (L5)); grandfathered single letters
@@ -384,6 +388,48 @@ constraints; the dated dispatch narrative is in *Decisions made* and git):
   stands unchanged:** phase OPEN, the 2026-08-05 Lean hold, W4 PARKED,
   `hK`/`hbareSplit` pinned, both option Bs un-commissioned.
 
+- **2026-08-26 (ninth check-in), BOTH OPEN ADJUDICATIONS DISCHARGED, the pick made,
+  and a USER-INITIATED SIDE LINE opened — the first direction the §9 external shelf has
+  ever produced.** Four calls, none of them a kernel-constraint move.
+  **(1) The (BE-14) slice shape** (the adjudication BATTAIN's landing opened): offered the
+  full statement, BATTAIN's `def₂ = def₃` proof-of-concept, W4's three informal costs, or
+  diversification off the carried items, the user selected **"(BE-14) full statement —
+  hbareSplit"** — an option selection, not free text — so the proof-of-concept is
+  **declined**, on the ground the offer itself named: it does not discharge `hbareSplit`
+  (DZ has `def₂ = 11`). Dispatched as **BZAVOID** (ordinal 40) at `recon-opus`. The option
+  set was coordinator-authored, so the twelfth's disclosure applies to the **alternatives**;
+  the **pick between them is the user's**, which makes this the first non-coordinator pick
+  since the 2026-08-26 delegation widened.
+  **(2) (K-res)** (the other open adjudication): offered the full wave, a cheap scoping
+  slice, or keeping it a bar, the user selected **"Cheap scoping slice only"** — one
+  direction asking whether (GR-15)/§(K-grid) transports to the `W19`-type (K-res) habitat.
+  This **retires the stale "pin it when the tight side closes" deferral** without
+  commissioning a wave at an `hK`-class kernel, and it **is not** option B by another name.
+  **Queued behind the two in flight; nothing now awaits adjudication.**
+  **(3) The side line, unprompted free text, quoted verbatim because it opened a shelf that
+  had been ineligible since 2026-08-21:** *"I'm also curious about whether the ideas
+  inspired by Zheng's body-pin project are worth pursuing. Perhaps we can look at that on
+  the side?"* Answered by dispatching **ZSHEAR** (ordinal 41) concurrently with BZAVOID at
+  `recon-opus`, scoped to **(ZH-1) alone** — §9.3's own cheapest-decisive-first head, the
+  only one of the six with an adversarial bed already in tree (§(K-flank) *Step F5(d)*'s
+  five *proven* escape failures at `P21`) — plus the **owed §2.5 counting-saturation filter
+  check on (ZH-2)/(ZH-3)**, which §8's board had recorded as *"a cheap prose-only slice and
+  worth running opportunistically"*. **The provenance bar is unchanged and is the hard bar:**
+  the source is unrefereed, AI-assisted, its byline and repository handle differ, and neither
+  has been independently checked — it is an **idea source, never a citation**, and no theorem
+  of it may be imported. (ZH-4)/(ZH-5) stay unopened, (ZH-6) stays write-up material, and
+  **the shelf stays off §8's board either way**. Non-collision with BZAVOID is structural:
+  different sections, disjoint tags (`BE-` vs `SH-`), serial coordinator landing.
+  **(4) Session config — fable CONSERVED for the second consecutive session.** The user
+  selected **cap lifted**, **rescue §1 fixups pre-authorized**, and **"coordinator picks
+  each direction this session"** (re-electing the 2026-08-26 widening, so the per-pick
+  check-in lapses again), leaving *"all four rungs dispatchable"* **unselected** — so
+  **sonnet + opus only, top rung = opus**, `weekly_scoped` at 92 % critical corroborating,
+  `weekly_all` at 77 % (below the 80 % stagger line, which is what licenses the concurrent
+  pair rather than a stagger). **Everything else stands unchanged:** phase OPEN, the
+  2026-08-05 Lean hold, W4 PARKED, `hK`/`hbareSplit` pinned, both option Bs
+  un-commissioned.
+
 **Kernel-(K) research arc — sixty-four docs+scripts-only dispatches landed, plus eight
 strategy-only passes** (2026-08-02 → 08-26) — and, **outside** that count because they test
 the architecture rather than the (K) crux, the **two probes**: **KBARE-FALSIFY**
@@ -511,20 +557,29 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
   **(T)/(V)/(E-loc) are slice-sized and need no adjudication; (K-res) is wave-sized and is a
   user call.**
 
-- **Doc debt, dated 2026-08-20 — this note is 6xx lines against the ~500 tripwire, and the
-  relief is a NAMED slice, not a vague "compress later".** The note is genuinely
-  *forward*-weighted (CLAUDE.md's actual test): *Hand-off* 186 lines + *Current state* 163
-  are live forward state, while the finished part (*Decisions made*) is only 88 — so the
-  overage is not bloat and one-lining settled entries will not fix it. The concrete relief
-  is a **third doc-split slice** on the precedent of slice 1 (2026-08-19): move *Current
-  state*'s three now-SPENT dated wave bullets — the seventh-fan-out dispatch, the post-wave
-  adjudication (both calls DISCHARGED) and the eighth-fan-out dispatch (its `σ > 0`
-  authorization spent on SIGZ) — **verbatim** to `notes/Pencil-adjudications.md`, leaving
-  thin pointers. Deliberately **not** done piecemeal by a coordinator commit: *Hand-off*
-  cites the eighth-fan-out bullet by name for the authorization's accepted terms, and slice
-  2's own experience was that repointing is where this doc set breaks (68 cross-references in
-  one slice), so it wants a scoped dispatch that greps the tree. Until then the overage is
-  **acknowledged, not silent**; full relief remains phase close.
+- **Doc debt — REMEASURED 2026-08-26, and the figure the 2026-08-20 entry carried is now
+  badly stale: this note is 1 127 lines against the ~500 tripwire, not "6xx".** It has
+  nearly doubled in six days, and the mechanism is visible in the section counts: *Current
+  state* **409** and *Hand-off* **318**, against a finished part (*Decisions made*) of
+  **169**. So the diagnosis the 2026-08-20 entry recorded still holds on CLAUDE.md's actual
+  test — the note is genuinely **forward**-weighted, the overage is not bloat, and one-lining
+  settled entries will not fix it — but the **scale** has changed: what was a 1.3× overage is
+  now 2.3×, driven almost entirely by *Current state*'s per-check-in dated bullets, which now
+  run nine deep at ~25 lines each. **The relief is still a NAMED slice, and it is now the
+  larger of the two halves.** (i) The 2026-08-20 plan stands: move *Current state*'s SPENT
+  dated wave bullets — the seventh-fan-out dispatch, the post-wave adjudication (both calls
+  DISCHARGED) and the eighth-fan-out dispatch (its `σ > 0` authorization spent on SIGZ) —
+  **verbatim** to `notes/Pencil-adjudications.md`, leaving thin pointers. (ii) **New, and
+  the bigger win: the per-check-in bullets for picks whose direction has LANDED are spent
+  the moment the landing write-up exists** — GFLIP through BATTAIN are eight such bullets,
+  and each one's durable content is a single sentence ("shape X elected, resolved to
+  direction Y, dispatched at rung Z") plus its config delta. Collapse them to that, verbatim
+  copies to `notes/Pencil-adjudications.md`. Deliberately **not** done piecemeal by a
+  coordinator commit: *Hand-off* cites the eighth-fan-out bullet **by name** for the
+  authorization's accepted terms, and slice 2's own experience was that repointing is where
+  this doc set breaks (68 cross-references in one slice), so it wants a scoped dispatch that
+  greps the tree. Until then the overage is **acknowledged, not silent**; full relief remains
+  phase close.
 - The full biconditional transport (design doc's W0 pin) is landed only as its two forward
   implications; the reverse arms need a `complementIso` involution lemma, not in tree —
   deferred, **off every critical path** (§(K-σ) *Step σ6*).
@@ -617,9 +672,22 @@ neighbours' incidences and every capacity unit above 2 is bought by a **Case-I g
 whose pencil-compatibility is geometry the probe was barred from. **§(K-avoid) was never
 opened** and no gap-map status moved.
 
-**THE NEXT CONCRETE TASK — the next direction, coordinator-picked, and the
-candidate list below is now ordered by DISTANCE TO THE PHASE TARGET** (the
-2026-08-26 directive, *Current state*'s eighth-check-in bullet), replacing the
+**THE NEXT CONCRETE TASK — verify and land BZAVOID and ZSHEAR, both DISPATCHED
+2026-08-26 (ordinals 40 and 41, `recon-opus`, concurrent, specs at
+`notes/Pencil-fanout.md` §§"BZAVOID"/"ZSHEAR").** **BZAVOID** takes item 1
+below at its **full statement** — the user's 2026-08-26 call, declining
+BATTAIN's `def₂ = def₃` proof-of-concept. **ZSHEAR** is the session's **side
+line** on unprompted user initiative: strategy §9's (ZH-1), the Witt shear as a
+uniformity device, tested against §(K-flank) *Step F5(d)*'s five proven
+failures, plus the owed §2.5 filter check on (ZH-2)/(ZH-3) — the first
+direction the §9 shelf has ever produced, and the shelf stays off §8's board
+either way. **Then, queued in order:** the **(K-res) scoping slice** (one
+direction — does (GR-15)/§(K-grid) transport to the `W19`-type (K-res)
+habitat? — the user's 2026-08-26 call, and the retirement of the stale *"pin it
+when the tight side closes"* deferral), then the next pick off the list below.
+
+**The list below is ordered by DISTANCE TO THE PHASE TARGET** (the 2026-08-26
+directive, *Current state*'s eighth-check-in bullet), replacing the
 previous-direction's-successor-order convention that produced five consecutive
 directions on a ledger residual the ledger does not consume.
 
@@ -752,12 +820,16 @@ round 2 (slice 4 the phase-note split, **slice 5/"slice 2" the harness move-down
 OSCHU's `rank(Q|_D) = 3` residue is no longer blocked on the harness — exact `ℚ(i)`
 (`exactcore.Gauss`) is now a base-layer primitive.
 
-**THE STANDING RESEARCH-PICK DELEGATION — exercised, and NOT live until
-GHWIT lands.** The seventh check-in (2026-08-26) elected single direction
-front-runner-first → the half-witness clause, dispatched as **GHWIT** at
-`recon-opus` (see the top `**Status:**` block and *Current state*'s
-2026-08-26 seventh-check-in bullet). The delegation covers the pick
-*after* GHWIT; its shape is again a user call.
+**THE STANDING RESEARCH-PICK DELEGATION — WIDENED, and re-elected for the
+current session.** Since the 2026-08-26 seventh check-in's second call the
+coordinator picks **both the shape and the direction**, with the per-pick
+check-in lapsed; the ninth check-in re-elected that for this session. The one
+exception in the run so far is **BZAVOID**, which the *user* picked between
+coordinator-authored options (*Current state*, ninth check-in). Two selection
+criteria bind on top of the delegation: **distance to the phase target** (the
+eighth check-in, superseding cheapest-decisive-first) and **falsification /
+architecture-testing as a positive criterion** (the seventh check-in's second
+call).
 
 **`hsplit` is CLOSED IN FULL** (W5-L7c-1…6, landed 2026-07-30) and **`hfresh`'s mechanical
 discharge (residue (iv)) is CLOSED too**. The landed successor
