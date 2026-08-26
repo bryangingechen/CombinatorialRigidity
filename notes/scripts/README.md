@@ -1009,11 +1009,22 @@ are a recorded *Harness debt* item (see below).
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/gprice.py --hunt` | 53 s | ibid. *Step G128* ((GR-108) hunt: 373 pairs at `n = 12/14/16/18`, `2k ∈ {2, 4}` — seeded pool + the NEW cell-targeted `(F, M)` sampler, every candidate `cubic_habitat`-gated; gap histogram `{0: 373}`, the spec's refutation object NOT FOUND under disclosed caps) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/gprice.py --mech` | 4 s | ibid. *Step G128*(iii) ((GR-108)'s strong form: every structurally-maximum reversal set reaches balance at 1 034/1 034 stratum pairs, but 65/101 at the (GR-103) control and worst 32/66 at seeded `n = 12` — the exchange boundary exactly `n = 12`) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/gprice.py --validate` | 67 s | ibid. all four in one process; byte-identical at `PYTHONHASHSEED` 0 and 999 modulo wall-clock |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/gblaw.py --form` | 6 s | `notes/Pencil-informal-grid.md` §(K-grid) *Step G130* (direction GBLAW; (GR-110): the arc-transversal normal form asserted **set-equal to the exhaustive labeled enumeration** at 6 294 (pair, sink set) cells — stratum EXHAUSTIVE, V8, the (GR-103) control, seeded `n = 12/14` — and the enumeration itself asserted `== n − f(p)` against the landed `gprice.rmodel_f` at every pattern of 1 072 pairs) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/gblaw.py --conn` | 10 s | ibid. *Steps G132–G133* ((GR-112)/(GR-113): the fine-move census at three nested levels over 1 099 pairs; the no-crossing assert rides EVERY edge built; stratum 12 448 labeled maxima, 0 pos/neg-forcing; existential escape 0 failures at L2/L3; the sole no-escape witness (`n = 16`) printed in full) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/gblaw.py --recomb` | 8 s | ibid. *Step G131* ((GR-111): recombination asserted at 6 426 seeded `(x, y, T)` triples — every recombinant valid AND maximum; the (GR-111)(v) separation hunt: control 36/36, seeded `n = 12` 75/196, `n = 16` 36/124, neg-partner cap 40 disclosed) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/gblaw.py --strand` | 1 s | ibid. *Step G133*(iv) (the `n = 16` strand witness in full: components 88 (56 bal + 16 pos + 16 neg) + 32 pure pos + 32 pure neg; the separation hunt EXHAUSTIVE at this pair — 0/32 stranded, 0/16 big-component over ALL 48 neg partners) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/gblaw.py --validate` | 25 s | ibid. all four in one process; byte-identical at `PYTHONHASHSEED` 0 and 999 modulo wall-clock |
 
 **GPRICE (single direction, LANDED 2026-08-25).** One driver added
 (`w4/gprice.py`), nothing existing modified; imports downward only — the
 balance layer directly from `gridbal_common` (never via the sibling
 re-exports). Its five sibling-import arrivals are recorded below.
+
+**GBLAW (single direction, LANDED 2026-08-26).** One driver added
+(`w4/gblaw.py`), nothing existing modified; imports downward only — the
+balance layer directly from `gridbal_common` (never via the sibling
+re-exports), `cflank.cubic_habitat`, and five `gprice` devices whose
+second-consumer arrival is recorded below (*Harness debt*).
 
 **C3-AVOID (probe, LANDED 2026-08-24).** All seven modes (`--all`, ~36 s total,
 inside the 600 s foreground budget in one call) run by the dispatch, exit 0,
@@ -1296,12 +1307,13 @@ figure-invariant): `rref`, `rank`/`rank_exact`, `nullspace`, `left_nullspace`,
 `neighbors` (`kbare_common`, `n9`); `K4`/`K5_minus_matching` (three copies:
 `localtest`, `probe_zero`, `run_habitats`).
 
-## Harness debt — four rounds PAID (S1–S4 2026-08-06; the move-down round 2026-08-20; the GFLIP balance-layer move-down 2026-08-25; the GCHEAP/GPRICE balance-layer extension 2026-08-25), **three items outstanding**
+## Harness debt — four rounds PAID (S1–S4 2026-08-06; the move-down round 2026-08-20; the GFLIP balance-layer move-down 2026-08-25; the GCHEAP/GPRICE balance-layer extension 2026-08-25), **four items outstanding**
 
-**Three items are outstanding: `zneq.ledger`** (deliberately deferred to a
+**Four items are outstanding: `zneq.ledger`** (deliberately deferred to a
 round that can re-run `oschu --gtarget` / `--census1` / `--census2`), **the
-`kbare/` sibling-import set** that probe KBARE-FALSIFY created, and
-**OQRANK's two arrivals** (`out_classes`/`shape_key`/`tree_triple`) —
+`kbare/` sibling-import set** that probe KBARE-FALSIFY created,
+**OQRANK's two arrivals** (`out_classes`/`shape_key`/`tree_triple`), and
+**GBLAW's five `gprice`-device arrivals** (last subsection) —
 **UNPAID** by the same rule that forbids a dispatch from moving a landed
 name. Everything else is paid: the first round's four items are in the
 *ALL FOUR CLEARED* block immediately below (kept in the past tense as the record
@@ -2279,6 +2291,27 @@ documented three-invocation split (`--coll`, `--loc`, `--fibre --par --fit
 --cert --adv`) — all nine byte-identical modulo the wall-clock `[Ns]`
 exception, mechanically confirmed (every differing line reduces to the
 timing annotation alone once it is stripped).
+
+### New item (2026-08-26, direction GBLAW) — five second-consumer arrivals on `gprice.py`; **UNPAID**
+
+`w4/gblaw.py` imports the balance layer directly from `gridbal_common` (the
+intended post-move pattern) and `cflank.cubic_habitat` (§1-catalogued in
+place at the GCHEAP/GPRICE payment), plus **five** read-only devices from
+one sibling leaf — the documented sibling-import pattern, in policy,
+recorded here per §2 rule 2 with every consumer named (a dispatch may not
+make the move):
+
+| name | current home | consumers (besides the home) |
+|---|---|---|
+| `cell_data`, `cell_shapes`, `gr103_specs`, `pairs_of`, `rmodel_f` | `gprice` | **`gblaw`** (1 each — the 2-factor cycle extraction, the cell-targeted `(F, M)` sampler, the (GR-103) witness, the pair iterator, and the `2^n` reversal-set `f`; exactly the "second consumer arrived" mechanism the move-down write-ups predict) |
+
+**Where they should go if paid:** the (GR-106)-model surface (`rmodel_f`,
+`pairs_of`, `cell_data`) and the samplers (`cell_shapes`, `gr103_specs`)
+belong in `gridbal_common` beside the (GR-49)/(GR-50) surface they extend
+(or §1 cataloguing in place for `gr103_specs`, a pinned witness). Same
+acceptance test as the 2026-08-25 payments: re-run every consumer's
+validate mode byte-identical at `PYTHONHASHSEED=0` against pre-move
+baselines.
 
 ## Deliberate non-goals
 

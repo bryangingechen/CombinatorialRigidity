@@ -1,8 +1,13 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: EIGHT fan-outs and FOURTEEN single directions; 41 of 42 directions
-LANDED — GBLAW (ordinal 34, §"GBLAW") is PREPPED 2026-08-25, dispatch is
-the next action.** **GPRICE (ordinal 33, §"GPRICE") LANDED 2026-08-25, same
+**Status: EIGHT fan-outs and FOURTEEN single directions dispatched; ALL 42
+directions LANDED.** **GBLAW (ordinal 34, §"GBLAW") LANDED 2026-08-26, one
+day after its 2026-08-25 dispatch — an honest OPEN reshape: (GR-108) neither
+proven nor refuted, the exchange calculus its pinned proof shape called for
+PROVEN in three theorems ((GR-110)–(GR-112)), the law reduced to
+**existential escape** (0 failures at 1 099 swept pairs), universal escape
+REFUTED at an explicit `n = 16` witness that defeats both new mechanisms
+exhaustively at that pair.** **GPRICE (ordinal 33, §"GPRICE") LANDED 2026-08-25, same
 day as its dispatch — a graded outcome of the third kind: (GR-104)(i) is a
 theorem at `2k = 2`, every `n`, modulo the minted balance law (GR-108) alone
 (measured 1 431/1 431, `n ≤ 6` sub-cell exhaustive, hunt empty to `n = 18`),
@@ -3129,3 +3134,57 @@ read-only, left untracked for the coordinator to gate and commit.
 GBLAW"): §(K-grid) **extends** — no new section; labels
 **(GR-110)–(GR-114)**, **Steps G130–G134**; owning section stays
 authoritative; return any unconsumed remainder to the tail.
+
+### GBLAW — landing write-up (LANDED 2026-08-26, recon-fable, one serial coordinator commit)
+
+**Verdict: an honest OPEN reshape — none of the spec's three HIT shapes as
+posed; (GR-108) is neither proven nor refuted.** What lands is the exchange
+calculus the pinned proof shape called for, PROVEN in three theorems: the
+**arc-transversal normal form** (GR-110) (at a fixed sink set the maximum
+family IS an independent-transversal family, `|R| = 2|K|`, sources sliding
+freely inside sink-arcs), the **recombination theorem** (GR-111) (two maxima
+exchange along glued difference components, both recombinants again valid
+maxima, the maximum family recombination-connected — and the `2k = 2`
+refutation shape sharpens to **universal linkage**), and the **escape
+lemma** (GR-112) (imbalance intervals move by at most one notch per fine
+move, so no fine move crosses the balance layer and **(GR-108) ⟸
+existential escape**). The measured layer (GR-113): the `n ≤ 6` stratum has
+**no pos/neg-forcing maximum at all** (12 448/12 448, exhaustive — strictly
+stronger than (GR-108)(iii)'s landed stratum half); **universal escape**
+holds through `n = 14` and **FAILS at exactly one `n = 16` pair** (the
+`strand_witness`: single 16-cycle 2-factor, 152 maxima, two stranded pure
+components of 32, safe flips included — the second localization of (GR-108)
+to fail at a finite boundary); **existential escape** — the reduction's
+hypothesis and the new named open kernel — has **0 failures at all 1 099
+swept pairs**; and the (GR-111)(v) separation criterion rescues 36/36 at
+the control but **0/48 at the witness, exhaustively** — the witness is
+universally linked while the law holds there via natively balanced maxima,
+so the two mechanisms are incomparable and **any proof must produce the
+balance-reaching maximum globally, not by repairing an arbitrary maximum**.
+Two sub-claims minted-and-killed inside the pass (law untouched): universal
+escape as a per-component locality; separation as a complete proof route.
+A Haxell-type sufficient condition rides as a non-headline remark (citation
+verified at landing: P. E. Haxell, *A note on vertex list colouring*,
+Combin. Probab. Comput. **10** (2001), no. 4, 345–347). Canonical home
+§(K-grid) *Steps G130–G134* (`notes/Pencil-informal-grid.md`); driver
+`w4/gblaw.py` (five modes, ~25 s); labels (GR-110)–(GR-114) and Steps
+G130–G134 all claimed, none returned; the (GR-109) successor list's entry 1
+revised in place per (GR-114). TERMINATION: E1/E2 not fired; E3 stays ARMED
+(by GBAL) and does not fire — the movement is on (b′)'s selection layer,
+not entry 1.
+
+**Coordinator verification at landing:** every mode re-run individually in
+the foreground (`--form`/`--conn`/`--recomb`/`--strand`) plus `--validate`
+at `PYTHONHASHSEED` 0 AND 999 (byte-identical modulo wall-clock; all
+headline figures reproduced: 6 294 (pair, sink set) cells / 6 426 triples /
+the stratum's 12 448-0-forcing counter / existential escape 0 failures /
+the witness profile 88 = 56 + 16 + 16 plus 32 + 32 stranded / separation
+0/32 and 0/16 over all 48 partners); the (GR-110) counting, the (GR-111)
+gluing argument and the (GR-112) notch bound re-walked; the driver's import
+list verified against the file itself (direct `gridbal_common`, rank-free —
+`fully_good_rank` absent; five `gprice` devices recorded as the new
+*Harness debt* item); the L6 bare-token grep clean on the merged draft;
+`check-gapmap-cells.py` green on the recomputed §(K-grid) row (the close-it
+cell recomputed to a current-state statement per the checker's own
+guidance, no cap bump; the status cell's stale (GR-R1)/(GR-C2) tail
+repaired to current standing in the same pass).

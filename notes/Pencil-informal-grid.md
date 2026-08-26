@@ -13044,14 +13044,17 @@ off `M`". (iv)–(v) are direct. ∎
 > | (GR-104)(i) at `2k ∈ {4, 6}` | theorem at `n ≤ 10` (landed); at the `O ⊆ M` sub-cell it follows from (GR-108) wherever the law holds (measured, incl. V8); the `O ⊄ M` corner (every feasible majority branch a DBM while some odd branch sits off `M`, infeasible or minority) is **untouched and OPEN** |
 >
 > **The residual, in successor order.**
-> 1. **Prove (GR-108)** — the whole remaining gap at `2k = 2`. The proof
->    shape is pinned by (GR-108)(iii): an exchange producing a
->    balance-reaching maximum reversal set from a linked one; the linked
->    family is nonempty from `n = 12`, so nothing per-set works. The
->    model's freedom inventory: adjacent-pair removal is free
->    ((GR-107)(v)), and at a maximum `R` every same-gap through-pair
->    insertion is blocked only by a matching obstruction — the two moves a
->    surgery would combine.
+> 1. **Prove (GR-108)** — the whole remaining gap at `2k = 2`. *(Revised
+>    in place by (GR-114), Steps G130–G134 below.)* The exchange calculus
+>    this entry called for is now LANDED and PROVEN maximum-preserving
+>    ((GR-110)–(GR-112): slides, teleports, safe flips, recombination),
+>    and the (GR-113) witness shows no per-maximum local repair in that
+>    calculus can be the whole proof. The two live shapes: (a) prove
+>    **existential escape** ((GR-112)(v)'s hypothesis — strictly weaker
+>    than what the witness kills; 0 counterexamples known at 1 099 swept
+>    pairs); (b) a **global/extremal construction** of a balance-valid
+>    maximum, for which (GR-110) supplies the parametrization and the
+>    Haxell remark the only known unconditional criterion.
 > 2. **The `2k ∈ {4, 6}`, `O ⊄ M` corner** of (GR-104)(i) — no landed or
 >    new instrument addresses it beyond `n ≤ 10`; it needs either a
 >    (GR-106)-style model with odd `F`-branches as fixed darts (the
@@ -13192,3 +13195,392 @@ re-runs it.**
   The movement here is on **(b′)'s selection layer** ((GR-104)(i) reshaped
   onto (GR-108) at `2k = 2`), which is not entry 1 and arms nothing.
   **Firing is a coordinator action; reported, not fired.**
+
+---
+
+### Step G130 — (GR-110): the arc-transversal normal form — at a fixed sink set, the maximum family IS an independent-transversal family, and sources slide freely inside sink-arcs
+
+> **(GR-110)** *(proven; asserted configuration-by-configuration against
+> the exhaustive labeled enumeration at **6 294** (pair, sink set) cells —
+> the stratum EXHAUSTIVE, V8, the (GR-103) control, seeded `n = 12/14`;
+> `--form`)*
+>
+> Fix an `O ⊆ M` pair in the (GR-106) model and let `K` be the sink set
+> of some valid configuration. Then:
+>
+> **(i) The arc system.** On each `F`-cycle, sinks and sources alternate,
+> so `K` cuts each `K`-meeting cycle into `|K ∩ C|` **arcs** (segments
+> between cyclically consecutive sinks), and a valid configuration with
+> sink set `K` has exactly one source in each arc's interior and nothing
+> on `K`-free cycles.
+>
+> **(ii) The transversal characterization.** The valid configurations
+> with sink set exactly `K` are **precisely** the choices of one source
+> per arc interior such that (a) no even matching pair has both ends
+> chosen and (b) no odd branch has one end chosen and the other in `K`.
+> Every one has `|R| = 2|K|` — so either all of them are maxima or none
+> is, and the maximum family stratifies by sink set into
+> independent-transversal families.
+>
+> **(iii) The slide generator.** Consequently replacing one source by
+> any other admissible position of its arc preserves validity and
+> `|R|`; dually (fix the sources) sinks slide inside source-arcs — the
+> colour-swap involution (GR-105) exchanges the two statements.
+>
+> **(iv) A Haxell-type sufficient condition (remark).** The conflict
+> relation on positions ("both ends of an even matching pair chosen")
+> is a partial **matching**, i.e. max degree `Δ = 1`; by Haxell's
+> theorem (P. E. Haxell, *A note on vertex list colouring*, Combin.
+> Probab. Comput. **10** (2001), no. 4, 345–347: classes of size
+> `≥ 2Δ` admit an independent transversal — citation verified) if some
+> maximum configuration's sink set avoids all odd-branch ends and every
+> arc interior still has `≥ 2` positions after deleting the ends of one
+> odd branch `γ`, then a maximum with `γ` **free** (no resident end)
+> exists; at `2k = 2` such a maximum is valid at a balanced pattern, so
+> (GR-108) holds at that pair. Weak in practice — singleton arcs abound
+> at every swept `n` — and recorded only as the one unconditional
+> "large-arc" criterion currently proven; not a headline claim and not
+> driver-tested.
+
+*Proof.* (i) is (GR-106)(i) read at the labels. (ii) One source per arc
+is exactly alternation; among the (GR-106) constraints, the even-pair
+exclusions inside `K` are inherited from the configuration that
+produced `K`, sink–source pairs are unconstrained, source–source pairs
+are (a), and the end forcings (GR-106)(iii) plus end-consistency say a
+branch's resident ends carry ONE label — which given fixed `K` is (b).
+Counting: `|R| = |K| + #arcs = 2|K|`. (iii) is (ii) applied twice. ∎
+
+---
+
+### Step G131 — (GR-111): the recombination theorem — two maxima exchange along glued difference components, the maximum family is recombination-connected, and the 2k = 2 refutation shape sharpens to UNIVERSAL linkage
+
+> **(GR-111)** *(proven; asserted mechanically at **6 426** seeded
+> `(x, y, T)` triples — every recombinant valid and maximum; `--recomb`)*
+>
+> Work at the orientation level (orientations of `F`'s edges; hub states
+> through/sink/source by `F`-in-degree; (GR-106)'s constraints). For
+> orientations `x, y` let `z` be the set of edges where they differ,
+> with its connected components in `F`; a hub on a `z`-edge belongs to
+> that edge's component (two `z`-edges at one hub share a component),
+> and a `z`-fixed hub has equal states in `x` and `y`. **Glue**
+> components `X ~ X'` whenever some constrained pair `(a, b)` (an even
+> matching pair, or the two ends of one odd branch) has `a ∈ X`,
+> `b ∈ X'` and a **mixed** state pair — `(x_a, y_b)` or `(y_a, x_b)` —
+> violating that pair's constraint. Then for every union `T` of glued
+> classes, the recombinants `x_T` (`y`-values on `T`, `x` elsewhere)
+> and `y_T` (the complementary exchange) satisfy:
+>
+> **(i)** per hub, `{state_{x_T}(v), state_{y_T}(v)} =
+> {state_x(v), state_y(v)}`, so the reversal counts of `x_T` and `y_T`
+> sum to those of `x` and `y`;
+>
+> **(ii)** both recombinants are valid; and
+>
+> **(iii)** if `x` and `y` are maxima, **both recombinants are maxima**.
+>
+> **(iv) Connectivity.** Swapping the glued classes one at a time walks
+> `x` to `y` through maxima: the maximum family is
+> recombination-connected.
+>
+> **(v) The 2k = 2 separation criterion.** Let `x` be an AA-forcing
+> maximum and `y` a BB-forcing one. If no glued class is pinned both
+> ways — where an end of `γ₁` that is a **sink in `y`** pins its class
+> OUT and an end of `γ₂` that is a **source in `x`** pins its class IN
+> (mirror version with `γ₁`, `γ₂` swapped) — then `T` = the IN-pinned
+> classes makes `x_T` an **AB-valid maximum**, and (GR-108) holds at
+> the pair. Contrapositive, sharpening (GR-108)(iv): a refutation of
+> (GR-108) at `2k = 2` requires **universal linkage** — at EVERY pair
+> (`x` AA-max, `y` BB-max), a glued chain joining a pinned `γ₁` end to
+> a pinned `γ₂` end. The converse implication is FALSE: the (GR-113)
+> witness is universally linked (exhaustively, at that pair) and the
+> law holds there anyway.
+
+*Proof.* (i): a hub's state is a function of its two incident edge
+values; on `T` both values are `y`'s (a hub with one `z`-edge has its
+other edge shared), off `T` both are `x`'s, so each hub's two
+recombinant states are its two original states in one order or the
+other. (ii): a constrained pair sees pure `x`-states, pure `y`-states
+(also when one hub is `z`-fixed, where mixed = pure), or genuinely
+mixed states across two UNGLUED classes — legal by the definition of
+gluing. (iii): both are valid, so both counts are `≤ M*`; by (i) they
+sum to `2M*`. (iv): swap classes of `z` one at a time; each
+intermediate pairs with its complementary recombinant by (iii).
+(v): the pin conditions say exactly that in `x_T` every end of `γ₁` is
+source-or-through and every end of `γ₂` is sink-or-through, i.e. `x_T`
+is valid at the balanced pattern (A on `γ₁`, B on `γ₂`); it is a
+maximum by (iii). ∎
+
+*(Register note: the mixed-state pins are well-defined because an
+AA-forcing maximum has all resident odd ends sources, a BB-forcing one
+all sinks, and a `z`-fixed end shared by both must be through.)*
+
+---
+
+### Step G132 — (GR-112): the escape lemma — imbalance intervals move by at most one notch per move, so no fine move crosses the balance layer, and the law REDUCES to an escape statement
+
+> **(GR-112)** *(proven at every `2k`; the no-crossing consequence
+> asserted on every one of the fine-move graph's edges the driver
+> builds — 0 violations; `--conn`)*
+>
+> **(i) The interval.** The valid patterns of a configuration form a
+> subcube (forced branches pinned, free branches free), and their
+> imbalance values are exactly `{μ, μ+2, …, M}` with `μ = β − d`,
+> `M = β + d` (`β` = forced-A count minus forced-B count, `d` = #free).
+> Classify: **bal** (`μ ≤ 0 ≤ M`), **pos** (`μ ≥ 2`), **neg**
+> (`M ≤ −2`).
+>
+> **(ii) The moves.** The fine-move calculus: source slides and sink
+> slides ((GR-110)(iii)), **adjacent-pair teleports** (remove an
+> aux-cycle-adjacent reversal pair — always valid, (GR-107)(v) — then
+> insert a reversal pair into any gap of the result), and **safe
+> flips** (flip an aux component holding resident ends of at most ONE
+> odd branch). All preserve validity and `|R|`, hence map maxima to
+> maxima.
+>
+> **(iii) The notch bound.** A single fine move changes `μ` by `≥ −2`
+> and `M` by `≤ +2`. *Proof:* the `μ`-lowering branch transitions are
+> exactly A→free and A→B (each `−2`; the other four transitions move
+> `μ` by `0` or `+2`), and each requires the branch to lose its **last
+> source end** — a slide or teleport removes at most one source hub,
+> and a safe flip converts the ends of at most one branch, so at most
+> one branch can suffer one per move; the `M` half is the colour-swap
+> mirror (GR-105). ∎
+>
+> **(iv) No crossing.** Hence no single fine move joins a pos
+> configuration to a neg one (from `μ ≥ 2`, the successor has
+> `μ ≥ 0`), and the FIRST non-pos configuration on any fine-move walk
+> out of a pos configuration is **bal**.
+>
+> **(v) The reduction.** If at an `O ⊆ M` pair some maximum is
+> pos-forcing and some fine-move sequence through the maximum family
+> leaves the pos class, then a balance-valid maximum exists. So
+> **(GR-108) follows from the ESCAPE statement**: *at every pair whose
+> maximum family contains a pos-forcing member, some pos-forcing
+> maximum admits a fine-move walk out of the pos class* (pairs with no
+> pos/neg-forcing maxima satisfy the law vacuously — every maximum is
+> balance-valid; pos and neg members come in (GR-105) pairs).
+
+---
+
+### Step G133 — (GR-113): the measured escape verdict — universal escape holds through `n = 14` and FAILS at an explicit `n = 16` witness whose stranded maxima defeat BOTH mechanisms; existential escape is intact everywhere swept
+
+> **(GR-113)** *(measured; `--conn`, `--recomb`, `--strand`; caps
+> disclosed below — an exhausted cap is not nonexistence)*
+>
+> Sweep the labeled maximum family of **1 099** `O ⊆ M` pairs (stratum
+> EXHAUSTIVE 1 034, V8, the (GR-103) control, seeded cell pools at
+> `n = 12` (2k = 2 and 4), `14`, `16`) and its fine-move graph at three
+> nested levels (L1 slides; L2 + teleports; L3 + safe flips):
+>
+> **(i) The stratum strengthening.** On the exhaustive `n ≤ 6` stratum
+> there is **no pos- or neg-forcing maximum at all** (12 448 labeled
+> maxima, all balance-valid) — strictly stronger than (GR-108)(iii)'s
+> landed stratum half, which quantified over reversal **sets**.
+>
+> **(ii) Universal escape** (every fine component holding a forcing
+> maximum also holds a balance-valid one): holds at **every** swept
+> pair through `n = 14` at level L2 — at the control, slides alone
+> strand 2 components and teleports reconnect the whole 202-config
+> family into ONE component — and **FAILS at exactly one swept pair**,
+> the `n = 16` witness (`strand_witness` in the driver; one 16-cycle
+> 2-factor, both odd branches matching chords): its 152 maxima split
+> into one 88-component carrying all 56 balance-valid maxima plus 16
+> pos and 16 neg, and two STRANDED pure components (32 pos / 32 neg —
+> pure, exactly as (GR-112)(iv) forces). Safe flips do not rescue it.
+>
+> **(iii) Existential escape** (the (GR-112)(v) hypothesis): **0
+> failures anywhere swept** at L2/L3. (At L1, slides alone already
+> fail one `n = 14` pair even existentially.)
+>
+> **(iv) The separation mechanism's limits.** The (GR-111)(v)
+> criterion, hunted constructively at every pos-forcing maximum: at
+> the control it succeeds at **36/36** (all neg partners tried); at
+> the seeded `n = 12` pool at 75/196; at the `n = 16` pool at 36/124 —
+> and at the witness pair at **0/48, exhaustively**: the witness's
+> 2-factor is a single cycle, so every configuration determines its
+> orientation, and ALL (pos, neg) maximum pairs were tried — the
+> witness is **universally linked**, yet the law holds there via its
+> 56 natively balance-valid maxima.
+>
+> **(v) The two mechanisms are incomparable.** Fine moves rescue the
+> witness's big-component pos maxima (16/16 reach balance-valid
+> company) where separation rescues none; separation rescues all 36
+> control pos maxima where slides alone strand some. Neither, alone or
+> together, reaches the witness's stranded 32 — **any proof of
+> (GR-108) must produce the balance-reaching maximum globally, not by
+> locally repairing an arbitrary maximum**: maxima exist that are dead
+> ends for every exchange in this calculus.
+
+**Caps, disclosed in full.** (1) Only the `n ≤ 6` stratum leg is
+exhaustive; V8 and the control are single named pairs. (2) The cell
+pools run `cell_shapes` tries 120/120/60/40 at `n = 12(2k=2)/12(2k=4)/
+14/16` with a pair cap 12 on the `n = 16` leg; `--form`/`--conn`/
+`--recomb` draw their pools at distinct printed seeds. (3) The
+separation hunt caps neg partners at 40 per pos maximum — the driver
+counts and prints where the cap binds: at exactly **one** swept pair,
+the witness itself inside `--recomb`'s `n = 16` leg, where `--strand`'s
+exhaustive 48-partner hunt supersedes it — and draws one orientation
+per attempt (reversal-free cycles' coins; at the witness no coin
+exists). (4) The `--strand` leg is cap-free at its pair (single
+`F`-cycle). None of
+these caps qualifies (GR-110)–(GR-112) — those are proofs; the caps
+qualify (GR-113)'s sweeps only.
+
+---
+
+### Step G134 — (GR-114): where (GR-108) stands after the exchange-calculus pass, and the hand-off
+
+> **(GR-114)** *(the status statement; no new mathematics)*
+>
+> | statement | standing after this pass |
+> |---|---|
+> | (GR-108), the balance law | **unchanged: minted, measured (GPRICE's 1 431/1 431), NOT a theorem, NOT refuted** — this pass neither proves nor breaks it |
+> | (GR-108)(iii)'s stratum half | **strengthened, exhaustively**: every labeled maximum configuration on the `n ≤ 6` stratum is balance-valid (12 448/12 448) |
+> | the fixed-sink structure of the maximum family | **theorem** ((GR-110)): independent-transversal families, sources sliding in sink-arcs |
+> | exchange between maxima | **theorem** ((GR-111)): glued-difference recombination, maximum-family connectivity, and the sharpened refutation shape (universal linkage) |
+> | the law's reduction | **theorem** ((GR-112)): fine moves never cross the balance layer; (GR-108) ⟸ existential escape |
+> | universal escape (per-component locality) | **REFUTED** at the explicit `n = 16` witness — the second localization of (GR-108) to fail at a finite boundary (per-set at `n = 12`, (GR-108)(iii); per-component at `n = 16`, here) |
+> | existential escape | **the named open kernel** — measured intact at all 1 099 swept pairs (0 failures at L2/L3); implies (GR-108) at `2k = 2` via (GR-107)(iii) |
+> | (GR-111)(v) separation as a complete proof route | **refuted**: the witness is universally linked (0/48, exhaustive at that pair) while the law holds there |
+> | (GR-104)(i) at `2k = 2` | **unchanged**: theorem modulo (GR-108) alone ((GR-107)(iii)) |
+>
+> **The residual, in successor order** (revising (GR-109)'s entry 1 in
+> place; entries 2–3 unchanged):
+> 1. **Prove (GR-108)** — now with the proof-shape inventory sharpened
+>    both ways: the exchange calculus (slides, teleports, safe flips,
+>    recombination) is landed and PROVEN maximum-preserving, and the
+>    witness shows no per-maximum local repair in this calculus can be
+>    the whole proof. The two live shapes: (a) prove **existential
+>    escape** (strictly weaker than what the witness kills — the walk
+>    may start at a well-chosen maximum, and 0 counterexamples are
+>    known); (b) a **global/extremal construction** of a balance-valid
+>    maximum (e.g. an extremal sink system), for which (GR-110) supplies
+>    the parametrization and the Haxell remark the only known
+>    unconditional criterion.
+> 2. The `2k ∈ {4, 6}`, `O ⊄ M` corner — untouched here, as barred.
+> 3. (GR-C1) past the stratum — untouched here, as barred.
+
+---
+
+### Verification (Steps G130–G134)
+
+`notes/scripts/w4/gblaw.py` (**new with this pass**, at the spec's pinned
+path; left untracked for the coordinator to gate and commit). Imports —
+all read-only — `imb_of` / `odd_idx` / `stratum_cases` / `v8_specs`
+**directly from `gridbal_common`** (never via the sibling re-exports),
+`cflank.cubic_habitat`, and **five `gprice` devices** (`cell_data`,
+`cell_shapes`, `gr103_specs`, `pairs_of`, `rmodel_f`) — a §2-rule-2
+sideways trip, disclosed as a *Harness debt* item below. **Rank-free**:
+`gexist.fully_good_rank` is never imported or called and no `d_fg` claim
+is made anywhere. Local devices, none shadowing a §1 primitive (checked
+against the README index and the *Divergences* table): `valid_pats` /
+`imb_interval` / `cls_of` (the first-principles validator and the
+(GR-112) classification), `enum_family` (the exhaustive labeled maximum
+family plus the per-pattern maxima, a SECOND validator cross-checked
+in-driver against `valid_pats` and against the landed `rmodel_f`),
+`arcs_of` / `transversal_family` ((GR-110)'s two sides), `slides` /
+`gaps_of` / `teleports` / `aux_comps` / `safeflips` (the move calculus),
+`orient_of` / `states_of` (the configuration ↔ orientation dictionary),
+`glue_data` / `swap_T` / `recombine` / `separation` ((GR-111)),
+`strand_witness` (the pinned `n = 16` witness, re-entered for
+independent reconstruction and gated by `cubic_habitat` at use),
+`family_of` / `form_pair` / `conn_pair` / `recomb_pair` / the pools /
+reports. Exact integers / GF(2) throughout; no floating point; rngs
+seeded per mode with the seed printed; no set iteration printed.
+
+```
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gblaw.py --form      # ~6 s  (GR-110) at 6 294 (pair, sink set) cells + enum == rmodel_f at every pattern of 1 072 pairs
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gblaw.py --conn      # ~10 s (GR-112)/(GR-113): the fine-move census, three levels, no-crossing asserted on every edge
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gblaw.py --recomb    # ~8 s  (GR-111) at 6 426 (x, y, T) triples + the separation hunt
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gblaw.py --strand    # ~1 s  the witness in full: pinned component structure + the EXHAUSTIVE separation hunt
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gblaw.py --validate  # ~25 s all four in one process
+```
+
+**Which driver mode tests which sentence (F11).**
+
+| claim | mode | what asserts *that sentence* |
+|---|---|---|
+| (GR-110)(i)/(ii) the transversal characterization | `--form` | `transversal_family` (built from the theorem's clauses alone) asserted **set-equal** to the enumerated family at every (pair, sink set) cell — 6 294 cells across the stratum (EXHAUSTIVE), V8, the control, seeded `n = 12/14`; `|R| = 2|K|` asserted per cell |
+| the labeled enumeration itself | `--form` | `enum_family`'s per-pattern maxima asserted `== n − f(p)` against the landed `rmodel_f` at **every pattern** of all 1 072 pairs, and every family member re-checked by the independent `valid_pats` |
+| (GR-110)(iii) slides valid | `--conn` | every slide image validated and asserted to be an enumerated maximum (any miss aborts) |
+| (GR-111)(i)–(iii) recombination | `--recomb` | 6 426 seeded `(x, y, T)` triples: both recombinants asserted valid AND maximum |
+| (GR-111)(v) separation ⟹ balance | `--recomb`, `--strand` | every separation the hunt finds has its recombinant asserted balance-valid and maximum |
+| (GR-112)(iii)/(iv) no crossing | `--conn` | asserted on EVERY edge of every fine-move graph built (pos↔neg forbidden; `μ` drop `≤ 2`), all levels, all 1 099 pairs |
+| (GR-113)(i) stratum strengthening | `--conn` | the stratum leg's forcing counter: 0 pos/neg-forcing among 12 448 labeled maxima (exhaustive stratum) |
+| (GR-113)(ii) universal escape + the witness | `--conn` | per-pair no-escape component counts at L1/L2/L3; the sole L2/L3 witness printed in full (shape, matching) |
+| (GR-113)(iii) existential escape | `--conn` | per-pair existential-escape counter: 0 failures at L2/L3 |
+| (GR-113)(iv) the witness's exhaustive linkage | `--strand` | pinned family (152; 48/48/56), pinned component profile (88 = 56+16+16, 32 pos, 32 neg), separation 0/32 stranded and 0/16 big-component over ALL 48 neg partners, asserted |
+| (GR-108) itself | — | **not re-measured** (GPRICE's landed 1 431/1 431 stands; the bar on re-running landed sweeps respected); the driver's per-pair `assert bali` in the separation leg re-derives the law only at the pairs it sweeps, as a guard |
+
+**Determinism.** `--validate` run at `PYTHONHASHSEED` 0 and 999:
+byte-identical except the `[Ns]` wall-clock annotations. Every seeded leg
+prints its seed.
+
+**Scratch probes (README's standing rule).** Two interim probes (the
+witness's component profile; the stranded separation hunt) were promoted
+into the driver as `--strand` before landing; every figure quoted above
+is produced by `gblaw.py`.
+
+**Harness debt.** The five `gprice` devices above acquired their second
+consumer via a disclosed §2-rule-2 sideways import — recorded as a
+*Harness debt* item in `notes/scripts/README.md` (the canonical home).
+
+---
+
+### Confidence verdict (Steps G130–G134)
+
+| | claim | standing |
+|---|---|---|
+| **(GR-110)** | the arc-transversal normal form; slides; `|R| = 2\|K\|` | **proven**; asserted at 6 294 cells |
+| **(GR-111)** | glued-difference recombination; maximum-family connectivity; the universal-linkage refutation shape | **proven**; asserted at 6 426 triples |
+| **(GR-112)** | the imbalance-interval notch bound; no fine move crosses the balance layer; (GR-108) ⟸ existential escape | **proven** (every `2k`); no-crossing asserted on every edge built |
+| **(GR-113)** | universal escape to `n = 14`; REFUTED at the `n = 16` witness; existential escape 0 failures; the witness universally linked (exhaustive at that pair) | **measured** under the disclosed caps; the witness's own figures cap-free |
+| **(GR-108)** | the balance law | **unchanged** — minted, measured, open; the residual is now *existential escape OR a global construction* |
+| (GR-105)–(GR-107), (GR-103), (GR-104)(i) | | **untouched and consumed**; the control's landed figures re-derived only as in-driver guards |
+| **(a′)** / input (Y) / (GR-15) | | **OPEN — not attempted**; no rank computed anywhere; no flank; no class-uniformity claim |
+
+**Which side of the (`≤3`-closedHubNbhd) line this sits on.** The same
+side as GBAL's through GPRICE's: exact GF(2) / integer combinatorics on
+constructed hub multigraphs, never `PencilNondegFeasible G`; no rank is
+computed anywhere; no σ-fixed witness is read as generic (§(K-clos)
+(AC-9)); the only samplers draw **graphs**, not placements.
+
+### What would change this (Steps G130–G134)
+
+*(i)* **A proof of existential escape** makes (GR-108) a theorem at
+`2k = 2` (with (GR-107)(iii)) — the walk may start at ANY well-chosen
+maximum, which is exactly what the witness leaves open. *(ii)* **A pair
+whose every fine component of forcing maxima is stranded AND whose
+balance-valid stratum is empty** refutes (GR-108) outright; the witness
+shows the first half is achievable per-component, so the hunt for the
+second half now has a shape to grow from (grow `strand_witness`-like
+single-cycle pairs and test `bal = 0`). *(iii)* **A fourth move class**
+(multi-pair moves, or removal of non-adjacent pairs) could restore
+universal escape — the witness is the exact test case, and the driver's
+move generators are the harness for it. *(iv)* **An error in
+(GR-107)(v)** (adjacent-pair removal's validity) would void the teleport
+generator; it is a landed proven theorem. *(v)* **The `Λ ≠ ∅` / `D > 0`
+lifts** stay unswept by standing rider; everything here uses cubicity
+and `M` perfect throughout.
+
+**TERMINATION check (E1/E2/E3) — this direction's reading; the
+coordinator re-runs it.**
+
+- **(E1) NOT FIRED.** No g-flank; the pass is rank-free and computes no
+  rank, so clauses (i)–(iv) cannot fire. Clause (v) (`d_adm = ∞`) fires
+  on nothing: at an `O ⊆ M` pair the empty reversal set is valid at
+  every pattern ((GR-106)(v), vacuously), so `d_adm ≤ n` everywhere
+  this model reaches.
+- **(E2) NOT FIRED.** Entry 5 is PROVEN ((GR-54)) and consumed
+  untouched. No route is demoted: (GR-108) keeps its measured standing
+  and gains a proven exchange calculus; the residual is re-expressed
+  (existential escape / global construction), not widened; the two
+  refuted localizations (universal escape; separation-as-complete-route)
+  were both minted and killed inside this same pass, with the law's
+  standing unchanged.
+- **(E3) ARMED (by GBAL), DOES NOT FIRE, and this direction does not
+  fire it.** E3 fires only on a HIT completing **entry 1** — i.e. (a′).
+  This pass does not attempt (a′), computes no rank, and makes no `d_fg`
+  claim. The movement is on (b′)'s selection layer ((GR-108)'s exchange
+  calculus), which is not entry 1 and arms nothing. **Firing is a
+  coordinator action; reported, not fired.**

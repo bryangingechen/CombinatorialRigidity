@@ -5,8 +5,8 @@
 (L0–L7) are COMPLETE — `hsplit` CLOSED IN FULL and `hfresh`'s counting discharge landed
 (2026-07-30). Only three items remain, all carried by the landed successor
 `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card` (`Molecule/Pencil/Escape.lean`):
-`hcontract` (W4), kernel `hK`, and kernel `hbareSplit` — see *Hand-off*. **Forty-one
-kernel-(K) directions are now COMPLETE** (2026-08-05 → 08-25, ordinals 1–33; roster and
+`hcontract` (W4), kernel `hK`, and kernel `hbareSplit` — see *Hand-off*. **Forty-two
+kernel-(K) directions are now COMPLETE** (2026-08-05 → 08-26, ordinals 1–34; roster and
 per-direction theorem chain in *Decisions made*). **The SIXTH, SEVENTH and EIGHTH FAN-OUTS
 ARE ALL COMPLETE** (all fifteen directions LANDED 2026-08-19). **The arc's HITs:**
 route-ledger **entry 5 PROVEN in both halves** (GBAL, discharging input (X)); **chart
@@ -21,7 +21,7 @@ a combinatorial WALL found, the naive form refuted as a class statement,
 per-class-generic quantifier, zero (K-tight)-event rulings).
 Everything else an honest MISS or an OPEN reshape; verdicts in *Decisions made* and
 `notes/Pencil-fanout{,-archive}.md`, **not restated here**. **(GR-15) stays OPEN
-throughout; class uniformity untouched; no g-flank at any of the thirty-eight directions.
+throughout; class uniformity untouched; no g-flank at any of the forty-two directions.
 E3 is ARMED (by GBAL) and has NOT fired.** Direction codes are **multi-letter and
 topic-tagged from the fifth fan-out on** (`notes/Pencil-labels.md` (L5)); grandfathered
 single letters are re-used across dates, **always date those**.
@@ -98,15 +98,23 @@ balance law (GR-108) alone** — the reversal-set normal form (GR-106) makes
 (GR-108)'s strong form fails from exactly `n = 12`, so a proof must exchange
 between maximum reversal sets. Canonical home §(K-grid) *Steps G125–G129*
 (`notes/Pencil-informal-grid.md`), landing record `notes/Pencil-fanout.md`
-§"GPRICE", driver `w4/gprice.py`. **DIRECTION GBLAW (ordinal 34) IS PREPPED
-— the fifth 2026-08-25 check-in's front-runner pick, (GR-108) the balance
-law** (GPRICE's residual #1, the whole remaining gap to (GR-104)(i) at
-`2k = 2`; the same check-in had the GCHEAP/GPRICE harness debt paid first,
-`782e8bcd`). **NEXT CONCRETE TASK: dispatch direction GBLAW** (spec
-`notes/Pencil-fanout.md` §"GBLAW"; labels (GR-110)–(GR-114) / Steps
-G130–G134 reserved) — the §9 shelf **(ZH-1)–(ZH-6)** stays unpriced and
-ineligible. Nothing else structural queued, nothing awaiting user
-adjudication.
+§"GPRICE", driver `w4/gprice.py`. **DIRECTION GBLAW (ordinal 34) IS LANDED —
+dispatched 2026-08-25 (the fifth check-in's front-runner pick, (GR-108) the
+balance law; the same check-in had the GCHEAP/GPRICE harness debt paid
+first, `782e8bcd`), landed 2026-08-26: an honest OPEN reshape.** (GR-108)
+is neither proven nor refuted; the exchange calculus its pinned proof shape
+called for is **PROVEN** ((GR-110)–(GR-112): arc-transversal normal form,
+recombination connectivity, the escape lemma), the law REDUCES to
+**existential escape** (the new named open kernel, 0 failures at 1 099
+swept pairs), and universal escape is **REFUTED at an explicit `n = 16`
+witness** defeating both new mechanisms — so any proof must produce the
+balance-reaching maximum globally. Canonical home §(K-grid) *Steps
+G130–G134* (`notes/Pencil-informal-grid.md`), landing record
+`notes/Pencil-fanout.md` §"GBLAW", driver `w4/gblaw.py`. **NEXT CONCRETE
+TASK: the next standing research pick** (the 2026-08-07 delegation; the
+*shape* is a user call) — candidate list in *Hand-off*; the §9 shelf
+**(ZH-1)–(ZH-6)** stays unpriced and ineligible. Nothing else structural
+queued, nothing awaiting user adjudication.
 
 ## Current state
 
@@ -300,16 +308,16 @@ constraints; the dated dispatch narrative is in *Decisions made* and git):
   2026-08-05 Lean hold, W4 PARKED, `hK`/`hbareSplit` pinned, option B
   un-commissioned.
 
-**Kernel-(K) research arc — fifty-eight docs+scripts-only dispatches landed, plus eight
-strategy-only passes** (2026-08-02 → 08-25) — and, **outside** that count because they test
+**Kernel-(K) research arc — fifty-nine docs+scripts-only dispatches landed, plus eight
+strategy-only passes** (2026-08-02 → 08-26) — and, **outside** that count because they test
 the architecture rather than the (K) crux, the **two probes**: **KBARE-FALSIFY**
 (2026-08-20) and **C3-AVOID** (2026-08-24), both landed. Which pass was which is one-lined in *Decisions
 made*; the rule is that the **dispatch** count moves only on a landing (GBAL/GLAW/FRES/OCON/
 LTWO are the fortieth through forty-fourth; CIRR the forty-fifth; YLOC the forty-sixth; BALB
 the forty-seventh; ZNEQ the forty-eighth; AGLU the forty-ninth; the eighth fan-out's five
 the **fiftieth through fifty-fourth**, all landed 2026-08-19; **GFLIP the fifty-fifth**,
-**GCHEAP the fifty-sixth**, **OQRANK the fifty-seventh** and **GPRICE the fifty-eighth**,
-all 2026-08-25), and a **user call on
+**GCHEAP the fifty-sixth**, **OQRANK the fifty-seventh**, **GPRICE the fifty-eighth**,
+all 2026-08-25, and **GBLAW the fifty-ninth**, 2026-08-26), and a **user call on
 dispatch *shape*** — either multidispatch election, or a coordinator-authored pick like the
 twelfth's — contributes **no** strategy pass, so the 2026-08-19 eighth-fan-out check-in adds
 none even though it moved a standing constraint.
@@ -317,7 +325,7 @@ Canonical homes: workbook `notes/Pencil-informal.md` (**State of (K)** map = ent
 `notes/Pencil-W4-informal.md` (W4-residual), `notes/Pencil-strategy.md` (strategy). Net
 effect: **disproof risk removed**, every refuted route/gap has a successor in the gap map,
 several structural positives proven, and **route-ledger entry 5 is PROVEN, the arc's first
-HIT**; **class uniformity of the escape remains untouched by all fifty-seven.**
+HIT**; **class uniformity of the escape remains untouched by all fifty-nine.**
 **Doc-debt round CLOSED — `notes/Pencil-cleanup.md`** (2026-08-13, category D only; D-5 a
 watch item; the D-2 fix's regression history is in `notes/check-gapmap-cells.py`'s docstring).
 
@@ -533,15 +541,16 @@ neighbours' incidences and every capacity unit above 2 is bought by a **Case-I g
 whose pencil-compatibility is geometry the probe was barred from. **§(K-avoid) was never
 opened** and no gap-map status moved.
 
-**THE NEXT CONCRETE TASK — dispatch direction GBLAW** (ordinal 34, PREPPED
-2026-08-25: the fifth check-in's front-runner pick, **(GR-108), the balance
-law** — GPRICE's residual #1, the whole remaining gap to (GR-104)(i) at
-`2k = 2`, proof shape pinned by (GR-108)(iii), an exchange between maximum
-reversal sets; spec `notes/Pencil-fanout.md` §"GBLAW", labels
-(GR-110)–(GR-114) / Steps G130–G134 reserved, then land the return per the
-fan-out landing checklist). The candidate list behind it — the 2026-08-25
-re-ranked board (`notes/Pencil-strategy.md` §8, the canonical home) with both
-its rank-1 and rank-2 slots landed (OQRANK / GPRICE): after GBLAW,
+**THE NEXT CONCRETE TASK — the next standing research pick** (GBLAW is
+LANDED, see the top `**Status:**` block and *Decisions made*; landing record
+`notes/Pencil-fanout.md` §"GBLAW"). The candidate list — the 2026-08-25
+re-ranked board (`notes/Pencil-strategy.md` §8, the canonical home) with its
+rank-1 and rank-2 slots landed (OQRANK / GPRICE), plus GBLAW's sharpened
+residual: **prove existential escape** ((GR-112)(v)'s hypothesis, the whole
+remaining gap to (GR-108) hence to (GR-104)(i) at `2k = 2` — strictly weaker
+than what the `n = 16` witness kills, 0 counterexamples at 1 099 swept
+pairs; the alternative shape a **global/extremal construction** off
+(GR-110)'s parametrization; §(K-grid) *Steps G130–G134*), then
 **(K-bare) at the seed-free direct-attainment shape** (rank 3 — the
 KBARE-FALSIFY successor priced on §8.4's board; NOT option B, which stays
 un-commissioned; this is where the standing attention asymmetry says a
@@ -550,7 +559,10 @@ wall-avoiding-colouring existence** ((OC-44)(iii)) and **the second
 confinement's mechanism** — then the `2k ∈ {4, 6}` `O ⊄ M` corner of
 (GR-104)(i), the one-unit-defect redo of (GR-79)–(GR-82), GCOLL's collision
 dominance, and (OC-19) input (c) class-uniformly — the *shape* of each pick
-stays a user call under the standing 2026-08-07 delegation. **GCHEAP's
+stays a user call under the standing 2026-08-07 delegation. Recorded debt:
+GBLAW's five `gprice`-device arrivals joined `zneq.ledger`, the `kbare/`
+set and OQRANK's two arrivals (`notes/scripts/README.md` *Harness debt*,
+coordinator-paid between waves like their predecessors). **GCHEAP's
 residual sibling imports and GPRICE's five consumer arrivals are now PAID**
 (2026-08-25, paid together per the GPRICE item's own instruction — nine
 devices joined the (GR-49)/(GR-50) z-form and pattern/cube-combinatorics
@@ -579,11 +591,11 @@ round 2 (slice 4 the phase-note split, **slice 5/"slice 2" the harness move-down
 OSCHU's `rank(Q|_D) = 3` residue is no longer blocked on the harness — exact `ℚ(i)`
 (`exactcore.Gauss`) is now a base-layer primitive.
 
-**THE STANDING RESEARCH-PICK DELEGATION — spent on GBLAW for this round**
-(2026-08-25, fifth check-in, single direction front-runner-first →
-(GR-108), prepped as ordinal 34; see the top `**Status:**` block and
-*Current state*'s fifth 2026-08-25 bullet). The delegation covers the pick
-after GBLAW lands; its shape is again a user call then.
+**THE STANDING RESEARCH-PICK DELEGATION — live again: GBLAW is landed**
+(dispatched 2026-08-25 at the fifth check-in, single direction
+front-runner-first → (GR-108), landed 2026-08-26; see the top `**Status:**`
+block and *Current state*'s fifth 2026-08-25 bullet). The delegation covers
+the next pick; its shape is again a user call.
 
 **`hsplit` is CLOSED IN FULL** (W5-L7c-1…6, landed 2026-07-30) and **`hfresh`'s mechanical
 discharge (residue (iv)) is CLOSED too**. The landed successor
@@ -689,6 +701,18 @@ survey — incl. IDENT-PANEL, the nearest neighbour — is `notes/IdeaBacklog.md
 
 ## Decisions made during this phase
 
+- **Direction GBLAW (ordinal 34, 2026-08-25 → 08-26, fable, docs+scripts only)
+  — (GR-108) attacked by its pinned exchange shape, an honest OPEN reshape.**
+  The arc-transversal normal form ((GR-110): maximum families are
+  independent-transversal families, `|R| = 2|K|`), the recombination theorem
+  ((GR-111): glued-difference exchange, maximum-family connectivity, the
+  `2k = 2` refutation shape sharpened to universal linkage) and the escape
+  lemma ((GR-112): no fine move crosses the balance layer) reduce (GR-108) to
+  **existential escape** — 0 failures at 1 099 swept pairs ((GR-113), stratum
+  strengthened exhaustively: no forcing maximum at `n ≤ 6`); universal escape
+  REFUTED at the `n = 16` strand witness, where separation also fails 0/48
+  exhaustively. Canonical home §(K-grid) *Steps G130–G134*; driver
+  `w4/gblaw.py`. **(GR-15) OPEN; E3 ARMED, not fired.**
 - **Direction GPRICE (ordinal 33, 2026-08-25, fable, docs+scripts only) —
   (GR-104)(i) settled under a restricted quantifier, a graded outcome of the
   third kind.** The colour-swap identity ((GR-105)), the reversal-set normal
