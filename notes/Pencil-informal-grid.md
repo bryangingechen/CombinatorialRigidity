@@ -14455,3 +14455,470 @@ does not exhaust its target: it **settles** it, negatively, with a
 witness. **E3** — **ARMED by GBAL and NOT fired**: nothing here touches
 (a′), `d_fg` or input (Y); no rank is computed anywhere. Reported, not
 fired — firing is the coordinator's action.
+
+---
+
+### Steps G145–G148 (2026-08-26, direction GMINM) — **GHWIT's refutation does NOT reach the ledger, and the hunted stronger kill is IMPOSSIBLE**: **(GR-125)** generalizes (GR-106)'s reversal-set normal form off the `O ⊆ M` cell — carrying the per-branch twist `τ_i = [ℓ_i even]` explicitly makes `dist(z, M) = n − |R(z)|` and the whole `2^n` `f`-table computation valid at **every** perfect matching, so `d_par(M)` and `d_adm(M)` become computable where the `2^{3n/2}` cube stops (cross-asserted `f`-value-by-`f`-value against `gridbal_common.adm_cube` at **24 240** (shape, matching) pairs, 23 203 of them `O ⊄ M`, plus **236 732** landed-predicate certificates); **(GR-126)** is the **ESCAPE THEOREM** — at `2k = 2`, `min_M (d_adm(M) − d_par(M)) ≤ 2` at **every** habitat, unconditionally, because (GR-107)(iii)'s off-`M` half has a **vacuous** (GR-C1) hypothesis at `2k = 2` and (GR-94)(iv)'s landed Plesník input already supplies a matching avoiding both odd branches — so **the refutation this dispatch was told to hunt hardest (a shape pricing `≥ 4` at every matching) CANNOT EXIST at `2k = 2`**, and GHWIT's kill is confined to the per-matching reading; **(GR-127)** answers the routing question from the landed source: the ledger's own (b′) term is `d_adm(shape) − d_par(shape)` with **both ends independent minima over matchings** (`gdev.min_dev`), a **difference of minima**, and the landed W3 figures already separate it from every per-matching reading — W3's ledger gap is **1**, which (GR-67)'s parity law forbids any per-matching gap from being; **(GR-128)** is the measured verdict — at `refut20` itself `min_M gap = 0` **and** the ledger gap is **0** (`d_par(shape) = d_adm(shape) = 3`, against the witness matching's own `(4, 8, 4)`), at all five pinned GHWIT witnesses and at **25 further habitat-gated all-(2,2) `n = 20` pairs (5 of them new gap-4 (GR-104)(i) refutations)** `min_M gap = 0` and the ledger gap ∈ {0, 1}, and across **4 905** landed pool shapes `min_M gap ≤ 2` and the ledger gap ∈ {0, 1, 2} everywhere. **No status word on (GR-104)(i) or on per-matching (b′) moves — both stay REFUTED. (GR-15) stays OPEN, no gap-map status move on `hK` itself; E3 stays ARMED and does NOT fire.**
+
+### Step G145 — (GR-125): the reversal-set normal form off the `O ⊆ M` cell — one twist bit per branch makes the `2^n` model work at EVERY perfect matching
+
+**Why this cell.** (GR-106) is stated at `O ⊆ M` pairs and its proof
+opens "orient each even branch toward the end receiving its A-dart;
+odd branches (all in `M`) deliver nothing" — the all-evenness of
+`F = E ∖ M` is what makes that orientation well defined. Every landed
+`2^n` model in this arc (`gprice.rmodel_f`, `gxesc.word_census`,
+`ghwit`'s bitset layer, `naive_family`) inherits that hypothesis, so
+the arc has had **no instrument at all** for a matching with an odd
+branch off `M` past `n = 12`, where `gridbal_common.adm_cube`'s
+`2^{3n/2}` enumeration stops. The `min_M` question is exactly a
+question about those matchings.
+
+> **(GR-125)** *(proven; cross-asserted `f`-value-by-`f`-value against the
+> landed `adm_cube` + `f_layers` oracle at every (shape, matching) pair
+> of the small pools — `n ≤ 6` stratum EXHAUSTIVE, V8, seeded `n = 10`,
+> three `n = 12` — **24 240** pairs, of which **23 203** are `O ⊄ M`,
+> at `2k ∈ {2, 4, 6}`; `--check`)*
+>
+> Let `M` be **any** perfect matching of the hub multigraph and
+> `F = E ∖ M` the complementary 2-factor. Write `τ_i := [ℓ_i even]`, so
+> that branch `i`'s two dart colours agree iff `τ_i = 0`. Traverse each
+> `F`-cycle and let a **word** `w ∈ GF(2)^F` assign to each `F`-branch
+> the colour of its dart at that branch's **tail**; the dart at the head
+> is `w_i ⊕ τ_i`. For a hub `v` — head of `p`, tail of `q` — set
+>
+> > `v ∈ R(w)` iff `w_p ⊕ τ_p = w_q`, and then `c(v) := w_q` is its
+> > **common `F`-dart colour**.
+>
+> **(i) The distance identity, in full generality.** For every
+> admissible `z`, `dist(z, M) = n − |R(z)|`. *(At `v ∈ R` the two
+> `F`-darts agree, so admissibility forces the `M`-dart to the other
+> colour and `m(v) = M(v)`; at `v ∉ R` they differ, so the minority
+> dart is an `F`-dart and `m(v) ≠ M(v)`.)* This is (GR-106)(iv)'s own
+> argument with **no use of all-evenness**.
+>
+> **(ii) Admissibility is one GF(2) condition per `M`-branch.** `z` is
+> admissible iff at every `v ∈ R(w)` the `M`-dart is `1 − c(v)`. So an
+> `M`-branch `i = uw` with **both** ends resident is realizable iff
+> > `c(u) ⊕ τ_i = c(w)`,
+>
+> which is exactly (GR-106)(ii)'s sink/source exclusion when `τ_i = 1`
+> and (GR-106)(iii)'s equal-label forcing when `τ_i = 0`; with one
+> resident end the `M`-branch's colour is **forced**, with none it is
+> **free**.
+>
+> **(iii) The pattern layer.** An odd branch **in `M`** may take colour
+> A exactly at the words with no end of it carrying `c = 0`, colour B
+> exactly at those with no end carrying `c = 1` (both, when neither end
+> is resident); an odd branch **in `F`** carries its colour on its own
+> word bit. Hence
+> > `f(p) = n − max{|R(w)| : w valid, p realizable at w}`,
+> > `d_par(M) = min_p f(p)`, `d_adm(M) = min_{balanced p} f(p)`,
+>
+> a `2^{n}` computation at **any** matching, independent of branch
+> lengths beyond their parities.
+>
+> **(iv) It reduces to (GR-106) verbatim.** At an `O ⊆ M` pair every
+> `F`-branch is even, `τ ≡ 1`, and (i)–(iii) are the landed clauses
+> word for word.
+
+*Proof.* (i) and (ii) are displayed above; (iii) is (ii) read colour by
+colour. For completeness in the (GR-106)(v) sense: given a valid word
+and a realizable pattern, the explicit `z` is the word on `F`, the
+forced colour on each resident `M`-branch and the pattern's colour on a
+free odd `M`-branch — and the driver **builds exactly that `z` and runs
+the landed `(GR-49)` predicate on it** (see the certificate note below).
+∎
+
+*Verification note — what "independent" means here, precisely, read off
+the shipped driver.* `--check` runs **two** models against each other
+and adds **one** certificate layer:
+
+1. the general word model of this step (`gminm.pair_model` /
+   `pair_layers`, new here); and
+2. the **landed** `gridbal_common.adm_cube` + `f_layers` oracle, which
+   enumerates the full `2^{3n/2}` branch cube and reads `(m, c)` off
+   `gbal.dart_col` — a wholly different carrier;
+
+asserted **`f`-value by `f`-value at every pattern** (feasibility and
+value), plus `(d_par, d_adm)`, at 24 240 pairs. On top of that,
+`gminm.certify` **decodes the optimal word of every reported `f`-value
+into an explicit `z`** and asserts `z_admissible(z)`, `z_pattern(z) = p`
+and `dist(z, M) = f(p)` through the **landed** `(GR-49)` devices —
+**236 732** such certificates in `--check`, and the same device runs at
+**every** figure this pass reports at `n = 20`, where the cube oracle is
+out of reach. That certificate is a genuine **achievability**
+certificate at `n = 20`; the matching **lower** bound there rests on the
+model, whose agreement with the cube is established at `n ≤ 12` only.
+Stated plainly: **two independent models plus a landed-predicate
+certificate**, not three models — the certificate confirms `≤`, not `=`.
+At the `O ⊆ M` matching of each of GHWIT's five pinned witnesses the
+model additionally re-derives the landed triples exactly —
+`refut20`'s `f = {AA 4, AB 8, BA 8, BB 4}`, `d_par = 4`, `d_adm = 8`,
+**gap 4** — asserted against the figures **re-entered locally** from the
+landed write-up. GHWIT's own four models are **not re-run** here (its
+`--verify` is cited, not repeated); what this adds is a **fifth**
+carrier agreeing with them.
+
+---
+
+### Step G146 — (GR-126): the ESCAPE THEOREM — at `2k = 2` the `min_M` reading holds at every habitat, so the stronger kill this dispatch hunted cannot exist
+
+> **(GR-126)** *(proven; both halves already landed, this step composes
+> them and the composition is asserted at 11 089 `O ⊄ M` pairs of
+> `2k = 2` pool shapes and at every witness — `--pm`, `--min`)*
+>
+> **(i) The off-`M` half is unconditional at `2k = 2`.** (GR-107)(iii)
+> reads *"whenever a parity-optimal configuration with `|δ| ≤ 2` exists
+> ((GR-C1)'s conclusion, consumed)"*. At `2k = 2` the imbalance of any
+> pattern is `imb = 2 − 2·#B ∈ {2, 0, −2}`, so **`|δ| ≤ 2` holds at
+> every configuration whatsoever** and the hypothesis is **vacuous**.
+> The (GR-C1) qualifier that hedges (GR-107)(iii) elsewhere therefore
+> costs nothing in this cell.
+>
+> **(ii) The off-`M` half gives the gap directly.** Let `M` have some
+> odd branch off `M` and let `z` be parity-optimal, `dist(z, M) =
+> d_par(M)`, with pattern `p`. If `p` is balanced then
+> `d_adm(M) ≤ f(p) = d_par(M)`. If not, `|δ| = 2`, **both** odd branches
+> are majority-side, and the one off `M` is a feasible ((GR-99)(ii),
+> `a = 2`) majority branch that is not a matching branch, hence
+> **cheap**; by (GR-86) its flip prices `≤ 2`, and the flipped pattern
+> is balanced, so
+> > `d_adm(M) ≤ f(p ⊕ χ_γ) ≤ f(p) + 2 = d_par(M) + 2`.
+>
+> **So `d_adm(M) − d_par(M) ≤ 2` at every `2k = 2` matching with
+> `O ⊄ M`** — no `n` bound, no habitat gate beyond the standing one.
+>
+> **(iii) An escape matching always exists.** (GR-94)(iv), landed:
+> at every habitat shape `G°` is a bridgeless cubic multigraph of even
+> order, so **Plesník 1972** supplies a perfect matching avoiding any
+> two prescribed branches — take the two odd branches. (The
+> bridgelessness is itself two lines from the (GR-25) cut criterion:
+> both sides of a bridge are connected, branch-closed, of size `≥ 2`
+> (a singleton has `∂ = 3`), so each needs `exc ≥ 5` against a total
+> excess of 6.)
+>
+> **(iv) Hence the `min_M` reading SURVIVES, as a theorem.**
+> > At every `2k = 2` habitat shape,
+> > `min_M (d_adm(M) − d_par(M)) ≤ 2`.
+>
+> **(v) And the hunted refutation is IMPOSSIBLE at `2k = 2`.** A shape
+> pricing `≥ 4` at **every** matching would need every perfect matching
+> to contain **both** odd branches, which (iii) forbids. The spec's
+> "outcome to hunt hardest" is therefore not merely unfound — it does
+> **not exist** in this cell. *(At `2k ∈ {4, 6}` the argument gives
+> `min_M ≤ 2` as soon as some matching misses an odd branch, which
+> (GR-94)(iv) again supplies whenever `|O ∖ M|` can be arranged — but
+> (GR-107)(iii) is a `2k = 2` statement and this dispatch does not
+> extend it; the `2k ∈ {4, 6}` `O ⊄ M` corner stays barred and
+> untouched.)*
+
+*A second, self-contained proof of (iii), which also closes (GR-94)'s
+recorded multigraph gap for this use.* Let `G` be a bridgeless cubic
+multigraph. Every odd vertex set `S` has `|δ(S)| ≡ |S| ≡ 1 (mod 2)` and
+`|δ(S)| ≠ 1`, hence `|δ(S)| ≥ 3`; so the all-`1/3` vector satisfies
+`x(δ(v)) = 1` and `x(δ(S)) ≥ 1` and lies in the **perfect matching
+polytope** (Edmonds 1965, *Maximum matching and a polyhedron with
+0,1-vertices*, J. Res. Nat. Bur. Standards Sect. B **69B**, 125–130 —
+verified against the NBS volume scan, `archive.org/details/
+jresv69Bn1-2p125`). Writing it as a convex combination of perfect
+matchings, no edge can lie in **all** of them, or its coordinate would
+be 1. The argument is verbatim for multigraphs, so the *"multigraph
+reading is a named gap"* caveat (GR-94) attaches to its Plesník input
+is **not needed** for the one-branch case; the two-branch case still
+uses Plesník. `--pm` additionally **exhibits** an avoiding matching, and
+asserts bridgelessness, at every shape this pass touches (4 910 shapes,
+25 052 perfect matchings) — the same *"exhibited at every shape
+touched"* discipline (GR-94) already uses.
+
+---
+
+### Step G147 — (GR-127): which reading the ledger actually consumes — a DIFFERENCE OF MINIMA, and W3 already separates it from every per-matching reading
+
+**This is the dispatch's Q2, answered from the landed source rather than
+from the prose that cites it.**
+
+> **(GR-127)** *(a reading of landed statements + landed code; the W3
+> separation re-derived independently, `--gdev`)*
+>
+> **(i) Where (b′) is defined.** (b′) is minted at *Step G52* as the
+> **balance-layer** term of the growth law
+> > `d_fg(shape) = d_adm(shape) ≤ ⌈φ*/2⌉ + c_shift + c_balance`,
+>
+> in the route-ledger entry as *"the balance-layer bound (prove
+> `d_adm − d_par ≤ 2`, or characterize the W3-type balance sticks)"*.
+> Its three quantities are **shape**-level, defined at *Step G50* as
+> *"the least deviation counts at which some (matching, deviations) map
+> is parity-consistent / extends to an admissible colouring / to a
+> fully-good one"*.
+>
+> **(ii) And that is exactly how the landed driver computes them.**
+> `notes/scripts/w4/gdev.py:329` `min_dev` loops
+> `for nd in range(dmax + 1): for mat in mats:` and sets each of
+> `d_par`, `d_adm`, `d_fg` at the **first** `nd` at which **any**
+> matching qualifies. So
+> > `d_par(shape) = min_M d_par(M)`, `d_adm(shape) = min_M d_adm(M)`,
+>
+> **two independent minima**, and the ledger's (b′) term is
+> > `c_balance = min_M d_adm(M) − min_M d_par(M)`,
+>
+> a **difference of minima**. The landed layer-gap histogram
+> `d_adm − d_par ∈ {0: 130, 2: 1}` (*Step G50*'s pool table) and the
+> necklace line `d_par(NK(m)) = d_adm(NK(m)) = m` are both this
+> quantity.
+>
+> **(iii) The three readings are three different statements.** Write
+> `g(M) := d_adm(M) − d_par(M)`.
+> > (P) `g(M) ≤ 2` for **every** `M` — **REFUTED** (GR-122).
+> > (m) `min_M g(M) ≤ 2` — the spec's `min_M` reading; **PROVEN**
+> >     (GR-126).
+> > (L) `min_M d_adm(M) − min_M d_par(M) ≤ 2` — **the ledger's**.
+>
+> (P) ⟹ (L) (take `M` attaining `d_par(shape)`) and (P) ⟹ (m), but
+> **(m) ⇏ (L)** and **(L) ⇏ (m)**: the two minima need not be attained
+> at the same matching.
+>
+> **(iv) W3 already exhibits the separation — from landed figures.**
+> (GR-67)'s parity law says **every per-matching gap `g(M)` is EVEN**.
+> The landed W3 record (GDEV *Step G50*, corrected by GADM *Step G56*)
+> is `d_par(W3) = 2`, `d_adm(W3) = 3`, i.e. **ledger gap 1** — an
+> **odd** number, which no `g(M)` can be. So W3's ledger gap is
+> attained at **two different matchings** and is not any per-matching
+> gap at all. `--gdev` re-derives it independently: W3 has 8 perfect
+> matchings, `g` histogram `{0: 5, 2: 3}`, `min_M g = 0`,
+> `d_par(shape) = 2`, `d_adm(shape) = 3`, ledger gap **1**.
+>
+> **(v) Consequently GHWIT refuted a statement no consumer runs on.**
+> (P) is the reading GHWIT killed. The growth law consumes (L). The
+> `min_M` question the spec posed is (m). Neither (L) nor (m) is
+> touched by `refut20` — measured at `refut20` itself in (GR-128).
+>
+> **(vi) And no consumer needs a constant at all on the critical path.**
+> *Step G52*'s own sentence routes existence through (a′), not (b′):
+> *"prove the `d_fg = d_adm` half … and the existence target of GEXIST
+> follows from per-shape admissibility"* — and per-shape admissibility
+> is **PROVEN** ((GR-54)). (GR-15)'s four live routes do not include
+> (b′). The strategy note says it in one line
+> (`notes/Pencil-strategy.md:1279`): (GR-104)(i) is *"a
+> residual-of-a-residual inside the (a′)/(b′) ledger and **does not
+> touch a named `hK` gap**"*. So the re-routing question the spec asks
+> — *can the consumers run at the proven constant 4?* — has the answer
+> **yes, trivially, and they do not even need 4**: (b′)'s constant is a
+> bookkeeping term of the growth law, and `d_adm − d_par ≤ 4` at
+> `2k = 2` is already a theorem ((GR-86), attained by (GR-122)) while
+> the `n`-free `≤ 12` ((GR-89)) is unconditional at every `2k`.
+
+*Register note.* (iii) is the (GR-59) precedent's exact shape one notch
+further out. There, `min_M` was shown **load-bearing** for (a′) —
+`d_fg = d_adm` at the shape level survives while the per-matching form
+dies. Here the same happens for (b′), and (iv) adds the sharper fact
+that the ledger's quantity is not even `min_M` of the per-matching one.
+Anything a future (b′) proof does must therefore be stated in (L), and
+a proof of (L) may **not** fix its anchor matching — the (GR-59) moral,
+inherited.
+
+---
+
+### Step G148 — (GR-128): the measured verdict, the caps, and where the arc stands
+
+> **(GR-128)** *(measured; `--min`, `--hunt`, every figure through the
+> (GR-125) model with landed-predicate certificates at every reported
+> optimum)*
+>
+> **(i) At `refut20` the refutation does not reach either reading.**
+> The `refut20` shape carries **26** perfect matchings, **1** with
+> `O ⊆ M` (the witness, `(d_par, d_adm, gap) = (4, 8, 4)` — re-derived);
+> the per-matching gap histogram over all 26 is
+> > `{0: 16, 2: 9, 4: 1}` — `O ⊆ M` `{4: 1}`, `O ⊄ M` `{0: 16, 2: 9}`,
+>
+> so **`min_M gap = 0`**, and
+> > `d_par(shape) = 3`, `d_adm(shape) = 3`, **ledger gap `0`**.
+>
+> Note the witness matching is **not** even `d_par`-optimal for its own
+> shape (4 against 3), which is why the ledger term never sees its gap.
+>
+> **(ii) The five pinned GHWIT witnesses.**
+>
+> | pair | matchings (`O ⊆ M`) | per-matching gaps | `min_M` | `d_par`/`d_adm`(shape) | ledger gap |
+> |---|---|---|---|---|---|
+> | n12a | 10 (1) | `{0: 4, 2: 6}` | 0 | 2 / 3 | **1** |
+> | n12b | 10 (1) | `{0: 4, 2: 6}` | 0 | 2 / 3 | **1** |
+> | n12c | 10 (1) | `{0: 4, 2: 6}` | 0 | 2 / 3 | **1** |
+> | **refut20** | 26 (1) | `{0: 16, 2: 9, 4: 1}` | **0** | 3 / 3 | **0** |
+> | clause20 | 26 (2) | `{0: 15, 2: 11}` | 0 | 4 / 5 | **1** |
+>
+> **(iii) A population, not a single shape.** The 2-chord transposition
+> neighbourhood of `refut20` and `clause20` (70 transpositions each)
+> yields **28** all-(2,2) diagrams, **25** of them habitat-gated by the
+> landed `specs_of_diagram` recipe, of which **5 have diagram gap 4** —
+> five **new** (GR-104)(i) refutations beyond `refut20`. Measured at
+> **every** matching of every one of the 25:
+> > `(diagram gap, per-matching max, min_M, ledger)` =
+> > `{(2, 2, 0, 0): 10, (2, 2, 0, 1): 10, (4, 4, 0, 0): 5}`.
+>
+> **Every gap-4 pair has `min_M gap = 0` and ledger gap `0`.**
+>
+> **(iv) And across the landed pools.** Every shape, every matching,
+> through the same model: **4 905** shapes / **24 970** (shape,
+> matching) pairs — `n ≤ 6` stratum EXHAUSTIVE (4 780 shapes), V8, the
+> four named large shapes, seeded `n = 8/10/12`.
+>
+> | leg | shapes (`2k = 2`) | `min_M` gap | **ledger** gap | per-matching MAX gap |
+> |---|---|---|---|---|
+> | stratum | 4 780 (2 395) | `{0: 4767, 2: 13}` | `{0: 4641, 1: 126, 2: 13}` | `{0: 4641, 2: 139}` |
+> | V8 | 1 (0) | `{0: 1}` | `{0: 1}` | `{0: 1}` |
+> | named | 4 (2) | `{0: 4}` | `{0: 3, 1: 1}` | `{0: 3, 2: 1}` |
+> | seed8 | 45 (10) | `{0: 45}` | `{0: 44, 1: 1}` | `{0: 43, 2: 2}` |
+> | seed10 | 30 (1) | `{0: 30}` | `{0: 29, 1: 1}` | `{0: 28, 2: 2}` |
+> | seed12 | 45 (4) | `{0: 45}` | `{0: 43, 1: 2}` | `{0: 36, 2: 9}` |
+>
+> The ledger gap's spectrum is `{0, 1, 2}` — **reproducing the landed
+> record** *"the balance gaps measured across everything probed are
+> `{0, 1, 2}`"* (GADM *Step G56*) from an independent model, and the
+> odd value 1 occurs at **131** shapes, each of them a fresh instance of
+> (GR-127)(iv)'s separation.
+>
+> **(v) (GR-107)(iii)'s off-`M` half, corroborated at a new
+> population.** `gap ≤ 2` is **asserted** at every `O ⊄ M` matching of
+> every `2k = 2` pool shape — **11 089** pairs, 0 violations — with the
+> observed histograms never carrying a 4. Independent corroboration of
+> the landed theorem, not a re-proof.
+
+**Caps, disclosed in full — an exhausted cap is not a proof of
+nonexistence.** (1) The `n ≤ 6` habitat stratum is **EXHAUSTIVE**
+(`stratum_cases`, the (GR-25) cut criterion); every other pool is
+seeded (`seeded_shapes`, seed `20260826 + n` printed, 200 tries) or
+named. (2) The cube cross-check reaches `n ≤ 12` only — `adm_cube` is
+`2^{3n/2}` — and the `n = 12` leg is **3 shapes** (`--cube12`), the
+`n = 10` leg 34; beyond that the model is validated by structure plus
+the landed-predicate certificate on each reported optimum, which
+certifies **achievability**, not optimality. (3) The `n = 20` hunt is
+the **2-chord transposition neighbourhood only** of the two pinned
+witnesses — 140 diagrams — not a search; GHWIT's `--build` climb is
+**not** re-run, as barred. So *"25 gated all-(2,2) pairs"* is
+*"25 found in this neighbourhood"*, never a count of what exists. (4)
+`perfect_matchings` runs at cap 2 000 and the driver **asserts the cap
+does not bind** at every shape (largest count seen: 33). (5) The named
+pool is capped at `n ≤ 12` (`--namedcap`), so W5 and the necklaces are
+**not** measured here. (6) Nothing in this pass is habitat-ungated:
+every `n = 20` shape is rebuilt and gated by the landed
+`specs_of_diagram` + `cubic_habitat`.
+
+---
+
+### Verification (Steps G145–G148)
+
+`notes/scripts/w4/gminm.py` (**new with this pass**, at the spec's
+pinned path; left untracked for the coordinator to gate and commit).
+Imports — all read-only — `adm_cube`, `branches_at`, `f_layers`,
+`imb_of`, `named_cases`, `odd_idx`, `seeded_shapes`, `stratum_cases`,
+`v8_specs`, `z_admissible`, `z_pattern`, `z_to_map` **directly from
+`gridbal_common`** (never via the sibling re-exports),
+`gorient.perfect_matchings`, `cflank.cubic_habitat`, and one `gxesc`
+device (`specs_of_diagram` — acquiring its **third** consumer): a
+§2-rule-2 sideways trip, disclosed and recorded as an extension of the
+**GBLAW/GXESC *Harness debt*** item's consumer lists
+(`notes/scripts/README.md`, the canonical home) — **this dispatch makes
+no move**. **No import of `w4/ghwit.py` is taken**: the five pinned
+witness diagrams are **re-entered locally** (`witness_diagrams`), as
+ghwit itself re-entered the (GR-116) diagrams, so the re-derivation of
+(GR-122)'s figures is genuinely independent of ghwit's code.
+**Rank-free**: `gexist.fully_good_rank` is never imported or called and
+no `d_fg` claim is made anywhere. Local devices, none shadowing a §1
+primitive (checked against the README index and the *Divergences*
+table): `bit_masks` (the word-bit bitsets, built by doubling),
+`f_2factor` (the 2-factor of **any** perfect matching as ordered
+cycles), `size_planes` / `maxsize` (the bit-sliced `|R|`
+decomposition), `pair_model` / `pair_layers` ((GR-125) itself),
+`certify` (the landed-predicate certificate), `cube_layers` (the landed
+oracle in the same shape), `shape_scan` / `report_shape` (the per-shape
+matching census), `bridgeless`, `witness_diagrams`, `pool_shapes`,
+`transpositions`, `diagram_pair`, `diagram_scan`. Exact integers /
+GF(2) throughout; no floating point; every rng seeded with the seed
+printed; no set iteration printed.
+
+```
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gminm.py --check     # ~88 s  (GR-125): the general model vs the landed cube at 24 240 pairs + 236 732 certificates
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gminm.py --gdev      # ~1 s   (GR-127)(iv): the W3 separation
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gminm.py --pm        # ~19 s  (GR-126)(iii): bridgeless + an escape matching at every shape
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gminm.py --min       # ~22 s  (GR-128)(i)/(ii)/(iv)/(v): the min_M and ledger sweeps
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gminm.py --hunt      # ~245 s (GR-128)(iii): the n = 20 neighbourhood, gated and measured
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gminm.py --validate  # ~380 s all five in one process
+```
+
+**Which driver mode tests which sentence (F11).**
+
+| claim | mode | what asserts *that sentence* |
+|---|---|---|
+| (GR-125)(i)–(iii), the model | `--check` | the whole `f`-table (per-pattern feasibility **and** value) plus `(d_par, d_adm)` asserted equal to the landed `adm_cube` + `f_layers` oracle at **every** (shape, matching) pair of four legs — 24 240 pairs, **23 203 of them `O ⊄ M`**, at `2k ∈ {2, 4, 6}` |
+| (GR-125) completeness at every reported optimum | `--check`, `--min`, `--hunt` | `certify` decodes the optimal word into an explicit `z` and asserts the **landed** `z_admissible` / `z_pattern` / `z_to_map` on it; 236 732 in `--check` and again at every figure of the `n = 20` legs |
+| (GR-125)(iv) reduction to (GR-106) | `--check` | the `O ⊆ M` matchings are 1 037 of the cross-asserted pairs and the five pinned witnesses' triples are asserted equal to the (GR-122)/(GR-123) figures re-entered locally from the landed write-up (GHWIT's models are not re-run) |
+| (GR-126)(iii) bridgeless | `--pm` | `bridgeless` asserted branch-by-branch at every one of 4 910 shapes |
+| (GR-126)(iii) escape matching exists | `--pm` | for **every branch** `i` of every shape, some perfect matching omits `i`, asserted; and `O ⊄ M` asserted nonempty per shape — 25 052 matchings scanned |
+| (GR-126)(ii)/(iv) `min_M ≤ 2` | `--min`, `--hunt` | `min_M gap ≤ 2` **asserted** at every shape of every leg (4 935 shapes); the value is 0 at all but the 13 stratum shapes where it is 2 |
+| (GR-107)(iii)'s off-`M` half re-measured | `--min` | `gap ≤ 2` asserted at all **11 089** `O ⊄ M` matchings of `2k = 2` pool shapes; 0 violations, and the histograms are printed |
+| (GR-127)(iv) the W3 separation | `--gdev` | `d_par(shape)`, `d_adm(shape)`, the ledger gap and the per-matching gap histogram printed together at each named shape, with `all(g % 2 == 0)` **asserted** — so the ledger gap 1 at W3 is displayed against a proven-even per-matching spectrum |
+| (GR-127)(i)/(ii) the ledger reading | — | **a reading of landed statements and landed code** (*Step G50*/*G52*; `gdev.py:329` `min_dev`), not a measurement; the driver tests only its consequence (iv) |
+| (GR-128)(i) `refut20` | `--min` | the pinned `(4, 8, 4)` triple asserted at the `O ⊆ M` matching; the 26-matching census, `min_M` and the shape-level pair printed |
+| (GR-128)(iii) the population | `--hunt` | 140 transposed diagrams scanned, each all-(2,2) hit re-gated through `specs_of_diagram`, then the full matching census run on it; the `(diagram gap, max, min_M, ledger)` table is the summary |
+| (GR-128)(iv) the pools | `--min` | per-leg `min_M` / ledger / per-matching-MAX histograms over 4 905 shapes; the 13 ledger-gap-2 shapes listed by tag |
+| (b′)'s downstream consumers | — | **not driver-testable**; (GR-127) is a source reading, and its pointers are given so it can be checked by reading, not by running |
+| (a′) / `d_fg` / input (Y) / (GR-15) | — | **not attempted**; no mode computes a rank |
+
+**Determinism — tested, not asserted, on the SHIPPED file.** `--validate`
+was run **twice** at `PYTHONHASHSEED=0` (380 s, 356 s) and once at
+`PYTHONHASHSEED=999` (358 s), all three exit 0. Raw diff of the two `=0`
+runs: **24 lines, every content line carrying a `[Ns]` wall-clock cell**;
+the diff after stripping `[Ns]` is **empty**, and likewise for `=0` vs
+`=999`. So every
+mathematical byte — the cross-assert counts, the certificate count, the
+witness tables, the pool histograms, the 25 hunted pairs — is
+bit-identical across runs and across hash seeds. Every seeded leg prints
+its seed.
+
+**Scratch probes (README's standing rule — every script the project runs
+is committed).** There are none. Every figure quoted in this draft is
+produced by a mode of the shipped `gminm.py`; no probe was run outside
+it, and no figure is quoted from a transcript.
+
+**Harness debt (§2 rule 2) — record, do not move.** `gminm.py` takes one
+sideways import, `gxesc.specs_of_diagram`, which reaches **three**
+consumers with this pass (`gxesc` itself, `ghwit`, `gminm`). Extend the
+GBLAW/GXESC *Harness debt* item's consumer list in
+`notes/scripts/README.md` accordingly; this dispatch makes **no move**.
+Two further devices now have wide fan-in and are worth a line there:
+`gorient.perfect_matchings` (already §1-catalogued in place) and
+`cflank.cubic_habitat` (likewise).
+
+### Confidence verdict (Steps G145–G148)
+
+| | claim | standing |
+|---|---|---|
+| **(GR-125)** | the general reversal-set model at every matching | **proven** (the (GR-106) argument with the twist carried); cross-asserted against the landed cube at 24 240 pairs, 0 disagreements, plus 236 732 landed-predicate certificates |
+| **(GR-126)(i)/(ii)** | `O ⊄ M` ⟹ gap `≤ 2` at `2k = 2`, unconditionally | **proven** — a composition of landed results; residual confidence qualifier is (GR-86)(iii)/(iv)'s own landed status (its degenerate chain coincidences are machine-checked). Corroborated at 11 089 pairs |
+| **(GR-126)(iii)** | an escape matching exists at every habitat | **proven** — (GR-94)(iv)'s landed Plesník input, plus a self-contained Edmonds-polytope proof for the one-branch case that needs no multigraph caveat; **exhibited** at every shape touched |
+| **(GR-126)(iv)/(v)** | `min_M ≤ 2` at every `2k = 2` habitat; the stronger kill is impossible | **proven** (composition of the above) |
+| **(GR-127)** | the ledger's (b′) term is a difference of minima; W3 separates the readings | **proven-by-source-reading** for (i)/(ii)/(iii)/(vi) (*Step G50*/*G52*, `gdev.py:329`, `Pencil-strategy.md:1279`); **(iv) re-derived independently** by `--gdev` against landed figures |
+| **(GR-128)** | the measured verdict | **measured**, caps as disclosed; the `refut20` and pinned-witness triples asserted against the landed values first |
+
+**What would change this.** (a) An error in (GR-86)(iii)/(iv)'s price
+ledger would void (GR-126)(ii) and with it the theorem — but not
+(GR-128)'s measurements, which are model-computed and certificate-backed
+and would still show `min_M = 0` at every shape touched. (b) A `2k = 2`
+habitat whose ledger gap is `≥ 3` would make (b′) genuinely false in the
+reading that matters; none of the 4 935 shapes here exceeds 2, and 2 is
+the landed record's own maximum. That is the **live successor**, and it
+is a *different* statement from anything the arc has hunted. (c) If the
+`2k ∈ {4, 6}` `O ⊄ M` corner is ever opened, (GR-126)(i)'s vacuity
+argument does **not** transfer — `|δ| ≤ 2` is a real hypothesis there —
+and the escape theorem would need (GR-107)(iii)'s analogue first.
+
+### TERMINATION check (E1 / E2 / E3)
+
+**E1** — no flank is opened or closed by this pass; the `2k ∈ {4, 6}`
+`O ⊄ M` corner, (GR-C1), (GR-15) and class uniformity are untouched, as
+barred. **E2** — the pass **settles** its target rather than exhausting
+it: Q1 answered positively **as a theorem**, Q2 answered with source
+pointers, and the successor named (the ledger gap `≥ 3` question).
+**E3** — **ARMED by GBAL and NOT fired**: nothing here touches (a′),
+`d_fg` or input (Y); no rank is computed anywhere. Reported, not fired —
+firing is the coordinator's action.

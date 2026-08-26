@@ -1557,7 +1557,7 @@ itself, the corpus's own name for (GR-117)(iii). The source tokens
 in this reservation; GHWIT *cites* them and mints its own results at
 (GR-120)+.
 
-## Reserved namespace — direction GMINM (2026-08-26, **RESERVED — the direction is in flight**)
+## Reserved namespace — direction GMINM (2026-08-26, **USED — the direction landed the same day; (GR-125)–(GR-128) and Steps G145–G148 consumed, (GR-129) and Step G149 RETURNED to the tail**)
 
 **Reserved 2026-08-26 for the single direction GMINM** (ordinal 37, the
 arc's forty-fifth direction; `notes/Pencil-fanout.md` §"GMINM"), the first
@@ -1570,8 +1570,12 @@ coordinator chooses; `notes/Phase39.md` *Current state*). Target: the
 | **GMINM** | §(K-grid) — **extends**, no new section | **(GR-125)–(GR-129)** | **G145–G149** | `w4/gminm.py` (conditional — see the spec) |
 
 The reservation is the head of §(K-grid)'s unclaimed tail (declared
-**(GR-125)+ / Step G145+** at GHWIT's landing above). At landing, record
-what was consumed, return any remainder, and flip this header to **USED**.
+**(GR-125)+ / Step G145+** at GHWIT's landing above).
+**Consumed 2026-08-26 at landing: (GR-125)–(GR-128) and Steps G145–G148;
+(GR-129) and Step G149 were NOT needed and are RETURNED** — the live tail is
+therefore **(GR-129)+ / Step G149+**. The (L6) landing-time bare-token grep
+ran clean on the merged draft (every mint `GR-`-prefixed inside the
+reservation).
 
 **Code and basename verified 0-hit** as raw substrings, case-insensitively,
 across `*.md`, `*.tex`, `*.lean`, `*.py`, `*.m2` with `.git`/`.lake`

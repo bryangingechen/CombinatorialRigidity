@@ -1025,6 +1025,12 @@ are a recorded *Harness debt* item (see below).
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/ghwit.py --exh` | 71 s | ibid. *Step G143*(ii)/(iv) (EXHAUSTIVE over every `F`-cycle type and every chord diagram at `n ≤ 12` and single-cycle `n = 14` — 6.2M instances, 0 all-(2,2), 0 gap-4; capped legs at `n = 14` all-types and `n = 16` single-cycle disclosed as caps) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/ghwit.py --build` | 235 s | ibid. *Step G142* (the (2,2)-fraction climb — a NEW objective; 12 all-(2,2) hits at `n = 20`, 8 habitat-gated, **3 at gap 4**, `refut20` among them) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/ghwit.py --validate` | 335 s | ibid. all five in one process; **byte-identical across two runs at `PYTHONHASHSEED=0` modulo the `[Ns]` wall-clock cells** (measured two-run diff: 16 lines, all timing) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/gminm.py --check` | ~45 s | `notes/Pencil-informal-grid.md` §(K-grid) *Step G145* (direction GMINM; (GR-125): the twisted reversal-set model cross-asserted **`f`-value by `f`-value** against the landed `gridbal_common.adm_cube` at 24 240 (shape, matching) pairs — 23 203 of them `O ⊄ M`, `2k ∈ {2,4,6}` — plus 236 732 landed-`(GR-49)`-predicate certificates) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/gminm.py --gdev` | ~10 s | ibid. *Step G147* ((GR-127): the ledger's own `(d_par, d_adm, d_fg)` re-derived through `gdev.min_dev`'s shape-level semantics; the W3 separation — ledger gap **1**, odd, which (GR-67) forbids any per-matching gap from being) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/gminm.py --pm` | ~20 s | ibid. *Step G146* ((GR-126)'s escape-matching input exhibited per shape; `perfect_matchings` cap 2000 asserted non-binding, max seen 33) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/gminm.py --min` | ~55 s | ibid. *Step G148* (`min_M` gap and the ledger gap over 4 905 landed pool shapes: `min_M ≤ 2` everywhere, ledger gap ∈ {0,1,2}) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/gminm.py --hunt` | 224 s | ibid. *Step G148* (the `n = 20` all-(2,2) neighbourhood: 25 further habitat-gated pairs, 5 of them new gap-4 (GR-104)(i) refutations — **`min_M` gap 0 and ledger gap ∈ {0,1} at every one**; 2-chord-transposition neighbourhood ONLY, GHWIT's `--build` not re-run) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/gminm.py --validate` | 353 s | ibid. all five in one process; **byte-identical across two `PYTHONHASHSEED=0` runs and one at 999**, modulo the `[Ns]` wall-clock cells (measured; stripped diff empty both ways) |
 
 **GPRICE (single direction, LANDED 2026-08-25).** One driver added
 (`w4/gprice.py`), nothing existing modified; imports downward only — the
@@ -1051,6 +1057,14 @@ the GBLAW/GXESC item's extension). Its fourth verification model
 (`naive_family`) is deliberately **project-device-free** and lives in the
 driver, so the "four independent models" claim is driver-produced rather
 than attested.
+
+**GMINM (single direction, LANDED 2026-08-26).** One driver added
+(`w4/gminm.py`), nothing existing modified; imports downward only — the
+balance layer and the `adm_cube`/`f_layers` cube oracle directly from
+`gridbal_common`, and **one** sideways import (`gxesc.specs_of_diagram`,
+third consumer, recorded below). **It does not import `ghwit.py`** — the
+five witness diagrams are re-entered locally, so the two drivers are
+independent carriers.
 
 **C3-AVOID (probe, LANDED 2026-08-24).** All seven modes (`--all`, ~36 s total,
 inside the 600 s foreground budget in one call) run by the dispatch, exit 0,
@@ -2318,7 +2332,7 @@ documented three-invocation split (`--coll`, `--loc`, `--fibre --par --fit
 exception, mechanically confirmed (every differing line reduces to the
 timing annotation alone once it is stripped).
 
-### New item (2026-08-26, directions GBLAW + GXESC + GHWIT) — the reversal-model sibling imports on `gprice.py`/`gblaw.py`/`gxesc.py`; **UNPAID**
+### New item (2026-08-26, directions GBLAW + GXESC + GHWIT + GMINM) — the reversal-model sibling imports on `gprice.py`/`gblaw.py`/`gxesc.py`; **UNPAID**
 
 `w4/gblaw.py` imports the balance layer directly from `gridbal_common` (the
 intended post-move pattern) and `cflank.cubic_habitat` (§1-catalogued in
@@ -2333,7 +2347,8 @@ may not make the move):
 | `cell_data`, `cell_shapes`, `pairs_of`, `rmodel_f` | `gprice` | **`gblaw`**, **`gxesc`**, **`ghwit`** (3 each — the 2-factor cycle extraction, the cell-targeted `(F, M)` sampler, the pair iterator, and the `2^n` reversal-set `f`; the "second consumer arrived" mechanism, a third at GXESC's landing and a fourth arrival at GHWIT's) |
 | `gr103_specs` | `gprice` | **`gblaw`**, **`gxesc`** (2 each — the (GR-103) witness; **`ghwit` does not import it**) |
 | `cls_of`, `enum_family`, `safeflips`, `slides`, `strand_witness`, `teleports`, `valid_pats` | `gblaw` | **`gxesc`** (1 each — the class map, the labeled maximum family (a landed independent model for witness verification), the L1–L3 move generators, the (GR-113) witness, and the validator; extension recorded 2026-08-26 at GXESC's landing) |
-| `refut_specs`, `specs_of_diagram`, `word_census`, `word_stats`, `word_valid` | `gxesc` | **`ghwit`** (1 each — the four pinned (GR-116) witnesses, the landed habitat-shape recipe, and the single-cycle orientation-word census with its stats/validator; extension recorded 2026-08-26 at GHWIT's landing) |
+| `specs_of_diagram` | `gxesc` | **`ghwit`**, **`gminm`** (2 — the landed habitat-shape recipe; GMINM's only sideways import, recorded 2026-08-26 at its landing) |
+| `refut_specs`, `word_census`, `word_stats`, `word_valid` | `gxesc` | **`ghwit`** (1 each — the four pinned (GR-116) witnesses, the landed habitat-shape recipe, and the single-cycle orientation-word census with its stats/validator; extension recorded 2026-08-26 at GHWIT's landing) |
 
 **Where they should go if paid:** the (GR-106)-model surface (`rmodel_f`,
 `pairs_of`, `cell_data`, and now `gblaw`'s `valid_pats`/`cls_of`/

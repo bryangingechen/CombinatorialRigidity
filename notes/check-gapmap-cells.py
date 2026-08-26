@@ -70,6 +70,21 @@ further compression deletes status rather than redundancy. Cap set at that
 recompute's own size plus ~15%: **2715 / 935**. Recompute first, twice, then
 bump -- the order this docstring mandates.
 
+**2026-08-26 bump (direction GMINM), `(K-grid)` close-it 935 -> 985 --
+deliberately TIGHT.** The row absorbed four labels ((GR-125)-(GR-128)) and,
+with them, a distinction it did not previously carry: (b') has THREE
+readings -- per-matching, `min_M` of the difference, and the LEDGER's own
+difference-of-minima -- which are pairwise inequivalent, and the arc spent
+four consecutive directions attacking the first while the consumers run on
+the third. Naming all three is what the row is for, and it is irreducible.
+Recomputed TWICE before bumping, per the order this docstring mandates: the
+GHWIT landing absorbed a whole direction at flat size (108 -> 112 words),
+and this landing's own clause went 192 -> 144. The residual is +24. Cap set
+at the recompute's own size (959) plus ~2.7%, NOT the ~15% headroom the
+earlier bumps used -- the tight setting is deliberate, so the next landing
+on this row must recompute again rather than coast on headroom (the F21
+lesson: a cap bounds growth but cannot express purpose).
+
 **2026-08-19, `(K-out)` promoted out of the default (eighth fan-out).** The
 section absorbed **eleven** new theorems in one day -- (OC-29)-(OC-34) from
 direction OSCHU and (OC-35)-(OC-39) from direction SIGZ -- taking it from
@@ -111,7 +126,7 @@ DEFAULT_CAP = 800  # per cell (status / close-it); largest ungrandfathered
 SPECIAL_CAPS = {
     # gap-key -> {"status": cap, "closeit": cap}. Combined-remainder fallback
     # (ambiguous pipe split) uses the sum of the two.
-    "K-grid": {"status": 2715, "closeit": 935},
+    "K-grid": {"status": 2715, "closeit": 985},
     "K-out": {"status": 950, "closeit": 873},
 }
 

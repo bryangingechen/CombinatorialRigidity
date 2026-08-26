@@ -1,9 +1,12 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: EIGHT fan-outs and SEVENTEEN single directions dispatched; 44 of
-the 45 LANDED — GMINM (ordinal 37, §"GMINM") is PREPPED and IN FLIGHT**, the
-first direction picked under the 2026-08-26 widened delegation, testing
-whether GHWIT's refutation actually reaches the ledger. **GHWIT (ordinal 36, §"GHWIT") LANDED 2026-08-26, same
+**Status: EIGHT fan-outs and SEVENTEEN single directions dispatched; ALL 45
+directions LANDED.** **GMINM (ordinal 37, §"GMINM") LANDED 2026-08-26 with
+the arc's most consequential routing finding: GHWIT's refutation DOES NOT
+REACH THE LEDGER.** (b′) has three pairwise-inequivalent readings; the ledger
+consumes the **difference of minima**, the `min_M` reading is now PROVEN, and
+the per-matching reading the last four directions attacked is the one the
+consumers never used. **GHWIT (ordinal 36, §"GHWIT") LANDED 2026-08-26, same
 day as its dispatch — a REFUTATION BY WITNESS that goes one clause past the
 spec's headline case: the half-witness clause (GR-117)(iii), the gap-2 law
 (GR-117)(i) AND **(GR-104)(i) at `2k = 2` itself** are all FALSE at an
@@ -3675,3 +3678,64 @@ for the coordinator to gate and commit.
 **Reservation** (`notes/Pencil-labels.md` §"Reserved namespace — direction
 GMINM"): §(K-grid) **extends**; labels **(GR-125)–(GR-129)**, **Steps
 G145–G149**; return any unconsumed remainder to the tail.
+
+### GMINM — landing write-up (LANDED 2026-08-26, recon-opus, one serial coordinator commit)
+
+**Verdict: not the outcome the spec ranked first, and a more consequential
+one.** The spec told GMINM to hunt hardest for a shape pricing `≥ 4` at every
+matching. That shape **cannot exist** at `2k = 2` — proven, not merely unfound
+— and the routing question the spec attached as (Q2) turned out to carry the
+finding.
+
+**(Q1) The `min_M` reading is a THEOREM** ((GR-126)). Two landed pieces
+compose: (GR-107)(iii)'s off-`M` half has a **vacuous hypothesis at
+`2k = 2`** (imbalance is `2 − 2·#B ∈ {2,0,−2}`, so `|δ| ≤ 2` holds at every
+configuration and the (GR-C1) hedge never binds), and (GR-94)(iv) already
+supplies a perfect matching avoiding any two prescribed branches at every
+habitat (Plesník 1972). So `min_M (d_adm − d_par) ≤ 2` everywhere, and the
+hunted stronger kill is impossible.
+
+**(Q2) The ledger consumes neither reading the arc has been arguing about**
+((GR-127)). (b′)'s term is `d_adm(shape) − d_par(shape)` with **both ends
+independent minima over matchings** — this is what `gdev.min_dev` computes,
+its loop running `for nd` outer and `for mat` inner and fixing each layer at
+the first `nd` any matching reaches. So the consumed statement is
+**(L)** `min_M d_adm − min_M d_par ≤ 2`, not **(P)** `∀M` (GHWIT's, refuted)
+and not **(m)** `min_M (d_adm − d_par)` (this spec's, now proven).
+**(m) ⇏ (L) and (L) ⇏ (m).**
+
+**The separation needs no new measurement.** (GR-67)'s parity law proves every
+*per-matching* gap EVEN; W3's landed record is `d_par = 2`, `d_adm = 3` — a
+ledger gap of **1**, which no per-matching gap can be. And at (GR-122)'s own
+witness shape the ledger gap is **0**: the matching that refuted per-matching
+(b′) is not even `d_par`-optimal for its own shape.
+
+**What this does to the previous four directions.** GPRICE, GBLAW, GXESC and
+GHWIT all attacked (GR-104)(i) at `2k = 2` — reading **(P)**. The ledger runs
+on **(L)**. Their *mechanism* theorems stand and are untouched; what is
+re-priced is the target's relevance, and `notes/Pencil-strategy.md` §8's own
+warning ("a residual-of-a-residual inside the (a′)/(b′) ledger [that] does not
+touch a named `hK` gap") reads, in hindsight, as the signal it was.
+
+**No status word moves.** (GR-104)(i) and per-matching (b′) stay REFUTED;
+(GR-15), `hK` and class uniformity are untouched; E3 stays ARMED and does not
+fire. **The live successor is a NEW statement: is the ledger gap ever `≥ 3`?**
+— measured spectrum `{0, 1, 2}` at 4 935 shapes, and by (GR-127) no proof of
+it may fix its anchor matching ((GR-59)'s moral, one notch further out).
+
+**Verification the coordinator re-ran.** `--validate` in full: exit 0, ALL
+LEGS OK, 353 s; the `(diagram gap, per-matching max, min_M, shape-level)`
+census reproduces, including five pairs at diagram gap 4 with `min_M` gap 0
+**and** ledger gap 0. Independently checked against the tree: `gdev.min_dev`'s
+loop order and docstring (the (Q2) claim), (GR-67)'s "every per-matching layer
+gap is EVEN", (GR-94)(iv)'s "Such an `M` exists at every habitat", and W3's
+landed `d_adm = 3`.
+
+**F25 compliance, unprompted and worth recording.** The return stated its own
+bar by re-reading the shipped driver and **corrected the count downward**:
+*"two models plus a landed-predicate certificate — not three models"*, noting
+the certificate confirms achievability rather than optimality, so the `n = 20`
+lower bounds rest on the model, cube-validated at `n ≤ 12` only. That is
+exactly the discipline F25 was minted for, one dispatch earlier.
+
+**TERMINATION: E1, E2, E3 all NO** — coordinator-re-run and agreed.
