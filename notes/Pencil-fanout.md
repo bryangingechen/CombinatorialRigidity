@@ -1,7 +1,12 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: EIGHT fan-outs, TWENTY-ONE single directions and TWO concurrent pairs
-dispatched; ALL 51 LANDED.** **BINDUC (ordinal 42, §"BINDUC") LANDED 2026-08-26 —
+**Status: EIGHT fan-outs, TWENTY-TWO single directions and TWO concurrent pairs
+dispatched; 51 LANDED, ONE IN FLIGHT.** **BTWOCUT (ordinal 44, §"BTWOCUT") was
+DISPATCHED 2026-08-26 at the arc's highest-stakes target: the strengthened 2-cut
+composition lemma, which by BINDUC's exhaustive decomposition **IS** (BE-14) —
+proving it discharges `hbareSplit` *and* `PencilPair`'s unconditional conjunct.
+Its selection was **forced, not ranked**: no other candidate exists. Flip it to
+LANDED here at its landing.** **BINDUC (ordinal 42, §"BINDUC") LANDED 2026-08-26 —
 the biggest single advance the arc has made on the phase target: the induction's
 **BASE IS FREE** (3-connected ⇒ `def₂ = 0`, so the declined `def₂ = def₃` slice
 covers the whole base), BZAVOID's asserted 2-cut `− 6` is **REFUTED** and replaced
@@ -106,7 +111,7 @@ exact `n_hub` boundary for ledger attack (c)'s AA-glue case (GTMPL), (b′)'s fi
 kills the counting route to a disproof (SIGZ), (a₁) reduced to one determinant (OSCHU), and
 **(GR-64)(R2) REFUTED** with (R1) delivered (GCOLL).
 Ordinals run 1–41 (the eighth fan-out claims 25–29; GFLIP is 30; GCHEAP is 31;
-OQRANK is 32; GPRICE is 33; GBLAW is 34; GXESC is 35; GHWIT is 36; GMINM is 37; OGEOM is 38; BATTAIN is 39; BZAVOID is 40; ZSHEAR is 41; BINDUC is 42; ZJACOB is 43) and were assigned at dispatch, so landing order
+OQRANK is 32; GPRICE is 33; GBLAW is 34; GXESC is 35; GHWIT is 36; GMINM is 37; OGEOM is 38; BATTAIN is 39; BZAVOID is 40; ZSHEAR is 41; BINDUC is 42; ZJACOB is 43; BTWOCUT is 44) and were assigned at dispatch, so landing order
 differs from ordinal order.
 
 **The two architecture-testing PROBES are also both LANDED** (§"Two probes SPECCED and
@@ -5159,3 +5164,130 @@ claim.
 
 **TERMINATION: E1, E2, E3 all NO** — coordinator-re-run and agreed. E3 stays
 **ARMED by GBAL**, reported not fired.
+
+## BTWOCUT — forty-fourth ordinal, the fifty-second direction (single dispatch, prepped 2026-08-26)
+
+**Selection provenance: forced, for the first time in the arc.** No ranking was
+needed and none was made. BINDUC closed every other layer of (BE-14)'s
+decomposition and proved the decomposition **exhaustive**, so the strengthened
+2-cut composition lemma is not the best candidate — **it is the only one**, and
+proving it proves **(BE-14)**. The user's standing max-impact criterion
+(2026-08-26) selects it trivially. Dispatched **un-named, single**, at
+**`recon-opus`** (fable conserved). The twelfth's disclosure is **not** engaged:
+there were no alternatives to rank.
+
+**This is the highest-stakes dispatch of the arc.** (BE-14) proven discharges
+**`hbareSplit`** *and* **`PencilPair`'s unconditional second conjunct**, as a
+standalone theorem — two of the phase's three carried items' worth of motive, and
+the phase's own 2026-08-05 standalone-significance bar. Read the state of the
+induction from §(K-bare-ext) *Steps BE19–BE23* directly; it is **not** restated
+here.
+
+**The target, stated exactly as BINDUC left it.** Across a 2-cut `{u,v}` with
+pieces `G₁, G₂`:
+
+> `dim M(G) = dim M₁ + dim M₂ − 6 − dim(ρ̄₁ + ρ̄₂)` over relative-screw subspaces
+> of `Λ²K⁴`, so **attainment ⟺ `dim(ρ̄₁ + ρ̄₂) = min(δ₁ + δ₂, 6)`**.
+
+**Two needs, both named by BINDUC, and they are not symmetric in difficulty.**
+
+1. **The strengthened statement — and pinning it IS the first job.** `ρ_i ≤ δ_i`
+   always, so what recurses is **welded-framework attainment**, not (BE-14)
+   itself. **Write the strengthened statement down precisely before proving
+   anything**: it must (a) imply (BE-14) at the top level, (b) be closed under
+   1-cut composition ((BE-18)) and under the 2-cut step, and (c) hold at the
+   three base classes BINDUC proved free. That is a **design decision**, it is
+   the crux of this slice, and a wrong choice here wastes the rest — the phase's
+   own precedent is that a mis-shaped kernel costs the whole tower built on it.
+   If the statement you need is *stronger than anything the base classes give*,
+   say so plainly: that is a real (negative) result about the induction, not a
+   failure of the dispatch.
+
+2. **General position — and BINDUC's own cap says the obstruction may not be
+   real.** BINDUC prices the residual gauge group at dim **7** (adjacent cut
+   pair) / **5** (non-adjacent) against `Gr(3,6)`'s dim **9**, concluding it
+   "cannot supply" general position. **Its cap (BE-22)(v) discloses that this is
+   a dimension count, not an obstruction proof, and that the PIECES' OWN MODULI
+   ARE UNCOUNTED.** That is the coordinator's reading, flagged to be tested and
+   not inherited (RESEARCH-ARC §7): **count the pieces' moduli first.** If each
+   piece's own realization space supplies freedom beyond the gauge group — and it
+   plausibly does, since the pieces are only required to *attain*, not to sit at
+   a specific configuration — then need (2) may **dissolve**, and the lemma
+   reduces to need (1) plus bookkeeping. The evidence behind this reading is
+   exactly BINDUC's disclosed cap and nothing more; it may well be wrong.
+
+**Already proved — do not re-derive, and note what they leave open.**
+`δ₁ = δ₂ = 0`; and **one-rigid-side**, where the criterion collapses to `ρ = δ`
+on the other side with **no general position required at all** (biconditional,
+296 ear additions). So the genuinely open zone is **both sides non-rigid with
+positive `δ`s** — attack that, and use the one-rigid-side case as the model for
+what a clean proof looks like.
+
+**What counts as a HIT — state which you got.**
+
+1. **The lemma PROVEN ⇒ (BE-14) PROVEN.** State it plainly and do not decorate
+   it. Then stop: the **phase-boundary consequences are the user's call**, not
+   yours and not the coordinator's — whether Phase 39 closes, whether a
+   successor phase opens for the Lean, and what happens to `hK`/`hcontract` are
+   `PHASE-BOUNDARIES.md` events against a standing 2026-07-24 no-split
+   adjudication. Report; do not act on them, and do not open a Lean file (the
+   standing hold binds regardless of how good the news is).
+2. **The strengthened statement PINNED plus partial progress.** A precisely
+   written, checked strengthened statement — closed under both compositions,
+   true at the three free base classes — is itself a real deliverable even with
+   the hard case open, because it is the thing the whole induction recurses on.
+3. **An obstruction, located.** The lemma provably fails for some 2-cut class.
+   Then: is the failure a **new universal-cap mechanism**? BINDUC's (BE-23)(ii)
+   is measured-empty over 25 270 forced-flat instances, and BZAVOID's (BE-15)(ii)
+   is proved only for the **triangle**-forced mechanism (scope-corrected
+   2026-08-26 — read the bordered note at (BE-15)(ii), not the headline), so a
+   genuine new cap is live in a way it was not two commits ago. Report as a
+   candidate, never as a refutation; classification mandatory.
+4. **An honest OPEN with the route priced** — and, since this lemma *is*
+   (BE-14), an assessment of whether the connectivity induction is the right
+   frame at all, or whether the `∃`-seed + repair alternative (whose chartless
+   wall nothing has lowered) becomes competitive again.
+
+**Bounded secondary deliverable, if and only if it is cheap.** BINDUC's ranked
+successor (2): a **direct point-side proof of the flat law**, removing
+(BE-20)(ii)'s inherited (BE-13) *proven-informally* planar body-pin ingredient.
+This matters more than it did before, because (BE-20) is now **load-bearing for
+the whole base**, so an informal ingredient sits under the free part of the
+induction. BINDUC calls it "a small, self-contained target". Take it only if it
+does not compete with the primary; skip it explicitly if it does.
+
+**Bars.** **Do not inherit BZAVOID's `− 6`** — REFUTED (BE-21); the exact law is
+`def₃(G) = max(g₁+g₂, f₁+f₂−6)`. **Do not over-rely on (BE-15)(ii)**: its
+cap-free closure covers the **triangle**-forced mechanism only. Do not
+re-attempt the routes closed by BZAVOID ((BE-15) triangle cap, the `G²`/molecule
+apparatus (BE-17), the transversality count (BE-16)(iv)) or by ZJACOB (the
+Jacobian/singular-locus route and, per (JC-6), **any** route deriving properness
+from a codimension count, a Jacobian criterion, or Cohen–Macaulayness —
+§(K-jac) answers those before they start). Do not scaffold on
+`Graph.minimal_kdof_reduction`: its conclusion cannot reach `∀ G`, and its
+`hcontract` is a **sibling** of the phase's parked item, not the same obligation
+(the spec that called them byte-for-byte was wrong — BINDUC's correction, and
+the phase's is strictly stronger). Do not attack `hK`, (GR-15), class
+uniformity, or §(K-grid)'s ledger. Do not touch W4 / `hcontract`. **No `.lean`**
+— the standing 2026-08-05 Lean hold, which binds even on a HIT shape 1.
+
+**Riders.** TERMINATION E1/E2/E3 at the return (**E3 ARMED by GBAL** — report,
+never fire). **F11:** a driver per headline sentence; a *criterion* claim needs a
+driver that tests the biconditional, not one direction of it. **F27:** multi-seed
+any shortfall claim — rank is lower semicontinuous, and this namespace has been
+bitten twice (BATTAIN, BZAVOID). **F25:** state your verification bar off the
+shipped driver; every script you run is committed; cap disclosure mandatory, and
+**disclose explicitly whether any dimension count in your argument is an
+obstruction proof or only a count** — that distinction is what (BE-22)(v) got
+right and is the single most likely place for this slice to overclaim. Exact ℚ,
+seeded, degeneracy-guarded; `notes/scripts/README.md` binds. The `kbare/`
+sibling-import set is recorded UNPAID debt, now with three `w4/` consumers and a
+three-deep `battain → bzavoid → binduc` chain — extend the list, make no move.
+
+**Driver — expected, at the pinned path `notes/scripts/w4/btwocut.py`.** Extend
+`w4/binduc.py`'s `twocut`/`rank2`/`ear` modes by read-only import rather than
+reimplementing the gluing machinery.
+
+**Reservation** (`notes/Pencil-labels.md` §"Reserved namespace — direction
+BTWOCUT"): §(K-bare-ext) **extends**, no new section; labels
+**(BE-25)–(BE-29)**, **Steps BE24–BE28**; return any unconsumed remainder.

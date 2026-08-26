@@ -1800,6 +1800,40 @@ for a §9-shelf direction (`ZSHEAR` the first), which keeps the externally-sourc
 sections visibly grouped; note it is **not** a claim about the source's
 correctness, only about where the idea came from.
 
+## Reserved namespace — direction BTWOCUT (2026-08-26, **reserved at dispatch; flip to USED at landing**)
+
+**Reserved 2026-08-26 for the single direction BTWOCUT** (ordinal 44, the arc's
+fifty-second direction; `notes/Pencil-fanout.md` §"BTWOCUT"), the **fifth
+consecutive direction to work this namespace** and the first whose selection was
+**forced rather than ranked**: BINDUC proved (BE-14)'s decomposition exhaustive
+and closed every layer but one, so the strengthened 2-cut composition lemma is
+the only candidate, and proving it proves (BE-14).
+
+| direction | owning § | labels reserved | steps reserved | driver |
+|---|---|---|---|---|
+| **BTWOCUT** | §(K-bare-ext) — **extends**, no new section | **(BE-25)–(BE-29)** | **BE24–BE28** | `w4/btwocut.py` (expected — extend `binduc.py`'s `twocut`/`rank2`/`ear` by read-only import) |
+
+The reservation is the head of §(K-bare-ext)'s unclaimed tail, which four
+consecutive directions have consumed with **nothing returned**: KBARE-FALSIFY
+*Steps BE1–BE8* / **(BE-1)–(BE-9)**, BATTAIN *Steps BE9–BE13* /
+**(BE-10)–(BE-14)**, BZAVOID *Steps BE14–BE18* / **(BE-15)–(BE-19)**, BINDUC
+*Steps BE19–BE23* / **(BE-20)–(BE-24)** — so the tail is
+**(BE-25)+ / Step BE24+**.
+
+**Code and basename verified 0-hit** as raw substrings across `*.md`, `*.tex`,
+`*.lean`, `*.py`, `*.m2` with `.git`/`.lake` excluded. `(BE-26)`–`(BE-30)` each
+0-hit; **`(BE-25)`, `Step BE24` and `BTWOCUT` hit only this file's own
+bookkeeping** — the first two the BINDUC landing's tail record, the third
+BINDUC's *"Checked and NOT chosen"* line. Fourth occurrence of that benign shape
+in this namespace, and worth recording for a reason beyond bookkeeping:
+**`BTWOCUT` was rejected for BINDUC on the stated ground that it "names only the
+first slice, and the direction's target is the whole induction plus its base"** —
+BINDUC then *closed* the base and the rest, so that slice **is** now the whole
+target and the rejection reason has expired. The code is taken here on its
+original merit. **Checked and NOT chosen:** `BGLUE` — 0-hit, but "glue" is
+already the name of `bzavoid.py`'s 1-cut mode and would read as that mode's
+successor rather than as the 2-cut lemma.
+
 ## Registry — `notes/Pencil-informal.md` (the (K) workbook)
 
 Status keywords are pointers to the owning section's verdict block and the

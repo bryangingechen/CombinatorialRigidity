@@ -12,8 +12,9 @@ with **`hsplit` CLOSED IN FULL** and `hfresh`'s counting discharge landed
 
 **The kernel-(K) research arc: 51 directions COMPLETE** (2026-08-05 → 08-26,
 ordinals 1–43), plus eight strategy-only passes and two architecture probes.
-Both of the session's second concurrent pair (ordinals 42–43) are LANDED, so the
-arc stands at **51 directions COMPLETE** and **nothing is in flight**.
+Ordinals 42–43 are LANDED, so the arc stands at **51 directions COMPLETE**;
+**ordinal 44 (BTWOCUT) is IN FLIGHT** at the strengthened 2-cut lemma, which
+**is** (BE-14).
 **Per-direction verdicts are NOT restated here** — each has a landing write-up
 at `notes/Pencil-fanout.md` §"<CODE>" and a canonical mathematical home in the
 workbooks. **The arc's standing result, unchanged by all 47: `hK` is not
@@ -34,8 +35,20 @@ the arc's first-ever look at `hbareSplit`, **bare realizability proved
 UNCONDITIONAL** plus the first pencil-stratum rank cap produced by an argument
 (BATTAIN, (BE-11)/(BE-13)).
 
-**NEXT CONCRETE TASK — the STRENGTHENED 2-cut composition lemma, which is now
-the ONLY thing between the arc and (BE-14).** BINDUC reduced (BE-14) to an
+**NEXT CONCRETE TASK — verify and land BTWOCUT (ordinal 44, IN FLIGHT), then the
+queued (K-res) scoping slice.** BTWOCUT is dispatched at the **STRENGTHENED 2-cut
+composition lemma, the ONLY thing between the arc and (BE-14)** — spec at
+`notes/Pencil-fanout.md` §"BTWOCUT". **Its selection was forced, not ranked:** by
+BINDUC's exhaustive decomposition no other candidate exists, and proving it
+discharges `hbareSplit` *and* `PencilPair`'s unconditional conjunct as a
+standalone theorem. **If it returns a HIT shape 1, the phase-boundary
+consequences are the USER's call** — whether Phase 39 closes and a successor
+opens for the Lean is a `PHASE-BOUNDARIES.md` event against the standing
+2026-07-24 no-split adjudication, surfaced with a commit-count estimate, never
+taken unilaterally; the 2026-08-05 Lean hold binds regardless of how good the
+news is.
+
+**The lemma, for reference —** BINDUC reduced (BE-14) to an
 exhaustive decomposition whose base is **free** and whose 1-cut layer is
 **done**, leaving one lemma: *attains ⟺ `dim(ρ̄₁+ρ̄₂) = min(δ₁+δ₂,6)`* across a
 2-cut, which needs (a) the induction to carry a **strengthened** statement
@@ -506,6 +519,37 @@ constraints; the dated dispatch narrative is in *Decisions made* and git):
   here because the next coordinator should not have to rediscover it.
   **Everything else stands unchanged:** phase OPEN, the 2026-08-05 Lean hold, W4
   PARKED, `hK`/`hbareSplit` pinned, both option Bs un-commissioned.
+
+- **2026-08-26 (eleventh check-in), the HEADROOM RULE RE-CALIBRATED — measured,
+  not argued — and one more dispatch authorized before a session break.** Asked
+  whether to break or continue, the user first corrected the coordinator's
+  standing caution, verbatim: *"I think the guidance not to fan out when
+  weekly_all > 80% was when we were using fable subagents. With opus we can
+  probably go a bit further before sticking to single dispatches."* **The
+  coordinator measured rather than debating, and the correction is confirmed on
+  the stronger of its two halves:** `weekly_scoped` sat at **92 % for the entire
+  session and did not move a single point across four opus recons**, so it tracks
+  **fable only** — exactly the 2026-08-19 finding, now established by measurement
+  instead of assertion. Applied literally, `.claude/commands/coordinate-phase.md`'s
+  *"above ~80 % on **either** limit, stagger"* would have blocked every fan-out
+  this session, **including the pair that produced the arc's biggest advance**;
+  the rule as written is mis-calibrated for opus work and should be read as
+  *"above ~80 % on the limit the dispatched rung actually consumes."* On the half
+  that does bind: `weekly_all` moved **77 → 79 → 81 %**, i.e. **1–2 points per
+  pair-round**, leaving on the order of eight to twelve pair-rounds before the
+  14-hour reset — so the coordinator's *"the next round should stagger"* was
+  **over-conservative and is withdrawn**. Asked then whether to break, the
+  coordinator recommended **one more dispatch, bounded** — the 2-cut lemma, specced
+  while the just-verified detail (the criterion, both named needs, the free
+  sub-cases, the (BE-15) scope correction) was still in hand rather than
+  re-derived from the docs — and the user selected **"proceed with your
+  suggestion"**. So: **BTWOCUT dispatched, then a session break.** Separately, and
+  closing an item `f3ded610`'s message had left open for the user: asked about
+  rewriting `d87693ae`'s message, the user answered *"Don't worry about
+  d87693ae's commit message; it's fine to just leave it and not track it any
+  more."* — **the item is closed and is not tracked anywhere.** **Everything else
+  stands unchanged:** phase OPEN, the 2026-08-05 Lean hold, W4 PARKED,
+  `hK`/`hbareSplit` pinned, both option Bs un-commissioned, (K-res) queued.
 
 **Kernel-(K) research arc — sixty-eight docs+scripts-only dispatches landed, plus eight
 strategy-only passes** (2026-08-02 → 08-26) — and, **outside** that count because they test
