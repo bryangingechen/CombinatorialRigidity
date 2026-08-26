@@ -1,13 +1,19 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: EIGHT fan-outs and TWENTY-ONE single directions dispatched; 47
-LANDED, TWO IN FLIGHT.** **BZAVOID (ordinal 40, §"BZAVOID") and ZSHEAR
-(ordinal 41, §"ZSHEAR") were DISPATCHED 2026-08-26, concurrently, at
-`recon-opus` — BZAVOID at (BE-14)'s full statement (`Y° ⊄ Z(G)`, the hard step
-that would discharge `hbareSplit` *and* `PencilPair`'s unconditional conjunct),
-ZSHEAR as the session's side line and the **first direction strategy §9's
-external-technique shelf has ever produced** ((ZH-1), the Witt shear). Neither
-has returned; flip both to LANDED here at landing.** **BATTAIN (ordinal 39, §"BATTAIN") LANDED 2026-08-26 —
+**Status: EIGHT fan-outs and TWENTY-ONE single directions dispatched; 48
+LANDED, ONE IN FLIGHT.** **BZAVOID (ordinal 40, §"BZAVOID") LANDED 2026-08-26 —
+the spec's commissioned falsification arm came back **EMPTY BY AN ARGUMENT at
+every graph**, so BATTAIN's triangle-free premise is a special case and not the
+reason; the pencil stratum is **IDENTIFIED as the planar-atom molecular
+stratum**, making (BE-14) **existential rather than generic**; and **two routes
+are CLOSED** — the landed Phases-24–26 `G²` apparatus (gate is the literal
+negation of the pencil condition, dictionary gaps 5/4/1) and the coordinator's
+own transversality count (structurally incapable). (BE-14) reduced to
+2-connected graphs and still OPEN; `hbareSplit` untouched; nothing refuted, not
+a PENCIL event.** **ZSHEAR (ordinal 41, §"ZSHEAR") is IN FLIGHT** — dispatched
+2026-08-26 concurrently with BZAVOID as the session's side line, and the
+**first direction strategy §9's external-technique shelf has ever produced**
+((ZH-1), the Witt shear); flip it to LANDED here at its landing. **BATTAIN (ordinal 39, §"BATTAIN") LANDED 2026-08-26 —
 the arc's first direction ever aimed at `hbareSplit`, and it paid: the motive
 characterized off the Lean bodies, bare realizability proved UNCONDITIONAL,
 the first universal pencil-stratum rank cap produced BY AN ARGUMENT, the
@@ -4263,6 +4269,132 @@ imports; leave it untracked for the coordinator to gate and commit.
 BZAVOID"): §(K-bare-ext) **extends**, no new section; labels
 **(BE-15)–(BE-19)**, **Steps BE14–BE18**; return any unconsumed remainder to
 the tail.
+
+### BZAVOID — landing write-up (LANDED 2026-08-26, recon-opus, one serial coordinator commit)
+
+**Verdict: HIT shape 2, fired NEGATIVELY and BY AN ARGUMENT; shape 1 an honest
+partial; shape 3 re-priced. Nothing is refuted — not `PencilPair K 3 G`, not
+`hbareSplit`, not (BE-14)-for-all-`G`. Three ROUTE findings and one reduction.
+Not a PENCIL event.**
+
+**The falsification arm the spec commissioned is EMPTY BY AN ARGUMENT — and it
+is empty for every graph, on and off the habitat.** The spec asked for a
+triangle-carrying `G` with a forced cone and `def₂ > def₃`, reasoning that
+triangles are legal off the `hnoRigid` habitat. **(BE-15)** shows the
+criterion's two halves are logically incompatible. The direction first
+**generalized** BATTAIN's cone criterion to a family of universal caps, one per
+forced class partition `π(G)` (the vertex classes of the triangle-edge subgraph
+`T(G)`), with deficiency `6(k−1) − 5c + Σ_i def₂(G[V_i])`; `k = 1` is (BE-13).
+Then it proved **`Σ_i def₂(G[V_i]) = 0` always** — each class is connected and
+triangle-covered, a triangle is isostatic in the planar body-pin count
+(`3·3 − 2·3 = 3`), and two rigid units sharing a **body** (which is what sharing
+a *vertex* means when vertices are bodies) are rigid together — so the cap's
+deficiency is exactly `max(0, partitionDef₃(π(G)))`, **a value `def₃`'s own
+maximand already takes**. The mechanism can only ever reproduce a bound the
+target already accounts for. Exact, **cap-free**, and enumerated at
+**375 719 + 27 474** graphs with zero exceptions.
+
+**What that does to BATTAIN's reading is a STRENGTHENING, not a correction.**
+*Step BE13* explained the empty arm by *"forcing needs a triangle, and the
+habitat is triangle-free by `hnoRigid`"*, with a Lean-level citation. Sound, but
+**not needed**: the arm was never inhabited anywhere, and the reason is an
+identity rather than a property of the habitat. The `hnoRigid` appeal becomes a
+special case. The superseded sentence in *Step BE13*'s own *what would change
+this* block was repaired in the same commit (the RESEARCH-ARC §3 corollary — a
+map correction is presumptively a prose correction too).
+
+**The identification, and it changes how the residual should be worked.**
+**(BE-16)**, read off the Lean bodies as the guard requires: `rigidityRows`
+(`RigidityMatrix/Basic.lean:654`) and `hingeRowBlock` (`:435`, literally
+`(span {supportExtensor e}).dualAnnihilator`) make the rank a function of the
+**hinge lines alone**; on the pencil stratum the hinge of `uv` is the **join
+`p_u ∨ p_v`**, so the framework **is** the molecular (hinge-concurrent)
+framework at atom positions `p` — exactly the landed `molecularOfCentres`
+construction, whose own body builds the hinge as the join of the endpoint
+centres. The pencil condition dualizes to *every closed star of points is
+coplanar*: the **all-trigonal-planar** molecule. Consequence that matters:
+(BE-14) is **existential, not generic** — `rank ≤ target` is universal, so **one
+witness per graph settles that graph**, and `Y° ⊄ Z(G)` is a strictly less
+constructive phrasing of the same thing.
+
+**Two routes CLOSED, one of them the most attractive on the board.**
+**(BE-17)** — the landed Phases-24–26 `G²` molecule apparatus is **dead here**,
+and not merely by hypothesis mismatch: `IsGeneralPositionPlacement`
+(`GeneralPositionPlacement.lean:59`) demands every `≤ 4`-subset affinely
+independent, which is the **literal negation** of the pencil condition at every
+degree-3 hub, and the dictionary's *sufficient condition* for (BE-14) is
+measured **FALSE in exact ℚ** at DZ / `spider(5,5,5)+c` / `theta(4,4,4)+c`
+(`rank R(G²,p)` = 49/38/32 against generic 54/42/33; dictionary gaps **5/4/1**)
+**while the molecular rank attains 114/90/72**. Mechanism: a coplanar `K₄` has
+bar-joint rank 5, not 6. **(BE-16)(iv)** — the **coordinator's own offered
+transversality/dimension count is structurally incapable** of settling
+`Y° ⊄ Z(G)`: containment needs only `dim Y° ≤ dim Z`, satisfiable at every
+graph with a hub (DZ: `54 ≤ 59`). The *other* half of that same coordinator
+reading — "deform off the canonical point" — **survives and is now priced
+exactly** at `def₂ − def₃`, with `def₂ ≥ def₃` proven at every connected graph.
+So the reading was **SPLIT, not simply refuted**, on the YLOC precedent.
+
+**One reduction banked.** **(BE-18)** — `def₃` is additive over a 1-vertex cut
+(both directions proved, 907 gluings enumerated) and the panel-hinge rank is
+`GL₄`-invariant, so pencil attainment **composes over 1-cuts** and **(BE-14)
+reduces to 2-connected graphs**. The 2-cut extension is asserted "routine", not
+proved — disclosed as cap 8.
+
+**A free corollary worth naming, and it is NOT the declined partial.** At a
+genuinely forced cone (`k = 1`) `def₂ = 0`, hence `def₃ = 0`, hence the cone
+**attains in closed form** — so (BE-14) holds with no genericity argument for
+every graph whose triangle-edge subgraph is spanning and connected (every `K_n`,
+every triangular cactus). That is a **subclass** of BATTAIN's declined
+`def₂ = def₃` slice, forcing both to `0`, so it is strictly less than what the
+user declined and the direction says so plainly. **The declined partial is still
+unclaimed.**
+
+**Shape 1 — the honest partial, with the residual quantified.** (BE-14) is
+**OPEN**: *for every 2-connected `G`, `∃ p : V → P³` with every closed star
+coplanar and adjacent points distinct, at which the molecular body-hinge matrix
+has rank `6(|V|−1) − def₃(G)`.* Priced as **the same size as after BATTAIN**,
+two dead ends removed and the shape stated correctly; the `∃`-seed + repair
+alternative is untouched and §(K-tight) *Step 5*'s chartless wall is not
+lowered.
+
+**Coordinator verification.** Full-figure re-run, not `validate` alone: `tri`
+(**375 719 / 0**, 73 s, the `n = 7` tier `validate` deliberately skips), `crit`
+(**27 474 exhaustive / 0 fire / 16 894 tight**), `cap` (`K4` reproducing
+(BE-13); DZ triangle-free at `k = 20`, `c = 23`, cap deficiency `0`; necklaces
+`k = 3…7` with cap deficiency `max(0, k−6)`), `pn` (rank **114 by both
+carriers**), `flat` (`6` vs `5`; 6/6 hubs), `sq` (deficits **5/4/1**), `glue`
+(**907**), `validate` (17 s). **All six Lean pins verified against the
+definition BODIES**, not docstrings — `rigidityRows`, `hingeRowBlock`,
+`IsGeneralPositionPlacement`, `molecularOfCentres`,
+`molecular_finrank_motions_eq_square_ker` (whose `hgp` hypothesis is the gate
+(BE-17)(i) turns on), `molecule_rank_formula`. **The load-bearing algebra was
+re-derived independently by the coordinator:** `partitionDef₃(π) = 6(k−1) − 5c`;
+`d ≥ q − 1` on a connected graph gives `partitionDef₂ ≥ partitionDef₃`
+pointwise, hence `def₂ ≥ def₃`; `def₂ = 0 ⇒ def₃ = 0`; `def₂` monotone
+decreasing in edges; triangle-covered + connected ⇒ triangle-intersection graph
+connected ⇒ `def₂ = 0`; and `k = 1, c = 0` specializing to `6(|V|−1) − def₂(G)`.
+**The apparent tension with DZ's `def₂ = 11` resolves correctly** and was
+checked: DZ is triangle-free, so its cone is *available*, not *forced*
+(`k = 20`), and (BE-13) prices a chosen configuration while (BE-15) prices a
+forced one.
+
+**F25 bar, read off the shipped driver:** eight modes, all foreground with
+explicit timeouts, **exhaustive** enumerations backing every "always"/"never"
+sentence (F11's own claim class), both deficiency oracles cross-checked at all
+27 474 exhaustive entries, every rng seeded, and `sq` multi-seeded (6 draws, max
+taken) against BATTAIN's own recorded one-seed trap. **The `G²` ranks are exact
+ℚ deliberately** — the direction started them in GF(p) and corrected itself,
+since a mod-`p` rank is a *lower* bound and therefore the wrong direction for a
+shortfall claim. **Nine caps disclosed**, including that the exhaustive tiers
+stop at `n = 7`/`n = 6`, that `sq`'s three shapes are all `def₃ = 0` and
+degree-3-hubbed with `def₃ > 0` and degree-`≥ 4` hubs **unprobed**, that `Nk_3`
+had no usable `Y` sample and is skipped, and — the one that matters most for
+soundness — that **(BE-15)(ii)'s closure does NOT inherit (BE-13)'s
+proven-informally status**, needing only `def₂(G[V_i]) = 0` and a definitional
+inequality. **No scratchpad probe backs any claim.**
+
+**TERMINATION: E1, E2, E3 all NO** — coordinator-re-run and agreed. E3 stays
+**ARMED by GBAL, not fired**.
 
 ## ZSHEAR — forty-first ordinal, the forty-ninth direction (single dispatch, prepped 2026-08-26, **the side line**)
 

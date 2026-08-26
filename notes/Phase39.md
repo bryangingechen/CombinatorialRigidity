@@ -10,9 +10,10 @@ Everything else in the phase is closed: W0–W3 and the whole W5 arc (L0–L7),
 with **`hsplit` CLOSED IN FULL** and `hfresh`'s counting discharge landed
 (2026-07-30).
 
-**The kernel-(K) research arc: 47 directions COMPLETE** (2026-08-05 → 08-26,
-ordinals 1–39), plus eight strategy-only passes and two architecture probes;
-**ordinals 40–41 (BZAVOID / ZSHEAR) are IN FLIGHT**, dispatched 2026-08-26.
+**The kernel-(K) research arc: 48 directions COMPLETE** (2026-08-05 → 08-26,
+ordinals 1–40), plus eight strategy-only passes and two architecture probes.
+**Ordinal 41 (ZSHEAR, the §9 side line) has RETURNED and lands in the next
+commit**; this commit lands **BZAVOID** (ordinal 40).
 **Per-direction verdicts are NOT restated here** — each has a landing write-up
 at `notes/Pencil-fanout.md` §"<CODE>" and a canonical mathematical home in the
 workbooks. **The arc's standing result, unchanged by all 47: `hK` is not
@@ -33,17 +34,18 @@ the arc's first-ever look at `hbareSplit`, **bare realizability proved
 UNCONDITIONAL** plus the first pencil-stratum rank cap produced by an argument
 (BATTAIN, (BE-11)/(BE-13)).
 
-**NEXT CONCRETE TASK — verify and land the two directions DISPATCHED
-2026-08-26 (ninth check-in), then pick the next.** **BZAVOID** (ordinal 40)
-takes *Hand-off*'s head — **(BE-14) at the FULL statement**, hard step
-`Y° ⊄ Z(G)`, which would discharge `hbareSplit` *and* `PencilPair`'s
-unconditional conjunct at once — and **ZSHEAR** (ordinal 41) runs concurrently
-as the session's **side line**, the first direction ever produced by strategy
-§9's external-technique shelf ((ZH-1), the Witt shear as a uniformity device,
-plus the owed §2.5 filter check on (ZH-2)/(ZH-3)). Specs, bars and riders:
-`notes/Pencil-fanout.md` §§"BZAVOID"/"ZSHEAR"; reservations
-`notes/Pencil-labels.md`. **Queued behind them: the (K-res) scoping slice**
-(one direction, adjudicated 2026-08-26 — see *Current state*).
+**NEXT CONCRETE TASK — land ZSHEAR (ordinal 41), which has RETURNED**, then run
+the **(K-res) scoping slice** (one direction, adjudicated 2026-08-26 — see
+*Current state*), then pick the next off *Hand-off*'s target-ordered list.
+**BZAVOID LANDED 2026-08-26** and did three things: the spec's commissioned
+falsification arm came back **empty BY AN ARGUMENT at every graph**, so
+BATTAIN's triangle-free premise is a special case rather than the reason
+((BE-15)); the pencil stratum is **IDENTIFIED as the planar-atom molecular
+stratum**, which makes (BE-14) **existential rather than generic** — one witness
+per graph settles that graph ((BE-16)); and **two routes are CLOSED**, the
+landed Phases-24–26 `G²` apparatus and the coordinator's own transversality
+count ((BE-17)/(BE-16)(iv)). **(BE-14) is reduced to 2-connected graphs and
+still OPEN**; `hbareSplit` untouched and pinned; nothing refuted.
 
 > **BOTH ADJUDICATIONS ARE DISCHARGED** (opened 2026-08-26 at the BATTAIN
 > landing, answered the same day at the ninth check-in; verbatim record in
@@ -431,7 +433,7 @@ constraints; the dated dispatch narrative is in *Decisions made* and git):
   2026-08-05 Lean hold, W4 PARKED, `hK`/`hbareSplit` pinned, both option Bs
   un-commissioned.
 
-**Kernel-(K) research arc — sixty-four docs+scripts-only dispatches landed, plus eight
+**Kernel-(K) research arc — sixty-five docs+scripts-only dispatches landed, plus eight
 strategy-only passes** (2026-08-02 → 08-26) — and, **outside** that count because they test
 the architecture rather than the (K) crux, the **two probes**: **KBARE-FALSIFY**
 (2026-08-20) and **C3-AVOID** (2026-08-24), both landed. Which pass was which is one-lined in *Decisions
@@ -440,7 +442,7 @@ LTWO are the fortieth through forty-fourth; CIRR the forty-fifth; YLOC the forty
 the forty-seventh; ZNEQ the forty-eighth; AGLU the forty-ninth; the eighth fan-out's five
 the **fiftieth through fifty-fourth**, all landed 2026-08-19; **GFLIP the fifty-fifth**,
 **GCHEAP the fifty-sixth**, **OQRANK the fifty-seventh**, **GPRICE the fifty-eighth**,
-all 2026-08-25, and **GBLAW the fifty-ninth**, **GXESC the sixtieth**, **GHWIT the sixty-first** **GMINM the sixty-second**, **OGEOM the sixty-third** and **BATTAIN the sixty-fourth**, all 2026-08-26), and a **user call on
+all 2026-08-25, and **GBLAW the fifty-ninth**, **GXESC the sixtieth**, **GHWIT the sixty-first** **GMINM the sixty-second**, **OGEOM the sixty-third**, **BATTAIN the sixty-fourth** and **BZAVOID the sixty-fifth**, all 2026-08-26), and a **user call on
 dispatch *shape*** — either multidispatch election, or a coordinator-authored pick like the
 twelfth's — contributes **no** strategy pass, so the 2026-08-19 eighth-fan-out check-in adds
 none even though it moved a standing constraint.
@@ -673,19 +675,32 @@ neighbours' incidences and every capacity unit above 2 is bought by a **Case-I g
 whose pencil-compatibility is geometry the probe was barred from. **§(K-avoid) was never
 opened** and no gap-map status moved.
 
-**THE NEXT CONCRETE TASK — verify and land BZAVOID and ZSHEAR, both DISPATCHED
-2026-08-26 (ordinals 40 and 41, `recon-opus`, concurrent, specs at
-`notes/Pencil-fanout.md` §§"BZAVOID"/"ZSHEAR").** **BZAVOID** takes item 1
-below at its **full statement** — the user's 2026-08-26 call, declining
-BATTAIN's `def₂ = def₃` proof-of-concept. **ZSHEAR** is the session's **side
-line** on unprompted user initiative: strategy §9's (ZH-1), the Witt shear as a
-uniformity device, tested against §(K-flank) *Step F5(d)*'s five proven
-failures, plus the owed §2.5 filter check on (ZH-2)/(ZH-3) — the first
-direction the §9 shelf has ever produced, and the shelf stays off §8's board
-either way. **Then, queued in order:** the **(K-res) scoping slice** (one
-direction — does (GR-15)/§(K-grid) transport to the `W19`-type (K-res)
-habitat? — the user's 2026-08-26 call, and the retirement of the stale *"pin it
-when the tight side closes"* deferral), then the next pick off the list below.
+**THE NEXT CONCRETE TASK — land ZSHEAR (ordinal 41), which has RETURNED**, then
+run the **(K-res) scoping slice** (one direction — does (GR-15)/§(K-grid)
+transport to the `W19`-type (K-res) habitat? — the user's 2026-08-26 call, and
+the retirement of the stale *"pin it when the tight side closes"* deferral),
+then pick the next off the target-ordered list below.
+
+**BZAVOID LANDED 2026-08-26** (§(K-bare-ext) *Steps BE14–BE18*; landing record
+`notes/Pencil-fanout.md` §"BZAVOID") — **none of it restated here.** What it
+changes for item 1 below, and only that: **(BE-14) is now known to be an
+EXISTENTIAL, not a genericity claim** — the pencil stratum *is* the planar-atom
+molecular stratum ((BE-16)), `rank ≤ target` is universal, so **one coplanar-star
+point configuration per graph settles that graph**, and the residual is *"∀ `G`
+2-connected, ∃ `p : V → P³` with every closed star coplanar and adjacent points
+distinct, at which the molecular body-hinge matrix has rank
+`6(|V|−1) − def₃(G)`"*. **Three things are now closed and must not be
+re-attempted:** the forced-degeneration cap as a refutation route for **any**
+graph ((BE-15), cap-free); the landed Phases-24–26 `G²` molecule apparatus,
+whose general-position gate is the **literal negation** of the pencil condition
+((BE-17)); and the **transversality/dimension count** ((BE-16)(iv)). **Still
+unclaimed:** the declined `def₂ = def₃` slice — BZAVOID's free corollary proves
+only the strictly smaller *forced-triangle* subclass. **Ranked successors, in
+BZAVOID's own order:** (1) an **inductive construction on the point side**
+(1-cuts done by (BE-18); 2-cuts asserted routine, unproved); (2) the
+`def₂ = def₃` closed-form slice as a base case; (3) a **flat-star dictionary** —
+re-prove `molecular_finrank_motions_eq_square_ker`'s surjectivity under a
+hypothesis admitting coplanar stars, which would revive route 2.
 
 **The list below is ordered by DISTANCE TO THE PHASE TARGET** (the 2026-08-26
 directive, *Current state*'s eighth-check-in bullet), replacing the
@@ -935,6 +950,35 @@ ORIGAMI (`notes/Origami.md`, next queued) is the bar-joint-side analog; the wide
 survey — incl. IDENT-PANEL, the nearest neighbour — is `notes/IdeaBacklog.md`.
 
 ## Decisions made during this phase
+
+- **Direction BZAVOID (ordinal 40, 2026-08-26, opus, docs+scripts only) — the
+  commissioned falsification arm is EMPTY BY AN ARGUMENT at EVERY graph, the
+  pencil stratum is IDENTIFIED as the planar-atom molecular stratum, and two
+  routes CLOSE.** (BE-15): the forced-degeneration T2 criterion generalizes to
+  one universal cap per forced class partition, and then dies in the general
+  form — forcing confines each class to a local cone, which forces
+  `Σ_i def₂(G[V_i]) = 0`, leaving cap deficiency exactly `partitionDef₃(π(G))`,
+  a value `def₃`'s own maximand already takes; exact, **cap-free**, enumerated at
+  375 719 + 27 474 graphs with zero exceptions. So BATTAIN's triangle-free
+  `hnoRigid` premise is a **special case, not the load-bearing step**. (BE-16),
+  off the Lean bodies: the rank is a function of the hinge lines alone, the
+  pencil hinge is the **join `p_u ∨ p_v`**, so the framework **is**
+  `molecularOfCentres` at atom positions `p` and the pencil condition is *every
+  closed star of points coplanar* — the all-trigonal-planar molecule; (BE-14) is
+  therefore **existential, not generic**. (BE-17): the landed Phases-24–26 `G²`
+  apparatus is **dead** — `IsGeneralPositionPlacement` is the literal negation of
+  the pencil condition, and its sufficient condition is measured FALSE in exact ℚ
+  at three shapes (dictionary gaps 5/4/1) while the molecular rank attains
+  114/90/72. (BE-16)(iv): the coordinator's offered transversality count is
+  **structurally incapable** of settling `Y° ⊄ Z(G)`, though the same reading's
+  "deform off the canonical point" half **survives, priced at `def₂ − def₃`** —
+  a SPLIT, on the YLOC precedent. (BE-18): `def₃` is 1-cut additive and the rank
+  is `GL₄`-invariant, so **(BE-14) reduces to 2-connected graphs**. Free
+  corollary: (BE-14) holds in closed form wherever the triangle-edge subgraph is
+  spanning and connected — a **subclass** of the declined `def₂ = def₃` slice, so
+  **the declined partial is still unclaimed**. **(BE-14) OPEN, `hbareSplit`
+  untouched, nothing refuted, not a PENCIL event.** Detail: §(K-bare-ext)
+  *Steps BE14–BE18*; landing record `notes/Pencil-fanout.md` §"BZAVOID".
 
 - **Direction GXESC (ordinal 35, 2026-08-26, fable, docs+scripts only) —
   (GR-108) and existential escape REFUTED BY WITNESS; the price form
