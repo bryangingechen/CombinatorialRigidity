@@ -12,8 +12,9 @@ with **`hsplit` CLOSED IN FULL** and `hfresh`'s counting discharge landed
 
 **The kernel-(K) research arc: 49 directions COMPLETE** (2026-08-05 → 08-26,
 ordinals 1–41), plus eight strategy-only passes and two architecture probes.
-**Ordinals 42–43 (BINDUC / ZJACOB) are IN FLIGHT**, dispatched 2026-08-26 as the
-session's second concurrent pair.
+**Ordinal 43 (ZJACOB) LANDED**; **ordinal 42 (BINDUC) is IN FLIGHT**, both
+dispatched 2026-08-26 as the session's second concurrent pair. Count: **50
+directions COMPLETE**.
 **Per-direction verdicts are NOT restated here** — each has a landing write-up
 at `notes/Pencil-fanout.md` §"<CODE>" and a canonical mathematical home in the
 workbooks. **The arc's standing result, unchanged by all 47: `hK` is not
@@ -34,17 +35,18 @@ the arc's first-ever look at `hbareSplit`, **bare realizability proved
 UNCONDITIONAL** plus the first pencil-stratum rank cap produced by an argument
 (BATTAIN, (BE-11)/(BE-13)).
 
-**NEXT CONCRETE TASK — verify and land the two directions DISPATCHED 2026-08-26
-as the session's SECOND concurrent pair, then pick the next.** **BINDUC**
-(ordinal 42) carries the induction BZAVOID opened — the 2-cut composition, the
-base class, and (BE-14) itself — picked under a **user-supplied criterion**
-(*"most impact towards either proving or disproving the target theorem"*), which
-it meets by being the only statement on the board that removes a **carried
-item**. **ZJACOB** (ordinal 43) continues the **Zheng line** at §9.3's own new
-head **(ZH-4)**, the Jacobian/singular-locus route — aimed at **properness**, the
-gap ZSHEAR identified as the arc's real one. Specs, bars and riders:
-`notes/Pencil-fanout.md` §§"BINDUC"/"ZJACOB"; reservations
-`notes/Pencil-labels.md`. **Still queued behind them: the (K-res) scoping slice**
+**NEXT CONCRETE TASK — land BINDUC (ordinal 42), still IN FLIGHT**, then the
+queued **(K-res) scoping slice**, then pick the next off *Hand-off*'s
+target-ordered list. BINDUC carries the induction BZAVOID opened — the 2-cut
+composition, the base class, and (BE-14) itself — picked under the user's
+**max-impact criterion**, which it meets by being the only statement on the board
+that removes a **carried item**. **ZJACOB LANDED 2026-08-26**: (ZH-4) is
+**REFUTED by an EQUIVALENCE** — the corank stratification makes *"LCI of the
+expected codimension"* ⟺ `B_0 ≠ ∅` ∧ `codim B_k ≥ k`, and `B_0 ≠ ∅` **IS**
+properness, so the route's hypothesis contains its conclusion. Its refutation
+**absorbs (ZH-3)**, leaving §9 with **exactly one dispatchable candidate**
+((ZH-2), stratified only). Specs and write-ups:
+`notes/Pencil-fanout.md` §§"BINDUC"/"ZJACOB". **Still queued behind them: the (K-res) scoping slice**
 (one direction — does (GR-15)/§(K-grid) transport to the `W19`-type (K-res)
 habitat? — the user's 2026-08-26 adjudication, and the retirement of the stale
 *"pin it when the tight side closes"* deferral), **deferred once by the
@@ -476,7 +478,7 @@ constraints; the dated dispatch narrative is in *Decisions made* and git):
   **Everything else stands unchanged:** phase OPEN, the 2026-08-05 Lean hold, W4
   PARKED, `hK`/`hbareSplit` pinned, both option Bs un-commissioned.
 
-**Kernel-(K) research arc — sixty-six docs+scripts-only dispatches landed, plus eight
+**Kernel-(K) research arc — sixty-seven docs+scripts-only dispatches landed, plus eight
 strategy-only passes** (2026-08-02 → 08-26) — and, **outside** that count because they test
 the architecture rather than the (K) crux, the **two probes**: **KBARE-FALSIFY**
 (2026-08-20) and **C3-AVOID** (2026-08-24), both landed. Which pass was which is one-lined in *Decisions
@@ -485,7 +487,7 @@ LTWO are the fortieth through forty-fourth; CIRR the forty-fifth; YLOC the forty
 the forty-seventh; ZNEQ the forty-eighth; AGLU the forty-ninth; the eighth fan-out's five
 the **fiftieth through fifty-fourth**, all landed 2026-08-19; **GFLIP the fifty-fifth**,
 **GCHEAP the fifty-sixth**, **OQRANK the fifty-seventh**, **GPRICE the fifty-eighth**,
-all 2026-08-25, and **GBLAW the fifty-ninth**, **GXESC the sixtieth**, **GHWIT the sixty-first** **GMINM the sixty-second**, **OGEOM the sixty-third**, **BATTAIN the sixty-fourth** and **BZAVOID the sixty-fifth** and **ZSHEAR the sixty-sixth**, all 2026-08-26), and a **user call on
+all 2026-08-25, and **GBLAW the fifty-ninth**, **GXESC the sixtieth**, **GHWIT the sixty-first** **GMINM the sixty-second**, **OGEOM the sixty-third**, **BATTAIN the sixty-fourth** and **BZAVOID the sixty-fifth**, **ZSHEAR the sixty-sixth** and **ZJACOB the sixty-seventh**, all 2026-08-26), and a **user call on
 dispatch *shape*** — either multidispatch election, or a coordinator-authored pick like the
 twelfth's — contributes **no** strategy pass, so the 2026-08-19 eighth-fan-out check-in adds
 none even though it moved a standing constraint.
@@ -718,15 +720,22 @@ neighbours' incidences and every capacity unit above 2 is bought by a **Case-I g
 whose pencil-compatibility is geometry the probe was barred from. **§(K-avoid) was never
 opened** and no gap-map status moved.
 
-**THE NEXT CONCRETE TASK — verify and land BINDUC and ZJACOB**, dispatched
-2026-08-26 as the session's second concurrent pair (ordinals 42 and 43,
-`recon-opus`, specs at `notes/Pencil-fanout.md` §§"BINDUC"/"ZJACOB"). **BINDUC**
-carries item 1 below: the induction (BE-18) opened — 2-cut composition (its
-`− 6` correction term to be **derived, not inherited**), the base class, and
-(BE-14) itself. **ZJACOB** continues the **Zheng line** at (ZH-4), aimed at
-**properness** — the gap ZSHEAR identified when it showed (ZH-1)'s
-"avoid proper subvarieties" mechanism was the arc's own and free once `P ≢ 0` is
-known.
+**THE NEXT CONCRETE TASK — land BINDUC**, still in flight (ordinal 42,
+`recon-opus`, spec at `notes/Pencil-fanout.md` §"BINDUC"). It carries item 1
+below: the induction (BE-18) opened — 2-cut composition (its `− 6` correction
+term to be **derived, not inherited**), the base class, and (BE-14) itself.
+
+**ZJACOB LANDED 2026-08-26** (§(K-jac) *Steps JC1–JC5*; write-up
+`notes/Pencil-fanout.md` §"ZJACOB") — **not restated here.** Two consequences for
+future picks. **(1) The Zheng shelf is nearly spent:** (ZH-1) and (ZH-4) struck,
+(ZH-3) struck-by-absorption (it *is* (ZH-4)'s hypothesis), (ZH-5) a design note,
+(ZH-6) write-up material — **only (ZH-2), stratified, remains dispatchable**, and
+the shelf stays off §8's board. **(2) A durable negative worth not re-deriving:**
+the determinantal / scheme-theoretic package is a **conservation law** — it
+converts expected codimension *into* structure and has **no theorem producing
+it** over a non-generic base. Any future route that proposes to get properness
+from a codimension count, a Jacobian criterion, or Cohen–Macaulayness is
+answered by §(K-jac) before it starts.
 
 **THEN — the (K-res) SCOPING SLICE**, deferred one round by the max-impact
 directive and NOT dropped. One direction: *does (GR-15)/§(K-grid) transport to
@@ -1014,6 +1023,39 @@ ORIGAMI (`notes/Origami.md`, next queued) is the bar-joint-side analog; the wide
 survey — incl. IDENT-PANEL, the nearest neighbour — is `notes/IdeaBacklog.md`.
 
 ## Decisions made during this phase
+
+- **Direction ZJACOB (ordinal 43, 2026-08-26, opus, docs+scripts only, the Zheng
+  line's SECOND direction) — (ZH-4) REFUTED by an EQUIVALENCE rather than an
+  obstruction, and the refutation ABSORBS (ZH-3).** (JC-1): the polynomial
+  presentation of the motion cone (`dominance.motion_system`, not the `rref`-built
+  5-row model) has Jacobian **`[0 | A(y)]`** at the zero section — 108/108
+  `y`-entries identically zero in `ℚ[pts]`, fibre block 240/240 against an
+  independent build — so *"generically smooth along the zero section"* unfolds
+  **with no computation in between** to *"the rank attains target generically"*;
+  the inclusion `Sing 𝒞 ∩ Z ⊆ D_1` is unconditional, but the reverse — the half
+  the route needs — is conditional. (JC-2), the load-bearing step: the corank
+  stratification gives `dim 𝒞 = max_{k≥0}(dim B_k + 6 + k)`, so expected
+  dimension ⟺ `B_0 ≠ ∅` **and** `codim_B B_k ≥ k` — and **`B_0 ≠ ∅` IS
+  properness**, the phase target on the tight class. **The route's hypothesis
+  contains its conclusion as its weakest clause.** (JC-3): every classical bound
+  on heights of ideals of minors is an **upper** bound taking the generic rank as
+  **input** (Eagon–Northcott, Bruns, Eisenbud–Huneke–Ulrich — all four citations
+  coordinator-verified, no section pointers asserted), evaluating to the
+  **graph-independent constant 7** at 8/8 shapes, so §4.6's filter fires too, with
+  input-dependence exhibited twice. (JC-4): the criterion is **identically blind**
+  to the pure-condition half (84/84 fibre-quadratic partials vanish on the zero
+  section) — tautologous where it applies, vacuous where the arc needs help, **no
+  third region**. (JC-5): the re-encoding reproduces §(K-tight) *Steps 2.1/2.4*
+  verbatim, with `line(ab)` chart-illegal by `Motive.lean:110`'s conjunct 4.
+  (JC-6): a **conservation law** — the determinantal package converts expected
+  codimension *into* structure and has no theorem *producing* it over a
+  non-generic base; the ambient-Tay repair dies to §(K-pure) (PC6). **Explicitly
+  NOT a provenance failure:** granting the source's Theorem 4.2 in full changes
+  nothing, since a carrier analogue would *be* the phase target. **Shelf effect:**
+  (ZH-4) **STRUCK**, (ZH-3) struck-by-absorption with a mechanism, so §9 retains
+  **only (ZH-2) stratified** — two-for-two, still off §8's board. **No gap-map row
+  moves; not a PENCIL event.** Detail: §(K-jac) *Steps JC1–JC5*; landing record
+  `notes/Pencil-fanout.md` §"ZJACOB".
 
 - **Direction ZSHEAR (ordinal 41, 2026-08-26, opus, docs+scripts only, the
   session's SIDE LINE and the §9 shelf's first direction ever) — (ZH-1) REFUTED

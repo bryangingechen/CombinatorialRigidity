@@ -1162,6 +1162,17 @@ direction is set:
 
 ## 7. Provenance
 
+**Four classical references entered use 2026-08-26 (direction ZJACOB), and their
+canonical home is `notes/Pencil-informal.md` §(K-jac)'s own reference block, not
+this section** — Eagon–Northcott 1962, Bruns 1981, Eisenbud–Huneke–Ulrich 2004
+and Hochster–Eagon 1971, on heights of ideals of minors and generic perfection of
+determinantal loci. All four were verified against primary/publisher metadata at
+that landing and **no section pointer is asserted for any of them** (the
+CLAUDE.md bar: cite "classical" rather than guess a §). They are cited there for
+a **negative** use — every one of them bounds the height of an ideal of minors
+from *above* and takes the generic rank as an *input*, which is why the
+determinantal package cannot supply properness.
+
 **§4.6 is a later, separately-commissioned recon (2026-08-05), read against the
 same record; it ran no driver and moved no gap-map row.** Its refutations (R1)–(R6)
 are arguments, not measurements, and each names the landed fact it turns on:
@@ -1523,7 +1534,26 @@ codimension"* theorem for the body–hinge carrier, whose sparsity class would b
 the Tay packing class rather than `(2,2)`. Whether that is tractable is a real
 open question, and §2.5's filter is owed here too.
 
-**(ZH-4) Escape failure as a singular locus — the Jacobian route.** The source's
+**(ZH-4) Escape failure as a singular locus — the Jacobian route. — STRUCK
+2026-08-26, direction ZJACOB: REFUTED, and by an EQUIVALENCE rather than an
+obstruction.** Canonical home `notes/Pencil-informal.md` §(K-jac) *Steps
+JC1–JC5* — not restated here. In one line: stratifying by corank gives
+`dim 𝒞 = max_{k≥0}(dim B_k + 6 + k)`, so *"local complete intersection of the
+expected codimension"* ⟺ `B_0 ≠ ∅` **and** `codim B_k ≥ k` (∀`k ≥ 1`) — and
+`B_0 ≠ ∅` **IS** properness, which on the tight class is the phase target. **The
+route's hypothesis contains its conclusion as its weakest clause**, so the
+Jacobian criterion unfolds with no computation in between to *"the rank attains
+target generically"*. Two independent corroborations: every classical bound on
+heights of ideals of minors is an **upper** bound taking the generic rank as
+**input**, and on our shapes evaluates to the graph-independent constant `7`
+(so §4.6's filter fires too); and the criterion is **identically blind** to the
+pure-condition half (every partial of a fibre-quadratic vanishes on the zero
+section, 84/84). **The corollary that matters for this shelf: (ZH-4)'s
+hypothesis IS (ZH-3)** — the two "concrete" candidates were one candidate, and
+(ZH-3)'s *circular as posed* transfers verbatim. Granting the source's
+Theorem 4.2 in full changes nothing: a carrier analogue would **be** the phase
+target. The reading below is preserved as the shelf's original pitch. The
+source's
 Theorem 4.2 is a scheme-theoretic upgrade of exactly the White–Whiteley
 pure-condition material §(K-pure) works by hand: degeneracy loci as
 determinantal subschemes of a two-term complex, the universal
@@ -1578,8 +1608,17 @@ for orientation; nothing in the arc turns on it.)*
 
 ### 9.3 Suggested order, if a direction is ever spent here
 
-**UPDATED 2026-08-26 (direction ZSHEAR, the first and so far only direction this
-shelf has produced).** The head is **spent**: (ZH-1) ran and is **STRUCK**
+**UPDATED TWICE ON 2026-08-26 — the shelf is now two-for-two, and it has exactly
+ONE dispatchable candidate left.** Second update (direction **ZJACOB**):
+**(ZH-4) is STRUCK** (refuted by an equivalence — its hypothesis contains its
+conclusion, §(K-jac)), and its refutation **absorbs (ZH-3)**, whose circularity
+now has a mechanism: (ZH-4)'s hypothesis *is* (ZH-3). So of the six original
+candidates, **(ZH-1) and (ZH-4) are struck, (ZH-3) is struck-by-absorption,
+(ZH-5) is a design note rather than a result, and (ZH-6) is write-up material
+that is never a dispatch** — leaving **(ZH-2) in its stratified reading only** as
+the shelf's whole remaining dispatchable content. The shelf stays **off §8's
+board**. First update (direction **ZSHEAR**): the head was **spent**: (ZH-1) ran
+and is **STRUCK**
 (refuted — gauge-triviality, §(K-shear)). The owed filter checks are **DONE**, so
 nothing on this shelf is held on that account any more: **(ZH-2)** survives §2.5
 **only in its stratified reading** — at the generic point of the *whole* chart

@@ -1753,7 +1753,7 @@ namespace). **Checked and NOT chosen:** `BTWOCUT` — 0-hit but it names only th
 already dense in §(K-bare-ext). **`BINDUC` names the target's content** — the
 **b**are-half direct-attainment **induc**tion.
 
-## Reserved namespace — direction ZJACOB (2026-08-26, **reserved at dispatch; flip to USED at landing**)
+## Reserved namespace — direction ZJACOB (2026-08-26, **USED — the direction landed the same day; all six labels and all five steps consumed, none returned**)
 
 **Reserved 2026-08-26 for the direction ZJACOB** (ordinal 43, the arc's
 fifty-first direction; `notes/Pencil-fanout.md` §"ZJACOB"), the **Zheng line's
@@ -1763,6 +1763,16 @@ source. Dispatched concurrently with BINDUC.
 | direction | owning § | labels reserved | steps reserved | driver |
 |---|---|---|---|---|
 | **ZJACOB** | **§(K-jac)** — **NEW section**, `notes/Pencil-informal.md` | **(JC-1)–(JC-6)** | **JC1–JC5** | `w4/zjacob.py` (conditional) + `m2/zjacob.m2` (only if a symbolic leaf is genuinely needed) |
+
+**Consumed at landing (2026-08-26), NOTHING RETURNED:** *Steps JC1–JC5* and
+**(JC-1)–(JC-6)** — (JC-1) the polynomial presentation and its zero-section
+Jacobian, (JC-2) the stratification equivalence that kills the route, (JC-3) the
+classical bounds' direction and input-dependence, (JC-4) the criterion's
+identical blindness to the pure-condition half, (JC-5) the faithful-hence-useless
+re-encoding, (JC-6) the conservation law. **§(K-jac) was MINTED** and driver
+`w4/zjacob.py` **shipped** (four modes); **no `m2/zjacob.m2`**, and the reason is
+recorded as mathematical rather than budgetary. The tail is
+**(JC-7)+ / Step JC6+**.
 
 **Non-collision with the concurrent BINDUC is structural, not negotiated:**
 different workbook sections, disjoint tags (`BE-` vs `JC-`), and — unlike the
@@ -1808,6 +1818,7 @@ Status keywords are pointers to the owning section's verdict block and the
 | §(K-frame) | `FR-` ✓ | (FR-1)–(FR-7); the residual input **(FR-R1)**; Steps FR0–FR6; driver modes `--rulings`/`--pattern`/`--transport`/`--outer`/`--validate` (`framedom.py`) and M2 blocks (FR-M0)–(FR-M3) (`framedom.m2`); **since 2026-08-07 (direction PEX)** (FR-8)–(FR-14), Steps FR7–FR11, driver modes `--frame`/`--recipe`/`--strat`/`--kill`/`--validate`/`--recon` (`w4/patexist.py`; `m2/patexist.m2` not needed); **since 2026-08-19 (direction FRES)** (FR-15)–(FR-17), Steps FR12–FR15, no driver ((FR-18) reserved and unused) | the shared chart-to-frame dominance residue of §(K-out) (OC-16) / §(K-ann) (ANH-14): the minimal non-containment lemma, the ruling decomposition and determinant law at grid points, the `G′`-regridding transport, the 1904-site pattern battery, the θ(3,4,5) constructed witnesses, (since PEX) the bare-cycle stratum's finiteness + exhaustive enumeration, and (since FRES) the chart-map-vs-chart-variety correction that closes the residue with no rider | (FR-1)/(FR-2)/(FR-3) proven / proven-informally; (FR-4) superseded by **(FR-17)**, proven-informally with **no named gap**; (FR-5) measured (each certificate a per-site proof); (FR-6) exact per point, retro-certified by (FR-16); **(FR-R1) PROVEN** (Steps FR7–FR11, direction PEX); **(FR-15)–(FR-17) proven-informally** (Steps FR12–FR15, direction FRES) — no rider remains |
 | §(K-chart) | `CH-` ✓ | (CH-1)–(CH-8); Steps CH1–CH8; driver modes `--empty`/`--guard`/`--fibre`/`--all` (`w4/cirr.py`) | *(new, 2026-08-19, direction CIRR)* the pencil chart of `G′` proven irreducible, ℚ-rational, a tower of affine-linear fibres: the constant-fibre-dimension restriction identified as `IsNondegPencilRealization` conjunct 3 ((CH-6)), the closure argument that makes the restriction cost nothing ((CH-4)), the nonemptiness clause and its girth ≥ 4 correction to §(K-frame) *Step FR13* ((CH-5)), and the consumer audit of §(K-out) (OC-19) / §(K-slide) (S1)(e) / §(K-dom) (D4) / §(K-ann) (ANH-9)(ii) ((CH-7)); (CH-8) is a pointer to the landed, strictly stronger `not_pencilNondegFeasible_of_triangle_two_hubs` | (CH-1)–(CH-7) proven-informally, no named gap; (CH-3)/(CH-6) proven; **a HIT** — all four consumers clean; no gap-map status moves |
 | §(K-shear) | `SH-` ✓ | (SH-1)–(SH-6); Steps SH1–SH5; driver modes `--iso`/`--bed`/`--inv`/`--prod`/`--validate` (`w4/zshear.py`) | *(new, 2026-08-26, direction ZSHEAR — the first section minted from an EXTERNAL idea source rather than an internal residual)* the Witt shear of `notes/Pencil-strategy.md` §9's (ZH-1) settled: the shear group identified as the `Λ²`-image of the affine translations, `Q` as its own defining invariant, the §(K-tight) criterion proved **equivariant entry-for-entry**, the coordinator-offered per-body repair decided in both readings, and the general symmetry-vs-deformation dichotomy | **(SH-1)–(SH-6) proven** — (SH-1)/(SH-2)/(SH-5)(i) **symbolic identities** in `ℚ[…]`, no sampling; **(ZH-1) REFUTED / STRUCK from the shelf**, a HIT of the negative kind. **No gap-map row moves.** Durable residue: `Q(r̃) ≠ 0` is `PGL(4)`-invariant, so **no gauge-fixing or frame normalization can ever supply it** |
+| §(K-jac) | `JC-` ✓ | (JC-1)–(JC-6); Steps JC1–JC5; driver modes `--sym`/`--tan`/`--codim`/`--validate` (`w4/zjacob.py`; no M2 leaf, barred for stated mathematical reasons) | *(new, 2026-08-26, direction ZJACOB — the SECOND section minted from the external §9 shelf)* the Jacobian / singular-locus route of `notes/Pencil-strategy.md` §9's (ZH-4) settled: the polynomial presentation of the motion cone and its zero-section Jacobian `[0 \| A(y)]`, the corank stratification identity `dim 𝒞 = max_k(dim B_k + 6 + k)`, the direction and input-dependence of the classical height bounds on ideals of minors, the criterion's blindness to fibre-quadratic (pure-condition) data, and the faithful re-encoding of §(K-tight) *Steps 2.1/2.4* | **(JC-1)–(JC-6) proven / proven-informally** — (JC-1)(b) and (JC-4) **symbolic identities** in `ℚ[pts]`, no sampling; **(ZH-4) REFUTED / STRUCK from the shelf, and its refutation ABSORBS (ZH-3)**. A HIT of the negative kind. **No gap-map row moves.** Durable residue: the determinantal/scheme package is a **conservation law** — it converts expected codimension *into* structure and has no theorem *producing* it over a non-generic base |
 
 Gap names used arc-wide and owned by the *State of (K)* map: **(K-tight)**,
 (K-move), (K-pitch), (K-pitch-∞), (K-wit), (K-Λ), (K-slide), (K-slide-cl),

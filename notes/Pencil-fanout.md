@@ -1,13 +1,17 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
 **Status: EIGHT fan-outs, TWENTY-ONE single directions and TWO concurrent pairs
-dispatched; 49 LANDED, TWO IN FLIGHT.** **BINDUC (ordinal 42, §"BINDUC") and
-ZJACOB (ordinal 43, §"ZJACOB") were DISPATCHED 2026-08-26 as the second pair,
-under a user-supplied criterion (*max impact on proving or disproving the target*)
-plus a standing second lane for the Zheng shelf — BINDUC carrying the (BE-14)
-induction (2-cut composition, base class, the theorem), ZJACOB at §9.3's new head
-(ZH-4), the Jacobian/singular-locus route aimed at **properness**. Neither has
-returned; flip both to LANDED here at landing.** **BZAVOID (ordinal 40, §"BZAVOID") LANDED 2026-08-26 —
+dispatched; 50 LANDED, ONE IN FLIGHT.** **ZJACOB (ordinal 43, §"ZJACOB") LANDED
+2026-08-26 — (ZH-4) **REFUTED by an EQUIVALENCE**, not an obstruction: the corank
+stratification makes *"LCI of the expected codimension"* ⟺ `B_0 ≠ ∅` ∧
+`codim B_k ≥ k`, and `B_0 ≠ ∅` **IS** properness, so the route's hypothesis
+contains its conclusion as its weakest clause. Its refutation **absorbs (ZH-3)**
+— the shelf's two "concrete" candidates were one — leaving §9 with exactly one
+dispatchable candidate, (ZH-2) stratified. Both coordinator-predicted deaths were
+refuted **as diagnoses**.** **BINDUC (ordinal 42, §"BINDUC") is IN FLIGHT** —
+dispatched 2026-08-26 under a user-supplied criterion (*max impact on proving or
+disproving the target*), carrying the (BE-14) induction; flip it to LANDED here at
+its landing. **BZAVOID (ordinal 40, §"BZAVOID") LANDED 2026-08-26 —
 the spec's commissioned falsification arm came back **EMPTY BY AN ARGUMENT at
 every graph**, so BATTAIN's triangle-free premise is a special case and not the
 reason; the pencil stratum is **IDENTIFIED as the planar-atom molecular
@@ -4883,3 +4887,132 @@ ZJACOB"): **new section §(K-jac)** in `notes/Pencil-informal.md`, tag **`JC-`**
 (globally 0-hit); labels **(JC-1)–(JC-6)**, **Steps JC1–JC5**; return any
 unconsumed remainder. Mint the section even if the route dies — ZSHEAR's
 precedent: a recorded death with its exact reason is the deliverable.
+
+### ZJACOB — landing write-up (LANDED 2026-08-26, recon-opus, one serial coordinator commit)
+
+**Verdict: (ZH-4) is REFUTED — HIT shape 2 (a death with its exact reason) plus
+shape 3's pricing. And the death is an EQUIVALENCE, not an obstruction**, which
+is a sharper category than the spec anticipated. No gap-map row moves;
+`hbareSplit`/(BE-14) untouched (BINDUC owned them concurrently); not a PENCIL
+event.
+
+**The route's input is computed for free, and that is the first half of the
+problem.** (JC-1): the harness's 5-rows-per-hinge model is **not polynomial** in
+the chart coordinates (`exactcore.perp_basis` is an `rref`, so a "Jacobian" of it
+is basis-dependent); the polynomial presentation is `dominance.motion_system`'s
+augmented system, `6|E|` equations polynomial in `y` and exactly linear in the
+fibre variables. At a zero-section point its Jacobian is **`[0 | A(y)]`** —
+**108/108** `y`-entries identically zero in `ℚ[pts]` (every `∂F/∂y` carries a
+factor `ω_e`), fibre block equal to `motion_system`'s own matrix **240/240**
+against an independently-built copy. So `rank Jac(y,0,0) = rank A(y)`, and
+*"generically smooth along the zero section"* unfolds **with no computation in
+between** to *"`rank R(y)` attains target generically"*. The direction is careful
+about which half is free: `Sing 𝒞 ∩ Z ⊆ D_1` holds **unconditionally**; the
+reverse inclusion — the half the route needs — is **conditional on the
+expected-dimension hypothesis**.
+
+**And that hypothesis contains the conclusion.** (JC-2), the load-bearing step:
+stratifying by corank, `dim 𝒞 = max_{k≥0}(dim B_k + 6 + k)`, and since `B` is
+irreducible (§(K-chart)) exactly one stratum is dense, so `𝒞` has the expected
+dimension `dim B + 6` **⟺ `B_0 ≠ ∅` and `codim_B B_k ≥ k` for every `k ≥ 1`**.
+On the tight class `#equations` equals that expected codimension (*Step JC1*), so
+this is also exactly *"local complete intersection of the expected
+codimension"* — and `B_0 ≠ ∅` **is** properness, which on the tight class is the
+phase target. **The route's hypothesis contains its conclusion as its weakest
+clause.** Coordinator-verified by re-deriving the stratification count
+independently.
+
+**The corollary that reshapes the shelf: (ZH-4)'s hypothesis IS (ZH-3).** The two
+candidates §9 priced as its "concrete" ones were **one** candidate, and ZSHEAR's
+*circular as posed* verdict on (ZH-3) transfers verbatim with a mechanism
+attached. §9 now has **exactly one dispatchable candidate left** — (ZH-2) in its
+stratified reading only.
+
+**Two independent corroborations, each a separate claim class.** (JC-3): every
+classical bound on the height of an ideal of minors is an **upper** bound and
+takes the generic rank `r` as an **input** — Eagon–Northcott, Bruns,
+Eisenbud–Huneke–Ulrich, with EHU's own introduction stating the direction in as
+many words. On our shapes the sharpest reads the **graph-independent constant
+`7` = 6 trivial motions + 1**, measured identical at **8/8** shapes, so §4.6's
+growing-ground-set filter fires as well; and the input-dependence is *exhibited*
+twice — `P21`'s two sub-loci (`r = 119` vs `120`) and `Nk₄`'s two global strata
+(`89` vs `90`, recomputing (BE-13)'s law). (JC-4): the criterion is
+**identically blind** to the pure-condition half — every partial of a
+fibre-degree-`≥ 2` equation vanishes on the zero section (**84/84**, for a
+general quadratic and for the arc's own `Q(t) = ⟨t,★t⟩`), so any cone carrying
+the pitch is singular along its *whole* zero section at every `y`. That is (PC5)'s
+invariant mismatch one level up: **tautologous where it applies, vacuous where
+the arc needs help, with no third region.**
+
+**The re-encoding is faithful, hence useless.** (JC-5): inserting `v` cuts
+`𝒞_{G−v} × K⁶` by 10 rows on 6 columns → 4 conditions on the relative twist,
+which is §(K-tight) *Step 2.1* **verbatim**; and over an escaping seed the
+zero-section singular locus is *Step 2.4*'s conic `line(ab) ∪ P′`, both factors
+exhibited at four carriers. The `line(ab)` component is **chart-illegal** — a
+Lean pin the direction verified against the body, `Motive.lean:110`'s conjunct 4,
+which at a degree-2 non-hub says exactly *"`pt v, pt a, pt b` not collinear"* — so
+`P′` is what survives, which is the arc's existing object.
+
+**General form (JC-6): a conservation law.** The determinantal/scheme package
+converts expected codimension **into** structure and has **no theorem producing
+it** over a non-generic base. The strongest repair — use Tay on the *ambient*
+space, where the cone genuinely is an LCI, then restrict — dies to §(K-pure)
+**(PC6)**'s already-exhibited descent failure at `P21`.
+
+**Both coordinator-predicted deaths were refuted AS DIAGNOSES, and this is the
+fifth such instance.** The spec named two likeliest deaths: *(i)* "the cone may
+not be an LCI of the expected codimension in our carrier" — which **mis-locates a
+conclusion as a checkable hypothesis**; *(ii)* "the identification may need a
+hypothesis the pencil stratum violates" — the stratum does not *violate* it, it
+**is** it. Both are wrong in a deeper way than a wrong guess: the *framing* was
+wrong. This is the first instance where the promoted `RESEARCH-ARC.md` §7 rule
+(one commit old) is what made the correction legible — the spec labelled them
+"likeliest deaths to check first" rather than asserting them, so the direction
+could report the framing error instead of quietly working around it.
+
+**The provenance bar is explicitly NOT what kills this**, and the direction says
+so: granting the source's Theorem 4.2 in full changes nothing, because a carrier
+analogue would **be** the phase target. No theorem of the source is imported,
+assumed or leaned on; nothing here bears on its Lemma 3.4 or Proposition 3.3.
+
+**Binding-findings check, both explicit.** (SH-6): **not** an instance of the
+symmetry clause — no group, and smoothness is not a symmetry claim (checked
+early, as required) — but **is** an instance of the relocation clause, and the
+**first onto the conclusion itself**. `Q(r̃) ≠ 0` being `PGL(4)`-invariant
+**decided the symbolic-leaf question**: any M2 leaf is barred twice, ungauged by
+§5.3's measured 600 s boundary and gauged by being provably incapable of producing
+the non-vanishing. **No M2 leaf, and not for budget reasons** — exactly the
+disposition the spec asked to be stated explicitly.
+
+**Coordinator verification.** `--validate` re-run at **249 s** (the return said
+237 s; timing variance, inside the 600 s budget either way) and `--sym`
+separately; every headline figure reproduces — 108/108, 240/240, 84/84, 218
+points at 112/106, the constant `7` at 8/8, and both input-dependence
+exhibitions. **The Lean pin was verified against the definition body:**
+`Motive.lean:110`'s conjunct 4 is
+`∀ v ∈ V(G), ¬ G.PencilHub v → LinearIndepOn K point (G.closedNbhd v)`, and
+`dominance.motion_system` exists at `w4/dominance.py:139` as claimed. **The
+load-bearing step was re-derived independently:** over `B_k` the fibre has
+dimension `6 + k`, the `B_k` partition `B`, so `dim 𝒞 = max_k(dim B_k + 6 + k)`,
+which equals `dim B + 6` iff `codim B_k ≥ k` for all `k ≥ 1` **and** `B_0 ≠ ∅`
+(else a `k ≥ 1` stratum is dense and already exceeds it) — and `B_0 ≠ ∅` is
+attainment. **All four classical citations were checked** against
+author/title/journal/volume/year/pages: Eagon–Northcott, Proc. Roy. Soc. London
+Ser. A **269** (1962) 188–204; Bruns, PAMS **83** (1981) 19–24;
+Eisenbud–Huneke–Ulrich, Amer. J. Math. **126** (2004) 417–438 (arXiv:math/0209184);
+Hochster–Eagon, Amer. J. Math. **93** (1971) 1020–1058. All four resolve, and
+**no section pointer is asserted for any** — the CLAUDE.md bar honoured rather
+than guessed. The `7 = 6 + 1` arithmetic was checked independently under both
+parametrizations of the Eagon–Northcott bound.
+
+**F25 bar, read off the shipped driver:** four modes, all foreground with
+explicit timeouts, `--validate` inside 600 s, exact ℚ throughout, `--sym`
+**sampling-free**, `RNG_SEED = 20260826` with every RNG seeded. The `P21` bed was
+re-derived and **asserted against *Step F5(d)*'s recorded `(30,5,5)`** before
+use, and `repin.star_generic` was **reported, not used as a gate** (5/5 rejected,
+26/30 accepted — independently reproducing (SH-3)), so the 112/106 split is a
+tally of **exhibited points and never a rate**. No scratchpad probe backs any
+claim.
+
+**TERMINATION: E1, E2, E3 all NO** — coordinator-re-run and agreed. E3 stays
+**ARMED by GBAL**, reported not fired.
