@@ -1,7 +1,10 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: EIGHT fan-outs and SEVENTEEN single directions dispatched; ALL 45
-directions LANDED.** **GMINM (ordinal 37, §"GMINM") LANDED 2026-08-26 with
+**Status: EIGHT fan-outs and EIGHTEEN single directions dispatched; 45 of the
+46 LANDED — OGEOM (ordinal 38, §"OGEOM") is PREPPED and IN FLIGHT**, the
+second pick under the widened delegation, the first off §(K-grid) in six
+directions, and the arc's first dispatch aimed squarely at **disproving**
+`hK` since SIGZ. **GMINM (ordinal 37, §"GMINM") LANDED 2026-08-26 with
 the arc's most consequential routing finding: GHWIT's refutation DOES NOT
 REACH THE LEDGER.** (b′) has three pairwise-inequivalent readings; the ledger
 consumes the **difference of minima**, the `min_M` reading is now PROVEN, and
@@ -57,8 +60,8 @@ exact `n_hub` boundary for ledger attack (c)'s AA-glue case (GTMPL), (b′)'s fi
 `n`-free constant (GFLOW), a **NO HIT** on the authorized disproof hunt that nonetheless
 kills the counting route to a disproof (SIGZ), (a₁) reduced to one determinant (OSCHU), and
 **(GR-64)(R2) REFUTED** with (R1) delivered (GCOLL).
-Ordinals run 1–37 (the eighth fan-out claims 25–29; GFLIP is 30; GCHEAP is 31;
-OQRANK is 32; GPRICE is 33; GBLAW is 34; GXESC is 35; GHWIT is 36; GMINM is 37) and were assigned at dispatch, so landing order
+Ordinals run 1–38 (the eighth fan-out claims 25–29; GFLIP is 30; GCHEAP is 31;
+OQRANK is 32; GPRICE is 33; GBLAW is 34; GXESC is 35; GHWIT is 36; GMINM is 37; OGEOM is 38) and were assigned at dispatch, so landing order
 differs from ordinal order.
 
 **The two architecture-testing PROBES are also both LANDED** (§"Two probes SPECCED and
@@ -3739,3 +3742,105 @@ lower bounds rest on the model, cube-validated at `n ≤ 12` only. That is
 exactly the discipline F25 was minted for, one dispatch earlier.
 
 **TERMINATION: E1, E2, E3 all NO** — coordinator-re-run and agreed.
+
+## OGEOM — thirty-eighth ordinal, the forty-sixth direction (single dispatch, prepped 2026-08-26)
+
+**Selection provenance:** the **2026-08-26 widened delegation** — the pick is
+the coordinator's, under the user's two stated criteria (explore different
+paths; prefer examples that could kill whole directions or counterexample the
+target). **The twelfth's disclosure applies — no independent top-rung ranking
+of the alternatives.** Dispatched **un-named, single**, at **`recon-opus`**
+(fable conserved).
+
+**Why this, and why now.** It is `notes/Pencil-strategy.md` §8.5's one **open**
+row, in the section whose own header calls it *"the move this board's own risk
+analysis recommends before more `hK` spend"*. It is the first direction off
+§(K-grid) in six, and GMINM has just shown what that concentration cost: five
+directions attacked reading **(P)** of (b′) while the ledger consumes **(L)**
+((GR-127)). This dispatch attacks a **carried kernel's own truth**, not a
+ledger residual.
+
+**The target — is there a class shape where `hK` is FALSE?** Concretely: a
+class (shape, split) at which **`{σ = 0} = ∅`**, i.e. *every* chart point of
+`H = G − v − a` carries a self-stress, so `H`'s rows are nowhere independent
+and (a₂) fails. By **(OC-24)** that makes **`hK` FALSE at that shape** — a
+**PENCIL event**, not a (K-tight) one.
+
+**What is already settled, and must not be re-run.** The **counting** route to
+this disproof is **DEAD**: **(OC-37)** proves `slack(F) ≥ 0` at every class
+shape with equality iff `F` is a cycle or bouquet, so **no `H`-supported
+stress in the habitat is combinatorially forced** (2 614 shapes, 215 906
+supports, no cap, `slack < 0` zero times). Direction **SIGZ** ran the
+authorized `σ > 0`-everywhere hunt on that mechanism and returned **NO HIT**.
+Cite both; re-running either is out of scope. What (OC-37) left standing, and
+your whole target, is the **geometric** half: *no forced chain-span drop and
+no forced Kirchhoff drop* — **measured free but open class-uniformly**,
+**one-point decidable per shape**, and in **(OC-8)'s own object class**.
+
+**The confinements handed to you, all landed.** (i) **(OC-39)** carries an
+exact-ℚ **full-row-rank certificate at 3 368/3 368** class (shape, split)
+pairs over the **exhaustive `K4` stratum** — per-pair *proofs*, not a sample —
+so **a counterexample cannot live there**; start outside it and say where you
+looked. (ii) **The only known failure mechanism** is a self-stress of a short
+**theta sub-multigraph** inside `H` (§(K-flank) *F5(d)*'s support), with
+(OC-37)'s tight corollary `Σ min(ℓᵢ, 6) ≥ 13` bounding when a theta can carry
+one at all. (iii) **(OC-38)** is the cautionary instance: `P21` is
+`hnoRigid`-FALSE and **one unit short** of what the class needs, and its five
+σ-jump seeds are **exactly** the five where `localtest.plane_basis`
+degenerates — a *set equality*, so the arc's only exhibited near-instance sits
+on the **(OC-7) coincidence locus** and is an artifact, not a witness. Any
+candidate you find must be checked against `repin.star_generic` before it is
+called a hit. (iv) **(OC-35)/(OC-36)** give the mechanism language: a stress
+is a **Kirchhoff flow on topological paths** valued in the chain-span perps,
+and `corank R(F) = Σδ_Q + ρ_F − slack(F)`.
+
+**What counts as a HIT — both directions are valuable, state which you got.**
+
+1. **A disproof witness:** a class (shape, split), off the `K4` stratum,
+   with `{σ = 0} = ∅` — every chart point stressed — surviving the (OC-38)
+   coincidence check. **This makes `hK` FALSE there.** Report it **separately
+   and first**, with the shape, the split, the mechanism, and the exact
+   arithmetic. **The direction-A pivot rule is in force** for what it *means*
+   — but note the stop clause was **superseded 2026-08-26**: the coordinator
+   works a confirmed hit up toward formalization rather than halting, and what
+   goes to the user is the **classification** (does `PencilPair K 3 G` itself
+   fail, or only the `hK` pin?) and the confirming pass. So: **state your
+   classification explicitly** and do not overstate confidence on a single
+   witness.
+2. **A class-uniform proof that the geometric half is free** — that no chain-
+   span or Kirchhoff drop is ever forced. That delivers (a₂)'s necessary half
+   class-uniformly and **closes the last known route to a disproof**, which is
+   itself decision-relevant: it says stop hunting counterexamples and commit
+   to proving.
+3. **An honest MISS with the route priced** — where the hunt reached, what
+   mechanism would be needed, and whether §8.5's row should stay open. **Cap
+   disclosure is mandatory:** *"not found under cap C"*, never nonexistence.
+
+**Bars.** Do **not** re-run (OC-37), SIGZ's hunt, or the (OC-39) `K4`
+certificates. Do **not** attack (OC-8), input (a)'s target-rank half (a₁), or
+(GR-15) — separate residuals. Class uniformity of the *escape* is out of
+scope. Do not touch §(K-grid)'s (b′) ledger at all — (P) is refuted, (m) is
+proven, (L) is the live one and is **not** this dispatch's business. No
+`.lean` (the standing Lean hold).
+
+**Riders.** TERMINATION check E1/E2/E3 at the return (E3 ARMED by GBAL —
+report, never fire). F11: every headline claim needs a driver testing **that
+sentence**; "exhaustive"/"forced"/"the only" are their own claim class.
+**F25:** state your verification bar by **re-reading the shipped driver** —
+write "N independent models" and any pinned figure from the deliverable,
+never from memory of the session; a scratchpad probe that is not in the
+driver does not count. Every script you run is committed. All figures exact ℚ
+(or exact `ℚ(i)` via `exactcore.Gauss`, now a base-layer primitive), seeded,
+degeneracy-guarded; `notes/scripts/README.md` binds and its *Divergences*
+table names the same-name-different-semantics traps. Sideways imports are in
+policy but trip §2 rule 2 — record them in your draft, make no move.
+
+**Driver — conditional, at the pinned path `notes/scripts/w4/ogeom.py`.** A
+purely derivational result consuming only landed figures needs no new driver;
+state that disposition explicitly. Any new measured or exhaustion claim mints
+the driver at the pinned path, read-only imports, left untracked for the
+coordinator to gate and commit.
+
+**Reservation** (`notes/Pencil-labels.md` §"Reserved namespace — direction
+OGEOM"): §(K-out) **extends**; labels **(OC-45)–(OC-49)**, **Steps O42–O46**;
+return any unconsumed remainder to the tail.

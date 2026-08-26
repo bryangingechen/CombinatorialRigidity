@@ -1587,6 +1587,34 @@ raw-substring, on "anchor"); `GMREAD` — 0-hit but it names the *act of
 reading* rather than the object. **`GMINM` names the statement's content**
 — the **min-over-M** form of the price gap.
 
+## Reserved namespace — direction OGEOM (2026-08-26, **RESERVED — the direction is in flight**)
+
+**Reserved 2026-08-26 for the single direction OGEOM** (ordinal 38, the
+arc's forty-sixth direction; `notes/Pencil-fanout.md` §"OGEOM"), the second
+pick under the 2026-08-26 widened delegation and the first to leave
+§(K-grid). Target: **the geometric route to a disproof** —
+`notes/Pencil-strategy.md` §8.5's one open row.
+
+| direction | owning § | labels reserved | steps reserved | driver |
+|---|---|---|---|---|
+| **OGEOM** | §(K-out) — **extends**, no new section | **(OC-45)–(OC-49)** | **O42–O46** | `w4/ogeom.py` (conditional — see the spec) |
+
+The reservation is the head of §(K-out)'s unclaimed tail (declared
+**(OC-45)+ / Step O42+** at OQRANK's landing above). At landing, record what
+was consumed, return any remainder, and flip this header to **USED**.
+
+**Code and basename verified 0-hit** as raw substrings, case-insensitively,
+across `*.md`, `*.tex`, `*.lean`, `*.py`, `*.m2` with `.git`/`.lake`
+excluded, control token `gminm` live at 7 files. `(OC-46)`–`(OC-50)` and
+*Steps O43–O47* each 0-hit; `(OC-45)` and *Step O42* hit only OQRANK's
+live-tails bookkeeping above (the `(GR-97)`/`(GR-115)`/`(GR-120)`
+precedent). **Checked and NOT chosen:** `OKIRCH`, `OFORCE` — both 0-hit, but
+each names one candidate *mechanism* (the Kirchhoff drop, the forcing)
+rather than the route, and the route is the target (the `GWALK`/`GFINE`
+rejection reason). **`OGEOM` names the route's content** — the **geometric**
+half of the disproof question, the half (OC-37) left standing when it killed
+the counting half.
+
 ## Registry — `notes/Pencil-informal.md` (the (K) workbook)
 
 Status keywords are pointers to the owning section's verdict block and the

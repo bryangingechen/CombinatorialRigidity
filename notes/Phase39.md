@@ -160,11 +160,26 @@ not. Canonical home §(K-grid) *Steps G145–G148*, landing record
 `notes/Pencil-fanout.md` §"GMINM", driver `w4/gminm.py`. **No status
 word moves on (GR-104)(i) or per-matching (b′) — both stay REFUTED;
 `hK`, (GR-15) and class uniformity untouched; E3 ARMED, not fired.**
-**NEXT CONCRETE TASK: the next research direction, coordinator-picked
-— and it goes OFF §(K-grid)** (the GMINM prep recorded that in
-writing). The new live grid-side statement, for whoever returns: **is
-the ledger gap ever `≥ 3`?** (spectrum `{0,1,2}` at 4 935 shapes; by
-(GR-127) no proof may fix its anchor matching). The §9 shelf **(ZH-1)–(ZH-6)** stays unpriced and
+**DIRECTION OGEOM (ordinal 38) IS PREPPED and IN FLIGHT** — the second
+pick under the widened delegation, the first off §(K-grid) in six
+directions, dispatched 2026-08-26 at `recon-opus`. Target: **the
+geometric route to a disproof**, `notes/Pencil-strategy.md` §8.5's one
+open row — is there a class (shape, split) with **`{σ = 0} = ∅`**,
+every chart point of `H = G − v − a` stressed? By (OC-24) that makes
+**`hK` FALSE there**, a **PENCIL event**. The *counting* half of this
+question is dead ((OC-37), SIGZ NO HIT); the *geometric* half — no
+forced chain-span or Kirchhoff drop — is measured free but open
+class-uniformly and one-point decidable per shape. Confined by
+(OC-39)'s 3 368/3 368 exact-ℚ `K4`-stratum certificates (no
+counterexample lives there) and by (OC-38)'s coincidence-locus
+cautionary instance. Spec `notes/Pencil-fanout.md` §"OGEOM";
+reservation (OC-45)–(OC-49) / *Steps O42–O46*. **A hit is worked up
+in-phase per the 2026-08-26 pre-adjudication, with the
+classification** — does `PencilPair K 3 G` itself fail, or only the
+`hK` pin? — **surfaced to the user.** **NEXT CONCRETE TASK: land the
+OGEOM return.** The grid-side statement left behind, new and
+unattacked: **is the ledger gap ever `≥ 3`?** (spectrum `{0,1,2}` at
+4 935 shapes; by (GR-127) no proof may fix its anchor matching). The §9 shelf **(ZH-1)–(ZH-6)** stays unpriced and
 ineligible. Nothing else structural queued, nothing awaiting user
 adjudication.
 
@@ -691,8 +706,17 @@ neighbours' incidences and every capacity unit above 2 is bought by a **Case-I g
 whose pencil-compatibility is geometry the probe was barred from. **§(K-avoid) was never
 opened** and no gap-map status moved.
 
-**THE NEXT CONCRETE TASK — the next research direction, coordinator-picked
-under the 2026-08-26 widened delegation, and it goes OFF §(K-grid).** GMINM
+**THE NEXT CONCRETE TASK — land the OGEOM return.** Direction **OGEOM**
+(ordinal 38, the arc's forty-sixth) is **PREPPED and IN FLIGHT**, dispatched
+2026-08-26 at `recon-opus` against `notes/Pencil-fanout.md` §"OGEOM"
+(reservation (OC-45)–(OC-49) / *Steps O42–O46*) — the second pick under the
+widened delegation and the first off §(K-grid) in six directions. It hunts
+**the geometric route to a disproof** (§8.5's one open row): a class shape
+with `{σ = 0} = ∅`, which by (OC-24) makes **`hK` FALSE there**. **A hit is a
+PENCIL event** — worked up in-phase per the 2026-08-26 pre-adjudication, with
+the half-1/half-2 classification and the confirming pass surfaced to the
+user. A class-uniform proof that the geometric half is free is an equally
+valuable outcome: it closes the last known disproof route. GMINM
 is LANDED (§(K-grid) *Steps G145–G148*) and its finding re-prices the grid
 thread: the ledger consumes **(L)**, the difference of minima, so the
 per-matching statement four directions attacked is not the consumed one
