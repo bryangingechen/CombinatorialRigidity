@@ -10753,7 +10753,7 @@ state of (b′).**
 | (b′) with (GR-C1) + (GR-C2) | `2` | reduced to the **selection** clause (GR-C2); (GR-C1) proven at `n ≤ 6` — **(GR-C2) PROVEN at `n ≤ 10` (*Steps G120–G124*), so a full THEOREM on the `n ≤ 6` stratum, theorem modulo (GR-C1) alone at `n = 8, 10`** |
 | (b′) with (GR-C1) + (GR-R1) | `4` | **PROVEN modulo (GR-C1) alone** ((GR-86) + one descent step; (GR-R1) PROVEN at *Steps G116–G119*) — a full theorem on the `n_hub ≤ 6` stratum |
 | (b′) with (GR-R1) alone | `4·min(k, ⌊n/4⌋) ≤ 12` | **PROVEN**, `n`-free ((GR-R1) PROVEN at *Steps G116–G119*) |
-| (b′) with (GR-R1) + (GR-C2) at every step | `2·min(k, ⌊n/4⌋) ≤ 6` | **the every-step form is PROVEN for `n < 6|δ|` and REFUTED from `n = 12` (*Steps G120–G124*)**: this row is a THEOREM outright at `n ≤ 10`, OPEN beyond via the successor **(GR-104)(i)** (the price form — since *Steps G125–G129* (GPRICE) a theorem at `2k = 2`, every `n`, modulo the balance law (GR-108)); the interpolation (GR-104)(ii) improves the chain below `n = 12·(δ_M/2)` |
+| (b′) with (GR-R1) + (GR-C2) at every step | `2·min(k, ⌊n/4⌋) ≤ 6` | **the every-step form is PROVEN for `n < 6|δ|` and REFUTED from `n = 12` (*Steps G120–G124*)**: this row is a THEOREM outright at `n ≤ 10`, OPEN beyond via the successor **(GR-104)(i)** (the price form — since *Steps G125–G129* (GPRICE) a theorem at `2k = 2`, every `n`, modulo the balance law (GR-108) — **(GR-108) since REFUTED, the surviving conditional the half-witness clause (*Steps G135–G139*)**); the interpolation (GR-104)(ii) improves the chain below `n = 12·(δ_M/2)` |
 
 **Why the naive exchange had to be anchored, recorded as the route-3
 post-mortem.** The obvious `n`-free form of route 3 is *"`f` is 2-Lipschitz
@@ -11005,7 +11005,7 @@ driver's `--exact` price table as their in-driver counterpart.
 | **(GR-89)(iii)** | the counting bound `n_hub ≥ 3k + 5\|δ\|/2` for a total failure | **proven** (a five-line count off (GR-85)(iv)); a live guard in the driver |
 | **(GR-89)(iv)** | **(GR-C2)**, the selection clause | **settled per-configuration in both directions at *Steps G120–G124*** (2026-08-25, GCHEAP): every-step form **PROVEN for `n < 6|δ|`** — all `n ≤ 10` at `|δ| = 2`, the censuses now theorems — and **REFUTED from `n_hub = 12`** by witness; as-posed proven `n ≤ 10`, OPEN beyond; successor **(GR-104)(i)**. The "proven by (iii)" clause here was the incomplete inference *Step G108*(v)'s marker corrects |
 | **(GR-R1)** | some majority-side flip is always feasible | **PROVEN at *Steps G116–G119*** (GFLIP, 2026-08-25; the selection theorem (GR-99), with `≥ |δ|` feasible majority flips — (GR-52)/(GR-53) turned out not to be the instruments) |
-| **(b′)** | `d_adm − d_par ≤ 2` | **a HIT of the third kind — a different constant with the exact boundary named.** Constant `4` **PROVEN modulo (GR-C1)** and `n`-free `≤ 12` **PROVEN outright** ((GR-R1) closed at *Steps G116–G119*); constant `2` **a THEOREM on the whole `n ≤ 6` stratum and modulo (GR-C1) alone at `n = 8, 10`** (*Steps G120–G124*), **OPEN from `n = 12`**, residual **(GR-104)(i)** (the price form, superseding (GR-C2) as the certificate — since *Steps G125–G129* (GPRICE) a **theorem at `2k = 2`, every `n`, modulo the balance law (GR-108) alone**, its `2k ∈ {4, 6}` `O ⊄ M` corner OPEN); sub-clause 1 proven, sub-clause 2 refuted as posed |
+| **(b′)** | `d_adm − d_par ≤ 2` | **a HIT of the third kind — a different constant with the exact boundary named.** Constant `4` **PROVEN modulo (GR-C1)** and `n`-free `≤ 12` **PROVEN outright** ((GR-R1) closed at *Steps G116–G119*); constant `2` **a THEOREM on the whole `n ≤ 6` stratum and modulo (GR-C1) alone at `n = 8, 10`** (*Steps G120–G124*), **OPEN from `n = 12`**, residual **(GR-104)(i)** (the price form, superseding (GR-C2) as the certificate — since *Steps G125–G129* (GPRICE) a theorem at `2k = 2`, every `n`, modulo the balance law (GR-108) alone, and since *Steps G135–G139* (GXESC) **⟺ the gap-2 law, (GR-108) REFUTED, the surviving conditional the half-witness clause**, its `2k ∈ {4, 6}` `O ⊄ M` corner OPEN); sub-clause 1 proven, sub-clause 2 refuted as posed |
 | (GR-67)/(GR-68)/(GR-69)/(GR-70) | BALB's chain | **untouched and consumed**; (GR-70)(ii)'s figures **independently reproduced** from the `z`-cube; (GR-68) re-derived once inside the model as a consistency check, never replaced |
 | (GR-49)–(GR-54) | the z-form and the balance theorem | **untouched and consumed**; (GR-50)'s decision is *corroborated* at the one-flip level by the chain search's 0 disagreements |
 | **(a′)** / **input (Y)** / **(GR-64)(R2)** | | **OPEN — not attempted.** One coordinate observation reported, no figure, no rank |
@@ -13038,23 +13038,21 @@ off `M`". (iv)–(v) are direct. ∎
 > |---|---|
 > | (GR-104)(i) at `n ≤ 10` | **theorem** ((GR-101)(ii) + (GR-86), landed — untouched) |
 > | (GR-104)(i) at `2k = 2`, any `n`, some odd branch off `M` | **PROVEN** ((GR-107)(iii), off (GR-99) + (GR-86)) |
-> | (GR-104)(i) at `2k = 2`, any `n`, `O ⊆ M` | **theorem modulo (GR-108) alone** ((GR-107)(iii)); unconditional proof NOT delivered |
-> | (GR-108), the balance law | **minted; measured 1 431/1 431** (stratum sub-cell exhaustive; to `n = 18` under disclosed caps); strong form fails from exactly `n = 12` |
+> | (GR-104)(i) at `2k = 2`, any `n`, `O ⊆ M` | theorem modulo (GR-108) as landed; **(GR-108) since REFUTED (*Steps G135–G139*, GXESC) — the surviving route is the gap-2 law modulo the half-witness clause ((GR-117))** |
+> | (GR-108), the balance law | minted and measured 1 431/1 431 as landed; **since REFUTED from `n = 16` ((GR-116), four verified witnesses outside this pool)** |
 > | the spec's refutation object (all optima unbalanced ∧ all price-stalled) | **not found** — every swept `O ⊆ M` pair has a balanced optimum outright; an exhausted cap is *not found under cap*, never nonexistence |
 > | (GR-104)(i) at `2k ∈ {4, 6}` | theorem at `n ≤ 10` (landed); at the `O ⊆ M` sub-cell it follows from (GR-108) wherever the law holds (measured, incl. V8); the `O ⊄ M` corner (every feasible majority branch a DBM while some odd branch sits off `M`, infeasible or minority) is **untouched and OPEN** |
 >
 > **The residual, in successor order.**
-> 1. **Prove (GR-108)** — the whole remaining gap at `2k = 2`. *(Revised
->    in place by (GR-114), Steps G130–G134 below.)* The exchange calculus
->    this entry called for is now LANDED and PROVEN maximum-preserving
->    ((GR-110)–(GR-112): slides, teleports, safe flips, recombination),
->    and the (GR-113) witness shows no per-maximum local repair in that
->    calculus can be the whole proof. The two live shapes: (a) prove
->    **existential escape** ((GR-112)(v)'s hypothesis — strictly weaker
->    than what the witness kills; 0 counterexamples known at 1 099 swept
->    pairs); (b) a **global/extremal construction** of a balance-valid
->    maximum, for which (GR-110) supplies the parametrization and the
->    Haxell remark the only known unconditional criterion.
+> 1. ~~**Prove (GR-108)**~~ — *(revised in place twice: by (GR-114),
+>    Steps G130–G134, and then by (GR-119), Steps G135–G139.)*
+>    **(GR-108) and existential escape are both REFUTED** ((GR-116),
+>    four verified witnesses from `n = 16`); the successor is the
+>    **half-witness clause** ((GR-117)(iii)): every pos-carrying
+>    `O ⊆ M` pair has a maximum that is balance-valid or half-resident
+>    — strictly weaker, with a proven surgical mechanism
+>    ((GR-117)(ii)), and it closes (GR-104)(i) at `2k = 2`
+>    unconditionally.
 > 2. **The `2k ∈ {4, 6}`, `O ⊄ M` corner** of (GR-104)(i) — no landed or
 >    new instrument addresses it beyond `n ≤ 10`; it needs either a
 >    (GR-106)-style model with odd `F`-branches as fixed darts (the
@@ -13434,29 +13432,23 @@ qualify (GR-113)'s sweeps only.
 >
 > | statement | standing after this pass |
 > |---|---|
-> | (GR-108), the balance law | **unchanged: minted, measured (GPRICE's 1 431/1 431), NOT a theorem, NOT refuted** — this pass neither proves nor breaks it |
+> | (GR-108), the balance law | unchanged by this pass; **since REFUTED from `n = 16` (*Steps G135–G139*, GXESC)** |
 > | (GR-108)(iii)'s stratum half | **strengthened, exhaustively**: every labeled maximum configuration on the `n ≤ 6` stratum is balance-valid (12 448/12 448) |
 > | the fixed-sink structure of the maximum family | **theorem** ((GR-110)): independent-transversal families, sources sliding in sink-arcs |
 > | exchange between maxima | **theorem** ((GR-111)): glued-difference recombination, maximum-family connectivity, and the sharpened refutation shape (universal linkage) |
 > | the law's reduction | **theorem** ((GR-112)): fine moves never cross the balance layer; (GR-108) ⟸ existential escape |
 > | universal escape (per-component locality) | **REFUTED** at the explicit `n = 16` witness — the second localization of (GR-108) to fail at a finite boundary (per-set at `n = 12`, (GR-108)(iii); per-component at `n = 16`, here) |
-> | existential escape | **the named open kernel** — measured intact at all 1 099 swept pairs (0 failures at L2/L3); implies (GR-108) at `2k = 2` via (GR-107)(iii) |
+> | existential escape | the named open kernel of this pass, measured intact at all 1 099 swept pairs; **since REFUTED at the same witnesses (*Steps G135–G139*)** — the 0-failures record stands as a statement about this pool |
 > | (GR-111)(v) separation as a complete proof route | **refuted**: the witness is universally linked (0/48, exhaustive at that pair) while the law holds there |
 > | (GR-104)(i) at `2k = 2` | **unchanged**: theorem modulo (GR-108) alone ((GR-107)(iii)) |
 >
 > **The residual, in successor order** (revising (GR-109)'s entry 1 in
 > place; entries 2–3 unchanged):
-> 1. **Prove (GR-108)** — now with the proof-shape inventory sharpened
->    both ways: the exchange calculus (slides, teleports, safe flips,
->    recombination) is landed and PROVEN maximum-preserving, and the
->    witness shows no per-maximum local repair in this calculus can be
->    the whole proof. The two live shapes: (a) prove **existential
->    escape** (strictly weaker than what the witness kills — the walk
->    may start at a well-chosen maximum, and 0 counterexamples are
->    known); (b) a **global/extremal construction** of a balance-valid
->    maximum (e.g. an extremal sink system), for which (GR-110) supplies
->    the parametrization and the Haxell remark the only known
->    unconditional criterion.
+> 1. ~~**Prove (GR-108)**~~ — *(revised in place by (GR-119), Steps
+>    G135–G139: both shapes died together — (GR-108) and existential
+>    escape are REFUTED at the same four witnesses.)* The successor is
+>    the **half-witness clause** ((GR-117)(iii)); the calculus and
+>    parametrization of this pass remain the workspace.
 > 2. The `2k ∈ {4, 6}`, `O ⊄ M` corner — untouched here, as barred.
 > 3. (GR-C1) past the stratum — untouched here, as barred.
 
@@ -13584,3 +13576,443 @@ coordinator re-runs it.**
   claim. The movement is on (b′)'s selection layer ((GR-108)'s exchange
   calculus), which is not entry 1 and arms nothing. **Firing is a
   coordinator action; reported, not fired.**
+
+---
+
+### Steps G135–G139 (2026-08-26, direction GXESC) — **(GR-108), the balance law, is REFUTED BY WITNESS — and existential escape falls with it; the price form survives at every witness, and its residual is reshaped onto a two-case GAP-2 LAW, three quarters of it proven**: **(GR-115)** is the **reversal-label ledger** — score sources +1 and sinks −1; per-cycle alternation and the even-pair exclusion force `Σ_j c_j + h = 0`, with `c_j` odd branch `j`'s resident-end score and `h` the **even-half ledger** (the score of the resident hubs whose even matching partner is through) — whose corollaries are all proven: an **M-closed** configuration (every matching branch fully in or fully out of `R`) is **balance-valid at every `2k`**; at `2k = 2`, `|h| ≤ 1` forces balance-validity and pos-forcing forces `h ≤ −2`; **(GR-116) REFUTES (GR-108)**: four explicit single-`F`-cycle `O ⊆ M`, `2k = 2` habitat pairs — two at `n = 16`, two at `n = 20`, the first ONE 2-chord endpoint transposition away from the (GR-113) witness diagram — have maximum families that are pure pos + neg with **NO balance-valid member** (`d_adm − d_par = 2`), every figure re-derived through THREE independent models (two of them landed); hence **existential escape ((GR-112)(v)'s hypothesis) is REFUTED** — with no bal maximum, no fine-move walk can leave the pos class ((GR-112)(iv)) — and (GR-109)'s "theorem modulo (GR-108) alone" loses its hypothesis; **(GR-117)** mints the reshaped residual, the **GAP-2 LAW**: at `2k = 2`, `O ⊆ M`, the price form (GR-104)(i) is EXACTLY `d_adm(M) ≤ d_par(M) + 2`, it **SURVIVES at all four witnesses** (both one-flip prices +2), and it is **PROVEN at every pair whose maximum family contains a balance-valid or half-resident member** (one (GR-107)(v) adjacent-pair removal at the lone resident end frees the branch at `M* − 2`) — the ONE open case, *every maximum forcing with both branches fully resident*, is measured EMPTY at all 248 hunted pairs, and a gap-4 pair (a genuine (GR-104)(i) refutation) would have to live there; **(GR-118)** is the measured record — the hunt legs and the exact failure boundary (exhaustively TRUE at `n ≤ 6`, clean to `n = 14` under caps, FALSE from `n = 16`), the M-closure coverage (`M* − M*_cl ∈ {0, 2, 4}` everywhere swept), and the (GR-113) witness anatomy: under **interval flips** through configurations of size `≥ M* − 2`, all 32 "stranded" maxima reach balance-valid company — the strandedness was an artifact of the L1–L3 move set, answering *Step G134*'s fourth-move question positively at the witness and moot for the law; **(GR-119)** the status. **(GR-15) stays OPEN, no gap-map status move on `hK` itself; E3 stays ARMED and does NOT fire.**
+
+Answering `notes/Pencil-fanout.md` §"GXESC — thirty-fifth ordinal":
+**prove existential escape / (GR-108), or refute by witness**. **The
+outcome is the spec's named refutation-by-witness shape, in its strong
+form**: pairs whose balance-valid stratum is empty while pos-forcing
+maxima exist — *Step G134*'s hunt shape ("grow `strand_witness`-like
+single-cycle pairs and test `bal = 0`") delivered exactly as written,
+plus one proven ledger theorem and a proven three-quarters of the
+successor law. Rank-free throughout: nothing imports or calls
+`gexist.fully_good_rank` and no `d_fg` claim is made anywhere
+((a′) / input (Y) untouched). Read against *Steps G125–G129*
+((GR-105)–(GR-109)) and *Steps G130–G134* ((GR-110)–(GR-114)).
+
+***Notation, inherited unchanged, with one new term.*** The (GR-106)
+model throughout: `O ⊆ M` pair, `F = G° ∖ M` all-even, reversal set
+`R`, sinks/sources, through hubs, `dist = n − |R|`, `M* = n − d_par`;
+classes bal/pos/neg as at (GR-112)(i); "resident" = in `R`; a branch
+is **full** (both ends resident), **half** (one), or **empty**.
+**New:** the **score** of a resident hub is `+1` (source) / `−1`
+(sink); `c_j` = the score-sum of odd branch `j`'s resident ends
+(`∈ {−2, …, +2}`); `h` = the score-sum of the resident hubs on
+half-resident EVEN matching branches (the **even-half ledger**); a
+configuration is **M-closed** iff no branch (even or odd) is half.
+
+**Step 0 pin (mandatory, discharged before any derivation).** (GR-105)
+(colour swap), (GR-106) in full (the normal form; its constraints are
+what "valid" means below), (GR-107)(iii)/(v) (the 2k = 2 reduction and
+the adjacent-pair removal), (GR-110)–(GR-112) (the exchange calculus,
+consumed as proven theorems), (GR-113)'s witness figures (re-entered
+as controls, asserted, never re-derived), (GR-86) (the gap-4 cap),
+(GR-99)(ii) and (GR-104) as landed. **Bars honoured:** (GR-C1) not
+attacked; the `2k ∈ {4, 6}` `O ⊄ M` corner untouched; no landed
+census re-run — GPRICE's 1 431-pair sweep and GBLAW's 1 099-pair
+escape census are cited as records of their pools (the refutation
+pairs are NEW pairs outside both pools); (GR-15) / class uniformity
+untouched; no `.lean` touched (the standing Lean hold).
+
+---
+
+### Step G135 — (GR-115): the reversal-label ledger — sources minus sinks vanish cycle-by-cycle, so the forcing class of a configuration is stored on its half-resident even branches
+
+> **(GR-115)** *(proven; asserted clause-by-clause EXHAUSTIVELY over
+> all `3^n` labeled states of every `n ≤ 6` stratum pair (39 642
+> valid configurations, 1 034 pairs), over every valid orientation
+> word of the (GR-113) witness (22 876, ALL sizes), and over the
+> labeled maximum families of V8 and the (GR-103) control; `--ledger`)*
+>
+> Score every resident hub `+1` (source) / `−1` (sink). At every
+> valid configuration of every `O ⊆ M` pair (any `2k`):
+>
+> **(i) The identity.** Each `F`-cycle's score-sum is 0 (alternation),
+> and each full even matching pair's is 0 (its labels differ,
+> (GR-106)(ii)). Since `M` is perfect, partitioning `R` by matching
+> branch gives
+> > `Σ_j c_j + h = 0`.
+>
+> **(ii) M-closure forces balance — at every `2k`.** If no branch is
+> half, then each `c_j ∈ {−2, 0, +2}` and `Σ c_j = 0`, so the full
+> odd branches split into **equally many forced-A and forced-B** (a
+> full source-source branch is forced A, sink-sink forced B,
+> (GR-106)(iii)), and the free count `2k − #full` is **even**; the
+> pattern colouring the forced branches as forced and splitting the
+> free ones evenly is balanced and valid. **Every M-closed valid
+> configuration is balance-valid.**
+>
+> **(iii) The `2k = 2` dictionary.** `|h| ≤ 1 ⟹` balance-valid (a
+> forced-equal pair has `|c_1 + c_2| ≥ 2`). Pos-forcing `⟹ c_1, c_2
+> ≥ 1 ⟹ h ≤ −2` — a net sink surplus of at least 2 on the even-half
+> branches — with `h = −2` forcing **both** odd branches half.
+> (Neg mirrors by (GR-105).)
+
+*Proof.* (i): alternation ((GR-106)(i)) makes sinks and sources
+equinumerous on each cycle; the branch partition then splits the zero
+total into full-even (0 each, labels differ), odd (`c_j`), and
+even-half (`h`) parts. (ii): a full odd branch has equal labels
+(structural validity), so `c_j = ±2`; `Σ c_j = 0` forces the ±2's to
+pair up; `2k` even makes the free count even; validity of the
+displayed pattern is immediate from (GR-106)(iii). (iii): direct.
+∎
+
+*(Register note: (GR-115)(ii) is the first unconditional structural
+balance-validity criterion after (GR-110)(iv)'s Haxell remark, and it
+is checkable by a `2^{n/2}` chord-subset enumeration — the driver's
+`closed_mstar`. Its coverage is real but partial: see (GR-118)(iii).)*
+
+---
+
+### Step G136 — (GR-116): the balance law (GR-108) is REFUTED — four witnesses, the first one transposition from the (GR-113) diagram — and existential escape is refuted with it
+
+> **(GR-116)** *(refutation by witness; every pinned figure asserted
+> through THREE independent models — the driver's orientation-word
+> census, the landed `gprice.rmodel_f` ((GR-106)(vi), cube-asserted at
+> 1 054 pairs in its own sweeps), and, at `n = 16`, the landed
+> `gblaw.enum_family` (itself cross-asserted against `rmodel_f` at
+> 1 072 pairs at its landing); `--verify`, discovery in `--hunt`)*
+>
+> **(i) The witnesses.** Four `O ⊆ M`, `2k = 2` habitat pairs, each
+> with a single-cycle 2-factor and both odd branches matching chords
+> (`refut_specs` in the driver, positional diagrams on the cycle
+> `0..n−1`; shapes rebuilt deterministically and gated by the
+> canonical `cflank.cubic_habitat`):
+>
+> | witness | `n` | maximum family | gap `d_adm − d_par` |
+> |---|---|---|---|
+> | **mut16** | 16 | `M* = 12`; 64 maxima = **32 pos + 32 neg + 0 bal** | **2** (`f = {AA: 4, AB: 6, BA: 6, BB: 4}`) |
+> | **rand16** | 16 | `M* = 12`; 48 = 24/24/**0** | **2** (same `f`-table) |
+> | **rand20a** | 20 | `M* = 16`; 32 = 16/16/**0** | **2** (same) |
+> | **rand20b** | 20 | `M* = 16`; 48 = 24/24/**0** | **2** (same) |
+>
+> mut16's diagram: even chords `{8,5}, {1,9}, {13,15}, {12,3}, {2,7},
+> {14,10}`, odd chords `{6,11}, {0,4}` — it differs from the (GR-113)
+> witness diagram by **one endpoint transposition between two even
+> chords** (odd chords identical; asserted). The near-miss was one
+> swap from the law's grave.
+>
+> **(ii) What is refuted.** **(GR-108) as stated** — at these
+> matchings NO balanced pattern attains `d_par(M)`: `d_adm = d_par +
+> 2`. Hence also: **existential escape** ((GR-112)(v)'s hypothesis) —
+> the maximum family is pure pos + neg, and by the no-crossing lemma
+> (GR-112)(iv) the first non-pos stop of any fine-move walk would be a
+> bal maximum, which does not exist; **universal escape's remaining
+> hope** likewise; and the **`2k ∈ {4, 6}` `O ⊆ M` sub-cell route**
+> "follows from (GR-108) wherever the law holds" loses its general
+> form. Consistently with (GR-111)(v)'s contrapositive, the witnesses
+> are universally linked — a refutation cannot be otherwise. Per
+> (GR-115)(iii)'s contrapositive, every maximum at every witness has
+> `|h| ≥ 2` and none is M-closed (asserted).
+>
+> **(iii) What is NOT refuted.** **(GR-104)(i) survives at all four
+> witnesses**: the parity optima are the two unbalanced patterns and
+> both majority one-flip prices are exactly `+2 ≤ 2` — see (GR-117).
+> The theorems (GR-105)–(GR-107), (GR-110)–(GR-112) and (GR-115) are
+> implications or mechanism facts and stand untouched; (GR-86)'s
+> gap-4 cap stands (the witnesses realize gap 2). GPRICE's
+> 1 431/1 431 and GBLAW's 1 099-pair records remain true of their
+> pools — the witnesses are new pairs outside both, in the cell those
+> samplers rarely draw (single-cycle `F` at `n ≥ 16`).
+>
+> **(iv) The boundary.** (GR-108) is exhaustively TRUE on the
+> `n ≤ 6` stratum sub-cell (GPRICE, 1 034 pairs — landed) and
+> measured-clean at `n = 8/10/12/14` (landed pools; plus this pass's
+> 74 + 48 single-cycle pairs at `n = 12/14`, gap 0 throughout); it is
+> **FALSE from `n = 16`** — the third localization boundary of the
+> (GR-108) family after per-set `n = 12` ((GR-108)(iii)) and
+> per-component `n = 16` ((GR-113)(ii)), and this time it is the law
+> itself. Between 14 and 16 the record is caps-only, not exhaustive.
+
+*Verification note.* The word census is a third, independent
+implementation of the (GR-106) model (single-cycle specialization:
+orientation words with sign-change residency); it reproduces the
+(GR-113) witness's pinned `(M*, family, classes) = (12, 152,
+48/48/56)` and, at `--ledger`, has its class and ledger values
+asserted against the `valid_pats`/`cls_of` machinery at every one of
+the witness's 22 876 valid words. The full `2^{|E|}` cube stops at
+`n = 12` (|E| = 18), so no witness is cube-checkable — the bar met
+here (two landed models + one fresh one, all exact, agreeing on every
+figure) is the same bar the landed (GR-83) and (GR-113) witnesses
+met. ∎
+
+---
+
+### Step G137 — (GR-117): the GAP-2 LAW — the price form at `2k = 2`, `O ⊆ M` is exactly `d_adm ≤ d_par + 2`, and it is proven except at one named configuration class
+
+> **(GR-117)** *(minted; the equivalence and clause (ii) proven;
+> clause (iii)'s hypothesis measured EMPTY at all 248 hunted pairs;
+> `--hunt`'s gap histograms and `all22` counter)*
+>
+> **(i) The equivalence.** At an `O ⊆ M` pair with `2k = 2`:
+> `f(AA) = f(BB)` and `f(AB) = f(BA)` ((GR-105)), so `d_par =
+> min(f(AA), f(AB))`, `d_adm = f(AB)`, and the (GR-104)(i) sentence
+> ('vacuous', or some majority one-flip price `≤ 2` at a `|δ| = 2`
+> optimum) is **exactly**
+> > `gap := d_adm(M) − d_par(M) ≤ 2`  — the **gap-2 law** —
+> the gap being even ((GR-106)(iv): `dist ≡ n mod 2`) and `≤ 4`
+> ((GR-86), landed). (GR-108) was the `gap = 0` form; the witnesses
+> realize gap 2; a **gap-4 pair is exactly a (GR-104)(i) refutation**
+> at this cell.
+>
+> **(ii) The proven three quarters.** The gap-2 law holds at every
+> pair whose maximum family contains a member that is **balance-valid
+> or has a half-resident odd branch**. *Proof.* A bal maximum gives
+> gap 0. Otherwise take wlog a pos-forcing maximum `x` with γ₂
+> half-resident at its lone source end `e`. Both cyclic `R`-neighbours
+> of `e` on its `F`-cycle are sinks (alternation), and no resident odd
+> end is a sink at a pos maximum, so a neighbouring sink `s` is not an
+> odd end. Remove the adjacent pair `{e, s}` — valid by (GR-107)(v),
+> constraints only relax. The result has γ₂ **free** and γ₁ still
+> forced A, so it is valid at the balanced pattern (A, B) with
+> `|R| = M* − 2`: `d_adm ≤ d_par + 2`. ∎ (By (GR-115)(iii), the
+> `h = −2` pos maxima are automatically of this kind — both branches
+> half.)
+>
+> **(iii) The one open case, exactly named.** The gap-2 law can fail
+> only at a pair where **every maximum is forcing with both odd
+> branches fully resident** (residency (2,2), `|h| = 4`). Measured:
+> **0 such pairs** among all 248 gated single-cycle pairs hunted
+> (`all22`), including all four refutation witnesses — at each of
+> which the law therefore holds with gap **exactly** 2, by (ii) plus
+> bal-emptiness. The named successor clause — the **half-witness
+> clause**: *every pos-carrying `O ⊆ M` pair has a maximum that is
+> balance-valid or half-resident* — would make (GR-104)(i) a
+> **theorem at `2k = 2`, every `n`, unconditionally** (with
+> (GR-107)(iii)'s proven off-`M` half), replacing the refuted
+> "modulo (GR-108)" route by a strictly weaker hypothesis with a
+> proven surgical mechanism.
+
+---
+
+### Step G138 — (GR-118): the measured record — the hunt and the boundary, the M-closure coverage, and the witness anatomy (the strandedness was the move set's artifact)
+
+> **(GR-118)** *(measured; `--hunt`, `--closure`, `--strand`; caps
+> disclosed below — an exhausted cap is not nonexistence)*
+>
+> **(i) The hunt** (the *Step G134* shape, single-`F`-cycle `2k = 2`
+> diagrams, word census): the EXHAUSTIVE gated 2-chord-transposition
+> neighbourhood of the (GR-113) witness (41 pairs — **1 refutation**,
+> mut16) and seeded pools at `n = 12/14/16/18/20` (74/48/42/33/10
+> gated pairs — refutations 0/0/**1**/0/**2**). Gap histogram over
+> all 248: `{0: 244, 2: 4}`; **no gap-4 pair** (no (GR-104)(i)
+> refutation) and **no all-(2,2) pair** anywhere.
+>
+> **(ii) The `n = 18` note.** The 33-pair `n = 18` leg is clean —
+> the failure set is not monotone in `n` along these caps; nothing
+> beyond "not found under cap" is claimed at 18.
+>
+> **(iii) M-closure coverage** (`--closure`, 1 100 pairs: stratum
+> EXHAUSTIVE 1 034 + V8 + control + witness + cell pools at
+> `n = 12/14/16`): an M-closed maximum — hence a balance-valid one,
+> (GR-115)(ii) — exists at 970/1 034 stratum pairs, at V8 and the
+> control, and at 19/64 of the pool pairs; the closed gap
+> `M* − M*_cl ∈ {0, 2, 4}` everywhere swept. The criterion is real
+> but partial: the (GR-113) witness itself has `M*_cl = 10 < 12`
+> (closed gap 2) while carrying 56 bal maxima — M-closure does not
+> explain them — and 30 of the 33 forcing mutation-leg pairs lack an
+> M-closed maximum. (GR-115) asserted at every maximum of all 1 100
+> pairs, 0 violations.
+>
+> **(iv) The (GR-113) witness anatomy** (`--strand`). Features of the
+> 16 escaping vs 32 stranded pos maxima: ledgers `h` `{−4: 2, −3: 8,
+> −2: 6}` vs `{−4: 8, −3: 20, −2: 4}`; residencies `{(1,1): 6,
+> (1,2): 8, (2,2): 2}` vs `{(1,1): 4, (1,2): 20, (2,2): 8}`; **sink
+> set shared with some bal maximum: 8/16 vs 0/32** — the sharpest
+> separator found: a stranded maximum's sink system supports no
+> balance-valid transversal at all ((GR-110)(ii)).
+>
+> **(v) The dip census — the fourth-move answer.** Widen the move set
+> to **interval flips** (flip the orientation of one cyclic segment:
+> toggles residency at the two cut hubs and colour-swaps the segment's
+> interior — a strict superset of slides and single
+> removals/insertions) through valid configurations of size
+> `≥ M* − d`. At the witness, already at **`d = 2`** (2 454 valid
+> words) **all 32 stranded pos maxima reach balance-valid company**
+> (as do the 16 escapers). *Step G134*'s what-would-change (iii) is
+> answered at its own test case: a fourth move class DOES restore
+> universal escape there — and it is moot for the law, which
+> (GR-116) refutes outright at pairs where no bal maximum exists for
+> any calculus to reach.
+
+**Caps, disclosed in full.** (1) The mutation leg is exhaustive over
+gated 2-chord transpositions of the witness diagram only (41 of the 56
+endpoint-transposition candidates — two per chord pair — pass the
+F-parallel exclusion and the habitat gate under the driver's
+deterministic `ℓ`-placement recipe; the others are not swept). (2) The seeded
+single-cycle pools run `cyc_sample` tries 100/60/60/40/12 at
+`n = 12/14/16/18/20` (seeds printed; the boundary legs on their own
+seed so the discovery legs reproduce byte-identically). (3) The
+`--closure` cell pools reuse `gprice.cell_shapes` tries 120/120/60/40
+with pair cap 12 on the `n = 16` leg. (4) `--strand`'s dip census is
+the witness pair only. (5) No assertion path is capped. **None of
+these caps qualifies (GR-115), (GR-116)(i)–(iii) or (GR-117)(i)/(ii)**
+— those are proofs or verified witnesses; the caps qualify the
+boundary claim (GR-116)(iv), the hunt's emptiness figures and the
+coverage figures only.
+
+---
+
+### Step G139 — (GR-119): where the arc stands after the refutation, and the hand-off
+
+> **(GR-119)** *(the status statement; no new mathematics)*
+>
+> | statement | standing after this pass |
+> |---|---|
+> | (GR-108), the balance law | **REFUTED** — four verified witnesses from `n = 16`; exhaustively true at `n ≤ 6` (landed); measured-clean to `n = 14` under caps |
+> | existential escape ((GR-112)(v)'s hypothesis) | **REFUTED** at the same witnesses (no bal maximum to escape to); GBLAW's 0-failures record stands as a statement about its 1 099-pair pool |
+> | (GR-110)–(GR-112), the exchange calculus | **untouched, proven** — mechanism theorems, not law instances |
+> | (GR-105)–(GR-107) | **untouched, proven**; (GR-107)(iii)'s off-`M` half still gives (GR-104)(i) outright there |
+> | (GR-104)(i) at `2k = 2`, `O ⊆ M` | **⟺ the gap-2 law** ((GR-117)(i)); SURVIVES at every witness (price +2); **proven whenever some maximum is bal or half-resident** ((GR-117)(ii)); open exactly at the all-(2,2) case, measured EMPTY at 248 pairs |
+> | (GR-104)(i) at `2k = 2`, whole cell | theorem at `n ≤ 10` (landed, untouched); now **theorem modulo the half-witness clause** ((GR-117)(iii)) — replacing the refuted "modulo (GR-108) alone" |
+> | (GR-104)(i) at `2k ∈ {4, 6}`, `O ⊆ M` sub-cell | the (GR-108)-conditional route is dead in general; (GR-115)(ii) covers the M-closed-maximum pairs at every `2k`; otherwise open, the corner unchanged |
+> | (GR-115), the ledger | **proven** (exhaustive asserts); its M-closure criterion the first unconditional balance-validity test after the Haxell remark |
+> | the (GR-113) witness's stranded family | reconnects at dip 2 under interval flips — the L1–L3 strandedness was the move set's artifact ((GR-118)(v)) |
+>
+> **The residual, in successor order** (revising (GR-114)'s entry 1 in
+> place; entries 2–3 unchanged):
+> 1. **Prove the half-witness clause** ((GR-117)(iii)): every
+>    pos-carrying `O ⊆ M` pair has a maximum that is balance-valid or
+>    half-resident. It is strictly weaker than the dead (GR-108),
+>    carries a proven surgical mechanism ((GR-117)(ii)), and closes
+>    (GR-104)(i) at `2k = 2` unconditionally. Equivalently: refute it
+>    together with the gap-2 law by an **all-(2,2), gap-4 pair** —
+>    the hunt shape is pinned (`--hunt`'s `all22` and gap counters;
+>    none found to `n = 20` under the disclosed caps), and such a
+>    pair would refute (GR-104)(i) itself, moving (b′)'s constant.
+> 2. The `2k ∈ {4, 6}`, `O ⊄ M` corner — untouched, as barred.
+> 3. (GR-C1) past the stratum — untouched, as barred.
+
+---
+
+### Verification (Steps G135–G139)
+
+`notes/scripts/w4/gxesc.py` (**new with this pass**, at the spec's
+pinned path; left untracked for the coordinator to gate and commit).
+Imports — all read-only — `odd_idx` / `stratum_cases` / `v8_specs`
+**directly from `gridbal_common`** (never via the sibling re-exports),
+`cflank.cubic_habitat`, the **five `gprice` devices** (`cell_data`,
+`cell_shapes`, `gr103_specs`, `pairs_of`, `rmodel_f` — each acquiring
+a THIRD consumer) and **seven `gblaw` devices** (`cls_of`,
+`enum_family`, `safeflips`, `slides`, `strand_witness`, `teleports`,
+`valid_pats` — each acquiring its SECOND consumer): §2-rule-2 sideways
+trips, disclosed and recorded as an extension of the GBLAW *Harness
+debt* item (`notes/scripts/README.md`, the canonical home).
+**Rank-free**: `gexist.fully_good_rank` is never imported or called
+and no `d_fg` claim is made anywhere. Local devices, none shadowing a
+§1 primitive (checked against the README index and the *Divergences*
+table): `lab_val` / `ledger_of` / `ledger_assert` (the (GR-115)
+clauses), `closed_mstar` (the `2^{n/2}` M-closed optimum),
+`word_valid` / `word_stats` / `word_census` (the single-cycle
+orientation-word census — the third independent (GR-106)
+implementation), `specs_of_diagram` / `cyc_sample` /
+`witness_positional` / `witness_mutations` (the hunt cell),
+`refut_specs` (the four pinned witnesses, re-entered for independent
+reconstruction and gated at use), `dsu_find` / `dip_census` (the
+interval-flip graph), `closure_pair` / pools / reports. Exact
+integers / GF(2) throughout; no floating point; rngs seeded per mode
+with the seed printed; no set iteration printed.
+
+```
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gxesc.py --ledger    # ~4 s   (GR-115) exhaustive/witness/family asserts
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gxesc.py --closure   # ~8 s   M-closure coverage + closed-gap histogram, 1 100 pairs
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gxesc.py --hunt      # ~190 s the single-cycle hunt: 248 pairs, gap histograms, the 4 refutations found
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gxesc.py --verify    # ~50 s  the 4 pinned witnesses through the three models, every figure asserted
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gxesc.py --strand    # ~1 s   the (GR-113) witness anatomy + the dip census
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gxesc.py --validate  # ~250 s all five in one process
+```
+
+**Which driver mode tests which sentence (F11).**
+
+| claim | mode | what asserts *that sentence* |
+|---|---|---|
+| (GR-115)(i)–(iii), every clause | `--ledger` | asserted at every valid configuration: EXHAUSTIVE `3^n` labeled states on the stratum (39 642 configs / 1 034 pairs), every valid word of the (GR-113) witness (22 876, with word-model class and ledger cross-asserted against `valid_pats`/`cls_of`/`ledger_of`), V8 + control maximum families; also at every maximum of `--closure`'s 1 100 pairs and inside `--verify` |
+| (GR-116)(i) the witnesses' figures | `--verify` | each pinned `(M*, N, pos, neg, bal, gap, min|h|)` asserted in the word census AND `rmodel_f`'s `f`-table asserted `= {4, 6, 6, 4}` AND (n = 16) `enum_family`'s family/class profile asserted equal — three independent models |
+| (GR-116)(i) mut16's provenance | `--verify` | the one-transposition relation to the (GR-113) diagram asserted set-theoretically (odd chords identical) |
+| (GR-116)(ii) no M-closed / no `\|h\| ≤ 1` maximum at a witness | `--verify` | `\|h\| ≥ 2` and non-closure asserted at every maximum of both `n = 16` witnesses ((GR-115)'s contrapositive) |
+| (GR-116)(iv) the boundary legs | `--hunt` | `n = 12/14` single-cycle pools: gap histogram `{0: all}`; the `n ≤ 6` exhaustive half is GPRICE's landed record, cited not re-run |
+| (GR-117)(i) gap parity/cap | `--hunt`, `--verify` | gap asserted even and `= (bal-maxima = 0)`-consistent at every censused pair; the 4-cap is (GR-86), landed |
+| (GR-117)(iii) the hunt for the open case | `--hunt` | `all22` counter = 0 at all 248 pairs; `price_refut` (gap ≥ 4) counter = 0; any hit would print the full diagram |
+| (GR-118)(iii) coverage | `--closure` | per-leg counts + closed-gap histograms; the `(M*_cl = M*) ⟺ (an M-closed maximum exists)` consistency asserted per pair |
+| (GR-118)(iv)/(v) anatomy + dip census | `--strand` | the 32/16 strand split re-derived through the landed L1–L3 generators and asserted; feature histograms printed; dip-`d` reachability computed on the interval-flip graph, `d = 2, 4, 6, 8` |
+| the witness control | `--hunt`, `--ledger` | (GR-113)'s pinned `(12, 152, 48/48/56)` asserted in the word model before any hunt leg runs |
+
+**Determinism.** `--validate` run at `PYTHONHASHSEED` 0 and 999:
+byte-identical except the `[Ns]` wall-clock annotations. Every seeded
+leg prints its seed; the discovery legs keep the exact rng stream that
+found the witnesses (the added boundary legs draw from their own
+printed seed).
+
+**Scratch probes (README's standing rule).** Two interim probes (the
+first re-derivation of the candidates through `rmodel_f`/`enum_family`;
+the `n = 20` figure/timing check) were promoted into the driver as
+`--verify` before landing; every figure quoted above is produced by
+`gxesc.py`.
+
+### Confidence verdict (Steps G135–G139)
+
+| | claim | standing |
+|---|---|---|
+| **(GR-115)** | the reversal-label ledger; M-closed ⟹ balance-valid (every `2k`); the `2k = 2` dictionary | **proven**; asserted exhaustively on the stratum + 22 876 witness words + every family swept |
+| **(GR-116)** | (GR-108) REFUTED; existential escape REFUTED; boundary `n = 16` | **refuted by witness** — four pairs, every figure asserted through three independent exact models, two of them landed (the (GR-83)/(GR-113) verification bar); the boundary's `8 ≤ n ≤ 14` half is measured-only under disclosed caps |
+| **(GR-117)(i)** | price form ⟺ gap-2 law at `2k = 2`, `O ⊆ M` | **proven** ((GR-105) + (GR-86) + definitions) |
+| **(GR-117)(ii)** | gap ≤ 2 whenever some maximum is bal or half-resident | **proven** ((GR-107)(v) surgery) |
+| **(GR-117)(iii)** | the half-witness clause | **minted, measured** — all-(2,2) pairs 0/248, gap-4 pairs 0/248; NOT a theorem |
+| **(GR-118)** | hunt, coverage, anatomy, dip census | **measured** under the disclosed caps; the witnesses' own figures cap-free |
+| (GR-105)–(GR-107), (GR-110)–(GR-112), (GR-86), (GR-99)–(GR-104) | | **untouched and consumed**; (GR-113)'s figures re-asserted as controls |
+| **(a′)** / input (Y) / (GR-15) | | **OPEN — not attempted**; no rank computed anywhere; no flank; no class-uniformity claim |
+
+**Which side of the (`≤3`-closedHubNbhd) line this sits on.** The same
+side as GBAL's through GBLAW's: exact GF(2) / integer combinatorics on
+constructed hub multigraphs, never `PencilNondegFeasible G`; no rank is
+computed anywhere; no σ-fixed witness is read as generic (§(K-clos)
+(AC-9)); the only samplers draw **graphs**, not placements.
+
+### What would change this (Steps G135–G139)
+
+*(i)* **A proof of the half-witness clause** makes (GR-104)(i) a
+theorem at `2k = 2`, every `n` (with (GR-107)(iii)'s off-`M` half),
+leaving (b′) at the constant 2 resting on (GR-C1) plus the
+`2k ∈ {4, 6}` `O ⊄ M` corner alone — the exact position (GR-109)
+claimed modulo the now-refuted (GR-108), re-based on a strictly weaker
+hypothesis. *(ii)* **An all-(2,2), gap-4 pair** refutes (GR-104)(i)
+at `2k = 2` outright and moves (b′)'s constant; the hunt shape is
+pinned and its counters are the detector. *(iii)* **An error in
+(GR-106)/(GR-107)(v)** would void both the witnesses and the surgery —
+both are landed proven theorems, and the witnesses additionally ride
+two independent implementations of the model. *(iv)* **The
+`2k ∈ {4, 6}` `O ⊆ M` sub-cell** could be re-attacked with the
+ledger: (GR-115)(ii) is `2k`-free, and the pair-removal surgery frees
+one branch at cost 2 at any `2k` — the balanced-pattern bookkeeping is
+what changes. *(v)* **The `Λ ≠ ∅` / `D > 0` lifts** stay unswept by
+standing rider; everything here uses cubicity and `M` perfect
+throughout. *(vi)* **A Lean transcription** of a refutation witness
+would be small (one explicit multigraph, one matching, a finite
+verified census); nothing here pins a carrier beyond what
+(GR-49)–(GR-51) already pin.
+
+**TERMINATION check (E1/E2/E3) — this direction's reading; the
+coordinator re-runs it.**
+
+- **(E1) NOT FIRED.** No g-flank; the pass is rank-free and computes
+  no rank, so clauses (i)–(iv) cannot fire. Clause (v) (`d_adm = ∞`)
+  fires on nothing: at every `O ⊆ M` pair the empty reversal set is
+  valid at every pattern, so `d_adm ≤ n` everywhere this model
+  reaches — including the four witnesses (`d_adm = 6` at each).
+- **(E2) NOT FIRED.** Entry 5 is PROVEN ((GR-54)) and consumed
+  untouched. A minted law ((GR-108)) is refuted, but it is not a
+  ledger entry, and the refutation arrives **with its successor
+  named** (the E2 carve-out): (b′)'s residual *narrows* from
+  "modulo (GR-108) [false]" to "modulo the half-witness clause",
+  three quarters of whose content is proven here; (a′)/(b′)/(c)/(d′)
+  all remain open-with-a-named-dispatchable-attack.
+- **(E3) ARMED (by GBAL), DOES NOT FIRE, and this direction does not
+  fire it.** E3 fires only on a HIT completing **entry 1** — i.e.
+  (a′). This pass does not attempt (a′), computes no rank, and makes
+  no `d_fg` claim. The movement is on (b′)'s selection layer (the
+  (GR-108) refutation and the gap-2 reshaping), which is not entry 1
+  and arms nothing. **Firing is a coordinator action; reported, not
+  fired.**

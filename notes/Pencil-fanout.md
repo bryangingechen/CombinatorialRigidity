@@ -1,8 +1,13 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: EIGHT fan-outs and FIFTEEN single directions; 42 of 43 directions
-LANDED — GXESC (ordinal 35, §"GXESC") is PREPPED 2026-08-26, dispatch is
-the next action.** **GBLAW (ordinal 34, §"GBLAW") LANDED 2026-08-26, one
+**Status: EIGHT fan-outs and FIFTEEN single directions dispatched; ALL 43
+directions LANDED.** **GXESC (ordinal 35, §"GXESC") LANDED 2026-08-26, same
+day as its dispatch — a REFUTATION BY WITNESS, the spec's strong form:
+(GR-108), the balance law, is FALSE from `n = 16` (four verified witnesses,
+the first one transposition from GBLAW's strand witness) and existential
+escape falls with it — while **(GR-104)(i) SURVIVES at every witness** (⟺
+the gap-2 law, proven except at the all-(2,2) case, measured empty at 248
+pairs); the reshaped residual is the **half-witness clause** (GR-117)(iii).** **GBLAW (ordinal 34, §"GBLAW") LANDED 2026-08-26, one
 day after its 2026-08-25 dispatch — an honest OPEN reshape: (GR-108) neither
 proven nor refuted, the exchange calculus its pinned proof shape called for
 PROVEN in three theorems ((GR-110)–(GR-112)), the law reduced to
@@ -3304,3 +3309,60 @@ read-only, left untracked for the coordinator to gate and commit.
 GXESC"): §(K-grid) **extends** — no new section; labels
 **(GR-115)–(GR-119)**, **Steps G135–G139**; owning section stays
 authoritative; return any unconsumed remainder to the tail.
+
+### GXESC — landing write-up (LANDED 2026-08-26, recon-fable, one serial coordinator commit)
+
+**Verdict: REFUTATION BY WITNESS — the spec's named refutation shape in its
+strong form. (GR-108), the balance law, is FALSE from `n = 16`, and
+existential escape ((GR-112)(v)'s hypothesis, the dispatch target) is FALSE
+with it.** Four explicit single-`F`-cycle `O ⊆ M`, `2k = 2` habitat pairs
+(two at `n = 16`, two at `n = 20`; `refut_specs` in the driver) have maximum
+families that are pure pos + neg with **no balance-valid member** and
+`d_adm − d_par = 2`; with no bal maximum, no fine-move walk can leave the
+pos class ((GR-112)(iv)), so neither of GBLAW's two live shapes can exist.
+The first witness, **mut16, is ONE even-chord endpoint transposition from
+the (GR-113) strand-witness diagram** (odd chords identical, asserted) —
+found by the exact hunt shape *Step G134* pinned. Every figure re-derived
+through THREE independent exact models, two of them landed
+(`gprice.rmodel_f`; at `n = 16` `gblaw.enum_family`) — the (GR-83)/(GR-113)
+verification bar. **What survives:** **(GR-104)(i) holds at all four
+witnesses** (both one-flip prices exactly +2); the pass proves it is
+**exactly the gap-2 law** `d_adm ≤ d_par + 2` at this cell ((GR-117)(i))
+and **proves the law wherever some maximum is balance-valid or
+half-resident** ((GR-117)(ii), a one-pair-removal surgery); the one open
+case — every maximum forcing with both branches fully resident — is
+measured EMPTY at all 248 hunted pairs, and a gap-4 pair (a genuine
+(GR-104)(i) refutation) would have to live there. New proven instrument:
+the **reversal-label ledger** (GR-115) (`Σ c_j + h = 0`; **M-closed ⟹
+balance-valid at every `2k`**). Bonus finding ((GR-118)(v)): under interval
+flips at dip 2 the (GR-113) witness's 32 "stranded" maxima all reach bal
+company — the strandedness was the L1–L3 move set's artifact, answering
+*Step G134*'s fourth-move question at its test case (and moot for the law).
+**The reshaped residual is the HALF-WITNESS CLAUSE** ((GR-117)(iii)): every
+pos-carrying `O ⊆ M` pair has a maximum that is balance-valid or
+half-resident — strictly weaker than the dead (GR-108), with a proven
+mechanism, closing (GR-104)(i) at `2k = 2` unconditionally if proven.
+Canonical home §(K-grid) *Steps G135–G139* (`notes/Pencil-informal-grid.md`);
+driver `w4/gxesc.py` (six modes, ~250 s); labels (GR-115)–(GR-119) and Steps
+G135–G139 all claimed, none returned; (GR-109)'s and (GR-114)'s superseded
+rows and successor entries revised in place per (GR-119). GPRICE's
+1 431/1 431 and GBLAW's 1 099-pair records stand as statements about their
+pools — the witnesses are new pairs outside both, in the cell those
+samplers rarely draw. TERMINATION: E1 not fired; E2 not fired (the refuted
+(GR-108) is not a ledger entry and arrives with its successor named — the
+carve-out); E3 stays ARMED (by GBAL) and does not fire.
+
+**Coordinator verification at landing:** every mode re-run individually in
+the foreground (`--ledger`/`--closure`/`--strand`/`--verify`/`--hunt`) plus
+`--validate` at `PYTHONHASHSEED` 0 AND 999 (byte-identical modulo
+wall-clock; all headline figures reproduced: the four witnesses'
+`(M*, N, pos, neg, bal, gap)` profiles through all three models / the
+248-pair gap histogram `{0: 244, 2: 4}` with `all22` = 0 and gap-4 = 0 /
+the 39 642-config exhaustive ledger assert / the dip-2 32/32
+reconnection); the (GR-115) ledger identity and the (GR-117)(ii) surgery
+re-walked against the landed (GR-106)/(GR-107) statements; the driver's
+import list verified against the file itself (direct `gridbal_common`,
+rank-free — `fully_good_rank` absent; the twelve `gprice`/`gblaw` sibling
+imports recorded as the GBLAW debt item's extension); the L6 bare-token
+grep clean on the merged draft; `check-gapmap-cells.py` green on the
+recomputed §(K-grid) row.

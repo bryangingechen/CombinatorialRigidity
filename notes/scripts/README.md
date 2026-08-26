@@ -1014,6 +1014,12 @@ are a recorded *Harness debt* item (see below).
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/gblaw.py --recomb` | 8 s | ibid. *Step G131* ((GR-111): recombination asserted at 6 426 seeded `(x, y, T)` triples — every recombinant valid AND maximum; the (GR-111)(v) separation hunt: control 36/36, seeded `n = 12` 75/196, `n = 16` 36/124, neg-partner cap 40 disclosed) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/gblaw.py --strand` | 1 s | ibid. *Step G133*(iv) (the `n = 16` strand witness in full: components 88 (56 bal + 16 pos + 16 neg) + 32 pure pos + 32 pure neg; the separation hunt EXHAUSTIVE at this pair — 0/32 stranded, 0/16 big-component over ALL 48 neg partners) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/gblaw.py --validate` | 25 s | ibid. all four in one process; byte-identical at `PYTHONHASHSEED` 0 and 999 modulo wall-clock |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/gxesc.py --ledger` | 4 s | `notes/Pencil-informal-grid.md` §(K-grid) *Step G135* (direction GXESC; (GR-115): the reversal-label ledger asserted EXHAUSTIVELY over all `3^n` labeled states of the `n ≤ 6` stratum (39 642 configs / 1 034 pairs), every valid word of the (GR-113) witness (22 876, cross-asserted against the landed σ-model), V8 + the (GR-103) control) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/gxesc.py --closure` | 8 s | ibid. *Step G138*(iii) (M-closure coverage at 1 100 pairs; closed-gap histogram `M* − M*_cl ∈ {0, 2, 4}` everywhere swept) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/gxesc.py --hunt` | 190 s | ibid. *Steps G136/G138* (the single-cycle hunt: 248 gated pairs at `n = 12`–`20`, gap histogram `{0: 244, 2: 4}` — the FOUR (GR-108) refutations found and printed in full; `all22` = 0 and gap-4 = 0 everywhere, so no (GR-104)(i) refutation and no half-witness-clause counterexample) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/gxesc.py --verify` | 50 s | ibid. *Step G136* (the four pinned witnesses re-derived through THREE independent exact models — the word census, the landed `gprice.rmodel_f`, and (at `n = 16`) the landed `gblaw.enum_family` — every figure asserted; mut16's one-transposition provenance from the (GR-113) diagram asserted) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/gxesc.py --strand` | 1 s | ibid. *Step G138*(iv)/(v) (the (GR-113) witness anatomy + the interval-flip dip census: all 32 stranded maxima reach bal company at dip 2) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/gxesc.py --validate` | 250 s | ibid. all five in one process; byte-identical at `PYTHONHASHSEED` 0 and 999 modulo wall-clock |
 
 **GPRICE (single direction, LANDED 2026-08-25).** One driver added
 (`w4/gprice.py`), nothing existing modified; imports downward only — the
@@ -1025,6 +1031,12 @@ re-exports). Its five sibling-import arrivals are recorded below.
 balance layer directly from `gridbal_common` (never via the sibling
 re-exports), `cflank.cubic_habitat`, and five `gprice` devices whose
 second-consumer arrival is recorded below (*Harness debt*).
+
+**GXESC (single direction, LANDED 2026-08-26).** One driver added
+(`w4/gxesc.py`), nothing existing modified; imports downward only — the
+balance layer directly from `gridbal_common`, `cflank.cubic_habitat`, and
+the twelve `gprice`/`gblaw` sibling devices recorded below (*Harness debt*,
+the GBLAW item's extension).
 
 **C3-AVOID (probe, LANDED 2026-08-24).** All seven modes (`--all`, ~36 s total,
 inside the 600 s foreground budget in one call) run by the dispatch, exit 0,
@@ -1313,7 +1325,7 @@ figure-invariant): `rref`, `rank`/`rank_exact`, `nullspace`, `left_nullspace`,
 round that can re-run `oschu --gtarget` / `--census1` / `--census2`), **the
 `kbare/` sibling-import set** that probe KBARE-FALSIFY created,
 **OQRANK's two arrivals** (`out_classes`/`shape_key`/`tree_triple`), and
-**GBLAW's five `gprice`-device arrivals** (last subsection) —
+**the GBLAW + GXESC reversal-model sibling imports** (last subsection) —
 **UNPAID** by the same rule that forbids a dispatch from moving a landed
 name. Everything else is paid: the first round's four items are in the
 *ALL FOUR CLEARED* block immediately below (kept in the past tense as the record
@@ -2292,26 +2304,29 @@ documented three-invocation split (`--coll`, `--loc`, `--fibre --par --fit
 exception, mechanically confirmed (every differing line reduces to the
 timing annotation alone once it is stripped).
 
-### New item (2026-08-26, direction GBLAW) — five second-consumer arrivals on `gprice.py`; **UNPAID**
+### New item (2026-08-26, directions GBLAW + GXESC) — the reversal-model sibling imports on `gprice.py`/`gblaw.py`; **UNPAID**
 
 `w4/gblaw.py` imports the balance layer directly from `gridbal_common` (the
 intended post-move pattern) and `cflank.cubic_habitat` (§1-catalogued in
 place at the GCHEAP/GPRICE payment), plus **five** read-only devices from
-one sibling leaf — the documented sibling-import pattern, in policy,
-recorded here per §2 rule 2 with every consumer named (a dispatch may not
-make the move):
+one sibling leaf; `w4/gxesc.py` (2026-08-26) then imported the same five
+plus **seven** `gblaw` devices — the documented sibling-import pattern, in
+policy, recorded here per §2 rule 2 with every consumer named (a dispatch
+may not make the move):
 
 | name | current home | consumers (besides the home) |
 |---|---|---|
-| `cell_data`, `cell_shapes`, `gr103_specs`, `pairs_of`, `rmodel_f` | `gprice` | **`gblaw`** (1 each — the 2-factor cycle extraction, the cell-targeted `(F, M)` sampler, the (GR-103) witness, the pair iterator, and the `2^n` reversal-set `f`; exactly the "second consumer arrived" mechanism the move-down write-ups predict) |
+| `cell_data`, `cell_shapes`, `gr103_specs`, `pairs_of`, `rmodel_f` | `gprice` | **`gblaw`**, **`gxesc`** (2 each — the 2-factor cycle extraction, the cell-targeted `(F, M)` sampler, the (GR-103) witness, the pair iterator, and the `2^n` reversal-set `f`; the "second consumer arrived" mechanism, and GXESC promptly made it a third) |
+| `cls_of`, `enum_family`, `safeflips`, `slides`, `strand_witness`, `teleports`, `valid_pats` | `gblaw` | **`gxesc`** (1 each — the class map, the labeled maximum family (a landed independent model for witness verification), the L1–L3 move generators, the (GR-113) witness, and the validator; extension recorded 2026-08-26 at GXESC's landing) |
 
 **Where they should go if paid:** the (GR-106)-model surface (`rmodel_f`,
-`pairs_of`, `cell_data`) and the samplers (`cell_shapes`, `gr103_specs`)
-belong in `gridbal_common` beside the (GR-49)/(GR-50) surface they extend
-(or §1 cataloguing in place for `gr103_specs`, a pinned witness). Same
-acceptance test as the 2026-08-25 payments: re-run every consumer's
-validate mode byte-identical at `PYTHONHASHSEED=0` against pre-move
-baselines.
+`pairs_of`, `cell_data`, and now `gblaw`'s `valid_pats`/`cls_of`/
+`enum_family` and move generators) and the samplers (`cell_shapes`,
+`gr103_specs`, `strand_witness`) belong in a reversal-model common layer
+beside the (GR-49)/(GR-50) surface in `gridbal_common` (or §1 cataloguing
+in place for the pinned witnesses). Same acceptance test as the 2026-08-25
+payments: re-run every consumer's validate mode byte-identical at
+`PYTHONHASHSEED=0` against pre-move baselines.
 
 ## Deliberate non-goals
 

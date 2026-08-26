@@ -5,8 +5,8 @@
 (L0–L7) are COMPLETE — `hsplit` CLOSED IN FULL and `hfresh`'s counting discharge landed
 (2026-07-30). Only three items remain, all carried by the landed successor
 `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card` (`Molecule/Pencil/Escape.lean`):
-`hcontract` (W4), kernel `hK`, and kernel `hbareSplit` — see *Hand-off*. **Forty-two
-kernel-(K) directions are now COMPLETE** (2026-08-05 → 08-26, ordinals 1–34; roster and
+`hcontract` (W4), kernel `hK`, and kernel `hbareSplit` — see *Hand-off*. **Forty-three
+kernel-(K) directions are now COMPLETE** (2026-08-05 → 08-26, ordinals 1–35; roster and
 per-direction theorem chain in *Decisions made*). **The SIXTH, SEVENTH and EIGHTH FAN-OUTS
 ARE ALL COMPLETE** (all fifteen directions LANDED 2026-08-19). **The arc's HITs:**
 route-ledger **entry 5 PROVEN in both halves** (GBAL, discharging input (X)); **chart
@@ -21,7 +21,7 @@ a combinatorial WALL found, the naive form refuted as a class statement,
 per-class-generic quantifier, zero (K-tight)-event rulings).
 Everything else an honest MISS or an OPEN reshape; verdicts in *Decisions made* and
 `notes/Pencil-fanout{,-archive}.md`, **not restated here**. **(GR-15) stays OPEN
-throughout; class uniformity untouched; no g-flank at any of the forty-two directions.
+throughout; class uniformity untouched; no g-flank at any of the forty-three directions.
 E3 is ARMED (by GBAL) and has NOT fired.** Direction codes are **multi-letter and
 topic-tagged from the fifth fan-out on** (`notes/Pencil-labels.md` (L5)); grandfathered
 single letters are re-used across dates, **always date those**.
@@ -111,11 +111,22 @@ witness** defeating both new mechanisms — so any proof must produce the
 balance-reaching maximum globally. Canonical home §(K-grid) *Steps
 G130–G134* (`notes/Pencil-informal-grid.md`), landing record
 `notes/Pencil-fanout.md` §"GBLAW", driver `w4/gblaw.py`. **DIRECTION GXESC
-(ordinal 35) IS PREPPED — the sixth check-in's front-runner pick,
-existential escape** ((GR-112)(v)'s hypothesis, GBLAW's residual #1, the
-whole remaining gap to (GR-108) hence to (GR-104)(i) at `2k = 2`). **NEXT
-CONCRETE TASK: dispatch direction GXESC** (spec `notes/Pencil-fanout.md`
-§"GXESC"; labels (GR-115)–(GR-119) / Steps G135–G139 reserved) — the §9
+(ordinal 35) IS LANDED — dispatched and landed 2026-08-26 (the sixth
+check-in's front-runner pick), a REFUTATION BY WITNESS, the spec's strong
+form: (GR-108), the balance law, is FALSE from `n = 16`** (four verified
+witnesses, each re-derived through three independent exact models, the
+first ONE transposition from GBLAW's strand witness) **and existential
+escape falls with it — while (GR-104)(i) SURVIVES at every witness**: it
+is ⟺ the **gap-2 law** (GR-117)(i), proven wherever some maximum is
+balance-valid or half-resident (GR-117)(ii), and the reshaped residual is
+the **half-witness clause** (GR-117)(iii) (counterexample-free at 248
+hunted pairs), which would close (GR-104)(i) at `2k = 2` unconditionally.
+New proven instrument: the reversal-label ledger (GR-115), M-closed ⟹
+balance-valid at every `2k`. Canonical home §(K-grid) *Steps G135–G139*
+(`notes/Pencil-informal-grid.md`), landing record `notes/Pencil-fanout.md`
+§"GXESC", driver `w4/gxesc.py`. **NEXT CONCRETE TASK: the next standing
+research pick** (the 2026-08-07 delegation; the *shape* is a user call) —
+candidate list in *Hand-off*, headed by the half-witness clause; the §9
 shelf **(ZH-1)–(ZH-6)** stays unpriced and ineligible. Nothing else
 structural queued, nothing awaiting user adjudication.
 
@@ -326,7 +337,7 @@ constraints; the dated dispatch narrative is in *Decisions made* and git):
   the 2026-08-05 Lean hold, W4 PARKED, `hK`/`hbareSplit` pinned, option B
   un-commissioned.
 
-**Kernel-(K) research arc — fifty-nine docs+scripts-only dispatches landed, plus eight
+**Kernel-(K) research arc — sixty docs+scripts-only dispatches landed, plus eight
 strategy-only passes** (2026-08-02 → 08-26) — and, **outside** that count because they test
 the architecture rather than the (K) crux, the **two probes**: **KBARE-FALSIFY**
 (2026-08-20) and **C3-AVOID** (2026-08-24), both landed. Which pass was which is one-lined in *Decisions
@@ -335,7 +346,7 @@ LTWO are the fortieth through forty-fourth; CIRR the forty-fifth; YLOC the forty
 the forty-seventh; ZNEQ the forty-eighth; AGLU the forty-ninth; the eighth fan-out's five
 the **fiftieth through fifty-fourth**, all landed 2026-08-19; **GFLIP the fifty-fifth**,
 **GCHEAP the fifty-sixth**, **OQRANK the fifty-seventh**, **GPRICE the fifty-eighth**,
-all 2026-08-25, and **GBLAW the fifty-ninth**, 2026-08-26), and a **user call on
+all 2026-08-25, and **GBLAW the fifty-ninth** and **GXESC the sixtieth**, both 2026-08-26), and a **user call on
 dispatch *shape*** — either multidispatch election, or a coordinator-authored pick like the
 twelfth's — contributes **no** strategy pass, so the 2026-08-19 eighth-fan-out check-in adds
 none even though it moved a standing constraint.
@@ -343,7 +354,7 @@ Canonical homes: workbook `notes/Pencil-informal.md` (**State of (K)** map = ent
 `notes/Pencil-W4-informal.md` (W4-residual), `notes/Pencil-strategy.md` (strategy). Net
 effect: **disproof risk removed**, every refuted route/gap has a successor in the gap map,
 several structural positives proven, and **route-ledger entry 5 is PROVEN, the arc's first
-HIT**; **class uniformity of the escape remains untouched by all fifty-nine.**
+HIT**; **class uniformity of the escape remains untouched by all sixty.**
 **Doc-debt round CLOSED — `notes/Pencil-cleanup.md`** (2026-08-13, category D only; D-5 a
 watch item; the D-2 fix's regression history is in `notes/check-gapmap-cells.py`'s docstring).
 
@@ -559,19 +570,19 @@ neighbours' incidences and every capacity unit above 2 is bought by a **Case-I g
 whose pencil-compatibility is geometry the probe was barred from. **§(K-avoid) was never
 opened** and no gap-map status moved.
 
-**THE NEXT CONCRETE TASK — dispatch direction GXESC** (ordinal 35, PREPPED
-2026-08-26: the sixth check-in's front-runner pick, **existential escape** —
-GBLAW's residual #1, the whole remaining gap to (GR-108) hence to
-(GR-104)(i) at `2k = 2`; spec `notes/Pencil-fanout.md` §"GXESC", labels
-(GR-115)–(GR-119) / Steps G135–G139 reserved, then land the return per the
-fan-out landing checklist). The candidate list behind it — the 2026-08-25
+**THE NEXT CONCRETE TASK — the next standing research pick** (GXESC is
+LANDED, see the top `**Status:**` block and *Decisions made*; landing record
+`notes/Pencil-fanout.md` §"GXESC"). The candidate list — the 2026-08-25
 re-ranked board (`notes/Pencil-strategy.md` §8, the canonical home) with its
-rank-1 and rank-2 slots landed (OQRANK / GPRICE), plus GBLAW's sharpened
-residual: **prove existential escape** ((GR-112)(v)'s hypothesis, the whole
-remaining gap to (GR-108) hence to (GR-104)(i) at `2k = 2` — strictly weaker
-than what the `n = 16` witness kills, 0 counterexamples at 1 099 swept
-pairs; the alternative shape a **global/extremal construction** off
-(GR-110)'s parametrization; §(K-grid) *Steps G130–G134*), then
+rank-1 and rank-2 slots landed (OQRANK / GPRICE), plus GXESC's reshaped
+residual at the head: **prove the half-witness clause** ((GR-117)(iii):
+every pos-carrying `O ⊆ M` pair has a maximum that is balance-valid or
+half-resident — strictly weaker than the refuted (GR-108), a proven
+surgical mechanism behind it ((GR-117)(ii)), counterexample-free at 248
+hunted pairs; a proof closes (GR-104)(i) at `2k = 2` unconditionally, and
+the equal-value refutation shape — an all-(2,2), gap-4 pair — would refute
+(GR-104)(i) itself and move (b′)'s constant; §(K-grid) *Steps G135–G139*),
+then
 **(K-bare) at the seed-free direct-attainment shape** (rank 3 — the
 KBARE-FALSIFY successor priced on §8.4's board; NOT option B, which stays
 un-commissioned; this is where the standing attention asymmetry says a
@@ -612,11 +623,12 @@ round 2 (slice 4 the phase-note split, **slice 5/"slice 2" the harness move-down
 OSCHU's `rank(Q|_D) = 3` residue is no longer blocked on the harness — exact `ℚ(i)`
 (`exactcore.Gauss`) is now a base-layer primitive.
 
-**THE STANDING RESEARCH-PICK DELEGATION — spent on GXESC for this round**
+**THE STANDING RESEARCH-PICK DELEGATION — live again: GXESC is landed**
 (2026-08-26, sixth check-in, single direction front-runner-first →
-existential escape, prepped as ordinal 35; see the top `**Status:**` block
-and *Current state*'s 2026-08-26 bullet). The delegation covers the pick
-after GXESC lands; its shape is again a user call then.
+existential escape, dispatched and landed the same day with a refutation
+verdict; see the top `**Status:**` block and *Current state*'s 2026-08-26
+bullet). The delegation covers the next pick; its shape is again a user
+call.
 
 **`hsplit` is CLOSED IN FULL** (W5-L7c-1…6, landed 2026-07-30) and **`hfresh`'s mechanical
 discharge (residue (iv)) is CLOSED too**. The landed successor
@@ -722,6 +734,19 @@ survey — incl. IDENT-PANEL, the nearest neighbour — is `notes/IdeaBacklog.md
 
 ## Decisions made during this phase
 
+- **Direction GXESC (ordinal 35, 2026-08-26, fable, docs+scripts only) —
+  (GR-108) and existential escape REFUTED BY WITNESS; the price form
+  survives everywhere.** Four verified single-cycle `O ⊆ M` witnesses from
+  `n = 16` (three independent exact models each; mut16 one transposition
+  from GBLAW's strand witness) have pure pos+neg maximum families —
+  `d_adm = d_par + 2`, no balanced optimum — killing both of GBLAW's live
+  shapes at once; **(GR-104)(i) holds at all four (prices exactly +2)** and
+  is proven ⟺ the gap-2 law ((GR-117)(i)), proven at every bal-or-
+  half-resident pair ((GR-117)(ii)); the reversal-label ledger (GR-115)
+  proven (M-closed ⟹ balance-valid, every `2k`); reshaped residual the
+  **half-witness clause** ((GR-117)(iii), 0 counterexamples at 248 pairs).
+  Canonical home §(K-grid) *Steps G135–G139*; driver `w4/gxesc.py`.
+  **(GR-15) OPEN; E1/E2 not fired (successor named); E3 ARMED, not fired.**
 - **Direction GBLAW (ordinal 34, 2026-08-25 → 08-26, fable, docs+scripts only)
   — (GR-108) attacked by its pinned exchange shape, an honest OPEN reshape.**
   The arc-transversal normal form ((GR-110): maximum families are
