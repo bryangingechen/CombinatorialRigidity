@@ -10,10 +10,9 @@ Everything else in the phase is closed: W0–W3 and the whole W5 arc (L0–L7),
 with **`hsplit` CLOSED IN FULL** and `hfresh`'s counting discharge landed
 (2026-07-30).
 
-**The kernel-(K) research arc: 48 directions COMPLETE** (2026-08-05 → 08-26,
-ordinals 1–40), plus eight strategy-only passes and two architecture probes.
-**Ordinal 41 (ZSHEAR, the §9 side line) has RETURNED and lands in the next
-commit**; this commit lands **BZAVOID** (ordinal 40).
+**The kernel-(K) research arc: 49 directions COMPLETE** (2026-08-05 → 08-26,
+ordinals 1–41), plus eight strategy-only passes and two architecture probes.
+**Nothing is in flight.**
 **Per-direction verdicts are NOT restated here** — each has a landing write-up
 at `notes/Pencil-fanout.md` §"<CODE>" and a canonical mathematical home in the
 workbooks. **The arc's standing result, unchanged by all 47: `hK` is not
@@ -34,10 +33,18 @@ the arc's first-ever look at `hbareSplit`, **bare realizability proved
 UNCONDITIONAL** plus the first pencil-stratum rank cap produced by an argument
 (BATTAIN, (BE-11)/(BE-13)).
 
-**NEXT CONCRETE TASK — land ZSHEAR (ordinal 41), which has RETURNED**, then run
-the **(K-res) scoping slice** (one direction, adjudicated 2026-08-26 — see
-*Current state*), then pick the next off *Hand-off*'s target-ordered list.
-**BZAVOID LANDED 2026-08-26** and did three things: the spec's commissioned
+**NEXT CONCRETE TASK — the (K-res) scoping slice** (one direction: does
+(GR-15)/§(K-grid) transport to the `W19`-type (K-res) habitat? — the user's
+2026-08-26 adjudication, and the retirement of the stale *"pin it when the tight
+side closes"* deferral), then pick the next off *Hand-off*'s target-ordered
+list. **Both 2026-08-26 dispatches are LANDED and nothing is in flight.**
+**ZSHEAR** — the §9 shelf's first direction ever — refuted **(ZH-1)** by
+**gauge-triviality**: the Witt shear *is* the translation subgroup of `PGL(4)`
+on line coordinates, `Q` is its own defining invariant, and the §(K-tight)
+criterion matrix is literally the same matrix in the pushed basis, so the
+mechanism is vacuous; the candidate is **STRUCK**, the owed §2.5 filter check is
+**DISCHARGED**, and the durable residue is that `Q(r̃) ≠ 0` is `PGL(4)`-invariant,
+so **no gauge-fixing can ever supply it**. **BZAVOID LANDED 2026-08-26** and did three things: the spec's commissioned
 falsification arm came back **empty BY AN ARGUMENT at every graph**, so
 BATTAIN's triangle-free premise is a special case rather than the reason
 ((BE-15)); the pencil stratum is **IDENTIFIED as the planar-atom molecular
@@ -433,7 +440,7 @@ constraints; the dated dispatch narrative is in *Decisions made* and git):
   2026-08-05 Lean hold, W4 PARKED, `hK`/`hbareSplit` pinned, both option Bs
   un-commissioned.
 
-**Kernel-(K) research arc — sixty-five docs+scripts-only dispatches landed, plus eight
+**Kernel-(K) research arc — sixty-six docs+scripts-only dispatches landed, plus eight
 strategy-only passes** (2026-08-02 → 08-26) — and, **outside** that count because they test
 the architecture rather than the (K) crux, the **two probes**: **KBARE-FALSIFY**
 (2026-08-20) and **C3-AVOID** (2026-08-24), both landed. Which pass was which is one-lined in *Decisions
@@ -442,7 +449,7 @@ LTWO are the fortieth through forty-fourth; CIRR the forty-fifth; YLOC the forty
 the forty-seventh; ZNEQ the forty-eighth; AGLU the forty-ninth; the eighth fan-out's five
 the **fiftieth through fifty-fourth**, all landed 2026-08-19; **GFLIP the fifty-fifth**,
 **GCHEAP the fifty-sixth**, **OQRANK the fifty-seventh**, **GPRICE the fifty-eighth**,
-all 2026-08-25, and **GBLAW the fifty-ninth**, **GXESC the sixtieth**, **GHWIT the sixty-first** **GMINM the sixty-second**, **OGEOM the sixty-third**, **BATTAIN the sixty-fourth** and **BZAVOID the sixty-fifth**, all 2026-08-26), and a **user call on
+all 2026-08-25, and **GBLAW the fifty-ninth**, **GXESC the sixtieth**, **GHWIT the sixty-first** **GMINM the sixty-second**, **OGEOM the sixty-third**, **BATTAIN the sixty-fourth** and **BZAVOID the sixty-fifth** and **ZSHEAR the sixty-sixth**, all 2026-08-26), and a **user call on
 dispatch *shape*** — either multidispatch election, or a coordinator-authored pick like the
 twelfth's — contributes **no** strategy pass, so the 2026-08-19 eighth-fan-out check-in adds
 none even though it moved a standing constraint.
@@ -675,11 +682,21 @@ neighbours' incidences and every capacity unit above 2 is bought by a **Case-I g
 whose pencil-compatibility is geometry the probe was barred from. **§(K-avoid) was never
 opened** and no gap-map status moved.
 
-**THE NEXT CONCRETE TASK — land ZSHEAR (ordinal 41), which has RETURNED**, then
-run the **(K-res) scoping slice** (one direction — does (GR-15)/§(K-grid)
-transport to the `W19`-type (K-res) habitat? — the user's 2026-08-26 call, and
-the retirement of the stale *"pin it when the tight side closes"* deferral),
-then pick the next off the target-ordered list below.
+**THE NEXT CONCRETE TASK — the (K-res) SCOPING SLICE**, one direction: *does
+(GR-15)/§(K-grid) transport to the `W19`-type (K-res) habitat?* This is the
+user's 2026-08-26 adjudication (offered the full wave, the cheap scoping slice,
+or a re-deferral, they chose the **scoping slice**), and it retires the stale
+*"pin it when the tight side closes"* deferral — the coordinator hand-off note
+that has sat unresolved in this section since the arc opened — **without**
+commissioning a wave at an `hK`-class kernel. After it, pick the next off the
+target-ordered list below.
+
+**Both 2026-08-26 dispatches are LANDED; nothing is in flight.** ZSHEAR's
+verdict and shelf effects are in *Decisions made* and
+`notes/Pencil-fanout.md` §"ZSHEAR" — **not restated here.** One line matters for
+future picks: **the §9 shelf is now one-for-one** (one direction spent, (ZH-1)
+struck), its owed filter checks are **DISCHARGED**, and §9.3's head is **(ZH-4)**
+— still off §8's board, still an idea source and never a citation.
 
 **BZAVOID LANDED 2026-08-26** (§(K-bare-ext) *Steps BE14–BE18*; landing record
 `notes/Pencil-fanout.md` §"BZAVOID") — **none of it restated here.** What it
@@ -950,6 +967,39 @@ ORIGAMI (`notes/Origami.md`, next queued) is the bar-joint-side analog; the wide
 survey — incl. IDENT-PANEL, the nearest neighbour — is `notes/IdeaBacklog.md`.
 
 ## Decisions made during this phase
+
+- **Direction ZSHEAR (ordinal 41, 2026-08-26, opus, docs+scripts only, the
+  session's SIDE LINE and the §9 shelf's first direction ever) — (ZH-1) REFUTED
+  by GAUGE-TRIVIALITY, a HIT of the negative kind.** (SH-1)/(SH-2), symbolic
+  identities in `ℚ[…]` with no sampling: `Φ_S = Λ²(T_{−s})`, so the Witt shear
+  group **is** the translation subgroup of `PGL(4)` on line coordinates;
+  `Q(w) = 2·dir(w)·mom(w)`, upgrading strategy §9.1's *"same form"* to an
+  identity in our own Plücker convention; and `Φ_Sᵀ★Φ_S = ★`, so **`Q` is the
+  shear group's own defining invariant**. The shear's pointwise-fixed 3-space is
+  a **β-plane of the Klein quadric**, already in §7's in-use list — so the
+  spec's *"is it already implicitly available?"* is answered **yes, trivially**.
+  (SH-3)/(SH-4): on §(K-flank) *Step F5(d)*'s bed, re-derived and asserted
+  before use, the criterion matrix is **equal entry-for-entry** in the pushed
+  basis (150/150), rank equal (222/222), `dim R_a` moved at **0 of 45** — so the
+  bad-`S` set is `so₃` or `∅`, never a proper nonempty affine subspace, and
+  (ZH-1)'s mechanism is **vacuous**. (SH-5): the coordinator's offered per-body
+  repair is decided negative in **both** readings — the product action is not
+  form-preserving off the diagonal (defect exhibited), and the maximal
+  carrier-preserving translation family (dim **49 of 63** at `P21`), though it
+  *does* pass §4.6's filter, acts simply transitively on the fixed-normal slice
+  and so **is** §(K-slide) *Step 1(e)*'s chart re-labelled, moving `dim R_a`
+  (6/6). (SH-6): the general **dichotomy** — a group under which the criterion
+  is equivariant cannot turn a failure into an escape, and a family that moves a
+  failure propagates nothing. **Durable residue:** `Q(r̃) ≠ 0` is
+  `PGL(4)`-invariant, so **no gauge-fixing or frame normalization can ever supply
+  it** (consistent with `m2/lambda1.m2` (M4), whose landed status is
+  computational feasibility — a scope statement on top, orphaning nothing).
+  **Shelf effect:** (ZH-1) **STRUCK**, (ZH-3) re-labelled **circular as posed**,
+  (ZH-2) surviving §2.5 **only stratified**, the owed filter note **DISCHARGED**,
+  §9.3's order advanced to (ZH-4) — and the shelf **stays off §8's board**. **No
+  gap-map row moves; `hbareSplit`/(BE-14) untouched; not a PENCIL event.**
+  Detail: §(K-shear) *Steps SH1–SH5*; landing record
+  `notes/Pencil-fanout.md` §"ZSHEAR".
 
 - **Direction BZAVOID (ordinal 40, 2026-08-26, opus, docs+scripts only) — the
   commissioned falsification arm is EMPTY BY AN ARGUMENT at EVERY graph, the

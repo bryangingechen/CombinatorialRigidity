@@ -1298,10 +1298,13 @@ realizes both unbounded residual cases at `n_hub = 16`); collision dominance
 (*Step G115* (GR-96)(iii) — non-vacuous at only the 180 Petersen witnesses,
 and no mechanism identified); (OC-19) input (c) ((GR-15)-flavoured, the
 oldest missing technology). §8.2's C2/U1/U3 and §8.4's route-σ obligations
-2–4 keep their standing notes. **One filter note owed on §9's shelf, recorded
-without pricing:** the §2.5 counting-saturation check that (ZH-2)/(ZH-3) owe
-is a cheap prose-only slice and worth running opportunistically — it moves
-nothing onto this board by itself, and the shelf stays off-board either way.
+2–4 keep their standing notes. **The one filter note this board owed on §9's shelf is
+DISCHARGED (2026-08-26, direction ZSHEAR's secondary deliverable):** (ZH-2)
+survives §2.5 only in its **stratified** reading (whole-chart `∆` is
+count-expressible, so the filter bites exactly there), and (ZH-3) survives the
+filter but is **circular as posed** — a sharper objection. As predicted, neither
+moves anything onto this board, and the shelf stays off-board; §9.3's order is
+updated and (ZH-1) is **struck**.
 
 ### 8.1 Continue the current architecture
 
@@ -1430,7 +1433,18 @@ available rather than new.
 
 ### 9.2 The six candidates
 
-**(ZH-1) The Witt shear as a uniformity device.** The source's Lemma 5.1: the
+**(ZH-1) The Witt shear as a uniformity device. — STRUCK 2026-08-26, direction
+ZSHEAR: REFUTED, and the reason is that the shear is a GAUGE transformation.**
+Canonical home for the refutation is `notes/Pencil-informal.md` §(K-shear)
+*Steps SH1–SH5* — not restated here. In one line: `Φ_S = Λ²(T_{−s})`
+identically, so the shear group **is** the translation subgroup of `PGL(4)` on
+line coordinates, `Q` is its own defining invariant, and the §(K-tight)
+criterion matrix is **literally the same matrix** in the pushed basis (150/150
+entry-for-entry, `dim R_a` moved at **0 of 45**) — so the bad-`S` set is `so₃`
+or `∅`, never a *proper nonempty* affine subspace, and (ZH-1)'s mechanism is
+**vacuous**. The death is **stronger** than §4.6's predicted
+growing-ground-set one. The reading below is preserved as the shelf's original
+pitch. The source's Lemma 5.1: the
 orthogonal group of `q` contains unipotent shears `Φ_S(ω,b) = (ω, b + Sω)` for
 `S` skew, which fix **each generator individually** (not merely the ideal),
 because `ωᵀSω = 0`. Its uniformity argument is then: for each pair, the bad `S`
@@ -1484,7 +1498,18 @@ a count of combinatorial objects, but it is still a numerical invariant, and
 ceiling, highest risk: this is a reformulation of the kernel, not a route inside
 the current one.
 
-**(ZH-3) A rank lower bound from a codimension count.** The source's
+**(ZH-3) A rank lower bound from a codimension count. — RE-LABELLED
+2026-08-26, direction ZSHEAR: CIRCULAR AS POSED, which supersedes "owes a §2.5
+filter check".** It does survive §2.5 (a codimension is geometric, and it does
+separate seeds at a fixed graph), but the filter is not the binding objection:
+on the tight class `m = 5|E| = target`, so `rank ≥ m − c` reaches the target
+only at `c = 0`, where the statement reads *the pencil chart's generic
+self-stress dimension is 0* — which **is** `HasGenericPencilRealization`
+(`Motive.lean:140`, coordinator-verified against the body). Its content is
+expected-codimension transversality **relative to the pencil chart**, i.e.
+§2.4's wall; at `c ≥ 1` it yields `target − 1`, the shortfall already recorded
+at §(K-flank) *Step F5(d)*. Detail: §(K-shear)'s *Secondary deliverable*. The
+source's
 Theorem 1.2, read contrapositively: a stratum of codimension `c` has generic
 self-stress dimension `≤ c`, hence **rank `≥ m − c`** — a rank lower bound
 derived from nothing but the codimension of the stratum. The arc has no tool of
@@ -1553,9 +1578,15 @@ for orientation; nothing in the arc turns on it.)*
 
 ### 9.3 Suggested order, if a direction is ever spent here
 
-Cheapest-decisive first, matching §8's convention: **(ZH-1)** (a yes/no question
-with a cheap adversarial pre-test at §(K-flank) *Step F5(d)*'s five proven
-failures, and field-generic if it survives), then **(ZH-4)** (concrete, no filter
-problem visible), then **(ZH-5)** as a design note feeding a fan-out's direction
-selection, with **(ZH-2)** and **(ZH-3)** held until their §2.5 filter checks are
-done. **(ZH-6)** is write-up material, never a dispatch.
+**UPDATED 2026-08-26 (direction ZSHEAR, the first and so far only direction this
+shelf has produced).** The head is **spent**: (ZH-1) ran and is **STRUCK**
+(refuted — gauge-triviality, §(K-shear)). The owed filter checks are **DONE**, so
+nothing on this shelf is held on that account any more: **(ZH-2)** survives §2.5
+**only in its stratified reading** — at the generic point of the *whole* chart
+`trdeg = dim(chart)`, a function of hub/degree data alone, so whole-chart `∆` is
+count-expressible and §2.5 bites exactly; **(ZH-3)** is **circular as posed**, a
+sharper objection than the filter. So the order is now: **(ZH-4)** (concrete, no
+filter problem visible — the head), then **(ZH-5)** as a design note feeding a
+fan-out's direction selection, then **(ZH-2)** *in its stratified reading only*.
+**(ZH-6)** is write-up material, never a dispatch. The shelf stays **off §8's
+board**, and it is now one-for-one: one direction spent, one candidate struck.

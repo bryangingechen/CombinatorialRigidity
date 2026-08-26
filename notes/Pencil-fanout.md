@@ -1,7 +1,7 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: EIGHT fan-outs and TWENTY-ONE single directions dispatched; 48
-LANDED, ONE IN FLIGHT.** **BZAVOID (ordinal 40, §"BZAVOID") LANDED 2026-08-26 —
+**Status: EIGHT fan-outs and TWENTY-ONE single directions dispatched; ALL 49
+LANDED.** **BZAVOID (ordinal 40, §"BZAVOID") LANDED 2026-08-26 —
 the spec's commissioned falsification arm came back **EMPTY BY AN ARGUMENT at
 every graph**, so BATTAIN's triangle-free premise is a special case and not the
 reason; the pencil stratum is **IDENTIFIED as the planar-atom molecular
@@ -10,10 +10,17 @@ are CLOSED** — the landed Phases-24–26 `G²` apparatus (gate is the literal
 negation of the pencil condition, dictionary gaps 5/4/1) and the coordinator's
 own transversality count (structurally incapable). (BE-14) reduced to
 2-connected graphs and still OPEN; `hbareSplit` untouched; nothing refuted, not
-a PENCIL event.** **ZSHEAR (ordinal 41, §"ZSHEAR") is IN FLIGHT** — dispatched
-2026-08-26 concurrently with BZAVOID as the session's side line, and the
-**first direction strategy §9's external-technique shelf has ever produced**
-((ZH-1), the Witt shear); flip it to LANDED here at its landing. **BATTAIN (ordinal 39, §"BATTAIN") LANDED 2026-08-26 —
+a PENCIL event.** **ZSHEAR (ordinal 41, §"ZSHEAR") LANDED 2026-08-26** — the
+session's side line and the **first direction strategy §9's external-technique
+shelf has ever produced**, and it came back a **negative HIT by a
+computation-free identity**: the Witt shear **is** the translation subgroup of
+`PGL(4)` on line coordinates (`Φ_S = Λ²(T_{−s})`), `Q` is its **own defining
+invariant**, and the §(K-tight) criterion matrix is **literally the same matrix**
+in the pushed basis — so (ZH-1)'s mechanism is **vacuous** and the candidate is
+**STRUCK** from the shelf, by gauge-triviality rather than §4.6's predicted
+growing-ground-set death. The coordinator's offered per-body repair was decided
+negative in both readings; the owed §2.5 filter check on (ZH-2)/(ZH-3) is
+**DISCHARGED**. **Status: 49 LANDED, none in flight.** **BATTAIN (ordinal 39, §"BATTAIN") LANDED 2026-08-26 —
 the arc's first direction ever aimed at `hbareSplit`, and it paid: the motive
 characterized off the Lean bodies, bare realizability proved UNCONDITIONAL,
 the first universal pencil-stratum rank cap produced BY AN ARGUMENT, the
@@ -4513,3 +4520,126 @@ ZSHEAR"): **new section §(K-shear)** in `notes/Pencil-informal.md`, tag
 **`SH-`** (globally 0-hit, cleaner than `BE-`); labels **(SH-1)–(SH-6)**,
 **Steps SH1–SH5**; return any unconsumed remainder to the tail. If (ZH-1) dies,
 the section is still minted — a recorded death is the deliverable.
+
+### ZSHEAR — landing write-up (LANDED 2026-08-26, recon-opus, one serial coordinator commit)
+
+**Verdict: (ZH-1) is REFUTED — a HIT of the negative kind, and the refutation is
+a computation-free identity plus its exact verification. `hbareSplit`/(BE-14)
+untouched; no gap-map row moves; not a PENCIL event.**
+
+**The exact reason: the shear is a GAUGE transformation.** Writing `s` for the
+axial vector of the skew `S`, **`Φ_S = Λ²(T_{−s})` identically in
+`ℚ[s₀,s₁,s₂]`** — the shear group *is* (not "is isomorphic to") the
+**translation subgroup of `PGL(4)`** acting on line coordinates, verified by
+comparing two independently-built matrices. Also identically:
+`Q(w) = ⟨w,★w⟩ = 2·dir(w)·mom(w)`, upgrading §9.1's *"same form"* from a
+reading to an identity in the harness's own Plücker convention; and
+**`Φ_Sᵀ★Φ_S = ★`**, so **`Q` is the shear group's own defining invariant**.
+(SH-1)/(SH-2). The spec asked *"check first whether the shear is already
+implicitly available to this project"* — the answer is **yes, trivially**: it is
+the 3-dimensional tip of a 15-dimensional group the arc has had all along, and
+its pointwise-fixed 3-space is a **β-plane of the Klein quadric**, already in
+strategy §7's in-use list, whose pointwise stabilizer in `O(Q)` is exactly
+3-dimensional — so nothing larger is on offer either.
+
+**On the arc's own adversarial bed the failure locus is shear-invariant, and by
+more than rank equality.** *Step F5(d)*'s five proven escape failures were
+**re-derived and asserted before use** (the spec's explicit requirement, and the
+`plane_basis` precedent): `s₀ = 1`, `dim R_a = 0`, `dim U = 1` at seeds
+101/111/128/136/138, all three §(K-tight) structure identities asserted at all
+35 valid seeds. Then, at all 35 seeds and both strata: `U′ = Φ^{−T}U`,
+`R_a′ = Φ^{−T}R_a`, `Λ²Π̂(b)′ = Φ·Λ²Π̂(b)`, `C(ab)′ = Φ·C(ab)` (45/45); the
+`2 × dim U` criterion matrix **equal entry-for-entry** in the pushed basis
+(150/150, because `⟨Φ^{−T}u, ΦC⟩ = ⟨u,C⟩`); exact rank equal at corresponding
+placements on both KT routes (222/222); pitch preserved (30/30). **The minors do
+not even move.** So for a fixed seed the bad-`S` set is **all of `so₃`** (if the
+seed fails) or **empty** (if it escapes) — never a *proper nonempty* affine
+subspace, and (ZH-1)'s mechanism, *"finitely many proper affine subspaces cannot
+cover an affine space over an infinite field"*, is a true principle that is
+**vacuous here**. (SH-3)/(SH-4).
+
+**The coordinator's offered repair is decided, in both of its readings.**
+Identically,
+`Q(Φ_{t_u}X_u − Φ_{t_v}X_v) = Q(X_u−X_v) + 2(t_u−t_v)·(dir X_u × dir X_v)`, so
+the per-body product action does **not** preserve the form generator-wise off
+the diagonal (defect `2` at an exhibited instance) and is therefore not an
+action on the variety. On the carrier side the honest lift is per-body
+**translations**, and the maximal carrier-preserving family at fixed normals is
+computed exactly — cut by `normal_h·(t_u − t_h) = 0` per hub-neighbour
+incidence, **dim 49 of 63** at `P21`, containing the diagonal, and it **does**
+pass §4.6's growing-ground-set filter, unlike `so₃` itself. But it acts **simply
+transitively on the fixed-normal slice of the pencil chart**: it *is* §(K-slide)
+*Step 1(e)*'s chart re-labelled, and it **moves `dim R_a`** (6/6 fields kill the
+forced failure, against 0/45 for the global shear). So it gives deformation,
+which the arc already has, and propagates nothing. (SH-5).
+
+**The general form, and it is stronger than the predicted death.** §4.6
+predicted *"`so₃` is fixed-dimensional and cannot see the graph"*. True, but not
+sharp: the shear cannot see **anything** — it is a gauge, and every ingredient
+of the criterion transports with it. The sharp statement is a **dichotomy**: a
+group under which the criterion is equivariant **cannot** turn a failing seed
+into an escaping one; a family that *does* move a failure is no symmetry and
+propagates no witness. (SH-6). Fourth instance of §4.6 (R1)'s relocation
+pattern — and the **first one backwards**, in that the candidate was retired by
+being shown *already owned* rather than out of reach.
+
+**The residue worth keeping, and it is new, small and permanent.** `Q(r̃) ≠ 0`
+is `PGL(4)`-invariant, so **no gauge-fixing or frame normalization can ever
+supply it**. Coordinator-checked for consistency against landed work: this does
+**not** disturb `m2/lambda1.m2` block **(M4)**, whose landed status is a
+*computational-feasibility* result (the gauged local frame with `λ` free
+finishes; the 600 s kill is the ungauged 28-point expansion). The residue adds a
+**scope** statement on top of it — legitimate for computation, provably
+incapable of producing the non-vanishing — so it strengthens rather than
+contradicts, and orphans nothing.
+
+**Secondary deliverable — the OWED §2.5 filter check, DISCHARGED (prose only,
+nothing priced onto §8's board).** **(ZH-2)** survives §2.5 **only in its
+stratified reading**: at the generic point of the *whole* chart
+`trdeg = dim(chart)`, which is a function of hub/degree data alone (§(K-slide)
+*Step 1(e)*'s tower), so whole-chart `∆` **is** count-expressible and §2.5 bites
+exactly. **(ZH-3)** survives the filter — a codimension is geometric and does
+separate seeds at a fixed graph — but the sharper finding needs no filter: it is
+**circular**. On the tight class `m = 5|E| = target`, so `rank ≥ m − c` reaches
+the target only at `c = 0`, where the statement reads *the pencil chart's
+generic self-stress dimension is 0* — which **is**
+`HasGenericPencilRealization`. Recommendation accepted: (ZH-3) is re-labelled
+**circular as posed** rather than *owing a filter check*.
+
+**Provenance bar honoured in full**, and independently confirmed at landing: no
+theorem of the source is imported, assumed, or leaned on; nothing in the section
+needs its Lemma 3.4 or Proposition 3.3; and nothing in it is evidence for or
+against them. The author-name item struck earlier in the session (`f3ded610`)
+appears nowhere in the draft, the driver, or the return — the mid-flight
+correction took.
+
+**Coordinator verification.** `--validate` re-run at **356 s** (the return said
+353 s; the bed is cached once per process, standalone `--inv` alone is 426 s) and
+`--iso` separately; every headline figure reproduces — 150/150, 222/222, 45/45,
+30/30, `dim R_a` moved 0/45 vs 6/6, family dim 49/63, defect 2. **Four Lean pins
+verified against the definition BODIES**, not docstrings: `Theorem55.lean:3059`
+(`HasCoplanarPanelRealization`), `Statement.lean:88`
+(`HasPencilPanelRealization`), `Motive.lean:110` (`IsNondegPencilRealization`)
+and `Motive.lean:140` (`HasGenericPencilRealization`, which is what makes the
+(ZH-3) circularity claim hold in shape). **The load-bearing identities were
+re-derived independently by the coordinator:** a translation sends
+`(dir, mom) ↦ (dir, mom − t × dir)`, which is exactly `Φ_S` with `S ↔ −t`; and
+`dir·mom = p₀₁p₂₃ − p₀₂p₁₃ + p₀₃p₁₂` is the Klein form, with
+`Q(Φ_S(ω,b)) = 2ω·(b + s×ω) = 2ω·b` since `ω·(s×ω) = 0` — the source's own
+`ωᵀSω = 0`, in our coordinates. **One convention note, not a defect:** the
+hand-derivation gives the (SH-5)(i) defect term with the opposite sign, which is
+the axial-vector orientation implied by `Φ_S = Λ²(T_{−s})`; the driver computes
+it symbolically in its own convention and exhibits the defect, and the
+conclusion (not form-preserving off the diagonal) is sign-independent.
+
+**F25 bar, read off the shipped driver:** four modes, all foreground with
+explicit timeouts, `--validate` **inside** the 600 s budget, exact ℚ throughout,
+the two structural modes fully **symbolic** (identities in `ℚ[…]`, no sampling
+at all — the strongest evidence class the arc has), the bed re-derived and
+asserted before use, and the `plane_basis` guard **reported rather than
+assumed** (`star_generic` rejects 5/5 failing and accepts 26/30 escaping —
+rejection is **necessary, not sufficient**, stated as such). No scratchpad probe
+backs any claim.
+
+**TERMINATION: E1, E2, E3 all NO** — coordinator-re-run and agreed. E3 stays
+**ARMED by GBAL**, neither fired nor disarmed.

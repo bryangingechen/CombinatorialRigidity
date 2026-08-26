@@ -18,9 +18,11 @@ commit as **research-shaped**.
 
 **Provenance.** Every item below is distilled from **Phase 39 (PENCIL)**'s
 kernel-(K) research arc — the hinge-pencil molecular conjecture's open
-kernel, run as 49 docs+script-only dispatches across roughly two weeks
-(2026-08-02 → 08-19), including two multidispatch fan-outs of five
-concurrent directions each. `notes/Phase39.md`, `notes/Pencil-fanout.md`,
+kernel, run as **66 docs+script-only dispatches** across roughly four weeks
+(2026-08-02 → 08-26; the figure was 49 to 2026-08-19, when this file was
+written), including **three** multidispatch fan-outs of five concurrent
+directions each and a long tail of single directions and coordinator-picked
+pairs. `notes/Phase39.md`, `notes/Pencil-fanout.md`,
 `notes/Pencil-labels.md`, `notes/Pencil-informal.md` and
 `notes/dispatch-log.md` are the canonical homes for that phase's own
 detail; this file distills the **general** lesson and points back at them
@@ -201,10 +203,44 @@ leaves headroom for landings already queued into that row, not merely
 never by eye**: the coordinator's own hand-recompute dropped a live label,
 and only a script caught it.
 
+### 7. A coordinator prediction is a hypothesis — flag it as one, with its evidence stratum named
+
+**Promoted 2026-08-26** from the *Candidates* tier at a fourth independent
+instance. A coordinator authoring a dispatch spec is the party with the least
+time on the question and the most authority over its framing, which is exactly
+the combination that produces confident wrong predictions. In PENCIL's arc a
+coordinator-authored prediction was refuted by the very direction it primed
+**four times**: twice in the 2026-08-19 fan-out (an obstruction's location, an
+obstruction's consequence), once at GHWIT (a `route` block's reduction clause,
+false at a landed witness), and once at BZAVOID — where a two-part geometric
+reading **split**, its dimension-count half refuted structurally and its
+"deform off the canonical point" half surviving and getting priced. ZSHEAR then
+made it four-for-four in the same session by deciding a coordinator-offered
+*repair* negative.
+
+**The rule, and it is about the framing rather than the accuracy.** A prediction
+written into a spec must be labelled as **to be tested, not inherited**, and
+must **name the stratum its evidence actually comes from**. That labelling is
+what converts a wrong prediction from a silent contaminant into a legible
+finding: BZAVOID's split was reportable *as a split* precisely because the spec
+said which measurements the reading rested on, and every one of the four
+dispatches tested rather than assumed the claim. The corollary already carried
+here in §4 applies with full force — the corrective mechanism is the **next
+pass**, not coordinator scrutiny — so the cheap move is to write the prediction
+down *with its provenance* and let the dispatch kill it.
+
+**The second half of the same finding: coordinator artifacts need the same
+verification tier as a subagent's.** A coordinator-authored prep commit has
+carried its own status-surface defects, caught only by a landing agent. Nothing
+about authoring a spec exempts it from the checks a return gets. Full incident
+record: `notes/dispatch-log.md` **F19** and the BZAVOID/ZSHEAR rows.
+
 ## Candidates, not yet promoted
 
-One wave of evidence each, all from the same 2026-08-19 fan-out. Watch for
-a second instance before treating any of these as a standing rule; full
+One wave of evidence each, both from the 2026-08-19 fan-out (a third item, the
+coordinator-predicted-obstruction category, was **promoted to *Ready* §7 on
+2026-08-26** at a fourth instance and is no longer listed here). Watch for a
+second instance before treating either of these as a standing rule; full
 record in `notes/dispatch-log.md` *Findings* (do not duplicate that text
 here — read it there):
 
@@ -225,15 +261,6 @@ here — read it there):
   an explicit **cross-return pass** in verification, separate from each
   individual return's check, and choose directions in *different* sections
   so independence stays real. `notes/dispatch-log.md` **F18**/**F19**.
-- **The coordinator-predicted-obstruction category, and coordinator
-  artifacts needing the same verification tier as a subagent's.** Twice in
-  one wave a coordinator-authored prediction (an obstruction's location, an
-  obstruction's consequence) was refuted by the very direction it primed —
-  and a coordinator-authored prep commit carried its own status-surface
-  defects, caught only by a landing agent. The suggested (not yet
-  validated a second time) fix: a predicted obstruction written into a
-  dispatch spec should name the stratum its evidence actually comes from.
-  `notes/dispatch-log.md` **F19**.
 
 ## Genuinely unsettled — deferred, question stated
 
