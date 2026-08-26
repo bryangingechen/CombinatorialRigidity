@@ -1723,6 +1723,62 @@ the **Z**heng-sourced Witt **shear**. If (ZH-1) dies, §(K-shear) is minted
 anyway: a recorded death with its exact reason is the deliverable, and an
 unminted section would leave the shelf row unresolvable.
 
+## Reserved namespace — direction BINDUC (2026-08-26, **reserved at dispatch; flip to USED at landing**)
+
+**Reserved 2026-08-26 for the direction BINDUC** (ordinal 42, the arc's fiftieth
+direction; `notes/Pencil-fanout.md` §"BINDUC"), the max-impact half of the
+session's second concurrent pair, picked under a **user-supplied criterion**
+(max impact on proving or disproving `PencilPair K 3 G`). It is the direct
+successor of BZAVOID inside the same section, carrying the induction (BE-18)
+opened.
+
+| direction | owning § | labels reserved | steps reserved | driver |
+|---|---|---|---|---|
+| **BINDUC** | §(K-bare-ext) — **extends**, no new section | **(BE-20)–(BE-24)** | **BE19–BE23** | `w4/binduc.py` (expected — the 2-cut `def₃` law is enumerable) |
+
+The reservation is the head of §(K-bare-ext)'s unclaimed tail: KBARE-FALSIFY
+consumed *Steps BE1–BE8* / **(BE-1)–(BE-9)**, BATTAIN *Steps BE9–BE13* /
+**(BE-10)–(BE-14)**, BZAVOID *Steps BE14–BE18* / **(BE-15)–(BE-19)** — all three
+returning nothing — so the tail is **(BE-20)+ / Step BE19+**.
+
+**Code and basename verified 0-hit** as raw substrings across `*.md`, `*.tex`,
+`*.lean`, `*.py`, `*.m2` with `.git`/`.lake` excluded. `BINDUC`, `(BE-21)`–
+`(BE-25)` and *Step BE19*'s neighbours each 0-hit; **`(BE-20)` and `Step BE19`
+hit only this file's own tail-bookkeeping** from the BZAVOID landing, which is
+exactly the record that declared them unclaimed (the `(GR-97)`/`(OC-45)` and
+`(BE-10)`/`(BE-15)` precedents — third occurrence of that benign shape in this
+namespace). **Checked and NOT chosen:** `BTWOCUT` — 0-hit but it names only the
+*first slice*, and the direction's target is the whole induction plus its base;
+`BSTARS` — 0-hit but ambiguous against the `closedNbhd`/`closed star` vocabulary
+already dense in §(K-bare-ext). **`BINDUC` names the target's content** — the
+**b**are-half direct-attainment **induc**tion.
+
+## Reserved namespace — direction ZJACOB (2026-08-26, **reserved at dispatch; flip to USED at landing**)
+
+**Reserved 2026-08-26 for the direction ZJACOB** (ordinal 43, the arc's
+fifty-first direction; `notes/Pencil-fanout.md` §"ZJACOB"), the **Zheng line's
+second direction** and the second section this arc mints from an external idea
+source. Dispatched concurrently with BINDUC.
+
+| direction | owning § | labels reserved | steps reserved | driver |
+|---|---|---|---|---|
+| **ZJACOB** | **§(K-jac)** — **NEW section**, `notes/Pencil-informal.md` | **(JC-1)–(JC-6)** | **JC1–JC5** | `w4/zjacob.py` (conditional) + `m2/zjacob.m2` (only if a symbolic leaf is genuinely needed) |
+
+**Non-collision with the concurrent BINDUC is structural, not negotiated:**
+different workbook sections, disjoint tags (`BE-` vs `JC-`), and — unlike the
+BZAVOID/ZSHEAR pair — also disjoint *subject matter*, since BINDUC owns
+(BE-14)/`hbareSplit` and ZJACOB is barred from it. Neither may edit a shared
+file; the coordinator lands them **serially, one commit each** (RESEARCH-ARC §2).
+
+**Code, section name, tag and basename verified 0-hit** as raw substrings across
+`*.md`, `*.tex`, `*.lean`, `*.py`, `*.m2` with `.git`/`.lake` excluded:
+`ZJACOB`, `K-jac`, **`JC-` itself**, `(JC-1)`–`(JC-7)`, *Step JC1*/*Steps JC1*.
+**`JC-` is the tag and `ZJACOB` names the content** — the **Z**heng-sourced
+**Jacob**ian/singular-locus route. The `Z` prefix is now this arc's convention
+for a §9-shelf direction (`ZSHEAR` the first), which keeps the externally-sourced
+sections visibly grouped; note it is **not** a claim about the source's
+correctness, only about where the idea came from.
+
 ## Registry — `notes/Pencil-informal.md` (the (K) workbook)
 
 Status keywords are pointers to the owning section's verdict block and the

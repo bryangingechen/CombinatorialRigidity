@@ -12,7 +12,8 @@ with **`hsplit` CLOSED IN FULL** and `hfresh`'s counting discharge landed
 
 **The kernel-(K) research arc: 49 directions COMPLETE** (2026-08-05 → 08-26,
 ordinals 1–41), plus eight strategy-only passes and two architecture probes.
-**Nothing is in flight.**
+**Ordinals 42–43 (BINDUC / ZJACOB) are IN FLIGHT**, dispatched 2026-08-26 as the
+session's second concurrent pair.
 **Per-direction verdicts are NOT restated here** — each has a landing write-up
 at `notes/Pencil-fanout.md` §"<CODE>" and a canonical mathematical home in the
 workbooks. **The arc's standing result, unchanged by all 47: `hK` is not
@@ -33,11 +34,21 @@ the arc's first-ever look at `hbareSplit`, **bare realizability proved
 UNCONDITIONAL** plus the first pencil-stratum rank cap produced by an argument
 (BATTAIN, (BE-11)/(BE-13)).
 
-**NEXT CONCRETE TASK — the (K-res) scoping slice** (one direction: does
-(GR-15)/§(K-grid) transport to the `W19`-type (K-res) habitat? — the user's
-2026-08-26 adjudication, and the retirement of the stale *"pin it when the tight
-side closes"* deferral), then pick the next off *Hand-off*'s target-ordered
-list. **Both 2026-08-26 dispatches are LANDED and nothing is in flight.**
+**NEXT CONCRETE TASK — verify and land the two directions DISPATCHED 2026-08-26
+as the session's SECOND concurrent pair, then pick the next.** **BINDUC**
+(ordinal 42) carries the induction BZAVOID opened — the 2-cut composition, the
+base class, and (BE-14) itself — picked under a **user-supplied criterion**
+(*"most impact towards either proving or disproving the target theorem"*), which
+it meets by being the only statement on the board that removes a **carried
+item**. **ZJACOB** (ordinal 43) continues the **Zheng line** at §9.3's own new
+head **(ZH-4)**, the Jacobian/singular-locus route — aimed at **properness**, the
+gap ZSHEAR identified as the arc's real one. Specs, bars and riders:
+`notes/Pencil-fanout.md` §§"BINDUC"/"ZJACOB"; reservations
+`notes/Pencil-labels.md`. **Still queued behind them: the (K-res) scoping slice**
+(one direction — does (GR-15)/§(K-grid) transport to the `W19`-type (K-res)
+habitat? — the user's 2026-08-26 adjudication, and the retirement of the stale
+*"pin it when the tight side closes"* deferral), **deferred once by the
+2026-08-26 max-impact directive, not dropped.**
 **ZSHEAR** — the §9 shelf's first direction ever — refuted **(ZH-1)** by
 **gauge-triviality**: the Witt shear *is* the translation subgroup of `PGL(4)`
 on line coordinates, `Q` is its own defining invariant, and the §(K-tight)
@@ -440,6 +451,31 @@ constraints; the dated dispatch narrative is in *Decisions made* and git):
   2026-08-05 Lean hold, W4 PARKED, `hK`/`hbareSplit` pinned, both option Bs
   un-commissioned.
 
+- **2026-08-26 (tenth check-in), the SELECTION CRITERION SHARPENS AGAIN and the
+  Zheng line becomes a standing second lane.** Unprompted free text, quoted
+  verbatim: *"Let's continue with 2 dispatches in parallel one on the direction
+  that is most likely to have most impact towards either proving or disproving
+  the target theorem and one continuing the Zheng line."* Three consequences,
+  none a kernel-constraint move. **(1)** The criterion is now **max impact on
+  proving or disproving `PencilPair K 3 G`** — sharper than the eighth
+  check-in's *distance to the phase target*, since it counts **either
+  direction** explicitly; the coordinator's pick under it is **BINDUC**, on the
+  ground that (BE-14) is the only statement on the board that removes a
+  **carried item** (`hbareSplit` plus `PencilPair`'s unconditional conjunct),
+  with the honest limit recorded in the spec that it leaves `hK` and `hcontract`
+  standing. **(2)** The **Zheng line is a standing second lane**, not a one-off
+  side quest — the shelf that was ineligible on 2026-08-21 and produced its
+  first direction this morning now gets a successor by user direction; the pick
+  within it is **forced by §9.3's own updated order** (head (ZH-4) after ZSHEAR
+  struck (ZH-1)), so it is not a coordinator ranking. **(3)** The **(K-res)
+  scoping slice is deferred one round, not dropped** — it stays the queued item
+  behind this pair. **Headroom disclosed rather than glossed:** `weekly_all` was
+  at **79 %**, just under the playbook's 80 % stagger line, so the concurrent
+  pair is licensed but the round *after* it will likely need staggering; said
+  here because the next coordinator should not have to rediscover it.
+  **Everything else stands unchanged:** phase OPEN, the 2026-08-05 Lean hold, W4
+  PARKED, `hK`/`hbareSplit` pinned, both option Bs un-commissioned.
+
 **Kernel-(K) research arc — sixty-six docs+scripts-only dispatches landed, plus eight
 strategy-only passes** (2026-08-02 → 08-26) — and, **outside** that count because they test
 the architecture rather than the (K) crux, the **two probes**: **KBARE-FALSIFY**
@@ -682,8 +718,19 @@ neighbours' incidences and every capacity unit above 2 is bought by a **Case-I g
 whose pencil-compatibility is geometry the probe was barred from. **§(K-avoid) was never
 opened** and no gap-map status moved.
 
-**THE NEXT CONCRETE TASK — the (K-res) SCOPING SLICE**, one direction: *does
-(GR-15)/§(K-grid) transport to the `W19`-type (K-res) habitat?* This is the
+**THE NEXT CONCRETE TASK — verify and land BINDUC and ZJACOB**, dispatched
+2026-08-26 as the session's second concurrent pair (ordinals 42 and 43,
+`recon-opus`, specs at `notes/Pencil-fanout.md` §§"BINDUC"/"ZJACOB"). **BINDUC**
+carries item 1 below: the induction (BE-18) opened — 2-cut composition (its
+`− 6` correction term to be **derived, not inherited**), the base class, and
+(BE-14) itself. **ZJACOB** continues the **Zheng line** at (ZH-4), aimed at
+**properness** — the gap ZSHEAR identified when it showed (ZH-1)'s
+"avoid proper subvarieties" mechanism was the arc's own and free once `P ≢ 0` is
+known.
+
+**THEN — the (K-res) SCOPING SLICE**, deferred one round by the max-impact
+directive and NOT dropped. One direction: *does (GR-15)/§(K-grid) transport to
+the `W19`-type (K-res) habitat?* This is the
 user's 2026-08-26 adjudication (offered the full wave, the cheap scoping slice,
 or a re-deferral, they chose the **scoping slice**), and it retires the stale
 *"pin it when the tight side closes"* deferral — the coordinator hand-off note

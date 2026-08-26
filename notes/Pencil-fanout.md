@@ -1,7 +1,13 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: EIGHT fan-outs and TWENTY-ONE single directions dispatched; ALL 49
-LANDED.** **BZAVOID (ordinal 40, §"BZAVOID") LANDED 2026-08-26 —
+**Status: EIGHT fan-outs, TWENTY-ONE single directions and TWO concurrent pairs
+dispatched; 49 LANDED, TWO IN FLIGHT.** **BINDUC (ordinal 42, §"BINDUC") and
+ZJACOB (ordinal 43, §"ZJACOB") were DISPATCHED 2026-08-26 as the second pair,
+under a user-supplied criterion (*max impact on proving or disproving the target*)
+plus a standing second lane for the Zheng shelf — BINDUC carrying the (BE-14)
+induction (2-cut composition, base class, the theorem), ZJACOB at §9.3's new head
+(ZH-4), the Jacobian/singular-locus route aimed at **properness**. Neither has
+returned; flip both to LANDED here at landing.** **BZAVOID (ordinal 40, §"BZAVOID") LANDED 2026-08-26 —
 the spec's commissioned falsification arm came back **EMPTY BY AN ARGUMENT at
 every graph**, so BATTAIN's triangle-free premise is a special case and not the
 reason; the pencil stratum is **IDENTIFIED as the planar-atom molecular
@@ -88,7 +94,7 @@ exact `n_hub` boundary for ledger attack (c)'s AA-glue case (GTMPL), (b′)'s fi
 kills the counting route to a disproof (SIGZ), (a₁) reduced to one determinant (OSCHU), and
 **(GR-64)(R2) REFUTED** with (R1) delivered (GCOLL).
 Ordinals run 1–41 (the eighth fan-out claims 25–29; GFLIP is 30; GCHEAP is 31;
-OQRANK is 32; GPRICE is 33; GBLAW is 34; GXESC is 35; GHWIT is 36; GMINM is 37; OGEOM is 38; BATTAIN is 39; BZAVOID is 40; ZSHEAR is 41) and were assigned at dispatch, so landing order
+OQRANK is 32; GPRICE is 33; GBLAW is 34; GXESC is 35; GHWIT is 36; GMINM is 37; OGEOM is 38; BATTAIN is 39; BZAVOID is 40; ZSHEAR is 41; BINDUC is 42; ZJACOB is 43) and were assigned at dispatch, so landing order
 differs from ordinal order.
 
 **The two architecture-testing PROBES are also both LANDED** (§"Two probes SPECCED and
@@ -4643,3 +4649,237 @@ backs any claim.
 
 **TERMINATION: E1, E2, E3 all NO** — coordinator-re-run and agreed. E3 stays
 **ARMED by GBAL**, neither fired nor disarmed.
+
+## BINDUC — forty-second ordinal, the fiftieth direction (concurrent pair, prepped 2026-08-26)
+
+**Selection provenance: a USER DIRECTIVE naming the criterion, the pick made
+under it by the coordinator.** 2026-08-26, verbatim: *"Let's continue with 2
+dispatches in parallel one on the direction that is most likely to have most
+impact towards either proving or disproving the target theorem and one
+continuing the Zheng line."* So the *criterion* is the user's and sharper than
+the standing one — **max impact on proving or disproving `PencilPair K 3 G`** —
+while the pick against it is coordinator-set, and the twelfth's disclosure
+applies (no independent top-rung ranking of the alternatives). Dispatched
+**un-named**, concurrently with ZJACOB, at **`recon-opus`** (fable conserved).
+
+**Why this is the max-impact pick, stated so it can be checked rather than
+trusted.** (BE-14) is the only statement on the board that removes a **carried
+item** outright: proven, it discharges **`hbareSplit`** *and* **`PencilPair`'s
+unconditional second conjunct**, as a standalone theorem. The honest limit,
+stated up front: it does **not** discharge `hK` or `hcontract`, so it takes the
+phase from three carried items to two and delivers half the target motive — and
+that is still strictly more than anything else available, since `hK` is the
+phase's hardest item with **no named next slice after 47 directions** and
+`hcontract` cannot close without the wave-sized **(K-res)**, which the user
+declined in favour of a scoping slice. **BZAVOID's own ranked successor list puts
+this first.**
+
+**What BZAVOID changed, and it is why this is now a construction problem.**
+(BE-16) proved (BE-14) is **EXISTENTIAL, not generic**: `rank ≤ target` holds
+universally, so **one witness per graph settles that graph**, and the pencil
+stratum **is** the planar-atom molecular stratum — the object to build is a
+*point* configuration `p : V → P³` with every closed star coplanar, i.e. an
+all-trigonal-planar molecule. The residual, verbatim from *Step BE18*:
+
+> `∀ G` 2-connected, `∃ p : V(G) → P³` with `{p_w : w ∈ closedNbhd(v)}` coplanar
+> for every `v` and `p_u ≁ p_v` on edges, such that the molecular body-hinge
+> rigidity matrix at `p` has rank `6(|V|−1) − def₃(G)`.
+
+**The target: carry the induction BZAVOID opened.** (BE-18) proved composition
+over a **1-vertex cut** (`def₃` additive both directions, 907 gluings; the rank
+half by `GL₄`-alignment of the shared body's flag), which is what reduced
+(BE-14) to 2-connected graphs. Your job is the **next layer and the base**:
+
+1. **The 2-cut composition.** BZAVOID asserts it *"looks routine by the same
+   `GL₄` alignment, with `def₃(G) = def₃(G₁) + def₃(G₂) − 6` to be checked"* —
+   **asserted, not proved or measured**, and disclosed as its cap 8. Prove or
+   refute both halves. **Do not inherit the `− 6`:** derive the correction term
+   from `def₃`'s own maximand (`|P| = |P₁| + |P₂| − 2` when both shared vertices
+   sit in merged parts; the shared pair may or may not be adjacent, and the
+   `GL₄` transitivity that made the 1-cut alignment free is on
+   (plane, point-on-plane) **flags**, so a 2-cut needs two flags aligned at
+   once and that is a real condition, not a restatement). A refutation with an
+   explicit witness is as good an outcome as a proof.
+2. **The base class, and this is the part with no named answer.** If 1- and
+   2-cuts compose, the base is **3-connected**. Say plainly whether that base is
+   attackable, and if not, what the honest decomposition is. BZAVOID's other
+   offered base — the **`def₂ = def₃` closed-form slice**, still unclaimed and
+   still the user's declined-as-a-*deliverable* partial — is legitimate **as a
+   base case inside this induction**; use it that way if it fits, and say so.
+3. **Where it obstructs, if it does.** An induction that closes on a named
+   subclass and provably fails outside it is a real result — the subclass is
+   then the first proved-attainment class the arc owns beyond BZAVOID's
+   forced-triangle corollary.
+
+**A TRAP, coordinator-verified in the Lean, that you must not walk into.** The
+project has a landed well-founded induction principle over exactly this kind of
+object: `Graph.minimal_kdof_reduction`
+(`Molecular/Induction/ForestSurgery/Reduction.lean:673`, `\leanok`, KT
+Theorem 4.9). I read its signature: its three closure hypotheses are named
+**`hbase`**, **`hsplit`** and **`hcontract`** — and **`hcontract` is
+byte-for-byte the phase's own PARKED carried item**. Scaffolding (BE-14) on that
+principle therefore **re-imports the exact obligation (BE-14) is valuable for
+avoiding**, and would convert a standalone theorem back into a conditional one.
+It also runs only over `IsMinimalKDof n 0`, not over all graphs, so it does not
+even cover the statement. **Go by connectivity decomposition, not by the KT
+reduction moves.** If you conclude the KT scaffold is nonetheless the right one,
+that is a **finding to report, not a licence to use it** — it would be a
+re-routing of the phase's architecture and is the user's call.
+
+**What counts as a HIT — state which you got.**
+
+1. **The induction advanced.** 2-cut composition proven (with the correct
+   correction term derived, not inherited), and the base class named with an
+   honest assessment. Best case: (BE-14) proven on a named, non-trivial class.
+2. **(BE-14) PROVEN.** The phase-target result. If you get here, say so plainly
+   and do not decorate it.
+3. **An obstruction, located.** The induction provably fails at a named
+   decomposition class — and then the question that matters for the *disproof*
+   side: does the failure suggest a **new universal-cap mechanism**? BZAVOID
+   proved the forced-degeneration cap can never refute (BE-14) at any graph
+   ((BE-15), cap-free), so a disproof now **needs a genuinely new cap
+   mechanism**, and an obstruction is the most likely place one would surface.
+   Report it as a candidate, never as a refutation.
+4. **An honest OPEN with the route re-priced** against the `∃`-seed + repair
+   alternative, whose chartless wall (§(K-tight) *Step 5*) BZAVOID did not lower.
+
+**Bars.** **Option B (the insertion calculus) stays un-commissioned** (2026-07-30,
+standing). **Do not re-attempt the three routes BZAVOID closed:** the
+forced-degeneration cap as a refutation route ((BE-15), cap-free, every graph);
+the landed Phases-24–26 `G²`/molecule-dictionary apparatus ((BE-17) — its
+general-position gate is the *literal negation* of the pencil condition, and its
+sufficient condition measures FALSE at three shapes); and the
+transversality/dimension count ((BE-16)(iv), structural). Do not re-derive
+BATTAIN's or BZAVOID's figures — **cite them**. Do not attack `hK`, (GR-15),
+class uniformity, or §(K-grid)'s ledger. Do not touch W4 / `hcontract`. **No
+`.lean`** — the standing 2026-08-05 Lean hold. **Read-only w.r.t. every shared
+file; commit NOTHING** (RESEARCH-ARC §2) — ZJACOB runs concurrently.
+
+**Riders.** TERMINATION E1/E2/E3 at the return (**E3 ARMED by GBAL** — report,
+never fire). Classification mandatory if anything in shape 3 fires: say whether
+you have refuted `PencilPair K 3 G`, (BE-14)-for-all-`G`, or only a route, and
+do not overstate a single witness. **F11:** a driver per headline sentence, and
+"routine"/"always"/"the only" are their own claim class needing an *enumerating*
+driver — note that the thing you are checking is itself an inherited
+*"looks routine"*, so this rider bites directly. **F25:** state your
+verification bar off the shipped driver; every script you run is committed.
+**Cap disclosure mandatory.** Exact ℚ, seeded, degeneracy-guarded; multi-seed any
+shortfall claim (F27 — rank is lower semicontinuous, so one draw is a lower
+bound only, and both BATTAIN and BZAVOID were bitten by exactly this).
+`notes/scripts/README.md` binds; the `kbare/` sibling-import set is recorded
+UNPAID debt with `w4/bzavoid` its second consumer — extend the list, make no move.
+
+**Driver — expected, at the pinned path `notes/scripts/w4/binduc.py`.** The
+2-cut `def₃` law is a measured/enumerable claim and needs one; `w4/bzavoid.py`'s
+`glue` mode is the precedent to extend from (read-only import).
+
+**Reservation** (`notes/Pencil-labels.md` §"Reserved namespace — direction
+BINDUC"): §(K-bare-ext) **extends**, no new section; labels
+**(BE-20)–(BE-24)**, **Steps BE19–BE23**; return any unconsumed remainder.
+
+## ZJACOB — forty-third ordinal, the fifty-first direction (concurrent pair, prepped 2026-08-26, **the Zheng line, second direction**)
+
+**Selection provenance: the same 2026-08-26 user directive**, whose second half
+reads *"and one continuing the Zheng line."* The pick within that line is
+**forced by the shelf's own updated order**, not chosen: §9.3's head after
+ZSHEAR struck (ZH-1) is **(ZH-4)**, with (ZH-5) a design note rather than a
+result, (ZH-2) surviving §2.5 only in its stratified reading, (ZH-3) re-labelled
+**circular as posed**, and (ZH-6) write-up material that is never a dispatch.
+Dispatched **un-named**, concurrently with BINDUC, at **`recon-opus`**.
+
+**Why (ZH-4) is the right successor and not merely the next in line — this comes
+straight out of ZSHEAR's own return.** ZSHEAR established that (ZH-1)'s
+mechanism was **the arc's own**: *"avoid finitely many proper subvarieties over
+an infinite field"* is **free** once `P ≢ 0` is known, so the real gap is
+**PROPERNESS of the failure locus**, and (ZH-1) bought only avoidance. **(ZH-4)
+is aimed exactly at properness:** if the escape-failure locus can be presented as
+the **singular locus of the universal infinitesimal-motion cone along its zero
+section**, then *"escape fails only on a proper closed subset"* becomes *"the
+cone is generically smooth along its zero section"* — a **Jacobian-rank
+computation** rather than a witness hunt. That is the arc's open thing, attacked
+at the point ZSHEAR identified as the actual gap.
+
+**The technique, and where it already touches this project.** §9.2's reading of
+the source's Theorem 4.2 is a scheme-theoretic upgrade of **exactly the
+White–Whiteley pure-condition material §(K-pure) works by hand**: degeneracy loci
+as determinantal subschemes of a two-term complex; the universal
+infinitesimal-motion cone a **local complete intersection of the expected
+codimension**, hence Cohen–Macaulay and equidimensional; and — the usable part —
+the identification of the **first degeneracy locus with the singular locus of
+that cone along its zero section**, via the Jacobian criterion. §(K-pure)'s chord
+obstruction and isotropic completions (**(PC1)**–**(PC3)**, **(PC-Z)**) are
+already local computations at a limit carrier, so §9.2 prices this as *"a
+repackaging with real leverage and no filter problem on its face"* — **test that
+pricing rather than inheriting it.**
+
+**Two ZSHEAR findings that bind on you, and one that does not.** **Binding:**
+(SH-6)'s **dichotomy** — a group under which the criterion is equivariant cannot
+turn a failing seed into an escaping one, and a family that *does* move a
+failure is no symmetry and propagates nothing. Check early whether the Jacobian
+route is a disguised instance (it should not be: smoothness is not a symmetry
+claim), and say so explicitly either way. Also binding: **`Q(r̃) ≠ 0` is
+`PGL(4)`-invariant, so no gauge-fixing or frame normalization can ever supply
+it** — if your route reaches for a normalized local frame, that residue says
+what the frame can and cannot buy. **Not binding:** (ZH-1)'s death was
+gauge-triviality, which is specific to the shear and says nothing about
+(ZH-4).
+
+**What counts as a HIT — state which you got.**
+
+1. **Properness delivered, or reduced to a named Jacobian-rank computation** with
+   the exact locus, complex, and quantifier written down. Even a clean reduction
+   is a real result, because properness is the identified gap.
+2. **The route is DEAD, with the exact reason.** ZSHEAR is the precedent: a
+   precise, well-grounded death that strikes a shelf candidate is a HIT of the
+   negative kind and a perfectly good outcome. The likeliest deaths to check
+   first: the cone is **not** a local complete intersection of the expected
+   codimension in *our* carrier (the source's is bar-joint `(2,2)`-sparse, ours
+   is body-hinge at multiplicity 5 — **no theorem transfers**); or the
+   identification needs a hypothesis the pencil stratum violates, which is
+   exactly how (BE-17) killed the `G²` route one commit ago.
+3. **An honest OPEN with the route priced** against §(K-pure)'s by-hand
+   computations — is this a genuine upgrade or a re-encoding?
+
+**Bars — the provenance bar is the hard one and is unchanged.** The source is an
+**unrefereed preprint** whose own acknowledgment credits an AI assistant with the
+refinement of proof details, the Lean formalization and its verification, and
+which **this project has not independently checked**. Per top-level `CLAUDE.md`
+*Referencing prior work* and `DESIGN.md` *Formalize everything the argument uses*:
+it is an **IDEA SOURCE, never a citation**, and **no theorem of it may be
+imported, assumed, or leaned on** — its Theorem 4.2 included. Your result must
+stand on (a) classical facts (the Jacobian criterion, determinantal-scheme
+codimension bounds, Cohen–Macaulay/equidimensionality, and the White–Whiteley
+pure-condition material already in §7's in-use list — **check first whether what
+you need is already available to this project**) and (b) this project's own
+drivers and definition bodies. If a step needs the source's Theorem 4.2,
+Lemma 3.4 or Proposition 3.3, **that step is not delivered** — say so. §9's
+orientation note, for context only: its Lemma 3.4 sits *exactly* on its boundary
+at `d = 3` via `2(d−1) = d+1`, so an error there would be structural rather than
+repairable. Do not open (ZH-2)/(ZH-5), do not re-litigate (ZH-1) or (ZH-3), do
+not write up (ZH-6). Do not touch (BE-14)/`hbareSplit` — **BINDUC owns it
+concurrently.** Do not touch W4 / `hcontract`. **No `.lean`** — the standing
+Lean hold. **Read-only w.r.t. every shared file; commit NOTHING.**
+
+**Riders.** TERMINATION E1/E2/E3 at the return (**E3 ARMED by GBAL** — report,
+never fire). **F11:** a driver per headline sentence; *"the cone is a local
+complete intersection of the expected codimension"* and *"the singular locus is
+exactly the first degeneracy locus"* are **structural** claims — either derive
+them symbolically or exhibit them at named carriers, and never state them more
+strongly than what you ran. A **symbolic** dispatch also starts from
+`notes/scripts/m2/README.md`; strategy §5.3's measured boundary is the standing
+warning (the ungauged 28-coordinate degree-52 expansion dies at 600 s), so scope
+any Macaulay2 leaf against it up front rather than discovering it. **F25:** state
+your verification bar off the shipped driver; every script you run is committed.
+**Cap disclosure mandatory.** Exact ℚ (or exact `ℚ(i)` via `exactcore.Gauss`),
+seeded, degeneracy-guarded; `notes/scripts/README.md` binds.
+
+**Driver — conditional, at the pinned path `notes/scripts/w4/zjacob.py`** (plus
+`notes/scripts/m2/zjacob.m2` if a symbolic leaf is genuinely needed; ZSHEAR
+needed none and said so). A purely derivational result needs no new driver —
+state that disposition explicitly. Read-only imports, untracked.
+
+**Reservation** (`notes/Pencil-labels.md` §"Reserved namespace — direction
+ZJACOB"): **new section §(K-jac)** in `notes/Pencil-informal.md`, tag **`JC-`**
+(globally 0-hit); labels **(JC-1)–(JC-6)**, **Steps JC1–JC5**; return any
+unconsumed remainder. Mint the section even if the route dies — ZSHEAR's
+precedent: a recorded death with its exact reason is the deliverable.
