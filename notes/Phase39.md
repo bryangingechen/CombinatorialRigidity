@@ -1,211 +1,75 @@
 # Phase 39 — PENCIL: the hinge-pencil molecular conjecture (work log)
 
-**Status:** in progress — phase stays OPEN (standing user adjudications of 2026-07-24 /
-2026-07-30 / 2026-08-02, quoted verbatim in *Current state*). W0–W3 and the whole W5 arc
-(L0–L7) are COMPLETE — `hsplit` CLOSED IN FULL and `hfresh`'s counting discharge landed
-(2026-07-30). Only three items remain, all carried by the landed successor
-`pencil_conjecture_of_hcontract_hK_hbareSplit_of_card` (`Molecule/Pencil/Escape.lean`):
-`hcontract` (W4), kernel `hK`, and kernel `hbareSplit` — see *Hand-off*. **Forty-seven
-kernel-(K) directions are now COMPLETE** (2026-08-05 → 08-26, ordinals 1–35; roster and
-per-direction theorem chain in *Decisions made*). **The SIXTH, SEVENTH and EIGHTH FAN-OUTS
-ARE ALL COMPLETE** (all fifteen directions LANDED 2026-08-19). **The arc's HITs:**
-route-ledger **entry 5 PROVEN in both halves** (GBAL, discharging input (X)); **chart
-irreducibility PROVEN** (CIRR); the **AA-glue configuration NOT realizable at `n_hub = 8`**
-(AGLU); **(GR-R1) PROVEN** (GFLIP, 2026-08-25 — so (b′)'s `n`-free `≤ 12` bound (GR-89)(ii)
-is a THEOREM, the arc's first unconditional bound of (b′)'s shape); **(GR-C2) settled
-per-configuration in both directions** (GCHEAP, 2026-08-25 — **(b′) at the constant 2
-a THEOREM on the whole `n_hub ≤ 6` stratum**, the per-configuration form refuted from
-`n_hub = 12`, residual reshaped to (GR-104)(i)); **input (a) delivered at all 174
-certified classes** (OQRANK, 2026-08-25 — the ⋆-eigen-block mechanism completed with
-a combinatorial WALL found, the naive form refuted as a class statement,
-per-class-generic quantifier, zero (K-tight)-event rulings).
-Everything else an honest MISS or an OPEN reshape; verdicts in *Decisions made* and
-`notes/Pencil-fanout{,-archive}.md`, **not restated here**. **(GR-15) stays OPEN
-throughout; class uniformity untouched; no g-flank at any of the forty-seven directions.
-E3 is ARMED (by GBAL) and has NOT fired.** Direction codes are **multi-letter and
-topic-tagged from the fifth fan-out on** (`notes/Pencil-labels.md` (L5)); grandfathered
-single letters are re-used across dates, **always date those**.
-**The doc-split AND discipline-distillation rounds are BOTH COMPLETE**
-(all three slices, `notes/Pencil-structure.md`; the new `RESEARCH-ARC.md`
-promotes this phase's dispatch discipline).
-**THE EIGHTH FAN-OUT IS COMPLETE — all five LANDED 2026-08-19** — five
-concurrent opus directions, ordinals 25–29; specs, roster, tier split, label
-reservations and the losers' ranking all in `notes/Pencil-fanout.md` §"Eighth
-fan-out", not restated here (the arc's
-thirty-third through thirty-seventh directions: GTMPL / GFLOW / GCOLL / OSCHU /
-SIGZ). One gap-map status move in the wave (GCOLL's), the pivot rule never
-triggering; **verdicts one-lined in *Decisions made*, per-direction detail in
-`notes/Pencil-fanout.md` §"Eighth fan-out" — not restated here**, and the
-wave-closing exception-log commit is DONE (`notes/dispatch-log.md`, five rows,
-**F22–F24**). **Both queued structural items are LANDED** — the phase-note doc
-split (2026-08-19) and the **harness move-down round (2026-08-20)**, which paid
-all five *Harness debt* move-downs with **no recorded figure moved**.
-**BOTH ARCHITECTURE-TESTING PROBES ARE NOW LANDED, and each returned a verdict.**
-**KBARE-FALSIFY (2026-08-20) — a T1 HIT:** (K-bare-ext), route A's arbitrary-seed
-insertion lemma, is **REFUTED as stated**, exactly and **cap-free**; **`hbareSplit`
-itself is UNTOUCHED and still carried as pinned** (its consequent is an `∃` over
-frameworks and every probed gadget attains), so this is a **route** finding, not a
-kernel refutation and not a PENCIL event. Detail, the three enabling results and every
-figure: `notes/Pencil-informal.md` §(K-bare-ext) *Steps BE1–BE8* — not restated here.
-**C3-AVOID (2026-08-24) — the gate DECIDED at threshold `|S| ≤ 2`**, so board option
-**C3 is NO-GO as a crux-avoidance route**: the local gate never fails, but a
-conservation law caps avoidance at `2 μ(G)`, `μ = |E| − |V| + 1`, `|S| = 3` fails at the
-cycles `C_3 … C_6`, and no structural hypothesis on `S` lifts it. Mathematics, proofs
-and caps: `notes/Pencil-strategy.md` §4.7 ((AV-1)–(AV-8), driver `w4/avoidgen.py`) —
-**§(K-avoid) never opened, no gap-map status moved**, `hK`/`hbareSplit`/(GR-15)/class
-uniformity untouched.
-**DIRECTION GFLIP (ordinal 30) IS LANDED — dispatched and landed 2026-08-25, a HIT of
-the first kind.** The shape was adjudicated at the 2026-08-25 check-in (*Current state*,
-the 2026-08-25 bullet): single direction, cheapest first → **(GR-R1)**. The direction
-**PROVED it**, strengthened (`≥ |δ|` feasible majority flips, no habitat/`2k`/
-connectivity hypothesis), via the demand form (GR-97) + counting lemma (GR-98) +
-selection theorem (GR-99) — canonical home §(K-grid) *Steps G116–G119*
-(`notes/Pencil-informal-grid.md`), landing record `notes/Pencil-fanout.md` §"GFLIP",
-driver `w4/gflip.py`. (GR-C2) stays the whole constant-2 residual, with a sharpened
-hypothesis reported. Both probe verdicts were surfaced to the user at the same
-check-in — that flag is discharged.
-**DIRECTION GCHEAP (ordinal 31) IS LANDED — dispatched and landed 2026-08-25, a graded
-double outcome.** The shape was re-elected at the second 2026-08-25 check-in (single
-direction, cheapest first → **(GR-C2)**). The direction **settled (GR-C2)
-per-configuration in both directions**: the every-step form is **PROVEN for
-`n_hub < 6|δ|`** via the lone-dart capacity (GR-100)/(GR-101) — so **(b′) at the
-constant 2 is a THEOREM on the whole `n_hub ≤ 6` stratum** (modulo (GR-C1) alone at
-`n = 8, 10`) — and the per-configuration form is **REFUTED from `n_hub = 12`** by an
-explicit witness (GR-103), the boundary `6|δ|` exact both ways; the as-posed
-existential survives at every audited pair (stalled flips price 0) and the residual
-is reshaped to **(GR-104)(i), the price form**. Canonical home §(K-grid) *Steps
-G120–G124* (`notes/Pencil-informal-grid.md`), landing record `notes/Pencil-fanout.md`
-§"GCHEAP", driver `w4/gcheap.py`. GFLIP's harness-debt item is **PAID** (2026-08-25,
-the `gridbal_common` move-down); GCHEAP's own residual sibling imports were a recorded
-*Harness debt* item, now **PAID** together with GPRICE's (below). **DIRECTION OQRANK (ordinal 32) IS LANDED — dispatched and landed 2026-08-25, a graded
-HIT of the first kind.** Picked at the third 2026-08-25 check-in (recon-first → the
-eighth strategy-only pass's board re-rank `f72cbb35` → its rank-1 front-runner). The
-⋆-eigen-block route of *Step O29* is **completed as a mechanism** ((OC-40)/(OC-41));
-its naive single-colouring form is **REFUTED as a class statement** (27/174 — 7 by the
-new combinatorial **WALL** (OC-42), 20 by a second uncharacterized confinement); the
-hunted form is **GREEN at 174/174**: **input (a) holds at every certified class**, at
-an exhibited exact ℚ(i) σ-fixed grid point and every sufficiently generic draw of the
-exhibited colouring ((OC-43)/(OC-44)) — NOT class-uniform, which stays OPEN. Zero
-rulings: **the (K-tight)-event branch never fired.** New named residuals:
-wall-avoiding-colouring existence ((OC-44)(iii)) and the second confinement's
-mechanism. Canonical home §(K-out) *Steps O37–O41* (`notes/Pencil-informal.md`),
-landing record `notes/Pencil-fanout.md` §"OQRANK", driver `w4/oqrank.py`.
-**DIRECTION GPRICE (ordinal 33) IS LANDED — dispatched and landed 2026-08-25
-(the fourth check-in's front-runner pick), a graded outcome of the third
-kind: (GR-104)(i) is a THEOREM at `2k = 2`, every `n`, modulo the minted
-balance law (GR-108) alone** — the reversal-set normal form (GR-106) makes
-`f` computable in `2^n`, the refutation hunt is EMPTY to `n = 18`, and
-(GR-108)'s strong form fails from exactly `n = 12`, so a proof must exchange
-between maximum reversal sets. Canonical home §(K-grid) *Steps G125–G129*
-(`notes/Pencil-informal-grid.md`), landing record `notes/Pencil-fanout.md`
-§"GPRICE", driver `w4/gprice.py`. **DIRECTION GBLAW (ordinal 34) IS LANDED —
-dispatched 2026-08-25 (the fifth check-in's front-runner pick, (GR-108) the
-balance law; the same check-in had the GCHEAP/GPRICE harness debt paid
-first, `782e8bcd`), landed 2026-08-26: an honest OPEN reshape.** (GR-108)
-is neither proven nor refuted; the exchange calculus its pinned proof shape
-called for is **PROVEN** ((GR-110)–(GR-112): arc-transversal normal form,
-recombination connectivity, the escape lemma), the law REDUCES to
-**existential escape** (the new named open kernel, 0 failures at 1 099
-swept pairs), and universal escape is **REFUTED at an explicit `n = 16`
-witness** defeating both new mechanisms — so any proof must produce the
-balance-reaching maximum globally. Canonical home §(K-grid) *Steps
-G130–G134* (`notes/Pencil-informal-grid.md`), landing record
-`notes/Pencil-fanout.md` §"GBLAW", driver `w4/gblaw.py`. **DIRECTION GXESC
-(ordinal 35) IS LANDED — dispatched and landed 2026-08-26 (the sixth
-check-in's front-runner pick), a REFUTATION BY WITNESS, the spec's strong
-form: (GR-108), the balance law, is FALSE from `n = 16`** (four verified
-witnesses, each re-derived through three independent exact models, the
-first ONE transposition from GBLAW's strand witness) **and existential
-escape falls with it — while (GR-104)(i) SURVIVES at every witness**: it
-is ⟺ the **gap-2 law** (GR-117)(i), proven wherever some maximum is
-balance-valid or half-resident (GR-117)(ii), and the reshaped residual is
-the **half-witness clause** (GR-117)(iii) (counterexample-free at 248
-hunted pairs), which would close (GR-104)(i) at `2k = 2` unconditionally.
-New proven instrument: the reversal-label ledger (GR-115), M-closed ⟹
-balance-valid at every `2k`. Canonical home §(K-grid) *Steps G135–G139*
-(`notes/Pencil-informal-grid.md`), landing record `notes/Pencil-fanout.md`
-§"GXESC", driver `w4/gxesc.py`. **DIRECTION GHWIT (ordinal 36) IS LANDED —
-dispatched and landed 2026-08-26 at `recon-opus` (the first single
-direction to run below the top rung, fable conserved), a REFUTATION BY
-WITNESS that reaches one clause past its own target: the half-witness
-clause (GR-117)(iii), the gap-2 law (GR-117)(i) AND (GR-104)(i) at
-`2k = 2` ITSELF are all FALSE** at an explicit habitat-gated
-`n_hub = 20` pair whose entire 64-member maximum family is all-(2,2)
-with gap 4 ((GR-122), four independent exact models) — so
-**per-matching (b′) at the constant 2 is FALSE** and (GR-86)'s gap-4
-cap is TIGHT. A second, independent finding **corrects a landed
-figure**: (GR-108) is false from **`n = 12`**, exactly, not `n = 16`
-((GR-123), superseding (GR-116)(iv) in place). New proven instruments:
-the (2,2) budget (GR-120) — which makes the price form a THEOREM at
-every `n ≤ 10` and wherever `d_par(M) ≤ 2` — and the slide gate
-(GR-121), refuted as a route. **`hK`, (GR-15) and class uniformity are
-untouched; E3 stays ARMED and does not fire.** Canonical home
-§(K-grid) *Steps G140–G144* (`notes/Pencil-informal-grid.md`), landing
-record `notes/Pencil-fanout.md` §"GHWIT", driver `w4/ghwit.py`.
-**DIRECTION GMINM (ordinal 37) IS LANDED — 2026-08-26, `recon-opus`,
-the first pick under the widened delegation, and it re-prices the
-arc's last four directions.** (b′) has **three pairwise-inequivalent
-readings** ((GR-127)): **(P)** `∀M`, **(m)** `min_M (d_adm − d_par)`,
-**(L)** `min_M d_adm − min_M d_par`. **The ledger consumes (L)** — a
-difference of minima, which is what `gdev.min_dev` computes. **(P) is
-what GPRICE/GBLAW/GXESC/GHWIT attacked and GHWIT refuted; (m) is now
-PROVEN** at every habitat ((GR-126)), so the stronger kill GMINM was
-told to hunt **cannot exist**; **(L) is untouched by either**, and the
-landed W3 figures already separate it — ledger gap **1**, which
-(GR-67)'s parity law forbids any per-matching gap from being — while
-at (GR-122)'s own witness shape the ledger gap is **0**. So
-**GHWIT refuted a statement the ledger never used**; the four
-directions' mechanism theorems stand, their target's relevance does
-not. Canonical home §(K-grid) *Steps G145–G148*, landing record
-`notes/Pencil-fanout.md` §"GMINM", driver `w4/gminm.py`. **No status
-word moves on (GR-104)(i) or per-matching (b′) — both stay REFUTED;
-`hK`, (GR-15) and class uniformity untouched; E3 ARMED, not fired.**
-**DIRECTION OGEOM (ordinal 38) IS LANDED** — 2026-08-26, `recon-opus`,
-the second pick under the widened delegation and the first off
-§(K-grid) in six directions: **NO disproof witness**, and a HIT of the
-restricted second kind. The geometric route to a disproof is now free
-**by an argument** on everything searched — `σ` depends on the induced
-`H` alone ((OC-46)); paths of length `≥ 6` are dead, and girth `≥ 7`
-(forced by `hnoRigid`) therefore kills **every cycle and bouquet**, so
-**(OC-37)(ii)'s one-unit topology dies class-uniformly** ((OC-47));
-**91 260 live cores, 0 candidates** ((OC-48)), making `{σ = 0} ≠ ∅` a
-**theorem** at 275 342 class pairs over 63 013 shapes and **upgrading
-(OC-39) from sample to theorem** ((OC-49)). **It does not close §8.5's
-row:** `n(F°) = 4` and `5` at `|E°| ≥ 9`, and **every `n(F°) ≥ 6`**,
-were never searched — compute frontier below `n(F°) ≤ 5`, ideas
-frontier above; the headline is *"not found under these caps"*, never
-nonexistence. The residual is now **one shape-free sentence**: at every
-live core the Kirchhoff map `⊕_Q S_Q^⊥ → (K⁶)^nodes` is injective at
-the generic chart point. `hK`, (GR-15) and class uniformity untouched;
-E3 ARMED, not fired. Canonical home §(K-out) *Steps O42–O46*, landing
-record `notes/Pencil-fanout.md` §"OGEOM", driver `w4/ogeom.py`. **DIRECTION BATTAIN (ordinal 39) IS LANDED — 2026-08-26,
-`recon-opus`, the arc's FIRST direction ever aimed at `hbareSplit`,
-and it paid.** The motive is **exactly characterized off the Lean
-bodies** ((BE-10)); **bare pencil realizability is UNCONDITIONAL**
-((BE-11)) — `HasPencilRealization` has no existence content, all of it
-is the rank, which is *why* the antecedent gives route A nothing; the
-pencil condition is carried entirely by the hubs ((BE-12)); and
-**(BE-13) is the first universal rank cap over a pencil stratum ever
-produced BY AN ARGUMENT**, `rank(cone) = 6(|V|−1) − def₂(G)`, exact at
-68/68. It **CORRECTS a standing reading**: "no T2 is producible by this
-harness" was too strong — a universal cap *is* producible, and what
-actually blocks T2 is **structural**, forcing the cone needs a
-**triangle** and the habitat is triangle-free by `hnoRigid`. The
-falsification arm is answered **positively and deterministically**:
-**774 shapes, 774 exact-ℚ attainment certificates, ZERO shortfalls** —
-proofs, not cap reports. **`hbareSplit` OPEN and unchanged; refutes
-neither it nor `PencilPair K 3 G`; NOT a PENCIL event.** The residual
-**(BE-14)**, direct attainment, is one sentence: **`Y° ⊄ Z(G)`**.
-Canonical home §(K-bare-ext) *Steps BE9–BE13*, landing record
-`notes/Pencil-fanout.md` §"BATTAIN", driver `w4/battain.py`.
-**NEXT CONCRETE TASK: the next direction, coordinator-picked — and the
-candidate list is now ordered by TARGET DISTANCE** (the 2026-08-26
-user directive, *Current state*), not by the previous direction's
-successor order. The grid-side statement left behind, new and
-unattacked: **is the ledger gap ever `≥ 3`?** (spectrum `{0,1,2}` at
-4 935 shapes; by (GR-127) no proof may fix its anchor matching). The §9 shelf **(ZH-1)–(ZH-6)** stays unpriced and
-ineligible. Nothing else structural queued, nothing awaiting user
-adjudication.
+**Status:** in progress — the phase stays OPEN (2026-07-24 adjudication). The
+target is **`PencilPair K 3 G`**, and the landed successor
+`pencil_conjecture_of_hcontract_hK_hbareSplit_of_card`
+(`Molecule/Pencil/Escape.lean`) derives it from exactly **three carried
+items**: **`hcontract`** (W4 — build parked by the Lean hold, four informal
+costs NOT parked), **`hK`** (kernel (K)), **`hbareSplit`** (kernel (K-bare)).
+Everything else in the phase is closed: W0–W3 and the whole W5 arc (L0–L7),
+with **`hsplit` CLOSED IN FULL** and `hfresh`'s counting discharge landed
+(2026-07-30).
+
+**The kernel-(K) research arc: 47 directions COMPLETE** (2026-08-05 → 08-26,
+ordinals 1–39), plus eight strategy-only passes and two architecture probes.
+**Per-direction verdicts are NOT restated here** — each has a landing write-up
+at `notes/Pencil-fanout.md` §"<CODE>" and a canonical mathematical home in the
+workbooks. **The arc's standing result, unchanged by all 47: `hK` is not
+closer.** **(GR-15)** — the single open gap the whole §(K-grid) chain reduces
+to — is **untouched**; **class uniformity of the escape is untouched**; no
+g-flank was found by any direction; **E3 is ARMED (by GBAL) and has never
+fired**.
+
+**What the arc did buy**, in one line each: route-ledger **entry 5 PROVEN**
+(GBAL) and **chart irreducibility PROVEN** (CIRR); **(GR-R1) PROVEN** (GFLIP)
+and **(GR-C2) settled both ways** (GCHEAP), making (b′) at the constant 2 a
+theorem on the `n_hub ≤ 6` stratum; **input (a) at all 174 certified classes**
+(OQRANK); the **(b′) price form REFUTED** (GHWIT) and then shown to be a
+statement **the ledger never consumed** (GMINM — (b′) has three inequivalent
+readings and the consumers run on the difference of minima); the **geometric
+disproof route free by an argument** on everything searched (OGEOM); and, at
+the arc's first-ever look at `hbareSplit`, **bare realizability proved
+UNCONDITIONAL** plus the first pencil-stratum rank cap produced by an argument
+(BATTAIN, (BE-11)/(BE-13)).
+
+**NEXT CONCRETE TASK — the next direction, coordinator-picked from *Hand-off*'s
+candidate list, which is ordered by DISTANCE TO THE PHASE TARGET** (the
+2026-08-26 user directive; see *Current state*'s eighth-check-in bullet). Its
+head is **(BE-14)**, direct attainment, whose hard step is one sentence —
+`Y° ⊄ Z(G)` — and which would discharge `hbareSplit` *and* `PencilPair`'s
+unconditional conjunct at once.
+
+> **TWO ITEMS AWAIT USER ADJUDICATION** (both opened 2026-08-26; this replaces
+> the "nothing awaiting adjudication" standing of 2026-08-19):
+> 1. **(K-res) — commission it or not.** Wave-sized, **never attacked**,
+>    present in the dispatch docs only as a *bar* across eight consecutive
+>    specs, and **W4 route 3 cannot close without it**. Its "pin it when the
+>    tight side closes" deferral is stale by this note's own admission. The
+>    coordinator will **price it, not commission it**.
+> 2. **The (BE-14) slice shape.** BATTAIN offered a deliberately partial
+>    proof-of-concept — (BE-14) restricted to `def₂ = def₃`, where the cone
+>    attains in closed form, giving the arc's first *proved*
+>    `HasPencilRealization` result but **not** discharging `hbareSplit` (DZ has
+>    `def₂ = 11`) — versus going at the full statement. A user call on how much
+>    partiality is worth buying.
+
+**Conventions.** Direction codes are multi-letter and topic-tagged from the
+fifth fan-out on (`notes/Pencil-labels.md` (L5)); grandfathered single letters
+are re-used across dates, so **always date those**. The doc-split and
+discipline-distillation rounds are both COMPLETE (`notes/Pencil-structure.md`;
+`RESEARCH-ARC.md` is the promoted manual). Both architecture probes are landed
+(KBARE-FALSIFY, C3-AVOID). File layout: `Molecule/Pencil.lean` split into
+`Molecule/Pencil/{Statement,Arms,Motive,Chart,Engine,Reseed,Witness,Steer,Pair,
+Pair2,Escape,Base}.lean`; per-leaf history `notes/Phase39-design.md`.
+
+**Canonical homes — read these, not a summary of them.** The **State of (K)**
+gap map in `notes/Pencil-informal.md` is the phase's status object and is
+authoritative for every status word; `notes/Pencil-informal-grid.md` owns
+§(K-grid); `notes/Pencil-strategy.md` owns the option board (§8) and the
+unpriced §9 shelf **(ZH-1)–(ZH-6)**, which stays ineligible;
+`notes/Pencil-fanout.md` owns dispatch specs and landing write-ups;
+`notes/Pencil-adjudications.md` owns the archived verbatim user calls.
+
 
 ## Current state
 
@@ -861,7 +725,12 @@ Remaining recorded debt: `zneq.ledger` (deliberately deferred), the
 (`out_classes`/`shape_key`/`tree_triple`) — all still coordinator-paid
 between waves.
 
-**Nothing is awaiting user adjudication as of 2026-08-19.** The one item that was —
+**SUPERSEDED 2026-08-26 — two items now await user adjudication** ((K-res)'s
+commissioning and the (BE-14) slice shape; both stated in the top `**Status:**`
+block, not restated here). The paragraph below records the 2026-08-19 state and
+the SIGZ authorization, which still binds on its own terms.
+
+**As of 2026-08-19, nothing was awaiting adjudication.** The one item that was —
 ZNEQ's `σ > 0`-everywhere hunt at class shapes whose `H` carries a short theta
 sub-multigraph — is **AUTHORIZED** and dispatched as **SIGZ**; the direction-A pivot rule
 (`notes/Pencil-fanout-archive.md` §"Direction A") stays in force, so a hit is *"a

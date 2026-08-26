@@ -130,6 +130,10 @@ keeps only what git cannot show.
 | 2026-08-26 | Phase39 GHWIT verification-bar overclaim (`ef0c8907`) | opus | gate-invisible defect caught in verification → corrective resume, closed | The draft claimed **four** independent exact models and pinned a `max\|R\|` quadruple; the shipped driver implemented **three** and its own docstring said so, and nothing in the tree produced that figure. Every gate was green — the defect sat in the *verification-bar sentence itself*, the load-bearing claim for a refutation. Root cause the agent named: it wrote the bar from what it had **run** (a scratchpad probe) rather than what it had **shipped**. Resume landed the model as an asserting device. See F25. |
 | 2026-08-26 | Phase39 GHWIT — coordinator shaping block refuted by the direction it primed (`ef0c8907`) | opus (coordinator) | coordinator-predicted-obstruction category, SECOND instance | The dispatch's `route` block asserted the clause "reduces to *some maximum has `\|h\| = 2`*", derived by the coordinator from (GR-115)(iii). False: a landed witness has `min \|h\| = 3` across its whole maximum family, and the refuting pair defeats even `\|h\| ≤ 3`. Harmless here — the agent tested rather than assumed it — but it is the second phase instance of `RESEARCH-ARC.md`'s watched candidate (a coordinator prediction refuted by the direction it primed). **Two instances now; promotion-eligible at a third.** |
 
+| 2026-08-26 | Phase39 45th direction GMINM (`e4911af6`, `3ff28b76`) | opus | a landed headline RE-PRICED by the next direction — no defect, a routing error | GHWIT's landing headlined *"per-matching (b′) at the constant 2 is FALSE"*. True, and irrelevant: GMINM found (b′) has THREE inequivalent readings and the ledger consumes the third (`gdev.min_dev` computes a **difference of minima**), so five directions had attacked a statement the consumers never used. Verified against landed source, not docstrings; the separation follows from landed figures alone ((GR-67) parity + W3's odd ledger gap). **No gate could have caught this** — every figure was right. See F26. |
+| 2026-08-26 | Phase39 46th direction OGEOM (`7e5d968a`, `aa451646`) | opus | coordinator-verified premise the driver only CITED | (OC-47)(i)'s class-uniform claim ("every cycle and bouquet is dead") rests entirely on girth ≥ 7, which the driver **cites to (Λ4)** rather than asserting. Checked independently against the workbook: it holds, forced by `hnoRigid`. Recorded because the pattern is general — **a premise a driver cites is outside its F11 coverage by construction**, and is exactly where a landed-but-unchecked assumption would hide. Also: `--validate` runs 645 s and does not fit the 600 s foreground budget; the two-invocation split is the recorded gate recipe. |
+| 2026-08-26 | Phase39 47th direction BATTAIN (`50e90d6a`, `def76ed2`) | opus | dispatch corrected a LANDED reading, and caught its own methodological trap | (BE-9)'s *"no T2 is producible by this harness"* was too strong: a universal cap **is** producible by argument ((BE-13)), and what blocks T2 is structural (forcing the cone needs a triangle; the habitat is triangle-free by `hnoRigid` — coordinator-verified in `Escape.lean:411–418`, not a docstring). Separately, its first sweep reported three shortfalls from **one seed each**; rank being lower semicontinuous, a one-seed shortfall proves nothing — it found and fixed this before returning. See F27. |
+
 ## Findings
 
 (Distill recurring lessons here — one entry per lesson, rows cite it.
@@ -591,3 +595,36 @@ At phase close, promote stable entries into the coordinator command's
   headline claim needs a driver testing that sentence; this is the reminder
   that *"we checked it N ways"* is one of them, and on a refutation it is
   the load-bearing one.
+
+- **F26 — a residual can be *correct* and still be the wrong target; check what
+  the consumer actually consumes before spending a direction on it.** Phase 39
+  ran five consecutive directions (GCHEAP → GPRICE → GBLAW → GXESC → GHWIT) at
+  (GR-104)(i), the (b′) price form. Every one was sound; the last refuted the
+  target outright. Then GMINM read the *consumer* and found (b′) has **three
+  pairwise-inequivalent readings** — `∀M`, `min_M` of the difference, and the
+  ledger's own **difference of minima** — and the consumers run on the third.
+  The refuted statement was never consumed. **No gate can catch this**: every
+  figure was right, every landing verified, and the defect lived in the choice
+  of target. Two structural causes, both fixable and both fixed at the
+  2026-08-26 landing: the phase note's candidate list was ordered by *the
+  previous direction's successor order*, which mechanically chases residuals;
+  and the option board ranks **cheapest-decisive**, a property of the direction
+  rather than its distance to the target. **The rule:** before dispatching at a
+  residual, open its consumer and confirm the exact statement it takes — the
+  same *slot-trace* discipline the playbook already mandates for build
+  hand-offs, applied to research targets. A residual-of-a-residual that "does
+  not touch a named gap" is a documented smell; this arc had that sentence
+  written on its own board and ran at the target anyway.
+
+- **F27 — one draw is a lower bound, not a measurement, whenever the statistic
+  is semicontinuous.** BATTAIN's first sweep reported three rank shortfalls
+  from a **single seed each**; rank is lower semicontinuous, so a one-seed
+  shortfall establishes nothing — all three attained on another draw. The
+  dispatch caught it itself and said so. This is the **second** instance of the
+  shape in this phase (C3's `0/179` was the first, in mirror image), which is
+  what makes it promotable rather than an anecdote. **The rule:** any claim of
+  the form *"this shape fails to reach X"* needs multiple independent draws
+  before it is a measurement at all, and the return must say how many; the
+  *positive* direction needs only one, because an exhibited certificate is a
+  proof. State the asymmetry explicitly — BATTAIN's 774/774 are proofs, its
+  shortfall reports would have been guesses.
