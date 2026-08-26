@@ -1557,6 +1557,32 @@ itself, the corpus's own name for (GR-117)(iii). The source tokens
 in this reservation; GHWIT *cites* them and mints its own results at
 (GR-120)+.
 
+## Reserved namespace — direction GMINM (2026-08-26, **RESERVED — the direction is in flight**)
+
+**Reserved 2026-08-26 for the single direction GMINM** (ordinal 37, the
+arc's forty-fifth direction; `notes/Pencil-fanout.md` §"GMINM"), the first
+direction picked under the **2026-08-26 widened delegation** (the
+coordinator chooses; `notes/Phase39.md` *Current state*). Target: the
+**`min_M` reading** of (GR-104)(i), GHWIT's residual #2.
+
+| direction | owning § | labels reserved | steps reserved | driver |
+|---|---|---|---|---|
+| **GMINM** | §(K-grid) — **extends**, no new section | **(GR-125)–(GR-129)** | **G145–G149** | `w4/gminm.py` (conditional — see the spec) |
+
+The reservation is the head of §(K-grid)'s unclaimed tail (declared
+**(GR-125)+ / Step G145+** at GHWIT's landing above). At landing, record
+what was consumed, return any remainder, and flip this header to **USED**.
+
+**Code and basename verified 0-hit** as raw substrings, case-insensitively,
+across `*.md`, `*.tex`, `*.lean`, `*.py`, `*.m2` with `.git`/`.lake`
+excluded, control token `ghwit` live at 7 files. `(GR-126)`–`(GR-130)` and
+*Steps G146–G150* each 0-hit; `(GR-125)` and *Step G145* hit only GHWIT's
+live-tails bookkeeping above (the `(GR-97)`/`(GR-115)`/`(GR-120)`
+precedent). **Checked and NOT chosen:** `GANCH` — **collides** (2 files,
+raw-substring, on "anchor"); `GMREAD` — 0-hit but it names the *act of
+reading* rather than the object. **`GMINM` names the statement's content**
+— the **min-over-M** form of the price gap.
+
 ## Registry — `notes/Pencil-informal.md` (the (K) workbook)
 
 Status keywords are pointers to the owning section's verdict block and the

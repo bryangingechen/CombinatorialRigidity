@@ -1,7 +1,9 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: EIGHT fan-outs and SIXTEEN single directions dispatched; ALL 44
-directions LANDED.** **GHWIT (ordinal 36, §"GHWIT") LANDED 2026-08-26, same
+**Status: EIGHT fan-outs and SEVENTEEN single directions dispatched; 44 of
+the 45 LANDED — GMINM (ordinal 37, §"GMINM") is PREPPED and IN FLIGHT**, the
+first direction picked under the 2026-08-26 widened delegation, testing
+whether GHWIT's refutation actually reaches the ledger. **GHWIT (ordinal 36, §"GHWIT") LANDED 2026-08-26, same
 day as its dispatch — a REFUTATION BY WITNESS that goes one clause past the
 spec's headline case: the half-witness clause (GR-117)(iii), the gap-2 law
 (GR-117)(i) AND **(GR-104)(i) at `2k = 2` itself** are all FALSE at an
@@ -52,8 +54,8 @@ exact `n_hub` boundary for ledger attack (c)'s AA-glue case (GTMPL), (b′)'s fi
 `n`-free constant (GFLOW), a **NO HIT** on the authorized disproof hunt that nonetheless
 kills the counting route to a disproof (SIGZ), (a₁) reduced to one determinant (OSCHU), and
 **(GR-64)(R2) REFUTED** with (R1) delivered (GCOLL).
-Ordinals run 1–36 (the eighth fan-out claims 25–29; GFLIP is 30; GCHEAP is 31;
-OQRANK is 32; GPRICE is 33; GBLAW is 34; GXESC is 35; GHWIT is 36) and were assigned at dispatch, so landing order
+Ordinals run 1–37 (the eighth fan-out claims 25–29; GFLIP is 30; GCHEAP is 31;
+OQRANK is 32; GPRICE is 33; GBLAW is 34; GXESC is 35; GHWIT is 36; GMINM is 37) and were assigned at dispatch, so landing order
 differs from ordinal order.
 
 **The two architecture-testing PROBES are also both LANDED** (§"Two probes SPECCED and
@@ -3574,3 +3576,102 @@ downstream consumers run at 4 is a **ledger-side routing call**. (2) The
 `O ⊄ M` and satisfy (GR-104)(i) outright by (GR-107)(iii); (GR-59) is the
 precedent that `min_M` can be load-bearing. (3) The exact `n` of the first
 clause failure: 16, 18 or 20 (20 exhibited; 16/18 clean under disclosed caps).
+
+## GMINM — thirty-seventh ordinal, the forty-fifth direction (single dispatch, prepped 2026-08-26)
+
+**Selection provenance:** the **2026-08-26 widened delegation** — the user
+put the *pick* itself, not merely its shape, in the coordinator's hands for
+the rest of the session, with two stated criteria: explore different paths
+rather than getting bogged down, and prefer examples that could kill whole
+directions or counterexample the target (`notes/Phase39.md` *Current state*,
+the seventh check-in's second bullet, quoted verbatim there). **This is a
+coordinator pick; the twelfth's disclosure applies — no independent top-rung
+ranking of the alternatives.** Dispatched **un-named, single**, at
+**`recon-opus`** (fable conserved; `weekly_scoped` critical).
+
+**Why this and not a fresh section — stated honestly, because it is the
+fifth consecutive §(K-grid) direction.** It is picked *against* the
+diversity criterion on purpose and for one reason: GHWIT's landed headline
+— *"per-matching (b′) at the constant 2 is FALSE"* — has an **unmeasured
+escape hatch**, and until it is closed we do not know whether the arc just
+killed the constant or only one reading of it. (GR-59) is the standing
+precedent that this is a real hatch, not a quibble: the per-matching variant
+of **(a′)** was refuted exactly this way and `min_M` turned out to be
+load-bearing. So this is a **correctness check on our own just-landed
+claim**, cheap and decisive, not another attempt to prove the thing GHWIT
+buried. It is bounded to one dispatch; the next pick goes off §(K-grid).
+
+**The target — two questions, both required.**
+
+**(Q1) Does the `min_M` reading survive?** At `2k = 2`, is
+`min_M (d_adm(M) − d_par(M)) ≤ 2` true at the habitat shapes where the
+per-matching form is refuted — starting with `refut20` and the other 11
+all-(2,2) pairs GHWIT's `--build` found at `n = 20` (8 habitat-gated, 3 at
+gap 4; `ghwit.py --build`)? At `refut20`'s shape the arithmetic is already
+suggestive and **must be checked, not assumed**: 26 perfect matchings, of
+which exactly **one** has `O ⊆ M` (the witness), the other 25 having
+`O ⊄ M` and satisfying (GR-104)(i) outright by (GR-107)(iii). If that
+pattern is general, `min_M` survives and GHWIT's kill is confined to the
+per-matching reading. **The refutation shape is the valuable one:** a
+habitat shape where **every** matching prices `≥ 4` kills (b′)'s constant at
+*every* reading — that is a strictly bigger kill than GHWIT's and is the
+outcome to hunt hardest.
+
+**(Q2) Which reading does the ledger actually consume?** GHWIT called this
+"a ledger-side routing call, the coordinator's" — it is being routed here,
+because it is a question about landed statements and not a preference. Read
+(b′)'s **downstream consumers** and report, with the decl/step pointers,
+whether they need the per-matching form, the `min_M` form, or the constant
+only. If they run on `min_M`, GHWIT refuted a statement the ledger never
+used, and that must be said plainly. If they need per-matching, then
+whether they can be re-routed at the **proven** constant **4** ((GR-86),
+now *attained* by (GR-122)) is the live question — answer it if the reading
+is cheap, and say so if it is not.
+
+**The named inputs (landed; consume, do not re-derive).** (GR-122) and
+`refut20` with its 11 siblings (`ghwit.py --build`/`--verify`); (GR-120)'s
+budget, which already makes the price form a theorem at `n ≤ 10` and
+wherever `d_par(M) ≤ 2` — so **any `min_M` counterexample lives at `n ≥ 12`
+with every matching at `d_par ≥ 4`**, a sharp confinement to hunt inside;
+(GR-107)(iii)'s proven off-`M` half, the reason the 25 other matchings are
+free; (GR-59), the precedent and the shape of the answer; (GR-86)'s cap.
+`gprice.pairs_of` and `perfect_matchings` enumerate the matchings.
+
+**What counts as a HIT.** Either answer to Q1, stated with its exact
+quantifier — a proof or a broad measurement that `min_M ≤ 2` survives (say
+over what population, with caps disclosed), or **a shape where every
+matching prices `≥ 4`**, which is the bigger kill and a
+coordinator-surfacing headline. Q2 answered with pointers is required
+either way and is **not** optional colour.
+
+**Bars.** Do **not** re-open the per-matching form — it is refuted, that is
+settled. Do not attack (GR-C1) or the `2k ∈ {4, 6}` `O ⊄ M` corner. Do not
+re-run GHWIT's `--exh` or `--build`, GPRICE's 1 431-pair sweep, GBLAW's
+1 099-pair census or GXESC's 248-pair hunt — cite them; a *new* mode testing
+a *new* sentence is fine. (GR-15) and class uniformity are out of scope. No
+`.lean` (the standing Lean hold).
+
+**Riders, verbatim from GHWIT's.** TERMINATION check E1/E2/E3 at the return
+(E3 ARMED by GBAL — report, never fire). Cap disclosure: an exhausted cap is
+*"not found under cap C"*, never nonexistence. F11: every headline claim
+needs a driver testing **that sentence**; "exhaustive"/"forced"/"the only"
+are their own claim class. **F25, new and aimed straight at this dispatch:**
+the sentence describing your *verification bar* is itself a headline claim —
+write "N independent models" and any figure you pin by **re-reading the
+shipped driver**, never from memory of the session; a scratchpad probe that
+is not in the driver does not count toward the bar. All figures exact ℚ,
+seeded, degeneracy-guarded; the balance layer is `w4/gridbal_common`,
+imported directly, never via sibling re-exports. `gprice`/`gxesc`/`ghwit`
+are sibling leaves — sideways imports are in policy but trip §2 rule 2:
+extend the existing *Harness debt* item's consumer list in your draft (the
+coordinator records it), make no move.
+
+**Driver — conditional, at the pinned path `notes/scripts/w4/gminm.py`.** A
+purely derivational answer consuming only landed figures needs no new
+driver; state that disposition explicitly. Any new measured or exhaustion
+claim mints the driver at the pinned path, read-only imports, left untracked
+for the coordinator to gate and commit.
+
+**Reservation** (`notes/Pencil-labels.md` §"Reserved namespace — direction
+GMINM"): §(K-grid) **extends**; labels **(GR-125)–(GR-129)**, **Steps
+G145–G149**; return any unconsumed remainder to the tail.

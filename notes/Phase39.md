@@ -142,11 +142,20 @@ every `n ≤ 10` and wherever `d_par(M) ≤ 2` — and the slide gate
 untouched; E3 stays ARMED and does not fire.** Canonical home
 §(K-grid) *Steps G140–G144* (`notes/Pencil-informal-grid.md`), landing
 record `notes/Pencil-fanout.md` §"GHWIT", driver `w4/ghwit.py`.
-**NEXT CONCRETE TASK: the next research direction, coordinator-picked**
-under the 2026-08-26 widened delegation — the two named successors are
-the **ledger-side routing call** (can the consumers run at the proven
-constant 4?) and the **untested `min_M` reading**; candidate list in
-*Hand-off*. The §9 shelf **(ZH-1)–(ZH-6)** stays unpriced and
+**DIRECTION GMINM (ordinal 37) IS PREPPED and IN FLIGHT** — the first
+pick made under the 2026-08-26 widened delegation, dispatched
+2026-08-26 at `recon-opus`. It carries **both** of GHWIT's successors
+as one question: does the **`min_M` reading** of (GR-104)(i) survive
+where the per-matching form is refuted, and **which reading do (b′)'s
+downstream consumers actually need**? The stakes are our own headline —
+if `min_M` survives, GHWIT killed one reading rather than the constant;
+if some shape prices `≥ 4` at *every* matching, (b′)'s constant falls
+at every reading, a strictly bigger kill. Spec
+`notes/Pencil-fanout.md` §"GMINM"; reservation (GR-125)–(GR-129) /
+*Steps G145–G149*. Picked **against** the diversity criterion and
+deliberately so (a fifth consecutive §(K-grid)), as a bounded
+correctness check on a just-landed claim; the next pick goes off
+§(K-grid). **NEXT CONCRETE TASK: land the GMINM return.** The §9 shelf **(ZH-1)–(ZH-6)** stays unpriced and
 ineligible. Nothing else structural queued, nothing awaiting user
 adjudication.
 
@@ -673,11 +682,14 @@ neighbours' incidences and every capacity unit above 2 is bought by a **Case-I g
 whose pencil-compatibility is geometry the probe was barred from. **§(K-avoid) was never
 opened** and no gap-map status moved.
 
-**THE NEXT CONCRETE TASK — the next research direction, coordinator-picked**
-under the 2026-08-26 widened delegation (*Current state*, the seventh
-check-in's second bullet: the coordinator chooses each direction, diversity
-is a selection criterion, and §8.5's *test the architecture* category is a
-standing preference). **GHWIT is LANDED** (§(K-grid) *Steps G140–G144*;
+**THE NEXT CONCRETE TASK — land the GMINM return.** Direction **GMINM**
+(ordinal 37, the arc's forty-fifth) is **PREPPED and IN FLIGHT**, dispatched
+2026-08-26 at `recon-opus` against `notes/Pencil-fanout.md` §"GMINM"
+(reservation (GR-125)–(GR-129) / *Steps G145–G149*) — the first pick under
+the 2026-08-26 widened delegation, carrying GHWIT's residuals #1 and #2 as
+one question. **A shape pricing `≥ 4` at every matching is a
+coordinator-surfacing headline** (it costs (b′) its constant at every
+reading). **GHWIT is LANDED** (§(K-grid) *Steps G140–G144*;
 landing record `notes/Pencil-fanout.md` §"GHWIT"), and it **refuted
 (GR-104)(i) at `2k = 2`** — so the whole GPRICE → GBLAW → GXESC → GHWIT
 price-form thread is **closed negatively**, its mechanism theorems standing
