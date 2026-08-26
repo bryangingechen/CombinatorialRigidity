@@ -1518,7 +1518,7 @@ source tokens **(GR-108)/(GR-112)** are landed labels — already minted,
 **not** in this reservation; GXESC *cites* them and mints its own results
 at (GR-115)+.
 
-## Reserved namespace — direction GHWIT (2026-08-26, **RESERVED — the direction is in flight**)
+## Reserved namespace — direction GHWIT (2026-08-26, **USED — the direction landed the same day; all five labels and all five steps consumed, none returned**)
 
 **Reserved 2026-08-26 for the single direction GHWIT** (ordinal 36, the
 arc's forty-fourth direction; `notes/Pencil-fanout.md` §"GHWIT"), the
@@ -1534,9 +1534,12 @@ from this one's labels.
 | **GHWIT** | §(K-grid) — **extends**, no new section | **(GR-120)–(GR-124)** | **G140–G144** | `w4/ghwit.py` (conditional — see the spec) |
 
 The reservation is the head of §(K-grid)'s unclaimed tail (declared
-**(GR-120)+ / Step G140+** at GXESC's landing above). At landing, record
-which labels and steps were consumed and return any remainder to the tail,
-then flip this header to **USED**.
+**(GR-120)+ / Step G140+** at GXESC's landing above).
+**Consumed 2026-08-26 at landing: (GR-120)–(GR-124) and Steps G140–G144 ALL
+CLAIMED, none returned** — the live tail is therefore **(GR-125)+ /
+Step G145+**. The registry's §(K-grid) row above is extended accordingly;
+the (L6) landing-time bare-token grep ran clean on the merged draft (every
+mint `GR-`-prefixed inside the reservation).
 
 **Code and basename verified 0-hit** as raw substrings, case-insensitively,
 across `*.md`, `*.tex`, `*.lean`, `*.py`, `*.m2` with `.git`/`.lake`

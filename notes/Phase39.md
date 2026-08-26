@@ -5,7 +5,7 @@
 (L0–L7) are COMPLETE — `hsplit` CLOSED IN FULL and `hfresh`'s counting discharge landed
 (2026-07-30). Only three items remain, all carried by the landed successor
 `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card` (`Molecule/Pencil/Escape.lean`):
-`hcontract` (W4), kernel `hK`, and kernel `hbareSplit` — see *Hand-off*. **Forty-three
+`hcontract` (W4), kernel `hK`, and kernel `hbareSplit` — see *Hand-off*. **Forty-four
 kernel-(K) directions are now COMPLETE** (2026-08-05 → 08-26, ordinals 1–35; roster and
 per-direction theorem chain in *Decisions made*). **The SIXTH, SEVENTH and EIGHTH FAN-OUTS
 ARE ALL COMPLETE** (all fifteen directions LANDED 2026-08-19). **The arc's HITs:**
@@ -21,7 +21,7 @@ a combinatorial WALL found, the naive form refuted as a class statement,
 per-class-generic quantifier, zero (K-tight)-event rulings).
 Everything else an honest MISS or an OPEN reshape; verdicts in *Decisions made* and
 `notes/Pencil-fanout{,-archive}.md`, **not restated here**. **(GR-15) stays OPEN
-throughout; class uniformity untouched; no g-flank at any of the forty-three directions.
+throughout; class uniformity untouched; no g-flank at any of the forty-four directions.
 E3 is ARMED (by GBAL) and has NOT fired.** Direction codes are **multi-letter and
 topic-tagged from the fifth fan-out on** (`notes/Pencil-labels.md` (L5)); grandfathered
 single letters are re-used across dates, **always date those**.
@@ -124,19 +124,28 @@ hunted pairs), which would close (GR-104)(i) at `2k = 2` unconditionally.
 New proven instrument: the reversal-label ledger (GR-115), M-closed ⟹
 balance-valid at every `2k`. Canonical home §(K-grid) *Steps G135–G139*
 (`notes/Pencil-informal-grid.md`), landing record `notes/Pencil-fanout.md`
-§"GXESC", driver `w4/gxesc.py`. **DIRECTION GHWIT (ordinal 36) IS
-PREPPED and IN FLIGHT — the seventh check-in's front-runner pick,
-dispatched 2026-08-26 at `recon-opus`**, the first of the seven single
-directions GFLIP–GHWIT to run **below the top rung** (fable conserved by
-the user's own session-config selection; `weekly_scoped` 92 % critical).
-Its target is GXESC's reshaped residual, the **half-witness clause**
-(GR-117)(iii) — a proof closes (GR-104)(i) at `2k = 2` unconditionally,
-and the refutation shape (an all-(2,2), **gap-4** pair) would refute
-(GR-104)(i) itself and move (b′)'s constant. Spec
-`notes/Pencil-fanout.md` §"GHWIT"; reservation (GR-120)–(GR-124) /
-*Steps G140–G144*. **NEXT CONCRETE TASK: land the GHWIT return** (per the
-fan-out landing checklist), then the next standing research pick (the
-2026-08-07 delegation; the *shape* is a user call) — candidate list in
+§"GXESC", driver `w4/gxesc.py`. **DIRECTION GHWIT (ordinal 36) IS LANDED —
+dispatched and landed 2026-08-26 at `recon-opus` (the first single
+direction to run below the top rung, fable conserved), a REFUTATION BY
+WITNESS that reaches one clause past its own target: the half-witness
+clause (GR-117)(iii), the gap-2 law (GR-117)(i) AND (GR-104)(i) at
+`2k = 2` ITSELF are all FALSE** at an explicit habitat-gated
+`n_hub = 20` pair whose entire 64-member maximum family is all-(2,2)
+with gap 4 ((GR-122), four independent exact models) — so
+**per-matching (b′) at the constant 2 is FALSE** and (GR-86)'s gap-4
+cap is TIGHT. A second, independent finding **corrects a landed
+figure**: (GR-108) is false from **`n = 12`**, exactly, not `n = 16`
+((GR-123), superseding (GR-116)(iv) in place). New proven instruments:
+the (2,2) budget (GR-120) — which makes the price form a THEOREM at
+every `n ≤ 10` and wherever `d_par(M) ≤ 2` — and the slide gate
+(GR-121), refuted as a route. **`hK`, (GR-15) and class uniformity are
+untouched; E3 stays ARMED and does not fire.** Canonical home
+§(K-grid) *Steps G140–G144* (`notes/Pencil-informal-grid.md`), landing
+record `notes/Pencil-fanout.md` §"GHWIT", driver `w4/ghwit.py`.
+**NEXT CONCRETE TASK: the next research direction, coordinator-picked**
+under the 2026-08-26 widened delegation — the two named successors are
+the **ledger-side routing call** (can the consumers run at the proven
+constant 4?) and the **untested `min_M` reading**; candidate list in
 *Hand-off*. The §9 shelf **(ZH-1)–(ZH-6)** stays unpriced and
 ineligible. Nothing else structural queued, nothing awaiting user
 adjudication.
@@ -431,7 +440,7 @@ constraints; the dated dispatch narrative is in *Decisions made* and git):
   unchanged:** phase OPEN, the 2026-08-05 Lean hold, W4 PARKED, `hK`/`hbareSplit`
   pinned, both option Bs un-commissioned, (K-res) still a user call.
 
-**Kernel-(K) research arc — sixty docs+scripts-only dispatches landed, plus eight
+**Kernel-(K) research arc — sixty-one docs+scripts-only dispatches landed, plus eight
 strategy-only passes** (2026-08-02 → 08-26) — and, **outside** that count because they test
 the architecture rather than the (K) crux, the **two probes**: **KBARE-FALSIFY**
 (2026-08-20) and **C3-AVOID** (2026-08-24), both landed. Which pass was which is one-lined in *Decisions
@@ -440,7 +449,7 @@ LTWO are the fortieth through forty-fourth; CIRR the forty-fifth; YLOC the forty
 the forty-seventh; ZNEQ the forty-eighth; AGLU the forty-ninth; the eighth fan-out's five
 the **fiftieth through fifty-fourth**, all landed 2026-08-19; **GFLIP the fifty-fifth**,
 **GCHEAP the fifty-sixth**, **OQRANK the fifty-seventh**, **GPRICE the fifty-eighth**,
-all 2026-08-25, and **GBLAW the fifty-ninth** and **GXESC the sixtieth**, both 2026-08-26), and a **user call on
+all 2026-08-25, and **GBLAW the fifty-ninth**, **GXESC the sixtieth** and **GHWIT the sixty-first**, all 2026-08-26), and a **user call on
 dispatch *shape*** — either multidispatch election, or a coordinator-authored pick like the
 twelfth's — contributes **no** strategy pass, so the 2026-08-19 eighth-fan-out check-in adds
 none even though it moved a standing constraint.
@@ -664,24 +673,28 @@ neighbours' incidences and every capacity unit above 2 is bought by a **Case-I g
 whose pencil-compatibility is geometry the probe was barred from. **§(K-avoid) was never
 opened** and no gap-map status moved.
 
-**THE NEXT CONCRETE TASK — land the GHWIT return.** Direction **GHWIT**
-(ordinal 36, the arc's forty-fourth) is **PREPPED and IN FLIGHT**,
-dispatched 2026-08-26 at **`recon-opus`** against the spec at
-`notes/Pencil-fanout.md` §"GHWIT" (reservation (GR-120)–(GR-124) / *Steps
-G140–G144*, `notes/Pencil-labels.md`). Its target is the **half-witness
-clause** ((GR-117)(iii): every pos-carrying `O ⊆ M` pair has a maximum
-that is balance-valid or half-resident — strictly weaker than the refuted
-(GR-108), a proven surgical mechanism behind it ((GR-117)(ii)),
-counterexample-free at 248 hunted pairs; a proof closes (GR-104)(i) at
-`2k = 2` unconditionally, and the equal-value refutation shape — an
-all-(2,2), **gap-4** pair — would refute (GR-104)(i) itself and move
-(b′)'s constant; §(K-grid) *Steps G135–G139*). **A gap-4 witness stops
-the loop and goes to the user**; a gap-2 all-(2,2) witness kills the
-clause only, leaving the gap-2 law alive and needing a new route. Land the
-return per the fan-out landing checklist, then take the next standing
-research pick.
+**THE NEXT CONCRETE TASK — the next research direction, coordinator-picked**
+under the 2026-08-26 widened delegation (*Current state*, the seventh
+check-in's second bullet: the coordinator chooses each direction, diversity
+is a selection criterion, and §8.5's *test the architecture* category is a
+standing preference). **GHWIT is LANDED** (§(K-grid) *Steps G140–G144*;
+landing record `notes/Pencil-fanout.md` §"GHWIT"), and it **refuted
+(GR-104)(i) at `2k = 2`** — so the whole GPRICE → GBLAW → GXESC → GHWIT
+price-form thread is **closed negatively**, its mechanism theorems standing
+and its target dead. **Do not re-open the constant 2 per-matching.**
 
-**The candidate list after GHWIT** — the 2026-08-25 re-ranked board
+**GHWIT's own two successors, in order.** (1) **The ledger-side routing
+call** — the ceiling **4** is proven ((GR-86)) and now *attained*
+((GR-122)), so the question is whether (b′)'s downstream consumers can run
+at 4; this is a **ledger** question, not a grid one, and is the
+coordinator's to route. (2) **The untested `min_M` reading** — at
+`refut20`'s shape 25 of 26 matchings have `O ⊄ M` and satisfy (GR-104)(i)
+outright by (GR-107)(iii), and (GR-59) is the standing precedent that
+`min_M` can be load-bearing where the per-matching form is refuted; the
+sweep is cheap and well-posed. (3) The exact `n` of the first clause
+failure (16, 18 or 20).
+
+**The wider candidate list** — the 2026-08-25 re-ranked board
 (`notes/Pencil-strategy.md` §8, the canonical home) with its rank-1 and
 rank-2 slots landed (OQRANK / GPRICE) and its head now in flight:
 **(K-bare) at the seed-free direct-attainment shape** (rank 3 — the

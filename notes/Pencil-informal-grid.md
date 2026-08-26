@@ -13718,14 +13718,22 @@ is checkable by a `2^{n/2}` chord-subset enumeration — the driver's
 > pools — the witnesses are new pairs outside both, in the cell those
 > samplers rarely draw (single-cycle `F` at `n ≥ 16`).
 >
-> **(iv) The boundary.** (GR-108) is exhaustively TRUE on the
-> `n ≤ 6` stratum sub-cell (GPRICE, 1 034 pairs — landed) and
-> measured-clean at `n = 8/10/12/14` (landed pools; plus this pass's
-> 74 + 48 single-cycle pairs at `n = 12/14`, gap 0 throughout); it is
-> **FALSE from `n = 16`** — the third localization boundary of the
-> (GR-108) family after per-set `n = 12` ((GR-108)(iii)) and
-> per-component `n = 16` ((GR-113)(ii)), and this time it is the law
-> itself. Between 14 and 16 the record is caps-only, not exhaustive.
+> **(iv) The boundary.** ~~(GR-108) is exhaustively TRUE on the
+> `n ≤ 6` stratum sub-cell … it is **FALSE from `n = 16`** — the third
+> localization boundary of the (GR-108) family …~~ **SUPERSEDED
+> 2026-08-26 by (GR-123)(i)/(ii) (GHWIT, *Step G143*): (GR-108) is
+> FALSE from `n = 12`, and 12 is EXACT.** Three habitat-gated
+> single-`F`-cycle `n = 12` witnesses (`n12a/b/c`, four independent
+> models each) carry `M* = 8`, family `72 = 36 pos + 36 neg + 0 bal`;
+> and every `F`-cycle type and chord diagram at `n ≤ 10` is
+> exhaustively enumerated with no habitat-realizable gap-2 instance
+> (`Λ = ∅` at all 12 ungated ones). **What survives verbatim:** the
+> `n ≤ 6` exhaustive half (GPRICE, 1 034 pairs) and this clause's
+> caps-disclosed reading of its own pools — the `n = 12/14` legs were
+> correctly hedged as *"not found under cap"*, so the **disclosure
+> stands and only the inference from it fails**; the "third
+> localization boundary" gloss goes with the superseded sentence.
+> (GR-116)(i)–(iii) are untouched.
 
 *Verification note.* The word census is a third, independent
 implementation of the (GR-106) model (single-cycle specialization:
@@ -14016,3 +14024,434 @@ coordinator re-runs it.**
   (GR-108) refutation and the gap-2 reshaping), which is not entry 1
   and arms nothing. **Firing is a coordinator action; reported, not
   fired.**
+
+---
+
+### Steps G140–G144 (2026-08-26, direction GHWIT) — **the half-witness clause, the gap-2 law AND (GR-104)(i) at `2k = 2` are ALL REFUTED BY WITNESS, so per-matching (b′) at the constant 2 is FALSE and (GR-86)'s gap-4 cap is TIGHT — and a landed boundary figure is corrected: (GR-108) is false from `n = 12`, exactly**: **(GR-120)** is the **(2,2) budget** — at any `O ⊆ M` pair, any `2k`, any number of `F`-cycles, a *forcing* maximum with residency (2,2) forces `h_k = h_s + 4`, the exact chord budget `e_f + 2h_s + f_0 = n/2 − 6` and `dist = 2h_s + 4 + 2f_0`, hence **`n ≥ 12` and `d_par ≥ 4`**, with `n = 12` forcing `e_f = h_s = f_0 = 0` — whose corollary is that **the clause, the gap-2 law and (GR-104)(i) at `2k = 2` are THEOREMS at every `n ≤ 10` and at every pair with `d_par(M) ≤ 2`** (asserted at all 13 704 maxima of 1 055 pairs, 0 violations); **(GR-121)** is the **slide gate**, the (GR-110)(ii) criterion that a clause failure needs all four odd-end arcs blocked and, at `d_par = 4`, all four odd ends tight — **refuted as a route**, only 20/40 (2,2) maxima on the landed pools being rescued by one slide; **(GR-122) IS THE REFUTATION** — `refut20`, an explicit **habitat-gated** single-`F`-cycle `O ⊆ M`, `2k = 2` pair at `n_hub = 20` whose maximum family is `64 = 32 pos + 32 neg + 0 bal` with **every member residency (2,2)**, `min|h| = 4`, `f = {AA:4, AB:8, BA:8, BB:4}`, so `d_par = 4`, `d_adm = 8`, **gap = 4**: the **half-witness clause (GR-117)(iii) is FALSE**, the **gap-2 law (GR-117)(i) is FALSE**, and by (GR-117)(i)'s proven equivalence **(GR-104)(i) at `2k = 2` is FALSE** — both majority one-flip prices exactly `+4`, so **per-matching (b′) at the constant 2 is FALSE** and **(GR-86)'s gap-4 cap is ATTAINED**; every figure asserted through **four independent exact models**, three landed or local and one (`naive_family`) a self-contained brute force using no project device, and the witness is not isolated (12 all-(2,2) pairs at `n = 20`, 8 habitat-gated, 3 at gap 4, plus a second pinned gated all-(2,2) pair `clause20` at gap 2 — so the clause failure and the law failure are **distinct events and both occur**); **(GR-123)** corrects the landed boundary — **(GR-108) is FALSE from `n = 12`** at three habitat-gated witnesses, and **12 is EXACT** (every `F`-cycle type and chord diagram exhaustively enumerated at `n ≤ 10`, the 12 ungated gap-2 instances none habitat-realizable), superseding (GR-116)(iv)'s "from `n = 16`" and its third-localization-boundary gloss while leaving its caps disclosure standing; **(GR-124)** the status, whose successor order heads with **what replaces the constant 2 in (b′)** (the proven ceiling 4, now attained) and **the untested `min_M` reading** (at `refut20`'s shape 25 of 26 matchings have `O ⊄ M` and satisfy (GR-104)(i) outright — the (GR-59) precedent). **(GR-15) stays OPEN, no gap-map status move on `hK` itself; E3 stays ARMED and does NOT fire.**
+
+### Step G140 — (GR-120): the (2,2) budget — a forcing maximum with both odd branches fully resident forces `n ≥ 12`, `d_par ≥ 4`, and an exact chord budget
+
+> **(GR-120)** *(proven; asserted at every maximum of 1 055 `O ⊆ M`,
+> `2k = 2` pairs — the `n ≤ 6` stratum EXHAUSTIVE, V8, seeded
+> `cell_shapes` pools at `n = 12/14` — 13 704 maxima, 0 violations;
+> `--census`)*
+>
+> Fix an `O ⊆ M` pair with `2k = 2` and a valid configuration `z` whose
+> class is **forcing** (pos or neg, (GR-112)(i)) with **residency
+> (2, 2)** — both odd branches fully resident. Classify the `n/2 − 2`
+> **even** matching chords by residency: `e_f` **full** (both ends in
+> `R`), `h_s` / `h_k` **half** with the resident end a **source** /
+> **sink**, `f_0` **free** (both ends through). Then, wlog pos:
+>
+> **(i) The ledger reading.** `h = h_s − h_k = −4`, so
+> > `h_k = h_s + 4`.
+>
+> **(ii) The chord budget.**
+> > `e_f + 2 h_s + f_0 = n/2 − 6`.
+>
+> **(iii) The distance.** `dist(z, M) = 2 h_s + 4 + 2 f_0`.
+>
+> **(iv) The numerical gate.** Hence `n ≥ 12` and `dist(z, M) ≥ 4`, and
+> at `n = 12` necessarily `e_f = h_s = f_0 = 0`, `dist = 4`.
+>
+> **(v) Corollary — the clause and the law, unconditionally, on two
+> regions.** The half-witness clause (GR-117)(iii), hence the gap-2 law
+> (GR-117)(i), hence **(GR-104)(i) at `2k = 2`, `O ⊆ M`**, hold at
+> every pair with **`n ≤ 10`** and at every pair with
+> **`d_par(M) ≤ 2`**.
+
+*Proof.* All four odd ends are resident sources ((GR-106)(iii) at a pos
+configuration), so each odd branch scores `c_j = +2` and (GR-115)(i)'s
+identity `Σ_j c_j + h = 0` gives (i). Count labels: sinks and sources
+alternate on every `F`-cycle ((GR-106)(i)), so `|K| = |S|`; a full even
+chord carries one of each ((GR-106)(ii)); hence
+`|S| = 4 + e_f + h_s` and `|K| = e_f + h_k`, which is (i) again.
+Counting chords, `(n/2) − 2 = e_f + h_s + h_k + f_0 = e_f + 2h_s + 4 + f_0`
+— that is (ii). The through hubs are exactly the non-resident end of
+each half chord and both ends of each free chord, so
+`n − |R| = h_s + h_k + 2f_0 = 2h_s + 4 + 2f_0`, which is (iii) via
+(GR-106)(iv). (iv) is `e_f, h_s, f_0 ≥ 0` in (ii) and (iii). For (v):
+by (iv) no maximum of an `n ≤ 10` pair, and none of a `d_par ≤ 2` pair,
+is forcing with residency (2, 2); every other maximum is balance-valid
+(residency with a 0 frees a branch) or half-resident; so
+(GR-117)(iii)'s hypothesis is met and (GR-117)(ii) applies. ∎
+
+*(Register note: (iv) is the first **hypothesis-free numerical** gate on
+the (GR-117)(iii) open case. It also explains the shape of the whole
+landed record: every gap > 0 instance in every sweep of this pass has
+`d_par = 4` exactly — see (GR-123)(ii).)*
+
+---
+
+### Step G141 — (GR-121): the slide gate — the (GR-110) transversal form makes the open case a *blocking* condition, and one slide is provably not enough
+
+> **(GR-121)** *(the criterion proven; its sufficiency REFUTED as a
+> route by measurement — 20 of 40 (2,2) maxima rescued on the landed
+> pools, 8/16, 4/8, 4/8, 4/32 at the four (GR-116) witnesses;
+> `--census`)*
+>
+> Let `x` be a pos maximum with residency (2, 2), `K` its sink set, and
+> let `e` be an end of an odd branch `γ`. By (GR-110)(i)–(ii) `e` is the
+> unique source in the interior of its arc, and:
+>
+> **(i) The criterion.** Replacing `e` by another interior position `p`
+> of its arc yields a **maximum** with `γ` **half-resident**, and is
+> valid **iff** `π(p) ∉ S ∖ {e}`, where `π` is the `M`-partner map and
+> `S` the source set. (The (GR-110)(ii)(b) clause is vacuous here: no
+> odd end lies in `K` at a pos configuration.)
+>
+> **(ii) The open case is a blocking condition.** So a pair violating
+> (GR-117)(iii) has, at **every** maximum, all four odd-end arcs
+> **fully blocked**: every other position of each is the `M`-partner of
+> a source. In particular `Σ_{4 odd arcs}(s_i − 1) ≤ h_s` with `s_i`
+> the arc-interior sizes.
+>
+> **(iii) The `d_par = 4` corollary.** At `d_par = 4`, (GR-120)(iii)
+> forces `h_s = 0`: no source has a through partner, so *no* position
+> is blockable and every odd-end arc must be a **singleton** — all four
+> odd ends **tight** (both `F`-neighbours resident).
+>
+> **(iv) What this is not.** It is **not** a proof route. Measured over
+> the landed pools, only **20 of 40** (2,2) forcing maxima admit such a
+> slide, and at the four (GR-116) witnesses the rescue rates are
+> `8/16`, `4/8`, `4/8`, `4/32`. Tight (2,2) maxima are common, and
+> (GR-122)'s witness is built entirely out of them.
+
+*Proof.* (i) is (GR-110)(ii) read at a fixed sink set: with `K` fixed
+every valid configuration has `|R| = 2|K|`, so any admissible re-choice
+is again a maximum; conditions (a)/(b) there reduce to the displayed
+one. (ii) is the contrapositive plus (GR-120). (iii): `dist = 4` in
+(GR-120)(iii) gives `h_s = f_0 = 0`; a blocked position `p` would make
+`{p, π(p)}` a half chord with a source resident end, i.e. `h_s ≥ 1`. ∎
+
+---
+
+### Step G142 — (GR-122): **THE REFUTATION** — an `n = 20` habitat pair whose entire maximum family is all-(2,2), with gap 4: the half-witness clause, the gap-2 law and (GR-104)(i) at `2k = 2` are all FALSE
+
+> **(GR-122)** *(refutation by witness; every pinned figure asserted
+> through **four** independent exact models — the landed
+> `gxesc.word_census` orientation-word census, the landed
+> `gprice.rmodel_f` (GR-106) reversal-set model run on the
+> habitat-gated **shape** (not the diagram), this pass's bitset model,
+> and `naive_family`, a self-contained brute force using no project
+> device; all four assert inside `--verify`; discovery in `--build`)*
+>
+> **(i) The witness `refut20`.** On the positional 20-cycle
+> `0..19` (single `F`-cycle, all-even, so `O ⊆ M`):
+> > even chords `{15,6}, {13,1}, {17,11}, {18,16}, {7,2}, {5,3},
+> > {9,4}, {0,8}`;  odd chords `γ₁ = {10,14}`, `γ₂ = {12,19}`.
+>
+> Habitat-gated by the canonical `cflank.cubic_habitat` at the
+> `ℓ`-assignment `ℓ = 4` on the `F`-branches `(3,4)` and `(16,17)`,
+> `ℓ = 3` on both odd chords, `ℓ = 2` elsewhere (excess 6, `Λ = ∅`).
+> Then
+> > `M* = 16`, family **64 = 32 pos + 32 neg + 0 bal**,
+> > **every member residency (2, 2), min |h| = 4**,
+> > `f = {AA: 4, AB: 8, BA: 8, BB: 4}`, `d_par(M) = 4`,
+> > `d_adm(M) = 8`, **gap = 4**.
+>
+> **(ii) What is refuted.**
+> * **(GR-117)(iii), the half-witness clause** — the maximum family has
+>   no balance-valid and no half-resident member. The (GR-117)(ii)
+>   surgery has nothing to apply to.
+> * **(GR-117)(i), the gap-2 law** — `d_adm > d_par + 2`.
+> * **(GR-104)(i), the price form, at `2k = 2`** — by (GR-117)(i)'s
+>   proven equivalence, the parity optima are the two unbalanced
+>   patterns and **both majority one-flip prices are exactly `+4`**. So
+>   **per-matching (b′) at the constant 2 is FALSE**, at an explicit
+>   habitat with an explicit perfect matching.
+> * **(GR-86)'s gap-4 cap is TIGHT** at `2k = 2` — the value 4 is
+>   attained, so no argument can improve the cap without new
+>   hypotheses.
+>
+> **(iii) No `O ⊆ M` escape at the shape.** The `refut20` shape carries
+> **26** perfect matchings, of which **exactly one** has `O ⊆ M` — the
+> witness matching, gap 4. (The other 25 have `O ⊄ M` and satisfy
+> (GR-104)(i) outright by the landed (GR-107)(iii).) So the refutation
+> is not an artifact of a bad matching choice *within* the cell; a
+> hypothetical `min_M`-over-**all**-matchings reading of (b′) is
+> untouched here and is the obvious successor question.
+>
+> **(iv) It is not isolated.** The `--build` climb (seed 20260826, 16
+> starts at `n = 20`) returns **12** all-(2,2) hits, **8 habitat-gated**,
+> among them **three** gap-4 pairs, two of which gate. A second pinned
+> witness `clause20` (even chords `{12,16},{15,5},{9,7},{10,19},
+> {11,1},{8,3},{0,13},{14,18}`, odd `{17,4},{2,6}`) is habitat-gated,
+> all-(2,2) with **gap 2**: it refutes the clause while the gap-2 law
+> survives at it — the two failures are genuinely different events, and
+> both occur.
+>
+> **(v) The (GR-116) witnesses were the wrong adversarial control.** All
+> four have `min |h| ∈ {2, 3}`, i.e. a half-resident maximum; the
+> refuting family is the one with `min |h| = 4` throughout. The
+> distinguishing statistic is the **(2,2) fraction** of the maximum
+> family, and it is what `--build` climbs.
+
+*Verification note.* The four models are genuinely independent in their
+carrier: `rmodel_f` enumerates `2^n` **reversal sets** with an aux-graph
+bipartiteness test and a per-component orientation solve, and it is run
+on the habitat **shape** rebuilt by the landed `specs_of_diagram`
+recipe (so `f_cycles`, `odd_idx`, `cell_data` all re-derive the diagram
+from the branch list); the landed word census and this pass's bitset
+layer enumerate `2^n` **orientations**; and the fourth, `naive_family`,
+is a deliberately unoptimized self-contained brute force that uses **no
+project device** — it recomputes hub states, validity, sizes,
+per-pattern optima and classes from the raw chord lists, sharing no
+code path with the other three, and touching them only at the answer.
+It runs inside `--verify` at **all five** pinned witnesses (~2 s per
+`n = 20` pair) and independently returns, at `refut20`,
+`max|R| = (AA 16, AB 12, BA 12, BB 16)` — i.e. `f = {4, 8, 8, 4}` by
+(GR-106)(iv) — with the 64-member family profiling
+`{('pos', (2,2)): 32, ('neg', (2,2)): 32}`: the all-(2,2) property, from
+a fourth carrier. Its `M*`, family size, whole `f`-table, gap and
+all-(2,2) verdict are **asserted equal** to the other three models', not
+merely printed. The `2^{3n/2}` full cube is out of reach at `n = 20` (it
+stops at 12), so the bar met here is exactly the
+(GR-83)/(GR-113)/(GR-116) bar, with one extra model. ∎
+
+---
+
+### Step G143 — (GR-123): the corrected (GR-108) boundary — the balance law is FALSE from `n = 12`, exactly — and the exhaustive record
+
+> **(GR-123)** *(three verified witnesses + EXHAUSTIVE sweeps; caps
+> disclosed below; `--verify`, `--exh`)*
+>
+> **(i) (GR-108) is FALSE at `n = 12`.** Three explicit **habitat-gated**
+> single-`F`-cycle `O ⊆ M`, `2k = 2` pairs on the positional 12-cycle:
+>
+> | tag | even chords | odd chords | family | gap |
+> |---|---|---|---|---|
+> | **n12a** | `{0,2},{1,4},{6,8},{7,10}` | `{3,11},{5,9}` | `M* = 8`, 72 = 36 pos + 36 neg + **0 bal** | **2** |
+> | **n12b** | `{0,2},{1,10},{4,7},{6,8}` | `{3,11},{5,9}` | same | **2** |
+> | **n12c** | `{0,3},{2,4},{6,9},{8,10}` | `{1,5},{7,11}` | same | **2** |
+>
+> each with `f = {AA: 4, AB: 6, BA: 6, BB: 4}`, all **four** models
+> agreeing (`--verify` runs the full chain at these too).
+> So **(GR-116)(iv)'s boundary sentence — "(GR-108) is FALSE from
+> `n = 16`", "the third localization boundary" — is REFUTED**: the law
+> already fails at 12. (GR-116)(iv)'s `n ≤ 14` legs were correctly
+> hedged as *"measured-clean under caps"*; what falls is the boundary
+> reading, not the disclosure. **(GR-104)(i) survives at all three**
+> (gap 2), and each satisfies (GR-117)(iii) (4 of 36 maxima are (2,2)).
+>
+> **(ii) And `n = 12` is EXACT.** Over **every** `F`-cycle type and
+> **every** chord diagram and **every** odd-pair choice — i.e. every
+> `O ⊆ M`, `2k = 2` pair up to isomorphism, **ungated**, hence a
+> superset of the habitat pairs:
+>
+> | `n` | `F`-cycle types | instances | gap histogram | all-(2,2) | gap ≥ 4 |
+> |---|---|---|---|---|---|
+> | 4 | 2 | 6 | `{0: 6}` | 0 | 0 |
+> | 6 | 4 | 180 | `{0: 180}` | 0 | 0 |
+> | 8 | 7 | 4 410 | `{0: 4410}` | 0 | 0 |
+> | 10 | 12 | 113 400 | `{0: 113388, 2: 12}` | 0 | 0 |
+> | 12 | 21 | 3 274 425 | `{0: 3270594, 2: 3831}` | 0 | 0 |
+> | 14 (single-cycle only) | 1 | 2 837 835 | `{0: 2816037, 2: 21798}` | 0 | 0 |
+>
+> and the **12** ungated gap-2 instances at `n = 10` are **none of them
+> habitat-realizable** — every `ℓ`-placement with the odd branches at
+> `ℓ ∈ {3,5}` and the rest at `ℓ ∈ {2,4}`, total excess 6, `Λ = ∅`, was
+> tried through `cubic_habitat`. So (GR-108) is a **theorem at every
+> `n ≤ 10`** and false at 12: the boundary is exact.
+>
+> **(iii) `d_par = 4` everywhere.** Every gap > 0 instance in every
+> sweep of this pass — 25 641 exhaustive plus 11 399 capped — has
+> `d_par(M) = 4` **exactly**. The lower half is (GR-120)(iv); the upper
+> half is measured only.
+>
+> **(iv) The all-(2,2) emptiness, and where it ends.** 0 all-(2,2) and 0
+> gap-4 instances at `n ≤ 12` (all cycle types) and `n = 14`
+> (single-cycle), **exhaustively and ungated**; 0 in the capped legs at
+> `n = 14` (all types, 3 000 matchings each: 2 142 000 instances) and
+> `n = 16` (single-cycle, 84 000 instances); 0 in the full 2-chord
+> transposition neighbourhood of each (GR-116) witness (40/41/73/70
+> pairs); and 0 from the guided climb at `n = 12/14/16/18` (68/74/71/73
+> starts × ≤ 40 steps), whose best (2,2) fractions rise
+> `0.11 → 0.27 → 0.60 → 0.82` and reach **1.0 only at `n = 20`**. The
+> smallest `n` carrying a clause failure is therefore **16, 18 or 20**,
+> and 20 is the first one exhibited.
+>
+> **(v) The `|h| = 2` reduction is FALSE.** The route *"the clause
+> reduces to `some maximum has |h| = 2`"* (from (GR-115)(iii)) does not
+> hold: the landed (GR-116) witness **rand20b** is pos-carrying with
+> **min |h| = 3** over its whole maximum family — profile
+> `{(1,2): 8, (2,2): 16}` per class, **no (1,1) member at all**. The
+> correct reduction is *some maximum has `|h| ≤ 3`*, equivalently *some
+> odd end is through at some maximum*, and (GR-122) shows even that can
+> fail.
+
+**Caps, disclosed in full.** (1) The `n ≤ 12` sweeps and the `n = 14`
+single-`F`-cycle sweep are **complete** — every cycle type, every
+perfect matching of the hub set, every odd-pair — with **no cap on any
+assertion path**; they are ungated, hence a superset of the habitat
+pairs, so their emptiness claims are *stronger* than gated ones but
+their **gap histograms are NOT comparable to the landed gated
+populations** (GPRICE's 1 431, GBLAW's 1 099, GXESC's 248 are all
+habitat-gated). (2) `n = 14` all-types and `n = 16` single-cycle are
+seeded random-matching legs at 3 000 tries per cycle type (seed
+20260826 printed). (3) The `--build` climb is seeded, 80 starts × 40
+steps, capped at 12 hits per `n`. (4) The `n ≤ 10` habitat exhaustion
+is complete over `ℓ`-placements **given `Λ = ∅`** (no `ℓ = 1`
+hub-hub branch) — the standing convention of this cell. (5) The gate is
+`cflank.cubic_habitat`, the same (GR-25) cut-criterion device every
+landed sampler in this arc uses; `gridcol.class_shape`, its canonical
+oracle, is out of reach at `n_hub ≥ 12`. (6) `refut20`'s and
+`clause20`'s figures are **cap-free** — full `2^n` enumerations.
+
+---
+
+### Step G144 — (GR-124): where the arc stands after the refutation, and the hand-off
+
+> **(GR-124)** *(the status statement; no new mathematics)*
+>
+> | statement | standing after this pass |
+> |---|---|
+> | (GR-117)(iii), the half-witness clause | **REFUTED** — `refut20` and `clause20`, habitat-gated, `n = 20`, all-(2,2) maximum families |
+> | (GR-117)(i), the gap-2 law | **REFUTED** — `refut20` has gap 4 |
+> | **(GR-104)(i) at `2k = 2`, `O ⊆ M`** | **REFUTED** — both majority one-flip prices `+4` at `refut20`; so **per-matching (b′) at the constant 2 is FALSE** |
+> | (GR-104)(i) at `2k = 2`, `n ≤ 10`; and at any `n` with `d_par(M) ≤ 2` | **THEOREM** — (GR-120)(v), unconditional, all `F`-cycle types |
+> | (GR-104)(i) at `2k = 2`, `n = 12`; single-cycle `n = 14` | **TRUE by complete enumeration** ((GR-123)(ii)/(iv)), ungated |
+> | (GR-86)'s gap-4 cap | **TIGHT** at `2k = 2` — attained at `refut20` |
+> | (GR-108), the balance law | **REFUTED from `n = 12`** (three gated witnesses), **exact**: a theorem at every `n ≤ 10`. (GR-116)(iv)'s "from `n = 16`" is superseded |
+> | (GR-117)(ii), the surgery | **untouched, proven** — it just has no input at `refut20` |
+> | (GR-105)–(GR-107), (GR-110)–(GR-112), (GR-115) | **untouched, proven** — mechanism theorems; (GR-107)(iii)'s off-`M` half still gives (GR-104)(i) outright there |
+> | (GR-116)(i)–(iii), the four witnesses | **untouched** — re-asserted here figure-by-figure; only (iv)'s boundary moves |
+> | the `2k ∈ {4, 6}` `O ⊄ M` corner | untouched, as barred |
+> | (GR-C1) past the stratum | untouched, as barred |
+> | (GR-15) | **OPEN, unchanged; no gap-map status move on `hK`** |
+>
+> **The residual, in successor order.**
+> 1. **What replaces the constant 2 in (b′).** The proven `n`-free
+>    chain is `d_adm − d_par ≤ 4·min(k, ⌊n/4⌋) ≤ 12` ((GR-89), now
+>    unconditional), and (GR-104)(ii)'s interpolation gives
+>    `≤ δ_M + 2·min(δ_M/2, ⌊n/12⌋)`. At `2k = 2` that is `≤ 4` for
+>    `n ≥ 12`, and (GR-122) shows **4 is attained**. So the first
+>    question is whether **`d_adm − d_par ≤ 4` at `2k = 2`** is a
+>    theorem (it is, by (GR-86)) and whether the ledger's downstream
+>    consumers can run at 4 rather than 2 — a **ledger-side** question,
+>    not a grid-side one, and it is the coordinator's to route.
+> 2. **The `min_M` reading.** (GR-122)(iii) leaves open whether
+>    `min_M (d_adm(M) − d_par(M)) ≤ 2` survives: at the `refut20` shape
+>    25 of 26 matchings have `O ⊄ M` and satisfy (GR-104)(i) outright
+>    by (GR-107)(iii). Precedent cuts both ways — (GR-59) refuted the
+>    per-matching variant of **(a′)** and made `min_M` load-bearing
+>    there; the same move is available here and has **not** been
+>    tested. This is the cheapest live successor: sweep
+>    `min_M (d_adm − d_par)` over habitat shapes carrying an all-(2,2)
+>    `O ⊆ M` pair.
+> 3. **The exact `n` boundary of the clause failure.** 16, 18 or 20;
+>    20 exhibited, 16/18 clean under the disclosed caps. A directed
+>    search at 16/18 with the (2,2)-fraction objective is a small,
+>    well-posed job.
+> 4. The `2k ∈ {4, 6}`, `O ⊄ M` corner — untouched, as barred.
+> 5. (GR-C1) past the stratum — untouched, as barred.
+
+---
+
+### Verification (Steps G140–G144)
+
+`notes/scripts/w4/ghwit.py` (**new with this pass**, at the spec's
+pinned path; left untracked for the coordinator to gate and commit).
+Imports — all read-only — `odd_idx` / `stratum_cases` / `v8_specs`
+**directly from `gridbal_common`** (never via the sibling re-exports),
+`cflank.cubic_habitat`, four `gprice` devices (`cell_data`,
+`cell_shapes`, `pairs_of`, `rmodel_f` — each acquiring a **fourth**
+consumer) and five `gxesc` devices (`refut_specs`, `specs_of_diagram`,
+`word_census`, `word_stats`, `word_valid` — each acquiring its
+**second** consumer): §2-rule-2 sideways trips, disclosed and recorded
+as an extension of the **GBLAW/GXESC *Harness debt*** item's consumer
+lists (`notes/scripts/README.md`, the canonical home) — this dispatch
+makes **no move**. **Rank-free**: `gexist.fully_good_rank` is never
+imported or called and no `d_fg` claim is made anywhere. Local devices,
+none shadowing a §1 primitive (checked against the README index and the
+*Divergences* table): `hub_edges` / `state_tables` / `word_bitsets` /
+`maxsize` / `sigma_of_word` (the multi-`F`-cycle generalization of the
+gxesc word model, plus its bitset layer — the model reduces to gxesc's
+verbatim on one cycle and is cross-asserted against it), `pair_scan` /
+`scan_one` (the per-instance verdict), `budget_of` / `budget_assert`
+(the (GR-120) clauses), `slide_test` ((GR-121)), `naive_family` (the **fourth model** — a
+self-contained brute force using no project device, deliberately
+unoptimized), `cyc_types` / `all_matchings` / `scan_matching`
+(the exhaustive sweep), `n12_specs` / `n20_specs` (the pinned
+witnesses, re-entered for independent reconstruction and gated at use),
+`gate_general` (the all-`ℓ`-placement habitat gate), `transpositions`.
+Exact integers / GF(2) throughout; no floating point; rngs seeded per
+mode with the seed printed; no set iteration printed.
+
+```
+PYTHONHASHSEED=0 python3 notes/scripts/w4/ghwit.py --verify    # ~32 s  (GR-122)/(GR-123): the five pinned witnesses through FOUR models, the n <= 10 gate exhaustion
+PYTHONHASHSEED=0 python3 notes/scripts/w4/ghwit.py --census    # ~5 s   (GR-120)/(GR-121) asserted; the min-|h| record
+PYTHONHASHSEED=0 python3 notes/scripts/w4/ghwit.py --exh       # ~70 s  the exhaustive ungated sweep + the capped legs + the gate disclosure
+PYTHONHASHSEED=0 python3 notes/scripts/w4/ghwit.py --build     # ~225 s the (2,2)-fraction climb that found refut20
+PYTHONHASHSEED=0 python3 notes/scripts/w4/ghwit.py --validate  # ~335 s all four in one process
+```
+
+**Which driver mode tests which sentence (F11).**
+
+| claim | mode | what asserts *that sentence* |
+|---|---|---|
+| (GR-120)(i)–(iv), every clause | `--census` | `budget_assert` runs at **every maximum** of 1 055 pairs (stratum EXHAUSTIVE + V8 + seeded `n = 12/14` cells) — 13 704 maxima; the ledger `±4`, the budget identity, `n ≥ 12`, `dist ≥ 4` and the `n = 12` rigidity are five separate asserts |
+| (GR-120)(v) the two proven regions | `--exh` | the `n ≤ 10` rows of the exhaustive table are the corollary's own instance (gap 0 everywhere gated), and the `(2,2) forcing maxima seen` histogram shows the budget's only realizations are `(n=12, 0,0,0, dist 4)` and `(n=14, 1,0,0, dist 4)` |
+| (GR-121)(i)/(iii) the criterion | `--census` | `slide_test` re-derives, per maximum, the same-sink-set family from (GR-110)(ii) and reports the rescued count |
+| (GR-121)(iv) one slide is NOT enough | `--census` | the printed `20 of 40` and the per-witness `8/16, 4/8, 4/8, 4/32` — a **refutation** counter, not a corroboration |
+| **(GR-122)(i) `refut20`'s figures** | `--verify` | each pinned `(M*, N, pos, neg, bal, gap, min|h|)` asserted in the word census; `scan_one` asserted equal; `cubic_habitat` asserted on the rebuilt shape; `odd_idx ⊆ mat` and single-`F`-cycle asserted; `rmodel_f`'s `f`-table asserted `{4,8,8,4}` with `d_adm − d_par = 4`; the all-(2,2) property asserted in **both** the bitset model and the word census |
+| **the verification bar itself — four independent models** | `--verify` | `naive_family` (no project device) runs at all five pinned witnesses and its `M*`, family size, full `f`-table, gap and all-(2,2) verdict are **asserted equal** to the word census's, the bitset model's and `rmodel_f`'s; its `max |R|` quadruple is printed per witness, so the claim "four models" is produced by the driver, not attested |
+| (GR-122)(ii) the three refutations | `--verify` | they are exactly `bal = 0`, `gap ≥ 4` and residency `(2,2)` at every maximum, each its own assert |
+| (GR-122)(iii) no `O ⊆ M` escape | — | `pairs_of` on the `refut20` shape returns **1** matching (probe, promoted figure; re-runnable in three lines) |
+| (GR-122)(iv) not isolated | `--build` | 12 hits at `n = 20`, 8 gated, 3 with gap 4 — each printed with its diagram and gate verdict |
+| (GR-123)(i) the `n = 12` (GR-108) witnesses | `--verify` | the same four-model assert chain as (GR-122)(i), at gap 2 |
+| (GR-123)(ii) the exhaustive table | `--exh` | complete enumeration; the `pairs` counter is the instance count and no assertion path is capped |
+| (GR-123)(ii) `n = 12` is EXACT | `--verify` | `gate_general` tried at **every** `ℓ`-placement on all 12 ungated `n = 10` gap-2 instances (and all 0 at `n = 8`); 0 realizable |
+| (GR-123)(iv) the climb ceiling | `--build` | best (2,2) fraction printed per `n`; the `1.0` first appears at `n = 20` |
+| (GR-123)(v) the `\|h\| = 2` reduction fails | `--census` | rand20b's full `(class, residency, h)` profile printed with the landed `refut_specs` tuple asserted first |
+| the landed (GR-116) figures | `--census` | all four witnesses' pinned tuples asserted before anything is built on them |
+| (a′) / `d_fg` / input (Y) / (GR-15) | — | **not attempted**; no mode computes a rank |
+
+**Determinism — tested, not asserted.** `--validate` was run **twice**
+at `PYTHONHASHSEED=0` (333 s, 334 s; both exit 0) and the two outputs
+diffed: the raw diff is **16 lines, every one of them a `[Ns]`
+wall-clock cell**, and the diff after stripping `[Ns]` is **empty**. So
+every mathematical byte — the witness tables, the four models'
+quadruples and profiles, the exhaustive histograms, the climb's 12 hits
+at `n = 20` — is bit-identical across runs. Every seeded leg prints its
+seed (`20260826`).
+
+**Scratch probes (README's standing rule — every script the project runs
+is committed).** Five interim probes (the witness-family anatomy; the
+bitset/word-census cross-assert; a handmade `n = 12` budget-saturating
+candidate; the self-contained brute force; the matching census at the
+refuting shape) were folded into `--verify`/`--census`. The fourth
+model in particular is **landed as `naive_family` and asserts inside
+`--verify`** — it is not a scratch figure. The only figures still
+quoted from outside the driver are (GR-122)(iii)'s two matching counts
+(26 perfect matchings, 1 with `O ⊆ M`), which are three-line
+`pairs_of` / `perfect_matchings` calls quoted as such.
+
+### Confidence verdict (Steps G140–G144)
+
+| | claim | standing |
+|---|---|---|
+| **(GR-120)** | the (2,2) budget; `n ≥ 12`, `d_par ≥ 4`; the clause at `n ≤ 10` and at `d_par ≤ 2` | **proven**; asserted at 13 704 maxima, 0 violations |
+| **(GR-121)** | the slide criterion | **proven**; its sufficiency **refuted** by measurement |
+| **(GR-122)** | (GR-117)(iii), (GR-117)(i) and **(GR-104)(i) at `2k = 2`** REFUTED | **refuted by witness** — four independent exact models, habitat-gated, cap-free at the pair |
+| **(GR-123)(i)** | (GR-108) FALSE from `n = 12` | **refuted by witness** — three gated pairs, four models |
+| **(GR-123)(ii)** | `n = 12` is the EXACT (GR-108) boundary | **proven-by-complete-enumeration** at `n ≤ 12` (ungated superset; `ℓ`-placement exhaustion modulo `Λ = ∅`) |
+| **(GR-123)(iii)/(iv)** | `d_par = 4` at every gap > 0 instance; all-(2,2) emptiness to `n = 14` | **measured**; the `d_par ≥ 4` half is (GR-120), the rest is enumeration |
+| **(GR-124)** | the status and successor order | **status statement** |
+
+**What would change this.** (a) A `min_M`-over-all-matchings sweep
+finding a habitat shape where **every** matching has gap ≥ 4 would
+close residual 2 negatively and cost (b′) its constant at every
+reading; finding none at many all-(2,2) shapes would make the `min_M`
+form the live target. (b) A gap-4 pair at `n = 16` or `18` would sharpen
+residual 3. (c) A proof that `d_adm − d_par ≤ 4` needs no (GR-86)
+detour at `2k = 2` would make the new constant unconditional cheaply.
+
+### TERMINATION check (E1 / E2 / E3)
+
+**E1** — no flank is opened or closed by this pass; the `2k ∈ {4,6}`
+`O ⊄ M` corner and (GR-C1) are untouched, as barred. **E2** — the pass
+does not exhaust its target: it **settles** it, negatively, with a
+witness. **E3** — **ARMED by GBAL and NOT fired**: nothing here touches
+(a′), `d_fg` or input (Y); no rank is computed anywhere. Reported, not
+fired — firing is the coordinator's action.

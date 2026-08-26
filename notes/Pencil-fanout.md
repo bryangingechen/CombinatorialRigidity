@@ -1,11 +1,16 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: EIGHT fan-outs and SIXTEEN single directions dispatched; 43 of the
-44 LANDED — GHWIT (ordinal 36, §"GHWIT") is PREPPED and IN FLIGHT**, the
-first of the seven single directions GFLIP–GHWIT to run below the top rung
-(`recon-opus`; fable conserved at the user's session-config selection).
-Its target is GXESC's reshaped residual, the **half-witness clause**
-(GR-117)(iii). **GXESC (ordinal 35, §"GXESC") LANDED 2026-08-26, same
+**Status: EIGHT fan-outs and SIXTEEN single directions dispatched; ALL 44
+directions LANDED.** **GHWIT (ordinal 36, §"GHWIT") LANDED 2026-08-26, same
+day as its dispatch — a REFUTATION BY WITNESS that goes one clause past the
+spec's headline case: the half-witness clause (GR-117)(iii), the gap-2 law
+(GR-117)(i) AND **(GR-104)(i) at `2k = 2` itself** are all FALSE at an
+explicit habitat-gated `n_hub = 20` all-(2,2) pair of gap 4 — so
+**per-matching (b′) at the constant 2 is FALSE** and (GR-86)'s gap-4 cap is
+TIGHT — while a second independent finding corrects a landed boundary:
+(GR-108) is false from `n = 12`, exactly, not `n = 16`. The first single
+direction to run below the top rung (`recon-opus`, fable conserved), and it
+hit.** **GXESC (ordinal 35, §"GXESC") LANDED 2026-08-26, same
 day as its dispatch — a REFUTATION BY WITNESS, the spec's strong form:
 (GR-108), the balance law, is FALSE from `n = 16` (four verified witnesses,
 the first one transposition from GBLAW's strand witness) and existential
@@ -3497,3 +3502,75 @@ read-only, left untracked for the coordinator to gate and commit.
 GHWIT"): §(K-grid) **extends** — no new section; labels
 **(GR-120)–(GR-124)**, **Steps G140–G144**; owning section stays
 authoritative; return any unconsumed remainder to the tail.
+
+### GHWIT — landing write-up (LANDED 2026-08-26, recon-opus, one serial coordinator commit)
+
+**Verdict: REFUTATION BY WITNESS — the spec's named refutation shape, and it
+reaches one clause further than the spec's headline case.** The spec asked
+for the half-witness clause and flagged an all-(2,2) **gap-4** pair as the
+coordinator-surfacing outcome. GHWIT found exactly that.
+
+**The witness.** `refut20`: a **habitat-gated** (`cflank.cubic_habitat`)
+single-`F`-cycle `O ⊆ M`, `2k = 2` pair at `n_hub = 20` — even chords
+`{15,6} {13,1} {17,11} {18,16} {7,2} {5,3} {9,4} {0,8}`, odd chords
+`γ₁={10,14}`, `γ₂={12,19}`, `ℓ = 4` on `F`-branches `(3,4)`/`(16,17)`,
+`ℓ = 3` on both odd chords, `ℓ = 2` elsewhere. `M* = 16`; maximum family
+`64 = 32 pos + 32 neg + 0 bal`, **every member residency (2,2)**,
+`min|h| = 4`; `f = {AA:4, AB:8, BA:8, BB:4}`, so `d_par = 4`, `d_adm = 8`,
+**gap 4**. By (GR-117)(i)'s *proven* equivalence the price form falls with
+the law — this is not a fresh price computation. Not isolated: 12 all-(2,2)
+pairs at `n = 20`, 8 habitat-gated, 3 at gap 4; and a second pinned gated
+all-(2,2) pair `clause20` at gap **2** separates the clause failure from the
+law failure — **both occur**.
+
+**Second, independent finding — a landed figure corrected.** (GR-108) is
+FALSE from **`n = 12`**, not `n = 16`: three habitat-gated single-cycle
+`n = 12` witnesses, with `n ≤ 10` exhaustively enumerated over every
+`F`-cycle type and chord diagram and no habitat-realizable gap-2 instance.
+So **12 is exact**, and (GR-116)(iv)'s boundary sentence plus its "third
+localization boundary" gloss are superseded in place. GXESC's caps
+disclosure was correct — only the inference from it failed, which is the
+disclosure discipline working as designed.
+
+**Proven, new and unconditional.** (GR-120), the **(2,2) budget**: at any
+`O ⊆ M` pair, any `2k`, any number of `F`-cycles, a forcing maximum with
+residency (2,2) forces `h_k = h_s + 4`, `e_f + 2h_s + f_0 = n/2 − 6` and
+`dist = 2h_s + 4 + 2f_0`, hence `n ≥ 12` and `d_par ≥ 4` — so **the clause,
+the gap-2 law and (GR-104)(i) at `2k = 2` are theorems at every `n ≤ 10` and
+at every pair with `d_par(M) ≤ 2`**. (GR-121), the **slide gate**, is proven
+as a criterion and **refuted as a route** (20/40).
+
+**The coordinator's own shaping block was refuted.** The dispatch asserted
+that the clause reduces to *"some maximum has `|h| = 2`"*. False: the landed
+witness `rand20b` is pos-carrying with `min|h| = 3` across its whole family.
+The correct reduction is `|h| ≤ 3`, and `refut20` defeats even that. This is
+the **second** instance in the phase of a coordinator-authored prediction
+refuted by the direction it primed (`RESEARCH-ARC.md` lists that as a
+watched candidate, not yet a rule) — logged at `notes/dispatch-log.md`.
+
+**Verification the coordinator re-ran.** `--validate` re-run in full: exit 0,
+ALL LEGS OK, 337 s, every headline figure reproduced. **One defect was caught
+and returned before landing:** the draft claimed *four* independent exact
+models and pinned a `max|R|` quadruple, but the shipped driver implemented
+three (its own docstring said so) and nothing in the tree produced that
+figure — an attestation with no evidence, tripping F11 and the harness's hard
+"every script the project runs is committed" rule. The continuation landed
+the fourth model (`naive_family`, self-contained, no project device)
+**asserting** `M*`, family size, the whole `f`-table, the gap and the
+all-(2,2) verdict at all five pinned witnesses, and tested byte-stability by
+a measured two-run diff (16 lines, all `[Ns]` wall-clock). Re-verified by the
+coordinator at `--verify`.
+
+**TERMINATION: E1, E2, E3 all NO** — coordinator-re-run and agreed. E1: no
+flank opened or closed; the pass is rank-free. E2: the target is **settled**,
+negatively, with a named successor. E3: **stays ARMED by GBAL, not fired** —
+nothing here touches (a′), `d_fg` or input (Y); no rank is computed anywhere.
+**(GR-15) does not move; `hK` is untouched.**
+
+**Successors, in order.** (1) What replaces the constant 2 in (b′): the
+ceiling **4** is proven ((GR-86)) and now *attained*, so whether the ledger's
+downstream consumers run at 4 is a **ledger-side routing call**. (2) The
+**untested `min_M` reading** — at `refut20`'s shape 25 of 26 matchings have
+`O ⊄ M` and satisfy (GR-104)(i) outright by (GR-107)(iii); (GR-59) is the
+precedent that `min_M` can be load-bearing. (3) The exact `n` of the first
+clause failure: 16, 18 or 20 (20 exhibited; 16/18 clean under disclosed caps).
