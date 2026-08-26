@@ -5,7 +5,7 @@
 (L0–L7) are COMPLETE — `hsplit` CLOSED IN FULL and `hfresh`'s counting discharge landed
 (2026-07-30). Only three items remain, all carried by the landed successor
 `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card` (`Molecule/Pencil/Escape.lean`):
-`hcontract` (W4), kernel `hK`, and kernel `hbareSplit` — see *Hand-off*. **Forty-five
+`hcontract` (W4), kernel `hK`, and kernel `hbareSplit` — see *Hand-off*. **Forty-six
 kernel-(K) directions are now COMPLETE** (2026-08-05 → 08-26, ordinals 1–35; roster and
 per-direction theorem chain in *Decisions made*). **The SIXTH, SEVENTH and EIGHTH FAN-OUTS
 ARE ALL COMPLETE** (all fifteen directions LANDED 2026-08-19). **The arc's HITs:**
@@ -21,7 +21,7 @@ a combinatorial WALL found, the naive form refuted as a class statement,
 per-class-generic quantifier, zero (K-tight)-event rulings).
 Everything else an honest MISS or an OPEN reshape; verdicts in *Decisions made* and
 `notes/Pencil-fanout{,-archive}.md`, **not restated here**. **(GR-15) stays OPEN
-throughout; class uniformity untouched; no g-flank at any of the forty-five directions.
+throughout; class uniformity untouched; no g-flank at any of the forty-six directions.
 E3 is ARMED (by GBAL) and has NOT fired.** Direction codes are **multi-letter and
 topic-tagged from the fifth fan-out on** (`notes/Pencil-labels.md` (L5)); grandfathered
 single letters are re-used across dates, **always date those**.
@@ -160,24 +160,26 @@ not. Canonical home §(K-grid) *Steps G145–G148*, landing record
 `notes/Pencil-fanout.md` §"GMINM", driver `w4/gminm.py`. **No status
 word moves on (GR-104)(i) or per-matching (b′) — both stay REFUTED;
 `hK`, (GR-15) and class uniformity untouched; E3 ARMED, not fired.**
-**DIRECTION OGEOM (ordinal 38) IS PREPPED and IN FLIGHT** — the second
-pick under the widened delegation, the first off §(K-grid) in six
-directions, dispatched 2026-08-26 at `recon-opus`. Target: **the
-geometric route to a disproof**, `notes/Pencil-strategy.md` §8.5's one
-open row — is there a class (shape, split) with **`{σ = 0} = ∅`**,
-every chart point of `H = G − v − a` stressed? By (OC-24) that makes
-**`hK` FALSE there**, a **PENCIL event**. The *counting* half of this
-question is dead ((OC-37), SIGZ NO HIT); the *geometric* half — no
-forced chain-span or Kirchhoff drop — is measured free but open
-class-uniformly and one-point decidable per shape. Confined by
-(OC-39)'s 3 368/3 368 exact-ℚ `K4`-stratum certificates (no
-counterexample lives there) and by (OC-38)'s coincidence-locus
-cautionary instance. Spec `notes/Pencil-fanout.md` §"OGEOM";
-reservation (OC-45)–(OC-49) / *Steps O42–O46*. **A hit is worked up
-in-phase per the 2026-08-26 pre-adjudication, with the
-classification** — does `PencilPair K 3 G` itself fail, or only the
-`hK` pin? — **surfaced to the user.** **NEXT CONCRETE TASK: land the
-OGEOM return.** The grid-side statement left behind, new and
+**DIRECTION OGEOM (ordinal 38) IS LANDED** — 2026-08-26, `recon-opus`,
+the second pick under the widened delegation and the first off
+§(K-grid) in six directions: **NO disproof witness**, and a HIT of the
+restricted second kind. The geometric route to a disproof is now free
+**by an argument** on everything searched — `σ` depends on the induced
+`H` alone ((OC-46)); paths of length `≥ 6` are dead, and girth `≥ 7`
+(forced by `hnoRigid`) therefore kills **every cycle and bouquet**, so
+**(OC-37)(ii)'s one-unit topology dies class-uniformly** ((OC-47));
+**91 260 live cores, 0 candidates** ((OC-48)), making `{σ = 0} ≠ ∅` a
+**theorem** at 275 342 class pairs over 63 013 shapes and **upgrading
+(OC-39) from sample to theorem** ((OC-49)). **It does not close §8.5's
+row:** `n(F°) = 4` and `5` at `|E°| ≥ 9`, and **every `n(F°) ≥ 6`**,
+were never searched — compute frontier below `n(F°) ≤ 5`, ideas
+frontier above; the headline is *"not found under these caps"*, never
+nonexistence. The residual is now **one shape-free sentence**: at every
+live core the Kirchhoff map `⊕_Q S_Q^⊥ → (K⁶)^nodes` is injective at
+the generic chart point. `hK`, (GR-15) and class uniformity untouched;
+E3 ARMED, not fired. Canonical home §(K-out) *Steps O42–O46*, landing
+record `notes/Pencil-fanout.md` §"OGEOM", driver `w4/ogeom.py`. **NEXT CONCRETE TASK: the next research
+direction, coordinator-picked.** The grid-side statement left behind, new and
 unattacked: **is the ledger gap ever `≥ 3`?** (spectrum `{0,1,2}` at
 4 935 shapes; by (GR-127) no proof may fix its anchor matching). The §9 shelf **(ZH-1)–(ZH-6)** stays unpriced and
 ineligible. Nothing else structural queued, nothing awaiting user
@@ -473,7 +475,7 @@ constraints; the dated dispatch narrative is in *Decisions made* and git):
   unchanged:** phase OPEN, the 2026-08-05 Lean hold, W4 PARKED, `hK`/`hbareSplit`
   pinned, both option Bs un-commissioned, (K-res) still a user call.
 
-**Kernel-(K) research arc — sixty-two docs+scripts-only dispatches landed, plus eight
+**Kernel-(K) research arc — sixty-three docs+scripts-only dispatches landed, plus eight
 strategy-only passes** (2026-08-02 → 08-26) — and, **outside** that count because they test
 the architecture rather than the (K) crux, the **two probes**: **KBARE-FALSIFY**
 (2026-08-20) and **C3-AVOID** (2026-08-24), both landed. Which pass was which is one-lined in *Decisions
@@ -482,7 +484,7 @@ LTWO are the fortieth through forty-fourth; CIRR the forty-fifth; YLOC the forty
 the forty-seventh; ZNEQ the forty-eighth; AGLU the forty-ninth; the eighth fan-out's five
 the **fiftieth through fifty-fourth**, all landed 2026-08-19; **GFLIP the fifty-fifth**,
 **GCHEAP the fifty-sixth**, **OQRANK the fifty-seventh**, **GPRICE the fifty-eighth**,
-all 2026-08-25, and **GBLAW the fifty-ninth**, **GXESC the sixtieth**, **GHWIT the sixty-first** and **GMINM the sixty-second**, all 2026-08-26), and a **user call on
+all 2026-08-25, and **GBLAW the fifty-ninth**, **GXESC the sixtieth**, **GHWIT the sixty-first** **GMINM the sixty-second** and **OGEOM the sixty-third**, all 2026-08-26), and a **user call on
 dispatch *shape*** — either multidispatch election, or a coordinator-authored pick like the
 twelfth's — contributes **no** strategy pass, so the 2026-08-19 eighth-fan-out check-in adds
 none even though it moved a standing constraint.
@@ -706,17 +708,19 @@ neighbours' incidences and every capacity unit above 2 is bought by a **Case-I g
 whose pencil-compatibility is geometry the probe was barred from. **§(K-avoid) was never
 opened** and no gap-map status moved.
 
-**THE NEXT CONCRETE TASK — land the OGEOM return.** Direction **OGEOM**
-(ordinal 38, the arc's forty-sixth) is **PREPPED and IN FLIGHT**, dispatched
-2026-08-26 at `recon-opus` against `notes/Pencil-fanout.md` §"OGEOM"
-(reservation (OC-45)–(OC-49) / *Steps O42–O46*) — the second pick under the
-widened delegation and the first off §(K-grid) in six directions. It hunts
-**the geometric route to a disproof** (§8.5's one open row): a class shape
-with `{σ = 0} = ∅`, which by (OC-24) makes **`hK` FALSE there**. **A hit is a
-PENCIL event** — worked up in-phase per the 2026-08-26 pre-adjudication, with
-the half-1/half-2 classification and the confirming pass surfaced to the
-user. A class-uniform proof that the geometric half is free is an equally
-valuable outcome: it closes the last known disproof route. GMINM
+**THE NEXT CONCRETE TASK — the next research direction, coordinator-picked**
+under the 2026-08-26 widened delegation. **OGEOM is LANDED** (§(K-out) *Steps
+O42–O46*): no disproof witness, the geometric route free **by an argument**
+on everything searched, and §8.5's row **narrowed, not closed**. Its own
+successors, in order: **(1)** the unsearched cells — `n(F°) = 4` and `5` at
+`|E°| ≥ 9` (a **compute** job, `--huntn` already takes a cell range and slice
+index) and **every `n(F°) ≥ 6`** (an **ideas** job, since the budget bounds
+`|E(F°)|` but not `n(F°)`); **(2)** the shape-free residual — *is the
+Kirchhoff map `⊕_Q S_Q^⊥ → (K⁶)^nodes` injective at the generic chart point
+of every live core?* — the first single-sentence form the geometric half has
+ever had. Off §(K-out), the standing candidate is **(K-bare)** at the
+seed-free shape: **46 directions on `hK`, still zero on (K-bare)**, the
+arc's starkest imbalance and untouched by every direction to date. GMINM
 is LANDED (§(K-grid) *Steps G145–G148*) and its finding re-prices the grid
 thread: the ledger consumes **(L)**, the difference of minima, so the
 per-matching statement four directions attacked is not the consumed one

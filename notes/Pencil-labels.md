@@ -1587,7 +1587,7 @@ raw-substring, on "anchor"); `GMREAD` — 0-hit but it names the *act of
 reading* rather than the object. **`GMINM` names the statement's content**
 — the **min-over-M** form of the price gap.
 
-## Reserved namespace — direction OGEOM (2026-08-26, **RESERVED — the direction is in flight**)
+## Reserved namespace — direction OGEOM (2026-08-26, **USED — the direction landed the same day; all five labels and all five steps consumed, none returned**)
 
 **Reserved 2026-08-26 for the single direction OGEOM** (ordinal 38, the
 arc's forty-sixth direction; `notes/Pencil-fanout.md` §"OGEOM"), the second
@@ -1600,8 +1600,11 @@ pick under the 2026-08-26 widened delegation and the first to leave
 | **OGEOM** | §(K-out) — **extends**, no new section | **(OC-45)–(OC-49)** | **O42–O46** | `w4/ogeom.py` (conditional — see the spec) |
 
 The reservation is the head of §(K-out)'s unclaimed tail (declared
-**(OC-45)+ / Step O42+** at OQRANK's landing above). At landing, record what
-was consumed, return any remainder, and flip this header to **USED**.
+**(OC-45)+ / Step O42+** at OQRANK's landing above).
+**Consumed 2026-08-26 at landing: (OC-45)–(OC-49) and Steps O42–O46 ALL
+CLAIMED, none returned** — the live tail is therefore **(OC-50)+ /
+Step O47+**. The (L6) landing-time bare-token grep ran clean on the merged
+draft (every mint `OC-`-prefixed inside the reservation).
 
 **Code and basename verified 0-hit** as raw substrings, case-insensitively,
 across `*.md`, `*.tex`, `*.lean`, `*.py`, `*.m2` with `.git`/`.lake`

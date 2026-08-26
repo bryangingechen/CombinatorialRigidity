@@ -1031,6 +1031,10 @@ are a recorded *Harness debt* item (see below).
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/gminm.py --min` | ~55 s | ibid. *Step G148* (`min_M` gap and the ledger gap over 4 905 landed pool shapes: `min_M ≤ 2` everywhere, ledger gap ∈ {0,1,2}) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/gminm.py --hunt` | 224 s | ibid. *Step G148* (the `n = 20` all-(2,2) neighbourhood: 25 further habitat-gated pairs, 5 of them new gap-4 (GR-104)(i) refutations — **`min_M` gap 0 and ledger gap ∈ {0,1} at every one**; 2-chord-transposition neighbourhood ONLY, GHWIT's `--build` not re-run) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/gminm.py --validate` | 353 s | ibid. all five in one process; **byte-identical across two `PYTHONHASHSEED=0` runs and one at 999**, modulo the `[Ns]` wall-clock cells (measured; stripped diff empty both ways) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/ogeom.py --bound --dom --core --cert` | 288 s | `notes/Pencil-informal.md` §(K-out) *Steps O42–O45* (direction OGEOM; (OC-45) the `ℓ ≤ 5` + bridgeless class-shape check that turns `sigz.k4_stratum`'s `{1..5}^6` from a cap into a theorem (re-enumerated at `{1..12}^6`, 877 = 877); (OC-46) restriction-dominance, 1482 + 222 extensions, 0 failures; (OC-47) the live-core reduction; (OC-49) the census — 271 974/271 974 pairs settled, and (OC-39)'s 3 324 + 44 = 3 368 pairs shown to lie in exhausted cells) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/ogeom.py --hunt` | 357 s | ibid. *Step O45* ((OC-48): the exhaustive iso-reduced live-core hunt at `n(F°) ∈ {2,3}` (all `\|E°\|`) and `n(F°) = 4` (`\|E°\| ≤ 8`) — 21 086 classes here, all free, **0 candidates**) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/ogeom.py --huntn 5 8 8 <PART> 3` | 318 s each | ibid. *Step O45*, the `n(F°) = 5`, `\|E°\| = 8` cell in three deterministic slices (70 174 classes, all free) — the parts together with the two rows above make the pass's **91 260** cores |
+| — (no `--validate` row) | 645 s | **`--validate` does NOT fit the 600 s foreground budget** and is deliberately not the gate invocation; the two-invocation split above is the reproduction recipe and is recorded in the driver's own docstring |
 
 **GPRICE (single direction, LANDED 2026-08-25).** One driver added
 (`w4/gprice.py`), nothing existing modified; imports downward only — the
@@ -1065,6 +1069,16 @@ balance layer and the `adm_cube`/`f_layers` cube oracle directly from
 third consumer, recorded below). **It does not import `ghwit.py`** — the
 five witness diagrams are re-entered locally, so the two drivers are
 independent carriers.
+
+**OGEOM (single direction, LANDED 2026-08-26).** One driver added
+(`w4/ogeom.py`), nothing existing modified. It is the arc's **widest
+fan-in** driver — thirteen read-only imports (`exactcore`, `kbare_common`,
+`pencil_escape`, `nogood_subdiv`, `dominance`, `widened`, `repin`, `flanks`,
+`pitch`, `kslide`, `outer`, `sigz`, and `scriptpath`) — all of them **§1
+primitives or already-catalogued layer devices**, so the fan-in is downward
+and adds **no** sibling-import debt. Its `--validate` runs 645 s and so
+exceeds the 600 s foreground budget; the two-invocation split is the
+recorded gate recipe.
 
 **C3-AVOID (probe, LANDED 2026-08-24).** All seven modes (`--all`, ~36 s total,
 inside the 600 s foreground budget in one call) run by the dispatch, exit 0,

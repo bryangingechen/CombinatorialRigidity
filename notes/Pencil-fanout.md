@@ -1,10 +1,12 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: EIGHT fan-outs and EIGHTEEN single directions dispatched; 45 of the
-46 LANDED — OGEOM (ordinal 38, §"OGEOM") is PREPPED and IN FLIGHT**, the
-second pick under the widened delegation, the first off §(K-grid) in six
-directions, and the arc's first dispatch aimed squarely at **disproving**
-`hK` since SIGZ. **GMINM (ordinal 37, §"GMINM") LANDED 2026-08-26 with
+**Status: EIGHT fan-outs and EIGHTEEN single directions dispatched; ALL 46
+directions LANDED.** **OGEOM (ordinal 38, §"OGEOM") LANDED 2026-08-26 — NO
+disproof witness (91 260 live cores, 0 candidates), and the geometric route
+is now free BY AN ARGUMENT on everything searched, with (OC-37)(ii)'s
+one-unit topology dead class-uniformly and (OC-39) upgraded from sample to
+theorem. §8.5's row NARROWS but does NOT close: `n(F°) ≥ 6` was never
+searched.** **GMINM (ordinal 37, §"GMINM") LANDED 2026-08-26 with
 the arc's most consequential routing finding: GHWIT's refutation DOES NOT
 REACH THE LEDGER.** (b′) has three pairwise-inequivalent readings; the ledger
 consumes the **difference of minima**, the `min_M` reading is now PROVEN, and
@@ -3844,3 +3846,79 @@ coordinator to gate and commit.
 **Reservation** (`notes/Pencil-labels.md` §"Reserved namespace — direction
 OGEOM"): §(K-out) **extends**; labels **(OC-45)–(OC-49)**, **Steps O42–O46**;
 return any unconsumed remainder to the tail.
+
+### OGEOM — landing write-up (LANDED 2026-08-26, recon-opus, one serial coordinator commit)
+
+**Verdict: NO disproof witness — a HIT of the spec's type 2, restricted.**
+The geometric half of the disproof question is now free **by an argument**,
+class-uniformly in the ambient shape, on a named finite frontier. §8.5's row
+narrows sharply and stays open.
+
+**No witness, and the classification question does not arise.** 91 260 live
+cores searched, **0** with `corank > 0` at every gated draw. The dispatch
+correctly declined to classify (`PencilPair` vs the `hK` pin) on the strength
+of nothing found — the right call, and the KBARE-FALSIFY precedent is why the
+spec asked for the classification in the first place.
+
+**Three results, each with its witness.** **(OC-46)** — `H = G − v − a` is a
+*vertex deletion*, hence **induced**, so `G`'s chart surjects onto `H`'s and
+**`σ` depends on `H` alone; the ambient class shape drops out**. The only
+failure mode of the extension construction is a chord, which an induced
+subgraph cannot have (1 482 + 222 extensions, 0 failures). **(OC-47)** — a
+topological path of length `≥ 6` has full chain span, so its flow variable
+vanishes and the path is **dead**; iterating gives the live core. Since
+**girth `≥ 7`** is forced at a class shape (a cycle of length `≤ 6` would be
+rigid, contradicting `hnoRigid` — coordinator-verified against
+`notes/Pencil-informal-grid.md`), **every cycle and every bouquet is dead** —
+so **(OC-37)(ii)'s `slack = 0` mechanism, the only topology at which one
+geometric unit suffices, is gone class-uniformly, by argument rather than
+enumeration.** **(OC-48)/(OC-49)** — the exhaustive iso-reduced hunt, and the
+census: `{σ = 0} ≠ ∅` at **275 342** class (shape, split) pairs over 63 013
+shapes **by theorem**, the chain run end-to-end 222 times with all four
+`IsNondegPencilRealization` conjuncts green.
+
+**(OC-45), the adversarial check that passed — and it upgrades a landed
+result.** Every class-shape branch has `ℓ ≤ 5` and `G°` is bridgeless, so
+`sigz.k4_stratum`'s `{1..5}^6` is a **theorem, not a cap** (re-enumerated at
+`{1..12}^6`: 877 = 877). Consequently **(OC-39) is upgraded, not corrected** —
+its 3 368 per-pair certificates become consequences of an argument. Nothing
+landed is contradicted by this pass.
+
+**What it does NOT do, stated because the negative is an emptiness claim.**
+Unsearched cells: `n(F°) = 4` at `|E°| ≥ 9`, `n(F°) = 5` at `|E°| ≥ 9`, and
+**every `n(F°) ≥ 6`** — the budget bounds `|E(F°)|` but not `n(F°)`. Below
+`n(F°) ≤ 5` that is a *compute* frontier (`--huntn` takes a cell range and
+slice index); above it, an *ideas* frontier. Seed cap 8 gated draws per core;
+census cap `|V°| ≤ 5`, `|E°| ≤ 9`; cross-check cap 250 pairs. **The headline
+is "not found under these caps", never nonexistence** — and the driver prints
+that boundary itself, before any number.
+
+**The residual is now one shape-free sentence** — *at every live core, the
+Kirchhoff map `⊕_Q S_Q^⊥ → (K⁶)^nodes` is injective at the generic chart
+point.* Not a counting statement, not shape-indexed. The first time the
+geometric half has been a single sentence.
+
+**(OC-38) independently reproduced**, which is worth recording: `P21`'s
+`(3,3,6)` theta has an **empty** live core, so generic `σ = 0` — matching
+(OC-38)(iv)'s 360/360 — and its `Σd = 3` overflows the core budget 2, which
+**re-derives "one unit short" as a budget statement** rather than a
+measurement.
+
+**Verification the coordinator re-ran.** Both invocations of the disclosed
+two-call split: `--bound --dom --core --cert` (exit 0, 288 s) and `--hunt`
+(exit 0, 357 s); the 21 086/0, 271 974/271 974, 3 324 + 44 = 3 368 and 250/250
+figures all reproduce. The **girth `≥ 7`** premise — load-bearing for
+(OC-47)(i)'s class-uniform claim and *cited* rather than asserted by the
+driver — was checked independently against the workbook and holds.
+
+**F25 bar, read off the shipped driver:** **three independent
+double-implementations**, each machine-asserted — corank by direct
+`5|E|×6|V|` matrix *and* by the (OC-35) flow system; the class predicate by
+oracle *and* by counting; the (Λ4)(iii) filter by vertex-set pruning *and* by
+brute force over all `2^m` subsets. Nothing quoted from a scratchpad probe.
+
+**Harness:** thirteen read-only imports, all §1 primitives or catalogued layer
+devices — the arc's widest fan-in, and **no new sibling-import debt**.
+
+**TERMINATION: E1, E2, E3 all NO** — coordinator-re-run and agreed. E3 stays
+**ARMED by GBAL, not fired**: the target is not proven.
