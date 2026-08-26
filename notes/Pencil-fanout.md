@@ -1,7 +1,13 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
 **Status: EIGHT fan-outs, TWENTY-ONE single directions and TWO concurrent pairs
-dispatched; 50 LANDED, ONE IN FLIGHT.** **ZJACOB (ordinal 43, §"ZJACOB") LANDED
+dispatched; ALL 51 LANDED.** **BINDUC (ordinal 42, §"BINDUC") LANDED 2026-08-26 —
+the biggest single advance the arc has made on the phase target: the induction's
+**BASE IS FREE** (3-connected ⇒ `def₂ = 0`, so the declined `def₂ = def₃` slice
+covers the whole base), BZAVOID's asserted 2-cut `− 6` is **REFUTED** and replaced
+by an exact `max`-law, and **(BE-14) is reduced to ONE named composition lemma**.
+It also **scope-corrects (BE-15)(ii)**: the general forcing rule needs no triangle,
+so BZAVOID's cap-free closure covers the triangle mechanism only.** **ZJACOB (ordinal 43, §"ZJACOB") LANDED
 2026-08-26 — (ZH-4) **REFUTED by an EQUIVALENCE**, not an obstruction: the corank
 stratification makes *"LCI of the expected codimension"* ⟺ `B_0 ≠ ∅` ∧
 `codim B_k ≥ k`, and `B_0 ≠ ∅` **IS** properness, so the route's hypothesis
@@ -13,7 +19,9 @@ dispatched 2026-08-26 under a user-supplied criterion (*max impact on proving or
 disproving the target*), carrying the (BE-14) induction; flip it to LANDED here at
 its landing. **BZAVOID (ordinal 40, §"BZAVOID") LANDED 2026-08-26 —
 the spec's commissioned falsification arm came back **EMPTY BY AN ARGUMENT at
-every graph**, so BATTAIN's triangle-free premise is a special case and not the
+every graph** for the **triangle**-forced mechanism (scope-corrected at the
+BINDUC landing: the general forcing rule needs no triangle, and is closed only as
+measured), so BATTAIN's triangle-free premise is a special case and not the
 reason; the pencil stratum is **IDENTIFIED as the planar-atom molecular
 stratum**, making (BE-14) **existential rather than generic**; and **two routes
 are CLOSED** — the landed Phases-24–26 `G²` apparatus (gate is the literal
@@ -4780,6 +4788,141 @@ UNPAID debt with `w4/bzavoid` its second consumer — extend the list, make no m
 **Reservation** (`notes/Pencil-labels.md` §"Reserved namespace — direction
 BINDUC"): §(K-bare-ext) **extends**, no new section; labels
 **(BE-20)–(BE-24)**, **Steps BE19–BE23**; return any unconsumed remainder.
+
+### BINDUC — landing write-up (LANDED 2026-08-26, recon-opus, one serial coordinator commit)
+
+**Verdict: HIT shape 1, advanced on all three jobs; shape 3 answered (the
+candidate mechanism EXISTS and fires empty); shape 2 not reached. `hbareSplit`
+OPEN and pinned; not a PENCIL event. The single biggest advance the arc has made
+on the phase target.**
+
+**Job 2 — the part the spec said had "no named answer" turned out FREE, in four
+elementary lines.** **A 3-connected graph has `def₂ = 0`**: 3-connectivity ⇒
+3-edge-connectivity ⇒ every proper nonempty `S` has `|∂S| ≥ 3` ⇒ summing over a
+`q`-part partition, `2d(P) ≥ 3q` ⇒ `partitionDef₂ ≤ 3(q−1) − 3q = −3 < 0` for
+every `q ≥ 2`, while `q = 1` gives `0`. Hence `def₃ = 0` (BZAVOID's (BE-15)(a)),
+hence the **flat witness** — all points distinct in one plane, the *legal dual*
+of BATTAIN's chart-illegal coincident-points cone — attains in closed form.
+**EXHAUSTIVE at 226 891 3-connected labelled graphs, `n = 4…7`, zero
+exceptions**, and the bound is **tight**: the driver measures the worst
+`partitionDef₂` at exactly the proved `−3`. **So BATTAIN's declined
+`def₂ = def₃` slice, which the spec re-authorized as a base case, covers the
+ENTIRE base.** Contrapositive, and it reframes the whole problem:
+**`def₂ > def₃` forces a cut of size `≤ 2`** (16 214 exhaustive instances, none
+3-connected).
+
+**Job 1 — the inherited `− 6` is REFUTED, not merely unchecked, and the spec's
+instruction not to inherit it was load-bearing.** It goes **negative** — two
+triangles sharing an edge give `−4` against the true `0` — which is impossible
+since `def₃ ≥ 0` always, and it is negative at **9 425 of 10 804** enumerated
+gluings (87.2 %), correct at only **54** (0.5 %). The exact law, derived from
+`def₃`'s own maximand and proved in **both** directions:
+**`def₃(G) = max(g₁+g₂, f₁+f₂−6) = f₁+f₂ − min(δ₁+δ₂,6)`**, with `g_i` the
+maximand over partitions putting the cut pair in one part and `δ_i ∈ [0,6]`; both
+branches are needed (`g₁+g₂` attains the max at 10 798, `f₁+f₂−6` at 54).
+
+**The rank half is reduced to ONE named lemma, with its obstruction located.**
+`dim M(G) = dim M₁ + dim M₂ − 6 − dim(ρ̄₁+ρ̄₂)` over relative-screw subspaces of
+`Λ²K⁴`, so **attains ⟺ `dim(ρ̄₁+ρ̄₂) = min(δ₁+δ₂,6)`**. Two things it needs, both
+named: **(a)** welded-framework attainment (`ρ_i ≤ δ_i` always), so the induction
+must carry a **strengthened statement**, not (BE-14) itself; and **(b)** general
+position, which the residual gauge group — dim **7** adjacent / **5**
+non-adjacent, against `Gr(3,6)`'s dim **9** — provably cannot supply. **Free
+cases proved:** `δ₁ = δ₂ = 0`, and with *one* rigid side the criterion collapses
+to `ρ = δ` on the other with **no general position at all**, confirmed as a
+biconditional at 296 ear additions (240 attaining; the 56 misses are all
+hub-load-4 *constructor* caps with the cause localized to `ρ₂ = 3 < δ₂`, never
+shortfall claims).
+
+**(BE-14) is now ONE LEMMA away, and the decomposition is exhaustive.** Base
+`{3-connected}` ∪ `{max deg ≤ 2}` ∪ `{def₂ = def₃}` — note the middle set is
+where the landed `IsGeneralPositionPlacement` gate *is* satisfiable, so
+(BE-17)'s dead route is alive on exactly its complement — plus 1-cuts (BE-18),
+plus the 2-cut step. Only the last is open. A new **hub-plane construction** (one
+plane per hub or per forced hub class, feasible when every closed neighbourhood
+holds `≤ 3` hubs) attains at **5 824** graphs with **0 failures**, **2 441 of
+them with `def₂ > def₃`** where the flat witness provably misses — each a
+per-graph theorem, and collectively **beyond every witness the arc had** — and it
+reaches necklace(3)/(4) systematically. The class-level statement is **measured,
+not proved**, and is disclosed as such.
+
+**The disproof side, which the spec asked about explicitly: the new-cap mechanism
+EXISTS, is strictly more general, and fires EMPTY.** The general propagation rule
+is *"`π_v` is forced to `π` once `closedNbhd(v)` holds three independent points
+already in `π`"*, which fires **without any triangle** — at a `K_{2,3}`, and in
+chains, so **`K_{3,3}` is forced flat and triangle-free** (driver-checked both
+ways). Hunted under an **aggressive** combinatorial closure that *over*-claims
+forcing (so an empty result is the stronger statement): **27 470 connected graphs
+exhaustive at `n ≤ 6` (20 963 forced flat) plus 4 800 sampled at `n = 7…10`
+(4 307 forced flat) — ZERO with `def₂ > def₃`**, worst gap `0`. The largest
+`def₂` at a forced-flat graph is **5**, so with BZAVOID's `def₂ ≥ def₃` the
+measured statement is the strictly stronger **forced flat ⇒ `def₂ = def₃`** —
+where the flat witness is forced, it therefore **attains**, and the mechanism is
+harmless. **MEASURED, not proved, and reported as a candidate rather than a
+refutation** — exactly as the spec required.
+
+**THE SCOPE CORRECTION THIS FORCES ON BZAVOID, made in this commit.** (BE-15)'s
+propagation rule is **adjacent-pair** forcing, and *that* is what needs a
+triangle; the general rule accumulates three independent pinned members of a
+closed neighbourhood and needs none. So the forced class partition can be
+**strictly coarser** than `π(G)`'s `T(G)`-components, and on those coarser
+classes (BE-15)(ii)'s *"each class is triangle-covered, hence `def₂ = 0`"* step
+**does not apply**. What (BE-15)(ii) establishes, exactly: **the TRIANGLE-forced
+mechanism is closed at every graph, cap-free and by an argument** — unchanged and
+sound. The **general** mechanism is closed only as **MEASURED**. The unqualified
+*"no graph whatsoever"* in the landed claim, and the coordinator's own landing
+prose repeating it, **over-reached**; both are corrected in place (workbook claim,
+gap-map row, the fan-out header's BZAVOID clause, and the phase note), and a proof
+of (BE-23)(ii) is now the named target that would restore it in full. **This is
+the second time this session a landed headline was re-priced by the next
+direction** (the GMINM/F26 shape), and the second time the coordinator's own
+verification passed it — because, again, no driver tested the sentence that was
+wrong.
+
+**THE TRAP: confirmed, with a correction to the COORDINATOR'S justification.**
+`Graph.minimal_kdof_reduction`'s conclusion is
+`∀ G, G.IsMinimalKDof n 0 → 2 ≤ ncard → P G`, so it **cannot reach (BE-14)'s
+`∀ G`** — the trap conclusion stands and the direction went by connectivity, with
+(BE-20) now giving a *positive* reason to. But its `hcontract` is **NOT
+byte-for-byte** the phase's parked item, as the spec claimed: the principle
+quantifies over `IsMinimalKDof n 0` with a **richer** induction hypothesis,
+whereas the phase's (`Escape.lean:451`) quantifies over `Loopless` with
+`V(G').Nonempty` only — the same obligation *shape* at `P := PencilPair K 3`, with
+**the phase's strictly stronger**. Instantiating would hand back a **sibling**
+obligation, not the parked one. Coordinator-verified against both signatures at
+landing: **the correction is right and the spec was wrong.**
+
+**Coordinator verification.** Full-figure re-run, not `validate` alone: `base`
+(**226 891 / 0**, 411 s — the exhaustive `n = 7` tier `validate` skips, plus the
+16 214 contrapositive), `twocut` (**10 804** gluings, law at every one, `− 6`
+correct at 54 / impossible at 9 425), `force` (**27 470 + 4 800**, zero
+candidates, `K_{3,3}` forced-flat-and-triangle-free confirmed), `validate`
+(114 s, all modes). **The load-bearing proof was re-derived independently by the
+coordinator** — 3-connected ⇒ 3-edge-connected ⇒ `|∂S| ≥ 3`; summing over parts
+gives `2d(P) ≥ 3q`; so `partitionDef₂ ≤ 3(q−1) − 3q = −3`, and `q = 1` gives `0`,
+hence `def₂ = 0` — and the driver's measured worst value of exactly `−3` confirms
+tightness rather than merely consistency. The `− 6` refutation was independently
+sanity-checked from `def₃ ≥ 0` alone: any pair of `def₃ = 0` pieces makes
+`def₃(G₁)+def₃(G₂)−6 = −6 < 0`, impossible, so the formula could not have been
+right for *any* 3-connected pair — which, by (BE-20), is most of them. **Both Lean
+signatures compared directly** for the trap correction.
+
+**F25 bar, read off the shipped driver:** eight modes, all foreground with
+explicit timeouts, exhaustive enumerations backing every "always"/"never"
+sentence, the `|∂S| ≥ 3` step swept separately from the `def₂` computation (so the
+proof's two steps are checked independently rather than jointly), the 2-cut law
+checked against an **independent oracle**, every RNG seeded, and the forcing hunt
+run under a deliberately **over**-claiming closure so that emptiness is the
+stronger reading. **Eleven caps disclosed**, the load-bearing ones being that
+(BE-20)(ii) still inherits (BE-13)'s *proven-informally* planar body-pin import (a
+direct point-side proof would remove it — a small named target), that (BE-22)(v)
+is a **dimension count rather than an obstruction proof** with the piece's own
+moduli uncounted, and that (BE-23)(i)/(ii) are class-level **measured**. No
+scratchpad probe backs any claim.
+
+**TERMINATION: E1 NO, E2 NO** — one landed claim is refuted (BZAVOID's `− 6`) but
+**with its successor in hand**, which is the shape E2 explicitly does not fire on;
+coordinator-re-run and agreed. **E3 ARMED by GBAL, not fired.**
 
 ## ZJACOB — forty-third ordinal, the fifty-first direction (concurrent pair, prepped 2026-08-26, **the Zheng line, second direction**)
 

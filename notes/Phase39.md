@@ -10,11 +10,10 @@ Everything else in the phase is closed: W0–W3 and the whole W5 arc (L0–L7),
 with **`hsplit` CLOSED IN FULL** and `hfresh`'s counting discharge landed
 (2026-07-30).
 
-**The kernel-(K) research arc: 49 directions COMPLETE** (2026-08-05 → 08-26,
-ordinals 1–41), plus eight strategy-only passes and two architecture probes.
-**Ordinal 43 (ZJACOB) LANDED**; **ordinal 42 (BINDUC) is IN FLIGHT**, both
-dispatched 2026-08-26 as the session's second concurrent pair. Count: **50
-directions COMPLETE**.
+**The kernel-(K) research arc: 51 directions COMPLETE** (2026-08-05 → 08-26,
+ordinals 1–43), plus eight strategy-only passes and two architecture probes.
+Both of the session's second concurrent pair (ordinals 42–43) are LANDED, so the
+arc stands at **51 directions COMPLETE** and **nothing is in flight**.
 **Per-direction verdicts are NOT restated here** — each has a landing write-up
 at `notes/Pencil-fanout.md` §"<CODE>" and a canonical mathematical home in the
 workbooks. **The arc's standing result, unchanged by all 47: `hK` is not
@@ -35,18 +34,48 @@ the arc's first-ever look at `hbareSplit`, **bare realizability proved
 UNCONDITIONAL** plus the first pencil-stratum rank cap produced by an argument
 (BATTAIN, (BE-11)/(BE-13)).
 
-**NEXT CONCRETE TASK — land BINDUC (ordinal 42), still IN FLIGHT**, then the
-queued **(K-res) scoping slice**, then pick the next off *Hand-off*'s
-target-ordered list. BINDUC carries the induction BZAVOID opened — the 2-cut
-composition, the base class, and (BE-14) itself — picked under the user's
-**max-impact criterion**, which it meets by being the only statement on the board
-that removes a **carried item**. **ZJACOB LANDED 2026-08-26**: (ZH-4) is
-**REFUTED by an EQUIVALENCE** — the corank stratification makes *"LCI of the
-expected codimension"* ⟺ `B_0 ≠ ∅` ∧ `codim B_k ≥ k`, and `B_0 ≠ ∅` **IS**
-properness, so the route's hypothesis contains its conclusion. Its refutation
-**absorbs (ZH-3)**, leaving §9 with **exactly one dispatchable candidate**
-((ZH-2), stratified only). Specs and write-ups:
-`notes/Pencil-fanout.md` §§"BINDUC"/"ZJACOB". **Still queued behind them: the (K-res) scoping slice**
+**NEXT CONCRETE TASK — the STRENGTHENED 2-cut composition lemma, which is now
+the ONLY thing between the arc and (BE-14).** BINDUC reduced (BE-14) to an
+exhaustive decomposition whose base is **free** and whose 1-cut layer is
+**done**, leaving one lemma: *attains ⟺ `dim(ρ̄₁+ρ̄₂) = min(δ₁+δ₂,6)`* across a
+2-cut, which needs (a) the induction to carry a **strengthened** statement
+(welded-framework attainment, since `ρ_i ≤ δ_i` always) and (b) a general-position
+input the residual gauge group provably cannot supply (dim 7/5 against
+`Gr(3,6)`'s 9). Its free sub-cases are proved. **Then** the queued **(K-res)
+scoping slice**, then the next pick.
+
+**BINDUC LANDED 2026-08-26 — the arc's biggest single advance on the phase
+target.** **3-connected ⇒ `def₂ = 0`** in four elementary lines (exhaustive at
+226 891 graphs, bound tight), so `def₃ = 0` and the **flat witness** attains in
+closed form: **the base of the induction is FREE, and BATTAIN's declined
+`def₂ = def₃` slice covers the whole of it.** Contrapositive: **`def₂ > def₃`
+forces a cut of size `≤ 2`.** BZAVOID's asserted 2-cut `− 6` is **REFUTED**
+(negative at 87 % of 10 804 gluings) and replaced by an exact `max`-law. A new
+**hub-plane construction** proves (BE-14) at **5 824** further graphs, **2 441
+beyond every witness the arc had**. On the disproof side the new-cap mechanism the
+spec asked for **exists, is strictly more general than BZAVOID's, and fires
+empty** (25 270 instances) — **which is also a SCOPE CORRECTION to (BE-15)(ii)**,
+see the note below.
+
+**ZJACOB LANDED 2026-08-26**: (ZH-4) **REFUTED by an EQUIVALENCE** — the corank
+stratification makes *"LCI of the expected codimension"* ⟺ `B_0 ≠ ∅` ∧
+`codim B_k ≥ k`, and `B_0 ≠ ∅` **IS** properness, so the route's hypothesis
+contains its conclusion. Its refutation **absorbs (ZH-3)**, leaving §9 with
+**exactly one dispatchable candidate** ((ZH-2), stratified only).
+
+> **SCOPE CORRECTION to the BZAVOID landing, made at the BINDUC landing and
+> recorded here because the coordinator's own prose carried the over-reach.**
+> (BE-15)(ii) was landed and reported as closing the falsification arm *"by an
+> argument at every graph, cap-free"*. That holds for the **TRIANGLE-forced**
+> mechanism only: (BE-15)'s propagation rule is *adjacent-pair* forcing, while
+> the **general** rule fires once a closed neighbourhood holds three independent
+> pinned points and needs **no triangle** (`K_{3,3}` is forced flat and
+> triangle-free), so the forced classes can be strictly coarser and the
+> *"triangle-covered ⇒ `def₂ = 0`"* step does not reach them. The general
+> mechanism is closed only as **MEASURED**. Corrected in place at the workbook
+> claim, the gap-map row, the fan-out header and here; **a proof of (BE-23)(ii)
+> is the named target that would restore it in full**, and it is the disproof
+> side's highest-value single search. **Still queued behind them: the (K-res) scoping slice**
 (one direction — does (GR-15)/§(K-grid) transport to the `W19`-type (K-res)
 habitat? — the user's 2026-08-26 adjudication, and the retirement of the stale
 *"pin it when the tight side closes"* deferral), **deferred once by the
@@ -478,7 +507,7 @@ constraints; the dated dispatch narrative is in *Decisions made* and git):
   **Everything else stands unchanged:** phase OPEN, the 2026-08-05 Lean hold, W4
   PARKED, `hK`/`hbareSplit` pinned, both option Bs un-commissioned.
 
-**Kernel-(K) research arc — sixty-seven docs+scripts-only dispatches landed, plus eight
+**Kernel-(K) research arc — sixty-eight docs+scripts-only dispatches landed, plus eight
 strategy-only passes** (2026-08-02 → 08-26) — and, **outside** that count because they test
 the architecture rather than the (K) crux, the **two probes**: **KBARE-FALSIFY**
 (2026-08-20) and **C3-AVOID** (2026-08-24), both landed. Which pass was which is one-lined in *Decisions
@@ -487,7 +516,7 @@ LTWO are the fortieth through forty-fourth; CIRR the forty-fifth; YLOC the forty
 the forty-seventh; ZNEQ the forty-eighth; AGLU the forty-ninth; the eighth fan-out's five
 the **fiftieth through fifty-fourth**, all landed 2026-08-19; **GFLIP the fifty-fifth**,
 **GCHEAP the fifty-sixth**, **OQRANK the fifty-seventh**, **GPRICE the fifty-eighth**,
-all 2026-08-25, and **GBLAW the fifty-ninth**, **GXESC the sixtieth**, **GHWIT the sixty-first** **GMINM the sixty-second**, **OGEOM the sixty-third**, **BATTAIN the sixty-fourth** and **BZAVOID the sixty-fifth**, **ZSHEAR the sixty-sixth** and **ZJACOB the sixty-seventh**, all 2026-08-26), and a **user call on
+all 2026-08-25, and **GBLAW the fifty-ninth**, **GXESC the sixtieth**, **GHWIT the sixty-first** **GMINM the sixty-second**, **OGEOM the sixty-third**, **BATTAIN the sixty-fourth** and **BZAVOID the sixty-fifth**, **ZSHEAR the sixty-sixth**, **ZJACOB the sixty-seventh** and **BINDUC the sixty-eighth**, all 2026-08-26), and a **user call on
 dispatch *shape*** — either multidispatch election, or a coordinator-authored pick like the
 twelfth's — contributes **no** strategy pass, so the 2026-08-19 eighth-fan-out check-in adds
 none even though it moved a standing constraint.
@@ -720,10 +749,22 @@ neighbours' incidences and every capacity unit above 2 is bought by a **Case-I g
 whose pencil-compatibility is geometry the probe was barred from. **§(K-avoid) was never
 opened** and no gap-map status moved.
 
-**THE NEXT CONCRETE TASK — land BINDUC**, still in flight (ordinal 42,
-`recon-opus`, spec at `notes/Pencil-fanout.md` §"BINDUC"). It carries item 1
-below: the induction (BE-18) opened — 2-cut composition (its `− 6` correction
-term to be **derived, not inherited**), the base class, and (BE-14) itself.
+**THE NEXT CONCRETE TASK — the STRENGTHENED 2-CUT COMPOSITION LEMMA.** After
+BINDUC, item 1 below is **one lemma from done**, and the lemma is named exactly:
+across a 2-cut `{u,v}`, *attains ⟺ `dim(ρ̄₁+ρ̄₂) = min(δ₁+δ₂,6)`* — requiring
+**(a)** the induction to carry a **strengthened** statement (welded-framework
+attainment, because `ρ_i ≤ δ_i` always, so (BE-14) itself is not what recurses)
+and **(b)** a general-position input the residual gauge group **provably cannot
+supply** (dim 7 adjacent / 5 non-adjacent against `Gr(3,6)`'s 9). Free sub-cases
+already proved: `δ₁ = δ₂ = 0`, and one-rigid-side, where the criterion collapses
+to `ρ = δ` with no general position at all. **Everything else in the
+decomposition is closed** — base `{3-connected}` (free, (BE-20)) ∪
+`{max deg ≤ 2}` ∪ `{def₂ = def₃}`, plus 1-cuts ((BE-18)) — and the decomposition
+is exhaustive, so this lemma **is** (BE-14). BINDUC's own successor ranking, in
+order: (1) this lemma; (2) a direct point-side proof of the flat law, removing
+(BE-20)(ii)'s inherited (BE-13) ingredient — small and self-contained; (3) a
+proof of (BE-23)(ii) (*forced flat ⇒ `def₂ = def₃`*), which would close the
+disproof side the way (BE-15)(ii) closed the triangle case.
 
 **ZJACOB LANDED 2026-08-26** (§(K-jac) *Steps JC1–JC5*; write-up
 `notes/Pencil-fanout.md` §"ZJACOB") — **not restated here.** Two consequences for
@@ -1023,6 +1064,39 @@ ORIGAMI (`notes/Origami.md`, next queued) is the bar-joint-side analog; the wide
 survey — incl. IDENT-PANEL, the nearest neighbour — is `notes/IdeaBacklog.md`.
 
 ## Decisions made during this phase
+
+- **Direction BINDUC (ordinal 42, 2026-08-26, opus, docs+scripts only) — the
+  induction's BASE IS FREE, BZAVOID's 2-cut `− 6` is REFUTED, and (BE-14) is ONE
+  LEMMA away.** (BE-20): **3-connected ⇒ `def₂ = 0`** — 3-edge-connectivity gives
+  `|∂S| ≥ 3`, so `2d(P) ≥ 3q` and `partitionDef₂ ≤ −3` for every `q ≥ 2` —
+  hence `def₃ = 0` and the **flat witness** (all points distinct in one plane,
+  the legal dual of BATTAIN's chart-illegal coincident cone) attains in closed
+  form; exhaustive at **226 891** 3-connected labelled graphs with the bound
+  measured **tight** at `−3`. So the declined `def₂ = def₃` slice **covers the
+  entire base**, and the contrapositive **`def₂ > def₃` ⇒ a cut of size `≤ 2`**
+  reframes the problem. (BE-21): the inherited `− 6` is **REFUTED** — it goes
+  negative, impossible since `def₃ ≥ 0`, at 87 % of 10 804 gluings — replaced by
+  `def₃(G) = max(g₁+g₂, f₁+f₂−6)`, both directions proved, both branches needed.
+  (BE-22): the rank half reduces to **attains ⟺ `dim(ρ̄₁+ρ̄₂) = min(δ₁+δ₂,6)`**,
+  needing a **strengthened** inductive statement plus general position the
+  residual gauge group cannot supply; free sub-cases proved. (BE-23): the
+  decomposition is **exhaustive** — base `{3-connected}` ∪ `{max deg ≤ 2}` ∪
+  `{def₂ = def₃}`, plus 1-cuts, plus the one open 2-cut step — and a new
+  **hub-plane construction** proves (BE-14) at **5 824** graphs, **2 441 with
+  `def₂ > def₃`** where the flat witness misses, each a per-graph theorem.
+  **Disproof side:** the new-cap mechanism **exists**, is **strictly more general**
+  than BZAVOID's (needs three shared independent points, not a triangle;
+  `K_{3,3}` is forced flat and triangle-free), and **fires empty** at 25 270
+  forced-flat instances under an over-claiming closure — MEASURED, reported as a
+  candidate. **That generality is also a SCOPE CORRECTION to (BE-15)(ii)** (see
+  the *Hand-off* blockquote): its cap-free closure covers the triangle mechanism,
+  not the general one. **It also corrected the coordinator's own spec:** the
+  landed induction principle's `hcontract` is *not* byte-for-byte the phase's
+  parked item — the phase's quantifies over `Loopless` with a weaker IH and is
+  **strictly stronger** — though the trap conclusion stands, since the principle
+  cannot reach `∀ G`. **(BE-14) OPEN; `hbareSplit` untouched; not a PENCIL
+  event.** Detail: §(K-bare-ext) *Steps BE19–BE23*; landing record
+  `notes/Pencil-fanout.md` §"BINDUC".
 
 - **Direction ZJACOB (ordinal 43, 2026-08-26, opus, docs+scripts only, the Zheng
   line's SECOND direction) — (ZH-4) REFUTED by an EQUIVALENCE rather than an
