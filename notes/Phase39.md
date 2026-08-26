@@ -371,6 +371,35 @@ constraints; the dated dispatch narrative is in *Decisions made* and git):
   target. **Everything else stands unchanged:** phase OPEN, the 2026-08-05 Lean
   hold, W4 PARKED, `hK`/`hbareSplit` pinned, option B un-commissioned.
 
+- **2026-08-26 (seventh check-in, second call), the DELEGATION WIDENS — the
+  coordinator picks each direction for the rest of the session, and the
+  selection criteria move toward falsification.** Unprompted free text, quoted
+  verbatim because it supersedes the *shape*-only half of the standing
+  2026-08-07 delegation for this session: *"For this session, I'd like to
+  coordinator to choose the next direction after each subagent returns. We
+  should aim to explore different paths rather than getting bogged down in
+  directions which might never pan out. Think also about whether there are
+  examples we can build that could kill off whole directions of the current
+  proof strategy (or even be a counterexample to what we're trying to prove)."*
+  Three consequences, none of them a kernel-constraint move: **(1)** the *pick*
+  as well as its shape is coordinator-set for the rest of this session — the
+  per-pick check-in lapses, and the twelfth's disclosure (no independent
+  top-rung ranking of the losers) applies to every pick made under it;
+  **(2)** **diversification is now a selection criterion** — the arc's recent
+  concentration is the thing being corrected (**six of the last seven
+  directions are §(K-grid)**, four of them consecutively on the (GR-104)(i)
+  price-form thread GPRICE → GBLAW → GXESC → GHWIT, a thread `notes/Pencil-strategy.md`
+  §8's own re-rank calls *"a residual-of-a-residual inside the (a′)/(b′)
+  ledger"* that *"does not touch a named `hK` gap"*); **(3)** **§8.5's category
+  — "test the architecture instead of extending it" — is promoted from a board
+  row to a standing preference**, which is what §8.5's own header already
+  recommended (*"the move this board's own risk analysis recommends before more
+  `hK` spend"*). The direction-A pivot rule is unaffected and still binds: a
+  disproof-side hit is a phase-redefining event for the **user** to adjudicate,
+  surfaced not built on. **Everything else stands unchanged:** phase OPEN, the
+  2026-08-05 Lean hold, W4 PARKED, `hK`/`hbareSplit` pinned, both option Bs
+  un-commissioned, (K-res) still a user call.
+
 **Kernel-(K) research arc — sixty docs+scripts-only dispatches landed, plus eight
 strategy-only passes** (2026-08-02 → 08-26) — and, **outside** that count because they test
 the architecture rather than the (K) crux, the **two probes**: **KBARE-FALSIFY**
