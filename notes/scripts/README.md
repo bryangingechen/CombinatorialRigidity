@@ -1035,6 +1035,7 @@ are a recorded *Harness debt* item (see below).
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/ogeom.py --hunt` | 357 s | ibid. *Step O45* ((OC-48): the exhaustive iso-reduced live-core hunt at `n(F°) ∈ {2,3}` (all `\|E°\|`) and `n(F°) = 4` (`\|E°\| ≤ 8`) — 21 086 classes here, all free, **0 candidates**) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/ogeom.py --huntn 5 8 8 <PART> 3` | 318 s each | ibid. *Step O45*, the `n(F°) = 5`, `\|E°\| = 8` cell in three deterministic slices (70 174 classes, all free) — the parts together with the two rows above make the pass's **91 260** cores |
 | — (no `--validate` row) | 645 s | **`--validate` does NOT fit the 600 s foreground budget** and is deliberately not the gate invocation; the two-invocation split above is the reproduction recipe and is recorded in the driver's own docstring |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/battain.py validate` | 72 s | `notes/Pencil-informal.md` §(K-bare-ext) *Steps BE9–BE13* (direction BATTAIN; all 11 modes in one process — (BE-10) the motive characterized off the Lean bodies and cross-asserted against `kbare_common.build_rigidity` at equal exact rank 114; (BE-11) unconditional bare realizability; (BE-12) the hub determinants; (BE-13) the cone rank law `6(\|V\|−1) − def₂(G)` exact at 68/68 and the decidable T2 criterion; (BE-14) the 774 attainment certificates, **0 shortfalls surviving 8 independent `Y` draws**) |
 
 **GPRICE (single direction, LANDED 2026-08-25).** One driver added
 (`w4/gprice.py`), nothing existing modified; imports downward only — the
@@ -1079,6 +1080,15 @@ primitives or already-catalogued layer devices**, so the fan-in is downward
 and adds **no** sibling-import debt. Its `--validate` runs 645 s and so
 exceeds the 600 s foreground budget; the two-invocation split is the
 recorded gate recipe.
+
+**BATTAIN (single direction, LANDED 2026-08-26).** One driver added
+(`w4/battain.py`, eleven modes), nothing existing modified. **It is the first
+`w4/` consumer of the `kbare/` set** and the first import edge from the `w4/`
+stack into `kbare/` *drivers* — previous `w4/` consumers reached only the
+`kbare_common` model layer — so the recorded `kbare/` *Harness debt* item
+gains its first cross-stack consumer (below). Its positive results are
+**deterministic proofs, not cap reports**: `rank ≤ target` is universal and
+the conclusion existential, so an exhibited certificate settles a shape.
 
 **C3-AVOID (probe, LANDED 2026-08-24).** All seven modes (`--all`, ~36 s total,
 inside the 600 s foreground budget in one call) run by the dispatch, exit 0,
@@ -2168,7 +2178,7 @@ room for those three modes, or fold it into a commit that has reason to re-run
 them anyway. Recording it here also fixes the list discrepancy: **seven** names,
 six moved 2026-08-20, `ledger` outstanding.
 
-### New item (2026-08-20, probe KBARE-FALSIFY) — the `kbare/` sibling imports; **UNPAID**
+### New item (2026-08-20, probe KBARE-FALSIFY; **EXTENDED 2026-08-26, direction BATTAIN — first cross-stack consumer**) — the `kbare/` sibling imports; **UNPAID**
 
 `kbare/breakhunt.py` imports from four **sibling leaves** of its own layer, which
 is the documented sibling-import pattern and in policy, but trips §2 rule 2's
@@ -2179,8 +2189,8 @@ direction may be importing in flight).
 | name | current home | consumers |
 |---|---|---|
 | `line_of_two_planes` | `gate2` | `danger`, `optc`, **`breakhunt`** (3) |
-| `dz_gadget`, `sample_dz_pencil` | `danger` | `optc`, **`breakhunt`** (2) |
-| `SKELETONS`, `build_from_skeleton` | `optc` | **`breakhunt`** (1 — under the trigger, listed because the move-down of the other two would naturally take them) |
+| `dz_gadget`, `sample_dz_pencil` | `danger` | `optc`, **`breakhunt`**, **`w4/battain`** (3 — BATTAIN is the FIRST `w4/` consumer of a `kbare/` *driver*; earlier `w4/` consumers reached only the `kbare_common` model layer, so this is a new **cross-stack** edge, recorded 2026-08-26) |
+| `SKELETONS`, `build_from_skeleton` | `optc` | **`breakhunt`**, **`w4/battain`** (`SKELETONS` only, 2 — cross-stack, recorded 2026-08-26; `build_from_skeleton` stays at 1) |
 | `report_graph` | `gate1` | `danger` (1 — pre-existing, unchanged) |
 
 **Where they should go:** `kbare_common`, the layer both `kbare/` leaves and

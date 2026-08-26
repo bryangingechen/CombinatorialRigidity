@@ -5,7 +5,7 @@
 (L0–L7) are COMPLETE — `hsplit` CLOSED IN FULL and `hfresh`'s counting discharge landed
 (2026-07-30). Only three items remain, all carried by the landed successor
 `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card` (`Molecule/Pencil/Escape.lean`):
-`hcontract` (W4), kernel `hK`, and kernel `hbareSplit` — see *Hand-off*. **Forty-six
+`hcontract` (W4), kernel `hK`, and kernel `hbareSplit` — see *Hand-off*. **Forty-seven
 kernel-(K) directions are now COMPLETE** (2026-08-05 → 08-26, ordinals 1–35; roster and
 per-direction theorem chain in *Decisions made*). **The SIXTH, SEVENTH and EIGHTH FAN-OUTS
 ARE ALL COMPLETE** (all fifteen directions LANDED 2026-08-19). **The arc's HITs:**
@@ -21,7 +21,7 @@ a combinatorial WALL found, the naive form refuted as a class statement,
 per-class-generic quantifier, zero (K-tight)-event rulings).
 Everything else an honest MISS or an OPEN reshape; verdicts in *Decisions made* and
 `notes/Pencil-fanout{,-archive}.md`, **not restated here**. **(GR-15) stays OPEN
-throughout; class uniformity untouched; no g-flank at any of the forty-six directions.
+throughout; class uniformity untouched; no g-flank at any of the forty-seven directions.
 E3 is ARMED (by GBAL) and has NOT fired.** Direction codes are **multi-letter and
 topic-tagged from the fifth fan-out on** (`notes/Pencil-labels.md` (L5)); grandfathered
 single letters are re-used across dates, **always date those**.
@@ -178,19 +178,30 @@ nonexistence. The residual is now **one shape-free sentence**: at every
 live core the Kirchhoff map `⊕_Q S_Q^⊥ → (K⁶)^nodes` is injective at
 the generic chart point. `hK`, (GR-15) and class uniformity untouched;
 E3 ARMED, not fired. Canonical home §(K-out) *Steps O42–O46*, landing
-record `notes/Pencil-fanout.md` §"OGEOM", driver `w4/ogeom.py`. **DIRECTION BATTAIN (ordinal 39) IS
-PREPPED and IN FLIGHT — the arc's FIRST direction ever aimed at
-`hbareSplit`**, dispatched 2026-08-26 at `recon-opus` (the third pick
-under the widened delegation). Target: the **seed-free
-direct-attainment shape** — bypass the refuted antecedent and attack
-`HasPencilRealization K 3 G` directly on the habitat (strategy §8.4's
-rank-3 row, the KBARE-FALSIFY probe's own suggestion). It carries a
-**falsification arm**: a habitat where that fails is a **T2** witness,
-making `PencilPair K 3 G` itself false — a PENCIL event — and the spec
-asks it to *test* rather than inherit the standing "not producible by
-this harness" reading. **Option B stays un-commissioned** (hard bar).
-Spec `notes/Pencil-fanout.md` §"BATTAIN"; reservation (BE-10)–(BE-14) /
-*Steps BE9–BE13*. **NEXT CONCRETE TASK: land the BATTAIN return.** The grid-side statement left behind, new and
+record `notes/Pencil-fanout.md` §"OGEOM", driver `w4/ogeom.py`. **DIRECTION BATTAIN (ordinal 39) IS LANDED — 2026-08-26,
+`recon-opus`, the arc's FIRST direction ever aimed at `hbareSplit`,
+and it paid.** The motive is **exactly characterized off the Lean
+bodies** ((BE-10)); **bare pencil realizability is UNCONDITIONAL**
+((BE-11)) — `HasPencilRealization` has no existence content, all of it
+is the rank, which is *why* the antecedent gives route A nothing; the
+pencil condition is carried entirely by the hubs ((BE-12)); and
+**(BE-13) is the first universal rank cap over a pencil stratum ever
+produced BY AN ARGUMENT**, `rank(cone) = 6(|V|−1) − def₂(G)`, exact at
+68/68. It **CORRECTS a standing reading**: "no T2 is producible by this
+harness" was too strong — a universal cap *is* producible, and what
+actually blocks T2 is **structural**, forcing the cone needs a
+**triangle** and the habitat is triangle-free by `hnoRigid`. The
+falsification arm is answered **positively and deterministically**:
+**774 shapes, 774 exact-ℚ attainment certificates, ZERO shortfalls** —
+proofs, not cap reports. **`hbareSplit` OPEN and unchanged; refutes
+neither it nor `PencilPair K 3 G`; NOT a PENCIL event.** The residual
+**(BE-14)**, direct attainment, is one sentence: **`Y° ⊄ Z(G)`**.
+Canonical home §(K-bare-ext) *Steps BE9–BE13*, landing record
+`notes/Pencil-fanout.md` §"BATTAIN", driver `w4/battain.py`.
+**NEXT CONCRETE TASK: the next direction, coordinator-picked — and the
+candidate list is now ordered by TARGET DISTANCE** (the 2026-08-26
+user directive, *Current state*), not by the previous direction's
+successor order. The grid-side statement left behind, new and
 unattacked: **is the ledger gap ever `≥ 3`?** (spectrum `{0,1,2}` at
 4 935 shapes; by (GR-127) no proof may fix its anchor matching). The §9 shelf **(ZH-1)–(ZH-6)** stays unpriced and
 ineligible. Nothing else structural queued, nothing awaiting user
@@ -486,7 +497,30 @@ constraints; the dated dispatch narrative is in *Decisions made* and git):
   unchanged:** phase OPEN, the 2026-08-05 Lean hold, W4 PARKED, `hK`/`hbareSplit`
   pinned, both option Bs un-commissioned, (K-res) still a user call.
 
-**Kernel-(K) research arc — sixty-three docs+scripts-only dispatches landed, plus eight
+- **2026-08-26 (eighth check-in), the SELECTION CRITERION MOVES — prioritize by
+  distance to the PHASE TARGET.** After a walk-through of where OGEOM sat in the
+  (K) work and what a disproof of its residual would and would not mean, the
+  user directed, verbatim: *"I think we should be prioritizing work that makes
+  headway on the phase target one way or the other."* This **supersedes the
+  board's cheapest-decisive-first convention** as the ordering criterion for
+  picks made under the widened delegation. The coordinator's audit, recorded
+  because the finding is structural: the docs were **not** emphasizing
+  target-moving work, and the miss was systematic — *Hand-off*'s candidate list
+  was ordered by the previous direction's **successor order** (which
+  mechanically chases residuals; five directions on the (b′) price form is what
+  that produces), W4's four informal costs sat unranked in option-board §8.5
+  rather than anywhere a reader looks for the next build, **(K-res) appeared in
+  the dispatch docs only as a bar** (excluded from eight consecutive specs), and
+  §8's ranking criterion measures the *direction*, not its distance to the
+  target. **Acted on at the BATTAIN landing:** *Hand-off*'s candidate list is
+  re-ordered by target distance, with the three carried items at its head. **Not
+  acted on, and still a user call: (K-res)** — wave-sized, never attacked, and
+  the thing route 3 **cannot close without**; its "pin it when the tight side
+  closes" deferral is now stale by the note's own admission. **Everything else
+  stands unchanged:** phase OPEN, the 2026-08-05 Lean hold, W4 PARKED,
+  `hK`/`hbareSplit` pinned, both option Bs un-commissioned.
+
+**Kernel-(K) research arc — sixty-four docs+scripts-only dispatches landed, plus eight
 strategy-only passes** (2026-08-02 → 08-26) — and, **outside** that count because they test
 the architecture rather than the (K) crux, the **two probes**: **KBARE-FALSIFY**
 (2026-08-20) and **C3-AVOID** (2026-08-24), both landed. Which pass was which is one-lined in *Decisions
@@ -495,7 +529,7 @@ LTWO are the fortieth through forty-fourth; CIRR the forty-fifth; YLOC the forty
 the forty-seventh; ZNEQ the forty-eighth; AGLU the forty-ninth; the eighth fan-out's five
 the **fiftieth through fifty-fourth**, all landed 2026-08-19; **GFLIP the fifty-fifth**,
 **GCHEAP the fifty-sixth**, **OQRANK the fifty-seventh**, **GPRICE the fifty-eighth**,
-all 2026-08-25, and **GBLAW the fifty-ninth**, **GXESC the sixtieth**, **GHWIT the sixty-first** **GMINM the sixty-second** and **OGEOM the sixty-third**, all 2026-08-26), and a **user call on
+all 2026-08-25, and **GBLAW the fifty-ninth**, **GXESC the sixtieth**, **GHWIT the sixty-first** **GMINM the sixty-second**, **OGEOM the sixty-third** and **BATTAIN the sixty-fourth**, all 2026-08-26), and a **user call on
 dispatch *shape*** — either multidispatch election, or a coordinator-authored pick like the
 twelfth's — contributes **no** strategy pass, so the 2026-08-19 eighth-fan-out check-in adds
 none even though it moved a standing constraint.
@@ -719,15 +753,54 @@ neighbours' incidences and every capacity unit above 2 is bought by a **Case-I g
 whose pencil-compatibility is geometry the probe was barred from. **§(K-avoid) was never
 opened** and no gap-map status moved.
 
-**THE NEXT CONCRETE TASK — land the BATTAIN return.** Direction **BATTAIN**
-(ordinal 39, the arc's forty-seventh) is **PREPPED and IN FLIGHT**, dispatched
-2026-08-26 at `recon-opus` against `notes/Pencil-fanout.md` §"BATTAIN"
-(reservation (BE-10)–(BE-14) / *Steps BE9–BE13*) — **the arc's first
-direction ever aimed at `hbareSplit`**, closing a 46-to-0 attention gap the
-gap map has flagged since 2026-07-30. **Option B stays un-commissioned.** Its
-falsification arm (a T2 witness ⟹ `PencilPair K 3 G` false ⟹ a PENCIL event)
-is worked up in-phase per the 2026-08-26 pre-adjudication, with the
-classification surfaced. **OGEOM is LANDED** (§(K-out) *Steps
+**THE NEXT CONCRETE TASK — the next direction, coordinator-picked, and the
+candidate list below is now ordered by DISTANCE TO THE PHASE TARGET** (the
+2026-08-26 directive, *Current state*'s eighth-check-in bullet), replacing the
+previous-direction's-successor-order convention that produced five consecutive
+directions on a ledger residual the ledger does not consume.
+
+**The target is `PencilPair K 3 G`, and exactly three carried items stand
+between the landed theorem and it. Rank accordingly.**
+
+1. **`hbareSplit` via (BE-14), direct attainment** — *the pencil stratum
+   attains `6(|V|−1) − def₃(G)`*, hard step isolated to **`Y° ⊄ Z(G)`**
+   (§(K-bare-ext) *Step BE13*, BATTAIN). **The most target-moving statement
+   the arc currently owns:** seed-free, induction-free, never uses
+   `¬PencilNondegFeasible`, and it discharges `hbareSplit` **and**
+   `PencilPair`'s unconditional conjunct at once, as a **standalone theorem**
+   (the phase's own 2026-08-05 bar). Dearer in absolute terms, cheaper in
+   structure. **Proof-of-concept slice, offered by BATTAIN:** (BE-14)
+   restricted to `def₂ = def₃`, where the cone attains by (BE-13) in closed
+   form — the arc's first *proved* `HasPencilRealization` result; it does not
+   discharge `hbareSplit` (DZ has `def₂ = 11`).
+2. **`hcontract` via W4's informal costs — dispatchable TODAY, and the hold is
+   an argument FOR them, not against.** The hold parks Lean; it does **not**
+   park route 3's other four costs (*Blockers*, "What the Lean hold parks, and
+   what it does NOT"). **(T)** `G` triangle-free — *"a genuine research gap,
+   not a numerics gap"* and **landed-invisible**, since the search's own
+   feasibility certificate requires triangle-freeness, so no certified sweep
+   can ever surface a triangle-carrying residual; **(V)** the local choice;
+   **(E-loc)** the combinatorial gap (255/255, unproven). **All three are
+   slice-sized and need no adjudication.**
+3. **`hcontract` via (K-res) — the structural blocker, and a USER CALL.** Route
+   3 **cannot close without it**; it has **never been attacked**, appearing in
+   the dispatch docs only as a **bar** across eight consecutive specs behind a
+   *"pin it when the tight side closes"* deferral this note itself now calls
+   stale. Wave-sized. **Do not commission it without the user.**
+4. **`hK` via (GR-15)** — the phase's hardest item, untouched by all
+   forty-seven directions, and the only one of the three with no named
+   next slice. Everything in §(K-grid)/§(K-out) below is *support* for this,
+   not progress on it.
+
+**Below the carried items — support work, explicitly ranked lower now.**
+OGEOM's successors (the unsearched `n(F°) ≥ 6` frontier; the Kirchhoff-
+injectivity sentence) are **disproof-risk reduction**, which by (OC-24) *"can
+never be the binding obstruction"*; the grid-side residual (*is the ledger gap
+ever `≥ 3`?*) is ledger bookkeeping; OQRANK's residuals and the `2k ∈ {4,6}`
+corner likewise. **Do not re-open** per-matching (b′) or the `min_M` reading —
+refuted and proven respectively.
+
+**OGEOM is LANDED****OGEOM is LANDED** (§(K-out) *Steps
 O42–O46*): no disproof witness, the geometric route free **by an argument**
 on everything searched, and §8.5's row **narrowed, not closed**. Its own
 successors, in order: **(1)** the unsearched cells — `n(F°) = 4` and `5` at

@@ -1618,7 +1618,7 @@ rejection reason). **`OGEOM` names the route's content** — the **geometric**
 half of the disproof question, the half (OC-37) left standing when it killed
 the counting half.
 
-## Reserved namespace — direction BATTAIN (2026-08-26, **RESERVED — the direction is in flight**)
+## Reserved namespace — direction BATTAIN (2026-08-26, **USED — the direction landed the same day; all five labels and all five steps consumed, none returned**)
 
 **Reserved 2026-08-26 for the single direction BATTAIN** (ordinal 39, the
 arc's forty-seventh direction; `notes/Pencil-fanout.md` §"BATTAIN"), the

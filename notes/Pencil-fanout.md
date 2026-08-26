@@ -1,9 +1,13 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: EIGHT fan-outs and NINETEEN single directions dispatched; 46 of the
-47 LANDED — BATTAIN (ordinal 39, §"BATTAIN") is PREPPED and IN FLIGHT, and it
-is the arc's FIRST direction ever aimed at `hbareSplit`** (46 on `hK`, zero
-on (K-bare)). **OGEOM (ordinal 38, §"OGEOM") LANDED 2026-08-26 — NO
+**Status: EIGHT fan-outs and NINETEEN single directions dispatched; ALL 47
+directions LANDED.** **BATTAIN (ordinal 39, §"BATTAIN") LANDED 2026-08-26 —
+the arc's first direction ever aimed at `hbareSplit`, and it paid: the motive
+characterized off the Lean bodies, bare realizability proved UNCONDITIONAL,
+the first universal pencil-stratum rank cap produced BY AN ARGUMENT, the
+standing "no T2 producible by this harness" reading CORRECTED, and 774/774
+deterministic attainment certificates with zero shortfalls. `hbareSplit` OPEN
+and unchanged; not a PENCIL event.** **OGEOM (ordinal 38, §"OGEOM") LANDED 2026-08-26 — NO
 disproof witness (91 260 live cores, 0 candidates), and the geometric route
 is now free BY AN ARGUMENT on everything searched, with (OC-37)(ii)'s
 one-unit topology dead class-uniformly and (OC-39) upgraded from sample to
@@ -4027,3 +4031,89 @@ and commit.
 **Reservation** (`notes/Pencil-labels.md` §"Reserved namespace — direction
 BATTAIN"): §(K-bare-ext) **extends**; labels **(BE-10)–(BE-14)**, **Steps
 BE9–BE13**; return any unconsumed remainder to the tail.
+
+### BATTAIN — landing write-up (LANDED 2026-08-26, recon-opus, one serial coordinator commit)
+
+**Verdict: HIT shapes 1 and 2, both graded. `hbareSplit` OPEN and unchanged,
+and the classification is explicit — it refutes neither `PencilPair K 3 G`
+nor `hbareSplit`, only a *reading* and a *route pricing*. Not a PENCIL
+event.**
+
+**Four results.** **(BE-10)** characterizes the motive exactly, **derived off
+the Lean bodies** as the spec required: `∃F, HasPencilPanelRealization G F n p
+⟺ n_v ≠ 0 ∧ p_v ≠ 0 ∧ n_w ⬝ᵥ p_v = 0` for every `w ∈ closedNbhd(v)`, the
+`W_e` clause free. Cross-asserted against `kbare_common.build_rigidity` at
+equal exact rank 114. **(BE-11)** — **bare pencil realizability is
+UNCONDITIONAL** (all normals in a common 3-space, all points at its perp:
+legal at *every* graph), so `HasPencilRealization` has **no existence
+content** — all of it is the rank. That is *why* the antecedent supplies an
+object route A cannot use, a fact the arc had recorded but never explained.
+**(BE-12)** — the pencil condition is carried entirely by the hubs, one
+determinant each, vacuous at degree ≤ 2; the arc's "only known certificate"
+(`|closedHubNbhd(v)| ≥ 4 ⟹ ¬PencilNondegFeasible`) becomes a one-line
+theorem. **(BE-13)** — **the first universal rank cap over a pencil stratum
+produced by an argument**: `rank(cone) = 6(|V|−1) − def₂(G)` with `def₂` the
+*planar* deficiency, exact at 68/68 (DZ `103 = 114 − 11`, predicted before
+measured).
+
+**The correction, and it is the valuable one.** **(BE-9)'s "no T2 is
+producible by this harness" was too strong.** A universal cap *is* producible
+by argument — (BE-13) is one, and it reduces T2 at a forced cone to the
+**decidable** criterion `def₂ > def₃`. What actually blocks T2 is narrower and
+structural: forcing the cone needs three shared closed-star normals, hence a
+common neighbour of two adjacent bodies — a **triangle** — and the habitat is
+**triangle-free by `hnoRigid`**. Coordinator-verified in the Lean source, not
+a docstring: `Escape.lean:411–418`, via `Graph.triangle_isProperRigidSubgraph`.
+(BE-9)'s subclass objection is confirmed **real but inert** — the affine class
+is Zariski-dense in `Y°`, a tower of linear fibrations, hence irreducible and
+rational.
+
+**The falsification arm, answered positively and deterministically.** **774
+shapes, 774 exact-ℚ attainment certificates, ZERO shortfalls** — the entire
+216-member index-1 census (not a sample), DZ 114/114, Q3 138/138, a 545-shape
+sweep over indices −6…12, and the necklaces. These are **proofs, not cap
+reports**: `rank ≤ target` holds universally and the conclusion is
+existential, so an exhibited certificate settles a shape. *Step BE7*'s "no T2
+candidate found under cap" therefore upgrades to **774 shapes proven not to be
+T2 witnesses**. A constructed T2 candidate — a necklace of `K₄−e` blobs — met
+the arithmetic half but its own derived stratum attains at `k = 3…7`; the
+criterion's two halves have never been met by one graph.
+
+**A methodological trap caught by the dispatch itself, worth recording.** Its
+first sweep pass reported three shortfalls from **one seed each**; rank is
+lower semicontinuous, so a one-seed shortfall is only a lower bound. All three
+attain on another seed. It found and corrected this before returning — the
+mirror image of C3's `0/179`.
+
+**What remains, and it is now one sentence.** **(BE-14)**, direct attainment —
+*the pencil stratum attains `6(|V|−1) − def₃(G)`*, a **pencil analogue of the
+Molecular Theorem** — is OPEN with its hard step isolated to **`Y° ⊄ Z(G)`**:
+hub concurrency does not force the rank-drop locus, and nothing in the arc
+bounds `Z(G)` (§(K-tight)'s calculus is split-local). **Pricing:** dearer in
+absolute terms (whole-graph, no induction, new genericity mathematics),
+**cheaper in structure** — seed-free, induction-free, never uses
+`¬PencilNondegFeasible`, so it discharges `hbareSplit` **and** `PencilPair`'s
+unconditional conjunct at once, as a **standalone theorem** — the phase's own
+2026-08-05 bar. The `∃`-seed + repair alternative stays inside the induction
+and still meets §(K-tight) *Step 5*'s chartless wall; **nothing this pass found
+lowers that wall.**
+
+**Smallest next slice, offered:** (BE-14) restricted to `def₂ = def₃`, where
+the cone itself attains by (BE-13) — closed-form, no genericity argument, and
+the arc's first `HasPencilRealization` result *proved* rather than measured.
+It does **not** discharge `hbareSplit` (DZ has `def₂ = 11`); it is a
+proof-of-concept.
+
+**Coordinator verification.** `validate` re-run (exit 0, 72 s); the 68/68 cone
+law, DZ `103` vs target `114`, the necklace attainments at `k = 3…7`, and the
+774/0 record all reproduce. The triangle-free premise — load-bearing for the
+corrected T2 reading — was checked against the Lean source itself.
+
+**F25 bar, read off the shipped driver:** eleven modes, all foreground with
+explicit timeouts, exact ℚ throughout, every rng seeded, asserts covering every
+`HasPencilPanelRealization` conjunct. **No scratchpad probe backs any claim.**
+Seven caps disclosed, including that degree-≥4 habitat members are **unprobed**
+and `def₂` is exact only to `|V| ≤ 16`.
+
+**TERMINATION: E1, E2, E3 all NO** — coordinator-re-run and agreed. E3 stays
+**ARMED by GBAL, not fired**.
