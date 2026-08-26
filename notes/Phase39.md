@@ -400,6 +400,37 @@ constraints; the dated dispatch narrative is in *Decisions made* and git):
   2026-08-05 Lean hold, W4 PARKED, `hK`/`hbareSplit` pinned, both option Bs
   un-commissioned, (K-res) still a user call.
 
+- **2026-08-26 (seventh check-in, third call), the DIRECTION-A PIVOT RULE's stop
+  clause is PRE-ADJUDICATED — a confirmed disproof is worked up, not surfaced for
+  a decision.** Asked whether a disproof would not simply have an obvious
+  response, the user settled it, verbatim: *"OK, if there is a confirmed
+  disproof, then it does reverse what the result of this phase; however, I think
+  the steps we would take are clear, right? We should clean up that disproof and
+  prepare it for formalization (probably in the next phase)."* This **supersedes
+  the stop-and-adjudicate half** of the Direction-A pivot rule
+  (`notes/Pencil-fanout-archive.md` §"Direction A") and of the 2026-08-19 SIGZ
+  authorization terms: on a confirmed half-2 disproof the loop does **not** halt
+  for a user decision — the coordinator works the disproof up to a
+  formalization-ready informal statement inside this phase, under the standing
+  Lean hold (so: workbook + drivers + a corrected statement, **no `.lean`**), and
+  the Lean lands in a successor phase. **What the pre-adjudication does NOT
+  cover, and what still comes to the user:** (i) the **classification** — half 1
+  (the `hK` *pin* fails: a re-pin, explicitly *"not a disproof of the
+  conjecture"*) versus half 2 (the conjecture itself fails) versus a T1-style
+  *route* refutation; the coordinator reports which landed rather than the flat
+  word "disproof", the KBARE-FALSIFY precedent being a direction whose own spec
+  mis-predicted its own category; (ii) **"confirmed"** — a first return is not
+  confirmed; the bar is the (GR-83)/(GR-113) one that GXESC's witnesses cleared
+  (every figure re-derived through three independent exact models, two of them
+  landed), and `RESEARCH-ARC.md` item 4 binds: the corrective mechanism is the
+  **next pass**, not coordinator scrutiny, so a confirming pass is priced into
+  the work-up; (iii) the **phase boundary** — whether Phase 39 closes and a
+  successor opens for the Lean is a `PHASE-BOUNDARIES.md` event against a
+  standing 2026-07-24 no-split adjudication, so it is surfaced with a
+  commit-count estimate, not taken unilaterally. **Everything else stands
+  unchanged:** phase OPEN, the 2026-08-05 Lean hold, W4 PARKED, `hK`/`hbareSplit`
+  pinned, both option Bs un-commissioned, (K-res) still a user call.
+
 **Kernel-(K) research arc — sixty docs+scripts-only dispatches landed, plus eight
 strategy-only passes** (2026-08-02 → 08-26) — and, **outside** that count because they test
 the architecture rather than the (K) crux, the **two probes**: **KBARE-FALSIFY**
@@ -681,8 +712,12 @@ sub-multigraph — is **AUTHORIZED** and dispatched as **SIGZ**; the direction-A
 (`notes/Pencil-fanout-archive.md` §"Direction A") stays in force, so a hit is *"a
 phase-redefining event for the user to adjudicate, not a result to build on"* — **the
 adjudication now happens at the return, not before the dispatch** (the terms the user
-accepted, quoted in *Current state*'s 2026-08-19 eighth-fan-out bullet). **A hit therefore
-stops the loop and goes to the user**; it does not move a gap-map status by itself.
+accepted, quoted in *Current state*'s 2026-08-19 eighth-fan-out bullet). **Superseded
+2026-08-26 as to the stop clause** (*Current state*, the seventh check-in's third bullet):
+a **confirmed** hit is now **worked up in-phase toward formalization** rather than halted
+for a user decision — what still goes to the user is the half-1/half-2/route
+**classification**, the confirming pass behind the word "confirmed", and the phase-boundary
+call. It does not move a gap-map status by itself.
 
 **BOTH STRUCTURAL ROUNDS ARE COMPLETE — nothing structural is queued.** Round 1 (doc-split
 slices 1–2 + discipline-distillation slice 3, `RESEARCH-ARC.md` the promoted manual) and
