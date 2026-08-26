@@ -1,7 +1,11 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: EIGHT fan-outs and FIFTEEN single directions dispatched; ALL 43
-directions LANDED.** **GXESC (ordinal 35, §"GXESC") LANDED 2026-08-26, same
+**Status: EIGHT fan-outs and SIXTEEN single directions dispatched; 43 of the
+44 LANDED — GHWIT (ordinal 36, §"GHWIT") is PREPPED and IN FLIGHT**, the
+first of the seven single directions GFLIP–GHWIT to run below the top rung
+(`recon-opus`; fable conserved at the user's session-config selection).
+Its target is GXESC's reshaped residual, the **half-witness clause**
+(GR-117)(iii). **GXESC (ordinal 35, §"GXESC") LANDED 2026-08-26, same
 day as its dispatch — a REFUTATION BY WITNESS, the spec's strong form:
 (GR-108), the balance law, is FALSE from `n = 16` (four verified witnesses,
 the first one transposition from GBLAW's strand witness) and existential
@@ -43,8 +47,8 @@ exact `n_hub` boundary for ledger attack (c)'s AA-glue case (GTMPL), (b′)'s fi
 `n`-free constant (GFLOW), a **NO HIT** on the authorized disproof hunt that nonetheless
 kills the counting route to a disproof (SIGZ), (a₁) reduced to one determinant (OSCHU), and
 **(GR-64)(R2) REFUTED** with (R1) delivered (GCOLL).
-Ordinals run 1–35 (the eighth fan-out claims 25–29; GFLIP is 30; GCHEAP is 31;
-OQRANK is 32; GPRICE is 33; GBLAW is 34; GXESC is 35) and were assigned at dispatch, so landing order
+Ordinals run 1–36 (the eighth fan-out claims 25–29; GFLIP is 30; GCHEAP is 31;
+OQRANK is 32; GPRICE is 33; GBLAW is 34; GXESC is 35; GHWIT is 36) and were assigned at dispatch, so landing order
 differs from ordinal order.
 
 **The two architecture-testing PROBES are also both LANDED** (§"Two probes SPECCED and
@@ -3366,3 +3370,130 @@ rank-free — `fully_good_rank` absent; the twelve `gprice`/`gblaw` sibling
 imports recorded as the GBLAW debt item's extension); the L6 bare-token
 grep clean on the merged draft; `check-gapmap-cells.py` green on the
 recomputed §(K-grid) row.
+
+## GHWIT — thirty-sixth ordinal, the forty-fourth direction (single dispatch, prepped 2026-08-26)
+
+**Selection provenance:** the standing 2026-08-07 delegation; shape adjudicated
+at the **seventh** check-in (the 2026-08-26 session) — **"Single direction,
+front-runner-first"** (an option selection; `notes/Phase39.md` *Current state*,
+the 2026-08-26 seventh-check-in bullet). With GXESC landed 2026-08-26, the
+front-runner is GXESC's own reshaped residual, the head of *Step G139*'s
+successor order and the first entry of `notes/Phase39.md` *Hand-off*'s
+candidate list: the **half-witness clause** (GR-117)(iii) — the whole
+remaining gap to (GR-104)(i) at `2k = 2`, every `n`, unconditionally.
+
+**Rung — read this before calibrating the return.** Dispatched **un-named,
+single**, at **`recon-opus`, NOT the top rung**: at the same check-in the
+user's session-config selection left "all four rungs dispatchable"
+**unselected**, so fable is conserved this session (`weekly_scoped` 92 %
+critical corroborates), and opus is the playbook's nearest available rung at
+or above the mapping. **GHWIT is the first of the seven single directions
+GFLIP–GHWIT not to run at `recon-fable`** — the six predecessors' returns are
+the calibration baseline, and a thinner return here is a rung artifact to
+report, not a property of the target. Derivation-first tier — the surgical
+mechanism is proven and the hunt is landed; new measurement is the
+conditional, not the default. **The shared mechanics and landing checklist
+above apply in full** — read-only w.r.t. every shared file, commit nothing,
+draft to the untracked `notes/Pencil-draft-GHWIT.md`, tight return verdict.
+
+**The target — the half-witness clause, (GR-117)(iii).** Verbatim as GXESC
+minted it (§(K-grid) *Step G137*, `notes/Pencil-informal-grid.md`):
+
+> *Every pos-carrying `O ⊆ M` pair has a maximum that is balance-valid or
+> half-resident.*
+
+Equivalently, in the contrapositive form the landed hunt already tests: **no
+`O ⊆ M` pair has every maximum forcing with both odd branches fully
+resident** (residency (2,2), `|h| = 4`).
+
+Standing: **minted and measured, NOT a theorem — 0 all-(2,2) pairs and 0
+gap-4 pairs among all 248 gated single-cycle pairs hunted** ((GR-117)(iii),
+(GR-118)(i); caps disclosed at *Step G138*, pools to `n = 20`), including all
+four (GR-116) refutation witnesses. What a proof buys: with (GR-117)(ii)'s
+proven surgery it makes the **gap-2 law** — equivalently, by (GR-117)(i),
+(GR-104)(i) at `2k = 2`, `O ⊆ M` — a theorem; with (GR-107)(iii)'s proven
+off-`M` half, **(GR-104)(i) becomes a theorem at `2k = 2`, every `n`,
+unconditionally**, leaving (b′) at the constant 2 resting on (GR-C1) plus the
+`2k ∈ {4, 6}` `O ⊄ M` corner alone.
+
+**The named inputs (landed; consume, do not re-derive).** (i) **The
+reversal-label ledger (GR-115)** — proven: `Σ_j c_j + h = 0`; M-closed ⟹
+balance-valid at every `2k`; at `2k = 2`, `|h| ≤ 1` forces balance-validity
+and pos-forcing forces `h ≤ −2`; and (GR-115)(iii), **the sharpest instrument
+pointed straight at the target** — the `h = −2` pos maxima are *automatically*
+half-resident on both branches. Since the open case is exactly `|h| = 4`, the
+clause to beat reduces to **"some maximum has `|h| = 2`"**; start there and
+say explicitly if it fails. (ii) **The surgery (GR-117)(ii)** — proven: one
+(GR-107)(v) adjacent-pair removal at the lone resident end frees the branch at
+`|R| = M* − 2`, giving gap ≤ 2. The mechanism is *done*; what is missing is
+only the **existence** of a maximum it can be applied to. (iii) **The
+arc-transversal normal form (GR-110)** — the maximum family stratifies by sink
+set into independent-transversal families of size `2|K|`, sources sliding
+freely inside sink-arcs; its Haxell-type remark ((GR-110)(iv), Haxell, *Comb.
+Probab. Comput.* **10** (2001) 345–347) is the one unconditional large-arc
+criterion proven. This is the parametrization any existence or extremal
+construction works in. (iv) **(GR-111) recombination** (proven
+maximum-preserving; its (v) separation criterion is REFUTED as a *complete*
+route but stays a valid per-pair instrument), **(GR-112)**'s fine-move
+calculus (slides, adjacent-pair teleports, safe flips — all proven
+maximum-preserving), and **(GR-118)(v)'s interval flips** at dip 2, which
+reconnected the (GR-113) witness's 32 stranded maxima: the fourth move class
+*Step G134* asked for is now known to exist at that pair. (v) **The four
+(GR-116) witnesses are the adversarial control** — pure pos + neg with **no
+balance-valid member**, and the clause nevertheless HOLDS at each (every
+maximum there is half-resident). They are exactly the pairs where the clause
+is tight and the refuted (GR-108) is false: a proof must be one they do not
+kill, and a refutation must beat them. `w4/gxesc.py --verify` prints them in
+full; `--hunt` is the landed hunt cell.
+
+**What counts as a HIT.** A **proof of the half-witness clause** — state the
+exact quantifier delivered: which maximum is exhibited, what selects it, and
+any hypotheses carried beyond `O ⊆ M` + cubic loop-free + `M` perfect +
+`2k = 2`. **Or a proof of the gap-2 law by any other route**, which counts
+identically and is strictly better: the law is the actual target and the
+clause is one *sufficient* hypothesis for it, not a necessary one — do not
+force the argument through the clause if a direct route appears. Also valued,
+on the (GR-116) precedent: a **refutation by witness**, i.e. an all-(2,2)
+pair. If you find one, report **immediately and separately** whether its gap
+is **2** (the clause dies, the gap-2 law survives and needs a new route) or
+**4** — a gap-4 pair **refutes (GR-104)(i) itself at `2k = 2`**, moves (b′)'s
+constant, and is a coordinator-surfacing event, so state it as the headline
+and do not bury it in a summary. Or a **proof under a restricted quantifier or
+an extended move class with the exact boundary named** (an `n` bound, a
+residency hypothesis, a fourth move class). State which you got.
+
+**Bars.** Do **not** attack (GR-C1) or the `2k ∈ {4, 6}` `O ⊄ M` corner —
+separate residuals. (GR-105)–(GR-118) are **landed** — consume, do not
+re-derive; the (GR-116) witnesses' figures are cap-free at those pairs — do
+not try to repair or re-derive them. Do **not** re-run GPRICE's 1 431-pair
+sweep, GBLAW's 1 099-pair escape census, or GXESC's 248-pair hunt / 1 100-pair
+closure census — cite them; a *new* driver mode that tests a *new* sentence is
+fine, a re-measurement of a landed figure is not. (GR-15) and class uniformity
+are out of scope. No `.lean` is touched (the standing Lean hold).
+
+**Riders, verbatim from GXESC's.** TERMINATION check E1/E2/E3 at the return
+(E3 is ARMED by GBAL — firing is the coordinator's action; report, never
+fire). Cap disclosure: an exhausted cap is *"not found under cap C"*, never
+nonexistence. F11: every headline claim needs a driver that tests **that
+sentence**, and "exhaustive"/"forced"/"the only" are their own claim class.
+The shift-metric layer is UNBOUNDED ((GR-43)) — any bound is on a
+**difference**. All figures exact ℚ, seeded, degeneracy-guarded, imported from
+the canonical layer (`notes/scripts/README.md` binds; the *Divergences* table
+names the same-name-different-semantics traps) — **the balance layer is
+`w4/gridbal_common`**: import the moved devices from there directly, never via
+the sibling re-exports. The `gprice`, `gblaw` and `gxesc` device sets are
+sibling leaves — a sideways import is in policy but trips §2 rule 2's
+recorded-debt rule: **extend the existing GBLAW/GXESC *Harness debt* item's
+consumer list in your draft** (the coordinator records it), do NOT make any
+move.
+
+**Driver — conditional, at the pinned path `notes/scripts/w4/ghwit.py`.** A
+purely derivational proof consuming only landed figures needs no new driver —
+then state that disposition explicitly in the draft. Any new measured or
+exhaustion claim mints the driver at the pinned path, importing the harness
+read-only, left untracked for the coordinator to gate and commit.
+
+**Reservation** (`notes/Pencil-labels.md` §"Reserved namespace — direction
+GHWIT"): §(K-grid) **extends** — no new section; labels
+**(GR-120)–(GR-124)**, **Steps G140–G144**; owning section stays
+authoritative; return any unconsumed remainder to the tail.

@@ -124,11 +124,22 @@ hunted pairs), which would close (GR-104)(i) at `2k = 2` unconditionally.
 New proven instrument: the reversal-label ledger (GR-115), M-closed ⟹
 balance-valid at every `2k`. Canonical home §(K-grid) *Steps G135–G139*
 (`notes/Pencil-informal-grid.md`), landing record `notes/Pencil-fanout.md`
-§"GXESC", driver `w4/gxesc.py`. **NEXT CONCRETE TASK: the next standing
-research pick** (the 2026-08-07 delegation; the *shape* is a user call) —
-candidate list in *Hand-off*, headed by the half-witness clause; the §9
-shelf **(ZH-1)–(ZH-6)** stays unpriced and ineligible. Nothing else
-structural queued, nothing awaiting user adjudication.
+§"GXESC", driver `w4/gxesc.py`. **DIRECTION GHWIT (ordinal 36) IS
+PREPPED and IN FLIGHT — the seventh check-in's front-runner pick,
+dispatched 2026-08-26 at `recon-opus`**, the first of the seven single
+directions GFLIP–GHWIT to run **below the top rung** (fable conserved by
+the user's own session-config selection; `weekly_scoped` 92 % critical).
+Its target is GXESC's reshaped residual, the **half-witness clause**
+(GR-117)(iii) — a proof closes (GR-104)(i) at `2k = 2` unconditionally,
+and the refutation shape (an all-(2,2), **gap-4** pair) would refute
+(GR-104)(i) itself and move (b′)'s constant. Spec
+`notes/Pencil-fanout.md` §"GHWIT"; reservation (GR-120)–(GR-124) /
+*Steps G140–G144*. **NEXT CONCRETE TASK: land the GHWIT return** (per the
+fan-out landing checklist), then the next standing research pick (the
+2026-08-07 delegation; the *shape* is a user call) — candidate list in
+*Hand-off*. The §9 shelf **(ZH-1)–(ZH-6)** stays unpriced and
+ineligible. Nothing else structural queued, nothing awaiting user
+adjudication.
 
 ## Current state
 
@@ -336,6 +347,29 @@ constraints; the dated dispatch narrative is in *Decisions made* and git):
   fixups pre-authorized). **Everything else stands unchanged:** phase OPEN,
   the 2026-08-05 Lean hold, W4 PARKED, `hK`/`hbareSplit` pinned, option B
   un-commissioned.
+
+- **2026-08-26 (seventh check-in), the pick after GXESC — the front-runner shape
+  RE-ELECTED, and FABLE CONSERVED (the first session-config move since
+  2026-08-25; no kernel constraint moves).** With GXESC landed, the user was
+  offered four shapes (single direction front-runner-first → the half-witness
+  clause / single direction at (K-bare)'s rank-3 shape / top-rung recon-first (a
+  ninth strategy pass) / ninth multidispatch fan-out) and selected **"Single
+  direction, front-runner-first → (GR-117)(iii)"** — an option selection, not
+  free text — which resolves to the **half-witness clause**: GXESC's reshaped
+  residual, the head of *Step G139*'s successor order and the first entry of
+  *Hand-off*'s candidate list. Dispatched as **GHWIT** (ordinal 36).
+  **The config move, recorded because it changes the calibration baseline:**
+  asked in the same check-in which rungs are dispatchable, the user selected
+  only **cap lifted** and **rescue §1 fixups pre-authorized**, leaving *"all
+  four rungs dispatchable"* **unselected** — so **fable is conserved this
+  session: sonnet + opus only, top rung = opus** (`weekly_scoped` at 92 %
+  critical corroborates the reading), and GHWIT dispatches at **`recon-opus`**,
+  the playbook's nearest-available substitute at or above the mapped rung. It is
+  **the first of the seven single directions GFLIP–GHWIT not to run at
+  `recon-fable`**; the six predecessors' returns are the calibration baseline,
+  so a thinner return is a rung artifact to report rather than a property of the
+  target. **Everything else stands unchanged:** phase OPEN, the 2026-08-05 Lean
+  hold, W4 PARKED, `hK`/`hbareSplit` pinned, option B un-commissioned.
 
 **Kernel-(K) research arc — sixty docs+scripts-only dispatches landed, plus eight
 strategy-only passes** (2026-08-02 → 08-26) — and, **outside** that count because they test
@@ -570,19 +604,26 @@ neighbours' incidences and every capacity unit above 2 is bought by a **Case-I g
 whose pencil-compatibility is geometry the probe was barred from. **§(K-avoid) was never
 opened** and no gap-map status moved.
 
-**THE NEXT CONCRETE TASK — the next standing research pick** (GXESC is
-LANDED, see the top `**Status:**` block and *Decisions made*; landing record
-`notes/Pencil-fanout.md` §"GXESC"). The candidate list — the 2026-08-25
-re-ranked board (`notes/Pencil-strategy.md` §8, the canonical home) with its
-rank-1 and rank-2 slots landed (OQRANK / GPRICE), plus GXESC's reshaped
-residual at the head: **prove the half-witness clause** ((GR-117)(iii):
-every pos-carrying `O ⊆ M` pair has a maximum that is balance-valid or
-half-resident — strictly weaker than the refuted (GR-108), a proven
-surgical mechanism behind it ((GR-117)(ii)), counterexample-free at 248
-hunted pairs; a proof closes (GR-104)(i) at `2k = 2` unconditionally, and
-the equal-value refutation shape — an all-(2,2), gap-4 pair — would refute
-(GR-104)(i) itself and move (b′)'s constant; §(K-grid) *Steps G135–G139*),
-then
+**THE NEXT CONCRETE TASK — land the GHWIT return.** Direction **GHWIT**
+(ordinal 36, the arc's forty-fourth) is **PREPPED and IN FLIGHT**,
+dispatched 2026-08-26 at **`recon-opus`** against the spec at
+`notes/Pencil-fanout.md` §"GHWIT" (reservation (GR-120)–(GR-124) / *Steps
+G140–G144*, `notes/Pencil-labels.md`). Its target is the **half-witness
+clause** ((GR-117)(iii): every pos-carrying `O ⊆ M` pair has a maximum
+that is balance-valid or half-resident — strictly weaker than the refuted
+(GR-108), a proven surgical mechanism behind it ((GR-117)(ii)),
+counterexample-free at 248 hunted pairs; a proof closes (GR-104)(i) at
+`2k = 2` unconditionally, and the equal-value refutation shape — an
+all-(2,2), **gap-4** pair — would refute (GR-104)(i) itself and move
+(b′)'s constant; §(K-grid) *Steps G135–G139*). **A gap-4 witness stops
+the loop and goes to the user**; a gap-2 all-(2,2) witness kills the
+clause only, leaving the gap-2 law alive and needing a new route. Land the
+return per the fan-out landing checklist, then take the next standing
+research pick.
+
+**The candidate list after GHWIT** — the 2026-08-25 re-ranked board
+(`notes/Pencil-strategy.md` §8, the canonical home) with its rank-1 and
+rank-2 slots landed (OQRANK / GPRICE) and its head now in flight:
 **(K-bare) at the seed-free direct-attainment shape** (rank 3 — the
 KBARE-FALSIFY successor priced on §8.4's board; NOT option B, which stays
 un-commissioned; this is where the standing attention asymmetry says a
@@ -623,12 +664,12 @@ round 2 (slice 4 the phase-note split, **slice 5/"slice 2" the harness move-down
 OSCHU's `rank(Q|_D) = 3` residue is no longer blocked on the harness — exact `ℚ(i)`
 (`exactcore.Gauss`) is now a base-layer primitive.
 
-**THE STANDING RESEARCH-PICK DELEGATION — live again: GXESC is landed**
-(2026-08-26, sixth check-in, single direction front-runner-first →
-existential escape, dispatched and landed the same day with a refutation
-verdict; see the top `**Status:**` block and *Current state*'s 2026-08-26
-bullet). The delegation covers the next pick; its shape is again a user
-call.
+**THE STANDING RESEARCH-PICK DELEGATION — exercised, and NOT live until
+GHWIT lands.** The seventh check-in (2026-08-26) elected single direction
+front-runner-first → the half-witness clause, dispatched as **GHWIT** at
+`recon-opus` (see the top `**Status:**` block and *Current state*'s
+2026-08-26 seventh-check-in bullet). The delegation covers the pick
+*after* GHWIT; its shape is again a user call.
 
 **`hsplit` is CLOSED IN FULL** (W5-L7c-1…6, landed 2026-07-30) and **`hfresh`'s mechanical
 discharge (residue (iv)) is CLOSED too**. The landed successor

@@ -1518,6 +1518,42 @@ source tokens **(GR-108)/(GR-112)** are landed labels — already minted,
 **not** in this reservation; GXESC *cites* them and mints its own results
 at (GR-115)+.
 
+## Reserved namespace — direction GHWIT (2026-08-26, **RESERVED — the direction is in flight**)
+
+**Reserved 2026-08-26 for the single direction GHWIT** (ordinal 36, the
+arc's forty-fourth direction; `notes/Pencil-fanout.md` §"GHWIT"), the
+standing research pick made at the seventh check-in of the 2026-08-26
+session (single direction, front-runner-first → the **half-witness
+clause**, (GR-117)(iii) — GXESC's reshaped residual and the head of
+*Step G139*'s successor order). One direction, no siblings — the
+reservation still binds because it protects the *next* dispatch's prep
+from this one's labels.
+
+| direction | owning § | labels reserved | steps reserved | driver |
+|---|---|---|---|---|
+| **GHWIT** | §(K-grid) — **extends**, no new section | **(GR-120)–(GR-124)** | **G140–G144** | `w4/ghwit.py` (conditional — see the spec) |
+
+The reservation is the head of §(K-grid)'s unclaimed tail (declared
+**(GR-120)+ / Step G140+** at GXESC's landing above). At landing, record
+which labels and steps were consumed and return any remainder to the tail,
+then flip this header to **USED**.
+
+**Code and basename verified 0-hit** as raw substrings, case-insensitively,
+across `*.md`, `*.tex`, `*.lean`, `*.py`, `*.m2` with `.git`/`.lake`
+excluded, control token `aglu` live at 14 files (`gxesc` live at 8, the
+freshest control). Label tokens `(GR-121)`–`(GR-125)` and *Steps
+G141–G145* each 0-hit; `(GR-120)` and *Step G140* hit only GXESC's
+live-tails bookkeeping above (the `(GR-97)`/`(GR-115)` precedent).
+**Checked and NOT chosen:** `GHALF` — **collides** (1 file: `ghalf`, a
+local variable in `notes/scripts/w4/gxesc.py`, a raw-substring hit and so
+barred); `GHRES` — 0-hit but it names one *disjunct of the conclusion*
+(half-residency), not the clause (the `GWALK`/`GFINE` rejection reason).
+**`GHWIT` names the theorem's content** — the **H**alf-**WIT**ness clause
+itself, the corpus's own name for (GR-117)(iii). The source tokens
+**(GR-104)/(GR-115)/(GR-117)** are landed labels — already minted, **not**
+in this reservation; GHWIT *cites* them and mints its own results at
+(GR-120)+.
+
 ## Registry — `notes/Pencil-informal.md` (the (K) workbook)
 
 Status keywords are pointers to the owning section's verdict block and the
