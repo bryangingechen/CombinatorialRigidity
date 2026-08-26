@@ -140,8 +140,12 @@ from gpsa import branches_at, nk55_specs, nkp_specs, pattern_of           # noqa
 # (README *Harness debt*, direction GFLIP): `gflip` imports both, past §2
 # rule 2's trigger, alongside nine sibling devices from `balb`/`gbal`/
 # `gdesc`/`gpsa`.  Re-exported here, so this module's own modes and
-# `gflip`'s import line are unchanged.
-from gridbal_common import feas_flip, seeded_shapes                       # noqa: E402
+# `gflip`'s import line are unchanged.  `adm_cube`/`block_ends_at`/
+# `f_layers` joined 2026-08-25 (README *Harness debt*, directions
+# GCHEAP/GPRICE): `gcheap`/`gprice` both pull some of the three, past the
+# trigger again; re-exported here for the same reason.
+from gridbal_common import (adm_cube, block_ends_at, f_layers,            # noqa: E402
+                            feas_flip, seeded_shapes)
 
 R_SEED = 20260819
 
@@ -155,8 +159,9 @@ R_SEED = 20260819
 # witness set; `chain_repairs` / `chain_first` the (GR-86) repair chains;
 # `block_ends_at` the blocked-end count that names the four cases;
 # `adm_cube` the exhaustive admissible-z enumeration; `f_layers` the exact
-# per-pattern minimum dist; `walk_adm` the large-n admissible-configuration
-# sampler.
+# per-pattern minimum dist (all three moved to `gridbal_common` 2026-08-25,
+# used here via the re-export above); `walk_adm` the large-n
+# admissible-configuration sampler.
 
 
 def nonmatch_at(binc, matbr, v):
@@ -220,14 +225,6 @@ def bad_hubs(specs, n, binc, z):
         if a == b == c:
             out.append(v)
     return out
-
-
-def block_ends_at(specs, m, i):
-    """The ends of odd branch `i` at which `i` carries the MINORITY dart --
-    the BLOCKED ends.  0 = dart-free, 1 = one-end-blocked, 2 = doubly
-    blocked."""
-    (u, w, _L) = specs[i]
-    return [v for v in (u, w) if m[v][0] == i]
 
 
 def case_of(specs, m, matbr, i):
@@ -300,30 +297,6 @@ def chain_first(specs, n, binc, z, D, oset, nodecap=40000):
             seen.add(t2)
             q.append((t2, J | {i}))
     return None, False
-
-
-def adm_cube(specs, n, binc, oidx):
-    """EXHAUSTIVE: every admissible z of the full 2^|E| cube, with its (m, c)
-    and its odd pattern.  Usable to |E| = 18 (n_hub = 12)."""
-    mn = len(specs)
-    out = []
-    for bits in range(1 << mn):
-        z = [(bits >> i) & 1 for i in range(mn)]
-        if z_admissible(specs, n, binc, z):
-            mm, c = z_to_map(specs, n, binc, z)
-            out.append((z, mm, c, z_pattern(z, oidx)))
-    return out
-
-
-def f_layers(cube, n, base):
-    """f(pattern) = the exact minimum dist(., M) over admissible z with that
-    pattern, off the exhaustive cube; plus d_par(M) = min f."""
-    f = {}
-    for (_z, mm, _c, pat) in cube:
-        d = sum(1 for v in range(n) if mm[v] != base[v])
-        if pat not in f or d < f[pat]:
-            f[pat] = d
-    return f, min(f.values())
 
 
 def walk_adm(specs, n, binc, z, rng, steps):

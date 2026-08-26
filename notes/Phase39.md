@@ -76,8 +76,8 @@ existential survives at every audited pair (stalled flips price 0) and the resid
 is reshaped to **(GR-104)(i), the price form**. Canonical home §(K-grid) *Steps
 G120–G124* (`notes/Pencil-informal-grid.md`), landing record `notes/Pencil-fanout.md`
 §"GCHEAP", driver `w4/gcheap.py`. GFLIP's harness-debt item is **PAID** (2026-08-25,
-the `gridbal_common` move-down); GCHEAP's own residual sibling imports are the new
-recorded *Harness debt* item. **DIRECTION OQRANK (ordinal 32) IS LANDED — dispatched and landed 2026-08-25, a graded
+the `gridbal_common` move-down); GCHEAP's own residual sibling imports were a recorded
+*Harness debt* item, now **PAID** together with GPRICE's (below). **DIRECTION OQRANK (ordinal 32) IS LANDED — dispatched and landed 2026-08-25, a graded
 HIT of the first kind.** Picked at the third 2026-08-25 check-in (recon-first → the
 eighth strategy-only pass's board re-rank `f72cbb35` → its rank-1 front-runner). The
 ⋆-eigen-block route of *Step O29* is **completed as a mechanism** ((OC-40)/(OC-41));
@@ -526,10 +526,16 @@ wall-avoiding-colouring existence** ((OC-44)(iii)) and **the second
 confinement's mechanism** — then the `2k ∈ {4, 6}` `O ⊄ M` corner of
 (GR-104)(i), the one-unit-defect redo of (GR-79)–(GR-82), GCOLL's collision
 dominance, and (OC-19) input (c) class-uniformly — the *shape* of each pick
-stays a user call under the standing 2026-08-07 delegation. Recorded debt:
-GCHEAP's residual sibling imports plus GPRICE's five consumer arrivals
-(`notes/scripts/README.md` *Harness debt*, coordinator-paid between waves
-like their predecessors).
+stays a user call under the standing 2026-08-07 delegation. **GCHEAP's
+residual sibling imports and GPRICE's five consumer arrivals are now PAID**
+(2026-08-25, paid together per the GPRICE item's own instruction — nine
+devices joined the (GR-49)/(GR-50) z-form and pattern/cube-combinatorics
+groups already in `gridbal_common`, `perfect_matchings`/`cubic_habitat`
+catalogued in §1 in place; `notes/scripts/README.md` *Harness debt*).
+Remaining recorded debt: `zneq.ledger` (deliberately deferred), the
+`kbare/` sibling-import set, and OQRANK's two arrivals
+(`out_classes`/`shape_key`/`tree_triple`) — all still coordinator-paid
+between waves.
 
 **Nothing is awaiting user adjudication as of 2026-08-19.** The one item that was —
 ZNEQ's `σ > 0`-everywhere hunt at class shapes whose `H` carries a short theta

@@ -115,11 +115,21 @@ from gpsa import (branches_at, is_bridgeless, delta_of, parity_census,  # noqa: 
 # GFLIP): `gflip` imports all five, past §2 rule 2's trigger, alongside six
 # sibling devices from `balb`/`gdesc`/`gflow`/`gpsa`.  Re-exported here, so
 # this module's own modes and `balb`'s/`gflow`'s import lines are
-# unchanged.  `assign_feasible`/`z_of_orientation`/`pool_cases`/
-# `rand_cubic` stay HERE (one consumer each, this module and the moved
-# bodies via a deferred import) -- a moved body may not reach back up.
-from gridbal_common import (bounds_of, feasible_at, named_cases,       # noqa: E402
-                            odd_idx, random_cases)
+# unchanged.  A SECOND batch joined 2026-08-25 (README *Harness debt*,
+# directions GCHEAP/GPRICE): `z_admissible`/`z_pattern`/`z_to_map`/
+# `assign_feasible`/`z_of_orientation` -- the rest of the (GR-49)/(GR-50)
+# z-form surface, moved beside `bounds_of`/`feasible_at` because `gcheap`/
+# `gprice` each pull some of the five, past the trigger again.
+# `pool_cases`/`rand_cubic` stay HERE (one consumer each, this module and
+# the moved bodies via a deferred import) -- a moved body may not reach
+# back up.  `dart_col`/`map_to_z`/`flip_legal` also stay HERE: the two
+# moved bodies that need `dart_col` (`z_admissible`/`z_to_map`) now reach
+# it back up via their OWN deferred import in `gridbal_common`, the same
+# shape as `pool_cases`/`rand_cubic`.
+from gridbal_common import (assign_feasible, bounds_of, feasible_at,   # noqa: E402
+                            named_cases, odd_idx, random_cases,
+                            z_admissible, z_of_orientation, z_pattern,
+                            z_to_map)
 
 R_SEED = 20260819
 
@@ -127,9 +137,11 @@ R_SEED = 20260819
 # ----------------------------------------------------- local devices --------
 #
 # All new; none shadows a S1 primitive (checked against the README index and
-# the Divergences table).  `dart_col`/`z_admissible`/`z_to_map`/`map_to_z`
-# are the (GR-49) bijection; `assign_feasible` the (GR-50) degree-constrained
-# assignment WITH its infeasibility certificate (the violating hub set);
+# the Divergences table).  `dart_col`/`map_to_z`/`flip_legal` are the local
+# rest of the (GR-49) bijection -- `z_admissible`/`z_to_map` (also part of
+# it) and `assign_feasible` (the GR-50) degree-constrained assignment WITH
+# its infeasibility certificate, the violating hub set) moved to
+# `gridbal_common` 2026-08-25 and are used here via the re-export above;
 # `balance_oracle` the exact per-shape decision; `weight_of`/
 # `weight_criterion` the (GR-51) local form; `constraints_of`/`good_split`/
 # `maximal_structures` the (GR-53) combinatorics; `rand_cubic` a seeded
@@ -147,43 +159,10 @@ def dart_col(specs, z, v, i):
     return z[i] ^ (1 if L % 2 == 0 else 0)
 
 
-def z_admissible(specs, n, binc, z):
-    """(GR-49): no hub sees three equal dart colours."""
-    for v in range(n):
-        a, b, c = (dart_col(specs, z, v, i) for i in binc[v])
-        if a == b == c:
-            return False
-    return True
-
-
-def z_to_map(specs, n, binc, z):
-    """(GR-49) forward: the (m, c) of an admissible z -- c(v) = the
-    majority dart colour at v, m(v) = the minority dart."""
-    m, c = {}, {}
-    for v in range(n):
-        cs = [dart_col(specs, z, v, i) for i in binc[v]]
-        maj = 0 if cs.count(0) >= 2 else 1
-        c[v] = maj
-        lone = [t for t in range(3) if cs[t] != maj]
-        assert len(lone) == 1, "hub not 2-1 split: z was not admissible"
-        i = binc[v][lone[0]]
-        m[v] = (i, 0 if v == specs[i][0] else 1)
-    return m, c
-
-
 def map_to_z(specs, m, c):
     """(GR-49) backward: the z of a parity-consistent (m, c)."""
     return [c[specs[i][0]] ^ (1 if m[specs[i][0]] == (i, 0) else 0)
             for i in range(len(specs))]
-
-
-def z_pattern(z, oidx):
-    """The odd-branch majority pattern of z, in pattern_of's bit order."""
-    bits = 0
-    for j, i in enumerate(oidx):
-        if z[i]:
-            bits |= 1 << j
-    return bits
 
 
 def flip_legal(specs, n, binc, m, F):
@@ -196,86 +175,6 @@ def flip_legal(specs, n, binc, m, F):
         if (m[v][0] in F) != (deg >= 2):
             return False
     return True
-
-
-def assign_feasible(nv, edges, lo, hi):
-    """(GR-50)/(GR-51): assign every edge to ONE endpoint with
-    lo[v] <= load[v] <= hi[v].  Returns (assignment, None) on success or
-    (None, R) with R a hub set violating the two-sided Hall condition --
-    the infeasibility CERTIFICATE.  Augmenting-path algorithm, exact
-    integers; this is the constructive half of (GR-51)'s proof."""
-    bad = {v for v in range(nv) if lo[v] > hi[v]}
-    if bad:
-        return None, bad
-    asg = [e[0] for e in edges]
-    load = [0] * nv
-    for a in asg:
-        load[a] += 1
-    inc = {v: [] for v in range(nv)}
-    for j, (a, b) in enumerate(edges):
-        inc[a].append(j)
-        inc[b].append(j)
-
-    def other(j, v):
-        a, b = edges[j]
-        return b if a == v else a
-
-    for phase in (0, 1):
-        moved = True
-        while moved:
-            moved = False
-            for v in range(nv):
-                while (load[v] > hi[v]) if phase == 0 else (load[v] < lo[v]):
-                    par = {v: None}
-                    stack = [v]
-                    tgt = None
-                    while stack and tgt is None:
-                        x = stack.pop()
-                        for j in inc[x]:
-                            y = other(j, x)
-                            if phase == 0 and asg[j] != x:
-                                continue
-                            if phase == 1 and asg[j] != y:
-                                continue
-                            if y in par:
-                                continue
-                            par[y] = (x, j)
-                            ok = (load[y] < hi[y]) if phase == 0 \
-                                else (load[y] > lo[y])
-                            if ok:
-                                tgt = y
-                                break
-                            stack.append(y)
-                    if tgt is None:
-                        return None, set(par)
-                    y = tgt
-                    while par[y] is not None:
-                        x, j = par[y]
-                        if phase == 0:
-                            asg[j] = y
-                            load[y] += 1
-                            load[x] -= 1
-                        else:
-                            asg[j] = x
-                            load[x] += 1
-                            load[y] -= 1
-                        y = x
-                    moved = True
-    for v in range(nv):
-        assert lo[v] <= load[v] <= hi[v], "assignment out of bounds"
-    return asg, None
-
-
-def z_of_orientation(specs, oidx, p, even, asg):
-    """(GR-49)+(GR-50): rebuild the branch colouring z from a balanced
-    pattern and an even-branch orientation."""
-    z = [0] * len(specs)
-    for j, i in enumerate(oidx):
-        z[i] = p[j]
-    for t, i in enumerate(even):
-        (u, _w, _L) = specs[i]
-        z[i] = 0 if asg[t] == u else 1
-    return z
 
 
 def balanced_patterns(k2):

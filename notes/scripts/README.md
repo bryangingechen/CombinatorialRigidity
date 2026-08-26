@@ -321,6 +321,17 @@ those five direction leaves; each re-exports its own moved names, so
 | is the pattern with one odd branch recoloured (GR-50)-feasible? | `feas_flip` | `gridbal_common` (re-exported by `gflow`) |
 | signed imbalance `a − b` of an odd-branch pattern | `imb_of` | `gridbal_common` (re-exported by `gdesc`) |
 | hub → the 3 incident branch indices (the widest fan-in recorded: 8 consumers before this move) | `branches_at` | `gridbal_common` (re-exported by `gpsa`) |
+| (GR-49): no hub sees three equal dart colours | `z_admissible` | `gridbal_common` (re-exported by `gbal`) |
+| (GR-49) forward: z → (m, c) | `z_to_map` | `gridbal_common` (re-exported by `gbal`) |
+| the odd-branch majority pattern of z | `z_pattern` | `gridbal_common` (re-exported by `gbal`) |
+| (GR-50)/(GR-51) degree-constrained edge-to-endpoint assignment, WITH its infeasibility certificate | `assign_feasible` | `gridbal_common` (re-exported by `gbal`) |
+| (GR-49)+(GR-50): rebuild z from a balanced pattern and an even-branch orientation | `z_of_orientation` | `gridbal_common` (re-exported by `gbal`) |
+| specs-indices of the majority-side odd branches | `majority_of` | `gridbal_common` (re-exported by `gdesc`) |
+| the ends of an odd branch carrying the MINORITY dart (the blocked ends) | `block_ends_at` | `gridbal_common` (re-exported by `gflow`) |
+| EXHAUSTIVE enumeration of the admissible-z cube, with (m, c) and odd pattern | `adm_cube` | `gridbal_common` (re-exported by `gflow`) |
+| exact per-pattern minimum `dist(., M)` off the exhaustive cube | `f_layers` | `gridbal_common` (re-exported by `gflow`) |
+| all perfect matchings of the hub multigraph, as branch-index sets (capped) | `perfect_matchings` | `gorient` |
+| (GR-25) the cut criterion for habitat membership at `D = 0` | `cubic_habitat` | `cflank` |
 
 ## 2. Layering map, and the rule for new scripts
 
@@ -518,6 +529,30 @@ Three layers, plus one **language island**:
   `gflow --validate`, and `yloc`'s three-invocation split (`--coll`,
   `--loc`, `--fibre --par --fit --cert --adv`) that its own `--validate`
   does not fit in the 600 s budget.
+  **EXTENDED 2026-08-25** — the coordinator-commissioned payment of the
+  GCHEAP and GPRICE debt items below, paid together per the GPRICE item's
+  own text: nine more read-only devices — the rest of the (GR-49)/(GR-50)
+  z-form surface, `z_admissible` / `z_to_map` / `z_pattern` /
+  `assign_feasible` / `z_of_orientation` (all from `gbal`), `majority_of`
+  (from `gdesc`), `adm_cube` / `block_ends_at` / `f_layers` (from
+  `gflow`) — moved into the same `gridbal_common`. Same shape again:
+  every old home re-exports its moved names, `gcheap`'s and `gprice`'s
+  import lines are unchanged, and every body is byte-verbatim except that
+  `z_admissible`/`z_to_map` each pick up a fresh function-body-local
+  `from gbal import dart_col` (the one (GR-49) device that stays behind),
+  while `feasible_at`'s own former deferred import of
+  `assign_feasible`/`z_of_orientation` DISSOLVES, both now living beside
+  it in the same module. `perfect_matchings` (`gorient`) and
+  `cubic_habitat` (`cflank`) are catalogued in §1 in place rather than
+  moved — both already have a fan-in this layer's private-device shape
+  doesn't fit, but neither touches `gridbal_common` in either direction.
+  Nine driver invocations re-run at landing (the four tracked drivers
+  actually touched this time are `gbal`/`gdesc`/`gflow`/`gridbal_common`,
+  so the closure is `gbal`/`gdesc`/`gflow`/`balb`/`gcheap`/`gflip`/
+  `gprice` `--validate`, `gcoll --dfg --adv` (the two modes that reach
+  `z_to_map`; its own `--validate` does not fit the 600 s budget either),
+  and `yloc`'s three-invocation split — all byte-identical modulo
+  wall-clock.
 - **The M2 island** — `m2/`. Macaulay2, not Python, so there is **no import
   edge** in either direction: an M2 driver cannot reuse a §1 primitive and must
   re-derive the ones it needs. That is a licensed exception to rule 3 below and
@@ -539,8 +574,8 @@ Three layers, plus one **language island**:
    keep working, as `pitch.cross3` and `localtest.K4` now do — and, since
    2026-08-20, `flanks.star_span_ranks`, `ocon.meet`, `zneq`'s six §(K-out)
    devices, `aglu`'s seven `n_hub`-stratum devices, `gridwit.tree_triple` and
-   `closure.Gauss`; and, since 2026-08-25, `gridbal_common`'s eleven balance-
-   layer devices out of `balb`/`gbal`/`gdesc`/`gflow`/`gpsa`). **A dispatch
+   `closure.Gauss`; and, since 2026-08-25, `gridbal_common`'s twenty
+   balance-layer devices out of `balb`/`gbal`/`gdesc`/`gflow`/`gpsa`). **A dispatch
    may not make the move** (it would modify a
    landed file another direction may be importing in flight): record it as a
    *Harness debt* item naming every consumer, and the coordinator pays it in a
@@ -1261,19 +1296,23 @@ figure-invariant): `rref`, `rank`/`rank_exact`, `nullspace`, `left_nullspace`,
 `neighbors` (`kbare_common`, `n9`); `K4`/`K5_minus_matching` (three copies:
 `localtest`, `probe_zero`, `run_habitats`).
 
-## Harness debt — three rounds PAID (S1–S4 2026-08-06; the move-down round 2026-08-20; the GFLIP balance-layer move-down 2026-08-25), **two items outstanding**
+## Harness debt — four rounds PAID (S1–S4 2026-08-06; the move-down round 2026-08-20; the GFLIP balance-layer move-down 2026-08-25; the GCHEAP/GPRICE balance-layer extension 2026-08-25), **three items outstanding**
 
-**Two items are outstanding: `zneq.ledger`** (deliberately deferred to a
-round that can re-run `oschu --gtarget` / `--census1` / `--census2`) and
-**the `kbare/` sibling-import set** that probe KBARE-FALSIFY created —
+**Three items are outstanding: `zneq.ledger`** (deliberately deferred to a
+round that can re-run `oschu --gtarget` / `--census1` / `--census2`), **the
+`kbare/` sibling-import set** that probe KBARE-FALSIFY created, and
+**OQRANK's two arrivals** (`out_classes`/`shape_key`/`tree_triple`) —
 **UNPAID** by the same rule that forbids a dispatch from moving a landed
 name. Everything else is paid: the first round's four items are in the
 *ALL FOUR CLEARED* block immediately below (kept in the past tense as the record
 of what was wrong), the five §2-rule-2 move-downs the sixth-to-eighth
 fan-outs accumulated are in the three *New item* subsections after it, each
-marked **PAID 2026-08-20** with the round's own write-up after them, and
-the eleven-device GFLIP balance-layer move (last subsection) is marked
-**PAID 2026-08-25**, its own dedicated payment commit. Two
+marked **PAID 2026-08-20** with the round's own write-up after them, the
+eleven-device GFLIP balance-layer move is marked **PAID 2026-08-25**, its
+own dedicated payment commit, and the GCHEAP + GPRICE items (paid together,
+per the GPRICE entry's own instruction) are marked **PAID 2026-08-25**
+directly below it — nine more devices folded into the same
+`gridbal_common`, plus two in-place §1 cataloguings. Two
 *Recorded observations* also remain deliberately unfixed and say so.
 
 ### Round one — four items, **ALL FOUR CLEARED**; **CLOSED** (S1–S4, 2026-08-06)
@@ -2150,7 +2189,7 @@ foreground budget (README's standing note), so it ran as the
 already-documented three-invocation split (`--coll`, `--loc`, `--fibre
 --par --fit --cert --adv`) instead, covering the same ground.
 
-### New item (2026-08-25, direction GCHEAP) — `gcheap.py`'s residual sibling imports; **UNPAID**
+### New item (2026-08-25, direction GCHEAP) — `gcheap.py`'s residual sibling imports; **PAID 2026-08-25**
 
 `w4/gcheap.py` imports the moved balance layer **directly from
 `gridbal_common`** (the intended post-move pattern) but also pulls **ten**
@@ -2194,7 +2233,7 @@ consumer named, per the rule; a dispatch may not make the move):
 `tree_triple` is a `grid`-layer primitive and a candidate for §1
 cataloguing in place. Same acceptance test as the 2026-08-25 payment.
 
-### New item (2026-08-25, direction GPRICE) — five further-consumer arrivals; **UNPAID**
+### New item (2026-08-25, direction GPRICE) — five further-consumer arrivals; **PAID 2026-08-25**
 
 `w4/gprice.py` imports the balance layer directly from `gridbal_common` (the
 intended post-move pattern) plus **five** read-only devices from **four
@@ -2206,6 +2245,40 @@ dispatch may not make the move): `z_admissible` (`gbal` — **`gprice`** joins
 `cubic_habitat` (`cflank` — the standing habitat gate). **Where they should
 go if paid:** unchanged from GCHEAP's item — pay the two items together; the
 consumer lists there should be read as including `gprice` from this date.
+
+**PAID 2026-08-25**, exactly that way, GCHEAP and GPRICE together as their
+own dedicated payment commit (nothing else in flight over `gbal`/`gdesc`/
+`gflow`, and OQRANK's own item above is left untouched — it names a
+different pair of homes, `oschu`/`gridwit`, and is not part of this
+instruction): the rest of the (GR-49)/(GR-50) z-form surface
+(`z_admissible`/`z_pattern`/`z_to_map`/`assign_feasible`/`z_of_orientation`)
+moved beside `bounds_of`/`feasible_at` in `gridbal_common`, `majority_of`
+joined `imb_of`/`branches_at` in the pattern-combinatorics group, and
+`adm_cube`/`block_ends_at`/`f_layers` opened a new cube-combinatorics group
+in the same module — nine devices, all byte-verbatim, `gcheap`'s and
+`gprice`'s import lines unchanged. `z_admissible`/`z_to_map` pick up a
+fresh function-body-local `from gbal import dart_col` (the one (GR-49)
+device that stays behind — one consumer, this deferred import, the same
+shape as `pool_cases`/`rand_cubic`); `feasible_at`'s own former deferred
+import of `assign_feasible`/`z_of_orientation` DISSOLVES instead, exactly
+as this item's own "where they should go" text predicted, since both now
+live beside it in the same module. `perfect_matchings` (`gorient`) and
+`cubic_habitat` (`cflank`) are catalogued in §1 in place, not moved — the
+"§1 cataloguing in place" candidacy this item's own table already flagged,
+confirmed on inspection: both have a fan-in this layer's private-device
+shape does not fit, but neither reads nor is read by `gridbal_common`.
+**Gate: figures do not move.** Four tracked drivers modified (`gbal.py`,
+`gdesc.py`, `gflow.py`, `gridbal_common.py`), so the full re-run obligation
+applies to their import closure. Baselined every affected consumer's
+validate mode before editing (via `git stash`), re-ran after,
+`PYTHONHASHSEED=0`, foreground, one command at a time: `gbal`/`gdesc`/
+`gflow`/`balb`/`gcheap`/`gflip`/`gprice` `--validate`, `gcoll --dfg --adv`
+(the two modes that reach `z_to_map`; `gcoll`'s own `--validate` does not
+fit the 600 s budget either, same standing note as `yloc`), and `yloc`'s
+documented three-invocation split (`--coll`, `--loc`, `--fibre --par --fit
+--cert --adv`) — all nine byte-identical modulo the wall-clock `[Ns]`
+exception, mechanically confirmed (every differing line reduces to the
+timing annotation alone once it is stripped).
 
 ## Deliberate non-goals
 

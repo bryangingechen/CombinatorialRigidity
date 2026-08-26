@@ -123,8 +123,10 @@ from gpsa import (branches_at, is_bridgeless, delta_of,                # noqa: E
 # debt*, direction GFLIP): `gflip` imports it, past §2 rule 2's trigger,
 # alongside ten sibling devices from `balb`/`gbal`/`gflow`/`gpsa`.
 # Re-exported here, so this module's own modes and `balb`'s/`gflow`'s
-# import lines are unchanged.
-from gridbal_common import imb_of                                      # noqa: E402
+# import lines are unchanged.  `majority_of` joined it 2026-08-25 (README
+# *Harness debt*, directions GCHEAP/GPRICE): `gcheap`/`gflow` both already
+# pull it, past the trigger again; re-exported here for the same reason.
+from gridbal_common import imb_of, majority_of                         # noqa: E402
 
 R_SEED = 20260818
 
@@ -133,20 +135,13 @@ R_SEED = 20260818
 #
 # All new; none shadows a S1 primitive (checked against the README index
 # and the Divergences table).  `imb_of`/`majority_of` read the imbalance
-# off a pattern; `transit_move` is the (GR-46) construction;
+# off a pattern (both moved to `gridbal_common` 2026-08-25, used here via
+# the re-export above); `transit_move` is the (GR-46) construction;
 # `normal_form`/`rebuild_nf` the (GR-47) bijection; `t2_at`/
 # `ts_pair_moves` the per-hub T2 family and its K3 pair-star extension;
 # `rescue_scan`/`verify_escape` the escape search and its adversarial
 # verifier; `census_layers` the exact per-shape d_par/d_adm/|imb|-at-
 # optimum computation off the full census.
-
-
-def majority_of(oidx, p, sgn):
-    """specs-indices of the majority-side odd branches (sgn = sign of
-    the imbalance; bit 0 = A-majority)."""
-    assert sgn != 0
-    return [i for j, i in enumerate(oidx)
-            if (sgn > 0) == (((p >> j) & 1) == 0)]
 
 
 def block_ends(specs, m, i):

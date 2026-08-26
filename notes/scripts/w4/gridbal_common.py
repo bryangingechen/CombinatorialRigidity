@@ -13,32 +13,58 @@ its home changed.  Each old home RE-EXPORTS its moved names (`from
 gridbal_common import ...`), so no consumer's import line changes -- the
 `star_span_ranks` precedent (README S2 rule 2).
 
-Three coherent jobs, matching the README item's own grouping:
+Four coherent jobs, matching the README items' own grouping:
   * pool / shape suppliers -- `v8_specs`/`stratum_cases` (from `balb`),
     `named_cases`/`random_cases` (from `gbal`), `seeded_shapes` (from
     `gflow`);
-  * the (GR-49)/(GR-50) oracle surface -- `odd_idx`/`bounds_of`/
-    `feasible_at` (from `gbal`), `feas_flip` (from `gflow`);
+  * the (GR-49)/(GR-50) z-form + oracle surface -- `odd_idx`/`bounds_of`/
+    `feasible_at` (from `gbal`), `feas_flip` (from `gflow`), plus, since
+    2026-08-25, the rest of the z-form (`z_admissible`/`z_to_map`/
+    `z_pattern`/`assign_feasible`/`z_of_orientation`, all from `gbal`);
   * pattern combinatorics -- `imb_of` (from `gdesc`), `branches_at`
     (from `gpsa` -- the widest fan-in recorded: 8 consumers before this
-    move).
+    move), plus, since 2026-08-25, `majority_of` (from `gdesc`);
+  * cube combinatorics, joining 2026-08-25 -- `adm_cube`/`block_ends_at`/
+    `f_layers` (all from `gflow`).
 
-DEFERRED IMPORTS, not an oversight.  Five of the eleven bodies read a
-name that stays BEHIND in their old home -- `gbal.pool_cases`,
-`gbal.rand_cubic`, `gbal.assign_feasible`, `gbal.z_of_orientation`,
-`balb.rand_habitat`, `gpsa.nkp_specs`/`nk55_specs`/`nko2v_specs` -- and
-that old home now imports THIS module back, to re-export.  A top-level
-`from gbal import ...` (or `from balb import ...` / `from gpsa import
-...`) here would be a genuine import cycle at module-load time; the
-KBARE-FALSIFY precedent's generalization ("every global a moved body
-reads must resolve in the new module") is honoured with a
-function-body-local import instead of a top-level one.  That resolves
-cleanly regardless of import order, because no caller ever invokes
-these functions while another module's own top-level code is still
-executing -- every driver's argparse dispatch runs after all imports in
-the process have completed.  `WITNESSES` (`gunif`), `nk_specs` (`gdev`)
-and `nko_specs` (`gadm`) are NOT cyclic -- neither of those three
-modules imports anything from this layer -- and stay top-level imports.
+EXTENDED 2026-08-25 (README *Harness debt*, "New item (2026-08-25,
+direction GCHEAP)" and "New item (2026-08-25, direction GPRICE)", the
+GPRICE entry's own text saying to pay both together): nine more
+read-only devices that `w4/gcheap.py` and `w4/gprice.py` pull in from
+three of the same five sibling leaves (`gbal`, `gdesc`, `gflow`) --
+none S1-catalogued, several already past two or more consumers before
+GCHEAP/GPRICE arrived, exactly the mechanism the GFLIP move-down above
+predicted for its own five-name surface ("the deferred-import wrinkle
+dissolves if the whole surface moves" -- see `feasible_at` below).
+Same byte-verbatim / re-export discipline.  `perfect_matchings`
+(`gorient`) and `cubic_habitat` (`cflank`) are catalogued in
+`README.md` §1 IN PLACE instead of moved: both already have a far
+wider fan-in than a single layer's private device, but neither reads
+nor is read by anything in this module, so moving them buys nothing.
+
+DEFERRED IMPORTS, not an oversight.  Five of the original eleven bodies
+read a name that stays BEHIND in their old home -- `gbal.pool_cases`,
+`gbal.rand_cubic`, `balb.rand_habitat`,
+`gpsa.nkp_specs`/`nk55_specs`/`nko2v_specs` -- and that old home now
+imports THIS module back, to re-export.  A top-level `from gbal import
+...` (or `from balb import ...` / `from gpsa import ...`) here would be
+a genuine import cycle at module-load time; the KBARE-FALSIFY
+precedent's generalization ("every global a moved body reads must
+resolve in the new module") is honoured with a function-body-local
+import instead of a top-level one.  That resolves cleanly regardless of
+import order, because no caller ever invokes these functions while
+another module's own top-level code is still executing -- every
+driver's argparse dispatch runs after all imports in the process have
+completed.  `WITNESSES` (`gunif`), `nk_specs` (`gdev`) and `nko_specs`
+(`gadm`) are NOT cyclic -- neither of those three modules imports
+anything from this layer -- and stay top-level imports.  Two of the
+nine 2026-08-25 arrivals need the same treatment: `z_admissible` and
+`z_to_map` each read `gbal.dart_col`, which stays behind (not itself
+past §2 rule 2's trigger -- one consumer, this module, via this very
+deferred import), so both keep a function-body-local `from gbal import
+dart_col`.  `feasible_at`'s OWN former deferred import DISSOLVES
+instead: `assign_feasible` and `z_of_orientation` now live in this
+module alongside it, exactly as the GCHEAP entry predicted.
 """
 import os
 import sys
@@ -168,9 +194,123 @@ def bounds_of(specs, n, oidx, p):
     return o, q, d, lo, hi
 
 
+def z_admissible(specs, n, binc, z):
+    """(GR-49): no hub sees three equal dart colours."""
+    from gbal import dart_col
+    for v in range(n):
+        a, b, c = (dart_col(specs, z, v, i) for i in binc[v])
+        if a == b == c:
+            return False
+    return True
+
+
+def z_to_map(specs, n, binc, z):
+    """(GR-49) forward: the (m, c) of an admissible z -- c(v) = the
+    majority dart colour at v, m(v) = the minority dart."""
+    from gbal import dart_col
+    m, c = {}, {}
+    for v in range(n):
+        cs = [dart_col(specs, z, v, i) for i in binc[v]]
+        maj = 0 if cs.count(0) >= 2 else 1
+        c[v] = maj
+        lone = [t for t in range(3) if cs[t] != maj]
+        assert len(lone) == 1, "hub not 2-1 split: z was not admissible"
+        i = binc[v][lone[0]]
+        m[v] = (i, 0 if v == specs[i][0] else 1)
+    return m, c
+
+
+def z_pattern(z, oidx):
+    """The odd-branch majority pattern of z, in pattern_of's bit order."""
+    bits = 0
+    for j, i in enumerate(oidx):
+        if z[i]:
+            bits |= 1 << j
+    return bits
+
+
+def assign_feasible(nv, edges, lo, hi):
+    """(GR-50)/(GR-51): assign every edge to ONE endpoint with
+    lo[v] <= load[v] <= hi[v].  Returns (assignment, None) on success or
+    (None, R) with R a hub set violating the two-sided Hall condition --
+    the infeasibility CERTIFICATE.  Augmenting-path algorithm, exact
+    integers; this is the constructive half of (GR-51)'s proof."""
+    bad = {v for v in range(nv) if lo[v] > hi[v]}
+    if bad:
+        return None, bad
+    asg = [e[0] for e in edges]
+    load = [0] * nv
+    for a in asg:
+        load[a] += 1
+    inc = {v: [] for v in range(nv)}
+    for j, (a, b) in enumerate(edges):
+        inc[a].append(j)
+        inc[b].append(j)
+
+    def other(j, v):
+        a, b = edges[j]
+        return b if a == v else a
+
+    for phase in (0, 1):
+        moved = True
+        while moved:
+            moved = False
+            for v in range(nv):
+                while (load[v] > hi[v]) if phase == 0 else (load[v] < lo[v]):
+                    par = {v: None}
+                    stack = [v]
+                    tgt = None
+                    while stack and tgt is None:
+                        x = stack.pop()
+                        for j in inc[x]:
+                            y = other(j, x)
+                            if phase == 0 and asg[j] != x:
+                                continue
+                            if phase == 1 and asg[j] != y:
+                                continue
+                            if y in par:
+                                continue
+                            par[y] = (x, j)
+                            ok = (load[y] < hi[y]) if phase == 0 \
+                                else (load[y] > lo[y])
+                            if ok:
+                                tgt = y
+                                break
+                            stack.append(y)
+                    if tgt is None:
+                        return None, set(par)
+                    y = tgt
+                    while par[y] is not None:
+                        x, j = par[y]
+                        if phase == 0:
+                            asg[j] = y
+                            load[y] += 1
+                            load[x] -= 1
+                        else:
+                            asg[j] = x
+                            load[x] += 1
+                            load[y] -= 1
+                        y = x
+                    moved = True
+    for v in range(nv):
+        assert lo[v] <= load[v] <= hi[v], "assignment out of bounds"
+    return asg, None
+
+
+def z_of_orientation(specs, oidx, p, even, asg):
+    """(GR-49)+(GR-50): rebuild the branch colouring z from a balanced
+    pattern and an even-branch orientation."""
+    z = [0] * len(specs)
+    for j, i in enumerate(oidx):
+        z[i] = p[j]
+    for t, i in enumerate(even):
+        (u, _w, _L) = specs[i]
+        z[i] = 0 if asg[t] == u else 1
+    return z
+
+
 def feasible_at(specs, n, oidx, p):
     """The (GR-50) decision at ONE pattern: returns z or None."""
-    from gbal import assign_feasible, z_of_orientation
     _o, _q, _d, lo, hi = bounds_of(specs, n, oidx, p)
     if any(hi[v] < lo[v] for v in range(n)):
         return None
@@ -207,3 +347,45 @@ def branches_at(specs, n):
     for v in range(n):
         assert len(inc[v]) == 3, "hub not cubic"
     return inc
+
+
+def majority_of(oidx, p, sgn):
+    """specs-indices of the majority-side odd branches (sgn = sign of
+    the imbalance; bit 0 = A-majority)."""
+    assert sgn != 0
+    return [i for j, i in enumerate(oidx)
+            if (sgn > 0) == (((p >> j) & 1) == 0)]
+
+
+# ---------------------------------------------- cube combinatorics ---------
+
+def block_ends_at(specs, m, i):
+    """The ends of odd branch `i` at which `i` carries the MINORITY dart --
+    the BLOCKED ends.  0 = dart-free, 1 = one-end-blocked, 2 = doubly
+    blocked."""
+    (u, w, _L) = specs[i]
+    return [v for v in (u, w) if m[v][0] == i]
+
+
+def adm_cube(specs, n, binc, oidx):
+    """EXHAUSTIVE: every admissible z of the full 2^|E| cube, with its (m, c)
+    and its odd pattern.  Usable to |E| = 18 (n_hub = 12)."""
+    mn = len(specs)
+    out = []
+    for bits in range(1 << mn):
+        z = [(bits >> i) & 1 for i in range(mn)]
+        if z_admissible(specs, n, binc, z):
+            mm, c = z_to_map(specs, n, binc, z)
+            out.append((z, mm, c, z_pattern(z, oidx)))
+    return out
+
+
+def f_layers(cube, n, base):
+    """f(pattern) = the exact minimum dist(., M) over admissible z with that
+    pattern, off the exhaustive cube; plus d_par(M) = min f."""
+    f = {}
+    for (_z, mm, _c, pat) in cube:
+        d = sum(1 for v in range(n) if mm[v] != base[v])
+        if pat not in f or d < f[pat]:
+            f[pat] = d
+    return f, min(f.values())
