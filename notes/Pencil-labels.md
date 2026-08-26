@@ -1481,6 +1481,38 @@ registry exists to prevent. **`GBLAW` names the theorem's content** — the
 target token **(GR-108)** is GPRICE's landed label — already minted, **not**
 in this reservation; GBLAW *cites* it and mints its own results at (GR-110)+.
 
+## Reserved namespace — direction GXESC (2026-08-26)
+
+**Reserved 2026-08-26 for the single direction GXESC** (ordinal 35, the
+arc's forty-third direction; `notes/Pencil-fanout.md` §"GXESC"), the
+standing research pick made at the sixth check-in of the 2026-08-25/26
+session (single direction, front-runner-first → **existential escape**,
+(GR-112)(v)'s hypothesis — GBLAW's sharpened residual #1 and the head of
+*Step G134*'s successor order). One direction, no siblings — the
+reservation still binds because it protects the *next* dispatch's prep
+from this one's labels.
+
+| direction | owning § | labels reserved | steps reserved | driver |
+|---|---|---|---|---|
+| **GXESC** | §(K-grid) — **extends**, no new section | **(GR-115)–(GR-119)** | **G135–G139** | `w4/gxesc.py` (conditional — see the spec) |
+
+The reservation is the head of §(K-grid)'s unclaimed tail (declared
+**(GR-115)+ / Step G135+** at GBLAW's landing above).
+
+**Code and basename verified 0-hit** as raw substrings, case-insensitively,
+across `*.md`, `*.tex`, `*.lean`, `*.py`, `*.m2` with `.git`/`.lake`
+excluded, control token `aglu` live at 14 files. Label tokens
+`(GR-116)`–`(GR-120)` and *Steps G136–G140* each 0-hit; `(GR-115)` and
+*Step G135* hit only GBLAW's live-tails bookkeeping above (the `(GR-97)`
+precedent). **Checked and NOT chosen:** `GESC` — **collides** (2 files,
+raw-substring); `GWALK`, `GFINE` — 0-hit but they name the *instrument*
+(the walk, the fine-move class), not the target (the `GSEL`/`GXCH`
+rejection reason). **`GXESC` names the theorem's content** — the
+e**X**istential **ESC**ape statement itself, (GR-112)(v)'s hypothesis. The
+source tokens **(GR-108)/(GR-112)** are landed labels — already minted,
+**not** in this reservation; GXESC *cites* them and mints its own results
+at (GR-115)+.
+
 ## Registry — `notes/Pencil-informal.md` (the (K) workbook)
 
 Status keywords are pointers to the owning section's verdict block and the

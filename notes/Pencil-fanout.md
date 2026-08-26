@@ -1,7 +1,8 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: EIGHT fan-outs and FOURTEEN single directions dispatched; ALL 42
-directions LANDED.** **GBLAW (ordinal 34, §"GBLAW") LANDED 2026-08-26, one
+**Status: EIGHT fan-outs and FIFTEEN single directions; 42 of 43 directions
+LANDED — GXESC (ordinal 35, §"GXESC") is PREPPED 2026-08-26, dispatch is
+the next action.** **GBLAW (ordinal 34, §"GBLAW") LANDED 2026-08-26, one
 day after its 2026-08-25 dispatch — an honest OPEN reshape: (GR-108) neither
 proven nor refuted, the exchange calculus its pinned proof shape called for
 PROVEN in three theorems ((GR-110)–(GR-112)), the law reduced to
@@ -37,8 +38,8 @@ exact `n_hub` boundary for ledger attack (c)'s AA-glue case (GTMPL), (b′)'s fi
 `n`-free constant (GFLOW), a **NO HIT** on the authorized disproof hunt that nonetheless
 kills the counting route to a disproof (SIGZ), (a₁) reduced to one determinant (OSCHU), and
 **(GR-64)(R2) REFUTED** with (R1) delivered (GCOLL).
-Ordinals run 1–34 (the eighth fan-out claims 25–29; GFLIP is 30; GCHEAP is 31;
-OQRANK is 32; GPRICE is 33; GBLAW is 34) and were assigned at dispatch, so landing order
+Ordinals run 1–35 (the eighth fan-out claims 25–29; GFLIP is 30; GCHEAP is 31;
+OQRANK is 32; GPRICE is 33; GBLAW is 34; GXESC is 35) and were assigned at dispatch, so landing order
 differs from ordinal order.
 
 **The two architecture-testing PROBES are also both LANDED** (§"Two probes SPECCED and
@@ -3188,3 +3189,118 @@ list verified against the file itself (direct `gridbal_common`, rank-free —
 cell recomputed to a current-state statement per the checker's own
 guidance, no cap bump; the status cell's stale (GR-R1)/(GR-C2) tail
 repaired to current standing in the same pass).
+
+## GXESC — thirty-fifth ordinal, the forty-third direction (single dispatch, prepped 2026-08-26)
+
+**Selection provenance:** the standing 2026-08-07 delegation; shape adjudicated
+at the **sixth** check-in of the 2026-08-25/26 session — **"Single direction,
+front-runner-first"** (an option selection; `notes/Phase39.md` *Current state*,
+the 2026-08-26 bullet). With the 2026-08-25 re-rank's ranks 1 and 2 landed
+(OQRANK / GPRICE) and GBLAW landed 2026-08-26, the front-runner is GBLAW's own
+sharpened residual, the head of *Step G134*'s successor order and the first
+entry of `notes/Phase39.md` *Hand-off*'s candidate list: **existential
+escape** — the whole remaining gap to (GR-108), hence to (GR-104)(i) at
+`2k = 2`. Dispatched **un-named, single, top rung** (`recon-fable`).
+Derivation-first tier — the calculus is proven and the sweeps are landed; new
+measurement is the conditional, not the default. **The shared mechanics and
+landing checklist above apply in full** — read-only w.r.t. every shared file,
+commit nothing, draft to the untracked `notes/Pencil-draft-GXESC.md`, tight
+return verdict.
+
+**The target — existential escape, (GR-112)(v)'s hypothesis; it is the whole
+remaining gap to (GR-108) at `2k = 2`, every `n`.** Verbatim as GBLAW minted
+it (§(K-grid) *Step G132*, `notes/Pencil-informal-grid.md`):
+
+> *At every pair whose maximum family contains a pos-forcing member, some
+> pos-forcing maximum admits a fine-move walk out of the pos class* (pairs
+> with no pos/neg-forcing maxima satisfy the law vacuously — every maximum
+> is balance-valid; pos and neg members come in (GR-105) pairs).
+
+Standing: **measured, NOT a theorem — 0 failures at all 1 099 GBLAW-swept
+`O ⊆ M` pairs** (stratum EXHAUSTIVE at 1 034 with no forcing maximum at all,
+V8, the (GR-103) control, seeded cell pools to `n = 16`), at move levels
+L2/L3 (slides alone already fail one `n = 14` pair). What a proof buys: by
+the escape lemma (GR-112)(v) it proves **(GR-108)**, hence — with
+(GR-107)(iii) — **(GR-104)(i) becomes a theorem at `2k = 2`, every `n`,
+unconditionally**, leaving (b′) at the constant 2 resting on (GR-C1) plus
+the `2k ∈ {4, 6}` `O ⊄ M` corner alone. **An unconditional proof of
+(GR-108) by the OTHER live shape — a global/extremal construction of a
+balance-valid maximum ((GR-114) residual shape (b)) — counts identically;
+state which shape you delivered.**
+
+**The named inputs (landed; consume, do not re-derive).** (i) **The
+arc-transversal normal form (GR-110)**: the maximum family stratifies by
+sink set into independent-transversal families of size `2|K|`, sources
+sliding freely inside sink-arcs — the parametrization any global
+construction works in; its Haxell-type remark ((GR-110)(iv), Haxell CPC 10
+(2001) 345–347) is the one unconditional large-arc criterion currently
+proven. (ii) **The recombination theorem (GR-111)** — proven
+maximum-preserving; its (v) separation criterion is REFUTED as a *complete*
+route (0/48 at the witness) but stays a valid per-pair instrument.
+(iii) **The escape lemma (GR-112)**: the imbalance-interval classification
+(bal/pos/neg), the notch bound, and the reduction itself — the fine-move
+calculus is slides + adjacent-pair teleports + safe flips, all proven
+maximum-preserving. (iv) **The (GR-113) witness is the adversarial
+control**: at the `n = 16` strand witness existential escape HOLDS — the
+big component's 16 pos maxima reach balance-valid company; the stranded 32
+are exactly the maxima a proof may NOT be forced to start from, so any
+selection argument must be able to avoid them. `w4/gblaw.py --strand`
+prints the witness in full; `--conn` the fine-move census. (v) *Step
+G134*'s freedom inventory and *What would change this* (iii): a **fourth
+move class** (multi-pair moves; removal of non-adjacent pairs) could
+restore even universal escape — the witness is the exact test case and
+`gblaw`'s move generators are the harness for it. Treat any walk-selection
+or construction sketch as a candidate, not a pin — if it dies, say where.
+
+**What counts as a HIT** — a proof of existential escape, or of (GR-108)
+directly by global construction (state the exact quantifier delivered:
+which pos-forcing maximum starts the walk / which balance-valid maximum is
+constructed, what selects it, any hypotheses carried beyond `O ⊆ M` + cubic
+loop-free + `M` perfect). Also valued, on the (GR-29)/(GR-30) precedent: a
+**refutation by witness** — a pair whose every fine component of forcing
+maxima is stranded AND whose balance-valid stratum is empty refutes
+(GR-108) outright (*Step G134*'s hunt shape: grow `strand_witness`-like
+single-cycle pairs and test `bal = 0`); a weaker witness killing
+existential escape alone (all pos-forcing maxima stranded, balance-valid
+maxima existing elsewhere) kills only the (GR-112)(v) route — the law
+survives, state exactly what does; or a **proof under a restricted
+quantifier or an extended move class with the exact boundary named** (e.g.
+a fourth move restoring universal escape, a `2k` stratum, an `n` bound).
+State which you got.
+
+**Bars.** Do **not** attack (GR-C1) or the `2k ∈ {4, 6}` `O ⊄ M` corner —
+separate residuals. (GR-105)–(GR-114) and (GR-97)–(GR-104)'s landed parts
+are **landed** — consume, do not re-derive; the (GR-113) witness's figures
+are cap-free at that pair — do not try to repair or re-derive them. Do
+**not** re-run the exhaustive censuses, GPRICE's 1 431-pair sweep, or
+GBLAW's 1 099-pair escape census — cite them; a *new* driver mode that
+tests a *new* sentence is fine, a re-measurement of a landed figure is not.
+(GR-15) and class uniformity are out of scope. No `.lean` is touched (the
+standing Lean hold).
+
+**Riders, verbatim from GBLAW's.** TERMINATION check E1/E2/E3 at the return
+(E3 is ARMED by GBAL — firing is the coordinator's action; report, never
+fire). Cap disclosure: an exhausted cap is *"not found under cap C"*, never
+nonexistence. F11: every headline claim needs a driver that tests that
+sentence, and "exhaustive"/"forced"/"the only" are their own claim class. The
+shift-metric layer is UNBOUNDED ((GR-43)) — any bound is on a **difference**.
+All figures exact ℚ, seeded, degeneracy-guarded, imported from the canonical
+layer (`notes/scripts/README.md` binds; the *Divergences* table names the
+same-name-different-semantics traps) — **the balance layer is
+`w4/gridbal_common`**: import the moved devices from there directly, never
+via the sibling re-exports. The five `gprice` devices and `gblaw`'s whole
+device set are sibling leaves — a sideways import is in policy but trips §2
+rule 2's recorded-debt rule: extend the existing GBLAW *Harness debt* item's
+consumer list in your draft (the coordinator records it), do NOT make any
+move.
+
+**Driver — conditional, at the pinned path `notes/scripts/w4/gxesc.py`.** A
+purely derivational proof consuming only landed figures needs no new driver —
+then state that disposition explicitly in the draft. Any new measured or
+exhaustion claim mints the driver at the pinned path, importing the harness
+read-only, left untracked for the coordinator to gate and commit.
+
+**Reservation** (`notes/Pencil-labels.md` §"Reserved namespace — direction
+GXESC"): §(K-grid) **extends** — no new section; labels
+**(GR-115)–(GR-119)**, **Steps G135–G139**; owning section stays
+authoritative; return any unconsumed remainder to the tail.

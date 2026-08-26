@@ -110,11 +110,14 @@ swept pairs), and universal escape is **REFUTED at an explicit `n = 16`
 witness** defeating both new mechanisms — so any proof must produce the
 balance-reaching maximum globally. Canonical home §(K-grid) *Steps
 G130–G134* (`notes/Pencil-informal-grid.md`), landing record
-`notes/Pencil-fanout.md` §"GBLAW", driver `w4/gblaw.py`. **NEXT CONCRETE
-TASK: the next standing research pick** (the 2026-08-07 delegation; the
-*shape* is a user call) — candidate list in *Hand-off*; the §9 shelf
-**(ZH-1)–(ZH-6)** stays unpriced and ineligible. Nothing else structural
-queued, nothing awaiting user adjudication.
+`notes/Pencil-fanout.md` §"GBLAW", driver `w4/gblaw.py`. **DIRECTION GXESC
+(ordinal 35) IS PREPPED — the sixth check-in's front-runner pick,
+existential escape** ((GR-112)(v)'s hypothesis, GBLAW's residual #1, the
+whole remaining gap to (GR-108) hence to (GR-104)(i) at `2k = 2`). **NEXT
+CONCRETE TASK: dispatch direction GXESC** (spec `notes/Pencil-fanout.md`
+§"GXESC"; labels (GR-115)–(GR-119) / Steps G135–G139 reserved) — the §9
+shelf **(ZH-1)–(ZH-6)** stays unpriced and ineligible. Nothing else
+structural queued, nothing awaiting user adjudication.
 
 ## Current state
 
@@ -306,6 +309,21 @@ constraints; the dated dispatch narrative is in *Decisions made* and git):
   dispatchable, fable included**, cap **lifted**, rescue §1 fixups
   **pre-authorized**. **Everything else stands unchanged:** phase OPEN, the
   2026-08-05 Lean hold, W4 PARKED, `hK`/`hbareSplit` pinned, option B
+  un-commissioned.
+
+- **2026-08-26 (sixth check-in), the pick after GBLAW — the front-runner shape
+  RE-ELECTED (changes no standing constraint).** With GBLAW landed, the user
+  was offered four shapes (single direction front-runner-first → existential
+  escape / single direction at (K-bare)'s rank-3 shape / top-rung recon-first
+  (a ninth strategy pass) / ninth multidispatch fan-out) and selected
+  **"Single direction, front-runner-first → existential escape"** — an option
+  selection, not free text — which resolves to **existential escape**
+  ((GR-112)(v)'s hypothesis): GBLAW's sharpened residual #1, the head of
+  *Step G134*'s successor order and the first entry of *Hand-off*'s candidate
+  list. Dispatched as **GXESC** (ordinal 35) at top rung (`recon-fable`).
+  Session config carried from the fifth check-in (all four rungs, cap lifted,
+  fixups pre-authorized). **Everything else stands unchanged:** phase OPEN,
+  the 2026-08-05 Lean hold, W4 PARKED, `hK`/`hbareSplit` pinned, option B
   un-commissioned.
 
 **Kernel-(K) research arc — fifty-nine docs+scripts-only dispatches landed, plus eight
@@ -541,9 +559,12 @@ neighbours' incidences and every capacity unit above 2 is bought by a **Case-I g
 whose pencil-compatibility is geometry the probe was barred from. **§(K-avoid) was never
 opened** and no gap-map status moved.
 
-**THE NEXT CONCRETE TASK — the next standing research pick** (GBLAW is
-LANDED, see the top `**Status:**` block and *Decisions made*; landing record
-`notes/Pencil-fanout.md` §"GBLAW"). The candidate list — the 2026-08-25
+**THE NEXT CONCRETE TASK — dispatch direction GXESC** (ordinal 35, PREPPED
+2026-08-26: the sixth check-in's front-runner pick, **existential escape** —
+GBLAW's residual #1, the whole remaining gap to (GR-108) hence to
+(GR-104)(i) at `2k = 2`; spec `notes/Pencil-fanout.md` §"GXESC", labels
+(GR-115)–(GR-119) / Steps G135–G139 reserved, then land the return per the
+fan-out landing checklist). The candidate list behind it — the 2026-08-25
 re-ranked board (`notes/Pencil-strategy.md` §8, the canonical home) with its
 rank-1 and rank-2 slots landed (OQRANK / GPRICE), plus GBLAW's sharpened
 residual: **prove existential escape** ((GR-112)(v)'s hypothesis, the whole
@@ -591,11 +612,11 @@ round 2 (slice 4 the phase-note split, **slice 5/"slice 2" the harness move-down
 OSCHU's `rank(Q|_D) = 3` residue is no longer blocked on the harness — exact `ℚ(i)`
 (`exactcore.Gauss`) is now a base-layer primitive.
 
-**THE STANDING RESEARCH-PICK DELEGATION — live again: GBLAW is landed**
-(dispatched 2026-08-25 at the fifth check-in, single direction
-front-runner-first → (GR-108), landed 2026-08-26; see the top `**Status:**`
-block and *Current state*'s fifth 2026-08-25 bullet). The delegation covers
-the next pick; its shape is again a user call.
+**THE STANDING RESEARCH-PICK DELEGATION — spent on GXESC for this round**
+(2026-08-26, sixth check-in, single direction front-runner-first →
+existential escape, prepped as ordinal 35; see the top `**Status:**` block
+and *Current state*'s 2026-08-26 bullet). The delegation covers the pick
+after GXESC lands; its shape is again a user call then.
 
 **`hsplit` is CLOSED IN FULL** (W5-L7c-1…6, landed 2026-07-30) and **`hfresh`'s mechanical
 discharge (residue (iv)) is CLOSED too**. The landed successor
