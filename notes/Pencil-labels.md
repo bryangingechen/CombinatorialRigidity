@@ -1618,6 +1618,35 @@ rejection reason). **`OGEOM` names the route's content** — the **geometric**
 half of the disproof question, the half (OC-37) left standing when it killed
 the counting half.
 
+## Reserved namespace — direction BATTAIN (2026-08-26, **RESERVED — the direction is in flight**)
+
+**Reserved 2026-08-26 for the single direction BATTAIN** (ordinal 39, the
+arc's forty-seventh direction; `notes/Pencil-fanout.md` §"BATTAIN"), the
+third pick under the 2026-08-26 widened delegation and **the arc's FIRST
+direction ever aimed at `hbareSplit`** — 46 directions on `hK`, zero on
+(K-bare), the imbalance the gap map has called *"open, nothing being
+developed"* since 2026-07-30.
+
+| direction | owning § | labels reserved | steps reserved | driver |
+|---|---|---|---|---|
+| **BATTAIN** | §(K-bare-ext) — **extends**, no new section | **(BE-10)–(BE-14)** | **BE9–BE13** | `w4/battain.py` (conditional — see the spec) |
+
+The reservation is the head of §(K-bare-ext)'s unclaimed tail: KBARE-FALSIFY
+consumed *Steps BE1–BE8* and **(BE-1)–(BE-9)**, leaving **(BE-10) unused and
+returned**, so the tail is **(BE-10)+ / Step BE9+**. At landing, record what
+was consumed, return any remainder, and flip this header to **USED**.
+
+**Code and basename verified 0-hit** as raw substrings, case-insensitively,
+across `*.md`, `*.tex`, `*.lean`, `*.py`, `*.m2` with `.git`/`.lake`
+excluded, control token `ogeom` live at 7 files. `(BE-11)`–`(BE-15)` and
+*Steps BE9–BE14* each 0-hit; `(BE-10)` hits only KBARE-FALSIFY's own
+reservation record above, which is exactly the bookkeeping that declared it
+unused (the `(GR-97)`/`(OC-45)` precedent). **Checked and NOT chosen:**
+`BDIRECT` — **collides** hard (26 files, raw-substring, on "direct");
+`BSEED` — 0-hit but it names what the shape **avoids** (the seed) rather
+than what it delivers. **`BATTAIN` names the target's content** — direct
+**attain**ment of `HasPencilRealization K 3 G` on the habitat.
+
 ## Registry — `notes/Pencil-informal.md` (the (K) workbook)
 
 Status keywords are pointers to the owning section's verdict block and the

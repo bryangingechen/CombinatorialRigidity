@@ -178,8 +178,19 @@ nonexistence. The residual is now **one shape-free sentence**: at every
 live core the Kirchhoff map `⊕_Q S_Q^⊥ → (K⁶)^nodes` is injective at
 the generic chart point. `hK`, (GR-15) and class uniformity untouched;
 E3 ARMED, not fired. Canonical home §(K-out) *Steps O42–O46*, landing
-record `notes/Pencil-fanout.md` §"OGEOM", driver `w4/ogeom.py`. **NEXT CONCRETE TASK: the next research
-direction, coordinator-picked.** The grid-side statement left behind, new and
+record `notes/Pencil-fanout.md` §"OGEOM", driver `w4/ogeom.py`. **DIRECTION BATTAIN (ordinal 39) IS
+PREPPED and IN FLIGHT — the arc's FIRST direction ever aimed at
+`hbareSplit`**, dispatched 2026-08-26 at `recon-opus` (the third pick
+under the widened delegation). Target: the **seed-free
+direct-attainment shape** — bypass the refuted antecedent and attack
+`HasPencilRealization K 3 G` directly on the habitat (strategy §8.4's
+rank-3 row, the KBARE-FALSIFY probe's own suggestion). It carries a
+**falsification arm**: a habitat where that fails is a **T2** witness,
+making `PencilPair K 3 G` itself false — a PENCIL event — and the spec
+asks it to *test* rather than inherit the standing "not producible by
+this harness" reading. **Option B stays un-commissioned** (hard bar).
+Spec `notes/Pencil-fanout.md` §"BATTAIN"; reservation (BE-10)–(BE-14) /
+*Steps BE9–BE13*. **NEXT CONCRETE TASK: land the BATTAIN return.** The grid-side statement left behind, new and
 unattacked: **is the ledger gap ever `≥ 3`?** (spectrum `{0,1,2}` at
 4 935 shapes; by (GR-127) no proof may fix its anchor matching). The §9 shelf **(ZH-1)–(ZH-6)** stays unpriced and
 ineligible. Nothing else structural queued, nothing awaiting user
@@ -708,8 +719,15 @@ neighbours' incidences and every capacity unit above 2 is bought by a **Case-I g
 whose pencil-compatibility is geometry the probe was barred from. **§(K-avoid) was never
 opened** and no gap-map status moved.
 
-**THE NEXT CONCRETE TASK — the next research direction, coordinator-picked**
-under the 2026-08-26 widened delegation. **OGEOM is LANDED** (§(K-out) *Steps
+**THE NEXT CONCRETE TASK — land the BATTAIN return.** Direction **BATTAIN**
+(ordinal 39, the arc's forty-seventh) is **PREPPED and IN FLIGHT**, dispatched
+2026-08-26 at `recon-opus` against `notes/Pencil-fanout.md` §"BATTAIN"
+(reservation (BE-10)–(BE-14) / *Steps BE9–BE13*) — **the arc's first
+direction ever aimed at `hbareSplit`**, closing a 46-to-0 attention gap the
+gap map has flagged since 2026-07-30. **Option B stays un-commissioned.** Its
+falsification arm (a T2 witness ⟹ `PencilPair K 3 G` false ⟹ a PENCIL event)
+is worked up in-phase per the 2026-08-26 pre-adjudication, with the
+classification surfaced. **OGEOM is LANDED** (§(K-out) *Steps
 O42–O46*): no disproof witness, the geometric route free **by an argument**
 on everything searched, and §8.5's row **narrowed, not closed**. Its own
 successors, in order: **(1)** the unsearched cells — `n(F°) = 4` and `5` at

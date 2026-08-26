@@ -1,7 +1,9 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: EIGHT fan-outs and EIGHTEEN single directions dispatched; ALL 46
-directions LANDED.** **OGEOM (ordinal 38, §"OGEOM") LANDED 2026-08-26 — NO
+**Status: EIGHT fan-outs and NINETEEN single directions dispatched; 46 of the
+47 LANDED — BATTAIN (ordinal 39, §"BATTAIN") is PREPPED and IN FLIGHT, and it
+is the arc's FIRST direction ever aimed at `hbareSplit`** (46 on `hK`, zero
+on (K-bare)). **OGEOM (ordinal 38, §"OGEOM") LANDED 2026-08-26 — NO
 disproof witness (91 260 live cores, 0 candidates), and the geometric route
 is now free BY AN ARGUMENT on everything searched, with (OC-37)(ii)'s
 one-unit topology dead class-uniformly and (OC-39) upgraded from sample to
@@ -62,8 +64,8 @@ exact `n_hub` boundary for ledger attack (c)'s AA-glue case (GTMPL), (b′)'s fi
 `n`-free constant (GFLOW), a **NO HIT** on the authorized disproof hunt that nonetheless
 kills the counting route to a disproof (SIGZ), (a₁) reduced to one determinant (OSCHU), and
 **(GR-64)(R2) REFUTED** with (R1) delivered (GCOLL).
-Ordinals run 1–38 (the eighth fan-out claims 25–29; GFLIP is 30; GCHEAP is 31;
-OQRANK is 32; GPRICE is 33; GBLAW is 34; GXESC is 35; GHWIT is 36; GMINM is 37; OGEOM is 38) and were assigned at dispatch, so landing order
+Ordinals run 1–39 (the eighth fan-out claims 25–29; GFLIP is 30; GCHEAP is 31;
+OQRANK is 32; GPRICE is 33; GBLAW is 34; GXESC is 35; GHWIT is 36; GMINM is 37; OGEOM is 38; BATTAIN is 39) and were assigned at dispatch, so landing order
 differs from ordinal order.
 
 **The two architecture-testing PROBES are also both LANDED** (§"Two probes SPECCED and
@@ -3922,3 +3924,106 @@ devices — the arc's widest fan-in, and **no new sibling-import debt**.
 
 **TERMINATION: E1, E2, E3 all NO** — coordinator-re-run and agreed. E3 stays
 **ARMED by GBAL, not fired**: the target is not proven.
+
+## BATTAIN — thirty-ninth ordinal, the forty-seventh direction (single dispatch, prepped 2026-08-26)
+
+**Selection provenance:** the **2026-08-26 widened delegation** — a
+coordinator pick, so the twelfth's disclosure applies (no independent
+top-rung ranking of the alternatives). Dispatched **un-named, single**, at
+**`recon-opus`** (fable conserved).
+
+**Why this pick, and it is the starkest fact on the board.** Forty-six
+directions have attacked `hK`. **Zero** have attacked `hbareSplit** — the gap
+map's own words are *"open, nothing being developed"*, and
+`notes/Phase39.md` has flagged the imbalance as **dispatch attention, not
+adjudication** since 2026-07-30. It is also the pick GMINM's lesson argues
+for: `hbareSplit` is a kernel **carried by the landed theorem**
+(`pencil_conjecture_of_hcontract_hK_hbareSplit_of_card`), not a
+residual-of-a-residual, and the arc has just spent five directions
+discovering that a ledger residual was misaimed.
+
+**The target — the seed-free direct-attainment shape** (strategy §8.4's
+(K-bare) development row, **rank 3** on the 2026-08-25 re-rank; the
+KBARE-FALSIFY probe's own suggestion). **Bypass the antecedent**: instead of
+repairing route A's refuted fixed-seed insertion, attack
+**`HasPencilRealization K 3 G` directly on the habitat**. It is strictly
+stronger than the `∃`-seed form, and **seed-free**, which is the point — the
+probe's finding was that the antecedent supplies an object route A cannot
+use.
+
+**What is settled, and must not be re-litigated.** **(K-bare-ext) is REFUTED
+as stated** (KBARE-FALSIFY, 2026-08-20, *Steps BE1–BE8*) — exactly and
+cap-free — but **`hbareSplit` itself is UNTOUCHED and still carried as
+pinned**: its consequent is an `∃` over frameworks and every probed gadget
+attains, so what died is route A's `∀`-over-seeds shape, not the kernel.
+**Option B (the insertion calculus) is NOT commissioned** (2026-07-30
+adjudication, standing) — do not drift into it, do not cost it, do not
+propose it as the route. It needs the owed KT pp. 684–691 re-pin first and
+was built for chart-generic seeds.
+
+**Two enablers make this newly affordable** (both landed, both from the
+probes): the §(K-tight) **boundary-load calculus transports** (192/192), and
+the **dependent stratum is complete** at `corank(G′) ≤ 3`. Note the honest
+difficulty statement from the gap map, which you should test rather than
+assume: versus `hK`, (K-bare) is *easier on uniformity, harder on the seed
+side*, and the habitat reaches **corank 2** (DZ), so `¬PencilNondegFeasible`
+buys **no corank control** — the chart/reseed/engine apparatus has nothing to
+consume on either side of the split, leaving only the 2–3-dimensional `pt(v)`
+placement freedom.
+
+**What counts as a HIT — three shapes, state which you got.**
+
+1. **Direct attainment, proven or reduced** — `HasPencilRealization K 3 G` on
+   the habitat, or a reduction of it to a named finite/decidable residual
+   with the exact quantifier stated. A first slice here is legitimately
+   **exploratory** (the board ranks it third precisely because it has no
+   named one-step residue), so a well-posed decomposition with the hard step
+   isolated is a real result — but say plainly which step is hard.
+2. **A falsification arm, and this is the one to report first if it fires.**
+   Is there a habitat `G` at which `HasPencilRealization K 3 G` **FAILS**?
+   That is a **T2** witness in the probe's tiering, and it makes
+   **`PencilPair K 3 G` itself false** — a **PENCIL event**, the phase's
+   target motive rather than the induction reaching it. The standing reading
+   is that T2 is *"a universal non-existence over frameworks"* and **not
+   producible by this harness**. **Test that reading rather than inheriting
+   it:** say precisely what a T2 witness would have to exhibit, and whether
+   any available tool decides it — noting that `notes/Pencil-strategy.md`
+   §5.3 measures whole-graph symbolic work as hopeless (the ungauged
+   28-coordinate degree-52 expansion dies at 600 s; a `|V| = 31` shape
+   carries ~120 coordinates) and that the symbolic route *"stops exactly
+   where the far graph enters"*. **A precise, well-grounded "still
+   undecidable by this harness, and here is exactly why"** closes a standing
+   question and is a perfectly good outcome — better than a vague hope.
+3. **An honest OPEN with the route priced** — what the seed-free shape needs
+   that the arc does not have, and whether it is cheaper or dearer than the
+   `∃`-seed + deformation-repair alternative.
+
+**Bars.** **Option B stays un-commissioned** — hard bar. Do not re-run
+KBARE-FALSIFY's hunt or re-derive its figures; cite them. Do not attack
+`hK`, (GR-15), class uniformity, or §(K-grid)'s (b′) ledger — all separate.
+Do not touch W4 / `hcontract` (parked by the Lean hold). No `.lean` — the
+standing Lean hold.
+
+**Riders.** TERMINATION check E1/E2/E3 at the return (E3 ARMED by GBAL —
+report, never fire). **The direction-A pivot rule applies to shape 2**: its
+stop clause was superseded 2026-08-26 (a confirmed hit is worked up in-phase,
+not halted), but the **classification** is required and is the user's — state
+explicitly whether what you have refutes `PencilPair K 3 G` itself or only a
+route, and do not overstate a single witness. F11: every headline claim needs
+a driver testing **that sentence**. **F25:** state your verification bar by
+re-reading the shipped driver; a scratchpad probe that is not in the driver
+does not count, and every script you run is committed. Cap disclosure
+mandatory. All figures exact ℚ (or exact `ℚ(i)` via `exactcore.Gauss`),
+seeded, degeneracy-guarded; `notes/scripts/README.md` binds, and the `kbare/`
+sibling-import set is **recorded UNPAID debt** — extend its consumer list in
+your draft, make no move.
+
+**Driver — conditional, at the pinned path `notes/scripts/w4/battain.py`.**
+A purely derivational result needs no new driver; state that disposition
+explicitly. Any new measured or exhaustion claim mints the driver at the
+pinned path, read-only imports, left untracked for the coordinator to gate
+and commit.
+
+**Reservation** (`notes/Pencil-labels.md` §"Reserved namespace — direction
+BATTAIN"): §(K-bare-ext) **extends**; labels **(BE-10)–(BE-14)**, **Steps
+BE9–BE13**; return any unconsumed remainder to the tail.
