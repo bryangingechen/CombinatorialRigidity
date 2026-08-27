@@ -1844,7 +1844,7 @@ already the name of `bzavoid.py`'s 1-cut mode and would read as that mode's
 successor rather than as the 2-cut lemma.
 
 
-## Reserved namespace — direction BIMAGE (2026-08-27, **IN FLIGHT**)
+## Reserved namespace — direction BIMAGE (2026-08-27, **USED — the direction landed the same day; all five labels and all five steps consumed, none returned**)
 
 **Reserved 2026-08-27 for the single direction BIMAGE** (ordinal 45, the arc's
 fifty-third direction; `notes/Pencil-fanout.md` §"BIMAGE"), the **sixth
@@ -1877,6 +1877,20 @@ namespace. **Checked and NOT chosen:** `BGENPOS` — 0-hit, but it names only th
 hypothesis is the answer, which is exactly the framing RESEARCH-ARC §7 forbids a
 spec from inheriting. `BIMAGE` is BTWOCUT's own word for the residue (*"the
 image statement"*).
+
+**Consumed at landing (2026-08-27), NOTHING RETURNED:** *Steps BE29–BE33* and
+**(BE-30)–(BE-34)** — (BE-30) the ear's image as a chain on the Klein quadric
+plus the three confinement laws, (BE-31) the series/parallel recursion and the
+refutation of the path-intersection bound, (BE-32) the three merge-inequality
+theorems and the `δ ≤ dist` sweep, (BE-33) the α-plane escape lemma and the
+three-mechanism classification, (BE-34) the image at real graphs, the hunt and
+the F27 escalation. Driver `w4/bimage.py` **shipped** (nine modes). The tail is
+**(BE-35)+ / Step BE34+**. **Six consecutive directions have now consumed this
+namespace with nothing returned** — and the gap-map row it feeds was
+**recomputed rather than appended to** at this landing (1 370 → 1 402 words
+against a 1 600 combined cap, after folding the KBARE-FALSIFY and BATTAIN
+clauses), so a **seventh** landing here needs a fuller recompute first, not
+another clause.
 
 ## Registry — `notes/Pencil-informal.md` (the (K) workbook)
 

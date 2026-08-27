@@ -1,11 +1,18 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
 **Status: EIGHT fan-outs, TWENTY-THREE single directions and TWO concurrent
-pairs dispatched; 52 LANDED, ONE IN FLIGHT.** **BIMAGE (ordinal 45, §"BIMAGE")
-is IN FLIGHT** — prepped and dispatched 2026-08-27 at `recon-opus` (fable
-unavailable this session), carrying **BTWOCUT's ranked successor (1)**: the
-image statement the strengthened 2-cut lemma reduces to, ear case first. Flip it
-to LANDED here at its landing. **BTWOCUT (ordinal 44, §"BTWOCUT") LANDED 2026-08-26
+pairs dispatched; ALL 53 LANDED, none in flight.** **BIMAGE (ordinal 45,
+§"BIMAGE") LANDED 2026-08-27** — BTWOCUT's *"nothing in the arc bounds that
+image"* is now **FALSE**: for the **ear** the image is described **exactly** as
+the span of a **chain on the Klein quadric** (a *bijection*, the coordinator's
+hypothesis **CONFIRMED and strengthened**, with three confinement laws it did
+not predict), its bad locus is **classified into exactly three mechanisms** —
+each a *proved* lower bound, exactness **MEASURED** — and every trap a real
+piece shows is a **configuration artifact** (607/607 escalated). Off the ear,
+`ρ̄` obeys an exact **series/parallel recursion** that **REFUTES** the
+coordinator's candidate path-intersection bound as an equality and leaves the
+**internal R-node** as the residue. **The ear case is REDUCED, not proved;
+(BE-14) OPEN and unchanged.** **BTWOCUT (ordinal 44, §"BTWOCUT") LANDED 2026-08-26
 — HIT shape 2, delivered in full: the strengthened statement is **PINNED**
 (S-mark closes; S-all does not, and its one gap is named), the simultaneity worry
 is proved **VACUOUS**, a new elementary theorem makes the leaf base free,
@@ -5600,3 +5607,122 @@ than reimplementing the gluing, deficiency-oracle or pencil-witness machinery.
 **Reservation** (`notes/Pencil-labels.md` §"Reserved namespace — direction
 BIMAGE"): §(K-bare-ext) **extends**, no new section; labels **(BE-30)–(BE-34)**,
 ***Steps BE29–BE33***; return any unconsumed remainder.
+
+### BIMAGE — landing write-up (LANDED 2026-08-27, recon-opus, one serial coordinator commit)
+
+**Verdict: strictly between HIT shapes 2 and 4, and the direction refused to
+round it up.** Not shape 1 ((BE-14) not proved), not shape 2 in full (the ear
+case is **reduced**, not **proved**), not shape 3 (the hunt fires empty after
+escalation). `PencilPair K 3 G`, `hbareSplit` and (BE-14)-for-all-`G` are
+untouched; **not a PENCIL event**. Reservation **fully consumed** —
+**(BE-30)–(BE-34)**, *Steps BE29–BE33*, nothing returned.
+
+**The headline is a refutation of a standing sentence of BTWOCUT's own.**
+*"Nothing in the arc bounds that image"* is now false for the ear:
+`ρ̄₂ = ⟨ℓ₁,…,ℓ_{m+1}⟩` with **equality** (a path is a tree, so the edge
+multipliers are free — two lines, and checked as an identity of *subspaces*, not
+dimensions, at 44/44 draws), and the achievable tuples are **exactly** the
+chains with `ℓ₁ ∈ Π_u`, `ℓ_{m+1} ∈ Π_v` and consecutive members conjugate.
+Coordinator-verified: both directions of the bijection are elementary and
+correct.
+
+**The coordinator's Klein-chain hypothesis: CONFIRMED, and stronger than it
+claimed** — a bijection, not an inclusion. Per RESEARCH-ARC §7 the spec shipped
+it labelled *to be tested, not inherited*, with its provenance named and its
+cheapest falsification specified; the direction tested it rather than assuming
+it, **proved** the falsification consequence (`δ₂ ≤` shortest-path length, tight
+on the ear for `m ≤ 5`) instead of merely confirming it, and returned the
+**correction the hypothesis does not predict**: at small `m` the two ends
+interact, giving three exact **confinement laws** — at `π_u = π_v` with `m = 2`
+the image collapses to a **single point** of `Gr(3,6)`. This is the fifth
+consecutive coordinator prediction the direction it primed has *tested*; unlike
+the four before it, this one survived.
+
+**Job 2 answered positively, and the coordinator's other candidate REFUTED.**
+`ρ̄` obeys an exact **series/parallel recursion** — series **sums**, parallel
+**intersects**, both proved by elementary gluing and verified as subspace
+identities — so a hinge-line description exists for **every series-parallel
+piece** down its SPQR tree. The spec's *"obvious candidate upper bound is the
+intersection over `u–v` paths"* is a genuine bound but **NOT an equality**,
+refuted by an exact witness (`θ(3,3)` + pendant edge: `1` against `2`), because
+intersection does not distribute over sum. Coordinator-re-derived: the witness
+is right and the arithmetic is forced.
+
+**Three elementary combinatorial theorems, each one merge inequality.**
+`u ~ v ⇒ δ_{uv} ≤ 1`; a common **triangle** `⇒ δ_{uv} = 0`; **`≥ 3` common
+neighbours** `⇒ δ_{uv} = 0`. Coordinator-re-derived all three independently from
+the merge identity `value = f − 6k + 5c` — they are correct. They matter because
+they are exactly the two mechanisms that **force `π_u = π_v`** (BZAVOID's
+triangle propagation, BINDUC's `K_{2,3}` generalization), so wherever the
+sharpest confinement is *forced*, that piece has `δ = 0` and (BE-22)(vi) makes
+the composition free: **the obstruction and the deficiency are in tension**, the
+same shape (BE-15) found on the disproof side. Swept over **542 893**
+`(graph, pair)` instances, **exhaustive** at `n ≤ 6` (27 474 graphs / 408 080
+pairs), zero violations across five predicates — including the purely
+combinatorial necessary condition **`δ_{uv} ≤ dist(u,v)`** for S-all/S-mark,
+which is the arc's cheapest falsification test and **fires empty**.
+
+**The bad locus, classified — and the cap that governs the whole landing.**
+Three mechanisms: **pencil swallowing**, **confinement**, and the `m = 1`
+**opposite ruling**. Each is a **proved** lower bound on the loss, resting on a
+proved **α-plane escape lemma** (`Bad(B)` is at most a point for `dim B ≤ 4`, at
+most a line for `dim B = 5`) which the coordinator re-derived from the Klein
+form. **That the loss is EXACTLY their maximum is MEASURED at 358/358, not
+proved** — the direction names this its headline cap and requires it to travel
+with the figure. The one open sub-step is named precisely: the greedy's last
+choice of `p_m ∈ π_v` must satisfy two conditions in a 2-parameter family.
+
+**Every trap a real piece shows is a configuration artifact.** 934 predicted
+trapped `(piece, m)` pairs over a census subsample; 682 have `π_u = π_v` *chosen
+by the constructor* rather than forced — the same shape as BINDUC's 56 ear
+misses — 230 forced, 22 genuinely geometric. Rebuilt as composed graphs with
+side 1 free to move: **607/607 reach the criterion and the whole-graph target**.
+And 43/43 real `G₁ ∪ ear(m)` instances reach `dim(ρ̄₁+ρ̄₂) = min(δ₁+δ₂,6)` **by
+moving the ear alone**, at `δ₁` up to 6.
+
+**One gate-invisible defect, caught in coordinator verification and fixed before
+landing.** The draft twice wrote that the SP recursion's residue is *"the
+R-node, which (BE-25)(iii) already makes rigid after removing its parent virtual
+edge"*, and the shipped driver printed the same sentence. **(BE-25)(iii) closes
+the LEAF R-node only** — BTWOCUT's own consequence line reads *"every SPQR
+**leaf** 3-block is rigid"* — where the piece **is** the skeleton minus its
+parent virtual edge, so `ρ̄ = 0` and the recursion terminates. An **internal**
+R-node, with flexible children substituted for its virtual edges, is not covered
+and is not rigid at all: `K₄` with one virtual edge replaced by an ear **is**
+BINDUC's `K₄ + ear(m)`, `δ ∈ {4,5}`. The clause read as closing what the
+direction's **own ranked successor (3)** is queued to open. Corrected in the
+workbook and in the driver's printed prose, and `sprec` re-run. Logged
+(`notes/dispatch-log.md`).
+
+**Coordinator verification.** `validate` re-run to completion (the escalation
+reproducing 73/73 at the reduced tier), then the full tiers of `sprec`, `chain`,
+`alpha` and `combi` — the last reproducing **542 893** instances and all five
+zero-violation columns exactly. **Both new arguments were re-derived
+independently by the coordinator**: the three merge-inequality theorems (all
+three cases, including the third-part contradiction) and the α-plane escape
+lemma from the Klein form. The `θ(3,3)`+pendant witness was checked by hand
+(`3 + 3` intersecting to `0`, against two `4`s intersecting to `2`).
+
+**F25 bar, read off the shipped driver:** nine modes, one per headline sentence;
+every *"every"/"always"/"exactly"* sentence backed by an **enumerating** tier;
+every subspace claim an identity of **spaces**, never of dimensions; exact ℚ
+throughout with no GF(p) and no floating point; every rng seeded with a printed
+literal; every configuration passing `assert_generic_star` **and**
+`verify_pencil_witness`. **Ten caps disclosed**, the load-bearing three being
+the measured exactness, the measured *"no real piece produces a bad `ρ̄₁`"*, and
+the twice-subsampled census. **Procedural slip, disclosed by the direction
+itself:** one driver run auto-backgrounded for a missing explicit `timeout`; it
+was re-run in the foreground and every quoted figure comes from a foreground
+run (dispatch-log **F6**, seventh instance).
+
+**Ranked successors, this pass's own order.** (1) *a piece satisfying the
+strengthened statement admits a configuration with `Π_u ⊄ ρ̄₁`, `Π_v ⊄ ρ̄₁`* —
+with (2) it **proves the ear case outright**, and the SP recursion is the tool;
+(2) the greedy's last step — self-contained projective geometry, the smallest
+item in the arc's queue; (3) the **internal R-node**, the step from ear to
+general piece; (4) BTWOCUT's successor (2), the bundle proof, **skipped here
+explicitly** as the spec authorizes.
+
+**TERMINATION: E1 NO, E2 NO** — one coordinator candidate and one landed
+sentence refuted, both with successors in hand, which is the shape E2 does not
+fire on; coordinator-re-run and agreed. **E3 ARMED by GBAL, not fired.**
