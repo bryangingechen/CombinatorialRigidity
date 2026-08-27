@@ -1893,7 +1893,7 @@ clauses), so a **seventh** landing here needs a fuller recompute first, not
 another clause.
 
 
-## Reserved namespace — direction BEARCASE (2026-08-27, **IN FLIGHT**)
+## Reserved namespace — direction BEARCASE (2026-08-27, **USED — the direction landed the same day; four of five labels and four of five steps consumed, (BE-39) and *Step BE38* RETURNED**)
 
 **Reserved 2026-08-27 for the single direction BEARCASE** (ordinal 46, the arc's
 fifty-fourth direction; `notes/Pencil-fanout.md` §"BEARCASE"), the **seventh
@@ -1927,6 +1927,29 @@ case.
 stands at **1 402 / 1 600** words after a recompute. A seventh landing here needs
 a **fuller recompute first** — folding the remaining dated clauses into a
 current-state paragraph — not another appended clause.
+
+**Consumed at landing (2026-08-27):** *Steps BE34–BE37* and **(BE-35)–(BE-38)** —
+(BE-35) the 2-step lemma, the ear's last step, the end-pair lemma, the
+reordering-and-slide and the `m ≤ 2` corners; (BE-36) the refutation of (β) as
+stated; (BE-37) the quantifier collapse, the reduction and the named residue;
+(BE-38) (β) for real pieces, the transfer, the independent-sampler falsification
+arm and the classification. **(BE-39) and *Step BE38* are RETURNED UNCONSUMED** —
+**the first return in this namespace after six directions of nothing returned**,
+so the tail is **(BE-39)+ / Step BE38+**. Driver `w4/bearcase.py` **shipped**
+(eight modes).
+
+**The fuller recompute the note above called for was DONE at this landing**, not
+deferred again: the `(K-bare)` status cell was rewritten as a **current-state
+paragraph** rather than a stack of dated *"Since Steps…"* clauses, going
+**1 409 → 1 130 words** *while absorbing a full direction* — 470 words of
+headroom against the 1 600 cap, and a reader cost of ~2 550 tokens against
+~3 076. Label preservation was checked by **scripted set-diff**: 28 tokens
+dropped, **every one verified present in the workbook body first**, and the four
+that are *current-state* rather than historical figures (**`Y° ⊄ Z(G)`**,
+`Z(G)`, `HasPencilRealization`, `dim Y° ≤ dim Z`) were **restored** into the new
+cell. The steps column now reads **BE1–BE37**, and the cell states explicitly
+that per-direction history for *Steps BE14–BE33* is the workbook's, not the
+cell's.
 
 ## Registry — `notes/Pencil-informal.md` (the (K) workbook)
 

@@ -9,27 +9,27 @@ derives it from exactly **three carried items**: **`hcontract`** (W4 — build p
 (L0–L7), with **`hsplit` CLOSED IN FULL** and `hfresh`'s counting discharge landed
 (2026-07-30).
 
-**The kernel-(K) research arc: 53 directions COMPLETE** (2026-08-05 → 08-27, ordinals
-1–45), plus eight strategy-only passes and two architecture probes; **BEARCASE (ordinal 46)
-is IN FLIGHT**.
+**The kernel-(K) research arc: 54 directions COMPLETE** (2026-08-05 → 08-27, ordinals
+1–46), plus eight strategy-only passes and two architecture probes; **nothing is in flight**.
 **Per-direction verdicts, specs and landing write-ups are NOT restated here** —
 each direction has one at `notes/Pencil-fanout.md` §"<CODE>" (ordinals 1–19:
 `notes/Pencil-fanout-archive.md`) and a canonical mathematical home in the workbooks.
-**The arc's standing result, unchanged by all 53: `hK` is not closer.** **(GR-15)** — the
+**The arc's standing result, unchanged by all 54: `hK` is not closer.** **(GR-15)** — the
 single open gap the whole §(K-grid) chain reduces to — is **untouched**; **class uniformity
 of the escape is untouched**; no g-flank was found by any direction; **E3 is ARMED (by
 GBAL) and has never fired**.
 
-**IN FLIGHT — direction BEARCASE** (ordinal 46, `recon-opus`, dispatched 2026-08-27) at
-**BOTH** of BIMAGE's ranked successors (1) and (2), which **together prove the ear case** of
-the strengthened 2-cut lemma: **(α)** the greedy's last step (self-contained projective
-geometry, the **smallest item in the arc's queue**; closing it turns the reach formula from
-MEASURED to PROVED) and **(β)** *a piece satisfying the strengthened statement admits a
-configuration with `Π_u ⊄ ρ̄₁`, `Π_v ⊄ ρ̄₁`, `dim(ρ̄₁ ∩ Z) ≤ dim Z − c₂`* — a statement about
-**ONE piece**. Spec: `notes/Pencil-fanout.md` §"BEARCASE". **This is the SEVENTH consecutive
-direction in §(K-bare-ext)**, overriding the standing diversification criterion by the
-max-impact one that supersedes it; the **(K-res) scoping slice** is thereby deferred a
-**THIRD** round — a deferral, not a drop — alongside **(ZH-2)** and **(BE-23)(ii)**.
+**NEXT CONCRETE TASK — (BE-32)(+) AS A THEOREM**, the **single named residue** the ear case's
+(β) side is now down to: *a graph that forces `π_u = π_v` has `δ_{uv} = 0`*, still **MEASURED**
+(208 418 instances, aggressive closure, no argument) — and **two of its mechanisms are already
+proved**, (BE-32)(ii)/(iii). BEARCASE **closed (α)**: the reach formula is **PROVED for
+`m ≥ 3`** by a reordering-plus-slide, discharging BIMAGE's headline cap. It also **refuted (β)
+as stated** (unsatisfiable at `δ₁ ≥ 5`; the correct target is what the landed driver already
+tests — no measurement changed) and **collapsed its quantifier** on the attaining locus. Rest
+of the ranking: *Hand-off*, **not restated here**. **This is the SEVENTH consecutive direction
+in §(K-bare-ext)**, overriding diversification by the max-impact criterion; the **(K-res)
+scoping slice** stands deferred a **THIRD** round — a deferral, not a drop — alongside
+**(ZH-2)** and **(BE-23)(ii)**.
 
 **On a future HIT: the phase-boundary consequences are the USER's call** —
 whether Phase 39 closes and a successor opens for the Lean is a
@@ -214,11 +214,12 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
   `notes/Pencil-structure.md` §"Slice 6"). **The gate is MECHANICAL** —
   `notes/check-phase-note.py` caps this note at **580 lines / 525 status-header words** and
   fails if *Decisions made* outgrows the forward sections. **Live watch, measured at the
-  BIMAGE landing: 575/580 lines, 494/525 words — FIVE lines of headroom.** The next landing
-  must compress *before* it writes, and the natural target is *Decisions made*'s older
-  one-liners (their canonical homes are `notes/Pencil-fanout.md` + the workbooks). A
-  landing's entry is **one line**; the (BE-14) thread's five prose entries are the standing
-  exception.
+  BEARCASE landing: 572/580 lines, 492/525 words.** That landing compressed *Decisions made*
+  before it wrote — the 2026-08-25 fable run, GHWIT/GMINM/OGEOM, and the two probes each
+  folded into one grouped entry — and the **same move is the next landing's first step**;
+  their canonical homes are `notes/Pencil-fanout.md` + the workbooks. A landing's entry is
+  **one line**; the (BE-14) thread's five prose entries are the standing exception, and the
+  oldest of them demotes when the thread's next direction lands.
 - The full biconditional transport (design doc's W0 pin) is landed only as its two forward
   implications; the reverse arms need a `complementIso` involution lemma, not in tree —
   deferred, **off every critical path** (§(K-σ) *Step σ6*).
@@ -236,25 +237,28 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
 
 **The phase stays OPEN** (the 2026-07-24 adjudication — no phase-close; see *Current state*).
 
-**THE NEXT CONCRETE TASK — the EAR CASE, ONE LEMMA FROM PROVED.** The strengthened
-2-cut lemma **is** (BE-14) (decomposition exhaustive; base `{3-connected}` ∪
-`{max deg ≤ 2}` ∪ `{def₂ = def₃}` free, 1-cuts (BE-18), statement **PINNED** as
-**S-mark**, simultaneity **VACUOUS** (BE-25)(i)), and BIMAGE reduced its residual
-geometric sentence for the **ear** to a named lemma. **BIMAGE's ranked successors,
-which supersede BTWOCUT's:**
+**THE NEXT CONCRETE TASK — (BE-32)(+), the EAR CASE'S SINGLE NAMED RESIDUE.** The
+strengthened 2-cut lemma **is** (BE-14) (decomposition exhaustive; base
+`{3-connected}` ∪ `{max deg ≤ 2}` ∪ `{def₂ = def₃}` free, 1-cuts (BE-18),
+statement **PINNED** as **S-mark**, simultaneity **VACUOUS** (BE-25)(i)). BIMAGE
+bounded and classified its residual geometric sentence for the **ear**; BEARCASE
+then **PROVED (α)** — the reach formula holds for `m ≥ 3` — **refuted (β) as
+stated** and **collapsed its quantifier**, leaving one residue.
+**BEARCASE's ranked successors, which supersede BIMAGE's:**
 
-1. *A piece satisfying the strengthened statement admits a configuration with
-   `Π_u ⊄ ρ̄₁`, `Π_v ⊄ ρ̄₁` and `dim(ρ̄₁ ∩ Z) ≤ dim Z − c₂`.* With (2) this
-   **proves the ear case outright**; the SP recursion ((BE-31)) is the tool, since
-   for a series-parallel piece `ρ̄₁` is computed from its own hinge lines.
-2. **The greedy's last step** — the choice of `p_m ∈ π_v` making both `ℓ_m` and
-   `ℓ_{m+1}` escape, two conditions in a 2-parameter family. Self-contained
-   projective geometry, no graph theory, **the smallest item in the arc's queue**;
-   closing it turns the reach formula from MEASURED (358/358) to proved.
-3. **The internal R-node** ((BE-31)(ii)) — the step from ear to general piece.
-   (BE-25)(iii) closes the **leaf** R-node only.
+1. **(BE-32)(+) as a theorem** — *a graph that forces `π_u = π_v` has
+   `δ_{uv} = 0`*. The **single named residue** of the ear case on the (β) side:
+   everything else reduces to generic-position statements about one piece, and
+   **two of its three mechanisms are already proved** ((BE-32)(ii)/(iii), a common
+   triangle and `≥ 3` common neighbours). Still MEASURED only — 208 418 instances
+   under the **aggressive** closure, which over-claims forcing, so an empty sweep
+   is the stronger statement but not an argument.
+2. **(b2) for a general piece** — the middle clause of (BE-37)(ii)'s reduction.
+3. **The internal R-node** ((BE-31)(ii)) — the step from ear to general piece;
+   (BE-25)(iii) closes the **leaf** R-node only, and BEARCASE's independent
+   sampler now reaches R-node pieces.
 4. BTWOCUT's successor (2), the **bundle-construction proof** — (BE-29)(ii) from
-   rung to theorem, reaching `DZ` / `spider(5,5,5)+c`. Skipped by BIMAGE.
+   rung to theorem, reaching `DZ` / `spider(5,5,5)+c`. Skipped twice.
 
 Also ranked, unchanged: BTWOCUT's cross-pair closure ((BE-28)(i), motive economy
 only — S-mark closes) and the point-side flat law (**priced NOT cheap**); and from
@@ -428,6 +432,13 @@ paragraphs.**
 
 The (BE-14) thread the next task sits on — five entries, kept at prose length:
 
+- **BEARCASE** (46, 2026-08-27, opus) — **(α) CLOSED**: the greedy's last step is a complete
+  criterion (**the 2-step lemma**), its bad case a **scheduling** artifact, and a
+  **reordering + slide** removes it ⟹ **the reach formula is PROVED for `m ≥ 3`**
+  (constructed, 1 432/1 432); no fourth mechanism at `m ≤ 2`. **(β) as stated REFUTED**
+  (unsatisfiable at `δ₁ ≥ 5`; a **propagated prose defect**, no measurement changed), its
+  quantifier **COLLAPSED** on the attaining locus, and the (β) side reduced to the single
+  residue **(BE-32)(+)**. §(K-bare-ext) *BE34–BE37*.
 - **BIMAGE** (45, 2026-08-27, opus) — BTWOCUT's *"nothing bounds that image"* **REFUTED**:
   the ear's `ρ̄₂` is the span of a **chain on the Klein quadric** (a bijection; the
   coordinator's hypothesis CONFIRMED, plus three confinement laws it missed), its bad locus
@@ -445,12 +456,12 @@ The (BE-14) thread the next task sits on — five entries, kept at prose length:
   **base is FREE**; BZAVOID's 2-cut `− 6` **REFUTED**, replaced by an exact `max`-law;
   (BE-14) proved at 5 824 further graphs; the general new-cap mechanism fires empty,
   **scope-correcting (BE-15)(ii)** to the triangle mechanism only. §(K-bare-ext) *BE19–BE23*.
-- **BZAVOID** (40, 2026-08-26, opus) — falsification arm **EMPTY BY AN ARGUMENT at every
-  graph** ((BE-15)); the pencil stratum **IS** the planar-atom molecular stratum, so
-  (BE-14) is **existential, not generic** ((BE-16)); two routes CLOSED; (BE-14) reduced to
-  2-connected graphs. §(K-bare-ext) *BE14–BE18*.
 
 Settled, one line each:
+
+- **BZAVOID** (40, 2026-08-26, opus) — falsification arm **EMPTY BY AN ARGUMENT** ((BE-15));
+  the pencil stratum **IS** the planar-atom molecular stratum, so (BE-14) is **existential**
+  ((BE-16)); two routes CLOSED. §(K-bare-ext) *BE14–BE18*.
 
 - **BATTAIN** (39, 2026-08-26, opus, the arc's first direction ever at `hbareSplit`) — motive
   characterized off the Lean bodies, **bare realizability UNCONDITIONAL**, the first universal
@@ -460,41 +471,30 @@ Settled, one line each:
   (`B_0 ≠ ∅` **is** properness); **absorbs (ZH-3)**. §(K-jac) *JC1–JC5*.
 - **ZSHEAR** (41, 2026-08-26, opus, the §9 shelf's first direction ever) — **(ZH-1)
   REFUTED by GAUGE-TRIVIALITY**; owed §2.5 filter check **DISCHARGED**. §(K-shear) *SH1–SH5*.
-- **OGEOM** (38, 2026-08-26, opus) — **no disproof witness**; the geometric route free **by
-  an argument** on everything searched; §8.5's row NARROWS, does not close. §(K-out) *O42–O46*.
-- **GMINM** (37, 2026-08-26, opus) — **GHWIT's refutation does not reach the ledger**: the
-  ledger consumes the **difference of minima**, `min_M` **PROVEN**. §(K-grid) *G145–G148*.
-- **GHWIT** (36, 2026-08-26, opus — first single direction below the top rung, and it hit)
-  — per-matching (b′) at the constant 2 is **FALSE** by witness, (GR-86)'s gap-4 cap TIGHT.
-  §(K-grid) *G140–G144*.
-- **GXESC** (35, 2026-08-26, fable) — (GR-108) and existential escape **REFUTED BY
-  WITNESS**; the price form survives everywhere. §(K-grid) *G135–G139*.
-- **GBLAW** (34, 2026-08-25 → 08-26, fable) — an honest OPEN reshape: (GR-108) reduced to
-  **existential escape**; universal escape REFUTED. §(K-grid) *G130–G134*.
-- **GPRICE** (33, 2026-08-25, fable) — **(GR-104)(i) a theorem at `2k = 2`, every `n`,
-  modulo the minted balance law (GR-108) alone**. §(K-grid) *G125–G129*.
-- **OQRANK** (32, 2026-08-25, fable) — a graded HIT: **input (a) GREEN at all 174 certified
-  classes** in exact ℚ(i), the naive route REFUTED as a class statement; class-uniform (a)
-  still OPEN. §(K-out) *O37–O41*.
-- **GCHEAP** (31, 2026-08-25, fable) — **(b′) at 2 is a THEOREM on the whole `n_hub ≤ 6`
-  stratum**; the per-configuration form REFUTED from `n_hub = 12`. §(K-grid) *G120–G124*.
-- **GFLIP** (30, 2026-08-25, fable) — **(GR-R1) PROVEN**, so (GR-89)(ii)'s `n`-free `≤ 12`
-  bound is a **THEOREM**. §(K-grid) *G116–G119*.
-- **Probe C3-AVOID** (2026-08-24, opus) — board option **C3 is NO-GO as a crux-avoidance
-  route**: universal threshold **`|S| ≤ 2`**. `notes/Pencil-strategy.md` §4.7.
-- **Probe KBARE-FALSIFY** (2026-08-20, opus) — a **T1 HIT**: (K-bare-ext) **refuted as
-  stated**; `hbareSplit` **untouched**. §(K-bare-ext) *BE1–BE8*.
-- **Structural rounds 1–2 COMPLETE** (five slices, 2026-08-19 → 08-20) and the **phase-note
-  compression round, slice 6, LANDED 2026-08-26**. Record: `notes/Pencil-structure.md`.
-  **ROADMAP §39 split by volatility, 2026-08-26**: it keeps the question, the R1–R3
-  one-liners and the closed W0–W5 record (what *The question and the opening recon* points
-  at) and **no longer carries the arc's running state** — no direction count, no fan-out
-  roll-call. Do not re-add one: the count is the ROADMAP Status row's.
-- **The EIGHTH FAN-OUT — COMPLETE, all five LANDED 2026-08-19** (ordinals 25–29): an exact
-  `n_hub` boundary for AA-glue (GTMPL), (b′)'s first proven `n`-free constant (GFLOW), a NO
-  HIT that nonetheless kills the counting route to a disproof ((OC-37), SIGZ), (a₁) reduced
-  to one determinant (OSCHU), **(GR-64)(R2) REFUTED** with (R1) delivered (GCOLL). Four of
-  five corrected a defective spec clause (`notes/dispatch-log.md` **F22**).
+- **GHWIT / GMINM / OGEOM (36–38), 2026-08-26, opus, one-lined** — per-matching (b′) at the
+  constant 2 is **FALSE** by witness with (GR-86)'s gap-4 cap TIGHT (GHWIT); that refutation
+  **does not reach the ledger**, which consumes the **difference of minima**, `min_M` **PROVEN**
+  (GMINM); **no disproof witness**, the geometric route free by an argument on everything
+  searched, §8.5's row narrows but does not close (OGEOM). §(K-grid) *G140–G148*, §(K-out)
+  *O42–O46*.
+- **The 2026-08-25 fable run (30–35), one-lined** — **GFLIP** (GR-R1) PROVEN so (GR-89)(ii)'s
+  `n`-free `≤ 12` bound is a THEOREM; **GCHEAP** (b′) at 2 a THEOREM on the whole `n_hub ≤ 6`
+  stratum, per-configuration form REFUTED; **OQRANK** a graded HIT, input (a) GREEN at all 174
+  certified classes, class-uniform (a) still OPEN; **GPRICE** (GR-104)(i) a theorem at `2k = 2`
+  modulo (GR-108); **GBLAW** an honest OPEN reshape, (GR-108) reduced to existential escape;
+  **GXESC** (GR-108) and existential escape REFUTED BY WITNESS. §(K-grid) *G116–G139*,
+  §(K-out) *O37–O41*.
+- **The two architecture probes, one-lined** — **C3-AVOID** (2026-08-24): board option **C3
+  NO-GO** as a crux-avoidance route, universal threshold **`|S| ≤ 2`** (strategy §4.7).
+  **KBARE-FALSIFY** (2026-08-20): a **T1 HIT**, (K-bare-ext) **refuted as stated**,
+  `hbareSplit` **untouched** (§(K-bare-ext) *BE1–BE8*).
+- **Structural rounds 1–2 + the slice-6 compression round: COMPLETE** (2026-08-19 → 08-26;
+  record `notes/Pencil-structure.md`). **ROADMAP §39 was split by volatility** and no longer
+  carries the arc's running state — **do not re-add a direction count or fan-out roll-call
+  there**; the count is the ROADMAP Status row's.
+- **The EIGHTH FAN-OUT — all five LANDED 2026-08-19** (ordinals 25–29): GTMPL, GFLOW, SIGZ
+  ((OC-37) killing the counting route to a disproof), OSCHU, GCOLL (**(GR-64)(R2) REFUTED**).
+  Four of five corrected a defective spec clause (`notes/dispatch-log.md` **F22**).
 - **Directions 1–24 — ALL LANDED 2026-08-05…08-19** (thirteen across the first five
   fan-outs, one per ordinal from the sixth on). **Net: three HITs** — entry 5 PROVEN both
   halves (GBAL, discharging (X)); chart irreducibility PROVEN (CIRR); AA-glue NOT

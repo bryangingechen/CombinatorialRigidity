@@ -1,11 +1,17 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
 **Status: EIGHT fan-outs, TWENTY-FOUR single directions and TWO concurrent
-pairs dispatched; 53 LANDED, ONE IN FLIGHT.** **BEARCASE (ordinal 46,
-§"BEARCASE") is IN FLIGHT** — prepped and dispatched 2026-08-27 at `recon-opus`,
-carrying **BIMAGE's ranked successors (1) and (2)**, which together **prove the
-ear case** of the strengthened 2-cut lemma. Flip it to LANDED here at its
-landing. **BIMAGE (ordinal 45,
+pairs dispatched; ALL 54 LANDED, none in flight.** **BEARCASE (ordinal 46,
+§"BEARCASE") LANDED 2026-08-27 — HIT shape 2: (α) IS CLOSED.** The greedy's last
+step is a **complete criterion** (the 2-step lemma), its bad case is non-empty
+but a **scheduling artifact**, and a **reordering plus a slide** removes it — so
+**(BE-33)(ii)'s reach formula is PROVED for `m ≥ 3`**, discharging BIMAGE's
+headline cap. **(β) as stated is REFUTED** — unsatisfiable at `δ₁ ≥ 5` by plain
+Grassmann, a **prose defect that propagated** from BIMAGE's successor ranking
+into this direction's own spec and the phase note; the correct target is what
+the landed driver already tests, so **no measurement changes**. Its *"every
+configuration"* quantifier **collapses**, and the ear case's (β) side is down to
+**one named residue, (BE-32)(+)**. **BIMAGE (ordinal 45,
 §"BIMAGE") LANDED 2026-08-27** — BTWOCUT's *"nothing in the arc bounds that
 image"* is now **FALSE**: for the **ear** the image is described **exactly** as
 the span of a **chain on the Klein quadric** (a *bijection*, the coordinator's
@@ -5771,6 +5777,12 @@ own.
 > `dim(ρ̄₁ ∩ Z) ≤ dim Z − c₂`.* This is a statement about **ONE piece and its
 > own moduli**, not about two pieces in relative position — which is what makes
 > it tractable, and it is the same simplification (BE-22)(vi) exploited.
+>
+> **[SPEC DEFECT, recorded in place 2026-08-27 — the dispatch refuted it.** The
+> third clause is unsatisfiable at `δ₁ ≥ 5` by plain Grassmann; the coordinator
+> transcribed it verbatim from BIMAGE's ranked successor (1) without checking
+> its arithmetic, and it reached the phase note's hand-off too. The correct
+> target is `loss ≤ max(0, δ₁+δ₂−6)`. See (BE-36).**]**
 
 **Job 1 — (α).** Self-contained projective geometry, no graph theory; BIMAGE
 calls it **the smallest item in the arc's queue**. Take it first: it is the
@@ -5901,3 +5913,111 @@ and 2 need.
 **Reservation** (`notes/Pencil-labels.md` §"Reserved namespace — direction
 BEARCASE"): §(K-bare-ext) **extends**, no new section; labels
 **(BE-35)–(BE-39)**, ***Steps BE34–BE38***; return any unconsumed remainder.
+
+### BEARCASE — landing write-up (LANDED 2026-08-27, recon-opus, one serial coordinator commit)
+
+**Verdict: HIT shape 2 — one of the two proved, and it is (α).** `PencilPair
+K 3 G`, `hbareSplit`, (BE-14)-for-all-`G` and the 2-cut step are all untouched;
+**not a PENCIL event**. Reservation **partly returned** for the first time in
+this namespace: **(BE-35)–(BE-38)** and *Steps BE34–BE37* consumed, **(BE-39)**
+and ***Step BE38*** returned unconsumed.
+
+**(α) is closed, and the mechanism is a REORDERING rather than a new tool.** The
+last step's two conditions collapse to one — `⟨ℓ_m, ℓ_{m+1}⟩` is the pencil
+`p_m ∧ M` — giving **the 2-step lemma (BE-35)(i)**: the reach of `W + c∧M` is
+determined by `dim(W ∩ N_M)` alone, with an exceptional `S_t` clause at
+`dim = 3`. Coordinator-verified in full: I re-derived the quadratic form
+coefficient by coefficient against the draft's `Q(a)` and it **matches exactly**,
+and checked the `dim C ≤ 2` union-of-`T_t` count and the converse. The
+proof's case split is complete, though it does not spell out why
+`c_{02}, c_{03}` cannot be dependent-and-nonzero — that sub-case forces the
+image into a line and contradicts surjectivity, which I verified separately.
+BIMAGE's bad case is then shown **non-empty but a condition on the SCHEDULE**,
+not on `A` — so (α) is a question about the **order of the greedy's choices**,
+and is answered by changing it: pick both constrained ends first (**the end-pair
+lemma (BE-35)(iii)**, four cases in the quotient `Z/(A∩Z)` — coordinator-verified
+including the *"same line"* case, which needs `Z = Π_u + Π_v` and gets it), close
+with a point **free in `P³`**, and **slide** two points along fixed lines so `M`
+sweeps a 2-parameter transversal family against a `≤ 1`-parameter bad set.
+**⟹ the reach formula is PROVED for `m ≥ 3`** — BIMAGE's headline cap,
+discharged — with the `m ≤ 2` corners decided separately and **no fourth
+mechanism** found at 1 067 targeted instances.
+
+**(β) as stated is REFUTED, and the defect was the COORDINATOR'S to catch.**
+`dim(ρ̄₁ ∩ Z) ≥ δ₁ + dim Z − 6` always, so the demanded `≤ dim Z − 2` is
+**unsatisfiable at `δ₁ ≥ 5`**, `dim Z` cancelling. This is one line of Grassmann.
+It originated in BIMAGE's own ranked successor (1), and the coordinator
+transcribed it **verbatim** into `notes/Phase39.md`'s hand-off item 1 and into
+this direction's spec without checking its arithmetic — so the dispatch was sent
+to prove a false statement, and found that out itself. **No measurement changes**:
+the correct target `loss ≤ max(0, δ₁+δ₂−6)` is exactly what the landed
+`bimage.py hunt` already tests. Corrected at all four landed sites in this
+commit — the workbook's successor ranking, the spec (annotated **in place**, not
+silently rewritten), and both phase-note sites. Logged (`notes/dispatch-log.md`).
+
+**The quantifier collapse — the answer to the spec's own job-2 note, and it
+needed a hypothesis the draft omitted.** *"At every configuration"* ⟺ *"at a
+generic configuration"*, so a sampler can **over-report** traps but **never miss
+one**, and one drawn configuration with `loss ≤ slack` is a **theorem for that
+piece**. The draft justified this by *"a difference of lower-semicontinuous rank
+functions is upper semicontinuous"*, which is **false in general** — coordinator
+witness: `V(t) = ⟨(1,0,0),(0,t,0)⟩`, `X = ⟨(0,1,0)⟩` gives `dim(V ∩ X) = 1`
+generically and `0` at `t = 0`. It is true exactly where **`dim ρ̄₁` is
+constant** — the **attaining** locus, which is where (β) is posed and where all
+three consequences live. The hypothesis was supplied at landing; **no conclusion
+changes**.
+
+**Two genuinely new class-level results on the (β) side.** The reduction to
+three generic-position statements holds in **87 of 91** arithmetic cases, the
+four failures being exactly the `π_u = π_v`, `m = 2` corner where the ear has no
+freedom at all; and a piece with **`dist_{G₁}(u,v) ≤ 4` has `loss = 0` for every
+ear length**, stated with its genericity proviso rather than without.
+
+**The falsification arm answered BIMAGE's cap 3 head-on.** BIMAGE's 607/607 was
+measured over the **BTWOCUT ladder's** configurations — the same shape (BE-26)
+caught BINDUC on. This direction built a sampler that **owes the ladder nothing**:
+by (BE-16) the pencil condition is *every closed star coplanar*, so subdivisions
+whose branch vertices form an independent set have a **free parametrization** of
+the stratum. Over 24 pieces × 14 generic draws — including **R-node** pieces
+(subdivided `K₄`, `K_{3,3}`, prism), which is BIMAGE's own named residue —
+**ZERO candidates**, with `Π_u ⊆ ρ̄₁` occurring at *exactly* the vacuous
+`ρ₁ = 6` rows, **asserted** rather than eyeballed. The coordinator's observation 3
+is reproduced on that independent sampler and **sharpened**: the intersection is
+`1` for path-like sides, `0` where two `u–v` paths leave `u` differently, and
+never `2` below `ρ₁ = 6`.
+
+**The coordinator's hypothesis was decided NEGATIVE, and cleanly.** The
+(BE-32)-style *tension* argument is **not** the mechanism: `δ₂ = min(m+1,6) ≥ 2`
+always covers the deficit, so (β) reduces to plain generic position with no
+tension needed. Tension survives only at the residue the direction lands on —
+**(BE-32)(+)**. Fifth of the last seven coordinator predictions to be decided by
+the direction it primed; the second to be decided negative.
+
+**Coordinator verification.** `validate` re-run to completion (117 s), then the
+**full** tiers of `twostep` (2 205 comparisons, 14/14 enumerated shapes),
+`betadim`, `greedy` (1 432/1 432, every first attempt) and `corners` (1 067/1 067)
+— all reproducing exactly. The `betadim` forced minima were checked against my
+own independent Grassmann table, row for row. **Three arguments re-derived
+independently**: the 2-step lemma's quadratic form, the end-pair lemma's four
+cases, and the (β) refutation.
+
+**F25 bar, read off the shipped driver:** eight modes, exact ℚ throughout, every
+rng seeded with a printed literal, every subspace claim an identity of spaces;
+the `laststep` criterion is **decided, not sampled** (a quadratic form on a
+3-space vanishes identically iff it vanishes at three basis vectors and their
+three pairwise sums, so the six-point test is a decision procedure); the
+`betahunt` sampler **asserts** its chosen plane equals `plane_at`'s closed-star
+plane. **Caps disclosed**, the load-bearing ones being that `m ≤ 2` is proved
+*given a skew optimal end pair*, that `m ≥ 6` is argued rather than measured,
+and that the independent sampler **excludes pieces with adjacent branch
+vertices** — which the direction itself names as where it would look next for a
+counterexample.
+
+**Ranked successors, this pass's own order.** (1) **(BE-32)(+) as a theorem** —
+the single named residue, and two of its mechanisms are already
+(BE-32)(ii)/(iii); (2) **(b2)** for a general piece; (3) the **internal R-node**,
+now with a free sampler in hand; (4) BTWOCUT's bundle proof, still skipped.
+
+**TERMINATION: E1 NO, E2 NO** — one landed prose sentence corrected with its
+successor already in the landed driver, which is the shape E2 does not fire on;
+the ear case **narrows** rather than dying. **E3 ARMED by GBAL, not fired.**
