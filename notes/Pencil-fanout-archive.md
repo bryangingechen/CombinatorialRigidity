@@ -178,7 +178,7 @@ whether it can be pursued under the standing adjudications.
 round closed: of the coordinator's proposed parallel package the user selected
 *"OK, let's go with 1+2+3 in parallel"* — 1 = the §(K-clos) (AC-6)
 tight-stratum residual (**T**), 2 = §(K-ann) (ANH-R1) (**R**), 3 = the
-mechanisms pass (**M**; `notes/Phase39.md` *Current state* (a)). This resolves
+mechanisms pass (**M**; `notes/Pencil-adjudications.md` (a)). This resolves
 the 2026-08-05 open ordering question (whether route σ or §4.6's shortlist
 preempts the mechanisms pass): the mechanisms pass runs NOW, in parallel with
 both. Route σ was **not** selected — its remaining substance is the Lean half,
@@ -1060,7 +1060,7 @@ into the registry and adding the driver's rows to
 
 **Status: LANDED 2026-08-13.** A **single direction**, not a fan-out; its
 selection was made under the 2026-08-12 refinement of the standing
-delegation (`notes/Phase39.md` *Current state*, verbatim there): the user
+delegation (`notes/Pencil-adjudications.md`, verbatim there): the user
 delegated the seventh-direction call to a **top-rung fable recon**, whose
 verdict the coordinator verified and accepted; this section transcribed
 that verdict's dispatch-grade spec. §(K-grid) continuation, Steps
@@ -1561,7 +1561,7 @@ the minority-orientation CSP is loose exactly where everything is proven.
 **No g-flank found; the target stays OPEN, reduced to that orientation
 problem, and so does (GR-15), unchanged in status; no gap-map status
 moves.** The standing frame is the 2026-08-13 phase-shape adjudication (the
-research arc CONTINUES; `notes/Phase39.md` *Current state*); this landing
+research arc CONTINUES; `notes/Pencil-adjudications.md`); this landing
 does **not** open a tenth direction — the route ledger below records why.
 
 **Direction code GEXIST** (the deliverable is the uniform **EXIST**ence
@@ -1903,7 +1903,7 @@ colouring within 2 deviations of any of its 8 matchings). **No g-flank
 found; the target stays OPEN, re-anchored on this selection principle,
 and so does (GR-15), unchanged in status; no gap-map status moves.**
 The standing frame is the 2026-08-13 phase-shape adjudication (the
-research arc CONTINUES; `notes/Phase39.md` *Current state*); this
+research arc CONTINUES; `notes/Pencil-adjudications.md`); this
 landing does **not** open an eleventh direction — the route ledger
 below records why.
 

@@ -233,7 +233,7 @@ section name **§(K-prof)** and its tag **`PF-`** were never opened and
 return to the pool unopened; the optional M2 leaf `m2/cflank.m2` was also
 never needed). A **single direction**, not a fan-out — its selection was
 **delegated to the coordinator**, not user-adjudicated from a candidate
-list (`notes/Phase39.md` *Current state*, the "keep going on my own
+list (`notes/Pencil-adjudications.md`, the "keep going on my own
 judgment" adjudication). No flank found; (GR-15) stays OPEN, unchanged in
 status.
 
@@ -1156,8 +1156,8 @@ collide — and they did:
   invariants C1/C2/C3, §`hnoGood'` vacuity's (C1)–(C6), and §(K-slide-cl)'s
   step/claim pair — the same overload clause 4 names.
 
-**Disposition: RENAMED**, per the 2026-08-20 user adjudication (`Phase39.md`
-*Current state*): the rename option this record left open for the user was
+**Disposition: RENAMED**, per the 2026-08-20 user adjudication
+(`notes/Pencil-adjudications.md`): the rename option this record left open for the user was
 offered as one of a small option selection, and the user selected **"Rename
 to (GR-R1)/(GR-C1)/(GR-C2)"** verbatim, citing the direction-A precedent
 (bare `(R1)`/`(R2)` → renamed to `(ANH-R1)`/`(ANH-R2)` at landing, before
@@ -1562,7 +1562,7 @@ in this reservation; GHWIT *cites* them and mints its own results at
 **Reserved 2026-08-26 for the single direction GMINM** (ordinal 37, the
 arc's forty-fifth direction; `notes/Pencil-fanout.md` §"GMINM"), the first
 direction picked under the **2026-08-26 widened delegation** (the
-coordinator chooses; `notes/Phase39.md` *Current state*). Target: the
+coordinator chooses; `notes/Pencil-adjudications.md`). Target: the
 **`min_M` reading** of (GR-104)(i), GHWIT's residual #2.
 
 | direction | owning § | labels reserved | steps reserved | driver |

@@ -139,8 +139,11 @@ of (K)* gap map, which is authoritative for every status word). Label reservatio
 minting rule live in `notes/Pencil-labels.md`.
 
 **Selection provenance is NOT duplicated here.** Which user adjudication or delegation
-picked each direction is canonical in `notes/Phase39.md` *Current state*, as dated bullets
-quoting the user verbatim, and in each direction's own section below. Do not restate it in
+picked each direction is canonical in `notes/Pencil-adjudications.md`, as dated bullets
+quoting the user verbatim (ordinals 1–44, moved out of `notes/Phase39.md` *Current state*
+in two rounds, 2026-08-19 and 2026-08-26), and in each direction's own section below.
+`notes/Phase39.md` *Current state* keeps only the **standing** GO/NO-GO constraints and a
+compressed statement of the delegation and its selection criteria. Do not restate it in
 this header — reproducing it is what grew this header to 2 139 words of changelog across
 thirteen directions, stale by two whole fan-outs, and still describing the file as scoping
 "three independent research directions" long after there were twenty-four.
@@ -2521,7 +2524,7 @@ neither fired nor disarmed (this probe touches neither entry 1 nor (a′)).
 
 **Selection provenance:** the standing 2026-08-07 delegation; shape adjudicated
 at the 2026-08-25 check-in — **"Single direction, cheapest first"** (an option
-selection; `notes/Phase39.md` *Current state*, the 2026-08-25 bullet). Cheapest
+selection; `notes/Pencil-adjudications.md`, the 2026-08-25 bullet). Cheapest
 first is §8.1's own ranking: **(GR-R1)**, the cheapest item on the option
 board. Dispatched **un-named, single, top rung** (`recon-fable` — fable is
 dispatchable this session per the same check-in; the fan-out mechanics' rung
@@ -2645,7 +2648,7 @@ clean; `check-gapmap-cells.py` green on the recomputed §(K-grid) row.
 
 **Selection provenance:** the standing 2026-08-07 delegation; shape adjudicated
 at the **second** 2026-08-25 check-in — **"Single direction, cheapest first"**
-(an option selection; `notes/Phase39.md` *Current state*, the second 2026-08-25
+(an option selection; `notes/Pencil-adjudications.md`, the second 2026-08-25
 bullet). Cheapest first is §8.1's own ranking with (GR-R1) struck by GFLIP:
 **(GR-C2)**, now the cheapest item on the option board. Dispatched **un-named,
 single, top rung** (`recon-fable` — fable is dispatchable this session per the
@@ -2944,7 +2947,7 @@ draft; `check-gapmap-cells.py` green on the recomputed §(K-out) row
 
 **Selection provenance:** the standing 2026-08-07 delegation; shape adjudicated
 at the **fourth** 2026-08-25 check-in — **"Single direction,
-front-runner-first"** (an option selection; `notes/Phase39.md` *Current state*,
+front-runner-first"** (an option selection; `notes/Pencil-adjudications.md`,
 the fourth 2026-08-25 bullet). Front-runner-first is the 2026-08-25 re-rank's
 own order with its rank 1 (the O29 ℚ(i) eigen-block leg) landed by OQRANK:
 **(GR-104)(i)**, the re-rank's rank 2 and the board's highest unlanded entry
@@ -3094,7 +3097,7 @@ the checker's own guidance, no cap bump).
 
 **Selection provenance:** the standing 2026-08-07 delegation; shape adjudicated
 at the **fifth** 2026-08-25 check-in — **"Single direction,
-front-runner-first"** (an option selection; `notes/Phase39.md` *Current state*,
+front-runner-first"** (an option selection; `notes/Pencil-adjudications.md`,
 the fifth 2026-08-25 bullet). With the 2026-08-25 re-rank's ranks 1 and 2 both
 landed the same day (OQRANK / GPRICE), the front-runner is GPRICE's own
 residual #1, the head of *Step G129*'s successor order and the first entry of
@@ -3268,7 +3271,7 @@ repaired to current standing in the same pass).
 
 **Selection provenance:** the standing 2026-08-07 delegation; shape adjudicated
 at the **sixth** check-in of the 2026-08-25/26 session — **"Single direction,
-front-runner-first"** (an option selection; `notes/Phase39.md` *Current state*,
+front-runner-first"** (an option selection; `notes/Pencil-adjudications.md`,
 the 2026-08-26 bullet). With the 2026-08-25 re-rank's ranks 1 and 2 landed
 (OQRANK / GPRICE) and GBLAW landed 2026-08-26, the front-runner is GBLAW's own
 sharpened residual, the head of *Step G134*'s successor order and the first
@@ -3440,7 +3443,7 @@ recomputed §(K-grid) row.
 
 **Selection provenance:** the standing 2026-08-07 delegation; shape adjudicated
 at the **seventh** check-in (the 2026-08-26 session) — **"Single direction,
-front-runner-first"** (an option selection; `notes/Phase39.md` *Current state*,
+front-runner-first"** (an option selection; `notes/Pencil-adjudications.md`,
 the 2026-08-26 seventh-check-in bullet). With GXESC landed 2026-08-26, the
 front-runner is GXESC's own reshaped residual, the head of *Step G139*'s
 successor order and the first entry of `notes/Phase39.md` *Hand-off*'s
@@ -3641,7 +3644,7 @@ clause failure: 16, 18 or 20 (20 exhibited; 16/18 clean under disclosed caps).
 put the *pick* itself, not merely its shape, in the coordinator's hands for
 the rest of the session, with two stated criteria: explore different paths
 rather than getting bogged down, and prefer examples that could kill whole
-directions or counterexample the target (`notes/Phase39.md` *Current state*,
+directions or counterexample the target (`notes/Pencil-adjudications.md`,
 the seventh check-in's second bullet, quoted verbatim there). **This is a
 coordinator pick; the twelfth's disclosure applies — no independent top-rung
 ranking of the alternatives.** Dispatched **un-named, single**, at

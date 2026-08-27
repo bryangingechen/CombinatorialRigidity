@@ -114,15 +114,18 @@ for *organizing* this directory is here.
   in the parent file above.
 - **`Pencil-adjudications.md`** — the dated, verbatim-quoted user
   adjudication/delegation bullets from `notes/Phase39.md` *Current state*
-  that selected the picks for ordinals 1–19 (2026-08-05…07, 2026-08-07,
-  2026-08-12, 2026-08-13, and the 2026-08-19 sixth-fan-out dispatch), split
-  out of `Phase39.md` **verbatim** (2026-08-19, the phase-note doc split,
-  `notes/Pencil-structure.md`) — same precedent as `Pencil-fanout-archive.md`
-  above: relocation only, no re-wording or re-verdicting. The standing kernel
-  GO/NO-GO constraints and the three still-live 2026-08-19 bullets stay in
-  `Phase39.md` *Current state*, since a fresh session must read them; this
-  file is selection provenance for the archived ordinals only, never
-  mathematics.
+  that selected the picks for **ordinals 1–44, the whole kernel-(K) arc**,
+  split out of `Phase39.md` **verbatim** in two rounds — ordinals 1–19 on
+  2026-08-19 (the phase-note doc split) and ordinals 20–44 on 2026-08-26 (the
+  phase-note compression round), both recorded in
+  `notes/Pencil-structure.md`. Same precedent as `Pencil-fanout-archive.md`
+  above: relocation only, no re-wording or re-verdicting. What stays in
+  `Phase39.md` *Current state* is the **standing kernel GO/NO-GO constraints**
+  plus a **compressed statement** of the standing research-pick delegation,
+  its selection criteria and the direction-A pivot rule's pre-adjudicated stop
+  clause, since a fresh session must read those; the verbatim quotes behind
+  them are here. **A citation naming a dated Phase-39 bullet resolves here,
+  not in the phase note.** Selection provenance only, never mathematics.
 - **`Pencil-strategy.md`** — the Phase-39 **strategic record** written after the
   fan-out landed: *why* class uniformity of the escape resists (a
   three-ingredient diagnosis of how rank conditions become combinatorial and

@@ -1,7 +1,8 @@
 # PENCIL doc-split / discipline-distillation — structural rounds (work log)
 
-**Status: BOTH ROUNDS COMPLETE — first round slices 1–3 LANDED 2026-08-19;
-second round slices 4–5 LANDED (slice 4 2026-08-19, slice 5 2026-08-20).
+**Status: ALL THREE ROUNDS COMPLETE — first round slices 1–3 LANDED 2026-08-19;
+second round slices 4–5 LANDED (slice 4 2026-08-19, slice 5 2026-08-20); third
+round, the phase-note compression pass, **slice 6 LANDED 2026-08-26**.
 Nothing structural is queued; the phase's next concrete task is the kernel-(K)
 research pick (`notes/Phase39.md` *Hand-off*).** **Slice 1** —
 §(K-grid) split out of `notes/Pencil-informal.md` into its own file,
@@ -378,6 +379,80 @@ that cost permanently for it.
   (*Hand-off*, the open kernel items) are untouched and their share of the
   note only grows as *Current state* shrinks.
 
+## Slice 6 — phase-note compression — Decisions made (LANDED 2026-08-26)
+
+**What fired it.** A context-usage measurement over six `/coordinate-phase`
+sessions: `notes/Phase39.md` held at ~500 lines from 07-25 to 08-15, then went
+660 (08-20) → 882 (08-25) → **1 500 (08-26)**, i.e. **3× the `notes/CLAUDE.md`
+tripwire**, with *Decisions made* (328) plus the Status header (155) outweighing
+nothing the note needed forward. Every landing commit was `+50…100 / −20…30` on
+it, and in one session writes to this single file consumed 138 399 characters of
+tool arguments — the largest consumer of that session's context. Slice 4's own
+hand-off had named the remaining work and declined to improvise it: *"Closing the
+rest would need a genuine compression pass on live prose … a different,
+not-yet-commissioned kind of work."* This slice is that pass, commissioned.
+
+**What moved, and the rule it moved under.** Governing rule: **relocate, never
+delete**, and cut only verified duplication.
+
+- **Ordinals 20–44's dated adjudication bullets → `notes/Pencil-adjudications.md`,
+  verbatim** (385 lines, relocation verified byte-identical by `md5` on the
+  extracted block before and after). That file's title and header now cover
+  **ordinals 1–44**; it is sectioned by move round (1–19 / 20–44). Slice 4's
+  precedent exactly, at the other half of the same content.
+- **Kept in `Phase39.md` *Current state*:** the five standing GO/NO-GO
+  constraints (2026-07-24, 07-30 ×2, 08-02, 08-05) verbatim, plus a
+  **compressed** statement of three live things whose verbatim now lives in the
+  companion — the widened research-pick delegation and its three selection
+  criteria, the direction-A pivot rule's pre-adjudicated stop clause, and the
+  measured session-headroom calibration. The last of these had **no other home
+  in the tree** (not `dispatch-log.md`, not the coordinator command), which is
+  why it was compressed rather than cut.
+- **Cut as verified duplicate**, each checked against the named home before
+  removal: the sixth/seventh/eighth fan-out completion paragraphs and their
+  per-direction verdicts (`Pencil-fanout{,-archive}.md`); the ZJACOB / ZSHEAR /
+  BZAVOID / OGEOM / GMINM / GHWIT landing recaps and successor lists (same, plus
+  the workbook sections each names); both probe paragraphs
+  (`Pencil-informal.md` §(K-bare-ext) *Step BE1* carries the tier semantics;
+  `Pencil-strategy.md` §4.7 the C3 pricing); the wider-candidate-list and
+  harness-debt recitals (`Pencil-strategy.md` §8, `notes/scripts/README.md`
+  *Harness debt*); the "nothing awaits adjudication" pair (both discharged); the
+  structural-rounds paragraph (this file); and `## The question` /
+  `## Opening recon verdicts`, which duplicated `ROADMAP.md` §39 against
+  `notes/CLAUDE.md`'s own canonical-home table.
+- **Merged, not cut:** *Hand-off*'s target-ordered list and its separate "three
+  carried items" bullet list were two rankings of the same three objects; they
+  are now one ranked list. The two route-σ blockquotes (one per section, each
+  saying the other carried the other half) are now one.
+- ***Decisions made* collapsed to one-line verdicts**, the four (BE-14)-thread
+  entries kept at prose length because the next task leans on them. Four
+  landings (BATTAIN, OGEOM, GMINM, GHWIT) had **no** *Decisions made* entry at
+  all — their record lived only in *Hand-off* prose that this slice cut — so
+  entries were added for them from the coordinator's own landed words.
+
+**Stale facts reconciled** (current reading kept, stale one fixed): **52
+directions / ordinals 1–44** against `ROADMAP.md`:157, replacing "all 47", "46
+directions on `hK`" and "45"; the doubled `**OGEOM is LANDED****OGEOM is
+LANDED**` from a botched sed; the *"pin it when the tight side closes"* (K-res)
+deferral, **retired** by the 2026-08-26 adjudication rather than "stale"; and
+*Harness debt*'s **four** outstanding items against the phase note's "one".
+
+**Cross-references repaired in the same commit** (the slice-2 lesson): the
+`Pencil-fanout.md` header's selection-provenance rule; seven per-direction
+*Selection provenance* citations in `Pencil-fanout.md` (GFLIP…GMINM); three in
+`Pencil-labels.md`; four **pre-existing slice-4 dangles** in
+`Pencil-fanout-archive.md` that had cited moved 1–19 bullets since 2026-08-19;
+and `notes/CLAUDE.md`'s own `Pencil-adjudications.md` entry.
+
+**Result: 1 500 → 554 lines**, forward (*Current state* 97 + *Blockers* 60 +
+*Hand-off* 169 = **326**) outweighing finished (*Decisions made* **93**); Status
+header 155 → **58**. Still
+above the ~500 tripwire, and honestly so: the standing-constraint block, the
+next-task spec, the three ranked carried items and the do-not-re-open list are
+all live. The watch item is recorded in `Phase39.md` *Blockers* — ~10 landings
+re-breach it at the observed per-commit rate, and the gate is the landing
+checklist's step 5 plus a one-line *Decisions made* entry per landing.
+
 ## Follow-up items (not this round's job)
 
 - Recompute the *Section index*'s §(K-frame)/§(K-chart)/§(K-mech) line
@@ -427,6 +502,12 @@ not-yet-commissioned kind of work — flagging it rather than improvising it.
 **Slice 5, the harness move-down round, LANDED 2026-08-20** — the five debt
 items paid in one pass, `closure.Gauss` → `exactcore` included, with no
 recorded figure moved. ROADMAP's doc-split row carries this slice's record;
-this log's *Status* header is the verdict. **With it the structural work is
-finished**, and the phase's next concrete task — the kernel-(K) research pick —
-is now live rather than blocked; see `notes/Phase39.md` *Hand-off*.
+this log's *Status* header is the verdict.
+
+**Slice 6, the phase-note compression pass, LANDED 2026-08-26** — and it
+**discharges the item slice 4's hand-off above declined to improvise** (*"a
+genuine compression pass on live prose … a different, not-yet-commissioned kind
+of work"*). `notes/Phase39.md` 1 500 → 554, forward-weighted, ordinals 20–44's
+dated bullets relocated verbatim; per-slice record in *Slice 6* above.
+**With it the structural work is finished**, and the phase's next concrete task
+— the kernel-(K) research pick — is live; see `notes/Phase39.md` *Hand-off*.
