@@ -10,11 +10,11 @@ Everything else in the phase is closed: W0–W3 and the whole W5 arc (L0–L7),
 with **`hsplit` CLOSED IN FULL** and `hfresh`'s counting discharge landed
 (2026-07-30).
 
-**The kernel-(K) research arc: 51 directions COMPLETE** (2026-08-05 → 08-26,
-ordinals 1–43), plus eight strategy-only passes and two architecture probes.
-Ordinals 42–43 are LANDED, so the arc stands at **51 directions COMPLETE**;
-**ordinal 44 (BTWOCUT) is IN FLIGHT** at the strengthened 2-cut lemma, which
-**is** (BE-14).
+**The kernel-(K) research arc: 52 directions COMPLETE** (2026-08-05 → 08-26,
+ordinals 1–44), plus eight strategy-only passes and two architecture probes.
+**52 directions COMPLETE and nothing is in flight.** (BE-14)'s induction now has
+a **pinned strengthened statement**, a **free base**, and exactly **one geometric
+sentence** left in its 2-cut step.
 **Per-direction verdicts are NOT restated here** — each has a landing write-up
 at `notes/Pencil-fanout.md` §"<CODE>" and a canonical mathematical home in the
 workbooks. **The arc's standing result, unchanged by all 47: `hK` is not
@@ -35,18 +35,31 @@ the arc's first-ever look at `hbareSplit`, **bare realizability proved
 UNCONDITIONAL** plus the first pencil-stratum rank cap produced by an argument
 (BATTAIN, (BE-11)/(BE-13)).
 
-**NEXT CONCRETE TASK — verify and land BTWOCUT (ordinal 44, IN FLIGHT), then the
-queued (K-res) scoping slice.** BTWOCUT is dispatched at the **STRENGTHENED 2-cut
-composition lemma, the ONLY thing between the arc and (BE-14)** — spec at
-`notes/Pencil-fanout.md` §"BTWOCUT". **Its selection was forced, not ranked:** by
-BINDUC's exhaustive decomposition no other candidate exists, and proving it
-discharges `hbareSplit` *and* `PencilPair`'s unconditional conjunct as a
-standalone theorem. **If it returns a HIT shape 1, the phase-boundary
-consequences are the USER's call** — whether Phase 39 closes and a successor
-opens for the Lean is a `PHASE-BOUNDARIES.md` event against the standing
-2026-07-24 no-split adjudication, surfaced with a commit-count estimate, never
-taken unilaterally; the 2026-08-05 Lean hold binds regardless of how good the
-news is.
+**NEXT CONCRETE TASK — the ONE GEOMETRIC SENTENCE the 2-cut step now reduces to:**
+*the image of a piece's realization space in `Gr(δ₂,6)` is not contained in
+`ρ̄₁`'s bad locus.* BTWOCUT calls this **the first genuinely geometric obligation
+the arc has reached**, and that reading is right — every prior residual was
+combinatorial, rank-arithmetic, or a route question. Everything around it is now
+settled: the strengthened statement is **PINNED** (**S-mark** closes; **S-all**
+does not, and its one gap is named), the simultaneity worry is **vacuous**, the
+base is **free**, and the general-position half **dissolves on everything swept**
+(16/16; hunt empty at 13 484) — though **no dimension count in that half is an
+obstruction proof**, and (BE-22)(v) stands as a count. **Then** the queued
+**(K-res) scoping slice**.
+
+**Two live secondary items, both named by BTWOCUT:** **(1) cross-pair closure**
+— needed only if the induction switches to **S-all**; `G/xy` is not decomposable
+at the cut, so no composition law reaches it (measured 1 200/1 200 + 13/13, **no
+argument**). **(2)** a **direct point-side proof of the flat law**, removing
+(BE-20)(ii)'s inherited (BE-13) informal ingredient from under the *free* part of
+the induction — BTWOCUT declined it explicitly as competing with the primary, so
+it is unclaimed and still small.
+
+**On a future HIT: the phase-boundary consequences are the USER's call** —
+whether Phase 39 closes and a successor opens for the Lean is a
+`PHASE-BOUNDARIES.md` event against the standing 2026-07-24 no-split
+adjudication, surfaced with a commit-count estimate, never taken unilaterally;
+the 2026-08-05 Lean hold binds regardless of how good the news is.
 
 **The lemma, for reference —** BINDUC reduced (BE-14) to an
 exhaustive decomposition whose base is **free** and whose 1-cut layer is
@@ -551,7 +564,7 @@ constraints; the dated dispatch narrative is in *Decisions made* and git):
   stands unchanged:** phase OPEN, the 2026-08-05 Lean hold, W4 PARKED,
   `hK`/`hbareSplit` pinned, both option Bs un-commissioned, (K-res) queued.
 
-**Kernel-(K) research arc — sixty-eight docs+scripts-only dispatches landed, plus eight
+**Kernel-(K) research arc — sixty-nine docs+scripts-only dispatches landed, plus eight
 strategy-only passes** (2026-08-02 → 08-26) — and, **outside** that count because they test
 the architecture rather than the (K) crux, the **two probes**: **KBARE-FALSIFY**
 (2026-08-20) and **C3-AVOID** (2026-08-24), both landed. Which pass was which is one-lined in *Decisions
@@ -560,7 +573,7 @@ LTWO are the fortieth through forty-fourth; CIRR the forty-fifth; YLOC the forty
 the forty-seventh; ZNEQ the forty-eighth; AGLU the forty-ninth; the eighth fan-out's five
 the **fiftieth through fifty-fourth**, all landed 2026-08-19; **GFLIP the fifty-fifth**,
 **GCHEAP the fifty-sixth**, **OQRANK the fifty-seventh**, **GPRICE the fifty-eighth**,
-all 2026-08-25, and **GBLAW the fifty-ninth**, **GXESC the sixtieth**, **GHWIT the sixty-first** **GMINM the sixty-second**, **OGEOM the sixty-third**, **BATTAIN the sixty-fourth** and **BZAVOID the sixty-fifth**, **ZSHEAR the sixty-sixth**, **ZJACOB the sixty-seventh** and **BINDUC the sixty-eighth**, all 2026-08-26), and a **user call on
+all 2026-08-25, and **GBLAW the fifty-ninth**, **GXESC the sixtieth**, **GHWIT the sixty-first** **GMINM the sixty-second**, **OGEOM the sixty-third**, **BATTAIN the sixty-fourth** and **BZAVOID the sixty-fifth**, **ZSHEAR the sixty-sixth**, **ZJACOB the sixty-seventh**, **BINDUC the sixty-eighth** and **BTWOCUT the sixty-ninth**, all 2026-08-26), and a **user call on
 dispatch *shape*** — either multidispatch election, or a coordinator-authored pick like the
 twelfth's — contributes **no** strategy pass, so the 2026-08-19 eighth-fan-out check-in adds
 none even though it moved a standing constraint.
@@ -1108,6 +1121,38 @@ ORIGAMI (`notes/Origami.md`, next queued) is the bar-joint-side analog; the wide
 survey — incl. IDENT-PANEL, the nearest neighbour — is `notes/IdeaBacklog.md`.
 
 ## Decisions made during this phase
+
+- **Direction BTWOCUT (ordinal 44, 2026-08-26, opus, docs+scripts only) — the
+  strengthened statement PINNED, the general-position half DISSOLVED on
+  everything swept, and (BE-14) reduced to ONE GEOMETRIC SENTENCE.** (BE-25)(i):
+  BINDUC's cap-9 simultaneity worry is **VACUOUS** — every quantity in play is a
+  rank of a configuration-polynomial matrix, hence lower semicontinuous, and a
+  finite intersection of dense opens is dense open, so at a component's generic
+  point all are simultaneously maximal; **what genericity does not give is that
+  the maxima EQUAL the caps, and that is the entire content**. (BE-25)(ii), the
+  design decision: **S-mark** (rooted 3-block/SPQR tree, one marked pair per
+  subtree) **closes** and is what the induction should carry, at the motive cost
+  of a tree plus a marked pair; **S-all** (every pair) is simpler and is what the
+  evidence satisfies but is **not self-closing**. New elementary theorem: **a
+  3-connected graph minus one edge still has `def₂ = def₃ = 0`** (19 696 leaf
+  blocks exhaustive, bound tight at `−1`), making S-mark's leaf base free.
+  (BE-26): **BINDUC's 56 `cube+ear` misses are cleared as a `flat_config`
+  constructor artifact** — 296/296 attain under a `hubflat` rung, fixed by the
+  **ear's own moduli** — which is BINDUC's ranked successor (3) built, not proved.
+  (BE-27): the coordinator's reading is **borne out** — side moduli run 4–26
+  against the gauge group's 7/5, 16/16 splits reach the criterion, and the
+  obstruction hunt is **empty at 13 484/13 484** — so the need as posed
+  **dissolves** and the *reading* behind (BE-22)(v) is refuted; **but no dimension
+  count here is an obstruction proof**, and (BE-22)(v) stands **as a count**.
+  (BE-28): the induction's one genuinely-new obligation is **cross-pair
+  closure** — `G/xy` is not decomposable at the cut, so neither the (BE-21) nor
+  the (BE-22)(i) law applies; measured 1 200/1 200 + 13/13 with **no argument**,
+  which keeps S-all live rather than dead. **(BE-14) NOT proved**; the step
+  reduces to *the image of a piece's realization space in `Gr(δ₂,6)` is not
+  contained in `ρ̄₁`'s bad locus* — **the first genuinely geometric obligation the
+  arc has reached**. **`hbareSplit` untouched; not a PENCIL event.** Detail:
+  §(K-bare-ext) *Steps BE24–BE28*; landing record
+  `notes/Pencil-fanout.md` §"BTWOCUT".
 
 - **Direction BINDUC (ordinal 42, 2026-08-26, opus, docs+scripts only) — the
   induction's BASE IS FREE, BZAVOID's 2-cut `− 6` is REFUTED, and (BE-14) is ONE

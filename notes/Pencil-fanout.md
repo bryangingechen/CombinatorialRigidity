@@ -1,12 +1,14 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
 **Status: EIGHT fan-outs, TWENTY-TWO single directions and TWO concurrent pairs
-dispatched; 51 LANDED, ONE IN FLIGHT.** **BTWOCUT (ordinal 44, §"BTWOCUT") was
-DISPATCHED 2026-08-26 at the arc's highest-stakes target: the strengthened 2-cut
-composition lemma, which by BINDUC's exhaustive decomposition **IS** (BE-14) —
-proving it discharges `hbareSplit` *and* `PencilPair`'s unconditional conjunct.
-Its selection was **forced, not ranked**: no other candidate exists. Flip it to
-LANDED here at its landing.** **BINDUC (ordinal 42, §"BINDUC") LANDED 2026-08-26 —
+dispatched; ALL 52 LANDED.** **BTWOCUT (ordinal 44, §"BTWOCUT") LANDED 2026-08-26
+— HIT shape 2, delivered in full: the strengthened statement is **PINNED**
+(S-mark closes; S-all does not, and its one gap is named), the simultaneity worry
+is proved **VACUOUS**, a new elementary theorem makes the leaf base free,
+BINDUC's 56 ear misses are **cleared as a constructor artifact**, and the
+general-position half **dissolves on everything swept** (16/16; hunt empty at
+13 484). **(BE-14) is NOT proved** — the step reduces to one geometric sentence,
+the first genuinely geometric obligation the arc has reached.** **BINDUC (ordinal 42, §"BINDUC") LANDED 2026-08-26 —
 the biggest single advance the arc has made on the phase target: the induction's
 **BASE IS FREE** (3-connected ⇒ `def₂ = 0`, so the declined `def₂ = def₃` slice
 covers the whole base), BZAVOID's asserted 2-cut `− 6` is **REFUTED** and replaced
@@ -5291,3 +5293,113 @@ reimplementing the gluing machinery.
 **Reservation** (`notes/Pencil-labels.md` §"Reserved namespace — direction
 BTWOCUT"): §(K-bare-ext) **extends**, no new section; labels
 **(BE-25)–(BE-29)**, **Steps BE24–BE28**; return any unconsumed remainder.
+
+### BTWOCUT — landing write-up (LANDED 2026-08-26, recon-opus, one serial coordinator commit)
+
+**Verdict: HIT shape 2, delivered in full — the strengthened statement PINNED
+with its design decision made and priced. (BE-14) is NOT proved.** `hbareSplit`,
+`PencilPair` and (BE-14)-for-all-`G` untouched; **not a PENCIL event**. Two
+landed claims corrected, both with successors in hand.
+
+**Job 1, the crux, is done — and it splits into a free half and the whole
+difficulty.** **(BE-25)(i)**: BINDUC's disclosed cap 9 — *does one configuration
+satisfy attainment and welded attainment at every cut pair simultaneously?* — is
+**VACUOUS**. Every quantity in play (the body-hinge rank, `dim M(G/π)`, `ρ_{uv}`,
+`dim(ρ̄₁+ρ̄₂)`) is the rank of a matrix **polynomial in the configuration**, hence
+lower semicontinuous, hence maximal on a dense open subset of an irreducible
+component; a **finite intersection of dense opens is dense open**, so at the
+generic point they are **all simultaneously maximal**. Coordinator-verified: the
+argument is standard and correct. **What genericity does NOT give is that those
+maxima equal the combinatorial caps — that is the entire content**, and recording
+the distinction means the induction never again has to argue that two good
+configurations can be chosen at once.
+
+**The design decision, made with both shapes checked against all three
+criteria.** **S-all** (*for every pair `{u,v}`, `ρ_{uv} = δ_{uv}`*) implies
+(BE-14) immediately and is free at the base — but is **NOT self-closing**.
+**S-mark** (*relative to a **rooted** 3-block / SPQR tree, one marked pair per
+subtree*) **closes**, because each subtree attaches at exactly one separation
+pair. **The decision: S-mark is the shape the induction should carry; S-all is
+the shape the evidence is about.** The price is stated rather than hidden — the
+motive then carries **a tree and a marked pair, not just a graph**.
+
+**A new elementary theorem makes S-mark's leaf base free.** **A 3-connected graph
+minus one edge still has `def₂ = def₃ = 0`** — one line past (BE-20)(i):
+`d_G(P) ≥ ⌈3q/2⌉`, so deleting an edge gives `d_H ≥ ⌈3q/2⌉ − 1`, and both forms
+come out `≤ −1 < 0` for `q ≥ 2`. **EXHAUSTIVE at 19 696 (3-connected `B`, edge
+`uv`) leaf blocks, zero with `def > 0`, bound measured tight at `−1`.**
+Coordinator-verified by hand in both forms (`−1` at even `q`, `−2` at odd for the
+`def₂` form; `−3q/2−1` and `(−3q−7)/2` for the `def₃` form). The direction
+**discloses that this is not independent evidence about the flexible case** — the
+leaf block minus its virtual edge is rigid, so it is base 1's argument confirmed,
+not extended.
+
+**Job 2: the coordinator's reading is borne out on everything measured — and the
+direction refuses to overclaim it.** The spec asked whether BINDUC's
+general-position obstruction was real, given that its own cap (BE-22)(v)
+disclosed the pieces' moduli were **uncounted**. Counted: side moduli with the
+shared flags **held fixed** run **4–26** against the gauge group's 7/5 (hardest
+rows 18/18 and 24/24 free), and **16/16 splits reach
+`dim(ρ̄₁+ρ̄₂) = min(δ₁+δ₂,6)`**. The obstruction hunt fires **empty at
+13 484/13 484** both-`δ`-positive instances — exhaustive at `n = 5,6` plus
+sampled **both-sides-hubbed** at `n = 7,8,9`. **So the need as posed dissolves,
+and the *reading* behind (BE-22)(v) is refuted: the gauge group was never the
+right place to look.** But the disclosure the spec demanded is given squarely:
+**no dimension count in the draft is an obstruction proof** — the moduli count is
+a **lower bound on one constructor's own parameters** and cannot establish
+transversality in either direction, so **(BE-22)(v) is left standing as a
+count**. Every attainment is an exact-ℚ **per-graph theorem**; every non-hit is
+*"not found under this constructor"*.
+
+**BINDUC's 56 `cube+ear` misses are REFUTED — and its own cap called it.** BINDUC
+disclosed them (cap 10) as *constructor* caps needing a concurrent plane
+arrangement "not attempted". Built: the mechanism is exact — `flat_config`
+flattens the ear's **pencil-unconstrained interior**, capping `ρ ≤ dim Λ²π = 3` —
+and under a `hubflat` rung **296/296 now attain**. Exemplar `cube+ear(m=4)`: flat
+`64/66` with `ρ₂ = 3 < δ₂ = 5`; hubflat **`66/66`, `ρ₂ = 5 = δ₂`**. The fix is
+the **ear's own moduli**; the general-position half was never involved. This is
+BINDUC's ranked successor (3) — the concurrent-plane rung — **built, not proved**.
+
+**The induction's one genuinely-new obligation, located and named: CROSS-PAIR
+closure.** **(BE-28)(i)**: for a cross pair `x ∈ V₁∖{u,v}`, `y ∈ V₂∖{u,v}`,
+`G/xy` is **not decomposable at `{u,v}`** — the merged vertex is adjacent to both
+sides, so `{u,v}` stops being a separator — hence **neither the (BE-21) `def₃`
+law nor the (BE-22)(i) fibre-product law applies**, and S-all's closure obligation
+at cross pairs has **no composition law behind it**. Same-side pairs are
+unaffected (bookkeeping). **This is S-all's whole cost, and it is why S-mark
+exists.** Measured true at **13/13** battery graphs (21–91 pairs each) and
+**1 200/1 200** census instances, cross pairs included, zero violations — with
+two independent deficiency oracles cross-checked at **408 080** (graph, pair)
+instances, zero mismatches. **Reported as measured with no argument**, which is
+what keeps S-all live rather than dead.
+
+**What remains, and it is now one geometric sentence.** The 2-cut step itself is
+**unproved**: it reduces to *the image of a piece's realization space in
+`Gr(δ₂,6)` is not contained in `ρ̄₁`'s bad locus*. The direction calls this **the
+first genuinely geometric obligation the arc has reached**, and that reading is
+right — every prior residual was combinatorial, rank-arithmetic, or a route
+question.
+
+**Coordinator verification.** Full-figure re-run beyond `validate` (117 s):
+`spqr` (**19 696 / 0**, 403 s, bound tight at `−1`, plus 6 721/6 721 carrying S1),
+`earfix` (**296/296**, with the exemplar's flat-vs-hubflat contrast reproduced
+exactly), `moduli` (**16/16**, and the mode prints its own obstruction-proof
+disclaimer). `crosspair` + `hunt` were re-run to completion. **Both new arguments
+were re-derived independently by the coordinator** — the `G−e` bound in both
+forms and at both parities, and the semicontinuity argument (rank lower
+semicontinuous ⇒ each max locus dense open ⇒ finite intersection dense open).
+
+**F25 bar, read off the shipped driver:** eight modes, foreground with explicit
+timeouts, exact ℚ throughout, `binduc` imported **read-only**, every RNG seeded,
+and an explicit **F27 escalation protocol** — one cheap draw per instance, then
+*only the residuals* multi-seeded — which is the correct shape given rank
+semicontinuity and which this namespace has twice been bitten for missing.
+**Caps disclosed**, the load-bearing ones being that no dimension count is an
+obstruction proof, that `spqr`'s S1 evidence is not independent of base 1, and
+that the cross-pair claim has no argument. The bounded secondary (a direct
+point-side flat law) was **declined explicitly** as competing with the primary —
+the disposition the spec asked for.
+
+**TERMINATION: E1 NO, E2 NO** — two landed claims corrected, both with successors
+in hand, which is the shape E2 does not fire on; coordinator-re-run and agreed.
+**E3 ARMED by GBAL, not fired.**
