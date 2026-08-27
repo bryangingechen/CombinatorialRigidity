@@ -378,6 +378,16 @@ CLAUDE.md at phase close.
    agent definition + CLAUDE.md auto-loads carry the discipline, and
    duplication invites drift.
 
+   **Cache keepalive.** In the SAME turn as the dispatch, arm
+   `CronCreate({cron: "17,47 * * * *", prompt: "KEEPALIVE — cache
+   warm-up only. Do NOT read files, run commands, or dispatch. Reply
+   with exactly: keepalive"})`; `CronDelete` its id at step 4. A
+   dispatch running past ~1h expires the session's 1-hour prompt
+   cache and the next turn re-writes the whole prefix at 2× base
+   input, where a ping is a 0.1× cache read that refreshes the timer.
+   Cron fires only while the REPL is idle; skip the keepalive in
+   overage (the TTL drops to 5 min there and no cadence catches it).
+
    **Continuation dispatch (same-arc slices).** When the next task
    directly continues the arc the previous dispatch just delivered —
    a recon commissioned to record its own accepted verdict, the next
@@ -400,7 +410,7 @@ CLAUDE.md at phase close.
    Validated 2026-07-10 (Phase 30 RELAX: 7 continuations across one
    recon arc + one builder arc, zero defects, incl. a killed-dispatch
    resume — dispatch-log F4).
-4. Verify the return:
+4. Verify the return (`CronDelete` the keepalive job first):
    - **Mechanics:** `git log --oneline -3`, `git show --stat HEAD`,
      `git branch --show-current`. HEAD advanced past the noted sha;
      still on `master`; author `bryangingechen@gmail.com`; diff
