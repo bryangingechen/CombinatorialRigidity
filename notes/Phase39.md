@@ -474,6 +474,10 @@ Settled, one line each:
   stated**; `hbareSplit` **untouched**. §(K-bare-ext) *BE1–BE8*.
 - **Structural rounds 1–2 COMPLETE** (five slices, 2026-08-19 → 08-20) and the **phase-note
   compression round, slice 6, LANDED 2026-08-26**. Record: `notes/Pencil-structure.md`.
+  **ROADMAP §39 split by volatility, 2026-08-26**: it keeps the question, the R1–R3
+  one-liners and the closed W0–W5 record (what *The question and the opening recon* points
+  at) and **no longer carries the arc's running state** — no direction count, no fan-out
+  roll-call. Do not re-add one: the count is the ROADMAP Status row's.
 - **The EIGHTH FAN-OUT — COMPLETE, all five LANDED 2026-08-19** (ordinals 25–29): an exact
   `n_hub` boundary for AA-glue (GTMPL), (b′)'s first proven `n`-free constant (GFLOW), a NO
   HIT that nonetheless kills the counting route to a disproof ((OC-37), SIGZ), (a₁) reduced

@@ -1146,39 +1146,33 @@ W5's genericity escape and W4's constrained-family route both supported
 by new exact-rational numerics. W3 and the W5 device/arms/feasibility
 layers are complete; as of 2026-07-30 the W5-L7 rank core is decomposed
 into landed glue (L7a/L7b) plus the L7c build sequence carrying two
-named kernels — (K)/`hK` (the escape, research open) and
-(K-bare)/`hbareSplit` (the bare half off-feasibility, adjudication
-open) — with W4 (constrained-family route, `hcontract`) to follow.
-Since 2026-08-02 the phase has run a **docs+scripts-only kernel-(K) research
-arc** (21 passes as of 2026-08-06): the disproof risk is removed, seven named
-gaps, routes or constructions are refuted-or-superseded, the arc gained its
-first class-uniform positive and then its first *recipe* (a formula rather
-than a search), a Macaulay2 symbolic layer landed — and **class uniformity of
-the escape is untouched by every one of them**. One **candidate** closure is
-on the table (route σ, the polarity applied to the seed), resting on a single
-obligation whose numerics half is discharged and whose Lean half is held by
-the standing Lean-hold adjudication; its **field scope is settled**
-(2026-08-06 — the polarity generalizes, so `ℝ` is the *narrowest* choice
-rather than a restriction). A **harness re-baselining round** then cleared all
-four recorded numerics-harness debt items across four slices, re-running 260
-driver invocations and moving 21 figures, each repointed in the section that
-owns it. The research arc has since run to **thirty-two landed
-directions** (2026-08-05 → 08-19), latterly as **multidispatch fan-outs of
-five concurrent directions** — a sixth (GBAL/GLAW/OCON/LTWO/FRES) and a
-seventh (YLOC/BALB/AGLU/ZNEQ/CIRR), both COMPLETE. Three of the thirty-two
-are HITs: route-ledger entry 5 PROVEN in both halves (GBAL), chart
-irreducibility PROVEN (CIRR), and the AA-glue configuration proven **NOT
-realizable** at `n_hub = 8` (AGLU); the rest are honest MISSes or open
-reshapes, each leaving a named dispatchable successor. **No g-flank has been
-found by any of them, (GR-15) stays OPEN, and class uniformity of the escape
-is untouched by all thirty-two.** An **eighth fan-out**
-(GTMPL/GFLOW/GCOLL/OSCHU/SIGZ) was dispatched 2026-08-19, one of its five
-being the arc's first **authorized disproof hunt** — a hit there would make
-the carried kernel false at that shape and is reserved for user adjudication.
-Two doc rounds also landed: a structural doc-split, and a discipline
-distillation promoting this phase's dispatch discipline into the new
-read-on-demand root manual `RESEARCH-ARC.md`. Hand-off →
-`notes/Phase39.md`.
+named kernels — (K)/`hK` (the escape) and (K-bare)/`hbareSplit` (the
+bare half off-feasibility). Those two, plus W4's `hcontract` (the
+constrained-family route), are the **three carried items** the landed
+successor in `Molecule/Pencil/Escape.lean` reduces the target to; their
+live status is `notes/Phase39.md`'s.
+
+Since 2026-08-02 the phase has run a **docs+scripts-only kernel-(K)
+research arc** (no `.lean`, under the standing 2026-08-05 Lean hold),
+latterly as multidispatch fan-outs of five concurrent directions, each
+leaving a named dispatchable successor. **This section deliberately does
+not track that arc's running state** — the **Status row above** carries
+the landed-direction count, `notes/Phase39.md` the current state and the
+next concrete task, `notes/Pencil-fanout.md` (ordinals 1–19:
+`notes/Pencil-fanout-archive.md`) the per-direction specs and verdicts,
+and `notes/Pencil-informal.md`'s *State of (K)* gap map is authoritative
+for every status word. Its **standing result, unchanged by every
+direction so far: `hK` is not closer** — no g-flank found, **(GR-15)**
+(the one open gap the whole §(K-grid) chain reduces to) OPEN, class
+uniformity of the escape untouched; against that, the disproof risk is
+removed and a series of named gaps, routes and constructions are
+refuted-or-superseded, with HITs among the landings. A **harness
+re-baselining round** cleared all four recorded numerics-harness debt
+items and CLOSED 2026-08-06 (its cost ledger and the rules now binding
+new numerics work: `notes/scripts/README.md` *Harness debt*); two doc
+rounds — a structural doc-split and a discipline distillation into the
+new read-on-demand root manual `RESEARCH-ARC.md` — are the ⋮ Status
+rows. Hand-off → `notes/Phase39.md`.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 

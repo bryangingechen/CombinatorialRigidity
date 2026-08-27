@@ -12,11 +12,15 @@ trigger below points there (`→ rescue §N`); this body carries the
 every-iteration core.
 
 Setup: follow CLAUDE.md reading order, but read **only ROADMAP.md's
-*Status* table** (to confirm the active phase) — NOT the full file: its
-§1–N *Mathematical roadmap* prose (lines ~168–850, the bulk of
-ROADMAP's ~980 lines) is closed-phase archival detail the coordinator
-never needs pre-dispatch (the active phase's working detail is in
-notes/Phase$ARGUMENTS.md + the blueprint dep-graph). Then read
+*Status* table plus the active phase's own §N section** — NOT the full
+file: the §1–N *Mathematical roadmap* prose of **closed** phases is
+archival detail the coordinator never needs pre-dispatch, and it is the
+bulk of the file (the active phase's working detail is in
+notes/Phase$ARGUMENTS.md + the blueprint dep-graph). The **active**
+phase's §N is the exception — short, it states the phase's question and
+standing framing, and notes/Phase$ARGUMENTS.md may point at it — so read
+it, and fix it in passing if it contradicts the Status row (unread, §39
+drifted a week and ~20 directions stale, 2026-08-26). Then read
 notes/Phase$ARGUMENTS.md. Confirm `git status` is clean and the
 leftmost active phase file builds green (per *Starting a Lean-touching
 session* in CombinatorialRigidity/CLAUDE.md). Run the loop in the
