@@ -10,8 +10,8 @@ derives it from exactly **three carried items**: **`hcontract`** (W4 — build p
 (2026-07-30).
 
 **The kernel-(K) research arc: 52 directions COMPLETE** (2026-08-05 → 08-26, ordinals
-1–44), plus eight strategy-only passes and two architecture probes; **nothing is in
-flight**. **Per-direction verdicts, specs and landing write-ups are NOT restated here** —
+1–44), plus eight strategy-only passes and two architecture probes.
+**Per-direction verdicts, specs and landing write-ups are NOT restated here** —
 each direction has one at `notes/Pencil-fanout.md` §"<CODE>" (ordinals 1–19:
 `notes/Pencil-fanout-archive.md`) and a canonical mathematical home in the workbooks.
 **The arc's standing result, unchanged by all 52: `hK` is not closer.** **(GR-15)** — the
@@ -19,19 +19,17 @@ single open gap the whole §(K-grid) chain reduces to — is **untouched**; **cl
 of the escape is untouched**; no g-flank was found by any direction; **E3 is ARMED (by
 GBAL) and has never fired**.
 
-**NEXT CONCRETE TASK — the ONE GEOMETRIC SENTENCE the 2-cut step now reduces to:**
-*the image of a piece's realization space in `Gr(δ₂,6)` is not contained in `ρ̄₁`'s bad
-locus* — **the first genuinely geometric obligation the arc has reached**, and everything
-around it now settled. **Then** the queued **(K-res) scoping slice**. Full statement, what
-is settled around it, and BINDUC's successor ranking: *Hand-off*, **not restated here**.
-
-**Two live secondary items, both named by BTWOCUT:** **(1) cross-pair closure**
-— needed only if the induction switches to **S-all**; `G/xy` is not decomposable
-at the cut, so no composition law reaches it (measured 1 200/1 200 + 13/13, **no
-argument**). **(2)** a **direct point-side proof of the flat law**, removing
-(BE-20)(ii)'s inherited (BE-13) informal ingredient from under the *free* part of
-the induction — BTWOCUT declined it explicitly as competing with the primary, so
-it is unclaimed and still small.
+**IN FLIGHT — direction BIMAGE** (ordinal 45, `recon-opus`, dispatched 2026-08-27) at the
+**ONE GEOMETRIC SENTENCE** the 2-cut step reduces to: *the image of a piece's realization
+space in `Gr(δ₂,6)` is not contained in `ρ̄₁`'s bad locus* — **the first genuinely geometric
+obligation the arc has reached** — taken in BTWOCUT's own recommended restriction, the
+**ear** case, where `ρ̄₂` is the span of the path's hinge lines. Spec:
+`notes/Pencil-fanout.md` §"BIMAGE"; the statement and BTWOCUT's successor ranking:
+*Hand-off*, **not restated here** — including BTWOCUT's other three successors
+(the bundle-construction proof, cross-pair closure, and the point-side flat law,
+the last **priced NOT cheap**, correcting a stale *"still small"* that stood
+here). **Then** the queued **(K-res) scoping slice**, now deferred a **SECOND**
+round by the max-impact directive — a deferral, not a drop.
 
 **On a future HIT: the phase-boundary consequences are the USER's call** —
 whether Phase 39 closes and a successor opens for the Lean is a
@@ -242,29 +240,39 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
 
 **The phase stays OPEN** (the 2026-07-24 adjudication — no phase-close; see *Current state*).
 
-**THE NEXT CONCRETE TASK — the STRENGTHENED 2-CUT COMPOSITION LEMMA.** After
-BINDUC, item 1 below is **one lemma from done**, and the lemma is named exactly:
-across a 2-cut `{u,v}`, *attains ⟺ `dim(ρ̄₁+ρ̄₂) = min(δ₁+δ₂,6)`* — requiring
-**(a)** the induction to carry a **strengthened** statement (welded-framework
-attainment, because `ρ_i ≤ δ_i` always, so (BE-14) itself is not what recurses)
-and **(b)** a general-position input the residual gauge group **provably cannot
-supply** (dim 7 adjacent / 5 non-adjacent against `Gr(3,6)`'s 9). Free sub-cases
-already proved: `δ₁ = δ₂ = 0`, and one-rigid-side, where the criterion collapses
-to `ρ = δ` with no general position at all. **Everything else in the
-decomposition is closed** — base `{3-connected}` (free, (BE-20)) ∪
-`{max deg ≤ 2}` ∪ `{def₂ = def₃}`, plus 1-cuts ((BE-18)) — and the decomposition
-is exhaustive, so this lemma **is** (BE-14). BINDUC's own successor ranking, in
-order: (1) this lemma; (2) a direct point-side proof of the flat law, removing
-(BE-20)(ii)'s inherited (BE-13) ingredient — small and self-contained; (3) a
-proof of (BE-23)(ii) (*forced flat ⇒ `def₂ = def₃`*), which would close the
-disproof side the way (BE-15)(ii) closed the triangle case.
+**THE NEXT CONCRETE TASK — the IMAGE STATEMENT, and it is IN FLIGHT** (direction
+BIMAGE, ordinal 45, `recon-opus`, 2026-08-27). After BTWOCUT the strengthened
+2-cut lemma has its statement **PINNED** (**S-mark**: a rooted 3-block / SPQR
+tree with one marked pair per subtree, so the motive carries a tree and not just
+a graph), its simultaneity worry proved **VACUOUS** ((BE-25)(i)) and both bases
+**FREE** — and what is left is one sentence: *the image of a piece's realization
+space in `Gr(δ₂,6)` is not contained in `ρ̄₁`'s bad locus*, i.e. a **Schubert
+non-containment**. **The earlier framing of the general-position half is
+SUPERSEDED:** (BE-27)(ii) refuted the reading that the residual gauge group
+(dim 7 adjacent / 5 non-adjacent) is where general position must come from — *the
+gauge group was never the right place to look* — and located the freedom in the
+**piece's own moduli**, measured 4–26 and disclosed as **a count only, never an
+obstruction proof**. Free sub-cases proved: `δ₁ = δ₂ = 0`, and one-rigid-side,
+where the criterion collapses to `ρ₁ = δ₁` with no general-position content at
+all. **Everything else in the decomposition is closed** — base `{3-connected}`
+(free, (BE-20)) ∪ `{max deg ≤ 2}` ∪ `{def₂ = def₃}`, plus 1-cuts ((BE-18)) — and
+the decomposition is exhaustive, so this lemma **is** (BE-14). **BTWOCUT's own
+successor ranking, which SUPERSEDES BINDUC's:** (1) the image statement, ear case
+first, where `ρ̄₂ = ⟨ℓ₁,…,ℓ_{m+1}⟩` is the span of the path's hinge lines —
+**BIMAGE has it**; (2) a proof that the bundle / concurrent-plane construction
+attains wherever the generic-plane ladder does not, turning (BE-29)(ii) from a
+rung into a theorem and reaching `DZ` / `spider(5,5,5)+c`; (3) cross-pair closure
+((BE-28)(i)), which would retire the rooted tree from the motive; (4) the
+point-side flat law — **declined and priced NOT cheap**. Ranked alongside, from
+BINDUC: **(BE-23)(ii)** (*forced flat ⇒ `def₂ = def₃`*), the disproof side's
+highest-value single search.
 
 Also unclaimed, from BZAVOID's own successor ranking: a **flat-star dictionary** —
 re-prove `molecular_finrank_motions_eq_square_ker`'s surjectivity under a hypothesis
 admitting coplanar stars, which would revive route 2 (§(K-bare-ext)).
 
-**THEN — the (K-res) SCOPING SLICE**, deferred one round by the max-impact
-directive and NOT dropped. One direction: *does (GR-15)/§(K-grid) transport to
+**THEN — the (K-res) SCOPING SLICE**, deferred a **SECOND** round by the
+max-impact directive (2026-08-27) and NOT dropped. One direction: *does (GR-15)/§(K-grid) transport to
 the `W19`-type (K-res) habitat?* This is the
 user's 2026-08-26 adjudication (offered the full wave, the cheap scoping slice,
 or a re-deferral, they chose the **scoping slice**), and it retires the stale

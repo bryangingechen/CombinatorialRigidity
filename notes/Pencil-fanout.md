@@ -1,7 +1,11 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: EIGHT fan-outs, TWENTY-TWO single directions and TWO concurrent pairs
-dispatched; ALL 52 LANDED.** **BTWOCUT (ordinal 44, §"BTWOCUT") LANDED 2026-08-26
+**Status: EIGHT fan-outs, TWENTY-THREE single directions and TWO concurrent
+pairs dispatched; 52 LANDED, ONE IN FLIGHT.** **BIMAGE (ordinal 45, §"BIMAGE")
+is IN FLIGHT** — prepped and dispatched 2026-08-27 at `recon-opus` (fable
+unavailable this session), carrying **BTWOCUT's ranked successor (1)**: the
+image statement the strengthened 2-cut lemma reduces to, ear case first. Flip it
+to LANDED here at its landing. **BTWOCUT (ordinal 44, §"BTWOCUT") LANDED 2026-08-26
 — HIT shape 2, delivered in full: the strengthened statement is **PINNED**
 (S-mark closes; S-all does not, and its one gap is named), the simultaneity worry
 is proved **VACUOUS**, a new elementary theorem makes the leaf base free,
@@ -21,10 +25,7 @@ stratification makes *"LCI of the expected codimension"* ⟺ `B_0 ≠ ∅` ∧
 contains its conclusion as its weakest clause. Its refutation **absorbs (ZH-3)**
 — the shelf's two "concrete" candidates were one — leaving §9 with exactly one
 dispatchable candidate, (ZH-2) stratified. Both coordinator-predicted deaths were
-refuted **as diagnoses**.** **BINDUC (ordinal 42, §"BINDUC") is IN FLIGHT** —
-dispatched 2026-08-26 under a user-supplied criterion (*max impact on proving or
-disproving the target*), carrying the (BE-14) induction; flip it to LANDED here at
-its landing. **BZAVOID (ordinal 40, §"BZAVOID") LANDED 2026-08-26 —
+refuted **as diagnoses**.** **BZAVOID (ordinal 40, §"BZAVOID") LANDED 2026-08-26 —
 the spec's commissioned falsification arm came back **EMPTY BY AN ARGUMENT at
 every graph** for the **triangle**-forced mechanism (scope-corrected at the
 BINDUC landing: the general forcing rule needs no triangle, and is closed only as
@@ -45,7 +46,7 @@ in the pushed basis — so (ZH-1)'s mechanism is **vacuous** and the candidate i
 **STRUCK** from the shelf, by gauge-triviality rather than §4.6's predicted
 growing-ground-set death. The coordinator's offered per-body repair was decided
 negative in both readings; the owed §2.5 filter check on (ZH-2)/(ZH-3) is
-**DISCHARGED**. **Status: 49 LANDED, none in flight.** **BATTAIN (ordinal 39, §"BATTAIN") LANDED 2026-08-26 —
+**DISCHARGED**. **BATTAIN (ordinal 39, §"BATTAIN") LANDED 2026-08-26 —
 the arc's first direction ever aimed at `hbareSplit`, and it paid: the motive
 characterized off the Lean bodies, bare realizability proved UNCONDITIONAL,
 the first universal pencil-stratum rank cap produced BY AN ARGUMENT, the
@@ -5408,3 +5409,194 @@ the disposition the spec asked for.
 **TERMINATION: E1 NO, E2 NO** — two landed claims corrected, both with successors
 in hand, which is the shape E2 does not fire on; coordinator-re-run and agreed.
 **E3 ARMED by GBAL, not fired.**
+
+## BIMAGE — forty-fifth ordinal, the fifty-third direction (single dispatch, prepped 2026-08-27)
+
+**Selection provenance: FORCED for the second consecutive direction, and now
+strictly geometric.** BTWOCUT closed every remaining layer of the strengthened
+2-cut composition lemma but one and named the residue exactly — *the image of a
+piece's realization space in `Gr(δ₂,6)` is not contained in `ρ̄₁`'s bad locus* —
+and this direction is **BTWOCUT's own ranked successor (1)**, taken in the
+restriction BTWOCUT itself recommended (the **ear** case first). Proving it
+proves the 2-cut lemma, which proves **(BE-14)**, which discharges
+**`hbareSplit`** *and* **`PencilPair`'s unconditional second conjunct** as a
+standalone theorem. The user's standing max-impact criterion (2026-08-26, tenth
+check-in) selects it with nothing above it to rank. Dispatched **un-named,
+single**, at **`recon-opus`** — **fable is unavailable this session** (check-in
+2026-08-27), so opus is the mapped-rung substitute and **no rung was conserved
+by choice**.
+
+**Ranked and NOT chosen — the twelfth's disclosure IS engaged this time**, since
+unlike BTWOCUT there were alternatives:
+
+- **BTWOCUT's successor (2)** — a *proof* that the bundle / concurrent-plane
+  construction attains wherever the generic-plane ladder does not, turning
+  (BE-29)(ii) from a rung into a theorem and reaching `DZ` and
+  `spider(5,5,5)+c`. Real value, but it strengthens a **constructor**, not the
+  lemma. **Offered below as job 3, cheap-only.**
+- **BTWOCUT's successor (3)** — cross-pair closure ((BE-28)(i)). It buys the
+  simpler **S-all** frame and retires the rooted tree from the motive; but
+  **S-mark is PINNED and closes**, so this is motive economy, not progress on
+  the target.
+- **BTWOCUT's successor (4)** — the direct point-side proof of the flat law.
+  **Do not take it**, and note that `notes/Phase39.md`'s *"unclaimed and still
+  small"* was **STALE**: BTWOCUT priced it and it is **not** cheap (it needs a
+  planar body-pin rank derivation from scratch). Corrected in the phase note in
+  this same prep commit.
+- **(BE-23)(ii)** (*forced flat ⇒ `def₂ = def₃`*) — the disproof side's
+  highest-value single search, and the thing that would restore (BE-15)'s
+  cap-free closure in full. **Ranked next** if this direction returns an honest
+  OPEN.
+- **The (K-res) scoping slice** — the user's own 2026-08-26 choice, now
+  **deferred a SECOND round** by the same max-impact directive that deferred it
+  the first. Recorded as a deferral, **not** a drop; taken under the standing
+  pick delegation and disclosed here *because* it is a second deferral of a
+  user-selected item.
+- **(ZH-2) stratified** — the Zheng lane's one remaining dispatchable candidate.
+  The lane is a **standing second lane**, not a per-round obligation, and it does
+  not out-rank the last lemma of (BE-14).
+
+**The target, stated exactly as BTWOCUT left it.** For a 2-cut `{u,v}` with
+pieces `G₁, G₂` **both attaining**, (BE-22)(iii) gives
+
+> attainment of `G` ⟺ `dim(ρ̄₁ + ρ̄₂) = min(δ₁ + δ₂, 6)`.
+
+Fix `ρ̄₁ ∈ Gr(δ₁, 6)`. Its **bad locus**
+
+> `B(ρ̄₁) := { W ∈ Gr(δ₂,6) : dim(ρ̄₁ + W) < min(δ₁+δ₂,6) }`
+> `        = { W ∈ Gr(δ₂,6) : dim(ρ̄₁ ∩ W) > max(0, δ₁+δ₂−6) }`
+
+is a **Schubert variety — proper and Zariski-closed** in `Gr(δ₂,6)`. The whole
+remaining obligation is
+
+> **`ρ̄₂( Y°(G₂; flags at u,v) ) ⊄ B(ρ̄₁)`**,
+
+at the *same* irreducible component whose generic point (BE-25)(i) already makes
+every other quantity simultaneously maximal, and with `ρ̄₁` itself ranging over
+`G₁`'s own realizations. **Nothing in the arc bounds that image** — (BE-27)
+measures it and says so explicitly.
+
+**Job 1 (PRIMARY) — the ear case, which BTWOCUT ranked first because it is
+already written down.** When `G₂` is an **ear** (a path `u = w₀, w₁, …,
+w_{m+1} = v` of `m` interior degree-2 vertices), the workbook already records
+`ρ̄₂ = ⟨ℓ₁, …, ℓ_{m+1}⟩` — the **span of the path's hinge lines** — with
+`ℓ₁ ∈ Π_u`, `ℓ_{m+1} ∈ Π_v` and the rest free ((BE-26)'s exemplar exhibits it).
+In the (BE-16) point model (`p : V → P³`, hinge of `xy` the join `p_x ∨ p_y`,
+pencil condition ⟺ every closed star coplanar) the interior points are the only
+moduli, and (BE-27)(i)'s count reads `3m − 2` here — which reproduces the
+measured `7` at `K₄ + ear(3)` exactly. **So the ear case is a fully explicit,
+finite-dimensional question and it is the one to settle first.** State the answer
+as a theorem or as a located obstruction; do not leave it as a measurement.
+
+**Job 2 — what `ρ̄₂` is for a piece that is NOT an ear, or a proof that no such
+description exists.** This is the bridge from job 1 to the lemma (BE-14)
+actually needs, and it is where the direction earns its rung. The obvious
+candidate upper bound is the intersection over `u–v` paths of the path spans;
+whether it is an equality, and whether the pencil condition is what makes it one,
+is open as far as the coordinator can see. **A negative here is a real result:**
+if `ρ̄₂` admits no hinge-line description off the ear, say so plainly and the
+route to (BE-14) through job 1 is priced accordingly.
+
+**COORDINATOR HYPOTHESIS — TO BE TESTED, NOT INHERITED (RESEARCH-ARC §7).**
+*Provenance, named as the rule requires:* derived by the coordinator at
+dispatch time from (BE-26)'s own `Λ²π` argument plus the standard Klein-quadric
+dictionary, **not** measured, **not** found in either workbook by a coordinator
+grep, and resting on **no** stratum of this arc's evidence. It may be false,
+vacuous, or already implicit. The hypothesis: in Plücker coordinates on
+`Λ²K⁴ ≅ K⁶`, job 1's data is a **chain on the Klein quadric** — each `ℓ_i` is a
+quadric point, **consecutive** ones are conjugate (they share `p_i`, and two
+lines meet iff their Plücker points are conjugate), **non-consecutive** ones are
+unconstrained, and each **end** line ranges over the pencil at its flag, which is
+a **line ruled on the quadric**. If that is right, job 1 becomes: *can the span
+of such a chain meet a fixed `δ₁`-subspace in the minimum dimension?* — a
+classical question with no graph theory left in it. **Test it before using it**
+(the cheapest falsification is the `δ₂ ≤ #edges of the shortest `u–v` path`
+consequence, which is one driver run against BTWOCUT's own `moduli`/`hunt`
+batteries); report it as refuted, confirmed, or vacuous, and **do not let it
+frame the answer if it fails.**
+
+**Job 3 — BTWOCUT's successor (2), CHEAP-ONLY.** A proof that the bundle /
+concurrent-plane construction attains wherever the generic-plane ladder does
+not. Take it only if job 1 closes early; **skip it explicitly** if it competes,
+exactly as BTWOCUT skipped its own secondary.
+
+**What counts as a HIT — state which you got.**
+
+1. **The image statement PROVEN in general ⇒ the 2-cut lemma ⇒ (BE-14) PROVEN.**
+   State it plainly, undecorated. Then **stop**: the phase-boundary consequences
+   are the **USER's** call — whether Phase 39 closes, whether a successor phase
+   opens for the Lean, what happens to `hK` / `hcontract` — a
+   `PHASE-BOUNDARIES.md` event against the standing 2026-07-24 no-split
+   adjudication. Report; do not act; **do not open a `.lean` file** (the
+   2026-08-05 hold binds regardless of how good the news is).
+2. **The ear case PROVEN, the general case reduced.** A theorem for ear pieces
+   plus an exact statement of what the general piece needs is a real deliverable:
+   ears are the extremal flexible pieces (`δ` grows with the path), and by
+   (BE-22)(vi) the one-rigid-side case is already free, so ear-vs-flexible is
+   most of the open zone.
+3. **An obstruction, located.** The image *is* contained in a bad locus for some
+   2-cut class. Then classify, **mandatorily**: is this a failure of the 2-cut
+   step only (re-shape the induction), of (BE-14) (the disproof side, and then
+   whether it is a new universal-cap mechanism in (BE-23)(ii)'s sense), or of the
+   **conjecture**? Report as a **candidate**, never as a refutation, and read the
+   direction-A pivot rule in `notes/Phase39.md` *Current state* before writing
+   the classification.
+4. **An honest OPEN with the route priced** — including whether the connectivity
+   induction is still the right frame, or whether the `∃`-seed + repair
+   alternative (whose chartless wall nothing has lowered) becomes competitive.
+
+**Bars.**
+
+- **ZJACOB (JC-6) binds hardest on this direction of any so far, and it is the
+  single most likely place to overclaim.** No route may derive properness,
+  generic smoothness, or transversality from a **codimension count**, a
+  **Jacobian criterion**, or **Cohen–Macaulayness**. A non-containment argument
+  that reduces to "the image has dimension `≥` the bad locus's codimension" is
+  exactly the barred shape. **Every dimension count you write must be labelled
+  as a count and not an obstruction proof**, per (BE-27)(i)/(ii)'s own
+  discipline.
+- **Do not re-run the gauge-group count.** (BE-27)(ii) refuted the *reading*
+  that the residual gauge group (dim 7 adjacent / 5 non-adjacent) is where
+  general position must come from — *"the gauge group was never the right place
+  to look"*. The freedom is the **piece's own moduli**.
+- **Do not re-derive settled BTWOCUT results:** (BE-25)(i) simultaneity
+  **VACUOUS**; (BE-25)(ii) **S-mark PINNED** as the induction's shape (do not
+  re-litigate S-all vs S-mark); (BE-25)(iii)/(iv) both bases **FREE**; (BE-26)
+  the ear misses **cleared**; (BE-29) the hunt **empty at 13 484/13 484**.
+  Extend these; do not repeat them.
+- **Do not inherit BZAVOID's `− 6`** (REFUTED; the law is
+  `def₃(G) = max(g₁+g₂, f₁+f₂−6)`), and **do not over-rely on (BE-15)(ii)** —
+  cap-free for the **triangle** mechanism only.
+- **ZSHEAR:** `Q(r̃) ≠ 0` is `PGL(4)`-invariant, so **no gauge-fixing can supply
+  it** — a second, independent reason not to look to the gauge group.
+- **Closed routes, do not re-attempt:** the `G²`/molecule apparatus ((BE-17),
+  its general-position gate is the *literal negation* of the pencil condition),
+  the transversality/dimension count ((BE-16)(iv)), the Jacobian/singular-locus
+  package (§(K-jac)).
+- **Do not scaffold on `Graph.minimal_kdof_reduction`** — its conclusion cannot
+  reach `∀ G`, and its `hcontract` is a **sibling** of the phase's parked item,
+  not the same obligation (BINDUC's correction, §(K-bare-ext) *Step BE21*).
+- **Out of scope entirely:** `hK`, (GR-15), class uniformity, §(K-grid)'s
+  ledger, W4 / `hcontract`, and **any `.lean`** (standing 2026-08-05 hold).
+
+**Riders.** **TERMINATION E1/E2/E3** at the return (**E3 is ARMED by GBAL** —
+report, never fire). **F11:** a driver per headline sentence; an *"every" /
+"exhaustive" / "the only"* claim needs a driver that **enumerates**. **F27:**
+multi-seed any shortfall claim — rank is lower semicontinuous and this namespace
+has been bitten twice (BATTAIN, BZAVOID). **F25:** state your verification bar
+off the **shipped** driver; every script you run is committed
+(`notes/scripts/README.md` binds; §4 convention 8's cap-disclosure rule is
+harness-wide); exact ℚ, seeded with printed literals, degeneracy-guarded via
+`binduc.assert_generic_star` + `kbare_common.verify_pencil_witness`. **Cap
+disclosure mandatory** — *"not found under cap C"*, never *"does not exist"*.
+The `kbare/` sibling-import set is recorded **UNPAID** debt with three `w4/`
+consumers and a four-deep `battain → bzavoid → binduc → btwocut` chain:
+**extend the recorded list, make no move.**
+
+**Driver — expected, at the pinned path `notes/scripts/w4/bimage.py`.** Extend
+`w4/btwocut.py` (and through it `w4/binduc.py`) by **read-only import** rather
+than reimplementing the gluing, deficiency-oracle or pencil-witness machinery.
+
+**Reservation** (`notes/Pencil-labels.md` §"Reserved namespace — direction
+BIMAGE"): §(K-bare-ext) **extends**, no new section; labels **(BE-30)–(BE-34)**,
+***Steps BE29–BE33***; return any unconsumed remainder.

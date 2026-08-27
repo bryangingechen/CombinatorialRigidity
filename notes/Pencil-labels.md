@@ -1843,6 +1843,41 @@ original merit. **Checked and NOT chosen:** `BGLUE` — 0-hit, but "glue" is
 already the name of `bzavoid.py`'s 1-cut mode and would read as that mode's
 successor rather than as the 2-cut lemma.
 
+
+## Reserved namespace — direction BIMAGE (2026-08-27, **IN FLIGHT**)
+
+**Reserved 2026-08-27 for the single direction BIMAGE** (ordinal 45, the arc's
+fifty-third direction; `notes/Pencil-fanout.md` §"BIMAGE"), the **sixth
+consecutive direction to work this namespace** and the second in a row whose
+selection was **forced rather than ranked**: BTWOCUT reduced the strengthened
+2-cut lemma to a single geometric sentence and ranked its own successors, and
+this direction takes successor (1) in BTWOCUT's own recommended restriction (the
+ear case first).
+
+| direction | owning § | labels reserved | steps reserved | driver |
+|---|---|---|---|---|
+| **BIMAGE** | §(K-bare-ext) — **extends**, no new section | **(BE-30)–(BE-34)** | **BE29–BE33** | `w4/bimage.py` (expected — extend `btwocut.py`, and through it `binduc.py`, by read-only import) |
+
+The reservation is the head of §(K-bare-ext)'s unclaimed tail, which **five**
+consecutive directions have consumed with **nothing returned**: KBARE-FALSIFY
+*Steps BE1–BE8* / **(BE-1)–(BE-9)**, BATTAIN *Steps BE9–BE13* /
+**(BE-10)–(BE-14)**, BZAVOID *Steps BE14–BE18* / **(BE-15)–(BE-19)**, BINDUC
+*Steps BE19–BE23* / **(BE-20)–(BE-24)**, BTWOCUT *Steps BE24–BE28* /
+**(BE-25)–(BE-29)** — so the tail is **(BE-30)+ / Step BE29+**, exactly as
+BTWOCUT's landing record states.
+
+**Code and basename verified 0-hit** as raw substrings across `*.md`, `*.tex`,
+`*.lean`, `*.py`, `*.m2` with `.git`/`.lake` excluded: `BIMAGE`, `bimage`,
+`(BE-31)`–`(BE-34)` and `Step BE30`–`Step BE33` each **0-hit**; `(BE-30)` and
+`Step BE29` hit **only this file's own bookkeeping** (BTWOCUT's landing record
+naming the free tail) — the fifth occurrence of that benign shape in this
+namespace. **Checked and NOT chosen:** `BGENPOS` — 0-hit, but it names only the
+*general-position* half, which (BE-27)(ii) has already refuted as a *reading*;
+`BSPAN` — 0-hit, but it presumes the coordinator's untested hinge-line-span
+hypothesis is the answer, which is exactly the framing RESEARCH-ARC §7 forbids a
+spec from inheriting. `BIMAGE` is BTWOCUT's own word for the residue (*"the
+image statement"*).
+
 ## Registry — `notes/Pencil-informal.md` (the (K) workbook)
 
 Status keywords are pointers to the owning section's verdict block and the
