@@ -1,7 +1,12 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: EIGHT fan-outs, TWENTY-FOUR single directions and TWO concurrent
-pairs dispatched; ALL 54 LANDED, none in flight.** **BEARCASE (ordinal 46,
+**Status: EIGHT fan-outs, TWENTY-FIVE single directions and TWO concurrent
+pairs dispatched; 54 LANDED, ONE IN FLIGHT.** **BEARFULL (ordinal 47,
+§"BEARFULL") is IN FLIGHT** — prepped and dispatched 2026-08-27 at `recon-opus`,
+carrying the ear case's last two items (BEARCASE's successors (1) and (2)) plus a
+**coordinator-raised ROUTING question**: whether an **open ear decomposition**
+makes the ear case *itself* the induction step, retiring the internal R-node from
+the critical path. Flip it to LANDED here at its landing. **BEARCASE (ordinal 46,
 §"BEARCASE") LANDED 2026-08-27 — HIT shape 2: (α) IS CLOSED.** The greedy's last
 step is a **complete criterion** (the 2-step lemma), its bad case is non-empty
 but a **scheduling artifact**, and a **reordering plus a slide** removes it — so
@@ -6021,3 +6026,144 @@ now with a free sampler in hand; (4) BTWOCUT's bundle proof, still skipped.
 **TERMINATION: E1 NO, E2 NO** — one landed prose sentence corrected with its
 successor already in the landed driver, which is the shape E2 does not fire on;
 the ear case **narrows** rather than dying. **E3 ARMED by GBAL, not fired.**
+
+## BEARFULL — forty-seventh ordinal, the fifty-fifth direction (single dispatch, prepped 2026-08-27)
+
+**Selection provenance: the ear case's last two items, plus a ROUTING question
+the coordinator is putting up deliberately.** BEARCASE closed (α) and left the
+(β) side with exactly two open items — its own ranked successors (1) and (2) —
+so jobs 1 and 2 are forced in the same way the last two directions were.
+**Job 3 is not forced**: it is a coordinator-raised routing question that could
+re-rank the board, and it is raised now precisely because the information the
+S-all/S-mark pin was made on has changed. Dispatched **un-named, single**, at
+**`recon-opus`** (fable unavailable this session).
+
+**Disclosed: EIGHTH consecutive direction in §(K-bare-ext), and the (K-res)
+scoping slice is now deferred a FOURTH round.** That slice is a **user-selected**
+item (2026-08-26, chosen over the full wave and over a re-deferral). The
+coordinator is scheduling it rather than deferring it indefinitely: **it is the
+next dispatch after this one**, and this is recorded in `notes/Phase39.md`'s
+hand-off, not just here. Also unpicked: **(ZH-2) stratified** and
+**(BE-23)(ii)**.
+
+**Job 1 (PRIMARY) — (BE-32)(+) as a theorem.** *A graph that forces
+`π_u = π_v` has `δ_{uv} = 0`.* It is the **single named residue** of the ear
+case on the (β) side. Status: **MEASURED** at 208 418 instances under the
+**aggressive** plane-class closure (which over-claims forcing, so an empty sweep
+is the stronger statement — but it is not an argument). **Two of its three
+mechanisms are already theorems** — (BE-32)(ii) a common triangle, (BE-32)(iii)
+`≥ 3` common neighbours — both by the **merge inequality**
+`value = f − 6k + 5c`, which is four lines. The task is the rest: either extend
+the merge argument to the aggressive closure's general forcing rule, or exhibit
+a graph that forces `π_u = π_v` with `δ_{uv} > 0`. **State the closure operator
+you are proving it for** — "forced" is only meaningful relative to one, and the
+measured predicate is the aggressive one.
+
+**Job 2 — (b2) for a general piece**, BEARCASE's successor (2): the middle
+clause of (BE-37)(ii)'s reduction, at a piece that is not covered by
+(BE-38)(ii)'s `dist_{G₁}(u,v) ≤ 4` transfer. With job 1 this **completes the ear
+case's (β) side**, and with (α) already closed that is **the ear case, proved**.
+
+**Job 3 — THE ROUTING QUESTION, and it is the reason this spec lifts one of its
+own predecessors' bars.** BEARCASE's spec said *"do not re-open S-all vs
+S-mark"*. **That bar is lifted for this job only**, and the reason is stated
+rather than assumed: BTWOCUT pinned **S-mark** because S-all's cross-pair gap
+had *"no composition law behind it"* while S-mark *"closes"* — a correct call
+**on the information then available**, when the ear case was unproved and the
+general piece and the ear looked comparably hard. **BEARCASE changed that
+information**: the ear case is now one or two items from proved, while the
+general piece (the **internal R-node**, successor (3)) is untouched.
+
+> **COORDINATOR HYPOTHESIS — TO BE TESTED, NOT INHERITED (RESEARCH-ARC §7).**
+> *Provenance:* the coordinator's own reading, formed at this dispatch, resting
+> on **no measurement and no workbook result**; a `grep` confirms the arc has
+> **never** considered it (0 hits for "ear decomposition" across the workbooks).
+> It is new, and therefore more likely wrong than the usual.
+>
+> **The hypothesis: the ear case may already BE the induction step.** Every
+> 2-connected graph has an **open ear decomposition** starting from a cycle
+> (classical; **verify the attribution against a primary source before writing
+> it into the workbook** — do not assert a section number). (BE-18) already
+> reduces (BE-14) to 2-connected graphs, and a cycle is `max degree ≤ 2`, which
+> is one of the **free** base classes ((BE-25)(iv)). Each ear addition attaches
+> a path at a pair `{u,v}` — i.e. **exactly the 2-cut composition with `G₂` an
+> ear and `G₁` arbitrary**, which is the case BEARCASE has nearly proved. If
+> that goes through, the **internal R-node is not needed at all** and successor
+> (3) leaves the critical path.
+>
+> **Two gaps the coordinator already sees, stated so they are not discovered as
+> surprises:** **(i) CHORDS.** An open ear decomposition admits **single-edge**
+> ears, and a chord addition is **not** a 2-cut composition (`{u,v}` is not a
+> separator). `K₄` needs one, so this is unavoidable, and the ear route needs
+> its own edge-addition step. **(ii) WHICH strengthened statement.** The
+> attachment pair varies along the decomposition, so the induction needs the
+> welding clause at the *next* ear's pair — which is neither S-mark (a rooted
+> tree) nor obviously S-all (every pair). It may be a **third** shape, marked by
+> the decomposition rather than by a tree; whether *that* is self-closing is the
+> real question, and if it needs S-all then **cross-pair closure ((BE-28)(i))
+> becomes the binding obligation** and jumps from "motive economy" to the top of
+> the board.
+>
+> **Report a verdict on the route, not a preference.** If the ear route does not
+> work, say so and why — that is worth as much as a yes, because it **confirms**
+> S-mark and retires a coordinator distraction.
+
+**What counts as a HIT — state which you got.**
+
+1. **The EAR CASE PROVED** (jobs 1 and 2 both closed). The arc's first proved
+   case of the strengthened 2-cut lemma. Report the phase-boundary question and
+   **do not act on it**; the 2026-08-05 Lean hold binds regardless.
+2. **One of jobs 1 and 2 proved**, with the other reduced.
+3. **A routing verdict on job 3** that re-ranks the board — in either direction.
+   A clean NO is a real deliverable.
+4. **An obstruction, located** — job 1 fails, i.e. a graph forcing `π_u = π_v`
+   with `δ_{uv} > 0`. Classify **mandatorily** (ear case / 2-cut step / (BE-14)
+   / the conjecture); candidate, never refutation; read the direction-A pivot
+   rule in `notes/Phase39.md` *Current state* first.
+
+**Bars.**
+
+- **ZJACOB (JC-6)** — no properness, generic smoothness or transversality from a
+  codimension count, a Jacobian criterion, or Cohen–Macaulayness; **label every
+  dimension count as a count**.
+- **Do not re-derive BEARCASE's settled results:** (BE-35) the 2-step lemma, the
+  end-pair lemma, the reordering-and-slide, the `m ≤ 2` corners; (BE-36) — and
+  note **(β) as originally stated is REFUTED**, the correct target being
+  `loss ≤ max(0, δ₁+δ₂−6)`, which the landed driver already tests; (BE-37)(i)
+  the quantifier collapse, **which holds on the ATTAINING locus** (the general
+  semicontinuity claim is false — the corrected statement is in the workbook,
+  read it); (BE-38) the transfer and the independent sampler.
+- **Do not re-derive BIMAGE's or BTWOCUT's settled results** ((BE-30)–(BE-34),
+  (BE-25)–(BE-29)); **(BE-25)(iii) closes the LEAF R-node only**.
+- **Closed routes:** the `G²`/molecule apparatus ((BE-17)), the
+  transversality/dimension count ((BE-16)(iv)), §(K-jac)'s package, and
+  gauge-fixing as a source of a `PGL(4)`-invariant (ZSHEAR). **Do not re-run the
+  gauge-group count** ((BE-27)(ii)).
+- **The S-all/S-mark bar is lifted for JOB 3 ONLY** — and only as a *routing*
+  question. Do not re-litigate (BE-25)(ii)'s reasoning on the information it
+  had; it was right then.
+- **Out of scope:** `hK`, (GR-15), class uniformity, §(K-grid)'s ledger, W4 /
+  `hcontract`, and **any `.lean`** (2026-08-05 hold).
+
+**Riders.** **TERMINATION E1/E2/E3** (**E3 ARMED by GBAL** — report, never fire).
+**F11:** a driver per headline sentence; *"every"/"forced"/"the only"* needs a
+driver that **enumerates**, and job 1's *"forced"* is a claim about a **closure
+operator** — name it and test that one. **F27:** multi-seed any shortfall claim.
+**F25:** verification bar off the **shipped** driver; every script committed;
+exact ℚ, seeded with printed literals, degeneracy-guarded. **Cap disclosure
+mandatory.** **Citation discipline is live this time** (job 3 reaches for a
+classical theorem): verify author/year against a primary source, and write
+*"classical"* without a section number rather than guess one — `CLAUDE.md`
+*Referencing prior work*. The `kbare/` chain is **six deep**: extend the
+recorded consumer list, **make no move**.
+
+**Driver — expected, at the pinned path `notes/scripts/w4/bearfull.py`.** Extend
+`w4/bearcase.py` (and through it `bimage`/`btwocut`/`binduc`) by **read-only
+import**; job 1 wants `bearcase`'s combinatorial layer and `binduc`'s
+`def_by_partitions`, job 3 wants an ear-decomposition generator that does not
+exist yet.
+
+**Reservation** (`notes/Pencil-labels.md` §"Reserved namespace — direction
+BEARFULL"): §(K-bare-ext) **extends**, no new section; labels
+**(BE-39)–(BE-43)**, ***Steps BE38–BE42***; **(BE-39)** and ***Step BE38*** are
+the tail BEARCASE returned unconsumed. Return any unconsumed remainder.

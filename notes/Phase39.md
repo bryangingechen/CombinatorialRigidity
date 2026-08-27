@@ -10,7 +10,8 @@ derives it from exactly **three carried items**: **`hcontract`** (W4 — build p
 (2026-07-30).
 
 **The kernel-(K) research arc: 54 directions COMPLETE** (2026-08-05 → 08-27, ordinals
-1–46), plus eight strategy-only passes and two architecture probes; **nothing is in flight**.
+1–46), plus eight strategy-only passes and two architecture probes; **BEARFULL (ordinal 47)
+is IN FLIGHT**.
 **Per-direction verdicts, specs and landing write-ups are NOT restated here** —
 each direction has one at `notes/Pencil-fanout.md` §"<CODE>" (ordinals 1–19:
 `notes/Pencil-fanout-archive.md`) and a canonical mathematical home in the workbooks.
@@ -19,17 +20,18 @@ single open gap the whole §(K-grid) chain reduces to — is **untouched**; **cl
 of the escape is untouched**; no g-flank was found by any direction; **E3 is ARMED (by
 GBAL) and has never fired**.
 
-**NEXT CONCRETE TASK — (BE-32)(+) AS A THEOREM**, the **single named residue** the ear case's
-(β) side is now down to: *a graph that forces `π_u = π_v` has `δ_{uv} = 0`*, still **MEASURED**
-(208 418 instances, aggressive closure, no argument) — and **two of its mechanisms are already
-proved**, (BE-32)(ii)/(iii). BEARCASE **closed (α)**: the reach formula is **PROVED for
-`m ≥ 3`** by a reordering-plus-slide, discharging BIMAGE's headline cap. It also **refuted (β)
-as stated** (unsatisfiable at `δ₁ ≥ 5`; the correct target is what the landed driver already
-tests — no measurement changed) and **collapsed its quantifier** on the attaining locus. Rest
-of the ranking: *Hand-off*, **not restated here**. **This is the SEVENTH consecutive direction
-in §(K-bare-ext)**, overriding diversification by the max-impact criterion; the **(K-res)
-scoping slice** stands deferred a **THIRD** round — a deferral, not a drop — alongside
-**(ZH-2)** and **(BE-23)(ii)**.
+**IN FLIGHT — direction BEARFULL** (ordinal 47, `recon-opus`, dispatched 2026-08-27) at the
+ear case's **last two items** — **(BE-32)(+)** as a theorem (*a graph that forces `π_u = π_v`
+has `δ_{uv} = 0`*, the single named residue; two of three mechanisms already proved) and
+**(b2)** for a general piece — plus a **coordinator-raised ROUTING question**: whether an
+**open ear decomposition** makes the ear case *itself* the induction step, which would retire
+the **internal R-node** from the critical path. BEARCASE had already **closed (α)** (reach
+formula PROVED for `m ≥ 3`). Spec: `notes/Pencil-fanout.md` §"BEARFULL".
+**SCHEDULED, NOT DEFERRED AGAIN: the (K-res) scoping slice is the NEXT dispatch after this
+one.** It is a **user-selected** item (2026-08-26) and this is its **fourth** deferral; the
+coordinator is committing it to the next slot rather than deferring it indefinitely. This is
+the **EIGHTH** consecutive direction in §(K-bare-ext); **(ZH-2)** and **(BE-23)(ii)** also
+stand unpicked.
 
 **On a future HIT: the phase-boundary consequences are the USER's call** —
 whether Phase 39 closes and a successor opens for the Lean is a
@@ -271,8 +273,9 @@ Also unclaimed, from BZAVOID's own successor ranking: a **flat-star dictionary**
 re-prove `molecular_finrank_motions_eq_square_ker`'s surjectivity under a hypothesis
 admitting coplanar stars, which would revive route 2 (§(K-bare-ext)).
 
-**THEN — the (K-res) SCOPING SLICE**, deferred a **SECOND** round by the
-max-impact directive (2026-08-27) and NOT dropped. One direction: *does (GR-15)/§(K-grid) transport to
+**THEN — the (K-res) SCOPING SLICE, and it is now SCHEDULED rather than deferred:
+it is the NEXT dispatch after BEARFULL.** Deferred four rounds by the max-impact
+directive; a user-selected item, so the coordinator is committing it to a slot. One direction: *does (GR-15)/§(K-grid) transport to
 the `W19`-type (K-res) habitat?* This is the
 user's 2026-08-26 adjudication (offered the full wave, the cheap scoping slice,
 or a re-deferral, they chose the **scoping slice**), and it retires the stale

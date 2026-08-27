@@ -1951,6 +1951,40 @@ cell. The steps column now reads **BE1–BE37**, and the cell states explicitly
 that per-direction history for *Steps BE14–BE33* is the workbook's, not the
 cell's.
 
+
+## Reserved namespace — direction BEARFULL (2026-08-27, **IN FLIGHT**)
+
+**Reserved 2026-08-27 for the single direction BEARFULL** (ordinal 47, the arc's
+fifty-fifth direction; `notes/Pencil-fanout.md` §"BEARFULL"), the **eighth
+consecutive direction to work this namespace**. Jobs 1–2 are forced (BEARCASE's
+successors (1) and (2), the ear case's last two items); **job 3 is not** — it is
+a coordinator-raised routing question, and the spec lifts BEARCASE's own
+*"do not re-open S-all vs S-mark"* bar **for that job only**, with the reason
+stated.
+
+| direction | owning § | labels reserved | steps reserved | driver |
+|---|---|---|---|---|
+| **BEARFULL** | §(K-bare-ext) — **extends**, no new section | **(BE-39)–(BE-43)** | **BE38–BE42** | `w4/bearfull.py` (expected — extend `bearcase.py`, and through it `bimage`/`btwocut`/`binduc`, by read-only import) |
+
+The reservation opens at **(BE-39) / Step BE38**, which BEARCASE **returned
+unconsumed** — the first return in this namespace after six directions of nothing
+returned, so for once the tail was not simply the head of the previous
+reservation's remainder.
+
+**Code and basename verified 0-hit** as raw substrings across `*.md`, `*.tex`,
+`*.lean`, `*.py`, `*.m2` with `.git`/`.lake` excluded: `BEARFULL`, `bearfull`,
+`(BE-40)`–`(BE-43)` and `Step BE39`–`Step BE42` each **0-hit** — and, unusually,
+so are `(BE-39)` and `Step BE38`, because BEARCASE's landing record returned them
+rather than consuming them. **Checked and NOT chosen:** `BFORCED` (0-hit, but it
+names only job 1) and `BEARDONE` (0-hit, but it **presumes the outcome** — the
+ear case is not done until jobs 1 and 2 both close, and a code that asserts the
+verdict is the framing RESEARCH-ARC §7 forbids).
+
+**Gap-map note:** the `(K-bare)` row was **fully recomputed** at the BEARCASE
+landing (current-state paragraph, **1 130 / 1 600** words, 470 of headroom), so
+this landing may fold its clause in normally. The next *full* recompute is not
+due until that headroom is spent.
+
 ## Registry — `notes/Pencil-informal.md` (the (K) workbook)
 
 Status keywords are pointers to the owning section's verdict block and the
