@@ -295,6 +295,9 @@ CLAUDE.md at phase close.
    serial coordinator landing, the gap-map-as-status-object pattern,
    the driver-per-headline-claim rule, and cap disclosure are all
    distilled there so a fresh research phase does not reinvent them.
+   **Read that status object with `python3 notes/gapmap.py` (`--list` /
+   `--row` / `--label '(GR-15)'`), never `sed`/`grep`: one row is one
+   22 000-character line.**
 2. **Rate S/P/B and pick the rung per the Dispatch playbook** (above);
    the rung is carried by the **agent type**, not the `model`
    parameter — dispatch the matching rung-pinned variant

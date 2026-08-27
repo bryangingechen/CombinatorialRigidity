@@ -207,6 +207,17 @@ leaves headroom for landings already queued into that row, not merely
 never by eye**: the coordinator's own hand-recompute dropped a live label,
 and only a script caught it.
 
+**Cap the cell, but also ship a READER for it (2026-08-26).** One row per gap
+means one *physical line* per gap, so a compliant cell is still unreadable in
+slices: `sed -n '<row>p'`, `grep '(GR-15)'` and every other line-oriented tool
+deliver the whole 22 000-character row, measured at up to 20% of a
+coordinator session's peak context for a single row. The fix is a read-only
+slice reader beside the gate, not a reshaped table (the one-row-per-gap shape
+is what §3 makes load-bearing): PENCIL's `notes/gapmap.py` answers *which rows
+exist and what do they cost* (`--list`), *one cell, windowed by sentence*
+(`--row … --cell status --head N`) and *only the sentences mentioning one
+label* (`--label '(GR-15)'`) for 3–13% of the row's cost.
+
 ### 7. A coordinator prediction is a hypothesis — flag it as one, with its evidence stratum named
 
 **Promoted 2026-08-26** from the *Candidates* tier at a fourth independent

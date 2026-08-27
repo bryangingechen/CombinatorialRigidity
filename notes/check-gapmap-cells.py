@@ -139,14 +139,22 @@ def _key_of(col1):
     return m.group(1) if m else col1.strip().strip("`*").strip()
 
 
-def table_rows(text):
-    """{key: ("split", status_words, closeit_words) | ("combined", words)}
-    for every data row of the *State of (K)* gap-map table."""
+def iter_row_cells(text):
+    """Yield `(lineno, key, col1, col2, kind, cells)` for every data row of the
+    *State of (K)* gap-map table, in file order (`lineno` 1-based).
+
+    `kind` is `"split"` for a clean 4-column row (`cells == [status, closeit]`)
+    or `"combined"` for a row whose columns 3/4 carry stray unescaped pipe(s)
+    (`cells == [status_plus_closeit]`) -- see the docstring's *Table shape*.
+    Cell text is raw (not stripped). This is the ONE parser for the table:
+    `table_rows` below counts words on top of it, and `notes/gapmap.py` (the
+    read-only slice reader) prints slices of it, so both agree on what a row,
+    a key and a column are.
+    """
     lines = text.splitlines()
-    out = {}
     in_section = False
     in_table = False
-    for line in lines:
+    for lineno, line in enumerate(lines, start=1):
         if SECTION_RE.match(line):
             in_section = True
             continue
@@ -168,16 +176,28 @@ def table_rows(text):
         if len(pos) < 5:
             continue  # not a well-formed 4-column row; skip rather than guess
         col1 = line[pos[0] + 1 : pos[1]]
+        col2 = line[pos[1] + 1 : pos[2]]
         key = _key_of(col1)
         if len(pos) == 5:
             status = line[pos[2] + 1 : pos[3]]
             closeit = line[pos[3] + 1 : pos[4]]
-            out[key] = ("split", len(status.split()), len(closeit.split()))
+            yield lineno, key, col1, col2, "split", [status, closeit]
         else:
             # stray unescaped pipe(s) inside columns 3/4 -- don't guess the
             # split, cap the combined remainder instead.
             combined = line[pos[2] + 1 : pos[-1]]
-            out[key] = ("combined", len(combined.split()))
+            yield lineno, key, col1, col2, "combined", [combined]
+
+
+def table_rows(text):
+    """{key: ("split", status_words, closeit_words) | ("combined", words)}
+    for every data row of the *State of (K)* gap-map table."""
+    out = {}
+    for _lineno, key, _col1, _col2, kind, cells in iter_row_cells(text):
+        if kind == "split":
+            out[key] = ("split", len(cells[0].split()), len(cells[1].split()))
+        else:
+            out[key] = ("combined", len(cells[0].split()))
     return out
 
 

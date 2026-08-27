@@ -72,7 +72,11 @@ for *organizing* this directory is here.
   repairs both times) before the cap replaced the prose rule. Run it
   (default mode; no flags) before any commit that edits a gap-map row —
   it checks only the rows that changed, so unrelated commits never block on
-  grandfathered ones.
+  grandfathered ones. **To READ the map use `notes/gapmap.py`** (`--list`,
+  `--row '(K-grid)' --cell status`, `--label '(GR-15)'`, `--grep`), never
+  `sed`/`grep`: a row is ONE physical line — `(K-grid)` alone is 22 000 chars
+  ≈ 7 300 tokens, and there is no way to read part of one. Detail in its
+  docstring.
 - **`Pencil-W4-informal.md`** — the same workbook's **W4 (`hcontract`)
   residual arc**, split out 2026-08-05: three sections closed *as arguments*
   (`hnoGood'` vacuity / (SAFE-RES) refuted, the kernel widening priced) and
