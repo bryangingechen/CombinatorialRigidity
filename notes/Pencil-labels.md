@@ -1892,6 +1892,42 @@ against a 1 600 combined cap, after folding the KBARE-FALSIFY and BATTAIN
 clauses), so a **seventh** landing here needs a fuller recompute first, not
 another clause.
 
+
+## Reserved namespace — direction BEARCASE (2026-08-27, **IN FLIGHT**)
+
+**Reserved 2026-08-27 for the single direction BEARCASE** (ordinal 46, the arc's
+fifty-fourth direction; `notes/Pencil-fanout.md` §"BEARCASE"), the **seventh
+consecutive direction to work this namespace** and the **third in a row whose
+selection was forced rather than ranked**: BIMAGE reduced the ear case to exactly
+two open items and stated that together they prove it.
+
+| direction | owning § | labels reserved | steps reserved | driver |
+|---|---|---|---|---|
+| **BEARCASE** | §(K-bare-ext) — **extends**, no new section | **(BE-35)–(BE-39)** | **BE34–BE38** | `w4/bearcase.py` (expected — extend `bimage.py`, and through it `btwocut`/`binduc`, by read-only import) |
+
+The reservation is the head of §(K-bare-ext)'s unclaimed tail, which **six**
+consecutive directions have consumed with **nothing returned**: KBARE-FALSIFY
+*BE1–BE8*, BATTAIN *BE9–BE13*, BZAVOID *BE14–BE18*, BINDUC *BE19–BE23*, BTWOCUT
+*BE24–BE28*, BIMAGE *BE29–BE33* — so the tail is **(BE-35)+ / Step BE34+**,
+exactly as BIMAGE's landing record states.
+
+**Code and basename verified 0-hit** as raw substrings across `*.md`, `*.tex`,
+`*.lean`, `*.py`, `*.m2` with `.git`/`.lake` excluded: `BEARCASE`, `bearcase`,
+`(BE-36)`–`(BE-39)` and `Step BE35`–`Step BE38` each **0-hit**; `(BE-35)` and
+`Step BE34` hit **only this file's own bookkeeping** (BIMAGE's landing record
+naming the free tail) — the sixth occurrence of that benign shape here.
+**Checked and NOT chosen:** `BESCAPE` — it would collide *semantically* with
+"the escape" (`hK`'s `≢ 0` uniformity kernel), which is a different object in a
+different section, and clause L3 would need qualifying on every use; `BNONCON`
+and `BGREEDY` — both 0-hit, but each names only **one** of the direction's two
+jobs, and the point of pairing (α) with (β) is that together they close the ear
+case.
+
+**Gap-map note carried forward from the BIMAGE landing:** the `(K-bare)` row
+stands at **1 402 / 1 600** words after a recompute. A seventh landing here needs
+a **fuller recompute first** — folding the remaining dated clauses into a
+current-state paragraph — not another appended clause.
+
 ## Registry — `notes/Pencil-informal.md` (the (K) workbook)
 
 Status keywords are pointers to the owning section's verdict block and the

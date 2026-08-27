@@ -10,7 +10,8 @@ derives it from exactly **three carried items**: **`hcontract`** (W4 — build p
 (2026-07-30).
 
 **The kernel-(K) research arc: 53 directions COMPLETE** (2026-08-05 → 08-27, ordinals
-1–45), plus eight strategy-only passes and two architecture probes; **nothing is in flight**.
+1–45), plus eight strategy-only passes and two architecture probes; **BEARCASE (ordinal 46)
+is IN FLIGHT**.
 **Per-direction verdicts, specs and landing write-ups are NOT restated here** —
 each direction has one at `notes/Pencil-fanout.md` §"<CODE>" (ordinals 1–19:
 `notes/Pencil-fanout-archive.md`) and a canonical mathematical home in the workbooks.
@@ -19,16 +20,16 @@ single open gap the whole §(K-grid) chain reduces to — is **untouched**; **cl
 of the escape is untouched**; no g-flank was found by any direction; **E3 is ARMED (by
 GBAL) and has never fired**.
 
-**NEXT CONCRETE TASK — the EAR CASE IS ONE LEMMA FROM PROVED, and the lemma is named:**
-*a piece satisfying the strengthened statement admits a configuration with `Π_u ⊄ ρ̄₁` and
-`Π_v ⊄ ρ̄₁` and `dim(ρ̄₁ ∩ Z) ≤ dim Z − c₂`* — BIMAGE's own ranked successor (1), which with
-its successor (2) (the greedy's last step, self-contained projective geometry and the
-**smallest item in the arc's queue**) **proves the ear case outright**. BIMAGE bounded and
-classified the image the 2-cut step reduces to: `ρ̄₂` is the span of a **chain on the Klein
-quadric**, its bad locus is **exactly three mechanisms**, and every trap a real piece shows
-is a **configuration artifact** (607/607). Full statement and the rest of the ranking:
-*Hand-off*, **not restated here**. **Then** the queued **(K-res) scoping slice**, deferred a
-**SECOND** round by the max-impact directive — a deferral, not a drop.
+**IN FLIGHT — direction BEARCASE** (ordinal 46, `recon-opus`, dispatched 2026-08-27) at
+**BOTH** of BIMAGE's ranked successors (1) and (2), which **together prove the ear case** of
+the strengthened 2-cut lemma: **(α)** the greedy's last step (self-contained projective
+geometry, the **smallest item in the arc's queue**; closing it turns the reach formula from
+MEASURED to PROVED) and **(β)** *a piece satisfying the strengthened statement admits a
+configuration with `Π_u ⊄ ρ̄₁`, `Π_v ⊄ ρ̄₁`, `dim(ρ̄₁ ∩ Z) ≤ dim Z − c₂`* — a statement about
+**ONE piece**. Spec: `notes/Pencil-fanout.md` §"BEARCASE". **This is the SEVENTH consecutive
+direction in §(K-bare-ext)**, overriding the standing diversification criterion by the
+max-impact one that supersedes it; the **(K-res) scoping slice** is thereby deferred a
+**THIRD** round — a deferral, not a drop — alongside **(ZH-2)** and **(BE-23)(ii)**.
 
 **On a future HIT: the phase-boundary consequences are the USER's call** —
 whether Phase 39 closes and a successor opens for the Lean is a

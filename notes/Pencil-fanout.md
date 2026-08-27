@@ -1,7 +1,11 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: EIGHT fan-outs, TWENTY-THREE single directions and TWO concurrent
-pairs dispatched; ALL 53 LANDED, none in flight.** **BIMAGE (ordinal 45,
+**Status: EIGHT fan-outs, TWENTY-FOUR single directions and TWO concurrent
+pairs dispatched; 53 LANDED, ONE IN FLIGHT.** **BEARCASE (ordinal 46,
+§"BEARCASE") is IN FLIGHT** — prepped and dispatched 2026-08-27 at `recon-opus`,
+carrying **BIMAGE's ranked successors (1) and (2)**, which together **prove the
+ear case** of the strengthened 2-cut lemma. Flip it to LANDED here at its
+landing. **BIMAGE (ordinal 45,
 §"BIMAGE") LANDED 2026-08-27** — BTWOCUT's *"nothing in the arc bounds that
 image"* is now **FALSE**: for the **ear** the image is described **exactly** as
 the span of a **chain on the Klein quadric** (a *bijection*, the coordinator's
@@ -5726,3 +5730,174 @@ explicitly** as the spec authorizes.
 **TERMINATION: E1 NO, E2 NO** — one coordinator candidate and one landed
 sentence refuted, both with successors in hand, which is the shape E2 does not
 fire on; coordinator-re-run and agreed. **E3 ARMED by GBAL, not fired.**
+
+## BEARCASE — forty-sixth ordinal, the fifty-fourth direction (single dispatch, prepped 2026-08-27)
+
+**Selection provenance: FORCED for the THIRD consecutive direction.** BIMAGE
+reduced the ear case of the strengthened 2-cut lemma to **exactly two** open
+items and ranked them (1) and (2); it says in terms that together they **prove
+the ear case outright**. There is nothing above them to rank, and the user's
+standing max-impact criterion (2026-08-26, tenth check-in) selects them.
+Dispatched **un-named, single**, at **`recon-opus`** — fable unavailable this
+session (check-in 2026-08-27), so opus is the mapped-rung substitute.
+
+**Disclosed, because it is now a pattern and not an accident: this is the
+SEVENTH consecutive direction in §(K-bare-ext).** The standing *diversification*
+criterion was minted to correct the arc's §(K-grid) concentration and now reads
+against this namespace instead. It is being **overridden deliberately, by the
+max-impact criterion that supersedes it**: (BE-14) discharges **two of the three
+carried items** and nothing else on the board is within a direction of a proof.
+**Unpicked and named, so the concentration stays visible:** the **(K-res)
+scoping slice** (a user-selected item, now deferred a **THIRD** round);
+**(ZH-2) stratified**, the Zheng lane's one dispatchable candidate; and
+**(BE-23)(ii)**, the disproof side's highest-value single search. **BIMAGE's
+successor (3)** (the internal R-node) and **(4)** (BTWOCUT's bundle proof) are
+ranked below this direction only because they do not close anything on their
+own.
+
+**The target — the two items, stated exactly as BIMAGE left them.**
+
+> **(α) The greedy's last step.** (BE-33)(i)'s α-plane escape lemma runs the
+> chain greedily through every **interior** vertex of the ear. It does **not**
+> close the **final** choice: `p_m` must lie in the 2-parameter plane `π_v` and
+> satisfy **two** conditions at once — `ℓ_m ∉ W_{m−1}` **and** `ℓ_{m+1} ∉ W_m`.
+> BIMAGE characterizes the bad case (it forces
+> `⟨x,y⟩ ∧ (p_v + λ p_{m−1}) ⊆ W_{m−1}` for some `λ`) and does **not** rule it
+> out. **Closing (α) turns (BE-33)(ii)'s reach formula from MEASURED (358/358)
+> to PROVED**, which is the landing's headline cap.
+>
+> **(β) The `ρ̄₁` non-containment.** *A piece satisfying the strengthened
+> statement admits a configuration with `Π_u ⊄ ρ̄₁`, `Π_v ⊄ ρ̄₁` and
+> `dim(ρ̄₁ ∩ Z) ≤ dim Z − c₂`.* This is a statement about **ONE piece and its
+> own moduli**, not about two pieces in relative position — which is what makes
+> it tractable, and it is the same simplification (BE-22)(vi) exploited.
+
+**Job 1 — (α).** Self-contained projective geometry, no graph theory; BIMAGE
+calls it **the smallest item in the arc's queue**. Take it first: it is the
+cheaper of the two and it converts a measured headline into a proved one.
+
+**Job 2 — (β), the substantial half.** The **SP recursion (BE-31) is the tool
+the direction that minted (β) names**: for a series-parallel `G₁`, `ρ̄₁` is
+computed from its own hinge lines down the SPQR tree, so (β) becomes a statement
+about **sums and intersections of chain spans** — the same objects job 1 works
+with, which is why the two belong in one direction.
+
+**Job 3 — the generalization, ONLY if jobs 1 and 2 both close.** State and, if
+it is cheap, prove the ear case's successor: **the same non-containment for an
+arbitrary series-parallel piece on the other side**, via the recursion. The ear
+is the all-`S` case; `S`+`P` is the natural next frontier and would leave the
+**internal R-node** as the single named residue of the whole 2-cut lemma. **Skip
+it explicitly** if it competes with jobs 1–2, exactly as BIMAGE skipped its own
+secondary.
+
+**Coordinator-verified observations — use them, they are not predictions.**
+
+1. **The `δ₁ = 6` corner is VACUOUS, and (β) must be stated with that carve-out.**
+   If `δ₁ = 6` then `ρ̄₁ = K⁶`, so `Π_u ⊆ ρ̄₁` necessarily — but then
+   `dim(ρ̄₁+ρ̄₂) = 6 = min(δ₁+δ₂,6)` and the criterion is **already met**. Read
+   off `bimage.py hunt`'s own output, which flags exactly this (*"the `Pi_u <=
+   rho_1` column includes the VACUOUS hits rho_1 = 6"*). Any sweep for a
+   counterexample to (β) that counts those rows is counting non-instances.
+2. **What the criterion actually demands, in two regimes.** With
+   `dim ρ̄ᵢ = δᵢ`: at `δ₁ + δ₂ ≤ 6` it is `ρ̄₁ ∩ ρ̄₂ = 0`; at `δ₁ + δ₂ > 6` it is
+   `dim(ρ̄₁ ∩ ρ̄₂) = δ₁ + δ₂ − 6` exactly. The second regime is the one `C₁₀` /
+   `C₁₂` at antipodes live in (`δ = (5,5)`, `(6,6)`), and both are **measured
+   attaining** — the extremal rows of BTWOCUT's `rank2` table.
+3. **`ρ̄₁` and `ρ̄₂` are never in naive general position at the cut, and this is
+   structural.** The pencil condition at `u` constrains the **whole** closed
+   neighbourhood, both sides at once, so when a side is path-like its first
+   hinge at `u` lies in `Π_u` — hence each of `ρ̄₁ ∩ Π_u`, `ρ̄₂ ∩ Π_u` is
+   generically a *line* of the 2-dimensional `Π_u`. Two distinct lines of a
+   2-space span it and meet only at `0`, so this forces **no** intersection —
+   but it is why (P), *pencil swallowing*, is the classification's first
+   mechanism, and it is worth having stated rather than rediscovered.
+   **Scope caveat, measured:** this is a claim about **path-like** sides only —
+   `bimage.py hunt` reports `ρ̄₁ ∩ Π_u = 0` at 15 of 80 subspaces, so it is
+   **false in general** and must not be assumed for an arbitrary `G₁`.
+
+**COORDINATOR HYPOTHESIS — TO BE TESTED, NOT INHERITED (RESEARCH-ARC §7).**
+*Provenance:* the coordinator's reading of a **pattern** across two landed
+results — (BE-32)(ii)/(iii) (the mechanisms that *force* `π_u = π_v` also force
+`δ = 0`) and (BE-15) on the disproof side (forcing confines each class to a
+local cone and thereby forces `def₂ = 0`). It rests on **no measurement of its
+own**. The hypothesis: **(β) is true for the same reason, by a tension argument**
+— that a piece whose *every* configuration has `Π_u ⊆ ρ̄₁` is thereby forced
+into a regime where the criterion is vacuous or the strengthened statement
+fails, so the obstruction and the deficiency cannot coexist. If that tension is
+real, (β) is proved by the (BE-32) method rather than by a genericity argument.
+**It may well be false**, and the honest alternative is that (β) needs the
+piece's moduli directly. **Test it; do not let it frame a negative result.**
+
+**The falsification arm — commissioned, and it is the standing positive
+criterion.** Hunt for a piece that satisfies the strengthened statement and has
+`Π_u ⊆ ρ̄₁` (or the (Z)/(R) variant) at **EVERY** configuration with the given
+flags — not at one drawn configuration. BIMAGE's 607/607 escalation is
+**measured over the BTWOCUT ladder's configurations**, which is exactly the cap
+(BE-26) caught BINDUC on: a constructor artifact reads as a trap. So the
+question this direction must answer is the one escalation cannot: **is the
+trapped set empty as a matter of the piece, or only of the constructor?** A
+genuine witness here would be the first real candidate for a new universal cap
+since (BE-23)(ii) and **must be classified against it**.
+
+**What counts as a HIT — state which you got.**
+
+1. **(α) and (β) both proved ⇒ THE EAR CASE PROVED.** The arc's first *proved*
+   case of the strengthened 2-cut lemma. State it plainly; report the
+   phase-boundary question and **do not act on it** (the user's call; the
+   2026-08-05 Lean hold binds regardless).
+2. **One of the two proved.** (α) alone turns the reach formula from measured to
+   proved — a real deliverable on its own, and the cheaper one.
+3. **An obstruction, located** — (β) fails for some piece class. Classify
+   **mandatorily**: 2-cut step only, (BE-14), or the conjecture; candidate,
+   never refutation; read the direction-A pivot rule in `notes/Phase39.md`
+   *Current state* before writing it.
+4. **An honest OPEN with the route priced**, including whether the ear case is
+   the right first target at all or whether the internal R-node (successor (3))
+   should have gone first.
+
+**Bars.**
+
+- **ZJACOB (JC-6) still binds hardest.** No properness, generic smoothness or
+  transversality from a **codimension count**, a **Jacobian criterion**, or
+  **Cohen–Macaulayness**. (β) is exactly the kind of statement that invites a
+  dimension count; **label every count as a count**, per (BE-27)(i)/(ii) and
+  (BE-33)(ii)'s own discipline.
+- **Do not re-derive BIMAGE's settled results:** (BE-30) the chain bijection and
+  the three confinement laws; (BE-31) the SP recursion (and note **(BE-25)(iii)
+  closes the LEAF R-node only** — the internal one is not rigid, `K₄ + ear(m)`
+  is one); (BE-32) the three merge-inequality theorems; (BE-33)(i) the α-plane
+  escape lemma; (BE-34) the hunt and escalation. **Extend these; do not repeat
+  them.**
+- **Do not re-run the gauge-group count** ((BE-27)(ii): *the gauge group was
+  never the right place to look*), and **do not re-open S-all vs S-mark**
+  ((BE-25)(ii): S-mark **PINNED**).
+- **Do not inherit BZAVOID's `− 6`** (REFUTED), and **(BE-15)(ii)** is cap-free
+  for the **triangle** mechanism only.
+- **Closed routes:** the `G²`/molecule apparatus ((BE-17)), the
+  transversality/dimension count ((BE-16)(iv)), the Jacobian/singular-locus
+  package (§(K-jac)), and — ZSHEAR — anything expecting **gauge-fixing** to
+  supply a `PGL(4)`-invariant.
+- **Out of scope entirely:** `hK`, (GR-15), class uniformity, §(K-grid)'s
+  ledger, W4 / `hcontract`, and **any `.lean`** (standing 2026-08-05 hold).
+
+**Riders.** **TERMINATION E1/E2/E3** at the return (**E3 ARMED by GBAL** —
+report, never fire). **F11:** a driver per headline sentence; an
+*"every"/"exhaustive"/"the only"* claim needs a driver that **enumerates** — and
+note that (β) quantifies over **every configuration of a piece**, which no
+sampler enumerates, so a claim there is **measured** unless you have an
+argument. **F27:** multi-seed any shortfall claim. **F25:** state your
+verification bar off the **shipped** driver; every script committed
+(`notes/scripts/README.md` binds); exact ℚ, seeded with printed literals,
+degeneracy-guarded via `assert_generic_star` + `verify_pencil_witness`. **Cap
+disclosure mandatory.** The `kbare/` sibling-import set is recorded **UNPAID**
+debt, the chain now **five deep** (`battain → bzavoid → binduc → btwocut →
+bimage`): **extend the recorded list, make no move.**
+
+**Driver — expected, at the pinned path `notes/scripts/w4/bearcase.py`.** Extend
+`w4/bimage.py` (and through it `btwocut` / `binduc`) by **read-only import**;
+its `chain`, `sprec`, `alpha` and `badA` modes already build every object jobs 1
+and 2 need.
+
+**Reservation** (`notes/Pencil-labels.md` §"Reserved namespace — direction
+BEARCASE"): §(K-bare-ext) **extends**, no new section; labels
+**(BE-35)–(BE-39)**, ***Steps BE34–BE38***; return any unconsumed remainder.
