@@ -182,15 +182,19 @@ incidents in full.
 
 ### 6. Mechanical word caps on status cells, with recompute-not-bump
 
-A gap-map cell (or any other single-row status summary) gets a **hard,
-machine-checked word cap per cell**, gated by a small script run before any
-commit that edits the row (PENCIL's `notes/check-gapmap-cells.py`). The
+**Any single status summary** — a gap-map cell, a phase note's own
+`**Status:**` header block, any other one-object status paragraph — gets a
+**hard, machine-checked word cap**, gated by a small script run before any
+commit that edits it (PENCIL's `notes/check-gapmap-cells.py` for the gap-map
+row, `notes/check-phase-note.py` for the phase-note header). The
 point of the cap is not merely to bound length — it exists because, left
 unchecked, a status cell reliably regresses from a *current-state*
 paragraph into a *changelog* one landing at a time, via one specific,
 now-named construction: **"Since Steps X–Y (direction Z), W changed" —
 appended to the row rather than folded into it.** PENCIL's own worst row hit
-this shape **five times** before the cap replaced ad hoc prose reminders.
+this shape **five times** before the cap replaced ad hoc prose reminders, and
+the phase note's `**Status:**` header — the same object with no cap on it —
+did the same thing at one appended paragraph per landing, reaching 155 lines.
 
 **The refinement a fifth regression forced (dispatch-log F21), stated as
 its own clause because a cap alone does not catch it:** a cap bounds

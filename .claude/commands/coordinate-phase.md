@@ -419,6 +419,10 @@ CLAUDE.md at phase close.
      a research-shaped phase — judge against the hand-off, not against
      "must touch Lean". (Wrong branch / author / trailer → rescue §1:
      a fixup, not a stop.)
+   - **Docs gates (default mode, no flags; nothing else runs them):**
+     commit touched a phase note → `python3
+     notes/check-phase-note.py`; touched the gap map → `python3
+     notes/check-gapmap-cells.py`. Exit 1 names the offending surface.
    - **"Gates green" is an attestation, not evidence.** The step-5
      gate always runs; apply the playbook's verification tier for the
      dispatched rung (full-diff read + `lake lint` + sorry-grep below

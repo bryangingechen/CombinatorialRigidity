@@ -19,6 +19,13 @@ for *organizing* this directory is here.
 ## Files in this directory
 
 - **`PhaseN.md`** (one per phase, N = 1, 2, …) — phase work logs.
+  **Four of the *Phase notes* rules below are machine-gated**
+  (`notes/check-phase-note.py`): the ~500-line tripwire, the
+  forward-vs-finished ratio, a `**Status:**`-header word cap and the
+  ≤ 8-line *Decisions made* entry. Run it (default mode; no flags)
+  before any commit that edits a phase note — it checks only what
+  changed, so legacy entries never block an unrelated commit. Caps,
+  calibration and the recompute-before-bump rule are in its docstring.
 - **`FRICTION.md`** — active friction log: open items, anti-patterns,
   mirrored upstream-eligible lemmas. File format and filing rule
   in the file's own header.
@@ -342,7 +349,15 @@ contract holds only if the file stays scannable.
   promotion; stop and investigate, don't just trim. *At phase close* the
   note becomes the compressed archive ROADMAP §N points at: forward
   shrinks to the next-phase hand-off, and *Decisions made* settles as a
-  mostly one-line verdict record.
+  mostly one-line verdict record. **All four checks here are mechanical
+  now** — `notes/check-phase-note.py`, run before the commit that edits
+  the note; three prose-only statements of them failed first.
+- **Never paste a large `old` string back through a heredoc** when editing
+  a note — append, edit an anchored line range, or write only the new text.
+  `s.replace(old, new)` in a `python3 - <<PY` block puts the OLD text back
+  into context beside the new, paying for every edit twice: measured at
+  **318 267** characters of Bash *write* arguments against **13 709** for
+  every read command in one coordinator session, ~35 % of its context.
 
 `notes/Phase1.md` is a complete-phase example for a small phase
 (flat "Decisions made"); `notes/Phase3.md` is the canonical example

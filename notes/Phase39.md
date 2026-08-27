@@ -221,8 +221,10 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
   collapsed — **1 500 → 554**, forward (326) outweighing finished (93). Record:
   `notes/Pencil-structure.md` §"Slice 6". **Watch item, because the
   mechanism is structural:** every landing commit is `+50…100 / −20…30` on this note, so
-  ~10 landings re-breach the tripwire. The gate is the landing checklist's step 5
-  (`notes/Pencil-fanout.md`), and a landing's *Decisions made* entry is **one line**.
+  ~10 landings re-breach the tripwire. **The gate is now MECHANICAL** —
+  `notes/check-phase-note.py` (default mode, no flags; wired into `/coordinate-phase`
+  step 4) caps this note at **580 lines / 525 status-header words** and fails if
+  *Decisions made* outgrows the forward sections. A landing's entry is still **one line**.
 - The full biconditional transport (design doc's W0 pin) is landed only as its two forward
   implications; the reverse arms need a `complementIso` involution lemma, not in tree —
   deferred, **off every critical path** (§(K-σ) *Step σ6*).

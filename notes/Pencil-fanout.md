@@ -239,9 +239,11 @@ their own claim class. General statement and rationale: **`RESEARCH-ARC.md`**
 4. Merge the draft into `notes/Pencil-informal.md`, update the matching **State
    of (K)** gap-map row(s), add a one-line *Decisions made* entry to
    `notes/Phase39.md`, and commit the new script in the same commit.
-5. Keep `notes/Phase39.md` forward-weighted and under the ~500-line tripwire;
-   the gap map is the canonical home for (K) status, so the phase note's
-   kernel bullets stay thin pointers.
+5. Keep `notes/Phase39.md` forward-weighted and under its line cap — **now
+   machine-gated: run `python3 notes/check-phase-note.py` (default mode)
+   before committing**, alongside `check-gapmap-cells.py` for the row. The gap
+   map is the canonical home for (K) status, so the phase note's kernel
+   bullets stay thin pointers.
 6. **A draft's closing *"Coordinator actions at landing"* block is
    scaffolding, not mathematics: execute it, then STRIP it — it must never
    be merged into the workbook.** Merged, it reads as an outstanding to-do
