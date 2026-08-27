@@ -511,3 +511,32 @@ of work"*). `notes/Phase39.md` 1 500 → 554, forward-weighted, ordinals 20–44
 dated bullets relocated verbatim; per-slice record in *Slice 6* above.
 **With it the structural work is finished**, and the phase's next concrete task
 — the kernel-(K) research pick — is live; see `notes/Phase39.md` *Hand-off*.
+
+## Conventions and canonical homes
+
+**Relocated verbatim from `notes/Phase39.md`'s `**Status:**` header, 2026-08-27**,
+at the BEARFULL landing. The reason is recorded rather than implied: three
+consecutive landings had each compressed *Decisions made* with real deletions and
+each recovered only 2–5 lines, because the note is **forward-weighted and the
+forward part is what grew** (339 forward vs 104 finished). These two paragraphs
+are **stable reference, not status**, so they were the right thing to move — and
+moving them is what the note's own watch item prescribed instead of bumping the
+gate's caps. `notes/Phase39.md` keeps a pointer plus the one line that genuinely
+is status (the gap map is authoritative).
+
+**Conventions.** Direction codes are multi-letter and topic-tagged from the
+fifth fan-out on (`notes/Pencil-labels.md` (L5)); grandfathered single letters
+are re-used across dates, so **always date those**. The doc-split and
+discipline-distillation rounds are both COMPLETE (`notes/Pencil-structure.md`;
+`RESEARCH-ARC.md` is the promoted manual). Both architecture probes are landed
+(KBARE-FALSIFY, C3-AVOID). File layout: `Molecule/Pencil.lean` split into
+`Molecule/Pencil/{Statement,Arms,Motive,Chart,Engine,Reseed,Witness,Steer,Pair,
+Pair2,Escape,Base}.lean`; per-leaf history `notes/Phase39-design.md`.
+
+**Canonical homes — read these, not a summary of them.** The **State of (K)**
+gap map in `notes/Pencil-informal.md` is the phase's status object and is
+authoritative for every status word; `notes/Pencil-informal-grid.md` owns
+§(K-grid); `notes/Pencil-strategy.md` owns the option board (§8) and the
+unpriced §9 shelf **(ZH-1)–(ZH-6)**, which stays ineligible;
+`notes/Pencil-fanout.md` owns dispatch specs and landing write-ups;
+`notes/Pencil-adjudications.md` owns the archived verbatim user calls.

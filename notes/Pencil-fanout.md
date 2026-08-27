@@ -1,12 +1,16 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
 **Status: EIGHT fan-outs, TWENTY-FIVE single directions and TWO concurrent
-pairs dispatched; 54 LANDED, ONE IN FLIGHT.** **BEARFULL (ordinal 47,
-§"BEARFULL") is IN FLIGHT** — prepped and dispatched 2026-08-27 at `recon-opus`,
-carrying the ear case's last two items (BEARCASE's successors (1) and (2)) plus a
-**coordinator-raised ROUTING question**: whether an **open ear decomposition**
-makes the ear case *itself* the induction step, retiring the internal R-node from
-the critical path. Flip it to LANDED here at its landing. **BEARCASE (ordinal 46,
+pairs dispatched; ALL 55 LANDED, none in flight.** **BEARFULL (ordinal 47,
+§"BEARFULL") LANDED 2026-08-27** — the merge inequality's real theorem is a
+**SHORT-CYCLE LAW** (`girth(Q) ≥ 6`, so every cycle of length `≤ 6` forces
+`δ = 0`), which **CONTAINS** (BE-32)(ii)/(iii) — **weakening** the latter's
+hypothesis — and proves **(BE-32)(+) at 196 043 of 203 723** forced pairs;
+**`δ = 0` is an EQUIVALENCE RELATION** by a supermodularity/join lemma; **(b2) is
+a COROLLARY of (b1)**, so the ear case's (β) side loses a clause; and the
+**coordinator's ear-decomposition routing hypothesis is REFUTED BY A THEOREM** —
+every minimum-degree-`≥ 3` graph forces a single-edge ear, so the chord gap sits
+exactly at the R-nodes it was meant to retire. **S-mark's pin STANDS.** **BEARCASE (ordinal 46,
 §"BEARCASE") LANDED 2026-08-27 — HIT shape 2: (α) IS CLOSED.** The greedy's last
 step is a **complete criterion** (the 2-step lemma), its bad case is non-empty
 but a **scheduling artifact**, and a **reordering plus a slide** removes it — so
@@ -6167,3 +6171,106 @@ exist yet.
 BEARFULL"): §(K-bare-ext) **extends**, no new section; labels
 **(BE-39)–(BE-43)**, ***Steps BE38–BE42***; **(BE-39)** and ***Step BE38*** are
 the tail BEARCASE returned unconsumed. Return any unconsumed remainder.
+
+### BEARFULL — landing write-up (LANDED 2026-08-27, recon-opus, one serial coordinator commit)
+
+**Verdict: HIT shape 3 — a routing verdict that re-ranks the board, and it is a
+clean NO — carrying shape 2's job-2 half outright.** `PencilPair K 3 G`,
+`hbareSplit`, (BE-14)-for-all-`G`, the 2-cut step and S-mark are all untouched;
+**not a PENCIL event**. Reservation **fully consumed**, nothing returned:
+**(BE-39)–(BE-43)**, *Steps BE38–BE42*; tail now **(BE-44) / Step BE43**.
+
+**THE COORDINATOR'S ROUTING HYPOTHESIS IS REFUTED — by a one-line theorem, which
+is the best possible outcome for a labelled guess.** The spec asked whether an
+open ear decomposition makes the ear case *itself* the induction step, retiring
+the internal R-node. Answer: **no**, and the chord gap the spec flagged as (i)
+turns out to be **fatal and located exactly at the R-nodes it was meant to
+retire**. **(BE-43)(i):** in a **chord-free** open ear decomposition the last ear
+receives no later attachment, so its interior vertices have degree exactly 2 —
+hence **chord-free ⟹ `G` has a degree-2 vertex**, i.e. **every minimum-degree-`≥ 3`
+graph, every 3-connected block, every R-node forces a single-edge ear in EVERY
+open ear decomposition**. Coordinator-verified by hand, and its counting shadow
+(`m ≤ 2n − girth`) checked to be **strictly weaker** — it excludes `K₄` but not
+the prism, which the theorem does. Swept: **2 084 3-connected graphs, ZERO
+chord-free**. **S-mark's pin stands, for a NEW reason** — not because S-all's
+cross-pair gap is unclosed (it still is) but because the ear route does not
+escape it and **adds a second gap**, both localising at the R-node.
+
+**Two partition-lattice laws the arc had never extracted, and they are the
+landing's real content.** **(BE-39)(i), the quotient sparsity law:** merging *any*
+set `S` of parts of an optimal partition is a competitor, so
+`5 e_Q(S) ≤ 6(|S|−1)` — giving `Q` **simple** and **`girth(Q) ≥ 6`**, with the
+6-cycle **tight**. **(BE-39)(ii), the join lemma:** `g` is **supermodular** on the
+partition lattice, so optimal partitions are closed under join, there is a unique
+coarsest `P_max`, and **`δ_uv = 0 ⟺ u,v` share a block of `P_max`** — i.e.
+**`δ = 0` is an EQUIVALENCE RELATION**. Coordinator-verified: I re-derived the
+sparsity law from the merge inequality (the `|S| = 2…6` table reproduces exactly,
+including the tight 6-cycle) and checked both halves of the supermodularity
+argument, including the `#components ≥ #vertices − #edges` count on the
+block-intersection bipartite graph.
+
+**The SHORT-CYCLE LAW, which contains two landed theorems and weakens one.**
+A cycle's crossing edges form a closed walk of **distinct** `Q`-edges, hence an
+even subgraph, hence contain a `Q`-cycle of length `≥ 6`: **crossings are `0` or
+`≥ 6`**, so **every cycle of length `≤ 6` forces `δ = 0`**, and
+`δ ≤ max(0, L−6)` in general — **strictly better than (BE-32)(iv)'s `δ ≤ dist`
+for every `L ≤ 11`**. (BE-32)(ii) is the `L = 3` case; **(BE-32)(iii) is `L = 4`
+and its hypothesis WEAKENS from `≥ 3` to `≥ 2` common neighbours** (61 770
+newly-covered pairs, 0 with `δ ≠ 0`). Nothing is refuted — a landed theorem is
+**strengthened**. Coordinator-verified including (iii)'s `k ≤ r` step (a closed
+walk of length `r` visits at most `r` vertices).
+
+**Job 1: MEASURED → PROVED at 96.2 %, with the boundary EXACT rather than
+guessed.** The closure operator is **named** (`bimage.forced_same_plane`, the
+aggressive one, which over-claims forcing — so a theorem for it holds a
+fortiori). **401 489 of 401 544** forcing steps and **196 043 of 203 723** forced
+pairs are proved with no measurement, including **100 % of the exhaustive
+`n ≤ 6` tier** — every SPREAD step appears only in the sampled tiers. The residue
+is one geometry-free statement, and the boundary is not an artifact: **a 7-cycle
+of `Q` has slack `−1`**, so the merge inequality provably cannot pass 6, and a
+named triangle-chain family exhibits genuine spread steps at cycle length 7 and 8
+(with `δ = 0` at every member anyway).
+
+**Job 2 is discharged outright, in one line.** `Π_u ⊆ Z`, so
+`dim(ρ̄₁∩Z) ≤ dim Z − 2 + min(dim(ρ̄₁∩Π_u), dim(ρ̄₁∩Π_v))` — the same cancellation
+(BE-36) used to refute (β) as stated. Hence **(b1) ⟹ (b2)** at `δ₁ ≥ 5`, and
+`ρ̄₁ ∩ Π_u = 0` at either end gives it at every `δ₁`. **(b2) stops being an
+independent clause**, so the ear case's (β) side is down to **one**.
+
+**Citation discipline, which this spec put live.** Whitney, *Non-separable and
+planar graphs*, Trans. Amer. Math. Soc. **34** (1932), no. 2, 339–362 — author,
+year, title, journal, volume and pages verified against the AMS primary listing,
+and the theorem written as **classical with no section number asserted**, which
+is what `CLAUDE.md` asks for when a pointer cannot be verified. The coordinator
+deliberately asserted no pointer in the spec.
+
+**Coordinator verification.** `validate` re-run to completion (346 s at the
+reduced tier), then the **full** tiers of `merge`, `cycles`, `forced` and
+`eardec` — every figure reproducing exactly, including the girth histogram
+(`forest: 28 572, 6: 61`) and the 0-SPREAD-steps-at-`n ≤ 6` column that makes the
+96.2 % claim honest. **Three arguments re-derived independently**: the sparsity
+law's `|S|`-table, the ear-decomposition degree-2 theorem with its counting
+shadow, and the short-cycle bound's `k ≤ r` step.
+
+**F25 bar, read off the shipped driver:** eight modes; every mode `assert`s its
+proved laws so a violation stops the run; `optimal_partitions` cross-checks its
+lattice enumeration against `exact_deficiency`'s packing oracle **on every
+call**; `def3_fast` cross-checks `def3_multi` against `exact_deficiency` at every
+`|V| ≤ 13` call; `forcing_derivation` **asserts** it reproduces
+`forced_same_plane`'s pair set exactly. **Ten caps disclosed**, the load-bearing
+one being that (BE-41)(ii) reads *"no escape found under this cap"*, never *"none
+exists"*. **Self-disclosed loose end:** a more extreme spread-step probe at
+`n = 21` was built in scratch and **did not complete** (recursion depth and a
+`2²¹` subset table); it is **not** in the shipped driver and backs no claim.
+
+**Ranked successors, this pass's own order.** (1) **(b1) sharpened to
+`ρ̄₁ ∩ Π_u = 0`**, which now discharges two of the three clauses at once;
+(2) the **spread step**, the last 3.8 % of (BE-32)(+) — pure graph theory, 55
+known instances, and the merge inequality is *known* not to reach it; (3) the
+**internal R-node**, which job 3 **confirms** on the critical path, now with a
+local alternative coordinate (the **chord step**, whose combinatorial half
+(BE-43)(ii) is already free); (4) BTWOCUT's bundle proof, still skipped.
+
+**TERMINATION: E1 NO, E2 NO** — a landed hypothesis is weakened and a landed
+bound improved, which is the strengthening shape E2 does not fire on.
+**E3 ARMED by GBAL, not fired.**

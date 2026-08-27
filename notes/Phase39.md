@@ -9,29 +9,29 @@ derives it from exactly **three carried items**: **`hcontract`** (W4 — build p
 (L0–L7), with **`hsplit` CLOSED IN FULL** and `hfresh`'s counting discharge landed
 (2026-07-30).
 
-**The kernel-(K) research arc: 54 directions COMPLETE** (2026-08-05 → 08-27, ordinals
-1–46), plus eight strategy-only passes and two architecture probes; **BEARFULL (ordinal 47)
-is IN FLIGHT**.
+**The kernel-(K) research arc: 55 directions COMPLETE** (2026-08-05 → 08-27, ordinals
+1–47), plus eight strategy-only passes and two architecture probes; **nothing is in flight**.
 **Per-direction verdicts, specs and landing write-ups are NOT restated here** —
 each direction has one at `notes/Pencil-fanout.md` §"<CODE>" (ordinals 1–19:
 `notes/Pencil-fanout-archive.md`) and a canonical mathematical home in the workbooks.
-**The arc's standing result, unchanged by all 54: `hK` is not closer.** **(GR-15)** — the
+**The arc's standing result, unchanged by all 55: `hK` is not closer.** **(GR-15)** — the
 single open gap the whole §(K-grid) chain reduces to — is **untouched**; **class uniformity
 of the escape is untouched**; no g-flank was found by any direction; **E3 is ARMED (by
 GBAL) and has never fired**.
 
-**IN FLIGHT — direction BEARFULL** (ordinal 47, `recon-opus`, dispatched 2026-08-27) at the
-ear case's **last two items** — **(BE-32)(+)** as a theorem (*a graph that forces `π_u = π_v`
-has `δ_{uv} = 0`*, the single named residue; two of three mechanisms already proved) and
-**(b2)** for a general piece — plus a **coordinator-raised ROUTING question**: whether an
-**open ear decomposition** makes the ear case *itself* the induction step, which would retire
-the **internal R-node** from the critical path. BEARCASE had already **closed (α)** (reach
-formula PROVED for `m ≥ 3`). Spec: `notes/Pencil-fanout.md` §"BEARFULL".
-**SCHEDULED, NOT DEFERRED AGAIN: the (K-res) scoping slice is the NEXT dispatch after this
-one.** It is a **user-selected** item (2026-08-26) and this is its **fourth** deferral; the
-coordinator is committing it to the next slot rather than deferring it indefinitely. This is
-the **EIGHTH** consecutive direction in §(K-bare-ext); **(ZH-2)** and **(BE-23)(ii)** also
-stand unpicked.
+**NEXT CONCRETE TASK — the (K-res) SCOPING SLICE, and it is DUE NOW.** It is a
+**user-selected** item (2026-08-26) that the max-impact directive has deferred **four** times;
+the coordinator committed it to this slot at the BEARFULL prep and **that commitment stands**.
+One direction: *does (GR-15)/§(K-grid) transport to the `W19`-type (K-res) habitat?*
+
+**AFTER IT, on the (BE-14) side** (BEARFULL's own ranking): **(1) (b1) sharpened to
+`ρ̄₁ ∩ Π_u = 0`** — it now discharges **two** of the three clauses of the ear case's (β) side,
+since **(b2) is a COROLLARY of (b1)** ((BE-42)); **(2) the SPREAD STEP**, the last 3.8 % of
+(BE-32)(+), pure graph theory with 55 known instances and the merge inequality **known** not
+to reach it; **(3) the INTERNAL R-NODE**, which BEARFULL **confirms** on the critical path by
+refuting the ear-decomposition route. BEARFULL's other results — the **short-cycle law**
+(every cycle of length `≤ 6` forces `δ = 0`, containing (BE-32)(ii)/(iii) and **weakening**
+the latter) and **`δ = 0` as an equivalence relation** — are in *Hand-off*, not restated here.
 
 **On a future HIT: the phase-boundary consequences are the USER's call** —
 whether Phase 39 closes and a successor opens for the Lean is a
@@ -39,22 +39,12 @@ whether Phase 39 closes and a successor opens for the Lean is a
 adjudication, surfaced with a commit-count estimate, never taken unilaterally;
 the 2026-08-05 Lean hold binds regardless of how good the news is.
 
-**Conventions.** Direction codes are multi-letter and topic-tagged from the
-fifth fan-out on (`notes/Pencil-labels.md` (L5)); grandfathered single letters
-are re-used across dates, so **always date those**. The doc-split and
-discipline-distillation rounds are both COMPLETE (`notes/Pencil-structure.md`;
-`RESEARCH-ARC.md` is the promoted manual). Both architecture probes are landed
-(KBARE-FALSIFY, C3-AVOID). File layout: `Molecule/Pencil.lean` split into
-`Molecule/Pencil/{Statement,Arms,Motive,Chart,Engine,Reseed,Witness,Steer,Pair,
-Pair2,Escape,Base}.lean`; per-leaf history `notes/Phase39-design.md`.
-
-**Canonical homes — read these, not a summary of them.** The **State of (K)**
-gap map in `notes/Pencil-informal.md` is the phase's status object and is
-authoritative for every status word; `notes/Pencil-informal-grid.md` owns
-§(K-grid); `notes/Pencil-strategy.md` owns the option board (§8) and the
-unpriced §9 shelf **(ZH-1)–(ZH-6)**, which stays ineligible;
-`notes/Pencil-fanout.md` owns dispatch specs and landing write-ups;
-`notes/Pencil-adjudications.md` owns the archived verbatim user calls.
+**Conventions and canonical homes — RELOCATED 2026-08-27** to
+`notes/Pencil-structure.md` §"Conventions and canonical homes" (verbatim: direction-code
+rules, file layout, and which doc owns which content). **Read it once per session**; the
+one line that must stay here is that the **State of (K)** gap map in
+`notes/Pencil-informal.md` is the phase's status object and is **authoritative for every
+status word** — read it with `python3 notes/gapmap.py`, never `sed`/`grep`.
 
 ## Current state
 
@@ -216,12 +206,17 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
   `notes/Pencil-structure.md` §"Slice 6"). **The gate is MECHANICAL** —
   `notes/check-phase-note.py` caps this note at **580 lines / 525 status-header words** and
   fails if *Decisions made* outgrows the forward sections. **Live watch, measured at the
-  BEARCASE landing: 572/580 lines, 492/525 words.** That landing compressed *Decisions made*
-  before it wrote — the 2026-08-25 fable run, GHWIT/GMINM/OGEOM, and the two probes each
-  folded into one grouped entry — and the **same move is the next landing's first step**;
-  their canonical homes are `notes/Pencil-fanout.md` + the workbooks. A landing's entry is
-  **one line**; the (BE-14) thread's five prose entries are the standing exception, and the
-  oldest of them demotes when the thread's next direction lands.
+  BEARFULL landing, AFTER the relocation: 573/580 lines, 468/525 words.** **COMPRESSION HAD RUN OUT and RELOCATION
+  was done instead — 2026-08-27, at this landing.** Three consecutive landings had each
+  compressed *Decisions made* with real deletions and each recovered only 2–5 lines, because
+  the note is **forward-weighted and the forward part is what grew**; a fourth fold would have
+  been theatre. The `**Status:**` header's *Conventions* and *Canonical homes* paragraphs were
+  **stable reference, not status**, so they moved **verbatim** to `notes/Pencil-structure.md`
+  §"Conventions and canonical homes", leaving a pointer plus the one line that genuinely is
+  status. The caps were **NOT** bumped and nothing was deleted. **Next time this binds, the
+  question is again "what here is reference rather than status?"** — not another fold. A
+  landing's entry stays **one line**; the (BE-14) thread's four prose entries are the standing
+  exception, and the oldest demotes when the thread's next direction lands.
 - The full biconditional transport (design doc's W0 pin) is landed only as its two forward
   implications; the reverse arms need a `complementIso` involution lemma, not in tree —
   deferred, **off every critical path** (§(K-σ) *Step σ6*).
@@ -248,19 +243,20 @@ then **PROVED (α)** — the reach formula holds for `m ≥ 3` — **refuted (β
 stated** and **collapsed its quantifier**, leaving one residue.
 **BEARCASE's ranked successors, which supersede BIMAGE's:**
 
-1. **(BE-32)(+) as a theorem** — *a graph that forces `π_u = π_v` has
-   `δ_{uv} = 0`*. The **single named residue** of the ear case on the (β) side:
-   everything else reduces to generic-position statements about one piece, and
-   **two of its three mechanisms are already proved** ((BE-32)(ii)/(iii), a common
-   triangle and `≥ 3` common neighbours). Still MEASURED only — 208 418 instances
-   under the **aggressive** closure, which over-claims forcing, so an empty sweep
-   is the stronger statement but not an argument.
-2. **(b2) for a general piece** — the middle clause of (BE-37)(ii)'s reduction.
-3. **The internal R-node** ((BE-31)(ii)) — the step from ear to general piece;
-   (BE-25)(iii) closes the **leaf** R-node only, and BEARCASE's independent
-   sampler now reaches R-node pieces.
+1. **(b1) sharpened to `ρ̄₁ ∩ Π_u = 0`** — it discharges **two** of the three
+   clauses at once, since **(b2) is now a COROLLARY of (b1)** ((BE-42)); the
+   mechanism is named in (BE-42)(iii).
+2. **The SPREAD STEP** — *every aggressively-forced pair lies in one `≤6`-cycle
+   class*, the last **3.8 %** of (BE-32)(+) (55 known instances). Pure graph
+   theory, and the merge inequality is **known** not to reach it: a 7-cycle of
+   `Q` has slack `−1`, so a successor needs a different tool or a restricted
+   closure operator.
+3. **The internal R-node** ((BE-31)(ii)) — **confirmed** on the critical path by
+   BEARFULL's refutation of the ear route; (BE-25)(iii) closes the **leaf**
+   R-node only. New local coordinate: the **chord step** (*(BE-14) + clause for
+   `G` ⟹ for `G + uv`*), whose combinatorial half **(BE-43)(ii)** is already free.
 4. BTWOCUT's successor (2), the **bundle-construction proof** — (BE-29)(ii) from
-   rung to theorem, reaching `DZ` / `spider(5,5,5)+c`. Skipped twice.
+   rung to theorem, reaching `DZ` / `spider(5,5,5)+c`. Skipped three times.
 
 Also ranked, unchanged: BTWOCUT's cross-pair closure ((BE-28)(i), motive economy
 only — S-mark closes) and the point-side flat law (**priced NOT cheap**); and from
@@ -273,9 +269,8 @@ Also unclaimed, from BZAVOID's own successor ranking: a **flat-star dictionary**
 re-prove `molecular_finrank_motions_eq_square_ker`'s surjectivity under a hypothesis
 admitting coplanar stars, which would revive route 2 (§(K-bare-ext)).
 
-**THEN — the (K-res) SCOPING SLICE, and it is now SCHEDULED rather than deferred:
-it is the NEXT dispatch after BEARFULL.** Deferred four rounds by the max-impact
-directive; a user-selected item, so the coordinator is committing it to a slot. One direction: *does (GR-15)/§(K-grid) transport to
+**THE (K-res) SCOPING SLICE IS THE NEXT DISPATCH** — deferred four rounds by the
+max-impact directive, committed to this slot at the BEARFULL prep, and **due now**. One direction: *does (GR-15)/§(K-grid) transport to
 the `W19`-type (K-res) habitat?* This is the
 user's 2026-08-26 adjudication (offered the full wave, the cheap scoping slice,
 or a re-deferral, they chose the **scoping slice**), and it retires the stale
@@ -433,8 +428,16 @@ section named; its *spec and landing write-up* in `notes/Pencil-fanout.md` §"<C
 `notes/Pencil-adjudications.md`; the derivation in git. **Do not grow these back into
 paragraphs.**
 
-The (BE-14) thread the next task sits on — five entries, kept at prose length:
+The (BE-14) thread the next task sits on — four entries, kept at prose length:
 
+- **BEARFULL** (47, 2026-08-27, opus) — the merge inequality's real theorem is a **SHORT-CYCLE
+  LAW**: `girth(Q) ≥ 6`, so **every cycle of length `≤ 6` forces `δ = 0`** and
+  `δ ≤ max(0, L−6)` — **containing** (BE-32)(ii)/(iii) and **weakening** the latter to `≥ 2`
+  common neighbours; **`δ = 0` is an EQUIVALENCE RELATION** (supermodularity + join).
+  **(BE-32)(+) PROVED at 196 043/203 723** forced pairs, residue geometry-free with an
+  **exact** boundary. **(b2) a COROLLARY of (b1)**. The coordinator's **ear-decomposition
+  route REFUTED by a theorem** — min-degree-`≥ 3` forces a chord — so **S-mark's pin STANDS**
+  and the internal R-node is **confirmed** on the critical path. §(K-bare-ext) *BE38–BE42*.
 - **BEARCASE** (46, 2026-08-27, opus) — **(α) CLOSED**: the greedy's last step is a complete
   criterion (**the 2-step lemma**), its bad case a **scheduling** artifact, and a
   **reordering + slide** removes it ⟹ **the reach formula is PROVED for `m ≥ 3`**
@@ -450,17 +453,15 @@ The (BE-14) thread the next task sits on — five entries, kept at prose length:
   refuted path-intersection bound, residue the **internal R-node**; three merge-inequality
   theorems + `δ ≤ dist` empty at 542 893. **Ear case REDUCED, not proved.** §(K-bare-ext)
   *BE29–BE33*.
-- **BTWOCUT** (44, 2026-08-26, opus) — strengthened statement **PINNED** (S-mark closes,
-  S-all does not), simultaneity worry **VACUOUS**, leaf base free, BINDUC's 56 ear misses
-  cleared as a constructor artifact, general-position half **dissolved on everything
-  swept**; **(BE-14) NOT proved**, reduced to one geometric sentence. §(K-bare-ext)
-  *Steps BE24–BE28*.
-- **BINDUC** (42, 2026-08-26, opus) — **3-connected ⇒ `def₂ = 0`**, so the induction's
-  **base is FREE**; BZAVOID's 2-cut `− 6` **REFUTED**, replaced by an exact `max`-law;
-  (BE-14) proved at 5 824 further graphs; the general new-cap mechanism fires empty,
-  **scope-correcting (BE-15)(ii)** to the triangle mechanism only. §(K-bare-ext) *BE19–BE23*.
+- **BTWOCUT** (44, 2026-08-26, opus) — strengthened statement **PINNED** (S-mark), simultaneity
+  **VACUOUS**, leaf base free, BINDUC's 56 ear misses a constructor artifact; **(BE-14) NOT
+  proved**, reduced to one geometric sentence. §(K-bare-ext) *Steps BE24–BE28*.
 
 Settled, one line each:
+
+- **BINDUC** (42, 2026-08-26, opus) — **3-connected ⇒ `def₂ = 0`**, so the induction's **base
+  is FREE**; BZAVOID's 2-cut `− 6` **REFUTED** for an exact `max`-law; **(BE-15)(ii)
+  scope-corrected** to the triangle mechanism. §(K-bare-ext) *BE19–BE23*.
 
 - **BZAVOID** (40, 2026-08-26, opus) — falsification arm **EMPTY BY AN ARGUMENT** ((BE-15));
   the pencil stratum **IS** the planar-atom molecular stratum, so (BE-14) is **existential**
@@ -513,12 +514,9 @@ Settled, one line each:
   condition WRONG INVARIANT, dominance HOLDS but NOT a route; **(K-slide-comb) REFUTED**.
 
 - **Pre-fan-out arc, one-lined (2026-07-24 → 08-04; full detail `Phase39-design.md` + git)**:
-  W0–W3/W5 CLOSED `hsplit` IN FULL and isolated kernel **(K)** (route-1 locality REFUTED);
-  corank stratification fixed to **(K-tight)**, W4 decomposed and (K-bare-ext) NO-GO'd,
-  setting this phase's standing adjudications (quoted in *Current state*); 2026-08-02
-  priced the kernel-widening to **(K-res)** and REFUTED **(SAFE-RES)**/`hnoGood'` vacuity;
-  (K-tight) re-pinned against KT pp. 684–691; 2026-08-04 proved (K-slide) (S1) and closed
-  (K-pitch) at θ(3,3,6).
+  W0–W3/W5 CLOSED `hsplit` IN FULL and isolated kernel **(K)**; corank fixed to **(K-tight)**,
+  W4 decomposed, (K-bare-ext) NO-GO'd, the standing adjudications set; **(K-res)** priced and
+  **(SAFE-RES)**/`hnoGood'` vacuity REFUTED; (K-slide) (S1) proved, (K-pitch) closed.
 
 - **Promoted out of this phase** (pointers only): TACTICS-GOLF §11/§22/§23; TACTICS-QUIRKS
   §46/§96/§99–§104; FRICTION `exists_injOn_mapsTo_of_ncard_le` + `extensor_pair_smul`

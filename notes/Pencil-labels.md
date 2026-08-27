@@ -1952,7 +1952,7 @@ that per-direction history for *Steps BE14–BE33* is the workbook's, not the
 cell's.
 
 
-## Reserved namespace — direction BEARFULL (2026-08-27, **IN FLIGHT**)
+## Reserved namespace — direction BEARFULL (2026-08-27, **USED — the direction landed the same day; all five labels and all five steps consumed, none returned**)
 
 **Reserved 2026-08-27 for the single direction BEARFULL** (ordinal 47, the arc's
 fifty-fifth direction; `notes/Pencil-fanout.md` §"BEARFULL"), the **eighth
@@ -1984,6 +1984,25 @@ verdict is the framing RESEARCH-ARC §7 forbids).
 landing (current-state paragraph, **1 130 / 1 600** words, 470 of headroom), so
 this landing may fold its clause in normally. The next *full* recompute is not
 due until that headroom is spent.
+
+**Consumed at landing (2026-08-27), NOTHING RETURNED:** *Steps BE38–BE42* and
+**(BE-39)–(BE-43)** — (BE-39) the quotient sparsity law and the join lemma,
+(BE-40) the short-cycle law, (BE-41) (BE-32)(+) proved at 96.2 % with its exact
+boundary, (BE-42) (b2) as a corollary of (b1), (BE-43) the ear-decomposition
+routing verdict. Driver `w4/bearfull.py` **shipped** (eight modes). The tail is
+**(BE-44)+ / Step BE43+**.
+
+**The headroom the note above allotted is SPENT, and the lesson is recorded
+rather than just the number.** The coordinator's first draft of this landing's
+gap-map edit was a **374-word dated clause** — *"Since Steps BE38–BE42 (BEARFULL,
+…)"* — i.e. **exactly the changelog shape the BEARCASE recompute had just removed
+from this row**, and it took the cell to 1 504 / 1 600. It was discarded and the
+content **INTEGRATED** into the existing current-state sentences instead (the
+merge-theorem sentence became the short-cycle law; the residue sentence absorbed
+the 96.2 % result; the routing verdict joined the closed-routes list), landing at
+**1 402 / 1 600**. **A recompute does not hold if the next landing appends** —
+integrate, and treat "may fold its clause in normally" as licence to *edit
+sentences*, not to add one.
 
 ## Registry — `notes/Pencil-informal.md` (the (K) workbook)
 
