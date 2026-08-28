@@ -1,7 +1,16 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: EIGHT fan-outs, TWENTY-FIVE single directions and TWO concurrent
-pairs dispatched; ALL 55 LANDED, none in flight.** **BEARFULL (ordinal 47,
+**Status: EIGHT fan-outs, TWENTY-SIX single directions and TWO concurrent
+pairs dispatched; 55 LANDED, and RESGRID (ordinal 48, §"RESGRID") is IN
+FLIGHT.** **RESGRID PREPPED 2026-08-28** — the **(K-res) scoping slice**, a
+user-selected item deferred four rounds and committed to this slot at the
+BEARFULL prep: *does (GR-15)/§(K-grid) transport to the `W19`-type (K-res)
+habitat?* It is a **scoping slice, not the wave** — the wave stays a user call —
+and its deliverable is a **hypothesis audit** of the chain from (AC-6) through
+(GR-15) to (GR-16)–(GR-19), one row per named result. The sentence under test is
+the gap map's own *"same difficulty class, same stratum, so one uniform gap
+serves both"*, asserted since the 2026-08-02 route-3(b) adjudication and never
+proved. **BEARFULL (ordinal 47,
 §"BEARFULL") LANDED 2026-08-27** — the merge inequality's real theorem is a
 **SHORT-CYCLE LAW** (`girth(Q) ≥ 6`, so every cycle of length `≤ 6` forces
 `δ = 0`), which **CONTAINS** (BE-32)(ii)/(iii) — **weakening** the latter's
@@ -6274,3 +6283,237 @@ local alternative coordinate (the **chord step**, whose combinatorial half
 **TERMINATION: E1 NO, E2 NO** — a landed hypothesis is weakened and a landed
 bound improved, which is the strengthening shape E2 does not fire on.
 **E3 ARMED by GBAL, not fired.**
+
+## RESGRID — forty-eighth ordinal, the fifty-sixth direction (single dispatch, prepped 2026-08-28)
+
+**Selection provenance: a USER-SELECTED item, deferred four rounds, committed to
+this slot at the BEARFULL prep.** On 2026-08-26 the user was offered the full
+(K-res) wave, this cheap scoping slice, or a re-deferral, and chose the
+**scoping slice**; the coordinator then bound it to the next slot rather than
+let a fifth max-impact pick displace it. Dispatched **un-named, single**, at
+**`recon-fable`** — all rungs are available this session, and the verdict prices
+a **carried item** and either grounds or corrects a standing claim of the
+phase's **status object**, which is the playbook's top-rung trigger.
+
+**THIS IS A SCOPING SLICE, NOT THE WAVE — and the distinction is the spec.**
+`notes/Pencil-strategy.md` §8's board prices the (K-res) attack as *"wave-sized;
+a user call"*, and **it stays a user call**. This direction does **not** attack
+(K-res). Its entire job is to determine **what attacking it would cost**, by
+auditing whether §(K-grid) — the arc's largest single body of work, 14 924
+lines, *Steps G0–G148*, (GR-1)–(GR-128) — is **reusable** on the (K-res)
+habitat or has to be rebuilt from the colouring layer up.
+
+**The question, in one sentence:** *does (GR-15)/§(K-grid) transport to the
+`W19`-type (K-res) habitat?*
+
+### Four coordinator-verified facts, each read out of a named file at prep time
+
+Stated so the dispatch **checks** them rather than re-derives them; if one is
+wrong, say so — that is a finding, not a detour.
+
+1. **(K-res) is `hK`'s statement verbatim with one hypothesis swapped.**
+   `notes/Pencil-W4-informal.md` §"widened kernels (routes 1/3)" *Step 4*: the
+   minimal honest form is `hK`'s statement with **`hnoRigid` ↦
+   `PencilNondegFeasible K G`**. Same conclusion object, **disjoint** habitats,
+   and route 3 packaging (b) carries it as a *byte-identical sibling*. So the
+   transport question is **entirely about the proof route** and never about the
+   statement — and that same section already says which piece of the route dies:
+   *"the (K) stratification's cheap branch"* (*Step 2*).
+2. **§(K-grid) is scoped to the TIGHT stratum, explicitly and in its own
+   title** — *"the tight-stratum grid residual"* — and **(GR-15) quantifies over
+   "every tight class shape"** (gap map, (K-grid) *what would close it*). A
+   (K-res) member is **not** a tight class member: §(K-pure) says exactly that
+   of `P21` (*"a (K-res) residual, not a tight class member"*), and (AC-6)
+   records `W19` as *"rigid but **not count-tight**"*.
+3. **The gap map already ASSERTS the transport, without a proof, and that
+   sentence is what is under test.** The *State of (K)* map's own arc paragraph
+   (`notes/Pencil-informal.md`) says (K-tight) *"since the W4 route-3(b)
+   adjudication also carries the whole **(K-res)** residual habitat … same
+   difficulty class, same stratum, **so one uniform gap serves both**"*. But the
+   chain then reduced (K-tight)'s residual to a gap **quantified over tight
+   class shapes**. If fact 2 bites, the umbrella claim and the reduction have
+   quietly come apart and **the phase's status object is wrong** — in which case
+   `RESEARCH-ARC.md` §3's corollary binds: a map correction is presumptively a
+   **body-prose** correction too, so grep the whole file for the same claim
+   rather than fixing the row alone.
+4. **The habitat numbers are already on file, and they are why transport is
+   plausible rather than obviously false.** `notes/Pencil-W4-informal.md`
+   §"widened kernels" *Step 5*: `W19` and `S29` both `s₀ = 2`,
+   `corank(G′) = 3`, **`dim R_a = 1`**, **8/8** escaping seeds each; the pencil
+   rank target attained **108/108** at `W19` and **168/168** at `S29`. And
+   (AC-6)'s grid recipe **reached the target at `W19`, 1/1**. So (K-res) sits in
+   the **same hard `dim R_a = 1` stratum** §(K-grid) attacks, and the one
+   colouring-layer datum that exists there is positive.
+
+### Job 1 (PRIMARY, FORCED) — the hypothesis audit, and it is the deliverable
+
+Walk the chain from **(AC-6)** through **(GR-15)** and on through the
+post-(GR-15) reductions — **(GR-16)** the branch reduction, **(GR-17)** the
+circuit run law, **(GR-18)** the 6-tree packing, **(GR-19)** the collapse-order-4
+certificate — and as far beyond as the later steps actually bear on the
+transport. For **each named result**, record exactly which of these it consumes:
+
+> **count-tightness** · **`s₀ = 0`** · **`hnoRigid`** (vs (K-res)'s
+> `PencilNondegFeasible`) · **both chain ends hubs** · **2-connectivity** ·
+> **`corank(G′) = 1`** (vs (K-res)'s `3`) · **`def = 0`**
+
+**Deliverable: one table, one row per named result, three verdicts only** —
+**TRANSPORTS** (the proof never touches the swapped hypothesis),
+**TRANSPORTS-WITH-A-NAMED-REPAIR** (state the repair and price it), **BREAKS**
+(state the first step that fails and *why*, not that it "might"). A row you
+cannot decide is its own verdict — mark it **UNDECIDED** and say what would
+decide it; an undecided row honestly marked is worth more than a guessed one.
+
+**Do not re-derive the results themselves.** They are settled; this is an audit
+of their *hypotheses*. Cite each by label and step number.
+
+### Job 2 (FORCED) — name the (K-res) residual
+
+From job 1's table, state **(K-res)'s own grid residual** exactly, in one of
+three shapes, and say which:
+
+- **(GR-15) verbatim** — the gap really is habitat-uniform, fact 3's umbrella
+  claim is grounded, and one gap closes both. Then say **what that does to route
+  3's price**: (K-res) stops being a wave and becomes a rider on (GR-15).
+- **A strictly stronger sibling** — (GR-15) with its quantifier widened past the
+  tight class. Then state the sibling, mint it a label, and say whether the
+  §(K-grid) machinery that reduced (GR-15) reduces it too.
+- **A genuinely different gap** — the chain breaks before the residual is
+  reached. Then name where, and name the (K-res)-side residual that replaces it.
+
+**Whichever it is, the gap map moves**: either (K-tight)'s row/arc paragraph
+gains the grounding it currently lacks, or it is **corrected** and (K-res) gets
+its own row. Run `python3 notes/check-gapmap-cells.py` before committing any
+gap-map edit; a new row is fine, a silently-regrown cell is not.
+
+### Job 3 (NOT FORCED) — the two-shape control
+
+A cheap empirical control, and only if job 1 leaves a row that a measurement
+would decide. At the **named** (K-res) shapes — `W19` (`widened.W19`), `S29`
+(`saferes.w29`), and `nt21c3` (`dominance`, already labelled *"a (K-res)
+shape"*) — does an **(AC-6)-admissible colouring exist** and reach **generic
+`dim Z₊ = dim Z₋ = 0` in both blocks**, i.e. the *(GR-15)-shaped* per-shape
+check rather than the target-rank check (AC-6) already ran?
+
+**Reuse before you write.** `gridcol.py` / `gridwit.py` / `gridbal_common.py` /
+`gexist.py` carry the colouring and `dim Z` layer; `widened.py` and `saferes.py`
+build the shapes. **Do NOT run `kslidecomb.shape_ok`** on a (K-res) shape — it
+*is* the class predicate (tight count ∧ `def = 0` ∧ `hnoRigid`) and will reject
+them by construction; that rejection is the discriminator, not a bug.
+
+### COORDINATOR HYPOTHESIS — TO BE TESTED, NOT INHERITED (`RESEARCH-ARC.md` §7)
+
+> *Provenance:* formed at this prep from the file reads recorded above. It rests
+> on **no measurement of its own** and **no workbook result that states it**;
+> the arc has never asked the question, because (K-res) has been a **bar** in
+> eight consecutive specs and was never a target.
+>
+> **The hypothesis: the chain transports as far as the colouring layer, and it
+> is (GR-15)'s own QUANTIFIER — not the geometry — that has to be restated.**
+> Three reasons, each with the stratum its evidence actually comes from:
+> **(a)** (AC-6)'s failure mechanism is *bare odd cycle components* and it is
+> **complete and proven** (`C3…C14` → exactly `[3,5,7,9,11,13]`); `W19` has 5
+> hubs and `S29` has 9, so no hub-carrying (K-res) member can be a bare cycle,
+> and the one obstruction the colouring layer is known to have **cannot bite** —
+> *stratum: (AC-6)'s own proven parity mechanism, plus the single 1/1 `W19`
+> datum*. **(b)** Both habitats sit at `dim R_a = 1` — *stratum: the W4 *Step 5*
+> table, **two** shapes*. **(c)** (GR-16)–(GR-19) are stated on `(G°, ℓ, bits)`,
+> the **contracted hub multigraph** — a purely combinatorial object that a
+> change in `s₀` or `corank` need not touch — *stratum: the statements' own
+> form, no measurement*.
+>
+> **Where the coordinator expects to be wrong, stated up front so it is not
+> discovered as a surprise:** count-tightness looks **load-bearing in the
+> counting layer** — (GR-3)'s two counting obstructions, (GR-22)'s five caps,
+> and above all **(GR-32)'s capacity theorem** (*"the whole graph is exactly
+> critical, every proper chunk has one unit of slack"*), which reads like a
+> tightness statement wearing another name. If the chain breaks, that is where
+> the coordinator expects it. **A clean "does not transport, and here is the
+> first step that fails" is worth as much as a yes** — it converts the board's
+> (K-res) row from an unpriced *"wave-sized"* into a named gap with a cost.
+
+### What counts as a HIT — state which you got
+
+1. **TRANSPORT PROVEN** — the chain carries and (K-res)'s residual is (GR-15)
+   verbatim. One gap then serves both carried obligations; route 3's price drops
+   by a wave. Report the consequence for the board, **do not act on it**.
+2. **TRANSPORT REFUTED, with the break located** — the first failing step named,
+   and (K-res)'s own residual stated. Equally valuable, and it **corrects the
+   status object**.
+3. **A PARTIAL transport with the surviving fraction measured** — e.g. the
+   colouring layer carries, the counting layer does not. State the boundary as a
+   *step number*, not as a mood.
+4. **An obstruction, located** — something in the audit refutes a landed claim.
+   Classify **mandatorily** (§(K-grid)'s own scope / the gap map's umbrella
+   claim / (K-res) / `hK` / the conjecture); **candidate, never refutation**;
+   read the direction-A pivot rule in `notes/Phase39.md` *Current state* first.
+
+### Bars
+
+- **DO NOT ATTACK (K-res).** Even if the audit finds a clean transport, do not
+  then start proving the transported gap — the wave is a **user call** and this
+  slice does not pre-empt it. Scope, price, stop.
+- **`PencilNondegFeasible` is NOT combinatorially certifiable, and (K-res)'s
+  hypothesis IS `PencilNondegFeasible`.** `not_pencilNondegFeasible_of_triangle_two_hubs`
+  refutes feasibility propagation as a proposition for **any** purely
+  combinatorial (`≤3`-closedHubNbhd) criterion (`notes/Phase39.md` *Blockers*).
+  Any repair that proposes to certify the swapped hypothesis combinatorially is
+  refuted before it starts — check a candidate repair against this bullet
+  **before** writing it down.
+- **The counting filters.** **(OC-3)** kills the whole class of counting/matroid
+  routes to (OUT)'s hypothesis and **(OC-37)** closes the other direction; §8's
+  board carries both as sight-kill filters (growing ground-set; counting
+  saturation). Do not propose one as the (K-res) repair.
+- **Route σ is NOT a route to (K-res)** — §(K-σ) obligation 2 and the board row
+  say so outright (the habitat is *unsampled*, `s₀ = 2`). Do not re-propose it.
+- **ZJACOB (JC-6)** — no properness, generic smoothness or transversality from a
+  codimension count, a Jacobian criterion, or Cohen–Macaulayness; **label every
+  dimension count as a count**.
+- **Out of scope:** proving (GR-15) itself; the §(K-bare-ext)/(BE-14) thread
+  (eight consecutive directions, deliberately not this one); the W4 **build**;
+  and **any `.lean`** (2026-08-05 hold).
+
+### Riders
+
+**TERMINATION E1/E2/E3** — **E3 is ARMED (by GBAL)**; report, never fire.
+**F26** — the consumer is W4 **route 3, branch 4**, and the coordinator has
+already traced it (fact 1); do not re-trace it, but do not contradict it either.
+**F11** — a driver per headline sentence; *"every" / "transports" / "the only"*
+needs a driver that **enumerates**, and job 1's verdicts are **audit** claims,
+so their evidence is a **cited step number**, not a measurement — say which is
+which per row. **F27** — any *"this shape fails to reach X"* claim needs
+multiple independent draws and the return says how many; a positive certificate
+needs one. **F25** — verification bar off the **shipped** driver; **every script
+committed** (standing 2026-08-05 user requirement); exact ℚ, seeded with printed
+literals, degeneracy-guarded. **Cap disclosure MANDATORY** — an exhausted cap is
+*"not found under cap C"*, never *"does not exist"*, and the disclosure travels
+with the figure. **Read `notes/scripts/README.md` *Harness debt* before any
+numerics** (four items outstanding; the §2-rule-2 rule binds: record the item
+naming every consumer, do **not** modify the landed file).
+
+### Driver — OPTIONAL, and the spec says so
+
+Job 1 is an audit and may need no new code at all; a prep that forces a driver
+onto a reading task buys nothing. **If** job 3 runs, reuse the grid colouring
+layer and the residual shape builders by **read-only import** rather than
+copying them. If new code is genuinely needed, the pinned path is
+**`notes/scripts/w4/resgrid.py`**. If none is written, say so explicitly and
+discharge figure invariance the standing way (`git diff --name-only -- '*.py'
+'*.m2'` empty **is** the discharge, stated in the commit message).
+
+### Reservation
+
+(`notes/Pencil-labels.md` §"Reserved namespace — direction RESGRID".) A **new
+section §(K-res)** in `notes/Pencil-informal-grid.md` — that workbook owns
+§(K-grid), so colocating the audit minimizes cross-file citation — with tag
+**`RS-`**, tokens **(RS-1)–(RS-12)**, ***Steps RS1–RS10***, driver
+`notes/scripts/w4/resgrid.py`. `RESGRID`, `resgrid`, `§(K-res)`, `(RS-1)`,
+`(RS-2)`, `(RS-9)`, `RS1` and *`Step RS`* each verified **0-hit** as raw
+substrings across `*.md`/`*.tex`/`*.lean`/`*.py`/`*.m2` at reservation time.
+**Return any unconsumed remainder.** Note the deliberate near-miss: `(K-res)`
+alone is a **habitat name** with 139 existing hits, so every citation of the new
+section must carry its `§` — the §(K-bare-ext)-beside-(K-bare) precedent
+exactly. **Checked and NOT chosen:** extending the `GR-` tail (it would mix two
+habitats inside one label family, against the registry's qualify-don't-merge
+rule) and `RESPORT` (names the hoped-for answer, which is the framing
+`RESEARCH-ARC.md` §7 forbids).

@@ -2004,6 +2004,59 @@ the 96.2 % result; the routing verdict joined the closed-routes list), landing a
 integrate, and treat "may fold its clause in normally" as licence to *edit
 sentences*, not to add one.
 
+## Reserved namespace — direction RESGRID (2026-08-28, **IN FLIGHT**)
+
+**Reserved 2026-08-28 for the single direction RESGRID** (ordinal 48, the arc's
+fifty-sixth direction; `notes/Pencil-fanout.md` §"RESGRID") — the **(K-res)
+scoping slice**, a user-selected item (2026-08-26) deferred four rounds and
+committed to this slot at the BEARFULL prep. It is the **first direction ever
+aimed at the (K-res) habitat**, which has been a *bar* in eight consecutive
+specs, and it **breaks the eight-direction run in §(K-bare-ext)**. Coordinator-set,
+single dispatch — **not** a fan-out, so this reservation protects against the
+*existing corpus* only; there are no siblings in flight.
+
+| what | reserved | note |
+|---|---|---|
+| section | **§(K-res)**, new, in `notes/Pencil-informal-grid.md` | that workbook owns §(K-grid), so the audit sits beside what it audits |
+| tag / labels | **`RS-`**, tokens **(RS-1)–(RS-12)** | no `RS-` token has ever been minted in the pencil doc set |
+| steps | ***Steps RS1–RS10*** | first steps the section has had |
+| driver | **`notes/scripts/w4/resgrid.py`** — **optional** | job 1 is an audit and may need no code; job 3 reuses `gridcol`/`gridwit`/`gexist` + `widened`/`saferes` by read-only import |
+| M2 leaf | **none** — not expected, not reserved | a direction that finds it needs one asks the coordinator rather than minting a path |
+
+**0-hit verification, at reservation time.** `RESGRID`, `resgrid`, `§(K-res)`,
+`(RS-1)`, `(RS-2)`, `(RS-9)`, `RS1` and *`Step RS`* were each verified **0-hit**
+as raw substrings, case-insensitively, across `*.md`, `*.tex`, `*.lean`, `*.py`,
+`*.m2`.
+
+**The deliberate near-miss, recorded because clause L1 still binds inside a
+reservation.** `(K-res)` **alone** is a live **habitat name** with **139**
+existing hits across the corpus; only `§(K-res)` is free. So every citation of
+the new section must carry its `§` — the same shape as §(K-bare-ext) sitting
+beside the `(K-bare)` gap-map row, which has held without incident. A bare
+`(K-res)` in the new section's prose still means *the habitat*, as it does
+everywhere else.
+
+**Checked and NOT chosen.** Extending the **`GR-` tail** ((GR-129)+, *Step
+G149*+): it is the mechanically obvious choice and it is wrong here, because it
+would mix **two habitats** inside one label family — the registry's rule is to
+qualify a cross-section citation, not to merge the families. And **`RESPORT`**
+(0-hit): it names the hoped-for answer, which is exactly the framing
+`RESEARCH-ARC.md` §7 forbids in a spec whose whole job is to test a coordinator
+hypothesis.
+
+**Gap-map note — the two rows this verdict can land in have very different
+headroom, and the difference is measured, not guessed.** The natural home is
+**(K-tight)**'s row, which carries the umbrella claim under test (*"one uniform
+gap serves both"*): **297 / 800** status words, ~500 of headroom, so a clause
+folds in normally. But **(K-grid)**'s *close-it* cell — where (GR-15) is stated,
+and therefore where any qualification of its quantifier belongs — sits at
+**959 / 985**: **twenty-six words of headroom**. If the verdict touches it,
+**integrate into the existing sentences, do not append a dated clause** (the
+BEARFULL lesson recorded above), and if that cannot be done, recompute with an
+**explicit target** that leaves room for the landings already queued behind it
+(`RESEARCH-ARC.md` §6) and verify label preservation **by a scripted set-diff,
+never by eye**. Bump a cap only with a dated one-line reason.
+
 ## Registry — `notes/Pencil-informal.md` (the (K) workbook)
 
 Status keywords are pointers to the owning section's verdict block and the

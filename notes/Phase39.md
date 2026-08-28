@@ -10,7 +10,8 @@ derives it from exactly **three carried items**: **`hcontract`** (W4 — build p
 (2026-07-30).
 
 **The kernel-(K) research arc: 55 directions COMPLETE** (2026-08-05 → 08-27, ordinals
-1–47), plus eight strategy-only passes and two architecture probes; **nothing is in flight**.
+1–47), plus eight strategy-only passes and two architecture probes; **RESGRID (ordinal 48)
+is IN FLIGHT**.
 **Per-direction verdicts, specs and landing write-ups are NOT restated here** —
 each direction has one at `notes/Pencil-fanout.md` §"<CODE>" (ordinals 1–19:
 `notes/Pencil-fanout-archive.md`) and a canonical mathematical home in the workbooks.
@@ -19,10 +20,13 @@ single open gap the whole §(K-grid) chain reduces to — is **untouched**; **cl
 of the escape is untouched**; no g-flank was found by any direction; **E3 is ARMED (by
 GBAL) and has never fired**.
 
-**NEXT CONCRETE TASK — the (K-res) SCOPING SLICE, and it is DUE NOW.** It is a
-**user-selected** item (2026-08-26) that the max-impact directive has deferred **four** times;
-the coordinator committed it to this slot at the BEARFULL prep and **that commitment stands**.
-One direction: *does (GR-15)/§(K-grid) transport to the `W19`-type (K-res) habitat?*
+**IN FLIGHT — direction RESGRID** (ordinal 48, `recon-fable`, dispatched 2026-08-28): the
+**(K-res) SCOPING SLICE**, the user-selected item (2026-08-26) the max-impact directive had
+deferred **four** times. *Does (GR-15)/§(K-grid) transport to the `W19`-type (K-res)
+habitat?* — a **hypothesis audit** of the chain, **not** the (K-res) wave, which stays a user
+call. The sentence under test is the gap map's own *"same difficulty class, same stratum, so
+one uniform gap serves both"*, asserted since 2026-08-02 and never proved. Spec:
+`notes/Pencil-fanout.md` §"RESGRID".
 
 **AFTER IT, on the (BE-14) side** (BEARFULL's own ranking): **(1) (b1) sharpened to
 `ρ̄₁ ∩ Π_u = 0`** — it now discharges **two** of the three clauses of the ear case's (β) side,
@@ -202,19 +206,17 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
   queued in *Hand-off*. **(T)/(V)/(E-loc) are slice-sized and need no adjudication; the
   (K-res) WAVE is still a user call.**
 
-- **Doc debt — relief slice LANDED 2026-08-26** (1 500 → 554; record
-  `notes/Pencil-structure.md` §"Slice 6"). **The gate is MECHANICAL** —
+- **Doc debt — relief slice LANDED 2026-08-26** (1 500 → 554), then a **relocation** at the
+  BEARFULL landing (2026-08-27) when compression had run out: the header's *Conventions* /
+  *Canonical homes* paragraphs were stable **reference, not status**, so they moved verbatim
+  to `notes/Pencil-structure.md` §"Conventions and canonical homes". Caps **not** bumped,
+  nothing deleted; record `notes/Pencil-structure.md` §"Slice 6". **The gate is MECHANICAL** —
   `notes/check-phase-note.py` caps this note at **580 lines / 525 status-header words** and
   fails if *Decisions made* outgrows the forward sections. **Live watch, measured at the
-  BEARFULL landing, AFTER the relocation: 573/580 lines, 468/525 words.** **COMPRESSION HAD RUN OUT and RELOCATION
-  was done instead — 2026-08-27, at this landing.** Three consecutive landings had each
-  compressed *Decisions made* with real deletions and each recovered only 2–5 lines, because
-  the note is **forward-weighted and the forward part is what grew**; a fourth fold would have
-  been theatre. The `**Status:**` header's *Conventions* and *Canonical homes* paragraphs were
-  **stable reference, not status**, so they moved **verbatim** to `notes/Pencil-structure.md`
-  §"Conventions and canonical homes", leaving a pointer plus the one line that genuinely is
-  status. The caps were **NOT** bumped and nothing was deleted. **Next time this binds, the
-  question is again "what here is reference rather than status?"** — not another fold. A
+  RESGRID prep by running the gate: 574/580 lines, 496/525 words — SIX lines and TWENTY-NINE
+  words of headroom, and a landing spends more than either.** **Next time this binds, the question is again "what here is reference
+  rather than status?"** — not another fold; three consecutive folds recovered only 2–5 lines
+  each, because the note is forward-weighted and **the forward part is what grew**. A
   landing's entry stays **one line**; the (BE-14) thread's four prose entries are the standing
   exception, and the oldest demotes when the thread's next direction lands.
 - The full biconditional transport (design doc's W0 pin) is landed only as its two forward
@@ -269,15 +271,14 @@ Also unclaimed, from BZAVOID's own successor ranking: a **flat-star dictionary**
 re-prove `molecular_finrank_motions_eq_square_ker`'s surjectivity under a hypothesis
 admitting coplanar stars, which would revive route 2 (§(K-bare-ext)).
 
-**THE (K-res) SCOPING SLICE IS THE NEXT DISPATCH** — deferred four rounds by the
-max-impact directive, committed to this slot at the BEARFULL prep, and **due now**. One direction: *does (GR-15)/§(K-grid) transport to
-the `W19`-type (K-res) habitat?* This is the
-user's 2026-08-26 adjudication (offered the full wave, the cheap scoping slice,
-or a re-deferral, they chose the **scoping slice**), and it retires the stale
-*"pin it when the tight side closes"* deferral — the coordinator hand-off note
-that had sat unresolved in this section since the arc opened — **without**
-commissioning a wave at an `hK`-class kernel. After it, pick the next off the
-target-ordered list below.
+**THE (K-res) SCOPING SLICE IS IN FLIGHT** as direction **RESGRID** (ordinal 48,
+`recon-fable`, dispatched 2026-08-28; spec `notes/Pencil-fanout.md` §"RESGRID").
+It discharges the user's 2026-08-26 adjudication (offered the full wave, the
+cheap scoping slice, or a re-deferral, they chose the **scoping slice**) and
+retires the stale *"pin it when the tight side closes"* deferral — the
+coordinator hand-off note that had sat unresolved in this section since the arc
+opened — **without** commissioning a wave at an `hK`-class kernel. **After it,
+the ranked (BE-14) successors above**, or the next pick off the option board.
 
 **THE CANDIDATE LIST lives in `notes/Pencil-strategy.md` §8 — the option board** (new
 2026-08-20): every live route priced in one place, with the two filters that kill most
