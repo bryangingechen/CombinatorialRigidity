@@ -9,26 +9,24 @@ derives it from exactly **three carried items**: **`hcontract`** (W4 — build p
 (L0–L7), with **`hsplit` CLOSED IN FULL** and `hfresh`'s counting discharge landed
 (2026-07-30).
 
-**The kernel-(K) research arc: 55 directions COMPLETE** (2026-08-05 → 08-27, ordinals
-1–47), plus eight strategy-only passes and two architecture probes; **RESGRID (ordinal 48)
-is IN FLIGHT**.
+**The kernel-(K) research arc: 56 directions COMPLETE** (2026-08-05 → 08-28, ordinals
+1–48), plus eight strategy-only passes and two architecture probes.
 **Per-direction verdicts, specs and landing write-ups are NOT restated here** —
 each direction has one at `notes/Pencil-fanout.md` §"<CODE>" (ordinals 1–19:
 `notes/Pencil-fanout-archive.md`) and a canonical mathematical home in the workbooks.
-**The arc's standing result, unchanged by all 55: `hK` is not closer.** **(GR-15)** — the
+**The arc's standing result, unchanged by all 56: `hK` is not closer.** **(GR-15)** — the
 single open gap the whole §(K-grid) chain reduces to — is **untouched**; **class uniformity
 of the escape is untouched**; no g-flank was found by any direction; **E3 is ARMED (by
 GBAL) and has never fired**.
 
-**IN FLIGHT — direction RESGRID** (ordinal 48, `recon-fable`, dispatched 2026-08-28): the
-**(K-res) SCOPING SLICE**, the user-selected item (2026-08-26) the max-impact directive had
-deferred **four** times. *Does (GR-15)/§(K-grid) transport to the `W19`-type (K-res)
-habitat?* — a **hypothesis audit** of the chain, **not** the (K-res) wave, which stays a user
-call. The sentence under test is the gap map's own *"same difficulty class, same stratum, so
-one uniform gap serves both"*, asserted since 2026-08-02 and never proved. Spec:
-`notes/Pencil-fanout.md` §"RESGRID".
+**LATEST LANDING — RESGRID** (ordinal 48, 2026-08-28), the **(K-res) scoping slice**:
+the §(K-grid) **geometry transports verbatim**, the (K-res) grid residual is **(RS-5)**
+((GR-15)'s criterion, quantifier widened; **proven per-shape at `W19`/`S29`/`NT21c3`**),
+the tight bookkeeping does **not** transport, the deficient fringe is **refuted** ((RS-6)).
+The gap map's *"one uniform gap serves both"* is **CORRECTED**; canonical home **§(K-res)**
+(`notes/Pencil-informal-grid.md`, own gap-map row). **The wave stays a user call.**
 
-**AFTER IT, on the (BE-14) side** (BEARFULL's own ranking): **(1) (b1) sharpened to
+**NEXT, on the (BE-14) side** (BEARFULL's own ranking): **(1) (b1) sharpened to
 `ρ̄₁ ∩ Π_u = 0`** — it now discharges **two** of the three clauses of the ear case's (β) side,
 since **(b2) is a COROLLARY of (b1)** ((BE-42)); **(2) the SPREAD STEP**, the last 3.8 % of
 (BE-32)(+), pure graph theory with 55 known instances and the merge inequality **known** not
@@ -113,8 +111,8 @@ constraints; the **dated dispatch/selection narrative for every ordinal, 1–44,
   rung actually consumes"*; `weekly_all` moves **1–2 points per pair-round**. Nothing
   else in the playbook moves.
 
-**Kernel-(K) research arc — sixty-nine docs+scripts-only dispatches landed across 52
-directions (ordinals 1–44), plus eight strategy-only passes** (2026-08-02 → 08-26) — and,
+**Kernel-(K) research arc — seventy-three docs+scripts-only dispatches landed across 56
+directions (ordinals 1–48), plus eight strategy-only passes** (2026-08-02 → 08-28) — and,
 **outside** that count because they test the architecture rather than the (K) crux, the
 **two probes**, **KBARE-FALSIFY** (2026-08-20) and **C3-AVOID** (2026-08-24), both landed.
 The roll call, ordinals, dates and rungs are `notes/Pencil-fanout.md`'s header and its
@@ -271,14 +269,15 @@ Also unclaimed, from BZAVOID's own successor ranking: a **flat-star dictionary**
 re-prove `molecular_finrank_motions_eq_square_ker`'s surjectivity under a hypothesis
 admitting coplanar stars, which would revive route 2 (§(K-bare-ext)).
 
-**THE (K-res) SCOPING SLICE IS IN FLIGHT** as direction **RESGRID** (ordinal 48,
-`recon-fable`, dispatched 2026-08-28; spec `notes/Pencil-fanout.md` §"RESGRID").
-It discharges the user's 2026-08-26 adjudication (offered the full wave, the
-cheap scoping slice, or a re-deferral, they chose the **scoping slice**) and
-retires the stale *"pin it when the tight side closes"* deferral — the
-coordinator hand-off note that had sat unresolved in this section since the arc
-opened — **without** commissioning a wave at an `hK`-class kernel. **After it,
-the ranked (BE-14) successors above**, or the next pick off the option board.
+**THE (K-res) SCOPING SLICE LANDED 2026-08-28** as direction **RESGRID** (ordinal
+48; spec + landing write-up `notes/Pencil-fanout.md` §"RESGRID"; mathematics
+**§(K-res)**, `notes/Pencil-informal-grid.md`, own gap-map row). It discharged
+the user's 2026-08-26 adjudication and retired the stale *"pin it when the tight
+side closes"* deferral. **The (K-res) wave remains a user call** — the slice
+neither started nor pre-empted it (price, *Step RS9*: reduction free, per-shape
+checks cheap, uniformity machinery to rebuild above the *Step G23* waterline).
+**The next concrete task is the ranked (BE-14) successors above**, or the next
+pick off the option board.
 
 **THE CANDIDATE LIST lives in `notes/Pencil-strategy.md` §8 — the option board** (new
 2026-08-20): every live route priced in one place, with the two filters that kill most
@@ -428,6 +427,13 @@ section named; its *spec and landing write-up* in `notes/Pencil-fanout.md` §"<C
 (`notes/Pencil-fanout-archive.md` for ordinals 1–19); the *user call that picked it* in
 `notes/Pencil-adjudications.md`; the derivation in git. **Do not grow these back into
 paragraphs.**
+
+- **RESGRID** (48, 2026-08-28, fable) — the (K-res) scoping slice: §(K-grid)'s **geometry
+  transports verbatim** and the (K-res) grid residual is **(RS-5)** ((GR-15)'s criterion,
+  quantifier widened; proven per-shape at `W19`/`S29`/`NT21c3`); the tight bookkeeping and
+  the (GR-21)+ program do **not** transport; the deficient fringe refuted ((RS-6), θ(2,3,7)
+  capped at 58 < 59, retiring §(K-clos) *Z6*'s miss as a theorem). *"One uniform gap serves
+  both"* **corrected**; §(K-res) opened with its own gap-map row; wave stays a user call.
 
 The (BE-14) thread the next task sits on — four entries, kept at prose length:
 

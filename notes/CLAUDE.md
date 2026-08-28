@@ -89,7 +89,9 @@ for *organizing* this directory is here.
   next-largest section). Verbatim relocation — same editing discipline as
   the sections that stayed behind; `Pencil-informal.md`'s *Section index*
   points here, and its *State of (K)* gap map (incl. §(K-grid)'s own row)
-  did **not** move.
+  did **not** move. Since 2026-08-28 (direction RESGRID) it also carries
+  **§(K-res)** — the residual-habitat transport audit, at the end of the
+  file — whose gap-map row likewise stays in `Pencil-informal.md`.
 - **`Pencil-labels.md`** — the Phase-39 **label registry and minting rule**: one
   index of every label token in use across the pencil doc set, the measured
   diagnosis of why bare single-letter families collide while topic-tagged ones

@@ -837,7 +837,13 @@ Reproduce: `python3 notes/scripts/w4/widened.py --validate | --witness |
   stratum — but that stratum's escape criterion is now settled and identical
   across the pinned and residual habitats (`notes/Pencil-informal.md`
   §(K-tight) Steps 2/5), so the two
-  kernels share one uniform gap ((K-move)/(K-pitch)).
+  kernels share one uniform gap ((K-move)/(K-pitch)). **Scope note
+  (2026-08-28, direction RESGRID): that kinship is the *escape*-side one.**
+  On the *grid* side the arc's reduced gap (GR-15) does **not** cover
+  (K-res) — the (K-res) grid residual is **(RS-5)** (§(K-res),
+  `notes/Pencil-informal-grid.md`): the §(K-grid) geometry transports
+  verbatim and (RS-5) is proven per-shape at `W19`/`S29`/`NT21c3`, while
+  the deficient fringe is excluded with a mechanism ((RS-6), θ(2,3,7)).
 - **`hbareSplit`** — **unchanged.** Not on routes 1/3's path (Step 0); its
   adjudicated carry stands verbatim. **(K-bare-ext)**, its route-A discharge
   statement, is **REFUTED as stated** since 2026-08-20

@@ -8,7 +8,10 @@ blocks, byte-for-byte as they stood in the parent file. Nothing below is
 re-verdicted, re-worded, or re-derived by the split; it is the same argument in a
 new location. The split fired because this one section had grown to 9 883 lines —
 39% of the parent workbook, six times the next-largest section — and was the
-section three of the seventh fan-out's five directions wrote into.
+section three of the seventh fan-out's five directions wrote into. **Since
+2026-08-28 (direction RESGRID) this file also carries §(K-res)** — the
+residual-habitat transport audit, at the end of the file — because that
+audit's every citation lands in §(K-grid).
 
 **What stayed behind, and why.** The **State of (K)** gap map — the phase's single
 status object, including §(K-grid)'s own gap-map row — stays whole in
@@ -14922,3 +14925,312 @@ pointers, and the successor named (the ledger gap `≥ 3` question).
 **E3** — **ARMED by GBAL and NOT fired**: nothing here touches (a′),
 `d_fg` or input (Y); no rank is computed anywhere. Reported, not fired —
 firing is the coordinator's action.
+
+---
+
+## §(K-res) — the residual-habitat transport audit (direction RESGRID, 2026-08-28): the GEOMETRY of §(K-grid) transports verbatim and the residual is (GR-15)'s criterion with a WIDENED QUANTIFIER — proven per-shape at all three named (K-res) shapes — while the tight BOOKKEEPING ((GR-16)(iv) squareness, (GR-17)(d)'s binding list, (GR-18)(i)'s 6-tree partition, and the whole (GR-21)+ uniformity program) does NOT; the deficient fringe is REFUTED with a mechanism at θ(2,3,7)
+
+**What this section is.** The (K-res) *scoping slice* (spec:
+`notes/Pencil-fanout.md` §"RESGRID"; labels (RS-1)–(RS-6), *Steps RS1–RS10*,
+`notes/Pencil-labels.md`). It audits which hypotheses each named §(K-grid)
+result consumes, against the habitat swap `hnoRigid ↦ PencilNondegFeasible`
+((K-res), `notes/Pencil-W4-informal.md` §"widened kernels (routes 1/3)"
+*Step 4* — `hK`'s statement verbatim with that one hypothesis replaced, same
+conclusion object, disjoint habitats). It does **not** attack (K-res): the
+wave stays a user call. Driver: `notes/scripts/w4/resgrid.py` (exact ℚ/ℚ(i),
+read-only imports of `grid`/`gridwit`/`closure`/`widened`/`saferes`/
+`dominance`; enumeration exhaustive per shape, only the generic-`dim Z`
+draws sampled, `0` draws conclusive by semicontinuity).
+
+### Step RS1 — the habitat, and the seven audited predicates
+
+A (K-res) member is simple, 2-edge-connected, `|V| ≥ 5`, feasible, with a
+usable degree-2 split vertex, and **carries a proper rigid subgraph** (its
+*core*) — so `hnoRigid` fails, `kslidecomb.shape_ok` rejects it by
+construction (the habitat discriminator), and §(K-pure) is explicit that
+such a shape is *"a (K-res) residual, not a tight class member"* (`P21`).
+The three named shapes, `--audit` (every figure asserted):
+
+| shape | `\|V\|` | `\|E\|` | `index` | `def` | core | `f(core)` | hubs | 2ec | `hcard` |
+|---|---|---|---|---|---|---|---|---|---|
+| `W19` (`widened.W19`) | 19 | 22 | 2 | 0 | `C₄` `{c0..c3}` | **2** | 5 | ✓ | ✓ |
+| `S29` (`saferes.w29`) | 29 | 34 | 2 | 0 | `C₄` `{A,m1,B,m2}` | **2** | 9 | ✓ | ✓ |
+| `NT21c3` (`dominance.nt21c3`) | 21 | 24 | 0 | 0 | `C₆` (the two `b`–`c` 3-paths) | **0** | 4 | ✓ | ✓ |
+
+Here `index(G) = 5|E| − 6(|V|−1) = 6c − |E|` with `c` the cycle rank; a
+tight class shape is `index = 0` **and** `hnoRigid`. The audit's seven
+predicates are the spec's: count-tightness · `s₀ = 0` · `hnoRigid` · both
+chain ends hubs · 2-connectivity · `corank(G′) = 1` · `def = 0`.
+
+**Two of the seven are consumed NOWHERE in §(K-grid), and saying so
+corrects the prep's framing.** `s₀ = 0` and `corank(G′) = 1` (and with
+them `dim R_a`) are quantities of the **escape route** — they live at the
+split `G ↦ G′` — while the grid route is a **direct** discharge (Step G0:
+*"no escape route, no split, no inductive hypothesis"*). So the W4 *Step 5*
+numbers (`s₀ = 2`, `corank(G′) = 3`, `dim R_a = 1` at `W19`/`S29`), true as
+they are, are **irrelevant to the grid transport question**: the grid
+neither uses nor sees them. Likewise *both chain ends hubs* is the
+(K-tight) escape-stratum descriptor; the grid chain needs only *hubs
+exist* (no bare-cycle component, (AC-6)'s parity mechanism) — which every
+(K-res) member has. What the grid chain actually consumes of the seven is
+**count-tightness, `hnoRigid` (through 5/6-sparsity and girth ≥ 7),
+`def = 0`, and 2-edge-connectivity** — the first two are exactly what the
+habitat swap removes, and the audit below traces them result by result.
+
+### Step RS2 — (RS-1): the rank identity is habitat-free, and with it (GR-15)'s criterion
+
+> **(RS-1)** *(proven; asserted numerically at 72 matched-parameter draws +
+> 3 exact target points + the θ control, `--rank`/`--theta`)* Let `G` be
+> connected, `col` a legal colouring (all bodies distinct) with **both**
+> ruling classes forests. Then at every parameter assignment
+>
+> > `rank(σ-fixed configuration) = 6(|V| − 1) − dim Z₊ − dim Z₋` .
+>
+> *Proof.* (AC-4)'s eigen decoupling `rank = rank₊ + rank₋` and (GR-1)'s
+> `rank_± = 3|E_∓| + 3n_c^± − 3 − dim Z_±` are both stated and proven with
+> no tightness input (only `H_±` connected, the other class a forest); sum
+> and use `n_c^+ + n_c^- = 2|V| − |E|`. ∎
+>
+> **Corollary (the criterion transports).** At `def = 0` the Tay target
+> `6(|V|−1)` is reached **iff `dim Z₊ = dim Z₋ = 0`** — (GR-15)'s per-shape
+> criterion **verbatim, on any habitat**. At `def > 0` the target needs
+> `dim Z₊ + dim Z₋ = def`, and the sum is `≥ def` always (the σ-fixed locus
+> cannot beat the generic rank). One-point decidability ((GR-7) remark (i))
+> is likewise general: an exact rational draw with both blocks at 0 is a
+> per-shape proof.
+
+### Step RS3 — (RS-2): the slack law — what replaces tight balance
+
+> **(RS-2)** *(a reading of (GR-7), which is general; the identity asserted
+> at every one of the 2 492 passing colouring-blocks of the three shapes,
+> `--dimz`)* At any legal both-forest colouring block,
+> `dim Z = (m − 3h) + dim W` (with `a` absorbed: `a + (M − 3h) = m − 3h`),
+> where `m` is the block's edge count and `h = c(G)` the cycle rank. So
+> `dim Z = 0` **requires `dim W = 3h − m ≥ 0`** — the block must land
+> *exactly* on its slack. Summing, `m₊ + m₋ = |E| = 6c − index` forces the
+> colour split to be **balanced within the index**
+> (`max(m₊, m₋) ≤ 3c`, so `|m₊ − m₋| ≤ index`), which replaces the tight
+> filter's exact-balance clause. At `index = 0` this is (GR-16)(iv)'s
+> square system; at `index = 2` each near-balanced block is rectangular
+> with one unit of slack.
+
+### Step RS4 — (RS-3): the forced core witness, and why rigidity always pays for it
+
+> **(RS-3)** *(proven; the `g ≥ 1` half is a parameter-free combinatorial
+> count asserted at every passing colouring-block of `W19`/`S29` and the θ
+> control, `--dimz`/`--theta`)*
+>
+> **(i) Short cores force interpolation witnesses.** A core circuit `γ` of
+> `G°` whose colour-run count is `< 3` at every admissible colouring — by
+> (GR-17)(a), any circuit with `(L − r) + max h_≠ < 6`, in particular the
+> `C₄` core as a `(2,2)` digon (`runs ≤ 2`) and the `C₅` as a `(2,3)` pair
+> (`runs = 2`) — meets `≤ 2` classes in **both** blocks, so (GR-8) (which
+> transports verbatim) forces `dim W_± ≥ g(γ) ≥ 1` at **every** parameter
+> point. (NC1) is therefore **unsatisfiable** on such a habitat — and that
+> is not fatal, because of (ii).
+>
+> **(ii) Rigidity covers the excess.** For every connected `W ⊆ V`,
+> `def(G) ≥ f(W) − index(G)` (the `W`-rows span `≤ 6(|W|−1)` dimensions,
+> the rest `≤ 5(|E| − |E(W)|)`). So a **rigid** (K-res) member has
+> `f(core) ≤ index` — the count slack of (RS-2) is *always at least* the
+> core's excess, and the forced witness of (i) can sit exactly on the
+> slack: `dim Z = 0` remains arithmetically possible, with
+> `dim W = 3h − m` pinned to the forced value. Measured tight at
+> `W19`/`S29`: min `dim W = 1` over all passing blocks, and `dim Z = 0`
+> attained. At `def > 0` the cover fails by exactly `def`, which is
+> *Step RS8*'s refutation mechanism.
+
+### Step RS5 — job 1: the hypothesis audit, one row per named result
+
+Verdicts: **T** = transports (the proof never touches the swapped
+hypotheses), **T/R** = transports with the named repair, **B** = breaks
+(first failing point named). *Evidence:* **audit** = a cited proof reading
+(step number given), **measured** = a `resgrid.py` figure, both where both.
+
+| result (step) | consumes, of the seven | verdict | evidence |
+|---|---|---|---|
+| (AC-6) recipe + parity mechanism (§(K-clos) *Z6*) | none — the construction and the bare-odd-cycle law are habitat-free | **T** | audit (*Z6* proof); measured (`W19` 1/1 landed; all three shapes here) |
+| (GR-1) spline reduction (*G1*) | rank formula: none (H connected, other class forest); the *target ⟺ Z = 0* clause: count-tightness via balance | **T/R** — repair is (RS-1), which recovers the clause at any `def = 0` habitat | audit (*G1* proof); measured (`--rank`, 72 asserts + 3 exact points) |
+| (GR-2) mono-hub bond (*G2*) | none — one-class star cut geometry | **T** | audit (*G2*) |
+| (GR-3) counting bounds (*G3*) | (a)/(b): none; (c)'s tight-balanced reading: count-tightness | **T** (bounds), the (c) reading re-priced by (RS-2) | audit (*G3* proofs) |
+| (GR-5) chart membership (*G6*) | 2-edge-connectivity + simplicity + `hcard` + degree-2 non-hubs — all present at (K-res) (`--audit`) | **T** | audit (*G6* proof); habitat inputs measured |
+| (GR-7) deficit factorization (*G8*) | none — every parameter point, any legal block | **T** | audit (*G8*); measured (identity asserted at 2 492 blocks) |
+| (GR-8) obstruction family (*G9*) | none | **T** — and its forced core instance is (RS-3)(i) | audit (*G9*); measured (`g ≥ 1` asserted per block at `W19`/`S29`/θ) |
+| (GR-9) tree-triple certificate (*G10*) | vanishing half: none; the *pairwise-unions-are-spanning-trees* equivalence: count-tightness | **T/R** — co-independence form survives; at `index = 2` one complement carries exactly one cycle | audit (*G10* proof) |
+| (GR-10) merged residual (*G11*) | quantifier **and** spanning-tree form: count-tightness + `hnoRigid` | **B as stated** — its (K-res) role passes to (RS-5) with the co-independent form | audit (*G11* statement) |
+| (GR-12)/(GR-13) certificate min-max + hardness (*G14–G15*) | stated at tight balance; the hardness is general a fortiori | not consumed by the (K-res) route | audit |
+| (GR-14) rainbow basis (*G17*) | proof: none; balanced pin-down: count-tightness | **T/R** (nil applicability expected, as on the tight side) | audit (*G17*) |
+| (GR-15) (*G17*) | **quantifier**: tight class shapes (fact 2 — a (K-res) member is not one); criterion: none ((RS-1)) | **the statement does not cover (K-res)**; the sibling is (RS-5) | audit (statement); measured (criterion attained, 3/3 shapes) |
+| (GR-16)(i)–(iii) branch reduction (*G19*) | none ((iii) *"holds verbatim at any shape"*, (FR-10)(i)) | **T** | audit (*G19*) |
+| (GR-16)(iv) the square system (*G19*) | count-tightness (balance `m = 3h`) | **B** — the system is rectangular with slack `3h − m`; repair is (RS-2) | audit; measured (min `dim W = 1` at `W19`/`S29`) |
+| (GR-17)(a)–(c) run law + necessity (*G20*) | none | **T** | audit (*G20*) |
+| (GR-17)(d) the binding list (*G20*) | `hnoRigid` (girth ≥ 7 via (R3)) | **B** — new binding profiles: the `(2,2)` core digon (NC1 **unsatisfiable**, absorbed by slack, (RS-3)) and the `(3,3)` core pair (`NT21c3`, satisfiable at `h_≠ = 2`) | audit; measured (`--dimz`) |
+| (GR-18)(i) the 6-tree partition (*G21*) | `def = 0` **+** `hnoRigid` (5/6-sparsity), and `\|E(Ĝ)\| = 6(n−1)` is count-tightness | **B — the chain's first outright failure**: `\|E(Ĝ)\| = 6(n−1) + index`, and Nash–Williams **fails at the core** (`Σ(6−ℓ) = 8 > 6` at `W19`/`S29`, asserted) | audit (*G21* proof); measured (`--audit`) |
+| (GR-19)(i)/(iv) collapse hierarchy (*G22*) | none (semicontinuity, monotonicity) | **T** as a sufficiency instrument | audit (*G22*) |
+| (GR-19)(ii)/(iii) its exact counts (*G22*) | count-tightness (balance) | **T/R** — counts shift by the index; at `r = 3` *"all complements spanning trees"* becomes *"all complements connected, total slack `index`"* | audit |
+| (GR-20) residual restatement (*G23*) | tight-specific as stated | superseded on (K-res) by (RS-5) | audit |
+| (GR-21) excess law (*G24*) | count-tightness + girth | **B** — the (K-res) analogue is `Σ(ℓ−2) = 2D + 6 − index` | audit (*G24* proof) |
+| (GR-22) five caps (*G25*) | `hnoRigid` sparsity (`f ≤ −1` at proper branch-closed sets) | **B** — `f = +2` at the core (asserted) | audit; measured |
+| (GR-25) cut criterion (*G27*) | it **is** the tight + `hnoRigid` class predicate in cut form | **B by definition** — its (i) fails at the core digon (`2∂ + exc = 4 < 7`); that failure is the habitat discriminator | audit (*G27*) |
+| (GR-32) capacity theorem (*G38*) | (GR-25) + (GR-21) + (SD-6) | **B** — a (K-res) core is a proper chunk **below** the `cap ≥ 7` floor; the prep's expected break location, confirmed, but **downstream** of (GR-16)(iv)/(GR-17)(d)/(GR-18)(i) | audit (*G38* proof inputs) |
+| the whole post-*G23* uniformity program ((GR-21)–(GR-128), *Steps G24–G148*) | built on (GR-21)/(GR-22)/(GR-25)/(GR-32) and the cubic `D = 0` tight stratum | **B as stated** — none of it is available on (K-res) without re-derivation above the (RS-2)/(RS-3) bookkeeping | audit (each cited law is an input to the rest) |
+
+No row is UNDECIDED: every verdict above is either a cited proof reading or
+a driver figure, and the one question the audit could not settle by
+citation — *is the criterion actually attainable at the named shapes?* —
+was job 3's measurement, *Step RS6*.
+
+### Step RS6 — job 3: the two-shape control, run at all three named shapes
+
+`--dimz` / `--rank`, exhaustive colouring enumeration per shape, exact ℚ:
+
+| shape | colourings | passing | generic `(0,0)` | first-zero split | exact target point |
+|---|---|---|---|---|---|
+| `W19` | 256 | 52 | **28** | `(11, 11)` | **108/108 target, PROVEN** |
+| `S29` | 16 384 | 1 140 | **468** | `(17, 17)` | **168/168 target, PROVEN** |
+| `NT21c3` | 128 | 54 | **24** | `(12, 12)` | **120/120 target, PROVEN** |
+
+*Passing* = legal, admissible, no monochromatic hub, both classes forests.
+Every zero split is balanced-within-the-index ((RS-2), as it must be). At
+`W19`/`S29` every passing block carries the forced witness (`dim W ≥ 1`
+asserted combinatorially; measured min exactly 1) and reaches `dim Z = 0`
+anyway — the slack absorbs it, (RS-3)(ii). Each *exact target point* is an
+exact rational draw at `6(|V|−1)`, i.e. a **per-shape proof** of (RS-5) by
+semicontinuity, the same instrument as the census's 907/907.
+
+### Step RS7 — (RS-4): the transported reduction
+
+> **(RS-4)** *(proven — a composition of transported results)* Let `G` be a
+> `def = 0` (K-res) shape (simple, 2-edge-connected, `hcard`, a proper
+> rigid subgraph). If some admissible colouring with both classes forests
+> has generic `dim Z₊ = dim Z₋ = 0`, then `hK`'s conclusion object — which
+> **is** (K-res)'s conclusion (W4 *Step 4*: same conclusion, swapped
+> hypothesis) — holds at `G` over `ℚ(i)`, hence over every infinite
+> characteristic-0 field. *Proof:* (RS-1) puts the σ-fixed grid at the Tay
+> target at an exact rational draw; (GR-5) (whose hypotheses the habitat
+> supplies, *Step RS5*) converts the grid into a chart seed with
+> `pencilRow` at the same rank; (AC-7) descends. ∎ The (GR-9)
+> co-independent-triple and (GR-19) collapse certificates remain valid
+> sufficiency instruments for the vanishing hypothesis (their proofs are
+> parameter-collapse arguments, habitat-free).
+
+### Step RS8 — (RS-5) and (RS-6): the named residual, and the deficient fringe
+
+> **(RS-5)** *(open — the (K-res) grid residual; **proven per-shape at
+> `W19`, `S29`, `NT21c3`**)* Every `def = 0` (K-res) shape admits an
+> admissible colouring, both classes forests, with generic
+> `dim Z₊ = dim Z₋ = 0`.
+
+This is job 2's **strictly-stronger-sibling** answer: (GR-15)'s criterion
+verbatim, quantifier widened past the tight class — the honest widened
+statement is the **conjunction (GR-15) ∧ (RS-5)**, and the two quantifiers
+are **disjoint** (tight class shapes satisfy `hnoRigid`; (K-res) shapes
+refute it). Closing (GR-15) alone would **not** close (RS-5).
+
+> **(RS-6)** *(proven, `--theta`)* The deficient fringe is **not** served
+> by the grid route, with a mechanism: at θ(2,3,7) (`def = 1`, in the
+> swapped habitat as far as the recorded feasibility-necessary conditions
+> reach — its `hnoRigid` failure is the rigid `C₅` on branches `2+3`), the
+> forced core witness gives `dim W_± ≥ 1` at every parameter point of
+> every one of the **4** admissible colourings (exhaustive), and
+> `index = 0` leaves no slack, so by (RS-1)
+> `rank ≤ 6(|V|−1) − 2 = 58 < 59 = target` — **at every colouring, every
+> draw**. §(K-clos) *Z6*'s recorded θ(2,3,7) miss (*"all 4 legal
+> colourings give rank 58 vs target 59"*) is thereby a **theorem, not a
+> measurement**. Deficient (K-res) members stay with the escape route
+> (W4 *Step 2*'s `dim R_a = 0` / KT-Case-II routing), as they already do.
+
+### Step RS9 — what the (K-res) wave would cost (the scoping answer)
+
+**(K-res) is neither a rider on (GR-15) nor a rebuild from the colouring
+layer up.** The price, itemized: **(i)** the reduction *to* (RS-5) is
+**free** — (RS-1)–(RS-4) transport the whole geometry, and the certificate
+instruments ((GR-9) co-independence, (GR-19) hierarchy) come with it;
+**(ii)** per-shape verification is **cheap and banked** at the three named
+shapes; sweeping the 255-residual pool's `def = 0` members with the same
+driver is bounded work of the same kind; **(iii)** the **uniformity gap**
+of (RS-5) is real and new: the tight side's entire post-*G23* machinery
+((GR-21) excess budget, (GR-22)/(GR-25) sparsity caps, (GR-32) capacity,
+the `D = 0` balance layer) consumes exactly the hypotheses the habitat
+swap removes, so uniformity work on (K-res) restarts at the *G23*
+waterline with the (RS-2)/(RS-3) bookkeeping in place of tight balance —
+smaller than the original §(K-grid) arc (the geometry and the instruments
+are free), larger than a rider (none of the tight side's structural laws
+carry). **(iv)** the deficient members are out of the grid route's reach
+entirely ((RS-6)). The wave remains a **user call**; nothing here starts
+it.
+
+### Step RS10 — verdict, and what moves
+
+**HIT shape 3 — a partial transport with the boundary a step number.**
+Transports: (AC-6), (GR-1)*, (GR-2), (GR-3), (GR-5), (GR-7), (GR-8),
+(GR-9)*, (GR-14)*, (GR-16)(i)–(iii), (GR-17)(a)–(c), (GR-19)(i)/(iv)
+(* = with the (RS-1)/(RS-2) repair of a tight-balance clause). Breaks,
+first at **(GR-16)(iv)/(GR-17)(d)/(GR-18)(i)** (*Steps G19–G21*), then
+everything built on (GR-21)/(GR-22)/(GR-25)/(GR-32). **The coordinator
+hypothesis splits exactly as `RESEARCH-ARC.md` §7 anticipates a labelled
+guess can:** its headline (*"the quantifier, not the geometry"*) is
+**confirmed on the rigid stratum** and refuted on the deficient fringe
+((RS-6)); its reason (a) (parity cannot bite) is confirmed; its reason (b)
+(`dim R_a = 1`) is **irrelevant to the grid route** (*Step RS1* — the
+prep's own framing corrected); its reason (c) ((GR-16)–(GR-19) purely
+combinatorial, so untouched) is **refuted** — three of those four break,
+and the expected break location ((GR-32)) is real but not first.
+
+**The gap map moves as follows** (executed with this landing): the *arc
+paragraph*'s umbrella sentence — *"same difficulty class, same stratum, so
+one uniform gap serves both"*, asserted since 2026-08-02 — is **corrected**:
+one uniform gap does **not** serve both as reduced ((GR-15) quantifies over
+tight class shapes only); what is shared is the geometry, and the (K-res)
+side's own residual is now named ((RS-5)), per-shape proven at three
+shapes, with its deficient fringe excluded by (RS-6). §(K-res) gets its own
+gap-map row; (GR-15), §(K-grid)'s row, and class uniformity are untouched.
+
+**TERMINATION: E1 NO** (no flank opened or closed on the tight side; (GR-15)
+untouched), **E2 NO** (the pass settles its scoping target and names the
+successor object), **E3 ARMED by GBAL, NOT fired** (nothing here touches
+(a′), `d_fg`, or input (Y); every rank computed is a σ-fixed construction,
+never a composite-guard-generic sample). Reservation: (RS-1)–(RS-6) and
+*Steps RS1–RS10* consumed; **(RS-7)–(RS-12) returned**; the M2 leaf was
+never needed.
+
+### Verification (Steps RS1–RS10)
+
+`notes/scripts/w4/resgrid.py` (**new with this pass**; imports `grid.py` /
+`gridwit.py` / `closure.py` / `widened.py` / `saferes.py` / `dominance.py`
+read-only — the `packmm.py`/`gcap.py` pattern; exact ℚ throughout with the
+eigen ranks over exact ℚ(i); rng seeded, seed printed; no `set` printed;
+colouring enumeration exhaustive per shape — the 2^20 cap is asserted
+non-binding; the one disclosed count cap is `--rank`'s 24
+identity-asserts per shape, a cap on asserts, not on enumeration).
+
+```
+PYTHONHASHSEED=0 python3 notes/scripts/w4/resgrid.py --audit    #  <1 s  Step RS1 table; (RS-3)(ii) max f(W) <= index + def; the (GR-18)/(GR-25) core failure asserted
+PYTHONHASHSEED=0 python3 notes/scripts/w4/resgrid.py --dimz     # ~40 s  Step RS6 sweep; (RS-2) identity asserted at all 2 492 passing blocks; forced witness g >= 1 asserted; min dim_W = 1 at W19/S29
+PYTHONHASHSEED=0 python3 notes/scripts/w4/resgrid.py --rank     # ~17 s  (RS-1) asserted at 72 matched draws; exact rational TARGET points at 108/168/120 — the three per-shape proofs of (RS-5)
+PYTHONHASHSEED=0 python3 notes/scripts/w4/resgrid.py --theta    #  <1 s  (RS-6): theta(2,3,7) exhaustive, proven cap 58 < 59, measured max 58
+PYTHONHASHSEED=0 python3 notes/scripts/w4/resgrid.py --validate # all four, ~60 s
+```
+
+*Confidence verdict.* **(RS-1), (RS-2), (RS-3), (RS-4) proven-informally**
+(proofs above are compositions/re-readings of (AC-4)/(GR-1)/(GR-7)/(GR-8)
+at their own generality, with the driver asserting each identity
+numerically). **(RS-5) open as the uniform statement; proven per-shape at
+the three named shapes** (exact-point semicontinuity — the same standing as
+the census's per-shape proofs of (GR-15)-instances). **(RS-6) proven**
+(exhaustive over the 4 admissible colourings; the floor is parameter-free).
+The audit table's verdicts are proof readings against cited steps, not
+measurements, except where the evidence column says *measured*. What is
+**not** established here: (RS-5) at any unswept `def = 0` residual; any
+(K-res)-side flank hunt; any statement about `PencilNondegFeasible` itself
+(not combinatorially certifiable — `not_pencilNondegFeasible_of_triangle_two_hubs`
+refutes any `≤3`-closedHubNbhd criterion, and no repair here proposes one).
+
+*What would change this.* (i) A `def = 0` (K-res) shape with **every**
+admissible colouring at `dim Z > 0` — refutes (RS-5) and re-prices the wave
+upward; the driver's sweep shape is the instrument to find one. (ii) A
+proof that some core profile beyond the `(2,2)`/`(2,3)` list forces more
+witness than the index covers — would carve more of the habitat out of
+(RS-5)'s reach the way (RS-6) carved the deficient fringe. (iii) A uniform
+colouring-existence argument for (RS-5) — the wave's actual target, a user
+call.

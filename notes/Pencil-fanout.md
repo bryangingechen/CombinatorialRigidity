@@ -1,16 +1,18 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: EIGHT fan-outs, TWENTY-SIX single directions and TWO concurrent
-pairs dispatched; 55 LANDED, and RESGRID (ordinal 48, §"RESGRID") is IN
-FLIGHT.** **RESGRID PREPPED 2026-08-28** — the **(K-res) scoping slice**, a
-user-selected item deferred four rounds and committed to this slot at the
-BEARFULL prep: *does (GR-15)/§(K-grid) transport to the `W19`-type (K-res)
-habitat?* It is a **scoping slice, not the wave** — the wave stays a user call —
-and its deliverable is a **hypothesis audit** of the chain from (AC-6) through
-(GR-15) to (GR-16)–(GR-19), one row per named result. The sentence under test is
-the gap map's own *"same difficulty class, same stratum, so one uniform gap
-serves both"*, asserted since the 2026-08-02 route-3(b) adjudication and never
-proved. **BEARFULL (ordinal 47,
+**Status: EIGHT fan-outs, TWENTY-SEVEN single directions and TWO concurrent
+pairs dispatched; ALL 56 LANDED.** **RESGRID (ordinal 48, §"RESGRID") LANDED
+2026-08-28** — the **(K-res) scoping slice**, user-selected 2026-08-26: *does
+(GR-15)/§(K-grid) transport to the `W19`-type (K-res) habitat?* **HIT shape 3,
+partial transport with the boundary a step number**: the §(K-grid) **geometry
+transports verbatim** and the (K-res) grid residual is **(RS-5)** — (GR-15)'s
+criterion with the quantifier widened, **proven per-shape at `W19`/`S29`/
+`NT21c3`** by exact rational target points — while the tight bookkeeping
+((GR-16)(iv)/(GR-17)(d)/(GR-18)(i) first, then the whole (GR-21)+ uniformity
+program) does **not**, and the deficient fringe is **refuted with a mechanism**
+((RS-6): θ(2,3,7) provably capped at 58 < 59, exhaustive). The gap map's
+umbrella sentence (*"one uniform gap serves both"*, standing since 2026-08-02)
+is **CORRECTED** and §(K-res) gets its own row; the **wave stays a user call**. **BEARFULL (ordinal 47,
 §"BEARFULL") LANDED 2026-08-27** — the merge inequality's real theorem is a
 **SHORT-CYCLE LAW** (`girth(Q) ≥ 6`, so every cycle of length `≤ 6` forces
 `δ = 0`), which **CONTAINS** (BE-32)(ii)/(iii) — **weakening** the latter's
@@ -6517,3 +6519,87 @@ exactly. **Checked and NOT chosen:** extending the `GR-` tail (it would mix two
 habitats inside one label family, against the registry's qualify-don't-merge
 rule) and `RESPORT` (names the hoped-for answer, which is the framing
 `RESEARCH-ARC.md` §7 forbids).
+
+### RESGRID — landing write-up (LANDED 2026-08-28, recon-fable, single design-pass commit)
+
+**Verdict: HIT shape 3 — a PARTIAL transport with the boundary a step number,
+carrying shape 2's correction of the status object.** `hK`, (GR-15), class
+uniformity, E1/E2 untouched; **E3 stays ARMED (by GBAL), not fired**. Canonical
+home: **§(K-res)**, `notes/Pencil-informal-grid.md` (end of file), *Steps
+RS1–RS10*; driver `notes/scripts/w4/resgrid.py`. Reservation: (RS-1)–(RS-6)
+consumed, **(RS-7)–(RS-12) returned**, the M2 leaf never needed.
+
+**The question is answered in both directions at once.** The §(K-grid)
+**geometry transports verbatim** — (AC-6)'s recipe and parity mechanism,
+(GR-1)'s reduction, (GR-5) chart membership, (GR-7)/(GR-8), (GR-9)'s
+vanishing half, (GR-19)'s semicontinuity/monotonicity — because none of those
+proofs touches the swapped hypothesis; the **tight bookkeeping does not**:
+the first outright failures are **(GR-16)(iv)** (squareness), **(GR-17)(d)**
+(the girth-7 binding list) and **(GR-18)(i)** (the 6-tree partition — Nash–
+Williams *fails at the core*, `Σ(6−ℓ) = 8 > 6`, driver-asserted), and
+everything built on (GR-21)/(GR-22)/(GR-25)/(GR-32) consumes exactly what the
+habitat swap removes. Job 1's audit table (*Step RS5*) has **no UNDECIDED
+row**: every verdict is a cited proof reading or a driver figure, per F11.
+
+**Four new laws, minted because the audit needed them.** **(RS-1)**
+`rank = 6(|V|−1) − dim Z₊ − dim Z₋` at ANY legal both-forest colouring —
+(GR-15)'s criterion is habitat-free; **(RS-2)** the slack law
+`dim Z = (m − 3h) + dim W`, with the colour split balanced within the index;
+**(RS-3)** short cores force a (GR-8) witness (`g ≥ 1`, parameter-free) and
+**rigidity always pays for it** (`def ≥ f(W) − index`); **(RS-4)** the
+transported discharge through (GR-5)/(AC-7).
+
+**Job 2: the residual is the SECOND of the three offered shapes — a strictly
+stronger sibling.** **(RS-5)**: every `def = 0` (K-res) shape admits an
+admissible both-forest colouring with generic `dim Z₊ = dim Z₋ = 0` —
+(GR-15)'s criterion verbatim, quantifier widened past the tight class,
+quantifiers **disjoint**, so **closing (GR-15) does NOT close (RS-5)**. The
+gap map's umbrella sentence (*"one uniform gap serves both"*, standing since
+2026-08-02) is **corrected**, §(K-res) gets its own gap-map row, and the
+(K-tight) row and W4 workbook carry pointer corrections (the F12 grep found
+three prose sites; all repaired in this commit).
+
+**Job 3 ran, and it decided the one row citation could not.** Exhaustive
+colouring sweeps at all three named shapes: `W19` 28 of 52 passing colourings
+at generic `(0,0)`, `S29` 468 of 1 140, `NT21c3` 24 of 54 — and at each an
+**exact rational target point** (108/168/120), i.e. **(RS-5) is PROVEN
+per-shape at all three** by semicontinuity, the census's own instrument. At
+`W19`/`S29` every passing block carries the forced core witness
+(`dim W ≥ 1`, asserted combinatorially, measured exactly 1) and reaches
+`dim Z = 0` anyway — the index-2 slack absorbs it, exactly as (RS-3) says.
+**(RS-6)**: the deficient fringe is refuted with a mechanism — θ(2,3,7)
+(`def = 1`, `index = 0`, rigid `C₅` core) is **provably capped at 58 < 59**
+at every one of its 4 admissible colourings, retiring §(K-clos) *Z6*'s
+recorded miss as a theorem.
+
+**The coordinator hypothesis, scored per `RESEARCH-ARC.md` §7.** Headline
+(*"the quantifier, not the geometry"*): **confirmed on the rigid stratum,
+refuted on the deficient fringe**. Reason (a) (parity cannot bite):
+confirmed. Reason (b) (`dim R_a = 1` kinship): **irrelevant to the grid
+route** — `s₀`, `corank(G′)`, `dim R_a` are consumed *nowhere* in §(K-grid)
+(escape-side quantities; the grid is split-free), which corrects the prep's
+fact-4 framing. Reason (c) ((GR-16)–(GR-19) purely combinatorial, hence
+untouched): **refuted** — three of the four break. The expected break
+location ((GR-32)) is real but **downstream of the first break**.
+
+**Scope, price, stop — the scoping answer (*Step RS9*).** (K-res) is
+**neither a rider on (GR-15) nor a rebuild from the colouring layer up**:
+the reduction to (RS-5) is free (geometry + certificate instruments
+transport), per-shape checks are cheap and three are banked, the
+**uniformity machinery must be rebuilt above the *Step G23* waterline**
+(no tight structural law carries), and the deficient members are out of the
+grid route's reach entirely. **The wave stays a user call; nothing here
+starts it.**
+
+**F25/F27 bar, read off the shipped driver.** Four modes plus `--validate`
+(~60 s); every identity **asserted** in-run ((RS-1) at 72 matched draws +
+3 exact points + the θ control; (RS-2)=(GR-7) at all 2 492 passing blocks;
+the forced witness per block; rigidity-covers-excess per shape); enumeration
+**exhaustive** per shape (the 2^20 cap asserted non-binding); the θ
+refutation rests on a parameter-free floor plus exhaustive enumeration, not
+on draws (F27 satisfied by proof, with 3 draws/colouring corroborating);
+seeds printed; the one count cap (24 identity-asserts/shape) disclosed as a
+cap on asserts, not enumeration.
+
+**TERMINATION: E1 NO, E2 NO** (a scoping target settled, successor object
+named — (RS-5)'s uniform statement, a user call), **E3 ARMED, not fired**.
