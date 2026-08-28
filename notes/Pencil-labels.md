@@ -2057,6 +2057,50 @@ BEARFULL lesson recorded above), and if that cannot be done, recompute with an
 (`RESEARCH-ARC.md` §6) and verify label preservation **by a scripted set-diff,
 never by eye**. Bump a cap only with a dated one-line reason.
 
+## Reserved namespace — direction BSHARP (2026-08-28, **IN FLIGHT**)
+
+**Reserved 2026-08-28 for the single direction BSHARP** (ordinal 49, the arc's
+fifty-seventh direction; `notes/Pencil-fanout.md` §"BSHARP") — BEARFULL's
+successor (1), the ear case's **last (β) clause**: prove `ρ̄₁ ∩ Π_u = 0`, which
+by the proved (BE-42)(ii) carries **both** (b1) and (b2). Coordinator-set,
+single dispatch — **not** a fan-out, so this reservation protects against the
+*existing corpus* only; there are no siblings in flight. It is §(K-bare-ext)'s
+**first** direction since RESGRID broke the namespace's eight-direction run.
+
+| direction | owning § | labels reserved | steps reserved | driver |
+|---|---|---|---|---|
+| **BSHARP** | §(K-bare-ext) — **extends**, no new section | **(BE-44)–(BE-48)** | **BE43–BE47** | `w4/bsharp.py` (expected — extend `bearfull.py`, and through it `bearcase`/`bimage`/`btwocut`/`binduc`, by read-only import) |
+
+The reservation opens at **(BE-44) / Step BE43**, **exactly the tail BEARFULL
+declared** at its landing — the ordinary case, unlike BEARFULL's own opening on
+a returned token.
+
+**0-hit verification, at reservation time**, across `*.md`, `*.tex`, `*.lean`,
+`*.py`, `*.m2`: `BSHARP`, `bsharp`, `(BE-45)`, `(BE-48)` and *`Step BE47`* each
+**0-hit**. **`(BE-44)` and *`Step BE43`* each have TWO hits, and both were
+opened and confirmed to be the tail POINTERS** — `notes/Pencil-fanout.md`'s
+BEARFULL reservation line and this file's line 1993 (*"The tail is (BE-44)+ /
+Step BE43+"*) — **not consumed labels**. Recorded because a bare hit count
+would otherwise read as a collision; clause L1 binds inside a reservation, and
+the check is the whole corpus, not just the siblings.
+
+**Checked and NOT chosen.** **`BZERO`** (0-hit): it names the answer as if
+settled, and worse, the answer it names is **false at path pieces** —
+(BE-38)(i) proves `dim(ρ̄₁ ∩ Π_u) = 1` there, sharp — so the honest target is a
+**case split**, and a code asserting `0` would prime exactly the framing
+`RESEARCH-ARC.md` §7 forbids. **`BFLAG`** (0-hit): it names the apparatus (the
+point-plane flag `Π_u = p_u ∧ π_u`) rather than the question.
+
+**Gap-map note.** The `(K-bare)` row was fully recomputed at the BEARCASE
+landing and stood at **1 402 / 1 600** words after BEARFULL integrated its
+clause rather than appending one. That is **198 words of headroom** for this
+landing — enough to integrate, not enough to append a dated clause. **Integrate
+into the existing sentences** (BEARFULL's own recorded lesson: *"a recompute
+does not hold if the next landing appends"*), and if a recompute becomes
+necessary, give it an explicit target with room for the spread step and the
+internal R-node behind it, verifying label preservation by a **scripted
+set-diff, never by eye**.
+
 ## Registry — `notes/Pencil-informal.md` (the (K) workbook)
 
 Status keywords are pointers to the owning section's verdict block and the

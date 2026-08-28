@@ -540,3 +540,22 @@ authoritative for every status word; `notes/Pencil-informal-grid.md` owns
 unpriced §9 shelf **(ZH-1)–(ZH-6)**, which stays ineligible;
 `notes/Pencil-fanout.md` owns dispatch specs and landing write-ups;
 `notes/Pencil-adjudications.md` owns the archived verbatim user calls.
+
+## Gates for any continuation
+
+**Relocated verbatim from `notes/Phase39.md`'s *Hand-off* section, 2026-08-28**, at
+the BSHARP prep, when the note's line gate stood at 580/580 with a landing due. It
+is **stable reference, not status** — the same list every session, changing only
+when a gate is added — which is what the note's own watch item prescribes moving
+instead of bumping the cap. The note keeps a pointer.
+
+Gates for any continuation: `lake build` (warning-clean) + `lake lint` when `.lean` is touched;
+`blueprint/verify.sh` + `blueprint/lint.sh` (vocabulary gate bans "stratum"/"strata") when `.tex`
+is touched; **when `notes/scripts/` is touched**, figure invariance proportionate to what the
+commit modifies (`git diff --name-only -- '*.py' '*.m2'` empty ⇒ that check IS the discharge,
+stated in the commit message) — canonical home `notes/scripts/README.md` *Hard rule — figures do
+not move*; a **symbolic** dispatch adds `notes/scripts/m2/README.md`;
+**`notes/check-gapmap-cells.py` before any gap-map edit** — the cap-exhaustion hazard this
+guards against is now a standing, harness-wide rule (`notes/scripts/README.md` §4 convention
+8, promoted 2026-08-19 after a second instance; not restated here); bump a row's cap only
+with a dated one-line reason, never a silent regrowth.

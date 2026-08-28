@@ -1,7 +1,15 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: EIGHT fan-outs, TWENTY-SEVEN single directions and TWO concurrent
-pairs dispatched; ALL 56 LANDED.** **RESGRID (ordinal 48, §"RESGRID") LANDED
+**Status: EIGHT fan-outs, TWENTY-EIGHT single directions and TWO concurrent
+pairs dispatched; 56 LANDED, and BSHARP (ordinal 49, §"BSHARP") is IN FLIGHT.**
+**BSHARP PREPPED 2026-08-28** — BEARFULL's successor (1), the ear case's **last
+(β) clause**: prove **`ρ̄₁ ∩ Π_u = 0`**, which by the proved (BE-42)(ii)
+discharges **(b1) and (b2) together** and leaves (β) at **(b3)** alone. The job
+is the **genericity proviso** (BE-42)(iii) is explicit about not discharging;
+job 2 asks the coverage question the mechanism raises — its hypothesis needs
+*two `u–v` paths leaving `u` by different edges*, which **fails at path pieces,
+where (BE-38)(i) proves `dim = 1` sharp** — so the honest target is a **case
+split, not a uniform sharpening**. **RESGRID (ordinal 48, §"RESGRID") LANDED
 2026-08-28** — the **(K-res) scoping slice**, user-selected 2026-08-26: *does
 (GR-15)/§(K-grid) transport to the `W19`-type (K-res) habitat?* **HIT shape 3,
 partial transport with the boundary a step number**: the §(K-grid) **geometry
@@ -6603,3 +6611,189 @@ cap on asserts, not enumeration.
 
 **TERMINATION: E1 NO, E2 NO** (a scoping target settled, successor object
 named — (RS-5)'s uniform statement, a user call), **E3 ARMED, not fired**.
+
+## BSHARP — forty-ninth ordinal, the fifty-seventh direction (single dispatch, prepped 2026-08-28)
+
+**Selection provenance: BEARFULL's own successor (1), taken under the standing
+research-pick delegation on the max-impact criterion.** The ear case's (β) side
+is down to **one clause**, and this is it. Dispatched **un-named, single**, at
+**`recon-opus`** — the playbook's default for a read-only research recon; RESGRID
+took the top rung because it re-priced a carried item and corrected the status
+object, and this one does neither.
+
+**Diversification note, and it is a genuine reset rather than a waiver.** This is
+§(K-bare-ext)'s **first** direction since RESGRID broke an eight-direction run in
+the namespace. Still unpicked and disclosed: **(ZH-2) stratified** (the standing
+Zheng second lane) and **(BE-23)(ii)**.
+
+### The target, stated exactly
+
+> **Prove `ρ̄₁ ∩ Π_u = 0`** — (b1) sharpened from `≤ 1` to `0` — at one end of a
+> general ear-case piece.
+
+By **(BE-42)(ii)**, *proved*, that single statement discharges **(b1) and (b2)
+together**: (b1) ⟹ (b2) outright at `δ₁ ≥ 5`, and **always** from the sharpened
+`0`, at **either** end. With **(α)** closed by BEARCASE, the ear case's (β) side
+then has only **(b3)** left (*`ρ̄₁ ∩ E` is not an opposite-ruling pencil*).
+
+### What is already free — cite it, do NOT re-derive it
+
+- **(BE-30)(iv)**, proven: `ρ̄₁ ⊆ ⟨ℓ_e : e ∈ P⟩` for **every** `u–v` path `P`.
+- **(BE-42)(i)**, proven: the Grassmann bound, exact at every draw, tight at 144.
+- **(BE-42)(ii)**, proven: (b1) ⟹ (b2) at `δ₁ ≥ 5`, and always from `0`.
+- **(BE-42)(iii)**, the **mechanism, NAMED not proved**: every hinge line at `u`
+  lies in `Π_u = p_u ∧ π_u` (closed star coplanar, (BE-16)); `assert_generic_star`
+  forbids two hinge lines at a body from coinciding, so **any two hinge lines at
+  `u` span `Π_u`**; if two `u–v` paths leave `u` by **different edges** then `ρ̄₁`
+  lies in both path spans, whose `Π_u`-parts are **different lines**.
+- **(BE-38)(iii)**, measured and asserted: `Π_u ⊆ ρ̄₁` occurs at **exactly** the
+  `ρ₁ = 6` vacuous rows and nowhere else.
+- **(BE-38)(i)/(ii)**, proven: a path piece has `dim(ρ̄₁ ∩ Π_u) = 1`; and any
+  piece with a `u–v` path of length `≤ 4` whose interior lines are generic
+  against `Z` has `loss = 0` outright.
+
+### Job 1 (PRIMARY, FORCED) — discharge the genericity proviso, or locate it
+
+The workbook is explicit that **(BE-42)(iii) is a mechanism, not a proof**: the
+containment is exact and the two `Π_u`-lines are distinct, but concluding `0`
+*"still needs the interior lines to be generic against `Π_u`, and that is
+labelled a genericity proviso"*. **That proviso is the whole job.** Either
+discharge it — by an argument, on the pencil stratum, at the pieces that need it
+— or state exactly what it is and exhibit the configuration where it fails.
+
+**A reduction the coordinator believes the proviso admits, offered as a starting
+point and not as a result** (test it first; if it is wrong, say so and proceed
+from the mechanism directly): with `P`, `Q` two `u–v` paths leaving `u` by
+different edges, (BE-30)(iv) gives
+`ρ̄₁ ∩ Π_u ⊆ (⟨ℓ_e : e ∈ P⟩ ∩ Π_u) ∩ (⟨ℓ_e : e ∈ Q⟩ ∩ Π_u)`. Each factor
+**contains** the first-edge line and the two first-edge lines are distinct in the
+**2-dimensional** `Π_u`, so the intersection is `0` **as soon as each factor is
+exactly that one line**. If that is right, the proviso is precisely: *no
+combination of `P`'s interior hinge lines enlarges `⟨ℓ_e : e ∈ P⟩ ∩ Π_u` past
+`⟨ℓ_{first}⟩`* — a codimension condition on the interior lines, one path at a
+time, and **not** a joint condition on the pair. **State whether the reduction
+holds** before using it.
+
+### Job 2 (FORCED) — the two coverage questions the mechanism raises
+
+Both are structural, both are cheap, and neither is answered anywhere in the
+workbook:
+
+1. **When does the mechanism's own hypothesis fail?** It needs *two `u–v` paths
+   leaving `u` by different edges*. A **path piece** has only one `u–v` path, so
+   the hypothesis fails there outright — and (BE-38)(i) proves `dim = 1` at a
+   path piece, **sharp**, so the sharpening to `0` is **FALSE** there. The honest
+   target is therefore a **case split**, not a uniform sharpening. Say so in the
+   statement you land.
+2. **Does the split already cover everything?** See the coordinator hypothesis
+   below.
+
+### Job 3 (NOT FORCED) — the disclosed sampler coverage gap
+
+`bgrass`'s battery inherits bearcase's shape guard (branch vertices an
+independent set, each free vertex with at most one branch neighbour), so it is
+**subdivisions only** and, in the workbook's own words, *"says nothing about
+pieces with adjacent branch vertices"*. If the argument in job 1 is
+configuration-sensitive, that is the class to test it on. Reuse `bearfull.py
+bgrass`'s parametrization by read-only import; a new shape family is the only
+new code this should need.
+
+### COORDINATOR HYPOTHESIS — TO BE TESTED, NOT INHERITED (`RESEARCH-ARC.md` §7)
+
+> *Provenance:* formed at this prep by reading (BE-30)(iv), (BE-38)(i)/(ii),
+> (BE-42)(ii)/(iii) and caveat 6 of BEARFULL's *Verification* block. It rests on
+> **no measurement of its own** and on **no workbook sentence that states it**.
+> Four of the last five coordinator predictions in this arc were refuted or split
+> by the direction they primed; price this one the same way.
+>
+> **The hypothesis: the case split is already complete, so the sharpening is
+> needed only at non-path pieces.** At a **path** piece, `ρ̄₁` is a chain, so
+> `δ₁` is governed by the same ear formula and `dist ≥ 5` should force
+> `δ₁ ≥ 5` — which is exactly (BE-42)(ii)'s **first** branch, needing no
+> sharpening; while `dist ≤ 4` is (BE-38)(ii), free. If both hold, **path pieces
+> need nothing new**, and job 1's sharpening is required only where the
+> mechanism's hypothesis is available anyway. *Evidence stratum:* the ear's own
+> reach formula (BE-33)(ii), **proved for `m ≥ 3`** but proved **about the ear**,
+> transported here by analogy and **not** by a stated result — that transport is
+> the weak link and is where the coordinator expects to be wrong.
+>
+> **A second, weaker guess, flagged separately because its stratum is different
+> again:** (BE-38)(iii)'s *"`Π_u ⊆ ρ̄₁` at exactly the `ρ₁ = 6` rows and nowhere
+> else"* is an **asserted** measurement over 24 pieces × 14 draws, and it is the
+> `dim = 2` case of the same question job 1 asks at `dim = 1`. If the proviso is
+> real it should already be visible as a `dim(ρ̄₁ ∩ Π_u) = 1` row at a piece with
+> two paths — `bgrass` reports exactly such rows at `δ₁ = 5`. **Check whether
+> those rows are the proviso failing or the vacuous corner** before building an
+> argument that would have to explain them away.
+
+### What counts as a HIT — state which you got
+
+1. **`ρ̄₁ ∩ Π_u = 0` PROVED** on its honest domain, with the case split stated.
+   That closes **(b1) and (b2)** and leaves the ear case's (β) side at **(b3)**
+   alone. Report the consequence for the board; **do not act on it**, and the
+   2026-08-05 Lean hold binds regardless.
+2. **The proviso reduced to a named, checkable condition** with the reduction
+   proved, even if the condition itself stays open.
+3. **The case split settled** (job 2) even without job 1 — knowing exactly which
+   pieces need the sharpening is a real deliverable.
+4. **An obstruction, located** — a piece with two `u–v` paths where
+   `dim(ρ̄₁ ∩ Π_u) = 1` genuinely and not vacuously. Classify **mandatorily**
+   (the sharpening / (b1) / the ear case / (BE-14) / the conjecture);
+   **candidate, never refutation**; read the direction-A pivot rule in
+   `notes/Phase39.md` *Current state* first.
+
+### Bars
+
+- **Do not re-derive** (BE-30)(iv), (BE-42)(i)/(ii), (BE-35)–(BE-38), or the
+  short-cycle law (BE-39)/(BE-40). Cite them. **(BE-25)(iii) closes the LEAF
+  R-node only**; **(β) as originally stated is REFUTED** — the correct target is
+  `loss ≤ max(0, δ₁+δ₂−6)`.
+- **Closed routes, do not re-open:** the **ear-decomposition induction**
+  ((BE-43), refuted by a theorem — every minimum-degree-`≥ 3` graph forces a
+  single-edge ear); the `G²` apparatus ((BE-17)); the transversality/dimension
+  count ((BE-16)(iv)); gauge-fixing as a source of a `PGL(4)`-invariant (ZSHEAR);
+  the gauge-group count ((BE-27)(ii)). **ZJACOB (JC-6)** — no properness or
+  transversality from a codimension count, a Jacobian criterion, or
+  Cohen–Macaulayness; **label every dimension count as a count** ((BE-27)).
+- **The spread step is NOT this direction.** It is BEARFULL's successor (2) and
+  the last 3.8 % of (BE-32)(+); leave it.
+- **Out of scope:** `hK`, (GR-15), (RS-5) and the (K-res) wave (a user call),
+  class uniformity, W4 / `hcontract`, and **any `.lean`** (2026-08-05 hold).
+
+### Riders
+
+**TERMINATION E1/E2/E3** — **E3 is ARMED (by GBAL)**; report, never fire.
+**F11** — a driver per headline sentence; *"every" / "always" / "the only"* needs
+a driver that **enumerates**, and a genericity claim is a claim about a
+**locus**, so name the locus and say what tests it. **F27** — the asymmetry is
+live here: an exhibited `= 0` at a configuration is a **proof** for that
+configuration, while *"this piece fails to reach `0`"* needs multiple independent
+draws and the return says how many; a single non-zero draw is an **upper bound
+artefact**, not a failure. **F25** — verification bar off the **shipped** driver;
+**every script committed**; exact ℚ, seeded with printed literals,
+degeneracy-guarded, `assert_generic_star` **and** `verify_pencil_witness` on
+every draw (the (BE-42)(iii) mechanism *consumes* the first of those, so a draw
+that skips it tests nothing). **Cap disclosure MANDATORY.** **Read
+`notes/scripts/README.md` *Harness debt* before any numerics** — and note the
+`w4/bear*` chain is now **seven** deep: extend the recorded consumer list,
+**make no move**.
+
+### Driver — expected, at the pinned path `notes/scripts/w4/bsharp.py`
+
+Extend `bearfull.py` (and through it `bearcase`/`bimage`/`btwocut`/`binduc`) by
+**read-only import**; `bgrass`'s free parametrization and its two guards are the
+things to reuse, and job 3's adjacent-branch-vertex family is the one genuinely
+new generator.
+
+### Reservation
+
+(`notes/Pencil-labels.md` §"Reserved namespace — direction BSHARP".)
+§(K-bare-ext) **extends**, no new section; labels **(BE-44)–(BE-48)**, ***Steps
+BE43–BE47*** — exactly the tail BEARFULL declared. `BSHARP`, `bsharp`,
+`(BE-45)`, `(BE-48)` and *`Step BE47`* verified **0-hit**; `(BE-44)` and *`Step
+BE43`* have **two hits each and both are the tail POINTERS** BEARFULL and its
+registry row wrote, not consumed labels — checked, not assumed. **Return any
+unconsumed remainder.** **Checked and NOT chosen:** `BZERO` (0-hit, but it names
+the answer as if settled, and the honest target is a case split in which `0` is
+**false** at path pieces) and `BFLAG` (0-hit, but it names the apparatus rather
+than the question).

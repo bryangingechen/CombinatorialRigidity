@@ -10,7 +10,8 @@ derives it from exactly **three carried items**: **`hcontract`** (W4 — build p
 (2026-07-30).
 
 **The kernel-(K) research arc: 56 directions COMPLETE** (2026-08-05 → 08-28, ordinals
-1–48), plus eight strategy-only passes and two architecture probes.
+1–48), plus eight strategy-only passes and two architecture probes; **BSHARP (ordinal 49)
+is IN FLIGHT**.
 **Per-direction verdicts, specs and landing write-ups are NOT restated here** —
 each direction has one at `notes/Pencil-fanout.md` §"<CODE>" (ordinals 1–19:
 `notes/Pencil-fanout-archive.md`) and a canonical mathematical home in the workbooks.
@@ -19,21 +20,18 @@ single open gap the whole §(K-grid) chain reduces to — is **untouched**; **cl
 of the escape is untouched**; no g-flank was found by any direction; **E3 is ARMED (by
 GBAL) and has never fired**.
 
-**LATEST LANDING — RESGRID** (ordinal 48, 2026-08-28), the **(K-res) scoping slice**:
-the §(K-grid) **geometry transports verbatim**, the (K-res) grid residual is **(RS-5)**
-((GR-15)'s criterion, quantifier widened; **proven per-shape at `W19`/`S29`/`NT21c3`**),
-the tight bookkeeping does **not** transport, the deficient fringe is **refuted** ((RS-6)).
-The gap map's *"one uniform gap serves both"* is **CORRECTED**; canonical home **§(K-res)**
-(`notes/Pencil-informal-grid.md`, own gap-map row). **The wave stays a user call.**
+**LATEST LANDING — RESGRID** (ordinal 48): the (K-res) scoping slice — geometry transports,
+residual is **(RS-5)**, the gap map's *"one uniform gap serves both"* **CORRECTED**, the wave
+still a user call (§(K-res), `notes/Pencil-informal-grid.md`; write-up in the fanout doc).
 
-**NEXT, on the (BE-14) side** (BEARFULL's own ranking): **(1) (b1) sharpened to
-`ρ̄₁ ∩ Π_u = 0`** — it now discharges **two** of the three clauses of the ear case's (β) side,
-since **(b2) is a COROLLARY of (b1)** ((BE-42)); **(2) the SPREAD STEP**, the last 3.8 % of
-(BE-32)(+), pure graph theory with 55 known instances and the merge inequality **known** not
-to reach it; **(3) the INTERNAL R-NODE**, which BEARFULL **confirms** on the critical path by
-refuting the ear-decomposition route. BEARFULL's other results — the **short-cycle law**
-(every cycle of length `≤ 6` forces `δ = 0`, containing (BE-32)(ii)/(iii) and **weakening**
-the latter) and **`δ = 0` as an equivalence relation** — are in *Hand-off*, not restated here.
+**IN FLIGHT — direction BSHARP** (ordinal 49, `recon-opus`, dispatched 2026-08-28):
+BEARFULL's successor (1) and the ear case's **last (β) clause** — prove **`ρ̄₁ ∩ Π_u = 0`**,
+which by the proved (BE-42)(ii) discharges **(b1) and (b2) together**, leaving (β) at **(b3)**
+alone. The job is the **genericity proviso** (BE-42)(iii) explicitly does not discharge, and
+the honest target is a **case split**: the mechanism needs two `u–v` paths leaving `u` by
+different edges, which fails at path pieces, where (BE-38)(i) proves `dim = 1` **sharp**.
+Spec: `notes/Pencil-fanout.md` §"BSHARP". **The full ranked successor list is *Hand-off*'s,
+not restated here** — this pointer replaces the copy that used to sit in this header.
 
 **On a future HIT: the phase-boundary consequences are the USER's call** —
 whether Phase 39 closes and a successor opens for the Lean is a
@@ -234,7 +232,8 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
 
 **The phase stays OPEN** (the 2026-07-24 adjudication — no phase-close; see *Current state*).
 
-**THE NEXT CONCRETE TASK — (BE-32)(+), the EAR CASE'S SINGLE NAMED RESIDUE.** The
+**IN FLIGHT — BSHARP (ordinal 49) at ranked successor (1) below**, the ear case's last
+(β) clause: prove **`ρ̄₁ ∩ Π_u = 0`** (spec `notes/Pencil-fanout.md` §"BSHARP"). The
 strengthened 2-cut lemma **is** (BE-14) (decomposition exhaustive; base
 `{3-connected}` ∪ `{max deg ≤ 2}` ∪ `{def₂ = def₃}` free, 1-cuts (BE-18),
 statement **PINNED** as **S-mark**, simultaneity **VACUOUS** (BE-25)(i)). BIMAGE
@@ -276,8 +275,8 @@ the user's 2026-08-26 adjudication and retired the stale *"pin it when the tight
 side closes"* deferral. **The (K-res) wave remains a user call** — the slice
 neither started nor pre-empted it (price, *Step RS9*: reduction free, per-shape
 checks cheap, uniformity machinery to rebuild above the *Step G23* waterline).
-**The next concrete task is the ranked (BE-14) successors above**, or the next
-pick off the option board.
+**BSHARP then took successor (1)**; after it, successor (2) (the spread step) or the
+next pick off the option board.
 
 **THE CANDIDATE LIST lives in `notes/Pencil-strategy.md` §8 — the option board** (new
 2026-08-20): every live route priced in one place, with the two filters that kill most
@@ -402,16 +401,10 @@ discharge (residue (iv)) is CLOSED too**. The landed successor
 > (D2)'s far block, POOL-G/POOL-S, a counting/matroid route to (OUT)'s hypothesis ((OC-3)
 > refutes the whole class), or `lambda.py`'s figures (slice **S3**'s carve-out is spent).
 
-Gates for any continuation: `lake build` (warning-clean) + `lake lint` when `.lean` is touched;
-`blueprint/verify.sh` + `blueprint/lint.sh` (vocabulary gate bans "stratum"/"strata") when `.tex`
-is touched; **when `notes/scripts/` is touched**, figure invariance proportionate to what the
-commit modifies (`git diff --name-only -- '*.py' '*.m2'` empty ⇒ that check IS the discharge,
-stated in the commit message) — canonical home `notes/scripts/README.md` *Hard rule — figures do
-not move*; a **symbolic** dispatch adds `notes/scripts/m2/README.md`;
-**`notes/check-gapmap-cells.py` before any gap-map edit** — the cap-exhaustion hazard this
-guards against is now a standing, harness-wide rule (`notes/scripts/README.md` §4 convention
-8, promoted 2026-08-19 after a second instance; not restated here); bump a row's cap only
-with a dated one-line reason, never a silent regrowth.
+**Gates for any continuation — RELOCATED 2026-08-28** (verbatim) to
+`notes/Pencil-structure.md` §"Gates for any continuation": which gate fires on which file
+type, and the figure-invariance discharge. Stable reference, not status; read it once per
+session alongside the *Conventions* block relocated there 2026-08-27.
 
 ## Adjacent directions (orientation only, not this phase)
 
