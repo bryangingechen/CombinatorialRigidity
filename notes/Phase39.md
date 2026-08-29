@@ -9,33 +9,30 @@ derives it from exactly **three carried items**: **`hcontract`** (W4 — build p
 (L0–L7), with **`hsplit` CLOSED IN FULL** and `hfresh`'s counting discharge landed
 (2026-07-30).
 
-**The kernel-(K) research arc: 58 directions COMPLETE** (2026-08-05 → 08-28, ordinals
-1–50), plus eight strategy-only passes and two architecture probes; **BWIN (ordinal 51)
-is IN FLIGHT**.
+**The kernel-(K) research arc: 59 directions COMPLETE** (2026-08-05 → 08-29, ordinals
+1–51), plus eight strategy-only passes and two architecture probes; **nothing is in
+flight**.
 **Per-direction verdicts, specs and landing write-ups are NOT restated here** —
 each direction has one at `notes/Pencil-fanout.md` §"<CODE>" (ordinals 1–19:
 `notes/Pencil-fanout-archive.md`) and a canonical mathematical home in the workbooks.
-**The arc's standing result, unchanged by all 58: `hK` is not closer.** **(GR-15)** — the
+**The arc's standing result, unchanged by all 59: `hK` is not closer.** **(GR-15)** — the
 single open gap the whole §(K-grid) chain reduces to — is **untouched**; **class uniformity
 of the escape is untouched**; no g-flank was found by any direction; **E3 is ARMED (by
 GBAL) and has never fired**.
 
-**WHERE (β) STANDS, after three landings** (details in §(K-bare-ext) and the fan-out
-write-ups, **not restated here**): **(b1)/(b2) discharged everywhere but one window**
-(BSHARP), **(b3) PROVED and disjoint from that window** by a separation theorem (BRULE),
-so **(β) is at BSHARP's window ALONE**. Two riders BRULE established: (BE-37)(ii)'s
-*inference* *"(b3) ⟹ `lossR = 0`"* is **corrected** — (Z) dominates (R), the `max` bound
-absorbs it, **every landed measurement intact**; and its routing verdict, **(BE-32)(+)
-sits UNDER the (β) side at the `π_u = π_v` corner but on the FORCED branch only**.
-
-**IN FLIGHT — direction BWIN** (ordinal 51, `recon-fable`, dispatched 2026-08-28) at
-**the LAST ITEM in (β)**: BSHARP's window identity `ρ̄₁ ∩ Z = ⟨ℓ_u, ℓ_v⟩` as a **CLASS
-statement**. With (b1) and (b3) discharged, closing it gives (BE-37)(ii) all three clauses
-and **proves the ear case's (β) side** on the reduction's 87-of-91 domain. The spec's
-central point, and why it is at the top rung: the arc's one-witness discharge machinery
-**cannot** produce a class statement — **(BE-46)(iv) says so itself** — so more exhibited
-witnesses are not progress and a **uniform** argument is the deliverable. Spec:
-`notes/Pencil-fanout.md` §"BWIN".
+**WHERE (β) STANDS, after four landings** (details in §(K-bare-ext) and the fan-out
+write-ups, **not restated here**): **THE WINDOW IS CLOSED BY A CLASS THEOREM** — BWIN
+(ordinal 51, LANDED 2026-08-29, HIT shape 1) proved `ρ̄₁ ∩ Z = ⟨ℓ_u, ℓ_v⟩` at **every**
+both-ends-series piece with `δ₁ ≤ 4` (strictly containing the window): the ends act on
+the middle's screw space through **ONE hyperplane and ONE functional**, and `δ₁ ≤ 4` is
+exactly that rank-one budget ((BE-54)–(BE-58); write-up `notes/Pencil-fanout.md`
+§"BWIN"). With BSHARP ((b1)/(b2) outside the window) and BRULE ((b3), disjoint),
+**(BE-37)(ii) has all three clauses at every window piece and (β) is PROVED there on
+the reduction's 87-of-91 domain**. Job 3: the window is **NOT the barbells** (theta
+chains and R-node middles are in it). What remains of (β) is per-shape/measured residue
+**outside** the window — the ledger is (BE-58)(iv) — and the `π_u = π_v` corner
+((BE-32)(+), forced branch). **The phase-boundary consequence is reported, NOT acted
+on** (next block).
 
 **On a future HIT: the phase-boundary consequences are the USER's call** —
 whether Phase 39 closes and a successor opens for the Lean is a
@@ -198,9 +195,11 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
   §"Slice 6" onward). **The gate is MECHANICAL** —
   `notes/check-phase-note.py` caps this note at **580 lines / 525 status-header words** and
   fails if *Decisions made* outgrows the forward sections. **Live watch, re-measured at the
-  BRULE landing (2026-08-28): 575/580 lines, 415/525 words** — the recompute's 25 lines of
-  headroom bought exactly one landing, as intended, and **FIVE** remain, so the next
-  landing binds. **When it does, the question is again "what
+  BWIN landing (2026-08-29): 574/580 lines, 457/525 words** — the landing integrated by
+  rewriting the (β) and hand-off blocks in place and demoting BTWOCUT's thread entry
+  (571 → 574 net; the header word cost, 415 → 457, is the class theorem's summary and is
+  the next thing to compress; **SIX lines remain, so the next landing binds**). **When
+  it does, the question is again "what
   here is reference rather than status?"** — not another fold; three consecutive folds
   recovered only 2–5 lines each, because the note is forward-weighted and **the forward part
   is what grew**. A
@@ -223,40 +222,38 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
 
 **The phase stays OPEN** (the 2026-07-24 adjudication — no phase-close; see *Current state*).
 
-**BRULE (ordinal 50) LANDED 2026-08-28** and **discharged (b3)**, the clause BSHARP left:
-a separation theorem makes it free wherever a BSHARP mechanism fires — hence free
-throughout the window — so **(β) is at BSHARP's window ALONE** ((BE-49)–(BE-53); write-up
-`notes/Pencil-fanout.md` §"BRULE"). BSHARP before it had shown the sharpening **FALSE at a
-dichotomy**, the proviso **discharged**, and (b1)/(b2) discharged outside that window
-((BE-44)–(BE-48)).
+**BWIN (ordinal 51) LANDED 2026-08-29** and **CLOSED THE WINDOW as a class**
+((BE-54)–(BE-58); write-up `notes/Pencil-fanout.md` §"BWIN"): the modular law reduces
+the identity to `W ∩ Z ⊆ ⟨ℓ_u, ℓ_v⟩` for the middle's screw space `W`, the ends act on
+`W` through one hyperplane and one functional, and `δ₁ ≤ 4` is that budget. With BRULE
+((b3), disjoint) and BSHARP ((b1)/(b2) outside the window), **(β) is proved at every
+window piece on the 87-of-91 domain**; the remaining (β) residue is per-shape outside
+the window ((BE-58)(iv)'s ledger) plus the `π_u = π_v` corner ((BE-32)(+), forced).
 The strengthened 2-cut lemma **is** (BE-14) (decomposition exhaustive; base
 `{3-connected}` ∪ `{max deg ≤ 2}` ∪ `{def₂ = def₃}` free, 1-cuts (BE-18),
 statement **PINNED** as **S-mark**, simultaneity **VACUOUS** (BE-25)(i)). BIMAGE
 bounded and classified its residual geometric sentence for the **ear**; BEARCASE
-then **PROVED (α)** — the reach formula holds for `m ≥ 3` — **refuted (β) as
-stated** and **collapsed its quantifier**, leaving one residue.
-**Ranked successors, re-ranked at the BRULE landing** — successor (1) is now the ear
-case's **only** remaining item, and (BE-50)(iii) proves it independent of everything
-BRULE touched:
+then **PROVED (α)** for `m ≥ 3`; BEARFULL, BSHARP and BRULE cut (β) down to the
+window BWIN closed.
+**Ranked successors, re-ranked at the BWIN landing** — the window is closed, so the
+(β)-adjacent items with no class route lead:
 
-1. **THE WINDOW IDENTITY AS A CLASS STATEMENT** — at a **series end at both ends**
-   with `δ₁ ≤ 4`, is `ρ̄₁ ∩ Z = ⟨ℓ_u, ℓ_v⟩`? (BE-31)(i) makes `ρ̄₁ = ⟨ℓ_u⟩ +
-   ρ̄(middle) + ⟨ℓ_v⟩` explicit, so it says *"the middle's own `ρ̄` misses `Z`"* — a
-   new obligation, **exhibited 5/5**, equivalent to (b2) there ((BE-47)(iii)), and
-   the (β) side's **last item**: (b3) is discharged, so closing it **closes (β)**.
+1. **The ONE-END-SERIES case by BWIN's machine** — one peel instead of two
+   (`ρ̄₁ = ⟨ℓ_u⟩ + ρ̄(rest)`), budget `δ₁ ≤ 3` by the same excess accounting, or a
+   second functional from the clean end. Would retire the (BE-46)/(BE-52)
+   per-shape witnesses behind the *sharpened-at-one-end* route — (β)'s largest
+   remaining per-shape component ((BE-58)(iv)).
 2. **The SPREAD STEP** — *every aggressively-forced pair lies in one `≤6`-cycle
    class*, the last **3.8 %** of (BE-32)(+) (55 known instances). Pure graph
-   theory, and the merge inequality is **known** not to reach it: a 7-cycle of
-   `Q` has slack `−1`, so a successor needs a different tool or a restricted
-   closure operator. **Re-priced by BRULE's job 2**: (BE-32)(+) sits **under**
-   three clauses of (β) at the `π_u = π_v` corner, not beside them — but on the
-   **forced** branch only, the unforced one being free by (BE-37)(i)(3).
+   theory; the merge inequality is **known** not to reach it (a 7-cycle of `Q`
+   has slack `−1`). BRULE's job 2: (BE-32)(+) sits **under** three clauses of
+   (β) at the `π_u = π_v` corner — the **forced** branch only.
 3. **The internal R-node** ((BE-31)(ii)) — **confirmed** on the critical path by
    BEARFULL's refutation of the ear route; (BE-25)(iii) closes the **leaf**
    R-node only. New local coordinate: the **chord step** (*(BE-14) + clause for
    `G` ⟹ for `G + uv`*), whose combinatorial half **(BE-43)(ii)** is already free.
 4. BTWOCUT's successor (2), the **bundle-construction proof** — (BE-29)(ii) from
-   rung to theorem, reaching `DZ` / `spider(5,5,5)+c`. Skipped three times.
+   rung to theorem, reaching `DZ` / `spider(5,5,5)+c`. Skipped four times.
 
 Also ranked, unchanged: BTWOCUT's cross-pair closure ((BE-28)(i), motive economy
 only — S-mark closes) and the point-side flat law (**priced NOT cheap**); and from
@@ -273,7 +270,7 @@ admitting coplanar stars, which would revive route 2 (§(K-bare-ext)).
 `notes/Pencil-informal-grid.md`, own gap-map row), discharging the user's 2026-08-26
 adjudication and retiring the *"pin it when the tight side closes"* deferral. **The
 (K-res) wave remains a user call** — neither started nor pre-empted (price, *Step
-RS9*). **After BSHARP the next pick is successor (1) above, (2), or the option board.**
+RS9*). **After BWIN the next pick is successor (1) above, (2), or the option board.**
 
 **THE CANDIDATE LIST lives in `notes/Pencil-strategy.md` §8 — the option board** (new
 2026-08-20): every live route priced in one place, with the two filters that kill most
@@ -403,6 +400,14 @@ section named; its *spec and landing write-up* in `notes/Pencil-fanout.md` §"<C
 `notes/Pencil-adjudications.md`; the derivation in git. **Do not grow these back into
 paragraphs.**
 
+- **BWIN** (51, 2026-08-29, fable) — **THE WINDOW CLOSED BY A CLASS THEOREM** ((BE-57)):
+  `ρ̄₁ ∩ Z = ⟨ℓ_u, ℓ_v⟩` at every both-ends-series piece with `δ₁ ≤ 4`. Machine: double
+  peel + **modular law** (target ⟺ `W ∩ Z ⊆ ⟨ℓ_u,ℓ_v⟩`, `W` the middle's screw space,
+  **arbitrary** — no enumeration, no middle induction, job 2 REFRAMED), the **end-choice
+  lemma** (one functional, survivors exactly `⟨ℓ_u,ℓ_v⟩`), the **excess law**
+  `excess ≤ max(0, δ₁−3)`. **(b1)+(b2)+(b3) at every window piece ⟹ (β) proved there on
+  87-of-91**; window ⊋ barbells (R-node middles in it); two side conditions named,
+  vacuous at every drawn middle; 160/160 end draws. §(K-bare-ext) *BE53–BE57*.
 - **BRULE** (50, 2026-08-28, opus) — **(b3) DECIDED, the CHEAPEST clause**, by a
   **separation theorem** ((BE-50)): `Π_u`, `Π_v` lie in the very ruling `y ∧ L` lives in
   and same-ruling members meet in `0`, so a failure refutes (b1) or forces the sharpening
@@ -426,7 +431,7 @@ paragraphs.**
   capped at 58 < 59, retiring §(K-clos) *Z6*'s miss as a theorem). *"One uniform gap serves
   both"* **corrected**; §(K-res) opened with its own gap-map row; wave stays a user call.
 
-The (BE-14) thread the next task sits on — four entries, kept at prose length:
+The (BE-14) thread the next task sits on — three entries, kept at prose length:
 
 - **BEARFULL** (47, 2026-08-27, opus) — the merge inequality's real theorem is a **SHORT-CYCLE
   LAW**: `girth(Q) ≥ 6`, so **every cycle of length `≤ 6` forces `δ = 0`** and
@@ -444,18 +449,16 @@ The (BE-14) thread the next task sits on — four entries, kept at prose length:
   quantifier **COLLAPSED** on the attaining locus, and the (β) side reduced to the single
   residue **(BE-32)(+)**. §(K-bare-ext) *BE34–BE37*.
 - **BIMAGE** (45, 2026-08-27, opus) — BTWOCUT's *"nothing bounds that image"* **REFUTED**:
-  the ear's `ρ̄₂` is the span of a **chain on the Klein quadric** (a bijection; the
-  coordinator's hypothesis CONFIRMED, plus three confinement laws it missed), its bad locus
-  is **three mechanisms**, exactness MEASURED 358/358, every trap a **configuration
-  artifact** (607/607). Off the ear an exact **series/parallel recursion** replaces the
-  refuted path-intersection bound, residue the **internal R-node**; three merge-inequality
-  theorems + `δ ≤ dist` empty at 542 893. **Ear case REDUCED, not proved.** §(K-bare-ext)
-  *BE29–BE33*.
-- **BTWOCUT** (44, 2026-08-26, opus) — strengthened statement **PINNED** (S-mark), simultaneity
-  **VACUOUS**, leaf base free, BINDUC's 56 ear misses a constructor artifact; **(BE-14) NOT
-  proved**, reduced to one geometric sentence. §(K-bare-ext) *Steps BE24–BE28*.
-
+  the ear's `ρ̄₂` is the span of a **chain on the Klein quadric** (a bijection, plus three
+  confinement laws), its bad locus **three mechanisms**, exactness MEASURED 358/358, every
+  trap a **configuration artifact** (607/607). Off the ear an exact **series/parallel
+  recursion** replaces the refuted path-intersection bound, residue the **internal
+  R-node**; three merge-inequality theorems + `δ ≤ dist` empty at 542 893. **Ear case
+  REDUCED, not proved.** §(K-bare-ext) *BE29–BE33*.
 Settled, one line each:
+
+- **BTWOCUT** (44, 2026-08-26, opus) — strengthened statement **PINNED** (S-mark), simultaneity
+  **VACUOUS**, leaf base free; **(BE-14) NOT proved**. §(K-bare-ext) *BE24–BE28*.
 
 - **BINDUC** (42, 2026-08-26, opus) — **3-connected ⇒ `def₂ = 0`**, so the induction's **base
   is FREE**; BZAVOID's 2-cut `− 6` **REFUTED** for an exact `max`-law; **(BE-15)(ii)

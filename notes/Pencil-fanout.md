@@ -1,14 +1,19 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: EIGHT fan-outs, THIRTY single directions and TWO concurrent
-pairs dispatched; 58 LANDED, and BWIN (ordinal 51, §"BWIN") is IN FLIGHT.**
-**BWIN PREPPED 2026-08-28** at **the LAST ITEM in (β)** — BSHARP's window
-identity `ρ̄₁ ∩ Z = ⟨ℓ_u, ℓ_v⟩` as a **CLASS statement**. With (b1) (BSHARP) and
-(b3) (BRULE) discharged, closing it gives (BE-37)(ii) all three clauses and
-**proves the ear case's (β) side**. The spec's central point: the arc's
-one-witness discharge machinery **cannot** deliver a class statement — (BE-46)(iv)
-says so itself — so more exhibitions are not progress, and a **uniform** argument
-is the deliverable.
+**Status: EIGHT fan-outs, THIRTY-ONE single directions and TWO concurrent
+pairs dispatched; ALL 59 LANDED — nothing in flight.**
+**BWIN (ordinal 51, §"BWIN") LANDED 2026-08-29** at **the LAST ITEM in (β)** —
+BSHARP's window identity `ρ̄₁ ∩ Z = ⟨ℓ_u, ℓ_v⟩` as a **CLASS statement**, and it
+came back as the spec's first deliverable shape: **the class statement PROVED,
+by a uniform argument** ((BE-57)) — the double peel plus the **modular law**
+reduce it to `W ∩ Z ⊆ ⟨ℓ_u, ℓ_v⟩` for the middle's own screw space `W`, the
+ends act on `W` through **ONE hyperplane and ONE linear functional**, and
+`δ₁ ≤ 4` is exactly the budget that one rank-1 functional can pay. **(b1)+(b2)+
+(b3) hold at every window piece, so the ear case's (β) side is proved there on
+the reduction's 87-of-91 domain**; job 3 shows the window is **NOT the
+barbells** (theta chains and **R-node middles** are in it — "barbell" was the
+sampler's reach), and job 2's observation lands **reframed**: no induction on
+the middle exists anywhere — the middle enters as one arbitrary subspace.
 **BRULE (ordinal 50, §"BRULE") LANDED 2026-08-28** at **(b3)** — *`ρ̄₁ ∩ E` is
 not an opposite-ruling pencil*, the one clause of (β) never attacked, taken as a
 deliberate deviation from BSHARP's successor order for the reason F26 records.
@@ -7392,3 +7397,77 @@ thinning, so nothing was relocated and nothing deleted. `(K-bare)` sits at
 242, so **integrate into the current-state sentences**, and if this landing is
 large, recompute *Steps BE14–BE33*'s per-direction history (BZAVOID/BINDUC/
 BTWOCUT/BIMAGE) — already flagged in the row as the workbook's, not the cell's.
+
+### BWIN — landing write-up (LANDED 2026-08-29, recon-fable, single design-pass commit)
+
+**THE WINDOW IS CLOSED, BY A CLASS THEOREM — the deliverable is the spec's
+first shape: the class statement PROVED by a uniform argument.**
+
+**HIT shape 1**, `notes/Pencil-informal.md` §(K-bare-ext) *Steps BE53–BE57*,
+driver `notes/scripts/w4/bwin.py` (`dec|sweep|exc|cls|wide|validate`).
+
+- **Job 1: the class statement, PROVED** — for **every** piece that is a
+  series end at both ends with `δ₁ ≤ 4` (strictly containing the window; (M2)
+  and `dist` are never consulted), constructed exact-ℚ configurations attain
+  `dim ρ̄₁ = δ₁`, `dim Z = 4`, cross-incidence-free flags, and
+  **`ρ̄₁ ∩ Z = ⟨ℓ_u, ℓ_v⟩` exactly** ((BE-57)). The machine is new to the arc
+  and is **not** the one-witness machinery the spec barred: the double series
+  peel makes `ρ̄₁ = ⟨ℓ_u⟩ + W + ⟨ℓ_v⟩` with `W` the middle's own screw space;
+  the **modular law** turns the target into `W ∩ Z ⊆ ⟨ℓ_u, ℓ_v⟩` ((BE-54));
+  `Z = μ^{⊥K} ∩ λ^{⊥K}`, so over a fixed `L` the whole end freedom acts on
+  `W` through **one linear functional** vanishing identically on
+  `⟨ℓ_u, ℓ_v⟩`, whose survivors are exactly `⟨ℓ_u, ℓ_v⟩` (the end-choice
+  lemma, (BE-55)); and the **excess law** `excess ≤ max(0, δ₁ − 3)` ((BE-56))
+  says `δ₁ ≤ 4` leaves at most the one dimension that functional kills. The
+  quantifier over window shapes is carried by `W` being **arbitrary** — no
+  enumeration (F11 met by argument). Two side conditions, named and vacuous
+  at every drawn middle: `p_{w₁} ≠ p_{w₂}` at some attaining middle
+  configuration, and no middle-forced relation pinning `λ` into `W^{⊥K}`
+  ((BE-57)(iv)); the one forceable degeneration the arc knows —
+  boundary planes equal — is covered by lemma ((BE-55)(iii)).
+- **The consequence for the board:** with (BE-47)(iii) ((b2) ⟺ the identity),
+  the `Π_u ∩ Π_v = 0` computation ((b1)), and (BE-50)(iii) ((b3), (M1)
+  firing), **(BE-37)(ii) has all three clauses at every window piece** and
+  the (β) side is **proved at the window** on the 87-of-91 domain, by
+  (BE-37)(i)(3). What stays per-shape or measured is all **outside** the
+  window: (BE-45)(iv)'s three no-mechanism rows, (b1)-at-`δ₁ = 5` (measured),
+  the (BE-46)/(BE-52) witnesses behind the sharpened-at-one-end route, and
+  the `π_u = π_v` corner ((BE-32)(+), forced branch) — the ledger is
+  (BE-58)(iv). **Reported, not acted on**: the phase boundary is the user's,
+  and the 2026-08-05 Lean hold binds.
+- **Job 2, the coordinator observation: REFRAMED** (the prep priced it at
+  five-of-six refuted/split/reframed, and reframed is what landed). The
+  suspicion was right — the identity is a genuine cross-condition, not a
+  statement about the middle — and the hedge was right in refined form: the
+  interface is the two Klein pairings `⟨·, λ⟩`, `⟨·, μ⟩` plus the boundary
+  pencils. **No induction on the middle appears**; the landed phrase "the
+  middle contributes nothing to `Z`" survives only as "nothing beyond what it
+  already shares with `⟨ℓ_u, ℓ_v⟩`" — at `t ≥ 3` the middle is FORCED to meet
+  `Z`, and `δ₁ ≤ 4` is what forces that contribution inside the two leading
+  lines ((BE-54)(iii)).
+- **Job 3: the window is NOT the barbells.** Five constructed non-barbell
+  window pieces — theta chains, a four-branch theta, and two **R-node
+  (subdivided-`K₄`) middles** — plus a `K_{3,3}`-middle control at `δ₁ = 5`
+  showing the boundary cuts through the R-node class ((BE-58)(i)). At every
+  real window piece the trichotomy sits in the lowest regime (`t = δ₁ − 2`,
+  `W ∩ ⟨ℓ_u, ℓ_v⟩ = 0`), which is why BSHARP's successor phrase measured
+  true while being the special case ((BE-58)(iii)).
+- **Verification:** 358 guarded configurations across five modes (every
+  resweep re-gated through `assert_generic_star` + `verify_pencil_witness`);
+  the end-to-end construction asserted at **160/160** window end draws; the
+  per-`L` criterion (identity ⟺ `excess ≤ 1`) asserted at 84/84 resweeps
+  with three MUST-FAIL controls failing at every end draw; `validate` ~112 s.
+- **F12 hunks at the originating prose:** (BE-47)(iii) (marked PROVED as a
+  class statement), BSHARP's successor bullet (*"the middle's own `ρ̄` misses
+  `Z`"* refined at source — the provable form is `W ∩ Z ⊆ ⟨ℓ_u, ℓ_v⟩`, no
+  measurement changed), and BRULE's successor bullet (marked LANDED).
+- **Nothing refuted; not a PENCIL event** — `hK`, (GR-15), class uniformity,
+  `hbareSplit`, (BE-14), the 2-cut step, S-mark and (BE-32)(+) untouched.
+  E1/E2 NO; E3 still ARMED (GBAL), not fired. Reservation **fully consumed**
+  ((BE-54)–(BE-58), *Steps BE53–BE57*); harness chain now **TEN** deep
+  (`… → brule → bwin`), no move made.
+- **Ranked successors:** (1) the **one-end-series case** by the same machine
+  (one peel, budget `δ₁ ≤ 3`, or a second functional from the clean end) —
+  it would retire the largest remaining per-shape component of (β); (2) the
+  **spread step** ((BE-32)(+)'s last 3.8 %, the `π_u = π_v` corner's forced
+  branch); (3) the **internal R-node** ((BE-31)(ii)).
