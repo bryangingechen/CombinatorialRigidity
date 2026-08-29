@@ -1,7 +1,12 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: EIGHT fan-outs, TWENTY-EIGHT single directions and TWO concurrent
-pairs dispatched; ALL 57 ARE LANDED and nothing is in flight.**
+**Status: EIGHT fan-outs, TWENTY-NINE single directions and TWO concurrent
+pairs dispatched; 57 LANDED, and BRULE (ordinal 50, §"BRULE") is IN FLIGHT.**
+**BRULE PREPPED 2026-08-28** at **(b3)** — *`ρ̄₁ ∩ E` is not an opposite-ruling
+pencil* — **the one clause of (β) never attacked**, and a deliberate deviation
+from BSHARP's successor order for the reason F26 records. It also carries a
+cheap **routing** question: whether (BE-32)(+), whose last 3.8 % is the spread
+step, sits **under** two different clauses of (β) rather than beside them.
 **BSHARP (ordinal 49, §"BSHARP") LANDED 2026-08-28** — the ear case's **last
 (β) clause**, and **HIT shape 2 with a refutation attached**: the sharpening
 **`ρ̄₁ ∩ Π_u = 0` IS FALSE**, at an exact **DICHOTOMY of two identities** — a
@@ -6936,3 +6941,180 @@ here. **(3)** (b3) itself — *`ρ̄₁ ∩ E` is not an opposite-ruling pencil*
 no direction has yet attacked and which (BE-33)'s third trapping mechanism
 already describes. **(4)** A parametrization for branch vertices of branch
 degree `≥ 3` (unsubdivided `K₄`), the first shape neither sampler reaches.
+
+## BRULE — fiftieth ordinal, the fifty-eighth direction (single dispatch, prepped 2026-08-28)
+
+**Selection provenance: a coordinator pick that DEVIATES from the previous
+direction's successor order, deliberately and for a logged reason.** BSHARP
+ranked the window identity (1), the spread step (2) and **(b3)** (3). This spec
+takes **(b3)** — and `notes/dispatch-log.md` **F26** is the reason: the phase's
+own worst episode was five consecutive directions ordered by *"the previous
+direction's successor order, which mechanically chases residuals"*, at a target
+the consumer never consumed. The consumer here is **(BE-37)(ii)**, whose
+reduction needs **(b1) ∧ (b2) ∧ (b3)**. (b1) and (b2) are now discharged
+everywhere but one named window. **(b3) has never been attacked at all** —
+it is the last unexamined clause of (β), and the only one whose difficulty is
+entirely unknown. Dispatched **un-named, single**, at **`recon-opus`**.
+
+### The target, stated exactly
+
+> **(b3)** *(from (BE-37)(ii), verbatim)*: **`ρ̄₁ ∩ E` is not an opposite-ruling
+> pencil `y ∧ L`.**
+
+Decide it: prove it (on its honest domain, with the case split stated if it
+needs one), or exhibit a piece and configuration where `ρ̄₁ ∩ E` **is** an
+opposite-ruling pencil. Either is a full deliverable.
+
+### What is already free — cite it, do NOT re-derive it
+
+- **(BE-33)**, proven: the ear's bad locus is **exactly three mechanisms**
+  (pencil swallowing / confinement / **the `m = 1` opposite ruling**), each a
+  *proved lower bound*. (b3) is the piece-side counterpart of the third.
+- **(BE-34)**, measured: every trap a real piece shows is a **configuration
+  artifact**, **607/607** escalated.
+- **(BE-37)(i)(2)/(3)**, proven, and it is the lever: a random exact draw
+  computes an **upper** bound on `min loss`, so a sampler **can report a false
+  trap but can never miss a real one**; and since (β) is **existential**, one
+  drawn configuration settles a piece. An empty hunt therefore corroborates in
+  the **safe** direction — the precise sense in which 607/607 is stronger than
+  "measured".
+- **(BE-30)**, proven: `ρ̄₂` is the span of a **chain on the Klein quadric**,
+  with three exact confinement laws at small `m`.
+- **(BE-45)/(BE-46)/(BE-47)**, BSHARP: the dichotomy, the discharged proviso,
+  and the residual window. **Do not re-open the sharpening** — it is settled
+  FALSE at an exact dichotomy.
+
+### Job 1 (PRIMARY, FORCED) — decide (b3)
+
+Note what makes this different from (b1)/(b2): those are **dimension** bounds,
+while (b3) is a **shape** condition — *not of the form `y ∧ L`*. A dimension
+count cannot settle it (and per **ZJACOB (JC-6)** must not be dressed up as
+one). What settles it is the Klein-quadric structure (BE-30) plus whatever
+forces `ρ̄₁ ∩ E` off the opposite ruling.
+
+Report the honest status per the arc's own vocabulary: **proven-informally** /
+**proven on a named domain with the complement stated** / **measured with the
+locus named** / **refuted with a witness**.
+
+### Job 2 (FORCED) — a ROUTING check the coordinator raises, and it is cheap
+
+Reading (BE-37)(iii) against (BE-47)(iii)'s caveat 7, the coordinator believes
+the board's current ranking **understates the spread step**, and asks for a
+one-paragraph confirmation or refutation as a by-product, not a
+sub-investigation:
+
+- **(BE-37)(ii)**'s reduction fails in exactly **4 of 91** arithmetic rows —
+  `dim Z = 3`, `c₂ = 3`, `δ₁ ≤ 3`, `m = 2`, i.e. the `π_u = π_v` corner — and
+  (BE-37)(iii) escapes them through **(BE-32)(ii)/(iii)/(+)**.
+- **(BE-47)(iii)'s caveat 7** independently reports that at `dim Z = 3` the (b2)
+  bound is `1` while `⟨ℓ_u, ℓ_v⟩` has dimension `2`, so **(b2) would fail
+  outright** — escaping through the *same* (BE-32) family.
+
+**If both readings hold, (BE-32)(+) — whose last 3.8 % is the spread step — sits
+UNDER two different clauses of (β), not beside them**, and "the last 3.8 % of a
+proved result" is the wrong way to price it. **State whether that is right.** A
+refutation is just as useful: it would mean the two `dim Z = 3` escapes are
+independent and the board's ranking stands.
+
+### Job 3 (NOT FORCED) — the falsification arm, if job 1 does not close
+
+Hunt for a piece and configuration with `ρ̄₁ ∩ E` an opposite-ruling pencil,
+using (BE-37)(i)(2)'s safe direction: an empty hunt is real corroboration here,
+not a shrug. Reuse `bsharp.py`'s guarded draw machinery and **(BE-48)(i)'s
+adjacent-branch-vertex parametrization** by read-only import — it is the first
+sampler past bearcase's shape guard, and its own cap (branch subgraph max degree
+`≤ 2`, free vertices with `≤ 2` branch neighbours) must be disclosed with any
+figure it produces.
+
+### COORDINATOR HYPOTHESIS — TO BE TESTED, NOT INHERITED (`RESEARCH-ARC.md` §7)
+
+> *Provenance:* formed at this prep from (BE-33)'s three-mechanism
+> classification and (BE-34)'s 607/607, both read at their own sites. It rests
+> on **no measurement of its own**.
+>
+> **The hypothesis: (b3) is the CHEAPEST of the three clauses, not the
+> hardest — its mechanism is already a proved lower bound and it has an
+> `m = 1` smell.** (BE-33) makes the opposite ruling the `m = 1` mechanism
+> specifically, and `δ₂ = min(m+1, 6) ≥ 2` is what the reduction leans on; if
+> the opposite-ruling trap is confined to `m = 1` on the *piece* side too, (b3)
+> may be free at every `m ≥ 2` by a confinement law already proved.
+> *Evidence stratum:* (BE-33)'s classification of the **ear's** bad locus,
+> applied to the **piece** by analogy — **the same transport BSHARP found
+> unnecessary in one direction and wrong in another**, so treat it as the weak
+> link and check `E`'s definition on the piece side before using it.
+>
+> **Where the coordinator expects to be wrong:** (b3) is a *shape* condition,
+> and shape conditions have been the arc's expensive ones — §(K-Λ)'s (T5) frame
+> died on exactly that (a bad locus gaining a second, equal-dimensional
+> component). If (b3) is hard, expect it to be hard for that reason.
+
+### What counts as a HIT — state which you got
+
+1. **(b3) PROVED** on its honest domain. With BSHARP's (b1)/(b2) result, (β) is
+   then down to **the window alone**. Report the consequence; **do not act on
+   it**; the 2026-08-05 Lean hold binds regardless.
+2. **(b3) reduced** to a named checkable condition, as (BE-47)(iii) did for the
+   window.
+3. **The routing verdict of job 2**, in either direction.
+4. **An obstruction, located** — a configuration where `ρ̄₁ ∩ E` *is* an
+   opposite-ruling pencil. Classify **mandatorily** ((b3) / the reduction / the
+   ear case / (BE-14) / the conjecture); **candidate, never refutation**; read
+   the direction-A pivot rule in `notes/Phase39.md` *Current state* first.
+
+### Bars
+
+- **Do not re-open the sharpening** ((BE-45): FALSE at an exact dichotomy) or
+  the genericity proviso ((BE-46): DISCHARGED). **Do not attack the window**
+  (BSHARP's successor (1)) or the **spread step** (BEARFULL's successor (2)) —
+  job 2 asks about the spread step's *ranking*, not for work on it.
+- **ZJACOB (JC-6)** — (b3) is a shape condition; **no dimension count may stand
+  in for it**, and every count is labelled a count ((BE-27)).
+- **Closed routes:** the ear-decomposition induction ((BE-43)); the `G²`
+  apparatus ((BE-17)); the transversality count ((BE-16)(iv)); gauge-fixing
+  (ZSHEAR); the gauge-group count ((BE-27)(ii)).
+- **Out of scope:** `hK`, (GR-15), **(RS-5) and the (K-res) wave (a user call)**,
+  class uniformity, W4 / `hcontract`, and **any `.lean`** (2026-08-05 hold).
+
+### Riders
+
+**TERMINATION E1/E2/E3** — **E3 ARMED (by GBAL)**; report, never fire. **F11** —
+a driver per headline sentence; *"not an opposite-ruling pencil"* is a **shape**
+claim, so say what tests the shape, not the dimension. **F27** — an exhibited
+non-`y ∧ L` at a configuration is a proof for that piece by (BE-37)(i)(3); a
+claim that a piece *does* trap needs multiple independent draws and the count
+stated — and note (BE-37)(i)(2) makes a reported trap the **unsafe** direction
+here, so escalate before believing one. **F25** — verification off the
+**shipped** driver; every script committed; exact ℚ, printed literal seeds,
+`assert_generic_star` **and** `verify_pencil_witness` on every draw. **Cap
+disclosure MANDATORY**, including (BE-48)(i)'s sampler cap. **F12 — and it is
+live on this one:** BSHARP corrected a landed prose clause but left the two
+paragraphs that *state* it untouched (repaired in `1e4ae32c`). If this direction
+corrects any summary, **the hunk list must show a hunk at the originating
+prose**, not only at your own new section and the gap-map row. **Read
+`notes/scripts/README.md` *Harness debt*** — the `w4/bear*` chain is **nine**
+deep; extend the consumer list, **make no move**.
+
+### Driver — expected, at the pinned path `notes/scripts/w4/brule.py`
+
+Extend `bsharp.py` (and through it the `bear*`/`bimage`/`btwocut`/`binduc`
+chain) by **read-only import**.
+
+### Reservation
+
+(`notes/Pencil-labels.md` §"Reserved namespace — direction BRULE".)
+§(K-bare-ext) **extends**, no new section; labels **(BE-49)–(BE-53)**, ***Steps
+BE48–BE52***, exactly the tail BSHARP declared. `BRULE`, `brule`, `(BE-49)`,
+`(BE-53)`, *`Step BE48`* and *`Step BE52`* each verified **0-hit** across
+`*.md`, `*.tex`, `*.lean`, `*.py`, `*.m2`. **Return any unconsumed remainder.**
+**Checked and NOT chosen:** `BOPP` (0-hit, but it abbreviates "opposite" to
+something that reads as a typo next to `(b3)`) and `BRULING` (0-hit, but it
+names the ruling rather than the clause under test).
+
+### Gap-map and phase-note budget — RECOMPUTED, and this is the room it bought
+
+The `(K-bare)` row was recomputed at `5ae57257`: **1 200 / 1 600** words, **400
+of headroom** (was 32), zero labels dropped by scripted set-diff. `Phase39.md`
+is at **555 / 580** lines, **25 of headroom**, after a third relocation. So this
+landing folds in **normally** — but integrate into the row's current-state
+sentences rather than appending a dated *"Since Steps …"* clause, which is the
+shape three landings in a row have had to undo.

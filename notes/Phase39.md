@@ -10,8 +10,8 @@ derives it from exactly **three carried items**: **`hcontract`** (W4 — build p
 (2026-07-30).
 
 **The kernel-(K) research arc: 57 directions COMPLETE** (2026-08-05 → 08-28, ordinals
-1–49), plus eight strategy-only passes and two architecture probes; **nothing is in
-flight**.
+1–49), plus eight strategy-only passes and two architecture probes; **BRULE (ordinal 50)
+is IN FLIGHT**.
 **Per-direction verdicts, specs and landing write-ups are NOT restated here** —
 each direction has one at `notes/Pencil-fanout.md` §"<CODE>" (ordinals 1–19:
 `notes/Pencil-fanout-archive.md`) and a canonical mathematical home in the workbooks.
@@ -26,9 +26,16 @@ sharpening **`ρ̄₁ ∩ Π_u = 0` is FALSE** — its failure locus is an exact
 BEARFULL's own rows; the **genericity proviso IS DISCHARGED** where the sharpening is
 available; **every failure case discharges (b2) by an already-landed route except ONE named
 window**, where **(b2) ⟺ `ρ̄₁ ∩ Z = ⟨ℓ_u, ℓ_v⟩`** (§(K-bare-ext) *Steps BE43–BE47*).
-**(β) is at (b3) plus that window. The next concrete task is the *Hand-off*'s ranked
-successor (1)**, that window identity as a class statement; the full list is there, not
-here.
+**(β) is at (b3) plus that window.**
+
+**IN FLIGHT — direction BRULE** (ordinal 50, `recon-opus`, dispatched 2026-08-28) at
+**(b3)** — *`ρ̄₁ ∩ E` is not an opposite-ruling pencil* — **the one clause of (β) never
+attacked**. It is a **deliberate deviation from BSHARP's successor order**, for the reason
+F26 records: the consumer (BE-37)(ii) needs (b1) ∧ (b2) ∧ (b3), and ranking by the previous
+direction's successors is the phase's own documented way of chasing residuals. It also
+carries a cheap **routing** question — whether (BE-32)(+), whose last 3.8 % is the spread
+step, sits **under** two clauses of (β) rather than beside them. Spec:
+`notes/Pencil-fanout.md` §"BRULE". The ranked list is *Hand-off*'s, not here.
 
 **On a future HIT: the phase-boundary consequences are the USER's call** —
 whether Phase 39 closes and a successor opens for the Lean is a

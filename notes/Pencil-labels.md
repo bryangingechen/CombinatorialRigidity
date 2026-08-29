@@ -2124,6 +2124,38 @@ elsewhere in the row — and `HasPencilRealization`, one of the four the BEARCAS
 had deliberately restored, was **restored again** because the diff caught it. The next
 landing has room to integrate a clause; the one after that asks this question again.
 
+## Reserved namespace — direction BRULE (2026-08-28, **IN FLIGHT**)
+
+**Reserved 2026-08-28 for the single direction BRULE** (ordinal 50, the arc's
+fifty-eighth direction; `notes/Pencil-fanout.md` §"BRULE") — **(b3)**, the one
+clause of the ear case's (β) side that has **never been attacked**.
+Coordinator-set, single dispatch — **not** a fan-out, so this reservation
+protects against the *existing corpus* only; there are no siblings in flight.
+
+| direction | owning § | labels reserved | steps reserved | driver |
+|---|---|---|---|---|
+| **BRULE** | §(K-bare-ext) — **extends**, no new section | **(BE-49)–(BE-53)** | **BE48–BE52** | `w4/brule.py` (expected — extend `bsharp.py`, and through it the `bear*`/`bimage`/`btwocut`/`binduc` chain, by read-only import) |
+
+The reservation opens at **(BE-49) / Step BE48**, exactly the tail BSHARP
+declared; BSHARP consumed its reservation in full and returned nothing.
+
+**0-hit verification, at reservation time**, across `*.md`, `*.tex`, `*.lean`,
+`*.py`, `*.m2`: `BRULE`, `brule`, `(BE-49)`, `(BE-53)`, *`Step BE48`* and
+*`Step BE52`* each **0-hit** — unlike BSHARP's opening, no token here needed the
+tail-pointer carve-out. **Checked and NOT chosen:** `BOPP` (0-hit, but it
+abbreviates "opposite" to something that reads as a typo beside `(b3)`) and
+`BRULING` (0-hit, but it names the ruling rather than the clause under test).
+
+**Gap-map note — the row was RECOMPUTED at `5ae57257` and this landing has
+room.** `(K-bare)` sits at **1 200 / 1 600** words, **400 of headroom** (was
+32), with **zero labels dropped** by scripted set-diff and one span
+(`HasPencilRealization`) restored that a by-eye pass would have lost. So this
+landing folds in **normally** — but *integrate into the current-state
+sentences*, never append a dated *"Since Steps …"* clause: that is the shape
+three consecutive landings have had to undo, and the 400 words are meant to
+carry the window identity and the spread step behind this direction, not one
+landing.
+
 ## Registry — `notes/Pencil-informal.md` (the (K) workbook)
 
 Status keywords are pointers to the owning section's verdict block and the
