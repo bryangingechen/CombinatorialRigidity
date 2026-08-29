@@ -28,7 +28,8 @@ the middle's screw space through **ONE hyperplane and ONE functional**, and `δ�
 exactly that rank-one budget ((BE-54)–(BE-58); write-up `notes/Pencil-fanout.md`
 §"BWIN"). With BSHARP ((b1)/(b2) outside the window) and BRULE ((b3), disjoint),
 **(BE-37)(ii) has all three clauses at every window piece and (β) is PROVED there on
-the reduction's 87-of-91 domain**. Job 3: the window is **NOT the barbells** (theta
+the reduction's 87-of-91 domain — MODULO the two named side conditions (S1)/(S2)**
+((BE-57)(iv)): hypotheses on the middle, vacuous at every drawn piece, **not theorems**. Job 3: the window is **NOT the barbells** (theta
 chains and R-node middles are in it). What remains of (β) is per-shape/measured residue
 **outside** the window — the ledger is (BE-58)(iv) — and the `π_u = π_v` corner
 ((BE-32)(+), forced branch). **The phase-boundary consequence is reported, NOT acted
