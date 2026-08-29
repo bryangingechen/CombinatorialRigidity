@@ -536,8 +536,9 @@ Pair2,Escape,Base}.lean`; per-leaf history `notes/Phase39-design.md`.
 **Canonical homes — read these, not a summary of them.** The **State of (K)**
 gap map in `notes/Pencil-informal.md` is the phase's status object and is
 authoritative for every status word; `notes/Pencil-informal-grid.md` owns
-§(K-grid); `notes/Pencil-strategy.md` owns the option board (§8) and the
-unpriced §9 shelf **(ZH-1)–(ZH-6)**, which stays ineligible;
+§(K-grid); `notes/Pencil-W4-informal.md` owns the W4 (`hcontract`) residual arc;
+`notes/Pencil-strategy.md` owns the option board (§8) and the unpriced
+§9 shelf **(ZH-1)–(ZH-6)**, which stays ineligible;
 `notes/Pencil-fanout.md` owns dispatch specs and landing write-ups;
 `notes/Pencil-adjudications.md` owns the archived verbatim user calls.
 
@@ -608,10 +609,61 @@ reduction; U3's negative-form insight already exploited); the symbolic meta-opti
 ("upgrade §(K-Λ) via M2") is **landed, not pending** (`m2/lambda0.m2`) — only §5.3 item
 (i) remains, ruled out by §5.3's own local-frame feasibility boundary.
 **Not open, and not re-litigated per wave:** the **(FR-6) follow-ons** ((ii)/(iv)
-un-commissioned; **(iii)** struck by (OC-17)), the unselected leads (b)–(f) in *Current
-state*, and route σ / W4. **Deliberate non-goals — do not re-derive, re-sweep, or
-re-open:** (Λ0), (Λ1), the `g₁₄` clause, §(K-ind), §(K-Δ), §(K-clos)'s field question,
+un-commissioned; **(iii)** struck by (OC-17)), the unselected leads (b)–(f) (below,
+§"The unselected candidate continuations"), and route σ / W4. **Deliberate non-goals — do not
+re-derive, re-sweep, or re-open:** (Λ0), (Λ1), the `g₁₄` clause, §(K-ind),
+§(K-Δ), §(K-clos)'s field question,
 §(K-ann)'s settled batch ((ANH-1)–(ANH-6), (SD-6)) and §(K-out)'s settled batch
 ((OC-1)–(OC-7); pinned, disjoint pools) — including "does the polarity generalize?",
 (D2)'s far block, POOL-G/POOL-S, a counting/matroid route to (OUT)'s hypothesis ((OC-3)
 refutes the whole class), or `lambda.py`'s figures (slice **S3**'s carve-out is spent).
+
+## What the recent landings closed
+
+**Relocated verbatim from `notes/Phase39.md`'s *Hand-off* section, 2026-08-29**, at the
+recompute that followed the BWIN landing, when the note stood at 575/580 lines with the
+user's next pick to record in both the header and the hand-off. A standing
+**do-not-re-open** list is **stable reference, not status** — it changes only when a
+direction closes something new — which is exactly the disposition the four blocks above
+already have, and what the note's own *Doc debt* watch item prescribes instead of a fifth
+compression fold. Each item's own gap-map row carries the same close, and the gap map is
+authoritative for status; caps were not bumped and nothing was deleted. The note keeps a
+pointer.
+
+**DO NOT RE-OPEN — what the recent landings closed.** From **BZAVOID**: the
+forced-degeneration cap as a refutation route for **any** graph ((BE-15); cap-free for the
+**triangle** mechanism, the general one MEASURED only — a proof of **(BE-23)(ii)** would
+restore it in full and is the disproof side's highest-value single search); the landed
+Phases-24–26 `G²` apparatus, whose general-position gate is the **literal negation** of the
+pencil condition ((BE-17)); and the **transversality/dimension count** ((BE-16)(iv)). From
+**ZJACOB**: the determinantal / scheme-theoretic package is a **conservation law** — it
+converts expected codimension *into* structure with **no theorem producing it** over a
+non-generic base, so any route getting properness from a codimension count, a Jacobian
+criterion or Cohen–Macaulayness is answered by §(K-jac) before it starts. From **ZSHEAR**:
+`Q(r̃) ≠ 0` is `PGL(4)`-invariant, so **no gauge-fixing can ever supply it**. From
+**GHWIT/GMINM**: per-matching (b′) at the constant 2 is FALSE and the `min_M` reading is
+PROVEN — **do not re-open either**.
+
+## The unselected candidate continuations
+
+**Relocated verbatim from `notes/Phase39.md`'s *Current state* section, 2026-08-29**, at the
+same recompute and for the same reason. This list is **reference, not status** by its own
+last sentence — *"the current ranking of what a wave did not pick is
+`notes/Pencil-fanout.md`'s own losers sections, not this list"* — so what a fresh session
+needs from `notes/Phase39.md` is the pointer, and the ranking is read where it is live. The
+`notes/Pencil-fanout-archive.md` references to *"the unselected leads (b)–(f)"* are dated
+records of what a user did **not** select and name no section, so they do not dangle; the one
+live section-naming reference, in §"Durable negatives and deliberate non-goals" above, is
+repointed here in the same commit. The note keeps a pointer.
+
+The other candidate continuations, unselected — items (a)/(g) **DONE** (second-fan-out
+directions M and R), each with a canonical home carrying the detail: **(b)** **(K-wit)**, the
+pitch route's single live form at companion splits (§(K-Λ)) — its (OC-8) residue now reduces
+to chart irreducibility (**DONE**, CIRR) plus input (a), which itself **FACTORS** (**DONE**,
+ZNEQ) into a dominated half and the target-rank half (OSCHU, landed 2026-08-19; OQRANK,
+landed 2026-08-25); **(c)** the **W4 build**, decomposed and buildable, **PARKED** by the
+Lean hold; **(d)** the companion-length dichotomy frame (§(K-dom) *D7*) + the unprobed
+`k ≥ 4` parallel-edge item (§(K-pure) *P4*); **(e)** §(K-Λ) item (vii)'s residual, since
+LTWO a named, non-empty, floor-classified family; **(f)** strategy §4.6's shortlist,
+**partially superseded** for the tight stratum, U3 still unrun. **The current ranking of
+what a wave did not pick is `notes/Pencil-fanout.md`'s own losers sections, not this list.**
