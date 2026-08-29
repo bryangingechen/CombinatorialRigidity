@@ -1,15 +1,25 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
 **Status: EIGHT fan-outs, TWENTY-EIGHT single directions and TWO concurrent
-pairs dispatched; 56 LANDED, and BSHARP (ordinal 49, §"BSHARP") is IN FLIGHT.**
-**BSHARP PREPPED 2026-08-28** — BEARFULL's successor (1), the ear case's **last
-(β) clause**: prove **`ρ̄₁ ∩ Π_u = 0`**, which by the proved (BE-42)(ii)
-discharges **(b1) and (b2) together** and leaves (β) at **(b3)** alone. The job
-is the **genericity proviso** (BE-42)(iii) is explicit about not discharging;
-job 2 asks the coverage question the mechanism raises — its hypothesis needs
-*two `u–v` paths leaving `u` by different edges*, which **fails at path pieces,
-where (BE-38)(i) proves `dim = 1` sharp** — so the honest target is a **case
-split, not a uniform sharpening**. **RESGRID (ordinal 48, §"RESGRID") LANDED
+pairs dispatched; ALL 57 ARE LANDED and nothing is in flight.**
+**BSHARP (ordinal 49, §"BSHARP") LANDED 2026-08-28** — the ear case's **last
+(β) clause**, and **HIT shape 2 with a refutation attached**: the sharpening
+**`ρ̄₁ ∩ Π_u = 0` IS FALSE**, at an exact **DICHOTOMY of two identities** — a
+**series end** (every `u–v` path leaves `u` by one edge, so (BE-31)(i) puts
+that hinge line in `ρ̄₁`) or **path saturation** (`δ₁ = min_P dim⟨P⟩`, so
+(BE-30)(iv) is an equality of spaces) — **0 mismatches over 49 pieces**. The
+second mechanism needs **no** hypothesis on the first edges, so it **CORRECTS
+(BE-38)(iii)'s prose clause** *"`0` wherever two `u–v` paths leave `u` by
+different edges"* at six of BEARFULL's own landed `bgrass` rows, and with it
+(BE-42)(iii)'s implied sufficiency — **no measurement changes**. The
+coordinator's reduction is **sound and decouples**, but its limit is
+`dim⟨P⟩ ≤ 5`, a **dimension count, not a proviso**; the **genericity proviso IS
+DISCHARGED** where the sharpening is available (openness + irreducibility ⟹ one
+exhibited witness proves a shape's stratum). **Every failure case discharges
+(b2) by an already-landed route except ONE named window** — series at **both**
+ends with `δ₁ ≤ 4` — where **(b2) ⟺ `ρ̄₁ ∩ Z = ⟨ℓ_u, ℓ_v⟩`**, exhibited 5/5;
+reaching that window needed job 3's **first parametrization past bearcase's
+shape guard**. **(β) is at (b3) plus that window**, not (b3) alone. **RESGRID (ordinal 48, §"RESGRID") LANDED
 2026-08-28** — the **(K-res) scoping slice**, user-selected 2026-08-26: *does
 (GR-15)/§(K-grid) transport to the `W19`-type (K-res) habitat?* **HIT shape 3,
 partial transport with the boundary a step number**: the §(K-grid) **geometry
@@ -6797,3 +6807,132 @@ unconsumed remainder.** **Checked and NOT chosen:** `BZERO` (0-hit, but it names
 the answer as if settled, and the honest target is a case split in which `0` is
 **false** at path pieces) and `BFLAG` (0-hit, but it names the apparatus rather
 than the question).
+
+### BSHARP — landing write-up (LANDED 2026-08-28, recon-opus, single design-pass commit)
+
+**Verdict: HIT shape 2 with a refutation attached — the target is CLOSED as a
+question, and the answer is a DICHOTOMY rather than a theorem.**
+`PencilPair K 3 G`, `hbareSplit`, (BE-14)-for-all-`G`, the 2-cut step, S-mark
+and (BE-32)(+) untouched; **not a PENCIL event**; **E3 stays ARMED (by GBAL),
+not fired**. Canonical home: **§(K-bare-ext)**, `notes/Pencil-informal.md`,
+*Steps BE43–BE47*; driver `notes/scripts/w4/bsharp.py`
+(`red|split|gen|hyp|adj|validate`). Reservation **fully consumed** —
+(BE-44)–(BE-48) and *Steps BE43–BE47*, nothing returned.
+
+**The spec's own correction was right, and it did not go far enough.** The spec
+refused the uniform sharpening because (BE-38)(i) proves `dim = 1` sharp at a
+**path piece**, and asked for a case split. The split is real but the class is
+wrong: the sharpening fails at every **series end** — every `u–v` path leaving
+`u` by the same edge — of which a path piece is the special case, and a
+**lollipop** (a pendant path from `u` into a `θ` whose far hub is `v`) is a
+series end with **three** `u–v` paths where it also fails. **(BE-45)(i)**,
+proved from (BE-31)(i)'s SERIES identity: the leading edge is a bridge, its own
+hinge line sits in `ρ̄₁ ∩ Π_u`, at every configuration.
+
+**And there is a SECOND, independent mechanism the spec did not have — which
+refutes the mechanism's implied sufficiency, on the arc's own landed rows.**
+**(BE-45)(ii)**: if `δ₁ = min_P dim⟨P⟩` then (BE-30)(iv)'s containment is an
+**equality of spaces**, so `ρ̄₁ ∩ Π_u` inherits that path's first line — **with
+no hypothesis on the first edges at all**. That fires at `K₄`/`K_{3,3}`/prism
+subdivided ×5, `θ(5,6,7)`, `θ(5,7,9)`, every one with **three distinct first
+edges at `u`** and `dim(ρ̄₁ ∩ Π_u) = 1`. **These are BEARFULL's own `bgrass`
+rows.** So (BE-38)(iii)'s summary clause *"`0` wherever two `u–v` paths leave
+`u` by different edges"* is **false**, and (BE-42)(iii) inherited it when it
+named itself *"the reason behind"* that measurement. **No measurement changes;
+one prose clause does** — the same shape as (BE-36), and the second time in
+this sub-arc a summary sentence outran its own table. The coordinator's second,
+weaker guess asked exactly this question (*"are those `δ₁ = 5` rows the proviso
+failing or the vacuous corner?"*): **neither — they are a second mechanism**,
+and it is a theorem.
+
+**The dichotomy is exact.** Forward (a mechanism fires ⟹ the sharpening fails):
+**proved**, both halves, certified per draw as identities of spaces. Converse
+(neither fires ⟹ it holds): **0 mismatches over 49 pieces**, proved at 8 of the
+11 applicable pieces and measured at 3. (M1) is a property of the **graph**
+(decided by connectivity, never by path enumeration); (M2) is a property of the
+**configuration**, generically of the graph.
+
+**The reduction the spec offered: TESTED, and the verdict is *sound, with a
+different limit than expected*.** It holds, and it **decouples** exactly as the
+spec guessed — the condition is per path. But *"`⟨P⟩ ∩ Π_u = ⟨ℓ_first⟩`"* is
+equivalent to `dim⟨P⟩ ≤ 5` and fails **identically**, at every configuration,
+once a path spans all six dimensions. **The limit is a dimension count, not a
+genericity proviso** ((BE-44)). It is also sufficient-not-necessary: loose at 6
+of 37 pieces, three of which have the sharpening it cannot see.
+
+**Job 1 delivered: the genericity proviso is DISCHARGED where the sharpening is
+available.** The condition is **open** on the constant-rank locus (a morphism
+to a product of Grassmannians against a closed incidence locus) and the free
+parametrization is **irreducible**, so a non-empty open is dense and finitely
+many meet — (BE-25)(i)'s own argument. Hence **one exhibited exact-ℚ witness
+proves a whole shape's stratum**, and by (BE-37)(i)(3) the (β) side is
+existential, so a dense open is *more* than it needs. 11 pieces exhibit `0`,
+296 guarded draws, zero variation over attaining draws ((BE-46)). What is not
+discharged, and is said plainly: the class-level statement over all pieces.
+
+**Job 2 answered, and the coordinator hypothesis is SPLIT — at the link the
+prep named, but not in the way it expected.** Every failure case discharges
+(b2) by a route already landed: `δ₁ ≤ 4` is (BE-38)(ii), `δ₁ = 5` is
+(BE-42)(ii)'s first branch, `δ₁ = 6` meets the (BE-22) criterion **outright**,
+and (M1) at one end is (BE-42)(ii) at the other. **The residual is exactly
+series-at-BOTH-ends with `δ₁ ≤ 4`** (hence `dist ≥ 5`), and there (b2) is
+**equivalent to a named identity**: `ρ̄₁ ∩ Z = ⟨ℓ_u, ℓ_v⟩` — the middle of the
+piece contributes nothing to `Z` past the two leading lines — **exhibited 5 of
+5** ((BE-47)). The ear reach formula (BE-33)(ii), the transport the prep
+flagged as the weak link, is **not used**: (BE-30)(i) gives a path piece
+`δ₁ = min(dist,6)` directly. So the transport is not *wrong*, it is
+*unnecessary*, and the hypothesis's error is one class up.
+
+**Job 3 was NOT FORCED and turned out to be LOAD-BEARING.** `bsharp.py adj` is
+the **first parametrization past bearcase's shape guard**: plane first at every
+branch vertex, then adjacent branch points forced onto the **meet line** of
+their planes (and a branch vertex with two branch neighbours to the
+triple-plane point). 12 pieces outside the old guard, 72 guarded draws, **0
+dichotomy mismatches**. And the residual window is **out of the old guard's
+reach** on the natural both-series family — it forces pendant length `≥ 3`,
+hence `δ₁ = 6`, the vacuous corner. The sampler also **re-derives**
+(BE-30)(iii)(c) instead of assuming it: a triangle on two adjacent branch
+vertices collapses two hinge lines and the gate rejects the draw.
+
+**F25/F27 bar, read off the shipped driver.** Five modes plus `validate`
+(~280 s end-to-end); **497 guarded draws**, every one through
+`assert_generic_star` **and** `verify_pencil_witness`, with the flags at `u`,
+`v` asserted equal to `plane_at`'s closed-star flags and `Π_u, Π_v ⊆ Z`
+asserted as identities of spaces; every subspace claim `same_space`/`contains`,
+never a dimension; the per-path invariant and the dichotomy both **asserted**,
+so a violation stops the run. **F27 in both directions:** the `= 0` rows are
+proofs at their configuration (and, with (BE-46), on a dense open), while every
+*"this piece fails to reach `0`"* row carries **8 independent draws** — and is
+in any case backed by (BE-45)'s identity, which is what actually carries it.
+Caps disclosed: the converse's 3 measured-only rows, (BE-46)'s per-shape scope,
+the new sampler's own max-branch-degree-2 guard, the 4000-path enumeration cap
+(not hit), the 49-piece battery, and the `dim Z = 3` regime excluded from
+(BE-47)(iii).
+
+**One index repair made in passing, disclosed rather than smoothed.**
+`notes/Pencil-labels.md`'s §(K-bare-ext) **registry row** had been stale since
+BZAVOID — BIMAGE, BEARCASE and BEARFULL each landed without extending it. One
+clause now covers all four directions ((BE-30)–(BE-48), *Steps BE29–BE47*) and
+says so. The registry is a pure index; the workbook's four continuation verdict
+blocks stay authoritative.
+
+**Gap map.** The `(K-bare)` row was **integrated, not appended** (the (BE-42)
+sentence rewritten in place, `+196` words) and the landing **paid part of its
+own way** by compressing the (BE-43) ear-route clause (`−30`), landing at
+**1 568 / 1 600**. **32 words remain, which is not enough for the next
+landing**: the recompute target is recorded in the labels file.
+
+**TERMINATION: E1 NO, E2 NO** (the refutations are of this direction's own
+target as posed and of one landed prose clause, every landed measurement
+intact, successor named — the window identity), **E3 ARMED, not fired**.
+
+**Successor ranking, for the coordinator (not acted on).** **(1)** *The window
+identity as a class statement* — at a both-series piece with `δ₁ ≤ 4`,
+`ρ̄₁ ∩ Z = ⟨ℓ_u, ℓ_v⟩`. (BE-31)(i) makes `ρ̄₁ = ⟨ℓ_u⟩ + ρ̄(middle) + ⟨ℓ_v⟩`
+explicit, so the statement is *"the middle's own `ρ̄` misses `Z`"* — a
+genuinely new obligation, and closing it puts the (β) side at **(b3) alone**.
+**(2)** BEARFULL's spread step, still the last 3.8 % of (BE-32)(+), untouched
+here. **(3)** (b3) itself — *`ρ̄₁ ∩ E` is not an opposite-ruling pencil* — which
+no direction has yet attacked and which (BE-33)'s third trapping mechanism
+already describes. **(4)** A parametrization for branch vertices of branch
+degree `≥ 3` (unsubdivided `K₄`), the first shape neither sampler reaches.

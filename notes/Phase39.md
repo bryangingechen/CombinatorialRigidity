@@ -9,29 +9,26 @@ derives it from exactly **three carried items**: **`hcontract`** (W4 — build p
 (L0–L7), with **`hsplit` CLOSED IN FULL** and `hfresh`'s counting discharge landed
 (2026-07-30).
 
-**The kernel-(K) research arc: 56 directions COMPLETE** (2026-08-05 → 08-28, ordinals
-1–48), plus eight strategy-only passes and two architecture probes; **BSHARP (ordinal 49)
-is IN FLIGHT**.
+**The kernel-(K) research arc: 57 directions COMPLETE** (2026-08-05 → 08-28, ordinals
+1–49), plus eight strategy-only passes and two architecture probes; **nothing is in
+flight**.
 **Per-direction verdicts, specs and landing write-ups are NOT restated here** —
 each direction has one at `notes/Pencil-fanout.md` §"<CODE>" (ordinals 1–19:
 `notes/Pencil-fanout-archive.md`) and a canonical mathematical home in the workbooks.
-**The arc's standing result, unchanged by all 56: `hK` is not closer.** **(GR-15)** — the
+**The arc's standing result, unchanged by all 57: `hK` is not closer.** **(GR-15)** — the
 single open gap the whole §(K-grid) chain reduces to — is **untouched**; **class uniformity
 of the escape is untouched**; no g-flank was found by any direction; **E3 is ARMED (by
 GBAL) and has never fired**.
 
-**LATEST LANDING — RESGRID** (ordinal 48): the (K-res) scoping slice — geometry transports,
-residual is **(RS-5)**, the gap map's *"one uniform gap serves both"* **CORRECTED**, the wave
-still a user call (§(K-res), `notes/Pencil-informal-grid.md`; write-up in the fanout doc).
-
-**IN FLIGHT — direction BSHARP** (ordinal 49, `recon-opus`, dispatched 2026-08-28):
-BEARFULL's successor (1) and the ear case's **last (β) clause** — prove **`ρ̄₁ ∩ Π_u = 0`**,
-which by the proved (BE-42)(ii) discharges **(b1) and (b2) together**, leaving (β) at **(b3)**
-alone. The job is the **genericity proviso** (BE-42)(iii) explicitly does not discharge, and
-the honest target is a **case split**: the mechanism needs two `u–v` paths leaving `u` by
-different edges, which fails at path pieces, where (BE-38)(i) proves `dim = 1` **sharp**.
-Spec: `notes/Pencil-fanout.md` §"BSHARP". **The full ranked successor list is *Hand-off*'s,
-not restated here** — this pointer replaces the copy that used to sit in this header.
+**LATEST LANDING — BSHARP** (ordinal 49): the ear case's last (β) clause, and the
+sharpening **`ρ̄₁ ∩ Π_u = 0` is FALSE** — its failure locus is an exact **DICHOTOMY** (a
+**series end**, or `δ₁ = min_P dim⟨P⟩`), which **corrects (BE-38)(iii)'s prose** at six of
+BEARFULL's own rows; the **genericity proviso IS DISCHARGED** where the sharpening is
+available; **every failure case discharges (b2) by an already-landed route except ONE named
+window**, where **(b2) ⟺ `ρ̄₁ ∩ Z = ⟨ℓ_u, ℓ_v⟩`** (§(K-bare-ext) *Steps BE43–BE47*).
+**(β) is at (b3) plus that window. The next concrete task is the *Hand-off*'s ranked
+successor (1)**, that window identity as a class statement; the full list is there, not
+here.
 
 **On a future HIT: the phase-boundary consequences are the USER's call** —
 whether Phase 39 closes and a successor opens for the Lean is a
@@ -208,9 +205,10 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
   to `notes/Pencil-structure.md` §"Conventions and canonical homes". Caps **not** bumped,
   nothing deleted; record `notes/Pencil-structure.md` §"Slice 6". **The gate is MECHANICAL** —
   `notes/check-phase-note.py` caps this note at **580 lines / 525 status-header words** and
-  fails if *Decisions made* outgrows the forward sections. **Live watch, measured at the
-  RESGRID prep by running the gate: 574/580 lines, 496/525 words — SIX lines and TWENTY-NINE
-  words of headroom, and a landing spends more than either.** **Next time this binds, the question is again "what here is reference
+  fails if *Decisions made* outgrows the forward sections. **Live watch, re-measured at the
+  BSHARP landing (2026-08-28): 578/580 lines, 409/525 words** — recomputing the header
+  (folding the in-flight block into the landing block) bought **116 words**, so **lines are
+  the binding constraint, at TWO.** **Next time this binds, the question is again "what here is reference
   rather than status?"** — not another fold; three consecutive folds recovered only 2–5 lines
   each, because the note is forward-weighted and **the forward part is what grew**. A
   landing's entry stays **one line**; the (BE-14) thread's four prose entries are the standing
@@ -232,19 +230,22 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
 
 **The phase stays OPEN** (the 2026-07-24 adjudication — no phase-close; see *Current state*).
 
-**IN FLIGHT — BSHARP (ordinal 49) at ranked successor (1) below**, the ear case's last
-(β) clause: prove **`ρ̄₁ ∩ Π_u = 0`** (spec `notes/Pencil-fanout.md` §"BSHARP"). The
-strengthened 2-cut lemma **is** (BE-14) (decomposition exhaustive; base
+**BSHARP (ordinal 49) LANDED 2026-08-28** and consumed the old successor (1): the
+sharpening is **FALSE at a dichotomy**, the proviso **discharged**, and (β) is at **(b3)
+plus one named window** ((BE-44)–(BE-48); write-up `notes/Pencil-fanout.md` §"BSHARP").
+The strengthened 2-cut lemma **is** (BE-14) (decomposition exhaustive; base
 `{3-connected}` ∪ `{max deg ≤ 2}` ∪ `{def₂ = def₃}` free, 1-cuts (BE-18),
 statement **PINNED** as **S-mark**, simultaneity **VACUOUS** (BE-25)(i)). BIMAGE
 bounded and classified its residual geometric sentence for the **ear**; BEARCASE
 then **PROVED (α)** — the reach formula holds for `m ≥ 3` — **refuted (β) as
 stated** and **collapsed its quantifier**, leaving one residue.
-**BEARCASE's ranked successors, which supersede BIMAGE's:**
+**Ranked successors, re-ranked at the BSHARP landing:**
 
-1. **(b1) sharpened to `ρ̄₁ ∩ Π_u = 0`** — it discharges **two** of the three
-   clauses at once, since **(b2) is now a COROLLARY of (b1)** ((BE-42)); the
-   mechanism is named in (BE-42)(iii).
+1. **THE WINDOW IDENTITY AS A CLASS STATEMENT** — at a **series end at both ends**
+   with `δ₁ ≤ 4`, is `ρ̄₁ ∩ Z = ⟨ℓ_u, ℓ_v⟩`? (BE-31)(i) makes `ρ̄₁ = ⟨ℓ_u⟩ +
+   ρ̄(middle) + ⟨ℓ_v⟩` explicit, so it says *"the middle's own `ρ̄` misses `Z`"* — a
+   new obligation, **exhibited 5/5**, equivalent to (b2) there ((BE-47)(iii)), and
+   the (β) side's last item: closing it puts (β) at **(b3) alone**.
 2. **The SPREAD STEP** — *every aggressively-forced pair lies in one `≤6`-cycle
    class*, the last **3.8 %** of (BE-32)(+) (55 known instances). Pure graph
    theory, and the merge inequality is **known** not to reach it: a 7-cycle of
@@ -268,15 +269,11 @@ Also unclaimed, from BZAVOID's own successor ranking: a **flat-star dictionary**
 re-prove `molecular_finrank_motions_eq_square_ker`'s surjectivity under a hypothesis
 admitting coplanar stars, which would revive route 2 (§(K-bare-ext)).
 
-**THE (K-res) SCOPING SLICE LANDED 2026-08-28** as direction **RESGRID** (ordinal
-48; spec + landing write-up `notes/Pencil-fanout.md` §"RESGRID"; mathematics
-**§(K-res)**, `notes/Pencil-informal-grid.md`, own gap-map row). It discharged
-the user's 2026-08-26 adjudication and retired the stale *"pin it when the tight
-side closes"* deferral. **The (K-res) wave remains a user call** — the slice
-neither started nor pre-empted it (price, *Step RS9*: reduction free, per-shape
-checks cheap, uniformity machinery to rebuild above the *Step G23* waterline).
-**BSHARP then took successor (1)**; after it, successor (2) (the spread step) or the
-next pick off the option board.
+**THE (K-res) SCOPING SLICE LANDED 2026-08-28** (RESGRID, ordinal 48; §(K-res),
+`notes/Pencil-informal-grid.md`, own gap-map row), discharging the user's 2026-08-26
+adjudication and retiring the *"pin it when the tight side closes"* deferral. **The
+(K-res) wave remains a user call** — neither started nor pre-empted (price, *Step
+RS9*). **After BSHARP the next pick is successor (1) above, (2), or the option board.**
 
 **THE CANDIDATE LIST lives in `notes/Pencil-strategy.md` §8 — the option board** (new
 2026-08-20): every live route priced in one place, with the two filters that kill most
@@ -421,6 +418,14 @@ section named; its *spec and landing write-up* in `notes/Pencil-fanout.md` §"<C
 `notes/Pencil-adjudications.md`; the derivation in git. **Do not grow these back into
 paragraphs.**
 
+- **BSHARP** (49, 2026-08-28, opus) — the (b1) sharpening is **FALSE**, at an exact
+  **dichotomy of two identities**, 0 mismatches over 49 pieces: a **series end** or
+  **path saturation** `δ₁ = min_P dim⟨P⟩` ((BE-45)). The second needs no first-edge
+  hypothesis, so **(BE-38)(iii)'s *"`0` wherever two `u–v` paths leave `u` by different
+  edges"* is CORRECTED** at six landed `bgrass` rows, with (BE-42)(iii)'s sufficiency —
+  **no measurement changes**. Reduction sound, bounded by `dim⟨P⟩ ≤ 5`, a **count**
+  ((BE-44)); **proviso DISCHARGED** ((BE-46)); (b2) free everywhere but **both-ends-series
+  with `δ₁ ≤ 4`**, where **(b2) ⟺ `ρ̄₁ ∩ Z = ⟨ℓ_u,ℓ_v⟩`** ((BE-47), (BE-48) reaches it).
 - **RESGRID** (48, 2026-08-28, fable) — the (K-res) scoping slice: §(K-grid)'s **geometry
   transports verbatim** and the (K-res) grid residual is **(RS-5)** ((GR-15)'s criterion,
   quantifier widened; proven per-shape at `W19`/`S29`/`NT21c3`); the tight bookkeeping and
