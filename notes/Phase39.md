@@ -36,9 +36,10 @@ whether Phase 39 closes and a successor opens for the Lean is a
 adjudication, surfaced with a commit-count estimate, never taken unilaterally;
 the 2026-08-05 Lean hold binds regardless of how good the news is.
 
-**Conventions and canonical homes — RELOCATED 2026-08-27** to
-`notes/Pencil-structure.md` §"Conventions and canonical homes" (verbatim: direction-code
-rules, file layout, and which doc owns which content). **Read it once per session**; the
+**Four reference blocks — RELOCATED 2026-08-27/28**, verbatim, to
+`notes/Pencil-structure.md`: *Conventions and canonical homes*, *Gates for any
+continuation*, *The question and the opening recon*, *Durable negatives and deliberate
+non-goals*. **Read them once per session**; the
 one line that must stay here is that the **State of (K)** gap map in
 `notes/Pencil-informal.md` is the phase's status object and is **authoritative for every
 status word** — read it with `python3 notes/gapmap.py`, never `sed`/`grep`.
@@ -140,28 +141,10 @@ point for any attack on the crux. **Any (K)- or W4-side numerics dispatch starts
 `notes/scripts/README.md`** (a symbolic one also from `notes/scripts/m2/README.md`); detail
 in *Blockers*.
 
-## The question and the opening recon
-
-**The question is stated once, in `ROADMAP.md` §39** (the intersection stratum:
-each body's hinges both concurrent *and* coplanar, i.e. a pencil of lines through
-a point in a plane; in the `G²` molecular reading, every atom's bond-star
-coplanar — sp²/planar-bonded atoms; the trivial direction is pencil ⇒ panel per
-body, so the content is the **lower bound**, and the all-bodies form implies every
-mixed version by rank lower-semicontinuity) — **not restated here**. Two clauses
-that section does not carry: the condition only bites at bodies of degree `≥ 3`,
-and the two literature hunts after the opening one (2026-07-30 rigidity-side,
-2026-08-05 Δ-matroid-side) are both MISSes for **complementary** reasons
-(§(K-Δ)) — **this is new mathematics**.
-
-**Opening recon verdicts R1–R3** (landed 2026-07-23) are one-lined in
-`ROADMAP.md` §39; the full record, grounding and the W0–W5 decomposition are
-`notes/Phase39-design.md`. Three clauses still constrain statements: **R1** pins
-the statement in the Phase-35 containment model + `ExtensorThroughPoint` (dual of
-`ExtensorInPanel`), satisfiable for every graph and self-dual on-stratum via
-`screwComplementIso` (§(K-clos) (AC-1)); **R2**'s queued-warmup claim is
-*bar-joint-side* and **false** for body-hinge on dense graphs; **R3**'s three open
-cores (outer Thm-5.6 strip-extend, Case-I glue Claim 6.4, Case III Claim 6.12
-span break) are what W3–W5 were built against.
+**The question, and opening recon verdicts R1–R3 — RELOCATED 2026-08-28** (verbatim) to
+`notes/Pencil-structure.md` §"The question and the opening recon": the `ROADMAP.md` §39
+pointer plus the two clauses that section does not carry, and R1/R2/R3's three clauses that
+still constrain statements. Stable reference, not status — unmoved since 2026-07-23.
 
 ## Blockers / open questions
 
@@ -199,18 +182,21 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
   queued in *Hand-off*. **(T)/(V)/(E-loc) are slice-sized and need no adjudication; the
   (K-res) WAVE is still a user call.**
 
-- **Doc debt — relief slice LANDED 2026-08-26** (1 500 → 554), then a **relocation** at the
-  BEARFULL landing (2026-08-27) when compression had run out: the header's *Conventions* /
-  *Canonical homes* paragraphs were stable **reference, not status**, so they moved verbatim
-  to `notes/Pencil-structure.md` §"Conventions and canonical homes". Caps **not** bumped,
-  nothing deleted; record `notes/Pencil-structure.md` §"Slice 6". **The gate is MECHANICAL** —
+- **Doc debt — relief slice LANDED 2026-08-26** (1 500 → 554), and **relocation, not
+  compression, every time since**: *Conventions* / *Canonical homes* (2026-08-27), *Gates for
+  any continuation* (2026-08-28), and at this recompute **the whole *question and opening
+  recon* section plus the route-σ block's *durable negatives* / *deliberate non-goals***. All
+  four are stable **reference, not status** and sit verbatim in `notes/Pencil-structure.md`,
+  each with its own reason recorded; caps **not** bumped, nothing deleted (record there,
+  §"Slice 6" onward). **The gate is MECHANICAL** —
   `notes/check-phase-note.py` caps this note at **580 lines / 525 status-header words** and
-  fails if *Decisions made* outgrows the forward sections. **Live watch, re-measured at the
-  BSHARP landing (2026-08-28): 578/580 lines, 409/525 words** — recomputing the header
-  (folding the in-flight block into the landing block) bought **116 words**, so **lines are
-  the binding constraint, at TWO.** **Next time this binds, the question is again "what here is reference
-  rather than status?"** — not another fold; three consecutive folds recovered only 2–5 lines
-  each, because the note is forward-weighted and **the forward part is what grew**. A
+  fails if *Decisions made* outgrows the forward sections. **Live watch, re-measured at this
+  recompute (2026-08-28): 578 → 555 lines, 409 → 413 words** — 25 lines of headroom, taken
+  deliberately because three landings are queued (`RESEARCH-ARC.md` §6's recompute-not-bump
+  reasoning applies to this surface too). **When it next binds the question is again "what
+  here is reference rather than status?"** — not another fold; three consecutive folds
+  recovered only 2–5 lines each, because the note is forward-weighted and **the forward part
+  is what grew**. A
   landing's entry stays **one line**; the (BE-14) thread's four prose entries are the standing
   exception, and the oldest demotes when the thread's next direction lands.
 - The full biconditional transport (design doc's W0 pin) is landed only as its two forward
@@ -384,19 +370,10 @@ discharge (residue (iv)) is CLOSED too**. The landed successor
 > (`predAfalse = 0/47`); **(4)** the branch it closes has **never been observed nonempty**,
 > so its value is **insurance, not repair**.
 >
-> **Two durable negatives from the 2026-08-07 adjudication — do not re-run:** §4.6's
-> shortlist is **partially superseded** for the tight stratum (U2 delivered by (GR-16)'s
-> reduction; U3's negative-form insight already exploited); the symbolic meta-option
-> ("upgrade §(K-Λ) via M2") is **landed, not pending** (`m2/lambda0.m2`) — only §5.3 item
-> (i) remains, ruled out by §5.3's own local-frame feasibility boundary.
-> **Not open, and not re-litigated per wave:** the **(FR-6) follow-ons** ((ii)/(iv)
-> un-commissioned; **(iii)** struck by (OC-17)), the unselected leads (b)–(f) in *Current
-> state*, and route σ / W4. **Deliberate non-goals — do not re-derive, re-sweep, or
-> re-open:** (Λ0), (Λ1), the `g₁₄` clause, §(K-ind), §(K-Δ), §(K-clos)'s field question,
-> §(K-ann)'s settled batch ((ANH-1)–(ANH-6), (SD-6)) and §(K-out)'s settled batch
-> ((OC-1)–(OC-7); pinned, disjoint pools) — including "does the polarity generalize?",
-> (D2)'s far block, POOL-G/POOL-S, a counting/matroid route to (OUT)'s hypothesis ((OC-3)
-> refutes the whole class), or `lambda.py`'s figures (slice **S3**'s carve-out is spent).
+> **The durable negatives and the deliberate non-goals — RELOCATED 2026-08-28** (verbatim)
+> to `notes/Pencil-structure.md` §"Durable negatives and deliberate non-goals": the two
+> 2026-08-07 do-not-re-run items, the *not re-litigated per wave* list, and the
+> do-not-re-derive/re-sweep/re-open batch. Stable reference, not status.
 
 **Gates for any continuation — RELOCATED 2026-08-28** (verbatim) to
 `notes/Pencil-structure.md` §"Gates for any continuation": which gate fires on which file

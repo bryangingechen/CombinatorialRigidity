@@ -559,3 +559,59 @@ not move*; a **symbolic** dispatch adds `notes/scripts/m2/README.md`;
 guards against is now a standing, harness-wide rule (`notes/scripts/README.md` §4 convention
 8, promoted 2026-08-19 after a second instance; not restated here); bump a row's cap only
 with a dated one-line reason, never a silent regrowth.
+
+## The question and the opening recon
+
+**Relocated verbatim from `notes/Phase39.md`, 2026-08-28**, at the recompute that followed
+the BSHARP landing, when the note stood at 578/580 lines with three landings already queued
+behind it. It is **stable reference, not status**: the question itself has been stated once
+in `ROADMAP.md` §39 since the phase opened, and R1/R2/R3's three still-binding clauses have
+not moved since 2026-07-23. That is what the note's own *Doc debt* watch item prescribes —
+*"what here is reference rather than status?"*, not a fourth compression fold of *Decisions
+made*, which the three preceding folds had already reduced to 2–5 recovered lines each. Caps
+were not bumped and nothing was deleted; the note keeps a pointer.
+
+**The question is stated once, in `ROADMAP.md` §39** (the intersection stratum:
+each body's hinges both concurrent *and* coplanar, i.e. a pencil of lines through
+a point in a plane; in the `G²` molecular reading, every atom's bond-star
+coplanar — sp²/planar-bonded atoms; the trivial direction is pencil ⇒ panel per
+body, so the content is the **lower bound**, and the all-bodies form implies every
+mixed version by rank lower-semicontinuity) — **not restated here**. Two clauses
+that section does not carry: the condition only bites at bodies of degree `≥ 3`,
+and the two literature hunts after the opening one (2026-07-30 rigidity-side,
+2026-08-05 Δ-matroid-side) are both MISSes for **complementary** reasons
+(§(K-Δ)) — **this is new mathematics**.
+
+**Opening recon verdicts R1–R3** (landed 2026-07-23) are one-lined in
+`ROADMAP.md` §39; the full record, grounding and the W0–W5 decomposition are
+`notes/Phase39-design.md`. Three clauses still constrain statements: **R1** pins
+the statement in the Phase-35 containment model + `ExtensorThroughPoint` (dual of
+`ExtensorInPanel`), satisfiable for every graph and self-dual on-stratum via
+`screwComplementIso` (§(K-clos) (AC-1)); **R2**'s queued-warmup claim is
+*bar-joint-side* and **false** for body-hinge on dense graphs; **R3**'s three open
+cores (outer Thm-5.6 strip-extend, Case-I glue Claim 6.4, Case III Claim 6.12
+span break) are what W3–W5 were built against.
+
+## Durable negatives and deliberate non-goals
+
+**Relocated verbatim from `notes/Phase39.md`'s route-σ block, 2026-08-28**, at the same
+recompute and for the same reason — a standing *do not re-run / do not re-open* list is
+**stable reference, not status**, changing only when a direction closes something new — so
+it belongs beside the *Conventions* and *Gates* blocks relocated here on 2026-08-27/28. The
+only edit is formatting: these paragraphs sat inside the note's route-σ blockquote, and the
+`> ` markers are dropped here. **The route σ candidacy itself is status and stays in the
+note**; only its trailing do-not-re-open paragraphs moved. The note keeps a pointer.
+
+**Two durable negatives from the 2026-08-07 adjudication — do not re-run:** §4.6's
+shortlist is **partially superseded** for the tight stratum (U2 delivered by (GR-16)'s
+reduction; U3's negative-form insight already exploited); the symbolic meta-option
+("upgrade §(K-Λ) via M2") is **landed, not pending** (`m2/lambda0.m2`) — only §5.3 item
+(i) remains, ruled out by §5.3's own local-frame feasibility boundary.
+**Not open, and not re-litigated per wave:** the **(FR-6) follow-ons** ((ii)/(iv)
+un-commissioned; **(iii)** struck by (OC-17)), the unselected leads (b)–(f) in *Current
+state*, and route σ / W4. **Deliberate non-goals — do not re-derive, re-sweep, or
+re-open:** (Λ0), (Λ1), the `g₁₄` clause, §(K-ind), §(K-Δ), §(K-clos)'s field question,
+§(K-ann)'s settled batch ((ANH-1)–(ANH-6), (SD-6)) and §(K-out)'s settled batch
+((OC-1)–(OC-7); pinned, disjoint pools) — including "does the polarity generalize?",
+(D2)'s far block, POOL-G/POOL-S, a counting/matroid route to (OUT)'s hypothesis ((OC-3)
+refutes the whole class), or `lambda.py`'s figures (slice **S3**'s carve-out is spent).

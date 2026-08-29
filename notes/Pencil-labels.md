@@ -2110,6 +2110,20 @@ target is *Steps BE1–BE13*'s option-C / BATTAIN history, every claim of which
 is settled and cited by label. Verify label preservation by a **scripted
 set-diff, never by eye**.
 
+**RECOMPUTE DONE 2026-08-28** (docs-only, no direction). The row was rewritten as a
+**current-state paragraph** against the explicit target above rather than extended:
+**1 568 → 1 200 / 1 600 words** (10 368 → 8 157 characters; reader cost ~3 456 → ~2 719
+tokens), leaving **400 words of headroom** for the three landings already queued on this
+namespace — the window identity ((BE-47)'s successor 1), the spread step, and (b3). The cap
+was **not** bumped. *Steps BE1–BE13*'s option-C / BATTAIN history collapsed to one
+label-cited sentence, and the two surviving dated *"Since Steps …"* clauses (BEARCASE,
+BSHARP) became current-state headers. **Scripted set-diff, run before the write:** **zero**
+`(XX-n)` labels dropped and zero added (59 distinct, counting roman sub-items); **18 code
+spans** dropped, each verified body-present in §(K-bare-ext) or still present as text
+elsewhere in the row — and `HasPencilRealization`, one of the four the BEARCASE recompute
+had deliberately restored, was **restored again** because the diff caught it. The next
+landing has room to integrate a clause; the one after that asks this question again.
+
 ## Registry — `notes/Pencil-informal.md` (the (K) workbook)
 
 Status keywords are pointers to the owning section's verdict block and the

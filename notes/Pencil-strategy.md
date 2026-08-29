@@ -402,7 +402,8 @@ The direct "carry the crux" move. Two honest problems:
 ### C3 — the mixed stratum: weaken the theorem so the hard case moves
 
 Not an invariant; it changes which case is hard. Currently the target is
-all-bodies-pencil, and `notes/Phase39.md` *The question and the opening recon* notes mixed versions
+all-bodies-pencil, and `notes/Pencil-structure.md` *The question and the opening recon*
+(relocated from `notes/Phase39.md` 2026-08-28) notes mixed versions
 follow *from* it by semicontinuity. Run that backwards: pin only a subset `S` of
 bodies to pencils, generic elsewhere. Then at each reduction step one may be able
 to **choose the split vertex outside `S`**, where KT's full freedom is intact —
