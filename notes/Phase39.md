@@ -119,8 +119,8 @@ constraints; the **dated dispatch/selection narrative for every ordinal, 1–44,
   rung actually consumes"*; `weekly_all` moves **1–2 points per pair-round**. Nothing
   else in the playbook moves.
 
-**Kernel-(K) research arc — seventy-three docs+scripts-only dispatches landed across 56
-directions (ordinals 1–48), plus eight strategy-only passes** (2026-08-02 → 08-28) — and,
+**Kernel-(K) research arc — seventy-six docs+scripts-only dispatches landed across 59
+directions (ordinals 1–51), plus eight strategy-only passes** (2026-08-02 → 08-29) — and,
 **outside** that count because they test the architecture rather than the (K) crux, the
 **two probes**, **KBARE-FALSIFY** (2026-08-20) and **C3-AVOID** (2026-08-24), both landed.
 The roll call, ordinals, dates and rungs are `notes/Pencil-fanout.md`'s header and its
@@ -328,7 +328,7 @@ its cost are `notes/dispatch-log.md`'s and `notes/Pencil-fanout.md`'s). **The ta
    identification recon" and `notes/Pencil-W4-informal.md`.
 3. **`hK`** (kernel (K), research) **via (GR-15)** — the escape `≢ 0` uniformity kernel,
    the phase's hardest open item and what the whole research arc attacks: **untouched by
-   all 52 directions**, and the only one of the three with **no named next slice**.
+   all 59 directions**, and the only one of the three with **no named next slice**.
    Everything in §(K-grid)/§(K-out) is *support* for this, not progress on it. **Standing
    adjudication ("C: literature hunt + A", 2026-07-30): carry `hK` pinned; option B NOT
    authorized**; both literature hunts are MISSes, and since 2026-08-02 it also carries
