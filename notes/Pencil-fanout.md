@@ -1,7 +1,14 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: EIGHT fan-outs, TWENTY-NINE single directions and TWO concurrent
-pairs dispatched; ALL 58 ARE LANDED and nothing is in flight.**
+**Status: EIGHT fan-outs, THIRTY single directions and TWO concurrent
+pairs dispatched; 58 LANDED, and BWIN (ordinal 51, §"BWIN") is IN FLIGHT.**
+**BWIN PREPPED 2026-08-28** at **the LAST ITEM in (β)** — BSHARP's window
+identity `ρ̄₁ ∩ Z = ⟨ℓ_u, ℓ_v⟩` as a **CLASS statement**. With (b1) (BSHARP) and
+(b3) (BRULE) discharged, closing it gives (BE-37)(ii) all three clauses and
+**proves the ear case's (β) side**. The spec's central point: the arc's
+one-witness discharge machinery **cannot** deliver a class statement — (BE-46)(iv)
+says so itself — so more exhibitions are not progress, and a **uniform** argument
+is the deliverable.
 **BRULE (ordinal 50, §"BRULE") LANDED 2026-08-28** at **(b3)** — *`ρ̄₁ ∩ E` is
 not an opposite-ruling pencil*, the one clause of (β) never attacked, taken as a
 deliberate deviation from BSHARP's successor order for the reason F26 records.
@@ -7212,3 +7219,176 @@ shape three landings in a row have had to undo.
   clauses on the forced branch. (3) A **class-level (b3)** on the no-mechanism
   class, whose route is the census fact this direction measured but did not
   prove: `ρ̄₁ ∩ E` at dimension 2 is never totally singular at all.
+
+## BWIN — fifty-first ordinal, the fifty-ninth direction (single dispatch, prepped 2026-08-28)
+
+**Selection provenance: the LAST ITEM in (β), and this time the successor order
+and the max-impact criterion agree.** BRULE proved **(b3)** and (BE-50)(iii)
+proved it **disjoint** from this window, so the ear case's (β) side is down to
+exactly one obligation. F26's residual-chasing worry does not apply here — the
+consumer (BE-37)(ii) needs (b1) ∧ (b2) ∧ (b3), and this is the only gap left in
+any of the three. Dispatched **un-named, single**, at **`recon-fable`**, for the
+reason in *The crux* below: the deliverable is a **class** statement, which the
+arc's own discharge machinery explicitly cannot produce.
+
+### The target, stated exactly
+
+> **(BE-47)(iii) as a CLASS statement.** For **every** window piece —
+> (M1) at both ends, (M2) at neither, `δ₁ ≤ 4` (hence `dist ≥ 5`), at
+> `dim Z = 4` — **`ρ̄₁ ∩ Z = ⟨ℓ_u, ℓ_v⟩` exactly.**
+
+By (BE-47)(iii), *proved as an equivalence*, that **is** (b2) in the window. So
+closing it closes (b2) everywhere, and with (b1) (BSHARP) and (b3) (BRULE)
+already discharged, **(BE-37)(ii)'s reduction has all three clauses** and the
+ear case's (β) side is proved outright, on the 87-of-91 domain the reduction
+already enumerates.
+
+### THE CRUX — read this before planning, because it is what makes the direction hard
+
+The arc's standard discharge for a statement of this shape is
+**(BE-46)(i)/(ii)** — openness on the constant-rank locus, irreducibility of the
+free parametrization, hence *one exhibited exact-ℚ witness proves a whole
+shape's stratum* — strengthened by BRULE's **properness** step ((BE-52)). BSHARP
+used it to bank the identity at **5 of 5** window pieces.
+
+**That machinery cannot deliver this target, and (BE-46)(iv) says so in its own
+words:** it turns *one shape's* statement into a theorem from one witness, but
+*"they do not produce the witness, and nothing here bounds the shapes needing
+one"*. **So more exhibitions are more of the same non-class evidence.** What is
+needed is a **uniform argument over the window**. Say plainly, at the top of
+your write-up, which you produced.
+
+### What is free — cite it, do NOT re-derive it
+
+- **(BE-31)(i)**, proven: the **series** recursion, `ρ̄` sums across a cut vertex.
+- **(BE-45)(i)**, proven: at a series end the far part is a leaf, so
+  `ρ̄_{u,w₁}(A ∪ e) = K·ℓ_e` **exactly**.
+- Together these give BSHARP's reformulation, which is the natural handle:
+  **`ρ̄₁ = ⟨ℓ_u⟩ + ρ̄(middle) + ⟨ℓ_v⟩`**, so the target reads *"the middle
+  contributes nothing to `Z` beyond the two leading lines"*.
+- **(BE-50)**, BRULE: (b3) holds throughout the window, and **(BE-50)(iii)**
+  proves this target independent of everything BRULE touched. The window is
+  **isolated** — nothing you prove here can disturb (b1) or (b3).
+- **(BE-48)(i)**, BSHARP: the adjacent-branch-vertex parametrization, and
+  BSHARP's own load-bearing note that **the window lives outside bearcase's old
+  shape guard** (pendant length `≥ 3` forces `δ₁ = 6`). Any sampler work starts
+  there, with its cap (branch subgraph max degree `≤ 2`, free vertices with
+  `≤ 2` branch neighbours) disclosed on every figure.
+
+### Job 1 (PRIMARY, FORCED) — decide the class statement
+
+Prove it uniformly over the window, or exhibit a window piece where
+`ρ̄₁ ∩ Z ⊋ ⟨ℓ_u, ℓ_v⟩`. If neither closes, **reduce** it — name a checkable
+condition on the middle, the way (BE-47)(iii) named this one.
+
+### Job 2 (FORCED) — the cross-condition question, which the coordinator believes is the trap
+
+> **COORDINATOR OBSERVATION — TO BE TESTED, NOT INHERITED
+> (`RESEARCH-ARC.md` §7).** *Provenance:* formed at this prep by reading
+> (BE-31)(i) and (BE-47)(iii) together; **no measurement, and no workbook
+> sentence states it.**
+>
+> *"The middle's `ρ̄` misses `Z`"* **looks** like a statement about the middle,
+> and it is not. `Z` is defined from `u` and `v` (it contains `Π_u` and `Π_v`),
+> while `ρ̄(middle)` is a `w₁–w₂` object. **The identity is a CROSS-condition
+> between the middle and the two ends**, and the coordinator's concern is
+> precisely that this is the shape which *looks* like a clean induction on the
+> middle and is not one. Before building any induction or recursion on the
+> middle, **state whether the condition factors through the middle alone**, and
+> if it does not, say what the coupling is.
+>
+> *Where the coordinator expects to be wrong:* the coupling may be cheap — the
+> two leading lines `ℓ_u`, `ℓ_v` are pinned by the series ends, so the middle
+> may see `Z` only through a 2-dimensional interface that the series recursion
+> already describes. If so this job is a paragraph, not an obstacle. **Five of
+> the last six coordinator predictions in this arc were refuted, split, or
+> reframed by the direction they primed; price this one the same way.**
+
+### Job 3 (NOT FORCED) — widen the window battery
+
+BSHARP's 5 window pieces are all **barbells** (a pendant edge or short path from
+`u` into a `θ`, and out of its far hub to `v`), `δ₁ ∈ {2,3,4}`, `dist ∈ {5,6,7}`.
+If job 1 produces a candidate argument, test it on window pieces that are **not**
+barbells — the honest question being whether "barbell" is the window or merely
+the part of it the sampler reaches. **A negative here is a finding**: if the
+window *is* exactly the barbells, say so, because that is a much smaller class
+than "both-ends-series with `δ₁ ≤ 4`" and would change what a class statement
+has to cover.
+
+### What counts as a HIT — state which you got
+
+1. **The class statement PROVED.** Then **(b1)+(b2)+(b3) all hold** and **the
+   ear case's (β) side is proved** on the reduction's 87-of-91 domain. This is
+   the largest single result the (BE-14) thread could return. Report the
+   consequence for the board and the phase boundary; **do not act on either** —
+   the phase-boundary call is the USER's (`notes/Phase39.md` *Status*), and the
+   2026-08-05 Lean hold binds regardless of how good the news is.
+2. **Reduced to a named checkable condition**, as (BE-47)(iii) did.
+3. **The window characterized** (job 3) — e.g. *the window is exactly the
+   barbells* — even without job 1.
+4. **An obstruction, located** — a window piece with `ρ̄₁ ∩ Z ⊋ ⟨ℓ_u, ℓ_v⟩`.
+   Classify **mandatorily** (the window / (b2) / the reduction / the ear case /
+   (BE-14) / the conjecture); **candidate, never refutation**; read the
+   direction-A pivot rule in `notes/Phase39.md` *Current state* first.
+
+### Bars
+
+- **Do not re-open** the sharpening ((BE-45): FALSE at a dichotomy), the proviso
+  ((BE-46): DISCHARGED), or **(b3)** ((BE-50): PROVED, and disjoint from this).
+- **Do not treat more exhibited witnesses as progress on the class statement** —
+  see *The crux*. Banking a sixth witness is not a HIT.
+- **ZJACOB (JC-6)**; label every dimension count as a count ((BE-27)).
+- **Closed routes:** the ear-decomposition induction ((BE-43)); the `G²`
+  apparatus ((BE-17)); the transversality count ((BE-16)(iv)); gauge-fixing
+  (ZSHEAR); the gauge-group count ((BE-27)(ii)).
+- **The spread step is not this direction** (BEARFULL's successor (2)), and
+  BRULE's (BE-53)(iv) already settled its ranking question.
+- **Out of scope:** `hK`, (GR-15), **(RS-5) and the (K-res) wave (a user call)**,
+  class uniformity, W4 / `hcontract`, and **any `.lean`** (2026-08-05 hold).
+
+### Riders
+
+**TERMINATION E1/E2/E3** — **E3 ARMED (by GBAL)**; report, never fire. **F11** —
+a driver per headline sentence; *"every window piece"* is an **exhaustiveness**
+claim and needs a driver that **enumerates** the window, or an argument that
+does not need one. **F27** — an exhibited identity at a configuration is a proof
+for that piece by (BE-37)(i)(3); a claim that a piece *fails* needs multiple
+independent draws, stated. **F25** — verification off the **shipped** driver;
+every script committed; exact ℚ, printed literal seeds, `assert_generic_star`
+**and** `verify_pencil_witness` on every draw. **Cap disclosure MANDATORY**,
+including (BE-48)(i)'s sampler cap. **F12, and it is live:** if you correct any
+summary, your **hunk list** must show a hunk at the **originating prose**, not
+only at your new section and the gap-map row — BRULE did this correctly, BSHARP
+did not and needed a repair commit. **F17, also live:** the fan-out doc's own
+`**Status:**` header is a surface a landing must update — BRULE left it stale
+and needed a second repair commit. **Read `notes/scripts/README.md` *Harness
+debt*** — the `w4/bear*` chain is **ten** deep; extend the consumer list, **make
+no move**.
+
+### Driver — expected, at the pinned path `notes/scripts/w4/bwin.py`
+
+Extend `brule.py` (and through it `bsharp` and the rest of the chain) by
+**read-only import**.
+
+### Reservation
+
+(`notes/Pencil-labels.md` §"Reserved namespace — direction BWIN".) §(K-bare-ext)
+**extends**, no new section; labels **(BE-54)–(BE-58)**, ***Steps BE53–BE57***,
+exactly the tail BRULE declared. `BWIN`, `bwin`, `(BE-58)` and *`Step BE57`*
+verified **0-hit**; `(BE-54)` and *`Step BE53`* have **one hit each and both are
+the tail POINTER** BRULE wrote, checked and not assumed. **Return any unconsumed
+remainder.** **Checked and NOT chosen:** `BMID` (0-hit, but it names the middle,
+and job 2's whole point is that the condition may **not** be about the middle
+alone — a code asserting otherwise would prime the answer).
+
+### Budget — measured at this prep, and both surfaces are tighter than at BRULE's
+
+`notes/Phase39.md` at **569 / 580** lines after this prep (11 of headroom); the
+route-σ block was **thinned to a pointer** here — it was a *third copy* of
+material whose canonical homes (§(K-σ) *Step σ5*, the (K-σ) and (K-tight)
+gap-map rows, strategy §8.4) were each checked to carry all of it before
+thinning, so nothing was relocated and nothing deleted. `(K-bare)` sits at
+**1 442 / 1 600** words: the `5ae57257` recompute bought 400 and BRULE spent
+242, so **integrate into the current-state sentences**, and if this landing is
+large, recompute *Steps BE14–BE33*'s per-direction history (BZAVOID/BINDUC/
+BTWOCUT/BIMAGE) — already flagged in the row as the workbook's, not the cell's.

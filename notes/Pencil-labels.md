@@ -2167,6 +2167,40 @@ Steps …"* clause was added) and its step range BE1–BE47 → **BE1–BE52**. 
 corrected inference is stated. The tail a successor opens at is **(BE-54) /
 *Step BE53***.
 
+## Reserved namespace — direction BWIN (2026-08-28, **IN FLIGHT**)
+
+**Reserved 2026-08-28 for the single direction BWIN** (ordinal 51, the arc's
+fifty-ninth direction; `notes/Pencil-fanout.md` §"BWIN") — BSHARP's **window
+identity as a CLASS statement**, the **last open item of the ear case's (β)
+side** after BRULE proved (b3) and (BE-50)(iii) proved it disjoint from the
+window. Coordinator-set, single dispatch — **not** a fan-out, so this
+reservation protects against the *existing corpus* only.
+
+| direction | owning § | labels reserved | steps reserved | driver |
+|---|---|---|---|---|
+| **BWIN** | §(K-bare-ext) — **extends**, no new section | **(BE-54)–(BE-58)** | **BE53–BE57** | `w4/bwin.py` (expected — extend `brule.py`, and through it `bsharp` and the rest of the chain, by read-only import) |
+
+The reservation opens at **(BE-54) / Step BE53**, exactly the tail BRULE
+declared; BRULE consumed its reservation in full and returned nothing.
+
+**0-hit verification, at reservation time**, across `*.md`, `*.tex`, `*.lean`,
+`*.py`, `*.m2`: `BWIN`, `bwin`, `(BE-58)` and *`Step BE57`* each **0-hit**.
+**`(BE-54)` and *`Step BE53`* have ONE hit each, and both were opened and
+confirmed to be the tail POINTER** BRULE wrote at its landing — not consumed
+labels. Recorded because a bare hit count would read as a collision; the same
+carve-out BSHARP's reservation needed, for the same structural reason.
+
+**Checked and NOT chosen:** `BMID` (0-hit, but it names *the middle*, and job
+2's whole point is that the identity may **not** be a condition on the middle
+alone — `Z` is defined from `u` and `v`. A code asserting otherwise would prime
+the answer, which is the framing `RESEARCH-ARC.md` §7 forbids).
+
+**Gap-map note.** `(K-bare)` sits at **1 442 / 1 600** words. The `5ae57257`
+recompute bought 400 and BRULE spent 242 of them, so this landing **integrates
+into the current-state sentences** — and if it is large, the recompute target is
+*Steps BE14–BE33*'s per-direction history (BZAVOID/BINDUC/BTWOCUT/BIMAGE), which
+the row **already declares** to be the workbook's rather than the cell's.
+
 ## Registry — `notes/Pencil-informal.md` (the (K) workbook)
 
 Status keywords are pointers to the owning section's verdict block and the

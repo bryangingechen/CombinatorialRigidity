@@ -10,7 +10,8 @@ derives it from exactly **three carried items**: **`hcontract`** (W4 — build p
 (2026-07-30).
 
 **The kernel-(K) research arc: 58 directions COMPLETE** (2026-08-05 → 08-28, ordinals
-1–50), plus eight strategy-only passes and two architecture probes; **none in flight**.
+1–50), plus eight strategy-only passes and two architecture probes; **BWIN (ordinal 51)
+is IN FLIGHT**.
 **Per-direction verdicts, specs and landing write-ups are NOT restated here** —
 each direction has one at `notes/Pencil-fanout.md` §"<CODE>" (ordinals 1–19:
 `notes/Pencil-fanout-archive.md`) and a canonical mathematical home in the workbooks.
@@ -19,21 +20,22 @@ single open gap the whole §(K-grid) chain reduces to — is **untouched**; **cl
 of the escape is untouched**; no g-flank was found by any direction; **E3 is ARMED (by
 GBAL) and has never fired**.
 
-**LATEST LANDING — BRULE** (ordinal 50): **(b3) is DECIDED — proved on its honest
-domain, and it is the CHEAPEST of (β)'s three clauses.** A **separation theorem**:
-`Π_u = p_u ∧ L` and `Π_v = p_v ∧ L` are members of the very ruling `y ∧ L` lives in, and
-distinct members of one ruling meet in `0` — so a (b3) failure would **refute (b1)** at
-`y ∈ {p_u, p_v}` and elsewhere force the **sharpening at BOTH ends**. Hence **(b3) holds
-wherever a BSHARP mechanism fires, in particular throughout the residual window, and
-(β)'s two residues are DISJOINT**. Its honest domain is named and it is **struck, not
-proved, in every degenerate regime**; (BE-37)(ii)'s **inference** *"(b3) ⟹ `lossR = 0`"*
-is **corrected** — (Z) dominates (R) — with **every landed measurement intact**; `0`
-failures at **637** guarded draws, and (BE-34)(ii)'s landed *"0 hits on the opposite-ruling
-predicate"* is re-read as **(b3) already measured at 768 real subspaces**
-(§(K-bare-ext) *Steps BE48–BE52*, (BE-49)–(BE-53)). **(β) is at BSHARP's window alone.**
-Job 2's routing verdict: **(BE-32)(+) does sit UNDER the (β) side** — under three clauses
-at the `π_u = π_v` corner — **but on the FORCED branch only**, the unforced branch being
-free by the existential collapse.
+**WHERE (β) STANDS, after three landings** (details in §(K-bare-ext) and the fan-out
+write-ups, **not restated here**): **(b1)/(b2) discharged everywhere but one window**
+(BSHARP), **(b3) PROVED and disjoint from that window** by a separation theorem (BRULE),
+so **(β) is at BSHARP's window ALONE**. Two riders BRULE established: (BE-37)(ii)'s
+*inference* *"(b3) ⟹ `lossR = 0`"* is **corrected** — (Z) dominates (R), the `max` bound
+absorbs it, **every landed measurement intact**; and its routing verdict, **(BE-32)(+)
+sits UNDER the (β) side at the `π_u = π_v` corner but on the FORCED branch only**.
+
+**IN FLIGHT — direction BWIN** (ordinal 51, `recon-fable`, dispatched 2026-08-28) at
+**the LAST ITEM in (β)**: BSHARP's window identity `ρ̄₁ ∩ Z = ⟨ℓ_u, ℓ_v⟩` as a **CLASS
+statement**. With (b1) and (b3) discharged, closing it gives (BE-37)(ii) all three clauses
+and **proves the ear case's (β) side** on the reduction's 87-of-91 domain. The spec's
+central point, and why it is at the top rung: the arc's one-witness discharge machinery
+**cannot** produce a class statement — **(BE-46)(iv) says so itself** — so more exhibited
+witnesses are not progress and a **uniform** argument is the deliverable. Spec:
+`notes/Pencil-fanout.md` §"BWIN".
 
 **On a future HIT: the phase-boundary consequences are the USER's call** —
 whether Phase 39 closes and a successor opens for the Lean is a
@@ -363,24 +365,18 @@ discharge (residue (iv)) is CLOSED too**. The landed successor
 `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card` (`Molecule/Pencil/Escape.lean`) wraps
 `pencil_conjecture_of_hcontract_hK_hbareSplit` and carries exactly the three items above.
 
-> **Route σ — the one live candidate, and it is NOT settled.** Route σ = route A at the dual
-> seed `σu`; it would close (K-tight) on the hard stratum, *length-free*, via
-> `Λ²Π̂(b) + Λ²Π̂(c) + α_{pt(b)} = K⁶`. **Offered for adjudication**, **no longer
-> field-blocked** (§(K-clos): the polarity generalizes, `ℝ` the *narrowest* choice); it moves
-> no gap-map status and changes no standing constraint. **It rests on FOUR obligations, and
-> only the first is Lean.** Canonical home for all four, the `--hunt` findings, the validation
-> scope and the *Field scope* caveat: §(K-σ) *Step σ5* (`notes/Pencil-informal.md`); priced in
-> `notes/Pencil-strategy.md` §8.4. **Obligation 1 is
-> genuinely the hold's** — §(K-σ)'s own verdict is *"Lean engineering against a landed
-> pattern, **not new mathematics**"*; smallest commit when opened:
-> `exists_common_seed_pencilRow_and_polynomials` (`Engine.lean:476`, chart **total**);
-> **`exists_pencilSeed_of_nondeg` (`Reseed.lean:65`) is NOT the bridge** (circular).
-> **Obligations 2–4 are NOT Lean, NOT blocked, and NOT in flight**, two of them
-> decision-relevant *before* any Lean is commissioned: **(2)** scope — the `dim R_a = 0`
-> stratum untouched and the **(K-res)** habitat unsampled, so **route σ is not a route to
-> (K-res)** even fully built; **(3)** (σ6)'s failure direction **unwitnessed**
-> (`predAfalse = 0/47`); **(4)** the branch it closes has **never been observed nonempty**,
-> so its value is **insurance, not repair**.
+> **Route σ — the one live candidate, and it is NOT settled.** Route A at the dual seed
+> `σu`; it would close (K-tight) on the hard stratum, *length-free*. **Offered for
+> adjudication**, **not field-blocked**, **not in flight**; it moves no gap-map status and
+> changes no standing constraint. It rests on **four obligations, only the first of which is
+> Lean** — that one genuinely the hold's, the other three dispatchable and two of them
+> decision-relevant *before* any Lean is commissioned. **The four, their `--hunt` findings,
+> the validation scope, the *Field scope* caveat, the smallest opening commit and the
+> not-the-bridge warning are THIRD-COPIED here no longer** (thinned 2026-08-28): canonical
+> homes are §(K-σ) *Step σ5* (`notes/Pencil-informal.md`), the **(K-σ)** and **(K-tight)**
+> gap-map rows, and `notes/Pencil-strategy.md` §8.4 — each of which carries all of it,
+> checked before thinning. The one clause that is *status* and stays here: **route σ is not
+> a route to (K-res)** (obligation 2), so it does not substitute for the (K-res) wave.
 >
 > **The durable negatives and the deliberate non-goals — RELOCATED 2026-08-28** (verbatim)
 > to `notes/Pencil-structure.md` §"Durable negatives and deliberate non-goals": the two
