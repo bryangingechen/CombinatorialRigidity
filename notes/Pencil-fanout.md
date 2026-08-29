@@ -1,12 +1,22 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
 **Status: EIGHT fan-outs, TWENTY-NINE single directions and TWO concurrent
-pairs dispatched; 57 LANDED, and BRULE (ordinal 50, §"BRULE") is IN FLIGHT.**
-**BRULE PREPPED 2026-08-28** at **(b3)** — *`ρ̄₁ ∩ E` is not an opposite-ruling
-pencil* — **the one clause of (β) never attacked**, and a deliberate deviation
-from BSHARP's successor order for the reason F26 records. It also carries a
-cheap **routing** question: whether (BE-32)(+), whose last 3.8 % is the spread
-step, sits **under** two different clauses of (β) rather than beside them.
+pairs dispatched; ALL 58 ARE LANDED and nothing is in flight.**
+**BRULE (ordinal 50, §"BRULE") LANDED 2026-08-28** at **(b3)** — *`ρ̄₁ ∩ E` is
+not an opposite-ruling pencil*, the one clause of (β) never attacked, taken as a
+deliberate deviation from BSHARP's successor order for the reason F26 records.
+**HIT shape 1: (b3) is DECIDED — PROVED on its honest domain** by a
+**separation theorem** ((BE-50)): `Π_u` and `Π_v` are members of the very ruling
+`y ∧ L` lives in, so a failure either refutes (b1) or forces the sharpening at
+**both** ends — and since (BE-45)'s mechanisms make the sharpening fail exactly
+where the window lives, **(b3) holds throughout the window and (β)'s two
+obligations are DISJOINT**. It also **corrects an inference of (BE-37)(ii)** —
+*"(b3) ⟹ `lossR = 0`"* is false, `lossR ≤ lossZ` holds instead — with the
+**conclusion, the 91-case enumeration and every landed measurement UNCHANGED**,
+because the reduction bounds `loss` by `max(lossP, lossZ, lossR)`. The routing
+question came back **CONFIRMED and extended to a third clause**, with the escape
+**splitting**: (BE-32)(+) is load-bearing on the **forced** branch only. **(β) is
+now down to BSHARP's window ALONE.**
 **BSHARP (ordinal 49, §"BSHARP") LANDED 2026-08-28** — the ear case's **last
 (β) clause**, and **HIT shape 2 with a refutation attached**: the sharpening
 **`ρ̄₁ ∩ Π_u = 0` IS FALSE**, at an exact **DICHOTOMY of two identities** — a
@@ -7119,7 +7129,9 @@ landing folds in **normally** — but integrate into the row's current-state
 sentences rather than appending a dated *"Since Steps …"* clause, which is the
 shape three landings in a row have had to undo.
 
-### LANDED 2026-08-28 — **(b3) is DECIDED: proved on its honest domain, by a SEPARATION THEOREM that makes it disjoint from BSHARP's window**
+### BRULE — landing write-up (LANDED 2026-08-28, recon-opus, single design-pass commit)
+
+**(b3) is DECIDED: proved on its honest domain, by a SEPARATION THEOREM that makes it disjoint from BSHARP's window.**
 
 **HIT shape 1** (with shape 2 attached), `notes/Pencil-informal.md`
 §(K-bare-ext) *Steps BE48–BE52*, driver `notes/scripts/w4/brule.py`
