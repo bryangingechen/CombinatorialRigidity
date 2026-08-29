@@ -9,33 +9,31 @@ derives it from exactly **three carried items**: **`hcontract`** (W4 — build p
 (L0–L7), with **`hsplit` CLOSED IN FULL** and `hfresh`'s counting discharge landed
 (2026-07-30).
 
-**The kernel-(K) research arc: 57 directions COMPLETE** (2026-08-05 → 08-28, ordinals
-1–49), plus eight strategy-only passes and two architecture probes; **BRULE (ordinal 50)
-is IN FLIGHT**.
+**The kernel-(K) research arc: 58 directions COMPLETE** (2026-08-05 → 08-28, ordinals
+1–50), plus eight strategy-only passes and two architecture probes; **none in flight**.
 **Per-direction verdicts, specs and landing write-ups are NOT restated here** —
 each direction has one at `notes/Pencil-fanout.md` §"<CODE>" (ordinals 1–19:
 `notes/Pencil-fanout-archive.md`) and a canonical mathematical home in the workbooks.
-**The arc's standing result, unchanged by all 57: `hK` is not closer.** **(GR-15)** — the
+**The arc's standing result, unchanged by all 58: `hK` is not closer.** **(GR-15)** — the
 single open gap the whole §(K-grid) chain reduces to — is **untouched**; **class uniformity
 of the escape is untouched**; no g-flank was found by any direction; **E3 is ARMED (by
 GBAL) and has never fired**.
 
-**LATEST LANDING — BSHARP** (ordinal 49): the ear case's last (β) clause, and the
-sharpening **`ρ̄₁ ∩ Π_u = 0` is FALSE** — its failure locus is an exact **DICHOTOMY** (a
-**series end**, or `δ₁ = min_P dim⟨P⟩`), which **corrects (BE-38)(iii)'s prose** at six of
-BEARFULL's own rows; the **genericity proviso IS DISCHARGED** where the sharpening is
-available; **every failure case discharges (b2) by an already-landed route except ONE named
-window**, where **(b2) ⟺ `ρ̄₁ ∩ Z = ⟨ℓ_u, ℓ_v⟩`** (§(K-bare-ext) *Steps BE43–BE47*).
-**(β) is at (b3) plus that window.**
-
-**IN FLIGHT — direction BRULE** (ordinal 50, `recon-opus`, dispatched 2026-08-28) at
-**(b3)** — *`ρ̄₁ ∩ E` is not an opposite-ruling pencil* — **the one clause of (β) never
-attacked**. It is a **deliberate deviation from BSHARP's successor order**, for the reason
-F26 records: the consumer (BE-37)(ii) needs (b1) ∧ (b2) ∧ (b3), and ranking by the previous
-direction's successors is the phase's own documented way of chasing residuals. It also
-carries a cheap **routing** question — whether (BE-32)(+), whose last 3.8 % is the spread
-step, sits **under** two clauses of (β) rather than beside them. Spec:
-`notes/Pencil-fanout.md` §"BRULE". The ranked list is *Hand-off*'s, not here.
+**LATEST LANDING — BRULE** (ordinal 50): **(b3) is DECIDED — proved on its honest
+domain, and it is the CHEAPEST of (β)'s three clauses.** A **separation theorem**:
+`Π_u = p_u ∧ L` and `Π_v = p_v ∧ L` are members of the very ruling `y ∧ L` lives in, and
+distinct members of one ruling meet in `0` — so a (b3) failure would **refute (b1)** at
+`y ∈ {p_u, p_v}` and elsewhere force the **sharpening at BOTH ends**. Hence **(b3) holds
+wherever a BSHARP mechanism fires, in particular throughout the residual window, and
+(β)'s two residues are DISJOINT**. Its honest domain is named and it is **struck, not
+proved, in every degenerate regime**; (BE-37)(ii)'s **inference** *"(b3) ⟹ `lossR = 0`"*
+is **corrected** — (Z) dominates (R) — with **every landed measurement intact**; `0`
+failures at **637** guarded draws, and (BE-34)(ii)'s landed *"0 hits on the opposite-ruling
+predicate"* is re-read as **(b3) already measured at 768 real subspaces**
+(§(K-bare-ext) *Steps BE48–BE52*, (BE-49)–(BE-53)). **(β) is at BSHARP's window alone.**
+Job 2's routing verdict: **(BE-32)(+) does sit UNDER the (β) side** — under three clauses
+at the `π_u = π_v` corner — **but on the FORCED branch only**, the unforced branch being
+free by the existential collapse.
 
 **On a future HIT: the phase-boundary consequences are the USER's call** —
 whether Phase 39 closes and a successor opens for the Lean is a
@@ -197,10 +195,10 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
   each with its own reason recorded; caps **not** bumped, nothing deleted (record there,
   §"Slice 6" onward). **The gate is MECHANICAL** —
   `notes/check-phase-note.py` caps this note at **580 lines / 525 status-header words** and
-  fails if *Decisions made* outgrows the forward sections. **Live watch, re-measured at this
-  recompute (2026-08-28): 578 → 555 lines, 409 → 413 words** — 25 lines of headroom, taken
-  deliberately because three landings are queued (`RESEARCH-ARC.md` §6's recompute-not-bump
-  reasoning applies to this surface too). **When it next binds the question is again "what
+  fails if *Decisions made* outgrows the forward sections. **Live watch, re-measured at the
+  BRULE landing (2026-08-28): 575/580 lines, 415/525 words** — the recompute's 25 lines of
+  headroom bought exactly one landing, as intended, and **FIVE** remain, so the next
+  landing binds. **When it does, the question is again "what
   here is reference rather than status?"** — not another fold; three consecutive folds
   recovered only 2–5 lines each, because the note is forward-weighted and **the forward part
   is what grew**. A
@@ -223,27 +221,34 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
 
 **The phase stays OPEN** (the 2026-07-24 adjudication — no phase-close; see *Current state*).
 
-**BSHARP (ordinal 49) LANDED 2026-08-28** and consumed the old successor (1): the
-sharpening is **FALSE at a dichotomy**, the proviso **discharged**, and (β) is at **(b3)
-plus one named window** ((BE-44)–(BE-48); write-up `notes/Pencil-fanout.md` §"BSHARP").
+**BRULE (ordinal 50) LANDED 2026-08-28** and **discharged (b3)**, the clause BSHARP left:
+a separation theorem makes it free wherever a BSHARP mechanism fires — hence free
+throughout the window — so **(β) is at BSHARP's window ALONE** ((BE-49)–(BE-53); write-up
+`notes/Pencil-fanout.md` §"BRULE"). BSHARP before it had shown the sharpening **FALSE at a
+dichotomy**, the proviso **discharged**, and (b1)/(b2) discharged outside that window
+((BE-44)–(BE-48)).
 The strengthened 2-cut lemma **is** (BE-14) (decomposition exhaustive; base
 `{3-connected}` ∪ `{max deg ≤ 2}` ∪ `{def₂ = def₃}` free, 1-cuts (BE-18),
 statement **PINNED** as **S-mark**, simultaneity **VACUOUS** (BE-25)(i)). BIMAGE
 bounded and classified its residual geometric sentence for the **ear**; BEARCASE
 then **PROVED (α)** — the reach formula holds for `m ≥ 3` — **refuted (β) as
 stated** and **collapsed its quantifier**, leaving one residue.
-**Ranked successors, re-ranked at the BSHARP landing:**
+**Ranked successors, re-ranked at the BRULE landing** — successor (1) is now the ear
+case's **only** remaining item, and (BE-50)(iii) proves it independent of everything
+BRULE touched:
 
 1. **THE WINDOW IDENTITY AS A CLASS STATEMENT** — at a **series end at both ends**
    with `δ₁ ≤ 4`, is `ρ̄₁ ∩ Z = ⟨ℓ_u, ℓ_v⟩`? (BE-31)(i) makes `ρ̄₁ = ⟨ℓ_u⟩ +
    ρ̄(middle) + ⟨ℓ_v⟩` explicit, so it says *"the middle's own `ρ̄` misses `Z`"* — a
    new obligation, **exhibited 5/5**, equivalent to (b2) there ((BE-47)(iii)), and
-   the (β) side's last item: closing it puts (β) at **(b3) alone**.
+   the (β) side's **last item**: (b3) is discharged, so closing it **closes (β)**.
 2. **The SPREAD STEP** — *every aggressively-forced pair lies in one `≤6`-cycle
    class*, the last **3.8 %** of (BE-32)(+) (55 known instances). Pure graph
    theory, and the merge inequality is **known** not to reach it: a 7-cycle of
    `Q` has slack `−1`, so a successor needs a different tool or a restricted
-   closure operator.
+   closure operator. **Re-priced by BRULE's job 2**: (BE-32)(+) sits **under**
+   three clauses of (β) at the `π_u = π_v` corner, not beside them — but on the
+   **forced** branch only, the unforced one being free by (BE-37)(i)(3).
 3. **The internal R-node** ((BE-31)(ii)) — **confirmed** on the critical path by
    BEARFULL's refutation of the ear route; (BE-25)(iii) closes the **leaf**
    R-node only. New local coordinate: the **chord step** (*(BE-14) + clause for
@@ -402,6 +407,14 @@ section named; its *spec and landing write-up* in `notes/Pencil-fanout.md` §"<C
 `notes/Pencil-adjudications.md`; the derivation in git. **Do not grow these back into
 paragraphs.**
 
+- **BRULE** (50, 2026-08-28, opus) — **(b3) DECIDED, the CHEAPEST clause**, by a
+  **separation theorem** ((BE-50)): `Π_u`, `Π_v` lie in the very ruling `y ∧ L` lives in
+  and same-ruling members meet in `0`, so a failure refutes (b1) or forces the sharpening
+  at **both** ends — free wherever a BSHARP mechanism fires, **window included**, so
+  **(β)'s two residues are DISJOINT** and (β) is at **the window alone**. Domain named and
+  (b3) **struck** at `π_u = π_v` ((BE-49)); (BE-37)(ii)'s *inference* corrected, (Z)
+  dominating (R), **no measurement moved** ((BE-51)); one witness per shape ((BE-52)); 0
+  failures at 637 draws ((BE-53)). Job 2: (BE-32)(+) is **under** three clauses, forced branch only.
 - **BSHARP** (49, 2026-08-28, opus) — the (b1) sharpening is **FALSE**, at an exact
   **dichotomy of two identities**, 0 mismatches over 49 pieces: a **series end** or
   **path saturation** `δ₁ = min_P dim⟨P⟩` ((BE-45)). The second needs no first-edge

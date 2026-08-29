@@ -7118,3 +7118,85 @@ is at **555 / 580** lines, **25 of headroom**, after a third relocation. So this
 landing folds in **normally** — but integrate into the row's current-state
 sentences rather than appending a dated *"Since Steps …"* clause, which is the
 shape three landings in a row have had to undo.
+
+### LANDED 2026-08-28 — **(b3) is DECIDED: proved on its honest domain, by a SEPARATION THEOREM that makes it disjoint from BSHARP's window**
+
+**HIT shape 1** (with shape 2 attached), `notes/Pencil-informal.md`
+§(K-bare-ext) *Steps BE48–BE52*, driver `notes/scripts/w4/brule.py`
+(`dom|sep|domin|wit|hunt|validate`).
+
+- **Job 1 (b3): DECIDED, PROVED.** `Π_u = p_u ∧ L` and `Π_v = p_v ∧ L` are
+  members of **the very ruling `y ∧ L` lives in**, and distinct members of one
+  ruling of a quadric surface meet in `0`. So a (b3) failure at
+  `y ∈ {p_u, p_v}` **refutes (b1)**, and at any other `y` forces
+  `ρ̄₁ ∩ Π_u = ρ̄₁ ∩ Π_v = 0` — **the sharpening at BOTH ends**. By (BE-45) the
+  sharpening fails whenever (M1) or (M2) fires, so **(b3) holds wherever either
+  BSHARP mechanism fires — in particular THROUGHOUT (BE-47)(ii)'s residual
+  window.** **(β)'s two remaining obligations are DISJOINT.** **(BE-50)**.
+- **The honest domain, and three regimes where (b3) is STRUCK rather than
+  proved.** It is posed only at `π_u ≠ π_v`, **cross-incidence-free** flags, and
+  `m = 1`. At `uv ∈ E(G₁)`, `δ₁ ≤ 1` leaves nothing to contain a pencil; at
+  `π_u = π_v` the line `L` does not exist, the clause is **ill-posed**, and its
+  content is carried outright by (Z) — every 2-dimensional subspace of `Λ²π`
+  meets every image pencil. And cross-incidence at a non-adjacent pair is a
+  **configuration-level side-condition (BE-37)(ii) never states**. **(BE-49)**.
+- **A landed INFERENCE corrected, with no measurement touched.** (BE-37)(ii)'s
+  *"(b3) ⟹ `lossR = 0`"* is **false** — an equality test does not exclude
+  containment at `dim(ρ̄₁ ∩ E) ≥ 3`. What holds is **`lossR ≤ lossZ`** (a plane
+  of `P(E)` meets the quadric in a conic, so carries at most one member of each
+  ruling). The conclusion, the 87/91 enumeration, and the landed
+  `bimage.bad_predicate` — which makes the same equality test — all **stand**;
+  verified 8/8 + 8/8 against `reach_measured` on newly built rows, **no move
+  made** on any landed driver. **(BE-51)**.
+- **One witness per shape is a proof**, by openness + **properness** (`P(M) ≅ P¹`
+  is complete, the step (BE-46) did not need) + irreducibility. **(BE-52)**.
+- **Measured: `0` failures at 637 guarded piece draws** across 49 pieces and
+  both samplers; at **every** row with `dim(ρ̄₁ ∩ E) = 2` the Klein form does not
+  vanish, so the intersection is not a pencil **at all**. The corrected
+  containment form fires only at the vacuous `δ₁ = 6` corner (11 of 49 rows).
+  And **(BE-34)(ii)'s landed *"0 hits on the `m = 1` opposite-ruling predicate
+  anywhere"* IS (b3)**, already measured at 768 real piece subspaces — cited,
+  not re-run. **(BE-53)(i)–(iii)**.
+- **Job 2 (routing): CONFIRMED, extended to a THIRD clause, and corrected in its
+  pricing.** (BE-37)(iii)'s 4 failing rows, (BE-47)(iii)'s caveat 7, and (b3)'s
+  ill-posedness are the **same** `π_u = π_v` corner. But the escape **splits**:
+  unforced `π_u = π_v` is avoided free by the existential (β) ((BE-37)(i)(3)),
+  and **(BE-32)(+) is load-bearing on the FORCED branch only** — where it
+  carries all three clauses at once. So it does sit *under* the (β) side, not
+  beside it; *"the last 3.8 % of a proved result"* understates its position,
+  while *"(β) stands or falls with it"* would overstate it. **(BE-53)(iv)**.
+- **Job 3 (falsification): EMPTY**, and corroborating in the safe direction
+  twice over ((BE-37)(i)(2) and (i)(3)). 392 guarded draws, 111 at the
+  no-mechanism pieces (BE-50)'s only opening, `0` failures. **(BE-53)(ii)**.
+- **COORDINATOR HYPOTHESIS: CONFIRMED in its headline, REFRAMED in its
+  mechanism, and its named weak link DISSOLVED.** *"(b3) is the cheapest, not
+  the hardest"* — **right**. Its proposed reason (*the opposite-ruling trap is
+  confined to `m = 1` on the piece side too*) is **misframed**: (b3) mentions no
+  `m` at all; the `m = 1` confinement is a property of the **consumer**
+  (mechanism (R) exists nowhere else), so (b3) is simply **not consulted** at
+  `m ≥ 2` — stronger and simpler than the conditional the hypothesis offered.
+  The flagged weak link — transporting (BE-33)'s **ear** classification to the
+  **piece** — is **unnecessary, not wrong**: `E = Π_u + Π_v` is a
+  **shared-flag** object, read at its definition site, so nothing is
+  transported. That is the **same** finding shape BSHARP reported at
+  (BE-47)(i), two directions running. And *"where the coordinator expects to be
+  wrong"* — *shape conditions have been the arc's expensive ones* — is
+  **refuted here**: this shape condition is cheap **because** the two rulings
+  are disjoint families, which turns the shape question into an incidence with
+  `Π_u`.
+- **Nothing refuted.** `PencilPair K 3 G`, `hbareSplit`, (BE-14)-for-all-`G`,
+  the 2-cut step, S-mark, (BE-32)(+), the short-cycle law, BSHARP's dichotomy
+  and window identity all untouched. **Not a PENCIL event.** **TERMINATION E1:
+  NO, E2: NO, E3: ARMED by GBAL, not fired.**
+- **Reservation FULLY CONSUMED** — (BE-49)–(BE-53), *Steps BE48–BE52*, nothing
+  returned. **F12 discharged**: the correction landed at the **originating
+  prose**, (BE-37)(ii) itself, as well as at the new section and the gap-map
+  row.
+- **Successors, ranked.** (1) **BSHARP's window identity as a class statement**
+  — *at a both-series piece with `δ₁ ≤ 4`, `ρ̄₁ ∩ Z = ⟨ℓ_u, ℓ_v⟩`* — now the
+  **only** thing between the ear case's (β) side and a proof, and by (BE-50)(iii)
+  independent of everything this direction touched. (2) **The spread step**,
+  (BE-32)(+)'s last 3.8 %, whose position is now known to be *under* three
+  clauses on the forced branch. (3) A **class-level (b3)** on the no-mechanism
+  class, whose route is the census fact this direction measured but did not
+  prove: `ρ̄₁ ∩ E` at dimension 2 is never totally singular at all.
