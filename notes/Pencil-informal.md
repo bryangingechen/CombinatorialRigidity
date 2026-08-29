@@ -21391,6 +21391,15 @@ the screw-space convention is BIMAGE's, read off `kbare_common.build_rigidity`.
 > coordinator's observation 3 on an independent sampler and sharpens it: the
 > intersection is `1` for path-like sides, `0` wherever two `u–v` paths leave
 > `u` by different edges, and never `2` below `ρ₁ = 6`.
+>
+> **The MIDDLE clause is FALSE — corrected 2026-08-28 by (BE-45)(iii), direction
+> BSHARP.** Six of the rows summarised here (`K₄` ×5 at `0,1` and `0,2`,
+> `K_{3,3}` ×5 at `0,3`, prism ×5 at `0,1`, `θ(5,6,7)`, `θ(5,7,9)`) have
+> **three** distinct first edges at `u` and `dim(ρ̄₁ ∩ Π_u) = 1`, by **path
+> saturation** ((BE-45)(ii)). Distinct first edges are **necessary, not
+> sufficient**; the exact criterion is (BE-45)'s dichotomy. **The first and third
+> clauses stand and no measurement in this block changes** — this was a summary
+> sentence outrunning its own table, the same shape as (BE-36).
 
 > **(BE-38)(iv)** *(classification, mandatory and explicit)* **Nothing is
 > refuted.** Not `PencilPair K 3 G`; not `hbareSplit`; not (BE-14)-for-all-`G`;
@@ -21983,6 +21992,15 @@ closed star is coplanar** — and that reading is what (BE-43)(iii) rests on.
 > honest note that turning it into `ρ̄₁ ∩ Π_u = 0` still needs the interior
 > lines to be generic against `Π_u`, which is a **genericity proviso** and is
 > labelled as one.
+>
+> **CORRECTED 2026-08-28 (BSHARP, (BE-45)(iii)): the sentence this mechanism was
+> read off is false, so the mechanism is NOT SUFFICIENT.** The containment is
+> real and it decouples per path ((BE-44)(i)), but distinct first edges do not
+> give `0` — six of the `bgrass` rows below have three of them and `dim = 1`, by
+> path saturation ((BE-45)(ii)); the exact criterion is (BE-45)'s dichotomy. The
+> genericity proviso this block disclosed is separately **DISCHARGED**
+> ((BE-46)); what fails is **sufficiency**, not the proviso. No measurement in
+> this block changes.
 >
 > Measured (`bearfull.py bgrass`): **19 pieces, every one with
 > `dist_{G₁}(u,v) ≥ 5`** — exactly the regime (BE-38)(ii)'s `dist ≤ 4` transfer
