@@ -1,16 +1,26 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: EIGHT fan-outs, THIRTY-TWO single directions and TWO concurrent
-pairs dispatched; 59 LANDED, and BRNODE (ordinal 52, §"BRNODE") is IN FLIGHT.**
-**BRNODE PREPPED 2026-09-01** at **the INTERNAL R-NODE** ((BE-31)(ii)) — the
-step from *ear* to *general piece*, **user-selected 2026-08-29** and confirmed on
-the critical path by BEARFULL's (BE-43)(v). The SP recursion computes `ρ̄_{u,v}`
-for every series-parallel piece and has **no** analogue at a 3-connected
-skeleton with flexible children; (BE-25)(iii) closes the **leaf** R-node only.
-The spec's central point is the routing question the ear case makes unavoidable:
-`ρ̄₂` for the ear was described **exactly** ((BE-30)) and the residual work was
-still (α)/(β), so a description at the R-node may not move (BE-22)(iii) at all —
-job 2 asks that directly, and a negative there is a HIT.
+**Status: EIGHT fan-outs, THIRTY-THREE single directions and TWO concurrent
+pairs dispatched; 60 LANDED, none in flight.**
+**BRNODE (ordinal 52, §"BRNODE") LANDED 2026-09-01** at **the INTERNAL
+R-NODE** ((BE-31)(ii)), the user's 2026-08-29 pick — **HIT shapes 1 and 3
+at once**. Job 1's sharp question comes back **YES, by a proof**: a child's
+whole boundary trace is `Δ ⊕ ({0} ⊕ ρ̄_e)` — a function of its `ρ̄` ALONE —
+so `M(H)` restricted to `V(B)` **is** the motion space of the **decorated
+skeleton** and the SP recursion **extends to a complete recursion over the
+SPQR tree** (leaf line, `S` sums, `P` intersects, `R` the decorated kernel;
+(BE-59)/(BE-60)) — (BE-31)(ii)'s residue **closed as a computation**, exact
+at every configuration. The routing verdict (job 2, F26): the coordinator's
+trace **CONFIRMED in its central clause** — the description was never what
+the consumer is short of — with drawn (α)/(β) content **EMPTY** (24/24
+both-flexible peels, criterion outright), so the R-node's residue is the
+**achievable-decorations class statement**, the (BE-30)(ii)-analogue fibred
+over the branch flags ((BE-62)). The carve-out is **negative with an exact
+boundary**: the (BE-22)(vi) collapse is the checkable condition
+`δ_{xy}(B − uv − e) = 0`, exhaustive at `n ≤ 6` — `K₄` passes exactly at the
+disjoint edge, the **prism fails at two rungs**, so one flexible child
+already suffices to leave no collapse peel ((BE-61)). The chord step is
+priced the **strictly harder** coordinate for this obligation ((BE-63)).
 **BWIN (ordinal 51, §"BWIN") LANDED 2026-08-29** at **the LAST ITEM in (β)** —
 BSHARP's window identity `ρ̄₁ ∩ Z = ⟨ℓ_u, ℓ_v⟩` as a **CLASS statement**, and it
 came back as the spec's first deliverable shape: **the class statement PROVED,
@@ -7702,3 +7712,85 @@ this landing unless it is very large. `notes/Phase39.md` is measured in the
 commit message; the note's *Doc debt* watch item stands — **when it binds, the
 question is "what here is reference rather than status?"**, not another
 compression fold of *Decisions made*.
+
+### BRNODE — landing write-up (LANDED 2026-09-01, recon-fable, single design-pass commit)
+
+**THE INTERNAL R-NODE IS DESCRIBED, AND THE DESCRIPTION WAS NEVER THE HARD
+PART — HIT shapes 1 and 3.**
+
+`notes/Pencil-informal.md` §(K-bare-ext) *Steps BE58–BE62*, driver
+`notes/scripts/w4/brnode.py` (`law|rec|carve [named|full]|route|validate`).
+
+- **Job 1, the sharp form FIRST, as the spec ordered — and the answer is
+  YES, by a proof.** The **boundary-pair lemma** ((BE-59)(i), extracted from
+  (BE-22)(i)'s own proof): a connected child's image in `K⁶ ⊕ K⁶` at its
+  terminals is `Δ ⊕ ({0} ⊕ ρ̄_e)` — its whole interface is a function of
+  `ρ̄_e` alone. Hence the **decorated-skeleton law** ((BE-59)(ii)): `M(H)`
+  restricted to `V(B)` is exactly the motion space of `B − uv` with each
+  edge constrained by `m_x − m_y ∈ ρ̄_e` in place of a hinge line, and
+  `ρ̄_{u,v}(H)` is its image at `(u, v)` — **exact at every configuration,
+  no genericity**, with the many-piece fibre-product dim law ((BE-59)(iii))
+  containing (BE-22)(i). So the SP recursion **extends to a complete
+  recursion over the SPQR tree** ((BE-60)): leaf `⟨ℓ_e⟩`, `S` sums, `P`
+  intersects, `R` the decorated kernel — (BE-31)(ii)'s named residue
+  **closed as a computation** (HIT shape 1); the R-node case is a kernel,
+  not a lattice expression, which is why the sum/intersect recursion could
+  not see it. HIT shape 4 does **not** fire.
+- **Job 2, the routing question (F26, tested not inherited): the
+  coordinator's trace CONFIRMED in its central clause, REFRAMED in one.**
+  The description is one elementary lemma, so it was never the consumer's
+  missing piece — the ear precedent generalizes. Measured at **24
+  both-flexible R-node peels** (guarded draws, both gates, (BE-22)(i)
+  asserted at every one): both sides attained, welded attainment
+  `ρ_i = δ_i` everywhere, general-position shortfall **0 at 24/24** — the
+  (BE-22)(iii) criterion held outright, consistent with BTWOCUT's
+  13 484/13 484. The reframe: the trace's "the peel does not reduce to a
+  series-parallel piece" is true but immaterial — the decorated skeleton is
+  the object, bounded, the same opaque-subspace move BWIN made. **Where the
+  content sits ((BE-62)(iii), the named residue): the achievable-decorations
+  class statement** — which tuples `{ρ̄_e}` pencil configurations achieve,
+  a fibred product over the branch flags (children couple only through the
+  flag at a shared vertex), known exactly for leaves and ears
+  ((BE-30)(ii)), open in general.
+- **The carve-out (the spec's cheapest-first question): negative, with an
+  exact boundary.** The (BE-22)(vi) collapse at the peel of child `e` needs
+  a `δ = 0` side; an ear child never supplies one, so for an all-leaf
+  remainder the condition is **`δ_{xy}(B − uv − e) = 0`, a checkable
+  function of `B`** ((BE-61)). Enumerated **exhaustively at `n = 4, 5, 6`**
+  (1 + 26 + 1 768 labelled 3-connected skeletons — reproducing btwocut's
+  1 795 census — 198 360 triples): collapse at 20.0 % / 70.9 % / 84.8 %.
+  `K₄` collapses **exactly at the edge disjoint from `uv`** (the spec's
+  parenthetical refined); the **prism at two rungs does not** (`δ = 1`) —
+  one flexible child already leaves no collapse peel, and constructed
+  both-flexible pieces **draw** (`K₄` + three long ears: `dim M = 7`,
+  `ρ̄_{u,v} ≠ 0`, every peel both-sides-flexible).
+- **Job 3: the chord step is the STRICTLY HARDER coordinate for this
+  obligation** ((BE-63)) — its geometric half fights upper semicontinuity
+  ((BE-43)(iii), the wrong way, no landed mechanism), while the decorated
+  route's residue is right-way attainment statements plus one class
+  statement of the species BWIN closed once. Kept as a coordinate only
+  where the SPQR frame itself obstructs.
+- **Verification:** 36 guarded draws over nine `law` pieces + 6
+  equal-`ρ̄`/different-geometry interior-redraw pairs (full-span and flat
+  `Λ²π` mechanisms); the lines-only SPQR recursion asserted at 3 nested
+  pieces × 3 draws; the carve enumeration exhaustive at `n ≤ 6` in `carve
+  full`; 24 route peels with (BE-22)(i) asserted at every one; exact ℚ,
+  seed literal `20260901`; `validate` ~17 s. Caps disclosed: `K₄`/`K₃,₃`
+  battery skeletons only (a two-hub triangle defeats the independent-planes
+  sampler — the (BE-30)(iii)(c) mechanism — so prism pieces are
+  combinatorial-only), and (BE-62)(ii) is a measurement, not the class
+  statement.
+- **F12 hunk at originating prose:** (BE-31)(ii)'s *"What has no such
+  description is the R-node"* marked LANDED at source (BIMAGE section).
+  **Nothing refuted; not a PENCIL event** — `hK`, (GR-15), class
+  uniformity, `hbareSplit`, (BE-14), the 2-cut step, S-mark and (BE-32)(+)
+  untouched. E1/E2 NO; E3 still ARMED (GBAL), not fired. Reservation
+  **fully consumed** ((BE-59)–(BE-63), *Steps BE58–BE62*), nothing
+  returned; the successor tail opens at (BE-64) / *Step BE63*. Harness
+  chain now **ELEVEN** deep (`… → bwin → brnode`), no move made.
+- **Ranked successors:** (1) the **achievable-decorations statement**
+  ((BE-62)(iii)) — per-child achievable sets past ears (theta children
+  first), then attainment of the decorated skeleton over the coupled
+  flags: what (BE-22)(iii) at the R-node actually consumes; (2) BWIN's
+  standing ranking (the one-end-series case, the spread step, (S1)/(S2)),
+  unchanged by this landing.

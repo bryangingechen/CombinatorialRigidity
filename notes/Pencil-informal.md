@@ -264,7 +264,7 @@ all in this file.
 | **(K-out)** *(new, 2026-08-06)* | (K-out) O1–O41 | **(OUT)'s hypothesis, measured — the headline is the NEGATIVE.** **(OC-3)**, load-bearing: `{λ₁ = 0}` is nonempty at every class shape's chart, so **no counting, matroid or placement-blind argument can ever deliver (OUT)'s hypothesis**; the bad locus is proper (`dim(R ∩ L) = 1` at 46/46) though `2` is reachable by construction (**OC-14**, a hub slide onto `C₀`). **The combinatorial half alone does not deliver availability: (OC-2)**'s 4296-pair result collapses to **one** fact — rigidity of `H/X` — which **(OC-10)** proves **forced at every class shape**; θ(3,4,5) is the unique theta class member. **Positives are pointwise, over two disjoint pinned pools: (OC-5)** POOL-G, 356/357 and 356/356; **(OC-6)** POOL-S, 270/270; **(OC-1)**'s hinge-rate identity, exact; **(OC-4)** the bad line reached by a legal chart move at all four habitats. **(OUT) is available, never automatic, not contradicted. No `place_pencil_general` battery may be quoted as a rate or as evidence about a generic chart point** — POOL-G figures over the 318 coincidence-free frames, never the raw 357. **(OC-7) is CLEARED** (32/357, fixed by `repin.star_generic`); **(OC-9)**'s guard rejects 58/357 ⊋ 39. **(OC-17)** frees the hard-stratum qualifier (`dim R_a = corank(G′) − s₀` at **every** legal chart point, so `Z` is Zariski **open**); **(OC-18)**: `H/X` rigid at a chart point ⟹ `L_b ⊄ R₁`, degree-free, at both ends of every class pair (5226/5226). **(OC-19)** reduces (OC-8) at a (shape, split) to `Z ≠ ∅` + chart irreducibility + one `H/X`-rigid chart point; **`Z ≠ ∅` alone does NOT suffice** (`--control`: 3 points in `Z` with `L_b ⊆ R₁` — openness **plus** irreducibility **plus** a witness all needed). **(OC-20)/(OC-21)** restate the bad case in perp form and strip `x₁`; **(OC-22)** lands the residue in (ANH-R1)'s object class. **Chart irreducibility (input (b)) is PROVEN** (§(K-chart) **(CH-1)(a)**). **Input (a) factors: (OC-23)** its `s₀` half is independence of `H = G − v − a` alone, at every chart point; **(OC-24)** the dichotomy, and `{σ = 0} = ∅` would make `hK` **FALSE there** (a **PENCIL event**), so that half is **necessary for `hK`** and never the binding obstruction; **(OC-25)** the target-rank half **is** §(K-tight) *Step 2* item 1 one split down; **(OC-26)** its failure is a **disjunction**, both branches forcing a codimension-2 Schubert jump of `D`; **(OC-27)** 138/138 witnesses; **(OC-28)** the `s₀` half is **dominated** by §(K-grid) (GR-10), with `{σ = 0}` a **proper** open. **The `σ > 0`-everywhere hunt RAN twice: NO HIT either time.** SIGZ killed the counting route; **OGEOM** (*Steps O42–O46*) then searched the geometric one — 91 260 live cores, **0 candidates**, `{σ = 0} ≠ ∅` a **theorem** at 275 342 class pairs ((OC-46)–(OC-49)) — leaving a named unsearched frontier (`n(F°) ≥ 6`, and `n(F°) ∈ {4,5}` at `|E°| ≥ 9`). **(OC-35)**: the self-stress space of any min-degree-≥2 subgraph is a **Kirchhoff flow on its topological paths** valued in the chain-span perps (§(K-pure) *P0*'s carrier read *off* the slide limit); **(OC-36)**: hence `corank R(F) = Σδ_Q + ρ_F − slack(F)`; **(OC-37)**, the theorem: at a class shape `slack(F) ≥ 0`, with equality **iff** `F` is a cycle or bouquet, so a stress needs `Σδ + ρ ≥ 2` at **every other topology, thetas included** — **no `H`-supported stress in the habitat is combinatorially forced** (enumerated, no cap: 2614 shapes, 215 906 supports, `slack < 0` **zero** times; theta corollary `Σ min(ℓᵢ,6) ≥ 13`, **tight**). **(OC-38)**: `P21` (**`hnoRigid`-FALSE**) is **one unit short** of what the class needs, and its five σ-jump seeds are **EXACTLY** the five where `localtest.plane_basis` degenerates — a set equality, so the arc's only exhibited instance sits on the (OC-7) coincidence locus; under `repin.star_generic`, `σ = 0` at all 360 gate-accepted seeds (cap 500). **(OC-39)**: `{σ = 0} ≠ ∅` carries an exact-ℚ **full-row-rank certificate at 3368/3368** class (shape, split) pairs over the **exhaustive `K4` stratum** — per-pair proofs, not a sample. **The target-rank half (a₁) is half-proven and half-reduced to ONE determinant (OSCHU).** **(OC-29)**: the Schubert 4-space is §(K-out)'s own hub pencils, `M̂ ∧ W = L_b ⊕ L_c`, Klein perp `⟨C(M), C(bc)⟩` — so **`dimK ≥ 1` always**. **(OC-30)**: the bad set on `M` is **exactly** the transversals of `M` and `bc` inside `D`, five rows, so `\|B\| ≤ 2` off the all-bad case. **(OC-31)**: at **every** target-rank chart point of the **whole graph `G`**, `C(vb) ∈ L_b` and `C(ac) ∈ L_c` come free from the tower, forcing **`dimK ≤ 2`** — so **`hK` at ONE `G`-point kills (OC-26)(ii)'s `dimK ≥ 3` disjunct at every eligible split at once** (292/292 + 174/174, all `dimK = 1`); **(OC-32)**: a third generator is structurally unavailable, so that bound is exact. **(OC-33)**: the surviving disjunct forces `Q\|_D` degenerate, so **`rank(Q\|_D) = 3` at one target-rank `G`-point ⟹ input (a) there** — one 3×3 determinant, `x₁`/`λ`/stratum-free, at a point the grid route already builds (570/570, 174/174). **(OC-34)**: the (a₂) re-keying is **DONE and corrects a figure quoted since (OC-28)** — §(K-grid)'s 907 *labelled* shapes are only **75 classes**, covering **19** of §(K-out)'s **174**; the other **155 are certified DIRECTLY, 0 misses**, so the `s₀` half is free at **all 174 and *without* (GR-10)** — only the **class-uniform** statement needs it. **The (a₁) residue is RUN (direction OQRANK, *Steps O37–O41*): (OC-40)/(OC-41)** complete the ⋆-eigen-block mechanism (forced `(1,2)` profile; `rank(Q\|_D) = [Q(g) ≠ 0] + rank Gram(D_Y)`); **(OC-42)** is a combinatorial **WALL** (a single-class `b`–`c` `X`-path forces `rank(Q\|_D) = 2` at every draw), refuting the naive first-colouring route **as a class statement** (27/174: 7 wall, 20 by a second uncharacterized confinement); **(OC-43)/(OC-44)**: **input (a) holds at all 174 certified classes**, per-class/per-exhibited-colouring-generic, at exact `ℚ(i)` σ-fixed grid points; zero rulings — **the (K-tight)-event branch never fires** — every rank-2 point still witnessing input (a) via (OC-30)(ii). New named residuals: wall-avoiding-colouring existence ((OC-44)(iii)); the second confinement's mechanism. **Input (a) stays OPEN as a class-uniform statement and is NOT an independent gap; (OC-8) stays OPEN, reshaped; no gap-map status move.** | **(OC-8)**: at every class shape, a hard-stratum target-rank point of the **whole-graph** chart with `L_b ⊄ R₁` or `L_c ⊄ R₄`. That is a rank **lower** bound at a pencil placement — `Pencil-strategy.md` §2.3's wall **relocated** onto the smaller `H/{e₂,e₃,e₄}` and **weakened, not crossed** — and (OC-3) says the relocation **cannot be discharged combinatorially**, so any proof must be a genericity argument on the whole-graph chart (needing its hard-stratum component not to lie inside `{λ₁ = 0} ∩ {λ₄ = 0}`), which the arc has never established because `λ` is a **far** datum. The one symbolically tractable piece — `L_b ⊄ R₁` as a polynomial non-vanishing (`Pencil-strategy.md` §5.3) — is **DELIVERED on the `ℓ_min = 5` stratum** ((OC-16): `Δ = [a,u,b] · C₀(pt b) ≢ 0` at the local frame's generic point, the bad line `C₀` in **closed form**) and **blocked off it** ((OC-15): the path-span form carries no information at `ℓ_min ≥ 6`; the stratum is 8 of 5226 pairs); at a **degree-3 hub** (3081/5226 pairs at the `b` end) (OC-8) restates with **no rank condition left** — availability ⟺ the hard-stratum target-rank locus `⊄ {pt(b) ∈ C₀}` — with **chart-to-frame dominance** the named residue ((OC-16)'s gap); the non-containment is **witnessed by construction** at θ(3,4,5) (4/8 admissible `G′`-colourings on the hard stratum at target rank, each with `Δ ≠ 0` at one end — §(K-frame) (FR-6)), the strict availability package is **0/8 at σ-fixed witnesses** with the (AC-9) coincidence the named mechanism (structurality open), and at grid points `Δ` is **combinatorial** ((FR-3)). **Both routes to a disproof are now confined.** The **counting** one is DEAD ((OC-37), SIGZ): no `H`-supported self-stress is combinatorially forced, so `{σ = 0} = ∅` can never be certified by a count. The **geometric** one is **free by an argument, not a sample**, on everything searched (*Steps O42–O46*, OGEOM): `H` is an **induced** subgraph, so `σ` depends on `H` alone ((OC-46)); every topological path of length `≥ 6` is **dead**, so `σ` is the corank of `H`'s **live core** and — girth `≥ 7` being forced by `hnoRigid` — **every cycle and bouquet is dead, killing (OC-37)(ii)'s one-unit topology class-uniformly** ((OC-47)); 91 260 live cores carry exact-ℚ corank-0 witnesses, **0 candidates** ((OC-48)), settling `{σ = 0} ≠ ∅` at **275 342** class pairs over 63 013 shapes and **upgrading (OC-39)'s 3 368 certificates from sample to theorem** ((OC-49)). **It does NOT close:** unsearched cells are `n(F°) = 4` at `|E°| ≥ 9`, `n(F°) = 5` at `|E°| ≥ 9`, and **every `n(F°) ≥ 6`** — a compute frontier below `n(F°) ≤ 5`, an ideas frontier above. The residual is now one shape-free sentence: *at every live core the Kirchhoff map `⊕_Q S_Q^⊥ → (K⁶)^nodes` is injective at the generic chart point.* **Input (a), `Z ≠ ∅`, itself factors** (§(K-out) direction ZNEQ): a **necessary-for-`hK`** half — `H` independent at some chart point, equivalently at the generic one — **dominated** by §(K-grid) (GR-10), free at 907/907 of its pool once **re-keyed** against this section's class-shape population (a combinatorial cross-pool job, no new mathematics; the two pools are labelled-instance pools with different keys and are **not** re-keyed here); and a **target-rank** half, the Schubert **non-jump** `dim(D ∩ (M̂ ∧ W)) ≤ 1` (`D` the far framework `H`'s relative twist space, `W` the hub line's 2-space) — one-point decidable, `x₁`-free, `λ`-free, stratum-free, in the same object class as (OC-20)'s perp form; measured to fail nowhere (138/138 (shape, split) witnesses, (OC-27)) but a **recipe** is missing, exactly as for (OC-19) input (c). Neither half is proven class-uniformly. **The only known failure mechanism for the necessary half is a self-stress of a short theta sub-multigraph inside `H`** (§(K-flank) *F5(d)*'s support) — a hit there would make `hK` **FALSE** at that shape, a **PENCIL event**, not a (K-tight) one, and needs the direction-A pivot rule (`Pencil-fanout-archive.md` §"Direction A") in force before any dispatch.|
 | **(K-ind)** *(new, 2026-08-05)* | (K-ind) I0–I6 | **REFUTED as a route**, and not merely "no invariant found": the transport structure the question presupposes does not exist on the `hK` habitat. **(I1)** tight ⟺ `(|V|,|E|) = (5c+1, 6c)`, so two tight graphs of equal cycle rank have equal size and **no arm of `pencil_reduction` can relate them**; **(I2)** `splitOff` at a degree-2 vertex takes `index 0 → 1` preserving `c` and fixing the hub multigraph `G°`; **(I4)** inside one `G°` the class is a **finite antichain**, and the class's infinitude is entirely in the `G°` direction, which no move reaches. **(I0)**: the failure locus is a **divisor**, so its only numerical invariant is the single bit `codim F = 1`, which *is* `hK` — the question as posed is circular, and the image-side reading is (K-dom), already struck. One genuine positive by-product: **(I3)**, subdivision-monotonicity of `Image(V_bc)` — real, new, *and pointing the wrong way*, since the induction descends and every descent bottoms out at `k ≤ 3` where (D1) caps the rank at 4 | — refuted as a route. Any future "strengthen the inductive invariant" proposal must first exhibit a move relating two class members; `pencil_reduction`'s five arms supply none |
 | **(K-Δ)** *(new, 2026-08-05)* | (K-Δ) | **NO HIT — the literature lead is discharged**, not open. Two independently fatal hypothesis failures: **(M1)** the subject's objects are *totally isotropic* subspaces and `V_bc` never is (Klein Gram rank 3, or 2 on serial chains — an `O(6)`-invariant, not a frame choice), so it has no Wick vector and carries no Δ-matroid; **(M3)** the ground set is `[3]`, fixed by `dim Λ²K⁴ = 6`, and never grows with the graph — `Pencil-strategy.md` §2.2's ingredient-2 failure in the target literature's own terms. Recorded as a *pass*: the **form** matches exactly (transversality to two coordinate isotropics = two Wick coordinates nonzero). Buys two readings, not a route: **(N1)** the `ℓ = 3` criterion as five feasible pairs in the Dress–Havel metroid of the five lines, and **(N2)** the **pentagon** reading — `Q(z) ≠ 0` ⟺ no two non-consecutive edges of the closed chain `b–x–y–c–a–b` meet | — discharged. `Pencil-strategy.md` §7's "one unverified lead" is now a checked negative with the reason |
-| **(K-bare)/(K-bare-ext)** | (K-bare-ext) BE1–BE57 | **`hbareSplit` OPEN, carried as PINNED** (*"C: cheap numerics extensions + A"*, 2026-07-30; option B NOT commissioned), and the **`∀`-seed form is REFUTED** (probe KBARE-FALSIFY, tier **T1**, a *route* finding — the **KERNEL is untouched**, the consequent an `∃` every probed gadget attains). The **extension route is NO-GO on landed machinery**, definitionally: at `¬PencilNondegFeasible` the chart/reseed/engine apparatus has nothing to consume, and the `∃`-seed + repair alternative meets §(K-tight) *Step 5*'s chartless wall. ***Steps BE1–BE13* are HISTORY, not state** — settled, cited by label, the workbook's not this cell's: the witness and enabling results, the `dim R_a = 0` cap report, option-C **C3's "failure set is exactly the line" corrected AT DZ**, and BATTAIN's **priced shape** — motive characterized off the Lean bodies ((BE-10)), bare realizability **UNCONDITIONAL** (`HasPencilRealization` is all rank, (BE-11)), the pencil condition one hub determinant each ((BE-12)), the universal cone cap `rank(cone) = 6(|V|−1) − def₂(G)` ((BE-13)). **THE TARGET IS (BE-14), DIRECT ATTAINMENT** — *the pencil stratum attains `6(|V|−1) − def₃(G)`*, **dearer in absolute terms, cheaper in structure** (seed-free, induction-free, never uses `¬PencilNondegFeasible`), discharging `hbareSplit` **and** `PencilPair`'s unconditional conjunct at once, as a **standalone theorem**; its `def₂ = def₃` proof-of-concept does **not** discharge it (DZ has `def₂ = 11`). Its hard step is one sentence — **`Y° ⊄ Z(G)`**: hub concurrency does not force the rank-drop locus, and nothing in the arc bounds `Z(G)`. ***Steps BE14–BE33* are HISTORY too**, same discipline (BZAVOID/BINDUC/BTWOCUT/BIMAGE): **(BE-14) is EXISTENTIAL, not generic**, the pencil stratum being the planar-atom molecular stratum ((BE-16)), so one witness per graph settles it and the falsification arm answers **positively** — 774/774 exact-ℚ attainment certificates. **Routes CLOSED, do not re-open:** the **ear-decomposition induction** (min-degree-`≥ 3` forces a single-edge ear in EVERY chord-free open ear decomposition, so **S-mark's pin STANDS** and the ear only re-hits the **same R-node**; chord step not soft, combinatorial half FREE, (BE-43)); the falsification arm ((BE-15), cap-free for the **triangle** mechanism only); the landed Phases-24–26 `G²` apparatus, its general-position gate the **literal negation** of the pencil condition ((BE-17)); the transversality/dimension count, `dim Y° ≤ dim Z` satisfiable at every graph with a hub ((BE-16)(iv), (BE-27)). **THE DECOMPOSITION IS EXHAUSTIVE** — 1-cuts compose ((BE-18)), **3-connected ⇒ `def₂ = 0`** ((BE-20)), the 2-cut `def₃` law is exactly `max(g₁+g₂, f₁+f₂−6)` ((BE-21)/(BE-23)) — so the base `{3-connected} ∪ {max deg ≤ 2} ∪ {def₂ = def₃}` is **FREE**, leaving **only the 2-cut composition lemma**, *attains ⟺ `dim(ρ̄₁+ρ̄₂) = min(δ₁+δ₂,6)`* ((BE-22)), **PINNED as S-mark** with simultaneity and the LEAF base free ((BE-25)); one residue, **cross-pair welding** ((BE-28)(i), measured, no argument). **For the EAR** `ρ̄₂` spans a **chain on the Klein quadric** with ends `Π_u`, `Π_v` ((BE-30)), its bad locus **exactly three mechanisms** ((BE-33)), every trap a **configuration artifact** ((BE-34)); off the ear `ρ̄` obeys an exact **series/parallel recursion** — series **sums**, parallel **intersects** — refuting the path-intersection bound as an equality and leaving the **INTERNAL R-node** as residue ((BE-31)). The combinatorial half is the **SHORT-CYCLE LAW**: `g` is **supermodular**, **`δ = 0` an EQUIVALENCE RELATION**, and the **quotient sparsity law** `5 e_Q(S) ≤ 6(|S|−1)` gives **`girth(Q) ≥ 6`** ((BE-39)), hence **every cycle of length `≤ 6` forces `δ = 0`** and `δ ≤ max(0, L−6)` in general ((BE-40)) — which **CONTAINS** the three earlier merge theorems (the `≥3`-common-neighbour one **WEAKENED to `≥ 2`**) and beats **`δ_{uv} ≤ dist(u,v)`**, empty for every `L ≤ 11` ((BE-32)). **THE EAR CASE: (α) CLOSED — the reach formula PROVED for `m ≥ 3`, no fourth mechanism at `m ≤ 2` ((BE-35)); (β) PROVED AT THE WINDOW BY A CLASS THEOREM, the rest per-shape residue outside it.** **(β) AS STATED IS FALSE** at `δ₁ ≥ 5`, unsatisfiable by plain Grassmann — a **propagated prose defect**; the correct target `loss ≤ max(0, δ₁+δ₂−6)` is **what the landed driver already tests**: **no measurement changes** ((BE-36)). Its *"every configuration"* quantifier **COLLAPSES** to one generic draw on the **attaining** locus, so a sampler over-reports traps but never misses one ((BE-37)(i)); the rest reduces to three generic-position statements in **87 of 91** arithmetic cases ((BE-37)(ii)), proved for the all-S piece and transferred at `dist_{G₁}(u,v) ≤ 4` ((BE-38)(i)/(ii)); and a BTWOCUT-independent sampler reaching **R-node** pieces finds **ZERO candidates** ((BE-38)(iii)). **(BE-32)(+)** — *forced `π_u = π_v ⇒ δ_{uv} = 0`* — is **PROVED at 196 043 of 203 723 forced pairs** and **100 % of the exhaustive `n ≤ 6` tier**; residue one geometry-free statement (*every forced pair lies in one `≤6`-cycle class*, **MEASURED**, 0 escapes in 231 137 pairs) with an **exact** boundary: a 7-cycle of `Q` has slack `−1` ((BE-41)). **(b2) is a COROLLARY of (b1)** by one line of Grassmann — `Π_u ⊆ Z`, the cancellation (BE-36) used ((BE-42)). The sharpening `ρ̄₁ ∩ Π_u = 0` is **FALSE at a DICHOTOMY** — a **series end** ((BE-31)(i)) or **path saturation** `δ₁ = min_P dim⟨P⟩` ((BE-30)(iv)) — **0 mismatches over 49 pieces**, **CORRECTING (BE-38)(iii)'s first-edge clause** and the sufficiency (BE-42)(iii), **no measurement changed** ((BE-45)); the reduction is sound and decouples, bounded by `dim⟨P⟩ ≤ 5`, a **count, not a proviso** ((BE-44)), and the **genericity proviso is DISCHARGED** ((BE-46)). Every other failure discharges (b2) ((BE-38)(ii) at `δ₁ ≤ 4`, (BE-42)(ii) at `5`, (BE-22) at `6`, the other end for a one-sided series) **except series at BOTH ends with `δ₁ ≤ 4`**, where **(b2) ⟺ `ρ̄₁ ∩ Z = ⟨ℓ_u, ℓ_v⟩`** ((BE-47)/(BE-48)) — and that is **NOW A CLASS THEOREM**: by a double peel and the **modular law**, the ends acting on the middle's own screw space through **ONE hyperplane and ONE functional** with `δ₁ ≤ 4` exactly that rank-one budget, so **(b1)+(b2)+(b3) hold at EVERY window piece** and (β) is proved there on the 87-of-91 domain; the window is **NOT the barbells** (theta chains and **R-node middles** are in it), and the two named side conditions are vacuous at every drawn middle ((BE-54)–(BE-58)). **(b3) — the SHAPE clause — is the CHEAPEST, by a SEPARATION THEOREM**: `Π_u` and `Π_v` are members of the very ruling `y ∧ L` lives in, and distinct members of one ruling meet in `0`, so a (b3) failure either refutes (b1) or forces the sharpening at BOTH ends. So **(b3) holds wherever (M1) or (M2) fires, in particular THROUGHOUT the window, and (β)'s two residues are DISJOINT** ((BE-50)). Its honest domain is `π_u ≠ π_v` with **cross-incidence-free** flags and `m = 1`; at `uv ∈ E(G₁)` it is free (`δ₁ ≤ 1`), at `π_u = π_v` **ill-posed and STRUCK** — (Z) carries its content — ((BE-49)). (BE-37)(ii)'s **inference** *"(b3) ⇒ lossR = 0"* is **CORRECTED**, but **(Z) DOMINATES (R)** off that regime, so the conclusion, the 87/91 enumeration and every landed figure **stand** ((BE-51)). Openness, **properness** and irreducibility make **one exact-ℚ witness per shape a proof** ((BE-52)); **0 failures at 637 guarded draws**, `ρ̄₁ ∩ E` **never totally singular at dimension 2**, the containment form firing only at the vacuous `δ₁ = 6` corner, and (BE-34)(ii) re-read as **(b3) already measured at 768 real subspaces** ((BE-53)). **(BE-14) OPEN; the ear case REDUCED, not proved; `hbareSplit` untouched; not a PENCIL event** |
+| **(K-bare)/(K-bare-ext)** | (K-bare-ext) BE1–BE62 | **`hbareSplit` OPEN, carried as PINNED** (*"C: cheap numerics extensions + A"*, 2026-07-30; option B NOT commissioned), and the **`∀`-seed form is REFUTED** (probe KBARE-FALSIFY, tier **T1**, a *route* finding — the **KERNEL is untouched**, the consequent an `∃` every probed gadget attains). The **extension route is NO-GO on landed machinery**, definitionally: at `¬PencilNondegFeasible` the chart/reseed/engine apparatus has nothing to consume, and the `∃`-seed + repair alternative meets §(K-tight) *Step 5*'s chartless wall. ***Steps BE1–BE13* are HISTORY, not state** — settled, cited by label, the workbook's not this cell's: the witness and enabling results, the `dim R_a = 0` cap report, option-C **C3's "failure set is exactly the line" corrected AT DZ**, and BATTAIN's **priced shape** — motive characterized off the Lean bodies ((BE-10)), bare realizability **UNCONDITIONAL** (`HasPencilRealization` is all rank, (BE-11)), the pencil condition one hub determinant each ((BE-12)), the universal cone cap `rank(cone) = 6(|V|−1) − def₂(G)` ((BE-13)). **THE TARGET IS (BE-14), DIRECT ATTAINMENT** — *the pencil stratum attains `6(|V|−1) − def₃(G)`*, **dearer in absolute terms, cheaper in structure** (seed-free, induction-free, never uses `¬PencilNondegFeasible`), discharging `hbareSplit` **and** `PencilPair`'s unconditional conjunct at once, as a **standalone theorem**; its `def₂ = def₃` proof-of-concept does **not** discharge it (DZ has `def₂ = 11`). Its hard step is one sentence — **`Y° ⊄ Z(G)`**: hub concurrency does not force the rank-drop locus, and nothing in the arc bounds `Z(G)`. ***Steps BE14–BE33* are HISTORY too**, same discipline (BZAVOID/BINDUC/BTWOCUT/BIMAGE): **(BE-14) is EXISTENTIAL, not generic**, the pencil stratum being the planar-atom molecular stratum ((BE-16)), so one witness per graph settles it and the falsification arm answers **positively** — 774/774 exact-ℚ attainment certificates. **Routes CLOSED, do not re-open:** the **ear-decomposition induction** (min-degree-`≥ 3` forces a single-edge ear in EVERY chord-free open ear decomposition, so **S-mark's pin STANDS** and the ear only re-hits the **same R-node**; chord step not soft, combinatorial half FREE, (BE-43)); the falsification arm ((BE-15), cap-free for the **triangle** mechanism only); the landed Phases-24–26 `G²` apparatus, its general-position gate the **literal negation** of the pencil condition ((BE-17)); the transversality/dimension count, `dim Y° ≤ dim Z` satisfiable at every graph with a hub ((BE-16)(iv), (BE-27)). **THE DECOMPOSITION IS EXHAUSTIVE** — 1-cuts compose ((BE-18)), **3-connected ⇒ `def₂ = 0`** ((BE-20)), the 2-cut `def₃` law is exactly `max(g₁+g₂, f₁+f₂−6)` ((BE-21)/(BE-23)) — so the base `{3-connected} ∪ {max deg ≤ 2} ∪ {def₂ = def₃}` is **FREE**, leaving **only the 2-cut composition lemma**, *attains ⟺ `dim(ρ̄₁+ρ̄₂) = min(δ₁+δ₂,6)`* ((BE-22)), **PINNED as S-mark** with simultaneity and the LEAF base free ((BE-25)); one residue, **cross-pair welding** ((BE-28)(i), measured, no argument). **For the EAR** `ρ̄₂` spans a **chain on the Klein quadric** with ends `Π_u`, `Π_v` ((BE-30)), its bad locus **exactly three mechanisms** ((BE-33)), every trap a **configuration artifact** ((BE-34)); off the ear `ρ̄` obeys an exact **series/parallel recursion** — series **sums**, parallel **intersects** — refuting the path-intersection bound as an equality ((BE-31)); and the **INTERNAL R-NODE residue is CLOSED AS A COMPUTATION** — a child's whole boundary trace is a function of its `ρ̄` alone, so `ρ̄` at every SPQR node obeys ONE **decorated-skeleton law** (leaf line, `S` sums, `P` intersects, `R` the decorated kernel), exact at every configuration ((BE-59)/(BE-60)). The (BE-22)(vi) collapse at an R-node peel is the **checkable condition** `δ_{xy}(B − uv − e) = 0` — exhaustive at `n ≤ 6` (198 360 triples), `K₄` passes exactly at the disjoint edge, the **prism FAILS at two rungs**, so the both-flexible case is nonempty at ONE flexible child ((BE-61)); drawn (α)/(β) content at both-flexible R-node peels is **EMPTY** (24/24, constructor-capped), so the R-node's remaining content is the **achievable-decorations class statement** — the (BE-30)(ii)-analogue, fibred over the branch flags ((BE-62)) — and the chord step is priced the strictly harder coordinate for it ((BE-63)). The combinatorial half is the **SHORT-CYCLE LAW**: `g` is **supermodular**, **`δ = 0` an EQUIVALENCE RELATION**, and the **quotient sparsity law** `5 e_Q(S) ≤ 6(|S|−1)` gives **`girth(Q) ≥ 6`** ((BE-39)), hence **every cycle of length `≤ 6` forces `δ = 0`** and `δ ≤ max(0, L−6)` in general ((BE-40)) — which **CONTAINS** the three earlier merge theorems (the `≥3`-common-neighbour one **WEAKENED to `≥ 2`**) and beats **`δ_{uv} ≤ dist(u,v)`**, empty for every `L ≤ 11` ((BE-32)). **THE EAR CASE: (α) CLOSED — the reach formula PROVED for `m ≥ 3`, no fourth mechanism at `m ≤ 2` ((BE-35)); (β) PROVED AT THE WINDOW BY A CLASS THEOREM, the rest per-shape residue outside it.** **(β) AS STATED IS FALSE** at `δ₁ ≥ 5`, unsatisfiable by plain Grassmann — a **propagated prose defect**; the correct target `loss ≤ max(0, δ₁+δ₂−6)` is **what the landed driver already tests**: **no measurement changes** ((BE-36)). Its *"every configuration"* quantifier **COLLAPSES** to one generic draw on the **attaining** locus, so a sampler over-reports traps but never misses one ((BE-37)(i)); the rest reduces to three generic-position statements in **87 of 91** arithmetic cases ((BE-37)(ii)), proved for the all-S piece and transferred at `dist_{G₁}(u,v) ≤ 4` ((BE-38)(i)/(ii)); and a BTWOCUT-independent sampler reaching **R-node** pieces finds **ZERO candidates** ((BE-38)(iii)). **(BE-32)(+)** — *forced `π_u = π_v ⇒ δ_{uv} = 0`* — is **PROVED at 196 043 of 203 723 forced pairs** and **100 % of the exhaustive `n ≤ 6` tier**; residue one geometry-free statement (*every forced pair lies in one `≤6`-cycle class*, **MEASURED**, 0 escapes in 231 137 pairs) with an **exact** boundary: a 7-cycle of `Q` has slack `−1` ((BE-41)). **(b2) is a COROLLARY of (b1)** by one line of Grassmann — `Π_u ⊆ Z`, the cancellation (BE-36) used ((BE-42)). The sharpening `ρ̄₁ ∩ Π_u = 0` is **FALSE at a DICHOTOMY** — a **series end** ((BE-31)(i)) or **path saturation** `δ₁ = min_P dim⟨P⟩` ((BE-30)(iv)) — **0 mismatches over 49 pieces**, **CORRECTING (BE-38)(iii)'s first-edge clause** and the sufficiency (BE-42)(iii), **no measurement changed** ((BE-45)); the reduction is sound and decouples, bounded by `dim⟨P⟩ ≤ 5`, a **count, not a proviso** ((BE-44)), and the **genericity proviso is DISCHARGED** ((BE-46)). Every other failure discharges (b2) ((BE-38)(ii) at `δ₁ ≤ 4`, (BE-42)(ii) at `5`, (BE-22) at `6`, the other end for a one-sided series) **except series at BOTH ends with `δ₁ ≤ 4`**, where **(b2) ⟺ `ρ̄₁ ∩ Z = ⟨ℓ_u, ℓ_v⟩`** ((BE-47)/(BE-48)) — and that is **NOW A CLASS THEOREM**: by a double peel and the **modular law**, the ends acting on the middle's own screw space through **ONE hyperplane and ONE functional** with `δ₁ ≤ 4` exactly that rank-one budget, so **(b1)+(b2)+(b3) hold at EVERY window piece** and (β) is proved there on the 87-of-91 domain; the window is **NOT the barbells** (theta chains and **R-node middles** are in it), and the two named side conditions are vacuous at every drawn middle ((BE-54)–(BE-58)). **(b3) — the SHAPE clause — is the CHEAPEST, by a SEPARATION THEOREM**: `Π_u` and `Π_v` are members of the very ruling `y ∧ L` lives in, and distinct members of one ruling meet in `0`, so a (b3) failure either refutes (b1) or forces the sharpening at BOTH ends. So **(b3) holds wherever (M1) or (M2) fires, in particular THROUGHOUT the window, and (β)'s two residues are DISJOINT** ((BE-50)). Its honest domain is `π_u ≠ π_v` with **cross-incidence-free** flags and `m = 1`; at `uv ∈ E(G₁)` it is free (`δ₁ ≤ 1`), at `π_u = π_v` **ill-posed and STRUCK** — (Z) carries its content — ((BE-49)). (BE-37)(ii)'s **inference** *"(b3) ⇒ lossR = 0"* is **CORRECTED**, but **(Z) DOMINATES (R)** off that regime, so the conclusion, the 87/91 enumeration and every landed figure **stand** ((BE-51)). Openness, **properness** and irreducibility make **one exact-ℚ witness per shape a proof** ((BE-52)); **0 failures at 637 guarded draws**, `ρ̄₁ ∩ E` **never totally singular at dimension 2**, the containment form firing only at the vacuous `δ₁ = 6` corner, and (BE-34)(ii) re-read as **(b3) already measured at 768 real subspaces** ((BE-53)). **(BE-14) OPEN; the ear case REDUCED, not proved; `hbareSplit` untouched; not a PENCIL event** |
 
 **Shapes no *class-uniform* mechanism covers** (the class program's uncovered
 flanks, all from §(K-slide-comb) *Step D5* + §(K-slide) *Step 5*): `χ(G°) ≥ 5` —
@@ -20516,7 +20516,10 @@ screw-space convention used throughout is read off
 > **intersects**, the leaf is a single edge with `ρ̄ = ⟨ℓ_e⟩`. The ear is the
 > all-`S` case, which is why it was the tractable one. What has **no** such
 > description is the **R-node** — a 3-connected block with its virtual edges
-> replaced by children.
+> replaced by children. **LANDED 2026-09-01 as (BE-59)/(BE-60), direction
+> BRNODE: the description exists — the decorated-skeleton law extends the
+> recursion over the whole SPQR tree, the R-node case a kernel computation
+> rather than a lattice expression.**
 >
 > **Exactly how far (BE-25)(iii) reaches, corrected by the coordinator at
 > landing.** It closes the **LEAF** R-node only — BTWOCUT's own consequence line
@@ -24139,6 +24142,442 @@ measurement intact. **E3: ARMED by GBAL, not fired** — this direction is on
 the §(K-bare-ext) path, not (a′); reported, not acted on.
 
 
----
+## §(K-bare-ext) — continuation (direction BRNODE): the INTERNAL R-NODE IS DESCRIBED — `ρ̄` at every 2-connected piece is computed by ONE law over the SPQR tree, because a child's whole boundary trace is a function of its `ρ̄` alone (the **decorated-skeleton law**), so job 1's sharp question comes back **YES**; the (BE-22)(vi) collapse at an R-node peel is an exact **checkable condition on `B`** that `K₄` passes at the opposite edge and the **prism fails at two rungs** — the both-flexible case is nonempty already at ONE flexible child; and the routing verdict is that the description was never what the consumer was short of — the residue is the **achievable-decorations** class statement, the (BE-30)(ii)-analogue
 
-<!-- APPENDIX FOR THE COORDINATOR — not part of the workbook section. -->
+Direction **BRNODE** (`notes/Pencil-fanout.md` §"BRNODE", ordinal 52), the arc's
+sixtieth, at **(BE-31)(ii)'s named residue** — the internal R-node, the step
+from *ear* to *general piece*, **user-selected 2026-08-29** and confirmed on the
+critical path by (BE-43)(v). Read against *Steps BE29–BE33* (BIMAGE, the SP
+recursion), *Steps BE24–BE28* (BTWOCUT, the S-mark frame), *Steps BE19–BE23*
+(BINDUC, (BE-22)) and *Steps BE53–BE57* (BWIN, the opaque-subspace precedent),
+whose figures are **cited, never re-run**. Driver `notes/scripts/w4/brnode.py`
+(`law|rec|carve [named|full]|route|validate`), importing `bwin` / `bsharp` /
+`bimage` / `binduc` **read-only**, and through them the rest of the chain; all
+exact ℚ, every rng seeded from the printed literal `20260901`, every drawn
+configuration through `assert_generic_star` **and**
+`kbare_common.verify_pencil_witness`.
+
+**WHICH DELIVERABLE THIS IS — said at the top, as the spec demands.** Job 1's
+sharp sub-question (*is `ρ̄` at an R-node a function of the children's `ρ̄` at
+all?*) is answered **YES, by a proof**, and the answer is constructive: **HIT
+shape 1** — the SP recursion is **extended to a complete recursion over the
+SPQR tree** ((BE-59)/(BE-60)), with the R-node case a *kernel computation*
+rather than a lattice expression. Job 2's routing verdict is the direction's
+second deliverable (**HIT shape 3**): the description is **cheap** — one
+elementary lemma — and what (BE-22)(iii) is short of at the R-node is located
+**elsewhere**, in the class-level achievable-decorations statement ((BE-62)).
+The carve-out comes back as the spec expected, **negative with an exact
+boundary** ((BE-61)): no peel order always keeps one side collapsible, and the
+controlling quantity is a checkable function of `B`.
+
+**Status, stated before the mathematics.**
+
+- **JOB 1's SHARP QUESTION: YES, PROVED — and the proof is one lemma.** The
+  full boundary trace of a connected child `C_e` with terminals `{x, y}` —
+  the image of `M(C_e)` at `(x, y)` inside `K⁶ ⊕ K⁶` — is
+  **`Δ ⊕ ({0} ⊕ ρ̄_{x,y}(C_e))`**, a function of `ρ̄_e` **alone** ((BE-59)(i),
+  extracted from (BE-22)(i)'s own proof, where the space appears as `R_i`).
+  Hence `M(H)` restricted to `V(B)` **is** the motion space of the
+  **decorated skeleton** — each edge `e` of `B` constrained by
+  `m_x − m_y ∈ ρ̄_e` in place of a hinge line — and
+  **`ρ̄_{u,v}(H)` is its image at `(u, v)`**, exact at every configuration,
+  no genericity ((BE-59)(ii)). HIT shape 4 does **not** fire. Asserted as
+  identities of spaces at 36 guarded draws over nine pieces (`K₄`- and
+  `K₃,₃`-skeleton, ear/theta/mixed children) plus 6 interior-redraw pairs
+  with equal `ρ̄_e` and different geometry. **(BE-59)**.
+- **THE RECURSION OVER THE SPQR TREE IS COMPLETE.** Leaf: `ρ̄ = ⟨ℓ_e⟩`;
+  `S`-node: **sum**; `P`-node: **intersection**; `R`-node: the **decorated
+  kernel** of its 3-connected skeleton. The first three are the decorated
+  law at a path, a bundle, and (BE-31)(i)'s two cases; the fourth is new.
+  So `ρ̄_{u,v}` for **every** 2-connected piece is computed from its hinge
+  lines by one bottom-up pass — (BE-31)(ii)'s residue is **closed as a
+  computation**. What the R-node case is *not* is a sum/intersection
+  expression in the children's `ρ̄` — the skeleton's own graph structure
+  enters through the kernel — which is why the arc's lattice-shaped
+  recursion could not see it. **(BE-60)**.
+- **THE CARVE-OUT: negative, with an exact boundary.** At the peel of child
+  `e`, (BE-22)(vi) collapses the criterion iff a side has `δ = 0`; an ear
+  child never does, so the collapse must come from the remainder, and for
+  an all-leaf remainder that is **`δ_{xy}(B − uv − e) = 0` — a checkable
+  condition on `B` alone**. `K₄` passes it exactly at the edge **disjoint**
+  from `uv` (6 of 30 triples — the adjacent-edge triples fail, refining the
+  spec's parenthetical) and the **prism fails at two rungs**
+  (`δ = 1`), so **a single flexible child already suffices to leave no
+  collapse peel**. Enumerated exhaustively: `n = 4, 5, 6` — 1 + 26 + 1 768
+  labelled 3-connected skeletons (sum 1 795, **independently reproducing
+  btwocut's landed census count**), 198 360 `(B, uv, e)` triples, collapse
+  at 20.0 % / 70.9 % / 84.8 %. Constructed both-flexible pieces exist and
+  **draw**: `K₄` with three long ears is flexible at the marked pair
+  (`dim M = 7`, `ρ̄_{u,v} ≠ 0`) with **every** peel both-sides-flexible.
+  **(BE-61)**.
+- **JOB 2, THE ROUTING VERDICT: the description was never what the consumer
+  is short of — CONFIRMING the coordinator's trace in its central clause,
+  with one reframe.** At 24 measured peels over the constructed both-flexible
+  R-node pieces the criterion `dim(ρ̄₁ + ρ̄₂) = min(δ₁ + δ₂, 6)` held
+  **outright** — welded attainment `ρ_i = δ_i` at every side, general-position
+  shortfall `0` at every peel — so at drawn instances there is no (α)- or
+  (β)-shaped obstruction to see, exactly as BTWOCUT's 13 484/13 484 sweep
+  found from the other side. **The R-node's real content is the CLASS
+  quantifier**: which decoration tuples `{ρ̄_e}` are simultaneously
+  achievable by pencil configurations — the analogue of (BE-30)(ii)'s
+  achievable-set half, which for the ear was a bijection and free. The
+  reframe: the peel's failure to reduce to a series-parallel piece is
+  **immaterial** — the decorated skeleton is the right object and it is
+  bounded. **(BE-62)**.
+- **JOB 3: the chord step is the STRICTLY HARDER coordinate for this
+  obligation.** Its geometric half fights **upper** semicontinuity
+  (specialization points the wrong way, (BE-43)(iii), no landed mechanism);
+  the decorated route's residue is attainment statements in the **right**
+  direction (exhibit a configuration; (BE-37)(i)(3) makes one exact-ℚ
+  witness a proof on the attaining locus) plus one class statement of
+  BWIN's opaque-subspace species. **(BE-63)**.
+- **Verdict: HIT shapes 1 and 3. Nothing landed is refuted** — one landed
+  prose surface is **annotated at source** (F12): (BE-31)(ii)'s *"What has
+  no such description is the R-node"*, now closed by this landing.
+  `PencilPair K 3 G`, `hbareSplit`, (BE-14)-for-all-`G`, the 2-cut step,
+  S-mark and (BE-32)(+) are untouched; **not a PENCIL event**; the
+  phase-boundary consequence is **reported, not acted on**.
+- **Reservation FULLY CONSUMED.** Labels **(BE-59)–(BE-63)** and *Steps
+  BE58–BE62*; nothing returned.
+
+### Standing notation
+
+Inherited from *Steps BE9–BE57* verbatim (`f := def₃`, `g_{uv}`,
+`δ_{uv} := f − g_{uv}`, `ρ̄_{uv}`, `ρ_{uv}`, hub, `Π_v := p_v ∧ π_v`, `M(F)`,
+attainment, the S-mark frame of (BE-25)(ii)). Added here:
+
+- an **internal R-node piece**: a 2-connected `H` with marked pair `{u, v}`
+  whose SPQR tree (of `H + uv`) has an R-node `B` with `uv ∈ E(B)` virtual
+  and at least one other virtual edge carrying a flexible child. In the
+  constructions below `B` is a named 3-connected graph, the **parent edge**
+  `uv` is deleted, and each remaining edge `e = xy` of `B` carries a
+  **child** `C_e`: the edge itself (a **leaf**), an **ear** (path with
+  `m ≥ 1` interior vertices), or a **theta**;
+- the **decorated skeleton** `(B − uv; {ρ̄_e})`: the linear space
+  `M(B; dec) := {m : V(B) → K⁶ : m_x − m_y ∈ ρ̄_e for every child edge e}`,
+  and its relative-screw image at `(u, v)`;
+- a **peel at `e`**: `H = H'_e ∪ C_e` over `{x, y}`, with
+  `H'_e = H − int(C_e)` the remainder (which still contains `B − uv − e`).
+
+**Carrier check, done off the landed bodies rather than the prose.** No new
+Lean object is read; the screw-space convention is
+`kbare_common.build_rigidity`'s own (`m_x − m_w ∈ K·ℓ_{xw}`, enforced by
+`perp_basis` rows), read off the driver chain as in *Steps BE29–BE57* — which
+is exactly why the decorated rows below (`perp_std(ρ̄_e)` in place of
+`perp_basis(ℓ)`) are the same constraint shape with a subspace in place of a
+line. **No `.lean` was opened; the standing 2026-08-05 Lean hold binds.**
+
+### Step BE58 — the boundary-pair lemma and the decorated-skeleton law
+
+> **(BE-59)(i)** *(proven; **THE BOUNDARY-PAIR LEMMA** — extracted from
+> (BE-22)(i)'s proof, where the space appears as `R_i`)* Let `C` be a
+> connected piece with terminals `x, y`, at any configuration, and let
+> `β : M(C) → K⁶ ⊕ K⁶`, `β(m) = (m_x, m_y)`. Then
+>
+> **`im β = Δ ⊕ ({0} ⊕ ρ̄_{x,y}(C))`, of dimension `6 + ρ_{x,y}(C)`.**
+>
+> *Proof.* `⊇`: constants give `Δ`; for `r ∈ ρ̄` pick `m` with
+> `m_y − m_x = r` and translate by `−m_x`. `⊆`:
+> `(m_x, m_y) = (m_x, m_x) + (0, m_y − m_x)`. ∎
+>
+> So a child's **entire interface** to the rest of any graph it sits in is a
+> function of `ρ̄_e` alone — nothing else about its realization can be seen
+> across its terminals. Asserted as an identity of subspaces of `K¹²` at
+> **every child of every draw** (leaf, ear, theta, nested).
+
+> **(BE-59)(ii)** *(proven; **THE DECORATED-SKELETON LAW**)* Let
+> `H = ⋃_e C_e` with the children glued along the edges `e = xy` of a graph
+> `B₀` on the shared vertex set `V(B₀)` (children pairwise sharing only
+> vertices of `B₀`, interiors disjoint — the SPQR piece shape with
+> `B₀ = B − uv`), and let `u, v ∈ V(B₀)`. Then restriction
+> `M(H) → M(B₀; {ρ̄_e})` is well defined and **surjective**, and
+>
+> **`ρ̄_{u,v}(H) = ρ̄_{u,v}(B₀; {ρ̄_e})`** — exact at every configuration.
+>
+> *Proof.* Well defined: each child's constraint on `(m_x, m_y)` is
+> membership of `im β_e`, which by (i) is exactly `m_y − m_x ∈ ρ̄_e`.
+> Surjective: given a decorated motion on `V(B₀)`, extend each child
+> independently ((i) supplies an interior extension; interiors are
+> disjoint). ∎ In particular job 1's sharp question — *is `ρ̄` at an R-node
+> a function of the children's `ρ̄` at all?* — is **YES**: `ρ̄_{u,v}(H)` is a
+> function of the skeleton configuration on `V(B₀)` and the tuple `{ρ̄_e}`,
+> and of nothing else about the children. Asserted as an identity of spaces
+> (the decoration recomputed on the child subgraph alone) at every draw of
+> every battery piece; the two interior-redraw pair tests (an `ear(5)` child
+> at the full-span mechanism, an `ear(2)` child at the flat `Λ²π` mechanism
+> of (BE-30)(iii)(b)) exhibit equal `ρ̄_e` with different child geometry and
+> `ρ̄(H)` unmoved, 6/6 pairs.
+
+> **(BE-59)(iii)** *(proven; the **dim law** — the many-piece fibre-product
+> law, labelled a count)* `ker(restriction) = ⊕_e {m ∈ M(C_e) : m_x = m_y
+> = 0}`, of dimension `dim M(C_e) − 6 − dim ρ̄_e` per child by (i), so
+>
+> **`dim M(H) = dim M(B₀; dec) + Σ_e (dim M(C_e) − 6 − dim ρ̄_e)`.**
+>
+> The 2-vertex skeleton with two children is exactly (BE-22)(i)
+> (`dim M(B₀; dec) = 6 + dim(ρ̄₁ ∩ ρ̄₂)` there). ∎ Asserted at every draw.
+
+### Step BE59 — the recursion over the SPQR tree, complete
+
+> **(BE-60)(i)** *(proven; the uniform law)* Down a rooted SPQR tree, `ρ̄` of
+> every node's piece is computed by **one** law — the decorated-skeleton law
+> at that node's skeleton:
+>
+> - **leaf** (`Q`, a real edge): `ρ̄ = ⟨ℓ_e⟩`;
+> - **`S`-node** (skeleton a cycle; minus the parent edge, a path): the
+>   decorated path gives **`ρ̄ = Σ_e ρ̄_e`** (telescoping; a decorated path
+>   is a tree, so the per-edge contributions are free) — (BE-31)(i)'s
+>   series law with subspaces in place of lines;
+> - **`P`-node** (skeleton a bundle): **`ρ̄ = ⋂_e ρ̄_e`** — (BE-31)(i)'s
+>   parallel law, same generalization;
+> - **`R`-node** (skeleton 3-connected): **`ρ̄ = ρ̄_{u,v}(B − uv; {ρ̄_e})`**,
+>   the decorated kernel — new here.
+>
+> So `ρ̄_{u,v}(H)` for **every** 2-connected piece is computed from its
+> hinge lines alone by one bottom-up pass, and **(BE-31)(ii)'s named
+> residue is closed as a computation.** Verified end-to-end (leaf lines →
+> sums → intersections → decorated kernel, against the direct `ρ̄`, as
+> spaces) at three nested pieces — an R-node atop a `P`-of-`S` theta child;
+> the same plus an ear sibling; an R-node atop an `S`-node child whose own
+> children are a theta and a path — 3 draws each, zero mismatches.
+
+> **(BE-60)(ii)** *(the honest limit of the description, disclosed)* At `S`-
+> and `P`-nodes the law is a lattice expression in the children's `ρ̄`; at an
+> R-node it is a **kernel**, into which the skeleton's graph structure and
+> its `V(B)`-configuration enter. It is a *computation*, not a formula —
+> which is why the sum/intersect recursion could not reach it, and why the
+> consumer-facing questions ((BE-62)) do not fall out of it for free.
+
+### Step BE60 — the carve-out: (BE-22)(vi)'s reach at the R-node
+
+> **(BE-61)(i)** *(proven; the collapse condition is a checkable condition
+> on `B`)* At the peel `H = H'_e ∪ C_e`, (BE-22)(vi) removes the
+> general-position half iff **some side has `δ = 0`**. An ear child never
+> supplies one: `f(ear(m)) = m + 1` while welding gives the cycle `C_{m+1}`
+> (`g = max(0, m − 5)`, (R3)), so `δ ≥ 2`; a leaf peel's edge side has `δ = 1`; a **theta or leaf-R
+> child** is rigid and collapses its own side trivially, but removes no
+> flexible child from the remainder. So the load-bearing case is the peel
+> **at a flexible child**, where the collapse condition is
+> `δ_{x,y}(H'_e) = 0` — and when every other child is a leaf,
+> **`δ_{x,y}(B − uv − e) = 0`, a function of `B`, `uv`, `e` alone**,
+> decidable by the partition oracle. (Attainment of the remainder at the
+> drawn configuration is the (vi) hypothesis's other half; measured at every
+> `route` draw.)
+
+> **(BE-61)(ii)** *(measured EXHAUSTIVELY at `n ≤ 6`; the `K₄` refinement)*
+> Over **all** labelled 3-connected skeletons `B` on `n = 4, 5, 6` vertices
+> — `1`, `26`, `1 768` (total 1 795, **independently reproducing** the
+> btwocut `spqr` census count) — and all ordered pairs of distinct edges
+> `(uv, e)`: `δ_{xy}(B − uv − e) = 0` at **6/30 (20.0 %)**, **1 170/1 650
+> (70.9 %)**, **166 800/196 680 (84.8 %)**. At `K₄` the collapse holds
+> **exactly** at `e` disjoint from `uv` (the remainder is `C₄`) and fails at
+> every adjacent pair (remainder a triangle with a pendant edge, `δ = 1`) —
+> refining the spec's parenthetical, which read the `K₄ + ear` numbers as if
+> the skeleton side never collapsed. Named `n = 6` skeletons: prism 41.7 %,
+> `K₃,₃` 50.0 %, wheel `W₅` 66.7 %, **octahedron 100 %**.
+
+> **(BE-61)(iii)** *(the spec's expected negative, with a witness)* **The
+> prism at two rungs**: `uv` and `e` both rungs leaves
+> `H'_e ⊇ prism − 2 rungs` with `f = 1`, `g_{xy} = 0`, so `δ_{xy} = 1` — **a
+> single flexible child already leaves no collapse peel** (the only
+> flexible-child peel has both sides flexible; every leaf peel has the edge
+> side at `δ = 1`). So there is **no peel order that always keeps one side
+> collapsible**, and the both-flexible case of (BE-22)(iii) is the R-node's
+> irreducible case — reached already at one flexible child whenever
+> `δ_{xy}(B − uv − e) > 0`, and at `K₄` from two flexible children on
+> non-short-cycle remainders (an `ear(1)` sibling closes the remainder into
+> `C₅` and restores the collapse — the short-cycle law (BE-40) is exactly
+> what fires).
+
+> **(BE-61)(iv)** *(constructed; the both-flexible case is populated and
+> draws)* `K₄ − uv` with ears (3, 3, 2) on `ua`, `vb`, `ab` is an internal
+> R-node piece with `dim M = 7`, **`ρ̄_{u,v} ≠ 0`** at every guarded draw,
+> and **every** peel both-sides-flexible (`δ = (3, 4)` / `(3, 4)` /
+> `(4, 3)`); `K₄ − uv` with ears (3, 3) has both peels at `δ = (1, 4)`.
+> These are the `route` battery.
+
+### Step BE61 — job 2: the routing verdict
+
+> **(BE-62)(i)** *(the verdict on the consumer trace — F26, tested as
+> required)* **CONFIRMED in its central clause**: a description of
+> `ρ̄_{u,v}(H)` at the R-node is **cheap** — (BE-59) is one elementary lemma
+> — so the description alone was never going to be the R-node's content,
+> exactly as the ear precedent ((BE-30) exact, (α)/(β) still five
+> directions' work) predicted. **REFRAMED in one clause**: the trace's *"the
+> peel does not reduce to a series-parallel piece"* is true but immaterial —
+> the peel does not need to reduce; the decorated skeleton (bounded, one
+> kernel) is the object the induction step should hold, the same move BWIN
+> made when the middle entered as one opaque subspace `W`.
+
+> **(BE-62)(ii)** *(measured; the drawn (α)/(β) content is EMPTY)* At **24
+> measured peels** (4 pieces × 3 draws × their flexible-child peels, every
+> configuration through both gates): the fibre-product identity (BE-22)(i)
+> **asserted** at every one; both sides **attained** (`dim M_i = 6 + f_i`),
+> welded attainment `ρ_i = δ_i` held at **every side**, and the
+> general-position shortfall `min(ρ₁ + ρ₂, 6) − dim(ρ̄₁ + ρ̄₂)` was **0 at
+> 24/24** — the criterion of (BE-22)(iii) held outright at every drawn
+> both-flexible R-node peel, consistent with BTWOCUT's 13 484/13 484 sweep.
+> Constructor-capped and disclosed: these are `K₄`-skeleton pieces from one
+> sampler; a shortfall elsewhere would be "not attained by this
+> constructor", and none was seen.
+
+> **(BE-62)(iii)** *(where the R-node's content actually sits — the named
+> residue)* What (BE-22)(iii) at an internal R-node still needs is not a
+> computation but a **class statement**: *which decoration tuples `{ρ̄_e}`
+> are simultaneously achievable by pencil configurations of `H`* — the
+> analogue of (BE-30)(ii)'s achievable-set half, which for the ear was an
+> exact bijection. The structure is already visible: children incident to a
+> shared branch vertex `z` are coupled **only through the flag
+> `(p_z, π_z)`** (the pencil condition at `z` reads on the union of the
+> incident children's boundary neighbours, and each child's interior
+> constraints see only its own vertices and its terminal flags), so the
+> achievable tuples form a **fibred product over flag assignments on
+> `V(B)`** of per-child achievable sets — known exactly for leaves
+> (`ℓ ∈ Π_x ∩ Π_y`) and ears ((BE-30)(ii)), open in general. That fibred
+> statement, plus attainment of the decorated skeleton at the coupled
+> flags, is the R-node residue **in its honest minimal form** — the
+> successor this direction names.
+
+### Step BE62 — job 3: the chord step, priced against the decorated route
+
+> **(BE-63)** *(pricing verdict, from named landed facts)* The chord step —
+> *(BE-14) + the S-mark clause for `G` ⟹ for `G + uv`* — has its
+> combinatorial half free ((BE-43)(ii)) and its geometric half priced **not
+> soft** ((BE-43)(iii)): `Y°(G + uv)` is a proper closed subset of `Y°(G)`
+> and `dim M` is **upper** semicontinuous, so the transfer must defeat
+> specialization — the wrong-way direction, with no landed mechanism. The
+> decorated route's residue ((BE-62)(iii)) consists of **right-way**
+> statements: attainment claims discharged by exhibiting configurations
+> (one exact-ℚ witness a proof on the attaining locus, (BE-37)(i)(3)) and
+> one class statement of the species BWIN already closed once (quantify
+> over an opaque subspace). **Verdict: for the R-node obligation the chord
+> step is the strictly harder coordinate**; it remains a coordinate worth
+> keeping only where the SPQR frame itself is the obstruction (it needs no
+> tree), not as a route to this residue.
+
+### Verdict, classification, and the price
+
+- **HIT shape 1**: `ρ̄` at an internal R-node is **DESCRIBED** — the SP
+  recursion extends to a complete recursion over the SPQR tree, by the
+  decorated-skeleton law; job 1's sharp question is **YES, proved**.
+- **HIT shape 3**: the routing verdict — the R-node's content is in the
+  **achievable-decorations class statement** ((BE-62)(iii)), not in the
+  description (cheap, delivered) and not in any measured (α)/(β) shortfall
+  (empty at 24/24 drawn peels). The board re-ranks around that residue.
+- **The price, stated as a price.** The decorated law is exact but is a
+  kernel, not a formula ((BE-60)(ii)); the drawn (α)/(β) emptiness is
+  constructor-capped (`K₄`-skeleton pieces, one sampler; prism-skeleton
+  pieces need a shared-plane sampler the chain does not have — their
+  two-hub triangles make the independent-planes draw degenerate, the
+  (BE-30)(iii)(c) mechanism); and the achievable-decorations statement is
+  open in general, with only leaves and ears known exactly.
+- **Untouched.** `PencilPair K 3 G`, `hbareSplit`, (BE-14)-for-all-`G`, the
+  2-cut composition lemma, S-mark, (BE-32)(+), the short-cycle law, BWIN's
+  window theorem. **Not a PENCIL event.**
+
+### Verification
+
+Every claim above is reproduced by
+`python3 notes/scripts/w4/brnode.py {law|rec|carve [named|full]|route|validate}`,
+run from the repo root; `validate` runs all four modes at a reduced tier in
+~17 s; the full tiers are `law` 8 s, `rec` 2 s, `carve full` 4 s, `route`
+14 s. The load-bearing asserts (a failure stops the run):
+
+1. **Every configuration is a pencil configuration** — `assert_generic_star`
+   **and** `verify_pencil_witness` on every draw, interior redraws re-gated.
+2. **Every space claim is an identity of SPACES** (`same_space`, and a
+   width-agnostic variant for the `K¹²` boundary traces — bimage's `span`
+   has a rank-6 shortcut that is wrong at width 12 and is not used there):
+   the boundary-pair lemma per child, the decorated law per draw, the
+   recursion vs the direct `ρ̄`, the pair tests' equal decorations.
+3. **The dim law and (BE-22)(i) are asserted, not reported**, at every draw
+   and every measured peel respectively.
+4. **The carve enumeration is exhaustive** at `n = 4, 5` in every mode and
+   at `n = 6` in `carve full`; `validate`'s `n = 6` tier is the four named
+   skeletons plus a 300-graph sample, **disclosed in the output**; the
+   1 795 total cross-checks btwocut's landed census.
+5. **Exact ℚ throughout**, every rng seeded from the printed literal
+   `20260901`, zero floating point.
+
+### Caps, disclosed rather than smoothed
+
+1. **The battery skeletons are `K₄` and `K₃,₃`** (drawing) plus the prism
+   (combinatorial only): `sample_piece_config_adj` cannot draw a two-hub
+   triangle with independent planes (forced collinear — the
+   (BE-30)(iii)(c) mechanism), so prism-skeleton pieces appear in `carve`
+   but not in `law`/`route`; a shared-plane (class) sampler would lift
+   this.
+2. **The pair test runs at two mechanisms** (full-span `ear(5)`, flat
+   `Λ²π`), not at every equal-`ρ̄` mechanism; the law itself is proved, so
+   the pairs are corroboration, not the evidence.
+3. **(BE-62)(ii) is a measurement**, 24 peels over 4 constructed pieces —
+   it locates no obstruction; it does not prove the class statement.
+4. **`carve`'s named/sampled `n = 6` tier in `validate`** is not
+   exhaustive; `carve full` is, and its figures are the quoted ones.
+5. **Attainment figures are constructor lower bounds** (F27,
+   one-directional): every drawn piece attained, so nothing here rests on
+   the cap.
+
+### Harness note — the `kbare/` sibling-import set gains its THIRTEENTH consumer
+
+`brnode.py` imports `bwin` (`dehom`), `bsharp` (`guarded_draw`,
+`sample_piece_config_adj`, `_relabel`), `bimage` (the space helpers,
+`rho_bar_of`, `lam2`) and `binduc` (`assert_generic_star`,
+`def_by_partitions`, `motion_space`, `set_partitions`, `theta`,
+`vertex_connectivity_at_least`) **read-only**, and through them the rest of
+the chain, so the recorded **unpaid** sibling-import debt
+(`notes/scripts/README.md` *Harness debt*) gains its **thirteenth** `w4/`
+consumer and the chain is now **eleven** deep: `battain → bzavoid → binduc →
+btwocut → bimage → bearcase → bearfull → bsharp → brule → bwin → brnode`.
+**NO MOVE MADE**; the consumer list is extended in the README, exactly as
+the previous twelve did. The new primitives (`build_piece`,
+`decorated_motion`, the width-agnostic `K¹²` helpers, the carve oracle) are
+local to this driver.
+
+### Confidence verdicts, per claim
+
+| claim | status |
+|---|---|
+| (BE-59)(i) the boundary-pair lemma | **PROVED** (two lines, from (BE-22)(i)'s proof); asserted in `K¹²` at every child of every draw |
+| (BE-59)(ii) the decorated-skeleton law; job 1's sharp question YES | **PROVED**; asserted at 36 draws + 6 equal-`ρ̄` interior-redraw pairs |
+| (BE-59)(iii) the dim law | **PROVED** (a count, labelled one); asserted per draw |
+| (BE-60)(i) the complete SPQR recursion | **PROVED** (the law at each skeleton shape); lines-only recursion asserted at 3 nested pieces × 3 draws |
+| (BE-60)(ii) kernel-not-formula at the R-node | **DISCLOSED** (a statement about the description's form, not a theorem that no formula exists) |
+| (BE-61)(i) the collapse condition `δ_{xy}(B − uv − e) = 0` | **PROVED** (from (BE-22)(vi) + the peel structure) |
+| (BE-61)(ii) the enumeration; the `K₄` refinement | **MEASURED, EXHAUSTIVE at `n ≤ 6`** (198 360 triples; census cross-check 1 795) |
+| (BE-61)(iii) the prism negative — no collapse peel at one flexible child | **PROVED** (the `δ = 1` partition computation) + measured |
+| (BE-61)(iv) the both-flexible case draws, `ρ̄_{u,v} ≠ 0` | **CONSTRUCTED** (guarded draws) |
+| (BE-62)(i) the F26 verdict on the consumer trace | **CONFIRMED with one reframe**, per the spec's own job |
+| (BE-62)(ii) drawn (α)/(β) content empty | **MEASURED** (24/24 peels; constructor-capped, cap 3) |
+| (BE-62)(iii) the residue = the achievable-decorations class statement, fibred over flags | **LOCATED** (the flag-coupling factorization is proved; the per-child sets are known for leaves and ears only) |
+| (BE-63) the chord step strictly harder for this obligation | **PRICED** (from (BE-43)(ii)/(iii) + this landing; a comparison, not a refutation) |
+
+### What would change this
+
+- **A child whose boundary trace is not `Δ ⊕ 0⊕ρ̄`** would refute (BE-59)(i)
+  — impossible for connected children at legal configurations (the proof is
+  two lines), so a counterexample would mean a broken carrier convention;
+  the first place to look would be the driver chain's `build_rigidity`.
+- **A both-flexible R-node peel with a persistent criterion shortfall**
+  (welded or general-position, surviving resampling and constructor
+  escalation per (GR-83)/(GR-113)) would be the first (α)/(β)-shaped
+  obstruction of the R-node case — it would land in (BE-62)(iii)'s residue
+  as a genuine class obstruction and re-rank the board toward the disproof
+  side. None was seen.
+- **The achievable-decorations statement** ((BE-62)(iii)) is the named
+  successor: per-child achievable sets past ears (theta children first —
+  their `ρ̄` is an intersection of chain spans, so the ear machinery
+  composes), then attainment of the decorated skeleton over the coupled
+  flags — the (α)-analogue whose window-style class form is what
+  (BE-22)(iii) at the R-node actually consumes.
+- **The one-end-series case and the spread step** (BWIN's ranked
+  successors) are unaffected by this landing and stay ranked.
+
+### TERMINATION riders
+
+**E1: NO** — this direction is one gluing lemma, one kernel construction,
+one partition-oracle enumeration and one measurement pass; no `g`-flank is
+involved and none is produced. **E2: NO** — nothing landed is refuted; the
+one annotated prose surface ((BE-31)(ii)) is closed, not corrected, and
+every landed measurement is intact. **E3: ARMED by GBAL, not fired** — this
+direction is on the §(K-bare-ext) path, not (a′); reported, not acted on.

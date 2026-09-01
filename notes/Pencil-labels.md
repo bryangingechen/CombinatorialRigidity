@@ -2219,7 +2219,7 @@ headroom)~~ — **STALE, corrected 2026-09-01 at the BRNODE prep:** the
 was written) took the row 1 550 → **1 162** words, so the recompute is **already
 paid** and the next landing has **431 words of headroom**, not 50.
 
-## Reserved namespace — direction BRNODE (2026-09-01, **IN FLIGHT**)
+## Reserved namespace — direction BRNODE (2026-09-01, **USED — landed 2026-09-01; all five labels and all five steps consumed, none returned**)
 
 **Reserved 2026-09-01 for the single direction BRNODE** (ordinal 52, the arc's
 sixtieth direction; `notes/Pencil-fanout.md` §"BRNODE") — the **internal
@@ -2256,6 +2256,19 @@ rejected on the (L5) substring rule (2 hits).
 *prefix* and the *step range* only; it structurally cannot see a bare
 `(X<digit>)` token minted **inside** the reservation for a sub-clause. Run the
 landing-time bare-token grep on the returned draft.
+
+**Landed 2026-09-01.** The direction consumed exactly its reservation:
+**(BE-59)–(BE-63)** and *Steps BE58–BE62*, **nothing returned**. §(K-bare-ext)
+gained one continuation section (`## §(K-bare-ext) — continuation (direction
+BRNODE)`), and the `(K-bare)/(K-bare-ext)` gap-map row was **integrated, not
+appended to** — the (BE-31) recursion sentence rewritten as current state, the
+row moving 1 162 → **1 298 / 1 600** words (no dated *"Since Steps …"*
+clause; 302 words of headroom remain) and its step range BE1–BE57 →
+**BE1–BE62**. One **F12** hunk landed at originating prose: (BE-31)(ii)'s
+*"What has no such description is the R-node"* (marked LANDED — the
+decorated-skeleton law closes it). The landing-time (L6) bare-token grep found
+**no** new bare token — every minted token is (BE-59)–(BE-63) with roman
+sub-clauses. The tail a successor opens at is **(BE-64) / *Step BE63***.
 
 
 ## Registry — `notes/Pencil-informal.md` (the (K) workbook)
