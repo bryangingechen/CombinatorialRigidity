@@ -1,16 +1,31 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
 **Status: EIGHT fan-outs, THIRTY-FIVE single directions and TWO concurrent
-pairs dispatched; 61 LANDED, and BPEEL (ordinal 54, §"BPEEL") is IN FLIGHT.**
-**BPEEL PREPPED 2026-09-01** at **half (B)'s CLASS STATEMENT** ((BE-67)(iii)) —
-*for every internal R-node piece, some point of `Chart(H)` makes both peel sides
-attain and puts `ρ̄₁, ρ̄₂` in general position*. The coordinator re-ran the F26
-consumer trace: this is exactly what (BE-22)(iii) still needs at an R-node peel,
-under its own both-pieces-attain hypothesis. BDECOR made the quantifier explicit
-and irreducible; **two** ways to fail are located and each is separately
-discharged, so the open question is whether they are the **only** two — an
-exhaustiveness claim, not a new geometric argument. **Dispatched at
-`recon-opus`** (fable unavailable this session).
+pairs dispatched; 62 LANDED, none in flight.**
+**BPEEL (ordinal 54, §"BPEEL") LANDED 2026-09-01** at **half (B)'s CLASS
+STATEMENT** ((BE-67)(iii)) — **HIT shapes 2, 4 and 5; NOT 1 and NOT 3**. The
+spec's crux was **exhaustiveness**: two ways to fail are located and each
+discharged, and nothing proved there is no third. The answer is that the
+obligation is **retired, not discharged by enumeration**. The good locus is
+**Zariski-open** on the irreducible `Chart(H)`, hence **dense or empty**, so a
+failure is never a phenomenon at a special point and the whole question is the
+value of **one generic invariant one exact-ℚ draw computes** ((BE-69)); and **no
+topological branch crosses a 2-cut**, so at fixed flags `ρ̄₁, ρ̄₂` are functions
+of **disjoint coordinate blocks** and the two sides share exactly **one datum,
+the flag pair** — the achievable pairs are the full product, **modulo `G`**
+((BE-70), MIX-measured 42/42). Together they bound what any mechanism can
+*depend on*, so a third one could only appear as a **reach shortfall**;
+completeness of the mechanism list is **not claimed** (F11), and the direction's
+own Klein-**ruling** candidate is **examined and set aside** ((BE-71)). **Job 2
+is CLOSED on (CH-1)'s class**: `G` empty at *every* flag ⟺ `Chart(H) = ∅`,
+which (CH-1)(a) forbids ((BE-72)). **And one correction at source (F12):
+(BE-66)(iv)'s stated REASON is refuted** — the landed *general* propagation rule
+forces `π_u = π_v` at **non-adjacent** pairs (`K_{2,3}`) — while its
+**conclusion stands**, from (BE-32)(+) + (BE-22)(vi); enumerated at **3 497**
+forced R-node-shaped peels, every one with `min(δ₁,δ₂) = 0`, and **24 874**
+both-flexible R-node peels, none forced. **That re-ranks the SPREAD step** as
+the last gap in half (B)'s discharge. Landed at `recon-opus` (fable unavailable
+this session).
 **BDECOR (ordinal 53, §"BDECOR") LANDED 2026-09-01** at **the
 ACHIEVABLE-DECORATIONS class statement** ((BE-62)(iii)) — BRNODE's successor
 (1), taken after the coordinator re-ran the F26 consumer trace — **HIT shapes 1
@@ -8290,3 +8305,138 @@ scripted set-diff, never by eye** (a coordinator hand-recompute once dropped a
 live label). `notes/Phase39.md` is at **545/580 lines, 484/525 header words**;
 the *Citations* relocation bought the room, and the next relocation candidate is
 named in the note's own *Doc debt* bullet.
+
+### BPEEL — landing write-up (LANDED 2026-09-01, recon-opus, single design-pass commit)
+
+**HIT shapes 2, 4 and 5. NOT shape 1 and NOT shape 3.** The class statement is
+**not proved**; **no third failure mechanism is exhibited**, and none is claimed
+to be absent. Mathematics `notes/Pencil-informal.md` §(K-bare-ext) *Steps
+BE68–BE72* ((BE-69)–(BE-73)); driver `notes/scripts/w4/bpeel.py`
+(`open|indep|law|force|gate|validate`).
+
+**THE CRUX, ANSWERED THE ONLY WAY IT CAN BE.** The spec forbade reading
+(BE-66)(iii)'s *"only **located** enemy"* as *"no third mechanism"*, and this
+landing does not. It answers instead by **bounding what any mechanism can depend
+on**:
+
+1. **(BE-69), THE DICHOTOMY — PROVED.** `Good(H) := {both sides attain} ∩
+   {dim(ρ̄₁+ρ̄₂) = min(δ₁+δ₂,6)}` is **Zariski-open** on `Chart(H)` — the `δ_i`
+   are combinatorial constants, so both conditions are plain rank **lower**
+   bounds (labelled as counts, ZJACOB (JC-6)), and on the attaining locus the
+   coranks are constant, making `ρ̄_i` the image of a bundle map. `Chart(H)` is
+   **irreducible** by (BE-65)(ii)/(CH-1)(a), so `Good` is **DENSE or EMPTY**.
+   Three consequences: one draw settles a piece **generically** (upgrading
+   (BE-67)(ii)); a failing draw settles nothing, and the asymmetry **is** the
+   semicontinuity direction (F27); and **a failure is never a phenomenon at a
+   special point**. Measured signature: **16/16** peels where the first draw is
+   already at the maximum over five.
+2. **(BE-70), THE PEEL-INDEPENDENCE THEOREM — PROVED.** No topological branch
+   crosses the peel's 2-cut (both terminals are hubs; branch interiors have
+   degree 2) — **asserted 96/96**. So at a fixed flag assignment `ρ̄₁` and `ρ̄₂`
+   are functions of **disjoint coordinate blocks** and, **modulo `G`**, the
+   achievable pairs are the **full product**. **The two sides share exactly one
+   datum: the flag pair.** Measured by a **CROSS-MIX** test — side 1's chains
+   from one run, side 2's from another, at one fixed flag assignment: **42/42**
+   gate-passing, **36** realizing a pair neither parent run drew.
+3. **(BE-71).** Two lower bounds transfer from (BE-33)(ii) — the core, and the
+   **two-sided confinement** in the shared `Z`. **Completeness is explicitly not
+   claimed.** The direction's own third-mechanism candidate — two totally
+   singular 3-spaces of the **same Klein ruling** always meet — is **examined
+   and set aside**: the only landed confinement to a totally singular 3-space is
+   `ρ̄ = Λ²π` at `π_x = π_y`, and the plane is the **shared** one, so the two
+   β-planes are equal and the candidate collapses into the confinement.
+
+**JOB 2 (`G`) — CLOSED on (CH-1)'s class, and the argument needs no driver.**
+(BE-64)(ii) is a **bijection**, so `Chart(H)` is the union over flags of
+`(∏ Ear) ∩ G`; hence **`G` empty at every legal flag ⟺ `Chart(H) = ∅`**, which
+**(CH-1)(a)** forbids under `hcard` + min degree 2 + girth `≥ 4`. The
+coordinator's sharpening is what makes that enough: isolated emptiness is
+**absorbed**. Isolated emptiness is **real** — the named control, a **triangle
+on two hubs**, has `G` **empty at 120/120** drawn flags with `π_z ≠ π_{z'}`,
+which is (BE-30)(iii)(c) read as a `G` statement and exactly what girth `≥ 4`
+excludes. **(BE-72)**.
+
+**JOB 3 (BWIN's machine) — DOES NOT TRANSPORT, AND NEED NOT.** The
+coordinator's stated expectation is **CONFIRMED for the reason given**: an
+R-node peel has no series ends, the interface is a whole 2-cut, and the excess
+budget has nothing to bound. What replaces it is **stronger**: (BE-70) carries
+the quantifier by a **bijection** rather than a bound — the two sides are not
+opaque to each other, they are **independent**. **(BE-73)(v)**.
+
+**THE CORRECTION, AND THE RE-RANKING — the direction's most useful sentences.**
+**(BE-66)(iv)'s stated reason is REFUTED (F12, annotated at source).** It says
+*"the only landed mechanism forcing `π_x = π_y` is BZAVOID's triangle
+propagation, which needs `x ∼ y`"*; that misses **(BE-15)(ii)'s own inline scope
+correction**, which records the **general** rule as landed, triangle-free and
+adjacency-free (`K_{3,3}`), implemented as `binduc.flat_forcing_closure`.
+**`K_{2,3}` forces `π_u = π_v` at a non-adjacent pair** (asserted). **The
+conclusion stands by a different and stronger argument**: one-sided forcing gives
+`δ_i = 0` by **(BE-32)(+)**, and **(BE-22)(vi)** then removes the
+general-position half outright — so the enemy is **self-defeating** wherever it
+is one-sidedly forced, whatever the mechanism. The whole-piece reading of
+(BE-32)(+) is **near-vacuous at a 2-cut**, because `δ_{uv}(H) = max(0, δ₁+δ₂−6)`
+(proved from (BE-21)+(BE-18), **asserted at 19 991 peels**). **So the residue is
+CROSS-CUT-ONLY forcing, and its proof obligation is the SPREAD step
+((BE-41)(ii)) — which promotes the spread step from "the last 3.8 % of
+(BE-32)(+)" to the last gap in half (B)'s discharge.** That is a board move, and
+it is reported, not acted on.
+
+**THE ENUMERATION (F11's requirement), with its cap and its non-vacuity.** Three
+censuses, two independent enumerators. **Census 1** (all 2-cuts with `u ≁ v` of
+every 2-connected graph; exhaustive `n ≤ 6`, 3 000 masks at `n = 7, 8`, max
+degree `≤ 4`): 8 759 graphs, 13 004 peels, **5 704 forced**, 408 forced with both
+`δ` positive, **0** R-node-shaped — *and the non-vacuity check disqualifies that
+0*, since the tier carries **no** R-node-shaped peel with both `δ` positive.
+**Recorded rather than smoothed, and it is why census 3 exists.** **Census 3**
+(constructed: every branch-length profile of the `K₄` skeleton at lengths 1–4,
+plus 1 500 seeded profiles each of the prism and `K_{3,3}`): **38 758** peels,
+all R-node-shaped, **24 874** with both `δ` positive, **180** forced, **0** in
+the intersection. **Census 2** (`btwocut.two_cut_census`, both `δ` positive by
+construction): 12 756 instances, **0** non-adjacent-and-forced. **Total 3 497
+forced R-node-shaped peels, every one with `min(δ₁,δ₂) = 0`.** *"None found
+under cap"*, never *"there is no third mechanism"*.
+
+**AND ONE POSITIVE FACT THE NULL RESULT CARRIES: the R-node hypothesis is
+LOAD-BEARING.** Off the R-node shape — at P- and S-node peels, which
+(BE-67)(iii) does **not** quantify over — forcing with both sides flexible is
+**common (408 instances)**. A successor that widens the quantifier past internal
+R-node pieces loses this discharge immediately.
+
+**Caps, disclosed.** The enumeration is capped (exhaustive only at `n ≤ 6`, max
+degree `≤ 4`; constructed tier one skeleton family). The aggressive closure
+**over-claims** forcing, so *forced* is a candidate and *not forced* is sound —
+the direction the hunt needs. `rnode_shaped` is a **computable stand-in** for
+*"virtual edge of a simple 3-connected SPQR skeleton"*, not an SPQR
+implementation, and says so wherever quoted. `open`/`indep` run on **one
+constructor** (BDECOR's `R_BATTERY` plus the nested piece) and quote the
+**maximum** over seeded draws — the opposite convention to BDECOR's `theta`,
+because `dim` of a **sum** is lower semicontinuous. Both (BE-69)(ii) and
+(BE-72)(iii) stand on **(CH-1)(a)**, *proven-informally* with three hypotheses,
+so every class statement here is a statement **about that class**.
+
+**Nothing landed is refuted except one stated reason.** `PencilPair K 3 G`,
+`hbareSplit`, (BE-14)-for-all-`G`, the 2-cut step, S-mark, (BE-32)(+), BWIN's
+window theorem and (BE-64)–(BE-67) are untouched. **Not a PENCIL event**; **E3
+armed, not fired**; the phase-boundary consequence is **reported, not acted
+on**.
+
+**Reservation FULLY CONSUMED** — (BE-69)–(BE-73), *Steps BE68–BE72*; nothing
+returned. **Gap-map recompute, dispatched with a target (F21):** the `(K-bare)`
+row went **1 511 → 1 228 words** (gate's count; 1 600 cap), headroom **89 →
+372**, by rewriting *Steps BE14–BE33*'s per-direction history as current state.
+**Label preservation verified by scripted set-diff, not by eye: 0 of 56 labels
+dropped, 5 added**; eight *clause* qualifiers (e.g. `(BE-22)(iii)`) were folded
+into their parent label and each was verified **body-present** by the same
+script (6–26 occurrences each). The row now also **names (S1)/(S2)** where it
+previously only described them — the `db2deb03` lesson applied forward. The
+landing lands at **1 228** against the spec's **≈1 150** target: the remaining
+~80 words are the five new labels and their headline block, and cutting further
+would drop live status rather than history.
+
+**Successors this direction names**, in its own ranking: (1) **the SPREAD step**
+((BE-41)(ii)) — now the last gap in the discharge, pure graph theory, and it was
+already ranked; (2) **cross-cut-only forcing** at an R-node peel with both sides
+flexible — combinatorial, driver-findable, none found under cap; (3) the
+**uniformity of `reach`** over the class, which is what (BE-67)(iii) now
+literally is; (4) the **flag base** off the no-adjacent-hubs class ((BE-65)(i)),
+unchanged and untouched here.

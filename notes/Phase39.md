@@ -9,36 +9,36 @@ derives it from exactly **three carried items**: **`hcontract`** (W4 — build p
 (L0–L7), with **`hsplit` CLOSED IN FULL** and `hfresh`'s counting discharge landed
 (2026-07-30).
 
-**The kernel-(K) research arc: 61 directions COMPLETE** (2026-08-05 → 09-01, ordinals
-1–53), plus eight strategy-only passes and two architecture probes; **BPEEL (ordinal 54)
-is IN FLIGHT**.
-**Per-direction verdicts, specs and landing write-ups are NOT restated here** —
-each direction has one at `notes/Pencil-fanout.md` §"<CODE>" (ordinals 1–19:
-`notes/Pencil-fanout-archive.md`) and a canonical mathematical home in the workbooks.
-**The arc's standing result, unchanged by all 61: `hK` is not closer.** **(GR-15)** — the
+**The kernel-(K) research arc: 62 directions COMPLETE** (2026-08-05 → 09-01, ordinals
+1–54), plus eight strategy-only passes and two architecture probes; **none in flight**.
+**Per-direction verdicts, specs and write-ups are NOT restated here** — each has one at
+`notes/Pencil-fanout.md` §"<CODE>" (ordinals 1–19: `notes/Pencil-fanout-archive.md`) and a
+canonical home in the workbooks.
+**The arc's standing result, unchanged by all 62: `hK` is not closer.** **(GR-15)** — the
 single open gap the whole §(K-grid) chain reduces to — is **untouched**; **class uniformity
 of the escape is untouched**; no g-flank was found by any direction; **E3 is ARMED (by
 GBAL) and has never fired**.
 
 **WHERE THE (BE-14) THREAD STANDS** — the 2-cut composition lemma (S-mark) is (BE-14)'s
-only open step, and it has two sides (details in §(K-bare-ext), the `(K-bare)` gap-map row
-and the fan-out write-ups, **not restated here**). **THE EAR SIDE:** (α) **CLOSED**; (β)
-**PROVED AT THE WINDOW BY A CLASS THEOREM** (BWIN, with BSHARP's (b1)/(b2) and BRULE's
-(b3)) on the reduction's 87-of-91 domain — **MODULO the two side conditions (S1)/(S2)**
-((BE-57)(iv)), hypotheses on the middle, vacuous at every drawn piece, **not theorems**;
-residue per-shape outside the window plus the `π_u = π_v` corner. **THE GENERAL-PIECE
-SIDE:** the internal R-node is **DESCRIBED** (BRNODE) and its achievable decorations
-**REDUCED TO EARS** — at fixed hub flags any piece's legal configurations are a
-**product** of ear chains, one per topological branch, **modulo the cross-branch proviso
-`G`** (disclosed; never shown nonempty in general) ((BE-64)/(BE-66)). Half (B) holds at
-28/28 peels **per-piece**; its **class** quantifier and the **flag base** off the
-no-adjacent-hubs class are the residue ((BE-67)/(BE-68)). Cross-pair welding
-((BE-28)(i)) is the third, untouched. **The phase-boundary consequence is reported, NOT acted on** (next block).
-
-**IN FLIGHT — BPEEL** (ordinal 54, `recon-opus`, 2026-09-01) at **(BE-67)(iii)**, half
-(B)'s class statement — picked after re-running the F26 consumer trace. Its crux is
-**exhaustiveness**: two failure modes are located and each discharged, and nothing proves
-there is no third. Spec: `notes/Pencil-fanout.md` §"BPEEL".
+only open step, and it has three sides (details **not restated here**). **THE EAR SIDE:** (α) **CLOSED**;
+(β) **PROVED AT THE WINDOW BY A CLASS THEOREM** (BWIN, with BSHARP's (b1)/(b2) and BRULE's
+(b3)) on the 87-of-91 domain — **MODULO the side conditions (S1)/(S2)** ((BE-57)(iv)),
+vacuous at every drawn piece but **not theorems**; residue per-shape outside the window
+plus the `π_u = π_v` corner. **THE GENERAL-PIECE
+SIDE:** the internal R-node is **DESCRIBED** and its achievable decorations **REDUCED TO
+EARS** — a **product** of ear chains, one per topological branch, **modulo the proviso
+`G`** ((BE-64)/(BE-66)) — and **half (B)'s CLASS quantifier is now ONE NUMBER PER PEEL**
+(BPEEL, ordinal 54, `recon-opus`, HIT shapes 2/4/5): the good locus is Zariski-open on an
+irreducible chart, hence **dense or empty**, and no branch crosses a 2-cut, so the two
+sides are **independent**, sharing only the flag pair ((BE-69)/(BE-70)) — which **retires
+the exhaustiveness obligation** without claiming any mechanism list is complete (F11).
+**`G` is CLOSED on (CH-1)'s class** ((BE-72)); **(BE-66)(iv)'s stated REASON is refuted**
+(F12, corrected at source), its conclusion re-derived from (BE-32)(+) + (BE-22)(vi)
+((BE-73)). Residue: the **uniformity** of that number over pieces, the **flag base** off
+the no-adjacent-hubs class ((BE-65)(i)/(BE-68)), and **cross-cut-only forcing**, whose
+obligation is the **SPREAD step** — now the last gap in half (B)'s discharge. **THE THIRD
+SIDE:** cross-pair welding ((BE-28)(i)), untouched. **The phase-boundary consequence is
+reported, NOT acted on** (next block).
 
 **On a future HIT: the phase-boundary consequences are the USER's call** —
 whether Phase 39 closes and a successor opens for the Lean is a
@@ -122,8 +122,8 @@ constraints; the **dated dispatch/selection narrative for every ordinal, 1–44,
   rung actually consumes"*; `weekly_all` moves **1–2 points per pair-round**. Nothing
   else in the playbook moves.
 
-**Kernel-(K) research arc — seventy-eight docs+scripts-only dispatches landed across 61
-directions (ordinals 1–53), plus eight strategy-only passes** (2026-08-02 → 09-01) — and,
+**Kernel-(K) research arc — seventy-nine docs+scripts-only dispatches landed across 62
+directions (ordinals 1–54), plus eight strategy-only passes** (2026-08-02 → 09-01) — and,
 **outside** that count because they test the architecture rather than the (K) crux, the
 **two probes**, **KBARE-FALSIFY** (2026-08-20) and **C3-AVOID** (2026-08-24), both landed.
 The roll call, ordinals, dates and rungs are `notes/Pencil-fanout.md`'s header and its
@@ -195,12 +195,15 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
   deliberate non-goals* (08-28), and *What the recent landings closed* + *The unselected
   candidate continuations* (08-29), and *Citations — the phase's verified bibliography*
   (09-01, the BDECOR prep; **a direction that verifies a new source adds it THERE** — BDECOR
-  verified none, citing only arc-internal results). Caps **not** bumped, nothing deleted. **The gate is
+  and BPEEL both verified none, citing only arc-internal results). Caps **not** bumped, nothing deleted. **The gate is
   MECHANICAL** — `notes/check-phase-note.py` caps this note at **580 lines / 525
   status-header words** and fails if *Decisions made* outgrows the forward sections. **Live
-  watch, re-measured 2026-09-01 at the BDECOR landing: 540/580 lines, 474/525 words** —
-  the BDECOR prep's *Citations* relocation (the SEVENTH block) bought the room back, so
-  the gate is not near binding; ask "what here is reference rather than status?" when it is. **When
+  watch, re-measured 2026-09-01 at the BPEEL landing: 562/580 lines, 522/525 words** —
+  and the BPEEL landing **is the one that bound**: the header went 87 words over and was
+  **recomputed as current state** (the (BE-14)-thread block rewritten, the separate
+  landing paragraph folded into it) rather than relocated or capped, which is the gate
+  working as designed. **The next landing has 3 words of header headroom, so it must
+  relocate**; ask "what here is reference rather than status?" first. **When
   the next landing binds, the question is again "what here is reference rather than
   status?"** — not another fold; the measured diagnosis (three folds recovered 2–5 lines
   each, because the note is forward-weighted and the forward part is what grew) is recorded
@@ -240,35 +243,37 @@ computation** (the decorated-skeleton law) and located the R-node's content in t
 ((BE-64)) and settled its per-child half. The details are the write-ups' and the
 `(K-bare)` gap-map row's, **not restated here**.
 
-**THE NEXT CONCRETE TASK — DISPATCHED 2026-09-01 as direction BPEEL** (ordinal 54,
-`recon-opus`; spec `notes/Pencil-fanout.md` §"BPEEL", reservation (BE-69)–(BE-73) /
-*Steps BE68–BE72*): candidate 0 below, picked under the standing delegation **after the
-coordinator re-ran the F26 consumer trace** — (BE-22)(iii) at an R-node peel, under its
-own both-pieces-attain hypothesis, needs exactly (BE-67)(iii). The spec's crux: **the open
-question is whether the two located failure modes are the ONLY two** — an exhaustiveness
-claim, not a new mechanism. The rest stay **ranked, not dropped**:
+**THE NEXT CONCRETE TASK — the SPREAD STEP** (candidate 1 below), **re-ranked to the top by
+the BPEEL landing** and offered to the user as a research pick under the standing
+delegation. BPEEL (ordinal 54) landed candidate 0 as **HIT shapes 2/4/5**, and its routing
+verdict is what moves the board: the spread step is no longer *"the last 3.8 % of
+(BE-32)(+)"* — it is **the last gap in half (B)'s discharge**, because (BE-66)(iv)'s stated
+reason is refuted and the surviving argument (one-sided forcing ⇒ `δ_i = 0` ⇒ (BE-22)(vi))
+inherits exactly (BE-32)(+)'s residue. It is **pure graph theory**, needs no geometry, and
+was already ranked. The rest stay **ranked, not dropped**:
 
-0. **HALF (B)'s CLASS QUANTIFIER** ((BE-67)(iii)) — **IN FLIGHT.** *does every internal R-node piece have
-   a configuration at which both peel sides attain and `ρ̄₁, ρ̄₂` are in general position?*
-   Now **one statement per piece about one irreducible variety** ((BE-65)(ii), citing
-   (CH-1)), with both failure modes named and both currently unwitnessed: the welded half
-   is **free at theta children**, and the general-position half's only located enemy is a
-   flag coincidence **no landed mechanism can force at a virtual edge's terminals**
-   ((BE-66)(iv)). Two smaller siblings from the same landing: **the flag base off the
-   no-adjacent-hubs class** ((BE-65)(i), a pencil-realization problem for the hub
-   subgraph) and **the forced-empty hunt for the cross-branch proviso `G`**, which would
-   be BDECOR's own first refutation.
+0. **HALF (B)'s CLASS QUANTIFIER** ((BE-67)(iii)) — **REDUCED, not proved** (BPEEL). It is
+   now *one number per (piece, peel)*: `reach = min(δ₁+δ₂,6)`, the **generic** value of
+   `dim(ρ̄₁+ρ̄₂)`, computed by **one exact-ℚ draw** ((BE-69)(iii)); what is open is its
+   **uniformity over the class**. The exhaustiveness obligation is **retired**, not
+   discharged — (BE-70) bounds what any mechanism can depend on, and **completeness of the
+   mechanism list is not claimed**. Three siblings: **cross-cut-only forcing** at an R-node
+   peel with both sides flexible (combinatorial, driver-findable, none found under cap —
+   and its obligation is candidate 1); **the flag base off the no-adjacent-hubs class**
+   ((BE-65)(i)); and — **CLOSED by BPEEL, do not re-hunt** — the forced-empty `G` hunt,
+   impossible on (CH-1)'s class ((BE-72)).
 
-1. **The ONE-END-SERIES case by BWIN's machine** — one peel instead of two
+1. **The SPREAD STEP — THE NEXT CONCRETE TASK.** *Every aggressively-forced pair
+   lies in one `≤6`-cycle class*, the last **3.8 %** of (BE-32)(+) (55 known
+   instances). Pure graph theory; the merge inequality is **known** not to reach
+   it (a 7-cycle of `Q` has slack `−1`). Two consumers now, not one: BRULE's job
+   2 ((BE-32)(+) under three clauses of (β) at the `π_u = π_v` corner, forced
+   branch only) **and** half (B)'s general-position discharge ((BE-73)(ii)).
+2. **The ONE-END-SERIES case by BWIN's machine** — one peel instead of two
    (`ρ̄₁ = ⟨ℓ_u⟩ + ρ̄(rest)`), budget `δ₁ ≤ 3` by the same excess accounting, or a
    second functional from the clean end. Would retire the (BE-46)/(BE-52)
    per-shape witnesses behind the *sharpened-at-one-end* route — (β)'s largest
    remaining per-shape component ((BE-58)(iv)).
-2. **The SPREAD STEP** — *every aggressively-forced pair lies in one `≤6`-cycle
-   class*, the last **3.8 %** of (BE-32)(+) (55 known instances). Pure graph
-   theory; the merge inequality is **known** not to reach it (a 7-cycle of `Q`
-   has slack `−1`). BRULE's job 2: (BE-32)(+) sits **under** three clauses of
-   (β) at the `π_u = π_v` corner — the **forced** branch only.
 3. **(S1)/(S2), the two side conditions of (BE-57)** — hypotheses on the middle,
    **vacuous at every drawn piece but NOT theorems** ((BE-57)(iv)); the window's
    class theorem carries them until one is discharged. **Open and ranked, not
@@ -350,7 +355,7 @@ its cost are `notes/dispatch-log.md`'s and `notes/Pencil-fanout.md`'s). **The ta
    identification recon" and `notes/Pencil-W4-informal.md`.
 3. **`hK`** (kernel (K), research) **via (GR-15)** — the escape `≢ 0` uniformity kernel,
    the phase's hardest open item and what the whole research arc attacks: **untouched by
-   all 61 directions**, and the only one of the three with **no named next slice**.
+   all 62 directions**, and the only one of the three with **no named next slice**.
    Everything in §(K-grid)/§(K-out) is *support* for this, not progress on it. **Standing
    adjudication ("C: literature hunt + A", 2026-07-30): carry `hK` pinned; option B NOT
    authorized**; both literature hunts are MISSes, and since 2026-08-02 it also carries
@@ -408,6 +413,14 @@ section named; its *spec and landing write-up* in `notes/Pencil-fanout.md` §"<C
 `notes/Pencil-adjudications.md`; the derivation in git. **Do not grow these back into
 paragraphs.**
 
+- **BPEEL** (54, 2026-09-01, opus) — **HALF (B)'s CLASS QUANTIFIER IS ONE NUMBER PER PEEL,
+  and the EXHAUSTIVENESS OBLIGATION IS RETIRED**, not discharged by enumeration: the good
+  locus is **Zariski-open** on the irreducible `Chart(H)`, so **DENSE or EMPTY** and one draw
+  computes the generic **reach** ((BE-69)); **no branch crosses a 2-cut**, so the sides are
+  **independent**, sharing only the flag pair ((BE-70), MIX 42/42) — together bounding what a
+  mechanism can *depend on*, **completeness NOT claimed** (F11), ruling candidate set aside
+  ((BE-71)). **`G` CLOSED on (CH-1)'s class** ((BE-72)); **(BE-66)(iv)'s REASON refuted**
+  (F12), conclusion re-derived (3 497 forced peels, all `min(δ₁,δ₂) = 0`), **re-ranking the SPREAD step** ((BE-73)). §(K-bare-ext) *BE68–BE72*.
 - **BDECOR** (53, 2026-09-01, opus) — **THE ACHIEVABLE DECORATIONS ARE A PRODUCT OF EAR
   CHAINS** ((BE-64)): the pencil condition is a **per-vertex conjunction**, so at fixed hub
   flags ANY piece's legal configurations are a **product** of ear chains, one per
@@ -432,14 +445,12 @@ paragraphs.**
   `excess ≤ max(0, δ₁−3)`. **(b1)+(b2)+(b3) at every window piece ⟹ (β) proved there on
   87-of-91**; window ⊋ barbells (R-node middles in it); two side conditions named,
   vacuous at every drawn middle; 160/160 end draws. §(K-bare-ext) *BE53–BE57*.
-- **BRULE** (50, 2026-08-28, opus) — **(b3) DECIDED, the CHEAPEST clause**, by a
-  **separation theorem** ((BE-50)): `Π_u`, `Π_v` lie in the very ruling `y ∧ L` lives in
-  and same-ruling members meet in `0`, so a failure refutes (b1) or forces the sharpening
-  at **both** ends — free wherever a BSHARP mechanism fires, **window included**, so
-  **(β)'s two residues are DISJOINT** and (β) is at **the window alone**. Domain named and
-  (b3) **struck** at `π_u = π_v` ((BE-49)); (BE-37)(ii)'s *inference* corrected, (Z)
-  dominating (R), **no measurement moved** ((BE-51)); one witness per shape ((BE-52)); 0
-  failures at 637 draws ((BE-53)). Job 2: (BE-32)(+) is **under** three clauses, forced branch only.
+- **BRULE** (50, 2026-08-28, opus, **demoted at the BPEEL landing** per the thread's
+  oldest-demotes rule) — **(b3) DECIDED, the CHEAPEST clause**, by a **separation theorem**:
+  free wherever a BSHARP mechanism fires, window included, so **(β)'s two residues are
+  DISJOINT** ((BE-50)); domain named and (b3) struck at `π_u = π_v` ((BE-49));
+  (BE-37)(ii)'s *inference* corrected with no measurement moved ((BE-51)); one witness per
+  shape, 0 failures at 637 draws ((BE-52)/(BE-53)). §(K-bare-ext) *BE48–BE52*.
 - **BSHARP** (49, 2026-08-28, opus) — the (b1) sharpening is **FALSE** at a dichotomy
   (series end / path saturation), correcting (BE-38)(iii) with no measurement change, and
   it cuts (b2) down to the both-ends-series window. §(K-bare-ext) *BE43–BE47*.
