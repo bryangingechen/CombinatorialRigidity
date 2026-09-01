@@ -1,15 +1,29 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
 **Status: EIGHT fan-outs, THIRTY-FOUR single directions and TWO concurrent
-pairs dispatched; 60 LANDED, and BDECOR (ordinal 53, §"BDECOR") is IN FLIGHT.**
-**BDECOR PREPPED 2026-09-01** at **the ACHIEVABLE-DECORATIONS class statement**
-((BE-62)(iii)) — BRNODE's own successor (1), and the coordinator re-ran the F26
-consumer trace rather than inheriting the ranking: (BE-22)(iii) at an R-node peel
-needs to know which decoration tuples a pencil configuration can *realize*, so
-this is the consumer's actual remaining input, not a residual beside it. BRNODE
-proved the coupling factors through the branch flags; per-child achievable sets
-are known for leaves and ears ((BE-30)(ii)) and open beyond. **Dispatched at
-`recon-opus`** — the mapped top rung with fable unavailable this session.
+pairs dispatched; 61 LANDED, none in flight.**
+**BDECOR (ordinal 53, §"BDECOR") LANDED 2026-09-01** at **the
+ACHIEVABLE-DECORATIONS class statement** ((BE-62)(iii)) — BRNODE's successor
+(1), taken after the coordinator re-ran the F26 consumer trace — **HIT shapes 1
+and 2 at once, and there is no "past ears"**. The pencil condition is *every
+closed star coplanar*, which at a hub is a **conjunction with one conjunct per
+incident branch**, so at a fixed flag assignment the legal configurations of ANY
+piece are the **literal product** of legal ear chains, one factor per
+**topological branch** ((BE-64)) — the per-child sets (BE-62)(iii) left open are
+**never needed**, and the theta child falls out as a corollary with generic
+`dim ρ̄ = max(0, Σ_j min(a_j,6) − 12)` and welded attainment **FREE**
+((BE-66)). Job 2's hypothesis is **CONFIRMED and STRENGTHENED** (the freedom is
+not the P-layer's, it is the pencil condition's); its weak link **(b)** (the
+degree-3 terminal) is **harmless and provably so**, while **(a)** (the small-`m`
+correction) is **real and does not stay inside its branch** — at `π_x = π_y` two
+length-3 branches have EQUAL spans, `ρ̄` **exceeds** general position at 7 of 30
+rows, and **7 of 7** of those are **non-attaining**, exactly what (BE-22)(iii)'s
+hypothesis excludes. The residual coupling is the **flag base**, which is
+§(K-chart)'s own tower — so (CH-1) supplies irreducibility, rationality and
+dense ℚ-points already ((BE-65)) — and half (B) holds at **28/28** peels, 14 of
+them peeling a theta child, **each row a per-piece theorem** ((BE-67)).
+Dispatched at `recon-opus` — the mapped top rung with fable unavailable this
+session.
 **BRNODE (ordinal 52, §"BRNODE") LANDED 2026-09-01** at **the INTERNAL
 R-NODE** ((BE-31)(ii)), the user's 2026-08-29 pick — **HIT shapes 1 and 3
 at once**. Job 1's sharp question comes back **YES, by a proof**: a child's
@@ -7984,3 +7998,104 @@ a bibliography is reference, not status, the seventh such block — leaving a
 pointer and buying 43 lines. All 47 citation body lines were verified present in
 the new home by **scripted set-diff, not by eye** (the F21 discipline). **A
 direction that verifies a new source adds it THERE, in its landing commit.**
+
+### BDECOR — landing write-up (LANDED 2026-09-01, recon-opus, single design-pass commit)
+
+**HIT shapes 1 and 2, together, and in a stronger form than either was
+stated.** Mathematics: `notes/Pencil-informal.md` §(K-bare-ext) continuation
+(direction BDECOR), **(BE-64)–(BE-68)** / *Steps BE63–BE67*. Driver
+`notes/scripts/w4/bdecor.py` (`prod|theta|small|chart|attain|validate`).
+
+- **The headline: there is no "past ears".** (BE-62)(iii)'s fibration,
+  recursed down to the **topological skeleton** — hubs joined by one edge per
+  maximal degree-2 branch — makes every child an ear. At a **fixed** legal
+  flag assignment on the hub set the legal configurations of any piece are
+  the **literal product** `∏_b Ear(a_b; ϕ)` intersected with the harness
+  gate's cross-branch genericity proviso `G`, because the pencil condition is
+  *every closed star coplanar* and at a hub that is a **conjunction with one
+  conjunct per incident branch**, each conjunct reading only that branch's own
+  first interior vertex ((BE-64)(i)/(ii), proved). Hence the per-child sets
+  (BE-62)(iii) left *"open in general"* are **never needed** ((BE-64)(iv)).
+- **Job 2's hypothesis: CONFIRMED and STRENGTHENED.** The freedom is not a
+  property of the P-node layer; it is a property of the pencil condition, and
+  the SPQR tree was simply the wrong decomposition to ask it on. The theta
+  child's achievable set is then a **corollary**: `⟨C₁⟩ ∩ ⟨C₂⟩ ∩ ⟨C₃⟩` over
+  independent legal chains ((BE-66)(i)) — exactly the relocation the spec
+  predicted (*"the direction's real content is half (B)"*).
+- **The spec's two named weak links came out OPPOSITE ways, and that is the
+  direction's most useful single sentence.** **(b)**, the degree-3 terminal —
+  the one the spec said to check first — is **harmless and provably so**: the
+  hub condition is a conjunction, so three first-lines in the pencil `Π_x` is
+  three copies of the ear condition, not a new one. **(a)**, the small-`m`
+  correction, is **real and stronger than the spec's reading**: it does *not*
+  stay inside its branch. At `π_x = π_y` a length-3 branch has span **exactly
+  `Λ²π`**, so two of them have **equal** spans and the P-node intersection
+  does not drop; the law becomes `max(ambient, confined)` and `ρ̄` **exceeds**
+  general position at **7 of 30** measured rows, by up to **3** ((BE-66)(iii)).
+- **And that is a correction to (BE-62)(iii)'s own quantifier (F12).** All
+  **7 of 7** exceeding rows sit at configurations that **do not attain** —
+  which is exactly what (BE-22)(iii)'s *"if both pieces attain"* hypothesis
+  excludes. The consumer's question is the **attaining**-achievable set, and
+  the extra members of the full set are precisely the flag coincidences.
+  Moreover the only landed mechanism forcing `π_x = π_y` is BZAVOID's
+  triangle propagation ((BE-15)), which needs `x ∼ y` — impossible at the
+  ends of a **virtual** edge of a simple 3-connected skeleton. So **no landed
+  mechanism forces the confinement where the consumer needs it** ((BE-66)(iv);
+  stated as *no landed mechanism*, not as *never*).
+- **Where the residual coupling actually is: the FLAG BASE, and it is the
+  arc's own §(K-chart) object.** The legal flag assignments are the pencil
+  configurations of the **hub subgraph** `B_real` (the graph of length-1
+  branches), so the base is a product of irreducible rational bundles **iff
+  no two hubs are adjacent**, and otherwise the phase's own problem one level
+  down ((BE-65)(i)). And (BE-64)'s parametrization **is** §(K-chart) *Step
+  CH3*'s tower, the source of `widened.place_pencil_general` — so (CH-1)(a)/(e)
+  already supply irreducibility, rationality over ℚ and **dense ℚ-points**,
+  cited rather than re-proved, with its three hypotheses (`hcard`, min degree
+  2, girth `≥ 4`) checked at **7/7** battery pieces ((BE-65)(ii)). A
+  by-product worth recording: the arc's standing sampler cap **is** `hcard`,
+  i.e. (CH-1)'s hypothesis — not an artifact.
+- **Job 3 / half (B), and BRNODE's open question answered.** At **28 peels**
+  over 7 pieces — **14 of them peeling a THETA child**, which BRNODE's 24/24
+  did not contain, reaching `θ(6,6,6)` and `|V| = 28` — the (BE-22)(i)
+  identity is asserted at every one, welded attainment `ρ_i = δ_i` holds at
+  every side, and the general-position shortfall is **0 at 28/28**. BRNODE
+  asked whether its 24/24 was *"a theorem or a constructor artifact"*:
+  **a theorem for each piece measured** — every quantity is an exact-ℚ fact
+  about an exhibited configuration, `rank ≤ target` is universal, and
+  (BE-22)(iii) is a biconditional *at a configuration* — and an artifact only
+  as to the **class** ((BE-67)).
+- **Verification.** `prod`: **495/495** branch restrictions legal at joint
+  draws from **three independent samplers** (branch, `bsharp-adj`, `widened`)
+  over 8 pieces including a **nested two-level R-node**; the branch-decorated
+  law asserted as **spaces** at **69** draws, 0 mismatches; the **MIX** test
+  (chains drawn in *independent runs*, then glued) gate-passing at **8/8**
+  theta shapes. `theta`: **30/30** on the generic law and **30/30** on
+  `ρ = δ`. `small`: **30/30** on `max(ambient, confined)`. `chart`:
+  **15/15** deficiency-oracle cross-check, **7/7** cross-sampler agreement.
+  `attain`: 28 peels, 0 shortfalls. Exact ℚ, seed literal `20260901`,
+  `assert_generic_star` **and** `verify_pencil_witness` on every draw;
+  `validate` **≈ 182 s** in one foreground invocation. Caps disclosed in the
+  workbook: the greedy hub placement, the minimum-over-draws convention, the
+  one-constructor `attain` battery, and — the one that matters — **`G` is
+  never shown nonempty in general**, so a *forced-empty* proviso would be a
+  cross-branch obstruction (BE-64)(ii) does not see.
+- **F12 hunks at originating prose:** (BE-62)(iii)'s *"open in general"*
+  (closed) and its *"achievable by pencil configurations"* quantifier
+  (sharpened to the attaining locus), both annotated at source in the BRNODE
+  section. **Nothing refuted; not a PENCIL event** — `hK`, (GR-15), class
+  uniformity, `hbareSplit`, (BE-14), the 2-cut step, S-mark, (BE-32)(+) and
+  BWIN's window theorem untouched. E1/E2 NO; E3 still ARMED (GBAL), not
+  fired. Reservation **fully consumed** ((BE-64)–(BE-68), *Steps BE63–BE67*),
+  nothing returned; the successor tail opens at **(BE-69) / *Step BE68***.
+  Harness chain now **TWELVE** deep (`… → brnode → bdecor`), `bwin.dehom`
+  gains its second consumer (tripping the §2 rule-2 threshold) and `brnode`
+  its first — **no move made**.
+- **Ranked successors:** (1) **half (B)'s class quantifier** ((BE-67)(iii)) —
+  now one statement per piece about one *irreducible* variety, with both
+  failure modes named and both currently unwitnessed; the species BWIN's
+  opaque-subspace theorem already closed once. (2) **The flag base off the
+  no-adjacent-hubs class** ((BE-65)(i)) — a pencil-realization problem for
+  `B_real`, small but the phase's own kind. (3) **The cross-branch
+  genericity proviso `G`** — hunt a piece where it is *forced empty*; that
+  would be the direction's own first refutation. (4) BWIN's standing ranking
+  (the one-end-series case, the spread step, (S1)/(S2)), unchanged.

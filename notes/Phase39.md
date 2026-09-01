@@ -9,13 +9,12 @@ derives it from exactly **three carried items**: **`hcontract`** (W4 — build p
 (L0–L7), with **`hsplit` CLOSED IN FULL** and `hfresh`'s counting discharge landed
 (2026-07-30).
 
-**The kernel-(K) research arc: 60 directions COMPLETE** (2026-08-05 → 09-01, ordinals
-1–52), plus eight strategy-only passes and two architecture probes; **BDECOR (ordinal 53)
-is IN FLIGHT**.
+**The kernel-(K) research arc: 61 directions COMPLETE** (2026-08-05 → 09-01, ordinals
+1–53), plus eight strategy-only passes and two architecture probes; **none in flight**.
 **Per-direction verdicts, specs and landing write-ups are NOT restated here** —
 each direction has one at `notes/Pencil-fanout.md` §"<CODE>" (ordinals 1–19:
 `notes/Pencil-fanout-archive.md`) and a canonical mathematical home in the workbooks.
-**The arc's standing result, unchanged by all 60: `hK` is not closer.** **(GR-15)** — the
+**The arc's standing result, unchanged by all 61: `hK` is not closer.** **(GR-15)** — the
 single open gap the whole §(K-grid) chain reduces to — is **untouched**; **class uniformity
 of the escape is untouched**; no g-flank was found by any direction; **E3 is ARMED (by
 GBAL) and has never fired**.
@@ -27,18 +26,14 @@ and the fan-out write-ups, **not restated here**). **THE EAR SIDE:** (α) **CLOS
 (b3)) on the reduction's 87-of-91 domain — **MODULO the two side conditions (S1)/(S2)**
 ((BE-57)(iv)), hypotheses on the middle, vacuous at every drawn piece, **not theorems**;
 residue per-shape outside the window plus the `π_u = π_v` corner. **THE GENERAL-PIECE
-SIDE:** the internal R-node is **DESCRIBED** — BRNODE's decorated-skeleton law makes `ρ̄`
-a complete SPQR recursion ((BE-59)/(BE-60)) — and its remaining content is the
-**achievable-decorations class statement** ((BE-62)), which is what BDECOR is in flight
-on. Cross-pair welding ((BE-28)(i)) is the third residue, untouched. **The
-phase-boundary consequence is reported, NOT acted on** (next block).
-
-**IN FLIGHT — BDECOR** (ordinal 53, `recon-opus`, 2026-09-01) at **(BE-62)(iii)**: which
-decoration tuples pencil configurations achieve, fibred over the branch flags. BRNODE's
-successor (1), taken only after the coordinator **re-ran the F26 consumer trace** — it is
-what (BE-22)(iii) consumes, not a residual beside it. **Fable is unavailable this
-session**; top-rung dispatches take the playbook's substitute. Spec:
-`notes/Pencil-fanout.md` §"BDECOR".
+SIDE:** the internal R-node is **DESCRIBED** (BRNODE, (BE-59)/(BE-60)) and its
+achievable decorations are now **REDUCED TO EARS** — at fixed hub flags the legal
+configurations of ANY piece are a **literal product** of ear chains, one per topological
+branch ((BE-64)), so no per-child set past ears is ever needed and the theta child is a
+corollary ((BE-66)); half (B) holds at 28/28 measured peels as **per-piece theorems**,
+and its **class** quantifier plus the **flag base** off the no-adjacent-hubs class are
+the residue ((BE-67)/(BE-68)). Cross-pair welding ((BE-28)(i)) is the third residue,
+untouched. **The phase-boundary consequence is reported, NOT acted on** (next block).
 
 **On a future HIT: the phase-boundary consequences are the USER's call** —
 whether Phase 39 closes and a successor opens for the Lean is a
@@ -122,8 +117,8 @@ constraints; the **dated dispatch/selection narrative for every ordinal, 1–44,
   rung actually consumes"*; `weekly_all` moves **1–2 points per pair-round**. Nothing
   else in the playbook moves.
 
-**Kernel-(K) research arc — seventy-seven docs+scripts-only dispatches landed across 60
-directions (ordinals 1–52), plus eight strategy-only passes** (2026-08-02 → 09-01) — and,
+**Kernel-(K) research arc — seventy-eight docs+scripts-only dispatches landed across 61
+directions (ordinals 1–53), plus eight strategy-only passes** (2026-08-02 → 09-01) — and,
 **outside** that count because they test the architecture rather than the (K) crux, the
 **two probes**, **KBARE-FALSIFY** (2026-08-20) and **C3-AVOID** (2026-08-24), both landed.
 The roll call, ordinals, dates and rungs are `notes/Pencil-fanout.md`'s header and its
@@ -188,16 +183,19 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
   (K-res) WAVE is still a user call.**
 
 - **Doc debt — relief slice LANDED 2026-08-26** (1 500 → 554), and **relocation, not
-  compression, every time since** — now **SIX** blocks, all stable **reference, not status**,
+  compression, every time since** — now **SEVEN** blocks, all stable **reference, not status**,
   sitting verbatim in `notes/Pencil-structure.md` with their own reasons recorded there
   (§"Slice 6" onward): *Conventions* / *Canonical homes* (08-27), *Gates for any
   continuation* (08-28), *The question and the opening recon* + *Durable negatives and
   deliberate non-goals* (08-28), and *What the recent landings closed* + *The unselected
-  candidate continuations* (08-29). Caps **not** bumped, nothing deleted. **The gate is
+  candidate continuations* (08-29), and *Citations — the phase's verified bibliography*
+  (09-01, the BDECOR prep; **a direction that verifies a new source adds it THERE** — BDECOR
+  verified none, citing only arc-internal results). Caps **not** bumped, nothing deleted. **The gate is
   MECHANICAL** — `notes/check-phase-note.py` caps this note at **580 lines / 525
   status-header words** and fails if *Decisions made* outgrows the forward sections. **Live
-  watch, re-measured 2026-09-01 at the BRNODE landing: 575/580 lines, 505/525 words** —
-  the next landing likely binds; ask "what here is reference rather than status?" then. **When
+  watch, re-measured 2026-09-01 at the BDECOR landing: 540/580 lines, 474/525 words** —
+  the BDECOR prep's *Citations* relocation (the SEVENTH block) bought the room back, so
+  the gate is not near binding; ask "what here is reference rather than status?" when it is. **When
   the next landing binds, the question is again "what here is reference rather than
   status?"** — not another fold; the measured diagnosis (three folds recovered 2–5 lines
   each, because the note is forward-weighted and the forward part is what grew) is recorded
@@ -229,26 +227,29 @@ simultaneity **VACUOUS** (BE-25)(i)). BIMAGE bounded and classified the ear's re
 geometric sentence; BEARCASE **PROVED (α)** for `m ≥ 3`; BEARFULL, BSHARP and BRULE cut
 (β) down to the window BWIN closed.
 
-**BRNODE (ordinal 52) LANDED 2026-09-01** at the INTERNAL R-NODE ((BE-31)(ii)) — write-up
-`notes/Pencil-fanout.md` §"BRNODE", mathematics §(K-bare-ext) *Steps BE58–BE62*, driver
-`notes/scripts/w4/brnode.py`. (BE-31)(ii)'s residue is **CLOSED AS A COMPUTATION** (the
-decorated-skeleton law: `ρ̄` at every SPQR node by one law, children entering through their
-`ρ̄` alone); the R-node's remaining content is the **achievable-decorations class
-statement** ((BE-62)(iii)); the (BE-22)(vi) collapse is the checkable condition
-`δ_{xy}(B − uv − e) = 0`, with the prism failing at two rungs ((BE-61)); the chord step is
-priced **strictly harder** for this obligation ((BE-63)).
+**BRNODE (52) and BDECOR (53) BOTH LANDED 2026-09-01** — write-ups
+`notes/Pencil-fanout.md` §"BRNODE"/§"BDECOR", mathematics §(K-bare-ext) *Steps BE58–BE67*,
+drivers `notes/scripts/w4/{brnode,bdecor}.py`. BRNODE closed (BE-31)(ii)'s residue **as a
+computation** (the decorated-skeleton law) and located the R-node's content in the
+**achievable-decorations class statement**; BDECOR then **reduced that statement to ears**
+((BE-64)) and settled its per-child half. The details are the write-ups' and the
+`(K-bare)` gap-map row's, **not restated here**.
 
-**THE NEXT CONCRETE TASK — DISPATCHED 2026-09-01 as direction BDECOR** (ordinal 53,
-`recon-opus`; spec `notes/Pencil-fanout.md` §"BDECOR", reservation (BE-64)–(BE-68) /
-*Steps BE63–BE67*): candidate 0 below, **picked under the standing research-pick
-delegation after the coordinator re-ran the F26 consumer trace** — not inherited from
-BRNODE's ranking. The remaining candidates stay **ranked, not dropped**:
+**THE NEXT CONCRETE TASK — the next research pick, under the standing delegation.** The
+coordinator picks the direction; **F26 binds: re-run the consumer trace rather than
+inheriting BDECOR's own successor order.** BDECOR's ranking, offered not decided, is
+candidate 0 below; the rest stay **ranked, not dropped**:
 
-0. **The ACHIEVABLE-DECORATIONS statement** ((BE-62)(iii)) — **IN FLIGHT.** Which tuples
-   `{ρ̄_e}` pencil configurations achieve, fibred over the branch flags; per-child sets
-   known for leaves and ears ((BE-30)(ii), at fixed flags), theta children the first open
-   case. What (BE-22)(iii) at the R-node actually consumes — the (BE-14) thread's own
-   continuation.
+0. **HALF (B)'s CLASS QUANTIFIER** ((BE-67)(iii)) — *does every internal R-node piece have
+   a configuration at which both peel sides attain and `ρ̄₁, ρ̄₂` are in general position?*
+   Now **one statement per piece about one irreducible variety** ((BE-65)(ii), citing
+   (CH-1)), with both failure modes named and both currently unwitnessed: the welded half
+   is **free at theta children**, and the general-position half's only located enemy is a
+   flag coincidence **no landed mechanism can force at a virtual edge's terminals**
+   ((BE-66)(iv)). Two smaller siblings from the same landing: **the flag base off the
+   no-adjacent-hubs class** ((BE-65)(i), a pencil-realization problem for the hub
+   subgraph) and **the forced-empty hunt for the cross-branch proviso `G`**, which would
+   be BDECOR's own first refutation.
 
 1. **The ONE-END-SERIES case by BWIN's machine** — one peel instead of two
    (`ρ̄₁ = ⟨ℓ_u⟩ + ρ̄(rest)`), budget `δ₁ ≤ 3` by the same excess accounting, or a
@@ -341,7 +342,7 @@ its cost are `notes/dispatch-log.md`'s and `notes/Pencil-fanout.md`'s). **The ta
    identification recon" and `notes/Pencil-W4-informal.md`.
 3. **`hK`** (kernel (K), research) **via (GR-15)** — the escape `≢ 0` uniformity kernel,
    the phase's hardest open item and what the whole research arc attacks: **untouched by
-   all 60 directions**, and the only one of the three with **no named next slice**.
+   all 61 directions**, and the only one of the three with **no named next slice**.
    Everything in §(K-grid)/§(K-out) is *support* for this, not progress on it. **Standing
    adjudication ("C: literature hunt + A", 2026-07-30): carry `hK` pinned; option B NOT
    authorized**; both literature hunts are MISSes, and since 2026-08-02 it also carries
@@ -399,6 +400,14 @@ section named; its *spec and landing write-up* in `notes/Pencil-fanout.md` §"<C
 `notes/Pencil-adjudications.md`; the derivation in git. **Do not grow these back into
 paragraphs.**
 
+- **BDECOR** (53, 2026-09-01, opus) — **THE ACHIEVABLE DECORATIONS ARE A PRODUCT OF EAR
+  CHAINS** ((BE-64)): the pencil condition is a **per-vertex conjunction**, so at fixed hub
+  flags ANY piece's legal configurations are the **literal product** of ear chains, one per
+  **topological branch** — per-child sets past ears **never needed**, theta a corollary
+  (generic `dim ρ̄ = max(0, Σ min(a_j,6) − 12)`, welded attainment **FREE**, (BE-66)). Job 2
+  CONFIRMED+widened; (b) harmless, (a) **propagates THROUGH the P-node** (7/30 rows off
+  general position, all 7 **non-attaining** — a quantifier correction to (BE-62)(iii)).
+  Flag base = §(K-chart)'s tower ((BE-65)); half (B) 28/28 **per-piece** ((BE-67)).
 - **BRNODE** (52, 2026-09-01, fable) — **THE INTERNAL R-NODE DESCRIBED** ((BE-59)/(BE-60)):
   a child's boundary trace is `Δ ⊕ (0 ⊕ ρ̄_e)` — a function of its `ρ̄` ALONE — so the SP
   recursion extends to the whole SPQR tree (leaf line, `S` sums, `P` intersects, `R` the
@@ -423,14 +432,9 @@ paragraphs.**
   (b3) **struck** at `π_u = π_v` ((BE-49)); (BE-37)(ii)'s *inference* corrected, (Z)
   dominating (R), **no measurement moved** ((BE-51)); one witness per shape ((BE-52)); 0
   failures at 637 draws ((BE-53)). Job 2: (BE-32)(+) is **under** three clauses, forced branch only.
-- **BSHARP** (49, 2026-08-28, opus) — the (b1) sharpening is **FALSE**, at an exact
-  **dichotomy of two identities**, 0 mismatches over 49 pieces: a **series end** or
-  **path saturation** `δ₁ = min_P dim⟨P⟩` ((BE-45)). The second needs no first-edge
-  hypothesis, so **(BE-38)(iii)'s *"`0` wherever two `u–v` paths leave `u` by different
-  edges"* is CORRECTED** at six landed `bgrass` rows, with (BE-42)(iii)'s sufficiency —
-  **no measurement changes**. Reduction sound, bounded by `dim⟨P⟩ ≤ 5`, a **count**
-  ((BE-44)); **proviso DISCHARGED** ((BE-46)); (b2) free everywhere but **both-ends-series
-  with `δ₁ ≤ 4`**, where **(b2) ⟺ `ρ̄₁ ∩ Z = ⟨ℓ_u,ℓ_v⟩`** ((BE-47), (BE-48) reaches it).
+- **BSHARP** (49, 2026-08-28, opus) — the (b1) sharpening is **FALSE** at a dichotomy
+  (series end / path saturation), correcting (BE-38)(iii) with no measurement change, and
+  it cuts (b2) down to the both-ends-series window. §(K-bare-ext) *BE43–BE47*.
 - **RESGRID** (48, 2026-08-28, fable) — the (K-res) scoping slice: §(K-grid)'s **geometry
   transports verbatim** and the (K-res) grid residual is **(RS-5)** ((GR-15)'s criterion,
   quantifier widened; proven per-shape at `W19`/`S29`/`NT21c3`); the tight bookkeeping and
