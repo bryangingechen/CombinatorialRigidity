@@ -28,8 +28,9 @@ and the fan-out write-ups, **not restated here**). **THE EAR SIDE:** (α) **CLOS
 residue per-shape outside the window plus the `π_u = π_v` corner. **THE GENERAL-PIECE
 SIDE:** the internal R-node is **DESCRIBED** (BRNODE, (BE-59)/(BE-60)) and its
 achievable decorations are now **REDUCED TO EARS** — at fixed hub flags the legal
-configurations of ANY piece are a **literal product** of ear chains, one per topological
-branch ((BE-64)), so no per-child set past ears is ever needed and the theta child is a
+configurations of ANY piece are a **product** of ear chains, one per topological branch,
+**modulo the cross-branch proviso `G`** (disclosed, never shown nonempty in general)
+((BE-64)), so no per-child set past ears is ever needed and the theta child is a
 corollary ((BE-66)); half (B) holds at 28/28 measured peels as **per-piece theorems**,
 and its **class** quantifier plus the **flag base** off the no-adjacent-hubs class are
 the residue ((BE-67)/(BE-68)). Cross-pair welding ((BE-28)(i)) is the third residue,
@@ -402,8 +403,8 @@ paragraphs.**
 
 - **BDECOR** (53, 2026-09-01, opus) — **THE ACHIEVABLE DECORATIONS ARE A PRODUCT OF EAR
   CHAINS** ((BE-64)): the pencil condition is a **per-vertex conjunction**, so at fixed hub
-  flags ANY piece's legal configurations are the **literal product** of ear chains, one per
-  **topological branch** — per-child sets past ears **never needed**, theta a corollary
+  flags ANY piece's legal configurations are a **product** of ear chains, one per
+  **topological branch**, **modulo the cross-branch proviso `G`** — per-child sets past ears **never needed**, theta a corollary
   (generic `dim ρ̄ = max(0, Σ min(a_j,6) − 12)`, welded attainment **FREE**, (BE-66)). Job 2
   CONFIRMED+widened; (b) harmless, (a) **propagates THROUGH the P-node** (7/30 rows off
   general position, all 7 **non-attaining** — a quantifier correction to (BE-62)(iii)).

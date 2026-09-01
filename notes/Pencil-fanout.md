@@ -8,8 +8,9 @@ ACHIEVABLE-DECORATIONS class statement** ((BE-62)(iii)) — BRNODE's successor
 and 2 at once, and there is no "past ears"**. The pencil condition is *every
 closed star coplanar*, which at a hub is a **conjunction with one conjunct per
 incident branch**, so at a fixed flag assignment the legal configurations of ANY
-piece are the **literal product** of legal ear chains, one factor per
-**topological branch** ((BE-64)) — the per-child sets (BE-62)(iii) left open are
+piece are a **product** of legal ear chains, one factor per **topological
+branch**, **modulo the cross-branch proviso `G`** — disclosed, and never shown
+nonempty in general ((BE-64)) — the per-child sets (BE-62)(iii) left open are
 **never needed**, and the theta child falls out as a corollary with generic
 `dim ρ̄ = max(0, Σ_j min(a_j,6) − 12)` and welded attainment **FREE**
 ((BE-66)). Job 2's hypothesis is **CONFIRMED and STRENGTHENED** (the freedom is
