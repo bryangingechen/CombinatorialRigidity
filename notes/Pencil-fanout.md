@@ -1,7 +1,15 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: EIGHT fan-outs, THIRTY-THREE single directions and TWO concurrent
-pairs dispatched; 60 LANDED, none in flight.**
+**Status: EIGHT fan-outs, THIRTY-FOUR single directions and TWO concurrent
+pairs dispatched; 60 LANDED, and BDECOR (ordinal 53, §"BDECOR") is IN FLIGHT.**
+**BDECOR PREPPED 2026-09-01** at **the ACHIEVABLE-DECORATIONS class statement**
+((BE-62)(iii)) — BRNODE's own successor (1), and the coordinator re-ran the F26
+consumer trace rather than inheriting the ranking: (BE-22)(iii) at an R-node peel
+needs to know which decoration tuples a pencil configuration can *realize*, so
+this is the consumer's actual remaining input, not a residual beside it. BRNODE
+proved the coupling factors through the branch flags; per-child achievable sets
+are known for leaves and ears ((BE-30)(ii)) and open beyond. **Dispatched at
+`recon-opus`** — the mapped top rung with fable unavailable this session.
 **BRNODE (ordinal 52, §"BRNODE") LANDED 2026-09-01** at **the INTERNAL
 R-NODE** ((BE-31)(ii)), the user's 2026-08-29 pick — **HIT shapes 1 and 3
 at once**. Job 1's sharp question comes back **YES, by a proof**: a child's
@@ -7794,3 +7802,185 @@ PART — HIT shapes 1 and 3.**
   flags: what (BE-22)(iii) at the R-node actually consumes; (2) BWIN's
   standing ranking (the one-end-series case, the spread step, (S1)/(S2)),
   unchanged by this landing.
+
+## BDECOR — fifty-third ordinal, the sixty-first direction (single dispatch, prepped 2026-09-01)
+
+**Selection provenance: BRNODE's successor (1), taken only AFTER the coordinator
+re-ran the consumer trace — F26 applies to this pick by name.** BRNODE ranked the
+achievable-decorations statement first, and this arc's worst recorded episode
+(F26: five consecutive directions at (GR-104)(i)) was exactly *"ordered by the
+previous direction's successor order, which mechanically chases residuals"*. So
+the ranking was **not** inherited. The coordinator opened (BE-22)(iii) and
+(BE-62)(iii) and confirms: the criterion needs some **achievable** decoration
+tuple to attain `dim(ρ̄₁ + ρ̄₂) = min(δ₁ + δ₂, 6)`, and BRNODE closed the
+*computation* while leaving the *achievability* quantifier open. **That
+quantifier is the consumer's remaining input, not a residual beside it.**
+Dispatched **un-named, single**, at **`recon-opus`**: the mapped rung is the top
+one (a class statement over a quantifier the arc has never characterized past
+ears), and fable is unavailable this session, so the playbook's named substitute
+applies — never a weaker rung than mapped where a stronger is reachable.
+
+### The target, stated exactly
+
+> **(BE-62)(iii).** For an internal R-node piece `H` with skeleton `B`: **which
+> decoration tuples `{ρ̄_e}_{e ∈ E(B)}` are simultaneously achievable by pencil
+> configurations of `H`?** BRNODE proved the shape of the answer — children
+> incident to a branch vertex `z` are coupled **only** through the flag
+> `(p_z, π_z)`, so the achievable tuples are a **fibred product over flag
+> assignments on `V(B)`** of per-child achievable sets. Those sets are known
+> exactly for **leaves** (`ℓ ∈ Π_x ∩ Π_y`) and **ears** ((BE-30)(ii), a
+> bijection) and **open in general**.
+
+Two halves, and the spec wants them separated: **(A)** the **per-child** sets
+past ears — theta children first; **(B)** **attainment of the decorated
+skeleton** over the coupled flags, i.e. that some achievable tuple meets
+(BE-22)(iii)'s criterion.
+
+### What is free — cite it, do NOT re-derive it
+
+- **(BE-59)(i)/(ii)**, BRNODE, proven: a connected child's whole boundary trace
+  at its terminals is `Δ ⊕ ({0} ⊕ ρ̄_e)` — a function of `ρ̄_e` alone — so
+  `M(H)|_{V(B)}` **is** the decorated skeleton's motion space, exact at every
+  configuration, no genericity.
+- **(BE-60)**, BRNODE: the complete SPQR recursion — leaf `⟨ℓ_e⟩`, `S` sums,
+  `P` intersects, `R` the decorated kernel.
+- **(BE-62)(iii)**, BRNODE: the **flag-coupling factorization is PROVED**. The
+  per-child sets are what is open.
+- **(BE-30)(ii)**, BIMAGE, proven and a *bijection*: **stated at FIXED FLAGS**
+  (its opening clause is *"Fix the shared flags"* — the coordinator opened it
+  and confirmed this, because the whole hypothesis below turns on it). The
+  achievable ear tuples are exactly: every `ℓ_i` on the Klein quadric,
+  consecutive ones conjugate and distinct, `ℓ₁ ∈ Π_u`, `ℓ_{m+1} ∈ Π_v`, **and
+  nothing further for `m ≥ 3`**.
+- **(BE-30)(iii)** is the **correction at small `m`** that the ear hypothesis did
+  not predict — read it before assuming short paths behave like long ones.
+- **(BE-61)**, BRNODE: the collapse condition `δ_{xy}(B − uv − e) = 0`, exhaustive
+  at `n ≤ 6`; the prism fails at two rungs, so **both-flexible pieces are
+  nonempty at one flexible child** and the constructed family draws.
+- **(BE-22)(iii)/(vi)**: the criterion, and the rigid-side collapse.
+
+### Job 1 (PRIMARY, FORCED) — the per-child achievable set past ears
+
+Characterize the achievable `ρ̄_e` set for a **theta child** at fixed terminal
+flags, then say how far the method reaches (nested children, children with their
+own R-nodes). A characterization, a reduction to (BE-30)(ii), or a proof that no
+(BE-30)(ii)-style bijection exists past ears — all three are results.
+
+### Job 2 (FORCED) — the coordinator's hypothesis, which may make job 1 cheap
+
+> **COORDINATOR HYPOTHESIS — TO BE TESTED, NOT INHERITED (`RESEARCH-ARC.md`
+> §7).** *Provenance:* formed at this prep by reading (BE-62)(iii)'s
+> factorization against (BE-30)(ii)'s **fixed-flag** statement, whose opening
+> clause the coordinator opened and verified. **No measurement, no driver, and
+> no workbook sentence states it.**
+>
+> **The P-node layer may be FREE.** A theta child between terminals `x, y` is a
+> `P`-node over three internally-disjoint paths, so by (BE-60) its
+> `ρ̄ = ⟨P₁⟩ ∩ ⟨P₂⟩ ∩ ⟨P₃⟩`. The three paths share **only** `x` and `y`, whose
+> flags are fixed by the fibration; interior vertices are free. So the theta's
+> achievable set should be exactly `{⟨P₁⟩ ∩ ⟨P₂⟩ ∩ ⟨P₃⟩}` over **independent**
+> (BE-30)(ii)-legal chains at those flags — computed, not newly characterized.
+> **If that holds, job 1's theta case is a corollary and the direction's real
+> content is half (B), the skeleton-attainment statement over coupled flags.**
+>
+> *Where the coordinator expects to be wrong, named rather than hedged:*
+> **(a)** (BE-30)(ii)'s *"nothing further"* is stated for `m ≥ 3` and
+> **(BE-30)(iii)** is an explicit correction at small `m`, so short theta paths
+> may not be free — that is the likeliest failure and it is checkable first.
+> **(b)** In an *ear*, a terminal has degree **1** into the child; in a theta it
+> has degree **3**, so three first-lines lie in `Π_x` simultaneously. `Π_x` is a
+> pencil, so this looks harmless — but (BE-30)(ii)'s proof calls interior
+> degree-2 vertices *"free vertices in btwocut's sense"*, and whether that
+> freedom survives a degree-3 terminal is **not** something the ear case ever
+> tested. **Check (b) before building on the hypothesis.**
+>
+> **Five of the last six coordinator predictions in this arc were refuted, split,
+> or reframed by the direction they primed** — and BRNODE confirmed the last one,
+> so the streak is not evidence of accuracy. Price this one the same way.
+
+### Job 3 (NOT FORCED) — half (B), if job 1 closes cheaply
+
+Attainment of the decorated skeleton over the coupled flags: does some achievable
+tuple meet (BE-22)(iii)? BRNODE measured the criterion holding **outright** at
+24/24 constructor-capped peels, so the honest question is whether that is a
+theorem or a constructor artifact. **Say which**, and if it is a theorem for a
+named class, name the class.
+
+### What counts as a HIT — state which you got
+
+1. **The per-child achievable set characterized past ears** (theta children, or
+   wider), the (BE-30)(ii)-analogue delivered.
+2. **The P-node layer shown free** (job 2's hypothesis confirmed), reducing job 1
+   to (BE-30)(ii) and relocating the content to half (B).
+3. **Half (B) settled for a named class** — attainment over coupled flags.
+4. **An obstruction, located** — e.g. no (BE-30)(ii)-style bijection past ears,
+   or the degree-3-terminal freedom failing. Classify **mandatorily** (the
+   per-child set / the fibration / (BE-22)(iii) / the 2-cut step / S-mark /
+   (BE-14) / the conjecture); **candidate, never refutation**; read the
+   **direction-A pivot rule** in `notes/Phase39.md` *Current state* first.
+
+### Bars
+
+- **Do not re-open:** the decorated-skeleton law ((BE-59)/(BE-60), PROVED); the
+  path-intersection bound as an equality ((BE-31)(iii)); the ear-decomposition
+  induction ((BE-43)); the sharpening ((BE-45)); the proviso ((BE-46)); **(b3)**
+  ((BE-50)); the `G²` apparatus ((BE-17)); the transversality count
+  ((BE-16)(iv), (BE-27)); gauge-fixing (ZSHEAR); the gauge-group count
+  ((BE-27)(ii)); the chord step as the cheaper coordinate ((BE-63), PRICED
+  strictly harder).
+- **ZJACOB (JC-6):** no properness, smoothness or transversality from a
+  codimension count, a Jacobian criterion, or Cohen–Macaulayness. Label every
+  dimension count **as a count** ((BE-27)).
+- **Not this direction, and ranked separately:** the one-end-series case, the
+  spread step, **(S1)/(S2)**, BTWOCUT's bundle construction.
+- **Out of scope:** `hK`, **(GR-15)**, **(RS-5) and the (K-res) wave (a USER
+  call)**, class uniformity, W4 / `hcontract`, and **any `.lean`** (the standing
+  2026-08-05 hold).
+
+### Riders
+
+**TERMINATION E1/E2/E3** — **E3 ARMED (by GBAL)**; report, never fire. **F11** —
+a driver per headline sentence; *"exactly"*, *"nothing further"* and *"free"* are
+**exhaustiveness** claims needing an **enumerating** driver or an argument that
+needs none. **F27** — an exhibited tuple is a proof that it is achievable; a
+claim that a tuple is **NOT** achievable needs multiple independent draws, stated,
+and is *"not found under cap C"*, never *"does not exist"*. **Cap disclosure
+MANDATORY**, and it travels with the figure. **F25** — verification off the
+**shipped** driver; every script committed; exact ℚ, printed literal seeds,
+`assert_generic_star` **and** `verify_pencil_witness` on every draw. **F12** — if
+you correct any summary, your **hunk list** must show a hunk at the **originating
+prose**. **F17** — the fan-out doc's own header and `notes/Phase39.md`'s
+`**Status:**` header are surfaces a landing must update; BWIN needed a repair
+commit for exactly that miss. **Read `notes/scripts/README.md` *Harness debt***
+— the chain is **eleven** deep (`… → bwin → brnode`) with a new `bwin.dehom` row;
+extend the consumer list, **make no move**.
+
+### Driver — expected, at the pinned path `notes/scripts/w4/bdecor.py`
+
+Extend `brnode.py` (and through it `bwin`/`brule`/`bsharp`/`bimage`/`binduc` and
+the rest of the chain) by **read-only import**.
+
+### Reservation
+
+(`notes/Pencil-labels.md` §"Reserved namespace — direction BDECOR".)
+§(K-bare-ext) **extends**, no new section; labels **(BE-64)–(BE-68)**,
+***Steps BE63–BE67***, exactly the tail BRNODE declared and consumed nothing of.
+`BDECOR`, `bdecor`, `(BE-68)` and *`Step BE67`* verified **0-hit** across
+`*.md`/`*.tex`/`*.lean`/`*.py`/`*.m2`; **`(BE-64)` and *`Step BE63`* have two
+hits each — `notes/Pencil-fanout.md:7789` and `notes/Pencil-labels.md:2271`,
+both opened and confirmed to be the tail POINTER** BRNODE wrote in the two places
+it records one. Recorded because a bare hit count would read as a collision.
+**Return any unconsumed remainder.** **Checked and NOT chosen:** `BTHETA` (0-hit,
+but it names the theta child, which is only the spec's *first* sub-case — job 1
+may find it the wrong cut, and a code that pins the scoping would prime it).
+
+### Budget — measured at this prep
+
+`(K-bare)` sits at **1 305 / 1 600** words (295 of headroom) — integrate into the
+current-state sentences. `notes/Phase39.md` stood at **576 / 580** lines with an
+in-flight block to add, so this prep **relocated the *Citations* section verbatim**
+to `notes/Pencil-structure.md` §"Citations — the phase's verified bibliography" —
+a bibliography is reference, not status, the seventh such block — leaving a
+pointer and buying 43 lines. All 47 citation body lines were verified present in
+the new home by **scripted set-diff, not by eye** (the F21 discipline). **A
+direction that verifies a new source adds it THERE, in its landing commit.**

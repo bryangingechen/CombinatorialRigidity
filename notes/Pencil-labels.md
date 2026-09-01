@@ -2271,6 +2271,43 @@ decorated-skeleton law closes it). The landing-time (L6) bare-token grep found
 sub-clauses. The tail a successor opens at is **(BE-64) / *Step BE63***.
 
 
+## Reserved namespace — direction BDECOR (2026-09-01, **IN FLIGHT**)
+
+**Reserved 2026-09-01 for the single direction BDECOR** (ordinal 53, the arc's
+sixty-first direction; `notes/Pencil-fanout.md` §"BDECOR") — the
+**achievable-decorations class statement** ((BE-62)(iii)), BRNODE's successor (1),
+taken only after the coordinator re-ran the F26 consumer trace. Coordinator-set,
+single dispatch — **not** a fan-out, so this reservation protects against the
+*existing corpus* only.
+
+| direction | owning § | labels reserved | steps reserved | driver |
+|---|---|---|---|---|
+| **BDECOR** | §(K-bare-ext) — **extends**, no new section | **(BE-64)–(BE-68)** | **BE63–BE67** | `w4/bdecor.py` (expected — extend `brnode.py`, and through it `bwin`/`brule`/`bsharp` and the rest of the chain, by read-only import) |
+
+The reservation opens at **(BE-64) / Step BE63**, exactly the tail BRNODE
+declared; BRNODE consumed its reservation in full and returned nothing.
+
+**0-hit verification, at reservation time**, across `*.md`, `*.tex`, `*.lean`,
+`*.py`, `*.m2` with `.git`/`.lake` excluded: `BDECOR`, `bdecor`, `(BE-68)` and
+*`Step BE67`* each **0-hit**. **`(BE-64)` and *`Step BE63`* have TWO hits each —
+`notes/Pencil-fanout.md:7789` and this file's line 2271 — and both were opened
+and confirmed to be the tail POINTER** BRNODE wrote, not consumed labels. Two
+rather than one because BRNODE records its tail in both places; recorded because
+a bare hit count would read as a collision, the same carve-out BSHARP's, BWIN's
+and BRNODE's reservations needed.
+
+**Checked and NOT chosen:** `BTHETA` — 0-hit, but it names the **theta child**,
+which is only the spec's *first* sub-case of job 1. A code that pins the scoping
+would prime it, and job 1 explicitly may find theta children the wrong cut
+(the coordinator's own job-2 hypothesis is that they are *free*, in which case
+the direction's content is elsewhere entirely). `RESEARCH-ARC.md` §7.
+
+**(L6) reminder for the landing.** The reservation check above verifies the
+*prefix* and the *step range* only; it structurally cannot see a bare
+`(X<digit>)` token minted **inside** the reservation for a sub-clause. Run the
+landing-time bare-token grep on the returned draft.
+
+
 ## Registry — `notes/Pencil-informal.md` (the (K) workbook)
 
 Status keywords are pointers to the owning section's verdict block and the

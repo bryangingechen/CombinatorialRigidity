@@ -39,6 +39,32 @@ re-run; the round's write-up is in that file's *Harness debt*). **Next: nothing
 here — the phase's next concrete task is the kernel-(K) research pick
 (`notes/Phase39.md` *Hand-off*, "Queued behind the wave").**
 
+## The relocated reference blocks — the index `notes/Phase39.md` points at
+
+**SEVEN blocks, relocated verbatim from `notes/Phase39.md` between 2026-08-27 and
+2026-09-01**, each because it is **stable reference, not status** — it changes only
+when something is *added* to it, never when a gap's status moves. That is the
+disposition the phase note's own *Doc debt* watch item prescribes moving, instead of
+another compression fold of *Decisions made* (three prior folds recovered 2–5 lines
+each, because the note is forward-weighted and the forward part is what grew). **No
+cap was ever bumped and nothing was deleted**; the note keeps a pointer to each.
+**Read these once per session.**
+
+| # | block | relocated | what it carries |
+|---|---|---|---|
+| 1 | *Conventions and canonical homes* | 2026-08-27 | direction-code conventions; which doc owns which content |
+| 2 | *Gates for any continuation* | 2026-08-28 | which gate fires on which file type; the figure-invariance discharge |
+| 3 | *The question and the opening recon* | 2026-08-28 | the phase's question; R1/R2/R3's still-binding clauses |
+| 4 | *Durable negatives and deliberate non-goals* | 2026-08-28 | the do-not-re-run / do-not-re-open list |
+| 5 | *What the recent landings closed* | 2026-08-29 | BZAVOID / ZJACOB / ZSHEAR / GHWIT / GMINM closes |
+| 6 | *The unselected candidate continuations* | 2026-08-29 | leads (b)–(f); ranking lives in the fan-out losers sections |
+| 7 | *Citations — the phase's verified bibliography* | 2026-09-01 | every verified source; **a new source is added HERE** |
+
+The one line that stays in `notes/Phase39.md` rather than moving here: the **State of
+(K)** gap map in `notes/Pencil-informal.md` is the phase's status object, authoritative
+for every status word — and it is read with `python3 notes/gapmap.py`, never
+`sed`/`grep` (one row is one 22 000-character line).
+
 ## Why this round
 
 Phase 39 (PENCIL) stays open (`notes/Phase39.md` *Current state*); the
@@ -667,3 +693,69 @@ Lean hold; **(d)** the companion-length dichotomy frame (§(K-dom) *D7*) + the u
 LTWO a named, non-empty, floor-classified family; **(f)** strategy §4.6's shortlist,
 **partially superseded** for the tight stratum, U3 still unrun. **The current ranking of
 what a wave did not pick is `notes/Pencil-fanout.md`'s own losers sections, not this list.**
+
+## Citations — the phase's verified bibliography
+
+**Relocated verbatim from `notes/Phase39.md`'s *Citations* section, 2026-09-01**, at
+the BDECOR prep, when the note stood at 576/580 lines with an in-flight block to add.
+It is **stable reference, not status**: a bibliography changes only when a direction
+verifies a new source, never when a gap's status moves — the same disposition as the
+six blocks relocated here on 2026-08-27/29, and what the note's own *Doc debt* watch
+item prescribes (*"what here is reference rather than status?"*) instead of another
+fold of *Decisions made*, which three prior folds had already reduced to 2–5 recovered
+lines each. Caps were not bumped and nothing was deleted; the note keeps a pointer.
+
+**`CLAUDE.md` *Referencing prior work* still binds here, unmoved:** this is the
+canonical home for the phase's verified attributions, and **a direction that verifies
+a new source adds it to this section in its landing commit**. The two fuller
+bibliographies this section deliberately does not duplicate keep their own homes —
+`notes/Phase39-design.md` §"(K) literature hunt" and `notes/Pencil-informal.md`
+§(K-Δ) *Sources*.
+
+- Katoh–Tanigawa, *A proof of the molecular conjecture*, Discrete Comput. Geom. **45** (2011) —
+  the KT pointers in this note (Cor. 5.7, Thm 5.5, Lemma 6.13, the Case I/II/III split) are
+  transcribed from `notes/Pencil.md`'s 2026-07-23 survey against the project-canonical source
+  (ROADMAP *References*); pointer verification history: `notes/Phase35.md` *Citations*,
+  `notes/Phase23-cleanup.md`. The (K-tight) re-pin (2026-08-02) verified pp. 681–691 directly
+  against the `.refs` copy — workbook §(K-tight) *Step 0*. **KT Thm 4.9 is cited by the
+  *molecular* side only**: the pencil induction is `Graph.pencil_reduction`, not
+  `minimal_kdof_reduction` (§(K-ind) *Verification*).
+- Jordán 2016 (MSJ Memoirs 34) — checked silent on the pencil stratum in the 2026-07-23 survey,
+  re-confirmed by the 2026-07-30 (K) literature hunt.
+- The 2026-07-30 (K) literature hunt (option C) verified six project-new sources against the
+  `.refs` copies / primary metadata, all MISSes on the (K-tight) crux — White–Whiteley 1987 and
+  1983, Whiteley 1988 and 1999, Schulze–Tanigawa, Garamvölgyi. **The full verified bibliography,
+  with per-source venue data and the reason each is a MISS, is `notes/Phase39-design.md` §"(K)
+  literature hunt" — the canonical home; it is not duplicated here** (same pointer discipline as
+  the Δ-matroid bibliography below).
+- White–Whiteley 1987 (op. cit.) §2 — verified against the `.refs` copy (2026-08-04, the
+  (K-slide-cl) development): Proposition 2.6, Corollary 2.7, Theorem 2.18 (the technique the
+  tetrahedral collapse instantiates), Corollary 2.19 (Tay's count).
+- **The 2026-08-06 direction-T landing** (§(K-grid)) verified one project-new source against
+  publisher metadata (Smith ScholarWorks record + arXiv listing), cited as context only (nothing
+  in §(K-grid) is derived from it): **Gilbert–Polster–Tymoczko**, *Generalized splines on
+  arbitrary graphs*, Pacific J. Math. **281** (2016), no. 2, 333–364 (arXiv:1306.0801).
+  Whiteley 1996 (op. cit. below) is re-used for the matroid-union context, no new section pointer.
+- Whiteley, *Some matroids from discrete applied geometry*, in Matroid Theory
+  (Bonin–Oxley–Servatius, eds.), Contemp. Math. **197**, AMS 1996, 171–311 — §12.2's screw-center
+  description of body-hinge motions verified against the `.refs` copy (2026-08-04, the (K-pitch)
+  development); volume/pages verified against AMS metadata.
+- The 2026-08-05 (K-slide-comb) pass reuses the project-canonical **Edmonds 1965** (verified in
+  Phase 12) and the **Tutte 1961 / Nash-Williams 1961** tree-packing pair (Phase 13). One
+  project-new source, verified against publisher metadata: **Grünbaum**, *Acyclic colorings of
+  planar graphs*, Israel J. Math. **14** (1973) 390–408, DOI 10.1007/BF02764716. Brooks' theorem
+  is cited by name only (classical).
+- **The 2026-08-05 broad class-uniformity recon** (`notes/Pencil-strategy.md` §4.6) verified one
+  project-new source against publisher metadata + the arXiv preprint listing, **no section pointer
+  asserted**: **Scott**, *Grassmannians and Cluster Algebras*, Proc. London Math. Soc. **92**
+  (2006), no. 2, 345–380, DOI 10.1112/S0024611505015571 (preprint arXiv:math/0311148) — the
+  finite-type Grassmannian classification. Its `D₄`/`A_{n−3}` labels state the *refuted* proposal
+  only, never a load-bearing step; **White–Whiteley 1987** (below) is re-used by name for the pure
+  condition, with no new section pointer.
+- **The 2026-08-05 Δ-matroid literature hunt** (§(K-Δ)) verified ~20 project-new sources —
+  Bouchet, Dress–Havel, Wenzel, Gelfand–Serganova, Borovik–Gelfand–White, Vince(–White), Rincón,
+  Jin–Kim, Baker–Jin, Geelen–Iwata–Murota, Bouchet–Cunningham, Koana–Wahlström, Moffatt, Chun et
+  al., Kung, and Cruickshank–Jackson–Jordán–Tanigawa (arXiv:2508.11636, the corroborating
+  negative). **The full verified bibliography, with its two caught hallucinated attributions and
+  one deliberately omitted volume number, is `notes/Pencil-informal.md` §(K-Δ) *Sources* — the
+  canonical home; it is not duplicated here.**

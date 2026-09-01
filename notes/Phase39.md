@@ -10,7 +10,8 @@ derives it from exactly **three carried items**: **`hcontract`** (W4 — build p
 (2026-07-30).
 
 **The kernel-(K) research arc: 60 directions COMPLETE** (2026-08-05 → 09-01, ordinals
-1–52), plus eight strategy-only passes and two architecture probes; none in flight.
+1–52), plus eight strategy-only passes and two architecture probes; **BDECOR (ordinal 53)
+is IN FLIGHT**.
 **Per-direction verdicts, specs and landing write-ups are NOT restated here** —
 each direction has one at `notes/Pencil-fanout.md` §"<CODE>" (ordinals 1–19:
 `notes/Pencil-fanout-archive.md`) and a canonical mathematical home in the workbooks.
@@ -19,23 +20,25 @@ single open gap the whole §(K-grid) chain reduces to — is **untouched**; **cl
 of the escape is untouched**; no g-flank was found by any direction; **E3 is ARMED (by
 GBAL) and has never fired**.
 
-**WHERE THE EAR CASE STANDS** (details in §(K-bare-ext), the `(K-bare)` gap-map row and the
-fan-out write-ups, **not restated here**): **(α) CLOSED**; **(β) PROVED AT THE WINDOW BY A
-CLASS THEOREM** — BWIN's `ρ̄₁ ∩ Z = ⟨ℓ_u, ℓ_v⟩` at every both-ends-series piece with
-`δ₁ ≤ 4`, plus BSHARP's (b1)/(b2) and BRULE's (b3) — on the reduction's 87-of-91 domain,
-**MODULO the two side conditions (S1)/(S2)** ((BE-57)(iv)): hypotheses on the middle, vacuous
-at every drawn piece, **not theorems**. The window is **NOT the barbells**. (β)'s residue is
-per-shape, outside the window ((BE-58)(iv)), plus the `π_u = π_v` corner ((BE-32)(+),
-forced). **The phase-boundary consequence is reported, NOT acted on** (next block).
+**WHERE THE (BE-14) THREAD STANDS** — the 2-cut composition lemma (S-mark) is (BE-14)'s
+only open step, and it has two sides (details in §(K-bare-ext), the `(K-bare)` gap-map row
+and the fan-out write-ups, **not restated here**). **THE EAR SIDE:** (α) **CLOSED**; (β)
+**PROVED AT THE WINDOW BY A CLASS THEOREM** (BWIN, with BSHARP's (b1)/(b2) and BRULE's
+(b3)) on the reduction's 87-of-91 domain — **MODULO the two side conditions (S1)/(S2)**
+((BE-57)(iv)), hypotheses on the middle, vacuous at every drawn piece, **not theorems**;
+residue per-shape outside the window plus the `π_u = π_v` corner. **THE GENERAL-PIECE
+SIDE:** the internal R-node is **DESCRIBED** — BRNODE's decorated-skeleton law makes `ρ̄`
+a complete SPQR recursion ((BE-59)/(BE-60)) — and its remaining content is the
+**achievable-decorations class statement** ((BE-62)), which is what BDECOR is in flight
+on. Cross-pair welding ((BE-28)(i)) is the third residue, untouched. **The
+phase-boundary consequence is reported, NOT acted on** (next block).
 
-**BRNODE (ordinal 52) LANDED 2026-09-01 — the INTERNAL R-NODE IS DESCRIBED** (HIT
-shapes 1 and 3): the **decorated-skeleton law** extends the SP recursion to a complete
-recursion over the SPQR tree ((BE-59)/(BE-60)), the (BE-22)(vi) collapse is a checkable
-condition on `B` with the **prism failing at two rungs** ((BE-61)), and the routing
-verdict locates the R-node's residue in the **achievable-decorations class statement**
-((BE-62)) — the description was never what the consumer is short of, exactly as the
-spec's F26 trace suspected. **The next pick is the coordinator's** under the standing
-delegation (*Hand-off*).
+**IN FLIGHT — BDECOR** (ordinal 53, `recon-opus`, 2026-09-01) at **(BE-62)(iii)**: which
+decoration tuples pencil configurations achieve, fibred over the branch flags. BRNODE's
+successor (1), taken only after the coordinator **re-ran the F26 consumer trace** — it is
+what (BE-22)(iii) consumes, not a residual beside it. **Fable is unavailable this
+session**; top-rung dispatches take the playbook's substitute. Spec:
+`notes/Pencil-fanout.md` §"BDECOR".
 
 **On a future HIT: the phase-boundary consequences are the USER's call** —
 whether Phase 39 closes and a successor opens for the Lean is a
@@ -43,12 +46,10 @@ whether Phase 39 closes and a successor opens for the Lean is a
 adjudication, surfaced with a commit-count estimate, never taken unilaterally;
 the 2026-08-05 Lean hold binds regardless of how good the news is.
 
-**Six reference blocks — RELOCATED 2026-08-27/29**, verbatim, to `notes/Pencil-structure.md`
-(*Conventions and canonical homes*, *Gates for any continuation*, *The question and the
-opening recon*, *Durable negatives and deliberate non-goals*, *What the recent landings
-closed*, *The unselected candidate continuations*). **Read them once per session**; the one
-line that must stay here is that the **State of (K)** gap map in `notes/Pencil-informal.md`
-is the phase's status object, **authoritative for every status word** — read it with
+**SEVEN reference blocks — RELOCATED 2026-08-27 → 09-01**, verbatim, to
+`notes/Pencil-structure.md`, which indexes them; **read them once per session**. The one
+line that must stay here: the **State of (K)** gap map in `notes/Pencil-informal.md` is the
+phase's status object, **authoritative for every status word** — read it with
 `python3 notes/gapmap.py`, never `sed`/`grep`.
 
 ## Current state
@@ -237,15 +238,17 @@ statement** ((BE-62)(iii)); the (BE-22)(vi) collapse is the checkable condition
 `δ_{xy}(B − uv − e) = 0`, with the prism failing at two rungs ((BE-61)); the chord step is
 priced **strictly harder** for this obligation ((BE-63)).
 
-**THE NEXT CONCRETE TASK is the coordinator's next pick** under the standing research-pick
-delegation (*Current state*) — the 2026-08-29 user call is discharged by this landing and
-no pick is standing. The candidates, ranked — BRNODE's named successor first (its
-landing's own ranking), then BWIN's standing ranking, unchanged:
+**THE NEXT CONCRETE TASK — DISPATCHED 2026-09-01 as direction BDECOR** (ordinal 53,
+`recon-opus`; spec `notes/Pencil-fanout.md` §"BDECOR", reservation (BE-64)–(BE-68) /
+*Steps BE63–BE67*): candidate 0 below, **picked under the standing research-pick
+delegation after the coordinator re-ran the F26 consumer trace** — not inherited from
+BRNODE's ranking. The remaining candidates stay **ranked, not dropped**:
 
-0. **The ACHIEVABLE-DECORATIONS statement** ((BE-62)(iii)) — which tuples `{ρ̄_e}` pencil
-   configurations achieve, fibred over the branch flags; per-child sets known for leaves
-   and ears ((BE-30)(ii)), theta children the first open case. What (BE-22)(iii) at the
-   R-node actually consumes — the (BE-14) thread's own continuation.
+0. **The ACHIEVABLE-DECORATIONS statement** ((BE-62)(iii)) — **IN FLIGHT.** Which tuples
+   `{ρ̄_e}` pencil configurations achieve, fibred over the branch flags; per-child sets
+   known for leaves and ears ((BE-30)(ii), at fixed flags), theta children the first open
+   case. What (BE-22)(iii) at the R-node actually consumes — the (BE-14) thread's own
+   continuation.
 
 1. **The ONE-END-SERIES case by BWIN's machine** — one peel instead of two
    (`ρ̄₁ = ⟨ℓ_u⟩ + ρ̄(rest)`), budget `δ₁ ≤ 3` by the same excess accounting, or a
@@ -523,53 +526,14 @@ Settled, one line each:
 - **Promoted out of this phase** (pointers only): TACTICS-GOLF §11/§22/§23; TACTICS-QUIRKS
   §46/§96/§99–§104; FRICTION `exists_injOn_mapsTo_of_ncard_le` + `extensor_pair_smul`
   [mirror-candidate] and the omega/`Set.ncard`-atom idiom.
-
 ## Citations (transcribed, project-canonical sources)
 
-- Katoh–Tanigawa, *A proof of the molecular conjecture*, Discrete Comput. Geom. **45** (2011) —
-  the KT pointers in this note (Cor. 5.7, Thm 5.5, Lemma 6.13, the Case I/II/III split) are
-  transcribed from `notes/Pencil.md`'s 2026-07-23 survey against the project-canonical source
-  (ROADMAP *References*); pointer verification history: `notes/Phase35.md` *Citations*,
-  `notes/Phase23-cleanup.md`. The (K-tight) re-pin (2026-08-02) verified pp. 681–691 directly
-  against the `.refs` copy — workbook §(K-tight) *Step 0*. **KT Thm 4.9 is cited by the
-  *molecular* side only**: the pencil induction is `Graph.pencil_reduction`, not
-  `minimal_kdof_reduction` (§(K-ind) *Verification*).
-- Jordán 2016 (MSJ Memoirs 34) — checked silent on the pencil stratum in the 2026-07-23 survey,
-  re-confirmed by the 2026-07-30 (K) literature hunt.
-- The 2026-07-30 (K) literature hunt (option C) verified six project-new sources against the
-  `.refs` copies / primary metadata, all MISSes on the (K-tight) crux — White–Whiteley 1987 and
-  1983, Whiteley 1988 and 1999, Schulze–Tanigawa, Garamvölgyi. **The full verified bibliography,
-  with per-source venue data and the reason each is a MISS, is `notes/Phase39-design.md` §"(K)
-  literature hunt" — the canonical home; it is not duplicated here** (same pointer discipline as
-  the Δ-matroid bibliography below).
-- White–Whiteley 1987 (op. cit.) §2 — verified against the `.refs` copy (2026-08-04, the
-  (K-slide-cl) development): Proposition 2.6, Corollary 2.7, Theorem 2.18 (the technique the
-  tetrahedral collapse instantiates), Corollary 2.19 (Tay's count).
-- **The 2026-08-06 direction-T landing** (§(K-grid)) verified one project-new source against
-  publisher metadata (Smith ScholarWorks record + arXiv listing), cited as context only (nothing
-  in §(K-grid) is derived from it): **Gilbert–Polster–Tymoczko**, *Generalized splines on
-  arbitrary graphs*, Pacific J. Math. **281** (2016), no. 2, 333–364 (arXiv:1306.0801).
-  Whiteley 1996 (op. cit. below) is re-used for the matroid-union context, no new section pointer.
-- Whiteley, *Some matroids from discrete applied geometry*, in Matroid Theory
-  (Bonin–Oxley–Servatius, eds.), Contemp. Math. **197**, AMS 1996, 171–311 — §12.2's screw-center
-  description of body-hinge motions verified against the `.refs` copy (2026-08-04, the (K-pitch)
-  development); volume/pages verified against AMS metadata.
-- The 2026-08-05 (K-slide-comb) pass reuses the project-canonical **Edmonds 1965** (verified in
-  Phase 12) and the **Tutte 1961 / Nash-Williams 1961** tree-packing pair (Phase 13). One
-  project-new source, verified against publisher metadata: **Grünbaum**, *Acyclic colorings of
-  planar graphs*, Israel J. Math. **14** (1973) 390–408, DOI 10.1007/BF02764716. Brooks' theorem
-  is cited by name only (classical).
-- **The 2026-08-05 broad class-uniformity recon** (`notes/Pencil-strategy.md` §4.6) verified one
-  project-new source against publisher metadata + the arXiv preprint listing, **no section pointer
-  asserted**: **Scott**, *Grassmannians and Cluster Algebras*, Proc. London Math. Soc. **92**
-  (2006), no. 2, 345–380, DOI 10.1112/S0024611505015571 (preprint arXiv:math/0311148) — the
-  finite-type Grassmannian classification. Its `D₄`/`A_{n−3}` labels state the *refuted* proposal
-  only, never a load-bearing step; **White–Whiteley 1987** (below) is re-used by name for the pure
-  condition, with no new section pointer.
-- **The 2026-08-05 Δ-matroid literature hunt** (§(K-Δ)) verified ~20 project-new sources —
-  Bouchet, Dress–Havel, Wenzel, Gelfand–Serganova, Borovik–Gelfand–White, Vince(–White), Rincón,
-  Jin–Kim, Baker–Jin, Geelen–Iwata–Murota, Bouchet–Cunningham, Koana–Wahlström, Moffatt, Chun et
-  al., Kung, and Cruickshank–Jackson–Jordán–Tanigawa (arXiv:2508.11636, the corroborating
-  negative). **The full verified bibliography, with its two caught hallucinated attributions and
-  one deliberately omitted volume number, is `notes/Pencil-informal.md` §(K-Δ) *Sources* — the
-  canonical home; it is not duplicated here.**
+**RELOCATED 2026-09-01** (verbatim) to `notes/Pencil-structure.md` §"Citations —
+the phase's verified bibliography": the per-source venue data, the verification
+dates and the two pointers to the fuller bibliographies it does not duplicate
+(`notes/Phase39-design.md` §"(K) literature hunt", `notes/Pencil-informal.md`
+§(K-Δ) *Sources*). **Stable reference, not status** — it changes only when a
+direction verifies a new source, which is the same disposition as the six blocks
+relocated 2026-08-27/29, and it is what this note's *Doc debt* watch item
+prescribes instead of a fifth compression fold. Nothing deleted, no cap bumped.
+**A direction that verifies a new source adds it THERE, in its landing commit.**
