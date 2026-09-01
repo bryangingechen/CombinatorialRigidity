@@ -2388,7 +2388,47 @@ the first time (L6) has caught a live collision rather than confirming a clean
 draft** — recorded here because the (L5) substring rule's own precedent bullet
 is the model.
 
-The tail a successor opens at is **(BE-74) / *Step BE73***.
+The tail a successor opens at is **(BE-79) / *Step BE78*** (BSPREAD reserved
+(BE-74)–(BE-78) / *Steps BE73–BE77* below).
+
+
+## Reserved namespace — direction BSPREAD (2026-09-01, **RESERVED — the direction is in flight**)
+
+**Reserved 2026-09-01 for the single direction BSPREAD** (ordinal 55, the arc's
+sixty-third direction; `notes/Pencil-fanout.md` §"BSPREAD") — the **SPREAD step**,
+(BE-32)(+)'s last 3.8 %, re-ranked to the top by BPEEL and picked by the
+coordinator under the standing research delegation. Coordinator-set, single
+dispatch — **not** a fan-out, so this reservation protects against the *existing
+corpus* only.
+
+| direction | owning § | labels reserved | steps reserved | driver |
+|---|---|---|---|---|
+| **BSPREAD** | §(K-bare-ext) — **extends**, no new section | **(BE-74)–(BE-78)** | **BE73–BE77** | `w4/bspread.py` (expected — extend `bearfull.py` and `bpeel.py`, and through them `binduc`/`btwocut`/`bimage` and the rest of the chain, by read-only import) |
+
+The reservation opens at **(BE-74) / Step BE73**, exactly the tail BPEEL declared;
+BPEEL consumed its reservation in full and returned nothing.
+
+**0-hit verification, at reservation time**, across `*.md`, `*.tex`, `*.lean`,
+`*.py`, `*.m2` with `.git`/`.lake`/`__pycache__` excluded: `BSPREAD`, `bspread`,
+`(BE-75)`, `(BE-76)`, `(BE-77)`, `(BE-78)` and *`Steps BE74–BE77`* each **0-hit**.
+**`(BE-74)` and *`Step BE73`* have ONE hit each** — this file's own tail-pointer
+line, opened and confirmed to be the pointer BPEEL wrote, not a consumed label:
+the same carve-out the five preceding reservations needed.
+
+**Checked and NOT chosen:** `BFORCE` and `BSTAR` — both rejected on the **(L5)
+substring rule** (`BFORCE` hits inside driver text, `BSTAR` inside
+`assert_generic_star`-adjacent prose), which is exactly the failure (L5)'s
+substring half exists to catch. `BINDEP` is rejected because `bindep` hits as a
+substring, and because it names the coordinator's *hypothesised* mechanism (the
+independence proviso) rather than the question's site — `RESEARCH-ARC.md` §7 warns
+against baking a coordinator prediction into the name, and job 1 may well find the
+argument lives somewhere other than independence. `BSPREAD` names the site.
+
+**(L6) reminder for the landing.** Run the landing-time bare-token grep on the
+returned draft; the reservation check sees prefixes and step ranges only. **BPEEL's
+landing is the live precedent** — its (L6) grep caught four tokens (`(G1)`/`(G2)`,
+`(P₂)`/`(Z₂)`) that were 0-hit inside the pencil doc set but in prior use
+elsewhere in `notes/`, and all four were renamed to bold prose names before commit.
 
 
 ## Registry — `notes/Pencil-informal.md` (the (K) workbook)

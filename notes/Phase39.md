@@ -9,7 +9,8 @@ derives it from exactly **three carried items**: **`hcontract`** (W4 — build p
 (L0–L7), `hsplit` and `hfresh` included (2026-07-30, unchanged since).
 
 **The kernel-(K) research arc: 62 directions COMPLETE** (2026-08-05 → 09-01, ordinals
-1–54), plus eight strategy-only passes and two architecture probes; **none in flight**.
+1–54), plus eight strategy-only passes and two architecture probes; **ONE in flight**
+(BSPREAD, ordinal 55).
 Per-direction verdicts, specs and write-ups live at `notes/Pencil-fanout.md` §"<CODE>"
 (ordinals 1–19: the archive) plus a workbook home — **not restated here**.
 **The arc's standing result, unchanged by all 62: `hK` is not closer.** **(GR-15)** — the
@@ -17,26 +18,22 @@ single open gap the whole §(K-grid) chain reduces to — is **untouched**; **cl
 of the escape is untouched**; no g-flank was found by any direction; **E3 is ARMED (by
 GBAL) and has never fired**.
 
-**WHERE THE (BE-14) THREAD STANDS** — the 2-cut composition lemma (S-mark) is (BE-14)'s
-only open step, and it has three sides (details **not restated here**). **THE EAR SIDE:** (α) **CLOSED**;
-(β) **PROVED AT THE WINDOW BY A CLASS THEOREM** (BWIN, with BSHARP's (b1)/(b2) and BRULE's
-(b3)) on the 87-of-91 domain — **MODULO the side conditions (S1)/(S2)** ((BE-57)(iv)),
-vacuous at every drawn piece but **not theorems**; residue per-shape outside the window
-plus the `π_u = π_v` corner. **THE GENERAL-PIECE
-SIDE:** the internal R-node is **DESCRIBED** and its achievable decorations **REDUCED TO
-EARS** — a **product** of ear chains, one per topological branch, **modulo the proviso
-`G`** ((BE-64)/(BE-66)) — and **half (B)'s CLASS quantifier is now ONE NUMBER PER PEEL**
-(BPEEL, ordinal 54, `recon-opus`, HIT shapes 2/4/5): the good locus is Zariski-open on an
-irreducible chart, hence **dense or empty**, and no branch crosses a 2-cut, so the two
-sides are **independent**, sharing only the flag pair ((BE-69)/(BE-70)) — which **retires
-the exhaustiveness obligation** without claiming any mechanism list is complete (F11).
-**`G` is CLOSED on (CH-1)'s class** ((BE-72)); **(BE-66)(iv)'s stated REASON is refuted**
-(F12, corrected at source), its conclusion re-derived from (BE-32)(+) + (BE-22)(vi)
-((BE-73)). Residue: the **uniformity** of that number over pieces, the **flag base** off
-the no-adjacent-hubs class ((BE-65)(i)/(BE-68)), and **cross-cut-only forcing**, whose
-obligation is the **SPREAD step** — now the last gap in half (B)'s discharge. **THE THIRD
-SIDE:** cross-pair welding ((BE-28)(i)), untouched. **The phase-boundary consequence is
-reported, NOT acted on** (next block).
+**IN FLIGHT — direction BSPREAD** (ordinal 55) at the **SPREAD step**, and the prep
+re-derived that **(BE-41)(ii) is REFUTED AS STATED** by its own sibling (BE-41)(iii) —
+BEARFULL wrote both halves; three **summary** surfaces re-stated (ii) without (iii)'s
+carve-out, and two downstream consumers inherited the wrong form. The 8-member
+constructed family escapes the `≤6`-cycle certificate and the shipped driver `assert`s
+that escape non-empty. So (BE-32)(+)'s true residue is *forced ⇒ `δ = 0` at **spread
+steps***, the `≤6`-cycle route **known dead**; each of those five surfaces is owed an
+F12 hunk.
+
+**WHERE THE (BE-14) THREAD STANDS** — S-mark, the 2-cut composition lemma, is (BE-14)'s
+only open step; its **three sides** and every per-landing detail are **REFERENCE,
+RELOCATED 2026-09-01** to `notes/Pencil-structure.md` §"The (BE-14) thread — per-landing
+detail" (**block 8**, and it is the eighth of the read-once-per-session set). What is
+status: (β) is proved at the window **MODULO (S1)/(S2)**; the general-piece side is down to
+**cross-cut-only forcing** plus two named residues; cross-pair welding is **untouched**.
+**The phase-boundary consequence is reported, NOT acted on** (next block).
 
 **On a future HIT: the phase-boundary consequences are the USER's call** —
 whether Phase 39 closes and a successor opens for the Lean is a
@@ -44,7 +41,7 @@ whether Phase 39 closes and a successor opens for the Lean is a
 adjudication, surfaced with a commit-count estimate, never taken unilaterally;
 the 2026-08-05 Lean hold binds regardless of how good the news is.
 
-**SEVEN reference blocks sit in `notes/Pencil-structure.md`**, which indexes them —
+**EIGHT reference blocks sit in `notes/Pencil-structure.md`**, which indexes them —
 **read them once per session**. The line that stays here: the **State of (K)** gap map
 (`notes/Pencil-informal.md`) is this phase's status object, **authoritative for every
 status word**; read it with `python3 notes/gapmap.py`, never `sed`/`grep`.
@@ -185,32 +182,24 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
   (K-res) WAVE is still a user call.**
 
 - **Doc debt — relief slice LANDED 2026-08-26** (1 500 → 554), and **relocation, not
-  compression, every time since** — now **SEVEN** blocks, all stable **reference, not status**,
-  sitting verbatim in `notes/Pencil-structure.md` with their own reasons recorded there
-  (§"Slice 6" onward): *Conventions* / *Canonical homes* (08-27), *Gates for any
-  continuation* (08-28), *The question and the opening recon* + *Durable negatives and
-  deliberate non-goals* (08-28), and *What the recent landings closed* + *The unselected
-  candidate continuations* (08-29), and *Citations — the phase's verified bibliography*
-  (09-01, the BDECOR prep; **a direction that verifies a new source adds it THERE** — BDECOR
-  and BPEEL both verified none, citing only arc-internal results). Caps **not** bumped, nothing deleted. **The gate is
-  MECHANICAL** — `notes/check-phase-note.py` caps this note at **580 lines / 525
-  status-header words** and fails if *Decisions made* outgrows the forward sections. **Live
-  watch, re-measured 2026-09-01 at the SESSION CLOSE: 560/580 lines, 505/525 words —
-  20 spare on each.** The BPEEL landing bound hardest (87 words over, recomputed as
-  current state — the gate working as designed); the session-close pass then bought 17
-  more words by trimming two clauses that had gone stale rather than by relocating.
-  **A fresh session should expect the header to bind on its FIRST prep** — 20 words does
-  not fit an in-flight block (~55–70), and the gate fired at every one of this session's
-  three preps. **The named next relocation candidate is the `**Status:**` header's own
-  per-landing detail paragraph**, which becomes reference the moment the next direction
-  starts; do that instead of a fold, and do NOT relocate the *"On a future HIT"* block —
-  it is standing safety policy and must stay where a fresh session reads it first. **When
-  the next landing binds, the question is again "what here is reference rather than
-  status?"** — not another fold; the measured diagnosis (three folds recovered 2–5 lines
-  each, because the note is forward-weighted and the forward part is what grew) is recorded
-  at `notes/Pencil-structure.md`, not restated here. A landing's entry stays **one line**;
-  the (BE-14) thread's prose entries are the standing exception, and the oldest demotes when
-  the thread's next direction lands.
+  compression, every time since** — now **EIGHT** blocks, all stable **reference, not
+  status**, sitting verbatim in `notes/Pencil-structure.md` with their own reasons recorded
+  there (§"Slice 6" onward), indexed by that file's own table. Caps **not** bumped, nothing
+  deleted. **The gate is MECHANICAL** — `notes/check-phase-note.py` caps this note at
+  **580 lines / 525 status-header words** and fails if *Decisions made* outgrows the
+  forward sections. **The prediction the last session wrote here was CORRECT and the
+  prescribed remedy WORKED:** it warned the header would bind on a fresh session's first
+  prep with 20 words spare, named the `**Status:**` header's **per-landing detail
+  paragraph** as the next relocation candidate, and forbade a fifth fold. The BSPREAD prep
+  did exactly that — the (BE-14) thread's per-landing detail relocated **verbatim** as
+  block 8 — and the header went **505 → 420 / 525 words**, buying **105** of headroom
+  where a fold has never recovered more than 5 lines. **Live watch, measured at the
+  BSPREAD prep: 558/580 lines, 420/525 words.** **Do NOT relocate the *"On a future HIT"*
+  block** — it is standing safety policy and must stay where a fresh session reads it
+  first. **When the next landing binds, the question is again "what here is reference
+  rather than status?"** — not a fold. A landing's entry stays **one line**; the (BE-14)
+  thread's prose entries are the standing exception, and the oldest demotes when the
+  thread's next direction lands.
 - The full biconditional transport (design doc's W0 pin) is landed only as its two forward
   implications; the reverse arms need a `complementIso` involution lemma, not in tree —
   deferred, **off every critical path** (§(K-σ) *Step σ6*).
@@ -244,14 +233,19 @@ computation** (the decorated-skeleton law) and located the R-node's content in t
 ((BE-64)) and settled its per-child half. The details are the write-ups' and the
 `(K-bare)` gap-map row's, **not restated here**.
 
-**THE NEXT CONCRETE TASK — the SPREAD STEP** (candidate 1 below), **re-ranked to the top by
-the BPEEL landing** and offered to the user as a research pick under the standing
-delegation. BPEEL (ordinal 54) landed candidate 0 as **HIT shapes 2/4/5**, and its routing
-verdict is what moves the board: the spread step is no longer *"the last 3.8 % of
-(BE-32)(+)"* — it is **the last gap in half (B)'s discharge**, because (BE-66)(iv)'s stated
-reason is refuted and the surviving argument (one-sided forcing ⇒ `δ_i = 0` ⇒ (BE-22)(vi))
-inherits exactly (BE-32)(+)'s residue. It is **pure graph theory**, needs no geometry, and
-was already ranked. The rest stay **ranked, not dropped**:
+**IN FLIGHT — direction BSPREAD** (ordinal 55, `recon-opus`, prepped 2026-09-01) at the
+**SPREAD step**, candidate 1 below, re-ranked to the top by BPEEL and picked by the
+coordinator under the standing delegation. **THE PREP CORRECTED THE TARGET, and the
+correction is the reason this is not a routine continuation: the statement three surfaces
+call the spread step — (BE-41)(ii), *every aggressively-forced pair lies in one `≤6`-cycle
+class* — is REFUTED AS STATED by its own sibling (BE-41)(iii)**, whose 8-member constructed
+triangle-chain family produces genuine spread steps whose admitted hub sits on no `≤6`-cycle
+at all; `bearfull.py chain` `assert`s that escape set non-empty, so the refutation is
+enforced by the shipped driver, not merely written down. `δ = 0` holds at every member
+anyway, so **(BE-32)(+) itself is untouched** — what is dead is the `≤6`-cycle **route** to
+it. The true residue is therefore *forced ⇒ `δ = 0` at **spread steps***, and BEARFULL's own
+successor sentence already said the honest thing — *"a successor needs a different tool **or
+a restriction of the closure operator**"*. The rest stay **ranked, not dropped**:
 
 0. **HALF (B)'s CLASS QUANTIFIER** ((BE-67)(iii)) — **REDUCED, not proved** (BPEEL). It is
    now *one number per (piece, peel)*: `reach = min(δ₁+δ₂,6)`, the **generic** value of
@@ -264,12 +258,17 @@ was already ranked. The rest stay **ranked, not dropped**:
    ((BE-65)(i)); and — **CLOSED by BPEEL, do not re-hunt** — the forced-empty `G` hunt,
    impossible on (CH-1)'s class ((BE-72)).
 
-1. **The SPREAD STEP — THE NEXT CONCRETE TASK.** *Every aggressively-forced pair
-   lies in one `≤6`-cycle class*, the last **3.8 %** of (BE-32)(+) (55 known
-   instances). Pure graph theory; the merge inequality is **known** not to reach
-   it (a 7-cycle of `Q` has slack `−1`). Two consumers now, not one: BRULE's job
-   2 ((BE-32)(+) under three clauses of (β) at the `π_u = π_v` corner, forced
-   branch only) **and** half (B)'s general-position discharge ((BE-73)(ii)).
+1. **The SPREAD STEP — IN FLIGHT as BSPREAD.** *Forced ⇒ `δ = 0` at the **spread**
+   steps* — the last **3.8 %** of (BE-32)(+), **55** known instances. **NOT** the
+   `≤6`-cycle-class form of (BE-41)(ii), which the prep found refuted (above);
+   the merge inequality is **known** not to reach past 6 (a 7-cycle of `Q` has
+   slack `−1`) and the boundary family shows the certificate genuinely absent, so
+   a successor needs a **different tool or a restriction of the closure
+   operator** — the aggressive closure's own docstring records that it *"assumes
+   every 3 forced points are independent, which OVER-claims forcing"*. Pure graph
+   theory. Two consumers, not one: BRULE's job 2 ((BE-32)(+) under three clauses
+   of (β) at the `π_u = π_v` corner, forced branch only) **and** half (B)'s
+   general-position discharge ((BE-73)(ii)).
 2. **The ONE-END-SERIES case by BWIN's machine** — one peel instead of two
    (`ρ̄₁ = ⟨ℓ_u⟩ + ρ̄(rest)`), budget `δ₁ ≤ 3` by the same excess accounting, or a
    second functional from the clean end. Would retire the (BE-46)/(BE-52)

@@ -41,9 +41,12 @@ here — the phase's next concrete task is the kernel-(K) research pick
 
 ## The relocated reference blocks — the index `notes/Phase39.md` points at
 
-**SEVEN blocks, relocated verbatim from `notes/Phase39.md` between 2026-08-27 and
+**EIGHT blocks, relocated verbatim from `notes/Phase39.md` between 2026-08-27 and
 2026-09-01**, each because it is **stable reference, not status** — it changes only
-when something is *added* to it, never when a gap's status moves. That is the
+when something is *added* to it, never when a gap's status moves. (Block 8 is the
+one exception to the "never when a gap's status moves" reading, and it is a
+deliberate one: it is the *per-landing attribution* of a thread whose status the
+note keeps — see its own section for why that split is the right cut.) That is the
 disposition the phase note's own *Doc debt* watch item prescribes moving, instead of
 another compression fold of *Decisions made* (three prior folds recovered 2–5 lines
 each, because the note is forward-weighted and the forward part is what grew). **No
@@ -59,6 +62,7 @@ cap was ever bumped and nothing was deleted**; the note keeps a pointer to each.
 | 5 | *What the recent landings closed* | 2026-08-29 | BZAVOID / ZJACOB / ZSHEAR / GHWIT / GMINM closes |
 | 6 | *The unselected candidate continuations* | 2026-08-29 | leads (b)–(f); ranking lives in the fan-out losers sections |
 | 7 | *Citations — the phase's verified bibliography* | 2026-09-01 | every verified source; **a new source is added HERE** |
+| 8 | *The (BE-14) thread — per-landing detail* | 2026-09-01 | which direction proved which sub-clause of the three sides, with its labels |
 
 The one line that stays in `notes/Phase39.md` rather than moving here: the **State of
 (K)** gap map in `notes/Pencil-informal.md` is the phase's status object, authoritative
@@ -759,3 +763,52 @@ bibliographies this section deliberately does not duplicate keep their own homes
   negative). **The full verified bibliography, with its two caught hallucinated attributions and
   one deliberately omitted volume number, is `notes/Pencil-informal.md` §(K-Δ) *Sources* — the
   canonical home; it is not duplicated here.**
+
+## The (BE-14) thread — per-landing detail
+
+**Relocated verbatim from `notes/Phase39.md`'s `**Status:**` header, 2026-09-01**, at the
+BSPREAD prep. This is the block the note's own *Doc debt* watch item **named in advance** as
+the next relocation candidate — *"the `**Status:**` header's own per-landing detail
+paragraph, which becomes reference the moment the next direction starts; do that instead of
+a fold"* — and the moment arrived when BSPREAD was prepped. The prediction was also
+quantitatively right: the header stood at **505/525** words with 20 spare, an in-flight
+block needs ~55–70, and three consecutive folds before it had recovered only 2–5 lines
+each. Relocating this paragraph took the header to **420/525**, buying **105** words.
+
+**Why this is reference and not status, when the thread itself is very much live.** The cut
+is between *where the three sides stand* — which the note keeps, in three clauses — and
+*which direction proved which sub-clause, with its labels and its HIT shapes*, which is
+attribution. Attribution has two canonical homes already (`notes/Pencil-fanout.md` §"<CODE>"
+for the landing write-up, and the note's own *Decisions made* one-liners), so the header was
+a third copy; and the **`(K-bare)` gap-map row is authoritative for every status word**
+regardless. Nothing was deleted and no cap was bumped; `notes/Phase39.md` keeps a pointer
+plus the status clauses.
+
+**The paragraph, as it stood at the BPEEL landing (`94af7fdd`) and the session-close commit
+(`ae78b432`):**
+
+**WHERE THE (BE-14) THREAD STANDS** — the 2-cut composition lemma (S-mark) is (BE-14)'s
+only open step, and it has three sides (details **not restated here**). **THE EAR SIDE:** (α) **CLOSED**;
+(β) **PROVED AT THE WINDOW BY A CLASS THEOREM** (BWIN, with BSHARP's (b1)/(b2) and BRULE's
+(b3)) on the 87-of-91 domain — **MODULO the side conditions (S1)/(S2)** ((BE-57)(iv)),
+vacuous at every drawn piece but **not theorems**; residue per-shape outside the window
+plus the `π_u = π_v` corner. **THE GENERAL-PIECE
+SIDE:** the internal R-node is **DESCRIBED** and its achievable decorations **REDUCED TO
+EARS** — a **product** of ear chains, one per topological branch, **modulo the proviso
+`G`** ((BE-64)/(BE-66)) — and **half (B)'s CLASS quantifier is now ONE NUMBER PER PEEL**
+(BPEEL, ordinal 54, `recon-opus`, HIT shapes 2/4/5): the good locus is Zariski-open on an
+irreducible chart, hence **dense or empty**, and no branch crosses a 2-cut, so the two
+sides are **independent**, sharing only the flag pair ((BE-69)/(BE-70)) — which **retires
+the exhaustiveness obligation** without claiming any mechanism list is complete (F11).
+**`G` is CLOSED on (CH-1)'s class** ((BE-72)); **(BE-66)(iv)'s stated REASON is refuted**
+(F12, corrected at source), its conclusion re-derived from (BE-32)(+) + (BE-22)(vi)
+((BE-73)). Residue: the **uniformity** of that number over pieces, the **flag base** off
+the no-adjacent-hubs class ((BE-65)(i)/(BE-68)), and **cross-cut-only forcing**, whose
+obligation is the **SPREAD step** — now the last gap in half (B)'s discharge. **THE THIRD
+SIDE:** cross-pair welding ((BE-28)(i)), untouched. **The phase-boundary consequence is
+reported, NOT acted on** (next block).
+
+**Reading it later.** Every label in it resolves in `notes/Pencil-informal.md`
+§(K-bare-ext); the direction codes resolve in `notes/Pencil-fanout.md`. Treat the paragraph
+as a snapshot dated 2026-09-01, **not** as a live status surface — if it disagrees with the
+gap map, the gap map wins.

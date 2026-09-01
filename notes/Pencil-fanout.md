@@ -1,7 +1,25 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: EIGHT fan-outs, THIRTY-FIVE single directions and TWO concurrent
-pairs dispatched; 62 LANDED, none in flight.**
+**Status: EIGHT fan-outs, THIRTY-SIX single directions and TWO concurrent
+pairs dispatched; 62 LANDED, ONE IN FLIGHT — BSPREAD (ordinal 55).**
+**BSPREAD (ordinal 55, §"BSPREAD") PREPPED 2026-09-01** at the **SPREAD step**,
+BPEEL's successor (1) and the hand-off's candidate 1, picked by the coordinator
+under the standing research delegation. **The F26 consumer trace was re-run for a
+THIRD direction running, and this time it CORRECTED THE TARGET rather than
+confirming the ranking:** the sentence three surfaces call the spread step —
+**(BE-41)(ii)**, *every aggressively-forced pair lies in one `≤6`-cycle class* —
+is **REFUTED AS STATED by its own sibling (BE-41)(iii)**, whose constructed
+triangle-chain family admits a hub sitting on no `≤6`-cycle at all. BEARFULL wrote
+both halves; the damage is in three **summary** surfaces that re-stated (ii)
+without (iii)'s carve-out (its confidence-table row, its cap 3 — a cap disclosure
+that **under**-reported a known refutation — and (ii)'s own measurement line) and
+in the two **downstream consumers** that inherited the wrong form, BPEEL's
+(BE-73)(iv) and its *What would change this*. Verified off the shipped driver, not
+the prose: `bearfull.py chain` carries `assert esc, 'the boundary family produced
+no escape -- the claim is empty'`. **`δ = 0` at every member, so (BE-32)(+) is
+untouched — what is dead is the `≤6`-cycle ROUTE to it**, and the true residue is
+*forced ⇒ `δ = 0` at the **spread** steps*. Dispatched at `recon-opus` (fable
+unavailable this session).
 **BPEEL (ordinal 54, §"BPEEL") LANDED 2026-09-01** at **half (B)'s CLASS
 STATEMENT** ((BE-67)(iii)) — **HIT shapes 2, 4 and 5; NOT 1 and NOT 3**. The
 spec's crux was **exhaustiveness**: two ways to fail are located and each
@@ -8440,3 +8458,270 @@ flexible — combinatorial, driver-findable, none found under cap; (3) the
 **uniformity of `reach`** over the class, which is what (BE-67)(iii) now
 literally is; (4) the **flag base** off the no-adjacent-hubs class ((BE-65)(i)),
 unchanged and untouched here.
+
+## BSPREAD — fifty-fifth ordinal, the sixty-third direction (single dispatch, prepped 2026-09-01)
+
+**Selection provenance: BPEEL's successor (1), and the hand-off's candidate 1 —
+but the F26 consumer trace was re-run for the THIRD direction running, and this
+time it did not merely confirm the ranking, it CORRECTED THE TARGET.** The trace
+opened both consumers. **(BE-73)(ii)(b)**: one-sided forcing gives `δ_i = 0` by
+(BE-32)(+), and (BE-22)(vi) then removes half (B)'s general-position content
+outright — so the discharge inherits (BE-32)(+)'s residue exactly. **BRULE job
+2**: the ear side's (β) ledger carries *"the `π_u = π_v` corner ((BE-32)(+),
+forced branch)"* as a named residue ((BE-58)(iv)). Both consume (BE-32)(+) at the
+**pair** level, so the ranking survives its own check. What did not survive is the
+**statement**. Dispatched **un-named, single**, at **`recon-opus`** — the mapped
+rung is the top one (this may re-route the (BE-14) thread and it settles new
+mirror math), and fable is unavailable this session, so the playbook's named
+substitute applies.
+
+### THE CORRECTION — read this before anything else
+
+**The sentence three surfaces call "the spread step" is REFUTED AS STATED, by its
+own sibling, and the refutation is enforced by the shipped driver.**
+
+> **(BE-41)(ii)** *(as landed)* What is left of (BE-32)(+) is **every
+> aggressively-forced pair lies in one `≤6`-cycle class** … Measured: **203 723**
+> forced pairs, **`0`** outside a `≤6`-cycle class.
+
+> **(BE-41)(iii)** *(as landed, same direction)* Let `t₀ … t_k` be a path, let
+> `x_i` complete the triangle `(t_i, t_{i+1})`, and let `v` be joined to `t₀`, to
+> `x_{k−1}` and to a pendant. The closure admits every `t_i` and then admits `v`
+> on `{v, t₀, x_{k−1}}` — and the **shortest cycle through `v` has length
+> `k + 2`** … the `k ≥ 5` members have shortest cycle `7` and `8` and are **NOT**
+> in a common `≤6`-cycle class with `t₀`.
+
+`(v, t₀)` is an aggressively-forced pair lying in **no** `≤6`-cycle class. So
+(BE-41)(ii) is **false as a universal statement**, and BEARFULL **said so in
+prose** — *"the `≤6`-cycle certificate is not merely unproved past 6, it is
+**absent**"*. The coordinator verified it **off the shipped driver, not off the
+prose** (`RESEARCH-ARC.md` §4's own standard): `bearfull.py chain` carries
+
+```
+assert esc, 'the boundary family produced no escape -- the claim is empty'
+```
+
+and, at every member, `assert spread_ok` (no witness triple makes the step
+star-2) and `assert ... r[5] == 0` (`δ = 0`). **The escape set is asserted
+NON-EMPTY.** `δ = 0` holds at all 8, so **(BE-32)(+) itself is untouched** — what
+is dead is the `≤6`-cycle **route** to it.
+
+**Where the defect actually sits, stated fairly.** BEARFULL wrote both halves. The
+damage is in the **summary surfaces** that re-stated (ii) without (iii)'s
+carve-out, and in the two **downstream consumers** that then inherited the wrong
+form as the thing to prove:
+
+1. **BEARFULL's confidence table** — *"(BE-41)(ii) forced ⟹ `≤6`-cycle class |
+   **MEASURED** at 203 723 + 27 414 pairs, 0 escapes"*. Those are the two
+   **random/enumerated** tiers; the **constructed** tier escapes by design and is
+   tabulated on the *next row* as if it were a different claim.
+2. **BEARFULL's cap 3** — *"It reads 'no aggressively-forced pair outside a
+   `≤6`-cycle class was found under this cap', never 'none exists'."* That is
+   **weaker than the truth**: one is known to exist, by construction. A cap
+   disclosure that under-reports a known refutation is the F11/§5 hazard running
+   backwards.
+3. **(BE-41)(ii)'s own measurement line**, which reports `0` escapes with no
+   pointer to (iii).
+4. **BPEEL (BE-73)(iv)** — *"Its proof obligation is the **SPREAD step**
+   ((BE-41)(ii))"* — and BPEEL's *What would change this* — *"A proof of the
+   SPREAD step ((BE-41)(ii)) would upgrade (BE-73)(ii)(b) … to a theorem"*. Both
+   name a statement that has a counterexample.
+5. **`notes/Phase39.md`'s hand-off candidate 1**, which stated the `≤6`-cycle
+   form verbatim — **corrected in this prep's own commit**, along with the note's
+   in-flight block.
+
+The **`(K-bare)` gap-map row is CLEAN** and was checked: it says *"residue the
+geometry-free **SPREAD step** ((BE-41))"*, naming the label family, not the
+refuted clause. Do not "fix" it into the refuted form.
+
+### The target, stated exactly
+
+> **(BE-32)(+), at the spread steps.** Let the aggressive closure admit a hub `v`
+> on the strength of three points `x, y, z ∈ N[v] ∩ A` **no two of which lie in a
+> common closed star** (a **SPREAD** step — the complement of (BE-41)(i)'s
+> star-2 step). Show that the resulting forced pairs still satisfy
+> **`δ = 0`** — or restrict the closure operator so that spread steps do not
+> produce forced pairs at all — or exhibit a genuinely-forced pair with
+> `δ ≠ 0`.
+
+**55 of 401 544** forcing steps are spread steps; **7 680 of 203 723** pairs
+(3.8 %) are unproved because of them. Pure graph theory: no configuration, no
+genericity, no constructor. **The merge inequality cannot be the tool** — a
+6-cycle of `Q` is tight and a 7-cycle has slack `−1` (`5·7 = 35 < 36`), which is
+(BE-41)(iii)'s own reason the boundary family exists.
+
+### THE COORDINATOR'S ROUTE HYPOTHESIS — TO BE TESTED, NOT INHERITED (`RESEARCH-ARC.md` §7)
+
+> *Provenance, named as §7 requires:* this is **not** measured and **not**
+> derived from any landed step. It comes from **one docstring** —
+> `binduc.flat_forcing_closure`'s — plus BEARFULL's own successor sentence
+> (*"a successor needs a different tool **or a restriction of the closure
+> operator**"*). Evidence stratum: **a comment and a sentence**. Five of the last
+> seven coordinator predictions in this arc were refuted, split or reframed.
+>
+> The docstring says the closure is *"**Aggressive** = assumes every 3 forced
+> points are independent, which **OVER-claims** forcing; a hit is a
+> **CANDIDATE**"*, and the implementation is exactly `len(star & A) >= 3` — a
+> count of **vertices**, with **no independence test at all**. The genuine rule
+> needs three points of `N[v]` in `π` that are **not collinear**; three collinear
+> ones force nothing. So the aggressive relation is a **superset** of genuine
+> forcing, and (BE-32)(+) for it is **strictly stronger than the consumers need**
+> — both consumers ((BE-73)(ii)(b), BRULE job 2) quantify over *genuine*
+> coincidences in *real* configurations.
+>
+> **The hypothesis:** at a spread step the three witnesses can be made
+> **collinear** in some legal pencil configuration, so the step is not a genuine
+> forcing certificate; dropping spread steps leaves the **star-2-only** closure,
+> for which (BE-41)(i) already **PROVES** (BE-32)(+) outright. If that holds,
+> (BE-32)(+) closes for genuine forcing with no new geometry.
+>
+> **Where the coordinator expects to be wrong.** (a) Collinearity of three
+> specified vertices is a **realizability** question inside the pencil stratum,
+> not a free choice — the rest of the pencil conditions may forbid it, and at a
+> hub `v` the closed star is already coplanar, so the three witnesses lie in
+> `π ∩ π_v` *only if* `π ≠ π_v`, which is what is being established, not
+> assumed. (b) Blocking one derivation of a pair does not show the pair is
+> unforced — **another** derivation may reach it, so the honest object is *"is
+> there a legal configuration with `π_u ≠ π_v`?"*, one existential per pair, not
+> a per-step veto. (c) The retreat changes the object (BE-32)(+) quantifies over,
+> which touches **every** surface that cites it, including BINDUC's (BE-23)(ii)
+> and BZAVOID's (BE-15) — a scope change, and it must be priced as one. **If the
+> hypothesis is wrong, say so in a paragraph and do not force it**; the
+> alternative half of BEARFULL's sentence — a *different tool* for the spread
+> steps as they stand — is equally in scope and is job 1's other half.
+
+### What is free — cite it, do NOT re-derive it
+
+- **(BE-41)(i)**, the **star-2 step**: two of the three witnesses in one closed
+  star (non-degenerate) ⟹ `v, w` on a common `3`- or `4`-cycle ⟹ `δ_{vw} = 0`
+  by (BE-40), composing by (BE-39)(ii). **PROVED**, 401 489/401 544 steps.
+  (BE-32)(ii)/(iii) are its base case, and **the first step is always of this
+  shape**.
+- **(BE-39)/(BE-40)**, the **short-cycle law**: `g` supermodular, `girth(Q) ≥ 6`,
+  `δ = 0` an **equivalence relation**, and `δ_{xy} ≤ max(0, L−6)` on a common
+  `L`-cycle. **PROVED**; and **(BE-40) cannot reach past 6** ((BE-41)(iii)).
+- **(BE-41)(iii)**, the boundary family and its blind re-finding: **8**
+  constructed members, `k = 3…6 ×` 1 or 2 pendants, plus **2 541** blind graphs
+  at `n = 9…13` giving **27 414** forced pairs, **0** escapes in the blind tier
+  and **3 802** direct `δ` computations, **0** violations.
+- **(BE-73)(ii)(a)**, the 2-cut `δ` law `δ_{uv}(H) = max(0, δ₁+δ₂−6)`, asserted
+  at **19 991** peels — and its consequence that the **whole-piece** reading of
+  (BE-32)(+) is near-vacuous at a 2-cut, so only the **one-sided** reading has
+  content.
+- **(BE-73)(iii)**'s three censuses: **3 497** forced R-node-shaped peels, all
+  with `min(δ₁,δ₂) = 0`; **24 874** both-flexible R-node peels, none forced;
+  **408** forced-with-both-`δ`-positive instances **off** the R-node shape.
+- **(BE-23)(ii)** and **(BE-15)(ii)**'s scope correction: the landed *general*
+  forcing rule is triangle-free and adjacency-free (`K_{3,3}`, `K_{2,3}`),
+  implemented as `binduc.flat_forcing_closure` — the **same operator** this
+  direction is about.
+
+### Job 0 (FORCED, CHEAP, FIRST) — confirm or refute the correction, then annotate at source
+
+Re-derive the correction above **from the driver, not from this spec**, and say
+which. If confirmed, land an **F12 hunk at every originating surface** — items
+1–4 of *Where the defect actually sits* — restating (BE-41)(ii) in a form the
+boundary family does not refute and repointing BPEEL's two consumer sentences.
+**If the coordinator is wrong**, say so plainly and in full: that is a clean
+result and it costs this direction nothing.
+
+### Job 1 (PRIMARY, FORCED) — the spread steps
+
+Close (BE-32)(+) at the spread steps by **either** half of BEARFULL's own
+sentence — a **different tool** for the 55 steps as they stand, or a **restriction
+of the closure operator** that removes them (the coordinator's hypothesis above is
+one candidate restriction and is **not** privileged) — **or** exhibit a
+genuinely-forced pair with `δ ≠ 0`. Per-instance re-measurement of the 55 is
+**not** progress; (BE-46)(iv)'s rule applies one level up. A **reduction to a
+named checkable condition** is a result.
+
+### Job 2 (FORCED) — cross-cut-only forcing, the hunt BPEEL left sharpest
+
+BPEEL's successor (2), and *"the sharpest single question this landing leaves"*:
+a coincidence `π_u = π_v` forced at an **R-node-shaped** 2-cut peel by the two
+sides **together**, inside neither alone, with **both sides flexible**. It is not
+covered by (BE-73)(ii)(b) (which needs one-sidedness) and the whole-piece reading
+is vacuous by (ii)(a). **None was found under BPEEL's cap.** Widen the cap, or
+give an argument that none exists — and note that the same object is what job 1
+governs, since a cross-cut-only certificate that is a **spread** step is exactly
+where both gaps meet. **F11 binds:** *"none exists"* needs an enumeration; a wider
+search that finds nothing reports *"none found under cap C"*.
+
+### What counts as a HIT — state which you got
+
+1. **(BE-32)(+) PROVED outright** — for the aggressive operator, or for a
+   restricted operator that both consumers accept (say **which**, and price the
+   scope change per (c) above). That closes the `π_u = π_v` corner of (β) **and**
+   upgrades (BE-73)(ii)(b) to a theorem.
+2. **Reduced** to a named checkable condition.
+3. **A genuinely-forced pair with `δ ≠ 0`** — HIT shape 4 in BEARFULL's numbering,
+   classified against (BE-23)(ii). Report the board consequence; **act on none**.
+4. **Cross-cut-only forcing found** (job 2), or shown impossible under a stated
+   argument.
+5. **The correction landed** (job 0), either way.
+
+### Bars
+
+- **Do not re-open:** the short-cycle law ((BE-39)/(BE-40)); the star-2 step
+  ((BE-41)(i)); the Grassmann bound ((BE-42)(i)); the ear-decomposition induction
+  ((BE-43), S-mark's pin STANDS); the branch-product theorem ((BE-64)); the
+  decorated-skeleton law ((BE-59)/(BE-60)); the peel-independence theorem
+  ((BE-70)); `G` on (CH-1)'s class ((BE-72)); the `G²` apparatus ((BE-17)); the
+  transversality count ((BE-16)(iv), (BE-27)); gauge-fixing (ZSHEAR).
+- **ZJACOB (JC-6):** no properness, smoothness or transversality from a
+  codimension count, a Jacobian criterion, or Cohen–Macaulayness. Label every
+  dimension count **as a count** ((BE-27)).
+- **Not this direction, ranked separately:** the one-end-series case;
+  **(S1)/(S2)**; the flag base off the no-adjacent-hubs class ((BE-65)(i)); the
+  uniformity of `reach` ((BE-67)(iii)); cross-pair welding ((BE-28)(i));
+  BTWOCUT's bundle construction ((BE-29)(ii)).
+- **Out of scope:** `hK`, **(GR-15)**, **(RS-5) and the (K-res) wave (a USER
+  call)**, class uniformity, W4, and **any `.lean`** (2026-08-05 hold).
+
+### Riders
+
+**TERMINATION E1/E2/E3** — **E3 ARMED (by GBAL)**; report, never fire. **F11 is
+this direction's central rider, and job 2 is where it bites:** *"no cross-cut-only
+forcing exists"* is an **exhaustiveness** claim and needs a driver that
+**enumerates**, or an argument that needs no driver. **F27** — a claim that a step
+or pair **fails** needs multiple independent draws, stated. **Cap disclosure
+MANDATORY**, and this direction has a live reason to take it literally: item 2 of
+*Where the defect actually sits* is a cap disclosure that **under**-reported a
+known refutation. **F25** — verification off the **shipped** driver; exact ℚ,
+printed literal seeds, `assert_generic_star` **and** `verify_pencil_witness` on
+every geometric draw. **F12** — job 0 **is** an F12 sweep; a corrected summary
+needs a hunk at the originating prose, and BPEEL's own (BE-66)(iv) annotation is
+the model. **F17** — the fan-out header and `notes/Phase39.md`'s `**Status:**`
+header are surfaces a landing must update. **Read `notes/scripts/README.md`
+*Harness debt***; the chain is **thirteen** deep (`… → bdecor → bpeel`), sixteenth
+`kbare/` consumer — extend the consumer lists, **make no move**.
+
+### Driver — expected, at the pinned path `notes/scripts/w4/bspread.py`
+
+Extend `bearfull.py` (for `forcing_derivation`, `step_shape`, `cycle_classes`,
+`tri_chain`, `g_exact` via `btwocut`) and `bpeel.py` (for the peel censuses) by
+**read-only import**. The 55 spread steps are already enumerable by
+`bearfull.py forced`; do not re-implement the closure.
+
+### Reservation
+
+(`notes/Pencil-labels.md` §"Reserved namespace — direction BSPREAD".)
+§(K-bare-ext) **extends**, no new section; labels **(BE-74)–(BE-78)**, ***Steps
+BE73–BE77***, exactly the tail BPEEL declared. `BSPREAD`, `bspread`,
+`(BE-75)`–`(BE-78)` and *`Steps BE74–BE77`* verified **0-hit**; **`(BE-74)` and
+*`Step BE73`* have one hit each**, the tail POINTER in `Pencil-labels.md`, opened
+and confirmed. **Return any unconsumed remainder.** **Checked and NOT chosen:**
+`BFORCE`, `BSTAR` (both fail the **(L5)** substring rule) and `BINDEP` — rejected
+because `bindep` hits as a substring **and** because it names the coordinator's
+*hypothesised* mechanism rather than the question's site, which §7 warns against.
+
+### Budget — measured at this prep
+
+**`(K-bare)` is at 1 228 / 1 600 words — 372 of headroom**, recomputed to a target
+by BPEEL one landing ago, so **no recompute is dispatched with this direction**;
+the landing fits. **`notes/Phase39.md` is at 560/580 lines, 420/525 header
+words** — the prep relocated the `**Status:**` header's (BE-14)-thread
+per-landing detail **verbatim** to `notes/Pencil-structure.md` as **block 8**,
+exactly the move the note's own *Doc debt* watch item named in advance, taking the
+header 505 → 420 and buying **105** words where three prior folds recovered 2–5
+lines each. Lines are the tighter of the two: **20 spare**.
