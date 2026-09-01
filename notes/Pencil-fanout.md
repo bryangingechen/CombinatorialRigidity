@@ -1,7 +1,16 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: EIGHT fan-outs, THIRTY-FOUR single directions and TWO concurrent
-pairs dispatched; 61 LANDED, none in flight.**
+**Status: EIGHT fan-outs, THIRTY-FIVE single directions and TWO concurrent
+pairs dispatched; 61 LANDED, and BPEEL (ordinal 54, §"BPEEL") is IN FLIGHT.**
+**BPEEL PREPPED 2026-09-01** at **half (B)'s CLASS STATEMENT** ((BE-67)(iii)) —
+*for every internal R-node piece, some point of `Chart(H)` makes both peel sides
+attain and puts `ρ̄₁, ρ̄₂` in general position*. The coordinator re-ran the F26
+consumer trace: this is exactly what (BE-22)(iii) still needs at an R-node peel,
+under its own both-pieces-attain hypothesis. BDECOR made the quantifier explicit
+and irreducible; **two** ways to fail are located and each is separately
+discharged, so the open question is whether they are the **only** two — an
+exhaustiveness claim, not a new geometric argument. **Dispatched at
+`recon-opus`** (fable unavailable this session).
 **BDECOR (ordinal 53, §"BDECOR") LANDED 2026-09-01** at **the
 ACHIEVABLE-DECORATIONS class statement** ((BE-62)(iii)) — BRNODE's successor
 (1), taken after the coordinator re-ran the F26 consumer trace — **HIT shapes 1
@@ -8100,3 +8109,184 @@ stated.** Mathematics: `notes/Pencil-informal.md` §(K-bare-ext) continuation
   genericity proviso `G`** — hunt a piece where it is *forced empty*; that
   would be the direction's own first refutation. (4) BWIN's standing ranking
   (the one-end-series case, the spread step, (S1)/(S2)), unchanged.
+
+## BPEEL — fifty-fourth ordinal, the sixty-second direction (single dispatch, prepped 2026-09-01)
+
+**Selection provenance: BDECOR's residue (1), taken after the coordinator re-ran
+the consumer trace — F26, again by name.** Two directions in a row have now had
+their successor ranking re-checked rather than inherited, because this arc's
+worst episode was five directions ordered by the previous one's successor list.
+The trace: **(BE-22)(iii)** needs `dim(ρ̄₁ + ρ̄₂) = min(δ₁ + δ₂, 6)` at the peel,
+under the hypothesis that **both pieces attain**. **(BE-67)(iii)** states exactly
+that over the parameter space BDECOR made explicit. It is the consumer's
+remaining input. Dispatched **un-named, single**, at **`recon-opus`** — the
+mapped rung is the top one (a class statement over new mirror math), and fable is
+unavailable this session, so the playbook's named substitute applies.
+
+### The target, stated exactly
+
+> **(BE-67)(iii).** For **every** internal R-node piece `H`: some point of
+> `Chart(H)` — a legal flag assignment on the hub set `W`, then an independent
+> (BE-30)(ii)/(iii)-legal chain per topological branch — makes **both peel sides
+> attain** and puts **`ρ̄₁, ρ̄₂` in general position**.
+
+**Two identified ways to fail, each already separately discharged:** the welded
+half (BE-22)(iii)(a), **free at theta children** by (BE-66)(ii); and the
+general-position half, whose **only located enemy** is (BE-66)(iii)'s flag
+coincidence, **unforceable at an R-node peel** by (BE-66)(iv) (a virtual edge's
+ends are non-adjacent, and (BE-15) needs `x ∼ y`).
+
+### THE CRUX — read this before planning
+
+**The open question is not either failure mode; it is whether they are the ONLY
+two.** (BE-66)(iii)/(iv) is a *located* claim — BDECOR found two mechanisms and
+discharged both — and **nothing in the arc proves there is no third**. So the
+deliverable is an **exhaustiveness** argument over an explicit irreducible
+variety, not a new geometric mechanism. Treating *"no third mechanism found"* as
+*"no third mechanism"* is the one move this spec forbids outright: it is F11's
+own rule, and (BE-66)(iii)'s own wording — *"only **located** enemy"* — is the
+disclosure that makes the gap visible.
+
+### What is free — cite it, do NOT re-derive it
+
+- **(BE-64)**, BDECOR: the branch-product theorem — at a fixed legal flag
+  assignment, `Config(H; ϕ) ≅ (∏_b Ear(a_b; ϕ)) ∩ G`. **The `∩ G` is part of the
+  theorem** (see job 2); a summary that drops it was repaired at `db2deb03`.
+- **(BE-65)**, BDECOR: the flag base **is** §(K-chart)'s own tower, so **(CH-1)**
+  supplies irreducibility, rationality and dense ℚ-points — its three hypotheses
+  checked 7/7. Free iff no two hubs are adjacent; otherwise a pencil-realization
+  problem for the hub subgraph ((BE-65)(i), open, ranked).
+- **(BE-66)(i)/(ii)**: the theta corollary — generic
+  `dim ρ̄ = max(0, Σ_j min(a_j,6) − 12)`, welded attainment **FREE** (`ρ = δ`,
+  30/30).
+- **(BE-66)(iii)/(iv)**: the flag-coincidence mechanism, and its unforceability
+  at an R-node peel.
+- **(BE-67)(i)/(ii)**: half (B) holds at **28/28** measured peels as **per-piece**
+  theorems — 14 with a theta child. Per-piece, **not** class.
+- **(BE-54)–(BE-58)**, BWIN: the **opaque-subspace** machine — double peel,
+  modular law, an arbitrary middle subspace carrying the quantifier, an excess
+  budget. BDECOR says this target *"is the shape BWIN's opaque-subspace theorem
+  had, one level up"*. **That is a coordinator-relayed sentence, not a proof** —
+  see job 3.
+- **(BE-30)(ii)/(iii)**: the ear achievable sets, at fixed flags, with the
+  small-`m` correction that BDECOR showed propagates through a P-node.
+
+### Job 1 (PRIMARY, FORCED) — the class statement
+
+Prove it uniformly over internal R-node pieces, or reduce it to a named checkable
+condition, or exhibit a piece where every point of `Chart(H)` fails. **An
+exhaustiveness argument is what is wanted**; more per-piece witnesses are not
+progress on a class statement, exactly as (BE-46)(iv) said one level down.
+
+### Job 2 (FORCED) — the `G` question, in its sharp form
+
+BDECOR disclosed that the cross-branch proviso `G` is **never shown nonempty in
+general** and named a forced-empty `G` as the first thing to hunt. **The
+coordinator sharpens what "fatal" means, and this is a correction to how the gap
+reads:** the class statement is **existential over the whole chart**, so `G`
+empty at an *isolated* flag is **absorbed** — another flag serves. The fatal case
+is a piece where `G` is empty at **every** legal flag. **Hunt that**, and if you
+find only isolated emptiness, say so — it downgrades the gap rather than closing
+it, which is a result.
+
+### Job 3 (FORCED) — does BWIN's machine transport?
+
+> **COORDINATOR OBSERVATION — TO BE TESTED, NOT INHERITED (`RESEARCH-ARC.md`
+> §7).** *Provenance:* BDECOR's own closing sentence, relayed here **as a
+> hypothesis, not a finding** — it is a shape comparison, and BDECOR did not
+> attempt the transport.
+>
+> BWIN closed a class statement of similar shape by making the middle an
+> **arbitrary subspace** and paying an **excess budget** with one rank-1
+> functional, so no enumeration of shapes was needed. Here the analogue would
+> make the *other peel side* opaque and carry the quantifier the same way. **Say
+> whether it transports.**
+>
+> *Where the coordinator expects to be wrong:* BWIN's leverage was that the ends
+> acted on the middle through **one hyperplane and one functional** — a rank-one
+> interface forced by the series structure at both ends. An R-node peel has **no
+> series ends**; the interface is a whole 2-cut, so the budget argument may have
+> nothing to bound. If so, say it in a paragraph and do not force the analogy.
+> Five of the last six coordinator predictions in this arc were refuted, split or
+> reframed; BRNODE and BDECOR both confirmed theirs, which is not evidence of
+> accuracy.
+
+### What counts as a HIT — state which you got
+
+1. **The class statement PROVED** — half (B) closed for internal R-node pieces.
+   With (BE-64)/(BE-65) that would leave the 2-cut lemma's general-piece side
+   standing on the flag base ((BE-65)(i)) and cross-pair welding alone. Report
+   the board and phase-boundary consequence; **act on neither**.
+2. **Reduced** to a named checkable condition.
+3. **The exhaustiveness question settled negatively** — a **third** failure
+   mechanism exhibited. That re-ranks the board and is a HIT.
+4. **`G` settled** (job 2) — forced-empty found, or shown absorbed.
+5. **BWIN's machine priced** (job 3), either way.
+
+### Bars
+
+- **Do not re-open:** the branch-product theorem ((BE-64)); the
+  decorated-skeleton law ((BE-59)/(BE-60)); the ear-decomposition induction
+  ((BE-43)); the path-intersection bound ((BE-31)(iii)); **(b3)** ((BE-50)); the
+  sharpening ((BE-45)); the proviso ((BE-46)); the `G²` apparatus ((BE-17)); the
+  transversality count ((BE-16)(iv), (BE-27)); gauge-fixing (ZSHEAR).
+- **ZJACOB (JC-6):** no properness, smoothness or transversality from a
+  codimension count, a Jacobian criterion, or Cohen–Macaulayness — and this
+  target sits on an irreducible variety, which is exactly where that temptation
+  is strongest. Label every dimension count **as a count** ((BE-27)).
+- **Not this direction, ranked separately:** the flag base off the
+  no-adjacent-hubs class ((BE-65)(i)); the one-end-series case; the spread step;
+  **(S1)/(S2)**; cross-pair welding ((BE-28)(i)).
+- **Out of scope:** `hK`, **(GR-15)**, **(RS-5) and the (K-res) wave (a USER
+  call)**, class uniformity, W4, and **any `.lean`** (2026-08-05 hold).
+
+### Riders
+
+**TERMINATION E1/E2/E3** — **E3 ARMED (by GBAL)**; report, never fire. **F11 is
+this direction's central rider:** *"the only two failure modes"* is an
+**exhaustiveness** claim and needs a driver that **enumerates**, or an argument
+that needs no driver — a search that finds no third mechanism is *"none found
+under cap C"*. **F27** — a claim that a piece **fails** needs multiple
+independent draws, stated; an exhibited attaining point is a proof for that
+piece. **Cap disclosure MANDATORY.** **F25** — verification off the **shipped**
+driver; exact ℚ, printed literal seeds, `assert_generic_star` **and**
+`verify_pencil_witness` on every draw. **F12** — a corrected summary needs a hunk
+at the **originating prose**. **F17** — the fan-out header and
+`notes/Phase39.md`'s `**Status:**` header are surfaces a landing must update.
+**And the lesson from `db2deb03`, which is this arc's fourth instance:** when
+your theorem carries a proviso or a modulo-clause, **carry it onto every surface
+that summarizes the theorem** — the gap-map row above all, since it is
+authoritative for every status word. **Read `notes/scripts/README.md` *Harness
+debt***; the chain is **twelve** deep (`… → brnode → bdecor`), fourteenth
+`kbare/` consumer — extend the consumer list, **make no move**.
+
+### Driver — expected, at the pinned path `notes/scripts/w4/bpeel.py`
+
+Extend `bdecor.py` (and through it `brnode`/`bwin`/`brule`/`bsharp` and the rest
+of the chain) by **read-only import**.
+
+### Reservation
+
+(`notes/Pencil-labels.md` §"Reserved namespace — direction BPEEL".) §(K-bare-ext)
+**extends**, no new section; labels **(BE-69)–(BE-73)**, ***Steps BE68–BE72***,
+exactly the tail BDECOR declared. `BPEEL`, `bpeel`, `(BE-73)` and *`Step BE72`*
+verified **0-hit**; **`(BE-69)` has two hits and *`Step BE68`* one**, all tail
+POINTERS (`Pencil-fanout.md:8090`, `Pencil-labels.md:2323`), opened and
+confirmed. **Return any unconsumed remainder.** **Checked and NOT chosen:**
+`BCLASS` — rejected on the **(L5) substring rule**, 3 hits as `BCLASS` and 19 as
+`bclass`; `BCHART` and `BFIBRE` (both 0-hit) name the method's frame rather than
+the question's site, and job 3 may find the chart is **not** where the argument
+lives.
+
+### Budget — measured at this prep, and THIS ONE BINDS
+
+**`(K-bare)` is at 1 518 / 1 600 words — 82 of headroom, and the landing will
+not fit.** Per F21 a recompute is dispatched **with a target, not "under the
+cap"**: bring the row to **≈1 150 words** by rewriting *Steps BE14–BE33*'s
+per-direction history (BZAVOID/BINDUC/BTWOCUT/BIMAGE) as current state — the row
+already flags it as the workbook's, not the cell's — which leaves room for this
+landing **and** the ones queued behind it. **Verify label preservation by
+scripted set-diff, never by eye** (a coordinator hand-recompute once dropped a
+live label). `notes/Phase39.md` is at **545/580 lines, 484/525 header words**;
+the *Citations* relocation bought the room, and the next relocation candidate is
+named in the note's own *Doc debt* bullet.

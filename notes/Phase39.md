@@ -10,7 +10,8 @@ derives it from exactly **three carried items**: **`hcontract`** (W4 — build p
 (2026-07-30).
 
 **The kernel-(K) research arc: 61 directions COMPLETE** (2026-08-05 → 09-01, ordinals
-1–53), plus eight strategy-only passes and two architecture probes; **none in flight**.
+1–53), plus eight strategy-only passes and two architecture probes; **BPEEL (ordinal 54)
+is IN FLIGHT**.
 **Per-direction verdicts, specs and landing write-ups are NOT restated here** —
 each direction has one at `notes/Pencil-fanout.md` §"<CODE>" (ordinals 1–19:
 `notes/Pencil-fanout-archive.md`) and a canonical mathematical home in the workbooks.
@@ -26,15 +27,18 @@ and the fan-out write-ups, **not restated here**). **THE EAR SIDE:** (α) **CLOS
 (b3)) on the reduction's 87-of-91 domain — **MODULO the two side conditions (S1)/(S2)**
 ((BE-57)(iv)), hypotheses on the middle, vacuous at every drawn piece, **not theorems**;
 residue per-shape outside the window plus the `π_u = π_v` corner. **THE GENERAL-PIECE
-SIDE:** the internal R-node is **DESCRIBED** (BRNODE, (BE-59)/(BE-60)) and its
-achievable decorations are now **REDUCED TO EARS** — at fixed hub flags the legal
-configurations of ANY piece are a **product** of ear chains, one per topological branch,
-**modulo the cross-branch proviso `G`** (disclosed, never shown nonempty in general)
-((BE-64)), so no per-child set past ears is ever needed and the theta child is a
-corollary ((BE-66)); half (B) holds at 28/28 measured peels as **per-piece theorems**,
-and its **class** quantifier plus the **flag base** off the no-adjacent-hubs class are
-the residue ((BE-67)/(BE-68)). Cross-pair welding ((BE-28)(i)) is the third residue,
-untouched. **The phase-boundary consequence is reported, NOT acted on** (next block).
+SIDE:** the internal R-node is **DESCRIBED** (BRNODE) and its achievable decorations
+**REDUCED TO EARS** — at fixed hub flags any piece's legal configurations are a
+**product** of ear chains, one per topological branch, **modulo the cross-branch proviso
+`G`** (disclosed; never shown nonempty in general) ((BE-64)/(BE-66)). Half (B) holds at
+28/28 peels **per-piece**; its **class** quantifier and the **flag base** off the
+no-adjacent-hubs class are the residue ((BE-67)/(BE-68)). Cross-pair welding
+((BE-28)(i)) is the third, untouched. **The phase-boundary consequence is reported, NOT acted on** (next block).
+
+**IN FLIGHT — BPEEL** (ordinal 54, `recon-opus`, 2026-09-01) at **(BE-67)(iii)**, half
+(B)'s class statement — picked after re-running the F26 consumer trace. Its crux is
+**exhaustiveness**: two failure modes are located and each discharged, and nothing proves
+there is no third. Spec: `notes/Pencil-fanout.md` §"BPEEL".
 
 **On a future HIT: the phase-boundary consequences are the USER's call** —
 whether Phase 39 closes and a successor opens for the Lean is a
@@ -236,12 +240,15 @@ computation** (the decorated-skeleton law) and located the R-node's content in t
 ((BE-64)) and settled its per-child half. The details are the write-ups' and the
 `(K-bare)` gap-map row's, **not restated here**.
 
-**THE NEXT CONCRETE TASK — the next research pick, under the standing delegation.** The
-coordinator picks the direction; **F26 binds: re-run the consumer trace rather than
-inheriting BDECOR's own successor order.** BDECOR's ranking, offered not decided, is
-candidate 0 below; the rest stay **ranked, not dropped**:
+**THE NEXT CONCRETE TASK — DISPATCHED 2026-09-01 as direction BPEEL** (ordinal 54,
+`recon-opus`; spec `notes/Pencil-fanout.md` §"BPEEL", reservation (BE-69)–(BE-73) /
+*Steps BE68–BE72*): candidate 0 below, picked under the standing delegation **after the
+coordinator re-ran the F26 consumer trace** — (BE-22)(iii) at an R-node peel, under its
+own both-pieces-attain hypothesis, needs exactly (BE-67)(iii). The spec's crux: **the open
+question is whether the two located failure modes are the ONLY two** — an exhaustiveness
+claim, not a new mechanism. The rest stay **ranked, not dropped**:
 
-0. **HALF (B)'s CLASS QUANTIFIER** ((BE-67)(iii)) — *does every internal R-node piece have
+0. **HALF (B)'s CLASS QUANTIFIER** ((BE-67)(iii)) — **IN FLIGHT.** *does every internal R-node piece have
    a configuration at which both peel sides attain and `ρ̄₁, ρ̄₂` are in general position?*
    Now **one statement per piece about one irreducible variety** ((BE-65)(ii), citing
    (CH-1)), with both failure modes named and both currently unwitnessed: the welded half

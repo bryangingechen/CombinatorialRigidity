@@ -2324,6 +2324,39 @@ already in arc-wide use. The tail a successor opens at is **(BE-69) / *Step
 BE68***.
 
 
+## Reserved namespace — direction BPEEL (2026-09-01, **IN FLIGHT**)
+
+**Reserved 2026-09-01 for the single direction BPEEL** (ordinal 54, the arc's
+sixty-second direction; `notes/Pencil-fanout.md` §"BPEEL") — **half (B)'s class
+statement** ((BE-67)(iii)), BDECOR's residue (1), taken after the coordinator
+re-ran the F26 consumer trace. Coordinator-set, single dispatch — **not** a
+fan-out, so this reservation protects against the *existing corpus* only.
+
+| direction | owning § | labels reserved | steps reserved | driver |
+|---|---|---|---|---|
+| **BPEEL** | §(K-bare-ext) — **extends**, no new section | **(BE-69)–(BE-73)** | **BE68–BE72** | `w4/bpeel.py` (expected — extend `bdecor.py`, and through it `brnode`/`bwin`/`brule`/`bsharp` and the rest of the chain, by read-only import) |
+
+The reservation opens at **(BE-69) / Step BE68**, exactly the tail BDECOR
+declared; BDECOR consumed its reservation in full and returned nothing.
+
+**0-hit verification, at reservation time**, across `*.md`, `*.tex`, `*.lean`,
+`*.py`, `*.m2` with `.git`/`.lake` excluded: `BPEEL`, `bpeel`, `(BE-73)` and
+*`Step BE72`* each **0-hit**. **`(BE-69)` has TWO hits and *`Step BE68`* ONE** —
+`notes/Pencil-fanout.md:8090` and this file's line 2323 — **all opened and
+confirmed to be the tail POINTER** BDECOR wrote, not consumed labels; the same
+carve-out the four preceding reservations needed.
+
+**Checked and NOT chosen:** `BCLASS` — rejected on the **(L5) substring rule**
+(3 hits as `BCLASS`, 19 as `bclass`, the latter inside driver identifiers), which
+is exactly the failure (L5)'s substring half exists to catch. `BCHART` and
+`BFIBRE` are both 0-hit but name the *method's frame* rather than the question's
+site, and job 3 explicitly may find that the chart is **not** where the argument
+lives — `RESEARCH-ARC.md` §7.
+
+**(L6) reminder for the landing.** Run the landing-time bare-token grep on the
+returned draft; the reservation check sees prefixes and step ranges only.
+
+
 ## Registry — `notes/Pencil-informal.md` (the (K) workbook)
 
 Status keywords are pointers to the owning section's verdict block and the
