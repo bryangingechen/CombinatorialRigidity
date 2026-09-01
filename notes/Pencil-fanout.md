@@ -1,7 +1,16 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: EIGHT fan-outs, THIRTY-ONE single directions and TWO concurrent
-pairs dispatched; ALL 59 LANDED — nothing in flight.**
+**Status: EIGHT fan-outs, THIRTY-TWO single directions and TWO concurrent
+pairs dispatched; 59 LANDED, and BRNODE (ordinal 52, §"BRNODE") is IN FLIGHT.**
+**BRNODE PREPPED 2026-09-01** at **the INTERNAL R-NODE** ((BE-31)(ii)) — the
+step from *ear* to *general piece*, **user-selected 2026-08-29** and confirmed on
+the critical path by BEARFULL's (BE-43)(v). The SP recursion computes `ρ̄_{u,v}`
+for every series-parallel piece and has **no** analogue at a 3-connected
+skeleton with flexible children; (BE-25)(iii) closes the **leaf** R-node only.
+The spec's central point is the routing question the ear case makes unavoidable:
+`ρ̄₂` for the ear was described **exactly** ((BE-30)) and the residual work was
+still (α)/(β), so a description at the R-node may not move (BE-22)(iii) at all —
+job 2 asks that directly, and a negative there is a HIT.
 **BWIN (ordinal 51, §"BWIN") LANDED 2026-08-29** at **the LAST ITEM in (β)** —
 BSHARP's window identity `ρ̄₁ ∩ Z = ⟨ℓ_u, ℓ_v⟩` as a **CLASS statement**, and it
 came back as the spec's first deliverable shape: **the class statement PROVED,
@@ -7471,3 +7480,225 @@ driver `notes/scripts/w4/bwin.py` (`dec|sweep|exc|cls|wide|validate`).
   it would retire the largest remaining per-shape component of (β); (2) the
   **spread step** ((BE-32)(+)'s last 3.8 %, the `π_u = π_v` corner's forced
   branch); (3) the **internal R-node** ((BE-31)(ii)).
+
+## BRNODE — fifty-second ordinal, the sixtieth direction (single dispatch, prepped 2026-09-01)
+
+**Selection provenance: a USER CALL, not a successor order.** Offered at the
+2026-08-29 twelfth check-in against the spread step, discharging (S1)/(S2) and
+the (K-res) wave, the user picked **the internal R-node**; the same call chose
+*"recompute only, then hold"*, so this is the first dispatch of the resuming
+session. It is **confirmed on the critical path** by BEARFULL's (BE-43)(v) — the
+ear-decomposition route was refused precisely because it *"only re-hits the same
+R-node"*. Dispatched **un-named, single**, at **`recon-fable`**: the deliverable
+is a **description of an object the arc has never described**, so it is a class
+statement by construction and no one-witness discharge ((BE-46)(i)/(ii),
+(BE-52)) can produce it; and job 2's verdict re-ranks the board.
+
+### The target, stated exactly
+
+> **(BE-31)(ii)'s named residue.** Let `H` be a 2-connected piece with marked
+> pair `{u,v}` whose SPQR tree carries an **internal R-node** — a 3-connected
+> skeleton `B` at least one of whose virtual edges is replaced by a **flexible**
+> child. **Describe `ρ̄_{u,v}(H)`**: a computation from `B` together with the
+> children's own data, or a criterion for
+> `dim(ρ̄₁ + ρ̄₂) = min(δ₁ + δ₂, 6)` at the peel of a child, that does **not** go
+> through a per-shape witness.
+
+The leaf R-node is already closed — (BE-25)(iii), where the piece **is** the
+3-connected skeleton minus its parent virtual edge, hence rigid by (BE-20),
+hence `dim M = 6` and `ρ̄ = 0`, and the recursion terminates. The internal one is
+not: `K₄` with one virtual edge replaced by an ear is BINDUC's `K₄ + ear(m)`,
+with `δ ∈ {4,5}`.
+
+### THE CONSUMER TRACE, run by the coordinator at this prep (F26), so it can be checked rather than trusted
+
+The consumer is **(BE-22)(iii)** — *both pieces attain ⟹ (`G` attains ⟺
+`dim(ρ̄₁ + ρ̄₂) = min(δ₁+δ₂, 6)`)* — run as the induction step of the **S-mark**
+frame ((BE-25)(ii)). At an internal R-node each virtual edge's endpoints `{x,y}`
+**are** a 2-cut of `H`, so a child peels: `H = H' ∪ C_e` over `{x,y}`. The
+criterion then wants `ρ̄_{x,y}(H')` and `ρ̄_{x,y}(C_e)` — and `H'` still contains
+the 3-connected `B`, so **the peel does not reduce to a series-parallel piece**.
+That is why (BE-31)(ii)'s residue is what the consumer actually takes, and the
+trace is written here so the direction can **contradict it** rather than inherit
+it.
+
+**The carve-out that narrows the honest domain, and deciding how much is the
+cheapest first result.** By (BE-22)(vi), if one side is **rigid** the
+general-position half disappears entirely and the criterion collapses to the
+single condition `ρ₁ = δ₁` — *a statement about ONE piece and its welding*. By
+(BE-20) a 3-connected side is rigid. So the hard case is exactly **both sides
+flexible**, which at an R-node means the skeleton *plus its remaining children*
+is itself flexible. **Say how large that case is** — is there always a peel
+order keeping one side rigid? A negative is expected (`K₄ + ear(m)` has
+`δ ∈ {4,5}` on the skeleton side), but it has never been checked, and a positive
+would collapse the whole direction to (BE-22)(vi).
+
+### What is free — cite it, do NOT re-derive it
+
+- **(BE-31)(i)**, proven at 12/12 seeded draws as identities of **subspaces**:
+  **series** `ρ̄_{u,v}(H) = ρ̄_{u,z}(H₁) + ρ̄_{z,v}(H₂)` across a cut vertex,
+  **parallel** `ρ̄_{u,v}(H) = ρ̄_{u,v}(H₁) ∩ ρ̄_{u,v}(H₂)` across a 2-cut.
+- **(BE-31)(ii)**: iterating (i) computes `ρ̄` for every series-parallel piece
+  from its hinge lines alone — `S`-node **sums**, `P`-node **intersects**, leaf a
+  single edge with `ρ̄ = ⟨ℓ_e⟩`. The ear is the all-`S` case.
+- **(BE-31)(iii)**, with a witness: the path-intersection bound
+  `ρ̄ ⊆ ⋂_P ⟨P⟩` is a genuine **upper bound** and **NOT an equality** —
+  `θ(3,3)` with a pendant edge gives `1` against `2`, because intersection does
+  not distribute over sum. **Do not re-propose it.**
+- **(BE-22)(i)**, proven: `dim M(G) = dim M(G₁) + dim M(G₂) − 6 − dim(ρ̄₁+ρ̄₂)`;
+  **(ii)** `ρ_i ≤ δ_i` when the piece attains; **(iv)** `δ₁ = δ₂ = 0` composes
+  free; **(vi)** one rigid side kills the general-position half.
+- **(BE-20)**: 3-connected ⇒ `def₂ = 0`. **(BE-18)**: 1-cuts compose.
+  **(BE-21)/(BE-23)**: the 2-cut `def₃` law is `max(g₁+g₂, f₁+f₂−6)`.
+- **(BE-30)**, BIMAGE: for the **ear**, `ρ̄₂` is the span of a **chain on the
+  Klein quadric** with ends `Π_u`, `Π_v` — the model answer for the SP case, and
+  the shape a general description should specialize to.
+- **(BE-39)/(BE-40)**, BEARFULL: `girth(Q) ≥ 6`, every cycle of length `≤ 6`
+  forces `δ = 0`, and `δ ≤ max(0, L−6)` — free combinatorial bounds on `δ`.
+- **(BE-43)(i)/(ii)/(iii)**, BEARFULL: the ear route is **refused** (every
+  minimum-degree-`≥ 3` graph forces a single-edge ear in EVERY chord-free open
+  ear decomposition); the chord step's **combinatorial half is FREE**,
+  `def₃(G+uv) = max(def₃(G) − δ_uv, def₃(G) − 5)`, exhaustive at 189 587
+  instances; its **geometric half is priced and not soft** — `Y°(G+uv)` is a
+  proper closed subset of `Y°(G)`, and `dim M` is **upper** semicontinuous, so
+  specialisation points the **wrong way**.
+
+### Job 1 (PRIMARY, FORCED) — describe `ρ̄` at an internal R-node
+
+Extend the recursion past the R-node, or reduce the R-node case to a named
+checkable condition on `B`, or prove no description of that kind exists.
+
+> **The sharpest form, and the cheapest thing to decide FIRST: is `ρ̄` at an
+> R-node a function of the children's `ρ̄` at all?** The entire content of the SP
+> recursion is that it **is**, at `S`- and `P`-nodes: (BE-31)(i) computes
+> `ρ̄(H)` from `ρ̄(H₁)` and `ρ̄(H₂)` and nothing else. At a 3-connected skeleton
+> that may fail — `ρ̄_{u,v}(H)` may depend on the children's realizations beyond
+> their relative screw spaces. **This is decidable by two children with the same
+> `ρ̄` and different geometry**, it is one driver mode, and a **negative kills the
+> "extend the recursion" shape outright** (HIT shape 4). Run it before building
+> any recursion.
+
+### Job 2 (FORCED) — the routing question, and it is why the direction is at the top rung
+
+> **COORDINATOR OBSERVATION — TO BE TESTED, NOT INHERITED (`RESEARCH-ARC.md`
+> §7).** *Provenance:* formed at this prep by reading (BE-30) against
+> (BE-22)(iii); **no measurement, and no workbook sentence states it.**
+>
+> **The arc's hard half has never been *computing* `ρ̄`.** For the ear, `ρ̄₂` was
+> described **exactly** by (BE-30) — a chain on the Klein quadric, a *bijection*
+> — and BEARCASE/BEARFULL/BSHARP/BRULE/BWIN were still needed for (α) and (β),
+> the **reach** and **general-position** halves. So a formula for `ρ̄` at an
+> R-node may not move (BE-22)(iii) at all.
+>
+> **The job:** having answered job 1 (or having failed to), state **where the
+> R-node's real content sits** — in the *description*, in the (α)-analogue
+> (reach: what `dim ρ̄` is), or in the (β)-analogue (general position of `ρ̄₁`
+> against `ρ̄₂`). Read (BE-22)(iii) and the S-mark frame, do not assume. **A
+> negative — "the description is free and the content is all in (β)" — re-ranks
+> the board and is a HIT, worth more than a partial job 1.**
+>
+> *Where the coordinator expects to be wrong:* the ear's (β) difficulty came
+> from `ρ̄₁` being **arbitrary** while `ρ̄₂` was pinned; at an R-node peel both
+> sides are structured, so the (β)-analogue may be *easier*, not harder, and
+> the description may then be the whole job after all. **Five of the last six
+> coordinator predictions in this arc were refuted, split, or reframed by the
+> direction they primed; price this one the same way.**
+
+### Job 3 (NOT FORCED) — price the chord step as the alternative coordinate
+
+BEARFULL left the R-node a second local coordinate: the **chord step**,
+*(BE-14) + the S-mark clause for `G` ⟹ for `G + uv`*, whose combinatorial half
+is **free** ((BE-43)(ii)) and whose geometric half is **one sentence long** and
+**priced not soft** ((BE-43)(iii)). Decide whether it is a cheaper coordinate
+for the same obligation or a strictly harder one, and say which. This is a
+**pricing** verdict, not an attack; a refutation of the chord step as a route is
+worth as much as an endorsement.
+
+### What counts as a HIT — state which you got
+
+1. **`ρ̄` at an internal R-node DESCRIBED** — a computation from `B` and the
+   children, or the SP recursion **extended to a complete recursion over the
+   SPQR tree**. The largest result this thread could return: it is the step from
+   *ear* to *general piece*.
+2. **Reduced** to a named checkable condition on `B`, the way (BE-47)(iii)
+   reduced the window.
+3. **The routing verdict (job 2)** — the R-node's content located in the
+   description / (α)-analogue / (β)-analogue, re-ranking the board. **A negative
+   here is a HIT.**
+4. **An obstruction, located** — most likely job 1's sharp form coming back
+   **NO** (`ρ̄` at an R-node is *not* a function of the children's `ρ̄`), which
+   would close the "extend the recursion" shape and redirect the 2-cut lemma's
+   general piece. Classify **mandatorily** (the description / (BE-22)(iii) / the
+   2-cut step / S-mark / (BE-14) / the conjecture); **candidate, never
+   refutation**; read the **direction-A pivot rule** in `notes/Phase39.md`
+   *Current state* first.
+
+### Bars
+
+- **Do not re-open:** the path-intersection bound as an equality ((BE-31)(iii),
+  refuted with a witness); the **ear-decomposition induction** ((BE-43)); the
+  sharpening ((BE-45)) and the proviso ((BE-46)); **(b3)** ((BE-50)); the `G²`
+  apparatus ((BE-17)); the transversality / dimension count ((BE-16)(iv),
+  (BE-27)); gauge-fixing (ZSHEAR); the gauge-group count ((BE-27)(ii)).
+- **ZJACOB (JC-6):** no properness, smoothness or transversality from a
+  codimension count, a Jacobian criterion, or Cohen–Macaulayness. Label every
+  dimension count **as a count** ((BE-27)).
+- **Not this direction, and ranked separately:** the **one-end-series** case
+  (BWIN's successor 1), the **spread step**, **(S1)/(S2)** (BWIN's two side
+  conditions), and BTWOCUT's bundle construction ((BE-29)(ii)).
+- **Out of scope:** `hK`, **(GR-15)**, **(RS-5) and the (K-res) wave (a USER
+  call)**, class uniformity, W4 / `hcontract`, and **any `.lean`** (the standing
+  2026-08-05 hold).
+
+### Riders
+
+**TERMINATION E1/E2/E3** — **E3 ARMED (by GBAL)**; report, never fire. **F26 is
+this direction's own job 2** — the consumer trace above is the coordinator's and
+may be wrong; do not skip the job because the trace looks convincing. **F11** — a
+driver per headline sentence; *"a function of the children's `ρ̄`"*, *"no
+description exists"* and any *"every / exactly / the only"* are **exhaustiveness**
+claims needing a driver that **enumerates**, or an argument that needs no driver.
+**F27** — an exhibited identity at a configuration is a proof for that piece by
+(BE-37)(i)(3); a claim that a shape **fails** needs multiple independent draws,
+and the return must say how many. **F25** — verification off the **shipped**
+driver; every script committed (the 2026-08-05 reproducibility rule); exact ℚ,
+printed literal seeds, `assert_generic_star` **and** `verify_pencil_witness` on
+every draw. **Cap disclosure MANDATORY** — an exhausted cap is *"not found under
+cap C"*, never *"does not exist"*, and the disclosure travels with the figure.
+**F12** — if you correct any summary, your **hunk list** must show a hunk at the
+**originating prose**, not only at your new section and the gap-map row.
+**F17** — the fan-out doc's own `**Status:**` header is a surface a landing must
+update; so is `notes/Phase39.md`'s, and BWIN needed a repair commit for exactly
+that. **Read `notes/scripts/README.md` *Harness debt*** — the `w4/bear*` chain is
+**eleven** deep (`… → brule → bwin`); extend the consumer list, **make no move**.
+
+### Driver — expected, at the pinned path `notes/scripts/w4/brnode.py`
+
+Extend `bwin.py` (and through it `brule`/`bsharp`/`bearfull`/`bearcase`/`bimage`/
+`binduc` and the rest of the chain) by **read-only import**.
+
+### Reservation
+
+(`notes/Pencil-labels.md` §"Reserved namespace — direction BRNODE".)
+§(K-bare-ext) **extends**, no new section; labels **(BE-59)–(BE-63)**,
+***Steps BE58–BE62***, exactly the tail BWIN declared and consumed nothing of.
+`BRNODE`, `brnode`, `(BE-60)`–`(BE-63)` and *`Step BE62`* verified **0-hit**
+across `*.md`/`*.tex`/`*.lean`/`*.py`/`*.m2`; **`(BE-59)` and *`Step BE58`* have
+one hit each, both on `notes/Pencil-labels.md:2216` and both opened and confirmed
+to be the tail POINTER** BWIN wrote — the same carve-out BSHARP's and BWIN's
+reservations needed. **Return any unconsumed remainder.** **Checked and NOT
+chosen:** `BFLOW` and `BSPQR` (both 0-hit, but each names a *candidate answer* —
+the coordinator's flow duality and an SPQR-tree recursion respectively — and job
+1's sharp form may kill the second outright; a code asserting the answer is the
+framing `RESEARCH-ARC.md` §7 forbids). `BGEN` rejected on the (L5) substring
+rule (2 hits).
+
+### Budget — measured at this prep
+
+`(K-bare)` sits at **1 169 / 1 600** words: the `442c9363` recompute took it
+1 550 → 1 162 and BWIN's landing is **already integrated**, so **431 words of
+headroom** — integrate into the current-state sentences; no recompute is owed by
+this landing unless it is very large. `notes/Phase39.md` is measured in the
+commit message; the note's *Doc debt* watch item stands — **when it binds, the
+question is "what here is reference rather than status?"**, not another
+compression fold of *Decisions made*.

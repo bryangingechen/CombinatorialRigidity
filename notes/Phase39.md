@@ -10,8 +10,8 @@ derives it from exactly **three carried items**: **`hcontract`** (W4 — build p
 (2026-07-30).
 
 **The kernel-(K) research arc: 59 directions COMPLETE** (2026-08-05 → 08-29, ordinals
-1–51), plus eight strategy-only passes and two architecture probes; **nothing is in
-flight**.
+1–51), plus eight strategy-only passes and two architecture probes; **BRNODE (ordinal 52)
+is IN FLIGHT**.
 **Per-direction verdicts, specs and landing write-ups are NOT restated here** —
 each direction has one at `notes/Pencil-fanout.md` §"<CODE>" (ordinals 1–19:
 `notes/Pencil-fanout-archive.md`) and a canonical mathematical home in the workbooks.
@@ -20,20 +20,22 @@ single open gap the whole §(K-grid) chain reduces to — is **untouched**; **cl
 of the escape is untouched**; no g-flank was found by any direction; **E3 is ARMED (by
 GBAL) and has never fired**.
 
-**WHERE (β) STANDS** (details in §(K-bare-ext), the `(K-bare)` gap-map row and the fan-out
-write-ups, **not restated here**): **THE WINDOW IS CLOSED BY A CLASS THEOREM** — BWIN (51,
-2026-08-29) proved `ρ̄₁ ∩ Z = ⟨ℓ_u, ℓ_v⟩` at **every** both-ends-series piece with `δ₁ ≤ 4`,
-strictly containing the window ((BE-54)–(BE-58)). With BSHARP ((b1)/(b2) outside the window)
-and BRULE ((b3), disjoint), **(BE-37)(ii) has all three clauses at every window piece and (β)
-is PROVED there on the reduction's 87-of-91 domain — MODULO the two named side conditions
-(S1)/(S2)** ((BE-57)(iv)): hypotheses on the middle, vacuous at every drawn piece, **not
-theorems**. The window is **NOT the barbells** (theta chains and R-node middles are in it).
-What remains of (β) is per-shape/measured residue **outside** the window ((BE-58)(iv)) plus
-the `π_u = π_v` corner ((BE-32)(+), forced branch). **THE NEXT CONCRETE TASK — USER-SELECTED
-2026-08-29: the INTERNAL R-NODE ((BE-31)(ii)), the general piece**, confirmed on the critical
-path by BEARFULL's refutation of the ear route; the spread step, (S1)/(S2) and the (K-res)
-wave stay **ranked below it** (*Hand-off*), and the same call chose *"recompute only, then
-hold"*. **The phase-boundary consequence is reported, NOT acted on** (next block).
+**WHERE THE EAR CASE STANDS** (details in §(K-bare-ext), the `(K-bare)` gap-map row and the
+fan-out write-ups, **not restated here**): **(α) CLOSED**; **(β) PROVED AT THE WINDOW BY A
+CLASS THEOREM** — BWIN's `ρ̄₁ ∩ Z = ⟨ℓ_u, ℓ_v⟩` at every both-ends-series piece with
+`δ₁ ≤ 4`, plus BSHARP's (b1)/(b2) and BRULE's (b3) — on the reduction's 87-of-91 domain,
+**MODULO the two side conditions (S1)/(S2)** ((BE-57)(iv)): hypotheses on the middle, vacuous
+at every drawn piece, **not theorems**. The window is **NOT the barbells**. (β)'s residue is
+per-shape, outside the window ((BE-58)(iv)), plus the `π_u = π_v` corner ((BE-32)(+),
+forced). **The phase-boundary consequence is reported, NOT acted on** (next block).
+
+**IN FLIGHT — direction BRNODE** (ordinal 52, `recon-fable`, 2026-09-01) at the **INTERNAL
+R-NODE ((BE-31)(ii))**, the step from *ear* to *general piece*: the task the user selected
+2026-08-29 against the spread step, (S1)/(S2) and the (K-res) wave, which stay **ranked
+below it** (*Hand-off*). Confirmed on the critical path by BEARFULL's (BE-43)(v). The spec's
+central point: the ear's `ρ̄₂` was described **exactly** ((BE-30)) and (α)/(β) were still the
+work, so a description at the R-node may not move (BE-22)(iii) — that routing question is a
+forced job and a negative on it is a HIT. Spec: `notes/Pencil-fanout.md` §"BRNODE".
 
 **On a future HIT: the phase-boundary consequences are the USER's call** —
 whether Phase 39 closes and a successor opens for the Lean is a
@@ -225,14 +227,15 @@ simultaneity **VACUOUS** (BE-25)(i)). BIMAGE bounded and classified the ear's re
 geometric sentence; BEARCASE **PROVED (α)** for `m ≥ 3`; BEARFULL, BSHARP and BRULE cut
 (β) down to the window BWIN closed.
 
-**THE NEXT CONCRETE TASK — USER-SELECTED 2026-08-29: the INTERNAL R-NODE ((BE-31)(ii)),
-the general piece.** Offered against the spread step, discharging (S1)/(S2) and the (K-res)
-wave; the user picked the R-node, and on the same call chose *"recompute only, then hold"* —
-so a resuming loop dispatches this first. **Confirmed** on the critical path by BEARFULL's
-refutation of the ear-decomposition route; (BE-25)(iii) closes the **leaf** R-node only. New
-local coordinate: the **chord step** (*(BE-14) + clause for `G` ⟹ for `G + uv`*), whose
-combinatorial half **(BE-43)(ii)** is already free; off the ear the exact series/parallel
-recursion leaves the internal one as the residue ((BE-31)).
+**THE NEXT CONCRETE TASK — DISPATCHED 2026-09-01 as direction BRNODE** (ordinal 52,
+`recon-fable`; spec `notes/Pencil-fanout.md` §"BRNODE", reservation (BE-59)–(BE-63) /
+*Steps BE58–BE62*): **the INTERNAL R-NODE ((BE-31)(ii)), the general piece**, user-selected
+2026-08-29 against the spread step, (S1)/(S2) and the (K-res) wave. **Confirmed** on the
+critical path by BEARFULL's (BE-43)(v) refutation of the ear-decomposition route;
+(BE-25)(iii) closes the **leaf** R-node only. Second local coordinate, priced by the spec as
+job 3: the **chord step** (*(BE-14) + clause for `G` ⟹ for `G + uv`*), combinatorial half
+**(BE-43)(ii)** free, geometric half **(BE-43)(iii)** priced *not soft*. Off the ear the
+exact series/parallel recursion leaves the internal one as the residue ((BE-31)).
 
 **Ranked alternatives, kept below it** — the BWIN landing's own ranking, unchanged except
 that its (3) is now the pick above:

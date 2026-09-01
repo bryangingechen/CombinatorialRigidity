@@ -2213,8 +2213,50 @@ Three **F12** hunks landed at originating prose: (BE-47)(iii) (marked PROVED
 as a class statement), BSHARP's *What would change this* successor bullet
 (the *"misses `Z`"* form refined at source, no measurement changed), and
 BRULE's successor bullet (marked LANDED). The tail a successor opens at is
-**(BE-59) / *Step BE58***; the row's next landing must recompute (50 words of
-headroom).
+**(BE-59) / *Step BE58***. ~~the row's next landing must recompute (50 words of
+headroom)~~ — **STALE, corrected 2026-09-01 at the BRNODE prep:** the
+`442c9363` recompute (the BWIN-required one, landed the same day as this block
+was written) took the row 1 550 → **1 162** words, so the recompute is **already
+paid** and the next landing has **431 words of headroom**, not 50.
+
+## Reserved namespace — direction BRNODE (2026-09-01, **IN FLIGHT**)
+
+**Reserved 2026-09-01 for the single direction BRNODE** (ordinal 52, the arc's
+sixtieth direction; `notes/Pencil-fanout.md` §"BRNODE") — the **internal
+R-node**, (BE-31)(ii)'s named residue and the step from *ear* to *general
+piece*, **user-selected at the 2026-08-29 twelfth check-in**. Coordinator-set,
+single dispatch — **not** a fan-out, so this reservation protects against the
+*existing corpus* only.
+
+| direction | owning § | labels reserved | steps reserved | driver |
+|---|---|---|---|---|
+| **BRNODE** | §(K-bare-ext) — **extends**, no new section | **(BE-59)–(BE-63)** | **BE58–BE62** | `w4/brnode.py` (expected — extend `bwin.py`, and through it `brule`/`bsharp` and the rest of the chain, by read-only import) |
+
+The reservation opens at **(BE-59) / Step BE58**, exactly the tail BWIN
+declared; BWIN consumed its reservation in full and returned nothing.
+
+**0-hit verification, at reservation time**, across `*.md`, `*.tex`, `*.lean`,
+`*.py`, `*.m2` with `.git`/`.lake` excluded: `BRNODE`, `brnode`, `(BE-60)`,
+`(BE-61)`, `(BE-62)`, `(BE-63)` and *`Step BE62`* each **0-hit**. **`(BE-59)`
+and *`Step BE58`* have ONE hit each — both on this file's line 2216, and both
+opened and confirmed to be the tail POINTER** BWIN wrote at its landing, not
+consumed labels. Recorded because a bare hit count would read as a collision;
+the same carve-out BSHARP's and BWIN's reservations needed, for the same
+structural reason.
+
+**Checked and NOT chosen:** `BFLOW` and `BSPQR` — both 0-hit, but each names a
+**candidate answer** rather than the object. `BFLOW` would prime the
+coordinator's own annihilator-flow duality (job 2's spec labels it *to be
+tested, not inherited*), and `BSPQR` would prime an SPQR-tree recursion, which
+is exactly the shape job 1's sharp sub-question is written to be able to kill.
+Priming the answer is the framing `RESEARCH-ARC.md` §7 forbids. `BGEN` was
+rejected on the (L5) substring rule (2 hits).
+
+**(L6) reminder for the landing.** The reservation check above verifies the
+*prefix* and the *step range* only; it structurally cannot see a bare
+`(X<digit>)` token minted **inside** the reservation for a sub-clause. Run the
+landing-time bare-token grep on the returned draft.
+
 
 ## Registry — `notes/Pencil-informal.md` (the (K) workbook)
 
