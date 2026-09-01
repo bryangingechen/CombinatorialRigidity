@@ -5,15 +5,13 @@
 `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card` (`Molecule/Pencil/Escape.lean`)
 derives it from exactly **three carried items**: **`hcontract`** (W4 — build parked by the
 **2026-08-05 Lean hold**, four informal costs NOT parked), **`hK`** (kernel (K)),
-**`hbareSplit`** (kernel (K-bare)). Everything else is closed: W0–W3 and the whole W5 arc
-(L0–L7), with **`hsplit` CLOSED IN FULL** and `hfresh`'s counting discharge landed
-(2026-07-30).
+**`hbareSplit`** (kernel (K-bare)). Everything else is closed — W0–W3 and all of W5
+(L0–L7), `hsplit` and `hfresh` included (2026-07-30, unchanged since).
 
 **The kernel-(K) research arc: 62 directions COMPLETE** (2026-08-05 → 09-01, ordinals
 1–54), plus eight strategy-only passes and two architecture probes; **none in flight**.
-**Per-direction verdicts, specs and write-ups are NOT restated here** — each has one at
-`notes/Pencil-fanout.md` §"<CODE>" (ordinals 1–19: `notes/Pencil-fanout-archive.md`) and a
-canonical home in the workbooks.
+Per-direction verdicts, specs and write-ups live at `notes/Pencil-fanout.md` §"<CODE>"
+(ordinals 1–19: the archive) plus a workbook home — **not restated here**.
 **The arc's standing result, unchanged by all 62: `hK` is not closer.** **(GR-15)** — the
 single open gap the whole §(K-grid) chain reduces to — is **untouched**; **class uniformity
 of the escape is untouched**; no g-flank was found by any direction; **E3 is ARMED (by
@@ -46,11 +44,10 @@ whether Phase 39 closes and a successor opens for the Lean is a
 adjudication, surfaced with a commit-count estimate, never taken unilaterally;
 the 2026-08-05 Lean hold binds regardless of how good the news is.
 
-**SEVEN reference blocks — RELOCATED 2026-08-27 → 09-01**, verbatim, to
-`notes/Pencil-structure.md`, which indexes them; **read them once per session**. The one
-line that must stay here: the **State of (K)** gap map in `notes/Pencil-informal.md` is the
-phase's status object, **authoritative for every status word** — read it with
-`python3 notes/gapmap.py`, never `sed`/`grep`.
+**SEVEN reference blocks sit in `notes/Pencil-structure.md`**, which indexes them —
+**read them once per session**. The line that stays here: the **State of (K)** gap map
+(`notes/Pencil-informal.md`) is this phase's status object, **authoritative for every
+status word**; read it with `python3 notes/gapmap.py`, never `sed`/`grep`.
 
 ## Current state
 
@@ -198,12 +195,16 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
   and BPEEL both verified none, citing only arc-internal results). Caps **not** bumped, nothing deleted. **The gate is
   MECHANICAL** — `notes/check-phase-note.py` caps this note at **580 lines / 525
   status-header words** and fails if *Decisions made* outgrows the forward sections. **Live
-  watch, re-measured 2026-09-01 at the BPEEL landing: 562/580 lines, 522/525 words** —
-  and the BPEEL landing **is the one that bound**: the header went 87 words over and was
-  **recomputed as current state** (the (BE-14)-thread block rewritten, the separate
-  landing paragraph folded into it) rather than relocated or capped, which is the gate
-  working as designed. **The next landing has 3 words of header headroom, so it must
-  relocate**; ask "what here is reference rather than status?" first. **When
+  watch, re-measured 2026-09-01 at the SESSION CLOSE: 560/580 lines, 505/525 words —
+  20 spare on each.** The BPEEL landing bound hardest (87 words over, recomputed as
+  current state — the gate working as designed); the session-close pass then bought 17
+  more words by trimming two clauses that had gone stale rather than by relocating.
+  **A fresh session should expect the header to bind on its FIRST prep** — 20 words does
+  not fit an in-flight block (~55–70), and the gate fired at every one of this session's
+  three preps. **The named next relocation candidate is the `**Status:**` header's own
+  per-landing detail paragraph**, which becomes reference the moment the next direction
+  starts; do that instead of a fold, and do NOT relocate the *"On a future HIT"* block —
+  it is standing safety policy and must stay where a fresh session reads it first. **When
   the next landing binds, the question is again "what here is reference rather than
   status?"** — not another fold; the measured diagnosis (three folds recovered 2–5 lines
   each, because the note is forward-weighted and the forward part is what grew) is recorded
