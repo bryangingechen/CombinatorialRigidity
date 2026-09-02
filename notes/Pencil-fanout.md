@@ -1,20 +1,29 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
 **Status: EIGHT fan-outs, FORTY-ONE single directions and TWO concurrent pairs
-dispatched; 67 LANDED, ONE IN FLIGHT — WPAIR (ordinal 60).**
-**WPAIR (ordinal 60, §"WPAIR") PREPPED 2026-09-02** at **(E-pair)** — *every
-residual carries two adjacent degree-2 vertices* — the third W4-side direction.
-WELOC recommended it; the coordinator **verified the consumer off the landed
-body** rather than the note: `exists_adjacent_degree_two_pair_of_edgeBound`
-(`ReducibleVertex.lean:1068`) concludes exactly *two adjacent degree-2 vertices*
-from 2EC plus an edge-count hypothesis, so **(E) reaches the split arm only
-through that hypothesis** and (E-pair) bypasses (E) entirely — the same shape of
-find as WTRI's. It also serves **both** remaining non-user-call costs, since
-WELOC records (V)'s dependence on (E) as running only through (E-pair)'s
-branch-length statement. The question is branch lengths: (E-pair) says **no
-residual has every branch of interior length `≤ 1`**, and the tools are the ones
-*Step EL4* already used (Ear Lemma + no-good-contraction) plus **(EL-1)**, which
-caps hub adjacency at 2. Dispatched at `recon-opus` (fable unavailable).
+dispatched; 68 LANDED, NONE IN FLIGHT.**
+**WPAIR (ordinal 60, §"WPAIR") LANDED 2026-09-02** — the **third** W4-side
+direction, and it **REDUCES (E-pair)** to one named condition while proving two
+strata of it — **HIT shapes 3, 4 and 5; not 1, not 2**. The counting shape the prep
+guessed is an **exact identity**: if every branch has interior length `≤ 1` then
+`f(V(G)) = 6 + e₀ + 2σ` ((PAIR-1)), so ¬(E-pair) forces `f ≥ 6` — against `f ≤ 4`
+at every residual ever exhibited — and **(E-pair) follows from `f ≤ 5`**, one unit
+weaker than (E). The engine is a **strict generalization of (EL-4)**: no residual
+carries a rigid set attached to `≤ 2` outside hubs ((PAIR-3)), because
+`hcard(G/U)` is *exactly* `|∂_hub U| ≤ 2` ((PAIR-2)) and the ear moves **never
+grow** that count. That closes the independent-hub stratum outright ((PAIR-4):
+full subdivisions, so `f ≥ 7` for any counterexample) and leaves the **seed
+condition (PAIR-5)** — a hub-graph statement with no feasibility geometry in it.
+**Job 3 over-delivers: (V) is a THEOREM given (E-pair)** ((PAIR-6)) — its two
+`C₄`-carrying residues are *seeds*, killed by (PAIR-3) — so **W4's non-user-call
+cost is now the single obligation (PAIR-5)**, with (K-res) the only other open
+item and a USER call. **Job 2 paid a fourth time and now has a standing verdict**:
+`ReducibleVertex.lean` carries **five** adjacent-degree-2-pair producers behind the
+one cited, and the cited one's `hedge` **is (E) verbatim** — the systematic gap is
+that the arc inventories landed *conclusions* and records landed *hypotheses* in
+prose. Honest denominator **0, not 255** (the pool's max `f` is 2). Driver
+`notes/scripts/w4/wpair.py` (five modes, 282 s). Run at `recon-opus` (fable
+unavailable).
 **WELOC (ordinal 59, §"WELOC") LANDED 2026-09-02** — the **second** W4-side
 direction, and it **REFUTES (E-loc)** while proving the *other* obstruction shape
 **impossible** — **HIT shapes 2 and 3, then 4 and 5; NOT shape 1**. `T32`
@@ -10273,3 +10282,145 @@ otherwise adds only the in-flight lines. **The landing must MERGE or ROTATE, not
 append** — three landings running have done so successfully. The `(K-bare)` gap-map
 row is at **1 544 / 1 600** and is **not this direction's** (it is the (BE-14)
 thread's); the next landing on *that* thread needs a recompute to a target (F21).
+
+### LANDING WRITE-UP — WPAIR, 2026-09-02: **(E-pair) is REDUCED to one hub-graph condition, and two strata of it are PROVED**
+
+**HIT shapes 3, 4 and 5; NOT shape 1, NOT shape 2.** The spec ranked *"(E-pair)
+PROVED"* first, *"a residual with no adjacent degree-`2` pair"* second and
+*"reduced to a named checkable condition"* third. **Shape 3 is what landed** — the
+**seed condition (PAIR-5)** — but it landed with two strata of shape 1 proved
+outright and with the obligation's arithmetic pinned exactly, so the reduction is
+not a restatement: it names a condition with no feasibility geometry in it, and it
+comes with a proof that the two configurations the arc could previously not exclude
+are excluded.
+
+**The coordinator's counting guess was right, and it is an exact identity, not an
+estimate.** The prep offered *"if every branch has `≤ 1` interior vertex then `|V|`
+and `|E|` are both controlled by the hub set"* as a guess. It is (PAIR-1):
+
+> if `G` is simple with min degree `≥ 2` and its degree-`2` vertices form an
+> **independent set** — the exact negation of (E-pair) — then
+> `f(V(G)) = 6 + e₀ + 2σ`, with `e₀ = |E(G[hubs])|` and
+> `σ = Σ_{hubs}(deg − 3) ≥ 0`.
+
+So ¬(E-pair) forces `f(V(G)) ≥ 6 + e₀ ≥ 6`, with equality exactly at the **full
+subdivision of a 3-regular multigraph**. Three things fall out at once: **(E-pair)
+follows from `f ≤ 5`**, one unit weaker than (E)'s `f ≤ 4`; a counterexample to
+(E-pair) would **refute (E)** as well; and the whole ¬(E-pair) habitat is the
+*over-braced* regime, the opposite of the two-small-cores regime that killed
+(E-loc).
+
+**The engine is (EL-4) strictly generalized, and the generalization is what does
+the work.** (PAIR-2) computes the contraction criterion at an **arbitrary** rigid
+set `U`: the (R1) closure makes every boundary attachment a hub, so `hcard(G/U)`
+holds **iff at most two outside vertices adjacent to `U` are hubs** — `hcard` has
+three slots, `v*` takes one, and the other two are *free*. Then (PAIR-3): **no
+residual carries a rigid set with `|∂_hub U| ≤ 2`** (a *seed*), because the two ear
+moves of *Step EL4*'s chain **never increase** `|∂_hub ·|` — an absorbed hub always
+arrives with a hub neighbour already inside, by (EL-1) — so the chain runs from any
+seed to a certified good contraction, a co-1 rigid subgraph or a spanning `C₃`.
+(EL-4) is the corollary at `∂_hub = ∅`. The progression is now three deep and
+worth naming: **(C1)+(C5) at a maximal cluster → (EL-4) at a shielded set →
+(PAIR-3) at two free `hcard` slots.**
+
+**One stratum of (E-pair) is PROVED.** If the hubs are independent (`e₀ = 0`, i.e.
+`G` is a full subdivision) then *every* rigid set has `∂_hub = ∅` — the boundary of
+a rigid set can only be reached through a hub–hub edge — so (PAIR-3) applies to the
+rigid set the residual is required to carry. Hence **(PAIR-4)**: a counterexample
+has `e₀ ≥ 1` and `f(V(G)) ≥ 7`, i.e. **(E-pair) follows from `f ≤ 6`**, two units
+weaker than (E). The `f = 6` stratum — the one a naive search reaches first — is
+closed.
+
+**What remains is (PAIR-5), and it is a finite-per-instance question about the hub
+graph.** By (EL-1) the hub graph `Λ = G[hubs]` has max degree `≤ 2`, so its
+components are paths and cycles, and by (EL-4) every cycle component has length
+`≥ 7`; `|∂_hub U|` counts the **dangling `Λ`-ends** of `U ∩ hubs`. A rigid set
+whose hub part is a single `Λ`-sub-path is therefore automatically a seed, so a
+counterexample needs **every** rigid set's hub part spread across `Λ` with `≥ 3`
+dangling ends — while ¬(E-pair) makes the graph over-braced (`f ≥ 7`) and hence
+rigid-set-rich. That tension is the content of (PAIR-5), the named successor, and
+the natural attack is named with it: grow a rigid set *along* a `Λ`-run with the
+Ear Lemma, the branches hanging off a run having interior length `≤ 1`.
+
+**Job 3 over-delivers: (V) is a THEOREM given (E-pair).** The spec asked whether
+(V) closes outright or whether its two `C₄`-carrying residues still need their own
+argument. They do not: each residue's `C₄` is attached to at most **two** outside
+hubs by (EL-1) — a *seed* — so (PAIR-3) forbids it ((PAIR-6)). Since (E-pair)
+supplies exactly the `j ≥ 2` branch (V)'s case analysis consumes, and (T) kills the
+third residue, **(V) closes the moment (E-pair) does**. WELOC's *"(V) holds outright
+at `T32`"* is a **witness**; this is the theorem, and it holds for the same reason
+(EL-4) does. **So W4's non-user-call cost is now ONE obligation, (PAIR-5)**, with
+(K-res) the only other open item and a **USER call**.
+
+**Job 2 paid a fourth time, and the standing verdict is: YES, and the gap has one
+shape.** *The arc inventories landed CONCLUSIONS and records landed HYPOTHESES in
+prose.* `ReducibleVertex.lean` carries **five** producers of "two adjacent degree-2
+vertices", not the one *Step EL6* cited (`:893` the KT-4.6 root, `:1068` the
+edge-bound form, `:1206` the deficiency form, `:1384` the degree-2 form, plus the
+two edge bounds `:1270`/`:330` behind them) — and the cited one's `hedge` is
+`(D−1)|E| < D(|V|−1) + (D−1)`, i.e. **`f ≤ 4`: it IS (E)**, not "an edge-count
+hypothesis". Worse (better): `:893`'s **body** proves (E-pair) by the very double
+count this direction needed, and that count only ever needs `f ≤ 5` — so the landed
+statement carries a **one-unit slack**. Same shape as WTRI's transfers-vs-criteria
+find and WELOC's one-role-of-two find. **The standing fix, one line:** before
+declaring an obligation unprovable from the landed set, grep the owning file for
+every declaration whose *name* contains the obligation's conclusion and read each
+one's hypotheses **in the arc's own arithmetic**, never its docstring. Three of the
+four finds would have been unmissable under that rule.
+
+**Riders, each answered.** **F11** — *"no residual has all branches of interior
+length `≤ 1`"* is an impossibility claim and is **not** claimed from a sweep: what
+proves is (PAIR-3)+(PAIR-4), and the sweep is reported as *"0 residuals and 313/313
+seed condition under cap C"*, with C disclosed (`≤ 16` branches ⇒ `≤ 10` hubs; the
+pairing-model generator builds no `Λ`-cycle of length `≥ 7`, precisely what (EL-4)
+leaves open). **Cap disclosure with the denominator named, matching WELOC's
+standard:** the honest denominator over the 255-residual pool is **0, not 255** —
+¬(E-pair) needs `f ≥ 6` and the pool's maximum is `2` (`T32` reaches `4`), so no
+pool instance is even a candidate, and the recorded *"(E-pair) holds 255/255"* is a
+restatement of `f ≤ 4` there. **And this is NOT (T)'s blind spot** — branch length
+appears in no feasibility certificate, so a sweep *could* have seen a failure; what
+rules the pool out is the arithmetic, not the certificate. **F12** — corrected
+summaries carry hunks at their originating prose: §widened kernels' header
+paragraph and *"what would change this"*, *Step EL6*'s 255/255 sentence and its (V)
+paragraph, §(SAFE-RES)'s header paragraph and *Step 3*'s (E) bullet, (V) headline
+and (V) residue bullet, and the *Confidence verdict* entry. **F17** — four surfaces
+updated: this file's header, `notes/Phase39.md`'s `**Status:**` header **and** its
+*Blockers* W4 bullet **and** *Hand-off*, and `ROADMAP.md`'s Status row.
+
+**TERMINATION E1/E2/E3, read against their definitions
+(`notes/Pencil-fanout-archive.md`) and reported, never fired.** They are stated
+over the **kernel-(K)/(GR-15) ledger**; on the W4 side the reading is: **E1** wants
+a counterexample to a *carried* obligation (its (K)-side form is a g-flank) — none
+was exhibited, so **E1 does not fire**. **E2** wants the target refuted or
+unprovable-as-posed **with no dispatchable attack left**: the target is neither
+refuted nor unprovable — it is **reduced**, and the reduction *is* a named
+dispatchable attack ((PAIR-5), with its Ear-Lemma-along-`Λ` route named), so **E2
+does not fire**; the spec's E2 clause about specifying a successor applies to a
+refutation, which did not happen. **E3 is ARMED and comes within one step of
+firing, which is the report worth making:** E3 wants the target *proven* and every
+remaining entry adjudication-gated. (E-pair) is not proven, so **E3 does not
+fire** — but (PAIR-6) has now removed (V) from the dispatchable list, so **the next
+landing that proves (E-pair) leaves W4 with only (K-res), a USER call, and E3
+fires then.** Reported, not acted on.
+
+**What did NOT move.** (T) ((TF-1)–(TF-6)) is untouched and is *used* twice more
+(the third (V) residue; (PAIR-2)(iv)'s triangle clause). (E-loc) stays **refuted**
+and was not rescued; **(E) itself is untouched** — still open, still tight at
+`f = 4` — and this direction deliberately did not attack it. (EL-1)–(EL-5) are
+untouched and (EL-4) is *subsumed, not corrected*. (SAFE-RES) stays refuted,
+(SAFE-RES′) open with `W19`/`S29`/`T32` intact; the `hnoGood'` vacuity refutation
+stands. **(K-res), *Step 4*'s minimal widened statements, *Step 5*'s numerics and
+the route-3/packaging-(b) adjudication (2026-08-02) are untouched**, and **(K-res)
+stays a USER call**. Nothing on the (BE-14) side, `hnoGood'`'s vacuity, `hK`,
+(GR-15) or class uniformity is touched. **A PENCIL event on the W4 side; the
+phase-boundary consequence is reported, not acted on, and the 2026-08-05 Lean hold
+binds — no `.lean`, and the `noRigid`-free cheap leaf stays parked.**
+
+**Deliverable.** `notes/Pencil-W4-informal.md` §widened kernels (routes 1/3)
+*Steps PR1–PR6* / **(PAIR-1)–(PAIR-6)**, plus the F12 hunks listed above; driver
+`notes/scripts/w4/wpair.py` (`validate|sub|hunt|vee|pool`, 282 s, byte-identical at
+pinned `PYTHONHASHSEED`); reservation consumed **six of six, nothing returned**.
+`notes/check-gapmap-cells.py` **did not fire and was not skipped**: there is no
+gap-map row on the W4 side and this direction did not open one.
+`notes/check-phase-note.py` **did fire** and passes; the phase note was **merged and
+rotated**, not appended. Run at **`recon-opus`** (fable unavailable this session).

@@ -8,27 +8,26 @@ derives it from exactly **three carried items**: **`hcontract`** (W4 — build p
 **`hbareSplit`** (kernel (K-bare)). Everything else is closed — W0–W3 and all of W5
 (L0–L7), `hsplit` and `hfresh` included (2026-07-30, unchanged since).
 
-**The research arc: 67 directions COMPLETE** (2026-08-05 → 09-02, ordinals
-1–59 — 65 on kernel (K), and **WTRI (58) / WELOC (59) on W4**), plus eight strategy-only
-passes and two architecture probes; **ONE in flight** — WPAIR (60), the third on W4. Per-direction verdicts, specs and write-ups live at `notes/Pencil-fanout.md` §"<CODE>"
+**The research arc: 68 directions COMPLETE** (2026-08-05 → 09-02, ordinals
+1–60 — 65 on kernel (K), and **WTRI (58) / WELOC (59) / WPAIR (60) on W4**), plus eight
+strategy-only passes and two architecture probes; **none in flight**. Per-direction verdicts, specs and write-ups live at `notes/Pencil-fanout.md` §"<CODE>"
 (ordinals 1–19: the archive) plus a workbook home — **not restated here**.
-**The arc's standing result, unchanged by all 67: `hK` is not closer.** **(GR-15)** — the
+**The arc's standing result, unchanged by all 68: `hK` is not closer.** **(GR-15)** — the
 single open gap the whole §(K-grid) chain reduces to — is **untouched**; **class uniformity
 of the escape is untouched**; no g-flank was found by any direction; **E3 is ARMED (by
-GBAL) and has never fired**.
+GBAL), has never fired, and is now ONE LANDING AWAY** — proving (E-pair) empties W4's
+dispatchable list.
 
-**THE TWO W4-SIDE LANDINGS, both 2026-09-02** (`notes/Pencil-W4-informal.md` §(SAFE-RES)
-*Steps TF1–TF6*, §widened kernels *Steps EL1–EL6*). **WTRI (58): (T) IS A THEOREM**
-((TF-5)), by two **landed** transfers an inventory had missed. **WELOC (59) REFUTED
-(E-loc)** ((EL-5)) by the certified residual `T32` — but **(E) STANDS and is now TIGHT**,
-so only the *route* died, and the other obstruction shape is **impossible** ((EL-4)).
-W4's cost list is **(E), (V), (K-res)**.
-
-**IN FLIGHT — direction WPAIR** (ordinal 60) at **(E-pair)**, *every residual carries two
-adjacent degree-`2` vertices* — coordinator-verified as **all the split arm consumes**
-(`exists_adjacent_degree_two_pair_of_edgeBound`, read off the body), so it **bypasses (E)
-entirely**, and (V) needs (E) only through the same branch-length statement, so W4's two
-non-user-call items **share one target**.
+**THE THREE W4-SIDE LANDINGS, all 2026-09-02** (`notes/Pencil-W4-informal.md` §(SAFE-RES)
+*Steps TF1–TF6*, §widened kernels *Steps EL1–EL6* / *PR1–PR6*). **WTRI (58): (T) IS A
+THEOREM** ((TF-5)), by two **landed** transfers an inventory had missed. **WELOC (59)
+REFUTED (E-loc)** ((EL-5)) by the certified residual `T32` — but **(E) STANDS and is now
+TIGHT**, so only the *route* died, and the other obstruction shape is **impossible**
+((EL-4)). **WPAIR (60) REDUCED (E-pair)** to the **seed
+condition (PAIR-5)**: ¬(E-pair) forces `f = 6 + e₀ + 2σ ≥ 6` ((PAIR-1)), no residual
+carries a rigid set attached to `≤ 2` outside hubs ((PAIR-3), subsuming (EL-4)), the
+independent-hub stratum is **closed** ((PAIR-4)), and **(V) is a THEOREM given (E-pair)**
+((PAIR-6)). **W4's cost list is now (PAIR-5) plus the USER call (K-res).**
 
 
 **WHERE THE (BE-14) THREAD STANDS** — S-mark, the 2-cut composition lemma, is (BE-14)'s
@@ -163,8 +162,9 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
   phase, with the per-item route in *Hand-off*'s three carried items and **not duplicated
   here.** Two W4 facts that constrain future statements: **`hnoGood'` is known NON-vacuous**
   (2026-08-02), so branch 4 needs content, and **(SAFE-RES) is REFUTED** the same day, so the
-  adjudicated route 3 costs (V) + the reduced (E) plus **one** widened kernel (K-res) —
-  **(T) was the fourth and is now a THEOREM** (2026-09-02, WTRI)
+  adjudicated route 3 costs **(PAIR-5) alone** plus the widened kernel (K-res) — **(T) was
+  one of the original four and is a THEOREM** (WTRI), and **(V) is a theorem given
+  (E-pair)** (WPAIR, (PAIR-6))
   (`notes/Pencil-W4-informal.md` §§"`hnoGood'` vacuity"/"(SAFE-RES)"). **No adjudication is
   owed here** — route 3, packaging (b) was adjudicated 2026-08-02.
 
@@ -175,18 +175,20 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
   today** — which the hold's own wording ("hold off on more Lean until we have an informal
   proof") is an argument *for*. **(T) `G` triangle-free is CLOSED** (2026-09-02, WTRI —
   §(SAFE-RES) *Step TF5*): landed-**invisible** to any sweep, and settled by derivation, not
-  numerics. What is left: **(V)** the local choice, elementary given (E) and now needing only
-  two `C₄`-carrying branch shapes ruled out at *every* `≥ 2`-interior branch; **(E)** itself,
-  `f(V(G)) ≤ 4` — **(E-loc), the reduction it had, is REFUTED** (2026-09-02, WELOC, (EL-5)),
-  so (E) is primitive again, **tight**, and its live successor is the weaker **(E-pair)**,
-  *two adjacent degree-`2` vertices*, which is all the split arm consumes ((EL-6)); and
+  numerics. **(V) is likewise CLOSED given (E-pair)** (2026-09-02, WPAIR —
+  §widened kernels (PAIR-6)): its two `C₄`-carrying residues are *seeds*, which no residual
+  carries ((PAIR-3)). What is left: **(E-pair)** — all the split arm consumes ((EL-6)),
+  **weaker than (E)** (it follows from `f ≤ 5`, and from `f ≤ 6` once (PAIR-4) closes the
+  independent-hub stratum) and now **REDUCED to the seed condition (PAIR-5)**, a hub-graph
+  statement with no feasibility geometry in it; **(E)** itself stays open and **tight**, off
+  the critical path; and
   **(K-res)**, a kernel of `hK`'s difficulty class on
   the complementary habitat whose proof route is *strictly harder* (its habitat sits wholesale
   in the `dim R_a = 1` stratum where the (K) recon found no landed-brick route). **(K-res) has
   never been attacked** — it appears in the dispatch docs only as a **bar**, excluded from
   eight consecutive direction specs; its *"pin it when the tight side closes"* deferral is
   **RETIRED** by the 2026-08-26 adjudication, which selected the cheap scoping slice now
-  queued in *Hand-off*. **(V)/(E-pair) are slice-sized and need no adjudication; the
+  queued in *Hand-off*. **(PAIR-5) is slice-sized and needs no adjudication; the
   (K-res) WAVE is still a user call.**
 
 - **Doc debt — the gate is MECHANICAL** (`notes/check-phase-note.py`: **580 lines / 525
@@ -194,11 +196,11 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
   and the standing remedy is **relocation or merger, never a fold** — **EIGHT** reference
   blocks now sit verbatim in `notes/Pencil-structure.md`, indexed by its own table, with
   no cap ever bumped and nothing deleted. **The rule that keeps working:** ask *"what here
-  is reference rather than status?"*. Three landings running have paid for themselves that
-  way — block 8 bought 105 words, and the WTRI prep merged the thread's five per-landing
-  *Hand-off* blocks into one, which is the same move one section down. **LINES are the
-  binding constraint now, not words: 573/580 vs 480/525 at the WTRI prep**, so the next
-  landing should MERGE or ROTATE rather than append. **Do NOT relocate the *"On a future
+  is reference rather than status?"*. Four landings running have paid for themselves that
+  way — block 8 bought 105 words; the WTRI prep merged five per-landing *Hand-off* blocks
+  into one; WPAIR rotated its in-flight header block out and merged the three W4 landings'
+  *Decisions* entries. **LINES bind, not words — 580/580 vs 518/525**, so the next landing
+  MUST merge or rotate rather than append. **Do NOT relocate the *"On a future
   HIT"* block** — standing safety policy, and it must stay where a fresh session reads it
   first. A landing's entry stays **one line**; the (BE-14) thread's prose entries are the
   standing exception, and the oldest demotes when the thread's next direction lands.
@@ -233,21 +235,29 @@ star-2/SPREAD split; cross-cut-only forcing confined to `δ₁ = δ₂ = 1`, the
 then shown **genuine but harmless**. **Net: half (B)'s residue is back to TWO items** —
 (BE-67)(iii)'s uniformity and the flag base, now candidate 1 below.
 
-**THE W4 DEVIATION PAID TWICE** (§(SAFE-RES) *Steps TF1–TF6*, §widened kernels *Steps
-EL1–EL6*): WTRI (58) closed (T); WELOC (59) refuted (E-loc) and proved the other
-obstruction shape impossible, leaving **(E) primitive again and unchanged in truth**
-(`T32` satisfies it at `f = 4`). W4's cost list: **(E), (V), (K-res)**.
+**THE W4 DEVIATION PAID THREE TIMES** (§(SAFE-RES) *Steps TF1–TF6*, §widened kernels
+*Steps EL1–EL6* / *PR1–PR6*): WTRI (58) closed (T); WELOC (59) refuted (E-loc) and proved
+the other obstruction shape impossible, leaving **(E) primitive again and unchanged in
+truth** (`T32` satisfies it at `f = 4`); WPAIR (60) **reduced (E-pair)** to the seed
+condition **(PAIR-5)**, proved the independent-hub stratum ((PAIR-4)), generalized (EL-4)
+to *"no residual carries a rigid set attached to `≤ 2` outside hubs"* ((PAIR-3)) and made
+**(V) a theorem given (E-pair)** ((PAIR-6)). W4's cost list: **(PAIR-5)** + the USER call
+**(K-res)**.
 
-**THE NEXT CONCRETE TASK — WPAIR (60) at (E-pair)**, dispatched under the standing
-delegation and **verified off the landed body, not the note**:
-`exists_adjacent_degree_two_pair_of_edgeBound` (`ReducibleVertex.lean:1068`) concludes
-exactly *two adjacent degree-`2` vertices*, so **(E) reaches the split arm only through
-its edge-count hypothesis** and (E-pair) bypasses (E). It also serves **(V)**, whose
-dependence on (E) runs only through the same branch-length statement — so W4's two
-slice-sized items share one target, and the Ear Lemma + no-good-contraction pair that
-(EL-4) works with serves both. **(K-res) stays a USER call.** Spec
-`notes/Pencil-fanout.md` §"WPAIR". **The ranked (BE-14) list below is unchanged** — its
-candidate 1, the flag base, is that thread's default when it is next picked.
+**THE NEXT CONCRETE TASK — a fourth W4-side direction at (PAIR-5)**, the seed condition
+(`notes/Pencil-W4-informal.md` §widened kernels *Step PR5*), the **single remaining
+non-user-call W4 obligation**: *every simple, 2EC, triangle-free, `hcard` graph whose
+degree-`2` vertices are independent and which carries a proper rigid subgraph has a rigid
+`U` with `3 ≤ |U| ≤ |V| − 2` and at most two outside hubs adjacent to it.* By (PAIR-3) that
+implies (E-pair), hence (V), hence everything W4 needs short of (K-res). **The attack is
+named:** the hub graph `Λ` has max degree `≤ 2` with cycle components of length `≥ 7`, so
+`|∂_hub U|` counts dangling `Λ`-ends and any rigid set whose hub part is one `Λ`-sub-path is
+a seed — grow one **along** a `Λ`-run with the Ear Lemma, the branches off a run having
+interior length `≤ 1`. Slice-sized, no adjudication owed, `wpair.py` is the harness.
+**Two flags, not decisions taken here:** a HIT there **fires E3** (W4 would hold only the
+user call), and a refutation reaching a real residual would refute **(E)** too (`f ≥ 7`).
+**The ranked (BE-14) list below is unchanged** — candidate 1, the flag base, is that
+thread's default if the coordinator alternates threads instead.
 
 The ranked list:
 
@@ -350,13 +360,11 @@ its cost are `notes/dispatch-log.md`'s and `notes/Pencil-fanout.md`'s). **The ta
    (DZ has `def₂ = 11`).
 2. **`hcontract`** (W4) **via route 3's informal costs — dispatchable TODAY, and the hold
    is an argument FOR them, not against.** The **build** is fully decomposed, buildable and
-   PARKED by the hold; the other costs are **not** parked — **(T) is now a THEOREM**
-   ((TF-5), WTRI) and **(E-loc) is REFUTED** ((EL-5), WELOC), leaving **(V)**/**(E-pair)**,
-   both slice-sized and needing no
-   adjudication, plus **(K-res)**, wave-sized and a **USER CALL** that route 3 cannot
-   close without. All are stated once in *Blockers*, "What the
-   Lean hold parks, and what it does NOT" — the canonical scope statement, **not restated
-   here.** Route **ADJUDICATED 2026-08-02: route 3, packaging (b)**, with (K-res) a
+   PARKED by the hold; the other costs are **not** parked — **(T) is a THEOREM** ((TF-5),
+   WTRI), **(E-loc) is REFUTED** ((EL-5), WELOC) and **(V) is a theorem given (E-pair)**
+   ((PAIR-6), WPAIR), leaving the **seed condition (PAIR-5)**, slice-sized and needing no
+   adjudication, plus **(K-res)**, wave-sized and a **USER CALL** that route 3 cannot close
+   without. Stated once in *Blockers*, "What the Lean hold parks" — **not restated here.** Route **ADJUDICATED 2026-08-02: route 3, packaging (b)**, with (K-res) a
    byte-identical sibling of `hK`; residual carry narrows to **`hnoGood'`**, whose vacuity
    conjecture is **REFUTED** (`|V| = 19`), so branch 4 needs content. When commissioned the
    next commit is **W4-L4b** (`exists_degree_two_of_co1_rigid`, pinned +
@@ -423,18 +431,19 @@ section named; its *spec and landing write-up* in `notes/Pencil-fanout.md` §"<C
 `notes/Pencil-adjudications.md`; the derivation in git. **Do not grow these back into
 paragraphs.**
 
-- **WELOC** (59, 2026-09-02, opus) — **(E-loc) is REFUTED** ((EL-1)–(EL-5), §widened
-  kernels *Steps EL1–EL6*): `T32`, a `|V| = 32` residual with two **disjoint**
-  count-dependent `C₄` cores. The *other* obstruction shape is **impossible** ((EL-4), by
-  shieldedness + (T) + `isKDof_zero_of_cycle`), so shape 1 is the only failure mode.
-  **(E) stands and is now TIGHT** (`f = 4` attained); successor **(E-pair)**. Two F12 hunks
-  at *Step 0*/*Step 3*; pool denominator for (E-loc) is **0**. Driver `w4/weloc.py`.
-- **WTRI** (58, 2026-09-02, opus, first W4-side direction) — **§(SAFE-RES) (T) IS A
-  THEOREM** ((TF-1)–(TF-6), *Steps TF1–TF6*): `2EC` pins the pendant hub at degree `≥ 4`,
-  then two **landed** feasibility *transfers* — `PencilNondegFeasible.mono` at `deg ≥ 5`,
-  `pencilNondegFeasible_induce_of_pendant_deg3` at `deg = 4` after deleting one triangle
-  vertex — make `G/Δ` feasible, a good contraction. *Step 4* **retracted at source** (F12);
-  route 3's costs 4 → 3; (C8) collapses to (A). Driver `w4/wtri.py`.
+- **WPAIR** (60, 2026-09-02, opus, third W4-side) — **(E-pair) REDUCED, two strata proved**
+  ((PAIR-1)–(PAIR-6), §widened kernels *Steps PR1–PR6*): ¬(E-pair) ⟹ `f = 6 + e₀ + 2σ ≥ 6`
+  exactly ((PAIR-1)), `hcard(G/U) ↔ |∂_hub U| ≤ 2` ((PAIR-2)), **no residual carries a rigid
+  set with `|∂_hub U| ≤ 2`** ((PAIR-3), subsuming (EL-4)), the independent-hub stratum is
+  closed ((PAIR-4)), the residual is the **seed condition (PAIR-5)**, and **(V) is a THEOREM
+  given (E-pair)** ((PAIR-6)). Job 2 standing: the arc mis-reads landed *hypotheses*
+  (`hedge` **is** (E)). Denominator **0**. Driver `w4/wpair.py`.
+- **WELOC** (59, 2026-09-02, opus) — **(E-loc) REFUTED** ((EL-1)–(EL-5), *Steps EL1–EL6*):
+  `T32`, `|V| = 32`, two **disjoint** dependent `C₄` cores; the other shape **impossible**
+  ((EL-4), shieldedness + (T)); **(E) stands, now TIGHT**; denominator **0**. `w4/weloc.py`.
+- **WTRI** (58, 2026-09-02, opus, first W4-side) — **(T) IS A THEOREM** ((TF-1)–(TF-6),
+  *Steps TF1–TF6*): 2EC pins the pendant hub at `deg ≥ 4`, then two landed feasibility
+  *transfers* make `G/Δ` a good contraction; *Step 4* retracted at source. `w4/wtri.py`.
 - **BGENUINE** (57, 2026-09-01, opus) — **GENUINE, AND IT DOES NOT BITE** ((BE-84)–(BE-88),
   §(K-bare-ext) *Steps BE83–BE87*): (BE-77)(ii)'s certificate is a **hinge pair**, exactly the
   triple `assert_generic_star` asserts independent, so the **aggressive** operator is genuine

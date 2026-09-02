@@ -2493,7 +2493,7 @@ was missed from this sentence; added here with (K-ann) and (K-out).)
 | §(SAFE-RES) | `SR-` | **(C7)**, **(C8)**; (SAFE-RES), (SAFE-RES′); **(E)**, **(T)**, **(V)** | (C7) every ear through `T` has ≥ 6 interior vertices; (C8) the dichotomy at a maximal cluster; (E)/(T)/(V) the three gaps of (SAFE-RES′) |
 | §(SAFE-RES), direction WTRI | `TF-` | **(TF-1)–(TF-6)**; ***Steps TF1–TF6*** | the triangle-freeness cost (T), **LANDED 2026-09-02, reservation consumed EXACTLY (6/6, no remainder)**: (TF-1) the two landed feasibility *transfers* `Step 4` had not inventoried, (TF-2) the pendant triangle's anatomy + `2EC ⟹ deg z ≥ 4`, (TF-3) the `deg z ≥ 5` case by `PencilNondegFeasible.mono`, (TF-4) the `deg z = 4` case by the delete-one-then-steer chain, (TF-5) **(T) IS A THEOREM**, (TF-6) verification / the four Lean obligations / the by-product one-plane feasibility criterion. Owning section is authoritative |
 | §widened kernels (routes 1/3), direction WELOC | `EL-` | **(EL-1)–(EL-5)**; ***Steps EL1–EL6*** | the (E-loc) gap, **LANDED 2026-09-02, reservation consumed 5 of 6 — (EL-6) RETURNED unconsumed**, its step carrying no new labelled claim: (EL-1) the hub-degree law (every hub of a feasible `G` has ≤ 2 hub neighbours), (EL-2) the count identity `f = 5c − |W| + 1` and the anatomy of a minimal dependent set, (EL-3) a brick is a hub `C₄`/`C₅`, (EL-4) **no residual carries a brick** (shape 2 impossible), (EL-5) **(E-loc) is REFUTED** by `T32`. *Step EL6* carries the consumer trace, the successor (E-pair) and (V). Owning section is authoritative |
-| §widened kernels (routes 1/3), direction WPAIR | `PAIR-` | **(PAIR-1)–(PAIR-6)**; ***Steps PR1–PR6*** | the (E-pair) obligation: reserved 2026-09-02, in flight. `EP-` rejected on the (L5) substring rule (`STEP-1`/`STEP-4`) |
+| §widened kernels (routes 1/3), direction WPAIR | `PAIR-` | **(PAIR-1)–(PAIR-6)**; ***Steps PR1–PR6*** | the (E-pair) obligation: **all six consumed, LANDED 2026-09-02** (identity / contraction criterion / seed lemma / `e₀ = 0` stratum / seed condition / (V)). `EP-` rejected on the (L5) substring rule (`STEP-1`/`STEP-4`) |
 | §widened kernels (routes 1/3) | `WK-` | (E-loc) — **REFUTED**; **(E-pair)** (minted 2026-09-02, WELOC); **(K-res)** | the routes-1/3 kernel widening; (E-pair) is (E)'s successor target, *two adjacent degree-`2` vertices*; (K-res) is the widened kernel carried as a byte-identical sibling of `hK` |
 
 ## Registry — `notes/Pencil-strategy.md`, `Phase39.md`, `Phase39-design.md`
@@ -2751,7 +2751,7 @@ witness-naming convention and is defined in `notes/Pencil-W4-informal.md` §wide
 *Step EL5*, its canonical home.
 
 
-## Reserved namespace — direction WPAIR (2026-09-02, **RESERVED — the direction is in flight**)
+## Reserved namespace — direction WPAIR (2026-09-02, **CONSUMED 6/6 — LANDED, nothing returned**)
 
 **Reserved 2026-09-02 for the single direction WPAIR** (ordinal 60;
 `notes/Pencil-fanout.md` §"WPAIR") — **(E-pair)**: *every residual carries two adjacent
@@ -2786,3 +2786,14 @@ not yet in the collision table, and `(S1)`–`(S5)` **are** in it — (SAFE-RES�
 versus §(K-slide)'s claims versus §(K-bare-ext)'s window conditions, three owners for one
 token. **Qualify every one of them with its owner** (L3); the WELOC landing left one
 unqualified `(S1)/(S2)` and the coordinator repaired it at the WPAIR prep.
+
+**LANDED 2026-09-02.** **(PAIR-1)–(PAIR-6)** and *Steps PR1–PR6* all consumed, nothing
+returned: (PAIR-1) the deficit identity, (PAIR-2) the contraction criterion at a general
+rigid set, (PAIR-3) the seed lemma, (PAIR-4) the proved `e₀ = 0` stratum, (PAIR-5) the seed
+condition (E-pair) reduces to, (PAIR-6) (V) as a theorem given (E-pair). Two new **named
+objects** took prose/symbol names rather than labels, per WTRI's and WELOC's precedent: the
+**hub graph `Λ = G[hubs]`** and the **hub boundary `∂_hub U`** (with `∂U` its unrestricted
+form), both glossed at every *Step* that uses them; and **`e₀`/`σ`** are the two counting
+statistics of (PAIR-1). No new bare single-letter token was minted. Every citation of `(E)`,
+`(E-pair)`, `(T)`, `(V)` and `(S1)`/`(S2)` in the landed prose is owner-qualified per (L3);
+the landing-time bare-token grep was run.
