@@ -8,8 +8,11 @@ arguments** — `hnoGood'` vacuity REFUTED, (SAFE-RES) REFUTED with the successo
 live **as input to the eventual W4 build**: they carry the residual structure
 theorem ((C7)/(C8) at a maximal cluster), the statement of (SAFE-RES′), the
 statement of the widened kernel **(K-res)**, and the (E)/(E-loc)/(V) gap
-inventory the route-3(b) adjudication is pinned on — **(T) left that inventory
-2026-09-02**, proved in §(SAFE-RES) *Step TF5*. They are kept at full
+inventory the route-3(b) adjudication is pinned on — **that inventory EMPTIED on
+2026-09-02**: (T) proved (§(SAFE-RES) *Step TF5*), (E-loc) refuted and shown
+unnecessary (§widened kernels *Steps EL4–EL6*), **(E-pair) proved** (*ibid.*
+*Steps PR1–PR6* + *GW1–GW6*) and **(V)** with it. What is left for W4 is
+**(K-res)** — a user call — and the build. They are kept at full
 detail for exactly that reason.
 
 **W4 is parked.** The standing adjudication (2026-08-02, user) is route **3,
@@ -283,10 +286,13 @@ the local choice **(V)**, and route 3's cost list drops from four items to three
 a `|V| = 32` residual with two *disjoint* count-dependent `C₄` cores, so (E) is
 back to being the primitive gap — **open, and now known tight** (`f(V(T32)) = 4`).
 Its successor target is **(E-pair)**, *two adjacent degree-`2` vertices*, which is
-all the split arm consumes ((EL-6)) — and **(E-pair) is REDUCED** (2026-09-02,
-direction WPAIR, ibid. *Steps PR1–PR6*) to the **seed condition (PAIR-5)**, while
-**(V) becomes a THEOREM** the moment (E-pair) lands ((PAIR-6)). So route 3's cost
-list drops from three items to **one plus the user call**: (PAIR-5), and (K-res).
+all the split arm consumes ((EL-6)) — and **(E-pair) IS NOW A THEOREM**
+(2026-09-02, directions WPAIR + WGROW, ibid. *Steps PR1–PR6* and *GW1–GW6*): it
+reduced to the **seed condition (PAIR-5)** ((PAIR-3)), and (PAIR-5) is settled
+both ways on the **hub multigraph** — false as stated (`K₂,₃`, (GROW-5)), true
+under the residual's own *no co-1 rigid set* clause ((GROW-4)). **(V) is a
+THEOREM** with it ((PAIR-6)). So route 3's **non-user-call cost list is EMPTY**;
+what is left is **(K-res)**, a user call, and the W4 build itself.
 
 Here *residual* abbreviates `hnoGood'`'s antecedent bundle (`notes/Phase39-design.md`
 §"W4-L4 identification recon" Verdict 4): `G.Simple`, `3 ≤ |V(G)|`,
@@ -300,11 +306,13 @@ multigraph).
 **What would change this.** *For the refutation:* an arithmetic error (three
 independent integer-exact oracles agree — *Verification*), or a misreading of
 the split arm's `hnoRigid` consumption (all five points were read from the
-landed proof bodies, not docstrings). *For the successor:* a proof or
-counterexample for **(E)** — **no longer "equivalently (E-loc)"**: (E-loc) is
-strictly stronger and is **refuted** (§"widened kernels" *Step EL5*), while (E)
-holds at every instance known, `T32` included — or a residual every one of whose
-`≥ 2`-interior branches is one of (V)'s two `C₄`-carrying shapes. **Not (T)** — that
+landed proof bodies, not docstrings). *For the successor:* **nothing is open
+on it any more.** (E-pair) — all (S1)/(S2) consume ((EL-6)) — is a theorem
+(*Steps GW1–GW6*), and (V) with it; what would change *that* is an error in
+(PAIR-3), in the hub-model translation of *Step GW2*, or in the landed `hcard`
+necessary condition (EL-1) it rests on. **(E) itself stays open and tight**
+(`f = 4` at `T32`) but is no longer on any W4 path; **(E-loc)** is **refuted**
+(§"widened kernels" *Step EL5*). **Not (T)** — that
 is settled (*Step TF5*); what would change *it* is an error in the two landed
 transfers it composes, or in the four mechanical Lean obligations *Step TF6* lists.
 
@@ -1586,6 +1594,14 @@ Three remarks.
   that is a consequence of (EL-1) alone — every absorbed hub arrives with a hub
   neighbour already inside `S`. This needs no branch-length hypothesis, so
   (PAIR-3) is available to the whole arc, not only to this direction.
+  **Confirmed and BOUNDED** (2026-09-02, direction WGROW, *Step GW6*): the
+  non-increase holds at every one of 726 checked `j = 1` absorptions and is
+  unconditional — but it is a property of **these two moves**, not of ear
+  absorption in general. Absorbing a hub through **two subdivided branches** is
+  an ear with `j = 3`, admissible for the Ear Lemma, and it can **strictly
+  grow** `|∂_hub|` (241 witnesses, `wgrow.py --validate`). So the invariant
+  carries (PAIR-3)'s chain and does **not** carry a general "grow until it is a
+  seed" attack.
 - **It kills configurations the arc had left open**: any rigid set whose hubs sit
   on a single connected segment of the hub graph `Λ` is a seed (a segment has at
   most two continuing ends), and so is any `C₄`/`C₅`/`C₆` whose hub run is long
@@ -1626,6 +1642,15 @@ Putting *Steps PR1–PR4* together, (E-pair) is **reduced**:
 > **(PAIR-5) ⟹ (E-pair)**, by (PAIR-3). It is a statement about the **hub graph
 > `Λ` and the rigid sets of a partial subdivision** — no feasibility geometry, no
 > deficiency beyond `def(G[U]) = 0` — and it is decidable per instance.
+>
+> **SETTLED, BOTH WAYS (2026-09-02, direction WGROW, *Steps GW1–GW6*).** As
+> stated it is **FALSE**: `K₂,₃` is in the class, carries a proper rigid
+> subgraph (its `C₄`) and has no seed ((GROW-5)) — and it is the **only**
+> counterexample. Add either *no co-1 rigid set* or `6 ≤ |V(G)|` and it is a
+> **THEOREM** ((GROW-4), the seed dichotomy). A residual supplies the first of
+> those outright, so **(E-pair) is a theorem** ((GROW-6)) and so is **(V)**.
+> The paragraphs below are the state of the question *before* that landing and
+> are kept because the attack they name is what (GROW-4) replaces.
 
 Why it is the right residual, and what is known about it.
 
@@ -1664,20 +1689,28 @@ Why it is the right residual, and what is known about it.
   length `≤ 1` and an ear through `k` consecutive hubs has `≤ 2k − 1` interior
   vertices; or (b) a counterexample: a graph as in the worked instance whose every
   rigid set straddles `≥ 3` `Λ`-ends. **(b) would refute (E) as well** (`f ≥ 7`),
-  which is the reason to expect (a).
+  which is the reason to expect (a). **Correction (2026-09-02, WGROW):** that
+  last sentence holds only for a counterexample that is a **residual**. The
+  actual counterexample ((GROW-5)) is `K₂,₃`, which is in the class but is not a
+  residual and sits at `f = 6`, so it refutes the *statement* and says nothing
+  about (E). And the settling route was neither (a) nor (b) but a third one —
+  (GROW-4).
 
-> **Coordinator annotation, 2026-09-02 (direction WGROW's prep; TO BE TESTED, not a
-> correction yet).** Two readings of the paragraph above, both dispatched with WGROW and
-> both that direction's to confirm or kill. **(i)** The `≤ 2k − 1` count holds under the
-> convention that the ear **attaches directly at `z₁` and `z_k`**; with one attachment
-> running through a subdivided branch it is `2k`, with both `2k + 1`. Against the Ear
-> Lemma's `j ≤ 5` (§(SAFE-RES) *Step 1*, an **iff**) that caps **one** ear at **three**
-> consecutive hubs — two if either attachment is subdivided — so attack (a) must be
-> **iterated** short ears, not a single ear along a long run. **(ii)** Only the
-> *restriction* of (PAIR-5) to graphs that are residuals **and** satisfy ¬(E-pair) is ever
-> consumed, since that is the only context (PAIR-3) is applied in; the restriction supplies
-> `hnoGood'`, no co-1 rigid set, all branches of interior length `≤ 1`, and `f ≥ 7`
-> ((PAIR-1)+(PAIR-4)). Spec: `notes/Pencil-fanout.md` §"WGROW".
+> **Both coordinator readings of this paragraph are now TESTED (2026-09-02,
+> direction WGROW; `RESEARCH-ARC.md` §7).** **(i) CONFIRMED verbatim:** the
+> `≤ 2k − 1` count holds under the convention that the ear **attaches directly
+> at `z₁` and `z_k`**; with one attachment running through a subdivided branch
+> it is `2k`, with both `2k + 1`. Against the Ear Lemma's `j ≤ 5`
+> (§(SAFE-RES) *Step 1*, an **iff**) that caps **one** ear at **three**
+> consecutive hubs — two if either attachment is subdivided — so attack (a)
+> could only ever have been **iterated** short ears. **(ii) CONFIRMED and then
+> some:** only the restriction of (PAIR-5) to residuals is consumed, and the
+> restriction is not merely *sufficient* but **necessary** — the unrestricted
+> statement is false ((GROW-5)), and the single clause that repairs it is the
+> residual's *no co-1 rigid set*. **Both are superseded as an attack:**
+> (GROW-4) proves the repaired statement without growing anything, by reading
+> `|∂_hub| ≥ 3` off **every part of a minimum-excess partition at once**. Spec:
+> `notes/Pencil-fanout.md` §"WGROW".
 
 ### Step PR6 — job 3: **(V) is a THEOREM given (E-pair)**, and the consumer state
 
@@ -1712,9 +1745,302 @@ shapes. WELOC's *"(V) holds outright at `T32`"* is a **witness**; (PAIR-6) is th
 **The consumer state after this direction.** (E) has one real consumer,
 §(SAFE-RES′)'s (S1)/(S2) ((EL-6)); that consumer needs only (E-pair); (E-pair) is
 reduced to (PAIR-5); and (V) — the other non-user-call W4 item — is now a theorem
-*given the same (E-pair)*. So **W4's non-user-call cost is a single obligation**,
-(PAIR-5), with **(K-res)** the only other open item and a **USER call**. (The
-`hfresh` consumer needs no edge bound at all, (EL-6).)
+*given the same (E-pair)*. **Updated 2026-09-02 (direction WGROW):** (PAIR-5) is
+settled ((GROW-4)/(GROW-5)), so **(E-pair) is a theorem** ((GROW-6)) and with it
+(V); **W4's non-user-call cost list is EMPTY**, and **(K-res)** — a **USER
+call** — is the only open item left. (The `hfresh` consumer needs no edge bound
+at all, (EL-6).)
+
+### Step GW1 — the landed inventory (job 2): **the partition face of `deficiency`**
+
+The standing verdict WPAIR returned — *the arc inventories landed CONCLUSIONS
+and mis-reads landed HYPOTHESES* — was run here against a **new** consumer
+surface: producers of rigid subgraphs and of ear/cycle extensions. It fires
+again, and the find is larger than the previous three, because this time the
+missing object is not a lemma but a **face of the central definition**.
+
+`Graph.deficiency` is **defined** as a maximum over partitions
+(`Deficiency.lean:273`): `def(G̃) = ⨆_f partitionDef(G, n, f)` with
+`partitionDef = D(|P| − 1) − (D − 1)·d_G(P)` (`ibid.:262`, `numParts`
+`ibid.:255`). At `D = 6` that reads
+
+> `def(G̃) = max_P [ 6(|P| − 1) − 5·d_G(P) ]`, so **`G` is rigid iff every
+> partition `P` of `V(G)` has `5·d_G(P) ≥ 6(|P| − 1)`**,
+
+and the finest partition is exactly `−f(V(G))`. On top of it sits a whole
+**Jackson–Jordán tight-partition layer**, landed in Phase 32 for the Jacobs
+chapter and sitting in the same file this arc already cites for (R1) and
+`isKDof_zero_of_cycle`:
+
+| landed | what it says |
+|---|---|
+| `IsTightPartition` (`:1929`), `exists_isTightPartition` (`:1940`) | a partition attaining `def` exists |
+| `partitionDef_merge` (`:1978`) | the exact arithmetic of collapsing a subfamily of parts |
+| `IsTightPartition.subfamily_le` (`:2038`) | JJ Lemma 3.2(a): `(D−1)·e(Q) ≤ D(|S|−1)` on any subfamily |
+| `IsTightPartition.parts` (`:2091`) | JJ Lemma 3.2(b): a part with `≥ 2` members has `≥ 3`, and every vertex of it has `≥ 2` in-part edges |
+| `IsTightPartition.crossingEdgesWithin_pair_le_one` (`:2211`), `.eq_of_common_nbr` (`:2324`) | the cross-pair consequences |
+| `deficiency_eq_zero_iff_exists_spanningTrees` (`:3083`) | rigidity as the `D`-tree packing |
+
+**This whole file's W4 arc had cited none of it: `partitionDef` occurs 0 times
+in `notes/Pencil-W4-informal.md`.** Every deficiency claim from §`hnoGood'`
+vacuity onward is made through the *edge-count* face (`f = 5|E| − 6(|V| − 1)`,
+the Ear Lemma's packing count, the pebble-game oracle). *Steps GW2–GW4* below
+are nothing but the partition face applied to this arc's own class, and they
+settle (PAIR-5).
+
+**The standing verdict, sharpened.** WPAIR's diagnosis (*conclusions
+inventoried, hypotheses in prose*) is correct but not the whole shape. The
+sibling arc **had** read this object: `notes/Pencil-informal.md` cites
+`Graph.partitionDef`/`Graph.deficiency` 16 times (direction BINDUC read the
+bodies, and §(K-bare-ext) argues with `partitionDef₃` directly). So the gap is
+**per-arc**, not per-project: *an object already read and used on one side of
+the phase can still be missing from the other side's inventory, because each
+section's citations are grown from what that section needed when it was
+written.* The cheap fix that follows, and the one this direction ran: **before
+declaring an obligation open, grep the SIBLING WORKBOOK for the Lean file you
+are about to cite** — if the other arc reads more of that file than you do, the
+difference is your inventory gap. Applying it here cost one `grep` and produced
+the proof.
+
+*Applied prospectively?* Partly, and honestly: this direction ran the
+`grep`-the-owning-file rule **before** planning (it is what turned up the
+tight-partition layer), but the sibling-workbook half is new — invented while
+running the first half, not inherited. That is the evidence asked for: the
+standing rule was absorbed, and it generated its own extension.
+
+### Step GW2 — the hub-multigraph carrier: **(GROW-1)** and **(GROW-2)**
+
+Fix a member `G` of (PAIR-5)'s class: simple, 2EC, triangle-free, `hcard`, and
+with an **independent** degree-`2` set. Then every edge of `G` has a hub end
+and every degree-`2` vertex has two hub neighbours, so `G` is the **partial
+subdivision of a multigraph on the hubs**:
+
+> **The hub model.** `M` is the multigraph on `W` whose edges are the
+> `Λ`-edges (hub–hub edges of `G`, un-subdivided) together with one edge `u w`
+> per degree-`2` vertex `x` with `N(x) = {u, w}` (*subdivided*). Then
+> `deg_M z = deg_G z ≥ 3` for every hub, `Λ ⊆ M` has max degree `≤ 2` ((EL-1),
+> which is exactly `hcard` at a hub — `closedHubNbhd v = {v} ∪ (hub
+> neighbours)`, `Motive.lean:82`), no `Λ`-edge is parallel to another `M`-edge
+> and `Λ` has no `C₃` (both would put a triangle in `G`).
+>
+> Give an `M`-edge **weight 5** when it is a `Λ`-edge and **4** when it is
+> subdivided, and write `N` for `M` so weighted. For `A ⊆ W` put
+> `U(A) := A ∪ {degree-2 vertices with both neighbours in A}`, `c(A)` for the
+> `M`-edges leaving `A`, `e_Λ(A)` for the `Λ`-edges inside `A`, and
+> `σ_A = Σ_{z ∈ A}(deg z − 3)`.
+
+> **(GROW-1) Localized deficit identity.**
+> `f(U(A)) = 6 + e_Λ(A) + 2σ_A − 2c(A)` for every `A ⊆ W`. (PAIR-1) is the case
+> `A = W`, where `c = 0`.
+
+*Proof.* `U(A)` has `|A| + b` vertices and `e_Λ(A) + 2b` edges, `b` the
+subdivided `M`-edges inside `A`; so
+`f = 5e_Λ(A) + 4b − 6|A| + 6 = 4m(A) + e_Λ(A) − 6|A| + 6` with
+`m(A) = e_Λ(A) + b` the `M`-edges inside `A`. Now
+`2m(A) = Σ_{z∈A} deg_M z − c(A) = 3|A| + σ_A − c(A)`; substituting gives the
+claim. ∎
+
+> **(GROW-2) The hub-multigraph criterion.** For `A ⊆ W` and a partition
+> `Q = {X₁, …, X_k}` of `A`, let `a` / `b` count the `Λ`- / subdivided `M`-edges
+> of `M[A]` crossing `Q` and set
+>
+> `exc(Q) := 5a + 4b − 6(k − 1) = 6 + a + 2·Σ_i (c(X_i) − 3)`,
+>
+> the second form for `Q` a partition of **all** of `W` (`c` taken in `M`).
+> Then **`G[U(A)]` is rigid iff `exc(Q) ≥ 0` for every partition `Q` of `A`**,
+> and `exc(finest) = f(U(A))`. Moreover (**hub closure**) every rigid
+> `U ⊆ V(G)` satisfies `U ⊆ U(A)` for `A = U ∩ W`, `U(A)` is rigid, and
+> `∂_hub U = ∂_hub U(A) = N_Λ(A) ∖ A`. Consequently, for `A ⊊ W`,
+> `3 ≤ |U(A)|` whenever `U(A)` is rigid and `|U(A)| ≤ |V(G)| − 2` always.
+
+*Proof.* Take a partition `P` of `V(G[U(A)])` and read
+`6(|P| − 1) − 5·d(P)`, the landed `partitionDef` at `D = 6`
+(`Deficiency.lean:262`). A degree-`2` vertex `x ∈ U(A)` contributes `+0` when
+its part contains both its neighbours, `−4` as a singleton, `−5` with exactly
+one, `−10` with neither; so a maximizing `P` puts each such `x` with its two
+neighbours when they share a part and alone otherwise, i.e. `P` is the
+hub-closed lift of a partition `Q` of `A` with the `b` straddling mids as
+singletons. That lift has `|P| = k + b` and `d(P) = a + 2b`, so
+`6(|P| − 1) − 5 d(P) = 6(k − 1) − 5a − 4b = −exc(Q)`. Hence
+`def = max(0, −min_Q exc(Q))`, which is the criterion; the finest `Q` gives
+`−exc = 6(|A| − 1) − 5e_Λ(A) − 4b = −f(U(A))` by (GROW-1). The second form of
+`exc` is `Σ_i c(X_i) = 2(a + b)` substituted into `5a + 4b = 4(a+b) + a`.
+For the closure: a degree-`2` vertex of a rigid `U` has both neighbours in `U`
+by **(R1)** (`two_le_degree_of_isKDof_zero`, `Deficiency.lean:1306`), so
+`U ⊆ U(A)`; `G[U]`'s own excess drops only the non-chosen mids from `b`, so
+`exc_U ≤ exc_{U(A)}` pointwise and `U(A)` is rigid too. `∂U` can leave `U`
+only at a hub (again (R1)), so `∂_hub U` is the set of outside `Λ`-neighbours
+of `A`, unchanged by adding mids. Finally `A ⊊ W` leaves a hub `z ∉ U(A)` and
+(since `deg_M z ≥ 3 > 2 ≥ λ_z`) at least one mid at `z` outside as well, so
+`|U(A)| ≤ |V| − 2`; and a rigid `U(A)` with `|A| = 2` needs weight `≥ 6` across
+the two hubs, i.e. `≥ 2` **subdivided** parallel edges (a lone `Λ`-edge weighs
+`5`, and a `Λ`-edge parallel to anything is a triangle), so `|U(A)| ≥ 4`. ∎
+
+Two immediate readings. **The seed search is a hub-subset search**: by the
+closure it suffices to test `A ⊆ W`, `2^{|W|}` instead of
+`rigid_vertex_sets`' `2^{branches}` — which is what lets the driver reach the
+`Λ`-cycles of length `≥ 7` that `wpair.py --hunt`'s cap could not build. And
+**`|∂_hub U(A)| ≤ 2` is a `Λ`-condition alone**: `A = W ∖ Z` with `|Z| ≤ 2` is
+always within budget, so the only question about such an `A` is rigidity.
+
+### Step GW3 — **(GROW-3)**: the parts of a minimum-excess partition are rigid
+
+> **(GROW-3)** Let `Q*` minimize `exc` among the partitions of `W` with `k ≥ 2`
+> parts. Then `U(X)` is rigid for every part `X` of `Q*`.
+
+*Proof.* If `N[X]` failed the criterion there would be a partition `R` of `X`
+with `w_X(cross R) < 6(|R| − 1)`; refining `Q*` by replacing `X` with `R` gives
+a partition with `≥ 2` parts and excess
+`exc(Q*) + w_X(cross R) − 6(|R| − 1) < exc(Q*)`. ∎
+
+This is the tight-partition idiom of *Step GW1*'s landed layer, one notch
+stronger than the landed `IsTightPartition.parts` (`Deficiency.lean:2091`,
+JJ Lemma 3.2(b)): that lemma extracts *`≥ 3` vertices and `≥ 2` in-part edges*
+from the same merge/split arithmetic, where (GROW-3) extracts *rigidity of the
+part*. The restriction to `k ≥ 2` is what keeps the one-part partition (excess
+`0` always) from being the minimizer; when `def(G̃) > 0` the minimizer is a
+tight partition in the landed sense.
+
+### Step GW4 — **(GROW-4) THE SEED DICHOTOMY**, and **(GROW-6): (E-pair) is a THEOREM**
+
+> **(GROW-4) Seed dichotomy.** Every member of (PAIR-5)'s class has a **seed**
+> (a rigid `U` with `3 ≤ |U| ≤ |V(G)| − 2` and `|∂_hub U| ≤ 2`) **or** a
+> **co-1 rigid set** (`V(G) ∖ {x}` rigid). No hypothesis about proper rigid
+> subgraphs is needed.
+
+*Proof.* First `|W| ≥ 2`: `W = ∅` would make `G` a cycle (2EC, all degrees `2`),
+whose degree-`2` set is not independent, and a single hub cannot carry a
+degree-`2` vertex, which needs **two** hub neighbours. So the `k ≥ 2` partitions
+of `W` are a nonempty family. Suppose `G` has no seed, and let
+`Q* = {X₁, …, X_k}` minimize `exc` over them.
+
+By (GROW-3) each `U(X_i)` is rigid. A **singleton** part `{z}` has
+`c({z}) = deg_M z ≥ 3`. A part `X_i` with `|X_i| ≥ 2` gives a rigid `U(X_i)`
+with `3 ≤ |U(X_i)| ≤ |V| − 2` ((GROW-2), using `X_i ⊊ W` since `k ≥ 2`), so by
+the no-seed assumption `|∂_hub X_i| ≥ 3`: at least three **distinct** outside
+hubs are `Λ`-adjacent to `X_i`, hence at least three `Λ`-edges leave it, hence
+`c(X_i) ≥ 3` again. So every part has `c(X_i) ≥ 3` and, by (GROW-2)'s second
+form, `exc(Q*) = 6 + a + 2Σ_i(c(X_i) − 3) ≥ 6`.
+
+By minimality **every** `k ≥ 2` partition of `W` has `exc ≥ 6`. Now let `e` be
+any subdivided `M`-edge — one exists, since `Λ` has max degree `≤ 2` while `M`
+has min degree `≥ 3`. Deleting `e` lowers `exc` by `4` at the partitions it
+crosses and by `0` at the others, so `N − e` still has `exc ≥ 2 > 0` at every
+`k ≥ 2` partition (and `0` at the one-part partition). By (GROW-2) applied to
+`M − e`, that says `V(G) ∖ {x_e}` is **rigid**, `x_e` the degree-`2` vertex of
+`e` — a co-1 rigid set. ∎
+
+> **(GROW-6) (E-pair) is a THEOREM.** No residual has an independent
+> degree-`2` set; equivalently, **every residual carries two adjacent
+> degree-`2` vertices**. Hence, by (PAIR-6), so is **(V)**.
+
+*Proof.* Let `G` be a residual whose degree-`2` vertices are independent. `G`
+is simple and 2EC by hypothesis, triangle-free by **(T)** ((TF-5)), and
+`hcard` by the landed necessary condition
+(`ncard_closedHubNbhd_le_three_of_isNondegPencilRealization`, (EL-1)); so `G`
+is in (PAIR-5)'s class. A residual has **no** co-1 rigid subgraph, so (GROW-4)
+gives a seed — a proper rigid `U` with `|∂_hub U| ≤ 2` — which **(PAIR-3)**
+forbids at a residual. ∎
+
+Three remarks on what actually did the work.
+
+- **The co-1 clause is the hypothesis that was doing the work all along, and
+  it was in the residual bundle from the start.** (PAIR-4) used it (its `U`
+  has to be proper *and* not co-1); *Step PR5* did not carry it into the class
+  statement, and *Step GW5* shows that is exactly where (PAIR-5) breaks.
+- **The named attack is superseded, not completed.** *Step PR5*(a) proposed
+  growing a rigid set **along** a `Λ`-run by iterated ears. (GROW-4) never
+  grows anything: it takes the extremal partition and reads the same
+  `|∂_hub| ≥ 3` hypothesis off **every part at once**. The ear moves survive
+  only inside (PAIR-3), which is where they were already proved.
+- **What is *not* used**: no feasibility geometry, no branch-length bound
+  beyond the class's own, no bound on `e₀`, and no cap on `|V|`. The proof is
+  a two-line count once the carrier of *Step GW2* is in place.
+
+### Step GW5 — **(GROW-5)**: (PAIR-5) *as stated* is REFUTED, by `K₂,₃`
+
+> **(GROW-5)** `K₂,₃` — two hubs joined by three subdivided branches — is in
+> (PAIR-5)'s class, **carries a proper rigid subgraph**, and has **no seed**.
+> So (PAIR-5) as *Step PR5* states it is **false**. It is repaired by either
+> of the two hypotheses that (PAIR-3)'s consumer supplies anyway: *no co-1
+> rigid set* ((GROW-4)) or `6 ≤ |V(G)|`.
+
+*Verification.* `|V| = 5`, `|E| = 6`, `f = 6 = 6 + 0 + 2·0`; simple, 2EC,
+triangle-free, `hcard` (neither hub has a hub neighbour), degree-`2` set
+independent. Its `C₄` (drop one degree-`2` vertex) is a cycle of length `4`,
+rigid by `isKDof_zero_of_cycle` (`Deficiency.lean:743`), on `4 ⊊ 5` vertices —
+an `IsProperRigidSubgraph` (`ibid.:483`, which asks `2 ≤ |V(H)|` and
+`V(H) ⊊ V(G)`). But a seed needs `3 ≤ |U| ≤ |V| − 2 = 3`, and **every** 3-set
+carries at most two edges, `f = −2`, `def = 2`: no seed
+(`wgrow.py --k23` prints all ten). **`K₂,₃` is not a residual** — the very co-1
+rigid set that refutes (PAIR-5) is what a residual forbids — so this refutation
+**says nothing about (E)**, and (E) remains open and tight at `f = 4`.
+
+**It is the only one.** Seedlessness forces `exc ≥ 6` everywhere ((GROW-4)'s
+first half) while, for a seedless `G`, `V ∖ {x, x'}` must fail to be rigid for
+every pair of degree-`2` vertices, which needs a `k ≥ 2` partition with
+`exc ≤ 7`; a minimum-excess partition with a non-singleton part has `a ≥ 2`,
+hence `exc ≥ 8`, so the finest partition must be the witness and
+`f(V(G)) = 6 + e₀ + 2σ ≤ 7`, i.e. `σ = 0` and `e₀ ≤ 1`. With `σ = 0` the hub
+multigraph is **cubic** (so `|W|` is even), and at a hub with `λ_z = 0` the
+identity `exc_{N[W∖z]}(R) = exc_N(R ∪ {{z}}) − (4 deg z + λ_z) + 6 ≥ 6 − 12 + 6
+= 0` makes `U(W ∖ {z})` **rigid** — a seed, since `|∂_hub| ≤ λ_z = 0`, provided
+`|U(W ∖ {z})| ≥ 3`, which holds once `|W| ≥ 4`. With `e₀ ≤ 1` at most two hubs
+carry a `Λ`-edge, so `|W| ≥ 4` always exposes such a `z`. That leaves `|W| = 2`,
+where `e₀ = 0` (a `Λ`-edge between the two hubs would be parallel to a
+subdivided one) and cubicity forces the three-parallel-edge hub multigraph, i.e.
+`K₂,₃`. The sweep agrees: **1 seedless member in 1 016 class members**, and it
+is `K₂,₃` (`wgrow.py --k23`, `--dich`).
+
+### Step GW6 — job 3: the W4 cost list, the readings, the E-rider
+
+**The W4 cost list after this landing.** Non-user-call items: **NONE**.
+(E) — never needed by the split arm; its only real consumer, §(SAFE-RES′)'s
+(S1)/(S2), needs (E-pair) ((EL-6)), and (E-pair) is now a theorem ((GROW-6)).
+(E-loc) — refuted and not needed ((EL-5)). (T) — a theorem ((TF-5)). (V) — a
+theorem ((PAIR-6) + (GROW-6)). (PAIR-5) — settled both ways ((GROW-4),
+(GROW-5)). The **only** open W4 item is **(K-res)**, which is a **USER call**
+(the standing route-3/packaging-(b) adjudication parks the W4 build; (K-res)'s
+own mathematics is ranked with the kernel arc, not here). So W4's informal
+side is **closed as an argument**, and what remains is a build, not a gap.
+
+**Readings (2) and (3), tested (`RESEARCH-ARC.md` §7).**
+
+- **Reading (2) — CONFIRMED, and SHARPENED.** The `|∂_hub|` invariant is
+  indeed unconditional for (PAIR-3)'s **two** moves (726 `j = 1` absorptions
+  checked, all non-increasing), and the `j = 1` clause does strictly decrease
+  at a boundary hub. The sharpening the prep did not state, and which matters
+  the moment one tries to *grow*: the invariant is a property of **those two
+  moves**, not of ear absorption in general. Absorbing a hub through **two
+  subdivided branches** is an ear with `j = 3` — admissible for the Ear Lemma,
+  and it can **strictly grow** `|∂_hub|` (241 witnesses). That is why "grow
+  until it is a seed" does not close, and why (GROW-4) does not grow.
+- **Reading (3) — CONFIRMED, verbatim.** An ear through `k` consecutive hubs
+  has `2k − 1` interior vertices when it attaches directly at both ends, `2k`
+  with one subdivided attachment, `2k + 1` with two; against the Ear Lemma's
+  `j ≤ 5` that admits `k ≤ 3` (direct) and `k ≤ 2` otherwise. The correction
+  is made at *Step PR5* itself (F12), together with the note that the attack
+  the paragraph proposes is now **superseded** rather than blocked.
+
+**The E-rider, read and NOT fired.** E1–E3 are the **(BE-14)/(GR-15) arc's**
+termination test, stated over that arc's ledger and target; W4 is not a ledger
+entry but is named inside GEXIST's E3 as an example of an *adjudication-gated*
+one. I read **both** E3 texts: GEXIST's two-conjunct form
+(`notes/Pencil-fanout-archive.md:1700` — *target proven* **and** *every
+remaining ledger entry adjudication-gated*) and the later deliberate
+one-conjunct deviation (`ibid.:2098` — *the target is proven, full stop*).
+Under either, **E3 does not fire**: the target is the arc's,
+`PencilPair K 3 G`, and proving (E-pair) does not prove it; the (BE-14) thread
+also stays dispatchable, so the two-conjunct form fails twice over. **E2 does
+not fire**: its second conjunct — no ledger entry left
+open-with-a-named-dispatchable-attack — is false. Worth recording, since the
+prep's pre-correction and the rider's own wording differ: **E2's literal text
+says *"the direction's target"* while E3's says *"the target"***, so the
+"never a direction's local obligation" reading is a correction to E2's letter,
+not a restatement of it — under E2's letter its first conjunct would arguably
+be met here ((PAIR-5) *as stated* is refuted), and only the second conjunct
+stops it. **E1** needs a g-flank; none was exhibited. **Nothing is fired; this
+is a report.**
 
 ### Verification
 
@@ -1797,6 +2123,44 @@ Reproduce: `python3 notes/scripts/w4/wpair.py --validate | --sub | --hunt | --ve
 | --pool` (all five: 282 s, `VALIDATE: OK`, byte-identical at pinned
 `PYTHONHASHSEED`).
 
+**The (PAIR-5) driver is `notes/scripts/w4/wgrow.py`** (tracked; integer-exact,
+four modes), the evidence behind *Steps GW1–GW6*. It works on the **hub model**
+of *Step GW2*, so its enumeration is `2^{|W|}` rather than
+`rigid_vertex_sets`' `2^{branches}` — which is what lets it build the
+`Λ`-**cycles of length `≥ 7`** that `wpair.py --hunt`'s pairing-model generator
+could not (the cap that direction disclosed, and the configuration (EL-4)
+leaves open).
+
+- **`--validate`** — the four mechanical claims, over **824** class members
+  built from **882** hub models (all cubic hub multigraphs on `2`/`4`/`6` hubs
+  crossed with **every** valid `Λ`, plus the `Λ`-cycle family and random
+  min-degree-3 models). **(GROW-1)** on **196 028** hub subsets; **(GROW-2)** on
+  **39 989** hub subsets against **both** landed oracles (pebble game and tree
+  packing, which agree everywhere) plus the **co-1 stratum** — `V(G) ∖ {x}` at a
+  degree-`2` vertex is the partial subdivision of `M − e_x`, checked on **4 242**
+  candidates (**3 998** rigid); the **hub closure** on **46 024** rigid sets
+  taken from the independent branch enumeration; **(GROW-3)** on **1 490** parts
+  of minimum-excess partitions, with the `exc = 6 + a + 2Σ(c − 3)` rewriting
+  asserted. **0 mismatches anywhere.** Then the two readings: **726** `j = 1`
+  absorptions all non-increasing, and **241** `j = 3` absorptions that strictly
+  grow `|∂_hub|`; and the `2k − 1 / 2k / 2k + 1` ear table against `j ≤ 5`.
+- **`--dich`** — **(GROW-4)** checked on **1 016** class members from 1 182 hub
+  models: `seed` 5, `co-1` only **1**, both 1 010, **NEITHER 0**. **118** of
+  them carry a `Λ`-cycle of length `≥ 7`. Cap, disclosed: `|V| ≤ 27`,
+  `≤ 10` hubs (the `2^{|W|}` seed enumeration), `f(V(G)) ≤ 37`. **The sweep is
+  a check, not the evidence** — (GROW-4) is proved.
+- **`--k23`** — **(GROW-5)**: `K₂,₃`'s class membership, its `C₄`, and the
+  deficiency of **all ten** 3-subsets (`def = 2` except the edgeless one at
+  `12`), i.e. no seed; plus the uniqueness sweep — **1** seedless member over
+  the whole model set, and it is `K₂,₃`.
+- **`--pool`** — the denominator disclosure, unchanged from WPAIR's: **0 of
+  255** pool residuals have an independent degree-`2` set, so that pool decides
+  nothing here either.
+
+Reproduce: `python3 notes/scripts/w4/wgrow.py --validate | --dich | --k23 |
+--pool` (all four: **204 s**, byte-identical across two runs at pinned
+`PYTHONHASHSEED=0`).
+
 ### Confidence verdict per widened kernel
 
 - **(K-res)** — **open, no counterexample; same difficulty class as `hK`.**
@@ -1821,14 +2185,16 @@ Reproduce: `python3 notes/scripts/w4/wpair.py --validate | --sub | --hunt | --ve
   refutation is not a gap in the analysis but the whole answer. **(E): open**,
   holding at every instance known and **tight** (`f = 4` attained at `T32`); its
   live successor is **(E-pair)**, which is weaker and is all §(SAFE-RES′)'s
-  (S1)/(S2) consumes (*Step EL6*). **(E-pair): REDUCED, two strata proved**
-  (*Steps PR1–PR6*, 2026-09-02) — ¬(E-pair) forces `f ≥ 6` exactly ((PAIR-1)) and
+  (S1)/(S2) consumes (*Step EL6*). **(E-pair): a THEOREM** (*Steps PR1–PR6* +
+  *GW1–GW6*, 2026-09-02) — ¬(E-pair) forces `f ≥ 6` exactly ((PAIR-1)) and
   `f ≥ 7` once the independent-hub stratum is closed ((PAIR-4)); no residual
   carries a rigid set attached to `≤ 2` outside hubs ((PAIR-3), which subsumes
-  (EL-4)); the residual is the **seed condition (PAIR-5)**, a hub-graph statement
-  with no feasibility geometry in it, open, unviolated at 313/313 candidates under
-  a disclosed cap. **(V): a THEOREM given (E-pair)** ((PAIR-6)) — so (PAIR-5) is
-  W4's single remaining non-user-call obligation.
+  (EL-4)); and on the hub multigraph every class member has such a set or a co-1
+  rigid set ((GROW-4)), which a residual forbids ((GROW-6)). Its *statement*
+  (PAIR-5) needed one repair on the way — `K₂,₃` refutes the unrestricted form
+  ((GROW-5)) and is the only graph that does. **(V): a THEOREM** ((PAIR-6) +
+  (GROW-6)). **So W4's non-user-call cost list is EMPTY**, and its informal side
+  is closed as an argument; **(K-res)**, a USER call, is the only open item.
 - **`hbareSplit`** — **unchanged.** Not on routes 1/3's path (Step 0); its
   adjudicated carry stands verbatim. **(K-bare-ext)**, its route-A discharge
   statement, is **REFUTED as stated** since 2026-08-20

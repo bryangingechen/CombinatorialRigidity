@@ -2798,7 +2798,14 @@ statistics of (PAIR-1). No new bare single-letter token was minted. Every citati
 `(E-pair)`, `(T)`, `(V)` and `(S1)`/`(S2)` in the landed prose is owner-qualified per (L3);
 the landing-time bare-token grep was run.
 
-## Reserved namespace — direction WGROW (2026-09-02, **IN FLIGHT**)
+## Reserved namespace — direction WGROW (2026-09-02, **LANDED**)
+
+**LANDED 2026-09-02: all six labels and all six steps CONSUMED, nothing returned.**
+**(GROW-1)** the localized deficit identity, **(GROW-2)** the hub-multigraph
+rigidity criterion + hub closure, **(GROW-3)** the rigid parts of a
+minimum-excess partition, **(GROW-4)** the seed dichotomy, **(GROW-5)** `K₂,₃`
+refuting (PAIR-5) as stated, **(GROW-6)** **(E-pair) is a theorem**; *Steps
+GW1–GW6* in `notes/Pencil-W4-informal.md` §widened kernels.
 
 **Reserved 2026-09-02 for the single direction WGROW** (ordinal 61;
 `notes/Pencil-fanout.md` §"WGROW") — the target is **(PAIR-5)**, the *seed condition*:

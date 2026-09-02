@@ -269,6 +269,10 @@ before touching any of them.** `rvec3` likewise.
 | class shapes over a hub **multigraph** carrying a length-4 companion; the arithmetic pre-filter; bounded length compositions | `shapes_from`, `has_l4`, `bounded_comps` | `outer` |
 | hub-path map for `no_rigid_branch_union`, derived from `branch_decomposition` | `branch_pmap` | `dominance` |
 | hub set, triangles, `hcard` test | `hub_set`, `triangles`, `hcard_ok` | `nogood_subdiv` |
+| the **hub model** of a (PAIR-5)-class graph — its hub multigraph `M` with each edge tagged `Λ` / subdivided | `to_model` | `wgrow` |
+| hub-closed vertex set `U(A)`; `M`-edges leaving `A`; the `Λ`-cut and its outside hubs (`∂_hub`) | `U_of`, `c_of`, `lam_cut` | `wgrow` |
+| the weighted partition slack `exc(Q) = 5a + 4b − 6(k−1)`, its minimum over `k ≥ 2` partitions, and the rigidity test read off it ((GROW-2)) | `excess`, `min_excess`, `rigid_by_partition` | `wgrow` |
+| seeds (rigid `U`, `3 ≤ |U| ≤ |V|−2`, `|∂_hub U| ≤ 2`) and co-1 rigid sets, by hub-subset search | `seeds`, `co1_rigid` | `wgrow` |
 | branch (2-core path) decomposition; rigid vertex sets | `branch_decomposition`, `rigid_vertex_sets` | `nogood_subdiv` |
 | induced subgraph / contraction of a vertex set | `induced_edges`, `contraction` | `nogood_subdiv` |
 | split-usable / deep split vertices | `split_usable`, `deep_split_vertices` | `saferes` |
@@ -669,6 +673,10 @@ arcs too.
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/wpair.py --hunt` | 93 s | ibid. (the ¬(E-pair) search: 313 candidates, **0 residuals**, seed condition (PAIR-5) 313/313; cap `≤ 16` branches, disclosed in *Step PR5*) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/wpair.py --vee` | 23 s | ibid. ((PAIR-6): 432 carriers of (V)'s two `C₄` residues, each a *seed*, none a residual) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/wpair.py --pool` | 43 s | ibid. (the (E-pair) denominator disclosure — **0 of 255**, the pool's max `f` being 2) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/wgrow.py --validate` | 103 s | ibid. *Steps GW1–GW6* (direction WGROW; (GROW-1) on 196 028 hub subsets, (GROW-2) on 39 989 against **both** oracles plus 4 242 co-1 candidates, the hub closure on 46 024 rigid sets, (GROW-3) on 1 490 parts — 0 mismatches; then readings (2)/(3)) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/wgrow.py --dich` | 8 s | ibid. ((GROW-4) the seed dichotomy checked on 1 016 class members, 118 of them carrying a `Λ`-cycle of length `≥ 7`; **0** with neither a seed nor a co-1 rigid set; cap disclosed in the mode's own last line) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/wgrow.py --k23` | 5 s | ibid. ((GROW-5): `K₂,₃` refutes (PAIR-5) *as stated* — all ten 3-subsets printed with their deficiency — and is the only seedless member of the sweep) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/wgrow.py --pool` | 88 s | ibid. (the denominator disclosure, unchanged from WPAIR's: **0 of 255**) |
 | `python3 notes/scripts/w4/widened.py --validate` | 70 s | W4 workbook §"widened kernels (routes 1/3)" |
 | `python3 notes/scripts/w4/widened.py --witness` | 105 s | ibid. |
 | `python3 notes/scripts/w4/widened.py --pool` | 44 s | ibid. |

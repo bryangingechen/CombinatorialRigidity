@@ -4,30 +4,33 @@
 **`PencilPair K 3 G`**, and the landed successor
 `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card` (`Molecule/Pencil/Escape.lean`)
 derives it from exactly **three carried items**: **`hcontract`** (W4 — build parked by the
-**2026-08-05 Lean hold**, four informal costs NOT parked), **`hK`** (kernel (K)),
+**2026-08-05 Lean hold**; its informal side is now CLOSED as an argument), **`hK`** (kernel (K)),
 **`hbareSplit`** (kernel (K-bare)). Everything else is closed — W0–W3 and all of W5
 (L0–L7), `hsplit` and `hfresh` included (2026-07-30, unchanged since).
 
-**The research arc: 68 directions COMPLETE** (2026-08-05 → 09-02, ordinals
-1–60 — 65 on kernel (K), and **WTRI (58) / WELOC (59) / WPAIR (60) on W4**), plus eight
-strategy-only passes and two architecture probes; **WGROW (61) IS IN FLIGHT** at (PAIR-5).
+**The research arc: 69 directions COMPLETE** (2026-08-05 → 09-02, ordinals
+1–61 — 65 on kernel (K), and **WTRI (58) / WELOC (59) / WPAIR (60) / WGROW (61) on W4**),
+plus eight strategy-only passes and two architecture probes; **NONE IN FLIGHT — the next
+concrete task is to dispatch (BE-14) candidate 1, the flag base ((BE-65)(i)); see
+*Hand-off*.**
 Per-direction verdicts, specs and write-ups live at `notes/Pencil-fanout.md` §"<CODE>"
 (ordinals 1–19: the archive) plus a workbook home — **not restated here**.
-**The arc's standing result, unchanged by all 68: `hK` is not closer.** **(GR-15)** — the
+**The arc's standing result, unchanged by all 69: `hK` is not closer.** **(GR-15)** — the
 single open gap the whole §(K-grid) chain reduces to — is **untouched**; **class uniformity
 of the escape is untouched**; no g-flank was found by any direction; **E3 is ARMED (by
 GBAL), has NEVER fired, and is NOT one landing away** — `61e046a6` corrected that reading:
-"the target" in E1–E3 is the **arc's**, so emptying W4's list does not fire it.
+"the target" in E1–E3 is the **arc's**, so emptying W4's list does not fire it, and WGROW
+emptying it is the worked case.
 
-**THE THREE W4-SIDE LANDINGS, all 2026-09-02** (`notes/Pencil-W4-informal.md` §(SAFE-RES)
-*Steps TF1–TF6*, §widened kernels *Steps EL1–EL6* / *PR1–PR6*). **WTRI (58): (T) IS A
-THEOREM** ((TF-5)). **WELOC (59) REFUTED (E-loc)** ((EL-5)) by the certified residual
-`T32` — but **(E) STANDS, now TIGHT**, so only the *route* died, and the other obstruction
-shape is **impossible** ((EL-4)). **WPAIR (60) REDUCED (E-pair)** to the **seed condition
-(PAIR-5)**: ¬(E-pair) forces `f = 6 + e₀ + 2σ ≥ 6` ((PAIR-1)), no residual carries a rigid
-set attached to `≤ 2` outside hubs ((PAIR-3), subsuming (EL-4)), the independent-hub
-stratum is **closed** ((PAIR-4)), and **(V) is a THEOREM given (E-pair)** ((PAIR-6)).
-**W4's cost list is now (PAIR-5) — WGROW's target — plus the USER call (K-res).**
+**W4's INFORMAL SIDE IS CLOSED** by four 2026-09-02 landings
+(`notes/Pencil-W4-informal.md` §(SAFE-RES) *Steps TF1–TF6*, §widened kernels
+*EL1–EL6* / *PR1–PR6* / *GW1–GW6*): **WTRI (58)** proved **(T)**; **WELOC (59)** refuted
+**(E-loc)** — but **(E) STANDS, now TIGHT** (`T32`), so only the route died; **WPAIR (60)**
+reduced **(E-pair)** to the seed condition **(PAIR-5)** and made **(V)** a theorem given it;
+**WGROW (61)** settled (PAIR-5) both ways — **refuted as stated** by `K₂,₃` (in the class,
+**not a residual**, so **(E) untouched**) and **proved** where its only consumer needs it,
+by the seed dichotomy on the hub multigraph. **So (E-pair) and (V) are THEOREMS and W4's
+non-user-call cost list is EMPTY**, leaving the USER call **(K-res)** and the held build.
 
 **WHERE THE (BE-14) THREAD STANDS** — S-mark, the 2-cut composition lemma, is its **only
 open step**; the three sides and every per-landing detail are **REFERENCE**, at
@@ -156,38 +159,32 @@ stands** because it constrains future statements: feasibility propagation *as a 
 refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
 (`not_pencilNondegFeasible_of_triangle_two_hubs`).
 
-- **Open: kernels (K) and (K-bare), and W4 (`hcontract`)** — the entire remaining work of the
-  phase, with the per-item route in *Hand-off*'s three carried items and **not duplicated
-  here.** Two W4 facts that constrain future statements: **`hnoGood'` is known NON-vacuous**
-  (2026-08-02), so branch 4 needs content, and **(SAFE-RES) is REFUTED** the same day, so the
-  adjudicated route 3 costs **(PAIR-5) alone** plus the widened kernel (K-res) — **(T) was
-  one of the original four and is a THEOREM** (WTRI), and **(V) is a theorem given
-  (E-pair)** (WPAIR, (PAIR-6))
-  (`notes/Pencil-W4-informal.md` §§"`hnoGood'` vacuity"/"(SAFE-RES)"). **No adjudication is
-  owed here** — route 3, packaging (b) was adjudicated 2026-08-02.
+- **Open: kernels (K) and (K-bare); W4's remaining item is a USER call** — the per-item
+  route is in *Hand-off*'s three carried items and **not duplicated here.** Two W4 facts
+  that constrain future statements: **`hnoGood'` is known NON-vacuous** (2026-08-02), so
+  branch 4 needs content, and **(SAFE-RES) is REFUTED** the same day. **The adjudicated
+  route 3's informal cost list is now EMPTY** (2026-09-02): (T) a theorem (WTRI), (E-loc)
+  refuted and unnecessary (WELOC), **(E-pair) a theorem** (WPAIR + WGROW, (GROW-6)) and (V)
+  with it ((PAIR-6)) (`notes/Pencil-W4-informal.md` §§"`hnoGood'` vacuity"/"(SAFE-RES)"/
+  "widened kernels"). What remains for W4 is the widened kernel **(K-res)** and the build
+  itself. **No adjudication is owed here** — route 3, packaging (b) was adjudicated
+  2026-08-02.
 
 - **What the Lean hold parks, and what it does NOT — corrected 2026-08-20, because this
   bullet read as though it parked all of W4.** The hold parks **Lean**: the W4 build (W4-L4b
   onward), the `noRigid`-free Lean leaf (E) reduced to, and route σ's steering commit. It does
-  **not** park route 3's other costs, every one **informal mathematics dispatchable
-  today** — which the hold's own wording ("hold off on more Lean until we have an informal
-  proof") is an argument *for*. **(T) `G` triangle-free is CLOSED** (2026-09-02, WTRI —
-  §(SAFE-RES) *Step TF5*): landed-**invisible** to any sweep, and settled by derivation, not
-  numerics. **(V) is likewise CLOSED given (E-pair)** (2026-09-02, WPAIR —
-  §widened kernels (PAIR-6)): its two `C₄`-carrying residues are *seeds*, which no residual
-  carries ((PAIR-3)). What is left: **(E-pair)** — all the split arm consumes ((EL-6)),
-  **weaker than (E)** (it follows from `f ≤ 5`, and from `f ≤ 6` once (PAIR-4) closes the
-  independent-hub stratum) and now **REDUCED to the seed condition (PAIR-5)**, a hub-graph
-  statement with no feasibility geometry in it; **(E)** itself stays open and **tight**, off
-  the critical path; and
-  **(K-res)**, a kernel of `hK`'s difficulty class on
-  the complementary habitat whose proof route is *strictly harder* (its habitat sits wholesale
-  in the `dim R_a = 1` stratum where the (K) recon found no landed-brick route). **(K-res) has
-  never been attacked** — it appears in the dispatch docs only as a **bar**, excluded from
-  eight consecutive direction specs; its *"pin it when the tight side closes"* deferral is
-  **RETIRED** by the 2026-08-26 adjudication, which selected the cheap scoping slice now
-  queued in *Hand-off*. **(PAIR-5) is slice-sized, needs no adjudication and is IN FLIGHT at
-  WGROW (61); the (K-res) WAVE is still a user call.**
+  **not** park route 3's other costs, which were informal mathematics dispatchable today —
+  and as of 2026-09-02 **every one of them is discharged**: **(T)** (WTRI, §(SAFE-RES)
+  *Step TF5*), **(E-loc)** refuted and shown unnecessary (WELOC, (EL-5)/(EL-6)), **(E-pair)**
+  a theorem (WPAIR + WGROW, §widened kernels *Steps PR1–PR6* + *GW1–GW6*) and **(V)** with it
+  ((PAIR-6)). **(E)** itself stays open and **tight**, and is now off every W4 path. What is
+  left is **(K-res)**, a kernel of `hK`'s difficulty class on the complementary habitat whose
+  proof route is *strictly harder* (its habitat sits wholesale in the `dim R_a = 1` stratum
+  where the (K) recon found no landed-brick route). **(K-res) has never been attacked** — it
+  appears in the dispatch docs only as a **bar**, excluded from nine consecutive direction
+  specs; its *"pin it when the tight side closes"* deferral is **RETIRED** by the 2026-08-26
+  adjudication, which selected the cheap scoping slice now queued in *Hand-off*. **The W4
+  thread has no dispatchable non-user-call item left; the (K-res) WAVE is a user call.**
 
 - **Doc debt — the gate is MECHANICAL** (`notes/check-phase-note.py`: **580 lines / 525
   status-header words**, plus a fail if *Decisions made* outgrows the forward sections),
@@ -223,28 +220,27 @@ BGENUINE (57) and the last four directions are all W4-side. The status that stay
 **S-mark is (BE-14)'s only open step**, (β) is proved at the window **modulo (S1)/(S2)**,
 half (B)'s residue is **two** items, and cross-pair welding is **untouched**.
 
-**THE W4 DEVIATION PAID THREE TIMES** (§(SAFE-RES) *Steps TF1–TF6*, §widened kernels
-*Steps EL1–EL6* / *PR1–PR6*): WTRI (58) closed (T); WELOC (59) refuted (E-loc) and proved
-the other obstruction shape impossible, leaving **(E) primitive again and unchanged in
-truth** (`T32` satisfies it at `f = 4`); WPAIR (60) **reduced (E-pair)** to the seed
-condition **(PAIR-5)**, proved the independent-hub stratum ((PAIR-4)), generalized (EL-4)
-to *"no residual carries a rigid set attached to `≤ 2` outside hubs"* ((PAIR-3)) and made
-**(V) a theorem given (E-pair)** ((PAIR-6)). W4's cost list: **(PAIR-5)** + the USER call
-**(K-res)**.
+**THE W4 DEVIATION PAID FOUR TIMES AND IS NOW DONE** (§(SAFE-RES) *Steps TF1–TF6*,
+§widened kernels *Steps EL1–EL6* / *PR1–PR6* / *GW1–GW6*): WTRI (58) closed (T); WELOC (59)
+refuted (E-loc) and proved the other obstruction shape impossible, leaving **(E) primitive
+again and unchanged in truth** (`T32` satisfies it at `f = 4`); WPAIR (60) **reduced
+(E-pair)** to the seed condition **(PAIR-5)** ((PAIR-3)/(PAIR-4)) and made **(V) a theorem
+given (E-pair)** ((PAIR-6)); **WGROW (61) settled (PAIR-5) both ways** — **refuted as
+stated** by `K₂,₃`, which is in the class but is **not a residual** so **(E) is untouched**
+((GROW-5)), and **proved** in the restriction its only consumer needs, via the seed
+dichotomy *every class member has a seed or a co-1 rigid set* ((GROW-4)) on the **hub
+multigraph** ((GROW-1)/(GROW-2)/(GROW-3)). **So (E-pair) is a THEOREM ((GROW-6)) and (V)
+with it, and W4's non-user-call cost list is EMPTY** — only the USER call **(K-res)**
+remains, plus the Lean-held build.
 
-**IN FLIGHT — WGROW (61), the fourth W4-side direction, at (PAIR-5)**, the seed condition
-(`notes/Pencil-W4-informal.md` §widened kernels *Step PR5*; spec `notes/Pencil-fanout.md`
-§"WGROW"), the **single remaining non-user-call W4 obligation**: *every simple, 2EC,
-triangle-free, `hcard` graph whose degree-`2` vertices are independent and which carries a
-proper rigid subgraph has a rigid `U` with `3 ≤ |U| ≤ |V| − 2` and at most two outside hubs
-adjacent to it.* By (PAIR-3) that implies (E-pair), hence (V), hence everything W4 needs
-short of (K-res). **THE NEXT CONCRETE TASK is to verify and land WGROW's return** (the
-coordinator re-runs E1/E2/E3 itself, `61e046a6`); if it returns BLOCKED, the ranked list
-below is the fall-back and candidate 1 is that thread's default.
-**Two flags, not decisions taken here:** a HIT there empties **W4's** dispatchable list
-(leaving the user call) — it does **NOT** fire E3, which wants the **arc's** target proven
-and is corrected at the WPAIR write-up — and a refutation reaching a real residual would
-refute **(E)** too (`f ≥ 7`).
+**NOTHING IS IN FLIGHT.** **THE NEXT CONCRETE TASK is to dispatch (BE-14) candidate 1 —
+the flag base off the no-adjacent-hubs class ((BE-65)(i))** — the coordinator's own
+alternation rule after four consecutive W4-side directions, and the fall-back the WGROW
+spec named. **Two things that are the USER's call, not a dispatch:** the **(K-res) wave**
+(the 2026-08-26 adjudication selected a cheap scoping slice, queued below), and whether
+W4's now-closed informal side changes anything about the **2026-08-05 Lean hold** — its
+own release condition speaks of an informal result *"significant as standalone"*, and
+(E-pair) + (V) + (T) is one, but the hold is the user's to lift, never a coordinator's.
 **The ranked (BE-14) list below is unchanged.**
 
 The ranked list:
@@ -419,6 +415,14 @@ section named; its *spec and landing write-up* in `notes/Pencil-fanout.md` §"<C
 `notes/Pencil-adjudications.md`; the derivation in git. **Do not grow these back into
 paragraphs.**
 
+- **WGROW** (61, 2026-09-02, opus, fourth W4-side) — **(PAIR-5) SETTLED BOTH WAYS, so
+  (E-pair) IS A THEOREM** ((GROW-1)–(GROW-6), §widened kernels *Steps GW1–GW6*): rigidity is
+  `exc(Q) = 5a + 4b − 6(k−1) ≥ 0` on hub partitions ((GROW-1)/(GROW-2)), min-excess parts are
+  rigid ((GROW-3)), hence **every class member has a seed or a co-1 rigid set** ((GROW-4)) —
+  a residual forbids the latter, so (E-pair) ((GROW-6)) and (V). As *stated* (PAIR-5) is
+  **false**: `K₂,₃`, the only counterexample, **not a residual**, **(E) untouched**
+  ((GROW-5)). Job 2, now **per-arc**: the W4 arc cited **no** part of `deficiency`'s landed
+  **partition** face (`Deficiency.lean:1912+`); the sibling workbook cites it 16×.
 - **WPAIR** (60, 2026-09-02, opus, third W4-side) — **(E-pair) REDUCED, two strata proved**
   ((PAIR-1)–(PAIR-6), §widened kernels *Steps PR1–PR6*): ¬(E-pair) ⟹ `f = 6 + e₀ + 2σ ≥ 6`
   exactly ((PAIR-1)), `hcard(G/U) ↔ |∂_hub U| ≤ 2` ((PAIR-2)), **no residual carries a rigid

@@ -1,16 +1,29 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
 **Status: EIGHT fan-outs, FORTY-TWO single directions and TWO concurrent pairs
-dispatched; 68 LANDED, ONE IN FLIGHT.**
-**WGROW (ordinal 61, §"WGROW") IS IN FLIGHT since 2026-09-02** — the **fourth** W4-side
-direction, at **(PAIR-5)**, the seed condition WPAIR reduced (E-pair) to and **W4's single
-remaining non-user-call obligation**. Its prep carries three coordinator readings labelled
-*to be tested*: that (PAIR-5) may be proved in the **restricted** form (residual **and**
-¬(E-pair)) that is all (E-pair) consumes; that (PAIR-3)'s monotone `|∂_hub|` invariant is
-**unconditional** and strictly decreases on a `j = 1` absorption; and that *Step PR5*'s
-`≤ 2k − 1` ear count holds only under an unstated attachment convention, so the Ear
-Lemma's `j ≤ 5` caps **one** ear at **three** consecutive hubs and the attack must be
-iterated. Driver-to-be `notes/scripts/w4/wgrow.py`. Run at `recon-opus` (fable
+dispatched; 69 LANDED, NONE IN FLIGHT.**
+**WGROW (ordinal 61, §"WGROW") LANDED 2026-09-02** — the **fourth** W4-side
+direction, and it settles **(PAIR-5)** *both ways* — **HIT shapes 1, 2, 3, 4 and
+5**. As stated (PAIR-5) is **REFUTED** by `K₂,₃` ((GROW-5)), which is in the class,
+carries a proper rigid subgraph (its `C₄`) and has no seed — and is the **only**
+such graph; `K₂,₃` is **not a residual**, so **(E) is untouched**. The restriction
+the prep's reading (1) named is a **THEOREM**: every class member has a seed **or**
+a co-1 rigid set ((GROW-4), the **seed dichotomy**), and a residual forbids the
+latter — so **(E-pair) IS A THEOREM** ((GROW-6)), and with (PAIR-6) so is **(V)**.
+**W4's non-user-call cost list is EMPTY**; only **(K-res)**, a USER call, remains,
+and the four-direction W4 concentration self-terminates exactly as the spec said it
+would. The engine is a **change of carrier**: a class member is the partial
+subdivision of its hub multigraph, weight `5`/`4` on un-subdivided/subdivided
+edges, and rigidity is `exc(Q) = 5a + 4b − 6(k−1) ≥ 0` on every hub partition
+((GROW-1)/(GROW-2)) — so the whole question leaves the geometry. **Job 2's fifth
+payment is the biggest**: `Graph.deficiency` **is** a max over partitions
+(`Deficiency.lean:273`) with a landed **Jackson–Jordán tight-partition layer** on
+top, and the W4 workbook cited **none** of it (`partitionDef`: 0 hits) while the
+sibling (K) workbook cites it 16 times — so the standing verdict is sharpened to
+**per-arc**: *grep the sibling workbook for the Lean file you are about to cite*.
+Readings (2) and (3) **confirmed**, (2) with a bound (a `j = 3` ear CAN grow
+`|∂_hub|`, 241 witnesses) that kills the named attack as a route. Driver
+`notes/scripts/w4/wgrow.py` (four modes, 204 s). Run at `recon-opus` (fable
 unavailable).
 **WPAIR (ordinal 60, §"WPAIR") LANDED 2026-09-02** — the **third** W4-side
 direction, and it **REDUCES (E-pair)** to one named condition while proving two
@@ -10701,3 +10714,137 @@ miss in a **coordinator** commit, which is exactly the second half of `RESEARCH-
 (coordinator artifacts need the same verification tier as a subagent's). No gap-map row is
 touched by this direction and none is opened, so `notes/check-gapmap-cells.py` will not
 fire — **state that, do not skip it**.
+
+### LANDING WRITE-UP — WGROW, 2026-09-02: **(PAIR-5) is REFUTED as stated and PROVED where it is used — so (E-pair) is a THEOREM and W4's non-user-call list is EMPTY**
+
+**HIT shapes 1, 2, 3, 4 and 5 — all five, and shapes 1 and 2 are about *different
+statements*, which is the whole result.** The spec ranked *"(PAIR-5) PROVED"*
+first and *"a counterexample in the class"* second and treated them as
+alternatives. They are not: **(PAIR-5) as *Step PR5* states it is FALSE**, and the
+restriction the spec's reading (1) identified as *all that is consumed* is a
+**THEOREM**. So reading (1) is confirmed in the strongest available sense — the
+restriction is not merely sufficient, it is **necessary**.
+
+**The refutation is five vertices: `K₂,₃` ((GROW-5)).** Two hubs joined by three
+subdivided branches. It is in the class (simple, 2EC, triangle-free, `hcard`,
+degree-`2` set independent) and it **carries a proper rigid subgraph** — its `C₄`,
+rigid by `isKDof_zero_of_cycle`, on `4 ⊊ 5` vertices, which is exactly
+`IsProperRigidSubgraph` (`Deficiency.lean:483`: `2 ≤ |V(H)|` and `V(H) ⊊ V(G)`).
+But a seed needs `3 ≤ |U| ≤ |V| − 2 = 3`, and every 3-subset carries `≤ 2` edges
+(`def = 2`). **The residual/non-residual call, made explicitly as the spec
+demands:** `K₂,₃` is **NOT a residual** — the co-1 rigid set that saves it is
+precisely what a residual forbids — so this refutation says **nothing about (E)**,
+which stays open and tight at `f = 4`. And it is the **only** counterexample: a
+seedless class member forces `f(V(G)) ≤ 7`, hence a cubic hub multigraph with
+`e₀ ≤ 1`, hence (via `U(W ∖ {z})` at any hub with no `Λ`-edge) exactly two hubs.
+
+**The theorem is a two-line count once the carrier is right ((GROW-4), the SEED
+DICHOTOMY):** *every class member has a seed **or** a co-1 rigid set* — no
+proper-rigid-subgraph hypothesis needed. A residual has no co-1 rigid set, so it
+has a seed, which **(PAIR-3)** forbids: **no residual has an independent degree-`2`
+set, i.e. (E-pair) is a THEOREM** ((GROW-6)), and with (PAIR-6) so is **(V)**.
+
+**The change of carrier is the reusable part ((GROW-1)/(GROW-2)).** A class member
+is the partial subdivision of its **hub multigraph** `M`; weight an `M`-edge `5`
+when it is a `Λ`-edge and `4` when it is subdivided; then for a partition `Q` of
+the hubs into `k` parts,
+
+> `exc(Q) = 5a + 4b − 6(k−1) = 6 + a + 2·Σ_i (c(X_i) − 3)`,
+
+and **`G[U(A)]` is rigid iff `exc ≥ 0` on every partition of `A`**, with the
+finest partition giving back (PAIR-1). Rigid sets are hub-closed and `∂_hub` is a
+`Λ`-cut, so **the entire question lives on `M`**: no feasibility geometry, no
+deficiency oracle, no `|V|` cap. (GROW-4)'s proof is then: take a minimum-excess
+partition with `k ≥ 2`; **each of its parts is rigid** ((GROW-3), the refinement
+step); *no seed* forces `c ≥ 3` at every part (`≥ 3` dangling `Λ`-ends at the
+non-singletons, min degree `3` at the singletons); so `exc ≥ 6` everywhere; so
+deleting any single subdivided edge leaves `exc ≥ 2 > 0`, i.e. `V(G)` minus that
+branch's interior vertex is rigid — a co-1 rigid set.
+
+**The named attack was not completed, it was SUPERSEDED — and reading (3) is why
+it could not have been completed as stated.** *Step PR5*(a) proposed growing a
+rigid set **along** a `Λ`-run. (GROW-4) grows nothing; it reads `|∂_hub| ≥ 3` off
+**every part at once**. Reading (3) is **confirmed verbatim** (`2k−1 / 2k / 2k+1`
+by attachment convention; `j ≤ 5` caps one ear at three consecutive hubs, two if
+either attachment is subdivided), and reading (2) is **confirmed and bounded**: the
+`|∂_hub|` invariant is unconditional for (PAIR-3)'s **two** moves (726 `j = 1`
+absorptions, all non-increasing) but is **not** a property of ear absorption in
+general — absorbing a hub through **two subdivided branches** is an ear with
+`j = 3` and can **strictly grow** the count (241 witnesses). That is the precise
+reason "grow until it is a seed" does not close, and it is a **correction to the
+prep's own framing**, made at *Step PR3*'s remark (F12), not only here.
+
+**Job 2 paid a fifth time, and the find is the largest yet: a whole FACE of the
+central definition.** `Graph.deficiency` is *defined* as a maximum over partitions
+(`Deficiency.lean:273`/`:262`), and on top of it sits a landed **Jackson–Jordán
+tight-partition layer** (Phase 32's Jacobs chapter, same file): `IsTightPartition`
+(`:1929`), `exists_isTightPartition` (`:1940`), `partitionDef_merge` (`:1978`),
+`IsTightPartition.subfamily_le` (`:2038`, JJ 3.2(a)) and
+`IsTightPartition.parts` (`:2091`, JJ 3.2(b)). **`notes/Pencil-W4-informal.md`
+cited none of it — `partitionDef` occurs 0 times in the whole W4 arc**, which had
+argued about deficiency only through the edge-count face. (GROW-2)–(GROW-4) are
+that face applied to this arc's own class. **The standing verdict is therefore
+sharpened, not merely re-confirmed:** the sibling arc **had** read the object
+(`notes/Pencil-informal.md`: 16 `partitionDef` citations, direction BINDUC), so the
+gap is **per-arc**, and the new one-line rule is *grep the SIBLING WORKBOOK for the
+Lean file you are about to cite; if the other arc reads more of it than you do,
+the difference is your inventory gap.* Asked whether the fix has been applied
+prospectively: **half of it, honestly** — the `grep`-the-owning-file rule was run
+before planning and is what surfaced the tight-partition layer; the
+sibling-workbook half was invented while running it.
+
+**Job 3 — the W4 cost list, and the E-rider.** Non-user-call items: **NONE**.
+(T) theorem ((TF-5)); (E-loc) refuted and unnecessary ((EL-5)/(EL-6)); (E-pair)
+theorem ((GROW-6)); (V) theorem ((PAIR-6)); (PAIR-5) settled both ways. (E) itself
+stays open and tight but is on no W4 path. The only open W4 item is **(K-res)**,
+a **USER call**. **E-rider, read and NOT fired:** E1–E3 are the (BE-14)/(GR-15)
+arc's test, over that arc's ledger and target. I read **both** E3 texts — GEXIST's
+two-conjunct form (`notes/Pencil-fanout-archive.md:1700`) and the later deliberate
+one-conjunct deviation (`ibid.:2098`) — and under either **E3 does not fire**: the
+target is `PencilPair K 3 G`, unproven, and the (BE-14) thread stays dispatchable.
+**E2 does not fire** (its second conjunct is false). One thing worth recording:
+**E2's literal text says *"the direction's target"* while E3's says *"the
+target"***, so the prep's pre-correction is a correction to E2's letter rather
+than a restatement of it — under E2's letter its first conjunct would arguably be
+met here, and only the second conjunct stops it. **E1** needs a g-flank; none.
+
+**Riders, each answered.** **F11** — the two universal/exhaustiveness sentences are
+carried by **proofs**, not by the sweep: *"every class member has a seed or a co-1
+rigid set"* is (GROW-4), and *"`K₂,₃` has no seed"* is an **enumeration of all ten
+3-subsets** with their deficiencies printed. The sweep is a check, and its cap is
+disclosed **with the denominator named**: 1 016 class members, `|V| ≤ 27`, `≤ 10`
+hubs (the `2^{|W|}` seed enumeration), `f ≤ 37` — and **118 of them carry a
+`Λ`-cycle of length `≥ 7`**, the configuration `wpair.py --hunt`'s pairing-model
+generator could not build and the one (EL-4) leaves open. That specific known cap
+is therefore **fixed, not merely disclosed**, by the hub-model change of carrier.
+The 255-residual pool's denominator is still **0, not 255**. **F12** — hunks at the
+originating prose: *Step PR3*'s invariant remark (reading (2)), *Step PR5*'s
+statement block, its *"what would settle it"* bullet and its coordinator
+annotation (readings (1)/(3)), *Step PR6*'s consumer-state paragraph, §(SAFE-RES)'s
+header, its *"what would change this"*, the file's *Purpose* paragraph, and the
+*Confidence verdict* entry. **F17** — four surfaces moved off *in flight*: this
+file's header, `notes/Phase39.md`'s `**Status:**` header **and** its *Blockers* W4
+bullet **and** *Hand-off*, and `ROADMAP.md`'s Status row. **Harness** —
+`notes/scripts/README.md` read first; no primitive reimplemented (both landed
+rigidity oracles used, and they agree on all 39 989 cross-checked subsets); the new
+driver is `w4/wgrow.py`, four modes, 204 s, byte-identical across two runs at
+`PYTHONHASHSEED=0`; §1 primitive index and §3 invocation table extended. **No
+gap-map row is touched by this direction and none is opened**, so
+`notes/check-gapmap-cells.py` does not fire — stated, not skipped.
+
+**Reservation, and the unconsumed remainder.** All six reserved labels were used:
+**(GROW-1)** the localized deficit identity, **(GROW-2)** the hub-multigraph
+criterion + hub closure, **(GROW-3)** the rigid parts of a minimum-excess
+partition, **(GROW-4)** the seed dichotomy, **(GROW-5)** `K₂,₃`, **(GROW-6)**
+(E-pair) as a theorem; *Steps GW1–GW6* likewise. **Nothing is returned.** Two
+by-products a successor should know about, neither minted as a label: (GROW-3) is a
+**strengthening of the landed `IsTightPartition.parts`** (JJ 3.2(b) gives `≥ 3`
+vertices and `≥ 2` in-part edges; (GROW-3) gives rigidity of the part) and is the
+obvious next leaf if this arc is ever built in Lean; and (GROW-2)'s criterion is
+stated for the (PAIR-5) class but its proof only uses *degree-`2` vertices are
+independent*, so it transports to any partial subdivision.
+
+**What this costs the phase.** The W4 thread's **non-user-call dispatchable list is
+now empty**, which is exactly the self-termination the spec's diversification
+paragraph promised on a HIT. The concentration ends here on its own terms; the next
+pick is a (BE-14)-side one or a user call on (K-res)/the Lean hold.
