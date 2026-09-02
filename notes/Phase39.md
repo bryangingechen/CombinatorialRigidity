@@ -8,24 +8,23 @@ derives it from exactly **three carried items**: **`hcontract`** (W4 — build p
 **`hbareSplit`** (kernel (K-bare)). Everything else is closed — W0–W3 and all of W5
 (L0–L7), `hsplit` and `hfresh` included (2026-07-30, unchanged since).
 
-**The kernel-(K) research arc: 62 directions COMPLETE** (2026-08-05 → 09-01, ordinals
-1–54), plus eight strategy-only passes and two architecture probes; **ONE in flight**
-(BSPREAD, ordinal 55).
+**The kernel-(K) research arc: 63 directions COMPLETE** (2026-08-05 → 09-01, ordinals
+1–55), plus eight strategy-only passes and two architecture probes; **NONE in flight**.
 Per-direction verdicts, specs and write-ups live at `notes/Pencil-fanout.md` §"<CODE>"
 (ordinals 1–19: the archive) plus a workbook home — **not restated here**.
-**The arc's standing result, unchanged by all 62: `hK` is not closer.** **(GR-15)** — the
+**The arc's standing result, unchanged by all 63: `hK` is not closer.** **(GR-15)** — the
 single open gap the whole §(K-grid) chain reduces to — is **untouched**; **class uniformity
 of the escape is untouched**; no g-flank was found by any direction; **E3 is ARMED (by
 GBAL) and has never fired**.
 
-**IN FLIGHT — direction BSPREAD** (ordinal 55) at the **SPREAD step**, and the prep
-re-derived that **(BE-41)(ii) is REFUTED AS STATED** by its own sibling (BE-41)(iii) —
-BEARFULL wrote both halves; three **summary** surfaces re-stated (ii) without (iii)'s
-carve-out, and two downstream consumers inherited the wrong form. The 8-member
-constructed family escapes the `≤6`-cycle certificate and the shipped driver `assert`s
-that escape non-empty. So (BE-32)(+)'s true residue is *forced ⇒ `δ = 0` at **spread
-steps***, the `≤6`-cycle route **known dead**; each of those five surfaces is owed an
-F12 hunk.
+**BSPREAD (ordinal 55) LANDED 2026-09-01 — the arc's FIRST HIT SHAPE 1 on this item:**
+**(BE-32)(+) is a THEOREM.** A block of an **optimal** partition absorbs at most **TWO**
+points of any outside vertex's closed star, and the closure admits on **THREE** ((BE-74)) —
+(BE-39)(i) spent on the closure's admission rule, not on cycles of `G` where it stops at `6`.
+So the **star-2/SPREAD split is RETIRED**, and **(BE-73)(ii)(b) plus BRULE's `π_u = π_v`
+corner are UNCONDITIONAL**. **(BE-41)(ii) confirmed REFUTED as stated**, five surfaces
+annotated. **(BE-14) untouched; not a PENCIL event; the phase-boundary consequence is
+REPORTED, not acted on** (next block).
 
 **WHERE THE (BE-14) THREAD STANDS** — S-mark, the 2-cut composition lemma, is (BE-14)'s
 only open step; its **three sides** and every per-landing detail are **REFERENCE,
@@ -116,8 +115,8 @@ constraints; the **dated dispatch/selection narrative for every ordinal, 1–44,
   rung actually consumes"*; `weekly_all` moves **1–2 points per pair-round**. Nothing
   else in the playbook moves.
 
-**Kernel-(K) research arc — seventy-nine docs+scripts-only dispatches landed across 62
-directions (ordinals 1–54), plus eight strategy-only passes** (2026-08-02 → 09-01) — and,
+**Kernel-(K) research arc — eighty docs+scripts-only dispatches landed across 63
+directions (ordinals 1–55), plus eight strategy-only passes** (2026-08-02 → 09-01) — and,
 **outside** that count because they test the architecture rather than the (K) crux, the
 **two probes**, **KBARE-FALSIFY** (2026-08-20) and **C3-AVOID** (2026-08-24), both landed.
 The roll call, ordinals, dates and rungs are `notes/Pencil-fanout.md`'s header and its
@@ -194,7 +193,9 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
   did exactly that — the (BE-14) thread's per-landing detail relocated **verbatim** as
   block 8 — and the header went **505 → 420 / 525 words**, buying **105** of headroom
   where a fold has never recovered more than 5 lines. **Live watch, measured at the
-  BSPREAD prep: 558/580 lines, 420/525 words.** **Do NOT relocate the *"On a future HIT"*
+  BSPREAD landing: 561/580 lines, 444/525 words** — the prep's 105-word relocation absorbed
+  the landing's HIT-shape-1 rewrite with 81 words still spare, which is the first landing
+  in five not to arrive at the cap. **Do NOT relocate the *"On a future HIT"*
   block** — it is standing safety policy and must stay where a fresh session reads it
   first. **When the next landing binds, the question is again "what here is reference
   rather than status?"** — not a fold. A landing's entry stays **one line**; the (BE-14)
@@ -233,19 +234,15 @@ computation** (the decorated-skeleton law) and located the R-node's content in t
 ((BE-64)) and settled its per-child half. The details are the write-ups' and the
 `(K-bare)` gap-map row's, **not restated here**.
 
-**IN FLIGHT — direction BSPREAD** (ordinal 55, `recon-opus`, prepped 2026-09-01) at the
-**SPREAD step**, candidate 1 below, re-ranked to the top by BPEEL and picked by the
-coordinator under the standing delegation. **THE PREP CORRECTED THE TARGET, and the
-correction is the reason this is not a routine continuation: the statement three surfaces
-call the spread step — (BE-41)(ii), *every aggressively-forced pair lies in one `≤6`-cycle
-class* — is REFUTED AS STATED by its own sibling (BE-41)(iii)**, whose 8-member constructed
-triangle-chain family produces genuine spread steps whose admitted hub sits on no `≤6`-cycle
-at all; `bearfull.py chain` `assert`s that escape set non-empty, so the refutation is
-enforced by the shipped driver, not merely written down. `δ = 0` holds at every member
-anyway, so **(BE-32)(+) itself is untouched** — what is dead is the `≤6`-cycle **route** to
-it. The true residue is therefore *forced ⇒ `δ = 0` at **spread steps***, and BEARFULL's own
-successor sentence already said the honest thing — *"a successor needs a different tool **or
-a restriction of the closure operator**"*. The rest stay **ranked, not dropped**:
+**BSPREAD (55) LANDED 2026-09-01** — write-up `notes/Pencil-fanout.md` §"BSPREAD",
+mathematics §(K-bare-ext) *Steps BE73–BE77*, driver `notes/scripts/w4/bspread.py`.
+**HIT shapes 1, 2, 5.** **(BE-32)(+) IS A THEOREM** ((BE-74)) — the block-absorption lemma,
+proved from (BE-39)(i) alone and holding for the landed operator **and three widenings** of
+it; the star-2/SPREAD split is **retired**, (BE-41)(ii) **confirmed refuted as stated** and
+annotated at five surfaces, and job 2's cross-cut-only forcing **confined to `δ₁ = δ₂ = 1`**,
+which exposes BPEEL's census-3 zero as vacuous. Details are the write-up's and the
+`(K-bare)` gap-map row's, **not restated here**. **THE NEXT CONCRETE TASK is candidate 1
+below** — job 2's residue, now closure-free. The rest stay **ranked, not dropped**:
 
 0. **HALF (B)'s CLASS QUANTIFIER** ((BE-67)(iii)) — **REDUCED, not proved** (BPEEL). It is
    now *one number per (piece, peel)*: `reach = min(δ₁+δ₂,6)`, the **generic** value of
@@ -254,21 +251,20 @@ a restriction of the closure operator**"*. The rest stay **ranked, not dropped**
    discharged — (BE-70) bounds what any mechanism can depend on, and **completeness of the
    mechanism list is not claimed**. Three siblings: **cross-cut-only forcing** at an R-node
    peel with both sides flexible (combinatorial, driver-findable, none found under cap —
-   and its obligation is candidate 1); **the flag base off the no-adjacent-hubs class**
+   its obligation DISCHARGED by BSPREAD and its residue now candidate 1); **the flag
+   base off the no-adjacent-hubs class**
    ((BE-65)(i)); and — **CLOSED by BPEEL, do not re-hunt** — the forced-empty `G` hunt,
    impossible on (CH-1)'s class ((BE-72)).
 
-1. **The SPREAD STEP — IN FLIGHT as BSPREAD.** *Forced ⇒ `δ = 0` at the **spread**
-   steps* — the last **3.8 %** of (BE-32)(+), **55** known instances. **NOT** the
-   `≤6`-cycle-class form of (BE-41)(ii), which the prep found refuted (above);
-   the merge inequality is **known** not to reach past 6 (a 7-cycle of `Q` has
-   slack `−1`) and the boundary family shows the certificate genuinely absent, so
-   a successor needs a **different tool or a restriction of the closure
-   operator** — the aggressive closure's own docstring records that it *"assumes
-   every 3 forced points are independent, which OVER-claims forcing"*. Pure graph
-   theory. Two consumers, not one: BRULE's job 2 ((BE-32)(+) under three clauses
-   of (β) at the `π_u = π_v` corner, forced branch only) **and** half (B)'s
-   general-position discharge ((BE-73)(ii)).
+1. **CAN AN R-NODE-SHAPED 2-CUT PEEL HAVE `δ₁ = δ₂ = 1`?** — the whole of job 2's
+   residue after BSPREAD, and the sharpest question the arc currently has: **closure-free,
+   geometry-free, combinatorial**, two deficiencies and one 3-connectivity test. A **no**
+   makes cross-cut-only forcing at an R-node peel with both sides flexible **impossible**
+   and removes half (B)'s last general-position enemy; a **yes** is immediately testable
+   for forcing by (BE-77)(ii)'s exact certificate shape `{v, b₁, b₂}`. None found over
+   43 763 R-node peels + 932 `(1,1)` peels in two independent tiers — *none found under
+   cap*, **not** *none exists*. Cheap, and `bspread.py peel` is the driver. **The SPREAD
+   step itself is CLOSED** ((BE-74)); do not re-rank it.
 2. **The ONE-END-SERIES case by BWIN's machine** — one peel instead of two
    (`ρ̄₁ = ⟨ℓ_u⟩ + ρ̄(rest)`), budget `δ₁ ≤ 3` by the same excess accounting, or a
    second functional from the clean end. Would retire the (BE-46)/(BE-52)
@@ -413,6 +409,11 @@ section named; its *spec and landing write-up* in `notes/Pencil-fanout.md` §"<C
 `notes/Pencil-adjudications.md`; the derivation in git. **Do not grow these back into
 paragraphs.**
 
+- **BSPREAD** (55, 2026-09-01, opus) — **(BE-32)(+) IS A THEOREM** ((BE-74), §(K-bare-ext)
+  *Steps BE73–BE77*): an optimal partition's block absorbs at most **two** points of an
+  outside vertex's closed star and the closure admits on **three**, so the star-2/SPREAD
+  split is **retired**; (BE-41)(ii) **refuted as stated** (five F12 hunks) and job 2
+  **confined to `δ₁ = δ₂ = 1`**, exposing BPEEL's census-3 zero as vacuous.
 - **BPEEL** (54, 2026-09-01, opus) — **HALF (B)'s CLASS QUANTIFIER IS ONE NUMBER PER PEEL,
   and the EXHAUSTIVENESS OBLIGATION IS RETIRED**, not discharged by enumeration: the good
   locus is **Zariski-open** on the irreducible `Chart(H)`, so **DENSE or EMPTY** and one draw

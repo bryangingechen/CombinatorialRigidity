@@ -1,25 +1,27 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
 **Status: EIGHT fan-outs, THIRTY-SIX single directions and TWO concurrent
-pairs dispatched; 62 LANDED, ONE IN FLIGHT — BSPREAD (ordinal 55).**
-**BSPREAD (ordinal 55, §"BSPREAD") PREPPED 2026-09-01** at the **SPREAD step**,
-BPEEL's successor (1) and the hand-off's candidate 1, picked by the coordinator
-under the standing research delegation. **The F26 consumer trace was re-run for a
-THIRD direction running, and this time it CORRECTED THE TARGET rather than
-confirming the ranking:** the sentence three surfaces call the spread step —
-**(BE-41)(ii)**, *every aggressively-forced pair lies in one `≤6`-cycle class* —
-is **REFUTED AS STATED by its own sibling (BE-41)(iii)**, whose constructed
-triangle-chain family admits a hub sitting on no `≤6`-cycle at all. BEARFULL wrote
-both halves; the damage is in three **summary** surfaces that re-stated (ii)
-without (iii)'s carve-out (its confidence-table row, its cap 3 — a cap disclosure
-that **under**-reported a known refutation — and (ii)'s own measurement line) and
-in the two **downstream consumers** that inherited the wrong form, BPEEL's
-(BE-73)(iv) and its *What would change this*. Verified off the shipped driver, not
-the prose: `bearfull.py chain` carries `assert esc, 'the boundary family produced
-no escape -- the claim is empty'`. **`δ = 0` at every member, so (BE-32)(+) is
-untouched — what is dead is the `≤6`-cycle ROUTE to it**, and the true residue is
-*forced ⇒ `δ = 0` at the **spread** steps*. Dispatched at `recon-opus` (fable
-unavailable this session).
+pairs dispatched; 63 LANDED, NONE IN FLIGHT.**
+**BSPREAD (ordinal 55, §"BSPREAD") LANDED 2026-09-01** at the **SPREAD step**
+((BE-32)(+) where (BE-41)(i)'s star-2 certificate does not apply) — **HIT shapes
+1, 2 and 5, and shape 1 is the arc's first on this item**. **(BE-32)(+) is a
+THEOREM**: a block `B` of an **optimal** partition absorbs at most **TWO** points
+of any outside vertex's closed star — an edge route and a path route from `[v]` to
+`B` make a triangle of `Q`, two path routes make a `4`-cycle, and two edge routes
+coincide — and the closure admits on **THREE** ((BE-74)). The tool is
+**(BE-39)(i), spent on the closure's own admission rule instead of on cycles of
+`G`**, where BEARFULL spent it and where it runs out at `6`. So the **star-2 /
+SPREAD split is RETIRED, not half-closed** (401 544/401 544 steps, 203 723/203 723
+pairs, in the stronger *no optimal partition separates* form), (BE-32)(ii)/(iii)
+are its `|B| = 1` case, threshold `2` **fails as it must**, and the coordinator's
+closure-restriction hypothesis is **MOOT — its item-(c) scope change never paid**
+((BE-75)). Job 0 **confirmed the coordinator in full** off the shipped driver and
+annotated **five** surfaces ((BE-76)). Job 2: the closure **factorizes at a peel**,
+so cross-cut-only forcing with both sides flexible forces **`δ₁ = δ₂ = 1`** —
+BPEEL's 408 off-R-node positives are **408/408** exactly that, and its census-3
+zero is **VACUOUS**, `0` of 24 874 at `(1,1)` ((BE-77)). **(BE-73)(ii)(b) and
+BRULE's `π_u = π_v` corner become unconditional; (BE-14) untouched; not a PENCIL
+event.** Run at `recon-opus` (fable unavailable this session).
 **BPEEL (ordinal 54, §"BPEEL") LANDED 2026-09-01** at **half (B)'s CLASS
 STATEMENT** ((BE-67)(iii)) — **HIT shapes 2, 4 and 5; NOT 1 and NOT 3**. The
 spec's crux was **exhaustiveness**: two ways to fail are located and each
@@ -8459,7 +8461,7 @@ flexible — combinatorial, driver-findable, none found under cap; (3) the
 literally is; (4) the **flag base** off the no-adjacent-hubs class ((BE-65)(i)),
 unchanged and untouched here.
 
-## BSPREAD — fifty-fifth ordinal, the sixty-third direction (single dispatch, prepped 2026-09-01)
+## BSPREAD — fifty-fifth ordinal, the sixty-third direction (single dispatch, prepped 2026-09-01, **LANDED 2026-09-01**)
 
 **Selection provenance: BPEEL's successor (1), and the hand-off's candidate 1 —
 but the F26 consumer trace was re-run for the THIRD direction running, and this
@@ -8725,3 +8727,112 @@ per-landing detail **verbatim** to `notes/Pencil-structure.md` as **block 8**,
 exactly the move the note's own *Doc debt* watch item named in advance, taking the
 header 505 → 420 and buying **105** words where three prior folds recovered 2–5
 lines each. Lines are the tighter of the two: **20 spare**.
+
+### LANDING — BSPREAD, 2026-09-01, `recon-opus`
+
+**Mathematics:** `notes/Pencil-informal.md` §(K-bare-ext) continuation
+(direction BSPREAD), ***Steps BE73–BE77***, labels **(BE-74)–(BE-78)**.
+**Driver:** `notes/scripts/w4/bspread.py` (`lemma|chain|peel|validate`).
+**Reservation CONSUMED IN FULL; nothing returned.** **No `.lean`** — the
+2026-08-05 hold binds.
+
+**WHICH DELIVERABLE: HIT shapes 1, 2 and 5. NOT shape 3 and NOT shape 4** —
+and shape 4 is not merely un-hit, it is **closed**: there is no
+genuinely-forced pair with `δ ≠ 0` because there is no aggressively-forced one.
+
+**THE RESULT, in one sentence.** (BE-39)(i) — the quotient sparsity law
+`5 e_Q(S) ≤ 6(|S|−1)`, which BEARFULL extracted and spent on **cycles of `G`**
+where it runs out at `6` — spent instead on the **closure's own admission
+rule** proves (BE-32)(+) outright: at `|S| = 2, 3, 4` it says two blocks of an
+optimal partition are joined by at most **one** edge of `G` and the quotient
+`Q` has no triangle and no `4`-cycle, so a vertex `v` outside a block `B`
+reaches `B` by an **edge route** or a **path route** and the three exclusions
+(edge + path = triangle; two paths = `4`-cycle or two parallel edges; two edges
+= one edge) leave `B` absorbing **at most two** points of `N[v]` — *exactly*
+`{v, b}` when `v` has a neighbour `b ∈ B`, at most one otherwise. The closure
+admits on **three**. **(BE-74)**.
+
+**Job by job.**
+
+- **Job 0 (forced, cheap, first) — the coordinator is CONFIRMED IN FULL, and
+  the check was made from the driver.** `bspread.py chain` re-derives the
+  boundary family from `bearfull`'s own shipped objects (`tri_chain`,
+  `forcing_derivation`, `step_shape`, `cycle_classes`, `short_cycles`,
+  `def3_fast`) and not from the spec: **8** members, escape set **asserted
+  non-empty** with **4** members at shortest cycle `7` / `8`, every admitting
+  step asserted a genuine spread step, `δ = 0` asserted at all 8. So
+  **(BE-41)(ii) is FALSE as a universal statement**. **F12 hunks landed at all
+  five surfaces** the spec named — BEARFULL's confidence-table row, its cap 3
+  (the disclosure that under-reported a known refutation), (BE-41)(ii)'s own
+  statement and measurement line, and BPEEL's (BE-73)(iv) plus its *What would
+  change this* — and the `(K-bare)` gap-map row was **checked and not "fixed"
+  into the refuted form**, exactly as instructed. **(BE-76)**.
+- **Job 1 (primary) — HIT shape 1.** Not a per-instance re-measurement of the
+  55, and not the coordinator's restriction: a **different tool**, which is the
+  other half of BEARFULL's own successor sentence. The conclusion delivered is
+  **stronger** than `δ = 0` (*no optimal partition separates a forced pair*),
+  and it holds for the landed operator **and three widenings of it** — any
+  admitted vertex, any seed, both — at 274 168 (pair, optimal partition)
+  instances with `0` separations. **(BE-74)/(BE-75)**.
+- **Job 2 (forced) — HIT shape 2, plus a vacuity correction.** The closure
+  **factorizes at a peel** (39 736 runs, `0` violations): the run cannot cross
+  the cut before a terminal is admitted, so the **first** terminal is always
+  admitted one-sidedly and only the **second** terminal's admission can
+  straddle. With (BE-74) on each side that forces the witness split to be
+  exactly `(2,2)` in the shape `{v, b₁, b₂}`, and merging `[v]` into the block
+  of `u` across that single edge gives **`δ₁ = δ₂ = 1`**. BPEEL's **408**
+  off-R-node forced-both-flexible instances are **408/408** at `(1,1)` — a
+  population BPEEL recorded as a bare count. And **`0`** of BPEEL's 24 874
+  R-node both-flexible peels sit at `(1,1)`, so its census-3 zero had **`0`
+  chances**, not 24 874. Re-aimed hunt: **43 763** R-node peels and **932**
+  `(1,1)` peels over two independent tiers, intersection **empty** — *"none
+  found under cap"*, never *"none exists"* (F11). **(BE-77)**.
+
+**THE COORDINATOR'S ROUTE HYPOTHESIS — MOOT, and that is the cheapest of the
+three possible verdicts.** It proposed **restricting** the closure (make a
+spread step's three witnesses collinear, so the step is not genuine, leaving the
+star-2-only closure). (BE-74) proves the statement for the **unrestricted**
+operator and for three widenings, so the retreat is unnecessary and its own
+item **(c)** — the scope change across (BE-23)(ii), (BE-15) and every citing
+surface — is **never paid**. Its item **(b)** (*blocking one derivation does not
+unforce a pair*) was **right**, and is exactly why a theorem about the
+**over-claiming** operator is the better object: it holds a fortiori for genuine
+forcing with no realizability question asked. Its item **(a)** is untested and
+does not need to be. `RESEARCH-ARC.md` §7's tally: this is a coordinator
+prediction neither confirmed nor refuted but **made unnecessary**, which is a
+fourth outcome the §7 count has not seen before and should record as such.
+
+**What this landing does NOT touch, said plainly.** `PencilPair K 3 G`,
+`hbareSplit`, **(BE-14)**, the 2-cut composition lemma (S-mark), (BE-67)(iii)'s
+class quantifier and the uniformity of `reach`, the flag base ((BE-65)(i)),
+cross-pair welding ((BE-28)(i)), **(S1)/(S2)**, `hK`, **(GR-15)**, the (K-res)
+wave, class uniformity of the escape. **Not a PENCIL event.** The
+phase-boundary consequence of a HIT shape 1 is **reported, not acted on**
+(`notes/Phase39.md` *On a future HIT*).
+
+**Ranked successors this landing leaves.**
+
+1. **Can an R-node-shaped 2-cut peel have `δ₁ = δ₂ = 1`?** — the whole of job
+   2's residue, now **closure-free, geometry-free and combinatorial**: two
+   deficiencies and one 3-connectivity test. Cheap, driver-findable, and a
+   *no* closes half (B)'s last general-position enemy outright. **This is the
+   sharpest single question this landing leaves**, and it is much sharper than
+   the one it replaces.
+2. **(BE-67)(iii)'s class quantifier** — the uniformity of `reach` over the
+   class, BPEEL's own named successor, untouched here.
+3. **The one-end-series case by BWIN's machine**, and **(S1)/(S2)** — both
+   unchanged and still ranked.
+4. **BTWOCUT's bundle construction** ((BE-29)(ii)), skipped five times.
+
+**Riders.** **E1: NO. E2: NO** except two stated things — (BE-41)(ii) as a
+universal statement (refuted by its own sibling; annotated here, not discovered
+here) and (BE-73)(iii)'s non-vacuity **denominator** (corrected here); every
+landed *measurement* stands. **E3: ARMED by GBAL, not fired.** **F11**: job 2's
+zero is *"none found under cap"* and says so. **F27**: the negative is drawn in
+**two independent tiers** built by different generators. **F25**: verification
+off the **shipped** driver, exact integer arithmetic, printed literal seed
+`20260901`. **F12**: five hunks at source. **F17**: fan-out header,
+`notes/Phase39.md` `**Status:**` header, *Hand-off*, *Decisions made* and the
+ROADMAP Status row all updated in this commit. **Harness debt**: the chain is
+now **fourteen** deep (`… → bpeel → bspread`), **sixteenth** `kbare/` consumer;
+**no move made**, consumer lists extended.

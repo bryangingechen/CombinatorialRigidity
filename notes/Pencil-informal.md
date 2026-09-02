@@ -264,7 +264,7 @@ all in this file.
 | **(K-out)** *(new, 2026-08-06)* | (K-out) O1–O41 | **(OUT)'s hypothesis, measured — the headline is the NEGATIVE.** **(OC-3)**, load-bearing: `{λ₁ = 0}` is nonempty at every class shape's chart, so **no counting, matroid or placement-blind argument can ever deliver (OUT)'s hypothesis**; the bad locus is proper (`dim(R ∩ L) = 1` at 46/46) though `2` is reachable by construction (**OC-14**, a hub slide onto `C₀`). **The combinatorial half alone does not deliver availability: (OC-2)**'s 4296-pair result collapses to **one** fact — rigidity of `H/X` — which **(OC-10)** proves **forced at every class shape**; θ(3,4,5) is the unique theta class member. **Positives are pointwise, over two disjoint pinned pools: (OC-5)** POOL-G, 356/357 and 356/356; **(OC-6)** POOL-S, 270/270; **(OC-1)**'s hinge-rate identity, exact; **(OC-4)** the bad line reached by a legal chart move at all four habitats. **(OUT) is available, never automatic, not contradicted. No `place_pencil_general` battery may be quoted as a rate or as evidence about a generic chart point** — POOL-G figures over the 318 coincidence-free frames, never the raw 357. **(OC-7) is CLEARED** (32/357, fixed by `repin.star_generic`); **(OC-9)**'s guard rejects 58/357 ⊋ 39. **(OC-17)** frees the hard-stratum qualifier (`dim R_a = corank(G′) − s₀` at **every** legal chart point, so `Z` is Zariski **open**); **(OC-18)**: `H/X` rigid at a chart point ⟹ `L_b ⊄ R₁`, degree-free, at both ends of every class pair (5226/5226). **(OC-19)** reduces (OC-8) at a (shape, split) to `Z ≠ ∅` + chart irreducibility + one `H/X`-rigid chart point; **`Z ≠ ∅` alone does NOT suffice** (`--control`: 3 points in `Z` with `L_b ⊆ R₁` — openness **plus** irreducibility **plus** a witness all needed). **(OC-20)/(OC-21)** restate the bad case in perp form and strip `x₁`; **(OC-22)** lands the residue in (ANH-R1)'s object class. **Chart irreducibility (input (b)) is PROVEN** (§(K-chart) **(CH-1)(a)**). **Input (a) factors: (OC-23)** its `s₀` half is independence of `H = G − v − a` alone, at every chart point; **(OC-24)** the dichotomy, and `{σ = 0} = ∅` would make `hK` **FALSE there** (a **PENCIL event**), so that half is **necessary for `hK`** and never the binding obstruction; **(OC-25)** the target-rank half **is** §(K-tight) *Step 2* item 1 one split down; **(OC-26)** its failure is a **disjunction**, both branches forcing a codimension-2 Schubert jump of `D`; **(OC-27)** 138/138 witnesses; **(OC-28)** the `s₀` half is **dominated** by §(K-grid) (GR-10), with `{σ = 0}` a **proper** open. **The `σ > 0`-everywhere hunt RAN twice: NO HIT either time.** SIGZ killed the counting route; **OGEOM** (*Steps O42–O46*) then searched the geometric one — 91 260 live cores, **0 candidates**, `{σ = 0} ≠ ∅` a **theorem** at 275 342 class pairs ((OC-46)–(OC-49)) — leaving a named unsearched frontier (`n(F°) ≥ 6`, and `n(F°) ∈ {4,5}` at `|E°| ≥ 9`). **(OC-35)**: the self-stress space of any min-degree-≥2 subgraph is a **Kirchhoff flow on its topological paths** valued in the chain-span perps (§(K-pure) *P0*'s carrier read *off* the slide limit); **(OC-36)**: hence `corank R(F) = Σδ_Q + ρ_F − slack(F)`; **(OC-37)**, the theorem: at a class shape `slack(F) ≥ 0`, with equality **iff** `F` is a cycle or bouquet, so a stress needs `Σδ + ρ ≥ 2` at **every other topology, thetas included** — **no `H`-supported stress in the habitat is combinatorially forced** (enumerated, no cap: 2614 shapes, 215 906 supports, `slack < 0` **zero** times; theta corollary `Σ min(ℓᵢ,6) ≥ 13`, **tight**). **(OC-38)**: `P21` (**`hnoRigid`-FALSE**) is **one unit short** of what the class needs, and its five σ-jump seeds are **EXACTLY** the five where `localtest.plane_basis` degenerates — a set equality, so the arc's only exhibited instance sits on the (OC-7) coincidence locus; under `repin.star_generic`, `σ = 0` at all 360 gate-accepted seeds (cap 500). **(OC-39)**: `{σ = 0} ≠ ∅` carries an exact-ℚ **full-row-rank certificate at 3368/3368** class (shape, split) pairs over the **exhaustive `K4` stratum** — per-pair proofs, not a sample. **The target-rank half (a₁) is half-proven and half-reduced to ONE determinant (OSCHU).** **(OC-29)**: the Schubert 4-space is §(K-out)'s own hub pencils, `M̂ ∧ W = L_b ⊕ L_c`, Klein perp `⟨C(M), C(bc)⟩` — so **`dimK ≥ 1` always**. **(OC-30)**: the bad set on `M` is **exactly** the transversals of `M` and `bc` inside `D`, five rows, so `\|B\| ≤ 2` off the all-bad case. **(OC-31)**: at **every** target-rank chart point of the **whole graph `G`**, `C(vb) ∈ L_b` and `C(ac) ∈ L_c` come free from the tower, forcing **`dimK ≤ 2`** — so **`hK` at ONE `G`-point kills (OC-26)(ii)'s `dimK ≥ 3` disjunct at every eligible split at once** (292/292 + 174/174, all `dimK = 1`); **(OC-32)**: a third generator is structurally unavailable, so that bound is exact. **(OC-33)**: the surviving disjunct forces `Q\|_D` degenerate, so **`rank(Q\|_D) = 3` at one target-rank `G`-point ⟹ input (a) there** — one 3×3 determinant, `x₁`/`λ`/stratum-free, at a point the grid route already builds (570/570, 174/174). **(OC-34)**: the (a₂) re-keying is **DONE and corrects a figure quoted since (OC-28)** — §(K-grid)'s 907 *labelled* shapes are only **75 classes**, covering **19** of §(K-out)'s **174**; the other **155 are certified DIRECTLY, 0 misses**, so the `s₀` half is free at **all 174 and *without* (GR-10)** — only the **class-uniform** statement needs it. **The (a₁) residue is RUN (direction OQRANK, *Steps O37–O41*): (OC-40)/(OC-41)** complete the ⋆-eigen-block mechanism (forced `(1,2)` profile; `rank(Q\|_D) = [Q(g) ≠ 0] + rank Gram(D_Y)`); **(OC-42)** is a combinatorial **WALL** (a single-class `b`–`c` `X`-path forces `rank(Q\|_D) = 2` at every draw), refuting the naive first-colouring route **as a class statement** (27/174: 7 wall, 20 by a second uncharacterized confinement); **(OC-43)/(OC-44)**: **input (a) holds at all 174 certified classes**, per-class/per-exhibited-colouring-generic, at exact `ℚ(i)` σ-fixed grid points; zero rulings — **the (K-tight)-event branch never fires** — every rank-2 point still witnessing input (a) via (OC-30)(ii). New named residuals: wall-avoiding-colouring existence ((OC-44)(iii)); the second confinement's mechanism. **Input (a) stays OPEN as a class-uniform statement and is NOT an independent gap; (OC-8) stays OPEN, reshaped; no gap-map status move.** | **(OC-8)**: at every class shape, a hard-stratum target-rank point of the **whole-graph** chart with `L_b ⊄ R₁` or `L_c ⊄ R₄`. That is a rank **lower** bound at a pencil placement — `Pencil-strategy.md` §2.3's wall **relocated** onto the smaller `H/{e₂,e₃,e₄}` and **weakened, not crossed** — and (OC-3) says the relocation **cannot be discharged combinatorially**, so any proof must be a genericity argument on the whole-graph chart (needing its hard-stratum component not to lie inside `{λ₁ = 0} ∩ {λ₄ = 0}`), which the arc has never established because `λ` is a **far** datum. The one symbolically tractable piece — `L_b ⊄ R₁` as a polynomial non-vanishing (`Pencil-strategy.md` §5.3) — is **DELIVERED on the `ℓ_min = 5` stratum** ((OC-16): `Δ = [a,u,b] · C₀(pt b) ≢ 0` at the local frame's generic point, the bad line `C₀` in **closed form**) and **blocked off it** ((OC-15): the path-span form carries no information at `ℓ_min ≥ 6`; the stratum is 8 of 5226 pairs); at a **degree-3 hub** (3081/5226 pairs at the `b` end) (OC-8) restates with **no rank condition left** — availability ⟺ the hard-stratum target-rank locus `⊄ {pt(b) ∈ C₀}` — with **chart-to-frame dominance** the named residue ((OC-16)'s gap); the non-containment is **witnessed by construction** at θ(3,4,5) (4/8 admissible `G′`-colourings on the hard stratum at target rank, each with `Δ ≠ 0` at one end — §(K-frame) (FR-6)), the strict availability package is **0/8 at σ-fixed witnesses** with the (AC-9) coincidence the named mechanism (structurality open), and at grid points `Δ` is **combinatorial** ((FR-3)). **Both routes to a disproof are now confined.** The **counting** one is DEAD ((OC-37), SIGZ): no `H`-supported self-stress is combinatorially forced, so `{σ = 0} = ∅` can never be certified by a count. The **geometric** one is **free by an argument, not a sample**, on everything searched (*Steps O42–O46*, OGEOM): `H` is an **induced** subgraph, so `σ` depends on `H` alone ((OC-46)); every topological path of length `≥ 6` is **dead**, so `σ` is the corank of `H`'s **live core** and — girth `≥ 7` being forced by `hnoRigid` — **every cycle and bouquet is dead, killing (OC-37)(ii)'s one-unit topology class-uniformly** ((OC-47)); 91 260 live cores carry exact-ℚ corank-0 witnesses, **0 candidates** ((OC-48)), settling `{σ = 0} ≠ ∅` at **275 342** class pairs over 63 013 shapes and **upgrading (OC-39)'s 3 368 certificates from sample to theorem** ((OC-49)). **It does NOT close:** unsearched cells are `n(F°) = 4` at `|E°| ≥ 9`, `n(F°) = 5` at `|E°| ≥ 9`, and **every `n(F°) ≥ 6`** — a compute frontier below `n(F°) ≤ 5`, an ideas frontier above. The residual is now one shape-free sentence: *at every live core the Kirchhoff map `⊕_Q S_Q^⊥ → (K⁶)^nodes` is injective at the generic chart point.* **Input (a), `Z ≠ ∅`, itself factors** (§(K-out) direction ZNEQ): a **necessary-for-`hK`** half — `H` independent at some chart point, equivalently at the generic one — **dominated** by §(K-grid) (GR-10), free at 907/907 of its pool once **re-keyed** against this section's class-shape population (a combinatorial cross-pool job, no new mathematics; the two pools are labelled-instance pools with different keys and are **not** re-keyed here); and a **target-rank** half, the Schubert **non-jump** `dim(D ∩ (M̂ ∧ W)) ≤ 1` (`D` the far framework `H`'s relative twist space, `W` the hub line's 2-space) — one-point decidable, `x₁`-free, `λ`-free, stratum-free, in the same object class as (OC-20)'s perp form; measured to fail nowhere (138/138 (shape, split) witnesses, (OC-27)) but a **recipe** is missing, exactly as for (OC-19) input (c). Neither half is proven class-uniformly. **The only known failure mechanism for the necessary half is a self-stress of a short theta sub-multigraph inside `H`** (§(K-flank) *F5(d)*'s support) — a hit there would make `hK` **FALSE** at that shape, a **PENCIL event**, not a (K-tight) one, and needs the direction-A pivot rule (`Pencil-fanout-archive.md` §"Direction A") in force before any dispatch.|
 | **(K-ind)** *(new, 2026-08-05)* | (K-ind) I0–I6 | **REFUTED as a route**, and not merely "no invariant found": the transport structure the question presupposes does not exist on the `hK` habitat. **(I1)** tight ⟺ `(|V|,|E|) = (5c+1, 6c)`, so two tight graphs of equal cycle rank have equal size and **no arm of `pencil_reduction` can relate them**; **(I2)** `splitOff` at a degree-2 vertex takes `index 0 → 1` preserving `c` and fixing the hub multigraph `G°`; **(I4)** inside one `G°` the class is a **finite antichain**, and the class's infinitude is entirely in the `G°` direction, which no move reaches. **(I0)**: the failure locus is a **divisor**, so its only numerical invariant is the single bit `codim F = 1`, which *is* `hK` — the question as posed is circular, and the image-side reading is (K-dom), already struck. One genuine positive by-product: **(I3)**, subdivision-monotonicity of `Image(V_bc)` — real, new, *and pointing the wrong way*, since the induction descends and every descent bottoms out at `k ≤ 3` where (D1) caps the rank at 4 | — refuted as a route. Any future "strengthen the inductive invariant" proposal must first exhibit a move relating two class members; `pencil_reduction`'s five arms supply none |
 | **(K-Δ)** *(new, 2026-08-05)* | (K-Δ) | **NO HIT — the literature lead is discharged**, not open. Two independently fatal hypothesis failures: **(M1)** the subject's objects are *totally isotropic* subspaces and `V_bc` never is (Klein Gram rank 3, or 2 on serial chains — an `O(6)`-invariant, not a frame choice), so it has no Wick vector and carries no Δ-matroid; **(M3)** the ground set is `[3]`, fixed by `dim Λ²K⁴ = 6`, and never grows with the graph — `Pencil-strategy.md` §2.2's ingredient-2 failure in the target literature's own terms. Recorded as a *pass*: the **form** matches exactly (transversality to two coordinate isotropics = two Wick coordinates nonzero). Buys two readings, not a route: **(N1)** the `ℓ = 3` criterion as five feasible pairs in the Dress–Havel metroid of the five lines, and **(N2)** the **pentagon** reading — `Q(z) ≠ 0` ⟺ no two non-consecutive edges of the closed chain `b–x–y–c–a–b` meet | — discharged. `Pencil-strategy.md` §7's "one unverified lead" is now a checked negative with the reason |
-| **(K-bare)/(K-bare-ext)** | (K-bare-ext) BE1–BE73 | **`hbareSplit` OPEN, carried as PINNED** (*"C: cheap numerics extensions + A"*, 2026-07-30; option B NOT commissioned), and the **`∀`-seed form is REFUTED** (probe KBARE-FALSIFY, tier **T1**, a *route* finding — the **KERNEL is untouched**). The **extension route is NO-GO on landed machinery**, definitionally: at `¬PencilNondegFeasible` the chart/reseed/engine apparatus has nothing to consume, and the `∃`-seed + repair alternative meets §(K-tight) *Step 5*'s chartless wall. ***Steps BE1–BE13* are HISTORY**, cited by label: the motive off the Lean bodies ((BE-10)), bare realizability **UNCONDITIONAL** ((BE-11)), the pencil condition one hub determinant each ((BE-12)), the cone cap `rank = 6(|V|−1) − def₂(G)` ((BE-13)). **THE TARGET IS (BE-14), DIRECT ATTAINMENT** — *the pencil stratum attains `6(|V|−1) − def₃(G)`*, seed-free and induction-free, discharging `hbareSplit` **and** `PencilPair`'s unconditional conjunct at once (the `def₂ = def₃` proof-of-concept does **not**: DZ has `def₂ = 11`). It is **EXISTENTIAL, not generic** — the pencil stratum is the planar-atom molecular stratum ((BE-16)) — so one witness per graph settles it; the falsification arm answers **positively** (774/774 exact-ℚ certificates). **ROUTES CLOSED, DO NOT RE-OPEN:** the ear-decomposition induction ((BE-43), **S-mark's pin STANDS**); the falsification arm ((BE-15) — cap-free for the **TRIANGLE** mechanism only, its own scope correction recording a landed **general** rule needing neither triangle nor adjacency, measured at (BE-23)(ii)); the `G²` apparatus, its gate the literal negation of the pencil condition ((BE-17)); the transversality count ((BE-16)(iv), (BE-27)). **THE DECOMPOSITION IS EXHAUSTIVE** — 1-cuts compose ((BE-18)), 3-connected ⇒ `def₂ = 0` ((BE-20)), the 2-cut `def₃` law is `max(g₁+g₂, f₁+f₂−6)` ((BE-21)/(BE-23)) — so the base `{3-connected} ∪ {max deg ≤ 2} ∪ {def₂ = def₃}` is **FREE**, leaving **only the 2-cut composition lemma**, *attains ⟺ `dim(ρ̄₁+ρ̄₂) = min(δ₁+δ₂,6)`* ((BE-22)), **PINNED as S-mark**, simultaneity **VACUOUS**, LEAF base free ((BE-25)); one residue, **cross-pair welding** ((BE-28)(i), measured, no argument). At a 2-cut `δ_{uv}(H) = max(0, δ₁+δ₂−6)` ((BE-73)(ii)), so **one rigid side kills the general-position half outright** ((BE-22)(vi)). **THE GEOMETRY.** For an **EAR**, `ρ̄₂` spans a chain on the Klein quadric with ends `Π_u, Π_v` ((BE-30), and (BE-30)(iv) gives the unconditional `ρ ≤ dist`), its bad locus **exactly three mechanisms** (P)/(Z)/(R) ((BE-33)), every trap a configuration artifact ((BE-34)); off the ear `ρ̄` obeys an exact **series/parallel recursion** — series sums, parallel intersects — refuting the path-intersection bound as an equality ((BE-31)). The **combinatorial half is the SHORT-CYCLE LAW**: `g` supermodular, `δ = 0` an **equivalence relation**, quotient sparsity giving `girth(Q) ≥ 6` ((BE-39)), so every `≤ 6`-cycle forces `δ = 0` ((BE-40)), **CONTAINING** the three merge theorems ((BE-32)). **(BE-32)(+)** — *forced `π_u = π_v` ⇒ `δ_{uv} = 0`* — is **PROVED at 196 043 of 203 723 forced pairs** and 100 % of the exhaustive `n ≤ 6` tier, residue the geometry-free **SPREAD step** ((BE-41)). **THE EAR CASE: (α) CLOSED** ((BE-35)); **(β) PROVED AT THE WINDOW BY A CLASS THEOREM**, per-shape residue outside it. (β) as stated is **FALSE** at `δ₁ ≥ 5`; the correct `loss ≤ max(0, δ₁+δ₂−6)` is what the landed driver already tests, **no measurement changed** ((BE-36)); its *"every configuration"* quantifier **collapses** to one generic draw, the rest three generic-position statements in **87 of 91** cases ((BE-37)), proved for the all-S piece and transferred at `dist ≤ 4` ((BE-38)). **(b2) is a COROLLARY of (b1)** ((BE-42)); the sharpening `ρ̄₁ ∩ Π_u = 0` is **FALSE at a DICHOTOMY** — series end or path-saturated — correcting (BE-38)(iii), **no measurement changed** ((BE-45)), bounded by a **count, not a proviso** ((BE-44)), genericity proviso **DISCHARGED** ((BE-46)). Every other failure discharges (b2) except **series at BOTH ends with `δ₁ ≤ 4`**, where (b2) ⟺ `ρ̄₁ ∩ Z = ⟨ℓ_u, ℓ_v⟩` ((BE-47)/(BE-48)) — **NOW A CLASS THEOREM**: by a double peel and the **modular law** the ends see the middle through **ONE hyperplane and ONE functional**, `δ₁ ≤ 4` exactly that rank-one budget, so all three clauses hold at **every window piece** on the 87-of-91 domain — the window **NOT the barbells** — **MODULO (S1)/(S2)**, vacuous at every drawn piece, **NOT theorems** ((BE-54)–(BE-58)). **(b3) is the CHEAPEST, by a SEPARATION THEOREM**, so (β)'s two residues are **DISJOINT** ((BE-50)), its domain **STRUCK** at `π_u = π_v` ((BE-49)); (BE-37)(ii)'s stated *inference* is **CORRECTED**, (Z) dominating (R), every figure standing ((BE-51)); openness, properness and irreducibility make **one exact-ℚ witness per shape a proof** ((BE-52)), 0 failures at 637 guarded draws ((BE-53)). **THE GENERAL-PIECE SIDE — the INTERNAL R-NODE.** `ρ̄` at every SPQR node obeys ONE **decorated-skeleton law** (leaf line, `S` sums, `P` intersects, `R` the decorated kernel), exact at every configuration ((BE-59)/(BE-60)); the (BE-22)(vi) collapse there is the checkable `δ_{xy}(B − uv − e) = 0`, exhaustive at `n ≤ 6`, the **prism failing at two rungs** ((BE-61)); drawn (α)/(β) content is **EMPTY** (24/24), leaving the **achievable-decorations class statement** ((BE-62)), the chord step priced as the harder coordinate ((BE-63)). **THAT STATEMENT IS REDUCED TO EARS**: the pencil condition is a **per-vertex conjunction**, so at fixed hub flags any piece's legal configurations are a **PRODUCT of ear chains, one per topological branch, MODULO the cross-branch proviso `G`** ((BE-64)) — per-child sets past ears never needed — the theta child a corollary with generic `dim ρ̄ = max(0, Σ_j min(a_j,6) − 12)` and welded attainment **FREE** ((BE-66)(i)/(ii)). The residual coupling is the **flag base**, §(K-chart)'s own tower, free iff no two hubs are adjacent and otherwise a pencil-realization problem for the hub subgraph, **(CH-1)** supplying irreducibility, rationality and dense ℚ-points ((BE-65)). The small-`m` correction (BE-30)(iii) does **not** stay in its branch: at `π_x = π_y` two length-3 branches have EQUAL spans `Λ²π`, so `ρ̄` **exceeds** general position at 7 of 30 rows, all **NON-ATTAINING** ((BE-66)(iii)/(iv)). Half (B) holds at **28/28** peels (14 with a theta child) as **per-piece** theorems ((BE-67)(i)/(ii)); its **CLASS** quantifier ((BE-67)(iii)) and the flag base off the no-adjacent-hubs class are the residue ((BE-68)). **THAT CLASS QUANTIFIER IS NOW ONE NUMBER PER PEEL, AND THE EXHAUSTIVENESS OBLIGATION IS RETIRED.** The good locus is **Zariski-open** on the irreducible `Chart(H)`, hence **DENSE or EMPTY** — a failure is never a phenomenon at a special point, and one exact-ℚ draw computes the generic **reach** ((BE-69)); and **no topological branch crosses a 2-cut**, so at fixed flags `ρ̄₁, ρ̄₂` are functions of **DISJOINT coordinate blocks** sharing exactly **ONE datum, the flag pair**, the achievable pairs being the full product **modulo `G`** ((BE-70), MIX-measured 42/42). So a third mechanism could only appear as a **reach shortfall**; two lower bounds transfer, completeness is **NOT claimed**, and the Klein-**ruling** candidate collapses ((BE-71)). **`G` IS SETTLED ON (CH-1)'s CLASS**: `G` empty at *every* flag ⟺ `Chart(H) = ∅`, impossible under `hcard` + min degree 2 + girth `≥ 4`; isolated emptiness is real (a **triangle on two hubs**, 120/120) and **ABSORBED** by the existential ((BE-72)). **(BE-66)(iv)'s REASON is REFUTED** — the landed *general* rule forces `π_u = π_v` at NON-adjacent pairs (`K_{2,3}`) — its **CONCLUSION standing** instead from (BE-32)(+) + (BE-22)(vi). Enumerated: **3 497** forced R-node-shaped peels, **all** with `min(δ₁,δ₂) = 0`; **24 874** both-flexible R-node peels, **none** forced; off that shape forcing with both flexible is **common (408)**, so the **R-node hypothesis is LOAD-BEARING**. Residue: **CROSS-CUT-ONLY forcing**, none found under cap, its proof obligation the **SPREAD step** — now the last gap in half (B)'s discharge. BWIN's opaque-subspace machine does **NOT transport** and **need not**: (BE-70) is stronger ((BE-73)). **(BE-14) OPEN; the ear case REDUCED, not proved, and (β) at the window MODULO (S1)/(S2); half (B) REDUCED to the uniformity of one number; `hbareSplit` untouched; not a PENCIL event** |
+| **(K-bare)/(K-bare-ext)** | (K-bare-ext) BE1–BE78 | **`hbareSplit` OPEN, carried as PINNED** (*"C: cheap numerics extensions + A"*, 2026-07-30; option B NOT commissioned), and the **`∀`-seed form is REFUTED** (probe KBARE-FALSIFY, tier **T1**, a *route* finding — the **KERNEL is untouched**). The **extension route is NO-GO on landed machinery**, definitionally: at `¬PencilNondegFeasible` the chart/reseed/engine apparatus has nothing to consume, and the `∃`-seed + repair alternative meets §(K-tight) *Step 5*'s chartless wall. ***Steps BE1–BE13* are HISTORY**, cited by label: the motive off the Lean bodies ((BE-10)), bare realizability **UNCONDITIONAL** ((BE-11)), the pencil condition one hub determinant each ((BE-12)), the cone cap `rank = 6(|V|−1) − def₂(G)` ((BE-13)). **THE TARGET IS (BE-14), DIRECT ATTAINMENT** — *the pencil stratum attains `6(|V|−1) − def₃(G)`*, seed-free and induction-free, discharging `hbareSplit` **and** `PencilPair`'s unconditional conjunct at once (the `def₂ = def₃` proof-of-concept does **not**: DZ has `def₂ = 11`). It is **EXISTENTIAL, not generic** — the pencil stratum is the planar-atom molecular stratum ((BE-16)) — so one witness per graph settles it; the falsification arm answers **positively** (774/774 exact-ℚ certificates). **ROUTES CLOSED, DO NOT RE-OPEN:** the ear-decomposition induction ((BE-43), **S-mark's pin STANDS**); the falsification arm ((BE-15) — cap-free for the **TRIANGLE** mechanism only, its own scope correction recording a landed **general** rule needing neither triangle nor adjacency, measured at (BE-23)(ii)); the `G²` apparatus, its gate the literal negation of the pencil condition ((BE-17)); the transversality count ((BE-16)(iv), (BE-27)). **THE DECOMPOSITION IS EXHAUSTIVE** — 1-cuts compose ((BE-18)), 3-connected ⇒ `def₂ = 0` ((BE-20)), the 2-cut `def₃` law is `max(g₁+g₂, f₁+f₂−6)` ((BE-21)/(BE-23)) — so the base `{3-connected} ∪ {max deg ≤ 2} ∪ {def₂ = def₃}` is **FREE**, leaving **only the 2-cut composition lemma**, *attains ⟺ `dim(ρ̄₁+ρ̄₂) = min(δ₁+δ₂,6)`* ((BE-22)), **PINNED as S-mark**, simultaneity **VACUOUS**, LEAF base free ((BE-25)); one residue, **cross-pair welding** ((BE-28)(i), measured, no argument). At a 2-cut `δ_{uv}(H) = max(0, δ₁+δ₂−6)` ((BE-73)(ii)), so **one rigid side kills the general-position half outright** ((BE-22)(vi)). **THE GEOMETRY.** For an **EAR**, `ρ̄₂` spans a chain on the Klein quadric with ends `Π_u, Π_v` ((BE-30), and (BE-30)(iv) gives the unconditional `ρ ≤ dist`), its bad locus **exactly three mechanisms** (P)/(Z)/(R) ((BE-33)), every trap a configuration artifact ((BE-34)); off the ear `ρ̄` obeys an exact **series/parallel recursion** — series sums, parallel intersects — refuting the path-intersection bound as an equality ((BE-31)). The **combinatorial half is the SHORT-CYCLE LAW**: `g` supermodular, `δ = 0` an **equivalence relation**, quotient sparsity giving `girth(Q) ≥ 6` ((BE-39)), so every `≤ 6`-cycle forces `δ = 0` ((BE-40)), **CONTAINING** the three merge theorems ((BE-32)). **(BE-32)(+)** — *forced `π_u = π_v` ⇒ `δ_{uv} = 0`* — is a **THEOREM** ((BE-74)), for the aggressive operator and three widenings of it, in the stronger form *no optimal partition separates a forced pair*: a block of an optimal partition **absorbs at most TWO** points of an outside vertex's closed star (an edge route and a path route make a triangle of `Q`, two paths a `4`-cycle, two edges coincide) and the closure admits on **THREE** — so the **star-2/SPREAD split is RETIRED**, (BE-32)(ii)/(iii) are its `|B| = 1` case, threshold `2` fails as it must, and the coordinator's closure-restriction hypothesis is **MOOT**, its scope change never paid ((BE-75)). **(BE-41)(ii) is REFUTED AS STATED** by its own sibling (BE-41)(iii) and retired, five surfaces annotated ((BE-76)). **THE EAR CASE: (α) CLOSED** ((BE-35)); **(β) PROVED AT THE WINDOW BY A CLASS THEOREM**, per-shape residue outside it. (β) as stated is **FALSE** at `δ₁ ≥ 5`; the correct `loss ≤ max(0, δ₁+δ₂−6)` is what the landed driver already tests, **no measurement changed** ((BE-36)); its *"every configuration"* quantifier **collapses** to one generic draw, the rest three generic-position statements in **87 of 91** cases ((BE-37)), proved for the all-S piece and transferred at `dist ≤ 4` ((BE-38)). **(b2) is a COROLLARY of (b1)** ((BE-42)); the sharpening `ρ̄₁ ∩ Π_u = 0` is **FALSE at a DICHOTOMY** — series end or path-saturated — correcting (BE-38)(iii), **no measurement changed** ((BE-45)), bounded by a **count, not a proviso** ((BE-44)), genericity proviso **DISCHARGED** ((BE-46)). Every other failure discharges (b2) except **series at BOTH ends with `δ₁ ≤ 4`**, where (b2) ⟺ `ρ̄₁ ∩ Z = ⟨ℓ_u, ℓ_v⟩` ((BE-47)/(BE-48)) — **NOW A CLASS THEOREM**: by a double peel and the **modular law** the ends see the middle through **ONE hyperplane and ONE functional**, `δ₁ ≤ 4` exactly that rank-one budget, so all three clauses hold at **every window piece** on the 87-of-91 domain — the window **NOT the barbells** — **MODULO (S1)/(S2)**, vacuous at every drawn piece, **NOT theorems** ((BE-54)–(BE-58)). **(b3) is the CHEAPEST, by a SEPARATION THEOREM**, so (β)'s two residues are **DISJOINT** ((BE-50)), its domain **STRUCK** at `π_u = π_v` ((BE-49)); (BE-37)(ii)'s stated *inference* is **CORRECTED**, (Z) dominating (R), every figure standing ((BE-51)); openness, properness and irreducibility make **one exact-ℚ witness per shape a proof** ((BE-52)), 0 failures at 637 guarded draws ((BE-53)). **THE GENERAL-PIECE SIDE — the INTERNAL R-NODE.** `ρ̄` at every SPQR node obeys ONE **decorated-skeleton law** (leaf line, `S` sums, `P` intersects, `R` the decorated kernel), exact at every configuration ((BE-59)/(BE-60)); the (BE-22)(vi) collapse there is the checkable `δ_{xy}(B − uv − e) = 0`, exhaustive at `n ≤ 6`, the **prism failing at two rungs** ((BE-61)); drawn (α)/(β) content is **EMPTY** (24/24), leaving the **achievable-decorations class statement** ((BE-62)), the chord step priced as the harder coordinate ((BE-63)). **THAT STATEMENT IS REDUCED TO EARS**: the pencil condition is a **per-vertex conjunction**, so at fixed hub flags any piece's legal configurations are a **PRODUCT of ear chains, one per topological branch, MODULO the cross-branch proviso `G`** ((BE-64)) — per-child sets past ears never needed — the theta child a corollary with generic `dim ρ̄ = max(0, Σ_j min(a_j,6) − 12)` and welded attainment **FREE** ((BE-66)(i)/(ii)). The residual coupling is the **flag base**, §(K-chart)'s own tower, free iff no two hubs are adjacent and otherwise a pencil-realization problem for the hub subgraph, **(CH-1)** supplying irreducibility, rationality and dense ℚ-points ((BE-65)). The small-`m` correction (BE-30)(iii) does **not** stay in its branch: at `π_x = π_y` two length-3 branches have EQUAL spans `Λ²π`, so `ρ̄` **exceeds** general position at 7 of 30 rows, all **NON-ATTAINING** ((BE-66)(iii)/(iv)). Half (B) holds at **28/28** peels (14 with a theta child) as **per-piece** theorems ((BE-67)(i)/(ii)); its **CLASS** quantifier ((BE-67)(iii)) and the flag base off the no-adjacent-hubs class are the residue ((BE-68)). **THAT CLASS QUANTIFIER IS NOW ONE NUMBER PER PEEL, AND THE EXHAUSTIVENESS OBLIGATION IS RETIRED.** The good locus is **Zariski-open** on the irreducible `Chart(H)`, hence **DENSE or EMPTY** — a failure is never a phenomenon at a special point, and one exact-ℚ draw computes the generic **reach** ((BE-69)); and **no topological branch crosses a 2-cut**, so at fixed flags `ρ̄₁, ρ̄₂` are functions of **DISJOINT coordinate blocks** sharing exactly **ONE datum, the flag pair**, the achievable pairs being the full product **modulo `G`** ((BE-70), MIX-measured 42/42). So a third mechanism could only appear as a **reach shortfall**; two lower bounds transfer, completeness is **NOT claimed**, and the Klein-**ruling** candidate collapses ((BE-71)). **`G` IS SETTLED ON (CH-1)'s CLASS**: `G` empty at *every* flag ⟺ `Chart(H) = ∅`, impossible under `hcard` + min degree 2 + girth `≥ 4`; isolated emptiness is real (a **triangle on two hubs**, 120/120) and **ABSORBED** by the existential ((BE-72)). **(BE-66)(iv)'s REASON is REFUTED** — the landed *general* rule forces `π_u = π_v` at NON-adjacent pairs (`K_{2,3}`) — its **CONCLUSION standing** instead from (BE-32)(+) + (BE-22)(vi). Enumerated: **3 497** forced R-node-shaped peels, **all** with `min(δ₁,δ₂) = 0`; **24 874** both-flexible R-node peels, **none** forced; off that shape forcing with both flexible is **common (408)**, so the **R-node hypothesis is LOAD-BEARING**. Residue: **CROSS-CUT-ONLY forcing**, none found under cap — its proof obligation the SPREAD step, **now DISCHARGED**, so **(BE-73)(ii)(b) and BRULE's `π_u = π_v` corner are UNCONDITIONAL**. The closure **FACTORIZES at a peel** (the first cut terminal is always admitted one-sidedly, 39 736/0), so cross-cut-only forcing with both sides flexible forces **`δ₁ = δ₂ = 1`** — BPEEL's 408 off-R-node positives are **408/408** that, and its census-3 zero is **VACUOUS**, `0` of 24 874 at `(1,1)`. Job 2 is now one closure-free question, *can an R-node-shaped peel have `δ₁ = δ₂ = 1`?*, empty over 43 763 R-node + 932 `(1,1)` peels in two tiers ((BE-77)/(BE-78)). BWIN's opaque-subspace machine does **NOT transport** and **need not**: (BE-70) is stronger ((BE-73)). **(BE-14) OPEN; the ear case REDUCED, not proved, and (β) at the window MODULO (S1)/(S2); half (B) REDUCED to the uniformity of one number; `hbareSplit` untouched; not a PENCIL event** |
 
 **Shapes no *class-uniform* mechanism covers** (the class program's uncovered
 flanks, all from §(K-slide-comb) *Step D5* + §(K-slide) *Step 5*): `χ(G°) ≥ 5` —
@@ -21920,8 +21920,25 @@ closed star is coplanar** — and that reading is what (BE-43)(iii) rests on.
 > **proved with no measurement at all**; the exhaustive `n = 3…6` tier is
 > **100 %** proved and every unproved pair is at `n ≥ 7`.
 
-> **(BE-41)(ii)** *(the residue, stated exactly, and it is geometry-free)* What
-> is left of (BE-32)(+) is
+> **(BE-41)(ii)** *(the residue, stated exactly, and it is geometry-free)*
+>
+> > **CORRECTION, 2026-09-01 (direction BSPREAD, *Steps BE73/BE75* /
+> > (BE-74)/(BE-76)) — read this clause with its carve-out, and then read
+> > (BE-74).** The displayed sentence below is **FALSE as a universal
+> > statement**, and it is refuted by **(BE-41)(iii) immediately after it**:
+> > 4 of that family's 8 members carry an aggressively-forced pair whose
+> > shortest cycle has length `7` or `8`. The escape is **asserted non-empty**
+> > by this direction's own driver (`bearfull.py chain`, and re-derived at
+> > `bspread.py chain`), so the measurement line below reports `0` escapes over
+> > the **random and enumerated** tiers only — the **constructed** tier
+> > escapes **by design**. **(BE-32)(+) was never in danger**: `δ = 0` at
+> > every member, and it is now a **theorem** ((BE-74)), proved without any
+> > cycle certificate. So this clause is **RETIRED, not repaired**: the
+> > `≤6`-cycle class is a **sufficient** certificate for `δ = 0`
+> > ((BE-40)) that the aggressive closure can **escape** ((BE-41)(iii)), and
+> > (BE-32)(+) does not depend on it.
+>
+> What is left of (BE-32)(+) is
 >
 > **every aggressively-forced pair lies in one `≤6`-cycle class**,
 >
@@ -21931,7 +21948,9 @@ closed star is coplanar** — and that reading is what (BE-43)(iii) rests on.
 > different closed stars and no two share one, so no `≤4`-cycle is available at
 > `v`.
 >
-> Measured: **203 723** forced pairs, **`0`** outside a `≤6`-cycle class; and
+> Measured: **203 723** forced pairs, **`0`** outside a `≤6`-cycle class
+> **in the random and enumerated tiers** (the constructed tier of (BE-41)(iii)
+> **escapes by design**, and is the counterexample — correction above); and
 > at `n ≤ 7`, where `δ` is affordable directly, **144 539** forced pairs with
 > **`0`** having `δ ≠ 0`.
 
@@ -22206,11 +22225,15 @@ combinatorial law ((BE-43)(ii)).
   successor (2) is discharged.** Successor (3), the internal R-node, is
   **confirmed** on the critical path by job 3 and is now the arc's sole named
   residue of the 2-cut lemma alongside the spread step and cross-pair closure.
-- **What it will cost next.** **(1)** The **SPREAD STEP** — *every
-  aggressively-forced pair lies in one `≤6`-cycle class* — pure graph theory,
+- **What it will cost next.** **(1)** The **SPREAD STEP** — stated here as
+  *every aggressively-forced pair lies in one `≤6`-cycle class*, which
+  **direction BSPREAD found REFUTED as stated** (2026-09-01, (BE-76)) and then
+  **CLOSED by a different tool**: the residue is *forced ⇒ `δ = 0` at the
+  spread steps*, and **(BE-74) proves it outright** — pure graph theory,
   55 known instances, and the merge inequality is **known** not to reach it
-  (a 7-cycle of `Q` has slack `−1`), so a successor needs a different tool or a
-  restriction of the closure operator. **(2)** **(b1) sharpened to `0`**, which
+  (a 7-cycle of `Q` has slack `−1`), so the successor needed a different tool
+  or a restriction of the closure operator, and the **different tool** is
+  (BE-39)(i) spent on the closure's admission rule rather than on cycles. **(2)** **(b1) sharpened to `0`**, which
   is now carrying **both** (b1) and (b2). **(3)** The **internal R-node**, and
   its new alternative coordinate: the **chord step** *(BE-14) + clause for `G`
   ⟹ for `G + uv`*, whose combinatorial half is free. **(4)** **Cross-pair
@@ -22274,8 +22297,15 @@ tiers and the `n = 9…13` blind hunt.
    `δ ≤ max(0, L−6)` column is read at the shortest common cycle of length
    `≤ 8` and is **silent** about pairs whose only common cycles are longer.
 3. **(BE-41)(ii) is MEASURED, not proved**, and is the load-bearing cap of job
-   1. It reads *"no aggressively-forced pair outside a `≤6`-cycle class was
-   found under this cap"*, never *"none exists"*. The `n = 7, 8, 9` tiers are
+   1. **CORRECTED 2026-09-01 (direction BSPREAD, (BE-76)): this disclosure is
+   WEAKER THAN THE TRUTH and under-reports a KNOWN refutation.** It reads *"no
+   aggressively-forced pair outside a `≤6`-cycle class was found under this
+   cap"*, never *"none exists"* — but one **is** known to exist, by
+   construction, at (BE-41)(iii) in this same direction. The honest form is
+   *"the escape set is non-empty and constructed; the tiers below sample the
+   region where none was found"*. A cap disclosure that under-reports a known
+   refutation is the F11 hazard running backwards. (The clause itself is now
+   **retired** by (BE-74), which proves (BE-32)(+) with no cycle certificate.) The `n = 7, 8, 9` tiers are
    1 400 seeded masks each; the `n = 9…13` blind hunt is seeded random and
    computes `δ` at every not-connected pair **and two further forced pairs per
    graph**, not at all of them.
@@ -22329,7 +22359,7 @@ flight. The consumer lists to extend are the `kbare/`, `battain`, `bzavoid`,
 | (BE-40)(iii) `δ ≤ max(0, L−6)` | **PROVED**, swept at 289 000 pairs to `L ≤ 8` |
 | (BE-40)(iv) (BE-32)(iii) weakens to `≥ 2` common neighbours | **PROVED**, swept at 61 770 pairs |
 | (BE-41)(i) star-2 step | **PROVED**; covers 401 489/401 544 steps and 196 043/203 723 pairs |
-| (BE-41)(ii) forced ⟹ `≤6`-cycle class | **MEASURED** at 203 723 + 27 414 pairs, 0 escapes — the job's load-bearing cap |
+| (BE-41)(ii) forced ⟹ `≤6`-cycle class | **REFUTED AS STATED** (2026-09-01, direction BSPREAD (BE-76)) — the 203 723 + 27 414 pairs with 0 escapes are the **random/enumerated** tiers; the **constructed** tier on the next row escapes **by design**. **RETIRED, not repaired**: (BE-74) proves (BE-32)(+) with no cycle certificate |
 | (BE-41)(iii) the boundary family | **CONSTRUCTED**; `δ = 0` asserted at every member |
 | (BE-42)(i) the Grassmann bound | **PROVED**; exact at every draw, tight at 144 |
 | (BE-42)(ii) (b1) ⟹ (b2) at `δ₁ ≥ 5`, and always from `0` | **PROVED** |
@@ -25635,6 +25665,17 @@ hold binds.**
 > cap (1) this is **"none found"**, and it is **not** *"there is no third
 > mechanism"*.
 >
+> > **CORRECTION, 2026-09-01 (direction BSPREAD, *Step BE76* / (BE-77)(iii)) —
+> > the NON-VACUITY CHECK ABOVE POINTS AT THE WRONG DENOMINATOR.** By
+> > (BE-77)(ii), forced-with-both-sides-flexible at a 2-cut forces
+> > **`δ₁ = δ₂ = 1`**, so the only shape a hit can take is `(1,1)`; and of
+> > these **24 874** both-flexible R-node peels, **`0`** sit at `(1,1)`. So
+> > *"the hunt had that many chances"* is **`0` chances, not 24 874**, and the
+> > zero here is **vacuous at the only shape a hit can have**. Nothing else in
+> > this clause moves: the 3 497 and the 408 stand, and (BE-77)(ii)
+> > **explains** the 408 — all of them sit at `(1,1)`, 408/408. The re-aimed
+> > hunt is (BE-77)(iv), and it is still *"none found under cap"*.
+>
 > **And one fact that is new, not a null result: the R-node hypothesis is
 > LOAD-BEARING.** Off the R-node shape — at P-node and S-node peels, which
 > (BE-67)(iii) does **not** quantify over — forcing with both sides flexible is
@@ -25648,8 +25689,12 @@ hold binds.**
 > peel by the two sides **together**, inside neither alone, with both sides
 > flexible. It is not covered by (BE-73)(ii)(b) (which needs one-sidedness) and
 > the whole-piece reading is vacuous by (ii)(a). **None was found under cap
-> (1).** Its proof obligation is the **SPREAD step** ((BE-41)(ii)) plus the
-> one-sided reduction — which is why this direction **re-ranks the spread step**
+> (1).** Its proof obligation is the **SPREAD step** — named here as
+> **(BE-41)(ii)**, which **direction BSPREAD found refuted as stated**
+> ((BE-76)) and then **closed by a different tool** ((BE-74)); the residue is
+> therefore **discharged**, and what is left of this clause is the reduction
+> (BE-77) makes of it, *can an R-node-shaped peel have `δ₁ = δ₂ = 1`?* — plus
+> the one-sided reduction — which is why this direction **re-ranks the spread step**
 > from *"the last 3.8 % of (BE-32)(+)"* to **the last gap in half (B)'s
 > discharge**, a routing consequence and the direction's most useful sentence
 > for the board.
@@ -25803,9 +25848,9 @@ are local to this driver.
 | (BE-72)(iii) forced-empty `G` ⟺ empty chart; impossible on (CH-1)'s class | **PROVED given (CH-1)(a)** — the bijection is (BE-64)(ii), the nonemptiness is cited |
 | (BE-73)(i) (BE-66)(iv)'s stated reason is refuted | **PROVED** — `K_{2,3}` asserted, and the general rule is landed in (BE-15)(ii)'s own scope correction |
 | (BE-73)(ii)(a) `δ_{uv}(H) = max(0, δ₁+δ₂−6)` | **PROVED** from (BE-21) + (BE-18); asserted 19 991/19 991 |
-| (BE-73)(ii)(b) one-sided forcing ⇒ no general-position content | **PROVED given (BE-32)(+)**, which is itself 96.2 % proved with the spread-step residue |
-| (BE-73)(iii) the census; the R-node hypothesis is load-bearing | **MEASURED**, capped (cap 1); the 408 off-R-node instances are the positive half |
-| (BE-73)(iv) cross-cut-only forcing is the residue | **STATED** — a named open item, none found under cap |
+| (BE-73)(ii)(b) one-sided forcing ⇒ no general-position content | **PROVED** — the proviso is discharged: (BE-32)(+) is a theorem as of 2026-09-01, direction BSPREAD (BE-74)(ii). *(As landed here it read "PROVED given (BE-32)(+), which is itself 96.2 % proved with the spread-step residue".)* |
+| (BE-73)(iii) the census; the R-node hypothesis is load-bearing | **MEASURED**, capped (cap 1); the 408 off-R-node instances are the positive half. **Its non-vacuity denominator is CORRECTED** at (BE-77)(iii): 0 of the 24 874 sit at the only shape a hit can have |
+| (BE-73)(iv) cross-cut-only forcing is the residue | **STATED** — a named open item, none found under cap; **REDUCED** at (BE-77) to *can an R-node-shaped peel have `δ₁ = δ₂ = 1`?* |
 | (BE-73)(v) BWIN does not transport | **ARGUED**, and the coordinator's own expectation confirmed |
 
 ### What would change this
@@ -25814,10 +25859,15 @@ are local to this driver.
   flexible** would put the confinement back on the consumer's path and would be
   the third mechanism this direction did not find. It is **combinatorial**, the
   driver would find it as a `force` hit, and it is the sharpest single question
-  this landing leaves.
-- **A proof of the SPREAD step** ((BE-41)(ii)) would upgrade (BE-73)(ii)(b) from
+  this landing leaves. **NARROWED, 2026-09-01 (direction BSPREAD, (BE-77)): any
+  such coincidence has `δ₁ = δ₂ = 1`, so the question is now the
+  closure-free one *can an R-node-shaped 2-cut peel have `δ₁ = δ₂ = 1`?*
+- **A proof of the SPREAD step** would upgrade (BE-73)(ii)(b) from
   *96.2 %-proved* to a theorem and close the one-sided case outright. That is
-  the re-ranking this direction asks the board to record.
+  the re-ranking this direction asks the board to record. **DONE, 2026-09-01
+  (direction BSPREAD): (BE-74) proves (BE-32)(+) outright, so (BE-73)(ii)(b) is
+  a theorem.** The clause named here as the obligation, **(BE-41)(ii)**, was
+  itself refuted as stated ((BE-76)) and is **retired**, not proved.
 - **A piece off (CH-1)'s three hypotheses** — `hcard` failing, girth `3` — makes
   (BE-69)(ii) and (BE-72)(iii) both unavailable; the girth-3 case is exactly
   (BE-72)(ii)'s control, where `G` really is empty at the generic flag.
@@ -25837,3 +25887,601 @@ produced. **E2: NO** — nothing landed is refuted **except one stated reason**:
 re-derived here from (BE-32)(+) and stands; every landed measurement is intact,
 and (BE-64)–(BE-67) are untouched. **E3: ARMED by GBAL, not fired** — this
 direction is on the §(K-bare-ext) path, not (a′); reported, not acted on.
+
+## §(K-bare-ext) — continuation (direction BSPREAD): **(BE-32)(+) IS A THEOREM** — the spread step closes not by a better cycle certificate but by spending (BE-39)(i) on the **closure's own admission rule** instead of on cycles of `G`, where it never runs out; a block of an optimal partition absorbs **at most two** points of any outside vertex's closed star and the closure admits on **three**, so the star-2 / spread **split is retired**, not its second half closed. **(BE-41)(ii) is CONFIRMED REFUTED** as stated (job 0) and annotated at five surfaces. And job 2's cross-cut-only forcing is **confined to `δ₁ = δ₂ = 1`**, which exposes BPEEL's census-3 zero as **vacuous at the only shape the theorem allows**
+
+Direction **BSPREAD** (`notes/Pencil-fanout.md` §"BSPREAD", ordinal 55), the
+arc's sixty-third, at **(BE-32)(+) at the SPREAD steps** — *forced `π_u = π_v`
+⇒ `δ_{uv} = 0`* where (BE-41)(i)'s star-2 certificate does not apply, **55** of
+401 544 forcing steps, **7 680** of 203 723 pairs. BPEEL's successor (1), taken
+after the coordinator re-ran the F26 consumer trace, which this time
+**corrected the target**. Read against *Step BE40* (BEARFULL, (BE-41)),
+*Steps BE38–BE39* (BEARFULL, (BE-39)/(BE-40)), *Steps BE19–BE23* (BINDUC,
+(BE-22)/(BE-23)(ii)) and *Step BE72* (BPEEL, (BE-73)), whose figures are
+**cited, never re-run** except where a mode re-derives one on purpose and says
+so. Driver `notes/scripts/w4/bspread.py` (`lemma|chain|peel|validate`),
+importing `bearfull` / `bpeel` / `btwocut` / `bimage` / `bzavoid` **read-only**
+and through them the rest of the chain; every rng seeded from the printed
+literal `20260901`, exact integer arithmetic throughout, every cap disclosed.
+
+**WHICH DELIVERABLE THIS IS — said at the top, as the spec demands.**
+**HIT shape 1**, and it is the first time the arc has had one on this item:
+**(BE-32)(+) is PROVED OUTRIGHT for the aggressive operator** — not for a
+restriction of it, and in fact for **three widenings** of it as well, so the
+scope change the coordinator's route hypothesis would have had to pay is
+**never incurred**. Also **HIT shape 5** (job 0's correction landed, and the
+coordinator's reading of it confirmed), **HIT shape 2** for job 2 (cross-cut-only
+forcing reduced to a named, purely combinatorial checkable condition), and
+**NOT HIT shape 3** — no genuinely-forced pair with `δ ≠ 0` exists, because
+there are none at all.
+
+**Status, stated before the mathematics.**
+
+- **(BE-74), THE BLOCK-ABSORPTION LEMMA — PROVED, and it is the whole
+  direction.** Let `P` be an **optimal** partition, `B` one of its blocks, and
+  `A := ⋃_{w ∈ B} N[w]`. Then for **every** vertex `v ∉ B`: if `v` has a
+  neighbour `b ∈ B` (necessarily unique) then `N[v] ∩ A = {v, b}` **exactly**;
+  otherwise `|N[v] ∩ A| ≤ 1`. So **`|N[v] ∩ A| ≤ 2` always** — and the closure
+  admits on **three** points. Hence **(BE-32)(+)**, by induction, for **every**
+  forcing step, star-2 and spread alike, **with no cycle anywhere in the
+  proof**.
+- **THE TOOL IS (BE-39)(i), SPENT SOMEWHERE ELSE.** BEARFULL extracted the
+  quotient sparsity law and spent it on **cycles of `G`** ((BE-40)), where it
+  runs out at `6` because a `7`-cycle of `Q` has slack `−1`. Spent on the
+  **closure's own admission rule** it does not run out at all: a vertex outside
+  `B` reaches `B` in `Q` by an **edge** or by a **2-path**; an edge and a path
+  make a triangle of `Q`, two paths make a `4`-cycle, and two edges coincide.
+  Three witnesses need three routes and `Q` has room for two. **(BE-74)(i)**.
+- **THE PROOF IS SHARP, AND THE DRIVER SHOWS WHERE.** The equality case
+  `N[v] ∩ A = {v, b}` is attained at **59 144** of 176 344 enumerated
+  (block, outside vertex) pairs, and the same closure run at threshold **two**
+  separates **363** (pair, optimal partition) instances — so the bound `≤ 2` is
+  met, threshold `3` is exactly one more than it, and nothing here proves too
+  much. That degenerate pair `{v, b}` is precisely the carve-out
+  `bearfull.step_shape` made **by hand** and could not explain. **(BE-74)(iii)**.
+- **THE STAR-2 / SPREAD SPLIT IS RETIRED, NOT HALF-CLOSED.** (BE-41)(i) proved
+  401 489 steps by a `≤4`-cycle at the admitted hub and left 55; (BE-74) proves
+  all 401 544 by one argument, and **(BE-32)(ii)/(iii) fall out as the
+  `|B| = 1` case**. The conclusion delivered is **stronger** than `δ = 0`: *no
+  optimal partition separates a forced pair*, which by (BE-39)(ii) implies the
+  `P_max` form. **(BE-75)**.
+- **THE COORDINATOR'S ROUTE HYPOTHESIS IS MOOT, AND SAYING SO IS THE RESULT.**
+  It proposed **restricting** the closure — dropping spread steps as
+  non-genuine, on the ground that the aggressive rule counts vertices and not
+  independent points. (BE-74) proves the statement for the **unrestricted**
+  operator, and for the operator with the hub restriction dropped on admission,
+  on the seed, and on both; so the retreat is **unnecessary** and its item-(c)
+  scope change across (BE-23)(ii), (BE-15) and every citing surface is **never
+  paid**. Its item-(b) objection — *blocking one derivation does not unforce a
+  pair* — was **sound**, and is exactly why proving the statement for the
+  over-claiming operator is the better object. **(BE-75)(iv)**.
+- **JOB 0 — THE COORDINATOR IS CONFIRMED, off the driver.** **(BE-41)(ii)** —
+  *every aggressively-forced pair lies in one `≤6`-cycle class* — is **FALSE as
+  a universal statement**: **4 of 8** members of (BE-41)(iii)'s own boundary
+  family carry an aggressively-forced pair `(v, t₀)` whose shortest cycle
+  through `v` is `7` or `8`, every admitting step **asserted** a genuine spread
+  step, and `δ = 0` at **all 8**. Five surfaces annotated (F12). And (BE-74)
+  **retires** the clause rather than repairing it. **(BE-76)**.
+- **JOB 2 — CROSS-CUT-ONLY FORCING IS CONFINED TO `δ₁ = δ₂ = 1`, and BPEEL's
+  zero was VACUOUS.** At a 2-cut `{u,v}` with `u ≁ v`: the closure **factorizes
+  at the peel** (the run does not cross the cut before a terminal is admitted,
+  and the first terminal is admitted **one-sidedly** — asserted at **39 736**
+  runs, `0` violations), so forced-with-both-sides-flexible forces
+  **`δ₁ = δ₂ = 1`** — which BPEEL's own **408** instances satisfy **408 / 408**,
+  a population BPEEL reported as a bare count. And of BPEEL's **24 874**
+  R-node-shaped both-flexible peels, **`0`** sit at `(1,1)`: its *"the hunt had
+  that many chances"* had **`0`** chances at the only shape the theorem allows.
+  Re-aimed: **43 763** R-node-shaped peels and **932** `(1,1)` peels over two
+  independent tiers, **intersection empty**. **(BE-77)**.
+- **Verdict: HIT shapes 1, 2, 5.** `PencilPair K 3 G`, `hbareSplit`, (BE-14),
+  the 2-cut composition lemma, S-mark, (BE-39)/(BE-40), (BE-42)(i), (BE-43),
+  (BE-59)/(BE-60), (BE-64), (BE-70), (BE-72) and BWIN's window theorem are
+  **untouched**; **not a PENCIL event**; the phase-boundary consequence is
+  **reported, not acted on**.
+- **Reservation FULLY CONSUMED.** Labels **(BE-74)–(BE-78)** and *Steps
+  BE73–BE77*; nothing returned.
+
+### Standing notation
+
+Inherited from *Steps BE9–BE72* verbatim (`f := def₃`, `g_{uv}`,
+`δ_{uv} := f − g_{uv}`, the partition value `6(|P|−1) − 5 d(P)`, the quotient
+multigraph `Q(P)` and `e_Q(S)`, tight sets, `P_max`, the `≤L`-cycle class, the
+**aggressive plane-class closure**, hub, the **peel** at a 2-cut and its `δ_i`,
+**R-node-shaped**, one-sided vs **cross-cut-only** forcing). Added here:
+
+- for a vertex `z`, `[z]` denotes its block of the ambient optimal partition
+  `P`; a block `B` **absorbs** the set `A := ⋃_{w ∈ B} N[w] = B ∪ N(B)`;
+- for `v ∉ B` and `p ∈ N[v] ∩ A`, the **route** of `p`: the `Q`-edge or
+  `Q`-path of length `2` from `[v]` to `B` that `p` supplies (constructed in
+  *Step BE73*). A route is an **edge route** or a **path route**, and an edge
+  route has a **`[v]`-end**, the endpoint of the underlying `G`-edge lying in
+  `[v]`;
+- the **witness split** of an admission at a peel: the pair
+  `(|N[v] ∩ A ∩ V(H₁)|, |N[v] ∩ A ∩ V(H₂)|)`.
+
+**Carrier check, done off the landed bodies rather than the prose.** No new
+Lean object is read. The closure rule is read off **`bimage.forced_same_plane`'s
+body** and `binduc.flat_forcing_closure`'s (`|N[v] ∩ A| ≥ 3`, a count of
+**vertices**), not off either docstring — the docstring's *"assumes every 3
+forced points are independent"* is the reason the operator **over-claims**, and
+over-claiming is the direction that makes a theorem proved for it **stronger**
+than the consumers need, which is what makes the docstring's caveat harmless
+here rather than a gap to be closed. The partition value and `f`/`g` are read
+off `bearfull.partition_value` / `optimal_partitions` and `btwocut.g_exact`,
+each cross-checked inside the driver against `kbare_common.exact_deficiency`.
+**No `.lean` was opened; the standing 2026-08-05 Lean hold binds.**
+
+### Step BE73 — (BE-74): the block-absorption lemma, and (BE-32)(+) as a theorem
+
+> **(BE-74)(i)** *(proven; **THE BLOCK-ABSORPTION LEMMA**)* Let `P` be an
+> **optimal** partition of `G`, `B ∈ P` a block, and
+> `A := ⋃_{w ∈ B} N[w] = B ∪ N(B)`. Let `v ∉ B`. Then:
+>
+> - if `v` has a neighbour in `B`, that neighbour `b` is **unique** and
+>   **`N[v] ∩ A = {v, b}`** exactly;
+> - if `v` has no neighbour in `B`, then **`|N[v] ∩ A| ≤ 1`**.
+>
+> In particular **`|N[v] ∩ A| ≤ 2`** for every `v ∉ B`.
+>
+> *Proof.* Everything is (BE-39)(i), `5 e_Q(S) ≤ 6(|S|−1)`, read at three
+> sizes: `|S| = 2` gives `e_Q ≤ 1`, so **two blocks are joined by at most one
+> edge of `G`** (in particular the `b` above is unique); `|S| = 3` and `|S| = 4`
+> give `e_Q ≤ 2, 3`, so `Q` has **no triangle and no `4`-cycle**.
+>
+> Give each `p ∈ N[v] ∩ A` a **route** from `[v]` to `B` in `Q`. Since
+> `p ∈ A`, either `p ∈ B` or `p ∈ N[w]` for some `w ∈ B` with `p ∉ B`, whence
+> `p ≠ w` and `pw ∈ E(G)`.
+>
+> - `p ∈ B`: then `p ≠ v` and `p ∈ N(v)`, so `vp` is a `G`-edge joining `[v]`
+>   to `B` — an **edge route** with `[v]`-end `v`.
+> - `p ∉ B` and `p = v`: `vw` joins `[v]` to `B` — an **edge route** with
+>   `[v]`-end `v`.
+> - `p ∉ B`, `p ≠ v`, `[p] = [v]`: `pw` joins `[v]` to `B` — an **edge route**
+>   with `[v]`-end `p`.
+> - `p ∉ B`, `p ≠ v`, `[p] = C ∉ {B, [v]}`: `vp` joins `[v]` to `C` and `pw`
+>   joins `C` to `B` — a **path route** with middle `C`.
+>
+> Now three exclusions. **(1)** An edge route together with a path route with
+> middle `C` gives a **triangle** of `Q` on the three distinct blocks `[v]`,
+> `C`, `B`: forbidden. **(2)** Two path routes with **distinct** middles
+> `C ≠ C′` give the **`4`-cycle** `[v] — C — B — C′ — [v]` on four distinct
+> blocks: forbidden; and two path routes with the **same** middle `C` come from
+> distinct `p ≠ p′` with `vp, vp′` two `G`-edges between `[v]` and `C`:
+> forbidden. **(3)** All edge routes are the **same** `G`-edge `e*` — there is
+> at most one between `[v]` and `B` — so they all have the same `[v]`-end.
+>
+> Consequently, if `v` has a neighbour `b ∈ B` then `v ∈ N[b] ⊆ A`, so both `v`
+> and `b` are in `N[v] ∩ A` and both carry edge routes with `[v]`-end `v`,
+> forcing `e* = vb`; then by (1) there is no path route, and by (3) no edge
+> route with `[v]`-end `≠ v`, and an edge route with `[v]`-end `v` comes only
+> from `p = v` or `p = b`. So `N[v] ∩ A = {v, b}`. If instead `v` has no
+> neighbour in `B`, then `v ∉ A` and no route has `[v]`-end `v`, so by (1)–(3)
+> there is **at most one** route in all. ∎
+>
+> Measured (`bspread.py lemma`), and the measurement is a **check of a proved
+> statement, not its evidence**: **176 344** enumerated (block, outside vertex)
+> pairs over **27 990** optimal partitions of **27 930** graphs — exhaustive
+> over every connected labelled graph on `n = 3…6`, `250` seeded masks at each
+> of `n = 7, 8` — **`0` violations**, with the equality case `{v, b}` attained
+> at **59 144** of them.
+
+> **(BE-74)(ii)** *(proven; **(BE-32)(+)**, and the conclusion is stronger than
+> the statement)* Let `P` be **any** optimal partition, `h` a seed, and
+> `B := [h]`. The aggressive closure's family `fam(h)` satisfies
+> **`fam(h) ⊆ B`**.
+>
+> *Proof.* Induction on the admission order. `h ∈ B`. Suppose the admitted set
+> `F` so far lies in `B`; then `A_F := ⋃_{w ∈ F} N[w] ⊆ A` by monotonicity. A
+> vertex `v` is admitted on `|N[v] ∩ A_F| ≥ 3`; if `v ∉ B` then
+> `|N[v] ∩ A_F| ≤ |N[v] ∩ A| ≤ 2` by (i), a contradiction. So `v ∈ B`. ∎
+>
+> Hence **no optimal partition separates two aggressively-forced vertices**,
+> and in particular, by (BE-39)(ii), **`δ_{uv} = 0`** at every forced pair.
+> **(BE-32)(+) is a theorem.** The stronger form is the one (BE-32)(ii)/(iii)
+> also had and (BE-41) did not; it is what makes the statement compose without
+> appealing to the join lemma at all.
+>
+> Measured: **`0`** separations at **138 394** (pair, optimal partition)
+> instances of the landed operator over the same tier, with the driver's
+> parametrized closure **asserted equal** to `bimage.forced_same_plane` at
+> **27 930 / 27 930** graphs.
+
+> **(BE-74)(iii)** *(proven; **the bound is sharp, and threshold `3` is exactly
+> one more than it**)* The proof never uses `|N[v] ∩ A| ≥ 3` beyond exceeding
+> `2`, so it fails at threshold `2` — and it must, because the equality case is
+> attained: at any `v ∼ b` with `b` admitted, `N[v] ∩ A ⊇ {v, b}` already.
+> Measured: the same closure at threshold `2` **separates 363** (pair, optimal
+> partition) instances at `n = 3…6` alone, the first at
+> `{01, 04, 05, 12, 13}` — a **tree** with two adjacent degree-`3` vertices,
+> where `δ ≠ 0` between them.
+>
+> **This explains a carve-out the arc made by hand.** `bearfull.step_shape`
+> excludes *"the degenerate pair `{v, w}`"* from the star-2 shape with no
+> reason beyond *the cycle it would produce is not a cycle*. It is the same
+> pair, and (BE-74)(i)'s equality case is what it is: the **unique** two-point
+> configuration a block can absorb.
+
+### Step BE74 — (BE-75): what the theorem retires, what it upgrades, and the coordinator's hypothesis
+
+> **(BE-75)(i)** *(the split is **retired**)* (BE-41)(i) proved the **star-2**
+> steps — two of the three admitting points in one closed star — by exhibiting
+> a `3`- or `4`-cycle through `v` and the witness hub, and left the **spread**
+> steps, where no such cycle exists. (BE-74) proves **all** steps by one
+> argument that never mentions a cycle of `G`. So the residue is not closed by
+> a second certificate; the **classification into two shapes has no work left
+> to do**, and `step_shape` becomes a diagnostic rather than a proof device.
+> Concretely: **401 544 of 401 544** forcing steps and **203 723 of 203 723**
+> pairs, against (BE-41)(i)'s 401 489 and 196 043.
+
+> **(BE-75)(ii)** *(containment — (BE-32)(ii)/(iii) are the `|B| = 1` case)*
+> Take `B = {w}` a **singleton** block, so `A = N[w]`. (BE-74)(i) says: if
+> `v ∼ w` then `N[v] ∩ N[w] = {v, w}`, i.e. **`v` and `w` have no common
+> neighbour**; and if `v ≁ w` then `|N[v] ∩ N[w]| ≤ 1`, i.e. **at most one
+> common neighbour**. Contrapositively, a **common triangle** ((BE-32)(ii)) or
+> **two common neighbours** ((BE-32)(iii), weakened as (BE-40)(iv) already
+> found) puts `u, v` in one block of **every** optimal partition. So the two
+> landed merge theorems are the degenerate case of the lemma, exactly as
+> (BE-40) contained them — but now the containment reaches the closure's steps
+> too, which (BE-40)'s could not.
+
+> **(BE-75)(iii)** *(the consumers, and this is the routing payload)* Two
+> surfaces consumed (BE-32)(+) at the **pair** level and inherited its 3.8 %
+> residue verbatim. Both are now unconditional:
+>
+> - **(BE-73)(ii)(b)** — *one-sided forcing at a 2-cut gives `δ_i = 0`, and by
+>   (BE-22)(vi) a rigid side removes the general-position half outright* — was
+>   *"PROVED given (BE-32)(+), which is itself 96.2 % proved"*. It is now
+>   **PROVED**, and half (B)'s located enemy is discharged wherever it is
+>   forced one-sidedly, with **no residue at all**.
+> - **BRULE's job 2**, the `π_u = π_v` corner of (β)'s ledger ((BE-58)(iv),
+>   forced branch) — the same upgrade, on the ear side.
+>
+> **What it does NOT do.** It does not touch (BE-67)(iii)'s class quantifier,
+> `reach`, the flag base, cross-pair welding, (S1)/(S2), or the whole-piece
+> reading of (BE-32)(+) at a 2-cut, which (BE-73)(ii)(a) already showed is
+> near-vacuous. The residue it leaves is job 2's, and that is *Step BE76*.
+
+> **(BE-75)(iv)** *(**the coordinator's route hypothesis, disposed of** —
+> `RESEARCH-ARC.md` §7, and it was labelled *to be tested, not inherited*)*
+> The hypothesis was a **restriction** of the closure: at a spread step make
+> the three witnesses **collinear** in some legal pencil configuration, so the
+> step is not a genuine forcing certificate, leaving the star-2-only closure
+> for which (BE-41)(i) already proves (BE-32)(+). **The verdict is MOOT, not
+> confirmed and not refuted** — and moot is the strongest of the three here,
+> because a moot restriction costs nothing while a confirmed one costs its
+> scope change.
+>
+> **Why.** (BE-74) proves the statement for the **unrestricted aggressive
+> operator**, and the driver additionally checks it for **three widenings** the
+> proof covers — admission by any vertex rather than a hub, seeding at any
+> vertex, and both — at **274 168** (pair, optimal partition) instances with
+> `0` separations. So there is no need to argue that any step is non-genuine,
+> and the hypothesis's own item **(c)** — that the retreat changes the object
+> (BE-32)(+) quantifies over, touching (BE-23)(ii), (BE-15) and every citing
+> surface — is a price **never incurred**. Its item **(b)** — *blocking one
+> derivation does not show a pair unforced, so the honest object is one
+> existential per pair* — was **correct**, and is precisely the reason a
+> theorem about the **over-claiming** operator is the right thing to have: it
+> holds a fortiori for genuine forcing without any realizability question being
+> asked. Its item **(a)** — realizability of collinearity inside the pencil
+> stratum — is not tested here and does not need to be.
+
+### Step BE75 — (BE-76): job 0, the correction confirmed off the driver and annotated at source
+
+> **(BE-76)(i)** *(**a correction at source** — F12; **(BE-41)(ii) is refuted
+> as stated**, and the refutation is its own sibling's)* (BE-41)(ii) reads:
+> *"What is left of (BE-32)(+) is **every aggressively-forced pair lies in one
+> `≤6`-cycle class**"*, measured **203 723** pairs, **`0`** outside. But
+> (BE-41)(iii), the **same** direction, constructs a family in which one is
+> not: with `t₀ … t_k` a path, `x_i` completing the triangle `(t_i, t_{i+1})`,
+> and `v` joined to `t₀`, to `x_{k−1}` and to a pendant, the pair `(v, t₀)` is
+> aggressively forced and the shortest cycle through `v` has length `k + 2`.
+> So (BE-41)(ii) is **FALSE as a universal statement**.
+>
+> **Re-derived here off the SHIPPED driver, not off the write-up**
+> (`bspread.py chain`, importing `bearfull.tri_chain`,
+> `forcing_derivation`, `step_shape`, `cycle_classes`, `short_cycles`,
+> `def3_fast` and `btwocut.g_exact`): `k = 3…6 ×` 1 or 2 pendants, **8**
+> members at `n = 9…16`; the admitting step is **asserted** a genuine spread
+> step at every one (no witness triple makes it star-2); the escape set is
+> **asserted non-empty** and has **4** members, with shortest cycle `7` (`k=5`)
+> and `8` (`k=6`); and `δ = 0` at **all 8** — asserted, since a `δ ≠ 0` here
+> would be HIT shape 4. **The coordinator's reading is confirmed in full.**
+>
+> **(BE-32)(+) itself was never in danger**, and is now a theorem by (BE-74).
+> What was dead is the `≤6`-cycle **route**; what (BE-74) shows is that the
+> route was never the load-bearing one, so **the clause is retired rather than
+> repaired**. Its corrected form is: *the `≤6`-cycle class is a **sufficient**
+> certificate for `δ = 0` ((BE-40)) that the aggressive closure can **escape**
+> ((BE-41)(iii)); (BE-32)(+) does not depend on it ((BE-74))*.
+
+> **(BE-76)(ii)** *(where the defect sat, and the five hunks)* BEARFULL wrote
+> **both** halves; the damage was in surfaces that restated (ii) without
+> (iii)'s carve-out, and in the consumers that inherited the wrong form as the
+> thing to prove. Annotated at source in this landing's own commit:
+>
+> 1. **BEARFULL's confidence table** — *"(BE-41)(ii) forced ⟹ `≤6`-cycle
+>    class | MEASURED at 203 723 + 27 414 pairs, 0 escapes"*: those are the two
+>    **random/enumerated** tiers; the **constructed** tier escapes **by design**
+>    and is tabulated on the next row as if it were a different claim.
+> 2. **BEARFULL's cap 3** — *"It reads 'no aggressively-forced pair outside a
+>    `≤6`-cycle class was found under this cap', never 'none exists'"* — which
+>    is **weaker than the truth**: one is known to exist, by construction. A cap
+>    disclosure that **under**-reports a known refutation is the F11 hazard
+>    running backwards, and it is the reason this direction takes cap
+>    disclosure literally rather than formulaically.
+> 3. **(BE-41)(ii)'s own measurement line**, `0` escapes with no pointer to
+>    (iii).
+> 4. **BPEEL's (BE-73)(iv)** and its *What would change this* entry, both of
+>    which name *"the SPREAD step ((BE-41)(ii))"* as the proof obligation — a
+>    statement with a counterexample.
+> 5. **`notes/Phase39.md`'s hand-off candidate 1**, corrected in the BSPREAD
+>    prep's own commit.
+>
+> The `(K-bare)` gap-map row was **checked and is clean** — it names the label
+> family, not the refuted clause — and is **not** "fixed" into the refuted form.
+
+### Step BE76 — (BE-77): job 2, cross-cut-only forcing confined, and a vacuity correction to BPEEL's census
+
+> **(BE-77)(i)** *(proven; **THE PEEL FACTORIZATION OF THE CLOSURE**)* Let
+> `{u,v}` be a 2-cut of `H` with `u ≁ v` and `H = H₁ ∪ H₂`,
+> `H₁ ∩ H₂ = {u,v}`, both sides carrying an interior vertex. Run the closure
+> from a seed `h ∈ V(H₁) ∖ {u,v}`. Then:
+>
+> **(a)** until `u` or `v` is admitted, `A ⊆ V(H₁)` and every admitted vertex
+> lies in `V(H₁)`. *(An interior vertex `w` of `H₂` has `N[w] ⊆ V(H₂)`, so
+> `N[w] ∩ A ⊆ V(H₁) ∩ V(H₂) = {u,v}`, at most `2 < 3`.)*
+>
+> **(b)** hence the **first** terminal admitted has **all** its witnesses in
+> `V(H₁)`, i.e. it is admitted by the run **on `H₁` alone** — the certificate
+> for the first terminal is **one-sided**, always.
+>
+> *(If the seed is itself a terminal, (a) and (b) are vacuous and (c) below
+> applies to both sides at once, seeded at that terminal.)*
+>
+> **(c)** after that terminal `u` is admitted, `A ∩ V(H₂)` evolves **exactly**
+> as the `H₂`-run seeded at `u`, because `A ∩ V(H₂)` grows only through
+> `N[w] ∩ V(H₂)` for `w ∈ V(H₂)`; and symmetrically `A ∩ V(H₁)` continues as
+> the `H₁`-run. **So the only step that can cross the cut is the admission of
+> the second terminal.** ∎
+>
+> Asserted (`bspread.py peel`): **39 736** closure runs admitting both
+> terminals, **`0`** violations of (a) and (b), and **18 080** of them admit
+> the second terminal on a witness set genuinely **split** by the cut.
+
+> **(BE-77)(ii)** *(proven; **cross-cut-only forcing is confined to
+> `δ₁ = δ₂ = 1`**)* Suppose `π_u = π_v` is forced at such a peel and **both
+> sides are flexible**, `δ₁, δ₂ ≥ 1`. Then **`δ₁ = δ₂ = 1`**, and the second
+> terminal's witness set is **exactly** `{v, b₁, b₂}` with `b_i` the unique
+> neighbour of `v` in the block of `u` on side `i`.
+>
+> *Proof.* **Relabel so that `v` is the second terminal admitted** (if the seed
+> is itself a terminal, take `v` to be the other one; the conclusion is
+> symmetric in `u, v`). Write `a := |N_{H₁}[v] ∩ A₁|` and
+> `b := |N_{H₂}[v] ∩ A₂|` for its witness split, `A_i := A ∩ V(H_i)`.
+>
+> **Step 1: each side's admitted set lies in one block of every optimal
+> partition of that side.** `δ_i ≥ 1` means **every** optimal partition of
+> `H_i` separates `u` from `v`; fix one and let `B_i` be the block of `u`, so
+> `v ∉ B_i`. On side 1, `u` is admitted with witnesses in `V(H₁)` by (i)(b) and
+> every later admission `w ∈ V(H₁) ∖ {v}` has `N_H[w] = N_{H₁}[w]`, so the
+> induction of (BE-74)(ii) runs verbatim inside `H₁` and puts all of them in
+> `B₁`; hence `A₁ = ⋃_{w ∈ F₁} N_{H₁}[w]` with `F₁ ⊆ B₁`. On side 2, (i)(c)
+> makes `A₂` the `H₂`-run seeded at `u` — `A₂` starts at exactly `N_{H₂}[u]` —
+> and the same induction puts `F₂ ⊆ B₂`.
+>
+> **Step 2: `a, b ≤ 2`, in the shape `{v, b_i}`.** By Step 1, (BE-74)(i)
+> applies on each side, so `a ≤ 2` with equality **only** when `v` has a
+> neighbour `b₁ ∈ B₁` and `N_{H₁}[v] ∩ A₁ = {v, b₁}`, and likewise `b`. (This
+> also disposes of `a ≥ 3`, which by (BE-74)(i) would put `v ∈ B₁` and force
+> `δ₁ = 0` against the hypothesis; likewise `b ≥ 3`.) The
+> two sides overlap only in `v` itself (`u ≁ v`), so the total is
+> `a + b − [v ∈ A] ≥ 3` forces **`a = b = 2`** — the two-point shape needs
+> `v ∈ A`, and `(2,1)`, `(1,2)`, `(1,1)` all total `≤ 2`.
+>
+> **Step 3: the merge.** So `v` has a neighbour `b_i ∈ B_i` on **each** side. In `H_i`, the blocks
+> `[v]` and `B_i` are joined by exactly **one** edge — (BE-39)(i) at `|S| = 2`,
+> and `v b_i` is it — so **merging them** changes the partition value by
+> `−6 + 5·1 = −1` and produces a partition of `H_i` with `u, v` **together**.
+> Hence `g_i ≥ f_i − 1`, i.e. **`δ_i ≤ 1`**; with `δ_i ≥ 1`, `δ_i = 1`. ∎
+>
+> Checked against **BPEEL's own census 1**, re-run here: **13 004** peels,
+> **408** forced with both sides flexible, and the `(δ₁, δ₂)` distribution is
+> `{(1,1): 408}` — **408 / 408**, `0` violations. BPEEL recorded that
+> population as a bare count and read its zero at the R-node shape; the theorem
+> says what the population **is**.
+
+> **(BE-77)(iii)** *(**a vacuity correction** — F11, and it is BPEEL's own
+> discipline applied with the denominator the theorem supplies)* BPEEL's
+> census 3 reported *"**24 874** R-node-shaped peels with both `δ` positive,
+> **180** forced, **`0`** in the intersection"* under the non-vacuity check
+> *"the hunt had that many chances"*. By (ii) the only shape a hit can take is
+> `δ₁ = δ₂ = 1`, and of those **24 874**, the number at `(1,1)` is **`0`**. So
+> the hunt had **`0`** chances, not 24 874, and its zero is **vacuous at the
+> only shape the theorem allows**. **Recorded, not smoothed** — the check was
+> the right instrument pointed at the wrong denominator, and nothing else in
+> (BE-73)(iii) moves: its 3 497 forced R-node peels with `min(δ₁,δ₂) = 0` and
+> its 408 off-R-node positives stand, and (ii) now **explains** the 408.
+
+> **(BE-77)(iv)** *(**the re-aimed hunt**, and what job 2 has become)* Aimed at
+> `(1,1)` rather than at both-flexible, over two independent tiers: random
+> 2-connected graphs at `n = 6…10` with **no** max-degree filter (BPEEL's
+> census 1 carried one, which is why its R-node peels were rigid on one side)
+> — **16 800** peels, **5 005** R-node-shaped, **932** at `(1,1)`; and BPEEL's
+> constructed subdivided-skeleton tier — **38 758** R-node-shaped peels,
+> **`0`** at `(1,1)`. **Across 43 763 R-node-shaped peels and 932 `(1,1)`
+> peels the intersection is EMPTY.** Under F11 that is *"none found under cap
+> (1)"*, **never** *"none exists"*.
+>
+> **So job 2 is now one named, purely combinatorial, checkable condition:**
+>
+> **can an R-node-shaped 2-cut peel have `δ₁ = δ₂ = 1`?**
+>
+> No closure, no configuration, no genericity, no constructor — a statement
+> about two deficiencies and one 3-connectivity test. If **no**, cross-cut-only
+> forcing at an R-node peel with both sides flexible is **impossible** and
+> half (B)'s last general-position enemy is gone. If **yes**, the witness is
+> immediately testable for forcing by (ii)'s exact certificate shape. That is
+> the reduction, and it is what (BE-73)(iv) was short of.
+
+### Step BE77 — (BE-78): the board, reported and not acted on
+
+> **(BE-78)(i)** *(what moved)* **(BE-32)(+) is a theorem.** The `(K-bare)`
+> row's *"PROVED at 196 043 of 203 723 forced pairs, residue the geometry-free
+> SPREAD step"* becomes *"PROVED, at all of them, for the aggressive operator
+> and three widenings of it"*. **(BE-73)(ii)(b)** and **BRULE's (BE-58)(iv)
+> `π_u = π_v` corner** lose their inherited 3.8 % and become unconditional.
+> **(BE-41)(ii)** is refuted as stated and **retired**, not repaired, with its
+> five surfaces annotated. **(BE-73)(iv)'s residue** is reduced from a hunt to
+> a combinatorial question, and **(BE-73)(iii)'s census-3 zero** is corrected
+> from *"0 of 24 874 chances"* to *"0 of 0 chances"*.
+
+> **(BE-78)(ii)** *(what did **not** move, said plainly)* **(BE-14) is
+> untouched.** The 2-cut composition lemma (S-mark) is untouched; (BE-67)(iii)'s
+> class quantifier — the uniformity of `reach` over the class — is untouched;
+> the **flag base** off the no-adjacent-hubs class ((BE-65)(i)) is untouched;
+> **cross-pair welding** ((BE-28)(i)) is untouched; **(S1)/(S2)** are untouched;
+> `hbareSplit`, `hK`, **(GR-15)** and class uniformity of the escape are
+> untouched. **Not a PENCIL event.** The phase-boundary consequence of a
+> HIT shape 1 is **reported, not acted on**: whether it changes the phase's
+> shape is the USER's call under the standing 2026-07-24 adjudication and the
+> phase note's *On a future HIT* block, and the 2026-08-05 Lean hold binds
+> regardless.
+
+> **(BE-78)(iii)** *(the price, stated as a price)* **(BE-74) is a theorem
+> about the AGGRESSIVE operator**, which over-claims forcing; that is the
+> direction that makes it **stronger** than the consumers need, but it is a
+> statement about a **combinatorial** relation, not about which coincidences a
+> real pencil configuration actually exhibits. **(BE-74) rests entirely on
+> (BE-39)(i)**, which is proven-informally from optimality of `P` in one line
+> and enumerated at 130 331 subsets — if that law were wrong every clause here
+> falls, and nothing else would. **(BE-77)(ii)'s hypotheses are real**: `u ≁ v`,
+> both sides with an interior vertex, and *flexible* meaning `δ_i ≥ 1`; at
+> `u ∼ v` (BE-32)(i) already bounds `δ ≤ 1` and the peel is a different object.
+> **(BE-77)(iv) is a capped search** and its zero is *"none found"*. And the
+> reduction of job 2 is a **reduction**, not a discharge: the named condition
+> is open.
+
+### Verification
+
+Every claim above is reproduced by
+`python3 notes/scripts/w4/bspread.py {lemma|chain|peel|validate}`, run from the
+repo root; `validate` runs all three modes at a reduced tier in **≈ 54 s**
+(inside the 600 s foreground budget, one invocation); the full tiers are
+`lemma` **≈ 67 s**, `chain` **≈ 3 s**, `peel` **≈ 33 s** — wall clock, which
+varies run to run; the counts above are the invariants. The load-bearing
+asserts (a failure stops the run):
+
+1. **The block-absorption lemma is asserted, not reported** — a single
+   violation at any (optimal partition, block, outside vertex) triple stops
+   `lemma`, and would refute (BE-74)(i) rather than bound its scope.
+2. **The parametrized closure is asserted equal to the landed one**
+   (`bimage.forced_same_plane`) at every graph of the tier, 27 930 / 27 930.
+3. **The SHARPNESS control is asserted to FAIL**: `lemma` stops if threshold
+   `2` produces **no** separation, because a proof that also proved the false
+   threshold-`2` statement would be proving too much.
+4. **`chain` asserts the escape set NON-EMPTY**, asserts every member's
+   admitting step a genuine spread step, and asserts `δ = 0` at every member.
+5. **The peel factorization is asserted**, not measured: a run that crosses the
+   cut before a terminal is admitted, or a first terminal with an off-side
+   witness, stops `peel`.
+6. **(BE-77)(ii) is asserted** at every forced both-flexible peel — an instance
+   off `(1,1)` stops the run.
+7. **Exact integer arithmetic throughout**, every rng seeded from the printed
+   literal `20260901`, zero floating point. The partition oracle is
+   cross-checked against `kbare_common.exact_deficiency` at every call
+   (inherited from `bearfull.optimal_partitions`).
+
+### Caps, disclosed rather than smoothed
+
+1. **`lemma`'s enumeration is exhaustive at `n = 3…6` and SAMPLED at
+   `n = 7, 8`** (250 seeded masks each). The lemma is **proved**, so the tier
+   bounds the *check*, not the statement — the opposite of the usual reading,
+   and it is stated that way in the driver's own output.
+2. **The theorem is about the AGGRESSIVE operator** and its three widenings.
+   *Forced* there is a **candidate** and *not forced* is **sound**; a theorem
+   proved for it holds a fortiori for genuine forcing. Cap 2 of BEARFULL's list,
+   unchanged and still the right reading.
+3. **`chain`'s family is a CONSTRUCTION**: it proves the escape set non-empty,
+   never that it is large. The blind `n = 9…13` re-finding is **BEARFULL's**
+   ((BE-41)(iii)) and is **cited, not re-run**.
+4. **`peel`'s hunt is capped**: tier A is exhaustive at `n = 6` and 4 000
+   seeded masks at each of `n = 7…10` with `|E| ≤ 2n`; tier B is BPEEL's
+   constructed generator at its own cap (`K₄` all profiles at lengths `1…4`,
+   prism and `K_{3,3}` seeded). *"No R-node-shaped peel at `(1,1)` was found
+   under this cap"* is **never** *"none exists"* (F11).
+5. **`rnode_shaped` is BPEEL's stand-in, not an SPQR implementation**, and is
+   quoted as one here exactly as there.
+6. **F27 on the negative:** the `(1,1)`-and-R-node intersection is empty in
+   **two independent tiers** built by different generators (random masks; a
+   skeleton-plus-profile constructor), which is the multiple-draw requirement,
+   not one sampler run twice.
+
+### Harness note — the `kbare/` sibling-import set gains its SIXTEENTH consumer
+
+`bspread.py` imports `bearfull` (`optimal_partitions`, `cycle_classes`,
+`short_cycles`, `step_shape`, `forcing_derivation`, `tri_chain`, `def3_fast`),
+`bpeel` (`peel_scan`, `rnode_shaped`, `pair_forced`, `constructed_tier`),
+`btwocut` (`deltas_at`, `g_exact`, `vertex_connectivity_at_least`), `bimage`
+(`forced_same_plane`), `bzavoid` (`adj_of`, `connected_spanning`,
+`edges_of_mask`), plus `exactcore` and `kbare_common`, all **read-only**, and
+through them the rest of the chain — so the recorded **unpaid** sibling-import
+debt (`notes/scripts/README.md` *Harness debt*) gains its **sixteenth** `w4/`
+consumer and the chain is now **fourteen** deep: `battain → bzavoid → binduc →
+btwocut → bimage → bearcase → bearfull → bsharp → brule → bwin → brnode →
+bdecor → bpeel → bspread`. **`bpeel` gains its FIRST external consumer**, and
+`bearfull.optimal_partitions` its first consumer outside bearfull itself.
+**NO MOVE MADE**; the consumer lists are extended in the README, exactly as the
+previous fifteen did. The new primitives (`closure_trace`, `closure_pairs`,
+`block_of`, `lemma_violations`, `strong_separations`, `peel_invariants`) are
+local to this driver.
+
+### Confidence verdicts, per claim
+
+| claim | status |
+|---|---|
+| (BE-74)(i) the block-absorption lemma | **PROVED** from (BE-39)(i) at `|S| = 2, 3, 4`; enumerated 176 344 / 0 violations |
+| (BE-74)(ii) (BE-32)(+), in the *no optimal partition separates* form | **PROVED**; 138 394 instances / 0 separations, landed-closure cross-check 27 930/27 930 |
+| (BE-74)(iii) the bound is sharp; threshold 2 fails | **PROVED** (equality case exhibited); the control **fails as required**, 363 separations |
+| (BE-75)(i) the star-2 / spread split is retired | **PROVED** — a corollary of (BE-74)(ii), which never reads the shape |
+| (BE-75)(ii) (BE-32)(ii)/(iii) are the `\|B\| = 1` case | **PROVED** |
+| (BE-75)(iii) (BE-73)(ii)(b) and BRULE's corner become unconditional | **PROVED given the consumers' own statements**, which carried (BE-32)(+) as the only proviso |
+| (BE-75)(iv) the coordinator's route hypothesis is MOOT | **ARGUED** — the restriction is unnecessary, not shown impossible; its (a) is untested and need not be tested |
+| (BE-76)(i) (BE-41)(ii) is refuted as stated | **PROVED by construction**, re-derived off the shipped driver; escape set asserted non-empty |
+| (BE-76)(ii) the five annotated surfaces | **LANDED** in this commit (F12) |
+| (BE-77)(i) the peel factorization | **PROVED**; asserted 39 736 runs / 0 violations |
+| (BE-77)(ii) forced + both flexible ⇒ `δ₁ = δ₂ = 1` | **PROVED** from (BE-74) + (BE-39)(i); 408/408 against BPEEL's own census |
+| (BE-77)(iii) BPEEL's census-3 zero is vacuous at `(1,1)` | **MEASURED**, `0` of 24 874 — a correction to a landed non-vacuity claim |
+| (BE-77)(iv) no R-node peel at `(1,1)` found | **MEASURED**, capped, two independent tiers; **not** an impossibility claim |
+| (BE-78) the board | **REPORTED**, not acted on |
+
+### What would change this
+
+- **A counterexample to (BE-39)(i)** would take everything here with it, and
+  nothing else would be needed to. It is one line from optimality, and it is
+  enumerated at 130 331 subsets ((BE-39)(i)); this direction adds 176 344
+  further instances of its `|S| = 2` clause as a by-product.
+- **An R-node-shaped 2-cut peel with `δ₁ = δ₂ = 1`** is now the entire content
+  of job 2. It is combinatorial, cheap to test, and the driver would find it as
+  a `peel` hit; its absence under cap is **not** a proof.
+- **A genuinely-forced pair with `δ ≠ 0`** is now impossible for the aggressive
+  operator, hence for genuine forcing. HIT shape 4 is **closed**, and any
+  future claim of one is a claim against (BE-39)(i).
+- **A consumer that needs the `≤6`-cycle class itself** — rather than `δ = 0`
+  — would still face (BE-41)(iii)'s escape. None is known; (BE-40) is used
+  everywhere through its `δ` conclusion.
+- **A widening of the closure past threshold 3** breaks the theorem
+  immediately and correctly ((BE-74)(iii)), so any future *"the rule really
+  admits on two points"* reading is refuted in advance.
+
+### TERMINATION riders
+
+**E1: NO** — this direction is one combinatorial lemma, its two corollaries and
+a capped census; no `g`-flank is involved and none is produced. **E2: NO** —
+nothing landed is refuted **except two stated things**: **(BE-41)(ii)** as a
+universal statement, which its own sibling already refuted and which this
+direction annotates rather than discovers, and **(BE-73)(iii)'s non-vacuity
+denominator**, corrected here; every landed *measurement* is intact, and
+(BE-39)/(BE-40), (BE-41)(i)/(iii), (BE-64)–(BE-73) are untouched. **E3: ARMED
+by GBAL, not fired** — this direction is on the §(K-bare-ext) path, not (a′);
+reported, not acted on.
