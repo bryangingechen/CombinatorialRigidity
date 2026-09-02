@@ -1,7 +1,23 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: EIGHT fan-outs, THIRTY-SIX single directions and TWO concurrent
-pairs dispatched; 63 LANDED, NONE IN FLIGHT.**
+**Status: EIGHT fan-outs, THIRTY-SEVEN single directions and TWO concurrent
+pairs dispatched; 63 LANDED, ONE IN FLIGHT — BONEONE (ordinal 56).**
+**BONEONE (ordinal 56, §"BONEONE") PREPPED 2026-09-01** at **the whole of what
+BSPREAD reduced job 2 to** — *can an R-node-shaped 2-cut peel have
+`δ₁ = δ₂ = 1`?* — closure-free, geometry-free, and half (B)'s **last**
+general-position enemy. The F26 consumer trace was re-run for a FOURTH direction
+running and confirms it is the consumer's remaining input: (BE-22)(iii) needs the
+general-position half, (BE-22)(vi) kills it at a rigid side, (BE-73)(ii)(b) now
+supplies that **unconditionally** for one-sided forcing because (BE-32)(+) is a
+theorem, (BE-77)(i) factorizes the closure at the peel and (BE-77)(ii) confines
+what is left to `(1,1)`. The trace also turned up a **definitional item the spec
+makes job 1's first paragraph**: `rnode_shaped` is a per-SIDE predicate that
+BSPREAD's census combines with `or`, so the direction must say which side the
+consumer needs (the `or` reading is the safe one — it makes the population
+larger). Evidence: tier A has **5 005** R-node-shaped peels and **932** at
+`(1,1)` with the **intersection empty** — two four-figure sets that do not meet,
+which is a reason to look for a theorem rather than to widen the search.
+Dispatched at `recon-opus` (fable unavailable this session).
 **BSPREAD (ordinal 55, §"BSPREAD") LANDED 2026-09-01** at the **SPREAD step**
 ((BE-32)(+) where (BE-41)(i)'s star-2 certificate does not apply) — **HIT shapes
 1, 2 and 5, and shape 1 is the arc's first on this item**. **(BE-32)(+) is a
@@ -8836,3 +8852,219 @@ off the **shipped** driver, exact integer arithmetic, printed literal seed
 ROADMAP Status row all updated in this commit. **Harness debt**: the chain is
 now **fourteen** deep (`… → bpeel → bspread`), **sixteenth** `kbare/` consumer;
 **no move made**, consumer lists extended.
+
+## BONEONE — fifty-sixth ordinal, the sixty-fourth direction (single dispatch, prepped 2026-09-01)
+
+**Selection provenance: BSPREAD's own successor, and the F26 consumer trace was
+re-run for the FOURTH direction running.** BSPREAD reduced job 2 — cross-cut-only
+forcing at an R-node peel with both sides flexible, half (B)'s last
+general-position enemy — to **one purely combinatorial question**, and the trace
+confirms it is the consumer's remaining input rather than an adjacent one:
+**(BE-22)(iii)** needs `dim(ρ̄₁+ρ̄₂) = min(δ₁+δ₂,6)` at the peel; **(BE-22)(vi)**
+kills the general-position half outright when a side is rigid; **(BE-73)(ii)(b)**
+now unconditionally supplies `δ_i = 0` whenever the forcing certificate is
+one-sided, because **(BE-32)(+) is a theorem** ((BE-74)); **(BE-77)(i)** shows the
+closure factorizes at a peel so only the second terminal's admission can straddle
+the cut; and **(BE-77)(ii)** then forces `δ₁ = δ₂ = 1`. Nothing else stands
+between the enemy and its discharge. Dispatched **un-named, single**, at
+**`recon-opus`** — fable is unavailable this session, so the playbook's named
+substitute applies to the mapped top rung.
+
+### The target, stated exactly
+
+> **Can an R-node-shaped 2-cut peel have `δ₁ = δ₂ = 1`?**
+>
+> Prove **no** — for the class the consumer needs — or exhibit a **yes** witness,
+> or reduce to a named checkable condition.
+
+**A `no` removes half (B)'s last general-position enemy outright.** A `yes` is not
+a refutation of anything: it is a witness that must then be tested for
+**cross-cut-only forcing** by (BE-77)(ii)'s exact certificate shape `{v, b₁, b₂}`,
+which is cheap, and only a forcing witness re-opens the enemy.
+
+### THE DEFINITIONAL ITEM THE TRACE TURNED UP — settle it in the first paragraph
+
+**`rnode_shaped` is a per-SIDE predicate, and BSPREAD's census combines the two
+sides with `or`:** `rn = rnode_shaped(E1,u,v) or rnode_shaped(E2,u,v)`
+(`bspread.py`, coordinator-read off the body). Its own docstring is precise about
+what it tests — *"is the side's skeleton, with the virtual edge `uv` put back and
+every degree-2 vertex suppressed, SIMPLE and 3-CONNECTED?"*, rejecting a parallel
+pair (P-node) and a degree-2 marked vertex (S-node) — and discloses that it is a
+**stand-in** for *"`uv` is a virtual edge of a simple 3-connected SPQR skeleton"*,
+not an SPQR implementation.
+
+**Which side does the consumer actually need?** (BE-67)(iii) quantifies over
+**internal R-node pieces** `H`, and the peel splits `H`. **State the answer
+explicitly**, and note the safe direction while you are there: `or` makes the
+R-node-shaped population **larger**, so *"no R-node-shaped peel is at `(1,1)`"*
+under the inclusive reading implies it a fortiori under any narrower one. If the
+consumer needs **both** sides R-node-shaped, the theorem you want is weaker than
+the one the evidence is about — say so, and prove the one the consumer needs.
+
+### The evidence, and why it points at a structural reason rather than a thin cap
+
+- **Tier A** (`bspread.py peel`, random 2-connected, `n = 6…10`, **no**
+  max-degree filter — BPEEL's census 1 carried one, which is why its R-node peels
+  were rigid on one side): **16 800** peels, **5 005** R-node-shaped, **932** at
+  `(1,1)`, **intersection empty**.
+- **Tier B** (BPEEL's constructed subdivided-skeleton tier): **38 758**
+  R-node-shaped peels, **`0`** at `(1,1)`.
+- **The tier-A shape is the informative one**: *both* populations are large and
+  *disjoint*. A thin cap would show a small intersection, not an empty one
+  between two four-figure sets. That is a reason to look for a **theorem**, not to
+  widen the search first.
+- **BPEEL's census-3 zero is VACUOUS at this shape** and is corrected at source
+  ((BE-77)(iii)): `0` of its 24 874 R-node both-flexible peels sit at `(1,1)`, so
+  it had `0` chances, not 24 874. **Do not quote it as evidence here.**
+
+### THE COORDINATOR'S ROUTE HYPOTHESIS — TO BE TESTED, NOT INHERITED (`RESEARCH-ARC.md` §7)
+
+> *Provenance, named as §7 requires:* this is **arithmetic on landed laws plus the
+> tier-A shape above**, not a derivation — and §7's tally now stands at five
+> instances and four kinds (refuted, split, reframed, **moot** — BSPREAD's, one
+> landing ago). Expect this one to be killed too.
+>
+> The three landed facts that look like they should meet: **(BE-20)**
+> *3-connected ⇒ `def₂ = 0`*; **(BE-21)/(BE-23)**'s 2-cut `def₃` law
+> `f = max(g₁+g₂, f₁+f₂−6)`; and **(BE-39)(i)** at `|S| = 2`, which BSPREAD just
+> showed is the sharp tool for *"how much can one block see of another"*. An
+> R-node-shaped side is 3-connected **after degree-2 suppression**, and `δ_i = 1`
+> is the *minimum positive* deficiency drop — the same `−6 + 5·1 = −1` single-edge
+> merge that (BE-77)(ii) *Step 3* uses in the other direction. **The hypothesis:**
+> 3-connectivity of the suppressed skeleton forces `δ_i` away from exactly `1` —
+> either to `0` (enough connectivity that merging `u,v` is free) or to `≥ 2` — so
+> the `(1,1)` shape is excluded structurally.
+>
+> **Where the coordinator expects to be wrong.** (a) The suppression is doing real
+> work and `δ` is *not* invariant under it — degree-2 vertices are exactly what a
+> subdivision adds, and (SD-6) prices a subdivision at `ℓ − 6`, so a claim about
+> the suppressed skeleton may say nothing about `H_i`. (b) "3-connected ⇒ `δ = 0`"
+> is **not** a landed statement — (BE-20) is about `def₂` of the **whole** graph,
+> not about a peel side's `δ`, and reading one as the other is exactly the
+> level-confusion the playbook's P-rating calibration warns about. (c) The tier-A
+> disjointness may be an artifact of the **generator**, not of the graphs: random
+> 2-connected graphs at `n ≤ 10` with `m ≤ 2n` may simply not reach the region
+> where both hold. **Test (c) before believing the hypothesis** — a widened
+> generator that still finds nothing is worth more than an argument built on a
+> sampling artifact.
+
+### What is free — cite it, do NOT re-derive it
+
+- **(BE-74)**, the block-absorption lemma, and **(BE-32)(+) as a theorem** — for
+  the aggressive operator and three widenings.
+- **(BE-77)(i)**, the peel factorization of the closure (39 736 runs, 0
+  violations), and **(BE-77)(ii)**, the `δ₁ = δ₂ = 1` confinement with its exact
+  certificate shape `{v, b₁, b₂}` — **including its stated hypotheses**: `u ≁ v`,
+  both sides carrying an interior vertex, `δ_i ≥ 1`.
+- **(BE-73)(ii)(a)**, `δ_{uv}(H) = max(0, δ₁+δ₂−6)`, asserted at 19 991 peels —
+  note it gives `δ_{uv}(H) = 0` at `(1,1)`, so the whole-piece reading says
+  nothing here.
+- **(BE-39)(i)**, quotient sparsity, and **(BE-40)**, the short-cycle law.
+- **(BE-18)/(BE-20)/(BE-21)/(BE-23)**, the decomposition's composition laws.
+- **(BE-70)**, peel independence, and **(BE-69)**, the Zariski dichotomy — the
+  geometry that makes this the *last* general-position item rather than one of
+  several.
+
+### Job 1 (PRIMARY, FORCED) — the question
+
+Settle it. A **proof** is the deliverable; a wider search that finds nothing is
+**not** a proof and reports *"none found under cap C"* (F11). If the answer is
+**yes**, run (BE-77)(ii)'s certificate test on the witness in the same pass and
+report whether the enemy actually re-opens — a `(1,1)` peel that is not
+cross-cut-only forced changes nothing.
+
+### Job 2 (FORCED) — what a `no` actually closes, stated against the consumer
+
+If job 1 is **no**, write down precisely what half (B) then has left. The
+coordinator's reading, **to be checked rather than transcribed**: the residue
+becomes exactly **(BE-67)(iii)'s uniformity of `reach`** and **the flag base off
+the no-adjacent-hubs class ((BE-65)(i))** — two items, no third. Confirm or
+correct that, because it is what the next pick is chosen from.
+
+### Job 3 (FORCED, CHEAP) — the harness question BSPREAD's chain raises
+
+The `w4/` sibling-import chain is now **fourteen** deep (`… → bpeel → bspread`)
+and this direction would be the **seventeenth** `kbare/` consumer. The standing
+rule is **record, make no move** — a dispatch may not edit a landed driver
+another direction may be importing in flight. **Follow it.** But state, in one
+paragraph for the harness-debt list, whether a fifteen-deep chain is still
+importing *devices* or has become a de-facto shared layer — the §2 rule-2
+threshold question the debt list has been carrying since 2026-08-20 without a
+verdict.
+
+### What counts as a HIT — state which you got
+
+1. **`No`, PROVED** — half (B)'s last general-position enemy is gone, and
+   (BE-73)(iv)'s residue closes. Report the board and the phase-boundary
+   consequence; **act on neither**.
+2. **Reduced** to a named checkable condition.
+3. **A `yes` witness**, with its forcing test run.
+4. **The consumer's residue restated** (job 2), confirmed or corrected.
+5. **The chain-depth verdict** (job 3).
+
+### Bars
+
+- **Do not re-open:** (BE-32)(+) / the block-absorption lemma ((BE-74)); the
+  peel factorization and the confinement ((BE-77)(i)/(ii)); the short-cycle law
+  ((BE-39)/(BE-40)); (BE-41)(ii), **refuted as stated and RETIRED, not repaired**
+  ((BE-76)) — do not try to rescue the `≤6`-cycle form; the branch-product
+  theorem ((BE-64)); the decorated-skeleton law ((BE-59)/(BE-60)); peel
+  independence ((BE-70)); `G` on (CH-1)'s class ((BE-72)); the `G²` apparatus
+  ((BE-17)); the transversality count ((BE-16)(iv), (BE-27)); gauge-fixing
+  (ZSHEAR).
+- **ZJACOB (JC-6):** no properness, smoothness or transversality from a
+  codimension count, a Jacobian criterion, or Cohen–Macaulayness. Label every
+  dimension count **as a count** ((BE-27)).
+- **Not this direction, ranked separately:** (BE-67)(iii)'s uniformity of `reach`;
+  the flag base ((BE-65)(i)); the one-end-series case; **(S1)/(S2)**; cross-pair
+  welding ((BE-28)(i)); BTWOCUT's bundle construction ((BE-29)(ii)).
+- **Out of scope:** `hK`, **(GR-15)**, **(RS-5) and the (K-res) wave (a USER
+  call)**, class uniformity, W4, and **any `.lean`** (2026-08-05 hold).
+
+### Riders
+
+**TERMINATION E1/E2/E3** — **E3 ARMED (by GBAL)**; report, never fire. **F11 is
+this direction's central rider**: *"no R-node-shaped peel has `δ₁ = δ₂ = 1`"* is
+an **impossibility** claim and needs a **proof**, or it reports *"none found under
+cap C"*. **F27** — a claim that a peel **fails** a property needs multiple
+independent draws, stated. **Cap disclosure MANDATORY**, and note that BSPREAD's
+own (BE-77)(iii) is the live cautionary case: a zero read against the **wrong
+denominator** is worse than no measurement, so state the denominator every figure
+is over. **F25** — verification off the **shipped** driver; exact integer
+arithmetic, printed literal seeds. **F12** — a corrected summary needs a hunk at
+the originating prose. **F17** — the fan-out header and `notes/Phase39.md`'s
+`**Status:**` header are surfaces a landing must update. **Read
+`notes/scripts/README.md` *Harness debt*** before touching the harness; job 3 is
+the only thing this direction says about it, and it says *record, no move*.
+
+### Driver — expected, at the pinned path `notes/scripts/w4/boneone.py`
+
+Extend `bspread.py` (for `rnode_shaped` via `bpeel`, the peel censuses, and the
+`(1,1)` classifier) and `btwocut.py` (for `deltas_at` / `g_exact` /
+`def3_multi`) by **read-only import**. Do not re-implement the deficiency
+oracles; cross-check against `kbare_common.exact_deficiency` as the chain
+already does.
+
+### Reservation
+
+(`notes/Pencil-labels.md` §"Reserved namespace — direction BONEONE".)
+§(K-bare-ext) **extends**, no new section; labels **(BE-79)–(BE-83)**, ***Steps
+BE78–BE82***, exactly the tail BSPREAD declared. `BONEONE`, `boneone`,
+`(BE-80)`–`(BE-83)` and *`Steps BE79–BE82`* verified **0-hit**; **`(BE-79)` and
+*`Step BE78`* have two hits each**, both tail POINTERS in the registry, opened
+and confirmed. **Return any unconsumed remainder.** **Checked and NOT chosen:**
+`BRPEEL` (a reader-side collision with the landed `BPEEL`), `BFLEX` and `BDELTA`
+(both 0-hit, both naming a hypothesis rather than the site — §7). **Prefer prose
+names to new parenthesized tokens**, as BSPREAD did.
+
+### Budget — measured at this prep
+
+**`(K-bare)` is at 1 400 / 1 600 words — 200 of headroom.** That fits this
+landing but leaves little behind it, so **if the landing does not fit, recompute
+the row to a TARGET, not to "under the cap"** (F21), and **verify label
+preservation by scripted set-diff, never by eye**. **`notes/Phase39.md` is at
+565/580 lines, 450/525 header words** — **lines are the binding constraint here,
+not words**, with 15 spare; the prep rotated the header's landed-direction block
+rather than appending to it, and the landing should do the same. The next
+relocation candidate, if one is needed, is named in the note's own *Doc debt*
+bullet — and the *"On a future HIT"* block is **not** it.

@@ -2389,7 +2389,7 @@ draft** — recorded here because the (L5) substring rule's own precedent bullet
 is the model.
 
 The tail a successor opens at is **(BE-79) / *Step BE78*** (BSPREAD reserved
-(BE-74)–(BE-78) / *Steps BE73–BE77* below).
+(BE-74)–(BE-78) / *Steps BE73–BE77* below, and consumed them in full).
 
 
 ## Reserved namespace — direction BSPREAD (2026-09-01, **CONSUMED IN FULL at the landing; nothing returned**)
@@ -2412,7 +2412,8 @@ BPEEL consumed its reservation in full and returned nothing.
 lemma, (BE-75) what it retires and the coordinator's hypothesis disposed of,
 (BE-76) job 0's correction, (BE-77) job 2's confinement, (BE-78) the board;
 *Steps BE73–BE77*. **Nothing returned.** The next reservation on this section's
-tail opens at **(BE-79) / Step BE78**. The landing-time (L6) bare-token grep was
+tail opens at **(BE-84) / Step BE83** — BONEONE reserved (BE-79)–(BE-83) /
+*Steps BE78–BE82* on 2026-09-01, in the section below. The landing-time (L6) bare-token grep was
 run on the drafted section: the new prose names — *block-absorption lemma*,
 *route* / *edge route* / *path route*, *`[v]`-end*, *peel factorization*,
 *witness split* — are **prose, not tokens**, minted deliberately in that form
@@ -2529,3 +2530,42 @@ The two most dangerous in live prose are **(W4)** — because "W4" reads as
 `hcontract` everywhere in `Phase39.md` and as the limit-system condition
 everywhere in §(K-slide)/§(K-pure) — and **(C6)/(C7)**, which have already
 caused one landed fixup.
+
+## Reserved namespace — direction BONEONE (2026-09-01, **RESERVED — the direction is in flight**)
+
+**Reserved 2026-09-01 for the single direction BONEONE** (ordinal 56, the arc's
+sixty-fourth direction; `notes/Pencil-fanout.md` §"BONEONE") — **can an
+R-node-shaped 2-cut peel have `δ₁ = δ₂ = 1`?**, which is the whole of what
+BSPREAD reduced job 2 to ((BE-77)(iv)). Coordinator-set, single dispatch —
+**not** a fan-out, so this reservation protects against the *existing corpus*
+only.
+
+| direction | owning § | labels reserved | steps reserved | driver |
+|---|---|---|---|---|
+| **BONEONE** | §(K-bare-ext) — **extends**, no new section | **(BE-79)–(BE-83)** | **BE78–BE82** | `w4/boneone.py` (expected — extend `bspread.py`, and through it `bpeel`/`bearfull`/`btwocut`/`bimage`/`bzavoid` and the rest of the chain, by read-only import) |
+
+The reservation opens at **(BE-79) / Step BE78**, exactly the tail BSPREAD
+declared; BSPREAD consumed its reservation in full and returned nothing.
+
+**0-hit verification, at reservation time**, across `*.md`, `*.tex`, `*.lean`,
+`*.py`, `*.m2` with `.git`/`.lake`/`__pycache__` excluded: `BONEONE`, `boneone`,
+`(BE-80)`–`(BE-83)` and *`Steps BE79–BE82`* each **0-hit**. **`(BE-79)` and
+*`Step BE78`* have two hits each** — this file's BPEEL tail line and BSPREAD's
+own tail sentence — both opened and confirmed to be tail POINTERS, not consumed
+labels: the same carve-out the six preceding reservations needed.
+
+**Checked and NOT chosen:** `BRPEEL` (0-hit, but a **reader-side** collision —
+it is one inserted letter from the landed `BPEEL`, and this registry's whole
+purpose is that a code is unambiguous *when read*, which the (L5) substring rule
+formalizes for greps and cannot for eyes); `BFLEX` and `BDELTA`, both 0-hit but
+naming a *hypothesis* — "both sides flexible", "the `δ` shape" — rather than the
+question's site, which `RESEARCH-ARC.md` §7 warns against and BSPREAD's own
+reservation already rejected `BINDEP` for. `BONEONE` names the `(1,1)` shape,
+which is exactly what the question asks about.
+
+**(L6) reminder for the landing.** Run the landing-time bare-token grep on the
+returned draft; the reservation check sees prefixes and step ranges only.
+BSPREAD's landing is the live precedent for the **prose-name** habit that avoids
+the problem outright: it minted *block-absorption lemma*, *edge route*, *path
+route*, *`[v]`-end*, *peel factorization* and *witness split* as prose rather
+than as parenthesized tokens, and so minted nothing new at all.

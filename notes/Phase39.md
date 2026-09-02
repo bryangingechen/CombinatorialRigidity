@@ -9,22 +9,24 @@ derives it from exactly **three carried items**: **`hcontract`** (W4 — build p
 (L0–L7), `hsplit` and `hfresh` included (2026-07-30, unchanged since).
 
 **The kernel-(K) research arc: 63 directions COMPLETE** (2026-08-05 → 09-01, ordinals
-1–55), plus eight strategy-only passes and two architecture probes; **NONE in flight**.
-Per-direction verdicts, specs and write-ups live at `notes/Pencil-fanout.md` §"<CODE>"
+1–55), plus eight strategy-only passes and two architecture probes; **ONE in flight**
+(BONEONE, ordinal 56). Per-direction verdicts, specs and write-ups live at `notes/Pencil-fanout.md` §"<CODE>"
 (ordinals 1–19: the archive) plus a workbook home — **not restated here**.
 **The arc's standing result, unchanged by all 63: `hK` is not closer.** **(GR-15)** — the
 single open gap the whole §(K-grid) chain reduces to — is **untouched**; **class uniformity
 of the escape is untouched**; no g-flank was found by any direction; **E3 is ARMED (by
 GBAL) and has never fired**.
 
-**BSPREAD (ordinal 55) LANDED 2026-09-01 — the arc's FIRST HIT SHAPE 1 on this item:**
-**(BE-32)(+) is a THEOREM.** A block of an **optimal** partition absorbs at most **TWO**
-points of any outside vertex's closed star, and the closure admits on **THREE** ((BE-74)) —
-(BE-39)(i) spent on the closure's admission rule, not on cycles of `G` where it stops at `6`.
-So the **star-2/SPREAD split is RETIRED**, and **(BE-73)(ii)(b) plus BRULE's `π_u = π_v`
-corner are UNCONDITIONAL**. **(BE-41)(ii) confirmed REFUTED as stated**, five surfaces
-annotated. **(BE-14) untouched; not a PENCIL event; the phase-boundary consequence is
-REPORTED, not acted on** (next block).
+**BSPREAD (55) LANDED 2026-09-01 — the arc's FIRST HIT SHAPE 1 on this item:**
+**(BE-32)(+) is a THEOREM** ((BE-74)), so the star-2/SPREAD split is **retired** and
+**(BE-73)(ii)(b) plus BRULE's `π_u = π_v` corner are UNCONDITIONAL**. **(BE-14) untouched;
+not a PENCIL event.**
+
+**IN FLIGHT — direction BONEONE** (ordinal 56) at what BSPREAD reduced job 2 to:
+**can an R-node-shaped 2-cut peel have `δ₁ = δ₂ = 1`?** Closure-free, geometry-free,
+combinatorial. A **no** removes half (B)'s LAST general-position enemy; a **yes** is a
+witness immediately testable for forcing. Empty over 43 763 R-node + 932 `(1,1)` peels in
+two independent tiers — *none found under cap*, **not** *none exists*.
 
 **WHERE THE (BE-14) THREAD STANDS** — S-mark, the 2-cut composition lemma, is (BE-14)'s
 only open step; its **three sides** and every per-landing detail are **REFERENCE,
@@ -241,7 +243,7 @@ proved from (BE-39)(i) alone and holding for the landed operator **and three wid
 it; the star-2/SPREAD split is **retired**, (BE-41)(ii) **confirmed refuted as stated** and
 annotated at five surfaces, and job 2's cross-cut-only forcing **confined to `δ₁ = δ₂ = 1`**,
 which exposes BPEEL's census-3 zero as vacuous. Details are the write-up's and the
-`(K-bare)` gap-map row's, **not restated here**. **THE NEXT CONCRETE TASK is candidate 1
+`(K-bare)` gap-map row's, **not restated here**. **Candidate 1 is IN FLIGHT as BONEONE (56)
 below** — job 2's residue, now closure-free. The rest stay **ranked, not dropped**:
 
 0. **HALF (B)'s CLASS QUANTIFIER** ((BE-67)(iii)) — **REDUCED, not proved** (BPEEL). It is
@@ -256,7 +258,8 @@ below** — job 2's residue, now closure-free. The rest stay **ranked, not dropp
    ((BE-65)(i)); and — **CLOSED by BPEEL, do not re-hunt** — the forced-empty `G` hunt,
    impossible on (CH-1)'s class ((BE-72)).
 
-1. **CAN AN R-NODE-SHAPED 2-CUT PEEL HAVE `δ₁ = δ₂ = 1`?** — the whole of job 2's
+1. **CAN AN R-NODE-SHAPED 2-CUT PEEL HAVE `δ₁ = δ₂ = 1`? — IN FLIGHT as BONEONE** (56,
+   prepped 2026-09-01, `recon-opus`; spec `notes/Pencil-fanout.md` §"BONEONE"). The whole of job 2's
    residue after BSPREAD, and the sharpest question the arc currently has: **closure-free,
    geometry-free, combinatorial**, two deficiencies and one 3-connectivity test. A **no**
    makes cross-cut-only forcing at an R-node peel with both sides flexible **impossible**
