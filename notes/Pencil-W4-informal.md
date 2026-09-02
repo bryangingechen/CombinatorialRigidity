@@ -1851,7 +1851,21 @@ claim. ∎
 > and `exc(finest) = f(U(A))`. Moreover (**hub closure**) every rigid
 > `U ⊆ V(G)` satisfies `U ⊆ U(A)` for `A = U ∩ W`, `U(A)` is rigid, and
 > `∂_hub U = ∂_hub U(A) = N_Λ(A) ∖ A`. Consequently, for `A ⊊ W`,
-> `3 ≤ |U(A)|` whenever `U(A)` is rigid and `|U(A)| ≤ |V(G)| − 2` always.
+> `|U(A)| ≤ |V(G)| − 2` **always**, and `3 ≤ |U(A)|` whenever `U(A)` is rigid
+> **and `2 ≤ |A|`**.
+>
+> **The `2 ≤ |A|` is load-bearing in the statement and free in every use** (coordinator
+> repair, 2026-09-02, at the WGROW verification pass — the clause first landed without
+> it). At `|A| = 1` it fails: `U({z}) = {z}`, since a mid has two *distinct* hub
+> neighbours, and one vertex is rigid — its only partition is the one-part one, where
+> `partitionDef = 6·0 − 5·0 = 0`, so `def = 0`, and **(R1)**'s min-degree-`2` conclusion
+> does not bite because `two_le_degree_of_isKDof_zero` (`Deficiency.lean:1306`) carries
+> the hypothesis `2 ≤ |V(G)|`. **Nothing downstream moves:** (GROW-4) quotes the clause
+> only at `|X_i| ≥ 2` (it disposes of singleton parts by `c({z}) = deg_M z ≥ 3` instead),
+> *Step GW5* re-derives its own `|U(W ∖ {z})| ≥ 3` from `|W| ≥ 4`, and `wgrow.py
+> --validate` ranges `r` from `2`, so no figure or verdict is touched. Recorded rather
+> than silently patched because it is the *seventh* summary-outruns-its-caveat instance
+> of this arc and the first inside a freshly-landed lemma **statement**.
 
 *Proof.* Take a partition `P` of `V(G[U(A)])` and read
 `6(|P| − 1) − 5·d(P)`, the landed `partitionDef` at `D = 6`

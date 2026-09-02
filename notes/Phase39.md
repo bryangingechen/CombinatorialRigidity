@@ -22,15 +22,15 @@ GBAL), has NEVER fired, and is NOT one landing away** — `61e046a6` corrected t
 "the target" in E1–E3 is the **arc's**, so emptying W4's list does not fire it, and WGROW
 emptying it is the worked case.
 
-**W4's INFORMAL SIDE IS CLOSED** by four 2026-09-02 landings
-(`notes/Pencil-W4-informal.md` §(SAFE-RES) *Steps TF1–TF6*, §widened kernels
-*EL1–EL6* / *PR1–PR6* / *GW1–GW6*): **WTRI (58)** proved **(T)**; **WELOC (59)** refuted
-**(E-loc)** — but **(E) STANDS, now TIGHT** (`T32`), so only the route died; **WPAIR (60)**
-reduced **(E-pair)** to the seed condition **(PAIR-5)** and made **(V)** a theorem given it;
-**WGROW (61)** settled (PAIR-5) both ways — **refuted as stated** by `K₂,₃` (in the class,
-**not a residual**, so **(E) untouched**) and **proved** where its only consumer needs it,
-by the seed dichotomy on the hub multigraph. **So (E-pair) and (V) are THEOREMS and W4's
-non-user-call cost list is EMPTY**, leaving the USER call **(K-res)** and the held build.
+**W4's INFORMAL SIDE IS CLOSED** by four 2026-09-02 landings — **WTRI (58)** (T);
+**WELOC (59)** ¬(E-loc), with **(E) STANDING and now TIGHT** (`T32`); **WPAIR (60)** the
+(E-pair) → (PAIR-5) reduction plus **(V)** given it; **WGROW (61)** (PAIR-5) settled both
+ways (`K₂,₃` refutes it *as stated* and is **not a residual**, so **(E) untouched**; the
+seed dichotomy on the hub multigraph proves it where its only consumer needs it).
+**So (E-pair) and (V) are THEOREMS and W4's non-user-call list is EMPTY**, leaving the
+USER call **(K-res)** and the held build. Per-landing detail:
+`notes/Pencil-W4-informal.md` §(SAFE-RES) *TF1–TF6*, §widened kernels
+*EL1–EL6* / *PR1–PR6* / *GW1–GW6*.
 
 **WHERE THE (BE-14) THREAD STANDS** — S-mark, the 2-cut composition lemma, is its **only
 open step**; the three sides and every per-landing detail are **REFERENCE**, at
@@ -416,13 +416,9 @@ section named; its *spec and landing write-up* in `notes/Pencil-fanout.md` §"<C
 paragraphs.**
 
 - **WGROW** (61, 2026-09-02, opus, fourth W4-side) — **(PAIR-5) SETTLED BOTH WAYS, so
-  (E-pair) IS A THEOREM** ((GROW-1)–(GROW-6), §widened kernels *Steps GW1–GW6*): rigidity is
-  `exc(Q) = 5a + 4b − 6(k−1) ≥ 0` on hub partitions ((GROW-1)/(GROW-2)), min-excess parts are
-  rigid ((GROW-3)), hence **every class member has a seed or a co-1 rigid set** ((GROW-4)) —
-  a residual forbids the latter, so (E-pair) ((GROW-6)) and (V). As *stated* (PAIR-5) is
-  **false**: `K₂,₃`, the only counterexample, **not a residual**, **(E) untouched**
-  ((GROW-5)). Job 2, now **per-arc**: the W4 arc cited **no** part of `deficiency`'s landed
-  **partition** face (`Deficiency.lean:1912+`); the sibling workbook cites it 16×.
+  (E-pair) and (V) ARE THEOREMS and W4's non-user-call list is EMPTY** ((GROW-1)–(GROW-6),
+  §widened kernels *Steps GW1–GW6*; `K₂,₃` refutes (PAIR-5) *as stated* and is not a
+  residual, so **(E) is untouched**). Job 2's fifth payment, sharpened to **per-arc**.
 - **WPAIR** (60, 2026-09-02, opus, third W4-side) — **(E-pair) REDUCED, two strata proved**
   ((PAIR-1)–(PAIR-6), §widened kernels *Steps PR1–PR6*): ¬(E-pair) ⟹ `f = 6 + e₀ + 2σ ≥ 6`
   exactly ((PAIR-1)), `hcard(G/U) ↔ |∂_hub U| ≤ 2` ((PAIR-2)), **no residual carries a rigid
