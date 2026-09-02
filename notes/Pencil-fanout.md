@@ -12998,3 +12998,143 @@ freedom; (2) **`n_hub = 6` exhaustively** — `all_packings` is ~10⁴ partition
 (3) **leaf-covering as a packing question on its own terms**, the one place the landed
 Phase-12/13/14 matroid-union machinery might reach, as §(K-slide-comb) (C6) remark (c)
 reaches (GR-130).
+
+## BPROPER — sixty-ninth ordinal (single dispatch, **DRAFT-ONLY**, run 2026-09-02 in parallel with GLIST) — the class-statement lane
+
+**Selection provenance.** (BE-113)(i) item 1 **designated this target in its own words** —
+*"That is the successor's target, and it is a **class** statement, not a hunt"* — after the
+clause it protects had been refuted and repaired **three directions running** ((BE-99)
+BDOUBLE, (BE-105) BSATUR, (BE-109) BSIGMA), every one of them **SLACK, not a shortfall**
+(0 shortfalls at 300 / 260 / 78 rows) and every repair **free**, because (BE-14) is
+existential ((BE-16)), the good locus is dense on an irreducible chart ((BE-69)) and `reach`
+is lower-semicontinuous. Three free repairs is a signal that the object wants **proving**,
+not repairing a fourth time. Run **draft-only** beside a committing dispatch — the second
+exercise of `RESEARCH-ARC.md` §2's serial-landing pattern outside a prepared fan-out, and
+the second concurrent pair of the arc — at **`recon-opus`**.
+
+### The spec, as dispatched
+
+**Target.** Prove (PENCIL-SATURATES-CHART): that the `Σ_x ⊆ ρ̄_i` locus is a **proper**
+subvariety of `Chart(H)` at a **non-path** side. A class statement; any sweep is an
+**adversarial control** on an argument, not the deliverable.
+
+**Priced in advance, both ways.** A proof closes item 1 of half (B)'s four residuals. A
+refutation costs the redundancy theorem's hypothesis (`Π_x`/`Π_y` back among the live
+blocks, 12 → 14) but by (BE-113)(iv)'s own accounting does **not** refute
+`PencilPair K 3 G`, `hbareSplit`, (BE-14), the 2-cut step or half (B).
+
+**The coordinator's reading, labelled TO BE TESTED.** *The corank identity is
+structure-free; what the path proof consumes is the `dim⟨L_j⟩ ∈ {0,1}` case analysis, so
+properness off paths needs no new identity — only a replacement for `assert_generic_star`'s
+role at a vertex of degree `≥ 2`.* Evidence stratum named honestly in the spec: *a reading
+of (BE-110)'s proof text, no measurement, no driver.*
+
+**Forced jobs.** (1) a class statement, not a hunt; (2) the `RESEARCH-ARC.md` §4
+sampler-support audit, naming each population's support and which of the claim's own
+variables it varies — the direction's direct inheritance, since BSIGMA's own cap was that
+its planted stratum reached only paths; (3) measure the `deg_i(x) ≥ 2` shape ((BE-113)'s
+price (d)), unmeasured anywhere; (4) a shortfall control on every exhibited row; (5) cap
+disclosure; (6) E1/E2/E3 read at source.
+
+**Bars.** Draft-only, no tracked file touched; do not touch `notes/Pencil-informal-grid.md`
+or any `(GR-…)` label; do not re-open BSATUR's or BSIGMA's landings; (K-res) is a **USER
+call**; the 2026-08-05 Lean hold binds.
+
+### LANDING WRITE-UP — BPROPER, 2026-09-02: **the properness half is settled at every side, and two hunt verdicts fall with it**
+
+**THE TARGET'S PROPERNESS HALF IS SETTLED, and the argument is side-topology-free.** At a
+terminal with `deg_i(x) = 1` and side neighbour `c`, the pendant edge carries a **free
+multiplier** — `kbare_common.build_rigidity` emits `perp_basis(C_e)` as `+wv` at `u` and
+`−wv` at `w`, i.e. exactly `m(u) − m(w) ∈ ⟨C_e⟩`, so the single hinge `xc` is the only
+constraint on `x` — hence `ρ̄_i = ⟨p_x ∧ p_c⟩ + A` with `A = ρ̄(side_i − x; c, y)` a function
+of the **core points alone** ((BE-114)). Because `p_x ∧ p_c ∈ Σ_x`, the intersection splits
+exactly: `dim(ρ̄_i ∩ Σ_x) = dim(A ∩ Σ_x) + [ℓ ∉ A]` and `ρ_i = dim A + [ℓ ∉ A]`, so the bad
+condition is **two conditions on `p_x` against a FIXED subspace**. Both cut out a proper
+subvariety of the plane `π_c` the pencil condition confines `p_x` to — `Σ_p ⊆ A` because
+three α-planes over a plane already span `Λ²K⁴`, and `dim(A ∩ Σ_p) ≥ 2` by an incidence
+count on `{(p, ℓ) : p ∈ ℓ ∈ P(A) ∩ Q}` whose **one** exception `Λ²π_c ⊆ A` is **neutralized
+by `p_c ∈ π_c`**, which puts the row in the other branch ((BE-115), (BE-116)). **No
+`dim⟨L_j⟩` case analysis, no `assert_generic_star`, no path hypothesis.**
+
+**SCOPE, stated exactly as the caps allow and never widened.** What is settled is the
+**properness half**, **proven-informally modulo one MEASURED input** — that `p_x` genuinely
+sweeps its fibre inside `Chart(H)` with the core fixed. The passage from *proper* to
+*generic* **cites (BE-69) rather than re-deriving it** for this locus, and `a_i = 0` at a
+generic configuration is likewise measured. **(PENCIL-SATURATES-CHART) is therefore NOT yet
+a theorem and half (B)'s item 1 is NOT closed** ((BE-116)(ii)/(iii), (BE-121)(i)).
+
+**Properness exercised ON the bad locus, not by failing to find it.** At **96** planted bad
+rows over **16** topologies, `p_x` was swept over its actual chart freedom with the core —
+hence `A` — held fixed: a good `p_x` at **96/96**, and **0** of ~1 500 swept points bad. The
+planted `p_x` is asserted to be in its own fibre and to be bad, so what is measured is a
+**nonempty** proper subset.
+
+**AND THE PREDECESSOR'S CAP WAS A SAMPLER ARTEFACT, located at one line.** BSIGMA's planted
+sampler gave a hub inside the planted plane a *random* flag and then intersected it with the
+plane, forcing that hub's neighbours onto a **line** and failing `assert_generic_star`. Give
+the hub the planted plane itself and the obstruction disappears: **16 of 16** bucket-A
+topologies drawable (BSIGMA: 5 of 16), firing at **11**, **eight of them not paths** —
+cycles, thetas and a subdivided `K₄` ((BE-117)). The mechanism off paths is *simpler*: `A`
+collapses onto `Λ²π` exactly, giving `(ρ_i, dim, dim A) = (4,3,3)` against the path's
+`(5,3,4)`.
+
+**AND THE `ρ_i ≤ 4` HUNT VERDICT IS REFUTED BY WITNESS.** On a constructed peel — a non-path
+bucket-A side glued at two **non-adjacent** hubs of a subdivided `K₃₃` or prism, so side 2 is
+R-node-shaped — **21 rows** carry `Σ_x ⊆ ρ̄₁` at **`ρ₁ = 4`** with `deg₁(x) = deg₁(y) = 1`,
+both gates, and **`flag_frame` non-`None`** ((BE-118)). (BE-110)(ii) is a **path theorem**
+and is untouched; what falls is (BE-110)(iv)'s *none found at 668 rows*, which (BE-113)'s own
+*What would change this* had named. Its structural reading — that `deg_i(y)` is the regime
+gate — is **confirmed** by the witness.
+
+**price (d) MEASURED for the first time, and half settled.** At `deg_i(x) ≥ 2` the same
+inclusion survives (delete all but one edge at `x` — that only adds motions), so
+`Σ_x ⊆ ρ̄_i` still forces `dim(A ∩ Σ_x) ≥ 2`, which (BE-115) makes proper whenever
+`dim A ≤ 4`: **91 rows over 16 topologies, `dim A ≤ 3` at every one**, `Σ_x ⊆ ρ̄_i` with
+`ρ_i ≤ 5` **not found under that cap** ((BE-119)).
+
+**THE PRICE IS PAID DOWN, and the distinction matters.** `margin ≤ 0` at `Π_x`, `Π_y` and
+`⟨M⟩` at **all 21** rows — so `notes/Phase39.md` item 0(c)'s `Π_x` shortfall is **not**
+exhibited and **stays open** — and `⟨M⟩`'s both-sides shape stays empty, taking (BE-108)'s
+denominator to **93**. What the non-path rows *do* break is `U = Λ²K⁴`, because **planting
+off a path costs `a_i ≥ 1`** (a path is a tree, so `a_i = 0` identically; off paths the flat
+core gains motions): 15 of 21 rows carry `a₁+a₂ > max(0, 6−δ₁−δ₂)`, the **first exhibited
+inhabitants** of (BE-101)(iii)'s live non-attaining block and of the shape BDOUBLE's own
+*What would change this* named ((BE-120)). **F13 control**: the same seven graphs drawn
+**freely** give `a = (0,0)`, `dim(ρ̄₁ ∩ Σ_x) = 1` and **attain** — so this is a fact about
+the stratum, not the graph, and (BE-14) is existential.
+
+**THE COORDINATOR'S READING: SPLIT** — the arc's second. Its first half (*what the path
+proof consumes is the `L_j` analysis*) is **confirmed and load-bearing**; its second half
+(*replace `assert_generic_star`'s role at degree `≥ 2`*) is **MOOT**, `RESEARCH-ARC.md` §7's
+fourth kind: no replacement was needed and no `L_j` analysis was run. Escape-clause item 1 is
+**refuted**, item 2 (*is irreducibility available off paths?*) is **vindicated and promoted
+to the residual**, item 3 is **confirmed but relocated** — `deg_i(y)` matters only through
+the regime gate. **Tally: twelve instances, seven kinds.**
+
+**E-rider: none of E1/E2/E3 fires**, read at source with `:1700`'s two-conjunct E3. What is
+refuted is two **hunt verdicts**, not the arc's target; dispatchable attacks are named.
+
+**Driver** `notes/scripts/w4/bproper.py`, eight modes
+(`reduce | alpha | proper | plant | peel | degx | support | validate`), exact ℚ, seed
+`20260902`, every headline an `assert`.
+
+### Coordinator note on the landing — two concurrency findings, both new to `RESEARCH-ARC.md` §2
+
+§2 today covers **tracked-file** contention only, and both of this round's findings sit
+outside it.
+
+**1. A draft-only dispatch must diff against `HEAD`, never against the working tree.**
+BPROPER did this correctly for the gap map (`gapdiff.py K-bare HEAD`, which is why that work
+needed no redoing) and **incorrectly** for the phase note: it read `notes/Phase39.md`'s line
+and status-word counts off GLIST's **uncommitted** edits and reported them as landed state.
+Re-measured after GLIST committed as `cadfc1f3`, the real figures were 565 lines / 487 status
+words — close enough that nothing broke, which is precisely why the habit is the risk rather
+than this instance.
+
+**2. The session scratchpad is SHARED between concurrent dispatches.** Both directions wrote
+working files into the same directory, and generic names collided — GLIST reported two of its
+own overwritten, and BPROPER's `closeit.txt` was overwritten by a sibling. **Nothing was
+corrupted here only because** BPROPER's row-assembly chain re-derives everything from a
+single file that was re-verified byte-identical to `HEAD` immediately before use. The rule
+both findings share: **prefix every scratch file with the direction code**, and **re-verify
+any scratch input against `HEAD` before consuming it**.

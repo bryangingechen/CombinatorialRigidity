@@ -1062,6 +1062,14 @@ are a recorded *Harness debt* item (see below).
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/glist.py --csp` | 105 s | ibid. *Steps G154/G156* ((GR-134): the `(α, γ)` orientation normal form compared with `gpack.csp_witness` at **472 680/472 680** legal (packing, split) pairs, 0 disagreements, clause (a) ASSERTED rather than imposed at all 229 320 feasible ones; and the missing denominator — 243 360 pairs REJECTED, of which 44 640 fail (GR-135) at some hub and **198 720 are locally feasible at every hub**) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/glist.py --rich` | 320 s | ibid. *Step G156* ((GR-136)(iv): every `n_hub = 4` class shape of the `D = 0` stratum — every cubic hub multigraph up to isomorphism × every excess profile × every 6-tree partition × every split — asserted to carry SOME CSP-feasible legal pair, with the conflict realized at 80 640 of 1 013 760 pairs on the 28 pure-hub shapes; plus the constructed `K_{3,3}` `n_hub = 6` control, where a seeded capped DFS finds **0 feasible pairs — reported as *not found under cap* and disproved as a nonexistence claim in the same step** by 60 asserted certificate-induced witnesses) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/glist.py --validate` | 530 s | ibid. all four in one process — the landing gate; fits the 600 s foreground budget. No `set` is printed and the one rng is seeded from a literal (`20260902`) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/bproper.py reduce` | 189 s | `notes/Pencil-informal.md` §(K-bare-ext) *Step BE113* (direction BPROPER; (BE-114): the pendant reduction `ρ̄_i = ⟨p_x ∧ p_c⟩ + A` asserted as an identity of SUBSPACES at **327** legal side draws over 29 topologies of both buckets, blind (coordinate ranges `{3,5,9}`) and planted; the two dichotomy identities and each row's BAD/GOOD classification asserted at every one; and `A` asserted UNCHANGED under **164** legal moves of `p_x` inside `π_c` with the core held fixed — the `p_x`-freeness the whole argument rests on) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/bproper.py alpha` | 3 s | ibid. *Step BE114* ((BE-115): the α-plane incidence lemma — `Σ_{p₁}+Σ_{p₂}+Σ_{p₃} = Λ²K⁴` at 48 independent triples; clause (a) asserted at every `dim A ≤ 5` draw and clause (b) at every `dim A ≤ 4` draw off its exception, over 6 dimensions × 40 random subspaces × 12 points per plane; the exception `Λ²π ⊆ A` is measure zero, so it is **built** at 24 constructed `A` and its neutralization by `p_c ∈ π_c` asserted there; `dim(Σ_q ∩ Σ_p) = 1` at 288 pairs) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/bproper.py proper` | 58 s | ibid. *Step BE115* ((BE-116): properness exercised ON the bad locus — at **96** planted bad rows over 16 topologies the planted `p_x` is asserted to lie in its own freedom fibre AND to be bad, then `p_x` is swept 16 ways over that fibre with the core (hence `A`) fixed; a GOOD `p_x` asserted at 96/96, and 0 of ~1 500 swept points bad) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/bproper.py plant` | 116 s | ibid. *Step BE116* ((BE-117): the repaired planter's census — 8 planted draws per topology; the stratum draws at **16 of 16** bucket-A topologies (BSIGMA's `sample_side_config`: 5 of 16) and fires at **11**, eight of them NOT paths, with the three still-undrawable bucket-B topologies named in the output; `a_i = 0` asserted at every PATH hit and `a_i ≥ 1` at every NON-PATH hit) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/bproper.py peel` | 85 s | ibid. *Step BE117* ((BE-118): **21** full constructed-peel rows over 7 composites × 3 seeds — a non-path bucket-A side glued at two NON-ADJACENT hubs of a subdivided `K₃₃`/prism — every one with `Σ_x ⊆ ρ̄₁` at `ρ₁ = 4`, `c₁(Π_x) = 2` at the closed-star plane and 24 random planes through `p_x`, side 2 R-node-shaped, both gates, and `flag_frame` non-`None`; `margin ≤ 0` ASSERTED at `Π_x`/`Π_y`/`⟨M⟩`; plus the F13 free control on the same seven graphs, `a = (0,0)` and attaining) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/bproper.py degx` | 41 s | ibid. *Step BE118* ((BE-119): §(K-bare-ext) (BE-113)'s price (d), unmeasured until this pass — the weak inclusion `ρ̄_i ⊆ ⟨p_x ∧ p_{c₁}⟩ + A` asserted at **91/91** rows over 16 `deg_i(x) ≥ 2` topologies (8 blind + 6 planted each), with the `dim A` census printed; `dim A ≥ 5` and `Σ_x ⊆ ρ̄_i` at `ρ_i ≤ 5` both **not found under that cap**) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/bproper.py support` | 0 s | ibid. *Step BE120* ((BE-121): the `RESEARCH-ARC.md` §4 support audit — all six populations named with what each varies and what it holds fixed, and the predecessor's cap located at one line of one function) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/bproper.py validate` | 243 s | ibid. all seven in one process — the landing gate; fits the 600 s foreground budget. No wall-clock cell but the driver's own `%.1fs` prints, and every rng is seeded from the literal `20260902` |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/ogeom.py --bound --dom --core --cert` | 288 s | `notes/Pencil-informal.md` §(K-out) *Steps O42–O45* (direction OGEOM; (OC-45) the `ℓ ≤ 5` + bridgeless class-shape check that turns `sigz.k4_stratum`'s `{1..5}^6` from a cap into a theorem (re-enumerated at `{1..12}^6`, 877 = 877); (OC-46) restriction-dominance, 1482 + 222 extensions, 0 failures; (OC-47) the live-core reduction; (OC-49) the census — 271 974/271 974 pairs settled, and (OC-39)'s 3 324 + 44 = 3 368 pairs shown to lie in exhausted cells) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/ogeom.py --hunt` | 357 s | ibid. *Step O45* ((OC-48): the exhaustive iso-reduced live-core hunt at `n(F°) ∈ {2,3}` (all `\|E°\|`) and `n(F°) = 4` (`\|E°\| ≤ 8`) — 21 086 classes here, all free, **0 candidates**) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/ogeom.py --huntn 5 8 8 <PART> 3` | 318 s each | ibid. *Step O45*, the `n(F°) = 5`, `\|E°\| = 8` cell in three deterministic slices (70 174 classes, all free) — the parts together with the two rows above make the pass's **91 260** cores |
@@ -1250,6 +1258,16 @@ canonical descriptions.
 
 ## 4. Conventions — mandatory
 
+**Convention 0 (2026-09-02, direction BPROPER) — round-trip an ASSEMBLED table row through
+the gate's own parser before quoting its numbers.** A gap-map row built programmatically
+(fold a string, splice a new tail, rejoin the cells) can be *malformed* rather than merely
+wrong: BPROPER's first assembly omitted the row's trailing `` ` |` `` delimiter, so
+`notes/check-gapmap-cells.py` resolved only the status cell and **passed**, while
+`notes/scripts/gapdiff.py` reported *3 DROPPED* — three labels that in fact live in the
+close-it cell the parser never saw. The set-diff is therefore a **shape** check as well as a
+content check, and neither gate alone certifies a row: re-read the edited row back through
+`iter_row_cells` (or simply run both gates) before recording any figure from it.
+
 1. **A degeneracy guard and a rank/dimension assert on every sampled object.**
    Not "usually"; every one. A sampled placement must assert its rank, a
    sampled span its dimension, a sampled normal that it is nonzero and that the
@@ -1396,6 +1414,17 @@ canonical descriptions.
    the numerics harness.)
 
 ## Divergences — same name, different semantics: **do not merge**
+
+**`sample_side_config` (`w4/bsigma.py`) vs `plant_side` (`w4/bproper.py`).** The same
+signature-shaped job — a legal pencil configuration of a *side* with §(K-bare-ext)
+(BE-109)'s stratum planted — and **one line apart**: BSIGMA gives a hub inside the planted
+plane a *random* flag through its point and then intersects, which collapses that hub's
+neighbours onto a line and fails `assert_generic_star`; BPROPER gives such a hub **the
+planted plane itself**. That one line is the whole of (BE-117): it takes the planted stratum
+from 5 of 16 bucket-A topologies to 16 of 16. **Do not merge, and do not "fix" the BSIGMA
+version** — its recorded figures ((BE-110)(iv)'s 668/544-row census) are landed evidence
+taken under that distribution, and the disclosure that the distribution was the binding
+constraint is (BE-117)'s own finding.
 
 Consolidating any row below would change recorded figures. They are separate
 functions that happen to share a name; each is reachable from §1 under its own
@@ -2470,6 +2499,19 @@ mode (255 / 216 / 39), and this direction's own conclusion does not depend on to
 `wtri.py` already probes for `saferes.prime_pool` and would use it if it existed. **The
 duplication is verified faithful**: `--regress` reproduces the recorded **255** exactly.
 Pay it in the next round that can re-run `saferes.py --prime`.
+
+### New item (2026-09-02, direction BPROPER) — `bsigma.wedge3` reaches its SECOND consumer; **UNPAID**
+
+`wedge3` (the map `ω ↦ ω ∧ p_x` on `Λ²K⁴`, whose kernel is exactly `Σ_p`) was minted by
+BSIGMA as a leaf-driver primitive and is now imported by `w4/bproper.py` as well. By §2
+rule 2 a second consumer is the signal to **move it down** — here to `exactcore`, where
+`wedge2` and the `PL` index order already live and where it has no upward dependency (it
+needs only `Fraction` and `PL`), re-exporting from `bsigma` so that direction's recorded
+figures do not move. **No move made**, deliberately: the move touches a tracked driver and
+would fire the full re-baseline obligation across the `kbare/` chain, and BPROPER ran
+draft-only beside a committing dispatch. Cost when paid: one function body, two import
+lines, and a byte-identical re-run of `bsigma.py mech`/`floor` plus `bproper.py` — the only
+two consumers.
 
 ### New item (2026-08-26, directions GBLAW + GXESC + GHWIT + GMINM) — the reversal-model sibling imports on `gprice.py`/`gblaw.py`/`gxesc.py`; **UNPAID**
 

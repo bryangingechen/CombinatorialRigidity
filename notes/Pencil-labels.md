@@ -3164,7 +3164,59 @@ precedent: **(PENCIL-SATURATES-CHART)**. Nothing minted for `Σ_x`, `Π_x`, `ρ�
 the flag regime — *the tail stratum* and *the projected pair lines* stay plain prose. The
 section has now gone **seven** directions without a configuration-level token.
 
-**The next tail is (BE-114) / *Step BE113***, 0-hit verified at landing.
+## Reserved namespace — direction BPROPER (2026-09-02, **CONSUMED IN FULL at the landing; nothing returned**)
+
+**Reserved and consumed on 2026-09-02 for the single direction BPROPER** (ordinal 69;
+`notes/Pencil-fanout.md` §"BPROPER") — (BE-113)(i) item 1's own designated successor target.
+Like BSIGMA, **this reservation was never a separate commit**: BPROPER ran **draft-only** in
+parallel with a committing dispatch, so its spec and its labels were carried in the
+invocation prompt and land here with the write-up (`RESEARCH-ARC.md` §2).
+
+| direction | owning § | labels reserved | steps reserved | driver |
+|---|---|---|---|---|
+| **BPROPER** | §(K-bare-ext) — **extends**, no new section | **(BE-114)–(BE-121)** | **BE113–BE120** | `w4/bproper.py` (eight modes) |
+
+**0-hit verification, at reservation time** (coordinator-run, before dispatch) **and re-run
+by the direction as its first action**, across `*.md`, `*.tex`, `*.lean`, `*.py`, `*.m2`:
+`BPROPER`, `bproper`, `bproper.py`, `(BE-115)`–`(BE-121)` and the raw step tokens
+`BE114`–`BE120` each **0-hit**; `(BE-114)` and `Step BE113` had exactly one hit each, opened
+and confirmed to be BSIGMA's own tail declaration. **`BSWEEP` was checked (0-hit) and NOT
+chosen** — it names the *method* the coordinator predicted (sweeping the projected pair
+lines), which the direction did not use; `BPROPER` names the **property being decided**, not
+a predicted answer and not a predicted route, which is what `RESEARCH-ARC.md` §7 asks.
+
+**CONSUMED IN FULL.** (BE-114)–(BE-121) and *Steps BE113–BE120* all used; **nothing
+returned**. **Nothing is minted** — not for the core space `A`, the pendant reduction, the
+incidence lemma, or the `p_x`-sweep input, all of which stay plain descriptive prose, per
+the constraint BSATUR and BSIGMA both honoured. The section has now gone **eight**
+directions without a configuration-level token. **(L6) landing grep run** over the new
+steps: no bare `(X<digit>)` token is minted anywhere; `(C6)`/`(C7)`, `(R1)`/`(C1)`/`(C2)`
+all **0-hit** in the new text.
+
+**The next tail is (BE-122) / *Step BE121***, 0-hit verified at landing.
+
+**Gap-map note (F21) — the set-diff earned its keep a THIRD time, and in a NEW way.**
+`notes/scripts/gapdiff.py` has now caught a dropped label (BSIGMA) and, on this landing, a
+**malformed row**: the direction's first assembly of the recomputed row omitted the row's
+trailing `` ` |` `` delimiter, so the gate's parser resolved only the status cell and
+reported *3 DROPPED* — (BE-57), (BE-57)(iv), (BE-97)(iv), **all three of which live in the
+close-it cell**. `notes/check-gapmap-cells.py` **passed** on the same malformed row.
+Repaired before return; the gates then read **1 538 → 1 499 words, 143 in, 155 out, ZERO
+dropped, 12 added**, against an explicit target of ≤ 1 500 (≥ 100 words of headroom, up from
+62). Two lessons for a successor: the set-diff is a **shape** check as well as a content
+check, and a row assembled programmatically must be **round-tripped through the gate's own
+parser** before it is quoted.
+
+**A second mechanics finding, and it is about this file's own discipline.** A draft-only
+dispatch running beside a committing sibling must **diff against `HEAD`, never against the
+working tree**. BPROPER did that correctly for the gap map (`gapdiff.py K-bare HEAD`) and
+*incorrectly* for the phase note, reading `notes/Phase39.md`'s line and status-word counts
+off a sibling's **uncommitted** edits. The gap-map work was sound for exactly that reason.
+The **session scratchpad is likewise shared** between concurrent dispatches — two files
+under generic names were overwritten mid-round — so **prefix every scratch file with the
+direction code**, and **re-verify any scratch input against `HEAD` immediately before
+consuming it**. Both belong to `RESEARCH-ARC.md` §2, which today covers only tracked-file
+contention.
 
 **Gap-map note (F21) — and the set-diff earned its keep on its second outing.** The draft's
 own Appendix B **dropped the citation `(BE-107)(iii)`** from the status column — the very
