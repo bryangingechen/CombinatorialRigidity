@@ -21,15 +21,10 @@ GBAL), has NEVER fired, and is NOT one landing away** — `61e046a6` corrected t
 "the target" in E1–E3 is the **arc's**, so emptying W4's list does not fire it, and WGROW
 emptying it is the worked case.
 
-**W4's INFORMAL SIDE IS CLOSED** by four 2026-09-02 landings — **WTRI (58)** (T);
-**WELOC (59)** ¬(E-loc), with **(E) STANDING and now TIGHT** (`T32`); **WPAIR (60)** the
-(E-pair) → (PAIR-5) reduction plus **(V)** given it; **WGROW (61)** (PAIR-5) settled both
-ways (`K₂,₃` refutes it *as stated* and is **not a residual**, so **(E) untouched**; the
-seed dichotomy on the hub multigraph proves it where its only consumer needs it).
-**So (E-pair) and (V) are THEOREMS and W4's non-user-call list is EMPTY**, leaving the
-USER call **(K-res)** and the held build. Per-landing detail:
-`notes/Pencil-W4-informal.md` §(SAFE-RES) *TF1–TF6*, §widened kernels
-*EL1–EL6* / *PR1–PR6* / *GW1–GW6*.
+**W4's INFORMAL SIDE IS CLOSED** by four 2026-09-02 landings (WTRI 58 / WELOC 59 /
+WPAIR 60 / WGROW 61): **(T), (E-pair) and (V) are THEOREMS**, **(E) is open, TIGHT and off
+every W4 path**, and W4's non-user-call list is **EMPTY** — leaving the USER call
+**(K-res)** and the held build. Per-landing detail is **block 9**.
 
 **WHERE THE (BE-14) THREAD STANDS** — S-mark, the 2-cut composition lemma, is its **only
 open step**; the three sides and every per-landing detail are **REFERENCE**, at
@@ -46,7 +41,7 @@ whether Phase 39 closes and a successor opens for the Lean is a
 adjudication, surfaced with a commit-count estimate, never taken unilaterally;
 the 2026-08-05 Lean hold binds regardless of how good the news is.
 
-**EIGHT reference blocks sit in `notes/Pencil-structure.md`**, which indexes them —
+**NINE reference blocks sit in `notes/Pencil-structure.md`**, which indexes them —
 **read them once per session**. The line that stays here: the **State of (K)** gap map
 (`notes/Pencil-informal.md`) is this phase's status object, **authoritative for every
 status word**; read it with `python3 notes/gapmap.py`, never `sed`/`grep`.
@@ -186,7 +181,7 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
 
 - **Doc debt — the gate is MECHANICAL** (`notes/check-phase-note.py`: **580 lines / 525
   status-header words**, plus a fail if *Decisions made* outgrows the forward sections),
-  and the standing remedy is **relocation or merger, never a fold** — **EIGHT** reference
+  and the standing remedy is **relocation or merger, never a fold** — **NINE** reference
   blocks now sit verbatim in `notes/Pencil-structure.md`, indexed by its own table, with
   no cap ever bumped and nothing deleted. **The rule that keeps working:** ask *"what here
   is reference rather than status?"*. Four landings running have paid for themselves that
@@ -219,17 +214,13 @@ BGENUINE (57) and the last four directions are all W4-side. The status that stay
 (S1)/(S2)**, half (B)'s residue is **one** item — now the per-side **(NO-DOUBLE-PENCIL)**
 — and cross-pair welding is **untouched**.
 
-**THE W4 DEVIATION PAID FOUR TIMES AND IS NOW DONE** (§(SAFE-RES) *Steps TF1–TF6*,
-§widened kernels *Steps EL1–EL6* / *PR1–PR6* / *GW1–GW6*): WTRI (58) closed (T); WELOC (59)
-refuted (E-loc) and proved the other obstruction shape impossible, leaving **(E) primitive
-again and unchanged in truth** (`T32` satisfies it at `f = 4`); WPAIR (60) **reduced
-(E-pair)** to the seed condition **(PAIR-5)** ((PAIR-3)/(PAIR-4)) and made **(V) a theorem
-given (E-pair)** ((PAIR-6)); **WGROW (61) settled (PAIR-5) both ways** — **refuted as
-stated** by `K₂,₃`, which is in the class but is **not a residual** so **(E) is untouched**
-((GROW-5)), and **proved** in the restriction its only consumer needs, via the seed
-dichotomy *every class member has a seed or a co-1 rigid set* ((GROW-4)) on the **hub
-multigraph** ((GROW-1)/(GROW-2)/(GROW-3)). **So (E-pair) is a THEOREM ((GROW-6)) and (V)
-with it, and W4's non-user-call cost list is EMPTY** — only the USER call **(K-res)**
+**THE W4 DEVIATION'S PER-LANDING DETAIL — RELOCATED 2026-09-02** to
+`notes/Pencil-structure.md` §"The W4 deviation — per-landing detail" (**block 9**), the
+same disposition block 8 got: the thread has not been worked since WGROW (61) and its
+informal argument is **closed**, so which landing proved which sub-clause is attribution,
+owned by `notes/Pencil-fanout.md` §"<CODE>" and the *Decisions made* one-liners. The status
+that stays here: **(T), (E-pair) and (V) are THEOREMS**, **(E) is open, tight and off every
+W4 path**, and W4's non-user-call cost list is **EMPTY** — only the USER call **(K-res)**
 remains, plus the Lean-held build.
 
 **BBASE (62) LANDED 2026-09-02 — the flag base is FREE, so half (B)'s residue is ONE

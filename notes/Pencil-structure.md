@@ -41,11 +41,11 @@ here — the phase's next concrete task is the kernel-(K) research pick
 
 ## The relocated reference blocks — the index `notes/Phase39.md` points at
 
-**EIGHT blocks, relocated verbatim from `notes/Phase39.md` between 2026-08-27 and
-2026-09-01**, each because it is **stable reference, not status** — it changes only
-when something is *added* to it, never when a gap's status moves. (Block 8 is the
-one exception to the "never when a gap's status moves" reading, and it is a
-deliberate one: it is the *per-landing attribution* of a thread whose status the
+**NINE blocks, relocated verbatim from `notes/Phase39.md` between 2026-08-27 and
+2026-09-02**, each because it is **stable reference, not status** — it changes only
+when something is *added* to it, never when a gap's status moves. (Blocks 8 and 9 are the
+two exceptions to the "never when a gap's status moves" reading, and they are
+deliberate ones: each is the *per-landing attribution* of a thread whose status the
 note keeps — see its own section for why that split is the right cut.) That is the
 disposition the phase note's own *Doc debt* watch item prescribes moving, instead of
 another compression fold of *Decisions made* (three prior folds recovered 2–5 lines
@@ -63,6 +63,7 @@ cap was ever bumped and nothing was deleted**; the note keeps a pointer to each.
 | 6 | *The unselected candidate continuations* | 2026-08-29 | leads (b)–(f); ranking lives in the fan-out losers sections |
 | 7 | *Citations — the phase's verified bibliography* | 2026-09-01 | every verified source; **a new source is added HERE** |
 | 8 | *The (BE-14) thread — per-landing detail* | 2026-09-01 (addendum 09-02) | which direction proved which sub-clause of the three sides, with its labels; the **settled frame** and the thread's last five landings joined it 09-02 |
+| 9 | *The W4 deviation — per-landing detail* | 2026-09-02 | which of WTRI/WELOC/WPAIR/WGROW proved which sub-clause of route 3's cost list, with its labels; relocated once W4's informal argument closed |
 
 The one line that stays in `notes/Phase39.md` rather than moving here: the **State of
 (K)** gap map in `notes/Pencil-informal.md` is the phase's status object, authoritative
@@ -841,3 +842,35 @@ then shown **genuine but harmless**. **Net: half (B)'s residue is back to TWO it
 
 **Reading it later.** Same caution as block 8's: a snapshot, not a live surface. If it
 disagrees with the `(K-bare)` gap-map row, the row wins.
+
+## The W4 deviation — per-landing detail
+
+**Relocated verbatim from `notes/Phase39.md`'s *Hand-off* section, 2026-09-02**, at the
+BUNIF follow-up, when the note stood at **580/580 lines** — saturated, the position that had
+already blocked one correction commit (`61e046a6`). Same disposition as **block 8**'s, and
+for the same stated reason: the W4 thread has not been worked since WGROW (ordinal 61) and
+its **informal argument is closed**, so *which landing proved which sub-clause* is
+attribution, not status. Attribution has two canonical homes already —
+`notes/Pencil-fanout.md` §"<CODE>" for each landing write-up, and the phase note's own
+*Decisions made* one-liners — and the mathematics has a third, `notes/Pencil-W4-informal.md`.
+The phase note keeps the three status clauses named in its pointer.
+
+**The paragraph, as it stood at the BUNIF landing (`27e2bd18`):**
+
+**THE W4 DEVIATION PAID FOUR TIMES AND IS NOW DONE** (§(SAFE-RES) *Steps TF1–TF6*,
+§widened kernels *Steps EL1–EL6* / *PR1–PR6* / *GW1–GW6*): WTRI (58) closed (T); WELOC (59)
+refuted (E-loc) and proved the other obstruction shape impossible, leaving **(E) primitive
+again and unchanged in truth** (`T32` satisfies it at `f = 4`); WPAIR (60) **reduced
+(E-pair)** to the seed condition **(PAIR-5)** ((PAIR-3)/(PAIR-4)) and made **(V) a theorem
+given (E-pair)** ((PAIR-6)); **WGROW (61) settled (PAIR-5) both ways** — **refuted as
+stated** by `K₂,₃`, which is in the class but is **not a residual** so **(E) is untouched**
+((GROW-5)), and **proved** in the restriction its only consumer needs, via the seed
+dichotomy *every class member has a seed or a co-1 rigid set* ((GROW-4)) on the **hub
+multigraph** ((GROW-1)/(GROW-2)/(GROW-3)). **So (E-pair) is a THEOREM ((GROW-6)) and (V)
+with it, and W4's non-user-call cost list is EMPTY** — only the USER call **(K-res)**
+remains, plus the Lean-held build.
+
+**Reading it later.** Same caution as block 8's: a snapshot dated 2026-09-02, **not** a live
+status surface. Every label resolves in `notes/Pencil-W4-informal.md`; the direction codes
+resolve in `notes/Pencil-fanout.md`. If it disagrees with the phase note's *Blockers* W4
+bullet, the phase note wins.
