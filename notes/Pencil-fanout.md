@@ -1,7 +1,20 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: EIGHT fan-outs, FORTY single directions and TWO concurrent pairs
-dispatched; 67 LANDED, none in flight.**
+**Status: EIGHT fan-outs, FORTY-ONE single directions and TWO concurrent pairs
+dispatched; 67 LANDED, ONE IN FLIGHT — WPAIR (ordinal 60).**
+**WPAIR (ordinal 60, §"WPAIR") PREPPED 2026-09-02** at **(E-pair)** — *every
+residual carries two adjacent degree-2 vertices* — the third W4-side direction.
+WELOC recommended it; the coordinator **verified the consumer off the landed
+body** rather than the note: `exists_adjacent_degree_two_pair_of_edgeBound`
+(`ReducibleVertex.lean:1068`) concludes exactly *two adjacent degree-2 vertices*
+from 2EC plus an edge-count hypothesis, so **(E) reaches the split arm only
+through that hypothesis** and (E-pair) bypasses (E) entirely — the same shape of
+find as WTRI's. It also serves **both** remaining non-user-call costs, since
+WELOC records (V)'s dependence on (E) as running only through (E-pair)'s
+branch-length statement. The question is branch lengths: (E-pair) says **no
+residual has every branch of interior length `≤ 1`**, and the tools are the ones
+*Step EL4* already used (Ear Lemma + no-good-contraction) plus **(EL-1)**, which
+caps hub adjacency at 2. Dispatched at `recon-opus` (fable unavailable).
 **WELOC (ordinal 59, §"WELOC") LANDED 2026-09-02** — the **second** W4-side
 direction, and it **REFUTES (E-loc)** while proving the *other* obstruction shape
 **impossible** — **HIT shapes 2 and 3, then 4 and 5; NOT shape 1**. `T32`
@@ -10099,3 +10112,164 @@ consumed **five of six** — **(EL-6) is returned unconsumed**, the sixth step
 carrying no new labelled claim. `notes/check-gapmap-cells.py` **did not fire and
 was not skipped**: there is no gap-map row on the W4 side and this direction did
 not open one. Run at **`recon-opus`** (fable unavailable this session).
+
+## WPAIR — sixtieth ordinal (single dispatch, prepped 2026-09-02) — the third W4-side direction
+
+**Selection provenance: WELOC's own recommendation, TAKEN — but the consumer trace
+was re-run for a seventh direction running and it is the trace, not the
+recommendation, that authorizes the pick.** WELOC refuted (E-loc) with `T32` and
+named **(E-pair)** as (E)'s successor target, *"the pick the direction
+recommends"*. The coordinator opened the consumer rather than inheriting the
+sentence, and it holds — **verified off the landed body, not the note**:
+
+> `exists_adjacent_degree_two_pair_of_edgeBound` (`ReducibleVertex.lean:1068`)
+> concludes exactly
+> `∃ v a, v ∈ V(G) ∧ a ∈ V(G) ∧ G.degree v = 2 ∧ G.degree a = 2 ∧ ∃ e, G.IsLink e v a`
+> from `6 ≤ bodyBarDim n`, `3 ≤ |V(G)|`, `G.TwoEdgeConnected` and the edge-count
+> hypothesis `hedge`.
+
+So **(E) reaches the split arm only through `hedge`**, and the arm consumes only
+the *conclusion*. Proving **(E-pair)** directly bypasses (E) entirely. That is the
+same shape of find as WTRI's — read the consumer's actual conclusion and the
+obligation turns out weaker than the thing being proved — and it is why this pick
+dominates a second assault on (E).
+
+**It serves BOTH remaining non-user-call costs.** WELOC records that *"(V)'s
+dependence on (E) is only through (E-pair)'s branch-length statement"*, so W4's two
+slice-sized items now share one target. **(K-res) remains a USER call** and is out
+of scope.
+
+Dispatched **un-named, single**, at **`recon-opus`** (fable unavailable this
+session).
+
+### The target, stated exactly
+
+> **(E-pair)** *Every residual `G` carries two adjacent degree-`2` vertices.*
+
+Prove it, **or** exhibit a residual with no adjacent degree-`2` pair, **or** reduce
+it to a named checkable condition. It holds at **255/255** of the pool and at
+**`T32`**.
+
+### What is free — cite it, do NOT re-derive it
+
+- **The consumer trace above**, and *Step EL6*'s reduction of (E) to (E-pair).
+- **(T) is a THEOREM** ((TF-5)): every residual is triangle-free. Use it freely.
+- **(EL-4)**: **no residual carries a brick** (a hub `C₄`/`C₅` sitting away from the
+  degree-`2` vertices) — proved by the **shieldedness** argument, which is *Step 2*'s
+  (C1)+(C5) with maximality replaced by shieldedness. **This is the arc's worked
+  example of exactly the tool pair this direction needs** (Ear Lemma +
+  no-good-contraction), and *Step EL4* says so.
+- **(EL-1)**: in a feasible `G` every hub has **≤ 2 hub neighbours** — from
+  `ncard_closedHubNbhd_le_three_of_isNondegPencilRealization` (`Motive.lean:409`)
+  composed with the existential in `PencilNondegFeasible`. **Coordinator-verified
+  off both bodies.** WELOC's job-2 find was that the arc had only ever used that
+  lemma as a *certified-infeasibility test on a contraction*; as a structure theorem
+  about the residual itself it is new, and it is likely the most useful free fact
+  here.
+- **(EL-3)/(EL-2)**: a brick is a hub `C₄`/`C₅`; the count identity
+  `f = 5c − |W| + 1` and the anatomy of a minimal dependent set.
+- **`isKDof_zero_of_cycle`** (`Deficiency.lean:743`) / **`cycle_isProperRigidSubgraph`**
+  (`Operations.lean:1082`): **every** cycle of length `≤ 6` is rigid, not just the
+  `C₄` this arc habitually cites — WELOC's second job-2 find.
+- **`T32`** itself (`weloc.py --witness`), a certified residual with `f = 4`, two
+  disjoint `C₄` cores, 22 degree-`2` vertices — a free test instance, and
+  **(E-pair) holds there**.
+
+### Job 1 (PRIMARY, FORCED) — (E-pair)
+
+The statement is about **branch lengths**: a residual's degree-`2` vertices are the
+interiors of its branches, and two *adjacent* ones means some branch has `≥ 2`
+interior vertices. So (E-pair) says: **no residual has every branch of interior
+length `≤ 1`**. Attack it with the tools *Step EL4* already used — the **Ear
+Lemma** (an ear through the relevant set needs `≥ 6` interior vertices) and the
+**no-good-contraction** clause — and with **(EL-1)**, which caps hub adjacency at
+2 and therefore constrains how short every branch can simultaneously be.
+
+**The counting shape to check first, and the coordinator does NOT know the answer:**
+if every branch has `≤ 1` interior vertex then `|V|` and `|E|` are both controlled
+by the hub set, so `f(V(G))` is a function of the hub subgraph alone. **Does the
+residual's own feasibility (L6b: `hcard` + triangle-free) plus (EL-1) make that
+impossible?** That is a finite question about hub subgraphs of bounded adjacency,
+which is the kind of thing the last three W4 landings have each settled.
+
+### Job 2 (FORCED) — the landed-inventory question, third time and now standing
+
+WTRI closed (T) by finding two landed **transfers** an inventory had omitted;
+WELOC's job 2 found **two more** landed facts the arc had under-used ((EL-1)'s
+composition, and cycles up to `6` being rigid). **Run it again before concluding
+anything is unprovable**, and this time report it as a *standing* result: after
+three directions, is there a systematic gap between what the arc cites and what
+`ReducibleVertex.lean` / `Deficiency.lean` / `Operations.lean` / `Motive.lean`
+actually prove? A one-paragraph answer is enough, but it is worth having — this
+check has now paid three times running.
+
+### Job 3 (FORCED, CHEAP) — close the (V) trace
+
+If (E-pair) lands, **(V)** is *"elementary given (E) and (T)"* with (T) a theorem
+and (E)'s only consumed consequence supplied. In one paragraph: does (V) close
+outright, or do its two `C₄`-carrying residues (`j = 3` with `u = u'`; `j = 2` with
+`u ~ u'`) still need their own argument? **WELOC already reports (V) holds outright
+at `T32`** — so say whether that is a witness or a theorem.
+
+### What counts as a HIT — state which you got
+
+1. **(E-pair) PROVED** — the split arm's obligation is discharged, and W4's
+   non-user-call cost list collapses toward **(V)** alone.
+2. **A residual with no adjacent degree-`2` pair** — refutes (E-pair) and re-opens
+   the arm; a clean result that re-routes route 3.
+3. **Reduced** to a named checkable condition (e.g. a finite hub-subgraph check).
+4. **The standing inventory verdict** (job 2).
+5. **(V)'s status** (job 3) — witness or theorem.
+
+### Bars
+
+- **Do not re-open:** **(T)** ((TF-5)); **(EL-4)**, no residual carries a brick;
+  **(E-loc)**, REFUTED by `T32` ((EL-5)) — **do not attempt to rescue it**, and do
+  not re-hunt for a second refuting witness; **(E)** itself, which is open, tight
+  (`f = 4` at `T32`) and **explicitly not this direction's target** — the point of
+  (E-pair) is to avoid it; the route-3/packaging-(b) adjudication (2026-08-02);
+  `hnoGood'`'s vacuity refutation; **(SAFE-RES)**, refuted at `S29`; and the whole
+  **(BE-14) thread**.
+- **The Lean hold (2026-08-05) binds**: no `.lean`. The *"cheap Lean leaf"*
+  (`noRigid`-free sibling) stays **parked** — pin a statement, do not build it.
+- **Not this direction, ranked separately:** **(V)** beyond job 3; **(K-res)**, a
+  **USER call**; everything on the (BE-14) side.
+- **Out of scope:** `hK`, **(GR-15)**, class uniformity.
+
+### Riders
+
+**TERMINATION E1/E2/E3** — read against their actual definitions
+(`notes/Pencil-fanout-archive.md`) and state how you read them on the W4 side.
+**E2 came closest of any W4 landing at WELOC** (target refuted, but the successor
+*was* specified — the clause it turns on), so if this direction refutes (E-pair),
+**say explicitly whether a successor is specified**, because that is the E2 clause.
+**E3 is ARMED**; report, never fire. **F11** — *"no residual has all branches of
+interior length ≤ 1"* is an **impossibility** claim and needs an argument; a sweep
+reports *"none found under cap C"*. **Cap disclosure MANDATORY with the DENOMINATOR
+named** — and note WELOC's own precedent: it reported the honest denominator as
+**0, not 255** (zero pool residuals carry two dependent sets), which is the standard
+to match. **This question is NOT in (T)'s blind spot** either — branch length is in
+no feasibility certificate — so do not copy that sentence forward. **F12** — a
+corrected summary needs a hunk at the originating prose. **F17** — four surfaces:
+the fan-out header, `notes/Phase39.md`'s `**Status:**` header **and** its *Blockers*
+W4 bullet **and** *Hand-off*, and **`ROADMAP.md`'s Status row**.
+
+### Reservation
+
+(`notes/Pencil-labels.md` §"Reserved namespace — direction WPAIR".) Labels
+**(PAIR-1)–(PAIR-6)**, ***Steps PR1–PR6***, owning file
+`notes/Pencil-W4-informal.md` §widened kernels (routes 1/3). All **0-hit**.
+**Return any unconsumed remainder** — WELOC returned (EL-6) and that is the good
+habit. **`EP-` was rejected on the (L5) substring rule**: `(EP-1)`/`(EP-2)`/`(EP-4)`
+hit inside **`STEP-1`**, **`STEP-4`** and `perp-transport` in three Phase-23 /
+archive files. **Qualify `(E)`, `(E-pair)` and especially `(S1)`–`(S5)` with their
+owners** (L3) — that token has three owners across the doc set.
+
+### Budget — measured at this prep
+
+**`notes/Phase39.md` is at 570/580 lines, 512/525 header words** — both tight, and
+**the prep does not have room to spend**: it rotates the header's landed block and
+otherwise adds only the in-flight lines. **The landing must MERGE or ROTATE, not
+append** — three landings running have done so successfully. The `(K-bare)` gap-map
+row is at **1 544 / 1 600** and is **not this direction's** (it is the (BE-14)
+thread's); the next landing on *that* thread needs a recompute to a target (F21).

@@ -469,7 +469,10 @@ families; `saferes.py --prime`). It decomposes into three obligations:
   `f = 4` at `T32`, so (E) is tight**. Two direct attempts are known to leak:
   bounding `f(V(G))` by `f(S) + …` at a maximal cluster (`f(S)` of a dense rigid
   `H` is unbounded), and the local count above. The live successor is
-  **(E-pair)** ((EL-6)), which is weaker and is what (S1)/(S2) actually needs.
+  **(E-pair)** (*Step EL6*; the token is registered in §widened kernels' own `WK-`
+  neighbourhood, **not** as (EL-6), which WELOC RETURNED unconsumed), which is weaker
+  and is what (SAFE-RES′)'s (S1)/(S2) actually needs — those are the W4 clauses, not
+  §(K-bare-ext)'s window side conditions of the same name (L3).
 - **(T)** `G` triangle-free — **PROVED** (*Steps TF1–TF5*). The recorded
   255/255 was **never** evidence for it (the sweep's feasibility certificate is
   L6b, which *requires* triangle-freeness, so a triangle-carrying residual can

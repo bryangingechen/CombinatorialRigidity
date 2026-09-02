@@ -2493,6 +2493,7 @@ was missed from this sentence; added here with (K-ann) and (K-out).)
 | §(SAFE-RES) | `SR-` | **(C7)**, **(C8)**; (SAFE-RES), (SAFE-RES′); **(E)**, **(T)**, **(V)** | (C7) every ear through `T` has ≥ 6 interior vertices; (C8) the dichotomy at a maximal cluster; (E)/(T)/(V) the three gaps of (SAFE-RES′) |
 | §(SAFE-RES), direction WTRI | `TF-` | **(TF-1)–(TF-6)**; ***Steps TF1–TF6*** | the triangle-freeness cost (T), **LANDED 2026-09-02, reservation consumed EXACTLY (6/6, no remainder)**: (TF-1) the two landed feasibility *transfers* `Step 4` had not inventoried, (TF-2) the pendant triangle's anatomy + `2EC ⟹ deg z ≥ 4`, (TF-3) the `deg z ≥ 5` case by `PencilNondegFeasible.mono`, (TF-4) the `deg z = 4` case by the delete-one-then-steer chain, (TF-5) **(T) IS A THEOREM**, (TF-6) verification / the four Lean obligations / the by-product one-plane feasibility criterion. Owning section is authoritative |
 | §widened kernels (routes 1/3), direction WELOC | `EL-` | **(EL-1)–(EL-5)**; ***Steps EL1–EL6*** | the (E-loc) gap, **LANDED 2026-09-02, reservation consumed 5 of 6 — (EL-6) RETURNED unconsumed**, its step carrying no new labelled claim: (EL-1) the hub-degree law (every hub of a feasible `G` has ≤ 2 hub neighbours), (EL-2) the count identity `f = 5c − |W| + 1` and the anatomy of a minimal dependent set, (EL-3) a brick is a hub `C₄`/`C₅`, (EL-4) **no residual carries a brick** (shape 2 impossible), (EL-5) **(E-loc) is REFUTED** by `T32`. *Step EL6* carries the consumer trace, the successor (E-pair) and (V). Owning section is authoritative |
+| §widened kernels (routes 1/3), direction WPAIR | `PAIR-` | **(PAIR-1)–(PAIR-6)**; ***Steps PR1–PR6*** | the (E-pair) obligation: reserved 2026-09-02, in flight. `EP-` rejected on the (L5) substring rule (`STEP-1`/`STEP-4`) |
 | §widened kernels (routes 1/3) | `WK-` | (E-loc) — **REFUTED**; **(E-pair)** (minted 2026-09-02, WELOC); **(K-res)** | the routes-1/3 kernel widening; (E-pair) is (E)'s successor target, *two adjacent degree-`2` vertices*; (K-res) is the widened kernel carried as a byte-identical sibling of `hK` |
 
 ## Registry — `notes/Pencil-strategy.md`, `Phase39.md`, `Phase39-design.md`
@@ -2748,3 +2749,40 @@ minted outside this family: **(E-pair)**, in §widened kernels' own bare-token n
 beside (E-loc)/(K-res), registered in the `WK-` row above. `T32` follows the `W19`/`S29`
 witness-naming convention and is defined in `notes/Pencil-W4-informal.md` §widened kernels
 *Step EL5*, its canonical home.
+
+
+## Reserved namespace — direction WPAIR (2026-09-02, **RESERVED — the direction is in flight**)
+
+**Reserved 2026-09-02 for the single direction WPAIR** (ordinal 60;
+`notes/Pencil-fanout.md` §"WPAIR") — **(E-pair)**: *every residual carries two adjacent
+degree-`2` vertices.* The **third** W4-side direction; WTRI's W4-side conventions bind
+unchanged and are **not restated** (owning file `notes/Pencil-W4-informal.md`, `(BE-…)`
+not extended, **no gap-map row** and none opened, so `notes/check-gapmap-cells.py` will
+not fire — state it, do not skip it).
+
+| direction | owning § | labels reserved | steps reserved | driver |
+|---|---|---|---|---|
+| **WPAIR** | `notes/Pencil-W4-informal.md` §widened kernels (routes 1/3) — **extends** | **(PAIR-1)–(PAIR-6)** | **PR1–PR6** | `w4/wpair.py` (conditional, as WTRI's and WELOC's were) |
+
+**0-hit verification, at reservation time**, across `*.md`, `*.tex`, `*.lean`, `*.py`,
+`*.m2` with `.git`/`.lake`/`__pycache__` excluded: `WPAIR`, `wpair`,
+`(PAIR-1)`–`(PAIR-6)` and *`Steps PR1–PR6`* each **0-hit**.
+
+**`EP-` was CHECKED AND REJECTED, and it is the (L5) substring rule's cleanest catch
+yet.** The obvious tag for (E-pair) is `EP-`, and `(EP-1)`/`(EP-2)`/`(EP-4)` are **not**
+0-hit: they occur as substrings of **`STEP-1`**, **`STEP-4`** and `perp-transport` in
+`notes/Phase23b.md`, `notes/Phase23d.md` and `notes/model-experiment-archive.md`. None is
+a *label* collision — every hit is an innocent substring — which is precisely the failure
+(L5)'s substring half exists to catch, because a future grep for `(EP-4)` would surface
+Phase-23 prose. **`PAIR-` is topic-tagged, multi-letter and 0-hit**; the *step* prefix is
+**`PR`** rather than `PAIR` only to keep *Step* names short, and `Steps PR1–PR6` are
+0-hit too. Also checked and 0-hit but not chosen: `AJ-`, `D2-` (both opaque at the point
+of use — a reader meeting `(D2-3)` cannot tell what family it is, and this file's own
+collision table already carries a `(D1)–(D4)` row).
+
+**(L6) reminder for the landing.** Run the landing-time bare-token grep. The live risk on
+this question is **`(E)`** and **`(E-pair)`** themselves: `(E)` is a bare single letter
+not yet in the collision table, and `(S1)`–`(S5)` **are** in it — (SAFE-RES′)'s clauses
+versus §(K-slide)'s claims versus §(K-bare-ext)'s window conditions, three owners for one
+token. **Qualify every one of them with its owner** (L3); the WELOC landing left one
+unqualified `(S1)/(S2)` and the coordinator repaired it at the WPAIR prep.

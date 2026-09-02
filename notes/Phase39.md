@@ -10,7 +10,7 @@ derives it from exactly **three carried items**: **`hcontract`** (W4 — build p
 
 **The research arc: 67 directions COMPLETE** (2026-08-05 → 09-02, ordinals
 1–59 — 65 on kernel (K), and **WTRI (58) / WELOC (59) on W4**), plus eight strategy-only
-passes and two architecture probes; **none in flight**. Per-direction verdicts, specs and write-ups live at `notes/Pencil-fanout.md` §"<CODE>"
+passes and two architecture probes; **ONE in flight** — WPAIR (60), the third on W4. Per-direction verdicts, specs and write-ups live at `notes/Pencil-fanout.md` §"<CODE>"
 (ordinals 1–19: the archive) plus a workbook home — **not restated here**.
 **The arc's standing result, unchanged by all 67: `hK` is not closer.** **(GR-15)** — the
 single open gap the whole §(K-grid) chain reduces to — is **untouched**; **class uniformity
@@ -18,17 +18,17 @@ of the escape is untouched**; no g-flank was found by any direction; **E3 is ARM
 GBAL) and has never fired**.
 
 **THE TWO W4-SIDE LANDINGS, both 2026-09-02** (`notes/Pencil-W4-informal.md` §(SAFE-RES)
-*Steps TF1–TF6*, §widened kernels *Steps EL1–EL6*). **WTRI (58) CLOSED A CARRIED COST:
-(T) IS A THEOREM** ((TF-5)) — no feasible residual carries a triangle, by two **landed**
-feasibility *transfers* *Step 4* had never inventoried; route 3's list dropped
-**four → three**. **WELOC (59) then REFUTED (E-loc)** ((EL-5)): `T32`, a `|V| = 32`
-residual with two **disjoint** count-dependent `C₄` cores, certified to the `W19`/`S29`
-standard. **(E) itself STANDS** — `f(V(T32)) = 4` exactly, so (E) is now also **tight** —
-so W4's cost list is unchanged at **(E), (V), (K-res)**; only the (E) → (E-loc) *route*
-died, and the *other* obstruction shape is **impossible** ((EL-4)). **Successor named:
-(E-pair)**, *two adjacent degree-`2` vertices*, which is all
-`exists_adjacent_degree_two_pair_of_edgeBound` consumes — and (V) needs (E) only through
-the same branch-length neighbourhood, so W4's two non-user-call items share one target.
+*Steps TF1–TF6*, §widened kernels *Steps EL1–EL6*). **WTRI (58): (T) IS A THEOREM**
+((TF-5)), by two **landed** transfers an inventory had missed. **WELOC (59) REFUTED
+(E-loc)** ((EL-5)) by the certified residual `T32` — but **(E) STANDS and is now TIGHT**,
+so only the *route* died, and the other obstruction shape is **impossible** ((EL-4)).
+W4's cost list is **(E), (V), (K-res)**.
+
+**IN FLIGHT — direction WPAIR** (ordinal 60) at **(E-pair)**, *every residual carries two
+adjacent degree-`2` vertices* — coordinator-verified as **all the split arm consumes**
+(`exists_adjacent_degree_two_pair_of_edgeBound`, read off the body), so it **bypasses (E)
+entirely**, and (V) needs (E) only through the same branch-length statement, so W4's two
+non-user-call items **share one target**.
 
 
 **WHERE THE (BE-14) THREAD STANDS** — S-mark, the 2-cut composition lemma, is (BE-14)'s
@@ -234,19 +234,20 @@ then shown **genuine but harmless**. **Net: half (B)'s residue is back to TWO it
 (BE-67)(iii)'s uniformity and the flag base, now candidate 1 below.
 
 **THE W4 DEVIATION PAID TWICE** (§(SAFE-RES) *Steps TF1–TF6*, §widened kernels *Steps
-EL1–EL6*): WTRI (58) closed (T), and WELOC (59) **refuted (E-loc)** while proving the
-other obstruction shape **impossible** — so **(E) is primitive again and unchanged in
-truth** (`T32` satisfies it, at `f = 4` exactly). W4's cost list: **(E), (V), (K-res)**.
+EL1–EL6*): WTRI (58) closed (T); WELOC (59) refuted (E-loc) and proved the other
+obstruction shape impossible, leaving **(E) primitive again and unchanged in truth**
+(`T32` satisfies it at `f = 4`). W4's cost list: **(E), (V), (K-res)**.
 
-**THE NEXT CONCRETE TASK — the coordinator's pick under the standing delegation.** Two
-live boards, and the ranked (BE-14) list below is unchanged: its **candidate 1, the flag
-base**, is the thread default. The W4 board offers two items cheaper than anything on it,
-both slice-sized with no adjudication owed: **(V)**, reduced by (TF-5) to *"no residual has
-all its `≥ 2`-interior branches among two named `C₄`-carrying shapes"* (§(SAFE-RES)
-*Step 3*), and **(E-pair)** — *every residual carries two adjacent degree-`2` vertices*,
-(E)'s successor target, weaker than (E) and all the split arm consumes ((EL-6)). Both are
-**branch-length** statements, so the Ear Lemma + no-good-contraction pair that (EL-4) works
-with serves both. **(K-res) stays a USER call.**
+**THE NEXT CONCRETE TASK — WPAIR (60) at (E-pair)**, dispatched under the standing
+delegation and **verified off the landed body, not the note**:
+`exists_adjacent_degree_two_pair_of_edgeBound` (`ReducibleVertex.lean:1068`) concludes
+exactly *two adjacent degree-`2` vertices*, so **(E) reaches the split arm only through
+its edge-count hypothesis** and (E-pair) bypasses (E). It also serves **(V)**, whose
+dependence on (E) runs only through the same branch-length statement — so W4's two
+slice-sized items share one target, and the Ear Lemma + no-good-contraction pair that
+(EL-4) works with serves both. **(K-res) stays a USER call.** Spec
+`notes/Pencil-fanout.md` §"WPAIR". **The ranked (BE-14) list below is unchanged** — its
+candidate 1, the flag base, is that thread's default when it is next picked.
 
 The ranked list:
 
