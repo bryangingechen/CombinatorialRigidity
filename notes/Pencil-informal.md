@@ -25078,6 +25078,20 @@ BE29–BE62*. **No `.lean` was opened; the standing 2026-08-05 Lean hold binds.*
 > the flag coincidence of (BE-66)(iii), **unforceable at an R-node peel** by
 > (BE-66)(iv). That is the shape BWIN's opaque-subspace theorem had, one level
 > up.
+>
+> **CORRECTED at the BUNIF prep (2026-09-02, F12) — the last clause cites a
+> REFUTED lemma.** *"Unforceable at an R-node peel by (BE-66)(iv)"* no longer
+> holds: **(BE-66)(iv) is refuted outright** ((BE-81), direction BONEONE) —
+> `π_u = π_v` **is** forced at an internal R-node peel with both sides flexible,
+> at **392 of 928**. The **conclusion still stands, by a different route**: the
+> certificate is a **hinge pair**, so the forcing is genuine *pointwise*, and the
+> shortfall is **0 at 392/392** ((BE-84)–(BE-86), direction BGENUINE). So the
+> coincidence is a **checked hypothesis**, not an unforceable one, and the
+> general-position half's enemy is *located and measured-harmless* rather than
+> *excluded*. Three landings made the correction at (BE-66)(iv) itself and not
+> here, at the statement that cites it. The rest of (BE-67)(iii) is unaffected —
+> and its `Chart(H)` irreducibility citation is **not** touched by (BE-89)'s
+> correction to (BE-65), which is about `𝒜(B_real)`, a different object.
 
 ### Step BE67 — (BE-68): the routing verdict, and the residue in its honest minimal form
 

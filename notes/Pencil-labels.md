@@ -2912,3 +2912,46 @@ two window conditions"*, and the one pre-existing unqualified use in `notes/Phas
 qualified in the same commit), and **no label was minted for `B_real`** or for any of the
 new configuration-level objects (the flag base, a `B_real`-component, the collinear
 stratum), which keep prose names as BSPREAD / BONEONE / BGENUINE did.
+
+## Reserved namespace — direction BUNIF (2026-09-02, **IN FLIGHT**)
+
+**Reserved 2026-09-02 for the single direction BUNIF** (ordinal 63, the arc's seventy-first
+direction; `notes/Pencil-fanout.md` §"BUNIF") — **half (B)'s LAST residue**, the class
+quantifier (BE-67)(iii), i.e. *`reach(H;x,y) = min(δ₁+δ₂,6)` at every internal R-node piece
+and peel*. Coordinator-set, single dispatch — **not** a fan-out, so this reservation
+protects against the *existing corpus* only.
+
+| direction | owning § | labels reserved | steps reserved | driver |
+|---|---|---|---|---|
+| **BUNIF** | §(K-bare-ext) — **extends**, no new section | **(BE-94)–(BE-98)** | **BE93–BE97** | `w4/bunif.py` (expected — extend `bpeel.py`'s reach instruments, `bdecor.py`'s chart layer, `bgenuine.py`'s census and `bbase.py`'s flag tower, by read-only import) |
+
+The reservation opens at **(BE-94) / Step BE93**, the tail BBASE consumed to. **BBASE
+consumed (BE-89)–(BE-93) and *Steps BE88–BE92* in full and returned nothing**, and its own
+registry row did not declare the next tail — recorded here so the pointer is not lost, and
+the omission noted rather than glossed. (BGENUINE's row still carries the *now-consumed*
+"(BE-89) / Step BE88" pointer; it is a dated record of that reservation, not a live one.)
+
+**0-hit verification, at reservation time**, across `*.md`, `*.tex`, `*.lean`, `*.py`,
+`*.m2` with `.git`/`.lake`/`__pycache__` excluded, **in both cases**: `BUNIF`, `bunif`,
+`bunif.py`, `(BE-94)`–`(BE-98)` and the raw step tokens `BE93`–`BE97` each **0-hit**. Note
+the contrast with the last two openings: this tail is **entirely clean**, with no pointer
+hit to open and confirm, because BBASE declared none.
+
+**`BREACH` STAYS REJECTED and `BCLASS` is rejected the same way.** BGENUINE's prep already
+struck `BREACH` on the **(L5) substring rule** — `breach` hits **5** files, and `reach` is
+itself this arc's live technical term (`reach = min(δ₁+δ₂,6)`), exactly the overlap (L5)
+exists to catch — and that reasoning applies with more force here, where `reach` is the
+direction's own subject. `BCLASS`/`bclass` hit **7** and **21** files (the drivers'
+`class_shape` family). **`BUNIF` names the question — uniformity — and not a predicted
+answer**, per BGENUINE's and BBASE's precedent.
+
+**(L6) reminder for the landing.** Run the landing-time bare-token grep. Live risks:
+**`(S1)`/`(S2)`**, three owners — (SAFE-RES′)'s clauses, §(K-slide)'s claims,
+§(K-bare-ext)'s window conditions; BBASE's landing avoided the token entirely by writing
+*"§(K-bare-ext)'s own two window conditions"*, which is the habit to copy. **`reach`**,
+**`Good`**, **`A₁`/`A₂`** and the **flag pair** are existing prose/symbol names — reuse
+them, mint nothing for them.
+
+**Gap-map note (F21).** The `(K-bare)` row stands at **1 385 / 1 600 words** after BBASE's
+recompute, 215 spare — comfortable, but **recompute-to-a-target still applies** and label
+preservation is verified by **scripted set-diff**, never by eye.

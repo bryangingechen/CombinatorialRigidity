@@ -1,7 +1,20 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: EIGHT fan-outs, FORTY-FOUR single directions and TWO concurrent pairs
-dispatched; 70 LANDED, NONE IN FLIGHT.**
+**Status: EIGHT fan-outs, FORTY-FIVE single directions and TWO concurrent pairs
+dispatched; 70 LANDED, ONE IN FLIGHT.**
+**BUNIF (ordinal 63, §"BUNIF") IS IN FLIGHT since 2026-09-02** — at **half (B)'s LAST
+residue**, the class quantifier (BE-67)(iii), which BPEEL had already reduced to *one
+number per (piece, peel)*: **`reach(H;x,y) = min(δ₁+δ₂,6)`**, the generic value, with
+`A₁ ∩ A₂ ≠ ∅` already free. The prep **corrected the target at source** (F12):
+(BE-67)(iii) still said the general-position half's enemy is *"unforceable at an R-node
+peel by (BE-66)(iv)"*, and **(BE-66)(iv) is refuted outright** ((BE-81)) — the conclusion
+survives only by BGENUINE's different route, so the coincidence is a **checked
+hypothesis**, not an excluded one, and three landings had corrected the refuted lemma but
+not the statement citing it. Two readings labelled *to be tested*: that the class statement
+is now **entirely the general-position half**, and that (BE-70) makes `reach` a function of
+the **flag pair alone** — whose home BBASE has just shown free — with `G` the place the
+coordinator expects to be wrong. Driver-to-be `notes/scripts/w4/bunif.py`. Run at
+`recon-opus` (fable unavailable).
 **BBASE (ordinal 62, §"BBASE") LANDED 2026-09-02** — back to the **(BE-14) thread** after
 four W4-side directions, at **candidate 1**: the **flag base off the no-adjacent-hubs
 class** ((BE-65)(i)/(BE-68)(ii) item 1). **HIT shape 1 — the base is FREE, and it was
@@ -11187,3 +11200,205 @@ the flag base carries it at *every* vertex. An inapplicable citation passes ever
 stays inside the cited section; it is caught only by opening that theorem's own **ambient
 definition**. Recorded at `RESEARCH-ARC.md` §7, which now runs to **eight instances and
 seven kinds**.
+
+## BUNIF — sixty-third ordinal (single dispatch, prepped 2026-09-02) — half (B)'s LAST residue
+
+**Selection provenance: there is only one item left on this side.** BBASE discharged the
+flag base, so (BE-68)(ii)'s two-item residue is down to **one**: the **class quantifier of
+half (B)**, (BE-67)(iii), item 0 on the ranked list and the only entry on it that half (B)
+still needs. W4's non-user-call list is empty; the **(K-res) wave** and the **2026-08-05
+Lean hold** were both offered to the user on 2026-09-02 and both **declined in favour of
+continuing research**, so neither is in play.
+
+Dispatched **un-named, single**, at **`recon-opus`** (fable unavailable this session).
+
+### The target, stated exactly — and BPEEL already reduced it to one number
+
+Do **not** re-derive the reduction; (BE-69)(iii) states it:
+
+> `reach(H; x, y) := max_{A₁ ∩ A₂} dim(ρ̄₁ + ρ̄₂)`, attained on a **dense open** of
+> `A₁ ∩ A₂`, i.e. the **generic** value. Hence
+>
+> **(BE-67)(iii) at `H` ⟺ `A₁ ∩ A₂ ≠ ∅` and `reach(H; x, y) = min(δ₁+δ₂, 6)`.**
+
+`A₁ ∩ A₂ ≠ ∅` is **already free** — `A_i ≠ ∅` is (BE-14) for the side, the 2-cut
+induction's own hypothesis rather than a new obligation, and irreducibility upgrades the
+two to their intersection, which is the simultaneity clause (BE-25)(i) re-proved from the
+same source. So the whole class statement is **one sentence**:
+
+> **For every internal R-node piece `H` and every peel `(x, y)`,
+> `reach(H; x, y) = min(δ₁ + δ₂, 6)`.**
+
+Prove it, reduce it to a named checkable condition, or exhibit a **shortfall** — which by
+(BE-71) is the only shape a third mechanism could take, and would be a large result in its
+own right.
+
+### THE CORRECTION THIS PREP MADE BEFORE DISPATCHING — read it, the target cited a REFUTED lemma
+
+(BE-67)(iii) as landed says the general-position half's *"only located enemy is the flag
+coincidence of (BE-66)(iii), **unforceable at an R-node peel** by (BE-66)(iv)"*.
+**(BE-66)(iv) is refuted outright** ((BE-81), BONEONE): `π_u = π_v` **is** forced at an
+internal R-node peel with both sides flexible, at **392 of 928**. The *conclusion* — the
+enemy does not bite — survives, but by an entirely different route ((BE-84)–(BE-86),
+BGENUINE): the certificate is a **hinge pair**, the forcing is **genuine pointwise**, and
+the **shortfall is 0 at 392/392**. So the coincidence is a **checked hypothesis**, not an
+unforceable one, and the enemy is *located and measured-harmless* rather than *excluded*.
+Three landings made the correction at (BE-66)(iv) itself and **not** at the statement that
+cites it; **annotated at source in this prep** (F12). **Do not inherit the parenthetical.**
+Note also what is *not* affected: (BE-67)(iii)'s `Chart(H)`-irreducibility citation stands,
+because (BE-89)'s correction to (BE-65) is about `𝒜(B_real)` — a different object.
+
+### THE COORDINATOR'S TWO READINGS — labelled TO BE TESTED, not inherited
+
+`RESEARCH-ARC.md` §7 binds, and its tally now runs to **eight instances and seven kinds**
+after BBASE refuted all three of the last prep's readings — including the new
+**INAPPLICABLE** kind, a prediction citing a landed theorem about a *different object*.
+Both readings below are stated with the surface they were read off; kill either without
+ceremony.
+
+**(1) THE CLASS STATEMENT IS NOW ENTIRELY THE GENERAL-POSITION HALF — on current
+evidence.** (BE-67)(iii) names two ways to fail. The **welded half** ((BE-22)(iii)(a)) is
+*free at theta children* by (BE-66)(ii), and (BE-86) then found `ρ_i = δ_i + a_i` with
+(BE-22)(iii)(a) **free** at **392/392** — so on everything measured it is not where the
+statement can break. That leaves the **general-position half**, which is exactly what
+`reach` measures. **To be tested:** whether the welded half is genuinely free
+class-uniformly or only on the measured strata; if it is not, the class statement has two
+halves and this reading is wrong about which one is open. Read off (BE-66)(ii) + (BE-86),
+both measurements — **so this reading's evidence stratum is a sample, not an argument.**
+
+**(2) (BE-70) MAKES `reach` A FUNCTION OF THE FLAG PAIR ALONE, AND BBASE HAS JUST MADE THE
+FLAG PAIR'S OWN HOME FREE.** (BE-70): no topological branch crosses a 2-cut, so at fixed
+flags `ρ̄₁` and `ρ̄₂` are functions of **disjoint coordinate blocks** sharing **one datum,
+the flag pair `(ϕ_x, ϕ_y)`**, and the achievable pairs are the **full product modulo `G`**.
+So `reach(H; x, y)` is a maximum over the flag pair of `dim(ρ̄₁(ϕ) + ρ̄₂(ϕ))` with each
+side ranging independently over its own block — and (BE-89)–(BE-91) have just shown the
+base those flags live in is **nonempty always**, irreducible and ℚ-rational with dense
+ℚ-points, **hypothesis-free on a forest**. That is the shape of a class argument.
+**Where the coordinator expects to be wrong:** `G` is precisely the cross-branch proviso
+(BE-64)'s product theorem is stated **modulo**, and (BE-72) settles its emptiness only on
+**(CH-1)'s class** — so an argument routed through the product may **inherit `G` as a
+hypothesis** rather than discharge it, and would then prove a class statement about a class
+the proviso defines rather than about internal R-node pieces. Say explicitly which class
+your statement quantifies over.
+
+### Job 1 (PRIMARY, FORCED) — settle `reach` uniformity
+
+Readings (1) and (2) are a suggestion, not a route you owe anything to. **What is free and
+must not be re-derived:** (BE-69)'s dense-or-empty dichotomy and its one-draw mechanism;
+(BE-70)'s independence and product; (BE-72)'s `G` verdict on (CH-1)'s class; (BE-84)–(BE-86)'s
+genuine-but-harmless coincidence with shortfall 0; (BE-89)–(BE-93)'s free flag base;
+(BE-73)(ii)'s `δ_{uv}(H) = max(0, δ₁+δ₂−6)` and (BE-22)(vi)'s *one rigid side kills the
+general-position half*.
+
+**If you exhibit a shortfall, that is HIT shape 3 and it is large** — by (BE-71) a third
+mechanism can only appear as a reach shortfall, and completeness of the mechanism list was
+explicitly **never claimed**. Classify it: is it a *phenomenon* (a structural fact holding
+identically on `Chart(H)`, which (BE-69)(3) says is what `Good = ∅` means) or an artifact of
+the piece population? The former re-routes half (B); the latter is a cap finding.
+
+### Job 2 (FORCED) — the standing inventory verdict, per-arc
+
+The verdict is now two directions old and has paid five times: *the arc inventories landed
+**conclusions** and mis-reads landed **hypotheses***, sharpened by WGROW to **per-arc**
+(*grep the sibling workbook for the Lean file you are about to cite*) and paid again by
+BBASE, which found `hcard` **does** transport to the pieces but does **not** cap `B_real`.
+Run it against this section's own citations: which facts does §(K-bare-ext) cite **by the
+role they played when first needed** rather than by their landed signature? One paragraph.
+
+### Job 3 (FORCED, CHEAP) — what (BE-14) is left with, and the E-rider
+
+**This one is not routine, because a HIT here is large.** If `reach` uniformity lands, half
+(B) is **discharged** and (BE-14)'s only open half is the ear side, at the window **modulo
+§(K-bare-ext)'s two window conditions**, plus cross-pair welding. State that precisely.
+Then read E1/E2/E3 against their **actual** definitions (`notes/Pencil-fanout-archive.md`)
+and **report, never fire**, with the 2026-09-02 correction in force:
+
+> **"The target" in E1–E3 is the ARC's target — `PencilPair K 3 G`** — never a direction's
+> local obligation. Two E3 texts exist (`:1700`'s two-conjunct, `:2098`'s one-conjunct
+> deviation); say which you read. BBASE used `:1700`'s and confirmed WGROW's wrinkle that
+> **E2's letter says *"the direction's target"*** while E3's says *"the target"*.
+
+### What counts as a HIT — state which you got
+
+1. **`reach` uniformity PROVED class-uniformly** — half (B) is discharged.
+2. **Reduced** to a named checkable condition strictly smaller than (BE-67)(iii).
+3. **A shortfall exhibited** — the third mechanism, classified phenomenon-vs-artifact.
+4. **The per-arc inventory verdict** (job 2).
+5. **What (BE-14) is left with + the E-rider reading** (job 3).
+
+Either reading **corrected** is a reportable result in its own right — BBASE's landing is
+the model, where all three corrections were the direction's most useful output.
+
+### Bars
+
+- **Do not re-open:** the flag **coincidence** — genuine, pointwise, shortfall `0` at
+  392/392, a **checked hypothesis** ((BE-84)–(BE-86)); the **exhaustiveness obligation**
+  ((BE-70), retired — and completeness of the mechanism list is **not** claimed, do not
+  claim it); the **flag base** ((BE-89)–(BE-93), discharged — its two low-ranked successors,
+  including cyclomatic `≥ 2`, are **not** this direction); `(1,1)` peels ((BE-79));
+  the **SPREAD step** ((BE-74)); the **forced-empty `G` hunt** ((BE-72)); **(BE-32)(+)**;
+  **(BE-41)(ii)**; **BWIN's window theorem**; **S-mark's pin**; the ear-decomposition
+  induction ((BE-43)).
+- **Not this direction, ranked separately:** **§(K-bare-ext)'s two window conditions**
+  (qualify that token — it has three owners); **cross-pair welding** ((BE-28)(i)); the
+  **one-end-series** case; BTWOCUT's bundle construction; the whole **W4** side, whose
+  informal argument is closed.
+- **The Lean hold (2026-08-05) binds**: no `.lean`, in any file, for any reason.
+- **Out of scope:** `hK`, **(GR-15)**, class uniformity of the escape, **(K-res)** (a USER
+  call).
+
+### Riders
+
+**F11 — and it is the central rider here, because the target IS a uniformity claim.** Every
+figure this section owns is a measurement on a constructed piece population: **28/28** peels
+over 7 pieces ((BE-67)(i)), **24/24** (BRNODE), **16/16** first-draw-equals-maximum
+((BE-69)(iii)), **392/392** shortfall-0 ((BE-86)), **42/42** MIX ((BE-70)). *"For every
+internal R-node piece"* is an exhaustiveness claim over a class none of those populations
+exhausts. **Name the piece populations and their caps**, and say what a new sweep adds over
+them; a sweep reports *"none found under cap C"*. **Cap disclosure MANDATORY with the
+DENOMINATOR named** — BBASE's *"three tiers that cannot exhibit a counterexample"* is the
+standard to match, and it is the standard because it disclosed a cap that made its own
+78 564/78 564 uninformative about the open case.
+
+**F21 + `RESEARCH-ARC.md` §6.** The `(K-bare)` row was recomputed to **1 385 / 1 600** at the
+BBASE landing (215 spare), so this landing has genuine room — but **recompute-to-a-target
+still applies**, and label preservation is verified by **scripted set-diff, never by eye**
+(BBASE's *93 codes in, 98 out, zero dropped* is the model, including its three
+verified-benign inline-span drops). `notes/check-gapmap-cells.py` gates the cap, not the
+labels.
+
+**Harness.** `notes/scripts/README.md` first — §1 for the primitives (`bpeel.py`'s
+`open`/reach instruments, `bdecor.py`'s chart layer, `bgenuine.py`'s certificate census,
+`bbase.py`'s flag tower; do not reimplement any of them), §2 for layering, §4 for the
+discipline. If you only **add** `w4/bunif.py`, the figure-invariance gate discharges by the
+one-line `git diff --name-only -- '*.py' '*.m2'` / `git status --porcelain notes/scripts/`
+check rather than a §3 re-baseline.
+
+**F12** — the (BE-67)(iii) annotation this prep made is the model: a correction lands at the
+**consumer that cites** the refuted claim, not only at the refuted claim itself. If your
+work refutes or sharpens anything, sweep the citing statements too.
+
+**F17 — four status surfaces**, all set to *in flight* by this prep: the fan-out header;
+`notes/Phase39.md`'s `**Status:**` header **and** *Hand-off*; and **`ROADMAP.md`'s Status
+row**.
+
+### Reservation
+
+(`notes/Pencil-labels.md` §"Reserved namespace — direction BUNIF".) Labels
+**(BE-94)–(BE-98)**, ***Steps BE93–BE97***, owning file `notes/Pencil-informal.md`
+§(K-bare-ext) — **extends, no new section** — driver `w4/bunif.py`. The reservation opens at
+the tail BBASE consumed to. **Return any unconsumed remainder.** **`BREACH` stays
+rejected** — BGENUINE's prep already struck it on the (L5) substring rule (`breach` hits 5
+files, and `reach` is itself this arc's live technical term, which is exactly the overlap
+(L5) exists to catch) — and **`BCLASS` is rejected the same way** (`bclass` hits **21**,
+`BCLASS` 7). `BUNIF` names the question (uniformity), **not a predicted answer**. Prefer
+**prose names** for new configuration-level objects.
+
+### Budget — measured at this prep
+
+**`notes/Phase39.md` is at 576/580 lines, 502/525 status-header words** — the BBASE
+follow-up bought the lines back by demoting BPEEL's *Decisions* entry, collapsing the
+discharged ranked-list item 1, and merging the two W4 *Blockers* bullets. That is **4 lines**
+of headroom, which is **not enough for a landing**: the landing MUST merge or rotate, and
+the note's own rule names the candidates. The `(K-bare)` gap-map row at 1 385/1 600 is
+comfortable by comparison.

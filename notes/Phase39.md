@@ -10,10 +10,11 @@ derives it from exactly **three carried items**: **`hcontract`** (W4 — build p
 
 **The research arc: 70 directions COMPLETE** (2026-08-05 → 09-02, ordinals
 1–62 — 66 on kernel (K), and **WTRI (58) / WELOC (59) / WPAIR (60) / WGROW (61) on W4**),
-plus eight strategy-only passes and two architecture probes; **nothing is in flight**.
+plus eight strategy-only passes and two architecture probes; **BUNIF (63) IS IN FLIGHT**
+at half (B)'s last residue, the class quantifier ((BE-67)(iii)).
 Per-direction verdicts, specs and write-ups live at `notes/Pencil-fanout.md` §"<CODE>"
 (ordinals 1–19: the archive) plus a workbook home — **not restated here**.
-**The arc's standing result, unchanged by all 69: `hK` is not closer.** **(GR-15)** — the
+**The arc's standing result, unchanged by all 70: `hK` is not closer.** **(GR-15)** — the
 single open gap the whole §(K-grid) chain reduces to — is **untouched**; **class uniformity
 of the escape is untouched**; no g-flank was found by any direction; **E3 is ARMED (by
 GBAL), has NEVER fired, and is NOT one landing away** — `61e046a6` corrected that reading:
@@ -230,23 +231,20 @@ multigraph** ((GROW-1)/(GROW-2)/(GROW-3)). **So (E-pair) is a THEOREM ((GROW-6))
 with it, and W4's non-user-call cost list is EMPTY** — only the USER call **(K-res)**
 remains, plus the Lean-held build.
 
-**BBASE (62) LANDED 2026-09-02 — the flag base is FREE and half (B)'s residue is ONE
-item.** (BE-65)(i)/(BE-68)(ii) item 1 said the off-class base is *"the phase's own problem
-one level down"*; it is not. The base is the **flag** variety of `B_real` — a flag at
-*every* vertex — hence §(K-chart)'s tower's **stages 1–2 only**, and the absent stages 3–4
-are exactly where min degree 2 and girth `≥ 4` are spent, so **(CH-1) does not apply to it**
-((BE-89)). It is **nonempty always**, and irreducible, ℚ-rational with dense ℚ-points on
-every `B_real` component of cyclomatic number `≤ 1` — **with no hypothesis at all** on a
-forest ((BE-90)/(BE-91)). The only obstruction is **reducibility, not emptiness**, at a
-`B_real`-triangle or 4-cycle, both excluded on the class by girth `≥ 6` and both off the
-locus the standing proviso `G` already imposes ((BE-92)). **All three coordinator readings
-were corrected**, and job 2 came out two ways: `hcard` **does** transport to the pieces
-(monotone, a piece is a subgraph) but does **not** cap `B_real`, whose degree adds the
-marked pair's ((BE-93)). Write-up `notes/Pencil-informal.md` §(K-bare-ext) *Steps
-BE88–BE92*; driver `notes/scripts/w4/bbase.py`.
+**BBASE (62) LANDED 2026-09-02 — the flag base is FREE, so half (B)'s residue is ONE
+item.** Verdict in *Decisions made*; mathematics at `notes/Pencil-informal.md`
+§(K-bare-ext) *Steps BE88–BE92*. The one clause that is *status* rather than attribution:
+**(CH-1) does not apply to the base at all** ((BE-89)), so anything citing it for the base
+is citing the wrong object — and (BE-65)(i) is corrected at source.
 
-**THE NEXT CONCRETE TASK: prep and dispatch the next (BE-14) direction at half (B)'s
-LAST residue — the class quantifier (BE-67)(iii), now item 0 and the only one.** Two
+**IN FLIGHT — BUNIF (63), at half (B)'s LAST residue: the class quantifier (BE-67)(iii)**,
+which BPEEL reduced to one number, `reach(H;x,y) = min(δ₁+δ₂,6)`, with `A₁ ∩ A₂ ≠ ∅` free
+((BE-69)(iii); spec `notes/Pencil-fanout.md` §"BUNIF"). The prep **corrected the target at
+source** (F12): (BE-67)(iii) still called the coincidence *"unforceable by (BE-66)(iv)"*,
+which (BE-81) **refuted outright** — the conclusion survives only via BGENUINE's route, so
+it is a **checked hypothesis**, not an excluded enemy. **THE NEXT CONCRETE TASK is to
+verify and land BUNIF's return** (the coordinator re-runs E1/E2/E3 itself, `61e046a6`); a
+HIT **discharges half (B)**, leaving (BE-14)'s ear side and cross-pair welding. Two
 things stay the USER's call, both OFFERED 2026-09-02 and both DECLINED IN FAVOUR OF
 CONTINUING RESEARCH: the **(K-res) wave** (the 2026-08-26 adjudication selected a cheap
 scoping slice, queued below), and whether W4's now-closed informal side changes anything
