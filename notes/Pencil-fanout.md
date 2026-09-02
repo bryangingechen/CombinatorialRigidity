@@ -11850,14 +11850,15 @@ weaker than it reads), **(BE-45)(ii)** (its vacuous corner is what refutes (BE-9
 and **(BE-80)(iv)** (the `δ = min(L,6)` identity annotated **PATH-SIDE ONLY**, the prep's
 explicit instruction).
 
-**F21 — the `(K-bare)` row recomputed to a target, then the cap bumped deliberately.**
+**F21 — the `(K-bare)` row recomputed to a target; the cap bump was WITHDRAWN.**
 1 472 → **1 546** words while absorbing a full direction and five labels — ~110 words of
 pre-existing prose compressed away against ~186 added — with label preservation by a
-**scripted set-diff: 129 codes in, 144 out, ZERO dropped**. 54 words of headroom under the
-generic 1 600 is the *pointless recompute* `RESEARCH-ARC.md` §6 names, so the row joins
-`check-gapmap-cells.py`'s `SPECIAL_CAPS` at the recompute's own size plus ~15 % —
-**1 630 / 150, combined 1 780** — documented in that script's docstring in the same commit,
-per its own bump rule and the `(K-grid)` precedent. **Harness**: `bdouble.py` is an
+**scripted set-diff: 129 codes in, 144 out, ZERO dropped**. The recompute stands. The
+direction also added a `SPECIAL_CAPS` entry at 1 630 / 150, on the ground that 54 words of
+headroom is §6's *pointless recompute* case; the **coordinator withdrew it** the same day,
+because the row is **compliant at 1 546 under the generic 1 600** and every other entry in
+that table was added for a row that had *exceeded* its cap and carried a density argument.
+No overflow, no bump — the full reason is in the gate's own docstring. **Harness**: `bdouble.py` is an
 **addition only**, so the figure-invariance gate discharges by the one-line check; no
 tracked driver was edited. Twenty-first `kbare/` consumer, chain **nineteen** deep, and the
 **first external consumer of any `bunif` device** (recorded below the rule-2 threshold).

@@ -3029,6 +3029,6 @@ it at (BE-97)(iii) and (BE-99); it is **not** recycled. The **next tail is (BE-1
 `(K-bare)` row was recomputed to **1 546** words while absorbing a full direction
 (~110 words of pre-existing prose compressed away against ~186 added), scripted set-diff
 **129 codes in, 144 out, ZERO dropped**; the row then joined `check-gapmap-cells.py`'s
-`SPECIAL_CAPS` at **1 630 / 150 (combined 1 780)** — the recompute's own size plus ~15 %
-— documented in that script's docstring in the same commit, because 54 words of headroom
-under the generic 1 600 is the *pointless recompute* `RESEARCH-ARC.md` §6 names.
+`SPECIAL_CAPS` at **1 630 / 150** — **withdrawn by the coordinator the same day**, the
+row being compliant at 1 546 under the generic 1 600. The recompute stands; the ceiling does
+not move. Reason in `check-gapmap-cells.py`'s docstring.

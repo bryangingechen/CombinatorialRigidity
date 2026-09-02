@@ -29425,9 +29425,11 @@ per the prep's explicit instruction).
 1 546 words while absorbing a full direction and five labels, i.e. ~110 words
 of pre-existing prose compressed away against ~186 added — with label
 preservation verified by a **scripted set-diff**: **129 codes in, 144 out, ZERO
-dropped**. The row then joins `check-gapmap-cells.py`'s `SPECIAL_CAPS` at the
-recompute's own size plus ~15 % (1 630 / 150, combined 1 780), documented in
-that script's docstring in the same commit, per its own bump rule.
+dropped**. The direction then added a `SPECIAL_CAPS` entry (1 630 / 150); the
+**coordinator WITHDREW it** the same day — the row is **compliant at 1 546 under
+the generic 1 600**, and every other `SPECIAL_CAPS` entry was added for a row that
+had *exceeded* its cap, with a density argument. The recompute stands; the ceiling
+does not move (`check-gapmap-cells.py`'s docstring carries the full reason).
 
 **Reservation, and what is returned.** Labels **(BE-99)–(BE-103)** and
 ***Steps BE98–BE102*** were reserved and are **consumed in full**; nothing is

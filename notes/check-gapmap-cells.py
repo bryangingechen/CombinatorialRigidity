@@ -110,20 +110,31 @@ its prior cap (1769 words). Bumped to this recompute's own size
 (1769 / 797 words) plus ~15% headroom: 2035 / 873 (close-it left as-is,
 still under its prior cap).
 
-**2026-09-02 bump (direction BDOUBLE, `(K-bare)`).** The row now indexes
-*Steps BE1-BE102* -- 144 label codes -- and BDOUBLE adds five,
-(BE-99)-(BE-103): (NO-DOUBLE-PENCIL) REFUTED, its classification as slack,
-the Pi_x/Pi_y redundancy theorem under (PENCIL-SATURATES), reading (2)'s
-refuted weak link, and the job-2 verdict. Recomputed rather than appended --
-1472 -> 1546 words while absorbing a full direction, so ~110 words of
-pre-existing prose were compressed away against ~186 added, with label
-preservation verified by a scripted set-diff (129 codes in, 144 out, ZERO
-dropped). That left only 54 words of headroom under the generic 1600, which
-is the *pointless recompute* `RESEARCH-ARC.md` Sec.6 names, so the row joins
-SPECIAL_CAPS at the recompute's own size plus ~15%: 1630 / 150 (combined
-1780). Same disposition `(K-grid)` has had at each of its honest recomputes;
-the split is nominal, since this row's prose contains unescaped pipes and the
-gate caps its two cells COMBINED.
+**2026-09-02, `(K-bare)`: a bump PROPOSED and WITHDRAWN -- the case this
+docstring's order does NOT cover.** Direction BDOUBLE recomputed the row
+honestly while absorbing a full direction (1472 -> 1546 words; ~110 words of
+pre-existing prose compressed away against ~186 added; label preservation by
+scripted set-diff, 129 codes in, 144 out, ZERO dropped) and then added a
+SPECIAL_CAPS entry at 1630 / 150. The coordinator **withdrew the entry** in a
+follow-up the same day; the recompute stands, and the row passes the generic
+1600 cap at 1546 with the entry removed (verified by running the gate both
+ways).
+
+Why, and it is a distinction worth having in writing: **every other entry in
+SPECIAL_CAPS was added because a row had EXCEEDED its cap** -- `(K-grid)` at
+2360 against 2035, `(K-out)` at 828 against the 700 default, `(K-grid)`'s
+close-it at 959 against 935 -- and each recorded a *density* argument (~21-25
+words per labelled result, "further compression deletes status rather than
+redundancy") establishing that the recompute was exhausted. This row was
+**compliant**: 1546 under 1600, 54 words spare, and no density argument was
+made. Bumping a compliant row buys headroom for a landing that has not
+happened, which is exactly what the F21 lesson names -- and the `(K-grid)`
+close-it bump had already drawn that conclusion, setting a **deliberately
+tight** +2.7% "so the next landing on this row must recompute again rather
+than coast on headroom". The rule this leaves: *recompute first, twice, then
+bump* presupposes an overflow to bump for. **No overflow, no bump** -- if 54
+words of headroom is genuinely the pointless-recompute case, the answer is a
+further recompute with an explicit target, not a higher ceiling.
 """
 import re
 import subprocess
@@ -143,7 +154,6 @@ SPECIAL_CAPS = {
     # (ambiguous pipe split) uses the sum of the two.
     "K-grid": {"status": 2715, "closeit": 985},
     "K-out": {"status": 950, "closeit": 873},
-    "K-bare": {"status": 1630, "closeit": 150},
 }
 
 
