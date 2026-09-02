@@ -8,32 +8,33 @@ derives it from exactly **three carried items**: **`hcontract`** (W4 — build p
 **`hbareSplit`** (kernel (K-bare)). Everything else is closed — W0–W3 and all of W5
 (L0–L7), `hsplit` and `hfresh` included (2026-07-30, unchanged since).
 
-**The kernel-(K) research arc: 63 directions COMPLETE** (2026-08-05 → 09-01, ordinals
-1–55), plus eight strategy-only passes and two architecture probes; **ONE in flight**
-(BONEONE, ordinal 56). Per-direction verdicts, specs and write-ups live at `notes/Pencil-fanout.md` §"<CODE>"
+**The kernel-(K) research arc: 64 directions COMPLETE** (2026-08-05 → 09-01, ordinals
+1–56), plus eight strategy-only passes and two architecture probes; **none in flight**.
+Per-direction verdicts, specs and write-ups live at `notes/Pencil-fanout.md` §"<CODE>"
 (ordinals 1–19: the archive) plus a workbook home — **not restated here**.
-**The arc's standing result, unchanged by all 63: `hK` is not closer.** **(GR-15)** — the
+**The arc's standing result, unchanged by all 64: `hK` is not closer.** **(GR-15)** — the
 single open gap the whole §(K-grid) chain reduces to — is **untouched**; **class uniformity
 of the escape is untouched**; no g-flank was found by any direction; **E3 is ARMED (by
 GBAL) and has never fired**.
 
-**BSPREAD (55) LANDED 2026-09-01 — the arc's FIRST HIT SHAPE 1 on this item:**
-**(BE-32)(+) is a THEOREM** ((BE-74)), so the star-2/SPREAD split is **retired** and
-**(BE-73)(ii)(b) plus BRULE's `π_u = π_v` corner are UNCONDITIONAL**. **(BE-14) untouched;
-not a PENCIL event.**
-
-**IN FLIGHT — direction BONEONE** (ordinal 56) at what BSPREAD reduced job 2 to:
-**can an R-node-shaped 2-cut peel have `δ₁ = δ₂ = 1`?** Closure-free, geometry-free,
-combinatorial. A **no** removes half (B)'s LAST general-position enemy; a **yes** is a
-witness immediately testable for forcing. Empty over 43 763 R-node + 932 `(1,1)` peels in
-two independent tiers — *none found under cap*, **not** *none exists*.
+**BONEONE (56) LANDED 2026-09-01 — the answer is YES, and half (B)'s LAST
+general-position enemy is LIVE.** `δ_i` and the R-node test are **per-SIDE**, so any two
+sides glue ((BE-79)): a 9-vertex `K₄` side at `δ = 1` plus a 4-vertex one is an
+R-node-shaped `(1,1)` peel on **11** vertices, and **24 of the 48** such peels force
+`π_u = π_v` on exactly (BE-77)(ii)'s certificate — **(BE-66)(iv)'s CONCLUSION is REFUTED**
+((BE-81)). **Both zeros behind the old `no` were VACUOUS** ((BE-80)): tier A's cap was one
+vertex short, tier B's generator **structurally** cannot host one. Price: this is the
+**aggressive** operator, so the enemy is a **candidate** and **genuineness** is geometry
+((BE-82)). **(BE-32)(+), (BE-73)(ii)(b), (BE-77) and (BE-14) untouched; NOT a PENCIL
+event** — but see *On a future HIT*.
 
 **WHERE THE (BE-14) THREAD STANDS** — S-mark, the 2-cut composition lemma, is (BE-14)'s
 only open step; its **three sides** and every per-landing detail are **REFERENCE,
 RELOCATED 2026-09-01** to `notes/Pencil-structure.md` §"The (BE-14) thread — per-landing
 detail" (**block 8**, and it is the eighth of the read-once-per-session set). What is
 status: (β) is proved at the window **MODULO (S1)/(S2)**; the general-piece side is down to
-**cross-cut-only forcing** plus two named residues; cross-pair welding is **untouched**.
+**cross-cut-only forcing, RE-OPENED with 392 witnesses**, plus two named residues;
+cross-pair welding is **untouched**.
 **The phase-boundary consequence is reported, NOT acted on** (next block).
 
 **On a future HIT: the phase-boundary consequences are the USER's call** —
@@ -236,15 +237,19 @@ computation** (the decorated-skeleton law) and located the R-node's content in t
 ((BE-64)) and settled its per-child half. The details are the write-ups' and the
 `(K-bare)` gap-map row's, **not restated here**.
 
-**BSPREAD (55) LANDED 2026-09-01** — write-up `notes/Pencil-fanout.md` §"BSPREAD",
-mathematics §(K-bare-ext) *Steps BE73–BE77*, driver `notes/scripts/w4/bspread.py`.
-**HIT shapes 1, 2, 5.** **(BE-32)(+) IS A THEOREM** ((BE-74)) — the block-absorption lemma,
-proved from (BE-39)(i) alone and holding for the landed operator **and three widenings** of
-it; the star-2/SPREAD split is **retired**, (BE-41)(ii) **confirmed refuted as stated** and
-annotated at five surfaces, and job 2's cross-cut-only forcing **confined to `δ₁ = δ₂ = 1`**,
-which exposes BPEEL's census-3 zero as vacuous. Details are the write-up's and the
-`(K-bare)` gap-map row's, **not restated here**. **Candidate 1 is IN FLIGHT as BONEONE (56)
-below** — job 2's residue, now closure-free. The rest stay **ranked, not dropped**:
+**BSPREAD (55) LANDED 2026-09-01** — **(BE-32)(+) IS A THEOREM** ((BE-74)), the star-2 /
+SPREAD split **retired**, (BE-41)(ii) confirmed refuted, and cross-cut-only forcing
+**confined to `δ₁ = δ₂ = 1`**.
+
+**BONEONE (56) LANDED 2026-09-01** — write-up `notes/Pencil-fanout.md` §"BONEONE",
+mathematics §(K-bare-ext) *Steps BE78–BE82*, driver `notes/scripts/w4/boneone.py`.
+**HIT shapes 3, 2, 4, 5; NOT 1.** The answer is **YES**, the witness is **minimal**
+(11 vertices), the forcing test is **POSITIVE**, and **(BE-66)(iv)'s conclusion is
+REFUTED**. Both of (BE-77)(iv)'s tiers had **0 chances** — a cap one vertex short, and a
+generator that structurally cannot host the shape. The coordinator's route hypothesis is
+**refuted**, its own item (c) vindicated. Details are the write-up's and the `(K-bare)`
+gap-map row's, **not restated here**. The ranked list, with candidate 1 **replaced by what
+BONEONE leaves**:
 
 0. **HALF (B)'s CLASS QUANTIFIER** ((BE-67)(iii)) — **REDUCED, not proved** (BPEEL). It is
    now *one number per (piece, peel)*: `reach = min(δ₁+δ₂,6)`, the **generic** value of
@@ -252,22 +257,21 @@ below** — job 2's residue, now closure-free. The rest stay **ranked, not dropp
    **uniformity over the class**. The exhaustiveness obligation is **retired**, not
    discharged — (BE-70) bounds what any mechanism can depend on, and **completeness of the
    mechanism list is not claimed**. Three siblings: **cross-cut-only forcing** at an R-node
-   peel with both sides flexible (combinatorial, driver-findable, none found under cap —
-   its obligation DISCHARGED by BSPREAD and its residue now candidate 1); **the flag
-   base off the no-adjacent-hubs class**
+   peel with both sides flexible — **RE-OPENED by BONEONE**, 392 exhibited witnesses, now
+   candidate 1; **the flag base off the no-adjacent-hubs class**
    ((BE-65)(i)); and — **CLOSED by BPEEL, do not re-hunt** — the forced-empty `G` hunt,
    impossible on (CH-1)'s class ((BE-72)).
 
-1. **CAN AN R-NODE-SHAPED 2-CUT PEEL HAVE `δ₁ = δ₂ = 1`? — IN FLIGHT as BONEONE** (56,
-   prepped 2026-09-01, `recon-opus`; spec `notes/Pencil-fanout.md` §"BONEONE"). The whole of job 2's
-   residue after BSPREAD, and the sharpest question the arc currently has: **closure-free,
-   geometry-free, combinatorial**, two deficiencies and one 3-connectivity test. A **no**
-   makes cross-cut-only forcing at an R-node peel with both sides flexible **impossible**
-   and removes half (B)'s last general-position enemy; a **yes** is immediately testable
-   for forcing by (BE-77)(ii)'s exact certificate shape `{v, b₁, b₂}`. None found over
-   43 763 R-node peels + 932 `(1,1)` peels in two independent tiers — *none found under
-   cap*, **not** *none exists*. Cheap, and `bspread.py peel` is the driver. **The SPREAD
-   step itself is CLOSED** ((BE-74)); do not re-rank it.
+1. **IS THE RE-OPENED COINCIDENCE GENUINE, AND DOES IT BITE?** — BONEONE's own successor
+   and the sharpest question the arc has ((BE-82)(ii)/(iii)). Two sub-questions, both
+   **geometric**, both aimed at the **392 exhibited witnesses** `boneone.py force` prints:
+   (a) is `{v, b₁, b₂}` three **independent** points at a `Chart(H)` configuration, or does
+   the **aggressive** operator's over-claim evaporate here? (b) even if genuine, does the
+   forced coincidence actually drop `dim(ρ̄₁+ρ̄₂)` below `min(δ₁+δ₂,6) = 2`? A `0`
+   shortfall at `WIT11` — (BE-67)(i)'s own instrument, one exact-ℚ draw — would leave half
+   (B) intact with the enemy relabelled harmless; a positive one is a counterexample class.
+   **Do NOT re-hunt for `(1,1)` peels** (answered) and **do not re-rank the SPREAD step**
+   (closed, (BE-74)).
 2. **The ONE-END-SERIES case by BWIN's machine** — one peel instead of two
    (`ρ̄₁ = ⟨ℓ_u⟩ + ρ̄(rest)`), budget `δ₁ ≤ 3` by the same excess accounting, or a
    second functional from the clean end. Would retire the (BE-46)/(BE-52)
@@ -412,6 +416,12 @@ section named; its *spec and landing write-up* in `notes/Pencil-fanout.md` §"<C
 `notes/Pencil-adjudications.md`; the derivation in git. **Do not grow these back into
 paragraphs.**
 
+- **BONEONE** (56, 2026-09-01, opus) — **YES, AND THE ENEMY IS LIVE** ((BE-79)–(BE-83),
+  §(K-bare-ext) *Steps BE78–BE82*): `δ_i` and the R-node test are **per-side**, so any two
+  sides glue and an 11-vertex R-node-shaped peel sits at `(1,1)`; **24 of 48** such peels
+  force `π_u = π_v`, refuting **(BE-66)(iv)'s conclusion**, and both of (BE-77)(iv)'s tiers
+  had **0 chances** (a cap one vertex short; a structurally path-sided generator). The
+  price: the **aggressive** operator over-claims, so **genuineness is geometry** ((BE-82)).
 - **BSPREAD** (55, 2026-09-01, opus) — **(BE-32)(+) IS A THEOREM** ((BE-74), §(K-bare-ext)
   *Steps BE73–BE77*): an optimal partition's block absorbs at most **two** points of an
   outside vertex's closed star and the closure admits on **three**, so the star-2/SPREAD
@@ -433,14 +443,10 @@ paragraphs.**
   CONFIRMED+widened; (b) harmless, (a) **propagates THROUGH the P-node** (7/30 rows off
   general position, all 7 **non-attaining** — a quantifier correction to (BE-62)(iii)).
   Flag base = §(K-chart)'s tower ((BE-65)); half (B) 28/28 **per-piece** ((BE-67)).
-- **BRNODE** (52, 2026-09-01, fable) — **THE INTERNAL R-NODE DESCRIBED** ((BE-59)/(BE-60)):
-  a child's boundary trace is `Δ ⊕ (0 ⊕ ρ̄_e)` — a function of its `ρ̄` ALONE — so the SP
-  recursion extends to the whole SPQR tree (leaf line, `S` sums, `P` intersects, `R` the
-  **decorated kernel**), exact at every configuration; job 1's sharp question **YES**.
-  (BE-22)(vi)'s collapse = `δ_{xy}(B − uv − e) = 0`, exhaustive `n ≤ 6`, **prism fails at
-  two rungs** ((BE-61)); drawn (α)/(β) content **EMPTY** (24/24 peels), residue = the
-  **achievable-decorations class statement** ((BE-62)); chord step priced strictly harder
-  ((BE-63)). §(K-bare-ext) *BE58–BE62*.
+- **BRNODE** (52, 2026-09-01, fable) — **THE INTERNAL R-NODE DESCRIBED**
+  ((BE-59)–(BE-63), §(K-bare-ext) *BE58–BE62*): `ρ̄` obeys one **decorated-skeleton law**
+  at every SPQR node, exact at every configuration; residue = the **achievable-decorations
+  class statement**, chord step priced strictly harder.
 - **BWIN** (51, 2026-08-29, fable) — **THE WINDOW CLOSED BY A CLASS THEOREM** ((BE-57)):
   `ρ̄₁ ∩ Z = ⟨ℓ_u, ℓ_v⟩` at every both-ends-series piece with `δ₁ ≤ 4`. Machine: double
   peel + **modular law** (target ⟺ `W ∩ Z ⊆ ⟨ℓ_u,ℓ_v⟩`, `W` the middle's screw space,

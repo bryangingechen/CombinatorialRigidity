@@ -1,23 +1,34 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
 **Status: EIGHT fan-outs, THIRTY-SEVEN single directions and TWO concurrent
-pairs dispatched; 63 LANDED, ONE IN FLIGHT — BONEONE (ordinal 56).**
-**BONEONE (ordinal 56, §"BONEONE") PREPPED 2026-09-01** at **the whole of what
+pairs dispatched; 64 LANDED, NONE IN FLIGHT.**
+**BONEONE (ordinal 56, §"BONEONE") LANDED 2026-09-01** at **the whole of what
 BSPREAD reduced job 2 to** — *can an R-node-shaped 2-cut peel have
-`δ₁ = δ₂ = 1`?* — closure-free, geometry-free, and half (B)'s **last**
-general-position enemy. The F26 consumer trace was re-run for a FOURTH direction
-running and confirms it is the consumer's remaining input: (BE-22)(iii) needs the
-general-position half, (BE-22)(vi) kills it at a rigid side, (BE-73)(ii)(b) now
-supplies that **unconditionally** for one-sided forcing because (BE-32)(+) is a
-theorem, (BE-77)(i) factorizes the closure at the peel and (BE-77)(ii) confines
-what is left to `(1,1)`. The trace also turned up a **definitional item the spec
-makes job 1's first paragraph**: `rnode_shaped` is a per-SIDE predicate that
-BSPREAD's census combines with `or`, so the direction must say which side the
-consumer needs (the `or` reading is the safe one — it makes the population
-larger). Evidence: tier A has **5 005** R-node-shaped peels and **932** at
-`(1,1)` with the **intersection empty** — two four-figure sets that do not meet,
-which is a reason to look for a theorem rather than to widen the search.
-Dispatched at `recon-opus` (fable unavailable this session).
+`δ₁ = δ₂ = 1`?* — **HIT shapes 3, 2, 4 and 5; NOT 1**. **THE ANSWER IS YES, and
+half (B)'s last general-position enemy is LIVE.** The question was never about
+peels: `δ_i` and `rnode_shaped` are both **per-SIDE** and any two sides glue
+((BE-79)(i)), so it asks whether ONE side can be R-node-shaped at `δ = 1` — and
+a **9**-vertex `K₄`-skeleton side is, giving `WIT11`, an R-node-shaped peel at
+`(1,1)` on **11** vertices (and `WIT16`, where **both** sides are
+R-node-shaped, so the `and` reading falls too). **Both zeros behind the old
+`no` are VACUOUS** ((BE-80)): such a side needs
+`|V| ≥ 7 + min_s[5s + φ(q−p−1−s)] ≥ 9`, `= 9` **only over `K₄`**, so the peel
+needs **11** — one **above** tier A's `n ≤ 10` — and **every** 2-cut of a
+subdivided skeleton has a **PATH side**, `δ = min(L,6)`, never `1`, so tier B
+had **0 chances at any cap**. The forcing test job 1 demands is **POSITIVE**:
+**24 of the 48** `(1,1)` R-node peels on 11 vertices force `π_u = π_v`, **392
+of 928** in all, every certificate exactly (BE-77)(ii)'s `{v, b₁, b₂}` split
+`(2,2)` — so **(BE-66)(iv)'s CONCLUSION is REFUTED**, not merely unproved, and
+its *load-bearing R-node hypothesis* corollary is a **size floor** ((BE-81)).
+**The coordinator's route hypothesis is REFUTED and its own item (c) —
+*test the generator artifact first* — is what produced the landing.** Job 2's
+residue is **three** items, not two, and the price is that **genuineness** (the
+aggressive operator over-claims) is now what stands between the enemy and half
+(B) — **geometry again** ((BE-82)). Job 3: fifteen deep is a **de-facto shared
+layer, not a device chain**; record, no move ((BE-83)(iii)). **(BE-32)(+),
+(BE-73)(ii)(b) and (BE-77)(i)/(ii) untouched — the last CONFIRMED on the
+witness; (BE-14) untouched; not a PENCIL event.** Run at `recon-opus` (fable
+unavailable this session).
 **BSPREAD (ordinal 55, §"BSPREAD") LANDED 2026-09-01** at the **SPREAD step**
 ((BE-32)(+) where (BE-41)(i)'s star-2 certificate does not apply) — **HIT shapes
 1, 2 and 5, and shape 1 is the arc's first on this item**. **(BE-32)(+) is a
@@ -9068,3 +9079,99 @@ not words**, with 15 spare; the prep rotated the header's landed-direction block
 rather than appending to it, and the landing should do the same. The next
 relocation candidate, if one is needed, is named in the note's own *Doc debt*
 bullet — and the *"On a future HIT"* block is **not** it.
+
+### LANDING WRITE-UP — BONEONE, 2026-09-01: **YES, and the enemy is LIVE**
+
+**HIT shapes 3, 2, 4 and 5; NOT shape 1.** The target was *"prove `no` for the
+class the consumer needs, or exhibit a `yes` witness and run (BE-77)(ii)'s
+certificate test on it, or reduce to a named checkable condition"*. The answer
+is **`yes`**, the witness is **minimal**, the certificate test is **positive**,
+and the coordinator's route hypothesis is **REFUTED** — its own item **(c)**,
+*"the tier-A disjointness may be an artifact of the generator; test (c) before
+believing the hypothesis"*, was right, and testing it first is what produced
+the landing. `RESEARCH-ARC.md` §7's tally becomes **six instances and five
+kinds** — refuted, split, reframed, moot, and now **refuted with its own named
+escape clause vindicated**.
+
+**Job 1's definitional item, settled in the first paragraph as instructed.**
+The consumer needs the **`or`** reading, and not merely because it is safe:
+(BE-67)(iii) quantifies over internal R-node **pieces**, and at a peel of such a
+piece it is the **rest-of-piece** side whose skeleton is the R-node's, with
+nothing known about the child — so *"some side is R-node-shaped"* is the only
+hypothesis the consumer can actually supply. `WIT16` refutes the `and` reading
+as well, so nothing turns on the disclosed stand-in.
+
+**The method, and it is the transferable part.** *`δ_i` and `rnode_shaped` are
+both **per-side**, and any two sides glue* ((BE-79)(i)). So the question was
+never about peels: it asks whether **one** side can be R-node-shaped at
+`δ = 1`. Searching *peels* for a conjunction of two independent *per-side*
+properties is exactly what made two four-figure populations look like disjoint
+sets instead of two independent draws from two different size regimes.
+
+**The answer.** The side `H₁` on **9** vertices — skeleton `K₄` on `{u,v,C,D}`,
+virtual edge `uv` absent, branch lengths `(1,1,1,6,1)` on `(uC,uD,vC,vD,CD)` —
+has `δ = 1` and is R-node-shaped. Glued to `{ua,ub,ab,av}` (4 vertices,
+`δ = 1`) it gives **`WIT11`**: an R-node-shaped 2-cut peel at `δ₁ = δ₂ = 1` on
+**11** vertices, 14 edges, max degree 4. Two copies of `H₁` give **`WIT16`**.
+
+**Why both tiers saw nothing, and neither reason is evidence** ((BE-80)). An
+R-node-shaped side with `def₃ ≥ 1` has `|V| ≥ 7 + min_s[5s + φ(q−p−1−s)] ≥ 9`,
+with `9` attained **only** at `q = p+2`, i.e. **only over `K₄`**; a side with
+`δ = 1` has `|V| ≥ 4`; so the smallest R-node-shaped `(1,1)` peel has **11**
+vertices — **one above tier A's `n ≤ 10`**. And **every** 2-cut of a subdivided
+skeleton has a **path side**, whose `δ` is `min(L,6)` and never `1`, so tier B
+— `bpeel.constructed_tier`, which by its own body yields a peel only at a
+skeleton edge with `prof[i] ≥ 2` — had **0 chances at any cap**. *"43 763
+R-node-shaped peels and 932 at `(1,1)`, intersection empty"* is `0` of `0`.
+**This is the second consecutive landing whose finding is a denominator**, and
+this time on the very measurement that motivated the direction.
+
+**The forcing test, run as job 1 requires — and it comes back positive**
+((BE-81)). Of the **48** R-node-shaped `(1,1)` peels on 11 vertices (exhaustive
+over that class), **24** force `π_u = π_v`; 312 of 720 and 56 of 160 at
+`n = 12`. Every certificate is exactly (BE-77)(ii)'s **`{v, b₁, b₂}`**, split
+`(2,2)` by the cut, with the first terminal admitted one-sidedly as (BE-77)(i)
+(b) requires and every step classified `star2` by `bearfull.step_shape`. So
+**(BE-66)(iv)'s CONCLUSION is REFUTED**, not merely unproved; and its
+*"the R-node hypothesis is LOAD-BEARING"* corollary is corrected — the
+hypothesis **raises the size floor** from 4 vertices to 11, and both halves of
+the comparison behind it were measured at `n ≤ 8`, where the R-node half cannot
+occur.
+
+**Job 2, corrected rather than transcribed** ((BE-82)). The coordinator's
+reading — *"two items, no third"* — was written for a `no`, so it does not
+apply: half (B)'s residue is **three** items, the two named plus the
+**RE-OPENED** flag-coincidence enemy of (BE-66)(iii). **The price, stated as
+one:** everything here is the **aggressive** operator, which over-claims. Every
+consumer clause is *proved for* it, which makes each stronger than needed; a
+**witness against** it is *weaker*, so the enemy is a **candidate**, not a
+proven counterexample. What is certain is that the sufficient route is dead.
+What is open is **genuineness** — whether `{v,b₁,b₂}` is three *independent*
+points at a `Chart(H)` configuration, and whether a genuinely forced
+coincidence actually drops `dim(ρ̄₁+ρ̄₂)` below `2`. Both are **geometric**,
+so (BE-77)(iv)'s closure-free, geometry-free residue is neither again.
+
+**Job 3, answered** ((BE-83)(iii)). *Record, no move* — followed. The verdict
+the debt list has been owed since 2026-08-20: **fifteen deep is no longer a
+device chain, and has not been since roughly the tenth link.** §2 rule 2 is
+about a *device* with two consumers; `w4/` is a **stratified layer** whose
+levels are the arc's **oracles**, not helpers. A helper moved down is a
+refactor; an **oracle** moved down re-baselines every landed figure measured
+through it, which is why every dispatch has correctly declined. The actionable
+debt is therefore **not** a move-down but an interface decision — a
+coordinator/user call, recorded, nothing moved.
+
+**What did NOT move.** **(BE-32)(+) / (BE-74)** is untouched and still a
+theorem; **(BE-73)(ii)(a)/(b)** untouched, **(b) still unconditional**;
+**(BE-77)(i)/(ii)** untouched and **CONFIRMED on a live instance** — it is
+their hypothesis `(1,1)` that turns out satisfiable; **(BE-14)**, `hbareSplit`,
+S-mark, (BE-64), (BE-69)/(BE-70)/(BE-72), (BE-59)/(BE-60), the `G²` apparatus,
+the transversality count, (S1)/(S2) and cross-pair welding all untouched.
+BPEEL's 3 497 and 408 stand. **Not a PENCIL event**; the phase-boundary
+consequence is **reported, not acted on**.
+
+**Deliverable.** `notes/Pencil-informal.md` §(K-bare-ext) *Steps BE78–BE82* /
+**(BE-79)–(BE-83)**; driver `notes/scripts/w4/boneone.py`
+(`side|bound|force|validate`, 54 s, `VALIDATE: OK`); the `(K-bare)` gap-map
+row recomputed (1 474 words, label set-diff scripted); reservation **consumed
+in full**. Run at **`recon-opus`** (fable unavailable this session).

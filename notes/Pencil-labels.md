@@ -2531,7 +2531,7 @@ The two most dangerous in live prose are **(W4)** — because "W4" reads as
 everywhere in §(K-slide)/§(K-pure) — and **(C6)/(C7)**, which have already
 caused one landed fixup.
 
-## Reserved namespace — direction BONEONE (2026-09-01, **RESERVED — the direction is in flight**)
+## Reserved namespace — direction BONEONE (2026-09-01, **CONSUMED IN FULL at the landing; nothing returned**)
 
 **Reserved 2026-09-01 for the single direction BONEONE** (ordinal 56, the arc's
 sixty-fourth direction; `notes/Pencil-fanout.md` §"BONEONE") — **can an
@@ -2543,6 +2543,25 @@ only.
 | direction | owning § | labels reserved | steps reserved | driver |
 |---|---|---|---|---|
 | **BONEONE** | §(K-bare-ext) — **extends**, no new section | **(BE-79)–(BE-83)** | **BE78–BE82** | `w4/boneone.py` (expected — extend `bspread.py`, and through it `bpeel`/`bearfull`/`btwocut`/`bimage`/`bzavoid` and the rest of the chain, by read-only import) |
+
+**CONSUMED IN FULL at the landing (2026-09-01).** Labels **(BE-79)–(BE-83)** and
+*Steps BE78–BE82* are all used, in order, by the section's BONEONE
+continuation; **nothing is returned**. Label preservation in the `(K-bare)`
+gap-map row was verified by **scripted set-diff** against `HEAD`, not by eye:
+`(BE-79)`–`(BE-83)` added, and `(BE-78)` re-attached after the recompute had
+dropped it.
+
+**(L6) landing-time grep, RUN.** `BONEONE` / `boneone` / `(BE-79)`–`(BE-83)` /
+*Steps BE78–BE82* hit only this landing's own files. The direction minted **no
+new parenthesized token**: *the factorization*, *the size bound*, *the
+11-vertex floor*, *path side*, *side* / *glue*, *skeleton of a side* and
+*genuineness* are prose, following BSPREAD's precedent. Two short handles were
+minted and then **renamed before commit**: the witnesses were drafted as
+`W11` / `W16`, both 0-hit but reading as if they belonged to the live `W4`
+family, and they ship as **`WIT11` / `WIT16`**. That is the (L5) reader-side
+rule catching what a bare grep passes — the same objection that ruled out
+`BRPEEL` at reservation time, and the second time it has fired for this
+direction.
 
 The reservation opens at **(BE-79) / Step BE78**, exactly the tail BSPREAD
 declared; BSPREAD consumed its reservation in full and returned nothing.
