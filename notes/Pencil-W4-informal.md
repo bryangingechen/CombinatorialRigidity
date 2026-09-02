@@ -7,8 +7,9 @@ arguments** — `hnoGood'` vacuity REFUTED, (SAFE-RES) REFUTED with the successo
 (SAFE-RES′) open, the routes-1/3 kernel widening PRICED — and all three are
 live **as input to the eventual W4 build**: they carry the residual structure
 theorem ((C7)/(C8) at a maximal cluster), the statement of (SAFE-RES′), the
-statement of the widened kernel **(K-res)**, and the (E)/(E-loc)/(T)/(V) gap
-inventory the route-3(b) adjudication is pinned on. They are kept at full
+statement of the widened kernel **(K-res)**, and the (E)/(E-loc)/(V) gap
+inventory the route-3(b) adjudication is pinned on — **(T) left that inventory
+2026-09-02**, proved in §(SAFE-RES) *Step TF5*. They are kept at full
 detail for exactly that reason.
 
 **W4 is parked.** The standing adjudication (2026-08-02, user) is route **3,
@@ -38,8 +39,8 @@ definitions of the test shapes `W19` and `S29`) are in **`notes/Pencil-informal.
 name the file whenever they leave this one; a bare `§…` is a section of this
 file.
 
-**Labels.** This file's `(C1)`–`(C6)` (§`hnoGood'` vacuity) and `(C7)`/`(C8)`
-(§(SAFE-RES)) are a **different family** from `notes/Pencil-informal.md`
+**Labels.** This file's `(C1)`–`(C6)` (§`hnoGood'` vacuity), `(C7)`/`(C8)` and
+`(TF-1)`–`(TF-6)` (§(SAFE-RES)) are a **different family** from `notes/Pencil-informal.md`
 §(K-slide-cl)/§(K-slide-comb)'s same-numbered labels, and from
 `notes/Pencil-strategy.md` §4's C1/C2/C3. The registry that records all three,
 and the minting rule that prevents the next such clash, is
@@ -271,9 +272,13 @@ is a `|V| = 29` residual, certified to the same standard as `W19` — both
 feasibility verdicts landed-lemma-backed, no middle zone — in which **every**
 branch carries at most `2` interior vertices. What survives is the strictly
 weaker **(SAFE-RES′)** of *Step 3*, which is what the landed split arm actually
-consumes; it is **open**, holds on 255/255 inhabitants swept, and reduces to two
-named gaps: the residual's edge count **(E)** and its triangle-freeness **(T)**.
-**(E) is since reduced further** — §"widened kernels (routes 1/3)" *Step 3*.
+consumes; it is **open**, holds on 255/255 inhabitants swept, and reduced to two
+named gaps — the residual's edge count **(E)** and its triangle-freeness **(T)**.
+**(T) IS NOW A THEOREM** (*Steps TF1–TF5*, direction WTRI 2026-09-02): no feasible
+residual carries a triangle at all, by two **landed** feasibility transfers this
+section's own *Step 4* had not inventoried. So (SAFE-RES′) reduces to **(E)** —
+itself reduced further to (E-loc), §"widened kernels (routes 1/3)" *Step 3* — plus
+the local choice **(V)**, and route 3's cost list drops from four items to three.
 
 Here *residual* abbreviates `hnoGood'`'s antecedent bundle (`notes/Phase39-design.md`
 §"W4-L4 identification recon" Verdict 4): `G.Simple`, `3 ≤ |V(G)|`,
@@ -288,10 +293,10 @@ multigraph).
 independent integer-exact oracles agree — *Verification*), or a misreading of
 the split arm's `hnoRigid` consumption (all five points were read from the
 landed proof bodies, not docstrings). *For the successor:* a proof or
-counterexample for **(E)** or **(T)**. A residual carrying a triangle would
-settle (T) negatively — but *Step 4* shows such a graph is invisible to any
-landed-lemma-certified search, so numerics cannot decide (T) in either
-direction.
+counterexample for **(E)** (equivalently (E-loc)), or a residual every one of whose
+`≥ 2`-interior branches is one of (V)'s two `C₄`-carrying shapes. **Not (T)** — that
+is settled (*Step TF5*); what would change *it* is an error in the two landed
+transfers it composes, or in the four mechanical Lean obligations *Step TF6* lists.
 
 ### Step 0 — what the split arm actually consumes (`hnoRigid`, five points)
 
@@ -368,8 +373,9 @@ and triangle-free, so feasible by the landed-**sufficient** L6b. Either way
 > **(B)** `G[T]` carries a triangle, which by **(R5)** is a *pendant* triangle
 > of `G` (two adjacent degree-`2` vertices with a common hub), i.e. a petal
 > branch with `2` interior vertices.
-> In particular **at a triangle-free residual, (A) holds at every maximal
-> cluster.**
+> In particular **(A) holds at every maximal cluster of every residual** — the
+> triangle-free proviso this line originally carried is vacuous since
+> *Step TF5*, which rules out case (B) outright.
 
 (C7) + (C8)(A) + (C6) pin the shape: the core is at least a `C₄` with its two
 hubs opposite, it carries `≥ 3` boundary hubs spread over `≥ 2` attachment
@@ -455,10 +461,11 @@ families; `saferes.py --prime`). It decomposes into three obligations:
   sit at `f = 2`. (The natural direct attempt — bound `f(V(G))` by `f(S) + …`
   at a maximal cluster — leaks because `f(S)` of a dense rigid `H` is
   unbounded; the (E-loc) route replaces it.)
-- **(T)** `G` triangle-free — **open, with a landed-invisible failure mode**
-  (Step 4). Numerics: 255/255, but that is *not* evidence: the search's own
-  feasibility certificate for `G` is L6b, which requires triangle-freeness, so
-  a triangle-carrying residual can never appear in a certified sweep.
+- **(T)** `G` triangle-free — **PROVED** (*Steps TF1–TF5*). The recorded
+  255/255 was **never** evidence for it (the sweep's feasibility certificate is
+  L6b, which *requires* triangle-freeness, so a triangle-carrying residual can
+  never appear in a certified sweep) and it is not what settles it: the proof is
+  a two-case contraction argument on two **landed** feasibility transfers.
 - **(V)** the local choice — **elementary given (E) and (T).** (E) supplies a
   branch `β` with `j ≥ 2` interior vertices `x₁ … x_j` and hub ends `u, u'`.
   Then:
@@ -466,15 +473,16 @@ families; `saferes.py --prime`). It decomposes into three obligations:
     degree `2`, non-adjacent, and share only `x₂`. ✓
   - `j = 2` with `u ≠ u'` and `u ≁ u'`: take `v = x₁`; `a = x₂` (degree 2),
     `b = u`, `N(u) ∩ N(x₂) = {x₁}`. ✓
-  - the three residues — `j = 2` with `u = u'` (a pendant triangle, killed by
-    (T)); `j = 3` with `u = u'`; `j = 2` with `u ~ u'` — are unusable at every
+  - the three residues — `j = 2` with `u = u'` (a pendant triangle, **killed
+    outright by the (T) theorem**, *Step TF5*); `j = 3` with `u = u'`; `j = 2`
+    with `u ~ u'` — are unusable at every
     vertex of `β`. Each of the last two exhibits a **chordless induced `C₄`**
     (`u, x₁, x₂, u'` resp. `u, x₁, x₂, x₃`), hence a proper rigid subgraph, so
     they are natural material for the contraction arm rather than the split
     arm; a full proof of (V) must show that not *every* `≥ 2`-interior branch
     of a residual is of those two shapes.
 
-### Step 4 — why (T) is not reachable from the landed lemmas
+### Step 4 — the pendant-triangle anatomy (the input to *Steps TF1–TF5*)
 
 Let `Δ = {x, y, z}` be a triangle of a feasible `G` with `|V(G)| > 3`. By
 **(R5)** `x, y` have degree `2` and `z` is a hub, so `Δ` is a *pendant*
@@ -487,17 +495,220 @@ hub neighbourhood is contained in its `G`-counterpart. Hence **`hcard(G/Δ)`
 always holds**, and the residual's `¬Feasible(G/Δ)` can only be witnessed,
 landed-wise, by a *second* triangle in `G − x − y`.
 
-Consequences: (i) `G` must carry `≥ 2` triangles, and two pendant triangles
-already satisfy every landed test, so (T) is **not provable** from the landed
-set; (ii) such a `G` is itself middle-zone (a 1-hub triangle is neither
-landed-sufficient-feasible nor landed-necessary-infeasible), so it is
-**invisible to a certified search** — (T) is a genuine research gap, not a
-numerics gap. The smallest instance does die: the **bowtie** (two pendant
-triangles at one degree-4 hub, `|V| = 5`) contracts either triangle to the
-spanning `C₃`, landed-feasible by L7c-3 — a good contraction. Route 1/3 must
-either carry (T) as a hypothesis, add triangle-freeness to branch 4's dispatch
-condition (routing the triangle case elsewhere), or land a new
-feasibility-*necessary* condition that kills pendant triangles.
+Consequence (ii) survives verbatim and is the reason numerics never decided this:
+such a `G` is middle-zone (a 1-hub triangle is neither landed-sufficient-feasible
+nor landed-necessary-infeasible), so it is **invisible to a certified search**.
+So is the *contraction*: `G/Δ` inherits `hcard` and inherits ≤ 1-hub triangles
+(both are downward-monotone in degree), so **neither verdict on `G/Δ` can be
+certified either** — the blind spot is two-sided, which is sharper than what this
+step originally recorded, and it is why the recorded 255/255 is not a denominator
+one may reason from.
+
+**Consequence (i) was WRONG and is retracted** (direction WTRI, 2026-09-02).
+*"Two pendant triangles already satisfy every landed test, so (T) is not provable
+from the landed set"* took *landed set* to mean the landed feasibility
+**criteria** — L6b / L7c-3 on the sufficient side, `hcard` / no-two-hub-triangle
+on the necessary side. The landed set also contains two feasibility **transfers**,
+neither of which is a criterion and neither of which was inventoried here:
+`PencilNondegFeasible.mono` and `pencilNondegFeasible_induce_of_pendant_deg3`
+(`Molecule/Pencil/{Motive,Steer}.lean`). They decide `G/Δ` outright.
+**(T) is a theorem** — *Steps TF1–TF5* below; the bowtie remark is subsumed (no
+residual carries even *one* triangle, at any `|V|`, so a fortiori no bowtie), and
+route 1/3's three options are moot: nothing is carried, nothing is relocated.
+
+### Step TF1 — the landed inventory *Step 4* was missing
+
+> **(TF-1) Two landed feasibility TRANSFERS, neither of them a criterion.**
+> **(a)** `PencilNondegFeasible.mono` (`Molecule/Pencil/Motive.lean:272`;
+> `[G.LocallyFinite]`): `PencilNondegFeasible K G → H ≤ G →
+> (∀ v ∈ V(H), G.PencilHub v → H.PencilHub v ∨ H.degree v ≤ 1) →
+> PencilNondegFeasible K H`. Feasibility descends to a subgraph as long as no
+> `G`-hub lands at `H`-degree exactly `2`; that one case is the recorded
+> **cut-arm demotion gap** (2026-07-24), and the `≤ 1` bound is sharp.
+> **(b)** `pencilNondegFeasible_induce_of_pendant_deg3` (`Steer.lean:421`;
+> `[Finite α] [Finite β] [Infinite K]`): at `G.Simple`, `G.degree u_c = 3`, one
+> crossing edge `e_c : u_c–v_c`, `V(G) = V₁ ∪ {v_c}` and `u_c`'s two `V₁`-links to
+> `w₁ ≠ w₂`, `PencilNondegFeasible K G → PencilNondegFeasible K (G.induce V₁)`.
+> This one **closes the demotion-2 gap in its own configuration**, not by
+> restricting the given witness but by re-seeding it into the pencil chart and
+> **steering** to a common seed that makes the demoted triple `{u_c, w₁, w₂}`
+> independent alongside every standing chart condition
+> (`exists_common_seed_linearIndepOn_pencilChartPoint`).
+
+**Neither carries a triangle-freeness hypothesis** — read off the landed
+signatures, not the docstrings. That is the whole reason they see past L6b's
+blind spot: L6b is a *criterion* and needs triangle-freeness; these are
+*transfers* and do not.
+
+### Step TF2 — the residual's pendant triangle, and what 2EC forces at its hub
+
+Let `G` be a residual carrying a triangle `Δ`. Then:
+
+> **(TF-2)** (i) `|V(G)| ≥ 5`; (ii) `Δ = G[{x, y, z}]` with `deg x = deg y = 2`
+> and `z` the unique hub; (iii) `Δ` is a **proper rigid subgraph** with
+> `z ∈ V(Δ)`; (iv) `G.rigidContract Δ z = G.induce (V(G) ∖ {x, y})`, which is
+> **simple**; and (v) **`deg z ≥ 4`**.
+
+*Proof.* `|V(G)| ≥ 4`: at `|V(G)| = 3` a proper rigid subgraph would need
+`2 ≤ |V(H)|` and `V(H) ⊊ V(G)`, i.e. two vertices, and no `2`-vertex graph is
+rigid (`two_le_degree_of_isKDof_zero`, **(R1)**) — so the residual's `∃`-rigid
+clause fails. (ii) is *Step 4* via **(R5)**: `G` is connected with `|V(G)| > 3`,
+so some vertex of `Δ` has an outside edge and is a hub, and
+`not_pencilNondegFeasible_of_triangle_two_hubs` forbids a second; the other two
+are non-hubs, hence of degree exactly `2` (2EC gives `≥ 2`). (iii)
+`isKDof_zero_of_triangle`. (iv) `rigidContract G H r =
+(G.deleteEdges E(H)).map (collapseTo r V(H))`: the deletion removes exactly the
+three `Δ`-edges, `collapseTo z {x,y,z}` fixes every surviving vertex, and `x, y`
+have no edges outside `Δ`, so vertex set and link relation are those of the
+induced subgraph on `V(G) ∖ {x, y}`; simplicity is inherited. (v) Take
+`V' = {x, y, z}`, nonempty and proper by (i). `TwoEdgeConnected`'s own definition
+(`Deficiency.lean:1166`) demands `2 ≤ |cutEdges V'|`, and `cutEdges V'` is exactly
+`z`'s edges to the outside, of which there are `deg z − 2`. Hence `deg z ≥ 4`, and
+`|V(G)| ≥ 5`. ∎
+
+*(At `deg z = 3` the single outside edge is a **bridge** — this is where 2EC does
+the work, and it is why the two cases below are the only ones.)*
+
+### Step TF3 — the case `deg z ≥ 5`: the restriction lemma alone
+
+> **(TF-3)** If `deg z ≥ 5` then `G.induce (V(G) ∖ {x, y})` is feasible.
+
+*Proof.* Apply (TF-1)(a) with `H := G.induce (V(G) ∖ {x, y}) ≤ G`. Only vertices
+adjacent to `x` or `y` change degree, and `N(x) = {y, z}`, `N(y) = {x, z}`, so `z`
+is the only one: `H.degree z = deg z − 2 ≥ 3`, i.e. `z` stays a hub. Every other
+`G`-hub of `H` keeps its `G`-degree. The demotion hypothesis is therefore
+discharged with no residual at all. ∎
+
+### Step TF4 — the case `deg z = 4`: delete ONE vertex, then steer
+
+Here `H` demotes `z` to degree `2` — precisely the sharp case (TF-1)(a) excludes.
+The move is to **split the deletion in two** so that the landed steering lemma
+applies to the second half.
+
+> **(TF-4)** If `deg z = 4`, with `N(z) = {x, y, w₁, w₂}`, then
+> `G.induce (V(G) ∖ {x, y})` is feasible.
+
+*Proof.* **Step A.** Put `H₁ := G.induce (V(G) ∖ {x})`. Degrees move only at `y`
+(`2 → 1`) and `z` (`4 → 3`). `y` is not a `G`-hub, so (TF-1)(a) asks nothing of
+it; `z` is still a hub at degree `3`. So `PencilNondegFeasible K H₁`.
+**Step B.** Apply (TF-1)(b) to `H₁` with `u_c := z`, `v_c := y`,
+`V₁ := V(G) ∖ {x, y}`, and `w₁, w₂` as named. Its five configuration hypotheses
+all hold: `H₁.Simple` (induced); `H₁.degree z = 3`; `V(H₁) = V₁ ∪ {y}`;
+`(H₁.cutEdges V₁).ncard = 1`, since `y`'s only `H₁`-neighbour is `z` (`x` is
+gone); and `w₁ ≠ w₂` by `G.Simple` (`z` has four distinct neighbours). Hence
+`PencilNondegFeasible K (H₁.induce V₁) = PencilNondegFeasible K (G.induce V₁)`
+(`induce_induce_of_subset`). ∎
+
+**Why the split is not a trick.** (TF-1)(b) is *exactly* the lemma for one hub
+demoting from degree `3` to degree `2` across a single pendant edge, and deleting
+`x` first is what turns the pendant triangle into that shape. The landed lemma's
+`[Infinite K]` rides in free: the successor
+`pencil_conjecture_of_hcontract_hK_hbareSplit_of_card` (`Escape.lean:555`)
+already carries `[Infinite K] [Finite α] [Finite β]`, so the residual habitat has
+them.
+
+### Step TF5 — **(T) is a THEOREM**, and what falls out
+
+> **(TF-5)** **§(SAFE-RES) (T): a feasible residual `G` is triangle-free.**
+
+*Proof.* Suppose not, and take `Δ = {x, y, z}` as in (TF-2). Then `(Δ, z)` is a
+proper rigid subgraph with `z ∈ V(Δ)`, `G.rigidContract Δ z` is simple (TF-2)(iv),
+and it is feasible by (TF-3) at `deg z ≥ 5` and by (TF-4) at `deg z = 4` — the only
+two cases, by (TF-2)(v). That is a **good contraction**, contradicting the
+residual's own no-good-contraction clause. ∎
+
+Consequences, in the order they bite:
+
+- **(SAFE-RES′) loses a gap.** *Step 3*'s three obligations become **(E)**
+  (reduced to (E-loc)) and **(V)**; route 3's cost list drops from four items to
+  **three** — (E-loc), (V), **(K-res)** — of which only (K-res) is a user call.
+- **(C8) collapses to case (A), unconditionally.** *Step 1* recorded *"at a
+  triangle-free residual, (A) holds at every maximal cluster"*; by (TF-5) that
+  proviso is vacuous, so **every** maximal cluster of **every** residual has `v*`
+  a hub with `≥ 3` hub neighbours. The recorded `--structure` figure "case (B)
+  0/59" now has a proof rather than an explanation.
+- **The two-pendant-triangle question is dissolved, not answered.** *Step 4*
+  reduced (T)'s failure to a residual carrying `≥ 2` pendant triangles, and that
+  structure was the natural next handle. (TF-5) empties it: no residual carries
+  **one**. In particular the bowtie dies at every `|V|`, not only at `|V| = 5`.
+- **(V) is unchanged and its dependence on (T) is now discharged, not carried.**
+  *Step 3*'s residue *"`j = 2` with `u = u'` (a pendant triangle)"* is killed by a
+  theorem; the two `C₄`-carrying residues (`j = 3` with `u = u'`; `j = 2` with
+  `u ~ u'`) are untouched and remain (V)'s whole content. Nothing about (V) had to
+  be re-proved, and **no obligation was relocated** — the question *"if (T) is
+  carried rather than proved, which of (V)'s residues re-opens"* is moot.
+
+### Step TF6 — verification, the Lean obligations, and a by-product certificate
+
+**Compiler-checked spike** (scratch, deleted; the Lean hold forbids landing
+`.lean`). The two-case chain of *Steps TF3/TF4* was elaborated against the landed
+signatures: the `deg z ≥ 5` branch is **sorry-free** modulo its degree hypothesis,
+and the `deg z = 4` branch composes both landed transfers and rewrites through
+`induce_induce_of_subset` to the stated conclusion, leaving only the mechanical
+residues below. Four Lean obligations remain for the eventual W4 build, **all pure
+degree/cut bookkeeping, no geometry**:
+
+- **(O1)** `G.PencilHub v → 3 ≤ (G.induce (V(G) ∖ {x})).degree v` for `v ≠ x`.
+- **(O2)** `((G.induce (V(G) ∖ {x})).cutEdges (V(G) ∖ {x, y})).ncard ≤ 1`.
+- **(O3)** `(G.induce (V(G) ∖ {x})).degree z = 3`.
+- **(O4)** `G.rigidContract (G.induce {x,y,z}) z = G.induce (V(G) ∖ {x, y})`
+  (with `isKDof_zero_of_triangle`'s `E(H) = {exy, eyz, exz}` side condition).
+
+**A by-product, recorded because it is reusable and it is new.**
+
+> **(TF-6) One-plane feasibility criterion.** Let `G` be simple with **every
+> closed hub-neighbourhood of size `≤ 1`** — equivalently, **the hubs are pairwise
+> at distance `≥ 3`** — over a field with `|K| ≥ |V(G)|` (so over any infinite
+> field). Then `PencilNondegFeasible K G`, **triangles allowed**.
+
+*Proof.* Fix `n₀ ≠ 0`, set `normal v := n₀` for every body, and place all points on
+a moment curve `t ↦ (1, t, t²)` inside the single panel `τ = n₀^⊥` (3-dimensional,
+so any three distinct such points are independent by Vandermonde). Give each link
+`uv` the support extensor `extensor ![point u, point v]` and every other label a
+fixed nonzero extensor of `τ`. Conjuncts 1–2 of `IsNondegPencilRealization` and
+`HasCoplanarPanelRealization` are immediate (`span{p_u,p_v} ⊆ τ`); conjunct 4 at a
+non-hub is the three-distinct-points-on-a-conic fact; and conjunct 3 is where the
+hypothesis is spent — with all normals equal, `LinearIndepOn K normal S` holds
+**iff** `|S| ≤ 1`. ∎ This is not implied by L6b (it admits triangles) and does not
+imply it (L6b admits adjacent hubs); it is consistent with both landed necessary
+conditions by construction, since adjacent hubs are exactly what it forbids. It is
+**not used by (TF-5)** and is **not landed**.
+
+**Driver** — `notes/scripts/w4/wtri.py` (tracked; three modes). It deliberately
+does **not** hunt for a triangle-carrying residual, because that hunt is
+impossible in principle (below).
+
+- **`--validate`** — on **32 466** generated instances / **62 041** triangles:
+  pendancy **62 041/62 041**, hub degree `≥ 4` **62 041/62 041**, and the (O4)
+  identity `G/Δ = G − x − y` **62 041/62 041**. The one-plane criterion fires on
+  **5 549** instances and is consistent with `hcard` *and* no-two-hub-triangle at
+  **5 549/5 549**.
+- **`--audit`** — the same pool, restricted to the **blind-spot family**: simple,
+  2EC, **triangle-carrying**, passing every landed *necessary* test, hence
+  undecidable either way by a landed criterion. Contraction simple
+  **62 041/62 041**; the `deg z = 4` branch's landed-steering configuration holds
+  at **52 466/52 466** and the `deg z ≥ 5` branch's demotion condition at
+  **9 575/9 575**. **0** failures; any one would have refuted (TF-5).
+- **`--regress`** — the falsification test the new certificate demanded: does
+  (TF-6) dissolve anything recorded? Re-deriving `saferes.py --prime`'s pool
+  reproduces **255** residual inhabitants exactly; **0** are triangle-carrying (as
+  (TF-5) requires), **0** are dissolved by the new certificate, and both named
+  witnesses survive — `W19`'s and `S29`'s unique proper rigid subgraph contracts
+  to a graph refuted by the landed **necessary** `hcard`, which (TF-6) can never
+  override.
+
+**Cap and denominator disclosure — and it is stronger than a cap.** Every figure
+above is over a *generated* pool, and the `--audit` denominator (62 041 pendant
+triangles) counts configurations, not residuals. But the binding disclosure is not
+a cap at all: **no sweep at any size can exhibit a triangle-carrying residual**,
+because the sweep's feasibility certificate is L6b, which *requires* triangle-
+freeness — and, per *Step 4*'s corrected consequence, the *contraction*'s
+infeasibility is equally uncertifiable. The recorded **255/255** for §(SAFE-RES)
+(T) was therefore never evidence, in either direction; it is the arc's clearest
+example of a figure whose denominator is the wrong one. What settles (T) is
+*Steps TF2–TF5*.
+
+Reproduce: `python3 notes/scripts/w4/wtri.py --validate | --audit | --regress`.
 
 ### Verification
 
@@ -531,13 +742,16 @@ feasibility-*necessary* condition that kills pendant triangles.
   unchanged and every other figure in this section reproduces exactly.)
 - **`--structure`**: coverage for this section's own steps. (E-κ): 338
   ultra-short instances (`κ ≤ 1`), **0** violations of `f(V(G)) ≥ 5`. On 59
-  residual inhabitants: **(C7) 59/59**, **(C8) case (A) 59/59** (case (B) 0/59,
-  as Step 4 predicts for a certified sweep), split-usable vertex 59/59. The (V)
+  residual inhabitants: **(C7) 59/59**, **(C8) case (A) 59/59** (case (B) 0/59 —
+  since *Step TF5* this has a proof, not merely the certified-sweep explanation
+  *Step 4* originally gave it), split-usable vertex 59/59. The (V)
   branch characterization was checked against the direct scan with no
   over-generous branch on any instance in the pool.
 
 Reproduce: `python3 notes/scripts/w4/saferes.py --validate | --witness |
---search | --prime | --structure`.
+--search | --prime | --structure`. The (T) theorem's own driver is
+`notes/scripts/w4/wtri.py` — see *Step TF6*, whose `--regress` mode re-derives
+this section's `--prime` pool independently and reproduces its **255** exactly.
 
 ## §widened kernels (routes 1/3) — **priced; no counterexample**
 

@@ -8,26 +8,27 @@ derives it from exactly **three carried items**: **`hcontract`** (W4 — build p
 **`hbareSplit`** (kernel (K-bare)). Everything else is closed — W0–W3 and all of W5
 (L0–L7), `hsplit` and `hfresh` included (2026-07-30, unchanged since).
 
-**The kernel-(K) research arc: 65 directions COMPLETE** (2026-08-05 → 09-01, ordinals
-1–57), plus eight strategy-only passes and two architecture probes; **ONE in flight** —
-WTRI (58), and it is the sequence's **first W4-side** direction, not a kernel-(K) one.
-Per-direction verdicts, specs and write-ups live at `notes/Pencil-fanout.md` §"<CODE>"
+**The research arc: 66 directions COMPLETE** (2026-08-05 → 09-02, ordinals
+1–58 — 65 on kernel (K), and **WTRI (58), the first on W4**), plus eight strategy-only
+passes and two architecture probes; **none in flight**. Per-direction verdicts, specs and write-ups live at `notes/Pencil-fanout.md` §"<CODE>"
 (ordinals 1–19: the archive) plus a workbook home — **not restated here**.
-**The arc's standing result, unchanged by all 65: `hK` is not closer.** **(GR-15)** — the
+**The arc's standing result, unchanged by all 66: `hK` is not closer.** **(GR-15)** — the
 single open gap the whole §(K-grid) chain reduces to — is **untouched**; **class uniformity
 of the escape is untouched**; no g-flank was found by any direction; **E3 is ARMED (by
 GBAL) and has never fired**.
 
-**BGENUINE (57) LANDED 2026-09-01 — the re-opened coincidence is GENUINE and does NOT
-bite, so half (B)'s residue is back to TWO items** ((BE-67)(iii)'s uniformity, the flag
-base). The certificate is a **hinge pair**, so genuineness needs no draw ((BE-84)); at
-392/392 the sum is **direct** and `H` **attains** ((BE-86)). It also repaired a
-**denominator error the coordinator's own spec had inherited** ((BE-22)(iii) needs
-*both pieces attaining*). **Nothing landed refuted; NOT a PENCIL event.**
-
-**IN FLIGHT — direction WTRI** (58) at **W4 / `hcontract`**, route 3's cost **(T)**
-(*`G` triangle-free*) — **dispatchable and needing no adjudication since 2026-08-02**,
-untouched by all 65, and **landed-INVISIBLE**, so derivation-first by construction.
+**WTRI (58) LANDED 2026-09-02 — the arc's FIRST W4-side direction, and it CLOSES A
+CARRIED COST: §(SAFE-RES) (T) IS A THEOREM.** No feasible residual carries a triangle,
+so route 3's cost list drops from **four to three** — (E-loc), (V), **(K-res)** — and
+only (K-res) is still a user call. The proof is two **landed** feasibility *transfers*
+(`PencilNondegFeasible.mono`, `pencilNondegFeasible_induce_of_pendant_deg3`) that
+§(SAFE-RES) *Step 4* had never inventoried, composed over a `2EC ⟹ deg z ≥ 4` split;
+compiler-checked as a composition, four mechanical Lean obligations left. **The recorded
+255/255 was never evidence and is not what settled it**, and *Step 4*'s claim *"(T) is
+not provable from the landed set"* is **RETRACTED at source** (F12). §(SAFE-RES)
+*Steps TF1–TF6*. **A PENCIL event on the W4 side; `hK` is untouched.** BGENUINE (57)
+remains the (BE-14) thread's last word — the coincidence is genuine and harmless, half
+(B)'s residue back to **two** ((BE-84)–(BE-88)).
 
 **WHERE THE (BE-14) THREAD STANDS** — S-mark, the 2-cut composition lemma, is (BE-14)'s
 only open step; its **three sides** and every per-landing detail are **REFERENCE,
@@ -161,27 +162,28 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
   phase, with the per-item route in *Hand-off*'s three carried items and **not duplicated
   here.** Two W4 facts that constrain future statements: **`hnoGood'` is known NON-vacuous**
   (2026-08-02), so branch 4 needs content, and **(SAFE-RES) is REFUTED** the same day, so the
-  adjudicated route 3 costs (T) + (V) + the reduced (E) plus **one** widened kernel (K-res)
+  adjudicated route 3 costs (V) + the reduced (E) plus **one** widened kernel (K-res) —
+  **(T) was the fourth and is now a THEOREM** (2026-09-02, WTRI)
   (`notes/Pencil-W4-informal.md` §§"`hnoGood'` vacuity"/"(SAFE-RES)"). **No adjudication is
   owed here** — route 3, packaging (b) was adjudicated 2026-08-02.
 
 - **What the Lean hold parks, and what it does NOT — corrected 2026-08-20, because this
   bullet read as though it parked all of W4.** The hold parks **Lean**: the W4 build (W4-L4b
   onward), the `noRigid`-free Lean leaf (E) reduced to, and route σ's steering commit. It does
-  **not** park route 3's other four costs, every one **informal mathematics dispatchable
+  **not** park route 3's other costs, every one **informal mathematics dispatchable
   today** — which the hold's own wording ("hold off on more Lean until we have an informal
-  proof") is an argument *for*: **(T)** `G` triangle-free, *"a genuine research gap, not a
-  numerics gap"*, landed-**invisible** because the search's own feasibility certificate (L6b)
-  requires triangle-freeness, so a triangle-carrying residual can never appear in a certified
-  sweep; **(V)** the local choice, elementary given (E) and (T) but needing two `C₄`-carrying
-  branch shapes ruled out at *every* `≥ 2`-interior branch; **(E-loc)**, the combinatorial gap
+  proof") is an argument *for*. **(T) `G` triangle-free is CLOSED** (2026-09-02, WTRI —
+  §(SAFE-RES) *Step TF5*): landed-**invisible** to any sweep, and settled by derivation, not
+  numerics. What is left: **(V)** the local choice, elementary given (E) and now needing only
+  two `C₄`-carrying branch shapes ruled out at *every* `≥ 2`-interior branch — **the cheapest
+  remaining non-user-call item in the phase**; **(E-loc)**, the combinatorial gap
   (E) reduced to (255/255, unproven); and **(K-res)**, a kernel of `hK`'s difficulty class on
   the complementary habitat whose proof route is *strictly harder* (its habitat sits wholesale
   in the `dim R_a = 1` stratum where the (K) recon found no landed-brick route). **(K-res) has
   never been attacked** — it appears in the dispatch docs only as a **bar**, excluded from
   eight consecutive direction specs; its *"pin it when the tight side closes"* deferral is
   **RETIRED** by the 2026-08-26 adjudication, which selected the cheap scoping slice now
-  queued in *Hand-off*. **(T)/(V)/(E-loc) are slice-sized and need no adjudication; the
+  queued in *Hand-off*. **(V)/(E-loc) are slice-sized and need no adjudication; the
   (K-res) WAVE is still a user call.**
 
 - **Doc debt — the gate is MECHANICAL** (`notes/check-phase-note.py`: **580 lines / 525
@@ -223,29 +225,26 @@ geometric sentence; BEARCASE **PROVED (α)** for `m ≥ 3`; BEARFULL, BSHARP and
 (β) down to the window BWIN closed.
 
 **WHAT THE THREAD'S LAST FIVE LANDINGS ESTABLISHED** (52, 53, 55, 56, 57 — write-ups
-`notes/Pencil-fanout.md` §"<CODE>", mathematics §(K-bare-ext) *Steps BE58–BE87*, and the
-`(K-bare)` gap-map row is authoritative; **not restated here**). The decorated-skeleton
-law and the branch-product theorem ((BE-59)/(BE-60), (BE-64)); **(BE-32)(+) proved
-outright** ((BE-74)), retiring the star-2/SPREAD split; cross-cut-only forcing
-**confined** to `δ₁ = δ₂ = 1` ((BE-77)), then **found** there on a minimal 11-vertex
-witness with both prior tiers shown to have had `0` chances ((BE-79)–(BE-83)); and that
-coincidence shown **genuine but harmless** — `H` attains at 392/392 ((BE-84)/(BE-86)).
-**Net: half (B)'s residue is back to TWO items** — (BE-67)(iii)'s uniformity and the
-flag base, now candidate 1 below.
+`notes/Pencil-fanout.md` §"<CODE>", mathematics §(K-bare-ext) *Steps BE58–BE87*; the
+`(K-bare)` gap-map row is **authoritative and not restated here**). The decorated-skeleton
+law and the branch-product theorem; **(BE-32)(+) proved outright**, retiring the
+star-2/SPREAD split; cross-cut-only forcing confined to `δ₁ = δ₂ = 1`, then found there,
+then shown **genuine but harmless**. **Net: half (B)'s residue is back to TWO items** —
+(BE-67)(iii)'s uniformity and the flag base, now candidate 1 below.
 
-**THE NEXT CONCRETE TASK — direction WTRI (58), and it DEVIATES from the ranked list
-below on purpose.** After **nine consecutive** directions on the (BE-14) thread, the
-coordinator switched **carried item**: WTRI attacks **W4 / `hcontract`** — route 3's
-cost **(T)**, *`G` triangle-free* — which this note's own *Blockers* has called
-**slice-sized, dispatchable today and needing no adjudication since 2026-08-02**, and
-which **no direction of the 65 has touched**. The reason is the standing criteria, all
-three: `hcontract` is one of exactly **three** items between the landed successor and
-`PencilPair K 3 G` (max impact); (T) is **landed-invisible** — a certified sweep
-*cannot* see its failure mode — so attacking it is architecture-testing in the literal
-sense (falsification); and it is the first W4-side direction of the whole arc
-(diversification). **The ranked list below is (BE-14)-thread work and is NOT dropped**
-— the flag base stays candidate 1 for the next (BE-14) pick. Spec:
-`notes/Pencil-fanout.md` §"WTRI"; canonical home `notes/Pencil-W4-informal.md`.
+**THE W4 DEVIATION PAID: WTRI (58) closed a carried cost.** Nine consecutive directions
+had run on the (BE-14) thread while `hcontract` took zero; WTRI took route 3's cost
+**(T)** and **proved it** (§(SAFE-RES) *Steps TF1–TF6*). W4's cost list is now
+**(E-loc), (V), (K-res)**, and the deviation's own rationale — attack the item a
+certified sweep *cannot* see — is what found the answer: the two landed feasibility
+*transfers* were invisible to the sweep, not to a derivation.
+
+**THE NEXT CONCRETE TASK — the coordinator's pick under the standing delegation.** Two
+live boards, and the ranked (BE-14) list below is unchanged: its **candidate 1, the flag
+base**, is the thread default. The W4 board now offers a cheaper item than anything on
+it — **(V)**, which (TF-5) has reduced to *"no residual has all its `≥ 2`-interior
+branches among two named `C₄`-carrying shapes"*, one slice, no adjudication owed
+(`notes/Pencil-W4-informal.md` §(SAFE-RES) *Step 3*). **(K-res) stays a USER call.**
 
 The ranked list:
 
@@ -419,6 +418,12 @@ section named; its *spec and landing write-up* in `notes/Pencil-fanout.md` §"<C
 `notes/Pencil-adjudications.md`; the derivation in git. **Do not grow these back into
 paragraphs.**
 
+- **WTRI** (58, 2026-09-02, opus, first W4-side direction) — **§(SAFE-RES) (T) IS A
+  THEOREM** ((TF-1)–(TF-6), *Steps TF1–TF6*): `2EC` pins the pendant hub at degree `≥ 4`,
+  then two **landed** feasibility *transfers* — `PencilNondegFeasible.mono` at `deg ≥ 5`,
+  `pencilNondegFeasible_induce_of_pendant_deg3` at `deg = 4` after deleting one triangle
+  vertex — make `G/Δ` feasible, a good contraction. *Step 4* **retracted at source** (F12);
+  route 3's costs 4 → 3; (C8) collapses to (A). Driver `w4/wtri.py`.
 - **BGENUINE** (57, 2026-09-01, opus) — **GENUINE, AND IT DOES NOT BITE** ((BE-84)–(BE-88),
   §(K-bare-ext) *Steps BE83–BE87*): (BE-77)(ii)'s certificate is a **hinge pair**, exactly the
   triple `assert_generic_star` asserts independent, so the **aggressive** operator is genuine

@@ -2491,7 +2491,7 @@ was missed from this sentence; added here with (K-ann) and (K-out).)
 |---|---|---|---|
 | §`hnoGood'` vacuity | `NG-` | **(C1)–(C6)** | structure of a maximal cluster's contraction: (C1) simplicity is free, (C2) outside degrees preserved, (C3) boundary attachment points are hubs, (C4) `hcard` fails only at `v*`, (C5) no triangle through `v*`, (C6) the boundary-hub budget |
 | §(SAFE-RES) | `SR-` | **(C7)**, **(C8)**; (SAFE-RES), (SAFE-RES′); **(E)**, **(T)**, **(V)** | (C7) every ear through `T` has ≥ 6 interior vertices; (C8) the dichotomy at a maximal cluster; (E)/(T)/(V) the three gaps of (SAFE-RES′) |
-| §(SAFE-RES), direction WTRI | `TF-` | **(TF-1)–(TF-6)**; ***Steps TF1–TF6*** | the triangle-freeness cost (T): reserved 2026-09-01, in flight |
+| §(SAFE-RES), direction WTRI | `TF-` | **(TF-1)–(TF-6)**; ***Steps TF1–TF6*** | the triangle-freeness cost (T), **LANDED 2026-09-02, reservation consumed EXACTLY (6/6, no remainder)**: (TF-1) the two landed feasibility *transfers* `Step 4` had not inventoried, (TF-2) the pendant triangle's anatomy + `2EC ⟹ deg z ≥ 4`, (TF-3) the `deg z ≥ 5` case by `PencilNondegFeasible.mono`, (TF-4) the `deg z = 4` case by the delete-one-then-steer chain, (TF-5) **(T) IS A THEOREM**, (TF-6) verification / the four Lean obligations / the by-product one-plane feasibility criterion. Owning section is authoritative |
 | §widened kernels (routes 1/3) | `WK-` | (E-loc); **(K-res)** | the routes-1/3 kernel widening; (K-res) is the widened kernel carried as a byte-identical sibling of `hK` |
 
 ## Registry — `notes/Pencil-strategy.md`, `Phase39.md`, `Phase39-design.md`
@@ -2520,7 +2520,7 @@ token a reader will meet bare in the existing corpus.
 | **(M1)–(M4)** | §(K-Λ) `lambda1.m2` driver blocks | §(K-Δ) the three hypothesis tests | — |
 | **(P1)–(P7)** | §(K-Λ) `lambda0.m2` driver blocks | §(K-pure) *Steps* P0–P9 | — |
 | **(R1)–(R6)** | *Shared dictionary* rigid-graph facts (R1)–(R5) | R1/R2/R3 the opening recon questions | `Pencil-strategy.md` §4.6's six refutations (R1)–(R6) — **and (ANH-R1)/(ANH-R2)**, §(K-ann)'s two residual inputs, which are *prefixed precisely to stay out of this row* |
-| **(T)** | §(K-pitch) (T1)–(T5) transfer claims | W4 §(SAFE-RES) (T) — triangle-freeness | — |
+| **(T)** | §(K-pitch) (T1)–(T5) transfer claims | W4 §(SAFE-RES) (T) — triangle-freeness, **PROVED 2026-09-02** (*Step TF5*); the token stays ambiguous, so keep qualifying it | — |
 | **(W1)–(W4)** | §(K-slide) limit-system conditions | the phase's **work packages** W0–W5 (**W4 = `hcontract`**) | — |
 | **(N1), (N2)** | §(K-Δ) the two readings | N8/N9/N10/N10b the W4 gates | — |
 | **(F1)** | §(K-flank) claim / *Steps* F0–F7 | `dispatch-log.md` F-rows (F5, F11, F12, …) | — |
@@ -2665,7 +2665,7 @@ gap-map row spells the gloss out rather than carrying the bare symbol.
 **The next reservation on this section's tail opens at (BE-89) / Step BE88.**
 
 
-## Reserved namespace — direction WTRI (2026-09-01, **RESERVED — the direction is in flight**)
+## Reserved namespace — direction WTRI (2026-09-01, **CONSUMED 2026-09-02 — the direction LANDED; kept as the minting record**)
 
 **Reserved 2026-09-01 for the single direction WTRI** (ordinal 58; `notes/Pencil-fanout.md`
 §"WTRI") — **W4 / `hcontract`, route 3's cost (T): is a feasible residual `G`
@@ -2686,7 +2686,7 @@ reservation above it and both are deliberate:
 
 | direction | owning § | labels reserved | steps reserved | driver |
 |---|---|---|---|---|
-| **WTRI** | `notes/Pencil-W4-informal.md` §(SAFE-RES) — **extends**, no new file | **(TF-1)–(TF-6)** | **TF1–TF6** | `w4/wtri.py` *(only if the direction needs one — (T) is **landed-invisible**, so a certified sweep cannot decide it and a driver may be the wrong instrument here; see the spec)* |
+| **WTRI** | `notes/Pencil-W4-informal.md` §(SAFE-RES) — **extends**, no new file | **(TF-1)–(TF-6)** — **all six consumed, no remainder** | **TF1–TF6** — all six used | `w4/wtri.py` **SHIPPED** (`--validate`/`--audit`/`--regress`): it does *not* hunt for a triangle-carrying residual (impossible in principle) but audits the theorem's side conditions on the blind-spot family and regression-tests the new (TF-6) certificate against the 255 recorded inhabitants |
 
 **0-hit verification, at reservation time**, across `*.md`, `*.tex`, `*.lean`, `*.py`,
 `*.m2` with `.git`/`.lake`/`__pycache__` excluded: `WTRI`, `wtri`, `(TF-1)`–`(TF-6)` and

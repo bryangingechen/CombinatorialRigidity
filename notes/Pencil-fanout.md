@@ -1,24 +1,61 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
 **Status: EIGHT fan-outs, THIRTY-NINE single directions and TWO concurrent
-pairs dispatched; 65 LANDED, ONE IN FLIGHT — WTRI (ordinal 58).**
-**WTRI (ordinal 58, §"WTRI") PREPPED 2026-09-01** — **the sequence's FIRST W4-side
-direction, and a DELIBERATE DEVIATION from the ranked list.** Nine consecutive
-directions (49–57) ran on the (BE-14) thread while carried item **#2**,
-`hcontract`, took **zero** in the whole 65-direction sequence — although
-`notes/Phase39.md` *Blockers* has said since 2026-08-02 that three of route 3's
-four costs are *"slice-sized and need no adjudication"*. WTRI takes one of them:
-**(T)**, *is a feasible residual triangle-free?* All three standing criteria
-point at it — `hcontract` is one of exactly three items between the landed
-successor and `PencilPair K 3 G` (max impact); (T) is **landed-INVISIBLE**,
-because the sweep's own feasibility certificate L6b *requires* triangle-freeness,
-so a triangle-carrying residual can never appear in a certified search
-(falsification / architecture-testing, literally); and it is the first W4-side
-direction of the arc (diversification). **The recorded 255/255 is therefore NOT
-evidence** and the spec makes the driver **conditional** — this is a
-derivation-first direction, and shipping none is a legitimate landing shape.
-**The (BE-14) ranked list is not dropped**; the flag base stays candidate 1 for
-the next pick on that thread. Dispatched at `recon-opus` (fable unavailable).
+pairs dispatched; 66 LANDED, NONE IN FLIGHT.**
+**WTRI (ordinal 58, §"WTRI") LANDED 2026-09-02** — the arc's **FIRST W4-side
+direction**, and it **CLOSES A CARRIED COST: §(SAFE-RES) (T) IS A THEOREM** —
+**HIT shape 1**, the one the spec ranked first; also shapes 3, 4 and 5, and **NOT
+shape 2**. *A feasible residual `G` is triangle-free.* The proof is a two-case
+contraction argument and it uses **no new mathematics**: `2EC` pins the pendant
+triangle's hub at degree **exactly `≥ 4`** ((TF-2)), and the two **landed
+feasibility TRANSFERS** — `PencilNondegFeasible.mono` at `deg z ≥ 5` ((TF-3)) and
+`pencilNondegFeasible_induce_of_pendant_deg3` at `deg z = 4`, reached by deleting
+**one** triangle vertex first so the hub demotes `3 → 2` across a single pendant
+edge ((TF-4)) — make `G/Δ = G − x − y` feasible. That is a **good contraction**,
+contradicting the residual. **The direction's own crux was an INVENTORY error, not
+a hard theorem:** *Step 4*'s *"(T) is not provable from the landed set"* read
+*landed set* as the feasibility **criteria** (L6b / L7c-3 / `hcard` /
+no-two-hub-triangle) and missed the two **transfers**, which carry no
+triangle-freeness hypothesis and therefore see straight past L6b's blind spot.
+That claim is **RETRACTED AT SOURCE** (F12), and its consequence (ii) is
+*sharpened* instead: the blind spot is **two-sided** — `G/Δ` inherits `hcard` and
+inherits `≤ 1`-hub triangles, so **neither** verdict on the contraction can be
+certified either. **Job 2 is DISSOLVED, not answered**: the two-pendant-triangle
+structure the spec sent the direction at is **empty**, because no residual carries
+even one triangle (so the bowtie dies at *every* `|V|`, not only `5`). **Job 3 is
+MOOT and said so**: nothing is carried, nothing is relocated, and (V)'s
+pendant-triangle residue is killed by a theorem. Consequences: route 3's cost list
+drops **4 → 3** ((E-loc), (V), (K-res)); **(C8) collapses to case (A)
+unconditionally**; and (V) is now the cheapest non-user-call item in the phase.
+A **driver was shipped** — `w4/wtri.py`, three modes — but deliberately **not** as
+a hunt: `--audit` checks the theorem's configuration on the blind-spot family
+(**62 041/62 041** pendant triangles, 0 failures), `--validate` the mechanical
+identities (same denominator), and `--regress` asks whether the by-product
+one-plane certificate **(TF-6)** dissolves anything recorded — it re-derives
+`saferes.py --prime`'s pool, reproduces its **255** exactly, finds **0**
+triangle-carrying (as the theorem requires) and **0** dissolved, with `W19`/`S29`
+intact. **The recorded 255/255 was never evidence and is not what settled this**;
+the L6b blind spot is not a cap and no sweep removes it. Compiler-checked as a
+composition in a deleted scratch spike; **four mechanical Lean obligations** (pure
+degree/cut bookkeeping) remain for the W4 build, which the Lean hold still parks.
+`notes/check-gapmap-cells.py` **did not fire and was not skipped**: there is no
+gap-map row for the W4 side and this direction did not open one.
+**TERMINATION E1/E2/E3, read against their (K)-arc definitions
+(`notes/Pencil-fanout-archive.md`) and NOT by analogy.** **E1** (a g-flank) is a
+§(K-grid) object and has no W4 instance; its nearest W4 reading — *an exhibited
+object refuting the direction's target class* — would be a triangle-carrying
+feasible residual, and none exists ((TF-5)). **Does not fire.** **E2** needs the
+target *refuted or unprovable-as-posed*; it was **proved**. **Does not fire.**
+**E3 is ARMED (by GBAL)** and this is the **first landing whose FIRST conjunct is
+satisfied** — *the target is proven* — which is worth recording. Its **second
+conjunct fails**: E3 needs every remaining ledger entry *adjudication-gated
+rather than dispatchable*, and E3's own text names **W4** as an example of
+adjudication-gated. That is no longer true of W4's residue — after (TF-5),
+**(E-loc)** and **(V)** are dispatchable and need no adjudication (`notes/Phase39.md`
+*Blockers*, standing since 2026-08-02), and the (BE-14) ranked list is dispatchable
+throughout. **E3 DOES NOT FIRE — reported, not acted on.**
+**A PENCIL event on the W4 side; `hK` untouched.** Run at `recon-opus` (fable
+unavailable).
 **BGENUINE (ordinal 57, §"BGENUINE") LANDED 2026-09-01** at **the price BONEONE
 named in its own landing** — **HIT shapes 2, 5 and 4; NOT 1, NOT 3**.
 **THE COINCIDENCE IS GENUINE, AND IT DOES NOT BITE.** (a) is settled by an
@@ -9528,6 +9565,14 @@ reservation **consumed in full**. Run at **`recon-opus`** (fable unavailable
 this session).
 
 ## WTRI — fifty-eighth ordinal (single dispatch, prepped 2026-09-01) — **the sequence's FIRST W4-side direction**
+
+> **LANDED 2026-09-02 — HIT shape 1: §(SAFE-RES) (T) IS A THEOREM.** Verdict in this
+> file's header; mathematics in `notes/Pencil-W4-informal.md` §(SAFE-RES)
+> *Steps TF1–TF6*; driver `notes/scripts/w4/wtri.py`. The spec below is kept as the
+> dispatch record. Two of its framings did not survive: **job 2's two-pendant-triangle
+> structure is EMPTY** (no residual carries one triangle), and **job 1's three routes are
+> moot** — the answer was route 3 in a form *Step 4* had not listed, a landed feasibility
+> **transfer** rather than a new necessary condition.
 
 **Selection provenance: a DELIBERATE DEVIATION from the ranked list, and the
 reason is the standing criteria rather than a new finding.** BGENUINE handed half

@@ -656,6 +656,9 @@ arcs too.
 | `python3 notes/scripts/w4/saferes.py --search` | 290 s | ibid. |
 | `python3 notes/scripts/w4/saferes.py --prime` | 39 s | ibid. (255 residual inhabitants) |
 | `python3 notes/scripts/w4/saferes.py --structure` | 8 s | ibid. ((C7), the (C8) dichotomy, (E-κ), (V)) |
+| `python3 notes/scripts/w4/wtri.py --validate` | 16 s | ibid. *Step TF6* (pendancy, `deg z ≥ 4`, the (O4) contract-equals-delete identity) |
+| `python3 notes/scripts/w4/wtri.py --audit` | 13 s | ibid. (the (T) theorem's configuration on the **blind-spot** family) |
+| `python3 notes/scripts/w4/wtri.py --regress` | 48 s | ibid. (does the new (TF-6) certificate dissolve any of the 255 recorded inhabitants? — no) |
 | `python3 notes/scripts/w4/widened.py --validate` | 70 s | W4 workbook §"widened kernels (routes 1/3)" |
 | `python3 notes/scripts/w4/widened.py --witness` | 105 s | ibid. |
 | `python3 notes/scripts/w4/widened.py --pool` | 44 s | ibid. |
@@ -1414,13 +1417,14 @@ figure-invariant): `rref`, `rank`/`rank_exact`, `nullspace`, `left_nullspace`,
 `neighbors` (`kbare_common`, `n9`); `K4`/`K5_minus_matching` (three copies:
 `localtest`, `probe_zero`, `run_habitats`).
 
-## Harness debt — four rounds PAID (S1–S4 2026-08-06; the move-down round 2026-08-20; the GFLIP balance-layer move-down 2026-08-25; the GCHEAP/GPRICE balance-layer extension 2026-08-25), **four items outstanding**
+## Harness debt — four rounds PAID (S1–S4 2026-08-06; the move-down round 2026-08-20; the GFLIP balance-layer move-down 2026-08-25; the GCHEAP/GPRICE balance-layer extension 2026-08-25), **five items outstanding**
 
-**Four items are outstanding: `zneq.ledger`** (deliberately deferred to a
+**Five items are outstanding: `zneq.ledger`** (deliberately deferred to a
 round that can re-run `oschu --gtarget` / `--census1` / `--census2`), **the
 `kbare/` sibling-import set** that probe KBARE-FALSIFY created,
 **OQRANK's two arrivals** (`out_classes`/`shape_key`/`tree_triple`), and
-**the GBLAW + GXESC reversal-model sibling imports** (last subsection) —
+**the GBLAW + GXESC reversal-model sibling imports**, and **WTRI's duplicate of
+`saferes.prime()`'s pool** (last two subsections) —
 **UNPAID** by the same rule that forbids a dispatch from moving a landed
 name. Everything else is paid: the first round's four items are in the
 *ALL FOUR CLEARED* block immediately below (kept in the past tense as the record
@@ -2413,6 +2417,19 @@ documented three-invocation split (`--coll`, `--loc`, `--fibre --par --fit
 --cert --adv`) — all nine byte-identical modulo the wall-clock `[Ns]`
 exception, mechanically confirmed (every differing line reduces to the
 timing annotation alone once it is stripped).
+
+### New item (2026-09-02, direction WTRI) — `wtri.py`'s duplicate of `saferes.prime()`'s pool; **UNPAID, and deliberately so**
+
+`w4/wtri.py --regress` must re-classify the residual inhabitants `saferes.py --prime`
+sweeps, but `prime()` builds its pool inline and returns nothing, so `wtri.recorded_pool()`
+**re-states that generator list**. This is the §2-rule-2 shape (a second consumer of a
+device that lives inside one driver's `main`-level function), and the move-down is to
+factor `prime()`'s pool into an accessor `saferes.prime_pool()` that `prime()` then calls.
+It is **not paid here** for the reason the rule itself gives: `--prime` is a landed-figure
+mode (255 / 216 / 39), and this direction's own conclusion does not depend on touching it.
+`wtri.py` already probes for `saferes.prime_pool` and would use it if it existed. **The
+duplication is verified faithful**: `--regress` reproduces the recorded **255** exactly.
+Pay it in the next round that can re-run `saferes.py --prime`.
 
 ### New item (2026-08-26, directions GBLAW + GXESC + GHWIT + GMINM) — the reversal-model sibling imports on `gprice.py`/`gblaw.py`/`gxesc.py`; **UNPAID**
 
