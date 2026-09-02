@@ -2492,6 +2492,7 @@ was missed from this sentence; added here with (K-ann) and (K-out).)
 | §`hnoGood'` vacuity | `NG-` | **(C1)–(C6)** | structure of a maximal cluster's contraction: (C1) simplicity is free, (C2) outside degrees preserved, (C3) boundary attachment points are hubs, (C4) `hcard` fails only at `v*`, (C5) no triangle through `v*`, (C6) the boundary-hub budget |
 | §(SAFE-RES) | `SR-` | **(C7)**, **(C8)**; (SAFE-RES), (SAFE-RES′); **(E)**, **(T)**, **(V)** | (C7) every ear through `T` has ≥ 6 interior vertices; (C8) the dichotomy at a maximal cluster; (E)/(T)/(V) the three gaps of (SAFE-RES′) |
 | §(SAFE-RES), direction WTRI | `TF-` | **(TF-1)–(TF-6)**; ***Steps TF1–TF6*** | the triangle-freeness cost (T), **LANDED 2026-09-02, reservation consumed EXACTLY (6/6, no remainder)**: (TF-1) the two landed feasibility *transfers* `Step 4` had not inventoried, (TF-2) the pendant triangle's anatomy + `2EC ⟹ deg z ≥ 4`, (TF-3) the `deg z ≥ 5` case by `PencilNondegFeasible.mono`, (TF-4) the `deg z = 4` case by the delete-one-then-steer chain, (TF-5) **(T) IS A THEOREM**, (TF-6) verification / the four Lean obligations / the by-product one-plane feasibility criterion. Owning section is authoritative |
+| §widened kernels (routes 1/3), direction WELOC | `EL-` | **(EL-1)–(EL-6)**; ***Steps EL1–EL6*** | the (E-loc) gap: reserved 2026-09-02, in flight |
 | §widened kernels (routes 1/3) | `WK-` | (E-loc); **(K-res)** | the routes-1/3 kernel widening; (K-res) is the widened kernel carried as a byte-identical sibling of `hK` |
 
 ## Registry — `notes/Pencil-strategy.md`, `Phase39.md`, `Phase39-design.md`
@@ -2704,3 +2705,38 @@ bare `(T)`** with its owner, per (L3).
 draft, and note that the W4 workbook has its own single-letter families ((C1)–(C8), (E),
 (T), (V)) which are **already** in the collision table — a new bare letter here is the
 worst-case mint in the whole doc set.
+
+
+## Reserved namespace — direction WELOC (2026-09-02, **RESERVED — the direction is in flight**)
+
+**Reserved 2026-09-02 for the single direction WELOC** (ordinal 59; `notes/Pencil-fanout.md`
+§"WELOC") — **W4 / `hcontract`, the gap (E-loc)**: *every residual `G` has a degree-`2`
+vertex `v₀` with `E(G − v₀)` independent in the `(6,6)` count matroid.* The **second**
+W4-side direction; the conventions WTRI's reservation established for that side bind here
+unchanged and are **not restated** (owning file `notes/Pencil-W4-informal.md`, the
+`(BE-…)` family **not** extended, **no gap-map row** and none opened, so
+`notes/check-gapmap-cells.py` will not fire — state that rather than skip it).
+
+| direction | owning § | labels reserved | steps reserved | driver |
+|---|---|---|---|---|
+| **WELOC** | `notes/Pencil-W4-informal.md` §widened kernels (routes 1/3) — **extends**, no new file | **(EL-1)–(EL-6)** | **EL1–EL6** | `w4/weloc.py` *(conditional, as WTRI's was — see the spec on why this question's 255/255 is **not** in (T)'s blind spot but has a different limitation)* |
+
+**0-hit verification, at reservation time**, across `*.md`, `*.tex`, `*.lean`, `*.py`,
+`*.m2` with `.git`/`.lake`/`__pycache__` excluded: `WELOC`, `weloc`, `(EL-1)`–`(EL-6)` and
+*`Steps EL1–EL6`* each **0-hit**. `EL-` is topic-tagged and multi-letter, the shape this
+file's own diagnosis records as never having collided; it sits beside `TF-` (WTRI) in the
+W4 registry table.
+
+**Checked and NOT chosen:** `WCOUNT` (0-hit, but it names the *instrument* — the count
+matroid — rather than the question, and the question is about **which vertex**, not about
+counting); extending `WK-`, the existing tag of §widened kernels, because `(E-loc)` and
+`(K-res)` already live there as **bare** tokens and a fresh numbered family beside them
+would invite exactly the ambiguity clause (L3) exists to prevent. **Qualify every citation
+of the bare `(E)` with its owner** — this file's collision table does not yet list `(E)`,
+and this direction is the first to use it heavily.
+
+**(L6) reminder for the landing.** Run the landing-time bare-token grep on the returned
+draft. Two single-letter risks specific to this question: **`f`** (the count function) and
+**`v₀`** are already in arc-wide use and must stay glossed at each use, and the
+supermodularity argument will want names for the two obstruction shapes — **prefer prose
+names**, as WTRI and BSPREAD both did.

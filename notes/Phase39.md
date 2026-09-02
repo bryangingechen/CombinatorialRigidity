@@ -10,7 +10,7 @@ derives it from exactly **three carried items**: **`hcontract`** (W4 — build p
 
 **The research arc: 66 directions COMPLETE** (2026-08-05 → 09-02, ordinals
 1–58 — 65 on kernel (K), and **WTRI (58), the first on W4**), plus eight strategy-only
-passes and two architecture probes; **none in flight**. Per-direction verdicts, specs and write-ups live at `notes/Pencil-fanout.md` §"<CODE>"
+passes and two architecture probes; **ONE in flight** — WELOC (59), the second on W4. Per-direction verdicts, specs and write-ups live at `notes/Pencil-fanout.md` §"<CODE>"
 (ordinals 1–19: the archive) plus a workbook home — **not restated here**.
 **The arc's standing result, unchanged by all 66: `hK` is not closer.** **(GR-15)** — the
 single open gap the whole §(K-grid) chain reduces to — is **untouched**; **class uniformity
@@ -18,17 +18,17 @@ of the escape is untouched**; no g-flank was found by any direction; **E3 is ARM
 GBAL) and has never fired**.
 
 **WTRI (58) LANDED 2026-09-02 — the arc's FIRST W4-side direction, and it CLOSES A
-CARRIED COST: §(SAFE-RES) (T) IS A THEOREM.** No feasible residual carries a triangle,
-so route 3's cost list drops from **four to three** — (E-loc), (V), **(K-res)** — and
-only (K-res) is still a user call. The proof is two **landed** feasibility *transfers*
-(`PencilNondegFeasible.mono`, `pencilNondegFeasible_induce_of_pendant_deg3`) that
-§(SAFE-RES) *Step 4* had never inventoried, composed over a `2EC ⟹ deg z ≥ 4` split;
-compiler-checked as a composition, four mechanical Lean obligations left. **The recorded
-255/255 was never evidence and is not what settled it**, and *Step 4*'s claim *"(T) is
-not provable from the landed set"* is **RETRACTED at source** (F12). §(SAFE-RES)
-*Steps TF1–TF6*. **A PENCIL event on the W4 side; `hK` is untouched.** BGENUINE (57)
-remains the (BE-14) thread's last word — the coincidence is genuine and harmless, half
-(B)'s residue back to **two** ((BE-84)–(BE-88)).
+CARRIED COST: §(SAFE-RES) (T) IS A THEOREM** ((TF-5)). No feasible residual carries a
+triangle, so route 3's cost list drops **four → three** — (E-loc), (V), (K-res), only
+the last a user call. The proof composes two **landed** feasibility *transfers* *Step 4*
+had never inventoried; its *"not provable from the landed set"* is **RETRACTED at
+source** (F12), and the recorded **255/255 was never evidence**.
+
+**IN FLIGHT — direction WELOC** (ordinal 59), the **second** W4-side direction and the
+one (T) unblocked: **(E-loc)** — *every residual has a degree-2 vertex `v₀` with
+`E(G − v₀)` count-independent*. It is **upstream of (V)** (which is only *"elementary
+given (E)"*) and has **two** consumers, (E) and Step 0's `hfresh` discharge; its
+obstruction is already narrowed by supermodularity to **exactly two named shapes**.
 
 **WHERE THE (BE-14) THREAD STANDS** — S-mark, the 2-cut composition lemma, is (BE-14)'s
 only open step; its **three sides** and every per-landing detail are **REFERENCE,
@@ -212,17 +212,15 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
 
 **The phase stays OPEN** (the 2026-07-24 adjudication — no phase-close; see *Current state*).
 
-**BWIN (ordinal 51) LANDED 2026-08-29** and **CLOSED THE WINDOW as a class**
-((BE-54)–(BE-58); the machine and its caveats are the `(K-bare)` gap-map row's and the
-write-up `notes/Pencil-fanout.md` §"BWIN"'s, not restated here). With BRULE ((b3),
-disjoint) and BSHARP ((b1)/(b2) outside the window), **(β) is proved at every window piece
-on the 87-of-91 domain, MODULO (S1)/(S2)**; the remaining (β) residue is per-shape outside
-the window ((BE-58)(iv)'s ledger) plus the `π_u = π_v` corner ((BE-32)(+), forced). The
-strengthened 2-cut lemma **is** (BE-14) (decomposition exhaustive; base `{3-connected}` ∪
-`{max deg ≤ 2}` ∪ `{def₂ = def₃}` free, 1-cuts (BE-18), statement **PINNED** as **S-mark**,
-simultaneity **VACUOUS** (BE-25)(i)). BIMAGE bounded and classified the ear's residual
-geometric sentence; BEARCASE **PROVED (α)** for `m ≥ 3`; BEARFULL, BSHARP and BRULE cut
-(β) down to the window BWIN closed.
+**THE (BE-14) FRAME, settled and not restated** (write-ups `notes/Pencil-fanout.md`
+§"<CODE>"; the `(K-bare)` gap-map row is **authoritative**). The strengthened 2-cut
+lemma **is** (BE-14): decomposition exhaustive, base `{3-connected}` ∪ `{max deg ≤ 2}`
+∪ `{def₂ = def₃}` free, 1-cuts (BE-18), statement **PINNED** as **S-mark**, simultaneity
+**VACUOUS** ((BE-25)(i)). **THE EAR SIDE:** (α) closed (BEARCASE, `m ≥ 3`); (β) proved
+at every window piece on the **87-of-91** domain by BWIN's class theorem with BSHARP's
+(b1)/(b2) and BRULE's (b3) — **MODULO (S1)/(S2)** — residue per-shape outside the window
+((BE-58)(iv)) plus the `π_u = π_v` corner, **now unconditional** since (BE-32)(+) is a
+theorem.
 
 **WHAT THE THREAD'S LAST FIVE LANDINGS ESTABLISHED** (52, 53, 55, 56, 57 — write-ups
 `notes/Pencil-fanout.md` §"<CODE>", mathematics §(K-bare-ext) *Steps BE58–BE87*; the
@@ -232,12 +230,18 @@ star-2/SPREAD split; cross-cut-only forcing confined to `δ₁ = δ₂ = 1`, the
 then shown **genuine but harmless**. **Net: half (B)'s residue is back to TWO items** —
 (BE-67)(iii)'s uniformity and the flag base, now candidate 1 below.
 
-**THE W4 DEVIATION PAID: WTRI (58) closed a carried cost.** Nine consecutive directions
-had run on the (BE-14) thread while `hcontract` took zero; WTRI took route 3's cost
-**(T)** and **proved it** (§(SAFE-RES) *Steps TF1–TF6*). W4's cost list is now
-**(E-loc), (V), (K-res)**, and the deviation's own rationale — attack the item a
-certified sweep *cannot* see — is what found the answer: the two landed feasibility
-*transfers* were invisible to the sweep, not to a derivation.
+**THE W4 DEVIATION PAID: WTRI (58) closed a carried cost** (§(SAFE-RES) *Steps
+TF1–TF6*), and its rationale — attack the item a certified sweep *cannot* see — is what
+found the answer: the two landed feasibility *transfers* were invisible to the sweep,
+not to a derivation. W4's cost list is now **(E-loc), (V), (K-res)**.
+
+**THE NEXT CONCRETE TASK — direction WELOC (59), and the F26 trace OVERTURNED WTRI's own
+successor.** WTRI ranked **(V)** next as *"the cheapest non-user-call item"*; §(SAFE-RES)
+*Step 3* words (V) as *"elementary **given (E)** and (T)"*, so **(V) is DOWNSTREAM of the
+gap (E-loc) discharges**. (E-loc) also has **two** consumers ((E), Step 0's `hfresh`
+discharge) and its obstruction is **already narrowed by supermodularity to exactly two
+named shapes**. *Cheapest* is not the criterion; **max impact** is. **(V) is not dropped**
+— it is the next W4 pick. Spec `notes/Pencil-fanout.md` §"WELOC".
 
 **THE NEXT CONCRETE TASK — the coordinator's pick under the standing delegation.** Two
 live boards, and the ranked (BE-14) list below is unchanged: its **candidate 1, the flag
@@ -347,9 +351,10 @@ its cost are `notes/dispatch-log.md`'s and `notes/Pencil-fanout.md`'s). **The ta
    (DZ has `def₂ = 11`).
 2. **`hcontract`** (W4) **via route 3's informal costs — dispatchable TODAY, and the hold
    is an argument FOR them, not against.** The **build** is fully decomposed, buildable and
-   PARKED by the hold; the other four costs are **not** parked — **(T)**/**(V)**/**(E-loc)**
-   are slice-sized and need no adjudication, **(K-res)** is wave-sized and a **USER CALL**
-   that route 3 cannot close without. All four are stated once in *Blockers*, "What the
+   PARKED by the hold; the other costs are **not** parked — **(T) is now a THEOREM**
+   ((TF-5), WTRI), leaving **(V)**/**(E-loc)**, both slice-sized and needing no
+   adjudication, plus **(K-res)**, wave-sized and a **USER CALL** that route 3 cannot
+   close without. All are stated once in *Blockers*, "What the
    Lean hold parks, and what it does NOT" — the canonical scope statement, **not restated
    here.** Route **ADJUDICATED 2026-08-02: route 3, packaging (b)**, with (K-res) a
    byte-identical sibling of `hK`; residual carry narrows to **`hnoGood'`**, whose vacuity
@@ -360,7 +365,7 @@ its cost are `notes/dispatch-log.md`'s and `notes/Pencil-fanout.md`'s). **The ta
    identification recon" and `notes/Pencil-W4-informal.md`.
 3. **`hK`** (kernel (K), research) **via (GR-15)** — the escape `≢ 0` uniformity kernel,
    the phase's hardest open item and what the whole research arc attacks: **untouched by
-   all 62 directions**, and the only one of the three with **no named next slice**.
+   all 66 directions**, and the only one of the three with **no named next slice**.
    Everything in §(K-grid)/§(K-out) is *support* for this, not progress on it. **Standing
    adjudication ("C: literature hunt + A", 2026-07-30): carry `hK` pinned; option B NOT
    authorized**; both literature hunts are MISSes, and since 2026-08-02 it also carries
@@ -474,23 +479,16 @@ paragraphs.**
   widened); the tight bookkeeping and (GR-21)+ do **not** transport; the deficient fringe
   **refuted** ((RS-6)). §(K-res) opened with its own gap-map row; the wave stays a user call.
 
-The (BE-14) thread the hand-off's candidate (0) sits on — two entries kept at prose length:
+**DEMOTED 2026-09-02** per this note's oldest-demotes rule — six landings have followed:
 
-- **BEARFULL** (47, 2026-08-27, opus) — the merge inequality's real theorem is a **SHORT-CYCLE
-  LAW**: `girth(Q) ≥ 6`, so **every cycle of length `≤ 6` forces `δ = 0`** and
-  `δ ≤ max(0, L−6)` — **containing** (BE-32)(ii)/(iii) and **weakening** the latter to `≥ 2`
-  common neighbours; **`δ = 0` is an EQUIVALENCE RELATION** (supermodularity + join).
-  **(BE-32)(+) PROVED at 196 043/203 723** forced pairs, residue geometry-free with an
-  **exact** boundary. **(b2) a COROLLARY of (b1)**. The coordinator's **ear-decomposition
-  route REFUTED by a theorem** — min-degree-`≥ 3` forces a chord — so **S-mark's pin STANDS**
-  and the internal R-node is **confirmed** on the critical path. §(K-bare-ext) *BE38–BE42*.
-- **BEARCASE** (46, 2026-08-27, opus) — **(α) CLOSED**: the greedy's last step is a complete
-  criterion (**the 2-step lemma**), its bad case a **scheduling** artifact, and a
-  **reordering + slide** removes it ⟹ **the reach formula is PROVED for `m ≥ 3`**
-  (constructed, 1 432/1 432); no fourth mechanism at `m ≤ 2`. **(β) as stated REFUTED**
-  (unsatisfiable at `δ₁ ≥ 5`; a **propagated prose defect**, no measurement changed), its
-  quantifier **COLLAPSED** on the attaining locus, and the (β) side reduced to the single
-  residue **(BE-32)(+)**. §(K-bare-ext) *BE34–BE37*.
+- **BEARFULL** (47, 2026-08-27, opus) — the **SHORT-CYCLE LAW** (`girth(Q) ≥ 6`, every
+  `≤6`-cycle forces `δ = 0`, `δ = 0` an equivalence relation), **containing** (BE-32)(ii)/
+  (iii); **(b2) a COROLLARY of (b1)**; the ear-decomposition route **REFUTED**, so
+  S-mark's pin stands. §(K-bare-ext) *BE38–BE42*.
+- **BEARCASE** (46, 2026-08-27, opus) — **(α) CLOSED** (the 2-step lemma; reach formula
+  proved for `m ≥ 3`); **(β) as stated REFUTED**, its quantifier collapsed, the (β) side
+  reduced to the single residue (BE-32)(+) — **since PROVED** ((BE-74)).
+  §(K-bare-ext) *BE34–BE37*.
 Settled, one line each:
 
 - **BIMAGE** (45, 2026-08-27, opus) — the ear's `ρ̄₂` is a **chain on the Klein quadric**

@@ -1,7 +1,21 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: EIGHT fan-outs, THIRTY-NINE single directions and TWO concurrent
-pairs dispatched; 66 LANDED, NONE IN FLIGHT.**
+**Status: EIGHT fan-outs, FORTY single directions and TWO concurrent pairs
+dispatched; 66 LANDED, ONE IN FLIGHT — WELOC (ordinal 59).**
+**WELOC (ordinal 59, §"WELOC") PREPPED 2026-09-02** at **(E-loc)** — *every
+residual has a degree-2 vertex `v₀` with `E(G − v₀)` count-independent* — the
+second W4-side direction. **The F26 trace OVERTURNED the successor WTRI named:**
+WTRI ranked (V) next as *"the cheapest non-user-call item"*, but the workbook
+words (V) as *"elementary **given (E)** and (T)"*, so (V) is **downstream** of
+the very gap (E-loc) discharges; (E-loc) also has **two** consumers ((E) and
+Step 0's `hfresh` discharge) and its obstruction is **already narrowed by
+supermodularity to exactly two named shapes**. Cheapest is not the criterion;
+max impact is. **(V) is not dropped** — it is candidate 2 and gets cheaper the
+moment (E) lands. The spec also carries **job 2, the landed-inventory question**
+asked in general: WTRI's whole result came from a step enumerating the
+feasibility *criteria* and omitting the *transfers*, so this direction greps the
+tree around `ReducibleVertex.lean` **before** concluding anything is unprovable.
+Dispatched at `recon-opus` (fable unavailable this session).
 **WTRI (ordinal 58, §"WTRI") LANDED 2026-09-02** — the arc's **FIRST W4-side
 direction**, and it **CLOSES A CARRIED COST: §(SAFE-RES) (T) IS A THEOREM** —
 **HIT shape 1**, the one the spec ranked first; also shapes 3, 4 and 5, and **NOT
@@ -9755,3 +9769,177 @@ ROTATE, not append.** The **`(K-bare)` gap-map row is at 1 544 / 1 600 words** �
 **this direction does not touch it**, but the next (BE-14) landing will need a
 recompute **to a target** (F21), with label preservation verified by scripted
 set-diff; the natural material is *Steps BE34–BE57*'s per-direction history.
+
+## WELOC — fifty-ninth ordinal (single dispatch, prepped 2026-09-02) — the second W4-side direction
+
+**Selection provenance: the F26 consumer trace was re-run for a SIXTH direction
+running, and it OVERTURNED the successor WTRI named.** WTRI's return ranked **(V)**
+next, calling it *"the cheapest non-user-call item in the phase"*. The coordinator
+opened both remaining costs in `notes/Pencil-W4-informal.md` and did not take it:
+
+- **(V) is DOWNSTREAM of (E).** §(SAFE-RES) *Step 3* words it exactly — *"(V) the
+  local choice — **elementary given (E) and (T)**"* — and the proof it sketches
+  begins *"(E) supplies a branch `β` with `j ≥ 2` interior vertices"*. (T) is now a
+  theorem; **(E) is not**, and (E) is what (E-loc) discharges. Proving (V) first
+  means proving it modulo an open hypothesis.
+- **(E-loc) has TWO consumers**, not one: *Step 3* says discharging it *"fixes gap
+  **(E)** of §(SAFE-RES) *Step 3*, and with it the `hfresh` discharge of Step 0"*.
+- **(E-loc) already has its obstruction narrowed to two named shapes** — see below.
+  That is further along than (V)'s open half, which is still *"a full proof of (V)
+  must show that not every `≥ 2`-interior branch of a residual is of those two
+  shapes"*.
+
+*Cheapest* is not the standing criterion; **max impact on proving or disproving
+`PencilPair K 3 G`** is, and on that axis (E-loc) is upstream, has two consumers,
+and is better prepared. **(V) is not dropped** — it is candidate 2 and gets cheaper
+the moment (E) lands. Dispatched **un-named, single**, at **`recon-opus`** (fable
+unavailable this session).
+
+### The target, stated exactly
+
+> **(E-loc)** *Every residual `G` has a degree-`2` vertex `v₀` with `E(G − v₀)`
+> independent in the `(6,6)` count matroid.*
+
+Prove it, **or** exhibit a residual with no such vertex, **or** reduce it to a
+named checkable condition. **Numerics: 255/255** (`widened.py --ebound`).
+
+### What is free — cite it, do NOT re-derive it
+
+- **The reduction of (E) to (E-loc)** (§widened kernels *Step 3*), including the
+  line-by-line reading of `edgeBound_of_noRigid_of_degree_two`
+  (`ReducibleVertex.lean:1270`): it consumes `hnp` at **exactly one point**, to
+  prove `hindep` for the `5`-fold fiber of the edges avoiding `v`; everything after
+  is pure counting, giving `5(|E| − 2) + 6 ≤ 6(|V| − 1)`, i.e. `f(V(G)) ≤ 4`. And
+  the key asymmetry already recorded: **the conclusion is about `G`, not about
+  `v`**, so (E) follows as soon as *some* degree-`2` vertex satisfies it — **it need
+  not be the vertex the split uses**.
+- **The witness is typically NOT split-usable** — at `W19` it is `c1`/`c3`, at
+  `S29` it is `m1`/`m2`, the **core's own** degree-`2` vertices, disjoint from the
+  split-usable set in both. 210 of 255 do have a split-usable witness (which also
+  buys `s₀ = 0`); `W19`/`S29` are among the 45 that do not. **Do not conflate the
+  two roles.**
+- **(T) is now a theorem** ((TF-5)) — every residual is triangle-free, and that is
+  a hypothesis you may use freely.
+- **(R1)/(R5)** and the residual anatomy of §(SAFE-RES) *Step 4* / *Steps TF2–TF5*.
+
+### THE STRUCTURE THAT IS ALREADY DONE — start here, do not rediscover it
+
+§widened kernels *Step 3* records this and it is the direction's natural spine:
+
+> `f` is **supermodular** (`|E(·)|` is supermodular, `−6(|W| − 1)` is modular), so
+> `f(W₁ ∪ W₂) ≥ f(W₁) + f(W₂) − f(W₁ ∩ W₂)`. When `W₁ ∩ W₂` is a single vertex
+> `f(W₁ ∩ W₂) = 0`; when it is count-independent `f(W₁ ∩ W₂) ≤ 0`. Either way two
+> count-dependent sets meeting like that **merge** into a count-dependent union.
+
+**Hence the obstruction to (E-loc) is one of exactly two shapes**, and *Step 3*
+names them:
+
+1. **two count-dependent vertex sets meeting in an independent set** — in
+   particular two **disjoint** proper rigid subgraphs with `f > 0`;
+2. **a single dependent "brick"** all of whose vertices have `G`-degree `≥ 3`.
+
+**Neither occurs anywhere in the pool.** So the direction's job is not to hunt
+blind — it is to decide these two shapes against the residual definition.
+
+### Job 1 (PRIMARY, FORCED) — kill the two shapes, or exhibit one
+
+**Shape 2 looks like the one the residual definition should forbid outright** and
+is the coordinator's guess at the cheaper half — a residual is 2EC with a
+degree-`2` vertex somewhere by (R1)/(R5)-adjacent structure, and a brick all of
+whose vertices have degree `≥ 3` has to coexist with that. **Say whether that is
+actually an argument or whether the brick can sit disjoint from the degree-`2`
+vertices** — the second reading is the whole question and the coordinator does not
+know which holds.
+
+**Shape 1 is where two disjoint proper rigid subgraphs would live**, and the
+residual definition constrains proper rigid subgraphs directly (that is what WTRI
+just exploited on the triangle). **Ask what the residual's own `∃`-rigid clause and
+its contraction requirement say when there are two disjoint ones** — and note this
+is exactly the *"two pendant triangles"* shape one level up, which WTRI dissolved
+by finding a landed transfer rather than by a hunt.
+
+### Job 2 (FORCED) — the landed-inventory question, asked ONCE and in general
+
+WTRI's whole result came from *Step 4* having enumerated the feasibility
+**criteria** and omitted the feasibility **transfers**. That was not a one-off: it
+is now a logged check (`notes/dispatch-log.md`, 2026-09-02). **Run it here before
+concluding anything is unprovable:** *Step 3* says (E) is *"landed only under
+`hnoRigid`"* and proposes a *"`noRigid`-free sibling ... verbatim-prefix
+extraction"*. **Grep the tree for what is actually landed around the count matroid
+and reducible vertices** — `ReducibleVertex.lean` and its neighbours — and report
+whether a second declaration already gives what (E-loc) needs, the way
+`pencilNondegFeasible_induce_of_pendant_deg3` did for (T). **This is cheap and it
+is the highest-expected-value hour in the direction.**
+
+### Job 3 (FORCED, CHEAP) — what (V) costs once (E) lands
+
+If job 1 proves (E-loc), then (E) follows and **(V) becomes "elementary given (E)
+and (T)"** with both hypotheses discharged. In one paragraph: does (V) then close
+outright, or do its two `C₄`-carrying residues (`j = 3` with `u = u'`; `j = 2` with
+`u ~ u'`) still need the argument *Step 3* says they need? This is the consumer
+trace one level down and it decides the next pick.
+
+### What counts as a HIT — state which you got
+
+1. **(E-loc) PROVED** — (E) falls, `hfresh`'s Step-0 discharge falls with it, and
+   W4's cost list drops to **(V)** and **(K-res)**.
+2. **A residual with no count-independent degree-`2` deletion** — refutes (E-loc)
+   and re-opens (E); a clean result that re-routes route 3.
+3. **One of the two shapes decided**, even short of the full statement.
+4. **A landed declaration found** (job 2) that shortcuts the whole thing.
+5. **(V)'s post-(E) cost** (job 3), either way.
+
+### Bars
+
+- **Do not re-open:** **(T)**, now a theorem ((TF-5)) — use it, do not re-prove or
+  re-hunt it; the route-3/packaging-(b) adjudication (2026-08-02); `hnoGood'`'s
+  vacuity refutation (`|V| = 19`); **(SAFE-RES)** itself, refuted at `S29`; the
+  `W19` counterexample; and the whole **(BE-14) thread** — this direction does not
+  touch half (B), the 2-cut lemma or §(K-bare-ext).
+- **The Lean hold (2026-08-05) binds**: no `.lean`. The *"cheap Lean leaf"* §widened
+  kernels *Step 3* names (the `noRigid`-free sibling) is **parked** — you may say it
+  is cheap and pin its statement, you may not build it.
+- **Not this direction, ranked separately:** **(V)** beyond job 3's paragraph;
+  **(K-res)**, a **USER call**; everything on the (BE-14) side.
+- **Out of scope:** `hK`, **(GR-15)**, class uniformity.
+
+### Riders
+
+**TERMINATION E1/E2/E3** — read against their actual definitions
+(`notes/Pencil-fanout-archive.md`) and state how you read them on the W4 side, as
+WTRI did rather than asserting by analogy. **E3 is ARMED**; WTRI was the first
+landing whose *first* conjunct held, and its second failed because (E-loc)/(V) are
+dispatchable. **If this direction proves (E-loc), check E3 again** — the second
+conjunct moves closer, and it is a **report**, never a firing.
+**F11** — *"no residual has shape 1 / shape 2"* is an **impossibility** claim and
+needs an argument; a sweep that finds none reports *"none found under cap C"*.
+**Cap disclosure MANDATORY with the DENOMINATOR named.** **And the disclosure that
+differs from WTRI's, which you must get right:** (T)'s 255/255 was worthless
+because L6b *requires* triangle-freeness, so the sweep could not see the failure
+mode. **(E-loc) is not in that blind spot** — count-independence is not part of any
+feasibility certificate — so the 255/255 is ordinary evidence. **But the POOL is
+still generated**, so state what the pool's own construction can and cannot reach,
+and do **not** reuse WTRI's blind-spot sentence here. **F12** — a corrected summary
+needs a hunk at the originating prose. **F17** — the fan-out header,
+`notes/Phase39.md`'s `**Status:**` header **and its *Blockers* W4 bullet**, and
+**`ROADMAP.md`'s Status row** are all surfaces a landing must update; the ROADMAP
+row was missed at WTRI's landing and the coordinator repaired it at `571de184`.
+
+### Reservation
+
+(`notes/Pencil-labels.md` §"Reserved namespace — direction WELOC".) Labels
+**(EL-1)–(EL-6)**, ***Steps EL1–EL6***, owning file `notes/Pencil-W4-informal.md`
+§widened kernels (routes 1/3). All **0-hit**. **Return any unconsumed remainder.**
+**Checked and NOT chosen:** `WCOUNT` (names the instrument, not the question);
+extending `WK-`, since `(E-loc)` and `(K-res)` already sit there as bare tokens.
+**Qualify every citation of the bare `(E)` with its owner** (L3).
+
+### Budget — measured at this prep
+
+**`notes/Phase39.md` is at 569/580 lines, 509/525 header words** — **lines bind**,
+with 11 spare. The prep rotated the header's landed block and **merged the BWIN
+paragraph into a settled-frame paragraph** under the note's oldest-demotes rule.
+**The landing should MERGE or ROTATE, not append.** The `(K-bare)` gap-map row is
+at **1 544 / 1 600** and **this direction does not touch it** — it is the (BE-14)
+thread's, and the next landing on *that* thread needs a recompute to a target
+(F21), not this one.
