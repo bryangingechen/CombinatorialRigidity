@@ -3174,3 +3174,45 @@ status. The coordinator's **own** first compression attempt was then thrown away
 dropping the same label *and lengthening the row*; the row finally went **1 466 → 1 538 /
 1 600, zero dropped**, by folding superseded mechanism prose rather than history. **No
 `SPECIAL_CAPS` entry proposed or added.**
+
+## Reserved namespace — direction GLIST (2026-09-02, **CONSUMED IN FULL at the landing; nothing returned**)
+
+**Reserved 2026-09-02 for the direction GLIST** (ordinal 68; `notes/Pencil-fanout.md`
+§"GLIST") — **(GR-132)'s hub list-colouring at the `ℓ = 2`-rich shapes**, the `hK` lane's own
+named successor and rank 1 of `notes/Pencil-strategy.md` §8's corrected ranking. The
+**committing** dispatch of a concurrent pair; the sibling ran **draft-only on the (BE-14)
+thread**, so this reservation protects against the existing corpus *and* against one live
+sibling on a disjoint prefix.
+
+| direction | owning § | labels reserved | steps reserved | driver |
+|---|---|---|---|---|
+| **GLIST** | §(K-grid) (`notes/Pencil-informal-grid.md`) — **extends**, no new section | **(GR-134)–(GR-138)** | **G154–G158** | `w4/glist.py` |
+
+**It opens at exactly the tail GPACK declared** (*"the tail this direction declares, for the
+next reservation: (GR-134) / Step G154"*).
+
+**0-hit verification, at reservation time**, across `*.md`, `*.tex`, `*.lean`, `*.py`, `*.m2`
+with `.git`/`.lake`/`__pycache__` excluded: `GLIST` and `glist` each **0-hit as raw
+substrings**; `(GR-135)`–`(GR-138)` and the raw step tokens `G155`–`G158` each **0-hit**.
+**`(GR-134)` and `Step G154` had two hits, both opened and confirmed to be GPACK's TAIL
+DECLARATION** — one in its registry row above, one in its fan-out landing paragraph — not
+consumed labels. `GLIST` was checked for the substring hazard (L5) and is clean; *list* alone
+would not have been (hundreds of hits inside "listed" / "colouring-existence" prose), which is
+why the code carries the topic tag.
+
+**LANDED 2026-09-02 — the whole reservation CONSUMED, nothing returned.** (GR-134)–(GR-138)
+and *Steps G154–G158* are all written, in `notes/Pencil-informal-grid.md` §(K-grid), which the
+direction **extends** exactly as reserved; driver `w4/glist.py` as named. **(L6) landing grep
+run**: **no bare `(X<digit>)` token is minted anywhere in the new steps** — the newly named
+objects are the two hub functions `α`, `γ`, the two lists `P_β`/`Q_β`, and the words *pure
+hub*, *cross* and *leaf-covering*, all deliberately **unlettered**; *Step G21*'s `A(β)`,
+`B(β)`, `C_β`, `D_β`, `J`, `Ĝ` and *Step G149*'s `σ(F)` are **reused, nothing re-minted**.
+The bare `(C6)` appears once, written `§(K-slide-comb) (C6)` — qualified per (L3), no rename.
+**F21 discharged**: the `(K-grid)` row recomputed to explicit targets set before the edit —
+status **≤ 2 530**, landing at **2 528 / 2 715**; close-it **≤ 950**, landing at **949 / 985**
+— with the status target set honestly rather than generously *because no landing is queued on
+this row* (the concurrent sibling is on `(K-bare)`), and with **135 words compressed out of
+nine already-landed entries before a word of new content was added**. No `SPECIAL_CAPS` entry
+proposed and none needed. Label preservation by `notes/scripts/gapdiff.py`: **141 in, 146 out,
+ZERO dropped, 5 added**. **The tail this direction declares, for the next reservation:
+(GR-139) / Step G159.**

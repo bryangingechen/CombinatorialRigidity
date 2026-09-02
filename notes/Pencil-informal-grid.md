@@ -14699,7 +14699,7 @@ from the prose that cites it.**
 > *Step G52*'s own sentence routes existence through (a′), not (b′):
 > *"prove the `d_fg = d_adm` half … and the existence target of GEXIST
 > follows from per-shape admissibility"* — and per-shape admissibility
-> is **PROVEN** ((GR-54)). (GR-15)'s four live routes do not include
+> is **PROVEN** ((GR-54)). (GR-15)'s four live targets do not include
 > (b′). The strategy note says it in one line
 > (`notes/Pencil-strategy.md:1279`): (GR-104)(i) is *"a
 > residual-of-a-residual inside the (a′)/(b′) ledger and **does not
@@ -15303,6 +15303,445 @@ which is why `--split` costs 11 s against `--pack`'s 98 s.
 throwaway probes; **every figure any of them produced is reproduced by a
 shipped `gpack.py` mode above**, and none is quoted from a transcript, so no
 probe is retained.
+
+---
+
+### Step G154 — (GR-134): the orientation normal form — the end pattern is ELIMINABLE, and clause (a) is FREE
+
+> **(GR-134)** *(proven; the equivalence cross-oracled against
+> `gpack.csp_witness` at **472 680/472 680** legal (packing, split) pairs of
+> (GR-132)'s own population — 0 disagreements — and clause (a) **asserted
+> rather than imposed** at all **229 320** feasible ones, `--csp`)* Let `G` be
+> a tight class shape with `Λ = ∅`, let `(C, J)` be a legal (packing, split)
+> pair with trees `T_1, …, T_6`, and write `D_β := {1..6} ∖ C_β`,
+> `P_β := J ∩ D_β`, `Q_β := ({1..6} ∖ J) ∩ D_β`, so `|P_β| = A(β)` and
+> `|Q_β| = B(β)`.
+>
+> **(i) The normal form.** (GR-132)'s clauses (a)/(b)/(c) hold for `(C, J)`
+> **iff** there are two hub functions
+>
+> > `α : hubs → J`  and  `γ : hubs → {1..6} ∖ J`
+>
+> such that at every branch `β = uw`:
+>
+> > `ℓ_β` **even**: `(α(u) ∈ P_β ∧ γ(w) ∈ Q_β)` **or**
+> > `(α(w) ∈ P_β ∧ γ(u) ∈ Q_β)`;
+> > `ℓ_β` **odd with both ends A** (`A(β) = (ℓ_β+1)/2`): `α(u), α(w) ∈ P_β`
+> > and `α(u) ≠ α(w)`;
+> > `ℓ_β` **odd with both ends B**: `γ(u), γ(w) ∈ Q_β` and `γ(u) ≠ γ(w)`.
+>
+> The end pattern is **recovered** from `(α, γ)`, not chosen alongside it:
+> `(α, γ) = (g_A, g_B)`, and an even branch's A-end is the endpoint whose `α`
+> lies in `P_β`. Pointwise, the whole content is
+>
+> > *every branch at `u` lying in `T_{α(u)}` has its `u`-end **B**, and every
+> > branch at `u` lying in `T_{γ(u)}` has its `u`-end **A**.*
+>
+> **(ii) Clause (a) is FREE — it is implied by (b).** Each `T_j` is
+> **spanning**, so `deg_{T_{α(u)}}(u) ≥ 1`; any such branch `β` has
+> `α(u) ∈ C_β`, hence `α(u) ∉ P_β`, so its `u`-end cannot be A and `u`
+> carries a B-end. Dually `deg_{T_{γ(u)}}(u) ≥ 1` gives an A-end. **The
+> no-monochromatic-hub clause is never the obstruction at `Λ = ∅`.**
+>
+> **(iii) The per-length demand, read off `|P_β| = A(β)`.**
+> `ℓ = 2`: `|P| = |Q| = 1` — **both labels forced**, and the branch's free bit
+> is exactly *which end takes the forced A-label* · `ℓ = 3`: a 2-element list
+> on one side at **both** ends with a `≠`, so `{α(u), α(w)} = P_β` **exactly**
+> · `ℓ = 4`: a 2-element list on each side, plus the free bit · `ℓ = 5`:
+> `P_β = J` (or `Q_β = J^c`), so **only** the `≠` survives.
+
+*Proof.* (GR-132) already gives `g_A : hubs → J`, `g_B : hubs → J^c` with (b)
+`g_A(u) ∈ J ∖ C_β = P_β` at every branch with an A-end at `u`, and dually.
+Put `α := g_A`, `γ := g_B`. By (GR-16)(i) an even branch has exactly one A-end
+and one B-end, so its contribution to (b) is precisely the stated
+disjunction; an odd branch has both ends the same colour, forced by the split,
+so its contribution is the stated conjunction and (c) is the `≠`. Conversely
+(GR-132)'s own proof shows the *singleton* interior classes absorb whichever
+elements of `P_β` the stars did not take and impose nothing further, so
+(b)+(c) on the stars is the whole system; (a) is (ii). The pointwise reading
+is `α(u) ∈ P_β ⟺ α(u) ∈ D_β ⟺ β ∉ T_{α(u)}`. (iii) is `|J ∖ C_β| = A(β)`
+read out at `ℓ_β = 2, 3, 4, 5`. ∎
+
+**What this settles, and what it corrects.** The `ℓ = 2` sub-case **is** an
+orientation problem, as the dispatch's coordinator reading proposed — and
+(GR-134) says exactly in what sense: at `ℓ_β = 2` clause (b) *is* the forced
+label, clause (c) is vacuous (no length-2 branch has both ends A), and the
+free bit is an orientation of the branch. Two corrections come with it. First,
+the two sides are **linked**: one orientation bit sets `g_A` at one endpoint
+**and** `g_B` at the other, so this is a single CSP in the 9-valued hub
+variable `(α(u), γ(u)) ∈ J × J^c`, not two independent 3-colourings. Second,
+the reading's expectation that clause (a) would be an extra burden at a
+degree-2 hub is **wrong in a useful direction**: (a) is free, and free for a
+structural reason — the six parts of (GR-18)(i)'s partition are spanning
+trees, so each of them reaches every hub.
+
+---
+
+### Step G155 — (GR-135): the local criterion, and the length-2 conflict in closed form — a PERFECT MATCHING of the six trees
+
+> **(GR-135)** *(proven; the criterion checked against brute force
+> **exhaustively over the abstract local configuration space** — 729
+> configurations at hub degree 3, 6 561 at degree 4, **0 disagreements** —
+> and at **1 887 120/1 887 120** realized (pair, hub) instances of (GR-132)'s
+> population, `--local`/`--csp`)*
+>
+> **(i) The general local criterion.** The local relaxation of (GR-134) at a
+> hub `u` — clause (b) with every *other* endpoint left free — is satisfiable
+> **iff** there are `j ∈ J`, `k ∈ J^c` with
+>
+> > no forced-A branch at `u` in `T_j`, no forced-B branch at `u` in `T_k`,
+> > and **no even branch at `u` in both `T_j` and `T_k`**.
+>
+> **(ii) At a pure hub.** Call `u` **pure** when every branch at `u` has
+> `ℓ_β = 2`. Then the first two clauses are vacuous, each `D_β` is a pair with
+> one element in `J` and one outside — a **cell** of the `3 × 3` grid
+> `J × J^c` — and (i) says the incident cells lie in a single **cross**
+> `row(j) ∪ col(k)`.
+>
+> **(iii) At a CUBIC pure hub the criterion is `J`-free.** With
+> `deg_{G°}(u) = 3`, `Σ_{j=1}^{6} deg_{T_j}(u) = Σ_{β ∋ u}(6 − ℓ_β) = 12` and
+> `1 ≤ deg_{T_j}(u) ≤ 3`, so `#{j : deg = 3} = #{j : deg = 1}`. The following
+> are **equivalent**:
+>
+> > the local system is **infeasible**; `deg_{T_j}(u) = 2` for **all six** `j`;
+> > `u` is a **leaf** of no `T_j`; `u` has degree 3 in no `T_j`; the three
+> > pairs `D_{β_1}, D_{β_2}, D_{β_3}` are pairwise **disjoint**, i.e. they
+> > form a **perfect matching of `{1..6}`**.
+>
+> **(iv) Minimality, and why "no 3 in general position" is the wrong notion.**
+> At degree 3 the infeasible configurations are exactly the **36** labelled
+> transversals (one up to relabelling of the two sides). At degree 4 a
+> **second** minimal pattern appears — the `2 × 2` block
+> `{(j,k), (j,k′), (j′,k), (j′,k′)}`, whose maximum matching is only 2 — so
+> the right notion is cross-coverability (a vertex cover using one row and one
+> column), not a bound on the matching number.
+
+*Proof.* (i): the A-label at `u` is `α(u) = j` and `j ∈ P_β ⟺ β ∉ T_j`
+((GR-134)(i)); a forced-A branch needs `j ∈ P_β`, a forced-B branch needs
+`k ∈ Q_β`, and an even branch may take either side, so it needs `j ∈ P_β`
+**or** `k ∈ Q_β`, i.e. `β ∉ T_j` or `β ∉ T_k`. Feasibility of the local
+system is the existence of `(j, k)` meeting all three demands; clause (a) is
+free by (GR-134)(ii). (ii) is (i) at `|P_β| = |Q_β| = 1`, where
+`β ∉ T_j ⟺ a_β = j` for the unique `a_β ∈ P_β`. (iii): `deg_{T_j}(u) =
+3 − #{β ∋ u : j ∈ D_β}`, so the six multiplicities `3 − deg_{T_j}(u)` are the
+multiplicities of the elements in the multiset `D_{β_1} ⊎ D_{β_2} ⊎ D_{β_3}`,
+of total size 6 — all equal to 1 exactly when the three pairs are pairwise
+disjoint, which is `deg_{T_j}(u) = 2` for every `j`. If some
+`deg_{T_x}(u) = 1`, the unique branch `β_0` at `u` inside `T_x` has
+`x ∉ D_{β_0}`; taking `(j, k) := (x, b_{β_0})` when `x ∈ J`, and
+`(a_{β_0}, x)` when `x ∈ J^c`, gives a cross, since the only branch at `u` in
+`T_x` is `β_0` and `β_0 ∉ T_{b_{β_0}}` resp. `β_0 ∉ T_{a_{β_0}}`. Conversely
+all degrees 2 makes the three pairs a perfect matching, and then every cross
+`row(j) ∪ col(k)` misses one of the three cells. `#{3} = #{1}` is
+`Σ_j (deg_{T_j}(u) − 2) = 0`. (iv) is the exhaustive check. ∎
+
+**This is a SECOND obstruction mechanism, logically independent of
+(GR-131)'s.** *Step G151* found that 2.6 % of arbitrary 6-tree partitions
+admit **no legal split**, always by an **odd cycle** in the split graph — an
+obstruction to the *split*. (GR-135) is an obstruction to the *colouring* at a
+pair whose split is perfectly legal: a perfect matching of the six trees at a
+cubic pure hub. Both make (GR-130)'s exchange freedom load-bearing, and
+neither implies the other — the exhaustive measurement below exhibits legal
+pairs of each kind.
+
+**Where the conflict lives geometrically, and it is where (GR-17)(d) put it.**
+A cubic pure hub is a hub all three of whose branches have `ℓ = 2`; by girth 7
+((R3) + `hnoRigid`) no two of them are parallel, and any `G°`-branch joining
+two of its neighbours has `ℓ ≥ 3`. So a pure hub sits at the centre of exactly
+the `(2,2,·)` local pictures (GR-17)(d) isolates, and the `(2,2,2,2)` circuits
+of (GR-22) are the 4-cycles of the same length-2 subgraph `H`.
+
+---
+
+### Step G156 — (GR-136): what the residual reduces to — a LEAF-COVERING condition — and exactly where the local reading stops
+
+> **(GR-136)** *(clauses (i)/(ii) proven; (iii)/(iv) measured exhaustively on
+> the named strata, `--csp`/`--rich`)*
+>
+> **(i) There is no all-length-2 shape.** By the excess law (GR-21),
+> `Σ_β (ℓ_β − 2) = 2D + 6 ≥ 6`, so **every** tight class shape carries a
+> branch of length `≥ 3`; quantitatively `n_3 + 2n_4 + 3n_5 = 2D + 6`, with
+> equality of the degree hypothesis exactly at cubic `G°`. **So the
+> `ℓ = 2`-only case is a statement about HUBS, never about a shape** — the
+> successor (GR-132) named is a local one, and there is no "pure `ℓ = 2`
+> stratum" to attack as a whole.
+>
+> **(ii) At `D = 0` almost every hub is pure.** At most `2D + 6 = 6` branches
+> have `ℓ ≥ 3`, so at most 12 hubs meet one and **at least `n − 12` hubs are
+> pure**. The pure-hub demand is therefore the *generic* local condition on
+> the very stratum (GR-21)(iii) identifies as binding-circuit-rich, and by
+> (GR-135)(iii) it is a **leaf-covering condition on the 6-tree partition**:
+>
+> > *choose the partition so that every pure hub is a **leaf** of at least one
+> > of the six spanning trees.*
+>
+> This is not counting-obstructed: a spanning tree of a cubic graph has
+> `2 + t` leaves for `t` its own degree-3 vertices, `t ≤ (n−2)/2`, so the six
+> leaf sets can cover up to `3n` hub-slots against the `≤ n` needed — the
+> condition is a **placement** demand, not a supply one.
+>
+> **(iii) But the local conditions are NOT the residual, and this is the
+> sharp negative.** Exhaustively over (GR-132)'s own population: of the
+> **243 360** infeasible legal pairs, **44 640 already fail (GR-135) at some
+> single hub** and **198 720 (82 %) are locally feasible at EVERY hub** and
+> infeasible only **globally**. So no per-hub repair, and no strengthening of
+> the packing that only fixes hub-local data, can close (GR-18)(iii); the
+> residual is a genuinely global CSP in `(α, γ)`.
+>
+> **(iv) The residual is satisfiable everywhere it has been decided.**
+> Exhaustively over the `n_hub = 4` half of the `D = 0` stratum — every cubic
+> hub multigraph up to isomorphism × every excess profile, 312 class shapes,
+> 28 of them with a pure hub, **every** 6-tree partition and **every** split —
+> some legal pair is feasible at **every** shape, reached within 2 832 search
+> nodes in the worst case. The conflict is **realized** there — 80 640 of the
+> 1 013 760 legal pairs at the 28 pure-hub shapes carry a bad pure hub, and
+> every one of those is CSP-infeasible — and always escapable.
+
+*Proof of (i)/(ii).* (GR-21) is `Σ_β(ℓ_β − 2) = 4M − 6n + 6` with
+`2M = 3n + D`; at `Λ = ∅` every `ℓ_β ≥ 2`, so the left side is
+`n_3 + 2n_4 + 3n_5` and `D ≥ 0` gives `≥ 6`. A branch with `ℓ ≥ 3`
+contributes at least one unit, so there are at most `2D + 6` of them and they
+meet at most `2(2D + 6)` hubs; at `D = 0` that is 12. The leaf count of a
+spanning tree `T` of a cubic graph is `2 + #{v : deg_T(v) = 3}` and
+`#{deg 3} + #{deg 1} ≤ n` with `#{deg 1} = 2 + #{deg 3}` forces
+`#{deg 3} ≤ (n−2)/2`. ∎
+
+**Why "reduced, not proved" is the honest word.** (GR-136)(iii) is what stops
+this from being a theorem: the coordinator's reading, and the shape of
+(GR-132)'s own hand-off, both located the difficulty at a hub — and 82 % of
+the failures are invisible to every hub. What (GR-134)/(GR-135) buy is a
+**normal form plus an exact local criterion**, i.e. a strictly smaller named
+condition (HIT shape 3 of the dispatch menu) with a theorem on the named
+sub-statement (clause (a) is free, the pure-hub conflict is a perfect
+matching). What is left open is the same statement one level up: the global
+`(α, γ)` CSP, whose only established handle remains the exchange freedom of
+(GR-130).
+
+---
+
+### Step G157 — (GR-137): the support audit of (GR-132)'s own evidence — the population DOES present the conflict, and the `229 320/229 320` denominator is self-selected
+
+> **(GR-137)** *(measured, `--support`/`--csp`; the population rebuilt from
+> the shipped `gpack.py`, not from its transcript)*
+>
+> **(i) The population does present the conflict.** `--resid`'s twelve shapes
+> are the three thetas plus nine `K4`s; `max_u t(u) = 3` (where
+> `t(u) := deg_H(u)` counts length-2 branches at `u`), and **6 of the 12 carry
+> a pure hub** — the six `K4(2,2,2,·,·,·)` shapes, whose length-2 branches
+> form a **star** at one hub while the opposite triangle absorbs the whole
+> excess budget. So the audit's first question is answered **positively**, and
+> the reading that the difficulty is never presented is **refuted**.
+>
+> **(ii) The soundness leg ranges over the exchange freedom; the completeness
+> leg does not.** `--resid`'s soundness loop is
+> `for trees in all_packings(...)` then `for J in legal_splits(...)`, both
+> exhaustive — the full (GR-130) freedom. Its **completeness** loop consumes
+> only the **certificate-induced** packing of each filter-passing colouring,
+> with `J = (0,1,2)` pinned; (GR-131) has since shown that packing is **not
+> canonical**, so the `124/124` figure is a statement about the certificate
+> map, not about the pair space.
+>
+> **(iii) The `229 320/229 320` figure has a SELF-SELECTED denominator.** It
+> counts the pairs the CSP **accepts**: the soundness loop `continue`s on
+> rejection, so a rejected pair is never counted at all. Supplying the missing
+> denominator from the same enumeration: of **472 680** legal (packing, split)
+> pairs, **229 320 are feasible and 243 360 are NOT** — a 48.5 % acceptance
+> rate — and **17 280** of the rejections carry (GR-135)'s pure-hub conflict
+> outright. The `229 320` is exactly reproduced, so this is the same
+> population, read with its denominator restored.
+>
+> **(iv) The wider populations, for scale.** 303 census shapes have
+> `Λ = ∅`, with `max_u t(u)` histogram `0:25, 1:62, 2:192, 3:24` and **24 of
+> 303** carrying a pure hub. On the `D = 0` stratum, exhaustively:
+> `n_hub = 4` — 312 class shapes, 28 with a pure hub; `n_hub = 6` — 4 598
+> class shapes, **2 623** with a pure hub. Above `n_hub = 4` pure hubs are the
+> rule, not the exception, exactly as (GR-136)(ii) predicts.
+
+**The audit fired once more inside this dispatch, on its own driver, and the
+incident is recorded because it is the same defect one level down.**
+`--rich`'s `n_hub = 6` control is the constructed `K_{3,3}` shape with hub 0's
+star at `ℓ = 2` and the other six branches at `ℓ = 3` (`Σ(ℓ−2) = 6`, so
+(GR-21) is tight, and hub 0 is the unique pure hub; certified a class shape by
+**both** `gridcol.class_shape` and `cflank.cubic_habitat`). A seeded
+randomized depth-first search collected 4 000 6-tree partitions there, giving
+**21 336 legal pairs of which 0 are CSP-feasible and all 21 336 carry the
+conflict** — which, read as a nonexistence claim, would have been a (GR-10)
+flank. It is **not**: the shape has 512 admissible colourings, **60** of them
+filter-passing with a both-block tree-triple, and **every one of the 60**
+induces a legal pair that is CSP-feasible with hub 0 a **leaf** of some tree
+(`60/60`, asserted, and cross-oracled against `gpack.csp_witness`). The 4 000
+partitions were one **depth-first subtree** — the search varied the low-index
+branches and held the high-index ones nearly fixed, so its support missed the
+very quantifier the question was about. `RESEARCH-ARC.md` §4's sharpening and
+README §4 convention 8 both name this shape of defect; here they caught it
+inside the pass that was auditing them.
+
+---
+
+### Step G158 — (GR-138): where this leaves (GR-10), (GR-15) and `hK` — the reconciliation, the `Λ` caveat, and the hand-off
+
+**The verdict, in the dispatch's own three words.** The `ℓ = 2`-rich case is
+**reduced to a named strictly-smaller condition** — not a theorem, not
+refuted. What is a theorem: clause (a) is free ((GR-134)(ii)), the orientation
+normal form ((GR-134)(i)), the local criterion and its `J`-free cubic form
+((GR-135)), and the two structural facts that there is no all-length-2 shape
+and that at `D = 0` at least `n − 12` hubs are pure ((GR-136)(i)/(ii)). What
+is refuted: the reading that the residual is a union of hub-local conditions —
+82 % of the failures are locally invisible ((GR-136)(iii)). What is open: the
+global `(α, γ)` CSP, i.e. (GR-18)(iii)'s class-consistency clause, unchanged
+in status.
+
+**(GR-10) and (GR-15) are unchanged, and no gap-map status word moves.** The
+residual named at *Step G152* is re-stated, not discharged. What changes is
+its **shape**: from "a hub list-colouring with forced labels at length-2
+branches" to "a 9-valued hub CSP whose local relaxation is exactly a
+leaf-covering condition on the 6-tree partition, and whose obstruction is
+82 % global". (GR-13)'s NP-completeness of the grouped packing is consistent
+with that and now better located again: not in the packing ((GR-130)), not in
+the split ((GR-130)), not in the hub-local data ((GR-136)(iii)) — in the
+global consistency of the orientation.
+
+**The internal contradiction the option board flagged is RECONCILED here,
+because this direction owns the surface** (`Pencil-strategy.md` §8, item
+**(b)** of *TWO INTERNAL CONTRADICTIONS FLAGGED, NOT RESOLVED HERE*). The
+`(K-grid)` **close-it** cell lists route (i) — *"a colouring-existence
+argument over Step G12's branch bits … + (GR-4′)"* — as live, while the same
+cell files *"the whole certificate-3-uniformity route"* under
+do-not-re-run. **Both readings survive, and the cell was already carrying the
+distinction in a clause that is easy to read past:** route (i) is the
+**statement** (certificate 3's uniform form, *Step G32*), and what *Step
+G37* killed is the **method** named there — *"cap + `Λ ≠ ∅` flip + `D > 0`
+lift + (GR-4′)"*, whose first ingredient, the `g ≤ 1` cap, is false from
+`n_hub = 8` ((GR-29)/(GR-30)). A statement is not a route, and calling it one
+is what made the cell read as self-contradictory. The repair landed with this
+step is therefore **editorial and exact**: route (i) is relabelled a
+**target** rather than a route, the dead entry is qualified as the *cap +
+repair* method for it, and (GR-134)–(GR-136) are recorded as the current
+best-located form of the same target. No mathematics moves; no status word
+moves.
+
+**The `Λ ≠ ∅` caveat, restated so nothing here is over-read.** Everything in
+*Steps G154–G157* is at `Λ = ∅`, inherited from (GR-132). With `Λ ≠ ∅`,
+(GR-16)(iii) lets A-classes merge along `Γ_A`-paths of `Λ`, `|K_A(β)| < A(β)`
+becomes possible, and (GR-16)(iv) records that merging makes `dim W₊ > 0`
+outright — so the clause gains a second, `Λ`-shaped conjunct nobody has
+written, and (GR-134)'s bijection between classes and list elements is the
+first thing that breaks. `Λ ≠ ∅` is **not** closed by this pass and is not
+this direction's to close. (GR-17)(d)'s binding list is itself only *measured*
+there (*Step G20*), which is the same boundary.
+
+**What a (GR-15) HIT would still buy — unchanged, and quoted rather than
+re-derived.** (GR-133) is the source: a (GR-15) HIT discharges `hK` on the
+**tight** stratum (`index(G) = 0` **and** `hnoRigid`); the `def > 0` habitat,
+`C11` included, is **owned** by `§(K-res)` (RS-5)/(RS-6), which routes it to
+the **escape route** — owned, but not free. And `Pencil-strategy.md` §2.5 is a
+**negative** result (at tight shapes the count *forces* `dim R_a = 1`); it
+supplies freeness nowhere, and nothing above cites it as if it did.
+
+**The named successors, in this direction's own ranking.**
+1. **The global `(α, γ)` CSP at `D = 0`** — the 82 % figure says a proof must
+   charge something global. The two handles the pass leaves: the certificate
+   side is **constructive** (every filter-passing both-block triple induces a
+   feasible pair, `60/60` at the `n_hub = 6` control and `124/124` at
+   `--resid`), and the exchange freedom is described in closed form by
+   `|s(F)| ≤ σ(F)` ((GR-129)(iii)).
+2. **`n_hub = 6` exhaustively.** `--rich`'s exhaustive leg stops at
+   `n_hub = 4` because `all_packings` is ~10⁴ partitions per shape there and
+   out of reach at `m = 9`. A smarter enumerator (or a matroid-union
+   formulation of leaf-covering) would decide the 2 623 pure-hub shapes of the
+   `n_hub = 6` stratum.
+3. **The leaf-covering question on its own terms:** does every 6-tree
+   partition-carrying cubic multigraph admit one in which a prescribed set of
+   `≤ n` vertices are each a leaf of some part? This is a packing question
+   again, and the one place the arc's landed Phase-12/13/14 machinery
+   (`Matroid/Constructions/{Submodular,Union}.lean`) might reach — as
+   §(K-slide-comb) (C6) remark (c) reaches (GR-130).
+
+**Confidence verdict (Steps G154–G158).**
+
+| | claim | standing |
+|---|---|---|
+| **(GR-134)(i)** | the orientation normal form | **proven**; cross-oracled against `gpack.csp_witness` at 472 680/472 680 pairs, 0 disagreements |
+| **(GR-134)(ii)** | clause (a) is free | **proven** (each `T_j` spanning); asserted, not imposed, at 229 320/229 320 feasible pairs |
+| **(GR-135)** | the local criterion; the cubic pure-hub conflict is a perfect matching of the six trees | **proven**; exhaustive against brute force over the abstract configuration space (729 at degree 3, 6 561 at degree 4) and at 1 887 120/1 887 120 realized instances |
+| **(GR-136)(i)/(ii)** | no all-length-2 shape; `≥ n − 12` pure hubs at `D = 0` | **proven** from (GR-21) |
+| **(GR-136)(iii)** | 82 % of the failures are global, not local | **measured, exhaustive** over (GR-132)'s own population — a statement about those 12 shapes |
+| **(GR-136)(iv)** | the residual is satisfiable at every `n_hub = 4` `D = 0` class shape | **measured, exhaustive** over that stratum; says nothing about `n_hub ≥ 6` |
+| **(GR-137)** | the support audit | **measured**; (i)/(iii)/(iv) are figures, (ii) is a reading of the shipped driver |
+| **(GR-138)** | this hand-off, and the §8 reconciliation | **editorial**, plus a reading of landed rows; no status word moves |
+
+**What would change this.** (a) (GR-134)/(GR-135) are `Λ = ∅` statements and
+inherit (GR-132)'s caveat; a successor at `Λ ≠ ∅` must add the merging
+conjunct **before** using either. (b) (GR-136)(iii)'s 82 % is a figure about
+the 12-shape population; the *qualitative* claim it supports — that some
+failures are locally invisible — needs only one witness and has 198 720. (c)
+(GR-136)(iv) is exhaustive at `n_hub = 4` and **nothing** is known at
+`n_hub ≥ 6` beyond the one constructed control, where the positive verdict
+comes from the certificate side rather than from a search. (d) An error in
+(GR-18)(i)'s "each part is a **spanning** tree" would void (GR-134)(ii)
+outright — that is the single fact clause (a)'s freeness rests on.
+
+**TERMINATION check (E1 / E2 / E3) — reported, never fired.** Read against
+the **arc's** target `PencilPair K 3 G`, per the corrected reading of
+`61e046a6`; E3 in the two-conjunct text. **E1 does NOT fire, and the
+distinction had to be drawn twice in this pass.** A g-flank is a `D = 0` shape
+whose *every* admissible colouring is binding. (GR-135)'s bad pure hubs are
+**legal pairs**, not colourings, at shapes that carry a certificate — and the
+one object that *looked* like a flank, the `K_{3,3}` control's
+21 336-for-21 336 conflicted sample, is refuted as such in the same step by 60
+exhibited certificates (*Step G157*). **E1 is a live, literal reading here** —
+`§(K-grid)` is exactly E1's habitat — and it is decided **negative**: no
+g-flank was exhibited or found, and none is claimed. **E2 does NOT fire**: the
+target is not refuted, and the residual (GR-136) names is dispatchable (three
+successors above). **E3 does NOT fire**: the arc's target is not proven —
+(GR-134)/(GR-135) prove named sub-statements of (GR-18)(iii)'s residual, and
+(GR-10)/(GR-15) are unchanged in status.
+
+**Verification (F13/F11).** Every figure above is produced by a mode of the
+shipped `notes/scripts/w4/glist.py`; nothing is quoted from a transcript. Run
+from the repo root:
+
+```
+PYTHONHASHSEED=0 python3 notes/scripts/w4/glist.py --support   #   4 s  (GR-137): the population audit, the census and D = 0 measurements
+PYTHONHASHSEED=0 python3 notes/scripts/w4/glist.py --local     #   2 s  (GR-135): the criterion vs brute force, exhaustive; the F13 witness + controls
+PYTHONHASHSEED=0 python3 notes/scripts/w4/glist.py --csp       # 105 s  (GR-134): the cross-oracle, (a)-is-free, the missing denominator, the local/global split
+PYTHONHASHSEED=0 python3 notes/scripts/w4/glist.py --rich      # 320 s  (GR-136): the exhaustive n_hub = 4 verdict + the n_hub = 6 control
+PYTHONHASHSEED=0 python3 notes/scripts/w4/glist.py --validate  # 530 s  all four in one process — the landing gate
+```
+
+**Which mode tests which sentence (F11), with the sampler's support named.**
+
+| claim | mode | what asserts *that sentence*, and over what |
+|---|---|---|
+| (GR-134)(i) | `--csp` | feasibility of the `(α, γ)` CSP is compared with `gpack.csp_witness`'s verdict at **every** 6-tree partition and **every** split of **every** one of the 12 shapes — 472 680 instances, an exhaustive sweep of both quantifiers, not a sample |
+| (GR-134)(ii) | `--csp` | at every feasible pair the end pattern is *reconstructed* from `(α, γ)` and each hub asserted to carry both colours — (a) is never imposed, so a failure would fire |
+| (GR-135)(i)–(iii) | `--local` | the criterion and the brute force are compared at **every** configuration of the abstract space (`9^3`, `9^4`), and the tree-degree / leaf / perfect-matching equivalences asserted at every realizable one |
+| (GR-135) on realized data | `--csp` | criterion vs brute force at every (pair, hub) of the population — 1 887 120 instances |
+| (GR-135)'s guard | `--local` | the **constructed** transversal must be rejected, three one-cell perturbations must be accepted, with the pinned counter-fact that all four have identical list sizes |
+| (GR-136)(i)/(ii) | — | **proven** from (GR-21); the pure-hub counts that instantiate them are `--support`'s |
+| (GR-136)(iii) | `--csp` | the local relaxation is evaluated at **every** hub of **every** infeasible pair, so the 44 640 / 198 720 split is a partition of the whole population, not a sample |
+| (GR-136)(iv) | `--rich` | every cubic hub multigraph up to isomorphism × every excess profile at `n_hub = 4`, then every 6-tree partition and every split; the existence leg stops at the first witness, the statistics leg does not |
+| (GR-137)(ii) | — | **a reading of the shipped `gpack.py`**, given so it is checked by reading, not measured |
+| the `n_hub = 6` control | `--rich` | the DFS figure is reported as **not found under cap** and then *disproved as a nonexistence claim* by 60 asserted certificate-induced witnesses on the same shape |
+| (GR-10), (GR-15), `dim Z` | — | **not attempted**; no mode computes a rank |
+
+**Caps and denominators (F11).** `--support`'s census leg is exhaustive over
+the 907-shape census pool (303 of which have `Λ = ∅`); its `D = 0` leg is
+exhaustive at `n_hub ∈ {4, 6}` and says **nothing** about `n_hub ≥ 8`.
+`--local` is exhaustive over the abstract configuration space at hub degree 3
+and 4. `--csp` is exhaustive over all 6-tree partitions and all 20 splits at
+the 12 `--resid` shapes. `--rich` legs (i)/(ii) are exhaustive over the
+`n_hub = 4` `D = 0` stratum; leg (iii) is a **seeded capped search** whose
+`0 feasible` is reported as *not found under cap* and shown blind in the same
+step. The `n_hub = 6` pure-hub stratum (2 623 shapes) is **undecided** for
+this question, and that is successor 2.
+
+**Scratch probes (README's standing rule).** The derivation ran through two
+throwaway probes — the first `--support` run whose assertion failure produced
+(GR-137)(i), and a direct (GR-10) check at the `K_{3,3}` control. **Both
+figures are reproduced by shipped `glist.py` modes above** (`--support` prints
+the population table; `--rich` leg (iii) prints the 60 certificates), so
+neither probe is retained.
 
 ---
 

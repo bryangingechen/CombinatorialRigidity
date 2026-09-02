@@ -65,6 +65,7 @@ cap was ever bumped and nothing was deleted**; the note keeps a pointer to each.
 | 8 | *The (BE-14) thread — per-landing detail* | 2026-09-01 (addenda 09-02) | which direction proved which sub-clause of the three sides, with its labels; the **settled frame**, the thread's last five landings and its four 2026-09-02 landings (BBASE/BUNIF/BDOUBLE/BSATUR) joined it 09-02 |
 | 9 | *The W4 deviation — per-landing detail* | 2026-09-02 | which of WTRI/WELOC/WPAIR/WGROW proved which sub-clause of route 3's cost list, with its labels; relocated once W4's informal argument closed |
 | 10 | *The (BE-14) lane's standing candidate list* | 2026-09-02 | the lane's ranked-but-unmoved candidates — one-end-series, (S1)/(S2), the bundle construction and the *also ranked* tail; relocated when the note hit 587/580 |
+| 11 | *The `hK` lane — per-landing detail* | 2026-09-02 | which of GPACK/GLIST proved which sub-clause of (GR-18)(iii)'s split, with its labels, plus (GR-133)'s price; relocated at the GLIST landing, the lane's second result in two directions |
 
 The one line that stays in `notes/Phase39.md` rather than moving here: the **State of
 (K)** gap map in `notes/Pencil-informal.md` is the phase's status object, authoritative
@@ -948,3 +949,57 @@ gauge group was never the right place to look*.
 live surface. Every label resolves in `notes/Pencil-informal.md` §(K-bare-ext); the direction
 codes resolve in `notes/Pencil-fanout.md`. If it disagrees with the `(K-bare)` gap-map row,
 the row wins.
+
+## The `hK` lane — per-landing detail (RELOCATED from `notes/Phase39.md` 2026-09-02, the GLIST landing)
+
+**Why it moved.** `notes/Phase39.md`'s *Hand-off* carried a per-landing prose account of the
+`hK` lane's two 2026-09-02 results inside its ranked item 3, and GLIST's landing would have
+made it a third paragraph. The lane's *status* is one sentence; **which direction proved
+which sub-clause is attribution**, and attribution is reference. Same disposition blocks 8
+and 9 got, for the same reason and by the same rule (`notes/Phase39.md` *Blockers*, the
+doc-debt bullet: *"ask what here is reference rather than status"*). The mathematics is
+**not** here — it is §(K-grid) *Steps G149–G158* (`notes/Pencil-informal-grid.md`) and the
+`(K-grid)` gap-map row, which stay authoritative; the specs and landing write-ups are
+`notes/Pencil-fanout.md` §"GPACK" / §"GLIST".
+
+**GPACK (66, 2026-09-02) — (GR-18)(iii) splits, and the split half is a THEOREM.** The split
+condition is an **equitable bisection** of each `C_β`; a (packing, split) pair is exactly a
+**signing** of the odd-length branches bounded by the **5/6-sparsity slack**
+`σ(F) = Σ_F ℓ − 6·c(F)` ((GR-129)); and **a legal signing always exists**, unconditionally,
+off `def(G) = 0` alone ((GR-130)) — Nash-Williams arboricity + Tutte/Nash-Williams packing +
+Edmonds' covering, applied a second time to the *halved* multiplicities. So **neither the
+packing nor the split is ever the obstruction**, *Step G21*'s named successor object is
+retired, and the **exchange freedom is load-bearing**: 6 840 of 266 700 exhaustively
+enumerated 6-tree partitions admit no split, **every one** by an odd cycle in the split
+graph, so `gridcol --pack`'s 907/907 was evidence for (GR-18)(i) alone ((GR-131)). What is
+left is **exactly** the class-consistency clause — at `Λ = ∅` a hub list-colouring with lists
+`J ∖ C_β` of size `A(β)`, tight only at length-2 branches, where (GR-17)(d) independently
+says the circuit law binds ((GR-132)).
+
+**GLIST (68, 2026-09-02) — that residual is in NORMAL FORM, its local half EXACT, its
+obstruction GLOBAL.** The end pattern is **eliminable**: the clause is a CSP in two hub
+functions `α : hubs → J`, `γ : hubs → J^c` alone, and **clause (a) is FREE** — implied by
+(b), because each of the six parts is a **spanning** tree ((GR-134)). At a *pure* hub (every
+branch of length 2) the local system is feasible iff the incident absence-pairs lie in one
+cross of `J × J^c`; **at hub degree 3 that is `J`-free and reads *`u` is a LEAF of at least
+one of the six trees***, equivalently the three `D_β` are not a **perfect matching of
+`{1..6}`** ((GR-135)) — a **second** obstruction mechanism, independent of (GR-131)'s odd
+cycle. By the excess law (GR-21) there is **no all-length-2 shape**, and at `D = 0` at least
+`n − 12` hubs are pure, so the local half is a **leaf-covering** demand on the packing
+((GR-136)); **but 82 % of the infeasible pairs are locally feasible at every hub**, so the
+residual is genuinely global. The forced support audit ((GR-137)) **refuted the coordinator's
+expectation** — the population *does* present the conflict (6 of the 12 shapes carry a pure
+hub) — and restored the missing denominator: `229 320` of **472 680** legal pairs, not
+`229 320/229 320`. Exhaustively at `n_hub = 4` on the `D = 0` stratum some legal pair is
+feasible at **every** shape.
+
+**The price, sourced ((GR-133)) and unchanged by GLIST.** A (GR-15) HIT buys `hK` on the
+**tight stratum** only; the `def > 0` habitat (`C11`) is **owned** — `§(K-res)` (RS-5)/(RS-6)
+route it to the **escape route** — but **not free**, and `Pencil-strategy.md` §2.5's
+`dim R_a ≥ 2` reading **inverts its source** (§2.5 is a *negative* result: at tight shapes
+the count *forces* `dim R_a = 1`). **Do not quote §2.5 as supplying freeness anywhere.**
+
+**Reading it later.** Same caution as blocks 8 and 9: a snapshot dated 2026-09-02, **not** a
+live surface. If it disagrees with the `(K-grid)` gap-map row or with §(K-grid) itself, they
+win. The **status** that stays in `notes/Phase39.md` is one sentence — (GR-10)/(GR-15)
+unchanged, the residual now a global hub CSP with three named successors ((GR-138)).

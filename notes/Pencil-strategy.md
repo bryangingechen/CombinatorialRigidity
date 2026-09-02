@@ -1346,7 +1346,7 @@ own top two were spent. **The two filters were applied to every entry.**
 
 | # | item | owner | status, re-derived |
 |---|---|---|---|
-| ~~**1**~~ | ~~**(GR-18)(iii)**, the grouping problem~~ | §(K-grid) *Steps G149–G153* | **SPLIT IN TWO 2026-09-02 (direction GPACK)**: the packing-and-split half is an **unconditional theorem** ((GR-130)) off `def(G) = 0` alone — neither the packing nor the split is ever the obstruction — and the residual is a **hub list-colouring** ((GR-132)), sound and complete at `Λ = ∅`. **New rank 1 is that colouring at the `ℓ = 2`-rich shapes**; `Λ ≠ ∅` needs a merging conjunct nobody has written |
+| ~~**1**~~ | ~~**(GR-18)(iii)**, the grouping problem~~ | §(K-grid) *Steps G149–G158* | **SPLIT IN TWO 2026-09-02 (GPACK)**: the packing-and-split half is an **unconditional theorem** ((GR-130)) off `def(G) = 0` alone, and the residual is a **hub list-colouring** ((GR-132)) at `Λ = ∅`. **SPENT at the `ℓ = 2`-rich shapes 2026-09-02 (GLIST)**: that residual is now a 9-valued hub CSP in `(α, γ)` with clause (a) **free** ((GR-134)) and an exact local criterion — a cubic pure hub fails **iff** its three `D_β` are a perfect matching of the six trees ((GR-135)) — but **82 % of the infeasible pairs are locally feasible at every hub** ((GR-136)), so the open half is **global**. The three successors are (GR-138)'s; `Λ ≠ ∅` still needs a merging conjunct nobody has written |
 | 2 | collapse-order bound `κ ≤ 4/5` + the `r = 4` certifying criterion | §(K-grid) *Step G22* ((GR-19)); TCOL (i)/(ii) | measured `κ ≤ 4` at **18/18** separators, unproven, untouched since 2026-08-07 |
 | 3 | **(OC-44)(iii)** wall-avoiding certificate-colouring existence | §(K-out) *Step O41* | open, 174/174 within caps; a HIT buys a **quantifier**, not a gap-map row |
 | 4 | the (a′)/(b′) ledger residuals | §(K-grid) G98–G148 | entry **1 of 4**; entries 2–4 recorded *unchanged/unswept* at every landing since 2026-08-13 — **see the do-not-do note below** |
@@ -1377,15 +1377,20 @@ record is 907/907, 40 742 exhaustive, 549 172 blocks, 1 158 344 instances, 323 a
 constructions — and (GR-15)'s status word has never moved. §2.2 already wrote the reason:
 *"A search does not carry a reason."*
 
-**TWO INTERNAL CONTRADICTIONS FLAGGED, NOT RESOLVED HERE** (each needs a whole-file check
-the coordinator has not done, and one of them lives in the authoritative status object):
-**(a)** §8.2 lists **U2** *"live, rank 2"* and **U3** *"live, rank 3"*, while §8.6 says U2
-was *"delivered by (GR-16)'s reduction"* and U3 *"already exploited for the tight stratum
-only"*. **(b)** the `(K-grid)` **close-it** cell lists as live route (i) *"a
-colouring-existence argument over Step G12's branch bits … + (GR-4′)"* — which is
-**certificate 3** — while the **same cell** files *"the whole certificate-3-uniformity
-route"* under do-not-re-run, GUNIF having settled it at *Step G36* (*"DEAD AS
-SPECIFIED"*). Whichever direction next touches either surface owns the reconciliation.
+**TWO INTERNAL CONTRADICTIONS FLAGGED — (b) is now RESOLVED, (a) still open** (each needs a
+whole-file check the coordinator has not done, and one of them lives in the authoritative
+status object): **(a) STILL OPEN** — §8.2 lists **U2** *"live, rank 2"* and **U3** *"live,
+rank 3"*, while §8.6 says U2 was *"delivered by (GR-16)'s reduction"* and U3 *"already
+exploited for the tight stratum only"*. **(b) RESOLVED 2026-09-02 (direction GLIST, which
+owned the surface it touched)** — the `(K-grid)` **close-it** cell listed as live route (i)
+*"a colouring-existence argument over Step G12's branch bits … + (GR-4′)"*, i.e.
+**certificate 3**, while the same cell filed *"the whole certificate-3-uniformity route"*
+under do-not-re-run. **Both readings survive: (i) is the STATEMENT and what *Step G37*
+killed is the METHOD** — *"cap + `Λ ≠ ∅` flip + `D > 0` lift + (GR-4′)"*, whose first
+ingredient, the `g ≤ 1` cap, is false from `n_hub = 8` ((GR-29)/(GR-30)). Calling a
+statement a route is what made the cell read as self-contradictory; the cell now says
+**targets**, and the dead entry is qualified as the *cap + repair* method. Recorded at
+§(K-grid) *Step G158*; no mathematics and no status word moved.
 
 **WHAT A (GR-15) HIT BUYS — ASKED 2026-09-02, ANSWERED THE SAME DAY (direction GPACK,
 job 2), AND THE COORDINATOR'S OWN FRAMING OF THE QUESTION WAS WRONG.** A (GR-15) HIT

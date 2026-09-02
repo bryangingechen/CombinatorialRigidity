@@ -1057,6 +1057,11 @@ are a recorded *Harness debt* item (see below).
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/gpack.py --arb` | 40 s | ibid. *Step G151* ((GR-131): **266 700** 6-tree partitions of `Ĝ` enumerated EXHAUSTIVELY at the first 40 census shapes with `M ≤ 6` — a named subpool, not the census — of which **6 840** admit no legal 3+3 split, **all 6 840** by a non-bipartite split graph; the `K4(1,2,3,4,4,4)` witness printed with its triangle of separation pairs) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/gpack.py --resid` | 234 s | ibid. *Step G152* ((GR-132): both directions of the hub list-colouring at the first 12 census shapes with `M ≤ 6` and `Λ = ∅` — **229 320/229 320** accepted (packing, split) pairs rebuilt into a colouring and asserted through `gridcol.filter_pass` AND `packmm.fast_triple` in both blocks, and **124/124** certificate-induced pairs asserted split-legal and CSP-feasible, 0 misses) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/gpack.py --validate` | 336-402 s | ibid. all three in one process — the landing gate; fits the 600 s foreground budget. **Byte-identical across two `PYTHONHASHSEED=0` runs (394 s, 336 s) and one at 999 (402 s)** — no wall-clock cell is printed, so nothing has to be stripped; the range is machine load, not the driver. The census-wide leg `--split` is **16 s against `gridcol.py --pack`'s 98 s** over the same 907 shapes, because (GR-130) **constructs** the packing instead of searching an exchange neighbourhood around one; the 234 s sits in `--resid`, which enumerates every packing of a 12-shape subpool twice over |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/glist.py --support` | 4 s | `notes/Pencil-informal-grid.md` §(K-grid) *Step G157* (direction GLIST; (GR-137): the `RESEARCH-ARC.md` §4 support audit of (GR-132)'s evidence — `gpack --resid`'s population rebuilt exactly, with the length-2 subgraph `H`, `t(u) = deg_H(u)` and the PURE hubs per shape (6 of the 12 carry one, so the population **does** present the conflict); the same measurement over the 303 census `Λ = ∅` shapes and, exhaustively, over the `D = 0` stratum at `n_hub ∈ {4, 6}` — 312 and 4 598 class shapes, 28 and 2 623 with a pure hub) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/glist.py --local` | 2 s | ibid. *Step G155* ((GR-135): the local criterion checked against brute force EXHAUSTIVELY over the abstract configuration space — 729 configurations at hub degree 3 and 6 561 at degree 4, 0 disagreements — with the degree-3 infeasible set asserted to be exactly the 36 labelled perfect matchings of the six trees, the tree-degree / leaf equivalences asserted at all 576 spanning-realizable configurations, and the **constructed** transversal the criterion must REJECT plus its three one-cell negative controls (F13)) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/glist.py --csp` | 105 s | ibid. *Steps G154/G156* ((GR-134): the `(α, γ)` orientation normal form compared with `gpack.csp_witness` at **472 680/472 680** legal (packing, split) pairs, 0 disagreements, clause (a) ASSERTED rather than imposed at all 229 320 feasible ones; and the missing denominator — 243 360 pairs REJECTED, of which 44 640 fail (GR-135) at some hub and **198 720 are locally feasible at every hub**) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/glist.py --rich` | 320 s | ibid. *Step G156* ((GR-136)(iv): every `n_hub = 4` class shape of the `D = 0` stratum — every cubic hub multigraph up to isomorphism × every excess profile × every 6-tree partition × every split — asserted to carry SOME CSP-feasible legal pair, with the conflict realized at 80 640 of 1 013 760 pairs on the 28 pure-hub shapes; plus the constructed `K_{3,3}` `n_hub = 6` control, where a seeded capped DFS finds **0 feasible pairs — reported as *not found under cap* and disproved as a nonexistence claim in the same step** by 60 asserted certificate-induced witnesses) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/glist.py --validate` | 530 s | ibid. all four in one process — the landing gate; fits the 600 s foreground budget. No `set` is printed and the one rng is seeded from a literal (`20260902`) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/ogeom.py --bound --dom --core --cert` | 288 s | `notes/Pencil-informal.md` §(K-out) *Steps O42–O45* (direction OGEOM; (OC-45) the `ℓ ≤ 5` + bridgeless class-shape check that turns `sigz.k4_stratum`'s `{1..5}^6` from a cap into a theorem (re-enumerated at `{1..12}^6`, 877 = 877); (OC-46) restriction-dominance, 1482 + 222 extensions, 0 failures; (OC-47) the live-core reduction; (OC-49) the census — 271 974/271 974 pairs settled, and (OC-39)'s 3 324 + 44 = 3 368 pairs shown to lie in exhausted cells) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/ogeom.py --hunt` | 357 s | ibid. *Step O45* ((OC-48): the exhaustive iso-reduced live-core hunt at `n(F°) ∈ {2,3}` (all `\|E°\|`) and `n(F°) = 4` (`\|E°\| ≤ 8`) — 21 086 classes here, all free, **0 candidates**) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/ogeom.py --huntn 5 8 8 <PART> 3` | 318 s each | ibid. *Step O45*, the `n(F°) = 5`, `\|E°\| = 8` cell in three deterministic slices (70 174 classes, all free) — the parts together with the two rows above make the pass's **91 260** cores |
@@ -1109,6 +1114,8 @@ balance layer and the `adm_cube`/`f_layers` cube oracle directly from
 third consumer, recorded below). **It does not import `ghwit.py`** — the
 five witness diagrams are re-entered locally, so the two drivers are
 independent carriers.
+
+**GLIST (single direction, LANDED 2026-09-02) — a §2 rule 2 SECOND-CONSUMER arrival, UNPAID and deliberately so.** One driver added (`w4/glist.py`), nothing existing modified; it imports downward (`gridcol`, `cflank`, `closure`, `grid`, `packmm`, `kbare_common`) **and sideways from `w4/gpack.py`** — `all_packings`, `csets`, `legal_splits`, `csp_witness` and `shape_rows`, the five devices GPACK's own entry below calls *direction-local and deliberately not catalogued (one consumer each)*. They now have two consumers, which is exactly §2 rule 2's move-down trigger. **It is recorded here and NOT paid**, for one stated reason: `csp_witness` and `all_packings` *are* the objects GLIST cross-oracles against, so the value of importing them is that they are the **shipped GPACK code**, byte for byte; moving them to a shared layer would re-baseline `gpack.py`'s whole import closure (README's *figures do not move*) to serve a single new consumer. Pay it when a **third** consumer arrives, moving all five to `gridcol` (the layer they all sit above) with re-exports from `gpack` so no recorded figure moves. GLIST's own new primitives — `csp_orient`, `local_ok_brute` / `local_ok_criterion`, `tree_deg`, `pure_hubs`, `split_data`, `some_packings`, `first_feasible`, `d0_shapes` — are direction-local, one consumer each, and are deliberately not catalogued.
 
 **GPACK (single direction, LANDED 2026-09-02).** One driver added (`w4/gpack.py`), nothing existing modified; imports downward only — `gridcol` (`pool_shapes` / `branch_decomp` / `branch_classes` / `filter_pass` / `nash_williams_ok`), `grid` (`block_data`), `packmm` (`fast_triple`), `closure` (`colourings` / `cycle_rank`), `saferes` (`union_rank`) and `kbare_common` (`verts_of`), all §1-catalogued or catalogued here, and the rest of the chain through them. It is the **first `w4/` consumer of `saferes.union_rank`**, which it uses as an oracle *independent of* the `σ` criterion the direction derives — the whole point of the `--split` cross-check. Its one new primitive is `sigma_table` (§1, *Habitat combinatorics*); `all_packings`, `legal_splits` and `csp_witness` are direction-local and deliberately not catalogued (one consumer each).
 
@@ -1447,14 +1454,15 @@ figure-invariant): `rref`, `rank`/`rank_exact`, `nullspace`, `left_nullspace`,
 `neighbors` (`kbare_common`, `n9`); `K4`/`K5_minus_matching` (three copies:
 `localtest`, `probe_zero`, `run_habitats`).
 
-## Harness debt — four rounds PAID (S1–S4 2026-08-06; the move-down round 2026-08-20; the GFLIP balance-layer move-down 2026-08-25; the GCHEAP/GPRICE balance-layer extension 2026-08-25), **five items outstanding**
+## Harness debt — four rounds PAID (S1–S4 2026-08-06; the move-down round 2026-08-20; the GFLIP balance-layer move-down 2026-08-25; the GCHEAP/GPRICE balance-layer extension 2026-08-25), **six items outstanding**
 
-**Five items are outstanding: `zneq.ledger`** (deliberately deferred to a
+**Six items are outstanding: `zneq.ledger`** (deliberately deferred to a
 round that can re-run `oschu --gtarget` / `--census1` / `--census2`), **the
 `kbare/` sibling-import set** that probe KBARE-FALSIFY created,
 **OQRANK's two arrivals** (`out_classes`/`shape_key`/`tree_triple`), and
-**the GBLAW + GXESC reversal-model sibling imports**, and **WTRI's duplicate of
-`saferes.prime()`'s pool** (last two subsections) —
+**the GBLAW + GXESC reversal-model sibling imports**, **WTRI's duplicate of
+`saferes.prime()`'s pool**, and **GLIST's five-device sibling import of `gpack.py`**
+(the last three subsections) —
 **UNPAID** by the same rule that forbids a dispatch from moving a landed
 name. Everything else is paid: the first round's four items are in the
 *ALL FOUR CLEARED* block immediately below (kept in the past tense as the record
@@ -2489,6 +2497,30 @@ beside the (GR-49)/(GR-50) surface in `gridbal_common` (or §1 cataloguing
 in place for the pinned witnesses). Same acceptance test as the 2026-08-25
 payments: re-run every consumer's validate mode byte-identical at
 `PYTHONHASHSEED=0` against pre-move baselines.
+
+### New item (2026-09-02, direction GLIST) — `glist.py`'s five-device sibling import of `gpack.py`; **UNPAID, and deliberately so**
+
+`w4/glist.py` imports `all_packings`, `csets`, `legal_splits`, `csp_witness` and
+`shape_rows` from `w4/gpack.py`. GPACK's own §2 entry calls all five *"direction-local and
+deliberately not catalogued (one consumer each)"*; they now have two consumers, which is
+§2 rule 2's move-down trigger, so the item is recorded.
+
+**Why it is not paid here, stated so the next round does not re-litigate it.** Two of the
+five — `csp_witness` and `all_packings` — are not merely reused, they are the **oracles**
+GLIST cross-checks its own (GR-134) normal form against, at 472 680 instances. The value of
+the import is precisely that they are the *shipped GPACK code*, byte for byte; a move-down
+would put a copy in a shared layer and re-baseline `gpack.py`'s whole import closure
+(*figures do not move*) to serve one new consumer. **Pay it at the third consumer**, moving
+all five down to `gridcol` — the layer all of them already sit above — with re-exports from
+`gpack` so no recorded figure moves, exactly as the 2026-08-20 round did for its five.
+
+**Not a divergence candidate.** Nothing is re-implemented: GLIST calls the originals. Its
+own devices (`csp_orient`, `local_ok_brute`/`local_ok_criterion`, `tree_deg`, `pure_hubs`,
+`split_data`, `some_packings`, `first_feasible`, `d0_shapes`) are new, one consumer each,
+and stay direction-local. Two of them carry an explicit *local device* docstring saying what
+they are deliberately **not**: `tree_deg` is not `gridcol.degmap`, and `some_packings` /
+`first_feasible` are not `gpack.all_packings` (which is exhaustive by design and is the
+(GR-131) enumerator).
 
 ## Deliberate non-goals
 

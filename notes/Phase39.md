@@ -8,23 +8,21 @@ derives it from exactly **three carried items**: **`hcontract`** (W4 — build p
 **`hbareSplit`** (kernel (K-bare)). Everything else is closed — W0–W3 and all of W5
 (L0–L7), `hsplit` and `hfresh` included (2026-07-30, unchanged since).
 
-**The research arc: 75 directions COMPLETE** (2026-08-05 → 09-02, ordinals
-1–67 — 71 on kernel (K), and **WTRI (58) / WELOC (59) / WPAIR (60) / WGROW (61) on W4**),
-plus eight strategy-only passes, two architecture probes and one read-only scoping recon;
-**none in flight**. **GPACK (66) is the FIRST `hK`-side direction in 22**, and **BSIGMA (67)
-ran DRAFT-ONLY beside it** — the arc's first concurrent pair outside a prepared fan-out.
-Per-direction verdicts, specs and write-ups live at `notes/Pencil-fanout.md` §"<CODE>"
-(ordinals 1–19: the archive) plus a workbook home — **not restated here**.
-**The arc's standing result, unchanged by all 74: `hK` is not closer.** **(GR-15)** — the
-single open gap the whole §(K-grid) chain reduces to — is **untouched**; **class uniformity
-of the escape is untouched**; no g-flank was found by any direction; **E3 is ARMED (by
-GBAL), has NEVER fired, and is NOT one landing away** — `61e046a6` corrected that reading:
-"the target" in E1–E3 is the **arc's**, so emptying W4's list does not fire it, and WGROW
-emptying it is the worked case.
+**The research arc: 76 directions COMPLETE** (2026-08-05 → 09-02, ordinals 1–68 — 72 on
+kernel (K), **WTRI/WELOC/WPAIR/WGROW (58–61) on W4**), plus eight strategy-only passes, two
+architecture probes and one read-only scoping recon; **none in flight**. **GPACK (66) was
+the FIRST `hK`-side direction in 22 and GLIST (68) is its successor**, the committing half
+of a second concurrent pair. Per-direction verdicts, specs and write-ups live at
+`notes/Pencil-fanout.md` §"<CODE>" (1–19: the archive) plus a workbook home — **not
+restated here**. **The arc's standing result, unchanged by all 76: `hK` is not closer.**
+**(GR-15)** — the single open gap the §(K-grid) chain reduces to — is **untouched**; **class
+uniformity of the escape is untouched**; no g-flank was found; **E3 is ARMED (by GBAL), has
+NEVER fired, and is NOT one landing away** — `61e046a6`: "the target" in E1–E3 is the
+**arc's**, so emptying W4's list does not fire it (WGROW is the worked case).
 
-**`hK` LANE (GPACK 66): (GR-18)(iii) SPLITS and one half is a THEOREM** — the split is
-free, the residual is exactly the class-consistency clause; **(GR-10)/(GR-15) unchanged**.
-Detail: *Blockers* item 3.
+**`hK` LANE (GPACK 66, GLIST 68): (GR-18)(iii)'s split half is a THEOREM and its residual
+is a GLOBAL hub CSP** — clause (a) free, the local criterion exact, 82 % of failures
+hub-locally invisible; **(GR-10)/(GR-15) unchanged**. Detail: **block 11**.
 
 **W4's INFORMAL SIDE IS CLOSED** (58–61): **(T)/(E-pair)/(V) are THEOREMS**, **(E) open,
 TIGHT, off every W4 path**, list **EMPTY** — leaving the USER call **(K-res)** and the held
@@ -33,20 +31,20 @@ build. Detail: **block 9**.
 **WHERE THE (BE-14) THREAD STANDS** — S-mark, the 2-cut composition lemma, is its **only
 open step**; the three sides and every per-landing detail are **REFERENCE**, at
 `notes/Pencil-structure.md` §"The (BE-14) thread — per-landing detail" (**block 8**).
-Status only: (β) proved at the window **MODULO (BE-57)(iv)'s two window conditions**
-((S1)/(S2)); cross-cut-only forcing **empty** (392 genuine, `0` shortfall); the flag base
-**DISCHARGED**; BUNIF made the residue **per-side** (14 block inequalities); **BDOUBLE made
-both 2-dimensional blocks REDUNDANT** under **(PENCIL-SATURATES)**, which **BSATUR REFUTED
-at `ρ_i = 5` and REPAIRED** to the generic-flag **(PENCIL-SATURATES-GEN)**, free because
-(BE-14) is existential — **14 → 12** generically ((BE-107)). The 12 are **unwitnessed, NOT
-excluded** ((BE-97)(iv)) except `⟨M⟩`, empty at 72 rows; cross-pair welding **untouched**.
+Status only: (β) proved at the window **MODULO (BE-57)(iv)'s (S1)/(S2)**; cross-cut-only
+forcing **empty**; the flag base **DISCHARGED**; the residue is **per-side** (14 block
+inequalities), and **BDOUBLE made both 2-dimensional blocks REDUNDANT** under
+**(PENCIL-SATURATES)** — **REFUTED at BSATUR**, its `-GEN` repair **REFUTED again at
+BSIGMA**, leaving **-CHART**; **14 → 12** generically ((BE-107)). The 12 are **unwitnessed,
+NOT excluded** ((BE-97)(iv)) except `⟨M⟩`, empty at 72 rows; cross-pair welding
+**untouched**.
 
 **On a future HIT: the phase-boundary consequences are the USER's call** — whether Phase 39
 closes and a successor opens for the Lean is a `PHASE-BOUNDARIES.md` event against the
 standing 2026-07-24 no-split adjudication, surfaced with a commit-count estimate, never
 taken unilaterally; the 2026-08-05 Lean hold binds regardless.
 
-**TEN reference blocks sit in `notes/Pencil-structure.md`**, which indexes them —
+**ELEVEN reference blocks sit in `notes/Pencil-structure.md`**, which indexes them —
 **read them once per session**. The line that stays here: the **State of (K)** gap map
 (`notes/Pencil-informal.md`) is this phase's status object, **authoritative for every
 status word**; read it with `python3 notes/gapmap.py`, never `sed`/`grep`.
@@ -176,7 +174,7 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
 
 - **Doc debt — the gate is MECHANICAL** (`notes/check-phase-note.py`: **580 lines / 525
   status-header words**, plus a fail if *Decisions made* outgrows the forward sections),
-  and the standing remedy is **relocation or merger, never a fold** — **TEN** reference
+  and the standing remedy is **relocation or merger, never a fold** — **ELEVEN** reference
   blocks now sit verbatim in `notes/Pencil-structure.md`, indexed by its own table, with
   no cap ever bumped and nothing deleted. **The rule that keeps working:** ask *"what here
   is reference rather than status?"*. Four landings running have paid for themselves that
@@ -192,9 +190,9 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
 - The full biconditional transport (design doc's W0 pin) is landed only as its two forward
   implications; the reverse arms need a `complementIso` involution lemma, not in tree —
   deferred, **off every critical path** (§(K-σ) *Step σ6*).
-- **Harness debt — four rounds PAID, FOUR ITEMS OUTSTANDING.** Canonical home
+- **Harness debt — four rounds PAID, SIX ITEMS OUTSTANDING.** Canonical home
   `notes/scripts/README.md` *Harness debt* — **read it before any numerics dispatch**: its
-  own header enumerates all four outstanding items, the two deliberately-unfixed *Recorded
+  own header enumerates all six outstanding items, the two deliberately-unfixed *Recorded
   observations*, and the rule for a dispatch that trips §2 rule 2 again. **Not restated
   here** (thinned 2026-08-29; the home was checked first and carries every one).
 
@@ -221,14 +219,16 @@ is open and off every W4 path, and W4's non-user-call list is **EMPTY**.
 **block 8**. One clause is *status* and is not repeated below: **(CH-1) does not apply to
 the flag base** ((BE-89)), so anything citing it for the base cites the wrong object.
 
-**GPACK (66) LANDED 2026-09-02 — the `hK` lane's first result in 22 dispatches.**
-**(GR-18)(iii) splits, and the split half is a THEOREM** ((GR-129)–(GR-133), §(K-grid)
-*Steps G149–G153*; verdict in *Blockers* item 3, write-up at §"GPACK"). Neither the packing
-nor the split is ever the obstruction; the residual is the class-consistency clause, a hub
-list-colouring tight only at length-2 branches. **The `hK` lane's ranking is
+**GPACK (66) + GLIST (68) LANDED 2026-09-02 — the `hK` lane's first two results in 24
+dispatches; per-landing detail RELOCATED to block 11**, the disposition blocks 8 and 9 got.
+Status only: **(GR-18)(iii)'s packing-and-split half is a THEOREM** ((GR-130)) and its
+residual is now a **global** 9-valued hub CSP with clause (a) **free** and an exact local
+criterion ((GR-134)–(GR-136), §(K-grid) *Steps G149–G158*; write-ups §"GPACK"/§"GLIST").
+**82 % of the infeasible pairs are locally feasible at every hub**, so no per-hub repair
+closes it; three successors are named at (GR-138). **The `hK` lane's ranking is
 `notes/Pencil-strategy.md` §8's board, NOT this list** (re-ranked `70c06abe`/`5583a919`; it
-carries the standing **do-not-do** — no more (a′)/(b′) ledger directions), and GPACK
-supersedes its top entry.
+carries the standing **do-not-do** — no more (a′)/(b′) ledger directions), whose rank 1 both
+directions have now spent.
 
 **BSIGMA (67) LANDED 2026-09-02, DRAFT-ONLY beside GPACK — and the repair is repaired
 TWICE.** BSATUR's own named residual is **REALIZED** ((BE-109)–(BE-113), *Steps
@@ -241,9 +241,12 @@ point**, whose residual is a piece where the shape holds at a *generic* configur
 **The live-block count now reads THREE ways** — 14 pointwise in the flag, **14 pointwise in
 the configuration at a generic flag**, 12 at a generic chart point.
 
-**THE NEXT CONCRETE TASK is the (GR-132) list-colouring at the `ℓ = 2`-rich shapes** —
-finite, local, the first place a (GR-10) flank could live, and the `hK` lane's own named
-successor. The **(BE-14) lane's** alternative is ranked item 0 below, now
+**THE NEXT CONCRETE TASK is (GR-138)'s successor 1 — the GLOBAL `(α, γ)` CSP at `D = 0`**,
+the `hK` lane's own named successor now that its local half is exact: a proof must charge
+something global, and the two handles are the **constructive** certificate side and
+(GR-129)(iii)'s closed-form description of the exchange freedom. Successor 2 (`n_hub = 6`
+exhaustively, 2 623 undecided pure-hub shapes) needs a better enumerator than
+`gpack.all_packings`. The **(BE-14) lane's** alternative is ranked item 0 below, now
 **(PENCIL-SATURATES-CHART)**'s own residual. Two things stay the USER's call, both OFFERED
 2026-09-02 and both DECLINED IN FAVOUR OF CONTINUING RESEARCH: the **(K-res) wave** (a cheap
 scoping slice queued below) and whether W4's now-closed informal side changes anything about
@@ -346,25 +349,20 @@ its cost are `notes/dispatch-log.md`'s and `notes/Pencil-fanout.md`'s). **The ta
    identification recon" and `notes/Pencil-W4-informal.md`.
 3. **`hK`** (kernel (K), research) **via (GR-15)** — the escape `≢ 0` uniformity kernel,
    the phase's hardest open item and what the whole research arc attacks: **untouched by
-   all 74 directions**, but since GPACK (66) it has a **named next slice**.
-   **GPACK's result.** (GR-18)(iii) splits in two. The split condition is an equitable
-   bisection of each `C_β`; a (packing, split) pair is exactly a **signing** of the
-   odd-length branches bounded by the **5/6-sparsity slack** `σ(F) = Σ_F ℓ − 6·c(F)`
-   ((GR-129)); and **a legal signing always exists**, unconditionally, off `def(G) = 0`
-   alone ((GR-130)) — Nash-Williams arboricity + Tutte/Nash-Williams packing + Edmonds'
-   covering, applied a second time to the *halved* multiplicities. So **neither the packing
-   nor the split is ever the obstruction**, and the **exchange freedom is load-bearing**:
-   6 840 of 266 700 exhaustively enumerated 6-tree partitions admit no split, **every one**
-   by an odd cycle in the split graph, so `gridcol --pack`'s 907/907 was evidence for
-   (GR-18)(i) alone ((GR-131)). What is left is **exactly** the class-consistency clause —
-   at `Λ = ∅` a **hub list-colouring** with lists `J ∖ C_β` of size `A(β)`, asserted sound
-   and complete, tight only at **length-2 branches**, where (GR-17)(d) independently says
-   the circuit law binds ((GR-132)). **The named next slice is that list-colouring at the
-   `ℓ = 2`-rich shapes** — finite, local, and the first place a (GR-10) flank could live.
-   **Price, unchanged and now sourced ((GR-133)):** a (GR-15) HIT buys `hK` on the **tight
-   stratum** only; the `def > 0` habitat (`C11`) is **owned** — `(K-res)` (RS-5)/(RS-6)
-   route it to the **escape route** — but **not free**, and §2.5's `dim R_a ≥ 2` reading
-   inverts its source.
+   all 76 directions**, but GPACK (66) and GLIST (68) have reshaped its named next slice.
+   **THE LANE'S PER-LANDING DETAIL IS RELOCATED 2026-09-02** to
+   `notes/Pencil-structure.md` §"The `hK` lane — per-landing detail" (**block 11**), the
+   disposition blocks 8 and 9 got; it also carries (GR-133)'s **price** and the standing
+   *do not quote §2.5 as supplying freeness* warning. **Reference, not status.** The status:
+   **(GR-18)(iii)'s packing-and-split half is a THEOREM** ((GR-130)), and its residual — the
+   class-consistency clause — is now a **global 9-valued hub CSP** in `(α, γ)` with clause
+   (a) **free** ((GR-134)) and an exact local criterion, a cubic *pure* hub failing iff `u`
+   is a **leaf of none** of the six trees ((GR-135)); **82 % of the infeasible pairs are
+   locally feasible at every hub** ((GR-136)), so no per-hub repair can close it. Three
+   named successors ((GR-138)): the global CSP at `D = 0`; `n_hub = 6` exhaustively (2 623
+   pure-hub shapes, undecided — `n_hub = 4` is exhaustively fine); and leaf-covering as a
+   packing question, the one place the landed Phase-12/13/14 matroid-union machinery might
+   reach. **(GR-10)/(GR-15) unchanged in status.**
    Everything in §(K-grid)/§(K-out) is *support* for this, not progress on it. **Standing
    adjudication ("C: literature hunt + A", 2026-07-30): carry `hK` pinned; option B NOT
    authorized**; both literature hunts are MISSes, and since 2026-08-02 it also carries
@@ -422,6 +420,14 @@ section named; its *spec and landing write-up* in `notes/Pencil-fanout.md` §"<C
 `notes/Pencil-adjudications.md`; the derivation in git. **Do not grow these back into
 paragraphs.**
 
+- **GLIST** (68, 2026-09-02, opus, **committing half of a concurrent pair**) —
+  **(GR-132)'s RESIDUAL: NORMAL FORM, LOCAL HALF EXACT, OBSTRUCTION GLOBAL**
+  ((GR-134)–(GR-138), §(K-grid) *G154–G158*): the end pattern is eliminable, so it is a CSP
+  in `α, γ` alone with **(a) FREE** (the six parts are *spanning* trees); a *pure* cubic hub
+  fails **iff** its three `D_β` are a **perfect matching of the six trees**. **82 % of
+  infeasible pairs are hub-locally feasible**: REDUCED, not proved. Audit: the population
+  **does** carry the conflict and `229 320/229 320` had a self-selected denominator
+  (472 680 legal); board (b) RECONCILED. `w4/glist.py`.
 - **BSIGMA** (67, 2026-09-02, opus, **draft-only, parallel with GPACK**) — **BSATUR's OWN
   RESIDUAL IS REALIZED, so (PENCIL-SATURATES-GEN) is FALSE TOO** ((BE-109)–(BE-113), *Steps
   BE108–BE112*): `p_x` and its tail coplanar puts `Σ_x ⊆ ρ̄₁` at `ρ₁ = 5`, every flag bad —
@@ -429,39 +435,23 @@ paragraphs.**
   (corank identity; also upgrades (BE-105)(ii)'s measured half). Support audit: the flag was
   never a variable — the missing quantifier is the **configuration stratum**. Survivor
   **(PENCIL-SATURATES-CHART)**. `w4/bsigma.py`.
-- **GPACK** (66, 2026-09-02, opus, **the `hK` lane's first in 22**) — **(GR-18)(iii) SPLITS
-  and the split half is a THEOREM** ((GR-129)–(GR-133), §(K-grid) *Steps G149–G153*): the
-  grouping is an **equitable bisection**, a (packing, split) pair is a signing bounded by
-  the 5/6-sparsity slack, and a legal signing **always exists** off `def(G) = 0` alone
-  (Edmonds) — so neither packing nor split is ever the obstruction. The exchange freedom is
-  **load-bearing** (6 840 of 266 700 packings admit no split). Residual: a hub
-  list-colouring. `w4/gpack.py`.
-- **BSATUR** (65, 2026-09-02, opus) — **(PENCIL-SATURATES) IS FALSE, THE REPAIR IS FREE**
-  ((BE-104)–(BE-108), *Steps BE103–BE107*): at a side-degree-`1` terminal the legal planes
-  form a **pencil**, and a bad one exists **iff `dim(ρ̄_i ∩ Σ_x) ≥ 2`, i.e. iff `ρ_i ≥ 5`**
-  — `K4(5,3,3,3,3,3)` at its 5-branch has `c₁(Π_x) = 2` at `ρ₁ = 5`, R-node, generic
-  regime, both gates. **Every sampler draws that plane at random**, so the real assert could
-  never fire; the defect is a **quantifier**, not a converse slip. **SLACK** (260 rows, all
-  attain), `Π_x` tight at 76, **24** escapes. Repair **-GEN**, free because (BE-14) is
-  existential; `⟨M⟩` hunt **EMPTY at 72**; reading INAPPLICABLE. `w4/bsatur.py`, `gapdiff.py`.
-- **BDOUBLE** (64, 2026-09-02, opus) — **(NO-DOUBLE-PENCIL) IS REFUTED and the tight
-  block is REDUNDANT** ((BE-99)–(BE-103), *Steps BE98–BE102*): (BE-45)(ii)'s own **vacuous
-  corner** `d_min = 6` gives `ρ̄_i = Λ²K⁴`, hence `c_i(U) = dim U` everywhere, and glued to
-  (BE-45)(i)/(ii) that is the forbidden `(2,≥1)` — **one lemma, both clauses**, at 2 of
-  BUNIF's own 92 rows, and **SLACK not a shortfall** (margin `−1`, the peel attains). Under
-  **(PENCIL-SATURATES)** (itself REFUTED at BSATUR; read `-GEN`) a `Π_x` failure **is** a `Λ²K⁴`
-  failure (300/300, control 313), so **14 → 12** blocks. Reading (1) confirmed, (2) refuted
-  at its weak link; **job 2 fires on BOTH** target citations. `w4/bdouble.py`.
-- **BUNIF** (63, 2026-09-02, opus, **demoted at the BDOUBLE landing**) — **`reach` IS
-  PER-SIDE DATA, both directions PROVED** ((BE-94)–(BE-98), *Steps BE93–BE97*): the flag
-  pair's 5-dimensional stabilizer acts on **each side alone**, splitting `Λ²K⁴` into
-  `(2,1,1,2)` blocks with 16 stable subspaces, and cap-meets-degeneration makes
-  **(BE-67)(iii) ⟺ 14 per-side inequalities**; **(BE-71)(ii) ANSWERED** generically.
-  `w4/bunif.py`.
-- **BBASE** (62, 2026-09-02, opus, **demoted at the BSIGMA landing** per the thread's
-  oldest-demotes rule) — **THE FLAG BASE IS FREE and is NOT (CH-1)'s object**
-  ((BE-89)–(BE-93), *Steps BE88–BE92*): nonempty always, irreducible/ℚ-rational/dense-ℚ at
-  cyclomatic `≤ 1`, hypothesis-free on a forest; cyclomatic `≥ 2` open and low-ranked.
+- **GPACK** (66, 2026-09-02, opus, **one-lined at the GLIST landing, detail in block 11**)
+  — **(GR-18)(iii) SPLITS and the split half is a THEOREM** off `def(G) = 0` alone
+  ((GR-129)–(GR-133), §(K-grid) *G149–G153*); the exchange freedom is **load-bearing**.
+  `w4/gpack.py`.
+- **BSATUR** (65, 2026-09-02, opus, **one-lined at the GLIST landing, detail in block 8**)
+  — **(PENCIL-SATURATES) IS FALSE, THE REPAIR IS FREE** ((BE-104)–(BE-108), *BE103–BE107*):
+  a bad plane exists **iff `ρ_i ≥ 5`**, the defect a **quantifier** no sampler could see;
+  **SLACK**, repair **-GEN** (since itself refuted at BSIGMA). `w4/bsatur.py`.
+- **BDOUBLE** (64, 2026-09-02, opus, **one-lined at the GLIST landing**) —
+  **(NO-DOUBLE-PENCIL) IS REFUTED and the tight block is REDUNDANT** ((BE-99)–(BE-103),
+  *BE98–BE102*), so **14 → 12** blocks — under (PENCIL-SATURATES), itself REFUTED at BSATUR
+  and again at BSIGMA; read `-CHART`. `w4/bdouble.py`.
+- **BUNIF** (63, 2026-09-02, opus, **one-lined at the GLIST landing**) — **`reach` IS
+  PER-SIDE DATA, both directions PROVED**: (BE-67)(iii) ⟺ 14 per-side inequalities,
+  (BE-71)(ii) answered generically ((BE-94)–(BE-98), *BE93–BE97*). `w4/bunif.py`.
+- **BBASE** (62, 2026-09-02, opus, **one-lined at the GLIST landing**) — **THE FLAG BASE IS
+  FREE and is NOT (CH-1)'s object** ((BE-89)–(BE-93), *BE88–BE92*); cyclomatic `≥ 2` open.
 - **THE FOUR W4-SIDE LANDINGS (58–61), 2026-09-02 — entries RELOCATED to block 9**, which
   already owns that thread's per-landing detail, at the BSIGMA landing. The verdict, once:
   **(T), (E-pair) and (V) are THEOREMS**, **(E-loc) is REFUTED** (`T32`), **(E) stands and

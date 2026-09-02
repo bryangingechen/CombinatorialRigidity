@@ -1,7 +1,31 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
 **Status: EIGHT fan-outs, FORTY-EIGHT single directions, ONE draft-only parallel direction
-and TWO concurrent pairs dispatched; 75 LANDED, NONE IN FLIGHT.**
+and THREE concurrent pairs dispatched; 76 LANDED, NONE IN FLIGHT.**
+**GLIST (ordinal 68, §"GLIST") LANDED 2026-09-02** — the `hK` lane's own named successor,
+one direction after GPACK, at **(GR-132)'s hub list-colouring at the `ℓ = 2`-rich shapes**;
+the **committing** dispatch of a concurrent pair. **HIT shape 3 — REDUCED to a named
+strictly-smaller condition — with HIT shape 1 on two sub-statements.** The end pattern is
+**eliminable**: (GR-132)'s three clauses are a CSP in `α : hubs → J` and `γ : hubs → J^c`
+alone, and **clause (a) is FREE**, implied by (b) because each of the six parts of
+(GR-18)(i)'s partition is a **spanning** tree ((GR-134)). At a hub whose branches are all
+length 2 (*pure*) the local system is feasible iff the incident absence-pairs lie in one
+cross, and **at hub degree 3 that is `J`-free: `u` must be a LEAF of at least one of the six
+trees**, equivalently the three `D_β` must not be a **perfect matching of `{1..6}`**
+((GR-135)) — a second obstruction mechanism, independent of (GR-131)'s odd cycle, verified
+exhaustively over the abstract configuration space. By the excess law there is **no
+all-length-2 shape** and at `D = 0` at least `n − 12` hubs are pure, so the local half is a
+**leaf-covering** demand on the packing ((GR-136)) — **but 82 % of the infeasible pairs are
+locally feasible at every hub**, so the residual is genuinely global and this is *reduced*,
+not *proved*. **The forced support audit REFUTES the coordinator's own expectation**: the
+population **does** present the conflict (6 of the 12 shapes carry a pure hub), and what is
+defective is the **denominator** — `229 320/229 320` counts only accepted pairs, against
+**472 680** legal ones, 243 360 rejected ((GR-137)). Exhaustively at `n_hub = 4` on the
+`D = 0` stratum, some legal pair is feasible at **every** shape. **The flagged option-board
+contradiction is RECONCILED** (statement vs method), and **(GR-10)/(GR-15) are unchanged; E1
+does NOT fire** — the one object that looked like a flank is refuted in the same step by 60
+certificates, a *not-found-under-cap* reading of this direction's own DFS. Driver
+`notes/scripts/w4/glist.py` (four modes, 530 s). Run at `recon-opus`.
 **BSIGMA (ordinal 67, §"BSIGMA") LANDED 2026-09-02 — run DRAFT-ONLY in parallel with
 GPACK**, the arc's first concurrent pair outside a prepared fan-out, and a **HIT on the
 disproof lane**. BSATUR's own named residual `Σ_x ⊆ ρ̄_i` at `ρ_i = 5` is **REALIZED**, on
@@ -12776,3 +12800,201 @@ away: that attempt dropped the same label *and made the row longer*. The row fin
 **1 466 → 1 538 / 1 600** with **zero dropped**, by folding the (BE-104)/(BE-105) mechanism
 detail — now workbook material, superseded as headline by the proved floor — rather than by
 folding the history.
+
+---
+
+## GLIST — sixty-eighth ordinal (concurrent pair with a `(K-bare)` draft-only sibling, prepped 2026-09-02, **LANDED 2026-09-02**) — the `hK` lane's named successor, one direction after GPACK
+
+**Selection provenance.** `notes/Phase39.md`'s own **NEXT CONCRETE TASK** and **rank 1** of
+`notes/Pencil-strategy.md` §8's corrected `hK` ranking — the successor GPACK itself named at
+§(K-grid) *Step G152*. The **committing** dispatch of a concurrent pair, the sibling running
+draft-only on the (BE-14) thread; dispatched **`recon-opus`**.
+
+### The target, stated exactly
+
+From **§(K-grid) *Step G152* ((GR-132))**, read at source. At a tight class shape with
+`Λ = ∅`, fix a legal (packing, split) pair `(C, J)`. Is there always **some** such pair,
+end pattern and hub labelling `g_A : hubs → J`, `g_B : hubs → J^c` satisfying (GR-132)'s
+(a)/(b)/(c)? Concentrate where (GR-132)'s hand-off sends a successor: (GR-17)(d)'s binding
+profiles **(2,2,3)** and **(2,2,2,2)**, and the adversarial places
+`notes/Pencil-fanout-archive.md` §TCOL item (v) names.
+
+**What the prep supplied as verified, and it is all load-bearing.** (GR-130) is
+unconditional, so the packing-and-split half is closed and the criterion `|s(F)| ≤ σ(F)`
+describes **all** legal splits — the hunt ranges over a *described set*. (GR-131) makes the
+exchange freedom load-bearing (6 840 of 266 700 packings admit no split, every one by an odd
+cycle). (GR-132) is proven at `Λ = ∅` only, machine-asserted at 12 census shapes. (GR-133)
+is the price: a (GR-15) HIT buys `hK` on the **tight** stratum only, the `def > 0` habitat
+being **owned** by `§(K-res)` (RS-5)/(RS-6) but not free — and **`Pencil-strategy.md` §2.5
+must not be quoted as supplying freeness anywhere**, being a *negative* result.
+
+### The coordinator's reading, offered as a HYPOTHESIS (`RESEARCH-ARC.md` §7)
+
+Named honestly in the spec as *the coordinator's own reading of (GR-132)'s statement text,
+no measurement*: **the `ℓ = 2`-only sub-case may be an ORIENTATION problem rather than a
+colouring problem** — at an even branch exactly one end is A, at `ℓ_β = 2` both lists are
+singletons, so the bit is which endpoint takes the forced A-label; (b) is then automatic and
+(c) vacuous, leaving a constrained orientation on `G°`'s hubs. Three places the spec
+expected to be wrong: (1) the forced label depends on `β`, so agreement at a hub is a real
+constraint; (2) **(2,2,3)** carries an odd branch and reintroduces (c)'s `≠`; (3) (a) may
+not be satisfiable alongside an all-`ℓ = 2` orientation at a degree-2 hub.
+
+### Forced jobs (reproduced from the spec)
+
+1. **The deliverable is an ARGUMENT, the search demoted to an adversarial control** — say
+   plainly whether the `ℓ = 2`-rich case is a **theorem**, **refuted by an exhibited
+   conflict**, or **reduced to a named strictly-smaller condition**.
+2. **The sampler-support audit is FORCED** (`RESEARCH-ARC.md` §4's 2026-09-02 sharpening),
+   because (GR-132)'s evidence has exactly the shape that has just failed twice: name the
+   population's support and say which of (GR-132)'s own variables it varies — (i) is any of
+   the 12 shapes `ℓ = 2`-rich at all? (ii) do `--resid`'s 124 certificate-induced pairs
+   range over the **packing exchange freedom**?
+3. **Reconcile the internal contradiction the option board flags and does not resolve** —
+   the `(K-grid)` close-it cell lists route (i) as live *and* files the certificate-3
+   uniformity route under do-not-re-run.
+4. **Cap disclosure is mandatory**, travelling with the figure everywhere it is quoted.
+5. **Restate the `Λ ≠ ∅` caveat** so nothing is over-read; it is not this direction's to
+   close.
+6. **TERMINATION riders E1/E2/E3 read at source**, E1 live in its **literal** reading
+   because a g-flank is a §(K-grid) object.
+
+**Bars.** No (a′)/(b′) ledger direction; no `notes/Pencil-informal.md` §(K-bare-ext) or
+`(BE-…)` label (the sibling is there); no re-derivation of the packing/split half; **(K-res)
+is a user call and the 2026-08-05 Lean hold binds — no `.lean`.**
+
+### Reservation
+
+(`notes/Pencil-labels.md` §"Reserved namespace — direction GLIST".) Labels
+**(GR-134)–(GR-138)**, ***Steps G154–G158***, owning file `notes/Pencil-informal-grid.md`
+§(K-grid) — **extends, no new section** — driver `w4/glist.py`. Opens at exactly the tail
+**GPACK declared**. `GLIST`/`glist` verified **0-hit** as raw substrings across
+`*.md`/`*.tex`/`*.lean`/`*.py`/`*.m2`; `(GR-135)`–`(GR-138)` and `Step G155`–`G158` 0-hit,
+and the two hits on `(GR-134)`/`Step G154` were both opened and confirmed to be **GPACK's
+tail declaration**, not consumed labels.
+
+### LANDING — GLIST, 2026-09-02, `recon-opus`
+
+**Verdict: HIT shape 3 — REDUCED to a named strictly-smaller condition — with HIT shape 1 on
+two named sub-statements, and the coordinator's reading SPLIT.** Landed as §(K-grid) *Steps
+G154–G158*, labels **(GR-134)–(GR-138)**, driver `notes/scripts/w4/glist.py` (four modes).
+
+**Job 1, the argument.** Two theorems and one measured negative.
+
+- **(GR-134), the orientation normal form.** The end pattern is **eliminable**: (GR-132)'s
+  (a)/(b)/(c) are equivalent to a CSP in two hub functions `α : hubs → J`, `γ : hubs → J^c`
+  alone, whose entire content is *every branch at `u` inside `T_{α(u)}` has its `u`-end B,
+  and every branch inside `T_{γ(u)}` has its `u`-end A*. And **clause (a) is FREE** — implied
+  by (b), because each of the six parts of (GR-18)(i)'s partition is a **spanning** tree, so
+  `deg_{T_{α(u)}}(u) ≥ 1` supplies the B-end and `deg_{T_{γ(u)}}(u) ≥ 1` the A-end. Cross-
+  oracled against `gpack.csp_witness` at **472 680/472 680** pairs, 0 disagreements; (a)
+  **asserted rather than imposed** at all 229 320 feasible ones.
+- **(GR-135), the local criterion.** At a hub whose branches are all length 2 (*pure*), the
+  local system is feasible iff the incident cells lie in one cross of the `3 × 3` grid
+  `J × J^c`; at **hub degree 3 this is `J`-free** and reads *`u` is a **leaf** of at least
+  one of the six trees* — equivalently not `deg_{T_j}(u) = 2` for all six `j`, equivalently
+  the three `D_β` are **pairwise disjoint, a perfect matching of `{1..6}`**. Verified against
+  brute force **exhaustively over the abstract configuration space** (729 at degree 3, 6 561
+  at degree 4) and at 1 887 120 realized instances. This is a **second obstruction
+  mechanism, independent of (GR-131)'s odd cycle**: that one kills the *split*, this one
+  kills the *colouring* at a pair whose split is legal.
+- **(GR-136), the reduction and its limit.** By the excess law (GR-21) there is **no
+  all-length-2 shape** (`Σ(ℓ−2) = 2D + 6 ≥ 6`), so the `ℓ = 2`-only case is about **hubs**,
+  never a shape; at `D = 0` at least `n − 12` hubs are pure, and the local half is a
+  **leaf-covering** demand on the 6-tree partition, not counting-obstructed. **But the local
+  conditions are not the residual:** of the 243 360 infeasible legal pairs, 44 640 fail
+  (GR-135) at some hub and **198 720 (82 %) are locally feasible at every hub**. So no
+  per-hub repair can close (GR-18)(iii) — which is exactly why this is *reduced*, not
+  *proved*. Exhaustively at `n_hub = 4` on the `D = 0` stratum (312 class shapes, 28 with a
+  pure hub, every partition, every split) **some legal pair is feasible at every shape**, the
+  conflict being realized (80 640 of 1 013 760 pairs) and always escapable.
+
+**Job 2, the support audit ((GR-137)) — and it REFUTES the coordinator's own audit
+expectation.** The spec asked whether the population ever presents the conflict. **It does:**
+`--resid`'s twelve shapes are three thetas plus nine `K4`s, `max_u t(u) = 3`, and **6 of the
+12 carry a pure hub** — the `K4(2,2,2,·,·,·)` shapes, whose length-2 branches form a **star**
+at one hub while the opposite triangle absorbs the whole excess. What *is* defective is the
+denominator: the `229 320/229 320` figure counts only the pairs the CSP **accepts** (the
+soundness loop `continue`s on rejection), and the same enumeration produces **472 680** legal
+pairs of which **243 360 are rejected** — a 48.5 % acceptance rate, 17 280 of the rejections
+carrying (GR-135)'s conflict outright. On sub-question (ii): the **soundness** leg *does*
+range over the full exchange freedom (`all_packings` × `legal_splits`, both exhaustive); the
+**completeness** leg does not (certificate-induced packings only, `J = (0,1,2)` pinned).
+Wider scale: 24 of the 303 census `Λ = ∅` shapes carry a pure hub, and **2 623 of the 4 598**
+`n_hub = 6` `D = 0` shapes do.
+
+**The audit fired once more, on this direction's own driver, and it nearly produced a false
+flank.** `--rich`'s `n_hub = 6` control is a constructed `K_{3,3}` class shape with one pure
+hub. A seeded randomized DFS collected 4 000 6-tree partitions there and found **21 336 legal
+pairs, all conflicted, 0 CSP-feasible** — which read as a nonexistence claim would have been a
+(GR-10) flank. It is not: the shape's 512 admissible colourings contain **60** that are
+filter-passing with a both-block tree-triple, and **all 60** induce a legal pair that is
+CSP-feasible with the pure hub a **leaf**. The DFS had collected one depth-first subtree,
+varying the low-index branches and holding the high-index ones nearly fixed. Reported in the
+driver as *not found under cap* and disproved as a nonexistence claim in the same breath.
+
+**Job 3, the reconciliation.** Both readings survive. Route (i) is the **statement**
+(certificate 3's uniform form); what *Step G37* killed is the **method** — *"cap + `Λ ≠ ∅`
+flip + `D > 0` lift + (GR-4′)"*, whose `g ≤ 1` cap is false from `n_hub = 8`. Calling a
+statement a route is what made the cell read as self-contradictory. The close-it cell now
+says **targets**, the dead entry is qualified as the *cap + repair* method, and
+`Pencil-strategy.md` §8's flag (b) is marked **RESOLVED** (flag (a), the U2/U3 one, stays
+open — a different surface, not this direction's). Recorded at *Step G158*.
+
+**Jobs 4/5/6.** Caps travel with every figure (the `n_hub = 4` legs are exhaustive; the
+`n_hub = 6` control is capped and says so; `n_hub ≥ 8` is unswept). The `Λ ≠ ∅` caveat is
+restated at *Step G158* and **not closed** — (GR-16)(iii)'s merging is the first thing that
+breaks (GR-134)'s class/list bijection. **TERMINATION, read at source in
+`notes/Pencil-fanout-archive.md`:** **E1 does NOT fire**, decided in its literal reading —
+`§(K-grid)` is E1's habitat, a g-flank is a `D = 0` shape whose *every admissible colouring*
+is binding, and the one object that looked like one is refuted in the same step by 60
+certificates. **E2 does NOT fire** (target not refuted; three successors named). **E3 does
+NOT fire** (the arc's target is not proven; (GR-10)/(GR-15) unchanged).
+
+**On the coordinator's reading: SPLIT** (`RESEARCH-ARC.md` §7's second kind). Its *shape* is
+**confirmed and is now a theorem** — the `ℓ = 2` case is an orientation problem, exactly as
+described. Two of its three self-declared error bars land: expectation (1) is **right** (the
+forced label does depend on `β`, and (GR-135) is precisely when that agreement is
+satisfiable); expectation (3) is **wrong in a useful direction** — (a) is not an extra
+burden, it is **free**, for the structural reason that the six parts are spanning trees. The
+reading's implicit hope, that the residual is a union of per-hub conditions, is **refuted at
+82 %** of the infeasible pairs. The audit expectation the spec attached to job 2 — that the
+population never presents the conflict — is **refuted outright** by the first measurement the
+dispatch made; the tally on coordinator predictions moves to **twelve instances**, no new
+kind (this is a *refuted* one and a *split* one).
+
+**F21 — the corpus's biggest row, recomputed to an explicit target.** `(K-grid)`: **2 500 →
+2 528** status words against the `SPECIAL_CAPS` cap **2 715**, close-it **980 → 949 / 985**,
+both under a target set before the edit (status ≤ 2 530, close-it ≤ 950). The status target
+is honest rather than generous **because no landing is queued on this row** — the concurrent
+sibling is on `(K-bare)` — and the compression behind it is real: **135 words removed from
+nine already-landed entries before one word of new content was added**. **No `SPECIAL_CAPS`
+entry proposed and none needed** — *no overflow, no bump*. Label preservation by
+`python3 notes/scripts/gapdiff.py K-grid`: **141 codes in, 146 out, ZERO dropped, 5 added**.
+Column 2's step range `G0–G153` → `G0–G158` in the same edit. One **stale claim corrected in
+passing** (`RESEARCH-ARC.md` §3): the status cell still said (GR-108) is refuted *"from
+`n = 16`"* and *"the half-witness clause survives"* — both superseded in the body by
+(GR-122)/(GR-123) and now fixed in the row; the body prose was grepped and is already
+correct.
+
+**Reservation consumed in full**; nothing returned. Labels (GR-134)–(GR-138), *Steps
+G154–G158*, driver at the reserved path; the tail declared for the next reservation is
+**(GR-139) / Step G159**. **(L6) landing grep:** no bare `(X<digit>)` token is minted — the
+new objects are `α`, `γ`, `P_β`, `Q_β` and the words *pure hub* / *cross* / *leaf-covering*,
+all unlettered; *Step G21*'s `A(β)`, `C_β`, `D_β`, `J`, `Ĝ` and *Step G149*'s `σ(F)` are
+reused, nothing re-minted.
+
+**Cost.** `--support` 4 s, `--local` 2 s, `--csp` 105 s, `--rich` 320 s, `--validate` **530
+s** — inside the 600 s foreground budget. Harness debt: `glist.py` is the **second consumer**
+of `gpack.py`'s `all_packings` / `csets` / `legal_splits` / `csp_witness` / `shape_rows`, so
+§2 rule 2's move-down trigger fires; recorded **UNPAID** in `notes/scripts/README.md`, with
+the reason (moving them would re-baseline `gpack.py`'s recorded figures for a single
+consumer).
+
+**Successors this direction names**, in its own ranking: (1) **the global `(α, γ)` CSP at
+`D = 0`** — the 82 % says a proof must charge something global, and the two handles are the
+**constructive** certificate side and (GR-129)(iii)'s closed-form description of the exchange
+freedom; (2) **`n_hub = 6` exhaustively** — `all_packings` is ~10⁴ partitions per shape at
+`n_hub = 4` and out of reach at `m = 9`, so the 2 623 pure-hub shapes there are undecided;
+(3) **leaf-covering as a packing question on its own terms**, the one place the landed
+Phase-12/13/14 matroid-union machinery might reach, as §(K-slide-comb) (C6) remark (c)
+reaches (GR-130).
