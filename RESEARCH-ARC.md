@@ -153,6 +153,30 @@ class**: an exhaustiveness or uniqueness assertion needs a driver that
 actually *enumerates*, not one that merely asserts per-instance. Never
 state a claim more strongly than the driver that tests it.
 
+**THE SHARPENING A FIFTH PASS FORCED (2026-09-02, direction BSATUR), and it inverts
+a test the coordinator had been using as REASSURANCE.** §4 says a claim needs a driver
+that tests that exact sentence. The refinement: **a driver that ASSERTS a claim is only
+as strong as the distribution it runs under.** PENCIL's own case, verified at source: a
+clause of the form *"`c ≥ 2` never happens below `ρ = 6`"* was carried by a real
+`assert` in a landed driver — `assert not (cuv >= 2 and r1 < 6)` — and it was a true
+statement about **every draw that run made**. It was still false, because the sampler
+drew the relevant plane **at random** and never ranged over the quantifier the clause
+was about: the run varied the *configuration* and never the *flag*. The counterexample
+sat one quantifier away from everything the driver could see.
+
+**Why this is worth its own paragraph rather than a footnote to §4.** The coordinator's
+dispatch spec for that very direction had cited *"the driver **asserts** the clause
+rather than reporting it, so the run is a real assertion, not a silent pass"* as a
+reason to weight the clause **higher** — and that reasoning was exactly backwards. An
+assertion tells you the claim held wherever the sampler went; it tells you nothing about
+where the sampler could not go, and it *feels* like stronger evidence precisely because
+it would have halted the run. So: **when a claim's strength rests on an in-driver
+assertion, name the sampler's support and ask which of the claim's own variables it
+varies.** A claim quantified over an object the sampler holds fixed (or draws from one
+fixed distribution) is untested in that direction, however many times the assert passed.
+This is distinct from §4's original shape — there, *no* driver tested the sentence; here
+a driver did, correctly, and the population was blind.
+
 This is the single most load-bearing item in this file — it recurred
 across three consecutive corrective passes in PENCIL's arc (a degenerate
 sampler contamination, an acyclic-vs-proper colouring conflation, and a

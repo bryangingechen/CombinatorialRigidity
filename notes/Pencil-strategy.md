@@ -1270,7 +1270,27 @@ quoted from a hand-off — the dispatch-log F22 discipline). Cheapest-decisive
 first, the board's own convention; both filters applied (none of the three is
 an invariant proposal, so neither filter bites):
 
-1. **The ℚ(i) eigen-block leg of §(K-out) *Step O29*** (`rank(Q|_D) = 3` →
+> **RANKS 1 AND 2 ARE SPENT — RE-RANKED 2026-09-02 (coordinator, from a read-only
+> `hK`-scoping recon; the corrected list is *below* this list, which is kept as the dated
+> record).** Both entries were left live here after their owning sections had settled them,
+> and **§8.1's table already struck rank 1** — so the two surfaces of this board have
+> disagreed since 2026-08-26, with the *ranking* (which the preamble says is what a fresh
+> session reads) the stale one. **Rank 1 is SPENT**: OQRANK (ordinal 32, 2026-08-25) ran
+> it; input (a) holds at **all 174 certified classes** and *"zero rulings — the
+> (K-tight)-event branch never fires"*, so **both** branches the entry calls decisive are
+> settled, and `(K-out)`'s row records input (a) as *"OPEN as a class-uniform statement and
+> **NOT an independent gap**"*. **Rank 2 is REFUTED**: (GR-104)(i) was killed by **(GR-122)**
+> at §(K-grid) *Step G142* (direction GHWIT, ordinal 36) on **2026-08-26 — the day after it
+> was ranked**, by an `n_hub = 20` all-(2,2) pair of gap 4. This board's closing paragraph
+> *was* edited that same day (the ZSHEAR filter discharge), so the list was read and left
+> stale on the very day its rank 2 died. **Rank 3 is not an `hK` item** — it is the (K-bare)
+> seed-free shape, i.e. the (BE-14) thread, running since BATTAIN (39) and 20+ directions
+> in. Net effect, and it is the likely reason `hK` went untouched for **ordinals 44–65, 22
+> consecutive dispatches**: the one place a session looks for an `hK` candidate has pointed
+> at two dead items and one that is not `hK`.
+
+1. **The ℚ(i) eigen-block leg of §(K-out) *Step O29*** — **SPENT (OQRANK, 2026-08-25);
+   entry kept as the dated record, see the box above** (`rank(Q|_D) = 3` →
    **(a₁)**). O29's own landing calls it *"the single cheapest open step this
    pass leaves"*; harness-unblocked since the adjudicated `Gauss` →
    `exactcore` move-down (*"Step O29's route may now use exact `ℚ(i)`
@@ -1283,7 +1303,8 @@ an invariant proposal, so neither filter bites):
    the single live form of the pitch route, discharged per-class over the
    widest keyed population the arc has — and by a *mechanism*
    (⋆-eigen-block decoupling), §2.2's recipe sense, not a search.
-2. **(GR-104)(i)** — the price form at `n ≥ 12` (§(K-grid) *Step G124*).
+2. **(GR-104)(i)** — **REFUTED by (GR-122), *Step G142*, GHWIT, 2026-08-26; entry kept as
+   the dated record, see the box above** — the price form at `n ≥ 12` (§(K-grid) *Step G124*).
    Machinery landed (`w4/gcheap.py` + `gridbal_common`), the adversarial
    controls named (the `n = 12`, `2k = 2` stall pairs), and (GR-102) confines
    any refuting pair to `d_par(M) ≥ 2|δ| − b_M`. A HIT makes (b′) at the
@@ -1317,6 +1338,64 @@ count-expressible, so the filter bites exactly there), and (ZH-3) survives the
 filter but is **circular as posed** — a sharper objection. As predicted, neither
 moves anything onto this board, and the shelf stays off-board; §9.3's order is
 updated and (ZH-1) is **struck**.
+
+**THE CORRECTED `hK` RANKING (2026-09-02).** Re-derived from each item's *owning*
+section rather than from this board (the F22 discipline), by a read-only scoping recon
+commissioned because `hK` had gone 22 consecutive dispatches untouched while the board's
+own top two were spent. **The two filters were applied to every entry.**
+
+| # | item | owner | status, re-derived |
+|---|---|---|---|
+| **1** | **(GR-18)(iii)** — the grouping problem: does *some* 6-tree partition of `Ĝ` admit a 3+3 split `J` with `\|C_β ∩ J\| = 3 − A(β)` for a length-legal `A`? | §(K-grid) *Step G21*; TCOL *What would change this* (iii) | **named 2026-08-07, never attacked, never priced on any board, never in a dispatch spec** |
+| 2 | collapse-order bound `κ ≤ 4/5` + the `r = 4` certifying criterion | §(K-grid) *Step G22* ((GR-19)); TCOL (i)/(ii) | measured `κ ≤ 4` at **18/18** separators, unproven, untouched since 2026-08-07 |
+| 3 | **(OC-44)(iii)** wall-avoiding certificate-colouring existence | §(K-out) *Step O41* | open, 174/174 within caps; a HIT buys a **quantifier**, not a gap-map row |
+| 4 | the (a′)/(b′) ledger residuals | §(K-grid) G98–G148 | entry **1 of 4**; entries 2–4 recorded *unchanged/unswept* at every landing since 2026-08-13 — **see the do-not-do note below** |
+| 5 | (OC-19) input (c); the ZNEQ pool **re-key** | §(K-out) O18 | the re-key is *"a combinatorial cross-pool job, no new mathematics"* — genuinely cheap; input (c) itself is (GR-15)-flavoured |
+| 6 | route σ obligations 2–4 | §8.4; §(K-σ) *Step σ5* | eligible (obligation 1 only is Lean-held), but the branch obligation 4 closes *"has never been observed nonempty"* — insurance, not progress |
+| 7 | OGEOM's successors | §(K-out) O42–O46 | disproof-risk reduction, which **(OC-24)** says can never be the binding obstruction |
+| 8 | **(ZH-2) stratified** | §9 (Zheng preprint) | unrefereed, **idea source never a citation**, deliberately off-board; the shelf's last dispatchable candidate |
+
+**Why (GR-18)(iii) is rank 1.** Its input **(GR-18)(i) is a landed theorem** — `def(G) = 0`
+*alone* forces `Ĝ` to partition into exactly 6 spanning trees — so what is open is a
+**finite combinatorial** question with two named freedoms (re-choose the packing by matroid
+exchange; the even branches' bits). It passes the **growing-ground-set** test better than
+anything else on this board (index set `E(Ĝ)`, size `6(\|V\|−1)`), **counting saturation
+does not bite** because it is not an invariant of the escape, and **(GR-13)'s own hardness
+note points here** (*"any proof of (GR-10) must be an existence-of-good-colouring
+argument"*). It is `(GR-4′)`-free and stratification-free, so it owes **none** of the three
+ledger entries that have sat unswept all arc. HIT → (GR-10) → (GR-15) → `hK` **on the tight
+stratum**; MISS → the first (GR-10) flank in 73 directions.
+
+**THE DO-NOT-DO, and it is the strongest item this re-rank produced.** **Do not dispatch
+another (a′)/(b′) ledger direction.** Fourteen directions (GLAW → GMINM, *Steps G74–G148*)
+have worked it; the `(K-grid)` status cell's own summary over that span is *"(GR-15) stays
+OPEN throughout, unchanged in status, no gap-map status move"*. Its live successor is
+bookkeeping by its own words, and it is the thread that produced this board's rank 2 —
+refuted the day after it was ranked. The general form: **the next `hK` dispatch's
+deliverable must be an argument, with the search demoted to an adversarial control.** The
+record is 907/907, 40 742 exhaustive, 549 172 blocks, 1 158 344 instances, 323 adversarial
+constructions — and (GR-15)'s status word has never moved. §2.2 already wrote the reason:
+*"A search does not carry a reason."*
+
+**TWO INTERNAL CONTRADICTIONS FLAGGED, NOT RESOLVED HERE** (each needs a whole-file check
+the coordinator has not done, and one of them lives in the authoritative status object):
+**(a)** §8.2 lists **U2** *"live, rank 2"* and **U3** *"live, rank 3"*, while §8.6 says U2
+was *"delivered by (GR-16)'s reduction"* and U3 *"already exploited for the tight stratum
+only"*. **(b)** the `(K-grid)` **close-it** cell lists as live route (i) *"a
+colouring-existence argument over Step G12's branch bits … + (GR-4′)"* — which is
+**certificate 3** — while the **same cell** files *"the whole certificate-3-uniformity
+route"* under do-not-re-run, GUNIF having settled it at *Step G36* (*"DEAD AS
+SPECIFIED"*). Whichever direction next touches either surface owns the reconciliation.
+
+**ONE CAVEAT ON WHAT A (GR-15) HIT BUYS, raised as a question and not a claim.** A (GR-15)
+HIT discharges `hK` **on the tight stratum**. But `C11` — a bare odd cycle — is *in* `hK`'s
+habitat and is **not** count-tight, `(AC-6)` is *"REFUTED as a class statement"* by it, and
+`(K-clos)`'s close-it says *"nothing here would ever make the statement habitat-uniform:
+`C11` is permanent"*. The recon found **no gap-map row owning that non-tight-but-in-habitat
+remainder** (having read four of 28 rows, so this is a question, not a finding). **Is the
+remainder genuinely free — §2.5's `dim R_a ≥ 2` ⟹ escape automatic — or is it an unowned
+gap?** It is cheap to settle and it changes what a (GR-15) HIT is worth; it is a forced job
+on the next `hK` dispatch.
 
 ### 8.1 Continue the current architecture
 
