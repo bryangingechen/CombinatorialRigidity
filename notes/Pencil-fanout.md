@@ -1,7 +1,18 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: EIGHT fan-outs, FORTY-EIGHT single directions and TWO concurrent pairs
-dispatched; 74 LANDED, NONE IN FLIGHT.**
+**Status: EIGHT fan-outs, FORTY-EIGHT single directions, ONE draft-only parallel direction
+and TWO concurrent pairs dispatched; 75 LANDED, NONE IN FLIGHT.**
+**BSIGMA (ordinal 67, §"BSIGMA") LANDED 2026-09-02 — run DRAFT-ONLY in parallel with
+GPACK**, the arc's first concurrent pair outside a prepared fan-out, and a **HIT on the
+disproof lane**. BSATUR's own named residual `Σ_x ⊆ ρ̄_i` at `ρ_i = 5` is **REALIZED**, on
+BSATUR's own peel with a new *configuration* — `p_x` and its tail coplanar — so **every**
+flag is bad and **(PENCIL-SATURATES-GEN) is FALSE**. **SLACK, not a shortfall**, for the
+third refutation running (78 rows, 0 shortfalls); half (B) untouched. Second result: the
+**floor is a THEOREM** — `Σ_x ⊆ ρ̄_i ⟹ ρ_i ≥ 5` by a corank identity that also upgrades
+(BE-105)(ii)'s measured half to proved. The forced support audit answers sharply: the
+battery's five `deg = 1` terminals are its five **path** pieces, one generic configuration
+each, so **the flag was never a variable of this claim** — the missing quantifier is the
+**configuration stratum**. Survivor **(PENCIL-SATURATES-CHART)**, at a generic chart point.
 **GPACK (ordinal 66, §"GPACK") LANDED 2026-09-02** — the arc's **FIRST `hK`-side direction
 in 22 dispatches**, at **(GR-18)(iii)**, the grouping problem. **HIT shape 1 on a named half,
 HIT shape 3 on the rest: the SPLIT is a THEOREM and the exchange freedom is LOAD-BEARING.**
@@ -12635,3 +12646,133 @@ supplies is not written, and every current statement of the residual is a `Λ = 
 *no* legal split admits a consistent hub colouring would refute (GR-10) as a class statement
 and be the first (GR-10) flank in 74 directions; (4) the `(K-grid)` close-it's routes (ii)
 and (iii) (the collapse-order bound, and which `r`-groupings certify), untouched here.
+
+## BSIGMA — sixty-seventh ordinal (single dispatch, **DRAFT-ONLY**, run 2026-09-02 in parallel with GPACK) — the disproof lane
+
+**Selection provenance: a user call for parallelism, and the arc's first genuinely
+concurrent pair since the eighth fan-out.** With GPACK (66) in flight on `hK`, the user
+asked whether anything else could be dispatched in parallel to help prove or disprove the
+conjecture. The binding constraint was **not** budget: GPACK is a *committing* dispatch, so
+by `RESEARCH-ARC.md` §2 anything concurrent must be **read-only with respect to every
+shared file**. BSIGMA was therefore dispatched **draft-only** — spec delivered in the
+invocation prompt, deliverable written to the session scratchpad, **nothing committed and
+no tracked file touched** — and the coordinator landed it serially after GPACK. That is
+§2's pattern exercised for the first time outside a prepared fan-out, and it worked with
+zero collisions on a tree that took a full landing underneath it.
+
+**Why this target, out of everything available.** It is the **disproof lane**: BSATUR's own
+(BE-107)(iii) named `Σ_x ⊆ ρ̄_i` at `ρ_i ≤ 5` as *"the thing to hunt"* — the one shape that
+kills **(PENCIL-SATURATES-GEN)**, and therefore the hypothesis BSATUR's entire landing rests
+on. It is also genuinely independent of GPACK: different workbook (§(K-bare-ext) vs
+§(K-grid)), different label family, different gap-map row, different driver lineage. Three
+other candidates were considered and **not** dispatched, recorded so the choice is legible:
+the collapse-order bound (board rank 2 — arguably a bigger prize, but 18 separators on two
+shapes, geometry re-entering at `r = 4`, no landed input and no driver), the ZNEQ pool
+re-key (*"no new mathematics"* by its own description), and OGEOM's successors
+(disproof-risk reduction, which **(OC-24)** says can never be the binding obstruction).
+
+Run at **`recon-opus`** (fable unavailable this session).
+
+### The spec, as dispatched
+
+**Target.** Hunt `Σ_x ⊆ ρ̄_i` at `ρ_i ≤ 5` — equivalently a shape forcing
+`dim(ρ̄_i ∩ Σ_x) = 3` at `ρ_i = 5`. Exhibit one with its **regime checked**, or report
+*"none found under cap C"* with the cap and denominator named.
+
+**Priced in advance, and the direction was told to say it plainly:** a hit costs the
+redundancy theorem's hypothesis — `Π_x`/`Π_y` return to the live blocks, 12 → 14, and
+BUNIF's tight place is reinstated — but **does not refute half (B)**.
+
+**The rider that bit hardest.** `RESEARCH-ARC.md` §4's 2026-09-02 sharpening — *an in-driver
+assertion is only as strong as the sampler's support; name that support and say which of
+the claim's own variables it varies* — was made a **forced job**, because the target's own
+evidence has exactly the shape that had just failed: (BE-105)(ii)'s threshold is *"asserted
+at every `deg = 1` terminal of the 24-piece battery"*.
+
+**Bars.** Do not re-open BSATUR's landing; do not touch the `(K-grid)`/`(GR-…)` lane (GPACK
+was there); (K-res) is a **USER call**; the 2026-08-05 Lean hold binds.
+
+### LANDING WRITE-UP — BSIGMA, 2026-09-02: **the residual is REALIZED, and its floor is a THEOREM**
+
+**HIT.** `Σ_x ⊆ ρ̄₁` at `ρ₁ = 5`, on **BSATUR's own pinned peel** `K4(5,3,3,3,3,3)` — what is
+new is the **configuration**, not the peel. Place the peeled branch `x, b₀, b₁, b₂, b₃, y`
+with `p_x, p_{b₁}, p_{b₂}, p_{b₃}, p_y ∈ π` and `p_{b₀} ∉ π`. Then
+`ρ̄₁ = ⟨ℓ₁, ℓ₂⟩ ⊕ Λ²π` has `ρ₁ = 5` exactly and contains `p_x ∧ π` (dimension 2, because
+`p_x ∈ π`) together with `ℓ₁ = p_x ∧ p_{b₀}`; their span is
+`p_x ∧ (π + ⟨p_{b₀}⟩) = p_x ∧ K⁴ = Σ_x`. So **every** plane through `p_x` is bad — legal or
+not — and **(PENCIL-SATURATES-GEN) is FALSE as stated**. Asserted at 6/6 seeds: both gates,
+`flag_frame` non-`None`, R-node-shaped, `δ = (5,3)`, `a = (0,0)`, `c₁(Π_x) = 2`, and 24
+further random planes through `p_x` all bad. **F13 control**: the same peel drawn by
+`bsatur.draw_peel` gives `max(1, ρ−3)` and 0 hits.
+
+**Regime checked, and it is why this witness is the right one.** `deg₁(x) = deg₁(y) = 1`, so
+side 1 never forces `π_y` — both terminals are series ends. The `ρ_i = 4` shapes the
+direction *did* find fail exactly there (below).
+
+**SLACK, not a shortfall — for the third refutation running.** 78 rows over 39 constructed
+profiles, every one a hit row, `margin ≤ 0` at `Π_x`/`Π_y`/`⟨M⟩`/`Λ²K⁴` and
+`reach = min(δ₁+δ₂,6) + a₁ + a₂` asserted at each: **0 shortfalls**, margin histogram
+`{−3: 66, −2: 12}`, `Π_x` never tight. Half (B) is **not** refuted.
+
+**THE FLOOR IS A THEOREM, and it is the landing's second result.** Projection from `p_x` is
+the linear map `ω ↦ ω ∧ p_x`, whose kernel is exactly `Σ_x`, so
+`dim(ρ̄ ∩ Σ_x) = ρ − dim(ρ̄ ∧ p_x)`. At a path side `dim⟨L_j⟩ = 0` is killed by
+`assert_generic_star`, and `dim⟨L_j⟩ = 1` forces every point into one plane with `p_x`,
+capping `ρ ≤ 3`. Hence **`Σ_x ⊆ ρ̄_i ⟹ ρ_i ≥ 5` is PROVED**, improving (BE-107)(iii)'s
+modular bound from 3 to 5 — and the same identity **upgrades (BE-105)(ii)'s measured `≤`
+half to proved** at a generic path configuration.
+
+**`ρ_i ≤ 4`: none found under cap, and the misses are instructive.** Bucket A
+(`deg_i(y) = 1`, the only bucket a generic-regime peel can present): **668 rows / 16
+topologies**, zero. Bucket B (`deg_i(y) ≥ 2`): **544 rows / 13 topologies**, and the shape
+**is** reached at `ρ = 4` (`pendant + cycle(8)`, 8/8) — but at **8 of 8** those rows have
+`p_x` in the plane the side itself forces on `y`, so `flag_frame` rejects them: **off the
+generic flag regime**. That is BSATUR's own structural warning firing on a *positive*
+result rather than on a construction.
+
+**JOB 2 — the support audit, and it answers more sharply than the rider asked.**
+`bearcase.piece_battery()` returns 24 pieces; `deg(u) = 1` at **exactly 5**, and they are
+the **five path pieces**, one topological family in which the side *is* the path. Inside
+each, `run_mech` keeps **one** configuration — the arg-max of `ρ` over ≤6 draws of
+`sample_piece_config`, coordinates uniform on a box, so every kept configuration is
+**generic**. The sharp finding: **the flag is not a variable of this claim at all**
+(`Σ_x = p_x ∧ K⁴` depends on `p_x` alone), so unlike BSATUR's case the missing quantifier is
+the **configuration stratum**. `ρ = 5 ↦ 2, never 3` is a true statement about generic
+configurations of a path — now *proved* there — and false one stratum away. Re-running the
+battery reproduces `3↦1, 4↦1, 5↦2, 6↦3` verbatim.
+
+**JOB 3 — the residual.** Half (B) is **not** discharged. Item 1 is closed as posed **for
+the second direction running** and replaced by **(PENCIL-SATURATES-CHART)** — the clause at
+a generic *point of `Chart(H)`* — free by the same (BE-16)+(BE-69)+semicontinuity argument,
+now with a **proved**-proper bad locus at path sides. Its own residual is narrower: a piece
+where `Σ_x ⊆ ρ̄_i` holds at a *generic* configuration. The live-block count now reads **three
+ways**: 14 pointwise in the flag; **14 pointwise in the configuration at a generic flag
+(new)**; 12 at a generic chart point.
+
+**Honest cap, self-caught.** The planted stratum draws at only **5 of 16** bucket-A
+topologies (all five paths); every hub-carrying side rejects it under this sampler, listed
+by name in the driver output. So the shape at a **non-path** side is *unmeasured, not
+excluded*. An earlier draft of the direction's own claimed otherwise; its data refuted it
+and the draft was corrected before return.
+
+**E-rider: none of E1/E2/E3 fires**, read at source with `:1700`'s two-conjunct E3. E1: no
+g-flank. E2: what is refuted is **(PENCIL-SATURATES-GEN), a direction's local obligation,
+not the arc's target**, and dispatchable attacks are named. E3: target not proven, and it
+fails under `:2098` too, on the first conjunct.
+
+**Driver** `notes/scripts/w4/bsigma.py`, six modes
+(`witness | mech | support | floor | price | validate`), exact ℚ, seed `20260902`.
+
+### Coordinator note on the landing — one defect the draft carried
+
+**Appendix B2 dropped a label, and only the set-diff saw it.** The draft's status-column
+replacement removed the citation `(BE-107)(iii)`, whose residual this direction had just
+*realized*. `notes/check-gapmap-cells.py` (the word cap) passed; **`notes/scripts/gapdiff.py`
+failed** — *137 in, 142 out, 1 DROPPED*. Repaired at landing by keeping the citation with
+its new status (*"(BE-107)(iii)'s named residual REALIZED, not absent"*). This is the script
+GPACK's predecessor shipped one landing earlier, catching a real drop on its second outing,
+and it is also the reason the coordinator's **own** first compression attempt was thrown
+away: that attempt dropped the same label *and made the row longer*. The row finally went
+**1 466 → 1 538 / 1 600** with **zero dropped**, by folding the (BE-104)/(BE-105) mechanism
+detail — now workbook material, superseded as headline by the proved floor — rather than by
+folding the history.

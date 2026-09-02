@@ -41,7 +41,7 @@ here — the phase's next concrete task is the kernel-(K) research pick
 
 ## The relocated reference blocks — the index `notes/Phase39.md` points at
 
-**NINE blocks, relocated verbatim from `notes/Phase39.md` between 2026-08-27 and
+**TEN blocks, relocated verbatim from `notes/Phase39.md` between 2026-08-27 and
 2026-09-02**, each because it is **stable reference, not status** — it changes only
 when something is *added* to it, never when a gap's status moves. (Blocks 8 and 9 are the
 two exceptions to the "never when a gap's status moves" reading, and they are
@@ -64,6 +64,7 @@ cap was ever bumped and nothing was deleted**; the note keeps a pointer to each.
 | 7 | *Citations — the phase's verified bibliography* | 2026-09-01 | every verified source; **a new source is added HERE** |
 | 8 | *The (BE-14) thread — per-landing detail* | 2026-09-01 (addenda 09-02) | which direction proved which sub-clause of the three sides, with its labels; the **settled frame**, the thread's last five landings and its four 2026-09-02 landings (BBASE/BUNIF/BDOUBLE/BSATUR) joined it 09-02 |
 | 9 | *The W4 deviation — per-landing detail* | 2026-09-02 | which of WTRI/WELOC/WPAIR/WGROW proved which sub-clause of route 3's cost list, with its labels; relocated once W4's informal argument closed |
+| 10 | *The (BE-14) lane's standing candidate list* | 2026-09-02 | the lane's ranked-but-unmoved candidates — one-end-series, (S1)/(S2), the bundle construction and the *also ranked* tail; relocated when the note hit 587/580 |
 
 The one line that stays in `notes/Phase39.md` rather than moving here: the **State of
 (K)** gap map in `notes/Pencil-informal.md` is the phase's status object, authoritative
@@ -884,7 +885,66 @@ multigraph** ((GROW-1)/(GROW-2)/(GROW-3)). **So (E-pair) is a THEOREM ((GROW-6))
 with it, and W4's non-user-call cost list is EMPTY** — only the USER call **(K-res)**
 remains, plus the Lean-held build.
 
+### Addendum, 2026-09-02 — the four landings' *Decisions made* entries
+
+**Relocated from `notes/Phase39.md`'s *Decisions made* list at the BSIGMA landing**, when the
+note stood at 584/580 lines. The thread is closed as an informal argument, so its per-entry
+attribution belongs with the per-landing detail this block already owns. The phase note keeps
+a single pointer carrying the verdict.
+
+- **WGROW** (61, 2026-09-02, opus, W4-side; thread CLOSED, detail in **block 9**) —
+  **(PAIR-5) SETTLED BOTH WAYS, so (E-pair) and (V) are THEOREMS and W4's non-user-call
+  list is EMPTY** ((GROW-1)–(GROW-6)): rigidity moves to the hub multigraph as a weighted
+  partition count, every class member has a seed or a co-1 rigid set, and `K₂,₃` refutes
+  (PAIR-5) *as stated* without being a residual, so **(E) is untouched**.
+- **WPAIR** (60, 2026-09-02, opus, W4-side; thread CLOSED, detail in **block 9**) —
+  **(E-pair) REDUCED to the seed condition (PAIR-5) and two strata PROVED**
+  ((PAIR-1)–(PAIR-6)): ¬(E-pair) forces `f = 6 + e₀ + 2σ ≥ 6` exactly, `hcard(G/U) ↔
+  |∂_hub U| ≤ 2`, no residual carries a seed, and **(V) is a THEOREM given (E-pair)**.
+  Denominator **0**. `w4/wpair.py`.
+- **WELOC (59) / WTRI (58)** (2026-09-02, opus, W4-side; thread CLOSED, detail in **block
+  9**) — **(T) IS A THEOREM** ((TF-1)–(TF-6)) from two landed feasibility *transfers* an
+  inventory had missed; **(E-loc) REFUTED** ((EL-1)–(EL-5)) by the certified residual `T32`,
+  with the other obstruction shape **impossible** and **(E) left standing and TIGHT**.
+  Denominator **0** at both. `w4/wtri.py`, `w4/weloc.py`.
+
 **Reading it later.** Same caution as block 8's: a snapshot dated 2026-09-02, **not** a live
 status surface. Every label resolves in `notes/Pencil-W4-informal.md`; the direction codes
 resolve in `notes/Pencil-fanout.md`. If it disagrees with the phase note's *Blockers* W4
 bullet, the phase note wins.
+
+## The (BE-14) lane's standing candidate list
+
+**Relocated verbatim from `notes/Phase39.md`'s *Hand-off* ranked list, 2026-09-02**, at the
+BSIGMA landing, when the note stood at 587/580 lines. Same disposition as blocks 8 and 9: these
+are the lane's **ranked-but-unmoved** candidates — none has changed in fifteen landings, and
+the note keeps items 0 and 1, which are the live ones. **Reference, not status**; if any of
+these is picked, its entry moves back into the note as the active item.
+
+**The list, as it stood at the BSIGMA landing (`e53cb9b4`…this commit):**
+
+2. **The ONE-END-SERIES case by BWIN's machine** — one peel instead of two
+   (`ρ̄₁ = ⟨ℓ_u⟩ + ρ̄(rest)`), budget `δ₁ ≤ 3` by the same excess accounting, or a
+   second functional from the clean end. Would retire the (BE-46)/(BE-52)
+   per-shape witnesses behind the *sharpened-at-one-end* route — (β)'s largest
+   remaining per-shape component ((BE-58)(iv)).
+3. **(S1)/(S2), the two side conditions of (BE-57)** — hypotheses on the middle,
+   **vacuous at every drawn piece but NOT theorems** ((BE-57)(iv)); the window's
+   class theorem carries them until one is discharged. **Open and ranked, not
+   dropped.**
+4. BTWOCUT's successor (2), the **bundle-construction proof** — (BE-29)(ii) from rung
+   to theorem, reaching `DZ` / `spider(5,5,5)+c`. Skipped four times.
+
+Also ranked, unchanged: BTWOCUT's cross-pair closure ((BE-28)(i), motive economy only — S-mark
+closes), the point-side flat law (**priced NOT cheap**), BINDUC's **(BE-23)(ii)** (*forced flat
+⇒ `def₂ = def₃`*, the disproof side's highest-value single search), and — unclaimed, from
+BZAVOID's own successor ranking — a **flat-star dictionary**, re-proving
+`molecular_finrank_motions_eq_square_ker`'s surjectivity under a hypothesis admitting coplanar
+stars, which would revive route 2 (§(K-bare-ext)). **Superseded, do not re-derive:**
+(BE-27)(ii) refuted the reading that the residual gauge group supplies general position — *the
+gauge group was never the right place to look*.
+
+**Reading it later.** Same caution as blocks 8 and 9': a snapshot dated 2026-09-02, not a
+live surface. Every label resolves in `notes/Pencil-informal.md` §(K-bare-ext); the direction
+codes resolve in `notes/Pencil-fanout.md`. If it disagrees with the `(K-bare)` gap-map row,
+the row wins.

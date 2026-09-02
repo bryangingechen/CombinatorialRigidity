@@ -8,10 +8,11 @@ derives it from exactly **three carried items**: **`hcontract`** (W4 — build p
 **`hbareSplit`** (kernel (K-bare)). Everything else is closed — W0–W3 and all of W5
 (L0–L7), `hsplit` and `hfresh` included (2026-07-30, unchanged since).
 
-**The research arc: 74 directions COMPLETE** (2026-08-05 → 09-02, ordinals
-1–66 — 70 on kernel (K), and **WTRI (58) / WELOC (59) / WPAIR (60) / WGROW (61) on W4**),
+**The research arc: 75 directions COMPLETE** (2026-08-05 → 09-02, ordinals
+1–67 — 71 on kernel (K), and **WTRI (58) / WELOC (59) / WPAIR (60) / WGROW (61) on W4**),
 plus eight strategy-only passes, two architecture probes and one read-only scoping recon;
-**GPACK (66) LANDED — the FIRST `hK`-side direction in 22 dispatches**.
+**none in flight**. **GPACK (66) is the FIRST `hK`-side direction in 22**, and **BSIGMA (67)
+ran DRAFT-ONLY beside it** — the arc's first concurrent pair outside a prepared fan-out.
 Per-direction verdicts, specs and write-ups live at `notes/Pencil-fanout.md` §"<CODE>"
 (ordinals 1–19: the archive) plus a workbook home — **not restated here**.
 **The arc's standing result, unchanged by all 74: `hK` is not closer.** **(GR-15)** — the
@@ -25,10 +26,9 @@ emptying it is the worked case.
 free, the residual is exactly the class-consistency clause; **(GR-10)/(GR-15) unchanged**.
 Detail: *Blockers* item 3.
 
-**W4's INFORMAL SIDE IS CLOSED** (WTRI 58 / WELOC 59 / WPAIR 60 / WGROW 61): **(T),
-(E-pair) and (V) are THEOREMS**, **(E) open, TIGHT and off every W4 path**, W4's
-non-user-call list **EMPTY** — leaving the USER call **(K-res)** and the held build.
-Detail: **block 9**.
+**W4's INFORMAL SIDE IS CLOSED** (58–61): **(T)/(E-pair)/(V) are THEOREMS**, **(E) open,
+TIGHT, off every W4 path**, list **EMPTY** — leaving the USER call **(K-res)** and the held
+build. Detail: **block 9**.
 
 **WHERE THE (BE-14) THREAD STANDS** — S-mark, the 2-cut composition lemma, is its **only
 open step**; the three sides and every per-landing detail are **REFERENCE**, at
@@ -46,7 +46,7 @@ closes and a successor opens for the Lean is a `PHASE-BOUNDARIES.md` event again
 standing 2026-07-24 no-split adjudication, surfaced with a commit-count estimate, never
 taken unilaterally; the 2026-08-05 Lean hold binds regardless.
 
-**NINE reference blocks sit in `notes/Pencil-structure.md`**, which indexes them —
+**TEN reference blocks sit in `notes/Pencil-structure.md`**, which indexes them —
 **read them once per session**. The line that stays here: the **State of (K)** gap map
 (`notes/Pencil-informal.md`) is this phase's status object, **authoritative for every
 status word**; read it with `python3 notes/gapmap.py`, never `sed`/`grep`.
@@ -176,7 +176,7 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
 
 - **Doc debt — the gate is MECHANICAL** (`notes/check-phase-note.py`: **580 lines / 525
   status-header words**, plus a fail if *Decisions made* outgrows the forward sections),
-  and the standing remedy is **relocation or merger, never a fold** — **NINE** reference
+  and the standing remedy is **relocation or merger, never a fold** — **TEN** reference
   blocks now sit verbatim in `notes/Pencil-structure.md`, indexed by its own table, with
   no cap ever bumped and nothing deleted. **The rule that keeps working:** ask *"what here
   is reference rather than status?"*. Four landings running have paid for themselves that
@@ -216,25 +216,35 @@ informal argument is **closed**, so which landing proved which sub-clause is att
 Status, stated once in the header and not repeated: **(T)/(E-pair)/(V) are THEOREMS**, (E)
 is open and off every W4 path, and W4's non-user-call list is **EMPTY**.
 
-**BBASE (62) → BUNIF (63) → BDOUBLE (64) → BSATUR (65) ALL LANDED 2026-09-02** — verdicts
-in *Decisions made*, mathematics at §(K-bare-ext) *Steps BE88–BE107*, per-landing detail in
-**block 8**. Two clauses are *status*: **(CH-1) does not apply to the flag base**
-((BE-89)), so anything citing it for the base cites the wrong object; and
-**(PENCIL-SATURATES) is FALSE** ((BE-104)), its surviving form **(PENCIL-SATURATES-GEN)**
-free **only** because (BE-14) is existential — a step needing the block inequalities at
-*every* flag does **not** get it ((BE-107)(ii)).
+**BBASE (62) → BUNIF (63) → BDOUBLE (64) → BSATUR (65), all 2026-09-02** — verdicts in
+*Decisions made*, mathematics at §(K-bare-ext) *Steps BE88–BE107*, per-landing detail in
+**block 8**. One clause is *status* and is not repeated below: **(CH-1) does not apply to
+the flag base** ((BE-89)), so anything citing it for the base cites the wrong object.
 
 **GPACK (66) LANDED 2026-09-02 — the `hK` lane's first result in 22 dispatches.**
 **(GR-18)(iii) splits, and the split half is a THEOREM** ((GR-129)–(GR-133), §(K-grid)
 *Steps G149–G153*; verdict in *Blockers* item 3, write-up at §"GPACK"). Neither the packing
 nor the split is ever the obstruction; the residual is the class-consistency clause, a hub
 list-colouring tight only at length-2 branches. **The `hK` lane's ranking is
-`notes/Pencil-strategy.md` §8's board, NOT this list** (re-ranked `70c06abe`; it carries the
-standing **do-not-do** — no more (a′)/(b′) ledger directions), and GPACK supersedes its top
-entry. **THE NEXT CONCRETE TASK is the (GR-132) list-colouring at the `ℓ = 2`-rich shapes**
-— finite, local, the first place a (GR-10) flank could live, and the `hK` lane's own named
-successor; the **(BE-14) lane's** alternative is unchanged and ranked item 0 below
-(`Σ_x ⊆ ρ̄_i` at `ρ_i ≤ 5`, (BE-107)(iii)). Two things stay the USER's call, both OFFERED
+`notes/Pencil-strategy.md` §8's board, NOT this list** (re-ranked `70c06abe`/`5583a919`; it
+carries the standing **do-not-do** — no more (a′)/(b′) ledger directions), and GPACK
+supersedes its top entry.
+
+**BSIGMA (67) LANDED 2026-09-02, DRAFT-ONLY beside GPACK — and the repair is repaired
+TWICE.** BSATUR's own named residual is **REALIZED** ((BE-109)–(BE-113), *Steps
+BE108–BE112*; §"BSIGMA"): `Σ_x ⊆ ρ̄₁` at `ρ₁ = 5` on BSATUR's own peel with `p_x` and its
+tail coplanar, so **every flag is bad and (PENCIL-SATURATES-GEN) is FALSE** — **SLACK**
+again, 0 shortfalls at 78 rows, half (B) untouched. Two things are *status*: the **floor
+`Σ_x ⊆ ρ̄_i ⟹ ρ_i ≥ 5` is a THEOREM** at a path side, which also upgrades (BE-105)(ii)'s
+measured half; and the survivor is **(PENCIL-SATURATES-CHART)**, at a generic **chart
+point**, whose residual is a piece where the shape holds at a *generic* configuration.
+**The live-block count now reads THREE ways** — 14 pointwise in the flag, **14 pointwise in
+the configuration at a generic flag**, 12 at a generic chart point.
+
+**THE NEXT CONCRETE TASK is the (GR-132) list-colouring at the `ℓ = 2`-rich shapes** —
+finite, local, the first place a (GR-10) flank could live, and the `hK` lane's own named
+successor. The **(BE-14) lane's** alternative is ranked item 0 below, now
+**(PENCIL-SATURATES-CHART)**'s own residual. Two things stay the USER's call, both OFFERED
 2026-09-02 and both DECLINED IN FAVOUR OF CONTINUING RESEARCH: the **(K-res) wave** (a cheap
 scoping slice queued below) and whether W4's now-closed informal side changes anything about
 the **2026-08-05 Lean hold** — the hold is the user's to lift, never a coordinator's.
@@ -263,26 +273,13 @@ The ranked list:
    low-ranked leftovers: is `B_real` a forest on the class (78 564/78 564, on tiers that
    **cannot** exhibit a counterexample); cyclomatic `≥ 2`, reached by no clause; and
    whether a **triangle is necessary** for the forcing (BGENUINE: 0 forced over 648).
-2. **The ONE-END-SERIES case by BWIN's machine** — one peel instead of two
-   (`ρ̄₁ = ⟨ℓ_u⟩ + ρ̄(rest)`), budget `δ₁ ≤ 3` by the same excess accounting, or a
-   second functional from the clean end. Would retire the (BE-46)/(BE-52)
-   per-shape witnesses behind the *sharpened-at-one-end* route — (β)'s largest
-   remaining per-shape component ((BE-58)(iv)).
-3. **(S1)/(S2), the two side conditions of (BE-57)** — hypotheses on the middle,
-   **vacuous at every drawn piece but NOT theorems** ((BE-57)(iv)); the window's
-   class theorem carries them until one is discharged. **Open and ranked, not
-   dropped.**
-4. BTWOCUT's successor (2), the **bundle-construction proof** — (BE-29)(ii) from rung
-   to theorem, reaching `DZ` / `spider(5,5,5)+c`. Skipped four times.
-
-Also ranked, unchanged: BTWOCUT's cross-pair closure ((BE-28)(i), motive economy only — S-mark
-closes), the point-side flat law (**priced NOT cheap**), BINDUC's **(BE-23)(ii)** (*forced flat
-⇒ `def₂ = def₃`*, the disproof side's highest-value single search), and — unclaimed, from
-BZAVOID's own successor ranking — a **flat-star dictionary**, re-proving
-`molecular_finrank_motions_eq_square_ker`'s surjectivity under a hypothesis admitting coplanar
-stars, which would revive route 2 (§(K-bare-ext)). **Superseded, do not re-derive:**
-(BE-27)(ii) refuted the reading that the residual gauge group supplies general position — *the
-gauge group was never the right place to look*.
+2.–4. **THE LANE'S STANDING MENU — RELOCATED 2026-09-02** to
+`notes/Pencil-structure.md` §"The (BE-14) lane's standing candidate list" (**block 10**):
+the one-end-series case, **(S1)/(S2)**, BTWOCUT's bundle construction, and the *also
+ranked* tail (cross-pair closure, the point-side flat law, BINDUC's **(BE-23)(ii)** — the
+disproof side's highest-value single search — and the flat-star dictionary), with its
+*superseded, do not re-derive* note. **Reference, not status**: none has moved in fifteen
+landings, and the live items are 0 and 1 above.
 
 **THE (K-res) SCOPING SLICE LANDED 2026-08-28** (RESGRID, ordinal 48; §(K-res),
 `notes/Pencil-informal-grid.md`, own gap-map row), discharging the user's 2026-08-26
@@ -425,6 +422,20 @@ section named; its *spec and landing write-up* in `notes/Pencil-fanout.md` §"<C
 `notes/Pencil-adjudications.md`; the derivation in git. **Do not grow these back into
 paragraphs.**
 
+- **BSIGMA** (67, 2026-09-02, opus, **draft-only, parallel with GPACK**) — **BSATUR's OWN
+  RESIDUAL IS REALIZED, so (PENCIL-SATURATES-GEN) is FALSE TOO** ((BE-109)–(BE-113), *Steps
+  BE108–BE112*): `p_x` and its tail coplanar puts `Σ_x ⊆ ρ̄₁` at `ρ₁ = 5`, every flag bad —
+  **SLACK**, 0 shortfalls at 78 rows. **The floor `Σ_x ⊆ ρ̄_i ⟹ ρ_i ≥ 5` is a THEOREM**
+  (corank identity; also upgrades (BE-105)(ii)'s measured half). Support audit: the flag was
+  never a variable — the missing quantifier is the **configuration stratum**. Survivor
+  **(PENCIL-SATURATES-CHART)**. `w4/bsigma.py`.
+- **GPACK** (66, 2026-09-02, opus, **the `hK` lane's first in 22**) — **(GR-18)(iii) SPLITS
+  and the split half is a THEOREM** ((GR-129)–(GR-133), §(K-grid) *Steps G149–G153*): the
+  grouping is an **equitable bisection**, a (packing, split) pair is a signing bounded by
+  the 5/6-sparsity slack, and a legal signing **always exists** off `def(G) = 0` alone
+  (Edmonds) — so neither packing nor split is ever the obstruction. The exchange freedom is
+  **load-bearing** (6 840 of 266 700 packings admit no split). Residual: a hub
+  list-colouring. `w4/gpack.py`.
 - **BSATUR** (65, 2026-09-02, opus) — **(PENCIL-SATURATES) IS FALSE, THE REPAIR IS FREE**
   ((BE-104)–(BE-108), *Steps BE103–BE107*): at a side-degree-`1` terminal the legal planes
   form a **pencil**, and a bad one exists **iff `dim(ρ̄_i ∩ Σ_x) ≥ 2`, i.e. iff `ρ_i ≥ 5`**
@@ -447,29 +458,16 @@ paragraphs.**
   `(2,1,1,2)` blocks with 16 stable subspaces, and cap-meets-degeneration makes
   **(BE-67)(iii) ⟺ 14 per-side inequalities**; **(BE-71)(ii) ANSWERED** generically.
   `w4/bunif.py`.
-- **BBASE** (62, 2026-09-02, opus) — **THE FLAG BASE IS FREE; half (B)'s residue is ONE**
-  ((BE-89)–(BE-93), *Steps BE88–BE92*): the base is the **flag** variety of `B_real`,
-  **not** (CH-1)'s object — nonempty always, irreducible/ℚ-rational/dense-ℚ on every
-  component of cyclomatic number `≤ 1`, hypothesis-free on a forest; the only obstruction
-  is **reducibility** at a `B_real` triangle or 4-cycle, both excluded by girth `≥ 6`.
-  Cyclomatic `≥ 2` open, low-ranked. All three readings corrected. `w4/bbase.py`.
-- **WGROW** (61, 2026-09-02, opus, fourth W4-side) — **(PAIR-5) SETTLED BOTH WAYS, so
-  (E-pair) and (V) ARE THEOREMS and W4's non-user-call list is EMPTY** ((GROW-1)–(GROW-6),
-  §widened kernels *Steps GW1–GW6*; `K₂,₃` refutes (PAIR-5) *as stated* and is not a
-  residual, so **(E) is untouched**). Job 2's fifth payment, sharpened to **per-arc**.
-- **WPAIR** (60, 2026-09-02, opus, third W4-side) — **(E-pair) REDUCED, two strata proved**
-  ((PAIR-1)–(PAIR-6), §widened kernels *Steps PR1–PR6*): ¬(E-pair) ⟹ `f = 6 + e₀ + 2σ ≥ 6`
-  exactly ((PAIR-1)), `hcard(G/U) ↔ |∂_hub U| ≤ 2` ((PAIR-2)), **no residual carries a rigid
-  set with `|∂_hub U| ≤ 2`** ((PAIR-3), subsuming (EL-4)), the independent-hub stratum is
-  closed ((PAIR-4)), the residual is the **seed condition (PAIR-5)**, and **(V) is a THEOREM
-  given (E-pair)** ((PAIR-6)). Job 2 standing: the arc mis-reads landed *hypotheses*
-  (`hedge` **is** (E)). Denominator **0**. Driver `w4/wpair.py`.
-- **WELOC** (59, 2026-09-02, opus) — **(E-loc) REFUTED** ((EL-1)–(EL-5), *Steps EL1–EL6*):
-  `T32`, `|V| = 32`, two **disjoint** dependent `C₄` cores; the other shape **impossible**
-  ((EL-4), shieldedness + (T)); **(E) stands, now TIGHT**; denominator **0**. `w4/weloc.py`.
-- **WTRI** (58, 2026-09-02, opus, first W4-side) — **(T) IS A THEOREM** ((TF-1)–(TF-6),
-  *Steps TF1–TF6*): 2EC pins the pendant hub at `deg ≥ 4`, then two landed feasibility
-  *transfers* make `G/Δ` a good contraction; *Step 4* retracted at source. `w4/wtri.py`.
+- **BBASE** (62, 2026-09-02, opus, **demoted at the BSIGMA landing** per the thread's
+  oldest-demotes rule) — **THE FLAG BASE IS FREE and is NOT (CH-1)'s object**
+  ((BE-89)–(BE-93), *Steps BE88–BE92*): nonempty always, irreducible/ℚ-rational/dense-ℚ at
+  cyclomatic `≤ 1`, hypothesis-free on a forest; cyclomatic `≥ 2` open and low-ranked.
+- **THE FOUR W4-SIDE LANDINGS (58–61), 2026-09-02 — entries RELOCATED to block 9**, which
+  already owns that thread's per-landing detail, at the BSIGMA landing. The verdict, once:
+  **(T), (E-pair) and (V) are THEOREMS**, **(E-loc) is REFUTED** (`T32`), **(E) stands and
+  is TIGHT**, and **W4's non-user-call list is EMPTY** — leaving the USER call (K-res) and
+  the held build. Labels (TF-…)/(EL-…)/(PAIR-…)/(GROW-…); drivers `w4/{wtri,weloc,wpair,
+  wgrow}.py`.
 - **BGENUINE** (57, 2026-09-01, opus, **demoted at the BSATUR landing**) — **GENUINE, AND
   IT DOES NOT BITE** ((BE-84)–(BE-88), *Steps BE83–BE87*): 392/392 attain.
 - **BONEONE** (56, 2026-09-01, opus, **demoted at the BSATUR landing**) — **YES, AND THE

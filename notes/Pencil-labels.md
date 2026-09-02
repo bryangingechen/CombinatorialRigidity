@@ -3136,3 +3136,41 @@ time **because it had overflowed**. **Recompute to a target**; label preservatio
 `python3 notes/scripts/gapdiff.py`, now mandated by `notes/CLAUDE.md` for any recompute.
 **No overflow, no bump** — the gate's docstring records a bump proposed and **withdrawn**
 on 2026-09-02 for exactly that reason.
+
+## Reserved namespace — direction BSIGMA (2026-09-02, **CONSUMED IN FULL at the landing; nothing returned**)
+
+**Reserved and consumed on 2026-09-02 for the single direction BSIGMA** (ordinal 67, the
+arc's seventy-fifth direction; `notes/Pencil-fanout.md` §"BSIGMA") — **(BE-107)(iii)**,
+BSATUR's own named residual. **This reservation was never a separate commit**: BSIGMA ran
+**draft-only** in parallel with a committing direction, so its spec and its labels were
+carried in the invocation prompt and land here with the write-up. That is
+`RESEARCH-ARC.md` §2's serial-landing pattern, and this row is its registry record.
+
+| direction | owning § | labels reserved | steps reserved | driver |
+|---|---|---|---|---|
+| **BSIGMA** | §(K-bare-ext) — **extends**, no new section | **(BE-109)–(BE-113)** | **BE108–BE112** | `w4/bsigma.py` (six modes) |
+
+**0-hit verification, at reservation time** (coordinator-run, before dispatch), across
+`*.md`, `*.tex`, `*.lean`, `*.py`, `*.m2` with `.git`/`.lake`/`__pycache__` excluded, **in
+both cases**: `BSIGMA`, `bsigma`, `bsigma.py`, `(BE-110)`–`(BE-113)` and the raw step tokens
+`BE109`–`BE112` each **0-hit**; `(BE-109)` and `BE108` had one hit each, opened and confirmed
+to be BSATUR's tail declaration. `BKILL` was checked (0-hit) and **not chosen** — it names a
+**predicted outcome**, which `RESEARCH-ARC.md` §7 warns against baking into a code, and the
+direction could equally have returned a clean miss.
+
+**CONSUMED IN FULL.** (BE-109)–(BE-113) and *Steps BE108–BE112* all used; **nothing
+returned**. **One** name minted, a *condition* and not an object, mirroring BSATUR's
+precedent: **(PENCIL-SATURATES-CHART)**. Nothing minted for `Σ_x`, `Π_x`, `ρ̄_i`, `c_i(U)` or
+the flag regime — *the tail stratum* and *the projected pair lines* stay plain prose. The
+section has now gone **seven** directions without a configuration-level token.
+
+**The next tail is (BE-114) / *Step BE113***, 0-hit verified at landing.
+
+**Gap-map note (F21) — and the set-diff earned its keep on its second outing.** The draft's
+own Appendix B **dropped the citation `(BE-107)(iii)`** from the status column — the very
+residual this direction realized. `check-gapmap-cells.py` passed; **`gapdiff.py` failed**
+(*137 in, 142 out, 1 DROPPED*). Repaired at landing by keeping the citation with its new
+status. The coordinator's **own** first compression attempt was then thrown away for
+dropping the same label *and lengthening the row*; the row finally went **1 466 → 1 538 /
+1 600, zero dropped**, by folding superseded mechanism prose rather than history. **No
+`SPECIAL_CAPS` entry proposed or added.**
