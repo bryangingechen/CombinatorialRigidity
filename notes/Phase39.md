@@ -10,11 +10,11 @@ derives it from exactly **three carried items**: **`hcontract`** (W4 — build p
 
 **The research arc: 71 directions COMPLETE** (2026-08-05 → 09-02, ordinals
 1–63 — 67 on kernel (K), and **WTRI (58) / WELOC (59) / WPAIR (60) / WGROW (61) on W4**),
-plus eight strategy-only passes and two architecture probes; **none in flight** — **BUNIF
-(63) REDUCED (BE-67)(iii) to a per-side condition**.
+plus eight strategy-only passes and two architecture probes; **BDOUBLE (64) IS IN FLIGHT**
+at **(NO-DOUBLE-PENCIL)**, the per-side condition BUNIF reduced (BE-67)(iii) to.
 Per-direction verdicts, specs and write-ups live at `notes/Pencil-fanout.md` §"<CODE>"
 (ordinals 1–19: the archive) plus a workbook home — **not restated here**.
-**The arc's standing result, unchanged by all 70: `hK` is not closer.** **(GR-15)** — the
+**The arc's standing result, unchanged by all 71: `hK` is not closer.** **(GR-15)** — the
 single open gap the whole §(K-grid) chain reduces to — is **untouched**; **class uniformity
 of the escape is untouched**; no g-flank was found by any direction; **E3 is ARMED (by
 GBAL), has NEVER fired, and is NOT one landing away** — `61e046a6` corrected that reading:
@@ -32,8 +32,9 @@ open step**; the three sides and every per-landing detail are **REFERENCE**, at
 Status only: (β) proved at the window **MODULO §(K-bare-ext) (BE-57)(iv)'s own two window
 conditions** ((S1)/(S2), one of three owners of that token); cross-cut-only forcing
 is **empty as an obstruction** (392 genuine, `0` shortfall); the flag base is
-**DISCHARGED** (BBASE); and BUNIF made half (B)'s **ONE** residue **per-side**, now
-**(NO-DOUBLE-PENCIL)** ((BE-97)(iii)); cross-pair welding **untouched**.
+**DISCHARGED** (BBASE); and BUNIF made the residue **per-side**, tight only at
+**(NO-DOUBLE-PENCIL)** ((BE-97)(iii)) — **on the measured populations; the other 13 live
+blocks are unwitnessed, NOT excluded** ((BE-97)(iv)); cross-pair welding **untouched**.
 
 **On a future HIT: the phase-boundary consequences are the USER's call** —
 whether Phase 39 closes and a successor opens for the Lean is a
@@ -229,13 +230,16 @@ item.** Verdict in *Decisions made*; mathematics at `notes/Pencil-informal.md`
 **(CH-1) does not apply to the base at all** ((BE-89)), so anything citing it for the base
 is citing the wrong object — and (BE-65)(i) is corrected at source.
 
-**BUNIF (63) LANDED 2026-09-02 — half (B)'s last residue is REDUCED to per-side data.**
-Verdict in *Decisions made*; mathematics at §(K-bare-ext) *Steps BE93–BE97*. **THE NEXT
-CONCRETE TASK is to dispatch at (NO-DOUBLE-PENCIL)** ((BE-97)(iii), ranked item 0 below):
+**BUNIF (63) LANDED 2026-09-02 — half (B)'s residue is REDUCED to per-side data.**
+Verdict in *Decisions made*; mathematics at §(K-bare-ext) *Steps BE93–BE97*. **IN FLIGHT —
+BDOUBLE (64) at (NO-DOUBLE-PENCIL)** ((BE-97)(iii), ranked item 0 below):
 *no internal R-node peel has one side with `dim(ρ̄_i ∩ Π_x) = 2` and the other with
 `dim(ρ̄_j ∩ Π_x) ≥ 1`* — attack it by seeking the two clauses **together**, a side whose
 every `x–y` path spans 6 ((BE-44)(ii)) glued to a **series end** ((BE-45)(i)); cheap
-individually, never sought jointly. Two things stay the USER's call, both OFFERED
+individually, never sought jointly. **THE NEXT CONCRETE TASK is to verify and land
+BDOUBLE's return** (the coordinator re-runs E1/E2/E3 itself, `61e046a6`); note that a HIT
+there closes the **measured** tight place, not half (B) — (BE-97)(iv)'s other 13 blocks are
+unwitnessed, not excluded. Two things stay the USER's call, both OFFERED
 2026-09-02 and both DECLINED IN FAVOUR OF CONTINUING RESEARCH: the **(K-res) wave** (the
 2026-08-26 adjudication selected a cheap scoping slice, queued below), and whether W4's
 now-closed informal side changes anything about the **2026-08-05 Lean hold** — its own
@@ -251,7 +255,10 @@ The ranked list:
    modular law against the **16 `S(ϕ)`-stable subspaces** and the cap is **attained**
    ((BE-94)–(BE-96)), so (BE-67)(iii) is **14 inequalities in `c_i(U) = dim(ρ̄_i ∩ U)`**,
    and measured (92/92 margin `0`, no shortfall) the **only** block where both sides bite
-   is `Π_x`. **(BE-71)(ii)'s completeness is ANSWERED** generically; at `π_x = π_y` only
+   is `Π_x`. **That last word is scoped** ((BE-97)(iv)): 92 rows of two constructed
+   populations, so the other **13 live blocks are unwitnessed, not excluded** — proving
+   (NO-DOUBLE-PENCIL) closes the **measured** tight place, not the class statement.
+   **(BE-71)(ii)'s completeness is ANSWERED** generically; at `π_x = π_y` only
    the cap survives. Three siblings, all closed: cross-cut
    forcing (**checked hypothesis** by BGENUINE, `0` shortfall at 392/392 — **do not
    re-hunt**), the flag base (**DISCHARGED by BBASE**, item 1), the forced-empty `G` hunt

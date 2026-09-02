@@ -1,7 +1,19 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: EIGHT fan-outs, FORTY-FIVE single directions and TWO concurrent pairs
-dispatched; 71 LANDED, NONE IN FLIGHT.**
+**Status: EIGHT fan-outs, FORTY-SIX single directions and TWO concurrent pairs
+dispatched; 71 LANDED, ONE IN FLIGHT.**
+**BDOUBLE (ordinal 64, §"BDOUBLE") IS IN FLIGHT since 2026-09-02** — at
+**(NO-DOUBLE-PENCIL)** ((BE-97)(iii)), the one place BUNIF's 14 inequalities are tight.
+The prep carries **(BE-97)(iv)'s scope, promoted to three summary surfaces**: a HIT closes
+the **measured** tight place, **not** half (B), because the other 13 live blocks are
+unwitnessed rather than excluded. Two readings labelled *to be tested*, both derived from
+the landed law: that the real obligation is the `Π_x` **inequality**, strictly weaker than
+(NO-DOUBLE-PENCIL) and equal to it only at `δ₁+δ₂ ≤ 6` — so an exhibited double pencil is
+**not automatically a shortfall**; and that (BE-44)(ii)'s own structural price may buy the
+slack, since `c₁(Π_x) = 2` forces `dist₁ ≥ 6`, and **if** that gives `δ₁ = 6` a violation
+needs `c₂ > δ₂`, i.e. side 2 **non-attaining** — with the `dist ≥ 6 ⟹ δ = 6` step named as
+the weak link to check first. Driver-to-be `notes/scripts/w4/bdouble.py`. Run at
+`recon-opus` (fable unavailable).
 **BUNIF (ordinal 63, §"BUNIF") LANDED 2026-09-02** — at **half (B)'s LAST residue**, the
 class quantifier (BE-67)(iii), which BPEEL had reduced to *one number per (piece, peel)*:
 **`reach(H;x,y) = min(δ₁+δ₂,6)`**. **HIT shape 2 — `reach` IS PER-SIDE DATA, and both
@@ -11531,3 +11543,188 @@ seeking the two clauses **together**: a side all of whose `x–y` paths span 6
 jointly. **(2)** the `U = ⟨M⟩` block — both sides' `ρ̄_i` containing the virtual edge's own
 line — unwitnessed, and `xy ∉ E(H)` removes the obvious source. **(3)** the coincident
 regime, where only the cap survives; the forced family there is BGENUINE's 392.
+
+## BDOUBLE — sixty-fourth ordinal (single dispatch, prepped 2026-09-02) — the one place the law is tight
+
+**Selection provenance: BUNIF's own named successor, and it is the only tight place the
+measurement found.** BUNIF turned (BE-67)(iii) into **14 per-side inequalities**
+`c₁(U) + c₂(U) ≤ dim U + max(0, δ₁+δ₂−6)` against the 16 `S(ϕ)`-stable subspaces, proved
+both bounds of the sandwich, and measured the violation margin at **`0` at 92/92** — never
+positive, never negative. The **only** block where both sides exceed the generic profile is
+`Π_x` (12/92, tight at 8), leaving **(NO-DOUBLE-PENCIL)**. W4's non-user-call list is empty;
+the **(K-res) wave** and the **2026-08-05 Lean hold** were both offered to the user on
+2026-09-02 and both **declined in favour of continuing research**.
+
+Dispatched **un-named, single**, at **`recon-opus`** (fable unavailable this session).
+
+### The target, stated exactly
+
+> **(NO-DOUBLE-PENCIL) ((BE-97)(iii)).** At no internal R-node peel does one side have
+> `dim(ρ̄_i ∩ Π_x) = 2` while the other has `dim(ρ̄_j ∩ Π_x) ≥ 1` — and the same at `Π_y`.
+
+Its two clauses are **already priced by landed results**: the first by **(BE-44)(ii)**
+(`c_i(Π_x) = 2` forces **every** `x–y` path of side `i` to span 6, hence
+`dist_i(x, y) ≥ 6`), the second by **(BE-45)** (a **series end** at `x`, or **path
+saturation** `δ_i = d_min`). *"Neither clause has been shown incompatible with the other,
+and that — not a search over configurations — is what half (B) now needs."*
+
+### WHAT A HIT HERE DOES AND DOES NOT DO — read this before scoping
+
+**It does not discharge half (B), and the summary surfaces have been corrected to say so.**
+(BE-97)(iv) is explicit and it is this direction's honest frame: *"`Π_x` only" is a
+statement about 92 rows of two constructed populations, **not** a theorem. The other 13 live
+blocks are unwitnessed rather than excluded.* So proving (NO-DOUBLE-PENCIL) closes the
+**measured** tight place. Half (B)'s class statement additionally needs the other blocks —
+(BE-97)(iv) even names the shape that would put a second one in play at once
+(`c_i(⟨M⟩) = 1` on **both** sides: both relative screw spaces containing the virtual edge's
+own line `p_x ∨ p_y`). **Job 3 must state the residual in those terms**, and must not report
+half (B) as discharged on a (NO-DOUBLE-PENCIL) HIT.
+
+### THE COORDINATOR'S TWO READINGS — labelled TO BE TESTED, both derived from the landed law
+
+`RESEARCH-ARC.md` §7 binds; its tally is **eight instances and seven kinds**, and the last
+two preps had **five of six** readings refuted, corrected or ruled inapplicable. Treat both
+below as arithmetic to re-derive, not as a route.
+
+**(1) THE OBLIGATION IS THE INEQUALITY, AND IT IS STRICTLY WEAKER THAN (NO-DOUBLE-PENCIL).**
+What half (B) needs at `Π_x` is *no violation*: `c₁ + c₂ ≤ 2 + max(0, δ₁+δ₂−6)`. Since
+`c_i ≤ dim Π_x = 2`, `c₁ + c₂ ≥ 3` forces one side to `2` and the other to `≥ 1` — so
+**(NO-DOUBLE-PENCIL) ⟺ `c₁ + c₂ ≤ 2`**, which is the inequality **only when
+`δ₁ + δ₂ ≤ 6`**. Above that threshold the inequality has slack `(NO-DOUBLE-PENCIL)` does
+not use. **Consequence to test:** the named condition may be **stronger than necessary**, and
+a counterexample to it need not be a shortfall — so an exhibited double pencil is *not*
+automatically a refutation of half (B). Say which you have.
+
+**(2) AND THE FIRST CLAUSE MAY BUY THE SLACK ITSELF — the reading the coordinator would
+most like tested, with its weak link named.** By (BE-44)(ii), `c₁(Π_x) = 2` forces
+`dist₁(x, y) ≥ 6`. **If** that gives `δ₁ = 6` — the step this reading rests on, and the one
+the coordinator cannot verify (the `δ = min(L, 6)` identity is stated at a **path** side,
+(BE-79)/(BE-80), not in general) — then `max(0, δ₁+δ₂−6) = δ₂`, and a violation at `Π_x`
+needs `2 + c₂ > 2 + δ₂`, i.e.
+
+> **`c₂ > δ₂`, hence `a₂ ≥ 1`, since `c₂ ≤ ρ₂ = δ₂ + a₂`.**
+
+That is: **under `δ₁ = 6`, a `Π_x` violation requires side 2 to be NON-ATTAINING.** If the
+class statement is asked at peels where both sides attain — which is what `A_i ≠ ∅` supplies
+and what (BE-22)(iii)'s `a = 0` case is about — the `Π_x` block would then be **free**, and
+(NO-DOUBLE-PENCIL) would be provable rather than merely unrefuted. **Where the coordinator
+expects to be wrong:** the `dist ≥ 6 ⟹ δ = 6` step; `δ_i` is the side's own deficiency-like
+quantity and the identity may not survive off a path side. **Check that step first** — if it
+fails, reading (2) fails with it and the direction is back to the joint search.
+
+### Job 1 (PRIMARY, FORCED) — settle (NO-DOUBLE-PENCIL), or the inequality it stands in for
+
+Prove it, exhibit a double pencil, or reduce it. **The attack BUNIF named** is to seek the
+two clauses **together** — a side whose every `x–y` path spans 6 ((BE-44)(ii)) glued to a
+series end or path-saturated side ((BE-45)) — which is cheap on each clause separately and
+**has never been sought jointly**. Readings (1)/(2) suggest the joint search may be
+unnecessary; **test them before spending the search**, and if either holds, say what it
+leaves.
+
+**On an exhibited double pencil, classify before pricing** (reading (1)): is it a
+**violation of the inequality** — a genuine shortfall, which would be the third mechanism
+(BE-71) says is the only remaining shape and a large result — or merely a double pencil at
+`δ₁+δ₂ ≥ 7`, where the inequality has slack and half (B) survives? The two have completely
+different consequences.
+
+### Job 2 (FORCED) — the standing per-arc inventory verdict
+
+It has now paid at six directions running and BUNIF's own instance is the model to beat: it
+found that its first draft of (BE-97)(i) rested on **(BE-38)(iii)'s *measured* third
+clause** rather than a theorem, and the arithmetic enumeration refused the draft. Run the
+check on this direction's own load-bearing citations — **(BE-44)(ii)** and **(BE-45)**
+especially, since the whole target is stated in terms of them: are they theorems, or
+measured clauses over a named population? Read the statements, not the summaries. One
+paragraph.
+
+### Job 3 (FORCED, CHEAP) — the honest residual, and the E-rider
+
+State what half (B) is left with, **in (BE-97)(iv)'s terms** — a HIT here closes the
+measured tight place and leaves the other 13 blocks unwitnessed-not-excluded, with the
+`⟨M⟩`-on-both-sides shape named as the one that would put a second block in play. Then read
+E1/E2/E3 against their **actual** definitions and **report, never fire**, with the
+2026-09-02 correction in force:
+
+> **"The target" in E1–E3 is the ARC's target — `PencilPair K 3 G`** — never a direction's
+> local obligation. Two E3 texts exist (`:1700`'s two-conjunct, `:2098`'s one-conjunct
+> deviation); say which you read. BBASE and BUNIF both used `:1700`'s.
+
+### What counts as a HIT — state which you got
+
+1. **(NO-DOUBLE-PENCIL) PROVED**, or the weaker `Π_x` inequality proved (reading (1)) —
+   say which, they are not the same.
+2. **A double pencil exhibited**, classified violation-vs-slack per job 1.
+3. **Reduced** to a named condition strictly smaller than (NO-DOUBLE-PENCIL).
+4. **The per-arc inventory verdict** on (BE-44)(ii)/(BE-45) (job 2).
+5. **The honest residual + the E-rider** (job 3).
+
+Either reading **corrected** is a reportable result; BBASE's three-for-three and BUNIF's
+two-for-two are the precedent, and reading (2)'s named weak link is where to look first.
+
+### Bars
+
+- **Do not re-open:** the **law itself** ((BE-94)–(BE-96)) — the stabilizer, the block
+  splitting, the cap, the degeneration bound, and the `121/122` / `393/400` meeting
+  disclosure, all landed; the **flag coincidence** (checked hypothesis, `0` shortfall at
+  392/392); the **flag base** ((BE-89)–(BE-93), discharged; its cyclomatic-`≥ 2` successor
+  is **not** this direction); the **exhaustiveness obligation** ((BE-70)); `(1,1)` peels
+  ((BE-79)); the **SPREAD step** ((BE-74)); the **forced-empty `G` hunt** ((BE-72));
+  **(BE-32)(+)**; **(BE-41)(ii)**; **BWIN's window theorem**; **S-mark's pin**.
+- **Do not re-derive** BUNIF's `(BE-96)(ii)` exception (`K4(2,3,3,3,3,3)` at peel `(A,B)`,
+  where the degeneration bound is not sharp and the row is settled by measurement) — it is
+  disclosed and it is not this direction's job to close it.
+- **Not this direction, ranked separately:** §(K-bare-ext)'s two window conditions (qualify
+  that token — three owners); **cross-pair welding** ((BE-28)(i)); the **one-end-series**
+  case; BTWOCUT's bundle construction; the **W4** side, closed.
+- **The Lean hold (2026-08-05) binds**: no `.lean`, in any file, for any reason.
+- **Out of scope:** `hK`, **(GR-15)**, class uniformity of the escape, **(K-res)** (a USER
+  call).
+
+### Riders
+
+**F11 — and the target is again a universal claim.** *"At no internal R-node peel"* needs an
+argument or an enumeration that enumerates; the `12/92` and `8` tight rows are measurements
+on two constructed populations. **Name the populations and their caps**, and — this is the
+specific trap here — **do not let `Π_x` only** travel without (BE-97)(iv)'s scope, which is
+the correction this prep made to three summary surfaces after the landing stated the caveat
+only in the workbook. **Cap disclosure MANDATORY with the DENOMINATOR named.**
+
+**F12** — if you correct (BE-44)(ii)'s or (BE-45)'s reading, edit **at those statements**,
+not only in the write-up; and if reading (2)'s `δ = 6` step turns out false, annotate
+wherever the `δ = min(L, 6)` identity is quoted outside a path side.
+
+**F21 + `RESEARCH-ARC.md` §6.** The `(K-bare)` row is at **1 472 / 1 600** after BUNIF's
+recompute — **128 spare, the tightest it has been in three landings**, so a recompute to a
+target is required rather than optional, with label preservation by **scripted set-diff**
+(BUNIF's *101 in / 112 out / zero dropped* is the standard).
+
+**Harness.** `notes/scripts/README.md` first — §1 for the primitives (`bunif.py`'s block
+decomposition, profile and margin instruments; `bpeel.py`'s reach layer; `bgenuine.py`'s
+census; do not reimplement any). A new driver is `w4/bdouble.py`; if you only **add** it the
+figure gate discharges by the one-line check.
+
+**F17 — four status surfaces**, all set to *in flight* by this prep.
+
+**`RESEARCH-ARC.md` §7** — readings (1) and (2) are hypotheses with their evidence stratum
+named, and (2)'s weak link is named inside it. Kill either without ceremony.
+
+### Reservation
+
+(`notes/Pencil-labels.md` §"Reserved namespace — direction BDOUBLE".) Labels
+**(BE-99)–(BE-103)**, ***Steps BE98–BE102***, owning file `notes/Pencil-informal.md`
+§(K-bare-ext) — **extends, no new section** — driver `w4/bdouble.py`. Opens exactly at the
+tail **BUNIF declared**. **Return any unconsumed remainder.** **Do not mint a label for
+`Π_x`, `c_i(U)`, `margin`, `blockcap`/`blockdeg` or the double pencil itself** — all are
+existing prose/symbol names from BUNIF's landing. `BTIGHT` and `BPENCIL` were checked
+(both 0-hit) and **not chosen**: `BTIGHT` names a *measured* property rather than the
+question, and `BPENCIL` collides conceptually with the phase's own subject. **`BDOUBLE`
+names the condition, not a predicted answer.**
+
+### Budget — measured at this prep
+
+**`notes/Phase39.md` is at 578/580 lines, 485/525 status-header words.** The BUNIF landing
+left it **saturated at 580/580**, and the follow-up bought the room back by relocating the
+**W4 per-landing detail** as `notes/Pencil-structure.md` **block 9** — the same disposition
+block 8 got, and available because W4's informal argument is closed. The prep has spent most
+of that again on the in-flight lines plus (BE-97)(iv)'s scope caveat at two surfaces. **The
+landing MUST relocate or merge, not append**, and the note's own rule names the candidates.

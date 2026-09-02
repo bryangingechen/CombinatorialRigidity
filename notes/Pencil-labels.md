@@ -2971,3 +2971,41 @@ configuration-level objects took PROSE names**, per the reservation's preference
 BE98***, declared here so the omission BBASE's row made is not repeated. **Gap-map
 outcome:** the `(K-bare)` row was recomputed to **1 472 / 1 600** (128 spare), scripted
 set-diff **101 labels in, 112 out, ZERO dropped**.
+
+## Reserved namespace — direction BDOUBLE (2026-09-02, **IN FLIGHT**)
+
+**Reserved 2026-09-02 for the single direction BDOUBLE** (ordinal 64, the arc's
+seventy-second direction; `notes/Pencil-fanout.md` §"BDOUBLE") — **(NO-DOUBLE-PENCIL)**
+((BE-97)(iii)), the one place BUNIF's 14 per-side inequalities are tight. Coordinator-set,
+single dispatch — **not** a fan-out, so this reservation protects against the *existing
+corpus* only.
+
+| direction | owning § | labels reserved | steps reserved | driver |
+|---|---|---|---|---|
+| **BDOUBLE** | §(K-bare-ext) — **extends**, no new section | **(BE-99)–(BE-103)** | **BE98–BE102** | `w4/bdouble.py` (expected — extend `bunif.py`'s block/profile/margin instruments and `bpeel.py`'s reach layer, by read-only import) |
+
+The reservation opens at **(BE-99) / Step BE98**, exactly the tail **BUNIF declared** — the
+habit BBASE's row omitted and BUNIF restored. Both tokens have **one hit each**, opened and
+confirmed to be that declaration, not a consumed label.
+
+**0-hit verification, at reservation time**, across `*.md`, `*.tex`, `*.lean`, `*.py`,
+`*.m2` with `.git`/`.lake`/`__pycache__` excluded, **in both cases**: `BDOUBLE`, `bdouble`,
+`bdouble.py`, `(BE-100)`–`(BE-103)` and the raw step tokens `BE99`–`BE102` each **0-hit**.
+
+**Checked and NOT chosen:** `BTIGHT` (0-hit both cases, but it names a **measured
+property** — that the `Π_x` block is tight at 8 of 92 rows — rather than the question, and
+(BE-97)(iv) is precisely about how far that measurement generalizes); `BPENCIL` (0-hit, but
+*pencil* is the **phase's own subject**, so the code would read as being about
+`PencilPair` rather than about one block of one peel). **`BDOUBLE` names the condition and
+not a predicted answer**, per BGENUINE's, BBASE's and BUNIF's precedent.
+
+**(L6) reminder for the landing.** Run the landing-time bare-token grep. Live risks:
+**`(S1)`/`(S2)`** with three owners — BBASE's and BUNIF's habit of writing
+*"§(K-bare-ext)'s own two window conditions"* is the one to copy. **Mint nothing** for
+`Π_x`, `c_i(U)`, `margin`, `blockcap`/`blockdeg`, the 16 stable subspaces or the double
+pencil itself: all are existing prose/symbol names from BUNIF's landing, and this section
+has now gone four directions without minting a configuration-level token.
+
+**Gap-map note (F21).** The `(K-bare)` row stands at **1 472 / 1 600 words** after BUNIF's
+recompute — **128 spare, the tightest in three landings**, so a **recompute to a target** is
+required rather than optional, with label preservation by **scripted set-diff**.
