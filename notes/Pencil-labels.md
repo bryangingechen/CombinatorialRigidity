@@ -3087,3 +3087,50 @@ landing grep run**: `(S1)`/`(S2)` written as *"§(K-bare-ext)'s own two window c
 `SPECIAL_CAPS` entry added), label preservation by scripted set-diff — **130 in, 137 out,
 ZERO dropped**. **The tail this direction declares, for the next reservation:
 (BE-109) / Step BE108.**
+
+## Reserved namespace — direction GPACK (2026-09-02, **IN FLIGHT**)
+
+**Reserved 2026-09-02 for the single direction GPACK** (ordinal 66, the arc's
+seventy-fourth direction; `notes/Pencil-fanout.md` §"GPACK") — **(GR-18)(iii)**, the
+grouping problem, and **the arc's first `hK`-side direction in 22 dispatches**.
+Coordinator-set, single dispatch — **not** a fan-out, so this reservation protects against
+the *existing corpus* only.
+
+| direction | owning § | labels reserved | steps reserved | driver |
+|---|---|---|---|---|
+| **GPACK** | §(K-grid) (`notes/Pencil-informal-grid.md`) — **extends**, no new section | **(GR-129)–(GR-133)** | **G149–G153** | `w4/gpack.py` (expected — extend `gridcol.py`'s `--pack` and `packmm.py`/`gridwit.py` by read-only import) |
+
+**This is the first reservation on the `GR-` tail since GMINM (ordinal 36, 2026-08-26)** —
+21 directions on other namespaces — and it opens exactly where GMINM **returned**. GMINM
+reserved (GR-125)–(GR-129) and *Steps G145–G149*, consumed only through **(GR-128)/G148**,
+and its registry row states: *"(GR-129) and Step G149 were NOT needed and are RETURNED — the
+live tail is therefore (GR-129)+ / Step G149+."*
+
+**0-hit verification, at reservation time**, across `*.md`, `*.tex`, `*.lean`, `*.py`,
+`*.m2` with `.git`/`.lake`/`__pycache__` excluded, **in both cases**: `GPACK`, `gpack`,
+`gpack.py`, `(GR-131)`–`(GR-133)` and the raw step token `G151` each **0-hit**.
+**`(GR-129)`/`(GR-130)` and `G149`/`G150` have hits — every one opened and confirmed to be
+the RETURN RECORD**, in GMINM's registry row, its fan-out section, and one
+*checked-and-not-chosen* note; none is a consumed label.
+
+**Checked and NOT chosen.** **`GGROUP`** (0-hit) — *group* now collides with a **live
+technical object in the sibling thread**, BUNIF's stabilizer `S(ϕ) ⊆ PGL₄` and its maximal
+torus, so a `GGROUP`-tagged claim would read ambiguously in a corpus where both threads are
+cited together; that is exactly the (L5) overlap the rule exists to catch, and it is the
+first time a *cross-thread* collision has driven a naming decision. **`GBIS`** (0-hit) —
+names the **coordinator's framing** (*equitable bisection*) rather than the target, which
+§7 warns against. **`GPACK` names the object the two freedoms act on**, and not a predicted
+answer.
+
+**(L6) reminder for the landing.** Run the landing-time bare-token grep. Live risks on this
+namespace: bare **`(C6)`/`(C7)`** (this file's oldest recorded collision, §(SAFE-RES) vs
+§(K-slide-comb)); **`(R1)`/`(C1)`/`(C2)`**, renamed to `(GR-R1)`/`(GR-C1)`/`(GR-C2)` by the
+2026-08-20 user call — **do not re-mint the bare forms**; and `A(β)`, `C_β`, `J`, `Ĝ`,
+`D_β`, which are *Step G21*'s own symbol names — **reuse them, mint nothing**.
+
+**Gap-map note (F21) — this is the corpus's biggest row.** `(K-grid)` stands at **2 390 /
+2 715 status words**, the one row with a `SPECIAL_CAPS` entry, bumped three times and every
+time **because it had overflowed**. **Recompute to a target**; label preservation by
+`python3 notes/scripts/gapdiff.py`, now mandated by `notes/CLAUDE.md` for any recompute.
+**No overflow, no bump** — the gate's docstring records a bump proposed and **withdrawn**
+on 2026-09-02 for exactly that reason.

@@ -10,7 +10,8 @@ derives it from exactly **three carried items**: **`hcontract`** (W4 — build p
 
 **The research arc: 73 directions COMPLETE** (2026-08-05 → 09-02, ordinals
 1–65 — 69 on kernel (K), and **WTRI (58) / WELOC (59) / WPAIR (60) / WGROW (61) on W4**),
-plus eight strategy-only passes and two architecture probes; **NONE IN FLIGHT**.
+plus eight strategy-only passes, two architecture probes and one read-only scoping recon;
+**GPACK (66) IS IN FLIGHT — the FIRST `hK`-side direction in 22 dispatches**.
 Per-direction verdicts, specs and write-ups live at `notes/Pencil-fanout.md` §"<CODE>"
 (ordinals 1–19: the archive) plus a workbook home — **not restated here**.
 **The arc's standing result, unchanged by all 73: `hK` is not closer.** **(GR-15)** — the
@@ -119,18 +120,16 @@ constraints; the **dated dispatch/selection narrative for every ordinal, 1–44,
   rung actually consumes"*; `weekly_all` moves **1–2 points per pair-round**. Nothing
   else in the playbook moves.
 
-**Kernel-(K) research arc — eighty docs+scripts-only dispatches landed across 63
-directions (ordinals 1–55), plus eight strategy-only passes** (2026-08-02 → 09-01) — and,
-**outside** that count because they test the architecture rather than the (K) crux, the
-**two probes**, **KBARE-FALSIFY** (2026-08-20) and **C3-AVOID** (2026-08-24), both landed.
-The roll call, ordinals, dates and rungs are `notes/Pencil-fanout.md`'s header and its
-per-direction sections — **not restated here**; the **dispatch** count moves only on a
-landing, and a user call on dispatch *shape* contributes **no** strategy pass; the canonical
-homes are `notes/Pencil-structure.md` §"Conventions and canonical homes"'s, not restated
-here either. Net effect: **disproof risk removed**, every refuted route/gap has a successor
-in the gap map, several structural positives proven, **route-ledger entry 5 PROVEN** (the
-arc's first HIT) — and **class uniformity of the escape remains untouched**. **Doc-debt
-round CLOSED** (`notes/Pencil-cleanup.md`, 2026-08-13, category D only).
+**The arc's cumulative tally, and it had gone stale** (it read *"63 directions, ordinals
+1–55"* against a header saying 68/1–60 as early as 2026-09-02): the roll call, ordinals,
+dates and rungs live in `notes/Pencil-fanout.md`'s header and per-direction sections —
+**the only place they are maintained**. Counting rules, unchanged: the dispatch count moves
+only on a **landing**; a user call on dispatch *shape* contributes **no** strategy pass;
+the **two probes** (KBARE-FALSIFY, C3-AVOID) sit outside the direction count because they
+test the architecture, not the (K) crux. Net effect over the whole arc: **disproof risk
+removed**, every refuted route/gap has a successor in the gap map, **route-ledger entry 5
+PROVEN**, and **class uniformity of the escape remains untouched**. **Doc-debt round
+CLOSED** (`notes/Pencil-cleanup.md`, 2026-08-13, category D only).
 
 **The other candidate continuations, unselected — RELOCATED 2026-08-29** (verbatim) to
 `notes/Pencil-structure.md` §"The unselected candidate continuations": items (a)/(g) **DONE**,
@@ -220,26 +219,30 @@ status that stays here: **S-mark is (BE-14)'s only open step**, (β) is proved a
 **THE W4 DEVIATION'S PER-LANDING DETAIL — RELOCATED 2026-09-02** to
 `notes/Pencil-structure.md` §"The W4 deviation — per-landing detail" (**block 9**), the
 same disposition block 8 got: the thread has not been worked since WGROW (61) and its
-informal argument is **closed**, so which landing proved which sub-clause is attribution,
-owned by `notes/Pencil-fanout.md` §"<CODE>" and the *Decisions made* one-liners. The status
-that stays here: **(T), (E-pair) and (V) are THEOREMS**, **(E) is open, tight and off every
-W4 path**, and W4's non-user-call cost list is **EMPTY** — only the USER call **(K-res)**
-remains, plus the Lean-held build.
+informal argument is **closed**, so which landing proved which sub-clause is attribution.
+Status, stated once in the header and not repeated: **(T)/(E-pair)/(V) are THEOREMS**, (E)
+is open and off every W4 path, and W4's non-user-call list is **EMPTY**.
 
 **BBASE (62) → BUNIF (63) → BDOUBLE (64) → BSATUR (65) ALL LANDED 2026-09-02** — verdicts
-in *Decisions made*, mathematics at §(K-bare-ext) *Steps BE88–BE107*. The clauses that are
-*status* rather than attribution: **(CH-1) does not apply to the flag base at all**
+in *Decisions made*, mathematics at §(K-bare-ext) *Steps BE88–BE107*, per-landing detail in
+**block 8**. Two clauses are *status*: **(CH-1) does not apply to the flag base**
 ((BE-89)), so anything citing it for the base cites the wrong object; and
-**(PENCIL-SATURATES) is FALSE** ((BE-104)) — the surviving form is
-**(PENCIL-SATURATES-GEN)**, the same clause **at a generic flag**, which is free only
-because (BE-14) is **existential** ((BE-16)); a step needing the block inequalities at
+**(PENCIL-SATURATES) is FALSE** ((BE-104)), its surviving form **(PENCIL-SATURATES-GEN)**
+free **only** because (BE-14) is existential — a step needing the block inequalities at
 *every* flag does **not** get it ((BE-107)(ii)).
 
-**THE NEXT CONCRETE TASK is to prep and dispatch the sixty-sixth ordinal**, whose highest
-value target is BSATUR's own successor (1): **`Σ_x ⊆ ρ̄_i` at `ρ_i ≤ 5`** ((BE-107)(iii)) —
-the one shape that would kill the repair as well, driver-findable, and measured absent at
-only **5** terminals, the thinnest number the (BE-14) thread carries. Ranked item 0 below.
-Two things stay the USER's call, both OFFERED
+**IN FLIGHT — GPACK (66), and THE ARC HAS TWO LANES AGAIN.** After 22 consecutive
+dispatches on `hbareSplit`/W4, a user call sent one to **`hK`**: **(GR-18)(iii)**, the
+grouping problem (§(K-grid) *Step G21*; spec §"GPACK"). **The `hK` lane's ranking is
+`notes/Pencil-strategy.md` §8's corrected board, NOT this list** — the board's own top two
+were **spent** and **refuted** and were re-ranked at `70c06abe`; that box also carries the
+standing **do-not-do** (no more (a′)/(b′) ledger directions) and the caveat that a (GR-15)
+HIT buys `hK` on the **tight stratum only**. The **(BE-14) lane's** next target is
+unchanged and is ranked item 0 below: BSATUR's successor **`Σ_x ⊆ ρ̄_i` at `ρ_i ≤ 5`**
+((BE-107)(iii)), which would kill the repair too, measured absent at only **5** terminals.
+**THE NEXT CONCRETE TASK is to verify and land GPACK's return** (the coordinator re-runs
+E1/E2/E3 itself, `61e046a6` — and **E1 is live on that side**: a job-1 MISS is a (GR-10)
+flank). Two things stay the USER's call, both OFFERED
 2026-09-02 and both DECLINED IN FAVOUR OF CONTINUING RESEARCH: the **(K-res) wave** (the
 2026-08-26 adjudication selected a cheap scoping slice, queued below), and whether W4's
 now-closed informal side changes anything about the **2026-08-05 Lean hold** — its own

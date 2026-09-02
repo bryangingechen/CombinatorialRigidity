@@ -1,7 +1,21 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: EIGHT fan-outs, FORTY-SEVEN single directions and TWO concurrent pairs
-dispatched; 73 LANDED, NONE IN FLIGHT.**
+**Status: EIGHT fan-outs, FORTY-EIGHT single directions and TWO concurrent pairs
+dispatched; 73 LANDED, ONE IN FLIGHT.**
+**GPACK (ordinal 66, §"GPACK") IS IN FLIGHT since 2026-09-02 — the arc's FIRST `hK`-side
+direction in 22 dispatches**, at **(GR-18)(iii)**, the grouping problem: *does some 6-tree
+partition of `Ĝ` admit a length-legal 3+3 split?* Its input **(GR-18)(i) is a landed
+theorem**, so what is open is finite and combinatorial, with two named freedoms. Picked by
+a **user call** plus a read-only scoping recon that found §8's ranked board carrying a
+**spent** rank 1 (OQRANK) and a **refuted** rank 2 ((GR-122), the day after it was ranked)
+— re-ranked at `70c06abe`. The prep's one reading is **verified in the driver, not
+guessed**: `gridcol.py`'s `--pack` asserts Nash–Williams *feasibility* and confirms that
+(GR-10) certificates *are* packings — it **never** builds an arbitrary packing and asks
+whether that one splits, so the quantifier (GR-18)(iii) is about has no code behind it.
+That is the same shape as BSATUR's flag defect, and `RESEARCH-ARC.md` §4's new sharpening
+is its first application. **The deliverable must be an ARGUMENT** — the `hK` side's record
+is 907/907, 40 742 exhaustive, 1 158 344 instances, and (GR-15) has never moved. Driver-to-be
+`notes/scripts/w4/gpack.py`. Run at `recon-opus` (fable unavailable).
 **BSATUR (ordinal 65, §"BSATUR") LANDED 2026-09-02** — at **(PENCIL-SATURATES)**,
 *`dim(ρ̄_i ∩ Π) = 2 ⟹ ρ_i = 6`*, the clause BDOUBLE's redundancy theorem ((BE-101)) rests
 on. **HIT shapes 2 AND 3 — the clause is REFUTED, and the repair is FREE.** The prep's
@@ -12251,3 +12265,213 @@ refutation is not confined to series ends; (3) **a bad-flag row with `margin > 0
 shortfall, and worth far more than this landing; (4) the **remaining 11 live blocks**,
 still unwitnessed; (5) the ear side's **two window conditions** and **cross-pair welding**
 ((BE-28)(i)), unchanged and untouched here.
+
+## GPACK — sixty-sixth ordinal (single dispatch, prepped 2026-09-02) — **the arc returns to `hK` after 22 dispatches**
+
+**Selection provenance: a user call, and a board that had been pointing at dead items.**
+Asked whether an `hK`-side dispatch was worth spending this session, the user said yes. A
+read-only scoping recon then found that `notes/Pencil-strategy.md` §8's numbered ranking —
+which the board's own preamble names as *what a fresh session reads* — carried **rank 1
+SPENT** (OQRANK, 2026-08-25: input (a) at all 174 certified classes, **zero rulings**, so
+both branches it calls "decisive both ways" are settled) and **rank 2 REFUTED** ((GR-122),
+*Step G142*, GHWIT, **2026-08-26 — the day after it was ranked**), with rank 3 not an `hK`
+item at all. Coordinator-verified at source, both. Against a measured **22 consecutive
+dispatches (ordinals 44–65) with none on `hK`**, that is likely part of *why*. The board is
+re-ranked (`70c06abe`) and this is its **new rank 1**.
+
+Dispatched **un-named, single**, at **`recon-opus`** (fable unavailable this session).
+
+### The target, stated exactly
+
+From **§(K-grid) *Step G21*** (`notes/Pencil-informal-grid.md`), read at source. Let `G` be
+a tight class shape (`def(G) = 0`); let `Ĝ` be the hub multigraph with branch `β` at
+multiplicity `6 − ℓ_β`, so `|E(Ĝ)| = 6(n − 1)`.
+
+> **(GR-18)(i) is a THEOREM** — coordinator-verified: `def(G) = 0` **alone** forces `Ĝ` to
+> partition into exactly **6 spanning trees** of `G°` (Tutte / Nash-Williams plus
+> 5/6-sparsity). Nothing else is assumed: no `Λ = ∅`, no `D = 0`, no `(GR-4′)`.
+
+Writing `C_β ⊆ {1..6}` for the trees containing `β`, **(GR-18)(iii)** is what is open:
+
+> **Does *some* 6-tree partition of `Ĝ` admit a 3+3 split `J` with
+> `|C_β ∩ J| = 3 − A(β)` for a length-legal `A(β)`** — together with an A-end choice on
+> each even branch and a consistent hub colouring?
+
+Automatic at `ℓ_β ∈ {1,5}`; at `ℓ_β ∈ {2,3,4}` it says the complement `D_β` is split by `J`
+as evenly as possible. **Two freedoms are handed to the prover**: re-choose the packing
+(matroid-union **exchange**), and the even branches' bits.
+
+**HIT → (GR-10) → (GR-15) → `hK` on the tight stratum**, over every infinite
+characteristic-0 field, and it frees one half of §(K-out)'s input (a). **MISS → the first
+(GR-10) flank in 73 directions**: a shape where no packing admits a legal split *is* a
+flank by (GR-18)(iii), refuting (GR-10) as a class statement and localizing the obstruction
+to a concrete 6-element set-system condition.
+
+### THE COORDINATOR'S ONE READING — VERIFIED IN THE DRIVER, and it says where the work is
+
+This is not a mathematical guess. I read `notes/scripts/w4/gridcol.py`'s `leg_pack`
+(`--pack`, line 1001) and it does **two** things: it asserts the **Nash–Williams counting
+condition** — that `Ĝ` *can* pack 6 spanning trees — exhaustively at 907/907 shapes; and it
+confirms that **(GR-10) certificates ARE such packings**, i.e. it starts from a colouring
+that already passes `filter_pass` and reads off the packing it induces.
+
+> **It never constructs an arbitrary packing and asks whether that one admits a legal
+> split.** The quantifier (GR-18)(iii) is *about* — *some* 6-tree partition — is exactly the
+> one the existing harness does not range over, and the freedom the target hinges on
+> (re-choosing the packing by exchange) **has no code behind it**.
+
+**Why this is the load-bearing warning and not bookkeeping:** it is the same shape as the
+defect BSATUR found one landing ago and that `RESEARCH-ARC.md` §4 was extended for on
+2026-09-02 — an in-driver `assert` that was **true of every draw the run made** and still
+missed the answer, because the sampler varied the configuration and never the flag. Here
+`--pack`'s assertion is true and tells you about *feasibility*, not about *which* packing.
+**Do not read 907/907 as evidence about (GR-18)(iii)**; it is evidence for (GR-18)(i),
+which is already a theorem. **Where I expect to be wrong:** possibly the exchange freedom is
+unnecessary because the certificate-induced packing is already canonical in some sense the
+workbook knows and I do not — if so, say it, and the direction gets much cheaper.
+
+### Job 1 (PRIMARY, FORCED) — settle (GR-18)(iii), and the deliverable must be an ARGUMENT
+
+**The single most important instruction in this spec, and it comes from the re-rank's own
+do-not-do:** the `hK` side's record is **907/907, 40 742 exhaustive, 549 172 blocks,
+1 158 344 instances, 323 adversarial constructions — and (GR-15)'s status word has never
+moved.** §2.2 already wrote the reason: *"A search does not carry a reason."* So:
+
+> **The deliverable is an argument, with the search demoted to an adversarial control.**
+
+What a realistic direction returns — and the arc has this exact pattern three times over
+(GFLIP proved (GR-R1) hypothesis-free; (GR-68) proved a single-path repair price `≤ 2` at
+any shape with **no cap**; GCHEAP proved an every-step form below an **exact** boundary) —
+is **a theorem on a named stratum with an exact boundary, or an adversarial witness**. It
+will **not** return (GR-10) whole; do not pad toward that.
+
+**The attack is named and not blind.** TCOL item (v) already records the adversarial places
+— `G°` rich in `(2,2,3)`/`(2,2,2,2)` circuits sharing branches, hub multigraphs with many
+parallel branch pairs — and says *"a targeted adversarial construction has not been
+attempted"*. For this statement it still has not been.
+
+**(GR-13)'s NP-hardness does not bite and points here.** *Step G18* draws its own
+consequence: *"Any proof of (GR-10) must be an **existence-of-good-colouring argument** —
+exploit the free bit per branch … to avoid the non-polychromatic circuit hypergraphs, not
+to characterize them."* And (GR-13) remark (ii) proves the hardness gadgets are
+**habitat-infeasible**, leaving *"whether the grouped packing stays NP-complete with
+**connected** classes"* open — while real ruling classes are connected. Read that remark
+before concluding hardness blocks anything.
+
+### Job 2 (FORCED, CHEAP — and it changes what a HIT is worth) — the tight-stratum caveat
+
+A (GR-15) HIT discharges `hK` **on the tight stratum**. But **`C11`** — a bare odd cycle —
+is *in* `hK`'s habitat and is **not** count-tight; **(AC-6) is *"REFUTED as a class
+statement"*** by it, and `(K-clos)`'s close-it says *"nothing here would ever make the
+statement habitat-uniform: `C11` is permanent"*. The scoping recon **found no gap-map row
+owning that non-tight-but-in-habitat remainder** — having read four of 28 rows, so this is
+a question, not a finding.
+
+> **Is the remainder genuinely free — §2.5's `dim R_a ≥ 2` ⟹ escape automatic — or is it an
+> unowned gap?**
+
+One paragraph, sourced to whichever row does own it (or a statement that none does).
+**Read the map with `python3 notes/gapmap.py`, never `sed`/`grep`: one row is a single
+20 000+ character line.** This is cheap and it prices the whole `hK`-on-the-tight-stratum
+route, so it is forced rather than optional.
+
+### Job 3 (FORCED, CHEAP) — what `hK` is left with, and the E-rider
+
+State what **(GR-15)** and `hK` are left with after this landing, and read E1/E2/E3 against
+their **actual** definitions (`notes/Pencil-fanout-archive.md`) — **report, never fire**:
+
+> **"The target" in E1–E3 is the ARC's target — `PencilPair K 3 G`** — never a direction's
+> local obligation (`61e046a6`). **E1 is the clause that could actually fire on this side**:
+> it wants a **g-flank** exhibited, and a job-1 MISS producing a (GR-10) flank is the
+> closest any direction has come in 73. **Report it precisely and do not fire it** — the
+> coordinator re-runs E1/E2/E3. Two E3 texts exist (`:1700` two-conjunct, `:2098`
+> one-conjunct); the last four landings used `:1700`'s.
+
+### What counts as a HIT — state which you got
+
+1. **(GR-18)(iii) PROVED**, whole or on a named stratum with an **exact** boundary.
+2. **A flank** — a shape where no packing admits a legal split. The first in 73 directions,
+   and it re-routes (GR-15) onto the collapse-order route. **Say whether it is a g-flank in
+   E1's sense.**
+3. **Reduced** to a named condition on the branch hypergraph, strictly smaller.
+4. **The tight-stratum caveat's verdict** (job 2) — owned row, or unowned gap.
+5. **What `hK` is left with + the E-rider** (job 3).
+
+My reading corrected is a reportable result; six of the last eight coordinator readings
+died, and each death produced the landing's most useful sentence.
+
+### Bars
+
+- **DO NOT dispatch or drift into another (a′)/(b′) ledger question.** Fourteen directions
+  (GLAW → GMINM, *Steps G74–G148*) have worked it; the `(K-grid)` status cell's own summary
+  over that span is *"(GR-15) stays OPEN throughout, unchanged in status, no gap-map status
+  move"*; its live successor is bookkeeping by its own words; and it produced the board's
+  now-refuted rank 2.
+- **DO NOT re-run the certificate-3 uniformity route** — GUNIF settled it at *Step G36*,
+  *"DEAD AS SPECIFIED"*, the cap being false in general. (The `(K-grid)` **close-it** cell
+  still lists a route (i) that *is* certificate 3 while the same cell files it under
+  do-not-re-run; that contradiction is **flagged, not yours to resolve** unless your work
+  touches the cell, in which case you own the reconciliation.)
+- **Do not re-open:** (GR-10) as already-refuted (it is not), (GR-4′), `Λ ≠ ∅`, `D > 0` —
+  the three unswept ledger entries are **not** inputs to this route and must not become
+  hypotheses of your statement; if your argument needs one, **that is a finding** and the
+  route is not `(GR-4′)`-free after all — say so loudly.
+- **Not this direction:** **(K-res)** (a standing **USER call**, offered and declined
+  2026-09-02); **route σ obligation 1** and the **W4 build** (Lean-held); **option B** (the
+  stress-function infrastructure, un-commissioned 2026-07-30); the whole **(BE-14)** thread
+  and half (B).
+- **The Lean hold (2026-08-05) binds**: no `.lean`, in any file, for any reason. §9's Zheng
+  shelf is an **idea source, never a citation**.
+
+### Riders
+
+**F11, in its 2026-09-02 sharpened form — read `RESEARCH-ARC.md` §4 before writing a
+driver.** A driver that *asserts* a claim is only as strong as the distribution it runs
+under: **name the sampler's support and say which of the claim's own variables it varies.**
+That sharpening was promoted from BSATUR's landing yesterday-in-arc-time, and the coordinator
+reading above is its first application. **Cap disclosure MANDATORY with the DENOMINATOR
+named**; an exhausted cap is *"not found under cap C"*, never *"does not exist"*.
+
+**Cost caution, from the scoping recon.** `--pack` is already **98 s**; a packing-space
+explorer is combinatorially heavier. **Cap the exchange neighbourhood explicitly and
+disclose it** — GHWIT's precedent is the standard (*"the 2-chord transposition
+neighbourhood only … not a search"*).
+
+**F21 — and this row is the biggest in the corpus.** `(K-grid)` is at **2 390 / 2 715
+status words** (the one row with a `SPECIAL_CAPS` entry, bumped three times *because it had
+overflowed*). **Recompute to a target**, label preservation by **`python3
+notes/scripts/gapdiff.py`** — the scripted set-diff shipped yesterday-in-arc-time, now
+mandated by `notes/CLAUDE.md` for any recompute. **No overflow, no bump**: the gate's
+docstring records a bump proposed and withdrawn on 2026-09-02 for exactly that reason.
+
+**F17 — four status surfaces**, all set to *in flight* by this prep; note that
+`notes/Phase39.md`'s ranked list is the **(BE-14)** thread's, and this prep has added an
+`hK` lane above it pointing at the strategy board rather than duplicating it.
+
+**Harness.** `notes/scripts/README.md` first — §1 for the primitives (`gridcol.py`,
+`packmm.py`, `gridwit.py`, `grid.py`, `closure.py`; do not reimplement `branch_decomp`,
+`nash_williams_ok`, `colourings` or `filter_pass`). A new driver is `w4/gpack.py`;
+addition-only discharges the figure gate by the one-line check.
+
+### Reservation
+
+(`notes/Pencil-labels.md` §"Reserved namespace — direction GPACK".) Labels
+**(GR-129)–(GR-133)**, ***Steps G149–G153***, owning file
+`notes/Pencil-informal-grid.md` §(K-grid) — **extends, no new section** — driver
+`w4/gpack.py`. Opens at the tail **GMINM returned**: it reserved (GR-125)–(GR-129) and
+G145–G149, consumed only through (GR-128)/G148, and **explicitly returned (GR-129) and Step
+G149**, declaring *"the live tail is therefore (GR-129)+ / Step G149+"*. Every hit on
+`(GR-129)`/`(GR-130)`/`G149`/`G150` was opened and confirmed to be that **return record**,
+not a consumed label. **Return any unconsumed remainder.** `GGROUP` was checked (0-hit) and
+**not chosen**: *group* now collides with a live technical object in the sibling thread
+(BUNIF's stabilizer `S(ϕ) ⊆ PGL₄`), which is exactly the (L5) overlap the rule exists to
+catch. `GBIS` was 0-hit but names the coordinator's framing (*equitable bisection*) rather
+than the target. **`GPACK` names the object the freedom acts on.**
+
+### Budget — measured at this prep
+
+**`notes/Phase39.md` is at 575/580 lines, 496/525 status-header words** — BSATUR merged
+rather than appended (five demoted (BE-14) entries one-lined). The prep's `hK` lane is
+**net-new structure** in a note whose *Hand-off* has been single-threaded for 20+
+directions, so it was paid for inside the ranked list. **The landing MUST relocate or
+merge** — `notes/Pencil-structure.md` blocks 8 and 9 are the precedent.
