@@ -159,31 +159,29 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
 (`not_pencilNondegFeasible_of_triangle_two_hubs`).
 
 - **Open: kernels (K) and (K-bare); W4's remaining item is a USER call** — the per-item
-  route is in *Hand-off*'s three carried items and **not duplicated here.** Two W4 facts
-  that constrain future statements: **`hnoGood'` is known NON-vacuous** (2026-08-02), so
-  branch 4 needs content, and **(SAFE-RES) is REFUTED** the same day. **The adjudicated
-  route 3's informal cost list is now EMPTY** (2026-09-02): (T) a theorem (WTRI), (E-loc)
-  refuted and unnecessary (WELOC), **(E-pair) a theorem** (WPAIR + WGROW, (GROW-6)) and (V)
-  with it ((PAIR-6)) (`notes/Pencil-W4-informal.md` §§"`hnoGood'` vacuity"/"(SAFE-RES)"/
-  "widened kernels"). What remains for W4 is the widened kernel **(K-res)** and the build
-  itself. **No adjudication is owed here** — route 3, packaging (b) was adjudicated
-  2026-08-02.
+  route is in *Hand-off*'s three carried items and **not duplicated here** (the two W4
+  bullets that stood here were **merged at the BBASE landing**, having converged on the
+  same sentence once (GROW-6) landed). **Route 3's informal cost list is EMPTY**
+  (2026-09-02): **(T)** a theorem (WTRI, §(SAFE-RES) *Step TF5*), **(E-loc)** refuted and
+  shown unnecessary (WELOC, (EL-5)/(EL-6)), **(E-pair)** a theorem (WPAIR + WGROW,
+  §widened kernels *PR1–PR6* + *GW1–GW6*) and **(V)** with it ((PAIR-6)). **(E)** itself
+  stays open and **tight**, now off every W4 path. Two facts that still constrain future
+  statements: **`hnoGood'` is NON-vacuous** (2026-08-02), so branch 4 needs content, and
+  **(SAFE-RES) is REFUTED** the same day. **No adjudication is owed** — route 3, packaging
+  (b) was adjudicated 2026-08-02.
 
 - **What the Lean hold parks, and what it does NOT — corrected 2026-08-20, because this
-  bullet read as though it parked all of W4.** The hold parks **Lean**: the W4 build (W4-L4b
-  onward), the `noRigid`-free Lean leaf (E) reduced to, and route σ's steering commit. It does
-  **not** park route 3's other costs, which were informal mathematics dispatchable today —
-  and as of 2026-09-02 **every one of them is discharged**: **(T)** (WTRI, §(SAFE-RES)
-  *Step TF5*), **(E-loc)** refuted and shown unnecessary (WELOC, (EL-5)/(EL-6)), **(E-pair)**
-  a theorem (WPAIR + WGROW, §widened kernels *Steps PR1–PR6* + *GW1–GW6*) and **(V)** with it
-  ((PAIR-6)). **(E)** itself stays open and **tight**, and is now off every W4 path. What is
-  left is **(K-res)**, a kernel of `hK`'s difficulty class on the complementary habitat whose
-  proof route is *strictly harder* (its habitat sits wholesale in the `dim R_a = 1` stratum
-  where the (K) recon found no landed-brick route). **(K-res) has never been attacked** — it
-  appears in the dispatch docs only as a **bar**, excluded from nine consecutive direction
-  specs; its *"pin it when the tight side closes"* deferral is **RETIRED** by the 2026-08-26
-  adjudication, which selected the cheap scoping slice now queued in *Hand-off*. **The W4
-  thread has no dispatchable non-user-call item left; the (K-res) WAVE is a user call.**
+  bullet read as though it parked all of W4.** The hold parks **Lean**: the W4 build
+  (W4-L4b onward), the `noRigid`-free Lean leaf, and route σ's steering commit. It never
+  parked route 3's informal costs, and every one of those is now discharged (bullet above).
+  What is left is **(K-res)**, a kernel of `hK`'s difficulty class on the complementary
+  habitat whose proof route is *strictly harder* (its habitat sits wholesale in the
+  `dim R_a = 1` stratum where the (K) recon found no landed-brick route). **(K-res) has
+  never been attacked** — it appears in the dispatch docs only as a **bar**, excluded from
+  ten consecutive direction specs; its *"pin it when the tight side closes"* deferral is
+  **RETIRED** by the 2026-08-26 adjudication, which selected the cheap scoping slice queued
+  in *Hand-off*. **The W4 thread has no dispatchable non-user-call item left; the (K-res)
+  WAVE is a user call**, offered and declined 2026-09-02.
 
 - **Doc debt — the gate is MECHANICAL** (`notes/check-phase-note.py`: **580 lines / 525
   status-header words**, plus a fail if *Decisions made* outgrows the forward sections),
@@ -192,9 +190,9 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
   no cap ever bumped and nothing deleted. **The rule that keeps working:** ask *"what here
   is reference rather than status?"*. Four landings running have paid for themselves that
   way — block 8 bought 105 words; the WTRI prep merged five per-landing *Hand-off* blocks
-  into one; WPAIR rotated its in-flight header block out and merged the three W4 landings'
-  *Decisions* entries. **LINES bind, not words — 580/580 vs 518/525**, so the next landing
-  MUST merge or rotate rather than append. **Do NOT relocate the *"On a future
+  into one; WPAIR rotated its in-flight header block out; the BBASE landing merged the two
+  W4 *Blockers* bullets. **LINES bind, not words**, so the next landing MUST merge or
+  rotate rather than append. **Do NOT relocate the *"On a future
   HIT"* block** — standing safety policy, and it must stay where a fresh session reads it
   first. A landing's entry stays **one line**; the (BE-14) thread's prose entries are the
   standing exception, and the oldest demotes when the thread's next direction lands.
@@ -270,16 +268,12 @@ The ranked list:
    ((BE-65)(i)) — **DISCHARGED by BBASE**, see item 1; and — **CLOSED by BPEEL** — the
    forced-empty `G` hunt, impossible on (CH-1)'s class ((BE-72)).
 
-1. **THE FLAG BASE off the no-adjacent-hubs class** ((BE-65)(i)) — **DISCHARGED by
-   BBASE**, no longer an item: free on every `B_real` component of cyclomatic number
-   `≤ 1`, the only obstruction (a triangle or 4-cycle) excluded on the class by girth
-   `≥ 6` ((BE-89)–(BE-93)). Two named successors, both **low-ranked and cheap**: whether
-   `B_real` is a forest on the class in general (measured 78 564/78 564 on three
-   skeleton tiers that **cannot** exhibit a counterexample — a cap boundary), and the
-   one shape no clause reaches, a component of cyclomatic number `≥ 2` (0 of 78 564 on
-   the class, 22 of 10 678 off it). A cheap sibling kept from this slot: whether a
-   **triangle is necessary** for the forcing (`K_{2,3}` is the obvious triangle-free
-   admitting shape; BGENUINE measured 0 forced over its 648 triangle-free pairs).
+1. **THE FLAG BASE — DISCHARGED by BBASE, no longer an item** (verdict in *Decisions
+   made*). Two successors it named, both **low-ranked and cheap**: is `B_real` a forest
+   on the class (78 564/78 564, on tiers that **cannot** exhibit a counterexample — a cap
+   boundary), and the one shape no clause reaches, cyclomatic `≥ 2`. A cheap sibling kept
+   from this slot: whether a **triangle is necessary** for the forcing (`K_{2,3}` the
+   obvious triangle-free admitting shape; BGENUINE measured 0 forced over 648 pairs).
 2. **The ONE-END-SERIES case by BWIN's machine** — one peel instead of two
    (`ρ̄₁ = ⟨ℓ_u⟩ + ρ̄(rest)`), budget `δ₁ ≤ 3` by the same excess accounting, or a
    second functional from the clean end. Would retire the (BE-46)/(BE-52)
@@ -424,6 +418,14 @@ section named; its *spec and landing write-up* in `notes/Pencil-fanout.md` §"<C
 `notes/Pencil-adjudications.md`; the derivation in git. **Do not grow these back into
 paragraphs.**
 
+- **BBASE** (62, 2026-09-02, opus) — **THE FLAG BASE IS FREE; half (B)'s residue is ONE**
+  ((BE-89)–(BE-93), §(K-bare-ext) *Steps BE88–BE92*): the base is the **flag** variety of
+  `B_real`, **not** (CH-1)'s object, hence §(K-chart)'s tower's stages 1–2 only —
+  **nonempty always**, and irreducible/ℚ-rational/dense-ℚ on every component of cyclomatic
+  number `≤ 1`, **hypothesis-free** on a forest; the only obstruction is **reducibility**
+  at a `B_real` triangle or 4-cycle, both excluded by girth `≥ 6`. Open and low-ranked:
+  cyclomatic `≥ 2` (unreached by any clause; the census **cannot** exhibit it). All three
+  coordinator readings corrected; job 2 both ways. Driver `w4/bbase.py`.
 - **WGROW** (61, 2026-09-02, opus, fourth W4-side) — **(PAIR-5) SETTLED BOTH WAYS, so
   (E-pair) and (V) ARE THEOREMS and W4's non-user-call list is EMPTY** ((GROW-1)–(GROW-6),
   §widened kernels *Steps GW1–GW6*; `K₂,₃` refutes (PAIR-5) *as stated* and is not a
@@ -458,14 +460,11 @@ paragraphs.**
   outside vertex's closed star and the closure admits on **three**, so the star-2/SPREAD
   split is **retired**; (BE-41)(ii) **refuted as stated** (five F12 hunks) and job 2
   **confined to `δ₁ = δ₂ = 1`**, exposing BPEEL's census-3 zero as vacuous.
-- **BPEEL** (54, 2026-09-01, opus) — **HALF (B)'s CLASS QUANTIFIER IS ONE NUMBER PER PEEL,
-  and the EXHAUSTIVENESS OBLIGATION IS RETIRED**, not discharged by enumeration: the good
-  locus is **Zariski-open** on the irreducible `Chart(H)`, so **DENSE or EMPTY** and one draw
-  computes the generic **reach** ((BE-69)); **no branch crosses a 2-cut**, so the sides are
-  **independent**, sharing only the flag pair ((BE-70), MIX 42/42) — together bounding what a
-  mechanism can *depend on*, **completeness NOT claimed** (F11), ruling candidate set aside
-  ((BE-71)). **`G` CLOSED on (CH-1)'s class** ((BE-72)); **(BE-66)(iv)'s REASON refuted**
-  (F12), conclusion re-derived (3 497 forced peels, all `min(δ₁,δ₂) = 0`), **re-ranking the SPREAD step** ((BE-73)). §(K-bare-ext) *BE68–BE72*.
+- **BPEEL** (54, 2026-09-01, opus, **demoted at the BBASE landing** per the thread's
+  oldest-demotes rule) — **HALF (B)'s CLASS QUANTIFIER IS ONE NUMBER PER PEEL, and the
+  EXHAUSTIVENESS OBLIGATION IS RETIRED** ((BE-69)–(BE-73), §(K-bare-ext) *BE68–BE72*):
+  Zariski-open good locus, independent sides sharing only the flag pair, completeness
+  **NOT** claimed (F11); **`G` CLOSED on (CH-1)'s class**; (BE-66)(iv)'s **reason** refuted.
 - **BDECOR** (53, 2026-09-01, opus, **demoted at the BGENUINE landing** per the thread's
   oldest-demotes rule) — **THE ACHIEVABLE DECORATIONS ARE A PRODUCT OF EAR CHAINS**
   ((BE-64)–(BE-67), §(K-bare-ext) *BE63–BE67*): at fixed hub flags any piece's legal
