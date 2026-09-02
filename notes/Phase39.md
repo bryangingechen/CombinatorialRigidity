@@ -9,7 +9,7 @@ derives it from exactly **three carried items**: **`hcontract`** (W4 — build p
 (L0–L7), `hsplit` and `hfresh` included (2026-07-30, unchanged since).
 
 **The kernel-(K) research arc: 64 directions COMPLETE** (2026-08-05 → 09-01, ordinals
-1–56), plus eight strategy-only passes and two architecture probes; **none in flight**.
+1–56), plus eight strategy-only passes and two architecture probes; **ONE in flight** (BGENUINE, 57).
 Per-direction verdicts, specs and write-ups live at `notes/Pencil-fanout.md` §"<CODE>"
 (ordinals 1–19: the archive) plus a workbook home — **not restated here**.
 **The arc's standing result, unchanged by all 64: `hK` is not closer.** **(GR-15)** — the
@@ -19,14 +19,17 @@ GBAL) and has never fired**.
 
 **BONEONE (56) LANDED 2026-09-01 — the answer is YES, and half (B)'s LAST
 general-position enemy is LIVE.** `δ_i` and the R-node test are **per-SIDE**, so any two
-sides glue ((BE-79)): a 9-vertex `K₄` side at `δ = 1` plus a 4-vertex one is an
-R-node-shaped `(1,1)` peel on **11** vertices, and **24 of the 48** such peels force
-`π_u = π_v` on exactly (BE-77)(ii)'s certificate — **(BE-66)(iv)'s CONCLUSION is REFUTED**
-((BE-81)). **Both zeros behind the old `no` were VACUOUS** ((BE-80)): tier A's cap was one
-vertex short, tier B's generator **structurally** cannot host one. Price: this is the
-**aggressive** operator, so the enemy is a **candidate** and **genuineness** is geometry
-((BE-82)). **(BE-32)(+), (BE-73)(ii)(b), (BE-77) and (BE-14) untouched; NOT a PENCIL
-event** — but see *On a future HIT*.
+sides glue ((BE-79)); the minimal witness is **11** vertices, and **24 of the 48** such
+peels force `π_u = π_v` on exactly (BE-77)(ii)'s certificate — **(BE-66)(iv)'s CONCLUSION
+is REFUTED** ((BE-81)), and **both zeros behind the old `no` were VACUOUS** ((BE-80)).
+**(BE-32)(+), (BE-73)(ii)(b), (BE-77) and (BE-14) untouched; NOT a PENCIL event.**
+
+**IN FLIGHT — direction BGENUINE** (ordinal 57) at the price BONEONE named: this is all
+the **AGGRESSIVE** operator, which over-claims, so the enemy is a **candidate** and
+**genuineness is GEOMETRY** ((BE-82)). Two questions at the 392 witnesses — is
+`{v, b₁, b₂}` three **independent** points at a chart configuration, and if so does the
+coincidence drop `dim(ρ̄₁+ρ̄₂)` below `min(δ₁+δ₂,6) = 2`? A **0** shortfall relabels the
+enemy harmless; a positive one is a **counterexample class** for half (B).
 
 **WHERE THE (BE-14) THREAD STANDS** — S-mark, the 2-cut composition lemma, is (BE-14)'s
 only open step; its **three sides** and every per-landing detail are **REFERENCE,
@@ -229,13 +232,10 @@ simultaneity **VACUOUS** (BE-25)(i)). BIMAGE bounded and classified the ear's re
 geometric sentence; BEARCASE **PROVED (α)** for `m ≥ 3`; BEARFULL, BSHARP and BRULE cut
 (β) down to the window BWIN closed.
 
-**BRNODE (52) and BDECOR (53) BOTH LANDED 2026-09-01** — write-ups
-`notes/Pencil-fanout.md` §"BRNODE"/§"BDECOR", mathematics §(K-bare-ext) *Steps BE58–BE67*,
-drivers `notes/scripts/w4/{brnode,bdecor}.py`. BRNODE closed (BE-31)(ii)'s residue **as a
-computation** (the decorated-skeleton law) and located the R-node's content in the
-**achievable-decorations class statement**; BDECOR then **reduced that statement to ears**
-((BE-64)) and settled its per-child half. The details are the write-ups' and the
-`(K-bare)` gap-map row's, **not restated here**.
+**BRNODE (52) and BDECOR (53) LANDED 2026-09-01** — the decorated-skeleton law
+((BE-59)/(BE-60)) and the branch-product theorem ((BE-64)); §(K-bare-ext) *Steps
+BE58–BE67*. **Demoted to one entry** per this note's oldest-demotes rule, now that
+three further directions on the thread have landed; the write-ups carry the detail.
 
 **BSPREAD (55) LANDED 2026-09-01** — **(BE-32)(+) IS A THEOREM** ((BE-74)), the star-2 /
 SPREAD split **retired**, (BE-41)(ii) confirmed refuted, and cross-cut-only forcing
@@ -248,7 +248,7 @@ mathematics §(K-bare-ext) *Steps BE78–BE82*, driver `notes/scripts/w4/boneone
 REFUTED**. Both of (BE-77)(iv)'s tiers had **0 chances** — a cap one vertex short, and a
 generator that structurally cannot host the shape. The coordinator's route hypothesis is
 **refuted**, its own item (c) vindicated. Details are the write-up's and the `(K-bare)`
-gap-map row's, **not restated here**. The ranked list, with candidate 1 **replaced by what
+gap-map row's, **not restated here**. **Candidate 1 is IN FLIGHT as BGENUINE (57).** The ranked list, with it **replaced by what
 BONEONE leaves**:
 
 0. **HALF (B)'s CLASS QUANTIFIER** ((BE-67)(iii)) — **REDUCED, not proved** (BPEEL). It is
@@ -262,7 +262,8 @@ BONEONE leaves**:
    ((BE-65)(i)); and — **CLOSED by BPEEL, do not re-hunt** — the forced-empty `G` hunt,
    impossible on (CH-1)'s class ((BE-72)).
 
-1. **IS THE RE-OPENED COINCIDENCE GENUINE, AND DOES IT BITE?** — BONEONE's own successor
+1. **IS THE RE-OPENED COINCIDENCE GENUINE, AND DOES IT BITE? — IN FLIGHT as BGENUINE**
+   (57, prepped 2026-09-01, `recon-opus`; spec `notes/Pencil-fanout.md` §"BGENUINE").
    and the sharpest question the arc has ((BE-82)(ii)/(iii)). Two sub-questions, both
    **geometric**, both aimed at the **392 exhibited witnesses** `boneone.py force` prints:
    (a) is `{v, b₁, b₂}` three **independent** points at a `Chart(H)` configuration, or does
@@ -561,12 +562,7 @@ Settled, one line each:
   [mirror-candidate] and the omega/`Set.ncard`-atom idiom.
 ## Citations (transcribed, project-canonical sources)
 
-**RELOCATED 2026-09-01** (verbatim) to `notes/Pencil-structure.md` §"Citations —
-the phase's verified bibliography": the per-source venue data, the verification
-dates and the two pointers to the fuller bibliographies it does not duplicate
-(`notes/Phase39-design.md` §"(K) literature hunt", `notes/Pencil-informal.md`
-§(K-Δ) *Sources*). **Stable reference, not status** — it changes only when a
-direction verifies a new source, which is the same disposition as the six blocks
-relocated 2026-08-27/29, and it is what this note's *Doc debt* watch item
-prescribes instead of a fifth compression fold. Nothing deleted, no cap bumped.
-**A direction that verifies a new source adds it THERE, in its landing commit.**
+**RELOCATED 2026-09-01** (verbatim) to `notes/Pencil-structure.md` §"Citations — the
+phase's verified bibliography (block 7), which carries the per-source venue data and
+the verification dates. **Stable reference, not status.** **A direction that verifies a
+new source adds it THERE, in its landing commit.**

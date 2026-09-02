@@ -2588,3 +2588,49 @@ BSPREAD's landing is the live precedent for the **prose-name** habit that avoids
 the problem outright: it minted *block-absorption lemma*, *edge route*, *path
 route*, *`[v]`-end*, *peel factorization* and *witness split* as prose rather
 than as parenthesized tokens, and so minted nothing new at all.
+
+**CONSUMED IN FULL at the 2026-09-01 landing.** (BE-79) the per-side reduction and
+the witness, (BE-80) why both of (BE-77)(iv)'s tiers had `0` chances, (BE-81) the
+forcing test and (BE-66)(iv)'s refuted conclusion, (BE-82) the price and the
+residue; *Steps BE78–BE82*. **Nothing returned.** The next reservation on this
+section's tail opens at **(BE-84) / Step BE83** — BGENUINE reserved
+(BE-84)–(BE-88) / *Steps BE83–BE87* on 2026-09-01, in the section below. *(This
+consumption record and the tail pointer were added by the coordinator at the
+BGENUINE prep: the landing updated the section heading to CONSUMED but left the
+body without either, which is the one thing a successor's 0-hit check reads.)*
+
+
+## Reserved namespace — direction BGENUINE (2026-09-01, **RESERVED — the direction is in flight**)
+
+**Reserved 2026-09-01 for the single direction BGENUINE** (ordinal 57, the arc's
+sixty-fifth direction; `notes/Pencil-fanout.md` §"BGENUINE") — **is the
+coincidence BONEONE re-opened GENUINE, and does it BITE?**, the price BONEONE
+itself named ((BE-82)). Coordinator-set, single dispatch — **not** a fan-out, so
+this reservation protects against the *existing corpus* only.
+
+| direction | owning § | labels reserved | steps reserved | driver |
+|---|---|---|---|---|
+| **BGENUINE** | §(K-bare-ext) — **extends**, no new section | **(BE-84)–(BE-88)** | **BE83–BE87** | `w4/bgenuine.py` (expected — extend `boneone.py` for the witness family and `bdecor`/`bpeel` for the chart/`ρ̄` instruments, by read-only import) |
+
+The reservation opens at **(BE-84) / Step BE83**, exactly the tail BONEONE
+declared; BONEONE consumed its reservation in full and returned nothing.
+
+**0-hit verification, at reservation time**, across `*.md`, `*.tex`, `*.lean`,
+`*.py`, `*.m2` with `.git`/`.lake`/`__pycache__` excluded: `BGENUINE`,
+`bgenuine`, `(BE-85)`–`(BE-88)` and *`Steps BE84–BE87`* each **0-hit**.
+**`(BE-84)` and *`Step BE83`* have one hit each** — the tail sentence in
+BSPREAD's section, opened and confirmed to be a POINTER, not a consumed label.
+
+**Checked and NOT chosen:** `BREACH` — rejected on the **(L5) substring rule**
+(`breach` hits **5** files, and `reach` is itself a live technical term in this
+arc, `reach = min(δ₁+δ₂,6)`, which is exactly the kind of overlap (L5) exists to
+catch). `BBITE` and `BSHORT` are both 0-hit but name the **second** sub-question
+only; the *gating* one is genuineness, and a code should name what the direction
+is about first. `BGENUINE` names the question, **not a predicted answer** —
+`RESEARCH-ARC.md` §7's warning is about baking in a *prediction*, and this
+direction may well return *not genuine*.
+
+**(L6) reminder for the landing.** Run the landing-time bare-token grep on the
+returned draft. **This direction is the arc's first GEOMETRIC one in six**, so
+the temptation to mint configuration-level tokens is higher than it has been:
+prefer prose names, as BSPREAD and BONEONE both did.

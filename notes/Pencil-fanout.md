@@ -1,7 +1,22 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: EIGHT fan-outs, THIRTY-SEVEN single directions and TWO concurrent
-pairs dispatched; 64 LANDED, NONE IN FLIGHT.**
+**Status: EIGHT fan-outs, THIRTY-EIGHT single directions and TWO concurrent
+pairs dispatched; 64 LANDED, ONE IN FLIGHT — BGENUINE (ordinal 57).**
+**BGENUINE (ordinal 57, §"BGENUINE") PREPPED 2026-09-01** at **the price BONEONE
+named in its own landing**: the 392 re-opened witnesses are the **AGGRESSIVE**
+operator's, which over-claims, so the enemy is a **candidate** and genuineness is
+**GEOMETRY**. Two questions at the family — (a) are the three witnesses
+`{v, b₁, b₂}` **affinely independent** at a chart configuration, or does the
+over-claim evaporate; (b) if genuine, does the coincidence drop `dim(ρ̄₁+ρ̄₂)`
+below `min(δ₁+δ₂,6) = 2`? A **0** shortfall relabels the enemy harmless; a
+**positive** one is a counterexample class for half (B), and job 3 makes the
+direction classify it before anything else. **The price cuts asymmetrically and
+the spec says so**: a clause proved FOR the aggressive relation holds a fortiori
+(which is why (BE-74) is safe), while a witness exhibited AGAINST it is weaker
+(which is why BONEONE's 392 are candidates) — this direction is the one that
+converts, or fails to convert, a candidate into a real enemy. **The arc's first
+GEOMETRIC direction in six**, so F25's guards are the central rider. Dispatched at
+`recon-opus` (fable unavailable this session).
 **BONEONE (ordinal 56, §"BONEONE") LANDED 2026-09-01** at **the whole of what
 BSPREAD reduced job 2 to** — *can an R-node-shaped 2-cut peel have
 `δ₁ = δ₂ = 1`?* — **HIT shapes 3, 2, 4 and 5; NOT 1**. **THE ANSWER IS YES, and
@@ -9175,3 +9190,204 @@ consequence is **reported, not acted on**.
 (`side|bound|force|validate`, 54 s, `VALIDATE: OK`); the `(K-bare)` gap-map
 row recomputed (1 474 words, label set-diff scripted); reservation **consumed
 in full**. Run at **`recon-opus`** (fable unavailable this session).
+
+## BGENUINE — fifty-seventh ordinal, the sixty-fifth direction (single dispatch, prepped 2026-09-01)
+
+**Selection provenance: BONEONE's own successor, and the F26 consumer trace was
+re-run for the FIFTH direction running.** BONEONE re-opened half (B)'s last
+general-position enemy with 392 exhibited witnesses and named, in the same
+breath, the clause that blunts its own result: **everything is the AGGRESSIVE
+operator**, which over-claims forcing, so what it exhibited is a **candidate**
+enemy, not a confirmed one. The trace confirms this is the consumer's remaining
+input and not an adjacent question: **(BE-22)(iii)** needs
+`dim(ρ̄₁+ρ̄₂) = min(δ₁+δ₂,6)` at the peel, which at a `(1,1)` peel is **exactly
+`2`**; the enemy bites only if a *genuine* coincidence pushes that sum **below
+2**. Both halves of that sentence are **geometric**, and neither has been
+measured. Dispatched **un-named, single**, at **`recon-opus`** — a verdict that
+could produce a counterexample class for half (B) is top-rung-mapped, and fable
+is unavailable this session.
+
+### The target, stated exactly
+
+At the witness family BONEONE printed (`boneone.py force`, **392** forced
+R-node-shaped `(1,1)` peels across three exhaustive rows, minimal member
+`WIT11`):
+
+> **(a) GENUINENESS.** At a configuration of `Chart(H)`, are the three witnesses
+> `{v, b₁, b₂}` of the admitting step **affinely independent** — so that
+> `π_v` really is forced to the common plane — or does the aggressive operator's
+> over-claim **evaporate** here, the three being collinear at every legal
+> configuration?
+>
+> **(b) DOES IT BITE.** If genuine, does the forced `π_u = π_v` actually drop
+> `dim(ρ̄₁ + ρ̄₂)` below `min(δ₁+δ₂, 6) = 2`?
+
+**A `0` shortfall relabels the enemy harmless** and half (B) survives with its
+residue unchanged in kind. **A positive shortfall is a counterexample class** to
+half (B) as stated, and the direction says so plainly rather than softening it.
+
+### THE PRICE THE OPERATOR EXACTS, AND WHICH DIRECTION IT CUTS
+
+This is worth stating precisely because the arc has now used it in **both**
+directions in consecutive landings and they are not symmetric:
+
+- **A clause proved FOR the aggressive relation holds a fortiori for genuine
+  forcing** — that is why (BE-74) is stronger than the consumers need, and why
+  BSPREAD's theorem is safe.
+- **A witness exhibited AGAINST it is weaker than a genuine one** — that is why
+  BONEONE's 392 are candidates. **This direction is the one that converts, or
+  fails to convert, a candidate into a real enemy.**
+
+`binduc.flat_forcing_closure`'s own docstring is the source: *"Aggressive =
+assumes every 3 forced points are independent, which OVER-claims forcing; a hit
+is a CANDIDATE."* The word **CANDIDATE** is the landed disclosure this direction
+discharges.
+
+### What is free — cite it, do NOT re-derive it
+
+- **(BE-79)–(BE-82)**, BONEONE: the per-side reduction, `WIT11` and `WIT16`, the
+  two vacuous zeros, the forcing test at 392 witnesses, and the price.
+- **(BE-77)(i)/(ii)**, the peel factorization and the `(1,1)` confinement with the
+  exact certificate shape `{v, b₁, b₂}` split `(2,2)` by the cut — **every one of
+  the 392 has this shape**, so the geometric question is about *one* configuration
+  of *one* shape, not a family of shapes.
+- **(BE-74)**, the block-absorption lemma, and **(BE-32)(+) as a theorem**.
+- **(BE-69)**, the Zariski dichotomy: the good locus is **open** on the
+  irreducible `Chart(H)`, hence **dense or empty**. **This is the instrument that
+  makes (b) decidable by one draw** — a shortfall at a generic point is not a
+  special-point artifact, and a non-shortfall at a generic point settles the
+  piece. Use it, and label what it does and does not give.
+- **(BE-70)**, peel independence: at fixed flags `ρ̄₁, ρ̄₂` are functions of
+  **disjoint** coordinate blocks sharing only the flag pair. **Read this against
+  (b) before measuring:** if the two sides are independent given the flags, then a
+  forced flag *coincidence* is precisely the one datum that could couple them, and
+  that is the mechanism (b) is asking about.
+- **(BE-67)(i)**'s own instrument — the per-piece exact-ℚ draw — is what (b)
+  should be measured with. **(BE-30)(ii)/(iii)**, the ear achievable sets, with
+  the small-`m` correction.
+- **(CH-1)** for irreducibility, rationality and dense ℚ-points of the chart, under
+  its three hypotheses — **check `WIT11` against them by name**, since (BE-72)(iii)
+  and (BE-69)(ii) both rest on them and a witness off that class makes both
+  unavailable.
+
+### Job 1 (PRIMARY, FORCED) — genuineness
+
+Settle (a) at `WIT11` first and then across the family. **Note the asymmetry in
+what a finding means:** *collinear at every legal configuration* is a class claim
+needing an argument or an exhaustive-in-the-right-sense enumeration; *independent
+at one configuration* is a **proof for that witness**, by the same openness
+argument (BE-52) used one level down — state which you have. If the over-claim
+evaporates at every witness, say so: that **closes** the enemy and is the best
+outcome available here.
+
+### Job 2 (FORCED) — does it bite
+
+Measure the shortfall. `min(δ₁+δ₂,6) = 2` at every member of the family, so the
+question is whether `dim(ρ̄₁+ρ̄₂)` is `2` or `1`. **Run it at `WIT11` with
+(BE-67)(i)'s instrument**, exact ℚ, `assert_generic_star` **and**
+`verify_pencil_witness` on every draw, and report the drawn value **and** the
+generic one per (BE-69). Do this **even if job 1 returns `not genuine`** — the
+measurement is cheap, it is the thing every future consumer will ask for, and a
+`0` shortfall at a non-genuine witness still tells the board the mechanism is
+harmless twice over.
+
+### Job 3 (FORCED) — the classification, written down before it is needed
+
+**If the shortfall is positive**, classify it before anything else, per the
+phase note's *direction-A pivot rule*: is it (i) a **half-(B) counterexample**
+(the class statement as posed is false — a *route* finding), (ii) a
+**counterexample to (BE-22)(iii)'s hypothesis** at a real piece, or (iii)
+something that reaches **(BE-14)** itself? These are very different board moves
+and the phase note's *On a future HIT* block binds on all three. **Report the
+classification and the phase-boundary consequence; act on neither.** A first
+positive return is **not confirmed** — the bar is (GR-83)/(GR-113), and
+`RESEARCH-ARC.md` item 4 makes the corrective mechanism the **next** pass, so
+price a confirming pass rather than declaring.
+
+### What counts as a HIT — state which you got
+
+1. **Not genuine, by an argument** — the enemy closes and half (B)'s residue
+   returns to two items ((BE-67)(iii)'s uniformity, the flag base).
+2. **Genuine but `0` shortfall** — the enemy is relabelled harmless; say what
+   that leaves.
+3. **Genuine with a positive shortfall** — a counterexample class, classified per
+   job 3. **Report the board; act on nothing.**
+4. **Reduced** to a named checkable condition.
+5. **The `WIT11`-against-(CH-1) check** answered either way.
+
+### Bars
+
+- **Do not re-open:** the answer to *can an R-node-shaped peel sit at `(1,1)`*
+  (**yes**, (BE-79)) and the two vacuous zeros ((BE-80)) — **do not re-hunt**;
+  (BE-32)(+) / the block-absorption lemma ((BE-74)); the peel factorization and
+  the confinement ((BE-77)(i)/(ii)); (BE-41)(ii), **retired**; the branch-product
+  theorem ((BE-64)); peel independence ((BE-70)); the Zariski dichotomy ((BE-69));
+  `G` on (CH-1)'s class ((BE-72)); the `G²` apparatus ((BE-17)); the transversality
+  count ((BE-16)(iv), (BE-27)); gauge-fixing (ZSHEAR).
+- **ZJACOB (JC-6) binds harder here than on the last five directions**, because
+  this one is geometric and sits on an irreducible variety: **no properness,
+  smoothness or transversality from a codimension count, a Jacobian criterion, or
+  Cohen–Macaulayness.** Label every dimension count **as a count** ((BE-27)).
+- **Not this direction, ranked separately:** (BE-67)(iii)'s uniformity of `reach`;
+  the flag base ((BE-65)(i)); the one-end-series case; **(S1)/(S2)**; cross-pair
+  welding ((BE-28)(i)).
+- **Out of scope:** `hK`, **(GR-15)**, **(RS-5) and the (K-res) wave (a USER
+  call)**, class uniformity, W4, and **any `.lean`** (2026-08-05 hold).
+
+### Riders
+
+**TERMINATION E1/E2/E3** — read them against their **actual definitions**
+(`notes/Pencil-fanout-archive.md`): **E2** fires only if the target is refuted
+*and* the ledger has no entry left in state open-with-a-named-dispatchable-attack;
+**E3** only if the target is **proven** and every remaining entry is
+adjudication-gated. **E3 is ARMED (by GBAL)**; report, never fire. **F25 is this
+direction's central rider** — it is the arc's **first geometric direction in
+six**, and the guards that lapsed elsewhere are the ones that matter here: exact
+ℚ throughout, every rng seeded with a **printed literal**, every configuration
+through `assert_generic_star` **and** `kbare_common.verify_pencil_witness`, and
+every claimed identity of spaces asserted **as spaces**, not as dimensions.
+**F27** — a claim that a configuration **fails** a property needs multiple
+independent draws, stated; an exhibited good configuration is a proof for that
+witness. **F11** — *"collinear at every legal configuration"* is an
+**exhaustiveness** claim and needs an argument or a real enumeration. **Cap
+disclosure MANDATORY, and state the denominator every figure is over** — the last
+two landings each corrected a zero read against the wrong denominator. **F12** — a
+corrected summary needs a hunk at the originating prose. **F17** — the fan-out
+header and `notes/Phase39.md`'s `**Status:**` header are surfaces a landing must
+update. **Read `notes/scripts/README.md` *Harness debt***; BONEONE's job 3
+recorded the chain as a **de-facto shared layer** at fifteen deep — **record, make
+no move**, and do not re-litigate that verdict.
+
+### Driver — expected, at the pinned path `notes/scripts/w4/bgenuine.py`
+
+Extend `boneone.py` (for the witness family and `force`'s certificate output) and
+reach the chart / `ρ̄` instruments through `bdecor.py` / `bpeel.py` by **read-only
+import**. Do not re-implement the witness generator or the deficiency oracles.
+
+### Reservation
+
+(`notes/Pencil-labels.md` §"Reserved namespace — direction BGENUINE".)
+§(K-bare-ext) **extends**, no new section; labels **(BE-84)–(BE-88)**, ***Steps
+BE83–BE87***, exactly the tail BONEONE declared. `BGENUINE`, `bgenuine`,
+`(BE-85)`–`(BE-88)` and *`Steps BE84–BE87`* verified **0-hit**; **`(BE-84)` and
+*`Step BE83`* have one hit each**, a tail POINTER, opened and confirmed.
+**Return any unconsumed remainder.** **Checked and NOT chosen:** `BREACH` (the
+(L5) substring rule — `breach` hits 5 files, and `reach` is a live technical term
+in this arc), `BBITE` and `BSHORT` (0-hit, but naming the *second* sub-question
+when the gating one is genuineness). **Prefer prose names to new parenthesized
+tokens.**
+
+### Budget — measured at this prep, and the LINE cap is what binds
+
+**`(K-bare)` is at 1 474 / 1 600 words — 126 of headroom**, which is thin. **If
+the landing does not fit, recompute the row to a TARGET, not to "under the cap"**
+(F21), and **verify label preservation by scripted set-diff, never by eye**; the
+natural material is *Steps BE34–BE57*'s per-direction history, which the row can
+carry as current state the way BPEEL rewrote *BE14–BE33*. **`notes/Phase39.md` is
+at 568/580 lines, 504/525 header words** — the prep bought room by thinning the
+*Citations* pointer and **demoting the BRNODE/BDECOR entry to one paragraph**
+under the note's own oldest-demotes rule, then spent most of it on the in-flight
+block. **The landing should ROTATE the header's landed-direction block rather
+than append to it**, which is what the last two landings did successfully. The
+*"On a future HIT"* block is **not** relocatable — and this direction is the most
+likely in the arc's history to need it.
