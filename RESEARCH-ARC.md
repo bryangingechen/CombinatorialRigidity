@@ -244,6 +244,25 @@ here in §4 applies with full force — the corrective mechanism is the **next
 pass**, not coordinator scrutiny — so the cheap move is to write the prediction
 down *with its provenance* and let the dispatch kill it.
 
+**A FOURTH KIND of outcome, at the fifth instance: MOOT (2026-09-01,
+direction BSPREAD).** The four instances above are three kinds — *refuted*,
+*split*, *reframed*. BSPREAD's returned a fourth: the coordinator's route hypothesis
+(restrict an over-claiming closure operator so a residual case disappears) was
+**neither confirmed nor refuted — it was made unnecessary**, because the
+direction proved the statement outright for the *unrestricted* operator and
+three widenings of it. The hypothesis had priced its own cost honestly (a scope
+change across every surface citing the statement); that cost was simply never
+paid. Two things generalize. **The labelling is what made "moot" reportable
+at all** — a prediction written down as *to be tested* can come back as *not
+needed*, which an unlabelled assumption silently absorbs instead. And **a
+hypothesis that proposes RETREATING to a weaker object is the shape most likely
+to go moot**: it concedes the strong form before anyone has tried to prove it.
+Where the coordinator's item did earn its keep was the *"where I expect to be
+wrong"* clause — one of its three sub-items was right, and the direction cited
+it as the reason the over-claiming operator was the better object to prove a
+theorem about. Write the expectation down; let the dispatch decide which of the
+four kinds it gets.
+
 **The second half of the same finding: coordinator artifacts need the same
 verification tier as a subagent's.** A coordinator-authored prep commit has
 carried its own status-surface defects, caught only by a landing agent. Nothing
