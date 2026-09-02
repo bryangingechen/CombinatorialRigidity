@@ -2491,6 +2491,7 @@ was missed from this sentence; added here with (K-ann) and (K-out).)
 |---|---|---|---|
 | §`hnoGood'` vacuity | `NG-` | **(C1)–(C6)** | structure of a maximal cluster's contraction: (C1) simplicity is free, (C2) outside degrees preserved, (C3) boundary attachment points are hubs, (C4) `hcard` fails only at `v*`, (C5) no triangle through `v*`, (C6) the boundary-hub budget |
 | §(SAFE-RES) | `SR-` | **(C7)**, **(C8)**; (SAFE-RES), (SAFE-RES′); **(E)**, **(T)**, **(V)** | (C7) every ear through `T` has ≥ 6 interior vertices; (C8) the dichotomy at a maximal cluster; (E)/(T)/(V) the three gaps of (SAFE-RES′) |
+| §(SAFE-RES), direction WTRI | `TF-` | **(TF-1)–(TF-6)**; ***Steps TF1–TF6*** | the triangle-freeness cost (T): reserved 2026-09-01, in flight |
 | §widened kernels (routes 1/3) | `WK-` | (E-loc); **(K-res)** | the routes-1/3 kernel widening; (K-res) is the widened kernel carried as a byte-identical sibling of `hK` |
 
 ## Registry — `notes/Pencil-strategy.md`, `Phase39.md`, `Phase39-design.md`
@@ -2662,3 +2663,44 @@ side's own attainment loss at the chosen configuration"* at every use, and the
 gap-map row spells the gloss out rather than carrying the bare symbol.
 
 **The next reservation on this section's tail opens at (BE-89) / Step BE88.**
+
+
+## Reserved namespace — direction WTRI (2026-09-01, **RESERVED — the direction is in flight**)
+
+**Reserved 2026-09-01 for the single direction WTRI** (ordinal 58; `notes/Pencil-fanout.md`
+§"WTRI") — **W4 / `hcontract`, route 3's cost (T): is a feasible residual `G`
+triangle-free?** Coordinator-set, single dispatch — **not** a fan-out, so this reservation
+protects against the *existing corpus* only.
+
+**This is the sequence's FIRST W4-side direction**, so two things differ from every
+reservation above it and both are deliberate:
+
+- **The owning file is `notes/Pencil-W4-informal.md`, not `notes/Pencil-informal.md`.**
+  The `(BE-…)` family belongs to §(K-bare-ext) and **must not be extended here**; the W4
+  workbook's own families are `NG-`, `SR-` and `WK-` (registry table below).
+- **There is NO gap-map row for the W4 side, and this direction does not open one.** The
+  *State of (K)* map is the **(K) arc's** status object by its own header; W4's status
+  lives in the W4 workbook's per-section confidence verdicts and in `notes/Phase39.md`
+  *Blockers*. `notes/check-gapmap-cells.py` therefore will not fire on this landing —
+  which is a fact to state in the commit message, not a gate to skip silently.
+
+| direction | owning § | labels reserved | steps reserved | driver |
+|---|---|---|---|---|
+| **WTRI** | `notes/Pencil-W4-informal.md` §(SAFE-RES) — **extends**, no new file | **(TF-1)–(TF-6)** | **TF1–TF6** | `w4/wtri.py` *(only if the direction needs one — (T) is **landed-invisible**, so a certified sweep cannot decide it and a driver may be the wrong instrument here; see the spec)* |
+
+**0-hit verification, at reservation time**, across `*.md`, `*.tex`, `*.lean`, `*.py`,
+`*.m2` with `.git`/`.lake`/`__pycache__` excluded: `WTRI`, `wtri`, `(TF-1)`–`(TF-6)` and
+*`Steps TF1–TF6`* each **0-hit**. The `TF-` tag is new and topic-tagged, which is the shape
+`notes/Pencil-labels.md`'s own diagnosis says has **never** collided.
+
+**Checked and NOT chosen:** extending the `SR-` family — `(T)` already lives there as a
+bare single letter, and the **collision table** in this file records `(T)` as ambiguous
+(§(K-pitch)'s transfer claims vs W4's triangle-freeness). Minting `(T1)`, `(T2)`, … beside
+it would make that collision worse, which is exactly what clause (L4) forbids. `TF-` is
+disjoint and self-describing, and the direction should **qualify every citation of the
+bare `(T)`** with its owner, per (L3).
+
+**(L6) reminder for the landing.** Run the landing-time bare-token grep on the returned
+draft, and note that the W4 workbook has its own single-letter families ((C1)–(C8), (E),
+(T), (V)) which are **already** in the collision table — a new bare letter here is the
+worst-case mint in the whole doc set.

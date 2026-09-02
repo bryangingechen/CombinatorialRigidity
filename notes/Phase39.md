@@ -9,7 +9,8 @@ derives it from exactly **three carried items**: **`hcontract`** (W4 — build p
 (L0–L7), `hsplit` and `hfresh` included (2026-07-30, unchanged since).
 
 **The kernel-(K) research arc: 65 directions COMPLETE** (2026-08-05 → 09-01, ordinals
-1–57), plus eight strategy-only passes and two architecture probes; **none in flight**.
+1–57), plus eight strategy-only passes and two architecture probes; **ONE in flight** —
+WTRI (58), and it is the sequence's **first W4-side** direction, not a kernel-(K) one.
 Per-direction verdicts, specs and write-ups live at `notes/Pencil-fanout.md` §"<CODE>"
 (ordinals 1–19: the archive) plus a workbook home — **not restated here**.
 **The arc's standing result, unchanged by all 65: `hK` is not closer.** **(GR-15)** — the
@@ -17,18 +18,16 @@ single open gap the whole §(K-grid) chain reduces to — is **untouched**; **cl
 of the escape is untouched**; no g-flank was found by any direction; **E3 is ARMED (by
 GBAL) and has never fired**.
 
-**BGENUINE (57) LANDED 2026-09-01 — the re-opened coincidence is GENUINE and it does
-NOT bite, so half (B)'s residue is back to TWO items.** Genuineness needs no draw:
-(BE-77)(ii)'s certificate `{v, b₁, b₂}` is a **hinge pair** — `v` and two of its own
-neighbours — exactly the triple `binduc.assert_generic_star` asserts independent, so the
-**aggressive** operator and the genuine one agree **pointwise** ((BE-84)). And at
-**392/392**, on exhibited exact-ℚ certificates, `ρ̄₁ ∩ ρ̄₂ = 0` **as spaces** and **`H`
-ATTAINS** ((BE-86)). The naive shortfall's `−1` at 100 is a **denominator error**:
-(BE-22)(iii) needs *both pieces attaining*, the gap-map row had dropped the proviso
-(repaired), and the criterion is `dim(ρ̄₁+ρ̄₂) = min(δ₁+δ₂,6) + a₁+a₂`. The family is
-**off (CH-1)'s class** (girth 3 at 392/392, and 648/648 of a new `(10,5)` row) at **no
-cost** ((BE-85)). **BONEONE's 392, (BE-79)–(BE-83), (BE-32)(+), (BE-73)(ii)(b), (BE-77)
-and (BE-14) untouched; job 3 VACUOUS; NOT a PENCIL event.**
+**BGENUINE (57) LANDED 2026-09-01 — the re-opened coincidence is GENUINE and does NOT
+bite, so half (B)'s residue is back to TWO items** ((BE-67)(iii)'s uniformity, the flag
+base). The certificate is a **hinge pair**, so genuineness needs no draw ((BE-84)); at
+392/392 the sum is **direct** and `H` **attains** ((BE-86)). It also repaired a
+**denominator error the coordinator's own spec had inherited** ((BE-22)(iii) needs
+*both pieces attaining*). **Nothing landed refuted; NOT a PENCIL event.**
+
+**IN FLIGHT — direction WTRI** (58) at **W4 / `hcontract`**, route 3's cost **(T)**
+(*`G` triangle-free*) — **dispatchable and needing no adjudication since 2026-08-02**,
+untouched by all 65, and **landed-INVISIBLE**, so derivation-first by construction.
 
 **WHERE THE (BE-14) THREAD STANDS** — S-mark, the 2-cut composition lemma, is (BE-14)'s
 only open step; its **three sides** and every per-landing detail are **REFERENCE,
@@ -185,27 +184,19 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
   queued in *Hand-off*. **(T)/(V)/(E-loc) are slice-sized and need no adjudication; the
   (K-res) WAVE is still a user call.**
 
-- **Doc debt — relief slice LANDED 2026-08-26** (1 500 → 554), and **relocation, not
-  compression, every time since** — now **EIGHT** blocks, all stable **reference, not
-  status**, sitting verbatim in `notes/Pencil-structure.md` with their own reasons recorded
-  there (§"Slice 6" onward), indexed by that file's own table. Caps **not** bumped, nothing
-  deleted. **The gate is MECHANICAL** — `notes/check-phase-note.py` caps this note at
-  **580 lines / 525 status-header words** and fails if *Decisions made* outgrows the
-  forward sections. **The prediction the last session wrote here was CORRECT and the
-  prescribed remedy WORKED:** it warned the header would bind on a fresh session's first
-  prep with 20 words spare, named the `**Status:**` header's **per-landing detail
-  paragraph** as the next relocation candidate, and forbade a fifth fold. The BSPREAD prep
-  did exactly that — the (BE-14) thread's per-landing detail relocated **verbatim** as
-  block 8 — and the header went **505 → 420 / 525 words**, buying **105** of headroom
-  where a fold has never recovered more than 5 lines. **Live watch, measured at the
-  BSPREAD landing: 561/580 lines, 444/525 words** — the prep's 105-word relocation absorbed
-  the landing's HIT-shape-1 rewrite with 81 words still spare, which is the first landing
-  in five not to arrive at the cap. **Do NOT relocate the *"On a future HIT"*
-  block** — it is standing safety policy and must stay where a fresh session reads it
-  first. **When the next landing binds, the question is again "what here is reference
-  rather than status?"** — not a fold. A landing's entry stays **one line**; the (BE-14)
-  thread's prose entries are the standing exception, and the oldest demotes when the
-  thread's next direction lands.
+- **Doc debt — the gate is MECHANICAL** (`notes/check-phase-note.py`: **580 lines / 525
+  status-header words**, plus a fail if *Decisions made* outgrows the forward sections),
+  and the standing remedy is **relocation or merger, never a fold** — **EIGHT** reference
+  blocks now sit verbatim in `notes/Pencil-structure.md`, indexed by its own table, with
+  no cap ever bumped and nothing deleted. **The rule that keeps working:** ask *"what here
+  is reference rather than status?"*. Three landings running have paid for themselves that
+  way — block 8 bought 105 words, and the WTRI prep merged the thread's five per-landing
+  *Hand-off* blocks into one, which is the same move one section down. **LINES are the
+  binding constraint now, not words: 573/580 vs 480/525 at the WTRI prep**, so the next
+  landing should MERGE or ROTATE rather than append. **Do NOT relocate the *"On a future
+  HIT"* block** — standing safety policy, and it must stay where a fresh session reads it
+  first. A landing's entry stays **one line**; the (BE-14) thread's prose entries are the
+  standing exception, and the oldest demotes when the thread's next direction lands.
 - The full biconditional transport (design doc's W0 pin) is landed only as its two forward
   implications; the reverse arms need a `complementIso` involution lemma, not in tree —
   deferred, **off every critical path** (§(K-σ) *Step σ6*).
@@ -231,25 +222,32 @@ simultaneity **VACUOUS** (BE-25)(i)). BIMAGE bounded and classified the ear's re
 geometric sentence; BEARCASE **PROVED (α)** for `m ≥ 3`; BEARFULL, BSHARP and BRULE cut
 (β) down to the window BWIN closed.
 
-**BRNODE (52) and BDECOR (53) LANDED 2026-09-01** — the decorated-skeleton law
-((BE-59)/(BE-60)) and the branch-product theorem ((BE-64)); §(K-bare-ext) *Steps
-BE58–BE67*. **Demoted to one entry** per this note's oldest-demotes rule, now that
-three further directions on the thread have landed; the write-ups carry the detail.
+**WHAT THE THREAD'S LAST FIVE LANDINGS ESTABLISHED** (52, 53, 55, 56, 57 — write-ups
+`notes/Pencil-fanout.md` §"<CODE>", mathematics §(K-bare-ext) *Steps BE58–BE87*, and the
+`(K-bare)` gap-map row is authoritative; **not restated here**). The decorated-skeleton
+law and the branch-product theorem ((BE-59)/(BE-60), (BE-64)); **(BE-32)(+) proved
+outright** ((BE-74)), retiring the star-2/SPREAD split; cross-cut-only forcing
+**confined** to `δ₁ = δ₂ = 1` ((BE-77)), then **found** there on a minimal 11-vertex
+witness with both prior tiers shown to have had `0` chances ((BE-79)–(BE-83)); and that
+coincidence shown **genuine but harmless** — `H` attains at 392/392 ((BE-84)/(BE-86)).
+**Net: half (B)'s residue is back to TWO items** — (BE-67)(iii)'s uniformity and the
+flag base, now candidate 1 below.
 
-**BSPREAD (55) and BONEONE (56) LANDED 2026-09-01** — (BE-32)(+) is a **THEOREM**
-((BE-74)) and the star-2 / SPREAD split retired; cross-cut-only forcing **confined to
-`δ₁ = δ₂ = 1`** ((BE-77)) and then **found there**, on a minimal 11-vertex witness, with
-both of (BE-77)(iv)'s tiers shown to have had **0 chances** ((BE-79)–(BE-83)).
+**THE NEXT CONCRETE TASK — direction WTRI (58), and it DEVIATES from the ranked list
+below on purpose.** After **nine consecutive** directions on the (BE-14) thread, the
+coordinator switched **carried item**: WTRI attacks **W4 / `hcontract`** — route 3's
+cost **(T)**, *`G` triangle-free* — which this note's own *Blockers* has called
+**slice-sized, dispatchable today and needing no adjudication since 2026-08-02**, and
+which **no direction of the 65 has touched**. The reason is the standing criteria, all
+three: `hcontract` is one of exactly **three** items between the landed successor and
+`PencilPair K 3 G` (max impact); (T) is **landed-invisible** — a certified sweep
+*cannot* see its failure mode — so attacking it is architecture-testing in the literal
+sense (falsification); and it is the first W4-side direction of the whole arc
+(diversification). **The ranked list below is (BE-14)-thread work and is NOT dropped**
+— the flag base stays candidate 1 for the next (BE-14) pick. Spec:
+`notes/Pencil-fanout.md` §"WTRI"; canonical home `notes/Pencil-W4-informal.md`.
 
-**BGENUINE (57) LANDED 2026-09-01** — write-up `notes/Pencil-fanout.md` §"BGENUINE",
-mathematics §(K-bare-ext) *Steps BE83–BE87*, driver `notes/scripts/w4/bgenuine.py`.
-**HIT shapes 2, 5, 4; NOT 1, NOT 3.** The coincidence is **GENUINE** — by an argument off
-`assert_generic_star`, not a draw, because the certificate is a **hinge pair** ((BE-84)) —
-and it **does NOT bite**: `dim(ρ̄₁+ρ̄₂) = min(δ₁+δ₂,6) + a₁+a₂` with `ρ̄₁ ∩ ρ̄₂ = 0` as
-spaces and **`H` attaining** at **392/392** ((BE-86)). Job 3 **VACUOUS**; the family is off
-(CH-1)'s class at no cost ((BE-85)). Details are the write-up's and the `(K-bare)` gap-map
-row's, **not restated here**. **Half (B)'s residue is back to TWO items, so candidate 1 is
-retired and the flag base is promoted into it.** The ranked list:
+The ranked list:
 
 0. **HALF (B)'s CLASS QUANTIFIER** ((BE-67)(iii)) — **REDUCED, not proved** (BPEEL). It is
    now *one number per (piece, peel)*: `reach = min(δ₁+δ₂,6)`, the **generic** value of

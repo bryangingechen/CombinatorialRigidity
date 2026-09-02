@@ -1,7 +1,24 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: EIGHT fan-outs, THIRTY-EIGHT single directions and TWO concurrent
-pairs dispatched; 65 LANDED, NONE IN FLIGHT.**
+**Status: EIGHT fan-outs, THIRTY-NINE single directions and TWO concurrent
+pairs dispatched; 65 LANDED, ONE IN FLIGHT — WTRI (ordinal 58).**
+**WTRI (ordinal 58, §"WTRI") PREPPED 2026-09-01** — **the sequence's FIRST W4-side
+direction, and a DELIBERATE DEVIATION from the ranked list.** Nine consecutive
+directions (49–57) ran on the (BE-14) thread while carried item **#2**,
+`hcontract`, took **zero** in the whole 65-direction sequence — although
+`notes/Phase39.md` *Blockers* has said since 2026-08-02 that three of route 3's
+four costs are *"slice-sized and need no adjudication"*. WTRI takes one of them:
+**(T)**, *is a feasible residual triangle-free?* All three standing criteria
+point at it — `hcontract` is one of exactly three items between the landed
+successor and `PencilPair K 3 G` (max impact); (T) is **landed-INVISIBLE**,
+because the sweep's own feasibility certificate L6b *requires* triangle-freeness,
+so a triangle-carrying residual can never appear in a certified search
+(falsification / architecture-testing, literally); and it is the first W4-side
+direction of the arc (diversification). **The recorded 255/255 is therefore NOT
+evidence** and the spec makes the driver **conditional** — this is a
+derivation-first direction, and shipping none is a legitimate landing shape.
+**The (BE-14) ranked list is not dropped**; the flag base stays candidate 1 for
+the next pick on that thread. Dispatched at `recon-opus` (fable unavailable).
 **BGENUINE (ordinal 57, §"BGENUINE") LANDED 2026-09-01** at **the price BONEONE
 named in its own landing** — **HIT shapes 2, 5 and 4; NOT 1, NOT 3**.
 **THE COINCIDENCE IS GENUINE, AND IT DOES NOT BITE.** (a) is settled by an
@@ -9509,3 +9526,187 @@ gap-map row recomputed (1 475 → **1 545** words, label set-diff scripted at
 every pass, **0 lost**) and its (BE-22)(iii) proviso drop **repaired at source**;
 reservation **consumed in full**. Run at **`recon-opus`** (fable unavailable
 this session).
+
+## WTRI — fifty-eighth ordinal (single dispatch, prepped 2026-09-01) — **the sequence's FIRST W4-side direction**
+
+**Selection provenance: a DELIBERATE DEVIATION from the ranked list, and the
+reason is the standing criteria rather than a new finding.** BGENUINE handed half
+(B) back a two-item residue and `notes/Phase39.md`'s ranked list promoted the
+flag base to candidate 1. The coordinator did not take it. **Nine consecutive
+directions (49–57) have run on the (BE-14) thread**, and in the same period
+carried item **#2** — `hcontract`, one of exactly **three** things between the
+landed successor `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card` and
+`PencilPair K 3 G` — has had **zero directions in the whole 65-direction
+sequence**, while this note's own *Blockers* has said since **2026-08-02** that
+three of its four costs are *"slice-sized and need no adjudication"*. All three
+standing criteria point the same way:
+
+- **Max impact on proving or disproving `PencilPair K 3 G`.** Route 3 was
+  **adjudicated** on 2026-08-02 and cannot close without (T), (V), (E-loc) and
+  (K-res). (T) is one of the three that need no user call.
+- **Falsification / architecture-testing as a positive criterion.** (T) is
+  **landed-invisible**: the search's own feasibility certificate for `G` is L6b,
+  which *requires* triangle-freeness, so a triangle-carrying residual **can never
+  appear in a certified sweep**. Attacking it is architecture-testing in the
+  literal sense — it is a blind spot of the instrument, not a gap in the data.
+- **Diversification.** First W4-side direction of the arc; different carried
+  item, different workbook, different label family, and a question with no
+  geometry in it.
+
+**The (BE-14) ranked list is NOT dropped** — the flag base stays candidate 1 for
+the next pick on that thread. Dispatched **un-named, single**, at **`recon-opus`**
+(fable unavailable this session).
+
+### The target, stated exactly
+
+`notes/Pencil-W4-informal.md` §(SAFE-RES) *Step 3* states the successor
+(SAFE-RES′) and decomposes it into (E), (T), (V). This direction is **(T)**:
+
+> **(T)** *A residual `G` is **triangle-free**.*
+>
+> Prove it, **or** discharge route 3's need for it by one of the three routes
+> *Step 4* already names, **or** exhibit a triangle-carrying feasible residual.
+
+**Route 3, packaging (b) is ADJUDICATED (2026-08-02) and is not reopened by this
+direction.** (T) is a cost *inside* it, not a choice about it.
+
+### THE THING THAT MAKES THIS DIRECTION DIFFERENT — read it before planning a driver
+
+**Numerics cannot settle (T), and the 255/255 already recorded is NOT evidence.**
+*Step 3* says so in its own words, and *Step 4* explains why: the sweep's
+feasibility certificate is L6b, **which requires triangle-freeness**, so a
+triangle-carrying residual is invisible to a certified search *by construction*.
+A driver that sweeps harder reproduces the blind spot at greater cost. **This is a
+derivation-first direction** — and the reservation therefore makes `w4/wtri.py`
+**conditional**: ship one only if it tests something the blind spot does not
+cover (a *necessary*-condition candidate, say), and if you ship none, say so and
+why. That is a legitimate landing shape here and is **not** a gap in the work.
+
+### What *Step 4* already proves — cite it, do NOT re-derive it
+
+Let `Δ = {x,y,z}` be a triangle of a feasible `G` with `|V(G)| > 3`. By **(R5)**
+`x,y` have degree 2 and `z` is a hub, so `Δ` is a **pendant** triangle and a
+proper rigid subgraph. Its contraction is simple and equals `G − x − y` with
+`z ↦ v*`, `deg v* = deg z − 2`; the only degree that changes is `z`'s and it only
+**drops**, so no vertex gains hub status. Hence **`hcard(G/Δ)` always holds**, and
+`¬Feasible(G/Δ)` can only be witnessed, landed-wise, by a **second** triangle in
+`G − x − y`. Consequences already landed: **(i)** `G` must carry `≥ 2` triangles,
+and two pendant triangles pass every landed test, so **(T) is not provable from
+the landed set**; **(ii)** such a `G` is middle-zone, hence invisible to a
+certified search. The **bowtie** (`|V| = 5`) does die — either triangle contracts
+to the spanning `C₃`, landed-feasible by L7c-3.
+
+### Job 1 (PRIMARY, FORCED) — settle (T), by one of the three named routes
+
+*Step 4* names them and this direction should pick among them with reasons, not
+invent a fourth without saying so:
+
+1. **Carry (T) as a hypothesis** — price what that costs route 3 downstream, and
+   say precisely which consumer then owes it.
+2. **Add triangle-freeness to branch 4's dispatch condition**, routing the
+   triangle case elsewhere — say *where* it routes and whether that arm can
+   absorb it. Note **`hnoGood'` is known NON-vacuous** (2026-08-02), so branch 4
+   needs content regardless.
+3. **Land a new feasibility-*necessary* condition that kills pendant triangles.**
+   This is the only route that discharges (T) outright; the others relocate it.
+
+**A relocation is a legitimate result and must be labelled as one** — the
+playbook's *"an abstraction that defers the crux as a hypothesis is not progress
+on the crux"* applies with full force, so if (T) ends up carried, say **where**
+the obligation now sits and **who** discharges it.
+
+### Job 2 (FORCED) — the two-triangle structure, since that is where the answer lives
+
+*Step 4* reduces (T)'s failure to `G` carrying **≥ 2** pendant triangles. **That is
+a strong structural handle and nobody has pulled it.** Two pendant triangles at
+hubs `z₁, z₂` (possibly `z₁ = z₂`, the bowtie) inside a residual — what does the
+residual's own definition force about them? The bowtie dies at `|V| = 5`; **does
+it die in general, and if not, what is the smallest survivor?** An explicit
+survivor is the cleanest possible answer to job 1 (it refutes (T) and forces route
+2 or 1); an argument that none exists **proves (T)**.
+
+### Job 3 (FORCED, CHEAP) — say what (V) then costs
+
+*Step 3* makes **(V)** *"elementary given (E) and (T)"* and lists three residues,
+of which *"`j = 2` with `u = u'` (a pendant triangle)"* is **killed by (T)**. So
+(T)'s disposition changes (V)'s. In one paragraph: if (T) is carried rather than
+proved, is (V) still elementary, and which of its three residues re-opens? This is
+the consumer trace one level down and it is cheap to run while the structure is in
+front of you.
+
+### What counts as a HIT — state which you got
+
+1. **(T) PROVED** — route 3 loses a cost outright.
+2. **(T) REFUTED by an exhibited residual carrying two pendant triangles** — route
+   3 must take route 2 or carry it; a **clean** and useful result.
+3. **Route 2 or 3 of *Step 4* priced and recommended**, with the relocated
+   obligation named.
+4. **(V)'s cost under a carried (T)** (job 3), either way.
+5. **The two-triangle structure characterized** (job 2), even short of a verdict.
+
+### Bars
+
+- **Do not re-open:** the route-3/packaging-(b) adjudication (2026-08-02); the
+  `hnoGood'` vacuity refutation (`|V| = 19`); **(SAFE-RES) itself, REFUTED** at
+  `S29`; the `W19` counterexample; (E)'s reduction to **(E-loc)**; and the whole
+  **(BE-14) thread** — this direction does not touch half (B), the 2-cut lemma,
+  or anything in §(K-bare-ext).
+- **The Lean hold (2026-08-05) binds**: no `.lean`. The **W4 build** (W4-L4b
+  onward) is **parked** and is not this direction's business; (T) is informal
+  mathematics, which is precisely why it is dispatchable today.
+- **Not this direction, ranked separately:** (E-loc); (V) beyond job 3's
+  paragraph; **(K-res)**, which is a **USER call** and stays one; the flag base;
+  (BE-67)(iii)'s uniformity; the one-end-series case; (S1)/(S2).
+- **Out of scope:** `hK`, **(GR-15)**, class uniformity.
+
+### Riders
+
+**TERMINATION E1/E2/E3** — read against their actual definitions
+(`notes/Pencil-fanout-archive.md`); **E3 is ARMED (by GBAL)**, report, never fire.
+Note that E1/E2/E3 are phrased for the **(K)** arc, so state explicitly how you
+read them on the W4 side rather than asserting a verdict by analogy. **F11** —
+*"no residual carries two pendant triangles"* is an **impossibility** claim and
+needs an argument; a search that finds none reports *"none found under cap C"*,
+**and here it must also disclose the L6b blind spot**, which is stronger than a
+cap. **Cap disclosure MANDATORY with the DENOMINATOR named** — three consecutive
+landings have now turned on a denominator (BSPREAD's, BONEONE's, BGENUINE's), and
+this direction's recorded 255/255 is the arc's clearest example of a figure whose
+denominator is the wrong one. **F12** — a corrected summary needs a hunk at the
+originating prose. **F17** — the fan-out header and `notes/Phase39.md`'s
+`**Status:**` header are surfaces a landing must update; **`notes/Phase39.md`
+*Blockers*' W4 bullet is a third**, and it is the one a fresh session reads for
+this item. **Read `notes/scripts/README.md` *Harness debt*** only if you ship a
+driver.
+
+### Where the write-up goes — and the two things that differ on this side
+
+- **Mathematics → `notes/Pencil-W4-informal.md` §(SAFE-RES)**, extending it with
+  *Steps TF1–TF6* / **(TF-1)–(TF-6)**. **Do NOT extend the `(BE-…)` family** — it
+  belongs to §(K-bare-ext) in the other workbook.
+- **There is NO gap-map row for the W4 side and this direction does not open
+  one.** The *State of (K)* map is the (K) arc's status object by its own header;
+  W4's status lives in the W4 workbook's confidence verdicts and
+  `notes/Phase39.md` *Blockers*. So `notes/check-gapmap-cells.py` will not fire —
+  **state that in the commit message rather than skipping the gate silently**.
+  `notes/check-phase-note.py` **does** fire.
+
+### Reservation
+
+(`notes/Pencil-labels.md` §"Reserved namespace — direction WTRI".) Labels
+**(TF-1)–(TF-6)**, ***Steps TF1–TF6***, owning file `notes/Pencil-W4-informal.md`
+§(SAFE-RES). All **0-hit**. **Return any unconsumed remainder.** **Checked and NOT
+chosen:** extending the `SR-` family — the bare `(T)` is *already* in this file's
+collision table (§(K-pitch)'s transfer claims vs W4's triangle-freeness), so
+minting `(T1)`, `(T2)` beside it would deepen a recorded collision, which (L4)
+forbids. **Qualify every citation of the bare `(T)` with its owner** per (L3).
+
+### Budget — measured at this prep
+
+**`notes/Phase39.md` is at 565/580 lines, 480/525 header words** — **lines bind**.
+The prep bought 15 by **merging the (BE-14) thread's five per-landing *Hand-off*
+blocks into one paragraph** and compressing the *Doc debt* bullet, which is the
+same relocation-not-fold move that produced block 8. **The landing should MERGE or
+ROTATE, not append.** The **`(K-bare)` gap-map row is at 1 544 / 1 600 words** —
+**this direction does not touch it**, but the next (BE-14) landing will need a
+recompute **to a target** (F21), with label preservation verified by scripted
+set-diff; the natural material is *Steps BE34–BE57*'s per-direction history.
