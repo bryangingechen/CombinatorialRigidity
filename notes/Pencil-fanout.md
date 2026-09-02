@@ -10396,12 +10396,25 @@ unprovable-as-posed **with no dispatchable attack left**: the target is neither
 refuted nor unprovable — it is **reduced**, and the reduction *is* a named
 dispatchable attack ((PAIR-5), with its Ear-Lemma-along-`Λ` route named), so **E2
 does not fire**; the spec's E2 clause about specifying a successor applies to a
-refutation, which did not happen. **E3 is ARMED and comes within one step of
-firing, which is the report worth making:** E3 wants the target *proven* and every
-remaining entry adjudication-gated. (E-pair) is not proven, so **E3 does not
-fire** — but (PAIR-6) has now removed (V) from the dispatchable list, so **the next
-landing that proves (E-pair) leaves W4 with only (K-res), a USER call, and E3
-fires then.** Reported, not acted on.
+refutation, which did not happen. **E3 is ARMED and does NOT fire** — and the
+claim that it comes within one step of firing is **CORRECTED by the coordinator at
+this landing** (the loop assigns the E1/E2/E3 re-run to the coordinator, not to the
+direction). Two things were conflated. **First, the corpus carries TWO E3
+formulations**: GEXIST's — *target proven* **and** every remaining ledger entry
+adjudication-gated — and the later spec's **deliberate deviation**, *"the target is
+**proven** — full stop"*, which dropped the second conjunct on the recorded ground
+that entries 2–4 stay dispatchable on any HIT. **Second, and this is the actual
+error: "the target" in E1–E3 is the ARC's target, stated "over the ledger and the
+target's status", never a direction's local obligation.** (E-pair) is not the arc's
+target under either formulation. What proving it would empty is **W4's**
+dispatchable list — not the phase's, since the whole (BE-14) thread stays
+dispatchable — and E3's own stated purpose (the next spend becomes a user call,
+because the Lean hold's release condition is met by a standalone-significant
+informal proof) is not met either: `hcontract` is one of **three** carried items,
+so proving (E-pair) does not release the hold. **E3 is not one landing away.**
+The substantive report stands: (PAIR-6) removed (V) from the dispatchable list, so
+**W4's non-user-call work is the single obligation (PAIR-5)**. Reported, not acted
+on.
 
 **What did NOT move.** (T) ((TF-1)–(TF-6)) is untouched and is *used* twice more
 (the third (V) residue; (PAIR-2)(iv)'s triangle clause). (E-loc) stays **refuted**

@@ -217,23 +217,13 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
 
 **The phase stays OPEN** (the 2026-07-24 adjudication — no phase-close; see *Current state*).
 
-**THE (BE-14) FRAME, settled and not restated** (write-ups `notes/Pencil-fanout.md`
-§"<CODE>"; the `(K-bare)` gap-map row is **authoritative**). The strengthened 2-cut
-lemma **is** (BE-14): decomposition exhaustive, base `{3-connected}` ∪ `{max deg ≤ 2}`
-∪ `{def₂ = def₃}` free, 1-cuts (BE-18), statement **PINNED** as **S-mark**, simultaneity
-**VACUOUS** ((BE-25)(i)). **THE EAR SIDE:** (α) closed (BEARCASE, `m ≥ 3`); (β) proved
-at every window piece on the **87-of-91** domain by BWIN's class theorem with BSHARP's
-(b1)/(b2) and BRULE's (b3) — **MODULO (S1)/(S2)** — residue per-shape outside the window
-((BE-58)(iv)) plus the `π_u = π_v` corner, **now unconditional** since (BE-32)(+) is a
-theorem.
-
-**WHAT THE THREAD'S LAST FIVE LANDINGS ESTABLISHED** (52, 53, 55, 56, 57 — write-ups
-`notes/Pencil-fanout.md` §"<CODE>", mathematics §(K-bare-ext) *Steps BE58–BE87*; the
-`(K-bare)` gap-map row is **authoritative and not restated here**). The decorated-skeleton
-law and the branch-product theorem; **(BE-32)(+) proved outright**, retiring the
-star-2/SPREAD split; cross-cut-only forcing confined to `δ₁ = δ₂ = 1`, then found there,
-then shown **genuine but harmless**. **Net: half (B)'s residue is back to TWO items** —
-(BE-67)(iii)'s uniformity and the flag base, now candidate 1 below.
+**THE (BE-14) THREAD, settled frame + its last five landings — RELOCATED 2026-09-02** to
+`notes/Pencil-structure.md` §"The (BE-14) thread — per-landing detail" (**block 8**), which
+already owns that thread's per-landing detail; the write-ups and the `(K-bare)` gap-map row
+stay authoritative. **Reference, not status** — the thread has not been worked since
+BGENUINE (57) and the last four directions are all W4-side. The status that stays here:
+**S-mark is (BE-14)'s only open step**, (β) is proved at the window **modulo (S1)/(S2)**,
+half (B)'s residue is **two** items, and cross-pair welding is **untouched**.
 
 **THE W4 DEVIATION PAID THREE TIMES** (§(SAFE-RES) *Steps TF1–TF6*, §widened kernels
 *Steps EL1–EL6* / *PR1–PR6*): WTRI (58) closed (T); WELOC (59) refuted (E-loc) and proved
@@ -254,8 +244,10 @@ named:** the hub graph `Λ` has max degree `≤ 2` with cycle components of leng
 `|∂_hub U|` counts dangling `Λ`-ends and any rigid set whose hub part is one `Λ`-sub-path is
 a seed — grow one **along** a `Λ`-run with the Ear Lemma, the branches off a run having
 interior length `≤ 1`. Slice-sized, no adjudication owed, `wpair.py` is the harness.
-**Two flags, not decisions taken here:** a HIT there **fires E3** (W4 would hold only the
-user call), and a refutation reaching a real residual would refute **(E)** too (`f ≥ 7`).
+**Two flags, not decisions taken here:** a HIT there empties **W4's** dispatchable list
+(leaving the user call) — it does **NOT** fire E3, which wants the **arc's** target proven
+and is corrected at the WPAIR write-up — and a refutation reaching a real residual would
+refute **(E)** too (`f ≥ 7`).
 **The ranked (BE-14) list below is unchanged** — candidate 1, the flag base, is that
 thread's default if the coordinator alternates threads instead.
 

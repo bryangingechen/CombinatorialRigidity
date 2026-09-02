@@ -62,7 +62,7 @@ cap was ever bumped and nothing was deleted**; the note keeps a pointer to each.
 | 5 | *What the recent landings closed* | 2026-08-29 | BZAVOID / ZJACOB / ZSHEAR / GHWIT / GMINM closes |
 | 6 | *The unselected candidate continuations* | 2026-08-29 | leads (b)–(f); ranking lives in the fan-out losers sections |
 | 7 | *Citations — the phase's verified bibliography* | 2026-09-01 | every verified source; **a new source is added HERE** |
-| 8 | *The (BE-14) thread — per-landing detail* | 2026-09-01 | which direction proved which sub-clause of the three sides, with its labels |
+| 8 | *The (BE-14) thread — per-landing detail* | 2026-09-01 (addendum 09-02) | which direction proved which sub-clause of the three sides, with its labels; the **settled frame** and the thread's last five landings joined it 09-02 |
 
 The one line that stays in `notes/Phase39.md` rather than moving here: the **State of
 (K)** gap map in `notes/Pencil-informal.md` is the phase's status object, authoritative
@@ -812,3 +812,32 @@ reported, NOT acted on** (next block).
 §(K-bare-ext); the direction codes resolve in `notes/Pencil-fanout.md`. Treat the paragraph
 as a snapshot dated 2026-09-01, **not** as a live status surface — if it disagrees with the
 gap map, the gap map wins.
+
+### Addendum, 2026-09-02 — the settled frame and the last five landings
+
+**Relocated verbatim from `notes/Phase39.md`'s *Hand-off* section at the WPAIR landing**,
+for the same reason block 8 itself moved: the thread has not been worked since BGENUINE
+(ordinal 57) and the four directions after it are all **W4-side**, so its settled frame
+became reference while the phase note's line cap was saturated at **580/580**. The status
+clauses the note keeps are named in its pointer; everything below is the frame.
+
+**THE (BE-14) FRAME, settled and not restated** (write-ups `notes/Pencil-fanout.md`
+§"<CODE>"; the `(K-bare)` gap-map row is **authoritative**). The strengthened 2-cut
+lemma **is** (BE-14): decomposition exhaustive, base `{3-connected}` ∪ `{max deg ≤ 2}`
+∪ `{def₂ = def₃}` free, 1-cuts (BE-18), statement **PINNED** as **S-mark**, simultaneity
+**VACUOUS** ((BE-25)(i)). **THE EAR SIDE:** (α) closed (BEARCASE, `m ≥ 3`); (β) proved
+at every window piece on the **87-of-91** domain by BWIN's class theorem with BSHARP's
+(b1)/(b2) and BRULE's (b3) — **MODULO (S1)/(S2)** — residue per-shape outside the window
+((BE-58)(iv)) plus the `π_u = π_v` corner, **now unconditional** since (BE-32)(+) is a
+theorem.
+
+**WHAT THE THREAD'S LAST FIVE LANDINGS ESTABLISHED** (52, 53, 55, 56, 57 — write-ups
+`notes/Pencil-fanout.md` §"<CODE>", mathematics §(K-bare-ext) *Steps BE58–BE87*; the
+`(K-bare)` gap-map row is **authoritative and not restated here**). The decorated-skeleton
+law and the branch-product theorem; **(BE-32)(+) proved outright**, retiring the
+star-2/SPREAD split; cross-cut-only forcing confined to `δ₁ = δ₂ = 1`, then found there,
+then shown **genuine but harmless**. **Net: half (B)'s residue is back to TWO items** —
+(BE-67)(iii)'s uniformity and the flag base, now candidate 1 below.
+
+**Reading it later.** Same caution as block 8's: a snapshot, not a live surface. If it
+disagrees with the `(K-bare)` gap-map row, the row wins.
