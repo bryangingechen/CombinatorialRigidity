@@ -2600,7 +2600,7 @@ BGENUINE prep: the landing updated the section heading to CONSUMED but left the
 body without either, which is the one thing a successor's 0-hit check reads.)*
 
 
-## Reserved namespace — direction BGENUINE (2026-09-01, **RESERVED — the direction is in flight**)
+## Reserved namespace — direction BGENUINE (2026-09-01, **CONSUMED IN FULL at the landing; nothing returned**)
 
 **Reserved 2026-09-01 for the single direction BGENUINE** (ordinal 57, the arc's
 sixty-fifth direction; `notes/Pencil-fanout.md` §"BGENUINE") — **is the
@@ -2634,3 +2634,31 @@ direction may well return *not genuine*.
 returned draft. **This direction is the arc's first GEOMETRIC one in six**, so
 the temptation to mint configuration-level tokens is higher than it has been:
 prefer prose names, as BSPREAD and BONEONE both did.
+
+**CONSUMED IN FULL at the landing (2026-09-01).** Labels **(BE-84)–(BE-88)** and
+*Steps BE83–BE87* are all used, in order, by the section's BGENUINE
+continuation: (BE-84) the genuineness theorem and the certificate census,
+(BE-85) the chart of a forced witness plus the (CH-1) check and the new `(10,5)`
+row, (BE-86) the criterion without (BE-22)(iii)'s hypothesis and the `0`
+shortfall, (BE-87) what half (B) is left with and the vacuous job 3, (BE-88) the
+board. **Nothing is returned.** Label preservation in the `(K-bare)` gap-map row
+was verified by **scripted set-diff** at every one of the four recompute passes,
+never by eye: `(BE-84)`–`(BE-88)` added, **zero lost**, row 1 475 → **1 545**
+words against the 1 600 cap (the ear-case and BONEONE history blocks rewritten
+as current state, per F21 and BPEEL's precedent).
+
+**(L6) landing-time grep, RUN.** `BGENUINE` / `bgenuine` / `(BE-84)`–`(BE-88)` /
+*Steps BE83–BE87* hit only this landing's own files. The direction minted **no
+new parenthesized token**. Three prose handles were minted — ***hinge-pair
+certificate***, ***attainment loss*** (`a_i`), and the ***confinement*** /
+***freedom*** controls — and the first is a **deliberate reuse**, not a new
+term: *"hinge pair"* already names the pair of hinge lines at a body
+(`repin.hinge_coincidences`), and *"coincident hinge pair"* already names the
+degeneracy this certificate's guard excludes. The reuse is stated at
+(BE-84)(i) so a reader meeting *"hinge-pair certificate"* is pointed at the
+existing vocabulary rather than at a second meaning. **`a₁`/`a₂` are
+single-letter and therefore (L5)-risky**; they are scoped explicitly to *"the
+side's own attainment loss at the chosen configuration"* at every use, and the
+gap-map row spells the gloss out rather than carrying the bare symbol.
+
+**The next reservation on this section's tail opens at (BE-89) / Step BE88.**

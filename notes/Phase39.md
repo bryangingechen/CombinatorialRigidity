@@ -8,36 +8,35 @@ derives it from exactly **three carried items**: **`hcontract`** (W4 — build p
 **`hbareSplit`** (kernel (K-bare)). Everything else is closed — W0–W3 and all of W5
 (L0–L7), `hsplit` and `hfresh` included (2026-07-30, unchanged since).
 
-**The kernel-(K) research arc: 64 directions COMPLETE** (2026-08-05 → 09-01, ordinals
-1–56), plus eight strategy-only passes and two architecture probes; **ONE in flight** (BGENUINE, 57).
+**The kernel-(K) research arc: 65 directions COMPLETE** (2026-08-05 → 09-01, ordinals
+1–57), plus eight strategy-only passes and two architecture probes; **none in flight**.
 Per-direction verdicts, specs and write-ups live at `notes/Pencil-fanout.md` §"<CODE>"
 (ordinals 1–19: the archive) plus a workbook home — **not restated here**.
-**The arc's standing result, unchanged by all 64: `hK` is not closer.** **(GR-15)** — the
+**The arc's standing result, unchanged by all 65: `hK` is not closer.** **(GR-15)** — the
 single open gap the whole §(K-grid) chain reduces to — is **untouched**; **class uniformity
 of the escape is untouched**; no g-flank was found by any direction; **E3 is ARMED (by
 GBAL) and has never fired**.
 
-**BONEONE (56) LANDED 2026-09-01 — the answer is YES, and half (B)'s LAST
-general-position enemy is LIVE.** `δ_i` and the R-node test are **per-SIDE**, so any two
-sides glue ((BE-79)); the minimal witness is **11** vertices, and **24 of the 48** such
-peels force `π_u = π_v` on exactly (BE-77)(ii)'s certificate — **(BE-66)(iv)'s CONCLUSION
-is REFUTED** ((BE-81)), and **both zeros behind the old `no` were VACUOUS** ((BE-80)).
-**(BE-32)(+), (BE-73)(ii)(b), (BE-77) and (BE-14) untouched; NOT a PENCIL event.**
-
-**IN FLIGHT — direction BGENUINE** (ordinal 57) at the price BONEONE named: this is all
-the **AGGRESSIVE** operator, which over-claims, so the enemy is a **candidate** and
-**genuineness is GEOMETRY** ((BE-82)). Two questions at the 392 witnesses — is
-`{v, b₁, b₂}` three **independent** points at a chart configuration, and if so does the
-coincidence drop `dim(ρ̄₁+ρ̄₂)` below `min(δ₁+δ₂,6) = 2`? A **0** shortfall relabels the
-enemy harmless; a positive one is a **counterexample class** for half (B).
+**BGENUINE (57) LANDED 2026-09-01 — the re-opened coincidence is GENUINE and it does
+NOT bite, so half (B)'s residue is back to TWO items.** Genuineness needs no draw:
+(BE-77)(ii)'s certificate `{v, b₁, b₂}` is a **hinge pair** — `v` and two of its own
+neighbours — exactly the triple `binduc.assert_generic_star` asserts independent, so the
+**aggressive** operator and the genuine one agree **pointwise** ((BE-84)). And at
+**392/392**, on exhibited exact-ℚ certificates, `ρ̄₁ ∩ ρ̄₂ = 0` **as spaces** and **`H`
+ATTAINS** ((BE-86)). The naive shortfall's `−1` at 100 is a **denominator error**:
+(BE-22)(iii) needs *both pieces attaining*, the gap-map row had dropped the proviso
+(repaired), and the criterion is `dim(ρ̄₁+ρ̄₂) = min(δ₁+δ₂,6) + a₁+a₂`. The family is
+**off (CH-1)'s class** (girth 3 at 392/392, and 648/648 of a new `(10,5)` row) at **no
+cost** ((BE-85)). **BONEONE's 392, (BE-79)–(BE-83), (BE-32)(+), (BE-73)(ii)(b), (BE-77)
+and (BE-14) untouched; job 3 VACUOUS; NOT a PENCIL event.**
 
 **WHERE THE (BE-14) THREAD STANDS** — S-mark, the 2-cut composition lemma, is (BE-14)'s
 only open step; its **three sides** and every per-landing detail are **REFERENCE,
 RELOCATED 2026-09-01** to `notes/Pencil-structure.md` §"The (BE-14) thread — per-landing
-detail" (**block 8**, and it is the eighth of the read-once-per-session set). What is
-status: (β) is proved at the window **MODULO (S1)/(S2)**; the general-piece side is down to
-**cross-cut-only forcing, RE-OPENED with 392 witnesses**, plus two named residues;
-cross-pair welding is **untouched**.
+detail" (**block 8** of the read-once-per-session set). What is status: (β) is proved at the window **MODULO (S1)/(S2)**; the general-piece side's
+cross-cut-only forcing is **re-opened as a phenomenon and empty as an obstruction** (392
+genuine, `0` shortfall), leaving **two** residues — `reach` uniformity ((BE-67)(iii)) and
+the flag base ((BE-65)(i)); cross-pair welding is **untouched**.
 **The phase-boundary consequence is reported, NOT acted on** (next block).
 
 **On a future HIT: the phase-boundary consequences are the USER's call** —
@@ -237,19 +236,20 @@ geometric sentence; BEARCASE **PROVED (α)** for `m ≥ 3`; BEARFULL, BSHARP and
 BE58–BE67*. **Demoted to one entry** per this note's oldest-demotes rule, now that
 three further directions on the thread have landed; the write-ups carry the detail.
 
-**BSPREAD (55) LANDED 2026-09-01** — **(BE-32)(+) IS A THEOREM** ((BE-74)), the star-2 /
-SPREAD split **retired**, (BE-41)(ii) confirmed refuted, and cross-cut-only forcing
-**confined to `δ₁ = δ₂ = 1`**.
+**BSPREAD (55) and BONEONE (56) LANDED 2026-09-01** — (BE-32)(+) is a **THEOREM**
+((BE-74)) and the star-2 / SPREAD split retired; cross-cut-only forcing **confined to
+`δ₁ = δ₂ = 1`** ((BE-77)) and then **found there**, on a minimal 11-vertex witness, with
+both of (BE-77)(iv)'s tiers shown to have had **0 chances** ((BE-79)–(BE-83)).
 
-**BONEONE (56) LANDED 2026-09-01** — write-up `notes/Pencil-fanout.md` §"BONEONE",
-mathematics §(K-bare-ext) *Steps BE78–BE82*, driver `notes/scripts/w4/boneone.py`.
-**HIT shapes 3, 2, 4, 5; NOT 1.** The answer is **YES**, the witness is **minimal**
-(11 vertices), the forcing test is **POSITIVE**, and **(BE-66)(iv)'s conclusion is
-REFUTED**. Both of (BE-77)(iv)'s tiers had **0 chances** — a cap one vertex short, and a
-generator that structurally cannot host the shape. The coordinator's route hypothesis is
-**refuted**, its own item (c) vindicated. Details are the write-up's and the `(K-bare)`
-gap-map row's, **not restated here**. **Candidate 1 is IN FLIGHT as BGENUINE (57).** The ranked list, with it **replaced by what
-BONEONE leaves**:
+**BGENUINE (57) LANDED 2026-09-01** — write-up `notes/Pencil-fanout.md` §"BGENUINE",
+mathematics §(K-bare-ext) *Steps BE83–BE87*, driver `notes/scripts/w4/bgenuine.py`.
+**HIT shapes 2, 5, 4; NOT 1, NOT 3.** The coincidence is **GENUINE** — by an argument off
+`assert_generic_star`, not a draw, because the certificate is a **hinge pair** ((BE-84)) —
+and it **does NOT bite**: `dim(ρ̄₁+ρ̄₂) = min(δ₁+δ₂,6) + a₁+a₂` with `ρ̄₁ ∩ ρ̄₂ = 0` as
+spaces and **`H` attaining** at **392/392** ((BE-86)). Job 3 **VACUOUS**; the family is off
+(CH-1)'s class at no cost ((BE-85)). Details are the write-up's and the `(K-bare)` gap-map
+row's, **not restated here**. **Half (B)'s residue is back to TWO items, so candidate 1 is
+retired and the flag base is promoted into it.** The ranked list:
 
 0. **HALF (B)'s CLASS QUANTIFIER** ((BE-67)(iii)) — **REDUCED, not proved** (BPEEL). It is
    now *one number per (piece, peel)*: `reach = min(δ₁+δ₂,6)`, the **generic** value of
@@ -257,22 +257,26 @@ BONEONE leaves**:
    **uniformity over the class**. The exhaustiveness obligation is **retired**, not
    discharged — (BE-70) bounds what any mechanism can depend on, and **completeness of the
    mechanism list is not claimed**. Three siblings: **cross-cut-only forcing** at an R-node
-   peel with both sides flexible — **RE-OPENED by BONEONE**, 392 exhibited witnesses, now
-   candidate 1; **the flag base off the no-adjacent-hubs class**
-   ((BE-65)(i)); and — **CLOSED by BPEEL, do not re-hunt** — the forced-empty `G` hunt,
-   impossible on (CH-1)'s class ((BE-72)).
+   peel with both sides flexible — re-opened by BONEONE and **DISCHARGED AS AN OBSTRUCTION
+   by BGENUINE** (genuine, `0` shortfall at 392/392), so it is a **checked hypothesis**, not
+   an item, and **must not be re-hunted**; **the flag base off the no-adjacent-hubs class**
+   ((BE-65)(i)), now candidate 1; and — **CLOSED by BPEEL, do not re-hunt** — the
+   forced-empty `G` hunt, impossible on (CH-1)'s class ((BE-72)).
 
-1. **IS THE RE-OPENED COINCIDENCE GENUINE, AND DOES IT BITE? — IN FLIGHT as BGENUINE**
-   (57, prepped 2026-09-01, `recon-opus`; spec `notes/Pencil-fanout.md` §"BGENUINE").
-   and the sharpest question the arc has ((BE-82)(ii)/(iii)). Two sub-questions, both
-   **geometric**, both aimed at the **392 exhibited witnesses** `boneone.py force` prints:
-   (a) is `{v, b₁, b₂}` three **independent** points at a `Chart(H)` configuration, or does
-   the **aggressive** operator's over-claim evaporate here? (b) even if genuine, does the
-   forced coincidence actually drop `dim(ρ̄₁+ρ̄₂)` below `min(δ₁+δ₂,6) = 2`? A `0`
-   shortfall at `WIT11` — (BE-67)(i)'s own instrument, one exact-ℚ draw — would leave half
-   (B) intact with the enemy relabelled harmless; a positive one is a counterexample class.
-   **Do NOT re-hunt for `(1,1)` peels** (answered) and **do not re-rank the SPREAD step**
-   (closed, (BE-74)).
+1. **THE FLAG BASE off the no-adjacent-hubs class** ((BE-65)(i)) — with the coincidence
+   discharged, this is one of the **two** things standing between half (B) and a class
+   statement, and the smaller of them. It is free iff no two hubs are adjacent; otherwise
+   it is a **pencil-realization problem for the hub subgraph** — a small instance of the
+   phase's own problem, with **(CH-1)** supplying irreducibility, rationality and dense
+   ℚ-points **on its class**. BGENUINE's finding sharpens the caveat: the witnesses that
+   matter here are **off (CH-1)'s class** (girth 3 at 1 040/1 040 forced witnesses over
+   four exhaustive rows), so a direction that leans on (CH-1) must say at which objects.
+   **Do NOT re-hunt for `(1,1)` peels** (answered), **do not re-rank the SPREAD step**
+   (closed, (BE-74)), and **do not re-open genuineness or the shortfall** ((BE-84)/(BE-86)).
+   A cheap sibling, ranked low and named so it is not lost: whether a **triangle is
+   necessary** for the forcing (`K_{2,3}` is the obvious triangle-free admitting shape;
+   BGENUINE measured 0 forced over the 648 triangle-free × triangle-free pairs of its new
+   `(10,5)` row, and explicitly did **not** upgrade that to a theorem).
 2. **The ONE-END-SERIES case by BWIN's machine** — one peel instead of two
    (`ρ̄₁ = ⟨ℓ_u⟩ + ρ̄(rest)`), budget `δ₁ ≤ 3` by the same excess accounting, or a
    second functional from the clean end. Would retire the (BE-46)/(BE-52)
@@ -417,6 +421,12 @@ section named; its *spec and landing write-up* in `notes/Pencil-fanout.md` §"<C
 `notes/Pencil-adjudications.md`; the derivation in git. **Do not grow these back into
 paragraphs.**
 
+- **BGENUINE** (57, 2026-09-01, opus) — **GENUINE, AND IT DOES NOT BITE** ((BE-84)–(BE-88),
+  §(K-bare-ext) *Steps BE83–BE87*): (BE-77)(ii)'s certificate is a **hinge pair**, exactly the
+  triple `assert_generic_star` asserts independent, so the **aggressive** operator is genuine
+  here **pointwise**; and at **392/392** `dim(ρ̄₁+ρ̄₂) = min(δ₁+δ₂,6) + a₁+a₂` with
+  `ρ̄₁ ∩ ρ̄₂ = 0` as spaces and **`H` attaining** — the naive `−1` at 100 being (BE-22)(iii)'s
+  dropped *both-attain* proviso, repaired at source. Half (B) is back to **two** residues.
 - **BONEONE** (56, 2026-09-01, opus) — **YES, AND THE ENEMY IS LIVE** ((BE-79)–(BE-83),
   §(K-bare-ext) *Steps BE78–BE82*): `δ_i` and the R-node test are **per-side**, so any two
   sides glue and an 11-vertex R-node-shaped peel sits at `(1,1)`; **24 of 48** such peels
@@ -436,41 +446,30 @@ paragraphs.**
   mechanism can *depend on*, **completeness NOT claimed** (F11), ruling candidate set aside
   ((BE-71)). **`G` CLOSED on (CH-1)'s class** ((BE-72)); **(BE-66)(iv)'s REASON refuted**
   (F12), conclusion re-derived (3 497 forced peels, all `min(δ₁,δ₂) = 0`), **re-ranking the SPREAD step** ((BE-73)). §(K-bare-ext) *BE68–BE72*.
-- **BDECOR** (53, 2026-09-01, opus) — **THE ACHIEVABLE DECORATIONS ARE A PRODUCT OF EAR
-  CHAINS** ((BE-64)): the pencil condition is a **per-vertex conjunction**, so at fixed hub
-  flags ANY piece's legal configurations are a **product** of ear chains, one per
-  **topological branch**, **modulo the cross-branch proviso `G`** — per-child sets past ears **never needed**, theta a corollary
-  (generic `dim ρ̄ = max(0, Σ min(a_j,6) − 12)`, welded attainment **FREE**, (BE-66)). Job 2
-  CONFIRMED+widened; (b) harmless, (a) **propagates THROUGH the P-node** (7/30 rows off
-  general position, all 7 **non-attaining** — a quantifier correction to (BE-62)(iii)).
-  Flag base = §(K-chart)'s tower ((BE-65)); half (B) 28/28 **per-piece** ((BE-67)).
+- **BDECOR** (53, 2026-09-01, opus, **demoted at the BGENUINE landing** per the thread's
+  oldest-demotes rule) — **THE ACHIEVABLE DECORATIONS ARE A PRODUCT OF EAR CHAINS**
+  ((BE-64)–(BE-67), §(K-bare-ext) *BE63–BE67*): at fixed hub flags any piece's legal
+  configurations are a **product** of ear chains, one per topological branch, **modulo the
+  cross-branch proviso `G`**; flag base = §(K-chart)'s tower; half (B) 28/28 **per-piece**.
 - **BRNODE** (52, 2026-09-01, fable) — **THE INTERNAL R-NODE DESCRIBED**
   ((BE-59)–(BE-63), §(K-bare-ext) *BE58–BE62*): `ρ̄` obeys one **decorated-skeleton law**
   at every SPQR node, exact at every configuration; residue = the **achievable-decorations
   class statement**, chord step priced strictly harder.
-- **BWIN** (51, 2026-08-29, fable) — **THE WINDOW CLOSED BY A CLASS THEOREM** ((BE-57)):
-  `ρ̄₁ ∩ Z = ⟨ℓ_u, ℓ_v⟩` at every both-ends-series piece with `δ₁ ≤ 4`. Machine: double
-  peel + **modular law** (target ⟺ `W ∩ Z ⊆ ⟨ℓ_u,ℓ_v⟩`, `W` the middle's screw space,
-  **arbitrary** — no enumeration, no middle induction, job 2 REFRAMED), the **end-choice
-  lemma** (one functional, survivors exactly `⟨ℓ_u,ℓ_v⟩`), the **excess law**
-  `excess ≤ max(0, δ₁−3)`. **(b1)+(b2)+(b3) at every window piece ⟹ (β) proved there on
-  87-of-91**; window ⊋ barbells (R-node middles in it); two side conditions named,
-  vacuous at every drawn middle; 160/160 end draws. §(K-bare-ext) *BE53–BE57*.
-- **BRULE** (50, 2026-08-28, opus, **demoted at the BPEEL landing** per the thread's
-  oldest-demotes rule) — **(b3) DECIDED, the CHEAPEST clause**, by a **separation theorem**:
-  free wherever a BSHARP mechanism fires, window included, so **(β)'s two residues are
-  DISJOINT** ((BE-50)); domain named and (b3) struck at `π_u = π_v` ((BE-49));
-  (BE-37)(ii)'s *inference* corrected with no measurement moved ((BE-51)); one witness per
-  shape, 0 failures at 637 draws ((BE-52)/(BE-53)). §(K-bare-ext) *BE48–BE52*.
+- **BWIN** (51, 2026-08-29, fable, **demoted at the BGENUINE landing**) — **THE WINDOW
+  CLOSED BY A CLASS THEOREM** ((BE-54)–(BE-58), §(K-bare-ext) *BE53–BE57*):
+  `ρ̄₁ ∩ Z = ⟨ℓ_u, ℓ_v⟩` at every both-ends-series piece with `δ₁ ≤ 4`, by a double peel and
+  the **modular law**; **(β) proved at every window piece** on the 87-of-91 domain, **modulo
+  (S1)/(S2)**, which are vacuous at every drawn middle but **not theorems**.
+- **BRULE** (50, 2026-08-28, opus, demoted at the BPEEL landing) — **(b3) DECIDED, the
+  CHEAPEST clause**, by a **separation theorem**, so **(β)'s two residues are DISJOINT**
+  ((BE-49)–(BE-53), §(K-bare-ext) *BE48–BE52*); one witness per shape, 0/637 failures.
 - **BSHARP** (49, 2026-08-28, opus) — the (b1) sharpening is **FALSE** at a dichotomy
   (series end / path saturation), correcting (BE-38)(iii) with no measurement change, and
   it cuts (b2) down to the both-ends-series window. §(K-bare-ext) *BE43–BE47*.
 - **RESGRID** (48, 2026-08-28, fable) — the (K-res) scoping slice: §(K-grid)'s **geometry
-  transports verbatim** and the (K-res) grid residual is **(RS-5)** ((GR-15)'s criterion,
-  quantifier widened; proven per-shape at `W19`/`S29`/`NT21c3`); the tight bookkeeping and
-  the (GR-21)+ program do **not** transport; the deficient fringe refuted ((RS-6), θ(2,3,7)
-  capped at 58 < 59, retiring §(K-clos) *Z6*'s miss as a theorem). *"One uniform gap serves
-  both"* **corrected**; §(K-res) opened with its own gap-map row; wave stays a user call.
+  transports verbatim**, the grid residual is **(RS-5)** ((GR-15)'s criterion, quantifier
+  widened); the tight bookkeeping and (GR-21)+ do **not** transport; the deficient fringe
+  **refuted** ((RS-6)). §(K-res) opened with its own gap-map row; the wave stays a user call.
 
 The (BE-14) thread the hand-off's candidate (0) sits on — two entries kept at prose length:
 

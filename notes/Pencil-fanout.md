@@ -1,22 +1,31 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
 **Status: EIGHT fan-outs, THIRTY-EIGHT single directions and TWO concurrent
-pairs dispatched; 64 LANDED, ONE IN FLIGHT — BGENUINE (ordinal 57).**
-**BGENUINE (ordinal 57, §"BGENUINE") PREPPED 2026-09-01** at **the price BONEONE
-named in its own landing**: the 392 re-opened witnesses are the **AGGRESSIVE**
-operator's, which over-claims, so the enemy is a **candidate** and genuineness is
-**GEOMETRY**. Two questions at the family — (a) are the three witnesses
-`{v, b₁, b₂}` **affinely independent** at a chart configuration, or does the
-over-claim evaporate; (b) if genuine, does the coincidence drop `dim(ρ̄₁+ρ̄₂)`
-below `min(δ₁+δ₂,6) = 2`? A **0** shortfall relabels the enemy harmless; a
-**positive** one is a counterexample class for half (B), and job 3 makes the
-direction classify it before anything else. **The price cuts asymmetrically and
-the spec says so**: a clause proved FOR the aggressive relation holds a fortiori
-(which is why (BE-74) is safe), while a witness exhibited AGAINST it is weaker
-(which is why BONEONE's 392 are candidates) — this direction is the one that
-converts, or fails to convert, a candidate into a real enemy. **The arc's first
-GEOMETRIC direction in six**, so F25's guards are the central rider. Dispatched at
-`recon-opus` (fable unavailable this session).
+pairs dispatched; 65 LANDED, NONE IN FLIGHT.**
+**BGENUINE (ordinal 57, §"BGENUINE") LANDED 2026-09-01** at **the price BONEONE
+named in its own landing** — **HIT shapes 2, 5 and 4; NOT 1, NOT 3**.
+**THE COINCIDENCE IS GENUINE, AND IT DOES NOT BITE.** (a) is settled by an
+**argument, not a draw**: (BE-77)(ii)'s certificate `{v, b₁, b₂}` is a **HINGE
+PAIR** — `v` and two of its own neighbours — and `binduc.assert_generic_star`,
+the standing guard every landed measurement in this arc runs under, asserts
+exactly that such a triple is affinely independent. So the aggressive operator
+and the genuine one **agree pointwise** here; the over-claim is real in general
+and **vacuous on this family** (1 836 of 1 856 admitting steps are hinge pairs,
+372 of 392 whole derivations are, and the other 20 steps measure rank 3)
+((BE-84)). (b) is **`0`**: at **392 / 392**, on exhibited exact-ℚ certificates,
+`ρ̄₁ ∩ ρ̄₂ = 0` **as spaces** and **`H` ATTAINS** ((BE-86)). **The naive
+shortfall reads `−1` at 100 of them, and that is a DENOMINATOR ERROR** —
+(BE-22)(iii) holds *only when both pieces attain*, the gap-map row had dropped
+the proviso, and with `a_i` the side's own attainment loss the criterion is
+`dim(ρ̄₁+ρ̄₂) = min(δ₁+δ₂,6) + a₁+a₂`, met exactly. **The (CH-1) check is
+answered `no`** at every member (girth `3` at 392/392, and at 648/648 of a
+**new** `(10,5)` row at `n = 13` whose triangle-free sub-row is `648` pairs /
+**0** forced) — and it **costs nothing**, because (BE-84) is pointwise and
+(BE-86) is existential ((BE-85)). **Job 3 is VACUOUS** (no positive shortfall,
+so the *On a future HIT* block does not fire), the enemy is **live as a
+phenomenon and empty as an obstruction**, and half (B)'s residue is back to
+**TWO** items ((BE-87)/(BE-88)). **Not a PENCIL event.** Run at `recon-opus`
+(fable unavailable this session).
 **BONEONE (ordinal 56, §"BONEONE") LANDED 2026-09-01** at **the whole of what
 BSPREAD reduced job 2 to** — *can an R-node-shaped 2-cut peel have
 `δ₁ = δ₂ = 1`?* — **HIT shapes 3, 2, 4 and 5; NOT 1**. **THE ANSWER IS YES, and
@@ -9391,3 +9400,112 @@ block. **The landing should ROTATE the header's landed-direction block rather
 than append to it**, which is what the last two landings did successfully. The
 *"On a future HIT"* block is **not** relocatable — and this direction is the most
 likely in the arc's history to need it.
+
+### LANDING WRITE-UP — BGENUINE, 2026-09-01: **GENUINE, and it does NOT bite**
+
+**HIT shapes 2, 5 and 4; NOT shape 1, NOT shape 3.** The target was *"(a) is
+the coincidence genuine, and (b) does it bite?"*. **(a) yes**, and by an
+argument rather than a draw; **(b) no**, at every one of the 392, on exhibited
+exact-ℚ certificates. The spec's HIT list ranked *"not genuine, by an
+argument"* first because it would close the enemy; that is **not** what
+happened, and the second-ranked outcome is what landed — with the enemy
+relabelled harmless rather than removed.
+
+**Job 1, and the whole direction turns on one observation.** The aggressive
+operator's disclosure — *"assumes every 3 forced points are independent, which
+OVER-claims"* — is a statement about **arbitrary** triples. (BE-77)(ii)'s
+certificate is not arbitrary: *Step 2* of that theorem derives `b₁, b₂` as
+`v`'s unique neighbours in the two `u`-blocks, so the triple is **a vertex and
+two of its own neighbours** — a **hinge pair** in the arc's existing sense. And
+`binduc.assert_generic_star`, the `plane_basis`-class guard every landed
+measurement in this arc runs under, asserts *exactly* `rank[p̂_v, p̂_a, p̂_b] = 3`
+at every vertex and every pair of its neighbours. So the aggressive operator
+and the genuine one **agree pointwise** on this family — no draw, no
+genericity, no irreducibility. **The shape theorem the last two directions
+proved is what makes the guard applicable**, which is why (BE-77)(ii) is now
+load-bearing twice. Census: **1 836 / 1 856** admitting steps are hinge pairs,
+**372 / 392** whole derivations are, and the remaining **20** steps — three
+distinct neighbours of the admitted vertex — measure **rank 3** at a draw.
+**(BE-84)**.
+
+**Job 2, and the answer needed a correction to the criterion before it could
+be read.** With `a_i := dim M_i − 6 − f_i` the side's own attainment loss,
+(BE-22)(i)+(ii)+(BE-21) give the criterion **without** (BE-22)(iii)'s
+*both-pieces-attain* hypothesis:
+
+> **`H` attains ⟺ `dim(ρ̄₁+ρ̄₂) = min(δ₁+δ₂,6) + a₁ + a₂`.**
+
+At **392 / 392**: `dim(ρ̄₁+ρ̄₂) = 2 + a₁ + a₂` exactly, `ρ̄₁ ∩ ρ̄₂ = 0` **as
+spaces**, `ρ_i = δ_i + a_i` (so (BE-22)(iii)(a), welded attainment, is **free**)
+and `dim M(H) = 6 + def₃(H)` — **`H` attains**. Attainment is *existential*, so
+each exhibited configuration is a **proof for its witness**. **(BE-86)**.
+
+**The cap disclosure that this direction is actually about.** Measured against
+`min(δ₁+δ₂,6) = 2` **alone**, the same 392 draws read `0` at 292 and **`−1` at
+100** — an apparent *excess* over general position. The 100 are exactly the
+rows where **one side loses attainment** at the forced configuration, and the
+loss cancels the excess. **The `(K-bare)` gap-map row had quoted (BE-22)(iii)
+with its proviso dropped, and this spec inherited the drop** — so the
+denominator error was in the dispatch's own framing, not only in a reading of
+it. Corrected in the row, annotated at *Step BE21*. This is (BE-66)(iii)'s
+*"`ρ̄` exceeds general position at `π_x = π_y`, all NON-ATTAINING"* mechanism,
+identified at a 2-cut and shown **benign**. **(BE-86)(iii)**.
+
+**Job 3 is VACUOUS, and that is the report.** No positive shortfall anywhere,
+so none of the three classifications fires and the phase note's *On a future
+HIT* block does **not** apply. One clause half-fired and is worth the board's
+attention: **(BE-22)(iii)'s hypothesis genuinely fails at 100 of the 392** —
+job 3's option (ii) at a real piece — but harmlessly, because the corrected
+criterion covers it. The right board entry is *"a hypothesis that was never
+needed at this width"*, not *"a counterexample to a hypothesis"*.
+
+**HIT item 5, answered `no` — and it is a real finding.** Every one of the 392
+has **girth 3**; only 8 have `hcard`; **0** satisfy all three (CH-1)
+hypotheses. The reason is structural on the `n₁ = 9` side (`0 / 12` of the
+`K₄`-skeleton `δ = 1` sides are triangle-free, and the arithmetic says why) and
+on the `n₂ = 4` side (`0 / 4`). So **(CH-1)(a) irreducibility, (BE-69)(ii)'s
+dichotomy and (BE-72)(iii) are all unavailable here** — and it costs nothing,
+because (BE-84) is **pointwise** and (BE-86) is **existential**. What is
+genuinely lost is only the step from *"`π_u = π_v` at every **guarded**
+configuration"* to *"at every configuration of `Chart(H)`"*, and that step is
+never taken. **(BE-85)(iii)**.
+
+**One row beyond the cap, minted here.** (BE-81)'s census stops at
+`(n₁,n₂) ∈ {(9,4),(9,5),(10,4)}`. The next cell — **`(10,5)` at `n = 13`** — is
+run: **2 400** peels, **648** forced, girth `3` at **648/648**, hinge pairs
+**3 168 / 3 264**, and the same four asserts at **81/648**. Its triangle-free ×
+triangle-free sub-row is the **first cell of the generator in which a
+girth-`≥ 4` peel is combinatorially possible at all**, and it has **648 pairs
+and 0 forced**. Stated with F11's discipline: a *none-found* claim over a
+**non-vacuous** denominator, explicitly not upgraded to a theorem — whether a
+triangle is *necessary* for the forcing is open (`K_{2,3}` is the obvious
+triangle-free admitting shape). **(BE-85)(iv)/(BE-86)(v)**.
+
+**A harness finding the successor should know.** `bdecor.sample_by_branches`
+**cannot draw these charts.** Its flag stage places hub points under the
+rank-`≤ 3` constraints only, never discovers the forced coplanarity, and
+consequently pushes `u` onto the line `CD`, where the guard rejects it. The
+driver's own `draw_flat` places the forced set in a plane and everything else
+freely, and every draw goes through **both** standing gates — so a passing draw
+is a point of `Chart(H)` whatever route found it. That the route is *complete*
+is not assumed: **3 580 / 3 580** confinement controls and **1 100 / 1 100**
+freedom controls establish it. **(BE-85)(i)/(ii)**.
+
+**What did NOT move.** **(BE-79)–(BE-83) are untouched** — the witness,
+`WIT16`, the size theorem, both vacuity findings and the 392 all stand exactly
+as landed, and *"an R-node-shaped peel at `(1,1)` cannot be forced"* stays
+**false**. **(BE-32)(+) / (BE-74)**, **(BE-73)(ii)(a)/(b)**, **(BE-77)(i)/(ii)**,
+**(BE-14)**, `hbareSplit`, S-mark, (BE-64), (BE-69)/(BE-70)/(BE-72),
+(BE-59)/(BE-60), the `G²` apparatus, the transversality count, (S1)/(S2) and
+cross-pair welding are all untouched. BPEEL's 3 497 and 408 stand; BONEONE's
+38 580, 4 330 and three census rows stand. **Not a PENCIL event**; the
+phase-boundary consequence is **reported, not acted on**, and the 2026-08-05
+Lean hold binds regardless.
+
+**Deliverable.** `notes/Pencil-informal.md` §(K-bare-ext) *Steps BE83–BE87* /
+**(BE-84)–(BE-88)**; driver `notes/scripts/w4/bgenuine.py`
+(`cert|chart|bite|wider|validate`, 145 s, `VALIDATE: OK`); the `(K-bare)`
+gap-map row recomputed (1 475 → **1 545** words, label set-diff scripted at
+every pass, **0 lost**) and its (BE-22)(iii) proviso drop **repaired at source**;
+reservation **consumed in full**. Run at **`recon-opus`** (fable unavailable
+this session).

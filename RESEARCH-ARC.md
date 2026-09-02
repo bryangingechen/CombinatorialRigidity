@@ -263,6 +263,29 @@ it as the reason the over-claiming operator was the better object to prove a
 theorem about. Write the expectation down; let the dispatch decide which of the
 four kinds it gets.
 
+**A FIFTH AND SIXTH KIND, at the sixth and seventh instances (2026-09-01,
+directions BONEONE and BGENUINE) — and the tally is repaired here, because it
+had drifted.** BONEONE's landing recorded the tally as *six instances and five
+kinds* while this file still said *fifth instance, four instances, three kinds*;
+that drift is exactly the F12 shape §6 exists to catch, and it is fixed in this
+paragraph rather than left to the next reader. The **fifth kind** is *refuted
+with its own named escape clause vindicated* (BONEONE): the coordinator's route
+hypothesis was wrong, and its own *"where I expect to be wrong"* item — *test
+whether the disjointness is a generator artifact first* — is what produced the
+landing. The **sixth kind** is subtler and is the one to watch for: *the framing
+was right and load-bearing, and the stated TEST carried a dropped proviso*
+(BGENUINE). The spec's asymmetry — a clause proved FOR an over-claiming operator
+holds a fortiori, a witness exhibited AGAINST it is weaker — was correct and the
+direction turned on it. But the spec's quoted criterion, *"does the coincidence
+drop `dim(ρ̄₁+ρ̄₂)` below `min(δ₁+δ₂,6)`"*, had inherited a **proviso drop from a
+summary surface** (a gap-map row quoting a lemma without its hypothesis), and
+measured against that denominator a third of the witnesses read as violations.
+**The lesson generalizes past this arc:** when a prep quotes a criterion, quote
+it *with its hypotheses* or say which surface it was copied from — a prediction
+can be right in shape and still hand the dispatch the wrong yardstick, and the
+dispatch will not notice unless it re-derives the criterion from the lemma
+rather than from the prep.
+
 **The second half of the same finding: coordinator artifacts need the same
 verification tier as a subagent's.** A coordinator-authored prep commit has
 carried its own status-surface defects, caught only by a landing agent. Nothing
