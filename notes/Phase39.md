@@ -8,18 +8,22 @@ derives it from exactly **three carried items**: **`hcontract`** (W4 — build p
 **`hbareSplit`** (kernel (K-bare)). Everything else is closed — W0–W3 and all of W5
 (L0–L7), `hsplit` and `hfresh` included (2026-07-30, unchanged since).
 
-**The research arc: 73 directions COMPLETE** (2026-08-05 → 09-02, ordinals
-1–65 — 69 on kernel (K), and **WTRI (58) / WELOC (59) / WPAIR (60) / WGROW (61) on W4**),
+**The research arc: 74 directions COMPLETE** (2026-08-05 → 09-02, ordinals
+1–66 — 70 on kernel (K), and **WTRI (58) / WELOC (59) / WPAIR (60) / WGROW (61) on W4**),
 plus eight strategy-only passes, two architecture probes and one read-only scoping recon;
-**GPACK (66) IS IN FLIGHT — the FIRST `hK`-side direction in 22 dispatches**.
+**GPACK (66) LANDED — the FIRST `hK`-side direction in 22 dispatches**.
 Per-direction verdicts, specs and write-ups live at `notes/Pencil-fanout.md` §"<CODE>"
 (ordinals 1–19: the archive) plus a workbook home — **not restated here**.
-**The arc's standing result, unchanged by all 73: `hK` is not closer.** **(GR-15)** — the
+**The arc's standing result, unchanged by all 74: `hK` is not closer.** **(GR-15)** — the
 single open gap the whole §(K-grid) chain reduces to — is **untouched**; **class uniformity
 of the escape is untouched**; no g-flank was found by any direction; **E3 is ARMED (by
 GBAL), has NEVER fired, and is NOT one landing away** — `61e046a6` corrected that reading:
 "the target" in E1–E3 is the **arc's**, so emptying W4's list does not fire it, and WGROW
 emptying it is the worked case.
+
+**`hK` LANE (GPACK 66): (GR-18)(iii) SPLITS and one half is a THEOREM** — the split is
+free, the residual is exactly the class-consistency clause; **(GR-10)/(GR-15) unchanged**.
+Detail: *Blockers* item 3.
 
 **W4's INFORMAL SIDE IS CLOSED** (WTRI 58 / WELOC 59 / WPAIR 60 / WGROW 61): **(T),
 (E-pair) and (V) are THEOREMS**, **(E) open, TIGHT and off every W4 path**, W4's
@@ -29,21 +33,18 @@ Detail: **block 9**.
 **WHERE THE (BE-14) THREAD STANDS** — S-mark, the 2-cut composition lemma, is its **only
 open step**; the three sides and every per-landing detail are **REFERENCE**, at
 `notes/Pencil-structure.md` §"The (BE-14) thread — per-landing detail" (**block 8**).
-Status only: (β) proved at the window **MODULO §(K-bare-ext) (BE-57)(iv)'s own two window
-conditions** ((S1)/(S2), one of three owners); cross-cut-only forcing **empty as an
-obstruction** (392 genuine, `0` shortfall); the flag base **DISCHARGED**; BUNIF made the
-residue **per-side** (14 block inequalities); **BDOUBLE made both 2-dimensional blocks
-REDUNDANT** under **(PENCIL-SATURATES)**, which **BSATUR REFUTED at exactly `ρ_i = 5` and
-REPAIRED** to **(PENCIL-SATURATES-GEN)** — the same clause **at a generic flag**, free
-because (BE-14) is existential — so **14 → 12** stands generically ((BE-107)). The 12 are
-**unwitnessed, NOT excluded** ((BE-97)(iv)) except `⟨M⟩`, measured empty at 72 rows;
-cross-pair welding **untouched**.
+Status only: (β) proved at the window **MODULO (BE-57)(iv)'s two window conditions**
+((S1)/(S2)); cross-cut-only forcing **empty** (392 genuine, `0` shortfall); the flag base
+**DISCHARGED**; BUNIF made the residue **per-side** (14 block inequalities); **BDOUBLE made
+both 2-dimensional blocks REDUNDANT** under **(PENCIL-SATURATES)**, which **BSATUR REFUTED
+at `ρ_i = 5` and REPAIRED** to the generic-flag **(PENCIL-SATURATES-GEN)**, free because
+(BE-14) is existential — **14 → 12** generically ((BE-107)). The 12 are **unwitnessed, NOT
+excluded** ((BE-97)(iv)) except `⟨M⟩`, empty at 72 rows; cross-pair welding **untouched**.
 
-**On a future HIT: the phase-boundary consequences are the USER's call** —
-whether Phase 39 closes and a successor opens for the Lean is a
-`PHASE-BOUNDARIES.md` event against the standing 2026-07-24 no-split
-adjudication, surfaced with a commit-count estimate, never taken unilaterally;
-the 2026-08-05 Lean hold binds regardless of how good the news is.
+**On a future HIT: the phase-boundary consequences are the USER's call** — whether Phase 39
+closes and a successor opens for the Lean is a `PHASE-BOUNDARIES.md` event against the
+standing 2026-07-24 no-split adjudication, surfaced with a commit-count estimate, never
+taken unilaterally; the 2026-08-05 Lean hold binds regardless.
 
 **NINE reference blocks sit in `notes/Pencil-structure.md`**, which indexes them —
 **read them once per session**. The line that stays here: the **State of (K)** gap map
@@ -106,30 +107,22 @@ constraints; the **dated dispatch/selection narrative for every ordinal, 1–44,
   2026-08-19 SIGZ authorization's adjudicate-at-the-return terms *as to the stop
   clause only*.
 
-- **2026-08-29, THE TARGET AFTER BWIN, and the session boundary** (twelfth check-in).
-  Offered the internal R-node (the coordinator's pick), the spread step, discharging
-  (S1)/(S2), or the (K-res) wave, the user chose **the internal R-node**; asked whether to
-  keep running, the user chose **"recompute only, then hold"**. So the R-node is the next
-  concrete task (*Hand-off*), the other three stay **ranked, not dropped**, and the (K-res)
-  wave remains the standing user call it already was.
+- **2026-08-29, the target after BWIN** (twelfth check-in) — **SPENT**: the user picked the
+  internal R-node (long since landed) over the spread step, (S1)/(S2) and the (K-res) wave;
+  those three stay **ranked, not dropped**, and the (K-res) wave is still a user call.
 
-- **Session-headroom calibration — MEASURED 2026-08-26, not argued** (eleventh
-  check-in). `weekly_scoped` tracks **fable only** (92 % for a whole session, unmoved
-  across four opus recons), so `.claude/commands/coordinate-phase.md`'s *"above ~80 %
-  on **either** limit, stagger"* reads as *"above ~80 % on the limit the dispatched
-  rung actually consumes"*; `weekly_all` moves **1–2 points per pair-round**. Nothing
-  else in the playbook moves.
+- **Session-headroom calibration — MEASURED 2026-08-26** (eleventh check-in).
+  `weekly_scoped` tracks **fable only**, so the playbook's *"above ~80 % on **either**
+  limit, stagger"* reads as *"on the limit the dispatched rung actually consumes"*;
+  `weekly_all` moves **1–2 points per pair-round**.
 
-**The arc's cumulative tally, and it had gone stale** (it read *"63 directions, ordinals
-1–55"* against a header saying 68/1–60 as early as 2026-09-02): the roll call, ordinals,
-dates and rungs live in `notes/Pencil-fanout.md`'s header and per-direction sections —
-**the only place they are maintained**. Counting rules, unchanged: the dispatch count moves
-only on a **landing**; a user call on dispatch *shape* contributes **no** strategy pass;
-the **two probes** (KBARE-FALSIFY, C3-AVOID) sit outside the direction count because they
-test the architecture, not the (K) crux. Net effect over the whole arc: **disproof risk
-removed**, every refuted route/gap has a successor in the gap map, **route-ledger entry 5
-PROVEN**, and **class uniformity of the escape remains untouched**. **Doc-debt round
-CLOSED** (`notes/Pencil-cleanup.md`, 2026-08-13, category D only).
+**The arc's cumulative tally** — roll call, ordinals, dates and rungs live in
+`notes/Pencil-fanout.md`'s header and per-direction sections, **the only place they are
+maintained** (this note's copy has gone stale before). Counting rules: the count moves only
+on a **landing**; a user call on dispatch *shape* is **no** strategy pass; the two probes
+(KBARE-FALSIFY, C3-AVOID) sit outside it. Net effect: **disproof risk removed**, every
+refuted route/gap has a gap-map successor, **entry 5 PROVEN**, **class uniformity
+untouched**. **Doc-debt round CLOSED** (`notes/Pencil-cleanup.md`, 2026-08-13).
 
 **The other candidate continuations, unselected — RELOCATED 2026-08-29** (verbatim) to
 `notes/Pencil-structure.md` §"The unselected candidate continuations": items (a)/(g) **DONE**,
@@ -231,23 +224,20 @@ in *Decisions made*, mathematics at §(K-bare-ext) *Steps BE88–BE107*, per-lan
 free **only** because (BE-14) is existential — a step needing the block inequalities at
 *every* flag does **not** get it ((BE-107)(ii)).
 
-**IN FLIGHT — GPACK (66), and THE ARC HAS TWO LANES AGAIN.** After 22 consecutive
-dispatches on `hbareSplit`/W4, a user call sent one to **`hK`**: **(GR-18)(iii)**, the
-grouping problem (§(K-grid) *Step G21*; spec §"GPACK"). **The `hK` lane's ranking is
-`notes/Pencil-strategy.md` §8's corrected board, NOT this list** — the board's own top two
-were **spent** and **refuted** and were re-ranked at `70c06abe`; that box also carries the
-standing **do-not-do** (no more (a′)/(b′) ledger directions) and the caveat that a (GR-15)
-HIT buys `hK` on the **tight stratum only**. The **(BE-14) lane's** next target is
-unchanged and is ranked item 0 below: BSATUR's successor **`Σ_x ⊆ ρ̄_i` at `ρ_i ≤ 5`**
-((BE-107)(iii)), which would kill the repair too, measured absent at only **5** terminals.
-**THE NEXT CONCRETE TASK is to verify and land GPACK's return** (the coordinator re-runs
-E1/E2/E3 itself, `61e046a6` — and **E1 is live on that side**: a job-1 MISS is a (GR-10)
-flank). Two things stay the USER's call, both OFFERED
-2026-09-02 and both DECLINED IN FAVOUR OF CONTINUING RESEARCH: the **(K-res) wave** (the
-2026-08-26 adjudication selected a cheap scoping slice, queued below), and whether W4's
-now-closed informal side changes anything about the **2026-08-05 Lean hold** — its own
-release condition speaks of an informal result *"significant as standalone"*, and
-(E-pair) + (V) + (T) is one, but the hold is the user's to lift, never a coordinator's.
+**GPACK (66) LANDED 2026-09-02 — the `hK` lane's first result in 22 dispatches.**
+**(GR-18)(iii) splits, and the split half is a THEOREM** ((GR-129)–(GR-133), §(K-grid)
+*Steps G149–G153*; verdict in *Blockers* item 3, write-up at §"GPACK"). Neither the packing
+nor the split is ever the obstruction; the residual is the class-consistency clause, a hub
+list-colouring tight only at length-2 branches. **The `hK` lane's ranking is
+`notes/Pencil-strategy.md` §8's board, NOT this list** (re-ranked `70c06abe`; it carries the
+standing **do-not-do** — no more (a′)/(b′) ledger directions), and GPACK supersedes its top
+entry. **THE NEXT CONCRETE TASK is the (GR-132) list-colouring at the `ℓ = 2`-rich shapes**
+— finite, local, the first place a (GR-10) flank could live, and the `hK` lane's own named
+successor; the **(BE-14) lane's** alternative is unchanged and ranked item 0 below
+(`Σ_x ⊆ ρ̄_i` at `ρ_i ≤ 5`, (BE-107)(iii)). Two things stay the USER's call, both OFFERED
+2026-09-02 and both DECLINED IN FAVOUR OF CONTINUING RESEARCH: the **(K-res) wave** (a cheap
+scoping slice queued below) and whether W4's now-closed informal side changes anything about
+the **2026-08-05 Lean hold** — the hold is the user's to lift, never a coordinator's.
 
 The ranked list:
 
@@ -359,7 +349,25 @@ its cost are `notes/dispatch-log.md`'s and `notes/Pencil-fanout.md`'s). **The ta
    identification recon" and `notes/Pencil-W4-informal.md`.
 3. **`hK`** (kernel (K), research) **via (GR-15)** — the escape `≢ 0` uniformity kernel,
    the phase's hardest open item and what the whole research arc attacks: **untouched by
-   all 66 directions**, and the only one of the three with **no named next slice**.
+   all 74 directions**, but since GPACK (66) it has a **named next slice**.
+   **GPACK's result.** (GR-18)(iii) splits in two. The split condition is an equitable
+   bisection of each `C_β`; a (packing, split) pair is exactly a **signing** of the
+   odd-length branches bounded by the **5/6-sparsity slack** `σ(F) = Σ_F ℓ − 6·c(F)`
+   ((GR-129)); and **a legal signing always exists**, unconditionally, off `def(G) = 0`
+   alone ((GR-130)) — Nash-Williams arboricity + Tutte/Nash-Williams packing + Edmonds'
+   covering, applied a second time to the *halved* multiplicities. So **neither the packing
+   nor the split is ever the obstruction**, and the **exchange freedom is load-bearing**:
+   6 840 of 266 700 exhaustively enumerated 6-tree partitions admit no split, **every one**
+   by an odd cycle in the split graph, so `gridcol --pack`'s 907/907 was evidence for
+   (GR-18)(i) alone ((GR-131)). What is left is **exactly** the class-consistency clause —
+   at `Λ = ∅` a **hub list-colouring** with lists `J ∖ C_β` of size `A(β)`, asserted sound
+   and complete, tight only at **length-2 branches**, where (GR-17)(d) independently says
+   the circuit law binds ((GR-132)). **The named next slice is that list-colouring at the
+   `ℓ = 2`-rich shapes** — finite, local, and the first place a (GR-10) flank could live.
+   **Price, unchanged and now sourced ((GR-133)):** a (GR-15) HIT buys `hK` on the **tight
+   stratum** only; the `def > 0` habitat (`C11`) is **owned** — `(K-res)` (RS-5)/(RS-6)
+   route it to the **escape route** — but **not free**, and §2.5's `dim R_a ≥ 2` reading
+   inverts its source.
    Everything in §(K-grid)/§(K-out) is *support* for this, not progress on it. **Standing
    adjudication ("C: literature hunt + A", 2026-07-30): carry `hK` pinned; option B NOT
    authorized**; both literature hunts are MISSes, and since 2026-08-02 it also carries
@@ -494,32 +502,25 @@ paragraphs.**
 
 **DEMOTED 2026-09-02** per this note's oldest-demotes rule — seven landings have followed.
 Settled, one line each:
-
 - **BEARFULL** (47, 2026-08-27, opus) — the **SHORT-CYCLE LAW** (`girth(Q) ≥ 6`), containing
   (BE-32)(ii)/(iii); **(b2) a COROLLARY of (b1)**; ear-decomposition **REFUTED**.
   §(K-bare-ext) *BE38–BE42*.
 - **BEARCASE** (46, 2026-08-27, opus) — **(α) CLOSED**; **(β) as stated REFUTED**, reduced to
   the single residue (BE-32)(+) — **since PROVED** ((BE-74)). §(K-bare-ext) *BE34–BE37*.
-
 - **BIMAGE** (45, 2026-08-27, opus) — the ear's `ρ̄₂` is a **chain on the Klein quadric**
   (bijection + three confinement laws); the **series/parallel recursion** minted, residue
   the internal R-node — **now landed by BRNODE**. §(K-bare-ext) *BE29–BE33*.
-
 - **BTWOCUT** (44, 2026-08-26, opus) — strengthened statement **PINNED** (S-mark), simultaneity
   **VACUOUS**, leaf base free; **(BE-14) NOT proved**. §(K-bare-ext) *BE24–BE28*.
-
 - **BINDUC** (42, 2026-08-26, opus) — **3-connected ⇒ `def₂ = 0`**, so the induction's **base
   is FREE**; BZAVOID's 2-cut `− 6` **REFUTED** for an exact `max`-law; **(BE-15)(ii)
   scope-corrected** to the triangle mechanism. §(K-bare-ext) *BE19–BE23*.
-
 - **BZAVOID** (40, 2026-08-26, opus) — falsification arm **EMPTY BY AN ARGUMENT** ((BE-15));
   the pencil stratum **IS** the planar-atom molecular stratum, so (BE-14) is **existential**
   ((BE-16)); two routes CLOSED. §(K-bare-ext) *BE14–BE18*.
-
 - **BATTAIN** (39, 2026-08-26, opus, the arc's first direction ever at `hbareSplit`) — motive
   characterized off the Lean bodies, **bare realizability UNCONDITIONAL**, the first universal
   rank cap by an argument ((BE-11)/(BE-13)). §(K-bare-ext) *Step BE13*.
-
 - **ZJACOB** (43, 2026-08-26, opus, Zheng line) — **(ZH-4) REFUTED by an EQUIVALENCE**
   (`B_0 ≠ ∅` **is** properness); **absorbs (ZH-3)**. §(K-jac) *JC1–JC5*.
 - **ZSHEAR** (41, 2026-08-26, opus, the §9 shelf's first direction ever) — **(ZH-1)
@@ -561,12 +562,10 @@ Settled, one line each:
   Δ-matroid lead **BOTH REFUTED**; the §(K-Λ) triad settled ((Λ0)/(Λ1) PROVEN via M2); the
   sixth–ninth dispatches found the conjecture HOLDS at every uncovered flank, the pure
   condition WRONG INVARIANT, dominance HOLDS but NOT a route; **(K-slide-comb) REFUTED**.
-
 - **Pre-fan-out arc, one-lined (2026-07-24 → 08-04; full detail `Phase39-design.md` + git)**:
   W0–W3/W5 CLOSED `hsplit` IN FULL and isolated kernel **(K)**; corank fixed to **(K-tight)**,
   W4 decomposed, (K-bare-ext) NO-GO'd, the standing adjudications set; **(K-res)** priced and
   **(SAFE-RES)**/`hnoGood'` vacuity REFUTED; (K-slide) (S1) proved, (K-pitch) closed.
-
 - **Promoted out of this phase** (pointers only): TACTICS-GOLF §11/§22/§23; TACTICS-QUIRKS
   §46/§96/§99–§104; FRICTION `exists_injOn_mapsTo_of_ncard_le` + `extensor_pair_smul`
   [mirror-candidate] and the omega/`Set.ncard`-atom idiom.

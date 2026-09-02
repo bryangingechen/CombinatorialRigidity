@@ -1,21 +1,30 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
 **Status: EIGHT fan-outs, FORTY-EIGHT single directions and TWO concurrent pairs
-dispatched; 73 LANDED, ONE IN FLIGHT.**
-**GPACK (ordinal 66, §"GPACK") IS IN FLIGHT since 2026-09-02 — the arc's FIRST `hK`-side
-direction in 22 dispatches**, at **(GR-18)(iii)**, the grouping problem: *does some 6-tree
-partition of `Ĝ` admit a length-legal 3+3 split?* Its input **(GR-18)(i) is a landed
-theorem**, so what is open is finite and combinatorial, with two named freedoms. Picked by
-a **user call** plus a read-only scoping recon that found §8's ranked board carrying a
-**spent** rank 1 (OQRANK) and a **refuted** rank 2 ((GR-122), the day after it was ranked)
-— re-ranked at `70c06abe`. The prep's one reading is **verified in the driver, not
-guessed**: `gridcol.py`'s `--pack` asserts Nash–Williams *feasibility* and confirms that
-(GR-10) certificates *are* packings — it **never** builds an arbitrary packing and asks
-whether that one splits, so the quantifier (GR-18)(iii) is about has no code behind it.
-That is the same shape as BSATUR's flag defect, and `RESEARCH-ARC.md` §4's new sharpening
-is its first application. **The deliverable must be an ARGUMENT** — the `hK` side's record
-is 907/907, 40 742 exhaustive, 1 158 344 instances, and (GR-15) has never moved. Driver-to-be
-`notes/scripts/w4/gpack.py`. Run at `recon-opus` (fable unavailable).
+dispatched; 74 LANDED, NONE IN FLIGHT.**
+**GPACK (ordinal 66, §"GPACK") LANDED 2026-09-02** — the arc's **FIRST `hK`-side direction
+in 22 dispatches**, at **(GR-18)(iii)**, the grouping problem. **HIT shape 1 on a named half,
+HIT shape 3 on the rest: the SPLIT is a THEOREM and the exchange freedom is LOAD-BEARING.**
+The target has a normal form that deletes the packing from the statement — *"`|C_β ∩ J| =
+3 − A(β)` for a length-legal `A(β)`"* is exactly *"`J` bisects `C_β` as evenly as
+possible"*, and a (packing, split) pair is exactly a **signing** `s` of the odd branches with
+`\|s(F)\| ≤ σ(F) = Σ_F ℓ − 6·c(F)`, the **5/6-sparsity slack** ((GR-129)); balance falls out
+free. And **a legal signing always exists** ((GR-130)) — unconditionally, `def(G) = 0` and
+nothing else, by Nash-Williams arboricity + Tutte/Nash-Williams packing + Edmonds' covering
+applied a second time to the *halved* multiplicities, so **neither the packing nor the split
+is ever the obstruction** and *Step G21*'s named successor object is retired. The
+coordinator's reading was **verified at source and correct**; its named expectation was
+**refuted exhaustively** — of **266 700** enumerated 6-tree partitions, **6 840** admit no
+split at all, **every one** of them by a **non-bipartite split graph**, so the
+certificate-induced packing is not canonical and `--pack`'s 907/907 is evidence for
+(GR-18)(i) alone ((GR-131)). What is left is **exactly** the class-consistency clause, and at
+`Λ = ∅` it is a **list-colouring of the hubs** with lists `J ∖ C_β` of size `A(β)`, asserted
+sound *and* complete, whose only tight place is the **forced label at a length-2 branch** —
+(GR-17)(d)'s own binding profiles ((GR-132)). **Job 2** answers the tight-stratum caveat:
+**owned, not free** — `(K-res)` (RS-5)/(RS-6) own it and route `def > 0` members to the
+**escape route**, while §2.5's `dim R_a ≥ 2` reading inverts its source. **(GR-10) and
+(GR-15) unchanged in status; E1 does NOT fire — the split-less packings are NOT flanks.**
+Driver `notes/scripts/w4/gpack.py` (three modes, 336–402 s). Run at `recon-opus`.
 **BSATUR (ordinal 65, §"BSATUR") LANDED 2026-09-02** — at **(PENCIL-SATURATES)**,
 *`dim(ρ̄_i ∩ Π) = 2 ⟹ ρ_i = 6`*, the clause BDOUBLE's redundancy theorem ((BE-101)) rests
 on. **HIT shapes 2 AND 3 — the clause is REFUTED, and the repair is FREE.** The prep's
@@ -12266,7 +12275,7 @@ shortfall, and worth far more than this landing; (4) the **remaining 11 live blo
 still unwitnessed; (5) the ear side's **two window conditions** and **cross-pair welding**
 ((BE-28)(i)), unchanged and untouched here.
 
-## GPACK — sixty-sixth ordinal (single dispatch, prepped 2026-09-02) — **the arc returns to `hK` after 22 dispatches**
+## GPACK — sixty-sixth ordinal (single dispatch, prepped 2026-09-02, **LANDED 2026-09-02**) — **the arc returns to `hK` after 22 dispatches**
 
 **Selection provenance: a user call, and a board that had been pointing at dead items.**
 Asked whether an `hK`-side dispatch was worth spending this session, the user said yes. A
@@ -12475,3 +12484,154 @@ rather than appended (five demoted (BE-14) entries one-lined). The prep's `hK` l
 **net-new structure** in a note whose *Hand-off* has been single-threaded for 20+
 directions, so it was paid for inside the ranked list. **The landing MUST relocate or
 merge** — `notes/Pencil-structure.md` blocks 8 and 9 are the precedent.
+
+### LANDING — GPACK, 2026-09-02, `recon-opus`
+
+**Verdict: HIT shape 1 on a named half, HIT shape 3 on the rest, plus jobs 2 and 3. The
+SPLIT is a THEOREM — unconditionally — and the exchange freedom it uses is LOAD-BEARING.**
+Landed as §(K-grid) *Steps G149–G153*, labels **(GR-129)–(GR-133)**, driver
+`notes/scripts/w4/gpack.py` (three modes).
+
+**Job 1, part 1 — the target's normal form ((GR-129)).** Two reductions, both elementary
+and both removing an object from the statement. First, *"`|C_β ∩ J| = 3 − A(β)` for a
+length-legal `A(β)`"* is exactly *"`J` bisects `C_β` as evenly as possible"* — because
+`A(β) ∈ {⌊ℓ_β/2⌋, ⌈ℓ_β/2⌉}` by (GR-16)(i) and `|C_β| = 6 − ℓ_β`. Second, and this is the
+one that does the work: a **(packing, split) pair is the same data as a signing** `s` of
+the odd-length branches, `s_β = ±1`, subject to
+
+> `|s(F)| ≤ σ(F)` at every branch set `F`, where `σ(F) := Σ_{β∈F} ℓ_β − 6·c(F)`,
+
+the two sides being the multigraphs at multiplicity `(m_β ± s_β)/2`. The packing has
+disappeared from the statement; the unknown is one bit per odd branch, and the bound is the
+**5/6-sparsity slack** — the same quantity `gridcol.nash_williams_ok` computes for
+(GR-18)(i). A free corollary: any legal split is **automatically balanced** ((GR-16)(i)'s
+condition falls out of `σ(E) = 0`), so no argument for (GR-18)(iii) has to arrange balance.
+
+**Job 1, part 2 — the theorem ((GR-130)). A legal signing always exists.** Unconditional:
+`def(G) = 0` and nothing else — no `Λ = ∅`, no `D = 0`, no `(GR-4′)`, no colouring, no
+genericity. The proof is four landed classical facts over `σ ≥ 0`: (1) the half-multigraph
+`⌊m_β/2⌋` is independent in `N₃ = M(G°)^{∨3}` (Nash-Williams arboricity); (2) `⌈m_β/2⌉`
+*contains* three disjoint spanning trees, because halving the cross-count of a 6-tree
+packing leaves `3(p−1)` (Tutte/Nash-Williams packing); so (3) `M := (N₃/H₀)|_O` has rank
+`|O|/2` and a legal signing is exactly a partition of `O` into **two bases of `M`**, which
+by (4) Edmonds' covering theorem exists iff `|S| ≤ 2·rank_M(S)` for all `S ⊆ O` — and that
+inequality, expanded through the matroid-union rank formula, reads
+`σ(F) + o(F) + (|S| − 2|S ∩ F|) ≥ 0`, whose left side is `≥ σ(F) ≥ 0` identically. **So the
+grouping problem's packing-and-split half is closed**, and *Step G21*'s own naming of the
+equitable bisection as *"the shape of the argument a successor should attack"* is retired:
+that object is free. `--split` re-derives the conclusion at **907/907** without the proof,
+through `saferes.union_rank` as an oracle independent of `σ`, and cross-checks the criterion
+itself at **7 291/7 291** (shape, signing) instances with **0** disagreements.
+
+**Job 1, part 3 — the coordinator's reading, half confirmed and half REFUTED ((GR-131)).**
+The reading itself — that `--pack` asserts Nash-Williams *feasibility* and reads packings off
+colourings that already certify (GR-10), never ranging over the quantifier (iii) is about —
+was **verified at source and is correct**, and it is what made the direction dispatchable.
+Its *named expectation of being wrong* — that the exchange freedom might be unnecessary
+because the certificate-induced packing is canonical — is **refuted, exhaustively**. Over the
+first 40 census shapes with `M ≤ 6`, all **266 700** 6-tree partitions of `Ĝ` were
+enumerated: **6 840** of them (2.6 %) admit **no** legal 3+3 split. The mechanism is uniform
+and exact — **all 6 840** fail because the *split graph* (an edge for each `ℓ_β ∈ {2,4}`
+branch, joining the two trees `J` must separate) is **non-bipartite**; **0** are
+bipartite-but-unbalanced and **0** fail only through the `ℓ_β = 3` clause. Witness
+`K4(1,2,3,4,4,4)`, packing `((0,1,2),(0,1,2),(0,1,2),(1,3,4),(1,3,5),(2,4,5))`, separation
+pairs a triangle on `{3,4,5}`. (GR-130)'s proof does not split a handed packing; it
+*constructs* one, which is the exchange freedom in its strongest form. **The record the prep
+asked for: `--pack`'s 907/907 is evidence for (GR-18)(i), already a theorem, and none for
+(iii)** — `RESEARCH-ARC.md` §4's sharpening, second application, one landing after BSATUR
+minted it.
+
+**Job 1, part 4 — what is left, named exactly ((GR-132)).** At `Λ = ∅` the remaining clauses
+of (GR-18)(iii) are a **list-colouring of the hubs**: labels `g_A(u) ∈ J`, `g_B(u) ∈ J^c`,
+lists `J ∖ C_β` of size `A(β)` read off the packing, a `≠` constraint across every branch
+whose two ends carry the same colour, and *"no monochromatic hub"*. The proof is (GR-16)(iii)
+plus counting — at `Λ = ∅` every A-class is a hub star or an interior singleton, the stars
+are the only classes two branches share, and the singletons absorb whatever labels are left.
+Machine-asserted **both ways**: **229 320/229 320** accepted (packing, split) pairs rebuild a
+colouring that passes `gridcol.filter_pass` *and* carries a `packmm.fast_triple` in both
+blocks, and **124/124** certificate-induced pairs are accepted. **Where the difficulty now
+sits is measurable**: the list at a length-2 branch has size **1** on each side — the hub
+label is *forced* — which is exactly the profile (GR-17)(d) isolates as binding
+(`(2,2,3)`/`(2,2,2,2)`) and exactly TCOL item (v)'s named adversarial places. A successor
+hunts there, with the whole freedom of (GR-130) available: `|s(F)| ≤ σ(F)` describes **all**
+legal splits, not one.
+
+**Job 2 — the tight-stratum caveat: OWNED, not free, and the scoping recon's premise is
+half-wrong.** The remainder of `hK`'s habitat beyond the tight stratum is `hnoRigid` with
+`index ≠ 0`; `C11` is in it (`index = −5`, `def > 0`). It is **not an unowned gap**: the
+`§(K-res)/(RS-5)` row owns the audit and says, in its own words, that the two quantifiers are
+**disjoint** (*"tight shapes satisfy `hnoRigid`, (K-res) shapes refute it, so closing (GR-15)
+does NOT close this row"* — that claim, not anything re-verified here, is what covers the
+`def = 0`, `index > 0` corner; a successor that needs it should check it rather than inherit
+it) and that *"`def > 0`
+members stay with the **escape route**"* ((RS-6), the deficient fringe refuted for the grid
+route with a mechanism at θ(2,3,7)). But it is **not free**, and the `dim R_a ≥ 2` reading
+does not survive its source: `Pencil-strategy.md` §2.5 says the count **forces**
+`dim R_a = 1` at *tight* shapes — a negative result about counting invariants, not a supply
+of `dim R_a ≥ 2` anywhere — and §(K-flank) *F5(d)* exhibits seeds where the count predicts
+`1` and the geometry delivers `0`. **Price: a (GR-15) HIT buys `hK` on the tight stratum and
+hands the `def > 0` habitat to the escape route**, whose rows ((K-Λ), (K-wit), (K-pitch),
+(K-out), (K-dom)) are all live. §(K-clos)'s close-it says the same from the other side:
+*"`C11` is permanent."*
+
+**Job 3 — what (GR-15) and `hK` are left with, and the E-rider, reported and not fired.**
+(GR-10) and (GR-15) are **unchanged in status**; no gap-map status word moves on either.
+What changes is the *shape* of the residual: it is no longer a packing problem, so every
+instrument the arc built for it (Nash-Williams, Edmonds, the `2^M` sparsity sweep) is now on
+the closed side of the line, and (GR-13)'s NP-completeness of the *grouped* packing is better
+located — the hardness cannot live in the packing or the split, so it lives in the grouping
+map, which is the object (GR-132) exhibits. **The E-rider**, read against the **ARC's**
+target `PencilPair K 3 G` (`61e046a6`), E3 in `:1700`'s two-conjunct text: **E1 does NOT
+fire**, and the distinction is worth stating loudly because this landing is the closest an
+`hK`-side direction has come to tripping it by accident — **the 6 840 split-less packings are
+NOT flanks.** A g-flank is a `D = 0` *shape* whose **every** admissible colouring is binding;
+(GR-131)'s objects are *packings*, at shapes that do carry a good packing and a (GR-10)
+certificate. Nothing here refutes per-shape (GR-15) anywhere, and no flank was found.
+**E2** does not fire (target not refuted; (GR-132) is a dispatchable attack). **E3** does not
+fire (the arc's target is not proven).
+
+**F21 — the corpus's biggest row, recomputed to an explicit target.** `(K-grid)`:
+**2 390 → 2 500** status words against the `SPECIAL_CAPS` cap **2 715**, hitting the target
+`≤ 2 500` set before the edit (~140 added for this direction, ~30 compressed out of the
+(GR-94) and (b′) units, both keeping every code). Close-it **959 → 980 / 985**. **No
+`SPECIAL_CAPS` entry proposed and none needed** — *no overflow, no bump*. Label preservation
+by `python3 notes/scripts/gapdiff.py K-grid`: **135 codes in, 141 out, ZERO dropped, 6
+added**. Column 2's stale step range `G0–G129` corrected to `G0–G153` in the same edit.
+
+**The close-it cell's route (iv) is CONSUMED, and the flagged contradiction reconciled** (the
+prep made it mine because my work touches the cell). Route (iv) was *"an exchange argument on
+(GR-18)'s guaranteed 6-tree packing supplying a length-compatible 3+3 split"* — now
+**settled**, and rewritten to say so and to point at (GR-132) for what it leaves. The
+contradiction between route (i) and the do-not-re-run list is a **method/statement
+confusion**: route (i) is the *statement* (`a = 0 ∧ max g ≤ 0` at some colouring, plus
+(GR-4′)); what (GR-28)(iv)/(GR-29)/(GR-30) killed is the uniform-`g`-cap *method* for it.
+One clause added to route (i) saying exactly that.
+
+**Reservation consumed in full**; nothing returned. Labels (GR-129)–(GR-133), *Steps
+G149–G153*, driver at the reserved path; the tail declared for the next reservation is
+**(GR-134) / Step G154**. Nothing minted for the split graph — deliberately left unlettered,
+because `P` already carries (GR-8)'s subgraph and this direction's own signing subset.
+
+**Cost, and the prep's cost caution answered.** `--split` **16 s**, `--arb` 40 s, `--resid`
+234 s, `--validate` **336–402 s** — inside the 600 s foreground budget, byte-identical across
+two `PYTHONHASHSEED=0` runs (394 s, 336 s) and one at 999 (402 s); a range, because the wall
+clock moved ~20 % with machine load while not one output byte did. The prep warned that a
+packing-space explorer would be combinatorially heavier than `--pack`'s 98 s and told me to
+**cap the exchange neighbourhood and disclose it**. **No exchange cap was needed and none is
+disclosed**, because (GR-130) does not explore a neighbourhood at all — it *constructs* the
+packing — and the leg that covers the same 907 shapes `--pack` covers is `--split` at **16 s
+against its 98 s**. The 234 s is `--resid`, which is a different kind of cost: it enumerates
+every 6-tree partition of a 12-shape subpool and puts every accepted pair through
+`filter_pass` and `fast_triple` twice over. The caps that do exist are **population** caps,
+disclosed with denominators: all 907 shapes for `--split`; the first 40 with `M ≤ 6` for
+`--arb`; the first 12 with `M ≤ 6` and `Λ = ∅` for `--resid`.
+
+**Successors this direction names**, in its own ranking: (1) **the (GR-132) list-colouring at
+the `ℓ = 2`-rich shapes** — the forced-label conflict is the only mechanism left, it is
+finite and local, and `(2,2,3)`/`(2,2,2,2)` is where (GR-17)(d) independently says the
+circuit law binds; (2) **(GR-132) at `Λ ≠ ∅`** — the merging conjunct (GR-16)(iii)/(iv)
+supplies is not written, and every current statement of the residual is a `Λ = ∅` one;
+(3) **a flank hunt on the list-colouring**, now a genuinely finite object: a shape at which
+*no* legal split admits a consistent hub colouring would refute (GR-10) as a class statement
+and be the first (GR-10) flank in 74 directions; (4) the `(K-grid)` close-it's routes (ii)
+and (iii) (the collapse-order bound, and which `r`-groupings certify), untouched here.

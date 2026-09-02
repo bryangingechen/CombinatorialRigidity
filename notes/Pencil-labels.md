@@ -3088,7 +3088,7 @@ landing grep run**: `(S1)`/`(S2)` written as *"§(K-bare-ext)'s own two window c
 ZERO dropped**. **The tail this direction declares, for the next reservation:
 (BE-109) / Step BE108.**
 
-## Reserved namespace — direction GPACK (2026-09-02, **IN FLIGHT**)
+## Reserved namespace — direction GPACK (2026-09-02, **LANDED**)
 
 **Reserved 2026-09-02 for the single direction GPACK** (ordinal 66, the arc's
 seventy-fourth direction; `notes/Pencil-fanout.md` §"GPACK") — **(GR-18)(iii)**, the
@@ -3128,8 +3128,10 @@ namespace: bare **`(C6)`/`(C7)`** (this file's oldest recorded collision, §(SAF
 2026-08-20 user call — **do not re-mint the bare forms**; and `A(β)`, `C_β`, `J`, `Ĝ`,
 `D_β`, which are *Step G21*'s own symbol names — **reuse them, mint nothing**.
 
-**Gap-map note (F21) — this is the corpus's biggest row.** `(K-grid)` stands at **2 390 /
-2 715 status words**, the one row with a `SPECIAL_CAPS` entry, bumped three times and every
+**LANDED 2026-09-02 — the whole reservation CONSUMED, nothing returned.** (GR-129)–(GR-133) and *Steps G149–G153* are all written, in `notes/Pencil-informal-grid.md` §(K-grid), which the direction **extends** exactly as reserved; driver `w4/gpack.py` as named. **(L6) landing grep run**: the bare `(C6)` appears three times in the new steps, twice written `§(K-slide-comb) (C6)` and once inside a direct quotation of that result's own remark (c), in a sentence that names §(K-slide-comb) twice — unambiguous, no rename; `(C7)`, `(R1)`, `(C1)`, `(C2)` **0-hit**. *Step G21*'s symbols `A(β)`, `C_β`, `J`, `Ĝ`, `D_β` reused and nothing re-minted; the newly named objects are `σ(F)` (the sparsity slack), the signing `s`, `H₀`, `N₃` and *the split graph*, which is deliberately left **unlettered** because `P` was already carrying two jobs in §(K-grid) ((GR-8)'s subgraph, and this direction's own signing subset `P ⊆ O`). **F21 discharged**: the `(K-grid)` row recomputed to an explicit target of **≤ 2 500** status words and landing at exactly **2 500 / 2 715** (close-it **980 / 985**), no `SPECIAL_CAPS` entry proposed and none needed — the row was under cap before and after; label preservation by `notes/scripts/gapdiff.py`, **135 in, 141 out, ZERO dropped, 6 added**. **The tail this direction declares, for the next reservation: (GR-134) / Step G154.**
+
+**Gap-map note (F21) — this is the corpus's biggest row.** `(K-grid)` stood at **2 390 /
+2 715 status words** at reservation time (**2 500** after this landing), the one row with a `SPECIAL_CAPS` entry, bumped three times and every
 time **because it had overflowed**. **Recompute to a target**; label preservation by
 `python3 notes/scripts/gapdiff.py`, now mandated by `notes/CLAUDE.md` for any recompute.
 **No overflow, no bump** — the gate's docstring records a bump proposed and **withdrawn**

@@ -14928,6 +14928,384 @@ firing is the coordinator's action.
 
 ---
 
+### Step G149 — (GR-129): the split half of (GR-18)(iii) in normal form — an equitable bisection, and a signing criterion whose bound is the sparsity slack
+
+> **(GR-129)** *(proven; the criterion asserted against `saferes.union_rank`
+> at 7 291 (shape, signing) instances over all 907 census shapes, exhaustive
+> in **both** quantifiers — all `2^M` branch subsets and all balanced
+> signings — `--split`)* Let `G` be a tight class shape, `G°` its hub
+> multigraph with `M` branches and `n` hubs, `Ĝ` the multigraph of (GR-18)
+> with `β` at multiplicity `m_β = 6 − ℓ_β`, `O := {β : ℓ_β odd}`, and for a
+> branch set `F ⊆ E(G°)`
+>
+> > `σ(F) := 6·r_{M(G°)}(F) − Σ_{β ∈ F} m_β = Σ_{β ∈ F} ℓ_β − 6·c(F)` ,
+>
+> `c(F)` the cycle rank of `F`. Then `σ ≥ 0` **is** 5/6-sparsity — the
+> inequality (GR-18)(i)'s proof derives and `gridcol.nash_williams_ok`
+> tests — and `σ(E) = 0` **is** count-tightness.
+>
+> **(i) The split condition is an equitable bisection.** `|C_β ∩ J| =
+> 3 − A(β)` for a length-legal `A(β)` holds **iff** `|C_β ∩ J| ∈
+> {⌊m_β/2⌋, ⌈m_β/2⌉}`, i.e. iff `J` **bisects `C_β` as evenly as it can**.
+> Read out by length: vacuous at `ℓ_β ∈ {1, 5}`; at `ℓ_β = 4` it says `J`
+> separates the *pair* `C_β`; at `ℓ_β = 2` that it separates the pair
+> `D_β = {1..6} ∖ C_β`; at `ℓ_β = 3` that `J ∉ {C_β, D_β}`.
+>
+> **(ii) A legal split is automatically balanced.** `Σ_β A(β) =
+> 3M − Σ_{j ∈ J} |T_j| = 3M − 3(n − 1) = 3c`, which is (GR-16)(i)'s balance
+> condition. Balance is therefore **not** an extra clause of (GR-18)(iii);
+> it is implied by the split.
+>
+> **(iii) The signing form.** A 6-tree partition of `Ĝ` carrying a legal
+> split exists **iff** there is a signing `s : O → {±1}` with
+>
+> > `|s(F)| ≤ σ(F)` for every `F ⊆ E(G°)` ,  `s(F) := Σ_{β ∈ F ∩ O} s_β` ,
+>
+> and the two sides of such a split are then the multigraphs `H_{±s}` — `β`
+> at multiplicity `(m_β ± s_β)/2`, at `m_β/2` for `β ∉ O` — each of which
+> partitions into 3 spanning trees of `G°`. The instance `F = E` reads
+> `s(E) = 0`, which is (ii) again.
+
+*Proof.* (i) `A(β) + B(β) = ℓ_β`, and (GR-16)(i) makes `A(β) ∈
+{⌊ℓ_β/2⌋, ⌈ℓ_β/2⌉}` — the only freedom is the end colour at odd `ℓ_β`. So
+`3 − A(β) ∈ {⌊m_β/2⌋, ⌈m_β/2⌉}` with `m_β = 6 − ℓ_β = |C_β|`. (ii)
+`Σ_β |C_β ∩ J| = Σ_{j ∈ J} |T_j| = 3(n − 1)` because each `T_j` is a
+spanning tree, and `3c = 3(M − n + 1)`. (iii) Write `a_β := |C_β ∩ J|`.
+Grouping the six trees `3 + 3` **is** the data of a splitting
+`m = a + (m − a)` of the multiplicity vector into two parts each of which
+partitions into 3 spanning trees, and a sub-multiset `x` of `Ĝ` does that
+iff `x(E) = 3(n − 1)` and `x(F) ≤ 3·r(F)` for every `F` — the arboricity
+inequality gives 3 forests (Nash-Williams, *Decomposition of finite graphs
+into forests*, J. London Math. Soc. **39** (1964) 12), and the total then
+forces each of them spanning. Equitability of `a` says exactly
+`a_β = (m_β + s_β)/2` for signs `s_β` on the odd branches (and `a_β =
+m_β/2` on the even ones), under which `a(F) ≤ 3r(F)` reads `s(F) ≤ σ(F)`
+and `(m − a)(F) ≤ 3r(F)` reads `−s(F) ≤ σ(F)`. ∎
+
+**Why this is worth writing down as a normal form.** It removes the
+packing from the statement. `σ` is a function of `(G°, ℓ)` alone, computed
+by one `2^M` sweep — the *same* sweep `--pack` already runs for (GR-18)(i)
+— and the unknown has shrunk from "a partition of `6(n−1)` edge-copies into
+six trees, plus a 3-subset" to "one sign per odd branch". (GR-129)(ii) also
+retires a clause: no argument for (GR-18)(iii) has to *arrange* balance.
+
+**Measured** (`--split`, all 907 census shapes; `M ≤ 15`, `|O| ≤ 10`): `σ ≥ 0`
+and `σ(E) = 0` at 907/907 exhaustively over all `2^M` branch subsets, agreeing
+with `gridcol.nash_williams_ok` at every shape; and at **7 291/7 291**
+(shape, signing) instances the `σ`-criterion of (iii) agrees with the verdict
+of `saferes.union_rank` on the two sides — **0 disagreements**. The criterion
+is therefore not merely derived, it is cross-oracled against matroid union.
+
+---
+
+### Step G150 — (GR-130): the split ALWAYS exists — the theorem, and what it consumes
+
+> **(GR-130)** *(proven, unconditional; the conclusion re-derived end-to-end
+> at 907/907 census shapes through `saferes.union_rank`, `--split`)* At every
+> tight class shape a legal signing exists. Equivalently: **some** 6-tree
+> partition of `Ĝ` admits a 3+3 split with a length-legal `A(β)`. The
+> hypothesis is `def(G) = 0` and nothing else — no `Λ = ∅`, no `D = 0`, no
+> `(GR-4′)`, no colouring, no genericity.
+>
+> **Corollary.** (GR-18)(iii)'s obstruction is neither the packing (that was
+> (GR-18)(i)) nor the split: it is **exactly** the remaining conjunction —
+> the A-end choice together with a consistent hub colouring, i.e. the
+> **class-consistency clause** ((GR-132)).
+
+*Proof.* Let `H₀` be the sub-multigraph with `β` at multiplicity
+`⌊m_β/2⌋`, and let `N₃` be the union of three copies of the graphic matroid
+`M(G°)`, taken on the edge multiset of `Ĝ`.
+
+1. **`H₀` is `N₃`-independent.** For every `F`,
+   `Σ_{β ∈ F} ⌊m_β/2⌋ ≤ ½ Σ_{β ∈ F} m_β ≤ 3·r(F)` by `σ(F) ≥ 0`; that is
+   the arboricity condition for a decomposition into 3 forests.
+2. **`rank N₃ = 3(n − 1)`, and the bases of `N₃` are exactly the
+   sub-multisets that partition into 3 spanning trees of `G°`.**
+   `rank N₃ ≤ 3·r(E) = 3(n − 1)`, and (GR-18)(i) exhibits a set attaining
+   it; a base is `3(n − 1)` edges carried by 3 forests on `n` nodes, so each
+   forest has exactly `n − 1` edges and is spanning.
+3. **`H₀ ∪ O` has full rank.** Its multiplicity vector is `⌈m_β/2⌉`. For any
+   partition of the hubs into `p` parts its cross-count is
+   `Σ_{β cross} ⌈m_β/2⌉ ≥ ½ Σ_{β cross} m_β ≥ 3(p − 1)`, because `Ĝ` packs
+   6 spanning trees by (GR-18)(i) and each contributes `≥ p − 1` crossing
+   edges. By Tutte/Nash-Williams (the 1961 pair already cited at *Step G11*
+   and in (GR-18)(i)'s proof) it therefore *contains* 3 edge-disjoint
+   spanning trees, so `rank_{N₃}(H₀ ∪ O) = 3(n − 1)`.
+4. **The contracted matroid.** Put `M := (N₃ / H₀)|_O`. By 1 and 3,
+   `rank M = 3(n − 1) − |H₀| = |O|/2`, so `|O| = 2·rank M`. A legal signing
+   is exactly a partition `O = P ⊎ (O ∖ P)` into **two bases of `M`**:
+   `H₀ + P` and `H₀ + (O ∖ P)` are then `N₃`-bases with multiplicity vectors
+   `(m ± s)/2`, and conversely every legal signing has both its sides
+   containing `H₀`.
+5. **Edmonds' criterion.** `O` is a union of two `M`-independent sets iff
+   `|S| ≤ 2·rank_M(S)` for every `S ⊆ O` (Edmonds, *Minimum partition of a
+   matroid into independent subsets*, J. Res. Nat. Bur. Standards **69B**
+   (1965) 67–72 — the theorem §(K-slide-comb) (C6) and *Step G4* already
+   cite). Since `|O| = 2·rank M`, two such independent sets are forced to be
+   disjoint bases.
+6. **The rank, in closed form.** The matroid-union rank formula gives
+   `rank_{N₃}(Y) = min_{X ⊆ Y}(|Y ∖ X| + 3·r(X))`, and — as §(K-slide-comb)'s
+   own use of it records — the minimum is attained at a union of parallel
+   classes, i.e. at `X = Y|_F` for a branch set `F`, since `r` sees only the
+   support. With `y_S(β) := ⌊m_β/2⌋ + [β ∈ S]` this reads
+   `rank_M(S) = |S| + min_F (3·r(F) − y_S(F))`.
+7. **The criterion holds identically.** Substituting 6 into 5, `|S| ≤
+   2·rank_M(S)` for all `S ⊆ O` is
+   > `σ(F) + o(F) + (|S| − 2|S ∩ F|) ≥ 0` for every `F ⊆ E(G°)`, `S ⊆ O`,
+   with `o(F) := |F ∩ O|`. And `|S| − 2|S ∩ F| ≥ −|S ∩ F| ≥ −o(F)`, so the
+   left-hand side is `≥ σ(F) ≥ 0`. ∎
+
+**What the proof consumes, said plainly.** Exactly `σ ≥ 0` — 5/6-sparsity at
+a tight shape — used a *second* time, on the halved multiplicities. No
+colouring, no class structure, no arrangement statement, and no hypothesis
+from the three unswept ledger entries. The machinery is the Phase-12/13/14
+landed subsystem (`Matroid/Constructions/{Submodular,Union}.lean`,
+`BodyBar/TreePacking.lean`, `BodyBar/KFrame.lean`); §(K-slide-comb) (C6)
+remark (b) records that for the packing half, and remark (c)'s *"a route that
+needed only (C6) would be in reach of landed machinery"* now covers this step
+as well — (GR-130) is a second place where the route that is actually needed
+rests on it.
+
+**Two corollaries worth stating.** **(a) The all-even stratum is one line.**
+When every `ℓ_β` is even, `O = ∅`: the half-multigraph `β ↦ (6 − ℓ_β)/2`
+satisfies the same arboricity inequality, so it partitions into 3 spanning
+trees, and taking both sides of the split to be that triple settles it. **(b)
+The bound is exactly the right one, and it does bite.** `σ` is submodular
+with `σ ≥ 0` and `σ(E) = 0`, so the tight sets `{F : σ(F) = 0}` form a
+lattice, every one of them has `o(F)` even, and the signing must satisfy
+`s(F) = 0` on each — a genuine constraint whenever `o(F) ≥ 2`. (GR-130) says
+these constraints, together with the `σ(F) ≥ 1` ones, are never jointly
+infeasible.
+
+---
+
+### Step G151 — (GR-131): the exchange freedom is LOAD-BEARING, and every failure is a parity failure
+
+> **(GR-131)** *(proven by witness; exhaustive over a named subpool,
+> `--arb`)* An arbitrary 6-tree partition of `Ĝ` need **not** admit any legal
+> split. Define the **split graph** on the six trees: an edge `C_β` for
+> every `ℓ_β = 4` branch and an edge `D_β = {1..6} ∖ C_β` for every
+> `ℓ_β = 2` branch — a legal `J` must separate every one of its edges, so a
+> legal split needs the split graph bipartite with a balanced `3 + 3` side
+> split, and then needs to dodge the `ℓ_β = 3` clause.
+>
+> Over the first **40** census shapes with `M ≤ 6`, all **266 700** 6-tree
+> partitions of `Ĝ` were enumerated exhaustively: **6 840** of them (2.6 %)
+> admit **no** 3+3 split at all. The mechanism is uniform and exact — **all
+> 6 840 have a non-bipartite split graph**; **0** are bipartite-but-unbalanced and
+> **0** fail only through the `ℓ_β = 3` clause. So the obstruction to
+> splitting a *given* packing is always an **odd cycle**, never a count.
+>
+> Recorded witness: `K4(1,2,3,4,4,4)` at branch lengths `(3,1,2,4,4,4)`,
+> packing `T = ((0,1,2), (0,1,2), (0,1,2), (1,3,4), (1,3,5), (2,4,5))`,
+> separation pairs `(3,4), (3,4), (3,5), (4,5)` — a triangle on `{3,4,5}`.
+
+**Why this is the load-bearing correction, and it corrects the dispatch's own
+reading.** The prep's one coordinator reading — verified in `gridcol.py`, and
+correct as far as it went — was that `--pack` asserts Nash-Williams
+*feasibility* and then reads a packing off a colouring that *already*
+certifies (GR-10), so it never builds an arbitrary packing and asks whether
+that one splits; and it named the expectation that the exchange freedom might
+be **unnecessary**, the certificate-induced packing being canonical in some
+sense this workbook knows. **It is not canonical.** 2.6 % of the packings at
+the very shapes `--pack` runs on carry no split whatever, and (GR-130)'s proof
+does not split a handed packing — it *constructs* one (`H₀ + P`), which is
+precisely the exchange freedom used in its strongest form. The corollary for
+the record, and it is the same shape as the defect BSATUR landed one direction
+earlier (`RESEARCH-ARC.md` §4): **`--pack`'s 907/907 is evidence for
+(GR-18)(i), which is already a theorem, and none for (iii).**
+
+---
+
+### Step G152 — (GR-132): what is left, exactly — a list-colouring of the hubs
+
+> **(GR-132)** *(proven at `Λ = ∅`; **both** directions machine-asserted at
+> the first 12 census shapes with `M ≤ 6` and `Λ = ∅` — 229 320/229 320
+> accepted (packing, split) pairs rebuild a filter-passing colouring carrying
+> a tree-triple in **both** blocks, and 124/124 certificate-induced pairs are
+> accepted, 0 misses, `--resid`)* Let `G` be a tight class shape with
+> `Λ = ∅`. Fix a 6-tree partition `C` of `Ĝ` and a legal split `J`, and put
+> `A(β) := 3 − |C_β ∩ J|`. The **remaining** clauses of (GR-18)(iii) — the
+> A-end choice on each even branch and a consistent hub colouring — are
+> satisfiable for `(C, J)` **iff** there are
+>
+> - an **end pattern**: at odd `ℓ_β`, both ends A when `A(β) = (ℓ_β + 1)/2`
+>   and both ends B otherwise (**forced by the split**); at even `ℓ_β`, a
+>   free choice of which end is A;
+> - **hub labels** `g_A : hubs → J` and `g_B : hubs → {1..6} ∖ J`
+>
+> such that **(a)** every hub carries at least one A-end and at least one
+> B-end; **(b)** `g_A(u) ∉ C_β` at every branch `β` with an A-end at `u`,
+> and `g_B(u) ∉ C_β` at every branch with a B-end at `u`; **(c)** `g_A(u) ≠
+> g_A(w)` at every branch with **both** ends A, and `g_B(u) ≠ g_B(w)` at
+> every branch with both ends B.
+
+*Proof.* At `Λ = ∅`, (GR-16)(iii) makes every A-class either `star_A(u)` at
+a single hub or a **singleton** interior edge, and gives `|K_A(β)| = A(β)`.
+The rebuild in (GR-18)(iii) is a map from classes to the three A-groups
+indexed by `J` with `{group(κ) : κ ∈ K_A(β)} = J ∖ C_β` for every `β`; both
+sides have `A(β)` elements, so it is a bijection branch by branch. The star
+classes are the only ones shared between branches — `star_A(u)` meets exactly
+the branches with an A-end at `u`, once each, `G°` being loopless — so their
+groups are a hub labelling `g_A` subject to (b), and (c) is the injectivity
+demand at a branch whose two A-classes are two stars. The singleton classes
+meet one branch each, so they can always absorb the labels of `J ∖ C_β` that
+the stars did not take, and impose nothing. (a) is the (GR-2) filter's
+no-monochromatic-hub clause; *"both ruling classes forests"* is vacuous at
+`Λ = ∅` (*Step G12*(ii)); balance is (GR-129)(ii). The B-side is the same
+statement in `{1..6} ∖ J`. ∎
+
+**Where the difficulty is — and it is where (GR-17)(d) already put it.** The
+A-list at a hub is `J ∖ C_β`, of size `A(β)`; the B-list has size `B(β)`. So
+
+> `ℓ_β = 5`: lists of size 2 or 3 · `ℓ_β = 4`: size 2 · `ℓ_β = 3`: size 2 at
+> both ends, with a `≠` between them · **`ℓ_β = 2`: size 1 on each side — the
+> label is FORCED at both of that branch's hubs.**
+
+Two length-2 branches with A-ends at a common hub force that hub's `g_A`
+twice, and the only escape is the even branch's own bit (or a different
+packing). That is a purely local, purely combinatorial conflict, and it lives
+at exactly the profiles (GR-17)(d) isolates as the binding ones — `(2,2,3)`
+and `(2,2,2,2)` — and at the adversarial places TCOL item (v) names. A
+successor should hunt there, with the whole freedom of (GR-130) available:
+the criterion `|s(F)| ≤ σ(F)` describes **all** legal splits, not one, so the
+hunt is over a described set rather than over packings.
+
+**Caveat, stated so it is not over-read.** (GR-132) is proven at `Λ = ∅`.
+With `Λ ≠ ∅` classes merge along `Γ_A`-paths of `Λ` ((GR-16)(iii)),
+`|K_A(β)| < A(β)` becomes possible, and (GR-16)(iv) already records that
+merging makes `dim W₊ > 0` outright — so the clause gains a second,
+`Λ`-shaped conjunct there. Nothing in (GR-129)/(GR-130) needs `Λ = ∅`.
+
+---
+
+### Step G153 — (GR-133): where this leaves (GR-10), (GR-15) and `hK` (hand-off)
+
+**The target, adjudicated.** (GR-18)(iii) splits into two halves and they now
+have different statuses. The **packing-and-split half is CLOSED** — a theorem
+with no hypothesis beyond `def(G) = 0` ((GR-130)), so *Step G21*'s naming of
+the equitable bisection as *"the shape of the argument a successor should
+attack"* is retired: that object is free. The **class-consistency half is the
+whole of what is open**, and (GR-132) states it as a hub list-colouring whose
+lists are read off the packing. That is HIT shape 3 of the dispatch's own menu
+(reduced to a named, strictly smaller condition) with shape 1 on the named
+sub-statement; it is **not** (GR-10) whole and does not claim to be.
+
+**What (GR-10) and (GR-15) are left with.** (GR-10) is unchanged in status
+(**open**), and so is (GR-15); no gap-map status word moves on either. What
+changes is the *shape* of the remaining work: the residual is no longer a
+packing problem at all. Every instrument the arc built for it — Nash-Williams,
+Edmonds, the `2^M` sparsity sweep — is now on the closed side of the line, and
+what remains is a 3-list-colouring of `G°`'s hubs with a forced label at every
+length-2 branch. (GR-13)'s NP-completeness of the *grouped* packing is
+consistent with this and now better located: the hardness cannot live in the
+packing or the split, so it lives in the grouping map — which is exactly the
+object (GR-132) exhibits.
+
+**The tight-stratum caveat (the dispatch's job 2), read off the gap map.**
+A (GR-15) HIT discharges `hK` on the **tight** stratum: `index(G) = 0`
+**and** `hnoRigid` (§(K-res) *Step RS1*'s definition). The remainder of `hK`'s
+habitat is `hnoRigid` with `index ≠ 0`, and `C11` — a bare odd cycle, `index =
+−5`, `def > 0` — is in it. It is **not an unowned gap**: the `§(K-res)/(RS-5)`
+row owns the audit and says two things about it in its own words — that the
+(K-res) quantifier and the tight one are **disjoint** (*"tight shapes satisfy
+`hnoRigid`, (K-res) shapes refute it, so closing (GR-15) does NOT close this
+row"* — that claim, and not anything re-verified here, is what covers the
+`def = 0`, `index > 0` corner), and that *"`def > 0` members stay with the
+**escape route**"*
+((RS-6), which refutes the deficient fringe for the grid route with a
+mechanism at θ(2,3,7)). But it is **not free either**, and the reading that it
+might be does not survive its source: §2.5 of `Pencil-strategy.md` says the
+count **forces** `dim R_a = 1` at *tight* shapes — it is a negative result
+about counting invariants, not a supply of `dim R_a ≥ 2` anywhere — and
+§(K-flank) *F5(d)* exhibits seeds where the count predicts `dim R_a = 1` and
+the geometry delivers `0`. So the honest price: **a (GR-15) HIT buys `hK` on
+the tight stratum and hands the `def > 0` habitat to the escape route**, whose
+rows ((K-Λ), (K-wit), (K-pitch), (K-out), (K-dom)) are all live. §(K-clos)'s
+own close-it already says the same thing from the other side: *"`C11` is
+permanent."*
+
+**Confidence verdict (Steps G149–G153).**
+
+| | claim | standing |
+|---|---|---|
+| **(GR-129)** | the equitable-bisection normal form and the signing criterion | **proven**; and cross-oracled against `saferes.union_rank` at 7 291/7 291 instances, 0 disagreements |
+| **(GR-130)** | a legal signing always exists | **proven**, unconditional — a composition of Nash-Williams arboricity, Tutte/Nash-Williams packing and Edmonds' covering theorem over `σ ≥ 0`; conclusion re-derived at 907/907 |
+| **(GR-131)** | the exchange freedom is load-bearing; every failure is an odd cycle | **proven by witness**; the population figure is exhaustive over the named 40-shape subpool, not over the census |
+| **(GR-132)** | the residual IS the hub list-colouring, at `Λ = ∅` | **proven at `Λ = ∅`**; both directions asserted at 12 shapes (229 320 accepted pairs rebuilt and certified; 124/124 certificates accepted) |
+| **(GR-133)** | the job-2 caveat | **a reading of landed rows** (`(K-res)` (RS-5)/(RS-6), `(K-clos)`, `Pencil-strategy.md` §2.5), not a measurement |
+
+**What would change this.** (a) An error in `σ(F) = Σ_F ℓ − 6c(F) ≥ 0` would
+void (GR-130) — but that inequality is (GR-18)(i)'s own input, is checked
+exhaustively over all `2^M` branch subsets at all 907 shapes, and is
+cross-checked against `gridcol.nash_williams_ok`. (b) (GR-132) is a `Λ = ∅`
+statement; a successor working at `Λ ≠ ∅` must add the merging conjunct before
+using it. (c) The 2.6 % of (GR-131) is a figure about a named 40-shape
+subpool; it is *"not found under cap"*-style evidence for how common the
+phenomenon is, and only the *existence* half is a theorem.
+
+**TERMINATION check (E1 / E2 / E3) — reported, never fired.** Read against
+the **arc's** target `PencilPair K 3 G`, per the corrected reading of
+`61e046a6`; E3 in the two-conjunct text. **E1 does NOT fire**, and the
+distinction matters here more than usual: **the 6 840 split-less packings of
+(GR-131) are not flanks.** A g-flank is a `D = 0` shape whose *every*
+admissible colouring is binding; (GR-131)'s objects are *packings* at shapes
+that do carry a good packing — indeed a (GR-10) certificate — so nothing here
+refutes per-shape (GR-15) anywhere. No flank was exhibited or found. **E2 does
+NOT fire**: the target is not refuted, and the residual (GR-132) names is a
+dispatchable attack. **E3 does NOT fire**: the arc's target is not proven —
+(GR-130) proves a named half of (GR-18)(iii), and (GR-15) and (GR-10) are
+unchanged in status.
+
+**Verification (F13/F11).** Every figure above is produced by a mode of the
+shipped `notes/scripts/w4/gpack.py`; nothing is quoted from a transcript. Run
+from the repo root:
+
+```
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gpack.py --split    # 16 s  (GR-129)/(GR-130): sigma, the criterion, the cross-oracle, 907/907
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gpack.py --arb      # 40 s  (GR-131): 266 700 packings, 6 840 split-less, the witness
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gpack.py --resid    # 234 s (GR-132): soundness and completeness of the CSP
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gpack.py --validate # 336-402 s all three in one process — the landing gate
+```
+
+**Determinism — tested, not asserted, on the SHIPPED file.** `--validate` was run **twice**
+at `PYTHONHASHSEED=0` (394 s, 336 s) and once at `PYTHONHASHSEED=999` (402 s), all three
+exit 0, and the three outputs are **byte-identical** — no wall-clock cell is printed, so
+there is nothing to strip, and the seeded leg ((GR-130)'s sampled `S`) prints its seed. A
+**range** is recorded rather than a figure because the wall clock moved ~20 % across runs
+with machine load while not one output byte did; the per-mode times above were measured
+separately, under lighter load, and sum to less than any `--validate` run.
+
+**Which mode tests which sentence (F11), with the sampler's support named.**
+
+| claim | mode | what asserts *that sentence*, and over what |
+|---|---|---|
+| (GR-129)(i)/(ii) | `--split` | the equitability, length-legality and balance of the split are asserted on the signing found, at every one of the 907 shapes |
+| (GR-129)(iii) | `--split` | the `σ`-criterion is compared with `saferes.union_rank`'s verdict on **both** sides at **every** balanced signing of **every** shape — 7 291 instances, an exhaustive sweep of the criterion's own two quantifiers, not a sample |
+| (GR-130), steps 1/6/7 | `--split` | `H₀` asserted `N₃`-independent, the `rank_M` closed form asserted equal to `union_rank`'s value, and Edmonds' `\|S\| ≤ 2 rank_M(S)` asserted, at 200 sampled `S ⊆ O` (seed 20260902) |
+| (GR-130), conclusion | `--split` | a legal signing asserted to exist at 907/907, with both sides asserted 3-tree-packable by matroid union — the theorem's conclusion, re-derived without its proof |
+| (GR-131) | `--arb` | 6-tree partitions enumerated **exhaustively** at each of the 40 shapes; the split test is exhaustive over all 20 `J`; the bipartiteness split of the failures is computed, not sampled |
+| (GR-132), soundness | `--resid` | every accepted `(C, J)` is rebuilt into a colouring and put through `gridcol.filter_pass` **and** `packmm.fast_triple` in both blocks |
+| (GR-132), completeness | `--resid` | every filter-passing colouring of the shape whose two blocks carry tree-triples has its own induced `(C, J)` asserted split-legal and CSP-feasible |
+| (GR-133)'s job-2 paragraph | — | **a source reading**, not a measurement; the pointers are given so it is checked by reading |
+| (GR-10), (GR-15), `dim Z` | — | **not attempted**; no mode computes a rank |
+
+**Caps and denominators (F11).** `--split` is exhaustive at all 907 census
+shapes (`2^M ≤ 2^15` branch subsets, `C(|O|, |O|/2) ≤ 252` signings). `--arb`
+and `--resid` are exhaustive **within a named subpool** — the first 40 census
+shapes with `M ≤ 6`, and the first 12 with `M ≤ 6` and `Λ = ∅` — chosen by
+cost, not by outcome; their figures are statements about those subpools and
+about nothing else. The exchange neighbourhood is **not** capped and not
+searched: (GR-130) constructs the packing rather than exploring around one,
+which is why `--split` costs 11 s against `--pack`'s 98 s.
+
+**Scratch probes (README's standing rule).** The derivation ran through five
+throwaway probes; **every figure any of them produced is reproduced by a
+shipped `gpack.py` mode above**, and none is quoted from a transcript, so no
+probe is retained.
+
+---
+
 ## §(K-res) — the residual-habitat transport audit (direction RESGRID, 2026-08-28): the GEOMETRY of §(K-grid) transports verbatim and the residual is (GR-15)'s criterion with a WIDENED QUANTIFIER — proven per-shape at all three named (K-res) shapes — while the tight BOOKKEEPING ((GR-16)(iv) squareness, (GR-17)(d)'s binding list, (GR-18)(i)'s 6-tree partition, and the whole (GR-21)+ uniformity program) does NOT; the deficient fringe is REFUTED with a mechanism at θ(2,3,7)
 
 **What this section is.** The (K-res) *scoping slice* (spec:
