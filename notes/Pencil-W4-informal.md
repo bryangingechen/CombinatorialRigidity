@@ -276,9 +276,14 @@ consumes; it is **open**, holds on 255/255 inhabitants swept, and reduced to two
 named gaps — the residual's edge count **(E)** and its triangle-freeness **(T)**.
 **(T) IS NOW A THEOREM** (*Steps TF1–TF5*, direction WTRI 2026-09-02): no feasible
 residual carries a triangle at all, by two **landed** feasibility transfers this
-section's own *Step 4* had not inventoried. So (SAFE-RES′) reduces to **(E)** —
-itself reduced further to (E-loc), §"widened kernels (routes 1/3)" *Step 3* — plus
+section's own *Step 4* had not inventoried. So (SAFE-RES′) reduces to **(E)** plus
 the local choice **(V)**, and route 3's cost list drops from four items to three.
+**(E)'s onward reduction to (E-loc) is DEAD** (2026-09-02, direction WELOC —
+§"widened kernels (routes 1/3)" *Steps EL1–EL6*): **(E-loc) is REFUTED** by `T32`,
+a `|V| = 32` residual with two *disjoint* count-dependent `C₄` cores, so (E) is
+back to being the primitive gap — **open, and now known tight** (`f(V(T32)) = 4`).
+Its successor target is **(E-pair)**, *two adjacent degree-`2` vertices*, which is
+all the split arm consumes ((EL-6)).
 
 Here *residual* abbreviates `hnoGood'`'s antecedent bundle (`notes/Phase39-design.md`
 §"W4-L4 identification recon" Verdict 4): `G.Simple`, `3 ≤ |V(G)|`,
@@ -293,7 +298,9 @@ multigraph).
 independent integer-exact oracles agree — *Verification*), or a misreading of
 the split arm's `hnoRigid` consumption (all five points were read from the
 landed proof bodies, not docstrings). *For the successor:* a proof or
-counterexample for **(E)** (equivalently (E-loc)), or a residual every one of whose
+counterexample for **(E)** — **no longer "equivalently (E-loc)"**: (E-loc) is
+strictly stronger and is **refuted** (§"widened kernels" *Step EL5*), while (E)
+holds at every instance known, `T32` included — or a residual every one of whose
 `≥ 2`-interior branches is one of (V)'s two `C₄`-carrying shapes. **Not (T)** — that
 is settled (*Step TF5*); what would change *it* is an error in the two landed
 transfers it composes, or in the four mechanical Lean obligations *Step TF6* lists.
@@ -451,16 +458,18 @@ vertex**.
 **Verdict: open**, 255/255 on every residual inhabitant swept (both scripts'
 families; `saferes.py --prime`). It decomposes into three obligations:
 
-- **(E)** `f(V(G)) ≤ 4` — **open, but no longer the sharpest thing route 1
-  needs: it is now reduced to (E-loc)**, §"widened kernels (routes 1/3)"
-  *Step 3*. It *is* KT Lemma 4.5(i)'s conclusion, landed only under `hnoRigid`
-  (`edgeBound_of_noRigid_of_degree_two`) — but that lemma consumes `hnoRigid`
-  at exactly one point, to make the `v`-avoiding edge fiber count-independent,
-  and 255/255 residuals carry a degree-`2` vertex at which that independence
-  holds outright. Numerics: 255/255 for `f ≤ 4` itself, and `S29`, `W19` both
-  sit at `f = 2`. (The natural direct attempt — bound `f(V(G))` by `f(S) + …`
-  at a maximal cluster — leaks because `f(S)` of a dense rigid `H` is
-  unbounded; the (E-loc) route replaces it.)
+- **(E)** `f(V(G)) ≤ 4` — **open, and the primitive gap again.** It *is* KT
+  Lemma 4.5(i)'s conclusion, landed only under `hnoRigid`
+  (`edgeBound_of_noRigid_of_degree_two`), which consumes `hnoRigid` at exactly
+  one point — to make the `v`-avoiding edge fiber count-independent. **The
+  (E-loc) route through that point is REFUTED** (2026-09-02, §"widened kernels"
+  *Steps EL1–EL6*): at `T32` no degree-`2` deletion is count-independent, and the
+  generalized bound `f ≤ 4 + κ(v)` reaches only `f ≤ 6` there. Numerics for (E)
+  itself: 255/255 in the pool (max `f = 2`, `W19`/`S29` at `f = 2`) **and
+  `f = 4` at `T32`, so (E) is tight**. Two direct attempts are known to leak:
+  bounding `f(V(G))` by `f(S) + …` at a maximal cluster (`f(S)` of a dense rigid
+  `H` is unbounded), and the local count above. The live successor is
+  **(E-pair)** ((EL-6)), which is weaker and is what (S1)/(S2) actually needs.
 - **(T)** `G` triangle-free — **PROVED** (*Steps TF1–TF5*). The recorded
   255/255 was **never** evidence for it (the sweep's feasibility certificate is
   L6b, which *requires* triangle-freeness, so a triangle-carrying residual can
@@ -778,14 +787,22 @@ must widen. Three findings price that:
    failure here would have killed routes 1/3 outright; none exists.
 
 Net: routes 1/3 cost **one extra carried kernel of the same shape and the same
-difficulty class as `hK`**, plus §(SAFE-RES)'s (T) and (V), plus (E) — which
-Step 3 reduces to a cheap Lean leaf and one new combinatorial gap (E-loc).
+difficulty class as `hK`**, plus §(SAFE-RES)'s (T) — **now a THEOREM** — and (V),
+plus (E). **Step 3's reduction of (E) to (E-loc) is DEAD** (2026-09-02, direction
+WELOC): **(E-loc) is REFUTED** by `T32` (*Steps EL1–EL6*), while **(E) itself
+stands, open and now known tight**. (E)'s successor target is **(E-pair)** —
+*every residual carries two adjacent degree-`2` vertices* — which is all the
+split arm consumes ((EL-6)).
 
 **What would change this.** A residual split at which *no* target-rank `G′`
 seed escapes (that would refute (K-res) and kill routes 1/3); a reading error
 in `pencilPair_of_splitOff_of_habitat`'s `by_cases hfeas` branching (read from
-the body, `Escape.lean:396–428`); or a residual with no degree-`2` vertex
-whose `v`-avoiding edge fiber is count-independent (that would undo Step 3).
+the body, `Escape.lean:396–428`); or — for *Steps EL1–EL6* — an error in `T32`'s
+certification (three independent rigidity oracles agree; both feasibility
+verdicts are landed-lemma-backed) or in (EL-4)'s two-branch chain, whose every
+step is asserted instance-by-instance by `weloc.py --brick`. **Not** a residual
+with no count-independent degree-`2` deletion: that is `T32`, and it is what the
+last line of this paragraph used to ask for.
 
 ### Step 0 — which kernels routes 1/3 actually touch
 
@@ -819,7 +836,12 @@ The `hnoRigid` consumption points of the surviving chain are §(SAFE-RES)
 *Step 0*'s (S0)–(S5) plus **one that section missed**: the wrapper's `hfresh`
 discharge `freshEdgeSupply_of_card_lt_of_noRigid_of_degree_two`
 (`Escape.lean:516`) calls `edgeBound_of_noRigid_of_degree_two` and nothing
-else, so it collapses into **(E)** exactly like (S1)/(S2). Also free at a
+else, so it collapses into **(E)** exactly like (S1)/(S2). **Annotated
+2026-09-02 ((EL-6)): that is true of the landed PROOF, not of the OBLIGATION.**
+The edge bound is used there only to contradict `E(G′) = univ`, and a residual
+is `Simple`, so `|E| ≤ |α|(|α| − 1)/2` discharges it outright at the price of a
+larger `β` headroom in the consumer-facing headline. **(E) has ONE real
+consumer, (S1)/(S2), not two.** Also free at a
 residual: `5 ≤ |V(G)|`, since a simple rigid subgraph needs `≥ 3` vertices
 (`2` vertices give one edge, `def = 1`) and no-co-1 adds two more.
 
@@ -831,7 +853,7 @@ it cites:
 
 | # | consumption | producer | fate at a residual |
 |---|---|---|---|
-| K1 | `index(G) ≤ 4`, so the corank stratification is finite | `edgeBound_of_noRigid_of_degree_two` (`ReducibleVertex.lean:1270`) | = gap **(E)**; **survives modulo (E-loc)**, Step 3 |
+| K1 | `index(G) ≤ 4`, so the corank stratification is finite | `edgeBound_of_noRigid_of_degree_two` (`ReducibleVertex.lean:1270`) | = gap **(E)**, still open; **its (E-loc) route is REFUTED** (*Step EL5*), successor **(E-pair)** (*Step EL6*) |
 | K2 | `s₀ = 0` (no pure shared-row stresses), hence `dim R_a = corank(G′)` | `circuit_induces_isRigidSubgraph` + vertex-properness | **BREAKS**, Step 2 — this is the load-bearing one |
 | K3 | a lever-critical habitat has no cut vertex (blocks argument) | same | **proof breaks; conclusion holds** 255/255 |
 | K4 | route-1 gate finding 1's *explanation* that the stress is globally supported ("no proper subgraph to localise onto") | prose | verdict unaffected — that gate **refuted** locality; a residual makes the picture more mixed, not more local. Route 1 of the (K) options stays NO-GO |
@@ -908,6 +930,17 @@ counting: sparsity of `E'` on a vertex set avoiding `v` gives
 > **(E-loc)** *Every residual `G` has a degree-`2` vertex `v₀` with `E(G − v₀)`
 > independent in the `(6,6)` count matroid.*
 
+> **(E-loc) is REFUTED — 2026-09-02, direction WELOC, *Steps EL1–EL6* below.**
+> `T32` (`|V| = 32`) is a residual with **two disjoint count-dependent `C₄`
+> cores**, so every `E(G − v)` is count-dependent ((EL-5)). The **other**
+> obstruction shape is impossible ((EL-4)), so this is the only way it fails.
+> **(E) itself is untouched** — `f(V(T32)) = 4` **exactly**, so (E) is also now
+> known **tight** — and what dies is this route to it. The paragraphs below are
+> the state *before* that landing, kept because their reduction is exact and
+> because *Steps EL1–EL6* are read against it; every "255/255" in them is over a
+> pool whose honest denominator for this question is **`0`** ((EL-5)'s
+> disclosure).
+
 **Numerics: 255/255** (`widened.py --ebound`). The witness is typically *not*
 split-usable: at `W19` it is `c1` or `c3`, at `S29` it is `m1` or `m2` — the
 **core's own** degree-`2` vertices, and the split-usable set is disjoint from
@@ -925,6 +958,14 @@ particular two *disjoint* proper rigid subgraphs with `f > 0`), or a single
 dependent "brick" all of whose vertices have `G`-degree `≥ 3`. Neither occurs
 anywhere in the pool. Discharging (E-loc) fixes gap **(E)** of §(SAFE-RES)
 *Step 3*, and with it the `hfresh` discharge of Step 0.
+
+*Three corrections this paragraph earned* (WELOC): **merging does not remove
+shape 1** — it organizes it, and shape 1 is exactly what `T32` inhabits
+((EL-3)); the brick is not merely *"all degree `≥ 3`"* but a hub `C₄`/`C₅`, and
+it is **impossible** ((EL-3)/(EL-4)); and *"neither occurs anywhere in the
+pool"* is true but empty, since **no** pool instance carries two dependent sets
+at all. The `hfresh` half of the last sentence is also over-stated — that
+consumer needs no edge bound ((EL-6)).
 
 ### Step 4 — the minimal honest widened statements
 
@@ -1026,6 +1067,312 @@ Steps 2–3) is per route the
 for the iso-relabeled `pt(a)`-sweep), with combined failure ⟺ `★r ∥ C(M)`,
 the meet line of the two end panels.
 
+### Step EL1 — the landed inventory (job 2), and the hub-degree law
+
+**The job-2 answer, stated as asked.** There is **no** landed declaration giving
+(E-loc), and none giving a `noRigid`-free edge bound: `edgeBound_of_noRigid_of_
+degree_two` (`ReducibleVertex.lean:1270`) and `no_rigid_edge_count` (`:330`) are
+the tree's only two edge-count bounds and each consumes `hnoRigid` (the second
+also minimality). But the sweep of that file's neighbours turned up **two landed
+items that decide this direction**, each of which the workbook had been using in
+only one of its two roles:
+
+- **`isKDof_zero_of_cycle` (`Deficiency.lean:743`) / `cycle_isProperRigidSubgraph`
+  (`Operations.lean:1082`)** — **every cycle of length `3 ≤ m ≤ D = 6` is rigid**,
+  and inside a bigger simple graph is a *proper* rigid subgraph as soon as one of
+  its vertices has degree `≥ 3`. `c4_isProperRigidSubgraph` (`Habitat.lean:211`)
+  and `triangle_isProperRigidSubgraph` are its `m = 4` and `m = 3` cases. So a
+  `C₅` core stands on exactly the landed footing the `C₄` cores of `W19`/`S29`
+  do — which is why *Step EL5*'s refuting family is two-parameter, not one.
+- **the `hcard` necessary condition read as a TRANSFER, not as a sweep test.**
+  Every recorded use of `ncard_closedHubNbhd_le_three_of_isNondegPencilRealization`
+  (`Motive.lean:409`) in this arc tests a *contraction* for certified
+  infeasibility. Composed with the `PencilNondegFeasible` existential
+  (`Motive.lean:133`) it is instead a **structure theorem about the residual
+  itself**, and that is the only input *Steps EL3/EL4* need:
+
+> **(EL-1) Hub-degree law.** In a `PencilNondegFeasible` graph every hub has at
+> most **two** hub neighbours — equivalently `G[hubs]` has maximum degree `≤ 2`.
+> Hence a hub all of whose `G`-neighbours but two are outside `G[hubs]` has all of
+> them of degree exactly `2` (`≤ 2` as non-hubs, `≥ 2` by 2EC).
+
+*Proof.* `PencilNondegFeasible K G` is `∃ F normal point, IsNondegPencilRealization
+…`; the landed necessary condition gives `(G.closedHubNbhd v).ncard ≤ 3` at every
+`v ∈ V(G)`; and `closedHubNbhd v = {w | PencilHub w ∧ (w = v ∨ w ~ v)}`
+(`Motive.lean:82`) contains `v` itself when `v` is a hub. ∎
+
+This is WTRI's inventory lesson at one remove: the item was landed **and**
+inventoried — but in one role only, and the missing role is the load-bearing one.
+(A first corollary, free and used below: a feasible 2EC graph on `≥ 2` vertices
+**has** a degree-`2` vertex, since min degree `≥ 3` would make every vertex a hub
+with `≥ 3` hub neighbours.)
+
+The `noRigid`-free Lean sibling *Step 3* proposes is still a one-commit
+verbatim-prefix extraction and is still worth having with **(I)** as its
+antecedent; what *Step EL5* removes is the reason to want it — no residual
+supplies (I) at a degree-`2` vertex. (Lean hold: not built.)
+
+### Step EL2 — the count identity, and the anatomy of a minimal dependent set
+
+Write `f(W) = 5|E(G[W])| − 6(|W| − 1)` and call `W` **count-dependent** when
+`f(W) > 0`. By `matroidMG_indep_iff` (`Deficiency.lean:163`) and `IsSparse`
+(`BodyBar/TreePacking.lean:103`, `∀ E' ⊆ E, E'.Nonempty → |E'| + ℓ ≤ k|span E'|`)
+that is exactly dependence of the `5`-fold fiber over `E(G[W])` in `M(G̃)`, and
+`E(G − v)` is independent iff **no** `W ⊆ V(G) ∖ {v}` is dependent.
+
+> **(EL-2)** (i) `f(W) = 5·c(G[W]) − |W| − 5·k(G[W]) + 6`, with `c` the cycle rank
+> and `k` the number of components; for connected `W` this is `f(W) = 5c − |W| + 1`,
+> so **`W` is dependent iff `|W| ≤ 5·c(G[W])`**. (ii) `f(V(G)) = corank(G̃) −
+> def(G)`. (iii) A `⊆`-minimal dependent `W` is **connected**, has **min degree
+> `≥ 2` in `G[W]`**, and is therefore **branch-closed**.
+
+*Proof.* (i) substitute `|E| = |W| − k + c`. (ii) `5|E| = rank + corank` against
+`rank = 6(|V|−1) − def` — the identity *Step 2*'s `corank(H) = index(H) + def(H)`
+already used at a seed. (iii) if `u ∈ W` has `G[W]`-degree `d ≤ 1` then
+`f(W ∖ {u}) = f(W) − 5d + 6 ≥ f(W) + 1 > 0`, contradicting minimality; if `W` were
+disconnected, `f(W) = Σᵢ f(Wᵢ) − 6(k−1)` forces some component dependent. Min
+degree `2` then drags every degree-`2` vertex's whole branch **and both hub ends**
+into `W`, and every hub of `W` lies on `≥ 2` of `W`'s branches. ∎
+
+(iii) is the same closure property `nogood_subdiv.rigid_vertex_sets` exploits for
+rigid sets, so a residual's dependent sets are computable by the `2^#branches`
+branch sweep rather than a `2^|V|` subset sweep; `weloc.py --validate`
+cross-checks the enumeration against brute force (215 subdivisions, 533 minimal
+dependent sets, 0 mismatches).
+
+### Step EL3 — the two shapes, named exactly
+
+(E-loc) fails at `G` iff **no degree-`2` vertex lies in every dependent set** —
+equivalently in every *minimal* one, since every dependent set contains a minimal
+one. So the obstruction is exactly one of
+
+1. **shape 1** — two or more minimal dependent sets whose intersection carries no
+   degree-`2` vertex (in particular two **disjoint** ones);
+2. **shape 2** — a single dependent set carrying no degree-`2` vertex at all: a
+   **brick**, every vertex of which is a hub.
+
+*Step 3*'s supermodularity remark is what makes this list exhaustive, and its role
+is worth stating precisely, because it does **not** remove shape 1. Two dependent
+sets meeting in a nonempty independent set merge (`f(W₁ ∪ W₂) ≥ f(W₁) + f(W₂) −
+f(W₁ ∩ W₂) > 0`), so the union of any intersection-connected family of minimal
+dependent sets is dependent; what follows is that **two distinct components of
+that family are two disjoint dependent sets**. Merging therefore *organizes*
+shape 1 rather than killing it: (E-loc) fails the moment the family has two
+components, and it can also fail with a connected family whose common part is
+hub-only. Shape 2 in exchange collapses to a finite list:
+
+> **(EL-3)** In a feasible `G` a brick is a **cycle** `C₃`, `C₄` or `C₅` **all of
+> whose vertices are `G`-hubs**; in a residual (T) ((TF-5)) removes `C₃`, so it is
+> a hub `C₄` or a hub `C₅`. Such a cycle is a whole component of `G[hubs]`, and
+> **every neighbour of it outside it has degree exactly `2`**.
+
+*Proof.* A minimal dependent `W` with no degree-`2` vertex has `W ⊆ hubs`, so
+`G[W]` has max degree `≤ 2` by (EL-1) and min degree `≥ 2` and is connected by
+(EL-2)(iii): a cycle `C_m`, with `f = 5m − 6(m−1) = 6 − m > 0` iff `m ≤ 5`. Each
+of its vertices already has two hub neighbours inside, so by (EL-1) none outside;
+the rest is (EL-1)'s corollary. ∎
+
+### Step EL4 — **no residual carries a brick**: shape 2 is IMPOSSIBLE
+
+> **(EL-4)** No residual contains a cycle of length `≤ 6` all of whose vertices are
+> `G`-hubs. Equivalently, by (EL-3): **every count-dependent vertex set of a
+> residual contains a degree-`2` vertex**, so shape 2 never occurs and (E-loc) can
+> fail only through shape 1.
+
+Call `S ⊆ V(G)` **shielded** when `G[S]` is rigid and every vertex of `V(G) ∖ S`
+with a neighbour in `S` has `G`-degree `2`.
+
+*Proof.* Let `B` be a hub cycle, `3 ≤ |B| = m ≤ 6`.
+
+**(a) `B` is shielded and proper.** `G[B]` is the cycle itself: a chord would give each
+of its two endpoints a **third** hub neighbour, contradicting (EL-1) — this is the uniform
+reason, and for `m ≤ 5` (T) gives it too, a chord there being a triangle. `G[B]` is rigid by
+`isKDof_zero_of_cycle` (`3 ≤ m ≤ 6 = bodyBarDim 3`); its boundary is degree-`2` by (EL-1)
+(each `B`-vertex already has its two hub neighbours inside `B`); and `B ≠ V(G)`, since every
+vertex of a cycle has degree `2` while `B ⊆ hubs`.
+
+**(b) a shielded `S ≠ V(G)` whose contraction is SIMPLE has `hcard(G/S)`** — which is all
+(c) needs, since it dispatches on non-simplicity first. Here `G/S := G.rigidContract
+(G.induce S) r`, whose deleted edge set is *all* of `E(G[S])`, so no inner edge
+survives as a loop at `v*`. Simplicity says no outside vertex has two
+`S`-neighbours, so every outside vertex keeps its `G`-degree and its hub status.
+Then: `v*`'s neighbours are exactly `S`'s boundary vertices, all of degree `2`,
+hence non-hubs, so `closedHubNbhd(v*) ⊆ {v*}`; a boundary vertex is itself a
+non-hub, so its closed hub-neighbourhood sits inside its `≤ 2` neighbours; and
+every other vertex keeps its `G`-value, `≤ 3` by (EL-1). **So L6b's `¬hcard`
+escape is closed** — which is the one thing a general rigid subgraph does not
+give (at `W19`/`S29` it is exactly `¬hcard` that saves the core's contraction).
+
+**(c) the chain.** Take `S` of **maximum cardinality among shielded sets `⊇ B`
+with `S ≠ V(G)`** — the family is nonempty by (a). `G[S]` is a proper rigid
+subgraph with `2 ≤ |S|`, so the residual's no-good-contraction clause applies at
+`(G[S], r)`; by (b) and L6b (`pencilNondegFeasible_of_ncard_closedHubNbhd_le_
+three_of_triangleFree`, `Steer.lean:1344`) a simple **and** triangle-free `G/S`
+would be feasible. So one of:
+
+- **`G/S` not simple** — some `x ∉ S` has two `S`-neighbours; shieldedness makes
+  `deg_G x = 2`, so both its neighbours are in `S` and are distinct (`G.Simple`).
+  `S ∪ {x}` is rigid (Ear Lemma, `j = 1`) and still shielded (`x` has no neighbour
+  outside it), so maximality forces `S ∪ {x} = V(G)` — and then `G[S]` is a
+  **co-1** rigid subgraph, which the residual's no-co-1 clause forbids.
+- **`G/S` carries a triangle** — it passes through `v*`, since a triangle off `v*`
+  is a `G`-triangle and (T) forbids that. Write it `v* x y`: `x ~ y`, both outside
+  `S`, both attached to `S`, hence both of degree `2`, so `N(x) = {y, u}` and
+  `N(y) = {x, u'}` with `u, u' ∈ S` and `u ≠ u'` (else `u x y` is a `G`-triangle).
+  `S ∪ {x, y}` is rigid (Ear Lemma, `j = 2`) and shielded, so maximality forces
+  `S ∪ {x, y} = V(G)`; then `V(G) ∖ S = {x, y}` and `G/S` is exactly the
+  **spanning `C₃`** `v* x y`, simple and feasible by the landed-*sufficient*
+  L7c-3 witness (`pencilPair_of_habitat_ncard_eq_three`) — a good contraction.
+
+Both branches contradict the residual. ∎
+
+Three remarks.
+
+- **This is (C1)+(C5) freed from maximality.** *Step 2*'s (C1) (*no `T`-vertex has
+  two `S`-neighbours*) and (C5) (*no triangle through `v*`*) are these two branches
+  at a **maximal cluster**, where maximality supplies what shieldedness supplies
+  here. A brick is typically *not* a maximal cluster — but it is shielded, and
+  shieldedness is what those two arguments actually consume. No new mathematics.
+- **Shieldedness is preserved because every vertex the chain adds has degree `2`
+  with both neighbours inside**, so the boundary only shrinks. That is the engine,
+  and it is why the chain cannot stall.
+- **(T) is spent twice** — no hub `C₃` in (EL-3), and no triangle off `v*` here — so
+  (EL-4) is a genuine consumer of WTRI's theorem, landed hours earlier. (The no-chord step
+  is (EL-1)'s, not (T)'s; that matters only at `m = 6`, where a main diagonal is not a
+  triangle.)
+
+### Step EL5 — **(E-loc) is REFUTED**: the witness `T32`
+
+> **(EL-5)** There is a residual with **no** degree-`2` vertex `v₀` making
+> `E(G − v₀)` count-independent. `T32`: `|V| = 32`, `|E| = 38`, `f(V(G)) = 4`,
+> `def(G) = 0`, girth `4`.
+
+`T32` (`weloc.py --witness`; `two_core(4, 1, 4)`) is
+
+- two **disjoint** `C₄` cores `c₀c₁c₂c₃` and `d₀d₁d₂d₃`;
+- three hub poles per core, two on one core vertex and one on the opposite —
+  `z₀, z₁` on `c₀`, `z₂` on `c₂`; `w₀, w₁` on `d₀`, `w₂` on `d₂` — all six of them
+  hub **edges**;
+- one ring through the six poles in the order `z₀ z₁ z₂ w₀ w₁ w₂`, carrying **4**
+  interior vertices on each same-core leg and **1** on each cross leg.
+
+Every clause of `hnoGood'` holds, each certified by the landed lemma the pool's
+own classifier uses — the `W19`/`S29` standard, no middle zone:
+
+| clause | verdict at `T32` |
+|---|---|
+| `Simple`, three or more vertices, `TwoEdgeConnected` | ✓ |
+| `PencilNondegFeasible K G` | `hcard` ✓ and girth `4` ⟹ **L6b** (sufficient) |
+| `∃` proper rigid subgraph | the two `C₄` cores (`c4_isProperRigidSubgraph`) |
+| no co-1 rigid subgraph | the **only** proper rigid vertex sets are those two cores, at `4` vertices each against `30` |
+| no good contraction | both contractions are **simple**, with `closedHubNbhd(v*) = {v*, z₀, z₁, z₂}` resp. `{v*, w₀, w₁, w₂}` of size **4** — infeasible by the landed **necessary** `hcard` |
+
+and (E-loc) fails for the simplest available reason: `f = 2` at each core and the
+cores are **disjoint**, so each of the 32 vertices misses one of them entirely.
+All 22 degree-`2` vertices are additionally checked against the pebble game
+directly (`0` count-independent deletions).
+
+**Why the witness is this size** — the three constraints that fix it are also why
+the pool never reached it:
+
+- *three hub poles per core.* With two, `closedHubNbhd(v*) = 3` and L6b certifies
+  the contraction **feasible**: a good contraction, no residual. This is (C6)'s
+  budget — the first core that can break `hcard` at `v*` is a `C₄` whose two hubs
+  are **opposite** — applied twice.
+- *`≥ 4` interior vertices on a same-core leg.* The ear `c₀ – z₀ – [a] – z₁ – c₀`
+  has `a + 2` interior vertices, and the Ear Lemma merges it into the core at
+  `a + 2 ≤ 5`.
+- *`f(V(G)) ≤ 4`.* In this family `f = 22 − (4a + 2b)`, and **every** instance with
+  `f ≥ 6` came back `co-1` or `good-contraction`. `(a, b) = (4, 1)` is the smallest
+  residual the family reaches, and it sits at `f = 4` **exactly**.
+
+**Consequences, in the order they bite.**
+
+- **(E) is NOT refuted — and is now known TIGHT.** `f(V(T32)) = 4` is precisely the
+  bound (E) asserts, attained. The pool's maximum was `2` (`W19`, `S29`), so (E)
+  could not previously be known sharp; it is, and *"`f(V(G)) ≤ 3`"* is false. What
+  dies is the **route**, not the statement.
+- **The local counting route to (E) is dead, and not by a hair.** Generalize the
+  landed argument: for a degree-`2` `v` the `v`-avoiding fiber has `|E'(v)| =
+  5(|E| − 2)` and `rank(E'(v)) ≤ 6(|V| − 2)` (its span avoids `v`), so
+  **`f(V(G)) ≤ 4 + κ(v)`** with `κ(v)` its corank —
+  `edgeBound_of_noRigid_of_degree_two` is the `κ(v) = 0` case, i.e. (E-loc). At
+  `T32`, `κ(v) ∈ {2, 4}` and `min_v κ(v) = 2`, so the sharpest conclusion the
+  argument can reach is `f ≤ 6` against a true value of `4`. **No care in choosing
+  `v` recovers (E) here**, and no sharpening of the counting step does either:
+  the argument's only free parameter is the deleted vertex.
+- **It is a family, not a point.** `--hunt`'s `(m, a, b)` scan certifies **24** refuting
+  residuals (`m ∈ {4, 5}`, `a ≥ 4`, `b ≥ 1`), `T32` the smallest — a `C₅` core works exactly
+  as a `C₄` core does (`isKDof_zero_of_cycle`, *Step EL1*), and a `C₄` core and a `C₅`
+  core coexist in one residual at `|V| = 33`.
+- **(SAFE-RES′) is untouched at the witness.** `T32` is triangle-free (as (T)
+  requires), carries 8 deep split vertices and 16 split-usable ones, and satisfies
+  (E). Only the (E-loc) route dies.
+
+**Cap and denominator disclosure — and the denominator is `0`, not `255`.** Of the
+255 residual inhabitants of `saferes.py --prime` (all 255 certified STRONG, no
+middle-zone contraction), **160 carry no count-dependent set at all** — (E-loc)
+is then vacuous, every degree-`2` vertex works — and **95 carry exactly one**, in
+which case (EL-4) makes (E-loc) automatic. **Zero carry two.** So the pool contains
+**no instance of the only configuration that can decide the question**, and the
+recorded 255/255 was never evidence about (E-loc): the honest denominator is `0`.
+The reason is structural, not a size cap — `family_g` and `family_core_ring` each
+build **exactly one** core cycle, and the random sweeps contribute no residual at
+all (`--search`: `0` residuals from `584 + 343` random instances). **This is not
+(T)'s blind spot and must not be described as one:** count-independence appears in
+no feasibility certificate, so a sweep *could* have seen an (E-loc) failure — the
+generator simply never built one. The pool's maximum `f(V(G)) = 2` against `T32`'s
+`4` is the same gap seen from the arithmetic side.
+
+### Step EL6 — the two consumers, the successor, and (V)
+
+**Consumer 1 — (S1)/(S2) — needs strictly less than (E), and that is the successor
+to aim at.** *Step 0* records that (E) reaches the split arm only through
+`exists_adjacent_degree_two_pair_of_edgeBound` (`ReducibleVertex.lean:1068`),
+whose conclusion is *two adjacent degree-`2` vertices*. So the honest obligation is
+
+> **(E-pair)** *every residual carries two adjacent degree-`2` vertices*,
+
+which is implied by (E) and is what the arm consumes. It holds at **255/255** of
+the pool (`--prime`, recorded) and at `T32`, and — unlike (E) — it is a statement
+about branch lengths, where the Ear Lemma and the no-good-contraction clause are
+already the working tools (*Step EL4* is a worked example of exactly that pair of
+tools). **This is the pick the direction recommends**: it dominates (E) on cost and
+loses nothing on the split arm.
+
+**Consumer 2 — `hfresh` — is NOT really an (E) consumer.** *Step 0* records that
+the wrapper's discharge `freshEdgeSupply_of_card_lt_of_noRigid_of_degree_two`
+(`Escape.lean:516`) *"calls `edgeBound_of_noRigid_of_degree_two` and nothing else,
+so it collapses into (E)"*. True of the **landed proof**; not of the **obligation**.
+Read the body: the edge bound is used only to contradict `E(G') = univ` under the
+headroom `6(|α| − 1) < |β|`. A residual is `Simple`, so distinct edges have
+distinct endpoint pairs and `|E(G)| ≤ |α|(|α| − 1)/2` outright — so the
+residual-habitat sibling is discharged by **simplicity plus a larger `β`
+headroom**, with no edge bound at all. The cost is a bigger constant in the
+consumer-facing headline `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card`,
+which is a hypothesis of that headline and freely strengthenable. **So (E) has one
+real consumer, not two**, and *Step 0*'s sentence is annotated accordingly.
+
+**(V), i.e. job 3 — the premise is void and the answer is "unchanged".** Job 3
+asked what (V) costs *once (E) lands*; (E) did not land, and (E-loc) — the route
+it was to land by — is refuted. So (V) stays *"elementary given (E) and (T)"* with
+(T) discharged and (E) open, and its two `C₄`-carrying residues (`j = 3` with
+`u = u'`; `j = 2` with `u ~ u'`) are exactly as *Step 3* left them. Two things are
+worth recording anyway. First, **(V) holds outright at `T32`** by *Step 3*'s
+`j ≥ 4` branch (the same-core legs carry 4 interior vertices), so the refutation
+costs (V) nothing. Second, **(V)'s dependence on (E) is only through (E-pair)'s
+neighbourhood**: *Step 3* uses (E) to produce a branch with `j ≥ 2` interior
+vertices (via the (E-κ) arithmetic, `κ ≤ 1 ⟹ f ≥ 6 > 4`), which is again a
+branch-length statement — so **(E-pair)-style work serves (V) too**, and the two
+remaining non-user-call W4 items now share a single upstream target.
+
+**What did NOT move.** (T) ((TF-1)–(TF-6)) is untouched and is used three times
+here. (SAFE-RES) stays refuted, (SAFE-RES′) open with `W19`/`S29` intact; the
+`hnoGood'` vacuity refutation stands (`T32` is a third inhabitant, and the first
+with two cores). (K-res), *Step 4*'s minimal widened statements, *Step 5*'s
+numerics and the route-3/packaging-(b) adjudication are all untouched — (E-loc)
+was never an input to them. Nothing on the (BE-14) side is touched.
+
 ### Verification
 
 `notes/scripts/w4/widened.py` (tracked; exact-ℚ). New geometry:
@@ -1039,6 +1386,35 @@ on all 4192 pool pairs.
 
 Reproduce: `python3 notes/scripts/w4/widened.py --validate | --witness |
 --pool | --sample | --ebound`.
+
+**The (E-loc) driver is `notes/scripts/w4/weloc.py`** (tracked; integer-exact,
+five modes), and it is the evidence behind *Steps EL1–EL6*.
+
+- **`--validate`** — the mechanical identities of (EL-2): `f(W) = 5c − |W| − 5k
+  + 6` on **9 567** instances (7 156 connected), `count_indep` against the direct
+  `f(W) ≤ 0` sweep on **389** graphs, the minimal-dependent-set branch
+  enumeration against a brute-force subset sweep on **215** subdivisions
+  (533 sets), the Ear Lemma threshold at `j = 0..7`, and (EL-1) on 533 `hcard`
+  graphs. **0 mismatches anywhere.**
+- **`--witness`** — `T32`, every `hnoGood'` clause, with rigidity re-checked on
+  all three oracles (pebble game / tree packing / partition enumeration) and all
+  22 degree-`2` deletions tested; plus six further instances of the family.
+- **`--brick`** — the falsification audit for **(EL-4)**. (EL-3) first: **81**
+  bricks found across **319** random `hcard` graphs, every one a hub cycle of
+  length `≤ 5`. Then **374** instances *carrying* a hub cycle (structured stars,
+  chorded stars and random min-degree-3 bases), each run through *Step EL4*'s
+  chain with `hcard(G/S)` and shieldedness **asserted at every step**: **157**
+  `j = 1` and **128** `j = 2` ear extensions actually taken across 198 of them,
+  **0** assertion failures, and **0 residuals** — any one would refute (EL-4).
+- **`--pool`** — the denominator disclosure of *Step EL5* (255 → 160 / 95 / **0**).
+- **`--hunt`** — the size of the shape-1 family: the `(m, a, b)` scan, the
+  smallest refuting instance (`|V| = 32`), and mixed `C₄`/`C₅` cores. A three-core
+  construction is **not** run: 24 branches is past `rigid_vertex_sets`' `2^22`
+  enumeration cap, so no instance of it could be certified — recorded as a cap,
+  not as an absence.
+
+Reproduce: `python3 notes/scripts/w4/weloc.py --validate | --witness | --brick |
+--pool | --hunt` (all five: 114 s, `VALIDATE: OK`).
 
 ### Confidence verdict per widened kernel
 
@@ -1058,6 +1434,12 @@ Reproduce: `python3 notes/scripts/w4/widened.py --validate | --witness |
   `notes/Pencil-informal-grid.md`): the §(K-grid) geometry transports
   verbatim and (RS-5) is proven per-shape at `W19`/`S29`/`NT21c3`, while
   the deficient fringe is excluded with a mechanism ((RS-6), θ(2,3,7)).
+- **(E) and (E-loc)** — not kernels, but this section's other open item, and the
+  one that moved. **(E-loc): REFUTED** (*Step EL5*, `T32`) — and its *other*
+  obstruction shape is **impossible** (*Step EL4*), so the refutation is not a
+  gap in the analysis but the whole answer. **(E): open**, holding at every
+  instance known and **tight** (`f = 4` attained at `T32`); its live successor is
+  **(E-pair)**, which is weaker and is all (S1)/(S2) consumes (*Step EL6*).
 - **`hbareSplit`** — **unchanged.** Not on routes 1/3's path (Step 0); its
   adjudicated carry stands verbatim. **(K-bare-ext)**, its route-A discharge
   statement, is **REFUTED as stated** since 2026-08-20

@@ -1,21 +1,47 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
 **Status: EIGHT fan-outs, FORTY single directions and TWO concurrent pairs
-dispatched; 66 LANDED, ONE IN FLIGHT — WELOC (ordinal 59).**
-**WELOC (ordinal 59, §"WELOC") PREPPED 2026-09-02** at **(E-loc)** — *every
-residual has a degree-2 vertex `v₀` with `E(G − v₀)` count-independent* — the
-second W4-side direction. **The F26 trace OVERTURNED the successor WTRI named:**
-WTRI ranked (V) next as *"the cheapest non-user-call item"*, but the workbook
-words (V) as *"elementary **given (E)** and (T)"*, so (V) is **downstream** of
-the very gap (E-loc) discharges; (E-loc) also has **two** consumers ((E) and
-Step 0's `hfresh` discharge) and its obstruction is **already narrowed by
-supermodularity to exactly two named shapes**. Cheapest is not the criterion;
-max impact is. **(V) is not dropped** — it is candidate 2 and gets cheaper the
-moment (E) lands. The spec also carries **job 2, the landed-inventory question**
-asked in general: WTRI's whole result came from a step enumerating the
-feasibility *criteria* and omitting the *transfers*, so this direction greps the
-tree around `ReducibleVertex.lean` **before** concluding anything is unprovable.
-Dispatched at `recon-opus` (fable unavailable this session).
+dispatched; 67 LANDED, none in flight.**
+**WELOC (ordinal 59, §"WELOC") LANDED 2026-09-02** — the **second** W4-side
+direction, and it **REFUTES (E-loc)** while proving the *other* obstruction shape
+**impossible** — **HIT shapes 2 and 3, then 4 and 5; NOT shape 1**. `T32`
+(`|V| = 32`) is a residual with two **disjoint** count-dependent `C₄` cores, so
+every `E(G − v)` is count-dependent and no degree-`2` deletion is independent
+((EL-5)); it is certified to the `W19`/`S29` standard — L6b for `G`, the landed
+**necessary** `hcard` for both contractions, three rigidity oracles, no middle
+zone. **The coordinator's guess was right and it was the cheap half**: a brick is
+a hub `C₄`/`C₅` ((EL-3)) and **no residual carries one** ((EL-4)) — sitting away
+from the degree-`2` vertices is exactly what makes it **shielded**, which closes
+L6b's `¬hcard` escape and lets *Step 2*'s own (C1)+(C5) run with **maximality
+replaced by shieldedness**. **Job 2 delivered the two landed items that decide
+it**: `isKDof_zero_of_cycle`/`cycle_isProperRigidSubgraph` (every cycle of length
+`≤ 6` is rigid, not just the `C₄` this arc cited) and the `hcard` necessary
+condition read as a **transfer** — *every hub of a residual has `≤ 2` hub
+neighbours* ((EL-1)) — WTRI's inventory lesson at one remove, an item landed AND
+inventoried but in only one of its two roles. **(E) is NOT refuted**:
+`f(V(T32)) = 4` **exactly**, so `T32` satisfies (E) and **(E) is now known
+TIGHT** (the pool's max was `2`). The route dies by more than a hair — the
+generalized bound is `f ≤ 4 + κ(v)` and `min_v κ(v) = 2` at `T32`, so the counting
+argument reaches only `f ≤ 6`. **Successor named and cheaper: (E-pair)**, *two
+adjacent degree-`2` vertices*, which is all `exists_adjacent_degree_two_pair_of_
+edgeBound` consumes — and **(V) needs (E) only through the same branch-length
+neighbourhood**, so W4's two non-user-call items now share one target. **A second
+consumer that was never one:** *Step 0*'s `hfresh` sentence is true of the landed
+*proof*, not the *obligation* — a residual is `Simple`, so `|E| ≤ |α|(|α|−1)/2`
+discharges it at a larger `β` headroom; annotated at source (F12) along with three
+over-statements in *Step 3*'s own (E-loc) paragraph. **Job 3's premise is void**
+((E) did not land) and its substance is answered: (V) unchanged, holding outright
+at `T32`. Driver `w4/weloc.py`, five modes — `--brick` runs (EL-4)'s chain on
+**374** hub-cycle-carrying instances with shieldedness and `hcard(G/S)` asserted at
+every step (**157** `j = 1` + **128** `j = 2` extensions taken, **0** failures,
+**0** residuals). **Denominator disclosure: `0`, not `255`, and NOT (T)'s blind
+spot** — 160 pool residuals carry no dependent set and 95 carry exactly one, so
+**none** carries the configuration that decides the question; unlike (T), a sweep
+*could* have seen this failure, the generator simply never built one.
+`notes/check-gapmap-cells.py` **did not fire and was not skipped** (no W4 gap-map
+row; none opened). **E1/E2/E3 do not fire — E2 came closest of any W4 landing**
+(target refuted, but the successor IS specified, which is the clause it turns on);
+**reported, not acted on**. Run at `recon-opus` (fable unavailable).
 **WTRI (ordinal 58, §"WTRI") LANDED 2026-09-02** — the arc's **FIRST W4-side
 direction**, and it **CLOSES A CARRIED COST: §(SAFE-RES) (T) IS A THEOREM** —
 **HIT shape 1**, the one the spec ranked first; also shapes 3, 4 and 5, and **NOT
@@ -9943,3 +9969,133 @@ paragraph into a settled-frame paragraph** under the note's oldest-demotes rule.
 at **1 544 / 1 600** and **this direction does not touch it** — it is the (BE-14)
 thread's, and the next landing on *that* thread needs a recompute to a target
 (F21), not this one.
+
+### LANDING WRITE-UP — WELOC, 2026-09-02: **(E-loc) is REFUTED, and the other shape is IMPOSSIBLE**
+
+**HIT shapes 2 and 3, then 4 and 5; NOT shape 1.** The spec ranked *"(E-loc)
+PROVED"* first and *"a residual with no count-independent degree-`2` deletion"*
+second. The second is what landed — **`T32`**, `|V| = 32`, two **disjoint**
+count-dependent `C₄` cores — and shape 3 landed with it, because the *other*
+obstruction is now a **theorem in the negative**. Both shapes are therefore
+decided, which is more than either HIT alone: **(E-loc) fails, and shape 1 is the
+only way it can.**
+
+**The coordinator's guess was right, and it was the cheap half.** Shape 2 — *"a
+dependent brick all of whose vertices have `G`-degree `≥ 3`"* — is **impossible in
+a residual** ((EL-4)), and the spec's own worry (*"can the brick sit disjoint from
+the degree-`2` vertices?"*) is answered *yes it can, and that is exactly why it
+cannot exist*: sitting away from the degree-`2` vertices is what makes it
+**shielded**, and shieldedness is what closes L6b's `¬hcard` escape. Two landed
+items do the work, and *Step EL1* is the **job-2** find that supplies them:
+`isKDof_zero_of_cycle`/`cycle_isProperRigidSubgraph` (**every** cycle of length
+`≤ 6` is rigid, not just the `C₄` this arc had been citing), and the `hcard`
+necessary condition read as a **transfer** — composed with the
+`PencilNondegFeasible` existential it says *every hub of a residual has `≤ 2` hub
+neighbours* ((EL-1)), which the arc had only ever used as a certified-infeasibility
+test on a contraction. **WTRI's inventory lesson repeated at one remove: the item
+was landed AND inventoried — in one of its two roles.**
+
+**The brick argument, in one line.** A brick is a hub `C₄` or `C₅` ((EL-3), from
+(EL-1) + (T)); all its outside neighbours are then degree-`2`, so its contraction
+satisfies `hcard`, so L6b would certify it feasible unless the contraction is
+non-simple or carries a triangle — and each of those extends the set by an ear of
+`j = 1` or `j = 2` **preserving the same property**, until the chain hits a co-1
+rigid subgraph or a spanning-`C₃` contraction, both forbidden. It is *Step 2*'s
+own (C1)+(C5) with **maximality replaced by shieldedness**, which is what those two
+arguments actually consume — so no new mathematics, and **(T) is spent twice** (no hub
+`C₃`; no triangle off `v*`), hours after WTRI proved it.
+
+**`T32` is certified to the `W19`/`S29` standard, with no middle zone.** Simple,
+2EC, girth 4 and `hcard` ⟹ feasible by the landed-**sufficient** L6b; exactly two
+proper rigid vertex sets, the two `C₄` cores, on **three** independent oracles
+(pebble game / tree packing / partition enumeration); no co-1 (`4 ≤ |V| − 2`); and
+both contractions **simple** with `closedHubNbhd(v*)` of size **4**, infeasible by
+the landed-**necessary** `hcard`. (E-loc) then fails for the simplest available
+reason: `f = 2` at each core and the cores are disjoint, so every one of the 22
+degree-`2` vertices misses a whole dependent core. **It is a family, not a point** —
+the `(m, a, b)` scan certifies **24** refuting residuals, `T32` the smallest, `C₅` cores
+included, and a `C₄` core and a `C₅` core sit in one residual at `|V| = 33`.
+
+**What is NOT refuted, and the new extremal fact.** **(E) stands.** `f(V(T32)) = 4`
+— *exactly* the bound (E) asserts, attained — so the witness satisfies (E), and
+**(E) is now known TIGHT**: the pool's maximum was `2`, so *"`f ≤ 3`"* could not
+previously be ruled out and now is. `T32` also satisfies (SAFE-RES′) (8 deep split
+vertices, 16 split-usable) and is triangle-free, as (T) requires. **Only the route
+dies.**
+
+**And it dies by more than a hair.** Generalizing the landed argument gives
+`f(V(G)) ≤ 4 + κ(v)` for every degree-`2` `v`, with `κ(v)` the corank of the
+`v`-avoiding fiber — `edgeBound_of_noRigid_of_degree_two` is the `κ = 0` case. At
+`T32` `min_v κ(v) = 2`, so the sharpest conclusion the counting argument can reach
+is `f ≤ 6` against a true `f = 4`. **The argument's only free parameter is which
+vertex you delete, and no choice works.**
+
+**The successor, and it is cheaper than what it replaces.** *Step 0* records that
+(E) reaches the split arm only through
+`exists_adjacent_degree_two_pair_of_edgeBound`, whose conclusion is *two adjacent
+degree-`2` vertices*. So the honest obligation is **(E-pair)**, weaker than (E),
+true at 255/255 and at `T32`, and a statement about **branch lengths** — where the
+Ear Lemma and the no-good-contraction clause are already the working tools, as
+(EL-4) demonstrates. **(V) needs (E) only through the same neighbourhood** (a
+branch with `j ≥ 2` interior vertices), so the two remaining non-user-call W4
+items now share one upstream target. **Job 3's premise is void** — (E) did not
+land — but its substance is answered: (V) is unchanged, its two `C₄`-carrying
+residues untouched, and it holds outright at `T32` by the `j ≥ 4` branch.
+
+**A second consumer that was never one.** *Step 0*'s *"the `hfresh` discharge
+collapses into (E) exactly like (S1)/(S2)"* is true of the landed **proof** and
+not of the **obligation**: the edge bound is used there only to contradict
+`E(G′) = univ`, and a residual is `Simple`, so `|E| ≤ |α|(|α|−1)/2` discharges it
+at the price of a larger `β` headroom in the consumer-facing headline. **(E) has
+ONE real consumer**, and the sentence is annotated at source (F12), as are three
+over-statements in *Step 3*'s own (E-loc) paragraph — merging does not remove
+shape 1, the brick is not merely *"all degree `≥ 3`"*, and *"neither occurs in the
+pool"* is empty.
+
+**The denominator disclosure, and it is a `0` — not a cap, and NOT (T)'s blind
+spot.** Of the pool's 255 residual inhabitants (all 255 certified STRONG), **160
+carry no count-dependent set at all** and **95 carry exactly one**; **zero** carry
+two. So the pool holds **no instance of the only configuration that can decide
+(E-loc)**, and the recorded 255/255 was never evidence about it — the honest
+denominator is `0`. The cause is structural but *not* an invisibility: unlike (T),
+where L6b's own triangle-freeness hypothesis made a counterexample impossible for
+any sweep to certify, count-independence appears in **no** feasibility certificate,
+so a sweep *could* have seen this failure. `family_g` and `family_core_ring` simply
+build **exactly one** core cycle each, and the random sweeps produce no residual at
+all. The pool's maximum `f = 2` against `T32`'s `4` is the same gap from the
+arithmetic side.
+
+**TERMINATION E1/E2/E3, read against their (K)-arc definitions
+(`notes/Pencil-fanout-archive.md`), not by analogy.** **E1** (a g-flank) is a
+§(K-grid) object with no W4 instance; its nearest W4 reading — *an exhibited object
+refuting the direction's target class* — is **satisfied in the narrow sense**
+(`T32` refutes (E-loc)), but (E-loc) is a **gap on a route**, not the arc's target
+class, and refuting it removes a route while leaving `PencilPair K 3 G` exactly
+where it was. **E1 does not fire.** **E2** needs the target refuted or
+unprovable-as-posed *with no successor as specified*; the target **is** refuted,
+and the successor **is** specified ((E-pair), (EL-6)), which is the clause E2 turns
+on. **E2 does not fire — and this is the closest any W4 landing has come to it,
+worth recording.** **E3 is ARMED (by GBAL)**: its first conjunct needs the target
+*proven*, and it was refuted, so E3 does not fire on the first conjunct this time
+(WTRI's landing satisfied it); its second conjunct still fails, since (V) and
+(E-pair) are dispatchable and need no adjudication. **E3 DOES NOT FIRE —
+reported, not acted on.**
+
+**What did NOT move.** (T) ((TF-1)–(TF-6)) is untouched and is *used* three times.
+(SAFE-RES) stays refuted, (SAFE-RES′) open, `W19`/`S29` intact; the `hnoGood'`
+vacuity refutation stands and gains a third inhabitant. **(K-res), *Step 4*'s
+minimal widened statements, *Step 5*'s numerics and the route-3/packaging-(b)
+adjudication are untouched** — (E-loc) was never an input to any of them — and
+**(K-res) stays a USER call**. Nothing on the (BE-14) side, `hK`, (GR-15) or class
+uniformity is touched. **A PENCIL event on the W4 side; the phase-boundary
+consequence is reported, not acted on, and the 2026-08-05 Lean hold binds
+regardless.**
+
+**Deliverable.** `notes/Pencil-W4-informal.md` §widened kernels (routes 1/3)
+*Steps EL1–EL6* / **(EL-1)–(EL-5)**, plus F12 hunks at *Step 0*, *Step 1*'s K1
+row, *Step 3*, both section headers and §(SAFE-RES) *Step 3*'s (E) bullet; driver
+`notes/scripts/w4/weloc.py` (`validate|witness|brick|pool|hunt`, 114 s); reservation
+consumed **five of six** — **(EL-6) is returned unconsumed**, the sixth step
+carrying no new labelled claim. `notes/check-gapmap-cells.py` **did not fire and
+was not skipped**: there is no gap-map row on the W4 side and this direction did
+not open one. Run at **`recon-opus`** (fable unavailable this session).

@@ -2492,8 +2492,8 @@ was missed from this sentence; added here with (K-ann) and (K-out).)
 | §`hnoGood'` vacuity | `NG-` | **(C1)–(C6)** | structure of a maximal cluster's contraction: (C1) simplicity is free, (C2) outside degrees preserved, (C3) boundary attachment points are hubs, (C4) `hcard` fails only at `v*`, (C5) no triangle through `v*`, (C6) the boundary-hub budget |
 | §(SAFE-RES) | `SR-` | **(C7)**, **(C8)**; (SAFE-RES), (SAFE-RES′); **(E)**, **(T)**, **(V)** | (C7) every ear through `T` has ≥ 6 interior vertices; (C8) the dichotomy at a maximal cluster; (E)/(T)/(V) the three gaps of (SAFE-RES′) |
 | §(SAFE-RES), direction WTRI | `TF-` | **(TF-1)–(TF-6)**; ***Steps TF1–TF6*** | the triangle-freeness cost (T), **LANDED 2026-09-02, reservation consumed EXACTLY (6/6, no remainder)**: (TF-1) the two landed feasibility *transfers* `Step 4` had not inventoried, (TF-2) the pendant triangle's anatomy + `2EC ⟹ deg z ≥ 4`, (TF-3) the `deg z ≥ 5` case by `PencilNondegFeasible.mono`, (TF-4) the `deg z = 4` case by the delete-one-then-steer chain, (TF-5) **(T) IS A THEOREM**, (TF-6) verification / the four Lean obligations / the by-product one-plane feasibility criterion. Owning section is authoritative |
-| §widened kernels (routes 1/3), direction WELOC | `EL-` | **(EL-1)–(EL-6)**; ***Steps EL1–EL6*** | the (E-loc) gap: reserved 2026-09-02, in flight |
-| §widened kernels (routes 1/3) | `WK-` | (E-loc); **(K-res)** | the routes-1/3 kernel widening; (K-res) is the widened kernel carried as a byte-identical sibling of `hK` |
+| §widened kernels (routes 1/3), direction WELOC | `EL-` | **(EL-1)–(EL-5)**; ***Steps EL1–EL6*** | the (E-loc) gap, **LANDED 2026-09-02, reservation consumed 5 of 6 — (EL-6) RETURNED unconsumed**, its step carrying no new labelled claim: (EL-1) the hub-degree law (every hub of a feasible `G` has ≤ 2 hub neighbours), (EL-2) the count identity `f = 5c − |W| + 1` and the anatomy of a minimal dependent set, (EL-3) a brick is a hub `C₄`/`C₅`, (EL-4) **no residual carries a brick** (shape 2 impossible), (EL-5) **(E-loc) is REFUTED** by `T32`. *Step EL6* carries the consumer trace, the successor (E-pair) and (V). Owning section is authoritative |
+| §widened kernels (routes 1/3) | `WK-` | (E-loc) — **REFUTED**; **(E-pair)** (minted 2026-09-02, WELOC); **(K-res)** | the routes-1/3 kernel widening; (E-pair) is (E)'s successor target, *two adjacent degree-`2` vertices*; (K-res) is the widened kernel carried as a byte-identical sibling of `hK` |
 
 ## Registry — `notes/Pencil-strategy.md`, `Phase39.md`, `Phase39-design.md`
 
@@ -2707,7 +2707,7 @@ draft, and note that the W4 workbook has its own single-letter families ((C1)–
 worst-case mint in the whole doc set.
 
 
-## Reserved namespace — direction WELOC (2026-09-02, **RESERVED — the direction is in flight**)
+## Reserved namespace — direction WELOC (2026-09-02, **CONSUMED 5/6 — LANDED, (EL-6) RETURNED**)
 
 **Reserved 2026-09-02 for the single direction WELOC** (ordinal 59; `notes/Pencil-fanout.md`
 §"WELOC") — **W4 / `hcontract`, the gap (E-loc)**: *every residual `G` has a degree-`2`
@@ -2740,3 +2740,11 @@ draft. Two single-letter risks specific to this question: **`f`** (the count fun
 **`v₀`** are already in arc-wide use and must stay glossed at each use, and the
 supermodularity argument will want names for the two obstruction shapes — **prefer prose
 names**, as WTRI and BSPREAD both did.
+
+**LANDED 2026-09-02.** **(EL-1)–(EL-5)** consumed; **(EL-6) returned unconsumed** — *Step
+EL6* is the consumer trace and carries no claim that wanted a label. The two obstruction
+shapes took **prose** names as instructed (*brick* and *shape 1*), and one new token was
+minted outside this family: **(E-pair)**, in §widened kernels' own bare-token neighbourhood
+beside (E-loc)/(K-res), registered in the `WK-` row above. `T32` follows the `W19`/`S29`
+witness-naming convention and is defined in `notes/Pencil-W4-informal.md` §widened kernels
+*Step EL5*, its canonical home.
