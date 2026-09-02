@@ -2972,7 +2972,7 @@ BE98***, declared here so the omission BBASE's row made is not repeated. **Gap-m
 outcome:** the `(K-bare)` row was recomputed to **1 472 / 1 600** (128 spare), scripted
 set-diff **101 labels in, 112 out, ZERO dropped**.
 
-## Reserved namespace — direction BDOUBLE (2026-09-02, **IN FLIGHT**)
+## Reserved namespace — direction BDOUBLE (2026-09-02, **CONSUMED IN FULL**)
 
 **Reserved 2026-09-02 for the single direction BDOUBLE** (ordinal 64, the arc's
 seventy-second direction; `notes/Pencil-fanout.md` §"BDOUBLE") — **(NO-DOUBLE-PENCIL)**
@@ -3009,3 +3009,26 @@ has now gone four directions without minting a configuration-level token.
 **Gap-map note (F21).** The `(K-bare)` row stands at **1 472 / 1 600 words** after BUNIF's
 recompute — **128 spare, the tightest in three landings**, so a **recompute to a target** is
 required rather than optional, with label preservation by **scripted set-diff**.
+
+**LANDED 2026-09-02 — the reservation is CONSUMED IN FULL and nothing is returned.**
+Labels **(BE-99)–(BE-103)** and *Steps BE98–BE102* all used, in §(K-bare-ext) as reserved
+(extended, no new section); driver `notes/scripts/w4/bdouble.py` at the reserved path. The
+**(L6) landing grep** was run: **`(S1)`/`(S2)`** appears only in the qualified form
+*"*Step BE56* / (BE-57)(iv)'s **(S1)**/**(S2)**"*, inside a sentence that names the item
+it belongs to — BUNIF's habit, kept. **Nothing was minted** for `Π_x`, `c_i(U)`, `margin`,
+`blockcap`/`blockdeg`, the 16 stable subspaces or the double pencil itself, per the
+reservation's explicit constraint; all are reused as BUNIF's prose/symbol names. **One new
+configuration-level object took a PROSE name**: the per-side condition
+**(PENCIL-SATURATES)** — *`c_i(Π) = 2 ⟹ ρ_i = 6`*, which is (BE-38)(iii)'s third clause
+contrapositively — 0-hit-verified across the doc set at reservation time and now the
+direction's named residual. **(NO-DOUBLE-PENCIL) is retained as a token** even though the
+condition is **refuted**: it names the statement, and the refutation is recorded against
+it at (BE-97)(iii) and (BE-99); it is **not** recycled. The **next tail is (BE-104) /
+*Step BE103***, declared here per BUNIF's habit; both tokens verified **0-hit** across
+`*.md`/`*.tex`/`*.lean`/`*.py`/`*.m2` at landing time. **Gap-map outcome:** the
+`(K-bare)` row was recomputed to **1 546** words while absorbing a full direction
+(~110 words of pre-existing prose compressed away against ~186 added), scripted set-diff
+**129 codes in, 144 out, ZERO dropped**; the row then joined `check-gapmap-cells.py`'s
+`SPECIAL_CAPS` at **1 630 / 150 (combined 1 780)** — the recompute's own size plus ~15 %
+— documented in that script's docstring in the same commit, because 54 words of headroom
+under the generic 1 600 is the *pointless recompute* `RESEARCH-ARC.md` §6 names.

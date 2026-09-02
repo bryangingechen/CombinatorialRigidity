@@ -8,13 +8,12 @@ derives it from exactly **three carried items**: **`hcontract`** (W4 — build p
 **`hbareSplit`** (kernel (K-bare)). Everything else is closed — W0–W3 and all of W5
 (L0–L7), `hsplit` and `hfresh` included (2026-07-30, unchanged since).
 
-**The research arc: 71 directions COMPLETE** (2026-08-05 → 09-02, ordinals
-1–63 — 67 on kernel (K), and **WTRI (58) / WELOC (59) / WPAIR (60) / WGROW (61) on W4**),
-plus eight strategy-only passes and two architecture probes; **BDOUBLE (64) IS IN FLIGHT**
-at **(NO-DOUBLE-PENCIL)**, the per-side condition BUNIF reduced (BE-67)(iii) to.
+**The research arc: 72 directions COMPLETE** (2026-08-05 → 09-02, ordinals
+1–64 — 68 on kernel (K), and **WTRI (58) / WELOC (59) / WPAIR (60) / WGROW (61) on W4**),
+plus eight strategy-only passes and two architecture probes; **NONE IN FLIGHT**.
 Per-direction verdicts, specs and write-ups live at `notes/Pencil-fanout.md` §"<CODE>"
 (ordinals 1–19: the archive) plus a workbook home — **not restated here**.
-**The arc's standing result, unchanged by all 71: `hK` is not closer.** **(GR-15)** — the
+**The arc's standing result, unchanged by all 72: `hK` is not closer.** **(GR-15)** — the
 single open gap the whole §(K-grid) chain reduces to — is **untouched**; **class uniformity
 of the escape is untouched**; no g-flank was found by any direction; **E3 is ARMED (by
 GBAL), has NEVER fired, and is NOT one landing away** — `61e046a6` corrected that reading:
@@ -32,9 +31,11 @@ open step**; the three sides and every per-landing detail are **REFERENCE**, at
 Status only: (β) proved at the window **MODULO §(K-bare-ext) (BE-57)(iv)'s own two window
 conditions** ((S1)/(S2), one of three owners of that token); cross-cut-only forcing
 is **empty as an obstruction** (392 genuine, `0` shortfall); the flag base is
-**DISCHARGED** (BBASE); and BUNIF made the residue **per-side**, tight only at
-**(NO-DOUBLE-PENCIL)** ((BE-97)(iii)) — **on the measured populations; the other 13 live
-blocks are unwitnessed, NOT excluded** ((BE-97)(iv)); cross-pair welding **untouched**.
+**DISCHARGED** (BBASE); BUNIF made the residue **per-side** (14 block inequalities), and
+**BDOUBLE REFUTED its named tight-place condition (NO-DOUBLE-PENCIL) and made both
+2-dimensional blocks REDUNDANT** — under **(PENCIL-SATURATES)** (= (BE-38)(iii)'s third
+clause) a `Π_x` failure is a `Λ²K⁴` failure, so **14 → 12** blocks, all of them
+**unwitnessed, NOT excluded** ((BE-97)(iv)); cross-pair welding **untouched**.
 
 **On a future HIT: the phase-boundary consequences are the USER's call** —
 whether Phase 39 closes and a successor opens for the Lean is a
@@ -188,11 +189,13 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
   is reference rather than status?"*. Four landings running have paid for themselves that
   way — block 8 bought 105 words; the WTRI prep merged five per-landing *Hand-off* blocks
   into one; WPAIR rotated its in-flight header block out; the BBASE landing merged the two
-  W4 *Blockers* bullets. **LINES bind, not words**, so the next landing MUST merge or
-  rotate rather than append. **Do NOT relocate the *"On a future
-  HIT"* block** — standing safety policy, and it must stay where a fresh session reads it
-  first. A landing's entry stays **one line**; the (BE-14) thread's prose entries are the
-  standing exception, and the oldest demotes when the thread's next direction lands.
+  W4 *Blockers* bullets; the BDOUBLE landing merged BUNIF's *Hand-off* block with its own
+  and **demoted three** (BE-14) entries at once (BUNIF, BGENUINE, BSPREAD). **LINES bind,
+  not words**, so the next landing MUST merge or rotate rather than append. **Do NOT
+  relocate the *"On a future HIT"* block** — standing safety policy, read first by a fresh
+  session. A landing's entry stays **one line**; the (BE-14) thread's prose entries are the
+  standing exception, and the oldest demotes when the thread's next direction lands — at
+  576/580 the demote is no longer optional.
 - The full biconditional transport (design doc's W0 pin) is landed only as its two forward
   implications; the reverse arms need a `complementIso` involution lemma, not in tree —
   deferred, **off every critical path** (§(K-σ) *Step σ6*).
@@ -209,11 +212,10 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
 **THE (BE-14) THREAD, settled frame + its last five landings — RELOCATED 2026-09-02** to
 `notes/Pencil-structure.md` §"The (BE-14) thread — per-landing detail" (**block 8**), which
 already owns that thread's per-landing detail; the write-ups and the `(K-bare)` gap-map row
-stay authoritative. **Reference, not status** — the thread has not been worked since
-BGENUINE (57) and the last four directions are all W4-side. The status that stays here:
-**S-mark is (BE-14)'s only open step**, (β) is proved at the window **modulo (BE-57)(iv)'s
-(S1)/(S2)**, half (B)'s residue is **one** item — now the per-side **(NO-DOUBLE-PENCIL)**
-— and cross-pair welding is **untouched**.
+stay authoritative. **Reference, not status.** The status that stays here: **S-mark is
+(BE-14)'s only open step**, (β) is proved at the window **modulo (BE-57)(iv)'s (S1)/(S2)**,
+half (B)'s residue is **one** item — the per-side **(PENCIL-SATURATES)**, (NO-DOUBLE-PENCIL)
+having been **refuted** — and cross-pair welding is **untouched**.
 
 **THE W4 DEVIATION'S PER-LANDING DETAIL — RELOCATED 2026-09-02** to
 `notes/Pencil-structure.md` §"The W4 deviation — per-landing detail" (**block 9**), the
@@ -230,16 +232,13 @@ item.** Verdict in *Decisions made*; mathematics at `notes/Pencil-informal.md`
 **(CH-1) does not apply to the base at all** ((BE-89)), so anything citing it for the base
 is citing the wrong object — and (BE-65)(i) is corrected at source.
 
-**BUNIF (63) LANDED 2026-09-02 — half (B)'s residue is REDUCED to per-side data.**
-Verdict in *Decisions made*; mathematics at §(K-bare-ext) *Steps BE93–BE97*. **IN FLIGHT —
-BDOUBLE (64) at (NO-DOUBLE-PENCIL)** ((BE-97)(iii), ranked item 0 below):
-*no internal R-node peel has one side with `dim(ρ̄_i ∩ Π_x) = 2` and the other with
-`dim(ρ̄_j ∩ Π_x) ≥ 1`* — attack it by seeking the two clauses **together**, a side whose
-every `x–y` path spans 6 ((BE-44)(ii)) glued to a **series end** ((BE-45)(i)); cheap
-individually, never sought jointly. **THE NEXT CONCRETE TASK is to verify and land
-BDOUBLE's return** (the coordinator re-runs E1/E2/E3 itself, `61e046a6`); note that a HIT
-there closes the **measured** tight place, not half (B) — (BE-97)(iv)'s other 13 blocks are
-unwitnessed, not excluded. Two things stay the USER's call, both OFFERED
+**BUNIF (63) then BDOUBLE (64) LANDED 2026-09-02 — half (B)'s residue is per-side, and
+its named tight-place condition is REFUTED.** Verdicts in *Decisions made*; mathematics at
+§(K-bare-ext) *Steps BE93–BE102*. **THE NEXT CONCRETE TASK is to PREP and dispatch the
+sixty-fifth direction at (PENCIL-SATURATES)** — *`c_i(Π) = 2 ⟹ ρ_i = 6`*, ranked item 0
+below — attacking it where (BE-44)(ii)'s **per-shape** half does the work: a side whose
+every `x–y` path spans `≤ 5` yet whose `ρ̄_i` still contains `Π_x`. Two things stay the
+USER's call, both OFFERED
 2026-09-02 and both DECLINED IN FAVOUR OF CONTINUING RESEARCH: the **(K-res) wave** (the
 2026-08-26 adjudication selected a cheap scoping slice, queued below), and whether W4's
 now-closed informal side changes anything about the **2026-08-05 Lean hold** — its own
@@ -248,16 +247,16 @@ release condition speaks of an informal result *"significant as standalone"*, an
 
 The ranked list:
 
-0. **HALF (B)'s CLASS QUANTIFIER, now the PER-SIDE (NO-DOUBLE-PENCIL)** ((BE-97)(iii)) —
-   **REDUCED TWICE, not proved.** BPEEL made it *one number per (piece, peel)*
-   (`reach = min(δ₁+δ₂,6)`, the generic value, one exact-ℚ draw, (BE-69)(iii)); **BUNIF
-   made that number a function of two PER-SIDE profiles** — `reach` is capped by the
-   modular law against the **16 `S(ϕ)`-stable subspaces** and the cap is **attained**
-   ((BE-94)–(BE-96)), so (BE-67)(iii) is **14 inequalities in `c_i(U) = dim(ρ̄_i ∩ U)`**,
-   and measured (92/92 margin `0`, no shortfall) the **only** block where both sides bite
-   is `Π_x`. **That last word is scoped** ((BE-97)(iv)): 92 rows of two constructed
-   populations, so the other **13 live blocks are unwitnessed, not excluded** — proving
-   (NO-DOUBLE-PENCIL) closes the **measured** tight place, not the class statement.
+0. **HALF (B)'s CLASS QUANTIFIER, now the PER-SIDE (PENCIL-SATURATES)** ((BE-101)) —
+   **REDUCED THREE TIMES, not proved.** BPEEL made it *one number per (piece, peel)*
+   ((BE-69)(iii)); **BUNIF made that number a function of two PER-SIDE profiles**, so
+   (BE-67)(iii) is **14 inequalities in `c_i(U) = dim(ρ̄_i ∩ U)`** ((BE-94)–(BE-96)); and
+   **BDOUBLE refuted (NO-DOUBLE-PENCIL)** — (BE-45)(ii)'s own vacuous corner produces both
+   its clauses, harmlessly ((BE-99)/(BE-100)) — and showed the two 2-blocks are
+   **REDUNDANT** given *`c_i(Π) = 2 ⟹ ρ_i = 6`* = (BE-38)(iii)'s third clause, **MEASURED**
+   at 37 pieces + 4 sides. So **12 blocks remain**, every one **unwitnessed, not excluded**
+   ((BE-97)(iv)) — the named hunt being `c_i(⟨M⟩) = 1` on **both** sides — plus the
+   **non-attaining** case, where `U = Λ²K⁴` is itself live ((BE-101)(iii)).
    **(BE-71)(ii)'s completeness is ANSWERED** generically; at `π_x = π_y` only
    the cap survives. Three siblings, all closed: cross-cut
    forcing (**checked hypothesis** by BGENUINE, `0` shortfall at 392/392 — **do not
@@ -414,14 +413,20 @@ section named; its *spec and landing write-up* in `notes/Pencil-fanout.md` §"<C
 `notes/Pencil-adjudications.md`; the derivation in git. **Do not grow these back into
 paragraphs.**
 
-- **BUNIF** (63, 2026-09-02, opus) — **`reach` IS PER-SIDE DATA, both directions PROVED**
-  ((BE-94)–(BE-98), *Steps BE93–BE97*): `S(ϕ) = Stab(flag pair)` is 5-dimensional and acts
-  on **each side alone** ((BE-70)(ii), 30/30 incl. a one-sided reglue); `Λ²K⁴ =
-  Π_x ⊕ ⟨M⟩ ⊕ ⟨L⟩ ⊕ Π_y` `(2,1,1,2)`, 16 stable subspaces; the modular law caps
-  `dim(ρ̄₁+ρ̄₂)` per-side — **containing** (BE-71)'s (P) and (Z) — and a 1-PS degeneration
-  matches it (121/122 rows; cap attained 400/400). So **(BE-67)(iii) ⟺ 14 per-side
-  inequalities** and **(BE-71)(ii) is ANSWERED** generically; margin `0` at 92/92 (**no
-  shortfall**), residue **(NO-DOUBLE-PENCIL)**. Readings (1)/(2) killed. `w4/bunif.py`.
+- **BDOUBLE** (64, 2026-09-02, opus) — **(NO-DOUBLE-PENCIL) IS REFUTED and the tight
+  block is REDUNDANT** ((BE-99)–(BE-103), *Steps BE98–BE102*): (BE-45)(ii)'s own **vacuous
+  corner** `d_min = 6` gives `ρ̄_i = Λ²K⁴`, hence `c_i(U) = dim U` everywhere, and glued to
+  (BE-45)(i)/(ii) that is the forbidden `(2,≥1)` — **one lemma, both clauses**, at 2 of
+  BUNIF's own 92 rows, and **SLACK not a shortfall** (margin `−1`, the peel attains). Under
+  **(PENCIL-SATURATES)** (= (BE-38)(iii)'s third clause) a `Π_x` failure **is** a `Λ²K⁴`
+  failure (300/300, control 313), so **14 → 12** blocks. Reading (1) confirmed, (2) refuted
+  at its weak link; **job 2 fires on BOTH** target citations. `w4/bdouble.py`.
+- **BUNIF** (63, 2026-09-02, opus, **demoted at the BDOUBLE landing**) — **`reach` IS
+  PER-SIDE DATA, both directions PROVED** ((BE-94)–(BE-98), *Steps BE93–BE97*): the flag
+  pair's 5-dimensional stabilizer acts on **each side alone**, splitting `Λ²K⁴` into
+  `(2,1,1,2)` blocks with 16 stable subspaces, and cap-meets-degeneration makes
+  **(BE-67)(iii) ⟺ 14 per-side inequalities**; **(BE-71)(ii) ANSWERED** generically.
+  `w4/bunif.py`.
 - **BBASE** (62, 2026-09-02, opus) — **THE FLAG BASE IS FREE; half (B)'s residue is ONE**
   ((BE-89)–(BE-93), *Steps BE88–BE92*): the base is the **flag** variety of `B_real`,
   **not** (CH-1)'s object — nonempty always, irreducible/ℚ-rational/dense-ℚ on every
@@ -445,23 +450,18 @@ paragraphs.**
 - **WTRI** (58, 2026-09-02, opus, first W4-side) — **(T) IS A THEOREM** ((TF-1)–(TF-6),
   *Steps TF1–TF6*): 2EC pins the pendant hub at `deg ≥ 4`, then two landed feasibility
   *transfers* make `G/Δ` a good contraction; *Step 4* retracted at source. `w4/wtri.py`.
-- **BGENUINE** (57, 2026-09-01, opus) — **GENUINE, AND IT DOES NOT BITE** ((BE-84)–(BE-88),
-  §(K-bare-ext) *Steps BE83–BE87*): (BE-77)(ii)'s certificate is a **hinge pair**, exactly the
-  triple `assert_generic_star` asserts independent, so the **aggressive** operator is genuine
-  here **pointwise**; and at **392/392** `dim(ρ̄₁+ρ̄₂) = min(δ₁+δ₂,6) + a₁+a₂` with
-  `ρ̄₁ ∩ ρ̄₂ = 0` as spaces and **`H` attaining** — the naive `−1` at 100 being (BE-22)(iii)'s
-  dropped *both-attain* proviso, repaired at source. Half (B) is back to **two** residues.
-- **BONEONE** (56, 2026-09-01, opus) — **YES, AND THE ENEMY IS LIVE** ((BE-79)–(BE-83),
-  §(K-bare-ext) *Steps BE78–BE82*): `δ_i` and the R-node test are **per-side**, so any two
-  sides glue and an 11-vertex R-node-shaped peel sits at `(1,1)`; **24 of 48** such peels
-  force `π_u = π_v`, refuting **(BE-66)(iv)'s conclusion**, and both of (BE-77)(iv)'s tiers
-  had **0 chances** (a cap one vertex short; a structurally path-sided generator). The
-  price: the **aggressive** operator over-claims, so **genuineness is geometry** ((BE-82)).
-- **BSPREAD** (55, 2026-09-01, opus) — **(BE-32)(+) IS A THEOREM** ((BE-74), §(K-bare-ext)
-  *Steps BE73–BE77*): an optimal partition's block absorbs at most **two** points of an
-  outside vertex's closed star and the closure admits on **three**, so the star-2/SPREAD
-  split is **retired**; (BE-41)(ii) **refuted as stated** (five F12 hunks) and job 2
-  **confined to `δ₁ = δ₂ = 1`**, exposing BPEEL's census-3 zero as vacuous.
+- **BGENUINE** (57, 2026-09-01, opus, **demoted at the BDOUBLE landing**) — **GENUINE, AND
+  IT DOES NOT BITE** ((BE-84)–(BE-88), *Steps BE83–BE87*): the forcing certificate is a
+  **hinge pair**, so the aggressive operator is genuine **pointwise**; at **392/392** the
+  peel **attains**, the naive `−1` being (BE-22)(iii)'s dropped proviso, repaired at source.
+- **BONEONE** (56, 2026-09-01, opus, **demoted at the BDOUBLE landing**) — **YES, AND THE
+  ENEMY IS LIVE** ((BE-79)–(BE-83), *Steps BE78–BE82*): `δ_i` and the R-node test are
+  **per-side**, so an 11-vertex R-node-shaped `(1,1)` peel exists and **24 of 48** force
+  `π_u = π_v`, refuting **(BE-66)(iv)'s conclusion**; both old tiers had **0 chances**.
+- **BSPREAD** (55, 2026-09-01, opus, **demoted at the BDOUBLE landing**) — **(BE-32)(+) IS
+  A THEOREM** ((BE-74), *Steps BE73–BE77*): a block absorbs at most **two** points of an
+  outside closed star, the closure admits on **three**; star-2/SPREAD **retired**,
+  (BE-41)(ii) **refuted as stated**, job 2 confined to `δ₁ = δ₂ = 1`.
 - **BPEEL** (54, 2026-09-01, opus, **demoted at the BBASE landing** per the thread's
   oldest-demotes rule) — **HALF (B)'s CLASS QUANTIFIER IS ONE NUMBER PER PEEL, and the
   EXHAUSTIVENESS OBLIGATION IS RETIRED** ((BE-69)–(BE-73), §(K-bare-ext) *BE68–BE72*):

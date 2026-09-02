@@ -109,6 +109,21 @@ description to the input-(Y) formulation; only the status cell exceeds
 its prior cap (1769 words). Bumped to this recompute's own size
 (1769 / 797 words) plus ~15% headroom: 2035 / 873 (close-it left as-is,
 still under its prior cap).
+
+**2026-09-02 bump (direction BDOUBLE, `(K-bare)`).** The row now indexes
+*Steps BE1-BE102* -- 144 label codes -- and BDOUBLE adds five,
+(BE-99)-(BE-103): (NO-DOUBLE-PENCIL) REFUTED, its classification as slack,
+the Pi_x/Pi_y redundancy theorem under (PENCIL-SATURATES), reading (2)'s
+refuted weak link, and the job-2 verdict. Recomputed rather than appended --
+1472 -> 1546 words while absorbing a full direction, so ~110 words of
+pre-existing prose were compressed away against ~186 added, with label
+preservation verified by a scripted set-diff (129 codes in, 144 out, ZERO
+dropped). That left only 54 words of headroom under the generic 1600, which
+is the *pointless recompute* `RESEARCH-ARC.md` Sec.6 names, so the row joins
+SPECIAL_CAPS at the recompute's own size plus ~15%: 1630 / 150 (combined
+1780). Same disposition `(K-grid)` has had at each of its honest recomputes;
+the split is nominal, since this row's prose contains unescaped pipes and the
+gate caps its two cells COMBINED.
 """
 import re
 import subprocess
@@ -128,6 +143,7 @@ SPECIAL_CAPS = {
     # (ambiguous pipe split) uses the sum of the two.
     "K-grid": {"status": 2715, "closeit": 985},
     "K-out": {"status": 950, "closeit": 873},
+    "K-bare": {"status": 1630, "closeit": 150},
 }
 
 

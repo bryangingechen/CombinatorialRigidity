@@ -264,7 +264,7 @@ all in this file.
 | **(K-out)** *(new, 2026-08-06)* | (K-out) O1–O41 | **(OUT)'s hypothesis, measured — the headline is the NEGATIVE.** **(OC-3)**, load-bearing: `{λ₁ = 0}` is nonempty at every class shape's chart, so **no counting, matroid or placement-blind argument can ever deliver (OUT)'s hypothesis**; the bad locus is proper (`dim(R ∩ L) = 1` at 46/46) though `2` is reachable by construction (**OC-14**, a hub slide onto `C₀`). **The combinatorial half alone does not deliver availability: (OC-2)**'s 4296-pair result collapses to **one** fact — rigidity of `H/X` — which **(OC-10)** proves **forced at every class shape**; θ(3,4,5) is the unique theta class member. **Positives are pointwise, over two disjoint pinned pools: (OC-5)** POOL-G, 356/357 and 356/356; **(OC-6)** POOL-S, 270/270; **(OC-1)**'s hinge-rate identity, exact; **(OC-4)** the bad line reached by a legal chart move at all four habitats. **(OUT) is available, never automatic, not contradicted. No `place_pencil_general` battery may be quoted as a rate or as evidence about a generic chart point** — POOL-G figures over the 318 coincidence-free frames, never the raw 357. **(OC-7) is CLEARED** (32/357, fixed by `repin.star_generic`); **(OC-9)**'s guard rejects 58/357 ⊋ 39. **(OC-17)** frees the hard-stratum qualifier (`dim R_a = corank(G′) − s₀` at **every** legal chart point, so `Z` is Zariski **open**); **(OC-18)**: `H/X` rigid at a chart point ⟹ `L_b ⊄ R₁`, degree-free, at both ends of every class pair (5226/5226). **(OC-19)** reduces (OC-8) at a (shape, split) to `Z ≠ ∅` + chart irreducibility + one `H/X`-rigid chart point; **`Z ≠ ∅` alone does NOT suffice** (`--control`: 3 points in `Z` with `L_b ⊆ R₁` — openness **plus** irreducibility **plus** a witness all needed). **(OC-20)/(OC-21)** restate the bad case in perp form and strip `x₁`; **(OC-22)** lands the residue in (ANH-R1)'s object class. **Chart irreducibility (input (b)) is PROVEN** (§(K-chart) **(CH-1)(a)**). **Input (a) factors: (OC-23)** its `s₀` half is independence of `H = G − v − a` alone, at every chart point; **(OC-24)** the dichotomy, and `{σ = 0} = ∅` would make `hK` **FALSE there** (a **PENCIL event**), so that half is **necessary for `hK`** and never the binding obstruction; **(OC-25)** the target-rank half **is** §(K-tight) *Step 2* item 1 one split down; **(OC-26)** its failure is a **disjunction**, both branches forcing a codimension-2 Schubert jump of `D`; **(OC-27)** 138/138 witnesses; **(OC-28)** the `s₀` half is **dominated** by §(K-grid) (GR-10), with `{σ = 0}` a **proper** open. **The `σ > 0`-everywhere hunt RAN twice: NO HIT either time.** SIGZ killed the counting route; **OGEOM** (*Steps O42–O46*) then searched the geometric one — 91 260 live cores, **0 candidates**, `{σ = 0} ≠ ∅` a **theorem** at 275 342 class pairs ((OC-46)–(OC-49)) — leaving a named unsearched frontier (`n(F°) ≥ 6`, and `n(F°) ∈ {4,5}` at `|E°| ≥ 9`). **(OC-35)**: the self-stress space of any min-degree-≥2 subgraph is a **Kirchhoff flow on its topological paths** valued in the chain-span perps (§(K-pure) *P0*'s carrier read *off* the slide limit); **(OC-36)**: hence `corank R(F) = Σδ_Q + ρ_F − slack(F)`; **(OC-37)**, the theorem: at a class shape `slack(F) ≥ 0`, with equality **iff** `F` is a cycle or bouquet, so a stress needs `Σδ + ρ ≥ 2` at **every other topology, thetas included** — **no `H`-supported stress in the habitat is combinatorially forced** (enumerated, no cap: 2614 shapes, 215 906 supports, `slack < 0` **zero** times; theta corollary `Σ min(ℓᵢ,6) ≥ 13`, **tight**). **(OC-38)**: `P21` (**`hnoRigid`-FALSE**) is **one unit short** of what the class needs, and its five σ-jump seeds are **EXACTLY** the five where `localtest.plane_basis` degenerates — a set equality, so the arc's only exhibited instance sits on the (OC-7) coincidence locus; under `repin.star_generic`, `σ = 0` at all 360 gate-accepted seeds (cap 500). **(OC-39)**: `{σ = 0} ≠ ∅` carries an exact-ℚ **full-row-rank certificate at 3368/3368** class (shape, split) pairs over the **exhaustive `K4` stratum** — per-pair proofs, not a sample. **The target-rank half (a₁) is half-proven and half-reduced to ONE determinant (OSCHU).** **(OC-29)**: the Schubert 4-space is §(K-out)'s own hub pencils, `M̂ ∧ W = L_b ⊕ L_c`, Klein perp `⟨C(M), C(bc)⟩` — so **`dimK ≥ 1` always**. **(OC-30)**: the bad set on `M` is **exactly** the transversals of `M` and `bc` inside `D`, five rows, so `\|B\| ≤ 2` off the all-bad case. **(OC-31)**: at **every** target-rank chart point of the **whole graph `G`**, `C(vb) ∈ L_b` and `C(ac) ∈ L_c` come free from the tower, forcing **`dimK ≤ 2`** — so **`hK` at ONE `G`-point kills (OC-26)(ii)'s `dimK ≥ 3` disjunct at every eligible split at once** (292/292 + 174/174, all `dimK = 1`); **(OC-32)**: a third generator is structurally unavailable, so that bound is exact. **(OC-33)**: the surviving disjunct forces `Q\|_D` degenerate, so **`rank(Q\|_D) = 3` at one target-rank `G`-point ⟹ input (a) there** — one 3×3 determinant, `x₁`/`λ`/stratum-free, at a point the grid route already builds (570/570, 174/174). **(OC-34)**: the (a₂) re-keying is **DONE and corrects a figure quoted since (OC-28)** — §(K-grid)'s 907 *labelled* shapes are only **75 classes**, covering **19** of §(K-out)'s **174**; the other **155 are certified DIRECTLY, 0 misses**, so the `s₀` half is free at **all 174 and *without* (GR-10)** — only the **class-uniform** statement needs it. **The (a₁) residue is RUN (direction OQRANK, *Steps O37–O41*): (OC-40)/(OC-41)** complete the ⋆-eigen-block mechanism (forced `(1,2)` profile; `rank(Q\|_D) = [Q(g) ≠ 0] + rank Gram(D_Y)`); **(OC-42)** is a combinatorial **WALL** (a single-class `b`–`c` `X`-path forces `rank(Q\|_D) = 2` at every draw), refuting the naive first-colouring route **as a class statement** (27/174: 7 wall, 20 by a second uncharacterized confinement); **(OC-43)/(OC-44)**: **input (a) holds at all 174 certified classes**, per-class/per-exhibited-colouring-generic, at exact `ℚ(i)` σ-fixed grid points; zero rulings — **the (K-tight)-event branch never fires** — every rank-2 point still witnessing input (a) via (OC-30)(ii). New named residuals: wall-avoiding-colouring existence ((OC-44)(iii)); the second confinement's mechanism. **Input (a) stays OPEN as a class-uniform statement and is NOT an independent gap; (OC-8) stays OPEN, reshaped; no gap-map status move.** | **(OC-8)**: at every class shape, a hard-stratum target-rank point of the **whole-graph** chart with `L_b ⊄ R₁` or `L_c ⊄ R₄`. That is a rank **lower** bound at a pencil placement — `Pencil-strategy.md` §2.3's wall **relocated** onto the smaller `H/{e₂,e₃,e₄}` and **weakened, not crossed** — and (OC-3) says the relocation **cannot be discharged combinatorially**, so any proof must be a genericity argument on the whole-graph chart (needing its hard-stratum component not to lie inside `{λ₁ = 0} ∩ {λ₄ = 0}`), which the arc has never established because `λ` is a **far** datum. The one symbolically tractable piece — `L_b ⊄ R₁` as a polynomial non-vanishing (`Pencil-strategy.md` §5.3) — is **DELIVERED on the `ℓ_min = 5` stratum** ((OC-16): `Δ = [a,u,b] · C₀(pt b) ≢ 0` at the local frame's generic point, the bad line `C₀` in **closed form**) and **blocked off it** ((OC-15): the path-span form carries no information at `ℓ_min ≥ 6`; the stratum is 8 of 5226 pairs); at a **degree-3 hub** (3081/5226 pairs at the `b` end) (OC-8) restates with **no rank condition left** — availability ⟺ the hard-stratum target-rank locus `⊄ {pt(b) ∈ C₀}` — with **chart-to-frame dominance** the named residue ((OC-16)'s gap); the non-containment is **witnessed by construction** at θ(3,4,5) (4/8 admissible `G′`-colourings on the hard stratum at target rank, each with `Δ ≠ 0` at one end — §(K-frame) (FR-6)), the strict availability package is **0/8 at σ-fixed witnesses** with the (AC-9) coincidence the named mechanism (structurality open), and at grid points `Δ` is **combinatorial** ((FR-3)). **Both routes to a disproof are now confined.** The **counting** one is DEAD ((OC-37), SIGZ): no `H`-supported self-stress is combinatorially forced, so `{σ = 0} = ∅` can never be certified by a count. The **geometric** one is **free by an argument, not a sample**, on everything searched (*Steps O42–O46*, OGEOM): `H` is an **induced** subgraph, so `σ` depends on `H` alone ((OC-46)); every topological path of length `≥ 6` is **dead**, so `σ` is the corank of `H`'s **live core** and — girth `≥ 7` being forced by `hnoRigid` — **every cycle and bouquet is dead, killing (OC-37)(ii)'s one-unit topology class-uniformly** ((OC-47)); 91 260 live cores carry exact-ℚ corank-0 witnesses, **0 candidates** ((OC-48)), settling `{σ = 0} ≠ ∅` at **275 342** class pairs over 63 013 shapes and **upgrading (OC-39)'s 3 368 certificates from sample to theorem** ((OC-49)). **It does NOT close:** unsearched cells are `n(F°) = 4` at `|E°| ≥ 9`, `n(F°) = 5` at `|E°| ≥ 9`, and **every `n(F°) ≥ 6`** — a compute frontier below `n(F°) ≤ 5`, an ideas frontier above. The residual is now one shape-free sentence: *at every live core the Kirchhoff map `⊕_Q S_Q^⊥ → (K⁶)^nodes` is injective at the generic chart point.* **Input (a), `Z ≠ ∅`, itself factors** (§(K-out) direction ZNEQ): a **necessary-for-`hK`** half — `H` independent at some chart point, equivalently at the generic one — **dominated** by §(K-grid) (GR-10), free at 907/907 of its pool once **re-keyed** against this section's class-shape population (a combinatorial cross-pool job, no new mathematics; the two pools are labelled-instance pools with different keys and are **not** re-keyed here); and a **target-rank** half, the Schubert **non-jump** `dim(D ∩ (M̂ ∧ W)) ≤ 1` (`D` the far framework `H`'s relative twist space, `W` the hub line's 2-space) — one-point decidable, `x₁`-free, `λ`-free, stratum-free, in the same object class as (OC-20)'s perp form; measured to fail nowhere (138/138 (shape, split) witnesses, (OC-27)) but a **recipe** is missing, exactly as for (OC-19) input (c). Neither half is proven class-uniformly. **The only known failure mechanism for the necessary half is a self-stress of a short theta sub-multigraph inside `H`** (§(K-flank) *F5(d)*'s support) — a hit there would make `hK` **FALSE** at that shape, a **PENCIL event**, not a (K-tight) one, and needs the direction-A pivot rule (`Pencil-fanout-archive.md` §"Direction A") in force before any dispatch.|
 | **(K-ind)** *(new, 2026-08-05)* | (K-ind) I0–I6 | **REFUTED as a route**, and not merely "no invariant found": the transport structure the question presupposes does not exist on the `hK` habitat. **(I1)** tight ⟺ `(|V|,|E|) = (5c+1, 6c)`, so two tight graphs of equal cycle rank have equal size and **no arm of `pencil_reduction` can relate them**; **(I2)** `splitOff` at a degree-2 vertex takes `index 0 → 1` preserving `c` and fixing the hub multigraph `G°`; **(I4)** inside one `G°` the class is a **finite antichain**, and the class's infinitude is entirely in the `G°` direction, which no move reaches. **(I0)**: the failure locus is a **divisor**, so its only numerical invariant is the single bit `codim F = 1`, which *is* `hK` — the question as posed is circular, and the image-side reading is (K-dom), already struck. One genuine positive by-product: **(I3)**, subdivision-monotonicity of `Image(V_bc)` — real, new, *and pointing the wrong way*, since the induction descends and every descent bottoms out at `k ≤ 3` where (D1) caps the rank at 4 | — refuted as a route. Any future "strengthen the inductive invariant" proposal must first exhibit a move relating two class members; `pencil_reduction`'s five arms supply none |
 | **(K-Δ)** *(new, 2026-08-05)* | (K-Δ) | **NO HIT — the literature lead is discharged**, not open. Two independently fatal hypothesis failures: **(M1)** the subject's objects are *totally isotropic* subspaces and `V_bc` never is (Klein Gram rank 3, or 2 on serial chains — an `O(6)`-invariant, not a frame choice), so it has no Wick vector and carries no Δ-matroid; **(M3)** the ground set is `[3]`, fixed by `dim Λ²K⁴ = 6`, and never grows with the graph — `Pencil-strategy.md` §2.2's ingredient-2 failure in the target literature's own terms. Recorded as a *pass*: the **form** matches exactly (transversality to two coordinate isotropics = two Wick coordinates nonzero). Buys two readings, not a route: **(N1)** the `ℓ = 3` criterion as five feasible pairs in the Dress–Havel metroid of the five lines, and **(N2)** the **pentagon** reading — `Q(z) ≠ 0` ⟺ no two non-consecutive edges of the closed chain `b–x–y–c–a–b` meet | — discharged. `Pencil-strategy.md` §7's "one unverified lead" is now a checked negative with the reason |
-| **(K-bare)/(K-bare-ext)** *(new, 2026-07-30)* | (K-bare-ext) BE1–BE97 | **THE TARGET IS (BE-14), DIRECT ATTAINMENT** — *the pencil stratum attains `6(|V|−1) − def₃(G)`*, seed-free and induction-free, discharging `hbareSplit` **and** `PencilPair`'s unconditional conjunct at once. **`hbareSplit` OPEN, carried as PINNED** (*"C: cheap numerics + A"*, 2026-07-30; B NOT commissioned); the **`∀`-seed form is REFUTED** (probe KBARE-FALSIFY, tier **T1**, a *route* finding — the KERNEL is untouched), and the **extension route is NO-GO on landed machinery**: at `¬PencilNondegFeasible` the chart/reseed/engine apparatus has nothing to consume, and the `∃`-seed alternative meets §(K-tight) *Step 5*'s chartless wall. (BE-14) is **EXISTENTIAL, not generic** ((BE-16)) — one witness settles each graph, and the falsification arm answers **positively** (774/774 exact-ℚ). ***Steps BE1–BE13* are HISTORY**, by label: the motive ((BE-10)), bare realizability **UNCONDITIONAL** ((BE-11)), the pencil condition one hub determinant each ((BE-12)), the cone cap `6(|V|−1) − def₂(G)` ((BE-13)). **ROUTES CLOSED, DO NOT RE-OPEN:** the ear-decomposition induction ((BE-43), **S-mark's pin STANDS**); the falsification arm ((BE-15), cap-free for the **TRIANGLE** mechanism only, its scope correction (BE-23)(ii) recording a landed **general** rule); the `G²` apparatus ((BE-17)); the transversality count ((BE-16)(iv), (BE-27)). **THE DECOMPOSITION IS EXHAUSTIVE** — 1-cuts compose ((BE-18)), 3-connected ⇒ `def₂ = 0` ((BE-20)), the 2-cut `def₃` law `max(g₁+g₂, f₁+f₂−6)` ((BE-21)/(BE-23)) — so the base `{3-connected} ∪ {max deg ≤ 2} ∪ {def₂ = def₃}` is **FREE** and **only the 2-cut composition lemma** is left: *attains ⟺ `dim(ρ̄₁+ρ̄₂) = min(δ₁+δ₂,6) + a₁+a₂`*, `a_i` the side's attainment loss; (BE-22)(iii) is the `a = 0` case, **the proviso LOAD-BEARING**, dropped by (BE-22), restored at (BE-86)(i), **PINNED as S-mark**, simultaneity **VACUOUS**, LEAF base free ((BE-25)); residue **cross-pair welding** ((BE-28)(i)). At a 2-cut `δ_{uv}(H) = max(0, δ₁+δ₂−6)` ((BE-73)(ii)), so **one rigid side kills the general-position half** ((BE-22)(vi)). **THE GEOMETRY.** For an **EAR** `ρ̄₂` spans a Klein chain with ends `Π_u, Π_v`, unconditionally `ρ ≤ dist` ((BE-30)); bad locus **exactly** (P)/(Z)/(R) ((BE-33)), every trap a configuration artifact ((BE-34)); off the ear, an exact **series/parallel recursion** ((BE-31)). The **combinatorial half is the SHORT-CYCLE LAW**: `g` supermodular, `δ = 0` an **equivalence relation**, quotient sparsity giving `girth(Q) ≥ 6` ((BE-39)), so every `≤ 6`-cycle forces `δ = 0` ((BE-40)), **CONTAINING** the three merge theorems ((BE-32)). **(BE-32)(+)** — *forced `π_u = π_v` ⇒ `δ_{uv} = 0`* — is a **THEOREM** ((BE-74)): a block absorbs at most **TWO** points of an outside closed star, the closure admits on **THREE**; the **star-2/SPREAD split is RETIRED**, (BE-32)(ii) its `|B| = 1` case, the closure-restriction hypothesis **MOOT** ((BE-75)). **(BE-41)(ii) is REFUTED AS STATED** by its sibling (BE-41)(iii) ((BE-76)). **THE EAR CASE: (α) CLOSED** ((BE-35)); **(β) PROVED AT THE WINDOW BY A CLASS THEOREM**, per-shape residue outside it — by a double peel and the **modular law** the ends see the middle through **ONE hyperplane and ONE functional**, `δ₁ ≤ 4` exactly that budget, **MODULO §(K-bare-ext)'s own two window conditions**, vacuous but **NOT theorems** ((BE-47)/(BE-48)/(BE-54)–(BE-58)). Settled by label: (β) false as stated at `δ₁ ≥ 5`, correct form `loss ≤ max(0, δ₁+δ₂−6)`, **no measurement changed** ((BE-36)); its *"every configuration"* quantifier collapses to one generic draw, **87 of 91** ((BE-37)/(BE-38)), the (BE-37)(ii) inference **CORRECTED**, (Z) dominating (R) ((BE-51)); **(b2) a COROLLARY of (b1)** ((BE-42)), its sharpening `ρ̄₁ ∩ Π_u = 0` **FALSE at a DICHOTOMY** — series end or path-saturated — correcting (BE-38)(iii), bounded by a **count, not a proviso** ((BE-44)/(BE-45)/(BE-46)); **(b3) the CHEAPEST, by a SEPARATION THEOREM**, (β)'s residues **DISJOINT** ((BE-50)), its domain **STRUCK** at `π_u = π_v` ((BE-49)); openness + properness + irreducibility make **one exact-ℚ witness per shape a proof** ((BE-52)), 0 failures at 637 draws ((BE-53)). **THE GENERAL-PIECE SIDE — the INTERNAL R-NODE.** `ρ̄` at every SPQR node obeys ONE **decorated-skeleton law** (leaf line, `S` sums, `P` intersects, `R` the decorated kernel), exact at every configuration ((BE-59)/(BE-60)); the (BE-22)(vi) collapse is the checkable `δ_{xy}(B − uv − e) = 0`, the **prism failing at two rungs** ((BE-61)); drawn (α)/(β) content **EMPTY** (24/24), leaving the **achievable-decorations class statement** ((BE-62)) and the chord step ((BE-63)). **THAT STATEMENT IS REDUCED TO EARS**: the pencil condition is a **per-vertex conjunction**, so at fixed hub flags a piece's legal configurations are a **PRODUCT of ear chains, one per topological branch, MODULO the cross-branch proviso `G`** ((BE-64)) — per-child sets past ears never needed — the theta child a corollary, `dim ρ̄ = max(0, Σ_j min(a_j,6) − 12)`, welded attainment **FREE** ((BE-66)(i)); the small-`m` correction (BE-30)(iii) leaves its branch — at `π_x = π_y` two length-3 branches have EQUAL spans `Λ²π`, `ρ̄` **exceeding** general position at 7 of 30 rows, all **NON-ATTAINING** ((BE-66)(iii)/(iv)), a mechanism **BENIGN at a 2-cut** ((BE-86)(iii)). Half (B) holds at **28/28** peels as **per-piece** theorems ((BE-67)(i)). **THE EXHAUSTIVENESS OBLIGATION IS RETIRED**: the good locus is **Zariski-open** on the irreducible `Chart(H)`, hence **DENSE or EMPTY**, one exact-ℚ draw computing the generic **reach** ((BE-69)); **no topological branch crosses a 2-cut**, so at fixed flags `ρ̄₁, ρ̄₂` are **DISJOINT coordinate blocks** sharing **ONE datum, the flag pair** ((BE-70)); a third mechanism could only be a **reach shortfall**, completeness **NOT claimed**, the Klein-**ruling** candidate collapsing ((BE-71)). **`G` IS SETTLED ON (CH-1)'s CLASS**: `G` empty at *every* flag ⟺ `Chart(H) = ∅`, impossible under `hcard` + min degree 2 + girth `≥ 4`; isolated emptiness is real (a **triangle on two hubs**) and **ABSORBED** by the existential ((BE-72)). **(BE-66)(iv) is REFUTED OUTRIGHT** — its reason at (BE-73)(i), now its conclusion: `π_u = π_v` **IS** forced at an internal R-node peel with both sides flexible, at **392 of 928** ((BE-81)). The closure **FACTORIZES at a peel** (39 736/0), confining cross-cut-only forcing to **`δ₁ = δ₂ = 1`** ((BE-77)/(BE-77)(i)/(BE-77)(ii)); **a peel CAN be there** ((BE-79)) — `δ_i` and the R-node test are **per-SIDE** — and **every zero behind the old `no` was VACUOUS** ((BE-80)): the peel needs `|V| ≥ 11`, above tier A's cap, and tier B had **0 chances at any cap**; (BE-32)(+) and (BE-73)(ii) stay unconditional ((BE-78)). **THE ENEMY DOES NOT BITE, so (BE-82)/(BE-83)'s price is PAID.** (BE-77)(ii)'s certificate is a **HINGE PAIR**, the triple `assert_generic_star` asserts independent, so the forcing is **GENUINE POINTWISE** ((BE-84)); the forced chart is *(one plane for the forced set) × (the rest free)*, controlled 3 580/3 580 and 1 100/1 100, **OFF (CH-1)'s class** ((BE-85)/(BE-85)(iii)); and at **392/392** exact-ℚ certificates `dim(ρ̄₁+ρ̄₂) = 2+a₁+a₂`, `ρ̄₁ ∩ ρ̄₂ = 0` **as spaces**, `ρ_i = δ_i+a_i`, **`H` ATTAINS** — **shortfall 0**, the naive `−1` at 100 being (BE-66)(iii)'s excess **cancelling** a side's loss ((BE-86)) — the enemy **live as a phenomenon, empty as an obstruction** ((BE-87)/(BE-88)). BWIN's opaque-subspace machine does **NOT transport** and **need not** ((BE-73)). **AND THE FLAG BASE IS FREE**, so (BE-68)'s item 1 is **DISCHARGED**. (BE-65)'s *"the phase's own problem one level down"* is **CORRECTED**: it is the **flag** variety of `B_real`, §(K-chart)'s tower **stages 1–2 only**, so **(CH-1) does not apply** ((BE-89)); a complete intersection of dimension `5|W| − 2|E|`, **nonempty always**, and irreducible + ℚ-rational with dense ℚ-points on every component of cyclomatic number `≤ 1` — **FOREST with no hypothesis at all** ((BE-90)), unicyclic on the constant-rank locus ((BE-91)). The only obstruction is **REDUCIBILITY, not emptiness**, at a `B_real`-triangle or 4-cycle, both excluded on the class by girth `≥ 6` ((BE-92)); **`hcard` TRANSPORTS to the pieces** but does **not** cap `B_real` ((BE-93)). **AND `reach` IS PER-SIDE DATA, so (BE-67)(iii) is REDUCED and (BE-71)(ii)'s completeness question is ANSWERED in the generic flag regime.** The flag pair's stabilizer `S(ϕ)` is **5-dimensional**, contains the maximal torus and — by (BE-70)(ii) — acts on **each side's family separately** (asserted 30/30, the one-sided reglue through both gates); the screw space splits `S(ϕ)`-canonically as `Π_x ⊕ ⟨M⟩ ⊕ ⟨L⟩ ⊕ Π_y` of dims `(2,1,1,2)`, whose **16 sums are exactly the stable subspaces** ((BE-94)). Against those the modular law gives a **CAP** on `dim(ρ̄₁+ρ̄₂)` in per-side data, **containing** (BE-71)'s (P) at `U = core₁∩core₂` and (Z) at `U = Π_x⊕Π_y` ((BE-95)); degenerating each side along a 1-PS of `S(ϕ)` gives a matching **lower bound**, so where they meet — **121/122** peel rows, **393/400** abstract pairs — `reach` is **pinned by two proofs**, and the cap is **ATTAINED at 400/400** ((BE-96)). Hence **(BE-67)(iii) at a peel ⟺ 14 inequalities `c₁(U)+c₂(U) ≤ dim U + max(0,δ₁+δ₂−6)`, each `c_i(U) = dim(ρ̄_i ∩ U)` computed on ITS OWN SIDE** — (BE-22)(vi)'s named shape. Measured: violation margin `0` at **92/92**, so **no shortfall**, and `Π_x` is the **ONLY** block where both sides bite (12/92, tight at 8), where they sit at (BE-45)'s own value — residue **(NO-DOUBLE-PENCIL)**, priced by (BE-44)(ii) and (BE-45) ((BE-97)). **Generic flag regime only**: at `π_x = π_y` the blocks collapse (`Π_x+Π_y = Λ²π`, `Π_x∩Π_y = ⟨M⟩`) and only the cap survives, exhibiting two-sided (Z) at `dim Z = 3` (24/60) ((BE-98)) | **(BE-14) OPEN; the ear case REDUCED, not proved, (β) at the window MODULO §(K-bare-ext) (BE-57)(iv)'s two window conditions; half (B)'s ONE residue RESTATED as the per-side (NO-DOUBLE-PENCIL) ((BE-97)(iii)), the flag base DISCHARGED, the flag coincidence a CHECKED hypothesis; `hbareSplit` untouched; not a PENCIL event** |
+| **(K-bare)/(K-bare-ext)** *(new, 2026-07-30)* | (K-bare-ext) BE1–BE102 | **THE TARGET IS (BE-14), DIRECT ATTAINMENT** — *the pencil stratum attains `6(|V|−1) − def₃(G)`*, seed-free and induction-free, discharging `hbareSplit` **and** `PencilPair`'s unconditional conjunct at once. **`hbareSplit` OPEN, carried as PINNED** (*"C: cheap numerics + A"*); the **`∀`-seed form is REFUTED** (probe KBARE-FALSIFY, tier **T1**, a *route* finding), and the **extension route is NO-GO on landed machinery** — at `¬PencilNondegFeasible` nothing feeds the chart/reseed/engine apparatus, and the `∃`-seed alternative meets §(K-tight) *Step 5*'s chartless wall. (BE-14) is **EXISTENTIAL, not generic** ((BE-16)), the falsification arm answering **positively** (774/774 exact-ℚ). ***Steps BE1–BE13* are HISTORY**: the motive ((BE-10)), bare realizability **UNCONDITIONAL** ((BE-11)), the pencil condition one hub determinant each ((BE-12)), the cone cap `def₂(G)` ((BE-13)). **ROUTES CLOSED:** the ear-decomposition induction ((BE-43), **S-mark's pin STANDS**); the falsification arm ((BE-15), cap-free for the **TRIANGLE** only, scope-corrected at (BE-23)(ii)); the `G²` apparatus ((BE-17)); the transversality count ((BE-16)(iv), (BE-27)). **THE DECOMPOSITION IS EXHAUSTIVE** — 1-cuts compose ((BE-18)), 3-connected ⇒ `def₂ = 0` ((BE-20)), the 2-cut `def₃` law ((BE-21)/(BE-23)) — so the base `{3-connected} ∪ {max deg ≤ 2} ∪ {def₂ = def₃}` is **FREE** and **only the 2-cut composition lemma** is left: *attains ⟺ `dim(ρ̄₁+ρ̄₂) = min(δ₁+δ₂,6) + a₁+a₂`*, `a_i` the attainment loss; (BE-22)(iii) is the `a = 0` case, **the proviso LOAD-BEARING**, dropped by (BE-22), restored at (BE-86)(i), **PINNED as S-mark**, LEAF base free ((BE-25)); residue **cross-pair welding** ((BE-28)(i)). At a 2-cut `δ_{uv}(H) = max(0, δ₁+δ₂−6)` ((BE-73)(ii)), so **one rigid side kills the general-position half** ((BE-22)(vi)). **THE GEOMETRY.** For an **EAR** `ρ̄₂` spans a Klein chain with ends `Π_u, Π_v`, unconditionally `ρ ≤ dist` ((BE-30)) — an upper bound only, so a large `dist` never forces a large `δ` ((BE-102)(i)); bad locus **exactly** (P)/(Z)/(R) ((BE-33)), every trap a configuration artifact ((BE-34)); off the ear, an exact **series/parallel recursion** ((BE-31)). The **combinatorial half is the SHORT-CYCLE LAW**: `g` supermodular, `δ = 0` an **equivalence relation**, `girth(Q) ≥ 6` ((BE-39)), every `≤ 6`-cycle forcing `δ = 0` ((BE-40)) and **CONTAINING** the three merge theorems ((BE-32)). **(BE-32)(+)** — *forced `π_u = π_v` ⇒ `δ_{uv} = 0`* — is a **THEOREM** ((BE-74)); the **star-2/SPREAD split is RETIRED**, (BE-32)(ii) its `|B| = 1` case, the closure-restriction hypothesis **MOOT** ((BE-75)); **(BE-41)(ii) is REFUTED AS STATED** by (BE-41)(iii) ((BE-76)). **THE EAR CASE: (α) CLOSED** ((BE-35)); **(β) PROVED AT THE WINDOW BY A CLASS THEOREM**, per-shape residue outside it — by a double peel and the **modular law** the ends see the middle through **ONE hyperplane and ONE functional**, **MODULO §(K-bare-ext)'s own two window conditions**, vacuous but **NOT theorems** ((BE-47)/(BE-48)/(BE-54)–(BE-58)). By label: (β) false as stated at `δ₁ ≥ 5`, correct form `loss ≤ max(0, δ₁+δ₂−6)` ((BE-36)); its *"every configuration"* quantifier collapses to one generic draw ((BE-37)/(BE-38)), the (BE-37)(ii) inference **CORRECTED**, (Z) dominating (R) ((BE-51)); **(b2) a COROLLARY of (b1)** ((BE-42)), its sharpening `ρ̄₁ ∩ Π_u = 0` **FALSE at a DICHOTOMY** — (M1) series end or (M2) path-saturated — correcting (BE-38)(iii) ((BE-44)/(BE-45)/(BE-46)); **(b3) the CHEAPEST, by a SEPARATION THEOREM**, residues **DISJOINT** ((BE-50)), domain **STRUCK** at `π_u = π_v` ((BE-49)); openness + irreducibility make **one exact-ℚ witness per shape a proof** ((BE-52)/(BE-53)). **THE GENERAL-PIECE SIDE — the INTERNAL R-NODE.** `ρ̄` at every SPQR node obeys ONE **decorated-skeleton law** (leaf line, `S` sums, `P` intersects, `R` the decorated kernel) ((BE-59)/(BE-60)); the (BE-22)(vi) collapse is the checkable `δ_{xy}(B − uv − e) = 0` ((BE-61)); drawn (α)/(β) content **EMPTY** (24/24), leaving the **achievable-decorations class statement** ((BE-62)) and the chord step ((BE-63)). **THAT STATEMENT IS REDUCED TO EARS**: the pencil condition is a **per-vertex conjunction**, so at fixed hub flags a piece's legal configurations are a **PRODUCT of ear chains, one per topological branch, MODULO the cross-branch proviso `G`** ((BE-64)), welded attainment **FREE** ((BE-66)(i)); the small-`m` correction (BE-30)(iii) leaves its branch — at `π_x = π_y` two length-3 branches have EQUAL spans `Λ²π` and `ρ̄` **exceeds** general position, all **NON-ATTAINING** ((BE-66)(iii)/(iv)), **BENIGN at a 2-cut** ((BE-86)(iii)). Half (B) holds at **28/28** peels as **per-piece** theorems ((BE-67)(i)). **THE EXHAUSTIVENESS OBLIGATION IS RETIRED**: the good locus is **Zariski-open** on the irreducible `Chart(H)`, hence **DENSE or EMPTY**, one exact-ℚ draw computing the generic **reach** ((BE-69)); **no topological branch crosses a 2-cut**, so at fixed flags `ρ̄₁, ρ̄₂` are **DISJOINT blocks** sharing **ONE datum, the flag pair** ((BE-70)); a third mechanism could only be a **reach shortfall** ((BE-71)). **`G` IS SETTLED ON (CH-1)'s CLASS**: `G` empty at *every* flag ⟺ `Chart(H) = ∅`, impossible under `hcard` + min degree 2 + girth `≥ 4`; isolated emptiness **ABSORBED** by the existential ((BE-72)). **(BE-66)(iv) is REFUTED OUTRIGHT** — its reason at (BE-73)(i), now its conclusion: `π_u = π_v` **IS** forced at an internal R-node peel with both sides flexible, at **392 of 928** ((BE-81)). The closure **FACTORIZES at a peel**, confining cross-cut-only forcing to **`δ₁ = δ₂ = 1`** ((BE-77)/(BE-77)(i)/(BE-77)(ii)); **a peel CAN be there** ((BE-79)) — `δ_i` and the R-node test are **per-SIDE** — and **every zero behind the old `no` was VACUOUS** ((BE-80)); (BE-32)(+) and (BE-73)(ii) stay unconditional ((BE-78)). **THE ENEMY DOES NOT BITE, so (BE-82)/(BE-83)'s price is PAID.** (BE-77)(ii)'s certificate is a **HINGE PAIR** and the forcing **GENUINE POINTWISE** ((BE-84)); the forced chart is *(one plane for the forced set) × (the rest free)*, **OFF (CH-1)'s class** ((BE-85)/(BE-85)(iii)); at **392/392** exact-ℚ certificates `ρ̄₁ ∩ ρ̄₂ = 0` **as spaces**, `ρ_i = δ_i+a_i`, **`H` ATTAINS** with **shortfall 0**, the naive `−1` at 100 being (BE-66)(iii)'s excess **cancelling** a side's loss ((BE-86)) — the enemy **live as a phenomenon, empty as an obstruction** ((BE-87)/(BE-88)). BWIN's opaque-subspace machine does **NOT transport** and **need not** ((BE-73)). **THE FLAG BASE IS FREE**, so (BE-68)'s item 1 is **DISCHARGED**: (BE-65)'s *"the phase's own problem one level down"* is **CORRECTED** — it is the **flag** variety of `B_real`, §(K-chart)'s tower **stages 1–2 only**, so **(CH-1) does not apply** ((BE-89)); a complete intersection, **nonempty always**, irreducible + ℚ-rational at cyclomatic number `≤ 1` ((BE-90)), unicyclic on the constant-rank locus ((BE-91)); the only obstruction is **REDUCIBILITY, not emptiness**, at a `B_real`-triangle or 4-cycle, both excluded by girth `≥ 6` ((BE-92)); **`hcard` TRANSPORTS to the pieces** but does **not** cap `B_real` ((BE-93)). **AND `reach` IS PER-SIDE DATA, so (BE-67)(iii) is REDUCED and (BE-71)(ii)'s completeness is ANSWERED in the generic flag regime.** The flag pair's stabilizer `S(ϕ)` is **5-dimensional**, contains the maximal torus and — by (BE-70)(ii) — acts on **each side's family separately** (asserted 30/30, the one-sided reglue through both gates); the screw space splits `S(ϕ)`-canonically as `Π_x ⊕ ⟨M⟩ ⊕ ⟨L⟩ ⊕ Π_y`, dims `(2,1,1,2)`, whose **16 sums are exactly the stable subspaces** ((BE-94)). Against those the modular law gives a **CAP** in per-side data, **containing** (BE-71)'s (P) at `U = core₁∩core₂` and (Z) at `U = Π_x⊕Π_y` ((BE-95)); a 1-PS degeneration of each side gives a matching lower bound, so where they meet — **121/122** peel rows, **393/400** abstract pairs — `reach` is **pinned by two proofs**, the cap **ATTAINED at 400/400** ((BE-96)). Hence **(BE-67)(iii) at a peel ⟺ 14 inequalities `c₁(U)+c₂(U) ≤ dim U + max(0,δ₁+δ₂−6)`, `c_i(U) = dim(ρ̄_i ∩ U)` on ITS OWN SIDE** — (BE-22)(vi)'s named shape. Measured: violation margin `0` at **92/92**, so **no shortfall**, `Π_x` the only block where both sides exceed the generic profile (12/92, tight at 8) — residue **(NO-DOUBLE-PENCIL)** ((BE-97)); **generic regime only**, since at `π_x = π_y` the blocks collapse (`Π_x+Π_y = Λ²π`, `Π_x∩Π_y = ⟨M⟩`) and only the cap survives, with two-sided (Z) at `dim Z = 3` (24/60) ((BE-98)). **AND (NO-DOUBLE-PENCIL) ((BE-97)(iii)) IS REFUTED, THE TIGHT BLOCK REDUCED TO ONE PER-SIDE CLAUSE.** (BE-45)(ii)'s own **vacuous corner** `d_min = 6` gives `ρ̄_i = ⟨P⟩ = Λ²K⁴`, hence `c_i(U) = dim U` at **every** `U`; glued to (BE-45)(i)/(ii) at the other side that is exactly the forbidden `(2, ≥1)`, realized **inside BUNIF's own 92 rows** (`K4 + th(6,6,6)/ab + ear4/ua` at peel `(a,b)`, `c = (1,2)`, `δ = (2,6)`, both 2-blocks) — **one landed lemma refutes it**, the *"never sought jointly"* attack answered by a corner (BE-45)(ii) had named ((BE-99)). It is **SLACK, NOT A SHORTFALL** (margin `−1`, the peel attaining): (NO-DOUBLE-PENCIL) ⟺ `c₁+c₂ ≤ 2`, the block inequality only at `δ₁+δ₂ ≤ 6` (28 of 49 pairs), so it was **strictly stronger** than half (B) needs — 320 of 1 975 conceivable double pencils are not violations ((BE-100)). **The real obligation is REDUNDANT**: under **(PENCIL-SATURATES)** — *`c_i(Π) = 2` forces `ρ_i = 6`*, i.e. **(BE-38)(iii)'s third clause** contrapositively — every `Π_x` violation **is** a `U = Λ²K⁴` violation (300/300, 0 escaping; 313 escape without it), so `Π_x` and `Π_y` **drop out of the 14** and are **FREE in the attaining case** ((BE-101)). Reading (2)'s `dist ≥ 6 ⟹ δ = 6` is **REFUTED** (2 sides at `dist = 6`, `δ = 1`), recovered instead through `ρ`; **job 2 FIRES on both citations** — the target used (BE-44)(ii) in its **generic, per-shape** half ((BE-46)(iv)) and (BE-45) in its **converse** ((BE-45)(iv), 8 of 11), the refutation only their proved halves ((BE-102)) — and (BE-97)(i)'s *"14 of 16 live"* is an `a = 0` **denominator**, 15 of 16 off it ((BE-103)) | **(BE-14) OPEN; the ear case REDUCED, (β) at the window MODULO (BE-57)(iv)'s two window conditions; half (B)'s residue is now the PER-SIDE (PENCIL-SATURATES) = (BE-38)(iii)'s third clause, MEASURED at 37 pieces + 4 stress rows, the other 12 live blocks UNWITNESSED-NOT-EXCLUDED ((BE-97)(iv)); flag base DISCHARGED, flag coincidence a CHECKED hypothesis; `hbareSplit` untouched; not a PENCIL event** |
 
 **Shapes no *class-uniform* mechanism covers** (the class program's uncovered
 flanks, all from §(K-slide-comb) *Step D5* + §(K-slide) *Step 5*): `χ(G°) ≥ 5` —
@@ -22624,6 +22624,13 @@ geometric input (BE-44) and (BE-45) share. **No `.lean` was opened; the standing
 > Asserted as `same_space(ρ̄₁, ⟨P⟩)` at every firing row, never as an equality of
 > dimensions. Note `δ₁ = 6` is the sub-case `d_min = 6`: (M2) **subsumes the
 > vacuous corner**, where the intersection is all of `Π_u`.
+>
+> > **The vacuous corner is LOAD-BEARING (2026-09-02, (BE-99)).** At
+> > `d_min = 6` this identity gives `ρ̄₁ = ⟨P⟩ = Λ²K⁴`, hence
+> > `c₁(U) = dim U` at **every** subspace — and glued to (i)/(ii) at the other
+> > side of a peel that **refutes (BE-97)(iii)'s (NO-DOUBLE-PENCIL)** outright.
+> > So the corner named here as "vacuous" is exactly the configuration BUNIF's
+> > named residue forbade; see §(K-bare-ext) *Steps BE98–BE102*.
 
 > **(BE-45)(iii)** *(the consequence for the arc — **A LANDED PROSE SENTENCE IS
 > CORRECTED**, and its own numbers already said so)* (BE-38)(iii) reported
@@ -26843,6 +26850,16 @@ binds.**
 >
 > **`δ = min(L, 6)`, which is never `1`.**
 >
+> > **PATH-SIDE ONLY — annotated 2026-09-02, (BE-102)(i), direction BDOUBLE.**
+> > This identity is stated **for a bare path side**, and it does **not**
+> > generalize to `δ_i = min(dist_i, 6)` at an arbitrary side. (BE-30)'s
+> > `ρ ≤ dist` is an **upper** bound, so a large `dist` removes a constraint
+> > and never supplies one: measured, `K4(1,3,3,3,3,2)` and `K4(1,3,3,3,3,3)`
+> > at peel `(C,D)` have `dist = 6` with `ρ = δ = 1`, and (BE-44)(iii)'s loose
+> > rows already had `δ₁ ∈ {0,3}` against `d_min ∈ {3,6}`. A coordinator
+> > reading that quoted this identity off a path side to get
+> > *"`dist₁ ≥ 6 ⟹ δ₁ = 6`"* was refuted on exactly this point.
+>
 > Second, **every 2-cut of a subdivision `S` of a simple 3-connected `G` has a
 > path side.** If `x,y` are both branch vertices, `G − {x,y}` is connected, so
 > the only component `S − {x,y}` can shed is the interior of a branch joining
@@ -28619,6 +28636,19 @@ of `L`. It is BE-22(v)'s regime **(β)**. The complement is *Step BE96*.
 > down as one and the enumeration refused it** (F11). What (BE-44)(ii) *does*
 > prove is a per-side **structural price**: `c_i(Π_x) = 2` forces **every**
 > `x–y` path of side `i` to span 6, hence `dist_i(x, y) ≥ 6`.
+>
+> > **Two corrections, 2026-09-02, direction BDOUBLE.** (1) **The
+> > denominator.** The enumeration bounds `c_i ≤ min(dim U, δ_i)`; the true cap
+> > is `c_i ≤ ρ_i = δ_i + a_i`, so *"14 of 16 live"* is an **`a₁ = a₂ = 0`
+> > statement**. Off it **15 of 16** are live — only `U = ∅` still dies, and
+> > `U = Λ²K⁴` **joins** the list. The conclusion (*the arithmetic does not
+> > triage*) is unchanged and strengthened ((BE-101)(iii)). (2) **The price is
+> > weaker than it reads.** `dist_i ≥ 6` gives **no** lower bound on `ρ_i` or
+> > `δ_i`: (BE-30) bounds `ρ` by `dist` from **above**, and two measured sides
+> > sit at `dist = 6` with `ρ = δ = 1` ((BE-102)(i)). Moreover the step
+> > *`c_i(Π_x) = 2 ⟹ every path spans 6`* is the contrapositive of
+> > (BE-44)(ii)'s **converse**, which is the **per-shape** half (BE-46)
+> > discharges, not the proved `= 6` half ((BE-102)(iii)).
 
 > **(BE-97)(ii)** *(measured; **the violation margin is `0`, never positive**)*
 > Define `margin := max over the 16 stable U of
@@ -28656,6 +28686,23 @@ of `L`. It is BE-22(v)'s regime **(β)**. The complement is *Step BE96*.
 > (*series end, or path-saturated*). **Neither clause has been shown
 > incompatible with the other**, and that — not a search over configurations —
 > is what half (B) now needs.
+>
+> > **REFUTED 2026-09-02 by (BE-99), direction BDOUBLE — read *Steps
+> > BE98–BE102* with this clause.** The two clauses are not incompatible: **one
+> > landed lemma produces both.** (BE-45)(ii)'s own **vacuous corner**
+> > `d_min = 6` gives `ρ̄_i = ⟨P⟩ = Λ²K⁴`, hence `c_i(Π_x) = c_i(Π_y) = 2`, and
+> > (BE-45)(i)/(ii) at the other side gives `c_j(Π_x) ≥ 1` — realized at **2 of
+> > the 92 rows measured here**, `K4 + th(6,6,6)/ab + ear4/ua` at peel `(a,b)`,
+> > `c = (1,2)` at both 2-blocks. **The measurements in this step are
+> > untouched**: the census counts blocks where both sides *exceed the generic
+> > profile*, and a side at `ρ_i = 6` sits at `c_i = 2` **generically**, so the
+> > pair `(1,2)` is invisible to that statistic ((BE-99)(iv)). What is wrong is
+> > only the named condition, and it was **strictly stronger than the `Π_x`
+> > inequality it stood in for** — the exhibited pencil has `δ₁+δ₂ = 8` and
+> > margin `−1` ((BE-100)). The residue is now the **per-side**
+> > **(PENCIL-SATURATES)** (= (BE-38)(iii)'s third clause), under which `Π_x`
+> > and `Π_y` are **implied by the `U = Λ²K⁴` inequality** and drop out of the
+> > fourteen ((BE-101)).
 
 > **(BE-97)(iv)** *(the honest scope of (iii))* *"`Π_x` only"* is a statement
 > about 92 rows of two constructed populations, **not** a theorem. The other 13
@@ -28935,3 +28982,457 @@ returned. The driver `w4/bunif.py` landed at the reserved path. One new
 configuration-level object is named, in prose per the reservation's own
 preference: the **block profile** `c_i(U)` of a side at a flag pair, and the
 condition **(NO-DOUBLE-PENCIL)**.
+
+## §(K-bare-ext) — continuation (direction BDOUBLE): **(NO-DOUBLE-PENCIL) IS REFUTED, AND THE TIGHT BLOCK IS REDUNDANT** — BUNIF's named residue forbade a configuration that is generic, harmless and produced by **one landed lemma read at both ends**: (BE-45)(ii)'s own explicitly-flagged **vacuous corner** `d_min = 6` gives `ρ̄_i = ⟨P⟩ = Λ²K⁴`, hence `c_i(U) = dim U` at **every** stable `U` and in particular `c_i(Π_x) = c_i(Π_y) = 2`, while (BE-45)(i)/(ii) at the other side gives `c_j(Π_x) ≥ 1` — exactly the `(2, ≥ 1)` pair (NO-DOUBLE-PENCIL) forbids. It is realized **inside BUNIF's own 92-row population**, at `K4 + th(6,6,6)/ab + ear4/ua`, peel `(a,b)`: side 2 the `θ(6,6,6)` at `δ₂ = ρ₂ = 6`, side 1 the two-path side at `δ₁ = ρ₁ = d_min = 2`, `c = (1,2)` at **both** 2-blocks. **BUNIF's *"the two clauses have never been sought jointly"* is answered: they are not merely compatible, one lemma produces both.** And the double pencil is **SLACK, NOT A SHORTFALL** — `δ₁+δ₂ = 8`, so the block inequality's slack is `2` and the margin is `−1`, with the peel attaining at `dim(ρ̄₁+ρ̄₂) = 6`. The coordinator's **reading (1) is CONFIRMED**: (NO-DOUBLE-PENCIL) ⟺ `c₁+c₂ ≤ 2`, which is the obligation only at `δ₁+δ₂ ≤ 6` (28 of 49 `(δ₁,δ₂)` pairs), so the condition was **strictly stronger** than half (B) needs, and 320 of 1 975 conceivable double pencils are not violations at all. What replaces it is smaller and **per-side**: under **(PENCIL-SATURATES)** — *`c_i(Π) = 2` forces `ρ_i = 6`*, which is **(BE-38)(iii)'s third clause** read contrapositively — **every `Π_x` violation is a `U = Λ²K⁴` violation**, so `Π_x` and `Π_y` are **implied by the all-of-it inequality**, drop out of the fourteen, and are **FREE in the attaining case**. Reading (2)'s named weak link `dist_i ≥ 6 ⟹ δ_i = 6` is **REFUTED** — (BE-30) bounds `ρ` by `dist` from **above**, so a large `dist` removes a constraint rather than supplying one, and two measured sides sit at `dist = 6`, `δ = 1` — but its **conclusion** is recovered by a shorter route that never mentions `dist`. Job 2 **fires on both of the target's citations**
+
+**Direction BDOUBLE** (ordinal 64, `notes/Pencil-fanout.md` §"BDOUBLE"), 2026-09-02.
+Driver `notes/scripts/w4/bdouble.py`; labels **(BE-99)–(BE-103)**, *Steps
+BE98–BE102*. Read against *Steps BE93–BE97* (BUNIF), whose (BE-97)(iii) is the
+target, and *Steps BE43–BE45* ((BE-44)/(BE-45)/(BE-46)), which price it.
+
+### Standing notation
+
+Inherited verbatim from *Steps BE93–BE97*: `H` an internal R-node piece peeled
+at `{x, y}` (`xy ∉ E(H)`), sides `H₁, H₂`; `ρ̄_i ⊆ Λ²K⁴` the side's relative
+screw space, `ρ_i = dim ρ̄_i`, `δ_i = f_i − g_i`, `a_i = dim M_i − 6 − f_i`, so
+`ρ_i = δ_i + a_i` ((BE-86)(i)); the **generic flag regime** `π_x ≠ π_y`,
+`p_x ∉ π_y`, `p_y ∉ π_x`, in which `Λ²K⁴ = Π_x ⊕ ⟨M⟩ ⊕ ⟨L⟩ ⊕ Π_y` of dims
+`(2,1,1,2)` with the **16** sums exactly the `S(ϕ)`-stable subspaces
+((BE-94)(iii)); `c_i(U) := dim(ρ̄_i ∩ U)`, taken at its **generic** (= minimal)
+value over side `i`'s own family ((BE-96)(iv)); `d_min` the length of a
+shortest `x–y` path of the side, `⟨P⟩` the span of a path's hinge lines. Write
+
+**`slack := max(0, δ₁ + δ₂ − 6)`**, so the block obligation at `U` is
+**`c₁(U) + c₂(U) ≤ dim U + slack`** ((BE-96)(iv)), and a violation of it **is**
+a shortfall by the modular law ((BE-95)(i)).
+
+### Step BE98 — (BE-99): (NO-DOUBLE-PENCIL) is FALSE, and one landed lemma refutes it
+
+> **(BE-99)(i)** *(proven; **the vacuous corner saturates every block**)*
+> Suppose side `i` is **path-saturated** in (BE-45)(ii)'s sense with
+> `δ_i = d_min = 6`. Then (BE-45)(ii) gives `ρ̄_i = ⟨P⟩` **as spaces** for a
+> shortest path `P`, and `dim⟨P⟩ = ρ_i = 6 = dim Λ²K⁴`, so
+>
+> **`ρ̄_i = Λ²K⁴`, hence `c_i(U) = dim U` at EVERY subspace `U`** — in
+> particular `c_i(Π_x) = c_i(Π_y) = 2`, the block cap. ∎
+>
+> This is not a new observation: **(BE-45)(ii) names this corner itself**
+> (*"Note `δ₁ = 6` is the sub-case `d_min = 6`: (M2) subsumes the vacuous
+> corner, where the intersection is all of `Π_u`"*). What is new is reading it
+> **at a peel**, against (BE-97)(iii)'s condition.
+
+> **(BE-99)(ii)** *(proven; **the partner clause is the same lemma**)* By
+> (BE-45)(i) a **series end** at `x` on side `j` gives `c_j(Π_x) ≥ 1` at every
+> configuration, and by (BE-45)(ii) so does **path saturation** `δ_j = d_min`
+> at any `d_min`. Both are unconditional identities — no genericity, no draw.
+> Hence at any peel with side `i` at the vacuous corner and side `j` in either
+> mechanism,
+>
+> **`c_i(Π_x) = 2` and `c_j(Π_x) ≥ 1`: (NO-DOUBLE-PENCIL) FAILS**, and equally
+> at `Π_y`. ∎
+
+> **(BE-99)(iii)** *(**the witness**, and it was already inside BUNIF's own
+> population)* The two hypotheses are simultaneously realizable. At
+> `K4 + th(6,6,6)/ab + ear4/ua`, peel `(a,b)` — **population A**, one of the
+> 92 rows (BE-97)(ii) measured — the combinatorics are configuration-free:
+> **side 2 is the `θ(6,6,6)`**, three internally-disjoint `a–b` paths of length
+> 6, so `d_min = 6`; **side 1 is `{a–v–b, a–e1₄–e1₃–e1₂–e1₁–u–b}`**, so
+> `d_min = 2`. Measured (`bdouble.py witness`, 6 of 6 independent seeds drawing
+> a generic-regime configuration, **every line an assert**):
+>
+> | quantity | value |
+> |---|---|
+> | `d_min` (side 1, side 2), from `bimage.dist_in` | **2, 6** |
+> | `(ρ₁, δ₁, a₁)`, `(ρ₂, δ₂, a₂)` | **(2,2,0)**, **(6,6,0)** |
+> | `ρ̄₂ = Λ²K⁴` **as a space**; `Π_x, Π_y ⊆ ρ̄₂` | **yes**, asserted as containments |
+> | `c₁(Π_x), c₂(Π_x)` and `c₁(Π_y), c₂(Π_y)` | **1, 2** and **1, 2** |
+> | `dim(ρ̄₁ ∩ ρ̄₂)` | **2** — the two sides meet **in all of `Π_x`** |
+> | `dim(ρ̄₁ + ρ̄₂)` vs `min(δ₁+δ₂,6) + a₁ + a₂` | **6 = 6** — the peel **ATTAINS** |
+>
+> So the forbidden `(2, ≥1)` pair occurs, at **both** 2-blocks, at **2** of the
+> 92 rows (`bdouble.py hunt`: 4 `(row, block)` hits, `2` at `Π_x` and `2` at
+> `Π_y`). **(NO-DOUBLE-PENCIL) is REFUTED.** ∎
+
+> **(BE-99)(iv)** *(why BUNIF's census did not see it)* (BE-97)(iii)'s table
+> counts the `U` at which **both sides exceed the generic profile**
+> `max(0, ρ_i + dim U − 6)`. A side at `ρ_i = 6` has `c_i(Π_x) = 2` **as its
+> generic value**, so it never registers as exceeding, and the pair `(1,2)`
+> is invisible to that statistic — which is why the census reported
+> *"`Π_x` … where they sit at `c₁ = c₂ = 1`"*. The census is **correct as
+> written**; what it measures is *non-genericity*, and a double pencil does not
+> need non-genericity on both sides. **This is a candidate-side reading
+> correction, not a correction of any landed measurement** — the same shape as
+> (BE-45)(iii) and (BE-36).
+
+### Step BE99 — (BE-100): it is SLACK, not a shortfall — reading (1), confirmed and used
+
+> **(BE-100)(i)** *(proven; **reading (1)'s equivalence**)* Since
+> `c_i(Π_x) ≤ dim Π_x = 2`, the pair `(c₁, c₂)` has one entry `= 2` and the
+> other `≥ 1` **iff** `c₁ + c₂ ≥ 3`. Hence
+>
+> **(NO-DOUBLE-PENCIL) at `Π_x` ⟺ `c₁(Π_x) + c₂(Π_x) ≤ 2`,**
+>
+> whereas the obligation is `c₁ + c₂ ≤ 2 + slack`. The two coincide **exactly
+> when `slack = 0`, i.e. `δ₁ + δ₂ ≤ 6`** — asserted over all 9 profile pairs
+> and all 49 `(δ₁,δ₂)` pairs (`bdouble.py arith`; **28 of 49** agree, **21**
+> do not). The coordinator's **reading (1) is CONFIRMED as arithmetic**: above
+> the threshold the inequality has slack the condition never uses. ∎
+
+> **(BE-100)(ii)** *(proven; **the exhibited double pencil is on the slack
+> side**, and so is every one the corner produces)* At a vacuous-corner peel
+> `δ_i = 6`, so `slack = max(0, δ_j) = δ_j`, and
+>
+> `c_i(Π_x) + c_j(Π_x) = 2 + c_j(Π_x) ≤ 2 + ρ_j = 2 + δ_j + a_j`,
+>
+> which is `≤ 2 + slack` **whenever side `j` attains** (`a_j = 0`). So the
+> whole family of double pencils manufactured by (BE-99) is **harmless**: the
+> obligation holds, with equality only at `c_j = δ_j`. At the witness
+> `δ_j = 2`, `c_j = 1`, and the margin is **exactly `−1`** at both 2-blocks,
+> asserted at every seed. **Half (B) is untouched by the refutation.** ∎
+
+> **(BE-100)(iii)** *(the size of the gap, exhaustively)* Over the **6 400**
+> tuples `(δ₁,δ₂,a₁,a₂,c₁,c₂)` the caps `ρ_i = δ_i + a_i ≤ 6` and
+> `c_i ≤ min(2, ρ_i)` allow, **1 975** are double pencils and **1 655** are
+> `Π_x` violations, and **every violation is a double pencil** (asserted). So
+> the condition forbids **320** tuples the class statement permits — it is
+> **strictly stronger**, and (BE-99) lands inside exactly that gap.
+
+### Step BE100 — (BE-101): the REDUNDANCY THEOREM — `Π_x` and `Π_y` drop out of the fourteen
+
+> **(BE-101)(i)** *(proven, given (PENCIL-SATURATES); **the tight block is
+> implied by the trivial one**)* Name the per-side clause
+>
+> > **(PENCIL-SATURATES).** At an internal R-node peel in the generic flag
+> > regime, `c_i(Π_x) = 2 ⟹ ρ_i = 6` — equivalently, if a side's generic
+> > relative screw space contains the whole pencil at a terminal, it is the
+> > whole screw space. Same at `Π_y`. *(This is exactly **(BE-38)(iii)'s third
+> > clause**, "never `2` below `ρ₁ = 6`", read contrapositively.)*
+>
+> **Theorem.** Assume (PENCIL-SATURATES). If the obligation fails at
+> `U = Π_x`, it fails at `U = Λ²K⁴`.
+>
+> *Proof.* A failure at `Π_x` is `c₁(Π_x) + c₂(Π_x) > 2 + slack` with both
+> entries `≤ 2`, so some side — say 1 — has `c₁(Π_x) = 2`, and then
+> `c₂(Π_x) > slack`. By (PENCIL-SATURATES) `ρ₁ = 6`, so
+> `c₁(Λ²K⁴) = ρ₁ = 6`; and `c₂(Λ²K⁴) = ρ₂ ≥ c₂(Π_x) > slack`. Hence
+> `c₁(Λ²K⁴) + c₂(Λ²K⁴) > 6 + slack = dim Λ²K⁴ + slack`. ∎
+>
+> Verified exhaustively (`bdouble.py arith`): over the same 6 400 tuples with
+> the clause imposed, **300 of 300** `Π_x` violations are also `Λ²K⁴`
+> violations, **0 escape**. **Negative control (F13):** drop the clause and the
+> theorem fails — **313** `Π_x` violations escape, **30** of them in the
+> attaining case, the smallest at `δ = (0,0)`, `a = (1,2)`, `c = (1,2)`. So the
+> theorem genuinely rests on the clause, and the clause is the whole residual.
+
+> **(BE-101)(ii)** *(corollary; **in the attaining case the two 2-blocks are
+> FREE**)* The `U = Λ²K⁴` inequality reads `ρ₁ + ρ₂ ≤ 6 + slack`, i.e.
+>
+> **`a₁ + a₂ ≤ max(0, 6 − δ₁ − δ₂)`,**
+>
+> which is **automatic at `a₁ = a₂ = 0`**. So under (PENCIL-SATURATES) and
+> (BE-22)(iii)'s `a = 0` case — the proviso the arc carries as **S-mark's pin**
+> — there are **no `Π_x` violations at all** (asserted: 0 over the enumeration).
+> **The measured tight place of (BE-97)(iii) is therefore closed**, and the
+> live block list drops from **14 to 12**: neither `Π_x` nor `Π_y` can be the
+> binding `U`. This is the direction's result, and it is a **reduction**
+> (HIT shape 3), not a proof of half (B) — see (BE-103)(i) for the scope.
+
+> **(BE-101)(iii)** *(the scope correction (BE-97)(i)'s own enumeration needs)*
+> `bunif.never_bites` bounds `c_i ≤ min(dim U, δ_i)`. The true cap is
+> `c_i ≤ min(dim U, ρ_i) = min(dim U, δ_i + a_i)`, so **the landed
+> "14 of 16 blocks live" is an `a₁ = a₂ = 0` statement**. Re-run with the
+> `ρ`-cap, **15 of 16** are live: only `U = ∅` still dies, and `U = Λ²K⁴`
+> **joins** the list — which is precisely the block (BE-101)(i) routes a `Π_x`
+> failure into. (BE-97)(i)'s conclusion — *the arithmetic does not triage the
+> list* — is **unchanged and strengthened**; its **denominator** is corrected.
+> Asserted both ways in `bdouble.py arith`.
+
+### Step BE101 — (BE-102): reading (2) refuted at its named step, and job 2's verdict
+
+> **(BE-102)(i)** *(**reading (2)'s weak link is REFUTED**, and the inequality
+> points the wrong way)* Reading (2) needs `dist_i(x,y) ≥ 6 ⟹ δ_i = 6`. But
+> (BE-30) gives `ρ ≤ dist` — and `ρ_i ≤ 6` always — so
+>
+> **`ρ_i ≤ min(dist_i, 6)`: `dist` bounds `ρ` from ABOVE.**
+>
+> A large `dist` therefore **removes** a constraint; it never supplies a lower
+> bound, and `δ_i ≤ ρ_i` inherits nothing. Asserted at **184/184** sides of the
+> two populations, and **refuted by measurement** at **2** of them —
+> `K4(1,3,3,3,3,2)` and `K4(1,3,3,3,3,3)` at peel `(C,D)`, side 1, with
+> `dist = 6` and `ρ = δ = 1` (`bdouble.py price`). The landed corpus already
+> carried the same shape: (BE-44)(iii)'s loose rows have `δ₁ ∈ {0,3}` against
+> `d_min ∈ {3,6}`. **Reading (2) fails at the step the coordinator named**, and
+> the `δ = min(L,6)` identity of (BE-79)/(BE-80) does **not** survive off a
+> path side.
+
+> **(BE-102)(ii)** *(**its conclusion is recovered by a different route**)*
+> What reading (2) wanted was `δ_i = 6` from `c_i(Π_x) = 2`. (PENCIL-SATURATES)
+> supplies `ρ_i = 6` **directly**, without `dist`; in the attaining case
+> `δ_i = ρ_i = 6`, whence `slack = δ_j` and a violation needs `c_j > δ_j`,
+> i.e. `a_j ≥ 1` — **side `j` NON-ATTAINING**, exactly the conclusion reading
+> (2) predicted. So the reading is **CORRECTED IN ITS ROUTE and CONFIRMED IN
+> ITS CONCLUSION**; and (BE-101)(i) then supersedes it, since the same
+> hypothesis kills the block outright rather than merely constraining it.
+
+> **(BE-102)(iii)** *(**job 2** — the standing inventory verdict, run on this
+> direction's own two load-bearing citations, and it FIRES on both)* The target
+> (BE-97)(iii) states its two clauses as *"already priced by (BE-44)(ii) and
+> (BE-45)"*. Read at the statements rather than the summaries:
+>
+> - **(BE-44)(ii)** is **PROVED in the `dim⟨P⟩ = 6` direction only** — *"`Π_u`
+>   has dimension 2 in dimension 6, so `dim⟨P⟩ = 6` gives `⟨P⟩ = Λ²K⁴`"*, at
+>   every configuration. The **converse** — `dim⟨P⟩ ≤ 5 ⟹ ⟨P⟩ ∩ Π_u` is
+>   exactly the first line — is the **open condition (BE-46) discharges**,
+>   **per shape, from one witness**, and (BE-46)(iv) says plainly that *"the
+>   class-level statement over all pieces"* is **not** discharged. The price
+>   (BE-97)(i) quotes — *`c_i(Π_x) = 2` forces every `x–y` path to span 6* — is
+>   the **contrapositive of that converse**, so the target's first clause rests
+>   on the **generic, per-shape** half, not the proved one. *(The remaining
+>   step, `dim⟨P⟩ = 6 ⟹ |P| ≥ 6`, is free: `⟨P⟩` is spanned by the path's
+>   `|P|` hinge lines, so `dim⟨P⟩ ≤ |P|`. The measured identity
+>   `dim⟨P⟩ = min(|P|,6)` is not needed for it.)*
+> - **(BE-45)** has its **forward** direction proved — (i) series end and (ii)
+>   path saturation each force `c ≥ 1` unconditionally — while the **converse**
+>   (BE-45)(iv), *"where neither mechanism fires the sharpening holds"*, is
+>   **PROVED at 8 of 11 pieces and MEASURED at 3**. The target's second clause
+>   reads (BE-45) as **characterizing** `c_j(Π_x) ≥ 1`, which is the converse:
+>   **not a theorem**.
+>
+> **Both citations are used in their non-theorem direction** — the same shape
+> BUNIF found one direction earlier at (BE-38)(iii)'s third clause
+> ((BE-98)(ii)), and the second consecutive time a *"priced by"* phrase has
+> outrun its own statement. **The refutation (BE-99) is unaffected**: it uses
+> only (BE-45)(i)/(ii) **forward** and (BE-44)(ii)'s **proved** `= 6` half.
+> **What this does change** is the standing of the residual: (PENCIL-SATURATES)
+> is *not* implied by (BE-44)(ii) — that lemma yields `dist_i ≥ 6`, and
+> (BE-102)(i) shows `dist_i ≥ 6` gives no lower bound on `ρ_i` — so the clause
+> stands on (BE-38)(iii)'s measurement alone.
+
+### Step BE102 — (BE-103): job 3 — the honest residual, the board, and the E-rider
+
+> **(BE-103)(i)** *(**job 3**, stated in (BE-97)(iv)'s terms and not one word
+> stronger)* **Half (B) is NOT discharged.** What this direction closes is the
+> **measured tight place**: under (PENCIL-SATURATES) and `a₁ = a₂ = 0` the
+> `Π_x`/`Π_y` blocks are free ((BE-101)(ii)), and those are the only blocks any
+> measurement has ever seen bite on both sides (12/92). What remains:
+>
+> 1. **(PENCIL-SATURATES) itself** — *`c_i(Π) = 2 ⟹ ρ_i = 6`* — a **per-side**
+>    implication, one quantifier, no pairing. Evidence: (BE-38)(iii)'s
+>    measurement over **37** pieces, plus BUNIF's stress test (**4** sides at
+>    `c_i(Π) = 2`, **0** with `ρ_i < 6`, over 112 rows) and this direction's
+>    (**4** sides, **0**, over 92 rows). **Still a measurement, with a small
+>    denominator**, and by (BE-102)(iii) **not** implied by (BE-44)(ii).
+> 2. **The other 12 live blocks**, which (BE-97)(iv) records as
+>    **unwitnessed rather than excluded** — 92 rows of two constructed
+>    populations exhaust nothing. The shape (BE-97)(iv) names as the one that
+>    would put a second block in play at once is still the right one to hunt:
+>    **`c_i(⟨M⟩) = 1` on BOTH sides**, i.e. both relative screw spaces
+>    containing the virtual edge's own line `p_x ∨ p_y`.
+> 3. **The non-attaining case.** (BE-101)(ii) is stated at `a₁ = a₂ = 0`; off
+>    it the `U = Λ²K⁴` inequality is the real constraint
+>    `a₁ + a₂ ≤ max(0, 6 − δ₁ − δ₂)`, and by (BE-101)(iii) it is a **live**
+>    block rather than a dead one.
+> 4. Unchanged from (BE-98)(iii): **the ear case's (β) side at the window**,
+>    modulo *Step BE56* / (BE-57)(iv)'s **(S1)**/**(S2)** — vacuous at every
+>    drawn piece, neither a theorem, with a per-shape residue outside the
+>    window — and **cross-pair welding** ((BE-28)(i)).
+
+> **(BE-103)(ii)** *(the board)* **What moved.** (BE-97)(iii)'s named successor
+> condition is **false**, so the arc is not looking for a proof of it; the tight
+> block is **redundant** given a clause the arc already carries; the
+> triage denominator of (BE-97)(i) is corrected to an `a = 0` statement; and
+> reading (2)'s `dist ⟹ δ` step is refuted, which also annotates the
+> `δ = min(L,6)` identity as **path-side-only** wherever it is quoted.
+> **What did not move.** No class statement is proved; **no shortfall is
+> exhibited** — the exhibited double pencil is on the slack side, and by
+> (BE-101)(i) a genuine one would show up at `U = Λ²K⁴` first; `hbareSplit`,
+> `hK`, (GR-15) and class uniformity of the escape are all untouched; the
+> coincident regime ((BE-98)(i)) still keeps only the cap.
+
+### Verdict, classification, and the price
+
+- **HIT shape 2** — *a double pencil exhibited*, and **classified**: it is a
+  **slack** configuration at `δ₁+δ₂ = 8`, **not** a violation of the
+  inequality, so it is **not** the third mechanism (BE-71) leaves open
+  ((BE-99), (BE-100)(ii)).
+- **HIT shape 3** — *reduced to a named condition strictly smaller than
+  (NO-DOUBLE-PENCIL)*: **(PENCIL-SATURATES)**, a per-side implication with no
+  pairing, under which `Π_x`/`Π_y` drop out of the fourteen entirely
+  ((BE-101)).
+- **NOT HIT shape 1** — (NO-DOUBLE-PENCIL) is **not** proved; it is **false**.
+  The weaker `Π_x` inequality is proved **only modulo (PENCIL-SATURATES)** (and
+  `a = 0`), which is why the verdict is a reduction and not a proof.
+- **HIT shape 4** — job 2's verdict fires on **both** load-bearing citations
+  ((BE-102)(iii)).
+- **HIT shape 5** — job 3 answered in (BE-97)(iv)'s terms, with half (B)
+  explicitly **not** reported as discharged ((BE-103)(i)).
+- **Reading (1) CONFIRMED** ((BE-100)(i)) and immediately load-bearing: it is
+  what makes the exhibited double pencil a non-event.
+- **Reading (2) REFUTED at its named weak link, its conclusion RECOVERED**
+  ((BE-102)(i)/(ii)).
+- **The price, stated as a price.** (a) (BE-101) is **conditional** — its whole
+  content is *"given (PENCIL-SATURATES)"*, and that clause is a measurement.
+  (b) (BE-101)(ii) additionally assumes `a₁ = a₂ = 0`; the non-attaining case
+  is left live, not closed. (c) (BE-99)(iii)'s witness is **one** piece at one
+  peel; what makes it more than a lucky draw is that (BE-99)(i)/(ii) are
+  identities, so the draw only certifies **realizability**. (d) Everything
+  measured here rides on BUNIF's two **constructed** populations and adds no
+  new one.
+
+### Verification
+
+```
+PYTHONHASHSEED=0 python3 notes/scripts/w4/bdouble.py arith     #  0.0 s
+PYTHONHASHSEED=0 python3 notes/scripts/w4/bdouble.py witness   #  3.9 s
+PYTHONHASHSEED=0 python3 notes/scripts/w4/bdouble.py hunt      # 28.5 s
+PYTHONHASHSEED=0 python3 notes/scripts/w4/bdouble.py price     # 26.2 s
+PYTHONHASHSEED=0 python3 notes/scripts/w4/bdouble.py validate  # 33 s (reduced tiers, all four)
+```
+
+Exact ℚ throughout (`fractions.Fraction`, no floating point); the single seed
+is `20260902`, printed by every mode. Every headline is an `assert`, not a
+report: reading (1)'s equivalence and its threshold, the redundancy theorem and
+its negative control, `margin ≤ 0` at every row, `slack` at every exhibited
+double pencil, (PENCIL-SATURATES) at every side reaching `c_i(Π) = 2`,
+(BE-30)'s `ρ_i ≤ min(dist_i, 6)` at every side, and the witness's ten identities
+at every seed.
+
+### Caps, disclosed rather than smoothed — with the denominator named
+
+1. **The populations are BUNIF's, unchanged** — population **A** = BDECOR's 7
+   R-node pieces + BPEEL's nested one; population **B** =
+   `bpeel.constructed_tier(maxlen=3, nsamp=60)` filtered by BPEEL's disclosed
+   **stand-in** `rnode_shaped`. **92** rows for `hunt`, **184** sides for
+   `price`. This direction adds **no new population**, so its *"none found"*
+   figures inherit (BE-98)'s caps verbatim and are **not independent evidence**
+   of anything BUNIF already measured on them.
+2. **The refutation needs no cap at all.** (BE-99)(i)/(ii) are identities off
+   (BE-45); the population supplies only the **existence** of a peel meeting
+   both hypotheses, and one witness suffices for an existence claim.
+3. **`arith` is exhaustive**, not sampled: 9 profile pairs, 49 `(δ₁,δ₂)` pairs,
+   6 400 `(δ,a,c)` tuples, 16 stable `U`. Its figures are enumerations, and the
+   only modelling assumption is the cap `ρ_i ≤ 6`.
+4. **`price`'s refutation is `2` sides of 184** — a **none-found-elsewhere**
+   at that scale, not a claim that the failure is rare in the class.
+5. **(PENCIL-SATURATES)'s stress test has a denominator of 4.** Four sides in
+   92 rows reach `c_i(Π) = 2`; **0** have `ρ_i < 6`. That is the same small
+   denominator (BE-98)(ii) disclosed, on an overlapping population — it is
+   *not* a second independent confirmation.
+6. **`witness` is 6 seeds on ONE piece and ONE peel.** The assertions are
+   pointwise identities at those 6 configurations; the *generic* value of
+   `c_i(U)` is inferred by (BE-69)(i)'s semicontinuity exactly as BUNIF infers
+   it, and no more.
+
+### Harness note — the `kbare/` sibling-import set gains its TWENTY-FIRST consumer
+
+`bdouble.py` imports `bunif` (`battery_peels` / `battery_rows` / `tier_rows` /
+`measure_row` / `SUBS` / `CAP` / `SEED`), `bimage` (`dist_in` / `contains` /
+`dim` / `same_space`), `bdecor` (`sample_by_branches`) and `bpeel`
+(`peel_sides`) **read-only** and reimplements nothing: the block frame, the
+profile `c_i(U)`, the deficiency oracle, `ρ̄`, the peel split, the samplers and
+the two bounds are all BUNIF's or its dependencies'. It is the **first**
+external consumer of any `bunif` device. The chain is **nineteen** deep
+(`… → bgenuine → bbase → bunif → bdouble`). **No move made**, per the standing
+rule; the *interface decision* recorded at (BE-83)(iii) remains a
+coordinator/user call.
+
+### Confidence verdicts, per claim
+
+| claim | verdict |
+|---|---|
+| (BE-99)(i) the vacuous corner gives `ρ̄_i = Λ²K⁴`, so `c_i(U) = dim U` | **proven** from (BE-45)(ii); asserted as a space equality at 6/6 seeds |
+| (BE-99)(ii) the partner clause `c_j(Π_x) ≥ 1` | **proven** from (BE-45)(i)/(ii), both forward directions |
+| (BE-99)(iii) the two hypotheses are simultaneously realizable | **measured** — 1 piece, 1 peel, 6 seeds; 2 of BUNIF's 92 rows |
+| (BE-99)(iv) why BUNIF's census did not see it | **verdict** (a reading correction; no landed measurement changes) |
+| (BE-100)(i) (NO-DOUBLE-PENCIL) ⟺ `c₁+c₂ ≤ 2`; threshold `δ₁+δ₂ ≤ 6` | **proven** (exhaustive, 9 + 49 cases asserted) |
+| (BE-100)(ii) every vacuous-corner double pencil is slack, given `a_j = 0` | **proven** (one line from `c_j ≤ ρ_j`) |
+| (BE-100)(iii) the 320-tuple gap | **proven** (exhaustive enumeration) |
+| (BE-101)(i) the REDUNDANCY THEOREM, given (PENCIL-SATURATES) | **proven**; 300/300 caught, 0 escaping, with a negative control at 313 |
+| (BE-101)(ii) `Π_x`, `Π_y` FREE at `a₁ = a₂ = 0` | **proven**, given (PENCIL-SATURATES) |
+| (BE-101)(iii) "14 of 16 live" is an `a = 0` denominator; 15 of 16 off it | **proven** (exhaustive, both caps asserted) |
+| (BE-102)(i) `dist ≥ 6 ⟹ δ = 6` is FALSE | **refuted** — `ρ ≤ min(dist,6)` proved from (BE-30), asserted 184/184; 2 explicit counterexample sides |
+| (BE-102)(ii) the conclusion recovered through `ρ` | **proven**, given (PENCIL-SATURATES) |
+| (BE-102)(iii) job 2 fires on (BE-44)(ii) and (BE-45) | **verdict**, read at the statements |
+| (BE-103) the residual and the board | **verdict**, in (BE-97)(iv)'s terms |
+| **(PENCIL-SATURATES)** itself | **MEASURED, not proven** — 37 pieces ((BE-38)(iii)) + 4 sides of 92 here; **this is the residual** |
+
+### What would change this
+
+- **A side with `c_i(Π) = 2` and `ρ_i < 6`.** That refutes (PENCIL-SATURATES),
+  and with it (BE-101) entirely — the `Π_x` block returns to the residue and
+  the enumeration's 313 escaping violations become live shapes. This is the
+  single cheapest falsification of this direction, and the first place to look
+  is a side whose every `x–y` path spans `≤ 5` yet whose `ρ̄_i` still contains
+  `Π_x` — i.e. exactly where (BE-44)(ii)'s **per-shape** half is doing the work
+  ((BE-102)(iii)).
+- **A peel with `c_i(⟨M⟩) = 1` on both sides** and `δ₁+δ₂ ≤ 6`. That is a
+  violation at `U = ⟨M⟩`, hence a genuine shortfall, and it is the shape
+  (BE-97)(iv) names. Unwitnessed; `xy ∉ E(H)` removes the obvious source.
+- **A peel with `a₁ + a₂ > max(0, 6 − δ₁ − δ₂)`.** That breaks `U = Λ²K⁴`
+  directly, which (BE-101)(iii) shows is a **live** block off the attaining
+  case — and by (BE-101)(i) it is where a `Π_x` failure would surface anyway.
+- **A vacuous-corner peel whose OTHER side does not attain.** (BE-100)(ii)'s
+  slack argument needs `a_j = 0`; at `a_j ≥ 1` the exhibited family stops being
+  automatically harmless, and the classification would have to be redone
+  row by row.
+
+### TERMINATION riders
+
+**E1 / E2 / E3 — reported, never fired; E3 remains ARMED (by GBAL).** Read
+against their actual definitions in `notes/Pencil-fanout-archive.md`, with the
+2026-09-02 correction (`61e046a6`) in force: **"the target" in E1–E3 is the
+ARC's target, `PencilPair K 3 G`**, never a direction's local obligation. The
+corpus carries **two** E3 texts; **this reading is `:1700`'s two-conjunct
+form**, with `:2098`'s one-conjunct deviation noted and **not** used — as
+BBASE and BUNIF both read it.
+
+- **E1** — a g-flank, a `D = 0` shape whose every admissible colouring is
+  binding. **Does not fire**: no colourings, no `D`, no g-flank here.
+- **E2** — the arc's target refuted or unprovable-as-posed **and** no ledger
+  entry left open-with-a-named-dispatchable-attack. **Does not fire on either
+  conjunct.** *Note the distinction this landing makes sharp*: what is refuted
+  is **(NO-DOUBLE-PENCIL)**, a direction's local obligation, **not**
+  `PencilPair K 3 G` — E2 is about the ARC's target, and refuting a candidate
+  successor condition is ordinary progress. And this landing names a
+  dispatchable attack ((PENCIL-SATURATES), (BE-103)(i) item 1).
+- **E3** — the arc's target proven **and** every remaining entry
+  adjudication-gated. **Does not fire on either conjunct**: the target is not
+  proven, and (PENCIL-SATURATES) is dispatchable rather than gated. Under
+  `:2098`'s one-conjunct text it still does not fire, the first conjunct being
+  the one that fails.
+
+**F11 — the central rider, and the target was again a universal claim.**
+*"At no internal R-node peel"* is a `∀` that no sweep exhausts — but this
+direction did not need to exhaust it, because the answer is **negative** and a
+`∀` is refuted by one witness. The figures that *are* sweeps are disclosed with
+their denominators in *Caps*: **92** rows and **184** sides on BUNIF's two
+**constructed** populations (A = the R-battery + the nested piece; B =
+`constructed_tier(maxlen=3, nsamp=60)` behind `rnode_shaped`), with **no new
+population added**. Every *"none found"* here — including (PENCIL-SATURATES)'s
+`0 of 4` — reads **none found under those caps**, never *"does not exist"*, and
+the `4` is the same small denominator (BE-98)(ii) disclosed. The claims that
+are **not** sweeps are (BE-99)(i)/(ii) ((BE-45)'s identities), (BE-100)(i)–(iii)
+and (BE-101) (exhaustive enumerations plus one proof), and (BE-102)(i)'s
+`ρ ≤ min(dist,6)` (from (BE-30)).
+
+**F12 paid at source.** Four hunks, at the statements rather than only here:
+(BE-97)(iii) (the condition is refuted), (BE-97)(i) (its enumeration's `a = 0`
+denominator), (BE-45)(ii) (its vacuous corner is what refutes (BE-97)(iii)),
+and (BE-79)/(BE-80) (the `δ = min(L,6)` identity annotated **path-side-only**,
+per the prep's explicit instruction).
+
+**F21**: the `(K-bare)` gap-map row is **recomputed to a target** — 1 472 →
+1 546 words while absorbing a full direction and five labels, i.e. ~110 words
+of pre-existing prose compressed away against ~186 added — with label
+preservation verified by a **scripted set-diff**: **129 codes in, 144 out, ZERO
+dropped**. The row then joins `check-gapmap-cells.py`'s `SPECIAL_CAPS` at the
+recompute's own size plus ~15 % (1 630 / 150, combined 1 780), documented in
+that script's docstring in the same commit, per its own bump rule.
+
+**Reservation, and what is returned.** Labels **(BE-99)–(BE-103)** and
+***Steps BE98–BE102*** were reserved and are **consumed in full**; nothing is
+returned. The driver `w4/bdouble.py` landed at the reserved path. One new
+configuration-level object is named, per the reservation's own constraint (no
+label for `Π_x`, `c_i(U)`, `margin`, `blockcap`/`blockdeg` or the double pencil
+itself, all of which are BUNIF's existing prose names): the condition
+**(PENCIL-SATURATES)**.

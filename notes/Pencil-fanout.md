@@ -1,19 +1,33 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
 **Status: EIGHT fan-outs, FORTY-SIX single directions and TWO concurrent pairs
-dispatched; 71 LANDED, ONE IN FLIGHT.**
-**BDOUBLE (ordinal 64, §"BDOUBLE") IS IN FLIGHT since 2026-09-02** — at
-**(NO-DOUBLE-PENCIL)** ((BE-97)(iii)), the one place BUNIF's 14 inequalities are tight.
-The prep carries **(BE-97)(iv)'s scope, promoted to three summary surfaces**: a HIT closes
-the **measured** tight place, **not** half (B), because the other 13 live blocks are
-unwitnessed rather than excluded. Two readings labelled *to be tested*, both derived from
-the landed law: that the real obligation is the `Π_x` **inequality**, strictly weaker than
-(NO-DOUBLE-PENCIL) and equal to it only at `δ₁+δ₂ ≤ 6` — so an exhibited double pencil is
-**not automatically a shortfall**; and that (BE-44)(ii)'s own structural price may buy the
-slack, since `c₁(Π_x) = 2` forces `dist₁ ≥ 6`, and **if** that gives `δ₁ = 6` a violation
-needs `c₂ > δ₂`, i.e. side 2 **non-attaining** — with the `dist ≥ 6 ⟹ δ = 6` step named as
-the weak link to check first. Driver-to-be `notes/scripts/w4/bdouble.py`. Run at
-`recon-opus` (fable unavailable).
+dispatched; 72 LANDED, NONE IN FLIGHT.**
+**BDOUBLE (ordinal 64, §"BDOUBLE") LANDED 2026-09-02** — at **(NO-DOUBLE-PENCIL)**
+((BE-97)(iii)), the one place BUNIF's 14 inequalities are tight. **HIT shapes 2 AND 3 —
+the condition is REFUTED, and the tight block is REDUNDANT.** (BE-45)(ii)'s own
+explicitly-flagged **vacuous corner** `d_min = 6` gives `ρ̄_i = ⟨P⟩ = Λ²K⁴`, hence
+`c_i(U) = dim U` at **every** stable `U`; glued to (BE-45)(i)/(ii) at the other side that
+is exactly the forbidden `(2, ≥1)` pair — **one landed lemma produces both clauses**, and
+it is realized at **2 of BUNIF's own 92 rows** (`K4 + th(6,6,6)/ab + ear4/ua`, peel
+`(a,b)`, both 2-blocks) ((BE-99)). BUNIF's census missed it because a side at `ρ_i = 6`
+sits at `c_i = 2` **generically** and so never *"exceeds the generic profile"* — the
+measurements are untouched, only the named condition was wrong. **It is SLACK, not a
+shortfall**: `δ₁+δ₂ = 8`, margin **`−1`**, the peel attaining ((BE-100)), so **half (B)
+survives** and this is *not* (BE-71)'s third mechanism. And under **(PENCIL-SATURATES)**
+— *`c_i(Π) = 2 ⟹ ρ_i = 6`*, i.e. **(BE-38)(iii)'s third clause** contrapositively —
+every `Π_x` violation **is** a `U = Λ²K⁴` violation (**300/300**, 0 escaping; **313**
+escape without it), so `Π_x` and `Π_y` **drop out of the fourteen** and are **FREE in the
+attaining case**: the live block list goes **14 → 12** and the measured tight place is
+**closed** ((BE-101)). **Reading (1) CONFIRMED** — the condition is strictly stronger than
+the obligation, equal only at `δ₁+δ₂ ≤ 6` (28 of 49 pairs), and 320 of 1 975 conceivable
+double pencils are not violations. **Reading (2) REFUTED at its named weak link**
+(`ρ ≤ min(dist,6)` runs the *other* way; 2 sides at `dist = 6`, `δ = 1`) with its
+conclusion **recovered through `ρ`** ((BE-102)). **Job 2 fires on BOTH** target citations:
+(BE-44)(ii) is used in its **per-shape** converse and (BE-45) in its **converse** — the
+refutation itself uses only their proved halves. **Half (B) is NOT discharged**: the
+residual is the per-side (PENCIL-SATURATES), the other **12** blocks stay
+unwitnessed-not-excluded ((BE-97)(iv)), and the non-attaining case is live. Driver
+`notes/scripts/w4/bdouble.py`; write-up §(K-bare-ext) *Steps BE98–BE102*.
 **BUNIF (ordinal 63, §"BUNIF") LANDED 2026-09-02** — at **half (B)'s LAST residue**, the
 class quantifier (BE-67)(iii), which BPEEL had reduced to *one number per (piece, peel)*:
 **`reach(H;x,y) = min(δ₁+δ₂,6)`**. **HIT shape 2 — `reach` IS PER-SIDE DATA, and both
@@ -11728,3 +11742,137 @@ left it **saturated at 580/580**, and the follow-up bought the room back by relo
 block 8 got, and available because W4's informal argument is closed. The prep has spent most
 of that again on the in-flight lines plus (BE-97)(iv)'s scope caveat at two surfaces. **The
 landing MUST relocate or merge, not append**, and the note's own rule names the candidates.
+
+### LANDING WRITE-UP — BDOUBLE, 2026-09-02: **(NO-DOUBLE-PENCIL) is REFUTED by (BE-45)(ii)'s own vacuous corner, and the tight block is REDUNDANT — `Π_x` and `Π_y` drop out of the fourteen**
+
+> **LANDED 2026-09-02 — HIT shapes 2 AND 3, plus jobs 2 and 3.** Verdict in
+> `notes/Pencil-informal.md` §(K-bare-ext) *Steps BE98–BE102*, labels
+> **(BE-99)–(BE-103)**; driver `notes/scripts/w4/bdouble.py` (four modes: `arith`,
+> `witness`, `hunt`, `price`).
+
+**Job 1 (PRIMARY) — the condition is FALSE, and the double pencil is SLACK.**
+
+- **(BE-99) — one landed lemma produces BOTH clauses.** (BE-45)(ii) (M2, path
+  saturation) at its own **explicitly-flagged vacuous corner** `d_min = 6` gives
+  `ρ̄_i = ⟨P⟩` of dimension 6, i.e. **`ρ̄_i = Λ²K⁴`**, so `c_i(U) = dim U` at *every*
+  stable `U` — in particular `c_i(Π_x) = c_i(Π_y) = 2`, the block cap. (BE-45)(i)/(ii)
+  at the other side gives `c_j(Π_x) ≥ 1`. That is exactly the `(2, ≥1)` pair
+  (NO-DOUBLE-PENCIL) forbids, and **both hypotheses hold at a row already inside
+  BUNIF's own 92**: `K4 + th(6,6,6)/ab + ear4/ua` at peel `(a,b)` — side 2 the
+  `θ(6,6,6)` (`d_min = 6`, `δ₂ = ρ₂ = 6`, `ρ̄₂ = Λ²K⁴` asserted **as a space**), side 1
+  the `{a–v–b, a–e1₄…u–b}` side (`d_min = δ₁ = ρ₁ = 2`, `c₁ = 1`). **2 of 92 rows, at
+  BOTH 2-blocks**, 6 of 6 independent seeds. BUNIF's *"never sought jointly"* attack is
+  answered — the two clauses are not merely compatible, one lemma gives both.
+- **Why BUNIF's census did not see it, and no landed measurement changes.** (BE-97)(iii)
+  counts blocks where **both sides exceed the generic profile**. A side at `ρ_i = 6` has
+  `c_i(Π_x) = 2` *generically*, so it never registers as exceeding, and the pair `(1,2)`
+  is invisible to that statistic. The census is correct as written; the **named
+  condition** is what was wrong — a candidate-side reading correction of the (BE-45)(iii)
+  / (BE-36) shape.
+- **(BE-100) — CLASSIFIED, per job 1's own instruction: SLACK, not a violation.** At a
+  vacuous-corner peel `δ_i = 6`, so `slack = δ_j` and
+  `c_i + c_j ≤ 2 + ρ_j = 2 + δ_j + a_j` — the obligation holds whenever side `j`
+  attains. At the witness `δ₁+δ₂ = 8`, slack `2`, **margin `−1`** at both blocks, and
+  `dim(ρ̄₁+ρ̄₂) = 6 = min(δ₁+δ₂,6)+a₁+a₂`: **the peel ATTAINS. Half (B) is untouched by
+  the refutation.** This is *not* (BE-71)'s third mechanism.
+- **(BE-101) — THE REDUNDANCY THEOREM, and it is the direction's result.** Name the
+  per-side clause **(PENCIL-SATURATES)**: *`c_i(Π) = 2 ⟹ ρ_i = 6`* — **(BE-38)(iii)'s
+  third clause** contrapositively. **Theorem:** given it, a violation at `U = Π_x` **is**
+  a violation at `U = Λ²K⁴`. *(A `Π_x` failure forces some `c_i(Π_x) = 2` and the other
+  `c_j(Π_x) > slack`; then `ρ_i = 6` and `ρ_j ≥ c_j > slack`, so `ρ₁+ρ₂ > 6 + slack`.)*
+  Verified exhaustively — **300/300 caught, 0 escaping**, with an **F13 negative control**
+  at **313** escapes when the clause is dropped. **Corollary:** at `a₁ = a₂ = 0` the
+  `Λ²K⁴` inequality reads `a₁+a₂ ≤ max(0, 6−δ₁−δ₂)`, automatic — so `Π_x` and `Π_y` are
+  **FREE** and the live block list drops **14 → 12**. The measured tight place is closed.
+
+**The two coordinator readings, both TESTED.** `RESEARCH-ARC.md` §7's tally gains a tenth
+instance. **Reading (1) is CONFIRMED** and immediately load-bearing: (NO-DOUBLE-PENCIL) ⟺
+`c₁+c₂ ≤ 2`, the obligation only at `δ₁+δ₂ ≤ 6` (**28 of 49** `(δ₁,δ₂)` pairs asserted
+both ways), so the condition is **strictly stronger** than half (B) needs — **320 of 1 975**
+conceivable double pencils are not violations — and the exhibited pencil sits in exactly
+that gap. **Reading (2) is REFUTED at the weak link the prep named** and its **conclusion
+recovered by a different route**: `dist_i ≥ 6 ⟹ δ_i = 6` is false because (BE-30) bounds
+`ρ` by `dist` from **above** — a large `dist` removes a constraint, it never supplies one —
+asserted as `ρ_i ≤ min(dist_i, 6)` at **184/184** sides and refuted outright at **2**
+(`K4(1,3,3,3,3,2)` and `K4(1,3,3,3,3,3)` at peel `(C,D)`: `dist = 6`, `ρ = δ = 1`); the
+landed corpus already carried the shape at (BE-44)(iii). What reading (2) wanted comes
+instead from **(PENCIL-SATURATES)**, which gives `ρ_i = 6` with no mention of `dist`, and
+then (BE-101) supersedes the reading by killing the block outright.
+
+**Job 2 — the per-arc inventory verdict FIRES on BOTH of the target's citations.** Read at
+the statements, not the summaries. **(BE-44)(ii)** is proved in the `dim⟨P⟩ = 6` direction
+only; its **converse** (`≤ 5 ⟹ the intersection is the first line`) is the open condition
+**(BE-46)** discharges **per shape from one witness**, and (BE-46)(iv) says plainly that
+the class-level statement is **not** discharged — yet the price (BE-97)(i) quotes,
+*`c_i(Π_x) = 2` forces every path to span 6*, is exactly that converse's contrapositive.
+**(BE-45)** has (i) and (ii) proved **forward**, while the **converse** (BE-45)(iv) is
+*proved at 8 of 11 and measured at 3* — and the target's second clause reads (BE-45) as
+**characterizing** `c_j(Π_x) ≥ 1`, i.e. the converse. **Both citations are used in their
+non-theorem direction**, the second consecutive direction on which a *"priced by"* phrase
+outran its own statement (BUNIF's was (BE-38)(iii)). The **refutation is unaffected** — it
+uses only the proved halves — but the **residual's standing changes**: (PENCIL-SATURATES)
+is *not* implied by (BE-44)(ii), since `dist_i ≥ 6` yields no lower bound on `ρ_i`, so the
+clause rests on (BE-38)(iii)'s measurement alone.
+
+**Job 3 — the honest residual, in (BE-97)(iv)'s terms, and half (B) is NOT discharged.**
+What closes is the **measured** tight place. What remains: **(1)** **(PENCIL-SATURATES)**
+itself — per-side, one quantifier, no pairing; measured at **37** pieces ((BE-38)(iii))
+plus **4 sides of 92** here (0 with `ρ_i < 6`), a small denominator; **(2)** the **other 12
+live blocks**, **unwitnessed rather than excluded**, with (BE-97)(iv)'s own named shape —
+`c_i(⟨M⟩) = 1` on **both** sides — still the right hunt; **(3)** the **non-attaining case**,
+where `U = Λ²K⁴` is a real constraint `a₁+a₂ ≤ max(0, 6−δ₁−δ₂)` and, by (BE-101)(iii), a
+**live** block; **(4)** unchanged, the ear case's (β) side at the window modulo *Step BE56*
+/ (BE-57)(iv)'s **(S1)**/**(S2)**, and **cross-pair welding** ((BE-28)(i)).
+**E1/E2/E3 read against `notes/Pencil-fanout-archive.md`, REPORTED AND NOT FIRED**, with
+the 2026-09-02 correction in force (*"the target" is the ARC's, `PencilPair K 3 G`*): the
+reading is **`:1700`'s two-conjunct E3**, `:2098`'s one-conjunct deviation noted and not
+used. **E1** — no colourings, no `D`, no g-flank. **E2** — *does not fire*, and the
+distinction matters here: what is refuted is **(NO-DOUBLE-PENCIL)**, a direction's local
+obligation, **not** the arc's target; and this landing names a dispatchable attack.
+**E3** — the arc's target is not proven and (PENCIL-SATURATES) is dispatchable, not gated.
+
+**F11 — the rider, and the target was again a universal claim.** *"At no internal R-node
+peel"* is a `∀` no sweep exhausts — but this direction did not need to exhaust it, because
+the answer is **negative** and one witness settles a `∀`. The sweeps are **BUNIF's own two
+constructed populations, with no new one added**: **A** = BDECOR's 7 R-node pieces +
+BPEEL's nested one; **B** = `bpeel.constructed_tier(maxlen=3, nsamp=60)` behind BPEEL's
+disclosed stand-in `rnode_shaped`; **92** rows for `hunt`, **184** sides for `price`. Every
+*"none found"* — including (PENCIL-SATURATES)'s **0 of 4** — reads *none found under those
+caps*, and the `4` is the same small denominator (BE-98)(ii) disclosed, on an **overlapping**
+population, so it is **not** independent confirmation. The non-sweep claims are (BE-99)(i)/(ii)
+((BE-45)'s identities), (BE-100) and (BE-101) (exhaustive enumerations plus one proof), and
+(BE-102)(i)'s `ρ ≤ min(dist,6)` (from (BE-30)).
+
+**F12 paid at source — four hunks**, at the statements and not only in the write-up:
+**(BE-97)(iii)** (the condition is REFUTED, with its measurements explicitly untouched),
+**(BE-97)(i)** (its enumeration's `a = 0` denominator, and that its "structural price" is
+weaker than it reads), **(BE-45)(ii)** (its vacuous corner is what refutes (BE-97)(iii)),
+and **(BE-80)(iv)** (the `δ = min(L,6)` identity annotated **PATH-SIDE ONLY**, the prep's
+explicit instruction).
+
+**F21 — the `(K-bare)` row recomputed to a target, then the cap bumped deliberately.**
+1 472 → **1 546** words while absorbing a full direction and five labels — ~110 words of
+pre-existing prose compressed away against ~186 added — with label preservation by a
+**scripted set-diff: 129 codes in, 144 out, ZERO dropped**. 54 words of headroom under the
+generic 1 600 is the *pointless recompute* `RESEARCH-ARC.md` §6 names, so the row joins
+`check-gapmap-cells.py`'s `SPECIAL_CAPS` at the recompute's own size plus ~15 % —
+**1 630 / 150, combined 1 780** — documented in that script's docstring in the same commit,
+per its own bump rule and the `(K-grid)` precedent. **Harness**: `bdouble.py` is an
+**addition only**, so the figure-invariance gate discharges by the one-line check; no
+tracked driver was edited. Twenty-first `kbare/` consumer, chain **nineteen** deep, and the
+**first external consumer of any `bunif` device** (recorded below the rule-2 threshold).
+
+**Reservation CONSUMED IN FULL, nothing returned.** Labels **(BE-99)–(BE-103)**, *Steps
+BE98–BE102*, owning file §(K-bare-ext) (extended, no new section), driver `w4/bdouble.py`
+at the reserved path. **Nothing minted** for `Π_x`, `c_i(U)`, `margin`, `blockcap`/
+`blockdeg` or the double pencil itself, per the reservation's constraint. One new
+configuration-level object is named in prose: **(PENCIL-SATURATES)**. Next tail declared:
+**(BE-104) / *Step BE103***.
+
+**The successor this direction names, ranked.** **(1)** **(PENCIL-SATURATES)** — attack it
+where (BE-44)(ii)'s **per-shape** half is doing the work: a side whose every `x–y` path
+spans `≤ 5` yet whose `ρ̄_i` still contains `Π_x`. Cheapest falsification of this landing,
+and (BE-46)(iv) already says the class-level statement is undischarged. **(2)** the
+`U = ⟨M⟩` block, (BE-97)(iv)'s own named shape, still unwitnessed. **(3)** the
+**non-attaining** case, where `U = Λ²K⁴` becomes a live block ((BE-101)(iii)) — and by the
+redundancy theorem it is where a `Π_x` failure would surface first anyway.
