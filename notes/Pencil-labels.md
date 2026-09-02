@@ -2852,3 +2852,51 @@ owners — (SAFE-RES′)'s clauses, §(K-slide)'s claims, §(K-bare-ext)'s windo
 Qualify every one with its owner (L3). New objects this direction is likely to need
 (`Λ`-run, dangling `Λ`-end, `Λ`-component) already have prose/symbol names from WPAIR —
 **re-use them, do not mint labels for them**, per WTRI's and WPAIR's precedent.
+
+## Reserved namespace — direction BBASE (2026-09-02, **IN FLIGHT**)
+
+**Reserved 2026-09-02 for the single direction BBASE** (ordinal 62, the arc's seventieth
+direction; `notes/Pencil-fanout.md` §"BBASE") — **the flag base off the no-adjacent-hubs
+class** ((BE-65)(i)/(BE-68)(ii) item 1), candidate 1 of the (BE-14) thread and the smaller
+of half (B)'s two residue items. Coordinator-set, single dispatch — **not** a fan-out, so
+this reservation protects against the *existing corpus* only.
+
+| direction | owning § | labels reserved | steps reserved | driver |
+|---|---|---|---|---|
+| **BBASE** | §(K-bare-ext) — **extends**, no new section | **(BE-89)–(BE-93)** | **BE88–BE92** | `w4/bbase.py` (expected — extend `bdecor.py`'s chart instruments and `bsharp`/`widened`'s samplers by read-only import) |
+
+The reservation opens at **(BE-89) / Step BE88**, exactly the tail BGENUINE's registry row
+declared; BGENUINE consumed its reservation in full and returned nothing.
+
+**0-hit verification, at reservation time**, across `*.md`, `*.tex`, `*.lean`, `*.py`,
+`*.m2` with `.git`/`.lake`/`__pycache__` excluded, **in both cases**: `BBASE`, `bbase`,
+`bbase.py`, `(BE-90)`–`(BE-93)` and the raw step tokens `BE89`–`BE92` each **0-hit**.
+**`(BE-89)` and *`Step BE88`* have one hit each** — the tail sentence in BGENUINE's
+registry row, opened and confirmed to be a **pointer**, not a consumed label. (Same shape
+as BGENUINE's own `(BE-84)` / *Step BE83* check.)
+
+**`BFLAG` was CHECKED AND NOT CHOSEN, on two independent grounds.** It is **no longer
+0-hit** — BSHARP's prep rejected it in 2026-08-28 and both that reservation and the
+fan-out section record the rejection, so the token now appears twice — and BSHARP's
+recorded **reason still stands**: *"it names the apparatus (the point-plane flag
+`Π_u = p_u ∧ π_u`) rather than the question"*. Re-using a name whose rejection is on the
+record would also make the registry ambiguous about which direction it belonged to. Also
+checked: `BREAL` (0-hit, but it names the *object* `B_real` in a way that reads as a
+variable rather than a question), `BPATH` (0-hit uppercase but names a **predicted case
+split** — `RESEARCH-ARC.md` §7's warning about baking in a prediction, and the path case is
+exactly the coordinator reading most likely to be wrong), and `BFREE` (`bfree` hits **15**
+files, an (L5) substring rejection). **`BBASE` names the object the question is about and
+not a predicted answer**, per BGENUINE's precedent.
+
+**(L6) reminder for the landing.** Run the landing-time bare-token grep on the returned
+draft. Live risks: **`(S1)`/`(S2)`**, which have **three** owners — (SAFE-RES′)'s clauses,
+§(K-slide)'s claims, §(K-bare-ext)'s window conditions — qualify every one (L3); and
+**`B_real`**, which is a prose/symbol name, not a label, so **do not mint one for it**.
+Prefer prose names for new configuration-level objects, as BSPREAD, BONEONE and BGENUINE
+all did; the objects this direction is likely to need (a `B_real`-component, a `Λ`-run, a
+flag chain) already have prose names in the corpus.
+
+**Gap-map note (F21).** The `(K-bare)` row is at **1 544 / 1 600 words**, 56 spare. The
+landing must **recompute to a target**, not append a since-BBASE clause, and must verify
+label preservation by **scripted set-diff**. `notes/check-gapmap-cells.py` gates the cap,
+not the labels.

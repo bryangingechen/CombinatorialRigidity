@@ -10,9 +10,8 @@ derives it from exactly **three carried items**: **`hcontract`** (W4 — build p
 
 **The research arc: 69 directions COMPLETE** (2026-08-05 → 09-02, ordinals
 1–61 — 65 on kernel (K), and **WTRI (58) / WELOC (59) / WPAIR (60) / WGROW (61) on W4**),
-plus eight strategy-only passes and two architecture probes; **NONE IN FLIGHT — the next
-concrete task is to dispatch (BE-14) candidate 1, the flag base ((BE-65)(i)); see
-*Hand-off*.**
+plus eight strategy-only passes and two architecture probes; **BBASE (62) IS IN FLIGHT**
+at the (BE-14) thread's candidate 1, the flag base ((BE-65)(i)).
 Per-direction verdicts, specs and write-ups live at `notes/Pencil-fanout.md` §"<CODE>"
 (ordinals 1–19: the archive) plus a workbook home — **not restated here**.
 **The arc's standing result, unchanged by all 69: `hK` is not closer.** **(GR-15)** — the
@@ -233,14 +232,18 @@ multigraph** ((GROW-1)/(GROW-2)/(GROW-3)). **So (E-pair) is a THEOREM ((GROW-6))
 with it, and W4's non-user-call cost list is EMPTY** — only the USER call **(K-res)**
 remains, plus the Lean-held build.
 
-**NOTHING IS IN FLIGHT.** **THE NEXT CONCRETE TASK is to dispatch (BE-14) candidate 1 —
-the flag base off the no-adjacent-hubs class ((BE-65)(i))** — the coordinator's own
-alternation rule after four consecutive W4-side directions, and the fall-back the WGROW
-spec named. **Two things that are the USER's call, not a dispatch:** the **(K-res) wave**
-(the 2026-08-26 adjudication selected a cheap scoping slice, queued below), and whether
-W4's now-closed informal side changes anything about the **2026-08-05 Lean hold** — its
-own release condition speaks of an informal result *"significant as standalone"*, and
-(E-pair) + (V) + (T) is one, but the hold is the user's to lift, never a coordinator's.
+**IN FLIGHT — BBASE (62), at the (BE-14) thread's candidate 1: the flag base off the
+no-adjacent-hubs class ((BE-65)(i)/(BE-68)(ii) item 1)**, the smaller of half (B)'s two
+residue items (spec `notes/Pencil-fanout.md` §"BBASE"). The coordinator's own alternation
+rule after four consecutive W4-side directions. **THE NEXT CONCRETE TASK is to verify and
+land BBASE's return** (the coordinator re-runs E1/E2/E3 itself, `61e046a6`); the ranked
+list below is the fall-back if it returns BLOCKED. **Two things that stay the USER's call,
+both OFFERED 2026-09-02 and both DECLINED IN FAVOUR OF CONTINUING RESEARCH:** the
+**(K-res) wave** (the 2026-08-26 adjudication selected a cheap scoping slice, queued
+below), and whether W4's now-closed informal side changes anything about the
+**2026-08-05 Lean hold** — its own release condition speaks of an informal result
+*"significant as standalone"*, and (E-pair) + (V) + (T) is one, but the hold is the user's
+to lift, never a coordinator's.
 **The ranked (BE-14) list below is unchanged.**
 
 The ranked list:

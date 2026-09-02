@@ -1,7 +1,20 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: EIGHT fan-outs, FORTY-TWO single directions and TWO concurrent pairs
-dispatched; 69 LANDED, NONE IN FLIGHT.**
+**Status: EIGHT fan-outs, FORTY-THREE single directions and TWO concurrent pairs
+dispatched; 69 LANDED, ONE IN FLIGHT.**
+**BBASE (ordinal 62, §"BBASE") IS IN FLIGHT since 2026-09-02** — back to the **(BE-14)
+thread** after four W4-side directions, at **candidate 1**: the **flag base off the
+no-adjacent-hubs class** ((BE-65)(i)/(BE-68)(ii) item 1), the smaller of half (B)'s two
+residue items. Its prep carries three coordinator readings labelled *to be tested*, the
+first two a **join of two workbook sentences one *Step* apart**: that `hcard` makes
+`B_real` **max degree `≤ 2`**, so its components are paths and cycles; that the base
+**factors over those components** and **(CH-1) already settles the cycles of length
+`≥ 4`** verbatim, leaving **paths** (min degree 2 fails at the ends) and **triangles**
+(girth 3 fails, and (CH-5)/(BE-72) say that case is not merely technical); and that the
+path case may be (CH-1)'s own tower with a weaker hypothesis — the reading most likely to
+be wrong, since fibre dimension jumps where consecutive points coincide. Job 2's
+`hcard`-availability question is **load-bearing**, and the sibling W4 arc has a landed
+answer. Driver-to-be `notes/scripts/w4/bbase.py`. Run at `recon-opus` (fable unavailable).
 **WGROW (ordinal 61, §"WGROW") LANDED 2026-09-02** — the **fourth** W4-side
 direction, and it settles **(PAIR-5)** *both ways* — **HIT shapes 1, 2, 3, 4 and
 5**. As stated (PAIR-5) is **REFUTED** by `K₂,₃` ((GROW-5)), which is in the class,
@@ -10848,3 +10861,216 @@ independent*, so it transports to any partial subdivision.
 now empty**, which is exactly the self-termination the spec's diversification
 paragraph promised on a HIT. The concentration ends here on its own terms; the next
 pick is a (BE-14)-side one or a user call on (K-res)/the Lean hold.
+
+## BBASE — sixty-second ordinal (single dispatch, prepped 2026-09-02) — back to the (BE-14) thread
+
+**Selection provenance: the coordinator's own alternation rule, fired exactly where the
+WGROW spec said it would be.** W4's non-user-call list is **empty** ((GROW-6)), so the
+four-direction W4 concentration self-terminated; the user, offered the Lean hold and the
+(K-res) wave alongside continuing, chose **continuing**, leaving **both standing calls
+untouched**. That returns the loop to the ranked list, whose **candidate 1** is this: the
+**flag base off the no-adjacent-hubs class** ((BE-65)(i)/(BE-68)(ii) item 1) — one of the
+**two** things standing between half (B) and a class statement, and by the thread's own
+assessment **the smaller of them**.
+
+Dispatched **un-named, single**, at **`recon-opus`** (fable unavailable this session).
+
+### The target, stated exactly
+
+> **(BE-68)(ii) item 1.** *When the skeleton has real hub–hub edges, the flag base is a
+> pencil-realization problem for `B_real`* — the graph whose edges are the **length-1**
+> branches — *and that is the phase's own problem one level down.*
+
+Concretely ((BE-65)(i)): a legal flag assignment is a point `p_z` and a plane `π_z ∋ p_z`
+per hub, with `p_{z'} ∈ π_z` and `p_z ∈ π_{z'}` for every `B_real`-edge `zz'`. The base is
+a **product of irreducible rational bundles iff `E(B_real) = ∅`**. **Settle what it is off
+that class**: nonempty? irreducible? rational, with dense ℚ-points? If yes, half (B)'s
+residue drops from **two** items to **one** ((BE-67)(iii) alone).
+
+### THE COORDINATOR'S THREE READINGS — labelled TO BE TESTED, not inherited
+
+`RESEARCH-ARC.md` §7 binds; each names the surface it was read off. Readings (1) and (2)
+are the reason this is priced as one slice rather than a wave, and **reading (1) is a
+join of two sentences that are already both in the workbook, one *Step* apart** — so if it
+holds, the arc has been carrying a much smaller residue than (BE-68)(ii) says.
+
+**(1) `B_real` HAS MAX DEGREE `≤ 2`, SO ITS COMPONENTS ARE PATHS AND CYCLES.** (BE-65)(ii)'s
+own paragraph *"What `hcard` is, seen from here"* states it: `hcard` *"is the condition
+that every hub have at most two hub neighbours"*. `B_real`'s edges are exactly hub–hub
+edges ((BE-65)(i)). So under `hcard`, `B_real` is a disjoint union of **paths** (including
+isolated vertices and single edges) and **cycles** — not an arbitrary graph on `|W|`
+vertices. *"The phase's own problem one level down"* is then the phase's own problem on
+the **thinnest** graphs it has, which is a different proposition from the one
+(BE-68)(ii) records. **Read off the workbook, not measured.**
+
+**(2) THE BASE FACTORS OVER `B_real`'s COMPONENTS, AND (CH-1) ALREADY SETTLES THE CYCLES OF
+LENGTH `≥ 4`.** (BE-65)(i)'s proof says the *only* conditions are `p_z ∈ π_z` plus mutual
+incidence **per `B_real`-edge** — per-edge conditions, so the base is a **product over
+connected components** of `B_real`. On a cycle component of length `≥ 4`, all three of
+**(CH-1)**'s hypotheses hold: `hcard` (degree 2 means `≤ 2` hub neighbours), **min degree
+2** (it is a cycle), **girth `≥ 4`** (the cycle's own length). So §(K-chart)'s theorem
+applies **verbatim** and those components are free — nonempty, irreducible, ℚ-rational,
+dense ℚ-points. **What is left is then two named cases, not one open problem:**
+
+- **PATH components** (`m ≥ 2` vertices) — **min degree 2 fails at the two ends**, and that
+  is (CH-1)'s hypothesis, not an artifact. This is the real residue.
+- **TRIANGLE components** — **girth 3 fails**, and this one is *known not to be merely
+  technical*: **(CH-5)** found that girth `≥ 3` does **not** give nonemptiness, *"a
+  Λ-triangle with a non-hub on two of its hubs empties the tower at every seed"*, and
+  **(BE-72)** records *"isolated emptiness is real (a **triangle on two hubs**)"* and
+  **absorbed by the existential**. Say whether the same absorption argument covers the
+  base here, or whether a `B_real`-triangle is a genuine obstruction.
+
+**(3) THE PATH CASE LOOKS LIKE (CH-1)'s OWN TOWER WITH A WEAKER HYPOTHESIS, NOT A HARDER
+PROBLEM — and this is the reading most likely to be wrong.** §(K-chart) *Step CH3*'s tower
+is *hub points free, hub normals in `ker A_h(q)`, non-hub points in the intersection of
+their hub neighbours' planes*. Along a path `z₁ … z_m` the greedy order gives `p₁` free
+(3 params), `π₁ ∋ p₁` (2), then per step `p_{i+1} ∈ π_i` (2) and `π_{i+1} ∋ p_i, p_{i+1}`
+(1, the pencil of planes through the line `p_i p_{i+1}`) — a tower of affine-linear
+fibrations with irreducible rational fibres, hence irreducible and rational with dense
+ℚ-points. **Where the coordinator expects to be wrong:** that fibre dimension is **not
+constant** where consecutive points coincide (`p_i = p_{i+1}` makes the plane fibre
+2-dimensional, not 1), and constancy of fibre dimension is precisely what (CH-1)'s tower
+argument and **(CH-6)** are careful about. It is entirely possible that min degree 2 is
+(CH-1)'s hypothesis *because* of that jump, in which case a path is harder at its ends
+rather than freer. **Re-derive the count; do not inherit it.**
+
+### Job 1 (PRIMARY, FORCED) — settle the flag base off the no-adjacent-hubs class
+
+Prove it free, exhibit an obstruction, or reduce it to a named case. Readings (1)–(3) are a
+proposed decomposition, not a route you owe anything to. **What "free" has to mean** is set
+by the consumer: (BE-65)(iii) buys *one exact-ℚ draw settles the generic value* from
+irreducibility, and (BE-64)/(BE-66)'s product theorem needs the base to be a variety the
+per-branch chains fibre over — so say which of *nonempty / irreducible / rational / dense
+ℚ-points* you get, separately, and which the consumer actually needs.
+
+**If an obstruction appears, classify it before pricing it.** A `B_real` whose base is
+**empty** at every flag is a different animal from one whose base is **reducible**: the
+first is the (BE-72)/(CH-5) triangle phenomenon and may be absorbed by the existential; the
+second breaks (BE-65)(iii)'s one-draw mechanism and would put a genuine new item on half
+(B). Say which.
+
+### Job 2 (FORCED) — the standing inventory verdict, PER-ARC, with an immediate target
+
+WGROW sharpened the verdict to **per-arc**: *grep the sibling workbook for the Lean file
+you are about to cite* — the W4 arc had cited **no** part of `Graph.deficiency`'s landed
+**partition** face while this workbook cites it 16 times. **The immediate instance here
+runs the other way, and reading (1) rests on it:** is **`hcard` available at the pieces of
+this thread**, or is it only the **sampler's** cap? (BE-65)(ii) says *"the arc's standing
+sampler cap is not an artifact; it is (CH-1)'s hypothesis"* — a statement about the
+sampler, not about the pieces. The **sibling W4 arc has a landed answer**:
+`ncard_closedHubNbhd_le_three_of_isNondegPencilRealization` (`Motive.lean:409`), which W4
+reads as **(EL-1)** — *every hub of a graph carrying a nondegenerate pencil realization has
+`≤ 2` hub neighbours* — a **necessary condition**, not a modelling choice. Settle whether
+it transports to the pieces `H` here. **If it does not, reading (1) fails and job 1 is a
+larger question than this spec prices; say so plainly rather than working around it.**
+
+### Job 3 (FORCED, CHEAP) — the residue, and the E-rider
+
+State what half (B)'s residue is after this landing — **one** item or **two** — and what
+(BE-14) is left with. Then read E1/E2/E3 against their **actual** definitions
+(`notes/Pencil-fanout-archive.md`) and **report, never fire**. One clause is pre-corrected
+and quoting it wrong is the trap WPAIR fell into (`61e046a6`):
+
+> **"The target" in E1–E3 is the ARC's target — `PencilPair K 3 G`** — never a direction's
+> local obligation. The corpus carries **two** E3 formulations (`:1700`'s two-conjunct text
+> and `:2098`'s deliberate one-conjunct deviation); say which you read. WGROW recorded a
+> further wrinkle worth checking: **E2's literal text says *"the direction's target"* while
+> E3's says *"the target"***, so the correction is to E2's letter rather than a restatement
+> of it.
+
+### What counts as a HIT — state which you got
+
+1. **The flag base is FREE off the no-adjacent-hubs class** — half (B)'s residue drops to
+   the single item (BE-67)(iii), and (BE-68)(ii) is rewritten.
+2. **Free on a named sub-class, with the rest named** (readings (1)/(2)'s decomposition, or
+   a better one) — a reduction, and the honest shape if the triangle case resists.
+3. **An obstruction**, classified empty-vs-reducible per job 1.
+4. **The `hcard`-availability verdict** (job 2) — and it is load-bearing, not bookkeeping.
+5. **The residue statement + the E-rider reading** (job 3).
+
+Any of readings (1)–(3) **corrected** is a reportable result in its own right.
+
+### Bars
+
+- **Do not re-open:** the flag **coincidence** — genuine and harmless, a **checked
+  hypothesis**, not an item ((BE-84)/(BE-86)); the **shortfall** (`0` at 392/392); `(1,1)`
+  peels ((BE-79), answered); the **SPREAD step** ((BE-74), closed); the **forced-empty `G`
+  hunt** ((BE-72), impossible on (CH-1)'s class); the **exhaustiveness obligation**
+  ((BE-70), retired — and completeness of the mechanism list is **not** claimed, do not
+  claim it); **(BE-32)(+)**; **(BE-41)(ii)** (refuted and retired); **BWIN's window
+  theorem**; **S-mark's pin**; the ear-decomposition induction ((BE-43)).
+- **Not this direction, ranked separately:** **(BE-67)(iii)**, the class quantifier, beyond
+  job 3's one sentence; **cross-pair welding** ((BE-28)(i)); **(S1)/(S2)** — and qualify
+  that token, it has three owners; the **one-end-series** case; BTWOCUT's bundle
+  construction.
+- **The whole W4 side is CLOSED as an informal argument** ((GROW-6)) — do not re-derive it,
+  and do not treat `K₂,₃` appearing on both threads as a result (see *Riders*).
+- **The Lean hold (2026-08-05) binds**: no `.lean`, in any file, for any reason.
+- **Out of scope:** `hK`, **(GR-15)**, class uniformity, **(K-res)** (a USER call).
+
+### Riders
+
+**F11 — a driver per headline sentence.** *"Irreducible"*, *"rational"*, *"free"* and
+*"the only obstruction"* are all **exhaustiveness-class** claims: they need an argument, or
+an enumeration that actually enumerates. A sampler that draws legal flags and finds no
+failure shows **"none found under cap C"**. **Cap disclosure MANDATORY with the DENOMINATOR
+named** — WELOC's *"0, not 255"* and WGROW's *"1 016 class members, 118 carrying a `Λ`-cycle
+of length `≥ 7`"* are the standard.
+
+**F21 + `RESEARCH-ARC.md` §6 — the gap-map row, and this one binds at the landing.** The
+`(K-bare)` row is at **1 544 / 1 600 words**, 56 spare. That is the *pointless-recompute*
+position §6 names: do **not** append a since-direction-BBASE clause. **Recompute to a
+target** that leaves headroom for the landings already queued on that namespace, and
+**verify label preservation by a scripted set-diff, never by eye** — the coordinator's own
+hand-recompute once dropped a live label and only a script caught it.
+`notes/check-gapmap-cells.py` gates the cap; it does not gate the labels.
+
+**Harness.** `notes/scripts/README.md` binds and is **read first** — §1 for the primitives
+(`bdecor.py`'s chart instruments, `bpeel.py`, `bsharp.sample_piece_config_adj`,
+`widened.place_pencil_general`; do not reimplement them), §2 for layering, §4 for the
+discipline. Every script is committed; the figure-invariance gate fires only if a **tracked
+driver is modified**, so if you only add `w4/bbase.py`, record the one-line
+`git diff --name-only -- '*.py' '*.m2'` / `git status --porcelain notes/scripts/` evidence
+instead of re-baselining §3.
+
+**F12** — readings (1) and (2), if confirmed, are corrections *in waiting* at **(BE-65)(i)**
+(which calls the off-class base *"the phase's own problem"* without the max-degree-`≤ 2`
+qualifier) and at **(BE-68)(ii) item 1** (same). Edit **there**, not only in the write-up.
+
+**F17 — four status surfaces**, all set to *in flight* by this prep and to be moved by the
+landing: the fan-out header; `notes/Phase39.md`'s `**Status:**` header **and** *Hand-off*
+(its *Blockers* W4 bullet is **not** this direction's); and **`ROADMAP.md`'s Status row**.
+
+**A convergence to notice and NOT to manufacture.** WGROW's unique (PAIR-5) counterexample
+is `K₂,₃`, and this thread's named triangle-free admitting shape at (BE-86) is **also
+`K₂,₃`** — two independent directions, two different threads, one day apart, same five-vertex
+graph. That is the F18 cross-return shape and is worth **one sentence** if you see why, and
+**nothing at all** if you do not. Do not build a connection to report one.
+
+**`RESEARCH-ARC.md` §7** — readings (1)–(3) are hypotheses with their evidence stratum
+named. Kill any without ceremony; the tally of outcome kinds is at §7 and now runs to seven
+instances and six kinds.
+
+### Reservation
+
+(`notes/Pencil-labels.md` §"Reserved namespace — direction BBASE".) Labels
+**(BE-89)–(BE-93)**, ***Steps BE88–BE92***, owning file `notes/Pencil-informal.md`
+§(K-bare-ext) — **extends, no new section**, per the thread's standing convention — driver
+`w4/bbase.py`. The reservation opens exactly at the tail BGENUINE's registry row declared.
+**Return any unconsumed remainder.** **`BFLAG` was checked and NOT chosen**: it is no longer
+0-hit (BSHARP's prep and its fan-out section both record having rejected it), and BSHARP's
+recorded ground still stands — *it names the apparatus, the point-plane flag, rather than
+the question*. `BBASE` names the object the question is about and **not a predicted
+answer**, per BGENUINE's precedent. Prefer **prose names** for new configuration-level
+objects, as BSPREAD, BONEONE and BGENUINE all did.
+
+### Budget — measured at this prep
+
+**`notes/Phase39.md` is at 568/580 lines, 503/525 status-header words** — 12 lines and 22
+words of headroom, bought at the WGROW landing by rotating the four W4 landings into one
+paragraph plus a workbook pointer. The prep spends only the in-flight lines. **The
+`(K-bare)` gap-map row at 1 544/1 600 is the tighter constraint** and is the landing's, not
+the prep's — see *Riders*. No gap-map row is touched by this **prep**, so
+`notes/check-gapmap-cells.py` will not fire on it; the **landing** touches exactly one and
+must run it.
