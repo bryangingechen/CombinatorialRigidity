@@ -1346,7 +1346,7 @@ own top two were spent. **The two filters were applied to every entry.**
 
 | # | item | owner | status, re-derived |
 |---|---|---|---|
-| **1** | **(GR-18)(iii)** — the grouping problem: does *some* 6-tree partition of `Ĝ` admit a 3+3 split `J` with `\|C_β ∩ J\| = 3 − A(β)` for a length-legal `A`? | §(K-grid) *Step G21*; TCOL *What would change this* (iii) | **named 2026-08-07, never attacked, never priced on any board, never in a dispatch spec** |
+| ~~**1**~~ | ~~**(GR-18)(iii)**, the grouping problem~~ | §(K-grid) *Steps G149–G153* | **SPLIT IN TWO 2026-09-02 (direction GPACK)**: the packing-and-split half is an **unconditional theorem** ((GR-130)) off `def(G) = 0` alone — neither the packing nor the split is ever the obstruction — and the residual is a **hub list-colouring** ((GR-132)), sound and complete at `Λ = ∅`. **New rank 1 is that colouring at the `ℓ = 2`-rich shapes**; `Λ ≠ ∅` needs a merging conjunct nobody has written |
 | 2 | collapse-order bound `κ ≤ 4/5` + the `r = 4` certifying criterion | §(K-grid) *Step G22* ((GR-19)); TCOL (i)/(ii) | measured `κ ≤ 4` at **18/18** separators, unproven, untouched since 2026-08-07 |
 | 3 | **(OC-44)(iii)** wall-avoiding certificate-colouring existence | §(K-out) *Step O41* | open, 174/174 within caps; a HIT buys a **quantifier**, not a gap-map row |
 | 4 | the (a′)/(b′) ledger residuals | §(K-grid) G98–G148 | entry **1 of 4**; entries 2–4 recorded *unchanged/unswept* at every landing since 2026-08-13 — **see the do-not-do note below** |
@@ -1387,15 +1387,26 @@ colouring-existence argument over Step G12's branch bits … + (GR-4′)"* — w
 route"* under do-not-re-run, GUNIF having settled it at *Step G36* (*"DEAD AS
 SPECIFIED"*). Whichever direction next touches either surface owns the reconciliation.
 
-**ONE CAVEAT ON WHAT A (GR-15) HIT BUYS, raised as a question and not a claim.** A (GR-15)
-HIT discharges `hK` **on the tight stratum**. But `C11` — a bare odd cycle — is *in* `hK`'s
-habitat and is **not** count-tight, `(AC-6)` is *"REFUTED as a class statement"* by it, and
-`(K-clos)`'s close-it says *"nothing here would ever make the statement habitat-uniform:
-`C11` is permanent"*. The recon found **no gap-map row owning that non-tight-but-in-habitat
-remainder** (having read four of 28 rows, so this is a question, not a finding). **Is the
-remainder genuinely free — §2.5's `dim R_a ≥ 2` ⟹ escape automatic — or is it an unowned
-gap?** It is cheap to settle and it changes what a (GR-15) HIT is worth; it is a forced job
-on the next `hK` dispatch.
+**WHAT A (GR-15) HIT BUYS — ASKED 2026-09-02, ANSWERED THE SAME DAY (direction GPACK,
+job 2), AND THE COORDINATOR'S OWN FRAMING OF THE QUESTION WAS WRONG.** A (GR-15) HIT
+discharges `hK` **on the tight stratum**; `C11`, a bare odd cycle, is *in* the habitat, is
+**not** count-tight, refutes `(AC-6)` as a class statement, and `(K-clos)` calls it
+permanent. The scoping recon, having read four of 28 rows, could find no row owning that
+remainder and raised it as a question. **It is owned: `§(K-res)/(RS-5)`**, which routes
+`def > 0` habitat members to the **escape route** ((RS-6)). **Not an unowned gap** — a
+(GR-15) HIT buys the tight stratum and hands `C11`'s stratum to a route that has an owner.
+
+**And the way this box first posed the question INVERTED ITS OWN SOURCE.** It asked whether
+the remainder is *"genuinely free — §2.5's `dim R_a ≥ 2` ⟹ escape automatic"*. That
+implication is real, but **§2.5 is a NEGATIVE result** and citing it as a freeness route
+reads it backwards: its content is that at tight shapes the count **forces**
+`dim R_a = 5 + def(G′) − def(G − v) = 1`, so *"carry `dim R_a ≥ 2`"* is exactly the
+invariant that **cannot** be carried — and §(K-flank) *F5(d)* makes it worse, with five
+legal seeds where the count predicts `1` and the geometry delivers `0`. §2.5's own summary
+is *"counting data is saturated **and provably blind** to the discriminating phenomenon"*.
+**Do not quote §2.5 as supplying freeness anywhere.** Recorded rather than silently fixed
+because the mis-citation was the coordinator's, it was written into this board, and a
+later session reading it would have inherited a route the section exists to close.
 
 ### 8.1 Continue the current architecture
 
