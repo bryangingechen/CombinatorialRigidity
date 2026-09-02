@@ -41,7 +41,7 @@ here — the phase's next concrete task is the kernel-(K) research pick
 
 ## The relocated reference blocks — the index `notes/Phase39.md` points at
 
-**TEN blocks, relocated verbatim from `notes/Phase39.md` between 2026-08-27 and
+**TWELVE blocks, relocated verbatim from `notes/Phase39.md` between 2026-08-27 and
 2026-09-02**, each because it is **stable reference, not status** — it changes only
 when something is *added* to it, never when a gap's status moves. (Blocks 8 and 9 are the
 two exceptions to the "never when a gap's status moves" reading, and they are
@@ -62,10 +62,11 @@ cap was ever bumped and nothing was deleted**; the note keeps a pointer to each.
 | 5 | *What the recent landings closed* | 2026-08-29 | BZAVOID / ZJACOB / ZSHEAR / GHWIT / GMINM closes |
 | 6 | *The unselected candidate continuations* | 2026-08-29 | leads (b)–(f); ranking lives in the fan-out losers sections |
 | 7 | *Citations — the phase's verified bibliography* | 2026-09-01 | every verified source; **a new source is added HERE** |
-| 8 | *The (BE-14) thread — per-landing detail* | 2026-09-01 (addenda 09-02) | which direction proved which sub-clause of the three sides, with its labels; the **settled frame**, the thread's last five landings and its four 2026-09-02 landings (BBASE/BUNIF/BDOUBLE/BSATUR) joined it 09-02 |
+| 8 | *The (BE-14) thread — per-landing detail* | 2026-09-01 (addenda 09-02) | which direction proved which sub-clause of the three sides, with its labels; the **settled frame**, the thread's last five landings and its **six** 2026-09-02 landings (BBASE/BUNIF/BDOUBLE/BSATUR, then BSIGMA/BPROPER at the OWALL landing) joined it 09-02 |
 | 9 | *The W4 deviation — per-landing detail* | 2026-09-02 | which of WTRI/WELOC/WPAIR/WGROW proved which sub-clause of route 3's cost list, with its labels; relocated once W4's informal argument closed |
 | 10 | *The (BE-14) lane's standing candidate list* | 2026-09-02 | the lane's ranked-but-unmoved candidates — one-end-series, (S1)/(S2), the bundle construction and the *also ranked* tail; relocated when the note hit 587/580 |
 | 11 | *The `hK` lane — per-landing detail* | 2026-09-02 | which of GPACK/GLIST proved which sub-clause of (GR-18)(iii)'s split, with its labels, plus (GR-133)'s price; relocated at the GLIST landing, the lane's second result in two directions |
+| 12 | *The escape route (§(K-out)) — per-landing detail* | 2026-09-02 | OWALL's per-landing detail on the escape route's largest live row: the two-direction-network model, the three confinement certificates, and what (OC-44)(iii) reduced to; relocated at the OWALL landing, so the lane's narrative never entered the note |
 
 The one line that stays in `notes/Phase39.md` rather than moving here: the **State of
 (K)** gap map in `notes/Pencil-informal.md` is the phase's status object, authoritative
@@ -856,6 +857,25 @@ free because (BE-14) is existential ((BE-104)–(BE-107)). **Net: half (B)'s res
 item, and it is that repaired clause**, with `Σ_x ⊆ ρ̄_i` at `ρ_i ≤ 5` named as the shape
 that would kill the repair too ((BE-107)(iii)).
 
+**BSIGMA (67) and BPROPER (69), 2026-09-02 — RELOCATED here at the OWALL landing, the
+thread's next two landings joining the four above.** Both ran **draft-only** beside a
+committing dispatch. **BSIGMA realized BSATUR's own named residual** ((BE-109)–(BE-113)):
+`Σ_x ⊆ ρ̄₁` at `ρ₁ = 5` on BSATUR's own peel with `p_x` and its tail coplanar, so **every
+flag is bad and (PENCIL-SATURATES-GEN) is FALSE** — SLACK again, 0 shortfalls at 78 rows,
+half (B) untouched — and its **floor `Σ_x ⊆ ρ̄_i ⟹ ρ_i ≥ 5` is a THEOREM at a path side**,
+which also upgrades (BE-105)(ii)'s measured half. **BPROPER then settled the survivor's
+PROPERNESS half at EVERY side, path or not** ((BE-114)–(BE-121), *Steps BE113–BE120*;
+§"BPROPER"): the pendant edge's free multiplier gives `ρ̄_i = ⟨p_x ∧ p_c⟩ + A` with `A`
+**free of `p_x`**, and an α-plane incidence count makes both bad conditions proper in
+`p_x`, its one exception neutralized by `p_c ∈ π_c`. **(BE-113)'s price (d) is MEASURED**
+(91 rows), proper wherever `dim A ≤ 4`. **Two landed hunt verdicts are REFUTED** —
+(BE-109)(iv)'s *5 of 16* was a sampler artefact (16/16 now, 8 non-path hits) and
+(BE-110)(iv)'s *`ρ_i ≤ 4` none found* falls to a witness in the **generic flag regime** —
+with **no** shortfall at `Π_x`/`Π_y`/`⟨M⟩` at its 21 rows. The **status** the phase note
+keeps is three clauses, not repeated here: (PENCIL-SATURATES-CHART) is **not yet a
+theorem**, its residue being the passage from *proper* to *generic*; the live-block count
+reads three ways; and item 0 stays the (BE-14) lane's ranked alternative.
+
 **Reading it later.** Same caution as block 8's: a snapshot, not a live surface. If it
 disagrees with the `(K-bare)` gap-map row, the row wins.
 
@@ -1003,3 +1023,81 @@ the count *forces* `dim R_a = 1`). **Do not quote §2.5 as supplying freeness an
 live surface. If it disagrees with the `(K-grid)` gap-map row or with §(K-grid) itself, they
 win. The **status** that stays in `notes/Phase39.md` is one sentence — (GR-10)/(GR-15)
 unchanged, the residual now a global hub CSP with three named successors ((GR-138)).
+
+## The escape route (§(K-out)) — per-landing detail (RELOCATED at the OWALL landing, 2026-09-02)
+
+**Why this block exists, and why it starts empty of history.** The `hK` lane's own block
+(11) was created at the GLIST landing because that lane's per-landing prose had reached a
+third paragraph in `notes/Phase39.md`'s *Hand-off*. The **escape route** — the
+`(K-Λ)`/`(K-wit)`/`(K-pitch)`/`(K-out)`/`(K-dom)` rows that (GR-133) made load-bearing when
+it priced a (GR-15) HIT as tight-stratum-only — is a *second* lane, and OWALL is its first
+2026-09-02 result. The block was opened **at that landing rather than after it**, so the
+lane's narrative never entered the note at all: the note carries a four-line pointer and
+this block carries the attribution. Same rule as blocks 8, 9 and 11 (`notes/Phase39.md`
+*Blockers*, the doc-debt bullet: *"ask what here is reference rather than status"*), applied
+one landing earlier than usual because the note stood at **577/580 lines** when OWALL
+returned. The mathematics is **not** here — it is §(K-out) *Steps O47–O51*
+(`notes/Pencil-informal.md`) and the `(K-out)` gap-map row, which stay authoritative; the
+spec and landing write-up are `notes/Pencil-fanout.md` §"OWALL".
+
+**OWALL (70, 2026-09-02, draft-only) — the route *Step O41* named is refuted by LOGIC.**
+(OC-44)(iii) asked for a certificate colouring *with no single-class `b`–`c` `X`-path* and
+*with generic-draw `rank(Q|_D) = 3`*. **(OC-52)**: the first conjunct is **implied by** the
+second — a rank-3 colouring cannot be walled, by (OC-42)(ii) itself — so *Step O41*'s own
+attack (2), a tree-triple exchange breaking the single-class connectivity, proves a
+**consequence** of the target and can never prove the target. That retires a named route by
+a one-line argument rather than by measurement, and it is the landing's headline.
+
+**The enabling theorem ((OC-50)).** At a σ-fixed grid chart point the whole (a₁) criterion —
+target rank of `G`, `dim D = 3`, the forced `(1,2)` ⋆-eigen profile, `Q(g)`, `Gram_B(D_Y)`,
+`rank(Q|_D)` — is computed by **two direction networks in `K³`** with conic directions
+`A(s) = (1,s,s²)`, under a symbol dictionary in which `B` is the apolarity pairing and **`Q`
+is the discriminant**. No Plücker, no `ℚ(i)`, no rigidity matrix of `G`. It is not an
+analogue: `closure.ruling_A_line((1,s))` is the image of `(1,s,s²)` under a fixed invertible
+matrix in the *same* affine parameter, and `pitch.Q` pulls back to `−8Q`. The control is
+`owall.py --agree`, which reruns `oqrank.point_at` **unmodified** at OQRANK's own seed and
+draw order beside the model and requires every clause equal — 72 standing points, 36
+colourings, 12 classes.
+
+**The confinement calculus ((OC-51)).** `Q(g) ≠ 0 ⟺ βγ` is *independent* of the block
+network's edges in the class-parametrized direction-network matroid — an **O(1) rank test
+per colouring**. Three proven combinatorial certificates of the negation: **(W)** the
+(OC-42) wall (a `β`–`γ` path inside one class); **(C)** a new **monochromatic cut** (a
+`β`–`γ` edge cut inside one class), proved by a Kirchhoff-flow/apolarity argument dual to
+the wall's; **(Z)** a new **`≤ 3`-class vanishing rule** — three distinct Veronese points
+being independent ((FR-2)(ii)), a cycle-space element touching at most three classes forces
+every per-class sum to vanish, so coefficients are forced to **zero**, nodes are **welded**,
+and the wall becomes visible on the contracted network. (Z) **inverts** *Step O41*'s guess
+(*"a value-level cancellation through a `≥ 4`-class cycle relation"*): a `≥ 4`-class cycle is
+where a nonzero relation *lives*; `≤ 3`-class cycles are what *kill* coefficients.
+
+**The census, with OQRANK's colouring cap removed ((OC-54)).** Every admissible colouring of
+every one of the 174 classes — 8 514 certificate colourings — classified at 3 seeded draws:
+5 920 good, 2 340 confined, 0 mixed, 254 with no standing draw. **(OC-44)(iii) holds
+174/174 with no colouring cap**, never fewer than four good colourings at a class, so
+OQRANK's *"never past the fourth"* is explained rather than lucky. Of the 2 340 confined:
+**2 088 (W), 248 (Z), 4 certified by none of the three**, and **(C) fires zero times** —
+recorded as a theorem with **no realizations** in this population (it fires 38 times alone in
+a 20 000-network synthetic control), not as a mechanism. At the **first** certificate
+colouring the split is 131 good / 7 wall / 19 (Z) / 17 no-standing-draw, so **(Z) accounts
+for 19 of OQRANK's 20** unexplained rank-2 first points — *19 of 20*, and the two
+populations are **not directly comparable** (this leg stops at the first certificate
+colouring; OQRANK advances past a colouring that never stands), so the one unmatched class
+is **unaccounted for, not a second mechanism**. The **split quantifier** — the variable
+`oschu.out_classes` pins at one per class — was run at every eligible split of 20 classes:
+**98/98** (shape, split) pairs carry a good colouring, and there the raw wall covers only
+292 of 672 confined colourings against (Z)'s 376.
+
+**What it left ((OC-55)), and the cross-lane convergence.** **(OW)**: *every tight class
+shape, at every eligible split, admits an admissible colouring carrying both-block
+tree-triples whose block network leaves `βγ` independent for every `X`-class.* Geometry-free,
+decidable per colouring, and in the **same object class as §(K-grid) (GR-10)** — indeed
+(OW)(a) *is* (GR-10)'s certificate condition. So **a (GR-10) min-max would be consumed by
+(OW), not duplicated by it**, and (OC-52) adds that a colouring *exchange* alone cannot
+settle (OW)'s extra independence clause. That convergence with the lane GLIST landed the
+same day is a cross-return finding only a parallel round surfaces (dispatch-log F20).
+
+**Reading it later.** Same caution as blocks 8, 9 and 11: a snapshot dated 2026-09-02, not a
+live surface. If it disagrees with the `(K-out)` gap-map row or with §(K-out) itself, they
+win. The **status** that stays in `notes/Phase39.md` is one sentence — input (a) class-uniform
+and (OC-8) both OPEN and unchanged, (OC-44)(iii) restated as (OW).

@@ -13138,3 +13138,202 @@ corrupted here only because** BPROPER's row-assembly chain re-derives everything
 single file that was re-verified byte-identical to `HEAD` immediately before use. The rule
 both findings share: **prefix every scratch file with the direction code**, and **re-verify
 any scratch input against `HEAD` before consuming it**.
+
+---
+
+## OWALL — seventieth ordinal (**DRAFT-ONLY**, third dispatch of a three-way concurrent round, run 2026-09-02) — (OC-44)(iii), the wall-avoiding colouring existence question
+
+**Selection provenance.** Rank 3 of `notes/Pencil-strategy.md` §8's corrected
+`hK` ranking, dispatched as the **third** member of a concurrent round: one
+committing dispatch live in `notes/Pencil-informal-grid.md` §(K-grid), a second
+draft-only one in `notes/Pencil-informal.md` §(K-bare-ext), and this one. Three
+concurrent directions on one working tree is the widest exercise of
+`RESEARCH-ARC.md` §2 outside a prepared fan-out; it landed with zero collisions.
+
+**Why this row, and the reason is new.** GPACK's job 2 ((GR-133)) established
+that a (GR-15) HIT buys `hK` on the **tight stratum only**; the remainder of
+`hK`'s habitat is owned but not free, and `§(K-res)/(RS-5)`/(RS-6) route it to
+the **escape route**, whose gap-map rows — (K-Λ), (K-wit), (K-pitch), (K-out),
+(K-dom) — are all live. §(K-out) is that route's largest live row, and
+(OC-44)(iii) was its newest named residual.
+
+Run at **`recon-opus`**.
+
+### The spec, as dispatched
+
+**Target.** (OC-44)(iii): *"every certified class (every tight class shape)
+admits a certificate colouring with no single-class `b`–`c` `X`-path and with
+generic-draw `rank(Q|_D) = 3`"*. Prove it, refute it, or reduce it to a named
+strictly-smaller condition. **The deliverable must be an ARGUMENT**, with any
+search demoted to an adversarial control (§2.2's standing do-not-do for the
+lane: *"a search does not carry a reason"*).
+
+**Forced jobs.** (1) State plainly which of theorem / refuted / reduced.
+(2) The **sampler-support audit** (`RESEARCH-ARC.md` §4's 2026-09-02
+sharpening) with an exact target: (OC-44)(iii)'s 174/174 went *"never past the
+fourth certificate colouring"* — name that population's support, say how many
+admissible certificate colourings each rank-2 class actually has, and whether
+the enumeration order is adversarial or incidental. (3) Decide the **second
+confinement's status** (attack (4)) and whether *Step O41*'s `≥ 4`-class
+cycle-relation mechanism survives contact. (4) The **duplicate check** (F20)
+against the concurrent §(K-grid) exchange lane. (5) **Cap disclosure**.
+(6) **E-riders E1/E2/E3**, read at source.
+
+**The coordinator's reading, labelled TO BE TESTED** (`RESEARCH-ARC.md` §7):
+*the wall is a connectivity event on a single class and certificate colourings
+carry tree-triple exchange freedom, so the natural proof is attack (2) — given a
+walled colouring, exchange along the tree-triple to break the single-class
+path.* Evidence stratum named honestly in the spec: the coordinator's reading of
+*Step O41*'s text, no measurement, no driver, neither the exchange machinery nor
+the (OC-42) derivation read. Three "where I expect to be wrong" items, the first
+being *the 20 non-walled rank-2 classes are probably the real obstruction, so
+attack (2) alone may upgrade nothing*.
+
+**Bars.** Draft-only, no commit, no tracked file touched. Do not touch
+`notes/Pencil-informal-grid.md`, §(K-grid) or any `(GR-…)` label; do not touch
+§(K-bare-ext) or any `(BE-…)` label. Class-uniform input (a) and (GR-15) out of
+scope. Do not re-open §(K-out)'s settled batch, do not re-run the
+`{σ > 0}`-everywhere hunt, do not work the (a′)/(b′) ledger; **(K-res) is a
+USER call**; the 2026-08-05 Lean hold binds.
+
+### LANDING WRITE-UP — OWALL, 2026-09-02: **the named route is refuted as a matter of LOGIC, (OC-44)(iii) is REDUCED, and (Z) accounts for 19 of the 20 second-confinement points**
+
+**Verdict: REDUCED to a named strictly-smaller condition** — the third of the
+spec's three options, and the reduction is to a statement with **no geometry in
+it at all**.
+
+**The enabling theorem, and it is the pass's real content.** (OC-50): at a
+σ-fixed grid chart point the whole (a₁) criterion — target rank of `G`,
+`dim D = 3`, the forced `(1,2)` profile, `Q(g)`, `Gram_B(D_Y)`, `rank(Q|_D)` —
+is computed by **two direction networks in `K³`** with conic directions
+`A(s) = (1,s,s²)`, under a symbol dictionary in which `B` is the apolarity
+pairing and **`Q` is the discriminant**. No Plücker, no `ℚ(i)`, no rigidity
+matrix of `G`. The landed `closure.ruling_A_line` is the image of `(1,s,s²)`
+under a fixed invertible matrix in the *same* affine parameter and `pitch.Q`
+pulls back to `−8Q`, so this is not an analogue — it is the same object in a
+`ℚ`-rational basis. **Control:** `--agree` reruns `oqrank.point_at` unmodified,
+at OQRANK's own seed and draw order, beside the model, and requires every clause
+equal — **72 standing points over 36 colourings at 12 classes**, all equal.
+
+**The second confinement, 19 of 20 ACCOUNTED FOR.** (OC-51)(v), the **`≤ 3`-class vanishing
+rule**: a cycle-space element touching at most three distinct classes forces
+every per-class sum to vanish (three distinct Veronese points are independent,
+(FR-2)(ii)), so *coefficients are forced to zero*, nodes are **welded**, and the
+(OC-42) wall becomes visible on the contracted network. At the first certificate
+colouring per class the census returns **131 good / 7 wall / 19 (Z) / 17
+no-standing-draw**: the wall side matches OQRANK's 7 exactly (the same `K4+par`
+shapes at split 5) and **every one of the 19 is the wall after the weld** — so
+**(Z) accounts for 19 of OQRANK's 20**, not for all 20. The populations are
+**not directly comparable** (this leg stops at the first certificate colouring
+and reports 17 no-standing-draw classes, which OQRANK's figure has no bucket
+for), so the one unmatched class is recorded as **unaccounted for**, not as a
+second mechanism; a matched re-run would settle it and was not run. *Step O41*'s
+guess — *"a value-level cancellation through a `≥ 4`-class cycle relation"* — is
+**INVERTED**: a `≥ 4`-class cycle is where a nonzero relation *lives*; `≤ 3`-class
+cycles are what *kill* coefficients.
+
+**A second new mechanism, proven and (honestly) unrealized here.** (OC-51)(iv),
+the **monochromatic cut**: if `b` and `c` fall in different components of `H`
+minus one `X`-class's edges, then `g` is confined to that class's ruling line —
+a Kirchhoff-flow/apolarity proof, dual to the wall's path argument, neither
+implying the other. It fires **38 times alone** in a 20 000-network synthetic
+control and **zero times** anywhere in the class-shape population. Reported as a
+theorem with no realizations, not as a mechanism.
+
+**THE NAMED ROUTE IS REFUTED, and by logic rather than by measurement.**
+(OC-52): (OC-44)(iii)'s wall-avoidance conjunct is **implied by** its
+`rank(Q|_D) = 3` conjunct — a rank-3 colouring cannot be walled, by (OC-42)(ii)
+itself. So *Step O41*'s attack (2), a tree-triple exchange breaking the
+single-class connectivity, proves a **consequence** of the target and can never
+prove the target. This is the coordinator's own *"where I expect to be wrong"*
+item 1, **vindicated and strengthened**: not "the 20 are probably the real
+obstruction" but "the conjunct the route addresses is redundant". Quantified:
+**252 of 2 340** confined colourings at the pinned splits are unwalled, and
+**380 of 672** over the wider split population — at the non-pinned splits the
+(OC-42) wall as stated is the **minority** mechanism.
+
+**THE COORDINATOR'S READING, classified — and the tally was reconciled at
+landing.** `RESEARCH-ARC.md` §7's *"eight instances and seven kinds"* was **stale
+by six** when this direction was dispatched: the live count entering this round
+was **eleven** ((BE-113)(iii), BSIGMA), and three concurrent directions then each
+incremented a **shared counter** from whatever baseline they happened to read —
+GLIST landed "twelve" and BPROPER landed "twelve", claiming the same slot. The
+coordinator reconciled it on the cross-return pass and lands the repair of
+`RESEARCH-ARC.md` §7 and the other surfaces as a **separate commit**; the
+historical per-direction figures elsewhere in this file are correct as of their
+own landings and stay. **OWALL is the FOURTEENTH instance, seven kinds**
+(eleven before the round; GLIST twelfth, BPROPER thirteenth). Its kind is
+**5 — *refuted with its own named escape clause vindicated*** (the BONEONE
+kind), with a sharpening: the spec's escape item 1 (*"the 20 non-walled classes
+are probably the real obstruction, so attack (2) may upgrade nothing"*) was right
+for a **stronger reason than it stated** — the conjunct the route addresses is
+*logically redundant* ((OC-52)), not merely insufficient. Item 2 (*does a
+tree-triple exchange preserve admissibility?*) is **MOOT**: the route dies before
+that question is reached. Item 3 (*the 174/174 may not be evidence for existence
+given the cap*) is **REFUTED**: for an *existence* claim a successful capped
+search is full strength at the instances it sampled, and removing the cap
+entirely confirms 174/174 with 5 920 good colourings. **This instance is also the
+first evidence that §7's own counter is a shared mutable surface a concurrent
+round can double-claim** — a hazard of the fan-out shape, not of any direction.
+
+**THE SAMPLER-SUPPORT AUDIT (forced job 2), answered with the cap removed.**
+The landed 174/174 ran the *first `≤ 6`* certificate colourings in
+`grid.colourings` enumeration order — a bit-vector order over branch phases,
+i.e. **incidental, not adversarial**. This pass enumerates **every** admissible
+colouring of every shape (`2^{branches}`, 8–1024; `COL_CAP = 2^16` never
+approached) and keeps every one carrying (GR-9) certificates: **8 514
+certificate colourings**, 4–196 per class. Result: **(OC-44)(iii) holds
+174/174 with no colouring cap**, with **never fewer than four good colourings**
+at a class and the first certificate colouring already good at **131 of 174** —
+so *"never past the fourth"* is **explained, not lucky**. Two support holes
+remain and are named: the **174 classes** are a bounded stratum while *"every
+tight class shape"* is infinite (§(K-ind) (I4)); and the **split** — (a₁) is
+needed at every (shape, split) and `oschu.out_classes` pins one. Run at **every**
+eligible split of 20 classes — **98 (shape, split) pairs** — the answer is
+**98/98**, and the mechanism split flips (raw wall 292, (Z) 376). For an
+*existence* claim a successful capped search is full strength at the instances
+sampled, which is why the cap never weakened the 174/174; what it hid was the
+**denominator**, and that is what this pass supplies.
+
+**What is left.** **(OW)**: *every tight class shape, at every eligible split,
+admits an admissible colouring carrying both-block tree-triples whose block
+network leaves `βγ` independent, for every `X`-class, in the class-parametrized
+direction-network matroid.* Decidable per colouring by an O(1) rank test, so
+(OC-44)(iii) is now **decidable by enumeration at any given shape** — attack
+(4)'s operational goal, delivered. A **connectivity** characterization is not
+delivered: (W)/(C)/(Z) certify **2 336 of 2 340** confined colourings; the
+4-case residue is a matroid-**closure** event (a node set carrying a constant
+flex with **no rigid subnetwork** witnessing it), all on `V5e10`.
+
+**F20 DUPLICATE CHECK — one convergence, no duplication.** The argument rests on
+Veronese independence and Kirchhoff duality, **not** on any colouring-exchange
+lemma, so it does not re-derive the concurrent §(K-grid) lane's object under an
+`(OC-…)` label. Two honest convergences are recorded instead. *(a)* **(OW) is in
+the same object class as (GR-10)** — a partition-constrained existence statement
+over admissible colourings — and **(OW)(a) *is* (GR-10)'s certificate
+condition**. Stated plainly, because it connects this lane to the one GLIST
+landed the same day: **a (GR-10) min-max would be *consumed* by (OW), not
+duplicated by it** — (OW) is (GR-10) plus one extra independence clause about a
+single distinguished pair — **but (OC-52) shows a colouring *exchange* alone
+cannot settle that extra clause**, so the (GR-10) route buys (OW)(a) and leaves
+(OW)(b) exactly where it is. This is a cross-return finding: only a parallel
+round surfaces it. *(b)* **(OC-51)(v)'s proof uses the same Vandermonde/Veronese collapse
+that (GR-9)'s own proof uses** — three parameters, a `3 × 3` Vandermonde — cited
+to (FR-2)(ii), not re-derived as a new fact.
+
+**Caps, with denominators.** 3 seeded draws per colouring (a `confined` verdict
+is a theorem exactly when (W)/(C)/(Z) fires — 2 336/2 340); 174 classes of the
+bounded `|V°| ≤ 6` stratum against an infinite class; all eligible splits at 20
+of 174 classes; 20 000 synthetic networks yielding 81 target-rank-compatible.
+Every "not found" is *not found under cap*.
+
+**E-rider: none of E1/E2/E3 fires**, read at source. **E1** no g-flank — and the
+E1-shaped near-miss is named: a shape whose every certificate colouring is
+confined would be the route's dead end, and the exhaustive census found the
+opposite at 174/174 and 98/98. **E2** the target is reduced, not refuted, with
+three named dispatchable successors; what is refuted is a *route*. **E3** the
+target is not proven and stays ARMED by GBAL.
+
+**Driver** `notes/scripts/w4/owall.py`, seven modes
+(`controls | agree | full | splits | first | synth | validate`), exact `ℚ`, seed
+`20260902`, pool **POOL-OW**.

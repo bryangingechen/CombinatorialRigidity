@@ -21,9 +21,9 @@ uniformity of the escape is untouched**; no g-flank was found; **E3 is ARMED (by
 NEVER fired, and is NOT one landing away** — `61e046a6`: "the target" in E1–E3 is the
 **arc's**, so emptying W4's list does not fire it (WGROW is the worked case).
 
-**`hK` LANE (GPACK 66, GLIST 68): (GR-18)(iii)'s split half is a THEOREM and its residual
-is a GLOBAL hub CSP** — clause (a) free, the local criterion exact, 82 % of failures
-hub-locally invisible; **(GR-10)/(GR-15) unchanged**. Detail: **block 11**.
+**`hK` LANE (GPACK 66, GLIST 68): (GR-18)(iii)'s split half is a THEOREM, its residual a
+GLOBAL hub CSP. ESCAPE ROUTE (OWALL 70): (OC-44)(iii) is REDUCED to (OW)**, its named route
+refuted by logic. **(GR-10)/(GR-15)/(OC-8) unchanged**. Detail: **blocks 11–12**.
 
 **W4's INFORMAL SIDE IS CLOSED** (58–61): **(T)/(E-pair)/(V) are THEOREMS**, **(E) open,
 TIGHT, off every W4 path**, list **EMPTY** — leaving the USER call **(K-res)** and the held
@@ -175,7 +175,7 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
 
 - **Doc debt — the gate is MECHANICAL** (`notes/check-phase-note.py`: **580 lines / 525
   status-header words**, plus a fail if *Decisions made* outgrows the forward sections),
-  and the standing remedy is **relocation or merger, never a fold** — **ELEVEN** reference
+  and the standing remedy is **relocation or merger, never a fold** — **TWELVE** reference
   blocks now sit verbatim in `notes/Pencil-structure.md`, indexed by its own table, with
   no cap ever bumped and nothing deleted. **The rule that keeps working:** ask *"what here
   is reference rather than status?"*. Four landings running have paid for themselves that
@@ -221,32 +221,21 @@ is open and off every W4 path, and W4's non-user-call list is **EMPTY**.
 **block 8**. One clause is *status* and is not repeated below: **(CH-1) does not apply to
 the flag base** ((BE-89)), so anything citing it for the base cites the wrong object.
 
-**GPACK (66) + GLIST (68) LANDED 2026-09-02 — the `hK` lane's first two results in 24
-dispatches; per-landing detail RELOCATED to block 11**, the disposition blocks 8 and 9 got.
-Status only: **(GR-18)(iii)'s packing-and-split half is a THEOREM** ((GR-130)) and its
-residual is now a **global** 9-valued hub CSP with clause (a) **free** and an exact local
-criterion ((GR-134)–(GR-136), §(K-grid) *Steps G149–G158*; write-ups §"GPACK"/§"GLIST").
-**82 % of the infeasible pairs are locally feasible at every hub**, so no per-hub repair
-closes it; three successors are named at (GR-138). **The `hK` lane's ranking is
-`notes/Pencil-strategy.md` §8's board, NOT this list** (re-ranked `70c06abe`/`5583a919`; it
-carries the standing **do-not-do** — no more (a′)/(b′) ledger directions), whose rank 1 both
-directions have now spent.
-
-**BSIGMA (67) and BPROPER (69) LANDED 2026-09-02, both DRAFT-ONLY beside a committing
-dispatch — the clause is refuted twice and its PROPERNESS half is settled.** BSIGMA
-realized BSATUR's named residual ((BE-109)–(BE-113)): `Σ_x ⊆ ρ̄₁` at `ρ₁ = 5`, every flag
-bad, **(PENCIL-SATURATES-GEN) FALSE** — SLACK, 0 shortfalls at 78 rows — with the floor
-`Σ_x ⊆ ρ̄_i ⟹ ρ_i ≥ 5` a **theorem at a path side**. **BPROPER then settled the survivor's
-PROPERNESS half at EVERY side, path or not** ((BE-114)–(BE-121),
-*Steps BE113–BE120*; §"BPROPER"): the pendant edge's free multiplier gives
-`ρ̄_i = ⟨p_x ∧ p_c⟩ + A` with `A` **free of `p_x`**, and an α-plane incidence count makes
-both bad conditions proper in `p_x`, its one exception neutralized by `p_c ∈ π_c`. **Three
-things are status.** **(PENCIL-SATURATES-CHART) is NOT yet a theorem** — item 0's residue is
-the passage from *proper* to *generic*, i.e. (BE-69) here plus two **measured** inputs.
-**(BE-113)'s price (d) is MEASURED** (91 rows), proper wherever `dim A ≤ 4`. And
-**two landed hunt verdicts are REFUTED** — (BE-109)(iv)'s *5 of 16* was a sampler artefact
-(16/16 now, 8 non-path hits) and (BE-110)(iv)'s *`ρ_i ≤ 4` none found* falls to a witness in
-the **generic flag regime** — with **no** shortfall at `Π_x`/`Π_y`/`⟨M⟩` at its 21 rows.
+**THE 2026-09-02 LANDINGS (66–70) — ALL per-landing detail now RELOCATED**, blocks 11
+(`hK`: GPACK/GLIST), 12 (escape route: OWALL, opened at that landing) and 8 (BSIGMA/BPROPER,
+demoted at it). Status only, one clause each. **`hK`:** (GR-18)(iii)'s packing-and-split half
+is a **THEOREM** ((GR-130)); its residual is a **global** hub CSP, clause (a) free, the local
+criterion exact, **82 %** of infeasible pairs locally feasible everywhere, three successors at
+(GR-138). **Escape route:** **(OC-44)(iii) is REDUCED to (OW)**, a geometry-free
+colouring-existence statement in **(GR-10)'s object class** — a (GR-10) min-max would be
+*consumed* by it — and its own named route is **refuted by LOGIC**, the wall-avoidance
+conjunct being *implied by* the rank conjunct ((OC-52)); input (a) class-uniform and (OC-8)
+**OPEN, unchanged**. **(BE-14):** (PENCIL-SATURATES-GEN) is FALSE and **-CHART's PROPERNESS
+half is settled at EVERY side** ((BE-114)–(BE-121)), but **-CHART is NOT yet a theorem** —
+item 0's residue is *proper* → *generic*. **No gap-map status moves anywhere.** **The `hK`
+lane's ranking is `notes/Pencil-strategy.md` §8's board, NOT this list** (re-ranked
+`70c06abe`/`5583a919`; it carries the standing **do-not-do** — no more (a′)/(b′) ledger
+directions), whose ranks 1 and 3 are now spent.
 
 **THE NEXT CONCRETE TASK is (GR-138)'s successor 1 — the GLOBAL `(α, γ)` CSP at `D = 0`**,
 the `hK` lane's own named successor now that its local half is exact: a proof must charge
@@ -429,6 +418,13 @@ section named; its *spec and landing write-up* in `notes/Pencil-fanout.md` §"<C
 `notes/Pencil-adjudications.md`; the derivation in git. **Do not grow these back into
 paragraphs.**
 
+- **OWALL** (70, 2026-09-02, opus, **draft-only, third of a three-way concurrent round**)
+  — **(OC-44)(iii) REDUCED to (OW)**, geometry-free and in (GR-10)'s object class
+  ((OC-50)–(OC-55), §(K-out) *O47–O51*): the whole (a₁) grid criterion is **two direction
+  networks in `ℚ³`** with `Q` a discriminant, so `Q(g) ≠ 0` is an **O(1) matroid rank test**;
+  **(OC-52) refutes *Step O41*'s own attack (2) by LOGIC** — the wall-avoidance conjunct is
+  *implied by* the rank conjunct. Cap-free census 174/174, splits 98/98; (Z) accounts for
+  **19 of OQRANK's 20** second-confinement points, one unmatched. `w4/owall.py`.
 - **GLIST** (68, 2026-09-02, opus, **committing half of a concurrent pair**) —
   **(GR-132)'s RESIDUAL: NORMAL FORM, LOCAL HALF EXACT, OBSTRUCTION GLOBAL**
   ((GR-134)–(GR-138), §(K-grid) *G154–G158*): the end pattern is eliminable, so it is a CSP
@@ -437,16 +433,13 @@ paragraphs.**
   infeasible pairs are hub-locally feasible**: REDUCED, not proved. Audit: the population
   **does** carry the conflict and `229 320/229 320` had a self-selected denominator
   (472 680 legal); board (b) RECONCILED. `w4/glist.py`.
-- **BPROPER** (69, 2026-09-02, opus, **draft-only, parallel with GLIST**) —
-  **(PENCIL-SATURATES-CHART)'s PROPERNESS HALF IS SETTLED AT EVERY SIDE, PATH OR NOT**
-  ((BE-114)–(BE-121), *BE113–BE120*): the pendant edge's free multiplier gives
-  `ρ̄_i = ⟨p_x ∧ p_c⟩ + A` with `A` **free of `p_x`**, and an α-plane incidence count makes
-  both bad conditions proper in `p_x`. **NOT the whole clause** — genericity cites (BE-69),
-  two inputs measured. price (d) MEASURED; two hunt verdicts **REFUTED**. `w4/bproper.py`.
-- **BSIGMA** (67, 2026-09-02, opus, **draft-only, parallel with GPACK**) — **BSATUR's OWN
-  RESIDUAL IS REALIZED, so (PENCIL-SATURATES-GEN) is FALSE TOO**, and the floor
-  `Σ_x ⊆ ρ̄_i ⟹ ρ_i ≥ 5` is a **THEOREM** at a path side ((BE-109)–(BE-113), *BE108–BE112*);
-  SLACK, 0 shortfalls at 78 rows; survivor **(PENCIL-SATURATES-CHART)**. `w4/bsigma.py`.
+- **BPROPER** (69, 2026-09-02, opus, **one-lined at the OWALL landing, detail in block 8**)
+  — **(PENCIL-SATURATES-CHART)'s PROPERNESS HALF IS SETTLED AT EVERY SIDE, PATH OR NOT**
+  ((BE-114)–(BE-121), *BE113–BE120*); **NOT the whole clause** — genericity cites (BE-69),
+  two inputs measured; two hunt verdicts **REFUTED**. `w4/bproper.py`.
+- **BSIGMA** (67, 2026-09-02, opus, **one-lined at the OWALL landing, detail in block 8**) —
+  **(PENCIL-SATURATES-GEN) is FALSE TOO** and the floor `Σ_x ⊆ ρ̄_i ⟹ ρ_i ≥ 5` is a
+  **THEOREM** at a path side ((BE-109)–(BE-113), *BE108–BE112*). `w4/bsigma.py`.
 - **GPACK** (66, 2026-09-02, opus, **one-lined at the GLIST landing, detail in block 11**)
   — **(GR-18)(iii) SPLITS and the split half is a THEOREM** off `def(G) = 0` alone
   ((GR-129)–(GR-133), §(K-grid) *G149–G153*); the exchange freedom is **load-bearing**.
