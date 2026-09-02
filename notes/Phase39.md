@@ -8,10 +8,10 @@ derives it from exactly **three carried items**: **`hcontract`** (W4 — build p
 **`hbareSplit`** (kernel (K-bare)). Everything else is closed — W0–W3 and all of W5
 (L0–L7), `hsplit` and `hfresh` included (2026-07-30, unchanged since).
 
-**The research arc: 70 directions COMPLETE** (2026-08-05 → 09-02, ordinals
-1–62 — 66 on kernel (K), and **WTRI (58) / WELOC (59) / WPAIR (60) / WGROW (61) on W4**),
-plus eight strategy-only passes and two architecture probes; **BUNIF (63) IS IN FLIGHT**
-at half (B)'s last residue, the class quantifier ((BE-67)(iii)).
+**The research arc: 71 directions COMPLETE** (2026-08-05 → 09-02, ordinals
+1–63 — 67 on kernel (K), and **WTRI (58) / WELOC (59) / WPAIR (60) / WGROW (61) on W4**),
+plus eight strategy-only passes and two architecture probes; **none in flight** — **BUNIF
+(63) REDUCED (BE-67)(iii) to a per-side condition**.
 Per-direction verdicts, specs and write-ups live at `notes/Pencil-fanout.md` §"<CODE>"
 (ordinals 1–19: the archive) plus a workbook home — **not restated here**.
 **The arc's standing result, unchanged by all 70: `hK` is not closer.** **(GR-15)** — the
@@ -34,11 +34,11 @@ USER call **(K-res)** and the held build. Per-landing detail:
 **WHERE THE (BE-14) THREAD STANDS** — S-mark, the 2-cut composition lemma, is its **only
 open step**; the three sides and every per-landing detail are **REFERENCE**, at
 `notes/Pencil-structure.md` §"The (BE-14) thread — per-landing detail" (**block 8**).
-Status only: (β) proved at the window **MODULO §(K-bare-ext)'s own two window
-conditions** (its (S1)/(S2), one of three owners of that token); cross-cut-only forcing
-is **empty as an obstruction** (392 genuine, `0` shortfall); and **the flag base is
-DISCHARGED** (BBASE), leaving **ONE** residue — `reach` uniformity ((BE-67)(iii));
-cross-pair welding **untouched**.
+Status only: (β) proved at the window **MODULO §(K-bare-ext) (BE-57)(iv)'s own two window
+conditions** ((S1)/(S2), one of three owners of that token); cross-cut-only forcing
+is **empty as an obstruction** (392 genuine, `0` shortfall); the flag base is
+**DISCHARGED** (BBASE); and BUNIF made half (B)'s **ONE** residue **per-side**, now
+**(NO-DOUBLE-PENCIL)** ((BE-97)(iii)); cross-pair welding **untouched**.
 
 **On a future HIT: the phase-boundary consequences are the USER's call** —
 whether Phase 39 closes and a successor opens for the Lean is a
@@ -215,8 +215,9 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
 already owns that thread's per-landing detail; the write-ups and the `(K-bare)` gap-map row
 stay authoritative. **Reference, not status** — the thread has not been worked since
 BGENUINE (57) and the last four directions are all W4-side. The status that stays here:
-**S-mark is (BE-14)'s only open step**, (β) is proved at the window **modulo (S1)/(S2)**,
-half (B)'s residue is **two** items, and cross-pair welding is **untouched**.
+**S-mark is (BE-14)'s only open step**, (β) is proved at the window **modulo (BE-57)(iv)'s
+(S1)/(S2)**, half (B)'s residue is **one** item — now the per-side **(NO-DOUBLE-PENCIL)**
+— and cross-pair welding is **untouched**.
 
 **THE W4 DEVIATION PAID FOUR TIMES AND IS NOW DONE** (§(SAFE-RES) *Steps TF1–TF6*,
 §widened kernels *Steps EL1–EL6* / *PR1–PR6* / *GW1–GW6*): WTRI (58) closed (T); WELOC (59)
@@ -237,34 +238,33 @@ item.** Verdict in *Decisions made*; mathematics at `notes/Pencil-informal.md`
 **(CH-1) does not apply to the base at all** ((BE-89)), so anything citing it for the base
 is citing the wrong object — and (BE-65)(i) is corrected at source.
 
-**IN FLIGHT — BUNIF (63), at half (B)'s LAST residue: the class quantifier (BE-67)(iii)**,
-which BPEEL reduced to one number, `reach(H;x,y) = min(δ₁+δ₂,6)`, with `A₁ ∩ A₂ ≠ ∅` free
-((BE-69)(iii); spec `notes/Pencil-fanout.md` §"BUNIF"). The prep **corrected the target at
-source** (F12): (BE-67)(iii) still called the coincidence *"unforceable by (BE-66)(iv)"*,
-which (BE-81) **refuted outright** — the conclusion survives only via BGENUINE's route, so
-it is a **checked hypothesis**, not an excluded enemy. **THE NEXT CONCRETE TASK is to
-verify and land BUNIF's return** (the coordinator re-runs E1/E2/E3 itself, `61e046a6`); a
-HIT **discharges half (B)**, leaving (BE-14)'s ear side and cross-pair welding. Two
-things stay the USER's call, both OFFERED 2026-09-02 and both DECLINED IN FAVOUR OF
-CONTINUING RESEARCH: the **(K-res) wave** (the 2026-08-26 adjudication selected a cheap
-scoping slice, queued below), and whether W4's now-closed informal side changes anything
-about the **2026-08-05 Lean hold** — its own release condition speaks of an informal result
-*"significant as standalone"*, and (E-pair) + (V) + (T) is one, but the hold is the user's
-to lift, never a coordinator's.
+**BUNIF (63) LANDED 2026-09-02 — half (B)'s last residue is REDUCED to per-side data.**
+Verdict in *Decisions made*; mathematics at §(K-bare-ext) *Steps BE93–BE97*. **THE NEXT
+CONCRETE TASK is to dispatch at (NO-DOUBLE-PENCIL)** ((BE-97)(iii), ranked item 0 below):
+*no internal R-node peel has one side with `dim(ρ̄_i ∩ Π_x) = 2` and the other with
+`dim(ρ̄_j ∩ Π_x) ≥ 1`* — attack it by seeking the two clauses **together**, a side whose
+every `x–y` path spans 6 ((BE-44)(ii)) glued to a **series end** ((BE-45)(i)); cheap
+individually, never sought jointly. Two things stay the USER's call, both OFFERED
+2026-09-02 and both DECLINED IN FAVOUR OF CONTINUING RESEARCH: the **(K-res) wave** (the
+2026-08-26 adjudication selected a cheap scoping slice, queued below), and whether W4's
+now-closed informal side changes anything about the **2026-08-05 Lean hold** — its own
+release condition speaks of an informal result *"significant as standalone"*, and
+(E-pair) + (V) + (T) is one, but the hold is the user's to lift, never a coordinator's.
 
 The ranked list:
 
-0. **HALF (B)'s CLASS QUANTIFIER** ((BE-67)(iii)) — **REDUCED, not proved** (BPEEL). It is
-   now *one number per (piece, peel)*: `reach = min(δ₁+δ₂,6)`, the **generic** value of
-   `dim(ρ̄₁+ρ̄₂)`, computed by **one exact-ℚ draw** ((BE-69)(iii)); what is open is its
-   **uniformity over the class**. The exhaustiveness obligation is **retired**, not
-   discharged — (BE-70) bounds what any mechanism can depend on, and **completeness of the
-   mechanism list is not claimed**. Three siblings: **cross-cut-only forcing** at an R-node
-   peel with both sides flexible — re-opened by BONEONE and **DISCHARGED AS AN OBSTRUCTION
-   by BGENUINE** (genuine, `0` shortfall at 392/392), so it is a **checked hypothesis**, not
-   an item, and **must not be re-hunted**; **the flag base off the no-adjacent-hubs class**
-   ((BE-65)(i)) — **DISCHARGED by BBASE**, see item 1; and — **CLOSED by BPEEL** — the
-   forced-empty `G` hunt, impossible on (CH-1)'s class ((BE-72)).
+0. **HALF (B)'s CLASS QUANTIFIER, now the PER-SIDE (NO-DOUBLE-PENCIL)** ((BE-97)(iii)) —
+   **REDUCED TWICE, not proved.** BPEEL made it *one number per (piece, peel)*
+   (`reach = min(δ₁+δ₂,6)`, the generic value, one exact-ℚ draw, (BE-69)(iii)); **BUNIF
+   made that number a function of two PER-SIDE profiles** — `reach` is capped by the
+   modular law against the **16 `S(ϕ)`-stable subspaces** and the cap is **attained**
+   ((BE-94)–(BE-96)), so (BE-67)(iii) is **14 inequalities in `c_i(U) = dim(ρ̄_i ∩ U)`**,
+   and measured (92/92 margin `0`, no shortfall) the **only** block where both sides bite
+   is `Π_x`. **(BE-71)(ii)'s completeness is ANSWERED** generically; at `π_x = π_y` only
+   the cap survives. Three siblings, all closed: cross-cut
+   forcing (**checked hypothesis** by BGENUINE, `0` shortfall at 392/392 — **do not
+   re-hunt**), the flag base (**DISCHARGED by BBASE**, item 1), the forced-empty `G` hunt
+   (**CLOSED by BPEEL**, (BE-72)).
 
 1. **THE FLAG BASE — DISCHARGED by BBASE, no longer an item** (verdict in *Decisions
    made*). Two successors it named, both **low-ranked and cheap**: is `B_real` a forest
@@ -281,8 +281,8 @@ The ranked list:
    **vacuous at every drawn piece but NOT theorems** ((BE-57)(iv)); the window's
    class theorem carries them until one is discharged. **Open and ranked, not
    dropped.**
-4. BTWOCUT's successor (2), the **bundle-construction proof** — (BE-29)(ii) from
-   rung to theorem, reaching `DZ` / `spider(5,5,5)+c`. Skipped four times.
+4. BTWOCUT's successor (2), the **bundle-construction proof** — (BE-29)(ii) from rung
+   to theorem, reaching `DZ` / `spider(5,5,5)+c`. Skipped four times.
 
 Also ranked, unchanged: BTWOCUT's cross-pair closure ((BE-28)(i), motive economy only — S-mark
 closes), the point-side flat law (**priced NOT cheap**), BINDUC's **(BE-23)(ii)** (*forced flat
@@ -416,14 +416,20 @@ section named; its *spec and landing write-up* in `notes/Pencil-fanout.md` §"<C
 `notes/Pencil-adjudications.md`; the derivation in git. **Do not grow these back into
 paragraphs.**
 
+- **BUNIF** (63, 2026-09-02, opus) — **`reach` IS PER-SIDE DATA, both directions PROVED**
+  ((BE-94)–(BE-98), *Steps BE93–BE97*): `S(ϕ) = Stab(flag pair)` is 5-dimensional and acts
+  on **each side alone** ((BE-70)(ii), 30/30 incl. a one-sided reglue); `Λ²K⁴ =
+  Π_x ⊕ ⟨M⟩ ⊕ ⟨L⟩ ⊕ Π_y` `(2,1,1,2)`, 16 stable subspaces; the modular law caps
+  `dim(ρ̄₁+ρ̄₂)` per-side — **containing** (BE-71)'s (P) and (Z) — and a 1-PS degeneration
+  matches it (121/122 rows; cap attained 400/400). So **(BE-67)(iii) ⟺ 14 per-side
+  inequalities** and **(BE-71)(ii) is ANSWERED** generically; margin `0` at 92/92 (**no
+  shortfall**), residue **(NO-DOUBLE-PENCIL)**. Readings (1)/(2) killed. `w4/bunif.py`.
 - **BBASE** (62, 2026-09-02, opus) — **THE FLAG BASE IS FREE; half (B)'s residue is ONE**
-  ((BE-89)–(BE-93), §(K-bare-ext) *Steps BE88–BE92*): the base is the **flag** variety of
-  `B_real`, **not** (CH-1)'s object, hence §(K-chart)'s tower's stages 1–2 only —
-  **nonempty always**, and irreducible/ℚ-rational/dense-ℚ on every component of cyclomatic
-  number `≤ 1`, **hypothesis-free** on a forest; the only obstruction is **reducibility**
-  at a `B_real` triangle or 4-cycle, both excluded by girth `≥ 6`. Open and low-ranked:
-  cyclomatic `≥ 2` (unreached by any clause; the census **cannot** exhibit it). All three
-  coordinator readings corrected; job 2 both ways. Driver `w4/bbase.py`.
+  ((BE-89)–(BE-93), *Steps BE88–BE92*): the base is the **flag** variety of `B_real`,
+  **not** (CH-1)'s object — nonempty always, irreducible/ℚ-rational/dense-ℚ on every
+  component of cyclomatic number `≤ 1`, hypothesis-free on a forest; the only obstruction
+  is **reducibility** at a `B_real` triangle or 4-cycle, both excluded by girth `≥ 6`.
+  Cyclomatic `≥ 2` open, low-ranked. All three readings corrected. `w4/bbase.py`.
 - **WGROW** (61, 2026-09-02, opus, fourth W4-side) — **(PAIR-5) SETTLED BOTH WAYS, so
   (E-pair) and (V) ARE THEOREMS and W4's non-user-call list is EMPTY** ((GROW-1)–(GROW-6),
   §widened kernels *Steps GW1–GW6*; `K₂,₃` refutes (PAIR-5) *as stated* and is not a

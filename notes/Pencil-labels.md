@@ -2913,7 +2913,7 @@ qualified in the same commit), and **no label was minted for `B_real`** or for a
 new configuration-level objects (the flag base, a `B_real`-component, the collinear
 stratum), which keep prose names as BSPREAD / BONEONE / BGENUINE did.
 
-## Reserved namespace — direction BUNIF (2026-09-02, **IN FLIGHT**)
+## Reserved namespace — direction BUNIF (2026-09-02, **CONSUMED IN FULL**)
 
 **Reserved 2026-09-02 for the single direction BUNIF** (ordinal 63, the arc's seventy-first
 direction; `notes/Pencil-fanout.md` §"BUNIF") — **half (B)'s LAST residue**, the class
@@ -2952,6 +2952,22 @@ answer**, per BGENUINE's and BBASE's precedent.
 **`Good`**, **`A₁`/`A₂`** and the **flag pair** are existing prose/symbol names — reuse
 them, mint nothing for them.
 
-**Gap-map note (F21).** The `(K-bare)` row stands at **1 385 / 1 600 words** after BBASE's
+**Gap-map note (F21).** The `(K-bare)` row stood at **1 385 / 1 600 words** after BBASE's
 recompute, 215 spare — comfortable, but **recompute-to-a-target still applies** and label
 preservation is verified by **scripted set-diff**, never by eye.
+
+**LANDED 2026-09-02 — the reservation is CONSUMED IN FULL and nothing is returned.**
+Labels **(BE-94)–(BE-98)** and *Steps BE93–BE97* all used, in §(K-bare-ext) as reserved
+(extended, no new section); driver `notes/scripts/w4/bunif.py` at the reserved path. The
+**(L6) landing grep** was run: the risky token **`(S1)`/`(S2)`** appears only in the
+qualified form *"§(K-bare-ext) *Step BE56* / (BE-57)(iv)'s own two conditions"*, with the
+three owners named in the same sentence — a step past BBASE's habit, which avoided the
+token rather than qualifying it. **`reach`, `Good`, `A₁`/`A₂` and the flag pair** were
+reused as prose/symbol names and nothing was minted for them. **Two new
+configuration-level objects took PROSE names**, per the reservation's preference: the
+**block profile** `c_i(U)` of a side at a flag pair, and the successor condition
+**(NO-DOUBLE-PENCIL)** — the latter is a *named condition*, not a label, and is
+0-hit-verified across the doc set at landing time. The **next tail is (BE-99) / *Step
+BE98***, declared here so the omission BBASE's row made is not repeated. **Gap-map
+outcome:** the `(K-bare)` row was recomputed to **1 472 / 1 600** (128 spare), scripted
+set-diff **101 labels in, 112 out, ZERO dropped**.

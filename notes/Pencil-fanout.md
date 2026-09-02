@@ -1,20 +1,30 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
 **Status: EIGHT fan-outs, FORTY-FIVE single directions and TWO concurrent pairs
-dispatched; 70 LANDED, ONE IN FLIGHT.**
-**BUNIF (ordinal 63, §"BUNIF") IS IN FLIGHT since 2026-09-02** — at **half (B)'s LAST
-residue**, the class quantifier (BE-67)(iii), which BPEEL had already reduced to *one
-number per (piece, peel)*: **`reach(H;x,y) = min(δ₁+δ₂,6)`**, the generic value, with
-`A₁ ∩ A₂ ≠ ∅` already free. The prep **corrected the target at source** (F12):
-(BE-67)(iii) still said the general-position half's enemy is *"unforceable at an R-node
-peel by (BE-66)(iv)"*, and **(BE-66)(iv) is refuted outright** ((BE-81)) — the conclusion
-survives only by BGENUINE's different route, so the coincidence is a **checked
-hypothesis**, not an excluded one, and three landings had corrected the refuted lemma but
-not the statement citing it. Two readings labelled *to be tested*: that the class statement
-is now **entirely the general-position half**, and that (BE-70) makes `reach` a function of
-the **flag pair alone** — whose home BBASE has just shown free — with `G` the place the
-coordinator expects to be wrong. Driver-to-be `notes/scripts/w4/bunif.py`. Run at
-`recon-opus` (fable unavailable).
+dispatched; 71 LANDED, NONE IN FLIGHT.**
+**BUNIF (ordinal 63, §"BUNIF") LANDED 2026-09-02** — at **half (B)'s LAST residue**, the
+class quantifier (BE-67)(iii), which BPEEL had reduced to *one number per (piece, peel)*:
+**`reach(H;x,y) = min(δ₁+δ₂,6)`**. **HIT shape 2 — `reach` IS PER-SIDE DATA, and both
+directions of the law are PROVED.** The flag pair's stabilizer `S(ϕ) ⊆ PGL₄` is
+**5-dimensional**, contains the maximal torus, and by (BE-70)(ii) acts on **each side's
+achievable family separately** (asserted 30/30, including a one-sided reglue through both
+gates); in the generic flag regime the screw space splits `S(ϕ)`-canonically as
+`Π_x ⊕ ⟨M⟩ ⊕ ⟨L⟩ ⊕ Π_y` of dims `(2,1,1,2)`, whose **16 sums are exactly the
+`S(ϕ)`-stable subspaces** ((BE-94)). Against those the modular law gives a **CAP** on
+`dim(ρ̄₁+ρ̄₂)` written entirely in per-side data — **containing** (BE-71)'s two located
+mechanisms as the `U = core₁∩core₂` and `U = Π_x⊕Π_y` instances ((BE-95)) — and
+degenerating each side independently along a 1-PS of `S(ϕ)` gives a **matching lower
+bound**, so where the two meet (**121/122** peel rows, **393/400** abstract pairs)
+`reach` is **pinned by two proofs** and the cap is **ATTAINED at 400/400** ((BE-96)). So
+**(BE-67)(iii) at a peel ⟺ 14 inequalities `c₁(U)+c₂(U) ≤ dim U + max(0,δ₁+δ₂−6)`, each
+side's `c_i(U) = dim(ρ̄_i ∩ U)` computed on its own** — exactly the *"statement about ONE
+piece"* (BE-22)(vi) named. Measured: violation margin **`0` at 92/92** (so **no
+shortfall**), and `Π_x` is the **ONLY** block where **both** sides bite (12/92, tight at
+8), leaving the named residue **(NO-DOUBLE-PENCIL)** ((BE-97)). **Reading (1) REFUTED as
+stated** (the welded half is not a separate half — it is the `U = Λ²K⁴` term); **reading
+(2) CONFIRMED in shape, corrected in its expected failure point** (the operative object is
+the flag pair's **stabilizer**, not the base; `G` is **not** inherited as a hypothesis).
+Driver `notes/scripts/w4/bunif.py`; write-up §(K-bare-ext) *Steps BE93–BE97*.
 **BBASE (ordinal 62, §"BBASE") LANDED 2026-09-02** — back to the **(BE-14) thread** after
 four W4-side directions, at **candidate 1**: the **flag base off the no-adjacent-hubs
 class** ((BE-65)(i)/(BE-68)(ii) item 1). **HIT shape 1 — the base is FREE, and it was
@@ -11402,3 +11412,122 @@ discharged ranked-list item 1, and merging the two W4 *Blockers* bullets. That i
 of headroom, which is **not enough for a landing**: the landing MUST merge or rotate, and
 the note's own rule names the candidates. The `(K-bare)` gap-map row at 1 385/1 600 is
 comfortable by comparison.
+
+### BUNIF — LANDING WRITE-UP (2026-09-02)
+
+> **LANDED 2026-09-02 — HIT shape 2 (the reduction), plus jobs 2 and 3.** Verdict in
+> `notes/Pencil-informal.md` §(K-bare-ext) *Steps BE93–BE97*, labels **(BE-94)–(BE-98)**;
+> driver `notes/scripts/w4/bunif.py` (five modes: `equiv`, `law`, `bind`, `coin`, `abst`).
+
+**Job 1 (PRIMARY) — settled as a REDUCTION, not a proof and not a refutation.**
+
+- **(BE-94) — the flag pair's stabilizer, and it acts on each side alone.** In the generic
+  flag regime (`π_x ≠ π_y`, no cross-incidence) `S(ϕ) = Stab_{PGL₄}(p_x, π_x, p_y, π_y)`
+  is `{diag(λ, A, μ) : A ∈ GL₂}/K^×`, **dimension 5** — which *recovers (BE-22)(v)(β)'s
+  own count with the group named*, and, unlike a dimension count, **contains the maximal
+  torus**. By (BE-70)(ii) each side's achievable family is `S(ϕ)`-invariant and the two
+  sides move **independently**. The screw space splits `S(ϕ)`-canonically as
+  `Π_x ⊕ ⟨M⟩ ⊕ ⟨L⟩ ⊕ Π_y` of dims `(2,1,1,2)`, and because the four blocks carry pairwise
+  distinct torus characters the **`S(ϕ)`-stable subspaces are exactly the 16 sums**. That
+  is what makes `c_i(U) := dim(ρ̄_i ∩ U)` an invariant of the *family*, not of a member.
+- **(BE-95) — the cap, and (BE-71)'s mechanisms are instances.** The modular law bounds
+  `dim(ρ̄₁+ρ̄₂)` by `min_U [ρ₁+ρ₂ − max(0, c₁(U)+c₂(U) − dim U)]`. `core_i` is
+  `S(ϕ)`-stable, so **two-sided (P) is the `U = core₁∩core₂` term** and **two-sided (Z) is
+  the `U = Π_x⊕Π_y` term**; (BE-71)(iii)'s Klein-ruling candidate is inside (Z).
+- **(BE-96) — the law, and it is the direction's result.** Degenerating each side along a
+  1-PS of `S(ϕ)` (lower semicontinuity of `dim(V+W)` makes the limit a valid lower bound;
+  the `GL₂` factor commutes with the central torus and separates two lines inside a
+  2-dimensional block) gives a **matching lower bound** over the **8** realizable block
+  orderings. Where the two meet, `reach` is a **theorem** in the two per-side profiles:
+  **121/122** measured peel rows and **393/400** abstract pairs, with the cap **ATTAINED
+  by a group move at 400/400**. Hence the reduction: **(BE-67)(iii) at a peel ⟺ 14
+  inequalities in per-side data**, `⟹` a theorem (the modular law: a violation *is* a
+  shortfall), `⟸` the law.
+- **(BE-97) — where it can break, and the one place it is tight.** The arithmetic triage
+  leaves **14 of 16** blocks live (and refuses the tempting *"`Π_x` can never bite"*,
+  which needs (BE-38)(iii)'s **measured** third clause). Measured over 92 rows the
+  violation margin is **`0` at 92/92** — never positive, so **no shortfall**, and never
+  negative either: **saturated at every measured peel**. `Π_x` is the **only** block at
+  which BOTH sides exceed the generic profile (12/92), where they sit at `c₁ = c₂ = 1`,
+  which is (BE-45)'s **(M1)/(M2)** dichotomy firing at **both ends of one peel**. Named
+  residue: **(NO-DOUBLE-PENCIL)** — *no internal R-node peel has one side with
+  `dim(ρ̄_i ∩ Π_x) = 2` and the other with `dim(ρ̄_j ∩ Π_x) ≥ 1`* — whose two clauses are
+  already priced, by (BE-44)(ii) and (BE-45) respectively.
+- **NOT a shortfall (HIT shape 3 does not fire).** Nothing here exhibits one; what the
+  direction adds to (BE-71) is an **index set** for third mechanisms, not a witness.
+
+**The two coordinator readings, both TESTED.** `RESEARCH-ARC.md` §7's tally gains a ninth
+instance: **reading (1) is REFUTED AS STATED** — *"the class statement is now entirely the
+general-position half"* is wrong as a **decomposition**, because (BE-96)(iv) shows the
+welded half is not a separate half at all but the `U = Λ²K⁴` term of one inequality
+family; its cited evidence (30/30, 392/392) is untouched, and what fails is the
+two-halves framing it inherited from (BE-67)(iii). **Reading (2) is CONFIRMED IN SHAPE and
+CORRECTED IN ITS EXPECTED FAILURE POINT** — (BE-70) does make `reach` a function of the
+flag pair and that *is* the shape of a class argument, but the operative object is the
+flag pair's **stabilizer**, not the base BBASE freed; and `G` is **not** inherited as a
+hypothesis (it is carried exactly as (BE-64)(ii)/(BE-70)(ii) carry it), so the statement
+quantifies over **internal R-node pieces**, not over the proviso's class.
+
+**Job 2 — the per-arc inventory verdict FIRES, on this section's own citation.**
+§(K-bare-ext) cites **(BE-38)(iii)'s third clause** (*"never `2` below `ρ₁ = 6`"*) by the
+role it played when first needed — a summary of a table — and (BE-45)(iii) records it as
+**standing**; its landed signature is a **measurement over 37 pieces**. Reading it as a
+law produced this direction's own first draft of (BE-97)(i), and the arithmetic
+enumeration **refused** it. Stress-tested rather than only flagged: over 112 rows, **4**
+sides reach `c_i(Π) = 2` and **0** have `ρ_i < 6`, so the clause survives under this cap
+with a second population behind it — still a measurement. The section's other borrowings
+**are** cited by signature ((BE-69)(iii)'s `A_i ≠ ∅` as the induction's own hypothesis,
+(BE-70)(ii) *with* its `G`, (BE-65)(ii) with (CH-1)'s three hypotheses named).
+
+**Job 3 — what (BE-14) is left with, stated precisely, and the E-rider.** A HIT here would
+have **discharged half (B)**; this one **reduces** it instead, so half (B) still stands —
+as the single per-side condition (NO-DOUBLE-PENCIL). **If** it lands, (BE-14)'s open half
+is exactly: **(1)** the ear case's (β) side, at the window, **modulo §(K-bare-ext) *Step
+BE56* / (BE-57)(iv)'s own two conditions** — **(S1)** *some `δ₁`-attaining middle has
+`p_{w₁} ≠ p_{w₂}`* and **(S2)** *no middle forces a boundary-flag relation other than
+equality of the planes* — both vacuous at every drawn piece and **neither a theorem**,
+with a per-shape residue outside the window; and **(2)** cross-pair welding ((BE-28)(i)).
+*(The token "window conditions" has three owners — these; §(SAFE-RES′)'s (S1)–(S5), which
+disambiguates itself inline; the §(K-slide) (W1)–(W4) family — so it is qualified.)*
+**E1/E2/E3 read against `notes/Pencil-fanout-archive.md`, REPORTED AND NOT FIRED**, with
+the 2026-09-02 correction in force (*"the target" is the ARC's, `PencilPair K 3 G`*): the
+reading is **`:1700`'s two-conjunct E3**, with `:2098`'s one-conjunct deviation noted and
+not used, and E2's letter (*"the direction's target"*, `:1697`) confirmed to differ from
+E3's (*"the target"*, `:1700`). **E1** — no colourings, no g-flank. **E2** — the arc's
+target is neither refuted nor unprovable-as-posed, and this landing **names** a
+dispatchable attack. **E3** — the arc's target is not proven, and (NO-DOUBLE-PENCIL) is
+dispatchable rather than gated; it does not fire under `:2098`'s text either.
+
+**F11 — the central rider, honoured with denominators.** Every figure is a measurement on
+a **constructed** population and *"for every internal R-node piece"* exhausts none:
+**population A** = BDECOR's 7 R-node pieces + BPEEL's nested one, 3 draws, **32** rows —
+*the same pieces behind (BE-67)(i)'s 28/28 and (BE-69)(iii)'s 16/16, so not independent
+evidence*; **population B** = `bpeel.constructed_tier(maxlen=3, nsamp=60)` filtered by
+BPEEL's own **disclosed stand-in** `rnode_shaped`, **90** rows, a construction (K4
+exhaustive at lengths `1..3` + 60 seeds), not a census; **92** rows for `bind`; **400**
+random subspace pairs for `abst` (not achievable ones, 60 group draws each); **60**
+constructed coincident ear pairs for `coin`. What a new sweep adds over 24/24, 28/28 and
+16/16 is **population B** — the first R-node-peel population in this sub-arc that is *not*
+the R-battery — plus the index set, which lets a future sweep report *where* rather than
+only *whether*. The one non-sweep claim is (BE-96)(iv)'s `⟹`, which is the modular law.
+
+**F12** paid at source: forward pointers added at **(BE-67)(iii)**, **(BE-68)(ii) item 2**
+and **(BE-71)(ii)** (whose *"not proved and not claimed"* is now answered in the generic
+regime). **F21**: the `(K-bare)` gap-map row **recomputed to a target** — 1 385 → **1 472
+/ 1 600** words (128 spare), with label preservation verified by a **scripted set-diff**:
+**101 labels in, 112 out, ZERO dropped**. **Harness**: `bunif.py` is an **addition only**,
+so the figure-invariance gate discharges by `git diff --name-only -- '*.py' '*.m2'` /
+`git status --porcelain notes/scripts/`; no tracked driver was edited.
+
+**Reservation CONSUMED IN FULL, nothing returned.** Labels **(BE-94)–(BE-98)**, *Steps
+BE93–BE97*, owning file §(K-bare-ext) (extended, no new section), driver `w4/bunif.py` at
+the reserved path. One new configuration-level object is named, in prose per the
+reservation's preference: the **block profile** `c_i(U)`, and the condition
+**(NO-DOUBLE-PENCIL)**.
+
+**The successor this direction names, ranked.** **(1)** (NO-DOUBLE-PENCIL) — attack it by
+seeking the two clauses **together**: a side all of whose `x–y` paths span 6
+((BE-44)(ii)) glued to a **series end** ((BE-45)(i)). Cheap individually, never sought
+jointly. **(2)** the `U = ⟨M⟩` block — both sides' `ρ̄_i` containing the virtual edge's own
+line — unwitnessed, and `xy ∉ E(H)` removes the obvious source. **(3)** the coincident
+regime, where only the cap survives; the forced family there is BGENUINE's 392.
