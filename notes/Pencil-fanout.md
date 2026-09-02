@@ -1,20 +1,24 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: EIGHT fan-outs, FORTY-THREE single directions and TWO concurrent pairs
-dispatched; 69 LANDED, ONE IN FLIGHT.**
-**BBASE (ordinal 62, §"BBASE") IS IN FLIGHT since 2026-09-02** — back to the **(BE-14)
-thread** after four W4-side directions, at **candidate 1**: the **flag base off the
-no-adjacent-hubs class** ((BE-65)(i)/(BE-68)(ii) item 1), the smaller of half (B)'s two
-residue items. Its prep carries three coordinator readings labelled *to be tested*, the
-first two a **join of two workbook sentences one *Step* apart**: that `hcard` makes
-`B_real` **max degree `≤ 2`**, so its components are paths and cycles; that the base
-**factors over those components** and **(CH-1) already settles the cycles of length
-`≥ 4`** verbatim, leaving **paths** (min degree 2 fails at the ends) and **triangles**
-(girth 3 fails, and (CH-5)/(BE-72) say that case is not merely technical); and that the
-path case may be (CH-1)'s own tower with a weaker hypothesis — the reading most likely to
-be wrong, since fibre dimension jumps where consecutive points coincide. Job 2's
-`hcard`-availability question is **load-bearing**, and the sibling W4 arc has a landed
-answer. Driver-to-be `notes/scripts/w4/bbase.py`. Run at `recon-opus` (fable unavailable).
+**Status: EIGHT fan-outs, FORTY-FOUR single directions and TWO concurrent pairs
+dispatched; 70 LANDED, NONE IN FLIGHT.**
+**BBASE (ordinal 62, §"BBASE") LANDED 2026-09-02** — back to the **(BE-14) thread** after
+four W4-side directions, at **candidate 1**: the **flag base off the no-adjacent-hubs
+class** ((BE-65)(i)/(BE-68)(ii) item 1). **HIT shape 1 — the base is FREE, and it was
+never (CH-1)'s object.** It is the **flag** variety of `B_real`, a flag at *every* vertex,
+hence §(K-chart)'s tower's **stages 1–2 only**; the absent stages 3–4 are exactly where
+min degree 2 and girth `≥ 4` are spent, so **(CH-1) does not apply** ((BE-89)). It is
+**nonempty always**, a complete intersection of dimension `5|W| − 2|E|` that **factors
+over `B_real`'s components**, and irreducible / ℚ-rational / dense in ℚ-points on every
+component of **cyclomatic number `≤ 1`** — **with no hypothesis at all** on a forest,
+because the flag tower's fibre is irreducible of **constant** dimension 3
+((BE-90)/(BE-91)). The only obstruction is **REDUCIBILITY, not emptiness**, at a
+`B_real`-**triangle** (flag dims 10 > 9) or **4-cycle** (12 = 12), both off the locus the
+standing proviso `G` already imposes and both excluded on the class by girth `≥ 6`
+((BE-92)). **All three coordinator readings were CORRECTED**, and job 2 came out two
+ways: `hcard` **does** transport to the pieces and does **not** cap `B_real` ((BE-93)).
+**Half (B)'s residue drops from TWO items to ONE** — the class quantifier (BE-67)(iii).
+Driver `notes/scripts/w4/bbase.py`; write-up §(K-bare-ext) *Steps BE88–BE92*.
 **WGROW (ordinal 61, §"WGROW") LANDED 2026-09-02** — the **fourth** W4-side
 direction, and it settles **(PAIR-5)** *both ways* — **HIT shapes 1, 2, 3, 4 and
 5**. As stated (PAIR-5) is **REFUTED** by `K₂,₃` ((GROW-5)), which is in the class,
@@ -11074,3 +11078,112 @@ paragraph plus a workbook pointer. The prep spends only the in-flight lines. **T
 the prep's — see *Riders*. No gap-map row is touched by this **prep**, so
 `notes/check-gapmap-cells.py` will not fire on it; the **landing** touches exactly one and
 must run it.
+
+---
+
+### LANDING WRITE-UP — BBASE, 2026-09-02: **the flag base is FREE, and it was never (CH-1)'s object — half (B)'s residue drops from TWO items to ONE**
+
+**HIT shape 1, plus shapes 4 and 5, and shape 3 partially.** The base is free off the
+no-adjacent-hubs class; job 2's `hcard` verdict is load-bearing and comes out **two ways**;
+job 3 is delivered. Shape 3 partially: an obstruction **exists** and is classified
+**reducible, not empty** — the exact distinction job 1 asked for — but it is unreachable on
+the class. **All three coordinator readings are corrected**, which the spec records as a
+reportable result in its own right.
+
+**The object was misidentified, and that is the whole result ((BE-89)).** (BE-65)(i) calls
+the off-class base *"the phase's own problem one level down"*; (BE-68)(ii) carries that
+forward as half (B)'s residue item 1. It is the wrong ambient. The base is the **flag
+variety** of `B_real` — a point *and a plane* at **every** vertex — whereas §(K-chart)'s
+`𝒜(Γ)`, the object (CH-1) is about, carries a normal only at a vertex of **degree `≥ 3`**.
+Under `hcard` those two sets are nearly disjoint: a path or cycle component of `B_real` has
+**no** §(K-chart) hub at all, so `𝒜(B_real)` has **no normals** and is a different variety.
+Read instead as §(K-chart) *Step CH3*'s tower **with the hub set taken to be all of `W`**,
+the base is its **stages 1 and 2 only** — and stages 3 and 4 are exactly where (CH-1) spends
+*min degree 2* and *girth `≥ 4`* ((CH-5)). So the base's hypotheses are strictly **weaker**
+than (CH-1)'s, and the (BE-72)/(CH-5) twin-plane obstruction **cannot even be stated** here:
+it is about a non-hub's two panels failing to meet, and there is no non-hub and no meet.
+Corollary, unconditional: **`Base(B_real) ≠ ∅` for every `B_real`** — put every point at one
+`p` and every plane at one `π ∋ p`.
+
+**The forest theorem is the positive content, and it needs nothing ((BE-90)).** For any
+`Π ∈ Fl` the fibre `F_Π = {(p,π) ∈ Fl : p ∈ π₀, p₀ ∈ π}` is irreducible of **constant**
+dimension `3` — a `P¹`-bundle over `π₀ ∖ {p₀}` together with its `p = p₀` boundary, which
+lies in the closure. So on a **forest** `B_real` the base is a tower of such fibres over
+`Fl`, Zariski-locally trivial by `PGL₄`-homogeneity: **nonempty, irreducible, ℚ-rational
+with dense ℚ-points**, of dimension `5|W| − 2|E| = 5 + 3(m−1)` per tree — *with no
+genericity, no degree bound, no girth and no min-degree hypothesis*. A **unicyclic**
+component follows on the constant-rank locus ((BE-91)(iii)): its trees attach to the cycle
+by the same tower. Together: **every component of cyclomatic number `≤ 1`**.
+
+**Reading (3) is corrected, and it was the right one to distrust — for the wrong reason.**
+The greedy tower the spec proposed (`p_{i+1} ∈ π_i`, then `π_{i+1}` through `p_i p_{i+1}`)
+*does* jump where `p_i = p_{i+1}`. The jump is an artifact of **splitting the flag into
+two sub-stages**; as one stage, `Π_{i+1} ∈ F_{Π_i}`, the fibre is equidimensional. So min
+degree 2 is **not** (CH-1)'s hypothesis because of that jump, and a path is not harder at
+its ends — it is **freer than a cycle**. Driver-exhibited: `25` constructed `p₁ = p₂` base
+flags, every one legal and a **smooth** point of the same `5|W| − 2|E|` component.
+
+**Reading (2) is refuted outright** — (CH-1) does not apply to `B_real` at all, so it
+settles no cycles, of any length. **Reading (1) is refuted as stated** and replaced by
+something sharper ((BE-93)(i)): `W` is the **marked-pair-augmented** hub set, so
+`d_z(B_real) = d_z(Λ(H)) + |N_H(z) ∩ ({u,v} ∖ hubs(H))|` and `hcard` caps only the first
+term. `Δ(B_real) = 3` at **737** class-tier pieces. What survives is that
+`B_real ∖ {u,v} = Λ(H)` has max degree `≤ 2`.
+
+**Job 2, both halves.** `hcard` **DOES** transport to the pieces, and by an argument rather
+than a measurement: `binduc.split_at_pair` returns genuine subgraphs (`E₁ ∪ E₂ = E`, no
+virtual edge, body read this pass), so `Λ(H) ⊆ Λ(G)[V(H)]` and the sibling W4 arc's
+**(EL-1)** — a landed, compiler-checked necessary condition, **read at one remove from
+`notes/Pencil-W4-informal.md` because the 2026-08-05 Lean hold binds** — caps it. Measured:
+**0 failures at 78 564 class-tier pieces**. And it does **not** cap `B_real`, which is why
+reading (1) fails. So (BE-65)(ii)'s *"the arc's standing sampler cap is not an artifact"* is
+right about `Λ` and silent about `W`.
+
+**The obstruction, classified as job 1 demanded ((BE-92)).** Not emptiness — **reducibility**,
+and only at short cycles. On a `B_real`-triangle all three planes **coincide identically**
+on the constant-rank locus (`200/200`), while the **collinear stratum** — all points on one
+line, all planes in that line's pencil — is legal with three *pairwise distinct* planes and
+has flag dimension `10 > 9`. At a 4-cycle the two are `12 = 12`; from `m ≥ 5` the stratum is
+strictly smaller and the measured tangent rank says it creates no component. Two things keep
+it away: both extra components lie **off** the constant-rank locus, which is verbatim the
+hinge-coincidence half of the proviso `G` that (BE-64)(ii) is already stated modulo; and on
+the class a `B_real`-cycle **is** a cycle of `G`, so girth `≥ 6` forbids `m = 3, 4` outright.
+**The shape is real one step away**: two of the seven `R_BATTERY` pieces of (BE-64)/(BE-66)
+have `B_real` a 4-cycle at `girth(H) = 4`, and `bpeel.constructed_tier` reaches **118**
+triangle components in `10 678` off-class pieces. The landed sampler draws inside the good
+component at `16/16`, so **no landed figure moves**.
+
+**Job 3 — the residue, and the E-rider.** Half (B) is left with **ONE** item, the class
+quantifier (BE-67)(iii); (BE-14)'s open step is unchanged (S-mark). The named residue of
+*this* direction is a `B_real` component of **cyclomatic number `≥ 2`**: `0` of `78 564`
+class-tier pieces, `22` of `10 678` off-class ones, and at the smallest such shape the
+expected dimension survives, so what is missing is an argument, not a witness. **E1/E2/E3
+read against their actual definitions, none fires**, with the 2026-09-02 correction in
+force — *"the target" is the ARC's, `PencilPair K 3 G`*. The reading used is **`:1700`'s
+two-conjunct E3**, with `:2098`'s one-conjunct deviation noted and not used; WGROW's wrinkle
+holds on inspection (**E2's letter says *"the direction's target"*** at `:1697` while E3's
+says *"the target"* at `:1700`, so the correction is to E2's letter).
+
+**Verification.** `python3 notes/scripts/w4/bbase.py validate` (33 s), five modes; full
+tiers `census` (120 s) and `dim` / `forest` / `tri` / `cross` (`< 2 s` each). Class tier:
+K4 **exhaustive** (`[1,6]⁶` at sum 18, `gridcol.class_shape`-certified) plus prism and K33
+sampled `400` of `140 142` — `1 606` members, `78 564` peel pieces, `B_real` a **forest at
+78 564/78 564**, girth `≥ 7` at `1 606/1 606`. Caps disclosed: all three tiers have `≤ 6`
+hubs, so with girth `≥ 7` **no tier here can exhibit a `B_real` cycle** — the forest figure
+is a cap boundary, not evidence about the class beyond it.
+
+**Reservation consumed in full**; nothing returned. **F12 paid at source**: (BE-65)(i) and
+(BE-68)(ii) item 1 are annotated where they stand. **F21**: the `(K-bare)` gap-map row
+**recomputed** 1 544 → 1 385 words (cap 1 600, 215 spare) while absorbing five new labels,
+label preservation by **scripted set-diff — 93 codes in, 98 out, zero dropped**; three
+inline code spans dropped, each verified body-present. **The `K₂,₃` convergence was NOT
+built**: nothing in this direction reaches `K₂,₃`.
+
+**`RESEARCH-ARC.md` §7 — a SEVENTH kind, at the eighth instance: *INAPPLICABLE*.**
+Readings (1) and (3) came back *refuted* and *corrected*, both familiar shapes. Reading (2)
+is the new one: it cited a landed theorem that is **true**, about **cycles that are real**,
+and **does not apply** — its ambient carries structure only at degree-`≥ 3` vertices while
+the flag base carries it at *every* vertex. An inapplicable citation passes every check that
+stays inside the cited section; it is caught only by opening that theorem's own **ambient
+definition**. Recorded at `RESEARCH-ARC.md` §7, which now runs to **eight instances and
+seven kinds**.

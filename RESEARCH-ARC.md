@@ -286,6 +286,25 @@ can be right in shape and still hand the dispatch the wrong yardstick, and the
 dispatch will not notice unless it re-derives the criterion from the lemma
 rather than from the prep.
 
+**A SEVENTH KIND, at the eighth instance (2026-09-02, direction BBASE):
+*INAPPLICABLE* — a prediction that cites a landed theorem about a DIFFERENT
+OBJECT.** All three of BBASE's readings were wrong, in three different ways, and
+the middle one is the new kind. Readings (1) and (3) were *refuted* and
+*corrected* — familiar shapes. Reading (2) said a landed theorem *"already
+settles the cycles of length `≥ 4` verbatim"*; the theorem is true, the cycles
+are real, and it **does not apply**, because its ambient carries structure only
+at vertices of degree `≥ 3` while the object in question carries it at *every*
+vertex. Nothing was false; the citation simply pointed at a neighbouring
+variety. **Why this is worth its own kind:** a *refuted* reading fails a test the
+dispatch runs, and a *reframed* one fails on inspection — but an **inapplicable**
+one passes every check that stays inside the cited section, and is caught only by
+opening the cited theorem's own **ambient definition** and asking whether the new
+object is in it. It is the §4 *docstrings-are-not-evidence* rule one level up:
+the hypothesis list of a cited theorem is not evidence about the object you are
+citing it for. The practical instruction: when a prep says *"result X already
+covers case Y"*, name the **ambient** X is stated over, not only X's hypotheses.
+The tally now runs to **eight instances and seven kinds**.
+
 **The second half of the same finding: coordinator artifacts need the same
 verification tier as a subagent's.** A coordinator-authored prep commit has
 carried its own status-surface defects, caught only by a landing agent. Nothing

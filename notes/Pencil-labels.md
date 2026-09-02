@@ -2853,7 +2853,7 @@ Qualify every one with its owner (L3). New objects this direction is likely to n
 (`Λ`-run, dangling `Λ`-end, `Λ`-component) already have prose/symbol names from WPAIR —
 **re-use them, do not mint labels for them**, per WTRI's and WPAIR's precedent.
 
-## Reserved namespace — direction BBASE (2026-09-02, **IN FLIGHT**)
+## Reserved namespace — direction BBASE (2026-09-02, **CONSUMED IN FULL — LANDED 2026-09-02**)
 
 **Reserved 2026-09-02 for the single direction BBASE** (ordinal 62, the arc's seventieth
 direction; `notes/Pencil-fanout.md` §"BBASE") — **the flag base off the no-adjacent-hubs
@@ -2896,7 +2896,19 @@ Prefer prose names for new configuration-level objects, as BSPREAD, BONEONE and 
 all did; the objects this direction is likely to need (a `B_real`-component, a `Λ`-run, a
 flag chain) already have prose names in the corpus.
 
-**Gap-map note (F21).** The `(K-bare)` row is at **1 544 / 1 600 words**, 56 spare. The
-landing must **recompute to a target**, not append a since-BBASE clause, and must verify
-label preservation by **scripted set-diff**. `notes/check-gapmap-cells.py` gates the cap,
-not the labels.
+**Gap-map note (F21) — PAID at the landing.** The `(K-bare)` row was at
+**1 544 / 1 600 words**, 56 spare; **recomputed to 1 385** (215 spare) while absorbing
+(BE-89)–(BE-93), label preservation verified by **scripted set-diff — 93 codes in, 98 out,
+zero dropped**, three inline code spans dropped and each verified body-present
+(`` `2` `` at *Step BE74*, `` `δ = 1` `` at *Steps BE78–BE81*, and `` `def₂ = def₃` ``,
+which survives inside the larger span `{3-connected} ∪ {max deg ≤ 2} ∪ {def₂ = def₃}` and
+was a regex artifact rather than a drop). `notes/check-gapmap-cells.py` **GREEN**.
+
+**Consumption, at the landing.** All five labels **(BE-89)–(BE-93)** and all five steps
+**BE88–BE92** are consumed; **nothing is returned**. The driver landed at the reserved path
+`notes/scripts/w4/bbase.py`. The (L6) bare-token grep was run on the draft: `(S1)`/`(S2)`
+appear nowhere in the new section (its window conditions are cited as *"§(K-bare-ext)'s own
+two window conditions"*, and the one pre-existing unqualified use in `notes/Phase39.md` was
+qualified in the same commit), and **no label was minted for `B_real`** or for any of the
+new configuration-level objects (the flag base, a `B_real`-component, the collinear
+stratum), which keep prose names as BSPREAD / BONEONE / BGENUINE did.
