@@ -10,7 +10,8 @@ derives it from exactly **three carried items**: **`hcontract`** (W4 — build p
 
 **The research arc: 72 directions COMPLETE** (2026-08-05 → 09-02, ordinals
 1–64 — 68 on kernel (K), and **WTRI (58) / WELOC (59) / WPAIR (60) / WGROW (61) on W4**),
-plus eight strategy-only passes and two architecture probes; **NONE IN FLIGHT**.
+plus eight strategy-only passes and two architecture probes; **BSATUR (65) IS IN FLIGHT**
+at **(PENCIL-SATURATES)**, the clause BDOUBLE's redundancy theorem is conditional on.
 Per-direction verdicts, specs and write-ups live at `notes/Pencil-fanout.md` §"<CODE>"
 (ordinals 1–19: the archive) plus a workbook home — **not restated here**.
 **The arc's standing result, unchanged by all 72: `hK` is not closer.** **(GR-15)** — the
@@ -234,11 +235,15 @@ is citing the wrong object — and (BE-65)(i) is corrected at source.
 
 **BUNIF (63) then BDOUBLE (64) LANDED 2026-09-02 — half (B)'s residue is per-side, and
 its named tight-place condition is REFUTED.** Verdicts in *Decisions made*; mathematics at
-§(K-bare-ext) *Steps BE93–BE102*. **THE NEXT CONCRETE TASK is to PREP and dispatch the
-sixty-fifth direction at (PENCIL-SATURATES)** — *`c_i(Π) = 2 ⟹ ρ_i = 6`*, ranked item 0
-below — attacking it where (BE-44)(ii)'s **per-shape** half does the work: a side whose
-every `x–y` path spans `≤ 5` yet whose `ρ̄_i` still contains `Π_x`. Two things stay the
-USER's call, both OFFERED
+§(K-bare-ext) *Steps BE93–BE102*. **IN FLIGHT — BSATUR (65) at (PENCIL-SATURATES)** —
+*`c_i(Π) = 2 ⟹ ρ_i = 6`*, ranked item 0 below, the clause (BE-101)'s redundancy theorem is
+conditional on and which BDOUBLE's job 2 showed **is not implied by (BE-44)(ii)** and rests
+on (BE-38)(iii)'s measurement alone. The prep's first instruction: **its own sentence's
+MIDDLE clause is already FALSE** ((BE-45)(iii)), so ask whether the third survives the same
+scrutiny. Its job 2 is the **falsification lane** — the `c_i(⟨M⟩) = 1`-on-both-sides hunt,
+the first measurement of the 12-block residue. **THE NEXT CONCRETE TASK is to verify and
+land BSATUR's return** (the coordinator re-runs E1/E2/E3 itself, `61e046a6`). Two things
+stay the USER's call, both OFFERED
 2026-09-02 and both DECLINED IN FAVOUR OF CONTINUING RESEARCH: the **(K-res) wave** (the
 2026-08-26 adjudication selected a cheap scoping slice, queued below), and whether W4's
 now-closed informal side changes anything about the **2026-08-05 Lean hold** — its own
@@ -257,18 +262,14 @@ The ranked list:
    at 37 pieces + 4 sides. So **12 blocks remain**, every one **unwitnessed, not excluded**
    ((BE-97)(iv)) — the named hunt being `c_i(⟨M⟩) = 1` on **both** sides — plus the
    **non-attaining** case, where `U = Λ²K⁴` is itself live ((BE-101)(iii)).
-   **(BE-71)(ii)'s completeness is ANSWERED** generically; at `π_x = π_y` only
-   the cap survives. Three siblings, all closed: cross-cut
-   forcing (**checked hypothesis** by BGENUINE, `0` shortfall at 392/392 — **do not
-   re-hunt**), the flag base (**DISCHARGED by BBASE**, item 1), the forced-empty `G` hunt
-   (**CLOSED by BPEEL**, (BE-72)).
+   **(BE-71)(ii)'s completeness is ANSWERED** generically; at `π_x = π_y` only the cap
+   survives. Three siblings, **all closed — do not re-hunt**: cross-cut forcing (a checked
+   hypothesis, BGENUINE), the flag base (item 1), the forced-empty `G` hunt ((BE-72)).
 
-1. **THE FLAG BASE — DISCHARGED by BBASE, no longer an item** (verdict in *Decisions
-   made*). Two successors it named, both **low-ranked and cheap**: is `B_real` a forest
-   on the class (78 564/78 564, on tiers that **cannot** exhibit a counterexample — a cap
-   boundary), and the one shape no clause reaches, cyclomatic `≥ 2`. A cheap sibling kept
-   from this slot: whether a **triangle is necessary** for the forcing (`K_{2,3}` the
-   obvious triangle-free admitting shape; BGENUINE measured 0 forced over 648 pairs).
+1. **THE FLAG BASE — DISCHARGED by BBASE** (verdict in *Decisions made*). Three cheap,
+   low-ranked leftovers: is `B_real` a forest on the class (78 564/78 564, on tiers that
+   **cannot** exhibit a counterexample); cyclomatic `≥ 2`, reached by no clause; and
+   whether a **triangle is necessary** for the forcing (BGENUINE: 0 forced over 648).
 2. **The ONE-END-SERIES case by BWIN's machine** — one peel instead of two
    (`ρ̄₁ = ⟨ℓ_u⟩ + ρ̄(rest)`), budget `δ₁ ≤ 3` by the same excess accounting, or a
    second functional from the clean end. Would retire the (BE-46)/(BE-52)

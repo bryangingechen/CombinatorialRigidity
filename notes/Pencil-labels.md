@@ -3032,3 +3032,47 @@ it at (BE-97)(iii) and (BE-99); it is **not** recycled. The **next tail is (BE-1
 `SPECIAL_CAPS` at **1 630 / 150** — **withdrawn by the coordinator the same day**, the
 row being compliant at 1 546 under the generic 1 600. The recompute stands; the ceiling does
 not move. Reason in `check-gapmap-cells.py`'s docstring.
+
+## Reserved namespace — direction BSATUR (2026-09-02, **IN FLIGHT**)
+
+**Reserved 2026-09-02 for the single direction BSATUR** (ordinal 65, the arc's
+seventy-third direction; `notes/Pencil-fanout.md` §"BSATUR") — **(PENCIL-SATURATES)**,
+*`dim(ρ̄_i ∩ Π) = 2 ⟹ ρ_i = 6`*, the clause BDOUBLE's redundancy theorem ((BE-101)) is
+conditional on. Coordinator-set, single dispatch — **not** a fan-out, so this reservation
+protects against the *existing corpus* only.
+
+| direction | owning § | labels reserved | steps reserved | driver |
+|---|---|---|---|---|
+| **BSATUR** | §(K-bare-ext) — **extends**, no new section | **(BE-104)–(BE-108)** | **BE103–BE107** | `w4/bsatur.py` (expected — extend `bdouble.py`'s four modes and `bunif.py`'s block/profile instruments by read-only import) |
+
+The reservation opens at **(BE-104) / Step BE103**, exactly the tail **BDOUBLE declared**.
+Both tokens have **two hits each**, opened and confirmed to be that declaration in its two
+homes — this registry's BDOUBLE row and `notes/Pencil-fanout.md` §"BDOUBLE" — not consumed
+labels. (BDOUBLE declared its tail in **both** places, which is one better than BUNIF's one
+and two better than BBASE's none; the habit is worth keeping.)
+
+**0-hit verification, at reservation time**, across `*.md`, `*.tex`, `*.lean`, `*.py`,
+`*.m2` with `.git`/`.lake`/`__pycache__` excluded, **in both cases**: `BSATUR`, `bsatur`,
+`bsatur.py`, `(BE-105)`–`(BE-108)` and the raw step tokens `BE104`–`BE107` each **0-hit**.
+
+**Checked and NOT chosen:** `BSAT` (0-hit both cases, but it reads as *satisfiability*, a
+different subject the corpus does discuss) and `BPTRAP` (0-hit, but it names the
+**coordinator's reading** — that the target may be (BE-33)'s (P) trap read as vacuity —
+rather than the target, which is exactly what `RESEARCH-ARC.md` §7 warns against baking
+into a code; the reading is offered as a candidate for the **INAPPLICABLE** kind and may
+well die). **`BSATUR` names the condition, not a predicted answer.**
+
+**(L6) reminder for the landing.** Run the landing-time bare-token grep. Live risks:
+**`(S1)`/`(S2)`**, three owners — write *"§(K-bare-ext)'s own two window conditions"* as
+BBASE, BUNIF and BDOUBLE all did. **Mint nothing** for `Π_x`, `c_i(U)`, `ρ_i`, the
+**(P)/(Z)/(R)** traps, `margin`, `blockcap`/`blockdeg` or the double pencil: all existing
+prose/symbol names, and this section has now gone **five** directions without minting a
+configuration-level token.
+
+**Gap-map note (F21) — read the gate's docstring first.** The `(K-bare)` row is at
+**1 546 / 1 600 words**, 54 spare. BDOUBLE recomputed to that and then added a
+`SPECIAL_CAPS` entry at 1 630; **the coordinator withdrew it** the same day — the row was
+**compliant**, and every other entry in that table exists for a row that had *exceeded* its
+cap, each with a density argument. The docstring now states the rule: **no overflow, no
+bump.** This landing must **recompute to a target with real headroom**, label preservation
+by **scripted set-diff**.

@@ -1,7 +1,21 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: EIGHT fan-outs, FORTY-SIX single directions and TWO concurrent pairs
-dispatched; 72 LANDED, NONE IN FLIGHT.**
+**Status: EIGHT fan-outs, FORTY-SEVEN single directions and TWO concurrent pairs
+dispatched; 72 LANDED, ONE IN FLIGHT.**
+**BSATUR (ordinal 65, §"BSATUR") IS IN FLIGHT since 2026-09-02** — at
+**(PENCIL-SATURATES)**, *`dim(ρ̄_i ∩ Π) = 2 ⟹ ρ_i = 6`*, the clause BDOUBLE's redundancy
+theorem rests on and which its own job 2 showed *"rests on (BE-38)(iii)'s measurement
+alone"*. The prep's first instruction is not *is it true* but **does the third clause
+survive the scrutiny the MIDDLE clause of its own sentence failed** — (BE-38)(iii)'s middle
+clause was refuted by (BE-45)(iii) as a sufficient condition over-read as a
+characterization, and the note asserting *"the first and third clauses stand"* is itself a
+summary sentence. One coordinator reading, offered as a candidate for the **INAPPLICABLE**
+kind: (PENCIL-SATURATES) may be (BE-33)'s **(P) trap** read as a vacuity statement, with
+(BE-34) already saying every trap is a configuration artifact — **but (BE-33)/(BE-34) are
+stated for an EAR**, and the general-piece side is not one. **Job 2 is the falsification
+lane**: the `c_i(⟨M⟩) = 1`-on-both-sides hunt (BE-97)(iv) names, the first measurement of
+the 12-block residue. Driver-to-be `notes/scripts/w4/bsatur.py`. Run at `recon-opus` (fable
+unavailable).
 **BDOUBLE (ordinal 64, §"BDOUBLE") LANDED 2026-09-02** — at **(NO-DOUBLE-PENCIL)**
 ((BE-97)(iii)), the one place BUNIF's 14 inequalities are tight. **HIT shapes 2 AND 3 —
 the condition is REFUTED, and the tight block is REDUNDANT.** (BE-45)(ii)'s own
@@ -11877,3 +11891,205 @@ and (BE-46)(iv) already says the class-level statement is undischarged. **(2)** 
 `U = ⟨M⟩` block, (BE-97)(iv)'s own named shape, still unwitnessed. **(3)** the
 **non-attaining** case, where `U = Λ²K⁴` becomes a live block ((BE-101)(iii)) — and by the
 redundancy theorem it is where a `Π_x` failure would surface first anyway.
+
+## BSATUR — sixty-fifth ordinal (single dispatch, prepped 2026-09-02) — the clause the redundancy theorem rests on
+
+**Selection provenance: BDOUBLE's own ranked successor, and job 2's find is what makes it
+urgent.** BDOUBLE refuted (NO-DOUBLE-PENCIL) harmlessly and replaced it with something
+better — the **redundancy theorem** ((BE-101)): *under* **(PENCIL-SATURATES)** a `Π_x`
+violation **is** a `U = Λ²K⁴` violation, so at `a₁ = a₂ = 0` both 2-blocks are free and the
+live block list drops **14 → 12**. But its own job 2 established that **(PENCIL-SATURATES)
+is not implied by (BE-44)(ii)** and *"rests on (BE-38)(iii)'s measurement alone"*. So the
+best result the (BE-14) thread now owns is **conditional on a measured clause**, and this
+direction is about that clause.
+
+**Diversification, stated rather than hidden — this is the fourth consecutive (BE-14)-side
+direction** (BBASE, BUNIF, BDOUBLE, BSATUR), the same shape the W4 run had. It is taken
+because (BE-14) is carried item **#1** by distance to the phase target and half (B) is
+close; the mitigation is built into the spec as **job 2**, which is the falsification lane
+(the `⟨M⟩` hunt) rather than a promise to alternate later. The **(K-res) wave** and the
+**2026-08-05 Lean hold** were offered to the user on 2026-09-02 and both **declined in
+favour of continuing research**.
+
+Dispatched **un-named, single**, at **`recon-opus`** (fable unavailable this session).
+
+### The target, stated exactly
+
+> **(PENCIL-SATURATES).** For a side of an internal R-node peel,
+> `dim(ρ̄_i ∩ Π) = 2 ⟹ ρ_i = 6` — at `Π = Π_x` and at `Π = Π_y`.
+
+Equivalently: `Π ⊆ ρ̄_i` forces the side's relative screw space to be **all** of `Λ²K⁴`.
+It is **(BE-38)(iii)'s third clause**, *"never `2` below `ρ₁ = 6`"*, asserted in that
+block's driver over **24 pieces × 14 draws** (and re-measured by BDOUBLE at 37 pieces +
+4 sides of 92 — *a small denominator*, its own words). Prove it, refute it, or reduce it.
+
+### THE THING TO CHECK FIRST — its own sentence's MIDDLE clause is already FALSE
+
+**(BE-38)(iii) states three clauses in one sentence, and the middle one was refuted.**
+*"The intersection is `1` for path-like sides, `0` wherever two `u–v` paths leave `u` by
+different edges, and never `2` below `ρ₁ = 6`."* The **middle** clause — `0` at distinct
+first edges — is **FALSE**, corrected 2026-08-28 by **(BE-45)(iii)** (direction BSHARP):
+six rows have three distinct first edges and intersection `1`, by path saturation, so
+*"distinct first edges are **necessary, not sufficient**"*. The block's own correction note
+then asserts *"the first and third clauses stand"* — **which is itself a summary sentence,
+of exactly the kind the middle clause turned out to be** (the note even says so: *"this was
+a summary sentence outrunning its own table, the same shape as (BE-36)"*).
+
+So the first question is not *"is (PENCIL-SATURATES) true?"* but **"does the third clause
+survive the scrutiny the middle one failed?"** The middle clause failed by an
+over-read — a *sufficient* condition reported as a *characterization*. Ask whether the
+third clause is an over-read of the same kind: the table shows `2` occurring at the `ρ₁ = 6`
+rows, which establishes `ρ₁ = 6 ⟹` (nothing), and the clause asserts the **converse
+direction**. That is the same converse/contrapositive slip job 2 caught in (BE-44)(ii) one
+landing ago.
+
+**What is genuinely in its favour, and should be weighed rather than dismissed:** the
+driver **asserts** the clause rather than reporting it — *"a `Π_u ⊆ ρ̄₁` at a non-vacuous
+piece would be the (P) trap genuinely realized and would stop the run"* — so the 24 × 14
+run is a real assertion, not a silent pass, and BDOUBLE's own 37 pieces + 4 sides add to
+it. The clause is *measured*, not merely *believed*; what it lacks is an argument and a
+population that exhausts anything.
+
+### THE COORDINATOR'S ONE READING — labelled TO BE TESTED
+
+`RESEARCH-ARC.md` §7 binds; the tally is **nine instances and seven kinds**, and across the
+last three preps **six of eight** readings were refuted, corrected or ruled inapplicable —
+including one (BDOUBLE's reading (2)) that died at exactly the weak link its own prep named.
+Only one reading is offered here, because the coordinator has only one that is checkable.
+
+**(PENCIL-SATURATES) MAY BE (BE-33)'s (P) TRAP, READ AS A VACUITY STATEMENT.**
+(BE-38)(iii)'s own gloss names the configuration it forbids: `Π_u ⊆ ρ̄₁` at a non-vacuous
+piece **is the (P) trap genuinely realized**. (BE-33) proves the ear's bad locus is
+**exactly three mechanisms** (P)/(Z)/(R), and **(BE-34)** says *every trap is a
+configuration artifact*. **If** (BE-34)'s quantifier reaches the general-piece side and not
+only the ear, then (PENCIL-SATURATES) may already be a corollary — *(P) is realizable only
+where it is vacuous* — rather than a new obligation. **Where the coordinator expects to be
+wrong:** (BE-33)/(BE-34) are stated **for an EAR** (*"for an **EAR**, `ρ̄₂` spans a Klein
+chain with ends `Π_u, Π_v`"*), and the whole point of the general-piece side is that it is
+not an ear; BDOUBLE has just been burned by a `δ = min(L,6)` identity that held only at a
+**path** side. **Check the ambient before the statement** — that is `RESEARCH-ARC.md` §7's
+seventh kind, INAPPLICABLE, which BBASE minted three directions ago and which this reading
+is a candidate for.
+
+### Job 1 (PRIMARY, FORCED) — settle (PENCIL-SATURATES)
+
+Prove it, refute it, or reduce it. **What a refutation would cost, so you can price it
+before hunting:** a side with `Π ⊆ ρ̄_i` and `ρ_i < 6` would **not** refute half (B) — it
+would remove the redundancy theorem's hypothesis, putting `Π_x`/`Π_y` back among the live
+blocks (12 → 14) and reinstating BUNIF's tight place. Say that explicitly if you find one.
+**A proof, conversely, makes (BE-101)'s corollary unconditional at `a₁ = a₂ = 0`** and is
+the cheapest remaining upgrade the thread owns.
+
+**Do not re-hunt what BDOUBLE settled**: (NO-DOUBLE-PENCIL) is refuted, its witness is
+`K4 + th(6,6,6)/ab + ear4/ua` at peel `(a,b)`, and the refutation is **slack, not a
+shortfall** (margin `−1` at `δ₁+δ₂ = 8`). That witness has `ρ_i = 6` on the saturating
+side, so it is **consistent with** (PENCIL-SATURATES) and is not a counterexample to it.
+
+### Job 2 (FORCED — and this is the falsification lane) — the `⟨M⟩` hunt
+
+(BE-97)(iv) names the one shape that would put a **second** block in play at once:
+`c_i(⟨M⟩) = 1` on **both** sides — both relative screw spaces containing the virtual edge's
+own line `p_x ∨ p_y`. BDOUBLE left it as *"the named hunt"* and the other **12** live blocks
+as **unwitnessed rather than excluded**. **Run it.** A hit is a genuine falsification result
+and re-opens a block the thread currently ignores; a clean miss with a named cap is worth
+having as the first measurement of the 12-block residue. This is the direction's
+diversification, and it is a job rather than an aside.
+
+### Job 3 (FORCED, CHEAP) — the residual, and the E-rider
+
+State what half (B) is left with **in (BE-97)(iv)'s terms** — a HIT on job 1 makes the
+redundancy theorem unconditional and leaves the 12 blocks, the non-attaining case, the ear
+side's (β) window conditions and cross-pair welding. Then read E1/E2/E3 against their
+**actual** definitions and **report, never fire**:
+
+> **"The target" in E1–E3 is the ARC's target — `PencilPair K 3 G`** — never a direction's
+> local obligation (`61e046a6`). BDOUBLE made the distinction explicitly when it refuted
+> one; do the same. Two E3 texts exist (`:1700` two-conjunct, `:2098` one-conjunct); say
+> which you read — the last three landings all used `:1700`'s.
+
+### What counts as a HIT — state which you got
+
+1. **(PENCIL-SATURATES) PROVED** — (BE-101)'s corollary becomes unconditional at
+   `a₁ = a₂ = 0` and the 14 → 12 drop is a theorem.
+2. **REFUTED** — priced as above: the redundancy theorem loses its hypothesis, `Π_x`/`Π_y`
+   return to the live list, half (B) is **not** refuted.
+3. **Reduced** to a named condition strictly smaller, or shown to follow from a landed
+   result whose **ambient actually contains** the general-piece side.
+4. **The `⟨M⟩` hunt's verdict** (job 2), with its cap and denominator.
+5. **The residual + the E-rider** (job 3).
+
+The coordinator's reading corrected is a reportable result; it is offered as a candidate
+for the INAPPLICABLE kind and would be the second instance of that kind if so.
+
+### Bars
+
+- **Do not re-open:** **(NO-DOUBLE-PENCIL)** (refuted, and the refutation is *slack*);
+  BUNIF's **law** ((BE-94)–(BE-96)) and its `121/122` disclosure; the **flag coincidence**
+  (checked hypothesis, `0` shortfall at 392/392); the **flag base** ((BE-89)–(BE-93));
+  the **exhaustiveness obligation** ((BE-70)); `(1,1)` peels ((BE-79)); the **SPREAD step**
+  ((BE-74)); the **forced-empty `G` hunt** ((BE-72)); **(BE-32)(+)**; **(BE-41)(ii)**;
+  **BWIN's window theorem**; **S-mark's pin**.
+- **Do not re-derive** (BE-45)(iii)'s correction of (BE-38)(iii)'s middle clause — it is
+  landed, and it is cited here as *evidence about the block*, not as an open question.
+- **Not this direction, ranked separately:** §(K-bare-ext)'s two window conditions (qualify
+  that token — three owners); **cross-pair welding** ((BE-28)(i)); the **one-end-series**
+  case; BTWOCUT's bundle construction; the flag base's cyclomatic-`≥ 2` successor; the
+  **W4** side, closed.
+- **The Lean hold (2026-08-05) binds**: no `.lean`, in any file, for any reason.
+- **Out of scope:** `hK`, **(GR-15)**, class uniformity of the escape, **(K-res)** (a USER
+  call).
+
+### Riders
+
+**F11.** *"Never `2` below `ρ = 6`"* is a **universal** claim over sides of internal R-node
+peels; 24 × 14 draws, 37 pieces and 4 sides of 92 are measurements over constructed
+populations. **Name every population and its cap**, and distinguish *asserted-in-driver*
+(which (BE-38)(iii)'s run is, and which is stronger than reported) from *proved*. The
+`⟨M⟩` hunt is an existence search — report *"none found under cap C"*, never *"does not
+exist"*.
+
+**F21 + `RESEARCH-ARC.md` §6 — and read the gate's docstring before touching the row.**
+The `(K-bare)` row is at **1 546 / 1 600 words**, 54 spare. BDOUBLE recomputed to that and
+then added a `SPECIAL_CAPS` entry at 1 630; **the coordinator withdrew it**, because the row
+was **compliant** and every other entry in that table exists for a row that had *exceeded*
+its cap, each with a density argument. The gate's docstring now states the rule: **no
+overflow, no bump.** So this landing must **recompute to a target with real headroom** —
+the row has absorbed a full direction at each of the last three landings and the honest
+question is which of `(BE-1)`–`(BE-90)`'s prose is now redundant — with label preservation
+by **scripted set-diff**, never by eye.
+
+**F12** — if the third clause falls, annotate **(BE-38)(iii)** at source alongside its
+already-corrected middle clause, and sweep every consumer: **(BE-97)(i)**, **(BE-101)** and
+the redundancy corollary all quote it.
+
+**F17 — four status surfaces**, all set to *in flight* by this prep.
+
+**Harness.** `notes/scripts/README.md` first — §1 for the primitives (`bdouble.py`'s
+`arith`/`witness`/`hunt`/`price`, `bunif.py`'s block and profile instruments, `bpeel.py`'s
+reach layer; do not reimplement). A new driver is `w4/bsatur.py`; an addition-only diff
+discharges the figure gate by the one-line check. **`bdouble.py`'s set-diff probe was not
+retained** — if you need one, ship it.
+
+**`RESEARCH-ARC.md` §7** — the single reading above is a hypothesis with its ambient risk
+named. Kill it without ceremony.
+
+### Reservation
+
+(`notes/Pencil-labels.md` §"Reserved namespace — direction BSATUR".) Labels
+**(BE-104)–(BE-108)**, ***Steps BE103–BE107***, owning file `notes/Pencil-informal.md`
+§(K-bare-ext) — **extends, no new section** — driver `w4/bsatur.py`. Opens exactly at the
+tail **BDOUBLE declared** (its two tokens' hits are that declaration, in the registry and
+the fan-out, opened and confirmed). **Return any unconsumed remainder.** **Mint nothing**
+for `Π_x`, `c_i(U)`, `ρ_i`, the (P)/(Z)/(R) traps or the double pencil — all existing
+prose/symbol names; this section has gone **five** directions without minting a
+configuration-level token. `BSAT` and `BPTRAP` were checked (both 0-hit) and not chosen:
+`BSAT` reads as *satisfiability*, and `BPTRAP` names the coordinator's **reading** rather
+than the target — precisely what §7 warns against baking into a code.
+
+### Budget — measured at this prep
+
+**`notes/Phase39.md` is at 578/580 lines, 496/525 status-header words.** BDOUBLE merged
+rather than appended (BUNIF's *Hand-off* block folded in; three (BE-14) *Decisions* entries
+demoted at once) and still landed at 577; the prep's in-flight lines take it to the wire
+again. **The landing MUST relocate or merge** — blocks 8 and 9 of `notes/Pencil-structure.md`
+are the precedent, and the (BE-14) thread's own oldest-demotes rule is the other lever.
