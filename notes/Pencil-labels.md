@@ -3033,7 +3033,7 @@ it at (BE-97)(iii) and (BE-99); it is **not** recycled. The **next tail is (BE-1
 row being compliant at 1 546 under the generic 1 600. The recompute stands; the ceiling does
 not move. Reason in `check-gapmap-cells.py`'s docstring.
 
-## Reserved namespace — direction BSATUR (2026-09-02, **IN FLIGHT**)
+## Reserved namespace — direction BSATUR (2026-09-02, **CONSUMED IN FULL**)
 
 **Reserved 2026-09-02 for the single direction BSATUR** (ordinal 65, the arc's
 seventy-third direction; `notes/Pencil-fanout.md` §"BSATUR") — **(PENCIL-SATURATES)**,
@@ -3069,10 +3069,21 @@ BBASE, BUNIF and BDOUBLE all did. **Mint nothing** for `Π_x`, `c_i(U)`, `ρ_i`,
 prose/symbol names, and this section has now gone **five** directions without minting a
 configuration-level token.
 
-**Gap-map note (F21) — read the gate's docstring first.** The `(K-bare)` row is at
+**Gap-map note (F21) — read the gate's docstring first.** The `(K-bare)` row was at
 **1 546 / 1 600 words**, 54 spare. BDOUBLE recomputed to that and then added a
 `SPECIAL_CAPS` entry at 1 630; **the coordinator withdrew it** the same day — the row was
 **compliant**, and every other entry in that table exists for a row that had *exceeded* its
-cap, each with a density argument. The docstring now states the rule: **no overflow, no
-bump.** This landing must **recompute to a target with real headroom**, label preservation
-by **scripted set-diff**.
+cap, each with a density argument. The docstring states the rule: **no overflow, no bump.**
+
+**LANDED 2026-09-02.** Labels **(BE-104)–(BE-108)** and ***Steps BE103–BE107*** are
+**consumed in full**; nothing returned. The driver landed at the reserved path
+`notes/scripts/w4/bsatur.py`, and one further script — `notes/scripts/gapdiff.py`, the F21
+set-diff BDOUBLE did not retain — is shipped with it. **One** name minted, a *condition*
+rather than an object: **(PENCIL-SATURATES-GEN)** (0-hit at reservation time and at
+landing). Nothing minted for `Π_x`, `c_i(U)`, `ρ_i`, the (P)/(Z)/(R) traps or the double
+pencil; `Σ_x` is BUNIF's existing symbol and *"the bad plane"* is plain prose. **(L6)
+landing grep run**: `(S1)`/`(S2)` written as *"§(K-bare-ext)'s own two window conditions"*.
+**F21 discharged**: the `(K-bare)` row recomputed **1 546 → 1 466** words (134 spare, no
+`SPECIAL_CAPS` entry added), label preservation by scripted set-diff — **130 in, 137 out,
+ZERO dropped**. **The tail this direction declares, for the next reservation:
+(BE-109) / Step BE108.**

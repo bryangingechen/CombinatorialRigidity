@@ -62,7 +62,7 @@ cap was ever bumped and nothing was deleted**; the note keeps a pointer to each.
 | 5 | *What the recent landings closed* | 2026-08-29 | BZAVOID / ZJACOB / ZSHEAR / GHWIT / GMINM closes |
 | 6 | *The unselected candidate continuations* | 2026-08-29 | leads (b)–(f); ranking lives in the fan-out losers sections |
 | 7 | *Citations — the phase's verified bibliography* | 2026-09-01 | every verified source; **a new source is added HERE** |
-| 8 | *The (BE-14) thread — per-landing detail* | 2026-09-01 (addendum 09-02) | which direction proved which sub-clause of the three sides, with its labels; the **settled frame** and the thread's last five landings joined it 09-02 |
+| 8 | *The (BE-14) thread — per-landing detail* | 2026-09-01 (addenda 09-02) | which direction proved which sub-clause of the three sides, with its labels; the **settled frame**, the thread's last five landings and its four 2026-09-02 landings (BBASE/BUNIF/BDOUBLE/BSATUR) joined it 09-02 |
 | 9 | *The W4 deviation — per-landing detail* | 2026-09-02 | which of WTRI/WELOC/WPAIR/WGROW proved which sub-clause of route 3's cost list, with its labels; relocated once W4's informal argument closed |
 
 The one line that stays in `notes/Phase39.md` rather than moving here: the **State of
@@ -839,6 +839,20 @@ law and the branch-product theorem; **(BE-32)(+) proved outright**, retiring the
 star-2/SPREAD split; cross-cut-only forcing confined to `δ₁ = δ₂ = 1`, then found there,
 then shown **genuine but harmless**. **Net: half (B)'s residue is back to TWO items** —
 (BE-67)(iii)'s uniformity and the flag base, now candidate 1 below.
+
+**WHAT THE THREAD'S 2026-09-02 LANDINGS ESTABLISHED** (62 BBASE, 63 BUNIF, 64 BDOUBLE,
+65 BSATUR — write-ups `notes/Pencil-fanout.md` §"<CODE>", mathematics §(K-bare-ext)
+*Steps BE88–BE107*; the `(K-bare)` gap-map row is **authoritative and not restated
+here**). The **flag base is FREE** and is **not** (CH-1)'s object ((BE-89)); `reach` is a
+function of **two per-side profiles**, so (BE-67)(iii) at a peel is **14 numerical
+inequalities** ((BE-94)–(BE-96)); the named tight-place condition **(NO-DOUBLE-PENCIL) is
+REFUTED**, harmlessly, and the two 2-dimensional blocks are **REDUNDANT** given
+(BE-38)(iii)'s third clause ((BE-99)–(BE-101)); and **that clause is FALSE**, at exactly
+`ρ_i = 5`, by a bad plane in the pencil of legal planes at a side-degree-`1` terminal —
+its surviving form is **(PENCIL-SATURATES-GEN)**, the same clause **at a generic flag**,
+free because (BE-14) is existential ((BE-104)–(BE-107)). **Net: half (B)'s residue is ONE
+item, and it is that repaired clause**, with `Σ_x ⊆ ρ̄_i` at `ρ_i ≤ 5` named as the shape
+that would kill the repair too ((BE-107)(iii)).
 
 **Reading it later.** Same caution as block 8's: a snapshot, not a live surface. If it
 disagrees with the `(K-bare)` gap-map row, the row wins.

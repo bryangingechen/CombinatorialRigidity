@@ -8,35 +8,35 @@ derives it from exactly **three carried items**: **`hcontract`** (W4 — build p
 **`hbareSplit`** (kernel (K-bare)). Everything else is closed — W0–W3 and all of W5
 (L0–L7), `hsplit` and `hfresh` included (2026-07-30, unchanged since).
 
-**The research arc: 72 directions COMPLETE** (2026-08-05 → 09-02, ordinals
-1–64 — 68 on kernel (K), and **WTRI (58) / WELOC (59) / WPAIR (60) / WGROW (61) on W4**),
-plus eight strategy-only passes and two architecture probes; **BSATUR (65) IS IN FLIGHT**
-at **(PENCIL-SATURATES)**, the clause BDOUBLE's redundancy theorem is conditional on.
+**The research arc: 73 directions COMPLETE** (2026-08-05 → 09-02, ordinals
+1–65 — 69 on kernel (K), and **WTRI (58) / WELOC (59) / WPAIR (60) / WGROW (61) on W4**),
+plus eight strategy-only passes and two architecture probes; **NONE IN FLIGHT**.
 Per-direction verdicts, specs and write-ups live at `notes/Pencil-fanout.md` §"<CODE>"
 (ordinals 1–19: the archive) plus a workbook home — **not restated here**.
-**The arc's standing result, unchanged by all 72: `hK` is not closer.** **(GR-15)** — the
+**The arc's standing result, unchanged by all 73: `hK` is not closer.** **(GR-15)** — the
 single open gap the whole §(K-grid) chain reduces to — is **untouched**; **class uniformity
 of the escape is untouched**; no g-flank was found by any direction; **E3 is ARMED (by
 GBAL), has NEVER fired, and is NOT one landing away** — `61e046a6` corrected that reading:
 "the target" in E1–E3 is the **arc's**, so emptying W4's list does not fire it, and WGROW
 emptying it is the worked case.
 
-**W4's INFORMAL SIDE IS CLOSED** by four 2026-09-02 landings (WTRI 58 / WELOC 59 /
-WPAIR 60 / WGROW 61): **(T), (E-pair) and (V) are THEOREMS**, **(E) is open, TIGHT and off
-every W4 path**, and W4's non-user-call list is **EMPTY** — leaving the USER call
-**(K-res)** and the held build. Per-landing detail is **block 9**.
+**W4's INFORMAL SIDE IS CLOSED** (WTRI 58 / WELOC 59 / WPAIR 60 / WGROW 61): **(T),
+(E-pair) and (V) are THEOREMS**, **(E) open, TIGHT and off every W4 path**, W4's
+non-user-call list **EMPTY** — leaving the USER call **(K-res)** and the held build.
+Detail: **block 9**.
 
 **WHERE THE (BE-14) THREAD STANDS** — S-mark, the 2-cut composition lemma, is its **only
 open step**; the three sides and every per-landing detail are **REFERENCE**, at
 `notes/Pencil-structure.md` §"The (BE-14) thread — per-landing detail" (**block 8**).
 Status only: (β) proved at the window **MODULO §(K-bare-ext) (BE-57)(iv)'s own two window
-conditions** ((S1)/(S2), one of three owners of that token); cross-cut-only forcing
-is **empty as an obstruction** (392 genuine, `0` shortfall); the flag base is
-**DISCHARGED** (BBASE); BUNIF made the residue **per-side** (14 block inequalities), and
-**BDOUBLE REFUTED its named tight-place condition (NO-DOUBLE-PENCIL) and made both
-2-dimensional blocks REDUNDANT** — under **(PENCIL-SATURATES)** (= (BE-38)(iii)'s third
-clause) a `Π_x` failure is a `Λ²K⁴` failure, so **14 → 12** blocks, all of them
-**unwitnessed, NOT excluded** ((BE-97)(iv)); cross-pair welding **untouched**.
+conditions** ((S1)/(S2), one of three owners); cross-cut-only forcing **empty as an
+obstruction** (392 genuine, `0` shortfall); the flag base **DISCHARGED**; BUNIF made the
+residue **per-side** (14 block inequalities); **BDOUBLE made both 2-dimensional blocks
+REDUNDANT** under **(PENCIL-SATURATES)**, which **BSATUR REFUTED at exactly `ρ_i = 5` and
+REPAIRED** to **(PENCIL-SATURATES-GEN)** — the same clause **at a generic flag**, free
+because (BE-14) is existential — so **14 → 12** stands generically ((BE-107)). The 12 are
+**unwitnessed, NOT excluded** ((BE-97)(iv)) except `⟨M⟩`, measured empty at 72 rows;
+cross-pair welding **untouched**.
 
 **On a future HIT: the phase-boundary consequences are the USER's call** —
 whether Phase 39 closes and a successor opens for the Lean is a
@@ -210,13 +210,12 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
 
 **The phase stays OPEN** (the 2026-07-24 adjudication — no phase-close; see *Current state*).
 
-**THE (BE-14) THREAD, settled frame + its last five landings — RELOCATED 2026-09-02** to
-`notes/Pencil-structure.md` §"The (BE-14) thread — per-landing detail" (**block 8**), which
-already owns that thread's per-landing detail; the write-ups and the `(K-bare)` gap-map row
-stay authoritative. **Reference, not status.** The status that stays here: **S-mark is
-(BE-14)'s only open step**, (β) is proved at the window **modulo (BE-57)(iv)'s (S1)/(S2)**,
-half (B)'s residue is **one** item — the per-side **(PENCIL-SATURATES)**, (NO-DOUBLE-PENCIL)
-having been **refuted** — and cross-pair welding is **untouched**.
+**THE (BE-14) THREAD, settled frame + its last landings — RELOCATED 2026-09-02** to
+`notes/Pencil-structure.md` §"The (BE-14) thread — per-landing detail" (**block 8**); the
+write-ups and the `(K-bare)` gap-map row stay authoritative. **Reference, not status.** The
+status that stays here: **S-mark is (BE-14)'s only open step**, (β) is proved at the window
+**modulo (BE-57)(iv)'s (S1)/(S2)**, half (B)'s residue is **one** item — the per-side
+**(PENCIL-SATURATES-GEN)** — and cross-pair welding is **untouched**.
 
 **THE W4 DEVIATION'S PER-LANDING DETAIL — RELOCATED 2026-09-02** to
 `notes/Pencil-structure.md` §"The W4 deviation — per-landing detail" (**block 9**), the
@@ -227,23 +226,20 @@ that stays here: **(T), (E-pair) and (V) are THEOREMS**, **(E) is open, tight an
 W4 path**, and W4's non-user-call cost list is **EMPTY** — only the USER call **(K-res)**
 remains, plus the Lean-held build.
 
-**BBASE (62) LANDED 2026-09-02 — the flag base is FREE, so half (B)'s residue is ONE
-item.** Verdict in *Decisions made*; mathematics at `notes/Pencil-informal.md`
-§(K-bare-ext) *Steps BE88–BE92*. The one clause that is *status* rather than attribution:
-**(CH-1) does not apply to the base at all** ((BE-89)), so anything citing it for the base
-is citing the wrong object — and (BE-65)(i) is corrected at source.
+**BBASE (62) → BUNIF (63) → BDOUBLE (64) → BSATUR (65) ALL LANDED 2026-09-02** — verdicts
+in *Decisions made*, mathematics at §(K-bare-ext) *Steps BE88–BE107*. The clauses that are
+*status* rather than attribution: **(CH-1) does not apply to the flag base at all**
+((BE-89)), so anything citing it for the base cites the wrong object; and
+**(PENCIL-SATURATES) is FALSE** ((BE-104)) — the surviving form is
+**(PENCIL-SATURATES-GEN)**, the same clause **at a generic flag**, which is free only
+because (BE-14) is **existential** ((BE-16)); a step needing the block inequalities at
+*every* flag does **not** get it ((BE-107)(ii)).
 
-**BUNIF (63) then BDOUBLE (64) LANDED 2026-09-02 — half (B)'s residue is per-side, and
-its named tight-place condition is REFUTED.** Verdicts in *Decisions made*; mathematics at
-§(K-bare-ext) *Steps BE93–BE102*. **IN FLIGHT — BSATUR (65) at (PENCIL-SATURATES)** —
-*`c_i(Π) = 2 ⟹ ρ_i = 6`*, ranked item 0 below, the clause (BE-101)'s redundancy theorem is
-conditional on and which BDOUBLE's job 2 showed **is not implied by (BE-44)(ii)** and rests
-on (BE-38)(iii)'s measurement alone. The prep's first instruction: **its own sentence's
-MIDDLE clause is already FALSE** ((BE-45)(iii)), so ask whether the third survives the same
-scrutiny. Its job 2 is the **falsification lane** — the `c_i(⟨M⟩) = 1`-on-both-sides hunt,
-the first measurement of the 12-block residue. **THE NEXT CONCRETE TASK is to verify and
-land BSATUR's return** (the coordinator re-runs E1/E2/E3 itself, `61e046a6`). Two things
-stay the USER's call, both OFFERED
+**THE NEXT CONCRETE TASK is to prep and dispatch the sixty-sixth ordinal**, whose highest
+value target is BSATUR's own successor (1): **`Σ_x ⊆ ρ̄_i` at `ρ_i ≤ 5`** ((BE-107)(iii)) —
+the one shape that would kill the repair as well, driver-findable, and measured absent at
+only **5** terminals, the thinnest number the (BE-14) thread carries. Ranked item 0 below.
+Two things stay the USER's call, both OFFERED
 2026-09-02 and both DECLINED IN FAVOUR OF CONTINUING RESEARCH: the **(K-res) wave** (the
 2026-08-26 adjudication selected a cheap scoping slice, queued below), and whether W4's
 now-closed informal side changes anything about the **2026-08-05 Lean hold** — its own
@@ -252,19 +248,23 @@ release condition speaks of an informal result *"significant as standalone"*, an
 
 The ranked list:
 
-0. **HALF (B)'s CLASS QUANTIFIER, now the PER-SIDE (PENCIL-SATURATES)** ((BE-101)) —
-   **REDUCED THREE TIMES, not proved.** BPEEL made it *one number per (piece, peel)*
+0. **HALF (B)'s CLASS QUANTIFIER, now the PER-SIDE (PENCIL-SATURATES-GEN)** ((BE-107)) —
+   **REDUCED FOUR TIMES, not proved.** BPEEL made it *one number per (piece, peel)*
    ((BE-69)(iii)); **BUNIF made that number a function of two PER-SIDE profiles**, so
-   (BE-67)(iii) is **14 inequalities in `c_i(U) = dim(ρ̄_i ∩ U)`** ((BE-94)–(BE-96)); and
-   **BDOUBLE refuted (NO-DOUBLE-PENCIL)** — (BE-45)(ii)'s own vacuous corner produces both
-   its clauses, harmlessly ((BE-99)/(BE-100)) — and showed the two 2-blocks are
-   **REDUNDANT** given *`c_i(Π) = 2 ⟹ ρ_i = 6`* = (BE-38)(iii)'s third clause, **MEASURED**
-   at 37 pieces + 4 sides. So **12 blocks remain**, every one **unwitnessed, not excluded**
-   ((BE-97)(iv)) — the named hunt being `c_i(⟨M⟩) = 1` on **both** sides — plus the
-   **non-attaining** case, where `U = Λ²K⁴` is itself live ((BE-101)(iii)).
-   **(BE-71)(ii)'s completeness is ANSWERED** generically; at `π_x = π_y` only the cap
-   survives. Three siblings, **all closed — do not re-hunt**: cross-cut forcing (a checked
-   hypothesis, BGENUINE), the flag base (item 1), the forced-empty `G` hunt ((BE-72)).
+   (BE-67)(iii) is **14 inequalities in `c_i(U) = dim(ρ̄_i ∩ U)`** ((BE-94)–(BE-96));
+   **BDOUBLE refuted (NO-DOUBLE-PENCIL)** and made the two 2-blocks **REDUNDANT** given
+   (BE-38)(iii)'s third clause ((BE-99)–(BE-101)); and **BSATUR REFUTED that clause**
+   at exactly `ρ_i = 5` and repaired it to the **generic-flag** form ((BE-104)–(BE-107)),
+   under which **14 → 12** stands. The open sub-items, in this direction's own ranking:
+   **(a) `Σ_x ⊆ ρ̄_i` at `ρ_i ≤ 5`** ((BE-107)(iii)) — kills the repair too, measured absent
+   at 5 terminals only; **(b)** a `deg_i(x) ≥ 2` shape with `c_i(Π_x) = 2` below `ρ = 6`;
+   **(c)** a bad-flag row with `margin > 0` (`δ₂ ≤ 2`, `c₂(Π_x) ≥ slack+1`) — the arc's
+   first exhibited **shortfall** if it exists; **(d)** the remaining **11** live blocks,
+   `⟨M⟩` now measured empty at 72 rows ((BE-108)); **(e)** the **non-attaining** case, where
+   `U = Λ²K⁴` is itself live ((BE-101)(iii)). **(BE-71)(ii)'s completeness is ANSWERED**
+   generically; at `π_x = π_y` only the cap survives. Three siblings, **all closed — do not
+   re-hunt**: cross-cut forcing (a checked hypothesis, BGENUINE), the flag base (item 1),
+   the forced-empty `G` hunt ((BE-72)).
 
 1. **THE FLAG BASE — DISCHARGED by BBASE** (verdict in *Decisions made*). Three cheap,
    low-ranked leftovers: is `B_real` a forest on the class (78 564/78 564, on tiers that
@@ -414,12 +414,20 @@ section named; its *spec and landing write-up* in `notes/Pencil-fanout.md` §"<C
 `notes/Pencil-adjudications.md`; the derivation in git. **Do not grow these back into
 paragraphs.**
 
+- **BSATUR** (65, 2026-09-02, opus) — **(PENCIL-SATURATES) IS FALSE, THE REPAIR IS FREE**
+  ((BE-104)–(BE-108), *Steps BE103–BE107*): at a side-degree-`1` terminal the legal planes
+  form a **pencil**, and a bad one exists **iff `dim(ρ̄_i ∩ Σ_x) ≥ 2`, i.e. iff `ρ_i ≥ 5`**
+  — `K4(5,3,3,3,3,3)` at its 5-branch has `c₁(Π_x) = 2` at `ρ₁ = 5`, R-node, generic
+  regime, both gates. **Every sampler draws that plane at random**, so the real assert could
+  never fire; the defect is a **quantifier**, not a converse slip. **SLACK** (260 rows, all
+  attain), `Π_x` tight at 76, **24** escapes. Repair **-GEN**, free because (BE-14) is
+  existential; `⟨M⟩` hunt **EMPTY at 72**; reading INAPPLICABLE. `w4/bsatur.py`, `gapdiff.py`.
 - **BDOUBLE** (64, 2026-09-02, opus) — **(NO-DOUBLE-PENCIL) IS REFUTED and the tight
   block is REDUNDANT** ((BE-99)–(BE-103), *Steps BE98–BE102*): (BE-45)(ii)'s own **vacuous
   corner** `d_min = 6` gives `ρ̄_i = Λ²K⁴`, hence `c_i(U) = dim U` everywhere, and glued to
   (BE-45)(i)/(ii) that is the forbidden `(2,≥1)` — **one lemma, both clauses**, at 2 of
   BUNIF's own 92 rows, and **SLACK not a shortfall** (margin `−1`, the peel attains). Under
-  **(PENCIL-SATURATES)** (= (BE-38)(iii)'s third clause) a `Π_x` failure **is** a `Λ²K⁴`
+  **(PENCIL-SATURATES)** (itself REFUTED at BSATUR; read `-GEN`) a `Π_x` failure **is** a `Λ²K⁴`
   failure (300/300, control 313), so **14 → 12** blocks. Reading (1) confirmed, (2) refuted
   at its weak link; **job 2 fires on BOTH** target citations. `w4/bdouble.py`.
 - **BUNIF** (63, 2026-09-02, opus, **demoted at the BDOUBLE landing**) — **`reach` IS
@@ -451,28 +459,16 @@ paragraphs.**
 - **WTRI** (58, 2026-09-02, opus, first W4-side) — **(T) IS A THEOREM** ((TF-1)–(TF-6),
   *Steps TF1–TF6*): 2EC pins the pendant hub at `deg ≥ 4`, then two landed feasibility
   *transfers* make `G/Δ` a good contraction; *Step 4* retracted at source. `w4/wtri.py`.
-- **BGENUINE** (57, 2026-09-01, opus, **demoted at the BDOUBLE landing**) — **GENUINE, AND
-  IT DOES NOT BITE** ((BE-84)–(BE-88), *Steps BE83–BE87*): the forcing certificate is a
-  **hinge pair**, so the aggressive operator is genuine **pointwise**; at **392/392** the
-  peel **attains**, the naive `−1` being (BE-22)(iii)'s dropped proviso, repaired at source.
-- **BONEONE** (56, 2026-09-01, opus, **demoted at the BDOUBLE landing**) — **YES, AND THE
-  ENEMY IS LIVE** ((BE-79)–(BE-83), *Steps BE78–BE82*): `δ_i` and the R-node test are
-  **per-side**, so an 11-vertex R-node-shaped `(1,1)` peel exists and **24 of 48** force
-  `π_u = π_v`, refuting **(BE-66)(iv)'s conclusion**; both old tiers had **0 chances**.
-- **BSPREAD** (55, 2026-09-01, opus, **demoted at the BDOUBLE landing**) — **(BE-32)(+) IS
-  A THEOREM** ((BE-74), *Steps BE73–BE77*): a block absorbs at most **two** points of an
-  outside closed star, the closure admits on **three**; star-2/SPREAD **retired**,
-  (BE-41)(ii) **refuted as stated**, job 2 confined to `δ₁ = δ₂ = 1`.
-- **BPEEL** (54, 2026-09-01, opus, **demoted at the BBASE landing** per the thread's
-  oldest-demotes rule) — **HALF (B)'s CLASS QUANTIFIER IS ONE NUMBER PER PEEL, and the
-  EXHAUSTIVENESS OBLIGATION IS RETIRED** ((BE-69)–(BE-73), §(K-bare-ext) *BE68–BE72*):
-  Zariski-open good locus, independent sides sharing only the flag pair, completeness
-  **NOT** claimed (F11); **`G` CLOSED on (CH-1)'s class**; (BE-66)(iv)'s **reason** refuted.
-- **BDECOR** (53, 2026-09-01, opus, **demoted at the BGENUINE landing** per the thread's
-  oldest-demotes rule) — **THE ACHIEVABLE DECORATIONS ARE A PRODUCT OF EAR CHAINS**
-  ((BE-64)–(BE-67), §(K-bare-ext) *BE63–BE67*): at fixed hub flags any piece's legal
-  configurations are a **product** of ear chains, one per topological branch, **modulo the
-  cross-branch proviso `G`**; flag base = §(K-chart)'s tower; half (B) 28/28 **per-piece**.
+- **BGENUINE** (57, 2026-09-01, opus, **demoted at the BSATUR landing**) — **GENUINE, AND
+  IT DOES NOT BITE** ((BE-84)–(BE-88), *Steps BE83–BE87*): 392/392 attain.
+- **BONEONE** (56, 2026-09-01, opus, **demoted at the BSATUR landing**) — **YES, AND THE
+  ENEMY IS LIVE** ((BE-79)–(BE-83), *Steps BE78–BE82*): `δ_i` and the R-node test per-side.
+- **BSPREAD** (55, 2026-09-01, opus, **demoted at the BSATUR landing**) — **(BE-32)(+) IS
+  A THEOREM** ((BE-74), *Steps BE73–BE77*); star-2/SPREAD retired.
+- **BPEEL** (54, 2026-09-01, opus, demoted) — **HALF (B)'s CLASS QUANTIFIER IS ONE NUMBER
+  PER PEEL, EXHAUSTIVENESS RETIRED** ((BE-69)–(BE-73), *BE68–BE72*); `G` closed on (CH-1).
+- **BDECOR** (53, 2026-09-01, opus, demoted) — **THE ACHIEVABLE DECORATIONS ARE A PRODUCT
+  OF EAR CHAINS** ((BE-64)–(BE-67), *BE63–BE67*), modulo the cross-branch proviso `G`.
 - **BRNODE** (52, 2026-09-01, fable) — **THE INTERNAL R-NODE DESCRIBED**
   ((BE-59)–(BE-63), §(K-bare-ext) *BE58–BE62*): `ρ̄` obeys one **decorated-skeleton law**
   at every SPQR node, exact at every configuration; residue = the **achievable-decorations

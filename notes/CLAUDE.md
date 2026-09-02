@@ -76,7 +76,12 @@ for *organizing* this directory is here.
   `--row '(K-grid)' --cell status`, `--label '(GR-15)'`, `--grep`), never
   `sed`/`grep`: a row is ONE physical line — `(K-grid)` alone is 22 000 chars
   ≈ 7 300 tokens, and there is no way to read part of one. Detail in its
-  docstring.
+  docstring. **When you RECOMPUTE a row rather than append to it, also run
+  `notes/scripts/gapdiff.py [gap-key] [git-ref]`** (added 2026-09-02): it
+  set-diffs the row's label codes against `git-ref` and fails if the
+  compression dropped one, which is the failure mode a word cap cannot see.
+  Both scripts share `check-gapmap-cells.py`'s row parser, so they agree on
+  what a row and a cell are.
 - **`Pencil-W4-informal.md`** — the same workbook's **W4 (`hcontract`)
   residual arc**, split out 2026-08-05: three sections closed *as arguments*
   (`hnoGood'` vacuity / (SAFE-RES) refuted, the kernel widening priced) and
