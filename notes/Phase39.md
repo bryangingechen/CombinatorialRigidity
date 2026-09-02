@@ -418,6 +418,15 @@ section named; its *spec and landing write-up* in `notes/Pencil-fanout.md` §"<C
 `notes/Pencil-adjudications.md`; the derivation in git. **Do not grow these back into
 paragraphs.**
 
+- **Coordinator round reconciliation** (2026-09-02, after the GLIST/BPROPER/OWALL
+  round) — `RESEARCH-ARC.md` §7's prediction tally was **stale by six** and the round's
+  three directions each incremented it from a different baseline, two claiming the same
+  slot; the count is **fourteen instances, seven kinds**, now maintained in §7 and cited,
+  never re-derived per direction. Three concurrency hazards the read-only rule does not
+  cover are landed in `RESEARCH-ARC.md` §2 (diff against `HEAD` not the working tree; the
+  scratchpad is shared; a shared counter cannot be concurrently incremented). **No
+  mathematics and no status word moved.**
+
 - **OWALL** (70, 2026-09-02, opus, **draft-only, third of a three-way concurrent round**)
   — **(OC-44)(iii) REDUCED to (OW)**, geometry-free and in (GR-10)'s object class
   ((OC-50)–(OC-55), §(K-out) *O47–O51*): the whole (a₁) grid criterion is **two direction

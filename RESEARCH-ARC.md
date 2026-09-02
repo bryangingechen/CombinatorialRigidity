@@ -127,6 +127,37 @@ document sections, now requiring an N-way *merge* instead of N sequential
 contention, and it is unaffected by where the agents physically ran.
 Validated at both five-direction fan-outs with zero collisions each time.
 
+**What the read-only rule does NOT cover — three hazards, all from one round
+(2026-09-02, the first three-wide concurrent round outside a prepared
+fan-out).** "Read-only with respect to every shared file" protects the *writer*
+from a concurrent *writer*. It says nothing about what a concurrent **reader**
+sees, and all three of these bit in a single round. Recorded as one wave of
+evidence, not yet promoted — but each is a mechanical fact about the harness
+rather than a judgement call, so treat them as binding on the next concurrent
+round and confirm rather than re-discover them:
+
+- **Diff against `HEAD`, never the working tree.** A committing sibling leaves
+  the tree dirty for its whole run, so a draft-only dispatch that measures a
+  shared document measures an *uncommitted, mid-edit* state. One direction did
+  this correctly for the gap map (`gapdiff.py <row> HEAD`) and incorrectly for
+  the phase note in the same pass, and reported budget figures that were never
+  a landed state.
+- **The session scratchpad is SHARED.** Concurrent dispatches writing scratch
+  files under default names overwrite each other mid-edit — verified by byte
+  count, not inferred. Prefix every scratch file with the direction code, and
+  re-verify any scratch input against `HEAD` before consuming it.
+- **A shared monotone counter cannot be concurrently incremented.** Any
+  "Nth instance" tally (§7's is the live example) is read-modify-write: three
+  directions each read a baseline and added one, two of them claiming the same
+  slot while the third read a stale source. The coordinator must reconcile such
+  a counter *after* the round, in its own commit — and no direction should
+  re-derive it.
+
+**The general shape:** a concurrent round's defects concentrate in what the
+dispatches **read**, not in what they write, and none of them is visible to any
+gate or to any single return. Budget the **cross-return pass** (*Candidates*,
+below) as the check that catches them — it is what caught all three here.
+
 ### 3. The gap map as the phase's status object
 
 With no blueprint dep-graph, a research-shaped phase needs **one table
@@ -327,7 +358,13 @@ object is in it. It is the §4 *docstrings-are-not-evidence* rule one level up:
 the hypothesis list of a cited theorem is not evidence about the object you are
 citing it for. The practical instruction: when a prep says *"result X already
 covers case Y"*, name the **ambient** X is stated over, not only X's hypotheses.
-The tally now runs to **eight instances and seven kinds**.
+The tally now runs to **fourteen instances and seven kinds** — reconciled
+2026-09-02, when this line was found **stale by six**. That staleness is
+itself the finding: three concurrent directions landing the same day each
+read a different baseline for it (two claimed the same slot, one read the
+stale figure here), so the count is now maintained here and cited, never
+re-derived per direction. See §2's *What the read-only rule does not
+cover*, and `notes/dispatch-log.md`.
 
 **The second half of the same finding: coordinator artifacts need the same
 verification tier as a subagent's.** A coordinator-authored prep commit has

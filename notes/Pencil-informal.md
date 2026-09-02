@@ -31590,9 +31590,11 @@ and `deg_i(y) ≥ 2`.
 >   **Item 3 CONFIRMED but relocated**: `deg_i(y) = 1` is doing more work
 >   than the properness argument needs — none — and all of it in the
 >   **regime gate**, which is what makes (BE-118)'s witness count.
-> - **Tally: twelve instances, seven kinds**; this is the **second** SPLIT
->   and, like the first, it is recorded as a half-instance of CONFIRMED
->   rather than an eighth kind.
+> - **Tally: thirteen instances, seven kinds** — *corrected from "twelve" by
+>   the coordinator's round reconciliation, 2026-09-02; the landing read a
+>   baseline of eleven that direction GLIST had already consumed the same
+>   day*. This is the **second** SPLIT and, like the first, it is recorded
+>   as a half-instance of CONFIRMED rather than an eighth kind.
 
 > **(BE-121)(iv)** *(classification, mandatory and explicit)* **What is
 > proved**: (BE-114), (BE-115), (BE-119)(i), and (BE-116) **inside the
