@@ -1,7 +1,17 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: EIGHT fan-outs, FORTY-ONE single directions and TWO concurrent pairs
-dispatched; 68 LANDED, NONE IN FLIGHT.**
+**Status: EIGHT fan-outs, FORTY-TWO single directions and TWO concurrent pairs
+dispatched; 68 LANDED, ONE IN FLIGHT.**
+**WGROW (ordinal 61, §"WGROW") IS IN FLIGHT since 2026-09-02** — the **fourth** W4-side
+direction, at **(PAIR-5)**, the seed condition WPAIR reduced (E-pair) to and **W4's single
+remaining non-user-call obligation**. Its prep carries three coordinator readings labelled
+*to be tested*: that (PAIR-5) may be proved in the **restricted** form (residual **and**
+¬(E-pair)) that is all (E-pair) consumes; that (PAIR-3)'s monotone `|∂_hub|` invariant is
+**unconditional** and strictly decreases on a `j = 1` absorption; and that *Step PR5*'s
+`≤ 2k − 1` ear count holds only under an unstated attachment convention, so the Ear
+Lemma's `j ≤ 5` caps **one** ear at **three** consecutive hubs and the attack must be
+iterated. Driver-to-be `notes/scripts/w4/wgrow.py`. Run at `recon-opus` (fable
+unavailable).
 **WPAIR (ordinal 60, §"WPAIR") LANDED 2026-09-02** — the **third** W4-side
 direction, and it **REDUCES (E-pair)** to one named condition while proving two
 strata of it — **HIT shapes 3, 4 and 5; not 1, not 2**. The counting shape the prep
@@ -10437,3 +10447,257 @@ pinned `PYTHONHASHSEED`); reservation consumed **six of six, nothing returned**.
 gap-map row on the W4 side and this direction did not open one.
 `notes/check-phase-note.py` **did fire** and passes; the phase note was **merged and
 rotated**, not appended. Run at **`recon-opus`** (fable unavailable this session).
+
+## WGROW — sixty-first ordinal (single dispatch, prepped 2026-09-02) — the fourth W4-side direction
+
+**Selection provenance: WPAIR's own named residual, taken under the standing
+research-pick delegation — and the three binding criteria all point here.** *Max impact
+on proving or disproving `PencilPair K 3 G`* (tenth check-in): **(PAIR-5) is the single
+remaining non-user-call obligation of carried item #2**, so a HIT empties W4's
+dispatchable list outright, leaving only the (K-res) **user call**. *Falsification as a
+positive criterion* (seventh check-in): the refutation branch is unusually valuable here
+— a counterexample that is a genuine **residual** refutes **(E)** as well, because
+¬(E-pair) forces `f ≥ 7` ((PAIR-1)+(PAIR-4)) against (E)'s `f ≤ 4`. *Diversification*:
+**this is the fourth consecutive W4-side direction, and that is a new concentration — it
+is stated, not hidden.** The mitigation is structural rather than promised: on a HIT the
+W4 thread's non-user-call list is **empty**, so the concentration self-terminates at this
+dispatch; on a MISS the coordinator alternates back to (BE-14) candidate 1. Before WTRI
+the W4 thread had taken **zero of sixty-five**, so four is a correction, not a habit.
+
+Dispatched **un-named, single**, at **`recon-opus`** (fable unavailable this session).
+
+### The target, stated exactly
+
+> **(PAIR-5) Seed condition.** *Every simple, 2EC, triangle-free graph whose closed
+> hub-neighbourhoods have `≤ 3` members, whose degree-`2` vertices form an independent
+> set, and which carries a proper rigid subgraph, has a rigid `U ⊆ V(G)` with
+> `3 ≤ |U| ≤ |V(G)| − 2` and `|∂_hub U| ≤ 2`.*
+
+By **(PAIR-3)** that implies **(E-pair)**, hence **(V)** ((PAIR-6)), hence everything W4
+needs short of (K-res). Prove it, **or** exhibit a counterexample in the class, **or**
+reduce it to a named checkable condition. `wpair.py --hunt` found it holding **313/313**
+under a cap that never generated the open configuration (below).
+
+### THE COORDINATOR'S THREE READINGS — labelled TO BE TESTED, not inherited
+
+`RESEARCH-ARC.md` §7 binds: a coordinator writing a spec is the party with the least time
+on the question and the most authority over its framing. Each of the three below names
+the surface it was read off, and **each is the direction's to confirm, sharpen or kill**.
+Two of them are the reason this dispatch is priced as a slice rather than a wave.
+
+**(1) (PAIR-5) AS STATED IS STRONGER THAN WHAT (E-pair) NEEDS — read off the implication
+chain, not off numerics, and this is the most useful of the three if it holds.** The only
+use of (PAIR-5) is: *given a residual `G` whose degree-`2` vertices are independent,
+produce a seed and contradict (PAIR-3).* So it suffices to prove **(PAIR-5) restricted to
+graphs that are residuals AND satisfy ¬(E-pair)** — and that restriction hands the proof
+three hypotheses *Step PR5*'s class statement throws away:
+
+- the **no-good-contraction clause** at every proper rigid subgraph (`hnoGood'`), which is
+  the engine (PAIR-3)'s own proof runs on, plus feasibility and **no co-1 rigid set**;
+- **every branch has `≤ 1` interior vertex** (that *is* ¬(E-pair)), so `G` is a *partial
+  subdivision* of the hub multigraph and is determined by `Λ` plus a choice of which edges
+  are subdivided;
+- **`f(V(G)) = 6 + e₀ + 2σ ≥ 7` with `e₀ ≥ 1`** ((PAIR-1) + (PAIR-4)) — an over-braced
+  graph, so rigid sets are *plentiful*, which is the tension *Step PR5* names.
+
+**Prove the restricted statement and (E-pair) follows just as well.** If the direction
+proves the unrestricted (PAIR-5) instead, say so — it is a stronger and reusable result —
+but do not spend the dispatch on the extra generality if the restriction closes.
+
+**(2) THE MONOTONE `|∂_hub|` INVARIANT IS UNCONDITIONAL — read off (PAIR-3)'s own proof
+text and its second remark.** The non-increase of `|∂_hub ·|` along a `j = 1` or `j = 2`
+ear absorption follows from **(PAIR-2)(i) + (EL-1) alone**: every absorbed hub arrives
+with a hub neighbour already inside, and (EL-1) caps a hub at two hub neighbours. It needs
+neither `|∂_hub S| ≤ 2` nor any branch-length hypothesis — the workbook says exactly this
+(*"This needs no branch-length hypothesis, so (PAIR-3) is available to the whole arc"*).
+**And the `j = 1` clause is a strict decrease when the absorbed vertex was itself a
+boundary hub** (`∂_hub(S ∪ {x}) ⊆ ∂_hub S ∖ {x}`), so growth can carry `|∂_hub|` *down*
+across the `3 → 2` threshold. That is what makes "grow until it is a seed" a coherent
+attack rather than a category error. **Test it**: if the invariant turns out to need a
+hypothesis the workbook dropped, that is a correction to (PAIR-3)'s remark and it must be
+made at the originating prose (F12), not only in the write-up.
+
+**(3) *Step PR5*'s `≤ 2k − 1` IS RIGHT BUT ITS CONVENTION IS UNSTATED — and with the Ear
+Lemma threshold that convention decides the attack's shape.** *Step PR5* says *"an ear
+through `k` consecutive hubs has `≤ 2k − 1` interior vertices"*. Re-derived: `k` hubs plus
+at most `k − 1` subdivision vertices on the connecting branches — which is `2k − 1`
+**only if the ear attaches directly at `z₁` and `z_k`** (each has a neighbour in `H`). If
+one attachment runs through a subdivided branch the count is `2k`; if both, `2k + 1`.
+Against the Ear Lemma's `j ≤ 5` (§(SAFE-RES) *Step 1*, and it is an **iff**) that gives:
+
+> **one ear absorbs at most THREE consecutive hubs — and only two if either attachment is
+> subdivided.**
+
+So the named attack **cannot be a single ear along a long `Λ`-run**. It has to be
+**iterated** short ears, and the quantity carried across the iteration is reading (2)'s
+monotone `|∂_hub|`, not the run length. This is BGENUINE's lesson applied to the prep
+itself (`RESEARCH-ARC.md` §7, sixth kind): a criterion quoted without its hypotheses hands
+the dispatch the wrong yardstick. **Where the coordinator expects to be wrong:** the
+`2k − 1` figure may be intended with a different attachment convention than the one
+re-derived here, in which case the correction belongs at *Step PR5*.
+
+### What is free — cite it, do NOT re-derive it
+
+- **The whole WPAIR apparatus**: **(PAIR-1)** the deficit identity `f = 6 + e₀ + 2σ`;
+  **(PAIR-2)** the contraction criterion at a general rigid set — in particular **(i)**
+  (a rigid set's outside neighbours attach only at **hubs**, and a degree-`2` vertex of
+  `U` has both neighbours in `U`) and **(iii)** (`hcard(G/U)` **iff** `|∂_hub U| ≤ 2`);
+  **(PAIR-3)** the seed lemma; **(PAIR-4)** the closed `e₀ = 0` stratum; **(PAIR-6)** (V)
+  as a theorem given (E-pair).
+- **`Λ`'s shape, already pinned**: max degree `≤ 2` by (EL-1), so components are paths and
+  cycles; **cycle components have length `≥ 7`** (length `3` by (T); lengths `4`–`6` are
+  rigid by `isKDof_zero_of_cycle` with `∂_hub = ∅`, hence seeds, hence killed by
+  (PAIR-3)); and `|∂_hub U|` counts **dangling `Λ`-ends** of `U ∩ W` ((PAIR-2)(i)).
+- **(T) is a THEOREM** ((TF-5)): every residual is triangle-free.
+- **(EL-1)**: in a feasible `G` every hub has **`≤ 2` hub neighbours**. **(EL-3)/(EL-4)**:
+  a brick is a hub `C₄`/`C₅`, and no residual carries one.
+- **The Ear Lemma** (§(SAFE-RES) *Step 1*): `H` rigid, `P` a path with both ends in `V(H)`
+  and `j` interior vertices off `V(H)` — then `H ∪ P` is rigid **iff `j ≤ 5`**. `j = 1` is
+  "a vertex with two edges into a rigid `H`".
+- **`isKDof_zero_of_cycle`** (`Deficiency.lean:743`) / **`cycle_isProperRigidSubgraph`**
+  (`Operations.lean:1082`): every cycle of length `≤ 6` is rigid. **(R1)**
+  (`two_le_degree_of_isKDof_zero`, `Deficiency.lean:1306`): a rigid set has min degree `2`
+  inside.
+- **`T32`** (`weloc.py --witness`), a certified residual with `f = 4` — but note it does
+  **not** satisfy ¬(E-pair), so it is a sanity instance here, not a target.
+
+### Job 1 (PRIMARY, FORCED) — settle (PAIR-5)
+
+Prove it (reading (1)'s restriction is enough), refute it, or reduce it. The named attack
+is *Step PR5*(a): show some rigid set's hub part is a `Λ`-**sub-path**, since a sub-path
+has at most two dangling ends and is therefore a seed. Reading (3) says that has to be
+built by iterated short ears. **Two structural facts the coordinator did not check and
+that look load-bearing:** where the *starting* rigid set comes from (the class hypothesis
+gives a proper rigid subgraph, and (PAIR-4)'s proof shows `|V(H)| ≥ 3`), and whether the
+iteration can be forced to *stay* inside one `Λ`-component. If the iteration stalls, the
+stall configuration is itself the reduction (HIT shape 3).
+
+**The refutation branch is worth its own sentence.** A counterexample must be a graph in
+the class every one of whose rigid sets straddles `≥ 3` dangling `Λ`-ends. **State whether
+your counterexample is a genuine residual**: if it is, it carries `f ≥ 7` and therefore
+**refutes (E)** too — a much larger result than refuting the reduction route, and one that
+re-routes W4. If it is only in the class (not a residual), the route dies but **(E-pair)
+stays open**; say which, explicitly, because the two have completely different
+consequences.
+
+### Job 2 (FORCED) — the landed-inventory question, fourth time and now standing
+
+WPAIR returned a **standing verdict**: *the arc inventories landed CONCLUSIONS and
+mis-reads landed HYPOTHESES*, with the cheap fix — *before declaring an obligation
+unprovable from the landed set, `grep` the owning file for every declaration whose NAME
+contains the obligation's conclusion, and read each one's hypotheses in the arc's own
+arithmetic, not its docstring*. **Run it against this direction's new consumer**, which is
+different from the previous three: not feasibility criteria, but **producers of rigid
+subgraphs and of ear/cycle extensions** — `Operations.lean`, `Deficiency.lean`, and
+whatever `ReducibleVertex.lean` proves about `rigidContract`. One paragraph. If the fix
+has now been applied prospectively rather than retroactively, say so — that is the
+evidence that the standing verdict has been absorbed.
+
+### Job 3 (FORCED, CHEAP) — the W4 cost list, and the E-rider reading
+
+State **exactly** what W4's cost list is after this landing, distinguishing non-user-call
+items from the (K-res) **USER call**. Then read E1/E2/E3 against their **actual**
+definitions (`notes/Pencil-fanout-archive.md`) and **report, never fire**. One clause is
+pre-corrected for you and quoting it wrong is the trap WPAIR fell into (`61e046a6`):
+
+> **"The target" in E1–E3 is the ARC's target — `PencilPair K 3 G` — never a direction's
+> local obligation.** Emptying **W4's** dispatchable list does **not** fire E3: the
+> (BE-14) thread stays dispatchable, and `hcontract` is one of **three** carried items, so
+> proving (PAIR-5) does not meet the Lean hold's release condition. Note also that the
+> corpus carries **two** E3 formulations (GEXIST's two-conjunct text and a later
+> deliberate one-conjunct deviation) — say which you read.
+
+If the target is refuted, the **E2** clause turns on whether a successor is specified —
+say so explicitly.
+
+### What counts as a HIT — state which you got
+
+1. **(PAIR-5) PROVED** (restricted per reading (1), or in full) — **W4's non-user-call
+   cost list is EMPTY**, and (E-pair)/(V)/`hcontract`'s informal side all close behind it.
+2. **A counterexample in the class** — with the residual/non-residual call made
+   explicitly, because only the residual case refutes **(E)**.
+3. **Reduced** to a named checkable condition strictly smaller than (PAIR-5).
+4. **The standing inventory verdict**, run against the rigid-set-producer surface (job 2).
+5. **The W4 cost list + the E-rider reading** (job 3).
+
+Any of readings (1)–(3) **corrected** is a reportable result in its own right; say so
+rather than silently working around it.
+
+### Bars
+
+- **Do not re-open:** **(T)** ((TF-5)); **(EL-4)** (no residual carries a brick);
+  **(E-loc)**, REFUTED by `T32` ((EL-5)) — do **not** attempt to rescue it; **(PAIR-1)**,
+  **(PAIR-2)**, **(PAIR-3)**, **(PAIR-4)**, **(PAIR-6)**, all proved and all re-verified
+  by the coordinator at `61e046a6` and this prep; **(E)** itself, which is open, tight
+  (`f = 4` at `T32`) and **not this direction's target** — the whole point of the (E-pair)
+  route is to avoid it, and the only way (E) enters here is as *collateral* in the
+  refutation branch; the route-3 / packaging-(b) adjudication (2026-08-02); `hnoGood'`'s
+  vacuity refutation; **(SAFE-RES)**, refuted at `S29`; and the whole **(BE-14) thread**.
+- **The Lean hold (2026-08-05) binds**: no `.lean`, in any file, for any reason. Pin
+  statements; do not build them.
+- **Not this direction, ranked separately:** **(K-res)**, a **USER call** — it is a bar,
+  not a stretch goal, for the ninth consecutive spec; everything on the (BE-14) side.
+- **Out of scope:** `hK`, **(GR-15)**, class uniformity of the escape.
+
+### Riders
+
+**F11 — a driver per headline sentence, and the exhaustiveness class.** *"Every graph in
+the class has a seed"* is a **universal** claim and *"every rigid set of `X` straddles
+`≥ 3` ends"* is an **exhaustiveness** claim; both need an argument or an actual
+enumeration, never a per-instance assert. **Cap disclosure MANDATORY with the DENOMINATOR
+named** — and there is a specific, known cap to fix or disclose: `wpair.py --hunt`'s
+313/313 ran under **`≤ 16` branches** (`rigid_vertex_sets`' `2^{branches}` enumeration)
+and its **pairing-model generator builds no `Λ`-cycle of length `≥ 7`** — *precisely the
+configuration (EL-4) leaves open*. A new driver that does not reach `Λ`-cycles has not
+tested the open case; say so if it cannot.
+
+**Harness.** `notes/scripts/README.md` binds and is **read first** — §1 for the primitives
+that already exist (do not reimplement `rigid_vertex_sets`, the rigidity oracles, or the
+`hcard` test), §2 for where a new module goes, §4 for the discipline. `w4/wpair.py` is the
+direct ancestor and its five modes are the template; a new driver is `w4/wgrow.py`.
+**Every script the project runs is committed** (2026-08-05 user requirement), probes
+included, and the **figure-invariance gate is triggered by what the commit touches** —
+adding a driver cannot move an existing figure, so record the one-line
+`git diff --name-only -- '*.py' '*.m2'` / `git status --porcelain notes/scripts/` evidence
+rather than re-baselining §3.
+
+**F12 — a corrected summary needs a hunk at the originating prose.** Readings (2) and (3)
+above are corrections-in-waiting at *Step PR3*'s remark and *Step PR5*'s attack paragraph;
+if you confirm or refute either, edit **there**, not only in the write-up.
+
+**F17 — four status surfaces**, all of which this prep has already set to *in flight* and
+which the landing must move: the fan-out header; `notes/Phase39.md`'s `**Status:**` header
+**and** its *Blockers* W4 bullet **and** *Hand-off*; and **`ROADMAP.md`'s Status row**.
+
+**RESEARCH-ARC.md §7** — the three readings above are **hypotheses with their evidence
+stratum named**. Kill any of them without ceremony; a refuted coordinator reading is a
+finding, not a failure, and the tally of kinds is at §7.
+
+### Reservation
+
+(`notes/Pencil-labels.md` §"Reserved namespace — direction WGROW".) Labels
+**(GROW-1)–(GROW-6)**, ***Steps GW1–GW6***, owning file `notes/Pencil-W4-informal.md`
+§widened kernels (routes 1/3), driver `w4/wgrow.py`. All **0-hit in both cases**.
+**Return any unconsumed remainder** — WELOC returned (EL-6) and that is the good habit.
+**`SEED-`/`WSEED` was checked and REJECTED**: `(SEED` hits `random.Random(SEED)` in five
+drivers and **`wseed` is a live local variable in `w4/kslide.py`**, which would have made
+the driver un-greppable — (L5)'s substring rule firing on the lowercase half, one
+direction after it fired on the uppercase half (`EP-` inside `STEP-1`). **Qualify `(E)`,
+`(E-pair)` and especially `(S1)`–`(S5)` with their owners** (L3) — that token has three.
+`Λ`-run / dangling `Λ`-end / `Λ`-component already have prose names from WPAIR: **re-use
+them, do not mint labels for them.**
+
+### Budget — measured at this prep
+
+**`notes/Phase39.md` is at 568/580 lines, 491/525 status-header words** after this prep,
+which bought room the way the note's own rule prescribes — by asking *what here is
+reference rather than status* — compressing the (BE-14) status block and folding the three
+W4 landings into one paragraph. That is **12 lines and 34 words** of headroom, the most a
+landing has had in four; spend it, but **merge or rotate rather than append**, and a
+landing's *Decisions made* entry stays **one line**. The prep also repaired a stale
+surface: the `**Status:**` header still said *"E3 is ... ONE LANDING AWAY"*, which
+`61e046a6` had refuted in *Hand-off* and the write-up without fixing the header — an F17
+miss in a **coordinator** commit, which is exactly the second half of `RESEARCH-ARC.md` §7
+(coordinator artifacts need the same verification tier as a subagent's). No gap-map row is
+touched by this direction and none is opened, so `notes/check-gapmap-cells.py` will not
+fire — **state that, do not skip it**.

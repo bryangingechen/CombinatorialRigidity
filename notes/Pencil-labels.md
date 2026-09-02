@@ -2797,3 +2797,51 @@ form), both glossed at every *Step* that uses them; and **`e₀`/`σ`** are the 
 statistics of (PAIR-1). No new bare single-letter token was minted. Every citation of `(E)`,
 `(E-pair)`, `(T)`, `(V)` and `(S1)`/`(S2)` in the landed prose is owner-qualified per (L3);
 the landing-time bare-token grep was run.
+
+## Reserved namespace — direction WGROW (2026-09-02, **IN FLIGHT**)
+
+**Reserved 2026-09-02 for the single direction WGROW** (ordinal 61;
+`notes/Pencil-fanout.md` §"WGROW") — the target is **(PAIR-5)**, the *seed condition*:
+every simple, 2EC, triangle-free, `hcard` graph whose degree-`2` vertices are independent
+and which carries a proper rigid subgraph has a rigid `U` with `3 ≤ |U| ≤ |V| − 2` and
+`|∂_hub U| ≤ 2`. The **fourth** W4-side direction; WTRI's W4-side conventions bind
+unchanged and are **not restated** (owning file `notes/Pencil-W4-informal.md`, `(BE-…)`
+not extended, **no gap-map row** and none opened, so `notes/check-gapmap-cells.py` will
+not fire — state it, do not skip it).
+
+| direction | owning § | labels reserved | steps reserved | driver |
+|---|---|---|---|---|
+| **WGROW** | `notes/Pencil-W4-informal.md` §widened kernels (routes 1/3) — **extends** | **(GROW-1)–(GROW-6)** | **GW1–GW6** | `w4/wgrow.py` (conditional, as WTRI's / WELOC's / WPAIR's were) |
+
+**0-hit verification, at reservation time**, across `*.md`, `*.tex`, `*.lean`, `*.py`,
+`*.m2` with `.git`/`.lake`/`__pycache__` excluded, **in both cases**: `WGROW`, `wgrow`,
+`wgrow.py`, `(GROW-`, `GROW-`, `(GROW-1)`–`(GROW-6)` and the raw step tokens `GW1`–`GW6`
+each **0-hit**.
+
+**The codename names the ATTACK, not the target, and that is deliberate but not a
+commitment.** *Step PR5*'s named attack is to **grow** a rigid set along a `Λ`-run; the
+*target* is (PAIR-5) whichever way it is attacked, and per `RESEARCH-ARC.md` §7 the
+attack is a coordinator hypothesis to be tested, not inherited. Precedent for
+attack-named directions: BPEEL, BSPREAD, BWIN, BTWOCUT.
+
+**`SEED-` was CHECKED AND REJECTED — the (L5) substring rule firing a second time in two
+directions, and this time on the LOWERCASE half.** The obvious tag for the *seed*
+condition is `WSEED` / `(SEED-n)`. The minted forms `(SEED-1)`–`(SEED-6)` are 0-hit, but
+two innocent substring families are not: the bare string `(SEED` has **11 hits**, every
+one the Python expression `random.Random(SEED)` in five tracked drivers
+(`w4/{ltwo,ogeom,sigz,resgrid,repin}.py`); and **`wseed` has 9 hits as a local variable
+name in `w4/kslide.py`**, which would have made the driver `w4/wseed.py` un-greppable.
+Neither is a label collision — which is exactly what (L5)'s substring half exists to
+catch. WPAIR's rejection of `EP-` (inside `STEP-1`/`STEP-4`) is the same catch on the
+uppercase half; the pair of them is why the check runs in **both** cases, and that is now
+written into the clause above. Also checked and 0-hit but not chosen: `(RUN-` / `RN1`–`RN6`
+(bare `RUN` is common prose, so a `RUN`-grep is noisy even though `(RUN-` is clean) and
+`(SC-` / `(WS-` (opaque at the point of use).
+
+**(L6) reminder for the landing.** Run the landing-time bare-token grep. The live risks
+are the three WPAIR flagged, unchanged: **`(E)`** and **`(E-pair)`** (bare, and `(E)` is a
+single letter not in the collision table); and **`(S1)`–`(S5)`**, which have **three**
+owners — (SAFE-RES′)'s clauses, §(K-slide)'s claims, §(K-bare-ext)'s window conditions.
+Qualify every one with its owner (L3). New objects this direction is likely to need
+(`Λ`-run, dangling `Λ`-end, `Λ`-component) already have prose/symbol names from WPAIR —
+**re-use them, do not mint labels for them**, per WTRI's and WPAIR's precedent.

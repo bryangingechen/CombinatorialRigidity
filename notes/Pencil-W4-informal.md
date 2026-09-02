@@ -1666,6 +1666,19 @@ Why it is the right residual, and what is known about it.
   rigid set straddles `≥ 3` `Λ`-ends. **(b) would refute (E) as well** (`f ≥ 7`),
   which is the reason to expect (a).
 
+> **Coordinator annotation, 2026-09-02 (direction WGROW's prep; TO BE TESTED, not a
+> correction yet).** Two readings of the paragraph above, both dispatched with WGROW and
+> both that direction's to confirm or kill. **(i)** The `≤ 2k − 1` count holds under the
+> convention that the ear **attaches directly at `z₁` and `z_k`**; with one attachment
+> running through a subdivided branch it is `2k`, with both `2k + 1`. Against the Ear
+> Lemma's `j ≤ 5` (§(SAFE-RES) *Step 1*, an **iff**) that caps **one** ear at **three**
+> consecutive hubs — two if either attachment is subdivided — so attack (a) must be
+> **iterated** short ears, not a single ear along a long run. **(ii)** Only the
+> *restriction* of (PAIR-5) to graphs that are residuals **and** satisfy ¬(E-pair) is ever
+> consumed, since that is the only context (PAIR-3) is applied in; the restriction supplies
+> `hnoGood'`, no co-1 rigid set, all branches of interior length `≤ 1`, and `f ≥ 7`
+> ((PAIR-1)+(PAIR-4)). Spec: `notes/Pencil-fanout.md` §"WGROW".
+
 ### Step PR6 — job 3: **(V) is a THEOREM given (E-pair)**, and the consumer state
 
 > **(PAIR-6)** Given (E-pair) and (T), **(V)** — i.e. §(SAFE-RES′)'s (S1)–(S5)
