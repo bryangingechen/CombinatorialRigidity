@@ -213,7 +213,11 @@ def _core(s):
 def label_regex(label):
     """Regex for a gap-map label token -- `(GR-15)`, `GR-15`, `(GR-4′)`,
     `(GR-28)(iv)`. Matches the parenthesized and bare forms, and does NOT
-    match a longer sibling (`(GR-150)`, `(GR-15a)`, `(GR-4′)` for `GR-4`)."""
+    match a longer sibling (`(GR-15<digit>)`, `(GR-15a)`, `(GR-4')` for
+    `GR-4`).  The digit form is written as a PLACEHOLDER, not a real label:
+    this docstring used to say `(GR-150)`, which direction GLEAF consumes, so
+    a grep for that label would have hit this tool.  Keep tool-file examples
+    unmintable."""
     core = re.sub(r"^\(+", "", label.strip())
     core = re.sub(r"\)+$", "", core)
     if not core:

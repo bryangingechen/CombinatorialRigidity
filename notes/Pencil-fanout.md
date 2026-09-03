@@ -31,10 +31,25 @@ what it reaches is **implied by** (GR-18)(iii)'s residual (226 080 legal pairs p
 demand and fail the residual), so **§8's rank 3 is SPENT**: a proof there cannot move
 (GR-10), and a refutation would be *strictly stronger* than a g-flank. §8's rank-3
 rationale was **right on reach, wrong on value**. Two items need coordinator
-**adjudication before landing**: the `(K-grid)` status cell has **no room** — its proposal
-lands 2 718/2 715, three over, so a **fourth** compression (u86, ≥ 30 words) is required —
-and `notes/gapmap.py:216` carries **`(GR-150)` as a docstring example**, a live label form
-inside a tool's docstring, which wants re-wording to a non-colliding form.
+**adjudication before landing** — **BOTH NOW ADJUDICATED BY THE COORDINATOR, 2026-09-03**:
+
+- **The `(K-grid)` fourth compression: AUTHORIZED, with a target, not just a floor.** The
+  proposal lands 2 718/2 715 — three over — so compress **u86** as GLEAF proposes, but land
+  at **≤ 2 688** rather than at the cap: a 3-word margin does not survive transcription,
+  which is the lesson BSCOND and BARCH each paid for by adding one more compression at their
+  own landings. Standing constraints: remove **content-cell duplication or a mechanism
+  superseded as a headline, never history and never a label** — `gapdiff.py K-grid HEAD`
+  must show **0 dropped** — and **no `SPECIAL_CAPS` bump** (the gate's own *"no overflow, no
+  bump"*, BDOUBLE's withdrawn bump being the precedent).
+- **The `notes/gapmap.py` docstring label: FIXED IN ADVANCE by the coordinator** (this
+  commit), because GLEAF's own range **consumes `(GR-150)`**, so the example would have
+  become a false hit for a live label the moment its labels landed. Re-worded to the
+  unmintable placeholder `(GR-15<digit>)`, which preserves the docstring's actual point (a
+  longer sibling of `GR-15` must not match); `--selftest` green. **The general rule, and it
+  is narrow:** a tool-file example naming an **unminted** label becomes a false hit the
+  moment a direction mints it, so tool examples must be unmintable — whereas an example
+  naming an **already-consumed** label (`(GR-15)` itself, in this file and `gapdiff.py`) is
+  an ordinary citation and is fine. Only the first kind was repaired.
 
 **ALL THREE VERDICTS ARE AS REPORTED, NOT CONFIRMED** — none has had the coordinator's
 verification tier, which is precisely the outstanding work. Each draft also carries its own
