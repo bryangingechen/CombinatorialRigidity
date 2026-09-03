@@ -461,7 +461,43 @@ killed, but so a **timid** one can be beaten. The tell to watch for: a predictio
 whose reasoning is *"X is already covered by the weaker Y"*, where the honest
 answer turns out to be *"X is outright true here"*.
 
-The tally now runs to **eighteen instances and eight kinds** — the eighteenth
+**RECONCILED 2026-09-03 AFTER THE CONCURRENT ROUND OF FOUR: the tally runs to
+TWENTY-THREE instances and NINE kinds.** The five new ones are one round's worth, which is
+itself the finding — a four-direction round primed by one coordinator produced a
+coordinator-prediction correction in **every** direction:
+
+- **BSCOND** — *the ninth kind, and a new shape: **the dichotomy was too narrow**.* The spec
+  framed the outcome as prove-or-refute and priced a refutation as *"it costs the window's
+  class theorem its carrier and re-routes (β)"*. Reality took a **third** branch neither
+  named: refutation and proof were the **same object**, and (BE-57)(i) came out **stronger
+  with a hypothesis deleted**. The tell to watch: a spec offering two outcomes that *look*
+  exhaustive because they are each other's negation, when the live possibility is that the
+  question dissolves.
+- **BARCH** — kind 1, **refuted**: the spec asked whether the `p_x`-free method class dies
+  at `k ≥ 2` and primed death (*"if what made `A` `p_x`-free is gone by construction"*). It
+  does not die; it **changes ambient**, and (BE-139)(iv)'s universal quantifier is what
+  fails.
+- **OBAR** — kind 1, **refuted**, on a mechanism the coordinator guessed: the spec named
+  degree-`1` vertices as a likely second obstruction to (OC-35)-admissibility. A bar only
+  **raises** degrees; the real obstruction is (σ7), one level up.
+- **DSAT** — a **split**: the spec's *"say which stratum you trace on"* was right that the
+  stratification decides the answer and **inverted** about which one — no `k`-stratum is the
+  frame, the invariant is `def₃(G − a)`, and one object mixes `k = 3…9`.
+- **GLEAF** — a **split**, and the useful kind: the board's rank-3 rationale was **right on
+  reach and wrong on value**. Its own strike records the generalizable defect — *the entry
+  priced a candidate by the machinery it reaches and never asked whether the statement
+  reached is necessary or sufficient for its row.*
+
+**And the round ran corrections in BOTH directions, which §7's second half predicts but had
+not measured.** Against those five, the coordinator's landing-time verification caught four
+direction-side defects that no gate could see, each an under-qualified summary on the
+authoritative status object: BARCH's *"14 → 12 SURVIVES"* with (E4) unproved, OBAR's
+chart-wide negative not naming (σ7)'s own 39/39 basis, DSAT's kill not separating its
+**proved** (K-res) half from its **measured** class half, and GLEAF listing a **landed**
+theorem (`Union_rank_eq`, heterogeneous at the very line it cited) among its owed bridges.
+**Five and four, one round.** Neither party is the reliable one; the pairing is.
+
+The tally previously ran to **eighteen instances and eight kinds** — the eighteenth
 (2026-09-03, direction GELIM) a plain **refuted**, kind 1, and instructive for
 *where* the refutation was found: the spec's own evidence-stratum clause said
 the coordinator had **not opened §(K-dom)**, and §(K-dom) *Step D4* is exactly
