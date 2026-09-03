@@ -358,7 +358,7 @@ object is in it. It is the §4 *docstrings-are-not-evidence* rule one level up:
 the hypothesis list of a cited theorem is not evidence about the object you are
 citing it for. The practical instruction: when a prep says *"result X already
 covers case Y"*, name the **ambient** X is stated over, not only X's hypotheses.
-The tally now runs to **fourteen instances and seven kinds** — reconciled
+The tally now runs to **sixteen instances and seven kinds** — reconciled
 2026-09-02, when this line was found **stale by six**. That staleness is
 itself the finding: three concurrent directions landing the same day each
 read a different baseline for it (two claimed the same slot, one read the

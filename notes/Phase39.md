@@ -404,13 +404,13 @@ section named; its *spec and landing write-up* in `notes/Pencil-fanout.md` §"<C
 `notes/Pencil-adjudications.md`; the derivation in git. **Do not grow these back into
 paragraphs.**
 
-- **Coordinator round reconciliation** (2026-09-02, after the GLIST/BPROPER/OWALL
-  round) — `RESEARCH-ARC.md` §7's prediction tally was **stale by six** and the round's
-  three directions each incremented it from a different baseline, two claiming the same
-  slot; the count is **fourteen instances, seven kinds**, now maintained in §7 and cited,
-  never re-derived per direction. Three concurrency hazards the read-only rule does not
-  cover are landed in `RESEARCH-ARC.md` §2 (diff against `HEAD` not the working tree; the
-  scratchpad is shared; a shared counter cannot be concurrently incremented). **No
+- **Coordinator round reconciliations** (2026-09-02, both rounds) — §7's prediction tally
+  was **stale by six** and round 1's three directions each incremented it from a different
+  baseline, two claiming one slot; the count is **sixteen instances, seven kinds**, kept in
+  `RESEARCH-ARC.md` §7 and **cited, never incremented per direction** — round 2 obeyed that
+  and needed no repair. Three concurrency hazards the read-only rule misses are in §2 (diff
+  against `HEAD`, not the working tree; the scratchpad is shared; a shared counter is not
+  concurrently incrementable); **two gate blind spots** are in the *Gates* block. **No
   mathematics and no status word moved.**
 
 - **BOPEN** (72, 2026-09-02, opus, **draft-only beside a committing `(K-grid)` dispatch**)

@@ -596,6 +596,24 @@ guards against is now a standing, harness-wide rule (`notes/scripts/README.md` �
 8, promoted 2026-08-19 after a second instance; not restated here); bump a row's cap only
 with a dated one-line reason, never a silent regrowth.
 
+**Two blind spots in the two `check-*.py` gates, both found 2026-09-02 — read these before
+quoting a gate result as evidence.** Neither is a bug and neither has ever let a cap
+violation through; both mean a *green* run can certify **nothing**.
+
+1. **They inspect only files CHANGED VS `HEAD`.** So a run *after* the commit reports
+   `0 checked` and is a silent no-op — which is what a coordinator's post-landing
+   verification does by default. **Run them before committing**, or run `--all` (which
+   also surfaces long-standing FAILs on *closed* phase notes; those are pre-existing and
+   out of scope for an active-phase commit).
+2. **`check-gapmap-cells.py` detects a changed row by comparing WORD COUNTS, not text.** A
+   recompute that lands at *exactly* its pre-edit count is invisible to the default mode
+   (observed at 1 499 → 1 499). Use `--all`, and rely on `notes/scripts/gapdiff.py`, which
+   compares **label sets** and did see that change.
+
+The general rule both share: `gapdiff.py` is the gate that actually looks at content, and
+it is the one to trust for a recompute. Fuller record of (2), with its incident, in
+`notes/Pencil-labels.md`.
+
 ## The question and the opening recon
 
 **Relocated verbatim from `notes/Phase39.md`, 2026-08-28**, at the recompute that followed
