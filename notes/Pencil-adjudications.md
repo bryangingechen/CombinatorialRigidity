@@ -465,3 +465,21 @@ is dispatch-*selection* provenance only, never mathematics.
   more."* — **the item is closed and is not tracked anywhere.** **Everything else
   stands unchanged:** phase OPEN, the 2026-08-05 Lean hold, W4 PARKED,
   `hK`/`hbareSplit` pinned, both option Bs un-commissioned, (K-res) queued.
+
+## Relocated 2026-09-03 — the 2026-07-30 / 2026-08-02 route adjudications
+
+Moved verbatim from `notes/Phase39.md` *Current state* at the liveness round's reconcile
+commit. **Reason for the move:** the 2026-09-03 *declines are not permanent locks* directive
+demotes these from live GO/NO-GO constraints to the historical record of a priority call made
+under the evidence of those dates. They are **not** repealed and **not** re-decided here; they
+simply no longer bar anything on their own authority. Re-opening any of them needs a
+mathematical reason, not permission.
+
+- **2026-07-30, kernel (K):** *"Route 3: build now"*, then on the (K) non-constancy options
+  *"C: literature hunt + A"* — keep carrying `hK` as pinned; option B (commission the
+  stress-function infrastructure) is **NOT** commissioned.
+- **2026-07-30, kernel (K-bare):** *"C: cheap numerics extensions + A"* — keep carrying
+  `hbareSplit` as pinned; option B (the insertion-calculus research) is **NOT** commissioned.
+- **2026-08-02, W4:** route **3, packaging (b)** — the structure-theorem-pinned dispatch
+  invariant, with (K-res) carried as a sibling of the byte-identical `hK` — **recorded as a
+  decision, not built; W4 stays parked** while the (K)-family research continues.

@@ -58,14 +58,10 @@ constraints; the **dated dispatch/selection narrative for every ordinal, 1–44,
 
 - **2026-07-24:** *"Let's leave the phase open and continue the work on the conjecture in this
   phase. Unless there's a good reason to split here."*
-- **2026-07-30, kernel (K):** *"Route 3: build now"*, then on the (K) non-constancy options
-  *"C: literature hunt + A"* — keep carrying `hK` as pinned; option B (commission the
-  stress-function infrastructure) is **NOT** commissioned.
-- **2026-07-30, kernel (K-bare):** *"C: cheap numerics extensions + A"* — keep carrying
-  `hbareSplit` as pinned; option B (the insertion-calculus research) is **NOT** commissioned.
-- **2026-08-02, W4:** route **3, packaging (b)** — the structure-theorem-pinned dispatch
-  invariant, with (K-res) carried as a sibling of the byte-identical `hK` — **recorded as a
-  decision, not built; W4 stays parked** while the (K)-family research continues.
+- **2026-07-30 (both kernels) / 2026-08-02 (W4) — RELOCATED VERBATIM 2026-09-03** to
+  `notes/Pencil-adjudications.md`: the same day's *declines are not locks* directive demotes
+  them to **history**. `hK`/`hbareSplit` stay **pinned** (a claim about the proof, not a bar);
+  W4's build is parked **by the Lean hold**, not by the 2026-08-02 call.
 - **2026-08-05, the standing reproducibility requirement:** *"in general, I would like all of
   the scripts we run to be committed for reproducibility"* — now a hard rule of the harness
   (`notes/scripts/README.md`); every script the project runs is tracked, probes included.
@@ -105,6 +101,17 @@ constraints; the **dated dispatch/selection narrative for every ordinal, 1–44,
   (iii) the **phase boundary** (top `**Status:**` block). This supersedes the
   2026-08-19 SIGZ authorization's adjudicate-at-the-return terms *as to the stop
   clause only*.
+
+- **2026-09-03, DECLINES ARE NOT PERMANENT LOCKS** (verbatim): *"I wouldn't overemphasize
+  user decisions or make them too binding: we should ultimately be driven by the math. So if
+  there are still some promising directions that happened to be declined once in the past, we
+  shouldn't lock them out forever."* An adjudication is **a past priority call, not a
+  prohibition**; re-opening needs **a mathematical reason, not permission** — cite what
+  changed, never a fresh opinion. **Re-opened:** both option Bs (option B's first step is a
+  **design pass**, unparked by the hold) and **(K-res)**'s cheap slice + flank. **NOT
+  loosened** (barred by *mathematics*, not priority): the (a′)/(b′) do-not-do, §2.5 counting
+  saturation, the §(K-ind) gate, the Zheng unrefereed caveat. **The Lean hold is untouched
+  and remains the user's.**
 
 - **2026-09-03, THE REPRIORITIZE DIRECTIVE** (verbatim): *"we should try to tackle the most
   promising directions (either for proving or disproving the headline result); if the current
@@ -180,12 +187,10 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
   a user call**, offered and declined 2026-09-02.
 - **OPEN QUESTION FOR THE USER — not a coordinator call, and the answer lands here.** The
   `(K-res)` row's close-it names, beside the wave, a **cheap first slice** (the 255-residual
-  pool sweep) and a **flank** (a `def = 0` shape whose every admissible colouring has
-  `dim Z > 0`; `resgrid.py`'s sweep is the instrument, already built). **Reading 1:** both
-  are the wave's first steps, so the 2026-09-02 decline covers them and the W4 thread has
-  **nothing dispatchable left**. **Reading 2:** the flank sits outside the wave clause and is
-  separately dispatchable, in which case that claim is false. **UNSETTLED** (SWEEP C,
-  2026-09-03); no coordinator may soften either side of it.
+  pool sweep) and a **flank** (`resgrid.py`'s sweep is the instrument, already built).
+  **SETTLED 2026-09-03 at the POLICY level** (*Current state*): a decline is not a lock, so
+  the declined **wave** does not bar them. **Both dispatchable**; *"nothing dispatchable
+  left"* is **withdrawn**.
 
 - **Doc debt — the gate is MECHANICAL** (`notes/check-phase-note.py`: **580 lines / 525
   status-header words**, plus a fail if *Decisions made* outgrows the forward sections),
@@ -239,8 +244,11 @@ and BOPEN (72) closes half (B)'s item 1 at side-degree `1`** (block 8), and **th
 carries the standing **do-not-do** — no more (a′)/(b′) ledger directions), whose ranks 1 and
 3 are spent.
 
-**THE NEXT CONCRETE TASK is THIS LIVENESS DOC ROUND** (three sweeps, landing 2026-09-03),
-because **the ranked lists are not a safe dispatch basis** — measured, not impressionistic.
+**THE LIVENESS DOC ROUND IS COMPLETE** (slices 1+3 `c89c7adb`; sweeps C/A/B `2eeceace`,
+`e12ecca4`, `e5c2f03e`, all 2026-09-03): ~52 of ~108 forward-looking entries carried a
+defect. **THE NEXT CONCRETE TASK is a re-rank on the repaired lists**, under the 2026-09-03
+directives — declines are re-openable on merit, so the (K-res) cheap slice and both option
+Bs are candidates again.
 (GR-144)'s successor 1, which this line named until 2026-09-03, is **DEMOTED**: its own
 sentence concedes it **IS (GR-10)** here ((GR-140)(v)) — the gap, not a slice below it; the
 criterion's statement is §(K-grid)'s and is not restated. Successor 2 (`n_hub = 6`) is now
@@ -419,16 +427,13 @@ section named; its *spec and landing write-up* in `notes/Pencil-fanout.md` §"<C
 `notes/Pencil-adjudications.md`; the derivation in git. **Do not grow these back into
 paragraphs.**
 
-- **LIVENESS ROUND, SWEEP C** (2026-09-03) — item 1's `def₂ = def₃` fallback is **DEAD**
-  ((BE-23)(c), BINDUC); two *Blockers* claims CONTRADICTED; four counters stale. Block 14.
-- **Coordinator round reconciliations** (2026-09-02, both rounds) — §7's prediction tally
-  was **stale by six** and round 1's three directions each incremented it from a different
-  baseline, two claiming one slot; the count is **sixteen instances, seven kinds**, kept in
-  `RESEARCH-ARC.md` §7 and **cited, never incremented per direction** — round 2 obeyed that
-  and needed no repair. Three concurrency hazards the read-only rule misses are in §2 (diff
-  against `HEAD`, not the working tree; the scratchpad is shared; a shared counter is not
-  concurrently incrementable); **two gate blind spots** are in the *Gates* block. **No
-  mathematics and no status word moved.**
+- **THE LIVENESS DOC ROUND** (2026-09-03; `c89c7adb`, `2eeceace`, `e12ecca4`, `e5c2f03e`) —
+  **~52 of ~108 forward-looking entries carried a defect** (14 dead, 10 self-contradicting);
+  rule in `RESEARCH-ARC.md` **§8**, record in **block 14**. **The status objects were clean
+  throughout** — the rot was entirely in the recommendation layer.
+- **Coordinator round reconciliations** (2026-09-02) — §7's tally was **stale by six**; it is
+  **cited, never incremented per direction**. Three concurrency hazards in `RESEARCH-ARC.md`
+  §2, two gate blind spots in the *Gates* block. Detail: block 14.
 
 - **BLINE** (73, 2026-09-02, opus, **one-lined at the 2026-09-03 doc landing, detail in
   block 8**) — **`(∗)` IS DECIDED: a theorem below `dim A = 3`, FALSE from `dim A = 5`, and
@@ -558,13 +563,8 @@ Settled, one line each:
   realizable at `n_hub = 8` (AGLU) — the rest honest MISSes or OPEN reshapes, each with a
   named successor. **(GR-15) OPEN throughout; E1/E2 never fired; E3 ARMED by GBAL, not
   fired.** Canonical homes `notes/Pencil-fanout{,-archive}.md` + `notes/Pencil-labels.md`.
-- **The 2026-08-05 research cluster, one-lined** (all same day; full detail
-  `Phase39-design.md` + git, workbook sections named): notes reorganization
-  (`Pencil-labels.md`; design doc **FROZEN**) + class-uniformity recon (5 REFUTED, 3
-  ranked, strategy **§4.6**); route σ a **CANDIDATE** (obligation 1 DONE); (K-ind) and the
-  Δ-matroid lead **BOTH REFUTED**; the §(K-Λ) triad settled ((Λ0)/(Λ1) PROVEN via M2); the
-  sixth–ninth dispatches found the conjecture HOLDS at every uncovered flank, the pure
-  condition WRONG INVARIANT, dominance HOLDS but NOT a route; **(K-slide-comb) REFUTED**.
+- **The 2026-08-05 research cluster — RELOCATED 2026-09-03** to `Pencil-structure.md`
+  **block 14** (settled history; `Phase39-design.md` + git carry the detail).
 - **Pre-fan-out arc, one-lined (2026-07-24 → 08-04; full detail `Phase39-design.md` + git)**:
   W0–W3/W5 CLOSED `hsplit` IN FULL and isolated kernel **(K)**; corank fixed to **(K-tight)**,
   W4 decomposed, (K-bare-ext) NO-GO'd, the standing adjudications set; **(K-res)** priced and

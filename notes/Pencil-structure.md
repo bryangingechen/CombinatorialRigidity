@@ -1029,6 +1029,19 @@ disagrees with the `(K-bare)` gap-map row, the row wins.
   a **COROLLARY** ((BE-132)); two further gaps are **not** `(∗)` ((BE-134)); the clause
   itself stays **OPEN**, 0/270. `w4/bline.py`.
 
+### Addendum, 2026-09-03 — the 2026-08-05 research cluster, relocated verbatim
+
+Moved from `notes/Phase39.md` *Decisions made* at the liveness round's reconcile commit, to
+buy the lines the round's own records needed. Settled history; nothing here is status.
+
+- **The 2026-08-05 research cluster, one-lined** (all same day; full detail
+  `Phase39-design.md` + git, workbook sections named): notes reorganization
+  (`Pencil-labels.md`; design doc **FROZEN**) + class-uniformity recon (5 REFUTED, 3
+  ranked, strategy **§4.6**); route σ a **CANDIDATE** (obligation 1 DONE); (K-ind) and the
+  Δ-matroid lead **BOTH REFUTED**; the §(K-Λ) triad settled ((Λ0)/(Λ1) PROVEN via M2); the
+  sixth–ninth dispatches found the conjecture HOLDS at every uncovered flank, the pure
+  condition WRONG INVARIANT, dominance HOLDS but NOT a route; **(K-slide-comb) REFUTED**.
+
 ## The W4 deviation — per-landing detail
 
 **Relocated verbatim from `notes/Phase39.md`'s *Hand-off* section, 2026-09-02**, at the

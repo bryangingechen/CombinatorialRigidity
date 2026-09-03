@@ -317,6 +317,29 @@ surfaces and was misled every time, each item looking live where it is
 that is a bug in this file per the tiering caveat above — but the mechanism is
 general and the cost of the rule is one clause per entry.
 
+**Two amendments the round's own sweeps forced, both earned rather than predicted.**
+
+- **A do-not-re-run list needs a BACK-LINK to the lists still recommending its entries.**
+  Forward kill clauses alone would not have caught PENCIL's worst instance: §8.6 *already*
+  recorded §5.3's item (i) as ruled out, in the same file, while §5.3 four sections earlier
+  offered it as the highest-value unrun item — and no reader of either could see the other.
+  (§8.6's stated *cause* was wrong too, which is a second reason a back-link beats a
+  duplicated verdict: one of the two copies will drift.)
+- **Name the last ordinal, not an integer.** *"Unmoved since BSIGMA (ordinal 67)"* beats
+  *"unmoved in sixteen landings"*: the first is checkable against the record and **decays
+  visibly**, the second silently becomes wrong every time anything lands, and nobody is
+  positioned to bump it. PENCIL had four such counters drift simultaneously, and two copies
+  of one sentence reading *"sixteen"* and *"fifteen"*. Applies to any monotone count in a
+  recommendation surface.
+
+**The load-bearing evidence, and it is the round's real finding: the STATUS objects were
+clean throughout.** Three sweeps flagged two suspected gap-map defects between them and
+**neither survived coordinator scrutiny** — the map already stated the price inline in one
+case, and was merely uncited (not miscited) in the other. Meanwhile the gap map had said
+*"U1 is half delivered"* since the day after the shortlist calling U1 unrun was written. So
+the rot was **entirely** in the recommendation layer, which is exactly what §6-plus-this-item
+predicts: gate a surface and it stays correct; leave it ungated and it does not.
+
 **Corollary — a gate that reports zero is not a gate that passes.**
 `notes/check-log-rows.py` printed `OK: 0 row(s) checked` for weeks: it targeted
 a log whose rows had been archived, and was hard-coded to that log's column
