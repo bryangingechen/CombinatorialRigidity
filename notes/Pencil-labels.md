@@ -3815,7 +3815,7 @@ lesson would lose the one that is actually mechanical:
 A check can satisfy (1) and still fail (2), which is what happened here — so
 the two are independent clauses, not two readings of one lesson.
 
-## Coordinator reservation defects — THREE distinct shapes in ONE round (2026-09-03)
+## Coordinator reservation defects — FOUR distinct shapes in ONE round (2026-09-03)
 
 Recorded together because they arrived in one four-direction round, all in the
 **coordinator's** pre-dispatch checks, and because each would pass a check built to
@@ -3848,4 +3848,25 @@ failed.
 **The standing lesson for the dispatch side:** a direction that finds its reservation
 contradicted by this file should **follow this file and say so in its return**, as DSAT
 did. The registry outranks a coordinator's spec on label naming.
+
+4. **Off-by-one against a DECLARED TAIL** (GLEAF). The reservation offered
+   `(GR-146)`–`(GR-153)` / `G166`–`G173`. But GGLOB's landing **declares the tail
+   verbatim in two places** — *"the tail declared for the next reservation is (GR-145) /
+   Step G165"* — so the correct opening was **(GR-145)**, and the spec skipped it because a
+   max-integer scan saw `(GR-145)` present and read it as **consumed** when it was the
+   **declaration**. GLEAF **deviated DOWN correctly**, using `(GR-145)`–`(GR-152)` /
+   *Steps G165–G172*, returning `(GR-153)`/*Step G173* unused. It also found
+   **`(GR-150)` is not 0-hit**: 1 hit in `notes/gapmap.py:216`, a **docstring example** in
+   the boundary-matching helper — a live label form inside a tool's docstring, which should
+   be re-worded to a non-colliding form (coordinator action).
+
+**THE ROOT CAUSE, and it unifies all four.** Every one of these came from **deriving a
+reservation by scanning the corpus** instead of **reading the tail this registry
+declares**. Shape 1 mis-metered a scan, shape 2 under-covered a scan, shape 3 scanned the
+wrong family, and shape 4 misread a scan's maximum as consumed rather than declared. The
+registry states the next tail explicitly at nearly every landing, precisely so that no
+reservation has to be computed. **So: READ THE DECLARED TAIL for the owning section and
+open there. Use a scan only to CONFIRM it, checking every token in the range and naming
+the metric — never to DERIVE it.** A scan cannot distinguish a family from a coincidence
+of shape, nor a declaration from a consumption; the declaration can.
 

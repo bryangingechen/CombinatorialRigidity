@@ -1,8 +1,8 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
 **Status: EIGHT fan-outs, FORTY-NINE single directions, ONE draft-only parallel direction,
-FOUR concurrent pairs and ONE concurrent round of four dispatched; 85 LANDED, ONE IN
-FLIGHT** (GLEAF) **and TWO DRAFTED-BUT-NOT-LANDED (DSAT, OBAR)**.
+FOUR concurrent pairs and ONE concurrent round of four dispatched; 85 LANDED, NONE IN
+FLIGHT, **THREE DRAFTED-BUT-NOT-LANDED (DSAT, OBAR, GLEAF)**.
 *(Round state, coordinator, 2026-09-03: **DSAT returned `DRAFTED` and its landing is
 DEFERRED ON SESSION LIMITS**, not on any defect — the 5-hour window stood at 85 % and a
 landing resume costs ~0.4 M tokens, so the draft waits for the reset rather than risk a
@@ -24,8 +24,23 @@ lands at **1818/1823**, so the next `(K-out)` landing must **recompute, not appe
 §8.2, §4.6 and §8.6 must move in **one** commit, since the first two carry the same flag
 and say so.
 
-**Both verdicts are AS REPORTED, NOT CONFIRMED** — neither has had the coordinator's
-verification tier, which is precisely the outstanding work.)*
+**GLEAF** — verdict: **the reach question SPLITS**. The landed Phase-12/13/14 machinery
+**does** reach the branch-side leaf-covering demand, by a theorem — an Edmonds matroid
+partition over six contracted graphic matroids, three missing bridges all mechanical — but
+what it reaches is **implied by** (GR-18)(iii)'s residual (226 080 legal pairs pass the
+demand and fail the residual), so **§8's rank 3 is SPENT**: a proof there cannot move
+(GR-10), and a refutation would be *strictly stronger* than a g-flank. §8's rank-3
+rationale was **right on reach, wrong on value**. Two items need coordinator
+**adjudication before landing**: the `(K-grid)` status cell has **no room** — its proposal
+lands 2 718/2 715, three over, so a **fourth** compression (u86, ≥ 30 words) is required —
+and `notes/gapmap.py:216` carries **`(GR-150)` as a docstring example**, a live label form
+inside a tool's docstring, which wants re-wording to a non-colliding form.
+
+**ALL THREE VERDICTS ARE AS REPORTED, NOT CONFIRMED** — none has had the coordinator's
+verification tier, which is precisely the outstanding work. Each draft also carries its own
+disclosed self-caught defect (DSAT an assert-caught wrong guess, OBAR an unexercised
+failure branch, GLEAF a **silently-wrong oracle** caught only by two oracles disagreeing) —
+read those before trusting a figure.)*
 **The five landings after GLIST — BLINE (ordinal 73), BDEGTWO (74), RPOOL (75), BSCOND (76),
 BARCH (77) — have their own sections; read those, not the blurb below, for the current state.**
 **BARCH (ordinal 77, §"BARCH") LANDED 2026-09-03** — the ninth strategy pass's **rank 2**,
