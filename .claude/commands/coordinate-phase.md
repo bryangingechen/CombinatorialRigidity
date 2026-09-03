@@ -199,7 +199,17 @@ local Claude config dir is non-default) prints the 5-hour-window and
 weekly utilization with reset times — the same data as Claude Code's
 `/usage` screen, via the OAuth usage endpoint. Above ~80% on either
 limit, stagger dispatches (one at a time, re-check between returns)
-instead of fanning out; near a 5-hour reset, prefer waiting it out. The
+instead of fanning out. **A near reset is a reason to PROCEED, not to
+pause: with under ~1 h to the 5-hour reset, dispatch anyway** — the
+window refills well inside the session's 1-hour prompt-cache TTL, so
+waiting buys no headroom the dispatch would not get on its own, and it
+costs a turn plus the risk of returning to a cold cache prefix. Wait
+only when the reset is *far* off **and** a limit is high enough that
+the dispatch would likely be throttled mid-flight. (User call,
+2026-09-02: *"if we hit the limit, the reset is so close that we don't
+have to worry about the cache expiring"* — this reverses the previous
+*"near a 5-hour reset, prefer waiting it out"* clause, which had the
+sign backwards and cost a pause.) The
 `tokens` subcommand sums per-model token usage from the local
 transcripts (subagent transcripts included, deduped by message id) —
 use it to calibrate a planned fan-out against what a comparable past
