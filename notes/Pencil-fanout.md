@@ -1,9 +1,29 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: EIGHT fan-outs, FORTY-NINE single directions, ONE draft-only parallel direction
-and FOUR concurrent pairs dispatched; 84 LANDED, NONE IN FLIGHT.**
-**The four landings after GLIST — BLINE (ordinal 73), BDEGTWO (74), RPOOL (75), BSCOND (76) —
-have their own sections; read those, not the blurb below, for the current state.**
+**Status: EIGHT fan-outs, FORTY-NINE single directions, ONE draft-only parallel direction,
+FOUR concurrent pairs and ONE concurrent round of four dispatched; 85 LANDED, THREE IN
+FLIGHT** (GLEAF / OBAR / DSAT, the round's other three directions).
+**The five landings after GLIST — BLINE (ordinal 73), BDEGTWO (74), RPOOL (75), BSCOND (76),
+BARCH (77) — have their own sections; read those, not the blurb below, for the current state.**
+**BARCH (ordinal 77, §"BARCH") LANDED 2026-09-03** — the ninth strategy pass's **rank 2**,
+dispatched as a **recon** after four structurally-different attempts hit one named
+obstruction. **The method class is NOT dead — it CHANGES AMBIENT.** `s` and `r` are BOTH
+`p_x`-free on the fixed core, so their GRAPH `Γ ⊆ Λ²K⁴ ⊕ Λ²K⁴` is a FIXED subspace and
+`ρ̄_i ∩ Π_x = φ_p(Γ ∩ (Π_x ⊕ Π_x))` **exactly** (99/99, as subspaces) — the clause IS a
+surjectivity statement about `Γ`, i.e. (BE-114)(iii)'s technique one ambient up, so
+**(BE-139)(iv) is right inside `Λ²K⁴` and OVER-SCOPED as written** ((BE-149)). A **second**
+`p_x`-free subspace `R₀ = r(ker s) ⊆ R = ρ̄(core; c₁, c₂)` certifies GOOD at every
+`dim A ≤ 5` row (63/99), and a general **path bound** explains the asymmetry: `R`'s bound
+is the distance between two neighbours of `x`, `A`'s the distance to the far terminal
+((BE-150)). `dim Γ_Π ≤ 1` PROVES GOOD and fires at **39 of the 54** relaxation-blind
+fibres, 21 at `dim A = 6` ((BE-151)). **And 14 → 12 reduces to (E4), UNPROVED**: per-side
+weakening is **dead** (313/164/74/24/0 escapes at `f = 2..6`, (BE-152)), but the
+**two-sided** (E4) `c_i(Π_x) = 2 ⟹ e₁+e₂ ≥ 4` leaves **0** of 6 400, is strictly weaker
+(970 tuples) and **holds at BSATUR's own witness** — a per-side refutation cannot touch a
+statement about the pair ((BE-153)). **§8's bar LIFTS narrowly**: `A_sharp` properness as
+posed stays barred, `Γ`-properness and (E4) are lifted ((BE-154)). The clause itself stays
+**OPEN**, (E4) is **unproved**, class uniformity **untouched**; not a PENCIL event. Driver
+`notes/scripts/w4/barch.py` (five modes, `validate` 117 s). Run at `recon-opus`.
 **BSCOND (ordinal 76, §"BSCOND") LANDED 2026-09-03** — the ninth strategy pass's **rank 1**,
 at **(BE-57)(iv)'s two window conditions**, open since BWIN (51) and attacked by none of the
 eleven (BE-14)-thread landings since. **BOTH DECIDED, AND THEY WERE ONE GAP**: the pencil
@@ -14340,3 +14360,115 @@ hypothesis list, (BE-55)(iii)'s scope and cap 3, (BE-56)(ii)'s scope; and
 (BE-57)(iv) as a whole is **SUPERSEDED**. Not a PENCIL event; E1/E2/E3 all
 decided **not fired** at source. **Two labels returned unused**: (BE-149)
 and *Step BE148*.
+
+## BARCH — seventy-seventh ordinal (concurrent round of four, prepped 2026-09-03, **LANDED 2026-09-03**) — the ninth strategy pass's **rank 2**: does ANY `p_x`-free-subspace method survive at side-degree `≥ 2`, and is the 12-block residue reachable without the clause?
+
+Workbook home: `notes/Pencil-informal.md` §(K-bare-ext) *Steps BE148–BE154*, labels (BE-149)–(BE-155). Driver `notes/scripts/w4/barch.py` (five modes).
+
+### The spec, as dispatched
+
+Rank 2 of the 2026-09-03 strategy pass, dispatched **as a
+recon** and deliberately **not** as *"is `A_sharp` proper"*. Two questions:
+**(1)** does **any** `p_x`-free-subspace method survive at
+`k = deg_i(x) ≥ 2`, given that BDEGTWO's mechanism makes the pendant
+multiplier *free* at `k = 1` and *determined* at `k ≥ 2` so that
+`A_sharp` moves with `p_x`; and **(2)** if not, is the 12-block residue
+reachable **without** (PENCIL-SATURATES-CHART) at all — can 14 → 12, or the
+per-side inequalities, be had by another route at `k ≥ 2`? The spec's motive
+was the `/coordinate-phase` **recurring-wall** rule: four
+structurally-different attempts (BSATUR, BSIGMA, BLINE, BDEGTWO) hit **one**
+named obstruction, each varying the **upstream** construction, so the shared
+**downstream** object was to be suspected. §8 barred `A_sharp` properness — and
+any further single-clause repair — **as a build** until this recon ran, with
+the instruction to **price** `A_sharp` properness as one candidate *inside* the
+method question rather than attempt it.
+
+### LANDING WRITE-UP — BARCH, 2026-09-03: **the method class is NOT DEAD — it CHANGES AMBIENT — and 14 → 12 reduces to a strictly weaker TWO-SIDED clause**
+
+**BOTH questions answered, and the expected answer to the first
+one is WRONG.**
+
+1. **The method class is NOT dead — it changes ambient.** `s` and `r` are
+   **both** `p_x`-free maps on the fixed core motion space, and BDEGTWO used
+   only the first. Their graph `Γ ⊆ Λ²K⁴ ⊕ Λ²K⁴` is a **fixed** subspace and
+   `ρ̄_i ∩ Π_x = φ_p(Γ ∩ (Π_x ⊕ Π_x))` **exactly** (99/99, asserted as
+   subspaces), so the clause **is** a surjectivity statement about `Γ` — a
+   condition on the point `p_x` against a **fixed** subspace, which is
+   precisely (BE-114)(iii)'s technique. **(BE-139)(iv)'s *"provably
+   unavailable at `k ≥ 2`"* is right inside `Λ²K⁴` and OVER-SCOPED as
+   written** ((BE-149)).
+2. **A second `p_x`-free subspace exists in `Λ²K⁴` itself**:
+   `R₀ = r(ker s) ⊆ R = ρ̄(core; c₁, c₂)`, with **BAD ⟹ `ℓ₁ ∈ A` or
+   `Π_x ∩ R₀ ≠ 0`**. It certifies GOOD at **every** `dim A ≤ 5` row (63/99,
+   sound 63/63) and none at `dim A = 6`. A **general path bound** —
+   `ρ̄(H;u,v) ⊆ Σ_P ⟨ℓ_e⟩`, asserted at 99/99 — gives the structural reason
+   `A` saturates and `R` does not: `A`'s bound is the distance to the **far**
+   terminal, `R`'s the distance between **two neighbours of `x`** ((BE-150)).
+3. **The graph condition does what neither can.** `dim Γ_Π(p) ≤ 1` proves
+   GOOD; along the fibre it fires on **39 of the 54** configurations where the
+   relaxed condition is bad at every swept point — **21 of them at
+   `dim A = 6`** ((BE-151)). The residue is class uniformity, not
+   decidability.
+4. **Question 2, half one: the per-side weakening is DEAD.** Exhaustively over
+   6 400 tuples, `(PS-f)` leaves **313/164/74/24/0** escapes at `f = 2..6`, so
+   the landed clause is the **weakest per-side member** that works, and
+   relaxing to BSATUR's own `ρ_i ≥ 5` still leaves 24 (2 attaining)
+   ((BE-152)).
+5. **Question 2, half two: a TWO-SIDED clause does it.** **(E4)**
+   `c_i(Π_x) = 2 ⟹ e₁+e₂ ≥ 4`, `e_i = ρ_i − c_i(Π_x)`: **0** escapes,
+   implied by (PENCIL-SATURATES) (0 counterexamples) and **strictly weaker**
+   (970 tuples), (BE-101)(ii) intact at `a = 0`, and it **HOLDS at
+   (BE-104)(i)'s own recorded witness** — because that refutation exhibits
+   **one side**, and (E4) is about the **pair**. Patching only that corner
+   leaves 287 escapes ((BE-153)).
+
+**§8's BAR: LIFTS for two named new objects, STAYS DOWN for `A_sharp`.**
+Recorded at (BE-154)(iii) and — per §8's own instruction that a lift must be
+recorded **in §8, with its reason** — owed there too. `A_sharp` properness
+stays barred *as posed*, and (BE-149) explains why: it keeps the refuted
+downstream object. The lifts are (a) **`Γ`-properness** — an incidence lemma
+for one fixed subspace of `Λ²K⁴ ⊕ Λ²K⁴` against a 3-parameter family of
+products of **totally singular** 2-spaces (`Π_x = Σ_{p_x} ∩ Λ²π_x`); one half
+of (BE-115) lifts to it, the Klein-quadric half does not — and (b) **(E4)** as
+the clause in (BE-101). Both are **new downstream objects**, which is what the
+recurring-wall rule asks for. **The cheapest decisive move is a
+falsification**: a peel with `c_i(Π_x) = 2` and `e₁+e₂ ≤ 3`, which on
+BSATUR's `ρ_i = 5` witness needs `ρ̄_j ⊆ Π_x` outright ((BE-154)(iii)); the
+smallest concrete commit is one new driver mode running `cert`'s test at
+`bdegtwo.sweep_points`' 411 **chart** points at both sides of the peel
+((BE-154)(iv)).
+
+**What did NOT move, said plainly.** `PencilPair K 3 G`, `hbareSplit`, `hK`,
+(GR-15), (BE-14), S-mark, half (β), the 2-cut step, class uniformity, the 12
+unwitnessed blocks ((BE-97)(iv)), `⟨M⟩`. **(PENCIL-SATURATES-CHART) itself
+stays OPEN**, (E4) is **unproved**, and every certificate here is
+per-configuration. **(β) at the window went UNCONDITIONAL at BSCOND and half
+(B) is S-mark's OTHER half; (BE-14) needs BOTH** — closing nothing here
+closes nothing there, and neither would closing something. **No landed
+measurement is refuted**: (BE-139)(i)'s subspace identity reproduces and
+(BE-139)(iii)'s 13 `(dim A, dim A_sharp)` pairs come out identical.
+
+**Driver.** `notes/scripts/w4/barch.py`, five modes
+(`graph|two|cert|arith|support`) plus `validate` (117 s, fits the foreground
+budget). Exact ℚ; seed `20260902`; determinism checked byte-identical modulo
+the driver's own timing lines. Figures gate discharged by the one-line
+`git diff` check (a driver **added**, none modified).
+
+**Three stale surfaces this landing must repair** (the per-commit rule that
+three consecutive Phase-39 landings each tripped, dispatch-log F17):
+
+- `notes/Phase39.md` **status header** (block at the top): *"at side-degree
+  `≥ 2` **both gaps SETTLED, the obstruction the METHOD** ((BE-139)): no
+  `p_x`-free subspace survives, clause **OPEN**"* — the clause after the colon
+  is now scoped, not general.
+- `notes/Phase39.md` **per-direction line** for BDEGTWO: *"THE OBSTRUCTION IS
+  THE ARCHITECTURE ((BE-136)–(BE-141), *BE135–BE140*): no `p_x`-free subspace
+  survives."* — same correction.
+- `notes/Pencil-strategy.md` **§8 rank 2** — its kill condition (*"the method
+  class settled either way, or a `p_x`-varying properness argument landed"*)
+  has **FIRED** on the first clause; §8's **bar paragraph** needs the lift
+  recorded with its reason, per its own rule.
+
+**Cost.** One read-only recon dispatch, no build, no `.lean` (the 2026-08-05
+Lean hold binds). Ordinal and the §7 tally are the coordinator's to reconcile;
+this write-up cites them and increments neither.

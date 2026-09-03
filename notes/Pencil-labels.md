@@ -74,9 +74,9 @@ physical reorganization.
 
 ## The minting rule
 
-Six clauses. They are cheap; clause 1 is the one that actually prevents the
-next collision, and (L6) is the landing-time backstop for the one case L1
-structurally cannot see.
+Seven clauses. They are cheap; clause 1 is the one that actually prevents the
+next collision, (L6) is the landing-time backstop for the one case L1
+structurally cannot see, and (L7) is how the *check itself* is run.
 
 - **(L1) Uniqueness, checked against this file.** Before minting a label, grep
   this registry for the token. If it is taken, **prefix it with your section's
@@ -134,6 +134,15 @@ structurally cannot see.
   firing twice in the phase). The cheap fix is a **landing-time** grep for
   bare `(X<digit>)` tokens in the returned draft — run it in addition to,
   not instead of, the prep-time prefix/range check.
+- **(L7) A reservation check enumerates the range; it does not sample it**
+  *(landing fix, 2026-09-03, direction BARCH — the incident and its
+  two-defect comparison are in the BARCH reservation block below)*. Check
+  **every** token in the reserved range — both label forms and every raw step
+  token — and report **HITS** (matching lines) and **FILES** separately.
+  Sampling the range's endpoints is not a check, and sampling its *closing*
+  endpoints is the worst case: the *opening* tokens are exactly the ones the
+  predecessor's own tail-declaration had to write down, so a hit there is
+  **guaranteed** and is precisely what a sampled check will miss.
 
 ## Reserved namespaces — the three incoming parallel dispatches
 
@@ -3735,3 +3744,73 @@ notice, since it reads as prose rather than as a citation.
 **The next tail is (BE-149) / *Step BE148***, 0-hit verified at this landing
 (the pair returned unused above), so a successor opens there and **not** at
 (BE-150).
+
+## Reservation — BARCH (arc ordinal 77, 2026-09-03, a CONCURRENT ROUND OF FOUR)
+
+**Scope: §(K-bare-ext), which BARCH *extends* — no new section.** The direction
+is the ninth strategy pass's **rank 2**, *does any `p_x`-free-subspace method
+survive at side-degree `≥ 2`, and is the 12-block residue reachable without
+(PENCIL-SATURATES-CHART) at all?*. Its three siblings (GLEAF §(K-grid), OBAR
+§(K-out), DSAT §(K-dom)) own disjoint sections and disjoint tags, so the
+reservation protects against the corpus and against them.
+
+| direction | owning § | labels reserved | steps reserved | driver |
+|---|---|---|---|---|
+| **BARCH** | §(K-bare-ext) — **extends**, no new section | **(BE-149)–(BE-156)**, of which **(BE-149)–(BE-155)** consumed | **BE148–BE155**, of which **BE148–BE154** consumed | `w4/barch.py` (five modes) |
+
+**It opens at exactly the tail BSCOND declared** (*"The next tail is (BE-149) /
+Step BE148"*), and **not** at (BE-150). **One label and one step are RETURNED
+UNUSED**: **(BE-156)** and ***Step BE155***, reserved against an eight-label
+section that came in at seven, and **available**. **The next tail is (BE-156) /
+*Step BE155***, 0-hit verified at this landing, so a successor opens there and
+**not** at (BE-157).
+
+**0-hit verification, re-run by the direction as its FIRST action**, across
+`*.md`, `*.tex`, `*.lean`, `*.py`, `*.m2` **at `HEAD`**, reporting **HITS**
+(matching lines) and **FILES** separately: `BARCH`/`barch` **0/0**; `BE149`,
+`BE150`–`BE155`, `(BE-151)`–`(BE-156)` all **0/0**; `(BE-150)` **1 hit / 1
+file**, the BSCOND tail clause immediately above — a **declaration, not a
+consumed label**; and `(BE-149)`/`BE148` **6 hits / 3 files**, all six being
+this reservation's *own* declaration across `Pencil-fanout.md`,
+`Pencil-informal.md` and this file. Reservation clean.
+
+### CLAUSE (L7), minted here: check EVERY token in a reserved range, not sampled endpoints
+
+**The coordinator's prep reported `(BE-149)` and `BE148` as 0/0; the direction
+measured 6 hits in 3 files.** The prep's *conclusion* held — every hit is a
+declaration — but its *method* did not: it verified `(BE-150)`, `(BE-156)`,
+`BE149` and `BE155`, i.e. the range's **interior and closing** tokens, and
+**never `(BE-149)` or `BE148`, the range's actual OPENING tokens** — which are
+precisely the tokens the *previous* landing had to write down in order to hand
+the tail over. So the sampled-endpoint method is **systematically blind at the
+one end where a hit is guaranteed**.
+
+> **(L7).** A reservation check enumerates **every** token in the reserved
+> range — both label forms (`(BE-n)` and the bare `BE-n`) and every raw step
+> token — and reports **HITS and FILES separately**. Sampling endpoints is not
+> a check; sampling the *closing* endpoints is the worst case, because the
+> opening ones are the ones a predecessor's tail-declaration names.
+>
+> *(Numbered (L7): `(L5)` and `(L6)` are both taken. This draft first minted it
+> as `L5` and the registry's own index caught the collision at landing — clause
+> (L1) firing on the file that states it. `(L7)` is **not** globally 0-hit —
+> `notes/Phase22i.md` uses `L0`–`L10` for its **Layers** and carries two `(L7)`
+> hits — but neither are `(L1)` or `(L6)`, which hit the same file the same way.
+> That is a pre-existing cross-file homonym in a **closed** phase's note, in a
+> different namespace, and it is the `BE-`-is-not-globally-0-hit case this file
+> already adjudicated: the `L` clause numbers are this registry's own tag, and
+> a citation crossing into Phase-22i qualifies itself under clause (L2).)*
+
+**This is the SECOND coordinator reservation defect in two rounds, and they are
+DIFFERENT shapes — recorded separately rather than merged**, because a merged
+lesson would lose the one that is actually mechanical:
+
+1. **2026-09-03, `53bc9740` — a METRIC conflation.** The check counted *files*
+   and reported them as *hits*. The verdict was right, the cause was wrong. Fix:
+   name the metric.
+2. **2026-09-03, this landing — a COVERAGE gap.** The check named its metric
+   correctly and *did not check the range's opening tokens at all*. Fix: L5,
+   enumerate the range.
+
+A check can satisfy (1) and still fail (2), which is what happened here — so
+the two are independent clauses, not two readings of one lesson.

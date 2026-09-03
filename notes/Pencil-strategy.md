@@ -1614,7 +1614,10 @@ struck — decided by §9.3.*
   status is decided by the `(K-out)` and `(K-grid)` gap-map rows.*
 
 **RE-RANKED 2026-09-03 — THE NINTH STRATEGY-ONLY PASS, AND THE RANKING A SESSION READS.
-RANK 1 IS SPENT (BSCOND, ordinal 76, 2026-09-03); the live head of this list is RANK 2.**
+RANKS 1 AND 2 ARE BOTH SPENT** (BSCOND, ordinal 76, and BARCH, ordinal 77, both
+2026-09-03 — rank 2's own recon **lifted this pass's bar, narrowly**, and the lift is
+recorded in the bar paragraph below, not here); **the live head of this list is RANK 3**,
+(GR-144) successor 4 — leaf-covering on the branches.
 Coordinator-authored at a session start, no dispatch spent, commissioned by
 `notes/Phase39.md` *Hand-off*'s own next-concrete-task line after the liveness round found
 **~52 of ~108 forward-looking entries defective**. Every entry below was re-derived from its
@@ -1665,8 +1668,33 @@ build would be the fifth.
    testing, and naming the support before weighting any figure is what cracked it. *Kill
    condition FIRED. Decided by: the `(K-bare)` row's status cell, which now reads
    UNCONDITIONAL.*
-2. **Half (B) at side-degree `≥ 2` — the architecture question, AS A RECON, and see the bar
-   below.** Owner: `(K-bare)` u39/u40, (BE-139)/(BE-140). The question is not *is `A_sharp`
+2. ~~**Half (B) at side-degree `≥ 2` — the architecture question, AS A RECON.**~~ **SPENT
+   2026-09-03 — direction BARCH (ordinal 77), `notes/Pencil-fanout.md` §"BARCH". Its kill
+   condition FIRED on the first clause — the method class is settled, and settled the way
+   this entry did not expect.** **The method class is NOT dead: it CHANGES AMBIENT.** `s`
+   *and* `r` are both `p_x`-free on the fixed core, so their GRAPH `Γ ⊆ Λ²K⁴ ⊕ Λ²K⁴` is a
+   FIXED subspace and `ρ̄_i ∩ Π_x = φ_p(Γ ∩ (Π_x ⊕ Π_x))` **exactly** (99/99, as subspaces)
+   — so the clause IS a condition on the point `p_x` against a fixed subspace, and
+   **(BE-139)(iv) is right inside `Λ²K⁴` and OVER-SCOPED as written** ((BE-149)). A
+   **second** `p_x`-free subspace `R₀ = r(ker s) ⊆ R = ρ̄(core; c₁,c₂)` certifies GOOD at
+   every `dim A ≤ 5` row ((BE-150)); `dim Γ_Π ≤ 1` PROVES GOOD and fires at **39 of the
+   54** relaxation-blind fibres ((BE-151)). On the second question: **14 → 12 survives the
+   clause's loss** — the per-side weakening is **dead** (313/164/74/24/0 escapes at
+   `f = 2..6`, (BE-152)) but the **two-sided (E4)** leaves **0** of 6 400, is strictly
+   weaker, and **holds at BSATUR's own witness**, because a per-side refutation cannot
+   touch a statement about the pair ((BE-153)). **(E4) is UNPROVED.** **What this entry got
+   wrong, recorded because a ranking rationale is a forward-looking surface (§8's own
+   rule):** it priced the likeliest deliverable as *"another method-is-dead negative on a
+   half already known blocked"*, and that was the half that was wrong — what is gone by
+   construction is `A`'s **sufficiency**, not the **existence** of a `p_x`-free object.
+   **What it got right, and it is the transferable part:** it forbade posing the question
+   as *"is `A_sharp` proper"*. That reframing is what made the ambient visible; at the
+   narrow question the dispatch would have been the fifth attempt. *Kill condition FIRED.
+   Decided by: the `(K-bare)` row, whose status cell now reads the METHOD verdict as SCOPED
+   TO `Λ²K⁴` with `Γ`-properness and (E4) as the successors.*
+
+   ~~*(superseded framing, kept one line as the dated record)*~~ **Half (B) at side-degree
+   `≥ 2` — the architecture question, AS A RECON, and see the bar below.** Owner: `(K-bare)` u39/u40, (BE-139)/(BE-140). The question is not *is `A_sharp`
    proper* but **whether any `p_x`-free-subspace method survives at `k ≥ 2`** — BDEGTWO's own
    mechanism says the pendant multiplier is *free* at `k = 1` and *determined* at `k ≥ 2`, so
    what made `A` `p_x`-free is gone by construction — and, if none does, **whether the 12-block
@@ -1727,6 +1755,30 @@ what fails there is the **architecture, not the clause**. This bar is **methodol
 mathematical**: unlike the do-not-do below, the underlying mathematics is not spent, so rank
 2's recon can lift it — and a lift must be recorded **here**, with its reason, not inferred
 from a row elsewhere. *Kill condition: rank 2's recon delivered.*
+
+> **THE BAR IS LIFTED — NARROWLY, 2026-09-03, by rank 2's recon (BARCH, ordinal 77).**
+> Recorded **here**, with its reason, exactly as the paragraph above requires; do not infer
+> its scope from the `(K-bare)` row.
+>
+> - **STILL BARRED: `A_sharp` properness as posed**, and any repair that keeps a moving
+>   subspace of `Λ²K⁴` as its downstream object. **The reason is now a theorem, not a
+>   count**: (BE-149) shows `A` is the *only* `p_x`-free `s`-image in `Λ²K⁴`, so an argument
+>   of that shape has nothing fixed to stand on. Priced as a candidate inside the method
+>   question, as this bar asked: it is the **worst of the three**, because it is the one
+>   that keeps the object four attempts have already eaten.
+> - **LIFTED: `Γ`-properness.** Properness of `{p ∈ F : dim(Γ ∩ (Π_x(p) ⊕ Π_x(p))) ≥ 2}` —
+>   one incidence lemma for a **fixed** subspace of `Λ²K⁴ ⊕ Λ²K⁴` against a 3-parameter
+>   family of products of **totally singular** 2-spaces (`Π_x = Σ_{p_x} ∩ Λ²π_x`). Half of
+>   (BE-115) lifts to it and the Klein-quadric half does not ((BE-149)(v)).
+> - **LIFTED: (E4)** as the clause replacing (PENCIL-SATURATES-CHART) in (BE-101) — the
+>   cheaper of the two, since the arithmetic is already exhaustive ((BE-152)/(BE-153)).
+>
+> **Both lifts name a NEW downstream object**, which is what the recurring-wall rule asks
+> for; the bar's own condition is therefore met rather than waived. **And the cheapest
+> decisive move is a falsification, not either proof**: a peel with `c_i(Π_x) = 2` and
+> `e₁ + e₂ ≤ 3`, which on BSATUR's `ρ_i = 5` witness needs `ρ̄_j ⊆ Π_x` outright. If that
+> configuration exists, **(E4) dies and this bar comes back down over the whole clause
+> family** ((BE-154)(iii)/(iv)).
 
 **SUPERSEDED AS A RANKING by the 2026-09-03 pass above (back-link added in that same
 commit); kept as the dated record, and its per-entry content stays authoritative.**

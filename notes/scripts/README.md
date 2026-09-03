@@ -1120,6 +1120,12 @@ are a recorded *Harness debt* item (see below).
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/bscond.py ident` | 143 s | ibid. *Step BE147* ((BE-148): **100** coincidence configurations through `coin_measure` — every assertion of (BE-54)(i)/(ii)/(iii), (BE-55)(i), (BE-144), (BE-56)(i), both (BE-147) branches and `W ∩ Z = ker(φ|_V)` — with `dim Z = 4` at **100/100**, the identity **and** (b1) at **all 80** rows with `dim ρ̄₁ ≤ 4`, the identity failing at **all 20** rows with `dim ρ̄₁ = 5` as (BE-56)(iv) requires, and `bwin.full_measure`'s own `(BE-56)(ii)` assert FIRING at **30 of 100**) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/bscond.py board` | 0 s | ibid. *Step BE147*, continued ((BE-148), the price and the board): seven populations named with what each varies, holds fixed and therefore reaches, plus the five standing caps — bwin's pendant-terminal cap, the sampler shape guard (two of BWIN's twelve `wide` rows outside it), no coincident row at `δ₁ = 4` (a THEOREM in case (a), not-found-under-cap in case (b)), no coincident middle claimed `δ₁`-attaining, and every figure a count over CONSTRUCTED populations) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/bscond.py validate` | 229 s | ibid. all eight in one process — the landing gate; fits the 600 s foreground budget. Every rng is seeded from `bwin.SEED` (`20260829`) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/barch.py graph` | 41 s | `notes/Pencil-informal.md` §(K-bare-ext) *Step BE148* (direction BARCH; (BE-149): the identity `rho_bar_i cap Pi_x = phi_p(Gamma cap (Pi (+) Pi))` asserted as **SUBSPACES** at 99/99 with the clause <=> `phi_p`'s surjectivity, `Gamma` asserted UNCHANGED under moves of `p_x` inside its own fibre at 99/99, (BE-139)(i) reproduced through `bdegtwo.sharp_data`, and (BE-149)(v)'s three Klein-geometry facts — `Pi_x = Sigma_{p_x} cap Lambda^2 pi_x`, total singularity, (BE-115)(i)'s lift to rank 12 — asserted at 60/60 off the graphs) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/barch.py two` | 13 s | ibid. *Step BE149* ((BE-150): the PATH bound `rho_bar(H;u,v) <= sum_P <l_e>` asserted as a subspace containment for both `(c_1,c_2)` and `(c_1,y)` at 99/99, giving `dim R <= dist_core(c_1,c_2)` against `dim A <= dist_core(c_1,y)`; the two-subspace certificate `(l_1 not in A) and (Pi_x cap R_0 = 0) => GOOD` fires at 63 of 99 — exactly the `dim A <= 5` rows — and is asserted SOUND at 63/63) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/barch.py cert` | 63 s | ibid. *Step BE150* ((BE-151): 99 configurations, 783 swept fibre points; the RELAXED certificate fires on 45 and NOWHERE on 54, the GRAPH certificate `dim Gamma_Pi <= 1` on 84 and on **39 of those 54** (18 at `dim A = 5`, 21 at `dim A = 6`); both asserted SOUND at every firing) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/barch.py arith` | 0 s | ibid. *Steps BE151–BE152* ((BE-152)/(BE-153): EXHAUSTIVE over all 6 400 tuples — the per-side floor family leaves 313/164/74/24/0 escapes at `f = 2..6`, the two-sided **(E4)** leaves **0**, `PS => (E4)` with 0 counterexamples, 970 separating tuples, 0 attaining `Pi_x` violations under (E4), the 287-escape corner patch, and (BE-104)(i)'s own witness satisfying (E4). No sampling, no seed used) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/barch.py support` | 0 s | ibid. *Step BE154* ((BE-155): the `RESEARCH-ARC.md` §4 support audit read at SOURCE — `bsigma.sample_side_config`'s independent-set guard, `binduc.assert_generic_star`'s edge-only distinctness, `bimage.pt_in`'s width 4 and `bimage.span`'s `d == 6` special case all asserted present, plus the per-mode can/cannot-see reading. Discloses that no geometric mode varies `k`: every row is `k = 2`) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/barch.py validate` | 117 s | ibid. all five in one process — the landing gate; fits the 600 s foreground budget. Exact Q; the single seed is `20260902` (`bunif.SEED`), printed by every sampling mode (`arith` prints it and does not use it) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/ogeom.py --bound --dom --core --cert` | 288 s | `notes/Pencil-informal.md` §(K-out) *Steps O42–O45* (direction OGEOM; (OC-45) the `ℓ ≤ 5` + bridgeless class-shape check that turns `sigz.k4_stratum`'s `{1..5}^6` from a cap into a theorem (re-enumerated at `{1..12}^6`, 877 = 877); (OC-46) restriction-dominance, 1482 + 222 extensions, 0 failures; (OC-47) the live-core reduction; (OC-49) the census — 271 974/271 974 pairs settled, and (OC-39)'s 3 324 + 44 = 3 368 pairs shown to lie in exhausted cells) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/ogeom.py --hunt` | 357 s | ibid. *Step O45* ((OC-48): the exhaustive iso-reduced live-core hunt at `n(F°) ∈ {2,3}` (all `\|E°\|`) and `n(F°) = 4` (`\|E°\| ≤ 8`) — 21 086 classes here, all free, **0 candidates**) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/ogeom.py --huntn 5 8 8 <PART> 3` | 318 s each | ibid. *Step O45*, the `n(F°) = 5`, `\|E°\| = 8` cell in three deterministic slices (70 174 classes, all free) — the parts together with the two rows above make the pass's **91 260** cores |
@@ -1561,7 +1567,19 @@ section at the end of this list; the same landing adds a *fourth* consumer of
 `bproper.composite`/`core_of`, a *second* of `bopen.chart_data`/`sides_of`/
 `slide` and of `bline.longcore_library`/`rand_line`/`rand_subspace`/`star_ok`,
 all folded into the same standing sibling-import item rather than opened as
-new ones. **BSCOND (2026-09-03) adds the next `w4/` consumer of the same
+new ones. **BARCH (2026-09-03) adds the next `w4/` consumer of the same chain** —
+`barch → bdegtwo → bline → bopen → bproper → bsigma → bsatur → … →
+kbare_common`, eleven deep — plus a **fifth** consumer of `bproper.core_of`, a
+**second** of `bdegtwo.fibre_k`/`fibre_kind`/`sharp_data`, a **fourth** of
+`bline.longcore_library`, a **first** of `bline._arc` (a *private* helper —
+recorded as such) and the next of `bsigma.sample_side_config` /
+`binduc.assert_generic_star`/`motion_space` / `pitch.klein`/`Q`, **all folded
+into the same standing item, NO MOVE MADE**. It opens **no new hazard item**:
+all three recorded silent hazards were navigated (no `Λ²`-side draw through
+`pt_in`; no width-12 object through `span`/`dim`/`isect`; `bwin` not imported
+and `barch._aff3` returns a TUPLE), and its own `bimage.span` finding is a
+**second face of the existing eleventh item**, not a twelfth.
+**BSCOND (2026-09-03) adds the next `w4/` consumer of the same
 chain** — `bscond → bwin → bsharp → bearfull → bearcase → bimage → btwocut →
 binduc → bzavoid → kbare_common`, ten deep — plus a *second* consumer of
 `bwin.k4_span`/`k4_isect`/`resweep`/`full_measure`/`boundary_plane`/
@@ -2742,7 +2760,7 @@ reach a second consumer:
 **No `Divergences` entry is created**: none of the four is a same-named
 variant of an existing device.
 
-### New item (2026-09-03, direction BDEGTWO) — `bimage.span` returns DIMENSION 0 on a full-rank non-`Λ²` input; **SILENT, UNPAID**
+### New item (2026-09-03, direction BDEGTWO; **second face added 2026-09-03, direction BARCH**) — `bimage.span` returns DIMENSION 0 on a full-rank non-`Λ²` input, and `I6` on a width-12 input of rank 6; **SILENT, UNPAID**
 
 **This is a correctness hazard, not a tidy-up, and it is the second one in
 this file** — `bimage.pt_in`'s truncation (recorded at the BLINE landing) is
@@ -2764,6 +2782,20 @@ is **`0`**, with no assert firing anywhere. `bimage.isect` inherits the same
 defect through `perp_std`, which returns `I6` on an empty argument regardless
 of the caller's width, so `isect(A, B)` with a full-rank `K⁴` argument is
 also wrong.
+
+**A SECOND FACE OF THE SAME DEFECT, found 2026-09-03 (direction BARCH) — width
+12, and it is worse than a zero.** `w4/barch.py` is the first driver to work in
+`Λ²K⁴ ⊕ Λ²K⁴`, and there the `d == 6` branch is not a *rescue* but a *lie*:
+`span(rows)` on **width-12** input of rank 6 returns `I6`, i.e. a **width-6
+answer to a width-12 question**, again with no assert firing anywhere. So the
+item's shape is not "width 6 works, other widths return 0" — it is "the width-6
+special case fires on *rank*, not on *width*". `barch.py` navigates it by
+routing **every** 12-wide measurement through `exactcore.rank` (width-agnostic)
+and computing its `Gamma_Pi` cut in motion-space coordinates, so no width-12
+subspace is ever round-tripped through `span`. **Same device, same unpaid fix**
+(a width parameter on `span`/`perp_std`); this is an addition to this item, not
+a twelfth item. The acceptance test below already covers it once it reads
+"every width `1..12`" rather than `1..6`.
 
 **Why it is silent.** Every existing consumer of `span`/`isect` works in
 `Λ²K⁴`, where the special case fires; the `K⁴`-side uses in the tree

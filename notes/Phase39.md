@@ -8,11 +8,11 @@ derives it from exactly **three carried items**: **`hcontract`** (W4 — build p
 **`hbareSplit`** (kernel (K-bare)). Everything else is closed — W0–W3, all of W5
 (L0–L7), `hsplit` and `hfresh` (2026-07-30, unchanged since).
 
-**The research arc: 84 directions COMPLETE** (2026-08-05 → 09-03, ordinals 1–76 — 79 on
+**The research arc: 85 directions COMPLETE** (2026-08-05 → 09-03, ordinals 1–77 — 80 on
 kernel (K), **WTRI/WELOC/WPAIR/WGROW (58–61) on W4**, **RPOOL (75) on (K-res)**; direction
-= ordinal + 8), plus nine strategy passes, two probes and a scoping recon. **GPACK (66) opened the `hK` lane after
-22 dispatches; GLIST (68) and GGLOB (71) are its successors**; **BSCOND (76)** is the ninth
-pass's rank 1, **BDEGTWO (74)** BLINE's (73) residue, **RPOOL (75)** the (K-res) row's. Per-direction verdicts, specs and write-ups live at
+= ordinal + 8), plus nine strategy passes, two probes and a scoping recon. **GPACK (66) opened
+the `hK` lane** (GLIST 68, GGLOB 71 its successors); the ninth pass's **rank 1 is BSCOND (76)
+and its rank 2 BARCH (77)**. Per-direction verdicts, specs and write-ups live at
 `notes/Pencil-fanout.md` §"<CODE>" (1–19: the archive) plus a workbook home — **not
 restated here**. **The arc's standing result, unchanged: `hK` is not closer.**
 **(GR-15)** — the single open gap the §(K-grid) chain reduces to — is **untouched**; **class
@@ -30,16 +30,17 @@ off every W4 path**, list **EMPTY** — leaving the USER call **(K-res)**, now D
 **WHERE THE (BE-14) THREAD STANDS** — S-mark, the 2-cut composition lemma, is its **only
 open step**; the three sides and every per-landing detail are **REFERENCE**, at
 `notes/Pencil-structure.md` **block 8**.
-Status only: (β) at the window is **UNCONDITIONAL** — **BSCOND DECIDED (BE-57)(iv)'s
-(S1)/(S2)**, one gap not two: (S1) **REMOVABLE**, (S2) half theorem, half **REFUTED** then
-**CLOSED** ((BE-142)–(BE-148)); cross-cut forcing **empty**; the flag base **DISCHARGED**;
-the residue is **per-side** (14 block inequalities), and **BDOUBLE made both 2-dimensional
-blocks REDUNDANT** under **(PENCIL-SATURATES)** — **REFUTED at BSATUR**, `-GEN` **REFUTED at
-BSIGMA**, leaving **-CHART**, a **THEOREM at every side-degree-`1` terminal**
-((BE-127)), so **14 → 12** stands generically; at side-degree `≥ 2` **both gaps SETTLED, the
-obstruction the METHOD** ((BE-139)): no `p_x`-free subspace survives, clause **OPEN** at
-0/772. The 12 are **unwitnessed, NOT excluded**
-((BE-97)(iv)) except `⟨M⟩`, empty at 93 rows; cross-pair welding **untouched**.
+Status only: (β) at the window is **UNCONDITIONAL** — (BE-57)(iv)'s (S1)/(S2) **DECIDED**,
+one gap not two ((BE-142)–(BE-148)); cross-cut forcing **empty**; the flag base
+**DISCHARGED**; the residue is **per-side** (14 block inequalities), **REDUNDANT** at both
+2-blocks under **(PENCIL-SATURATES)** — **REFUTED**, `-GEN` **REFUTED**, leaving **-CHART**,
+a **THEOREM at side-degree `1`** ((BE-127)), so **14 → 12** stands generically.
+At side-degree `≥ 2` the obstruction was called the **METHOD** ((BE-139)); **BARCH SCOPED
+that to `Λ²K⁴`** — the GRAPH `Γ ⊆ Λ²K⁴⊕Λ²K⁴` of the two `p_x`-free maps is FIXED and
+carries the clause EXACTLY ((BE-149)/(BE-150)) — and **14 → 12 reduces to the two-sided
+(E4), UNPROVED** ((BE-152)/(BE-153)). Clause **OPEN** at 0/772; class uniformity
+**untouched**. The 12 are **unwitnessed, NOT excluded** ((BE-97)(iv)) except `⟨M⟩`, empty at
+93 rows; cross-pair welding **untouched**.
 
 **On a future HIT: the phase-boundary consequences are the USER's call** — whether Phase 39
 closes and a successor opens for the Lean is a `PHASE-BOUNDARIES.md` event against the
@@ -244,14 +245,16 @@ carries the standing **do-not-do** — no more (a′)/(b′) ledger directions),
 coordinator-authored 2026-09-03 at `notes/Pencil-strategy.md` **§8**, which is where the
 ranking lives and is **not restated here**; it supersedes the 2026-08-25 list and the
 2026-09-02 `hK` table *as rankings* (both back-linked in that commit). **Its rank 1 is
-SPENT: BSCOND (76) DECIDED (S1)/(S2)** — one gap not two, (S1) **REMOVABLE** and (S2) half
-theorem / half **REFUTED**-then-**CLOSED**, so (β) at the window is **UNCONDITIONAL**
-((BE-142)–(BE-148)). **THE NEXT CONCRETE TASK is §8's rank 2: the half-(B) side-degree-`≥ 2`
-architecture question, AS A RECON** — *does any `p_x`-free-subspace method survive at
-`k ≥ 2`, and if none does, is the 12-block residue reachable without the clause at all?* —
-which is also what **lifts** the pass's standing **BAR on `A_sharp` properness as a build**
-(a fifth attempt at one obstruction; the bar is methodological and §8 records what lifts
-it). Rank 1's closure does **not** close S-mark: (BE-14) needs both halves. (GR-144)'s successor **1 is DEMOTED** (it **IS** (GR-10) here, (GR-140)(v)),
+SPENT: BSCOND (76) DECIDED (S1)/(S2)**, so (β) at the window is **UNCONDITIONAL**
+((BE-142)–(BE-148)); **its rank 2 is SPENT TOO: BARCH (77)** answered both halves — the
+method class is **NOT** dead, it **changes ambient**, and 14 → 12 **reduces to the
+two-sided (E4), UNPROVED** ((BE-149)–(BE-155)) — and **§8's bar LIFTED NARROWLY** there:
+`A_sharp` properness as posed **stays barred**, `Γ`-properness and (E4) are **lifted**
+((BE-154)(iii); recorded in §8, as §8's own rule requires). **THE NEXT CONCRETE TASK is
+(BE-154)(iv)**: one new `barch.py` mode running the `Γ_Π` and `(e₁, e₂)` tests at
+`bdegtwo.sweep_points`' 411 **chart** points at **both** sides of the peel — it reaches the
+three fibre shapes `cert` cannot, and it **falsifies (E4) if (E4) is false**. Neither rank's
+closure closes S-mark: (BE-14) needs both halves. (GR-144)'s successor **1 is DEMOTED** (it **IS** (GR-10) here, (GR-140)(v)),
 **2** is engineering (150/150 decided, 2 473 of 2 623 left), **3** is a search (does *path*
 consistency decide where arc does not), and **4 — leaf-covering on the branches, this line's
 own omission until 2026-09-03 — is the lane's live pick**, §8's rank 3. The (K-res) **cheap
@@ -443,23 +446,22 @@ paragraphs.**
   **cited, never incremented per direction**. Three concurrency hazards in
   `RESEARCH-ARC.md` §2, two gate blind spots in *Gates*. Detail: block 14.
 
-- **BSCOND** (76, 2026-09-03, opus, **the ninth pass's rank 1**) — **(BE-57)(iv)'s TWO
-  WINDOW CONDITIONS ARE DECIDED, AND THEY WERE ONE GAP**: `p_{w₁} ∈ π_u`, `p_{w₂} ∈ π_v`
-  always, so coincidence lands on `L` and the leading lines MEET, i.e. **(S1) failing IS
-  (S2)'s regime**; (BE-55)(iii)'s proof is **plane-agnostic**, so **(S1) is REMOVABLE**;
-  forcing is **exhaustive at two**; and (S2)'s *"no such mechanism is known"* is **REFUTED**
-  (coincidence pins `λ` ⟺ `W ⊆ Σ_p`) then **CLOSED** by the **coincidence excess law** — a
-  dimension cap, not a repaired genericity. (β) at the window is **UNCONDITIONAL**; S-mark's
-  other half **untouched** ((BE-142)–(BE-148), *BE141–BE147*). `w4/bscond.py`.
+- **BSCOND** (76, 2026-09-03, opus, **one-lined at the BARCH landing**; detail at
+  `Pencil-fanout.md` §"BSCOND") — **(BE-57)(iv)'s TWO WINDOW CONDITIONS DECIDED, AND THEY
+  WERE ONE GAP**: (S1) **REMOVABLE**, (S2) half theorem / half **REFUTED** then **CLOSED** by
+  the coincidence excess law; (β) at the window **UNCONDITIONAL**, S-mark's other half
+  **untouched** ((BE-142)–(BE-148), *BE141–BE147*). `w4/bscond.py`.
 - **RPOOL** (75, 2026-09-03, opus, **one-lined at the BSCOND landing**) — **(RS-5) IS
   REFUTED** by `R20 = family_g(5,(0,0,2),(4,4,4))` — `widened.W19` with a longer core, in
   the recorded 255 pool since 2026-08-02; 30 of 102 `def = 0` members refute, 72 carry
   exact-point proofs, split by the **per-block** floor ((RS-14)/(RS-15)). §(K-res)
   *RS11–RS16*.
-- **BDEGTWO** (74, 2026-09-03, opus, **one-lined at the BSCOND landing, detail in block 8**)
-  — **BOTH OF (BE-134)'s GAPS SETTLED, AND WHAT FAILS AT SIDE-DEGREE `≥ 2` IS THE
-  ARCHITECTURE** ((BE-136)–(BE-141), *BE135–BE140*): no `p_x`-free subspace survives.
-  Successor: properness for the `p_x`-varying `A_sharp`. `w4/bdegtwo.py`.
+- **BARCH** (77, 2026-09-03, recon-opus, **the ninth pass's rank 2**) — **THE METHOD CLASS IS
+  NOT DEAD; IT CHANGES AMBIENT** — (BE-139)(iv) SCOPED to `Λ²K⁴`, and **14 → 12 reduces to
+  the two-sided (E4), UNPROVED** ((BE-149)–(BE-155), *BE148–BE154*). `w4/barch.py`.
+- **BDEGTWO** (74, opus, block 8) — **(BE-134)'s TWO GAPS SETTLED; the obstruction the
+  ARCHITECTURE** ((BE-136)–(BE-141)) — **inside `Λ²K⁴` only, scoped at BARCH**; its
+  successor superseded by (BE-154). `w4/bdegtwo.py`.
 - **BLINE** (73, opus, block 8) — **`(∗)` IS DECIDED: a theorem below `dim A = 3`, FALSE
   from `dim A = 5`, (BE-127)(ii)'s route dying with it**; the clause **OPEN**, 0/270
   ((BE-129)–(BE-135), *BE128–BE134*). `w4/bline.py`.
