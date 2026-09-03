@@ -13337,3 +13337,198 @@ target is not proven and stays ARMED by GBAL.
 **Driver** `notes/scripts/w4/owall.py`, seven modes
 (`controls | agree | full | splits | first | synth | validate`), exact `ℚ`, seed
 `20260902`, pool **POOL-OW**.
+
+## GGLOB — seventy-first ordinal (concurrent pair with a `(BE-14)` draft-only sibling, prepped 2026-09-02, **LANDED 2026-09-02**) — (GR-138)'s successor 1, the GLOBAL `(α, γ)` CSP at `D = 0`
+
+**Selection provenance.** `notes/Phase39.md`'s own **NEXT CONCRETE TASK** — the `hK` lane's
+own named successor, one direction after GLIST, now that its local half is exact and its
+residual explicitly global. The **committing** dispatch of a concurrent pair, the sibling
+running draft-only on the (BE-14) thread; dispatched **`recon-opus`**.
+
+### The target, stated exactly
+
+From **§(K-grid) *Step G158* ((GR-138)) successor 1**, read at source. At a tight class shape
+with `D = 0` and `Λ = ∅`, is the `(α, γ)` CSP of (GR-134) satisfiable for **some** legal
+(packing, split) pair? Prove it, refute it with an exhibited shape, or reduce it to a named
+strictly-smaller condition. The prep supplied as verified: **(GR-130)** unconditional (neither
+packing nor split is ever the obstruction); **(GR-134)** clause (a) **free**; **(GR-135)** the
+exact local criterion at a cubic pure hub; **(GR-136)(iii)** the measured negative that makes
+the direction necessary — **82 %** of the infeasible legal pairs are hub-locally feasible
+everywhere, so **no per-hub repair can close (GR-18)(iii)**; and **(GR-133)**'s price, which
+must be restated: a (GR-15) HIT buys `hK` on the **tight** stratum only, the `def > 0` habitat
+being **owned** by `§(K-res)` (RS-5)/(RS-6) but not free, and **`Pencil-strategy.md` §2.5 must
+never be quoted as supplying freeness**, being a *negative* result.
+
+### The coordinator's reading, offered as a HYPOTHESIS (`RESEARCH-ARC.md` §7)
+
+Named honestly in the spec as *the coordinator's reading of GLIST's landed text, no
+measurement, no driver* — and with the note that GLIST had classified the previous reading on
+this lane as **SPLIT**. The reading: (GR-136)(iii)'s 82 % says the obstruction is a **global
+consistency** phenomenon over the hub graph, and (GR-134) has already reduced the state to one
+9-valued variable per hub with constraints supported on **branches** — an **edge-constraint
+CSP on `G°`**. Two handles were proposed: **(i)** a **discharging / counting** argument over
+the six spanning trees (the leaf-slot count is `3n` against `≤ n` needed, so the demand is not
+counting-obstructed); **(ii)** (GR-129)(iii)'s exchange freedom used as a **repair operation**
+on a failed assignment rather than as a search space. Three places the spec expected to be
+wrong: (1) the constraint may stop being binary/edge-supported once branches of length `≥ 3`
+appear; (2) a counting argument that cannot fail is usually one that cannot help — **check the
+saturation filter before investing in handle (i)**; (3) the 82 % may not share a single
+mechanism, in which case the honest deliverable is a **classification**.
+
+### Forced jobs (reproduced from the spec)
+
+1. **The deliverable is an ARGUMENT, with any search demoted to an adversarial control.**
+2. **Apply the option board's two filters explicitly** — growing ground set (§4.6) and
+   counting saturation (§2.5, (OC-3)/(OC-37)) — saying which filter each candidate survives.
+3. **The sampler-support audit is FORCED** (`RESEARCH-ARC.md` §4): name the support of every
+   population and which of the claim's variables it varies; treat any "0 feasible" as a cap
+   artifact until disproved (GLIST's own near-miss is one direction old).
+4. **Cap disclosure**, travelling with every figure.
+5. **TERMINATION riders E1/E2/E3 read at source**, E1 live in its literal reading.
+6. **Restate the `Λ ≠ ∅` caveat**; it is not this direction's to close.
+
+**Bars.** No (a′)/(b′) ledger direction; no `§(K-bare-ext)` or `(BE-…)` label (the sibling is
+there); no re-derivation of (GR-130) or of (GR-135)'s local classification; **(K-res) is a
+user call and the 2026-08-05 Lean hold binds — no `.lean`.**
+
+### Reservation
+
+(`notes/Pencil-labels.md` §"Reserved namespace — direction GGLOB".) Labels
+**(GR-139)–(GR-144)**, ***Steps G159–G164***, owning file `notes/Pencil-informal-grid.md`
+§(K-grid) — **extends, no new section** — driver `w4/gglob.py`. Opens at exactly the tail
+**GLIST declared**. `GGLOB`/`gglob` verified **0-hit** as raw substrings across
+`*.md`/`*.tex`/`*.lean`/`*.py`/`*.m2` **at `HEAD`, never against the working tree** (the
+concurrent sibling leaves it dirty — `RESEARCH-ARC.md` §2's first new hazard); `(GR-140)`–
+`(GR-144)` and `G160`–`G164` 0-hit, and the two hits each on `(GR-139)`/`G159` were opened and
+confirmed to be **GLIST's tail declaration**, not consumed labels.
+
+### LANDING — GGLOB, 2026-09-02, `recon-opus`
+
+**Verdict: HIT shape 3 — REDUCED to a named strictly-smaller condition, and the reduction is
+CSP-FREE — with HIT shape 1 on four named sub-statements, two REFUTED handles, and a
+CORRECTION to a landed reading of (GR-136)(iii).** Landed as §(K-grid) *Steps G159–G164*,
+labels **(GR-139)–(GR-144)**, driver `notes/scripts/w4/gglob.py` (six modes).
+
+**Job 1, the argument.** Four theorems, one refutation by witness, one measured
+classification.
+
+- **(GR-139), the two dual normal forms.** The residual is a **binary** CSP on `G°` with the
+  uniform 9-element domain `J × J^c` **at every branch length** — a graph CSP, not a
+  hypergraph one — whose length-2 relation is exactly `R_β = (P × Q) ∪ (Q × P)` for the row
+  `P = row(a_β)` and column `Q = col(b_β)`: *the branch's cell is MIXED from the two hub
+  cells*. Orienting each length-2 branch at its A-end gives `a_β = α(head β)`,
+  `b_β = γ(tail β)` and the two identities `T_j ∩ H = {β : α(head β) ≠ j}` (`j ∈ J`) and
+  `T_k ∩ H = {β : γ(tail β) ≠ k}` (`k ∈ J^c`). Dually, fixing one **bit per even branch**
+  makes the A-side and B-side **decouple** into two independent 3-list-colourings. A
+  table-driven solver seeing nothing but one `9 × 9` table per branch, and the boolean dual,
+  each reproduce `csp_orient`'s verdict at **472 680/472 680** pairs.
+- **(GR-140), the SYNTHESIS theorem — the packing quantifier is ELIMINABLE.**
+  `D_β = {α(head β), γ(tail β)}` makes the length-2 half of the packing a **function** of the
+  CSP solution (asserted by rebuilding it, identical, at **229 320/229 320** feasible pairs),
+  so the only surviving freedom is the `(P_β, Q_β)` choice on the **at most six** long
+  branches. Hence *"some legal pair is CSP-feasible"* becomes a CSP-free statement about `H`:
+  *orient `H` and 3-colour the hubs twice so that every cycle of `H` carries a head of each
+  `α`-colour and a tail of each `γ`-colour*, plus the bookkeeping `Σ_{j∈J} t_j = 2L − 3`,
+  `2|H| = 3(n−1) − (2L−3)` — which incidentally re-proves `L ≥ 2` from the packing side.
+  **And the price is named: on the `D = 0`, `Λ = ∅` stratum that statement IS (GR-10)**, by
+  (GR-18)(ii)+(iii) — so successor 1 was never a slice below (GR-10).
+- **(GR-141), the two filters — handle (i) is DEAD.** Every counting identity in sight is an
+  identity in the **shape alone**, so it takes the same value on a feasible and an infeasible
+  pair; and, one level finer, **96 of 227** hub-local tree-degree profile classes contain both
+  a feasible and an infeasible pair, covering **335 520** of the 472 680 pairs. So no charge
+  assigned to hubs from their local tree degrees can decide the residual. (GR-140)'s object
+  **passes** the growing-ground-set test (index set `V(G°) ∪ E(H)`, per-hub domain the fixed
+  9-element grid).
+- **(GR-142), the matroid handle is DEAD too.** `{X ⊆ hubs : the branches headed in X form a
+  forest}` **fails the exchange axiom**, at an exhibited orientation *induced by a
+  CSP-feasible legal pair* of a genuine `D = 0`, `n_hub = 6` class shape. Since (GR-139)(iii)
+  makes the `J`-side of the packing exactly this family, the demand is a partition problem
+  over a **non-matroid**, and Edmonds/matroid union — what (GR-130) used on the *branch* side,
+  and what the landed Phase-12/13/14 subsystem is — does **not** reach the hub side. This is
+  (GR-10)'s own *"not yet Edmonds"* remark, one level down and now exhibited.
+- **(GR-143), the three-tier classification — and it CORRECTS a landed reading.** Tier 1,
+  hub-local: 44 640 of 243 360 (18 %). Tier 2, **propagation-visible**: arc consistency
+  **decides** the residual on (GR-132)'s whole population — non-empty closure ⟺ feasible at
+  **472 680/472 680**, ≤ 5 rounds — so *all* of (GR-136)(iii)'s 82 % lives there, and every
+  minimal core the greedy shrink returns spans a **cycle** of `G°` (198 720/198 720, sizes
+  3 and 4). Tier 3, **propagation-invisible**: a **pinned `n_hub = 6` witness** that is
+  hub-locally feasible, arc-consistent and infeasible. **(GR-132)'s population cannot present
+  tier 3 at all** — so the 82 % measures tier 2, and the genuinely global obstruction first
+  exists one hub-count up.
+
+**Job 2, the two filters.** Applied explicitly and *measured*, not asserted — see (GR-141).
+Handle (i) dies on **counting saturation**; handle (ii) survives both filters and is
+**reframed**: the exchange freedom is not a *repair* operation on a failed assignment, it is
+the **synthesis** direction — you do not repair the assignment, you build the packing from it.
+
+**Job 3, the support audit — and it fires on the arc's own headline figure.** Every population
+is named with its support: `--form`/`--filter`/`--glob` are exhaustive over (GR-132)'s 12
+shapes at `n_hub ∈ {2, 4}` (all partitions × all splits); `--synth`'s `n_hub = 4` leg is
+exhaustive over that whole `D = 0` stratum (312 shapes) and its `n_hub = 6` leg is a
+**deterministic prefix** of 150 pure-hub shapes out of 2 623; `--tier`'s census is a **seeded**
+sweep of 120 shapes. The finding: **the population behind (GR-136)(iii) is blind to tier 3**,
+because arc consistency decides it there — exactly the (GR-137) defect one level further out,
+and the reason (GR-143) exists.
+
+**The E1 guard, fired deliberately.** A tier-3 witness read as a shape-level claim would be a
+g-flank. It is not: the **same shape** carries a CSP-feasible legal pair, exhibited by
+`synth_first` in 339 nodes and asserted in the driver. Every shape this direction decided —
+312/312 at `n_hub = 4`, 150/150 at the `n_hub = 6` slice — carries one.
+
+**Jobs 4/5/6.** Caps travel with every figure, with denominators (the `--matroid` leg reports
+a **witness**, whose search cap is irrelevant to what it claims). **E1 does NOT fire**, decided
+in its literal reading over a strictly wider stratum than GLIST swept. **E2 does NOT fire**
+(target not refuted; four successors named). **E3 does NOT fire** ((GR-10)/(GR-15) unchanged).
+The `Λ ≠ ∅` caveat is restated at *Step G164* and **not closed** — (GR-134)'s class/list
+bijection is still the first thing that breaks.
+
+**On the coordinator's reading: SPLIT, with its own escape clause 2 vindicated.** The framing
+half — *a binary edge-constraint CSP on the hub graph* — is **confirmed and is now a theorem**
+((GR-139)(i)), and its self-declared error bar (1) is **refuted**: the constraint stays binary
+at every length. Error bar (2) is **exactly right** and is the reason handle (i) was not
+worked: counting saturation kills it, measurably ((GR-141)). Handle (ii) is **reframed** from
+*repair* to *synthesis* ((GR-140)). Error bar (3) is **answered**: the 82 % does share one
+mechanism — propagation — but the reading that it is *the* global obstruction is **corrected**,
+since the genuinely global tier is invisible on that population. **The tally is cited, not
+incremented** (`RESEARCH-ARC.md` §7, **fourteen instances, seven kinds** as reconciled by the
+coordinator after the previous round); this instance is of the **second kind, *split***, with
+the fifth kind's signature — the escape clause did the work.
+
+**F21 — the corpus's biggest row, recomputed to an explicit target.** `(K-grid)`: **2 528 →
+2 679** status words against the `SPECIAL_CAPS` cap **2 715**, close-it **949 → 964 / 985**,
+both under targets set before the edit (status ≤ 2 680, close-it ≤ 970). Honest rather than
+generous **because no landing is queued on this row** — the concurrent sibling is on
+`(K-bare)`. Two already-landed clauses were compressed before a word of new content was added,
+and the close-it cell's unit 6(iv) was **corrected**, not merely extended: it said the open
+half is *"global: 82 % of infeasible pairs are hub-locally invisible"*, which (GR-143) shows
+is the propagation-visible tier. Label preservation by
+`python3 notes/scripts/gapdiff.py K-grid HEAD`: **146 codes in, 154 out, ZERO dropped, 8
+added**. Column 2's step range `G0–G158` → `G0–G164` in the same edit. **No `SPECIAL_CAPS`
+entry proposed and none needed.**
+
+**Reservation consumed in full**; nothing returned. Labels (GR-139)–(GR-144), *Steps
+G159–G164*, driver at the reserved path; the tail declared for the next reservation is
+**(GR-145) / Step G165**. **(L6) landing grep:** the only `(X<digit>)`-shaped token in the new
+steps is `(F11)`, the dispatch-log finding code the *Verification* block cites by convention —
+no label is minted in that shape; the new objects (the **cell**, *head*/*tail*,
+*head-independent*, the three **tiers**) are deliberately unlettered.
+
+**Cost.** `--form` 140 s, `--synth` 195 s, `--filter` 76 s, `--matroid` 3 s, `--glob` 123 s,
+`--tier` 110 s. `--validate` is ~650 s and does **not** fit a 600 s foreground budget, so the
+landing gate ran **two** foreground invocations — `--form --synth` at **339 s** and
+`--filter --matroid --glob --tier` at **305 s** — per `notes/scripts/README.md`'s *Two invocations do not fit* row — the third
+recorded instance of that reading. Harness debt: `gglob.py` is the **third consumer** of
+`gpack.py`'s `all_packings`/`csets`/`legal_splits`/`csp_witness`/`shape_rows` and the
+**second** of `glist.py`'s `csp_orient`/`d0_shapes`/`first_feasible`/`split_data`/`tree_deg`,
+so §2 rule 2's move-down trigger fires **twice**; recorded **UNPAID** in
+`notes/scripts/README.md` with the same reason GLIST gave (moving them re-baselines two
+drivers' recorded figures).
+
+**Successors this direction names**, in its own ranking: (1) **(GR-140)(ii) attacked as a
+graph statement** — the CSP is gone, `H` is simple and triangle-free, and a 4-cycle needs at
+most one source and one sink to have three heads at all; (2) **`n_hub = 6`, now an engineering
+job** — `synth_first` decided 150/150 positively with the node cap never binding, leaving
+2 473 of 2 623 to compute; (3) **whether *path* consistency decides at `n_hub = 6`**, where
+arc consistency provably does not — the cheapest question that would say how global "global"
+really is; (4) **leaf-covering on the branches**, untouched by (GR-142) and still the one place
+the landed matroid machinery might reach.

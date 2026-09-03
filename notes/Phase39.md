@@ -8,22 +8,21 @@ derives it from exactly **three carried items**: **`hcontract`** (W4 — build p
 **`hbareSplit`** (kernel (K-bare)). Everything else is closed — W0–W3 and all of W5
 (L0–L7), `hsplit` and `hfresh` included (2026-07-30, unchanged since).
 
-**The research arc: 77 directions COMPLETE** (2026-08-05 → 09-02, ordinals 1–69 — 73 on
+**The research arc: 79 directions COMPLETE** (2026-08-05 → 09-02, ordinals 1–71 — 75 on
 kernel (K), **WTRI/WELOC/WPAIR/WGROW (58–61) on W4**), plus eight strategy-only passes, two
 architecture probes and one read-only scoping recon; **one further direction in flight,
-draft-only**. **GPACK (66) was the FIRST `hK`-side direction in 22 and GLIST (68) is its
-successor**, the committing half of a second concurrent pair whose draft-only half was
-**BPROPER (69)**. Per-direction verdicts, specs and write-ups live at
+draft-only**. **GPACK (66) opened the `hK` lane after 22 dispatches; GLIST (68) and
+GGLOB (71) are its successors**, GGLOB the committing half of a third concurrent pair. Per-direction verdicts, specs and write-ups live at
 `notes/Pencil-fanout.md` §"<CODE>" (1–19: the archive) plus a workbook home — **not
-restated here**. **The arc's standing result, unchanged by all 76: `hK` is not closer.**
+restated here**. **The arc's standing result, unchanged: `hK` is not closer.**
 **(GR-15)** — the single open gap the §(K-grid) chain reduces to — is **untouched**; **class
 uniformity of the escape is untouched**; no g-flank was found; **E3 is ARMED (by GBAL), has
 NEVER fired, and is NOT one landing away** — `61e046a6`: "the target" in E1–E3 is the
 **arc's**, so emptying W4's list does not fire it (WGROW is the worked case).
 
-**`hK` LANE (GPACK 66, GLIST 68): (GR-18)(iii)'s split half is a THEOREM, its residual a
-GLOBAL hub CSP. ESCAPE ROUTE (OWALL 70): (OC-44)(iii) is REDUCED to (OW)**, its named route
-refuted by logic. **(GR-10)/(GR-15)/(OC-8) unchanged**. Detail: **blocks 11–12**.
+**`hK` LANE (GPACK 66, GLIST 68, GGLOB 71): (GR-18)(iii)'s split half is a THEOREM and its
+residual is now CSP-FREE — and IS (GR-10) at `D = 0`. ESCAPE ROUTE (OWALL 70): (OC-44)(iii) is REDUCED to (OW)**, its named route
+refuted by logic. **(GR-10)/(GR-15)/(OC-8) unchanged**. Detail: **blocks 11–13**.
 
 **W4's INFORMAL SIDE IS CLOSED** (58–61): **(T)/(E-pair)/(V) are THEOREMS**, **(E) open,
 TIGHT, off every W4 path**, list **EMPTY** — leaving the USER call **(K-res)** and the held
@@ -45,7 +44,7 @@ closes and a successor opens for the Lean is a `PHASE-BOUNDARIES.md` event again
 standing 2026-07-24 no-split adjudication, surfaced with a commit-count estimate, never
 taken unilaterally; the 2026-08-05 Lean hold binds regardless.
 
-**ELEVEN reference blocks sit in `notes/Pencil-structure.md`**, which indexes them —
+**THIRTEEN reference blocks sit in `notes/Pencil-structure.md`**, which indexes them —
 **read them once per session**. The line that stays here: the **State of (K)** gap map
 (`notes/Pencil-informal.md`) is this phase's status object, **authoritative for every
 status word**; read it with `python3 notes/gapmap.py`, never `sed`/`grep`.
@@ -175,19 +174,16 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
 
 - **Doc debt — the gate is MECHANICAL** (`notes/check-phase-note.py`: **580 lines / 525
   status-header words**, plus a fail if *Decisions made* outgrows the forward sections),
-  and the standing remedy is **relocation or merger, never a fold** — **TWELVE** reference
-  blocks now sit verbatim in `notes/Pencil-structure.md`, indexed by its own table, with
-  no cap ever bumped and nothing deleted. **The rule that keeps working:** ask *"what here
-  is reference rather than status?"*. Four landings running have paid for themselves that
-  way — block 8 bought 105 words; the WTRI prep merged five per-landing *Hand-off* blocks
-  into one; WPAIR rotated its in-flight header block out; the BBASE landing merged the two
-  W4 *Blockers* bullets; the BDOUBLE landing merged BUNIF's *Hand-off* block with its own
-  and **demoted three** (BE-14) entries at once (BUNIF, BGENUINE, BSPREAD). **LINES bind,
-  not words**, so the next landing MUST merge or rotate rather than append. **Do NOT
-  relocate the *"On a future HIT"* block** — standing safety policy, read first by a fresh
-  session. A landing's entry stays **one line**; the (BE-14) thread's prose entries are the
-  standing exception, and the oldest demotes when the thread's next direction lands — at
-  576/580 the demote is no longer optional.
+  and the standing remedy is **relocation or merger, never a fold** — **THIRTEEN** reference
+  blocks now sit verbatim in `notes/Pencil-structure.md`, indexed by its own table, with no
+  cap ever bumped and nothing deleted; **which relocation bought what is that file's record,
+  not this one's**. **The rule that keeps working:** ask *"what here is reference rather than
+  status?"* — five landings running have paid for themselves that way. **LINES bind, not
+  words**, so the next landing MUST merge or rotate rather than append. **Do NOT relocate the
+  *"On a future HIT"* block** — standing safety policy, read first by a fresh session. A
+  landing's entry stays **one line**; the (BE-14) thread's prose entries are the standing
+  exception, and the oldest demotes when the thread's next direction lands — at 580/580 the
+  demote is **not optional**.
 - The full biconditional transport (design doc's W0 pin) is landed only as its two forward
   implications; the reverse arms need a `complementIso` involution lemma, not in tree —
   deferred, **off every critical path** (§(K-σ) *Step σ6*).
@@ -210,39 +206,31 @@ status that stays here: **S-mark is (BE-14)'s only open step**, (β) is proved a
 while the clause itself is **not yet a theorem** — and cross-pair welding is **untouched**.
 
 **THE W4 DEVIATION'S PER-LANDING DETAIL — RELOCATED 2026-09-02** to
-`notes/Pencil-structure.md` §"The W4 deviation — per-landing detail" (**block 9**), the
-same disposition block 8 got: the thread has not been worked since WGROW (61) and its
-informal argument is **closed**, so which landing proved which sub-clause is attribution.
-Status, stated once in the header and not repeated: **(T)/(E-pair)/(V) are THEOREMS**, (E)
-is open and off every W4 path, and W4's non-user-call list is **EMPTY**.
+`notes/Pencil-structure.md` §"The W4 deviation — per-landing detail" (**block 9**), block 8's
+disposition: the thread is untouched since WGROW (61) and its informal argument is **closed**.
+Status, stated once in the header and not repeated here.
 
 **BBASE (62) → BUNIF (63) → BDOUBLE (64) → BSATUR (65), all 2026-09-02** — verdicts in
 *Decisions made*, mathematics at §(K-bare-ext) *Steps BE88–BE107*, per-landing detail in
 **block 8**. One clause is *status* and is not repeated below: **(CH-1) does not apply to
 the flag base** ((BE-89)), so anything citing it for the base cites the wrong object.
 
-**THE 2026-09-02 LANDINGS (66–70) — ALL per-landing detail now RELOCATED**, blocks 11
-(`hK`: GPACK/GLIST), 12 (escape route: OWALL, opened at that landing) and 8 (BSIGMA/BPROPER,
-demoted at it). Status only, one clause each. **`hK`:** (GR-18)(iii)'s packing-and-split half
-is a **THEOREM** ((GR-130)); its residual is a **global** hub CSP, clause (a) free, the local
-criterion exact, **82 %** of infeasible pairs locally feasible everywhere, three successors at
-(GR-138). **Escape route:** **(OC-44)(iii) is REDUCED to (OW)**, a geometry-free
-colouring-existence statement in **(GR-10)'s object class** — a (GR-10) min-max would be
-*consumed* by it — and its own named route is **refuted by LOGIC**, the wall-avoidance
-conjunct being *implied by* the rank conjunct ((OC-52)); input (a) class-uniform and (OC-8)
-**OPEN, unchanged**. **(BE-14):** (PENCIL-SATURATES-GEN) is FALSE and **-CHART's PROPERNESS
-half is settled at EVERY side** ((BE-114)–(BE-121)), but **-CHART is NOT yet a theorem** —
-item 0's residue is *proper* → *generic*. **No gap-map status moves anywhere.** **The `hK`
-lane's ranking is `notes/Pencil-strategy.md` §8's board, NOT this list** (re-ranked
-`70c06abe`/`5583a919`; it carries the standing **do-not-do** — no more (a′)/(b′) ledger
-directions), whose ranks 1 and 3 are now spent.
+**THE 2026-09-02 ROUND'S PER-LANDING CLAUSES (66–71) — RELOCATED 2026-09-02** to
+`notes/Pencil-structure.md` §"The 2026-09-02 round — per-landing status clauses" (**block
+13**); blocks 8/11/12 already own the detail. **Reference, not status.** The two clauses that
+stay: **no gap-map status word moved at any of the six**, and **the `hK` lane's ranking is
+`notes/Pencil-strategy.md` §8's board, NOT this list** (re-ranked `70c06abe`/`5583a919`; it
+carries the standing **do-not-do** — no more (a′)/(b′) ledger directions), whose ranks 1 and
+3 are spent.
 
-**THE NEXT CONCRETE TASK is (GR-138)'s successor 1 — the GLOBAL `(α, γ)` CSP at `D = 0`**,
-the `hK` lane's own named successor now that its local half is exact: a proof must charge
-something global, and the two handles are the **constructive** certificate side and
-(GR-129)(iii)'s closed-form description of the exchange freedom. Successor 2 (`n_hub = 6`
-exhaustively, 2 623 undecided pure-hub shapes) needs a better enumerator than
-`gpack.all_packings`. The **(BE-14) lane's** alternative is ranked item 0 below, now
+**THE NEXT CONCRETE TASK is (GR-144)'s successor 1 — (GR-140)(ii)'s CSP-FREE orientation
+criterion on `H`**: *orient the length-2 subgraph and 3-colour the hubs twice so every cycle
+of `H` carries a head of each `α`-colour and a tail of each `γ`-colour*, plus ≤ 6 long
+branches of bookkeeping — the packing quantifier is **gone**, `H` is simple and triangle-free,
+and a 4-cycle is the first place to look. **Read the price first: on this stratum that
+criterion IS (GR-10)** ((GR-140)(v)), so it is not a slice below it. Successor 2 (`n_hub = 6`)
+is now **engineering** — 150/150 pure-hub shapes decided positively, 2 473 of 2 623 left;
+successor 3 is whether *path* consistency decides there, where arc consistency does not. The **(BE-14) lane's** alternative is ranked item 0 below, now
 **(PENCIL-SATURATES-CHART)**'s own residual. Two things stay the USER's call, both OFFERED
 2026-09-02 and both DECLINED IN FAVOUR OF CONTINUING RESEARCH: the **(K-res) wave** (a cheap
 scoping slice queued below) and whether W4's now-closed informal side changes anything about
@@ -352,15 +340,15 @@ its cost are `notes/dispatch-log.md`'s and `notes/Pencil-fanout.md`'s). **The ta
    `notes/Pencil-structure.md` §"The `hK` lane — per-landing detail" (**block 11**), the
    disposition blocks 8 and 9 got; it also carries (GR-133)'s **price** and the standing
    *do not quote §2.5 as supplying freeness* warning. **Reference, not status.** The status:
-   **(GR-18)(iii)'s packing-and-split half is a THEOREM** ((GR-130)), and its residual — the
-   class-consistency clause — is now a **global 9-valued hub CSP** in `(α, γ)` with clause
-   (a) **free** ((GR-134)) and an exact local criterion, a cubic *pure* hub failing iff `u`
-   is a **leaf of none** of the six trees ((GR-135)); **82 % of the infeasible pairs are
-   locally feasible at every hub** ((GR-136)), so no per-hub repair can close it. Three
-   named successors ((GR-138)): the global CSP at `D = 0`; `n_hub = 6` exhaustively (2 623
-   pure-hub shapes, undecided — `n_hub = 4` is exhaustively fine); and leaf-covering as a
-   packing question, the one place the landed Phase-12/13/14 matroid-union machinery might
-   reach. **(GR-10)/(GR-15) unchanged in status.**
+   **(GR-18)(iii)'s packing-and-split half is a THEOREM** ((GR-130)); its residual is a
+   **binary** 9-valued hub CSP, clause (a) **free**, local criterion exact
+   ((GR-134)/(GR-135)/(GR-139)) — and GGLOB made it **CSP-FREE**: the packing is a *function*
+   of the solution, so what is left is an orientation-plus-two-colourings criterion on `H`
+   that **is (GR-10)** here ((GR-140)). Both handles are **dead** — counting by saturation
+   ((GR-141)), matroid union by an exhibited exchange failure ((GR-142)) — and the obstruction
+   splits **three ways** ((GR-143)): hub-local, propagation-visible (all of the 82 %),
+   propagation-invisible from `n_hub = 6`, which that population cannot present. Four
+   successors at (GR-144). **(GR-10)/(GR-15) unchanged in status.**
    Everything in §(K-grid)/§(K-out) is *support* for this, not progress on it. **Standing
    adjudication ("C: literature hunt + A", 2026-07-30): carry `hK` pinned; option B NOT
    authorized**; both literature hunts are MISSes, and since 2026-08-02 it also carries
@@ -427,6 +415,14 @@ paragraphs.**
   scratchpad is shared; a shared counter cannot be concurrently incremented). **No
   mathematics and no status word moved.**
 
+- **GGLOB** (71, 2026-09-02, opus, **committing half of a concurrent pair**) — **THE GLOBAL
+  CSP IS CSP-FREE, BOTH HANDLES ARE DEAD, AND THE 82 % IS RE-LOCATED** ((GR-139)–(GR-144),
+  §(K-grid) *G159–G164*): two dual normal forms, and `D_β = {α(head), γ(tail)}` **eliminates
+  the packing quantifier** — on this stratum the residual **IS (GR-10)**. Counting **dead by
+  saturation** (96/227 profile classes carry both verdicts); head-independence **NOT a
+  matroid** (exchange failure exhibited). Three tiers: arc consistency decides (GR-132)'s
+  whole population, so the 82 % is propagation-visible, the invisible tier starting at
+  `n_hub = 6`. 150/150 `n_hub = 6` shapes POSITIVE. **E1 does not fire.** `w4/gglob.py`.
 - **OWALL** (70, 2026-09-02, opus, **draft-only, third of a three-way concurrent round**)
   — **(OC-44)(iii) REDUCED to (OW)**, geometry-free and in (GR-10)'s object class
   ((OC-50)–(OC-55), §(K-out) *O47–O51*): the whole (a₁) grid criterion is **two direction

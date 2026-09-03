@@ -41,7 +41,7 @@ here — the phase's next concrete task is the kernel-(K) research pick
 
 ## The relocated reference blocks — the index `notes/Phase39.md` points at
 
-**TWELVE blocks, relocated verbatim from `notes/Phase39.md` between 2026-08-27 and
+**THIRTEEN blocks, relocated verbatim from `notes/Phase39.md` between 2026-08-27 and
 2026-09-02**, each because it is **stable reference, not status** — it changes only
 when something is *added* to it, never when a gap's status moves. (Blocks 8 and 9 are the
 two exceptions to the "never when a gap's status moves" reading, and they are
@@ -67,6 +67,7 @@ cap was ever bumped and nothing was deleted**; the note keeps a pointer to each.
 | 10 | *The (BE-14) lane's standing candidate list* | 2026-09-02 | the lane's ranked-but-unmoved candidates — one-end-series, (S1)/(S2), the bundle construction and the *also ranked* tail; relocated when the note hit 587/580 |
 | 11 | *The `hK` lane — per-landing detail* | 2026-09-02 | which of GPACK/GLIST proved which sub-clause of (GR-18)(iii)'s split, with its labels, plus (GR-133)'s price; relocated at the GLIST landing, the lane's second result in two directions |
 | 12 | *The escape route (§(K-out)) — per-landing detail* | 2026-09-02 | OWALL's per-landing detail on the escape route's largest live row: the two-direction-network model, the three confinement certificates, and what (OC-44)(iii) reduced to; relocated at the OWALL landing, so the lane's narrative never entered the note |
+| 13 | *The 2026-09-02 round — per-landing status clauses* | 2026-09-02 | the one-clause-per-direction status paragraph for ordinals 66–71 (GPACK, BSIGMA, GLIST, BPROPER, OWALL, GGLOB), whose *detail* blocks 8/11/12 already own; relocated at the GGLOB landing, when a sixth clause would have pushed the note past its line cap |
 
 The one line that stays in `notes/Phase39.md` rather than moving here: the **State of
 (K)** gap map in `notes/Pencil-informal.md` is the phase's status object, authoritative
@@ -1006,8 +1007,9 @@ one of the six trees***, equivalently the three `D_β` are not a **perfect match
 `{1..6}`** ((GR-135)) — a **second** obstruction mechanism, independent of (GR-131)'s odd
 cycle. By the excess law (GR-21) there is **no all-length-2 shape**, and at `D = 0` at least
 `n − 12` hubs are pure, so the local half is a **leaf-covering** demand on the packing
-((GR-136)); **but 82 % of the infeasible pairs are locally feasible at every hub**, so the
-residual is genuinely global. The forced support audit ((GR-137)) **refuted the coordinator's
+((GR-136)); **but 82 % of the infeasible pairs are locally feasible at every hub** — which
+GGLOB then RE-LOCATED: all of that 82 % is **propagation-visible** (arc consistency decides
+that whole population), and the genuinely global tier first exists at `n_hub = 6` ((GR-143)). The forced support audit ((GR-137)) **refuted the coordinator's
 expectation** — the population *does* present the conflict (6 of the 12 shapes carry a pure
 hub) — and restored the missing denominator: `229 320` of **472 680** legal pairs, not
 `229 320/229 320`. Exhaustively at `n_hub = 4` on the `D = 0` stratum some legal pair is
@@ -1101,3 +1103,39 @@ same day is a cross-return finding only a parallel round surfaces (dispatch-log 
 live surface. If it disagrees with the `(K-out)` gap-map row or with §(K-out) itself, they
 win. The **status** that stays in `notes/Phase39.md` is one sentence — input (a) class-uniform
 and (OC-8) both OPEN and unchanged, (OC-44)(iii) restated as (OW).
+
+## The 2026-09-02 round — per-landing status clauses (RELOCATED from `notes/Phase39.md` 2026-09-02, the GGLOB landing)
+
+**Reference, not status by its own last sentence.** Six directions landed on 2026-09-02
+(ordinals 66–71) across three lanes, and the phase note carried a one-clause status summary
+of each. The *detail* is already owned by blocks **8** ((BE-14)), **11** (`hK`) and **12**
+(the escape route); what stood in the note was per-landing attribution, which is exactly the
+disposition blocks 8/9/11/12 got. The two clauses that are genuinely *status* stayed in the
+note: **no gap-map status word moved at any of the six**, and the `hK` lane's ranking is
+`notes/Pencil-strategy.md` §8's board rather than the note's own list.
+
+- **`hK` (GPACK 66, GLIST 68, GGLOB 71).** (GR-18)(iii)'s packing-and-split half is a
+  **THEOREM** ((GR-130)) — neither the packing nor the split is ever the obstruction. Its
+  residual is the class-consistency clause, put in orientation normal form with clause (a)
+  **free** and an exact local criterion ((GR-134)/(GR-135)), then in two dual normal forms —
+  a **binary** 9-valued hub CSP and a **boolean** one-bit-per-even-branch CSP ((GR-139)).
+  GGLOB then **eliminated the packing quantifier**: `D_β = {α(head), γ(tail)}` makes the
+  packing a function of the solution, so the residual is a **CSP-free** statement about the
+  length-2 subgraph `H` — *orient it and 3-colour the hubs twice so every cycle carries a
+  head of each `α`-colour and a tail of each `γ`-colour* — which on the `D = 0`, `Λ = ∅`
+  stratum **is (GR-10)** by (GR-18)(ii)+(iii) ((GR-140)). Both named handles are **dead**:
+  counting by saturation, measured — 96 of 227 hub-local tree-degree profile classes carry
+  both verdicts ((GR-141)) — and matroid union by an exhibited **exchange failure** for
+  head-independence ((GR-142)). And the obstruction splits **three ways** ((GR-143)):
+  hub-local (18 %), **propagation-visible** — arc consistency decides (GR-132)'s whole
+  population at 472 680/472 680, so all of GLIST's 82 % lives there — and
+  **propagation-INVISIBLE**, first realized at `n_hub = 6` at a pinned witness that
+  population cannot present. **E1 does not fire** at any of the three.
+- **Escape route (OWALL 70).** **(OC-44)(iii) is REDUCED to (OW)**, a geometry-free
+  colouring-existence statement in **(GR-10)'s object class** — a (GR-10) min-max would be
+  *consumed* by it — and its own named route is **refuted by LOGIC**, the wall-avoidance
+  conjunct being *implied by* the rank conjunct ((OC-52)); input (a) class-uniform and
+  (OC-8) **OPEN, unchanged**.
+- **(BE-14) (BSIGMA 67, BPROPER 69).** (PENCIL-SATURATES-GEN) is FALSE and **-CHART's
+  PROPERNESS half is settled at EVERY side** ((BE-114)–(BE-121)), but **-CHART is NOT yet a
+  theorem** — the residue is *proper* → *generic*.

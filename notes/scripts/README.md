@@ -80,7 +80,10 @@ model of the second bullet firing in full: 67/67 invocations, 65 byte-identical,
 
 **Two invocations do not fit a 600 s foreground budget** — `flanks.py --limit`
 (762 s) and `lambda.py --adv` (536 s); `outerline.py --pool` (358 s) and
-`--shapes` (322 s) each fit alone but not together. **A third case, added
+`--shapes` (322 s) each fit alone but not together. **A fourth case, added 2026-09-02 (direction GGLOB):** `w4/gglob.py --validate` (~650 s)
+does not fit; its six legs measure 140/195/76/3/123/110 s, and the landing gate ran **two**
+foreground invocations — `--form --synth` (339 s) and `--filter --matroid --glob --tier`
+(305 s). **A third case, added
 2026-08-19 (direction YLOC):** `w4/yloc.py --validate` (~890 s, its single
 biggest leg `--coll` alone measured 359 s) does not fit; `--coll` and `--loc`
 (measured 274.7 s) each fit **alone**, and the remaining five modes
@@ -1062,6 +1065,13 @@ are a recorded *Harness debt* item (see below).
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/glist.py --csp` | 105 s | ibid. *Steps G154/G156* ((GR-134): the `(α, γ)` orientation normal form compared with `gpack.csp_witness` at **472 680/472 680** legal (packing, split) pairs, 0 disagreements, clause (a) ASSERTED rather than imposed at all 229 320 feasible ones; and the missing denominator — 243 360 pairs REJECTED, of which 44 640 fail (GR-135) at some hub and **198 720 are locally feasible at every hub**) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/glist.py --rich` | 320 s | ibid. *Step G156* ((GR-136)(iv): every `n_hub = 4` class shape of the `D = 0` stratum — every cubic hub multigraph up to isomorphism × every excess profile × every 6-tree partition × every split — asserted to carry SOME CSP-feasible legal pair, with the conflict realized at 80 640 of 1 013 760 pairs on the 28 pure-hub shapes; plus the constructed `K_{3,3}` `n_hub = 6` control, where a seeded capped DFS finds **0 feasible pairs — reported as *not found under cap* and disproved as a nonexistence claim in the same step** by 60 asserted certificate-induced witnesses) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/glist.py --validate` | 530 s | ibid. all four in one process — the landing gate; fits the 600 s foreground budget. No `set` is printed and the one rng is seeded from a literal (`20260902`) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/gglob.py --form` | 140 s | `notes/Pencil-informal-grid.md` §(K-grid) *Step G159* (direction GGLOB; (GR-139): the two dual normal forms — a **table-driven** solver given one `9 × 9` relation per branch, and the **boolean dual**, each reproducing `csp_orient`'s verdict at **472 680/472 680** legal (packing, split) pairs; the mixed-cell identity at 559 080 (branch, solution) instances and the two head/tail tree identities at 1 375 920; plus `H` simple and triangle-free at 4 910/4 910 `D = 0` class shapes) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/gglob.py --synth` | 195 s | ibid. *Step G160* ((GR-140): the packing REBUILT from `(α, γ)` and asserted identical at **229 320/229 320** feasible pairs; then `synth_first` — hub cells, not packings — cross-oracled against `glist.first_feasible` at **312/312** `n_hub = 4` `D = 0` class shapes at 8 903 nodes against 84 898, and deciding the first **150** `n_hub = 6` pure-hub shapes, all POSITIVELY, worst node count 31 926 against a 400 000 cap) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/gglob.py --filter` | 76 s | ibid. *Step G161* ((GR-141): the counting-saturation filter measured — **96 of 227** hub-local tree-degree profile classes carry both a feasible and an infeasible pair, covering 335 520 pairs, with one witness pinned; and the five shape-only identities asserted at 4 910/4 910 `D = 0` class shapes) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/gglob.py --matroid` | 3 s | ibid. *Step G162* ((GR-142): the exchange-axiom failure for head-independence, exhibited at an orientation **induced by a CSP-feasible legal pair** of a `D = 0`, `n_hub = 6` class shape, every clause asserted — a witness, so no cap applies to what it claims) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/gglob.py --glob` | 123 s | ibid. *Step G163* ((GR-143)(i)/(ii): arc consistency against feasibility at **472 680/472 680** pairs, 0 disagreements, ≤ 5 rounds — so tier 2 is the whole of (GR-136)(iii)'s 82 % — and the minimal infeasible cores, **198 720/198 720** spanning a cycle of `G°`, none a forest) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/gglob.py --tier` | 110 s | ibid. *Step G163* ((GR-143)(iii)/(iv): the **pinned** `n_hub = 6` witness that is hub-locally feasible, arc-consistent and infeasible, re-verified end to end through three independent solvers, with the E1 guard exhibiting a feasible pair at the same shape; plus the seeded 120-shape census that found it, reported as a lower bound) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/gglob.py --form --synth` / `--filter --matroid --glob --tier` | 339 s / 305 s | ibid. — **the landing gate, in TWO foreground invocations**: `--validate` is ~650 s and does not fit the 600 s budget (see *Two invocations do not fit* above). No `set` is printed and the one rng is seeded from a literal (`20260903`) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/bproper.py reduce` | 189 s | `notes/Pencil-informal.md` §(K-bare-ext) *Step BE113* (direction BPROPER; (BE-114): the pendant reduction `ρ̄_i = ⟨p_x ∧ p_c⟩ + A` asserted as an identity of SUBSPACES at **327** legal side draws over 29 topologies of both buckets, blind (coordinate ranges `{3,5,9}`) and planted; the two dichotomy identities and each row's BAD/GOOD classification asserted at every one; and `A` asserted UNCHANGED under **164** legal moves of `p_x` inside `π_c` with the core held fixed — the `p_x`-freeness the whole argument rests on) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/bproper.py alpha` | 3 s | ibid. *Step BE114* ((BE-115): the α-plane incidence lemma — `Σ_{p₁}+Σ_{p₂}+Σ_{p₃} = Λ²K⁴` at 48 independent triples; clause (a) asserted at every `dim A ≤ 5` draw and clause (b) at every `dim A ≤ 4` draw off its exception, over 6 dimensions × 40 random subspaces × 12 points per plane; the exception `Λ²π ⊆ A` is measure zero, so it is **built** at 24 constructed `A` and its neutralization by `p_c ∈ π_c` asserted there; `dim(Σ_q ∩ Σ_p) = 1` at 288 pairs) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/bproper.py proper` | 58 s | ibid. *Step BE115* ((BE-116): properness exercised ON the bad locus — at **96** planted bad rows over 16 topologies the planted `p_x` is asserted to lie in its own freedom fibre AND to be bad, then `p_x` is swept 16 ways over that fibre with the core (hence `A`) fixed; a GOOD `p_x` asserted at 96/96, and 0 of ~1 500 swept points bad) |
@@ -2540,7 +2550,7 @@ in place for the pinned witnesses). Same acceptance test as the 2026-08-25
 payments: re-run every consumer's validate mode byte-identical at
 `PYTHONHASHSEED=0` against pre-move baselines.
 
-### New item (2026-09-02, direction GLIST) — `glist.py`'s five-device sibling import of `gpack.py`; **UNPAID, and deliberately so**
+### New item (2026-09-02, directions GLIST then GGLOB) — the sibling imports of `gpack.py` and of `glist.py`; **UNPAID — and the third consumer has now ARRIVED, so this item is OVERDUE by its own rule**
 
 `w4/glist.py` imports `all_packings`, `csets`, `legal_splits`, `csp_witness` and
 `shape_rows` from `w4/gpack.py`. GPACK's own §2 entry calls all five *"direction-local and
@@ -2563,6 +2573,29 @@ and stay direction-local. Two of them carry an explicit *local device* docstring
 they are deliberately **not**: `tree_deg` is not `gridcol.degmap`, and `some_packings` /
 `first_feasible` are not `gpack.all_packings` (which is exhaustive by design and is the
 (GR-131) enumerator).
+
+**THE THIRD CONSUMER ARRIVED ONE DIRECTION LATER (2026-09-02, direction GGLOB), and the debt
+is recorded as OVERDUE rather than silently deferred.** `w4/gglob.py` imports the same five
+devices from `gpack.py` — so the paragraph above's *"pay it at the third consumer"* trigger
+has now fired — **and** it imports eight more sideways from `w4/glist.py` (`csp_orient`,
+`d0_shapes`, `first_feasible`, `incidence`, `local_ok_criterion`, `pure_hubs`,
+`some_packings`, `split_data`, `tree_deg`, `K33`), each of which GLIST's own paragraph above
+calls direction-local with one consumer. **Two move-down triggers, both UNPAID.** The reason
+is unchanged and is now stronger, not weaker: the imported devices are again the **oracles**
+GGLOB cross-checks against (`csp_orient` at 472 680 instances, `first_feasible` at 312
+shapes), so the value of the import is that they are the shipped code byte for byte; and the
+target layer `gridcol` has a very large import closure, so a move-down there re-baselines
+essentially the whole harness (*figures do not move*) inside a docs-only landing. **What a
+successor should do, stated concretely so this is not re-litigated a third time:** run the
+move-down as its **own** commit — five devices from `gpack` and the eight from `glist` down
+to `gridcol`, with re-exports from both so no invocation path or recorded figure moves — and
+budget the full re-run of `gridcol`'s import closure for it. GGLOB's own new devices
+(`cellmap`, `orientation`, `relation_tables`, `binary_solve`, `bool_solve`, `_list_colour`,
+`branch_options`, `synth_pack`, `synth_first`, `is_packing`, `ac_closure`, `csp_sub`,
+`minimal_core`, `core_shape`, `degkey`, `head_indep`, `exchange_failure`, `hbranches`,
+`h_girth_data`) are one-consumer and stay direction-local; `cellmap` and `synth_first` carry
+explicit *local device* docstrings saying what they are deliberately **not**
+(`gpack.pair_graph`, and `glist.first_feasible` respectively).
 
 ## Deliberate non-goals
 

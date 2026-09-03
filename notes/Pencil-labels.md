@@ -3304,3 +3304,44 @@ nine already-landed entries before a word of new content was added**. No `SPECIA
 proposed and none needed. Label preservation by `notes/scripts/gapdiff.py`: **141 in, 146 out,
 ZERO dropped, 5 added**. **The tail this direction declares, for the next reservation:
 (GR-139) / Step G159.**
+
+## Reserved namespace — direction GGLOB (2026-09-02, **CONSUMED IN FULL at the landing; nothing returned**)
+
+**Reserved 2026-09-02 for the direction GGLOB** (ordinal 71; `notes/Pencil-fanout.md`
+§"GGLOB") — **(GR-138)'s successor 1, the GLOBAL `(α, γ)` CSP at `D = 0`**, the `hK` lane's
+own named successor one direction after GLIST. The **committing** dispatch of a concurrent
+pair; the sibling ran **draft-only on the (BE-14) thread**, so this reservation protects
+against the existing corpus *and* against one live sibling on a disjoint prefix.
+
+| direction | owning § | labels reserved | steps reserved | driver |
+|---|---|---|---|---|
+| **GGLOB** | §(K-grid) (`notes/Pencil-informal-grid.md`) — **extends**, no new section | **(GR-139)–(GR-144)** | **G159–G164** | `w4/gglob.py` |
+
+**It opens at exactly the tail GLIST declared** (*"the tail this direction declares, for the
+next reservation: (GR-139) / Step G159"*).
+
+**0-hit verification, at reservation time**, across `*.md`, `*.tex`, `*.lean`, `*.py`, `*.m2`
+at `HEAD` (never against the working tree — the concurrent sibling leaves it dirty, which is
+`RESEARCH-ARC.md` §2's first new hazard): `GGLOB` and `gglob` each **0-hit as raw
+substrings**; `(GR-140)`–`(GR-144)` and the raw step tokens `G160`–`G164` each **0-hit**.
+**`(GR-139)` and `G159` had two hits each, both opened and confirmed to be GLIST's TAIL
+DECLARATION** — one in its registry row above, one in its fan-out landing paragraph — not
+consumed labels. `GGLOB` was checked for the substring hazard (L5) and is clean.
+
+**LANDED 2026-09-02 — the whole reservation CONSUMED, nothing returned.** (GR-139)–(GR-144)
+and *Steps G159–G164* are all written, in `notes/Pencil-informal-grid.md` §(K-grid), which the
+direction **extends** exactly as reserved; driver `w4/gglob.py` as named. **(L6) landing grep
+run**: the only `(X<digit>)`-shaped token anywhere in the new steps is **`(F11)`**, the
+dispatch-log finding code the *Verification* block cites by long-standing convention (GLIST's
+own block does the same) — **no label is minted in that shape**. The newly named objects are
+the **cell** `h(u)`, the row/column pair `(P, Q)`, *head*/*tail*, *head-independent*, and the
+three **tiers**, all deliberately **unlettered**; `α`, `γ`, `P_β`, `Q_β`, `C_β`, `D_β`, `J`,
+`T_j`, `H`, `σ(F)` are **reused, nothing re-minted**. The bare `(C6)` does not appear.
+**F21 discharged**: the `(K-grid)` row was recomputed to explicit targets set *before* the
+edit — status **≤ 2 680**, landing at **2 679 / 2 715**; close-it **≤ 970**, landing at
+**964 / 985** — with the targets set honestly rather than generously because **no landing is
+queued on this row** (the concurrent sibling is on `(K-bare)`), and with **two landed clauses
+compressed before a word of new content was added**. No `SPECIAL_CAPS` entry proposed and
+none needed. Label preservation by `notes/scripts/gapdiff.py K-grid HEAD`: **146 in, 154 out,
+ZERO dropped, 8 added**. **The tail this direction declares, for the next reservation:
+(GR-145) / Step G165.**

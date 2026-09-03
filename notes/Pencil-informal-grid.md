@@ -15745,6 +15745,526 @@ neither probe is retained.
 
 ---
 
+### Steps G159–G164 (2026-09-02, direction GGLOB) — **the global `(α, γ)` CSP at `D = 0` is REDUCED TO A CSP-FREE ORIENTATION CRITERION, its two named handles are DEAD (counting by saturation, matroid union by an exhibited exchange failure), and (GR-136)(iii)'s "82 % global" is CORRECTED — that whole population is decided by LOCAL PROPAGATION, and the genuinely global obstruction first exists one hub-count up**: **(GR-139)** puts the residual in **two dual normal forms** — a **binary** CSP on `G°` with the uniform 9-element domain `J × J^c` whose length-2 relation is exactly `R_β = (P × Q) ∪ (Q × P)` for the row `P = row(a_β)` and the column `Q = col(b_β)` of the grid, and a **boolean** CSP with one bit per even branch under which the A-side and B-side **decouple** into two independent 3-list-colourings — together with the two identities `T_j ∩ H = {β : α(head β) ≠ j}` and `T_k ∩ H = {β : γ(tail β) ≠ k}`; **(GR-140)** is the **SYNTHESIS THEOREM** — `D_β = {α(head β), γ(tail β)}` makes the length-2 half of the packing a **function** of the CSP solution, so the packing quantifier is **eliminable** and *"some legal pair is CSP-feasible"* becomes a **CSP-free statement about `H` alone** (orient `H`, 3-colour the hubs twice, so that every cycle of `H` carries a head of each `α`-colour and a tail of each `γ`-colour, plus ≤ 6 long branches of bookkeeping), with the price named — **on the `D = 0`, `Λ = ∅` stratum that statement IS (GR-10)**, not a slice below it — and with an enumerator that decides **150/150** `n_hub = 6` pure-hub shapes where `all_packings` decided none; **(GR-141)** applies the option board's two filters and **kills the discharging handle by saturation**: 96 of 227 hub-local tree-degree profile classes contain both a feasible and an infeasible pair (335 520 of 472 680 pairs), so no charge read off hub-local degrees can decide the residual, while (GR-140)'s object **passes** the growing-ground-set test; **(GR-142)** refutes the matroid handle by an **exhibited exchange failure** at an orientation a real solution induces, so the head side is not an Edmonds partition problem and the landed Phase-12/13/14 subsystem does not reach it — (GR-10)'s own *"not yet Edmonds"* remark, reappearing verbatim one level down; and **(GR-143)** is the **three-tier classification and the support correction**: tier 1 hub-local (18 %), tier 2 **propagation-visible** — arc consistency decides (GR-132)'s whole population at **472 680/472 680**, so all of the 82 % lives there and every minimal core spans a **cycle** of `G°` — and tier 3 **propagation-invisible**, exhibited by a **pinned `n_hub = 6` witness** that is hub-locally feasible, arc-consistent and infeasible, at a shape that nonetheless carries a feasible pair (**E1 does not fire**). **(GR-10)/(GR-15) unchanged in status; no gap-map status word moves. E1/E2/E3 reported, none fires.**
+
+---
+
+### Step G159 — (GR-139): the two dual normal forms — a binary CSP on the hubs in **grid cells**, and a boolean CSP on the branches
+
+> **(GR-139)** *(proven; each clause cross-oracled at **472 680/472 680**
+> legal (packing, split) pairs of (GR-132)'s own population — 0
+> disagreements — by a **table-driven** solver that sees nothing but one
+> `9 × 9` relation per branch and, independently, by the **boolean dual**,
+> `--form`)* Let `G` be a tight class shape with `Λ = ∅`, let `(C, J)` be a
+> legal pair, write `H := {β : ℓ_β = 2}` for the length-2 subgraph of `G°`,
+> and for `β ∈ H` let `c_β := (a_β, b_β)` be the ordered pair with
+> `D_β = {a_β, b_β}`, `a_β ∈ J`, `b_β ∈ J^c`. Identify a hub's state with its
+> **cell** `h(u) := (α(u), γ(u))` in the `3 × 3` grid `J × J^c`.
+>
+> **(i) Binary and branch-supported at every length.** Every clause of
+> (GR-134)(i) mentions exactly the two endpoints of its own branch. So the
+> residual is a **binary CSP on `G°`** with the uniform 9-element domain
+> `J × J^c` — a *graph* CSP, at `ℓ_β = 2, 3, 4, 5` alike, not a hypergraph
+> one.
+>
+> **(ii) The length-2 relation in closed form — the branch cell is MIXED.**
+> With `P := row(a_β) = {x : r_x = a_β}` and `Q := col(b_β) = {x : k_x = b_β}`
+> (three cells each, meeting in the single cell `c_β`),
+>
+> > `R_β = (P × Q) ∪ (Q × P)` ,  equivalently  `c_β ∈ {(r_u, k_w), (r_w, k_u)}` ,
+>
+> where `h(u) = (r_u, k_u)`. In particular a cell `x` has **some** support
+> across `β` iff `x ∈ P ∪ Q`, the *cross* of (GR-135)(ii) — so **one round of
+> arc consistency on `H` is exactly the hub-local criterion (GR-135)(i)**.
+>
+> **(iii) The orientation reading, and the two identities.** Orient every
+> `β ∈ H` towards its A-end. Then `a_β = α(head β)` and `b_β = γ(tail β)`, so
+> **at every hub the in-branches share a row and the out-branches share a
+> column**, and for `j ∈ J`, `k ∈ J^c`
+>
+> > `T_j ∩ H = {β ∈ H : α(head β) ≠ j}` ,  `T_k ∩ H = {β ∈ H : γ(tail β) ≠ k}` .
+>
+> The three sets `H ∖ T_j` (`j ∈ J`) are therefore the **in-star classes** of
+> the hub partition `α^{-1}(0) ⊎ α^{-1}(1) ⊎ α^{-1}(2)`, and dually on the
+> B-side.
+>
+> **(iv) The boolean dual, and what the 9-valued cell is FOR.** Fix the end
+> pattern — one bit per **even** branch, the odd ones being forced by the
+> split. Then the A-side and the B-side **decouple**: the residual becomes two
+> *independent* 3-list-colourings, with lists `⋂_{A-ends at u} P_β` and
+> `⋂_{B-ends at u} Q_β` and a `≠` on the odd branches. So the same object is a
+> boolean CSP with **one variable per even branch and one constraint per hub**,
+> of arity `deg_{G°}(u)`. The 9-valued cell is precisely what **couples** the
+> two sides; fixing the orientation uncouples them.
+
+*Proof.* (i) is a reading of (GR-134)(i): each of its three clause shapes
+names `α(u), γ(u), α(w), γ(w)` for the two ends `u, w` of one branch and
+nothing else. (ii): at `ℓ_β = 2`, `|P_β| = A(β) = 1` and `|Q_β| = B(β) = 1`,
+so `P_β = {a_β}`, `Q_β = {b_β}`, and (GR-134)(i)'s even clause
+`(α(u) ∈ P_β ∧ γ(w) ∈ Q_β) ∨ (α(w) ∈ P_β ∧ γ(u) ∈ Q_β)` reads
+`(h(u) ∈ P ∧ h(w) ∈ Q) ∨ (h(w) ∈ P ∧ h(u) ∈ Q)`. Given `x ∈ P` any `y ∈ Q`
+is a support and conversely; given `x ∉ P ∪ Q` neither disjunct can hold at
+`x`. (iii): the A-end `u` of `β` has `α(u) ∈ P_β = {a_β}`, so
+`a_β = α(head β)`, and dually `b_β = γ(tail β)`; then for `j ∈ J`,
+`β ∈ T_j ⟺ j ∈ C_β ⟺ j ∉ D_β ⟺ j ≠ a_β`, which is the first identity, and
+the second is the same computation in `J^c`. Consequently the branches with
+`α(head β) = j` are exactly the in-stars of `α^{-1}(j)`. (iv): once the end
+pattern is fixed, (GR-132)(b) at a hub says the A-list `⋂ P_β` (over the
+branches with an A-end at `u`) contains `α(u)` and the B-list contains
+`γ(u)`, and (GR-132)(c) is a `≠` between two `α`'s or two `γ`'s; no clause
+mentions an `α` and a `γ` together, so the two systems are independent. ∎
+
+**What this settles about the successor's own framing, and it splits.** The
+prep's reading — *"(GR-134) has reduced the state to one 9-valued variable
+per hub with constraints supported on branches, i.e. an edge-constraint CSP
+on `G°`'s hub graph"* — is **confirmed**, and its named escape clause 1
+(*"the constraint may not be binary/edge-supported once branches of length
+`≥ 3` are present"*) is **refuted**: clause (i) holds at every length, and
+the table-driven solver, which is given nothing but one `9 × 9` table per
+branch, reproduces `csp_orient`'s verdict at all 472 680 instances. But the
+*hypergraph* reading is not wrong either — it is the **dual** encoding (iv),
+where the arity is `deg_{G°}(u) = 3` and the variables sit on branches. Both
+descriptions are of the same object, and which one is "the" arity depends on
+which side of the duality one stands. (GR-13)'s NP-completeness of the
+grouped packing is consistent with (iv), where the constraints are ternary,
+and is *not* contradicted by (i): a binary CSP over a 9-element domain is
+NP-hard in general too.
+
+---
+
+### Step G160 — (GR-140): the SYNTHESIS theorem — the packing quantifier is ELIMINABLE, and on this stratum the residual **is** (GR-10)
+
+> **(GR-140)** *((i)–(iv) proven; the reconstruction asserted at
+> **229 320/229 320** feasible pairs and the enumerator cross-oracled against
+> `glist.first_feasible` at **312/312** `n_hub = 4` `D = 0` class shapes,
+> `--synth`)*
+>
+> **(i) The packing is a FUNCTION of the solution.** At every length-2 branch
+> `D_β = {α(head β), γ(tail β)}` ((GR-139)(iii)). So a CSP solution together
+> with its induced orientation **determines** `C_β` at every branch of `H`,
+> and the only surviving freedom in the packing is the length-legal
+> `(P_β, Q_β)` on the **at most `2D + 6 = 6`** branches with `ℓ_β ≥ 3`
+> ((GR-21)(i)).
+>
+> **(ii) The synthesis criterion — CSP-free.** *Some* legal (packing, split)
+> pair is CSP-feasible **iff** there are an orientation of `H`, hub functions
+> `α : hubs → J`, `γ : hubs → J^c`, and for each long branch a length-legal
+> `(P_β, Q_β)` compatible with its end pattern, such that all six
+> `T_j := {β : j ∉ D_β}` are spanning trees of `G°`. In **cycle form**: for
+> each `j ∈ J` every cycle of `H` must carry a branch whose head is
+> `α`-labelled `j`, and for each `k ∈ J^c` every cycle must carry a branch
+> whose tail is `γ`-labelled `k` — *plus* the bookkeeping that completes each
+> of the six forests to a spanning tree using the long branches.
+>
+> **(iii) Two exact reductions.** `J = {0, 1, 2}` may be assumed (the six
+> trees are unlabelled), and **one hub's cell may be pinned** (relabelling
+> inside `J` and inside `J^c` are symmetries of the whole structure). Neither
+> is a cap.
+>
+> **(iv) The bookkeeping, in closed form, and a corollary.** Writing
+> `L := #{β : ℓ_β ≥ 3}` and `t_j := #{long β ∈ T_j}` for `j ∈ J`,
+>
+> > `Σ_{j ∈ J} t_j = 2L − 3` ,  `2|H| = 3(n − 1) − (2L − 3)` ,
+>
+> so each `H ∖ T_j` is a forest with `n − 1 − t_j` edges, i.e. spanning with
+> `t_j + 1` components, which the `t_j` long branches must join. Since
+> `Σ t_j ≥ 0`, **every `D = 0` tight class shape has `L ≥ 2`**, with equality
+> exactly when the excess budget is spent on two `ℓ = 5` branches — the same
+> conclusion (GR-21)'s `n_3 + 2n_4 + 3n_5 = 6` gives directly, reached here
+> from the packing side.
+>
+> **(v) The price, and it is the clause a successor must read first.** By
+> (GR-18)(ii)+(iii), *"some legal pair is CSP-feasible"* is **equivalent to a
+> both-block tree-triple existing at the shape**. So on the `D = 0`, `Λ = ∅`
+> stratum this statement **is (GR-10)**, not a slice below it: a proof is a
+> (GR-10) HIT there, and a shape refuting it is a **g-flank**.
+
+*Proof.* (i) is (GR-139)(iii) read as a definition. (ii, ⇒) is (i) plus the
+observation that `T_j` is a spanning tree by hypothesis. (ii, ⇐): define
+`D_β` as stated. At `ℓ_β = 2`, `|D_β ∩ J| = 1`, so `|C_β ∩ J| = 2 = 3 − A(β)`
+with `A(β) = 1` — the split is length-legal there; at a long branch the
+choice is length-legal by construction, so `J` is a legal split of the
+resulting partition, and by (GR-129)(ii) balance comes with it. Every clause
+of (GR-134)(i) holds by construction: the A-end `u` of an even branch has
+`α(u) = a_β ∈ P_β`, its B-end has `γ(w) = b_β ∈ Q_β`, and the odd branches'
+options are exactly those `branch_options` enumerates. So `(α, γ)` is a CSP
+solution for the pair just built, and the only remaining demand is that the
+six `T_j` be spanning trees. For the cycle form: by (GR-139)(iii),
+`T_j ∩ H = H ∖ A_j` where `A_j` is the in-star class of `α^{-1}(j)`, and a
+forest is exactly a set meeting no cycle, so *`T_j ∩ H` acyclic* ⟺ *every
+cycle of `H` carries a branch headed in `α^{-1}(j)`*; dually on the B-side.
+(iii): permuting the three trees inside `J` (resp. `J^c`) permutes `α` (resp.
+`γ`) at *every* hub simultaneously and carries packings to packings and legal
+splits to legal splits, so composing with the permutation that sends a chosen
+hub's cell to `(0, 3)` is a bijection of solutions. (iv): each length-2
+branch lies in exactly two of the three `J`-trees ((GR-129)(i)), so
+`Σ_{j∈J} |T_j ∩ H| = 2|H|`; and `Σ_{j∈J} |T_j| = 3(n − 1)` with
+`|T_j| = |T_j ∩ H| + t_j`. Substituting `|H| = M − L` and `2M = 3n` gives
+both identities. (v) is (GR-18)(ii)+(iii) verbatim: (ii) turns a both-block
+tree-triple into such a pair, (iii) turns such a pair (with the A-end choice
+and the hub colouring, which is what (GR-132)/(GR-134) package as the CSP)
+back into one. ∎
+
+**Why this is the step that changes the shape of the problem.** (GR-130)
+removed the packing from the *statement*; (GR-140) removes it from the
+*search*. The residual is no longer "quantify over 6-tree partitions and ask
+whether one of them supports a colouring" — it is a question about `H`, an
+orientation of it and two 3-colourings of its vertices, with six branches of
+bookkeeping attached. Every instrument the arc built for the packing side is
+now on the closed side of the line, and what is left is a **placement**
+statement, which is exactly the kind (GR-141) shows counting cannot see.
+
+**The measured half, and it is a gain rather than a check.** `synth_first`
+enumerates hub cells and *builds* the packing; `glist.first_feasible`
+enumerates packings and *tests* them. They agree at 312/312 `n_hub = 4`
+`D = 0` class shapes — an **independent re-derivation of (GR-136)(iv)**,
+through the synthesis direction — at **8 903** search nodes against
+**84 898**, a factor of 9.5. On the `n_hub = 6` half, where
+`gpack.all_packings` is out of reach and (GR-138)'s successor 2 records
+**2 623 pure-hub shapes as undecided**, `synth_first` decides the first
+**150** of them, **every one POSITIVELY**, with a worst node count of
+**31 926** against a 400 000 cap — so the cap never bound and each decision
+inside the slice is exhaustive for its shape. That is progress on successor
+2, not a closure of it: the slice is a deterministic prefix, and 2 473
+shapes are untouched.
+
+---
+
+### Step G161 — (GR-141): the two option-board filters — the **counting handle is DEAD**, and the reduced object passes the ground-set test
+
+> **(GR-141)** *((i) proven, asserted at 4 910/4 910 `D = 0` class shapes at
+> `n_hub ∈ {4, 6}`; (ii) measured exhaustively over (GR-132)'s population,
+> `--filter`)*
+>
+> **(i) Every counting identity in sight is an identity in the SHAPE alone.**
+> `Σ_β (ℓ_β − 2) = 6`, `2M = 3n`, `Σ_β (6 − ℓ_β) = 6(n − 1)`,
+> `2|H| = 3(n − 1) − (2L − 3)` and `Σ_{j∈J} t_j = 2L − 3` hold with equality
+> at every `D = 0` tight class shape. None of them mentions the packing, so
+> each takes the *same value* on a feasible and an infeasible legal pair.
+>
+> **(ii) The hub-local degree profile does not determine feasibility.** Group
+> the 472 680 legal pairs by the whole hub-by-hub profile
+>
+> > `u ↦ ( sorted (deg_{T_j}(u))_{j ∈ J} , sorted (deg_{T_k}(u))_{k ∈ J^c} )` ,
+>
+> which is everything a discharging rule reading hub-local tree degrees can
+> see (sorted inside each block because relabelling the trees inside a block
+> is a symmetry). There are **227** classes; **96** of them contain **both** a
+> feasible and an infeasible pair, covering **335 520** pairs — 71 % of the
+> population. One witness, pinned: at `K4(2, 2, 2, 3, 4, 5)`, profile
+> `(((1,1,3),(1,1,2)), ((1,1,2),(1,1,2)), ((1,2,3),(1,2,3)), ((1,1,1),(1,1,2)))`,
+> the pairs
+>
+> > feasible: packing `[(1,4,5), (1,3,5), (1,3,5), (0,3,5), (0,2,3), (0,1,2)]`, split `(2,3,5)` ;
+> > infeasible: packing `[(2,3,5), (1,3,5), (1,3,5), (0,3,5), (0,1,4), (0,1,2)]`, split `(2,3,5)` .
+>
+> **(iii) Verdict on the two filters.** **Counting saturation** (strategy
+> §2.5, reinforced in both directions by §(K-out) (OC-3)/(OC-37)) **kills**
+> the discharging handle: the leaf-slot supply is `3n` against `≤ n` needed
+> ((GR-136)(ii)), the constraint identities are exact, and the local profile
+> is blind — a counting argument here **cannot fail**, and an argument that
+> cannot fail cannot decide. The **growing-ground-set** test (strategy §4.6)
+> is **passed** by (GR-140)'s object: its index set is `V(G°)` together with
+> `E(H)`, both derived from `E(G)` by the branch decomposition, and the
+> per-hub domain is the *fixed* 9-element grid `J × J^c`.
+
+*Proof of (i).* Each identity is (GR-21) or (GR-140)(iv) re-read; the driver
+asserts them per shape rather than quoting them. ∎
+
+**Why (ii) is the sharp form of the filter, and not a restatement of it.**
+§2.5's saturation argument is about *count-expressible invariants of the
+shape*; (ii) is one level finer — it fixes the shape **and** the entire
+hub-local tree-degree data and still finds both verdicts. So the filter bites
+not only the invariants §2.5 already ruled out but every **discharging**
+scheme that assigns a charge to each hub from what that hub can see of the
+packing. This is exactly the successor prep's own escape clause 2 — *"a
+counting argument that cannot fail is usually a counting argument that cannot
+help; check the filter before investing in handle (i)"* — **vindicated**, and
+it is the reason handle (i) is not worked further here.
+
+---
+
+### Step G162 — (GR-142): the head family is **NOT a matroid**, so Edmonds does not reach the hub side
+
+> **(GR-142)** *(proven by an exhibited witness; every clause asserted,
+> `--matroid`)* Fix an orientation of `H` and call a hub set `X` **head-
+> independent** when `{β ∈ H : head β ∈ X}` is a forest. The family of
+> head-independent sets is **not** the independent-set family of a matroid:
+> the exchange axiom fails, at an orientation **induced by a CSP-feasible
+> legal pair** of a genuine `D = 0`, `Λ = ∅`, `n_hub = 6` class shape.
+>
+> Recorded witness. `G°` with branches
+> `[(0,4), (0,5), (0,5), (1,3), (1,4), (1,5), (2,3), (2,3), (2,4)]` and
+> lengths `[2, 5, 2, 2, 2, 2, 5, 2, 2]` (so `L = 2`, `Σ(ℓ−2) = 6`); the
+> packing `[(1,4,5,7,8), (0,2,3,4,8), (0,2,3,5,7), (0,2,3,7,8), (2,3,4,5,6),
+> (0,4,5,7,8)]` with split `(0,1,2)`, whose CSP solution is
+> `α = (0,0,0,1,2,1)`, `γ = (3,3,4,5,4,5)` and whose induced orientation is
+> `0: 4→0`, `2: 5→0`, `3: 3→1`, `4: 1→4`, `5: 1→5`, `7: 2→3`, `8: 2→4`. Then
+> `X = {0, 1, 4}` and `Y = {0, 1, 3, 5}` are both head-independent,
+> `|X| = 3 < 4 = |Y|`, and **both** extensions are dependent: `X + 3` carries
+> the cycle `1–3–2–4–1` and `X + 5` carries `0–4–1–5–0`.
+>
+> **Consequence.** By (GR-139)(iii) the `J`-side of the packing **is** this
+> family: `T_j ∩ H` is the complement of the in-star class of `α^{-1}(j)`, so
+> the demand *"partition the hubs into three parts, any two of which are
+> together head-independent"* is a partition problem over a **non-matroid**
+> family. Edmonds' partition theorem and matroid union — exactly what
+> (GR-130) used on the **branch** side, and exactly the landed Phase-12/13/14
+> subsystem (`Matroid/Constructions/{Submodular,Union}.lean`) — therefore do
+> **not** apply on the **hub** side.
+
+**This is (GR-10)'s own objection, one level down and now exhibited.**
+*Step G7*'s *"Why this is not yet Edmonds"* paragraph makes the same point
+about *co-independence of grouped classes* with an abstract `U_{2,4}`
+example. (GR-142) is the same failure in the object this direction actually
+has to solve, with a witness that a real solution produces — which matters,
+because the family is defined relative to an orientation and an abstract
+orientation would leave open whether the failure is reachable.
+
+**Scope, stated so it is not over-read.** This is a negative about the
+**head map** only. (GR-138)'s successor 3 — *does every 6-tree-partition-
+carrying cubic multigraph admit one in which a prescribed set of hubs are
+each a leaf of some part?* — is stated on the **branches**, and nothing here
+touches it; it stays open, and it stays the one place the landed matroid
+machinery might still reach.
+
+---
+
+### Step G163 — (GR-143): the obstruction has **THREE tiers**, and (GR-132)'s population can present only two
+
+> **(GR-143)** *((i)/(ii) measured exhaustively over (GR-132)'s population;
+> (iii) an exhibited pinned witness; (iv) a seeded capped census,
+> `--glob`/`--tier`)*
+>
+> **(i) Tier 1 — hub-local.** **44 640** of the 243 360 infeasible legal
+> pairs (18 %) already fail (GR-135) at a single hub.
+>
+> **(ii) Tier 2 — propagation-visible, and it is ALL of (GR-136)(iii)'s
+> 82 %.** Arc consistency on the binary CSP of (GR-139)(i) — iterate
+> `dom(u) ← {x ∈ dom(u) : x has a support in dom(w)}` over every branch until
+> stable — **decides** the residual on that population: the closure is
+> non-empty at every hub **iff** the CSP is feasible, at **472 680/472 680**
+> legal pairs, 0 disagreements, in at most **5** rounds. So every one of the
+> 198 720 "globally infeasible" pairs is visible to **local propagation**.
+> Consistently, the minimal infeasible core the greedy shrink returns spans a
+> **cycle** of `G°` at **198 720/198 720** — never a forest — with sizes
+> `3 : 17 280`, `4 : 181 440`.
+>
+> **(iii) Tier 3 — propagation-INVISIBLE, first realized at `n_hub = 6`.**
+> Recorded witness: `G°` with branches
+> `[(0,4), (0,5), (0,5), (1,2), (1,3), (1,5), (2,3), (2,4), (3,4)]`, lengths
+> `[2, 2, 5, 2, 3, 2, 4, 2, 2]` (a `D = 0`, `Λ = ∅` class shape), packing
+> `[(0,1,3,4,7), (0,2,5,7,8), (0,1,3,6,7), (0,4,5,7,8), (1,3,5,6,8),
+> (1,3,4,5,8)]`, split `(0,3,4)`. It is **hub-locally feasible at all six
+> hubs**, **arc-consistent** (2 rounds, surviving domain sizes
+> `2,2,2,3,2,2`), and **infeasible** — asserted through `csp_orient`, the
+> boolean dual of (GR-139)(iv) and `gpack.csp_witness` alike.
+>
+> **(iv) The support consequence, and it corrects a landed reading.**
+> (GR-132)'s population — the 12 census shapes with `m ≤ 6` and `Λ = ∅`, at
+> `n_hub ∈ {2, 4}` — **cannot present tier 3**, since arc consistency decides
+> it there at 472 680/472 680. So (GR-136)(iii)'s **82 % measures tier 2**,
+> and the genuinely global obstruction the successor is named for **first
+> exists one hub-count up**. In a seeded capped sweep of the first 120
+> `n_hub = 6` class shapes (≤ 30 partitions each, 60 000-node budget),
+> **2 of 2 954** legal pairs are tier 3 — a **lower bound** on the rate, not
+> the rate.
+
+**E1 guard, and it is the (GR-137) near-miss fired deliberately.** A tier-3
+witness is a statement about a **pair**, never about a shape. The same shape
+carries a CSP-feasible legal pair, exhibited by `synth_first` in **339**
+nodes: packing `[(0,1,4,7,8), (0,3,5,6,7), (1,3,4,5,8), (2,3,5,7,8),
+(0,1,4,5,6), (0,1,3,7,8)]`, split `(0,1,2)`, `α = (0,0,0,1,2,1)`,
+`γ = (3,3,4,5,4,5)`. So **no g-flank is exhibited or claimed**, and the
+witness does not weaken (GR-136)(iv).
+
+**What "global" should now be taken to mean, said once.** (GR-136)(iii) is
+correct as stated — those 198 720 pairs are not decided by any *hub-local*
+test — but "global" was doing more work than the measurement supported. The
+honest three-way split is *hub-local* / *propagation-visible* /
+*propagation-invisible*, and the third is the one a proof has to charge
+something genuinely global against. That the whole of the landed 82 % sits in
+the middle tier is a **support** finding of exactly the (GR-137) kind, one
+level further out: the population that produced the arc's headline figure is
+blind to the phenomenon the figure was taken to describe.
+
+**Whether a forest core can exist at all is open.** The cores measured here
+all span a cycle, at both hub counts (198 720/198 720 and 494/494), but the
+propagation argument does not forbid a *star* core in principle — arc
+consistency can empty a domain through a subtree — and the greedy shrink
+returns one minimal core, not all of them. So this is a measured regularity,
+not a theorem, and it is stated as one.
+
+---
+
+### Step G164 — (GR-144): where this leaves (GR-10), (GR-15) and `hK` — the price, the caveats, the hand-off
+
+**The verdict, in the dispatch's own three words.** The global `(α, γ)` CSP
+at `D = 0` is **reduced to a named strictly-smaller condition** — not proved,
+not refuted. What is now a **theorem**: the two dual normal forms and the two
+tree identities ((GR-139)); the synthesis theorem, its cycle form, its two
+exact reductions and the bookkeeping identities, including `L ≥ 2` from the
+packing side ((GR-140)(i)–(iv)); and the saturation identities ((GR-141)(i)).
+What is **refuted**: that a counting or discharging argument over hub-local
+data can decide the residual ((GR-141)(ii)), and that the head side is a
+matroid-union problem ((GR-142)). What is **corrected**: the reading that
+(GR-136)(iii)'s 82 % is the global obstruction — it is the propagation-
+visible tier, and the genuinely global one first exists at `n_hub = 6`
+((GR-143)). What is **open**: the synthesis criterion (GR-140)(ii) itself.
+
+**(GR-10) and (GR-15) are unchanged, and no gap-map status word moves.** But
+the *price* of the successor is now named rather than assumed:
+(GR-140)(v) — on the `D = 0`, `Λ = ∅` stratum *"some legal pair is
+CSP-feasible"* **is** (GR-10), by (GR-18)(ii)+(iii). A successor should read
+that before pricing the item as a slice below (GR-10): a proof there is a
+(GR-10) HIT on that stratum, and a refuting shape is a **g-flank**, which is
+E1's own object. Nothing above claims either.
+
+**The `Λ ≠ ∅` caveat, restated verbatim in force.** Everything in *Steps
+G159–G163* is at `Λ = ∅`, inherited from (GR-132) through (GR-134). With
+`Λ ≠ ∅`, (GR-16)(iii) lets A-classes merge along `Γ_A`-paths of `Λ`,
+`|K_A(β)| < A(β)` becomes possible, and (GR-16)(iv) records that merging
+makes `dim W₊ > 0` outright — so the clause gains a second, `Λ`-shaped
+conjunct nobody has written, and **(GR-134)'s class/list bijection is the
+first thing that breaks**. `Λ ≠ ∅` is not closed here and is not this
+direction's to close.
+
+**What a (GR-15) HIT would still buy — unchanged, quoted rather than
+re-derived.** (GR-133)/(GR-138) are the source: a (GR-15) HIT discharges `hK`
+on the **tight** stratum (`index(G) = 0` **and** `hnoRigid`); the `def > 0`
+habitat, `C11` included, is **owned** by `§(K-res)` (RS-5)/(RS-6), which
+routes it to the **escape route** — owned, but **not free**. And
+`Pencil-strategy.md` §2.5 is a **negative** result (at tight shapes the count
+*forces* `dim R_a = 1`); it supplies freeness nowhere, and nothing above
+cites it as if it did.
+
+**The named successors, in this direction's own ranking.**
+1. **The synthesis criterion (GR-140)(ii), attacked as a graph statement.**
+   The CSP is gone: what is left is *orient `H` and 3-colour the hubs twice
+   so that every cycle of `H` carries a head of each `α`-colour and a tail of
+   each `γ`-colour*, plus ≤ 6 long branches of bookkeeping. `H` is simple and
+   triangle-free ((GR-22)(i) + girth 7), so its shortest cycles are the
+   `(2,2,2,2)` circuits (GR-22)(iv) already caps at `¾ n_hub`, pairwise
+   sharing at most one branch — which is the first place to look, since a
+   4-cycle needs at most one source and at most one sink to have three heads
+   at all.
+2. **`n_hub = 6`, now an engineering job.** `synth_first` decided 150/150
+   pure-hub shapes positively with the cap never binding; the remaining 2 473
+   of (GR-137)(iv)'s 2 623 need only compute time, at a per-shape node cost
+   bounded by the measured 31 926.
+3. **Tier 3's own strength.** Arc consistency decides at `n_hub ≤ 4` and
+   fails at `n_hub = 6`; whether *path* consistency (or bounded width 2)
+   decides at `n_hub = 6` is untouched, and it is the cheapest question that
+   would say how global "global" really is.
+4. **Leaf-covering on the branches** — (GR-138)'s successor 3, untouched by
+   (GR-142) and still the one place the landed matroid machinery might reach.
+
+**Confidence verdict (Steps G159–G164).**
+
+| | claim | standing |
+|---|---|---|
+| **(GR-139)(i)/(ii)/(iii)** | the binary/cell normal form, the closed-form relation, the two tree identities | **proven**; cross-oracled by a table-driven solver at 472 680/472 680 pairs and the identities asserted at 1 375 920/1 375 920 (tree, solution) instances |
+| **(GR-139)(iv)** | the boolean dual and the A/B decoupling | **proven**; the dual solver agrees at 472 680/472 680 |
+| **(GR-140)(i)–(iv)** | the synthesis theorem, its cycle form, the two reductions, the bookkeeping | **proven**; the reconstruction asserted at 229 320/229 320 feasible pairs, the enumerator cross-oracled at 312/312 shapes |
+| **(GR-140)(v)** | the residual **is** (GR-10) on this stratum | **proven** from (GR-18)(ii)+(iii) — a reading of a landed theorem, not a new measurement |
+| **(GR-141)(i)** | the saturation identities | **proven**; asserted at 4 910/4 910 `D = 0` class shapes |
+| **(GR-141)(ii)** | hub-local degree profiles do not determine feasibility | **measured, exhaustive** over (GR-132)'s population — 96 of 227 classes, one witness pinned |
+| **(GR-142)** | head-independence is not a matroid | **proven by witness**, at a realized orientation; every clause asserted |
+| **(GR-143)(i)/(ii)** | the three-way split; arc consistency decides that population | **measured, exhaustive** over those 12 shapes — a statement about `n_hub ∈ {2, 4}` |
+| **(GR-143)(iii)** | a propagation-invisible pair exists at `n_hub = 6` | **exhibited**; a witness, so no cap applies to the existence claim |
+| **(GR-143)(iv)** | the rate, and the population's blindness | rate **not found under cap** (2/2 954, a lower bound); the blindness follows from (ii) |
+| the cores span a cycle | | **measured**, 198 720/198 720 and 494/494; **not** a theorem — a forest core is not excluded by any argument here |
+| **(GR-10)**, **(GR-15)**, `hK` | | **not attempted**; no rank, no field, no placement is computed anywhere in `gglob.py` |
+
+**What would change this.** (a) (GR-139)/(GR-140) are `Λ = ∅` statements and
+inherit (GR-132)'s caveat; a successor at `Λ ≠ ∅` must add the merging
+conjunct **before** using either. (b) (GR-143)(ii)'s arc-consistency verdict
+is a statement about 12 shapes at `n_hub ∈ {2,4}` and is **false** one hub
+count up — do not carry it forward as a property of the residual. (c)
+(GR-142) refutes the matroid reading of the **head** map; a different
+encoding of the same demand could still be matroidal, and the branch-side
+question is untouched. (d) An error in (GR-18)(i)'s *"each part is a
+**spanning** tree"* would void (GR-134)(ii) and with it the whole in-star
+reading of (GR-139)(iii) — that remains the single fact the normal form rests
+on.
+
+**TERMINATION check (E1 / E2 / E3) — reported, never fired.** Read against
+the **arc's** target `PencilPair K 3 G`, per the corrected reading of
+`61e046a6`; E3 in the two-conjunct text. **E1 is a live, literal reading
+here** — `§(K-grid)` is exactly its habitat, and this direction searched a
+strictly wider stratum than GLIST did (`n_hub = 4` exhaustively, plus 150
+`n_hub = 6` pure-hub shapes). It is decided **negative**: every shape decided
+carries a CSP-feasible legal pair, 312/312 and 150/150, and the one object
+that could be misread as a flank — (GR-143)(iii)'s propagation-invisible
+witness — is **refuted as such in the same step** by an exhibited feasible
+pair at the same shape. No g-flank was exhibited or found, and none is
+claimed. **E2 does not fire**: the target is not refuted, and the residual
+(GR-140)(ii) names is dispatchable (four successors above). **E3 does not
+fire**: the arc's target is not proven — (GR-139)–(GR-143) prove named
+sub-statements of (GR-18)(iii)'s residual, and (GR-10)/(GR-15) are unchanged
+in status.
+
+**Verification (F13/F11).** Every figure above is produced by a mode of the
+shipped `notes/scripts/w4/gglob.py`; nothing is quoted from a transcript.
+`--validate` is ~650 s and does **not** fit a 600 s foreground budget
+(`notes/scripts/README.md`, *Two invocations do not fit*), so the landing
+gate ran **two** foreground invocations:
+
+```
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gglob.py --form --synth                   # 339 s
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gglob.py --filter --matroid --glob --tier # 305 s
+```
+
+with the individual legs measured at `--form` 140 s, `--synth` 195 s,
+`--filter` 76 s, `--matroid` 3 s, `--glob` 123 s, `--tier` 110 s.
+
+**Which mode tests which sentence (F11), with the sampler's support named.**
+
+| claim | mode | what asserts *that sentence*, and over what |
+|---|---|---|
+| (GR-139)(i) | `--form` | a **table-driven** solver, given one `9 × 9` relation per branch and nothing else, is compared with `csp_orient` at **every** 6-tree partition × **every** legal split of **every** one of the 12 shapes — 472 680 instances, both quantifiers exhaustive |
+| (GR-139)(ii) | `--form` | the *mixed-cell* identity asserted per branch at every feasible pair — 559 080 instances |
+| (GR-139)(iii) | `--form` | `T_j ∩ H` compared with the head class (`j ∈ J`) and the tail class (`j ∈ J^c`) at every tree of every solution — 1 375 920 instances |
+| (GR-139)(iv) | `--form` | the boolean dual (bits outside, two decoupled list-colourings inside) compared with `csp_orient` at all 472 680 |
+| (GR-140)(i) | `--synth` | the packing **rebuilt** from `(α, γ)` and asserted *identical* to the one it came from, at 229 320/229 320 feasible pairs |
+| (GR-140)(ii)/(iii) | `--synth` | `synth_first` (hub cells, `J` fixed, one cell pinned) vs `first_feasible` (packings) at **every** `n_hub = 4` `D = 0` class shape; each synthesized pair re-asserted a legal, CSP-feasible packing |
+| (GR-140)(iv) | `--filter` | the identities asserted per shape at 4 910 `D = 0` class shapes |
+| (GR-140)(v) | — | **proven** from (GR-18)(ii)+(iii); no mode measures it |
+| (GR-141)(ii) | `--filter` | the profile computed at **every** legal pair, so the 96-of-227 split is a partition of the whole population, not a sample |
+| (GR-142) | `--matroid` | the witness's every clause asserted — both sets head-independent, sizes strict, both extensions dependent — at an orientation first *derived from a solution* `synth_first` produced |
+| (GR-143)(i)/(ii) | `--glob` | arc consistency vs `csp_orient` at every legal pair; the cores computed for every hub-locally-feasible infeasible pair |
+| (GR-143)(iii) | `--tier` | the pinned witness re-verified end to end: class shape, packing, split legality, (GR-135) at every hub, AC closure non-empty, and infeasibility through three independent solvers |
+| (GR-143)(iv) | `--tier` | a **seeded capped** sweep; the rate is reported as a lower bound |
+| the E1 guard | `--tier` | `synth_first` exhibits a feasible pair at the witness's own shape |
+| (GR-10), (GR-15), `dim Z` | — | **not attempted**; no mode computes a rank |
+
+**Caps and denominators (F11).** `--form`, `--filter` and `--glob` are
+exhaustive over (GR-132)'s population — 12 census shapes, `m ≤ 6`, `Λ = ∅`,
+`n_hub ∈ {2, 4}` — over **all** 6-tree partitions and **all** legal splits,
+and say **nothing** about `n_hub ≥ 6`; (GR-143)(iii) is precisely the
+statement that this matters. `--synth`'s `n_hub = 4` leg is exhaustive over
+that whole `D = 0` stratum (312 class shapes); its `n_hub = 6` leg is a
+**deterministic prefix** of 150 pure-hub shapes out of 2 623, with the node
+cap never reached inside the prefix. `--tier`'s census is a **seeded** sweep
+of the first 120 `n_hub = 6` class shapes with ≤ 30 partitions each under a
+60 000-node budget — a *lower bound* on the tier-3 rate. `--matroid` reports
+a **witness**, so its search cap is irrelevant to what is claimed. Nothing
+here is decided at `n_hub ≥ 8`.
+
+**Scratch probes (README's standing rule).** The derivation ran through four
+throwaway probes: an arc-consistency check at `n_hub ≤ 4`, the same at
+`n_hub = 6` (which produced (GR-143)(iii)'s witness), a rate probe for
+`synth_first` on the `n_hub = 6` stratum, and a lookup of the witness shape's
+index. **Every figure they produced is reproduced by a shipped mode above** —
+`--glob` prints the `n_hub ≤ 4` arc-consistency table, `--tier` the
+`n_hub = 6` census and the pinned witness, `--synth` the `n_hub = 6` slice
+and its node costs — so none is retained, and no probe figure is quoted
+anywhere in these steps.
+
+---
+
+---
+
 ## §(K-res) — the residual-habitat transport audit (direction RESGRID, 2026-08-28): the GEOMETRY of §(K-grid) transports verbatim and the residual is (GR-15)'s criterion with a WIDENED QUANTIFIER — proven per-shape at all three named (K-res) shapes — while the tight BOOKKEEPING ((GR-16)(iv) squareness, (GR-17)(d)'s binding list, (GR-18)(i)'s 6-tree partition, and the whole (GR-21)+ uniformity program) does NOT; the deficient fringe is REFUTED with a mechanism at θ(2,3,7)
 
 **What this section is.** The (K-res) *scoping slice* (spec:
