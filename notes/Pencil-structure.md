@@ -1,8 +1,10 @@
 # PENCIL doc-split / discipline-distillation — structural rounds (work log)
 
-**Status: ALL THREE ROUNDS COMPLETE — first round slices 1–3 LANDED 2026-08-19;
+**Status: ALL FOUR ROUNDS COMPLETE — first round slices 1–3 LANDED 2026-08-19;
 second round slices 4–5 LANDED (slice 4 2026-08-19, slice 5 2026-08-20); third
-round, the phase-note compression pass, **slice 6 LANDED 2026-08-26**.
+round, the phase-note compression pass, **slice 6 LANDED 2026-08-26**; fourth
+round, **slice 7 LANDED 2026-09-02** — `ROADMAP.md`'s Phase-39 Status cell
+re-thinned 10 109 → 623 characters, the last accreting session-start surface.
 Nothing structural is queued; the phase's next concrete task is the kernel-(K)
 research pick (`notes/Phase39.md` *Hand-off*).** **Slice 1** —
 §(K-grid) split out of `notes/Pencil-informal.md` into its own file,
@@ -35,9 +37,10 @@ PAID**), including the adjudicated `closure.Gauss` → `exactcore` move: `meet` 
 `lambda`, six `zneq` devices → `ocon`, seven `aglu` devices → `gridcol`,
 `tree_triple` → `grid`, `Gauss` → `exactcore`, each re-exported from its old
 home so no consumer changed and **no recorded figure moved** (18 driver modes
-re-run; the round's write-up is in that file's *Harness debt*). **Next: nothing
-here — the phase's next concrete task is the kernel-(K) research pick
-(`notes/Phase39.md` *Hand-off*, "Queued behind the wave").**
+re-run; the round's write-up is in that file's *Harness debt*). **Slice 7, LANDED 2026-09-02**, is a fourth round of one commit,
+coordinator-authored at a session start on the user's call; record in *Slice 7*
+below. **Next: nothing here — the phase's next concrete task is the kernel-(K)
+research pick (`notes/Phase39.md` *Hand-off*).**
 
 ## The relocated reference blocks — the index `notes/Phase39.md` points at
 
@@ -488,6 +491,52 @@ all live. The watch item is recorded in `Phase39.md` *Blockers* — ~10 landings
 re-breach it at the observed per-commit rate, and the gate is the landing
 checklist's step 5 plus a one-line *Decisions made* entry per landing.
 
+## Slice 7 — the ROADMAP Status cell — Decisions made (LANDED 2026-09-02)
+
+**What fired it.** A coordinator session-start read, user-authorized as its own
+commit. `ROADMAP.md`'s Phase-39 Status cell had reached **10 109 characters** —
+a ~2 500-word per-landing narrative running BBASE (62) through BOPEN (72) plus
+the four W4 directions, on a table whose own rule, printed four lines below it,
+reads *"each cell is a status marker plus at most one short scope clause and a
+`(see notes/PhaseN.md)` pointer — **never** a phase summary"*. It is read at
+every session start by every agent that follows CLAUDE.md's reading order, and
+the `/coordinate-phase` setup step now tells coordinators to skip the rest of
+the file — so this cell was the single largest un-skippable ROADMAP cost.
+
+**How it got there is the generalizable part.** No landing wrote it; *each*
+landing appended its own paragraph, correctly, to a surface nobody re-read
+whole. This is F17's shape (a status surface going stale under section-scoped
+edits) with the opposite symptom — not staleness but **accretion** — and no
+gate can see it: `check-phase-note.py` does not read `ROADMAP.md`, and a cell
+is one line, so `git show --stat` and a per-hunk diff read show a two-line
+change however large the line grows.
+
+**The deletion was verified non-lossy before it was made**, not after. The cell
+carried ten distinctive figures; each was grepped for a canonical home first.
+Eight resolved immediately. The two that did not — `907 out of 907` and
+`32-vertex` — resolved under their canonical spellings (`907/907` in
+`Pencil-fanout.md`, `Pencil-strategy.md` and this file; `T32` / `|V| = 32` in
+`Pencil-W4-informal.md` and `Pencil-fanout.md`), which is the reason the check
+is a **grep for the fact, not for the string**. CLAUDE.md's *extract, don't
+delete* rule is satisfied by the extraction having already happened: every
+clause cut was a third or fourth copy of text `notes/Pencil-fanout.md` and this
+file's blocks 8/9/11/12/13 already own.
+
+**Result: 10 109 → 623 characters** (−94 %), the cell now carrying exactly the
+status marker, one scope clause, the landed-direction count §39 delegates to
+it, the standing result, and three pointers. Nothing moved into §39: that
+section states it *"deliberately does not track that arc's running state"*, and
+the cut content **is** that running state.
+
+**One drift fixed in passing.** §39 called the arc a *"kernel-(K) research
+arc"*; four of its 80 directions (WTRI/WELOC/WPAIR/WGROW) are W4 and closed
+W4's informal side. Reworded to name both lanes.
+
+**The watch item.** The cell will re-accrete by the same mechanism unless
+landings stop appending to it. The rule that binds: a landing updates the cell's
+**count** and, if it moved, the standing result — never adds a clause. Re-measure
+`awk` character length on the Phase-39 row at the next doc round.
+
 ## Follow-up items (not this round's job)
 
 - Recompute the *Section index*'s §(K-frame)/§(K-chart)/§(K-mech) line
@@ -538,6 +587,13 @@ not-yet-commissioned kind of work — flagging it rather than improvising it.
 items paid in one pass, `closure.Gauss` → `exactcore` included, with no
 recorded figure moved. ROADMAP's doc-split row carries this slice's record;
 this log's *Status* header is the verdict.
+
+**Slice 7, the ROADMAP Status-cell re-thin, LANDED 2026-09-02** — a fourth
+round of one coordinator-authored commit, taken at a session start on the user's
+explicit call rather than folded into a landing. It closes the last accreting
+session-start surface: `ROADMAP.md`'s Phase-39 cell, 10 109 → 623 characters.
+Record and the non-lossiness check in *Slice 7* above; the binding rule going
+forward is that a landing updates the cell's **count**, never adds a clause.
 
 **Slice 6, the phase-note compression pass, LANDED 2026-08-26** — and it
 **discharges the item slice 4's hand-off above declined to improvise** (*"a
