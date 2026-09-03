@@ -44,8 +44,8 @@ research pick (`notes/Phase39.md` *Hand-off*).**
 
 ## The relocated reference blocks — the index `notes/Phase39.md` points at
 
-**THIRTEEN blocks, relocated verbatim from `notes/Phase39.md` between 2026-08-27 and
-2026-09-02**, each because it is **stable reference, not status** — it changes only
+**FOURTEEN blocks, relocated verbatim from `notes/Phase39.md` between 2026-08-27 and
+2026-09-03**, each because it is **stable reference, not status** — it changes only
 when something is *added* to it, never when a gap's status moves. (Blocks 8 and 9 are the
 two exceptions to the "never when a gap's status moves" reading, and they are
 deliberate ones: each is the *per-landing attribution* of a thread whose status the
@@ -71,6 +71,7 @@ cap was ever bumped and nothing was deleted**; the note keeps a pointer to each.
 | 11 | *The `hK` lane — per-landing detail* | 2026-09-02 | which of GPACK/GLIST proved which sub-clause of (GR-18)(iii)'s split, with its labels, plus (GR-133)'s price; relocated at the GLIST landing, the lane's second result in two directions |
 | 12 | *The escape route (§(K-out)) — per-landing detail* | 2026-09-02 | OWALL's per-landing detail on the escape route's largest live row: the two-direction-network model, the three confinement certificates, and what (OC-44)(iii) reduced to; relocated at the OWALL landing, so the lane's narrative never entered the note |
 | 13 | *The 2026-09-02 round — per-landing status clauses* | 2026-09-02 | the one-clause-per-direction status paragraph for ordinals 66–71 (GPACK, BSIGMA, GLIST, BPROPER, OWALL, GGLOB), whose *detail* blocks 8/11/12 already own; relocated at the GGLOB landing, when a sixth clause would have pushed the note past its line cap |
+| 14 | *The 2026-09-03 liveness round — what SWEEP C moved out of the note* | 2026-09-03 | the three failed replacement picks that fired the round; the item-0 sub-item **re-lettering hazard**; carried item 1's *why it is carried* rationale; the `hK` item's 2026-07-30 standing adjudication and its two literature-hunt MISSes |
 
 The one line that stays in `notes/Phase39.md` rather than moving here: the **State of
 (K)** gap map in `notes/Pencil-informal.md` is the phase's status object, authoritative
@@ -1087,9 +1088,19 @@ bullet, the phase note wins.
 
 **Relocated verbatim from `notes/Phase39.md`'s *Hand-off* ranked list, 2026-09-02**, at the
 BSIGMA landing, when the note stood at 587/580 lines. Same disposition as blocks 8 and 9: these
-are the lane's **ranked-but-unmoved** candidates — none has changed in fifteen landings, and
+are the lane's **ranked-but-unmoved** candidates — **unmoved since BSIGMA (ordinal 67)**, and
 the note keeps items 0 and 1, which are the live ones. **Reference, not status**; if any of
 these is picked, its entry moves back into the note as the active item.
+
+**SWEEP C, 2026-09-03 — this block was re-checked entry by entry against the `(K-bare)`
+gap-map row, and the header's own counter was the stalest thing in it.** It read *"none has
+changed in **fifteen** landings"* while the identical sentence in `notes/Phase39.md` read
+*"**sixteen**"* — two copies of one snapshot, hand-incremented by whoever remembered, drifting
+apart. Both now read **"unmoved since BSIGMA (ordinal 67)"**: an ordinal is checkable against
+`notes/Pencil-fanout.md`'s headings and **decays visibly** instead of silently. That is the
+round's generalizable rule — **name the last ordinal, never a count** — and it applies to every
+monotone counter on a recommendation surface. **No entry's STATUS moved**; what moved is
+recorded per entry below.
 
 **The list, as it stood at the BSIGMA landing (`e53cb9b4`…this commit):**
 
@@ -1098,21 +1109,74 @@ these is picked, its entry moves back into the note as the active item.
    second functional from the clean end. Would retire the (BE-46)/(BE-52)
    per-shape witnesses behind the *sharpened-at-one-end* route — (β)'s largest
    remaining per-shape component ((BE-58)(iv)).
+   **Kill condition:** that per-shape half discharged class-level. **Decided by:**
+   gap map `(K-bare)` units u12/u25. **Status LIVE, unmoved — but its VALUE was
+   RAISED at BDOUBLE (ordinal 64), one landing before this snapshot**, and the
+   snapshot never said so: (BE-102)(iii) reads (BE-46)(iv) and (BE-45)(iv) at
+   their statements and finds *"both citations are used in their **non-theorem**
+   direction"*, (BE-46)(iv) saying plainly that *"the class-level statement over
+   all pieces"* is **not** discharged. So the witnesses this entry proposes to
+   retire are now known to be load-bearing in exactly their weak direction.
 3. **(S1)/(S2), the two side conditions of (BE-57)** — hypotheses on the middle,
    **vacuous at every drawn piece but NOT theorems** ((BE-57)(iv)); the window's
    class theorem carries them until one is discharged. **Open and ranked, not
-   dropped.**
+   dropped.** **Kill condition:** either window condition proved or refuted.
+   **Decided by:** the `(K-bare)` row's *status* cell, which names them in as many
+   words — *"(β) at the window MODULO (BE-57)(iv)'s two window conditions"*.
+   **LIVE, unmoved** (re-checked 2026-09-03); this is the one entry whose deciding
+   row states it verbatim. *(Do not confuse with the `(K-slide)/(S1)` gap-map row —
+   a different (S1), on the `hK` side. Searching the row index for "(S1)" lands
+   on the wrong row.)*
 4. BTWOCUT's successor (2), the **bundle-construction proof** — (BE-29)(ii) from rung
-   to theorem, reaching `DZ` / `spider(5,5,5)+c`. Skipped four times.
+   to theorem, reaching `DZ` / `spider(5,5,5)+c`. **Skipped at every direction since
+   BTWOCUT (ordinal 44)** — it read *"skipped four times"* until 2026-09-03, another
+   hand-kept integer; the workbook's own later pass had already re-run the tally
+   (*"unchanged, still skipped"*). **Kill condition:** a proof that the bundle /
+   concurrent-plane construction attains wherever the generic-plane ladder does not,
+   turning (BE-29)(ii)'s **rung** (40/40, both sides attaining) into a theorem.
+   **Decided by:** gap map `(K-bare)` u6 — the 2-cut composition lemma is still the
+   sole open item. **LIVE, unmoved.**
 
-Also ranked, unchanged: BTWOCUT's cross-pair closure ((BE-28)(i), motive economy only — S-mark
-closes), the point-side flat law (**priced NOT cheap**), BINDUC's **(BE-23)(ii)** (*forced flat
-⇒ `def₂ = def₃`*, the disproof side's highest-value single search), and — unclaimed, from
-BZAVOID's own successor ranking — a **flat-star dictionary**, re-proving
-`molecular_finrank_motions_eq_square_ker`'s surjectivity under a hypothesis admitting coplanar
-stars, which would revive route 2 (§(K-bare-ext)). **Superseded, do not re-derive:**
-(BE-27)(ii) refuted the reading that the residual gauge group supplies general position — *the
-gauge group was never the right place to look*.
+Also ranked — **all four LIVE, none moved in status; two had a stale claim, corrected
+2026-09-03 (SWEEP C):**
+
+- **BTWOCUT's cross-pair closure** ((BE-28)(i), motive economy only — S-mark closes).
+  **Accurate as written.** (BE-28)(i) ends *"This is the design decision's whole cost, and it
+  is why **S-mark** exists"*, and the S-mark table gives closure *"**yes**"* against S-all's
+  *"**NO**"*. **Kill condition:** (BE-28)(i)'s coupled three-point identity proved, which
+  would let the simpler S-all frame replace the rooted tree. **Decided by:** `(K-bare)` u6,
+  which still lists cross-pair welding as the residue; half (B)'s residual item 4
+  ((BE-121)(i)) carries it as *"unchanged"*.
+- **The point-side flat law** (**priced NOT cheap**). **Accurate, and now load-bearing
+  twice.** BTWOCUT's successor (4): *"a direct point-side proof of the flat law, removing
+  (BE-20)(ii)'s inherited (BE-13) proven-informally planar body-pin ingredient — **declined
+  here, explicitly, as competing with the primary** … it is not [cheap], since it needs a
+  planar body-pin rank derivation from scratch."* **This is the same residual** that
+  `notes/Phase39.md`'s carried item 1 used to carry under the name *"BATTAIN's `def₂ = def₃`
+  slice, still unclaimed"* — that slice is **DISCHARGED** ((BE-23)(c) attains it by
+  (BE-20)(ii)), and what survived it is exactly this entry. One residual, one name, from
+  2026-09-03. **Kill condition:** a direct point-side proof. **Decided by:** (BE-20)(ii)'s
+  standing in the `(K-bare)` row.
+- **BINDUC's (BE-23)(ii)** (*forced flat ⇒ `def₂ = def₃`*). **Content exact, superlative
+  inherited.** BINDUC: *"a forced-flat graph with `def₂ > def₃` … would be a **new
+  universal-cap mechanism** and the first live disproof route since (BE-15) closed the
+  triangle one, so it is the **highest-value single search on the board** — 25 270 instances
+  say no."* That board is **BINDUC's, ordinal 42, 2026-08-26**, and nothing has re-ranked it
+  since; `notes/Phase39.md` now says the live items are 0 and 1 and defers ranking to
+  `notes/Pencil-strategy.md` §8. Read the superlative as dated, not current. **Kill
+  condition:** a forced-flat graph with `def₂ > def₃`.
+- **A flat-star dictionary**, unclaimed, from BZAVOID's own successor ranking: re-proving
+  `molecular_finrank_motions_eq_square_ker`'s surjectivity under a hypothesis admitting
+  coplanar closed stars. **The relocation DROPPED this entry's antecedent and thereby
+  over-stated it** (corrected 2026-09-03). The source reads: *"that is a self-contained
+  lemma, and **if it came with a corrected `G²` rank statement** it would revive route 2."*
+  The antecedent is the expensive half: the **`G²` apparatus is CLOSED** ((BE-17), gap map
+  *ROUTES CLOSED*) and sits in **block 5**'s do-not-re-open batch. So: the dictionary is a
+  live self-contained lemma; *"revives route 2"* is **conditional on re-opening a closed
+  route** and must never be quoted bare. **Decided by:** `(K-bare)` u5.
+
+**Superseded, do not re-derive:** (BE-27)(ii) refuted the reading that the residual gauge
+group supplies general position — *the gauge group was never the right place to look*.
 
 **Reading it later.** Same caution as blocks 8 and 9': a snapshot dated 2026-09-02, not a
 live surface. Every label resolves in `notes/Pencil-informal.md` §(K-bare-ext); the direction
@@ -1298,3 +1362,111 @@ note: **no gap-map status word moved at any of the six**, and the `hK` lane's ra
 - **(BE-14) (BSIGMA 67, BPROPER 69).** (PENCIL-SATURATES-GEN) is FALSE and **-CHART's
   PROPERNESS half is settled at EVERY side** ((BE-114)–(BE-121)), but **-CHART is NOT yet a
   theorem** — the residue is *proper* → *generic*.
+
+## The 2026-09-03 liveness round — what SWEEP C moved out of the note (RELOCATED from `notes/Phase39.md` 2026-09-03)
+
+**Why it moved.** The liveness round (`RESEARCH-ARC.md` §8) landed three concurrent sweeps
+into a note already at 579/580. SWEEP C's repairs — a DEAD entry, two CONTRADICTED *Blockers*
+claims, four stale monotone counters and a user-facing open question — cost lines the note
+did not have, so four passages that are **reference rather than status** moved here under the
+standing remedy (*relocation, never a fold*; nothing deleted, no cap bumped). **Reference,
+not status.**
+
+### 1. The three replacement picks that failed — why this round fired
+
+Verbatim from `notes/Phase39.md`'s *Hand-off*, 2026-09-03:
+
+> **The coordinator then failed THREE times to name a replacement from
+> `notes/Pencil-strategy.md`**: §5.3 item (i) (dead since (D4), struck `beb1b7ca`), §4.6's
+> `∀λ` (discharged; residue is realizability), U1 (criterion **(OUT)** = §(K-out)'s 51
+> steps; retarget = §(K-ann)). Each looked live where it is *recommended* and was spent one
+> layer down.
+
+That is the measured evidence behind the note's surviving one-line status clause — **the
+ranked lists are not a safe dispatch basis** — and behind `RESEARCH-ARC.md` §8's promotion.
+The per-item adjudication of §5.3/§4.6/U1 belongs to `notes/Pencil-strategy.md` and its own
+sweeps, not here.
+
+### 2. The item-0 sub-item RE-LETTERING HAZARD, and why the note now carries tags
+
+`notes/Phase39.md`'s ranked item 0 has sub-items cited **by letter** from the workbook, and
+the letters shift whenever a sub-item closes. At `815ed946` (BPROPER) the `margin > 0` item
+was **(c)** and the 11 blocks **(d)**. BOPEN's landing `89178ad3` closed the old (a) and
+re-lettered them to **(b)**/**(c)** — while **the same commit** wrote the *old* letter into
+the permanent record:
+
+> **(BE-128)(i)** … `notes/Phase39.md` *Hand-off* item 0 sub-item **(c)** — a `margin > 0`
+> row at `Π_x`/`Π_y`/`⟨M⟩` — is **not** exhibited and **stays open**, for the fourth
+> direction running.
+
+BLINE's **(BE-133)(v)** then uses the *new* lettering (*"`notes/Phase39.md` item 0(b)/(c) is
+untouched"*), so **two landed workbook citations now name different objects by the same
+letter**. Both are landed record and **must not be rewritten**. The note-side remedy, applied
+2026-09-03, is stable tags — **[MARGIN]**, **[BLOCKS]**, **[NON-ATTAIN]** — which survive a
+re-letter; **cite the tag, never the letter**.
+
+Two further mis-citations were found in the same pass and are recorded here because one of
+them is on the authoritative surface: item 0's `[BLOCKS]` figure *"`⟨M⟩` empty at 93 rows"*
+was attributed to **(BE-108)**, whose figure is **72**; the 93 (= 72 + 21) is
+**(BE-121)(i)** item 2. The note is corrected; **the gap map's `(K-bare)` u35 repeats the
+same mis-citation and has NOT been touched** — a row edit is a separate commit against a
+contended surface. Likewise the gap map's `(K-grid)` close-it u7 still lists four (GR-144)
+successors with successor 1 unmarked, four landings after the note demoted it.
+
+### 3. Carried item 1 (`hbareSplit`) — *why it is carried*
+
+Verbatim from `notes/Phase39.md`'s *Hand-off*, relocated 2026-09-03:
+
+> **Why it is *carried*:** the NO-GO is **definitional** — `PencilNondegFeasible` *is* "a
+> nondegenerate realization exists", so at `¬PencilNondegFeasible` the chart/reseed/engine
+> apparatus has **nothing to consume** on either side of the split, and the one identified
+> calculus is unlanded, needs the owed **KT pp. 684–691 re-pin**, and was built for
+> chart-*generic* seeds (**that research is option B, declined 2026-07-30**). Versus `hK`:
+> easier on uniformity, **harder on the seed side**, habitat reaching **corank 2** (DZ).
+> Evidence **strong but sample-scoped** — KBARE-FALSIFY's constructed off-line failure at DZ
+> (rank 113) corrected option-C C3's "failure set is exactly the line": the sample record
+> stands, the locus claim does not (gap-map row (K-bare)).
+
+**What SWEEP C changed about this item, and kept in the note:** its *hard step* pin
+(*"isolated to `Y° ⊄ Z(G)` (§(K-bare-ext) Step BE13, BATTAIN)"*) named a framing 34 ordinals
+old — the `(K-bare)` row has said since BINDUC/BTWOCUT that what is left is *"only the 2-cut
+composition lemma … **PINNED as S-mark**"* — and the phrase is in *Step BE12*, not BE13. And
+its fallback slice, *"**Still unclaimed:** BATTAIN's `def₂ = def₃` proof-of-concept slice"*,
+was **DEAD**: (BE-23) case **(c)** reads *"`def₂ = def₃` — attains at the flat witness by
+(BE-20)(ii)"* and concludes *"**So (BE-14) is equivalent to the strengthened 2-cut
+composition lemma (e)**, everything else being in hand"* (BINDUC, ordinal 42, 2026-08-26).
+It is the same defect as `hcontract`'s (PAIR-5) entry repaired at `59c1355c`, in a second
+carried item, and it had run **31 ordinals**. What genuinely survives it is (BE-20)(ii)'s
+inherited (BE-13) ingredient — the **point-side flat law**, block 10's tail, priced NOT cheap.
+
+### 4. Carried item 3 (`hK`) — the 2026-07-30 standing adjudication
+
+Verbatim from `notes/Phase39.md`'s *Hand-off*, relocated 2026-09-03:
+
+> **Standing adjudication ("C: literature hunt + A", 2026-07-30): carry `hK` pinned; option B
+> NOT authorized**; both literature hunts are MISSes, and since 2026-08-02 it also carries
+> **(K-res)**.
+
+Its live consequence stays in the note. **What SWEEP C changed here:** the item said
+*"untouched by all **76** directions"* — a **kernel-(K)** count, last bumped at GLIST
+(ordinal 68), five ordinals stale; `ROADMAP.md` reads **"81 directions landed (77 on kernel
+(K), four on W4)"**, so the figure is **77**, and the entry now **says which population it
+counts**. (The arc total 81 = ordinal 73 + 8; the offset is fixed by the fanout headings —
+*BATTAIN — thirty-ninth ordinal, the forty-seventh direction*, BRULE 50→58, BGENUINE 57→65.
+Landing 81 in that sentence would have silently converted a kernel-(K) count into an arc
+total: the same failure class, one file over.) The item also credited only GPACK (66) and
+GLIST (68) with reshaping the named next slice, omitting **GGLOB (71)**, which reshaped it
+most — it made the residual **CSP-free** — three sentences below in the item's own body.
+
+### 5. The round's one generalizable rule
+
+**Name the last ordinal, never a count.** Four monotone counters on recommendation surfaces
+had gone stale silently in exactly §8's way: *"none has moved in sixteen landings"* (note)
+against *"fifteen"* (block 10) — two copies of one snapshot; *"excluded from ten consecutive
+direction specs"* (eleven landings since it was set, so twenty-one); *"skipped four times"*;
+*"all 76 directions"*. An ordinal is checkable against `notes/Pencil-fanout.md`'s headings
+and **decays visibly**; a hand-incremented word does neither. Where a count must appear
+because a home owns it — the harness-debt list, which read **SIX** while
+`notes/scripts/README.md` read **TEN** — the note now says *the count is the home's* and
+carries only the one item that is a **silent** hazard rather than bookkeeping
+(`bimage.pt_in`'s `K⁴` truncation, no assert firing).

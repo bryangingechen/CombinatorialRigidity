@@ -45,7 +45,7 @@ closes and a successor opens for the Lean is a `PHASE-BOUNDARIES.md` event again
 standing 2026-07-24 no-split adjudication, surfaced with a commit-count estimate, never
 taken unilaterally; the 2026-08-05 Lean hold binds regardless.
 
-**THIRTEEN reference blocks sit in `notes/Pencil-structure.md`**, which indexes them —
+**FOURTEEN reference blocks sit in `notes/Pencil-structure.md`**, which indexes them —
 **read them once per session**. The line that stays here: the **State of (K)** gap map
 (`notes/Pencil-informal.md`) is this phase's status object, **authoritative for every
 status word**; read it with `python3 notes/gapmap.py`, never `sed`/`grep`.
@@ -171,33 +171,43 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
   parked route 3's informal costs, and every one of those is now discharged (bullet above).
   What is left is **(K-res)**, a kernel of `hK`'s difficulty class on the complementary
   habitat whose proof route is *strictly harder* (its habitat sits wholesale in the
-  `dim R_a = 1` stratum where the (K) recon found no landed-brick route). **(K-res) has
-  never been attacked** — it appears in the dispatch docs only as a **bar**, excluded from
-  ten consecutive direction specs; its *"pin it when the tight side closes"* deferral is
-  **RETIRED** by the 2026-08-26 adjudication, which selected the cheap scoping slice queued
-  in *Hand-off*. **The W4 thread has no dispatchable non-user-call item left; the (K-res)
-  WAVE is a user call**, offered and declined 2026-09-02.
+  `dim R_a = 1` stratum where the (K) recon found no landed-brick route). **Its SCOPING
+  LANDED** (RESGRID, ordinal 48, 2026-08-28 — *Hand-off* is the correct surface; this bullet
+  said "queued" until 2026-09-03). **The WAVE has never been attacked**, appearing in the
+  dispatch docs only as a **bar**, excluded from every direction spec since it was named
+  (last checked BLINE, ordinal 73 — name the ordinal, never a count). The *"pin it when the
+  tight side closes"* deferral is **RETIRED** by the 2026-08-26 adjudication. **The WAVE is
+  a user call**, offered and declined 2026-09-02.
+- **OPEN QUESTION FOR THE USER — not a coordinator call, and the answer lands here.** The
+  `(K-res)` row's close-it names, beside the wave, a **cheap first slice** (the 255-residual
+  pool sweep) and a **flank** (a `def = 0` shape whose every admissible colouring has
+  `dim Z > 0`; `resgrid.py`'s sweep is the instrument, already built). **Reading 1:** both
+  are the wave's first steps, so the 2026-09-02 decline covers them and the W4 thread has
+  **nothing dispatchable left**. **Reading 2:** the flank sits outside the wave clause and is
+  separately dispatchable, in which case that claim is false. **UNSETTLED** (SWEEP C,
+  2026-09-03); no coordinator may soften either side of it.
 
 - **Doc debt — the gate is MECHANICAL** (`notes/check-phase-note.py`: **580 lines / 525
   status-header words**, plus a fail if *Decisions made* outgrows the forward sections),
-  and the standing remedy is **relocation or merger, never a fold** — **THIRTEEN** reference
+  and the standing remedy is **relocation or merger, never a fold** — **FOURTEEN** reference
   blocks now sit verbatim in `notes/Pencil-structure.md`, indexed by its own table, with no
   cap ever bumped and nothing deleted; **which relocation bought what is that file's record,
   not this one's**. **The rule that keeps working:** ask *"what here is reference rather than
-  status?"* — five landings running have paid for themselves that way. **LINES bind, not
+  status?"* — six landings running have paid for themselves that way. **LINES bind, not
   words**, so the next landing MUST merge or rotate rather than append. **Do NOT relocate the
   *"On a future HIT"* block** — standing safety policy, read first by a fresh session. A
   landing's entry stays **one line**; the (BE-14) thread's prose entries are the standing
-  exception, and the oldest demotes when the thread's next direction lands — at 580/580 the
-  demote is **not optional**.
+  exception, the oldest demoting at 580/580.
 - The full biconditional transport (design doc's W0 pin) is landed only as its two forward
   implications; the reverse arms need a `complementIso` involution lemma, not in tree —
   deferred, **off every critical path** (§(K-σ) *Step σ6*).
-- **Harness debt — four rounds PAID, SIX ITEMS OUTSTANDING.** Canonical home
+- **Harness debt — four rounds PAID; the count is the HOME's, never restated here** (it read
+  SIX from GLIST to 2026-09-03 while the home said TEN). Canonical home
   `notes/scripts/README.md` *Harness debt* — **read it before any numerics dispatch**: its
-  own header enumerates all six outstanding items, the two deliberately-unfixed *Recorded
-  observations*, and the rule for a dispatch that trips §2 rule 2 again. **Not restated
-  here** (thinned 2026-08-29; the home was checked first and carries every one).
+  own header enumerates every outstanding item, the two deliberately-unfixed *Recorded
+  observations*, and the rule for a dispatch that trips §2 rule 2 again. One is a **silent**
+  correctness hazard, not a tidy-up: `bimage.pt_in` truncates a `Λ²K⁴` input to `K⁴` with no
+  assert firing — **no `Λ²`-side draw may go through `pt_in`**.
 
 ## Hand-off / next phase
 
@@ -207,57 +217,47 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
 `notes/Pencil-structure.md` §"The (BE-14) thread — per-landing detail" (**block 8**); the
 write-ups and the `(K-bare)` gap-map row stay authoritative. **Reference, not status.** The
 status that stays here: **S-mark is (BE-14)'s only open step**, (β) is proved at the window
-**modulo (BE-57)(iv)'s (S1)/(S2)**, half (B)'s residue is **one** item —
-**(PENCIL-SATURATES-CHART)**, a **THEOREM at every side-degree-`1` terminal** ((BE-127))
-and **OPEN** at side-degree `≥ 2`, where BLINE killed the `(∗)` route ((BE-130)) — and
-cross-pair welding is **untouched**.
+**modulo (BE-57)(iv)'s (S1)/(S2)**, half (B)'s residue is **item 1 of the workbook's four**
+((BE-121)(i); 2–4 are item 0's (b)/(c)/(d)) — item 1 being **(PENCIL-SATURATES-CHART)**, a
+**THEOREM at every side-degree-`1` terminal** ((BE-127)) and **OPEN** at side-degree `≥ 2`,
+where BLINE killed the `(∗)` route ((BE-130)) — and cross-pair welding is **untouched**.
 
 **THE W4 DEVIATION'S PER-LANDING DETAIL — RELOCATED 2026-09-02** to
-`notes/Pencil-structure.md` §"The W4 deviation — per-landing detail" (**block 9**), block 8's
-disposition: the thread is untouched since WGROW (61) and its informal argument is **closed**.
-Status, stated once in the header and not repeated here.
+`notes/Pencil-structure.md` **block 9**: the thread is untouched since WGROW (61) and its
+informal argument is **closed**. Status is in the header, not repeated here.
 
 **BBASE (62) → BUNIF (63) → BDOUBLE (64) → BSATUR (65), all 2026-09-02** — verdicts in
 *Decisions made*, mathematics at §(K-bare-ext) *Steps BE88–BE107*, per-landing detail in
-**block 8**. One clause is *status* and is not repeated below: **(CH-1) does not apply to
-the flag base** ((BE-89)), so anything citing it for the base cites the wrong object.
+**block 8** (which also owns BPEEL → … → BPROPER's five-landing reduction history). One
+clause is *status*: **(CH-1) does not apply to the flag base** ((BE-89)).
 
 **THE 2026-09-02 ROUND'S PER-LANDING CLAUSES (66–72) — RELOCATED 2026-09-02** to
-`notes/Pencil-structure.md` §"The 2026-09-02 round — per-landing status clauses" (**block
-13**); blocks 8/11/12 already own the detail. **Reference, not status.** The two clauses that
-stay: **no gap-map status word moved at any of the six, and BOPEN (72) closes half (B)'s
-item 1 at side-degree `1`** (detail in block 8), and **the `hK` lane's ranking is
+`notes/Pencil-structure.md` **block 13**; blocks 8/11/12 already own the detail. **Reference,
+not status.** The two clauses that stay: **no gap-map status word moved at any of the six,
+and BOPEN (72) closes half (B)'s item 1 at side-degree `1`** (block 8), and **the `hK` lane's ranking is
 `notes/Pencil-strategy.md` §8's board, NOT this list** (re-ranked `70c06abe`/`5583a919`; it
 carries the standing **do-not-do** — no more (a′)/(b′) ledger directions), whose ranks 1 and
 3 are spent.
 
-**THE NEXT CONCRETE TASK is (GR-144)'s successor 1 — (GR-140)(ii)'s CSP-FREE orientation
-criterion on `H`**: *orient the length-2 subgraph and 3-colour the hubs twice so every cycle
-of `H` carries a head of each `α`-colour and a tail of each `γ`-colour*, plus ≤ 6 long
-branches of bookkeeping — the packing quantifier is **gone**, `H` is simple and triangle-free,
-and a 4-cycle is the first place to look. **Read the price first: on this stratum that
-criterion IS (GR-10)** ((GR-140)(v)), so it is not a slice below it. Successor 2 (`n_hub = 6`)
-is now **engineering** — 150/150 pure-hub shapes decided positively, 2 473 of 2 623 left;
-successor 3 is whether *path* consistency decides there, where arc consistency does not.
-**DEMOTED 2026-09-03**: successor 1's own sentence concedes it **IS (GR-10)** here — the gap,
-not a slice below it. **The coordinator then failed THREE times to name a replacement from
-`notes/Pencil-strategy.md`**: §5.3 item (i) (dead since (D4), struck `beb1b7ca`), §4.6's `∀λ`
-(discharged; residue is realizability), U1 (criterion **(OUT)** = §(K-out)'s 51 steps;
-retarget = §(K-ann)). Each looked live where it is *recommended* and was spent one layer down.
-**So the next task is the LIVENESS DOC ROUND** — the ranked lists are not a safe dispatch
-basis, measured not impressionistic. Fallback if deferred: item 0's **exact `k ≥ 2`
-reduction**, the one candidate verified **at source** this session. Two things stay the USER's call, both OFFERED
-2026-09-02 and both DECLINED IN FAVOUR OF CONTINUING RESEARCH: the **(K-res) wave** (a cheap
-scoping slice queued below) and whether W4's now-closed informal side changes anything about
-the **2026-08-05 Lean hold** — the hold is the user's to lift, never a coordinator's.
+**THE NEXT CONCRETE TASK is THIS LIVENESS DOC ROUND** (three sweeps, landing 2026-09-03),
+because **the ranked lists are not a safe dispatch basis** — measured, not impressionistic.
+(GR-144)'s successor 1, which this line named until 2026-09-03, is **DEMOTED**: its own
+sentence concedes it **IS (GR-10)** here ((GR-140)(v)) — the gap, not a slice below it; the
+criterion's statement is §(K-grid)'s and is not restated. Successor 2 (`n_hub = 6`) is now
+**engineering** — 150/150 pure-hub shapes decided positively, 2 473 of 2 623 left; successor
+3 is whether *path* consistency decides there, where arc does not. **The three replacement
+picks that then failed are RELOCATED** to `notes/Pencil-structure.md` **block 14**, with the
+sub-item re-lettering hazard. Fallback if deferred: item 0's **exact `k ≥ 2` reduction**,
+verified **at source**. Two things stay the USER's call, both OFFERED 2026-09-02 and DECLINED
+IN FAVOUR OF CONTINUING RESEARCH: the **(K-res) wave** (its *scoping slice* LANDED
+2026-08-28, below — it is **not** queued) and whether W4's now-closed informal side changes
+anything about the **2026-08-05 Lean hold** — the user's to lift, never a coordinator's.
 
 The ranked list:
 
 0. **HALF (B)'s CLASS QUANTIFIER, now (PENCIL-SATURATES-CHART) — A THEOREM AT EVERY
    SIDE-DEGREE-`1` TERMINAL** ((BE-127)(i)), so (BE-101)(i)/(ii) hold with the clause
-   **proved** and **14 → 12 stands generically**. The five-landing reduction history
-   (BPEEL → BUNIF → BDOUBLE → BSATUR → BPROPER) is **RELOCATED** to
-   `notes/Pencil-structure.md` **block 8**; **(BE-69) is retired as the warrant, not
+   **proved** and **14 → 12 stands generically**. **(BE-69) is retired as the warrant, not
    proved — it is the wrong property** ((BE-122)/(BE-123)), and both of BPROPER's measured
    inputs are now **PROVED** ((BE-124)/(BE-126)). The open sub-items:
    **(a) the side-degree-`≥ 2` instances — ROUTE DEAD, CLAUSE OPEN.** `(∗)` is an exact
@@ -265,13 +265,13 @@ The ranked list:
    of 27 chart-legal shapes ((BE-133)); it does **not** subsume (BE-119)'s `dim A ≥ 5` —
    **they are one obstruction** — and the 91/91 was a **corollary** ((BE-132)). Successor:
    the exact `k ≥ 2` reduction keeping `xc₂…xc_k`, plus a `k ≥ 2` sweep lemma ((BE-134));
-   **(b)** a row with `margin > 0` at `Π_x`, `Π_y` or `⟨M⟩` — the arc's first
-   **shortfall** if it exists, still unexhibited after 54 further rows ((BE-128)(i));
-   **(c)** the remaining **11** live blocks, `⟨M⟩` empty at 93 rows ((BE-108));
-   **(d)** the **non-attaining** case, **INHABITED** ((BE-101)(iii), (BE-120)) by
-   non-generic configurations of graphs that attain when drawn freely. Three siblings,
-   **all closed — do not re-hunt**: cross-cut forcing (BGENUINE), the flag base (item 1),
-   the forced-empty `G` hunt ((BE-72)).
+   **(b) [MARGIN]** a row with `margin > 0` at `Π_x`, `Π_y` or `⟨M⟩` — the arc's first
+   **shortfall** if it exists, unexhibited at 54 rows ((BE-128)(i)), none new at BLINE
+   ((BE-135)(i)); **(c) [BLOCKS]** the **11** live blocks, `⟨M⟩` empty at 93 rows
+   ((BE-121)(i), 72 + 21 — **not** (BE-108), whose figure is 72); **(d) [NON-ATTAIN]** the
+   non-attaining case, **INHABITED, NOT ACTIVATED** ((BE-120)/(BE-121)(i)). **Cite the TAG,
+   never the letter** — why: block 14. **Three siblings, all closed — do not re-hunt**:
+   cross-cut forcing (BGENUINE), the flag base (item 1), the forced-empty `G` hunt ((BE-72)).
 
 1. **THE FLAG BASE — DISCHARGED by BBASE** (verdict in *Decisions made*); its three cheap
    leftovers (is `B_real` a forest on the class; cyclomatic `≥ 2`; is a triangle necessary)
@@ -280,8 +280,8 @@ The ranked list:
 `notes/Pencil-structure.md` §"The (BE-14) lane's standing candidate list" (**block 10**):
 one-end-series, **(S1)/(S2)**, BTWOCUT's bundle, and the *also ranked* tail (cross-pair
 closure, the point-side flat law, BINDUC's **(BE-23)(ii)**, the flat-star dictionary), with
-its *superseded, do not re-derive* note. **Reference, not status**: none has moved in
-sixteen landings; the live items are 0 and 1 above.
+its *superseded, do not re-derive* note. **Reference, not status**: unmoved since BSIGMA
+(ordinal 67) — name the ordinal, never a count; the live items are 0 and 1 above.
 
 **THE (K-res) SCOPING SLICE LANDED 2026-08-28** (RESGRID, ordinal 48; §(K-res),
 `notes/Pencil-informal-grid.md`, own gap-map row), discharging the user's 2026-08-26
@@ -300,10 +300,9 @@ dispatchable candidate, (ZH-2) stratified**; the per-item provenance, caveats an
 strategy §9's, not restated here.
 
 **DO NOT RE-OPEN — what the recent landings closed: RELOCATED 2026-08-29** (verbatim) to
-`notes/Pencil-structure.md` §"What the recent landings closed" — BZAVOID's three ((BE-15)
-cap-free for the **triangle** mechanism only, the `G²` apparatus, the transversality count),
-ZJACOB's conservation law, ZSHEAR's gauge-triviality, GHWIT/GMINM's pair. Stable reference,
-not status; every item's own gap-map row carries the same close.
+`notes/Pencil-structure.md` §"What the recent landings closed" — BZAVOID's three (incl. the
+**`G²` apparatus**), ZJACOB, ZSHEAR, GHWIT/GMINM. Stable reference, not status; every item's
+own gap-map row carries the same close.
 
 **THE THREE CARRIED ITEMS, RANKED BY DISTANCE TO THE PHASE TARGET** (the 2026-08-26
 directive; *Current state*'s delegation bullet; the superseded successor-order convention and
@@ -311,8 +310,9 @@ its cost are `notes/dispatch-log.md`'s and `notes/Pencil-fanout.md`'s). **The ta
 `PencilPair K 3 G`; exactly these three stand between it and the landed theorem. Rank accordingly.**
 
 1. **`hbareSplit`** (kernel (K-bare), research) **via (BE-14), direct attainment** — *the
-   pencil stratum attains `6(|V|−1) − def₃(G)`*, hard step isolated to **`Y° ⊄ Z(G)`**
-   (§(K-bare-ext) *Step BE13*, BATTAIN). **The most target-moving statement the arc
+   pencil stratum attains `6(|V|−1) − def₃(G)`*, hard step now the **strengthened 2-cut
+   composition lemma, PINNED as S-mark** ((BE-23)(e)); BATTAIN's `Y° ⊄ Z(G)` (*Step BE12*,
+   not BE13) is that same target one framing up. **The most target-moving statement the arc
    currently owns:** seed-free, induction-free, never uses `¬PencilNondegFeasible`, and it
    discharges `hbareSplit` **and** `PencilPair`'s unconditional conjunct at once, as a
    **standalone theorem** (the phase's own 2026-08-05 bar). Dearer in absolute terms,
@@ -320,19 +320,16 @@ its cost are `notes/dispatch-log.md`'s and `notes/Pencil-fanout.md`'s). **The ta
    2026-07-30; option B NOT commissioned), extension route recon'd **NO-GO on landed
    machinery**; minimal open statement **(K-bare-ext)**, the arbitrary-seed insertion
    lemma; status row in the gap map, full record in the design doc §"(K-bare)
-   extension-route recon", numerics `notes/scripts/kbare/{danger,optc}.py`. **Why it is
-   *carried*:** the NO-GO is **definitional** — `PencilNondegFeasible` *is* "a
-   nondegenerate realization exists", so at `¬PencilNondegFeasible` the
-   chart/reseed/engine apparatus has **nothing to consume** on either side of the split,
-   and the one identified calculus is unlanded, needs the owed **KT pp. 684–691 re-pin**,
-   and was built for chart-*generic* seeds (**that research is option B, declined
-   2026-07-30**). Versus `hK`: easier on uniformity, **harder on the seed side**, habitat
-   reaching **corank 2** (DZ). Evidence **strong but sample-scoped** — KBARE-FALSIFY's
-   constructed off-line failure at DZ (rank 113) corrected option-C C3's "failure set is
-   exactly the line": the sample record stands, the locus claim does not (gap-map row
-   (K-bare)). **Still unclaimed:** BATTAIN's `def₂ = def₃` proof-of-concept slice, now
-   known to cover the whole of BINDUC's base; it does not discharge `hbareSplit`
-   (DZ has `def₂ = 11`).
+   extension-route recon", numerics `notes/scripts/kbare/{danger,optc}.py`. **WHY IT IS
+   *CARRIED* — RELOCATED 2026-09-03** to `notes/Pencil-structure.md` **block 14**: the
+   definitional NO-GO, the owed KT pp. 684–691 re-pin, the `hK` comparison, and
+   KBARE-FALSIFY's sample-scoped evidence. **Reference, not status**; the `(K-bare)`
+   gap-map row stays authoritative.
+   **DEAD, not unclaimed** (repaired 2026-09-03): BATTAIN's `def₂ = def₃` slice
+   is DISCHARGED — (BE-23)(c) attains it by (BE-20)(ii), leaving (BE-14) equivalent to the
+   2-cut lemma alone (BINDUC, ordinal 42, 2026-08-26). What is left is (BE-20)(ii)'s
+   inherited (BE-13) ingredient: the **point-side flat law**, priced **NOT cheap**, already
+   ranked in block 10's tail — one residual, one name.
 2. **`hcontract`** (W4) **via route 3's informal costs — dispatchable TODAY, and the hold
    is an argument FOR them, not against.** The **build** is fully decomposed, buildable and
    PARKED by the hold; the other costs are **not** parked — **(T) is a THEOREM** ((TF-5),
@@ -349,8 +346,9 @@ its cost are `notes/dispatch-log.md`'s and `notes/Pencil-fanout.md`'s). **The ta
    PASSED. Canonical homes: `notes/Phase39-design.md` §§"W4 decomposition recon"/"W4-L4
    identification recon" and `notes/Pencil-W4-informal.md`.
 3. **`hK`** (kernel (K), research) **via (GR-15)** — the escape `≢ 0` uniformity kernel,
-   the phase's hardest open item and what the whole research arc attacks: **untouched by
-   all 76 directions**, but GPACK (66) and GLIST (68) have reshaped its named next slice.
+   the phase's hardest open item and what the arc attacks: **untouched by all 77
+   kernel-(K) directions** (ROADMAP's count — say which population; 81 arc-wide, four W4),
+   but GPACK (66), GLIST (68) and GGLOB (71) have reshaped its named next slice.
    **THE LANE'S PER-LANDING DETAIL IS RELOCATED 2026-09-02** to
    `notes/Pencil-structure.md` §"The `hK` lane — per-landing detail" (**block 11**), the
    disposition blocks 8 and 9 got; it also carries (GR-133)'s **price** and the standing
@@ -363,38 +361,38 @@ its cost are `notes/dispatch-log.md`'s and `notes/Pencil-fanout.md`'s). **The ta
    ((GR-141)), matroid union by an exhibited exchange failure ((GR-142)) — and the obstruction
    splits **three ways** ((GR-143)): hub-local, propagation-visible (all of the 82 %),
    propagation-invisible from `n_hub = 6`, which that population cannot present. Four
-   successors at (GR-144). **(GR-10)/(GR-15) unchanged in status.**
-   Everything in §(K-grid)/§(K-out) is *support* for this, not progress on it. **Standing
-   adjudication ("C: literature hunt + A", 2026-07-30): carry `hK` pinned; option B NOT
-   authorized**; both literature hunts are MISSes, and since 2026-08-02 it also carries
-   **(K-res)**. **The mathematics is NOT restated here** — canonical home is
-   `notes/Pencil-informal.md`'s **State of (K)** gap map (per gap: status, what would close
-   it, uncovered shapes, a *settled, do not re-derive* block). Read that map, not this
-   item, before any (K) work.
+   successors at (GR-144), **successor 1 DEMOTED 2026-09-03** (it *is* (GR-10) here — the
+   gap-map `(K-grid)` close-it has not caught up); three live. **(GR-10)/(GR-15) unchanged
+   in status.** Everything in §(K-grid)/§(K-out) is *support*, not progress on it. **THE
+   2026-07-30 STANDING ADJUDICATION and the two literature-hunt MISSes are RELOCATED
+   2026-09-03** to **block 14**; its live consequence stays: carry `hK` pinned, option B NOT
+   authorized, and since 2026-08-02 it also carries **(K-res)**. **The mathematics is NOT
+   restated here** — canonical home is `notes/Pencil-informal.md`'s **State of (K)** gap map.
+   Read that map, not this item, before any (K) work.
 
 **Below the carried items — support work, explicitly ranked lower now.** OGEOM's successors
 (the unsearched `n(F°) ≥ 6` frontier; the Kirchhoff-injectivity sentence) are **disproof-risk
 reduction**, which by (OC-24) *"can never be the binding obstruction"*; the grid-side residual
-(*is the ledger gap ever `≥ 3`?*) is ledger bookkeeping; OQRANK's residuals and the
-`2k ∈ {4,6}` corner likewise.
+(*is the ledger gap ever `≥ 3`?*), OQRANK's residuals and the `2k ∈ {4,6}` corner are ledger
+bookkeeping.
 
 **`hsplit` is CLOSED IN FULL** and **`hfresh`'s mechanical discharge (residue (iv))** with it
 (W5-L7c-1…6, 2026-07-30); `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card`
-(`Molecule/Pencil/Escape.lean`) wraps `pencil_conjecture_of_hcontract_hK_hbareSplit` and
-carries exactly the three items above.
+(`Molecule/Pencil/Escape.lean`) wraps `..._of_hcontract_hK_hbareSplit`, carrying exactly the
+three items above.
 
-> **Route σ — the one live candidate, and it is NOT settled.** Route A at the dual seed
-> `σu`; it would close (K-tight) on the hard stratum, *length-free*. **Offered for
-> adjudication**, **not field-blocked**, **not in flight**; it moves no gap-map status and
-> changes no standing constraint. It rests on **four obligations, only the first of which is
-> Lean** — that one genuinely the hold's, the other three dispatchable and two of them
-> decision-relevant *before* any Lean is commissioned. **The four, their `--hunt` findings,
-> the validation scope, the *Field scope* caveat, the smallest opening commit and the
-> not-the-bridge warning are THIRD-COPIED here no longer** (thinned 2026-08-28): canonical
-> homes are §(K-σ) *Step σ5* (`notes/Pencil-informal.md`), the **(K-σ)** and **(K-tight)**
-> gap-map rows, and `notes/Pencil-strategy.md` §8.4 — each of which carries all of it,
-> checked before thinning. The one clause that is *status* and stays here: **route σ is not
-> a route to (K-res)** (obligation 2), so it does not substitute for the (K-res) wave.
+> **Route σ — a live candidate on THIS section's list; ranking is §8's, not this
+> section's.** Route A at the dual seed `σu`; it would close (K-tight) on the hard stratum,
+> *length-free*. **Offered for adjudication**, **not field-blocked**, **not in flight**
+> (`notes/Pencil-adjudications.md`: never selected); it moves no gap-map status. It rests on
+> **four obligations, only the first of which is Lean** — that one genuinely the hold's, the
+> other three dispatchable and two decision-relevant *before* any Lean is commissioned. **The
+> four, their `--hunt` findings, the validation scope, the smallest opening commit and the
+> not-the-bridge warning are THIRD-COPIED here no longer** (thinned 2026-08-28; the *Field
+> scope* caveat left the list 2026-09-03 — **DISCHARGED**, §(K-clos) (AC-1), source-level):
+> canonical homes are §(K-σ) *Step σ5*, the **(K-σ)**/**(K-tight)** rows, and
+> `notes/Pencil-strategy.md` §8.4. The one clause that is *status* and stays here: **route σ
+> is not a route to (K-res)** (obligation 2), so it does not substitute for the wave.
 >
 > **The durable negatives and the deliberate non-goals — RELOCATED 2026-08-28** (verbatim)
 > to `notes/Pencil-structure.md` §"Durable negatives and deliberate non-goals": the two
@@ -421,6 +419,8 @@ section named; its *spec and landing write-up* in `notes/Pencil-fanout.md` §"<C
 `notes/Pencil-adjudications.md`; the derivation in git. **Do not grow these back into
 paragraphs.**
 
+- **LIVENESS ROUND, SWEEP C** (2026-09-03) — item 1's `def₂ = def₃` fallback is **DEAD**
+  ((BE-23)(c), BINDUC); two *Blockers* claims CONTRADICTED; four counters stale. Block 14.
 - **Coordinator round reconciliations** (2026-09-02, both rounds) — §7's prediction tally
   was **stale by six** and round 1's three directions each incremented it from a different
   baseline, two claiming one slot; the count is **sixteen instances, seven kinds**, kept in
