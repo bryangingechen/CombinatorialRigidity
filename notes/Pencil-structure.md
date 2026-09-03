@@ -984,7 +984,8 @@ gap is closed **pointwise** by a flag rotation ((BE-125)). BPROPER's **escape it
 drop, so `d_h(H) ≤ d_h(G) ≤ 2`, and girth and min degree follow. The **status** the phase
 note keeps is two clauses: the clause is a theorem at side-degree `1` and **not** at
 side-degree `≥ 2`, where it rests on `(∗)` — certified 91/91, not proved; and item 0(c)'s
-shortfall is still unexhibited after 54 further rows.
+shortfall is still unexhibited after 54 further rows. *(The first clause's second half is
+**SUPERSEDED by BLINE below**: `(∗)` is decided and its route dead; the clause stays open.)*
 
 **BLINE (73), 2026-09-02 — the thread's next landing, and it REFUTES A ROUTE rather than
 proving or refuting a clause.** It decides BOPEN's own residue `(∗)` ((BE-129)–(BE-135),

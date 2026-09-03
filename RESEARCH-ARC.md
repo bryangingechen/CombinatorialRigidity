@@ -358,7 +358,26 @@ object is in it. It is the §4 *docstrings-are-not-evidence* rule one level up:
 the hypothesis list of a cited theorem is not evidence about the object you are
 citing it for. The practical instruction: when a prep says *"result X already
 covers case Y"*, name the **ambient** X is stated over, not only X's hypotheses.
-The tally now runs to **sixteen instances and seven kinds** — reconciled
+**AN EIGHTH KIND, at the seventeenth instance (2026-09-02, direction BLINE):
+*UNDERSHOT* — the prediction was right in direction and WEAKER than the truth.**
+The coordinator predicted that a `91/91` certification was no evidence, because
+its population lay entirely inside the regime an older, weaker criterion already
+covered. Premise confirmed at source; **middle inference refuted** (the two
+criteria have *different loci* — `Σ_x` against the strictly larger `Π_x` — so the
+newer one did prove something there); **conclusion confirmed for a stronger
+reason** than the one given: on that population `(∗)` is a **theorem**, so the
+certification is a *corollary*, not weak evidence. **Why this is a kind and not a
+shade of *split*:** every kind above describes a prediction wrong in a way that
+could mislead **upward** — a spec that over-claims contaminates the dispatch it
+primes. UNDERSHOT misleads **downward**: inherited rather than tested, it would
+have *understated* the finding, and the cost is not a false result but a real one
+left unclaimed. It is therefore an argument for §7's labelling discipline from
+the opposite side — write the prediction down not only so a wrong one can be
+killed, but so a **timid** one can be beaten. The tell to watch for: a prediction
+whose reasoning is *"X is already covered by the weaker Y"*, where the honest
+answer turns out to be *"X is outright true here"*.
+
+The tally now runs to **seventeen instances and eight kinds** — reconciled
 2026-09-02, when this line was found **stale by six**. That staleness is
 itself the finding: three concurrent directions landing the same day each
 read a different baseline for it (two claimed the same slot, one read the
