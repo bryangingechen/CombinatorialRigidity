@@ -1,8 +1,8 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
 **Status: EIGHT fan-outs, FORTY-NINE single directions, ONE draft-only parallel direction,
-FOUR concurrent pairs and ONE concurrent round of four dispatched; 85 LANDED, NONE IN
-FLIGHT, **THREE DRAFTED-BUT-NOT-LANDED (DSAT, OBAR, GLEAF)**.
+FOUR concurrent pairs and ONE concurrent round of four dispatched; 86 LANDED, NONE IN
+FLIGHT, **TWO DRAFTED-BUT-NOT-LANDED (DSAT, GLEAF)**.
 *(Round state, coordinator, 2026-09-03: **DSAT returned `DRAFTED` and its landing is
 DEFERRED ON SESSION LIMITS**, not on any defect — the 5-hour window stood at 85 % and a
 landing resume costs ~0.4 M tokens, so the draft waits for the reset rather than risk a
@@ -16,13 +16,11 @@ carry**; SAT at all five class habitats, provably UNSAT at both (K-res) habitats
 against the coordinator's spec, per this file's sibling registry (see
 `notes/Pencil-labels.md`'s reservation-defect block).
 
-**OBAR** — verdict: **§8.2's U3 gate is NEGATIVE three independent ways and U3 is struck
-completely**; its step 2 could never have run, U3's object being **(T3) restated
-pointwise**. One failure is a *proof from a landed theorem* — §(K-σ) **(σ7)** — so the
-negative is chart-wide, not generic. With U2 struck, **U1 is alone**. Its `(K-out)` cell
-lands at **1818/1823**, so the next `(K-out)` landing must **recompute, not append**; and
-§8.2, §4.6 and §8.6 must move in **one** commit, since the first two carry the same flag
-and say so.
+**OBAR** — **LANDED 2026-09-03 as ordinal 78**; detail in §"OBAR" below, not here. Its
+`(K-out)` cell landed at **1810/1823** after a second content-duplication compression, so
+the next `(K-out)` landing must **recompute, not append**; §8.2, §4.6 and §8.6 moved in
+**one** commit as required; and its step-1 negative is chart-wide **on §(K-σ) (σ7)'s own
+basis** — conjunct 4's argument plus 39/39 witnesses — never more.
 
 **GLEAF** — verdict: **the reach question SPLITS**. The landed Phase-12/13/14 machinery
 **does** reach the branch-side leaf-covering demand, by a theorem — an Edmonds matroid
@@ -51,13 +49,15 @@ rationale was **right on reach, wrong on value**. Two items need coordinator
   naming an **already-consumed** label (`(GR-15)` itself, in this file and `gapdiff.py`) is
   an ordinary citation and is fine. Only the first kind was repaired.
 
-**ALL THREE VERDICTS ARE AS REPORTED, NOT CONFIRMED** — none has had the coordinator's
-verification tier, which is precisely the outstanding work. Each draft also carries its own
-disclosed self-caught defect (DSAT an assert-caught wrong guess, OBAR an unexercised
-failure branch, GLEAF a **silently-wrong oracle** caught only by two oracles disagreeing) —
-read those before trusting a figure.)*
-**The five landings after GLIST — BLINE (ordinal 73), BDEGTWO (74), RPOOL (75), BSCOND (76),
-BARCH (77) — have their own sections; read those, not the blurb below, for the current state.**
+**THE TWO REMAINING VERDICTS ARE AS REPORTED, NOT CONFIRMED** — neither has had the
+coordinator's verification tier, which is precisely the outstanding work. (**OBAR's has**,
+and it landed as ordinal 78.) Each draft also carries its own disclosed self-caught defect
+(DSAT an assert-caught wrong guess, GLEAF a **silently-wrong oracle** caught only by two
+oracles disagreeing; OBAR's was an **unexercised failure branch**, which landed disclosed
+as its own *Caps* item 1) — read those before trusting a figure.)*
+**The six landings after GLIST — BLINE (ordinal 73), BDEGTWO (74), RPOOL (75), BSCOND (76),
+BARCH (77), OBAR (78) — have their own sections; read those, not the blurb below, for the
+current state.**
 **BARCH (ordinal 77, §"BARCH") LANDED 2026-09-03** — the ninth strategy pass's **rank 2**,
 dispatched as a **recon** after four structurally-different attempts hit one named
 obstruction. **The method class is NOT dead — it CHANGES AMBIENT.** `s` and `r` are BOTH
@@ -14525,3 +14525,190 @@ three consecutive Phase-39 landings each tripped, dispatch-log F17):
 **Cost.** One read-only recon dispatch, no build, no `.lean` (the 2026-08-05
 Lean hold binds). Ordinal and the §7 tally are the coordinator's to reconcile;
 this write-up cites them and increments neither.
+
+## OBAR — seventy-eighth ordinal (one direction of a four-way concurrent round, drafted read-only 2026-09-03, **LANDED 2026-09-03**) — §8.2's U3 gate: is `H ∪ {bar along M}` an admissible (OC-35) subgraph?
+
+**Selection provenance.** The **ninth strategy-only pass**
+(`notes/Pencil-strategy.md` §8, coordinator-authored 2026-09-03) rewrote §8.2's
+U3 row from *"live, rank 3"* to **already-pursued**, its first step having been
+delivered more generally as **(OC-35)** by SIGZ (*Steps O31–O36*), and isolated
+**exactly one genuine residue**: the ledger nobody ran on `H ∪ {bar along M}`,
+U3's own object — with the row's own flag saying, in as many words, that
+*whether that object is even an admissible (OC-35) subgraph* had **not been
+checked**, and that *"that check gates the residue"*. The same flag sits in
+§4.6's U3 blockquote, which adds *"confirm before spending a slice"* and notes
+that the two surfaces must agree. The dispatch's value case was the **U1–U3
+interlock** (§4.6's own framing — one target, one machine, one logical form):
+with **U2 struck 2026-09-03** by (OC-4)+(OC-3), settling U3 either frees U1 to
+inherit the whole shortlist or restores a third bet.
+
+### The spec, as dispatched
+
+**Two steps, strictly ordered, step 1 gating step 2.** (1) Read (OC-35)'s
+actual hypotheses **at source** and settle whether the meet-line-bar object
+satisfies them, with two named ways it might not — `M` is *"a meet line, not an
+edge of `H`"*, so the construction *"may not produce a subgraph of the ambient
+graph at all, and may create degree-1 vertices"*. (2) **Only if admissible**,
+run the ledger. *"A negative answer is a complete and valuable landing — it
+kills the residue and U3 with it. Do not manufacture a positive."*
+
+**The coordinator's four verified findings, to be quoted rather than
+inherited.** (1) U3 is already-pursued with exactly one residue — *do not
+re-derive its programme*. (2) The interlock is why it is worth a dispatch
+despite that, and §2.3's logical-form move (negatives uniform, positives
+per-shape) is the standing reason to care. (3) Two filters that **may kill it on
+sight**: the growing-ground-set test, and counting saturation (§2.5, reinforced
+by (OC-3)/(OC-37)/(GR-141)) — with the standing warning that **§2.5 is a
+NEGATIVE result and must never be quoted as supplying freeness**, a
+mis-citation that had to be repaired on the board once. (4) Calibrate against
+**(OC-24)**: disproof-risk reduction *"can never be the binding obstruction"*.
+
+**Bars.** Draft-only, read-only against every shared file, **commits nothing**;
+the 2026-08-05 Lean hold binds (**no `.lean`**); every driver in the
+**foreground** with an explicit `timeout`, one at a time, never backgrounded
+(dispatch-log F6); measure and diff against **`HEAD`**, never the working tree,
+since siblings leave it dirty; the shared scratchpad prefixed `OBAR`; **no
+shared monotone counter touched** (the arc's direction count,
+`RESEARCH-ARC.md` §7's prediction tally) — the coordinator reconciles those.
+`notes/scripts/README.md` *Harness debt* required reading before any numerics,
+with the three silent hazards named explicitly.
+
+### LANDING WRITE-UP — OBAR, 2026-09-03: **THE GATE IS NEGATIVE THREE WAYS, ONE OF THEM BY A LANDED THEOREM — AND THE LEDGER WAS NEVER A COMPUTATION: U3's OBJECT IS (T3) RESTATED, POINTWISE**
+
+**THE GATE FAILS ON ALL THREE OF (OC-35)'s CLAUSES, AND THE MIDDLE ONE IS THE
+INTERESTING FAILURE.** (OC-35) quantifies over *"a subgraph with min degree ≥ 2
+at any pencil placement"* and its proof gives **each edge** a covector
+*"annihilating `C_e` — a 5-space"*. (i) `bc ∉ E(G)`: `H` is induced, so an edge
+there would give `k = 1` against `k ≥ 3` (§(K-dom)'s own derivation from
+`dim V_bc = 3`), equivalently a 4-cycle against `girth(G) ≥ 7`. (iii) A **bar
+is one row**; (OC-36)'s `f(V(F)) = 5|E(F)| − 6(|V(F)| − 1)` and every term of
+the `δ`/`ρ`/`slack` ledger count five, so the ledger is not merely inapplicable
+to the object — evaluated on it, it is **wrong by four rows**. (ii) is the one
+worth the dispatch: a **hinge** along `M` requires `C(M) ∈ L_b ∩ L_c`, hence
+`pt(b) ∈ Π(c)` **and** `pt(c) ∈ Π(b)` — **both** halves of **(Λ0d)** failing —
+and §(K-σ) **(σ7)** *proves* that impossible at exactly this split (`a` a
+degree-2 non-hub adjacent to both hubs), field-neutrally. **So the load-bearing
+side condition of the arc's own main route is what forbids U3's object**, and
+the negative is **chart-wide rather than generic**: it holds even where (Λ0d)
+does fail, which is where a sceptic would look. ((OC-56).)
+
+**THE COORDINATOR'S SECOND SUSPECTED OBSTRUCTION IS REFUTED, AND THAT MATTERS
+FOR HOW THE NEGATIVE READS.** The spec flagged that the construction *"may
+create degree-1 vertices"*. It cannot: a bar only raises degrees, and `H`
+itself has min degree ≥ 2 (`deg_H(b) = deg_H(c) = 2` at 18/18, from every
+non-hub of `G′` having degree exactly 2 — §(K-frame) *Step FR12*'s table — and
+`b`, `c` being hubs). So the
+negative is **not** the cheap min-degree failure it might have been — the object
+is a perfectly good *bar-and-hinge* framework, and what it is not is an
+(OC-35) *hinge subgraph*.
+
+**AND THE LEDGER WAS NEVER A COMPUTATION WAITING TO BE DONE — THIS IS THE
+FINDING.** A `b`–`c` attachment adds **no topological path**, so there is no
+`δ_Q`, no `slack`, and nothing for (OC-37)'s class floor to bound. What governs
+it instead is a one-line identity, for **any** attachment covector space `A`:
+`corank R(H ⊕_A bc) = corank R(H) + dim(A ∩ V_bc^{⊥_E})`, with the realized
+`A`-coefficients **exactly** that subspace ((OC-57)) — the general form of the
+*"close it up by adding three rows `B(m(b) − m(c), ρ) = 0`"* move
+§(K-slide-comb) already uses. Specialize to a **bar** (`dim A = 1`) and the bar
+is in some stress's support **iff `V_bc ⊥_B C(M)`**, which is **(T3)
+verbatim** — §(K-pitch) *Step 3*'s *"escape ⟺ some motion `m` of `H` has
+`B(C(M), m(b) − m(c)) ≠ 0`"*, the (K-wit) row's own content and its own close-it
+sentence. **U3's target statement is the escape, restated — pointwise, at every
+chart point, by rank–nullity.** ((OC-58).)
+
+**SO U3's OWN KILL CLAUSE FIRES, AND BY A CHEAPER MECHANISM THAN THE ONE IT
+NAMES.** §4.6 wrote *"if chart-wide stresses turn out to have no more structure
+than pointwise ones, U3 is only a change of wording"* — and asked for a
+support enumeration as *"the honest first step … prose, not a driver"*. The
+kill fires, but it needs **no** comparison of chart-wide with pointwise
+structure: the support in question is **one coordinate**, and its vanishing is
+(K-wit). **The logical-form move does not survive either**: the non-existence
+U3 wanted **is** `V_bc ⊄ C(M)^{⊥_B}`, a rank *lower* bound — the same side of
+§2.3's wall the arc has always been on. Restating a lower bound as *"no stress
+exists"* changes the grammar, not the logical form.
+
+**THE OTHER READING IS NOT MERELY UNREALIZABLE — IT REFUTES THE STATEMENT.**
+Read the object as a five-row **hinge** (the only (OC-35)-shaped reading) and
+the same identity gives jump `= 6 − dim(V_bc + ⟨C(M)⟩) ≥ 2`, always, with the
+hinge always in the support. So under that reading U3's non-existence claim is
+**FALSE at every legal chart point**, independently of (σ7) ((OC-59)). The
+dichotomy is complete and both branches are negative, and there is no third
+reading — an attachment is a subspace `A`, and (OC-57) covers every one.
+
+**ONE POSITIVE CARRIED OUT, PLUS A SECOND DERIVATION OF (T3).** The redundant
+`b`–`c` constraints form the 3-space `V_bc^{⊥_B}`, which contains `★r` by (T1);
+the redundant *bars* are its Klein conic; and at a `dim W = 5` seed
+`V_bc ⊥_B C(M) ⟺ C(M) ∝ ★r`, because `C(M) ⊥_B T` is automatic
+(`pt(a) ∈ M`) — an `r`-side re-derivation of (T3) independent of the
+rank–nullity one, recovering (σ5)'s load-side form. And
+`rank B|_{V_bc^{⊥_B}} = rank B|_{V_bc}`, so §(K-Δ) **(M1)**'s 3-or-2 dichotomy
+transports verbatim (3 at 13/18, 2 at 5/18, all five on the `k = 3`
+serial-chain habitat), while the **signature is not combinatorial** — both
+`(2,1)` and `(1,2)` occur at seeds of the same shape, (OC-3) again ((OC-60)).
+
+**CALIBRATION, AS INSTRUCTED.** No gap moves; **not** disproof-risk reduction
+either, so (OC-24) does not even need invoking — nothing here touches the
+disproof side. What lands is the **retirement of a residue**, and with §8.2's
+U2 already struck, **U3 is struck completely**: the interlocked shortlist is
+**U1 alone**. The two filters were applied and neither killed it on sight — the
+ground set does formally grow (`E(H) ∪ {bar}`), which is exactly why the object
+looked live, and (OC-58) shows that is cosmetic; §2.5 is used **only as a
+negative**, never as freeness.
+
+**WHAT THIS PASS DID NOT DO, stated because a successor will want it.**
+`V_bc ⊥_B C(M)` is FALSE at 18/18 seeds and 36/36 (shape, split) pairs, so
+**(OC-58)'s failure branch is never exercised numerically at `L = M`** — it is
+carried by the proof, plus two controls that fire the *same* predicate positive
+at *other* lines. The failure locus is known nonempty, known to be a σ-orbit
+with `{V_bc ⊥_B C(bc)}` ((σ5)) and reachable by a chart move at all four
+habitats; **constructing one was not attempted**. This is the BSATUR-shaped
+limit of the pass's own evidence and is disclosed as cap 1 rather than smoothed.
+Applying that same sharpening to itself is also why the pass carries a
+`--splits` mode: every other mode holds the **split** fixed at one per shape,
+so `--splits` ranges over all 48 eligible splits (36 with a usable seed) and
+makes the split the varied variable.
+
+**Reservation, and it DEVIATED DOWN.** §(K-out) **extended**, **Steps O52–O57**,
+labels **(OC-56)–(OC-61)** CLAIMED, **(OC-62)–(OC-65)** and **O58–O60 reserved
+and returned UNUSED**; driver `notes/scripts/w4/obar.py` (new), six modes. The
+dispatched spec offered **(OC-58)+ / O53+**, but `notes/Pencil-labels.md`
+declares §(K-out)'s tail **verbatim** at OWALL's landing — *"the live tail is
+therefore (OC-56)+ / Step O52+"* — and **no other §(K-out) direction was in the
+round** to hold the skipped `(OC-56)`/`(OC-57)`/`O52`. The direction opened at
+the declared tail per that file's standing lesson (*"the registry outranks a
+coordinator's spec on label naming"*), GLEAF's same-round precedent for
+deviating **down**. **This is reservation defect shape FIVE of the round** —
+shape 4 with the sign flipped, a scan reading a *declaration* as a
+*consumption* — recorded in that file's OBAR reservation block; the defects
+block's own FOUR-count is coordinator-owned and flagged rather than
+incremented.
+0-hit verified at `HEAD` as the first action, **HITS = 0 / FILES = 0** across
+`*.md`/`*.tex`/`*.lean`/`*.py`/`*.m2` for all 18 patterns at **53bc9740**; on a
+re-check at **d1efc63d** (BARCH landed mid-run) `OBAR` reads 2/2, both being
+this reservation's **own declaration** in `Pencil-fanout.md` and
+`Pencil-labels.md`, the other seventeen still 0/0. **The next tail is (OC-62) /
+*Step O58***.
+
+**Notes recorded AT the landing.** (1) The `(K-out)` gap-map row took a
+**128-word append inside u14**, paid for by **two content-duplication trims** in
+the status half — `(OC-39)`'s *"since upgraded to a theorem by (OC-49)"* and
+`(OC-27)`'s *"138/138 witnesses"*, both of which the close-it half already
+states **with its own figures**, and both labels surviving elsewhere in the row.
+Net **1692 → 1810** against a 1823 cap: **no `SPECIAL_CAPS` bump**, row still
+`combined`, `gapdiff.py K-out HEAD` **0 dropped** (68 → 75 labels, 7 added). The
+coordinator's landing instruction was `≤ 1810` rather than the cap, precisely
+because a five-word margin does not survive transcription — the lesson BSCOND
+and BARCH each paid for. The next `(K-out)` landing must **recompute**. (2)
+`notes/Pencil-strategy.md` §8.2 **and** §4.6 carry the *same* flag and say so
+explicitly — both must move in **one** commit, and §8.6 gains the settled
+negative with its back-link struck in that commit. (3) Concurrency: the
+working tree was dirty for the whole drafting run; every load-bearing quote was
+re-verified against `HEAD` **three times** — at `53bc9740`, at `d1efc63d` after
+BARCH landed mid-run, and again at `a5d8101c` at the landing — with the
+`(K-out)` row **unchanged at 1692 words** across all three, the u14 anchor
+unique each time, and the siblings' only gap-map edit being to the
+`(K-bare-ext)` row: **no collision on `(K-out)`**. Two siblings' drafts
+(`DSAT`, `GLEAF`) were on disk untracked throughout and were **not** touched. (4) The
+`pitch.H_motions_vbc` move-down trigger re-dates at a **sixth** consumer; no
+move made, no new hazard item, all three recorded silent hazards navigated
+rather than encountered.

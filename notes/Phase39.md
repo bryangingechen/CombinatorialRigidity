@@ -8,11 +8,11 @@ derives it from exactly **three carried items**: **`hcontract`** (W4 — build p
 **`hbareSplit`** (kernel (K-bare)). Everything else is closed — W0–W3, all of W5
 (L0–L7), `hsplit` and `hfresh` (2026-07-30, unchanged since).
 
-**The research arc: 85 directions COMPLETE** (2026-08-05 → 09-03, ordinals 1–77 — 80 on
+**The research arc: 86 directions COMPLETE** (2026-08-05 → 09-03, ordinals 1–78 — 81 on
 kernel (K), **WTRI/WELOC/WPAIR/WGROW (58–61) on W4**, **RPOOL (75) on (K-res)**; direction
 = ordinal + 8), plus nine strategy passes, two probes and a scoping recon. **GPACK (66) opened
-the `hK` lane** (GLIST 68, GGLOB 71 its successors); the ninth pass's **rank 1 is BSCOND (76)
-and its rank 2 BARCH (77)**. Per-direction verdicts, specs and write-ups live at
+the `hK` lane** (GLIST 68, GGLOB 71 its successors); the ninth pass's **ranks: BSCOND (76),
+BARCH (77), OBAR (78)**. Per-direction verdicts, specs and write-ups live at
 `notes/Pencil-fanout.md` §"<CODE>" (1–19: the archive) plus a workbook home — **not
 restated here**. **The arc's standing result, unchanged: `hK` is not closer.**
 **(GR-15)** — the single open gap the §(K-grid) chain reduces to — is **untouched**; **class
@@ -21,7 +21,7 @@ NOT one landing away** — why: **block 14**.
 
 **`hK` LANE (GPACK 66, GLIST 68, GGLOB 71): (GR-18)(iii)'s split half is a THEOREM, its
 residual CSP-FREE and IS (GR-10) at `D = 0`. ESCAPE (OWALL 70): (OC-44)(iii) REDUCED to
-(OW)**, its route refuted by logic. **(GR-10)/(GR-15)/(OC-8) unchanged**. Detail: **blocks 11–13**.
+(OW)**, route refuted by logic; **U3 STRUCK (OBAR 78)**, gate NEGATIVE. **(GR-10)/(GR-15)/(OC-8) unchanged**. Detail: **blocks 11–13**.
 
 **W4's INFORMAL SIDE IS CLOSED** (58–61): **(T)/(E-pair)/(V) THEOREMS**, **(E) open, TIGHT,
 off every W4 path**, list **EMPTY** — leaving the USER call **(K-res)**, now DEARER (**RPOOL
@@ -250,7 +250,7 @@ SPENT: BSCOND (76) DECIDED (S1)/(S2)**, so (β) at the window is **UNCONDITIONAL
 method class is **NOT** dead, it **changes ambient**, and 14 → 12 **reduces to the
 two-sided (E4), UNPROVED** ((BE-149)–(BE-155)) — and **§8's bar LIFTED NARROWLY** there:
 `A_sharp` properness as posed **stays barred**, `Γ`-properness and (E4) are **lifted**
-((BE-154)(iii); recorded in §8, as §8's own rule requires). **THREE DRAFTS AWAIT VERIFY-AND-LANDING — DSAT (C2 trace UNSAT: C2 dies as a uniform carry), OBAR (U3's gate NEGATIVE three ways, U3 struck, U1 now alone) and GLEAF (the reach question SPLITS: the machinery reaches the demand, but the residual implies it, so §8's rank 3 is SPENT) — deferred on SESSION LIMITS, not on any defect. Verdicts, paths, per-draft self-caught defects and TWO owed adjudications are in `notes/Pencil-fanout.md`'s header round-state block. ALL THREE ARE AS REPORTED, NOT CONFIRMED.**
+((BE-154)(iii); recorded in §8, as §8's own rule requires). **OBAR (78) LANDED from that round; TWO DRAFTS AWAIT VERIFY-AND-LANDING — DSAT (C2 trace UNSAT: C2 dies as a uniform carry) and GLEAF (the reach question SPLITS: the machinery reaches the demand, but the residual implies it, so §8's rank 3 is SPENT) — deferred on SESSION LIMITS, not on any defect. Verdicts, paths, per-draft self-caught defects and TWO owed adjudications are in `notes/Pencil-fanout.md`'s header round-state block. BOTH ARE AS REPORTED, NOT CONFIRMED.**
 **THE NEXT CONCRETE TASK is
 (BE-154)(iv)**: one new `barch.py` mode running the `Γ_Π` and `(e₁, e₂)` tests at
 `bdegtwo.sweep_points`' 411 **chart** points at **both** sides of the peel — it reaches the
@@ -447,16 +447,16 @@ paragraphs.**
   **cited, never incremented per direction**. Three concurrency hazards in
   `RESEARCH-ARC.md` §2, two gate blind spots in *Gates*. Detail: block 14.
 
-- **BSCOND** (76, 2026-09-03, opus, **one-lined at the BARCH landing**; detail at
-  `Pencil-fanout.md` §"BSCOND") — **(BE-57)(iv)'s TWO WINDOW CONDITIONS DECIDED, AND THEY
-  WERE ONE GAP**: (S1) **REMOVABLE**, (S2) half theorem / half **REFUTED** then **CLOSED** by
-  the coincidence excess law; (β) at the window **UNCONDITIONAL**, S-mark's other half
-  **untouched** ((BE-142)–(BE-148), *BE141–BE147*). `w4/bscond.py`.
-- **RPOOL** (75, 2026-09-03, opus, **one-lined at the BSCOND landing**) — **(RS-5) IS
-  REFUTED** by `R20 = family_g(5,(0,0,2),(4,4,4))` — `widened.W19` with a longer core, in
-  the recorded 255 pool since 2026-08-02; 30 of 102 `def = 0` members refute, 72 carry
-  exact-point proofs, split by the **per-block** floor ((RS-14)/(RS-15)). §(K-res)
-  *RS11–RS16*.
+- **BSCOND** (76, opus, **re-one-lined at the OBAR landing**) — **(BE-57)(iv)'s TWO WINDOW
+  CONDITIONS DECIDED AND THEY WERE ONE GAP**: (S1) REMOVABLE, (S2) half theorem / half
+  REFUTED then CLOSED; (β) at the window UNCONDITIONAL ((BE-142)–(BE-148)). `w4/bscond.py`.
+- **RPOOL** (75, opus, **re-one-lined at the OBAR landing**) — **(RS-5) IS REFUTED** by
+  `R20 = family_g(5,(0,0,2),(4,4,4))`, `widened.W19` with a longer core, in the recorded 255
+  pool since 2026-08-02; 30 of 102 `def = 0` members refute, 72 carry exact-point proofs,
+  split by the **per-block** floor ((RS-14)/(RS-15)). §(K-res) *RS11–RS16*.
+- **OBAR** (78, recon-opus, the ninth pass's **U3 gate**) — **§8.2's U3 GATE IS NEGATIVE
+  THREE WAYS, SO U3 IS STRUCK AND U1 IS ALONE**; the unrun ledger had nothing to compute,
+  the object being **(T3) restated pointwise** ((OC-56)–(OC-61), §(K-out) *O52–O57*). `w4/obar.py`.
 - **BARCH** (77, 2026-09-03, recon-opus, **the ninth pass's rank 2**) — **THE METHOD CLASS IS
   NOT DEAD; IT CHANGES AMBIENT** — (BE-139)(iv) SCOPED to `Λ²K⁴`, and **14 → 12 reduces to
   the two-sided (E4), UNPROVED** ((BE-149)–(BE-155), *BE148–BE154*). `w4/barch.py`.

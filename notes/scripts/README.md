@@ -1126,6 +1126,12 @@ are a recorded *Harness debt* item (see below).
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/barch.py arith` | 0 s | ibid. *Steps BE151–BE152* ((BE-152)/(BE-153): EXHAUSTIVE over all 6 400 tuples — the per-side floor family leaves 313/164/74/24/0 escapes at `f = 2..6`, the two-sided **(E4)** leaves **0**, `PS => (E4)` with 0 counterexamples, 970 separating tuples, 0 attaining `Pi_x` violations under (E4), the 287-escape corner patch, and (BE-104)(i)'s own witness satisfying (E4). No sampling, no seed used) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/barch.py support` | 0 s | ibid. *Step BE154* ((BE-155): the `RESEARCH-ARC.md` §4 support audit read at SOURCE — `bsigma.sample_side_config`'s independent-set guard, `binduc.assert_generic_star`'s edge-only distinctness, `bimage.pt_in`'s width 4 and `bimage.span`'s `d == 6` special case all asserted present, plus the per-mode can/cannot-see reading. Discloses that no geometric mode varies `k`: every row is `k = 2`) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/barch.py validate` | 117 s | ibid. all five in one process — the landing gate; fits the 600 s foreground budget. Exact Q; the single seed is `20260902` (`bunif.SEED`), printed by every sampling mode (`arith` prints it and does not use it) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/obar.py --validate` | 10 s | `notes/Pencil-informal.md` §(K-out) *Steps O52–O57* (direction OBAR): the machinery — `B(x,y) = <x,star y> = <star x,y>`, `star^2 = id`, `star` orthogonal (200 draws) — and **(OC-57)** asserted at 21 attachment draws with `A` random of **every** dimension `0..6`, the identity's own quantified variable over its full range |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/obar.py --admis` | 33 s | ibid. *Step O52* (**(OC-56)**: the U3 admissibility gate, NEGATIVE at 18/18 seeds — `bc` not an edge of `G` with `dist_H(b,c)` in {3,4,5,6}, `pt(b)`/`pt(c)` both OFF the meet line `M`, and `H` itself min-degree `>= 2` so the suspected degree-1 hazard does not arise) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/obar.py --onerow` | 55 s | ibid. *Steps O53–O54* (**(OC-57)**/**(OC-58)**: the bar along `M`, corank jump `= [V_bc perp_B C(M)]` and "bar in a support" the SAME predicate as (T3)'s `critA or critB`, at 18/18 — with three controls, a redundant generalized bar firing the indicator POSITIVE at 18/18, a genuine redundant line at 5/18, a random line negative at 18/18) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/obar.py --hinge` | 45 s | ibid. *Step O55* (**(OC-59)**: the five-row hinge reading — jump `= 6 - dim(V_bc + <C(M)>) = 2` with the hinge ALWAYS in the support, 18/18, so U3's non-existence statement is FALSE pointwise under that reading) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/obar.py --conic` | 33 s | ibid. *Step O56* (**(OC-60)**: `star(r)` inside the 3-space `V_bc^{perp B}`, `Q(star r) = Q(r)`, `rank B\|V_bc^{perp B} = rank B\|V_bc` reproducing §(K-Delta) (M1)'s 3-or-2 dichotomy — 3 at 13/18, 2 at 5/18 on the `k = 3` serial chain — and `C(M) perp_B V_bc` equal to `C(M) prop star(r)` at 18/18, a second r-side derivation of (T3); the SIGNATURE varies within one shape, so it is not combinatorial) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/obar.py --splits` | 439 s | ibid. all of *Steps O52–O57* with the **SPLIT** varied rather than held — the `RESEARCH-ARC.md` §4 BSATUR sharpening applied to this direction's own population: all 48 eligible splits attempted over 4 shapes, 36 with a usable target-rank seed in a 12-wide window (the other 12 reported under cap), `dist_H(b,c)` in {3,4,5,6,7,9}. The only mode near the 600 s foreground budget, and a single run rather than chunked |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/ogeom.py --bound --dom --core --cert` | 288 s | `notes/Pencil-informal.md` §(K-out) *Steps O42–O45* (direction OGEOM; (OC-45) the `ℓ ≤ 5` + bridgeless class-shape check that turns `sigz.k4_stratum`'s `{1..5}^6` from a cap into a theorem (re-enumerated at `{1..12}^6`, 877 = 877); (OC-46) restriction-dominance, 1482 + 222 extensions, 0 failures; (OC-47) the live-core reduction; (OC-49) the census — 271 974/271 974 pairs settled, and (OC-39)'s 3 324 + 44 = 3 368 pairs shown to lie in exhausted cells) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/ogeom.py --hunt` | 357 s | ibid. *Step O45* ((OC-48): the exhaustive iso-reduced live-core hunt at `n(F°) ∈ {2,3}` (all `\|E°\|`) and `n(F°) = 4` (`\|E°\| ≤ 8`) — 21 086 classes here, all free, **0 candidates**) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/ogeom.py --huntn 5 8 8 <PART> 3` | 318 s each | ibid. *Step O45*, the `n(F°) = 5`, `\|E°\| = 8` cell in three deterministic slices (70 174 classes, all free) — the parts together with the two rows above make the pass's **91 260** cores |
@@ -1579,6 +1585,20 @@ all three recorded silent hazards were navigated (no `Λ²`-side draw through
 `pt_in`; no width-12 object through `span`/`dim`/`isect`; `bwin` not imported
 and `barch._aff3` returns a TUPLE), and its own `bimage.span` finding is a
 **second face of the existing eleventh item**, not a twelfth.
+**OBAR (2026-09-03, arc ordinal 78) RE-DATES the `pitch` move-down
+trigger at a SIXTH consumer.** `w4/obar.py` imports `pitch.H_motions_vbc`
+(after `outerwide`, `dominance`, `lambda`, `outer`, `outerline` — six now) plus
+`pitch.klein`/`pitch.Q`/`pitch.theta_edges`, `repin`'s `seed_probe`/
+`hodge_star`/`span_basis`/`in_span`, and `localtest.meet_line`. **NO MOVE
+MADE**, by the standing rule that a dispatch does not move a landed name;
+folded into this same item rather than opened as a new one. It opens **no new
+hazard item**: `bimage` and every `kbare/` module are **not imported at all**,
+so the `pt_in` truncation, `bimage.span`'s width-6 special case and
+`bwin.dehom`'s list return are all unreachable from it rather than merely
+avoided; and every `localtest.meet_line` call is followed by an explicit
+`assert` on the returned direction, §4 convention 1's signal-not-raise
+contract, the idiom `pitch.transfer_probe` already uses.
+
 **BSCOND (2026-09-03) adds the next `w4/` consumer of the same
 chain** — `bscond → bwin → bsharp → bearfull → bearcase → bimage → btwocut →
 binduc → bzavoid → kbare_common`, ten deep — plus a *second* consumer of

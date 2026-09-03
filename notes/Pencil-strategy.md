@@ -28,9 +28,10 @@ a recon or a spike before it can be priced.
 > on class uniformity itself — the phase's crux, untouched by all seventeen
 > docs+scripts passes. It carries **six refutations** (`∀λ`, cluster structure on
 > `Gr(3,6)`, moment-curve/positivity, a codimension comparison, definable choice,
-> and a bonus sixth) and a **ranked three-entry live shortlist** (`U1`–`U3`), each
-> with its cheapest decisive experiment and what would kill it. Start there
-> before §4's C2/C3.
+> and a bonus sixth) and a once-**ranked three-entry shortlist** (`U1`–`U3`), each
+> with its cheapest decisive experiment and what would kill it — **of which
+> only `U1` survives as of 2026-09-03** (`U2` struck, `U3` retired by OBAR).
+> Start there before §4's C2/C3.
 
 > **Start at §8 (the option board, 2026-08-20)** if you are choosing a
 > direction. It prices every live route in one table set — including the two
@@ -546,8 +547,9 @@ logical form) rather than being independent bets.
 > 2026-09-02) and §(K-ann) to **17 steps across 3 waves**. Per entry:
 > **U1 ALREADY-PURSUED** (its criterion (OUT) is §(K-out), its retarget is
 > §(K-ann), both its named probes ran 2026-08-06); **U2 DEAD** (its own kill
-> clause (i) fired at (OC-4) + (OC-3), 2026-08-06); **U3 ALREADY-PURSUED** (its
-> named first step is §(K-out) *Steps O31–O36*). Read *"assessment only"* as a
+> clause (i) fired at (OC-4) + (OC-3), 2026-08-06); **U3 STRUCK 2026-09-03** (its
+> named first step is §(K-out) *Steps O31–O36*, and direction **OBAR** then
+> answered its one residue's gate **NEGATIVE** — §(K-out) *Steps O52–O57*). Read *"assessment only"* as a
 > statement about **this subsection's own commit**, never about whether its
 > entries are unrun. Nothing below is deleted: dead entries are struck with
 > cause and date, and the six refutations stand verbatim.
@@ -729,7 +731,9 @@ Three entries, labelled **U** (uniformity) rather than continuing the `C`
 sequence — the workbook already owns `(C6)`/`(C7)` and the collision would be
 real. They are **one object seen three ways** — U1 the target, U2 the machine,
 U3 the logical form — and the ranking is by expected value toward *uniformity*,
-not by how much is already known.
+not by how much is already known. **That interlock is why the shortlist's
+collapse matters: with U2 struck and U3 retired (both 2026-09-03), U1 does not
+inherit one third of the weight but all of it.**
 
 > **U1 — ALREADY-PURSUED SINCE 2026-08-06; NOT A DISPATCHABLE ENTRY**
 > (liveness sweep, 2026-09-03). Both halves were taken up **the day after this
@@ -923,10 +927,14 @@ wrong matroid. **Honesty flag:** "`{e₂,e₃}` contains no cocircuit" is a rank
 *lower* bound, so §2.3's asymmetry has **not** been evaded — only relocated onto
 a smaller, contracted graph.
 
-> **U3 — ALREADY-PURSUED SINCE 2026-08-19 (liveness sweep, 2026-09-03): its
-> named first step is DONE; its residue is one unrun application.** *Kill
-> condition:* chart-wide stresses have no more structure than pointwise ones —
-> **REFUTED**. §(K-out) **(OC-35)** is a structure theorem (the self-stress
+> **U3 — STRUCK 2026-09-03 (direction OBAR): its named first step was DONE and
+> its one residue's GATE IS NEGATIVE.** *Kill condition:* chart-wide stresses
+> have no more structure than pointwise ones — **it FIRES, and by a cheaper
+> mechanism than this clause names** (§(K-out) (OC-58)): the residue's object is
+> a **one-row** extension of `R(H)` whose stress-support question is *pointwise*
+> equivalent to (T3), so there is no chart-wide/pointwise gap to compare in the
+> first place. The clause's original ground — *"(OC-35) is a structure
+> theorem"* — stands and is not what killed it. §(K-out) **(OC-35)** is a structure theorem (the self-stress
 > space of **any** min-degree-≥2 subgraph at **any** pencil placement is a
 > Kirchhoff flow on its topological paths, valued in the chain-span perps),
 > **(OC-36)** a three-term ledger, **(OC-37)** a class-shape floor
@@ -938,21 +946,30 @@ a smaller, contracted graph.
 > adds the constructive converse (the common-transversal mechanism producing a
 > stress with prescribed support). *Row: gap-map **(K-out)** u13/u14/u26.*
 >
-> **The residue, as a dispatchable successor rather than as U3.** SIGZ and
-> OGEOM spent the ledger on `σ = corank R(H)` — **`H` alone**, the
-> *necessary* half of input (a) ((OC-23)/(OC-24)) — **never** on
-> `F = H ∪ {bar along M}` with the bar in its support, which is U3's own
-> object. That application is unrun. **Honest flag, carried not resolved:**
-> (OC-35) needs each edge to carry a hinge line and its covector in that
-> line's 5-space perp, which the meet-line bar satisfies *on its face*, but
-> **whether the arc admits `M` as a hinge of `H` in that construction is
-> UNVERIFIED** — confirm before spending a slice. (§8's U3 entry carries the
-> same flag; the two must agree.) The option-B adjacency this entry flags was
+> **The residue is RETIRED, and the flag that gated it is ANSWERED (direction
+> OBAR, 2026-09-03, §(K-out) *Steps O52–O57*).** SIGZ and OGEOM spent the ledger
+> on `σ = corank R(H)` — **`H` alone**, the *necessary* half of input (a)
+> ((OC-23)/(OC-24)) — **never** on `F = H ∪ {bar along M}`, U3's own object.
+> The flag this entry carried — *"whether the arc admits `M` as a hinge of `H`
+> in that construction is UNVERIFIED"* — is now **answered NEGATIVE three
+> independent ways** ((OC-56)): `bc ∉ E(G)`, so the object is no subgraph of
+> `G`; a **bar is one row** where (OC-36)'s ledger counts five; and a *hinge*
+> along `M` would need **both** halves of (Λ0d) to fail, which §(K-σ) **(σ7)**
+> rules out — on (σ7)'s own basis, conjunct 4's argument plus 39/39 witnesses,
+> so chart-wide only as far as (σ7) is. And the ledger had **nothing to
+> compute**: a `b`–`c` attachment adds no topological path, its whole increment
+> being `dim(A ∩ V_bc^{⊥_E})` ((OC-57)), so the bar is in a support **iff**
+> `V_bc ⊥_B C(M)` — **(T3) verbatim** ((OC-58)). Read as a *hinge* instead, the
+> statement U3 wanted is **FALSE** at every chart point ((OC-59)). *"Unrun"*
+> was a true observation about what was run and a false inference about what
+> was left undone. (§8's U3 entry carried the same flag and moves in the same
+> commit; the two agree.) The option-B adjacency this entry flags was
 > checked and separated at §(K-ann) (gap-map (K-ann) u7: *"option B and U2 are
 > **not** the same object"*); the 2026-07-30 NO-GO on option B stands.
 
-**U3 (rank 3) — restate `hK` as a non-existence, so §2.3's asymmetry works for
-it instead of against it.**
+**U3 (~~rank 3~~ — STRUCK 2026-09-03, direction OBAR) — restate `hK` as a
+non-existence, so §2.3's asymmetry works for it instead of against it. Kept as
+the dated record; the entry's own diagnosis below is what turned out false.**
 
 *The statement it would prove.* For every class (shape, split): the framework
 `H` together with a bar along the meet line `M` joining `b` and `c` admits **no
@@ -973,10 +990,21 @@ stress lives on `E(H) ∪ {bar}`; because the pencil realization is a *weak-map
 specialization* of the generic one, the support need not be a generic circuit —
 that is precisely §(K-pure) *P6*'s `P21` exhibit — so the honest first step is
 prose, not a driver: characterize which supports can carry a chart-wide (rather
-than pointwise) stress.
+than pointwise) stress. **RUN 2026-09-03 (OBAR), and the enumeration is
+one line long:** the support in question is a **single coordinate**, the bar's,
+and its vanishing is (K-wit) — §(K-out) (OC-57)/(OC-58).
 
 *What would kill it.* If chart-wide stresses turn out to have no more structure
-than pointwise ones, U3 is only a change of wording. It is also **adjacent to
+than pointwise ones, U3 is only a change of wording. **IT IS: STRUCK 2026-09-03
+(direction OBAR, §(K-out) *Steps O52–O57*), and the kill needed no
+chart-wide-versus-pointwise comparison at all.** By rank–nullity the bar's
+support question is *pointwise* equivalent to (T3) at **every** chart point
+((OC-58)), so this paragraph's *"Why §2's diagnosis does not already refute
+it"* is the clause that fails: the non-existence U3 states **is**
+`V_bc ⊄ C(M)^{⊥_B}`, a rank **lower** bound, so §2.3's asymmetry was never
+evaded — the negative form is grammar, not logical form. The object is
+moreover not an admissible (OC-35) subgraph at all ((OC-56)), and read as a
+*hinge* the statement is outright **FALSE** ((OC-59)). It is also **adjacent to
 the un-commissioned option B** (`[r]` as a chart rational function) and must not
 be allowed to become it: U3 is an informal argument about supports, not Lean
 infrastructure, and the standing 2026-07-30 NO-GO on option B is unaffected.
@@ -1730,10 +1758,10 @@ build would be the fifth.
 
 **Below the top four, in order, each keeping its own kill condition where the row above
 states one:** **U1** (the annihilator retarget, §8.2 — now inherits the whole §4.6 shortlist's
-weight, U2 struck and U3 already-pursued, and its residual (ANH-9)(iii) *is* the same missing
-technology as (GR-10)); **U3's one residue**, the `H ∪ {bar along M}` ledger nobody ran —
-cheap and decision-relevant, but **gated by an unverified admissibility check** that should
-run first; **RPOOL's two successors** — the *repaired* (RS-5) uniformly (108 per-shape
+weight, **U2 struck and U3 struck**, and its residual (ANH-9)(iii) *is* the same missing
+technology as (GR-10)); ~~**U3's one residue**, the `H ∪ {bar along M}` ledger nobody ran~~ —
+**RETIRED 2026-09-03 (direction OBAR): the admissibility check that gated it ran and came
+back NEGATIVE**, and the ledger had nothing to compute (§(K-out) *Steps O52–O57*); **RPOOL's two successors** — the *repaired* (RS-5) uniformly (108 per-shape
 confirmations, 72 exact-point proofs, 0 counterexamples) and **a route for the
 `index < 2·g_forced` members, which have no named home** — both inside the (K-res) wave, which
 stays a **user call** and is now dearer; **block 10's one-end-series** ((β)'s largest remaining
@@ -1871,8 +1899,8 @@ DO-NOT-DO is by attack name, not by span (see below)**; *kill condition:
 (OC-19) input (c) ((GR-15)-flavoured, the oldest missing technology) — *kill
 condition: `H/X` rigid class-uniformly — decided by the `(K-out)` row, u9, and
 §(K-out) *Step O18**. §8.4's route-σ obligations 2–4 and §8.2's C2/U1 keep their
-standing notes; **§8.2's U2 and U3 do not — both were re-settled 2026-09-03, U2
-STRUCK and U3 already-pursued (see §8.2). This sentence used to read
+standing notes; **§8.2's U2 and U3 do not — both were re-settled 2026-09-03, and
+BOTH ARE NOW STRUCK: U2 by (OC-4)+(OC-3), U3 by OBAR's negative gate (see §8.2). This sentence used to read
 "C2/U1/U3", silently omitting U2; that omission turned out correct in outcome
 and is now explicit.** **The one filter note this board owed on §9's shelf is
 DISCHARGED (2026-08-26, direction ZSHEAR's secondary deliverable):** (ZH-2)
@@ -1964,8 +1992,9 @@ class shape, and **(OC-4)** reaches the bad line by a legal chart move at all fo
 certified habitats, with **(OC-3)** independently ruling the target out in
 principle as a matroid statement. **§8.6's verdict was right and its cause was
 wrong**: (GR-16) is a *different object*, an exact `3c × 3c` system on `G°`
-alone. **U3 is ALREADY-PURSUED**, not live-rank-3. The below-top-three omission
-was correct in outcome. All three surfaces are now repaired; §8.2 carries the
+alone. **U3 is ALREADY-PURSUED**, not live-rank-3 — **and STRUCK
+OUTRIGHT since 2026-09-03, direction OBAR**. The below-top-three omission was
+correct in outcome. All three surfaces are now repaired; §8.2 carries the
 detail. **(b) RESOLVED 2026-09-02 (direction GLIST, which
 owned the surface it touched)** — the `(K-grid)` **close-it** cell listed as live route (i)
 *"a colouring-existence argument over Step G12's branch bits … + (GR-4′)"*, i.e.
@@ -2029,13 +2058,16 @@ its named residuals, all slice-sized, none needing an adjudication.
 | **C2** carry `V_bc` general position as a motive conjunct | **live, unpriced** | two honest problems: every existing conjunct is per-body/local while `V_bc` is global on a vertex-deleted subgraph; and a stronger motive can be **unsatisfiable** — needs a satisfiability trace first (the L6b/F10 precedent). Nothing in `(K-dom)` bears on C2: what is struck there is **C1**, and (D4) already gives per-shape dominance — what C2 would add is the **uniform** carry. *Kill condition: a satisfiability trace returning UNSAT for the strengthened motive (C2 dies), or a conjunct landing — decided by the `(K-dom)` row and §4-C2* |
 | **U1** retarget §2.4's image problem to the annihilator | **live, rank 1** | §4.6. `(K-ann)`'s close-it still names the remaining item as *"a class-uniform independent-point recipe ((ANH-9)(iii)) — the same missing technology as §(K-grid)'s residual"*. *Kill condition: (ANH-R1) made class-uniform, or the retarget refuted — decided by the `(K-ann)` row, close-it u6* |
 | ~~**U2** hinge-rate / cycle-space presentation~~ | **STRUCK 2026-09-03 — DEAD by its own kill clause** | U2 dies if its support condition is **satisfiable at some class shape**, and it is: **(OC-4)** reaches the bad line by a legal chart move at **all four** certified habitats. **(OC-3)** independently rules the target out in principle, it being a matroid statement — *no counting, matroid or placement-blind argument* can deliver it. **This row read *"live, rank 2"* for weeks while §8.6 recorded U2 as delivered; §8.6 had the verdict right and its cause wrong** (it credited (GR-16)'s reduction, which is a *different object* — an exact `3c × 3c` system on `G°` alone). Kept as the dated record, not removed |
-| ~~**U3** restate `hK` as a **non-existence**~~ | **ALREADY-PURSUED 2026-09-03 — not live-rank-3** | Its named first step is §(K-out) *Steps O31–O36* (direction SIGZ), and it was **delivered more generally as (OC-35)** (the self-stress space of any min-degree-`≥ 2` subgraph as a Kirchhoff flow on its topological paths). Its **one genuine residue**: SIGZ and OGEOM spent the whole ledger on `σ = corank R(H)` and **never on `H ∪ {bar along M}`** — U3's own object. **Flagged, unverified:** whether `H ∪ {meet-line bar}` is an admissible (OC-35) subgraph has **not** been checked; that check gates the residue. The logical-form move (negatives uniform, positives per-shape — §2.3) remains the reason to care. *Kill condition: the `H ∪ {bar along M}` ledger run, or the admissibility check coming back negative — decided by the `(K-out)` row, u14* |
+| ~~**U3** restate `hK` as a **non-existence**~~ | **STRUCK 2026-09-03 (direction OBAR) — its kill condition FIRED on the admissibility branch** | Its named first step was **delivered more generally as (OC-35)** (§(K-out) *Steps O31–O36*, SIGZ), leaving **one genuine residue**: the ledger nobody ran on `H ∪ {bar along M}`, gated by an **unverified** admissibility check. **That check ran and is NEGATIVE three independent ways** (§(K-out) *Steps O52–O57*, **(OC-56)**): `bc ∉ E(G)` so the object is no subgraph of `G`; a **bar is one row** where (OC-36)'s ledger counts five; and a *hinge* along `M` needs **both** halves of (Λ0d) to fail, which **(σ7)** rules out — on (σ7)'s own basis, conjunct 4's argument plus 39/39 witnesses, so chart-wide only as far as (σ7) is. **And the ledger had nothing to compute:** a `b`–`c` attachment adds no topological path, its whole increment being `dim(A ∩ V_bc^{⊥_E})` **(OC-57)**, so the bar is in a support **iff** `V_bc ⊥_B C(M)` — **(T3) verbatim**, the (K-wit) row's own content **(OC-58)** — while the five-row *hinge* reading makes the statement **FALSE** pointwise **(OC-59)**. **The logical-form move (§2.3) does NOT survive**: the non-existence *is* a rank lower bound, so the asymmetry was never evaded. Kept as the dated record. *No kill condition remains — this row is closed* |
 
 `U1`–`U3` **interlocked** — one target, one machine, one logical form — rather
 than being independent bets (§4.6's own framing). **As of 2026-09-03 only U1
-survives**: U2 is struck by (OC-4)+(OC-3), U3 is already-pursued with one
-unverified residue. The interlock is why that matters — U1 inherits the
-shortlist's whole remaining weight rather than one third of it.
+survives, and now with nothing else on the shortlist at all**: U2 is struck by
+(OC-4)+(OC-3), and U3 is **struck** by direction OBAR — its residue's
+admissibility gate came back negative and its ledger had nothing to compute.
+The interlock is why that matters — **U1 inherits the shortlist's whole
+remaining weight, not one third and no longer two thirds of it.** Nothing in
+either strike bears on U1: its residual (ANH-9)(iii) is untouched by both.
 
 ### 8.3 Change the target
 
@@ -2083,11 +2115,25 @@ wrong — **(GR-16) is a different object**, an exact `3c × 3c` system on `G°`
 alone. **U2 is dead by its own kill clause**: its support condition is satisfiable
 at a class shape, **(OC-4)** reaching the bad line by a legal chart move at all
 four certified habitats, with **(OC-3)** ruling the target out in principle as a
-matroid statement. `U3`'s negative-form insight is **already-pursued**, its first
-step delivered more generally as **(OC-35)**; its one residue is the
-`H ∪ {bar along M}` ledger nobody ran, with the admissibility of that subgraph
-**unverified**. *Back-link: **§8.2**, whose rows read "live, rank 2" and "live,
-rank 3" until 2026-09-03 — both now struck there.*
+matroid statement. `U3` is **STRUCK OUTRIGHT (2026-09-03, direction OBAR)**, and
+therefore belongs on this list rather than beside it: its negative-form insight
+was already-pursued, its first step delivered more generally as **(OC-35)**, and
+its one residue — the `H ∪ {bar along M}` ledger nobody ran — is **RETIRED**, the
+admissibility check that gated it having come back **NEGATIVE** three
+independent ways (§(K-out) *Steps O52–O57*, **(OC-56)**) with the ledger itself
+having **nothing to compute** (**(OC-57)**/**(OC-58)**: the object's whole
+content is one Klein condition on `V_bc`, i.e. (T3) restated). **Do not re-open
+the residue as a ledger question, and do not re-pose "is the meet-line bar an
+(OC-35) subgraph" — it is not, and one of the three reasons is that a bar is a
+one-row constraint where that ledger counts five.** The one clause here whose
+strength is *inherited* rather than proved outright is the hinge branch, which
+rests on **(σ7)** — conjunct 4's argument plus 39/39 witnesses — so
+*"chart-wide"* means *"as far as (σ7) is"*, never more. *Back-links:
+**§8.2**, whose rows read "live, rank 2" and "live, rank 3" until 2026-09-03 —
+both now struck there, U3's row closed with no kill condition remaining; and
+**§4.6**, whose U3 blockquote and rank-3 subsection carried the identical
+admissibility flag and are struck in the same commit as this entry, the two
+having been required to agree.*
 
 **§5.3 item (i)** — the `V_bc` pullback elimination question — **STRUCK
 2026-09-03** (direction GELIM, killed before computing). **Its cause here was

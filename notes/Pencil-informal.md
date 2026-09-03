@@ -261,7 +261,7 @@ all in this file.
 | **(K-frame)** *(new, 2026-08-07, direction J)* | (K-frame) FR0–FR11 | **The shared chart-to-frame dominance residue of directions O/Q/G, attacked via §(K-grid) *Step G13*'s lemma shape — which is delivered, and is smaller than its name.** **(FR-1)** proven: "dominance" over-asks — both residues are non-containment-in-one-hypersurface, settled by one witness point + irreducibility of the *source*; (ANH-14)'s source is the whole chart (irreducibility owned by §(K-ann) (ANH-9)(ii)), (OC-16)'s is the un-owned hard-stratum target-rank locus, needed **only** to combine separately-witnessed open conditions ((FR-7)). **(FR-2)/(FR-3)** proven: at a σ-fixed grid point every hinge line is a ruling line, the two families span complementary 3-spaces (= §(K-clos) (AC-4)'s `⋆`-eigenspaces, each a Veronese conic), and **any 6×6 hinge-line determinant — both bad divisors included — is nonzero ⟺ its edges are coloured 3–3 with pairwise-distinct components per family** (`det = 128·Vdm(s)·Vdm(u)`, an identity over the function field, `framedom.m2`); incidentally makes (AC-9) obvious with the coincident pair located exactly. **(FR-4)** true-modulo-named-gap (the (GR-5)-at-`G′` restatement, hypotheses machine-checked per instance): the transport works by **regridding at `G′ = G − v + ab`** (alternation makes `pt(a) ∈ M` automatic), and a *pattern colouring* yields an exact ℚ(i) chart witness proving the (ANH-R1) β-clause at its site via (ANH-9)(iii). **(FR-5)** measured: pattern availability **1904/1904** bare-cycle sites (census pin = (ANH-13)'s 1904), **30/30 exact end-to-end certificates** with negative controls. **(FR-6)** exact per point: at θ(3,4,5), 4/8 admissible colourings land on the hard stratum at target rank — the first **constructed** inhabitants — each a literal (OC-8) witness; the **strict** availability package is **0/8**, mechanism (AC-9) (structurality open). **Since Steps FR7–FR11 (2026-08-07, direction PEX): (FR-R1) is PROVEN.** The bare-cycle stratum is **finite** (a bare-cycle site forces `c(G) = 3`, hence `n_hub ≤ 4`) and **exhaustively enumerated**: **22 isomorphism classes, 76 sites, 1976 labelled instances**, every one pattern-available, both by a uniform structural argument ((FR-9)–(FR-12): the frame's normal form, the component law, and vacuity of legality (i)) and independently by the exhaustive scan itself ((FR-8)). The former sweep-boundedness caveat **dissolves rather than widens**: `outer.sweep_shapes` covers 14 of the 22 iso classes (58 of 76 sites) and misses none of what it carries ((FR-14)). **No gap-map status moves; class uniformity — `hK`'s status — is untouched.** **Since Steps FR12–FR15 (2026-08-19, direction FRES): (FR-4)'s named gap is CLOSED.** **(FR-15)** transports (GR-5) to `G′` verbatim, minus its target-rank clause (`G′` is not tight). **The correction this direction found:** (GR-5) is a chart-**MAP** statement (hub normals free, body points derived), while (ANH-9)(iii)'s semicontinuity needs membership in the chart-**VARIETY** of (ANH-9)(ii), whose parametrization runs the opposite way (hub points free, panel normals derived — literally `widened.place_pencil_general`) — a different sentence the first does not imply. **(FR-16)** supplies it: at a σ-fixed configuration the normals *are* the points, so the two parametrizations' genericity loci coincide on the single clause `framedom.legality_free` already tests, and it also retro-certifies (FR-6)'s θ(3,4,5) points as honest `G′`-chart points. **(FR-17)** then proves the (ANH-R1) β-clause at every bare-cycle site of every `k = 4` class triple (76 class-level sites, 22 iso classes) with **no named gap**, at the arc's ordinary proven-informally standing; no driver was run — every hypothesis is already asserted per instance by the landed `framedom.py`. **No gap-map status moves; class uniformity untouched.** | **Nothing on the (ANH-14) side.** (FR-17) (direction FRES, 2026-08-19) is the unconditional discharge on the whole bare-cycle stratum, no rider. The (OC-16)-side residual ingredient (irreducibility of the hard-stratum locus, or a per-shape simultaneous witness) stays with §(K-out) (OC-8), untouched |
 | **(K-chart)** *(new, 2026-08-19, direction CIRR)* | (K-chart) CH1–CH8 | **A HIT — the arc's most-consumed un-driver-tested fact, written down once.** **(CH-1)** proves the pencil chart of `G′` (loopless, `hcard`, min degree 2, girth ≥ 4) is a nonempty, irreducible, ℚ-rational variety, a tower of affine-linear fibres; the constant-fibre-dimension restriction is **identified, not assumed** — it **is** `IsNondegPencilRealization` conjunct 3 ((CH-6)), which `hK`'s own hypothesis already supplies at `G′`. **(CH-4)** shows the restriction costs no closure (an off-restriction legal realization is still on the same irreducible variety); **(CH-5)** finds *Step FR13*'s stated hypotheses (girth ≥ 3) do **not** give nonemptiness — a Λ-triangle with a non-hub on two of its hubs empties the tower at every seed — and girth ≥ 4 does, free at `G′` three independent ways (the girth-6 table row, `gridcol.class_shape`'s two-hub-triangle filter, and the landed `not_pencilNondegFeasible_of_triangle_two_hubs`). **(CH-7)** audits all **four** named consumers — §(K-out) (OC-19), §(K-slide) (S1)(e), §(K-dom) (D4), §(K-ann) (ANH-9)(ii) — clean, two needing strictly more than bare irreducibility (rationality; the closure clause), both supplied. **(CH-8)** is a **pointer, not a new claim**: the triangle-with-two-hubs infeasibility it first derived is already landed and compiler-checked, strictly stronger, as `not_pencilNondegFeasible_of_triangle_two_hubs` (`Motive.lean:563`); this section's own addition there is only the chart-side contrast (`𝒜(Γ) ≠ ∅` at 174/200 seeds of a triangle-carrying control while `PencilNondegFeasible` is false there). **No gap-map status moves; (OC-8), (ANH-R1), (GR-15), class uniformity, the balance layer and route-ledger entry 5 all untouched** | — settled; not a gap. The one open thread is *Step FR13*'s own hypothesis-list correction (girth ≥ 4), carried as a rider there ((FR-16)'s row), not a residual here |
 | **(K-ann)** *(new, 2026-08-06)* | (K-ann) A1–A17 | **A recipe delivered and an input relocated — read the two halves separately, and do not let the first warm up the second.** **Delivered, and the arc's first *formula* rather than a search** (`Pencil-strategy.md` §2.2's sense): **(ANH-2)** the reciprocity identity `dλ(π_P ω) = Σ_e ω_e B(τ_e, δC_e)`, local at the moved vertex, no genericity hypothesis, class-uniform, verified at 276 far-chart directions × 828 motions against an independent implicit differentiation; **(ANH-3)** at the named move (translate one non-hub 2-valent far body) it collapses to **one Klein pairing**, 192 single-vertex moves. Carry its caveat: *the formula's kernel is bounded-size and class-uniform; what it pairs against (`τ`, `ω`) is not* — so U1 is **half** delivered, the move and the formula but not the inputs. **Proven, and the mechanism behind (D2):** **(ANH-1)** `λ` **is a self-stress** — of the *contracted* framework `H/P` (weld the companion into one body), stress dimension exactly `k−3` (18 seeds, 9 habitats, `k = 3..6`), so (T5)/(D2) stop being measured bounds. **Proven, `k = 4`-only:** **(ANH-4)** `E(H/P)` is a **circuit of the generic Tay matroid**, from 5/6-sparsity + `hnoRigid`, the count `5k+10 ≤ 6k+6` tight exactly at `k = 4` — the same equality case as (D3)'s `k ≥ 4`; realized side, the support is the **whole** far edge set at 14/14 class seeds, so the named move needs **no support-location step**, with an off-class control (`hnoRigid` dropped) where the circuit is a proper 5-cycle and moves off it leave `V_bc` exactly fixed. **(ANH-7)**: on the **89 %** (3820/4296) of triples with a length-5 `H/P` branch the whole criterion is **one 4-point bracket**, correct 56/56. Corrections recorded here because they were written down before the pass ran: option B and U2 are **not** the same object (`λ` is a self-stress of the contracted **far** framework, not `[r]`); U2's cocircuit reading is the **dual** of what the recipe needs (`supp τ` is a *circuit*); and the pass's own `⟨C(z₁z₂)⟩` kill set is wrong at `dim U_y = 1`, the general criterion being `ρ_y ⊥_B (V_y ∧ U_y)`. **`k`-grading:** (ANH-1/2/3/5/6) and (SD-6) are length-free (`k = 3..6`); **(ANH-4) is provably `k = 4` only**, and with `k = 4` the `hnoRigid` equality case **no `k`-graded mechanism including this one can close the class** — the verdict `Pencil-strategy.md` §4.6 already carries. **No gap-map *status* moves; class uniformity untouched** | **(ANH-R1)** `τ_β ≠ 0` at the pencil placement — `H/P − β` (count exactly 0, generically isostatic) is **rigid** there. This is **relocation #4**, of a *different kind* for three reasons and *not thereby easier*: it crosses into a matroid that **has** a min-max (Tay, Phases 12–15) whose combinatorial half (ANH-4) **proves**; it lands on a **strictly smaller graph** (`\|E(G)\|−12` edges); and by §(K-ind) *Step I6* the welded body is not a pencil body, so it sits on the **mixed stratum** — not the same problem shrunk, and `Pencil-strategy.md` §4-C3's second concrete consumer after (OUT). It does **not** evade §2.3 (a rank *lower* bound): **limiting, not fatal** — the smaller graph's matroid is Tay's, where independence *is* combinatorially characterised, so the wall changes from "no matroid sees this" to "the matroid sees it and the pin may not respect the matroid" (the weak-map / specialization-stability lead of §4.6, which now has a statement to attach to). **"Easier or merely smaller" — SETTLED AS SCOPED (2026-08-06, Steps A10–A13, direction R): merely smaller in difficulty class**, with two structural gains and one proven loss. **(ANH-9)**: (ANH-R1) per triple ⟺ one exact rank computation at one rational chart point (weak-map formulation; `Pencil-strategy.md` §4.6's lead gets its precise statement); **(ANH-10)**: the pinned census probe is a clean negative at generic guarded seeds — 26/26 `dim S_pen = 1` with full support, 58/58 length-5-branch sites `τ_β ≠ 0`, so (ANH-R1) is **discharged at the generic point of every probed triple**; **(ANH-11)/(ANH-12)**: the bad locus is **INHABITED** — exact rational guard-accepted points (8/9 target-rank hard-stratum) where `H/P − β` goes dependent and `supp` strictly drops (11 → 6 at six exact witnesses) — so **the pencil pin respects Tay's matroid only generically, never pointwise, and no counting/matroid/placement-blind route to (ANH-R1) exists** (the τ-side analogue of (OC-3), by construction). Remaining: a **class-uniform independent-point recipe** ((ANH-9)(iii)) — the same missing technology as §(K-grid)'s residual (directions T and R converge; since direction G that residual is **(GR-10)**). The per-shape M2 identity `C(H/P − β) ≢ 0` was **RUN (2026-08-06, direction Q — Steps A14–A17): no shape refuted, and the "upgrade" reading was WRONG** ((ANH-16)(i): (ANH-9)(iii) already makes each census row a proof, so the identity is the pointwise restatement of (ANH-R1)); what survives is structure — **(ANH-13)** the branch-core normal form with the exact size law `deg C(H/P − β) = 12(c(G) − 2)`, bounded exactly on the finite part of the class; **(ANH-14)** the whole **bare-cycle stratum** (1904/6426 length-5-branch sites) governed by **ONE universal irreducible degree-12 bracket polynomial**, proven `≢ 0` over the function field with `det Gram = −C²`, so (ANH-R1) there is a **chart-to-frame dominance question with no rank condition left** (the **third** independent arrival at §(K-out) (OC-16)'s residue) — **since §(K-frame) (2026-08-07, directions J/PEX) that residue is CLOSED AS AN ARGUMENT on the whole bare-cycle stratum**: (FR-R1) is **PROVEN** — the stratum is finite (22 iso classes / 76 sites / 1976 labelled instances) and exhaustively enumerated with a pattern colouring at every site — via (ANH-9)(iii) each such point is a proof of the (ANH-R1) β-clause at its site, and since 2026-08-19 (direction FRES) that gap is **CLOSED** — §(K-frame) (FR-16)/(FR-17) discharge the stratum with no rider — and, by irreducibility, **no (ANH-7)-style one-bracket recipe exists for (ANH-R1)'s own certificate**; **no gap-map status moves and `hK`'s status is untouched**; **(ANH-15)** the bad locus **strictly contains** (ANH-11)'s transversal locus (a second, axis-free mechanism; all 9 (ANH-12) witnesses verified inside `{C = 0}`); **(ANH-16)** the M2 layer's reach bracketed from both sides (degree 12 in 24 indeterminates finishes at 578 s; the θ core at the generic point does not finish at 600 s). What it *would* close: the **length-4-companion stratum outright**, via §(K-Λ)'s Λ-completeness, since `dλ ≢ 0` makes `{λ = p⁺}` proper on an irreducible chart |
-| **(K-out)** *(new, 2026-08-06)* | (K-out) O1–O51 | **(OUT)'s hypothesis, measured — the headline is the NEGATIVE.** **(OC-3)**, load-bearing: `{λ₁ = 0}` is nonempty at every class shape's chart, so **no counting, matroid or placement-blind argument can ever deliver (OUT)'s hypothesis**; the bad locus is proper (`dim(R ∩ L) = 1` at 46/46) though `2` is reachable by construction (**OC-14**, a hub slide onto `C₀`). **The combinatorial half alone does not deliver availability: (OC-2)**'s 4296-pair result collapses to **one** fact — rigidity of `H/X` — which **(OC-10)** proves **forced at every class shape**; θ(3,4,5) is the unique theta class member. **Positives are pointwise, over two disjoint pinned pools: (OC-5)** POOL-G, 356/357 and 356/356; **(OC-6)** POOL-S, 270/270; **(OC-1)**'s hinge-rate identity, exact; **(OC-4)** the bad line reached by a legal chart move at all four habitats. **(OUT) is available, never automatic, not contradicted. No `place_pencil_general` battery may be quoted as a rate or as evidence about a generic chart point** — POOL-G figures over the 318 coincidence-free frames, never the raw 357. **(OC-7) is CLEARED** (32/357, fixed by `repin.star_generic`); **(OC-9)**'s guard rejects 58/357 ⊋ 39. **(OC-17)** frees the hard-stratum qualifier (`dim R_a = corank(G′) − s₀` at **every** legal chart point, so `Z` is Zariski **open**); **(OC-18)**: `H/X` rigid at a chart point ⟹ `L_b ⊄ R₁`, degree-free, at both ends of every class pair (5226/5226). **(OC-19)** reduces (OC-8) at a (shape, split) to `Z ≠ ∅` + chart irreducibility + one `H/X`-rigid chart point; **`Z ≠ ∅` alone does NOT suffice** (`--control`: 3 points in `Z` with `L_b ⊆ R₁` — openness **plus** irreducibility **plus** a witness all needed). **(OC-20)/(OC-21)** restate the bad case in perp form and strip `x₁`; **(OC-22)** lands the residue in (ANH-R1)'s object class. **Chart irreducibility (input (b)) is PROVEN** (§(K-chart) **(CH-1)(a)**). **Input (a) factors: (OC-23)** its `s₀` half is independence of `H = G − v − a` alone, at every chart point; **(OC-24)** the dichotomy, and `{σ = 0} = ∅` would make `hK` **FALSE there** (a **PENCIL event**), so that half is **necessary for `hK`** and never the binding obstruction; **(OC-25)** the target-rank half **is** §(K-tight) *Step 2* item 1 one split down; **(OC-26)** its failure is a **disjunction**, both branches forcing a codimension-2 Schubert jump of `D`; **(OC-27)** 138/138 witnesses; **(OC-28)** the `s₀` half is **dominated** by §(K-grid) (GR-10), with `{σ = 0}` a **proper** open. **The `σ > 0`-everywhere hunt RAN twice: NO HIT either time** (SIGZ, then OGEOM) — detail in the disproof paragraph below. **(OC-35)**: the self-stress space of any min-degree-≥2 subgraph is a **Kirchhoff flow on its topological paths** valued in the chain-span perps (§(K-pure) *P0*); **(OC-36)**: hence `corank R(F) = Σδ_Q + ρ_F − slack(F)`; **(OC-37)**, the theorem: at a class shape `slack(F) ≥ 0` with equality **iff** `F` is a cycle or bouquet, so **no `H`-supported stress in the habitat is combinatorially forced**, thetas included (enumerated, no cap: 2614 shapes, 215 906 supports, zero `slack < 0`). **(OC-38)**: `P21` (**`hnoRigid`-FALSE**) is **one unit short** and its five σ-jump seeds are **EXACTLY** the five where `localtest.plane_basis` degenerates — the arc's only exhibited instance sits on the (OC-7) coincidence locus. **(OC-39)**: 3368/3368 exact-ℚ full-row-rank certificates for `{σ = 0} ≠ ∅` over the exhaustive `K4` stratum, since **upgraded to a theorem by (OC-49)**. **The target-rank half (a₁) is half-proven and half-reduced to ONE determinant (OSCHU).** **(OC-29)**: the Schubert 4-space is §(K-out)'s own hub pencils, `M̂ ∧ W = L_b ⊕ L_c`, Klein perp `⟨C(M), C(bc)⟩` — so **`dimK ≥ 1` always**. **(OC-30)**: the bad set on `M` is **exactly** the transversals of `M` and `bc` inside `D`, five rows, so `\|B\| ≤ 2` off the all-bad case. **(OC-31)**: at **every** target-rank chart point of the **whole graph `G`** the two hinge lines come free from the tower, forcing **`dimK ≤ 2`** — so **`hK` at ONE `G`-point kills (OC-26)(ii)'s `dimK ≥ 3` disjunct at every eligible split at once** (292/292 + 174/174); **(OC-32)**: a third generator is structurally unavailable, so the bound is exact. **(OC-33)**: the surviving disjunct forces `Q\|_D` degenerate, so **`rank(Q\|_D) = 3` at one target-rank `G`-point ⟹ input (a) there** — one 3×3 determinant, `x₁`/`λ`/stratum-free (570/570, 174/174). **(OC-34)**: the (a₂) re-keying is **DONE and corrects a figure quoted since (OC-28)** — §(K-grid)'s 907 *labelled* shapes are only **75 classes** covering **19** of §(K-out)'s **174**; the other **155 are certified DIRECTLY**, so the `s₀` half is free at **all 174 and *without* (GR-10)**. **The (a₁) residue is RUN (OQRANK, *Steps O37–O41*): (OC-40)/(OC-41)** complete the ⋆-eigen-block mechanism (forced `(1,2)` profile; `rank(Q\|_D) = [Q(g) ≠ 0] + rank Gram(D_Y)`); **(OC-42)** is a combinatorial **WALL** — a single-class `b`–`c` `X`-path forces `rank(Q\|_D) = 2` at **every** draw, refuting the naive first-colouring route **as a class statement**; **(OC-43)/(OC-44)**: **input (a) holds at all 174 certified classes**, per-class/per-exhibited-colouring-generic, at exact `ℚ(i)` σ-fixed grid points; zero rulings — **the (K-tight)-event branch never fires** — every rank-2 point still witnessing input (a) via (OC-30)(ii). **(OC-44)(iii) is now REDUCED, and 19 of the 20 second-confinement points are ACCOUNTED FOR (direction OWALL, *Steps O47–O51*).** **(OC-50)**: the whole (a₁) grid criterion is **TWO DIRECTION NETWORKS IN ℚ³** — apolarity dictionary, `Q` = discriminant of the symbol — no Plücker, no `ℚ(i)`, no rigidity matrix of `G` (every OQRANK verdict reproduced clause-by-clause, 72 standing points). **(OC-51)**: `Q(g) ≠ 0 ⟺ `βγ` is INDEPENDENT of the block network in the class-parametrized direction-network matroid — an **O(1) rank test per colouring** — with three proven certificates of the negation: (W) the (OC-42) wall, (C) a NEW monochromatic **cut**, and (Z) a NEW **`≤ 3`-class cycle vanishing rule** that welds nodes and makes (W) visible on the contracted network. **(OC-52)**: (OC-44)(iii)'s wall-avoidance conjunct is **IMPLIED by** its rank conjunct, so *Step O41*'s attack (2) (exchange to break the wall) proves a **consequence**, never the target. **(OC-53)**: the `Y`-block is nondegenerate at 10 896/10 896 classified colourings, with a two-cut sufficient condition — never the binding half. **(OC-54)**, with the colouring cap REMOVED: all 8 514 certificate colourings of all 174 classes — **(OC-44)(iii) 174/174**, never fewer than 4 good colourings at a class; of 2 340 confined, **2 088 (W), 248 (Z), 4 uncertified, (C) zero**; at the FIRST colouring **7 wall + 19 (Z)** reproduces OQRANK's 7 + 20 and **accounts for 19 of OQRANK's 20 with (Z)** (one unmatched, populations not directly comparable); at **98/98 (shape, SPLIT) pairs** — the variable OQRANK held fixed — a good colouring exists, and there the raw wall is the **minority** mechanism (292 of 672). **(OC-55)**: what is left is **(OW)**, a geometry-free partition-constrained colouring-existence statement in **(GR-10)'s object class**; *Step O41*'s guessed `≥ 4`-class cancellation is **INVERTED** — the mechanism is `≤ 3`-class independence forcing coefficients to zero. **Input (a) stays OPEN as a class-uniform statement and is NOT an independent gap; (OC-8) stays OPEN, reshaped; (OC-44)(iii) restated as (OW), still OPEN; no gap-map status move.** | **(OC-8)**: at every class shape, a hard-stratum target-rank point of the **whole-graph** chart with `L_b ⊄ R₁` or `L_c ⊄ R₄`. That is a rank **lower** bound at a pencil placement — `Pencil-strategy.md` §2.3's wall **relocated** onto the smaller `H/{e₂,e₃,e₄}` and **weakened, not crossed** — and (OC-3) says it **cannot be discharged combinatorially**, so any proof must be a genericity argument on the whole-graph chart, which the arc has never established because `λ` is a **far** datum. The one symbolically tractable piece — `L_b ⊄ R₁` as a polynomial non-vanishing (`Pencil-strategy.md` §5.3) — is **DELIVERED on the `ℓ_min = 5` stratum** ((OC-16): `Δ = [a,u,b] · C₀(pt b) ≢ 0`, the bad line `C₀` in **closed form**) and **blocked off it** ((OC-15): no information at `ℓ_min ≥ 6`; 8 of 5226 pairs); at a **degree-3 hub** (3081/5226 at the `b` end) (OC-8) restates with **no rank condition left** — availability ⟺ the hard-stratum target-rank locus `⊄ {pt(b) ∈ C₀}` — with **chart-to-frame dominance** the named residue ((OC-16)'s gap); non-containment is **witnessed by construction** at θ(3,4,5) (§(K-frame) (FR-6)), the strict availability package is **0/8 at σ-fixed witnesses** with the (AC-9) coincidence the named mechanism (structurality open), and at grid points `Δ` is **combinatorial** ((FR-3)). **Both routes to a disproof are now confined.** The **counting** one is DEAD ((OC-37), SIGZ): no `H`-supported self-stress is combinatorially forced, so `{σ = 0} = ∅` can never be certified by a count. The **geometric** one is **free by an argument, not a sample**, on everything searched (*Steps O42–O46*, OGEOM): `σ` depends on the **induced** `H` alone ((OC-46)); paths of length `≥ 6` are dead, so `σ` is the corank of `H`'s **live core**, and girth `≥ 7` forced by `hnoRigid` **kills (OC-37)(ii)'s one-unit topology class-uniformly** ((OC-47)); 91 260 live cores, exact-ℚ corank-0 witnesses, **0 candidates** ((OC-48)), settling `{σ = 0} ≠ ∅` at **275 342** class pairs and **upgrading (OC-39) from sample to theorem** ((OC-49)). **It does NOT close:** unsearched are `n(F°) ∈ {4,5}` at `|E°| ≥ 9` and **every `n(F°) ≥ 6`** — compute frontier below, ideas frontier above. The residual is now one shape-free sentence: *at every live core the Kirchhoff map `⊕_Q S_Q^⊥ → (K⁶)^nodes` is injective at the generic chart point.* **Input (a), `Z ≠ ∅`, itself factors** (§(K-out) direction ZNEQ): a **necessary-for-`hK`** half — `H` independent at some chart point, equivalently at the generic one — **dominated** by §(K-grid) (GR-10), free at 907/907 of its pool once **re-keyed** against this section's class-shape population (a combinatorial cross-pool job, no new mathematics; the two pools are labelled-instance pools with different keys and are **not** re-keyed here); and a **target-rank** half, the Schubert **non-jump** `dim(D ∩ (M̂ ∧ W)) ≤ 1` (`D` the far framework `H`'s relative twist space, `W` the hub line's 2-space) — one-point decidable, `x₁`-free, `λ`-free, stratum-free, in the same object class as (OC-20)'s perp form; measured to fail nowhere (138/138 (shape, split) witnesses, (OC-27)) but a **recipe** is missing, exactly as for (OC-19) input (c). Neither half is proven class-uniformly. **The only known failure mechanism for the necessary half is a self-stress of a short theta sub-multigraph inside `H`** (§(K-flank) *F5(d)*'s support) — a hit there would make `hK` **FALSE** at that shape, a **PENCIL event**, not a (K-tight) one, and needs the direction-A pivot rule (`Pencil-fanout-archive.md` §"Direction A") in force before any dispatch.|
+| **(K-out)** *(new, 2026-08-06)* | (K-out) O1–O57 | **(OUT)'s hypothesis, measured — the headline is the NEGATIVE.** **(OC-3)**, load-bearing: `{λ₁ = 0}` is nonempty at every class shape's chart, so **no counting, matroid or placement-blind argument can ever deliver (OUT)'s hypothesis**; the bad locus is proper (`dim(R ∩ L) = 1` at 46/46) though `2` is reachable by construction (**OC-14**, a hub slide onto `C₀`). **The combinatorial half alone does not deliver availability: (OC-2)**'s 4296-pair result collapses to **one** fact — rigidity of `H/X` — which **(OC-10)** proves **forced at every class shape**; θ(3,4,5) is the unique theta class member. **Positives are pointwise, over two disjoint pinned pools: (OC-5)** POOL-G, 356/357 and 356/356; **(OC-6)** POOL-S, 270/270; **(OC-1)**'s hinge-rate identity, exact; **(OC-4)** the bad line reached by a legal chart move at all four habitats. **(OUT) is available, never automatic, not contradicted. No `place_pencil_general` battery may be quoted as a rate or as evidence about a generic chart point** — POOL-G figures over the 318 coincidence-free frames, never the raw 357. **(OC-7) is CLEARED** (32/357, fixed by `repin.star_generic`); **(OC-9)**'s guard rejects 58/357 ⊋ 39. **(OC-17)** frees the hard-stratum qualifier (`dim R_a = corank(G′) − s₀` at **every** legal chart point, so `Z` is Zariski **open**); **(OC-18)**: `H/X` rigid at a chart point ⟹ `L_b ⊄ R₁`, degree-free, at both ends of every class pair (5226/5226). **(OC-19)** reduces (OC-8) at a (shape, split) to `Z ≠ ∅` + chart irreducibility + one `H/X`-rigid chart point; **`Z ≠ ∅` alone does NOT suffice** (`--control`: 3 points in `Z` with `L_b ⊆ R₁` — openness **plus** irreducibility **plus** a witness all needed). **(OC-20)/(OC-21)** restate the bad case in perp form and strip `x₁`; **(OC-22)** lands the residue in (ANH-R1)'s object class. **Chart irreducibility (input (b)) is PROVEN** (§(K-chart) **(CH-1)(a)**). **Input (a) factors: (OC-23)** its `s₀` half is independence of `H = G − v − a` alone, at every chart point; **(OC-24)** the dichotomy, and `{σ = 0} = ∅` would make `hK` **FALSE there** (a **PENCIL event**), so that half is **necessary for `hK`** and never the binding obstruction; **(OC-25)** the target-rank half **is** §(K-tight) *Step 2* item 1 one split down; **(OC-26)** its failure is a **disjunction**, both branches forcing a codimension-2 Schubert jump of `D`; **(OC-28)** the `s₀` half is **dominated** by §(K-grid) (GR-10), with `{σ = 0}` a **proper** open. **The `σ > 0`-everywhere hunt RAN twice: NO HIT either time** (SIGZ, then OGEOM) — detail in the disproof paragraph below. **(OC-35)**: the self-stress space of any min-degree-≥2 subgraph is a **Kirchhoff flow on its topological paths** valued in the chain-span perps (§(K-pure) *P0*); **(OC-36)**: hence `corank R(F) = Σδ_Q + ρ_F − slack(F)`; **(OC-37)**, the theorem: at a class shape `slack(F) ≥ 0` with equality **iff** `F` is a cycle or bouquet, so **no `H`-supported stress in the habitat is combinatorially forced**, thetas included (enumerated, no cap: 2614 shapes, 215 906 supports, zero `slack < 0`). **(OC-56)–(OC-61) (OBAR, 2026-09-03) — §8.2's U3 gate NEGATIVE, residue RETIRED.** `H ∪ {bar along M}` is no (OC-35) object: `bc ∉ E(G)` (`k ≥ 3`); a bar is **one** row where (OC-36) counts five; a *hinge* along `M` needs **both** halves of (Λ0d) to fail, which **(σ7)** rules out — on its basis, **conjunct 4 plus 39/39 witnesses**, chart-wide only as far as (σ7) is. Replacing it: `corank R(H ⊕_A bc) = corank R(H) + dim(A ∩ V_bc^{⊥_E})`, coefficients realized exactly there **(OC-57)**; so the bar is supported **iff** `V_bc ⊥_B C(M)` — **(T3) verbatim**, (K-wit)'s content **(OC-58)**; the hinge reading is **FALSE** pointwise, jump `6 − dim(V_bc + ⟨C(M)⟩) ≥ 2` **(OC-59)**; `M` redundant iff `C(M) ∝ ★r` **(OC-60)**. **Nothing left for `δ_Q`/`slack` (OC-61).** No status move. **(OC-38)**: `P21` (**`hnoRigid`-FALSE**) is **one unit short** and its five σ-jump seeds are **EXACTLY** the five where `localtest.plane_basis` degenerates — the arc's only exhibited instance sits on the (OC-7) coincidence locus. **(OC-39)**: 3368/3368 exact-ℚ full-row-rank certificates for `{σ = 0} ≠ ∅` over the exhaustive `K4` stratum. **The target-rank half (a₁) is half-proven and half-reduced to ONE determinant (OSCHU).** **(OC-29)**: the Schubert 4-space is §(K-out)'s own hub pencils, `M̂ ∧ W = L_b ⊕ L_c`, Klein perp `⟨C(M), C(bc)⟩` — so **`dimK ≥ 1` always**. **(OC-30)**: the bad set on `M` is **exactly** the transversals of `M` and `bc` inside `D`, five rows, so `\|B\| ≤ 2` off the all-bad case. **(OC-31)**: at **every** target-rank chart point of the **whole graph `G`** the two hinge lines come free from the tower, forcing **`dimK ≤ 2`** — so **`hK` at ONE `G`-point kills (OC-26)(ii)'s `dimK ≥ 3` disjunct at every eligible split at once** (292/292 + 174/174); **(OC-32)**: a third generator is structurally unavailable, so the bound is exact. **(OC-33)**: the surviving disjunct forces `Q\|_D` degenerate, so **`rank(Q\|_D) = 3` at one target-rank `G`-point ⟹ input (a) there** — one 3×3 determinant, `x₁`/`λ`/stratum-free (570/570, 174/174). **(OC-34)**: the (a₂) re-keying is **DONE and corrects a figure quoted since (OC-28)** — §(K-grid)'s 907 *labelled* shapes are only **75 classes** covering **19** of §(K-out)'s **174**; the other **155 are certified DIRECTLY**, so the `s₀` half is free at **all 174 and *without* (GR-10)**. **The (a₁) residue is RUN (OQRANK, *Steps O37–O41*): (OC-40)/(OC-41)** complete the ⋆-eigen-block mechanism (forced `(1,2)` profile; `rank(Q\|_D) = [Q(g) ≠ 0] + rank Gram(D_Y)`); **(OC-42)** is a combinatorial **WALL** — a single-class `b`–`c` `X`-path forces `rank(Q\|_D) = 2` at **every** draw, refuting the naive first-colouring route **as a class statement**; **(OC-43)/(OC-44)**: **input (a) holds at all 174 certified classes**, per-class/per-exhibited-colouring-generic, at exact `ℚ(i)` σ-fixed grid points; zero rulings — **the (K-tight)-event branch never fires** — every rank-2 point still witnessing input (a) via (OC-30)(ii). **(OC-44)(iii) is now REDUCED, and 19 of the 20 second-confinement points are ACCOUNTED FOR (direction OWALL, *Steps O47–O51*).** **(OC-50)**: the whole (a₁) grid criterion is **TWO DIRECTION NETWORKS IN ℚ³** — apolarity dictionary, `Q` = discriminant of the symbol — no Plücker, no `ℚ(i)`, no rigidity matrix of `G` (every OQRANK verdict reproduced clause-by-clause, 72 standing points). **(OC-51)**: `Q(g) ≠ 0 ⟺ `βγ` is INDEPENDENT of the block network in the class-parametrized direction-network matroid — an **O(1) rank test per colouring** — with three proven certificates of the negation: (W) the (OC-42) wall, (C) a NEW monochromatic **cut**, and (Z) a NEW **`≤ 3`-class cycle vanishing rule** that welds nodes and makes (W) visible on the contracted network. **(OC-52)**: (OC-44)(iii)'s wall-avoidance conjunct is **IMPLIED by** its rank conjunct, so *Step O41*'s attack (2) (exchange to break the wall) proves a **consequence**, never the target. **(OC-53)**: the `Y`-block is nondegenerate at 10 896/10 896 classified colourings, with a two-cut sufficient condition — never the binding half. **(OC-54)**, with the colouring cap REMOVED: all 8 514 certificate colourings of all 174 classes — **(OC-44)(iii) 174/174**, never fewer than 4 good colourings at a class; of 2 340 confined, **2 088 (W), 248 (Z), 4 uncertified, (C) zero**; at the FIRST colouring **7 wall + 19 (Z)** reproduces OQRANK's 7 + 20 and **accounts for 19 of OQRANK's 20 with (Z)** (one unmatched, populations not directly comparable); at **98/98 (shape, SPLIT) pairs** — the variable OQRANK held fixed — a good colouring exists, and there the raw wall is the **minority** mechanism (292 of 672). **(OC-55)**: what is left is **(OW)**, a geometry-free partition-constrained colouring-existence statement in **(GR-10)'s object class**; *Step O41*'s guessed `≥ 4`-class cancellation is **INVERTED** — the mechanism is `≤ 3`-class independence forcing coefficients to zero. **Input (a) stays OPEN as a class-uniform statement and is NOT an independent gap; (OC-8) stays OPEN, reshaped; (OC-44)(iii) restated as (OW), still OPEN; no gap-map status move.** | **(OC-8)**: at every class shape, a hard-stratum target-rank point of the **whole-graph** chart with `L_b ⊄ R₁` or `L_c ⊄ R₄`. That is a rank **lower** bound at a pencil placement — `Pencil-strategy.md` §2.3's wall **relocated** onto the smaller `H/{e₂,e₃,e₄}` and **weakened, not crossed** — and (OC-3) says it **cannot be discharged combinatorially**, so any proof must be a genericity argument on the whole-graph chart, which the arc has never established because `λ` is a **far** datum. The one symbolically tractable piece — `L_b ⊄ R₁` as a polynomial non-vanishing (`Pencil-strategy.md` §5.3) — is **DELIVERED on the `ℓ_min = 5` stratum** ((OC-16): `Δ = [a,u,b] · C₀(pt b) ≢ 0`, the bad line `C₀` in **closed form**) and **blocked off it** ((OC-15): no information at `ℓ_min ≥ 6`; 8 of 5226 pairs); at a **degree-3 hub** (3081/5226 at the `b` end) (OC-8) restates with **no rank condition left** — availability ⟺ the hard-stratum target-rank locus `⊄ {pt(b) ∈ C₀}` — with **chart-to-frame dominance** the named residue ((OC-16)'s gap); non-containment is **witnessed by construction** at θ(3,4,5) (§(K-frame) (FR-6)), the strict availability package is **0/8 at σ-fixed witnesses** with the (AC-9) coincidence the named mechanism (structurality open), and at grid points `Δ` is **combinatorial** ((FR-3)). **Both routes to a disproof are now confined.** The **counting** one is DEAD ((OC-37), SIGZ): no `H`-supported self-stress is combinatorially forced, so `{σ = 0} = ∅` can never be certified by a count. The **geometric** one is **free by an argument, not a sample**, on everything searched (*Steps O42–O46*, OGEOM): `σ` depends on the **induced** `H` alone ((OC-46)); paths of length `≥ 6` are dead, so `σ` is the corank of `H`'s **live core**, and girth `≥ 7` forced by `hnoRigid` **kills (OC-37)(ii)'s one-unit topology class-uniformly** ((OC-47)); 91 260 live cores, exact-ℚ corank-0 witnesses, **0 candidates** ((OC-48)), settling `{σ = 0} ≠ ∅` at **275 342** class pairs and **upgrading (OC-39) from sample to theorem** ((OC-49)). **It does NOT close:** unsearched are `n(F°) ∈ {4,5}` at `|E°| ≥ 9` and **every `n(F°) ≥ 6`** — compute frontier below, ideas frontier above. The residual is now one shape-free sentence: *at every live core the Kirchhoff map `⊕_Q S_Q^⊥ → (K⁶)^nodes` is injective at the generic chart point.* **Input (a), `Z ≠ ∅`, itself factors** (§(K-out) direction ZNEQ): a **necessary-for-`hK`** half — `H` independent at some chart point, equivalently at the generic one — **dominated** by §(K-grid) (GR-10), free at 907/907 of its pool once **re-keyed** against this section's class-shape population (a combinatorial cross-pool job, no new mathematics; the two pools are labelled-instance pools with different keys and are **not** re-keyed here); and a **target-rank** half, the Schubert **non-jump** `dim(D ∩ (M̂ ∧ W)) ≤ 1` (`D` the far framework `H`'s relative twist space, `W` the hub line's 2-space) — one-point decidable, `x₁`-free, `λ`-free, stratum-free, in the same object class as (OC-20)'s perp form; measured to fail nowhere (138/138 (shape, split) witnesses, (OC-27)) but a **recipe** is missing, exactly as for (OC-19) input (c). Neither half is proven class-uniformly. **The only known failure mechanism for the necessary half is a self-stress of a short theta sub-multigraph inside `H`** (§(K-flank) *F5(d)*'s support) — a hit there would make `hK` **FALSE** at that shape, a **PENCIL event**, not a (K-tight) one, and needs the direction-A pivot rule (`Pencil-fanout-archive.md` §"Direction A") in force before any dispatch.|
 | **(K-ind)** *(new, 2026-08-05)* | (K-ind) I0–I6 | **REFUTED as a route**, and not merely "no invariant found": the transport structure the question presupposes does not exist on the `hK` habitat. **(I1)** tight ⟺ `(|V|,|E|) = (5c+1, 6c)`, so two tight graphs of equal cycle rank have equal size and **no arm of `pencil_reduction` can relate them**; **(I2)** `splitOff` at a degree-2 vertex takes `index 0 → 1` preserving `c` and fixing the hub multigraph `G°`; **(I4)** inside one `G°` the class is a **finite antichain**, and the class's infinitude is entirely in the `G°` direction, which no move reaches. **(I0)**: the failure locus is a **divisor**, so its only numerical invariant is the single bit `codim F = 1`, which *is* `hK` — the question as posed is circular, and the image-side reading is (K-dom), already struck. One genuine positive by-product: **(I3)**, subdivision-monotonicity of `Image(V_bc)` — real, new, *and pointing the wrong way*, since the induction descends and every descent bottoms out at `k ≤ 3` where (D1) caps the rank at 4 | — refuted as a route. Any future "strengthen the inductive invariant" proposal must first exhibit a move relating two class members; `pencil_reduction`'s five arms supply none |
 | **(K-Δ)** *(new, 2026-08-05)* | (K-Δ) | **NO HIT — the literature lead is discharged**, not open. Two independently fatal hypothesis failures: **(M1)** the subject's objects are *totally isotropic* subspaces and `V_bc` never is (Klein Gram rank 3, or 2 on serial chains — an `O(6)`-invariant, not a frame choice), so it has no Wick vector and carries no Δ-matroid; **(M3)** the ground set is `[3]`, fixed by `dim Λ²K⁴ = 6`, and never grows with the graph — `Pencil-strategy.md` §2.2's ingredient-2 failure in the target literature's own terms. Recorded as a *pass*: the **form** matches exactly (transversality to two coordinate isotropics = two Wick coordinates nonzero). Buys two readings, not a route: **(N1)** the `ℓ = 3` criterion as five feasible pairs in the Dress–Havel metroid of the five lines, and **(N2)** the **pentagon** reading — `Q(z) ≠ 0` ⟺ no two non-consecutive edges of the closed chain `b–x–y–c–a–b` meet | — discharged. `Pencil-strategy.md` §7's "one unverified lead" is now a checked negative with the reason |
 | **(K-bare)/(K-bare-ext)** *(new, 2026-07-30)* | (K-bare-ext) BE1–BE154 | **THE TARGET IS (BE-14), DIRECT ATTAINMENT** — *the pencil stratum attains `6(|V|−1) − def₃(G)`*, discharging `hbareSplit` **and** `PencilPair`'s unconditional conjunct. **`hbareSplit` OPEN, PINNED** (*"C: cheap numerics + A"*); **`∀`-seed form REFUTED** (KBARE-FALSIFY, **T1**), extension route **NO-GO**, `∃`-seed meeting §(K-tight)'s wall. (BE-14) **EXISTENTIAL** ((BE-16)), falsification **positive** (774/774). ***Steps BE1–BE13* HISTORY**: the motive ((BE-10)), bare realizability **UNCONDITIONAL** ((BE-11)), the pencil condition one hub determinant ((BE-12)), the cone cap ((BE-13)). **ROUTES CLOSED:** ear-decomposition induction ((BE-43), **S-mark's pin STANDS**); falsification ((BE-15), cap-free for the **TRIANGLE** only, (BE-23)(ii)); `G²` ((BE-17)); transversality ((BE-16)(iv)/(BE-27)). **THE DECOMPOSITION IS EXHAUSTIVE** — 1-cuts compose ((BE-18)), 3-connected ⇒ `def₂ = 0` ((BE-20)), the 2-cut `def₃` law ((BE-21)/(BE-23)) — base **FREE**, leaving **only the 2-cut composition lemma**: *attains ⟺ `dim(ρ̄₁+ρ̄₂) = min(δ₁+δ₂,6) + a₁+a₂`*; (BE-22)(iii) its `a = 0` case, **proviso LOAD-BEARING**, dropped by (BE-22), restored at (BE-86)(i), **PINNED as S-mark**; LEAF base free ((BE-25)), residue **cross-pair welding** ((BE-28)(i)). At a 2-cut `δ_{uv}(H) = max(0, δ₁+δ₂−6)` ((BE-73)(ii)), so **one rigid side kills the general-position half** ((BE-22)(vi)). **THE GEOMETRY.** **EAR** `ρ̄₂` a Klein chain, `ρ ≤ dist` ((BE-30)), **upper** only ((BE-102)(i)); bad locus (P)/(Z)/(R) ((BE-33)), traps configurational ((BE-34)); off it a **series/parallel recursion** ((BE-31)). Combinatorially the **SHORT-CYCLE LAW**: `g` supermodular, `girth(Q) ≥ 6` ((BE-39)), `≤ 6`-cycles forcing `δ = 0` ((BE-40)), **CONTAINING** the merge theorems ((BE-32)); **(BE-32)(+)** a **THEOREM** ((BE-74)), star-2/SPREAD **RETIRED**, (BE-32)(ii) its `|B|=1` case, closure-restriction **MOOT** ((BE-75)); **(BE-41)(ii) REFUTED AS STATED** by (BE-41)(iii) ((BE-76)). **THE EAR CASE: (α) CLOSED** ((BE-35)); **(β) PROVED AT THE WINDOW BY AN UNCONDITIONAL CLASS THEOREM**, residue outside ((BE-47)/(BE-48)/(BE-54)–(BE-58)). **§(K-bare-ext)'s TWO WINDOW CONDITIONS ARE DECIDED, and were ONE**: `p_{w₁} ∈ π_u`, `p_{w₂} ∈ π_v`, so coincidence lands on `L` and `ℓ_u`, `ℓ_v` MEET ((BE-143)) — (S1) failing IS (S2)'s regime, covered by (BE-55)(iii)'s **PLANE-AGNOSTIC** proof at `σ = ℓ_u ∨ ℓ_v` ((BE-144)); non-skew ⟺ `L` meets `π₁ ∩ π₂`, codim 1, forcing **EXHAUSTIVE at two** ((BE-145)). **(S2)'s *no such mechanism* REFUTED** — coincidence pins `λ` ⟺ `W ⊆ Σ_p`, at real middles incl. R-node ((BE-146)) — then **CLOSED**: `Σ_p` caps `dim ρ̄₁ ≤ 3`, so `excess = dim ρ̄₁ − 2 ≤ 1`, else the slice is restored ((BE-147)). **(S1) is REMOVABLE** (100/100 on the excluded stratum), its sampler evidence **STRUCK as circular** ((BE-142)/(BE-148)). By label: (β) false at `δ₁ ≥ 5`, correct form `loss ≤ max(0,δ₁+δ₂−6)` ((BE-36)), quantifier one generic draw ((BE-37)/(BE-37)(ii)/(BE-38)), (Z) over (R) ((BE-51)); **(b2) a COROLLARY of (b1)** ((BE-42)), sharpening **FALSE at a DICHOTOMY** ((BE-44)/(BE-45)/(BE-46)); **(b3) CHEAPEST, by a SEPARATION THEOREM**, residues **DISJOINT** ((BE-50)), domain **STRUCK** at `π_u = π_v` ((BE-49)); openness + irreducibility make **one exact-ℚ witness a proof** ((BE-52)/(BE-53)).  **THE GENERAL-PIECE SIDE — the INTERNAL R-NODE.** `ρ̄` at every SPQR node obeys ONE **decorated-skeleton law** ((BE-59)/(BE-60)), the (BE-22)(vi) collapse being `δ_{xy}(B−uv−e) = 0` ((BE-61)); drawn (α)/(β) content **EMPTY** (24/24), leaving **achievable decorations** ((BE-62)) and the chord step ((BE-63)). **REDUCED TO EARS**: at fixed hub flags a piece's configurations are a **PRODUCT of ear chains mod `G`** ((BE-64)), welded attainment **FREE** ((BE-66)(i)); (BE-30)(iii)'s small-`m` correction leaves its branch **NON-ATTAINING** at `π_x = π_y` ((BE-66)(iii)/(iv)), **BENIGN at a 2-cut** ((BE-86)(iii)); half (B) **28/28** peels ((BE-67)(i)). **EXHAUSTIVENESS RETIRED** ((BE-69), warrant corrected at (BE-122)/(BE-123)); **no branch crosses a 2-cut**, so `ρ̄₁, ρ̄₂` are **DISJOINT blocks** on **ONE datum** ((BE-70)); a third mechanism could only be a **reach shortfall** ((BE-71)). **`G` SETTLED ON (CH-1)'s CLASS**: `G` empty at *every* flag ⟺ `Chart(H) = ∅`, impossible under `hcard` + girth `≥ 4` ((BE-72)). **(BE-66)(iv) REFUTED OUTRIGHT** ((BE-73)(i)): `π_u = π_v` **IS** forced with both sides flexible (**392 of 928**, (BE-81)), the closure **FACTORIZING**, so cross-cut-only forcing needs `δ₁ = δ₂ = 1` ((BE-77)/(BE-77)(i)/(BE-77)(ii)/(BE-78)/(BE-79)/(BE-80)). **THE ENEMY DOES NOT BITE, (BE-82)/(BE-83)'s price PAID**: a **HINGE-PAIR** certificate forces **GENUINE POINTWISE** ((BE-84)), chart **OFF (CH-1)'s class** ((BE-85)/(BE-85)(iii)), and at **392/392** `ρ̄₁∩ρ̄₂ = 0`, `ρ_i = δ_i+a_i`, **`H` ATTAINS** ((BE-86)) — **empty as an obstruction** ((BE-87)/(BE-88)); BWIN's machine **NOT transporting** ((BE-73)). **THE FLAG BASE IS FREE**, (BE-68) item 1 **DISCHARGED**: the **flag** variety of `B_real`, §(K-chart) tower **stages 1–2**, so **(CH-1) does not apply**, correcting (BE-65) ((BE-89)); irreducible at cyclomatic `≤ 1` ((BE-90)/(BE-91)/(BE-92)), `hcard` **not** capping ((BE-93)). **`reach` IS PER-SIDE DATA: (BE-67)(iii) REDUCED, (BE-71)(ii) ANSWERED generically.** The flag pair's stabilizer acts **per side** ((BE-70)(ii)), giving **16 stable block sums** ((BE-94)); the modular law **CAPS** `reach`, **containing** (BE-71)'s (P)/(Z) blocks ((BE-95)), attained **400/400** ((BE-96)). Hence **(BE-67)(iii) at a peel ⟺ 14 PER-SIDE inequalities `c₁(U)+c₂(U) ≤ dim U + max(0,δ₁+δ₂−6)`** — (BE-22)(vi)'s shape; margin `0` at **92/92**, residue **(NO-DOUBLE-PENCIL)** ((BE-97)), **generic only** ((BE-98)). **THAT RESIDUE ((BE-97)(iii)) REFUTED, the tight block REDUNDANT**: (BE-45)(i)/(BE-45)(ii)'s corner realizes the forbidden `(2, ≥1)` in BUNIF's 92 rows ((BE-99)) — **SLACK, NOT A SHORTFALL** ((BE-100)) — and under **(PENCIL-SATURATES)** every `Π_x` violation **is** a `U = Λ²K⁴` one (300/300), so `Π_x`/`Π_y` **drop out of the 14** ((BE-101)). The `dist ⟹ δ` step **REFUTED**, citations (BE-44)(ii) ((BE-46)(iv)) and (BE-45) ((BE-45)(iv)) surviving on their proved halves ((BE-102)); (BE-97)(i)'s *"14 of 16"* an `a = 0` **denominator**, 15 off it ((BE-103)). **AND (PENCIL-SATURATES) IS FALSE TWICE**: at `ρ_i = 5` on `K4(5,3,3,3,3,3)`, at a plane no sampler draws ((BE-38)(iii), (BE-104)/(BE-105)) — **SLACK**, 260 rows, 24 escaping ((BE-106)); repair **(PENCIL-SATURATES-GEN)** ((BE-107)) fell to its residual ((BE-107)(iii)/(BE-109)), SLACK at 78 rows ((BE-112)); the floor `Σ_x ⊆ ρ̄_i ⟹ ρ_i ≥ 5` **PROVED at a path side** ((BE-110)/(BE-110)(ii)), upgrading (BE-105)(ii), leaving **(PENCIL-SATURATES-CHART)** ((BE-113)). **THAT HALF IS SETTLED SIDE-TOPOLOGY-FREE — THE CLAUSE A THEOREM AT EVERY SIDE-DEGREE-`1` TERMINAL.** At `deg_i(x) = 1` the pendant edge's free multiplier gives `ρ̄_i = ⟨p_x ∧ p_c⟩ + A`, `A` **free of `p_x`**, so BAD is `dim(A ∩ Σ_x) = 2` or `Σ_x ⊆ A` ((BE-114), 327/327), both **PROPER**, the ONE exception **neutralized** by `p_c ∈ π_c` ((BE-115)/(BE-116)). **TWO HUNT VERDICTS FELL**: (BE-109)(iv)'s *5 of 16* a **sampler artefact** ((BE-117)), (BE-110)(iv)'s *`ρ_i ≤ 4` none found* to a witness ((BE-118)); planting off a path costs `a_i ≥ 1`, **inhabiting** (BE-101)(iii), annotating (BE-86), F13 control **ATTAINING** ((BE-120)/(BE-121)). **PROPER → GENERIC — (BE-69) IS THE WRONG CITATION, NOT NEEDED** ((BE-122)): BAD **CONSTRUCTIBLE**, so fibrewise properness gives a **DENSE OPEN** on an irreducible chart; all (BE-69) gave is irreducibility, **(CH-1)(a)**, which every piece **INHERITS** (9/9) ((BE-123)). **The `p_x`-sweep PROVED** from (CH-2)'s tower ((BE-65)(ii)): `π_c` or **all `𝔸³`**, side 2 REBUILT, 102/102 ((BE-124)). **`Π_x ⊆ ρ̄_i` collapses onto (BE-116)'s locus POINTWISE** by a flag rotation ((BE-105)(i)), 16/16, 20/20; a fixed-flag argument would **not** do ((BE-125)). **`a_i = 0` generically IS (BE-69)(i)'s open `A_i`** — `a_i ≥ 0` by (BE-22)(ii), nonempty by **(BE-14) for the side** ((BE-69)(iii)); **PROVED** ((BE-126)). At `deg_i(x) ≥ 2` the inclusion is proper wherever `dim A ≤ 4` ((BE-119)); the clause becomes `p_x ∧ t ∈ A` on `L_c = p_{c₁} ∨ p_{c₂}` ((BE-105)(iv) + (BE-114)(iv)), proper under `(∗)` — **91/91** ((BE-127)); `margin ≤ 0` at `Π_x`/`Π_y`/`⟨M⟩` at **54** rows, `⟨M⟩` EMPTY ((BE-108)), **0 shortfalls** ((BE-128)). **`(∗)` IS DECIDED**: ⟺ `dim(A ∩ z^⊥) ≤ 3` plus two ruling exclusions on `Σ_{t₀}`/`Λ²π'`, `z = p_{c₁} ∧ p_{c₂}` ((BE-129)); **PROVED** at `dim A ≤ 2`, failing at `3`/`4` only at two degeneracies ((BE-131)), **REFUTED** with its reduction from `dim A ≥ 5` ((BE-130)). Hence (BE-127)(iii)'s 91/91 is a **COROLLARY**, not evidence — every row `dim A ≤ 3` ((BE-132)) — and `dim A ≥ 5` is **GENERIC** at 14 of 27 new (CH-1)-legal `deg_i(x) = 2` topologies (142/270 rows, 109 with `ρ_i ≤ 5`, (BE-133)). Two gaps were NOT `(∗)` ((BE-134)) and **BOTH SETTLED**: the `k ≥ 2` **SWEEP EXISTS** — (BE-124)(i)'s hypothesis not load-bearing — `n_x` determined but **RATIONAL**, fibre in **FOUR** shapes (`𝔸³`/`π_{c₁}`/line/`π_x`), 411/411 ((BE-136)); `Π_x = p_x ∧ L_{jk}` for **every** pair, so *keep `xc₂…xc_k`* **MOOT**, (BE-130)(i) one count, `(∗)` **SUFFICIENT NOT NECESSARY** — the β-ruling leaves `Bad` proper, 2 of 142 recovered, **none** at `dim A ≥ 5` ((BE-137)); fibre-properness **CLOSED-FORM** at all four, by `Π_{c₁} ⊆ A` / `dim(A ∩ Λ²π_x) ≥ 2` / `M ∧ t₀ ⊆ A` ((BE-138)). **THE ARCHITECTURE FAILS, NOT THE CLAUSE**: the pendant multiplier FREE at `k = 1`, DETERMINED at `k ≥ 2`, so `ρ̄_i` is the image of `r^{-1}(Π_x)` (162/162) and `A_sharp` **MOVES WITH `p_x`**, beating `A` at 30 rows ((BE-139)); clause unviolated at **0/772** ((BE-135)/(BE-140)); **BUT THE METHOD CLASS IS NOT DEAD — IT CHANGES AMBIENT.** `s` AND `r` are both `p_x`-free on the core, so the GRAPH `Γ ⊆ Λ²K⁴⊕Λ²K⁴` is FIXED and `ρ̄_i ∩ Π_x = φ_p(Γ ∩ (Π_x⊕Π_x))` EXACTLY (99/99) — the clause IS `φ_p`'s SURJECTIVITY ((BE-149)); a SECOND `p_x`-free subspace `R₀ = r(ker s) ⊆ R = ρ̄(core;c₁,c₂)`: BAD ⟹ `ℓ₁ ∈ A` or `Π_x ∩ R₀ ≠ 0`, GOOD at every `dim A ≤ 5` row (63/99), `dim R ≤ dist_core(c₁,c₂)` vs `dim A ≤ dist_core(c₁,y)`, a PATH bound ((BE-150)); `dim Γ_Π ≤ 1` PROVES GOOD, at 39 of the 54 relaxation-blind fibres ((BE-151)). **AND 14 → 12 REDUCES TO (E4), UNPROVED**: per-side floors `ρ_i ≥ f` leave 313/164/74/24/0 escapes ((BE-152)), TWO-SIDED **(E4)** `c_i(Π_x)=2 ⟹ e₁+e₂ ≥ 4` leaves **0** of 6 400, STRICTLY weaker (970), keeps (BE-101)(ii), HOLDS at BSATUR's witness ((BE-153)) | **(BE-14) OPEN; ear case REDUCED, (β) at the window **UNCONDITIONAL** — (BE-57)(iv) **DECIDED**, (S1) REMOVABLE, (S2) half-and-half ((BE-142)–(BE-148)); half (B)'s residue a **THEOREM at side-degree `1`** ((BE-122)–(BE-128)) — universal/generic-flag forms REFUTED ((BE-104)/(BE-109)), properness ((BE-114)–(BE-116)), sweep ((BE-124)), `a_i = 0` ((BE-126)), (BE-69) NOT NEEDED ((BE-123)); **14 → 12 generically** ((BE-101)). LEFT: side-degree `≥ 2` — **ONE item**: `(∗)` DEAD ((BE-119)/(BE-130)/(BE-131)), the clause OPEN; (BE-134)'s gaps SETTLED ((BE-136)/(BE-137)/(BE-138)); the **METHOD** verdict ((BE-139)/(BE-140)) is SCOPED TO `Λ²K⁴` — successor now `Γ`-properness plus **(E4)** for the clause ((BE-149)–(BE-155)); hunts ((BE-107)(iii)/(BE-117)/(BE-118)); `⟨M⟩` EMPTY at 93 rows, the other 11 UNWITNESSED-NOT-EXCLUDED ((BE-97)(iv)); (BE-101)(iii) INHABITED ((BE-120)); flag base DISCHARGED; `hbareSplit` untouched; not a PENCIL event** |
@@ -17354,6 +17354,476 @@ this check keeps that transposition explicit.
 Cap disclosure: every "not found" above is *not found under the stated caps* —
 3 draws per colouring, 174 classes of a bounded stratum, all eligible splits at
 20 of them, 20 000 synthetic networks — never nonexistence.
+
+---
+
+### Steps O52–O57 (2026-09-03, direction OBAR) — U3's residue: `H ∪ {bar along M}` is **NOT** an (OC-35) object, and the ledger it was waiting for has **nothing to compute** — the object's whole content is one Klein condition on `V_bc`, i.e. **(T3) restated**
+
+> **Read this first.** This direction was dispatched to settle a *gate*, with
+> an explicit instruction that a negative answer is a complete landing and that
+> a positive one must not be manufactured. The gate is **negative**. What
+> follows is the negative, the identity that replaces the ledger, and the
+> reason the residue was never a separate object — nothing here re-plans the
+> arc, moves a gap-map status, or bears on (OC-8), (GR-15), `{σ = 0}` or class
+> uniformity.
+>
+> **Numbering.** This section opens at **(OC-56) / *Step O52***, the tail
+> `notes/Pencil-labels.md` declares for §(K-out) at OWALL's landing
+> (*"the live tail is therefore (OC-56)+ / Step O52+"*). The dispatched
+> reservation offered (OC-58)+ / O53+; the direction **deviated DOWN** to the
+> declared tail and says so in its return, per that file's standing lesson
+> (*"the registry outranks a coordinator's spec on label naming"*) and GLEAF's
+> same-round precedent.
+
+#### Standing notation (on top of §(K-out) *Steps O19–O24* and *Steps O31–O36*)
+
+Split chain `b–v–a–c` at a hard-stratum target-rank `G′`-seed (`b, c` hubs,
+`deg v = deg a = 2`, `dim R_a = 1`); `G′ = G − v + ab`; `H := G − v − a = G′ − a`;
+`σ := corank R(H)`; `M := Π(b) ∩ Π(c)` the panels' meet line, with `pt(a) ∈ M`;
+`T := ⟨C_ab, C_ac⟩`; `B(x,y) = ⟨x, ★y⟩` the Klein form and `Q(x) = B(x,x)`;
+`V_bc := { m(b) − m(c) : m a motion of H } ⊆ K⁶` the relative twist system
+(§(K-pitch) *Step 1*, (T1)); `r` the transmitted load, `⟨r⟩ = (V_bc ⊕ T)^{⊥_E}`
+at a `dim W = 5` seed; `L_b := α_{pt(b)} ∩ β_{Π(b)}` the hub's 2-dimensional
+pencil, `L_c` dually; `k` the **companion length** (the shortest `b`–`c` path of
+`H`), `k ≥ 3` always. Two perps are in play and the whole pass turns on not
+conflating them: `⊥_E` is Euclidean on Plücker coordinates (the **row** model —
+`pencil_escape.build_rigidity` builds each hinge's five rows from
+`perp_basis(C_e)`), `⊥_B` is Klein. `★` is a Euclidean isometry and
+self-adjoint (§(K-σ) **(σ2)**), so `B(x,y) = ⟨★x, y⟩` as well as `⟨x, ★y⟩`; that
+is the identity that turns a Klein constraint into a Euclidean row, and it is
+asserted in the driver.
+
+For a subspace `A ⊆ K⁶`, write **`H ⊕_A bc`** for `R(H)` with the rows
+`ρ_φ : m ↦ ⟨φ, m(b) − m(c)⟩` adjoined, one for each `φ` in a basis of `A`. This
+is not a new device: §(K-pure) *Step P0* already reads a Klein constraint
+between two bodies as a **bar**, `R_P := S_P^{⊥_B}` — *"the available bars"* —
+with *"the hub-level limit rows for `P` are `m ↦ B(m(u) − m(w), ρ)`, `ρ ∈ R_P`"*,
+and §(K-slide-comb) already **closes a carrier up** by *"adding three rows
+`B(m(b) − m(c), ρ) = 0` for `ρ` in a generic 3-space `R₀`"*. So:
+
+- a **bar** along a line `L` between `b` and `c` is `A = ⟨★C(L)⟩` — **one** row;
+- a **hinge** along `L` is `A = C(L)^{⊥_E}` — **five** rows, the *"one
+  constraint `m(u) − m(w) ∈ S_P` per `P`, i.e. `6 − ℓ_P` rows"* of
+  §(K-slide-comb) at `ℓ_P = 1`, and exactly what `build_rigidity` emits.
+
+Everything below is at an arbitrary legal pencil chart point. **No genericity
+hypothesis is used anywhere in *Steps O52–O55*.**
+
+---
+
+#### Step O52 — (OC-56): the gate, answered NEGATIVE — three independent hypothesis failures, and the middle one is an argument rather than a measurement
+
+> **(OC-56)** *(proven; (i) and (iii) unconditional, (ii) **inheriting §(K-σ)
+> (σ7)'s basis** — see the clause below and *Caps* item 8; asserted per
+> instance)* `H ∪ {bar along M}` is **not** an object (OC-35) quantifies over.
+> (OC-35) reads *"let `F` be a subgraph with min degree ≥ 2 at any pencil
+> placement"* and its proof assigns to **each oriented edge** a covector
+> *"annihilating `C_e` — a 5-space"*. The candidate fails all three clauses:
+>
+> **(i) It is not a subgraph of `G`.** `bc ∉ E(G)`: `H` is vertex-deleted hence
+> induced, so `bc ∈ E(G)` would give `bc ∈ E(H)` and `k = 1`, against `k ≥ 3`
+> (§(K-dom) *Standing notation*: *"`k ≥ 3` always, since `dim V_bc = 3` needs
+> `dim span{C_e : e ∈ P} ≥ 3`"*; on the class `hnoRigid` forces `k ≥ 4`,
+> **(D3)**). Equivalently `b–v–a–c–b` would be a 4-cycle against `girth(G) ≥ 7`
+> ((R3) + `hnoRigid`, §(K-ind) *Step I2*).
+>
+> **(ii) `M` is an admissible pencil hinge at NEITHER hub, and that is
+> unreachable rather than merely non-generic.** A hinge along `M` between `b`
+> and `c` requires `C(M) ∈ L_b ∩ L_c`, i.e. `pt(b) ∈ M` **and** `pt(c) ∈ M`.
+> Since `M ⊆ Π(b)` and `M ⊆ Π(c)`, that says `pt(b) ∈ Π(c)` **and**
+> `pt(c) ∈ Π(b)` — **both** halves of **(Λ0d)** failing at once. §(K-σ)
+> **(σ7)** rules that out: *"the two-sided failure is impossible at a primally
+> nondegenerate seed whose split middle body `a` is a degree-2 non-hub adjacent
+> to both hubs — **(σ7)** — so (Λ0d) can fail in at most one direction"*. The
+> §(K-out) split is exactly that configuration: `deg a = 2`, `a` a non-hub, its
+> `G′`-neighbours `b` and `c` both hubs.
+>
+> **INHERITED BASIS, stated because the conclusion is a strong one.** (σ7) is
+> recorded in §(K-σ) as one of that section's **four settled verdicts**, and its
+> support is *primal conjunct 4 at the split's middle body `a`* — an
+> **argument** — together with **39/39 witnesses that forcing both halves
+> leaves `a` with no panel**. So *"unreachable"* here means *"on (σ7)'s basis:
+> conjunct 4's argument plus 39/39"*, **not** *"by a bare theorem with no
+> population behind it"*. It is field-neutral, (σ7) needing no polarity at all
+> (§(K-σ) *Field scope*). One half alone already gives `pt(b) ∉ M`
+> ((OC-29)(i)'s proof, from (Λ0d)); what (σ7) adds is that the negative holds
+> **even where (Λ0d) does fail** — precisely where a sceptic would look —
+> which is what makes it chart-wide rather than generic, on that basis.
+>
+> **(iii) A bar is one row where the ledger counts five.** (OC-36)'s
+> `f(V(F)) = 5|E(F)| − 6(|V(F)| − 1)`, and with it every one of `δ_Q`, `ρ_F`
+> and `slack(F)`, is built on five rows per edge. A bar contributes **one**. So
+> (OC-36)/(OC-37) are not merely inapplicable to the candidate — evaluated on
+> it they are **numerically wrong**, by four rows.
+
+*Proof.* (i) and (iii) are as stated. For (ii): `M = Π(b) ∩ Π(c)` is the unique
+line lying in both panels, so it is the unique candidate hinge line between the
+two bodies (the ℓ1 clause of §(K-mech) records the same fact from the other
+side: *"on an ℓ1 (hub-hub) chain the hinge lies in both panels, so
+`C_uw = Π(u) ∩ Π(w)`"*). The pencil condition at a hub confines its hinges to
+`L_b`, the lines through `pt(b)` in `Π(b)`; membership of `C(M)` there forces
+`pt(b) ∈ M`, and `M ⊆ Π(c)` then puts `pt(b) ∈ Π(c)`. Symmetrically at `c`.
+Both together are the two-sided (Λ0d) failure (σ7) rules out. ∎
+
+**What this already settles, before any ledger question.** The candidate can
+only be read as a **bar** — the reading U3's own words take (*"a bar along the
+meet line `M`"*). Under that reading it is a well-defined *rigidity-matrix*
+object (`R(H)` plus one row) and a well-defined *bar* between the two bodies;
+what it is not is a min-degree-≥ 2 hinge subgraph, so **(OC-35) and its ledger
+do not reach it**. *Step O53* says what does.
+
+*Exact, per instance:* `bc ∉ E(G)` and `pt(b), pt(c) ∉ M` at **18/18** seeds
+and, with the split varied rather than held, at **36/36** (shape, split) pairs
+with `dist_H(b,c) ∈ {3,4,5,6,7,9}` (`obar.py --admis`, `--splits`). The
+dispatch's second suspected obstruction — that the construction *"may create
+degree-1 vertices"* — is **REFUTED**, twice over: adding a bar only raises
+degrees, and `H` itself has min degree ≥ 2 (every non-hub of `G′` has degree
+exactly 2 — §(K-frame) *Step FR12*'s (GR-5)-at-`G′` hypothesis table, whose
+proof there is girth-based; `H = G′ − a` lowers degrees only at `b`, `c`, both
+hubs, so `deg_H(b) = deg_G(b) − 1 ≥ 2`), asserted at 18/18 with
+`deg_H(b) = deg_H(c) = 2` throughout.
+
+---
+
+#### Step O53 — (OC-57): the attachment identity — what replaces the ledger, and it is one line
+
+> **(OC-57)** *(proven; an identity, unconditional, no genericity, asserted per
+> frame)* Let `A ⊆ K⁶` be any subspace of constraint covectors attached between
+> the terminals `b` and `c`. Then at **every** pencil placement:
+>
+> **(a)** `corank R(H ⊕_A bc) = corank R(H) + dim(A ∩ V_bc^{⊥_E})`;
+>
+> **(b)** the set of `A`-components realized by self-stresses of `H ⊕_A bc` is
+> **exactly** the subspace `A ∩ V_bc^{⊥_E}`. In particular the attachment is in
+> the support of some stress **iff** `A ∩ V_bc^{⊥_E} ≠ 0`.
+>
+> No hypothesis on `H`, on `A`, on `dim V_bc`, or on the placement.
+
+*Proof.* Over a field, `rowspace R(H) = (ker R(H))^⊥`, and `ker R(H)` is the
+motion space of `H`. So for `φ ∈ K⁶`,
+`ρ_φ ∈ rowspace R(H) ⟺ ⟨φ, m(b) − m(c)⟩ = 0` for every motion `m`
+`⟺ φ ∈ V_bc^{⊥_E}`. The map `φ ↦ ρ_φ` is injective and linear, so
+`rank R(H ⊕_A bc) = rank R(H) + dim A − dim(A ∩ V_bc^{⊥_E})`, and (a) follows
+from `corank = #rows − rank`. For (b): a stress is a pair `(y, (c_i))` with
+`y^{T}R(H) + Σ c_i ρ_{φ_i} = 0`, i.e. `ρ_{Σ c_i φ_i} ∈ rowspace R(H)`, i.e.
+`Σ c_i φ_i ∈ A ∩ V_bc^{⊥_E}`; every such element is realized, by running the
+argument backwards. ∎
+
+**Why this is the right replacement, and not a consolation prize.** (OC-35)'s
+value is that it turns `corank` into *topological* data — paths, chain-span
+deficiencies `δ_Q`, a Kirchhoff deficiency `ρ_F`, a combinatorial `slack`. A
+`b`–`c` attachment adds **no topological path**: `b` and `c` are already nodes
+or path-interior bodies of `H°`, and the new rows touch only their two blocks.
+So there is no `δ_Q` to compute, no `slack` term to bound, and (OC-37)'s
+class-shape floor has nothing to say. The entire increment is
+`dim(A ∩ V_bc^{⊥_E})` — a **placement** datum about the one object §(K-pitch)
+has been studying since (T1). That is *Step O57*'s point, and it is why the
+"unrun ledger" was never a computation waiting to be done.
+
+**A consistency reading, flagged as a reading.** §(K-slide-comb)'s (C6) closes
+its limit carrier with *"three rows `B(m(b) − m(c), ρ) = 0` for `ρ` in a
+**generic** 3-space `R₀`"*. (OC-57)(a) with `A = ★R₀` gives jump
+`= dim(★R₀ ∩ V_bc^{⊥_E}) = 0` for generic `R₀` (two 3-spaces in `K⁶`), i.e. the
+closure adds no stress — which is exactly why that system is the isostaticity
+determinant. **This is a reading of (C6), not something this pass's driver
+tests:** (C6)'s object is the `ε = 0` limit carrier on `G°`, whose `V_bc` is the
+*limit* one, so a consumer should re-derive it at source before quoting it.
+
+*Exact, per frame:* (a) and (b) asserted at **21** attachment draws — `A`
+random of **every** dimension `0..6`, three seeds — plus the three named
+specializations at 18 seeds each (`obar.py --validate`, `--onerow`, `--hinge`).
+
+---
+
+#### Step O54 — (OC-58): the bar specialization — U3's target statement **IS** (T3), pointwise
+
+> **(OC-58)** *(proven; unconditional at every placement, and the (T3)
+> identification at a `dim W = 5` target-rank seed)* For a line `L`, take
+> `A = ⟨★C(L)⟩` (the bar along `L`). Then by (OC-57):
+>
+> `corank R(H ∪ {bar along L}) = corank R(H) + [ V_bc ⊥_B C(L) ]`,
+>
+> and **a self-stress with the bar in its support exists ⟺ `V_bc ⊥_B C(L)`**.
+> At `L = M` that right-hand side is, verbatim, §(K-pitch) *Step 3*'s
+>
+> > **(T3)** *at a `dim W = 5` target-rank seed, both hubs:* **escape ⟺ some
+> > motion `m` of `H` has `B(C(M), m(b) − m(c)) ≠ 0`** *— the relative twist
+> > system is not contained in the linear line complex of the meet line.*
+>
+> **So U3's target statement — *"for every class (shape, split), `H` together
+> with a bar along `M` admits no chart-wide self-stress with the bar in its
+> support"* — is the escape, restated.** Not equivalent-after-work: *pointwise
+> identical*, at every single chart point, with the bar's stress coefficient
+> `t ≠ 0` and the (K-wit) pairing `B(C(M), V_bc) = 0` being the same one linear
+> condition read twice.
+
+*Proof.* `⟨★C(L), m⟩ = B(C(L), m)` by self-adjointness of `★` ((σ2)), so
+`★C(L) ∈ V_bc^{⊥_E} ⟺ B(C(L), V_bc) = 0 ⟺ V_bc ⊥_B C(L)`. Substitute in
+(OC-57) at `dim A = 1`. The (T3) reading is that clause's own statement. ∎
+
+**U3's own kill clause fires, and by a cheaper mechanism than the one it
+names.** `Pencil-strategy.md` §4.6 wrote: *"if chart-wide stresses turn out to
+have no more structure than pointwise ones, U3 is only a change of wording"*.
+The kill does fire — but it needs **no comparison of chart-wide with pointwise
+structure at all**. The bar-support question is *pointwise* equivalent to the
+escape criterion by rank–nullity, so there is no chart-wide/pointwise gap for
+U3 to exploit in the first place. §4.6's *"the honest first step is prose, not a
+driver: characterize which supports can carry a chart-wide (rather than
+pointwise) stress"* asked for a support enumeration; the correct answer is that
+the support in question is one coordinate, and its vanishing is (K-wit).
+
+**And the logical-form move that motivated U3 does not survive the
+identification.** `Pencil-strategy.md` §2.3's asymmetry (negatives uniform,
+positives per-shape) was the reason to care: U3 stated the target as a
+**non-existence**. But (OC-58) shows the non-existence is the *escape*, i.e.
+`V_bc ⊄ C(M)^{⊥_B}` — a rank **lower** bound, the same side of §2.3's wall the
+arc has always been on, and precisely what the (K-wit) row already carries as
+its close-it: *"one `H`-motion pairing non-trivially with `C(M)`, uniformly"*.
+Restating a lower bound as *"no stress exists"* changes the sentence's grammar,
+not its logical form.
+
+*Exact, per frame:* `[V_bc ⊥_B C(M)]`, "the bar is in some support", and
+`critA or critB` agree at **18/18** seeds and at **36/36** (shape, split) pairs
+(`obar.py --onerow`, `--splits`). **The predicate's positive branch is
+witnessed, but at other lines `L`, not at `M`** — see *Caps* item 1.
+
+---
+
+#### Step O55 — (OC-59): the hinge specialization — the only (OC-35)-shaped reading, and it makes U3 **FALSE** everywhere
+
+> **(OC-59)** *(proven; unconditional, asserted per frame)* Take
+> `A = C(M)^{⊥_E}`, the five-row hinge along `M` — the only reading under which
+> the object would be an (OC-35) subgraph. Then by (OC-57):
+>
+> `corank R(H + hinge_M) − corank R(H) = dim(C(M)^{⊥_E} ∩ V_bc^{⊥_E})
+>  = 6 − dim(V_bc + ⟨C(M)⟩) ≥ 6 − (dim V_bc + 1) = 2`
+>
+> whenever `dim V_bc = 3`, i.e. at every seed of the hard stratum. So
+> `H + hinge_M` **always** carries self-stresses beyond `H`'s, and every one of
+> them has the hinge in its support (the `H`-only stresses are exactly those
+> with zero hinge component). **Under the hinge reading U3's non-existence
+> statement is therefore FALSE at every legal chart point** — quite
+> independently of (OC-56)(ii), which says the object is not reachable there in
+> the first place.
+
+*Proof.* `X^{⊥_E} ∩ Y^{⊥_E} = (X + Y)^{⊥_E}` gives the middle equality; the
+inequality is subadditivity of dimension. The support claim is (OC-57)(b) with
+`A ∩ V_bc^{⊥_E} ≠ 0`. ∎
+
+**The dichotomy is now complete and both branches are negative.** Read U3's
+object as a **bar** and it is well-defined but is (T3) restated ((OC-58)); read
+it as a **hinge** and it is both unreachable ((OC-56)(ii)) and, forced anyway, a
+**refutation** of the very statement U3 wanted ((OC-59)). There is no third
+reading: an attachment between two bodies is a subspace `A`, and (OC-57) covers
+every one.
+
+*Exact, per frame:* jump `= 6 − dim(V_bc + ⟨C(M)⟩) = 6 − 4 = 2` with the hinge
+supported at **18/18** seeds and **36/36** (shape, split) pairs (`obar.py
+--hinge`, `--splits`).
+
+---
+
+#### Step O56 — (OC-60): the geometry — the redundant-bar family is a Klein conic, and `M` sits on it iff `C(M) ∝ ★r`
+
+> **(OC-60)** *(proven; (i)–(iii) unconditional or as qualified, (iv) measured)*
+>
+> **(i)** The **redundant `b`–`c` wrench constraints** over `H` form the
+> 3-space `V_bc^{⊥_B}` (at `dim V_bc = 3`), and `★r ∈ V_bc^{⊥_B}` — immediately
+> from (T1)'s `r ⊥_E V_bc`, with `Q(★r) = Q(r)`.
+>
+> **(ii)** The **redundant bars along genuine lines** are exactly the Klein
+> conic `{Q = 0} ∩ P(V_bc^{⊥_B})` — a plane conic, i.e. a one-parameter ruled
+> family, not a single line.
+>
+> **(iii)** At a `dim W = 5` target-rank seed,
+> **`V_bc ⊥_B C(M) ⟺ C(M) ∝ ★r`.** Indeed `C(M) ⊥_B T` is automatic
+> (`pt(a) ∈ M`, so `B(C(M), C_ab) = B(C(M), C_ac) = 0`), whence
+> `C(M) ⊥_B V_bc` gives `C(M) ⊥_B W` and so `★C(M) ∈ W^{⊥_E} = ⟨r⟩`. This
+> **re-derives (T3) from the bar side**, independently of (OC-57), and recovers
+> §(K-σ) (σ5)'s load-side form `★r ∥ C(M) ⟺` routes A/B fail uniformly.
+>
+> **(iv)** `rank B|_{V_bc^{⊥_B}} = rank B|_{V_bc}` (both equal
+> `3 − dim(V_bc ∩ V_bc^{⊥_B})`, since `B` is nondegenerate on `K⁶`), so §(K-Δ)
+> **(M1)**'s dichotomy transports verbatim: **3 off a serial chain, 2 on one**.
+> Measured 3 at 13/18 seeds and 2 at 5/18 (all five at θ(3,3,6), the `k = 3`
+> serial-chain habitat). **The *signature* is not combinatorial** — it takes
+> both `(2,1)` and `(1,2)` at seeds of the *same* shape (dbl-subdiv `K4`) —
+> another instance of (OC-3): what the class predicate sees is a rank, never
+> the geometry on top of it.
+
+*Proof.* (i) `V_bc^{⊥_B} = ★(V_bc^{⊥_E})` because `★` is a Euclidean isometry,
+and `r ∈ V_bc^{⊥_E}` is (T1). (ii) A nonzero `x ∈ Λ²K⁴` is a line extensor iff
+`Q(x) = 0`, and the bar along that line is redundant iff `x ∈ V_bc^{⊥_B}`
+((OC-58)). (iii) as stated. (iv) the radical of `B|_S` is `S ∩ S^{⊥_B}`, and
+`(V_bc^{⊥_B})^{⊥_B} = V_bc`. ∎
+
+**A by-product worth naming, since it is a positive.** This is a further
+independent arrival at `V_bc` — alongside (T1)'s load side, §(K-dom)
+(D1)/(D2)'s dominance side and §(K-ann) (ANH-1)'s contracted-self-stress side —
+now from the constraint-attachment side. *(No count is claimed here; the three
+named arrivals are the ones this pass verified at source.)*
+
+*Exact, per frame:* (i), (iii) and (iv)'s rank equality asserted at **18/18**
+seeds; a genuine redundant **line** exhibited at **5/18** (the degenerate case,
+where the radical is rational and automatically isotropic) and **not found
+under cap** at the other 13 (`obar.py --conic`).
+
+---
+
+#### Step O57 — (OC-61): the verdict, and what it does and does not buy
+
+> **(OC-61)** *(an assessment)*
+>
+> **(1) `Pencil-strategy.md` §8.2's U3 gate is answered NEGATIVE and U3's one
+> genuine residue is RETIRED.** Its kill condition — *"the `H ∪ {bar along M}`
+> ledger run, or the admissibility check coming back negative"* — is exercised
+> on its **second** branch. §8.2's U3 row and §4.6's residue paragraph both
+> carried the flag *"UNVERIFIED — confirm before spending a slice"*; the slice
+> is now spent, at one dispatch. **U3 is struck completely**, not merely
+> already-pursued: with §8.2's U2 struck 2026-09-03 and U3 now retired, the
+> interlocked `U1`–`U3` shortlist is **U1 alone**.
+>
+> **(2) The ledger has nothing to compute — the residue was never a
+> computation.** By (OC-57) the whole content of a `b`–`c` attachment is
+> `dim(A ∩ V_bc^{⊥_E})`: no new topological path, no `δ_Q`, no `ρ_F`, no
+> `slack`. So *"SIGZ and OGEOM spent the whole ledger on `σ = corank R(H)` and
+> never on `H ∪ {bar along M}`"* is a true observation about what was run and a
+> **false inference** about what was left undone. There was nothing on the
+> other side.
+>
+> **(3) The calibration, per (OC-24).** This moves **no gap** and is **not**
+> disproof-risk reduction — (OC-24)'s standard, that such reduction *"can never
+> be the binding obstruction"*, does not even need invoking, because nothing
+> here bears on the disproof side at all. What it delivers is the retirement of
+> a residue plus one identity ((OC-57)) and one geometric restatement ((OC-60))
+> a successor can use.
+>
+> **(4) The filters the dispatch was told to apply, applied.** The
+> **growing-ground-set** test: the object's index set is `E(H) ∪ {bar}`, so it
+> passes ingredient 2 formally — and (OC-58) shows that is cosmetic, since the
+> bar coordinate carries the entire question and it is one scalar, not a growing
+> family. **Counting saturation** (`Pencil-strategy.md` §2.5): consistent, and
+> used only as a negative — `dim(A ∩ V_bc^{⊥_E})` is a placement datum with no
+> count-expressible content, which is (OC-3) again. **§2.5 supplies no freeness
+> here and is not quoted as if it did.**
+>
+> **(5) Status.** `hK`, (OC-8), (GR-15), `{σ = 0}`'s row, input (a), (OW) and
+> class uniformity are **exactly where they were**. **No gap-map status move.**
+
+---
+
+### Verification (Steps O52–O57)
+
+Driver `notes/scripts/w4/obar.py` (new, this pass), exact `ℚ`, fixed seed
+`20260903`; every headline is an `assert`, never a report. Run from the repo
+root, **foreground, one at a time**:
+
+```
+PYTHONHASHSEED=0 python3 notes/scripts/w4/obar.py --validate   #  10 s
+PYTHONHASHSEED=0 python3 notes/scripts/w4/obar.py --admis      #  33 s
+PYTHONHASHSEED=0 python3 notes/scripts/w4/obar.py --onerow     #  55 s
+PYTHONHASHSEED=0 python3 notes/scripts/w4/obar.py --hinge      #  45 s
+PYTHONHASHSEED=0 python3 notes/scripts/w4/obar.py --conic      #  33 s
+PYTHONHASHSEED=0 python3 notes/scripts/w4/obar.py --splits     # 439 s
+```
+
+All six modes are **byte-identical at `PYTHONHASHSEED=0` and `=1`** (checked);
+`--splits` is the only mode near the foreground budget at 439 s, and it is a
+single run, not chunked.
+
+**A driver mode per headline sentence** (`RESEARCH-ARC.md` §4), with each
+population's support and the variable it moves named:
+
+| headline | mode | population support | which of the claim's own variables it varies |
+|---|---|---|---|
+| (OC-56)(i)/(ii) the gate | `--admis` | 18 (shape, split, seed) triples over 4 shapes | shape, chart point; **split held** |
+| (OC-56)(i)/(ii) + (OC-58) + (OC-59), split varied | `--splits` | 36 (shape, split) pairs over 4 shapes, all 48 eligible splits attempted | **split** — the variable every other mode holds |
+| (OC-57)(a)/(b) the identity | `--validate` | 21 attachment draws: `A` random of every dim `0..6`, 3 seeds | **`A`**, the identity's own quantified variable, over its full dimension range |
+| (OC-58) the bar, both branches of the indicator | `--onerow` | 18 seeds × 4 attachment lines (`M`; a redundant generalized bar; a genuine redundant line; a random line) | **the line `L`** and the indicator's truth value |
+| (OC-59) the hinge | `--hinge` | 18 seeds | shape, chart point, with `A = C(M)^{⊥_E}` |
+| (OC-60)(i)/(iii)/(iv) | `--conic` | 18 seeds | shape, chart point; rank and signature both read off |
+
+Asserted per seed: `B(x,y) = ⟨x,★y⟩ = ⟨★x,y⟩`, `★² = id`, `★` orthogonal (200
+draws); `H` has min degree ≥ 2 and `deg_H(b), deg_H(c) ≥ 2`; `bc ∉ E(G)`;
+`Q(C(M)) = 0` and `C(M) ≠ C(bc)`; `B(C(M), C_ab) = B(C(M), C_ac) = 0`;
+(OC-57)(a) **and** (b) — the realized coefficient space equal to
+`A ∩ V_bc^{⊥_E}` as a subspace, not merely in dimension; `★r ∈ V_bc^{⊥_B}` and
+`Q(★r) = Q(r)`; `rank B|_{V_bc^{⊥_B}} = rank B|_{V_bc}`; and the two
+cross-checks that make the pass a claim about the arc's objects rather than
+about its own arithmetic — **`[V_bc ⊥_B C(M)] == (critA or critB)`** (the (T3)
+identification, against `repin.seed_probe`'s own criteria) and
+**`[V_bc ⊥_B C(M)] == [C(M) ∝ ★r]`** ((OC-60)(iii)).
+
+Controls: a **redundant generalized bar** built from `V_bc^{⊥_E}` fires the
+(OC-57) indicator **positive** at 18/18 (so the identity is witnessed in both
+directions, not only on the side `M` happens to sit); a **genuine redundant
+line** at 5/18; a **random line** fires it negative at 18/18.
+
+**Harness debt, recorded not paid** (this pass modified no landed file):
+`pitch.H_motions_vbc` gains a **sixth** `w4/` consumer (after `outerwide`,
+`dominance`, `lambda`, `outer`, `outerline`) and `pitch.klein`/`pitch.Q` a
+further one — `notes/scripts/README.md` §2 rule 2's move-down trigger,
+**RE-DATED, no move made**, by the standing rule that a dispatch does not move
+a landed name. **No new hazard item.** All three recorded silent hazards were
+**navigated, not encountered**: no `Λ²`-side draw goes through `bimage.pt_in`
+and no `kbare/` module is imported at all, so `bimage.span`'s width-6 special
+case and `bwin.dehom`'s list return are unreachable from here; and every
+`localtest.meet_line` call is followed by an explicit `assert` on the returned
+direction (§4 convention 1's signal-not-raise contract), the idiom
+`pitch.transfer_probe` already uses.
+
+### Caps, disclosed rather than smoothed (Steps O52–O57)
+
+1. **The one direction the evidence does not move, stated first because it is
+   the BSATUR-shaped limit of this pass.** `V_bc ⊥_B C(M)` is **FALSE at 18/18
+   seeds and 36/36 (shape, split) pairs**, so **(OC-58)'s failure branch is
+   never exercised numerically at `L = M`**. What carries it is the *proof*
+   (rank–nullity, no genericity) plus the fact that the *same predicate*'s
+   positive branch is exercised at other lines by two controls. The failure
+   locus is known nonempty and known to be a σ-orbit with `{V_bc ⊥_B C(bc)}`
+   (§(K-σ) (σ5)), and reachable by a chart move at all four habitats — **this
+   pass did not construct such a point**, and a successor quoting (OC-58)
+   should say so. It does not affect the verdict: step 1 is negative on its own,
+   and (OC-58) is a proof rather than a census.
+2. **W19 contributes ZERO seeds.** Every seed of `range(3000, 3040)` at
+   `split_usable(W19)[0][0][0]` is skipped — *a chain end is not a panelled
+   hub*, so the seed is outside the both-ends-hubs stratum every claim here is
+   stated over. The **(K-res)** habitat is therefore represented by **S29
+   alone** (2 seeds in the per-seed modes, 18 splits in `--splits`).
+3. **Seed windows are first-N, not random**, with per-population `need` caps
+   (6/5/5/3/2); `--splits` uses a 12-wide window per split and reports **12 of
+   48** eligible splits as *"no usable target-rank seed in the seed window
+   (cap)"* — that is a cap, **not** a claim that those splits admit no
+   target-rank seed.
+4. **The conic rational-point search is capped**: `|t₂|, |t₃| ≤ 12` with an
+   exact-square discriminant test. A genuine redundant **line** is found at
+   5/18 seeds and only via the free degenerate route (the radical of a rank-2
+   Gram is rational and automatically isotropic). At the other 13 the verdict is
+   **"not found under cap"**, never "does not exist" — whether
+   `{Q = 0} ∩ P(V_bc^{⊥_B})` has a rational point there is a Hasse question this
+   pass did not settle and does not need.
+5. **`--validate`'s random `A`** draws entries in `[−5, 5]` at **3 seeds of one
+   shape** (21 draws). The `A`-variable's *range* is covered exhaustively (every
+   dimension `0..6`); its *distribution* within a dimension is not.
+6. **Four shapes, not the 174-class census.** dbl-subdiv `K4`, θ(3,4,5),
+   θ(3,3,6) and S29. This is deliberate rather than a shortfall: (OC-56)(i) rests
+   on `k ≥ 3`, (OC-56)(ii) on (σ7), and (OC-57)–(OC-60) are placement-free
+   identities, so the driver's role is per-instance assertion, not coverage.
+   Anything read as a *rate* — the rank-3-vs-2 split, the signature spread — is
+   over these four shapes only.
+7. **θ(3,3,6) is off `hnoRigid`.** Its `dist_H(b,c) = 3` (so `k = 3`, and girth
+   6, not ≥ 7), which is why (OC-56)(i)'s per-instance floor is stated as
+   `k ≥ 3` — the unconditional bound — rather than (D3)'s class-only `k ≥ 4`.
+   The habitat is a control here, and the `k = 3` serial-chain case is exactly
+   where (OC-60)(iv)'s rank-2 branch and the geometric control fire.
+8. **(OC-56)(ii)'s "unreachable" is (σ7)'s basis, not more.** (σ7) is quoted,
+   not re-proven; its own scope is *"a primally nondegenerate seed whose split
+   middle body `a` is a degree-2 non-hub adjacent to both hubs"* and its own
+   support is **primal conjunct 4's argument plus 39/39 witnesses**, recorded in
+   §(K-σ) as one of four settled verdicts and field-neutral. **(OC-56)(ii)
+   inherits exactly that standing — the chart-wide reading of this pass's
+   step-1 negative is no stronger than (σ7) is**, and a summary of this section
+   must not upgrade it to a bare theorem.
 
 ---
 
