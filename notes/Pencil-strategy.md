@@ -234,6 +234,17 @@ be done uniformly in one line.
 > that global factorization is the shadow of §(K-Λ) **(Λ1)**'s local result
 > (`Φ_loc` always rank 2, a product of two rational linear forms) — **the two
 > computations are the same geometry at two scales.**
+>
+> > **That last sentence is an ASSERTED identification, not a proved one** (flagged
+> > 2026-09-03, direction GELIM). The claim it makes precise is that the two linear
+> > factors of `Φ_loc(λ)`, `(λ·ω⁺)` and `(λ·ω⁻)`, **are** the pullbacks of the two
+> > Schubert hyperplane forms cutting `B`. **No driver or workbook step proves it** —
+> > §§2–4 of this file are coordinator-authored synthesis and carry no driver
+> > (§(K-dom)'s opening says so). It is **cheap** to settle: a gauge-sliced identity in
+> > exactly `m2/lambda1.m2` block **(M4)**'s regime, which finishes. It is also **worth
+> > nothing to status**: proving it upgrades an analogy to an identity and leaves
+> > realizability untouched on both sides. Recorded so a successor neither *inherits* it
+> > as a fact nor spends a dispatch *proving* it expecting a gap-map move.
 
 This also restates §(K-pure) *P7*'s locality/pitch trade as a fact about that
 map: the degenerations that give combinatorial control **move `V_bc` onto the bad
@@ -1378,7 +1389,7 @@ own top two were spent. **The two filters were applied to every entry.**
 |---|---|---|---|
 | ~~**1**~~ | ~~**(GR-18)(iii)**, the grouping problem~~ | §(K-grid) *Steps G149–G164* | **SPLIT IN TWO 2026-09-02 (GPACK)**: the packing-and-split half is an **unconditional theorem** ((GR-130)) off `def(G) = 0` alone, and the residual is a **hub list-colouring** ((GR-132)) at `Λ = ∅`. **SPENT at the `ℓ = 2`-rich shapes 2026-09-02 (GLIST)**: that residual is now a 9-valued hub CSP in `(α, γ)` with clause (a) **free** ((GR-134)) and an exact local criterion — a cubic pure hub fails **iff** its three `D_β` are a perfect matching of the six trees ((GR-135)) — but **82 % of the infeasible pairs are locally feasible at every hub** ((GR-136)), so the open half is not hub-local. **RE-LOCATED and made CSP-FREE 2026-09-02 (GGLOB)**: the packing quantifier is **eliminable** and the residual is an orientation-plus-two-colourings criterion on the length-2 subgraph which, on the `D = 0`, `Λ = ∅` stratum, **IS (GR-10)** ((GR-140)); both named handles are dead — counting by saturation ((GR-141)), matroid union by an exhibited exchange failure ((GR-142)) — and the obstruction has **three tiers**, all of the 82 % being propagation-visible and the genuinely global tier first realized at `n_hub = 6` ((GR-143)). The successors are (GR-144)'s; `Λ ≠ ∅` still needs a merging conjunct nobody has written |
 | 2 | collapse-order bound `κ ≤ 4/5` + the `r = 4` certifying criterion | §(K-grid) *Step G22* ((GR-19)); TCOL (i)/(ii) | measured `κ ≤ 4` at **18/18** separators, unproven, untouched since 2026-08-07 |
-| 3 | **(OC-44)(iii)** wall-avoiding certificate-colouring existence | §(K-out) *Step O41* | open, 174/174 within caps; a HIT buys a **quantifier**, not a gap-map row |
+| 3 | **(OC-44)(iii)** wall-avoiding certificate-colouring existence | §(K-out) *Steps O41, O47–O51* | **RE-SCOPED 2026-09-02 (OWALL), row was stale until 2026-09-03**: (OC-44)(iii) is **REDUCED to (OW)**, geometry-free, and *Step O41*'s own named route is **REFUTED BY LOGIC** ((OC-50)–(OC-55)) — the conjunct it attacked is implied by the one it did not. Still open at (OW); a HIT still buys a **quantifier**, not a gap-map row |
 | 4 | the (a′)/(b′) ledger residuals | §(K-grid) G98–G148 | entry **1 of 4**; entries 2–4 recorded *unchanged/unswept* at every landing since 2026-08-13 — **see the do-not-do note below** |
 | 5 | (OC-19) input (c); the ZNEQ pool **re-key** | §(K-out) O18 | the re-key is *"a combinatorial cross-pool job, no new mathematics"* — genuinely cheap; input (c) itself is (GR-15)-flavoured |
 | 6 | route σ obligations 2–4 | §8.4; §(K-σ) *Step σ5* | eligible (obligation 1 only is Lean-held), but the branch obligation 4 closes *"has never been observed nonempty"* — insurance, not progress |

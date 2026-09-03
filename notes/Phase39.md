@@ -106,6 +106,11 @@ constraints; the **dated dispatch/selection narrative for every ordinal, 1–44,
   2026-08-19 SIGZ authorization's adjudicate-at-the-return terms *as to the stop
   clause only*.
 
+- **2026-09-03, THE REPRIORITIZE DIRECTIVE** (verbatim): *"we should try to tackle the most
+  promising directions (either for proving or disproving the headline result); if the current
+  approach seems to be getting in a rut then it's time to reprioritize."* Sharpens the
+  delegation's first criterion; adds an explicit licence to move off a ranked list.
+
 - **2026-08-29, the target after BWIN** (twelfth check-in) — **SPENT**: the user picked the
   internal R-node (long since landed) over the spread step, (S1)/(S2) and the (K-res) wave;
   those three stay **ranked, not dropped**, and the (K-res) wave is still a user call.
@@ -233,8 +238,15 @@ branches of bookkeeping — the packing quantifier is **gone**, `H` is simple an
 and a 4-cycle is the first place to look. **Read the price first: on this stratum that
 criterion IS (GR-10)** ((GR-140)(v)), so it is not a slice below it. Successor 2 (`n_hub = 6`)
 is now **engineering** — 150/150 pure-hub shapes decided positively, 2 473 of 2 623 left;
-successor 3 is whether *path* consistency decides there, where arc consistency does not. The **(BE-14) lane's** alternative is ranked item 0 below, now the **exact
-`k ≥ 2` reduction**: `(∗)` is decided and its route dead ((BE-129)/(BE-130)). Two things stay the USER's call, both OFFERED
+successor 3 is whether *path* consistency decides there, where arc consistency does not.
+**DEMOTED 2026-09-03**: successor 1's own sentence concedes it **IS (GR-10)** here — the gap,
+not a slice below it. **The coordinator then failed THREE times to name a replacement from
+`notes/Pencil-strategy.md`**: §5.3 item (i) (dead since (D4), struck `beb1b7ca`), §4.6's `∀λ`
+(discharged; residue is realizability), U1 (criterion **(OUT)** = §(K-out)'s 51 steps;
+retarget = §(K-ann)). Each looked live where it is *recommended* and was spent one layer down.
+**So the next task is the LIVENESS DOC ROUND** — the ranked lists are not a safe dispatch
+basis, measured not impressionistic. Fallback if deferred: item 0's **exact `k ≥ 2`
+reduction**, the one candidate verified **at source** this session. Two things stay the USER's call, both OFFERED
 2026-09-02 and both DECLINED IN FAVOUR OF CONTINUING RESEARCH: the **(K-res) wave** (a cheap
 scoping slice queued below) and whether W4's now-closed informal side changes anything about
 the **2026-08-05 Lean hold** — the hold is the user's to lift, never a coordinator's.
@@ -418,38 +430,29 @@ paragraphs.**
   concurrently incrementable); **two gate blind spots** are in the *Gates* block. **No
   mathematics and no status word moved.**
 
-- **BLINE** (73, 2026-09-02, opus) — **`(∗)` IS DECIDED: A THEOREM BELOW `dim A = 3`,
-  FALSE FROM `dim A = 5`, AND THE ROUTE DIES WITH IT** ((BE-129)–(BE-135), *BE128–BE134*).
-  `(∗)` ⟺ `dim(A ∩ C_{L_c}^⊥) ≤ 3` plus two incidence exclusions ((BE-129)), so `dim A ≥ 5`
-  refutes it and makes (BE-127)(ii)'s reduction **VACUOUS** ((BE-130)) — **generically, at
-  14 of 27 new (CH-1)-legal shapes**, 109 of them with `ρ_i ≤ 5` ((BE-133)). Hence 91/91 was
-  a **COROLLARY** ((BE-132)); two further gaps are **not** `(∗)` ((BE-134)); the clause
-  itself stays **OPEN**, 0/270. `w4/bline.py`.
+- **BLINE** (73, 2026-09-02, opus, **one-lined at the 2026-09-03 doc landing, detail in
+  block 8**) — **`(∗)` IS DECIDED: a theorem below `dim A = 3`, FALSE from `dim A = 5`, and
+  (BE-127)(ii)'s route dies with it**; the clause itself stays **OPEN**, 0/270
+  ((BE-129)–(BE-135), *BE128–BE134*). `w4/bline.py`.
 - **BOPEN** (72, 2026-09-02, opus, **one-lined at the BLINE landing, detail in block 8**)
   — **(PENCIL-SATURATES-CHART) IS A THEOREM at every side-degree-`1` terminal**, (BE-69)
   retired as its warrant ((BE-122)–(BE-128), *BE121–BE127*). `w4/bopen.py`.
-- **GGLOB** (71, 2026-09-02, opus, **committing half of a concurrent pair**) — **THE GLOBAL
-  CSP IS CSP-FREE, BOTH HANDLES ARE DEAD, AND THE 82 % IS RE-LOCATED** ((GR-139)–(GR-144),
-  §(K-grid) *G159–G164*): two dual normal forms, and `D_β = {α(head), γ(tail)}` **eliminates
-  the packing quantifier** — on this stratum the residual **IS (GR-10)**. Counting **dead by
-  saturation** (96/227 profile classes carry both verdicts); head-independence **NOT a
-  matroid** (exchange failure exhibited). Three tiers: arc consistency decides (GR-132)'s
-  whole population, so the 82 % is propagation-visible, the invisible tier starting at
-  `n_hub = 6`. 150/150 `n_hub = 6` shapes POSITIVE. **E1 does not fire.** `w4/gglob.py`.
+- **GGLOB** (71, 2026-09-02, opus, **one-lined at the 2026-09-03 doc landing, detail in
+  block 11**) — **THE GLOBAL CSP IS CSP-FREE, both handles DEAD, the 82 % RE-LOCATED**; on
+  this stratum the residual **IS (GR-10)** ((GR-139)–(GR-144), *G159–G164*). **E1 does not
+  fire.** `w4/gglob.py`.
 - **OWALL** (70, 2026-09-02, opus, **one-lined at the BLINE landing, detail in block 12**)
   — **(OC-44)(iii) REDUCED to (OW)**, geometry-free, *Step O41*'s own attack refuted by
   LOGIC ((OC-50)–(OC-55), §(K-out) *O47–O51*). `w4/owall.py`.
 - **GLIST** (68, 2026-09-02, opus, **one-lined at the BLINE landing, detail in block 11**)
   — **(GR-132)'s RESIDUAL: NORMAL FORM, LOCAL HALF EXACT, OBSTRUCTION GLOBAL**, 82 % of
   infeasible pairs hub-locally feasible ((GR-134)–(GR-138), *G154–G158*). `w4/glist.py`.
-- **BPROPER** (69, 2026-09-02, opus, **re-one-lined at the BOPEN landing, detail in block
-  8**) — **(PENCIL-SATURATES-CHART)'s PROPERNESS HALF SETTLED AT EVERY SIDE**
-  ((BE-114)–(BE-121)); its three named residues all **discharged at BOPEN**. `w4/bproper.py`.
+- **BPROPER** (69, 2026-09-02, opus, **block 8**) — **PROPERNESS HALF SETTLED AT EVERY SIDE**
+  ((BE-114)–(BE-121)), residues **discharged at BOPEN**. `w4/bproper.py`.
 - **BSIGMA** (67, 2026-09-02, opus, **detail in block 8**) — **(PENCIL-SATURATES-GEN) is
   FALSE TOO**, its floor a **THEOREM** at a path side ((BE-109)–(BE-113)). `w4/bsigma.py`.
-- **GPACK** (66, 2026-09-02, opus, **one-lined at the GLIST landing, detail in block 11**)
-  — **(GR-18)(iii) SPLITS and the split half is a THEOREM** off `def(G) = 0` alone
-  ((GR-129)–(GR-133), §(K-grid) *G149–G153*); the exchange freedom is **load-bearing**.
+- **GPACK** (66, 2026-09-02, opus, **block 11**) — **(GR-18)(iii) SPLITS, the split half a
+  THEOREM** off `def(G) = 0` ((GR-129)–(GR-133)); exchange freedom **load-bearing**.
   `w4/gpack.py`.
 - **BSATUR** (65, 2026-09-02, opus, **one-lined at the GLIST landing, detail in block 8**)
   — **(PENCIL-SATURATES) IS FALSE, THE REPAIR IS FREE** ((BE-104)–(BE-108), *BE103–BE107*):

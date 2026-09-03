@@ -1018,6 +1018,16 @@ this landing; no measurement moved.
 **Reading it later.** Same caution as block 8's: a snapshot, not a live surface. If it
 disagrees with the `(K-bare)` gap-map row, the row wins.
 
+### Addendum, 2026-09-03 — BLINE's *Decisions made* entry, relocated verbatim
+
+- **BLINE** (73, 2026-09-02, opus) — **`(∗)` IS DECIDED: A THEOREM BELOW `dim A = 3`,
+  FALSE FROM `dim A = 5`, AND THE ROUTE DIES WITH IT** ((BE-129)–(BE-135), *BE128–BE134*).
+  `(∗)` ⟺ `dim(A ∩ C_{L_c}^⊥) ≤ 3` plus two incidence exclusions ((BE-129)), so `dim A ≥ 5`
+  refutes it and makes (BE-127)(ii)'s reduction **VACUOUS** ((BE-130)) — **generically, at
+  14 of 27 new (CH-1)-legal shapes**, 109 of them with `ρ_i ≤ 5` ((BE-133)). Hence 91/91 was
+  a **COROLLARY** ((BE-132)); two further gaps are **not** `(∗)` ((BE-134)); the clause
+  itself stays **OPEN**, 0/270. `w4/bline.py`.
+
 ## The W4 deviation — per-landing detail
 
 **Relocated verbatim from `notes/Phase39.md`'s *Hand-off* section, 2026-09-02**, at the
@@ -1163,6 +1173,17 @@ the count *forces* `dim R_a = 1`). **Do not quote §2.5 as supplying freeness an
 live surface. If it disagrees with the `(K-grid)` gap-map row or with §(K-grid) itself, they
 win. The **status** that stays in `notes/Phase39.md` is one sentence — (GR-10)/(GR-15)
 unchanged, the residual now a global hub CSP with three named successors ((GR-138)).
+
+### Addendum, 2026-09-03 — GGLOB's *Decisions made* entry, relocated verbatim
+
+- **GGLOB** (71, 2026-09-02, opus, **committing half of a concurrent pair**) — **THE GLOBAL
+  CSP IS CSP-FREE, BOTH HANDLES ARE DEAD, AND THE 82 % IS RE-LOCATED** ((GR-139)–(GR-144),
+  §(K-grid) *G159–G164*): two dual normal forms, and `D_β = {α(head), γ(tail)}` **eliminates
+  the packing quantifier** — on this stratum the residual **IS (GR-10)**. Counting **dead by
+  saturation** (96/227 profile classes carry both verdicts); head-independence **NOT a
+  matroid** (exchange failure exhibited). Three tiers: arc consistency decides (GR-132)'s
+  whole population, so the 82 % is propagation-visible, the invisible tier starting at
+  `n_hub = 6`. 150/150 `n_hub = 6` shapes POSITIVE. **E1 does not fire.** `w4/gglob.py`.
 
 ## The escape route (§(K-out)) — per-landing detail (RELOCATED at the OWALL landing, 2026-09-02)
 
