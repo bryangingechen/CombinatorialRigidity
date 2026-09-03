@@ -364,6 +364,26 @@ escape is *carried* rather than re-proved at each shape. The phase has done this
 once already: W5-L4's motive gained a **fourth conjunct** precisely because the
 first three did not force what the induction needed.
 
+> **GATE ON THIS WHOLE SECTION, added 2026-09-03 (RESEARCH-ARC §8 liveness
+> sweep).** *Kill condition: no move of the phase's induction relates two class
+> members, so there is nothing along which to carry an invariant.* **It has
+> fired.** §(K-ind) **(I1)/(I2)/(I4)** prove exactly that — tight ⟺
+> `(|V|,|E|) = (5c+1, 6c)`, so two tight graphs of equal cycle rank have equal
+> size and **no arm of `pencil_reduction` can relate them**; the *Shared
+> dictionary* carries it as a do-not-re-open. So a C-entry is dispatchable only
+> if it **first exhibits such a move**, or abandons *"carried along the
+> induction"* for *"true at every member independently"*. C1 and C2 are read
+> against that gate below. *Row that decides it: gap-map **(K-ind)**.*
+>
+> **Re-openability (user ruling, 2026-09-03).** Everything in §4 that is
+> recorded as *declined* or *not recommended* is **a past priority call under
+> past evidence, not a permanent prohibition** — re-opening one needs a
+> **mathematical reason, not permission**. Where an entry is barred by a
+> *proof* instead (the gate above; §2.5 for the *Ruled out* family; (AV-3) for
+> C3-as-crux-avoidance), it stays barred until that mathematics changes, and
+> each such bar names its own kill condition so a successor can see which kind
+> it is.
+
 ### C1 — dominance of the `V_bc` map (**RUN 2026-08-05; NOT recommended**)
 
 > **Status: the spike below was adjudicated, dispatched and run.** Verdict, in
@@ -404,8 +424,16 @@ implicit differentiation — a derived linear system solved at the base point in
 exact ℚ, inside the existing harness. Scope it as one read-only dispatch with a
 new driver under `notes/scripts/w4/`.
 
-Caveat: dominance *at one habitat* is per-shape again. Uniformity still needs
-either the induction above or §5's generic-point route.
+Caveat: dominance *at one habitat* is per-shape again. Uniformity needs §5's
+generic-point route — **not** "the induction above": §(K-ind) **(I1)/(I4)**
+prove no move of `pencil_reduction` relates two class members, so there is
+nothing to carry dominance along (liveness sweep, 2026-09-03).
+*Kill condition:* a class habitat with `rank dV < 9` at every seed — **none
+found**, and gap-map **(K-dom)** *close-it* still names it — or a mechanism
+making `rank dV = 9` combinatorially certifiable class-wide. *Row: **(K-dom)**.*
+One update the status box above predates: since 2026-08-06 (D2)'s `3(k−3)` has
+a **mechanism** rather than a measurement — §(K-ann) **(ANH-1)**, the
+annihilator is the self-stress space of the contracted framework `H/P`.
 
 ### C2 — carry `V_bc` general position as a motive conjunct
 
@@ -421,6 +449,23 @@ The direct "carry the crux" move. Two honest problems:
   a satisfiability trace against the consumer's actual object before building
   anything on this** — the standing CLAUDE.md rule for deferred-hypothesis
   leaves.
+
+> **SUPERSEDED IN PART, 2026-08-06 — §(K-ind) *Step I6* is the canonical home**
+> (recorded here by the 2026-09-03 liveness sweep; C2 was the one C-entry
+> carrying no status line at all). The first bullet is not the binding
+> obstruction. `hcontract` is the only arm that can return to the tight locus,
+> and *Step I6* proves the contraction relates `Chart(G)` and `Chart(G/H₀)` by
+> **no morphism in either direction** — *"the obstruction is not only that the
+> conjunct would quantify over subgraphs — it is that the arm which would have
+> to re-establish it has no map to pull it back along."* So C2 is **not
+> dispatchable as a transport argument**. What survives is *"prove `Inv` at
+> `G/H₀` outright"*, which is a new problem rather than a strengthened
+> invariant — **declined, not refuted**, and re-openable on a mathematical
+> reason. *Kill condition:* the contraction arm admits no chart morphism
+> (**FIRED**, §(K-ind) I6), or the strengthened motive is unsatisfiable at the
+> consumer's object (**never tested** — the satisfiability trace this entry
+> prescribes has not been run, and the 2026-08-05 Lean hold blocks it).
+> *Row: gap-map **(K-ind)**.*
 
 ### C3 — the mixed stratum: weaken the theorem so the hard case moves
 
@@ -450,12 +495,37 @@ forced into `S`.
 > and stays on the board only **re-scoped**, `μ` measuring how much it buys
 > (**(AV-8)**) — and even a passed gate is necessary, not sufficient
 > (**(AV-7)**).
+>
+> **And its consumers are now named and worked** (liveness sweep, 2026-09-03;
+> the entry above still says C3 *"follows from nothing already proved"* and has
+> *"no consumer"*). The mixed-stratum rigidity facts (OUT) and (ANH-R1) need
+> are §(K-out) **(OC-18)** — `H/X` infinitesimally rigid at one chart point ⟹
+> (OUT)'s first disjunct, degree-free, at both ends of every class pair
+> (5226/5226) — and §(K-ann) **(ANH-R1)** — `H/P − β` pencil-rigid. Both are
+> facts about a **contracted, non-pencil** body, i.e. the mixed stratum, and
+> both are **pointwise available and neither class-uniform** ((OC-3),
+> (ANH-12)). *Kill condition for the re-scoped C3:* a proof that Case-I gluing
+> re-imposes the pencil condition on the glued body class-wide — that is
+> **(AV-7)**'s open arm. *Deciding surface: §4.7 (no gap-map row, by design)
+> plus gap-map **(K-out)** and **(K-wit)** u10.*
 
 ### Ruled out
 
 `dim R_a ≥ 2`, and every other count-expressible invariant, by §2.5.
+*Kill condition: a count-expressible invariant separating §(K-flank) F5(d)'s
+five failing seeds from the thirty escaping ones at the same graph and split —
+none found; deciding surface §(K-flank) *Step F5(d)*.* Two sharpenings landed
+after this entry was written and are the forms to quote (2026-09-03 sweep):
+§(K-shear) *Secondary deliverable* gives the **operative** version — *any
+invariant that is a function of the combinatorial data alone is constant where
+it must vary, and the count is provably blind to the discriminating
+phenomenon* — and §(K-ind) *Step I5*(1) shows a **Jacobian rank** evades the
+ruling in form and re-enters it in substance: count-predicted and measured
+values coincide at all seven §(K-dom) habitats, so the count is *"saturated as
+a predictor and useless as a certificate"*. This bar is **mathematical, not a
+priority call**: it lifts only if such an invariant is exhibited.
 
-### 4.6 The broad class-uniformity recon (2026-08-05) — six refutations, three live successors
+### 4.6 The broad class-uniformity recon (2026-08-05) — six refutations (permanent), and three successors that are NO LONGER LIVE AS WRITTEN (U1/U3 pursued since 2026-08-06/19, U2 struck 2026-09-03)
 
 **Status: assessment only.** No mathematics is landed by this subsection, **no
 driver was run**, and **no *State of (K)* row moves**. Commissioned to look
@@ -468,12 +538,34 @@ lead. Read the refutations first; the live shortlist that follows is short on
 purpose, and its three entries **interlock** (one target, one machine, one
 logical form) rather than being independent bets.
 
+> **LIVENESS BANNER, added 2026-09-03 — the refutations below are permanent;
+> the shortlist below is NOT current.** §(K-out) and §(K-ann) both opened
+> **2026-08-06, the day after this subsection was written**, and both are the
+> shortlist's own subject matter; §(K-out) has since run to **51 steps across 8
+> directions** (O, OCON, ZNEQ, OSCHU, SIGZ, OQRANK, OGEOM, OWALL — the last
+> 2026-09-02) and §(K-ann) to **17 steps across 3 waves**. Per entry:
+> **U1 ALREADY-PURSUED** (its criterion (OUT) is §(K-out), its retarget is
+> §(K-ann), both its named probes ran 2026-08-06); **U2 DEAD** (its own kill
+> clause (i) fired at (OC-4) + (OC-3), 2026-08-06); **U3 ALREADY-PURSUED** (its
+> named first step is §(K-out) *Steps O31–O36*). Read *"assessment only"* as a
+> statement about **this subsection's own commit**, never about whether its
+> entries are unrun. Nothing below is deleted: dead entries are struck with
+> cause and date, and the six refutations stand verbatim.
+
 **The test every candidate must pass, stated once.** §2.2's missing ingredient,
 sharpened by §(K-Δ)'s **(M3)**, is *a ground set that grows with the graph*.
 Any proposed structure — literature or homegrown — is a MISS unless its index
 set is `E(G)` or something derived from it. Applying that test up front is
 cheaper than a hunt, and it is what the two completed hunts should be
-remembered for.
+remembered for. *Kill condition: a class-uniform mechanism whose index set does
+**not** grow with the graph. Rows: gap-map **(K-Δ)**; workbook §(K-shear),
+§(K-jac).* **The test has fired twice more since** (2026-08-26): §(K-jac)
+records that the classical bounds on heights of ideals of minors evaluate on
+our shapes to the **graph-independent constant `7`**, *"so §4.6's filter fires
+too"*; and §(K-shear) records that (ZH-1) died for a **stronger** reason than
+the predicted growing-ground-set one — `so₃(k)` is fixed-dimensional, but the
+shear turned out to be a *gauge* transformation, so the mechanism is vacuous
+rather than merely blind.
 
 #### Refuted or discharged this pass
 
@@ -496,7 +588,9 @@ the M2 feasibility question is **already answered by a landed run**:
 `m2/lambda1.m2` block **(M4)** is the gauged local frame *with `λ` free*, and
 it finishes; the 600 s kill is the *ungauged 28-point* expansion, not the
 `λ`-indeterminate one. Nothing new to compute here.
-*The residue is live and is entry **U1** below.*
+*The residue is entry **U1** below — **ALREADY-PURSUED since 2026-08-06**
+(2026-09-03 sweep): its criterion is §(K-out), its retarget §(K-ann), and what
+is left of it is **(OW)** and **(ANH-R1)**, not a fresh dispatch.*
 
 **(R2) Cluster structure on `Gr(3,6)`.** *Refuted, and it is (M3) verbatim — a
 third MISS for the Δ-matroid reason.* The literature is real and verified:
@@ -523,6 +617,10 @@ independent failures, any one fatal:
   two hyperplanes" and §(K-Δ)'s (N1)/(N2) "two Wick coordinates nonzero", in a
   basis-dependent costume. No new information.
 
+*Kill condition (added 2026-09-03): a `Gr(3,6)` cluster structure whose index
+set grows with the graph and whose mutations preserve the Klein form `B`. Row:
+gap-map **(K-Δ)** — unmoved since; this refutation stands.*
+
 **(R3) Moment curve / total positivity.** *Refuted in one line, and the line is
 worth keeping.* The pencil condition at a body of degree `d ≥ 3` says
 `pt(v)` and its `d` neighbour points are **coplanar** — four or more points on
@@ -542,6 +640,12 @@ where it is needed; (ii) positivity has **already delivered everything it can**
 *Step 5*), which is precisely a positivity recipe and precisely why `k = 3`
 closes, while at `k = 4` (Λ1)'s factors are *linear in the far covector* and not
 bracket monomials, so there is nothing for a sign argument to bite on.
+
+*Kill condition (added 2026-09-03): a curve placement compatible with the pin
+at a hub, or a positivity certificate at `k = 4`. Deciding surfaces: §(K-pitch)
+*Step 5* (the `k = 3` bracket monomial, which is why `k = 3` closes) and §(K-Λ)
+(Λ1) (the `k = 4` factors, linear in the far covector). Neither has moved; this
+refutation stands.*
 
 **(R4) Codimension comparison of `D` against the pencil stratum.** *Refuted,
 and it can never work — not "it fails asymptotically".* Two counts settle it.
@@ -570,6 +674,14 @@ subvariety can have, so the inequality runs the wrong way everywhere, not
 asymptotically. The only comparison with teeth would be degree/multiplicity,
 which needs exactly the description of `Image(φ_G)` that §2.4 says is missing.
 
+*Kill condition (added 2026-09-03): a count running the other way, i.e.
+`codim D > codim(pencil)` — impossible, `codim D = 1` is the minimum. Cross-check
+2026-08-26: the same wall was reached independently from the codimension side by
+**(ZH-3)** and from the scheme side by **(ZH-4)**, both recorded **circular as
+posed** (§(K-shear) *Secondary deliverable*; §(K-jac) *Steps JC1–JC5*) — so
+"degree/multiplicity" is not a cheaper door into `Image(φ_G)`. Deciding surface:
+§2.4 and §(K-ind) *I0*; neither route opened a gap-map row.*
+
 **(R5) Definable choice / quantifier elimination over real closed fields.**
 *Refuted, but it points somewhere.* Semialgebraic definable choice does supply
 "the function that builds the seeds" — §2.2's missing recipe — **for a fixed
@@ -580,6 +692,12 @@ class member factors through, and (T5)/(D2) already supply one: at
 `k ≤ 6` the far graph's *entire* footprint is the annihilator
 `Λ ∈ Gr(k−3, S_P*)`. So the model-theoretic reading is not a route; it is an
 argument for **U1**.
+
+*2026-08-06 (recorded by the 2026-09-03 sweep): the bounded-dimensional
+intermediary this refutation calls for is now **identified**, not merely
+posited — §(K-ann) **(ANH-1)**, `Λ` is the self-stress space of the contracted
+framework `H/P`, of dimension exactly `k−3` forced by a count. The pointer
+still lands on U1, which is ALREADY-PURSUED. Row: gap-map **(K-ann)**.*
 
 **(R6) Bonus refutation — "choose the split to force a length-4 companion".**
 `hK` as landed is quantified `∀` over the split data
@@ -595,6 +713,16 @@ available split, which is exactly the value §(K-dom) *D4* records. The
 here** (the Lean hold is standing) and it is recorded only so a successor does
 not re-derive it.
 
+*Kill condition (added 2026-09-03): a Lean check of whether `hK`'s `∀` over the
+split data can be weakened to `∃`. Deciding surface: `Escape.lean:334`/`:555` —
+**no gap-map row**, and the standing 2026-08-05 Lean hold blocks the check, so
+this item cannot move until the hold lifts. Its premise was **strengthened**
+2026-08-06: §(K-ind) *Verification* records the coordinator-confirmed
+correction that the pencil side runs `Graph.pencil_reduction`, not KT Thm 4.9,
+and that "`hK` enters **only** through `pencilPair_of_splitOff_of_habitat`
+(`Escape.lean:334`), i.e. only in the split arm". The `k = 6`-at-every-split
+half stands (§(K-dom) *D4*).*
+
 #### The ranked live shortlist
 
 Three entries, labelled **U** (uniformity) rather than continuing the `C`
@@ -602,6 +730,19 @@ sequence — the workbook already owns `(C6)`/`(C7)` and the collision would be
 real. They are **one object seen three ways** — U1 the target, U2 the machine,
 U3 the logical form — and the ranking is by expected value toward *uniformity*,
 not by how much is already known.
+
+> **U1 — ALREADY-PURSUED SINCE 2026-08-06; NOT A DISPATCHABLE ENTRY**
+> (liveness sweep, 2026-09-03). Both halves were taken up **the day after this
+> was written**: the criterion **(OUT)** became **§(K-out)** (51 steps, 8
+> directions, to 2026-09-02) and the retarget became **§(K-ann)** (17 steps, 3
+> waves). *Kill condition:* a class shape at which `λ` is constant on the far
+> chart — **settled negative** ((ANH-1) + (D2)); or no single move works
+> class-wide — **settled positive**, (ANH-2)/(ANH-3) deliver a class-uniform
+> move *and* formula. *Row: gap-map **(K-ann)** — "U1 is **half** delivered,
+> the move and the formula but not the inputs" — and **(K-out)**.* **What is
+> left is not U1**: it is **(OW)** (§(K-out) *Steps O47–O51*, direction OWALL)
+> and **(ANH-R1)** (§(K-ann) *Step A8*, relocation #4). The text below is
+> preserved as the 2026-08-05 pitch.
 
 **U1 (rank 1) — retarget §2.4's image problem from `Gr(3,6)` to the
 annihilator, and read the failure off its support.**
@@ -655,13 +796,27 @@ paragraph expected:** the availability map is *uniform* but **ambient**-generic
 ((OC-2)), and on the pencil chart the bad locus is **nonempty at every class
 shape** ((OC-3)) — so (OUT)'s hypothesis is *available* pointwise (356/357,
 270/270) yet **never deliverable by a count**. The move-and-formula deliverable
-itself was half-delivered by §(K-ann) (below).
+itself was **delivered in full** by §(K-ann) **(ANH-2)/(ANH-3)** —
+class-uniform, no genericity hypothesis, local at the moved vertex, one Klein
+pairing at the named move, verified at 276 far-chart directions × 828 motions
+against an independent implicit differentiation. What is *not* delivered is the
+pair `(τ, ω)` it pairs against, which is **(ANH-R1)**. **This experiment is
+DEAD as a recommendation; do not re-run it.**
 
 *What would kill it.* A class shape at which `λ` is constant on the far chart —
 a genuine surprise against (D2)'s attainment, and a sharp new obstruction. Or a
 proof that no single move works class-wide, which would make U1 a fourth
 relocation. **Honesty flag:** if the move can only be exhibited per shape, this
-is another per-shape positive and must be recorded as one. *Scope:* the `k = 4`
+is another per-shape positive and must be recorded as one.
+
+*What would kill it — **SPENT**, 2026-09-03.* Neither kill fired and both are
+now settled: `λ` is never constant on the far chart at `k ≥ 4` ((ANH-1) makes
+the annihilator a `(k−3)`-dimensional stress space, (D2)'s `3(k−3)` attained),
+and a single class-wide move **does** exist ((ANH-3)). The honesty flag fired
+in a third direction nobody listed: the **move** is class-uniform and the
+**inputs** are per-shape, so U1's outcome is **relocation #4** — §(K-ann)
+*Step A8*, and gap-map (K-wit) u12 records that *"whether it is easier than its
+parent or merely smaller is OPEN"*. *Scope:* the `k = 4`
 reduction to two points is (Λ2), so it needs (Λ0f′) and (Λ0d); at `k = 5` the
 bad set is 3-dimensional in a 6-dimensional Grassmannian (§(K-Λ) *Step 7*) and
 at `k = 6` the target is `Gr(3,6)` again, so U1's *gain* is graded by `k` and
@@ -679,7 +834,49 @@ NT21; `k = 6`: both double subdivisions), which is why **no `k`-graded mechanism
 can close the class**, whatever the distribution. A cheap combinatorial census
 of `k` over the enumerated class families (877 `K4` shapes, 210 `K5` all-`{3,4}`
 shapes, the θ level sets) would refine the distribution; it would **not** change
-that verdict, which is why this pass did not run it.
+that verdict, which is why this pass did not run it. *(2026-09-03: a `k`-census
+of this kind is now largely a **by-product** — §(K-out)'s 174 classes and 4296
+length-4-companion triples, §(K-ann) (ANH-7)'s 3820/4296 — and the verdict is
+unchanged, as predicted. §(K-ann) (ANH-4)/(ANH-8) confirm the calibration
+independently: (ANH-4) is provably `k = 4` only, from the same `5k+10 ≤ 6k+6`
+equality case, and gap-map (K-ann) u8 states "no `k`-graded mechanism including
+this one can close the class — the verdict `Pencil-strategy.md` §4.6 already
+carries".)*
+
+> **U2 — STRUCK 2026-09-03 (liveness sweep): DEAD, and it was dead the day
+> after it was written. Its own kill clause (i) fired.** The support condition
+> `supp(λ) ⊆ {e₂,e₃}` — i.e. `λ₁ = λ₄ = 0` — is **satisfiable at every
+> certified class habitat**, constructed exactly and legally by §(K-out)
+> **(OC-4)** (*Step O6*, `outerline.py --build`, 2026-08-06): sliding `pt(x₁)`
+> and `pt(x₃)` onto their two marked directions simultaneously gives an exact
+> chart point with `λ₁ = λ₄ = 0` — **(OUT) SILENT** — still at target rank,
+> `dim R_a = 1`, all four `IsNondegPencilRealization` conjuncts holding, and at
+> 3 of the 4 habitats with **no** coincident hinge line. And the class-wide
+> target is impossible in principle: **(OC-3)** proves `dim(R₁ ∩ L_b) ≥ 1`
+> **structurally**, so §(K-out) *Step O3*'s own conclusion applies — *"a
+> class-uniform proof of (OUT)'s hypothesis cannot be a count, **a matroid
+> statement**, or any argument that does not see the placement"* — and U2's
+> target **is** a matroid statement. **Its predicted near-counterexample is not
+> one:** at (OC-4)'s point the escape still holds (`λ ∦ p⁺`, `λ ∦ q`,
+> `deg_t Q(z(t)) = 4`); what the point actually shows is that (OUT) is strictly
+> weaker than (Λ2). *Rows: gap-map **(K-out)** u2–u6, **(K-wit)** u7–u9.*
+>
+> **What survives, and it is in service.** U2's *premise* is **confirmed and
+> landed** — §(K-ann) *Step A1*(ii): *"U2's ground set survives contact …
+> `E(H)` really is the index set, and the matroid really has exchange (it is
+> linear)"*, with generic rank `r(A) = |A| − dof(H/(E∖A))` combinatorial by
+> Tay — and the hinge-rate identity is §(K-out) **(OC-1)** (*Step O1*, "the
+> hinge-rate reading, made exact"). **One correction:** *"What U2 named is the
+> **cocircuit** `supp(λ)`; the recipe turns on the **circuit** `supp(τ)`"*
+> (§(K-ann) *Step A1*(ii); gap-map (K-ann) u7). Kill clause **(ii) never fired
+> and is superseded**: the matroid is the generic Tay matroid, and (ANH-4)
+> makes `E(H/P)` a **circuit** of it at `k = 4`, not the 6-fold graphic union.
+>
+> **Cross-surface reconciliation, 2026-09-03.** The dispute was three-way and
+> is settled: §8.2's "live, rank 2" row is **struck with cause (OC-4) + (OC-3)**;
+> §8.6's *delivered* verdict is **kept**, with its cause repaired off
+> **(GR-16)**, which is a different object (an exact `3c × 3c` system on `G°`,
+> gap-map (K-grid) u8). The pitch below is preserved as written.
 
 **U2 (rank 2) — the hinge-rate / cycle-space presentation: a ground set that
 grows with the graph.**
@@ -726,6 +923,34 @@ wrong matroid. **Honesty flag:** "`{e₂,e₃}` contains no cocircuit" is a rank
 *lower* bound, so §2.3's asymmetry has **not** been evaded — only relocated onto
 a smaller, contracted graph.
 
+> **U3 — ALREADY-PURSUED SINCE 2026-08-19 (liveness sweep, 2026-09-03): its
+> named first step is DONE; its residue is one unrun application.** *Kill
+> condition:* chart-wide stresses have no more structure than pointwise ones —
+> **REFUTED**. §(K-out) **(OC-35)** is a structure theorem (the self-stress
+> space of **any** min-degree-≥2 subgraph at **any** pencil placement is a
+> Kirchhoff flow on its topological paths, valued in the chain-span perps),
+> **(OC-36)** a three-term ledger, **(OC-37)** a class-shape floor
+> `slack(F) ≥ 0` with equality **iff** `F` is a cycle or bouquet (2614 shapes,
+> 215 906 supports, zero violations). So the support-enumeration this entry
+> asked for landed in a **more general** form than requested — direction SIGZ,
+> *Steps O31–O36* — and was extended by OGEOM (*Steps O42–O46*); the weak-map
+> framing it invokes landed as §(K-ann) **(ANH-9)**, and §(K-ann) **(ANH-11)**
+> adds the constructive converse (the common-transversal mechanism producing a
+> stress with prescribed support). *Row: gap-map **(K-out)** u13/u14/u26.*
+>
+> **The residue, as a dispatchable successor rather than as U3.** SIGZ and
+> OGEOM spent the ledger on `σ = corank R(H)` — **`H` alone**, the
+> *necessary* half of input (a) ((OC-23)/(OC-24)) — **never** on
+> `F = H ∪ {bar along M}` with the bar in its support, which is U3's own
+> object. That application is unrun. **Honest flag, carried not resolved:**
+> (OC-35) needs each edge to carry a hinge line and its covector in that
+> line's 5-space perp, which the meet-line bar satisfies *on its face*, but
+> **whether the arc admits `M` as a hinge of `H` in that construction is
+> UNVERIFIED** — confirm before spending a slice. (§8's U3 entry carries the
+> same flag; the two must agree.) The option-B adjacency this entry flags was
+> checked and separated at §(K-ann) (gap-map (K-ann) u7: *"option B and U2 are
+> **not** the same object"*); the 2026-07-30 NO-GO on option B stands.
+
 **U3 (rank 3) — restate `hK` as a non-existence, so §2.3's asymmetry works for
 it instead of against it.**
 
@@ -769,6 +994,22 @@ with no verified pointer, explicitly weaker than §7's screw-theory pointer and
 subject to the same "verify from scratch" rule. §7's standing verdict — *the
 right pointer for a successor is "Coxeter matroids, and the reason they don't
 apply"* — is unchanged.
+
+**The named lead is no longer un-pointed (2026-08-06; recorded 2026-09-03).**
+§(K-ann) *Step A10* **(ANH-9)** supplies the precise statement this paragraph
+said it could not: (i) every `M_pen(p)` is a weak-map image of `M_gen`;
+(ii) `M_pen^gen` is well-defined on the irreducible chart and is the
+weak-map-maximal one; (iii) (ANH-R1) is decidable per triple by **one exact
+rank computation at one rational point**. The workbook says so in as many
+words — *"the weak-map / specialization-stability lead of `Pencil-strategy.md`
+§4.6 now has its precise statement … which is what that subsection said it
+could not supply."* So the fourth subject is an **internal** object with a
+landed formulation, not a literature target, which **strengthens** *"not
+recommended"* rather than weakening it. *Kill condition: a fourth subject with
+a graph-growing index set and a verified theorem pointer. Row: gap-map
+**(K-Δ)** and **(K-ann)**.* Note the bar here is **mathematical** — the
+(M3) argument plus (ANH-9) — not a priority call, so the 2026-09-03
+re-openability ruling does not loosen it.
 
 ### 4.7 C3's gate PRICED — probe C3-AVOID (specced 2026-08-20, LANDED 2026-08-24)
 
@@ -932,6 +1173,16 @@ pencil-compatibility is exactly the geometry this probe is barred from. **(AV-7)
 is combinatorial; its geometric consequence is OPEN and out of this probe's
 scope** — flagged, not forced.
 
+*Kill condition (added 2026-09-03): a proof — or refutation — that Case-I
+gluing re-imposes the pencil condition on the glued body class-wide, together
+with pencil realizability for the two `S`-bodies that reach the base.
+**Deciding surface: none — this item has NO gap-map row** (see *Step AV1*:
+§(K-avoid) was deliberately not opened), which is precisely why only a liveness
+sweep can check it. The nearest surfaces are §(K-ind) *I6* (the contraction arm
+has no chart morphism, so this arm has no transport) and the mixed-stratum
+rigidity facts §(K-out) **(OC-18)** / §(K-ann) **(ANH-R1)**. This is the only
+genuinely open item §4.7 leaves.*
+
 #### **(AV-8)** the verdict for the option board
 
 **(AV-8).** **C3's gate is priced, and the price is high.** As a *crux-avoidance*
@@ -946,6 +1197,16 @@ the hard case", but as *"the hard case relocates into Case-I gluing, at a rate
 `μ` measures"*. **Nothing here touches `hK`, `hbareSplit`, (GR-15) or class
 uniformity, and no gap-map status moves.**
 
+*Liveness clause, 2026-09-03.* C3-as-crux-avoidance is barred by a **proof**
+((AV-3)'s threshold), not by a priority call, so the re-openability ruling does
+not lift it; the **re-scoped** C3 is a live, unpriced option whose consumers now
+exist and are worked — §(K-out) **(OC-18)** and §(K-ann) **(ANH-R1)**, both
+pointwise available and neither class-uniform. *Kill condition for the
+re-scoped form: (AV-7)'s Case-I arm settles either way. Deciding surface: §4.7
+itself — no gap-map row — plus gap-map **(K-out)** and **(K-wit)** u10.*
+Whether §8's board still carries the C3 row is §8's business, not this
+subsection's.
+
 **Caps, disclosed.** The Case-II census is exhaustive **only for `μ ≤ 3`**
 (hence `|V| ≤ 16`); `μ ≥ 4` was not searched and an exhausted cap is not a
 nonexistence claim. The `--betti` / `--count` exhaustive sweeps are **simple
@@ -953,6 +1214,12 @@ nonexistence claim. The `--betti` / `--count` exhaustive sweeps are **simple
 larger pool members report the DP capacity only. Everything at `D = 6`
 (`n = 3`); (AV-1) and (AV-3) are stated and proved for general `D` and are the
 only claims here that are.
+
+*Kill condition (added 2026-09-03): a `μ ≥ 4` counterexample to (AV-2)/(AV-4),
+or a `|V| ≥ 7` violation of the exhaustive `--betti`/`--count` sweeps.
+Deciding surface: `notes/scripts/w4/avoidgen.py` — **no gap-map row**. An
+exhausted cap is not a nonexistence claim, and these caps are the disclosure of
+exactly that.*
 
 **Verification.** `python3 notes/scripts/w4/avoidgen.py --all` (~36 s, seven
 modes: `--supply --census --betti --forced --avoid --count --validate`),
@@ -1684,11 +1951,32 @@ spent), not a priority call.
 
 **What this is.** A read of a project-new external source against the kernel-(K)
 arc, producing six named candidates **(ZH-1)–(ZH-6)** for a future direction
-pick. Same discipline as the rest of this file: strategy, not mathematics — no
-claim here is a verdict, none carries a driver, and every one is an argument a
-successor should attack rather than assume. **None of the six is priced into
-§8's board**; they are raw candidates, and two of them — (ZH-2) and (ZH-3) —
-owe a §2.5 counting-saturation check before they are worth a slice.
+pick.
+
+**STATUS, 2026-08-26 (banner corrected by the 2026-09-03 liveness sweep, which
+found this paragraph contradicted by §9.2 and §9.3 below). The shelf is
+TWO-FOR-TWO and has exactly ONE dispatchable candidate left:** (ZH-1)
+**STRUCK** (direction ZSHEAR, driver `notes/scripts/w4/zshear.py`, canonical
+home §(K-shear)); (ZH-4) **STRUCK** (direction ZJACOB, driver
+`notes/scripts/w4/zjacob.py`, §(K-jac)); (ZH-3) **struck by absorption** into
+(ZH-4); (ZH-5) a **design note**; (ZH-6) **write-up material**; **(ZH-2)** live
+in its **stratified reading only**. The §2.5 counting-saturation checks (ZH-2)
+and (ZH-3) owed are **DONE** (2026-08-26, §(K-shear) *Secondary deliverable*).
+Two of the six therefore *are* verdicts and *do* carry committed drivers — the
+sentences this paragraph used to contain, *"no claim here is a verdict, none
+carries a driver"* and *"two of them owe a §2.5 check"*, were both false from
+2026-08-26 and are struck here with that cause.
+
+Same discipline as the rest of this file otherwise: strategy, not mathematics —
+the four surviving readings are arguments a successor should attack rather than
+assume, and every mathematical claim points at the section that owns it. **The
+shelf is deliberately UNPRICED — it is not on §8's board — and that is a
+priority call, not a prohibition:** per the 2026-09-03 user ruling an
+adjudication records a past priority call under past evidence, so any entry
+below may be re-opened **on a mathematical reason, without asking**. What that
+ruling does *not* touch is the evidential caveat that follows, which is a
+statement about the source's reliability rather than about this project's
+priorities and stays exactly as strong as it is.
 
 **Provenance and status caveat.** D. Zheng, *Stress Degeneracy of Direction
 Complexes of (2,2)-Sparse Graphs and Three-Dimensional Body–Pin Rigidity*,
@@ -1707,12 +1995,20 @@ would be a formalization target. **This does not disturb §8.6's two durable
 literature-hunt negatives** — those hunted for the pencil statement and for
 Δ-matroid structure; this source was not found by a hunt and is about neither.
 
+*Kill condition for this caveat (added 2026-09-03): the project independently
+checks the source. **It never has**, and nothing in-tree decides it — that
+absence IS the status. No reader may treat this section as a verification, and
+no (ZH-\*) status below is upgraded on the strength of the source: an entry is
+live here only where the **project-side** question it names is live.*
+
 **Where the load sits in the source, if a successor does go read it.** Its whole
 induction turns on the interaction of its Lemma 3.4 with its Proposition 3.3,
 and a dimensional analysis done at read time shows Lemma 3.4 sits *exactly* on
 its boundary at `d = 3` (the identity `2(d−1) = d+1`, which fails at `d ≥ 4`).
 There is no slack in that count, so an error there would be structural rather
-than repairable. Read its §3 before trusting its §5.
+than repairable. Read its §3 before trusting its §5. *(Kill condition, 2026-09-03:
+an in-project check of the source's §3 — **never run**; the paragraph above is
+a read-time dimensional analysis, not a verification.)*
 
 ### 9.1 The one identity — its quadratic form IS ours
 
@@ -1734,14 +2030,24 @@ Relevant adjacency: §7 already lists **Witt's theorem** and the α/β
 classification of the Klein quadric's maximal isotropics among the classical
 facts in use here, so the machinery below sits next door to machinery already in
 play — a successor should first check whether it is *already* implicitly
-available rather than new.
+available rather than new. **That advice was vindicated (2026-08-26):**
+§(K-shear) *confirms* this section's identification of the two quadrics while
+killing the device built on it — `Φ_S = Λ²(T_{−s})` identically, so the shear
+group **is** the translation subgroup of `PGL(4)` on line coordinates and `Q`
+is its own defining invariant. The identity stands; the machinery was already
+ours. *Kill condition: the two forms differ. Deciding surface: §(K-pitch)
+*Step 0* and §(K-shear) — no gap-map row.*
 
 ### 9.2 The six candidates
 
 **(ZH-1) The Witt shear as a uniformity device. — STRUCK 2026-08-26, direction
 ZSHEAR: REFUTED, and the reason is that the shear is a GAUGE transformation.**
 Canonical home for the refutation is `notes/Pencil-informal.md` §(K-shear)
-*Steps SH1–SH5* — not restated here. In one line: `Φ_S = Λ²(T_{−s})`
+*Steps SH1–SH5* — not restated here. *(Kill condition as this entry itself
+named it — "if that failure locus turns out shear-invariant, (ZH-1) dies
+immediately" — **FIRED**. Deciding surface: §(K-shear), driver
+`notes/scripts/w4/zshear.py`; **no gap-map row** — the direction moved no
+status. Struck, not deleted: the original pitch stands below.)* In one line: `Φ_S = Λ²(T_{−s})`
 identically, so the shear group **is** the translation subgroup of `PGL(4)` on
 line coordinates, `Q` is its own defining invariant, and the §(K-tight)
 criterion matrix is **literally the same matrix** in the pushed basis (150/150
@@ -1795,17 +2101,42 @@ computes `f(V(G′)) = f(V(G)) − 5ℓ + 6(ℓ−1) = ℓ − 6`, exactly such 
 count; what it lacks is a *geometric* quantity riding along on it, and `trdeg` of
 the pencil realization's coordinate field is the natural candidate.
 
-*Filter check owed before spending.* `∆` is indexed by `V(G)`/`E(G)` and grows
-with the graph, so it passes §4.6's growing-ground-set test. **It has NOT been
-checked against §2.5's counting saturation** — `trdeg` is a dimension rather than
-a count of combinatorial objects, but it is still a numerical invariant, and
-§2.5's argument must be read against it before a slice is spent. Highest
+*Filter check — **DONE 2026-08-26**, §(K-shear) *Secondary deliverable* (this
+paragraph's "owed" wording is struck here, 2026-09-03).* `∆` is indexed by
+`V(G)`/`E(G)` and grows with the graph, so it passes §4.6's
+growing-ground-set test. Against §2.5 it **SURVIVES in its stratified reading
+and DIES in its whole-chart reading**, and the distinction is the whole content
+of the check: at the generic point of the *whole* chart
+`trdeg_k K = dim(chart)`, a function of hub/degree data alone, so `∆` is
+count-expressible and §2.5 bites exactly; on the stratum carrying the
+degeneracy `trdeg` is that stratum's dimension, which *Step F5(d)* and §(K-out)
+**(OC-38)**(iii) show is **not** count-predicted. Carry the pass's own caution:
+pointwise self-stress dimension is upper semicontinuous and jumps *up* exactly
+where `trdeg` drops, so the sign of the increment must be checked **per
+reduction move**, never assumed additive. *Kill condition: `∆` taken
+whole-chart (**fires**), or a reduction move whose increment cannot be signed.
+Deciding surface: §(K-shear) *Secondary deliverable* — the shelf has **no
+gap-map row**.*
+
+*A second check, **OWED and never run** (added 2026-09-03).* `∆` is a potential
+carried **along reduction steps**, and §(K-ind) proves *"no move of
+`pencil_reduction` relates two class members"*, with *Step I5*(2) showing the
+arc's one dimension-carrying quantity moving in the **fatal direction** under
+the split (`9 → 4` at `k: 4 → 3`). A potential-function induction may
+legitimately descend *out* of the class, so this is **not** claimed as a kill —
+but a dispatch must say which it does. *Row: gap-map **(K-ind)**.* Highest
 ceiling, highest risk: this is a reformulation of the kernel, not a route inside
 the current one.
 
 **(ZH-3) A rank lower bound from a codimension count. — RE-LABELLED
 2026-08-26, direction ZSHEAR: CIRCULAR AS POSED, which supersedes "owes a §2.5
-filter check".** It does survive §2.5 (a codimension is geometric, and it does
+filter check"; then STRUCK BY ABSORPTION 2026-08-26, direction ZJACOB — it
+**is** (ZH-4)'s hypothesis, so the two "concrete" candidates were one.**
+*(Header aligned with §9.3 by the 2026-09-03 liveness sweep; mechanism and
+original pitch below unchanged. Kill condition: the bound reaches the target
+only at `c = 0`, where it **is** `HasGenericPencilRealization` — **FIRED**.
+Deciding surfaces: §(K-shear) *Secondary deliverable*, §(K-jac); no gap-map
+row.)* It does survive §2.5 (a codimension is geometric, and it does
 separate seeds at a fixed graph), but the filter is not the binding objection:
 on the tight class `m = 5|E| = target`, so `rank ≥ m − c` reaches the target
 only at `c = 0`, where the statement reads *the pencil chart's generic
@@ -1831,7 +2162,10 @@ open question, and §2.5's filter is owed here too.
 **(ZH-4) Escape failure as a singular locus — the Jacobian route. — STRUCK
 2026-08-26, direction ZJACOB: REFUTED, and by an EQUIVALENCE rather than an
 obstruction.** Canonical home `notes/Pencil-informal.md` §(K-jac) *Steps
-JC1–JC5* — not restated here. In one line: stratifying by corank gives
+JC1–JC5* — not restated here. *(Kill condition: the Jacobian criterion's
+hypothesis unfolds to the phase target — **FIRED**. Deciding surface:
+§(K-jac), driver `notes/scripts/w4/zjacob.py`; **no gap-map row**. Struck, not
+deleted: the original pitch stands below.)* In one line: stratifying by corank gives
 `dim 𝒞 = max_{k≥0}(dim B_k + 6 + k)`, so *"local complete intersection of the
 expected codimension"* ⟺ `B_0 ≠ ∅` **and** `codim B_k ≥ k` (∀`k ≥ 1`) — and
 `B_0 ≠ ∅` **IS** properness, which on the tight class is the phase target. **The
@@ -1884,6 +2218,19 @@ starvation bound, its matroid-intersection menu. A forest structure theorem on
 the **incidence of degeneracies**, rather than on the degeneracies themselves, is
 a move the arc has not made.
 
+*Adjacency, 2026-09-03 — recorded as adjacency, **not** as delivery.*
+§(K-bare-ext) directions **BRNODE** and **BDECOR** independently instantiate
+part **(a)** and something close to part **(c)**: decorated skeletons, and a
+per-branch **product** law for the achievable decorations of a piece (*"at a
+fixed flag assignment on the hub set the legal configurations of ANY piece are
+a product, one factor per topological branch"*). They were reached
+independently, not imported, and **whether that is this template's part (c) — a
+forest structure theorem on the *incidence* of decorations — is NOT verified.**
+*Kill condition: the arc makes the incidence-forest move, or the template is
+shown not to transfer to the body–hinge carrier. Row: gap-map
+**(K-bare)/(K-bare-ext)**.* Still a design note, never a dispatch — a priority
+call re-openable on merit, not a bar.
+
 **(ZH-6) Orientation, not a route — why our counting works and theirs does not.**
 The source's partition condition and this phase's `def(H)` are the same template
 with different capacity functions. Body–hinge: `Σ 5·d(P_i,P_j) ≥ 6(t−1)`,
@@ -1895,6 +2242,9 @@ phase's `def(H) = 0` criterion. A saturating capacity is not the rank function o
 any union of graphic matroids on the multigraph, which is why the source must
 first collapse to a simple support graph and only then use two copies. Useful
 when the phase writes up why its own counting is available; **not a direction.**
+*(Kill condition, 2026-09-03: none — this entry is never dispatchable by
+construction; it retires when the phase writes up its own counting. Deciding
+surface: none needed.)*
 
 *(The saturation also explains the source's `2`: its needed equation count is
 bounded by `2(t−1)`, exactly the `(2,2)`-tight bound on `t` vertices. Recorded
@@ -1902,24 +2252,47 @@ for orientation; nothing in the arc turns on it.)*
 
 ### 9.3 Suggested order, if a direction is ever spent here
 
-**UPDATED TWICE ON 2026-08-26 — the shelf is now two-for-two, and it has exactly
-ONE dispatchable candidate left.** Second update (direction **ZJACOB**):
-**(ZH-4) is STRUCK** (refuted by an equivalence — its hypothesis contains its
-conclusion, §(K-jac)), and its refutation **absorbs (ZH-3)**, whose circularity
-now has a mechanism: (ZH-4)'s hypothesis *is* (ZH-3). So of the six original
-candidates, **(ZH-1) and (ZH-4) are struck, (ZH-3) is struck-by-absorption,
-(ZH-5) is a design note rather than a result, and (ZH-6) is write-up material
-that is never a dispatch** — leaving **(ZH-2) in its stratified reading only** as
-the shelf's whole remaining dispatchable content. The shelf stays **off §8's
-board**. First update (direction **ZSHEAR**): the head was **spent**: (ZH-1) ran
-and is **STRUCK**
-(refuted — gauge-triviality, §(K-shear)). The owed filter checks are **DONE**, so
-nothing on this shelf is held on that account any more: **(ZH-2)** survives §2.5
-**only in its stratified reading** — at the generic point of the *whole* chart
-`trdeg = dim(chart)`, a function of hub/degree data alone, so whole-chart `∆` is
-count-expressible and §2.5 bites exactly; **(ZH-3)** is **circular as posed**, a
-sharper objection than the filter. So the order is now: **(ZH-4)** (concrete, no
-filter problem visible — the head), then **(ZH-5)** as a design note feeding a
-fan-out's direction selection, then **(ZH-2)** *in its stratified reading only*.
-**(ZH-6)** is write-up material, never a dispatch. The shelf stays **off §8's
-board**, and it is now one-for-one: one direction spent, one candidate struck.
+**The shelf is TWO-FOR-TWO and has exactly ONE dispatchable candidate left**
+(2026-08-26; table rebuilt 2026-09-03 by the liveness sweep). *This subsection
+was self-contradicting for a week and is the round's cleanest specimen of the
+`RESEARCH-ARC.md` §8 failure mode: the second update prepended a correct header
+and left the first update's ranking standing underneath, so the paragraph named
+**(ZH-4)** as the head of the order — an entry its own §9.2 marks STRUCK four
+paragraphs earlier — and closed "one-for-one" against its own opening
+"two-for-two". A coordinator reading top-down for a dispatch read "the head is
+(ZH-4)". The ranking prose is replaced by this table; nothing is deleted, and
+every strike keeps its cause, its date and its preserved original pitch in
+§9.2.*
+
+| entry | status | direction / date | canonical home |
+|---|---|---|---|
+| **(ZH-1)** | **STRUCK** — the Witt shear is a *gauge* transformation, so the mechanism is vacuous | ZSHEAR, 2026-08-26 | §(K-shear) *SH1–SH5*; `notes/scripts/w4/zshear.py` |
+| **(ZH-2)** | **LIVE, stratified reading only** — the shelf's whole dispatchable content | filter check DONE 2026-08-26 | §(K-shear) *Secondary deliverable* |
+| **(ZH-3)** | **STRUCK BY ABSORPTION** — circular as posed, and it **is** (ZH-4)'s hypothesis | ZSHEAR then ZJACOB, 2026-08-26 | §(K-shear); §(K-jac) |
+| **(ZH-4)** | **STRUCK** — refuted by an *equivalence*: its hypothesis contains its conclusion | ZJACOB, 2026-08-26 | §(K-jac) *JC1–JC5*; `notes/scripts/w4/zjacob.py` |
+| **(ZH-5)** | design note feeding a fan-out's *selection* — **never a dispatch** | unopened | — |
+| **(ZH-6)** | write-up material — **never a dispatch** | unopened | — |
+
+**So the order is: (ZH-2), in its stratified reading only, and nothing else.**
+**(ZH-5)** is consulted when a fan-out selects directions; **(ZH-6)** when the
+phase writes up why its own counting is available. Two directions spent
+(ZSHEAR, ZJACOB), two candidates struck, one re-explained, and the owed §2.5
+filter checks are **DONE**.
+
+Before (ZH-2) is dispatched it owes one further check, recorded in its own
+entry and **never run**: `∆` is carried along reduction steps, and §(K-ind)
+proves no move of `pencil_reduction` relates two class members. That is not a
+kill — a potential-function induction may legitimately descend out of the class
+— but a dispatch spec must say which. *Row: gap-map **(K-ind)**.*
+
+**The shelf stays UNPRICED — off §8's board — and that is a priority call, not
+a prohibition** (2026-09-03 user ruling): re-opening any entry here needs a
+**mathematical reason, not permission**. The unrefereed / AI-assisted /
+never-independently-checked caveat at the head of §9 is a different kind of
+statement — evidential, about the source — and is untouched by that ruling.
+
+*Kill condition for this subsection: a third direction is spent here, or
+(ZH-2) is struck — after which the shelf carries **no** dispatchable candidate
+and should be marked **closed** rather than re-ranked. Deciding surface: §9.2's
+own entry banners. **The shelf has no gap-map row**, which is exactly why
+nothing but a liveness sweep can detect that this table has gone stale.*
