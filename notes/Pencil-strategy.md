@@ -13,7 +13,8 @@ candidate routes), then `notes/Pencil-informal.md`'s **State of (K)** gap map
 (the canonical per-gap status). The mathematics is **not** restated here; every
 claim below points at the workbook section that owns it.
 
-**Labels.** §4's **C1/C2/C3** (candidate invariants) and §4.6's **U1/U2/U3** are
+**Labels.** §4's **C1/C2/C3** (candidate invariants — C1 and C2 both struck,
+C2 on 2026-09-03) and §4.6's **U1/U2/U3** are
 this file's own family; `C1`–`C3` collide with two unrelated `(C·)` families in
 the workbooks, which is why §4.6 minted `U1`–`U3` rather than continuing the
 letter. §9's **(ZH-1)–(ZH-6)** are the third, minted 2026-08-21 and topic-tagged
@@ -31,7 +32,8 @@ a recon or a spike before it can be priced.
 > and a bonus sixth) and a once-**ranked three-entry shortlist** (`U1`–`U3`), each
 > with its cheapest decisive experiment and what would kill it — **of which
 > only `U1` survives as of 2026-09-03** (`U2` struck, `U3` retired by OBAR).
-> Start there before §4's C2/C3.
+> Start there before §4's C3 — and **not** before C2, which is struck as a
+> uniform carry (2026-09-03, direction DSAT; §8.6).
 
 > **Start at §8 (the option board, 2026-08-20)** if you are choosing a
 > direction. It prices every live route in one table set — including the two
@@ -374,7 +376,9 @@ first three did not force what the induction needed.
 > dictionary* carries it as a do-not-re-open. So a C-entry is dispatchable only
 > if it **first exhibits such a move**, or abandons *"carried along the
 > induction"* for *"true at every member independently"*. C1 and C2 are read
-> against that gate below. *Row that decides it: gap-map **(K-ind)**.*
+> against that gate below — and **both are now dead on more than the gate**:
+> C1 by (D1)'s cap, C2 by its satisfiability trace (2026-09-03, §(K-dom)
+> *Steps D8–D14*), each provably false off the class. *Row that decides it: gap-map **(K-ind)**.*
 >
 > **Re-openability (user ruling, 2026-09-03).** Everything in §4 that is
 > recorded as *declined* or *not recommended* is **a past priority call under
@@ -464,9 +468,29 @@ The direct "carry the crux" move. Two honest problems:
 > invariant — **declined, not refuted**, and re-openable on a mathematical
 > reason. *Kill condition:* the contraction arm admits no chart morphism
 > (**FIRED**, §(K-ind) I6), or the strengthened motive is unsatisfiable at the
-> consumer's object (**never tested** — the satisfiability trace this entry
-> prescribes has not been run, and the 2026-08-05 Lean hold blocks it).
-> *Row: gap-map **(K-ind)**.*
+> consumer's object (**FIRED TOO, 2026-09-03, direction DSAT** — see the box
+> below). *Row: gap-map **(K-dom)**, repointed 2026-09-03 from (K-ind), which
+> is where the mathematics now lives.*
+
+> **AND THE SECOND KILL CONDITION HAS FIRED — the trace is RUN, 2026-09-03
+> (direction DSAT); §(K-dom) *Steps D8–D14* is the canonical home.** The
+> strengthened motive is **UNSAT off the class and SAT on it**, so **C2 is dead
+> as a *uniform* carry**. The mechanism: at a degree-2 vertex `a` with
+> `N(a) = {b, c}`, `dim V_bc = dim mot(G−a) − dim mot(G) ≥ def₃(G−a) − def₃(G)`
+> at every rank-target realization (**(DM-6)**, proven), so
+> `def₃(G−a) − def₃(G) ≥ 4` forces `dim V_bc ≥ 4` and hence a nonzero meet with
+> both isotropic 3-spaces (**(DM-7)**, proven) — and that trigger fires at both
+> (K-res) habitats, which `hK` carries, and at none of the five class habitats
+> (**(DM-8)**). **The (K-res) half is PROVED; the class half is MEASURED at
+> five shapes.** So the *"prove `Inv` at `G/H₀` outright"* residue this box
+> named is **not** refuted, and neither is a class-restricted conjunct — both
+> stay blocked by *Step I6* instead. Two corrections this box owed: the
+> parenthetical *"never tested … and the 2026-08-05 Lean hold blocks it"* was
+> **wrong twice** — the trace is numerics plus a source read, so the hold never
+> reached it; and the first bullet's *"quantify over subgraphs"* is now exact —
+> the index set is the **degree-2** triples, i.e. adjacent edge pairs, which
+> **passes** §4.6's growing-ground-set filter ((DM-5)); what is non-local is the
+> conjunct's *value*, `V_bc` being a global object of `G − a`.
 
 ### C3 — the mixed stratum: weaken the theorem so the hard case moves
 
@@ -1766,8 +1790,7 @@ confirmations, 72 exact-point proofs, 0 counterexamples) and **a route for the
 `index < 2·g_forced` members, which have no named home** — both inside the (K-res) wave, which
 stays a **user call** and is now dearer; **block 10's one-end-series** ((β)'s largest remaining
 per-shape component, value raised at BDOUBLE) and **BTWOCUT's bundle construction** (skipped
-at every direction since ordinal 44); **C2's satisfiability trace** (the L6b/F10 precedent —
-the trace is the gate, not the conjunct); **(OW)** (OWALL's reduction — buys a quantifier, not
+at every direction since ordinal 44); **(OW)** (OWALL's reduction — buys a quantifier, not
 a gap-map row); **collision dominance** `min_M B(M) ≤ d_adm` (not barred); **(GR-144)
 successors 2 and 3**; **(AV-7)'s Case-I gluing arm** (unpriced and untouched); **OGEOM's
 Kirchhoff-injectivity sentence** and the unsearched `n(F°) ≥ 6` frontier (disproof-risk
@@ -1898,8 +1921,9 @@ DO-NOT-DO is by attack name, not by span (see below)**; *kill condition:
 `min_M B(M) ≤ d_adm` proved or refuted — decided by `(K-grid)` close-it u16*;
 (OC-19) input (c) ((GR-15)-flavoured, the oldest missing technology) — *kill
 condition: `H/X` rigid class-uniformly — decided by the `(K-out)` row, u9, and
-§(K-out) *Step O18**. §8.4's route-σ obligations 2–4 and §8.2's C2/U1 keep their
-standing notes; **§8.2's U2 and U3 do not — both were re-settled 2026-09-03, and
+§(K-out) *Step O18**. §8.4's route-σ obligations 2–4 keep their standing notes, and of
+§8.2 only **U1** now does — **C2 was STRUCK 2026-09-03 (direction DSAT), its own
+satisfiability kill condition having fired**; **§8.2's U2 and U3 do not — both were re-settled 2026-09-03, and
 BOTH ARE NOW STRUCK: U2 by (OC-4)+(OC-3), U3 by OBAR's negative gate (see §8.2). This sentence used to read
 "C2/U1/U3", silently omitting U2; that omission turned out correct in outcome
 and is now explicit.** **The one filter note this board owed on §9's shelf is
@@ -2055,7 +2079,7 @@ its named residuals, all slice-sized, none needing an adjudication.
 | option | status | note |
 |---|---|---|
 | **C1** dominance of the `V_bc` map | **STRUCK** 2026-08-05 | dominance *holds* (rank 9), but both stated reasons refuted and it does not reach uniformity (§(K-dom)) |
-| **C2** carry `V_bc` general position as a motive conjunct | **live, unpriced** | two honest problems: every existing conjunct is per-body/local while `V_bc` is global on a vertex-deleted subgraph; and a stronger motive can be **unsatisfiable** — needs a satisfiability trace first (the L6b/F10 precedent). Nothing in `(K-dom)` bears on C2: what is struck there is **C1**, and (D4) already gives per-shape dominance — what C2 would add is the **uniform** carry. *Kill condition: a satisfiability trace returning UNSAT for the strengthened motive (C2 dies), or a conjunct landing — decided by the `(K-dom)` row and §4-C2* |
+| ~~**C2** carry `V_bc` general position as a motive conjunct~~ | **STRUCK 2026-09-03 (direction DSAT) — its own kill condition FIRED** | The trace this row demanded was run: the strengthened motive is **UNSAT off the class and SAT on it**, so **C2 dies as a *uniform* carry** — §(K-dom) *Steps D8–D14*. **(DM-6)** *(proven)* at a degree-2 `a`, `dim V_bc = dim mot(G−a) − dim mot(G) ≥ def₃(G−a) − def₃(G)`; **(DM-7)** *(proven)* `def₃(G−a) − def₃(G) ≥ 4` then makes the conjunct at `a` unsatisfiable at **every** realization; **(DM-8)** it fires at both (K-res) habitats — which `hK` carries — and at none of the five class ones. **Read the halves apart: the (K-res) half is PROVED, the class half MEASURED at five shapes, so C2 is NOT shown dead as a class-only conjunct** — that form stays blocked by §(K-ind) *Step I6* (no chart morphism at `hcontract`) rather than by satisfiability. Two further findings: the index set is forced to the degree-2 triples, which **passes** the growing-ground-set filter ((DM-5)); and "general position" read as a *general point of `Gr(3,6)`* is unsatisfiable at **6 of 8** indices of the class exemplar θ(3,4,5) ((DM-10)), so only the (PC-Z) escape reading survives. **This row's own clause *"nothing in `(K-dom)` bears on C2"* is REFUTED** — the deciding mechanism is a §(K-dom) dimension count, and it reproduces (D1)'s exact class-vs-(K-res) split. Kept as the dated record. *Successor, and it is the whole class-side question: a class member with a degree-2 `a` and `def₃(G−a) − def₃(G) ≥ 4`, or a proof that none exists — decided by the `(K-dom)` row's close-it* |
 | **U1** retarget §2.4's image problem to the annihilator | **live, rank 1** | §4.6. `(K-ann)`'s close-it still names the remaining item as *"a class-uniform independent-point recipe ((ANH-9)(iii)) — the same missing technology as §(K-grid)'s residual"*. *Kill condition: (ANH-R1) made class-uniform, or the retarget refuted — decided by the `(K-ann)` row, close-it u6* |
 | ~~**U2** hinge-rate / cycle-space presentation~~ | **STRUCK 2026-09-03 — DEAD by its own kill clause** | U2 dies if its support condition is **satisfiable at some class shape**, and it is: **(OC-4)** reaches the bad line by a legal chart move at **all four** certified habitats. **(OC-3)** independently rules the target out in principle, it being a matroid statement — *no counting, matroid or placement-blind argument* can deliver it. **This row read *"live, rank 2"* for weeks while §8.6 recorded U2 as delivered; §8.6 had the verdict right and its cause wrong** (it credited (GR-16)'s reduction, which is a *different object* — an exact `3c × 3c` system on `G°` alone). Kept as the dated record, not removed |
 | ~~**U3** restate `hK` as a **non-existence**~~ | **STRUCK 2026-09-03 (direction OBAR) — its kill condition FIRED on the admissibility branch** | Its named first step was **delivered more generally as (OC-35)** (§(K-out) *Steps O31–O36*, SIGZ), leaving **one genuine residue**: the ledger nobody ran on `H ∪ {bar along M}`, gated by an **unverified** admissibility check. **That check ran and is NEGATIVE three independent ways** (§(K-out) *Steps O52–O57*, **(OC-56)**): `bc ∉ E(G)` so the object is no subgraph of `G`; a **bar is one row** where (OC-36)'s ledger counts five; and a *hinge* along `M` needs **both** halves of (Λ0d) to fail, which **(σ7)** rules out — on (σ7)'s own basis, conjunct 4's argument plus 39/39 witnesses, so chart-wide only as far as (σ7) is. **And the ledger had nothing to compute:** a `b`–`c` attachment adds no topological path, its whole increment being `dim(A ∩ V_bc^{⊥_E})` **(OC-57)**, so the bar is in a support **iff** `V_bc ⊥_B C(M)` — **(T3) verbatim**, the (K-wit) row's own content **(OC-58)** — while the five-row *hinge* reading makes the statement **FALSE** pointwise **(OC-59)**. **The logical-form move (§2.3) does NOT survive**: the non-existence *is* a rank lower bound, so the asymmetry was never evaded. Kept as the dated record. *No kill condition remains — this row is closed* |
@@ -2108,6 +2132,28 @@ dispatch (direction GELIM).
 §4.6's six refutations; §2.5's counting saturation; **C1**; both literature
 hunts (rigidity-side, Δ-matroid-side); the symbolic meta-option, landed as
 `m2/lambda0.m2`.
+
+**`C2` as a UNIFORM carry — added 2026-09-03 (direction DSAT), and the scope
+line is part of the entry.** C2's own kill condition fired: the satisfiability
+trace it demanded returns **UNSAT off the class**, provably — §(K-dom)
+*Steps D8–D14*, **(DM-6)**/**(DM-7)**/**(DM-8)** — at both (K-res) habitats,
+which `hK` carries. Do not re-run the trace, and do not re-open *"carry `V_bc`
+general position at every index of every object the reduction reaches"*. **What
+this entry does NOT cover, stated because the summary would otherwise outrun
+its caveat:** the **class-restricted** conjunct is *not* on this list. The class
+half of the measurement is **five shapes**, not a theorem, so a proposal to
+carry the conjunct on the pinned class alone is answered by §(K-ind) *Step I6*
+(no chart morphism at `hcontract`) and by the `(K-dom)` row's open successor —
+**not** by this negative. Nor is *"general position"* re-openable in the
+`Gr(3,6)`-generic reading: **(DM-10)** kills that at 6 of 8 indices of the class
+exemplar θ(3,4,5), so the only live reading was always the (PC-Z) escape.
+*Back-links, all struck or annotated in the same commit: **§8.2**'s C2 row (was
+"live, unpriced", and its clause "nothing in `(K-dom)` bears on C2" is
+**refuted**); **§4-C2**'s kill-condition box (whose "never tested … and the
+Lean hold blocks it" was **wrong twice** — the trace is numerics plus a source
+read); **§8**'s below-the-top-four list (which carried "C2's satisfiability
+trace" as live); **§8**'s "§8.2's C2/U1 keep their standing notes"; **§4**'s
+gate box; and §(K-ind) *Step I6*, which read as C2's only kill.*
 
 **`U2` and `U3` — verdict kept, cause REPAIRED 2026-09-03.** This list said `U2`
 was *"delivered by (GR-16)'s reduction"*: the verdict is right, the cause is

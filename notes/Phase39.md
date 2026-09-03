@@ -8,11 +8,11 @@ derives it from exactly **three carried items**: **`hcontract`** (W4 — build p
 **`hbareSplit`** (kernel (K-bare)). Everything else is closed — W0–W3, all of W5
 (L0–L7), `hsplit` and `hfresh` (2026-07-30, unchanged since).
 
-**The research arc: 86 directions COMPLETE** (2026-08-05 → 09-03, ordinals 1–78 — 81 on
+**The research arc: 87 directions COMPLETE** (2026-08-05 → 09-03, ordinals 1–79 — 82 on
 kernel (K), **WTRI/WELOC/WPAIR/WGROW (58–61) on W4**, **RPOOL (75) on (K-res)**; direction
 = ordinal + 8), plus nine strategy passes, two probes and a scoping recon. **GPACK (66) opened
-the `hK` lane** (GLIST 68, GGLOB 71 its successors); the ninth pass's **ranks: BSCOND (76),
-BARCH (77), OBAR (78)**. Per-direction verdicts, specs and write-ups live at
+the `hK` lane** (GLIST 68, GGLOB 71); the ninth pass's **ranks 76–79: BSCOND,
+BARCH, OBAR, DSAT**. Per-direction verdicts, specs and write-ups live at
 `notes/Pencil-fanout.md` §"<CODE>" (1–19: the archive) plus a workbook home — **not
 restated here**. **The arc's standing result, unchanged: `hK` is not closer.**
 **(GR-15)** — the single open gap the §(K-grid) chain reduces to — is **untouched**; **class
@@ -21,7 +21,7 @@ NOT one landing away** — why: **block 14**.
 
 **`hK` LANE (GPACK 66, GLIST 68, GGLOB 71): (GR-18)(iii)'s split half is a THEOREM, its
 residual CSP-FREE and IS (GR-10) at `D = 0`. ESCAPE (OWALL 70): (OC-44)(iii) REDUCED to
-(OW)**, route refuted by logic; **U3 STRUCK (OBAR 78)**, gate NEGATIVE. **(GR-10)/(GR-15)/(OC-8) unchanged**. Detail: **blocks 11–13**.
+(OW)**, route refuted by logic; **U3 (OBAR) and C2 (DSAT) STRUCK**. **(GR-10)/(GR-15)/(OC-8) unchanged**. Detail: **blocks 11–13**.
 
 **W4's INFORMAL SIDE IS CLOSED** (58–61): **(T)/(E-pair)/(V) THEOREMS**, **(E) open, TIGHT,
 off every W4 path**, list **EMPTY** — leaving the USER call **(K-res)**, now DEARER (**RPOOL
@@ -250,7 +250,7 @@ SPENT: BSCOND (76) DECIDED (S1)/(S2)**, so (β) at the window is **UNCONDITIONAL
 method class is **NOT** dead, it **changes ambient**, and 14 → 12 **reduces to the
 two-sided (E4), UNPROVED** ((BE-149)–(BE-155)) — and **§8's bar LIFTED NARROWLY** there:
 `A_sharp` properness as posed **stays barred**, `Γ`-properness and (E4) are **lifted**
-((BE-154)(iii); recorded in §8, as §8's own rule requires). **OBAR (78) LANDED from that round; TWO DRAFTS AWAIT VERIFY-AND-LANDING — DSAT (C2 trace UNSAT: C2 dies as a uniform carry) and GLEAF (the reach question SPLITS: the machinery reaches the demand, but the residual implies it, so §8's rank 3 is SPENT) — deferred on SESSION LIMITS, not on any defect. Verdicts, paths, per-draft self-caught defects and TWO owed adjudications are in `notes/Pencil-fanout.md`'s header round-state block. BOTH ARE AS REPORTED, NOT CONFIRMED.**
+((BE-154)(iii); recorded in §8, as §8's own rule requires). **OBAR (78) and DSAT (79) LANDED from that round — DSAT struck C2 as a *uniform* carry (the (K-res) half PROVED, the class half measured at five shapes, so NOT as a class-only conjunct). ONE DRAFT AWAITS VERIFY-AND-LANDING: GLEAF (the reach question SPLITS — the machinery reaches the demand, but the residual implies it, so §8's rank 3 is SPENT), deferred on SESSION LIMITS, not on any defect; its verdict, paths, self-caught defects and two adjudicated items are in `notes/Pencil-fanout.md`'s header round-state block, and it is AS REPORTED, NOT CONFIRMED.**
 **THE NEXT CONCRETE TASK is
 (BE-154)(iv)**: one new `barch.py` mode running the `Γ_Π` and `(e₁, e₂)` tests at
 `bdegtwo.sweep_points`' 411 **chart** points at **both** sides of the peel — it reaches the
@@ -454,6 +454,9 @@ paragraphs.**
   `R20 = family_g(5,(0,0,2),(4,4,4))`, `widened.W19` with a longer core, in the recorded 255
   pool since 2026-08-02; 30 of 102 `def = 0` members refute, 72 carry exact-point proofs,
   split by the **per-block** floor ((RS-14)/(RS-15)). §(K-res) *RS11–RS16*.
+- **DSAT** (79, recon-opus, the ninth pass's **C2 trace**) — **C2's OWN KILL CONDITION FIRED:
+  the motive is UNSAT off the class (PROVED), SAT on it (five shapes)** — struck as a
+  *uniform* carry, **not** as a class-only one ((DM-5)–(DM-11), §(K-dom) *D8–D14*). `w4/dsat.py`.
 - **OBAR** (78, recon-opus, the ninth pass's **U3 gate**) — **§8.2's U3 GATE IS NEGATIVE
   THREE WAYS, SO U3 IS STRUCK AND U1 IS ALONE**; the unrun ledger had nothing to compute,
   the object being **(T3) restated pointwise** ((OC-56)–(OC-61), §(K-out) *O52–O57*). `w4/obar.py`.
@@ -515,14 +518,11 @@ landing above it is RPOOL (ordinal 75). Settled, one line each:
 - **RESGRID** (48, 2026-08-28, fable) — the (K-res) scoping slice: §(K-grid)'s geometry
   **transports verbatim**, the tight bookkeeping does not, the deficient fringe **refuted**
   ((RS-6)). Its residual **(RS-5) is since REFUTED** (RPOOL); (RS-1)–(RS-4) stand.
-- **BEARFULL** (47, 2026-08-27, opus) — the **SHORT-CYCLE LAW** (`girth(Q) ≥ 6`), containing
-  (BE-32)(ii)/(iii); **(b2) a COROLLARY of (b1)**; ear-decomposition **REFUTED**.
-  §(K-bare-ext) *BE38–BE42*.
-- **BEARCASE** (46, 2026-08-27, opus) — **(α) CLOSED**; **(β) as stated REFUTED**, reduced to
-  the single residue (BE-32)(+) — **since PROVED** ((BE-74)). §(K-bare-ext) *BE34–BE37*.
-- **BIMAGE** (45, 2026-08-27, opus) — the ear's `ρ̄₂` is a **chain on the Klein quadric**
-  (bijection + three confinement laws); the **series/parallel recursion** minted, residue
-  the internal R-node — **now landed by BRNODE**. §(K-bare-ext) *BE29–BE33*.
+- **BEARFULL** (47) / **BEARCASE** (46) / **BIMAGE** (45), 2026-08-27, opus, **one-lined at the
+  DSAT landing** — the **SHORT-CYCLE LAW** `girth(Q) ≥ 6`, (b2) a corollary of (b1),
+  ear-decomposition **REFUTED**; **(α) CLOSED** and **(β) as stated REFUTED** to the residue
+  (BE-32)(+), **since PROVED** ((BE-74)); the ear's `ρ̄₂` a **chain on the Klein quadric** plus
+  the **series/parallel recursion**, R-node residue **landed by BRNODE**. *BE29–BE42*.
 - **BTWOCUT** (44, 2026-08-26, opus) — strengthened statement **PINNED** (S-mark), simultaneity
   **VACUOUS**, leaf base free; **(BE-14) NOT proved**. §(K-bare-ext) *BE24–BE28*.
 - **BINDUC** (42, 2026-08-26, opus) — **3-connected ⇒ `def₂ = 0`**, so the induction's **base

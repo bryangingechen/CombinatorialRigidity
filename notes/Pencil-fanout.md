@@ -1,20 +1,18 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
 **Status: EIGHT fan-outs, FORTY-NINE single directions, ONE draft-only parallel direction,
-FOUR concurrent pairs and ONE concurrent round of four dispatched; 86 LANDED, NONE IN
-FLIGHT, **TWO DRAFTED-BUT-NOT-LANDED (DSAT, GLEAF)**.
-*(Round state, coordinator, 2026-09-03: **DSAT returned `DRAFTED` and its landing is
-DEFERRED ON SESSION LIMITS**, not on any defect — the 5-hour window stood at 85 % and a
-landing resume costs ~0.4 M tokens, so the draft waits for the reset rather than risk a
-resume killed mid-way through a multi-file landing. Its deliverables are the **untracked**
-`notes/Pencil-draft-<CODE>.md` and `notes/scripts/w4/<code>.py` for each.
+FOUR concurrent pairs and ONE concurrent round of four dispatched; 87 LANDED, NONE IN
+FLIGHT, **ONE DRAFTED-BUT-NOT-LANDED (GLEAF)**.
+*(Round state, coordinator, 2026-09-03: the remaining draft's deliverables are the
+**untracked** `notes/Pencil-draft-GLEAF.md` and `notes/scripts/w4/gleaf.py`.
 
-**DSAT** — verdict: **the C2 satisfiability trace returns UNSAT, so C2 dies as a *uniform*
-carry**; SAT at all five class habitats, provably UNSAT at both (K-res) habitats, which
-`hK` carries, the deciding mechanism a §(K-dom) dimension count — which refutes §8.2's own
-*"nothing in (K-dom) bears on C2"*. Labels **deviate correctly** to `(DM-5)`–`(DM-11)`
-against the coordinator's spec, per this file's sibling registry (see
-`notes/Pencil-labels.md`'s reservation-defect block).
+**DSAT** — **LANDED 2026-09-03 as ordinal 79**; detail in §"DSAT" below, not here. Status
+only: **C2 is STRUCK as a *uniform* carry** — the (K-res) half **proved**, the class half
+**measured at five shapes**, so it is **not** shown dead as a class-only conjunct; the
+`(K-dom)` row landed at **581/800** status and **95/800** close-it, recomputed not appended, `gapdiff.py K-dom` **0 dropped**; §8.2, §8.6, §4-C2, §8's two
+live-list clauses and §4's gate box moved in **one** commit as required; and its labels
+**deviated correctly** to `(DM-5)`–`(DM-11)` per clause (L1) — reservation defect shape
+three of the round, diagnosed in `notes/Pencil-labels.md`'s defects block, not here.
 
 **OBAR** — **LANDED 2026-09-03 as ordinal 78**; detail in §"OBAR" below, not here. Its
 `(K-out)` cell landed at **1810/1823** after a second content-duplication compression, so
@@ -14712,3 +14710,204 @@ unique each time, and the siblings' only gap-map edit being to the
 `pitch.H_motions_vbc` move-down trigger re-dates at a **sixth** consumer; no
 move made, no new hazard item, all three recorded silent hazards navigated
 rather than encountered.
+
+## DSAT — seventy-ninth ordinal (one direction of a four-way concurrent round, drafted read-only 2026-09-03, **LANDED 2026-09-03**) — §8.2's C2 row: its own prescribed satisfiability trace
+
+**Selection provenance.** `notes/Pencil-strategy.md` §8.2's **C2** row had sat
+**live and unpriced** while naming its own prerequisite — *"a stronger motive
+can be **unsatisfiable** — needs a satisfiability trace first (the L6b/F10
+precedent)"* — and §8's below-the-top-four paragraph listed *"C2's
+satisfiability trace (the L6b/F10 precedent — the trace is the gate, not the
+conjunct)"*. Nobody had run it. Draft-only, one of four concurrent directions,
+`recon-opus`.
+
+### The spec, as dispatched
+
+**Target.** Decide whether the strengthened motive — `IsNondegPencilRealization`'s
+four landed conjuncts plus `V_bc` general position — is satisfiable **at the
+actual objects the induction's consumer hands it**. *"UNSAT kills C2, which is a
+real result: the board loses a candidate honestly, and the arc has been carrying
+it unpriced."*
+
+**The coordinator's five findings.** (1) The row's own two honest problems —
+every existing conjunct per-body/local while `V_bc` is global on a
+vertex-deleted subgraph; and a stronger motive can be unsatisfiable. (2) What C2
+is **not**: **C1 is STRUCK** and (D4) already gives per-shape dominance, so
+re-derive neither, and *"nothing in `(K-dom)` bears on C2"*. (3) The L6b/F10
+precedent — a deferred-hypothesis leaf can be clean, correct and axiom-clean and
+still unsatisfiable for the consumer's object, so trace against the
+**consumer's objects**, not an abstract statement. (4) **Say which stratum** —
+(D3)'s `k ≥ 4` on the class, `k = 3` exactly on the (K-res) residuals; a trace
+that runs on one and reports for both is the defect to avoid. (5) Both filters
+bite: growing-ground-set, and §2.5 counting saturation (a **negative**, never a
+supply of freeness).
+
+**Bars.** Draft-only, commit nothing; the 2026-08-05 Lean hold (no `.lean`);
+every driver in the **foreground** with an explicit `timeout`, one at a time
+(F6); measure against `HEAD`, never the working tree; scratch files prefixed
+`DSAT`; no shared monotone counter; `notes/scripts/README.md` *Harness debt*
+required reading, with **no `Λ²`-side draw through `bimage.pt_in`**, the
+`bwin.k4_span`/`k4_isect` guards for `K⁴` subspaces, and `bwin.dehom`'s
+list-vs-tuple guard defeat.
+
+### LANDING WRITE-UP — DSAT, 2026-09-03: **THE TRACE RETURNS UNSAT, AND IT IS (D1)'s HABITAT SPLIT REACHED BY A DIFFERENT MECHANISM — SAT ON THE CLASS, PROVABLY UNSAT ON (K-res), SO C2 DIES AS A *UNIFORM* CARRY AND IS NOT SHOWN DEAD AS A CLASS-ONLY CONJUNCT**
+
+**THE CONSUMER'S OBJECT, AND WHY THE INDEX SET IS HALF THE QUESTION.** Read off
+`Escape.lean:334`: the split arm hands `hK` the motive **at
+`G′ = G.splitOff v a b e₀`**, from the IH (`:400`), and `V_bc` there is the
+relative twist of `H = G′ − a`. `G′` does not know which vertex was the split
+partner, and `pencil_reduction` (`Reduction.lean:850`) gives the motive **no
+habitat hypothesis** — so a carried conjunct must quantify over an index set of
+its own. Pinning it is **(DM-5)**, and it is **forced**: (T1)'s two-port
+derivation needs `deg(a) = 2` in both directions; the unrestricted form is false
+at **172 of 180** higher-degree indices (`dim V_bc ≥ 4`, and `4 + 3 > 6` forces
+both meets — **0** exceptions to that implication); and `dim mot(H/bc) > dim
+mot(G′)` at **all 180**, so the identity below cannot reach them. **The pinned
+set is adjacent edge pairs, so the growing-ground-set filter is PASSED** — what
+is non-local is the conjunct's *value*, which is the honest form of the row's
+first stated problem.
+
+**THE IDENTITY, AND IT IS THE FINDING.** At a degree-2 `a` with `N(a) = {b,c}`,
+at **any** rank-target realization,
+`dim V_bc = dim mot(G−a) − dim mot(G) ≥ def₃(G−a) − def₃(G)` (**(DM-6)**,
+*proven*). Three steps, no genericity: `dim V_bc = dim mot(H) − dim mot(H/bc)`
+by definition; every `H`-motion welding `b` to `c` **extends to `G`** by
+`m(a) := m(b)` — both hinge conditions at `a` read `0 ∈ ⟨C⟩`, and `a` has no
+third neighbour — so `dim mot(H/bc) ≤ dim mot(G)`, with equality at a rigid `G`;
+and `dim mot(H) ≥ 6 + def₃(H)` at every realization. **0 violations at 255
+indices**, the welded space computed independently each time. So `dim V_bc` —
+the subject of §2.4, of C1 and of C2 — is at every degree-2 index a **rigidity
+count of `G − a`**, and generically a purely combinatorial one (85/85).
+
+**HENCE A COMBINATORIAL UNSAT GATE, AND IT FIRES.** `def₃(G−a) − def₃(G) ≥ 4`
+gives `dim V_bc ≥ 4`, and both isotropic 3-spaces are then met — **the conjunct
+at `a` is unsatisfiable at every realization** (**(DM-7)**, *proven*; UNSAT
+**proved**, not a failed search). It fires at **54 of 255** indices and the split
+is **exactly class vs (K-res)**, asserted rather than observed: θ(3,3,6)
+**5/8** (`a ∈ {16…20}`), NT21c3 **13/16** (`a ∈ {104…116}`), **0** at all five
+class habitats. Census: `def₃` gap 3 at 201 indices, 4 at 54, nothing else.
+Since `hK` carries the (K-res) residual (2026-08-02 route-3(b)), **the uniform
+conjunct is UNSAT at objects the consumer hands the motive: C2's own kill
+condition fires.**
+
+**AND THE TWO HALVES OF THE KILL HAVE DIFFERENT EVIDENTIAL STATUS — the scope
+line is part of the result, not a hedge.** The **(K-res) half is PROVED**
+((DM-7) is an argument off a combinatorial trigger). The **class half is
+MEASURED at five shapes** — 0 firings at 62 degree-2 indices is a *shape-family
+cap*, and the shape family is precisely the axis this trace did not vary. So:
+**C2 is dead as a *uniform* carry, and is NOT shown dead as a class-only
+conjunct.** A future proposal to carry `V_bc` general position restricted to the
+pinned class habitat is **not** answered by this landing; it is answered by
+§(K-ind) *Step I6* (no chart morphism at `hcontract`) and by the `(K-dom)`
+row's open successor — *which class shapes, if any, have a degree-2 `a` with
+`def₃(G−a) − def₃(G) ≥ 4`?* (SD-6)'s branch bound `ℓ ≤ 5` is **not** the
+mechanism: NT21c3's forced index `a = 110` sits on a branch of length **3**.
+
+**THE SAT SIDE IS REAL, AND IT IS THE SIMULTANEITY NOBODY HAD TESTED.** At each
+of the five class habitats **one** exact-ℚ realization satisfies the escape
+reading at **every** degree-2 index at once — 8/8, 16/16, 11/11, 11/11, 15/15.
+No landed measurement has that shape: (D4) measures one split per habitat, (F1)
+one witness per shape for the four conjuncts plus the rank target, *Step F5* 16
+`e₀`-end splits. Simultaneity was the live risk and it is **discharged on the
+class** ((DM-9)) — as an **existence** claim at a named seed, never as *"the
+conjunct holds"*.
+
+**AND "GENERAL POSITION" HAS THREE READINGS, TWO OF THEM DEAD.** Read as *a
+general point of `Gr(3,6)`*, the conjunct is unsatisfiable at **22 of 85**
+indices at the max over **6** seeds — **including 6 of 8 at the class exemplar
+θ(3,4,5)** — because `V_bc` sits in the discriminant hypersurface there. At
+`k = 3` that is a **theorem** ((D1)'s corollary, six indices), and the driver
+asserts the ordered chain Gram's **shape** (zero diagonal, single off-diagonal
+entry) rather than its rank — *the basis matters, and asserting the shape in
+`span_basis`' RREF basis is the first thing this driver got wrong.* The
+`k ≥ 4` half is a **maximum over seeds, not an UNSAT proof**, and is the figure
+in the section most likely to need a successor's correction. Net: the only
+survivable reading is **ESC**, the (PC-Z) escape — there is no weaker,
+more-generic condition available to carry instead ((DM-10)).
+
+**THE COORDINATOR'S FRAMING, CLASSIFIED** (`RESEARCH-ARC.md` §7). **Finding 2 is
+REFUTED and it is the load-bearing correction:** *"nothing in `(K-dom)` bears on
+C2"* is false — the deciding mechanism is a `V_bc`-dimension count in §(K-dom)'s
+own object, and it reproduces **(D1)'s exact habitat split**, class vs (K-res).
+Two candidates, one section, same wall. **Finding 4 is CONFIRMED and inverted:**
+the instruction to name the stratum was right, and the answer is that **no
+`k`-stratum is the right frame** — the conjunct is indexed by every degree-2
+vertex of one object, so one object mixes `k` = 3…9, and the invariant that
+decides satisfiability is `def₃(G−a)`; the 54 forced indices have `k` = 6, 8, 9
+and the `k = 3` ones are precisely those the gate does **not** fire on.
+**Findings 1, 3 and 5 CONFIRMED:** the per-body/local-vs-global problem is
+located exactly (the *value*, not the index set); tracing against the consumer's
+object is what surfaced the index-set question at all; and both filters are
+answered — growing-ground-set **passed**, §2.5 not a bar but sharpened, since
+(DM-6) makes the *dimension* half of general position exactly as
+combinatorially certifiable and as useless as §(K-ind) *Step I5*(1) found the
+Jacobian rank to be.
+
+**ONE SOURCE-DERIVED FINDING WITH NO DRIVER, FLAGGED AS SUCH.**
+`IsNondegPencilRealization` is **both** an antecedent (through
+`PencilNondegFeasible`, `Motive.lean:133`, inside `PencilPair`'s `G.Simple →`
+clause) **and** a consequent (through `HasGenericPencilRealization`, `:140`), so
+a fifth conjunct does not simply strengthen the motive: it narrows the antecedent
+and moves graphs across `Escape.lean:396`'s `by_cases hfeas` from the `hK`
+branch onto **`hbareSplit`** — C2 buys a stronger `hK` input by enlarging kernel
+(K-bare)'s habitat (currently absorbed by (BE-14)'s unconditional target, and
+worth pricing before, not after). And its `mono` residual
+(`IsNondegPencilRealization.mono`, `:245`) lands on the cut arm's own recorded
+sharp boundary: `PencilNondegFeasible.mono` (`:272`) discharges the fourth
+conjunct's residual only at demotions to `H`-degree **≤ 1**, its docstring
+saying that at degree **2** it *"genuinely has no source in `G`'s witness"* —
+and degree 2 is the new conjunct's whole index set ((DM-11)). One piece of good
+news: the **fourth** conjunct, read off its definition body rather than off
+`repin.star_span_ranks`' docstring (which overstates it at a hub), is exactly
+`dim Λ²π̂ = 3` at a degree-2 `a`, asserted directly at 85/85 indices — so the
+new conjunct is supported by a landed one.
+
+**ONE HARNESS OBSERVATION, AND IT IS A DEBT ITEM, NOT A DEFECT.** All three
+recorded silent hazards are **unreachable** from `dsat.py`, which is stronger
+than avoided: it imports **no** `bimage`/`bwin`/`binduc` device at all, so
+`pt_in`'s truncation, `span`'s width-6 case and `dehom`'s list-vs-tuple guard
+defeat cannot be called from it. Every subspace goes through
+`repin.span_basis` / `repin.lambda2_through` / `exactcore.nullspace` with a
+dimension assert, and the acceptance gate is `dominance.base_seed`'s composite
+`repin.star_generic`, re-asserted in-file. The debt item is a **move-down
+trigger**: `dominance.py`'s split-seed / habitat device set reaches its second
+and third consumers (`notes/scripts/README.md` *Harness debt*, opened and left
+**unpaid** for a coordinator action, as ZNEQ's `ocon.meet` item was).
+
+**Labels and the declared tail.** The spec offered `(D8)`–`(D14)`;
+**`(DM-5)`–`(DM-11)`** were minted instead, per `notes/Pencil-labels.md` clause
+**(L1)** and its own worked example for this very section — reservation defect
+shape **three** of the round, whose diagnosis lives in that file's defects block
+and is not repeated here. The reserved **step** names `D8`–`D14` were kept, with
+bare `D8` adjudicated **taken-but-unrelated** (4 hits / 2 files,
+`notes/Phase23-design.md`'s Phase-23f *Layer* steps) and resolved by L3
+qualification. **The tail declared for the next reservation is (DM-12) /
+*Step D15***, 0-hit verified at this landing — so a successor to §(K-dom) opens
+**there**, not at `(D15)` (wrong family) and not at `(DM-13)`. **(L7) fired
+again on this range's opening token**, `(DM-5)` carrying 1 hit as (L1)'s own
+prescription: its second confirmation on the day it was minted. **Nothing
+returned unused** — seven claim slots reserved, seven minted; seven steps
+reserved, seven consumed.
+
+**What did NOT move.** `PencilPair K 3 G`, `hK`, `hbareSplit`, `hcontract`,
+(GR-15), (GR-10), (BE-14), S-mark, (RS-5), (OW), U1, **class uniformity**, and
+every landed figure of §(K-dom) — (D1)–(D4), the rank table, the `3(k−3)` far
+block, the 21 `--cap` seeds. **C1's strike is unaffected** and is not
+re-derived. **§(K-ind) *Step I6* is untouched** and is now C2's *second* reason
+rather than its only one: even the class-restricted conjunct stays
+non-dispatchable as a transport argument, so this landing removes an excuse, not
+a blocker. Not a PENCIL event; **E1/E2/E3 decided *not fired*, each with its
+reason**: **(E1)** no g-flank — the direction touched neither (GR-15) nor any
+admissible colouring; **(E2)** the clause needing real checking, since this
+direction's own headline *is* a kill — it fires only when the target is refuted
+**and** the ledger has no entry left *open-with-a-named-dispatchable-attack*,
+and §8 still carries U1, (OW), collision dominance, S-mark, (AV-7)'s Case-I arm
+and OGEOM's sentence, so it does **not** fire; **(E3)** the arc's target is not
+proven. Five surfaces are **struck or annotated in the same commit** (F12):
+§8.2's C2 row, §4-C2's kill-condition box, §8's below-the-top-four list, §8's
+*"C2/U1 keep their standing notes"* clause and §4's gate box — plus §8.6, which
+gains C2 with its back-links, and §(K-ind) *Step I6*. **One F12 item resolved
+differently from the draft's prediction, recorded because the list was wrong:**
+the `(K-ind)` gap-map **row** does not in fact carry C2's status — only §4-C2's
+*Row:* pointer did — so that pointer is repointed to **(K-dom)** and the
+`(K-ind)` row is left untouched rather than grown for no status change.

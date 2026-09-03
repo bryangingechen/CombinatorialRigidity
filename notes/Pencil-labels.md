@@ -2543,7 +2543,7 @@ Status keywords are pointers to the owning section's verdict block and the
 | §(K-flank) | `FL-` | **(F1)**; Steps F0–F7 | adversarial rank test at the uncovered flanks | half 2 proven-informally per shape |
 | §(K-pure) | `PC-` ✓ | (PC1), (PC2), (PC3), (PC5), (PC6), (PC-Z), (PC-OBS); (K-chord) *(named here)*; Steps P0–P9 | the pure condition of the limit carrier | (PC-Z)/(PC-OBS) proven-informally; direction C refuted |
 | §(K-Λ) | `Λ` ✓ | (Λ0), (Λ0a)–(Λ0i), (Λ0′), (Λ0f′), (Λ1), (Λ2), (Λ3), **(OUT)**; **driver blocks (M1)–(M4)** (`lambda1.m2`) and **(P1)–(P7)** (`lambda0.m2`); **since 2026-08-19 (direction LTWO)** (Λ4)–(Λ8), Steps Λ8–Λ12 (**`Λ`-prefixed step scheme**, per clause 4 — *Step Λ8* is NOT the existing *Step 8*), driver modes `--witness`/`--floor`/`--census`/`--validate` (`w4/ltwo.py`) | the Λ-compression's quadric; (OUT) = the outer-line criterion, *Step 5a*; (since LTWO) the branch calculus on `G°` alone, the companion-cycle lemma and the size floor realizing item (vii)'s two-hub-interior population at all four patterns | (Λ1) an identity over the function field; (K-Λ) refuted as an independent gap; **(Λ4)–(Λ8) proven-informally** (Steps Λ8–Λ12, direction LTWO) — item (vii) REALIZED at a proven size floor, `(K-wit)` residual recomputed not re-graded, Λ-completeness unchanged |
-| §(K-dom) | `DM-` | **(D1)**–(D4); Steps D0–D7 | the dominance spike, differential of `H ↦ V_bc` | (D1)–(D3) proven; C1 refuted as a route |
+| §(K-dom) | `DM-` ✓ | **(D1)**–(D4), **(DM-5)–(DM-11)**; Steps D0–D14; driver modes `--cap`/`--jac`/`--far`/`--validate` (`w4/dominance.py`) + `--index`/`--gate`/`--sim`/`--gen`/`--validate` (`w4/dsat.py`) | the dominance spike, differential of `H ↦ V_bc`; and, since *Steps D8–D14* (2026-09-03, direction DSAT), **the C2 satisfiability trace** — the conjunct's index set pinned to the degree-2 triples, the `dim V_bc = dim mot(G−a) − dim mot(G)` identity, and the combinatorial UNSAT gate | (D1)–(D3) proven, C1 refuted as a route; (DM-5)'s structural half / (DM-6) / (DM-7) proven, (DM-8)–(DM-10) measured, (DM-11) source-derived; **C2 struck as a uniform carry** |
 | §(K-σ) | `σ` ✓ | (σ1)–(σ7); Steps σ0–σ6, σ4b; hunt pools H4/H5 | the polarity as a symmetry of the split; **route σ** | (σ7) proven; route σ a CANDIDATE (its field scope settled by §(K-clos)) |
 | §(K-clos) | `AC-` ✓ | (AC-1)–**(AC-9)**; Steps Z0–Z8; driver blocks AC-C0/AC-E/AC-S/AC-U/AC-X/AC-Q/AC-R2/AC-F/AC-2c/AC-P (`closure.py`) | the over-`ℂ̄` question: the polarity's field scope, the σ-fixed grid locus, the `⋆`-eigen decoupling, the route-σ collapse, the char-0 descent | (AC-6) **refuted** as a class statement, open on the tight stratum; the rest proven-informally. **(AC-9)** (minted 2026-08-06, re-baselining slice S2): every σ-fixed body of degree `≥ 3` carries a coincident hinge line — **proven** by pigeonhole against *Step Z3*'s two-ruling-lines cap, measured 0/64 by the composite guard; it **qualifies (AC-3)** without weakening it |
 | §(K-ann) | `ANH-` ✓ | (ANH-1)–(ANH-8); the two residual inputs **(ANH-R1)**, **(ANH-R2)**; Steps A1–A9; driver modes `--stress`/`--rate`/`--supp`/`--recipe`/`--census`/`--validate` (`annih.py`); **since 2026-08-06 (direction R)** (ANH-9)–(ANH-12), Steps A10–A13, and driver modes `--census`/`--bad`/`--comb`/`--validate` (`shrink.py`); **since 2026-08-06 (direction Q)** (ANH-13)–(ANH-16), Steps A14–A17, driver modes `--types`/`--reduce`/`--size`/`--frame`/`--witness`/`--validate` (`anhr1.py`) and M2 blocks (ANH-Q0)–(ANH-Q4) (`anhr1.m2`) | the annihilator as a self-stress of the contracted framework `H/P`: the reciprocity identity, the named move, the `k = 4` Tay circuit, the one-bracket recipe. **(ANH-8) is promoted to the *Shared dictionary* as (SD-6)** — that is the only copy | (ANH-1)–(ANH-6), (ANH-8) proven / proven-informally; (ANH-7) true-modulo-named-gap; **(ANH-R1) open** |
@@ -2582,7 +2582,7 @@ was missed from this sentence; added here with (K-ann) and (K-out).)
 
 | owner | labels in use | what the family is |
 |---|---|---|
-| strategy §4 | **C1**, **C2**, **C3** | the three candidate stronger inductive invariants (C1 = dominance of the `V_bc` map, run and struck) |
+| strategy §4 | **C1**, **C2**, **C3** | the three candidate stronger inductive invariants (C1 = dominance of the `V_bc` map, run and struck; C2 = the general-position conjunct, trace run 2026-09-03 and **struck as a uniform carry** — UNSAT off the class, §(K-dom) (DM-7)/(DM-8)) |
 | strategy §4.7 | tag **`AV-`**, tokens **(AV-1)–(AV-8)**; ***Steps AV1–AV6***; driver modes `--supply`/`--census`/`--betti`/`--forced`/`--avoid`/`--count`/`--validate` (`w4/avoidgen.py`) | probe **C3-AVOID**'s pricing of C3's *"reduce avoiding `S`"* gate against the landed generation theorem (Thm 4.9): the degree-2 supply lemma (AV-1), the conservation law and the `2 μ(G)` capacity ceiling (AV-2)/(AV-4), the `\|S\| ≤ 2` threshold theorem (AV-3), the refutation of every structural hypothesis on `S` (AV-5), the contraction-free classification (AV-6), the necessary-not-sufficient scope line (AV-7), the board verdict (AV-8). **Reservation consumed exactly; §(K-avoid) never opened.** Owning section is authoritative |
 | strategy §4.6 | **U1**, **U2**, **U3** | the three ranked live class-uniformity successors |
 | strategy §9 | tag **`ZH-`**, tokens **(ZH-1)–(ZH-6)** | the six external-technique-transfer candidates from the Zheng body–pin preprint (minted 2026-08-21, verified 0-hit across `*.md`, `*.tex`, `*.lean`, `*.py`, `*.m2`; **unpriced** and not on §8's board — the owning section is authoritative, and the source is unrefereed) |
@@ -2600,7 +2600,7 @@ token a reader will meet bare in the existing corpus.
 |---|---|---|---|
 | **(C1)–(C6)** | §(K-slide-cl) *Steps* C0–C5 (+ claim (C1)) | W4 §`hnoGood'` cluster claims (C1)–(C6) | strategy §4 candidate invariants C1/C2/C3 |
 | **(C7)**, (C8) | §(K-slide-comb) (C7) — the length-4 menu repair | W4 §(SAFE-RES) (C7)/(C8) — ear length / cluster dichotomy | — |
-| **(D1)–(D4)** | §(K-dom) claims | §(K-dom) *Steps* D0–D7 | §(K-slide-comb) *Steps* D0–D5 |
+| **(D1)–(D4)** | §(K-dom) claims | §(K-dom) *Steps* D0–**D14** | §(K-slide-comb) *Steps* D0–D5; **`notes/Phase23-design.md`'s Phase-23f item-4 *Steps* D1–D8** *(found 2026-09-03, direction DSAT: bare `D8` is 4 hits / 2 files there and in `model-experiment-archive.md`)* |
 | **(M1)–(M4)** | §(K-Λ) `lambda1.m2` driver blocks | §(K-Δ) the three hypothesis tests | — |
 | **(P1)–(P7)** | §(K-Λ) `lambda0.m2` driver blocks | §(K-pure) *Steps* P0–P9 | — |
 | **(R1)–(R6)** | *Shared dictionary* rigid-graph facts (R1)–(R5) | R1/R2/R3 the opening recon questions | `Pencil-strategy.md` §4.6's six refutations (R1)–(R6) — **and (ANH-R1)/(ANH-R2)**, §(K-ann)'s two residual inputs, which are *prefixed precisely to stay out of this row* |
@@ -3744,6 +3744,83 @@ notice, since it reads as prose rather than as a citation.
 **The next tail is (BE-149) / *Step BE148***, 0-hit verified at this landing
 (the pair returned unused above), so a successor opens there and **not** at
 (BE-150).
+
+## Reservation — DSAT (arc ordinal 79, 2026-09-03, the same CONCURRENT ROUND OF FOUR)
+
+**Scope: §(K-dom), which DSAT *extends* — no new section.** The direction runs
+the satisfiability trace `notes/Pencil-strategy.md` §8.2's **C2** row had been
+demanding of itself: *is the strengthened motive — the four landed
+`IsNondegPencilRealization` conjuncts plus `V_bc` general position —
+satisfiable at the objects the induction's consumer hands it?* Its three
+siblings (BARCH §(K-bare-ext), OBAR §(K-out), GLEAF §(K-grid)) own disjoint
+sections and disjoint tags, so the reservation protects against the corpus and
+against them.
+
+| direction | owning § | labels reserved | steps reserved | driver |
+|---|---|---|---|---|
+| **DSAT** | §(K-dom) — **extends**, no new section | **(DM-5)–(DM-11)** (spec offered `(D8)`–`(D14)`), all seven consumed | **D8–D14**, all seven consumed | `w4/dsat.py` (five modes) |
+
+**DEVIATED to the CORRECT FAMILY — this is reservation defect shape THREE of
+the round**, whose diagnosis is in the *Coordinator reservation defects* block
+below and is **not duplicated here**. What this row adds is the disposition: the
+spec's `(D8)`–`(D14)` were abandoned and **`(DM-5)`–`(DM-11)`** minted instead,
+continuing §(K-dom)'s claim numbering past `(D4)` in the tag this file assigns
+that section, per clause **(L1)** and its own worked example. The reserved
+**step** names `D8`–`D14` were **kept** — (L2) writes a step as *Step D8*, never
+as `(D8)`, so the step namespace is untouched by the label change. Nothing is
+renamed (L4).
+
+**Adjudication — bare `D8` is TAKEN BUT UNRELATED, and stays.**
+`git grep -nIwF D8` gives **4 hits / 2 files**: `notes/Phase23-design.md:4012`
+and `:4019`, where **Phase 23f's item-4 decomposition runs *Layer* steps
+D1–D8**, plus the two `notes/model-experiment-archive.md` rows (`:2078`,
+`:2079`) citing `D1–D8`. This is the **grandfathered cross-file collision**
+case, resolved by qualification and not by renumbering — the same precedent
+`(L1)`/`(L6)`/`(L7)` use: every citation of these steps outside §(K-dom) is
+written **`§(K-dom) *Step D8*`** (clause L3), and the collision table above
+gains `notes/Phase23-design.md`'s D-range as a fourth colliding home for the
+bare `D` family. Phase 23f is a **closed** phase and its steps predate these by
+months, so nothing there moves.
+
+**The tail declared for the next reservation is (DM-12) / *Step D15***, 0-hit
+verified at this landing (**HITS 0 / FILES 0** for `(DM-12)`, bare `DM-12`,
+`(DM-13)`, and bare `D15` at word boundary), so a successor to §(K-dom) opens
+**there** — and **not** at `(D15)`, which is not this section's family, nor at
+`(DM-13)`. *Declared verbatim in two places, per the defects block's own root-cause
+fix: here, and in `notes/Pencil-fanout.md` §"DSAT".*
+
+**0-hit verification, re-run by the direction as its FIRST action**, across
+`*.md`, `*.tex`, `*.lean`, `*.py`, `*.m2` **at `HEAD`**, reporting **HITS**
+(matching lines) and **FILES** separately and covering **every token in the
+range rather than sampled endpoints** (shapes 1 and 2's fixes): `dsat` **0/0**;
+`(DM-6)`–`(DM-11)` and bare `DM-6`–`DM-11` **all 0/0**; `(D8)`–`(D14)` **all
+0/0**; bare `D9`–`D14` **all 0/0**; **`(DM-5)` and bare `DM-5` 1 hit / 1 file**,
+this file's own (L1) worked example at `:84` — a **prescription**, not a
+consumption, under the `(GR-145)`/`(BE-149)`/`(OC-56)` precedent; **`DSAT` 2
+hits / 2 files**, both the coordinator's own in-flight round-state notices in
+`Pencil-fanout.md` and this file; and bare **`D8` 4 hits / 2 files**,
+adjudicated above. **Reservation clean.**
+
+**(L7) fired again, on the very next range, and in the direction it predicted.**
+BARCH minted (L7) because a sampled-endpoint check is *"systematically blind at
+the one end where a hit is guaranteed"* — the range's **opening** token. This
+range's opening token is `(DM-5)`, and it has **1 hit**: the clause that tells
+§(K-dom) to use this tag. A check sampling `(DM-8)` and `(DM-11)` would have
+reported 0/0 and missed it. Benign in the same way `(BE-149)`'s and `(OC-56)`'s
+hits were — a declaration about the token, not a use of it — but the **method**
+point stands, and this is **(L7)'s second confirmation on the day it was
+minted**, in a section it had never touched.
+
+**Code and basename**: `DSAT` names the question — the **D**ominance section's
+**SAT**isfiability trace. The (L6) landing-time bare-token check: every mint is
+`DM-`-prefixed, and the landing introduces **no** bare `(X<digit>)` token of its
+own. The bare tokens it *cites* — `(D1)`–`(D4)`, `(T1)`, `(T5)`, `(S1)`,
+`(W1)`–`(W4)` by reference, `(PC-Z)`, `(SD-6)`, `(ANH-1)` — are grandfathered or
+already tagged, and the bare ones are written L3-qualified at first use outside
+their owner (`§(K-pitch) (T1)`, `§(K-dom) (D3)`). **No new section name and no
+new tag were minted** — `DM-` was already this section's assigned tag and had
+simply never been used, which is exactly how the spec came to offer the wrong
+family.
 
 ## Reservation — OBAR (arc ordinal 78, 2026-09-03, the same CONCURRENT ROUND OF FOUR)
 

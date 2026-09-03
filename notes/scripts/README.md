@@ -748,6 +748,11 @@ arcs too.
 | `python3 notes/scripts/w4/dominance.py --jac` | 57 s | ibid. (the rank table against `dim Gr(3,6) = 9`) |
 | `python3 notes/scripts/w4/dominance.py --far` | 28 s | ibid. (the (T5) far block `3(k−3)`, attained) |
 | `python3 notes/scripts/w4/dominance.py --validate` | 19 s | ibid. (three models for `V_bc`; two derivative routes; the secant test) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/dsat.py --index` | 114 s | ibid. *Step D9* **(DM-5)**: the C2 conjunct's index set pinned — 350 `(a,{b,c})` triples enumerated, `dim span{C_ax} = 2` at 350/350 whatever the degree, `deg ≥ 3` forced-bad 172/180 with **0** Grassmann exceptions and `dim mot(H/bc) > dim mot(G′)` at 180/180 |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/dsat.py --gate` | 178 s | ibid. *Steps D10–D11* **(DM-6)/(DM-7)/(DM-8)**: `dim V_bc = dim mot(G−a) − dim mot(G)` at **255/255** degree-2 indices, 0 violations, the welded space computed independently; the UNSAT gate fires at **54/255**, all with both meets nonzero; census `def₃` gap 3↦201, 4↦54 |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/dsat.py --sim` | 88 s | ibid. *Step D12* **(DM-9)**: simultaneous escape witnesses at all 5 class habitats (8/8, 16/16, 11/11, 11/11, 15/15) and UNSAT-proved at both (K-res) habitats; the class-vs-(K-res) split **asserted** |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/dsat.py --gen` | 172 s | ibid. *Step D13* **(DM-10)**: 22/85 degree-2 indices with `rank Q\|_{V_bc} = 2` at the max over **6** seeds (θ(3,4,5) 6/8), 6 of them by the `k = 3` theorem — the ordered chain Gram's **shape** asserted, not merely its rank |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/dsat.py --validate` | 74 s | ibid. seven machinery checks: two independent `V_bc` call paths, two independent `α(a)` constructions, a brute-force intersection cross-check, both (PC-Z) spaces totally isotropic, conjunct 4 at 85/85 indices, a **constructed** collinear adversarial witness with its pinned counter-fact and negative control, and `dim V_bc = def₃(H) − def₃(H/bc)` at 85/85 |
 | `python3 notes/scripts/w4/outer.py --geom` | 26 s | workbook §(K-Λ) *Step 3a* ((Λ0g); the constructed `g₁₄ = 0` chart point at all 4 habitats). **Its `lambda.omega_curves` line moved in slice S3** — the coded criterion now accepts the point and reports spans `(2,2)` instead of raising |
 | `python3 notes/scripts/w4/outer.py --habitat` | 45 s | ibid. (the named inventory, 48 triples) |
 | `python3 notes/scripts/w4/outer.py --sweep` | 18 s | ibid. (1357 class shapes, 4280 pairs; the (Λ0i) coverage split) |
@@ -1550,7 +1555,7 @@ figure-invariant): `rref`, `rank`/`rank_exact`, `nullspace`, `left_nullspace`,
 `neighbors` (`kbare_common`, `n9`); `K4`/`K5_minus_matching` (three copies:
 `localtest`, `probe_zero`, `run_habitats`).
 
-## Harness debt — four rounds PAID (S1–S4 2026-08-06; the move-down round 2026-08-20; the GFLIP balance-layer move-down 2026-08-25; the GCHEAP/GPRICE balance-layer extension 2026-08-25), **eleven items outstanding**
+## Harness debt — four rounds PAID (S1–S4 2026-08-06; the move-down round 2026-08-20; the GFLIP balance-layer move-down 2026-08-25; the GCHEAP/GPRICE balance-layer extension 2026-08-25), **twelve items outstanding**
 
 **Eleven items are outstanding** — the eleventh added 2026-09-03 (direction
 BDEGTWO, the **silent `bimage.span` width defect**, its own section at the
@@ -2841,6 +2846,60 @@ figures this landing has no business moving.
 random `rows` of every width `1..6` and every rank `0..width`, and the same
 identity for `isect` against a brute-force intersection, plus a byte-identical
 re-run of every driver in §3.
+
+### New item (2026-09-03, direction DSAT) — `dominance.py`'s split-seed and habitat device set reaches its SECOND and THIRD consumers; **UNPAID**
+
+`w4/dsat.py` (the C2 satisfiability trace, workbook §(K-dom) *Steps D8–D14*)
+imports `HABITATS`, `seeds_for`, `simple_paths`, `path_span`,
+`bad_locus_meets` and `class_status` from `dominance`. Only **`simple_paths`**
+is catalogued in §1 (owner `dominance`), so that one import is rule 1 rather
+than rule 2; the other five are **uncatalogued**, which is exactly the
+condition §2's own text names as *"how a second consumer arrived without
+anyone noticing the trigger"*. Consumer counts, this landing included:
+
+| device | consumers |
+|---|---|
+| `HABITATS` | `outer.py:138`, `annih.py:102`, **`dsat`** — third |
+| `seeds_for` | `annih.py:102`, **`dsat`** — second |
+| `base_seed` | `annih.py:102` directly; **`dsat` indirectly through `seeds_for`**, which is where the composite `repin.star_generic` acceptance gate enters |
+| `simple_paths` | `outer.py:137`, `annih.py:104`, **`dsat`** — third (**catalogued**, so rule 1) |
+| `h_edges` | `outer.py:137`, `annih.py:104` — unchanged; `dsat` does not use it |
+| `path_span`, `bad_locus_meets`, `class_status` | **`dsat`** — second, counting `dominance` itself |
+
+**Why UNPAID, and it is the `ocon.meet` shape exactly.** §2 rule 2 is
+explicit: *"A dispatch may not make the move"* — it would modify a landed file
+a concurrent direction may be importing in flight, and this landing ran as one
+of four concurrent directions. Beyond that, `annih` already reaches
+`star_span_ranks` *through* `dominance.base_seed`, so a move-down of
+`base_seed`/`seeds_for` drags the seed-acceptance gate with it and
+re-baselines both consumers' recorded figures. That is a deliberate
+coordinator round between directions, not something either dispatch could do
+on its own.
+
+**Acceptance test when it is paid.** `HABITATS`, `base_seed`, `seeds_for`,
+`h_edges`, `path_span`, `class_status` and `bad_locus_meets` catalogued in §1
+(whatever their home), re-exported from `dominance` so no import line moves,
+and `dominance`'s four modes, `outer`'s and `annih`'s validate modes and
+`dsat`'s five modes all byte-identical.
+
+**Not a *Divergences* row.** `dsat.escape_at` generalizes
+`dominance.bad_locus_meets` to an arbitrary `(a, b, c)` and builds `α(a)`
+through the canonical `repin.lambda2_through` rather than a perturbed third
+point — a different name for a generalization, and `dsat --validate` check 2
+asserts the two **agree** at the split triple of every habitat. That is a
+cross-check, not a divergence.
+
+**And a positive record, because it is a stronger statement than "avoided".**
+All three of this section's recorded **silent** hazards — `bimage.pt_in`'s
+`Λ²K⁴ → K⁴` truncation, `bimage.span`'s width-6-only full-rank case (with
+BARCH's `I6`-on-width-12 second face), and `bwin.dehom`'s list-vs-tuple guard
+defeat — are **unreachable** from `dsat.py`, not merely navigated around: the
+file imports **no** `bimage`, `bwin` or `binduc` device at all, so none of the
+three can be called from it. Every subspace it builds goes through
+`repin.span_basis` / `repin.lambda2_through` / `exactcore.nullspace` with a
+dimension assert, and its acceptance gate is `dominance.base_seed`'s composite
+`repin.star_generic`, re-asserted in-file at every accepted seed. **No new
+guard wrapper is minted.**
 
 ## Deliberate non-goals
 
