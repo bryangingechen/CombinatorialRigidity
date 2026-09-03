@@ -16265,6 +16265,646 @@ anywhere in these steps.
 
 ---
 
+### Steps G165–G172 (2026-09-03, direction GLEAF) — **(GR-144)'s successor 4, leaf-covering on the BRANCHES, is SETTLED AS A LANE: the landed Phase-12/13/14 machinery DOES reach it — at a fixed leaf assignment the demand IS an Edmonds matroid partition over six CONTRACTED graphic matroids, with a `σ`-shaped criterion — and reaching it buys nothing, because the demand is IMPLIED by (GR-18)(iii)'s residual and VACUOUS inside (GR-140)'s own normal form**: **(GR-145)** states the demand precisely and removes its prescribed set as a parameter — a hub that is a leaf of no part needs `deg_Ĝ(u) ≥ 12`, which at `Λ = ∅` forces it **pure**, so every non-pure hub is a leaf of some part in **every** 6-tree partition (485 160 (packing, hub) instances, 3 240 leafless, every one pure, 0 non-pure); **(GR-146)** fixes the demand's LOGICAL POSITION and is the verdict — it is (GR-143)'s **tier 1** read as an existence statement, **implied** by the residual ((GR-135)(iii)) and a **tautology** inside (GR-140)'s synthesis normal form, because `D_β = {α(head β), γ(tail β)}` makes two of a pure hub's three absence-pairs share a grid coordinate; measured, it admits **455 400 of 472 680** legal pairs against the residual's **229 320**, so **226 080 pairs pass the demand and fail the residual**; **(GR-147)** answers (GR-144)'s own *"what would change this"* clause (c) on the branch side — the **encoding** decides the reach: the *leaf* (degree-cap) encoding is **not a matroid**, exhibited at `K4(2,2,2,3,4,5)` by two maximal independent sets of sizes 2 and 3, while the *star-containment* encoding of the **same** demand ((GR-135)(iii)'s `deg = 3` half) is a **contraction**, which is matroid-preserving; **(GR-148)** is **THE REDUCTION THEOREM** — at a fixed leaf assignment `a : S → {1..6}` the demand is exactly *"`E'` partitions into bases of the six `M(G°) / K_j`"*, an Edmonds matroid-partition problem whose count condition collapses to `Σ_j [c(F ∪ K_j) − c(F)] ≤ σ(F)` at every branch set `F`, with two further equivalent forms (a component form and a `σ`-only form in which `F = ∅` is an **equality**), the **same `σ` (GR-129) owns, used a THIRD time**; **(GR-149)** is the **SLACK LAW** — at a `D = 0` class shape `σ(F) ≥ 1` for **every** `F` with `∅ ≠ F ≠ E`, a reading of (GR-25)'s cut criterion `2∂(W') + exc ≥ 7`, so (GR-130)(b)'s tight lattice is **trivial** on this stratum (asserted over all `2^m` subsets at 4 910 shapes) and the per-branch inequality `ℓ_β + k_β ≤ 6` closes the criterion wherever every `F ∪ K_j` is spanning-connected; **(GR-150)** DECIDES the demand positively on a stratum strictly **wider** than the residual's — all **312** `n_hub = 4` and all **4 598** `n_hub = 6` `D = 0` class shapes, 2 623 of them pure-hub where `gpack.all_packings` decides none and `gglob.synth_first` decided 150, plus **36** constructed class shapes to `n_hub = 20` — with **98.3 %** of copy-feasible assignments passing, so the `∃`-assignment disjunction is not the binding thing; **(GR-151)** is the reduction a PROOF would use — the **cover graph** on the pure hubs has maximum degree **`≤ 2`**, by a six-slot count plus the cut criterion killing the degree-3 configuration as a proper tight set, against **six** available colours; and **(GR-152)** is where the machinery stops and what the lane is worth: the criterion's nonempty-`F` content is **never binding anywhere it has been evaluated** (4 344 instances, 0 exceptions — recorded as a CONJECTURE, not a theorem), the two natural refuting configurations are killed by `σ ≥ 0` **itself** rather than by a search, and a refutation of the demand would be **strictly stronger** than a g-flank — so a proof cannot move (GR-10) and only a refutation could. **(GR-10)/(GR-15) unchanged in status; no gap-map status word moves on either. E1/E2/E3 reported, none fires.**
+
+---
+
+### Step G165 — (GR-145): the demand, stated precisely — and at `Λ = ∅` its prescribed set is not a parameter
+
+> **(GR-145)** *((i)/(ii)/(iii) proven; (ii)'s equivalence and (iii)'s
+> conclusion asserted at **485 160** (packing, hub) instances over every 6-tree
+> partition of (GR-132)'s own 12-shape population, and (i) at all **4 910**
+> `D = 0` class shapes at `n_hub ∈ {4, 6}`, `--state`)* Let `G` be a tight class
+> shape with `D = 0`, `Λ = ∅`; `G°` its hub multigraph, `Ĝ` the multigraph of
+> (GR-18) with `β` at multiplicity `m_β = 6 − ℓ_β`, and `C_β ⊆ {1..6}` the set
+> of parts of a 6-tree partition containing `β`, `D_β := {1..6} ∖ C_β`
+> (`|D_β| = ℓ_β`).
+>
+> **(i) Every hub is cubic and `Σ_j deg_{T_j}(u) = deg_Ĝ(u) = 18 − Σ_{β ∋ u} ℓ_β`.**
+> `2M = 3n + D = 3n` with every hub of degree `≥ 3` forces `G°` cubic; the
+> identity is `Σ_j deg_{T_j}(u) = Σ_{β ∋ u} m_β`.
+>
+> **(ii) The three forms of "`u` is a leaf of no part" coincide.** For a hub
+> `u` of `G°`-degree 3 the following are equivalent: `deg_{T_j}(u) = 2` for all
+> six `j`; `u` is a leaf of no `T_j`; `u` has degree 3 in no `T_j`; the three
+> `D_β` at `u` are **pairwise disjoint** (a perfect matching of `{1..6}` when
+> `u` is pure). This is (GR-135)(iii) re-derived from (i) alone.
+>
+> **(iii) Only a PURE hub can fail.** `u` a leaf of no part forces
+> `deg_Ĝ(u) ≥ 12`, i.e. `Σ_{β ∋ u} ℓ_β ≤ 6`; at `Λ = ∅` three branches give
+> `Σ ℓ ≥ 6` with equality **iff** `u` is pure. So **every non-pure hub is a
+> leaf of some part in EVERY 6-tree partition**, and the *prescribed set* in
+> (GR-138)'s phrasing of the question is not a free parameter at a class
+> shape: it may be taken to be all of `V(G°)` at no cost, and the content sits
+> at the `≥ n − 12` pure hubs (GR-136)(ii) counts.
+>
+> **THE DEMAND, stated once.** *Some* 6-tree partition of `Ĝ` makes **every
+> pure hub a leaf of at least one of the six parts** — equivalently (by (ii))
+> puts every pure hub's **whole star** inside at least one part.
+
+*Proof.* (i) Hub degrees are `≥ 3` by the branch decomposition and
+`Σ_u deg(u) = 2M = 3n`, so all are 3. (ii) `deg_{T_j}(u) = 3 − #{β ∋ u :
+j ∈ D_β}`, so the six numbers `3 − deg_{T_j}(u)` are the multiplicities of
+`{1..6}` in the multiset `⊎_{β ∋ u} D_β`, of total size `Σ_{β ∋ u} ℓ_β`; all six
+degrees equal 2 iff every multiplicity is 1, which for a total of 6 is pairwise
+disjointness, and `Σ_j (deg_{T_j}(u) − 2) = deg_Ĝ(u) − 12` gives
+`#{deg = 3} = #{deg = 1}` exactly when `deg_Ĝ(u) = 12`. (iii) Each part is
+**spanning** ((GR-18)(i)), so `deg_{T_j}(u) ≥ 1`; no leaf means all six are
+`≥ 2`, i.e. `deg_Ĝ(u) ≥ 12`, i.e. `Σ_{β ∋ u} ℓ_β ≤ 6`. ∎
+
+**Why (iii) is worth a clause of its own.** (GR-135)(iii) is stated *at a cubic
+pure hub* and (GR-136)(ii) counts the pure hubs; neither says what happens at
+the other `≤ 12`. It is now free: nothing. The demand has exactly one
+population, and the *"prescribed set of `≤ n` vertices"* of (GR-138)'s
+successor 3 is a parameter the class structure removes.
+
+**The `Λ ≠ ∅` boundary is not a gap in coverage — it is a DIFFERENT
+statement.** At `Λ ≠ ∅` a hub with lengths `(1,2,2)` has `deg_Ĝ = 13`, and the
+profile `(3,2,2,2,2,2)` is leafless, so (iii)'s arithmetic no longer forces
+purity and the demand acquires non-pure instances. Whether such a hub is
+realizable at a class shape is **not checked here** (the whole (GR-132)
+inheritance is `Λ = ∅`); it is recorded so that a successor at `Λ ≠ ∅` does not
+read (iii) as if it transported.
+
+---
+
+### Step G166 — (GR-146): the LOGICAL POSITION — necessary for the residual, and a TAUTOLOGY inside (GR-140)'s normal form
+
+> **(GR-146)** *((i)/(ii) proven; (i) asserted at **103 680** CSP-feasible
+> legal pairs and (ii) at every shape `gglob.synth_first` decides on the
+> `n_hub = 4` `D = 0` stratum, with the MECHANISM asserted rather than the
+> conclusion; (iii) measured exhaustively over (GR-132)'s own population,
+> `--state`/`--value`)*
+>
+> **(i) NECESSITY.** If a legal (packing, split) pair is CSP-feasible then its
+> packing is leaf-covering. Immediate from (GR-135)(iii): global feasibility
+> implies hub-local feasibility, which at a cubic pure hub *is* the leaf. So
+> **(GR-18)(iii)'s residual IMPLIES the demand**, and the demand is (GR-143)'s
+> **tier 1** read as an existence statement over packings.
+>
+> **(ii) VACUITY inside (GR-140).** Every packing that (GR-140)(i)'s synthesis
+> produces is leaf-covering, and the reason is one line: at a pure hub `u` the
+> three branches each have `u` as head or as tail, so two share a head or two
+> share a tail; `D_β = {α(head β), γ(tail β)}` then makes those two `D_β` share
+> a grid coordinate, so the three are not pairwise disjoint and `u` is a leaf
+> by (GR-145)(ii). **The demand is a tautology in the arc's current normal
+> form.**
+>
+> **(iii) The DISCRIMINATING POWER, measured.** Of the **472 680** legal
+> (packing, split) pairs of (GR-132)'s population, **455 400 (96.3 %) are
+> leaf-covering** and **229 320 (48.5 %) are CSP-feasible**; the 17 280
+> remainder carry (GR-135)'s pure-hub conflict outright and reproduce
+> (GR-137)(iii)'s own figure exactly. The relaxation admits **1.99×** as many
+> pairs as the target: **226 080 pairs pass the demand and fail the residual**.
+>
+> **(iv) Consequence, and it is the lane's price.** A **proof** of the demand
+> cannot advance (GR-10): a necessary condition of an open existence statement
+> is not a step toward it, and necessary conditions do not chain into
+> sufficiency. A **refutation** would be decisive — by (GR-140)(v) a shape with
+> no leaf-covering packing has no CSP-feasible legal pair, hence no both-block
+> tree-triple, hence is a **g-flank** — but it is **strictly stronger** than a
+> g-flank, since the residual implies the demand and not conversely. So the
+> lane's two possible outcomes are *no progress* and *a negative harder than
+> the one every prior `hK`-side direction has failed to find*.
+
+*Proof.* (i) is (GR-135)(iii) plus the definition of the CSP. (ii): the three
+branches at `u` partition into head-at-`u` and tail-at-`u`; `3 = h + t` forces
+`h ≥ 2` or `t ≥ 2`, and two head-at-`u` branches have `α(u)` in both `D_β`,
+two tail-at-`u` branches `γ(u)` in both. (iv) is (GR-140)(v) verbatim plus (i).
+∎
+
+**Why this is the verdict rather than a caveat.** `Pencil-strategy.md` §8's
+rank-3 rationale called the successor *"the `hK` lane's only live successor
+that is argument-shaped and reaches landed machinery"*. The **reach** half is
+confirmed — with a theorem, (GR-148) — and the **value** half is refuted: what
+the machinery reaches is a condition the residual already implies. That is a
+**split** in `RESEARCH-ARC.md` §7's taxonomy, and the half that survives is the
+half that does not help.
+
+---
+
+### Step G167 — (GR-147): the ENCODING decides the reach — the leaf form is no matroid, the star-containment form is a CONTRACTION
+
+> **(GR-147)** *(proven by an exhibited witness, with a negative control and a
+> pinned counter-fact; every clause asserted over (GR-132)'s 12-shape
+> population, `--encode`)*
+>
+> **(i) The LEAF encoding is not a matroid.** For a hub set `X` let
+> `I_deg(X) := {F ⊆ E(G°) : F a forest, deg_F(u) ≤ 1 ∀ u ∈ X}` — the family a
+> degree-capped reading of the demand would want to be matroidal. It is not,
+> already at `|X| = 2`. **Recorded witness:** the census shape
+> `K4(2,2,2,3,4,5)` — `G° = K_4` with `ends = [(0,1),(0,2),(0,3),(1,2),(1,3),
+> (2,3)]`, `lens = [3,2,4,2,5,2]` (so `Σ(ℓ−2) = 6`, `D = 0`, `Λ = ∅`) — and
+> `X = {0, 1}`: the sets `{(0,1), (2,3)}` and `{(0,2), (1,2), (2,3)}` are both
+> **maximal** in `I_deg(X)`, of sizes **2** and **3**. Two maximal independent
+> sets of different sizes, so no matroid.
+>
+> **(ii) NEGATIVE CONTROL (README §4 convention 6 / F13).** At `|X| = 1` the
+> same family **is** a matroid, at every hub of every shape of the population
+> (42 instances). The defect is the **second** constrained hub, not the degree
+> cap as such — which is exactly why a single-hub reading of the demand looks
+> matroidal and the real one is not.
+>
+> **(iii) PINNED COUNTER-FACT: the star-containment encoding of the SAME
+> demand is a contraction.** By (GR-145)(ii) *"`u` is a leaf of some part"* is
+> *"some part contains `star(u)` entirely"*. Requiring `T_j ⊇ K_j` is not a
+> constraint on an independent-set family at all — it is a **contraction**:
+> `T_j ∖ K_j` ranges over the bases of `M(G°) / K_j`, which is a matroid by
+> construction (36 reserved stars of the population, all matroids, asserted).
+> **Contraction is matroid-preserving; a degree cap is not.**
+>
+> **(iv) So (GR-142) does not reach the branch side, and the reason is
+> sharper than "different ground set".** (GR-142) refutes a family on **hub
+> sets** (head-independence under an orientation of `H`); the branch-side
+> demand lives on the **branch-copy multiset** of `Ĝ` and is expressible by
+> contraction. This answers (GR-144)'s own *"what would change this"* clause
+> (c) — *"a different encoding of the same demand could still be matroidal"* —
+> **affirmatively**, on the branch side, and it is the only place in this arc
+> where that clause has been discharged.
+
+**What (i) is and is not evidence for.** It is not an argument that the demand
+is hard; it is the reason the *obvious* formalization of it is the wrong one.
+Anyone reaching for *"spanning trees with a degree bound"* gets a matroid
+**intersection** problem (graphic ∩ partition), and matroid intersection is
+not a matroid; reaching instead for *"spanning trees through a prescribed
+forest"* gets a matroid **union of contractions**, which is landed.
+
+---
+### Step G168 — (GR-148): THE REDUCTION THEOREM — at a fixed leaf assignment the demand IS an Edmonds matroid partition, with a `σ`-shaped criterion
+
+> **(GR-148)** *(proven; the criterion cross-oracled **four** ways at **4 344**
+> (shape, assignment) instances — the cycle form, the component form, the
+> `σ` form and `union_rank_hetero` — with two matroid-free depth-first oracles
+> added and both verdicts exercised, 0 disagreements anywhere, `--edmonds`)*
+> Let `S` be the pure hubs, `a : S → {1..6}` a **leaf assignment**,
+> `S_j := a^{-1}(j)`, `K_j := ⋃_{u ∈ S_j} star_{G°}(u)` and
+> `k_β := #{j : β ∈ K_j}`. Reserve one copy of each `β ∈ K_j` for part `j` and
+> let `E'` be the remaining multiset, `|E'| = Σ_β (m_β − k_β)`.
+>
+> **(i) The reduction.** A leaf-covering 6-tree partition realizing `a` exists
+> **iff** `E'` partitions into bases of the six matroids `N_j := M(G°) / K_j`.
+> The counts always match: `Σ_j rank(N_j) = 6(n−1) − Σ_j |K_j| = |E'|`, so
+> *independent in `Matroid.Union (N_j)`* and *partitions into bases* coincide.
+>
+> **(ii) The criterion, CYCLE form.** That holds **iff** for every branch set
+> `F ⊆ E(G°)`
+>
+> > `Σ_{j=1}^{6} ν_j(F) ≤ σ(F)` ,  `ν_j(F) := c(F ∪ K_j) − c(F)` ,
+>
+> with `σ(F) = Σ_{β ∈ F} ℓ_β − 6 c(F)` **(GR-129)'s own slack** and `c` the
+> cycle rank. The `F = ∅` instance is exactly *every `K_j` is a forest*; the
+> `F = E` instance is vacuous.
+>
+> **(iii) Two further equivalent forms.** *Component form:*
+> `Σ_j (comp(F ∪ K_j) − 1) ≤ Σ_{β ∉ F} (6 − ℓ_β − k_β)`, `comp` counting
+> components of the spanning subgraph on all `n` hubs. *`σ` form:*
+> `2 Σ_{β ∉ F} k_β ≤ Σ_j σ(F ∪ K_j)`, which needs every reserved branch to
+> have `ℓ = 2` — true, since a pure hub's whole star lies in `H`. In the `σ`
+> form the `F = ∅` instance is an **equality**, which is why it is the form a
+> proof should work in.
+>
+> **(iv) Copy feasibility is free.** `K_j ⊆ H` and a branch has at most two
+> endpoints, so `k_β ≤ 2 ≤ 4 = m_β` at every reserved branch: the reservation
+> never runs out of copies. (Asserted at 3 154 instances, `--slack`.)
+
+*Proof.* (i) `K_j` a forest is necessary (a spanning tree contains no cycle),
+and then `T_j = K_j ⊎ B_j` is a spanning tree iff `B_j` is a base of
+`M(G°)/K_j`; two copies of one branch in one part are parallel, hence
+dependent, and a free copy of a `K_j`-branch is a **loop** of `M(G°)/K_j`, so
+the multiset bookkeeping is automatic. The rank count is
+`rank(M/K_j) = (n−1) − |K_j|`. (ii) Edmonds' matroid-partition theorem
+(Edmonds, *Minimum partition of a matroid into independent subsets*, J. Res.
+Nat. Bur. Standards **69B** (1965) 67–72 — the same theorem (GR-130) step 5
+cites) gives: `E'` is a union of independent sets of the `N_j` iff
+`|Y| ≤ Σ_j rank_{N_j}(Y)` for every `Y ⊆ E'`. Rank sees only the support, so
+for a fixed support the worst `Y` takes **all** available copies, and it
+suffices to range over branch sets `F` — the same parallel-class reduction
+(GR-130) step 6 uses. Then
+`rank_{N_j}(all free copies of F) = r(F ∪ K_j) − |K_j|`, and substituting
+`Σ_{β ∈ F} m_β = 6r(F) − σ(F)` turns the condition into
+`Σ_j [|K_j| − (r(F ∪ K_j) − r(F))] ≤ σ(F) + Σ_{β ∈ F} k_β`; since
+`|K_j| − (r(F ∪ K_j) − r(F)) = ν_j(F) + |K_j ∩ F|` and
+`Σ_j |K_j ∩ F| = Σ_{β ∈ F} k_β`, that is (ii). (iii) The component form is (ii)
+rewritten through `comp = n − r` and
+`Σ_{β ∉ F} m_β = 6(comp(F) − 1) + σ(F)`; the `σ` form is (ii) rewritten
+through `σ(F ∪ K_j) = σ(F) + 2|K_j ∖ F| − 6 ν_j(F)`, valid because every
+`β ∈ K_j` has `ℓ_β = 2`. ∎
+
+**What this consumes, and it is the answer to the `(K-grid)` close-it's u7
+question. Every declaration below was opened in its own file, and its
+PROVENANCE TIER is named — the project keeps three of them apart and *"vendored"*
+alone sends a reader to the wrong tree.**
+
+- **The local Apache-2.0 mirror**, in-repo at
+  `CombinatorialRigidity/Matroid/Constructions/Union.lean` (ported from
+  `apnelson1/Matroid`'s shelved `WIP/Union.lean`; `DESIGN.md` *Local mirror of
+  the matroid-union subsystem*): **`Matroid.Union : (ι → Matroid α) →
+  Matroid α`** (`:106`) is the union of an indexed family of **DIFFERENT**
+  matroids — the heterogeneous case is the landed case, and it is what this
+  reduction needs; **`Matroid.union_indep_iff`** (`:220`) is the per-factor
+  decomposition; **`Matroid.Union_rank_eq`** (`:521`) is **Edmonds' partition
+  rank formula for an arbitrary indexed family**, `∑ i, (Ms i).rk Y` over
+  *different* matroids; **`Matroid.adjMap_rk_eq`** (`:535`) is its per-set form
+  in `adjMap` shape.
+- **The upstream `apnelson1/Matroid` DEPENDENCY**, `.lake/packages/Matroid/` —
+  **not in this repo**: **`Graph.cycleMatroid`** and **`Graph.cycleMatroid_contract`**
+  (`Matroid/Graphic.lean:181`, `(G /[E(H), φ]).cycleMatroid = G.cycleMatroid ／
+  E(H)`), so contracting a forest of `G°` is vertex identification and
+  `M(G°)/K_j` is again a graphic matroid; and
+  **`Matroid.eRk_contract_add_eRk`** (`Matroid/Minor/Rank.lean:473`,
+  `(M ／ C).eRk X + M.eRk C = M.eRk (X ∪ C)`), the contract-rank bridge the
+  criterion's `r(F ∪ K_j) − |K_j|` needs.
+- **mathlib**: `Matroid.contract` (`／`) and **`Matroid.comapOn`**
+  (`Mathlib/Combinatorics/Matroid/Map.lean:248`, `(N.comap f) ↾ E`) — the
+  pullback of each contracted matroid along *copy ↦ branch*, which is how the
+  ground set becomes the copy multiset `E'`.
+- **Project-original, in-repo**: **`Graph.tutte_nash_williams`**
+  (`BodyBar/TreePacking.lean:432`) and
+  **`Graph.isSpanningTreePacking_of_isTight`** (`:578`) — the packing input
+  (GR-18)(i) already consumes; **`Matroid.Union_pow_rank_eq`** (`:65`), the
+  Phase-13 **idiom adapter** whose own docstring calls itself *"the
+  constant-family `Set`-side specialization of `Matroid.Union_rank_eq`"*; and
+  **`Matroid.Union_pow_isBasis'_split_of_rk_saturated`**
+  (`Molecular/Induction/Contraction.lean:307`), the basis-splitting count for
+  the constant family.
+
+**What is NOT landed — TWO items, and the third was MIS-STATED. Corrected here
+because a landed theorem listed as owed work is what a successor prices a build
+against.** The draft of this pass listed *"the heterogeneous per-set rank
+formula"* among the gaps. **It is not a gap: `Union_rank_eq` is heterogeneous
+outright**, and what is constant-family is only TreePacking's `Set`-side
+**adapter**. So the honest residue is: **(a)** that adapter's heterogeneous
+twin — a pure **idiom** restatement (`Set`-`Y` / `ℕ` / `Set.ncard` /
+`[Finite]`) plus the two-line loop-absorption that reads the whole-`rank` form
+as a count condition on `E'` after `comapOn`; **(b)** the heterogeneous
+**basis-splitting count** — `Σ_j rank(N_j) = |E'|` forcing every part to be a
+base — whose constant-family analogue *is* landed
+(`Union_pow_isBasis'_split_of_rk_saturated`) and whose general form is the same
+counting argument on top of `union_indep_iff`; **(c)** the **parallel-class
+reduction** of the minimum to branch sets, which (GR-130) step 6 also uses
+informally. All three are mechanical; none is research-scale; and **no
+commutation of union with contraction is needed** — the six contractions are
+the *factors*, so `Union_pow_contract_eq_contract_of_rk_saturated`'s recorded
+hazard (*"in general `Union Mᵢ ／ C ≠ Union (Mᵢ ／ C)`"*) does not arise.
+
+---
+
+### Step G169 — (GR-149): the SLACK LAW — no PROPER tight branch set at a `D = 0` class shape
+
+> **(GR-149)** *(proven; asserted over **all** `2^m` branch subsets of **all
+> 4 910** `D = 0` class shapes at `n_hub ∈ {4, 6}` — 312 + 4 598 shapes,
+> `m ≤ 9` — `--slack`)* At a `D = 0` tight class shape (so `hnoRigid`, the
+> (GR-25) cut criterion),
+>
+> > `σ(F) ≥ 1` for **every** `F` with `∅ ≠ F ≠ E` , and `σ(∅) = σ(E) = 0` ,
+>
+> with `σ(F) ≥ #components(F)`. Measured: the minimum over proper nonempty `F`
+> is exactly **1**, attained at 354 masks over the `n_hub = 4` stratum and
+> 3 978 over the `n_hub = 6` one.
+>
+> **Corollary (a).** **(GR-130)(b)'s tight lattice is TRIVIAL here.** That
+> remark records that the tight sets `{F : σ(F) = 0}` form a lattice on which
+> the signing must satisfy `s(F) = 0` — *"a genuine constraint whenever
+> `o(F) ≥ 2`"*. At `D = 0` with `hnoRigid` the lattice is `{∅, E}` and the
+> constraint is empty. (GR-130) is a census-wide theorem; this is the shape of
+> its hypothesis on the stratum the residual actually lives on.
+>
+> **Corollary (b).** A pure hub never carries two **parallel** branches:
+> `σ({β₁, β₂}) = 4 − 6 < 0` would follow, so `hnoRigid` excludes it. Hence
+> `star(u)` is a forest at every pure hub, and the `F = ∅` instance of
+> (GR-148)(ii) is satisfiable by the all-singletons assignment whenever
+> `|S| ≤ 6`.
+>
+> **Corollary (c).** `ℓ_β + k_β ≤ 6` at every reserved branch of every leaf
+> assignment (3 154 instances asserted), so
+> `Σ_{β ∉ F} (ℓ_β + k_β − 6) ≤ 0`: **the criterion holds at every `F` all six
+> of whose `F ∪ K_j` are spanning-connected.** The criterion's whole content
+> is therefore the *disconnected* deletions.
+
+*Proof.* `σ` is additive over connected components (both `Σℓ` and `c` are), and
+adding a branch inside the span of `F` changes `σ` by `ℓ − 6 < 0`, so among
+sets with a given span the **branch-closed** one minimizes `σ`. For a proper
+hub set `W'` with `|W'| ≥ 2` inducing a connected subgraph,
+`σ(E(W')) = 2∂(W') + exc(E(W')) − 6`, which the (GR-25) cut criterion
+(`cflank.cubic_habitat`'s own inequality, `2∂ + exc ≥ 7`) makes `≥ 1`.
+Components with `|W'| = 1` carry no branch (`hnoRigid` leaves no loop). For
+`F` spanning all hubs with `F ≠ E`, `σ(F) = Σ_{β ∉ F} (6 − ℓ_β) > 0`.
+Corollary (c) is the `σ`-form of (GR-148)(iii) at a spanning-connected `F ∪ K_j`. ∎
+
+**Why this is worth minting rather than quoting.** The cut criterion is
+recorded as a *habitat-membership test* and used as one; read as a statement
+about `σ` it says the 5/6-sparsity inequality is **strict** everywhere except
+at the two trivial sets. That is the fact that kills the natural refutation of
+the demand ((GR-152)(ii)) and the fact a proof of the (GR-152) conjecture would
+have to spend.
+
+---
+### Step G170 — (GR-150): the demand DECIDED — positively, on a stratum strictly wider than the residual's
+
+> **(GR-150)** *(measured; the `D = 0` legs **exhaustive** over their strata,
+> the large-`n_hub` leg a **named constructed family**, `--decide`)*
+>
+> **(i) Exhaustively at `D = 0`, `n_hub ∈ {4, 6}`: the demand HOLDS at every
+> class shape.** 312 shapes at `n_hub = 4` (28 pure-hub, `max |S| = 1`) and
+> **4 598** at `n_hub = 6` (**2 623** pure-hub, `max |S| = 2`); **0 failures**.
+> The `n_hub = 6` half is the point: `gpack.all_packings` decides **none** of
+> those 2 623 and `gglob.synth_first` decided **150**, while the (GR-148)
+> reduction decides all 2 623 — because it replaces an enumeration of packings
+> by a *polynomial* matroid-union test per assignment.
+>
+> **(ii) The `∃`-assignment disjunction is not the binding thing.** Of the
+> copy-feasible leaf assignments (counted up to permuting the six parts, which
+> (GR-140)(iii) makes a symmetry), **28 of 28 pass at `n_hub = 4` and 3 074 of
+> 3 126 (98.3 %) at `n_hub = 6`**; every one of the 52 failures fails already
+> at the `F = ∅` instance, i.e. carries a `K_j` with a cycle.
+>
+> **(iii) The constructed family, where `|S|` is large.** `|S| ≥ n − 12` bites
+> only from `n_hub ≈ 14`, and the exhaustive generator `glist.d0_shapes` does
+> not reach `n_hub ≥ 8` (measured: no shape produced in 400 s — a harness
+> limit, disclosed as one). So: circular ladders `C_{n/2} × K_2` and Möbius
+> ladders with the excess budget on two or three adjacent branches, each
+> candidate certified by `cflank.cubic_habitat` — **36 class shapes** at
+> `n_hub ∈ {10, 12, 14, 16, 18, 20}` with `|S| = n − 4`, i.e. up to **16**
+> prescribed hubs. The demand **HOLDS at all 36**, and at every one of them a
+> **two-block** assignment suffices: **two of the six parts own every
+> prescribed star and the other four are untouched.** That is (GR-136)(ii)'s
+> *"`3n` leaf slots against `≤ n` needed"* in the form a proof could use.
+>
+> **(iv) What this is NOT.** It is not a theorem, and by (GR-146)(iv) it would
+> not help if it were. It *is* the first evidence about this demand at
+> `n_hub ≥ 8` of any kind, and it is disproof-risk reduction, which by
+> (OC-24) can never be the binding obstruction.
+
+**The support, named (`RESEARCH-ARC.md` §4).** The claim quantifies over
+(shape, leaf assignment); the exhaustive legs vary **both** — every `D = 0`
+class shape at `n_hub ∈ {4, 6}` × every assignment up to part-relabelling. The
+constructed leg varies the **base graph** (prism vs Möbius — bipartite vs not),
+the **excess profile** (`5+5`, `4+4+4`, `5+4+3`, i.e. `L = 2` and `L = 3`) and
+`n_hub`; it holds fixed the *placement* of the excess (adjacent branches, which
+is what maximizes `|S|`) and the base-graph family. **The axis nobody moved is
+the base-graph family**: a cubic graph far from a ladder — high girth, or many
+4-cycles — is untested at `n_hub ≥ 8`, and by the RPOOL sharpening of §4 that
+is the axis a counterexample would sit on.
+
+---
+
+### Step G171 — (GR-151): the reduction a PROOF would use — the cover graph has maximum degree `≤ 2`
+
+> **(GR-151)** *(proven; asserted at every pure-hub shape of both exhaustive
+> `D = 0` strata (2 651 shapes) and at all 36 constructed ones, with the
+> degree-3 configuration exhibited and killed, `--flank`)* Define the **cover
+> graph** on the pure hubs: `u ~ w` iff `star(u) ∪ star(w)` carries a cycle,
+> i.e. iff `{u, w}` cannot be one block of a leaf assignment.
+>
+> **(i) `u ~ w` iff `u` and `w` have at least two common neighbours.** At pure
+> hubs the alternatives are excluded: a common neighbour with `u ~ w` adjacent
+> would be a `G°`-triangle of length-2 branches, `Σℓ = 6 < 7`, killed by girth;
+> two parallel branches are killed by (GR-149)(b).
+>
+> **(ii) Maximum degree `≤ 2`.** `u` has three neighbours, each with two
+> further slots — six in all — and each cover-neighbour consumes at least two
+> of them, so the degree is `≤ 3`; degree exactly 3 forces the three pairs of
+> `N(u)` to be used once each, i.e. the configuration `u; a, b, c;
+> w_{ab}, w_{bc}, w_{ac}`, which is **9 branches on 7 hubs with cycle rank 3
+> and `σ = 0`** — a **proper** tight set at every class shape (a cubic
+> multigraph has no 7 hubs), so (GR-149) excludes it.
+>
+> **(iii) Measured, and far from tight.** Max cover-graph degree **0** at
+> `n_hub = 4`, **1** at `n_hub = 6`, **2** on the constructed family; the cover
+> graph is **bipartite at every shape measured**, and a 2-colouring of it
+> always yields a passing assignment. Against **six** available colours.
+>
+> **(iv) What (ii) does and does not reduce.** The colouring the demand asks
+> for is a colouring of a **hypergraph**, not of (ii)'s graph: a colour class
+> `S_j` is legal iff `S_j` covers no cycle of `G°`, and a cycle of length `c`
+> has vertex covers of size `⌈c/2⌉`, so there are hyperedges of rank `≥ 3` —
+> three alternating hubs of a 6-cycle, pairwise **non**-adjacent in the cover
+> graph. (ii) settles the **rank-2** part of that hypergraph, with four colours
+> to spare; the higher-rank part is open and is the honest residue.
+
+**Why the rank-2 part is worth a theorem.** It is the part a reader would
+assume is the obstruction — *"can six colours beat the conflict graph?"* — and
+the answer is *"the conflict graph has degree `≤ 2`, so three colours already
+do"*. Whatever makes the demand hard, if anything does, it is not the pairwise
+conflict; and the mechanism that bounds it is `hnoRigid`, i.e. the same
+hypothesis (GR-149) reads. **The class structure suppresses exactly the dense
+configurations a colouring proof would fear.**
+
+---
+
+### Step G172 — (GR-152): where the machinery STOPS, the refutation side, and the verdict
+
+> **(GR-152)** *((i) a CONJECTURE, measured at 4 344 instances with 0
+> exceptions; (ii) two ARGUMENTS with constructed witnesses; (iii) a capped
+> hunt reported as *not found under cap*; `--edmonds`/`--flank`)*
+>
+> **(i) The criterion's nonempty-`F` content is never binding — CONJECTURED,
+> not proved.** At every instance evaluated, (GR-148)(ii) holds **iff** its
+> `F = ∅` instance does, i.e. iff every `K_j` is a forest: 3 126 (shape,
+> assignment) instances over the whole `n_hub = 6` pure-hub stratum — of which
+> 52 fail, **all** at `F = ∅` — and 1 218 over the constructed `n_hub = 10`
+> family, where 138 (prism) / 91 (Möbius) of 203 assignments have a cyclic
+> `K_j` and **0** have every `K_j` a forest and still fail. If the conjecture
+> is a theorem, the demand **is** the hypergraph colouring of (GR-151)(iv) and
+> nothing more. **Where a proof would go:** the `σ` form
+> `2 Σ_{β ∉ F} k_β ≤ Σ_j σ(F ∪ K_j)`, whose `F = ∅` instance is an equality,
+> so the statement is that the inequality only ever gains slack as `F` grows —
+> a *ballot*-shaped claim between two zeros, since `F = E` is an equality too.
+>
+> **(ii) The two natural refuting configurations are killed by `σ` ITSELF.**
+> *(a) A doubled branch.* A hub carrying two parallel branches has
+> `m_1 + m_2 ≤ 6` by `σ ≥ 0`, hence `deg_Ĝ(u) ≤ 11 < 12`, hence a leaf by
+> (GR-145)(iii) — asserted at 344 (shape, hub, parallel pair) instances, and
+> the mechanism, not the sweep, is the argument. *(b) A tight `K_{2,3}` plus a
+> returning hub.* The configuration that would force `ν_j > 0` at a tight `F`
+> is a `K_{2,3}` of length-2 branches (`σ = 0`) plus a hub with two neighbours
+> inside it; adding that hub's two branches gives `σ = −2`, so the
+> configuration is **not 5/6-sparse and not a class shape** —
+> `cflank.cubic_habitat` rejects it, and (GR-149) explains why in one line: no
+> proper tight set exists at all. Both are constructed witnesses, both
+> **rejected**, and the rejection is an argument.
+>
+> **(iii) The g-flank hunt, demoted to an adversarial control.** No shape whose
+> every 6-tree partition has a leafless pure hub was found: **not found under
+> cap** over 4 910 exhaustive `D = 0` shapes ((GR-150)(i)), a 400-shape
+> second-oracle prefix, and 36 constructed shapes to `n_hub = 20`. By
+> (GR-146)(iv) such a shape would be a **g-flank** and would fire **E1**; none
+> was exhibited or found, and none is claimed.
+>
+> **(iv) THE VERDICT for the close-it's u7 and for `Pencil-strategy.md` §8's
+> rank 3.** *"The one place the landed Phase-12/13/14 machinery might reach"*
+> is **half right and the wrong half**. The machinery **does** reach it —
+> (GR-148) is an exact reduction to `Matroid.Union` over an indexed family plus
+> `Union_rank_eq`, and the two missing Lean bridges are mechanical. What it
+> reaches is a condition **implied** by the residual and **vacuous** in
+> (GR-140)'s normal form, so a proof closes nothing on this row and only a
+> refutation — strictly stronger than a g-flank — could. **The lane is SPENT.**
+> The row's kill condition for this successor (*"leaf-covering settled on the
+> branches, or shown not to reach"*) has **FIRED on both clauses at once**, in
+> opposite directions.
+>
+> **(v) The named successor, and it is not on this row.** If anyone returns
+> here it should be for the **(GR-152)(i) conjecture** — because a proof of it
+> reduces a *matroid partition over six contractions* to a *hypergraph
+> colouring*, and that reduction is the transferable object, not the demand it
+> settles. Priced honestly: a `σ`-form induction between two equalities, with
+> (GR-149) and (GR-151)(ii) as the two available inputs, and **no consequence
+> for (GR-10) or (GR-15) whatever the outcome**.
+
+---
+
+### Verification (Steps G165–G172)
+
+Every figure above is produced by a mode of the shipped
+`notes/scripts/w4/gleaf.py`; nothing is quoted from a transcript. `--validate`
+runs all seven legs in **298 s**, inside a single 600 s foreground budget, so
+the landing gate is **one** invocation:
+
+```
+PYTHONHASHSEED=0 python3 notes/scripts/w4/gleaf.py --validate   # 298 s, exit 0
+```
+
+Per-leg costs, measured: `--state` 45 s, `--encode` 0.4 s, `--edmonds` 103 s,
+`--slack` 9 s, `--decide` 43 s, `--value` 58 s, `--flank` 39 s.
+
+**Which mode tests which sentence (F11), with the sampler's support named.**
+
+| claim | mode | what asserts *that sentence*, and over what |
+|---|---|---|
+| (GR-145)(i) | `--state` | cubicity and the `deg_Ĝ` identity asserted at **every** hub of **every** `D = 0` class shape at `n_hub ∈ {4, 6}` — 4 910 shapes, exhaustive |
+| (GR-145)(ii) | `--state` | the four-way equivalence asserted at **every** (packing, hub) of (GR-132)'s population — 485 160 instances over all 121 380 packings of the 12 shapes, both quantifiers exhaustive |
+| (GR-145)(iii) | `--state` | `deg_Ĝ(u) ≥ 12 ⟺ u` pure asserted per hub per shape; and *every non-pure hub is a leaf* asserted per packing, 0 exceptions in 485 160 |
+| (GR-146)(i) | `--state` | at **every** CSP-feasible legal pair of the pure-hub shapes (103 680) the packing is asserted leaf-covered **and** a leaf assignment extracted |
+| (GR-146)(ii) | `--state` | the **mechanism** asserted, not the conclusion: at every synthesized packing, two of each pure hub's three `D_β` are asserted to share a coordinate |
+| (GR-146)(iii) | `--value` | leaf-covering and CSP-feasibility evaluated at **every** legal pair of the population — 472 680, a partition of the whole population, not a sample; 17 280 reproduces (GR-137)(iii) exactly |
+| (GR-147)(i) | `--encode` | the family **enumerated** (all `2^m` branch sets) and its maximal members compared by size; down-closedness asserted first |
+| (GR-147)(ii) | `--encode` | the negative control: at `\|X\| = 1` the matroid axioms are asserted to HOLD at 42 (shape, hub) families — the F13 *guard must reject something* clause, run in both directions |
+| (GR-147)(iii) | `--encode` | the contraction family checked matroidal at 36 reserved stars |
+| (GR-148)(i)–(iv) | `--edmonds` | **four** oracles compared at 4 344 (shape, assignment) instances: cycle form, component form, `σ` form, `union_rank_hetero`. Two matroid-free DFS oracles besides: `first_pack_with` (*per-assignment*) at **79** instances of the 60-shape `n_hub = 6` prefix, with **76 feasible and 3 infeasible verdicts both exercised**, and `first_leafcover` (*over all assignments*) against the whole reduction at **all 312** `n_hub = 4` shapes |
+| `union_rank_hetero` itself | `--edmonds` | cross-oracled against `saferes.union_rank` at 312 shapes on the **constant** family, where the two must agree, and asserted to hit `6(n−1)` |
+| the canonical reduction | `--edmonds` | criterion invariance under three explicit permutations of the six parts, 1 080 instances — this is what licenses enumerating **partitions** of `S` rather than maps |
+| (GR-149) | `--slack` | `σ(F) ≥ 1` asserted at **every** proper nonempty mask of **every** shape of both strata; `σ(∅) = σ(E) = 0` asserted too |
+| (GR-149)(c) | `--slack` | `ℓ_β + k_β ≤ 6` and *every reserved branch has `ℓ = 2`* asserted at 3 154 instances |
+| (GR-150)(i)/(ii) | `--decide` | exhaustive over both strata; the assignment counts are over **all** copy-feasible assignments, not a prefix |
+| (GR-150)(iii) | `--decide` | 36 constructed shapes, each certified by `cflank.cubic_habitat` before being decided |
+| (GR-151)(ii) | `--flank` | the degree bound **asserted** (not reported) at every pure-hub shape and every constructed one; the degree-3 configuration constructed and its `σ = 0` asserted |
+| (GR-151)(iii) | `--flank` | max degree, bipartiteness and *a 2-colour assignment passes* asserted per shape |
+| (GR-152)(i) | `--edmonds` | the *forest-but-criterion-fail* counter is printed per leg and is 0; the leg also prints how many instances a stratum exercises, which is how the `n_hub ≤ 6` blindness below was found |
+| (GR-152)(ii) | `--flank` | two constructed configurations, both asserted **rejected** by `σ` and by `cubic_habitat` |
+| (GR-10), (GR-15), `dim Z` | — | **not attempted**; no mode computes a rank, a field or a placement |
+
+**Caps and denominators (F11 / README §4 convention 8).**
+
+- `--state`, `--encode`, `--value` run on (GR-132)'s own 12-shape population
+  (`m ≤ 6`, `Λ = ∅`, `n_hub ∈ {2, 4}`) and say **nothing** about `n_hub ≥ 6`.
+- `--slack`, `--decide` (i)/(ii) and `--edmonds` (ii)/(iv) are **exhaustive**
+  over the `D = 0` strata at `n_hub ∈ {4, 6}` — 4 910 class shapes, all `2^m`
+  branch subsets, all copy-feasible assignments up to part-relabelling — and
+  say **nothing** about `n_hub ≥ 8` as a stratum.
+- **A SUPPORT CAP, and it is the sharpest one here: the `n_hub ≤ 6` strata do
+  not exercise the criterion's nonempty-`F` content AT ALL.** All 52 negatives
+  in 3 126 instances fail at `F = ∅`. That is why the constructed `n_hub = 10`
+  leg exists, and it is why (GR-152)(i) is recorded as a **CONJECTURE, not a
+  theorem** — the never-binding claim rests on 4 344 instances of which only
+  1 218 could have refuted it, and the `σ` form is named as where a proof would
+  go. The blindness was found by this pass's own support leg, not assumed away.
+- `--edmonds`'s constrained-DFS leg is a **60-shape deterministic prefix** of
+  the 2 623; its node budget (2 000 000) is asserted never reached, so each
+  verdict inside the prefix is exhaustive for its instance. Its relabelling leg
+  is a **400-shape prefix**; `--flank`'s second-oracle leg a **400-shape
+  prefix** of the 2 623, reported as *not found under cap*.
+- `--decide` (iii) and `--flank` (v) are a **named constructed family**, never
+  a stratum: 36 shapes, two base-graph families × three excess profiles × six
+  hub counts. The exhaustive generator does not reach `n_hub ≥ 8` (no shape in
+  400 s), which is a **harness limit**, not a mathematical boundary.
+- `--flank` (vi) certifies 40 `n_hub = 4` shapes with **both**
+  `cflank.cubic_habitat` and `gridcol.class_shape`; the exhaustive agreement
+  check is `cflank.py --law`'s, not this file's.
+- **A CAP ON THIS PASS'S OWN ORACLE, recorded because it was SILENT and is a
+  `RESEARCH-ARC.md` §4 instance in its own right.** `hetero_feasible`'s first
+  version **omitted the `K_j`-forest guard**. `rank(M / K_j) = (n−1) − |K_j|`
+  holds only when `K_j` is independent, so without it the rank count that turns
+  *independent in the union* into *partitions into bases* is wrong, and the
+  oracle **silently accepted a reservation no spanning tree can contain** —
+  while the driver ran clean, with no assert firing anywhere. It was caught by
+  the `--edmonds` cross-oracle at `[[1, 4]]` on an `n_hub = 6` shape whose
+  `K_0` carries a 4-cycle, i.e. **only by two oracles disagreeing**. The guard
+  is now the `F = ∅` instance of the criterion and says so in its docstring.
+  The transferable form: *a driver that computes a rank against a formula
+  valid only under a hypothesis must assert the hypothesis, because the wrong
+  rank is still a number.*
+
+**Scratch probes (README's standing rule).** The derivation ran through three
+throwaway probes, all `GLEAF`-prefixed: a first `n_hub = 4` sweep that timed out
+and was replaced by the early-exit DFS; a scale probe at `n_hub ∈ {6, 8}` that
+produced the *generator is out of reach at 8* figure; and a criterion-content
+probe at `n_hub = 10` that produced the *forest-but-criterion-fail = 0* figure.
+**Every figure they produced is reproduced by a shipped mode above** —
+`--decide` prints the strata and the constructed family, `--edmonds` (vi) the
+criterion-content table — so none is retained.
+
+### Confidence verdict (Steps G165–G172)
+
+| | claim | standing |
+|---|---|---|
+| **(GR-145)(i)–(iii)** | cubicity, the three forms, only pure hubs can fail | **proven**; asserted at 4 910 shapes and 485 160 (packing, hub) instances |
+| **(GR-146)(i)/(ii)** | necessity; vacuity inside (GR-140) | **proven** from (GR-135)(iii) and (GR-140)(i); mechanism asserted, not just the conclusion |
+| **(GR-146)(iii)** | 455 400 of 472 680 against 229 320 | **measured, exhaustive** over (GR-132)'s population — a statement about those 12 shapes |
+| **(GR-146)(iv)** | a proof cannot advance (GR-10); a refutation is stronger than a g-flank | **proven** from (i) + (GR-140)(v) — a reading of landed statements, no new measurement |
+| **(GR-147)(i)** | the leaf encoding is not a matroid | **proven by witness**, every clause asserted; with a negative control and a pinned counter-fact |
+| **(GR-147)(iii)/(iv)** | the star-containment encoding is a contraction; (GR-142) does not reach here | **proven** (contraction is matroid-preserving); the scope reading is (GR-142)'s own |
+| **(GR-148)(i)–(iv)** | the reduction theorem and its three criterion forms | **proven** from Edmonds' partition theorem + the parallel-class reduction; cross-oracled four ways at 4 344 instances, 0 disagreements |
+| the landed-declaration inventory | | **verified at source**, with each declaration's **provenance tier** named (local mirror / upstream dependency / mathlib / project-original); the draft's third "missing bridge" was **withdrawn** here as mis-stated — `Union_rank_eq` is heterogeneous outright |
+| **(GR-149)** | `σ(F) ≥ 1` at every proper nonempty `F` | **proven** from (GR-25)'s cut criterion; asserted exhaustively over all `2^m` at 4 910 shapes |
+| **(GR-150)(i)/(ii)** | the demand holds at every `D = 0` shape at `n_hub ∈ {4, 6}`; 98.3 % of assignments pass | **measured, exhaustive** over those strata; says nothing about `n_hub ≥ 8` as a stratum |
+| **(GR-150)(iii)** | 36 constructed shapes to `n_hub = 20`, two blocks sufficing | **measured** on a **named family**; not a stratum, and the base-graph axis is the untested one |
+| **(GR-151)(i)/(ii)** | the cover graph has max degree `≤ 2` | **proven** (six-slot count + (GR-149) killing the degree-3 configuration); asserted at 2 651 + 36 shapes |
+| **(GR-151)(iv)** | the higher-rank hyperedges are the residue | **honest open**; a rank-3 hyperedge is exhibited abstractly, not measured as binding |
+| **(GR-152)(i)** | the criterion is equivalent to its `F = ∅` instance | **CONJECTURE** — measured at 4 344 instances with 0 exceptions, of which only the 1 218 constructed ones could have refuted it (the `n_hub ≤ 6` strata are blind to the clause); explicitly **not** a theorem |
+| **(GR-152)(ii)** | the two refuting configurations are `σ`-excluded | **proven**, with both witnesses constructed and rejected |
+| **(GR-152)(iii)** | no g-flank | **not found under cap**; a lower-bound-shaped negative, never a nonexistence claim |
+| this pass's own oracle | | one **SILENT** defect found and fixed (`hetero_feasible`'s missing forest guard, caught only by oracle disagreement) — recorded in *Caps* as an §4 instance |
+| **(GR-10)**, **(GR-15)**, `hK` | | **not attempted**; unchanged in status |
+
+### What would change this
+
+**(a)** Everything here is at **`Λ = ∅`**, inherited from (GR-132) through
+(GR-135); (GR-145)(iii)'s *only pure hubs can fail* is **false arithmetic** at
+`Λ ≠ ∅` (a `(1,2,2)` hub has `deg_Ĝ = 13` and the leafless profile
+`(3,2,2,2,2,2)` fits), so a successor there must re-derive the population
+before using any step above. **(b)** (GR-148) rests on Edmonds' partition
+theorem *and* on the parallel-class reduction of the minimum; an error in the
+latter would break the `2^m` sweep's exhaustiveness, not the theorem — the
+`union_rank_hetero` oracle does not use it, which is why both are run.
+**(c)** (GR-150)(iii)'s constructed family holds the *base-graph family* fixed;
+a cubic graph far from a ladder at `n_hub ≥ 8` is untested, and by the RPOOL
+sharpening that is where a counterexample would sit. **(d)** (GR-152)(i) is a
+conjecture, and it is load-bearing **only** for the *"the demand is exactly a
+hypergraph colouring"* reading — no other claim here depends on it. **(e)** An
+error in (GR-18)(i)'s *"each part is a **spanning** tree"* would void
+(GR-145)(iii) outright, as it would (GR-134)(ii): that remains the single fact
+this whole chain rests on.
+
+### TERMINATION check (E1 / E2 / E3) — reported, never fired
+
+Read against the **arc's** target `PencilPair K 3 G`, per the corrected reading
+of `61e046a6`; E3 in the two-conjunct text. **E1 does NOT fire, and this
+direction had a literal shot at it**: by (GR-146)(iv) a shape with no
+leaf-covering packing is a g-flank, so `--decide` and `--flank` are a g-flank
+hunt over a stratum (4 910 exhaustive `D = 0` shapes) strictly wider than any
+prior `hK`-side direction reached, plus 36 constructed shapes to
+`n_hub = 20`. It is decided **negative**: every shape decided carries a
+leaf-covering packing, no g-flank was exhibited or found, and none is claimed.
+**E2 does NOT fire**: the target is not refuted, and the residue this pass
+leaves is dispatchable ((GR-152)(v)). **E3 does NOT fire**: the arc's target is
+not proven — (GR-145)–(GR-151) prove named statements about a **relaxation** of
+(GR-18)(iii)'s residual, and (GR-146)(iv) is precisely the clause saying they
+do not reach it. **(GR-10)/(GR-15) unchanged in status.**
+
+---
+
+---
+
 ## §(K-res) — the residual-habitat transport audit (RESGRID, 2026-08-28) and its residual's REFUTATION (RPOOL, 2026-09-03): the GEOMETRY of §(K-grid) transports verbatim ((RS-1)–(RS-4)) while the tight BOOKKEEPING does NOT, and the widened-quantifier residual **(RS-5) is FALSE** — the flank is `R20 = family_g(5,(0,0,2),(4,4,4))`, `W19`'s own family with a `C₅` core, where the per-block floor (RS-11) is positive at all 64 admissible colourings; 30 of the recorded pool's 102 `def = 0` members refute it and 72 carry exact-point proofs, the split governed by `index < 2·g_forced` ((RS-15)); the deficient fringe stays REFUTED with a mechanism at θ(2,3,7) ((RS-6))
 
 **What this section is.** The (K-res) *scoping slice* (spec:

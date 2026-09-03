@@ -1,10 +1,11 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
 **Status: EIGHT fan-outs, FORTY-NINE single directions, ONE draft-only parallel direction,
-FOUR concurrent pairs and ONE concurrent round of four dispatched; 87 LANDED, NONE IN
-FLIGHT, **ONE DRAFTED-BUT-NOT-LANDED (GLEAF)**.
-*(Round state, coordinator, 2026-09-03: the remaining draft's deliverables are the
-**untracked** `notes/Pencil-draft-GLEAF.md` and `notes/scripts/w4/gleaf.py`.
+FOUR concurrent pairs and ONE concurrent round of four dispatched; 88 LANDED, **NONE IN
+FLIGHT, NONE DRAFTED — the concurrent round of four is COMPLETE** (BARCH 77, OBAR 78,
+DSAT 79, GLEAF 80).
+*(Round state, coordinator, 2026-09-03 — **CLOSED at GLEAF's landing**; what stays is the
+round's cross-return observations, not its queue.
 
 **DSAT** — **LANDED 2026-09-03 as ordinal 79**; detail in §"DSAT" below, not here. Status
 only: **C2 is STRUCK as a *uniform* carry** — the (K-res) half **proved**, the class half
@@ -20,42 +21,27 @@ the next `(K-out)` landing must **recompute, not append**; §8.2, §4.6 and §8.
 **one** commit as required; and its step-1 negative is chart-wide **on §(K-σ) (σ7)'s own
 basis** — conjunct 4's argument plus 39/39 witnesses — never more.
 
-**GLEAF** — verdict: **the reach question SPLITS**. The landed Phase-12/13/14 machinery
-**does** reach the branch-side leaf-covering demand, by a theorem — an Edmonds matroid
-partition over six contracted graphic matroids, three missing bridges all mechanical — but
-what it reaches is **implied by** (GR-18)(iii)'s residual (226 080 legal pairs pass the
-demand and fail the residual), so **§8's rank 3 is SPENT**: a proof there cannot move
-(GR-10), and a refutation would be *strictly stronger* than a g-flank. §8's rank-3
-rationale was **right on reach, wrong on value**. Two items need coordinator
-**adjudication before landing** — **BOTH NOW ADJUDICATED BY THE COORDINATOR, 2026-09-03**:
+**GLEAF** — **LANDED 2026-09-03 as ordinal 80**, the round's last; detail in §"GLEAF"
+below, not here. Status only: **the reach question SPLIT** — the landed Phase-12/13/14
+machinery **does** reach the branch-side demand, by a theorem, and what it reaches is
+**implied by** (GR-18)(iii)'s residual, so **§8's rank 3 is SPENT**. Both of its owed
+adjudications were cleared in advance (`a5d8101c`) and both were **spent at the landing**:
+the `(K-grid)` fourth compression landed the row at **2 688/2 715** status and **974/985**
+close-it with `gapdiff.py K-grid` **0 dropped, 8 added**, and the `notes/gapmap.py`
+docstring was already re-worded to an unmintable placeholder. Its labels **deviated
+correctly** to `(GR-145)`–`(GR-152)` — reservation defect shape **four** of the round, and
+OBAR's shape five is the same error, which is what made the diagnosis systematic;
+`notes/Pencil-labels.md`'s defects block owns it, not here.
 
-- **The `(K-grid)` fourth compression: AUTHORIZED, with a target, not just a floor.** The
-  proposal lands 2 718/2 715 — three over — so compress **u86** as GLEAF proposes, but land
-  at **≤ 2 688** rather than at the cap: a 3-word margin does not survive transcription,
-  which is the lesson BSCOND and BARCH each paid for by adding one more compression at their
-  own landings. Standing constraints: remove **content-cell duplication or a mechanism
-  superseded as a headline, never history and never a label** — `gapdiff.py K-grid HEAD`
-  must show **0 dropped** — and **no `SPECIAL_CAPS` bump** (the gate's own *"no overflow, no
-  bump"*, BDOUBLE's withdrawn bump being the precedent).
-- **The `notes/gapmap.py` docstring label: FIXED IN ADVANCE by the coordinator** (this
-  commit), because GLEAF's own range **consumes `(GR-150)`**, so the example would have
-  become a false hit for a live label the moment its labels landed. Re-worded to the
-  unmintable placeholder `(GR-15<digit>)`, which preserves the docstring's actual point (a
-  longer sibling of `GR-15` must not match); `--selftest` green. **The general rule, and it
-  is narrow:** a tool-file example naming an **unminted** label becomes a false hit the
-  moment a direction mints it, so tool examples must be unmintable — whereas an example
-  naming an **already-consumed** label (`(GR-15)` itself, in this file and `gapdiff.py`) is
-  an ordinary citation and is fine. Only the first kind was repaired.
-
-**THE TWO REMAINING VERDICTS ARE AS REPORTED, NOT CONFIRMED** — neither has had the
-coordinator's verification tier, which is precisely the outstanding work. (**OBAR's has**,
-and it landed as ordinal 78.) Each draft also carries its own disclosed self-caught defect
+**ALL FOUR VERDICTS HAVE NOW HAD THE COORDINATOR'S VERIFICATION TIER** — the clause that
+stood here as *"as reported, not confirmed"* is discharged; each landing carries its own
+disclosed self-caught defect
 (DSAT an assert-caught wrong guess, GLEAF a **silently-wrong oracle** caught only by two
 oracles disagreeing; OBAR's was an **unexercised failure branch**, which landed disclosed
 as its own *Caps* item 1) — read those before trusting a figure.)*
-**The six landings after GLIST — BLINE (ordinal 73), BDEGTWO (74), RPOOL (75), BSCOND (76),
-BARCH (77), OBAR (78) — have their own sections; read those, not the blurb below, for the
-current state.**
+**The eight landings after GLIST — BLINE (ordinal 73), BDEGTWO (74), RPOOL (75),
+BSCOND (76), BARCH (77), OBAR (78), DSAT (79), GLEAF (80) — have their own sections; read
+those, not the blurb below, for the current state.**
 **BARCH (ordinal 77, §"BARCH") LANDED 2026-09-03** — the ninth strategy pass's **rank 2**,
 dispatched as a **recon** after four structurally-different attempts hit one named
 obstruction. **The method class is NOT dead — it CHANGES AMBIENT.** `s` and `r` are BOTH
@@ -14911,3 +14897,109 @@ differently from the draft's prediction, recorded because the list was wrong:**
 the `(K-ind)` gap-map **row** does not in fact carry C2's status — only §4-C2's
 *Row:* pointer did — so that pointer is repointed to **(K-dom)** and the
 `(K-ind)` row is left untouched rather than grown for no status change.
+
+## GLEAF — eightieth ordinal (one direction of a four-way concurrent round, drafted read-only 2026-09-03, **LANDED 2026-09-03**, the round's last) — the ninth strategy pass's **rank 3**: (GR-144)'s successor 4, leaf-covering on the **branches**, and whether the landed matroid machinery reaches it
+
+Workbook home: `notes/Pencil-informal-grid.md` §(K-grid) *Steps G165–G172*, labels
+**(GR-145)–(GR-152)**. Driver `notes/scripts/w4/gleaf.py` (seven modes, `--validate` 298 s,
+one foreground invocation).
+
+### The spec, as dispatched
+
+Rank 3 of the 2026-09-03 strategy pass, whose rationale called this *"the `hK` lane's
+**only** live successor that is argument-shaped and reaches landed machinery"*, quoting the
+`(K-grid)` close-it **u7**: *"untouched by (GR-142), still the one place the landed
+Phase-12/13/14 machinery might reach"*. Two jobs: **state the branch-side demand
+precisely**, and **settle whether matroid union / Tutte–Nash-Williams / the `k`-frame
+matroid / Edmonds' covering reach it**. The spec flagged the trap explicitly — *confirm the
+branch-side statement is not the same object (GR-141)/(GR-142) reach* — and named the
+standing do-not-do: *the deliverable must be an argument, with the search demoted to an
+adversarial control*. **A reasoned NO was priced as equal to a YES**, which is what the
+return delivered.
+
+### LANDING WRITE-UP — GLEAF, 2026-09-03: **the reach question SPLITS — the machinery DOES reach it, and what it reaches is a NECESSARY condition, so the lane is SPENT**
+
+**Both jobs done, and the ranking rationale's two halves come apart.**
+
+1. **Not the same object, and the reason is sharper than *different ground set*.**
+   (GR-142) kills a family of **hub sets**; the branch-side demand lives on `Ĝ`'s
+   **branch-copy multiset**. The load-bearing point is the **encoding**: the *leaf*
+   (degree-cap) reading is **not a matroid** — two maximal independent sets of sizes 2 and 3
+   at `K4(2,2,2,3,4,5)`, `X = {0,1}`, with a matroidal `|X| = 1` negative control — while
+   the *star-containment* reading of the **same** demand ((GR-135)(iii)'s `deg = 3` half) is
+   a **contraction**. This discharges (GR-144)'s own *"what would change this"* clause (c)
+   affirmatively ((GR-147)).
+2. **THE REACH IS REAL, and it is a theorem.** At a fixed leaf assignment the demand **is**
+   an Edmonds matroid-partition problem over the six contracted graphic matroids
+   `M(G°)/K_j`, with criterion `Σ_j [c(F ∪ K_j) − c(F)] ≤ σ(F)` at every branch set —
+   **(GR-129)'s own `σ`, used a third time** — plus two equivalent forms, one of which makes
+   `F = ∅` an equality. Four independent oracles agree at **4 344** instances, with two
+   further matroid-free depth-first oracles and both verdicts exercised ((GR-148)). Every
+   declaration it consumes was opened at source **with its provenance tier named**: the
+   **local Apache-2.0 mirror** (`Matroid.Union` over an *indexed family*,
+   `union_indep_iff`, `Union_rank_eq`, `adjMap_rk_eq`), the **upstream `apnelson1/Matroid`
+   dependency** (`Graph.cycleMatroid_contract`, `Matroid.eRk_contract_add_eRk` — in
+   `.lake/packages/`, **not** vendored in-repo), **mathlib** (`Matroid.comapOn`,
+   `Matroid.contract`) and **project-original** (`tutte_nash_williams`,
+   `isSpanningTreePacking_of_isTight`, the Phase-13 idiom adapter, the constant-family
+   basis-split).
+3. **AND IT BUYS NOTHING, which is the verdict.** The demand is **implied by**
+   (GR-18)(iii)'s residual and a **tautology** inside (GR-140)'s own synthesis normal form:
+   `D_β = {α(head β), γ(tail β)}` makes two of a pure hub's three absence-pairs share a grid
+   coordinate. It is (GR-143)'s **tier 1** read as an existence statement, and it admits
+   **455 400 of 472 680** legal pairs against the residual's **229 320** — **226 080 pairs
+   pass the demand and fail the residual** ((GR-146)). So a **proof** cannot advance
+   (GR-10), and a **refutation** would be strictly stronger than a g-flank. **u7's kill
+   condition fires on both clauses at once, in opposite directions.**
+4. **Two theorems worth keeping regardless.** *(a)* At `Λ = ∅` **only pure hubs can fail** —
+   a leafless hub needs `deg_Ĝ ≥ 12`, which forces purity — so the *"prescribed set of
+   `≤ n` vertices"* in (GR-138)'s phrasing is not a parameter ((GR-145)). *(b)*
+   **`σ(F) ≥ 1` at every proper nonempty `F`** at a `D = 0` class shape, a reading of
+   (GR-25)'s cut criterion, so **(GR-130)(b)'s tight lattice is trivial on this stratum**
+   ((GR-149)) — and this is what kills both natural refuting configurations by an *argument*
+   rather than a search.
+5. **The demand DECIDED, on a stratum wider than the residual's.** All 312 `n_hub = 4` and
+   all **4 598** `n_hub = 6` `D = 0` class shapes (2 623 pure-hub, where `all_packings`
+   decides none and `synth_first` decided 150), plus 36 constructed class shapes to
+   **`n_hub = 20`** with `|S|` up to 16; **0 failures**, 98.3 % of assignments passing, and a
+   **two-block** assignment sufficing everywhere ((GR-150)). The **cover graph** a colouring
+   proof would face has max degree **`≤ 2`** against six colours, by an argument — the
+   degree-3 configuration is a proper tight set ((GR-151)).
+6. **Where it stops, honestly.** The criterion's nonempty-`F` content is **never binding
+   anywhere evaluated** (4 344 instances, 0 exceptions), which would make the demand
+   *exactly* a hypergraph colouring — recorded as a **conjecture**, with the `σ` form named
+   as where a proof goes ((GR-152)). The `n_hub ≤ 6` strata **do not exercise** that content
+   at all (all 52 negatives are `F = ∅`); only the constructed `n_hub = 10` leg does, so of
+   the 4 344 instances just **1 218** could have refuted it — a cap the pass's own support
+   leg found rather than assumed away.
+
+**One CORRECTION the coordinator's verification forced, and it is the kind worth recording.**
+The draft listed **three** missing Lean bridges, one of them *"the heterogeneous per-set
+rank formula"*. That is **not** a gap: `Matroid.Union_rank_eq` is heterogeneous outright
+(`∑ i, (Ms i).rk Y` over *different* matroids), and what is constant-family is only
+`BodyBar/TreePacking.lean`'s **`Set`-side idiom adapter**, whose own docstring says so. The
+item was **downgraded to that adapter's heterogeneous twin** and the count now reads **two
+bridges**, both counting/reduction steps. *A landed theorem listed as owed work is what a
+successor prices a build against* — which is why the correction is in the step and not only
+in the return.
+
+**What did NOT move, said plainly.** `PencilPair K 3 G`, `hK`, **(GR-10)**, **(GR-15)**,
+(GR-18)(iii)'s residual, (GR-140)(ii)'s synthesis criterion, class uniformity, the
+`Λ ≠ ∅` merging conjunct, `hbareSplit`, S-mark. **No gap-map status word moves on (GR-10)
+or (GR-15)**; the `(K-grid)` row gains eight labels and loses one forward-looking clause.
+**E1 does not fire** — and this direction had a literal shot at it, since a refutation of
+the demand *is* a g-flank; it is decided negative over the widest `hK`-side stratum the arc
+has searched. Not a PENCIL event.
+
+**Cost.** `--state` 45 s, `--encode` 0.4 s, `--edmonds` 103 s, `--slack` 9 s, `--decide`
+43 s, `--value` 58 s, `--flank` 39 s; `--validate` **298 s**, so unlike `gglob.py` the whole
+gate fits **one** 600 s foreground invocation. Run at `recon-opus`, draft-only, and landed
+by the direction itself at the coordinator's instruction.
+
+**Reservation record.** Reserved **(GR-146)–(GR-153) / G166–G173**; used
+**(GR-145)–(GR-152) / *Steps G165–G172*** — a **deliberate one-step deviation DOWN** to the
+tail GGLOB's landing declared verbatim in two places. **(GR-153) and *Step G173* are
+returned unused**, and **the tail this direction declares for the next reservation is
+(GR-153) / *Step G173***. Full record, including the (L7) per-token check and the metric it
+reports, in `notes/Pencil-labels.md` §"Reservation — GLEAF"; the defect taxonomy is that
+file's *Coordinator reservation defects* block (**shape 4**), **not duplicated here**.

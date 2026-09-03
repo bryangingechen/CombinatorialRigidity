@@ -1666,10 +1666,13 @@ struck — decided by §9.3.*
   status is decided by the `(K-out)` and `(K-grid)` gap-map rows.*
 
 **RE-RANKED 2026-09-03 — THE NINTH STRATEGY-ONLY PASS, AND THE RANKING A SESSION READS.
-RANKS 1 AND 2 ARE BOTH SPENT** (BSCOND, ordinal 76, and BARCH, ordinal 77, both
-2026-09-03 — rank 2's own recon **lifted this pass's bar, narrowly**, and the lift is
-recorded in the bar paragraph below, not here); **the live head of this list is RANK 3**,
-(GR-144) successor 4 — leaf-covering on the branches.
+RANKS 1, 2 AND 3 ARE ALL SPENT** (BSCOND, ordinal 76; BARCH, 77 — whose recon **lifted this
+pass's bar, narrowly**, the lift recorded in the bar paragraph below, not here; and GLEAF,
+80, whose kill condition fired on **both** clauses at once); **the live head of this list is
+RANK 4**, option B's design pass. **All three spent ranks were decided inside 24 hours of
+being written, and rank 3's verdict says something about this board rather than about its
+row:** the entry priced a candidate by *the machinery it reaches* and never asked whether
+the statement reached is **necessary or sufficient** for the row it sits on — see rank 3.
 Coordinator-authored at a session start, no dispatch spent, commissioned by
 `notes/Phase39.md` *Hand-off*'s own next-concrete-task line after the liveness round found
 **~52 of ~108 forward-looking entries defective**. Every entry below was re-derived from its
@@ -1756,20 +1759,28 @@ build would be the fifth.
    everything else because it sits on S-mark's critical path. *Kill condition: the method class
    settled either way, or a `p_x`-varying properness argument landed. Decided by: the
    `(K-bare)` row, u39–u40.*
-3. **(GR-144) successor 4 — leaf-covering on the branches.** Owner: `(K-grid)` close-it u7.
-   The `hK` lane's **only live successor that is argument-shaped and reaches landed
-   machinery**: the gap map's own words are *"untouched by (GR-142), still the one place the
-   landed Phase-12/13/14 machinery might reach"* — i.e. matroid union / Tutte–Nash-Williams
-   packing, §2.1's **ingredient 3**, the one ingredient the pencil pin does not cost.
-   Successor 2 (`n_hub = 6`, 2 473 of 2 623 left) is **engineering** and successor 3 (does
-   *path* consistency decide where arc does not) is a search — both disfavoured by the
-   do-not-do's general form; successor 1 is **demoted** (it *is* (GR-10) here, (GR-140)(v)).
-   **Recorded because it was invisible:** `notes/Phase39.md`'s carried-item-3 line said
-   *"Four successors at (GR-144), successor 1 DEMOTED, three live"* and then named only 2 and
-   3 — so the lane's best-shaped live successor was missing from the surface a fresh session
-   reads, one landing after the liveness round swept that class of defect. Repaired in the
-   same commit as this pass. *Kill condition: leaf-covering settled on the branches, or shown
-   not to reach. Decided by: `(K-grid)` close-it u7.*
+3. ~~**(GR-144) successor 4 — leaf-covering on the branches.**~~ **SPENT 2026-09-03 —
+   direction GLEAF (ordinal 80), `notes/Pencil-fanout.md` §"GLEAF". Its kill condition
+   FIRED on BOTH clauses at once, in opposite directions:** the machinery **does** reach it
+   — at a fixed leaf assignment the demand **is** an Edmonds matroid partition over six
+   contracted graphic matroids `M(G°)/K_j` with criterion `Σ_j ν_j(F) ≤ σ(F)`, and the two
+   remaining Lean bridges are mechanical ((GR-148)) — and what it reaches is a condition
+   (GR-18)(iii)'s residual **implies**, vacuous inside (GR-140)'s own normal form, admitting
+   455 400 of 472 680 legal pairs against the residual's 229 320 ((GR-146)). So a **proof
+   there cannot move (GR-10)**, and only a refutation — *strictly stronger* than a g-flank —
+   could. **What this pass got right, and what it got wrong:** the *reach* clause was right,
+   and *"matroid union / Tutte–Nash-Williams, §2.1's ingredient 3, the one ingredient the
+   pencil pin does not cost"* was the correct diagnosis of why; the *value* clause — calling
+   it the lane's best-shaped live successor — was wrong, and wrong for a reason this board
+   can act on: **it priced a candidate by the machinery it reaches and never asked whether
+   the statement reached is NECESSARY or SUFFICIENT for the row it sits on.** A necessary
+   condition of an open existence statement cannot be a step toward it. **Add that question
+   to the two filters** for any future entry. Successors 2 and 3 are unchanged — engineering
+   and a search, both disfavoured by the do-not-do's general form — and successor 1 stays
+   **demoted**; the residue GLEAF names ((GR-152)(v)) is a *conjecture about its own
+   criterion* with **no consequence for (GR-10) or (GR-15) either way**, so it does not
+   inherit this rank. *Kill condition FIRED. Decided by: `(K-grid)` close-it u7, which now
+   reads SPENT.*
 4. **Option B for `hbareSplit` — the design-pass first step ONLY.** Owner: §8.4's row. The
    diversification pick with genuine target impact (criterion 3): the only identified path to
    `hbareSplit` other than (BE-14), **re-opened 2026-09-03** on the *declines are not locks*
@@ -1974,7 +1985,9 @@ residual itself** (*"any proof of (GR-10) must be an existence-of-good-colouring
 argument"*), a strengthening rather than a loss. HIT → (GR-10) → (GR-15) → `hK` **on the
 tight stratum**; MISS → the first (GR-10) flank in **81** directions. *Kill condition:
 (GR-144)'s successor list exhausted, or (GR-10) settled — decided by `(K-grid)` close-it
-u7.*
+u7. **Successor 4 is SPENT (GLEAF, ordinal 80) and successor 1 demoted, leaving 2 and 3,
+both disfavoured; the list is one step from exhausted and no successor on it reaches
+(GR-10).***
 
 **THE DO-NOT-DO, and it is the strongest item this re-rank produced.** **Do not dispatch
 another (a′)/(b′) ledger direction.** Fourteen directions (GLAW → GMINM, mostly living in

@@ -3745,6 +3745,63 @@ notice, since it reads as prose rather than as a citation.
 (the pair returned unused above), so a successor opens there and **not** at
 (BE-150).
 
+## Reservation — GLEAF (arc ordinal 80, 2026-09-03, the same CONCURRENT ROUND OF FOUR — its LAST)
+
+**Scope: §(K-grid), which GLEAF *extends* — no new section.** The direction is the ninth
+strategy pass's **rank 3**, (GR-144)'s successor 4: *does every 6-tree-partition-carrying
+cubic multigraph admit one in which a prescribed set of hubs are each a leaf of some part,
+and does the landed Phase-12/13/14 machinery reach that?* Its three siblings (BARCH
+§(K-bare-ext), OBAR §(K-out), DSAT §(K-dom)) own disjoint sections and disjoint tags, so
+the reservation protects against the corpus and against them.
+
+| direction | owning § | labels reserved | steps reserved | driver |
+|---|---|---|---|---|
+| **GLEAF** | §(K-grid) — **extends**, no new section | **(GR-145)–(GR-152)** (spec offered `(GR-146)`–`(GR-153)`), all eight consumed | ***Steps G165–G172*** (spec offered `G166`–`G173`), all eight consumed | `w4/gleaf.py` (seven modes) |
+
+**DEVIATED DOWN BY ONE to the DECLARED TAIL — this is reservation defect shape FOUR of the
+round**, whose diagnosis is in the *Coordinator reservation defects* block below and is
+**not duplicated here**. What this row adds is the disposition: GGLOB's landing declares
+*"the tail declared for the next reservation is (GR-145) / Step G165"* **verbatim in two
+places** (this file and `notes/Pencil-fanout.md` §"GGLOB"), so the opening token was
+`(GR-145)`, and the spec's range skipped it. Nothing is renamed (L4); the spec's
+`(GR-153)` / *Step G173* are simply **RETURNED UNUSED**. Shape **five** (OBAR, off by two
+in §(K-out)) is the *same* error, which is what promoted the diagnosis from five incidents
+to one habit.
+
+**The tail declared for the next reservation is (GR-153) / *Step G173***, 0-hit verified at
+this landing (the pair returned unused above), so a successor to §(K-grid) opens **there**
+and **not** at (GR-154). *Declared verbatim in two places, per the defects block's own
+root-cause fix: here, and in `notes/Pencil-fanout.md` §"GLEAF".*
+
+**0-hit verification, re-run by the direction as its FIRST action and again after `HEAD`
+moved mid-round**, across `*.md`, `*.tex`, `*.lean`, `*.py`, `*.m2` **at `HEAD`**,
+reporting **HITS** (matching lines) and **FILES** separately and covering **every token in
+the range rather than sampled endpoints** (shapes 1 and 2's fixes): `gleaf` **0/0**;
+`(GR-146)`–`(GR-149)`, `(GR-151)`–`(GR-153)` and every bare `GR-146`–`GR-149`,
+`GR-151`–`GR-153` **all 0/0**; `G166`–`G173` **all 0/0**; **`(GR-145)` and bare `GR-145`
+2 hits / 2 files**, and **`G165` 2 hits / 2 files**, all four being GGLOB's own tail
+declaration — a **declaration, not a consumption**, under the `(BE-149)`/`(DM-5)`/`(OC-56)`
+precedent; **`(GR-150)` and bare `GR-150` 1 hit / 1 file**, `notes/gapmap.py:216`'s
+docstring example, **repaired in advance by the coordinator** (`a5d8101c`, re-worded to the
+unmintable `(GR-15<digit>)`) so the range is clean and nobody need re-find it; and
+**`GLEAF` 3 hits / 3 files**, all three the coordinator's own in-flight round-state
+notices. **Reservation clean.**
+
+**`HEAD` MOVED DURING THE RUN, and that is a check this file had not had to state.** The
+round lands serially, so a draft-only direction's `HEAD` is not fixed: GLEAF's first check
+ran at `53bc9740` and its second at `0db16ce3`, after BARCH landed. `RESEARCH-ARC.md` §2's
+hazard is *"diff against `HEAD`, never the working tree"*; the mirror image is that **`HEAD`
+itself is a moving reference for every direction but the first**, so a reservation check is
+re-run at landing time and says which commit it reports.
+
+**Code and basename**: `GLEAF` names the question — the **G**rid section's **LEAF**-covering
+successor. The (L6) landing-time bare-token check: every mint is `GR-`-prefixed, and the
+landing introduces **no** bare `(X<digit>)` token of its own — the only ones in the new steps
+are `(F11)`/`(F13)`, the dispatch-log finding codes the *Verification* block cites by
+convention, and `(L7)`, cited from this file. The new objects are deliberately
+**unlettered**: the *leaf assignment*, the *cover graph*, the *slack law*, and the criterion's
+three *forms*.
+
 ## Reservation — DSAT (arc ordinal 79, 2026-09-03, the same CONCURRENT ROUND OF FOUR)
 
 **Scope: §(K-dom), which DSAT *extends* — no new section.** The direction runs
@@ -3993,8 +4050,10 @@ did. The registry outranks a coordinator's spec on label naming.
    **declaration**. GLEAF **deviated DOWN correctly**, using `(GR-145)`–`(GR-152)` /
    *Steps G165–G172*, returning `(GR-153)`/*Step G173* unused. It also found
    **`(GR-150)` is not 0-hit**: 1 hit in `notes/gapmap.py:216`, a **docstring example** in
-   the boundary-matching helper — a live label form inside a tool's docstring, which should
-   be re-worded to a non-colliding form (coordinator action).
+   the boundary-matching helper — a live label form inside a tool's docstring, **re-worded
+   to the unmintable `(GR-15<digit>)` by the coordinator in advance of the landing**
+   (`a5d8101c`), so the range landed clean; the narrow rule it leaves is that a tool-file
+   example naming an **unminted** label becomes a false hit the moment a direction mints it.
 
 5. **Off-by-TWO against a declared tail** (OBAR) — **the increment OBAR flagged rather
    than took, applied here by the coordinator.** Detail is in OBAR's own reservation block
