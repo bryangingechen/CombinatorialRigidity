@@ -10,7 +10,7 @@ derives it from exactly **three carried items**: **`hcontract`** (W4 — build p
 
 **The research arc: 83 directions COMPLETE** (2026-08-05 → 09-03, ordinals 1–75 — 78 on
 kernel (K), **WTRI/WELOC/WPAIR/WGROW (58–61) on W4**, **RPOOL (75) on (K-res)**; direction
-= ordinal + 8), plus eight strategy passes, two probes and a scoping recon. **GPACK (66) opened the `hK` lane after
+= ordinal + 8), plus nine strategy passes, two probes and a scoping recon. **GPACK (66) opened the `hK` lane after
 22 dispatches; GLIST (68) and GGLOB (71) are its successors**; **BDEGTWO (74)** is
 BLINE's (73) own residue, **RPOOL (75)** the (K-res) row's. Per-direction verdicts, specs and write-ups live at
 `notes/Pencil-fanout.md` §"<CODE>" (1–19: the archive) plus a workbook home — **not
@@ -238,23 +238,25 @@ and BOPEN (72) closes half (B)'s item 1 at side-degree `1`** (block 8), and **th
 carries the standing **do-not-do** — no more (a′)/(b′) ledger directions), whose ranks 1 and
 3 are spent.
 
-**THE LIVENESS DOC ROUND IS COMPLETE** (slices 1+3 `c89c7adb`; sweeps C/A/B `2eeceace`,
-`e12ecca4`, `e5c2f03e`, all 2026-09-03): ~52 of ~108 forward-looking entries carried a
-defect. **THE NEXT CONCRETE TASK is a re-rank on the repaired lists**, under the 2026-09-03
-directives — both option Bs are candidates again; BDEGTWO's own successor (`A_sharp`
-properness) and RPOOL's (the repaired (RS-5), and a route for the members it excludes) enter
-that re-rank. The (K-res) **cheap slice is SPENT** (RPOOL) and no longer a candidate.
-(GR-144)'s successor 1, which this line named until 2026-09-03, is **DEMOTED**: its own
-sentence concedes it **IS (GR-10)** here ((GR-140)(v)) — the gap, not a slice below it; the
-criterion's statement is §(K-grid)'s and is not restated. Successor 2 (`n_hub = 6`) is now
-**engineering** — 150/150 pure-hub shapes decided positively, 2 473 of 2 623 left; successor
-3 is whether *path* consistency decides there, where arc does not. **The three replacement
-picks that then failed are RELOCATED** to `notes/Pencil-structure.md` **block 14**, with the
-sub-item re-lettering hazard. Fallback if deferred: item 0(a)'s **chart hunt** for
-(BE-138)'s three memberships. Two things stay the USER's call, both OFFERED 2026-09-02 and DECLINED
-IN FAVOUR OF CONTINUING RESEARCH: the **(K-res) wave** (its *scoping slice* LANDED
-2026-08-28, below — it is **not** queued) and whether W4's now-closed informal side changes
-anything about the **2026-08-05 Lean hold** — the user's to lift, never a coordinator's.
+**THE RE-RANK ON THE REPAIRED LISTS IS LANDED** — the **ninth strategy-only pass**,
+coordinator-authored 2026-09-03 at `notes/Pencil-strategy.md` **§8**, which is where the
+ranking lives and is **not restated here**; it supersedes the 2026-08-25 list and the
+2026-09-02 `hK` table *as rankings* (both back-linked in that commit). **THE NEXT CONCRETE
+TASK is its rank 1: (S1)/(S2), (BE-57)(iv)'s two window conditions** — half (β)'s only
+residue, open since **BWIN (51)** and attacked by none of the **eleven** (BE-14)-thread
+landings from BONEONE (56) to BDEGTWO (74), all of which worked half (B). The pass also
+**BARS `A_sharp` properness as a build** until its rank 2 (the side-degree-`≥ 2` architecture
+recon) runs — a fifth attempt at one obstruction; the bar is methodological and §8 records
+what lifts it. (GR-144)'s successor **1 is DEMOTED** (it **IS** (GR-10) here, (GR-140)(v)),
+**2** is engineering (150/150 decided, 2 473 of 2 623 left), **3** is a search (does *path*
+consistency decide where arc does not), and **4 — leaf-covering on the branches, this line's
+own omission until 2026-09-03 — is the lane's live pick**, §8's rank 3. The (K-res) **cheap
+slice is SPENT** (RPOOL). **The three replacement picks that failed are RELOCATED** to
+`notes/Pencil-structure.md` **block 14**, with the sub-item re-lettering hazard. Two things
+stay the USER's call, both OFFERED 2026-09-02 and DECLINED IN FAVOUR OF CONTINUING RESEARCH:
+the **(K-res) wave** (its *scoping slice* LANDED 2026-08-28, below — it is **not** queued) and
+whether W4's now-closed informal side changes anything about the **2026-08-05 Lean hold** —
+the user's to lift, never a coordinator's.
 
 The ranked list:
 
@@ -424,6 +426,11 @@ section named; its *spec and landing write-up* in `notes/Pencil-fanout.md` §"<C
 `notes/Pencil-adjudications.md`; the derivation in git. **Do not grow these back into
 paragraphs.**
 
+- **THE NINTH STRATEGY PASS — THE RE-RANK** (2026-09-03, coordinator, no dispatch) — rank 1
+  **(S1)/(S2)**; rank 2 the half-(B) side-degree-`≥ 2` **architecture recon**, with `A_sharp`
+  properness **BARRED as a build** until it runs (four defeated attempts at one obstruction);
+  rank 3 **(GR-144) successor 4**; rank 4 **option B for `hbareSplit`**'s design pass. Both
+  prior lists back-linked as dated records. Home: `notes/Pencil-strategy.md` §8.
 - **THE LIVENESS DOC ROUND** (2026-09-03; `c89c7adb`, `2eeceace`, `e12ecca4`, `e5c2f03e`) —
   **~52 of ~108 forward-looking entries carried a defect** (14 dead, 10 self-contradicting);
   rule in `RESEARCH-ARC.md` **§8**, record in **block 14**. **The status objects were clean
@@ -480,25 +487,19 @@ paragraphs.**
   (BE-71)(ii) answered generically ((BE-94)–(BE-98), *BE93–BE97*). `w4/bunif.py`.
 - **BBASE** (62, 2026-09-02, opus, **one-lined at the GLIST landing**) — **THE FLAG BASE IS
   FREE and is NOT (CH-1)'s object** ((BE-89)–(BE-93), *BE88–BE92*); cyclomatic `≥ 2` open.
-- **THE FOUR W4-SIDE LANDINGS (58–61), 2026-09-02 — entries RELOCATED to block 9**, which
-  already owns that thread's per-landing detail, at the BSIGMA landing. The verdict, once:
-  **(T), (E-pair) and (V) are THEOREMS**, **(E-loc) is REFUTED** (`T32`), **(E) stands and
-  is TIGHT**, and **W4's non-user-call list is EMPTY** — leaving the USER call (K-res) and
-  the held build. Labels (TF-…)/(EL-…)/(PAIR-…)/(GROW-…); drivers `w4/{wtri,weloc,wpair,
-  wgrow}.py`.
-- **BGENUINE** (57, 2026-09-01, opus, **demoted at the BSATUR landing**) — **GENUINE, AND
-  IT DOES NOT BITE** ((BE-84)–(BE-88), *Steps BE83–BE87*): 392/392 attain.
-- **BONEONE** (56, 2026-09-01, opus, **demoted at the BSATUR landing**) — **YES, AND THE
-  ENEMY IS LIVE** ((BE-79)–(BE-83), *Steps BE78–BE82*): `δ_i` and the R-node test per-side.
-- **BSPREAD** (55, 2026-09-01, opus, **demoted at the BSATUR landing**) — **(BE-32)(+) IS
-  A THEOREM** ((BE-74), *Steps BE73–BE77*); star-2/SPREAD retired.
-- **BPEEL** (54, 2026-09-01, opus, demoted) — **HALF (B)'s CLASS QUANTIFIER IS ONE NUMBER
-  PER PEEL, EXHAUSTIVENESS RETIRED** ((BE-69)–(BE-73), *BE68–BE72*); `G` closed on (CH-1).
-- **BDECOR** (53, 2026-09-01, opus, demoted) — **THE ACHIEVABLE DECORATIONS ARE A PRODUCT
-  OF EAR CHAINS** ((BE-64)–(BE-67), *BE63–BE67*), modulo the cross-branch proviso `G`.
+- **THE FOUR W4-SIDE LANDINGS (58–61), 2026-09-02 — entries in block 9**, which owns the
+  detail. Once: **(T), (E-pair), (V) THEOREMS**, **(E-loc) REFUTED** (`T32`), **(E) TIGHT**,
+  **W4's non-user-call list EMPTY** — leaving (K-res) and the held build. `w4/w{tri,eloc,pair,grow}.py`.
 
-**DEMOTED 2026-09-02** per this note's oldest-demotes rule — unmoved since; the newest
+**DEMOTED 2026-09-02, EXTENDED 2026-09-03** per this note's oldest-demotes rule; the newest
 landing above it is RPOOL (ordinal 75). Settled, one line each:
+- **BGENUINE** (57) / **BONEONE** (56) / **BSPREAD** (55) / **BPEEL** (54) / **BDECOR** (53),
+  2026-09-01, opus, **all one-lined 2026-09-03 to pay for the ninth strategy pass's entry**
+  (the rotation *Doc debt* prescribes at 580/580, not a fold) — cross-cut forcing **GENUINE
+  and it does not bite** (392/392); `δ_i` and the R-node test **per-side**; **(BE-32)(+) a
+  THEOREM**, star-2/SPREAD retired; half (B)'s class quantifier **one number per peel**,
+  exhaustiveness retired; the decorations **a product of ear chains** modulo the cross-branch
+  proviso `G`. §(K-bare-ext) *BE63–BE87*; detail in **block 8**.
 - **BRNODE** (52) / **BWIN** (51) / **BRULE** (50) / **BSHARP** (49), 2026-08-28…09-01,
   **all one-lined 2026-09-03 to pay for RPOOL's entry** — the internal R-node's
   decorated-skeleton law ((BE-59)–(BE-63)); the window closed by a class theorem, **(β)

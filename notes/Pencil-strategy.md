@@ -1613,6 +1613,116 @@ struck — decided by §9.3.*
   saturation. *Neither filter has a kill condition: they are negatives. Their
   status is decided by the `(K-out)` and `(K-grid)` gap-map rows.*
 
+**RE-RANKED 2026-09-03 — THE NINTH STRATEGY-ONLY PASS, AND THE RANKING A SESSION READS.**
+Coordinator-authored at a session start, no dispatch spent, commissioned by
+`notes/Phase39.md` *Hand-off*'s own next-concrete-task line after the liveness round found
+**~52 of ~108 forward-looking entries defective**. Every entry below was re-derived from its
+**owning** section or gap-map row in this pass and never quoted from a hand-off (the F22
+discipline); both filters above were applied to each. **The two lists below this one are dated
+records, not rankings** — the 2026-08-25 list (ranks 1 and 2 spent/refuted) and the 2026-09-02
+corrected `hK` table, whose per-row *re-derived status* stays authoritative for the `hK` lane
+and whose *ranking* this pass supersedes.
+
+**The four binding criteria** (`notes/Phase39.md` *Current state*, the standing delegation):
+(1) **max impact on proving or disproving `PencilPair K 3 G`**; (2) **falsification /
+architecture-testing as a positive criterion**; (3) **diversification**; (4) the 2026-09-03
+**reprioritize** directive — *"if the current approach seems to be getting in a rut then it's
+time to reprioritize."*
+
+**THE RUT MEASUREMENT, AND IT DECIDED RANK 1.** The (BE-14) thread is the arc's most
+target-moving carried item — seed-free, induction-free, discharging `hbareSplit` **and**
+`PencilPair`'s unconditional conjunct as a standalone theorem — and **S-mark is its only open
+step**. S-mark has two halves, and the spend is almost all on one: **eleven consecutive
+(BE-14)-thread landings, BONEONE (56) through BDEGTWO (74), worked half (B) or one of its
+named siblings**, while half (β)'s two named window conditions **(S1)/(S2) have been open since
+BWIN (51) and were attacked by none of them**. Meanwhile half (B)'s side-degree-`≥ 2` instance
+has defeated **four structurally-different attempts at one obstruction**: (PENCIL-SATURATES)
+**refuted** (BSATUR), its `-GEN` repair **refuted** (BSIGMA), `-CHART`'s `(∗)` route **dead
+from `dim A = 5`** (BLINE), and both of (BE-134)'s gaps **settled** with the **METHOD** left as
+the obstruction (BDEGTWO). That is `/coordinate-phase`'s **recurring-wall** shape exactly —
+each fix varied the *upstream* construction and hit the *same* named obstruction — so the wall
+is to be suspected in the shared downstream object, and the rule's remedy is a recon of **that
+object** before authorizing another re-targeting. The rule fires at the third; here the next
+build would be the fifth.
+
+1. **(S1)/(S2) — (BE-57)(iv)'s two window conditions.** Owner: `(K-bare)` row's *status*
+   cell, which names them verbatim (*"(β) at the window MODULO (BE-57)(iv)'s two window
+   conditions"*); standing entry 3 of block 10. **Why rank 1 on all four criteria:** it is the
+   only thing between half (β) and a class theorem at the window, on the statement that
+   discharges a carried item outright (criterion 1); it is **argument-shaped** — prove or
+   refute two side conditions on the middle — which is what the do-not-do below demands of
+   any next dispatch; it moves the thread off the four-times-defeated half (criteria 3, 4);
+   and it is **decisive both ways** (criterion 2), which is the point: *"vacuous at every
+   drawn piece but NOT theorems"* is the exact profile of an assumption a thread leans on
+   without testing, and this one has been leaned on for 24 ordinals. A refutation costs the
+   window's class theorem its carrier and re-routes (β) — the first hard information on that
+   half since BWIN. *Kill condition: either window condition proved or refuted. Decided by:
+   the `(K-bare)` row's status cell.*
+2. **Half (B) at side-degree `≥ 2` — the architecture question, AS A RECON, and see the bar
+   below.** Owner: `(K-bare)` u39/u40, (BE-139)/(BE-140). The question is not *is `A_sharp`
+   proper* but **whether any `p_x`-free-subspace method survives at `k ≥ 2`** — BDEGTWO's own
+   mechanism says the pendant multiplier is *free* at `k = 1` and *determined* at `k ≥ 2`, so
+   what made `A` `p_x`-free is gone by construction — and, if none does, **whether the 12-block
+   residue is reachable without the clause at all** (`⟨M⟩` empty at 93 rows, the other 11
+   **unwitnessed-not-excluded**, (BE-97)(iv)). Ranked below (S1)/(S2) because its likeliest
+   deliverable is another method-is-dead negative on a half already known blocked, and above
+   everything else because it sits on S-mark's critical path. *Kill condition: the method class
+   settled either way, or a `p_x`-varying properness argument landed. Decided by: the
+   `(K-bare)` row, u39–u40.*
+3. **(GR-144) successor 4 — leaf-covering on the branches.** Owner: `(K-grid)` close-it u7.
+   The `hK` lane's **only live successor that is argument-shaped and reaches landed
+   machinery**: the gap map's own words are *"untouched by (GR-142), still the one place the
+   landed Phase-12/13/14 machinery might reach"* — i.e. matroid union / Tutte–Nash-Williams
+   packing, §2.1's **ingredient 3**, the one ingredient the pencil pin does not cost.
+   Successor 2 (`n_hub = 6`, 2 473 of 2 623 left) is **engineering** and successor 3 (does
+   *path* consistency decide where arc does not) is a search — both disfavoured by the
+   do-not-do's general form; successor 1 is **demoted** (it *is* (GR-10) here, (GR-140)(v)).
+   **Recorded because it was invisible:** `notes/Phase39.md`'s carried-item-3 line said
+   *"Four successors at (GR-144), successor 1 DEMOTED, three live"* and then named only 2 and
+   3 — so the lane's best-shaped live successor was missing from the surface a fresh session
+   reads, one landing after the liveness round swept that class of defect. Repaired in the
+   same commit as this pass. *Kill condition: leaf-covering settled on the branches, or shown
+   not to reach. Decided by: `(K-grid)` close-it u7.*
+4. **Option B for `hbareSplit` — the design-pass first step ONLY.** Owner: §8.4's row. The
+   diversification pick with genuine target impact (criterion 3): the only identified path to
+   `hbareSplit` other than (BE-14), **re-opened 2026-09-03** on the *declines are not locks*
+   directive, with **both stated prerequisites DISCHARGED** (the KT pp. 684–691 re-pin landed
+   2026-08-02; the boundary-load calculus transports at 192/192) and a **first step the Lean
+   hold does not park**. Priced deliberately at *one design pass* — decision-relevant before
+   any research-scale commitment, and the pass itself is what prices the rest. *Kill
+   condition: commissioned and run, or (BE-14) closing `hbareSplit` without it. Decided by:
+   the `(K-bare)/(K-bare-ext)` row.*
+
+**Below the top four, in order, each keeping its own kill condition where the row above
+states one:** **U1** (the annihilator retarget, §8.2 — now inherits the whole §4.6 shortlist's
+weight, U2 struck and U3 already-pursued, and its residual (ANH-9)(iii) *is* the same missing
+technology as (GR-10)); **U3's one residue**, the `H ∪ {bar along M}` ledger nobody ran —
+cheap and decision-relevant, but **gated by an unverified admissibility check** that should
+run first; **RPOOL's two successors** — the *repaired* (RS-5) uniformly (108 per-shape
+confirmations, 72 exact-point proofs, 0 counterexamples) and **a route for the
+`index < 2·g_forced` members, which have no named home** — both inside the (K-res) wave, which
+stays a **user call** and is now dearer; **block 10's one-end-series** ((β)'s largest remaining
+per-shape component, value raised at BDOUBLE) and **BTWOCUT's bundle construction** (skipped
+at every direction since ordinal 44); **C2's satisfiability trace** (the L6b/F10 precedent —
+the trace is the gate, not the conjunct); **(OW)** (OWALL's reduction — buys a quantifier, not
+a gap-map row); **collision dominance** `min_M B(M) ≤ d_adm` (not barred); **(GR-144)
+successors 2 and 3**; **(AV-7)'s Case-I gluing arm** (unpriced and untouched); **OGEOM's
+Kirchhoff-injectivity sentence** and the unsearched `n(F°) ≥ 6` frontier (disproof-risk
+reduction, which (OC-24) says can never be the binding obstruction); **(ZH-2) stratified**;
+**route σ obligations 2–4** (insurance, not repair — obligation 4's branch has never been
+observed nonempty).
+
+**THE NEW BAR THIS PASS PRODUCED, recorded here the way the do-not-do below is.** **Do not
+dispatch `A_sharp` properness — or any further single-clause repair of
+(PENCIL-SATURATES-CHART) at side-degree `≥ 2` — as a build before rank 2's recon runs.** It
+would be the **fifth** attempt at the same named obstruction, and BDEGTWO's own verdict is that
+what fails there is the **architecture, not the clause**. This bar is **methodological, not
+mathematical**: unlike the do-not-do below, the underlying mathematics is not spent, so rank
+2's recon can lift it — and a lift must be recorded **here**, with its reason, not inferred
+from a row elsewhere. *Kill condition: rank 2's recon delivered.*
+
+**SUPERSEDED AS A RANKING by the 2026-09-03 pass above (back-link added in that same
+commit); kept as the dated record, and its per-entry content stays authoritative.**
 **RE-RANKED 2026-08-25** (the eighth strategy-only pass, post-GFLIP/GCHEAP;
 each candidate's stated inputs re-derived against its owning workbook step, not
 quoted from a hand-off — the dispatch-log F22 discipline). Cheapest-decisive
@@ -1716,6 +1826,9 @@ updated **twice on 2026-08-26** — ZSHEAR struck **(ZH-1)**, and ZJACOB struck
 only dispatchable content (row 8 below). *(The second update was missing here
 until 2026-09-03.)*
 
+**SUPERSEDED AS A RANKING by the 2026-09-03 pass above (back-link added in that same
+commit); its per-row *re-derived status* stays authoritative for the `hK` lane, and rank 3's
+own successor list is where the 2026-09-03 pass found its rank 3.**
 **THE CORRECTED `hK` RANKING (2026-09-02).** Re-derived from each item's *owning*
 section rather than from this board (the F22 discipline), by a read-only scoping recon
 commissioned because `hK` had gone 22 consecutive dispatches untouched while the board's
@@ -1927,13 +2040,15 @@ content**, (D4)'s dominance already giving `φ_G^*(f_B) ≢ 0` per shape; and at
 **`k = 3`** it is exactly **(K-res)**, outside the pinned class, with the
 containment **already refuted pointwise** ((D4), all 21 seeds). Full disposition
 at §5.3. *Back-links: **§5.3**'s "Others, in rough order of value" list, where it
-was item (i) and is now struck; and — **flagged 2026-09-03, NOT repaired here because it is
-outside this round's sections** — **`notes/CLAUDE.md`**'s own description of this file, which
-still reads "what remains of §5.3 is item (i) … which … sits beyond §5.3's own local-frame
-feasibility boundary". That is a THIRD copy of this entry carrying the SAME refuted cause, and
-it is the worst-placed of the three: `notes/CLAUDE.md` **auto-loads at the start of every
-session that touches `notes/`**, so it is the first surface a fresh agent reads. Coordinator
-action.*
+was item (i) and is now struck; and — **flagged 2026-09-03 as owed, PAID THE SAME DAY in
+`ba0db779`, and STRUCK HERE 2026-09-03 (ninth strategy pass), this file having been the last
+surface still claiming the debt** — **`notes/CLAUDE.md`**'s own description of this file. It
+read "what remains of §5.3 is item (i) … which … sits beyond §5.3's own local-frame
+feasibility boundary": a THIRD copy of this entry carrying the SAME refuted cause, and the
+worst-placed of the three, since `notes/CLAUDE.md` **auto-loads at the start of every session
+that touches `notes/`**. It now records the strike **and** that the old cause was wrong. The
+flag outlived the repair by exactly one commit, for the ordinary reason this list exists to
+catch: `ba0db779` edited `notes/CLAUDE.md` and never opened this file.*
 
 **Added 2026-08-24:** C3's *"reduce avoiding `S`"* gate — settled at threshold
 `|S| ≤ 2` with the exact ceiling `2 μ(G)` (§4.7, **(AV-3)**/**(AV-4)**); do not
