@@ -3874,7 +3874,7 @@ lesson would lose the one that is actually mechanical:
 A check can satisfy (1) and still fail (2), which is what happened here — so
 the two are independent clauses, not two readings of one lesson.
 
-## Coordinator reservation defects — FOUR distinct shapes in ONE round (2026-09-03)
+## Coordinator reservation defects — FIVE instances in ONE round (2026-09-03)
 
 Recorded together because they arrived in one four-direction round, all in the
 **coordinator's** pre-dispatch checks, and because each would pass a check built to
@@ -3919,13 +3919,37 @@ did. The registry outranks a coordinator's spec on label naming.
    the boundary-matching helper — a live label form inside a tool's docstring, which should
    be re-worded to a non-colliding form (coordinator action).
 
-**THE ROOT CAUSE, and it unifies all four.** Every one of these came from **deriving a
+5. **Off-by-TWO against a declared tail** (OBAR) — **the increment OBAR flagged rather
+   than took, applied here by the coordinator.** Detail is in OBAR's own reservation block
+   above and is **not duplicated**: the spec offered `(OC-58)`–`(OC-65)` / `O53`–`O60`
+   while this file declares §(K-out)'s tail verbatim at OWALL's landing as **`(OC-56)+ /
+   Step O52+`**, so the spec skipped two labels and a step that **no direction in the round
+   was holding**. OBAR opened at the declared tail and recorded it.
+
+**WHAT THE FIFTH INSTANCE ADDS, and it is why the count matters more than the taxonomy.**
+Shapes 4 and 5 are the *same* error — a scan seeing a declared tail *present* and reading
+it as *consumed* — committed **twice in one round, in two different sections**, and fixed
+both times by a **dispatched direction deviating DOWN to the declared tail** (GLEAF by one,
+OBAR by two). Two independent directions applying the same correction to the same
+coordinator is the signature of a **systematic** procedure failure, not five incidents; the
+taxonomy above is therefore a diagnosis of one habit, not a checklist of five.
+
+**THE ROOT CAUSE, and it unifies all five.** Every one of these came from **deriving a
 reservation by scanning the corpus** instead of **reading the tail this registry
 declares**. Shape 1 mis-metered a scan, shape 2 under-covered a scan, shape 3 scanned the
 wrong family, and shape 4 misread a scan's maximum as consumed rather than declared. The
 registry states the next tail explicitly at nearly every landing, precisely so that no
 reservation has to be computed. **So: READ THE DECLARED TAIL for the owning section and
 open there. Use a scan only to CONFIRM it, checking every token in the range and naming
-the metric — never to DERIVE it.** A scan cannot distinguish a family from a coincidence
+the metric — never to DERIVE it.** Concretely, the coordinator's pre-dispatch step is a
+**grep of this file, not of the corpus**:
+
+```
+grep -n "tail declared for the next reservation\|the live tail is therefore" \
+     notes/Pencil-labels.md | tail -20
+```
+
+which lists every section's declared tail in landing order. Both of shapes 4 and 5 would
+have been caught by that one command. A scan cannot distinguish a family from a coincidence
 of shape, nor a declaration from a consumption; the declaration can.
 
