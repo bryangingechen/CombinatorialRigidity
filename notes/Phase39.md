@@ -322,9 +322,11 @@ its cost are `notes/dispatch-log.md`'s and `notes/Pencil-fanout.md`'s). **The ta
    is an argument FOR them, not against.** The **build** is fully decomposed, buildable and
    PARKED by the hold; the other costs are **not** parked — **(T) is a THEOREM** ((TF-5),
    WTRI), **(E-loc) is REFUTED** ((EL-5), WELOC) and **(V) is a theorem given (E-pair)**
-   ((PAIR-6), WPAIR), leaving the **seed condition (PAIR-5)**, slice-sized and needing no
-   adjudication, plus **(K-res)**, wave-sized and a **USER CALL** that route 3 cannot close
-   without. Stated once in *Blockers*, "What the Lean hold parks" — **not restated here.** Route **ADJUDICATED 2026-08-02: route 3, packaging (b)**, with (K-res) a
+   ((PAIR-6), WPAIR). **(PAIR-5) is SETTLED BOTH WAYS** ((GROW-4)/(GROW-5), WGROW), so
+   **(E-pair) is a theorem** ((GROW-6)) and W4's non-user-call list is **EMPTY** — only
+   **(K-res)** is open, wave-sized and a **USER CALL** route 3 cannot close without.
+   *(This item read "leaving the seed condition (PAIR-5), slice-sized" until 2026-09-02 —
+   stale since WGROW, against this note's own header and Step GW6.)* Stated once in *Blockers*, "What the Lean hold parks" — **not restated here.** Route **ADJUDICATED 2026-08-02: route 3, packaging (b)**, with (K-res) a
    byte-identical sibling of `hK`; residual carry narrows to **`hnoGood'`**, whose vacuity
    conjecture is **REFUTED** (`|V| = 19`), so branch 4 needs content. When commissioned the
    next commit is **W4-L4b** (`exists_degree_two_of_co1_rigid`, pinned +
