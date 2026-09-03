@@ -4,45 +4,47 @@
 **`PencilPair K 3 G`**, and the landed successor
 `pencil_conjecture_of_hcontract_hK_hbareSplit_of_card` (`Molecule/Pencil/Escape.lean`)
 derives it from exactly **three carried items**: **`hcontract`** (W4 — build parked by the
-**2026-08-05 Lean hold**; its informal side is now CLOSED as an argument), **`hK`** (kernel (K)),
-**`hbareSplit`** (kernel (K-bare)). Everything else is closed — W0–W3 and all of W5
-(L0–L7), `hsplit` and `hfresh` included (2026-07-30, unchanged since).
+**2026-08-05 Lean hold**; informal side CLOSED as an argument), **`hK`** (kernel (K)),
+**`hbareSplit`** (kernel (K-bare)). Everything else is closed — W0–W3, all of W5
+(L0–L7), `hsplit` and `hfresh` (2026-07-30, unchanged since).
 
-**The research arc: 83 directions COMPLETE** (2026-08-05 → 09-03, ordinals 1–75 — 78 on
+**The research arc: 84 directions COMPLETE** (2026-08-05 → 09-03, ordinals 1–76 — 79 on
 kernel (K), **WTRI/WELOC/WPAIR/WGROW (58–61) on W4**, **RPOOL (75) on (K-res)**; direction
 = ordinal + 8), plus nine strategy passes, two probes and a scoping recon. **GPACK (66) opened the `hK` lane after
-22 dispatches; GLIST (68) and GGLOB (71) are its successors**; **BDEGTWO (74)** is
-BLINE's (73) own residue, **RPOOL (75)** the (K-res) row's. Per-direction verdicts, specs and write-ups live at
+22 dispatches; GLIST (68) and GGLOB (71) are its successors**; **BSCOND (76)** is the ninth
+pass's rank 1, **BDEGTWO (74)** BLINE's (73) residue, **RPOOL (75)** the (K-res) row's. Per-direction verdicts, specs and write-ups live at
 `notes/Pencil-fanout.md` §"<CODE>" (1–19: the archive) plus a workbook home — **not
 restated here**. **The arc's standing result, unchanged: `hK` is not closer.**
 **(GR-15)** — the single open gap the §(K-grid) chain reduces to — is **untouched**; **class
-uniformity of the escape is untouched**; no g-flank was found; **E3 is ARMED (by GBAL), has
-NEVER fired, and is NOT one landing away** — why: **block 14**.
+uniformity untouched**; no g-flank found; **E3 is ARMED (by GBAL), has NEVER fired, and is
+NOT one landing away** — why: **block 14**.
 
-**`hK` LANE (GPACK 66, GLIST 68, GGLOB 71): (GR-18)(iii)'s split half is a THEOREM and its
-residual is now CSP-FREE — and IS (GR-10) at `D = 0`. ESCAPE ROUTE (OWALL 70): (OC-44)(iii) is REDUCED to (OW)**, its named route
-refuted by logic. **(GR-10)/(GR-15)/(OC-8) unchanged**. Detail: **blocks 11–13**.
+**`hK` LANE (GPACK 66, GLIST 68, GGLOB 71): (GR-18)(iii)'s split half is a THEOREM, its
+residual CSP-FREE and IS (GR-10) at `D = 0`. ESCAPE (OWALL 70): (OC-44)(iii) REDUCED to
+(OW)**, its route refuted by logic. **(GR-10)/(GR-15)/(OC-8) unchanged**. Detail: **blocks 11–13**.
 
-**W4's INFORMAL SIDE IS CLOSED** (58–61): **(T)/(E-pair)/(V) are THEOREMS**, **(E) open,
-TIGHT, off every W4 path**, list **EMPTY** — leaving the USER call **(K-res)**, now DEARER
-(**RPOOL 75 REFUTED its grid residual (RS-5)**), and the held build. Detail: **block 9**.
+**W4's INFORMAL SIDE IS CLOSED** (58–61): **(T)/(E-pair)/(V) THEOREMS**, **(E) open, TIGHT,
+off every W4 path**, list **EMPTY** — leaving the USER call **(K-res)**, now DEARER (**RPOOL
+75 REFUTED (RS-5)**), and the held build. Detail: **block 9**.
 
 **WHERE THE (BE-14) THREAD STANDS** — S-mark, the 2-cut composition lemma, is its **only
 open step**; the three sides and every per-landing detail are **REFERENCE**, at
-`notes/Pencil-structure.md` §"The (BE-14) thread — per-landing detail" (**block 8**).
-Status only: (β) proved at the window **MODULO (BE-57)(iv)'s (S1)/(S2)**; cross-cut-only
-forcing **empty**; the flag base **DISCHARGED**; the residue is **per-side** (14 block
-inequalities), and **BDOUBLE made both 2-dimensional blocks REDUNDANT** under
-**(PENCIL-SATURATES)** — **REFUTED at BSATUR**, its `-GEN` repair **REFUTED again at
+`notes/Pencil-structure.md` **block 8**.
+Status only: (β) at the window is **UNCONDITIONAL** — **BSCOND DECIDED (BE-57)(iv)'s
+(S1)/(S2)**, one gap not two: (S1) **REMOVABLE**, (S2) half theorem, half **REFUTED** then
+**CLOSED** ((BE-142)–(BE-148)); cross-cut forcing **empty**; the flag base **DISCHARGED**;
+the residue is **per-side** (14 block inequalities), and **BDOUBLE made both 2-dimensional
+blocks REDUNDANT** under **(PENCIL-SATURATES)** — **REFUTED at BSATUR**, `-GEN` **REFUTED at
 BSIGMA**, leaving **-CHART**, a **THEOREM at every side-degree-`1` terminal**
-((BE-127)), so **14 → 12** stands generically; at side-degree `≥ 2` **both gaps are SETTLED and
-the obstruction is the METHOD** ((BE-139)): no `p_x`-free subspace survives, clause **OPEN** at 0/772. The 12 are **unwitnessed, NOT excluded**
+((BE-127)), so **14 → 12** stands generically; at side-degree `≥ 2` **both gaps SETTLED, the
+obstruction the METHOD** ((BE-139)): no `p_x`-free subspace survives, clause **OPEN** at
+0/772. The 12 are **unwitnessed, NOT excluded**
 ((BE-97)(iv)) except `⟨M⟩`, empty at 93 rows; cross-pair welding **untouched**.
 
 **On a future HIT: the phase-boundary consequences are the USER's call** — whether Phase 39
 closes and a successor opens for the Lean is a `PHASE-BOUNDARIES.md` event against the
 standing 2026-07-24 no-split adjudication, surfaced with a commit-count estimate, never
-taken unilaterally; the 2026-08-05 Lean hold binds regardless.
+unilateral; the 2026-08-05 Lean hold binds regardless.
 
 **FOURTEEN reference blocks sit in `notes/Pencil-structure.md`**, which indexes them —
 **read them once per session**. The line that stays here: the **State of (K)** gap map
@@ -241,13 +243,15 @@ carries the standing **do-not-do** — no more (a′)/(b′) ledger directions),
 **THE RE-RANK ON THE REPAIRED LISTS IS LANDED** — the **ninth strategy-only pass**,
 coordinator-authored 2026-09-03 at `notes/Pencil-strategy.md` **§8**, which is where the
 ranking lives and is **not restated here**; it supersedes the 2026-08-25 list and the
-2026-09-02 `hK` table *as rankings* (both back-linked in that commit). **THE NEXT CONCRETE
-TASK is its rank 1: (S1)/(S2), (BE-57)(iv)'s two window conditions** — half (β)'s only
-residue, open since **BWIN (51)** and attacked by none of the **eleven** (BE-14)-thread
-landings from BONEONE (56) to BDEGTWO (74), all of which worked half (B). The pass also
-**BARS `A_sharp` properness as a build** until its rank 2 (the side-degree-`≥ 2` architecture
-recon) runs — a fifth attempt at one obstruction; the bar is methodological and §8 records
-what lifts it. (GR-144)'s successor **1 is DEMOTED** (it **IS** (GR-10) here, (GR-140)(v)),
+2026-09-02 `hK` table *as rankings* (both back-linked in that commit). **Its rank 1 is
+SPENT: BSCOND (76) DECIDED (S1)/(S2)** — one gap not two, (S1) **REMOVABLE** and (S2) half
+theorem / half **REFUTED**-then-**CLOSED**, so (β) at the window is **UNCONDITIONAL**
+((BE-142)–(BE-148)). **THE NEXT CONCRETE TASK is §8's rank 2: the half-(B) side-degree-`≥ 2`
+architecture question, AS A RECON** — *does any `p_x`-free-subspace method survive at
+`k ≥ 2`, and if none does, is the 12-block residue reachable without the clause at all?* —
+which is also what **lifts** the pass's standing **BAR on `A_sharp` properness as a build**
+(a fifth attempt at one obstruction; the bar is methodological and §8 records what lifts
+it). Rank 1's closure does **not** close S-mark: (BE-14) needs both halves. (GR-144)'s successor **1 is DEMOTED** (it **IS** (GR-10) here, (GR-140)(v)),
 **2** is engineering (150/150 decided, 2 473 of 2 623 left), **3** is a search (does *path*
 consistency decide where arc does not), and **4 — leaf-covering on the branches, this line's
 own omission until 2026-09-03 — is the lane's live pick**, §8's rank 3. The (K-res) **cheap
@@ -283,10 +287,11 @@ The ranked list:
    are **RELOCATED** to `notes/Pencil-structure.md` **block 8**.
 2.–4. **THE LANE'S STANDING MENU — RELOCATED 2026-09-02** to
 `notes/Pencil-structure.md` §"The (BE-14) lane's standing candidate list" (**block 10**):
-one-end-series, **(S1)/(S2)**, BTWOCUT's bundle, and the *also ranked* tail (cross-pair
-closure, the point-side flat law, BINDUC's **(BE-23)(ii)**, the flat-star dictionary), with
-its *superseded, do not re-derive* note. **Reference, not status**: unmoved since BSIGMA
-(ordinal 67) — name the ordinal, never a count; the live items are 0 and 1 above.
+one-end-series, ~~**(S1)/(S2)**~~ (**entry 3 KILLED by BSCOND, ordinal 76** — its own kill
+condition fired), BTWOCUT's bundle, and the *also ranked* tail (cross-pair closure, the
+point-side flat law, BINDUC's **(BE-23)(ii)**, the flat-star dictionary), with its
+*superseded, do not re-derive* note. **Reference, not status**: the rest unmoved since
+BSIGMA (ordinal 67); the live items are 0 and 1 above.
 
 **THE (K-res) ROW's TWO CHEAP ITEMS ARE SPENT** (RPOOL, 75, 2026-09-03; §(K-res)
 *RS11–RS16*): the pool sweep ran over all **102** `def = 0` members of the recorded 255 and
@@ -353,9 +358,10 @@ its cost are `notes/dispatch-log.md`'s and `notes/Pencil-fanout.md`'s). **The ta
    PASSED. Canonical homes: `notes/Phase39-design.md` §§"W4 decomposition recon"/"W4-L4
    identification recon" and `notes/Pencil-W4-informal.md`.
 3. **`hK`** (kernel (K), research) **via (GR-15)** — the escape `≢ 0` uniformity kernel,
-   the phase's hardest open item and what the arc attacks: **untouched by all 77
-   kernel-(K) directions** (ROADMAP's count — say which population; 81 arc-wide, four W4),
-   but GPACK (66), GLIST (68) and GGLOB (71) have reshaped its named next slice.
+   the phase's hardest open item and what the arc attacks: **untouched by every kernel-(K)
+   direction through BSCOND (ordinal 76)** — name the last ordinal, never a count (SWEEP C;
+   this line carried two mutually inconsistent tallies until 2026-09-03) — but GPACK (66),
+   GLIST (68) and GGLOB (71) reshaped its named next slice.
    **THE LANE'S PER-LANDING DETAIL IS RELOCATED 2026-09-02** to
    `notes/Pencil-structure.md` §"The `hK` lane — per-landing detail" (**block 11**), the
    disposition blocks 8 and 9 got; it also carries (GR-133)'s **price** and the standing
@@ -427,57 +433,54 @@ section named; its *spec and landing write-up* in `notes/Pencil-fanout.md` §"<C
 paragraphs.**
 
 - **THE NINTH STRATEGY PASS — THE RE-RANK** (2026-09-03, coordinator, no dispatch) — rank 1
-  **(S1)/(S2)**; rank 2 the half-(B) side-degree-`≥ 2` **architecture recon**, with `A_sharp`
-  properness **BARRED as a build** until it runs (four defeated attempts at one obstruction);
-  rank 3 **(GR-144) successor 4**; rank 4 **option B for `hbareSplit`**'s design pass. Both
-  prior lists back-linked as dated records. Home: `notes/Pencil-strategy.md` §8.
-- **THE LIVENESS DOC ROUND** (2026-09-03; `c89c7adb`, `2eeceace`, `e12ecca4`, `e5c2f03e`) —
-  **~52 of ~108 forward-looking entries carried a defect** (14 dead, 10 self-contradicting);
-  rule in `RESEARCH-ARC.md` **§8**, record in **block 14**. **The status objects were clean
-  throughout** — the rot was entirely in the recommendation layer.
-- **Coordinator round reconciliations** (2026-09-02) — §7's tally was **stale by six**; it is
-  **cited, never incremented per direction**. Three concurrency hazards in `RESEARCH-ARC.md`
-  §2, two gate blind spots in the *Gates* block. Detail: block 14.
+  **(S1)/(S2)** (**SPENT at BSCOND, 76**); rank 2 the half-(B) side-degree-`≥ 2`
+  **architecture recon**, `A_sharp` properness **BARRED as a build** until it runs; rank 3
+  **(GR-144) successor 4**; rank 4 **option B**'s design pass. Home: strategy §8.
+- **THE LIVENESS DOC ROUND** (2026-09-03; `c89c7adb`…`e5c2f03e`) — **~52 of ~108
+  forward-looking entries carried a defect**; rule in `RESEARCH-ARC.md` **§8**, record in
+  **block 14**. **The status objects were clean** — the rot was in the recommendation layer.
+- **Coordinator round reconciliations** (2026-09-02) — §7's tally was **stale by six**;
+  **cited, never incremented per direction**. Three concurrency hazards in
+  `RESEARCH-ARC.md` §2, two gate blind spots in *Gates*. Detail: block 14.
 
-- **RPOOL** (75, 2026-09-03, opus) — **(RS-5) IS REFUTED** by the row's own *cheap first
-  slice*: `R20 = family_g(5,(0,0,2),(4,4,4))` is `widened.W19` with a longer core, in the
-  recorded 255 pool since 2026-08-02; **30 of its 102 `def = 0` members refute it, 72 carry
-  exact-point proofs**, split by the **per-block** floor (RS-11) where (RS-3)(ii)'s SUM bound
-  fell short ((RS-14)/(RS-15)). (GR-15) untouched; wave **re-priced**. §(K-res) *RS11–RS16*.
-- **BDEGTWO** (74, 2026-09-03, opus, **detail in block 8**) — **BOTH OF (BE-134)'s GAPS
-  ARE SETTLED, AND WHAT FAILS AT SIDE-DEGREE `≥ 2` IS THE ARCHITECTURE**: the `k ≥ 2`
-  sweep EXISTS (411/411, **four** fibre shapes), *keep `xc₂…xc_k`* is **MOOT**, `(∗)` is
-  **too strong**, fibre-properness is **closed-form** — but the pendant multiplier is what
-  made `A` `p_x`-free, so no such subspace survives ((BE-136)–(BE-141), *BE135–BE140*).
+- **BSCOND** (76, 2026-09-03, opus, **the ninth pass's rank 1**) — **(BE-57)(iv)'s TWO
+  WINDOW CONDITIONS ARE DECIDED, AND THEY WERE ONE GAP**: `p_{w₁} ∈ π_u`, `p_{w₂} ∈ π_v`
+  always, so coincidence lands on `L` and the leading lines MEET, i.e. **(S1) failing IS
+  (S2)'s regime**; (BE-55)(iii)'s proof is **plane-agnostic**, so **(S1) is REMOVABLE**;
+  forcing is **exhaustive at two**; and (S2)'s *"no such mechanism is known"* is **REFUTED**
+  (coincidence pins `λ` ⟺ `W ⊆ Σ_p`) then **CLOSED** by the **coincidence excess law** — a
+  dimension cap, not a repaired genericity. (β) at the window is **UNCONDITIONAL**; S-mark's
+  other half **untouched** ((BE-142)–(BE-148), *BE141–BE147*). `w4/bscond.py`.
+- **RPOOL** (75, 2026-09-03, opus, **one-lined at the BSCOND landing**) — **(RS-5) IS
+  REFUTED** by `R20 = family_g(5,(0,0,2),(4,4,4))` — `widened.W19` with a longer core, in
+  the recorded 255 pool since 2026-08-02; 30 of 102 `def = 0` members refute, 72 carry
+  exact-point proofs, split by the **per-block** floor ((RS-14)/(RS-15)). §(K-res)
+  *RS11–RS16*.
+- **BDEGTWO** (74, 2026-09-03, opus, **one-lined at the BSCOND landing, detail in block 8**)
+  — **BOTH OF (BE-134)'s GAPS SETTLED, AND WHAT FAILS AT SIDE-DEGREE `≥ 2` IS THE
+  ARCHITECTURE** ((BE-136)–(BE-141), *BE135–BE140*): no `p_x`-free subspace survives.
   Successor: properness for the `p_x`-varying `A_sharp`. `w4/bdegtwo.py`.
-- **BLINE** (73, 2026-09-02, opus, **one-lined at the 2026-09-03 doc landing, detail in
-  block 8**) — **`(∗)` IS DECIDED: a theorem below `dim A = 3`, FALSE from `dim A = 5`, and
-  (BE-127)(ii)'s route dies with it**; the clause itself stays **OPEN**, 0/270
+- **BLINE** (73, opus, block 8) — **`(∗)` IS DECIDED: a theorem below `dim A = 3`, FALSE
+  from `dim A = 5`, (BE-127)(ii)'s route dying with it**; the clause **OPEN**, 0/270
   ((BE-129)–(BE-135), *BE128–BE134*). `w4/bline.py`.
-- **BOPEN** (72, 2026-09-02, opus, **one-lined at the BLINE landing, detail in block 8**)
-  — **(PENCIL-SATURATES-CHART) IS A THEOREM at every side-degree-`1` terminal**, (BE-69)
-  retired as its warrant ((BE-122)–(BE-128), *BE121–BE127*). `w4/bopen.py`.
-- **GGLOB** (71, 2026-09-02, opus, **one-lined at the 2026-09-03 doc landing, detail in
-  block 11**) — **THE GLOBAL CSP IS CSP-FREE, both handles DEAD, the 82 % RE-LOCATED**; on
-  this stratum the residual **IS (GR-10)** ((GR-139)–(GR-144), *G159–G164*). **E1 does not
-  fire.** `w4/gglob.py`.
-- **OWALL** (70, 2026-09-02, opus, **one-lined at the BLINE landing, detail in block 12**)
-  — **(OC-44)(iii) REDUCED to (OW)**, geometry-free, *Step O41*'s own attack refuted by
-  LOGIC ((OC-50)–(OC-55), §(K-out) *O47–O51*). `w4/owall.py`.
-- **GLIST** (68, 2026-09-02, opus, **one-lined at the BLINE landing, detail in block 11**)
-  — **(GR-132)'s RESIDUAL: NORMAL FORM, LOCAL HALF EXACT, OBSTRUCTION GLOBAL**, 82 % of
-  infeasible pairs hub-locally feasible ((GR-134)–(GR-138), *G154–G158*). `w4/glist.py`.
-- **BPROPER** (69, 2026-09-02, opus, **block 8**) — **PROPERNESS HALF SETTLED AT EVERY SIDE**
+- **BOPEN** (72, opus, block 8) — **(PENCIL-SATURATES-CHART) IS A THEOREM at every
+  side-degree-`1` terminal**, (BE-69) retired as its warrant ((BE-122)–(BE-128)).
+- **GGLOB** (71, opus, block 11) — **THE GLOBAL CSP IS CSP-FREE, both handles DEAD, the
+  82 % RE-LOCATED**; on this stratum the residual **IS (GR-10)** ((GR-139)–(GR-144),
+  *G159–G164*). **E1 does not fire.** `w4/gglob.py`.
+- **OWALL** (70, opus, block 12) — **(OC-44)(iii) REDUCED to (OW)**, geometry-free, *Step
+  O41*'s attack refuted by LOGIC ((OC-50)–(OC-55), §(K-out) *O47–O51*). `w4/owall.py`.
+- **GLIST** (68, opus, block 11) — **(GR-132)'s RESIDUAL: NORMAL FORM, LOCAL HALF EXACT,
+  OBSTRUCTION GLOBAL**, 82 % hub-locally feasible ((GR-134)–(GR-138), *G154–G158*).
+- **BPROPER** (69, opus, block 8) — **PROPERNESS HALF SETTLED AT EVERY SIDE**
   ((BE-114)–(BE-121)), residues **discharged at BOPEN**. `w4/bproper.py`.
-- **BSIGMA** (67, 2026-09-02, opus, **detail in block 8**) — **(PENCIL-SATURATES-GEN) is
-  FALSE TOO**, its floor a **THEOREM** at a path side ((BE-109)–(BE-113)). `w4/bsigma.py`.
-- **GPACK** (66, 2026-09-02, opus, **block 11**) — **(GR-18)(iii) SPLITS, the split half a
-  THEOREM** off `def(G) = 0` ((GR-129)–(GR-133)); exchange freedom **load-bearing**.
-  `w4/gpack.py`.
-- **BSATUR** (65, 2026-09-02, opus, **one-lined at the GLIST landing, detail in block 8**)
-  — **(PENCIL-SATURATES) IS FALSE, THE REPAIR IS FREE** ((BE-104)–(BE-108), *BE103–BE107*):
-  a bad plane exists **iff `ρ_i ≥ 5`**, the defect a **quantifier** no sampler could see;
-  **SLACK**, repair **-GEN** (since itself refuted at BSIGMA). `w4/bsatur.py`.
+- **BSIGMA** (67, opus, block 8) — **(PENCIL-SATURATES-GEN) FALSE TOO**, its floor a
+  **THEOREM** at a path side ((BE-109)–(BE-113)). `w4/bsigma.py`.
+- **GPACK** (66, opus, block 11) — **(GR-18)(iii) SPLITS, the split half a THEOREM** off
+  `def(G) = 0` ((GR-129)–(GR-133)); exchange freedom **load-bearing**. `w4/gpack.py`.
+- **BSATUR** (65, opus, block 8) — **(PENCIL-SATURATES) IS FALSE, THE REPAIR IS FREE**
+  ((BE-104)–(BE-108)): a bad plane exists **iff `ρ_i ≥ 5`**, the defect a **quantifier** no
+  sampler could see; **SLACK**, repair **-GEN** (itself refuted at BSIGMA).
 - **BDOUBLE** (64, 2026-09-02, opus, **one-lined at the GLIST landing**) —
   **(NO-DOUBLE-PENCIL) IS REFUTED and the tight block is REDUNDANT** ((BE-99)–(BE-103),
   *BE98–BE102*), so **14 → 12** blocks — under (PENCIL-SATURATES), itself REFUTED at BSATUR

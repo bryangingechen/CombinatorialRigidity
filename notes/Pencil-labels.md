@@ -3623,4 +3623,102 @@ citation and parses as one and a half.
 
 **The next tail is (BE-142) / *Step BE141***, 0-hit verified at this landing
 (the pair returned unused above), so a successor opens there and **not** at
-(BE-144).
+(BE-144). **CONSUMED 2026-09-03 by direction BSCOND — see the block below.**
+
+**Reserved and consumed on 2026-09-03 for the single direction BSCOND**
+(ordinal 76; `notes/Pencil-fanout.md` §"BSCOND") — *prove or refute
+(BE-57)(iv)'s two window conditions (S1) and (S2)*, the ninth strategy
+pass's rank 1 and half (β)'s only residue since BWIN (ordinal 51). A
+**single** dispatch, so the reservation protects only against the corpus;
+every check below is nonetheless against `HEAD`, per `RESEARCH-ARC.md` §2's
+first concurrency hazard.
+
+| direction | owning § | labels reserved | steps reserved | driver |
+|---|---|---|---|---|
+| **BSCOND** | §(K-bare-ext) — **extends**, no new section | **(BE-142)–(BE-149)**, of which **(BE-142)–(BE-148)** consumed | **BE141–BE148**, of which **BE141–BE147** consumed | `w4/bscond.py` (eight modes) |
+
+**It opens at exactly the tail BDEGTWO declared** (*"The next tail is
+(BE-142) / Step BE141"*), and **not** at (BE-144). **One label and one step
+are RETURNED UNUSED**: **(BE-149)** and ***Step BE148***, reserved against a
+wider result than the direction needed, and **available**.
+
+**0-hit verification, re-run by the direction as its FIRST action**, across
+`*.md`, `*.tex`, `*.lean`, `*.py`, `*.m2` **at `HEAD`**: `BSCOND` and
+`bscond` each **0-hit as raw substrings** (case-insensitively);
+`(BE-145)`–`(BE-149)` and the raw step tokens `BE143`–`BE148` each **hard
+0-hit**. **The carve-out the coordinator flagged is CONFIRMED in its
+conclusion and CORRECTED in its counts:** the prep said `(BE-142)`/`(BE-143)`
+and `BE141`/`BE142` had *"exactly one hit, in `notes/Pencil-labels.md`
+only"*; the re-run at `HEAD` measured **`(BE-142)` 2, `(BE-143)` 3,
+`(BE-144)` 1, `BE141` 2, `BE142` 3** — **all in this file only, and all
+declarations**: BDEGTWO's reservation range row, its two-labels-returned-
+unused note, its *"The next tail is (BE-142) / Step BE141"* pointer and its
+*"and **not** at (BE-144)"* clause. **None is a consumed label**, so the
+conclusion stands; the counts differ because the prep's check predated the
+**ninth strategy pass's own commit** (`3c49ce60`), which is a live instance
+of *diff against `HEAD`, never a stale check* — recorded here rather than
+read as a collision.
+
+**`BSCOND` was checked for the substring hazard (L5)** and is clean; it names
+the **object** (the window's *side conditions*), not a method and not a
+verdict. **`BMID` was REJECTED at reservation** for priming the answer — and
+this registry had rejected the same token once before, **at BWIN's own
+reservation**, for the same reason. That is now two rejections of one token
+on one ground, which is worth stating as a pattern: *a code naming the
+object the claim is ABOUT is safe; a code naming the object the claim
+PREDICTS is not* (`BSWEEP`, rejected at BDEGTWO, is the third instance and
+the one where the rejection was vindicated).
+
+**CONSUMED IN FULL.** (BE-142)–(BE-148) and *Steps BE141–BE147* are all
+written, in `notes/Pencil-informal.md` §(K-bare-ext), which the direction
+**extends** exactly as reserved; driver `w4/bscond.py` as named. **One object
+name is minted**: **`Σ_p := p ∧ K⁴`**, and it is **deliberately not new** —
+it is the same object (BE-114)/(BE-116) already write `Σ_x` for on the
+half-(B) side, at a different vertex, and the *Standing notation* says so at
+its definition rather than presenting it as a fresh construction. `σ`, `q`,
+`W`, `V`, `L`, `M`, `λ`, `μ`, `t` are **plain symbols or reused**, and
+BOPEN's convention that **`(∗)` is a marker, not a label** is kept (the
+marker does not appear in the new text at all). The section has now gone
+**twelve** directions without a configuration-level token.
+
+**(L6) landing grep run** over the new text: the only `(X<digit>)`-shaped
+tokens anywhere in it are **`(S1)`/`(S2)`** (§(K-bare-ext)'s own inherited
+names, minted at BWIN — bare here because this is their owning section, per
+(L3); *do not confuse with the `(K-slide)/(S1)` gap-map row*), the
+`(BE-nnn)` family, **`(b1)`** ((BE-37)(ii)'s clause), **`(GR-15)`**,
+**`(E1)`/`(E2)`/`(E3)`** (the termination ledger's codes) and the sub-item
+letters `(a)`/`(b)`. **No label is minted in that shape**; `(C6)`, `(C7)`,
+`(R1)`, `(C1)`, `(C2)` are all **0-hit** in the new text.
+
+**Gap-map note (F21) — the row was RECOMPUTED to an explicit target and BEAT
+it, and the set-diff again earned its place.** The `(K-bare)` row stood at
+**1 539 / 1 600** words at `HEAD`. Target set **before the edit: ≤ 1 530,
+i.e. ≥ 70 words of headroom** — strictly more than BDEGTWO left (61), because
+this direction's own content is a *decided pair* (seven labels) rather than a
+single verdict, and §8's rank 2 is already queued into the same row. It
+lands at **1 530 / 1 600 — `−9` on `HEAD`** with the pair added, paid for by
+compressing **twenty-two** landed passages, every one of them *mechanism
+superseded as headline* (the (BE-30)/(BE-31)/(BE-33)/(BE-34) geometry
+paragraph, the (BE-39)/(BE-40)/(BE-74)/(BE-75)/(BE-76) short-cycle law, the
+(BE-84)–(BE-93) hinge-pair and flag-base narrative, the (BE-104)–(BE-113)
+(PENCIL-SATURATES) chain, the (BE-117)–(BE-124) hunt-verdict passage, the
+(BE-59)–(BE-67) R-node and reduction paragraphs, the (BE-136)–(BE-140)
+BDEGTWO narrative and the close-it cell's own tail) — and **never history**.
+Verified by `notes/scripts/gapdiff.py K-bare HEAD`: **186 in, 195 out, ZERO
+dropped, 9 added**. The section column moves `BE1–BE140 → BE1–BE147`.
+
+**The drop it caught, on the first assembly**, was **`K-bare-ext`** — the
+row's own section token, carried *only* by the phrase *"**MODULO**
+§(K-bare-ext)'s two window conditions"*, which this direction **discharges**,
+so the natural edit deleted the citation along with the modulo. Restored by
+re-citing the section inside the replacement sentence (*"§(K-bare-ext)'s TWO
+WINDOW CONDITIONS ARE DECIDED"*), at a cost of two words. **A third shape for
+this file's list**, and the sharpest one yet: a label lost because *the
+sentence that carried it was the one being discharged* — the same family as
+BDEGTWO's *refuted-claim* drop, but on the row's **own section name**, which
+is the one token a reader most needs and the one an author is least likely to
+notice, since it reads as prose rather than as a citation.
+
+**The next tail is (BE-149) / *Step BE148***, 0-hit verified at this landing
+(the pair returned unused above), so a successor opens there and **not** at
+(BE-150).

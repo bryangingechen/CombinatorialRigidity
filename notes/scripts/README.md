@@ -1111,6 +1111,15 @@ are a recorded *Harness debt* item (see below).
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/bdegtwo.py direct` | 194 s | ibid. *Step BE139* ((BE-140): the decisive control — at all **411** swept CHART points both the clause `Π_x ⊆ ρ̄_i, ρ_i ≤ 5` (**0**, *not found under this cap*) and the relaxed condition (165) are evaluated, per fibre shape; the relaxed condition holds at EVERY swept point of the fibre on **28 of 70** peels; **0** of the 96 confined-fibre points are even relaxed-bad; and `margin ≤ 0` is ASSERTED at `Π_x`/`Π_y`/`⟨M⟩` on the first swept point of each peel, histogram `{−3: 24, −2: 46}`, **0 shortfalls**) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/bdegtwo.py support` | 0 s | ibid. *Step BE140* ((BE-141): the `RESEARCH-ARC.md` §4 support audit — all seven populations named with what each varies, what it holds fixed and which of its own claim's quantifiers it therefore reaches, plus the standing cap that every population is CONSTRUCTED and no figure is a class-level rate) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/bdegtwo.py validate` | 229 s | ibid. all six in one process — the landing gate; fits the 600 s foreground budget. Every rng is seeded from `bunif.SEED` (`20260902`) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/bscond.py support` | 0 s | `notes/Pencil-informal.md` §(K-bare-ext) *Step BE141* (direction BSCOND; (BE-142): the `RESEARCH-ARC.md` §4 support audit read at SOURCE via `inspect.getsource` — the global distinctness filter `len(set(pt.values())) != len(V)` asserted PRESENT in both `bearcase.sample_piece_config` and `bsharp.sample_piece_config_adj`; `binduc.assert_generic_star` asserted to test distinctness on EDGES only; `kbare_common.verify_pencil_witness` asserted to reject only ADJACENT coincidence, with a legal 3-edge-path witness whose two ENDS coincide accepted by both; and `bwin.resweep` measured at **0 of 60** end draws over a constructed coincident middle) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/bscond.py incid` | 0 s | ibid. *Step BE142* ((BE-143): the incidence lemma at **80** constructed coincidence configurations over **20** shape-seeds — `p_{w₁} ∈ π_u`, `p_{w₂} ∈ π_v`, `p ∈ L`, `L = π_u ∩ π_v` and `ℓ_u ∩ ℓ_v = p` each asserted as an identity or incidence of SPACES, with `π₁ ≠ π₂` asserted at every one so the rows are NOT (BE-55)(iii)'s case; two of BWIN's twelve `wide` shapes fall outside the sampler's shape guard and are reported SKIPPED) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/bscond.py cover` | 1 s | ibid. *Step BE143* ((BE-144): the coplanar-boundary lemma's five space identities — `span(ℓ_u ∧ ℓ_v) = Λ²σ`, `(Λ²σ)^{⊥K} = Λ²σ`, `λ^{⊥K} ∩ Λ²σ = q ∧ σ = ⟨ℓ_u, ℓ_v⟩`, `L ⊄ σ`, `q = ℓ_u ∩ ℓ_v` DERIVED from (BE-56)(ii) — at **60** synthetic `π₁ = π₂` trials, **60** synthetic ARBITRARY non-skew trials (the population that establishes *plane-agnostic*, since `σ` is no boundary plane there) and **60** configurations over the 20 real coincident shape-seeds, where `σ = p ∨ M` is asserted distinct from both boundary planes) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/bscond.py crit` | 0 s | ibid. *Step BE144* ((BE-145): both readings of the skewness criterion — `L ∩ π₁ = L ∩ π₂` and *`L` meets `π₁ ∩ π₂`* — asserted EQUAL to the skewness fact at **200/200** draws with `π₁ ≠ π₂`, non-skew at **0**; plus the `2 × 2` forcing table `(π₁ = π₂?, p₁ = p₂?)` **ENUMERATED**, mechanism 1 at 80/80 lines, mechanism 2 at 25 configurations over 5 shapes, and the `(=, =)` cell claimed a fortiori with no independent witness) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/bscond.py pin` | 17 s | ibid. *Step BE145* ((BE-146): `𝒬` asserted to SPAN `Λ²K⁴`; then the free-`L` census — admissible `L` with `λ ∈ W^{⊥K}` at **0 of 120** for every `t = 1..5` and 120/120 at the vacuous `t = 0`, with `dim V = t − 1` asserted off the perp and `V = W` on it; then the coincidence equivalence *pinned at every admissible `L` ⟺ `W ⊆ Σ_p`* asserted at **60** configurations, **16** shape-seeds inside `Σ_p` and **4** outside, no middle mixed) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/bscond.py law` | 57 s | ibid. *Step BE146* ((BE-147): the coincidence excess law, both branches — **80** abstract `W ⊆ Σ_p` and **80** abstract `W ⊄ Σ_p` with the pinning asserted at every / not every line through `p`, plus **80** real coincident configurations at which case (a) asserts `V = W`, `dim ρ̄₁ ≤ 3` and `excess = dim ρ̄₁ − 2`, and case (b) asserts `dim V = t − 1` and `excess ≤ max(0, dim ρ̄₁ − 3)`; census `{('a',2,0,0): 40, ('a',3,1,1): 16, ('a',3,2,1): 8, ('b',5,3,2): 16}`) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/bscond.py ident` | 143 s | ibid. *Step BE147* ((BE-148): **100** coincidence configurations through `coin_measure` — every assertion of (BE-54)(i)/(ii)/(iii), (BE-55)(i), (BE-144), (BE-56)(i), both (BE-147) branches and `W ∩ Z = ker(φ|_V)` — with `dim Z = 4` at **100/100**, the identity **and** (b1) at **all 80** rows with `dim ρ̄₁ ≤ 4`, the identity failing at **all 20** rows with `dim ρ̄₁ = 5` as (BE-56)(iv) requires, and `bwin.full_measure`'s own `(BE-56)(ii)` assert FIRING at **30 of 100**) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/bscond.py board` | 0 s | ibid. *Step BE147*, continued ((BE-148), the price and the board): seven populations named with what each varies, holds fixed and therefore reaches, plus the five standing caps — bwin's pendant-terminal cap, the sampler shape guard (two of BWIN's twelve `wide` rows outside it), no coincident row at `δ₁ = 4` (a THEOREM in case (a), not-found-under-cap in case (b)), no coincident middle claimed `δ₁`-attaining, and every figure a count over CONSTRUCTED populations) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/bscond.py validate` | 229 s | ibid. all eight in one process — the landing gate; fits the 600 s foreground budget. Every rng is seeded from `bwin.SEED` (`20260829`) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/ogeom.py --bound --dom --core --cert` | 288 s | `notes/Pencil-informal.md` §(K-out) *Steps O42–O45* (direction OGEOM; (OC-45) the `ℓ ≤ 5` + bridgeless class-shape check that turns `sigz.k4_stratum`'s `{1..5}^6` from a cap into a theorem (re-enumerated at `{1..12}^6`, 877 = 877); (OC-46) restriction-dominance, 1482 + 222 extensions, 0 failures; (OC-47) the live-core reduction; (OC-49) the census — 271 974/271 974 pairs settled, and (OC-39)'s 3 324 + 44 = 3 368 pairs shown to lie in exhausted cells) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/ogeom.py --hunt` | 357 s | ibid. *Step O45* ((OC-48): the exhaustive iso-reduced live-core hunt at `n(F°) ∈ {2,3}` (all `\|E°\|`) and `n(F°) = 4` (`\|E°\| ≤ 8`) — 21 086 classes here, all free, **0 candidates**) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/ogeom.py --huntn 5 8 8 <PART> 3` | 318 s each | ibid. *Step O45*, the `n(F°) = 5`, `\|E°\| = 8` cell in three deterministic slices (70 174 classes, all free) — the parts together with the two rows above make the pass's **91 260** cores |
@@ -1552,7 +1561,17 @@ section at the end of this list; the same landing adds a *fourth* consumer of
 `bproper.composite`/`core_of`, a *second* of `bopen.chart_data`/`sides_of`/
 `slide` and of `bline.longcore_library`/`rand_line`/`rand_subspace`/`star_ok`,
 all folded into the same standing sibling-import item rather than opened as
-new ones.
+new ones. **BSCOND (2026-09-03) adds the next `w4/` consumer of the same
+chain** — `bscond → bwin → bsharp → bearfull → bearcase → bimage → btwocut →
+binduc → bzavoid → kbare_common`, ten deep — plus a *second* consumer of
+`bwin.k4_span`/`k4_isect`/`resweep`/`full_measure`/`boundary_plane`/
+`pt_on_line`/`dehom`/`series_data`/`theta_chain`/`window_battery`, **all
+folded into the same standing item, NO MOVE MADE**. It opens **no new hazard
+item**: both recorded silent hazards were navigated (no `Λ²`-side draw
+through `pt_in`; every `K⁴` subspace through `bwin.k4_span`/`k4_isect`, the
+pre-existing guards, so `bdegtwo.k4span`/`k4meet` are left alone), and its
+own `dehom` finding is a *Recorded observation* rather than a debt item
+because the fix is at the call site.
 
 **The `pt_in` item, stated once because it is SILENT.** `bimage.pt_in` builds
 its return with `for k in range(4)`: it is a `K⁴` helper, and calling it on a
@@ -2204,6 +2223,24 @@ second a latent defect on an unreachable path. Both are **recorded, not fixed**.
    full return dict** (a `.py` edit inside `lambda`'s closure, so it owes that
    closure's re-baseline; expected byte-identical, since no §3 row reads the
    full dict's `gram`).
+
+**Third observation (2026-09-03, direction BSCOND) — `bwin.dehom` returns a
+LIST, and that silently DEFEATS a guard rather than giving a wrong answer.**
+Every sampler in the tree stores a point as a **tuple**; `bwin.dehom` returns
+`[x0/x3, x1/x3, x2/x3]`. Two consequences, the second the dangerous one:
+a `len(set(pt.values()))` check **raises** (a list is unhashable), and a list
+compares **unequal to an equal tuple**, so `binduc.assert_generic_star`'s
+`pt[u] != pt[v]` edge check **silently passes** for any edge with one
+endpoint written by `dehom` and the other by a sampler. **No landed figure is
+affected** — `bwin` writes only the two terminals `u`, `v` through `dehom`,
+and their adjacent distinctness is separately implied by the
+cross-incidence-freeness checks in `resweep` — but a future module that
+writes an **interior** vertex that way loses the guard with no error.
+`bscond.aff` is the one-line fix (`tuple(dehom(x))`) and carries the warning
+at its definition. **Deliberately NOT a new debt item**: unlike the two
+silent `bimage` hazards, the fix is at the *call site*, not in the shared
+device, so it costs no re-baselining and no consumer sweep — a module that
+needs hashable points wraps, as `bscond` does.
 
 ### New item (2026-08-19, direction ZNEQ) — `ocon.meet` needs to move down; **PAID 2026-08-20**
 

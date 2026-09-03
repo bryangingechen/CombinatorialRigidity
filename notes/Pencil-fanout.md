@@ -1,9 +1,28 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: EIGHT fan-outs, FORTY-EIGHT single directions, ONE draft-only parallel direction
-and FOUR concurrent pairs dispatched; 83 LANDED, NONE IN FLIGHT.**
-**The three landings after GLIST — BLINE (ordinal 73), BDEGTWO (74), RPOOL (75) — have their
-own sections; read those, not the blurb below, for the current state.** *(Counter reconciled
+**Status: EIGHT fan-outs, FORTY-NINE single directions, ONE draft-only parallel direction
+and FOUR concurrent pairs dispatched; 84 LANDED, NONE IN FLIGHT.**
+**The four landings after GLIST — BLINE (ordinal 73), BDEGTWO (74), RPOOL (75), BSCOND (76) —
+have their own sections; read those, not the blurb below, for the current state.**
+**BSCOND (ordinal 76, §"BSCOND") LANDED 2026-09-03** — the ninth strategy pass's **rank 1**,
+at **(BE-57)(iv)'s two window conditions**, open since BWIN (51) and attacked by none of the
+eleven (BE-14)-thread landings since. **BOTH DECIDED, AND THEY WERE ONE GAP**: the pencil
+condition puts `p_{w₁} ∈ π_u` and `p_{w₂} ∈ π_v` always, so coincidence lands on `L` and the
+leading lines MEET — **(S1) failing IS (S2)'s meeting-lines regime** ((BE-143)). **(S1) is
+REMOVABLE** ((BE-148)): (BE-55)(iii)'s proof is **plane-agnostic** at `σ = ℓ_u ∨ ℓ_v`
+((BE-144)), so the theorem holds with the hypothesis deleted. **(S2)'s first half is PROVED**
+with the forcing list **exhaustive at two** by a `2 × 2` enumeration plus a
+dense-open-vs-proper-closed argument ((BE-145)); **its second half is REFUTED AS STATED** —
+`p_{w₁} = p_{w₂}` pins `λ` onto `W^{⊥K}`, at real window middles including two R-node ones,
+the equivalence being `W ⊆ Σ_p` ((BE-146)) — **and then CLOSED** by the **coincidence excess
+law**, which replaces the generic slice by a **dimension cap** (`Σ_p` caps `dim ρ̄₁ ≤ 3`, so
+`excess = dim ρ̄₁ − 2 ≤ 1`) rather than repairing it ((BE-147)). The support audit is the
+headline's other half: both samplers carry a **global distinctness filter**, the guard the
+clause names rejects coincidence only on **edges**, and the pencil **predicate admits** it —
+so `bwin.full_measure`'s own `(BE-56)(ii)` assert **fires** at 30 of 100 rows of the new
+population ((BE-142)). **S-mark's other half — half (B) at side-degree `≥ 2` — is UNTOUCHED**;
+not a PENCIL event. Driver `notes/scripts/w4/bscond.py` (eight modes, `validate` 229 s). Run
+at `recon-opus`. *(Counter reconciled
 by the coordinator 2026-09-03: this header read **76** and named GLIST as the latest landing
 while `ROADMAP.md` read 82 and `Phase39.md` 83 — two concurrent directions incrementing one
 shared counter from different baselines, the hazard `RESEARCH-ARC.md` §2 records. The count is
@@ -14124,3 +14143,200 @@ verbatim and (RS-4) is still a theorem; what fails is the hypothesis (RS-4)
 needs. **(GR-15) is untouched in both directions**: the quantifiers are
 disjoint, `R20` refutes `hnoRigid`, and the refutation says nothing about the
 tight class. Not a PENCIL event; E1/E2/E3 all decided **not fired** at source.
+
+## BSCOND — seventy-sixth ordinal (single dispatch, prepped 2026-09-03, **LANDED 2026-09-03**) — the ninth strategy pass's rank 1: **(BE-57)(iv)'s two window conditions**
+
+**Selection provenance.** The **ninth strategy-only pass**
+(`notes/Pencil-strategy.md` §8, coordinator-authored 2026-09-03) ranked this
+**1 of 4**, on all four binding criteria and on its own **rut measurement**:
+eleven consecutive (BE-14)-thread landings, **BONEONE (56) through BDEGTWO
+(74)**, worked half (B) or a named sibling, while half (β)'s two window
+conditions had sat *"open and ranked, not dropped"* since **BWIN (51)** —
+24 ordinals — in `notes/Pencil-structure.md` **block 10, entry 3**. The pass
+also **barred** `A_sharp` properness as a build until its own rank-2 recon
+runs (a fifth attempt at one obstruction), which is why the thread moved
+halves rather than continuing. Single dispatch at **`recon-opus`**.
+
+### The spec, as dispatched
+
+**Target.** Prove or refute **(S1)** — *some `δ₁`-attaining middle
+configuration has `p_{w₁} ≠ p_{w₂}`* — and **(S2)** — *the meeting-lines
+regime is handled by (BE-55)(iii) only when the forced equality is of the
+boundary planes; a middle forcing some other algebraic relation between its
+boundary flags that pins `λ` onto `W^{⊥K}` would need its own argument* —
+both to be **read at source in `notes/Pencil-informal.md` §(K-bare-ext)
+before anything else**. *"A refutation is worth as much as a proof — it costs
+the window's class theorem its carrier and re-routes (β), the first hard
+information on that half since BWIN."*
+
+**The three findings the coordinator supplied, each verified at source by the
+coordinator and to be quoted rather than inherited.** (1) **(S1)'s evidence
+is exactly the class this arc has twice broken** — *"both samplers reject
+coincidence, and every drawn middle satisfies it"* makes the second clause
+the reason the third is vacuous, so `RESEARCH-ARC.md` §4's **BSATUR**
+sharpening (*name the sampler's support and ask which of the claim's own
+variables it varies*) and its **RPOOL** sharpening both apply, with the
+instruction to *establish what those two samplers actually reject before
+weighting any existing figure*. (2) **(S2) is an asserted absence in the one
+section where five claims of that shape have fallen** — (BE-41)(ii),
+(BE-66)(iv), (BE-109)(iv), (BE-110)(iv), (BE-134)(i) — so *"no such mechanism
+is known"* is *"the sentence to attack, not to record"*. (3) **Nobody has
+attacked either**, so there is no prior pass's optimistic residue to build on
+and no prior pass's framing to inherit. (4) **What a decision does NOT buy**:
+S-mark's other half stays open with the **METHOD** as its obstruction
+((BE-139)), and (BE-14) needs both halves.
+
+**Bars.** Committing; the 2026-08-05 Lean hold binds (**no `.lean`**); every
+driver in the **foreground** with an explicit `timeout` parameter, one at a
+time, never backgrounded (dispatch-log F6); **out of scope as a bar, not a
+preference** — no `A_sharp` properness and no further single-clause repair of
+(PENCIL-SATURATES-CHART) at side-degree `≥ 2` (§8's rank 2, barred as a build
+until its own recon runs); no re-opening of `notes/Pencil-structure.md`
+blocks 4/5 or §8.6's durable negatives; the phase note at **574/580 lines**
+with its `**Status:**` header at **525/525 words**, so a header edit must be
+**word-neutral or negative** and the landing must **merge or rotate rather
+than append**; the `(K-bare)` row **recomputed, never bumped**;
+`notes/scripts/README.md` *Harness debt* required reading before any
+numerics, with **no `Λ²`-side draw through `bimage.pt_in`**. Code **BMID**
+was **rejected** at reservation for priming the answer — this registry had
+rejected it once already, at BWIN's own reservation.
+
+### LANDING WRITE-UP — BSCOND, 2026-09-03: **BOTH CONDITIONS DECIDED, AND THEY WERE ONE GAP — (S1) IS REMOVABLE, (S2)'s FIRST HALF IS A THEOREM, ITS SECOND HALF IS REFUTED AS STATED AND THEN CLOSED**
+
+**THE TWO CONDITIONS COLLAPSE INTO ONE, BY A TWO-LINE INCIDENCE LEMMA.** The
+pencil condition at `u` puts `p_{w₁}` in `π_u` and at `v` puts `p_{w₂}` in
+`π_v` — at *every* configuration, since `w₁ ∼ u` and `w₂ ∼ v` are the two
+bridges. So `p_{w₁} = p_{w₂}` forces that point onto `L = π_u ∩ π_v`, and the
+two leading lines `ℓ_u = p_u ∨ p_{w₁}`, `ℓ_v = p_v ∨ p_{w₂}` **meet** there.
+**(S1) failing IS (S2)'s meeting-lines regime**, and (S2)'s feared *"other
+algebraic relation between its boundary flags"* is not hypothetical — it is
+(S1)'s own failure ((BE-143)). Filing them as two independent side
+conditions, one *"checkable per middle"* and one an asserted absence, is what
+hid the implication for 24 ordinals.
+
+**(S1) IS REMOVABLE, NOT MERELY TRUE.** (BE-57)(i) invokes `p₁ ≠ p₂` at
+exactly one place — *"the boundary lines are skew when `p₁ ≠ p₂` and the
+boundary planes differ"*. **(BE-55)(iii)'s proof turns out to be
+plane-agnostic**: it is stated for `π₁ = π₂ = π` and instantiated at
+`σ = π`, `q = L ∩ π`, but every step needs only *a plane containing both
+leading lines with `L` outside it*, and `σ := ℓ_u ∨ ℓ_v` always is one. From
+cross-incidence-freeness and `π_u ≠ π_v` alone: `L ⊄ σ`; `q := L ∩ σ` is a
+single point; `q` **is** `ℓ_u ∩ ℓ_v` (derived, not assumed — each leading
+line meets `L` by (BE-56)(ii), inside `σ`, and `L ∩ σ` is that one point);
+`span(ℓ_u ∧ ℓ_v) = Λ²σ`, self-conjugate; and `λ^{⊥K} ∩ Λ²σ = q ∧ σ = Λ_{uv}`
+**exactly**, so the rank-one kill step is unchanged ((BE-144)). Delete the
+hypothesis and the theorem stands, on the window's own regime.
+
+**AND THE FORCING LIST IS EXHAUSTIVE AT TWO, BY AN ENUMERATION PLUS AN
+ARGUMENT.** `ℓ_u`, `ℓ_v` are non-skew **⟺ `L ∩ π₁ = L ∩ π₂` ⟺ `L` meets the
+line `π₁ ∩ π₂`** — a Schubert hyperplane section, codimension `1` in the
+4-dimensional Grassmannian, asserted equal to the skewness fact at 200/200
+draws and hit by **0** of them. Since a dense open is not contained in a
+proper closed set, the `(≠, ≠)` cell of the `2 × 2` table over
+`(π₁ = π₂?, p₁ = p₂?)` **cannot** force, so forcing requires `π₁ = π₂` or
+`p₁ = p₂` and **exactly three of four cells force** ((BE-145)). **(S2)'s
+first half is PROVED**, and (BE-55)(iii)'s coverage, read through (BE-144),
+is complete. *That an exhaustiveness claim needs an enumeration and not a
+sample is §4's rule, applied literally: the table is enumerated, the
+impossibility of the fourth cell is argued.*
+
+**(S2)'s SECOND HALF IS REFUTED AS STATED — the mechanism exists and it is
+(S1) failing.** At a **free** `L` no middle can pin `λ`: the admissible lines
+are a dense open of the Klein quadric `𝒬`, and `𝒬 ∩ P(W^{⊥K})` is proper
+closed for `t ≥ 1` because **`𝒬` spans `Λ²K⁴`** — census `{0: 120, 1..5: 0}`
+over 120 draws per `t`, with `t = 0` the vacuous corner (BE-56)(iii)'s own
+`max` covers. But `p_{w₁} = p_{w₂} = p` forces `L` **through `p`**, a
+codimension-2 restriction the free regime never sees; the lines through `p`
+span the **self-conjugate** `Σ_p := p ∧ K⁴`, so
+**`λ ∈ W^{⊥K}` for every admissible `L` ⟺ `W ⊆ Σ_p`** — asserted as an
+equivalence at 60 configurations, with **both branches inhabited by real
+window middles**: inside at **16** shape-seeds (the five landed barbells, the
+four-branch theta and **both R-node middles**), outside at **4** ((BE-146)).
+The generic slice really is defeated there.
+
+**AND IT CLOSES BY A DIMENSION CAP RATHER THAN A REPAIRED GENERICITY — the
+COINCIDENCE EXCESS LAW.** `Λ_{uv} ⊆ Σ_p` always at a coincident middle, so
+**(a)** `W ⊆ Σ_p` ⟹ `λ` is pinned and `V = W`, but `ρ̄₁ = Λ_{uv} + W ⊆ Σ_p`
+**caps `dim ρ̄₁ ≤ 3`**, and then `excess = dim ρ̄₁ − 2 ≤ 1`; **(b)**
+`W ⊄ Σ_p` ⟹ some line through `p` pairs nonzero with `W`, so generic
+`L ∋ p` restores `dim V = t − 1` and (BE-56)(iii) runs **verbatim**. Either
+way `excess ≤ 1` in the window ((BE-147)). Measured exactly: case (a) census
+`(dim ρ̄₁, t, excess) ∈ {(2,0,0), (3,1,1), (3,2,1)}` with
+`excess = dim ρ̄₁ − 2` at every row; case (b) `(5,3,2)` with `dim V = t − 1`
+and the excess law tight. **Corollary worth its own line: `δ₁ = 4` excludes
+case (a) outright**, so the window's hardest arithmetic row can only meet the
+coincidence regime through case (b), where nothing new is used.
+
+**THE END-TO-END CHECK, AT THE STRATUM THE HYPOTHESIS EXCLUDED.** **100**
+coincidence configurations over **20** shape-seeds / **10** shapes, each
+through `assert_generic_star` **and** `verify_pencil_witness` with the
+coincidence the only repeated point: `dim Z = 4` at **100/100**; the identity
+`ρ̄₁ ∩ Z = Λ_{uv}` **and** (b1) at **all 80** rows with `dim ρ̄₁ ≤ 4`; the
+identity failing at **all 20** rows with `dim ρ̄₁ = 5`, which (BE-56)(iv)
+*requires* ((BE-148)). **Non-vacuous in both directions.** Coincident middles
+are built by (BE-48)'s parametrization run **planes-first**: pick the shared
+point, then force the plane at every branch vertex whose closed star must
+contain it.
+
+**THE SUPPORT AUDIT IS THE COORDINATOR'S FINDING 1, CONFIRMED AND SHARPENED
+TWICE.** Read at source: `bearcase.sample_piece_config` and
+`bsharp.sample_piece_config_adj` each carry
+`if len(set(pt.values())) != len(V): continue`, a **global** pairwise-
+distinctness filter — so *"every drawn middle satisfies it"* is the filter.
+**Sharpening 1:** `binduc.assert_generic_star`, the guard the sentence most
+naturally names, rejects coincidence only on **edges** plus collinearity at
+distance `2`, and `dist_C(w₁,w₂) ≥ 3` in the window — so *"both samplers
+reject coincidence"* **overstates the guard** while understating the problem.
+**Sharpening 2:** `kbare_common.verify_pencil_witness` — the pencil
+*predicate* — rejects only adjacent coincidence, so the **mathematics admits
+`p_{w₁} = p_{w₂}`**: what the clause called an absence of *forcing* is an
+absence of *prohibition*, the opposite claim. And `bwin.resweep` rejects
+`rank(L + [p₁,p₂]) ≠ 4`, which `p₁ = p₂` makes unsatisfiable — **0 of 60**
+end draws over a constructed coincident middle survived. **Three layers, none
+able to produce the case, and (BE-55)(i)'s own honest domain excluding it by
+hypothesis** ((BE-142)). The quantitative form: `bwin.full_measure`'s own
+`(BE-56)(ii)` assert **fires** at **30 of 100** rows, so the landed
+measurement could not have been run where the claim needed testing.
+
+**The coordinator's framing, classified** (`RESEARCH-ARC.md` §7): **all four
+findings CONFIRMED, and finding 2's prediction was the one that paid.**
+Finding 1 is confirmed and **sharpened twice** (the named guard does not do
+the job, and the predicate *admits* the coincidence). Finding 2 — *"no such
+mechanism is known" is the sentence to attack* — is **confirmed exactly**:
+the mechanism exists, and this is the **sixth** clause of that shape to fall
+in this section. Finding 3's *"no framing to inherit"* was right and turned
+out to matter in an unforeseen direction: the two conditions were *labelled*
+as independent, and the labelling was the obstacle. Finding 4 stands
+unmodified — **S-mark's other half is untouched**. What the spec did **not**
+predict, and what a refutation-hunting reading of its own framing missed:
+the refutation and the proof are the **same object**, so *"a refutation costs
+the window's class theorem its carrier"* is wrong twice over — the theorem
+comes out **stronger**, with a hypothesis deleted.
+
+**One harness finding, and it is a silent guard-defeat rather than a wrong
+answer.** `bwin.dehom` returns a **list** where every sampler in the tree
+stores **tuples**: unhashable (so a `len(set(...))` check raises) and, worse,
+**unequal to a tuple**, so `assert_generic_star`'s `pt[u] != pt[v]` edge
+check silently passes for any edge with one endpoint written by `dehom`.
+`bscond.aff` is the local one-line fix. **No landed figure is affected** —
+`bwin` writes only the two terminals that way and their distinctness is
+separately implied — but a future module writing an interior vertex through
+`dehom` would lose the guard. Recorded as a *Recorded observation* rather
+than a new debt item, since the fix is one line at the call site. Both
+recorded silent hazards (`bimage.pt_in`'s truncation, `bimage.span`'s
+width-6 case) were **navigated**, not tripped: no `Λ²`-side draw through
+`pt_in`, and every `K⁴` subspace through the pre-existing
+`bwin.k4_span`/`k4_isect` — so **no new wrapper is minted**.
+
+**What did NOT move.** `PencilPair K 3 G`, `hbareSplit`, `hK`, (GR-15),
+(BE-14), the 2-cut step, **S-mark**, (BE-32)(+), the short-cycle law,
+BSHARP's dichotomy, BRULE's separation theorem, (BE-58)(i)–(iv), cross-pair
+welding, class uniformity, and **every landed measurement** (BWIN's 358
+guarded draws, the 160/160 `cls` census, the 84/84 per-`L` criterion, the
+42-draw excess census). **Half (B) at side-degree `≥ 2` stays OPEN with the
+METHOD as its obstruction** — closing (S1)/(S2) does **not** close S-mark.
+Three landed surfaces are **annotated at source** (per F12): (BE-57)(i)'s
+hypothesis list, (BE-55)(iii)'s scope and cap 3, (BE-56)(ii)'s scope; and
+(BE-57)(iv) as a whole is **SUPERSEDED**. Not a PENCIL event; E1/E2/E3 all
+decided **not fired** at source. **Two labels returned unused**: (BE-149)
+and *Step BE148*.

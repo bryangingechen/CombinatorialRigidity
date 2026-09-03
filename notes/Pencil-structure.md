@@ -1159,8 +1159,9 @@ bullet, the phase note wins.
 
 **Relocated verbatim from `notes/Phase39.md`'s *Hand-off* ranked list, 2026-09-02**, at the
 BSIGMA landing, when the note stood at 587/580 lines. Same disposition as blocks 8 and 9: these
-are the lane's **ranked-but-unmoved** candidates — **unmoved since BSIGMA (ordinal 67)**, and
-the note keeps items 0 and 1, which are the live ones. **Reference, not status**; if any of
+are the lane's **ranked-but-unmoved** candidates — **entry 3 KILLED at BSCOND (ordinal 76);
+the rest unmoved since BSIGMA (ordinal 67)** — and the note keeps items 0 and 1, which are
+the live ones. **Reference, not status**; if any of
 these is picked, its entry moves back into the note as the active item.
 
 **SWEEP C, 2026-09-03 — this block was re-checked entry by entry against the `(K-bare)`
@@ -1188,16 +1189,21 @@ recorded per entry below.
    direction"*, (BE-46)(iv) saying plainly that *"the class-level statement over
    all pieces"* is **not** discharged. So the witnesses this entry proposes to
    retire are now known to be load-bearing in exactly their weak direction.
-3. **(S1)/(S2), the two side conditions of (BE-57)** — hypotheses on the middle,
-   **vacuous at every drawn piece but NOT theorems** ((BE-57)(iv)); the window's
-   class theorem carries them until one is discharged. **Open and ranked, not
-   dropped.** **Kill condition:** either window condition proved or refuted.
-   **Decided by:** the `(K-bare)` row's *status* cell, which names them in as many
-   words — *"(β) at the window MODULO (BE-57)(iv)'s two window conditions"*.
-   **LIVE, unmoved** (re-checked 2026-09-03); this is the one entry whose deciding
-   row states it verbatim. *(Do not confuse with the `(K-slide)/(S1)` gap-map row —
-   a different (S1), on the `hK` side. Searching the row index for "(S1)" lands
-   on the wrong row.)*
+3. ~~**(S1)/(S2), the two side conditions of (BE-57)**~~ — **KILLED 2026-09-03 by
+   direction BSCOND (ordinal 76), its own kill condition fired: BOTH DECIDED.**
+   They were **one gap, not two** — `p_{w₁} ∈ π_u` and `p_{w₂} ∈ π_v` at every
+   configuration, so (S1) failing **is** (S2)'s meeting-lines regime ((BE-143));
+   (S1) is **REMOVABLE** from (BE-57)(i) ((BE-148)); (S2)'s first half is
+   **PROVED** with the forcing list exhaustive at two ((BE-145)) and its second
+   half **REFUTED as stated** — the mechanism exists — then **CLOSED** by the
+   coincidence excess law ((BE-146)/(BE-147)). (β) at the window is now
+   **UNCONDITIONAL**; the `(K-bare)` row says so. **The lesson this entry earns,
+   and it is why it sat 24 ordinals:** the entry recorded *"vacuous at every drawn
+   piece"* as reassurance when it was the **sampler's global distinctness filter**
+   speaking ((BE-142)) — a standing-candidate entry should record what a claim's
+   evidence *population* is, not only its status word. *(Do not confuse with the
+   `(K-slide)/(S1)` gap-map row — a different (S1), on the `hK` side. Searching the
+   row index for "(S1)" lands on the wrong row.)*
 4. BTWOCUT's successor (2), the **bundle-construction proof** — (BE-29)(ii) from rung
    to theorem, reaching `DZ` / `spider(5,5,5)+c`. **Skipped at every direction since
    BTWOCUT (ordinal 44)** — it read *"skipped four times"* until 2026-09-03, another

@@ -1613,7 +1613,8 @@ struck — decided by §9.3.*
   saturation. *Neither filter has a kill condition: they are negatives. Their
   status is decided by the `(K-out)` and `(K-grid)` gap-map rows.*
 
-**RE-RANKED 2026-09-03 — THE NINTH STRATEGY-ONLY PASS, AND THE RANKING A SESSION READS.**
+**RE-RANKED 2026-09-03 — THE NINTH STRATEGY-ONLY PASS, AND THE RANKING A SESSION READS.
+RANK 1 IS SPENT (BSCOND, ordinal 76, 2026-09-03); the live head of this list is RANK 2.**
 Coordinator-authored at a session start, no dispatch spent, commissioned by
 `notes/Phase39.md` *Hand-off*'s own next-concrete-task line after the liveness round found
 **~52 of ~108 forward-looking entries defective**. Every entry below was re-derived from its
@@ -1645,19 +1646,25 @@ is to be suspected in the shared downstream object, and the rule's remedy is a r
 object** before authorizing another re-targeting. The rule fires at the third; here the next
 build would be the fifth.
 
-1. **(S1)/(S2) — (BE-57)(iv)'s two window conditions.** Owner: `(K-bare)` row's *status*
-   cell, which names them verbatim (*"(β) at the window MODULO (BE-57)(iv)'s two window
-   conditions"*); standing entry 3 of block 10. **Why rank 1 on all four criteria:** it is the
-   only thing between half (β) and a class theorem at the window, on the statement that
-   discharges a carried item outright (criterion 1); it is **argument-shaped** — prove or
-   refute two side conditions on the middle — which is what the do-not-do below demands of
-   any next dispatch; it moves the thread off the four-times-defeated half (criteria 3, 4);
-   and it is **decisive both ways** (criterion 2), which is the point: *"vacuous at every
-   drawn piece but NOT theorems"* is the exact profile of an assumption a thread leans on
-   without testing, and this one has been leaned on for 24 ordinals. A refutation costs the
-   window's class theorem its carrier and re-routes (β) — the first hard information on that
-   half since BWIN. *Kill condition: either window condition proved or refuted. Decided by:
-   the `(K-bare)` row's status cell.*
+1. ~~**(S1)/(S2) — (BE-57)(iv)'s two window conditions.**~~ **SPENT 2026-09-03 —
+   direction BSCOND (ordinal 76), `notes/Pencil-fanout.md` §"BSCOND". Its kill condition
+   fired on BOTH:** the two conditions were **one gap** ((BE-143)), **(S1) is REMOVABLE**
+   ((BE-148)), (S2)'s first half is **PROVED** with the forcing list exhaustive at two
+   ((BE-145)), and its second half is **REFUTED as stated** — `p_{w₁} = p_{w₂}` does pin `λ`
+   onto `W^{⊥K}`, at real window middles — then **CLOSED** by the coincidence excess law
+   ((BE-146)/(BE-147)). (β) at the window is **UNCONDITIONAL**. **Two things this pass got
+   wrong, recorded because the ranking rationale is a forward-looking surface (§8's own
+   rule):** (a) *"a refutation costs the window's class theorem its carrier"* — it did not;
+   the refutation and the proof turned out to be **the same object**, and the theorem came
+   out **stronger**, with a hypothesis deleted; (b) the pass ranked this as *"the only thing
+   between half (β) and a class theorem at the window"*, which was right, and priced it as
+   **decisive both ways**, which was right for the wrong reason — the decisive information
+   was in the *sampler's support*, not in the mathematics of either condition taken alone.
+   **What the pass got right, and it is the transferable part:** *"vacuous at every drawn
+   piece but NOT theorems"* is the exact profile of an assumption a thread leans on without
+   testing, and naming the support before weighting any figure is what cracked it. *Kill
+   condition FIRED. Decided by: the `(K-bare)` row's status cell, which now reads
+   UNCONDITIONAL.*
 2. **Half (B) at side-degree `≥ 2` — the architecture question, AS A RECON, and see the bar
    below.** Owner: `(K-bare)` u39/u40, (BE-139)/(BE-140). The question is not *is `A_sharp`
    proper* but **whether any `p_x`-free-subspace method survives at `k ≥ 2`** — BDEGTWO's own
