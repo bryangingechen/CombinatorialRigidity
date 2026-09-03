@@ -9,8 +9,8 @@ derives it from exactly **three carried items**: **`hcontract`** (W4 — build p
 (L0–L7), `hsplit` and `hfresh` included (2026-07-30, unchanged since).
 
 **The research arc: 83 directions COMPLETE** (2026-08-05 → 09-03, ordinals 1–75 — 78 on
-kernel (K), **WTRI/WELOC/WPAIR/WGROW (58–61) on W4**), plus eight strategy-only passes, two
-architecture probes and one read-only scoping recon. **GPACK (66) opened the `hK` lane after
+kernel (K), **WTRI/WELOC/WPAIR/WGROW (58–61) on W4**, **RPOOL (75) on (K-res)**; direction
+= ordinal + 8), plus eight strategy passes, two probes and a scoping recon. **GPACK (66) opened the `hK` lane after
 22 dispatches; GLIST (68) and GGLOB (71) are its successors**; **BDEGTWO (74)** is
 BLINE's (73) own residue, **RPOOL (75)** the (K-res) row's. Per-direction verdicts, specs and write-ups live at
 `notes/Pencil-fanout.md` §"<CODE>" (1–19: the archive) plus a workbook home — **not

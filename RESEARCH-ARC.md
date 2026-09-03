@@ -208,6 +208,16 @@ fixed distribution) is untested in that direction, however many times the assert
 This is distinct from §4's original shape — there, *no* driver tested the sentence; here
 a driver did, correctly, and the population was blind.
 
+**A SECOND INSTANCE, 2026-09-03 (direction RPOOL), sharpening the rule for GENERATED
+families.** A prior direction proved its claim per-shape on a witness `W19` and varied the
+shape *family* around it. The refutation was `family_g(`**5**`, …)` where `W19` is
+`family_g(`**4**`, …)` — **the same generator, one parameter along** (the core cycle one edge
+longer) — and it had been sitting in that direction's **own recorded pool** since the day it
+was built. So: **when a claim is proved per-shape over a family produced by a generator,
+enumerate the generator's parameters and state which ones the evidence varied.** *"We tried
+many shapes"* is not support; *"we varied `n` and the leg profile, never the core length"* is.
+The counterexample is likeliest to sit one step along the axis nobody moved.
+
 This is the single most load-bearing item in this file — it recurred
 across three consecutive corrective passes in PENCIL's arc (a degenerate
 sampler contamination, an acyclic-vs-proper colouring conflation, and a

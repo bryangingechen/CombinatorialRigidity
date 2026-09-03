@@ -1,7 +1,13 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
 **Status: EIGHT fan-outs, FORTY-EIGHT single directions, ONE draft-only parallel direction
-and THREE concurrent pairs dispatched; 76 LANDED, NONE IN FLIGHT.**
+and FOUR concurrent pairs dispatched; 83 LANDED, NONE IN FLIGHT.**
+**The three landings after GLIST — BLINE (ordinal 73), BDEGTWO (74), RPOOL (75) — have their
+own sections; read those, not the blurb below, for the current state.** *(Counter reconciled
+by the coordinator 2026-09-03: this header read **76** and named GLIST as the latest landing
+while `ROADMAP.md` read 82 and `Phase39.md` 83 — two concurrent directions incrementing one
+shared counter from different baselines, the hazard `RESEARCH-ARC.md` §2 records. The count is
+**directions**, which run **ordinal + 8**; no direction increments it, the coordinator does.)*
 **GLIST (ordinal 68, §"GLIST") LANDED 2026-09-02** — the `hK` lane's own named successor,
 one direction after GPACK, at **(GR-132)'s hub list-colouring at the `ℓ = 2`-rich shapes**;
 the **committing** dispatch of a concurrent pair. **HIT shape 3 — REDUCED to a named
