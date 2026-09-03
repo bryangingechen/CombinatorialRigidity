@@ -1024,9 +1024,14 @@ Three things to carry forward from it:
   conclusion back to *every* class habitat's chart.
 - **It found a missing hypothesis.** The span criterion is
   `p⁺₂p⁺₃·g₁₃g₁₄g₂₄ ≠ 0`; the recorded (Λ0f) carries only the first two
-  factors, and `g₁₄ = [b,x₁,x₃,c] ≠ 0` is asserted nowhere in the Python
-  harness. It is generic, so no sampled frame ever saw it fail — the exact
-  failure mode sampling cannot detect.
+  factors, and `g₁₄ = [b,x₁,x₃,c] ≠ 0` was asserted nowhere in the Python
+  harness **at the time**. It is generic, so no sampled frame ever saw it fail —
+  the exact failure mode sampling cannot detect. **CLOSED the same day, and this
+  clause is now a settled record, not a job:** §(K-Λ) *Step 3a* (2026-08-05)
+  located it geometrically as **(Λ0g)** — `g₁₄ = 0 ⟺ C₁ ∩ M = C₄ ∩ M` as points
+  of `M`, one equation on the line `pt(a)` slides along — and it is asserted per
+  frame in `outer.py` (`--geom`/`--habitat`/`--sweep`) and at the chart point in
+  `ltwo.py`. *Kill condition: none — settled. Deciding surface: §(K-Λ) Step 3a.*
 - **It also marks the method's boundary, and confirms §2.3.** The upgrade works
   because (Λ0) is a statement about the **local frame alone**, where the far
   graph does not appear. (K-wit) — the escape's uniformity — quantifies over the
@@ -1063,7 +1068,30 @@ up immediately (`M2 --script notes/scripts/m2/lambda1.m2`; mathematics in
 `notes/Pencil-informal.md` §(K-Λ) *Step 2*). It verified, and it came with two
 things the per-frame battery could not give: (Λ1) needs **none** of (Λ0) and
 none of the panel data, and `rank Φ_loc = 2` is now generic rather than
-observed. (iii) (K-chord)/`R_3` questions for parameterized families.
+observed.
+
+**(iii) (K-chord)/`R_3` for parameterized families — LIVE, now this list's only
+unstruck item, and NOT dispatchable until a question is named.** `(K-chord)` is
+open, and its residue **widened** since this line was written: since §(K-mech)
+(direction M, 2026-08-06) the slide device's necessary-condition set is **three**
+decoration-free items — (K-chord) itself, both pole-cluster bounds `≤ 1`
+((MX-4)/(MX-5)), and no forced flex route ((MX-6)) — measured complete and sound
+at 21/21 on the sampled `|V°| ≤ 6` strata ((MX-9)); the live residue is the
+**sufficiency** of that set beyond those strata. Two standing objections a spec
+must clear first, neither of which was recorded here before 2026-09-03: `R_3` is
+a matroid with **no combinatorial characterisation** (generic 3-dimensional
+rigidity), so a class argument has nothing to reduce to (the `(K-chord)` row's
+own words); and the M2 layer's reach is bracketed from both sides by
+**(ANH-16)** — degree 12 in 24 indeterminates finishes at 578 s, the θ core at
+the generic point does **not** finish at 600 s — with the layer **cold since
+2026-08-07**. *Kill condition: a named question here run, or (K-chord) closed —
+decided by the `(K-chord)` gap-map row (`python3 notes/gapmap.py --row
+'(K-chord)'`).*
+
+**Standing rule for this list, added 2026-09-03 after direction GELIM was
+dispatched on a dead entry:** no item here is dispatchable without (a) an
+**(ANH-16) price** and (b) a check of its **owning gap-map row**. Neither
+objection that killed GELIM was in this section; both were one row away.
 
 **One measured feasibility datum, from that first driver.** The **ungauged**
 end-to-end (Λ1) expansion — all 28 point coordinates indeterminate, degree 52 —
@@ -1076,8 +1104,12 @@ graph.
 
 **Why this is plausible rather than fantasy:** Gröbner blowup makes whole-graph
 symbolic work hopeless (a `|V| = 31` shape carries ~120 point coordinates), so it
-is viable only on the **local frame** — 6 points, two panels, a meet line — which
-is precisely where §5.3's first item lives.
+is viable only on the **local frame** — 6 points, two panels, a meet line. That
+is where the layer's two delivered results live ((Λ0) and (Λ1), §(K-Λ)), and it
+is the boundary the gauge-slice datum above measures. ~~which is precisely where
+§5.3's first item lives~~ — **struck 2026-09-03 with item (i) itself: that item's
+disposition says it is *not* frame-expressible on the class stratum (`k ≥ 4`), so
+it was never an instance of this principle.**
 
 ### 5.4 Macaulay2 — the layer, and its conventions (**LANDED 2026-08-05**)
 
@@ -1287,11 +1319,17 @@ points at the section that owns it. **Status words here are pointers**; the
 owning section and `notes/Pencil-informal.md`'s *State of (K)* map remain
 authoritative.
 
-**Not on this board: §9's six candidates (ZH-1)–(ZH-6)**, from a project-new
-external source read 2026-08-21. They are deliberately *unpriced* — (ZH-2) and
-(ZH-3) owe a §2.5 filter check, and the source itself is unrefereed — so a session
-choosing from this board should read §9 as a separate, unvetted shelf rather
-than as rows omitted here.
+**Not on this board: §9's Zheng shelf** (a project-new external source read
+2026-08-21; the source is unrefereed and is an **idea source, never a
+citation**). **Corrected 2026-09-03 — this paragraph had gone stale against §8's
+own closing paragraph, which records the owed filter checks as DISCHARGED:** of
+the six candidates (ZH-1)–(ZH-6), **(ZH-1) and (ZH-4) are struck, (ZH-3) is
+struck-by-absorption, (ZH-5) is a design note and (ZH-6) is write-up material**
+(§9.3, updated twice on 2026-08-26 by directions ZSHEAR and ZJACOB), and the owed
+§2.5 filter checks are **DONE**. What survives is **(ZH-2) in its stratified
+reading only**, priced as row 8 of the corrected table below. The shelf stays off
+this board. *Kill condition for the shelf as a whole: (ZH-2)-stratified run or
+struck — decided by §9.3.*
 
 **Read the two filters first — most candidates die on one of them.**
 
@@ -1303,7 +1341,10 @@ than as rows omitted here.
   since: §(K-out) **(OC-3)** (no counting, matroid or placement-blind argument
   can deliver (OUT)'s hypothesis) and, 2026-08-19, §(K-out) **(OC-37)** — the
   counting route to a **disproof** is dead too. Counting is closed in *both*
-  directions.
+  directions — and a **third** arrival, 2026-09-02: on the `hK` lane's own
+  residual, **(GR-141)** (direction GGLOB) kills the counting handle by
+  saturation. *Neither filter has a kill condition: they are negatives. Their
+  status is decided by the `(K-out)` and `(K-grid)` gap-map rows.*
 
 **RE-RANKED 2026-08-25** (the eighth strategy-only pass, post-GFLIP/GCHEAP;
 each candidate's stated inputs re-derived against its owning workbook step, not
@@ -1354,31 +1395,56 @@ an invariant proposal, so neither filter bites):
    (a′)/(b′) ledger and does not touch a named `hK` gap.
 3. **(K-bare) at the seed-free direct-attainment shape** — bypass the
    antecedent and attack `HasPencilRealization K 3 G` directly on the
-   habitat (the KBARE-FALSIFY probe's own suggestion; **not option B**, which
-   stays un-commissioned). This is where the standing attention asymmetry
-   (39 directions on `hK`, zero on (K-bare)) says a dispatch now belongs, and
-   this is the cheapest of the gap-map row's three named shapes: the
-   `∃`-seed + deformation-repair shape has no chart to work in, and the
-   supply-lemma shape reduces to it. Two probe-delivered enablers make it
-   newly affordable: the §(K-tight) boundary-load calculus **transports**
-   (192/192) and the dependent stratum is **complete** at `corank(G′) ≤ 3`.
-   Ranked third, not first, because its first slice is exploratory (no named
-   one-step residue), where ranks 1–2 each attack one.
+   habitat (the KBARE-FALSIFY probe's own suggestion; **not option B**).
+   **BOTH OF THIS ENTRY'S STATED REASONS FOR ITS RANK ARE NOW FALSE
+   (corrected 2026-09-03); the item itself is LIVE.** It is the **(BE-14)
+   thread**, run continuously since **BATTAIN** (*Steps BE9–BE13*) through
+   **BLINE** (*Steps BE129–BE135*) — 130+ steps — so *"39 directions on `hK`,
+   zero on (K-bare)"* describes only the day this was written; and its first
+   slice is **not** exploratory, because the thread now has named one-step
+   residues. Current locus, from the gap-map row rather than from this board:
+   (BE-14) is **OPEN**, its **only open step** is **S-mark, the 2-cut
+   composition lemma**, half (B)'s residue **(PENCIL-SATURATES-CHART)** is a
+   **THEOREM at every side-degree-`1` terminal** ((BE-122)–(BE-128)) so
+   **14 → 12** stands generically, and at side-degree `≥ 2` the `(∗)` route is
+   **DEAD** ((BE-130)) with successors the exact `k ≥ 2` reduction keeping
+   `xc₂…xc_k` ((BE-133)) and a `k ≥ 2` sweep lemma ((BE-134)). Of KBARE-FALSIFY's
+   two shapes, the `∃`-seed + deformation-repair one meets §(K-tight)'s wall;
+   this seed-free one is the running thread. *Kill condition: (BE-14) settled —
+   decided by the `(K-bare)/(K-bare-ext)` row (`gapmap.py --row '(K-bare)'`,
+   units u38–u39).*
 
-Below the top three, unchanged in relative order: the one-unit-defect redo of
-(GR-79)–(GR-82) (*Step G103* hand-off item 1 — *"cheap, self-contained, and
-the honest completion of attack (c)"*, but bookkeeping-grade: (GR-84) already
-realizes both unbounded residual cases at `n_hub = 16`); collision dominance
-(*Step G115* (GR-96)(iii) — non-vacuous at only the 180 Petersen witnesses,
-and no mechanism identified); (OC-19) input (c) ((GR-15)-flavoured, the
-oldest missing technology). §8.2's C2/U1/U3 and §8.4's route-σ obligations
-2–4 keep their standing notes. **The one filter note this board owed on §9's shelf is
+Below the top three, unchanged in relative order:
+~~the one-unit-defect redo of (GR-79)–(GR-82)~~ — **BARRED 2026-09-03 by the
+DO-NOT-DO below. It IS an (a′)/(b′) ledger direction** (attack (c) of route-ledger
+entry 1, *Step G103* hand-off item 1), so the bar reaches it by its own reason,
+not merely by span. **The mathematics stays OPEN and this is not a closed-route
+record** — `(K-grid)` close-it u26 still names it as attack (c)'s successor
+(*"redo (GR-79)–(GR-82) with a one-unit defect budget"*, *"cheap,
+self-contained, and the honest completion of attack (c)"*), and (GR-84) already
+realizes both unbounded residual cases at `n_hub = 16`, so it is bookkeeping-grade
+even unbarred. It is a live item this board declines to dispatch;
+collision dominance (*Step G115* (GR-96)(iii) — non-vacuous at only the 180
+Petersen witnesses, and no mechanism identified) — **NOT barred: GCOLL lives
+inside *Steps G74–G148* but is not an (a′)/(b′) ledger direction, and the
+DO-NOT-DO is by attack name, not by span (see below)**; *kill condition:
+`min_M B(M) ≤ d_adm` proved or refuted — decided by `(K-grid)` close-it u16*;
+(OC-19) input (c) ((GR-15)-flavoured, the oldest missing technology) — *kill
+condition: `H/X` rigid class-uniformly — decided by the `(K-out)` row, u9, and
+§(K-out) *Step O18**. §8.4's route-σ obligations 2–4 and §8.2's C2/U1 keep their
+standing notes; **§8.2's U2 and U3 do not — both were re-settled 2026-09-03, U2
+STRUCK and U3 already-pursued (see §8.2). This sentence used to read
+"C2/U1/U3", silently omitting U2; that omission turned out correct in outcome
+and is now explicit.** **The one filter note this board owed on §9's shelf is
 DISCHARGED (2026-08-26, direction ZSHEAR's secondary deliverable):** (ZH-2)
 survives §2.5 only in its **stratified** reading (whole-chart `∆` is
 count-expressible, so the filter bites exactly there), and (ZH-3) survives the
 filter but is **circular as posed** — a sharper objection. As predicted, neither
-moves anything onto this board, and the shelf stays off-board; §9.3's order is
-updated and (ZH-1) is **struck**.
+moves anything onto this board, and the shelf stays off-board; §9.3's order was
+updated **twice on 2026-08-26** — ZSHEAR struck **(ZH-1)**, and ZJACOB struck
+**(ZH-4)** and absorbed **(ZH-3)** — leaving **(ZH-2)-stratified** as the shelf's
+only dispatchable content (row 8 below). *(The second update was missing here
+until 2026-09-03.)*
 
 **THE CORRECTED `hK` RANKING (2026-09-02).** Re-derived from each item's *owning*
 section rather than from this board (the F22 discipline), by a read-only scoping recon
@@ -1388,41 +1454,77 @@ own top two were spent. **The two filters were applied to every entry.**
 | # | item | owner | status, re-derived |
 |---|---|---|---|
 | ~~**1**~~ | ~~**(GR-18)(iii)**, the grouping problem~~ | §(K-grid) *Steps G149–G164* | **SPLIT IN TWO 2026-09-02 (GPACK)**: the packing-and-split half is an **unconditional theorem** ((GR-130)) off `def(G) = 0` alone, and the residual is a **hub list-colouring** ((GR-132)) at `Λ = ∅`. **SPENT at the `ℓ = 2`-rich shapes 2026-09-02 (GLIST)**: that residual is now a 9-valued hub CSP in `(α, γ)` with clause (a) **free** ((GR-134)) and an exact local criterion — a cubic pure hub fails **iff** its three `D_β` are a perfect matching of the six trees ((GR-135)) — but **82 % of the infeasible pairs are locally feasible at every hub** ((GR-136)), so the open half is not hub-local. **RE-LOCATED and made CSP-FREE 2026-09-02 (GGLOB)**: the packing quantifier is **eliminable** and the residual is an orientation-plus-two-colourings criterion on the length-2 subgraph which, on the `D = 0`, `Λ = ∅` stratum, **IS (GR-10)** ((GR-140)); both named handles are dead — counting by saturation ((GR-141)), matroid union by an exhibited exchange failure ((GR-142)) — and the obstruction has **three tiers**, all of the 82 % being propagation-visible and the genuinely global tier first realized at `n_hub = 6` ((GR-143)). The successors are (GR-144)'s; `Λ ≠ ∅` still needs a merging conjunct nobody has written |
-| 2 | collapse-order bound `κ ≤ 4/5` + the `r = 4` certifying criterion | §(K-grid) *Step G22* ((GR-19)); TCOL (i)/(ii) | measured `κ ≤ 4` at **18/18** separators, unproven, untouched since 2026-08-07 |
+| 2 | collapse-order bound `κ ≤ 4/5` + the `r = 4` certifying criterion | §(K-grid) *Step G22* ((GR-19)); TCOL (i)/(ii) | measured `κ ≤ 4` at **18/18** separators, unproven, untouched since 2026-08-07 — **re-checked 2026-09-03, unchanged**. *Kill condition: `κ ≤ 4` (or `≤ 5`) proved, or a census-pool `dim Z = 0` block with `κ ≥ 5` — decided by `(K-grid)` **close-it u6, targets (ii) and (iii)**. Item (iv) of that same list is already settled by (GR-130); (ii)/(iii) are the two that survive* |
 | 3 | **(OC-44)(iii)** wall-avoiding certificate-colouring existence | §(K-out) *Steps O41, O47–O51* | **RE-SCOPED 2026-09-02 (OWALL), row was stale until 2026-09-03**: (OC-44)(iii) is **REDUCED to (OW)**, geometry-free, and *Step O41*'s own named route is **REFUTED BY LOGIC** ((OC-50)–(OC-55)) — the conjunct it attacked is implied by the one it did not. Still open at (OW); a HIT still buys a **quantifier**, not a gap-map row |
-| 4 | the (a′)/(b′) ledger residuals | §(K-grid) G98–G148 | entry **1 of 4**; entries 2–4 recorded *unchanged/unswept* at every landing since 2026-08-13 — **see the do-not-do note below** |
-| 5 | (OC-19) input (c); the ZNEQ pool **re-key** | §(K-out) O18 | the re-key is *"a combinatorial cross-pool job, no new mathematics"* — genuinely cheap; input (c) itself is (GR-15)-flavoured |
-| 6 | route σ obligations 2–4 | §8.4; §(K-σ) *Step σ5* | eligible (obligation 1 only is Lean-held), but the branch obligation 4 closes *"has never been observed nonempty"* — insurance, not progress |
-| 7 | OGEOM's successors | §(K-out) O42–O46 | disproof-risk reduction, which **(OC-24)** says can never be the binding obstruction |
-| 8 | **(ZH-2) stratified** | §9 (Zheng preprint) | unrefereed, **idea source never a citation**, deliberately off-board; the shelf's last dispatchable candidate |
+| 4 | the (a′)/(b′) ledger residuals | §(K-grid) *Steps G98–G148*; the route ledger, `Pencil-informal-grid.md` L8374 | **route-ledger entry 1** (uniform fully-good existence at `Λ = ∅`, `D = 0`); **entries 2–4 are (GR-4′), `Λ ≠ ∅`, `D > 0`** — recorded *unchanged/unswept* at every landing since 2026-08-13; **entry 5 is PROVEN** ((GR-54)). *(The row used to say "entry 1 of 4" and name none of the others, which is why it was uncheckable.)* Its one live successor moved 2026-08-26: the **(L)** reading — *is the ledger gap ever `≥ 3`?* ((GR-127); spectrum `{0,1,2}` at 4 935 shapes) — **not** (P) (FALSE, (GR-122)) or (m) (PROVEN, (GR-126)). **BARRED by the do-not-do note below.** *Kill condition: any of entries 1–4 moves status — decided by `(K-grid)` close-it u14–u26* |
+| 5 | (OC-19) input (c) | §(K-out) *Step O18* | **the ZNEQ pool re-key is STRUCK — it was DONE 2026-08-19**, by **(OC-34)**, §(K-out) *Step O30*, direction OSCHU: the (a₂)/`s₀` re-keying landed (`907 → 75` classes covering 19 of 174, the other **155 certified DIRECTLY**), so the `s₀` half is free at **all 174 and *without* (GR-10)**. It was already done fourteen days before this "corrected" table listed it as cheap and unrun — recorded, not silently removed, because that is the exact defect this round exists to catch. What survives is a **different** job, *Step O30* hand-off item 2 — the **uncapped** re-keying that would turn 174 into a class statement — and it is **not** *"a combinatorial cross-pool job, no new mathematics"*. Input (c) stays open and is (GR-15)-flavoured. *Kill condition: input (c) class-uniform — decided by the `(K-out)` row, u9* |
+| 6 | route σ obligations 2–4 | §8.4; §(K-σ) *Step σ5* | eligible (obligation 1 only is Lean-held), but the branch obligation 4 closes *"has never been observed nonempty"* — insurance, not progress. **Route σ faces exactly one crux** (`(K-σ)` close-it u2): the workbook's two kills of `M₁` (§(K-tight) *Step 1* and *Step 2.6*) rest on the **same** reason, the `hinge(vb) := q(ab)` pinning. *Kill condition: an obligation discharged, or the obligation-4 branch observed nonempty — decided by the `(K-σ)` row, status u8* |
+| 7 | OGEOM's successors | §(K-out) *Steps O42–O46* | disproof-risk reduction, which **(OC-24)** says can never be the binding obstruction. The successor is **one shape-free sentence**: *at every live core the Kirchhoff map `⊕_Q S_Q^⊥ → (K⁶)^nodes` is injective at the generic chart point.* Unsearched: `n(F°) ∈ {4,5}` at `\|E°\| ≥ 9`, and **every** `n(F°) ≥ 6`. *Kill condition: that sentence proved, or a `σ > 0`-everywhere shape exhibited (a PENCIL event) — decided by the `(K-out)` row's disproof paragraph, u26* |
+| 8 | **(ZH-2) stratified** | §9 (Zheng preprint) | unrefereed, **idea source never a citation**, deliberately off-board; the shelf's last dispatchable candidate. *Kill condition: (ZH-2)-stratified run or struck — decided by §9.3* |
 
-**Why (GR-18)(iii) is rank 1.** Its input **(GR-18)(i) is a landed theorem** — `def(G) = 0`
-*alone* forces `Ĝ` to partition into exactly 6 spanning trees — so what is open is a
-**finite combinatorial** question with two named freedoms (re-choose the packing by matroid
-exchange; the even branches' bits). It passes the **growing-ground-set** test better than
-anything else on this board (index set `E(Ĝ)`, size `6(\|V\|−1)`), **counting saturation
-does not bite** because it is not an invariant of the escape, and **(GR-13)'s own hardness
-note points here** (*"any proof of (GR-10) must be an existence-of-good-colouring
-argument"*). It is `(GR-4′)`-free and stratification-free, so it owes **none** of the three
-ledger entries that have sat unswept all arc. HIT → (GR-10) → (GR-15) → `hK` **on the tight
-stratum**; MISS → the first (GR-10) flank in 73 directions.
+**Why the (GR-18)(iii) line was rank 1, and what its successors inherit** (updated
+2026-09-03; **the row itself is struck above**, so this is rationale carried forward, not a
+live ranking). Its input **(GR-18)(i) is a landed theorem** — `def(G) = 0` *alone* forces
+`Ĝ` to partition into exactly 6 spanning trees — and the split half is now unconditional
+((GR-130)). It passes the **growing-ground-set** test better than anything else on this
+board (index set `E(Ĝ)`, size `6(\|V\|−1)`), **counting saturation does not bite** because
+it is not an invariant of the escape, and it is `(GR-4′)`-free and stratification-free, so
+it owes **none** of the three ledger entries that have sat unswept all arc. **One freedom,
+not two (corrected 2026-09-03):** this paragraph used to name two — re-choose the packing
+by matroid exchange, and the even branches' bits — but **(GR-140)** (GGLOB, 2026-09-02)
+makes the packing a *function* of the solution, so the **packing quantifier is eliminable**
+and the exchange freedom is gone. What is left is *orient `H`, 3-colour the hubs twice,
+every cycle carrying a head of each `α`-colour and a tail of each `γ`-colour* — which on the
+`D = 0`, `Λ = ∅` stratum **IS (GR-10)**, so **(GR-13)'s hardness note now applies to the
+residual itself** (*"any proof of (GR-10) must be an existence-of-good-colouring
+argument"*), a strengthening rather than a loss. HIT → (GR-10) → (GR-15) → `hK` **on the
+tight stratum**; MISS → the first (GR-10) flank in **81** directions. *Kill condition:
+(GR-144)'s successor list exhausted, or (GR-10) settled — decided by `(K-grid)` close-it
+u7.*
 
 **THE DO-NOT-DO, and it is the strongest item this re-rank produced.** **Do not dispatch
-another (a′)/(b′) ledger direction.** Fourteen directions (GLAW → GMINM, *Steps G74–G148*)
-have worked it; the `(K-grid)` status cell's own summary over that span is *"(GR-15) stays
-OPEN throughout, unchanged in status, no gap-map status move"*. Its live successor is
-bookkeeping by its own words, and it is the thread that produced this board's rank 2 —
-refuted the day after it was ranked. The general form: **the next `hK` dispatch's
+another (a′)/(b′) ledger direction.** Fourteen directions (GLAW → GMINM, mostly living in
+*Steps G74–G148*) have worked it; the `(K-grid)` status cell's own summary over that span
+is *"(GR-15) stays OPEN throughout, unchanged in status, no gap-map status move"*. Its live
+successor is bookkeeping by its own words, and it is the thread that produced this board's
+rank 2 — refuted the day after it was ranked. The general form: **the next `hK` dispatch's
 deliverable must be an argument, with the search demoted to an adversarial control.** The
 record is 907/907, 40 742 exhaustive, 549 172 blocks, 1 158 344 instances, 323 adversarial
 constructions — and (GR-15)'s status word has never moved. §2.2 already wrote the reason:
 *"A search does not carry a reason."*
 
-**TWO INTERNAL CONTRADICTIONS FLAGGED — (b) is now RESOLVED, (a) still open** (each needs a
-whole-file check the coordinator has not done, and one of them lives in the authoritative
-status object): **(a) STILL OPEN** — §8.2 lists **U2** *"live, rank 2"* and **U3** *"live,
-rank 3"*, while §8.6 says U2 was *"delivered by (GR-16)'s reduction"* and U3 *"already
-exploited for the tight stratum only"*. **(b) RESOLVED 2026-09-02 (direction GLIST, which
+**Scope of the bar, ruled 2026-09-03 because two live options sat ambiguously inside it.**
+The bar is **by attack name, not by span**: it prohibits further **(a′)/(b′) ledger
+directions wherever they live**, and *Steps G74–G148* is a *"where they mostly live"*
+pointer, **not** the definition. The span is over-broad — it sweeps in work the bar's reason
+does not reach. Concretely: **collision dominance (GCOLL, *Steps G110–G115*) is NOT barred**,
+nor is any other non-(a′)/(b′) work inside that span; the **one-unit-defect redo of
+(GR-79)–(GR-82)** (attack (c) of route-ledger entry 1, GTMPL *Steps G98–G103*) **IS** an
+(a′)/(b′) ledger direction and **is** barred, and the two places above that used to offer it
+now say so. The reason matters: this bar is **mathematical** — the ledger is spent, and
+(GR-15) has not moved across fourteen directions — not a priority call, so the
+re-openable-on-merit rule that governs declined options elsewhere on this board does **not**
+loosen it. Lifting it for a specific item is a coordinator decision and must be recorded
+*here*, not inferred from a row above. *Kill condition: an argument-shaped handle on the
+ledger, or (GR-15) moving status — decided by the `(K-grid)` status cell.*
+
+**TWO INTERNAL CONTRADICTIONS FLAGGED — BOTH NOW RESOLVED** (each needed a
+whole-file check, and one of them lived in the authoritative status object):
+**(a) RESOLVED 2026-09-03 (liveness round, from §4.6 and the gap map — settled
+without reading this board, so the verdict is independent of the surfaces that
+were in conflict).** The dispute was **three-way**, not two-way: §8.2 listed
+**U2** *"live, rank 2"* and **U3** *"live, rank 3"*; §8.6 said U2 was *"delivered
+by (GR-16)'s reduction"* and U3 *"already exploited for the tight stratum only"*;
+and this board's own below-the-top-three paragraph enumerated *"C2/U1/U3"*,
+**silently omitting U2**. Verdict: **§8.2 was the defect.** **U2 is DEAD** by its
+own named kill clause — it dies if the support condition is satisfiable at some
+class shape, and **(OC-4)** reaches the bad line by a legal chart move at all four
+certified habitats, with **(OC-3)** independently ruling the target out in
+principle as a matroid statement. **§8.6's verdict was right and its cause was
+wrong**: (GR-16) is a *different object*, an exact `3c × 3c` system on `G°`
+alone. **U3 is ALREADY-PURSUED**, not live-rank-3. The below-top-three omission
+was correct in outcome. All three surfaces are now repaired; §8.2 carries the
+detail. **(b) RESOLVED 2026-09-02 (direction GLIST, which
 owned the surface it touched)** — the `(K-grid)` **close-it** cell listed as live route (i)
 *"a colouring-existence argument over Step G12's branch bits … + (GR-4′)"*, i.e.
 **certificate 3**, while the same cell filed *"the whole certificate-3-uniformity route"*
@@ -1441,6 +1543,14 @@ permanent. The scoping recon, having read four of 28 rows, could find no row own
 remainder and raised it as a question. **It is owned: `§(K-res)/(RS-5)`**, which routes
 `def > 0` habitat members to the **escape route** ((RS-6)). **Not an unowned gap** — a
 (GR-15) HIT buys the tight stratum and hands `C11`'s stratum to a route that has an owner.
+**Three precisions from that row, added 2026-09-03:** **(RS-5)** is *(GR-15)'s criterion
+verbatim, quantifier widened past the tight class*, and its quantifier is **disjoint** from
+(GR-15)'s — the row's own words are *"closing (GR-15) does **NOT** close this row"*; it is
+**(RS-6)** that retires the `def > 0` fringe, by a **proven** mechanism (θ(2,3,7) capped at
+`58 < 59` at all 4 admissible colourings); and the row **prices the (K-res) wave** —
+reduction free, per-shape checks cheap, uniformity machinery to rebuild above the *Step G23*
+waterline. *Kill condition: (RS-5) proved, or a `def = 0` (K-res) shape whose every
+admissible colouring has `dim Z > 0` — decided by the `§(K-res)/(RS-5)` row.*
 
 **And the way this box first posed the question INVERTED ITS OWN SOURCE.** It asked whether
 the remainder is *"genuinely free — §2.5's `dim R_a ≥ 2` ⟹ escape automatic"*. That
@@ -1462,41 +1572,44 @@ its named residuals, all slice-sized, none needing an adjudication.
 | option | what it would buy | owner |
 |---|---|---|
 | ~~**(GR-R1)**~~ (§(K-grid), GFLOW's clause) | **DONE — PROVEN 2026-08-25 (direction GFLIP, ordinal 30)**, strengthened to `≥ \|δ\|` feasible majority flips; (b′)'s `n`-free `≤ 12` is now a **theorem** | §(K-grid) *Steps G116–G119* |
-| ~~**(GR-C2)**~~ (§(K-grid), GFLOW's) | **SETTLED per-configuration in both directions 2026-08-25 (direction GCHEAP, ordinal 31)**: every-step form PROVEN for `n_hub < 6\|δ\|` — **(b′) at the constant 2 is a THEOREM on the whole `n_hub ≤ 6` stratum** — and per-configuration form REFUTED from `n_hub = 12`, boundary exact both ways | §(K-grid) *Steps G120–G124* |
-| **(GR-104)(i)** (§(K-grid), GCHEAP's) | **RANK 2 on the 2026-08-25 re-rank.** The **price form** of the selection clause — the whole remaining gap between the proven constant 4 and (b′)'s 2 (theorem at `n ≤ 10`, measured intact at `n = 12` where the stalled flips price 0; a refuting pair needs ALL parity-optima unbalanced and price-stalled, confined by the stall tax (GR-102)) | §(K-grid) *Step G124* |
-| one-unit-defect-budget redo of (GR-79)–(GR-82) | finishes ledger attack **(c)** past its `n_hub ≤ 14` boundary | §(K-grid) *Steps G98–G103* |
-| ~~`rank(Q\|_D) = 3` — the **ℚ(i) eigen-block leg**~~ | **RUN 2026-08-25 (direction OQRANK, ordinal 32) — a graded HIT: input (a) DELIVERED at all 174 certified classes**, per-class/per-colouring-generic, by the completed ⋆-eigen-block mechanism; the naive first-colouring form REFUTED as a class statement (27/174, incl. the (OC-42) **WALL**); zero (K-tight)-event rulings. O29's open caveat is answered *graded*: the wall and the secant positives are combinatorial, the general per-block condition is not. Successors: (OC-44)(iii) wall-avoiding-colouring existence; the second confinement's mechanism | §(K-out) *Steps O37–O41* |
-| collision dominance `min_M B(M) ≤ d_adm` | GCOLL's successor to the refuted (GR-64)(R2) | §(K-grid) *Step G115* |
-| (OC-19) input (c) class-uniformly | OCON's #1 by value — but **(GR-15)-flavoured**, so it re-enters the oldest missing technology | §(K-out) *Step O18* |
+| ~~**(GR-C2)**~~ (§(K-grid), GFLOW's) | **SETTLED per-configuration in both directions 2026-08-25 (direction GCHEAP, ordinal 31)**: every-step form PROVEN for `n_hub < 6\|δ\|` — **(b′) at the constant 2 is a THEOREM on the whole `n_hub ≤ 6` stratum** (modulo (GR-C1) at `n = 8, 10`) — and per-configuration form REFUTED from `n_hub = 12`, boundary exact both ways. **Read with (GR-127) (GMINM, 2026-08-26), added 2026-09-03:** (b′) has **three inequivalent readings** and the ledger consumes the third — **(P)** `∀M` **FALSE** ((GR-122)), **(m)** `min_M(d_adm − d_par)` **PROVEN** ((GR-126)), **(L)** the difference of minima (what `gdev.min_dev` actually computes) **untouched by both**. These headlines are (P)/(m)-shaped; five directions attacked a statement the consumers never used | §(K-grid) *Steps G120–G124* |
+| ~~**(GR-104)(i)**~~ (§(K-grid), GCHEAP's) | **REFUTED 2026-08-26 by (GR-122)** — §(K-grid) *Step G142*, direction GHWIT: an `n_hub = 20` all-(2,2) pair of gap 4, **one day after it was ranked 2**, with (GR-86)'s cap attained. Row kept as the dated record; the price form is **not a live option**. *(This row still read "RANK 2 on the 2026-08-25 re-rank" until 2026-09-03 — the main list above had been corrected and this table had not, so §8.1, the menu a session reads for slice-sized work, offered a refuted route for a week.)* The surviving question on this chain is the **(L)** reading — *is the ledger gap ever `≥ 3`?* — and it is barred by the do-not-do above | §(K-grid) *Steps G124, G142* |
+| ~~one-unit-defect-budget redo of (GR-79)–(GR-82)~~ | would finish ledger attack **(c)** past its `n_hub ≤ 14` boundary — **BARRED 2026-09-03: it IS an (a′)/(b′) ledger direction** (attack (c) of route-ledger entry 1), so the do-not-do above reaches it by its own reason. **Mathematics still OPEN**, named in `(K-grid)` close-it u26 as attack (c)'s successor; bookkeeping-grade even unbarred, since (GR-84) already realizes both unbounded residual cases at `n_hub = 16` | §(K-grid) *Steps G98–G103* |
+| ~~`rank(Q\|_D) = 3` — the **ℚ(i) eigen-block leg**~~ | **RUN 2026-08-25 (direction OQRANK, ordinal 32) — a graded HIT: input (a) DELIVERED at all 174 certified classes**, per-class/per-colouring-generic, by the completed ⋆-eigen-block mechanism; the naive first-colouring form REFUTED as a class statement (27/174, incl. the (OC-42) **WALL**); zero (K-tight)-event rulings. O29's open caveat is answered *graded*: the wall and the secant positives are combinatorial, the general per-block condition is not. Successors, **both DELIVERED 2026-09-02 (direction OWALL, *Steps O47–O51*; this clause named them as open until 2026-09-03)**: (OC-44)(iii) is **REDUCED to (OW)**, a geometry-free partition-constrained colouring-existence statement in (GR-10)'s object class ((OC-55)), and *Step O41*'s own route is **REFUTED BY LOGIC** ((OC-52) — the conjunct it attacked is implied by the one it did not); the second confinement's mechanism is **(Z)**, the `≤ 3`-class cycle vanishing rule, accounting for **19 of the 20** points ((OC-51)/(OC-54)). What is live is **(OW)** — corrected table row 3 | §(K-out) *Steps O37–O41, O47–O51* |
+| collision dominance `min_M B(M) ≤ d_adm` | GCOLL's successor to the refuted (GR-64)(R2) — **OPEN**, non-vacuous at 180 Petersen shapes, vacuous at the other 81 302; **NOT barred by the do-not-do** (GCOLL lives inside *Steps G74–G148* but is not an (a′)/(b′) ledger direction). *Kill condition: `min_M B(M) ≤ d_adm` proved or refuted — decided by `(K-grid)` close-it u16* | §(K-grid) *Step G115* |
+| (OC-19) input (c) class-uniformly | OCON's #1 by value — but **(GR-15)-flavoured**, so it re-enters the oldest missing technology. *Kill condition: `H/X` rigid class-uniformly — decided by the `(K-out)` row, u9* | §(K-out) *Step O18* |
 
 ### 8.2 Change the inductive invariant
 
 | option | status | note |
 |---|---|---|
 | **C1** dominance of the `V_bc` map | **STRUCK** 2026-08-05 | dominance *holds* (rank 9), but both stated reasons refuted and it does not reach uniformity (§(K-dom)) |
-| **C2** carry `V_bc` general position as a motive conjunct | **live, unpriced** | two honest problems: every existing conjunct is per-body/local while `V_bc` is global on a vertex-deleted subgraph; and a stronger motive can be **unsatisfiable** — needs a satisfiability trace first (the L6b/F10 precedent) |
-| **U1** retarget §2.4's image problem to the annihilator | **live, rank 1** | §4.6 |
-| **U2** hinge-rate / cycle-space presentation | **live, rank 2** | the only candidate *designed* to pass the growing-ground-set test |
-| **U3** restate `hK` as a **non-existence** | **live, rank 3** | makes §2.3's asymmetry (uniform negatives easy, per-shape positives hard) work *for* the prover; the first statement of the target in negative form |
+| **C2** carry `V_bc` general position as a motive conjunct | **live, unpriced** | two honest problems: every existing conjunct is per-body/local while `V_bc` is global on a vertex-deleted subgraph; and a stronger motive can be **unsatisfiable** — needs a satisfiability trace first (the L6b/F10 precedent). Nothing in `(K-dom)` bears on C2: what is struck there is **C1**, and (D4) already gives per-shape dominance — what C2 would add is the **uniform** carry. *Kill condition: a satisfiability trace returning UNSAT for the strengthened motive (C2 dies), or a conjunct landing — decided by the `(K-dom)` row and §4-C2* |
+| **U1** retarget §2.4's image problem to the annihilator | **live, rank 1** | §4.6. `(K-ann)`'s close-it still names the remaining item as *"a class-uniform independent-point recipe ((ANH-9)(iii)) — the same missing technology as §(K-grid)'s residual"*. *Kill condition: (ANH-R1) made class-uniform, or the retarget refuted — decided by the `(K-ann)` row, close-it u6* |
+| ~~**U2** hinge-rate / cycle-space presentation~~ | **STRUCK 2026-09-03 — DEAD by its own kill clause** | U2 dies if its support condition is **satisfiable at some class shape**, and it is: **(OC-4)** reaches the bad line by a legal chart move at **all four** certified habitats. **(OC-3)** independently rules the target out in principle, it being a matroid statement — *no counting, matroid or placement-blind argument* can deliver it. **This row read *"live, rank 2"* for weeks while §8.6 recorded U2 as delivered; §8.6 had the verdict right and its cause wrong** (it credited (GR-16)'s reduction, which is a *different object* — an exact `3c × 3c` system on `G°` alone). Kept as the dated record, not removed |
+| ~~**U3** restate `hK` as a **non-existence**~~ | **ALREADY-PURSUED 2026-09-03 — not live-rank-3** | Its named first step is §(K-out) *Steps O31–O36* (direction SIGZ), and it was **delivered more generally as (OC-35)** (the self-stress space of any min-degree-`≥ 2` subgraph as a Kirchhoff flow on its topological paths). Its **one genuine residue**: SIGZ and OGEOM spent the whole ledger on `σ = corank R(H)` and **never on `H ∪ {bar along M}`** — U3's own object. **Flagged, unverified:** whether `H ∪ {meet-line bar}` is an admissible (OC-35) subgraph has **not** been checked; that check gates the residue. The logical-form move (negatives uniform, positives per-shape — §2.3) remains the reason to care. *Kill condition: the `H ∪ {bar along M}` ledger run, or the admissibility check coming back negative — decided by the `(K-out)` row, u14* |
 
-`U1`–`U3` **interlock** — one target, one machine, one logical form — rather
-than being independent bets (§4.6's own framing).
+`U1`–`U3` **interlocked** — one target, one machine, one logical form — rather
+than being independent bets (§4.6's own framing). **As of 2026-09-03 only U1
+survives**: U2 is struck by (OC-4)+(OC-3), U3 is already-pursued with one
+unverified residue. The interlock is why that matters — U1 inherits the
+shortlist's whole remaining weight rather than one third of it.
 
 ### 8.3 Change the target
 
 | option | status | note |
 |---|---|---|
-| **C3** — pin only a subset `S` of bodies to pencils | **GATE PRICED 2026-08-24 (probe C3-AVOID) — NO-GO as a crux-avoidance route; live only RE-SCOPED** | The *"reduce avoiding `S`"* gate is decided: universal threshold **exactly `|S| ≤ 2`**, capped by a conservation law at `2 μ(G)` with `μ = \|E\| − \|V\| + 1`, no structural hypothesis on `S` lifting it, `\|S\| = 3` failing at the cycles `C_3 … C_6`. So C3 does **not** relocate the hard case for a chemically meaningful `S`; what survives is `μ` as the exact grading, and the relocation is into **Case-I gluing**, which the probe did not price. Full mathematics + caps: **§4.7**; landing record `notes/Pencil-fanout.md` §"Probe C3-AVOID". |
+| **C3** — pin only a subset `S` of bodies to pencils | **GATE PRICED 2026-08-24 (probe C3-AVOID) — NO-GO as a crux-avoidance route; live only RE-SCOPED** | The *"reduce avoiding `S`"* gate is decided: universal threshold **exactly `\|S\| ≤ 2`**, capped by a conservation law at `2 μ(G)` with `μ = \|E\| − \|V\| + 1`, no structural hypothesis on `S` lifting it, `\|S\| = 3` failing at the cycles `C_3 … C_6`. So C3 does **not** relocate the hard case for a chemically meaningful `S`; what survives is `μ` as the exact grading, and the relocation is into **Case-I gluing**, which the probe did not price. Full mathematics + caps: **§4.7**; landing record `notes/Pencil-fanout.md` §"Probe C3-AVOID". *Kill condition: (AV-7)'s Case-I gluing arm priced — decided by §4.7 (AV-7). Re-checked 2026-09-03: still **unpriced and untouched**; no direction has run it.* |
 
 ### 8.4 Attack a kernel's own proof
 
 | option | status | note |
 |---|---|---|
-| **route σ** — the polarity applied to the seed | **candidate closure; obligation 1 Lean-blocked, obligations 2–4 open and NOT blocked** | Corrected 2026-08-20: only obligation 1 is Lean ("*not new mathematics*"). **(2)** scope — the `dim R_a = 0` stratum untouched and the **(K-res)** habitat unsampled, so **route σ is not a route to (K-res)**; **(3)** (σ6)'s failure direction unwitnessed; **(4)** the branch it closes has **never been observed nonempty**, so its value is **insurance, not repair**. Obligations 2 and 4 are decision-relevant *before* commissioning any Lean. §(K-σ) *Step σ5* |
-| **option B for `hK`** — the stress-function infrastructure | **NOT commissioned** (2026-07-30) | research-scale |
-| **option B for `hbareSplit`** — the insertion calculus | **NOT commissioned** (2026-07-30) | was recorded here as *the only identified path* to closing `hbareSplit` — **no longer true since 2026-08-20**: KBARE-FALSIFY refuted its (K-bare-ext) target as stated *and* named two successor shapes (next row). Option B itself needs the owed **KT pp. 684–691 re-pin** first, then a corank-stratified boundary-load lemma at arbitrary seeds |
-| **(K-bare) development, post-probe** — the two KBARE-FALSIFY successor shapes | **live, un-commissioned; RANK 3 on the 2026-08-25 re-rank at the seed-free shape** | (i) the **`∃`-seed form + a seed-repair (deformation) obligation** inside `HasPencilRealization K 3 G′`'s attainment locus — no chart, the habitat infeasible by hypothesis, so new machinery; (ii) **bypass the antecedent**: attack `HasPencilRealization K 3 G` directly on the habitat — strictly stronger but **seed-free**, and newly affordable (the §(K-tight) calculus transports 192/192; the dependent stratum complete at `corank(G′) ≤ 3`). Neither is option B. Gap-map row: `(K-bare)/(K-bare-ext)`, §(K-bare-ext) *Steps BE1–BE8* |
-| **(K-res)** | never attacked — **barred from eight consecutive direction specs** | a kernel of `hK`'s difficulty class on the complementary habitat, proof route *strictly harder*; W4 route 3 cannot close without it. Wave-sized; a user call |
+| **route σ** — the polarity applied to the seed | **candidate closure; obligation 1 Lean-blocked, obligations 2–4 open and NOT blocked** | Corrected 2026-08-20: only obligation 1 is Lean ("*not new mathematics*"). **(2)** scope — the `dim R_a = 0` stratum untouched and the **(K-res)** habitat unsampled, so **route σ is not a route to (K-res)**; **(3)** (σ6)'s failure direction unwitnessed; **(4)** the branch it closes has **never been observed nonempty**, so its value is **insurance, not repair**. Obligations 2 and 4 are decision-relevant *before* commissioning any Lean. §(K-σ) *Step σ5*. *Kill condition: an obligation discharged, or obligation 4's branch observed nonempty — decided by the `(K-σ)` row, status u8* |
+| **option B for `hK`** — the stress-function infrastructure | **DECLINED 2026-07-30 under that date's evidence; re-openable on mathematical merit** (re-stated 2026-09-03 — it previously read as a standing bar) | research-scale. An adjudication records a **past priority call under past evidence, not a permanent prohibition**: re-opening needs a **mathematical reason, not permission**. Note its **first step is a design pass**, which the 2026-08-05 Lean hold does not park. *Kill condition: commissioned and run, or a cheaper route closing `hK` first* |
+| **option B for `hbareSplit`** — the insertion calculus | **DECLINED 2026-07-30 under that date's evidence; re-openable on mathematical merit** | was recorded here as *the only identified path* to closing `hbareSplit` — **no longer true since 2026-08-20**: KBARE-FALSIFY refuted its (K-bare-ext) target as stated *and* named two successor shapes (next row). **Its two stated prerequisites are DISCHARGED (corrected 2026-09-03; this row asserted them as still owed):** the **KT pp. 684–691 re-pin landed 2026-08-02** — §(K-tight) *Step 0*, against the carrier, **exact at arbitrary target-rank seeds** — eighteen days *before* the edit that recorded it as owed; and the corank-stratified **boundary-load calculus transports** at **192/192** placements, corank identity scope-free (KBARE-FALSIFY). So option B is un-commissioned by **choice**, not by blocker, and its first step is a design pass the Lean hold does not park. *Kill condition: commissioned, or the (BE-14) thread closing `hbareSplit` without it — decided by the `(K-bare)/(K-bare-ext)` row* |
+| **(K-bare) development — the (BE-14) thread** | **LIVE and CONTINUOUSLY COMMISSIONED since BATTAIN (*Steps BE9–BE13*) through BLINE (*Steps BE129–BE135*), 130+ steps** — corrected 2026-09-03; this row read *"live, un-commissioned"* while §8's own box eleven lines above said *"running since BATTAIN (39) and 20+ directions in"* | Of KBARE-FALSIFY's two successor shapes, **(ii) "bypass the antecedent" IS the running thread** — the row's target is **(BE-14), direct attainment**, discharging `hbareSplit` **and** `PencilPair`'s unconditional conjunct — while **(i) the `∃`-seed form meets §(K-tight)'s wall**. Neither is option B. Current locus: the **only open step is S-mark, the 2-cut composition lemma**; **(PENCIL-SATURATES-CHART)** is a **THEOREM at every side-degree-`1` terminal** so **14 → 12** generically; at side-degree `≥ 2` the `(∗)` route is **DEAD** ((BE-130)), successors (BE-133)/(BE-134). Gap-map row: `(K-bare)/(K-bare-ext)`, *Steps BE1–BE134*. *Kill condition: (BE-14) settled — decided by that row, u38–u39* |
+| **(K-res)** | **ATTACKED ONCE — direction RESGRID, 2026-08-28**, which opened `§(K-res)/(RS-5)`, *Steps RS1–RS10* (corrected 2026-09-03; this row read *"never attacked"* while §8's own (GR-15)-HIT box cites (RS-5) by name). The **wave** stays declined — a user call, re-openable on mathematical merit; the declined wave does **not** lock out a cheap slice | a kernel of `hK`'s difficulty class on the complementary habitat, proof route *strictly harder*; W4 route 3 cannot close without it. RESGRID transported the §(K-grid) geometry **verbatim** ((RS-1)–(RS-4)), **proved (RS-5) per-shape at all three named shapes** (`W19` 108, `S29` 168, `NT21c3` 120, exhaustive sweeps) and **REFUTED the deficient fringe with a mechanism** ((RS-6)). Note **(RS-5)'s quantifier is disjoint from (GR-15)'s** — closing (GR-15) does **not** close this row. **Its value rose 2026-09-02:** W4 route 3's non-user-call cost list is now **EMPTY** (§8.5), so (K-res) plus the held build is all that remains there. The row's own cheap first slice is the 255-residual pool sweep. *Kill condition: (RS-5) settled, or a `def = 0` (K-res) flank exhibited — decided by the `§(K-res)/(RS-5)` row* |
 
 ### 8.5 Test the architecture instead of extending it
 
@@ -1505,23 +1618,67 @@ The move this board's own risk analysis recommends before more `hK` spend.
 | option | status | note |
 |---|---|---|
 | ~~**`hbareSplit` falsification probe**~~ | **LANDED 2026-08-20 — a T1 HIT**: (K-bare-ext) **refuted as stated**, `hbareSplit` itself untouched (its consequent is an `∃`; every probed gadget attains) | §(K-bare-ext) *Steps BE1–BE8*; landing record `notes/Pencil-fanout.md` §"Probe KBARE-FALSIFY". The successor shapes it named are priced on §8.4's board (the (K-bare) development row) |
-| the geometric route to a disproof | **NARROWED, still open** (direction OGEOM, 2026-08-26) | The **counting** route is dead ((OC-37)). The geometric half is now free **by an argument** on everything searched: `σ` depends on the induced `H` alone ((OC-46)); paths of length `≥ 6` are dead, so girth `≥ 7` kills every cycle and bouquet — **(OC-37)(ii)'s one-unit topology dies class-uniformly** ((OC-47)); 91 260 live cores, **0 candidates**, and `{σ = 0} ≠ ∅` becomes a theorem at 275 342 class pairs, upgrading (OC-39) from sample to theorem ((OC-48)/(OC-49)). **Unsearched, and the row stays open for exactly these:** `n(F°) = 4` at `|E°| ≥ 9`, `n(F°) = 5` at `|E°| ≥ 9`, every `n(F°) ≥ 6`. Successor is one shape-free sentence — injectivity of the Kirchhoff map at the generic chart point. §(K-out) *Steps O42–O46* |
-| **(T)** / **(V)** / **(E-loc)** | open, slice-sized, **no adjudication needed** | W4 route 3's informal costs; (T) is *"a genuine research gap, not a numerics gap"* and landed-**invisible** (the search's own certificate requires triangle-freeness) |
+| the geometric route to a disproof | **NARROWED, still open** (direction OGEOM, 2026-08-26) | The **counting** route is dead ((OC-37)). The geometric half is now free **by an argument** on everything searched: `σ` depends on the induced `H` alone ((OC-46)); paths of length `≥ 6` are dead, so girth `≥ 7` kills every cycle and bouquet — **(OC-37)(ii)'s one-unit topology dies class-uniformly** ((OC-47)); 91 260 live cores, **0 candidates**, and `{σ = 0} ≠ ∅` becomes a theorem at 275 342 class pairs, upgrading (OC-39) from sample to theorem ((OC-48)/(OC-49)). **Unsearched, and the row stays open for exactly these:** `n(F°) = 4` at `\|E°\| ≥ 9`, `n(F°) = 5` at `\|E°\| ≥ 9`, every `n(F°) ≥ 6`. Successor is one shape-free sentence — injectivity of the Kirchhoff map at the generic chart point. §(K-out) *Steps O42–O46*. *Kill condition: that sentence proved, or a `σ > 0`-everywhere shape exhibited (a PENCIL event) — decided by the `(K-out)` row's disproof paragraph, u26* |
+| ~~**(T)** / **(V)** / **(E-loc)**~~ | **ALL THREE SETTLED 2026-09-02 — a dated record, not an option** (this row read *"open, slice-sized"* until 2026-09-03) | **(T) is a THEOREM** (direction WTRI, *Steps TF1–TF5*): no feasible residual carries a triangle at all, by **two landed feasibility transfers** the section's own *Step 4* had not inventoried — so the *"genuine research gap, not a numerics gap"* and landed-**invisible** readings above are both retired. **(E-loc) is REFUTED** (direction WELOC, *Step EL5*) by the `\|V\| = 32` witness `T32`, two *disjoint* count-dependent `C₄` cores; **(E)** returns to being the primitive gap — open, **tight** (`f = 4`), and **off every W4 path** — and its successor **(E-pair) is a THEOREM** (WPAIR + WGROW, *Steps PR1–PR6*/*GW1–GW6*), with **(V)** a theorem alongside it ((PAIR-6)). **Net: W4 route 3's non-user-call cost list is EMPTY** — what remains is **(K-res)** (a user call, §8.4) and the held W4 build. `notes/Pencil-W4-informal.md` §"widened kernels (routes 1/3)" |
 
 ### 8.6 Durable negatives — do not re-run
 
+**STANDING RULE FOR THIS LIST, added 2026-09-03.** Every entry here carries a
+**back-link**: the recommendation surface that still points the other way, struck
+or annotated **in the same commit**. Forward kill conditions alone do not catch
+this list's own failure mode — §5.3 item (i) sat here as a durable negative for
+four weeks while §5.3 listed it as the CAS layer's *highest-value unrun* item,
+and **no reader of §5.3 could see that the kill already existed here**. It cost a
+dispatch (direction GELIM).
+
 §4.6's six refutations; §2.5's counting saturation; **C1**; both literature
-hunts (rigidity-side, Δ-matroid-side); §4.6's `U2` delivered by (GR-16)'s
-reduction and `U3`'s negative-form insight already exploited **for the tight
-stratum only** (the shortlist is *partially* superseded, not retired — U3's
-logical-form move is still live as an invariant change); the symbolic
-meta-option, landed as `m2/lambda0.m2`. §5.3 item (i) remains, ruled out by
-§5.3's own local-frame feasibility boundary. **Added 2026-08-24:** C3's
-*"reduce avoiding `S`"* gate — settled at threshold `|S| ≤ 2` with the exact
-ceiling `2 μ(G)` (§4.7, **(AV-3)**/**(AV-4)**); do not re-open it as a
-cardinality question, and do not look for a structural hypothesis on `S`
-(**(AV-5)** refutes that class). What is *not* a durable negative and is the
-live successor: **(AV-7)**'s Case-I gluing arm, unpriced.
+hunts (rigidity-side, Δ-matroid-side); the symbolic meta-option, landed as
+`m2/lambda0.m2`.
+
+**`U2` and `U3` — verdict kept, cause REPAIRED 2026-09-03.** This list said `U2`
+was *"delivered by (GR-16)'s reduction"*: the verdict is right, the cause is
+wrong — **(GR-16) is a different object**, an exact `3c × 3c` system on `G°`
+alone. **U2 is dead by its own kill clause**: its support condition is satisfiable
+at a class shape, **(OC-4)** reaching the bad line by a legal chart move at all
+four certified habitats, with **(OC-3)** ruling the target out in principle as a
+matroid statement. `U3`'s negative-form insight is **already-pursued**, its first
+step delivered more generally as **(OC-35)**; its one residue is the
+`H ∪ {bar along M}` ledger nobody ran, with the admissibility of that subgraph
+**unverified**. *Back-link: **§8.2**, whose rows read "live, rank 2" and "live,
+rank 3" until 2026-09-03 — both now struck there.*
+
+**§5.3 item (i)** — the `V_bc` pullback elimination question — **STRUCK
+2026-09-03** (direction GELIM, killed before computing). **Its cause here was
+wrong and is now repaired:** it is **not** ruled out by §5.3's local-frame
+feasibility boundary, which the strike says it would *clear* (`k = 3`: ~14
+indeterminates at degree 12, *"it would run"*). It is dead because at **`k ≥ 4`**
+— the whole class stratum, by (D3) — it is not frame-expressible **and has no
+content**, (D4)'s dominance already giving `φ_G^*(f_B) ≢ 0` per shape; and at
+**`k = 3`** it is exactly **(K-res)**, outside the pinned class, with the
+containment **already refuted pointwise** ((D4), all 21 seeds). Full disposition
+at §5.3. *Back-links: **§5.3**'s "Others, in rough order of value" list, where it
+was item (i) and is now struck; and — **flagged 2026-09-03, NOT repaired here because it is
+outside this round's sections** — **`notes/CLAUDE.md`**'s own description of this file, which
+still reads "what remains of §5.3 is item (i) … which … sits beyond §5.3's own local-frame
+feasibility boundary". That is a THIRD copy of this entry carrying the SAME refuted cause, and
+it is the worst-placed of the three: `notes/CLAUDE.md` **auto-loads at the start of every
+session that touches `notes/`**, so it is the first surface a fresh agent reads. Coordinator
+action.*
+
+**Added 2026-08-24:** C3's *"reduce avoiding `S`"* gate — settled at threshold
+`|S| ≤ 2` with the exact ceiling `2 μ(G)` (§4.7, **(AV-3)**/**(AV-4)**); do not
+re-open it as a cardinality question, and do not look for a structural hypothesis
+on `S` (**(AV-5)** refutes that class). *Back-link: **§8.3**, whose C3 row states
+the same NO-GO — consistent, no repair needed.* What is *not* a durable negative
+and is the live successor: **(AV-7)**'s Case-I gluing arm, **unpriced and
+untouched as of 2026-09-03**.
+
+**Nothing on this list is a priority call.** Every entry is a refutation, a
+theorem, or a measured impossibility — so the *"declined once, re-openable on
+merit"* rule that governs §8.4's two option Bs and the (K-res) wave does **not**
+reach anything here. The one bar that is *adjacent* to this list without being on
+it is the **do-not-do** above; that one is also mathematical (the ledger is
+spent), not a priority call.
 
 ## 9. External technique transfer — the Zheng body–pin preprint (2026-08-21)
 
