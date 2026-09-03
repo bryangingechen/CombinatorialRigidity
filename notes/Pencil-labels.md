@@ -3654,10 +3654,23 @@ only"*; the re-run at `HEAD` measured **`(BE-142)` 2, `(BE-143)` 3,
 declarations**: BDEGTWO's reservation range row, its two-labels-returned-
 unused note, its *"The next tail is (BE-142) / Step BE141"* pointer and its
 *"and **not** at (BE-144)"* clause. **None is a consumed label**, so the
-conclusion stands; the counts differ because the prep's check predated the
-**ninth strategy pass's own commit** (`3c49ce60`), which is a live instance
-of *diff against `HEAD`, never a stale check* — recorded here rather than
-read as a collision.
+conclusion stands. **The CAUSE the landing gave for the discrepancy is WRONG,
+and is corrected here by the coordinator (2026-09-03), because the lesson it
+drew is the wrong check to teach.** It read *"the prep's check predated the
+ninth strategy pass's own commit (`3c49ce60`) … a live instance of diff
+against `HEAD`, never a stale check"*. The prep's check was **not** stale — it
+ran at `HEAD = 3c49ce60`, and the counts are **byte-identical at `89eb1fdb`
+and `3c49ce60`** (re-measured both: `(BE-142)` 2, `(BE-143)` 3, `(BE-144)` 1,
+`BE141` 2, `BE142` 3 at each), so that commit moved none of them. The real
+cause is a **metric conflation in the coordinator's own command**: the prep
+ran `git grep -c -- TOKEN | wc -l`, which counts **files containing a match**,
+and reported the result as **hits**. One file, five different hit counts — the
+number was a file count throughout, and the *conclusion* (one file, all
+declarations) was right for exactly that reason. **The check to teach:
+`git grep -c | wc -l` counts FILES; `git grep -o | wc -l` counts HITS — and a
+reservation must say which metric it reports.** Recorded rather than silently
+fixed, because a wrong cause on this file's reservation discipline would have
+future directions re-running a check that was never the problem.
 
 **`BSCOND` was checked for the substring hazard (L5)** and is clean; it names
 the **object** (the window's *side conditions*), not a method and not a
