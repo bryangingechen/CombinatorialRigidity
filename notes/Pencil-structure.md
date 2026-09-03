@@ -65,7 +65,7 @@ cap was ever bumped and nothing was deleted**; the note keeps a pointer to each.
 | 5 | *What the recent landings closed* | 2026-08-29 | BZAVOID / ZJACOB / ZSHEAR / GHWIT / GMINM closes |
 | 6 | *The unselected candidate continuations* | 2026-08-29 | leads (b)–(f); ranking lives in the fan-out losers sections |
 | 7 | *Citations — the phase's verified bibliography* | 2026-09-01 | every verified source; **a new source is added HERE** |
-| 8 | *The (BE-14) thread — per-landing detail* | 2026-09-01 (addenda 09-02) | which direction proved which sub-clause of the three sides, with its labels; the **settled frame**, the thread's last five landings and its **six** 2026-09-02 landings (BBASE/BUNIF/BDOUBLE/BSATUR, then BSIGMA/BPROPER at the OWALL landing) joined it 09-02 |
+| 8 | *The (BE-14) thread — per-landing detail* | 2026-09-01 (addenda 09-02) | which direction proved which sub-clause of the three sides, with its labels; the **settled frame**, the thread's last five landings and its **eight** 2026-09-02 landings (BBASE/BUNIF/BDOUBLE/BSATUR, then BSIGMA/BPROPER at the OWALL landing, BOPEN, and BLINE — which refutes a ROUTE, not a clause) joined it 09-02 |
 | 9 | *The W4 deviation — per-landing detail* | 2026-09-02 | which of WTRI/WELOC/WPAIR/WGROW proved which sub-clause of route 3's cost list, with its labels; relocated once W4's informal argument closed |
 | 10 | *The (BE-14) lane's standing candidate list* | 2026-09-02 | the lane's ranked-but-unmoved candidates — one-end-series, (S1)/(S2), the bundle construction and the *also ranked* tail; relocated when the note hit 587/580 |
 | 11 | *The `hK` lane — per-landing detail* | 2026-09-02 | which of GPACK/GLIST proved which sub-clause of (GR-18)(iii)'s split, with its labels, plus (GR-133)'s price; relocated at the GLIST landing, the lane's second result in two directions |
@@ -985,6 +985,34 @@ drop, so `d_h(H) ≤ d_h(G) ≤ 2`, and girth and min degree follow. The **statu
 note keeps is two clauses: the clause is a theorem at side-degree `1` and **not** at
 side-degree `≥ 2`, where it rests on `(∗)` — certified 91/91, not proved; and item 0(c)'s
 shortfall is still unexhibited after 54 further rows.
+
+**BLINE (73), 2026-09-02 — the thread's next landing, and it REFUTES A ROUTE rather than
+proving or refuting a clause.** It decides BOPEN's own residue `(∗)` ((BE-129)–(BE-135),
+§(K-bare-ext) *Steps BE128–BE134*; `notes/Pencil-fanout.md` §"BLINE"). Three things
+generalize past this thread. **(1)** *`(∗)` is not a quantifier over a line*: with
+`z = p_{c₁} ∧ p_{c₂}` and `W = z^⊥`, the quotient `W/⟨z⟩` is a `2 × 2` matrix space whose
+Segre rulings are exactly the `Σ_t`, so `(∗)` ⟺ `dim(A ∩ W) ≤ 3` plus two incidence
+exclusions ((BE-129)) — a rank computation, not a search. **(2)** *a sufficient condition's
+refutation kills a route, not a clause*: `dim A ≥ 5` makes `(∗)` false and (BE-127)(ii)'s
+necessary condition **vacuous** ((BE-130)), yet the clause itself is unviolated at 0/270
+rows, so (PENCIL-SATURATES-CHART) at side-degree `≥ 2` is exactly as open as BOPEN left it.
+**(3)** *a certified population can certify a theorem*: every one of (BE-127)(iii)'s 91 rows
+has `dim A ≤ 3`, where `(∗)` is proved ((BE-131)), so the 91/91 was a corollary and not
+evidence ((BE-132)) — a **second** blindness on top of the F13-disclosed never-fired assert,
+and one nothing in that landing could have surfaced. Two further findings are local and are
+annotated where they belong: there is **no `p_x`-sweep lemma at `deg_i(x) ≥ 2`**
+((BE-124)(i) assumes `deg_i(x) = 1` inside its own derivation), and `(∗)` permits a **bad plane**, so
+a hub-confined fibre is unprotected ((BE-134)). The **status** the phase note keeps is one
+clause: at side-degree `≥ 2` the route is dead and the clause open, its successor the exact
+`k ≥ 2` reduction that keeps `xc₂, …, xc_k` ((BE-133)(iv)).
+
+**A documentation correction this landing forces, recorded here because it touched two
+surfaces.** The `(K-bare)` gap-map row listed *"the side-degree-`≥ 2` instances … and
+(BE-119)'s `dim A ≥ 5`"* as **two** left items while `notes/Phase39.md` *Hand-off* item 0(a)
+said the first **subsumes** the second. Neither was right: `(∗)` **entails** `dim A ≤ 4`
+((BE-130)(i)), so it cannot subsume the `dim A ≥ 5` stratum — and the two are **one
+obstruction**, reached by two routes that both die on it. Both surfaces were corrected at
+this landing; no measurement moved.
 
 **Reading it later.** Same caution as block 8's: a snapshot, not a live surface. If it
 disagrees with the `(K-bare)` gap-map row, the row wins.

@@ -1089,6 +1089,13 @@ are a recorded *Harness debt* item (see below).
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/bopen.py price` | 106 s | ibid. *Step BE127* ((BE-128)(i): the shortfall control — over 9 composites × 3 seeds, planted AND free, **54** rows with `margin ≤ 0` ASSERTED at `Π_x`, `Π_y` and `⟨M⟩`, and `reach = min(δ₁+δ₂,6)+a₁+a₂` asserted at all 27 free rows; margin histogram at `Π_x` `{−3: 3, −2: 15, −1: 21, 0: 15}`, **0 shortfalls**, so `notes/Phase39.md` item 0(c) stays open) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/bopen.py support` | 0 s | ibid. *Step BE127* ((BE-128): the `RESEARCH-ARC.md` §4 support audit — all seven populations named with what each varies, what it holds fixed and which of the claim's own quantifiers it therefore reaches, plus the standing cap that every population is CONSTRUCTED and no figure is a class-level rate) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/bopen.py validate` | 281 s | ibid. all eight in one process — the landing gate; fits the 600 s foreground budget. No wall-clock cell but the driver's own `%.1fs` prints, and every rng is seeded from `bunif.SEED` (`20260902`) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/bline.py classify` | 1 s | `notes/Pencil-informal.md` §(K-bare-ext) *Step BE128* (direction BLINE; (BE-129): the classification of `(∗)` asserted as an **iff** — in BOTH its case-split and compact forms, against each other and against the brute-force reading — at **140** random `(A, L_c)` spread over `dim A = 0..6` (20 each), of which 40 FAIL, all at `dim A ∈ {5,6}`; plus **48** CONSTRUCTED `dim A = 3` degeneracies (`A = Σ_t`, `A = Λ²π'`), every one failing, which no random draw ever hits) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/bline.py five` | 2 s | ibid. *Step BE129* ((BE-130): `(∗)` asserted to FAIL at **60/60** random `(A, L_c)` with `dim A ∈ {5,6}`, and the reduction asserted VACUOUS at every one — **2 400/2 400** sampled `p_x` satisfy `p ∧ t ∈ A` for some `t ∈ L_c`; plus the contrapositive `(∗) ⟹ dim A ≤ 4` re-asserted at 40 further draws) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/bline.py low` | 2 s | ibid. *Step BE130* ((BE-131): `(∗)` asserted to HOLD at **200/200** random draws with `dim A ≤ 2`, with the `|{t : dim(A ∩ Σ_t) ≥ 2}| ≤ 1` mechanism asserted at each rather than inferred; 0/200 random failures at `dim A = 3` and at `dim A = 4` (`dim(A ∩ W)` census `{3: 200}`); **16** CONSTRUCTED `dim A = 4` subspaces inside `W = C_{L_c}^⊥`, every one failing) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/bline.py pop` | 31 s | ibid. *Step BE131* ((BE-132): (BE-127)(iii)'s population reproduced independently of `bopen.py` from BPROPER's own `degx_library` at its own seeds — **91** rows, `dim A` census `{1: 16, 2: 34, 3: 41}`, 0 hub side-neighbours, `(∗)` at 91/91 — with each row's DECIDING CLAUSE asserted to be a theorem of (BE-131): 50 rows by `dim A ≤ 2`, 41 by the `dim A = 3` classification) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/bline.py reach` | 24 s | ibid. *Step BE132* ((BE-133): **27** NEW `deg_i(x) = 2` topologies with longer cores, drawn by the same `bsigma.sample_side_config`; (CH-1) — `hcard`, min degree 2, girth `≥ 4`, both terminals hubs, side 2 `rnode_shaped` — asserted on **27/27** composites; **270** rows, `dim A` census `{1: 30, 2: 10, 3: 60, 4: 30, 5: 60, 6: 80}`, `(∗)` FAILING at **142**; `rank R_core = 5|E|` asserted at every row (tree core ⟹ `dim A` lower semicontinuous), giving generic `dim A ≥ 5` at **14 of 27**; `(dim A, ρ_i)` census with **109** of the 140 `dim A ≥ 5` rows at `ρ_i ≤ 5`; **90** hub-side-neighbour rows; the clause itself **0/270**) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/bline.py fibre` | 0 s | ibid. *Step BE133* ((BE-134)(ii): **12** CONSTRUCTED `(A, L_c)` with `(∗)` HOLDING and one `t₀` carrying `dim(A ∩ Σ_{t₀}) = 2`, whose bad fibre `q_{t₀}^{-1}(A ∩ Σ_{t₀})` is a whole PLANE of `P³`, asserted bad pointwise — so `(∗)` alone does not make the bad locus proper in a fibre confined to a plane) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/bline.py validate` | 59 s | ibid. all six in one process — the landing gate; fits the 600 s foreground budget comfortably. Every rng is seeded from `bunif.SEED` (`20260902`) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/ogeom.py --bound --dom --core --cert` | 288 s | `notes/Pencil-informal.md` §(K-out) *Steps O42–O45* (direction OGEOM; (OC-45) the `ℓ ≤ 5` + bridgeless class-shape check that turns `sigz.k4_stratum`'s `{1..5}^6` from a cap into a theorem (re-enumerated at `{1..12}^6`, 877 = 877); (OC-46) restriction-dominance, 1482 + 222 extensions, 0 failures; (OC-47) the live-core reduction; (OC-49) the census — 271 974/271 974 pairs settled, and (OC-39)'s 3 324 + 44 = 3 368 pairs shown to lie in exhausted cells) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/ogeom.py --hunt` | 357 s | ibid. *Step O45* ((OC-48): the exhaustive iso-reduced live-core hunt at `n(F°) ∈ {2,3}` (all `\|E°\|`) and `n(F°) = 4` (`\|E°\| ≤ 8`) — 21 086 classes here, all free, **0 candidates**) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/ogeom.py --huntn 5 8 8 <PART> 3` | 318 s each | ibid. *Step O45*, the `n(F°) = 5`, `\|E°\| = 8` cell in three deterministic slices (70 174 classes, all free) — the parts together with the two rows above make the pass's **91 260** cores |
@@ -1502,19 +1509,33 @@ figure-invariant): `rref`, `rank`/`rank_exact`, `nullspace`, `left_nullspace`,
 `neighbors` (`kbare_common`, `n9`); `K4`/`K5_minus_matching` (three copies:
 `localtest`, `probe_zero`, `run_habitats`).
 
-## Harness debt — four rounds PAID (S1–S4 2026-08-06; the move-down round 2026-08-20; the GFLIP balance-layer move-down 2026-08-25; the GCHEAP/GPRICE balance-layer extension 2026-08-25), **eight items outstanding**
+## Harness debt — four rounds PAID (S1–S4 2026-08-06; the move-down round 2026-08-20; the GFLIP balance-layer move-down 2026-08-25; the GCHEAP/GPRICE balance-layer extension 2026-08-25), **ten items outstanding**
 
-**Eight items are outstanding: `zneq.ledger`** (deliberately deferred to a
+**Ten items are outstanding: `zneq.ledger`** (deliberately deferred to a
 round that can re-run `oschu --gtarget` / `--census1` / `--census2`), **the
 `kbare/` sibling-import set** that probe KBARE-FALSIFY created,
 **OQRANK's two arrivals** (`out_classes`/`shape_key`/`tree_triple`),
 **the GBLAW + GXESC reversal-model sibling imports**, **WTRI's duplicate of
 `saferes.prime()`'s pool**, **`bsigma.wedge3`'s second consumer** (BPROPER —
 *this list had omitted it; added at the BOPEN landing, 2026-09-02*),
-**GLIST's five-device sibling import of `gpack.py`** and **BOPEN's second
-consumer of `bproper.py`'s peel constructors** —
-**UNPAID** by the same rule that forbids a dispatch from moving a landed
-name. Everything else is paid: the first round's four items are in the
+**GLIST's five-device sibling import of `gpack.py`**, **BOPEN's second
+consumer of `bproper.py`'s peel constructors** and, added at the **BLINE**
+landing (2026-09-02), **`bimage.pt_in`'s silent `K⁴` truncation** and
+**BLINE's third consumer of `bproper.py`'s peel constructors plus its first of
+`bopen.sat_locus`** — **UNPAID** by the same rule that forbids a dispatch from
+moving a landed name.
+
+**The `pt_in` item, stated once because it is SILENT.** `bimage.pt_in` builds
+its return with `for k in range(4)`: it is a `K⁴` helper, and calling it on a
+subspace of `Λ²K⁴` (a `sigma_at`, a `klein_perp`, any 6-column span)
+**truncates every basis row to its first four coordinates** and returns a
+vector in the wrong space, with **no assert firing anywhere** — the caller
+just gets a subspace of the wrong dimension and, typically, silently builds
+zero witnesses. It bit twice while `w4/bline.py` was written. `bline.sub_pt`
+is the widened local version and carries the warning in its docstring. The
+right fix is a width parameter on `pt_in` itself, which touches every consumer
+and re-baselines their figures, so **no move made**; until then, **a `Λ²`-side
+draw must not go through `pt_in`**. Everything else is paid: the first round's four items are in the
 *ALL FOUR CLEARED* block immediately below (kept in the past tense as the record
 of what was wrong), the five §2-rule-2 move-downs the sixth-to-eighth
 fan-outs accumulated are in the three *New item* subsections after it, each

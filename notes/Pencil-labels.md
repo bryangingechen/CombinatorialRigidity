@@ -3418,3 +3418,78 @@ nothing** about such a row: run `python3 notes/check-gapmap-cells.py --all`
 `notes/scripts/gapdiff.py`, which compares **label sets** and did see the
 change (155 in, 171 out). Two gates, two different notions of "changed"; a
 row can be invisible to one and not the other.
+
+## Reserved namespace — direction BLINE (2026-09-02, **CONSUMED IN FULL at the landing; nothing returned**)
+
+**Reserved and consumed on 2026-09-02 for the single direction BLINE**
+(ordinal 73; `notes/Pencil-fanout.md` §"BLINE") — BOPEN's own designated
+residue, *prove or refute §(K-bare-ext) (BE-127)(ii)'s `(∗)`*, which
+`notes/Phase39.md` *Hand-off* item 0(a) carries as half (B)'s last open
+sub-item. A **single, committing** dispatch: no sibling was in flight, so
+the tree was clean at reservation time and the corpus check had nothing to
+protect against but the corpus itself.
+
+| direction | owning § | labels reserved | steps reserved | driver |
+|---|---|---|---|---|
+| **BLINE** | §(K-bare-ext) — **extends**, no new section | **(BE-129)–(BE-135)** | **BE128–BE134** | `w4/bline.py` (six modes) |
+
+**It opens at exactly the tail BOPEN declared** (*"The next tail is (BE-129)
+/ Step BE128"*).
+
+**0-hit verification, re-run by the direction as its first action**, across
+`*.md`, `*.tex`, `*.lean`, `*.py`, `*.m2` **at `HEAD`** (`git grep`, not a
+working-tree grep — `RESEARCH-ARC.md` §2's first concurrency hazard, obeyed
+even though no sibling was running, because the run itself dirties the tree
+with the new driver): `BLINE` and `bline` each **0-hit as raw substrings**;
+`(BE-130)`–`(BE-135)` and the raw step tokens `BE129`–`BE134` each
+**0-hit**. **`(BE-129)` has two hits and `BE128` one, all three in BOPEN's
+own reservation block** (`notes/Pencil-labels.md:3369` — its excluded-range
+line — and `:3390`, its tail declaration): a **declaration**, not a consumed
+label. `BLINE` was checked for the substring hazard (L5) and is clean; it
+names the **object** (`L_c`, the fixed line the whole condition is
+quantified over) and not the answer, which `RESEARCH-ARC.md` §7 warns
+against — the answer turned out to be *refuted on a stratum*, which a code
+naming a predicted verdict would have prejudged in either direction.
+
+**CONSUMED IN FULL.** (BE-129)–(BE-135) and *Steps BE128–BE134* are all
+written, in `notes/Pencil-informal.md` §(K-bare-ext), which the direction
+**extends** exactly as reserved; driver `w4/bline.py` as named. **Nothing is
+minted** as an object name: `z`, `W`, `B`, `b`, `V`, `L_c`, `Σ_t`, `Λ²π'`,
+`A` are all **reused or plain symbols**, and BOPEN's convention that **`(∗)`
+is a marker, not a label** is kept — it is still a bare asterisk in
+parentheses, matched by no registry regex, still qualified as *"§(K-bare-ext)
+(BE-127)(ii)'s `(∗)`"* wherever cited outside its own step. The section has
+now gone **ten** directions without a configuration-level token. **(L6)
+landing grep run** over the new text: the only `(X<digit>)`-shaped tokens
+anywhere in it are **`(E1)`/`(E2)`/`(E3)`** (the termination ledger's own
+codes) and **`(F13)`** (a dispatch-log finding code) — both long-standing
+citation conventions that BOPEN's block uses identically, and **no label is
+minted in that shape**. `(C6)`, `(C7)`, `(R1)`, `(C1)`, `(C2)` are all
+**0-hit** in the new text.
+
+**The next tail is (BE-136) / *Step BE135***, 0-hit verified at this
+landing.
+
+**Gap-map note (F21).** The `(K-bare)` row was recomputed to an **explicit
+target set before the edit — ≤ 1 540 words, i.e. ≥ 60 of headroom** (BOPEN
+targeted ≤ 1 500 and landed at 1 499; this direction's own content is a
+refutation plus a classification plus a correction to two surfaces, so the
+target is 40 words looser and still honest, no landing being queued on the
+row). It lands at **exactly 1 540 / 1 600**, i.e. **+41 on `HEAD`**, with
+**every one of those 41 words paid for**: roughly two dozen landed passages
+were compressed in the same pass, all of them **mechanism
+superseded as headline** (the (BE-122)/(BE-123) semicontinuity argument, the
+(BE-124) tower sentence, the (BE-125) rotation, the (BE-94)/(BE-96)
+stabilizer split, the (BE-89)–(BE-93) flag-base derivation, the (BE-84)–(BE-88)
+hinge-pair narrative) and **never history** — every label those passages
+carried is still cited. Verified by `notes/scripts/gapdiff.py K-bare HEAD`:
+**171 in, 180 out, ZERO dropped, 9 added**.
+
+**And the set-diff caught a real drop, on the first assembly** — the third
+time this file records that shape. The compression pass dropped **`(K-bare-ext)`
+and `(K-chart)`**, both of them *section* labels sitting inside prose the
+recompute shortened (*"§(K-bare-ext)'s two window conditions"*,
+*"§(K-chart)'s tower"*), while `notes/check-gapmap-cells.py` passed and the
+word count looked healthy. A section label is the easiest kind to lose,
+because it reads as scenery rather than as a citation. Both were restored
+in the same pass, at a cost of two words.

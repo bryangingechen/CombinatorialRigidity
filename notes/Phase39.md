@@ -8,11 +8,11 @@ derives it from exactly **three carried items**: **`hcontract`** (W4 — build p
 **`hbareSplit`** (kernel (K-bare)). Everything else is closed — W0–W3 and all of W5
 (L0–L7), `hsplit` and `hfresh` included (2026-07-30, unchanged since).
 
-**The research arc: 80 directions COMPLETE** (2026-08-05 → 09-02, ordinals 1–72 — 76 on
+**The research arc: 81 directions COMPLETE** (2026-08-05 → 09-02, ordinals 1–73 — 77 on
 kernel (K), **WTRI/WELOC/WPAIR/WGROW (58–61) on W4**), plus eight strategy-only passes, two
 architecture probes and one read-only scoping recon. **GPACK (66) opened the `hK` lane after
-22 dispatches; GLIST (68) and GGLOB (71) are its successors**, GGLOB the committing half of
-a third concurrent pair whose draft-only half was **BOPEN (72)**. Per-direction verdicts, specs and write-ups live at
+22 dispatches; GLIST (68) and GGLOB (71) are its successors**; **BLINE (73)** is
+BOPEN's (72) own residue. Per-direction verdicts, specs and write-ups live at
 `notes/Pencil-fanout.md` §"<CODE>" (1–19: the archive) plus a workbook home — **not
 restated here**. **The arc's standing result, unchanged: `hK` is not closer.**
 **(GR-15)** — the single open gap the §(K-grid) chain reduces to — is **untouched**; **class
@@ -35,8 +35,9 @@ Status only: (β) proved at the window **MODULO (BE-57)(iv)'s (S1)/(S2)**; cross
 forcing **empty**; the flag base **DISCHARGED**; the residue is **per-side** (14 block
 inequalities), and **BDOUBLE made both 2-dimensional blocks REDUNDANT** under
 **(PENCIL-SATURATES)** — **REFUTED at BSATUR**, its `-GEN` repair **REFUTED again at
-BSIGMA**, leaving **-CHART**, now a **THEOREM at every side-degree-`1` terminal**
-((BE-127)), so **14 → 12** stands generically; the residue is `(∗)` at side-degree `≥ 2`. The 12 are **unwitnessed, NOT excluded**
+BSIGMA**, leaving **-CHART**, a **THEOREM at every side-degree-`1` terminal**
+((BE-127)), so **14 → 12** stands generically; at side-degree `≥ 2` the route is **DEAD**,
+`(∗)` FALSE from `dim A = 5` ((BE-130)), the clause **OPEN**. The 12 are **unwitnessed, NOT excluded**
 ((BE-97)(iv)) except `⟨M⟩`, empty at 93 rows; cross-pair welding **untouched**.
 
 **On a future HIT: the phase-boundary consequences are the USER's call** — whether Phase 39
@@ -203,7 +204,8 @@ write-ups and the `(K-bare)` gap-map row stay authoritative. **Reference, not st
 status that stays here: **S-mark is (BE-14)'s only open step**, (β) is proved at the window
 **modulo (BE-57)(iv)'s (S1)/(S2)**, half (B)'s residue is **one** item —
 **(PENCIL-SATURATES-CHART)**, a **THEOREM at every side-degree-`1` terminal** ((BE-127))
-and, at side-degree `≥ 2`, the condition `(∗)` — and cross-pair welding is **untouched**.
+and **OPEN** at side-degree `≥ 2`, where BLINE killed the `(∗)` route ((BE-130)) — and
+cross-pair welding is **untouched**.
 
 **THE W4 DEVIATION'S PER-LANDING DETAIL — RELOCATED 2026-09-02** to
 `notes/Pencil-structure.md` §"The W4 deviation — per-landing detail" (**block 9**), block 8's
@@ -231,9 +233,8 @@ branches of bookkeeping — the packing quantifier is **gone**, `H` is simple an
 and a 4-cycle is the first place to look. **Read the price first: on this stratum that
 criterion IS (GR-10)** ((GR-140)(v)), so it is not a slice below it. Successor 2 (`n_hub = 6`)
 is now **engineering** — 150/150 pure-hub shapes decided positively, 2 473 of 2 623 left;
-successor 3 is whether *path* consistency decides there, where arc consistency does not. The **(BE-14) lane's** alternative is ranked item 0 below, now **`(∗)` at a
-side-degree-`≥ 2` terminal** — one fixed line against one fixed subspace, certified 91/91
-and not proved. Two things stay the USER's call, both OFFERED
+successor 3 is whether *path* consistency decides there, where arc consistency does not. The **(BE-14) lane's** alternative is ranked item 0 below, now the **exact
+`k ≥ 2` reduction**: `(∗)` is decided and its route dead ((BE-129)/(BE-130)). Two things stay the USER's call, both OFFERED
 2026-09-02 and both DECLINED IN FAVOUR OF CONTINUING RESEARCH: the **(K-res) wave** (a cheap
 scoping slice queued below) and whether W4's now-closed informal side changes anything about
 the **2026-08-05 Lean hold** — the hold is the user's to lift, never a coordinator's.
@@ -247,9 +248,11 @@ The ranked list:
    `notes/Pencil-structure.md` **block 8**; **(BE-69) is retired as the warrant, not
    proved — it is the wrong property** ((BE-122)/(BE-123)), and both of BPROPER's measured
    inputs are now **PROVED** ((BE-124)/(BE-126)). The open sub-items:
-   **(a) the side-degree-`≥ 2` instances**, where the clause reduces to `p_x ∧ t ∈ A` on
-   **one fixed line** and is proper under `(∗)` — certified **exactly 91/91**, **not
-   proved** ((BE-127)(ii)/(iii)); this **subsumes** the old `dim A ≥ 5` item;
+   **(a) the side-degree-`≥ 2` instances — ROUTE DEAD, CLAUSE OPEN.** `(∗)` is an exact
+   criterion ((BE-129)) and is **FALSE from `dim A = 5`** ((BE-130)), generically so at 14
+   of 27 chart-legal shapes ((BE-133)); it does **not** subsume (BE-119)'s `dim A ≥ 5` —
+   **they are one obstruction** — and the 91/91 was a **corollary** ((BE-132)). Successor:
+   the exact `k ≥ 2` reduction keeping `xc₂…xc_k`, plus a `k ≥ 2` sweep lemma ((BE-134));
    **(b)** a row with `margin > 0` at `Π_x`, `Π_y` or `⟨M⟩` — the arc's first
    **shortfall** if it exists, still unexhibited after 54 further rows ((BE-128)(i));
    **(c)** the remaining **11** live blocks, `⟨M⟩` empty at 93 rows ((BE-108));
@@ -415,13 +418,16 @@ paragraphs.**
   concurrently incrementable); **two gate blind spots** are in the *Gates* block. **No
   mathematics and no status word moved.**
 
-- **BOPEN** (72, 2026-09-02, opus, **draft-only beside a committing `(K-grid)` dispatch**)
-  — **(PENCIL-SATURATES-CHART) IS A THEOREM at every side-degree-`1` terminal**, so half
-  (B)'s **item 1 CLOSES** there ((BE-122)–(BE-128), *BE121–BE127*): **(BE-69) is the WRONG
-  citation and NOT NEEDED** (*generic* wants constructibility, not openness), both measured
-  inputs **PROVED**, and the clause's `Π_x` locus — larger than (BE-116)'s `Σ_x` — closed
-  **pointwise** by a flag rotation. Residue `(∗)` at side-degree `≥ 2`, 91/91, not proved;
-  **0 shortfalls at 54 rows**. `w4/bopen.py`.
+- **BLINE** (73, 2026-09-02, opus) — **`(∗)` IS DECIDED: A THEOREM BELOW `dim A = 3`,
+  FALSE FROM `dim A = 5`, AND THE ROUTE DIES WITH IT** ((BE-129)–(BE-135), *BE128–BE134*).
+  `(∗)` ⟺ `dim(A ∩ C_{L_c}^⊥) ≤ 3` plus two incidence exclusions ((BE-129)), so `dim A ≥ 5`
+  refutes it and makes (BE-127)(ii)'s reduction **VACUOUS** ((BE-130)) — **generically, at
+  14 of 27 new (CH-1)-legal shapes**, 109 of them with `ρ_i ≤ 5` ((BE-133)). Hence 91/91 was
+  a **COROLLARY** ((BE-132)); two further gaps are **not** `(∗)` ((BE-134)); the clause
+  itself stays **OPEN**, 0/270. `w4/bline.py`.
+- **BOPEN** (72, 2026-09-02, opus, **one-lined at the BLINE landing, detail in block 8**)
+  — **(PENCIL-SATURATES-CHART) IS A THEOREM at every side-degree-`1` terminal**, (BE-69)
+  retired as its warrant ((BE-122)–(BE-128), *BE121–BE127*). `w4/bopen.py`.
 - **GGLOB** (71, 2026-09-02, opus, **committing half of a concurrent pair**) — **THE GLOBAL
   CSP IS CSP-FREE, BOTH HANDLES ARE DEAD, AND THE 82 % IS RE-LOCATED** ((GR-139)–(GR-144),
   §(K-grid) *G159–G164*): two dual normal forms, and `D_β = {α(head), γ(tail)}` **eliminates
@@ -430,21 +436,12 @@ paragraphs.**
   matroid** (exchange failure exhibited). Three tiers: arc consistency decides (GR-132)'s
   whole population, so the 82 % is propagation-visible, the invisible tier starting at
   `n_hub = 6`. 150/150 `n_hub = 6` shapes POSITIVE. **E1 does not fire.** `w4/gglob.py`.
-- **OWALL** (70, 2026-09-02, opus, **draft-only, third of a three-way concurrent round**)
-  — **(OC-44)(iii) REDUCED to (OW)**, geometry-free and in (GR-10)'s object class
-  ((OC-50)–(OC-55), §(K-out) *O47–O51*): the whole (a₁) grid criterion is **two direction
-  networks in `ℚ³`** with `Q` a discriminant, so `Q(g) ≠ 0` is an **O(1) matroid rank test**;
-  **(OC-52) refutes *Step O41*'s own attack (2) by LOGIC** — the wall-avoidance conjunct is
-  *implied by* the rank conjunct. Cap-free census 174/174, splits 98/98; (Z) accounts for
-  **19 of OQRANK's 20** second-confinement points, one unmatched. `w4/owall.py`.
-- **GLIST** (68, 2026-09-02, opus, **committing half of a concurrent pair**) —
-  **(GR-132)'s RESIDUAL: NORMAL FORM, LOCAL HALF EXACT, OBSTRUCTION GLOBAL**
-  ((GR-134)–(GR-138), §(K-grid) *G154–G158*): the end pattern is eliminable, so it is a CSP
-  in `α, γ` alone with **(a) FREE** (the six parts are *spanning* trees); a *pure* cubic hub
-  fails **iff** its three `D_β` are a **perfect matching of the six trees**. **82 % of
-  infeasible pairs are hub-locally feasible**: REDUCED, not proved. Audit: the population
-  **does** carry the conflict and `229 320/229 320` had a self-selected denominator
-  (472 680 legal); board (b) RECONCILED. `w4/glist.py`.
+- **OWALL** (70, 2026-09-02, opus, **one-lined at the BLINE landing, detail in block 12**)
+  — **(OC-44)(iii) REDUCED to (OW)**, geometry-free, *Step O41*'s own attack refuted by
+  LOGIC ((OC-50)–(OC-55), §(K-out) *O47–O51*). `w4/owall.py`.
+- **GLIST** (68, 2026-09-02, opus, **one-lined at the BLINE landing, detail in block 11**)
+  — **(GR-132)'s RESIDUAL: NORMAL FORM, LOCAL HALF EXACT, OBSTRUCTION GLOBAL**, 82 % of
+  infeasible pairs hub-locally feasible ((GR-134)–(GR-138), *G154–G158*). `w4/glist.py`.
 - **BPROPER** (69, 2026-09-02, opus, **re-one-lined at the BOPEN landing, detail in block
   8**) — **(PENCIL-SATURATES-CHART)'s PROPERNESS HALF SETTLED AT EVERY SIDE**
   ((BE-114)–(BE-121)); its three named residues all **discharged at BOPEN**. `w4/bproper.py`.

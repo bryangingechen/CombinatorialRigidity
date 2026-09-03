@@ -13680,3 +13680,179 @@ target* in E1–E3 is the **arc's** (`61e046a6`), and (BE-14), `hbareSplit` and
 **Driver** `notes/scripts/w4/bopen.py`, eight modes
 (`hyp | weak | amax | fibre | slide | degx | price | support | validate`),
 exact ℚ, seed `20260902`, every headline an `assert`, `validate` 281 s.
+
+## BLINE — seventy-third ordinal (single dispatch, prepped 2026-09-02, **LANDED 2026-09-02**) — BOPEN's own residue: prove or refute `(∗)`
+
+**Selection provenance.** BOPEN designated this target in its own words —
+*"a proof of `(∗)`, or a side with `deg_i(x) ≥ 2` violating it … that is now
+the whole of item 1"* — and `notes/Phase39.md` *Hand-off* item 0(a) carries
+it as half (B)'s **last open sub-item**. `hbareSplit` is ranked **#1 of the
+three carried items by distance to the phase target**. Two features made it
+the pick over the `hK` lane's queued successor: the item is one **fixed line**
+against one **fixed subspace** — the smallest object half (B) has ever been
+reduced to — and BOPEN had priced *both* halves of `(∗)` as *exactly
+certifiable*, so a decisive answer was cheap either way. Single **committing**
+dispatch at **`recon-opus`**; no sibling in flight.
+
+### The spec, as dispatched
+
+**Target.** Prove or refute **§(K-bare-ext) (BE-127)(ii)'s `(∗)`**, quoted
+**with its hypotheses** from *Step BE126* and not from a summary: *`Σ_t ⊄ A`
+for every `t ∈ L_c`, and `{t ∈ L_c : dim(A ∩ Σ_t) ≥ 2}` is FINITE*, at an
+internal R-node peel with `x ≁ y` under (CH-1), `deg_i(x) = k ≥ 2`.
+
+**Priced in advance, both ways.** A proof was priced as *"the clause is a
+theorem at every terminal, half (B)'s item 1 CLOSES, `14 → 12` stands
+unconditionally generically"*. A refutation was priced as *"re-opens the
+side-degree-`≥ 2` stratum with a named mechanism"*. **Both prices were
+wrong in the same direction, and the landing says so**: `(∗)` is
+**sufficient, not necessary**, so its refutation re-opens nothing that was
+closed — it kills a *route* and leaves the clause exactly as open as BOPEN
+left it. The correct advance price would have been *"a proof closes item 1;
+a refutation costs the arc a route and buys it a successor"*.
+
+**The coordinator's reading, labelled TO BE TESTED** (`RESEARCH-ARC.md` §7),
+with its stratum named honestly as *a reading of (BE-127)(iii)'s own reported
+figures, nothing else*: *(BE-127)(iii)'s certifying population is
+`dim A ∈ {1: 16, 2: 34, 3: 41}`, so every row has `dim A ≤ 3`, while
+(BE-127)(ii) claims to be stronger than (BE-119)(i), which needed
+`dim A ≤ 4`. If both readings are right the population lies entirely inside
+the regime the older criterion already covered, so it is evidence only where
+`(∗)` was not needed — and the `Hand-off`'s "subsumes the old `dim A ≥ 5`
+item" is a subsumption asserted on a population containing none of the
+subsumed cases. The support gap is at `dim A ≥ 4`/`≥ 5` and at rows where `x`
+has hub side-neighbours.*
+
+**Forced jobs.** (1) attack `(∗)` as mathematics before assuming measurement
+is the only move — the step itself says half one is *linear* in `t` and half
+two Zariski-closed; (2) reconcile the surface disagreement between the
+gap-map `(K-bare)` row (**two** left items) and *Hand-off* item 0(a)
+(**subsumes**); (3) the `RESEARCH-ARC.md` §4 sampler-support audit, naming
+each population's support and which of the claim's own variables it varies;
+(4) cap disclosure with denominators, *not found under cap C* never
+*does not exist*; (5) E1/E2/E3 read at source; (6) do **not** re-report
+(BE-127)(iii)'s F13-disclosed never-fired assert as a discovery.
+
+**Bars.** Committing; the 2026-08-05 Lean hold binds (no `.lean`); every
+driver run in the **foreground** with an explicit `timeout`; `(∗)` stays a
+**marker, not a label**; extend §(K-bare-ext), open no new section.
+
+### LANDING WRITE-UP — BLINE, 2026-09-02: **`(∗)` is DECIDED — a theorem below `dim A = 3`, FALSE from `dim A = 5`, and the route dies with it**
+
+**`(∗)` IS AN EXACT, CASE-FREE CRITERION.** Put `z := p_{c₁} ∧ p_{c₂}`, the
+Plücker point of `L_c`, and `W := z^⊥`, the **hyperplane** of lines meeting
+`L_c` — which contains every `Σ_t` with `t ∈ L_c`, and contains `z`. Then
+`W/⟨z⟩` is canonically `L_c ⊗ (K⁴/L_c)`, a space of `2 × 2` matrices whose
+rank-one locus is the Segre quadric, and `Σ_t/⟨z⟩` is its
+**column-space-`⟨t⟩` ruling**. Reading `(∗)` there collapses it to three
+incidences and nothing else ((BE-129)):
+
+> **`(∗)` HOLDS ⟺ `dim(A ∩ C_{L_c}^⊥) ≤ 3`, AND no `Σ_{t₀}` with `t₀ ∈ L_c`
+> lies in `A`, AND no `Λ²π'` with `L_c ⊆ π'` lies in `A`.**
+
+Asserted as an **iff** — in both its case-split and compact forms, against
+each other and against the brute-force reading of `(∗)` — at 140 random
+`(A, L_c)` across `dim A = 0..6` plus 48 constructed degeneracies.
+
+**HENCE `dim A ≥ 5` REFUTES IT, UNCONDITIONALLY.** `W` is a hyperplane, so
+`dim(A ∩ W) ≥ dim A − 1 ≥ 4` and the first clause fails at **every**
+configuration, for **every** line, with no genericity anywhere ((BE-130)(i)).
+Equivalently: **`(∗)` ⟹ `dim A ≤ 4`.** And the failure is not a lost
+certificate but a **dead route**: for every `p` off `L_c`, `p ∧ L_c` is a
+2-space inside the 5-space `W`, so it meets `A` — the necessary condition
+`p_x ∧ t ∈ A` that (BE-127)(ii) derives from `Π_x ⊆ ρ̄_i` holds at **every
+point of `P³`** and excludes nothing ((BE-130)(ii)), asserted at 2 400/2 400
+sampled `p_x`. **(BE-127)(ii) dies at exactly the place (BE-119)(i) died.**
+
+**AND `dim A ≤ 2` PROVES IT.** Half one needs `dim A ≥ 3`; half two needs
+`A ⊆ Σ_t`, and two distinct `t` on a line share only `⟨z⟩`, so at most one
+`t` qualifies ((BE-131)(i)). At `dim A = 3` the only failures are
+`A = Σ_{t₀}` (`t₀ ∈ L_c`) and `A = Λ²π'` (`L_c ⊆ π'`) — two **totally
+singular** 3-spaces, both proper closed, so **no blind draw can hit either**;
+at `dim A = 4` the failure locus is `A ⊆ C_{L_c}^⊥` plus one ruling case
+((BE-131)(ii)/(iii)). So the direction **proves `(∗)` on the stratum the arc
+has actually sampled and refutes it on the stratum it has not.**
+
+**SO (BE-127)(iii)'s 91/91 IS A COROLLARY, NOT EVIDENCE.** The population is
+reproduced here **exactly** and independently — 91 rows,
+`dim A ∈ {1: 16, 2: 34, 3: 41}`, 0 hub side-neighbours — and every row's
+verdict is **asserted to be decided by a theorem of (BE-131)**: 50 rows by
+(i), 41 by (ii) ((BE-132)). BOPEN had disclosed (F13) that the reduction's
+*assert* never fired; this landing supplies the reason the **certification**
+half is blind too, which was not disclosed because it was not known. The
+sampler varies the configuration and never the **core length**, the one
+variable `(∗)` is a function of — F11's shape once more.
+
+**AND THE REFUTED STRATUM IS INHABITED, GENERICALLY.** 27 new
+`deg_i(x) = 2` sides with **longer cores**, drawn by the sampler
+(BE-127)(iii) itself used, each glued into a composite on which (CH-1)'s
+three hypotheses, both terminals' hub-ness and side 2's R-node shape are
+**asserted 27/27**: `dim A` census `{1: 30, 2: 10, 3: 60, 4: 30, 5: 60,
+6: 80}`, and **`(∗)` fails at 142 of 270 rows** ((BE-133)(i)/(ii)). The cores
+are **trees**, so `rank R` is constant (asserted `= 5|E|` at every row) and
+`dim A` is **lower semicontinuous** — one draw at `dim A = d` certifies
+`dim A ≥ d` generically — giving `dim A ≥ 5` at a **generic** chart point of
+**14 of the 27** topologies ((BE-133)(iii)). The fairness check passes too:
+**109 of the 140** `dim A ≥ 5` rows have `ρ_i ≤ 5`, so the clause is not
+vacuous where the route dies ((BE-133)(iv)).
+
+**THE MECHANISM, AND THE SUCCESSOR IT NAMES.** The `(dim A, ρ_i)` census —
+`(5,3): 20, (5,4): 10, (5,5): 30, (6,4): 20, (6,5): 29, (6,6): 31` — shows
+`ρ_i` running 1 to 3 **below** `dim A`. That is the whole story:
+`ρ̄_i ⊆ ⟨ℓ₁⟩ + A` is a **relaxation**, obtained by deleting `xc₂, …, xc_k`,
+and at `k ≥ 2` those are exactly the edges that make `x`'s cycle rigid. **The
+named successor is the exact `k ≥ 2` reduction that keeps them.**
+
+**TWO FURTHER GAPS, AND NEITHER IS `(∗)`.** (a) There is **no `p_x`-sweep
+lemma at `deg_i(x) ≥ 2`**: (BE-124)(i) assumes `deg_i(x) = 1` inside its own
+derivation, and at `k ≥ 2` the flag `π_x` is *determined* by `p_x`, so moving
+`p_x` moves `π_x` and every side-2 neighbour must be re-placed. (b) *Proper
+in `P³`* is not *proper in the fibre*: the fibre is `𝔸³` only when no
+side-`i` neighbour of `x` is a hub, and `(∗)` explicitly permits finitely
+many `t` with `dim(A ∩ Σ_t) = 2`, each contributing a whole **bad plane** —
+12 such `(A, L_c)` are **constructed** with `(∗)` holding ((BE-134)(i)/(ii)).
+(BE-127)(iii) could not see (b): it reports **0** hub side-neighbours at all
+91 rows. This direction exhibits **90 rows** where `c₁` **is** a hub, on
+(CH-1)-legal composites ((BE-134)(iii)). So even a proof of `(∗)` would have
+left item 1 **two** steps short, not one.
+
+**WHAT IS *NOT* REFUTED, stated as prominently as what is.**
+(PENCIL-SATURATES-CHART) at side-degree `≥ 2` is **still OPEN**: `(∗)` is
+sufficient, not necessary, so its failure kills the route and not the clause,
+and the clause's own bad condition is **0 of 270** rows — *not found under
+this cap*. **(BE-127)(i) is untouched**; so are `PencilPair K 3 G`,
+`hbareSplit`, (BE-14), half (B), (BE-116), (BE-119)(i) and **every landed
+measurement** — (BE-127)(iii)'s figures are reproduced exactly. No shortfall
+is exhibited; item 0(b)/(c) is untouched, for the fifth direction running.
+
+**THE SURFACE DISAGREEMENT IS SETTLED, AND BOTH SURFACES CORRECTED.** The
+gap-map `(K-bare)` row's **two** left items and *Hand-off* item 0(a)'s
+**"subsumes"** are both wrong, in opposite directions: `(∗)` is FALSE exactly
+on (BE-119)'s `dim A ≥ 5`, so it cannot subsume it — and the two are not two
+items either. **They are ONE obstruction**, reached by two routes that both
+die on it. Both surfaces now say so.
+
+**THE COORDINATOR'S READING: SPLIT, with its parts pointing the same way.**
+Its **premise** is confirmed at source; its **middle inference** —
+*"(BE-119)(i) already gave properness there"* — is **REFUTED**, because
+(BE-119)(i)'s locus is `Σ_x` and (BE-127)(ii)'s is the strictly larger `Π_x`,
+a difference (BE-125)(iii) exhibits, so at `dim A ≤ 3` (BE-127)(ii) does
+prove something new; its **conclusion** is confirmed for a **stronger** reason
+than it gave (a theorem, not merely a covered regime); its **"subsumes"** call
+is confirmed as a defect and sharpened from *unsupported* to *false*; and its
+**located support gap** is confirmed at both coordinates. **Tally: cited, not
+incremented** — `RESEARCH-ARC.md` §7 stands at **sixteen instances, seven
+kinds**, and the coordinator reconciles after the round. Offered for that
+reconciliation, and explicitly not claimed: a candidate **eighth kind,
+UNDERSHOT** — a prediction right in direction and *weaker than the truth*, so
+that inheriting rather than testing it would have understated the finding.
+
+**E-rider: none of E1/E2/E3 fires**, read at source. E2's second conjunct is
+the one to state carefully: what is refuted is a **route**, not the target,
+and the residue — the exact `k ≥ 2` reduction ((BE-133)(iv)) and the sweep
+lemma ((BE-134)(i)) — is a named, dispatchable attack.
+
+**Driver** `notes/scripts/w4/bline.py`, six modes
+(`classify | five | low | pop | reach | fibre`, plus `validate`), exact ℚ,
+seed `20260902`, `validate` ≈ 59 s. **Mathematics** `notes/Pencil-informal.md`
+§(K-bare-ext) *Steps BE128–BE134*, labels **(BE-129)–(BE-135)**.
