@@ -207,6 +207,18 @@ be done uniformly in one line.
 > most `3(k−3)` to that dimension, so §4-C1's "the image grows with the far
 > graph" is false and the paragraph's hope of "done uniformly in one line" does
 > not survive: density per shape is per shape.
+>
+> **Scoping clause, added 2026-09-03.** The two sentences above read as
+> self-contradictory — a 4-fold cannot be dense in the 9-fold `Gr(3,6)` — and
+> that apparent contradiction cost direction GELIM its opening. They are not:
+> **every *class* habitat has `k ≥ 4`** by (D3)'s `hnoRigid ⟹ k ≥ 4`, where
+> `min(9, 6k−14) = 9` and the cap is **vacuous**; the 4-fold `k = 3` images are
+> **(K-res)** residuals, outside the pinned class. §(K-dom)'s own words:
+> *"(D1) is vacuous on the pinned `hK` class and bites exactly on the (K-res)
+> half."* And do **not** read the `k = 3` containment as bearing on `B`: it is
+> containment in the **discriminant** `{det Gram_B = 0}` (a serial chain has
+> `rank B|_{V_bc} = 2` identically), a *different* degree-2 Plücker form — at
+> `k = 3` the image lies in `D` **always** and in `B` **never** (6/6, (D4)).
 
 > **Four objects, and the conversation kept conflating them** (coordinator
 > scrutiny, 2026-08-05; the mathematics and the connection it makes are
@@ -1012,9 +1024,27 @@ Three things to carry forward from it:
   reaches it. The symbolic route can make every *far-graph-free hypothesis
   package* uniform and stops exactly where the far graph enters.
 
-**Others, in rough order of value.** (i) Is the pullback of the bad
+**Others, in rough order of value.** ~~(i) Is the pullback of the bad
 hypersurface's equation identically zero on the image of the `V_bc` map? — an
-elimination question, and the exact form of §2.4's open problem. ~~(ii) Verify
+elimination question, and the exact form of §2.4's open problem.~~ — **STRUCK
+2026-09-03 (direction GELIM, killed before computing; the disposition needed no
+driver). It was already dead when this list was written**, by (D4), which landed
+the same day. The disposition, by companion length:
+**at `k ≥ 4`** — the class stratum, by (D3)'s `hnoRigid ⟹ k ≥ 4` — it is **not
+frame-expressible** (the far block contributes `3(k−3) > 0`) **and has no
+content**: §(K-dom) (D4)'s dominance already gives `φ_G^*(f_B) ≢ 0` per shape,
+since a dense image cannot sit inside a hypersurface. The open thing there is
+**uniformity**, which is not elimination-shaped.
+**At `k = 3`** it *is* frame-expressible — the far block is **0** ((D2): `V_bc`
+constant along the entire far chart, 13/13 and 41/41; §(K-pitch) *Step 5b*: no
+far data at all), so the `λ` quantifier that bounds this method does not exist
+there, and the computation is ~14 indeterminates at degree 12, inside (ANH-16)'s
+brackets — it would run. But `k = 3` is **exactly (K-res)**, outside the pinned
+class and barred from direction specs; and the containment it would test is
+**already refuted pointwise** at both probed `k = 3` habitats ((D4): the escape
+holds at all 21 seeds, `V_bc ∩ α(a) = V_bc ∩ Λ²π̂ = 0`, the six `k = 3` seeds
+included). So the item is nontrivial **exactly on the stratum it may not serve**,
+and vacuous on the one it was proposed for. ~~(ii) Verify
 (Λ1)'s 16-entry bracket identity symbolically rather than per-frame.~~ —
 **DONE 2026-08-05**, and it was the layer's deliberate first consumer precisely
 because its answer was already known, so a mis-configured M2 layer would show

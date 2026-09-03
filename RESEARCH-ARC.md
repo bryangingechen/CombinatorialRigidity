@@ -377,7 +377,14 @@ killed, but so a **timid** one can be beaten. The tell to watch for: a predictio
 whose reasoning is *"X is already covered by the weaker Y"*, where the honest
 answer turns out to be *"X is outright true here"*.
 
-The tally now runs to **seventeen instances and eight kinds** — reconciled
+The tally now runs to **eighteen instances and eight kinds** — the eighteenth
+(2026-09-03, direction GELIM) a plain **refuted**, kind 1, and instructive for
+*where* the refutation was found: the spec's own evidence-stratum clause said
+the coordinator had **not opened §(K-dom)**, and §(K-dom) *Step D4* is exactly
+where the prediction died. Naming the stratum did not make the prediction right;
+it told the dispatch which section to open first, and it was refuted in one read
+before any computation. That is the cheapest possible outcome for a wrong
+prediction, and it is what §7 is for. Reconciled
 2026-09-02, when this line was found **stale by six**. That staleness is
 itself the finding: three concurrent directions landing the same day each
 read a different baseline for it (two claimed the same slot, one read the
