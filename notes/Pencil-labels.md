@@ -3814,3 +3814,38 @@ lesson would lose the one that is actually mechanical:
 
 A check can satisfy (1) and still fail (2), which is what happened here — so
 the two are independent clauses, not two readings of one lesson.
+
+## Coordinator reservation defects — THREE distinct shapes in ONE round (2026-09-03)
+
+Recorded together because they arrived in one four-direction round, all in the
+**coordinator's** pre-dispatch checks, and because each would pass a check built to
+catch the previous one. The conclusions survived all three; the *procedure* is what
+failed.
+
+1. **Metric conflation** (BSCOND; corrected `53bc9740`). `git grep -c` piped to
+   `wc -l` counts **files containing a match**, reported as **hits**. Fix: `git grep -o`
+   piped to `wc -l` counts hits, and a reservation **says which metric it reports**.
+2. **Coverage gap** (BARCH; corrected at its landing, `d1efc63d`). The check sampled the
+   range's interior and closing tokens — `(BE-150)`, `(BE-156)`, `BE149`, `BE155` — and
+   never `(BE-149)`/`BE148`, its **opening** tokens, which carry 6 hits in 3 files (all
+   declarations). Fix: **check every token in a reserved range, not sampled endpoints.**
+   Note this check *satisfied* shape 1 and still failed.
+3. **Wrong FAMILY** (DSAT, this round — the worst of the three, because it makes the
+   0-hit result meaningless rather than merely imprecise). The reservation offered
+   `(D8)`–`(D14)` for §(K-dom), derived from a max-integer scan of `\(D(\d+)\)`. But
+   **§(K-dom)'s label family is `(DM-N)`** — clause (L1)'s own worked example in this
+   file says a new §(K-dom) claim becomes **`(DM-5)`, not `(D5)`** — so the reserved
+   tokens were 0-hit for the entirely uninteresting reason that they were never the
+   family. DSAT **deviated correctly**, minting `(DM-5)`–`(DM-11)` against the spec and
+   citing (L1); the reserved **step** names `D8`–`D14` were kept, with `D8` itself
+   adjudicated as taken-but-unrelated (4 hits / 2 files, `notes/Phase23-design.md`'s
+   Phase-23f *Layer* steps) under the same precedent as `(L1)`/`(L6)`/`(L7)`.
+   **Fix, and it subsumes the other two: derive the family from THIS FILE's stated
+   convention for the owning section, never from a regex scan of integers — then check
+   every token, reporting hits and files separately.** A max-integer scan cannot tell a
+   label family from a coincidence of shape.
+
+**The standing lesson for the dispatch side:** a direction that finds its reservation
+contradicted by this file should **follow this file and say so in its return**, as DSAT
+did. The registry outranks a coordinator's spec on label naming.
+

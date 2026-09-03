@@ -1,8 +1,31 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
 **Status: EIGHT fan-outs, FORTY-NINE single directions, ONE draft-only parallel direction,
-FOUR concurrent pairs and ONE concurrent round of four dispatched; 85 LANDED, THREE IN
-FLIGHT** (GLEAF / OBAR / DSAT, the round's other three directions).
+FOUR concurrent pairs and ONE concurrent round of four dispatched; 85 LANDED, ONE IN
+FLIGHT** (GLEAF) **and TWO DRAFTED-BUT-NOT-LANDED (DSAT, OBAR)**.
+*(Round state, coordinator, 2026-09-03: **DSAT returned `DRAFTED` and its landing is
+DEFERRED ON SESSION LIMITS**, not on any defect — the 5-hour window stood at 85 % and a
+landing resume costs ~0.4 M tokens, so the draft waits for the reset rather than risk a
+resume killed mid-way through a multi-file landing. Its deliverables are the **untracked**
+`notes/Pencil-draft-<CODE>.md` and `notes/scripts/w4/<code>.py` for each.
+
+**DSAT** — verdict: **the C2 satisfiability trace returns UNSAT, so C2 dies as a *uniform*
+carry**; SAT at all five class habitats, provably UNSAT at both (K-res) habitats, which
+`hK` carries, the deciding mechanism a §(K-dom) dimension count — which refutes §8.2's own
+*"nothing in (K-dom) bears on C2"*. Labels **deviate correctly** to `(DM-5)`–`(DM-11)`
+against the coordinator's spec, per this file's sibling registry (see
+`notes/Pencil-labels.md`'s reservation-defect block).
+
+**OBAR** — verdict: **§8.2's U3 gate is NEGATIVE three independent ways and U3 is struck
+completely**; its step 2 could never have run, U3's object being **(T3) restated
+pointwise**. One failure is a *proof from a landed theorem* — §(K-σ) **(σ7)** — so the
+negative is chart-wide, not generic. With U2 struck, **U1 is alone**. Its `(K-out)` cell
+lands at **1818/1823**, so the next `(K-out)` landing must **recompute, not append**; and
+§8.2, §4.6 and §8.6 must move in **one** commit, since the first two carry the same flag
+and say so.
+
+**Both verdicts are AS REPORTED, NOT CONFIRMED** — neither has had the coordinator's
+verification tier, which is precisely the outstanding work.)*
 **The five landings after GLIST — BLINE (ordinal 73), BDEGTWO (74), RPOOL (75), BSCOND (76),
 BARCH (77) — have their own sections; read those, not the blurb below, for the current state.**
 **BARCH (ordinal 77, §"BARCH") LANDED 2026-09-03** — the ninth strategy pass's **rank 2**,

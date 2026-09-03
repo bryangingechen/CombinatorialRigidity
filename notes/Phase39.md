@@ -250,7 +250,8 @@ SPENT: BSCOND (76) DECIDED (S1)/(S2)**, so (β) at the window is **UNCONDITIONAL
 method class is **NOT** dead, it **changes ambient**, and 14 → 12 **reduces to the
 two-sided (E4), UNPROVED** ((BE-149)–(BE-155)) — and **§8's bar LIFTED NARROWLY** there:
 `A_sharp` properness as posed **stays barred**, `Γ`-properness and (E4) are **lifted**
-((BE-154)(iii); recorded in §8, as §8's own rule requires). **THE NEXT CONCRETE TASK is
+((BE-154)(iii); recorded in §8, as §8's own rule requires). **TWO DRAFTS AWAIT VERIFY-AND-LANDING — DSAT (C2 trace: UNSAT, C2 dies as a uniform carry) and OBAR (U3's gate NEGATIVE, U3 struck; U1 now alone) — deferred on SESSION LIMITS, not on any defect; verdicts, paths and caveats in `notes/Pencil-fanout.md`'s header round-state block; GLEAF was still in flight. Both verdicts are AS REPORTED, NOT CONFIRMED.**
+**THE NEXT CONCRETE TASK is
 (BE-154)(iv)**: one new `barch.py` mode running the `Γ_Π` and `(e₁, e₂)` tests at
 `bdegtwo.sweep_points`' 411 **chart** points at **both** sides of the peel — it reaches the
 three fibre shapes `cert` cannot, and it **falsifies (E4) if (E4) is false**. Neither rank's
