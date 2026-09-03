@@ -3345,3 +3345,76 @@ compressed before a word of new content was added**. No `SPECIAL_CAPS` entry pro
 none needed. Label preservation by `notes/scripts/gapdiff.py K-grid HEAD`: **146 in, 154 out,
 ZERO dropped, 8 added**. **The tail this direction declares, for the next reservation:
 (GR-145) / Step G165.**
+
+## Reserved namespace — direction BOPEN (2026-09-02, **CONSUMED IN FULL at the landing; nothing returned**)
+
+**Reserved and consumed on 2026-09-02 for the single direction BOPEN**
+(ordinal 72; `notes/Pencil-fanout.md` §"BOPEN") — (BE-121)(i) item 1's own
+designated successor, *"the passage from proper to generic … a chart question
+rather than a configuration hunt"*. Like BSIGMA and BPROPER, **this
+reservation was never a separate commit**: BOPEN ran **draft-only** in
+parallel with a committing dispatch, so its spec and its labels were carried
+in the invocation prompt and land here with the write-up (`RESEARCH-ARC.md`
+§2).
+
+| direction | owning § | labels reserved | steps reserved | driver |
+|---|---|---|---|---|
+| **BOPEN** | §(K-bare-ext) — **extends**, no new section | **(BE-122)–(BE-128)** | **BE121–BE127** | `w4/bopen.py` (eight modes) |
+
+**It opens at exactly the tail BPROPER declared** (*"The next tail is (BE-122)
+/ Step BE121, 0-hit verified at landing"*).
+
+**0-hit verification, re-run by the direction as its first action**, across
+`*.md`, `*.tex`, `*.lean`, `*.py`, `*.m2` with `.git`/`.lake`/`__pycache__`
+excluded: `BOPEN`, `bopen`, `bopen.py`, `(BE-123)`–`(BE-129)` and the raw step
+tokens `BE122`–`BE127` each **0-hit**; `(BE-122)` and `BE121` had exactly one
+hit each, opened and confirmed to be **BPROPER's own tail declaration**
+(`notes/Pencil-labels.md:3232`), not consumed labels. **`BGENERIC` was checked
+and NOT chosen** — it names the **predicted answer**, which `RESEARCH-ARC.md`
+§7 warns against baking into a code; `BOPEN` names the **question** (the
+passage from proper to generic, i.e. whether the good locus is *open*), and
+the direction's answer is that openness is the wrong property, which a code
+naming the answer would have prejudged.
+
+**CONSUMED IN FULL.** (BE-122)–(BE-128) and *Steps BE121–BE127* all used;
+**nothing returned**. **Nothing is minted** as an object name — not for the
+bad loci `B`/`B_str`, the rotation fibre, the tower slide or the condition
+`(∗)`, all of which stay plain descriptive prose (`(∗)` is a *marker*, not a
+label: it is a bare asterisk in parentheses, matched by no registry regex, and
+it is qualified as *"§(K-bare-ext) (BE-127)(ii)'s `(∗)`"* wherever it is cited
+outside its own step). The section has now gone **nine** directions without a
+configuration-level token. **(L6) landing grep**: no bare `(X<digit>)` token is
+minted anywhere in the new steps; `(C6)`/`(C7)`, `(R1)`/`(C1)`/`(C2)` all
+**0-hit** in the new text.
+
+**The next tail is (BE-129) / *Step BE128***, 0-hit verified at this landing.
+
+**Gap-map note (F21).** The `(K-bare)` row was recomputed to an **explicit
+target set before the edit — ≤ 1 500 words, i.e. ≥ 100 of headroom**, the same
+target BPROPER met and honest rather than generous **because no landing is
+queued on this row** (the concurrent sibling is on `(K-grid)`). It lands at
+**1 499 / 1 600**, i.e. **exactly level with `HEAD`** — the whole of a
+theorem-sized landing absorbed by folding **mechanism superseded as headline**
+(BUNIF's stabilizer derivation, BDOUBLE's realization narrative, BSATUR's and
+BSIGMA's refutation mechanisms, BPROPER's incidence count), **never history**:
+every label those passages carried is still cited. Verified by round-tripping
+the assembled row through **both gates' own code** — `iter_row_cells` and
+`gapdiff.labels_of`/`CODE`, in memory, since a draft-only dispatch may not
+touch the tracked file — at **155 in, 171 out, ZERO dropped, 16 added**. The
+convention-0 hazard fired **again and was caught the same way**: the first
+assembly dropped the row's trailing `` ` |` `` and the set-diff reported **3
+DROPPED** ((BE-57), (BE-57)(iv), (BE-97)(iv)) while the cap gate passed — the
+**third** time that shape has been caught by the set-diff and the second by
+this exact mechanism.
+
+**A gate artifact, recorded so the next recompute is not surprised by it.**
+`notes/check-gapmap-cells.py`'s default mode detects a changed row by
+comparing **word counts**, not text — so a recompute that lands at *exactly*
+the pre-edit count is invisible to it and it reports *"0 gap-map row(s)
+checked"*. That is what happened here (1 499 → 1 499). It is not a failure —
+the cap is satisfied either way — but it means the default run **certifies
+nothing** about such a row: run `python3 notes/check-gapmap-cells.py --all`
+(28 rows, all within cap, run at this landing) and rely on
+`notes/scripts/gapdiff.py`, which compares **label sets** and did see the
+change (155 in, 171 out). Two gates, two different notions of "changed"; a
+row can be invisible to one and not the other.

@@ -1080,6 +1080,15 @@ are a recorded *Harness debt* item (see below).
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/bproper.py degx` | 41 s | ibid. *Step BE118* ((BE-119): §(K-bare-ext) (BE-113)'s price (d), unmeasured until this pass — the weak inclusion `ρ̄_i ⊆ ⟨p_x ∧ p_{c₁}⟩ + A` asserted at **91/91** rows over 16 `deg_i(x) ≥ 2` topologies (8 blind + 6 planted each), with the `dim A` census printed; `dim A ≥ 5` and `Σ_x ⊆ ρ̄_i` at `ρ_i ≤ 5` both **not found under that cap**) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/bproper.py support` | 0 s | ibid. *Step BE120* ((BE-121): the `RESEARCH-ARC.md` §4 support audit — all six populations named with what each varies and what it holds fixed, and the predecessor's cap located at one line of one function) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/bproper.py validate` | 243 s | ibid. all seven in one process — the landing gate; fits the 600 s foreground budget. No wall-clock cell but the driver's own `%.1fs` prints, and every rng is seeded from the literal `20260902` |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/bopen.py hyp` | 0 s | `notes/Pencil-informal.md` §(K-bare-ext) *Step BE122* (direction BOPEN; (BE-123)(iii): (CH-1)'s three hypotheses — `hcard`, min degree 2, girth `≥ 4` — asserted at **9/9** constructed peels, with both terminals asserted to be hubs of the piece ((BE-70)(i)); plus the `d_x` census: `c` is a hub at 7 of 9, and `x` has a side-2 hub neighbour at **0** of 9) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/bopen.py weak` | 0 s | ibid. *Step BE124* ((BE-125)(iii): the CONSTRUCTED control — `A = ⟨e₁∧e₃, e₂∧e₃, e₃∧e₄⟩` over `π = ⟨e₁,e₂,e₃⟩` with `p_c = e₁` — asserted as an **iff** on a 160-point grid that `Π_p ⊆ ρ̄` exactly off one line of `π`, while `Σ_p ⊆ ρ̄` at the **single** point `p = e₃`, asserted at every one of its 8 hits. Shows the `Π_x` and `Σ_x` loci differ maximally on one fibre) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/bopen.py amax` | 20 s | ibid. *Step BE125* ((BE-126)(iii): over BSIGMA's 29-topology side library × 5 blind draws, `a_i = dim M_i − 6 − f_i ≥ 0` asserted at every draw — (BE-22)(ii)'s partition cap, which is what makes `{a_i = 0}` equal (BE-69)(i)'s `A_i` — with the generic `a_i` histogram `{0: 29}` and the FIRST draw attaining the minimum at **29/29**, (BE-69)(iii)'s openness signature read for `a_i`) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/bopen.py fibre` | 47 s | ibid. *Step BE123* ((BE-124)(ii): the `p_x`-sweep as a CONSTRUCTION — over 9 composites × 2 free draws × 6 targets, **102/102** targets rebuilt into full legal chart points of the piece with side 1 held byte-fixed and side 2 re-drawn by (CH-2)'s tower; both gates, the core asserted **unchanged as a placement**, `A` asserted **unchanged as a subspace**, and (BE-114)(i)'s identity re-asserted at the new `p_x`. 14 rows are the `π_c` fibre, 4 the `𝔸³` one) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/bopen.py slide` | 77 s | ibid. *Step BE124* ((BE-125)(i)/(ii): the flag-rotation fibre — `ρ̄₁` asserted CONSTANT as a subspace and `p_x` asserted fixed at every rotation; **every** rotation bad at **16/16** planted rows with `Σ_x ⊆ ρ̄₁`; **no** rotation bad at **20/20** free rows without it; `dim(ρ̄₁ ∩ Σ_x)` census `{1: 16, 2: 4}` there, and at the 4 rows with `dim = 2` the **unique** bad plane `q^{-1}(ρ̄₁ ∩ Σ_x)` is CONSTRUCTED and asserted both bad and inside the legal pencil) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/bopen.py degx` | 32 s | ibid. *Step BE126* ((BE-127)(iii): over BPROPER's own 16-topology `deg_i(x) ≥ 2` library at its own seeds — **91** rows, reproducing (BE-119)(ii) — (BE-105)(iv)'s `Π_x = ⟨ℓ₁, ℓ₂⟩` re-asserted, and **both halves of `(∗)` certified EXACTLY at 91/91**: `{t : Σ_t ⊆ A}` computed as a LINEAR subspace and asserted to miss `L_c`, and one `t ∈ L_c` with `dim(A ∩ Σ_t) ≤ 1` exhibited. `dim A` census `{1: 16, 2: 34, 3: 41}`; `x` has 0 hub side-neighbours; **no bad row**, so the reduction's assert never fired — disclosed) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/bopen.py price` | 106 s | ibid. *Step BE127* ((BE-128)(i): the shortfall control — over 9 composites × 3 seeds, planted AND free, **54** rows with `margin ≤ 0` ASSERTED at `Π_x`, `Π_y` and `⟨M⟩`, and `reach = min(δ₁+δ₂,6)+a₁+a₂` asserted at all 27 free rows; margin histogram at `Π_x` `{−3: 3, −2: 15, −1: 21, 0: 15}`, **0 shortfalls**, so `notes/Phase39.md` item 0(c) stays open) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/bopen.py support` | 0 s | ibid. *Step BE127* ((BE-128): the `RESEARCH-ARC.md` §4 support audit — all seven populations named with what each varies, what it holds fixed and which of the claim's own quantifiers it therefore reaches, plus the standing cap that every population is CONSTRUCTED and no figure is a class-level rate) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/bopen.py validate` | 281 s | ibid. all eight in one process — the landing gate; fits the 600 s foreground budget. No wall-clock cell but the driver's own `%.1fs` prints, and every rng is seeded from `bunif.SEED` (`20260902`) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/ogeom.py --bound --dom --core --cert` | 288 s | `notes/Pencil-informal.md` §(K-out) *Steps O42–O45* (direction OGEOM; (OC-45) the `ℓ ≤ 5` + bridgeless class-shape check that turns `sigz.k4_stratum`'s `{1..5}^6` from a cap into a theorem (re-enumerated at `{1..12}^6`, 877 = 877); (OC-46) restriction-dominance, 1482 + 222 extensions, 0 failures; (OC-47) the live-core reduction; (OC-49) the census — 271 974/271 974 pairs settled, and (OC-39)'s 3 324 + 44 = 3 368 pairs shown to lie in exhausted cells) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/ogeom.py --hunt` | 357 s | ibid. *Step O45* ((OC-48): the exhaustive iso-reduced live-core hunt at `n(F°) ∈ {2,3}` (all `\|E°\|`) and `n(F°) = 4` (`\|E°\| ≤ 8`) — 21 086 classes here, all free, **0 candidates**) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/ogeom.py --huntn 5 8 8 <PART> 3` | 318 s each | ibid. *Step O45*, the `n(F°) = 5`, `\|E°\| = 8` cell in three deterministic slices (70 174 classes, all free) — the parts together with the two rows above make the pass's **91 260** cores |
@@ -1493,15 +1502,17 @@ figure-invariant): `rref`, `rank`/`rank_exact`, `nullspace`, `left_nullspace`,
 `neighbors` (`kbare_common`, `n9`); `K4`/`K5_minus_matching` (three copies:
 `localtest`, `probe_zero`, `run_habitats`).
 
-## Harness debt — four rounds PAID (S1–S4 2026-08-06; the move-down round 2026-08-20; the GFLIP balance-layer move-down 2026-08-25; the GCHEAP/GPRICE balance-layer extension 2026-08-25), **six items outstanding**
+## Harness debt — four rounds PAID (S1–S4 2026-08-06; the move-down round 2026-08-20; the GFLIP balance-layer move-down 2026-08-25; the GCHEAP/GPRICE balance-layer extension 2026-08-25), **eight items outstanding**
 
-**Six items are outstanding: `zneq.ledger`** (deliberately deferred to a
+**Eight items are outstanding: `zneq.ledger`** (deliberately deferred to a
 round that can re-run `oschu --gtarget` / `--census1` / `--census2`), **the
 `kbare/` sibling-import set** that probe KBARE-FALSIFY created,
-**OQRANK's two arrivals** (`out_classes`/`shape_key`/`tree_triple`), and
+**OQRANK's two arrivals** (`out_classes`/`shape_key`/`tree_triple`),
 **the GBLAW + GXESC reversal-model sibling imports**, **WTRI's duplicate of
-`saferes.prime()`'s pool**, and **GLIST's five-device sibling import of `gpack.py`**
-(the last three subsections) —
+`saferes.prime()`'s pool**, **`bsigma.wedge3`'s second consumer** (BPROPER —
+*this list had omitted it; added at the BOPEN landing, 2026-09-02*),
+**GLIST's five-device sibling import of `gpack.py`** and **BOPEN's second
+consumer of `bproper.py`'s peel constructors** —
 **UNPAID** by the same rule that forbids a dispatch from moving a landed
 name. Everything else is paid: the first round's four items are in the
 *ALL FOUR CLEARED* block immediately below (kept in the past tense as the record
@@ -2596,6 +2607,41 @@ budget the full re-run of `gridcol`'s import closure for it. GGLOB's own new dev
 `h_girth_data`) are one-consumer and stay direction-local; `cellmap` and `synth_first` carry
 explicit *local device* docstrings saying what they are deliberately **not**
 (`gpack.pair_graph`, and `glist.first_feasible` respectively).
+
+### New item (2026-09-02, direction BOPEN) — `bproper.py`'s peel constructors reach their SECOND consumer; **UNPAID, and deliberately so**
+
+`w4/bopen.py` imports **nine** names from `w4/bproper.py` read-only —
+`PEELJOBS`, `composite`, `core_of`, `degx_library`, `free_peel`, `plant_peel`,
+`plant_side`, `reduction_data`, `side_named` — and reimplements none of them.
+By §2 rule 2 a primitive with a second consumer is a **move-down** signal, and
+the natural destination is a `w4/` peel-construction layer beside
+`bdecor`/`bpeel`.
+
+**No move is made, and the reason is priced.** These devices are **one
+direction old**; a move-down would re-baseline **eight** recorded BPROPER
+figures (`reduce` 327/164, `alpha`, `proper` 96/~1 500, `plant` 16/16 and 11,
+`peel` 21, `degx` 91, and the two `validate` totals) for no mathematical gain,
+and convention 5 **prices** such a commit rather than requiring it. The item
+is recorded so a third consumer triggers it rather than re-discovering it —
+the same disposition GLIST's five-device import of `gpack.py` took.
+
+Three **new** devices are added by `bopen.py` and are noted here in case they
+reach a second consumer:
+
+- **`bopen.slide`** — rebuild a chart point with `x`'s flag replaced, side 1
+  byte-fixed and side 2 re-drawn by the tower. The **first** device in the
+  harness that constructs a *move within `Chart(H)`* rather than a fresh draw.
+- **`bopen.chart_data`** — `(P, B, pts)` read off a configuration
+  (`plane_at` at every hub); a pure read, and the inverse of
+  `bdecor.flag_assignment`'s output shape.
+- **`bopen.bad_plane`** — the **constructive** inverse of (BE-105)(i)'s
+  `q : t ↦ p_x ∧ t`, i.e. the unique bad plane at a `dim(ρ̄ ∩ Σ_x) = 2` row.
+  No driver had it, because no sampler can reach that plane.
+- **`bopen.sat_locus`** — `{t : Σ_t ⊆ A}` as a **linear** subspace, which is
+  what makes half one of `(∗)` exactly certifiable rather than sampled.
+
+**No `Divergences` entry is created**: none of the four is a same-named
+variant of an existing device.
 
 ## Deliberate non-goals
 

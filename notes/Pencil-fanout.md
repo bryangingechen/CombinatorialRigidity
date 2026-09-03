@@ -13532,3 +13532,151 @@ job** — `synth_first` decided 150/150 positively with the node cap never bindi
 arc consistency provably does not — the cheapest question that would say how global "global"
 really is; (4) **leaf-covering on the branches**, untouched by (GR-142) and still the one place
 the landed matroid machinery might reach.
+
+---
+
+## BOPEN — seventy-second ordinal (single dispatch, **DRAFT-ONLY**, run 2026-09-02 in parallel with a committing `(K-grid)` dispatch) — the class-statement lane, one direction after BPROPER
+
+**Selection provenance.** (BE-121)(i) item 1 **designated this target in its
+own words** — *"what is left of item 1 is no longer a properness question; it
+is the passage from proper to generic, i.e. (BE-69)'s openness for this
+specific locus, plus (BE-116)(iii)'s two measured inputs … it is a **chart**
+question rather than a **configuration** hunt"* — after BPROPER settled the
+properness half at every side. `hbareSplit` is ranked **#1 of the three
+carried items by distance to the phase target**; the item is seed-free and
+induction-free and discharges `hbareSplit` **and** `PencilPair`'s
+unconditional conjunct at once. Run **draft-only** beside a committing
+dispatch at **`recon-opus`** — the third exercise of `RESEARCH-ARC.md` §2's
+serial-landing pattern outside a prepared fan-out.
+
+### The spec, as dispatched
+
+**Target.** Close half (B)'s item 1 by making **(PENCIL-SATURATES-CHART)** a
+theorem: discharge the passage from *proper* to *generic* for the
+`Σ_x ⊆ ρ̄_i` locus, plus BPROPER's two measured inputs (the `p_x`-sweep;
+`a_i = 0` generically).
+
+**Priced in advance, both ways.** A proof closes item 1. A refutation costs
+the redundancy theorem's hypothesis (`Π_x`/`Π_y` back among the live blocks,
+12 → 14) but by (BE-121)(iv)'s accounting does **not** refute
+`PencilPair K 3 G`, `hbareSplit`, (BE-14), the 2-cut step or half (B).
+
+**The coordinator's reading, labelled TO BE TESTED** (`RESEARCH-ARC.md` §7),
+with its stratum named honestly as *a reading of BPROPER's landed caps today;
+no measurement, no driver*: *the three gaps are not equally hard, and two may
+be corollaries of the pendant reduction — if `Chart(H)` fibres over the core
+with `π_c`-fibres, the sweep should follow from the chart's own construction
+rather than needing (BE-69) at all; `a_i = 0` generically looks like the
+genuinely separate one.* Three *where I expect to be wrong* items: (1) the
+chart may not fibre that way; (2) (BE-69) may be stated over a locus of a
+different **shape**, in which case the residue is **larger**; (3) `a_i = 0`
+may not be provable at this stratum.
+
+**Forced jobs.** (1) a class statement, not a hunt — any sweep is an
+adversarial control on an argument; (2) **read (BE-69) at source and report
+its actual ambient before using it**, a full result either way; (3) the
+`RESEARCH-ARC.md` §4 sampler-support audit, naming each population's support
+and which of the claim's own variables it varies — this lane having produced
+**three consecutive** claims true wherever the sampler went and false one
+quantifier away ((BE-105), (BE-109), (BE-117)); (4) BPROPER's shortfall
+control at every exhibited row, with a `margin > 0` row at `Π_x` outranking
+the stated target; (5) cap disclosure with denominators; (6) E1/E2/E3 read at
+source.
+
+**Bars.** Draft-only, no tracked file touched; do not touch
+`notes/Pencil-informal-grid.md` or any `(GR-…)` label; do not re-open
+BSATUR's, BSIGMA's or BPROPER's landings; (K-res) is a **USER call**; the
+2026-08-05 Lean hold binds. **Two rules new that day**: diff against `HEAD`,
+never the working tree; prefix every scratch file with `BOPEN_`.
+
+### LANDING WRITE-UP — BOPEN, 2026-09-02: **item 1 CLOSES at every side-degree-`1` terminal, and the citation it hung on is retired**
+
+**(PENCIL-SATURATES-CHART) IS A THEOREM at every terminal of side-degree `1`**
+((BE-127)(i)), which is every instance where the clause has ever failed and
+the only regime in which the flag carries freedom at all ((BE-105)(iv)). So
+half (B)'s item 1 **closes there**, (BE-101)(i)/(ii) hold with the clause a
+theorem rather than a hypothesis, and the `14 → 12` block drop stands at a
+generic chart point.
+
+**THE FORCED JOB ANSWERS NEGATIVELY, AND THAT IS THE RESULT THAT MOVES THE
+MOST.** (BE-69) read at source: its ambient **is** `Chart(H)` — so the
+citation is not `RESEARCH-ARC.md` §7's *INAPPLICABLE* shape — but its **locus**
+is `Good = A₁ ∩ A₂ ∩ GP`, the **attainment** locus, and its openness proof is
+in its own words *"plain rank **lower** bounds"*. The saturation good locus is
+an **upper** bound on an intersection dimension, upper-semicontinuous only on
+a constant-`ρ_i` stratum, so **(BE-69)(i) does not transport** ((BE-122)) —
+and it need not, because *generic* does not need *open*: the bad locus is a
+finite union of rank strata, hence **CONSTRUCTIBLE**, and on an irreducible
+variety a constructible set with empty interior is nowhere dense, so fibrewise
+properness alone yields a **dense open** good locus ((BE-123)). **The only
+thing (BE-69) ever contributed to three landings' arguments is
+irreducibility** — which is (CH-1)(a) one level down.
+
+**BOTH MEASURED INPUTS BECOME PROVED.** The `p_x`-**sweep**: in §(K-chart)'s
+tower (which (BE-65)(ii) says **is** (BE-64)(ii)'s parametrization, stage for
+stage) the defining equations are `n_h · (q_u − q_h) = 0`, and with the core
+fixed the **only** one coupling `q_x` to fixed data is `q_x ∈ π_c`, present
+exactly when `c` is a hub. So `p_x` ranges over the whole plane `π_c`, resp.
+over **all of `𝔸³`** — precisely (BE-116)(i)'s two ambients — with side 2
+**rebuilt** rather than perturbed ((BE-124)). And **`a_i = 0` generically IS
+(BE-69)(i)'s own open locus `A_i`**: `a_i = dim M_i − 6 − f_i` and (BE-22)(ii)
+caps `dim M_i ≥ 6 + f_i`, so `{a_i = 0}` is the max-rank locus — open,
+nonempty by **(BE-14) for the side**, which (BE-69)(iii) already calls *"the
+2-cut induction's own hypothesis, not a new obligation"* — hence dense
+((BE-126)).
+
+**AND A GAP NO LANDING HAD NOTICED IS LOCATED, EXHIBITED AND CLOSED.** The
+clause is stated at `Π_x = p_x ∧ π_x`; (BE-116) proves properness of the
+strictly smaller `Σ_x ⊆ ρ̄_i`. A **constructed** `A` shows the difference is
+real: at a **fixed** flag the `Π_x`-bad set can be the complement of one line
+of the `p_x`-plane — dense — while `Σ_x ⊆ ρ̄_i` holds at a **single point**
+((BE-125)(iii)). What closes it is a second fibration: rotating `π_x` through
+the line `p_x ∨ p_c` leaves `ρ̄_i` **constant** and sweeps `Σ_x`, so a bad
+chart point sitting in any **open** set is bad at **every** flag — i.e. lies
+in (BE-116)'s locus — **pointwise** ((BE-125)(ii)). Asserted at 16/16 planted
+rows (every rotation bad) and 20/20 free rows (none bad), with the unique bad
+plane **constructed** at the 4 rows that have one, since no sampled rotation
+can reach it ((BE-105)(iii) again).
+
+**BPROPER's ESCAPE ITEM 2 IS SETTLED, in two lines.** *"Is `Chart(H)`'s
+irreducibility available at a non-path side?"* — yes, and side topology plays
+no role: degrees only drop, so a hub of `H` is a hub of `G` and
+`d_h(H) ≤ d_h(G) ≤ 2`; girth and min degree inherit likewise ((BE-123)(iii)),
+checked 9/9.
+
+**price (d) is SHARPENED, not just measured.** At `deg_i(x) ≥ 2` the CHART
+clause reduces to `p_x ∧ t ∈ A` for `t` on the **fixed line**
+`p_{c₁} ∨ p_{c₂}` ((BE-105)(iv) + (BE-114)(iv)), proper under a two-part
+condition `(∗)` whose halves are **exactly certifiable** — one is *linear* in
+`t`, the other needs a single witness on the line — and which is certified at
+**91/91** of BPROPER's own library and seeds ((BE-127)(ii)/(iii)). That
+replaces (BE-119)(i)'s `dim A ≤ 4` hypothesis and is **what item 1 is now left
+with**.
+
+**THE PRICE IS PAID DOWN.** `margin ≤ 0` at `Π_x`, `Π_y` and `⟨M⟩` at **54**
+further rows (27 planted, 27 free), `reach = min(δ₁+δ₂,6)+a₁+a₂` at every free
+row, **0 shortfalls** — `notes/Phase39.md` item 0(c) is **untouched and still
+open**, for the fourth direction running ((BE-128)(i)). **Nothing is refuted**:
+(BE-116) is used verbatim, and what is replaced is a **warrant**
+((BE-122)(iii)) and a **hypothesis** ((BE-127)(ii) over (BE-119)(i)).
+
+**THE COORDINATOR'S READING: CONFIRMED**, and its escape item 2 is the
+informative one. The main claim — *the chart fibres over the core, so the
+sweep follows from the construction and (BE-69) is not needed* — is right in
+mechanism and in object. Its second half is **refuted with the sign
+inverted**: `a_i = 0` is the **cheapest** of the three, not the separate hard
+one. Escape items 1 and 3 are **refuted**; **item 2 SPLITS** — its diagnosis
+(*a locus of a different shape, so the citation was never going to work*) is
+exactly right, and its consequence (*the residue is larger*) is **inverted**,
+because openness was never what "generic" needed. **Tally: cited, not
+incremented** — `RESEARCH-ARC.md` §7 stands at **fourteen instances, seven
+kinds**, and the coordinator reconciles after the round.
+
+**E-rider: none of E1/E2/E3 fires**, read at source. E3's first conjunct is
+the one to state carefully: item 1 is proven at side-degree `1`, but *the
+target* in E1–E3 is the **arc's** (`61e046a6`), and (BE-14), `hbareSplit` and
+`hK` are untouched; dispatchable entries remain.
+
+**Driver** `notes/scripts/w4/bopen.py`, eight modes
+(`hyp | weak | amax | fibre | slide | degx | price | support | validate`),
+exact ℚ, seed `20260902`, every headline an `assert`, `validate` 281 s.

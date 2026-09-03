@@ -877,6 +877,41 @@ keeps is three clauses, not repeated here: (PENCIL-SATURATES-CHART) is **not yet
 theorem**, its residue being the passage from *proper* to *generic*; the live-block count
 reads three ways; and item 0 stays the (BE-14) lane's ranked alternative.
 
+**The five-landing reduction of half (B)'s class quantifier — RELOCATED from
+`notes/Phase39.md` item 0 at the BOPEN landing (2026-09-02).** BPEEL made it *one number per
+(piece, peel)* ((BE-69)(iii)); **BUNIF made that number a function of two PER-SIDE
+profiles**, so (BE-67)(iii) is **14 inequalities in `c_i(U) = dim(ρ̄_i ∩ U)`**
+((BE-94)–(BE-96)); **BDOUBLE refuted (NO-DOUBLE-PENCIL)** and made the two 2-blocks
+**REDUNDANT** given (BE-38)(iii)'s third clause ((BE-99)–(BE-101)); **BSATUR REFUTED that
+clause** at exactly `ρ_i = 5` and repaired it to the generic-flag form ((BE-104)–(BE-107));
+**BSIGMA refuted the repair** ((BE-109)–(BE-113)); and **BPROPER settled the survivor's
+properness half at every side** ((BE-114)–(BE-121)). **(BE-71)(ii)'s completeness is
+ANSWERED** generically; at `π_x = π_y` only the cap survives.
+
+**BOPEN (72), 2026-09-02 — the thread's next landing, draft-only beside a committing
+`(K-grid)` dispatch.** It **closes half (B)'s item 1 at every side-degree-`1` terminal**
+((BE-122)–(BE-128), §(K-bare-ext) *Steps BE121–BE127*; `notes/Pencil-fanout.md` §"BOPEN").
+Three things generalize past this thread. **(1)** *(BE-69) was the wrong citation and is not
+needed*: its locus is the **attainment** locus `A₁ ∩ A₂ ∩ GP`, cut out by rank **lower**
+bounds, while saturation is an **upper** bound on an intersection dimension — and "generic"
+needs only that the bad locus be **constructible** on an **irreducible** chart, which is
+strictly weaker than open. Three landings had cited (BE-69) for a warrant it does not
+supply, while relying on the half of it that it does: the irreducibility, which is
+**(CH-1)(a)**. The citation is repointed at all three at this landing, and no verdict of
+theirs changes. **(2)** *the `p_x`-sweep is a fact about the tower*: the only equation
+coupling `q_x` to a fixed core is `n_c · (q_x − q_c) = 0`, so `p_x` ranges over `π_c` when
+`c` is a hub and over all of `𝔸³` when it is not. **(3)** *`a_i = 0` generically **is**
+(BE-69)(i)'s own `A_i`* — the same object under two names, so its nonemptiness is the
+induction's own (BE-14) for the side and nothing new. A fourth finding is local but was
+invisible from (BE-116) alone and is annotated there: the clause is stated at
+`Π_x = p_x ∧ π_x` while (BE-116) proves properness at the strictly smaller `Σ_x`, and the
+gap is closed **pointwise** by a flag rotation ((BE-125)). BPROPER's **escape item 2** (is
+`Chart(H)` irreducible at a non-path side?) is settled by **inheritance**: degrees only
+drop, so `d_h(H) ≤ d_h(G) ≤ 2`, and girth and min degree follow. The **status** the phase
+note keeps is two clauses: the clause is a theorem at side-degree `1` and **not** at
+side-degree `≥ 2`, where it rests on `(∗)` — certified 91/91, not proved; and item 0(c)'s
+shortfall is still unexhibited after 54 further rows.
+
 **Reading it later.** Same caution as block 8's: a snapshot, not a live surface. If it
 disagrees with the `(K-bare)` gap-map row, the row wins.
 

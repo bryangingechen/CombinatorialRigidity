@@ -8,11 +8,11 @@ derives it from exactly **three carried items**: **`hcontract`** (W4 — build p
 **`hbareSplit`** (kernel (K-bare)). Everything else is closed — W0–W3 and all of W5
 (L0–L7), `hsplit` and `hfresh` included (2026-07-30, unchanged since).
 
-**The research arc: 79 directions COMPLETE** (2026-08-05 → 09-02, ordinals 1–71 — 75 on
+**The research arc: 80 directions COMPLETE** (2026-08-05 → 09-02, ordinals 1–72 — 76 on
 kernel (K), **WTRI/WELOC/WPAIR/WGROW (58–61) on W4**), plus eight strategy-only passes, two
-architecture probes and one read-only scoping recon; **one further direction in flight,
-draft-only**. **GPACK (66) opened the `hK` lane after 22 dispatches; GLIST (68) and
-GGLOB (71) are its successors**, GGLOB the committing half of a third concurrent pair. Per-direction verdicts, specs and write-ups live at
+architecture probes and one read-only scoping recon. **GPACK (66) opened the `hK` lane after
+22 dispatches; GLIST (68) and GGLOB (71) are its successors**, GGLOB the committing half of
+a third concurrent pair whose draft-only half was **BOPEN (72)**. Per-direction verdicts, specs and write-ups live at
 `notes/Pencil-fanout.md` §"<CODE>" (1–19: the archive) plus a workbook home — **not
 restated here**. **The arc's standing result, unchanged: `hK` is not closer.**
 **(GR-15)** — the single open gap the §(K-grid) chain reduces to — is **untouched**; **class
@@ -35,8 +35,8 @@ Status only: (β) proved at the window **MODULO (BE-57)(iv)'s (S1)/(S2)**; cross
 forcing **empty**; the flag base **DISCHARGED**; the residue is **per-side** (14 block
 inequalities), and **BDOUBLE made both 2-dimensional blocks REDUNDANT** under
 **(PENCIL-SATURATES)** — **REFUTED at BSATUR**, its `-GEN` repair **REFUTED again at
-BSIGMA**, leaving **-CHART**, whose **PROPERNESS half BPROPER settled at every side**
-((BE-116)); **14 → 12** generically ((BE-107)). The 12 are **unwitnessed, NOT excluded**
+BSIGMA**, leaving **-CHART**, now a **THEOREM at every side-degree-`1` terminal**
+((BE-127)), so **14 → 12** stands generically; the residue is `(∗)` at side-degree `≥ 2`. The 12 are **unwitnessed, NOT excluded**
 ((BE-97)(iv)) except `⟨M⟩`, empty at 93 rows; cross-pair welding **untouched**.
 
 **On a future HIT: the phase-boundary consequences are the USER's call** — whether Phase 39
@@ -202,8 +202,8 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
 write-ups and the `(K-bare)` gap-map row stay authoritative. **Reference, not status.** The
 status that stays here: **S-mark is (BE-14)'s only open step**, (β) is proved at the window
 **modulo (BE-57)(iv)'s (S1)/(S2)**, half (B)'s residue is **one** item —
-**(PENCIL-SATURATES-CHART)**, whose properness half is settled at every side ((BE-116))
-while the clause itself is **not yet a theorem** — and cross-pair welding is **untouched**.
+**(PENCIL-SATURATES-CHART)**, a **THEOREM at every side-degree-`1` terminal** ((BE-127))
+and, at side-degree `≥ 2`, the condition `(∗)` — and cross-pair welding is **untouched**.
 
 **THE W4 DEVIATION'S PER-LANDING DETAIL — RELOCATED 2026-09-02** to
 `notes/Pencil-structure.md` §"The W4 deviation — per-landing detail" (**block 9**), block 8's
@@ -215,10 +215,11 @@ Status, stated once in the header and not repeated here.
 **block 8**. One clause is *status* and is not repeated below: **(CH-1) does not apply to
 the flag base** ((BE-89)), so anything citing it for the base cites the wrong object.
 
-**THE 2026-09-02 ROUND'S PER-LANDING CLAUSES (66–71) — RELOCATED 2026-09-02** to
+**THE 2026-09-02 ROUND'S PER-LANDING CLAUSES (66–72) — RELOCATED 2026-09-02** to
 `notes/Pencil-structure.md` §"The 2026-09-02 round — per-landing status clauses" (**block
 13**); blocks 8/11/12 already own the detail. **Reference, not status.** The two clauses that
-stay: **no gap-map status word moved at any of the six**, and **the `hK` lane's ranking is
+stay: **no gap-map status word moved at any of the six, and BOPEN (72) closes half (B)'s
+item 1 at side-degree `1`** (detail in block 8), and **the `hK` lane's ranking is
 `notes/Pencil-strategy.md` §8's board, NOT this list** (re-ranked `70c06abe`/`5583a919`; it
 carries the standing **do-not-do** — no more (a′)/(b′) ledger directions), whose ranks 1 and
 3 are spent.
@@ -230,45 +231,42 @@ branches of bookkeeping — the packing quantifier is **gone**, `H` is simple an
 and a 4-cycle is the first place to look. **Read the price first: on this stratum that
 criterion IS (GR-10)** ((GR-140)(v)), so it is not a slice below it. Successor 2 (`n_hub = 6`)
 is now **engineering** — 150/150 pure-hub shapes decided positively, 2 473 of 2 623 left;
-successor 3 is whether *path* consistency decides there, where arc consistency does not. The **(BE-14) lane's** alternative is ranked item 0 below, now
-**(PENCIL-SATURATES-CHART)**'s own residual. Two things stay the USER's call, both OFFERED
+successor 3 is whether *path* consistency decides there, where arc consistency does not. The **(BE-14) lane's** alternative is ranked item 0 below, now **`(∗)` at a
+side-degree-`≥ 2` terminal** — one fixed line against one fixed subspace, certified 91/91
+and not proved. Two things stay the USER's call, both OFFERED
 2026-09-02 and both DECLINED IN FAVOUR OF CONTINUING RESEARCH: the **(K-res) wave** (a cheap
 scoping slice queued below) and whether W4's now-closed informal side changes anything about
 the **2026-08-05 Lean hold** — the hold is the user's to lift, never a coordinator's.
 
 The ranked list:
 
-0. **HALF (B)'s CLASS QUANTIFIER, now (PENCIL-SATURATES-CHART) — its PROPERNESS HALF
-   SETTLED** ((BE-116)) — **REDUCED FIVE TIMES, still not proved.** BPEEL made it *one number per (piece, peel)*
-   ((BE-69)(iii)); **BUNIF made that number a function of two PER-SIDE profiles**, so
-   (BE-67)(iii) is **14 inequalities in `c_i(U) = dim(ρ̄_i ∩ U)`** ((BE-94)–(BE-96));
-   **BDOUBLE refuted (NO-DOUBLE-PENCIL)** and made the two 2-blocks **REDUNDANT** given
-   (BE-38)(iii)'s third clause ((BE-99)–(BE-101)); and **BSATUR REFUTED that clause**
-   at exactly `ρ_i = 5` and repaired it to the **generic-flag** form ((BE-104)–(BE-107)),
-   under which **14 → 12** stands. The open sub-items, re-ranked by BPROPER:
-   **(a) the passage from PROPER to GENERIC** — (BE-69)'s openness for the `Σ_x ⊆ ρ̄_i`
-   locus, plus BPROPER's two measured inputs (the `p_x`-sweep; `a_i = 0` generically), the
-   whole residue now ((BE-116)); **(b)** a `deg_i(x) ≥ 2` side with `dim A ≥ 5`, where
-   (BE-119) gives nothing (none at 91 rows); **(c)** a row with `margin > 0` at `Π_x`,
-   `Π_y` or `⟨M⟩` — the arc's first **shortfall** if it exists, still unexhibited after
-   BPROPER's 21 rows; **(d)** the remaining **11** live blocks, `⟨M⟩` empty at 93 rows
-   ((BE-108)); **(e)** the **non-attaining** case, now **INHABITED** ((BE-101)(iii),
-   (BE-120)) — but by non-generic configurations of graphs that attain when drawn freely. **(BE-71)(ii)'s completeness is ANSWERED**
-   generically; at `π_x = π_y` only the cap survives. Three siblings, **all closed — do not
-   re-hunt**: cross-cut forcing (a checked hypothesis, BGENUINE), the flag base (item 1),
+0. **HALF (B)'s CLASS QUANTIFIER, now (PENCIL-SATURATES-CHART) — A THEOREM AT EVERY
+   SIDE-DEGREE-`1` TERMINAL** ((BE-127)(i)), so (BE-101)(i)/(ii) hold with the clause
+   **proved** and **14 → 12 stands generically**. The five-landing reduction history
+   (BPEEL → BUNIF → BDOUBLE → BSATUR → BPROPER) is **RELOCATED** to
+   `notes/Pencil-structure.md` **block 8**; **(BE-69) is retired as the warrant, not
+   proved — it is the wrong property** ((BE-122)/(BE-123)), and both of BPROPER's measured
+   inputs are now **PROVED** ((BE-124)/(BE-126)). The open sub-items:
+   **(a) the side-degree-`≥ 2` instances**, where the clause reduces to `p_x ∧ t ∈ A` on
+   **one fixed line** and is proper under `(∗)` — certified **exactly 91/91**, **not
+   proved** ((BE-127)(ii)/(iii)); this **subsumes** the old `dim A ≥ 5` item;
+   **(b)** a row with `margin > 0` at `Π_x`, `Π_y` or `⟨M⟩` — the arc's first
+   **shortfall** if it exists, still unexhibited after 54 further rows ((BE-128)(i));
+   **(c)** the remaining **11** live blocks, `⟨M⟩` empty at 93 rows ((BE-108));
+   **(d)** the **non-attaining** case, **INHABITED** ((BE-101)(iii), (BE-120)) by
+   non-generic configurations of graphs that attain when drawn freely. Three siblings,
+   **all closed — do not re-hunt**: cross-cut forcing (BGENUINE), the flag base (item 1),
    the forced-empty `G` hunt ((BE-72)).
 
-1. **THE FLAG BASE — DISCHARGED by BBASE** (verdict in *Decisions made*). Three cheap,
-   low-ranked leftovers: is `B_real` a forest on the class (78 564/78 564, on tiers that
-   **cannot** exhibit a counterexample); cyclomatic `≥ 2`, reached by no clause; and
-   whether a **triangle is necessary** for the forcing (BGENUINE: 0 forced over 648).
+1. **THE FLAG BASE — DISCHARGED by BBASE** (verdict in *Decisions made*); its three cheap
+   leftovers (is `B_real` a forest on the class; cyclomatic `≥ 2`; is a triangle necessary)
+   are **RELOCATED** to `notes/Pencil-structure.md` **block 8**.
 2.–4. **THE LANE'S STANDING MENU — RELOCATED 2026-09-02** to
 `notes/Pencil-structure.md` §"The (BE-14) lane's standing candidate list" (**block 10**):
-the one-end-series case, **(S1)/(S2)**, BTWOCUT's bundle construction, and the *also
-ranked* tail (cross-pair closure, the point-side flat law, BINDUC's **(BE-23)(ii)** — the
-disproof side's highest-value single search — and the flat-star dictionary), with its
-*superseded, do not re-derive* note. **Reference, not status**: none has moved in fifteen
-landings, and the live items are 0 and 1 above.
+one-end-series, **(S1)/(S2)**, BTWOCUT's bundle, and the *also ranked* tail (cross-pair
+closure, the point-side flat law, BINDUC's **(BE-23)(ii)**, the flat-star dictionary), with
+its *superseded, do not re-derive* note. **Reference, not status**: none has moved in
+sixteen landings; the live items are 0 and 1 above.
 
 **THE (K-res) SCOPING SLICE LANDED 2026-08-28** (RESGRID, ordinal 48; §(K-res),
 `notes/Pencil-informal-grid.md`, own gap-map row), discharging the user's 2026-08-26
@@ -415,6 +413,13 @@ paragraphs.**
   scratchpad is shared; a shared counter cannot be concurrently incremented). **No
   mathematics and no status word moved.**
 
+- **BOPEN** (72, 2026-09-02, opus, **draft-only beside a committing `(K-grid)` dispatch**)
+  — **(PENCIL-SATURATES-CHART) IS A THEOREM at every side-degree-`1` terminal**, so half
+  (B)'s **item 1 CLOSES** there ((BE-122)–(BE-128), *BE121–BE127*): **(BE-69) is the WRONG
+  citation and NOT NEEDED** (*generic* wants constructibility, not openness), both measured
+  inputs **PROVED**, and the clause's `Π_x` locus — larger than (BE-116)'s `Σ_x` — closed
+  **pointwise** by a flag rotation. Residue `(∗)` at side-degree `≥ 2`, 91/91, not proved;
+  **0 shortfalls at 54 rows**. `w4/bopen.py`.
 - **GGLOB** (71, 2026-09-02, opus, **committing half of a concurrent pair**) — **THE GLOBAL
   CSP IS CSP-FREE, BOTH HANDLES ARE DEAD, AND THE 82 % IS RE-LOCATED** ((GR-139)–(GR-144),
   §(K-grid) *G159–G164*): two dual normal forms, and `D_β = {α(head), γ(tail)}` **eliminates
@@ -438,13 +443,11 @@ paragraphs.**
   infeasible pairs are hub-locally feasible**: REDUCED, not proved. Audit: the population
   **does** carry the conflict and `229 320/229 320` had a self-selected denominator
   (472 680 legal); board (b) RECONCILED. `w4/glist.py`.
-- **BPROPER** (69, 2026-09-02, opus, **one-lined at the OWALL landing, detail in block 8**)
-  — **(PENCIL-SATURATES-CHART)'s PROPERNESS HALF IS SETTLED AT EVERY SIDE, PATH OR NOT**
-  ((BE-114)–(BE-121), *BE113–BE120*); **NOT the whole clause** — genericity cites (BE-69),
-  two inputs measured; two hunt verdicts **REFUTED**. `w4/bproper.py`.
-- **BSIGMA** (67, 2026-09-02, opus, **one-lined at the OWALL landing, detail in block 8**) —
-  **(PENCIL-SATURATES-GEN) is FALSE TOO** and the floor `Σ_x ⊆ ρ̄_i ⟹ ρ_i ≥ 5` is a
-  **THEOREM** at a path side ((BE-109)–(BE-113), *BE108–BE112*). `w4/bsigma.py`.
+- **BPROPER** (69, 2026-09-02, opus, **re-one-lined at the BOPEN landing, detail in block
+  8**) — **(PENCIL-SATURATES-CHART)'s PROPERNESS HALF SETTLED AT EVERY SIDE**
+  ((BE-114)–(BE-121)); its three named residues all **discharged at BOPEN**. `w4/bproper.py`.
+- **BSIGMA** (67, 2026-09-02, opus, **detail in block 8**) — **(PENCIL-SATURATES-GEN) is
+  FALSE TOO**, its floor a **THEOREM** at a path side ((BE-109)–(BE-113)). `w4/bsigma.py`.
 - **GPACK** (66, 2026-09-02, opus, **one-lined at the GLIST landing, detail in block 11**)
   — **(GR-18)(iii) SPLITS and the split half is a THEOREM** off `def(G) = 0` alone
   ((GR-129)–(GR-133), §(K-grid) *G149–G153*); the exchange freedom is **load-bearing**.
