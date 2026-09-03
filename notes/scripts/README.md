@@ -1096,6 +1096,13 @@ are a recorded *Harness debt* item (see below).
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/bline.py reach` | 24 s | ibid. *Step BE132* ((BE-133): **27** NEW `deg_i(x) = 2` topologies with longer cores, drawn by the same `bsigma.sample_side_config`; (CH-1) — `hcard`, min degree 2, girth `≥ 4`, both terminals hubs, side 2 `rnode_shaped` — asserted on **27/27** composites; **270** rows, `dim A` census `{1: 30, 2: 10, 3: 60, 4: 30, 5: 60, 6: 80}`, `(∗)` FAILING at **142**; `rank R_core = 5|E|` asserted at every row (tree core ⟹ `dim A` lower semicontinuous), giving generic `dim A ≥ 5` at **14 of 27**; `(dim A, ρ_i)` census with **109** of the 140 `dim A ≥ 5` rows at `ρ_i ≤ 5`; **90** hub-side-neighbour rows; the clause itself **0/270**) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/bline.py fibre` | 0 s | ibid. *Step BE133* ((BE-134)(ii): **12** CONSTRUCTED `(A, L_c)` with `(∗)` HOLDING and one `t₀` carrying `dim(A ∩ Σ_{t₀}) = 2`, whose bad fibre `q_{t₀}^{-1}(A ∩ Σ_{t₀})` is a whole PLANE of `P³`, asserted bad pointwise — so `(∗)` alone does not make the bad locus proper in a fibre confined to a plane) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/bline.py validate` | 59 s | ibid. all six in one process — the landing gate; fits the 600 s foreground budget comfortably. Every rng is seeded from `bunif.SEED` (`20260902`) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/bdegtwo.py sweep` | 5 s | `notes/Pencil-informal.md` §(K-bare-ext) *Step BE135* (direction BDEGTWO; (BE-136): the `k ≥ 2` `p_x`-sweep as a CONSTRUCTION — (CH-1) asserted on **35/35** composites before any target is drawn, then **411/411** targets over 70 free peel draws rebuilt into full legal chart points with the whole core byte-fixed and side 2 re-drawn by (CH-2)'s tower; at every one the pencil witness, the core asserted unchanged, `π_x` asserted to carry the fixed side-`i` star, and the fibre asserted unchanged under its own sweep. All **four** fibre shapes exercised — `𝔸³` 36 peels, `π_{c₁}` 18, `π_x` 10, the line 6) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/bdegtwo.py exact` | 11 s | ibid. *Step BE136* ((BE-137): `Π_x = p_x ∧ L_{jk}` asserted at **288** pairs over 192 side configurations, so the `C(k,2)` instances of (BE-127)(ii) are one condition; `dim A ≥ 5 ⟹ Bad = P³` asserted at 300 draws; `(∗) ⟹ Bad ≠ P³` at 300 random `(A, L_c)`, which **never separate** them, with the α- and β-rulings **CONSTRUCTED** 30 each to exhibit that they do; and BLINE's own 270 rows re-decided EXACTLY — `dim A` census reproduced, `(∗)` failing at 142, `Bad = P³` at 140 = precisely the `dim A ≥ 5` stratum, so **2** rows are recovered and none that matter) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/bdegtwo.py fibrebad` | 1 s | ibid. *Step BE137* ((BE-138): the three fibre-relative criteria each asserted as an **IFF** against the exact identically-vanishing-quadric test at **300** draws apiece — one-hub plane ⟺ `Bad = P³` or `Π_{c₁} ⊆ A` (137 planted); `k ≥ 3` plane ⟺ `dim(A ∩ Λ²π_x) ≥ 2` (150 planted); two-hub line ⟺ `dim(A ∩ (M ∧ L_c)) ≥ 3` or `M ∧ t₀ ⊆ A`, with **both** branches separately exercised and `dim B = 3` constructed) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/bdegtwo.py sharp` | 18 s | ibid. *Step BE138* ((BE-139): the exact `k = 2` structure `ρ̄_i = span{s(m) + a(m)ℓ₁ : m ∈ r^{-1}(Π_x)}` asserted as an identity of SUBSPACES at **162/162** rows of the long-core library, with `A_sharp ⊆ A` asserted at every one; `(dim A, dim A_sharp)` census printed, `A_sharp` strictly smaller at **89** rows and `≤ 4` at **30** rows carrying `dim A ≥ 5` — the positive half of the verdict) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/bdegtwo.py direct` | 194 s | ibid. *Step BE139* ((BE-140): the decisive control — at all **411** swept CHART points both the clause `Π_x ⊆ ρ̄_i, ρ_i ≤ 5` (**0**, *not found under this cap*) and the relaxed condition (165) are evaluated, per fibre shape; the relaxed condition holds at EVERY swept point of the fibre on **28 of 70** peels; **0** of the 96 confined-fibre points are even relaxed-bad; and `margin ≤ 0` is ASSERTED at `Π_x`/`Π_y`/`⟨M⟩` on the first swept point of each peel, histogram `{−3: 24, −2: 46}`, **0 shortfalls**) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/bdegtwo.py support` | 0 s | ibid. *Step BE140* ((BE-141): the `RESEARCH-ARC.md` §4 support audit — all seven populations named with what each varies, what it holds fixed and which of its own claim's quantifiers it therefore reaches, plus the standing cap that every population is CONSTRUCTED and no figure is a class-level rate) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/bdegtwo.py validate` | 229 s | ibid. all six in one process — the landing gate; fits the 600 s foreground budget. Every rng is seeded from `bunif.SEED` (`20260902`) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/ogeom.py --bound --dom --core --cert` | 288 s | `notes/Pencil-informal.md` §(K-out) *Steps O42–O45* (direction OGEOM; (OC-45) the `ℓ ≤ 5` + bridgeless class-shape check that turns `sigz.k4_stratum`'s `{1..5}^6` from a cap into a theorem (re-enumerated at `{1..12}^6`, 877 = 877); (OC-46) restriction-dominance, 1482 + 222 extensions, 0 failures; (OC-47) the live-core reduction; (OC-49) the census — 271 974/271 974 pairs settled, and (OC-39)'s 3 324 + 44 = 3 368 pairs shown to lie in exhausted cells) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/ogeom.py --hunt` | 357 s | ibid. *Step O45* ((OC-48): the exhaustive iso-reduced live-core hunt at `n(F°) ∈ {2,3}` (all `\|E°\|`) and `n(F°) = 4` (`\|E°\| ≤ 8`) — 21 086 classes here, all free, **0 candidates**) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/ogeom.py --huntn 5 8 8 <PART> 3` | 318 s each | ibid. *Step O45*, the `n(F°) = 5`, `\|E°\| = 8` cell in three deterministic slices (70 174 classes, all free) — the parts together with the two rows above make the pass's **91 260** cores |
@@ -1509,9 +1516,12 @@ figure-invariant): `rref`, `rank`/`rank_exact`, `nullspace`, `left_nullspace`,
 `neighbors` (`kbare_common`, `n9`); `K4`/`K5_minus_matching` (three copies:
 `localtest`, `probe_zero`, `run_habitats`).
 
-## Harness debt — four rounds PAID (S1–S4 2026-08-06; the move-down round 2026-08-20; the GFLIP balance-layer move-down 2026-08-25; the GCHEAP/GPRICE balance-layer extension 2026-08-25), **ten items outstanding**
+## Harness debt — four rounds PAID (S1–S4 2026-08-06; the move-down round 2026-08-20; the GFLIP balance-layer move-down 2026-08-25; the GCHEAP/GPRICE balance-layer extension 2026-08-25), **eleven items outstanding**
 
-**Ten items are outstanding: `zneq.ledger`** (deliberately deferred to a
+**Eleven items are outstanding** — the eleventh added 2026-09-03 (direction
+BDEGTWO, the **silent `bimage.span` width defect**, its own section at the
+end of this list, and the **second** silent-correctness hazard here after
+`bimage.pt_in`'s truncation). **The first ten: `zneq.ledger`** (deliberately deferred to a
 round that can re-run `oschu --gtarget` / `--census1` / `--census2`), **the
 `kbare/` sibling-import set** that probe KBARE-FALSIFY created,
 **OQRANK's two arrivals** (`out_classes`/`shape_key`/`tree_triple`),
@@ -1523,7 +1533,13 @@ consumer of `bproper.py`'s peel constructors** and, added at the **BLINE**
 landing (2026-09-02), **`bimage.pt_in`'s silent `K⁴` truncation** and
 **BLINE's third consumer of `bproper.py`'s peel constructors plus its first of
 `bopen.sat_locus`** — **UNPAID** by the same rule that forbids a dispatch from
-moving a landed name.
+moving a landed name. The **eleventh**, added at the **BDEGTWO** landing
+(2026-09-03), is **`bimage.span`'s silent width-6-only special case**, its own
+section at the end of this list; the same landing adds a *fourth* consumer of
+`bproper.composite`/`core_of`, a *second* of `bopen.chart_data`/`sides_of`/
+`slide` and of `bline.longcore_library`/`rand_line`/`rand_subspace`/`star_ok`,
+all folded into the same standing sibling-import item rather than opened as
+new ones.
 
 **The `pt_in` item, stated once because it is SILENT.** `bimage.pt_in` builds
 its return with `for k in range(4)`: it is a `K⁴` helper, and calling it on a
@@ -2663,6 +2679,54 @@ reach a second consumer:
 
 **No `Divergences` entry is created**: none of the four is a same-named
 variant of an existing device.
+
+### New item (2026-09-03, direction BDEGTWO) — `bimage.span` returns DIMENSION 0 on a full-rank non-`Λ²` input; **SILENT, UNPAID**
+
+**This is a correctness hazard, not a tidy-up, and it is the second one in
+this file** — `bimage.pt_in`'s truncation (recorded at the BLINE landing) is
+the first. `bimage.span` is a `Λ²K⁴` helper:
+
+```python
+def span(rows):
+    if not rows:  return []
+    d = dim(rows)
+    if d == 6:    return [r[:] for r in I6]
+    return nullspace(nullspace(rows))
+```
+
+The `d == 6` special case exists precisely because `nullspace(nullspace(·))`
+cannot represent a **full-rank** space — `nullspace(rows)` is empty and
+`nullspace([])` is empty again. That special case covers width **6 only**, so
+on width-4 input at full rank `span` returns **`[]`**, i.e. `dim(span(I4))`
+is **`0`**, with no assert firing anywhere. `bimage.isect` inherits the same
+defect through `perp_std`, which returns `I6` on an empty argument regardless
+of the caller's width, so `isect(A, B)` with a full-rank `K⁴` argument is
+also wrong.
+
+**Why it is silent.** Every existing consumer of `span`/`isect` works in
+`Λ²K⁴`, where the special case fires; the `K⁴`-side uses in the tree
+(`bopen.fibre_of`, `bproper.px_freedom`) hand-build `I4` rather than calling
+`span`, which is why nothing has ever failed. A new `K⁴`-side consumer that
+*does* call it gets a silently empty answer — it bit twice while
+`w4/bdegtwo.py` was written, in both cases producing **zero draws** from a
+loop rather than an error.
+
+**The workaround in tree, and it is local.** `bdegtwo.k4span` and
+`bdegtwo.k4meet` are guarded wrappers (full-rank check first, `I4`
+otherwise), documented at their definition and named so that they cannot be
+mistaken for variants of `span`/`isect`. **No `Divergences` entry**: they are
+guards around the canonical devices, not competitors to them.
+
+**Why UNPAID.** The right fix is a width parameter on `span`/`perp_std` (and
+on `pt_in`, the first hazard's), which touches **every** consumer in the `w4`
+and `escape` layers and re-baselines their recorded figures — a deliberate
+round, exactly as the `pt_in` item concluded. Doing it here would move
+figures this landing has no business moving.
+
+**Acceptance test when it is paid.** `dim(span(rows)) == rank(rows)` for
+random `rows` of every width `1..6` and every rank `0..width`, and the same
+identity for `isect` against a brute-force intersection, plus a byte-identical
+re-run of every driver in §3.
 
 ## Deliberate non-goals
 

@@ -65,7 +65,7 @@ cap was ever bumped and nothing was deleted**; the note keeps a pointer to each.
 | 5 | *What the recent landings closed* | 2026-08-29 | BZAVOID / ZJACOB / ZSHEAR / GHWIT / GMINM closes |
 | 6 | *The unselected candidate continuations* | 2026-08-29 | leads (b)–(f); ranking lives in the fan-out losers sections |
 | 7 | *Citations — the phase's verified bibliography* | 2026-09-01 | every verified source; **a new source is added HERE** |
-| 8 | *The (BE-14) thread — per-landing detail* | 2026-09-01 (addenda 09-02) | which direction proved which sub-clause of the three sides, with its labels; the **settled frame**, the thread's last five landings and its **eight** 2026-09-02 landings (BBASE/BUNIF/BDOUBLE/BSATUR, then BSIGMA/BPROPER at the OWALL landing, BOPEN, and BLINE — which refutes a ROUTE, not a clause) joined it 09-02 |
+| 8 | *The (BE-14) thread — per-landing detail* | 2026-09-01 (addenda 09-02, 09-03) | which direction proved which sub-clause of the three sides, with its labels; the **settled frame**, the thread's last five landings and its **eight** 2026-09-02 landings (BBASE/BUNIF/BDOUBLE/BSATUR, then BSIGMA/BPROPER at the OWALL landing, BOPEN, and BLINE — which refutes a ROUTE, not a clause), joined 2026-09-03 by **BDEGTWO**, which settles both of BLINE's residues and moves the obstruction to the METHOD |
 | 9 | *The W4 deviation — per-landing detail* | 2026-09-02 | which of WTRI/WELOC/WPAIR/WGROW proved which sub-clause of route 3's cost list, with its labels; relocated once W4's informal argument closed |
 | 10 | *The (BE-14) lane's standing candidate list* | 2026-09-02 | the lane's ranked-but-unmoved candidates — one-end-series, (S1)/(S2), the bundle construction and the *also ranked* tail; relocated when the note hit 587/580 |
 | 11 | *The `hK` lane — per-landing detail* | 2026-09-02 | which of GPACK/GLIST proved which sub-clause of (GR-18)(iii)'s split, with its labels, plus (GR-133)'s price; relocated at the GLIST landing, the lane's second result in two directions |
@@ -1019,6 +1019,50 @@ this landing; no measurement moved.
 **Reading it later.** Same caution as block 8's: a snapshot, not a live surface. If it
 disagrees with the `(K-bare)` gap-map row, the row wins.
 
+### Addendum, 2026-09-03 — BDEGTWO (74), the thread's next landing
+
+**BDEGTWO (74), 2026-09-03 — the committing half of a concurrent pair (the
+sibling on the (K-res) lane), and it SETTLES BOTH of BLINE's named residues
+((BE-134)(i)/(ii)) while relocating the obstruction from the clause to the
+METHOD.** Mathematics at §(K-bare-ext) *Steps BE135–BE140* ((BE-136)–(BE-141));
+write-up `notes/Pencil-fanout.md` §"BDEGTWO"; the `(K-bare)` gap-map row is
+**authoritative and not restated here**. Four things generalize past this
+thread. **(1)** *a "no lemma covers that" is not an obstruction claim*:
+(BE-134)(i)'s doubt about the `k ≥ 2` sweep rested on the disappearance of a
+**pencil** of planes at `x`, and (BE-124)(ii) never used that pencil's
+*dimension* — only that a plane through the fixed side-`i` star exists. At
+`k ≥ 2` the normal is *determined* and still **rational**, so the completion
+runs verbatim ((BE-136)(iii), 411/411 chart points). **(2)** *a reduction
+quantified over a choice is often quantified over nothing*: `Π_x = p_x ∧ L_{jk}`
+for **every** pair of side-neighbours, so the successor both the gap-map row
+and *Hand-off* item 0(a) named — *the exact `k ≥ 2` reduction keeping
+`xc₂…xc_k`* — is **MOOT** at the relaxation level ((BE-137)(i)); the same
+observation makes (BE-130)(i) a one-line dimension count. **(3)** *a refuted
+sufficient condition can be strictly stronger than the route needs*: what
+(BE-127)(ii) must exclude is `Bad ≠ P³`, and the β-ruling `Λ²π′ ⊆ A` makes
+`(∗)` fail while `Bad` stays a proper plane — a separation **no sampler can
+see**, worth 2 of BLINE's 142 failures and none of the 140 that matter
+((BE-137)(iii)/(iv)). **(4)** *the load-bearing fact of a landed theorem is
+often a degeneracy of its own hypothesis*: (BE-114)(i) works because a
+**pendant** edge's multiplier is FREE; at `k ≥ 2` it is determined by the
+core motion, the exact space is the image of `r^{-1}(Π_x)` (162/162), and
+the sharp replacement for `A` **moves with `p_x`** — so the technique
+(BE-114)(iii) names is provably unavailable, and the successor is a *method*
+change ((BE-139)). The **status** the phase note keeps is one clause: at
+side-degree `≥ 2` both of (BE-134)'s gaps are settled, the obstruction is
+the method, and the clause stays **OPEN**, unviolated at 0/772.
+
+**A doc-side finding this landing forces, recorded because it touched three
+surfaces.** `notes/Pencil-strategy.md` cited BLINE as *"Steps BE129–BE135"*
+in **two** places — that is BLINE's **label** range; its step range is
+*BE128–BE134*, the two being offset by one throughout §(K-bare-ext) because
+step `BEn` carries label `(BE-(n+1))`. Both are repaired and rolled forward.
+And the `(K-bare)` row's recompute dropped **two** labels on first assembly
+— `(BE-124)(i)`, whose only carrier was the sentence this direction refutes,
+and `(BE-45)(ii)`, lost to the slash abbreviation `(BE-45)(i)/(ii)` — caught
+by `gapdiff.py`, the **fourth** time that gate has caught a drop the word cap
+could not see. Both shapes are new to `notes/Pencil-labels.md`'s list.
+
 ### Addendum, 2026-09-03 — BLINE's *Decisions made* entry, relocated verbatim
 
 - **BLINE** (73, 2026-09-02, opus) — **`(∗)` IS DECIDED: A THEOREM BELOW `dim A = 3`,
@@ -1028,6 +1072,20 @@ disagrees with the `(K-bare)` gap-map row, the row wins.
   14 of 27 new (CH-1)-legal shapes**, 109 of them with `ρ_i ≤ 5` ((BE-133)). Hence 91/91 was
   a **COROLLARY** ((BE-132)); two further gaps are **not** `(∗)` ((BE-134)); the clause
   itself stays **OPEN**, 0/270. `w4/bline.py`.
+
+### Addendum, 2026-09-03 — the pre-fan-out arc and the promotion pointers, relocated verbatim
+
+Moved from `notes/Phase39.md` *Decisions made* at the BDEGTWO landing, to buy the lines
+that landing's own entry needed. Settled history and pointers; nothing here is status.
+
+- **Promoted out of Phase 39** (pointers only): TACTICS-GOLF §11/§22/§23; TACTICS-QUIRKS
+  §46/§96/§99–§104; FRICTION `exists_injOn_mapsTo_of_ncard_le` + `extensor_pair_smul`
+  [mirror-candidate] and the omega/`Set.ncard`-atom idiom.
+
+- **Pre-fan-out arc, one-lined (2026-07-24 → 08-04; full detail `Phase39-design.md` + git)**:
+  W0–W3/W5 CLOSED `hsplit` IN FULL and isolated kernel **(K)**; corank fixed to **(K-tight)**,
+  W4 decomposed, (K-bare-ext) NO-GO'd, the standing adjudications set; **(K-res)** priced and
+  **(SAFE-RES)**/`hnoGood'` vacuity REFUTED; (K-slide) (S1) proved, (K-pitch) closed.
 
 ### Addendum, 2026-09-03 — the 2026-08-05 research cluster, relocated verbatim
 

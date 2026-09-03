@@ -3493,3 +3493,97 @@ recompute shortened (*"§(K-bare-ext)'s two window conditions"*,
 word count looked healthy. A section label is the easiest kind to lose,
 because it reads as scenery rather than as a citation. Both were restored
 in the same pass, at a cost of two words.
+
+## Reserved namespace — direction BDEGTWO (2026-09-03, **CONSUMED IN FULL at the landing; two labels returned**)
+
+**Reserved and consumed on 2026-09-03 for the single direction BDEGTWO**
+(ordinal 74; `notes/Pencil-fanout.md` §"BDEGTWO") — *does half (B)'s item 1
+close at side-degree `≥ 2`, and what exactly is missing?*, i.e. BLINE's own
+two named residues (BE-134)(i)/(ii). One of a **concurrent pair**; the
+sibling ran the **(K-res)** lane and shares no section, label family or
+driver, so the reservation protects against the corpus rather than against a
+sibling — but the tree was **dirty** for the whole run (the sibling's own
+untracked driver), which is why every check below is against `HEAD`
+(`RESEARCH-ARC.md` §2's first concurrency hazard).
+
+| direction | owning § | labels reserved | steps reserved | driver |
+|---|---|---|---|---|
+| **BDEGTWO** | §(K-bare-ext) — **extends**, no new section | **(BE-136)–(BE-143)**, of which **(BE-136)–(BE-141)** consumed | **BE135–BE142**, of which **BE135–BE140** consumed | `w4/bdegtwo.py` (six modes) |
+
+**It opens at exactly the tail BLINE declared** (*"The next tail is (BE-136)
+/ Step BE135"*). **Two labels and two steps are RETURNED UNUSED**:
+(BE-142)/(BE-143) and *BE141*/*BE142* were reserved against a wider result
+than the direction needed, and are **available**.
+
+**0-hit verification, re-run by the direction as its first action**, across
+`*.md`, `*.py` (and by the same `git grep` over `*.tex`/`*.lean`/`*.m2`)
+**at `HEAD`**: `BDEGTWO` and `bdegtwo` each **0-hit as raw substrings**;
+`(BE-137)`–`(BE-143)` and the raw step tokens `BE136`–`BE142` each
+**0-hit**. **`(BE-136)` has exactly one hit and `BE135` three** — BLINE's
+own tail declaration (`notes/Pencil-labels.md:3470`) carries both, and the
+two further `BE135` hits are `notes/Pencil-strategy.md`'s **`BE129–BE135`**
+range citations (its §9 thread line and its §8 board row), i.e. a
+**declaration plus two citations of a WRONG range**, not consumed labels —
+see the citation repair below. `BDEGTWO` was checked for the substring hazard (L5) and is
+clean; it names the **stratum** (side-degree `≥ 2`) and not a method or a
+verdict, `BSWEEP` having been rejected by this registry for naming a
+*predicted method* — which was the right call twice over, since the sweep
+turned out to be the **easy** half and a code named for it would have
+implied the direction was about building one.
+
+**A citation repaired at this landing.** `notes/Pencil-strategy.md` recorded
+BLINE as *"Steps BE129–BE135"* in **two** places (§9's thread line and §8's
+`(K-bare)` board row). That is BLINE's **label** range; its **step** range is
+*BE128–BE134*. Both are corrected, and both now read *BDEGTWO (Steps
+BE135–BE140)*. The confusion is exactly what clause (L2) — *never label a
+step* — exists to prevent: the two ranges are offset by one throughout this
+section, because a step `BEn` carries label `(BE-(n+1))`.
+
+**CONSUMED IN FULL.** (BE-136)–(BE-141) and *Steps BE135–BE140* are all
+written, in `notes/Pencil-informal.md` §(K-bare-ext), which the direction
+**extends** exactly as reserved; driver `w4/bdegtwo.py` as named. **Nothing
+is minted** as an object name: `Bad`, `F`, `A_sharp`, `W`, `M`, `B`, `r`,
+`s`, `a(m)`, `N` are all **plain symbols or reused**, and BOPEN's convention
+that **`(∗)` is a marker, not a label** is kept. The section has now gone
+**eleven** directions without a configuration-level token. **(L6) landing
+grep run** over the new text: the only `(X<digit>)`-shaped tokens anywhere in
+it are **`(E1)`/`(E2)`/`(E3)`** (the termination ledger's codes), **`(F13)`**
+(a dispatch-log finding code) and **`(L2)`/`(L5)`/`(L6)`** (this file's own
+clause codes, cited only in this block); **no label is minted in that
+shape**, and `(C6)`, `(C7)`, `(R1)`, `(C1)`, `(C2)` are all **0-hit** in the
+new text.
+
+**Gap-map note (F21), and the set-diff caught a drop for the FOURTH time.**
+The `(K-bare)` row was recomputed to an **explicit target before the edit —
+≤ 1 545 words, i.e. ≥ 55 of headroom** (BLINE targeted ≤ 1 540 and the row
+stood at 1 554 at `HEAD` after the liveness round; this direction's own
+content is one dissolved gap, one closed-form criterion and one located
+obstruction, so ~105 new words were budgeted and paid for by compressing
+**fourteen** landed passages, every one of them *mechanism superseded as
+headline* — the (BE-122) semicontinuity clause, the (BE-124) tower sentence,
+the (BE-125) rotation, the (BE-129)/(BE-131) classification narrative, the
+(BE-45)/(BE-99)–(BE-101) corner derivation, the (BE-69) openness warrant,
+the (BE-94)–(BE-96) stabilizer split, the (BE-84)–(BE-86) hinge-pair
+narrative — and **never history**). It lands at **1 539 / 1 600**, i.e.
+**−15 on `HEAD`**, beating the target. Verified by
+`notes/scripts/gapdiff.py K-bare HEAD`: **180 in, 186 out, ZERO dropped, 6
+added**.
+
+**The drop it caught, on the first assembly**, was **two** labels:
+`(BE-124)(i)` — carried only by the sentence *"no `p_x`-sweep exists at
+`k ≥ 2` ((BE-124)(i)'s own hypothesis)"*, which this direction **refutes as
+an obstruction claim**, so the natural edit deleted the citation along with
+the claim — and `(BE-45)(ii)`, lost to the *abbreviation* `(BE-45)(i)/(ii)`,
+which `gapdiff`'s `CODE` regex reads as `(BE-45)(i)` plus a bare `(ii)`.
+Both were restored (`(BE-45)(i)/(BE-45)(ii)`, spelled out; and (BE-124)(i)
+re-cited inside the refuting clause, *"(BE-124)(i)'s hypothesis was not
+load-bearing"*), at a cost of eleven words. **Two new shapes for this file's
+list:** a label lost because *the claim carrying it was refuted* — the
+refutation is exactly when the citation matters most, since a reader must be
+able to find what was refuted — and a label lost to a **slash
+abbreviation** of two sub-items of the same label, which reads as one
+citation and parses as one and a half.
+
+**The next tail is (BE-142) / *Step BE141***, 0-hit verified at this landing
+(the pair returned unused above), so a successor opens there and **not** at
+(BE-144).

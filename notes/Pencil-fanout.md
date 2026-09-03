@@ -13856,3 +13856,178 @@ lemma ((BE-134)(i)) — is a named, dispatchable attack.
 (`classify | five | low | pop | reach | fibre`, plus `validate`), exact ℚ,
 seed `20260902`, `validate` ≈ 59 s. **Mathematics** `notes/Pencil-informal.md`
 §(K-bare-ext) *Steps BE128–BE134*, labels **(BE-129)–(BE-135)**.
+
+## BDEGTWO — seventy-fourth ordinal (concurrent pair with a **(K-res)** sibling, prepped 2026-09-03, **LANDED 2026-09-03**) — BLINE's own residue: **both** of (BE-134)'s gaps
+
+**Selection provenance.** `hbareSplit` via (BE-14) is the carried item the
+phase ranks **#1 by distance to `PencilPair K 3 G`**, and half (B)'s item 1
+is where six consecutive directions had gone. The coordinator **read
+(BE-134) at source before dispatching** and targeted the **sweep** gap
+rather than the hand-off's phrasing — the hand-off called the successor
+*"the exact `k ≥ 2` reduction keeping `xc₂…xc_k`"*, a mechanical restate,
+while (BE-134)(i) says a proof of `(∗)` would leave item 1 **"two steps
+short, not one"** and that *"no lemma in the section covers"* the missing
+one. Committing half of a concurrent pair at **`recon-opus`**; the sibling
+ran **(K-res)**, sharing no section, label family or driver.
+
+### The spec, as dispatched
+
+**Target.** Settle **(BE-134)(i)** — *there is no `p_x`-sweep at
+`deg_i(x) ≥ 2`* — and **(BE-134)(ii)** — *properness in `P³` is not
+properness in the fibre* — quoted with their hypotheses and to be read **at
+source, not through the spec**. **The deliverable was a verdict on whether
+item 1 can close at side-degree `≥ 2` at all**, with a well-evidenced
+**negative** named in advance as *"a fully acceptable and valuable
+outcome"*.
+
+**NO PREDICTION WAS OFFERED ON THE MATHEMATICS**, deliberately and on the
+record: *"yesterday I put three predictions into three specs and all three
+were wrong; the useful half each time was naming which section I had not
+opened."* What the spec offered instead was an **evidence-stratum
+declaration** — (BE-134), (BE-127)(i)/(ii) and (BE-124)(i) read at source;
+**(BE-123), (BE-125) and `bline.py fibre` NOT opened** — and one framing
+claim, that item 1 is *two* steps short, with the instruction to *"rate the
+work by that, not by the hand-off's phrasing"*.
+
+**Forced jobs.** (1) construct the `k ≥ 2` completion or show the
+obstruction is real and name it; (2) settle whether a hub-confined fibre can
+be protected; (3) `RESEARCH-ARC.md` §4 + its BSATUR sharpening — a driver
+per headline sentence, **naming the sampler's support**; (4) §5 cap
+disclosure; (5) §8 — every forward-looking item carries its kill condition
+and the status row that decides it; (6) §7 — label any route hypothesis and
+name its evidence stratum; (7) repair `notes/Pencil-strategy.md` §9's
+citation of BLINE as *"Steps BE129–BE135"* (a **label** range, not a step
+range).
+
+**Bars.** Committing; the 2026-08-05 Lean hold binds (no `.lean`); every
+driver in the **foreground** with an explicit `timeout` parameter; the phase
+note at **579 of its 580 cap**, so anything added is paid for by relocation
+and **never** a cap bump; diff against `HEAD`, never the working tree;
+distinctly-named scratch files; `BSWEEP` **rejected as a code** for naming a
+predicted method.
+
+### LANDING WRITE-UP — BDEGTWO, 2026-09-03: **both gaps SETTLED — the sweep EXISTS, fibre-properness is CLOSED-FORM, and what fails at `k ≥ 2` is the ARCHITECTURE, not the clause**
+
+**GAP (i) DISSOLVES.** (BE-134)(i)'s reason for doubting the sweep is that
+(BE-124)(ii) *"re-solves `n_x` from a pencil of planes through `q_x ∨ q_c`,
+which exists precisely because `π_x` is not yet determined"*. Read against
+(CH-2)'s tower that is true and **not load-bearing**: the completion needs a
+**nonempty** fibre for `n_x`, and at `k ≥ 2` it gets a *determined* one that
+is still **rational** in `q_x` — `n_x = (q_{c₁} − q_x) × (q_{c₂} − q_x)`,
+nonzero exactly off the fixed line `q_{c₁} ∨ q_{c₂}` — after which
+(BE-124)(ii)'s three stages run **verbatim**, because none of them used the
+pencil's *dimension* ((BE-136)(iii)). **411/411** targets over 70 free peel
+draws on **35** composites, (CH-1) asserted on all 35 before any target is
+drawn, the core asserted unchanged, `π_x` asserted to carry the fixed
+side-`i` star, and the fibre asserted unchanged under its own sweep. **So
+item 1 was one step short, not two.**
+
+**AND THE FIBRE HAS FOUR SHAPES, NOT THREE.** (BE-136)(ii) reads them off
+the tower rather than sampling: with `W := aff⟨q_{c_1},…,q_{c_k}⟩`, the
+fibre is `⋂_{hub c_j} π_{c_j}` **minus** `W` when `dim W = 1` and
+**intersected with** `W` when `dim W = 2`. `hcard` caps the hub count at 2,
+so that is `𝔸³` / the plane `π_{c₁}` / the line `π_{c₁} ∩ π_{c₂}` —
+(BE-134)(ii)'s three, **confirmed at source** — plus a fourth at `k ≥ 3`
+with the `c_j` non-collinear: the fibre is the plane `π_x` **itself**, along
+which `π_x` is **CONSTANT**. All four are realized as legal chart points,
+36/18/6/10 peels respectively, the last two on sides built for the purpose
+(`wide_library`).
+
+**THE REDUCTION IS UNIFORM IN `k`, WHICH MAKES THE NAMED SUCCESSOR MOOT.**
+`Π_x = p_x ∧ L_{jk}` for **every** pair of side-neighbours, so all `C(k,2)`
+instances of (BE-127)(ii) are the single condition `Π_x ∩ A ≠ 0`
+((BE-137)(i), 288 pairs over 192 configurations). *Keeping* `xc₂, …, xc_k`
+therefore buys **nothing** while the object on the right is `A` — the
+gap-map row's and *Hand-off* item 0(a)'s named successor is **MOOT as
+stated**. Two dividends fall out: (BE-130)(i) becomes a **one-line count**
+(`dim(p ∧ L_c) + dim A = 2 + 5 > 6`, no Segre analysis), and the condition
+the route actually needs is `Bad ≠ P³`, **strictly weaker** than `(∗)` —
+at the **β-ruling** `Λ²π′ ⊆ A` with `L_c ⊆ π′`, `(∗)` fails while `Bad` is
+the **proper plane** `π′`. That separation is **invisible to any sampler**
+(300 random `(A, L_c)` agree at every draw; both rulings are **built**), and
+the recount on BLINE's own 270 rows — reproduced **exactly**, `dim A` census
+`{1: 30, 2: 10, 3: 60, 4: 30, 5: 60, 6: 80}`, `(∗)` failing at 142 —
+recovers **2** rows and **none** of the 140 where `dim A ≥ 5`. **BLINE's
+verdict stands, for a shorter reason.**
+
+**GAP (ii) CLOSES AS A CRITERION, at all four shapes** ((BE-138), each
+asserted as an **iff** against an exact identically-vanishing-quadric test,
+300 draws apiece with every branch separately planted):
+
+> `π_{c₁} ⊆ Bad ⟺ Bad = P³` or **`Π_{c₁} ⊆ A`**;
+> `π_x ⊆ Bad ⟺ dim(A ∩ Λ²π_x) ≥ 2`;
+> `M ⊆ Bad ⟺ dim(A ∩ (M ∧ L_c)) ≥ 3` or **`M ∧ t₀ ⊆ A`**, `t₀ ∈ L_c`.
+
+One sentence covers all three: *a fibre is entirely bad exactly when `A`
+swallows a **2-dimensional totally singular family adapted to it***, or a
+dimension count forces it. That is the same shape as (BE-115)(iii)'s
+exception `Λ²π ⊆ A`, which the `k = 1` theorem neutralized with the chart
+fact `p_c ∈ π_c`; **no analogous chart fact is available here**.
+
+**AND THAT IS THE HEADLINE: WHAT FAILS AT `k ≥ 2` IS THE ARCHITECTURE.**
+The exact structure ((BE-139)(i), a **subspace identity** asserted 162/162)
+is `ρ̄_i = span{ s(m) + a(m)ℓ₁ : m ∈ r^{-1}(Π_x) }` with
+`r(m) = m(c_1) − m(c_2)` and `s(m) = m(y) − m(c_1)`. At `deg_i(x) = 1` there
+is no `r`, the pendant edge's multiplier is **free**, and that is the whole
+of (BE-114)(i) — *the free multiplier is not a convenience of the proof, it
+is the reason a `p_x`-free subspace exists at all*. At `k ≥ 2` the
+multiplier is **determined by the core motion**, and the sharp object
+`A_sharp = s(r^{-1}(Π_x))` **moves with `p_x`**. `A` is recovered only by
+dropping the constraint — i.e. by (BE-114)(iv)'s edge deletion — so it is
+the **unique** `p_x`-free candidate on this route, and (BE-137)(ii) makes it
+vacuous wherever `dim A ≥ 5`, which (BE-133)(iii) puts at a *generic* chart
+point on 14 of 27 topologies. **So (BE-114)(iii)'s "a condition on a point
+against a FIXED subspace" — the technique the whole `deg_i(x) = 1` theorem
+rests on — is provably unavailable at `k ≥ 2`** ((BE-139)(iv)).
+
+**THE POSITIVE HALF, AND IT IS THE SUCCESSOR.** `A_sharp` is strictly
+smaller than `A` at **89 of 162** rows and has `dim ≤ 4` — where (BE-115)
+and (BE-138) have content — at **30** rows carrying `dim A ≥ 5`. So the
+sharp object has content **exactly where the relaxation has none**. What it
+lacks is `p_x`-freeness, so the successor is a properness statement for the
+`p_x`-**varying** locus `{p ∈ F : (p ∧ L_c) ∩ A_sharp(p) ≠ 0}` — bounded-
+degree determinantal, decidable per configuration, class-uniformity open.
+**That is a change of method, not a further reduction.**
+
+**THE PRICE, AND THE FIRST POPULATION THAT COULD HAVE BROKEN IT.** At the
+411 swept **chart** points the clause `Π_x ⊆ ρ̄_i` with `ρ_i ≤ 5` holds at
+**0** — *not found under this cap*, taking the standing tally at
+side-degree `≥ 2` to **0 of 772**. The relaxed condition holds at 165, and
+at **28 of 70** peels at **every** point of the fibre, so there it proves
+properness nowhere while the clause is violated nowhere: the quantitative
+form of the architectural verdict. At all **96** confined-fibre points the
+relaxed condition holds at **none**, so **(BE-134)(ii)'s hazard is not
+realized on any chart point here** — its witnesses stay abstract, exactly as
+that step disclosed, and this is the first population that could have
+contradicted it. `margin ≤ 0` **asserted** at `Π_x`, `Π_y`, `⟨M⟩` on 70
+peels, histogram `{−3: 24, −2: 46}`, **0 shortfalls**, so item 0(b)/(c) is
+untouched.
+
+**The coordinator's framing, classified** (`RESEARCH-ARC.md` §7): **the
+spec withheld a prediction on purpose and substituted an evidence-stratum
+declaration, and the stratum half did the work.** Its framing is
+**CONFIRMED as to which question to ask** — the two gaps are the right two,
+and the hand-off's mechanical-restate reading was wrong — and **REFUTED as
+to the count**: one step short, not two. Both unopened sections were
+load-bearing: (BE-123)(i)'s constructibility is what makes the architecture
+`k`-free, and `bline.py fibre`'s implementation is what showed (BE-134)(ii)'s
+witnesses to be abstract rather than chart-realized. The tally is **cited,
+not incremented** (the 2026-09-02 concurrent-counter finding); a **ninth
+candidate kind, DECLINED-AND-REPLACED**, is offered for the coordinator's
+reconciliation, with the honest caveat that it may simply be §7 working.
+
+**Two harness findings.** A **silent** `bimage.span` hazard: it
+special-cases width 6 and otherwise round-trips `nullspace(nullspace(·))`,
+so it returns **`[]` — dimension 0 — on any full-rank input of width ≠ 6**
+(`span(I4)` is `[]`); `bimage.isect` shares it through `perp_std`. It bit
+twice while the driver was written, and it is the same family as BLINE's
+`pt_in` truncation trap. **New, unpaid**; `bdegtwo.k4span`/`k4meet` are the
+guards. And `notes/Pencil-strategy.md`'s two citations of BLINE as *"Steps
+BE129–BE135"* — its **label** range — are repaired to *BE128–BE134* and
+rolled forward to BDEGTWO's *BE135–BE140*.
+
+**What did NOT move.** `PencilPair K 3 G`, `hbareSplit`, `hK`, (GR-15),
+(BE-14), the 2-cut step, half (B) as a whole, class uniformity, cross-pair
+welding, (BE-127)(i)'s theorem at side-degree `1`, and **every landed
+measurement**. **(PENCIL-SATURATES-CHART) at side-degree `≥ 2` stays OPEN.**
+Not a PENCIL event; E1/E2/E3 all decided **not fired** at source.

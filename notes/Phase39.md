@@ -8,11 +8,11 @@ derives it from exactly **three carried items**: **`hcontract`** (W4 — build p
 **`hbareSplit`** (kernel (K-bare)). Everything else is closed — W0–W3 and all of W5
 (L0–L7), `hsplit` and `hfresh` included (2026-07-30, unchanged since).
 
-**The research arc: 81 directions COMPLETE** (2026-08-05 → 09-02, ordinals 1–73 — 77 on
+**The research arc: 82 directions COMPLETE** (2026-08-05 → 09-03, ordinals 1–74 — 78 on
 kernel (K), **WTRI/WELOC/WPAIR/WGROW (58–61) on W4**), plus eight strategy-only passes, two
 architecture probes and one read-only scoping recon. **GPACK (66) opened the `hK` lane after
-22 dispatches; GLIST (68) and GGLOB (71) are its successors**; **BLINE (73)** is
-BOPEN's (72) own residue. Per-direction verdicts, specs and write-ups live at
+22 dispatches; GLIST (68) and GGLOB (71) are its successors**; **BDEGTWO (74)** is
+BLINE's (73) own residue. Per-direction verdicts, specs and write-ups live at
 `notes/Pencil-fanout.md` §"<CODE>" (1–19: the archive) plus a workbook home — **not
 restated here**. **The arc's standing result, unchanged: `hK` is not closer.**
 **(GR-15)** — the single open gap the §(K-grid) chain reduces to — is **untouched**; **class
@@ -36,8 +36,8 @@ forcing **empty**; the flag base **DISCHARGED**; the residue is **per-side** (14
 inequalities), and **BDOUBLE made both 2-dimensional blocks REDUNDANT** under
 **(PENCIL-SATURATES)** — **REFUTED at BSATUR**, its `-GEN` repair **REFUTED again at
 BSIGMA**, leaving **-CHART**, a **THEOREM at every side-degree-`1` terminal**
-((BE-127)), so **14 → 12** stands generically; at side-degree `≥ 2` the route is **DEAD**,
-`(∗)` FALSE from `dim A = 5` ((BE-130)), the clause **OPEN**. The 12 are **unwitnessed, NOT excluded**
+((BE-127)), so **14 → 12** stands generically; at side-degree `≥ 2` **both gaps are SETTLED and
+the obstruction is the METHOD** ((BE-139)): no `p_x`-free subspace survives, clause **OPEN** at 0/772. The 12 are **unwitnessed, NOT excluded**
 ((BE-97)(iv)) except `⟨M⟩`, empty at 93 rows; cross-pair welding **untouched**.
 
 **On a future HIT: the phase-boundary consequences are the USER's call** — whether Phase 39
@@ -182,7 +182,7 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
   LANDED** (RESGRID, ordinal 48, 2026-08-28 — *Hand-off* is the correct surface; this bullet
   said "queued" until 2026-09-03). **The WAVE has never been attacked**, appearing in the
   dispatch docs only as a **bar**, excluded from every direction spec since it was named
-  (last checked BLINE, ordinal 73 — name the ordinal, never a count). The *"pin it when the
+  (last checked BDEGTWO, ordinal 74 — name the ordinal, never a count). The *"pin it when the
   tight side closes"* deferral is **RETIRED** by the 2026-08-26 adjudication. **The WAVE is
   a user call**, offered and declined 2026-09-02.
 - **OPEN QUESTION FOR THE USER — not a coordinator call, and the answer lands here.** The
@@ -248,15 +248,15 @@ carries the standing **do-not-do** — no more (a′)/(b′) ledger directions),
 `e12ecca4`, `e5c2f03e`, all 2026-09-03): ~52 of ~108 forward-looking entries carried a
 defect. **THE NEXT CONCRETE TASK is a re-rank on the repaired lists**, under the 2026-09-03
 directives — declines are re-openable on merit, so the (K-res) cheap slice and both option
-Bs are candidates again.
+Bs are candidates again; BDEGTWO's own successor (`A_sharp` properness) enters that re-rank.
 (GR-144)'s successor 1, which this line named until 2026-09-03, is **DEMOTED**: its own
 sentence concedes it **IS (GR-10)** here ((GR-140)(v)) — the gap, not a slice below it; the
 criterion's statement is §(K-grid)'s and is not restated. Successor 2 (`n_hub = 6`) is now
 **engineering** — 150/150 pure-hub shapes decided positively, 2 473 of 2 623 left; successor
 3 is whether *path* consistency decides there, where arc does not. **The three replacement
 picks that then failed are RELOCATED** to `notes/Pencil-structure.md` **block 14**, with the
-sub-item re-lettering hazard. Fallback if deferred: item 0's **exact `k ≥ 2` reduction**,
-verified **at source**. Two things stay the USER's call, both OFFERED 2026-09-02 and DECLINED
+sub-item re-lettering hazard. Fallback if deferred: item 0(a)'s **chart hunt** for
+(BE-138)'s three memberships. Two things stay the USER's call, both OFFERED 2026-09-02 and DECLINED
 IN FAVOUR OF CONTINUING RESEARCH: the **(K-res) wave** (its *scoping slice* LANDED
 2026-08-28, below — it is **not** queued) and whether W4's now-closed informal side changes
 anything about the **2026-08-05 Lean hold** — the user's to lift, never a coordinator's.
@@ -265,17 +265,17 @@ The ranked list:
 
 0. **HALF (B)'s CLASS QUANTIFIER, now (PENCIL-SATURATES-CHART) — A THEOREM AT EVERY
    SIDE-DEGREE-`1` TERMINAL** ((BE-127)(i)), so (BE-101)(i)/(ii) hold with the clause
-   **proved** and **14 → 12 stands generically**. **(BE-69) is retired as the warrant, not
-   proved — it is the wrong property** ((BE-122)/(BE-123)), and both of BPROPER's measured
-   inputs are now **PROVED** ((BE-124)/(BE-126)). The open sub-items:
-   **(a) the side-degree-`≥ 2` instances — ROUTE DEAD, CLAUSE OPEN.** `(∗)` is an exact
-   criterion ((BE-129)) and is **FALSE from `dim A = 5`** ((BE-130)), generically so at 14
-   of 27 chart-legal shapes ((BE-133)); it does **not** subsume (BE-119)'s `dim A ≥ 5` —
-   **they are one obstruction** — and the 91/91 was a **corollary** ((BE-132)). Successor:
-   the exact `k ≥ 2` reduction keeping `xc₂…xc_k`, plus a `k ≥ 2` sweep lemma ((BE-134));
+   **proved** and **14 → 12 stands generically**. **(BE-69) is the WRONG warrant, and not
+   needed** ((BE-122)/(BE-123)); BPROPER's two measured inputs are **PROVED** ((BE-124)/(BE-126)). Sub-items:
+   **(a) the side-degree-`≥ 2` instances — the OBSTRUCTION is the METHOD, CLAUSE OPEN.**
+   `(∗)` is exact ((BE-129)), **FALSE from `dim A = 5`** ((BE-130)), generic at 14 of 27
+   shapes ((BE-133)), one obstruction with (BE-119)'s ((BE-132)); BDEGTWO settled **both**
+   (BE-134) gaps — sweep PROVED, *keep `xc₂…xc_k`* MOOT, `(∗)` too strong, fibre-properness
+   closed-form — leaving **no `p_x`-free subspace** ((BE-136)–(BE-139)). Successors:
+   `A_sharp` properness; a chart hunt for (BE-138)'s three. *Kill: by the `(K-bare)` row;*
    **(b) [MARGIN]** a row with `margin > 0` at `Π_x`, `Π_y` or `⟨M⟩` — the arc's first
-   **shortfall** if it exists, unexhibited at 54 rows ((BE-128)(i)), none new at BLINE
-   ((BE-135)(i)); **(c) [BLOCKS]** the **11** live blocks, `⟨M⟩` empty at 93 rows
+   **shortfall** if it exists, unexhibited at 54 rows ((BE-128)(i)), none new at BLINE or
+   BDEGTWO ((BE-135)(i)/(BE-140)(iv)); **(c) [BLOCKS]** the **11** live blocks, `⟨M⟩` empty at 93 rows
    ((BE-121)(i), 72 + 21 — **not** (BE-108), whose figure is 72); **(d) [NON-ATTAIN]** the
    non-attaining case, **INHABITED, NOT ACTIVATED** ((BE-120)/(BE-121)(i)). **Cite the TAG,
    never the letter** — why: block 14. **Three siblings, all closed — do not re-hunt**:
@@ -435,6 +435,12 @@ paragraphs.**
   **cited, never incremented per direction**. Three concurrency hazards in `RESEARCH-ARC.md`
   §2, two gate blind spots in the *Gates* block. Detail: block 14.
 
+- **BDEGTWO** (74, 2026-09-03, opus, **detail in block 8**) — **BOTH OF (BE-134)'s GAPS
+  ARE SETTLED, AND WHAT FAILS AT SIDE-DEGREE `≥ 2` IS THE ARCHITECTURE**: the `k ≥ 2`
+  sweep EXISTS (411/411, **four** fibre shapes), *keep `xc₂…xc_k`* is **MOOT**, `(∗)` is
+  **too strong**, fibre-properness is **closed-form** — but the pendant multiplier is what
+  made `A` `p_x`-free, so no such subspace survives ((BE-136)–(BE-141), *BE135–BE140*).
+  Successor: properness for the `p_x`-varying `A_sharp`. `w4/bdegtwo.py`.
 - **BLINE** (73, 2026-09-02, opus, **one-lined at the 2026-09-03 doc landing, detail in
   block 8**) — **`(∗)` IS DECIDED: a theorem below `dim A = 3`, FALSE from `dim A = 5`, and
   (BE-127)(ii)'s route dies with it**; the clause itself stays **OPEN**, 0/270
@@ -503,10 +509,9 @@ paragraphs.**
 - **BSHARP** (49, 2026-08-28, opus) — the (b1) sharpening is **FALSE** at a dichotomy
   (series end / path saturation), correcting (BE-38)(iii) with no measurement change, and
   it cuts (b2) down to the both-ends-series window. §(K-bare-ext) *BE43–BE47*.
-- **RESGRID** (48, 2026-08-28, fable) — the (K-res) scoping slice: §(K-grid)'s **geometry
-  transports verbatim**, the grid residual is **(RS-5)** ((GR-15)'s criterion, quantifier
-  widened); the tight bookkeeping and (GR-21)+ do **not** transport; the deficient fringe
-  **refuted** ((RS-6)). §(K-res) opened with its own gap-map row; the wave stays a user call.
+- **RESGRID** (48, 2026-08-28, fable, **one-lined at the BDEGTWO landing**) — the (K-res)
+  scoping slice: §(K-grid)'s geometry **transports verbatim** to **(RS-5)**, the tight
+  bookkeeping does not, the deficient fringe **refuted** ((RS-6)); §(K-res) + its own row.
 
 **DEMOTED 2026-09-02** per this note's oldest-demotes rule — seven landings have followed.
 Settled, one line each:
@@ -565,13 +570,8 @@ Settled, one line each:
   fired.** Canonical homes `notes/Pencil-fanout{,-archive}.md` + `notes/Pencil-labels.md`.
 - **The 2026-08-05 research cluster — RELOCATED 2026-09-03** to `Pencil-structure.md`
   **block 14** (settled history; `Phase39-design.md` + git carry the detail).
-- **Pre-fan-out arc, one-lined (2026-07-24 → 08-04; full detail `Phase39-design.md` + git)**:
-  W0–W3/W5 CLOSED `hsplit` IN FULL and isolated kernel **(K)**; corank fixed to **(K-tight)**,
-  W4 decomposed, (K-bare-ext) NO-GO'd, the standing adjudications set; **(K-res)** priced and
-  **(SAFE-RES)**/`hnoGood'` vacuity REFUTED; (K-slide) (S1) proved, (K-pitch) closed.
-- **Promoted out of this phase** (pointers only): TACTICS-GOLF §11/§22/§23; TACTICS-QUIRKS
-  §46/§96/§99–§104; FRICTION `exists_injOn_mapsTo_of_ncard_le` + `extensor_pair_smul`
-  [mirror-candidate] and the omega/`Set.ncard`-atom idiom.
+- **Pre-fan-out arc (2026-07-24 → 08-04) and the *Promoted out of this phase* pointer list
+  — RELOCATED 2026-09-03** to `Pencil-structure.md` **block 14** (settled history + pointers).
 ## Citations (transcribed, project-canonical sources)
 
 **RELOCATED 2026-09-01** (verbatim) to `notes/Pencil-structure.md` §"Citations — the
