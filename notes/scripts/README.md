@@ -78,6 +78,14 @@ The 2026-08-05 rewire that created `scriptpath.py` / `exactcore.py` is the
 model of the second bullet firing in full: 67/67 invocations, 65 byte-identical,
 2 identical modulo their own timing print, 0 changed figures.
 
+**A FIFTH case, added 2026-09-03 (direction RPOOL), and it is a NEAR-MISS rather than an
+over-run:** `w4/rpool.py` has **no `--validate`** at all — its five legs measure
+46/484/104/61/18 s and total 713 s, so the all-in-one mode a driver normally carries would
+be unrunnable by construction, and the driver says so in its own docstring rather than
+offering a mode that cannot be used. `--sweep` alone at **484 s** fits with little room;
+that number is recorded here so a future extension of its 102-member population opens a
+sixth leg instead of growing that one past the ceiling.
+
 **Two invocations do not fit a 600 s foreground budget** — `flanks.py --limit`
 (762 s) and `lambda.py --adv` (536 s); `outerline.py --pool` (358 s) and
 `--shapes` (322 s) each fit alone but not together. **A fourth case, added 2026-09-02 (direction GGLOB):** `w4/gglob.py --validate` (~650 s)
@@ -1279,6 +1287,11 @@ line and treated as part of the figure.
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/resgrid.py --dimz` | ~40 s | ibid. *Step RS6*: the EXHAUSTIVE colouring sweeps — `W19` 256/52 passing/**28** at generic `(0,0)`, `S29` 16 384/1 140/**468**, `NT21c3` 128/54/**24**; the (RS-2)=(GR-7) identity asserted at all **2 492** passing blocks; the forced core witness `g ≥ 1` asserted per block at `W19`/`S29` with min `dim W` exactly **1** |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/resgrid.py --rank` | ~17 s | ibid. *Steps RS2/RS6*: (RS-1) `rank = 6(\|V\|−1) − dim Z₊ − dim Z₋` asserted at 24 matched parameter draws per shape (a cap on asserts, not enumeration); exact rational TARGET points **108/168/120** — the three per-shape PROOFS of (RS-5) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/resgrid.py --theta` | <1 s | ibid. *Step RS8* ((RS-6)): θ(2,3,7) exhaustive over its 4 admissible colourings — the parameter-free floor `dim W_± ≥ 1` + zero slack prove `rank ≤ 58 < 59 = target` at every colouring; measured max 58 (3 draws/colouring corroborate) — §(K-clos) *Z6*'s recorded miss retired as a theorem |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/rpool.py --pool` | 46 s | `notes/Pencil-informal-grid.md` §(K-res) *Step RS12* (direction RPOOL): the 255-residual pool census — **102** `def = 0` members (51/51/51 at `def = 1,2,3`), all `hcard` and triangle-free, `index ∈ {0,1,2}`, and `index = f(core)` at **102/102**. **`wtri.recorded_pool()` reached read-only** (third consumer of `saferes.prime()`'s generator list — *Harness debt*) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/rpool.py --sweep` | 484 s | ibid. *Steps RS11/RS13*: the FULL exhaustive colouring census at all 102 — **72 SATISFY (RS-5), 30 REFUTE it**, 0 undecided, 0 skipped; `h₊ = h₋ = c(G)` and the two slacks summing to `index` asserted at every passing colouring of every member; the (RS-2) identity + (GR-8) floor asserted at every drawn block of every tenth. **Measured at 484 s it FITS the 600 s budget with little room** — a future extension of the pool belongs in a sixth leg |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/rpool.py --proof` | 104 s | ibid. *Step RS13*: **72/72** exact rational Tay-target points at the satisfying members (per-shape PROOFS by semicontinuity); the miss set asserted **equal** to `--sweep`'s proven-flank set, keyed `(index 1, C₅ core, f = 1)` — the two legs cross-check each other |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/rpool.py --witness` | 61 s | ibid. *Step RS13*: the exhibited flank **`R20` = `family_g(5,(0,0,2),(4,4,4))`** end to end — `widened.W19` asserted `= family_g(4,(0,0,2),(4,4,4))`, two deficiency oracles at `def = 0`, the whole 256-colouring space broken down by rejecting clause, a positive proven floor at all **64** passing colourings with the (GR-7)/(RS-2) identity + `a + M = m` + (GR-8)'s `dim W ≥ g` asserted at **both blocks of all 64** (the sweep's own asserts are vacuous on a flank, whose `drawn` is 0 — RESEARCH-ARC §4), rank cap `113 < 114`, and the monochromatic-hub **loophole check** (all 192 excluded colourings measured, none at `(0,0)`) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/rpool.py --law` | 18 s | ibid. *Steps RS14/RS15*: the covering law `flank ⟺ index < 2·g_forced`, **0 counterexamples** at 51 systematically generated off-pool shapes (32 385 built, 13 990 in band) — **15 further PROVEN flanks**, 36 satisfying. Cap disclosed in-driver, including the **0 in-band residual `def = 0` shapes from 20 000 `random_short` draws** that forced the systematic generator |
 | `M2 --script notes/scripts/m2/lambda0.m2` | 0.1 s | workbook §(K-Λ) *Standing notation* + *Step 3* ((Λ0) and the `a`-line spans at the generic point; the widened span criterion) |
 | `M2 --script notes/scripts/m2/anhr1.m2` | 1 s | workbook §(K-ann) *Steps A15/A16* ((ANH-14)(c)(d)(e), (ANH-15)(a)(b): the universal degree-12 polynomial, irreducibility, `det Gram = −C²`) |
 | `M2 --script notes/scripts/m2/outerwide.m2` | 0.5 s | workbook §(K-out) *Step O12* ((OC-16): `Δ ≢ 0` at the local frame's generic point; the factorization `Δ = [a,u,b]·C₀(pt b)`) |
@@ -1526,7 +1539,7 @@ round that can re-run `oschu --gtarget` / `--census1` / `--census2`), **the
 `kbare/` sibling-import set** that probe KBARE-FALSIFY created,
 **OQRANK's two arrivals** (`out_classes`/`shape_key`/`tree_triple`),
 **the GBLAW + GXESC reversal-model sibling imports**, **WTRI's duplicate of
-`saferes.prime()`'s pool**, **`bsigma.wedge3`'s second consumer** (BPROPER —
+`saferes.prime()`'s pool** (**OVERDUE since 2026-09-03**: RPOOL is its third consumer), **`bsigma.wedge3`'s second consumer** (BPROPER —
 *this list had omitted it; added at the BOPEN landing, 2026-09-02*),
 **GLIST's five-device sibling import of `gpack.py`**, **BOPEN's second
 consumer of `bproper.py`'s peel constructors** and, added at the **BLINE**
@@ -2545,7 +2558,7 @@ documented three-invocation split (`--coll`, `--loc`, `--fibre --par --fit
 exception, mechanically confirmed (every differing line reduces to the
 timing annotation alone once it is stripped).
 
-### New item (2026-09-02, direction WTRI) — `wtri.py`'s duplicate of `saferes.prime()`'s pool; **UNPAID, and deliberately so**
+### New item (2026-09-02, direction WTRI) — `wtri.py`'s duplicate of `saferes.prime()`'s pool; **UNPAID — and the THIRD consumer has now ARRIVED (2026-09-03, direction RPOOL), so this item is OVERDUE by its own rule**
 
 `w4/wtri.py --regress` must re-classify the residual inhabitants `saferes.py --prime`
 sweeps, but `prime()` builds its pool inline and returns nothing, so `wtri.recorded_pool()`
@@ -2557,6 +2570,18 @@ mode (255 / 216 / 39), and this direction's own conclusion does not depend on to
 `wtri.py` already probes for `saferes.prime_pool` and would use it if it existed. **The
 duplication is verified faithful**: `--regress` reproduces the recorded **255** exactly.
 Pay it in the next round that can re-run `saferes.py --prime`.
+
+**Third consumer, 2026-09-03 (direction RPOOL).** `w4/rpool.py` needs the same pool and
+did **not** restate the generator list a third time: it calls `wtri.recorded_pool()`, and
+asserts the result is exactly **255** so a drift in either copy fails loudly rather than
+silently changing a denominator. That is the right call for a leaf driver, but it makes the
+sibling-import shape worse, not better — `rpool` now depends on a `main`-level helper inside
+`wtri`, which itself duplicates a `main`-level helper inside `saferes`. **The move-down is
+unchanged and now has three consumers**: factor `prime()`'s pool into `saferes.prime_pool()`,
+have `prime()` and `wtri.recorded_pool()` call it, and delete the duplicate. Cost when paid:
+one function body, two call sites, and a re-run of `saferes.py --prime` (39 s),
+`wtri.py --regress` (48 s) and `rpool.py --pool` (46 s) — all three expected
+byte-identical, since the pool's *contents* are what is being preserved.
 
 ### New item (2026-09-02, direction BPROPER) — `bsigma.wedge3` reaches its SECOND consumer; **UNPAID**
 

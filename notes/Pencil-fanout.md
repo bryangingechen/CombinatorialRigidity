@@ -14031,3 +14031,90 @@ rolled forward to BDEGTWO's *BE135–BE140*.
 welding, (BE-127)(i)'s theorem at side-degree `1`, and **every landed
 measurement**. **(PENCIL-SATURATES-CHART) at side-degree `≥ 2` stays OPEN.**
 Not a PENCIL event; E1/E2/E3 all decided **not fired** at source.
+
+## RPOOL — the `§(K-res)/(RS-5)` row's two cheap items (arc ordinal 75, 2026-09-03, recon-opus, committing half of a concurrent pair)
+
+### Spec (as dispatched)
+
+The row's *close-it* named, **beside the wave**, a *"cheap first slice"* (the
+255-residual pool sweep) and a **flank** (a `def = 0` (K-res) shape whose
+*every* admissible colouring has `dim Z > 0`, which would refute (RS-5)).
+Both were dispatchable only because of the **2026-09-03 declines-are-not-locks
+directive** — the 2026-09-02 decline of the **wave** is a past priority call,
+not a bar on its cheap first steps, and `notes/Phase39.md`'s *"nothing
+dispatchable left"* was withdrawn with it. **The wave itself was not
+re-litigated and remains uncommissioned.** Reservation:
+`notes/Pencil-labels.md` §"Reserved namespace — direction RPOOL".
+
+**No coordinator prediction was offered on the mathematics** — the spec said
+so explicitly, and named instead which sections the coordinator had *not*
+opened (*Steps RS1–RS10*, `resgrid.py`). That instruction — *confirm the
+instrument actually does what the row says it does* — is what the direction
+paid off first (below).
+
+### Landing write-up (LANDED 2026-09-03)
+
+**Verdict: HIT shape 1 — a named open statement REFUTED by an exhibited
+witness**, with a law identifying exactly which members survive. `hK`,
+(GR-15), (GR-10), class uniformity, `PencilPair K 3 G`, E1/E2 untouched;
+**E3 stays ARMED (by GBAL), not fired** — every rank computed is a σ-fixed
+construction, never a composite-guard generic sample. Canonical home:
+**§(K-res)**, *Steps RS11–RS16*; driver `notes/scripts/w4/rpool.py`.
+Reservation: (RS-11)–(RS-15) consumed, **(RS-16)–(RS-18) returned**, no M2
+leaf needed.
+
+**The instrument check came first, and it moved the spec.** The row says
+*"`resgrid.py`'s sweep is the instrument"*. Opened at source, `resgrid.py`
+has **no pool mode**: all four of its legs are keyed to a hard-coded
+`shapes()` = `W19`/`S29`/`NT21c3` plus the θ control. The sweep is reusable
+*in shape*, not runnable over the pool — so the slice needed a new driver
+(`rpool.py`), which imports `resgrid`'s pieces read-only. Recorded because
+the row's own wording would have led a reader to expect a flag.
+
+**(RS-5) IS FALSE.** The witness is **`R20` = `nogood_subdiv.family_g(5,
+(0,0,2), (4,4,4))`** — and `widened.W19` **is** `family_g(4, (0,0,2),
+(4,4,4))`, asserted, so the flank is **`W19` with a one-edge-longer core**,
+sitting inside the recorded 255-shape pool since 2026-08-02. At all **64** of
+its admissible both-forest colourings the parameter-free floor **(RS-11)** is
+positive, capping the σ-fixed rank at `113 < 114` at *every parameter point*;
+measured max `113`, and **no colouring of `R20` whatever** — the 192
+monochromatic-hub ones included — reaches `(0,0)`, so the refutation does not
+depend on how "admissible" is read. Two independent deficiency oracles agree
+on `def = 0`.
+
+**The mechanism is a block split, and it is where (RS-3)(ii) was one
+quantifier short.** (RS-11): `h₊ = h₋ = c(G)`, the per-block slacks
+`s_± = 3c − m_±` sum to **exactly** `index`, and `dim Z_± ≥ max(0, g_± − s_±)`
+— so a `(0,0)` colouring needs **each** block's forced witness covered by
+**that block's own** slack. (RS-3)(ii) buys `f(core) ≤ index`, a bound on the
+**sum**. `W19`/`S29` escape only because `index = 2` splits `1 + 1`;
+`NT21c3`'s `C₆` core forces nothing; `R20` has `W19`'s forced `g = 1` and one
+unit of index to split. **Across the pool: 30 of the 102 `def = 0` members
+refute (RS-5), 72 satisfy it** — each of the 72 with an *exact rational target
+point*, i.e. a per-shape proof, and the proof leg's miss set is asserted equal
+to the sweep leg's flank set. **0 undecided, 0 skipped.**
+
+**(RS-15), the covering law:** `flank ⟺ index < 2·g_forced`, no counterexample
+at 102 pool members + 51 systematically generated fresh ones (**15 further
+proven flanks off the recorded pool**). Cap disclosed: the `random_short`
+generator the pool's own third family uses produced **0** in-band residual
+`def = 0` shapes in 20 000 draws, which is why the extension is systematic
+over the *core* rather than sampled; nothing with `g_forced ≥ 2` or with two
+disjoint short cores was reached, so the law's right-hand side is **untested
+above `g_forced = 1`**.
+
+**What the wave now costs.** *Step RS9*'s three lines stand and a **fourth**
+is added: a positive, **identified** fraction of the `def = 0` habitat is
+outside the grid route entirely, joining the deficient fringe (RS-6) already
+excluded. The wave is no longer *"prove (RS-5) uniformly"* — that is refuted —
+but *"prove the repaired statement uniformly **and** route the
+`index < 2·g_forced` members somewhere else"*, and the second half is new work
+with **no named home**. The wave stays a **user call**.
+
+**What did NOT move.** `PencilPair K 3 G`, `hK`, `hbareSplit`, (GR-15),
+(GR-10), (BE-14), class uniformity, the Lean hold, and every landed
+measurement. **(RS-1)–(RS-4) are untouched** — the geometry still transports
+verbatim and (RS-4) is still a theorem; what fails is the hypothesis (RS-4)
+needs. **(GR-15) is untouched in both directions**: the quantifiers are
+disjoint, `R20` refutes `hnoRigid`, and the refutation says nothing about the
+tight class. Not a PENCIL event; E1/E2/E3 all decided **not fired** at source.

@@ -16265,7 +16265,7 @@ anywhere in these steps.
 
 ---
 
-## §(K-res) — the residual-habitat transport audit (direction RESGRID, 2026-08-28): the GEOMETRY of §(K-grid) transports verbatim and the residual is (GR-15)'s criterion with a WIDENED QUANTIFIER — proven per-shape at all three named (K-res) shapes — while the tight BOOKKEEPING ((GR-16)(iv) squareness, (GR-17)(d)'s binding list, (GR-18)(i)'s 6-tree partition, and the whole (GR-21)+ uniformity program) does NOT; the deficient fringe is REFUTED with a mechanism at θ(2,3,7)
+## §(K-res) — the residual-habitat transport audit (RESGRID, 2026-08-28) and its residual's REFUTATION (RPOOL, 2026-09-03): the GEOMETRY of §(K-grid) transports verbatim ((RS-1)–(RS-4)) while the tight BOOKKEEPING does NOT, and the widened-quantifier residual **(RS-5) is FALSE** — the flank is `R20 = family_g(5,(0,0,2),(4,4,4))`, `W19`'s own family with a `C₅` core, where the per-block floor (RS-11) is positive at all 64 admissible colourings; 30 of the recorded pool's 102 `def = 0` members refute it and 72 carry exact-point proofs, the split governed by `index < 2·g_forced` ((RS-15)); the deficient fringe stays REFUTED with a mechanism at θ(2,3,7) ((RS-6))
 
 **What this section is.** The (K-res) *scoping slice* (spec:
 `notes/Pencil-fanout.md` §"RESGRID"; labels (RS-1)–(RS-6), *Steps RS1–RS10*,
@@ -16453,10 +16453,11 @@ semicontinuity, the same instrument as the census's 907/907.
 
 ### Step RS8 — (RS-5) and (RS-6): the named residual, and the deficient fringe
 
-> **(RS-5)** *(open — the (K-res) grid residual; **proven per-shape at
-> `W19`, `S29`, `NT21c3`**)* Every `def = 0` (K-res) shape admits an
-> admissible colouring, both classes forests, with generic
-> `dim Z₊ = dim Z₋ = 0`.
+> **(RS-5)** *(**REFUTED 2026-09-03**, direction RPOOL, *Step RS13* — read
+> that step, not this one, for the current state; the per-shape proofs at
+> `W19`, `S29`, `NT21c3` stand, and the witness `R20` is one core edge from
+> `W19`)* Every `def = 0` (K-res) shape admits an admissible colouring, both
+> classes forests, with generic `dim Z₊ = dim Z₋ = 0`.
 
 This is job 2's **strictly-stronger-sibling** answer: (GR-15)'s criterion
 verbatim, quantifier widened past the tight class — the honest widened
@@ -16549,11 +16550,13 @@ PYTHONHASHSEED=0 python3 notes/scripts/w4/resgrid.py --theta    #  <1 s  (RS-6):
 PYTHONHASHSEED=0 python3 notes/scripts/w4/resgrid.py --validate # all four, ~60 s
 ```
 
-*Confidence verdict.* **(RS-1), (RS-2), (RS-3), (RS-4) proven-informally**
+*Confidence verdict (RESGRID's own, superseded on (RS-5) by *Step RS16*).*
+**(RS-1), (RS-2), (RS-3), (RS-4) proven-informally**
 (proofs above are compositions/re-readings of (AC-4)/(GR-1)/(GR-7)/(GR-8)
 at their own generality, with the driver asserting each identity
-numerically). **(RS-5) open as the uniform statement; proven per-shape at
-the three named shapes** (exact-point semicontinuity — the same standing as
+numerically). **(RS-5) REFUTED 2026-09-03 (*Step RS13*); it read
+"open as the uniform statement" here, and its per-shape proofs at
+the three named shapes stand** (exact-point semicontinuity — the same standing as
 the census's per-shape proofs of (GR-15)-instances). **(RS-6) proven**
 (exhaustive over the 4 admissible colourings; the floor is parameter-free).
 The audit table's verdicts are proof readings against cited steps, not
@@ -16563,11 +16566,249 @@ measurements, except where the evidence column says *measured*. What is
 (not combinatorially certifiable — `not_pencilNondegFeasible_of_triangle_two_hubs`
 refutes any `≤3`-closedHubNbhd criterion, and no repair here proposes one).
 
-*What would change this.* (i) A `def = 0` (K-res) shape with **every**
-admissible colouring at `dim Z > 0` — refutes (RS-5) and re-prices the wave
-upward; the driver's sweep shape is the instrument to find one. (ii) A
+*What would change this.* (i) **HAPPENED 2026-09-03**: a `def = 0` (K-res)
+shape with **every** admissible colouring at `dim Z > 0` — `R20`, *Step
+RS13* — refuting (RS-5) and re-pricing the wave upward, exactly as this line
+anticipated; it was in the recorded 255 pool the whole time. (ii) A
 proof that some core profile beyond the `(2,2)`/`(2,3)` list forces more
 witness than the index covers — would carve more of the habitat out of
 (RS-5)'s reach the way (RS-6) carved the deficient fringe. (iii) A uniform
 colouring-existence argument for (RS-5) — the wave's actual target, a user
 call.
+
+### Step RS11 — (RS-11): the per-block floor, and why it is the whole question
+
+Direction **RPOOL** (2026-09-03) ran the row's two cheap items. Both turn on
+one law, which (RS-2) and (GR-8) already contain but which no step had
+stated in the form that decides (RS-5).
+
+> **(RS-11)** *(proven; asserted at every passing colouring of every shape
+> swept below, `--sweep`/`--law`)* Let `G` be a connected `def = 0` (K-res)
+> shape and `col` an admissible colouring with **both** ruling classes
+> forests. Then
+>
+> **(i)** `h₊ = h₋ = c(G)`. *(The `+`-block's contracted node set is
+> `V/E₋`, of size `|V| − m₋` because `E₋` is a forest, so
+> `h₊ = m₊ − (|V| − m₋) + 1 = |E| − |V| + 1 = c`; symmetrically for `−`.)*
+>
+> **(ii)** the two per-block **slacks** `s_± := 3c − m_±` satisfy
+> `s₊ + s₋ = 6c − |E| = index(G)` — exactly, with **no sign constraint on
+> either one**.
+>
+> **(iii)** with `g_±` the (GR-8) functional at the contracted image of the
+> core circuit,
+>
+> > `dim Z_± ≥ max(0, g_± − s_±)` at **every** parameter point,
+>
+> so `dim Z₊ = dim Z₋ = 0` **requires each block's forced witness to be
+> covered by that block's own slack**. *Proof:* (RS-2) is
+> `dim Z = (m − 3h) + dim W`; (GR-8) — proven for *every* sub-multigraph of
+> `H₊`, and a **T** row of *Step RS5*'s transport audit — gives
+> `dim W ≥ g`. Both summands are combinatorial counts, so the bound is
+> parameter-free. The clamp at `0` is not cosmetic: the two blocks' floors
+> are summed, and a block with `s > g` must not be allowed to cancel the
+> other block's surviving witness. ∎
+
+**This is the exact point at which (RS-3)(ii) is one quantifier short.**
+*Step RS4* concluded that *"the count slack of (RS-2) is always at least the
+core's excess, and the forced witness of (i) can sit exactly on the slack"* —
+true of the **sum** `s₊ + s₋ = index ≥ f(core)`, and **false per block**,
+because the witness appears in *both* blocks while the slack is *split*
+between them. Where `index` is odd, or too small to split, the covering
+fails at every colouring at once.
+
+### Step RS12 — (RS-12): the 255-residual pool census
+
+`--pool`, exact, every figure asserted. The pool is `saferes.py --prime`'s
+255 recorded residual inhabitants, reached through `wtri.recorded_pool()`
+(this driver is that generator list's **third** consumer; the accessor debt
+is `notes/scripts/README.md` *Harness debt*).
+
+> **(RS-12)** *(measured, exhaustive over the pool)* **102 of the 255** are
+> `def = 0`, i.e. in (RS-5)'s own quantifier; the other 153 split
+> 51/51/51 across `def = 1, 2, 3`. All 102 are 2-edge-connected, `hcard`,
+> triangle-free, `|V| ∈ [19, 31]`, `index ∈ {0, 1, 2}`, and satisfy
+> (RS-3)(ii) `max f(W) ≤ index` — in fact **`index = f(core)` at 102/102**,
+> so on this population (RS-3)(ii) is **extremal, never slack**.
+
+*Support disclosure (RESEARCH-ARC §4).* The 255 are the residual inhabitants
+of three generators — `nogood_subdiv.family_g` (long-branch),
+`saferes.family_core_ring` (short-branch ring+spoke), 700
+`saferes.random_short` draws at seed 99991 — filtered by
+`nogood_subdiv.classify`. It is the pool the project **recorded**, not a
+census of the (K-res) habitat. Note that the WELOC/WPAIR denominator warning
+does **not** apply here: those directions found `0 of 255` in their band,
+whereas (RS-5)'s band is `def = 0` and holds **102**.
+
+### Step RS13 — (RS-5) IS REFUTED: the flank `R20`, and the pool dichotomy
+
+> **(RS-13)** *(proven — the flank half by a parameter-free count, the
+> positive half by exact rational target points; `--sweep`, `--proof`,
+> `--witness`)* **(RS-5) is FALSE.** The witness is
+>
+> > **`R20` := `nogood_subdiv.family_g(5, (0,0,2), (4,4,4))`** —
+> > `|V| = 20`, `|E| = 23`, `index = 1`, `def = 0`, simple, 2-edge-connected,
+> > `hcard`, triangle-free, `provably_feasible`, `STRONG-CANDIDATE`, two
+> > split-usable degree-2 vertices, **one** proper rigid subgraph: the `C₅`
+> > core `{c0..c4}` with `f(core) = 1 = index`.
+>
+> Its whole colouring space is 256; 192 carry a monochromatic hub, 0 have a
+> class with a cycle, 0 are illegal, so **64 pass**. At **all 64**,
+> (RS-11)(iii) gives a **positive** floor — `(s, g)` profiles
+> `((0,1),(1,1))×29`, `((1,1),(0,1))×29`, `((−1,1),(2,1))×3`,
+> `((2,1),(−1,1))×3` — so `dim Z₊ + dim Z₋ ≥ 1` at **every parameter
+> point**, and by (RS-1) the σ-fixed rank is capped at
+> `113 < 114 = 6(|V|−1)`. Measured: `dim Z₊ + dim Z₋ ∈ {1, 2, 3}` (never
+> `0`), rank histogram `{111:4, 112:6, 113:54}`, max `113`. Both deficiency
+> oracles (Lee–Streinu pebble game, matroid-union tree packing) return
+> `def = 0`.
+>
+> **Across the recorded pool: 30 of the 102 REFUTE (RS-5), 72 SATISFY it**
+> — and each of the 72 carries an **exact rational point at the Tay
+> target**, i.e. a per-shape *proof*, cross-checked as exactly the
+> complement of the flank set. `0` undecided, `0` skipped.
+
+**Provenance, and it is the finding's sting.** `widened.W19` **is**
+`family_g(4, (0,0,2), (4,4,4))` (asserted). So `R20` is `W19` **with the core
+cycle one edge longer** — the same generator, one parameter away from the
+shape *Step RS6* used as its first per-shape proof of (RS-5). RESGRID's
+population (`W19`, `S29` at `index = 2`; `NT21c3` at `index = 0`) varied the
+*shape family* and never the *core length at fixed generator*, and the
+counterexample sat in the pool the project had already recorded on
+2026-08-02.
+
+*The sampler-support hole, closed on purpose (RESEARCH-ARC §4).* The sweep's
+`(RS-2)`/`(GR-8)` asserts fire only on **drawn** blocks — and a flank has
+`drawn = 0` by construction, so on exactly the members carrying the verdict
+that assert is **vacuous**. `--witness` therefore asserts the (GR-7)/(RS-2)
+identity, `a + M = m`, and `dim W ≥ g` at **both blocks of all 64 passing
+colourings of `R20` itself**, drawn or not. The floor's warrant is a
+theorem ((GR-7) + (GR-8)); this is the corroboration that the *implementation*
+of that theorem is the one being applied.
+
+*Loophole check (the admissibility reading).* (RS-5)'s "admissible" is
+operationalized by `resgrid.passing_colourings`, which also excludes
+monochromatic-hub colourings — so the flank could in principle be an
+artifact of *that* clause. It is not: all 192 excluded colourings of `R20`
+are legal both-forest colourings, and their generic `dim Z₊ + dim Z₋` values
+are `{1,2,3,4,5}`. **No colouring of `R20` whatever reaches `(0,0)`.** (This
+half is measured, not proven; it concerns a class (RS-5) does not quantify
+over.)
+
+### Step RS14 — (RS-14): the mechanism, and what it does *not* touch
+
+> **(RS-14)** *(proven, from (RS-11) + (RS-3))* The refutation is **not** a
+> failure of the transported geometry, and it is **not** the deficient-fringe
+> mechanism of (RS-6) reappearing. It is the **block split**: (RS-3)(ii)
+> buys `f(core) ≤ index`, a bound on the **sum** `s₊ + s₋`; the forced
+> witness of (RS-3)(i) appears in **each** block; so the covering a `(0,0)`
+> colouring needs is `s_± ≥ g_±` **separately**. `W19`/`S29` escape only
+> because `index = 2` splits `1 + 1` and each unit exactly pays for its own
+> `g = 1`; `NT21c3` escapes because its `C₆` core forces nothing
+> (`g_forced = 0`). `R20` has the same forced `g = 1` as `W19` and only one
+> unit of index to split.
+
+Three things this does **not** move, stated because a refutation invites
+over-reading. **(i) (RS-1)–(RS-4) are untouched** — the geometry still
+transports verbatim, and (RS-4)'s reduction is still a theorem: what fails
+is the *hypothesis* (RS-4) needs, not (RS-4). **(ii) (GR-15) is untouched** —
+the quantifiers are disjoint (*Step RS8*), and `R20` refutes `hnoRigid`, so
+it is not a tight-class shape and says nothing about the tight side.
+**(iii) `hK` and the phase target are untouched**: (K-res) is W4 route 3's
+own kernel, and this makes that kernel *harder*, not the conjecture false.
+
+### Step RS15 — (RS-15): the covering law, tested off the recorded pool
+
+> **(RS-15)** *(measured, systematic — `--law`)* Write `g_forced` for the
+> minimum over passing colourings of `min(g₊, g₋)` — the witness **no**
+> colouring can avoid. On every `def = 0` (K-res) shape reached so far,
+>
+> > `G` is a flank **⟺** `index(G) < 2·g_forced(G)` ,
+>
+> with **no counterexample** at 102 pool members + 51 fresh ones. The three
+> occupied keys `(index, |core|, f(core), g_forced)` are
+> `(0, 6, 0, 0)` and `(2, 4, 2, 1)` — satisfying — against `(1, 5, 1, 1)` —
+> flank. **Off the recorded pool: 15 further PROVEN flanks, 36 satisfying**,
+> from a systematic extension of `family_g` (core lengths 3–9, branch
+> interiors 0–7) plus `family_core_ring` at ring sizes past the pool's.
+
+*Cap disclosure.* 32 385 shapes built, 13 990 with `index ∈ [0,2]`, **51**
+residual with `def = 0`; 3 draws per block. The `saferes.random_short`
+generator was tried first and produced **0** in-band residual `def = 0`
+shapes in 20 000 draws — which is *why* the extension is systematic over the
+core rather than sampled. Every negative here is **not found under this cap**,
+never "does not exist"; in particular **no shape with two disjoint short
+cores, and none with `g_forced ≥ 2`, was reached**, so the biconditional's
+right-hand side is untested above `g_forced = 1`.
+
+### Step RS16 — verdict, and what moves
+
+**HIT shape 1 — a named open statement REFUTED by an exhibited witness**,
+plus a law that says exactly which members survive.
+
+- **(RS-5) is FALSE as stated.** It is not repairable by weakening the
+  conclusion: at `R20` the Tay target is unreachable on the σ-fixed grid at
+  *every* admissible colouring, by a proven count.
+- **The surviving statement is (RS-15)'s right-hand side**, and the honest
+  successor to (RS-5) is: *every `def = 0` (K-res) shape with
+  `index ≥ 2·g_forced` admits a `(0,0)` admissible both-forest colouring* —
+  open, with 108 per-shape confirmations (72 of them exact-point proofs) and
+  no counterexample.
+- **The grid route does not serve all of (K-res).** *Step RS9*'s pricing
+  said the reduction to (RS-5) is free and the uniformity gap is the cost.
+  That pricing now needs a fourth line: a **positive fraction of the
+  `def = 0` habitat is outside the grid route entirely**, joining the
+  deficient fringe (RS-6) already excluded — 30/102 of the recorded pool,
+  and the excluded set is *identified*, not merely nonempty.
+- **What the wave would now have to be.** Not *"prove (RS-5) uniformly"* —
+  that is refuted — but *"prove (RS-15)'s repair uniformly **and** route the
+  `index < 2·g_forced` members somewhere else"*. The second half is new work
+  with no named home; the escape route took the deficient fringe, and
+  nothing here says it takes these.
+
+**TERMINATION: E1 NO** (no flank opened or closed on the *tight* side;
+(GR-15) untouched — the quantifiers are disjoint). **E2 NO** (the pass
+settles its target and names the successor object). **E3 ARMED by GBAL, NOT
+fired** (every rank here is a σ-fixed construction, never a composite-guard
+generic sample; nothing touches (a′), `d_fg` or input (Y)). Reservation:
+(RS-11)–(RS-15) and *Steps RS11–RS16* consumed; **(RS-16)–(RS-18) returned**;
+no M2 leaf needed.
+
+### Verification (Steps RS11–RS16)
+
+`notes/scripts/w4/rpool.py` (**new with this pass**; imports `resgrid.py`
+read-only for the floor's ingredients — `COL_CAP`, `core_edge_idx`,
+`f_count`, `min_core`, `passing_colourings`, `rank_and_z_at_draw` — plus
+`grid`/`gridwit`/`closure`/`wtri`/`saferes`/`nogood_subdiv`; exact ℚ
+throughout with the eigen ranks over exact ℚ(i); rngs seeded, seeds printed;
+no `set` printed; colouring enumeration **exhaustive** per shape, the 2^20
+cap asserted non-binding at every one, `0` skipped).
+
+```
+PYTHONHASHSEED=0 python3 notes/scripts/w4/rpool.py --pool     #  46 s  Step RS12: 255 -> 102 def-0 members; index == f(core) at 102/102
+PYTHONHASHSEED=0 python3 notes/scripts/w4/rpool.py --sweep    # 484 s  Steps RS11/RS13: full colouring census at all 102 -- 72 satisfy, 30 PROVEN flanks, 0 undecided
+PYTHONHASHSEED=0 python3 notes/scripts/w4/rpool.py --proof    # 104 s  Step RS13: 72/72 exact rational target points; miss set == flank set, asserted
+PYTHONHASHSEED=0 python3 notes/scripts/w4/rpool.py --witness  #  61 s  Step RS13: R20 end to end, two deficiency oracles, rank cap 113 < 114, loophole check
+PYTHONHASHSEED=0 python3 notes/scripts/w4/rpool.py --law      #  18 s  Steps RS14/RS15: the biconditional, 0 counterexamples, 15 further flanks off-pool
+```
+
+*Confidence verdict.* **(RS-11) proven** (a re-reading of (RS-2)+(GR-8) at
+their own generality, with (i)/(ii) asserted at every passing colouring of
+every shape swept). **(RS-13) proven** — the flank half is a parameter-free
+combinatorial count at an exhaustively enumerated colouring space, so no
+sampler is load-bearing in it, and the positive half is 72 exact-point
+proofs. **(RS-12) measured, exhaustive over the recorded pool.**
+**(RS-14) proven** (it is (RS-11) applied to (RS-3)). **(RS-15) measured on
+153 shapes, `not found under cap` for its negative half.**
+**(RS-5) is REFUTED** and its per-shape proofs at `W19`/`S29`/`NT21c3`
+stand — those three are in the 108 satisfying shapes. What is **not**
+established: the repaired statement of *Step RS16* at any unswept member;
+any routing for the `index < 2·g_forced` members; anything about
+`PencilNondegFeasible` itself.
+
+*What would change this.* (i) A `def = 0` (K-res) shape with
+`index ≥ 2·g_forced` and **no** `(0,0)` colouring — would refute the repair
+too and put the whole grid route on (K-res) in question. (ii) A proof of the
+repair, which is the wave's actual target, now a strictly smaller statement
+than (RS-5) was. (iii) A route for the excluded members: today they have
+none, and *Step RS9*'s "reduction is free" no longer covers them.

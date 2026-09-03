@@ -8,25 +8,24 @@ derives it from exactly **three carried items**: **`hcontract`** (W4 — build p
 **`hbareSplit`** (kernel (K-bare)). Everything else is closed — W0–W3 and all of W5
 (L0–L7), `hsplit` and `hfresh` included (2026-07-30, unchanged since).
 
-**The research arc: 82 directions COMPLETE** (2026-08-05 → 09-03, ordinals 1–74 — 78 on
+**The research arc: 83 directions COMPLETE** (2026-08-05 → 09-03, ordinals 1–75 — 78 on
 kernel (K), **WTRI/WELOC/WPAIR/WGROW (58–61) on W4**), plus eight strategy-only passes, two
 architecture probes and one read-only scoping recon. **GPACK (66) opened the `hK` lane after
 22 dispatches; GLIST (68) and GGLOB (71) are its successors**; **BDEGTWO (74)** is
-BLINE's (73) own residue. Per-direction verdicts, specs and write-ups live at
+BLINE's (73) own residue, **RPOOL (75)** the (K-res) row's. Per-direction verdicts, specs and write-ups live at
 `notes/Pencil-fanout.md` §"<CODE>" (1–19: the archive) plus a workbook home — **not
 restated here**. **The arc's standing result, unchanged: `hK` is not closer.**
 **(GR-15)** — the single open gap the §(K-grid) chain reduces to — is **untouched**; **class
 uniformity of the escape is untouched**; no g-flank was found; **E3 is ARMED (by GBAL), has
-NEVER fired, and is NOT one landing away** — `61e046a6`: "the target" in E1–E3 is the
-**arc's**, so emptying W4's list does not fire it (WGROW is the worked case).
+NEVER fired, and is NOT one landing away** — why: **block 14**.
 
 **`hK` LANE (GPACK 66, GLIST 68, GGLOB 71): (GR-18)(iii)'s split half is a THEOREM and its
 residual is now CSP-FREE — and IS (GR-10) at `D = 0`. ESCAPE ROUTE (OWALL 70): (OC-44)(iii) is REDUCED to (OW)**, its named route
 refuted by logic. **(GR-10)/(GR-15)/(OC-8) unchanged**. Detail: **blocks 11–13**.
 
 **W4's INFORMAL SIDE IS CLOSED** (58–61): **(T)/(E-pair)/(V) are THEOREMS**, **(E) open,
-TIGHT, off every W4 path**, list **EMPTY** — leaving the USER call **(K-res)** and the held
-build. Detail: **block 9**.
+TIGHT, off every W4 path**, list **EMPTY** — leaving the USER call **(K-res)**, now DEARER
+(**RPOOL 75 REFUTED its grid residual (RS-5)**), and the held build. Detail: **block 9**.
 
 **WHERE THE (BE-14) THREAD STANDS** — S-mark, the 2-cut composition lemma, is its **only
 open step**; the three sides and every per-landing detail are **REFERENCE**, at
@@ -179,18 +178,13 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
   What is left is **(K-res)**, a kernel of `hK`'s difficulty class on the complementary
   habitat whose proof route is *strictly harder* (its habitat sits wholesale in the
   `dim R_a = 1` stratum where the (K) recon found no landed-brick route). **Its SCOPING
-  LANDED** (RESGRID, ordinal 48, 2026-08-28 — *Hand-off* is the correct surface; this bullet
-  said "queued" until 2026-09-03). **The WAVE has never been attacked**, appearing in the
-  dispatch docs only as a **bar**, excluded from every direction spec since it was named
-  (last checked BDEGTWO, ordinal 74 — name the ordinal, never a count). The *"pin it when the
-  tight side closes"* deferral is **RETIRED** by the 2026-08-26 adjudication. **The WAVE is
-  a user call**, offered and declined 2026-09-02.
-- **OPEN QUESTION FOR THE USER — not a coordinator call, and the answer lands here.** The
-  `(K-res)` row's close-it names, beside the wave, a **cheap first slice** (the 255-residual
-  pool sweep) and a **flank** (`resgrid.py`'s sweep is the instrument, already built).
-  **SETTLED 2026-09-03 at the POLICY level** (*Current state*): a decline is not a lock, so
-  the declined **wave** does not bar them. **Both dispatchable**; *"nothing dispatchable
-  left"* is **withdrawn**.
+  LANDED** (RESGRID, 48) and its two **cheap items are now SPENT** (RPOOL, 75): the pool
+  sweep ran and the flank hunt **HIT** — **(RS-5) is REFUTED**, so the wave is **dearer**,
+  not closer. **The WAVE itself has still never been attacked** and stays a **user call**
+  (offered and declined 2026-09-02; not re-litigated at RPOOL). What it now costs: prove the
+  **repaired** statement uniformly **and** route the `index < 2·g_forced` members, which have
+  **no named home** — the `§(K-res)/(RS-5)` row carries both, and *Step RS9*'s pricing gains
+  a fourth line. The *"pin it when the tight side closes"* deferral stays **RETIRED**.
 
 - **Doc debt — the gate is MECHANICAL** (`notes/check-phase-note.py`: **580 lines / 525
   status-header words**, plus a fail if *Decisions made* outgrows the forward sections),
@@ -247,8 +241,9 @@ carries the standing **do-not-do** — no more (a′)/(b′) ledger directions),
 **THE LIVENESS DOC ROUND IS COMPLETE** (slices 1+3 `c89c7adb`; sweeps C/A/B `2eeceace`,
 `e12ecca4`, `e5c2f03e`, all 2026-09-03): ~52 of ~108 forward-looking entries carried a
 defect. **THE NEXT CONCRETE TASK is a re-rank on the repaired lists**, under the 2026-09-03
-directives — declines are re-openable on merit, so the (K-res) cheap slice and both option
-Bs are candidates again; BDEGTWO's own successor (`A_sharp` properness) enters that re-rank.
+directives — both option Bs are candidates again; BDEGTWO's own successor (`A_sharp`
+properness) and RPOOL's (the repaired (RS-5), and a route for the members it excludes) enter
+that re-rank. The (K-res) **cheap slice is SPENT** (RPOOL) and no longer a candidate.
 (GR-144)'s successor 1, which this line named until 2026-09-03, is **DEMOTED**: its own
 sentence concedes it **IS (GR-10)** here ((GR-140)(v)) — the gap, not a slice below it; the
 criterion's statement is §(K-grid)'s and is not restated. Successor 2 (`n_hub = 6`) is now
@@ -291,11 +286,13 @@ closure, the point-side flat law, BINDUC's **(BE-23)(ii)**, the flat-star dictio
 its *superseded, do not re-derive* note. **Reference, not status**: unmoved since BSIGMA
 (ordinal 67) — name the ordinal, never a count; the live items are 0 and 1 above.
 
-**THE (K-res) SCOPING SLICE LANDED 2026-08-28** (RESGRID, ordinal 48; §(K-res),
-`notes/Pencil-informal-grid.md`, own gap-map row), discharging the user's 2026-08-26
-adjudication and retiring the *"pin it when the tight side closes"* deferral. **The
-(K-res) wave remains a user call** — neither started nor pre-empted (price, *Step
-RS9*). **The 2026-08-29 user call is discharged (BRNODE landed); this stays ranked.**
+**THE (K-res) ROW's TWO CHEAP ITEMS ARE SPENT** (RPOOL, 75, 2026-09-03; §(K-res)
+*RS11–RS16*): the pool sweep ran over all **102** `def = 0` members of the recorded 255 and
+the flank hunt **HIT** — **(RS-5) is REFUTED** by `R20`, `W19` with a longer core. The
+scoping slice landed 2026-08-28 (RESGRID, 48). **The wave remains a user call**, neither
+started nor pre-empted, and is now **dearer**: see *Blockers*. **Kill condition for the
+successor: the repaired statement settled, or a flank at `g_forced ≥ 2` — decided by the
+`§(K-res)/(RS-5)` row.**
 
 **THE CANDIDATE LIST lives in `notes/Pencil-strategy.md` §8 — the option board** (new
 2026-08-20): every live route priced in one place, with the two filters that kill most
@@ -435,6 +432,11 @@ paragraphs.**
   **cited, never incremented per direction**. Three concurrency hazards in `RESEARCH-ARC.md`
   §2, two gate blind spots in the *Gates* block. Detail: block 14.
 
+- **RPOOL** (75, 2026-09-03, opus) — **(RS-5) IS REFUTED** by the row's own *cheap first
+  slice*: `R20 = family_g(5,(0,0,2),(4,4,4))` is `widened.W19` with a longer core, in the
+  recorded 255 pool since 2026-08-02; **30 of its 102 `def = 0` members refute it, 72 carry
+  exact-point proofs**, split by the **per-block** floor (RS-11) where (RS-3)(ii)'s SUM bound
+  fell short ((RS-14)/(RS-15)). (GR-15) untouched; wave **re-priced**. §(K-res) *RS11–RS16*.
 - **BDEGTWO** (74, 2026-09-03, opus, **detail in block 8**) — **BOTH OF (BE-134)'s GAPS
   ARE SETTLED, AND WHAT FAILS AT SIDE-DEGREE `≥ 2` IS THE ARCHITECTURE**: the `k ≥ 2`
   sweep EXISTS (411/411, **four** fibre shapes), *keep `xc₂…xc_k`* is **MOOT**, `(∗)` is
@@ -494,27 +496,18 @@ paragraphs.**
   PER PEEL, EXHAUSTIVENESS RETIRED** ((BE-69)–(BE-73), *BE68–BE72*); `G` closed on (CH-1).
 - **BDECOR** (53, 2026-09-01, opus, demoted) — **THE ACHIEVABLE DECORATIONS ARE A PRODUCT
   OF EAR CHAINS** ((BE-64)–(BE-67), *BE63–BE67*), modulo the cross-branch proviso `G`.
-- **BRNODE** (52, 2026-09-01, fable) — **THE INTERNAL R-NODE DESCRIBED**
-  ((BE-59)–(BE-63), §(K-bare-ext) *BE58–BE62*): `ρ̄` obeys one **decorated-skeleton law**
-  at every SPQR node, exact at every configuration; residue = the **achievable-decorations
-  class statement**, chord step priced strictly harder.
-- **BWIN** (51, 2026-08-29, fable, **demoted at the BGENUINE landing**) — **THE WINDOW
-  CLOSED BY A CLASS THEOREM** ((BE-54)–(BE-58), §(K-bare-ext) *BE53–BE57*):
-  `ρ̄₁ ∩ Z = ⟨ℓ_u, ℓ_v⟩` at every both-ends-series piece with `δ₁ ≤ 4`, by a double peel and
-  the **modular law**; **(β) proved at every window piece** on the 87-of-91 domain, **modulo
-  (S1)/(S2)**, which are vacuous at every drawn middle but **not theorems**.
-- **BRULE** (50, 2026-08-28, opus, demoted at the BPEEL landing) — **(b3) DECIDED, the
-  CHEAPEST clause**, by a **separation theorem**, so **(β)'s two residues are DISJOINT**
-  ((BE-49)–(BE-53), §(K-bare-ext) *BE48–BE52*); one witness per shape, 0/637 failures.
-- **BSHARP** (49, 2026-08-28, opus) — the (b1) sharpening is **FALSE** at a dichotomy
-  (series end / path saturation), correcting (BE-38)(iii) with no measurement change, and
-  it cuts (b2) down to the both-ends-series window. §(K-bare-ext) *BE43–BE47*.
-- **RESGRID** (48, 2026-08-28, fable, **one-lined at the BDEGTWO landing**) — the (K-res)
-  scoping slice: §(K-grid)'s geometry **transports verbatim** to **(RS-5)**, the tight
-  bookkeeping does not, the deficient fringe **refuted** ((RS-6)); §(K-res) + its own row.
 
-**DEMOTED 2026-09-02** per this note's oldest-demotes rule — seven landings have followed.
-Settled, one line each:
+**DEMOTED 2026-09-02** per this note's oldest-demotes rule — unmoved since; the newest
+landing above it is RPOOL (ordinal 75). Settled, one line each:
+- **BRNODE** (52) / **BWIN** (51) / **BRULE** (50) / **BSHARP** (49), 2026-08-28…09-01,
+  **all one-lined 2026-09-03 to pay for RPOOL's entry** — the internal R-node's
+  decorated-skeleton law ((BE-59)–(BE-63)); the window closed by a class theorem, **(β)
+  proved there modulo (S1)/(S2)** ((BE-54)–(BE-58)); **(b3) DECIDED**, (β)'s two residues
+  DISJOINT ((BE-49)–(BE-53)); the (b1) sharpening **FALSE** at a dichotomy, cutting (b2) to
+  the both-ends-series window. §(K-bare-ext) *BE43–BE62*; per-landing detail in **block 8**.
+- **RESGRID** (48, 2026-08-28, fable) — the (K-res) scoping slice: §(K-grid)'s geometry
+  **transports verbatim**, the tight bookkeeping does not, the deficient fringe **refuted**
+  ((RS-6)). Its residual **(RS-5) is since REFUTED** (RPOOL); (RS-1)–(RS-4) stand.
 - **BEARFULL** (47, 2026-08-27, opus) — the **SHORT-CYCLE LAW** (`girth(Q) ≥ 6`), containing
   (BE-32)(ii)/(iii); **(b2) a COROLLARY of (b1)**; ear-decomposition **REFUTED**.
   §(K-bare-ext) *BE38–BE42*.

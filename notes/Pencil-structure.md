@@ -1541,3 +1541,19 @@ because a home owns it — the harness-debt list, which read **SIX** while
 `notes/scripts/README.md` read **TEN** — the note now says *the count is the home's* and
 carries only the one item that is a **silent** hazard rather than bookkeeping
 (`bimage.pt_in`'s `K⁴` truncation, no assert firing).
+
+### Why E3 is not one landing away (RELOCATED from `notes/Phase39.md` 2026-09-03, the RPOOL landing)
+
+Verbatim, the clause the phase-note header carried until the header hit its
+word cap; it is an **explanation**, not a status word, and the status word
+(*E3 is ARMED by GBAL, has NEVER fired, and is NOT one landing away*) stays
+in the header:
+
+> `61e046a6`: "the target" in E1–E3 is the **arc's**, so emptying W4's list
+> does not fire it (WGROW is the worked case).
+
+The reading matters because every W4-side landing invites the opposite one.
+E1/E2/E3 are the **arc's** termination clauses — they ask whether the
+*research arc* has reached its target — so a landing that empties one carried
+item's cost list is not a landing that fires them, and the WGROW landing
+(ordinal 61) is the case where that was worked through explicitly.
