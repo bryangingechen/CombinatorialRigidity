@@ -25,34 +25,65 @@ import re
 import subprocess
 import sys
 
-PATH = "notes/model-experiment.md"
+# Default target: the live exception log. The model-experiment log this gate
+# was written for concluded (its rows are frozen in
+# notes/model-experiment-archive.md), so pointing here by default is what makes
+# the gate actually gate something -- it silently reported "0 row(s) checked"
+# against the empty pointer file from the day the experiment closed until
+# 2026-09-03, so its ~600-char cap had never once been enforced.
+# Override with --file <path> (e.g. the archive) to check another log.
+PATH = "notes/dispatch-log.md"
 CAP = 600
-ROW_RE = re.compile(r"^\| (\d+) \|")
+# A row's first cell is a date (dispatch log) or an ordinal (experiment log).
+ROW_RE = re.compile(r"^\| (\d{4}-\d{2}-\d{2}|\d+) \|")
 PIPE = re.compile(r"(?<!\\)\|")  # a column delimiter is an UNescaped pipe
 
 
-def notes_cell(line):
+SEP_RE = re.compile(r"^\|(?:\s*:?-{3,}:?\s*\|)+\s*$")
+
+
+def ncols_of(text):
+    """Column count, read off the table's own header separator row.
+
+    Derived rather than hard-coded because this gate serves two logs with
+    different shapes (the dispatch log has 5 columns, the model-experiment log
+    9). Hard-coding 9 is what silently disabled it against the dispatch log."""
+    for line in text.splitlines():
+        if SEP_RE.match(line):
+            return len([c for c in PIPE.split(line)[1:-1]])
+    return None
+
+
+def notes_cell(line, ncols):
     """Notes (last) cell of a log row, or None if the line isn't a row.
 
-    Splits on unescaped pipes only and takes everything between the 9th
-    delimiter and the row-end pipe, so literal pipes inside Notes (|V|, |E|)
-    and escaped pipes in the Task (\\|V\\|) are measured / handled correctly
-    rather than truncating the cell at the first interior pipe."""
+    Splits on unescaped pipes only and takes everything between the
+    `ncols`-th delimiter and the row-end pipe, so literal pipes inside Notes
+    (|V|, |E|) and escaped pipes elsewhere (\\|V\\|) are measured / handled
+    correctly rather than truncating the cell at the first interior pipe. The
+    fixed index is what makes interior pipes safe -- do not "generalize" this
+    to the last-two-delimiters, which breaks on exactly those rows."""
     s = line.rstrip("\n")
     pos = [m.start() for m in PIPE.finditer(s)]
-    if len(pos) < 10:  # need the 10 structural delimiters of a 9-column row
+    if len(pos) < ncols + 1:  # need the structural delimiters of a full row
         return None
-    return s[pos[8] + 1 : pos[-1]].strip()
+    return s[pos[ncols - 1] + 1 : pos[-1]].strip()
 
 
 def rows_of(text):
     out = {}
+    ncols = ncols_of(text)
+    if ncols is None:
+        return out
     for line in text.splitlines():
         m = ROW_RE.match(line)
         if m:
-            nc = notes_cell(line)
+            nc = notes_cell(line, ncols)
             if nc is not None:
-                out[int(m.group(1))] = nc
+                # Key by the row's non-Notes cells: unique in practice, and
+                # robust to insertion in a way a line index would not be.
+                cells = [c.strip() for c in PIPE.split(line)]
+                out[tuple(cells[:-2])] = nc
     return out
 
 
@@ -67,6 +98,9 @@ def git_show(ref):
 
 
 def main(argv):
+    global PATH
+    if "--file" in argv:
+        PATH = argv[argv.index("--file") + 1]
     if "--all" in argv:
         with io.open(PATH, encoding="utf-8") as f:
             cur = rows_of(f.read())
@@ -92,6 +126,7 @@ def main(argv):
         label = "changed vs HEAD"
 
     bad = [(n, len(cur[n])) for n in sorted(check) if len(cur[n]) > CAP]
+    bad = [((" | ".join(str(x) for x in n))[:90], c) for n, c in bad]
     if bad:
         print(
             f"FAIL: {len(bad)} log row(s) exceed the {CAP}-char Notes cap "

@@ -273,6 +273,57 @@ exist and what do they cost* (`--list`), *one cell, windowed by sentence*
 (`--row … --cell status --head N`) and *only the sentences mentioning one
 label* (`--label '(GR-15)'`) for 3–13% of the row's cost.
 
+### 8. Kill conditions on forward-looking items — §6's blind spot
+
+**§6 caps and gates every *status* surface. Nothing gates a *recommendation*
+surface, and recommendations are what a coordinator actually reads to choose the
+next dispatch.** That asymmetry is this file's newest promoted item, and it is a
+mechanism rather than an empirical finding: it is justified by the failure it
+prevents, which is demonstrated below.
+
+**The failure mode, named.** A ranked list, option board, candidate menu, or
+"highest-value remaining item" entry goes stale **silently**, because the thing
+that kills it is a landing *somewhere else*. No author is in a position to
+notice: the person who lands the killing result is not editing the list, and the
+person reading the list has no signal that it moved. Status objects do not have
+this problem — the gap map is *the artifact a new pass updates in place* (§3), so
+a landing touches it by construction.
+
+**The rule.** Every forward-looking entry carries, in the entry itself, two
+clauses:
+
+- **its kill condition** — *what result would retire this*; and
+- **the status row that decides it** — the gap-map row (or workbook §) a reader
+  checks to see whether that has happened.
+
+Both are cheap at write time and impossible to reconstruct later: whoever
+records a recommendation knows what would kill it, and today has nowhere to say
+so. A **liveness sweep** — walk the lists, re-check each entry against its named
+row — then becomes mechanical instead of a research task, and belongs in every
+doc round.
+
+**The evidence, stated honestly: three instances in one session (2026-09-03),
+which is one wave, plus the structural argument that this is §6 applied to the
+half of the documentation §6 never covered.** In PENCIL: `Pencil-strategy.md`
+§5.3's item (i) was listed as the CAS layer's highest-value unrun item and had
+been **dead since the day it was written** — the result that killed it, (D4),
+landed the same day — surviving four weeks and costing a dispatch; §8's option
+board, the file's designated *"every live route priced in one place"*, carried a
+rank-3 row still naming a route refuted the previous day; and §8.2 and §8.6
+contradicted each other on whether two shortlist entries were live. In the same
+session a coordinator tried **three times** to pick a direction from those
+surfaces and was misled every time, each item looking live where it is
+*recommended* and spent one layer down. If this turns out PENCIL-specific,
+that is a bug in this file per the tiering caveat above — but the mechanism is
+general and the cost of the rule is one clause per entry.
+
+**Corollary — a gate that reports zero is not a gate that passes.**
+`notes/check-log-rows.py` printed `OK: 0 row(s) checked` for weeks: it targeted
+a log whose rows had been archived, and was hard-coded to that log's column
+count. Both were invisible because the output said OK. When a gate's *scope* is
+configuration, assert the scope, not just the verdict — the fix here derives the
+column count from the table's own header and defaults to the live log.
+
 ### 7. A coordinator prediction is a hypothesis — flag it as one, with its evidence stratum named
 
 **Promoted 2026-08-26** from the *Candidates* tier at a fourth independent
