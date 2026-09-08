@@ -1,10 +1,36 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
 **Status: EIGHT fan-outs, FORTY-NINE single directions, ONE draft-only parallel direction,
-FOUR concurrent pairs and ONE concurrent round of four dispatched; 88 LANDED, **NONE IN
-FLIGHT, NONE DRAFTED — the concurrent round of four is COMPLETE** (BARCH 77, OBAR 78,
-DSAT 79, GLEAF 80).
-*(Round state, coordinator, 2026-09-03 — **CLOSED at GLEAF's landing**; what stays is the
+FOUR concurrent pairs, ONE concurrent round of four and ONE concurrent round of three
+dispatched; 91 LANDED, **NONE IN FLIGHT, NONE DRAFTED — the concurrent round of three is
+COMPLETE** (BFOUR 81, BINSERT 82, BSERIES 83).
+
+*(Round state, coordinator, 2026-09-08 — the **round of three**, CLOSED at BFOUR's landing.
+Three dispatched read-only, three landed serially, **zero label collisions and zero
+document contention**; the queue is empty and what stays is the round's cross-return
+observations.*
+
+**THE ROUND CONVERGED, which neither spec anticipated.** BSERIES (83) reduced half (β)'s
+one-end residue to **(PENCIL-SATURATES) at side-degree `≥ 2`** — half (B)'s own live item —
+and BFOUR (81) then **refuted that item's named successor (E4)** and repaired it as
+**(BE-E4′)**. So **both halves of S-mark now hang on one clause**, and the phase's next task
+is the single draw that decides its repair ((BE-162)(iii)). BINSERT (82) closed the other
+lane: **option B is SPENT, not declined**, one un-analyzed endpoint surviving. Every verdict
+had the coordinator's verification tier, and every driver's decisive mode was **re-run by
+the coordinator** (`--wit`/`--repair`, `routeb`/`combined`/`strata`, `validate`).
+
+**CORRECTIONS RAN BOTH WAYS AGAIN, and the coordinator's share grew.** Landing-time
+verification caught the **same species in all three** returns — an under-qualified summary on
+an authoritative status object: BINSERT's *"option B SPENT"* dropping shape 4's survival,
+BSERIES's *"class statement"* dropping its conditionality, and BFOUR's chart figures needing
+their measured-with-cap label. Against that, the directions caught **two coordinator
+defects**: an **arithmetically impossible** compression target (≤ 1,250 words at 219
+undroppable labels is 5.8 words/label — withdrawn at BFOUR's landing) and the **sixth
+reservation-defect shape**, a bare `(E4)` minted *inside* a correctly-enumerated range, which
+a range check structurally cannot see. Three and two, one round; `RESEARCH-ARC.md` §7's
+*neither party is the reliable one* holds a second time.
+
+*(Round state, coordinator, 2026-09-03 — the **round of four**, **CLOSED at GLEAF's landing**; what stays is the
 round's cross-return observations, not its queue.
 
 **DSAT** — **LANDED 2026-09-03 as ordinal 79**; detail in §"DSAT" below, not here. Status

@@ -8,11 +8,11 @@ derives it from exactly **three carried items**: **`hcontract`** (W4 — build p
 **`hbareSplit`** (kernel (K-bare)). Everything else is closed — W0–W3, all of W5
 (L0–L7), `hsplit` and `hfresh` (2026-07-30, unchanged since).
 
-**The research arc: 88 directions COMPLETE** (2026-08-05 → 09-03, ordinals 1–80 — 83 on
+**The research arc: 91 directions COMPLETE** (2026-08-05 → 09-08, ordinals 1–83 — 86 on
 kernel (K), **WTRI/WELOC/WPAIR/WGROW (58–61) on W4**, **RPOOL (75) on (K-res)**; direction
 = ordinal + 8), plus nine strategy passes, two probes, a scoping recon. **GPACK (66) opened
-the `hK` lane** (GLIST 68, GGLOB 71, GLEAF 80); the ninth pass's **ranks 1–4 SPENT**
-(BSCOND 76, BARCH 77, GLEAF 80, BINSERT 82); its round of four COMPLETE (OBAR 78, DSAT 79). Per-direction verdicts, specs and write-ups live at
+the `hK` lane** (GLIST 68, GGLOB 71, GLEAF 80); the ninth pass's **ranks 1–4 SPENT, list EXHAUSTED**
+(BSCOND 76, BARCH 77, GLEAF 80, BINSERT 82); rounds of four and three COMPLETE (78–83). Per-direction verdicts, specs and write-ups live at
 `notes/Pencil-fanout.md` §"<CODE>" (1–19: the archive) plus a workbook home — **not
 restated here**. **The arc's standing result, unchanged: `hK` is not closer.**
 **(GR-15)** — the single open gap the §(K-grid) chain reduces to — is **untouched**; **class

@@ -153,6 +153,23 @@ round and confirm rather than re-discover them:
   a counter *after* the round, in its own commit — and no direction should
   re-derive it.
 
+- **`HEAD` itself moves mid-run when the coordinator lands serially inside a
+  live round** *(added 2026-09-08, direction BSERIES; a **fourth** shape, and the
+  only one the coordinator causes rather than the harness)*. Serial landing is
+  what §2 prescribes, so a round of three where the first return lands while two
+  siblings still run is the *recommended* procedure — and it silently invalidates
+  every figure a still-running sibling measured against the old `HEAD`. It bit
+  twice in one round, both times on a document cap: the second lander's
+  gap-map-row delta and the third's whole recompute were computed against a
+  baseline that had already moved. **The remedy is cheap and belongs in the
+  spec:** tell each dispatch that `HEAD` may advance under it, and have every
+  proposed doc-cap figure **re-taken at landing time** rather than at draft time.
+  A sibling that reports its baseline sha (as BSERIES did) makes the staleness
+  visible in one line; one that does not hands the coordinator a number that was
+  true when it was written and is false when it lands. **The alternative — hold
+  all landings until the round closes — trades this hazard for a worse one**
+  (a session boundary losing every unlanded draft), so prefer re-taking figures.
+
 **The general shape:** a concurrent round's defects concentrate in what the
 dispatches **read**, not in what they write, and none of them is visible to any
 gate or to any single return. Budget the **cross-return pass** (*Candidates*,
@@ -460,6 +477,41 @@ the opposite side — write the prediction down not only so a wrong one can be
 killed, but so a **timid** one can be beaten. The tell to watch for: a prediction
 whose reasoning is *"X is already covered by the weaker Y"*, where the honest
 answer turns out to be *"X is outright true here"*.
+
+**RECONCILED 2026-09-08 AFTER THE CONCURRENT ROUND OF THREE: the tally runs to
+TWENTY-SIX instances and STILL NINE KINDS — and declining to mint a tenth is itself
+the decision.** All three directions of a three-wide round corrected the coordinator
+prediction that primed them, which with the previous round makes it **eight for eight
+across two rounds**. The classifications, and the reason none is new:
+
+- **BSERIES** — **kind 6** (framing right, stated test carrying a dropped proviso), which
+  the direction self-classified and the coordinator confirmed: *"run BWIN's machine at one
+  peel"* was the right frame and never asked **which pieces have a series end at all**, which
+  is precisely the case split the direction found.
+- **BFOUR** — **kind 5** (refuted, with its own named clause vindicated), in a variant worth
+  recording: the vindicated clause was not a *"where I expect to be wrong"* item but the
+  spec's **value** clause — *"the value lies in what the chart population cannot reach"* —
+  and following it to **why** the population could not reach is what produced the witness
+  that killed the prediction. A prediction can be wrong and its stated *reason for asking*
+  still be the thing that decides the question.
+- **BINSERT** — **kind 2 (split), sub-shape *the mirror of UNDERSHOT***, and the direction
+  offered a tenth kind here which the coordinator **declined**. Its structure mirrors kind 8
+  exactly — premise confirmed and sharpened, middle inference refuted, conclusion
+  **inverted** rather than confirmed-stronger — so it misleads **upward** where UNDERSHOT
+  misleads downward. That is a new *direction* for an existing structure, not a new
+  structure, and the last reconciliation's own closing lesson applies: *"the taxonomy is a
+  diagnosis of one habit, not a checklist"*. Minting a kind per round would inflate the
+  taxonomy's authority faster than its evidence. **The transferable instruction is the same
+  one UNDERSHOT earns from the other side: say which clause of a three-part prediction is
+  load-bearing**, because when the middle inference is the load-bearing one, the conclusion
+  can invert while the premise stays true.
+
+**Corrections ran both ways here too, and the coordinator's share grew.** Against those
+three, landing-time verification caught the **same species in all three** returns — an
+under-qualified summary on an authoritative status object — while the directions caught
+**two coordinator defects**, one of them an *arithmetically impossible* instruction (a
+compression target of 1,250 words against 219 undroppable labels). Three and two.
+Full round record: `notes/Pencil-fanout.md`'s round-of-three state block.
 
 **RECONCILED 2026-09-03 AFTER THE CONCURRENT ROUND OF FOUR: the tally runs to
 TWENTY-THREE instances and NINE kinds.** The five new ones are one round's worth, which is
