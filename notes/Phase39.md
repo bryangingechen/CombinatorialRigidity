@@ -8,11 +8,11 @@ derives it from exactly **three carried items**: **`hcontract`** (W4 — build p
 **`hbareSplit`** (kernel (K-bare)). Everything else is closed — W0–W3, all of W5
 (L0–L7), `hsplit` and `hfresh` (2026-07-30, unchanged since).
 
-**The research arc: 91 directions COMPLETE** (2026-08-05 → 09-08, ordinals 1–83 — 86 on
+**The research arc: 92 directions COMPLETE** (2026-08-05 → 09-08, ordinals 1–84 — 87 on
 kernel (K), **WTRI/WELOC/WPAIR/WGROW (58–61) on W4**, **RPOOL (75) on (K-res)**; direction
 = ordinal + 8), plus nine strategy passes, two probes, a scoping recon. **GPACK (66) opened
 the `hK` lane** (GLIST 68, GGLOB 71, GLEAF 80); the ninth pass's **ranks 1–4 SPENT, list EXHAUSTED**
-(BSCOND 76, BARCH 77, GLEAF 80, BINSERT 82); rounds of four and three COMPLETE (78–83). Per-direction verdicts, specs and write-ups live at
+(BSCOND 76, BARCH 77, GLEAF 80, BINSERT 82); rounds of four and three COMPLETE (78–83), BSTEER 84 SINGLE. Per-direction verdicts, specs and write-ups live at
 `notes/Pencil-fanout.md` §"<CODE>" (1–19: the archive) plus a workbook home — **not
 restated here**. **The arc's standing result, unchanged: `hK` is not closer.**
 **(GR-15)** — the single open gap the §(K-grid) chain reduces to — is **untouched**; **class
@@ -28,19 +28,18 @@ ESCAPE (OWALL 70): (OC-44)(iii) REDUCED to (OW)**; **U3 (OBAR), C2 (DSAT) STRUCK
 off every W4 path**, list **EMPTY** — leaving the USER call **(K-res)**, now DEARER (**RPOOL
 75 REFUTED (RS-5)**), and the held build. Detail: **block 9**.
 
-**THE (BE-14) THREAD** — S-mark its **only open step**; detail: **block 8**.
-Status: (β) at the window **UNCONDITIONAL** ((BE-142)–(BE-148)); OUTSIDE it **TWO
-items + a corner**, one-end half **CONDITIONAL on (PENCIL-SATURATES) at `deg ≥ 2`**
-((BE-164)–(BE-171)); cross-cut forcing **empty**; flag base **DISCHARGED**; the 14
-**REDUNDANT** under that clause (**REFUTED**, `-GEN` too), leaving **-CHART**, a **THEOREM
-at `deg 1`** ((BE-127)). At `deg ≥ 2` the **METHOD** ((BE-139)) is
-**SCOPED to `Λ²K⁴`** ((BE-149)/(BE-150)), and **(E4) IS REFUTED** (BFOUR) in the
-**ATTAINING** case, every falsifier being a clause counterexample ((BE-156)/(BE-160)) —
-**§8's (E4) lift REVERSES; `Γ`-properness's STRENGTHENED, NOT reversed**; **CONFINED to
-(BE-22)(vi)**, repair **(BE-E4′)** keeping 14 → 12 where both sides flex, **UNPROVED,
-TIGHT at `δ₂ = 1`** ((BE-161)/(BE-162)). So **BOTH halves of S-mark hang on one clause**. **OPEN** at 0/772 + 0/411; uniformity, the 12
-(**unwitnessed, NOT excluded**, (BE-97)(iv), `⟨M⟩` empty at 93), cross-pair welding
-**untouched**.
+**THE (BE-14) THREAD** — S-mark its **only open step**; the side-degree-`≥ 2` route's
+per-landing detail (BDEGTWO → BARCH → BFOUR → BSTEER) is **REFERENCE**, rotated
+2026-09-08 to **block 8**. Status only: (β) at the window **UNCONDITIONAL**
+((BE-142)–(BE-148)); OUTSIDE it **TWO items + a corner**, one-end half **CONDITIONAL on
+(PENCIL-SATURATES) at `deg ≥ 2`** ((BE-164)–(BE-171)); cross-cut forcing **empty**; flag
+base **DISCHARGED**; the 14 **REDUNDANT** under that clause, a **THEOREM at `deg 1`**
+((BE-127)). At `deg ≥ 2` the item is **OPEN**: **(E4) REFUTED** and its repair
+**(BE-E4′)** is the survivor — **UNPROVED**, but its one tight boundary now **CLOSED TO
+ATTACK** by a **degree count at `x`** ((BE-156)–(BE-163)/(BE-172)–(BE-178)), the family's
+first POSITIVE fact. So **BOTH halves of S-mark hang on that one clause**. **OPEN** at
+0/772 + 0/411; uniformity, the 12 (**unwitnessed, NOT excluded**, (BE-97)(iv), `⟨M⟩` empty
+at 93), cross-pair welding **untouched**.
 
 **On a future HIT: the phase-boundary consequences are the USER's call** — whether Phase 39
 closes and a successor opens for the Lean is a `PHASE-BOUNDARIES.md` event against the
@@ -240,8 +239,7 @@ carries the standing **do-not-do** — no more (a′)/(b′) ledger directions),
 
 **THE NINTH STRATEGY-ONLY PASS'S RANKING LIVES AT `notes/Pencil-strategy.md` §8** and is **not restated here** (it supersedes the 2026-08-25 list and the 2026-09-02 `hK` table *as rankings*). **Ranks 1–4 SPENT**: BSCOND 76 ((S1)/(S2)), BARCH 77 (the method class **changes ambient**, 14 → 12 reduced to (E4), (BE-149)–(BE-155)), GLEAF 80 (the reach question SPLIT, no proof there
 moves (GR-10), (GR-145)–(GR-152)), BINSERT 82. **§8's bar now reads: `A_sharp` properness BARRED, `Γ`-properness LIFTED and STRENGTHENED, (E4) REVERSED** — recorded in §8, as §8's own rule requires. OBAR 78 and DSAT 79 closed the round of four (DSAT struck C2 as a *uniform* carry, not a class-only conjunct); every verdict has had the coordinator's verification tier.
-**THE NEXT CONCRETE TASK is (BE-162)(iii)**: one `bfour.py` leg that **steers `c₂(Π_x)` at `δ₂ = 1`** on BFOUR's ladder — `ρ̄₂` is a single line there and `Π_x` is already (BE-105)'s bad plane, so *"can the line go inside it while side 1 stays bad"* is **one targeted draw**: YES kills **(BE-E4′)** and finishes the two-sided family, NO is the obstruction it needs. **(BE-154)(iv) is SPENT**
-— and its population is now known **not to decide (E4)**: every falsifier is a *clause* counterexample, so that hunt was a strict sub-hunt of one already run at 0/772, the reusable lesson being **price the population against the claim's own quantifiers before spending the compute**. No rank's closure closes S-mark: (BE-14) needs both halves, and **both now hang on (PENCIL-SATURATES) at `deg ≥ 2`** ((BE-162)(iv)).
+**THE NEXT CONCRETE TASK IS A GENUINE RE-PICK — a TENTH strategy-only pass** — and that is a change of kind, not a gap. **(BE-162)(iii) is SPENT (BSTEER 84) and came back NO**: (BE-E4′) survives, its one tight boundary at `δ₂ = 1` **closed to attack** by a degree count at `x` ((BE-172)–(BE-178)), which is the two-sided family's first POSITIVE fact — but proving (BE-E4′) is the open mathematics, not a smallest next commit, and **§8's ranked list is EXHAUSTED** (ranks 1–4 spent) with BSTEER having just spent the one cheap item standing outside it. So the next landed artifact is a **pass that produces a new ranked list**, on §8's own recurring-wall discipline, priced against: (BE-E4′) as a lemma; `Γ`-properness ((BE-149)(v)), whose lift §8 **strengthened**; and the two standing USER calls below. **The reusable lesson from the two landings that got here — price the population against the claim's own quantifiers before spending the compute** ((BE-156)/(BE-157)), and its BSTEER corollary: **a census over a large freedom is not an obstruction until something says the target is empty** ((BE-173)/(BE-175)). No rank's closure closes S-mark: (BE-14) needs both halves, and **both hang on (PENCIL-SATURATES) at `deg ≥ 2`**, whose surviving repair is (BE-E4′) ((BE-177)(iii)).
 (GR-144)'s successor **1 is DEMOTED** (it **IS** (GR-10) here, (GR-140)(v)),
 **2** is engineering (150/150 decided, 2 473 of 2 623 left), **3** is a search (does *path*
 consistency decide where arc does not), and **4 is SPENT** (GLEAF 80: reached, and
@@ -454,18 +452,20 @@ paragraphs.**
 - **OBAR** (78, recon-opus, the ninth pass's **U3 gate**) — **§8.2's U3 GATE IS NEGATIVE
   THREE WAYS, SO U3 IS STRUCK AND U1 IS ALONE**; the unrun ledger had nothing to compute,
   the object being **(T3) restated pointwise** ((OC-56)–(OC-61), §(K-out) *O52–O57*). `w4/obar.py`.
-- **BFOUR** (81, recon-opus, (BE-154)(iv)) — **(E4) IS FALSE**: `K4(5,2,2,2,2,2)`
-  reflagged gives `e = (3,0)`, **ATTAINING**, every gate green, **not** a shortfall — so
-  **§8's (E4) lift REVERSES** while `Γ`-properness's is **STRENGTHENED**
-  (`c₁(Π_x) ≤ dim Γ_Π` makes (BE-151)'s certificate *prove* (E4) where it fires).
-  (BE-154)(iv)'s own 411-point population **cannot decide** it — side 2 constant at
-  `(3,0,3,0)`, *every* falsifier a clause counterexample (535/535) — the witness sitting
-  one **hardcoded** generator parameter along (`pr` 3→2), RPOOL's sharpening a second time.
-  Confined to (BE-22)(vi); repair **(BE-E4′)** UNPROVED, tight at `δ₂ = 1` ((BE-156)–(BE-163)). `w4/bfour.py`.
-- **BARCH** (77, recon-opus, the ninth pass's **rank 2**) — **THE METHOD CLASS IS NOT DEAD;
-  IT CHANGES AMBIENT**; **14 → 12 reduces to the two-sided (E4), UNPROVED** ((BE-149)–(BE-155)). `w4/barch.py`.
+- **BSTEER** (84, recon-opus, (BE-162)(iii)) — **NO: `ρ̄₂` cannot be steered into `Π_x`**,
+  so **(BE-E4′) SURVIVES** its tight `δ₂ = 1` boundary with the family's **first POSITIVE**
+  fact. `Π_x` totally singular makes the target a **PITCH** condition ((BE-172)); the
+  freedom is REAL (144 lines / 144 rows), refuting the prediction's *no-shared-freedom*
+  reason ((BE-173)), while `Q(ρ̄₂) ≠ 0` at 0/56 empties the target ((BE-174)); and it is a
+  **PROOF**: the only mechanism making `ρ̄₂` singular is (BE-45)(i)'s series-end hinge,
+  which `rnode_shaped` rejects as an S-node — **jointly unsatisfiable by a degree count at
+  `x`** ((BE-175)–(BE-177)). `w4/bsteer.py`.
+- **BFOUR** (81, recon-opus, (BE-154)(iv)) — **(E4) IS FALSE** at `K4(5,2,2,2,2,2)`
+  reflagged, ATTAINING, every gate green; **§8's (E4) lift REVERSES**, `Γ`-properness's
+  **STRENGTHENED**; the named population could not have found it ((BE-156)–(BE-163)). Detail: **block 8**. `w4/bfour.py`.
+- **BARCH** (77, recon-opus, rank 2) — **THE METHOD CLASS CHANGES AMBIENT**; 14 → 12 reduced to (E4) ((BE-149)–(BE-155)). Detail: **block 8**. `w4/barch.py`.
 - **BDEGTWO** (74, opus, block 8) — **(BE-134)'s TWO GAPS SETTLED; the obstruction the
-  ARCHITECTURE** ((BE-136)–(BE-141)) — inside `Λ²K⁴` only, scoped at BARCH. `w4/bdegtwo.py`.
+  ARCHITECTURE, inside `Λ²K⁴` only** ((BE-136)–(BE-141)), scoped at BARCH. `w4/bdegtwo.py`.
 - **BLINE** (73, opus, block 8) — **`(∗)` IS DECIDED: a theorem below `dim A = 3`, FALSE
   from `dim A = 5`, (BE-127)(ii)'s route dying with it**; the clause **OPEN**, 0/270
   ((BE-129)–(BE-135), *BE128–BE134*). `w4/bline.py`.

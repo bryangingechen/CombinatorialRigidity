@@ -478,9 +478,11 @@ killed, but so a **timid** one can be beaten. The tell to watch for: a predictio
 whose reasoning is *"X is already covered by the weaker Y"*, where the honest
 answer turns out to be *"X is outright true here"*.
 
-**RECONCILED 2026-09-08 AFTER THE CONCURRENT ROUND OF THREE: the tally runs to
-TWENTY-SIX instances and STILL NINE KINDS — and declining to mint a tenth is itself
-the decision.** All three directions of a three-wide round corrected the coordinator
+**RECONCILED 2026-09-08 AFTER THE CONCURRENT ROUND OF THREE: the tally ran to
+TWENTY-SIX instances and STILL NINE KINDS — and declining to mint a tenth was itself
+the decision.** *(Superseded the same day at the twenty-seventh instance, BSTEER, which
+did mint a tenth; see the block after this round's record. The reasoning below stands as
+written — it is why the tenth had to argue for itself.)* All three directions of a three-wide round corrected the coordinator
 prediction that primed them, which with the previous round makes it **eight for eight
 across two rounds**. The classifications, and the reason none is new:
 
@@ -512,6 +514,38 @@ under-qualified summary on an authoritative status object — while the directio
 **two coordinator defects**, one of them an *arithmetically impossible* instruction (a
 compression target of 1,250 words against 219 undroppable labels). Three and two.
 Full round record: `notes/Pencil-fanout.md`'s round-of-three state block.
+
+**A TENTH KIND, at the twenty-seventh instance (2026-09-08, direction BSTEER) —
+*CONFIRMED, FOR THE WRONG REASON*; and it is the first instance in the tally whose
+VERDICT was right.** Reconciled here from the baseline of **twenty-six instances and
+nine kinds** recorded at `50027b25`. The spec predicted **NO** — the containment
+`ρ̄₂ ⊆ Π_x` is obstructed — and gave its reason: *"`Π_x` is pinned by (BE-105)'s bad
+plane while `ρ̄₂`'s line is determined by side 2's own core, so the two have no shared
+freedom to exploit."* The verdict is **right**. The reason is **measurably false**: held
+to its own terms — bad plane fixed, side 1 byte-untouched — the reflag moves `ρ̄₂` to
+**144 distinct lines in 144 rows**. The freedom is *total*; what obstructs is that the
+**target is empty**, because `Π_x` is **totally singular** and side 2's screw has
+nonzero **pitch**, and the mechanism that would make it a pure rotation is excluded by
+the habitat's own definition. So the prediction pointed at the right answer via a
+mechanism that does not exist, and the true obstruction was a **different kind of
+object** — a quadric condition and a degree count, not a dimension count.
+
+**Why this is a kind rather than a shade, and it is the strongest argument §7 has.**
+Every one of the nine kinds above describes a prediction whose *verdict* needed
+correcting; the taxonomy has been, implicitly, a taxonomy of wrong answers. This one is
+a **right** answer that would have been **worthless if inherited** — the very thing §7
+tells a dispatch not to do. Had the direction accepted the prediction and reported
+*"confirmed, no shared freedom"*, every check would have passed, the verdict would have
+been correct, and the finding — that the obstruction is total singularity plus a degree
+count, and is therefore a **proof** rather than a cap — would have been lost entirely.
+The eight-for-eight streak also ends here: **8 of 9 across three rounds**, with the ninth
+a confirmation. **The transferable instruction, and it is new:** a prediction has a
+verdict *and* a mechanism, and a dispatch must report on **both** — because a confirmed
+verdict is exactly the case where an unexamined mechanism survives unnoticed, and the
+mechanism is where the mathematics is. *(Minted by the direction; the coordinator is free
+to fold it back into kind 6, on the BINSERT precedent above — the case for a separate kind
+is the CONFIRMED verdict, which no existing kind covers, rather than the wrong reason,
+which several do.)*
 
 **RECONCILED 2026-09-03 AFTER THE CONCURRENT ROUND OF FOUR: the tally runs to
 TWENTY-THREE instances and NINE kinds.** The five new ones are one round's worth, which is

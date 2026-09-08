@@ -1880,6 +1880,31 @@ from a row elsewhere. *Kill condition: rank 2's recon delivered.*
 > no general-position content, so the 14 inequalities the clause serves are **vacuous** there
 > ((BE-161)). *Kill condition for the `(BE-E4′)` question: one targeted draw at `δ₂ = 1`.*
 
+> **THE (BE-E4′) QUESTION IS DECIDED NEGATIVELY — 2026-09-08, direction BSTEER
+> (ordinal 84) — AND THAT IS GOOD NEWS FOR THE CLAUSE.** Recorded **here** on this
+> paragraph's own rule. The (E4) lowering above **stands**; what changes is the status of
+> its successor. BFOUR left **(BE-E4′)** — (E4) plus `δ₁, δ₂ ≥ 1` — **UNPROVED and TIGHT
+> at `δ₂ = 1`**, refutable by one targeted draw, and priced that draw as the next move.
+> **The draw came back NO**, and the obstruction is structural rather than a cap:
+> `Π_x` is **totally singular**, so `ρ̄₂ ⊆ Π_x` at `ρ₂ = 1` demands a **pure rotation**
+> ((BE-172)); the only mechanism that supplies one is (BE-45)(i)'s **series-end hinge**,
+> which `rnode_shaped` rejects as an **S-node**, so the demand and the R-node habitat are
+> **jointly unsatisfiable by a degree count at `x`** ((BE-175)–(BE-177)). So **(BE-E4′)
+> keeps 14 → 12 on the both-flexible zone and its one zero-margin boundary is now closed
+> to attack** — the two-sided family's **first positive structural fact**, after four
+> negatives. It is still **UNPROVED**, and proving it is the open mathematics.
+>
+> **Two riders, because both bear on this board rather than on the workbook.** *(a)* The
+> `Γ`-properness lift is **strengthened again**: nothing here touches (BE-149)(v), and
+> BFOUR's `c₁(Π_x) ≤ dim Γ_Π` already made (BE-151)'s certificate a pointwise *prover*.
+> *(b)* **This board's ranked list is now EXHAUSTED and the one cheap item standing
+> outside it is spent** — ranks 1–4 all closed (BSCOND 76, BARCH 77, GLEAF 80, BINSERT 82)
+> and (BE-162)(iii) closed here. The next landed artifact is therefore a **TENTH
+> strategy-only pass** producing a new ranked list, priced against (BE-E4′) as a lemma,
+> `Γ`-properness, and the two standing USER calls; that is a re-pick, not a gap, and it is
+> what `notes/Phase39.md`'s *Hand-off* now names. *Kill condition for this entry: the
+> tenth pass landing.*
+
 **SUPERSEDED AS A RANKING by the 2026-09-03 pass above (back-link added in that same
 commit); kept as the dated record, and its per-entry content stays authoritative.**
 **RE-RANKED 2026-08-25** (the eighth strategy-only pass, post-GFLIP/GCHEAP;

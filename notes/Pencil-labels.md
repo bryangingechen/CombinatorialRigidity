@@ -4355,3 +4355,62 @@ sharpening this landing added to that clause). The direction minted **no** bare
 pre-existing, and every load-bearing one is written **(L3)-qualified** at first
 use (`§(K-bare-ext) (E4)` throughout). `BFOUR` was checked for the (L5)
 substring hazard and is clean; `bfour` is likewise 0-hit as a raw substring.
+
+## Reserved namespace — direction BSTEER (2026-09-08, **CONSUMED: seven labels and seven steps; one of each RETURNED**)
+
+**Reserved 2026-09-08 for the single direction BSTEER** (arc ordinal 84, the
+first dispatch of the arc with nothing else in flight since ordinal 75;
+`notes/Pencil-fanout.md` §"BSTEER") — **(BE-162)(iii): at `δ₂ = 1`, can side
+2's single screw line be steered inside `Π_x` while side 1 stays bad?**, the
+task BFOUR's own hand-off named. It extends **§(K-bare-ext)** and opens **no**
+new section, so the reservation is the unclaimed tail of that section's `(BE-n)`
+family and the owning section stays authoritative.
+
+| direction | owning § | labels reserved | steps reserved | driver |
+|---|---|---|---|---|
+| **BSTEER** | §(K-bare-ext) — **extends**, no new section | **(BE-172)–(BE-179)**, of which **(BE-172)–(BE-178)** consumed | **BE171–BE178**, of which **BE171–BE177** consumed | `w4/bsteer.py` (seven modes) |
+
+**It opens at exactly the tail BFOUR and BSERIES both declared** (*"The next
+tail is (BE-172) / Step BE171"*), and **not** at (BE-173). **One label and one
+step are RETURNED UNUSED: (BE-179) and *Step BE178***, and **the two earlier
+strays stay available and unused**: **(BE-163)** and ***Step BE162*** (BFOUR's)
+alongside ***Step INS8*** (BINSERT's). **THE LIVE TAIL IS (BE-180) /
+*Step BE179***, 0-hit verified at this landing.
+
+**0-hit verification, re-run by the direction as its FIRST action** (clause
+(L7): **every** token in the range, enumerated rather than sampled, **hits and
+files reported separately**), across the whole tree **at `HEAD`**, `git grep -o`
+for hits and `git grep -l` for files:
+
+| token | `(BE-n)` hits / files | bare `BE-n` hits / files | step `BEn` hits / files |
+|---|---|---|---|
+| `BE-172` / `BE171` | **7 / 3** | **7 / 3** | **6 / 3** |
+| `BE-173`–`BE-178` | 0 / 0 | 0 / 0 | 0 / 0 (`BE172`–`BE178`) |
+| `BE-179` | **1 / 1** | **1 / 1** | — |
+
+`BSTEER` and `bsteer` both **0 / 0** as raw substrings, (L5)'s check included.
+Every non-zero hit is a **declaration, not a consumption**: `(BE-172)`/`BE171`
+are the tail hand-over written *twice* — by BFOUR and by BSERIES, in
+`Pencil-fanout.md`, `Pencil-informal.md` and this file — and the single
+`(BE-179)` hit is BINSERT's own block noting that it names the token without
+minting it. The enumeration **reproduced the coordinator's prep
+token-for-token**, and this is the first reservation in the phase whose opening
+tokens were declared by **two** predecessors rather than one, which is (L7)'s
+own prediction with the multiplicity raised.
+
+**ONE LABEL CONSUMED FROM OUTSIDE THE `(BE-n)` FAMILY, and it is BFOUR's, not a
+mint: `(BE-E4′)`.** This direction *decides a question about* that clause and
+cites it throughout; it mints nothing new. The `(E4)` collision recorded under
+clause (L6) is therefore **unchanged in scope** by this landing, and every
+citation of the bare `(E4)` here is **(L3)-qualified** as
+`§(K-bare-ext) (E4)`.
+
+**(L6) landing-time bare-token grep, RUN over the whole repository** — the
+sharpening BFOUR added to that clause, now applied by the direction that added
+it. **No bare `(X<digit>)` token is minted here.** The bare tokens the section
+cites — `(E4)`, `(P)`/`(Z)`/`(R)`, `(M1)`, `(b1)`/`(b2)`/`(b3)`, `(α)`/`(β)`,
+`(∗)`, `(S1)`/`(S2)`, and `(E1)`/`(E2)`/`(E3)` in the E-rider — are all
+pre-existing, all in the collision table where they belong, and all qualified at
+first use. **The one new symbol introduced, `Q`, is deliberately not a label**:
+it is the Klein form, written as code (`pitch.Q`) and defined in the section's
+*Standing notation*, so it cannot be read as a claim token.

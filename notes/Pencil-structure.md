@@ -1087,6 +1087,54 @@ that landing's own entry needed. Settled history and pointers; nothing here is s
   W4 decomposed, (K-bare-ext) NO-GO'd, the standing adjudications set; **(K-res)** priced and
   **(SAFE-RES)**/`hnoGood'` vacuity REFUTED; (K-slide) (S1) proved, (K-pitch) closed.
 
+### Addendum, 2026-09-08 — the (BE-14) header block's SIDE-DEGREE-`≥ 2` CHANGELOG, rotated out of `notes/Phase39.md`
+
+**Why this moved.** The phase note's *"WHERE THE (BE-14) THREAD STANDS"* header
+block had accreted one clause per landing across BARCH (77), BFOUR (81) and
+BSTEER (84) and had become a **changelog of the side-degree-`≥ 2` item** rather
+than a statement of its current state — the exact failure `notes/CLAUDE.md`
+names (*"a `PhaseN.md` reads as the current state of the argument, not its
+changelog"*), and the reason block 8 exists at all. Rotated at the BSTEER
+landing, which is also what paid for that landing's header words. **The header
+keeps the status; this keeps the route.** Authoritative for the mathematics:
+`notes/Pencil-informal.md` §(K-bare-ext) *Steps BE148–BE177* and the
+`(K-bare)` gap-map row.
+
+**The side-degree-`≥ 2` route, in landing order.**
+
+- **BDEGTWO (74)** put the obstruction in the **architecture**, not the clause:
+  the pendant multiplier is FREE at `k = 1` and DETERMINED at `k ≥ 2`, so
+  `A_sharp` **moves with `p_x`** ((BE-139)), and the clause itself is unviolated
+  at **0/772** swept chart points ((BE-135)/(BE-140)).
+- **BARCH (77)** **SCOPED** that verdict to `Λ²K⁴`: `s` and `r` are both
+  `p_x`-free on the core, so the graph `Γ ⊆ Λ²K⁴ ⊕ Λ²K⁴` is **fixed** and
+  `ρ̄_i ∩ Π_x = φ_p(Γ_Π)` **exactly** ((BE-149)); a second `p_x`-free subspace
+  `R₀` exists ((BE-150)); `dim Γ_Π ≤ 1` **proves GOOD** ((BE-151)); and 14 → 12
+  reduces to the two-sided **§(K-bare-ext) (E4)** ((BE-152)/(BE-153)), with §8's
+  bar **lifted narrowly** ((BE-154)(iii)).
+- **BFOUR (81)** **REFUTED (E4)** at `K4(5,2,2,2,2,2)` reflagged, in the
+  attaining case and through every gate ((BE-160)) — **reversing §8's (E4)
+  lift** while *strengthening* the `Γ`-properness one ((BE-160)(vi)) — showed
+  that (BE-154)(iv)'s own 411-point population **could not have found it**
+  (side 2 constant, 3 of 535 tuples reachable, (BE-156)/(BE-157)), confined the
+  damage to **(BE-22)(vi)'s** proved rigid-side collapse ((BE-161)), and priced
+  the repair **(BE-E4′)** at 158 escapes all inside that collapse ((BE-162)).
+- **BSTEER (84)** closed (BE-E4′)'s one **tight** boundary. `Π_x` is **totally
+  singular**, so `ρ̄₂ ⊆ Π_x` at `ρ₂ = 1` is a **pitch** condition, not an
+  incidence one ((BE-172)); the freedom to steer is **real** — 144 distinct
+  lines in 144 rows ((BE-173)) — and the target is nevertheless **empty**,
+  `Q(ρ̄₂) ≠ 0` at 0/56 ((BE-174)); the only mechanism making `ρ̄₂` singular is
+  (BE-45)(i)'s **series-end hinge**, which `rnode_shaped` excludes as an
+  **S-node**, so the demand and the habitat are **jointly unsatisfiable** by a
+  **degree count at `x`** ((BE-175)), measured working just outside the habitat
+  ((BE-176)) and closed off a second way by `δ₂ ≥ 2` at a movable series end
+  ((BE-177)).
+
+**Reading it later.** Same caution as block 8's: a snapshot. The one-line
+status that stays in the phase note is that the item is **OPEN**, that
+**(BE-E4′)** is its surviving repair and is **UNPROVED**, and that **both halves
+of S-mark hang on it**.
+
 ### Addendum, 2026-09-08 — the BBASE → BSATUR *Hand-off* paragraph, relocated verbatim
 
 **Relocated from `notes/Phase39.md`'s *Hand-off* at the BSERIES landing**, when the note

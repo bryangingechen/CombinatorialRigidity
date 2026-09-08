@@ -1,9 +1,10 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: EIGHT fan-outs, FORTY-NINE single directions, ONE draft-only parallel direction,
+**Status: EIGHT fan-outs, FIFTY single directions, ONE draft-only parallel direction,
 FOUR concurrent pairs, ONE concurrent round of four and ONE concurrent round of three
-dispatched; 91 LANDED, **NONE IN FLIGHT, NONE DRAFTED — the concurrent round of three is
-COMPLETE** (BFOUR 81, BINSERT 82, BSERIES 83).
+dispatched; 92 LANDED, **NONE IN FLIGHT, NONE DRAFTED** — the round of three is COMPLETE
+(BFOUR 81, BINSERT 82, BSERIES 83) and **BSTEER 84 landed as a single dispatch after it**,
+answering the very task that round handed over.
 
 *(Round state, coordinator, 2026-09-08 — the **round of three**, CLOSED at BFOUR's landing.
 Three dispatched read-only, three landed serially, **zero label collisions and zero
@@ -13,8 +14,10 @@ observations.*
 **THE ROUND CONVERGED, which neither spec anticipated.** BSERIES (83) reduced half (β)'s
 one-end residue to **(PENCIL-SATURATES) at side-degree `≥ 2`** — half (B)'s own live item —
 and BFOUR (81) then **refuted that item's named successor (E4)** and repaired it as
-**(BE-E4′)**. So **both halves of S-mark now hang on one clause**, and the phase's next task
-is the single draw that decides its repair ((BE-162)(iii)). BINSERT (82) closed the other
+**(BE-E4′)**. So **both halves of S-mark now hang on one clause** — and **BSTEER (84) then
+ran the single draw that decided its repair ((BE-162)(iii)): NO**, so (BE-E4′) survives,
+its one tight boundary closed by a **degree count at `x`**, and the shared exposure is
+unchanged rather than worsened. BINSERT (82) closed the other
 lane: **option B is SPENT, not declined**, one un-analyzed endpoint surviving. Every verdict
 had the coordinator's verification tier, and every driver's decisive mode was **re-run by
 the coordinator** (`--wit`/`--repair`, `routeb`/`combined`/`strata`, `validate`).
@@ -15381,3 +15384,81 @@ finishes the two-sided family; NO is the geometric obstruction it needs. And
 the exposure is now shared: BSERIES's one-end reduction is itself conditional
 on (PENCIL-SATURATES) at side-degree `≥ 2` ((BE-168)/(BE-170)), so **both halves
 of S-mark hang on the clause whose cheapest replacement just died.**
+
+## BSTEER — eighty-fourth ordinal (single dispatch, nothing else in flight, **LANDED 2026-09-08**) — (BE-162)(iii), the task BFOUR's own hand-off named: at `δ₂ = 1`, can side 2's single screw line be steered inside `Π_x` while side 1 stays bad?
+
+**The spec.** BFOUR left **(BE-E4′)** — (E4) plus `δ₁, δ₂ ≥ 1` — UNPROVED and
+**TIGHT** at `δ₂ = 1`, where `e₁ + e₂ = 4` exactly, so `e₂ = 0` refutes it and
+`e₂ = 0` at `ρ₂ = 1` is exactly `ρ̄₂ ⊆ Π_x`. **YES** would kill (BE-E4′) and
+finish the two-sided clause family; **NO** would be the obstruction the repair
+needs. One targeted draw, which is why it outranked a board whose ranked list
+is exhausted. **Committing dispatch**, one commit; labels
+`(BE-172)`–`(BE-179)` / *Steps BE171–BE178*; **new driver `w4/bsteer.py` that
+IMPORTS `bfour`** — the coordinator's correction to BFOUR's own hand-off, which
+had said *"one `bfour.py` leg"*: `bfour` is now tracked, so editing it would
+forfeit the figure-invariance gate's one-line discharge and force a re-run of
+its two ~505 s chart halves.
+
+**The verdict: NO — and the obstruction is a DEGREE COUNT AT `x`.** `Π_x` is
+**totally singular**, so `ρ̄₂ ⊆ Π_x` at `ρ₂ = 1` demands `Q(ρ̄₂) = 0` *first* —
+side 2's screw must be a **pure rotation**, not a screw with pitch — and only
+then the two incidences ((BE-172)). At all **56** `δ₂ = 1` R-node rows over
+three skeletons `Q(ρ̄₂) ≠ 0`, and all three conditions fail **independently**,
+0/56 each ((BE-174)). The **proof** that this is not a cap: the one landed
+mechanism producing a singular `ρ̄₂` is (BE-45)(i)'s **series-end hinge**, which
+lands in `Π_x` *free* by (CH-1) — but `rnode_shaped` rejects `deg₂(x) = 1` as an
+**S-node** (12/12) while (BE-105)'s bad plane needs `deg₁(x) = 1`, so together
+they force `deg(x) = 2`, where **neither side is R-node-shaped** (6/6) *and* the
+flag at `x` is **determined** by its own 3-point star ((BE-175)). Measured
+working just outside the habitat — `c₂(Π_x) = 1` at 9/9 S-node rows against
+0/56 R-node rows ((BE-176)) — and closed a second way by `δ₂ ≥ 2` at a movable
+series end, 72/72 ((BE-177)). **So (BE-E4′) survives its one zero-margin
+boundary, and this is the two-sided family's FIRST POSITIVE structural fact**
+after four negatives. It is still **UNPROVED**.
+
+**The coordinator's prediction: VERDICT CONFIRMED, REASON REFUTED — and that is
+a new outcome class.** The spec predicted NO because *"`Π_x` is pinned while
+`ρ̄₂` is determined by side 2's own core, so the two have no shared freedom to
+exploit."* Held to its own terms, that is false: at a **fixed** bad plane with
+side 1 asserted byte-untouched, the reflag moves `ρ̄₂` to **144 distinct lines
+in 144 rows** ((BE-173)). The freedom is **total**; the *target* is empty. This
+is the **first** of 27 recorded instances whose **verdict** was confirmed, and
+it is the sharpest possible vindication of `RESEARCH-ARC.md` §7's *test, don't
+inherit* rule — inheriting this prediction would have produced the **right
+answer for the wrong reason** and lost the total-singularity obstruction
+entirely. Classified as §7's **tenth kind** at this landing, with the
+justification stated there and the coordinator free to fold it back.
+
+**The cross-half consequence, which the spec asked for explicitly.** BSERIES's
+habitat-(I) reduction of (b2) to (b1) is **conditional on (PENCIL-SATURATES) at
+side-degree `≥ 2`** ((BE-168)(ii)/(BE-170)) — half (B)'s item 0(a), whose
+surviving repair is (BE-E4′). So both halves of S-mark hang on this one clause.
+Had the draw come back **YES**, (BE-E4′) would have died and BSERIES's
+conditional would have lost its antecedent's cheapest replacement in the same
+stroke — the (β) side's one-end reduction and half (B)'s 14 → 12 falling
+together. It came back **NO**, so the conditional stands exactly as BSERIES left
+it and the shared exposure is **unchanged rather than worsened** ((BE-177)(iii)).
+
+**Self-caught, and disclosed.** The first plan was a *census*: resweep the
+reflag at `δ₂ = 1` and report whether the containment ever holds. That would
+have returned `0/56` and a *"not found under cap C"* verdict — true, and worth
+much less, because (BE-173) shows the freedom is large enough that a census
+alone leaves the clause one lucky draw from death. What converted it into a
+verdict was doing (BE-172) **first**: reducing the target before searching for
+it. The corollary now written into the hand-off: **a census over a large freedom
+is not an obstruction until something says the target is empty.**
+
+**Caps, stated.** `pitch` is 56 rows at `δ₁ = 5`, three skeletons, one profile
+family — *not found under that cap*, and the proof in `habitat` is what makes it
+an obstruction. `bound` is enumerated at `pr = [2]*n` and `L ∈ {2,3}` over three
+skeletons, **not** all side-2 shapes. `snode` is one **named constructed** peel
+with `ρ₂ = 2`, so it reaches `c₂(Π_x) = 1` and not the containment. `habitat`
+alone is cap-free: `rnode_shaped`'s rejection is a property of the test and the
+degree count is arithmetic.
+
+**Successor.** **A genuine RE-PICK — a tenth strategy-only pass.** §8's ranked
+list is exhausted (ranks 1–4 spent) and BSTEER just spent the one cheap item
+standing outside it; proving (BE-E4′) is the open mathematics rather than a
+smallest next commit. The pass is priced against (BE-E4′) as a lemma,
+`Γ`-properness ((BE-149)(v), whose lift §8 has now strengthened twice), and the
+two standing USER calls.

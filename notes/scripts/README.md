@@ -1151,6 +1151,14 @@ are a recorded *Harness debt* item (see below).
 | `python3 notes/scripts/w4/bseries.py b1` | 75 s | ibid. *Step BE168* (**(BE-169)**: (BE-110)(i)'s corank identity at the CLEAN end, floor `max(0, delta_1 - 3)` against a series end's `max(1, .)`; `Pi_v = <l_e, l_e'>` determined by side 1 ((BE-105)(iv)); the no-peel habitat at 7/7 rows including all three (BE-45)(iv) rows; two hunts, both capped and both empty) |
 | `python3 notes/scripts/w4/bseries.py board` | 0 s | ibid. *Steps BE169–BE170* ((BE-170)/(BE-171): the verdict, the re-scoping of (BE-58)(iv) to two items plus a corner, the prediction classified, the caps and the priced successors) |
 | `python3 notes/scripts/w4/bseries.py validate` | 310 s | ibid. all eight in one process — the landing gate; **256 guarded configurations** gated by `one_end_measure`, every one through `assert_generic_star` AND `verify_pencil_witness` |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/bsteer.py --crit` | 6 s | `notes/Pencil-informal.md` §(K-bare-ext) *Step BE171* (direction BSTEER; **(BE-172)**: the REDUCTION -- `Pi_x = Sigma_{p_x} cap Lambda^2 pi_x` AND `Pi_x` TOTALLY SINGULAR (`Q == 0` and the polarized Klein form `B == 0` on it) asserted at 10/10 `delta_2 = 1` rows over three skeletons, so `rho_bar_2 <= Pi_x` at `rho_2 = 1` splits EXACTLY into `Q(w) = 0` AND `w ^ p_x = 0` AND `w in Lambda^2 pi_x` -- a PITCH condition first, not an incidence one) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/bsteer.py --free` | 84 s | ibid. *Step BE172* (**(BE-173)**: the coordinator's stated reason -- *"no shared freedom"* -- tested as the claim about sampler support that it is, and REFUTED: at a FIXED bad plane with side 1 asserted byte-untouched, `rho_bar_2` takes **144 DISTINCT lines in 144 rows**, 48 at each of K4/prism/K33, a different line at every resweep. The freedom is total; the TARGET is empty) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/bsteer.py --pitch` | 31 s | ibid. *Step BE173* (**(BE-174)**: the three conditions measured SEPARATELY at 56 `delta_2 = 1` R-node rows with side 1 asserted BAD at every one -- `Q(rho_bar_2) = 0` at **0/56**, the line through `p_x` at **0/56**, the line inside `pi_x` at **0/56**, containment **0/56** -- all three failing INDEPENDENTLY, with (BE-172)'s split asserted as an `iff` pointwise so it cannot drift from the containment it decomposes) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/bsteer.py --habitat` | 0 s | ibid. *Step BE174* (**(BE-175)**: the PROOF, by construction rather than sampling -- (BE-45)(i)'s series-end hinge lands in `Pi_x` FREE by (CH-1), so the containment is automatic at `deg_2(x) = 1`; `rnode_shaped` REJECTS `deg_2(x) = 1` as an S-node at **12/12** constructed pendant shapes; (BE-105)'s bad plane needs `deg_1(x) = 1`; together `deg(x) = 2`, where NEITHER side is R-node-shaped at **6/6** full peels and the flag is DETERMINED by its own 3-point star -- jointly unsatisfiable) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/bsteer.py --snode` | 1 s | ibid. *Step BE175* (**(BE-176)**: the mechanism measured just OUTSIDE the habitat -- one NAMED constructed S-node peel (side 1 the 5-path, side 2 a pendant 2-path into a doubled arc; `deg(x) = 2`, `deg_2(x) = 1`, `rnode_shaped(side2)` FALSE), where the forced hinge is asserted in BOTH `rho_bar_2` and `Pi_x` and `c_2(Pi_x) >= 1` at **9/9** rows, against `c_2(Pi_x) = 0` at ALL 56 R-node rows. DISCLOSED as outside (E4)'s habitat, so NOT a refutation of (BE-E4')) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/bsteer.py --bound` | 0 s | ibid. *Steps BE176–BE177* (**(BE-177)**: the second count -- **72** constructed peels with a side-2 series end at `x` whose `x`-neighbour is MOVABLE, `delta_2` census `{2: 36, 3: 36}`, **minimum 2** asserted, so `delta_2 = 1` is not reachable that way and `rho_2 = 1` at a series end needs an IMMOVABLE hub neighbour, i.e. `deg(x) = 2` again; plus the board and the E-rider) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/bsteer.py --support` | 0 s | ibid. (the `RESEARCH-ARC.md` section 4 support audit: six populations with what each VARIES, HOLDS FIXED and therefore REACHES -- including the one sentence it exists for, that the verdict rests on a PROOF (`habitat`) plus a census (`pitch`) and NOT on the census alone, since with freedom this large a census would leave the clause one lucky draw from death) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/bsteer.py --validate` | 120 s | ibid. all six in one process -- the landing gate. **FITS the 600 s foreground ceiling**, so this driver adds NO over-ceiling case to section 0 |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/bfour.py --arith` | 0 s | `notes/Pencil-informal.md` §(K-bare-ext) *Step BE155* (direction BFOUR; **(BE-156)**: the CONTAINMENT THEOREM by EXHAUSTION over all 6 400 tuples — every one of the **535** (E4)-violating tuples is a (PENCIL-SATURATES-CHART) counterexample, **535/535 ASSERTED**, so the (BE-154)(iv) hunt is a STRICT SUB-HUNT of one already run at 0/772; the `Pi_x` margin histogram `{0: 150, 1: 234, 2: 151}` making **385 of 535** also [MARGIN] shortfalls and only 150 clean, 50 attaining; exactly **3** tuples reachable at the sweep's own side-2 signature, all forcing `rho_bar_1 = Pi_x` at `rho_1 = 2`; plus BARCH's 970 / 0 / 0 / 287 REPRODUCED as the divergence guard) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/bfour.py --charta` | 505 s | ibid. *Steps BE156–BE157* (**(BE-157)**/**(BE-158)**, half A: 204 composite chart points over 34 peels, both sides measured, the lean per-side row CROSS-ASSERTED against `bsatur.row_of` plus the three margin controls at 34/34 peels; side 2's signature the single value `(delta_2, a_2, rho_2, c_2) = (3,0,3,0)` at 204/204; `c_1(Pi_x) <= dim Gamma_Pi` ASSERTED 204/204 and the exact (BE-149)(i) identity 204/204; 0 (E4) falsifiers) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/bfour.py --chartb` | 504 s | ibid., half B: 207 points over 36 peels reaching the **three fibre shapes** the long-core library cannot (plane `pi_{c1}` 18, plane `pi_x` at `k >= 3` 10, the line 6); same single side-2 signature at 207/207, the bound 207/207, the identity 147/147 at its `k = 2` points, 0 falsifiers. **Union with half A is exactly (BE-136)'s 411/411 over 70 peels**, hypothesis met 72x, certificate firing 375/411, identity 351/351 |
@@ -2922,6 +2930,50 @@ figures this landing has no business moving.
 random `rows` of every width `1..6` and every rank `0..width`, and the same
 identity for `isect` against a brute-force intersection, plus a byte-identical
 re-run of every driver in §3.
+
+### New item (2026-09-08, direction BSTEER) — the chain reaches THIRTEEN deep, and `bfour` acquires its first consumer; **UNPAID, NO MOVE MADE**
+
+`w4/bsteer.py` (the (BE-162)(iii) verdict, workbook §(K-bare-ext) *Steps
+BE171–BE177*) imports **`bfour`** and takes the standing sibling-import chain
+**thirteen deep** — `bsteer → bfour → barch → bdegtwo → bline → bopen →
+bproper → bsigma → bsatur → … → kbare_common`. Folded into the same standing
+item; the new consumer counts are `bfour.witness_rows`/`RUNGS`-shaped data
+(**first** consumer of `bfour` by anything), a **third** consumer of
+`bsatur.bad_plane`/`draw_peel`/`reflag`/`peel_of`, the next of
+`bsatur.row_of`/`sigma_at`, `bpeel.rnode_shaped`/`delta_pair`/`subdivided`,
+`bdecor.girth`/`hcard_ok_piece`, `pitch.Q`/`klein` and
+`kbare_common.verify_pencil_witness`/`verts_of`.
+
+**Why UNPAID.** The move-down would modify `bfour.py`, `barch.py` and
+`bsatur.py`, all of which carry recorded figures — including `bfour`'s two
+~505 s chart halves. **That is also exactly why this driver imports `bfour`
+rather than extending it**: BFOUR's own hand-off had said *"one `bfour.py`
+leg"*, and the coordinator corrected it at dispatch, because editing a now-tracked
+driver forfeits the one-line *No tracked driver modified* discharge and forces a
+re-run of its own figures. Recorded as the first instance in this arc where the
+**tracked-ness of a driver changed the shape of the next direction's work**, and
+it is a cheap rule: **a follow-up direction imports its predecessor, it does not
+extend it.**
+
+**It opens NO new hazard item, and all three recorded silent hazards are
+UNREACHABLE rather than navigated.** `bimage.pt_in` is **not called** from
+`bsteer.py`; **no width-12 object** goes through `span`/`dim`/`isect` (every
+subspace built here is width 6 in `Λ²K⁴` or width 4 through
+`nullspace`/`plane_at`, and no `Γ`-level object is round-tripped); and `bwin`
+is **not imported**, so `dehom`'s list-vs-tuple guard defeat cannot fire — the
+one place an interior vertex is written goes through
+`bsatur.reflag`/`bdecor.draw_branch`.
+
+**One local helper, disclosed rather than folded.** `bsteer._arc` duplicates the
+four-line path builder that `bdegtwo._arc` and `bline._arc` already carry
+privately. It is **not** a §1 primitive and `bfour` does not re-export it;
+duplicating four lines is cheaper than either importing a third module's private
+name or moving a landed one, and it is recorded here so a future round that
+catalogues `_arc` finds all three call sites.
+
+**Acceptance test when the sibling-import item is paid.** Unchanged, plus:
+`bsteer`'s seven modes byte-identical at `PYTHONHASHSEED=0` (modulo each mode's
+own timing line) and `--validate` still under 600 s.
 
 ### New item (2026-09-08, direction BFOUR) — the next `w4/` consumer of the same chain, and a *Recorded observation* on `bdegtwo.sweep_points`' docstring; **UNPAID, NO MOVE MADE**
 

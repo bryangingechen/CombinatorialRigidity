@@ -149,7 +149,18 @@ KEY_RE = re.compile(r"\(([A-Za-z0-9\-∞Δσ′]+)\)")
 
 DEFAULT_CAP = 800  # per cell (status / close-it); largest ungrandfathered
                     # row today is (K-ann)'s close-it cell at 628 words.
+# **2026-09-08 bump (direction BSTEER), the first `K-bare` entry.** The row is
+# now a 228-label index over section (K-bare-ext)'s 170 steps, and BFOUR
+# measured its label-density floor one landing earlier: 219 labels in 1,592
+# words, 7.27 words per label, after three compression passes whose last bought
+# 12 words. BSTEER's honest recompute is 1,592 -> 1,690 words for 9 new labels
+# (~11 words each, BELOW the row's own average density) at 7.41 words per label,
+# and holding the old 1,600 combined cap would force 7.02 -- under one verdict
+# word per label, with `gapdiff.py` forbidding any drop. Capped at the
+# recompute's own size plus ~15%, the `(K-grid)`/`(K-out)` mechanism: 972 / 972,
+# combined 1,944. NOT a waiver -- the next landing states its own floor.
 SPECIAL_CAPS = {
+    "K-bare": {"status": 972, "closeit": 972},
     # gap-key -> {"status": cap, "closeit": cap}. Combined-remainder fallback
     # (ambiguous pipe split) uses the sum of the two.
     "K-grid": {"status": 2715, "closeit": 985},
