@@ -15680,6 +15680,24 @@ a deliberate coordinator round, and this landing does not take it.**
 > maintained, and the split becomes the cheaper option. **Where it lives until then:**
 > here, as a costed proposal with its parser evidence intact, so a future cleanup round
 > inherits the work rather than re-deriving it. A landing must not execute it.
+>
+> **RE-ADJUDICATED 2026-09-08 at BEFOURP's landing — THE TRIGGER FIRED AND I DECIDED
+> AGAINST THE SPLIT ANYWAY, which reverses the trigger's own premise.** BEFOURP's
+> recompute leaves **31** words, so *"a third bump becoming necessary"* is met. But that
+> condition was written against the row's **level** and is wrong on its **growth**: the
+> split moves ~24 labels / ~330 words out and leaves ~245 in a continuation row growing
+> at the same ~100–300 words per landing, so it buys **about two landings** of relief for
+> a repoint pass across ROADMAP, the phase note, the strategy board, every fan-out
+> write-up and `gapdiff.py`'s key in ~30 recorded reproduce commands. I set the trigger
+> believing it would buy more than that. **Third bump taken instead** (1,428/1,428,
+> combined 2,856, reason dated in `check-gapmap-cells.py`), split **still declined**.
+> **And the lever that actually matters is neither:** every recompute so far has been a
+> *compression*, which is why the density floor keeps rising — 7.27 → 7.41 → 7.85 →
+> 8.74 → 9.23 words per label over five landings. The row is a **summary** whose
+> per-label detail already lives in §(K-bare-ext), so a **relocation** pass (verdicts
+> out, pointers in) resets the density where a bump only re-prices it. That is this
+> phase's own standing doc remedy — *relocation or merger, never a fold* — and it is a
+> cleanup-round item. **No fourth bump without it.**
 
 
 ## BLONGARC — eighty-seventh ordinal (single dispatch, nothing else in flight, **LANDED 2026-09-08**) — BRANKV's own named successor: at arc length `≥ 4`, is `rank(B|_U) ≤ 2` forced on the 4-dimensional `U = ⟨ℓ_j⟩ + W_j` at a legal chart point?

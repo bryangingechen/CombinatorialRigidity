@@ -176,8 +176,36 @@ DEFAULT_CAP = 800  # per cell (status / close-it); largest ungrandfathered
 # status object and is the coordinator's to authorize, NOT a landing's to take:
 # the proposal with its word counts is in the BRANKV write-up in
 # `notes/Pencil-fanout.md`.
+# **2026-09-08 THIRD `K-bare` bump (coordinator, at BEFOURP's landing) -- and it
+# is the trigger the coordinator reserved, fired and then DECIDED AGAINST THE
+# SPLIT, with the reason recorded because it reverses that trigger's own
+# premise.** The trigger was set at `424f93dc` as *"a third bump becoming
+# necessary -- at that point the row is being re-priced per landing rather than
+# maintained, and the split becomes the cheaper option"*. It fired: BEFOURP's
+# honest recompute lands at 2,483 words / 269 labels (9.23 each) with **31**
+# words left. But the premise was set on the row's LEVEL and is wrong on its
+# GROWTH. The proposed split moves ~24 labels / ~330 words into a `(K-bare)`
+# proper row and leaves ~245 labels in a `(K-bare-ext)` continuation that grows
+# at the SAME ~100-300 words per landing -- so it buys about two landings of
+# relief for a repoint pass across ROADMAP, the phase note, the strategy board,
+# every fan-out write-up and `gapdiff.py`'s key inside ~30 recorded reproduce
+# commands, i.e. churn against recorded evidence, which the harness's own
+# *invocation paths are frozen* rule exists to prevent. Two landings of relief
+# is not worth that, and it is not what the trigger assumed it was buying.
+# **So: bumped to this recompute's size plus ~15%, 1,428 / 1,428, combined
+# 2,856** (~370 words of headroom), and the split stays DECLINED with its
+# costing intact in `notes/Pencil-fanout.md`. **The real lever, if this
+# recurs, is neither a bump nor a split: it is RELOCATION** -- the row is a
+# summary whose per-label detail already lives in section (K-bare-ext), and
+# this phase's standing doc remedy is *relocation or merger, never a fold*.
+# Every recompute so far has been a COMPRESSION (rewording inside the cell),
+# which is why the floor keeps rising: 7.27 -> 7.41 -> 7.85 -> 8.74 -> 9.23
+# words per label across five landings. A relocation pass -- settled verdicts
+# out of the cell, pointers in -- is a cleanup-round item and would reset that
+# density rather than re-price it. **Do not bump a fourth time without doing
+# the relocation pass first.**
 SPECIAL_CAPS = {
-    "K-bare": {"status": 1257, "closeit": 1257},
+    "K-bare": {"status": 1428, "closeit": 1428},
     # gap-key -> {"status": cap, "closeit": cap}. Combined-remainder fallback
     # (ambiguous pipe split) uses the sum of the two.
     "K-grid": {"status": 2715, "closeit": 985},
