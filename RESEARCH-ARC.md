@@ -235,6 +235,21 @@ enumerate the generator's parameters and state which ones the evidence varied.**
 many shapes"* is not support; *"we varied `n` and the leg profile, never the core length"* is.
 The counterexample is likeliest to sit one step along the axis nobody moved.
 
+**A THIRD INSTANCE, 2026-09-08 (direction BGTWOA), and it sharpens the rule from
+*unsampled* to *unrepresentable*.** RPOOL's form says: enumerate the generator's
+parameters and state which ones the evidence varied. BGTWOA's kill came from a
+parameter that **was not a generator parameter at all** — the peel profile length,
+which `PEELJOBS` and `bline.legal_peel` **hardcode at 3**. Every direction on that
+thread had varied skeleton, hub pair, seed and degeneracy stratum; none could have
+varied profile length without editing the harness, so no amount of sampling
+discipline would have surfaced it, and the frontier it killed had been measured
+exhaustively over 6,400 tuples. **So the question to ask of a population is not only
+*which parameters did the evidence vary* but *which axes does this harness make it
+impossible to vary* — the second list is where a cap-free exhaustive result can still
+be false.** The practical instruction: when a claim is priced as exhaustive, grep the
+generator for hardcoded constants and name them in the cap disclosure alongside the
+sampled ranges.
+
 This is the single most load-bearing item in this file — it recurred
 across three consecutive corrective passes in PENCIL's arc (a degenerate
 sampler contamination, an acyclic-vs-proper colouring conflation, and a
