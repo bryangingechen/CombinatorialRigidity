@@ -15132,3 +15132,147 @@ in the landing is machine-derived, and `gapdiff.py` then caught a genuine **drop
 assert on (INS-2)'s edge-set identity. (5) The joint sweep's two-parameter calculus was
 **declined rather than improvised** — deriving `U′` for a two-vertex deletion is not a
 relabelling of (BE-2), and a wrong number there would have been worse than the gap.
+
+## BSERIES — eighty-third ordinal (one of a concurrent round of three, drafted read-only 2026-09-08, **LANDED 2026-09-08**) — block 10's **entry 2**: can the (BE-46)/(BE-52) per-shape witnesses behind the *sharpened-at-one-end* route be retired class-level by running BWIN's machine at ONE peel?
+
+### The spec, as dispatched
+
+Half (β)'s residue **outside** BWIN's window. S-mark is (BE-14)'s only open
+step and needs **both** halves; half (β) at the window became
+**UNCONDITIONAL** at BSCOND (76), and (BE-58)(iv)'s own ledger names four
+items still per-shape or measured outside it. The target was the largest:
+**the (BE-46)/(BE-52) witnesses behind the *sharpened-at-one-end* route**.
+Concretely — run BWIN's machine at **one peel instead of two**
+(`ρ̄₁ = ⟨ℓ_u⟩ + ρ̄(rest)`, budget `δ₁ ≤ 3` by the same excess accounting, or a
+second functional from the clean end) and say whether (β)'s largest remaining
+per-shape component becomes a **class statement**; if not, say **which of the
+four ledger items is the real obstruction**, that re-scoping being a full
+deliverable. **Kill condition** (block 10 entry 2's own): *that per-shape half
+discharged class-level*. Reservation **(BE-164)–(BE-171)** / *Steps
+BE163–BE170*, §(K-bare-ext) **extended**, driver `w4/bseries.py`.
+
+**The coordinator's hypothesis, flagged as one** (`RESEARCH-ARC.md` §7):
+*"a tool-availability argument, not a derivation — I have not checked that the
+excess law's hypotheses survive the one-end geometry"*, expecting the tool to
+**transport**, the component to become a class statement at `δ₁ ≤ 3`, and the
+`δ₁ = 4` boundary to be the risk, on the reasoning that *"the excess law
+closes a slice argument by capping a dimension, and the one-end obstruction is
+exactly a per-shape slice argument"*. The two tools named were (i) (BE-144)'s
+plane-agnostic (BE-55)(iii) and (ii) the coincidence excess law
+((BE-146)/(BE-147)).
+
+### The verdict
+
+**THE QUESTION SPLITS, along a line the ledger does not draw, and BOTH halves
+are decided** — mathematics at §(K-bare-ext) *Steps BE163–BE170*, gap-map row
+`(K-bare)`.
+
+- **HABITAT (I) — clean at exactly ONE end: the machine TRANSPORTS, and what
+  it delivers is CONDITIONAL, not closed.** The peel, `Z`'s perp form and the
+  modular law all survive; the end sweep survives too, **confined** to two
+  **self-conjugate** 3-spaces (`Λ²π_v` for `λ`, `Σ_{p_v}` for `μ`) meeting
+  exactly in `Π_v`; the kill budget is **TWO**, not one; and the one-end
+  excess law `min dim(W′ ∩ Z) = max(dim(W′ ∩ Π_v), t′ − 2)` reduces
+  **(b2) to (b1)** — so the *sharpening* becomes **unnecessary** rather than
+  proved. **But (b1) at a clean end IS (PENCIL-SATURATES) at side-degree
+  `≥ 2`** (below the `δ₁ = 6` vacuous corner, and a clean end has
+  `deg_1(v) ≥ 2` by definition), which is **half (B)'s item 0(a), OPEN**. So
+  the class statement is **conditional on an open clause, and no status
+  surface may say otherwise**.
+- **HABITAT (II) — clean at BOTH ends: NO OBJECT, at any number of peels.**
+  No edge at either terminal is a bridge, so there is nothing to peel, and by
+  (BE-105)(iv) **both** terminal flags are forced by the piece — no end sweep
+  exists. **(BE-45)(iv)'s three measured-only rows are all here.**
+- **THE RE-SCOPING, and it is the most transferable part.** (BE-58)(iv)'s four
+  items are **not independent**: item 3 **splits**, its habitat-(II) half **is
+  item 1**, item 2 is what habitat (I) is **conditional** on, and item 4 is
+  untouched. **The ledger reads TWO items plus a corner, not four**, and half
+  (β) outside the window is **not independent of half (B)**.
+- **BSCOND's tools, tested rather than inherited — the pairing is REVERSED.**
+  (BE-144) has **no object**; (BE-147)'s **cap** has **no instance**; but
+  (BE-147)'s **mechanism** transports verbatim with `Λ²π_v` for `Σ_p`. The
+  tool that **breaks** is **(BE-146)(i)**, which the spec did not name, and
+  its breaking is what creates the case split.
+- **Prediction: `RESEARCH-ARC.md` §7's sixth kind** — *the framing was right
+  and load-bearing, and the stated test carried a dropped proviso*. Confirmed:
+  the `δ₁ ≤ 3` budget (case a′), the `δ₁ = 4` risk (the case boundary), the
+  dimension-cap mechanism. Corrected: the excess law's **hypotheses** do not
+  survive. The dropped proviso: **which pieces have a series end at all**.
+  *(The §7 tally is the coordinator's to reconcile; this landing states the
+  kind and touches no number.)*
+- **Caps, disclosed.** `deg(u) = 1` at every battery row, so a general
+  `A`-side rides on (BE-57)(ii)'s projective move (prose, not battery);
+  case (a′) at `t′ ≥ 1` is inhabited only in the abstract tier, so the
+  `δ₁ ≤ 3` budget is a **lemma with no graph instance** here; and the machine
+  is **not measured strictly stronger** than the per-shape route. Nothing is
+  reported as *"does not exist"*.
+- **Nothing landed is refuted**, (BE-46)/(BE-52) **as statements** included —
+  one of their two consumers stops needing them, which is not a refutation.
+  `PencilPair K 3 G`, `hbareSplit`, `hK`, (GR-15), S-mark, half (B),
+  (BE-32)(+), class uniformity and cross-pair welding are untouched. **Not a
+  PENCIL event.**
+
+### Two findings about the ROUND rather than the mathematics
+
+- **A THIRD read-side concurrency hazard: `HEAD` MOVED MID-RUN.**
+  `RESEARCH-ARC.md` §2 lists three hazards for a concurrent read-only round —
+  diff against `HEAD` and not the tree, prefix scratch files, do not increment
+  a shared counter — and **none covers `HEAD` itself moving**. It moved here:
+  the coordinator lands serially *inside* a live round, so BINSERT's landing
+  (`e63245c7` → `67124a9c`) changed `HEAD` while this direction was measuring,
+  which makes a `HEAD`-anchored figure taken **before** that landing stale in
+  exactly the way a working-tree figure is. Every figure in this landing was
+  re-taken at `67124a9c`, the (L7) enumeration included, and the gap-map
+  arithmetic was redone against the post-landing 1,595 rather than the
+  pre-landing 1,596. **The §2 edit is the coordinator's at the round close**;
+  it exists because of a coordinator choice, not a direction's error.
+- **A DIRECTION-SIDE F6 SLIP, disclosed plainly.** One `sweep` run was
+  launched **without an explicit Bash `timeout` parameter** and the harness
+  auto-backgrounded it — dispatch-log **F6**'s shape, and it recurred despite
+  an in-prompt reminder in this direction's own spec. **No figure in this
+  landing comes from that run**: it was re-run in the **foreground** with the
+  explicit timeout, and every number quoted here and in the workbook is from a
+  foreground run. Recorded as an exception-log datum about the reminder's
+  reach.
+
+### Self-caught defects (the round's standing expectation)
+
+1. **The direction's own starting conjecture was refuted by its own first
+   run.** It expected the one-end identity
+   `ρ̄₁ ∩ Z = (ρ̄₁ ∩ Π_u) ⊕ (ρ̄₁ ∩ Π_v)` — the natural reading of BWIN's
+   `ρ̄₁ ∩ Z = ⟨ℓ_u, ℓ_v⟩`. Mode `peel` refutes it at the first `δ₁ = 4` row
+   (`c_u = 1`, `c_v = 0`, `c_Z = 2`): `Z` **does** carry diagonal elements.
+   The surviving statement is the forced-minimum one,
+   `c_Z = max(1, δ₁ − 2)`, and (BE-168) is proved against that. **Had the
+   identity gone into the reduction, (BE-168)(ii) would have been false.**
+2. **A sampler-support defect in its own generator (the RPOOL shape).** The
+   first battery held pendant length `k ≥ 2`, which made `W′` the pendant tail
+   and hid the far end's own screw space at every `δ₁ ≤ 4` row — so
+   `dim(W′ ∩ Π_v) = 0` there for a *trivial* reason, at exactly the rows the
+   reduction is about. The twelve `k = 1` rows were added for that reason and
+   are the only place `dim(W′ ∩ Π_v) = 1` at `δ₁ ≤ 4` appears.
+3. **A mis-set hunt condition, caught before it was reported.** The `b1` hunt
+   first fired on `dim(W′ ∩ Π_v) ≥ 1` at `δ₁ ≤ 4` (2 rows) and was nearly
+   reported as the reduction breaking. It is not — the reduction **tolerates**
+   `≤ 1`; the breaker is `= 2`. Both firing rows also have **(M2)** firing and
+   `dist = 4`. The classification columns (`dist`, `d_min`, (M2), the
+   (BE-47)(iv) bucket) were added so the rows cannot be misread again.
+4. **The F6 slip above.**
+
+### Landing bookkeeping
+
+Reservation **CONSUMED IN FULL** — (BE-164)–(BE-171) and *Steps BE163–BE170*,
+nothing returned; next tail **(BE-172) / *Step BE171***. Gap-map row
+`(K-bare)` **recomputed, not appended**: 1,595 → **1,593** words against the
+1,600 combined cap, **0 labels DROPPED** (`notes/scripts/gapdiff.py K-bare
+HEAD`, 205 in / 207 out), the recompute paid for out of the (β) block's own
+settled units and BSCOND's window-mechanism detail. `notes/Phase39.md` 580 →
+**578** lines by the gate's own metric (`len(text.splitlines())`, which
+`wc -l` under-counts by one on this file), header **within** its 525-word cap,
+paid for by rotating the BBASE → BSATUR *Hand-off* paragraph to
+`notes/Pencil-structure.md` **block 8** and compressing three settled
+*Decisions made* entries — leaving the sibling BFOUR two lines. One landed
+registry sentence **corrected**: BINSERT's block named the `(BE-)`
+alternative home as *"(BE-172)+ / Steps BE163+"*, and `BE163` is the **first
+step of this reservation**, so a reader following it would have opened on top
+of a live range; it now reads ***Steps BE171*+**.

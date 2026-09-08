@@ -28,19 +28,17 @@ ESCAPE (OWALL 70): (OC-44)(iii) REDUCED to (OW)**; **U3 (OBAR), C2 (DSAT) STRUCK
 off every W4 path**, list **EMPTY** — leaving the USER call **(K-res)**, now DEARER (**RPOOL
 75 REFUTED (RS-5)**), and the held build. Detail: **block 9**.
 
-**WHERE THE (BE-14) THREAD STANDS** — S-mark, the 2-cut composition lemma, is its **only
-open step**; the three sides and every per-landing detail are **REFERENCE**, at
-`notes/Pencil-structure.md` **block 8**.
-Status only: (β) at the window is **UNCONDITIONAL** — (S1)/(S2) **DECIDED**, one gap not
-two ((BE-142)–(BE-148)); cross-cut forcing **empty**; the flag base **DISCHARGED**; the
-residue is **per-side** (14 block inequalities), **REDUNDANT** at both 2-blocks under
-**(PENCIL-SATURATES)** — **REFUTED**, `-GEN` too, leaving **-CHART**, a **THEOREM at
-side-degree `1`** ((BE-127)), so **14 → 12** stands generically.
-At side-degree `≥ 2` the **METHOD** ((BE-139)) was **SCOPED to `Λ²K⁴`** (BARCH): the FIXED
-graph `Γ` of the two `p_x`-free maps carries the clause EXACTLY ((BE-149)/(BE-150)), and
-**14 → 12 reduces to the two-sided (E4), UNPROVED** ((BE-152)/(BE-153)). Clause **OPEN** at 0/772; class uniformity
-**untouched**. The 12 are **unwitnessed, NOT excluded** ((BE-97)(iv)) except `⟨M⟩`, empty at
-93 rows; cross-pair welding **untouched**.
+**WHERE THE (BE-14) THREAD STANDS** — S-mark is its **only open step**; detail: **block 8**.
+Status only: (β) at the window is **UNCONDITIONAL** ((BE-142)–(BE-148)); OUTSIDE it the
+residue is **TWO items + a corner, not four**, its one-end half class-level
+**CONDITIONAL on (PENCIL-SATURATES) at `deg ≥ 2`**, so (β) is **not independent of half
+(B)** ((BE-164)–(BE-171)); cross-cut forcing **empty**; flag base **DISCHARGED**; the
+per-side residue (14) is **REDUNDANT** at both 2-blocks under that clause — **REFUTED**,
+`-GEN` too, leaving **-CHART**, a **THEOREM at `deg 1`** ((BE-127)), so **14 → 12** stands
+generically. At `deg ≥ 2` the **METHOD** ((BE-139)) is **SCOPED to `Λ²K⁴`**, the FIXED
+graph `Γ` carrying the clause EXACTLY ((BE-149)/(BE-150)), and **14 → 12 reduces to the
+two-sided (E4), UNPROVED** ((BE-152)/(BE-153)), **OPEN** at 0/772; class uniformity
+**untouched**. The 12 are **unwitnessed, NOT excluded** ((BE-97)(iv)) except `⟨M⟩`, empty at 93; cross-pair welding **untouched**.
 
 **On a future HIT: the phase-boundary consequences are the USER's call** — whether Phase 39
 closes and a successor opens for the Lean is a `PHASE-BOUNDARIES.md` event against the
@@ -228,10 +226,7 @@ where BLINE killed the `(∗)` route ((BE-130)) — and cross-pair welding is **
 `notes/Pencil-structure.md` **block 9**: the thread is untouched since WGROW (61) and its
 informal argument is **closed**. Status is in the header, not repeated here.
 
-**BBASE (62) → BUNIF (63) → BDOUBLE (64) → BSATUR (65), all 2026-09-02** — verdicts in
-*Decisions made*, mathematics at §(K-bare-ext) *Steps BE88–BE107*, per-landing detail in
-**block 8** (which also owns BPEEL → … → BPROPER's five-landing reduction history). One
-clause is *status*: **(CH-1) does not apply to the flag base** ((BE-89)).
+**BBASE (62) → BSATUR (65) — RELOCATED 2026-09-08** to **block 8**, which already owned the detail; the one *status* clause, **(CH-1) does not apply to the flag base** ((BE-89)), is in the header.
 
 **THE 2026-09-02 ROUND'S PER-LANDING CLAUSES (66–72) — RELOCATED 2026-09-02** to
 `notes/Pencil-structure.md` **block 13**; blocks 8/11/12 already own the detail. **Reference,
@@ -292,8 +287,9 @@ The ranked list:
    are **RELOCATED** to `notes/Pencil-structure.md` **block 8**.
 2.–4. **THE LANE'S STANDING MENU — RELOCATED 2026-09-02** to
 `notes/Pencil-structure.md` §"The (BE-14) lane's standing candidate list" (**block 10**):
-one-end-series, ~~**(S1)/(S2)**~~ (**entry 3 KILLED by BSCOND, ordinal 76** — its own kill
-condition fired), BTWOCUT's bundle, and the *also ranked* tail (cross-pair closure, the
+~~one-end-series~~ (**entry 2 SPENT at BSERIES, 83** — fired on ONE habitat, **conditionally**,
+and re-scoped onto (BE-45)(iv) on the other), ~~**(S1)/(S2)**~~ (**entry 3 KILLED by BSCOND,
+76**), BTWOCUT's bundle, and the *also ranked* tail (cross-pair closure, the
 point-side flat law, BINDUC's **(BE-23)(ii)**, the flat-star dictionary), with its
 *superseded, do not re-derive* note. **Reference, not status**: the rest unmoved since
 BSIGMA (ordinal 67); the live items are 0 and 1 above.
@@ -447,7 +443,11 @@ paragraphs.**
 - **BSCOND** (76, opus) — **(BE-57)(iv)'s TWO WINDOW CONDITIONS DECIDED AND THEY WERE ONE
   GAP**: (S1) REMOVABLE, (S2) half theorem / half REFUTED-then-CLOSED. `w4/bscond.py`.
 - **BINSERT** (82, recon-opus, **rank 4**) — **OPTION B SPENT: BOTH KT ROUTES REFUTED** at
-  `corank(G′)=3`, a **panel collapse**; only its joint sweep left, re-opening link 2. `w4/binsert.py`.
+  `corank(G′)=3`, a **panel collapse**; only its joint sweep left. `w4/binsert.py`.
+- **BSERIES** (83, recon-opus, block 10's **entry 2**) — *sharpened-at-one-end* **SPLITS**:
+  at ONE clean end **(b2) ⟸ (b1)** class-level by a two-kill law, **CONDITIONAL on
+  (PENCIL-SATURATES) at `deg ≥ 2`** (half (B)'s OPEN 0(a)); at BOTH, **no peel** — which **IS
+  (BE-45)(iv)**. So **(BE-58)(iv): TWO items + a corner, not four**. `w4/bseries.py`.
 - **RPOOL** (75, opus) — **(RS-5) IS REFUTED** by `R20 = family_g(5,(0,0,2),(4,4,4))`,
   `widened.W19` with a longer core, in the recorded pool since 2026-08-02; 30 of 102
   `def = 0` members refute, split by the **per-block** floor. §(K-res) *RS11–RS16*.
@@ -510,19 +510,18 @@ landing above it is RPOOL (ordinal 75). Settled, one line each:
   exhaustiveness retired; the decorations **a product of ear chains** modulo the cross-branch
   proviso `G`. §(K-bare-ext) *BE63–BE87*; detail in **block 8**.
 - **BRNODE** (52) / **BWIN** (51) / **BRULE** (50) / **BSHARP** (49), 2026-08-28…09-01,
-  **all one-lined 2026-09-03 to pay for RPOOL's entry** — the internal R-node's
+  **one-lined 2026-09-03, stale clause corrected 2026-09-08** — the R-node's
   decorated-skeleton law ((BE-59)–(BE-63)); the window closed by a class theorem, **(β)
-  proved there modulo (S1)/(S2)** ((BE-54)–(BE-58)); **(b3) DECIDED**, (β)'s two residues
-  DISJOINT ((BE-49)–(BE-53)); the (b1) sharpening **FALSE** at a dichotomy, cutting (b2) to
-  the both-ends-series window. §(K-bare-ext) *BE43–BE62*; per-landing detail in **block 8**.
+  proved there — UNCONDITIONALLY since BSCOND, not "modulo (S1)/(S2)"** ((BE-54)–(BE-58));
+  **(b3) DECIDED** ((BE-49)–(BE-53)); the (b1) sharpening **FALSE** at a dichotomy.
+  §(K-bare-ext) *BE43–BE62*; detail in **block 8**.
 - **RESGRID** (48, 2026-08-28, fable) — the (K-res) scoping slice: §(K-grid)'s geometry
-  **transports verbatim**, the tight bookkeeping does not, the deficient fringe **refuted**
-  ((RS-6)). Its residual **(RS-5) is since REFUTED** (RPOOL); (RS-1)–(RS-4) stand.
-- **BEARFULL** (47) / **BEARCASE** (46) / **BIMAGE** (45), 2026-08-27, opus, **one-lined at the
-  DSAT landing** — the **SHORT-CYCLE LAW** `girth(Q) ≥ 6`, (b2) a corollary of (b1),
-  ear-decomposition **REFUTED**; **(α) CLOSED** and **(β) as stated REFUTED** to the residue
-  (BE-32)(+), **since PROVED** ((BE-74)); the ear's `ρ̄₂` a **chain on the Klein quadric** plus
-  the **series/parallel recursion**, R-node residue **landed by BRNODE**. *BE29–BE42*.
+  **transports verbatim**, the bookkeeping does not, the deficient fringe **refuted**
+  ((RS-6)); residual **(RS-5) since REFUTED** (RPOOL), (RS-1)–(RS-4) stand.
+- **BEARFULL** (47) / **BEARCASE** (46) / **BIMAGE** (45), 2026-08-27, opus, **one-lined at
+  the DSAT landing** — **SHORT-CYCLE LAW** `girth(Q) ≥ 6`, (b2) a corollary of (b1),
+  ear-decomposition **REFUTED**; **(α) CLOSED**, **(β) as stated REFUTED** to (BE-32)(+),
+  **since PROVED** ((BE-74)); `ρ̄₂` a **Klein chain** + **series/parallel**. *BE29–BE42*.
 - **BTWOCUT** (44, 2026-08-26, opus) — strengthened statement **PINNED** (S-mark), simultaneity
   **VACUOUS**, leaf base free; **(BE-14) NOT proved**. §(K-bare-ext) *BE24–BE28*.
 - **BINDUC** (42, 2026-08-26, opus) — **3-connected ⇒ `def₂ = 0`**, so the induction's **base
@@ -556,9 +555,8 @@ landing above it is RPOOL (ordinal 75). Settled, one line each:
   **KBARE-FALSIFY** (2026-08-20): a **T1 HIT**, (K-bare-ext) **refuted as stated**,
   `hbareSplit` **untouched** (§(K-bare-ext) *BE1–BE8*).
 - **Structural rounds 1–2 + the slice-6 compression round: COMPLETE** (2026-08-19 → 08-26;
-  record `notes/Pencil-structure.md`). **ROADMAP §39 was split by volatility** and no longer
-  carries the arc's running state — **do not re-add a direction count or fan-out roll-call
-  there**; the count is the ROADMAP Status row's.
+  record `notes/Pencil-structure.md`). **ROADMAP §39 was split by volatility** — **do not
+  re-add a direction count or fan-out roll-call there**; the count is the Status row's.
 - **The EIGHTH FAN-OUT — all five LANDED 2026-08-19** (ordinals 25–29): GTMPL, GFLOW, SIGZ
   ((OC-37) killing the counting route to a disproof), OSCHU, GCOLL (**(GR-64)(R2) REFUTED**).
   Four of five corrected a defective spec clause (`notes/dispatch-log.md` **F22**).

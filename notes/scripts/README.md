@@ -1131,6 +1131,14 @@ are a recorded *Harness debt* item (see below).
 | `python3 notes/scripts/w4/binsert.py routeb` | 330 s | `notes/Pencil-informal.md` §(K-ins) *Step INS4* (direction BINSERT; (INS-2)/(INS-3): **KT's route B fails at ALL 8 of (BE-5)'s hit seeds**, cap-free — all six `2x2` minors of route B's own criterion matrix vanishing IDENTICALLY on `Pihat(c)`, `rank<U, Lambda^2 Pihat(c)> = 1` at 8/8 — with DZ's two splits as corank-2 controls (0 route-A hits there); the `rho` edge-set identity, the pullback's legality as a `G'_B` witness, `rkA == rkB`, the pulled-back seed's target-rank and grid-vs-exact agreement are all ASSERTED, not argued) |
 | `python3 notes/scripts/w4/binsert.py strata` | 65 s | ibid. *Step INS6* ((INS-5): the local-flat (`cycleflat`) stratum per index — target-**INCOMPATIBLE** at `index = 1` (0 of 20 legal witnesses across DZ's two splits reach `target(G')`) and target-**COMPATIBLE** at `index = 2` (8 of 9, every one a uniform failure); this is the row §(K-bare-ext) (BE-8)'s four-stratum table omits, and it is what confines the refutation to `corank(G') = 3`) |
 | `python3 notes/scripts/w4/binsert.py combined` | 80 s | ibid. *Step INS5* ((INS-4): the **panel collapse** — `dim(Lambda^2 Pihat(b) + Lambda^2 Pihat(c)) = 3` and `rank<U, sum> = 1` at 8/8 hits against **5** and **4** at 19/19 non-hit target-rank controls, so `Pihat(b) = Pihat(c)` at every hit; the controls independently reproduce §(K-tight) *Step 2.6*'s *5 of KT's 6* at a different kernel, and every `Lambda^2` panel is asserted 3-dimensional) |
+| `python3 notes/scripts/w4/bseries.py peel` | 82 s | `notes/Pencil-informal.md` §(K-bare-ext) *Step BE163* (direction BSERIES; **(BE-164)**: the ONE-END peel `rho_1 = <l_u> + W'` with `W' = rho_bar_{w1,v}(H - u)` as an identity of SPACES at 64 guarded configurations, `W'` recomputed DIRECTLY on `H - u`; plus `Z = mu^perpK cap lambda^perpK` and the modular factorization `rho_1 cap Z = <l_u> + (W' cap Z)`, and the peel count `dim(W' cap <l_u>) = t' + 1 - delta_1` — every one ASSERTED, and the two-end Grassmann count of (BE-56)(i) shown to have NO one-end analogue) |
+| `python3 notes/scripts/w4/bseries.py conf` | 42 s | ibid. *Step BE164* (**(BE-165)**: the TWO confinements the one-end geometry forces — `lambda` in `Lambda^2 pi_v`, `mu` in `Sigma_{p_v}`, both codimension 3 — both SELF-CONJUGATE, `Lambda^2 pi_v cap Sigma_{p_v} = Pi_v` exactly, and the sweep's survivor space `W' cap Lambda^2 pi_v cap Sigma_{p_v} = W' cap Pi_v`; asserted at 32 guarded rows and at 39 of 40 synthetic exact-Q flags off any graph) |
+| `python3 notes/scripts/w4/bseries.py sweep` | 355 s | ibid. *Step BE165* (**(BE-166)**: the ONE-END RESWEEP — `W'` is INVARIANT under it, asserted as an identity of spaces at **256** resweep draws over 32 pieces, every draw re-gated after the end is replaced; the drawn `lambda`s span `Lambda^2 pi_v` EXACTLY and the `mu`s `Sigma_{p_v}` EXACTLY at 32/32, and the full two-dimensional kill is realized at 32/32) |
+| `python3 notes/scripts/w4/bseries.py tools` | 22 s | ibid. *Step BE166* (**(BE-167)**: BSCOND's two tools tested for an INSTANCE — (BE-144) has NO OBJECT (no second leading line, 32/32) and (BE-147)'s cap NO INSTANCE (`l_u` not in `Sigma_{p_v}`, asserted 32/32); the tool that BREAKS is (BE-146)(i), the admissible `lambda`s spanning exactly `Lambda^2 pi_v` (dim 3) and never `Lambda^2 K^4`, at 30/30 synthetic flags) |
+| `python3 notes/scripts/w4/bseries.py budget` | 277 s | ibid. *Step BE167* (**(BE-168)**: THE ONE-END EXCESS LAW `min dim(W' cap Z) = max(dim(W' cap Pi_v), t' - 2)`, `t' - 1` in the pinned case — **180 of 180 ABSTRACT rows** with `W` an arbitrary subspace of every dimension 0..6 in cases (a')/(b') and a planted (c'), the lower bound asserted at EVERY admissible pair of every row, plus 32/32 battery pieces) |
+| `python3 notes/scripts/w4/bseries.py b1` | 75 s | ibid. *Step BE168* (**(BE-169)**: (BE-110)(i)'s corank identity at the CLEAN end, floor `max(0, delta_1 - 3)` against a series end's `max(1, .)`; `Pi_v = <l_e, l_e'>` determined by side 1 ((BE-105)(iv)); the no-peel habitat at 7/7 rows including all three (BE-45)(iv) rows; two hunts, both capped and both empty) |
+| `python3 notes/scripts/w4/bseries.py board` | 0 s | ibid. *Steps BE169–BE170* ((BE-170)/(BE-171): the verdict, the re-scoping of (BE-58)(iv) to two items plus a corner, the prediction classified, the caps and the priced successors) |
+| `python3 notes/scripts/w4/bseries.py validate` | 310 s | ibid. all eight in one process — the landing gate; **256 guarded configurations** gated by `one_end_measure`, every one through `assert_generic_star` AND `verify_pencil_witness` |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/barch.py arith` | 0 s | ibid. *Steps BE151–BE152* ((BE-152)/(BE-153): EXHAUSTIVE over all 6 400 tuples — the per-side floor family leaves 313/164/74/24/0 escapes at `f = 2..6`, the two-sided **(E4)** leaves **0**, `PS => (E4)` with 0 counterexamples, 970 separating tuples, 0 attaining `Pi_x` violations under (E4), the 287-escape corner patch, and (BE-104)(i)'s own witness satisfying (E4). No sampling, no seed used) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/barch.py support` | 0 s | ibid. *Step BE154* ((BE-155): the `RESEARCH-ARC.md` §4 support audit read at SOURCE — `bsigma.sample_side_config`'s independent-set guard, `binduc.assert_generic_star`'s edge-only distinctness, `bimage.pt_in`'s width 4 and `bimage.span`'s `d == 6` special case all asserted present, plus the per-mode can/cannot-see reading. Discloses that no geometric mode varies `k`: every row is `k = 2`) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/barch.py validate` | 117 s | ibid. all five in one process — the landing gate; fits the 600 s foreground budget. Exact Q; the single seed is `20260902` (`bunif.SEED`), printed by every sampling mode (`arith` prints it and does not use it) |
@@ -1573,7 +1581,7 @@ round that can re-run `oschu --gtarget` / `--census1` / `--census2`), **the
 `kbare/` sibling-import set** that probe KBARE-FALSIFY created,
 **OQRANK's two arrivals** (`out_classes`/`shape_key`/`tree_triple`),
 **the GBLAW + GXESC reversal-model sibling imports**, **WTRI's duplicate of
-`saferes.prime()`'s pool** (**OVERDUE since 2026-09-03**: RPOOL is its third consumer), **`bsigma.wedge3`'s second consumer** (BPROPER —
+`saferes.prime()`'s pool** (**OVERDUE since 2026-09-03**: RPOOL is its third consumer), **`bsigma.wedge3`'s second consumer** (BPROPER, **OVERDUE since 2026-09-08**: BSERIES is its third —
 *this list had omitted it; added at the BOPEN landing, 2026-09-02*),
 **GLIST's five-device sibling import of `gpack.py`**, **BOPEN's second
 consumer of `bproper.py`'s peel constructors** and, added at the **BLINE**
@@ -1623,6 +1631,25 @@ through `pt_in`; every `K⁴` subspace through `bwin.k4_span`/`k4_isect`, the
 pre-existing guards, so `bdegtwo.k4span`/`k4meet` are left alone), and its
 own `dehom` finding is a *Recorded observation* rather than a debt item
 because the fix is at the call site.
+
+**BSERIES (2026-09-08, arc ordinal 83) adds the next `w4/` consumer of the same
+chain** — `bseries → bscond → bwin → bsharp → bearfull → bearcase → bimage →
+btwocut → binduc → bzavoid → kbare_common`, **eleven deep** — plus a **THIRD**
+consumer of `bsigma.wedge3` (its own item above, now **OVERDUE**), a **first**
+of `bscond.aff`/`pt_in_plane`/`rand_lam2_sub`, a **first** of
+`bwin.d_min_of`/`theta4`, a **second** of `bimage.alpha_plane`/`lam2`, a
+**first** of `bsharp._relabel` (a *private* helper — recorded as such, the same
+disclosure BARCH made for `bline._arc`), and the next of
+`bsharp.guarded_draw`/`is_series_end`/`usable_first_edges` and
+`bearfull.dist_in_graph`. **All folded into the standing sibling-import item, NO
+MOVE MADE.** It opens **no new hazard item**: all three recorded silent hazards
+were navigated — no `Λ²`-side draw through `bimage.pt_in`; every `K⁴` subspace
+through `bwin.k4_span`/`k4_isect`, never `bimage.span`/`isect`, so the width-6
+special case is unreachable with a `K⁴` input; and **every point the module
+writes into a configuration goes through `bscond.aff`**, so `bwin.dehom`'s list
+return cannot defeat `assert_generic_star`'s tuple comparison. That last one is
+the first time the `aff` fix has been **consumed by a later direction** rather
+than re-derived, which is what recording it at the call site was for.
 
 **The `pt_in` item, stated once because it is SILENT.** `bimage.pt_in` builds
 its return with `for k in range(4)`: it is a `K⁴` helper, and calling it on a
@@ -2688,7 +2715,7 @@ one function body, two call sites, and a re-run of `saferes.py --prime` (39 s),
 `wtri.py --regress` (48 s) and `rpool.py --pool` (46 s) — all three expected
 byte-identical, since the pool's *contents* are what is being preserved.
 
-### New item (2026-09-02, direction BPROPER) — `bsigma.wedge3` reaches its SECOND consumer; **UNPAID**
+### New item (2026-09-02, direction BPROPER) — `bsigma.wedge3` reaches its SECOND consumer; **UNPAID — and the THIRD consumer has now ARRIVED (2026-09-08, direction BSERIES), so this item is OVERDUE by its own rule**
 
 `wedge3` (the map `ω ↦ ω ∧ p_x` on `Λ²K⁴`, whose kernel is exactly `Σ_p`) was minted by
 BSIGMA as a leaf-driver primitive and is now imported by `w4/bproper.py` as well. By §2
@@ -2699,7 +2726,11 @@ figures do not move. **No move made**, deliberately: the move touches a tracked 
 would fire the full re-baseline obligation across the `kbare/` chain, and BPROPER ran
 draft-only beside a committing dispatch. Cost when paid: one function body, two import
 lines, and a byte-identical re-run of `bsigma.py mech`/`floor` plus `bproper.py` — the only
-two consumers.
+two consumers. **BSERIES (2026-09-08) is the THIRD**, importing `wedge3` for
+(BE-169)(i)'s corank identity at a *clean* end rather than at a degree-1
+terminal; the rule that made a second consumer a signal makes a third one
+**overdue**, and the cost when paid is unchanged (the move target is still
+`exactcore`, and the re-run set grows by `bseries.py b1`).
 
 ### New item (2026-08-26, directions GBLAW + GXESC + GHWIT + GMINM) — the reversal-model sibling imports on `gprice.py`/`gblaw.py`/`gxesc.py`; **UNPAID**
 

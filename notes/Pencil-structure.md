@@ -67,7 +67,7 @@ cap was ever bumped and nothing was deleted**; the note keeps a pointer to each.
 | 7 | *Citations — the phase's verified bibliography* | 2026-09-01 | every verified source; **a new source is added HERE** |
 | 8 | *The (BE-14) thread — per-landing detail* | 2026-09-01 (addenda 09-02, 09-03) | which direction proved which sub-clause of the three sides, with its labels; the **settled frame**, the thread's last five landings and its **eight** 2026-09-02 landings (BBASE/BUNIF/BDOUBLE/BSATUR, then BSIGMA/BPROPER at the OWALL landing, BOPEN, and BLINE — which refutes a ROUTE, not a clause), joined 2026-09-03 by **BDEGTWO**, which settles both of BLINE's residues and moves the obstruction to the METHOD |
 | 9 | *The W4 deviation — per-landing detail* | 2026-09-02 | which of WTRI/WELOC/WPAIR/WGROW proved which sub-clause of route 3's cost list, with its labels; relocated once W4's informal argument closed |
-| 10 | *The (BE-14) lane's standing candidate list* | 2026-09-02 | the lane's ranked-but-unmoved candidates — one-end-series, (S1)/(S2), the bundle construction and the *also ranked* tail; relocated when the note hit 587/580 |
+| 10 | *The (BE-14) lane's standing candidate list* | 2026-09-02 | the lane's ranked-but-unmoved candidates — ~~one-end-series~~ (**SPENT, BSERIES 83**), ~~(S1)/(S2)~~ (**KILLED, BSCOND 76**), the bundle construction and the *also ranked* tail; relocated when the note hit 587/580 |
 | 11 | *The `hK` lane — per-landing detail* | 2026-09-02 | which of GPACK/GLIST proved which sub-clause of (GR-18)(iii)'s split, with its labels, plus (GR-133)'s price; relocated at the GLIST landing, the lane's second result in two directions |
 | 12 | *The escape route (§(K-out)) — per-landing detail* | 2026-09-02 | OWALL's per-landing detail on the escape route's largest live row: the two-direction-network model, the three confinement certificates, and what (OC-44)(iii) reduced to; relocated at the OWALL landing, so the lane's narrative never entered the note |
 | 13 | *The 2026-09-02 round — per-landing status clauses* | 2026-09-02 | the one-clause-per-direction status paragraph for ordinals 66–71 (GPACK, BSIGMA, GLIST, BPROPER, OWALL, GGLOB), whose *detail* blocks 8/11/12 already own; relocated at the GGLOB landing, when a sixth clause would have pushed the note past its line cap |
@@ -1087,6 +1087,20 @@ that landing's own entry needed. Settled history and pointers; nothing here is s
   W4 decomposed, (K-bare-ext) NO-GO'd, the standing adjudications set; **(K-res)** priced and
   **(SAFE-RES)**/`hnoGood'` vacuity REFUTED; (K-slide) (S1) proved, (K-pitch) closed.
 
+### Addendum, 2026-09-08 — the BBASE → BSATUR *Hand-off* paragraph, relocated verbatim
+
+**Relocated from `notes/Phase39.md`'s *Hand-off* at the BSERIES landing**, when the note
+stood at 580/580 lines by the gate's own metric (`len(text.splitlines())`, which `wc -l`
+under-counts by one on a file whose last line is unterminated). It was **pure attribution**
+— it said where the verdicts, the mathematics and the detail live, all three of them
+elsewhere — and this block already owned the detail. Its one *status* clause stays in the
+note's header. The paragraph, verbatim:
+
+> **BBASE (62) → BUNIF (63) → BDOUBLE (64) → BSATUR (65), all 2026-09-02** — verdicts in
+> *Decisions made*, mathematics at §(K-bare-ext) *Steps BE88–BE107*, per-landing detail in
+> **block 8** (which also owns BPEEL → … → BPROPER's five-landing reduction history). One
+> clause is *status*: **(CH-1) does not apply to the flag base** ((BE-89)).
+
 ### Addendum, 2026-09-03 — the 2026-08-05 research cluster, relocated verbatim
 
 Moved from `notes/Phase39.md` *Decisions made* at the liveness round's reconcile commit, to
@@ -1159,9 +1173,10 @@ bullet, the phase note wins.
 
 **Relocated verbatim from `notes/Phase39.md`'s *Hand-off* ranked list, 2026-09-02**, at the
 BSIGMA landing, when the note stood at 587/580 lines. Same disposition as blocks 8 and 9: these
-are the lane's **ranked-but-unmoved** candidates — **entry 3 KILLED at BSCOND (ordinal 76);
-the rest unmoved since BSIGMA (ordinal 67)** — and the note keeps items 0 and 1, which are
-the live ones. **Reference, not status**; if any of
+are the lane's **ranked-but-unmoved** candidates — **entry 3 KILLED at BSCOND (ordinal 76),
+entry 2 SPENT at BSERIES (ordinal 83, conditionally and on one habitat only); the rest
+unmoved since BSIGMA (ordinal 67)** — and the note keeps items 0 and 1, which are the live
+ones. **Entry 4 and the *also ranked* tail are now the whole of this list that is LIVE.** **Reference, not status**; if any of
 these is picked, its entry moves back into the note as the active item.
 
 **SWEEP C, 2026-09-03 — this block was re-checked entry by entry against the `(K-bare)`
@@ -1176,19 +1191,45 @@ recorded per entry below.
 
 **The list, as it stood at the BSIGMA landing (`e53cb9b4`…this commit):**
 
-2. **The ONE-END-SERIES case by BWIN's machine** — one peel instead of two
-   (`ρ̄₁ = ⟨ℓ_u⟩ + ρ̄(rest)`), budget `δ₁ ≤ 3` by the same excess accounting, or a
-   second functional from the clean end. Would retire the (BE-46)/(BE-52)
-   per-shape witnesses behind the *sharpened-at-one-end* route — (β)'s largest
-   remaining per-shape component ((BE-58)(iv)).
-   **Kill condition:** that per-shape half discharged class-level. **Decided by:**
-   gap map `(K-bare)` units u12/u25. **Status LIVE, unmoved — but its VALUE was
-   RAISED at BDOUBLE (ordinal 64), one landing before this snapshot**, and the
-   snapshot never said so: (BE-102)(iii) reads (BE-46)(iv) and (BE-45)(iv) at
-   their statements and finds *"both citations are used in their **non-theorem**
-   direction"*, (BE-46)(iv) saying plainly that *"the class-level statement over
-   all pieces"* is **not** discharged. So the witnesses this entry proposes to
-   retire are now known to be load-bearing in exactly their weak direction.
+2. ~~**The ONE-END-SERIES case by BWIN's machine**~~ — **SPENT 2026-09-08 by
+   direction BSERIES (ordinal 83): its kill condition fired on ONE HABITAT ONLY,
+   and what it delivers there is CONDITIONAL, not closed.** The entry read *"one
+   peel instead of two (`ρ̄₁ = ⟨ℓ_u⟩ + ρ̄(rest)`), budget `δ₁ ≤ 3` by the same
+   excess accounting, or a second functional from the clean end"*, and would
+   *"retire the (BE-46)/(BE-52) per-shape witnesses behind the
+   sharpened-at-one-end route — (β)'s largest remaining per-shape component
+   ((BE-58)(iv))"*. **Kill condition:** that per-shape half discharged
+   class-level. **Decided by:** gap map `(K-bare)`.
+   **What happened.** *"Sharpened at one end"* is **not one habitat**. At a piece
+   clean at **exactly one** end the machine **does** transport at one peel: the
+   end sweep survives, confined to two **self-conjugate** 3-spaces (`Λ²π_v` for
+   `λ`, `Σ_{p_v}` for `μ`) meeting exactly in `Π_v`, the kill budget is **TWO**
+   rather than one, and **(b2) ⟸ (b1)** — so the *sharpening* becomes
+   **unnecessary** rather than proved ((BE-164)–(BE-168)). **But that reduction
+   is CONDITIONAL on (PENCIL-SATURATES) at side-degree `≥ 2`** — (b1) at a clean
+   end **is** that clause below the `δ₁ = 6` vacuous corner, and a clean end has
+   `deg_1(v) ≥ 2` by definition — which is **half (B)'s item 0(a), OPEN**
+   ((BE-169)(ii)). At a piece clean at **both** ends there is **no bridge, hence
+   no peel and no end sweep at all** ((BE-169)(iii)), so the machine has **no
+   object** at any number of peels — and that habitat **is (BE-45)(iv)**, ledger
+   item 1. Two further caps: the `δ₁ ≤ 3` budget is case (a′)'s and is a **lemma
+   with no graph instance** in the direction's battery, and the machine is **not
+   measured strictly stronger** than the per-shape route ((BE-170)(iv)).
+   **The raised-value note is ANSWERED.** (BE-102)(iii)'s reading — *"both
+   citations are used in their **non-theorem** direction"*, with (BE-46)(iv)
+   saying plainly that *"the class-level statement over all pieces"* is **not**
+   discharged — stands exactly as written; what changed is that **one of the two
+   consumers stops needing them**, in habitat (I) only. (BE-46)/(BE-52) are
+   **not refuted and not retired**; in habitat (II) they are the *only* tool.
+   **The entry's own unit pointer was STALE and is not repaired but retired**:
+   it read *"units u12/u25"*, a snapshot of a numbering that shifts on every
+   recompute of the row — the round's *name the last ordinal, never a count*
+   rule applies to **unit indices** too, and the live pointer is the row.
+   **The lesson this entry earns:** the ledger it proposed to shorten had
+   **four items that are not independent**. Item 3 splits, its surviving half
+   **is** item 1, and item 2 is the *condition* on the half that closes — so
+   (BE-58)(iv) reads **two items plus a corner**, and half (β) outside the
+   window is **not independent of half (B)** ((BE-170)(ii)).
 3. ~~**(S1)/(S2), the two side conditions of (BE-57)**~~ — **KILLED 2026-09-03 by
    direction BSCOND (ordinal 76), its own kill condition fired: BOTH DECIDED.**
    They were **one gap, not two** — `p_{w₁} ∈ π_u` and `p_{w₂} ∈ π_v` at every
