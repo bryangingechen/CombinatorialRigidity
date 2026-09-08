@@ -1849,6 +1849,37 @@ from a row elsewhere. *Kill condition: rank 2's recon delivered.*
 > configuration exists, **(E4) dies and this bar comes back down over the whole clause
 > family** ((BE-154)(iii)/(iv)).
 
+> **THE (E4) LIFT IS REVERSED — 2026-09-08, by direction BFOUR (ordinal 81). THE
+> `Γ`-PROPERNESS LIFT IS NOT, AND IS STRENGTHENED.** Recorded **here**, with its reason,
+> on this paragraph's own rule that a lift *or a lowering* is written down here and not
+> inferred from a row elsewhere. The configuration the paragraph above asked for **exists**:
+> `K4(5,2,2,2,2,2)` peeled at `('A','B')`, side 1 the 5-branch, reflagged onto (BE-105)'s
+> bad plane, gives `(δ,a,ρ,c)(Π_x) = (5,0 | 0,0 | 5,0 | 2,0)`, so `e = (3,0)` and
+> `e₁ + e₂ = 3 < 4` — in the **attaining** case, through every (CH-1)/peel gate, **not** a
+> shortfall, exact ℚ ((BE-160)). So:
+>
+> - **LOWERED AGAIN: (E4).** It is not a repair of (PENCIL-SATURATES-CHART), it is a
+>   **refuted clause**, and the recurring-wall rule now counts it as the **fifth** attempt
+>   in the family (after `-GEN`, the `ρ_i ≥ 5` weakening, the per-side floor family and the
+>   corner patch). **Its successor `(BE-E4′)` — (E4) plus `δ₁, δ₂ ≥ 1` — is a NEW object**,
+>   keeps 14 → 12 on the both-flexible zone at a measured price of 158 escapes *all* inside
+>   (BE-22)(vi)'s proved rigid-side collapse, and is **UNPROVED and TIGHT at `δ₂ = 1`**
+>   ((BE-162)). Whether this bar lifts for **it** is the next pass's call, not BFOUR's;
+>   priced, its decisive test is **one targeted draw** ((BE-162)(iii)).
+> - **NOT LOWERED, AND STRENGTHENED: `Γ`-properness.** The refutation does not touch
+>   (BE-149)(v), and BFOUR *adds* to its standing: `c₁(Π_x) ≤ dim Γ_Π(p)` holds at **every**
+>   side-degree `k ≥ 2` (411/411), so wherever (BE-151)'s certificate fires it **proves**
+>   (E4) pointwise (375/411), and (BE-149)(i)'s exact identity now holds on **composite
+>   chart points** (351/351), not only bare side configurations ((BE-158)).
+> - **STILL BARRED: `A_sharp` properness as posed**, unchanged.
+>
+> **Read the scope narrowly.** (BE-154)(iii) wrote that a falsifier would bring the bar down
+> *"over the whole clause family"*; it does not, because **every** (E4) falsifier is itself a
+> (PENCIL-SATURATES-CHART) counterexample (535/535, (BE-156)) and every one exhibited has
+> `δ₂ = 0`, where (BE-22)(vi) — **proven** — collapses the 2-cut criterion to `ρ₁ = δ₁` with
+> no general-position content, so the 14 inequalities the clause serves are **vacuous** there
+> ((BE-161)). *Kill condition for the `(BE-E4′)` question: one targeted draw at `δ₂ = 1`.*
+
 **SUPERSEDED AS A RANKING by the 2026-09-03 pass above (back-link added in that same
 commit); kept as the dated record, and its per-entry content stays authoritative.**
 **RE-RANKED 2026-08-25** (the eighth strategy-only pass, post-GFLIP/GCHEAP;

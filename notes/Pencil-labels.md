@@ -134,6 +134,35 @@ structurally cannot see, and (L7) is how the *check itself* is run.
   firing twice in the phase). The cheap fix is a **landing-time** grep for
   bare `(X<digit>)` tokens in the returned draft — run it in addition to,
   not instead of, the prep-time prefix/range check.
+  **SHARPENED 2026-09-08 (direction BFOUR), and the sharpening is free: the
+  grep runs over the WHOLE REPOSITORY, not the returned draft alone, and a
+  hit in a `*.lean` doc-comment COUNTS.** BARCH's `(E4)` is the measured
+  case. It is a bare `(X<digit>)` token minted inside a reservation, and it
+  collides **two** ways: with §(K-grid)'s **live** termination-ledger family
+  `(E1)`/`(E2)`/`(E3)` — whose next slot it takes, and which *this file
+  already names three times* — and with the molecular program's brick codes
+  in **live Lean doc-comments** (`Molecular/Induction/Operations.lean` uses
+  `(E4)` for the ENTRY binder reshape; `Arms.lean` `(E5)`,
+  `ForestSurgery/Reduction.lean` `(E2)`). A grep confined to the draft, or
+  to `notes/`, sees neither. **And the reference count is the real lesson**:
+  four commits after the mint, `(E4)` already carried ~74 references across
+  10 files, **two of them landed drivers** — so a bare token minted inside a
+  reservation can blow past (L4)'s own *"~40 existing references"*
+  grandfathering threshold **in a single landing**, which makes the
+  landing-time grep the only place it can be caught cheaply.
+  **DISPOSITION, SETTLED (coordinator, 2026-09-08): NO RENAME.** `(E4)` now
+  names a **refuted** clause ((BE-160)), so renaming buys nothing
+  mathematically while costing edits to two landed drivers and the
+  figure-invariance gate's one-line discharge; and the **live** successor
+  token **`(BE-E4′)`** is already `BE-`-prefixed and was 0-hit at mint, so
+  the compliant name is in place going forward and the collision is
+  confined to history. The standing obligations are therefore (i) the
+  collision-table row above, (ii) **(L3)-qualified citations throughout** —
+  write `§(K-bare-ext) (E4)` — and (iii) a recorded **debt item**: were a
+  rename ever wanted, the name is **`(BE-E4)`** (0-hit at 2026-09-08),
+  priced at ~74 references across 10 files including `w4/barch.py` and
+  `w4/bfour.py`, which makes it a deliberate coordinator round and **not**
+  something a dispatch may do.
 - **(L7) A reservation check enumerates the range; it does not sample it**
   *(landing fix, 2026-09-03, direction BARCH — the incident and its
   two-defect comparison are in the BARCH reservation block below)*. Check
@@ -2611,6 +2640,7 @@ token a reader will meet bare in the existing corpus.
 | **(F1)** | §(K-flank) claim / *Steps* F0–F7 | `dispatch-log.md` F-rows (F5, F11, F12, …) | — |
 | **(σ5)** | §(K-σ) claim (σ5) | §(K-σ) *Step σ5* (the four obligations) | — |
 | **(S1)–(S5)** | §(K-slide) claims | `S29` test shape (distinct form; noted for completeness) | — |
+| **(E1)–(E5)** | §(K-grid)'s **termination-ledger** codes (E1)/(E2)/(E3) — `E3` is *armed*, so the family is LIVE | the molecular program's **brick** codes in live Lean doc-comments: (E2) `chainData_or_cycleData_of_noRigid`, (E4) the ENTRY binder reshape, (E5) `cycle_realization` | §(K-bare-ext) **(E4)**, BARCH's two-sided clause — **REFUTED 2026-09-08 (BFOUR)**; found 2026-09-08, and see the debt note under (L6) |
 
 The two most dangerous in live prose are **(W4)** — because "W4" reads as
 `hcontract` everywhere in `Phase39.md` and as the limit-system condition
@@ -4009,6 +4039,23 @@ lesson would lose the one that is actually mechanical:
 A check can satisfy (1) and still fail (2), which is what happened here — so
 the two are independent clauses, not two readings of one lesson.
 
+### A SIXTH SHAPE, found 2026-09-08 (direction BFOUR) — a token minted INSIDE the reservation, which a RANGE check structurally cannot see
+
+**This one is the coordinator's, not the direction's, and it is a different
+shape from all five below.** Every recorded defect so far is about the reserved
+**range** — its metric (1), its coverage (2), its family (3). BARCH's `(E4)` was
+never in a range: it was minted *inside* a clean, correctly-enumerated
+reservation as a **sub-clause name**, and a range check — however exhaustive
+over `(BE-149)`–`(BE-156)` and `BE148`–`BE155` — **cannot** see it, because it
+is not one of those tokens. That is precisely the gap **(L6)** exists to close,
+and (L6) either was not run at BARCH's landing or was run without leaving the
+draft. **Fix: (L6)'s grep runs over the whole repository and a `*.lean`
+doc-comment hit counts** — the clause text is sharpened in place above, with
+the measured `(E4)` case and the coordinator's settled *no-rename*
+disposition. **Recorded separately rather than merged with (2)** for the same
+reason (1) and (2) are separate: a check built to enumerate a range perfectly
+still misses this, so it is an independent clause.
+
 ## Coordinator reservation defects — FIVE instances in ONE round (2026-09-03)
 
 Recorded together because they arrived in one four-direction round, all in the
@@ -4229,3 +4276,82 @@ cases `(a′)`/`(b′)`/`(c′)`, *habitat (I)*/*habitat (II)*, *one-end piece* 
 *Steps BE163–BE170*; they were chosen over letters precisely because `(a)`/`(b)`
 are already carrying two jobs each in §(K-bare-ext) ((BE-147)'s cases and
 half (B)'s item-0 sub-items).
+
+## Reserved namespace — direction BFOUR (2026-09-08, **CONSUMED: seven labels and seven steps; one of each RETURNED**)
+
+**Reserved 2026-09-08 for the single direction BFOUR** (arc ordinal 81, run
+concurrently with BSERIES and BINSERT; `notes/Pencil-fanout.md` §"BFOUR") —
+**(BE-154)(iv): does a peel exist with `c_i(Π_x) = 2` and `e₁ + e₂ ≤ 3`, i.e.
+is §(K-bare-ext) (E4) false?** It extends **§(K-bare-ext)** and opens **no** new
+section, so the reservation is the unclaimed tail of that section's own `(BE-n)`
+family and the owning section stays authoritative.
+
+| direction | owning § | labels reserved | steps reserved | driver |
+|---|---|---|---|---|
+| **BFOUR** | §(K-bare-ext) — **extends**, no new section | **(BE-156)–(BE-163)**, of which **(BE-156)–(BE-162)** consumed | **BE155–BE162**, of which **BE155–BE161** consumed | `w4/bfour.py` (seven modes) |
+
+**It opens at exactly the tail BARCH declared** (*"The next tail is (BE-156) /
+Step BE155"*), and **not** at (BE-157). **One label and one step are RETURNED
+UNUSED: (BE-163) and *Step BE162***, reserved against an eight-label section
+that came in at seven, and **available**. Its step range therefore sits
+*numerically below* the BSERIES continuation that landed one commit earlier:
+`notes/Pencil-informal.md` is ordered by **landing**, not by step index, and
+this block records that so a successor does not read it as a numbering error.
+
+**THE LIVE TAIL IS (BE-172) / *Step BE171*** — BSERIES's declaration, unchanged
+by this landing, since BSERIES holds `(BE-164)`–`(BE-171)` / *Steps
+BE163–BE170* and returned nothing. **Two strays are available inside the
+consumed region and a successor may take either**: **(BE-163)** and
+***Step BE162*** (this direction's) alongside ***Step INS8*** (BINSERT's).
+
+**0-hit verification, re-run by the direction as its FIRST action** (clause
+(L7): **every** token in the range, enumerated rather than sampled, **hits and
+files reported separately**), across the whole tree **at `HEAD`** by
+`git grep -o -F` for hits and `git grep -l -F` for files:
+
+| token | `(BE-n)` hits / files | bare `BE-n` hits / files |
+|---|---|---|
+| `BE-156` | **6 / 1** | **6 / 1** |
+| `BE-157` | **1 / 1** | **1 / 1** |
+| `BE-158`–`BE-163` | 0 / 0 | 0 / 0 |
+
+with the raw step tokens `BE155` at **6 / 1** and `BE156`–`BE162` at **0 / 0**,
+and `bfour` **0 / 0**. All eight non-zero label/step hits are in **this file
+alone**, inside BARCH's own reservation block, and every one is a
+**declaration, not a consumption** — `(BE-156)`/`BE155` in its tail hand-over
+and `(BE-157)` in its *"and not at (BE-157)"* clause. That is exactly (L7)'s
+predicted **guaranteed hit at a range's opening tokens**, and the enumeration
+reproduced the coordinator's prep token-for-token. **Reservation clean.**
+
+**AND THE DIRECTION CODE ITSELF IS NOT 0-HIT — a NINTH declaration, caught by
+re-measuring rather than by assuming.** `BFOUR` is **6 hits / 3 files** at
+`HEAD`: `notes/Pencil-labels.md` ×4, `notes/Pencil-informal.md` ×1,
+`notes/Pencil-fanout.md` ×1 — **all six written by the two siblings that landed
+first in this same round** (BSERIES and BINSERT naming BFOUR as the direction
+holding the `(BE-156)` tail), so every one is a **declaration, not a
+consumption**, and the code was 0-hit when the round was reserved. **Recorded
+because the first draft of this block asserted `BFOUR` 0 / 0 without measuring
+it**, which is the (L7) failure mode one level up: the clause says enumerate
+the *label* range, and a **serial** landing order means the *code* acquires
+sibling references between reservation and landing. **Read as a clause:** a
+landing-time (L5)/(L7) check re-measures the **direction code** too, and
+expects hits equal to the number of siblings that landed before it.
+
+**ONE LABEL MINTED OUTSIDE THE RANGE, deliberately and under (L1):
+`(BE-E4′)`** — the repaired clause, (E4) restricted to `δ₁, δ₂ ≥ 1`
+((BE-162)(i)). It was verified **0 hits / 0 files** at `HEAD` in both forms
+(`(BE-E4′)`, `BE-E4′`), it is `BE-`-prefixed because clause (L1)'s remedy for a
+`(X<digit>)`-shaped token is the owning section's tag, and the prime follows
+the existing `(GR-4′)` / `(Λ0f′)` convention. **It is named this way precisely
+so the `(E)` family stops growing bare tokens** — see the collision-table row
+for `(E1)`–`(E5)` and the disposition note under clause (L6), both added at
+this landing.
+
+**(L6) landing-time bare-token grep, RUN over the whole repository** (the
+sharpening this landing added to that clause). The direction minted **no** bare
+`(X<digit>)` token of its own. The bare tokens the section *cites* — `(E4)`,
+`(S1)`, `(S2)`, `(P)`/`(Z)`/`(R)`, `(b1)`/`(b2)`/`(b3)`, `(α)`/`(β)`, `(∗)`,
+`(T1)`, `(F13)`, `(M1)`, `(E1)`/`(E2)`/`(E3)` in the E-rider — are all
+pre-existing, and every load-bearing one is written **(L3)-qualified** at first
+use (`§(K-bare-ext) (E4)` throughout). `BFOUR` was checked for the (L5)
+substring hazard and is clean; `bfour` is likewise 0-hit as a raw substring.

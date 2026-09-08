@@ -15276,3 +15276,82 @@ registry sentence **corrected**: BINSERT's block named the `(BE-)`
 alternative home as *"(BE-172)+ / Steps BE163+"*, and `BE163` is the **first
 step of this reservation**, so a reader following it would have opened on top
 of a live range; it now reads ***Steps BE171*+**.
+
+## BFOUR — eighty-first ordinal (one of a concurrent round of three, drafted read-only 2026-09-08, **LANDED 2026-09-08**) — (BE-154)(iv), the smallest concrete successor BARCH named: does a peel exist with `c_i(Π_x) = 2` and `e₁ + e₂ ≤ 3`, i.e. **is §(K-bare-ext) (E4) false?**
+
+**The spec.** BARCH ((BE-154)(iii)) called a falsification of (E4) *"the cheapest
+decisive move"* and ((BE-154)(iv)) named the population: extend `barch.py`'s
+`cert` sweep to composite **chart** points (`bdegtwo.sweep_points`, all four
+fibre shapes, 411 targets) and evaluate `dim Γ_Π(p)` and `(e₁, e₂)` at **both**
+sides of the peel. Read-only with respect to every shared file, `barch.py` and
+`bdegtwo.py` **imported and not edited**, new driver `w4/bfour.py`, labels
+`(BE-156)`–`(BE-163)` / *Steps BE155–BE162*, sibling ranges fenced (BSERIES
+`(BE-164)`–`(BE-171)`, BINSERT `(INS-1)`–`(INS-8)`).
+
+**The verdict: (E4) IS FALSE, and the named population could not have shown
+it.** `K4(5,2,2,2,2,2)` peeled at `('A','B')`, side 1 the 5-branch, reflagged
+onto (BE-105)'s bad plane, gives `(δ,a,ρ,c)(Π_x) = (5,0 | 0,0 | 5,0 | 2,0)`,
+hence `e = (3,0)` and `e₁ + e₂ = 3 < 4` — **attaining**, every (CH-1)/peel gate
+green, F13 control clean, **not** a shortfall, exact ℚ, 7/7 draws ((BE-160)).
+**§8's (E4) lift REVERSES**; the `Γ`-properness lift does **not**, and is
+*strengthened* ((BE-160)(vi)). The refutation is **confined to (BE-22)(vi)'s
+proved rigid-side collapse**, so the repair **(BE-E4′)** keeps 14 → 12 on the
+both-flexible zone at a measured price of 158 escapes, all of them inside that
+collapse — **UNPROVED and TIGHT at `δ₂ = 1`** ((BE-161)/(BE-162)).
+
+**Why the spec's population was the wrong one, stated as the reusable lesson.**
+`c_i(Π_x) = 2` *is* `Π_x ⊆ ρ̄_i`, so **every** (E4) falsifier is a
+(PENCIL-SATURATES-CHART) counterexample — 535/535 by exhaustion ((BE-156)) —
+which makes the commissioned hunt a **strict sub-hunt** of one already run at
+0/772. And at all **411/411** chart points side 2's signature is the single
+value `(3,0,3,0)`, so `e₂ ≡ 3`, the two-sided clause degenerates to a
+one-sided one, and only **3 of the 535** falsifying tuples are reachable
+((BE-157)). The witness sits **one hardcoded generator parameter along** —
+side-2 branch profile `3 → 2` — which is `RESEARCH-ARC.md` §4's **RPOOL
+sharpening** firing a second time ((BE-159)). **The lesson: price the
+population against the claim's own quantifiers before spending the compute.**
+The 411-point sweep cost ~1 010 s and could not decide the question; the
+3-second `--wit` leg did.
+
+**The coordinator's hypothesis was REFUTED, and its reasoning was the key.**
+The dispatch predicted **no** falsifier, flagged at the weakest evidence
+stratum ("an arithmetic census over tuples extrapolated to an unsampled
+geometric population"), and said the value would lie in *what the chart
+population cannot reach*. The prediction is refuted; the reasoning is
+confirmed and is exactly what found the witness — following *why* the
+population cannot reach it. Two consecutive ordinals on this thread have now
+refuted the coordinator's prediction (BARCH the `p_x`-free-method framing,
+BFOUR the no-falsifier framing), and in both the **dispatch discipline** rather
+than the dispatch hypothesis did the work.
+
+**Six self-caught defects, disclosed at landing.** (1) A false *"vacuous by
+construction"* verdict was nearly published — (E4)'s hypothesis **is** met, 72
+block-instances at 411 points; caught by instrumenting a counter and asserting
+it rather than inferring. (2) The (BE-E4′) repair was nearly reported as free;
+it costs 158 escapes and is free only because **all 158** sit in (BE-22)(vi),
+which had to be *asserted* 158/158. (3) `bdegtwo.sweep_points`' docstring is
+**stale by five fields** (nine advertised, fourteen yielded, `side2` among the
+omitted) — caught by CLAUDE.md's *docstrings are not evidence* rule, recorded
+as a *Recorded observation* rather than fixed. (4) `run_gen` first claimed *"all
+three skeletons"* when `K4` realizes none for the side-1 job used. (5) `run_wit`
+first disclosed only two of the three margin blocks. (6) At landing, this
+block's own registry text asserted the direction code `BFOUR` **0-hit** without
+measuring it: it is **6 hits / 3 files** at `HEAD`, all six written by the two
+siblings that landed earlier in the same round — a (L7) failure mode one level
+up, now recorded as a clause in `notes/Pencil-labels.md`.
+
+**Attestation.** The coordinator's verification tier re-ran `--wit` (2.5 s) and
+`--repair` (29.8 s) and reproduced both exactly, and verified (BE-22)(vi) at
+source plus the `(E4)` collision independently. The two chart halves (~505 s
+each) were **not** re-run at landing, so their figures are **measured-with-cap
+by the direction and attested rather than independently reproduced** — recorded
+here because that distinction travels with the 411 figure everywhere it is
+quoted.
+
+**Successor, named and priced.** `(BE-162)(iii)`: one `bfour.py` leg that
+**steers `c₂(Π_x)` at `δ₂ = 1`**, where `ρ̄₂` is a single line and `Π_x` is
+already the bad plane's pencil. **One targeted draw.** YES kills (BE-E4′) and
+finishes the two-sided family; NO is the geometric obstruction it needs. And
+the exposure is now shared: BSERIES's one-end reduction is itself conditional
+on (PENCIL-SATURATES) at side-degree `≥ 2` ((BE-168)/(BE-170)), so **both halves
+of S-mark hang on the clause whose cheapest replacement just died.**

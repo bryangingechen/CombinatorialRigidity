@@ -78,6 +78,18 @@ The 2026-08-05 rewire that created `scriptpath.py` / `exactcore.py` is the
 model of the second bullet firing in full: 67/67 invocations, 65 byte-identical,
 2 identical modulo their own timing print, 0 changed figures.
 
+**A SIXTH case, added 2026-09-08 (direction BFOUR), and it is the cleanest instance of the
+rule this section states:** `w4/bfour.py --chart` — the commissioned 411-target composite
+chart sweep of §(K-bare-ext) (BE-157) — measures **~1 010 s** and does **not** fit. The
+driver therefore ships the population **pre-split by side-1 job**, `--charta` (204 points,
+**505 s**) and `--chartb` (207 points, **504 s**), whose union is exactly the 411, and the
+landing gate ran those **two** foreground invocations plus `--validate` — the YLOC / GGLOB
+precedent applied at authoring time rather than discovered at landing. `--validate` (268 s)
+deliberately runs `chart` at a **70-point sample** instead and **says so in its own
+output**, so no 411-point figure can be quoted from a `--validate` transcript. Recorded
+because the split is in the flag surface, not in the runner's head: a future extension of
+the population adds a **third** half rather than growing either past the ceiling.
+
 **A FIFTH case, added 2026-09-03 (direction RPOOL), and it is a NEAR-MISS rather than an
 over-run:** `w4/rpool.py` has **no `--validate`** at all — its five legs measure
 46/484/104/61/18 s and total 713 s, so the all-in-one mode a driver normally carries would
@@ -1139,6 +1151,14 @@ are a recorded *Harness debt* item (see below).
 | `python3 notes/scripts/w4/bseries.py b1` | 75 s | ibid. *Step BE168* (**(BE-169)**: (BE-110)(i)'s corank identity at the CLEAN end, floor `max(0, delta_1 - 3)` against a series end's `max(1, .)`; `Pi_v = <l_e, l_e'>` determined by side 1 ((BE-105)(iv)); the no-peel habitat at 7/7 rows including all three (BE-45)(iv) rows; two hunts, both capped and both empty) |
 | `python3 notes/scripts/w4/bseries.py board` | 0 s | ibid. *Steps BE169–BE170* ((BE-170)/(BE-171): the verdict, the re-scoping of (BE-58)(iv) to two items plus a corner, the prediction classified, the caps and the priced successors) |
 | `python3 notes/scripts/w4/bseries.py validate` | 310 s | ibid. all eight in one process — the landing gate; **256 guarded configurations** gated by `one_end_measure`, every one through `assert_generic_star` AND `verify_pencil_witness` |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/bfour.py --arith` | 0 s | `notes/Pencil-informal.md` §(K-bare-ext) *Step BE155* (direction BFOUR; **(BE-156)**: the CONTAINMENT THEOREM by EXHAUSTION over all 6 400 tuples — every one of the **535** (E4)-violating tuples is a (PENCIL-SATURATES-CHART) counterexample, **535/535 ASSERTED**, so the (BE-154)(iv) hunt is a STRICT SUB-HUNT of one already run at 0/772; the `Pi_x` margin histogram `{0: 150, 1: 234, 2: 151}` making **385 of 535** also [MARGIN] shortfalls and only 150 clean, 50 attaining; exactly **3** tuples reachable at the sweep's own side-2 signature, all forcing `rho_bar_1 = Pi_x` at `rho_1 = 2`; plus BARCH's 970 / 0 / 0 / 287 REPRODUCED as the divergence guard) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/bfour.py --charta` | 505 s | ibid. *Steps BE156–BE157* (**(BE-157)**/**(BE-158)**, half A: 204 composite chart points over 34 peels, both sides measured, the lean per-side row CROSS-ASSERTED against `bsatur.row_of` plus the three margin controls at 34/34 peels; side 2's signature the single value `(delta_2, a_2, rho_2, c_2) = (3,0,3,0)` at 204/204; `c_1(Pi_x) <= dim Gamma_Pi` ASSERTED 204/204 and the exact (BE-149)(i) identity 204/204; 0 (E4) falsifiers) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/bfour.py --chartb` | 504 s | ibid., half B: 207 points over 36 peels reaching the **three fibre shapes** the long-core library cannot (plane `pi_{c1}` 18, plane `pi_x` at `k >= 3` 10, the line 6); same single side-2 signature at 207/207, the bound 207/207, the identity 147/147 at its `k = 2` points, 0 falsifiers. **Union with half A is exactly (BE-136)'s 411/411 over 70 peels**, hypothesis met 72x, certificate firing 375/411, identity 351/351 |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/bfour.py --gen` | 38 s | ibid. *Step BE158* (**(BE-159)**: the GENERATOR AUDIT, `RESEARCH-ARC.md` section 4's RPOOL sharpening — `sweep_points`' two EXPOSED side-2 axes `skname` x `xy` give ONE signature over all 12 realizing (skeleton, hub-pair) combinations, so moving them changes NOTHING; the HARDCODED `pr = [3]*n`, reached through `bproper.free_peel`, moves `e_2` through **0 / 3 / 4**, and `e_2 = 0` at `pr = [2]*n` is exactly what (BE-154)(iii)'s falsifier criterion needs) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/bfour.py --wit` | 3 s | ibid. *Step BE159* (**(BE-160)**: **§(K-bare-ext) (E4) IS FALSE**. BSATUR's own `K4(5,3,3,3,3,3)` witness MEASURED at `e = (3,3)`, upgrading (BE-153)(iii) from asserted-at-its-own-numbers, 5/5 draws; then the same generator ONE PARAMETER ALONG, `K4(5,2,2,2,2,2)` reflagged, giving `(delta,a,rho,c)(Pi_x) = (5,0|0,0|5,0|2,0)`, `e = (3,0)`, `e_1+e_2 = 3 < 4` at 7/7 draws — girth 6, `hcard`, `rnode_shaped(side2)`, `verify_pencil_witness`, `deg_1(x) = 1`, F13 control `c = 1 < 2`, margins `Pi_x`/`Pi_y`/`<M>` = 0/-1/-1, `a_1 = a_2 = 0`, and the quotient `(rho_1+rho_2+Pi_x)/Pi_x` at dimension 3 < 4 so (E4)'s OWN *equivalently* reading fails too — every one an `assert`) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/bfour.py --repair` | 31 s | ibid. *Steps BE160–BE161* (**(BE-161)**/**(BE-162)**: the `delta_2` LADDER at three skeletons, 57 rows over 12 profiles — `delta_2 = 0/1/2/3` giving `e_2 = 0/1/2/3` and `e_1+e_2 = 3/4/5/6`, (E4) failing at every `delta_2 = 0` rung (15 rows) and holding at every `delta_2 >= 1` rung (42 rows), **TIGHT at `delta_2 = 1`** — so the refutation is CONFINED to (BE-22)(vi)'s proved rigid-side collapse; and the repair **(BE-E4')** = (E4) + `delta_i >= 1` leaving **158** escapes of 6 400 with **all 158** at `min(delta_1, delta_2) = 0` ASSERTED, separating tuples 1160, `Pi_x` violations at `a_1 = a_2 = 0` still 0) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/bfour.py --support` | 0 s | ibid. (the `RESEARCH-ARC.md` section 4 support audit: five populations, each with what it VARIES, what it HOLDS FIXED and which quantifier of its own claim it therefore reaches — including the one sentence the audit exists for, that `bdegtwo.run_direct`'s 0/772 and `barch.run_cert`'s 663 firings are both true of every draw those runs made and both hold side 2 at a single point of its parameter space) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/bfour.py --validate` | 268 s | ibid. six modes in one process — the landing gate; **`chart` runs at a 70-point SAMPLE here and says so in its own output** (section 0's sixth over-ceiling case), so the 411-point figures come only from `--charta` + `--chartb` |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/barch.py arith` | 0 s | ibid. *Steps BE151–BE152* ((BE-152)/(BE-153): EXHAUSTIVE over all 6 400 tuples — the per-side floor family leaves 313/164/74/24/0 escapes at `f = 2..6`, the two-sided **(E4)** leaves **0**, `PS => (E4)` with 0 counterexamples, 970 separating tuples, 0 attaining `Pi_x` violations under (E4), the 287-escape corner patch, and (BE-104)(i)'s own witness satisfying (E4). No sampling, no seed used) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/barch.py support` | 0 s | ibid. *Step BE154* ((BE-155): the `RESEARCH-ARC.md` §4 support audit read at SOURCE — `bsigma.sample_side_config`'s independent-set guard, `binduc.assert_generic_star`'s edge-only distinctness, `bimage.pt_in`'s width 4 and `bimage.span`'s `d == 6` special case all asserted present, plus the per-mode can/cannot-see reading. Discloses that no geometric mode varies `k`: every row is `k = 2`) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/barch.py validate` | 117 s | ibid. all five in one process — the landing gate; fits the 600 s foreground budget. Exact Q; the single seed is `20260902` (`bunif.SEED`), printed by every sampling mode (`arith` prints it and does not use it) |
@@ -1566,7 +1586,7 @@ figure-invariant): `rref`, `rank`/`rank_exact`, `nullspace`, `left_nullspace`,
 `neighbors` (`kbare_common`, `n9`); `K4`/`K5_minus_matching` (three copies:
 `localtest`, `probe_zero`, `run_habitats`).
 
-## Harness debt — four rounds PAID (S1–S4 2026-08-06; the move-down round 2026-08-20; the GFLIP balance-layer move-down 2026-08-25; the GCHEAP/GPRICE balance-layer extension 2026-08-25), **twelve items outstanding**
+## Harness debt — four rounds PAID (S1–S4 2026-08-06; the move-down round 2026-08-20; the GFLIP balance-layer move-down 2026-08-25; the GCHEAP/GPRICE balance-layer extension 2026-08-25), **twelve items outstanding**, plus THREE *Recorded observations* deliberately unfixed
 
 **Twelve items are outstanding** — the eleventh added 2026-09-03 (direction
 BDEGTWO, the **silent `bimage.span` width defect**, its own section at the
@@ -2902,6 +2922,83 @@ figures this landing has no business moving.
 random `rows` of every width `1..6` and every rank `0..width`, and the same
 identity for `isect` against a brute-force intersection, plus a byte-identical
 re-run of every driver in §3.
+
+### New item (2026-09-08, direction BFOUR) — the next `w4/` consumer of the same chain, and a *Recorded observation* on `bdegtwo.sweep_points`' docstring; **UNPAID, NO MOVE MADE**
+
+`w4/bfour.py` (the (E4) refutation, workbook §(K-bare-ext) *Steps BE155–BE161*) is
+the next `w4/` consumer of the standing sibling-import chain — `bfour → barch →
+bdegtwo → bline → bopen → bproper → bsigma → bsatur → … → kbare_common`, **twelve
+deep** — and adds, all folded into the same standing item rather than opened as new
+ones:
+
+| device | consumers |
+|---|---|
+| `barch.graph_data` / `gamma_cut` | `barch` itself, **`bfour`** — second |
+| `barch.all_tuples` / `e4` / `ps_full` / `pair_patch` / `escapes` / `slack_of` / `violates` | **`bfour`** — second, counting `barch` |
+| `bdegtwo.all_jobs` / `peel_of` / `sweep_points` | `bdegtwo` itself, **`bfour`** — second |
+| `bsatur.bad_plane` / `draw_peel` / `reflag` / `peel_of` | `bsatur` itself, **`bfour`** — second |
+| `bsatur.row_of` | `bdegtwo`, `bline`, **`bfour`** — next |
+| `bproper.core_of` | **`bfour`** — sixth |
+| `bproper.free_peel` | `bdegtwo`, **`bfour`** — next |
+| `bopen.sides_of`, `bpeel.SKELETONS`/`delta_pair`/`rnode_shaped`, `bdecor.d3`/`girth`/`hcard_ok_piece`/`weld_d3`, `bunif.SEED`, `kbare_common.verify_pencil_witness`/`verts_of` | next of each |
+
+**Why UNPAID.** §2 rule 2 is explicit — *"A dispatch may not make the move"* — and
+this landing ran as one of three concurrent directions, two of which imported the
+same chain in flight. Beyond that, `barch`/`bdegtwo`/`bsatur` all carry recorded
+figures, so a move-down re-baselines three drivers' output for a comment-level
+benefit.
+
+**It opens NO new hazard item, and two of the three are UNREACHABLE rather than
+avoided.** `bimage.pt_in` is **not called at all** from `bfour.py` — the only calls
+in its import closure are `sweep_points`' own, on the width-4 `p_x` fibre, which is
+what the helper is *for* — so the `Λ²K⁴ → K⁴` truncation cannot fire from it. `bwin`
+is **not imported**, so `dehom`'s list-vs-tuple guard defeat is likewise
+unreachable. `bimage.span`'s width-6-on-*rank* case is **navigated**: no width-12
+object goes through `span`/`dim`/`isect` here, the one 12-wide measurement being
+inside `barch.gamma_cut` (which routes it through `exactcore.rank` and works in
+motion-space coordinates), and every `K⁴`-side subspace `bfour` builds comes from
+`nullspace`/`plane_at` rather than `span`, so `bdegtwo.k4span`/`k4meet` are left
+alone.
+
+**One new device, and it is a cross-check rather than a *Divergences* row.**
+`bfour.side_nums`/`e_row` compose `bimage.rho_bar_of` + `bdecor.d3`/`weld_d3` to
+give `bsatur.row_of`'s per-side arithmetic **without** its 16-block `profile` call,
+which costs ~16 subspace intersections a row and is why `row_of` costs seconds.
+`--charta`/`--chartb` **assert the two agree** — `ρ`, `δ`, `a`, `c(Π_x)`, `c(Π_y)`,
+`slack` — at the first swept point of **every** peel (70/70), together with the
+three margin controls. So the two cannot silently diverge, and no `Divergences`
+entry is proposed.
+
+**One call-site guard, recorded because the pair is a real *Divergences* hazard.**
+`bsatur.peel_of(skname, prof, ei)` and `bdegtwo.peel_of(E1t, skname, xy)` are
+same-named and different — different signatures, different side orientation.
+`bfour.py` reaches the former through a named local wrapper `_bs_peel` and the
+latter as `BD.peel_of`, and never interchanges them.
+
+**Acceptance test when the sibling-import item is paid.** Unchanged from the
+standing item, plus: `bfour`'s seven modes byte-identical at `PYTHONHASHSEED=0`
+(modulo each mode's own timing line), and `--charta` + `--chartb` still summing to
+411 points over 70 peels.
+
+### *Recorded observation* (2026-09-08, direction BFOUR) — `bdegtwo.sweep_points`' docstring is STALE by five fields; **deliberately unfixed**
+
+`bdegtwo.sweep_points`' docstring advertises
+
+> *"Yield (aff0, aff2, kind, cs, side1, E, x, y)"*
+
+— **nine** fields. Its body yields **fourteen**:
+`(name, aff, got[3], kind, cs, side1, side2, E, x, y, fib, nh, dW, (name, sd))`.
+The five it omits include **`side2`**, which is precisely the field a two-sided
+measurement needs, so a consumer written against the docstring would unpack the
+wrong tuple *and* believe side 2 unavailable.
+
+**Caught by CLAUDE.md's *docstrings are not evidence* rule**, before it became an
+unpacking bug: BFOUR derived its consumption from the **body**. Recorded here as
+prose and **not fixed**, on the same reasoning BSCOND's `bwin.dehom` observation
+uses — editing a landed driver, even only its comment, converts this landing's
+one-line *No tracked driver modified* discharge into the full *figures do not move*
+obligation for `bdegtwo` and every driver importing it. The fix belongs to the next
+round that touches `bdegtwo` for its own reasons. **Until then: read the body.**
 
 ### New item (2026-09-03, direction DSAT) — `dominance.py`'s split-seed and habitat device set reaches its SECOND and THIRD consumers; **UNPAID**
 
