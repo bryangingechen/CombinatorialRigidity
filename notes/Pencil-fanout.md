@@ -15668,3 +15668,123 @@ a deliberate coordinator round, and this landing does not take it.**
 > maintained, and the split becomes the cheaper option. **Where it lives until then:**
 > here, as a costed proposal with its parser evidence intact, so a future cleanup round
 > inherits the work rather than re-deriving it. A landing must not execute it.
+
+
+## BLONGARC — eighty-seventh ordinal (single dispatch, nothing else in flight, **LANDED 2026-09-08**) — BRANKV's own named successor: at arc length `≥ 4`, is `rank(B|_U) ≤ 2` forced on the 4-dimensional `U = ⟨ℓ_j⟩ + W_j` at a legal chart point?
+
+**NO — and the ladder extends anyway, TWO rungs, to a boundary that is
+EXACT.** Labels **(BE-196)–(BE-203)**, *Steps BE195–BE202*, §(K-bare-ext),
+driver `notes/scripts/w4/blongarc.py` (`form`/`perp`/`ladder`/`pop`,
+`validate` 51 s).
+
+**The dispatch's question, answered first and negatively — and the
+coordinator's hypothesis is CONFIRMED with its reasoning intact.** The Gram
+matrix of the Klein form on an arc-4 span is `[[0,Y],[Yᵗ,0]]` with
+`Y = [[a,b],[0,c]]`, `a = B(ℓ_1,ℓ_3)`, `b = B(ℓ_1,ℓ_4)`, `c = B(ℓ_2,ℓ_4)`, so
+`det = (ac)²` and `rank(B|_U) = 2·rank(Y)` — **always even, never 3**, and
+**4** at 60 of 60 generic draws. `a = 0` / `c = 0` are the coplanarity of four
+*consecutive* arc bodies, which `assert_generic_star` does **not** forbid (it
+forbids *collinearity* at a body, strictly stronger), and `(CH-1)` /
+`legal_peel` constrain no plane at all. So `rank(B|_U) ≤ 2` is a **proper
+closed** condition, not a forced one ((BE-197)). **The named tell fails:**
+there is no graph-side constraint keeping the form degenerate.
+
+**And (BE-193)(iv)'s warrant is upgraded while its conclusion stands.** It
+said a *nondegenerate* rank-4 form "does admit totally singular 2-spaces (the
+hyperbolic case)" — true over `ℚ` only **if** hyperbolic, an undischarged side
+condition. The arc discharges it for free: consecutive hinges meet, so
+`⟨ℓ_1,ℓ_2⟩` and `⟨ℓ_3,ℓ_4⟩` are **both totally singular** and `U` is their
+direct sum, hyperbolic over **any** field with `rad(U) = 0` and exactly **two
+`P¹`-rulings** (300 members **constructed**, each asserted isotropic and
+inside `U`). The isotropic 2-plane the spec asked to see exhibited is the
+arc's own `⟨ℓ_1,ℓ_2⟩` ((BE-198)).
+
+**But the spec's SPAN was the wrong object, and correcting it is free.**
+`Π_x` is the span of the **two** star lines at `x`, so `ℓ_j ∈ Π_x` already and
+`Π_x ⊆ U ⟺ ℓ_{j'} ∈ U` — one membership; and `Π_x ⊆ α_x := p_x ∧ K⁴`, the
+3-dimensional **totally singular α-space** of lines through `q_x`, so the
+containment lives in `U ∩ α_x` ((BE-196)). Hence the radical's habitat is
+`U^{(1)} = U ∩ ℓ_j^⊥`, with `ℓ_j` in its radical for free ((BE-199)) — and
+there the mechanism bites **once more**: at arc 4 the quotient
+`Ū = U^{(1)}/⟨ℓ_j⟩` is a **hyperbolic rank-2 plane**, its isotropic cone is
+exactly **two lines** (enumerated over 30 points of `P¹` per draw, the cone
+asserted `= {αγ = 0}`), one demanding the collinearity `assert_generic_star`
+forbids at `c` and the other forcing **`q_z ∈ π_x`** — one linear equation of
+exactly (BE-193)(i)'s shape, at the arc's second-to-last body ((BE-200)).
+
+**One count subsumes the whole ladder.** Generically
+`dim(U ∩ α_x) = max(1, min(|arc|, 6) − 3)` — asserted at every arc length 2–7
+and, independently, `dim U = min(|arc|, 6)` at 783/783 population points.
+Since `Π_x ⊆ α_x` always, the containment needs `dim(U ∩ α_x) ≥ 2`, so it is
+**impossible generically at arc `≤ 4`**, **one linear condition** on the other
+side-neighbour at arc 5, and **automatic at arc `≥ 6`**. (BE-190), (BE-191)/
+(BE-193), (BE-200) and the arc-5 closure are therefore **four cases of one
+count**, and item 0(a) is **CLOSED GENERICALLY at arc `≤ 5` — 48 of 99**,
+against BRANKV's 15, with properness *witnessed* (`ℓ_{j'} ∈ U` fires at 0 of
+378 arc-`≤ 5` points and at 405 of 783 overall, which is exactly the
+`dist ≥ 6` points) ((BE-201)).
+
+**The pointwise clause is FALSE at arc 4 too.** BRANKV's (BE-192) witness one
+arc-edge longer — `arc4_library`, three composite peels through
+`bline.legal_peel`, `binduc.flat_config` configurations, every gate checked
+before measurement — gives `c_i(Π_x) = 2` and `ρ_i = 3` at **24 of 24** gated
+chart points with `q_z ∈ π_x` at 24 of 24, so (BE-200)'s confinement is
+**proper and inhabited** rather than empty. **Cap, unchanged from
+(BE-192)(iii):** the witness is fully planar, on one skeleton at 3 peels / 24
+points, and a less degenerate one is not found and not excluded.
+
+**THE BOUNDARY IS EXACT, STRUCTURAL, AND IT IS (BE-189)(iii)'s OWN
+THRESHOLD.** The radical mechanism confines `Π_x` to a finite candidate list
+exactly while `dim Ū ≤ 2`, i.e. arc `≤ 4` (0 candidates at arc 2, 1 at 3, 2 at
+4); at arc 5 `Ū` is a nondegenerate ternary form and the locus is a **conic** —
+a `P¹` of candidates, **constructed** from the rational point `ℓ̄_2` by the
+secant parametrization, ≥ 5 members per draw, so *"not finite"* is built and
+not asserted. The α-space mechanism reaches arc 5, its determinantal bad-locus
+superset `Z_n = {rank[ℓ_1,…,ℓ_n,ℓ_{j'}] ≤ n}` being proper exactly when
+`n + 1 ≤ 6`. And **`|arc| = 6` is where (BE-189)(ii)'s `ρ_i ≤ dist` stops
+making the clause's conclusion unreachable** — so
+
+> **the path-bound family of arguments closes exactly the strata on which the
+> clause is VACUOUS and provably cannot reach the 51 of 99 on which it has
+> CONTENT** ((BE-202)/(BE-203)).
+
+**Successor.** **The arc / path-bound method class is SPENT** — *"try arc
+length 6"* is **not** a live slice, and neither is any further sharpening of
+the arc span; nor is any further *pointwise* target. The board is: §8's
+**rank 2** ((BE-E4′), open mathematics) first; then a *less degenerate*
+(BE-192)/(BE-200) witness (still needs the chart's hub-planarity at `y` and
+side 2 solved); then the `V^k` graph at `k ≥ 3`, untouched. **What did NOT
+move:** (BE-14), S-mark, (β), (BE-E4′), cross-pair welding, class uniformity,
+`Γ`-properness (still false as a class-uniform statement), side-degree `≥ 3`,
+the 51 long-arc configurations, `hbareSplit`. Not a PENCIL event.
+
+**Self-caught / found defects.** *(a)* The first derivation of the arc-4
+theorem concluded *"`q_c ∈ π_x` is forced"* — **vacuous**, because
+`π_x = ⟨q_x, q_{c_1}, q_{c_2}⟩` contains both side-neighbours *by
+construction*. Caught before any driver was written, by deriving `Π_x` from
+its definition rather than from (BE-190)(i)'s prose, and it is what produced
+the correct object (`α_x`) and hence (BE-201). *(b)* A first pass asserted
+`rank(B|_U) ≤ 2` would extend the ladder if forced; the *rulings* computation
+showed the nondegenerate case is where the mechanism dies and the *quotient*
+is where it survives — so the spec's own framing named the wrong subspace, and
+saying so is (BE-199)(iii). *(c)* **A doc defect in a landed driver, recorded
+and NOT fixed:** `w4/brankv.py`'s header docstring still states, in its first
+`(BE-191)` paragraph and without a flag, the **refuted** first-draft inference
+*"`Pi_x` is totally singular and 2-dimensional, so it embeds in `U` only if
+`rank(B|_U) <= 1`"*, which (BE-191)(ii) corrects two paragraphs later. Editing
+it would forfeit the figure-invariance gate's one-line *No tracked driver
+modified* discharge and force baselining `brankv.py`'s whole import closure,
+so it is recorded as a harness-debt doc item instead. *(d)* (L6) fired on this
+landing's driver for the **second consecutive** landing (`(P1)`/`(P2)`, 16 and
+13 hits elsewhere in the tree); the locals were **renamed**, not filtered, and
+the check's scope — `(X<digit>)` yes, bare single letters no — is now stated
+once in `notes/Pencil-labels.md` so the next landing does not re-litigate it.
+
+**Landing bookkeeping.** `(K-bare)` **RECOMPUTED, not appended**: 2,185 →
+**2,368** words at **260** labels (9.11 each) against the **unbumped**
+1257/1257 combined **2,514** cap — **146 words of headroom**, `gapdiff.py
+K-bare HEAD` reporting **0 DROPPED** and 10 added. **The cap was NOT bumped
+and the row split was NOT executed** (adjudicated `424f93dc`, DECLINED FOR
+NOW, queued above with its costing intact). Figure-invariance gate discharged
+by *No tracked driver modified*: the landing **adds** `w4/blongarc.py` and
+edits no `*.py`/`*.m2` under `notes/scripts/`.

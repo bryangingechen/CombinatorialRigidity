@@ -1787,6 +1787,54 @@ disproving `PencilPair K 3 G`**), not cheapness.
    > forced on the 4-dimensional `⟨ℓ_j⟩ + W_j`; if it is, the ladder continues
    > and item 0(a) closes on a strictly larger stratum ((BE-193)(iv),
    > (BE-195)(iii)).
+   >
+   > **SPENT A THIRD TIME 2026-09-08 (direction BLONGARC, ordinal 87) — AND
+   > THIS TIME THE WHOLE METHOD CLASS IS SPENT, NOT JUST THE TARGET.**
+   > *(Recorded here per §8's own rule. Ranks 2–4 are again untouched, but
+   > this is NOT rank 1's slot passing to a further successor: rank 1 has no
+   > successor left, and the next dispatch starts at **rank 2**.)* The
+   > question was answered **NO** — the arc-4 Gram matrix has
+   > `det = (ac)²` and `rank = 2·rank([[a,b],[0,c]])`, always **even** and
+   > equal to **4** at 60 of 60 generic draws, the vanishings being
+   > coplanarities of four *consecutive* arc bodies that `assert_generic_star`
+   > (which forbids *collinearity* at a body) does not force ((BE-197)) — so
+   > the coordinator's hypothesis and its stated reasoning both held, and the
+   > *tell* it named (a graph-side degeneracy forcer) does not exist.
+   > **(BE-193)(iv)'s warrant is UPGRADED rather than refuted:** over `ℚ` a
+   > nondegenerate rank-4 form admits totally singular 2-spaces only if
+   > *hyperbolic*, and the arc discharges that side condition for free — its
+   > consecutive pairs `⟨ℓ₁,ℓ₂⟩` and `⟨ℓ₃,ℓ₄⟩` are both totally singular, so
+   > `U` is hyperbolic over **any** field with two `P¹`-rulings, constructed
+   > ((BE-198)).
+   >
+   > **THE LADDER EXTENDED ANYWAY, AND THE REASON IS A CORRECTED OBJECT.**
+   > `Π_x = ⟨ℓ_j, ℓ_{j'}⟩` already contains `ℓ_j`, so the containment is ONE
+   > membership inside the totally singular **α-space** `α_x = p_x ∧ K⁴`
+   > ((BE-196)); the radical's habitat is therefore `U ∩ ℓ_j^⊥` and not `U`
+   > ((BE-199)), and there the mechanism bites once more — at arc 4 the
+   > quotient is a hyperbolic rank-2 plane, its isotropic cone exactly two
+   > lines, one forbidden and the other forcing **`q_z ∈ π_x`**, with the
+   > pointwise clause **refuted again** at 24 of 24 gated arc-4 chart points
+   > ((BE-200)). Then **one count subsumes the whole ladder**:
+   > `dim(U ∩ α_x) = max(1, min(|arc|,6) − 3)`, so the containment is
+   > impossible generically at arc `≤ 4`, one linear condition at arc 5 and
+   > **automatic** at arc `≥ 6` — item 0(a) **closed generically at arc
+   > `≤ 5`, 48 of 99** ((BE-201)).
+   >
+   > **AND THE BAR THIS LEAVES IS A METHOD-CLASS BAR, WHICH IS NEW.** The
+   > boundary `|arc| = 6` is **(BE-189)(iii)'s own threshold**: `ρ_i ≤ dist`
+   > makes the clause's conclusion `ρ_i = 6` unreachable at `dist ≤ 5`, so the
+   > path-bound family of arguments closes exactly the strata on which the
+   > clause is **vacuous** and provably cannot reach the **51 of 99** on which
+   > it has content ((BE-202)/(BE-203)). **Not authorized:** an arc-length-6
+   > attempt, any further sharpening of the arc span, any further *pointwise*
+   > target, any further properness sweep on the (BE-181) population.
+   > **THE GENERALIZABLE LESSON, one level above the method:** a path bound
+   > hands you a **subspace**, and a subspace argument dies exactly when the
+   > subspace fills the ambient — so before ranking a span-based route,
+   > compute `dim(span)` against `dim(ambient)` and read off the reachable
+   > strata. That is a two-line calculation and it would have priced this
+   > entire rung in advance ((BE-203)(iii)).
 2. **(BE-E4′) — the repaired two-sided clause.** Owner: `(K-bare)` row, (BE-153)/(BE-155)
    as amended by (BE-162)/(BE-177). It survives BSTEER's draw, is **tight at `δ₂ = 1`**, and
    delivers **14 → 12 on the both-flexible zone** with the rigid-side remainder carried by
@@ -1842,7 +1890,12 @@ block.)* *(**AMENDED AGAIN 2026-09-08 at BRANKV's landing:** that rank statement
 **FALSE** — it dropped the clause's *generic* quantifier — and item 0(a) is now **closed
 generically on the arc-`≤ 3` strata** (15/99) by a radical argument. The bar reads: **no
 pointwise target and no further properness sweep**; the live candidate is **arc length
-`≥ 4`**.)*
+`≥ 4`**.)* *(**AMENDED A THIRD TIME 2026-09-08 at BLONGARC's landing:** arc `≥ 4` is
+answered **NO** as asked, item 0(a) is now **closed generically at arc `≤ 5`** (48/99) by a
+radical-plus-α-space argument, and **the whole arc / path-bound METHOD CLASS is SPENT** —
+its boundary `|arc| = 6` is (BE-189)(iii)'s own threshold, so it reaches only the strata
+where the clause is vacuous. **Rank 1 has no successor left; the next dispatch starts at
+rank 2.**)*
 
 **SUPERSEDED AS A RANKING by the 2026-09-08 tenth pass above; its per-entry content stays
 authoritative for the four spent ranks.**

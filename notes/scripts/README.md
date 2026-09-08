@@ -1167,6 +1167,11 @@ are a recorded *Harness debt* item (see below).
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/brankv.py arc` | <1 s | ibid. *Steps BE189–BE190* (**(BE-190)**, **(BE-191)**: the arc theorems checked OFF the graphs -- the collinear collapse at 60/60 with a non-collinear control at 60/60; the arc-3 Gram rank 2 with a single off-diagonal entry at 60/60, its RADICAL asserted to be the MIDDLE hinge and the isotropic cone asserted to be exactly `a c = 0`; the coplanar branch totally singular and equal to `Lambda^2 tau` at 60/60. **The radical form REPLACES a first draft whose assert was VACUOUS** -- it drew random 2-spaces, which are never isotropic, `RESEARCH-ARC.md` section 4) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/brankv.py hunt` | 3 s | ibid. *Steps BE191–BE192* (**(BE-192)**: the constructed short-arc family -- the axis `bline.longcore_library`'s own docstring says it never moves -- planted at (BE-191)'s forced incidences, its arc-3 span asserted totally singular and equal to `Lambda^2 pi_x` at 118/118; then **the GATED test**: 3 composite peels through `bline.legal_peel` (every (CH-1) hypothesis on `H`, `x !~ y`, both terminals hubs, side 2 `rnode_shaped`) at `binduc.flat_config` configurations, giving `c_i(Pi_x) = 2` **and** `rho_i = 3` at **24 of 24** -- the POINTWISE clause REFUTED -- with `q_y in pi_x` asserted at every violation. The 118 bare-side rows are DISCLOSED as not (CH-1)-gated and are not the finding) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/brankv.py validate` | 53 s | ibid. all three in one process -- the landing gate. **FITS the 600 s foreground ceiling**, so this driver adds NO over-ceiling case to section 0 |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/blongarc.py form` | <1 s | `notes/Pencil-informal.md` §(K-bare-ext) *Steps BE195-BE197* (direction BLONGARC; **(BE-196)**, **(BE-197)**, **(BE-198)**: the arc BAND (`B(l_k,l_k) = B(l_k,l_{k+1}) = 0`) asserted at 75/75 arcs of lengths 2..6 with EVERY consecutive pair asserted to span a totally singular 2-space, 225/225 -- CONSTRUCTED over the whole pair family; the arc-4 Gram identities `det = (ac)^2` and `rank = 2 rank(Y)` at 60/60 with the rank asserted EVEN and `a = 0`/`c = 0` asserted EQUIVALENT to the coplanarity of four CONSECUTIVE arc bodies; **the dispatch's question answered NO** -- `rank(B|_U) = 4` at 60 of 60 generic draws with `rad(U) = 0`; and the UNCONDITIONAL hyperbolic splitting `U = <l_1,l_2> + <l_3,l_4>` at 30/30 with **300 CONSTRUCTED ruling members** each asserted totally singular and inside `U`, the two rulings meeting in a line at 150/150) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/blongarc.py perp` | 1 s | ibid. *Steps BE198-BE199* (**(BE-199)**, **(BE-200)**: `Pi_x <= U cap l_j^perp` with `dim = 3`, `rad = <l_j>` and `rank = 2` at 40/40; the arc-4 candidate list asserted to be EXACTLY TWO, ENUMERATED over 30 points of `P^1` per draw with the cone asserted `= {al ga = 0}`; the identity `a l_4 - b l_3 = p_z ^ (a p_y + b p_w)` and the forced `q_z in pi_x` plus `coplanar(q_x,q_w,q_z,q_y)` at 40/40; the containment locus asserted EMPTY at a generic arc-4 draw over **960/960** swept second star points; then **the GATED arc-4 test** -- 3 composite peels through `bline.legal_peel` at `binduc.flat_config` configurations, every one asserted to carry an arc of length exactly 4, giving `c_i(Pi_x) = 2` **and** `rho_i = 3` at **24 of 24** with `q_z in pi_x` at 24/24, so the POINTWISE clause is REFUTED at arc 4 as well. CAP: the witness is FULLY PLANAR, one skeleton, 3 peels) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/blongarc.py ladder` | 1 s | ibid. *Steps BE200-BE201* (**(BE-201)**, **(BE-202)**: the MASTER INVARIANT `dim(U cap alpha_x) = max(1, min(n,6) - 3)` asserted at every arc length 2..7, 24 draws each; `dim Ubar = min(n,6) - 2`; the CONSTRUCTED cone census of `Ubar` -- 1 line at n = 2,3, **2 lines at n = 4**, a CONIC at n = 5 (>= 5 members BUILT per draw from the rational point `l_2` by the secant parametrization) and a quadric at n >= 6 -- with the binary case counted in closed form by an exact rational-square discriminant test; the determinantal readings `rank([l_1..l_n] ++ alpha_x)` and `rank([l_1..l_n, l_{j'}])`, the latter `n + 1` at n <= 5 and `6` at n >= 6; and the containment verdict asserted to flip **exactly** at n = 6, 144/144. **The boundary `|arc| = 6` is (BE-189)(iii)'s own threshold**) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/blongarc.py pop` | 49 s | ibid. *Step BE202* (**(BE-203)**: the closure PRICED on BARCH's own 99-configuration / 783-point population -- the per-configuration `dist` census reproduced identically (`{2: 9, 3: 6, 4: 21, 5: 12, 6: 21, 7: 12, 8: 12, 9: 6}`), `dist = min_j |arc_j|` **asserted** at every configuration, coverage **15 of 99** at arc <= 3 / **36** at arc <= 4 / **48** at arc <= 5, `dim U = min(|arc|, 6)` at 783/783, properness WITNESSED (`l_{j'} in U` at **0 of 378** arc-<=5 points and at **405 of 783** overall -- exactly the `dist >= 6` points), BOTH clause conjuncts read (containment 120, **violation 0**), and the (BE-189)(ii) ceiling re-asserted at every point so the population identity with BRANKV's is CHECKED) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/blongarc.py validate` | 51 s | ibid. all four in one process -- the landing gate. **FITS the 600 s foreground ceiling**, so this driver adds NO over-ceiling case to section 0 |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/bfour.py --arith` | 0 s | `notes/Pencil-informal.md` §(K-bare-ext) *Step BE155* (direction BFOUR; **(BE-156)**: the CONTAINMENT THEOREM by EXHAUSTION over all 6 400 tuples — every one of the **535** (E4)-violating tuples is a (PENCIL-SATURATES-CHART) counterexample, **535/535 ASSERTED**, so the (BE-154)(iv) hunt is a STRICT SUB-HUNT of one already run at 0/772; the `Pi_x` margin histogram `{0: 150, 1: 234, 2: 151}` making **385 of 535** also [MARGIN] shortfalls and only 150 clean, 50 attaining; exactly **3** tuples reachable at the sweep's own side-2 signature, all forcing `rho_bar_1 = Pi_x` at `rho_1 = 2`; plus BARCH's 970 / 0 / 0 / 287 REPRODUCED as the divergence guard) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/bfour.py --charta` | 505 s | ibid. *Steps BE156–BE157* (**(BE-157)**/**(BE-158)**, half A: 204 composite chart points over 34 peels, both sides measured, the lean per-side row CROSS-ASSERTED against `bsatur.row_of` plus the three margin controls at 34/34 peels; side 2's signature the single value `(delta_2, a_2, rho_2, c_2) = (3,0,3,0)` at 204/204; `c_1(Pi_x) <= dim Gamma_Pi` ASSERTED 204/204 and the exact (BE-149)(i) identity 204/204; 0 (E4) falsifiers) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/bfour.py --chartb` | 504 s | ibid., half B: 207 points over 36 peels reaching the **three fibre shapes** the long-core library cannot (plane `pi_{c1}` 18, plane `pi_x` at `k >= 3` 10, the line 6); same single side-2 signature at 207/207, the bound 207/207, the identity 147/147 at its `k = 2` points, 0 falsifiers. **Union with half A is exactly (BE-136)'s 411/411 over 70 peels**, hypothesis met 72x, certificate firing 375/411, identity 351/351 |
@@ -2938,6 +2943,93 @@ figures this landing has no business moving.
 random `rows` of every width `1..6` and every rank `0..width`, and the same
 identity for `isect` against a brute-force intersection, plus a byte-identical
 re-run of every driver in §3.
+
+### New item (2026-09-08, direction BLONGARC) — the chain reaches FIFTEEN deep, `brankv` becomes an imported LIBRARY, and a DOC DEFECT is recorded in a landed driver; **UNPAID, NO MOVE MADE**
+
+`w4/blongarc.py` (the arc-ladder boundary verdict, workbook §(K-bare-ext)
+*Steps BE195–BE202*) imports **`brankv`**, **`barch`**, **`bline`**,
+**`binduc`**, **`bproper`** and **`bdegtwo`**, and sits **fifteen deep** on the
+standing sibling-import chain — `blongarc → brankv → barch → bdegtwo → bline →
+bopen → bproper → bsigma → bsatur → … → kbare_common`. Folded into the same
+standing item; the new consumer counts are a **fifth** consumer of
+`barch.graph_data`/`gamma_cut`/`library`/`side_row`/`star_holds`, a **third** of
+the private `barch._aff3`, a **second `w4/` consumer of
+`binduc.flat_config`**, the next of `bline.legal_peel` and `bproper.composite`,
+a **fifth** of `bdegtwo.fibre_k`, and the next of `pitch.Q`/`klein`,
+`bimage.plane_at` and `kbare_common.verify_pencil_witness`.
+
+**`brankv.py` becomes the arc's first successor-imported-as-a-LIBRARY, and it
+is the standing rule working.** `arc_through`, `gram`, `gram_rank` and `hinge`
+are imported from it verbatim rather than re-derived, which is what makes
+`blongarc`'s `pop` mode measure the *same* 99 configurations and 783 points
+BARCH, BGPROP and BRANKV measure — an identity that would be unverifiable had
+`brankv.py` been touched. **At four instances the *"a follow-up direction
+imports its predecessor, it does not extend it"* rule is no longer merely
+standing but load-bearing**: BSTEER recorded it, BGPROP applied it, BRANKV was
+the third, and this landing is the fourth *and* the first where the
+predecessor's own helpers — not just a two-generations-back library's — are the
+imported surface.
+
+**A DOC DEFECT IN `w4/brankv.py`, RECORDED AND DELIBERATELY NOT FIXED.** Its
+header docstring's first `(BE-191)` paragraph states
+
+```
+(BE-191) ARC LENGTH 3 IS A QUADRIC CONDITION ... `Pi_x` is totally singular
+         and 2-dimensional, so it embeds in `U` only if `rank(B|_U) <= 1`
+```
+
+which is the **refuted first-draft inference** the *same docstring* corrects
+two paragraphs later (*"A rank-2 form on a 3-space DOES admit totally singular
+2-spaces -- an earlier draft of this driver asserted otherwise and the assert
+PASSED"*). The **conclusion** (`β = 0`) is correct and correctly proved in the
+workbook ((BE-191)(ii)) and in the driver's code; only that one sentence still
+presents the refuted linear-algebra step as a fact, and it does so **before**
+the correction, with no forward pointer. A reader who stops at the summary gets
+the refuted claim.
+
+**Why UNPAID.** Editing a tracked driver — even a comment — forfeits the
+one-line *No tracked driver modified* discharge of the figure-invariance gate
+and puts `brankv.py`'s whole import closure (`barch`, `bdegtwo`, `bline`,
+`bopen`, `bproper`, `bsigma`, `bimage`, `pitch`, `binduc`, `kbare_common`) into
+the baseline-and-re-run obligation, for zero change in any figure. That is a
+deliberate coordinator slice, not a dispatch's. **Fix when paid:** insert
+*"(the corrected form is two paragraphs below; this summary states the refuted
+draft)"* or, better, replace the summary sentence with the radical statement
+`(BE-191)(ii)` actually proves. **Acceptance test:** `brankv.py`'s three modes
+byte-identical at `PYTHONHASHSEED=0` (modulo timing), which a comment-only edit
+must satisfy trivially.
+
+**It opens NO new hazard item, and all three recorded silent hazards are
+navigated.** `bimage.pt_in` is called **only** on the width-4 fibre basis
+`bdegtwo.fibre_k` returns. **No width-12 object is built at all**, so
+`bimage.span`/`dim`/`isect`'s rank-triggered width-6 special case is
+**unreachable** rather than merely avoided — and the one width-4 incidence
+question this driver asks (`q_z ∈ π_x` in `pop`) is routed through
+`exactcore.rank` **instead of** `span`/`contains`, which is the first time a
+driver has avoided that hazard by *construction at authoring time* rather than
+by the `bdegtwo.k4span`/`k4meet` guards. `bwin` is **not imported**; the one
+dehomogenization goes through `barch._aff3`, which returns a **tuple**.
+
+**One naming fix, made rather than recorded — the SECOND consecutive landing to
+hit it.** The first draft carried locals `P1`, `P2`, `U1`, `v2`, so an (L6)
+whole-repository grep over the file returned `(P1)`/`(P2)`/`(U1)`/`(v2)` —
+call-parenthesis strings, of which `(P1)` and `(P2)` have **16** and **13** hits
+elsewhere in the tree and so collide *in appearance* with live label families,
+exactly as BRANKV's `(E1)`/`(E2)` did. They were renamed (`Pca`, `Pcb`,
+`Uperp`, `vsec`) with figures unchanged. The incident and the check's now-stated
+**scope** — `(X<digit>)` in, bare single-letter call parentheses like `(P)` /
+`(U)` out, since those appear in ten-plus landed drivers for zero collision
+risk — are recorded in `notes/Pencil-labels.md`'s BLONGARC block.
+
+**`validate` FITS** — **51 s** (`form` 0.3, `perp` 1.0, `ladder` 0.6, `pop`
+49) against the 600 s foreground ceiling — so this landing adds **no**
+over-ceiling case to §0.
+
+**This subsection adds NO item to the heading's twelve** — it records consumers
+of a standing item, as BARCH's, BSTEER's, BFOUR's, BGPROP's and BRANKV's do,
+**plus one doc defect logged against an existing file rather than a new
+device**. `grep -c '^### New item'` now returns 21 (six **PAID**); the last
+landing to add an *item* remains DSAT (2026-09-03, the twelfth).
 
 ### New item (2026-09-08, direction BRANKV) — the chain reaches FOURTEEN deep, and `binduc.flat_config` acquires its first `w4/` consumer; **UNPAID, NO MOVE MADE**
 
