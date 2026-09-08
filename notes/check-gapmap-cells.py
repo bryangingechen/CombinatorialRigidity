@@ -159,8 +159,25 @@ DEFAULT_CAP = 800  # per cell (status / close-it); largest ungrandfathered
 # word per label, with `gapdiff.py` forbidding any drop. Capped at the
 # recompute's own size plus ~15%, the `(K-grid)`/`(K-out)` mechanism: 972 / 972,
 # combined 1,944. NOT a waiver -- the next landing states its own floor.
+# **2026-09-08 second `K-bare` bump (direction BRANKV), and it states its floor
+# as the previous entry demanded.** BGPROP's recompute took the row to 1,893
+# words / 241 labels (7.85 each) with **51** words of headroom -- which its own
+# hand-off flagged as not being headroom at all, since a landing costs ~200.
+# BRANKV recomputes again (six blocks, real word cuts, `gapdiff.py` verifying
+# 0 DROPPED) and still lands at 2,185 words for 9 new labels, 8.74 words each:
+# the row is an index over 250 labels and 194 steps, and compression is past
+# the point where it removes redundancy rather than status. Capped at this
+# recompute's own size plus ~15%: 1,257 / 1,257, combined **2,514**, leaving
+# ~330 words -- about one and a half landings, deliberately more than the last
+# bump left. **A bump-per-landing is not a strategy, and the standing proposal
+# is a ROW SPLIT** -- `(K-bare)` proper against a `(K-bare-ext)` continuation
+# row, on the `(K-res)`/`(K-ins)` precedents. The parser supports it (one key
+# per row, `KEY_RE` above), but it is a structural change to the phase's single
+# status object and is the coordinator's to authorize, NOT a landing's to take:
+# the proposal with its word counts is in the BRANKV write-up in
+# `notes/Pencil-fanout.md`.
 SPECIAL_CAPS = {
-    "K-bare": {"status": 972, "closeit": 972},
+    "K-bare": {"status": 1257, "closeit": 1257},
     # gap-key -> {"status": cap, "closeit": cap}. Combined-remainder fallback
     # (ambiguous pipe split) uses the sum of the two.
     "K-grid": {"status": 2715, "closeit": 985},

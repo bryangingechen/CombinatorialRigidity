@@ -1,10 +1,11 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: EIGHT fan-outs, FIFTY-ONE single directions, ONE draft-only parallel direction,
+**Status: EIGHT fan-outs, FIFTY-TWO single directions, ONE draft-only parallel direction,
 FOUR concurrent pairs, ONE concurrent round of four and ONE concurrent round of three
-dispatched; 93 LANDED, **NONE IN FLIGHT, NONE DRAFTED** — the round of three is COMPLETE
-(BFOUR 81, BINSERT 82, BSERIES 83) and **BSTEER 84 then BGPROP 85 landed as single
-dispatches after it**, each answering the very task its predecessor handed over.
+dispatched; 94 LANDED, **NONE IN FLIGHT, NONE DRAFTED** — the round of three is COMPLETE
+(BFOUR 81, BINSERT 82, BSERIES 83) and **BSTEER 84, BGPROP 85 then BRANKV 86 landed as
+single dispatches after it**, a chain of three in which each answered the very task its
+predecessor handed over — and the third **refuted its predecessor's own successor**.
 
 *(Round state, coordinator, 2026-09-08 — the **round of three**, CLOSED at BFOUR's landing.
 Three dispatched read-only, three landed serially, **zero label collisions and zero
@@ -15542,3 +15543,112 @@ three items: the clause at side-degree `≥ 2` still **OPEN**; `Γ`-properness
 `dim(Γ_Ω ∩ (Σ_p ⊕ Σ_p)) ≥ 2 ⟹ ρ̄_i = V` at `k = 2`, with the `V^k` graph at
 `k ≥ 3` second and (BE-184)(ii)'s pointwise floor over all of `F` third. **What
 is NOT a slice: more properness sweeps on this population.**
+
+
+## BRANKV — eighty-sixth ordinal (single dispatch, nothing else in flight, **LANDED 2026-09-08**) — BGPROP's own named successor: is the clause `Π_x ⊆ ρ̄_i ⟹ ρ_i = 6` true POINTWISE at `k = 2`?
+
+**NO — and the computation that refutes it PROVES the generic form on the
+short-arc strata.** Labels **(BE-188)–(BE-195)**, *Steps BE187–BE194*,
+§(K-bare-ext), driver `notes/scripts/w4/brankv.py`
+(`ceil`/`arc`/`hunt`, `validate` 53 s).
+
+**The framing was checked, not inherited, and needed one correction.** The
+spec read the target as *"the clause itself at `k = 2`, stated pointwise"*.
+(BE-149)(iii) is **one-directional**, so the target's hypothesis is weaker and
+the target is **strictly stronger** — equal only if (BE-186)(i)'s *measured*
+converse is a theorem. The **ranking rationale survives** (either statement
+*closes* rather than reduces, so there was no stop condition) and the
+identification does not; this direction attacked the **clause** ((BE-188)).
+
+**Two proved ceilings made the clause combinatorial.** `ρ_i ≤ 1 + dim
+A_sharp` from (BE-139)(i) and `ρ_i ≤ dist_{side_i}(x, y)` from (BE-150)(i),
+both asserted 783/783, so the clause's *conclusion* forces `dist ≥ 6` — and
+the landed population's 120 containments all sit at `dist ∈ {8, 9}` with `dim
+A_sharp = 6`, five above the ceiling's own floor ((BE-189)).
+
+**Then the arc ladder, and it is the third quadric result on this thread.**
+**Arc length 2: the containment is COMBINATORIALLY IMPOSSIBLE** — the span is
+`⟨ℓ_j, ℓ_{c_j y}⟩`, containment forces `ℓ_{c_j y} ∈ Π_x` hence `q_x, q_{c_j},
+q_y` collinear hence the span collapses to dimension 1, so **`c₁ ≁ y ∧ c₂ ≁
+y`**, cap-free ((BE-190)). **Arc length 3: the RADICAL decides** — the Gram
+matrix of the Klein form on `⟨ℓ_j, ℓ_{cw}, ℓ_{wy}⟩` has one off-diagonal
+entry, rank 2, radical `⟨ℓ_{cw}⟩`; every totally singular 2-space of a rank-2
+3-space **contains its radical**, so `Π_x ⊆ U` forces `ℓ_{cw} ∈ Π_x`, the
+collinearity `assert_generic_star` forbids at body `c`. Hence the arc is
+**coplanar**, `U = Λ²τ`, `π_x = τ`, and `q_y ∈ π_x` ((BE-191)).
+
+**The theorem predicted its own counterexample, and it was found there.**
+Planted at (BE-191)'s forced incidences on **three composite peels** through
+`bline.legal_peel` (every (CH-1) hypothesis on `H`, `x ≁ y`, both terminals
+hubs, side 2 `rnode_shaped`) at `binduc.flat_config` configurations — a helper
+whose docstring states it is *a legal pencil configuration at EVERY graph*,
+with `assert_generic_star` and `verify_pencil_witness` asserted inside it —
+the measurement is **`c_i(Π_x) = 2` and `ρ_i = 3` at 24 of 24**, `q_y ∈ π_x`
+at 24 of 24. **So (BE-187)(iii) and the spec's target are both FALSE**
+((BE-192)).
+
+**And the landing is what survives.** `{q_y ∈ π_x}` is **proper and
+inhabited** — 2 of 783 on the landed population, 781 outside — so (BE-191)
+confines the arc-3 bad locus inside a nowhere-dense set and, with (BE-123)
+plus **the bridge BGPROP verified transports**, the clause holds on a **DENSE
+OPEN at every `k = 2` peel with an `x`–`y` arc of length `≤ 3` through a
+side-neighbour of `x`** — identically at arc 2. **The first GENERIC closure of
+half (B)'s item 0(a) at side-degree `≥ 2`**, **15 of 99** configurations, with
+**no properness sweep** ((BE-193)). The ladder stops at 4 because a
+nondegenerate rank-4 form admits isotropic 2-planes — a statement about the
+**form's rank**, not about a search ((BE-193)(iv)).
+
+**Self-caught, and it is the same species this direction's predecessor
+recorded.** The first draft of (BE-191) said a rank-2 form on a 3-space admits
+**no** totally singular 2-space, and the driver's assert for it **PASSED** —
+because it drew *random* 2-spaces, which are never isotropic. The claim is
+false (`⟨ℓ_j, ℓ_{cw}⟩` is itself totally singular); the conclusion is
+unchanged; the driver now asserts the **true** statement (the radical is the
+middle hinge, the isotropic cone is exactly `{ac = 0}`). `RESEARCH-ARC.md`
+§4's exact shape, one landing after BGPROP found it in `barch.run_cert`.
+
+**Caps, stated.** Everything is at **`k = 2`**. (BE-193) covers arc length
+`≤ 3`, **15 of 99** on this population — which is BLINE's long-core library
+plus BARCH's cycle-7/8 corner, **not** a habitat census, and 84 of 99 are
+untouched. The refuting witness is **fully planar**, on **one** skeleton
+(`K33`, profile 3), 3 peels / 24 points; a **less degenerate** witness is
+*not found* and *not excluded*. The 118 bare-side rows in `hunt` are gated by
+`assert_generic_star`/`verify_pencil_witness` but **not** by (CH-1) on a
+composite, are disclosed as such, and are **not** the finding.
+
+**Successor.** **First slice: arc length 4** — compute `rank(B|_U)` on the
+4-dimensional `⟨ℓ_j⟩ + W_j` in terms of the arc's incidences and decide
+whether the hyperbolic case is reachable at a legal chart point; `rank ≤ 2`
+forced would extend the ladder. **Second:** a less degenerate witness for
+(BE-192), which needs the chart's hub-planarity at `y` and side 2 solved.
+**Third:** the `V^k` graph at `k ≥ 3`. **NOT a slice:** any further
+*pointwise* target for this clause.
+
+### PROPOSAL, NOT EXECUTED — splitting the `(K-bare)` gap-map row
+
+**The coordinator authorized a cap bump and asked for a split to be
+*described*, not taken.** Executed: the cap bump, `972/972 → 1,257/1,257`
+(combined **2,514**), with a dated reason in `check-gapmap-cells.py`'s
+docstring naming this recompute's own floor. **Not executed, and offered for
+authorization:**
+
+- **Row 1, `(K-bare)`** — *Steps BE1–BE28*: the target statement, `hbareSplit`'s
+  status, the two refuted KT routes, the `∃`-seed, the *Steps BE1–BE13*
+  history, the four closed routes, and the exhaustive decomposition down to
+  the 2-cut composition lemma and S-mark. **~24 labels, ~330 words** as
+  currently written.
+- **Row 2, `(K-bare-ext)`** — *Steps BE29–BE194*: the geometry from (BE-30)
+  on — the ear case, the short-cycle law, the window, the R-node, `reach`, the
+  saturation ladder, the method-class thread and everything BDEGTWO → BRANKV
+  landed. **~226 labels, ~1,855 words.**
+
+**Why it is coherent rather than cosmetic:** the two halves have *different
+objects* — row 1 is about the induction's shape and is **settled**, row 2 is
+about the geometry of one clause and is where every landing since ordinal 45
+has gone. **Why the parser supports it:** `check-gapmap-cells.py`'s `KEY_RE`
+takes one key per row, and `(K-res)`/`(K-ins)` are the standing precedents for
+a second row under one section. **What it costs:** the row is cited as
+`(K-bare)/(K-bare-ext)` in ROADMAP, the phase note, the strategy board and
+every fan-out write-up, so the split is a repoint pass across those surfaces
+plus `gapdiff.py`'s key argument in ~30 recorded reproduce commands. **That is
+a deliberate coordinator round, and this landing does not take it.**

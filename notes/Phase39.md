@@ -8,12 +8,12 @@ derives it from exactly **three carried items**: **`hcontract`** (W4 — build p
 **`hbareSplit`** (kernel (K-bare)). Everything else is closed — W0–W3, all of W5
 (L0–L7), `hsplit` and `hfresh` (2026-07-30, unchanged since).
 
-**The research arc: 93 directions COMPLETE** (2026-08-05 → 09-08, ordinals 1–85 — 88 on
+**The research arc: 94 directions COMPLETE** (2026-08-05 → 09-08, ordinals 1–86 — 89 on
 kernel (K), **WTRI/WELOC/WPAIR/WGROW (58–61) on W4**, **RPOOL (75) on (K-res)**; direction
-= ordinal + 8), plus ten strategy passes, two probes, a scoping recon. **GPACK (66) opened
-the `hK` lane** (GLIST 68, GGLOB 71, GLEAF 80); the ninth pass's ranks 1–4 SPENT and **the
-tenth pass's rank 1 SPENT too** (BGPROP 85); rounds of four and three COMPLETE (78–83),
-BSTEER 84 and BGPROP 85 SINGLE. Per-direction verdicts, specs and write-ups live at `notes/Pencil-fanout.md` §"<CODE>"
+= ordinal + 8), plus ten strategy passes, two probes, a scoping recon. **GPACK (66) opened the `hK` lane**
+(GLIST 68, GGLOB 71, GLEAF 80); the ninth pass's ranks 1–4 SPENT and **the tenth's rank 1
+SPENT TWICE OVER** (BGPROP 85, its successor at BRANKV 86); rounds of four and three
+COMPLETE (78–83), 84–86 SINGLE. Per-direction verdicts, specs and write-ups live at `notes/Pencil-fanout.md` §"<CODE>"
 (1–19: the archive) plus a workbook home — **not restated here**. **Standing result,
 unchanged: `hK` is not closer.** **(GR-15)** is **untouched**; **class uniformity
 untouched**; no g-flank found; **E3 ARMED (by GBAL), NEVER fired, NOT one landing away** —
@@ -25,8 +25,8 @@ IS (GR-10) at `D = 0`; successor 4 SPENT — reached, and *necessary* (GLEAF). E
 **(GR-10)/(GR-15)/(OC-8) unchanged**. Detail: **blocks 11–13**.
 
 **W4's INFORMAL SIDE IS CLOSED** (58–61): **(T)/(E-pair)/(V) THEOREMS**, **(E) open, TIGHT,
-off every W4 path**, list **EMPTY** — leaving the USER call **(K-res)**, DEARER since
-**RPOOL 75 REFUTED (RS-5)**, and the held build. Detail: **block 9**.
+off every W4 path**, list **EMPTY** — leaving the USER call **(K-res)** (DEARER since RPOOL
+75) and the held build. Detail: **block 9**.
 
 **THE (BE-14) THREAD** — S-mark its **only open step**; the side-degree-`≥ 2` route's
 per-landing detail (BDEGTWO → BARCH → BFOUR → BSTEER → BGPROP) is **REFERENCE** in
@@ -35,22 +35,22 @@ it **TWO items + a corner**, one-end half **CONDITIONAL on (PENCIL-SATURATES) at
 `deg ≥ 2`** ((BE-164)–(BE-171)); cross-cut forcing **empty**; flag base **DISCHARGED**; the
 14 **REDUNDANT**, a **THEOREM at `deg 1`** ((BE-127)). At `deg ≥ 2` the item is **OPEN**: **(E4) REFUTED**, its repair
 **(BE-E4′)** the survivor — **UNPROVED**, one tight boundary **CLOSED TO ATTACK** by a
-**degree count at `x`** ((BE-156)–(BE-163)/(BE-172)–(BE-178)) — and **`Γ`-PROPERNESS
-DECIDED: FALSE** ((BE-180)–(BE-187)), the bridge transporting but the lemma refuted at
-10/99 by a proof, 53/99 closed **class-uniformly**, and properness the **wrong target**
-where it fails (the clause **POINTWISE** there). So **BOTH halves of S-mark hang on that
-one clause**. **OPEN** at 0/772 + 0/411; uniformity, the 12 (**unwitnessed, NOT excluded**,
+**degree count at `x`** ((BE-156)–(BE-163)/(BE-172)–(BE-178)) — and **`Γ`-PROPERNESS DECIDED: FALSE**
+((BE-180)–(BE-187)), the bridge transporting, 53/99 class-uniformly proper, 10/99 provably
+not. **AND ITEM 0(a) IS NOW CLOSED GENERICALLY ON THE ARC-`≤ 3` STRATA** — 15/99, by a
+**radical** argument, its POINTWISE form **REFUTED** at 24/24 gated points
+((BE-188)–(BE-195)). So **BOTH halves of S-mark hang on that one clause**, open on the
+arc-`≥ 4` rest. **OPEN** at 0/772 + 0/411; uniformity, the 12 (**unwitnessed, NOT excluded**,
 (BE-97)(iv), `⟨M⟩` empty at 93), cross-pair welding **untouched**.
 
 **On a future HIT the phase-boundary consequences are the USER's call** — a
-`PHASE-BOUNDARIES.md` event against the standing 2026-07-24 no-split adjudication,
-surfaced with a commit-count estimate, never unilateral; the 2026-08-05 Lean hold binds
-regardless.
+`PHASE-BOUNDARIES.md` event against the 2026-07-24 no-split adjudication, surfaced with a
+commit-count estimate, never unilateral; the 2026-08-05 Lean hold binds regardless.
 
 **FOURTEEN reference blocks sit in `notes/Pencil-structure.md`**, indexed there — **read
-them once per session**. The line that stays here: the **State of (K)** gap map
-(`notes/Pencil-informal.md`) is this phase's status object, **authoritative for every
-status word**; read it with `python3 notes/gapmap.py`, never `sed`/`grep`.
+them once per session**. The **State of (K)** gap map (`notes/Pencil-informal.md`) is this
+phase's status object, **authoritative for every status word**; read it with
+`python3 notes/gapmap.py`, never `sed`/`grep`.
 
 ## Current state
 
@@ -239,7 +239,7 @@ carries the standing **do-not-do** — no more (a′)/(b′) ledger directions),
 3 are spent.
 
 **THE TENTH STRATEGY-ONLY PASS'S RANKING LIVES AT `notes/Pencil-strategy.md` §8** and is **not restated here** (it supersedes the ninth pass, the 2026-08-25 list and the 2026-09-02 `hK` table *as rankings*). **The ninth's ranks 1–4 ALL SPENT**: BSCOND 76 ((S1)/(S2)), BARCH 77 (the method class **changes ambient**, 14 → 12 reduced to (E4), (BE-149)–(BE-155)), GLEAF 80 (the reach question SPLIT, no proof there moves (GR-10), (GR-145)–(GR-152)), BINSERT 82. **AND THE TENTH'S RANK 1 IS SPENT TOO** (BGPROP 85). **§8's bar now reads: `A_sharp` properness BARRED, (E4) REVERSED, and `Γ`-properness STRUCK AS A CLOSURE ROUTE** — recorded in §8, as §8's own rule requires; **no further properness attempt on that population is authorized**.
-**THE NEXT CONCRETE TASK is (BE-187)(iii)'s FIRST SLICE — a RANK statement, not a properness one**: prove `dim(Γ_Ω ∩ (Σ_p ⊕ Σ_p)) ≥ 2 ⟹ ρ̄_i(p) = V` at `k = 2`, i.e. that a 2-dimensional graph cut forces the side **rigid**. It is measured at **120/120** containments, it consumes `Γ_Ω` and `M°` alone, and (BE-182)(ii) is its handle — a totally singular 2-space **pins `p`** at its pencil vertex. **Why this replaced rank 1:** BGPROP found the bridge **TRANSPORTS** (and one step SHORTER than at `k = 1`, (BE-125)(ii)'s collapse dropping out) but the properness lemma (BE-149)(v) named **FALSE** — the codimension-6 floor makes `g_Ω ≥ 8 ⇒` graph-bad everywhere, at **10 of 99** — while delivering the route's **first class-uniform positive**, 53 of 99, from an incidence bound on the **bi-quadric** locus, plus the reduction `Π_x(p) = Σ_p ∩ Ω^⊥` that turns the family into products of **α-planes** ((BE-180)–(BE-187)). At the 10 the containment is **forced** with `ρ_i = 6`, so the clause is **POINTWISE** there: properness was the wrong target. **Alternatives, in order:** §8's **rank 2** ((BE-E4′) as open mathematics, no smallest commit), then the `V^k` graph at `k ≥ 3` ((BE-187)(iii)'s second slice, where fibre shape 4 first appears), then (BE-184)(ii)'s pointwise floor over all of `F` at the 5 residual configurations. **DOC DEBT, flagged:** the `(K-bare)` gap-map row is at **1,893 / 1,944** words carrying **241** labels (7.9 words each) — the next landing on it must **recompute** or the cap must be **bumped with a dated reason**, and compression is near its floor. **(BE-14) needs both halves of S-mark and both hang on (PENCIL-SATURATES) at `deg ≥ 2`**, whose surviving repair is (BE-E4′) ((BE-177)(iii)).
+**THE NEXT CONCRETE TASK is ARC LENGTH `≥ 4` — a RANK QUESTION ABOUT A FORM, not a search**: for the 4-dimensional `U = ⟨ℓ_j⟩ + W_j` of an `x`–`y` arc of length 4 through a side-neighbour of `x`, decide whether `rank(B|_U) ≤ 2` is forced at a legal chart point. If it is, (BE-191)(ii)'s **radical** argument extends and half (B)'s item 0(a) closes generically on a strictly larger stratum; if not, (BE-193)(iv) names why — a nondegenerate rank-4 form admits isotropic 2-planes, so the radical has nothing to bite on ((BE-195)(iii)). **Why this replaced the last two picks:** BGPROP (85) found `Γ`-properness's bridge TRANSPORTS but the lemma FALSE at 10/99, and BRANKV (86) found BGPROP's own *pointwise* successor FALSE at **24/24 fully gated chart points** — it had dropped the clause's **generic** quantifier, which is exactly the repair `-CHART` encodes ((BE-104)/(BE-105)). What both landings bought instead: **item 0(a) is CLOSED GENERICALLY on the arc-`≤ 3` strata**, 15 of 99 configurations, with **no properness sweep** — arc 2 impossible combinatorially ((BE-190)), arc 3 forcing `q_y ∈ π_x` which is proper and inhabited ((BE-191)/(BE-193)). **THE METHOD IS THE STANDING FINDING, three instances now** ((BE-172)/(BE-182)/(BE-191)): **compute the Klein form's RADICAL on the span the path bound hands you.** Incidence arguments here have produced caps; the radical ones have produced theorems. **BARS:** no further *pointwise* target for this clause, and no further properness sweep on the (BE-181) population. **Alternatives, in order:** §8's **rank 2** ((BE-E4′), open mathematics), then a *less degenerate* (BE-192) witness (needs the chart's hub-planarity at `y` and side 2 solved), then the `V^k` graph at `k ≥ 3`. **DOC DEBT:** the `(K-bare)` row is **2,185 / 2,514** words at **250** labels after a second authorized cap bump (dated reason in `check-gapmap-cells.py`); a **ROW SPLIT is PROPOSED, NOT EXECUTED** — word counts and cost in `notes/Pencil-fanout.md` §"BRANKV" — and it is the coordinator's to authorize. **(BE-14) needs both halves of S-mark and both hang on (PENCIL-SATURATES) at `deg ≥ 2`**, whose surviving repair is (BE-E4′) ((BE-177)(iii)).
 (GR-144)'s successor **1 is DEMOTED** (it **IS** (GR-10) here, (GR-140)(v)),
 **2** is engineering (150/150 decided, 2 473 of 2 623 left), **3** is a search (does *path*
 consistency decide where arc does not), and **4 is SPENT** (GLEAF 80: reached, and
@@ -443,19 +443,23 @@ paragraphs.**
 - **GLEAF** (80, recon-opus, ninth pass **rank 3**) — **THE REACH QUESTION SPLITS**: an
   Edmonds partition over six `M(G°)/K_j` DOES reach leaf-covering and the residual **IMPLIES**
   it, so no proof there moves (GR-10) ((GR-145)–(GR-152), *G165–G172*). `w4/gleaf.py`.
-- **DSAT** (79, recon-opus, the ninth pass's **C2 trace**) — **C2's OWN KILL CONDITION FIRED:
-  the motive is UNSAT off the class (PROVED), SAT on it (five shapes)** — struck as a
-  *uniform* carry, **not** as a class-only one ((DM-5)–(DM-11), §(K-dom) *D8–D14*). `w4/dsat.py`.
-- **OBAR** (78, recon-opus, ninth pass **U3 gate**) — **U3 IS NEGATIVE THREE WAYS, SO U3 IS
-  STRUCK AND U1 IS ALONE**; the unrun ledger was **(T3) restated pointwise** ((OC-56)–(OC-61), *O52–O57*). `w4/obar.py`.
+- **DSAT** (79, recon-opus, ninth pass **C2 trace**) — **C2's KILL CONDITION FIRED: UNSAT off
+  the class (PROVED), SAT on it** — struck as a *uniform* carry ((DM-5)–(DM-11), *D8–D14*). `w4/dsat.py`.
+- **OBAR** (78, recon-opus, ninth pass **U3 gate**) — **U3 NEGATIVE THREE WAYS, STRUCK, U1 ALONE**; the unrun ledger was **(T3) pointwise** ((OC-56)–(OC-61), *O52–O57*). `w4/obar.py`.
+- **BRANKV** (86, recon-opus, BGPROP's own successor) — **THE POINTWISE CLAUSE IS FALSE AND
+  ITS REFUTATION CLOSES ITEM 0(a) GENERICALLY ON THE SHORT-ARC STRATA.** The target was
+  **strictly stronger** than the clause ((BE-188)); two proved ceilings make the conclusion
+  force `dist ≥ 6` ((BE-189)); **arc 2 is combinatorially impossible** ((BE-190)) and **arc 3
+  is decided by the Klein form's RADICAL**, forcing coplanarity and `q_y ∈ π_x` ((BE-191)).
+  Planted there, the pointwise clause **FAILS at 24/24 gated chart points** — the *generic*
+  quantifier was load-bearing ((BE-192)) — but `q_y ∈ π_x` is **proper and inhabited**, so
+  the clause holds on a **DENSE OPEN** at arc `≤ 3`: **15/99**, no sweep ((BE-193)–(BE-195)). `w4/brankv.py`.
 - **BGPROP** (85, recon-opus, the tenth pass's **rank 1**) — **THE BRIDGE TRANSPORTS AND THE
-  LEMMA IS FALSE.** (BE-122)/(BE-123) never mention `A`, (BE-139)(iv) had already recorded
-  inputs 1–2 available at `k ≥ 2`, and (BE-125)(ii)'s collapse **drops out** — one step
-  **shorter** ((BE-180)). `Π_x(p) = Σ_p ∩ Ω^⊥` makes the family products of **α-planes**
-  ((BE-181)) and a quadric/vertex dichotomy gives the route's **first class-uniform**
-  positive, 53/99 ((BE-182)/(BE-183)) — **but the codimension-6 floor REFUTES (BE-149)(v)'s
-  lemma at 10/99** ((BE-184)/(BE-185)), where the containment is **forced** at `ρ_i = 6`, so
-  the clause is **POINTWISE** and properness the **wrong target** ((BE-186)/(BE-187)). `w4/bgprop.py`.
+  LEMMA IS FALSE.** (BE-122)/(BE-123) never mention `A` and (BE-125)(ii)'s collapse **drops
+  out** — one step **shorter** ((BE-180)); `Π_x = Σ_p ∩ Ω^⊥` makes the family **α-plane**
+  products and a quadric dichotomy gives the route's **first class-uniform** positive, 53/99
+  ((BE-181)–(BE-183)) — **but the codim-6 floor REFUTES the lemma at 10/99**, where the
+  containment is FORCED at `ρ_i = 6` ((BE-184)–(BE-187)). `w4/bgprop.py`.
 - **BSTEER** (84, recon-opus, (BE-162)(iii)) — **NO: `ρ̄₂` cannot be steered into `Π_x`**,
   so **(BE-E4′) SURVIVES** its tight `δ₂ = 1` boundary — the family's **first POSITIVE** fact.
   Total singularity makes the target a **PITCH** condition ((BE-172)); the freedom is REAL
@@ -467,14 +471,11 @@ paragraphs.**
 - **BARCH** (77, recon-opus, rank 2) — **THE METHOD CLASS CHANGES AMBIENT**; 14 → 12 reduced to (E4) ((BE-149)–(BE-155)). Detail: **block 8**. `w4/barch.py`.
 - **BDEGTWO** (74, opus, block 8) — **(BE-134)'s TWO GAPS SETTLED; the obstruction the
   ARCHITECTURE, inside `Λ²K⁴` only** ((BE-136)–(BE-141)), scoped at BARCH. `w4/bdegtwo.py`.
-- **BLINE** (73, opus, block 8) — **`(∗)` IS DECIDED: a theorem below `dim A = 3`, FALSE
-  from `dim A = 5`, (BE-127)(ii)'s route dying with it**; the clause **OPEN**, 0/270
-  ((BE-129)–(BE-135), *BE128–BE134*). `w4/bline.py`.
-- **BOPEN** (72, opus, block 8) — **(PENCIL-SATURATES-CHART) IS A THEOREM at every
-  side-degree-`1` terminal**, (BE-69) retired as its warrant ((BE-122)–(BE-128)).
-- **GGLOB** (71, opus, block 11) — **THE GLOBAL CSP IS CSP-FREE, both handles DEAD, the
-  82 % RE-LOCATED**; on this stratum the residual **IS (GR-10)** ((GR-139)–(GR-144),
-  *G159–G164*). **E1 does not fire.** `w4/gglob.py`.
+- **BLINE** (73, opus, block 8) — **`(∗)` IS DECIDED: a theorem below `dim A = 3`, FALSE from
+  `dim A = 5`**; the clause **OPEN**, 0/270 ((BE-129)–(BE-135), *BE128–BE134*). `w4/bline.py`.
+- **BOPEN** (72, opus, block 8) — **(PENCIL-SATURATES-CHART) A THEOREM at every side-degree-`1` terminal**, (BE-69) retired ((BE-122)–(BE-128)).
+- **GGLOB** (71, opus, block 11) — **THE GLOBAL CSP IS CSP-FREE, both handles DEAD**; on this
+  stratum the residual **IS (GR-10)** ((GR-139)–(GR-144), *G159–G164*); E1 does not fire. `w4/gglob.py`.
 - **OWALL** (70, opus, block 12) — **(OC-44)(iii) REDUCED to (OW)**, geometry-free, *Step
   O41*'s attack refuted by LOGIC ((OC-50)–(OC-55), §(K-out) *O47–O51*). `w4/owall.py`.
 - **GLIST** (68, opus, block 11) — **(GR-132)'s RESIDUAL: NORMAL FORM, LOCAL HALF EXACT,
@@ -488,10 +489,9 @@ paragraphs.**
 - **BSATUR** (65, opus, block 8) — **(PENCIL-SATURATES) IS FALSE, THE REPAIR IS FREE**
   ((BE-104)–(BE-108)): a bad plane exists **iff `ρ_i ≥ 5`**, the defect a **quantifier** no
   sampler could see; **SLACK**, repair **-GEN** (itself refuted at BSIGMA).
-- **BDOUBLE** (64, 2026-09-02, opus, **one-lined at the GLIST landing**) —
-  **(NO-DOUBLE-PENCIL) IS REFUTED and the tight block is REDUNDANT** ((BE-99)–(BE-103),
-  *BE98–BE102*), so **14 → 12** blocks — under (PENCIL-SATURATES), itself REFUTED at BSATUR
-  and again at BSIGMA; read `-CHART`. `w4/bdouble.py`.
+- **BDOUBLE** (64, 2026-09-02, opus) — **(NO-DOUBLE-PENCIL) IS REFUTED and the tight block
+  REDUNDANT** ((BE-99)–(BE-103), *BE98–BE102*), so **14 → 12** under (PENCIL-SATURATES),
+  itself refuted at BSATUR and BSIGMA; read `-CHART`. `w4/bdouble.py`.
 - **BUNIF** (63, 2026-09-02, opus, **one-lined at the GLIST landing**) — **`reach` IS
   PER-SIDE DATA, both directions PROVED**: (BE-67)(iii) ⟺ 14 per-side inequalities,
   (BE-71)(ii) answered generically ((BE-94)–(BE-98), *BE93–BE97*). `w4/bunif.py`.

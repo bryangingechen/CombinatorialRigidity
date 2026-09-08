@@ -1751,6 +1751,42 @@ disproving `PencilPair K 3 G`**), not cheapness.
    > authorized**, because (BE-186)(i) shows the population cannot exhibit the
    > discriminating case. **(BE-187)(iii)'s rank statement is the live successor** and is
    > the pass's own next rank-1 candidate; ranks 2–4 stand as written.
+   >
+   > **SPENT IN TURN 2026-09-08 (direction BRANKV, ordinal 86) — the rank
+   > statement is FALSE, and its refutation is the FIRST GENERIC CLOSURE of
+   > half (B)'s item 0(a) at side-degree `≥ 2`.** *(Recorded here per §8's own
+   > rule; ranks 2–4 are again untouched, so this is rank 1's slot passing to a
+   > successor rather than a re-rank.)* The pointwise target
+   > `dim Γ_Π ≥ 2 ⟹ ρ̄_i = V` is **refuted at 24 of 24 fully gated chart
+   > points** — three composite peels through `bline.legal_peel`,
+   > configurations from `binduc.flat_config`, `c_i(Π_x) = 2` with `ρ_i = 3`
+   > ((BE-192)). **The defect was dropping the word *generic*:**
+   > (PENCIL-SATURATES-CHART) is a *generic* statement by construction —
+   > `-CHART` is precisely the repair (BE-104)/(BE-105) forced after a plane no
+   > sampler draws refuted the universal form — and the successor removed it.
+   > **What replaced it is better than what was asked for.** An **arc ladder**
+   > on the path bound: at arc length 2 the containment is **combinatorially
+   > impossible** (`c₁ ≁ y` and `c₂ ≁ y`, cap-free, (BE-190)); at arc length 3
+   > the **radical** of the Klein form on `⟨ℓ_j, ℓ_{cw}, ℓ_{wy}⟩` is the middle
+   > hinge, every totally singular 2-space contains it, and `ℓ_{cw} ∈ Π_x` is
+   > the collinearity `assert_generic_star` forbids — so the arc is coplanar,
+   > `π_x = τ`, and `q_y ∈ π_x` ((BE-191)). That condition is **proper and
+   > inhabited** (2 of 783), so with (BE-123) and (BE-180)'s bridge the clause
+   > holds on a **dense open** at every `k = 2` peel with an arc of length
+   > `≤ 3` — **15 of 99**, no properness sweep ((BE-193)).
+   >
+   > **THE METHOD IS THE FINDING, and this is its third consecutive
+   > instance.** (BE-172) (BSTEER, total singularity), (BE-182) (BGPROP, the
+   > pencil vertex) and (BE-191) here: **compute the Klein form's RADICAL on
+   > the span the path bound hands you, and read the containment off it.** On
+   > this thread incidence arguments have produced **caps**; the three
+   > radical/pitch arguments have produced **theorems**. **The bar this
+   > leaves:** no further *pointwise* target for this clause is authorized, and
+   > no further properness sweep on the (BE-181) population. **The live rank-1
+   > candidate is ARC LENGTH `≥ 4`** — decide whether `rank(B|_U) ≤ 2` is
+   > forced on the 4-dimensional `⟨ℓ_j⟩ + W_j`; if it is, the ladder continues
+   > and item 0(a) closes on a strictly larger stratum ((BE-193)(iv),
+   > (BE-195)(iii)).
 2. **(BE-E4′) — the repaired two-sided clause.** Owner: `(K-bare)` row, (BE-153)/(BE-155)
    as amended by (BE-162)/(BE-177). It survives BSTEER's draw, is **tight at `δ₂ = 1`**, and
    delivers **14 → 12 on the both-flexible zone** with the rigid-side remainder carried by
@@ -1802,7 +1838,11 @@ rank 1**. *(**AMENDED 2026-09-08 at BGPROP's landing:** rank 1 is **SPENT** and
 proof, its bridge confirmed, and 53 of 99 closed class-uniformly. The bar now reads: no
 further **properness** attempt on this population is authorized; the live successor is the
 **rank** statement (BE-187)(iii), `dim Γ_Π ≥ 2 ⟹ ρ̄_i = V`. See the entry's own SPENT
-block.)*
+block.)* *(**AMENDED AGAIN 2026-09-08 at BRANKV's landing:** that rank statement is
+**FALSE** — it dropped the clause's *generic* quantifier — and item 0(a) is now **closed
+generically on the arc-`≤ 3` strata** (15/99) by a radical argument. The bar reads: **no
+pointwise target and no further properness sweep**; the live candidate is **arc length
+`≥ 4`**.)*
 
 **SUPERSEDED AS A RANKING by the 2026-09-08 tenth pass above; its per-entry content stays
 authoritative for the four spent ranks.**

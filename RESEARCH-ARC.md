@@ -602,6 +602,44 @@ reported *open* rather than *decided the other way*), and a control assert whose
 was the finding** — a landed driver's `BAD` omitting the `ρ_i ≤ 5` conjunct its own reading
 convention states. **One and two**, and the pairing is again what worked.
 
+**THE TWENTY-NINTH INSTANCE (2026-09-08, direction BRANKV) — kind 1, plain *refuted*, and
+it is recorded because the STRATUM CLAUSE WORKED THIS TIME.** Baseline: **twenty-eight
+instances and ten kinds**, above. The spec predicted the pointwise statement **proves**, by
+*"a rank count rather than a locus argument"*, and named its stratum as *"your return
+message, plus my own reading of the clause's statement — I have not opened (BE-186)'s
+proof"*. The verdict is **wrong**: the statement is **false** at 24 of 24 fully gated chart
+points. **What makes this instance worth a paragraph is the spec's own *tell*, which fired
+exactly as written:** *"a configuration with `Π_x ⊆ ρ̄_i` and `ρ_i = 5` — the 120/120 is a
+measurement"*. The direction found `ρ_i = 3`. **So the taxonomy now has an instance where
+the labelled prediction was refuted BY THE ROUTE ITS OWN ESCAPE CLAUSE NAMED** — kind 5's
+shape (*refuted with its own named clause vindicated*), one step better: kind 5's vindicated
+clause produced the *landing*; here it produced the *refutation of the verdict itself*, and
+the spec had priced it as the thing to *surface immediately* rather than work around.
+
+**No new kind, and the reason is the axis test again.** A wrong verdict whose stated tell
+was correct is kind 5, and kind 5 already covers it. Two things do generalize. **First, the
+cheapest correction on this thread is now measurably the spec's own escape clause** — three
+of the last five instances (BONEONE, BFOUR, BRANKV) were decided by following it rather
+than the prediction, which promotes *"write down where you expect to be wrong"* from
+courtesy to **the highest-yield sentence in a dispatch spec**. **Second, the defect had a
+name in the corpus already:** the refuted statement had dropped the word *generic* from a
+clause whose whole identity is that word — `-CHART` is the repair (BE-104)/(BE-105) forced
+after a degenerate configuration refuted the universal form — so this is the *third*
+degenerate-configuration refutation of a universal clause in the same arc. **The
+transferable instruction: when a successor is proposed by weakening a landed clause's
+quantifier, check it against the arc's own refutation habitats before ranking it** — the
+habitats are recorded, and they are cheaper to consult than a dispatch.
+
+**Corrections ran both ways, and the direction's own share was two again.** Against the
+spec's one wrong verdict, the direction self-caught a **vacuous assert of its own** — it
+claimed a rank-2 form on a 3-space admits no totally singular 2-space, the assert PASSED
+because it drew *random* 2-spaces (never isotropic), and the claim is false; the conclusion
+survived on a **corrected** mechanism (the radical) — and an **appearance collision** in
+its own driver, where Python locals `E1`/`E2` made an (L6) whole-repository grep return the
+live `(E1)`/`(E2)` family's tokens. **§4's shape twice in two consecutive landings, both
+self-caught**, which is the pattern §4 predicts and the reason it is this file's most
+load-bearing item.
+
 **RECONCILED 2026-09-03 AFTER THE CONCURRENT ROUND OF FOUR: the tally runs to
 TWENTY-THREE instances and NINE kinds.** The five new ones are one round's worth, which is
 itself the finding — a four-direction round primed by one coordinator produced a
