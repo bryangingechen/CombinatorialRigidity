@@ -4611,3 +4611,82 @@ treating them as hits would demand a rename round across the whole harness
 for zero collision risk. **The rule, stated once so the next landing does not
 re-litigate it: (L6) greps `(X<digit>)`, renames a fresh local that matches,
 and leaves single-letter call parentheses alone.**
+
+## Reserved namespace — direction BEFOURP (2026-09-08, **CONSUMED: six labels and six steps, two labels and two steps RETURNED**)
+
+| direction | section | labels | steps | driver |
+|---|---|---|---|---|
+| **BEFOURP** | §(K-bare-ext) — **extends**, no new section | **(BE-204)–(BE-209)** consumed; **(BE-210)/(BE-211) RETURNED** | **BE203–BE208** consumed; ***Steps BE209*/*BE210*** RETURNED | `w4/befourp.py` (three modes + `validate`) |
+
+**It opens at exactly the tail BLONGARC declared** (*"THE LIVE TAIL IS NOW
+(BE-204) / Step BE203"*). **Two labels and two steps are RETURNED** — the
+section needed six, and a decomposition recon that pads to its reservation is
+writing filler. **THE LIVE TAIL IS NOW (BE-210) / *Step BE209***, 0-hit
+verified at this landing. **The four earlier strays stay available and
+unused**: **(BE-163)** / ***Step BE162*** (BFOUR's), **(BE-179)** /
+***Step BE178*** (BSTEER's), ***Step INS8*** (BINSERT's), and now
+**(BE-210)–(BE-211)** / ***Steps BE209–BE210*** (this direction's).
+
+**0-hit verification, re-run by the direction as its FIRST action** (clause
+(L7): **every** token in the range, enumerated rather than sampled, **hits and
+files reported separately**), across the whole tree **at `HEAD`**:
+
+| token | `(BE-n)` hits / files | bare `BE-n` hits / files | step `BEn` hits / files |
+|---|---|---|---|
+| `BE-204` / `BE203` | **1 / 1** | **2 / 1** | **1 / 1** |
+| `BE-205`–`BE-211` | 0 / 0 | 0 / 0 | 0 / 0 (`BE204`–`BE210`) |
+
+`BEFOURP` and `befourp` both **0 / 0** as raw substrings, (L5)'s check
+included. Every non-zero cell is BLONGARC's own tail declaration, **not a
+consumption**; the bare `BE-204` reads **2 hits in 1 file** for the same
+reason BLONGARC's `BE-196` did (that block names the token twice). The
+enumeration **reproduced the coordinator's prep token-for-token in both
+metrics** — the **fifth consecutive** reservation to do so, and the first to
+close *under* its range.
+
+**TWO LABELS ARE MINTED OUTSIDE THE `(BE-n)` FAMILY, AND (L1) FIRED ON THE
+FIRST DRAFT OF BOTH.** The section's two-piece decomposition needs names for
+the pieces, and the first draft used the bare families **`(F_f)`/`(G_g)`** with
+members `(F_4)`, `(F_5)`, `(F_6)`, `(G_1)`, `(G_2)`. **The (L1) grep struck
+them:** `(G_1)` has **14** hits in **three landed drivers** —
+`w4/bearfull.py`, `w4/bearcase.py`, `w4/brule.py`, all writing
+`E(G_1)` / `dist_(G_1)` / `dist_{G_1}` for a *graph*, not a label — and
+`(F_5)` has **6**. That is (L5)'s substring half firing on a *claim* token
+rather than a direction code, and it is exactly the shape that made `PAT`
+unusable. Per (L1)'s remedy the pieces are **section-tag prefixed**, matching
+`(BE-E4′)`'s own precedent:
+
+| token | owner | what it is | status |
+|---|---|---|---|
+| **`(BE-F_f)`** | §(K-bare-ext) (BE-205)(iii) | the *floor* piece family, `c_i(Π_x) = 2 ⟹ ρ_i ≥ f` | family; `(BE-F_5)`/`(BE-F_6)` **REFUTED**, `(BE-F_4)` **OPEN** |
+| **`(BE-G_g)`** | §(K-bare-ext) (BE-205)(iii) | the *other-side* piece family, `c_i(Π_x) = 2 ⟹ e_j ≥ g` | family; `(BE-G_1)` PROVED at `ρ_j = 1` (BSTEER), `(BE-G_2)` **OPEN** |
+
+Both were verified **0-hit as raw substrings** (`BE-F_`, `BE-G_`,
+`(BE-F_f)`, `(BE-G_g)` and every member token) before the rename landed, and
+the sub-members `(BE-G_2a)`/`(BE-G_2b)` likewise. **The underscore is
+load-bearing and deliberate**: it keeps the tokens off the `(X<digit>)` shape
+(L6) greps, so they are not confusable with the `(E1)`/`(E4)`/`(S1)` families.
+
+**ONE FURTHER LABEL CONSUMED FROM OUTSIDE THE FAMILY, and it is BFOUR's, not
+a mint: `(BE-E4′)`.** This direction *decomposes* that clause and cites it
+throughout. The `(E4)` collision recorded under clause (L6) is **unchanged in
+scope**, and every citation of the bare `(E4)` is **(L3)-qualified** as
+`§(K-bare-ext) (E4)` — including the one inside the driver's own
+`e4prime` docstring, which is the first time that qualification has been
+carried into Python rather than only into prose.
+
+**(L6) landing-time bare-token grep, RUN over the whole repository — and it
+did NOT fire this time, because (L1) caught the same tokens one clause
+earlier.** `grep -oE '\([A-Z][0-9]\)'` over the added prose **and** over
+`w4/befourp.py` returns **exactly one** token in each, `(E4)`, both
+(L3)-qualified. The driver's locals were named lowercase from the first draft
+(`rho1`, `del2`, `esd1`, `sp1`, `f1`/`f2`/`fh`) specifically to stay off the
+shape — BRANKV's `E1`/`E2` and BLONGARC's `P1`/`P2`/`U1` renames applied
+**pre-emptively** rather than at the landing grep, which is the first landing
+in the phase where that check cost nothing. **BLONGARC's scope statement is
+consumed unchanged**: `(X<digit>)` in, bare single-letter call parentheses out.
+
+**NO OTHER SYMBOL IS A LABEL.** The section's *notation* additions — `q̂`
+((BE-110)(i)'s projection `ω ↦ ω ∧ p_x`), `Σ_x`, `α_x`, `f` and `g` — are
+objects and parameters, written as mathematics; `f` and `g` in particular are
+**bare lowercase parameters of the two families**, never parenthesized alone.

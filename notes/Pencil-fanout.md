@@ -1,11 +1,23 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: EIGHT fan-outs, FIFTY-TWO single directions, ONE draft-only parallel direction,
+**Status: EIGHT fan-outs, FIFTY-THREE single directions, ONE draft-only parallel direction,
 FOUR concurrent pairs, ONE concurrent round of four and ONE concurrent round of three
-dispatched; 94 LANDED, **NONE IN FLIGHT, NONE DRAFTED** — the round of three is COMPLETE
-(BFOUR 81, BINSERT 82, BSERIES 83) and **BSTEER 84, BGPROP 85 then BRANKV 86 landed as
-single dispatches after it**, a chain of three in which each answered the very task its
-predecessor handed over — and the third **refuted its predecessor's own successor**.
+dispatched; 96 LANDED, **NONE IN FLIGHT, NONE DRAFTED** — the round of three is COMPLETE
+(BFOUR 81, BINSERT 82, BSERIES 83) and **BSTEER 84, BGPROP 85, BRANKV 86, BLONGARC 87 then
+BEFOURP 88 landed as single dispatches after it**, a chain of **five** in which each
+answered the very task its predecessor handed over — the third **refuted its predecessor's
+own successor**, the fourth **exhausted its own method class**, and the fifth
+**decomposed the survivor** ((BE-204)–(BE-209)).
+
+*(**THIS HEADER WAS STALE BY ONE, caught at BEFOURP's landing (2026-09-08).** It read
+*"94 LANDED"* with the chain ending at BRANKV 86: **BLONGARC's landing (`19f5d8b5`)
+updated its own section to LANDED and did not touch this header**, so the roll call was one
+direction behind for a whole dispatch. That is **item (v)** of this file's own
+status-surface list — *"this file's own top `**Status:**` header"* — firing again, the
+**second** instance in this file and the **seventh** of the shape; and it is the shape's own
+prediction holding once more: **a document's own header is precisely the part a
+section-scoped edit does not re-read.** Repaired here together with this landing's own
+increment, so the count above is `94 + BLONGARC + BEFOURP = 96`.)*
 
 *(Round state, coordinator, 2026-09-08 — the **round of three**, CLOSED at BFOUR's landing.
 Three dispatched read-only, three landed serially, **zero label collisions and zero
@@ -15788,3 +15800,168 @@ and the row split was NOT executed** (adjudicated `424f93dc`, DECLINED FOR
 NOW, queued above with its costing intact). Figure-invariance gate discharged
 by *No tracked driver modified*: the landing **adds** `w4/blongarc.py` and
 edits no `*.py`/`*.m2` under `notes/scripts/`.
+
+## Direction BEFOURP (arc ordinal 88, direction 96) — **§8's RANK 2 IS *DECOMPOSED*, NOT OPEN MATHEMATICS: an exact two-piece frontier, one member REFUTED by a landed witness, a first slice that is a re-statement — and one price, the generic flag regime becoming LOAD-BEARING**
+
+**The spec.** A **decomposition recon**, not a build: does (BE-E4′) — (E4)
+plus `δ₁, δ₂ ≥ 1` — admit a route, what are its buildable pieces, and what is
+the smallest first slice? Four questions: coverage (does it reach the 51 the
+arc family cannot?), decomposition (is there a `δ₂` ladder?), method (does the
+arc's radical finding have an object at a statement about a *pair*?), and
+flag-don't-force (if it needs new mathematics with no first slice, say so and
+price it). **One commit, nothing else in flight; driver
+`notes/scripts/w4/befourp.py`; labels (BE-204)–(BE-211), Steps BE203–BE210.**
+
+**THE FIRST CHECK — the coordinator's own claim, and the verdict SPLITS it.**
+The spec's promotion of rank 2 rested on *"nothing in a statement about `δ`
+and `e` looks arc-dependent"*, and named its own refutation-tell: *"`e_i`
+turning out to be defined through `dist` or the side's topology"*. Opened at
+source: (BE-153)(v) defines **`e_i = ρ_i − c_i(Π_x)`** with `ρ_i = δ_i + a_i`,
+and `barch.e4`/`barch.all_tuples` implement exactly that — **no arc, distance
+or topology datum appears**. *So the tell does not fire.* **But the argument
+was wrong anyway:** (BE-189)(ii)'s proved ceiling `ρ_i ≤ dist_{side_i}(x,y)`
+*does* reach `e_i`, and (BE-E4′)'s conclusion therefore forces
+**`dist₁ + dist₂ ≥ 6 + c_j(Π_x)`** — the two-sided analogue of (BE-189)(iii),
+and a necessary condition provable off the graph. What saves the entry is that
+this is a **SUM over the pair** where (BE-189)(iii)'s threshold is **per
+side**: a firing tuple satisfying (BE-E4′) exists at `ρ = (3,3)`, needing only
+`dist_i ≥ 3` on each side. **Coverage holds — and it is a consequence of the
+two-sidedness, the same property (BE-153)(iii) said made (E4) hard to refute,
+not of arc-independence** ((BE-204)).
+
+**THE ARITHMETIC DECOMPOSES EXACTLY, AND THE FRONTIER IS ENUMERATED.** With
+the firing side `i` (`c_i(Π_x) = 2`) and the other side `j`, define
+`(BE-F_f)`: `ρ_i ≥ f`, and `(BE-G_g)`: `e_j ≥ g`. Over all 6 400 tuples the
+245 (BE-E4′) escapes die **exactly** on `f + g ≥ 6` — minimal members `(2,4)`,
+`(3,3)`, `(4,2)`, `(5,1)`, `(6,0)` — and **neither piece suffices alone**
+(`(BE-F_5)` leaves 10, `(BE-G_1)` leaves 165) ((BE-205)(iii)). Two facts fall
+out. Every escape has `ρ_i ≤ 5` at every firing side, so a (BE-E4′) violation
+**is** a (PENCIL-SATURATES) violation there — but (PENCIL-SATURATES) on the
+both-flexible zone is **already refuted** at (BE-104)(i)'s own witness
+`(5,3|0,0|5,3|2,0)`, which satisfies (BE-E4′), so *"prove the clause where
+both sides are flexible"* is **not** the route ((BE-205)(ii)).
+
+**THE `δ₂`-LADDER QUESTION IS ANSWERED: NO** — and the grading that replaces
+it makes BLONGARC's own invariant reusable. (BE-161)(i)'s rungs are a **slice**
+at fixed `δ₁ = 5` and fixed `a_i = 0`, not a decomposition; the violating set
+is live at `min δ_i` up to **3**. What decomposes it is **(BE-110)(i)'s corank
+identity**, and the reason is a naming collapse worth recording on its own:
+**BLONGARC's α-space `α_x` and BPROPER/BSATUR's `Σ_x` are the SAME SUBSPACE**,
+both `p_x ∧ K⁴` — asserted at 21/21 rows — so **(BE-201)(i)'s master invariant
+and (BE-110)(i)'s corank identity are ONE theorem read on two different
+subspaces**, `U` and `ρ̄_i`. Read on `ρ̄_i` it gives, exactly,
+**`e_i = dim(ρ̄_i ∧ p_x) + [Σ_x ⊆ ρ̄_i]`** — four rungs, graded by the
+dimension of the side's reach *seen from `p_x`*, with `dim ≤ 2` meaning the
+projected hinge lines are **concurrent**. And it has **no arc-length
+parameter**: `dim(ρ̄_i ∧ p_x)` is capped at 3 by the ambient `Λ²(K⁴/p_x)` at
+every arc length, which is why the corresponding reading has no ceiling where
+the arc reading had one — (BE-203)(iii)'s own generalizable lesson selecting
+the object ((BE-206)).
+
+**`(BE-F_5)` IS FALSE, IN THE REGIME, AT A LANDED WITNESS — and side 2 there
+had never been measured.** (BE-118)(ii)'s 21 rows carry `Σ_x ⊆ ρ̄₁` at
+`ρ₁ = 4` with `flag_frame` **non-None** and side 2 `rnode_shaped`, so the
+grading is 1, `e₁ = 2`, and the frontier's **`(5,1)` member — the only one
+whose *both* halves had landed predecessors, (BE-110)(ii)'s floor and BSTEER's
+`e_j ≥ 1` — is struck by its floor half** ((BE-207)(i)). Side 2, measured for
+the first time: **`ρ₂ = 3`, `c₂(Π_x) = 0`, `e₂ = 3` at 21/21**, so (BE-E4′)
+**holds at 21/21 with margin `+1`** and survives there **entirely on piece
+`(BE-G)`**. The live member is **`(BE-F_4)` ∧ `(BE-G_2)`** ((BE-207)).
+
+**AND THE TWO LANDED POINTWISE-REFUTATION FAMILIES ARE THE SHARPEST TEST THE
+CLAUSE HAS — it survives them ONLY by the flag-regime gate.** BRANKV's 24
+gated arc-3 points and BLONGARC's 24 gated arc-4 points both sit at
+`c₁(Π_x) = 2` with `ρ₁ = 3`, so `e₁ = 1` and (BE-E4′) needs `e₂ ≥ 3`; neither
+predecessor measured side 2. Re-running both constructions verbatim and
+measuring **both** sides:
+
+> **`ρ = (3,3)`, `c(Π_x) = (2,2)`, `e = (1,1)`, margin `−2`, at 48 of 48 —
+> with `(δ₁, δ₂)` in `{(1,3), (2,3), (3,3), (4,3)}`, so BOTH SIDES ARE
+> FLEXIBLE at every one.**
+
+**`flag_frame` is None at 48/48**, and the 14 per-side inequalities (E4) and
+(BE-E4′) exist to thin are stated in the generic flag regime ((BE-98)) — so
+the rows are **REPORTED, never a refutation**, the same disposition
+(BE-110)(iv) gave its own `ρ_i = 4` hit one gate earlier. A **second,
+independent** reason: `a = (3,12)` there, so `ρ_i ≠ δ_i + a_i` and the rows
+sit outside `barch.all_tuples`'s space too. **The price, stated as a
+weakening:** the generic flag regime is now **LOAD-BEARING** for (BE-E4′) in a
+way it was **not** for BSTEER's `δ₂ = 1` closure, whose obstruction was a
+degree count valid at every configuration; (BE-177)(ii)'s *closed to attack*
+holds for `δ₂ = 1` but **not** for the `(2,2)` corner — which is **85 of the
+245** escapes and 48/48 of the measured rows, the dominant violating shape and
+(BE-97)'s (NO-DOUBLE-PENCIL) corner reached from a new direction. **No margin
+is claimed off the regime, so item 0(b) [MARGIN] stays unexhibited**
+((BE-208)).
+
+**THE ROUTE, AND THE SMALLEST FIRST SLICE.** (BE-E4′) follows from
+`(BE-F_4)` ∧ `(BE-G_2)`, which splits three ways: `(BE-F_4)` (**OPEN**, the
+route's real cost, object = (BE-110)(i)'s projection `q̂`), `(BE-G_2a)`
+`c_j(Π_x) = 0` (**PROVED at `ρ_j = 1`** by BSTEER's degree count), and
+`(BE-G_2b)` `ρ_j ≥ 2` ((BE-177)(i)'s pendant count already gives `δ₂ ≥ 2` on
+its habitat). **The slice: lift (BE-175)(i)/(ii) off its `ρ₂ = 1` hypothesis
+to `c_j(Π_x) = 0`.** (BE-175)(i) already concludes *"`dim(ρ̄_i ∩ Π_x) ≥ 1`
+**always** at a series end at `x`"* — a statement about the mechanism, with no
+`ρ_j` in it — and (ii)/(iii) exclude the series end by `rnode_shaped` and by
+the determined flag; **neither step mentions `dim ρ̄_j`**. So the slice is a
+re-statement plus (BE-175)(iii)'s own residual cap plus the **added
+generic-flag-regime hypothesis** the 48 rows show is now needed. **Its kill
+condition is cheap and named:** the lift is false without *both* the
+`rnode_shaped` and the regime hypotheses ((BE-176)(i)'s 9/9 S-node rows and
+these 48), so a hunt for a **third** `c_j(Π_x) ≥ 1` mechanism at an
+R-node-shaped side 2 *inside* the regime either finds one — and the whole
+frontier dies with `(BE-G)`, since `g = 0` suffices only at `f = 6` — or does
+not ((BE-209)).
+
+**Method verdict (the spec's question 3).** The arc's standing finding at
+three instances was *compute the Klein form's radical on the span the path
+bound hands you*. **The method has an object here**, and it is not the radical
+but the **projection `q̂ = (· ∧ p_x)` whose kernel is `Σ_x = α_x`** — the same
+machine on `ρ̄_i` instead of `U`. **And (BE-E4′)'s pair character is not an
+obstruction:** the decomposition is into two **per-side** statements, so the
+method never has to speak about a pair ((BE-209)(iii)).
+
+**What did NOT move.** (BE-14), S-mark, (β) at and outside the window,
+cross-pair welding, class uniformity, the 12 unwitnessed-not-excluded blocks,
+item 0(b) **[MARGIN]** (still unexhibited), (BE-101)(iii), the flag base,
+`Γ`-properness (still false class-uniformly), item 0(a)'s **48 of 99** generic
+closure and its **51** open, (GR-10), (GR-15), (OC-8), (K-res), W4,
+`hbareSplit`, `hK`, `hcontract`. Side-degree `≥ 3` and the `V^k` graph
+untouched. No `.lean` opened. **Not a PENCIL event**; `hK` is not closer.
+
+**Self-caught / found defects.** *(a)* The first draft of the route reduced
+(BE-E4′) to `Π_x ⊆ ρ̄_i ⟹ ρ_i ≥ 5` and cited (BE-110)(ii) as its predecessor.
+**Both halves were wrong**: (BE-110)(ii) is a floor for `Σ_x ⊆ ρ̄_i` (3
+conditions) and `Π_x ⊆ ρ̄_i` is strictly weaker (2), *and* the `≥ 5` floor is
+already **refuted off a path side** by (BE-118)(ii)/(BE-110)(iv). Caught by
+opening (BE-110)(ii)'s proof — which consumes the path in both steps — rather
+than reading its conclusion, and it is what produced the corank grading and
+hence the honest frontier. *(b)* A first pass read (BE-186)(i)'s measured
+equivalence `Π_x ⊆ ρ̄_i ⟺ ρ_i = 6` as available, which would have made
+(BE-E4′) automatic; it is **population-scoped to `k = 2`** and BFOUR's own
+`(E4)` witness (`ρ₁ = 5`, `c₁ = 2`, `deg₁(x) = 1`) refutes it outright.
+*(c)* **A scope check side 1 did not need.** `brankv._gated` and
+`blongarc._gated4` measure side 1 only, reading its edges off
+`bproper.composite` while the configuration lives on `bline.legal_peel`'s
+graph; measuring **side 2** requires knowing the two are the same graph. It is
+asserted, not inferred: the two edge sets **partition** `H`, and
+`bpeel.delta_pair`'s own split of `H` at `(x, y)` **reproduces** them.
+*(d)* (L1) fired on the first draft's piece names — bare `(F_f)`/`(G_g)`, with
+`(G_1)` carrying **14** hits in **three landed drivers** writing `E(G_1)` for
+a graph — so the pieces were **renamed** `(BE-F_f)`/`(BE-G_g)` per (L1)'s
+section-tag remedy, matching `(BE-E4′)`'s own precedent. (L6) consequently did
+**not** fire at the landing grep, the first landing in three where it cost
+nothing.
+
+**Landing bookkeeping.** `(K-bare)` **RECOMPUTED, not appended**: 2,368 →
+**2,483** words at **269** labels (9.23 each) against the **unbumped**
+1257/1257 combined **2,514** cap — **31 words of headroom**, `gapdiff.py
+K-bare HEAD` reporting **0 DROPPED** and 9 added, the `+115` net paid for by
+compressing two reference-only BLONGARC/BRANKV blocks in the same row. **The
+cap was NOT bumped and the row split was NOT executed** (adjudicated
+`424f93dc`, DECLINED FOR NOW, its costing intact above); with 31 words left,
+**the next landing on this row cannot pay by compression alone** and the
+coordinator's third-bump trigger is one direction away. Figure-invariance gate
+discharged by *No tracked driver modified*: the landing **adds**
+`w4/befourp.py` and edits no `*.py`/`*.m2`. **Two labels and two steps
+RETURNED** ((BE-210)/(BE-211), *Steps BE209*/*BE210*).

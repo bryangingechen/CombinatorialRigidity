@@ -640,6 +640,44 @@ live `(E1)`/`(E2)` family's tokens. **§4's shape twice in two consecutive landi
 self-caught**, which is the pattern §4 predicts and the reason it is this file's most
 load-bearing item.
 
+**THE THIRTIETH INSTANCE (2026-09-08, direction BEFOURP) — kind 10's THIRD, and it isolates
+the axis kind 10 was minted for.** Baseline: **twenty-nine instances and ten kinds**, above,
+cited rather than re-derived. The spec predicted **coverage holds** for (BE-E4′) and named
+its stratum honestly (*"the round's return messages plus the statement's shape — I have NOT
+opened (BE-153)'s proof or `e_i`'s definition"*), with a stated tell: *"`e_i` turning out to
+be defined through `dist` or the side's topology."* **The verdict is right and the tell does
+not fire** — (BE-153)(v) defines `e_i = ρ_i − c_i(Π_x)`, arc- and distance-free. **But the
+spec's REASON was wrong, and the correction is the finding:** the argument offered was
+*"nothing in a statement about `δ` and `e` looks arc-dependent"*, and (BE-189)(ii)'s proved
+ceiling **does** reach `e_i`, forcing `dist₁ + dist₂ ≥ 6`. What saves the entry is that the
+inherited condition is a **sum over the pair** where the boundary that exhausted the
+predecessor's method class is **per side** — so coverage is a consequence of the
+**two-sidedness**, the very property that made the clause hard to *refute*, not of
+arc-independence.
+
+**No new kind, by the axis test.** Kind 10 is *verdict right, correction entirely in the
+mechanism*; a verdict right for a wrong reason that the direction replaces with a correct one
+is a new **point** on that axis, not a new axis. What generalizes is sharper than the
+instance: **a spec that names its tell and its stratum can still be wrong in the *warrant*
+while right in both** — so the highest-yield sentence in a spec (§7's own promotion of the
+escape clause) needs a companion, **state the reason separately from the verdict so the
+direction can refute one without the other**. Three of the last six instances turned on the
+escape clause; this is the first that turned on the *warrant* while the escape clause and the
+verdict both held.
+
+**Corrections ran both ways, and the direction's share was two plus a status surface.** The
+direction self-caught **two** of its own: a first-draft route that reduced the clause to a
+`ρ_i ≥ 5` floor and cited a **path**-side theorem for it — wrong twice over, since that
+theorem is about a *strictly stronger* containment and its conclusion is already refuted off
+paths by a landed witness — and a first-draft reading of a **population-scoped** measured
+equivalence as if it were available, which its own predecessor's counterexample refutes
+outright. Both were caught by opening the cited proofs rather than their conclusions, which
+is §7's *docstrings are not evidence* rule applied to a workbook label. It also caught a
+**coordinator-side status surface**: `notes/Pencil-fanout.md`'s own `**Status:**` header,
+left **stale by one** at the previous landing — the **seventh** instance of that shape and
+the **second** in that file, and one more confirmation of its own generalization that *a
+document's own header is precisely the part a section-scoped edit does not re-read.*
+
 **RECONCILED 2026-09-03 AFTER THE CONCURRENT ROUND OF FOUR: the tally runs to
 TWENTY-THREE instances and NINE kinds.** The five new ones are one round's worth, which is
 itself the finding — a four-direction round primed by one coordinator produced a

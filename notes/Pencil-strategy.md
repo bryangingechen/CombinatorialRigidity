@@ -1845,6 +1845,44 @@ disproving `PencilPair K 3 G`**), not cheapness.
    falsification, BSTEER's boundary draw), so what is left is open mathematics rather than a
    smallest commit — which is the honest reason it is rank 2 and not rank 1. *Kill condition:
    proved, or a `δ_i ≥ 1` falsifier. Decided by: the `(K-bare)` row.*
+
+   > **AMENDED 2026-09-08, direction BEFOURP — RANK 2 STAYS FIRST AND IS NOW
+   > *DECOMPOSED*, NOT open mathematics.** The entry above says *"what is left is open
+   > mathematics rather than a smallest commit"*; that is **no longer true**, and the
+   > sentence stands only as the reason it was ranked 2 in the tenth pass. What changed:
+   > *(a)* **Coverage is settled and the reasoning that promoted the entry was wrong.**
+   > `e_i = ρ_i − c_i(Π_x)` carries no arc, distance or topology datum ((BE-204)(i)) — so
+   > the coordinator's refutation-tell does not fire — **but** (BE-189)(ii)'s ceiling does
+   > reach it, and (BE-E4′)'s conclusion forces `dist₁ + dist₂ ≥ 6`. That is a **sum over
+   > the pair** where (BE-189)(iii)'s threshold is **per side**, so the boundary that
+   > exhausted rank 1's method class does **not** transfer, and (BE-E4′) has content on
+   > the arc-`≤ 5` strata as well as the 51 ((BE-204)(iii)). **Coverage is a consequence
+   > of the two-sidedness, not of arc-independence.**
+   > *(b)* **The arithmetic decomposes exactly, into two PER-SIDE pieces on a five-member
+   > frontier `f + g ≥ 6`** — `(BE-F_f)` (a floor on the firing side's `ρ_i`) and
+   > `(BE-G_g)` (a floor on the other side's `e_j`), with `(2,4)`, `(3,3)`, `(4,2)`,
+   > `(5,1)`, `(6,0)` minimal and **neither half sufficient alone** ((BE-205)(iii)).
+   > *(c)* **The `δ₂` ladder is NOT the decomposition** — (BE-161)(i)'s rungs are a slice
+   > at fixed `δ₁`, and the violating set is live at `min δ_i` up to 3. The grading that
+   > works is **(BE-110)(i)'s corank identity**, and `α_x` **is** `Σ_x`, so BLONGARC's
+   > master invariant and BPROPER's identity are **one theorem on two subspaces**
+   > ((BE-206)(i)/(ii)); on `ρ̄_i` it gives `e_i = dim(ρ̄_i ∧ p_x) + [Σ_x ⊆ ρ̄_i]`, four
+   > rungs, **no arc-length parameter**.
+   > *(d)* **`(BE-F_5)` — the one frontier member with landed predecessors on both halves
+   > — is REFUTED in the regime** at (BE-118)(ii)'s 21 rows ((BE-207)(i)); side 2 there,
+   > measured for the first time, gives `c₂(Π_x) = 0` and `e₂ = 3`, so (BE-E4′) holds
+   > 21/21 at margin `+1`. **The live member is `(BE-F_4)` ∧ `(BE-G_2)`.**
+   > *(e)* **THE SMALLEST FIRST SLICE, which this entry did not have:** lift
+   > (BE-175)(i)/(ii) off its `ρ₂ = 1` hypothesis to `c_j(Π_x) = 0`. Neither step mentions
+   > `dim ρ̄_j`, so the slice is a re-statement plus two added hypotheses ((BE-209)(ii)).
+   > *(f)* **THE PRICE, and it is real.** At the 48 landed gated arc-3/arc-4 chart points
+   > **both** sides contain `Π_x`, `e = (1,1)`, margin **−2**, both sides flexible — and
+   > the clause survives them **only** because `flag_frame` is None at 48/48. **So the
+   > generic flag regime is now LOAD-BEARING for (BE-E4′)**, which BSTEER's `δ₂ = 1`
+   > closure did not need ((BE-208)(iii)), and (BE-177)(ii)'s *closed to attack* holds for
+   > `δ₂ = 1` but **not** for the `(2,2)` corner. *Kill condition, sharpened: `(BE-F_4)`
+   > and `(BE-G_2)` both proved in the regime, or a third `c_j(Π_x) ≥ 1` mechanism at an
+   > R-node-shaped side 2 **inside** the regime. Decided by: the `(K-bare)` row.*
 3. **LEDGER ITEM 1 — habitat (II), the sharpening.** Owner: `(K-bare)` row, (BE-58)(iv) as
    re-scoped by (BE-169)/(BE-170). BSERIES's re-scoping is what promotes this: item 3's
    surviving half **is** item 1, and habitat (II) — clean at **both** ends — admits **no
@@ -1895,7 +1933,15 @@ answered **NO** as asked, item 0(a) is now **closed generically at arc `≤ 5`**
 radical-plus-α-space argument, and **the whole arc / path-bound METHOD CLASS is SPENT** —
 its boundary `|arc| = 6` is (BE-189)(iii)'s own threshold, so it reaches only the strata
 where the clause is vacuous. **Rank 1 has no successor left; the next dispatch starts at
-rank 2.**)*
+rank 2.**)* *(**AMENDED A FOURTH TIME 2026-09-08 at BEFOURP's landing:** rank 2 is
+**decomposed, not spent** — see its own AMENDED block. Three bar entries are added, all
+about rank 2: **no further `δ₂`-ladder attempt on (BE-E4′)** ((BE-161)(i) is a slice at
+fixed `δ₁`, not a decomposition, (BE-205)(iv)); **no attempt at `(BE-F_5)`/`(BE-F_6)` or at
+(PENCIL-SATURATES) on the both-flexible zone** (both refuted at landed witnesses,
+(BE-205)(ii)/(BE-207)(i)); and **no reading of the 48 gated arc-3/arc-4 rows as a
+refutation of (BE-E4′)** (off the regime by two independent measurements, (BE-208)(ii)).
+Rank 1's bars are unchanged and none is crossed: the corank grading is on `ρ̄_i`, not the
+arc span, and carries no arc-length parameter ((BE-206)(v)).)*
 
 **SUPERSEDED AS A RANKING by the 2026-09-08 tenth pass above; its per-entry content stays
 authoritative for the four spent ranks.**

@@ -1172,6 +1172,10 @@ are a recorded *Harness debt* item (see below).
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/blongarc.py ladder` | 1 s | ibid. *Steps BE200-BE201* (**(BE-201)**, **(BE-202)**: the MASTER INVARIANT `dim(U cap alpha_x) = max(1, min(n,6) - 3)` asserted at every arc length 2..7, 24 draws each; `dim Ubar = min(n,6) - 2`; the CONSTRUCTED cone census of `Ubar` -- 1 line at n = 2,3, **2 lines at n = 4**, a CONIC at n = 5 (>= 5 members BUILT per draw from the rational point `l_2` by the secant parametrization) and a quadric at n >= 6 -- with the binary case counted in closed form by an exact rational-square discriminant test; the determinantal readings `rank([l_1..l_n] ++ alpha_x)` and `rank([l_1..l_n, l_{j'}])`, the latter `n + 1` at n <= 5 and `6` at n >= 6; and the containment verdict asserted to flip **exactly** at n = 6, 144/144. **The boundary `|arc| = 6` is (BE-189)(iii)'s own threshold**) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/blongarc.py pop` | 49 s | ibid. *Step BE202* (**(BE-203)**: the closure PRICED on BARCH's own 99-configuration / 783-point population -- the per-configuration `dist` census reproduced identically (`{2: 9, 3: 6, 4: 21, 5: 12, 6: 21, 7: 12, 8: 12, 9: 6}`), `dist = min_j |arc_j|` **asserted** at every configuration, coverage **15 of 99** at arc <= 3 / **36** at arc <= 4 / **48** at arc <= 5, `dim U = min(|arc|, 6)` at 783/783, properness WITNESSED (`l_{j'} in U` at **0 of 378** arc-<=5 points and at **405 of 783** overall -- exactly the `dist >= 6` points), BOTH clause conjuncts read (containment 120, **violation 0**), and the (BE-189)(ii) ceiling re-asserted at every point so the population identity with BRANKV's is CHECKED) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/blongarc.py validate` | 51 s | ibid. all four in one process -- the landing gate. **FITS the 600 s foreground ceiling**, so this driver adds NO over-ceiling case to section 0 |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/befourp.py arith` | 0 s | `notes/Pencil-informal.md` section (K-bare-ext) *Steps BE203-BE204* (direction BEFOURP; **(BE-204)**, **(BE-205)**: EXHAUSTIVE over all 6 400 tuples, no sampling and the seed printed UNUSED -- (BE-162)(iii)'s **245** (BE-E4') escapes reproduced and censused by `min delta_i` (`{1: 170, 2: 68, 3: 7}`), firing-side `rho_i` (`{2: 120, 3: 108, 4: 72, 5: 30}`), other-side `e_j`, `(c_1,c_2)` (the `(2,2)` corner **85**) and `e_1+e_2`; every escape asserted to have `rho_i <= 5` at every firing side, so a (BE-E4') violation IS a (PENCIL-SATURATES) violation there, with (PENCIL-SATURATES) => (BE-E4') at 0 escapes and (BE-104)(i)'s witness `(5,3,0,0,5,3,2,0)` asserted both-flexible, clause-violating and (BE-E4')-satisfying; the 25-cell `(BE-F_f)` x `(BE-G_g)` grid ENUMERATED, minimal sufficient pairs asserted to be `(2,4)/(3,3)/(4,2)/(5,1)/(6,0)` i.e. `f+g >= 6`, with `(BE-F_5)` alone leaving 10 and `(BE-G_1)` alone 165; and the `dist` reading -- `min(rho_1+rho_2) = 6` but `min max_i rho_i = 3` over the 1 835 satisfying firing tuples, so (BE-189)(iii)'s PER-SIDE threshold does not transfer -- plus `e_i = 4` at all 540 tuples with `rho_i = 6` at every firing side. Every headline an `assert`) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/befourp.py gated` | 10 s | ibid. *Step BE207* (**(BE-208)**: SIDE 2 measured for the FIRST time at BRANKV's (BE-192) gated arc-3 family and BLONGARC's (BE-200)(iv) gated arc-4 family -- both constructions re-issued VERBATIM (`bline.legal_peel` + `binduc.flat_config`, 3 peels x 8 draws each, 24 + 24 points), with a SCOPE CHECK side 1 never needed: the two side edge sets asserted to PARTITION `H` and `bpeel.delta_pair`'s own split asserted to REPRODUCE them. Result `rho = (3,3)`, `c(Pi_x) = (2,2)`, `e = (1,1)`, (BE-E4') margin **-2** at 24/24 and 24/24, with `(delta_1,delta_2)` in `{(1,3),(2,3),(3,3),(4,3)}` so BOTH sides flexible at every one -- **and `flag_frame` None at 48/48**, so the rows are REPORTED and NOT a refutation, the disposition (BE-110)(iv) gave its own `rho_i = 4` hit) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/befourp.py peel` | 47 s | ibid. *Steps BE205-BE206* (**(BE-206)**, **(BE-207)**: (BE-118)(ii)'s `bproper.plant_peel` construction re-run verbatim, 21 rows, `flag_frame` non-None ASSERTED at every one; `alpha_x` built BLONGARC's way and asserted EQUAL to `bsatur.sigma_at(p_x)` -- two names, ONE space; (BE-110)(i)'s corank identity re-asserted at every firing side (`dim(rho_bar_1 cap Sigma_x) = 3` at 21/21) together with the new exact grading `e_i = dim(rho_bar_i ^ p_x) + [Sigma_x <= rho_bar_i]` (grading `1` at 21/21, so `e_1 = 2`); hence `(BE-F_5)` and `(BE-F_6)` FALSE in the regime at a LANDED witness; and side 2 measured for the first time -- `rho_2 = 3`, `c_2(Pi_x) = 0`, `e_2 = 3` at 21/21, so (BE-E4') HOLDS at 21/21 with margin `+1`) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/befourp.py validate` | 58 s | ibid. all three in one process -- the landing gate. **FITS the 600 s foreground ceiling**, so this driver adds NO over-ceiling case to section 0 |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/bfour.py --arith` | 0 s | `notes/Pencil-informal.md` §(K-bare-ext) *Step BE155* (direction BFOUR; **(BE-156)**: the CONTAINMENT THEOREM by EXHAUSTION over all 6 400 tuples — every one of the **535** (E4)-violating tuples is a (PENCIL-SATURATES-CHART) counterexample, **535/535 ASSERTED**, so the (BE-154)(iv) hunt is a STRICT SUB-HUNT of one already run at 0/772; the `Pi_x` margin histogram `{0: 150, 1: 234, 2: 151}` making **385 of 535** also [MARGIN] shortfalls and only 150 clean, 50 attaining; exactly **3** tuples reachable at the sweep's own side-2 signature, all forcing `rho_bar_1 = Pi_x` at `rho_1 = 2`; plus BARCH's 970 / 0 / 0 / 287 REPRODUCED as the divergence guard) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/bfour.py --charta` | 505 s | ibid. *Steps BE156–BE157* (**(BE-157)**/**(BE-158)**, half A: 204 composite chart points over 34 peels, both sides measured, the lean per-side row CROSS-ASSERTED against `bsatur.row_of` plus the three margin controls at 34/34 peels; side 2's signature the single value `(delta_2, a_2, rho_2, c_2) = (3,0,3,0)` at 204/204; `c_1(Pi_x) <= dim Gamma_Pi` ASSERTED 204/204 and the exact (BE-149)(i) identity 204/204; 0 (E4) falsifiers) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/bfour.py --chartb` | 504 s | ibid., half B: 207 points over 36 peels reaching the **three fibre shapes** the long-core library cannot (plane `pi_{c1}` 18, plane `pi_x` at `k >= 3` 10, the line 6); same single side-2 signature at 207/207, the bound 207/207, the identity 147/147 at its `k = 2` points, 0 falsifiers. **Union with half A is exactly (BE-136)'s 411/411 over 70 peels**, hypothesis met 72x, certificate firing 375/411, identity 351/351 |
@@ -3327,6 +3331,43 @@ three can be called from it. Every subspace it builds goes through
 dimension assert, and its acceptance gate is `dominance.base_seed`'s composite
 `repin.star_generic`, re-asserted in-file at every accepted seed. **No new
 guard wrapper is minted.**
+
+### New item (2026-09-08, direction BEFOURP) — the chain reaches SIXTEEN deep, `bfour` and `blongarc` become imported LIBRARIES; **UNPAID, NO MOVE MADE**
+
+`w4/befourp.py` (the (BE-E4') decomposition, workbook section (K-bare-ext)
+*Steps BE203–BE208*) imports **`bfour`**, **`brankv`**, **`blongarc`**,
+**`barch`**, **`bline`**, **`binduc`**, **`bproper`**, **`bsatur`**, **`bpeel`**
+and **`bsigma`**, and sits **sixteen deep** on the standing sibling-import
+chain — `befourp → blongarc → brankv → barch → bdegtwo → bline → bopen →
+bproper → bsigma → bsatur → … → kbare_common`. Folded into the same standing
+item. New consumer counts: a **first** consumer of `bfour.e_row`/`e4_at`/
+`side_nums` (so `bfour` joins `brankv` and `blongarc` as an imported *library*
+rather than a leaf), a **second** of `brankv.arc_through`/`short_library` and of
+`blongarc.arc4_library`, a **sixth** of `bproper.composite`, a **third** of
+`bproper.plant_peel`/`PEELJOBS`/`side_named`, a **fourth** of `bsigma.wedge3`
+(its own **OVERDUE** item above, now at four consumers) and the next of
+`bsatur.sigma_at`, `bline.legal_peel`, `binduc.flat_config` and
+`bpeel.delta_pair`/`rnode_shaped`. **NO MOVE MADE**, by the standing rule that a
+dispatch does not move a landed name.
+
+**It opens no new hazard item, and two of the three recorded silent hazards are
+UNREACHABLE rather than navigated.** `bimage.pt_in` is **not called anywhere**
+in the module, so its `K^4` truncation cannot fire. `bwin` is **not imported**,
+so `dehom`'s list-vs-tuple guard defeat cannot fire — and, one step stronger,
+**every point the module reads comes from a predecessor's own configuration
+builder** (`binduc.flat_config`, `bproper.plant_peel`), so nothing it writes can
+defeat `assert_generic_star`'s tuple comparison. `bimage.span`'s rank-triggered
+width-6 special case is **navigated**: no width-12 object is built, every
+`span`/`dim`/`isect` call takes width-6 rows, and the one `K^4`-side dimension
+(the independent-point basis for `alpha_x`) goes through the width-agnostic
+`exactcore.rank` instead — the same device BLONGARC used for its width-4
+incidence test.
+
+**BLONGARC's recorded `brankv.py` doc defect is NOT fixed here**, for the same
+reason BLONGARC did not fix it: editing a tracked driver forfeits the
+figure-invariance gate's one-line *No tracked driver modified* discharge and
+would force baselining `brankv.py`'s whole import closure. It stays a
+harness-debt doc item.
 
 ## Deliberate non-goals
 
