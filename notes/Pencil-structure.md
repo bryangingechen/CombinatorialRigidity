@@ -1497,8 +1497,10 @@ Verbatim from `notes/Phase39.md`'s *Hand-off*, relocated 2026-09-03:
 > **Why it is *carried*:** the NO-GO is **definitional** — `PencilNondegFeasible` *is* "a
 > nondegenerate realization exists", so at `¬PencilNondegFeasible` the chart/reseed/engine
 > apparatus has **nothing to consume** on either side of the split, and the one identified
-> calculus is unlanded, needs the owed **KT pp. 684–691 re-pin**, and was built for
-> chart-*generic* seeds (**that research is option B, declined 2026-07-30**). Versus `hK`:
+> calculus was then unlanded and was built for chart-*generic* seeds (**that research is
+> option B, declined 2026-07-30**). *(Both clauses are since superseded and the block is kept
+> verbatim as the dated record: the **KT re-pin LANDED 2026-08-02**, the calculus LANDED
+> 2026-08-20 as (BE-2), and option B is **SPENT** — BINSERT, 82, §(K-ins).)* Versus `hK`:
 > easier on uniformity, **harder on the seed side**, habitat reaching **corank 2** (DZ).
 > Evidence **strong but sample-scoped** — KBARE-FALSIFY's constructed off-line failure at DZ
 > (rank 113) corrected option-C C3's "failure set is exactly the line": the sample record

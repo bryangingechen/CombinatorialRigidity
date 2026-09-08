@@ -3676,10 +3676,13 @@ obligation: the supply is the placement freedom itself over `[Infinite K]` (avoi
 ≥ 2-dim slot) once the attainment locus is known nonempty — the W5 seed/reseed/engine devices are
 not the supply and provably cannot be (item 1). Why (K-bare-ext) is new mathematics, precisely:
 the only identified proof calculus is the boundary-load / `R_a`-image analysis of the (K)
-non-constancy recon §2, which (i) is **not landed**, (ii) carries the explicitly-owed **KT
-pp. 684–691 re-pin** as its first task — that re-pin is therefore a prerequisite here, not a free
-brick — and (iii) was derived for *chart-generic* seeds: its `s₀ = 0` step (shared-subrank
-genericity) is not automatic at an opaque IH seed, so a genuinely new **arbitrary-seed/seed-repair
+non-constancy recon §2, which (i) was then **not landed** — it has **since LANDED as
+§(K-bare-ext) (BE-2)**, 2026-08-20 — (ii) carried the then-owed **KT
+pp. 684–691 re-pin** as its first task — **that re-pin LANDED 2026-08-02**, so it is no longer a
+prerequisite (see the (K-tight) pointer below) — and (iii) was derived for *chart-generic* seeds:
+its `s₀ = 0` step (shared-subrank genericity) is not automatic at an opaque IH seed
+(**and note, per §(K-ins) (INS-4): `s₀ = 0` in fact HOLDS at every one of the eight seeds that
+refuted the route, so item (iii)'s named step is not the one that broke**), so a genuinely new **arbitrary-seed/seed-repair
 extension** of the calculus is needed (rank-`≥ target` is open, which helps perturbation
 arguments, but in-pencil-variety local moves have no landed device at infeasible `G′`), plus a
 **corank-stratified uniform statement** (corank-0 seeds reduce to a stress-free monotone
@@ -3697,11 +3700,15 @@ block below); option B (the insertion-calculus research) is NOT commissioned now
 - **A — keep carrying `hbareSplit` as pinned** (recommended; this is the standing "route (a) GO"
   adjudication, unchanged). Zero effort now; this recon's stratification + (K-bare-ext) become
   the discharge's roadmap, exactly as the (K) recon's stratification did for `hK`.
-- **B — commission the insertion-calculus research** (the only identified path to closing
-  `hbareSplit` in-tree): first the owed KT pp. 684–691 re-pin, then the corank-stratified
-  boundary-load lemma at arbitrary seeds, then (K-bare-ext) on top — research-scale, success not
-  assured; shares its hardest ingredient (stress control at non-generic seeds) with (K)'s
-  option B without being identical to it.
+- **B — commission the insertion-calculus research** — **SPENT 2026-09-08 (direction BINSERT,
+  ordinal 82); this bullet is the dated record of the chain as originally priced:** first the
+  KT pp. 684–691 re-pin, then the corank-stratified boundary-load lemma at arbitrary seeds, then
+  (K-bare-ext) on top — research-scale, success not assured; shares its hardest ingredient
+  (stress control at non-generic seeds) with (K)'s option B without being identical to it.
+  **Outcome: links 1 and 2 both LANDED (2026-08-02; 2026-08-20, as (BE-2)) and link 3 was
+  REFUTED BY LINK 2's OWN DEVICE — then BINSERT refuted KT's route B at the same seeds, leaving
+  only the un-analyzed joint sweep, which re-opens link 2. `notes/Pencil-informal.md` §(K-ins),
+  (INS-1)–(INS-8).**
 - **C — cheap numerics extensions alongside A** (evidence-only, cannot close the leaf):
   adversarial seed hunts at DZ (deeper-degenerate `G′` seeds, à la `stress_extra.py`), an
   `index ≥ 2` danger-gadget existence search (the `K3,3` skeleton is arithmetically excluded at

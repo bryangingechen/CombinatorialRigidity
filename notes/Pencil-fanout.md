@@ -4606,10 +4606,11 @@ as stated** (KBARE-FALSIFY, 2026-08-20, *Steps BE1–BE8*) — exactly and
 cap-free — but **`hbareSplit` itself is UNTOUCHED and still carried as
 pinned**: its consequent is an `∃` over frameworks and every probed gadget
 attains, so what died is route A's `∀`-over-seeds shape, not the kernel.
-**Option B (the insertion calculus) is NOT commissioned** (2026-07-30
-adjudication, standing) — do not drift into it, do not cost it, do not
-propose it as the route. It needs the owed KT pp. 684–691 re-pin first and
-was built for chart-generic seeds.
+~~**Option B (the insertion calculus) is NOT commissioned**~~ — **SPENT
+2026-09-08 (BINSERT, 82): both KT-inherited routes REFUTED, only its
+un-analyzed joint sweep left; see §"BINSERT" and §(K-ins).** This bar's
+stated reason was stale when written: the KT pp. 684–691 re-pin **landed
+2026-08-02**, and the calculus itself landed as (BE-2) on 2026-08-20.
 
 **Two enablers make this newly affordable** (both landed, both from the
 probes): the §(K-tight) **boundary-load calculus transports** (192/192), and
@@ -15003,3 +15004,131 @@ returned unused**, and **the tail this direction declares for the next reservati
 (GR-153) / *Step G173***. Full record, including the (L7) per-token check and the metric it
 reports, in `notes/Pencil-labels.md` §"Reservation — GLEAF"; the defect taxonomy is that
 file's *Coordinator reservation defects* block (**shape 4**), **not duplicated here**.
+
+## BINSERT — eighty-second ordinal (drafted read-only 2026-09-08, **LANDED 2026-09-08**) — the ninth strategy pass's **rank 4**: option B for `hbareSplit`, the insertion calculus — does it still have an endpoint at all?
+
+Priced deliberately at **one design pass**, the pass itself being what prices the rest.
+Mathematics, claims and every figure: `notes/Pencil-informal.md` **§(K-ins)** *Steps
+INS1–INS7*, (INS-1)–(INS-8), and the new `§(K-ins)` gap-map row. Driver
+`notes/scripts/w4/binsert.py` (`routeb|strata|combined`).
+
+### The spec, as dispatched
+
+Three questions. **(a) Does option B still have an endpoint at all?** — reconcile, *at
+source*, `notes/Phase39-design.md`'s option-B chain (terminating in **(K-bare-ext)**, the
+`∀`-seed insertion lemma) against the gap map's record of that target as **REFUTED**
+(KBARE-FALSIFY, T1) while §8.4 still called the route live; **nobody had reconciled those**.
+**(b)** If a repaired endpoint exists, **price the three-step chain** and say for each link
+whether it is a landed brick, an informal theorem, or genuinely new mathematics, verifying
+each against the landed source rather than the row's prose. **(c) GO / NO-GO** with a cost
+estimate in dispatch-sized units and the row's kill condition explicitly discharged or not.
+Bars: read-only; no `.lean` (the Lean hold, untouched and the user's); a **NO-GO naming
+precisely which link is refuted is a complete deliverable**; frame the source checks
+adversarially — *try to refute the reading that option B is live*.
+
+The coordinator flagged one hypothesis as a hypothesis, evidence stratum named as **two
+documents read against each other with no re-derivation at source — thin**: *"I expect the
+endpoint to need **repair** rather than to be simply dead, because KBARE-FALSIFY's refutation
+is of the `∀`-seed **quantifier** while the calculus itself is corank-stratified."*
+
+### LANDING WRITE-UP — BINSERT, 2026-09-08: **OPTION B IS SPENT, NOT DECLINED — its chain had NO un-run link, link 3 was refuted BY LINK 2's OWN DEVICE, and BOTH KT-inherited routes are now refuted at `corank(G′) = 3` by a chain-end PANEL COLLAPSE; exactly ONE endpoint survives, unpriced**
+
+**(a) The reconciliation.** Option B's chain has **no un-run link**: link 1 (the KT
+pp. 684–691 re-pin) landed 2026-08-02, link 2 (the corank-stratified boundary-load lemma at
+arbitrary seeds) landed 2026-08-20 **as §(K-bare-ext) (BE-2)**, and link 3 — **(K-bare-ext)**
+— was refuted **by link 2's own device**: `breakhunt.uniform_failure_exact` decides (BE-2)
+item 2's rank criterion. So §8.4's *"un-commissioned by choice, not by blocker"* was wrong in
+the only sense that mattered, and its kill condition had fired **by its first disjunct** on
+2026-08-20 ((INS-6)).
+
+**The pass did not stop there, and that is where it earned its keep.** (BE-5) refutes the
+statement the design doc wrote, and **that statement quantifies over placements of `v` only**
+— KT's `M₂`, §(K-tight) *Step 1*'s **route A**. KT's Claim 6.12 (p. 690) needs only **one**
+of `M₁`/`M₂`/`M₃`, and *Step 1*'s own table kills only `M₁`. **Route B (`M₃`) and the joint
+sweep had never been tested**, and route B is **in scope**: `Graph.PencilHub` *is*
+`3 ≤ degree` (`Motive.lean:73`, body read), so `hsafe` + `G.TwoEdgeConnected` deliver KT
+Lemma 6.10's adjacent degree-2 pair ((INS-1)). Route B is then route A at the chain's other
+end on the `ρ`-pullback, with **no new mathematics** ((INS-2)).
+
+**(b)/(c) The measurement, and the verdict. Route B fails at all 8 of (BE-5)'s hit seeds,
+cap-free** ((INS-3)) — and the mechanism is now characterized: at those seeds
+**`Π̂(b) = Π̂(c)`**, the two chain-end hub panels collapsing onto one plane, so
+`dim(Λ²Π̂(b)+Λ²Π̂(c))` is **3** and `rank⟨U, sum⟩` is **1**, against **5** and **4** at 19/19
+non-hit target-rank controls — a total dichotomy, with the controls independently reproducing
+§(K-tight) *Step 2.6*'s *"5 of KT's 6"* at a different kernel ((INS-4)). It is legal
+**structurally**: `¬ PencilNondegFeasible` is what permits the collapse ((INS-8)). **NO-GO**,
+kill condition **FIRED**; §8's rank 4 **STRUCK** and that list **EXHAUSTED**. `hbareSplit`
+**UNTOUCHED** — tier T1 throughout, not a PENCIL event.
+
+**What survives, and it is why the verdict is not "refuted outright": exactly one endpoint** —
+§(K-tight) *Step 1*'s *"NEW, not in KT"* **joint sweep**, unpriced. Its escape space lies
+inside the collapsed plane, but it deletes **two** vertices so its `U′` differs and
+`rank⟨U′, Λ²Π̂⟩ ≥ 2` is **not excluded**; taking it **re-opens link 2** ((INS-7)). Cost if
+ever wanted: **one direction** for (INS-7)'s single measurement.
+
+**The coordinator's hypothesis SPLIT, and it misled *upward*.** Descriptive premise
+**CONFIRMED** and sharpened at a measurement nobody had taken — the refutation *is*
+corank-stratified, and (INS-5) confines it to `index = 2` (the local-flat stratum is
+target-INCOMPATIBLE at `index = 1`, 0/20, and target-COMPATIBLE at `index = 2`, 8/9).
+**Middle inference REFUTED:** the stratification does *not* yield a live option-B endpoint,
+because the refuted stratum is the **top** one, is **certified inhabited**, and sits inside
+`hbareSplit`'s `∀`. **Conclusion inverted.** It is the mirror of the eighth kind (*UNDERSHOT*):
+this one over-claimed liveness. (`RESEARCH-ARC.md` §7's tally is the coordinator's to
+reconcile and was not touched.)
+
+**Three corrections the pass made to the landed record, none of them verdict-changing:**
+(1) the design doc's item (iii) named the **`s₀ = 0`** step as the genericity at risk, but
+`s₀ = 0` **holds at 8/8 hit seeds** — the calculus's own assumption is satisfied and the route
+fails through a *different* non-genericity, so **an `s₀`-genericity repair fixes nothing**;
+(2) **(BE-8)'s four-stratum table omits the `cycleflat` (local-flat) row**, the one the hit
+lives on — its prose names the stratum, its table does not, and (INS-5) supplies it;
+(3) §8.4's `(i)`/`(ii)` successor-shape numerals are **not** *Step BE8*'s `1`/`2`/`3` (§8.4's
+`(ii)` is shape **3**) — cite the shape, never the numeral.
+
+**Defects found in shared documents, and fixed in this commit.** The KT re-pin landed
+2026-08-02 and §8.4 was corrected 2026-09-03, but **five copies of the stale *"owed"* claim
+survived at HEAD**, every one of them on a *recommendation* surface — this arc's own
+`RESEARCH-ARC.md` §8 defect species, with the status objects clean throughout:
+`Pencil-fanout.md`'s BATTAIN **Bars** clause, `Pencil-structure.md` block 14 (which also still
+called the calculus *"unlanded"* — (BE-2) **is** that calculus), `Phase39-design.md` twice
+(self-corrected 71 lines downstream but not in place), and `Phase39.md`'s pointer sentence.
+All five repaired here. §8's own *back-link* amendment would have caught the design doc's
+pair.
+
+**One further defect found and deliberately NOT fixed here, because fixing it is a doc round
+rather than a side errand.** `notes/Pencil-informal.md`'s *Section index* line ranges were
+**already stale by +9 on every row** before this commit (a landing added lines without
+re-indexing), and `§(K-mech)`'s row is off by ~1 800 lines at its end. This commit sets its
+own three rows (`§(K-ins)`, `§(K-frame)`, `§(K-chart)`) **exactly** and leaves the other
+sixteen alone — re-indexing the whole table is a cleanup-round item, and that file's own
+header already tells a reader the ranges are *"as of this commit"* and to grep the
+`## §(…)` heading, which is the durable anchor.
+
+**The `notes/scripts/README.md` *Harness debt* count, enumerated rather than guessed — and the
+enumeration INVERTS the draft's first reading.** The heading says *twelve*; the body says
+*"Eleven items are outstanding — the eleventh added 2026-09-03 (direction BDEGTWO)"*. Counting
+the section: **ten UNPAID `### New item` subsections** (zneq.ledger; the `kbare/` sibling
+imports; OQRANK's two; GBLAW+GXESC; WTRI; BPROPER's `bsigma.wedge3`; GLIST/GGLOB; BOPEN;
+BDEGTWO's `bimage.span`; **and DSAT's `dominance.py` set**) plus **two** items carried in
+header prose without a subsection of their own (`bimage.pt_in`'s silent `K⁴` truncation, and
+BLINE's third consumer of `bproper.py` plus its first of `bopen.sat_locus`) = **twelve**. So
+the **heading is correct and the body's *"Eleven"* is the stale half**: DSAT's item, landed
+2026-09-03 after BDEGTWO's, is the uncounted twelfth. The body sentence is repaired here and
+the heading left alone. BINSERT itself opens **no** new item — it is a further `w4/` consumer
+of the standing UNPAID `kbare/` sibling-import set, recorded there, **no move made**.
+
+**Self-caught defects, disclosed because the previous round had one per direction.** (1) The
+pass's first reading of route B's availability was **backwards** — inferring from
+`hbareSplit`'s antecedent list that `deg a = 2` was unavailable, hence that the strongest
+repair died for free. `PencilHub` is *defined* as `deg ≥ 3`, so `hsafe` + 2EC **do** supply
+the pair; caught only by opening `Motive.lean:73` instead of trusting the antecedent list, and
+had it not been, this direction would have returned a NO-GO whose central argument was
+inverted and left route B untested. (2) The pass was first scoped as *"no driver: prose/source
+pass"* and had to reverse once (INS-1) landed. (3) A **hand-counted gap-map word delta was
+wrong by 12 words** (claimed −2, actually +10) and would have blown the row's cap; every count
+in the landing is machine-derived, and `gapdiff.py` then caught a genuine **dropped
+`(K-tight)` label** in the recompute, which was restored and paid for. (4) A vacuous
+`... or True` assert in the driver, replaced at the coordinator's instruction with a real
+assert on (INS-2)'s edge-set identity. (5) The joint sweep's two-parameter calculus was
+**declined rather than improvised** — deriving `U′` for a two-vertex deletion is not a
+relabelling of (BE-2), and a wrong number there would have been worse than the gap.

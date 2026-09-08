@@ -2536,6 +2536,7 @@ Status keywords are pointers to the owning section's verdict block and the
 |---|---|---|---|---|
 | *Shared dictionary* | `SD-` | (R1)–(R5) *(grandfathered)*; **(SD-6)** | elementary rigid-graph facts used by **both** workbooks: min degree, size bound, short cycles, `hcard` restated, feasible triangles pendant, **branch length `≤ 5`** (= §(K-ann)'s (ANH-8), promoted here 2026-08-06; `SD-` because `(R6)` is taken by `Pencil-strategy.md` §4.6) | settled |
 | §(K-tight) | `KT-` | (K-move) *(named here)*; Steps 0–5 | the carrier escape criterion, KT pp. 684–691 re-pin | criterion proven-informally; (K-tight) open |
+| §(K-ins) | `INS-` ✓ | **(INS-1)–(INS-8)**; Steps INS1–INS7 | **new, 2026-09-08, direction BINSERT** — option B for `hbareSplit`, the insertion calculus: the chain audit, KT route B on the `ρ`-pullback, the chain-end **panel collapse** mechanism, and the one surviving endpoint (the joint sweep) | **option B SPENT save its joint sweep**; both KT-inherited routes REFUTED at `corank(G′) = 3`; `hbareSplit` UNTOUCHED (tier T1) |
 | §(K-pitch) | `PT-` | (T1)–(T5); (K-wit), (K-pitch-∞) *(named here)*; Steps 0–6 | motion-side transfer, sign law, placement quartic, Λ-compression | (T1)–(T5) proven-informally; uniform form open |
 | §(K-slide) | `SL-` | (S1)–(S5); **(W1)–(W4)**; (K-slide-cl) *(named here)*; Steps 1–5 | the slide-in transfer theorem; **(W1)–(W4) are the four conditions of the `ε = 0` limit line system** | (S1) proven-informally |
 | §(K-slide-cl) | `SC-` | Steps C0–C5, and a claim **(C1)** stated in Step C1 | the tetrahedral collapse; (C1) = *rows independent ⟺ every class is a forest* | reduction proven; statement refuted as stated; `∃Σ` form open |
@@ -4089,3 +4090,75 @@ which lists every section's declared tail in landing order. Both of shapes 4 and
 have been caught by that one command. A scan cannot distinguish a family from a coincidence
 of shape, nor a declaration from a consumption; the declaration can.
 
+## Reserved namespace — direction BINSERT (2026-09-08, **CONSUMED: all eight labels; one STEP returned**)
+
+**Reserved and consumed on 2026-09-08 for the single direction BINSERT**
+(ordinal 82; `notes/Pencil-fanout.md` §"BINSERT") — the ninth strategy pass's
+**rank 4**: *does option B for `hbareSplit`, the insertion calculus, still have
+an endpoint at all?* One of a **concurrent round of three**; the two siblings
+(BFOUR, BSERIES) both **extend §(K-bare-ext)** and held
+**(BE-156)–(BE-163)** / *Steps BE155–BE162* and **(BE-164)–(BE-171)** /
+*Steps BE163–BE170* respectively, so this direction was fenced out of that
+family's tail and every check below is against `HEAD` (`RESEARCH-ARC.md` §2's
+first concurrency hazard; the tree carried both siblings' untracked drivers
+throughout).
+
+| direction | owning § | labels reserved | steps reserved | driver |
+|---|---|---|---|---|
+| **BINSERT** | **§(K-ins) — a NEW section** | **(INS-1)–(INS-8)**, all eight consumed | **INS1–INS8**, of which **INS1–INS7** consumed | `w4/binsert.py` (three modes) |
+
+**A NEW SECTION rather than §(K-bare-ext)'s tail — a coordinator call at the
+landing, recorded here because it is a deliberate departure from this file's
+own convention and not an oversight.** The convention (*Reserved namespaces*)
+is that a direction which **extends** a live section reserves the unclaimed
+tail of that section's family, and only a direction opening genuinely new
+territory takes a new section — and every one of BINSERT's findings extends
+**§(K-bare-ext)**, so the convention's preferred home was `(BE-172)`+ /
+*Steps BE163*+. The direction reported the tension rather than resolving it;
+the coordinator's decision was **keep `§(K-ins)` / `INS-`**, on two grounds:
+the pass's object is option B's *route*, which carries its own kill condition
+and its own surviving endpoint (hence its own gap-map row, on the
+`§(K-res)/(RS-5)` precedent), and the `(BE-)` tail was fenced by two live
+siblings.
+
+**One STEP is RETURNED UNUSED: *Step INS8*.** All eight labels are consumed,
+but (INS-8) — the *no genericity to supply* claim — is stated **inside
+*Step INS5***, beside the panel-collapse measurement it depends on, rather
+than being given a step of its own. Labels and steps are separately reserved
+objects under clause (L2), so the two counts need not match. **The next tail
+is (INS-9) / *Step INS8*.**
+
+**(L3) scope declaration, and it is a coordinator call rather than a registry
+deviation.** §(K-ins) is a *new* section, so **every** `(BE-n)`, `(GR-n)`,
+`(OC-n)`, `(RS-n)` and `(E4)` citation inside it is cross-section, and (L3)
+asks for the owner on each. The section qualifies the load-bearing ones in
+place and otherwise carries an explicit scoping paragraph of its own —
+unqualified `(BE-n)`/`(E4)` mean §(K-bare-ext), `(GR-n)` §(K-grid), `(OC-n)`
+§(K-out), `(RS-n)` §(K-res), `(L n)` this file's minting rule. That is how
+§(K-bare-ext) itself reads its own `BE-` citations; the direction flagged the
+departure from (L3)'s literal prescription and the coordinator accepted the
+declared scope.
+
+**0-hit verification, re-run by the direction as its FIRST action** (clause
+(L7): every token in the range, enumerated rather than sampled, **hits and
+files reported separately**), across `*.md`, `*.tex`, `*.lean`, `*.py`,
+`*.m2` **at `HEAD`** by `git grep -I -c -F`: `K-ins`, `(INS-1)`–`(INS-8)`,
+the bare forms `INS-1`–`INS-8`, the raw step tokens `INS1`–`INS8`, `BINSERT`
+and `binsert` — **27 tokens, every one 0 hits / 0 files**, reproducing the
+coordinator's own prep enumeration exactly. This is the **first reservation
+in the phase with no hit anywhere in the range**, the opening tokens
+included: there was no predecessor tail declaration to collide with, because
+the section is new.
+
+`BINSERT` was checked for the substring hazard (L5) and is clean, and `INS-`
+is multi-letter and topic-tagged per that clause — it names the **object**
+(the insertion calculus), not a method or a verdict.
+
+**(L6) landing-time bare-token grep, run on the returned draft and again on
+the landed section.** The only bare `(X<digit>)` tokens present are `(E4)`
+and `(L1)`/`(L2)`/`(L4)`/`(L5)`/`(L7)` — **all pre-existing tokens the
+section cites, none minted here**; every mint is the topic-tagged
+`(INS-n)`. `(BE-171)`, `(BE-172)` and `(BE-179)` appear in this block and in
+the section's registry discussion **only** as references to the siblings'
+reserved ranges and to the rejected renumbering option — they are **not**
+mints.

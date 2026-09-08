@@ -11,8 +11,8 @@ derives it from exactly **three carried items**: **`hcontract`** (W4 — build p
 **The research arc: 88 directions COMPLETE** (2026-08-05 → 09-03, ordinals 1–80 — 83 on
 kernel (K), **WTRI/WELOC/WPAIR/WGROW (58–61) on W4**, **RPOOL (75) on (K-res)**; direction
 = ordinal + 8), plus nine strategy passes, two probes, a scoping recon. **GPACK (66) opened
-the `hK` lane** (GLIST 68, GGLOB 71, GLEAF 80); the ninth pass's **ranks 1–3 ALL SPENT**
-(BSCOND 76, BARCH 77, GLEAF 80); its round of four COMPLETE (OBAR 78, DSAT 79). Per-direction verdicts, specs and write-ups live at
+the `hK` lane** (GLIST 68, GGLOB 71, GLEAF 80); the ninth pass's **ranks 1–4 SPENT**
+(BSCOND 76, BARCH 77, GLEAF 80, BINSERT 82); its round of four COMPLETE (OBAR 78, DSAT 79). Per-direction verdicts, specs and write-ups live at
 `notes/Pencil-fanout.md` §"<CODE>" (1–19: the archive) plus a workbook home — **not
 restated here**. **The arc's standing result, unchanged: `hK` is not closer.**
 **(GR-15)** — the single open gap the §(K-grid) chain reduces to — is **untouched**; **class
@@ -333,13 +333,11 @@ its cost are `notes/dispatch-log.md`'s and `notes/Pencil-fanout.md`'s). **The ta
    currently owns:** seed-free, induction-free, never uses `¬PencilNondegFeasible`, and it
    discharges `hbareSplit` **and** `PencilPair`'s unconditional conjunct at once, as a
    **standalone theorem** (the phase's own 2026-08-05 bar). Dearer in absolute terms,
-   cheaper in structure. Carried as pinned ("C: cheap numerics extensions + A",
-   2026-07-30; option B NOT commissioned), extension route recon'd **NO-GO on landed
-   machinery**; minimal open statement **(K-bare-ext)**, the arbitrary-seed insertion
-   lemma; status row in the gap map, full record in the design doc §"(K-bare)
-   extension-route recon", numerics `notes/scripts/kbare/{danger,optc}.py`. **WHY IT IS
+   cheaper in structure. Carried as pinned; **OPTION B IS SPENT, NOT DECLINED** (BINSERT, 82)
+   — **(K-bare-ext) REFUTED on BOTH KT routes** by a panel collapse, only the un-analyzed
+   joint sweep left, which re-opens the calculus link (§(K-ins)). **WHY IT IS
    *CARRIED* — RELOCATED 2026-09-03** to `notes/Pencil-structure.md` **block 14**: the
-   definitional NO-GO, the owed KT pp. 684–691 re-pin, the `hK` comparison, and
+   definitional NO-GO, the KT pp. 684–691 re-pin (LANDED 2026-08-02), the `hK` comparison, and
    KBARE-FALSIFY's sample-scoped evidence. **Reference, not status**; the `(K-bare)`
    gap-map row stays authoritative.
    **DEAD, not unclaimed** (repaired 2026-09-03): BATTAIN's `def₂ = def₃` slice
@@ -438,8 +436,8 @@ section named; its *spec and landing write-up* in `notes/Pencil-fanout.md` §"<C
 paragraphs.**
 
 - **THE NINTH STRATEGY PASS — THE RE-RANK** (2026-09-03, coordinator, no dispatch) — **ranks
-  1–3 ALL SPENT within a day** (BSCOND 76, BARCH 77, GLEAF 80); rank 4 (**option B**'s design
-  pass) is the live head. Home: strategy §8.
+  1–4 ALL SPENT** (BSCOND 76, BARCH 77, GLEAF 80, BINSERT 82); **the list is EXHAUSTED**,
+  option B SPENT save its joint sweep. Home: strategy §8.
 - **THE LIVENESS DOC ROUND** (2026-09-03; `c89c7adb`…`e5c2f03e`) — **~52 of ~108
   forward-looking entries carried a defect**; rule in `RESEARCH-ARC.md` **§8**, record in
   **block 14**. **The status objects were clean** — the rot was in the recommendation layer.
@@ -448,6 +446,8 @@ paragraphs.**
 
 - **BSCOND** (76, opus) — **(BE-57)(iv)'s TWO WINDOW CONDITIONS DECIDED AND THEY WERE ONE
   GAP**: (S1) REMOVABLE, (S2) half theorem / half REFUTED-then-CLOSED. `w4/bscond.py`.
+- **BINSERT** (82, recon-opus, **rank 4**) — **OPTION B SPENT: BOTH KT ROUTES REFUTED** at
+  `corank(G′)=3`, a **panel collapse**; only its joint sweep left, re-opening link 2. `w4/binsert.py`.
 - **RPOOL** (75, opus) — **(RS-5) IS REFUTED** by `R20 = family_g(5,(0,0,2),(4,4,4))`,
   `widened.W19` with a longer core, in the recorded pool since 2026-08-02; 30 of 102
   `def = 0` members refute, split by the **per-block** floor. §(K-res) *RS11–RS16*.

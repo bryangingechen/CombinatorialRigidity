@@ -1128,6 +1128,9 @@ are a recorded *Harness debt* item (see below).
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/barch.py graph` | 41 s | `notes/Pencil-informal.md` §(K-bare-ext) *Step BE148* (direction BARCH; (BE-149): the identity `rho_bar_i cap Pi_x = phi_p(Gamma cap (Pi (+) Pi))` asserted as **SUBSPACES** at 99/99 with the clause <=> `phi_p`'s surjectivity, `Gamma` asserted UNCHANGED under moves of `p_x` inside its own fibre at 99/99, (BE-139)(i) reproduced through `bdegtwo.sharp_data`, and (BE-149)(v)'s three Klein-geometry facts — `Pi_x = Sigma_{p_x} cap Lambda^2 pi_x`, total singularity, (BE-115)(i)'s lift to rank 12 — asserted at 60/60 off the graphs) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/barch.py two` | 13 s | ibid. *Step BE149* ((BE-150): the PATH bound `rho_bar(H;u,v) <= sum_P <l_e>` asserted as a subspace containment for both `(c_1,c_2)` and `(c_1,y)` at 99/99, giving `dim R <= dist_core(c_1,c_2)` against `dim A <= dist_core(c_1,y)`; the two-subspace certificate `(l_1 not in A) and (Pi_x cap R_0 = 0) => GOOD` fires at 63 of 99 — exactly the `dim A <= 5` rows — and is asserted SOUND at 63/63) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/barch.py cert` | 63 s | ibid. *Step BE150* ((BE-151): 99 configurations, 783 swept fibre points; the RELAXED certificate fires on 45 and NOWHERE on 54, the GRAPH certificate `dim Gamma_Pi <= 1` on 84 and on **39 of those 54** (18 at `dim A = 5`, 21 at `dim A = 6`); both asserted SOUND at every firing) |
+| `python3 notes/scripts/w4/binsert.py routeb` | 330 s | `notes/Pencil-informal.md` §(K-ins) *Step INS4* (direction BINSERT; (INS-2)/(INS-3): **KT's route B fails at ALL 8 of (BE-5)'s hit seeds**, cap-free — all six `2x2` minors of route B's own criterion matrix vanishing IDENTICALLY on `Pihat(c)`, `rank<U, Lambda^2 Pihat(c)> = 1` at 8/8 — with DZ's two splits as corank-2 controls (0 route-A hits there); the `rho` edge-set identity, the pullback's legality as a `G'_B` witness, `rkA == rkB`, the pulled-back seed's target-rank and grid-vs-exact agreement are all ASSERTED, not argued) |
+| `python3 notes/scripts/w4/binsert.py strata` | 65 s | ibid. *Step INS6* ((INS-5): the local-flat (`cycleflat`) stratum per index — target-**INCOMPATIBLE** at `index = 1` (0 of 20 legal witnesses across DZ's two splits reach `target(G')`) and target-**COMPATIBLE** at `index = 2` (8 of 9, every one a uniform failure); this is the row §(K-bare-ext) (BE-8)'s four-stratum table omits, and it is what confines the refutation to `corank(G') = 3`) |
+| `python3 notes/scripts/w4/binsert.py combined` | 80 s | ibid. *Step INS5* ((INS-4): the **panel collapse** — `dim(Lambda^2 Pihat(b) + Lambda^2 Pihat(c)) = 3` and `rank<U, sum> = 1` at 8/8 hits against **5** and **4** at 19/19 non-hit target-rank controls, so `Pihat(b) = Pihat(c)` at every hit; the controls independently reproduce §(K-tight) *Step 2.6*'s *5 of KT's 6* at a different kernel, and every `Lambda^2` panel is asserted 3-dimensional) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/barch.py arith` | 0 s | ibid. *Steps BE151–BE152* ((BE-152)/(BE-153): EXHAUSTIVE over all 6 400 tuples — the per-side floor family leaves 313/164/74/24/0 escapes at `f = 2..6`, the two-sided **(E4)** leaves **0**, `PS => (E4)` with 0 counterexamples, 970 separating tuples, 0 attaining `Pi_x` violations under (E4), the 287-escape corner patch, and (BE-104)(i)'s own witness satisfying (E4). No sampling, no seed used) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/barch.py support` | 0 s | ibid. *Step BE154* ((BE-155): the `RESEARCH-ARC.md` §4 support audit read at SOURCE — `bsigma.sample_side_config`'s independent-set guard, `binduc.assert_generic_star`'s edge-only distinctness, `bimage.pt_in`'s width 4 and `bimage.span`'s `d == 6` special case all asserted present, plus the per-mode can/cannot-see reading. Discloses that no geometric mode varies `k`: every row is `k = 2`) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/barch.py validate` | 117 s | ibid. all five in one process — the landing gate; fits the 600 s foreground budget. Exact Q; the single seed is `20260902` (`bunif.SEED`), printed by every sampling mode (`arith` prints it and does not use it) |
@@ -1557,10 +1560,15 @@ figure-invariant): `rref`, `rank`/`rank_exact`, `nullspace`, `left_nullspace`,
 
 ## Harness debt — four rounds PAID (S1–S4 2026-08-06; the move-down round 2026-08-20; the GFLIP balance-layer move-down 2026-08-25; the GCHEAP/GPRICE balance-layer extension 2026-08-25), **twelve items outstanding**
 
-**Eleven items are outstanding** — the eleventh added 2026-09-03 (direction
+**Twelve items are outstanding** — the eleventh added 2026-09-03 (direction
 BDEGTWO, the **silent `bimage.span` width defect**, its own section at the
 end of this list, and the **second** silent-correctness hazard here after
-`bimage.pt_in`'s truncation). **The first ten: `zneq.ledger`** (deliberately deferred to a
+`bimage.pt_in`'s truncation), the **twelfth** the same day (direction DSAT,
+`dominance.py`'s split-seed and habitat device set, its own section below).
+*(This sentence read "Eleven" until 2026-09-08 while the heading said twelve;
+enumerated at the BINSERT landing — ten UNPAID `### New item` subsections, plus
+`bimage.pt_in` and BLINE's pair, which this prose carries without subsections
+of their own — and the **heading** was the correct half.)* **The first ten: `zneq.ledger`** (deliberately deferred to a
 round that can re-run `oschu --gtarget` / `--census1` / `--census2`), **the
 `kbare/` sibling-import set** that probe KBARE-FALSIFY created,
 **OQRANK's two arrivals** (`out_classes`/`shape_key`/`tree_triple`),
@@ -2443,7 +2451,24 @@ room for those three modes, or fold it into a commit that has reason to re-run
 them anyway. Recording it here also fixes the list discrepancy: **seven** names,
 six moved 2026-08-20, `ledger` outstanding.
 
-### New item (2026-08-20, probe KBARE-FALSIFY; **EXTENDED 2026-08-26, direction BATTAIN — first cross-stack consumer**) — the `kbare/` sibling imports; **UNPAID**
+### New item (2026-08-20, probe KBARE-FALSIFY; **EXTENDED 2026-08-26, direction BATTAIN — first cross-stack consumer; RE-DATED 2026-09-08, direction BINSERT — SECOND cross-stack consumer**) — the `kbare/` sibling imports; **UNPAID**
+
+**BINSERT (2026-09-08, arc ordinal 82) is the second `w4/` consumer of this set, and it
+reaches DEEPER than BATTAIN did.** `w4/binsert.py` imports twelve names from
+`kbare/breakhunt.py` (`split_ctx`, `seed_calculus`, `uniform_failure_exact`,
+`uniform_failure`, `need_rank`, `hub_domain`, `pairing_rank`, `certify_uniform`,
+`observed`, `q3_gadget`, `sample_pencil_bfs`, `BATTERY`), plus `danger.dz_gadget`,
+`repin`'s `lambda2_plane`, and six `kbare_common` primitives — so it pulls the whole
+`breakhunt -> {kbare_common, gate2, danger, optc, repin}` chain across the layer
+boundary. **NO MOVE MADE**, by the standing rule that a dispatch does not move a landed
+name; folded into this same item rather than opened as a new one. It opens **no new
+hazard item**: `bimage` is **not imported at all**, so `bimage.pt_in`'s silent `K⁴`
+truncation and `bimage.span`'s width-6 special case are **unreachable** from it rather
+than merely avoided, and every `lambda2_plane` / panel return is asserted non-`None`
+and rank-3. One defect of its own, caught in the coordinator's verification and fixed
+before landing: a `... or True` assert that could not fire, replaced by a real assert on
+the `ρ` edge-set identity (§(K-ins) (INS-2)) — §4 convention 1's *a guard that passes
+vacuously is not a guard*, one level down.
 
 `kbare/breakhunt.py` imports from four **sibling leaves** of its own layer, which
 is the documented sibling-import pattern and in policy, but trips §2 rule 2's

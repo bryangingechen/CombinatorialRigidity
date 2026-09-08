@@ -1666,10 +1666,11 @@ struck — decided by §9.3.*
   status is decided by the `(K-out)` and `(K-grid)` gap-map rows.*
 
 **RE-RANKED 2026-09-03 — THE NINTH STRATEGY-ONLY PASS, AND THE RANKING A SESSION READS.
-RANKS 1, 2 AND 3 ARE ALL SPENT** (BSCOND, ordinal 76; BARCH, 77 — whose recon **lifted this
-pass's bar, narrowly**, the lift recorded in the bar paragraph below, not here; and GLEAF,
-80, whose kill condition fired on **both** clauses at once); **the live head of this list is
-RANK 4**, option B's design pass. **All three spent ranks were decided inside 24 hours of
+RANKS 1–4 ARE ALL SPENT, SO THIS LIST IS EXHAUSTED** (BSCOND, ordinal 76; BARCH, 77 — whose
+recon **lifted this pass's bar, narrowly**, the lift recorded in the bar paragraph below, not
+here; GLEAF, 80, whose kill condition fired on **both** clauses at once; and **BINSERT, 82,
+which spent rank 4 by running it** — option B is **SPENT save its un-analyzed joint sweep**,
+which re-opens the calculus link, so a **tenth pass owes a fresh list**). **All three spent ranks were decided inside 24 hours of
 being written, and rank 3's verdict says something about this board rather than about its
 row:** the entry priced a candidate by *the machinery it reaches* and never asked whether
 the statement reached is **necessary or sufficient** for the row it sits on — see rank 3.
@@ -1781,15 +1782,21 @@ build would be the fifth.
    criterion* with **no consequence for (GR-10) or (GR-15) either way**, so it does not
    inherit this rank. *Kill condition FIRED. Decided by: `(K-grid)` close-it u7, which now
    reads SPENT.*
-4. **Option B for `hbareSplit` — the design-pass first step ONLY.** Owner: §8.4's row. The
-   diversification pick with genuine target impact (criterion 3): the only identified path to
-   `hbareSplit` other than (BE-14), **re-opened 2026-09-03** on the *declines are not locks*
-   directive, with **both stated prerequisites DISCHARGED** (the KT pp. 684–691 re-pin landed
-   2026-08-02; the boundary-load calculus transports at 192/192) and a **first step the Lean
-   hold does not park**. Priced deliberately at *one design pass* — decision-relevant before
-   any research-scale commitment, and the pass itself is what prices the rest. *Kill
-   condition: commissioned and run, or (BE-14) closing `hbareSplit` without it. Decided by:
-   the `(K-bare)/(K-bare-ext)` row.*
+4. ~~**Option B for `hbareSplit` — the design-pass first step ONLY.**~~ **SPENT 2026-09-08
+   (direction BINSERT, ordinal 82) — and the design pass is what spent it.** Both stated
+   prerequisites were DISCHARGED, and *that is the point*: link 1 (the KT pp. 684–691 re-pin)
+   landed 2026-08-02 and link 2 (the boundary-load calculus at arbitrary seeds) landed
+   2026-08-20 **as §(K-bare-ext) (BE-2)**, so the chain had **no un-run link** — and link 3,
+   **(K-bare-ext)**, was refuted **by link 2's own device** ((INS-6)). BINSERT then closed the
+   two escapes the route-A refutation had left untested: **BOTH KT-inherited routes are
+   REFUTED at `corank(G′) = 3`**, each cap-free at the same 8 seeds (route A KBARE-FALSIFY,
+   **route B** (INS-3)), the mechanism a **chain-end panel collapse** ((INS-4)) that
+   `¬ PencilNondegFeasible` permits structurally ((INS-8)). **NOT refuted outright, and the
+   distinction is load-bearing: exactly one endpoint survives** — §(K-tight) *Step 1*'s
+   **un-analyzed joint sweep** ((INS-7)), unpriced, and **taking it re-opens link 2** (it
+   needs a two-parameter extension of (BE-2) that does not exist). `hbareSplit` **UNTOUCHED**,
+   tier T1 throughout. *Kill condition FIRED, by its first disjunct — commissioned and run.
+   Successor: (INS-7)'s single measurement. Decided by: the `§(K-ins)` row.*
 
 **Below the top four, in order, each keeping its own kill condition where the row above
 states one:** **U1** (the annihilator retarget, §8.2 — now inherits the whole §4.6 shortlist's
@@ -2118,7 +2125,7 @@ either strike bears on U1: its residual (ANH-9)(iii) is untouched by both.
 |---|---|---|
 | **route σ** — the polarity applied to the seed | **candidate closure; obligation 1 Lean-blocked, obligations 2–4 open and NOT blocked** | Corrected 2026-08-20: only obligation 1 is Lean ("*not new mathematics*"). **(2)** scope — the `dim R_a = 0` stratum untouched and the **(K-res)** habitat unsampled, so **route σ is not a route to (K-res)**; **(3)** (σ6)'s failure direction unwitnessed; **(4)** the branch it closes has **never been observed nonempty**, so its value is **insurance, not repair**. Obligations 2 and 4 are decision-relevant *before* commissioning any Lean. §(K-σ) *Step σ5*. *Kill condition: an obligation discharged, or obligation 4's branch observed nonempty — decided by the `(K-σ)` row, status u8* |
 | **option B for `hK`** — the stress-function infrastructure | **DECLINED 2026-07-30 under that date's evidence; re-openable on mathematical merit** (re-stated 2026-09-03 — it previously read as a standing bar) | research-scale. An adjudication records a **past priority call under past evidence, not a permanent prohibition**: re-opening needs a **mathematical reason, not permission**. Note its **first step is a design pass**, which the 2026-08-05 Lean hold does not park. *Kill condition: commissioned and run, or a cheaper route closing `hK` first* |
-| **option B for `hbareSplit`** — the insertion calculus | **DECLINED 2026-07-30 under that date's evidence; re-openable on mathematical merit** | was recorded here as *the only identified path* to closing `hbareSplit` — **no longer true since 2026-08-20**: KBARE-FALSIFY refuted its (K-bare-ext) target as stated *and* named two successor shapes (next row). **Its two stated prerequisites are DISCHARGED (corrected 2026-09-03; this row asserted them as still owed):** the **KT pp. 684–691 re-pin landed 2026-08-02** — §(K-tight) *Step 0*, against the carrier, **exact at arbitrary target-rank seeds** — eighteen days *before* the edit that recorded it as owed; and the corank-stratified **boundary-load calculus transports** at **192/192** placements, corank identity scope-free (KBARE-FALSIFY). So option B is un-commissioned by **choice**, not by blocker, and its first step is a design pass the Lean hold does not park. *Kill condition: commissioned, or the (BE-14) thread closing `hbareSplit` without it — decided by the `(K-bare)/(K-bare-ext)` row* |
+| ~~**option B for `hbareSplit`** — the insertion calculus~~ | **SPENT 2026-09-08 (BINSERT, 82). KILL CONDITION FIRED BY ITS FIRST DISJUNCT — *commissioned and run*** | **HOW it fired, which is the whole finding:** the chain had **no un-run link**. Link 1, the **KT pp. 684–691 re-pin, landed 2026-08-02** (§(K-tight) *Step 0*, against the carrier, exact at arbitrary target-rank seeds; re-verified against the `.refs` copy at BINSERT); link 2, the corank-stratified **boundary-load calculus at arbitrary seeds, landed 2026-08-20 as §(K-bare-ext) (BE-2)** — *exact, no genericity, no `def` hypothesis*, 192/192; and link 3, **(K-bare-ext)**, was **refuted by link 2's own device** (`breakhunt.uniform_failure_exact` decides (BE-2) item 2's criterion) ((INS-6)). So this row's former *"un-commissioned by **choice**, not by blocker"* was wrong in the only sense that mattered — there was nothing left to commission. BINSERT's design pass then closed the two escapes route A's refutation left untested, KT Claim 6.12 needing only one of `M₁`/`M₂`/`M₃` and the carrier killing only `M₁`: **BOTH KT-inherited routes REFUTED at `corank(G′) = 3`**, cap-free at the same 8 seeds — route A (KBARE-FALSIFY), **route B ((INS-3))**, route B being route A at the chain's other end on the `ρ`-pullback ((INS-2)) and **in scope** because `hsafe` + 2EC deliver KT Lemma 6.10's adjacent degree-2 pair ((INS-1)). Mechanism: a **chain-end panel collapse** ((INS-4)), permitted **structurally** by `¬ PencilNondegFeasible` ((INS-8)); confined to `index = 2` ((INS-5)). **NOT refuted outright — exactly ONE endpoint survives, unpriced: §(K-tight) *Step 1*'s un-analyzed joint sweep ((INS-7)), and taking it RE-OPENS link 2** (a two-parameter extension of (BE-2) that does not exist). `hbareSplit` **UNTOUCHED**, tier T1 throughout. *Successor kill condition: (INS-7)'s single measurement, or (BE-14) closing `hbareSplit` without it — decided by the `§(K-ins)` row* |
 | **(K-bare) development — the (BE-14) thread** | **LIVE and CONTINUOUSLY COMMISSIONED since BATTAIN (*Steps BE9–BE13*) through BDEGTWO (*Steps BE135–BE140*), 140+ steps** — corrected 2026-09-03; this row read *"live, un-commissioned"* while §8's own box eleven lines above said *"running since BATTAIN (39) and 20+ directions in"* | Of KBARE-FALSIFY's two successor shapes, **(ii) "bypass the antecedent" IS the running thread** — the row's target is **(BE-14), direct attainment**, discharging `hbareSplit` **and** `PencilPair`'s unconditional conjunct — while **(i) the `∃`-seed form meets §(K-tight)'s wall**. Neither is option B. Current locus: the **only open step is S-mark, the 2-cut composition lemma**; **(PENCIL-SATURATES-CHART)** is a **THEOREM at every side-degree-`1` terminal** so **14 → 12** generically; at side-degree `≥ 2` the `(∗)` route is **DEAD** ((BE-130)) and BDEGTWO settled both of (BE-134)'s gaps, leaving the **METHOD** as the obstruction ((BE-139)). Gap-map row: `(K-bare)/(K-bare-ext)`, *Steps BE1–BE140*. *Kill condition: (BE-14) settled — decided by that row, u38–u39* |
 | **(K-res)** | **ATTACKED TWICE — RESGRID (2026-08-28) and RPOOL (2026-09-03)**, which opened `§(K-res)/(RS-5)`, *Steps RS1–RS16*. **RPOOL exercised this row's own kill condition and it FIRED: (RS-5) is REFUTED.** The **wave** stays declined and is now RE-PRICED upward — a user call, re-openable on mathematical merit; the declined wave did **not** lock out the cheap slice, which is what found the flank | a kernel of `hK`'s difficulty class on the complementary habitat, proof route *strictly harder*; W4 route 3 cannot close without it. RESGRID transported the §(K-grid) geometry **verbatim** ((RS-1)–(RS-4) — still theorems) and **REFUTED the deficient fringe with a mechanism** ((RS-6)). **RPOOL then refuted (RS-5) itself**: the witness `R20 = family_g(5,(0,0,2),(4,4,4))` is `widened.W19` with a one-edge-longer core and was in the recorded 255 pool from 2026-08-02; **30 of the pool's 102 `def = 0` members refute (RS-5), 72 carry exact-point proofs**, and the split is governed by `index < 2·g_forced` ((RS-15), 0 counterexamples at 153 shapes). **(RS-5)'s quantifier stays disjoint from (GR-15)'s** — the refutation touches the tight side in neither direction. **What the wave now is:** *prove the repaired statement uniformly* **and** *route the `index < 2·g_forced` members*, which have **no named home** — strictly more than before. *Kill condition: the repaired statement settled, or a flank at `g_forced ≥ 2` exhibited (which would also refute (RS-15)) — decided by the `§(K-res)/(RS-5)` row* |
 
