@@ -15652,3 +15652,19 @@ a second row under one section. **What it costs:** the row is cited as
 every fan-out write-up, so the split is a repoint pass across those surfaces
 plus `gapdiff.py`'s key argument in ~30 recorded reproduce commands. **That is
 a deliberate coordinator round, and this landing does not take it.**
+
+> **ADJUDICATED 2026-09-08, coordinator: DECLINED FOR NOW, and queued rather than
+> refused.** The proposal is coherent and the analysis is accepted as written — this is
+> a scheduling call, not a disagreement. Three reasons, in the order they weigh:
+> **(i)** the yield is zero mathematics, and the phase's own criterion is max impact on
+> proving or disproving `PencilPair K 3 G`; **(ii)** the cost lands on exactly the surface
+> the harness's *invocation paths are frozen* rule protects — `gapdiff.py`'s key inside
+> ~30 recorded reproduce commands — so it is churn against recorded evidence, which is
+> the one kind of doc work this project prices as expensive rather than cheap;
+> **(iii)** the cap was just bumped to 1257/1257 with a dated reason and the row sits at
+> 2,185 of a 2,514 combined budget, so the constraint that motivated the ask is not
+> binding for the next several landings. **What would flip it:** a *third* bump becoming
+> necessary — at that point the row is being re-priced per landing rather than
+> maintained, and the split becomes the cheaper option. **Where it lives until then:**
+> here, as a costed proposal with its parser evidence intact, so a future cleanup round
+> inherits the work rather than re-deriving it. A landing must not execute it.
