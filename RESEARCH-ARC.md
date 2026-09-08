@@ -547,6 +547,20 @@ to fold it back into kind 6, on the BINSERT precedent above — the case for a s
 is the CONFIRMED verdict, which no existing kind covers, rather than the wrong reason,
 which several do.)*
 
+> **UPHELD by the coordinator, 2026-09-08, and the line between this call and the BINSERT
+> one is recorded so the two do not read as arbitrary.** Both directions offered a tenth
+> kind in the same session and the calls went opposite ways, on one distinction: **the
+> AXIS.** BINSERT's proposal moved along the axis the taxonomy already runs on — a wrong
+> prediction, mirrored in direction (UNDERSHOT misleads downward, its mirror upward) — and a
+> new direction for an existing structure is not a new structure, so it was recorded as a
+> **sub-shape of kind 2**. BSTEER's opens a **new axis**: the verdict is *right*, which no
+> kind in nine had described, and the correction lives entirely in the mechanism. The test
+> the coordinator applied, and the one to apply next time: **does the proposal describe a
+> prediction the existing kinds would classify correctly?** BINSERT's would (kind 2, with a
+> noted direction); BSTEER's would not — every existing kind would have to call it
+> *unclassified*, because all nine presuppose a verdict that needed fixing. **A taxonomy
+> earns a kind for an unrepresented axis, not for a new point on a represented one.**
+
 **RECONCILED 2026-09-03 AFTER THE CONCURRENT ROUND OF FOUR: the tally runs to
 TWENTY-THREE instances and NINE kinds.** The five new ones are one round's worth, which is
 itself the finding — a four-direction round primed by one coordinator produced a

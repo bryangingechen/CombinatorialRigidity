@@ -1665,6 +1665,100 @@ struck — decided by §9.3.*
   saturation. *Neither filter has a kill condition: they are negatives. Their
   status is decided by the `(K-out)` and `(K-grid)` gap-map rows.*
 
+**RE-RANKED 2026-09-08 — THE TENTH STRATEGY-ONLY PASS, AND THE RANKING A SESSION READS.
+THE NINTH PASS'S LIST IS EXHAUSTED: ranks 1–4 ALL SPENT** (BSCOND 76, BARCH 77, GLEAF 80,
+BINSERT 82), **and the one cheap item outside it is spent too** (BSTEER 84, at BFOUR's own
+(BE-162)(iii)). Coordinator-authored at a round close, no dispatch spent, commissioned by
+`notes/Phase39.md` *Hand-off*'s own next-concrete-task line. Every entry below was
+re-derived from its **owning** section or gap-map row and never quoted from a hand-off (the
+F22 discipline); both filters above were applied to each, **and so was GLEAF's third
+question** — *is the statement reached NECESSARY or SUFFICIENT for the row it sits on?*,
+which that landing added to this board precisely because the ninth pass's rank 3 failed it.
+
+**WHAT THE 2026-09-08 ROUND CHANGED, and it is why this pass is short.** The
+round of three plus BSTEER did not add candidates — it **collapsed** them. BSERIES (83)
+reduced half (β)'s one-end residue to **(PENCIL-SATURATES) at side-degree `≥ 2`**, which is
+half (B)'s own open item, so **both halves of S-mark now hang on ONE clause**; BFOUR (81)
+refuted that clause's reduction-successor **(E4)** and repaired it as **(BE-E4′)**; BSTEER
+(84) then showed (BE-E4′) **survives** its tight boundary. So the board is no longer a
+menu of lanes — it is **one clause with two routes to it**, plus a short tail. Ranking
+accordingly, and the criterion doing the work is the first one (**max impact on proving or
+disproving `PencilPair K 3 G`**), not cheapness.
+
+1. **`Γ`-PROPERNESS — the incidence lemma of (BE-149)(v).** Owner: `(K-bare)` row,
+   (BE-149)(v)/(BE-151). Properness of `{p ∈ F : dim(Γ ∩ (Π_x(p) ⊕ Π_x(p))) ≥ 2}` for the
+   **fixed** `Γ ⊆ Λ²K⁴ ⊕ Λ²K⁴` against a 3-parameter family of products of **totally
+   singular** 2-spaces — the `V ⊕ V` analogue of (BE-115), and named at source as *what is
+   genuinely missing*. **Why rank 1, stated as sufficiency rather than as machinery
+   reached:** the clause **is** `φ_p`'s surjectivity ((BE-149)), and properness is the
+   hypothesis (BE-122)/(BE-123) turn into **generic** — `BAD` constructible, so fibrewise
+   properness gives a dense open on an irreducible chart. So this closes **half (B)'s open
+   item at side-degree `≥ 2`**, and by BSERIES's reduction it **discharges habitat (I) of
+   half (β) at the same time**: it is the only live candidate that moves **both halves of
+   S-mark at once**. Three further inputs, all landed this round: its certificate
+   `dim Γ_Π ≤ 1` already fires at **84 of 99** configurations and at **39 of the 54** the
+   relaxation cannot touch ((BE-151)), it is **SOUND at all 663 firings**, and BFOUR's
+   `c₁(Π_x) ≤ dim Γ_Π` (411/411) makes that certificate **prove (E4) pointwise** at 375/411
+   — so the object is not merely fixed, it is *measured to decide most of the population*.
+   **And the arc now owns the technique the lemma needs:** fact (a) of (BE-149)(v)'s own
+   difficulty list is that `Π_x` is **totally singular**, which is exactly the fact BSTEER
+   used to settle (BE-162)(iii) — a Klein-quadric argument seeing what every incidence
+   argument on this thread had missed. **The entry's FIRST check, not an assumption:** does
+   (BE-122)/(BE-123)'s proper → generic bridge **transport** from the `A`-locus it was
+   proved for to the `Γ`-locus? Settle that before proving anything; if it does not, this
+   entry is a reduction and not a closure, and it drops below rank 2. *Kill condition:
+   the lemma proved, or a `p`-varying counterexample to properness exhibited. Decided by:
+   the `(K-bare)` row.*
+2. **(BE-E4′) — the repaired two-sided clause.** Owner: `(K-bare)` row, (BE-153)/(BE-155)
+   as amended by (BE-162)/(BE-177). It survives BSTEER's draw, is **tight at `δ₂ = 1`**, and
+   delivers **14 → 12 on the both-flexible zone** with the rigid-side remainder carried by
+   (BE-22)(vi)'s proved collapse. Ranked **below** rank 1 on GLEAF's own question: it is a
+   *reduction* of the inequality list, **not** the clause, so proving it leaves
+   (PENCIL-SATURATES-CHART) open at side-degree `≥ 2` **and** leaves the 12
+   unwitnessed-not-excluded blocks untouched. Its cheap decisive moves are **spent** (BFOUR's
+   falsification, BSTEER's boundary draw), so what is left is open mathematics rather than a
+   smallest commit — which is the honest reason it is rank 2 and not rank 1. *Kill condition:
+   proved, or a `δ_i ≥ 1` falsifier. Decided by: the `(K-bare)` row.*
+3. **LEDGER ITEM 1 — habitat (II), the sharpening.** Owner: `(K-bare)` row, (BE-58)(iv) as
+   re-scoped by (BE-169)/(BE-170). BSERIES's re-scoping is what promotes this: item 3's
+   surviving half **is** item 1, and habitat (II) — clean at **both** ends — admits **no
+   peel**, so no machine in the (BE-14) sub-arc has an object there and (BE-45)(iv)'s three
+   measured-only rows all live in it. It needs the **sharpening** (`c = 0`), *strictly
+   stronger* than (PENCIL-SATURATES)'s `c ≤ 1`. Ranked third because it is the (β) side's
+   real obstruction and nothing in this round touched it — but it is a **research item with
+   no named first slice**, which is exactly what ranks 1 and 2 have and it does not.
+   *Kill condition: the sharpening proved on habitat (II), or a counterexample. Decided by:
+   the `(K-bare)` row, u12/u25.*
+4. **(INS-7)'s SINGLE MEASUREMENT — the last option-B stone.** Owner: the new `§(K-ins)`
+   row. Derive `U′` for the two-vertex-deleted shared framework and measure
+   `rank⟨U′, Λ²Π̂⟩` at BINSERT's 8 hit seeds. **One direction, a *necessary* condition and
+   not the full criterion** — priced honestly by BINSERT itself, with a negative prior, and
+   it **re-opens link 2** if taken further. It earns rank 4 on **diversification** (the only
+   live entry outside the (BE-14) thread) and on **cap disclosure hygiene**: option B is
+   recorded SPENT *save this endpoint*, and leaving a named un-run measurement under a
+   "spent" verdict is how a route gets silently resurrected later. *Kill condition: the
+   measurement run, or (BE-14) closing `hbareSplit` without it. Decided by: the `§(K-ins)`
+   row.*
+
+**Below the top four, unchanged in relative order and none of them re-derived this pass**
+(they moved in no direction of this round): **U1** (the annihilator retarget — its residual
+(ANH-9)(iii) *is* (GR-10)'s missing technology, which is why it stays below a live clause);
+**block 10's one-end-series tail** and **BTWOCUT's bundle construction**; the **point-side
+flat law** (priced NOT cheap, load-bearing twice); **cross-pair welding** ((BE-28)(i),
+motive economy only); the **12 unwitnessed-not-excluded blocks** and **item 0(b) [MARGIN]**,
+still unexhibited after this round; **RPOOL's two successors** and the **(K-res) wave**
+(a **USER call**, dearer since RPOOL); **(GR-144) successors 2 and 3**; **(AV-7)'s Case-I
+gluing arm** (unpriced, untouched); **(ZH-2) stratified**; **route σ obligations 2–4**.
+
+**THE BAR THIS PASS LEAVES STANDING, and one it narrows.** `A_sharp` properness in `Λ²K⁴`
+**stays barred** — (BE-149) makes that a theorem, not a count. The bar's `(E4)` half
+**came back down** at BFOUR's landing and this pass does **not** lift it: (E4) as stated is
+refuted, so no further single-clause repair of *it* is authorized; **(BE-E4′)** is a
+different statement and is rank 2 on its own merits. `Γ`-properness is **lifted and now
+rank 1**.
+
+**SUPERSEDED AS A RANKING by the 2026-09-08 tenth pass above; its per-entry content stays
+authoritative for the four spent ranks.**
 **RE-RANKED 2026-09-03 — THE NINTH STRATEGY-ONLY PASS, AND THE RANKING A SESSION READS.
 RANKS 1–4 ARE ALL SPENT, SO THIS LIST IS EXHAUSTED** (BSCOND, ordinal 76; BARCH, 77 — whose
 recon **lifted this pass's bar, narrowly**, the lift recorded in the bar paragraph below, not
