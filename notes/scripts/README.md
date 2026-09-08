@@ -1159,6 +1159,10 @@ are a recorded *Harness debt* item (see below).
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/bsteer.py --bound` | 0 s | ibid. *Steps BE176–BE177* (**(BE-177)**: the second count -- **72** constructed peels with a side-2 series end at `x` whose `x`-neighbour is MOVABLE, `delta_2` census `{2: 36, 3: 36}`, **minimum 2** asserted, so `delta_2 = 1` is not reachable that way and `rho_2 = 1` at a series end needs an IMMOVABLE hub neighbour, i.e. `deg(x) = 2` again; plus the board and the E-rider) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/bsteer.py --support` | 0 s | ibid. (the `RESEARCH-ARC.md` section 4 support audit: six populations with what each VARIES, HOLDS FIXED and therefore REACHES -- including the one sentence it exists for, that the verdict rests on a PROOF (`habitat`) plus a census (`pitch`) and NOT on the census alone, since with freedom this large a census would leave the clause one lucky draw from death) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/bsteer.py --validate` | 120 s | ibid. all six in one process -- the landing gate. **FITS the 600 s foreground ceiling**, so this driver adds NO over-ceiling case to section 0 |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/bgprop.py geom` | <1 s | `notes/Pencil-informal.md` §(K-bare-ext) *Steps BE180–BE181* (direction BGPROP; **(BE-181)(i)/(BE-182)**: the `K^4` facts read OFF the graphs entirely -- Lemma A's dichotomy (`{p : u in Sigma_p}` recovered as the SUBSPACE `<a,b>` at 60/60 decomposable draws and EMPTY at 60/60 non-singular ones), `Pi_p = Sigma_p cap Om^perp` asserted as a subspace at 60/60 draws off the line with the degenerate `p` ON the line exhibited at 60 CONSTRUCTED draws, `Sigma_p` totally singular (`Q = 0` and `B = 0`) at every draw, and (BE-149)(v)(b)'s lift to alpha-plane PRODUCTS re-asserted at rank 12) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/bgprop.py reduce` | 10 s | ibid. *Steps BE180/BE183/BE184* (**(BE-181)(ii)**, **(BE-184)**, **(BE-185)**: on BARCH's own 99 configurations and 783 swept fibre points -- `Pi_x(p) = Sigma_p cap Om^perp` and `Gamma_Pi(p) = Gamma_Om cap (Sigma_p (+) Sigma_p)` asserted as SUBSPACE identities at 783/783 by two independently computed cuts agreeing with `barch.gamma_cut`'s rank at every point; `dim Gamma = dim A + dim R_0` at 99/99; the extension bound and the codimension-6 floor at 783/783. `g_Om` census `{2:2, 3:17, 4:22, 5:15, 6:18, 7:15, 8:7, 9:3}`, fibre shapes `A^3` 72 / plane `pi_{c_1}` 27) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/bgprop.py crit` | 55 s | ibid. *Steps BE182/BE183/BE185* (**(BE-183)**, **(BE-184)**, **(BE-186)**: the incidence bound computed per configuration -- properness PROVED class-uniformly at **53 of 99** (sweep-consistent 53/53), `Delta_Om = 0` at 70/99, `g_Om >= 8` PROVING the certificate dead at **10 of 99** (sweep-consistent 10/10) so (BE-149)(v)'s lemma is REFUTED, the sharpened floor `>= 2` at every swept point of exactly the 15 non-firing configurations, and the reframe: the containment FORCED at 80/80 with `rho_i = 6`, `dim Gamma_Pi >= 2 <=> Pi_x <= rho_bar_i <=> rho_i = 6` at 783/783, true BAD 0 of 120. **CAP**: `dim X_1`'s proportional part over a six-point lambda grid) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/bgprop.py validate` | 66 s | ibid. all three in one process -- the landing gate. **FITS the 600 s foreground ceiling**, so this driver adds NO over-ceiling case to section 0 |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/bfour.py --arith` | 0 s | `notes/Pencil-informal.md` §(K-bare-ext) *Step BE155* (direction BFOUR; **(BE-156)**: the CONTAINMENT THEOREM by EXHAUSTION over all 6 400 tuples — every one of the **535** (E4)-violating tuples is a (PENCIL-SATURATES-CHART) counterexample, **535/535 ASSERTED**, so the (BE-154)(iv) hunt is a STRICT SUB-HUNT of one already run at 0/772; the `Pi_x` margin histogram `{0: 150, 1: 234, 2: 151}` making **385 of 535** also [MARGIN] shortfalls and only 150 clean, 50 attaining; exactly **3** tuples reachable at the sweep's own side-2 signature, all forcing `rho_bar_1 = Pi_x` at `rho_1 = 2`; plus BARCH's 970 / 0 / 0 / 287 REPRODUCED as the divergence guard) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/bfour.py --charta` | 505 s | ibid. *Steps BE156–BE157* (**(BE-157)**/**(BE-158)**, half A: 204 composite chart points over 34 peels, both sides measured, the lean per-side row CROSS-ASSERTED against `bsatur.row_of` plus the three margin controls at 34/34 peels; side 2's signature the single value `(delta_2, a_2, rho_2, c_2) = (3,0,3,0)` at 204/204; `c_1(Pi_x) <= dim Gamma_Pi` ASSERTED 204/204 and the exact (BE-149)(i) identity 204/204; 0 (E4) falsifiers) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/bfour.py --chartb` | 504 s | ibid., half B: 207 points over 36 peels reaching the **three fibre shapes** the long-core library cannot (plane `pi_{c1}` 18, plane `pi_x` at `k >= 3` 10, the line 6); same single side-2 signature at 207/207, the bound 207/207, the identity 147/147 at its `k = 2` points, 0 falsifiers. **Union with half A is exactly (BE-136)'s 411/411 over 70 peels**, hypothesis met 72x, certificate firing 375/411, identity 351/351 |
@@ -2930,6 +2934,67 @@ figures this landing has no business moving.
 random `rows` of every width `1..6` and every rank `0..width`, and the same
 identity for `isect` against a brute-force intersection, plus a byte-identical
 re-run of every driver in §3.
+
+### New item (2026-09-08, direction BGPROP) — `barch` acquires its *third* consumer and `repin.hodge_star` its next; **UNPAID, NO MOVE MADE**
+
+`w4/bgprop.py` (the `Γ`-properness verdict, workbook §(K-bare-ext) *Steps
+BE179–BE186*) imports **`barch`** and sits **twelve deep** on the standing
+sibling-import chain — `bgprop → barch → bdegtwo → bline → bopen → bproper →
+bsigma → bsatur → … → kbare_common`. Folded into the same standing item; the
+new consumer counts are a **third** consumer of
+`barch.graph_data`/`gamma_cut`/`library`/`side_row`/`star_holds` (after `barch`
+itself and `bfour`) and its **first** of the private `barch._aff3`, a **third**
+of `bdegtwo.fibre_k`/`fibre_kind`, the next of `pitch.Q`/`klein`, and the next
+of **`repin.hodge_star`** reached through `pitch` rather than through `repin`'s
+own consumers.
+
+**Why UNPAID, and the rule BSTEER recorded is what decided the shape here.**
+BSTEER's item states it as a rule — *"a follow-up direction imports its
+predecessor, it does not extend it"* — and the coordinator's dispatch for this
+direction restated it as a hard instruction. `barch.py` carries recorded
+figures (the 99-row `graph`/`two`/`cert` census), so extending it would forfeit
+the one-line *No tracked driver modified* discharge and force a re-run. **The
+second instance in two landings**, so the rule is now load-bearing rather than
+observed once.
+
+**And this driver depends on that non-edit for a stronger reason than the
+gate:** it reuses `barch.side_row` *and* BARCH's own fibre-draw seed formula
+`SEED + 7717·sd + 29·j + len(name)` verbatim, so its 99 configurations and 783
+swept points are the **same population** (BE-151) measures — which is what
+makes (BE-151)'s 84/99 and 120/783 *reproduce* rather than merely agree. Had
+`barch.py` been edited, that identity would have been unverifiable.
+
+**One local helper set, disclosed rather than folded.** `bgprop._sp`/`_cap`/
+`_same`/`_rk` are width-agnostic re-implementations of `bimage.span`/`isect`/
+`same_space`/`dim`, existing **only** because `bimage`'s versions hardwire `I6`
+on a full-rank input (the eleventh item below). They are **not** §1 primitives
+and are not re-exported; they are recorded here so the round that finally pays
+`bimage.span`'s width defect finds this call site and deletes them rather than
+merging them.
+
+**It opens NO new hazard item, and all three recorded silent hazards are
+navigated.** `bimage.pt_in` is called **only** on the width-4 fibre basis
+`bdegtwo.fibre_k` returns — its intended use — and **no `Λ²`-side draw** goes
+through it. **No width-12 object** touches `span`/`dim`/`isect`: every 12-wide
+measurement goes through `exactcore.rank` or the four local helpers above, and
+every `Γ`-level cut is computed in `M°`-coordinates exactly as
+`barch.gamma_cut` does. `bwin` is **not imported**; the one dehomogenization
+goes through `barch._aff3`, which returns a **tuple** for exactly that reason.
+
+**Acceptance test when the sibling-import item is paid.** Unchanged, plus:
+`bgprop`'s three modes byte-identical at `PYTHONHASHSEED=0` (modulo each mode's
+own timing line), `validate` still under 600 s, and the 99/783 population
+figures still matching `barch.py cert`'s.
+
+**This subsection adds NO item to the heading's twelve**, and the reason is
+worth stating because a reader counting `### New item` headings will get a
+different number: it records **consumers of a standing item**, exactly as
+BARCH's, BSTEER's and BFOUR's do, and opens no new defect. **So the subsection
+count is NOT the item count** — `grep -c '^### New item'` returns 19 (six of
+them **PAID**), against twelve outstanding items, and the drift is structural
+rather than an error. The list's own repaired-count note applies: **name the
+last landing, never a count** — the last landing to add an *item* was DSAT
+(2026-09-03, the twelfth).
 
 ### New item (2026-09-08, direction BSTEER) — the chain reaches THIRTEEN deep, and `bfour` acquires its first consumer; **UNPAID, NO MOVE MADE**
 

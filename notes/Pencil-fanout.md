@@ -1,10 +1,10 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: EIGHT fan-outs, FIFTY single directions, ONE draft-only parallel direction,
+**Status: EIGHT fan-outs, FIFTY-ONE single directions, ONE draft-only parallel direction,
 FOUR concurrent pairs, ONE concurrent round of four and ONE concurrent round of three
-dispatched; 92 LANDED, **NONE IN FLIGHT, NONE DRAFTED** — the round of three is COMPLETE
-(BFOUR 81, BINSERT 82, BSERIES 83) and **BSTEER 84 landed as a single dispatch after it**,
-answering the very task that round handed over.
+dispatched; 93 LANDED, **NONE IN FLIGHT, NONE DRAFTED** — the round of three is COMPLETE
+(BFOUR 81, BINSERT 82, BSERIES 83) and **BSTEER 84 then BGPROP 85 landed as single
+dispatches after it**, each answering the very task its predecessor handed over.
 
 *(Round state, coordinator, 2026-09-08 — the **round of three**, CLOSED at BFOUR's landing.
 Three dispatched read-only, three landed serially, **zero label collisions and zero
@@ -15462,3 +15462,83 @@ standing outside it; proving (BE-E4′) is the open mathematics rather than a
 smallest next commit. The pass is priced against (BE-E4′) as a lemma,
 `Γ`-properness ((BE-149)(v), whose lift §8 has now strengthened twice), and the
 two standing USER calls.
+
+
+## BGPROP — eighty-fifth ordinal (single dispatch, nothing else in flight, **LANDED 2026-09-08**) — the tenth strategy pass's rank 1, `Γ`-properness: does (BE-122)/(BE-123)'s proper → generic bridge TRANSPORT to the `Γ`-locus, and can the lemma (BE-149)(v) names be proved?
+
+**Two questions, the first gating the second, and they came back
+CONFIRMED then REFUTED.** Verdict, in one line: **the bridge transports —
+and one step SHORTER than it runs at `k = 1` — but the properness it would
+consume is FALSE, provably, on 10 of 99 configurations; and where it is false
+it is the WRONG TARGET.** Labels **(BE-180)–(BE-187)**, *Steps BE179–BE186*,
+§(K-bare-ext), driver `notes/scripts/w4/bgprop.py` (`geom`/`reduce`/`crit`,
+`validate` 66 s).
+
+**Question 1 — TRANSPORTS, and it was answered on the board.** Opened at their
+own proof sites, (BE-122) and (BE-123) mention `A` nowhere: (BE-123)(i)'s
+constructibility needs only a constant-rank stratification, (ii) is elementary,
+(iii)/(iv) are about the *piece* and the two *ambients*. **And (BE-139)(iv)
+already states the architecture and records inputs 1 and 2 as available at
+`k ≥ 2`**, citing exactly (BE-123)(i) and (BE-136)(iii) — a clause the dispatch
+spec did not cite while declaring the check *"explicitly NOT an assumption"*.
+Two corrections came with the confirmation. The architecture has **five**
+inputs, not the spec's two, and the *fibrewise* step is
+**(BE-136)(iii)'s rational completion**, not (BE-123). And **one step of
+(BE-127)(i) DROPS OUT** — (BE-125)(ii)'s pointwise collapse, needed at `k = 1`
+only because (BE-114)/(BE-115) prove properness for the `Σ_x` locus and
+(BE-125)(iii) exhibits the two loci differing *dense against a single point*.
+(BE-149)(i) is exact at the `Π_x` level, so the `Γ` bridge is four steps where
+`k = 1` needs five ((BE-180)).
+
+**Question 2 — the reduction, then the refutation.** At `k = 2` (the whole
+landed scope of `Γ`) `Π_x(p) = Σ_p ∩ Ω^⊥` with `Ω = p_{c₁} ∧ p_{c₂}` the fixed
+Plücker point of `L_c`, so `Γ_Π(p) = Γ_Ω ∩ (Σ_p ⊕ Σ_p)` with `Γ_Ω` fixed and
+the moving factor a product of **α-planes** — *maximal* totally singular, which
+is precisely the family (BE-149)(v)(b) reports as the liftable half of
+(BE-115)(i). **The two halves of (BE-149)(v)(b) were describing the same family
+and nobody had taken the step that identifies them** ((BE-181)). BSTEER's
+technique then transplants: `{p : u ∈ Σ_p}` is `L_u` at zero pitch and **empty**
+otherwise, and a totally singular 2-space **pins `p`** at its pencil vertex
+((BE-182)), giving `dim Bad ≤ max(dim X_1, dim T − 1)` — the route's **first
+class-uniform properness positive**, 53 of 99 ((BE-183)). **Then the floor
+kills it**: `Σ_p ⊕ Σ_p` has codimension 6, so `g_Ω ≥ 8` makes graph-bad hold at
+**every** `p`, and `g_Ω ≥ 8` at **10 of 99** ((BE-184)).
+
+**And the last result is the one that matters for half (B).** At those 10 the
+containment `Π_x ⊆ ρ̄_i` is **forced** at 80/80 swept points with `ρ_i = 6` at
+all 80, so the clause holds **pointwise** there and there is no properness
+question to ask; over the whole 783-point sweep
+`dim Γ_Π ≥ 2 ⟺ Π_x ⊆ ρ̄_i ⟺ ρ_i = 6` at 783/783 ((BE-186)). **So the
+refutation is of a route, on a habitat where the clause is measured true** — and
+the successor is a **rank** statement, `dim Γ_Π(p) ≥ 2 ⟹ ρ̄_i(p) = V`
+(120/120), which needs no bridge, no properness and no genericity
+((BE-187)(iii)).
+
+**Self-caught, and disclosed — twice.** *(a)* The first plan was to prove
+properness class-uniformly and report the coverage. The floor was written as a
+*sanity assert* and it **refuted the target**; had it been left out, the
+direction would have returned "53 of 99 proved, the rest open" and missed that
+46 of the rest are not open but **decided the other way**. *(b)* An assert added
+as a control — *"the clause never fires where the certificate is dead"* —
+**failed**, and the failure was the finding: `barch.run_cert`'s `BAD` omits the
+`ρ_i ≤ 5` conjunct its own reading convention states, so the containment fires
+at 120/783 while the true BAD is 0/783. Both landed figures are correct; the
+gap between them is (BE-186)(i).
+
+**Caps, stated.** `dim X_1`'s proportional part is bounded over a **six-point
+`λ` grid** (largest 3) — *not found* above that under the cap, **never proved
+below it**; the exact statement needs elimination the Python layer cannot do.
+The 53/31/10/5 split is over **this** population — 33 shapes, three
+side-configuration scales, 8 fibre draws each — and is not a statement about the
+class. Everything is at **`k = 2`**: fibre shape 4 and the `V^k` graph are
+untouched. (BE-186)(i)'s equivalence is **MEASURED**, and its own disclosure is
+that the population **cannot exhibit a clause violation**, so every soundness
+assertion run on it — (BE-150)(iii)'s 63/63 and (BE-151)(i)'s 663 included — is
+a statement about a population where BAD coincides with `ρ_i = 6`.
+
+**Successor.** **§8's rank 1 is SPENT as a closure route**, and the board is
+three items: the clause at side-degree `≥ 2` still **OPEN**; `Γ`-properness
+**DECIDED — false**; and the replacement first slice
+`dim(Γ_Ω ∩ (Σ_p ⊕ Σ_p)) ≥ 2 ⟹ ρ̄_i = V` at `k = 2`, with the `V^k` graph at
+`k ≥ 3` second and (BE-184)(ii)'s pointwise floor over all of `F` third. **What
+is NOT a slice: more properness sweeps on this population.**

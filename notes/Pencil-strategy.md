@@ -1709,6 +1709,48 @@ disproving `PencilPair K 3 G`**), not cheapness.
    entry is a reduction and not a closure, and it drops below rank 2. *Kill condition:
    the lemma proved, or a `p`-varying counterexample to properness exhibited. Decided by:
    the `(K-bare)` row.*
+   > **SPENT 2026-09-08 (direction BGPROP, ordinal 85) — and this entry's own kill
+   > condition FIRED on the SECOND branch.** *(Recorded here, in §8, per this section's own
+   > rule; it does not re-rank ranks 2–4, whose relative order is untouched.)* **The FIRST
+   > check came back POSITIVE**: the bridge **transports**, and the answer was already on
+   > the board at **(BE-139)(iv)**, which states the architecture and records its inputs 1
+   > and 2 available at `k ≥ 2` — so the conditional demotion this entry wrote for itself
+   > (*"if it does not, this entry is a reduction and not a closure, and it drops below rank
+   > 2"*) **does not fire**. **The lemma itself is FALSE.** `Σ_p ⊕ Σ_p` has codimension 6 in
+   > `V ⊕ V`, so `dim Γ_Π(p) ≥ g_Ω − 6` for every `p` and `g_Ω ≥ 8` makes the graph-bad
+   > locus **all of `F`** — at **10 of 99** configurations ((BE-184)). What the entry
+   > delivers instead is a **partial closure**: class-uniform properness at **53 of 99** by
+   > an incidence bound over the **bi-quadric** locus ((BE-183)) — the route's first
+   > class-uniform positive, and the thing (BE-139)(iv) said no landed lemma supplies —
+   > per-configuration properness at 31 more by (BE-151)(ii)'s one-witness argument, and
+   > **provable failure at 10**, with 5 measured-but-unproved.
+   >
+   > **THREE THINGS THIS ENTRY GOT WRONG, and they are worth more than the verdict.**
+   > **(a) The family is not the one this entry names.** At `k = 2` — the whole landed scope
+   > of `Γ` — `Π_x(p) = Σ_p ∩ Ω^⊥` with `Ω = p_{c₁} ∧ p_{c₂}` **fixed**, so the products are
+   > of **α-planes**, *maximal* totally singular 3-spaces, not of the 2-spaces this entry
+   > describes; and that is exactly the family (BE-149)(v)(b) already reports as the
+   > **liftable** half of (BE-115)(i) ((BE-181)). The two halves of (BE-149)(v)(b) were
+   > describing the same object and nobody had taken the step. **(b) The bridge is not
+   > (BE-122)/(BE-123) alone.** It has five inputs, and the *fibrewise* step is
+   > (BE-136)(iii)'s rational completion; conversely one step of (BE-127)(i) —
+   > (BE-125)(ii)'s pointwise collapse — **drops out** on this route, so the `Γ` bridge is
+   > **shorter**, not longer ((BE-180)). **(c) Properness is the wrong target where it
+   > fails.** At the 10 the containment `Π_x ⊆ ρ̄_i` is **forced** (80/80) with `ρ_i = 6` at
+   > all 80, and over the whole sweep `dim Γ_Π ≥ 2 ⟺ Π_x ⊆ ρ̄_i ⟺ ρ_i = 6` at 783/783
+   > ((BE-186)). So the clause holds **pointwise** on the habitat where the route dies, and
+   > the successor is a **rank** statement — `dim Γ_Π(p) ≥ 2 ⟹ ρ̄_i(p) = V`, measured
+   > 120/120 — needing **no** bridge, **no** properness and **no** genericity
+   > ((BE-187)(iii)).
+   >
+   > **AND THE ENTRY'S OWN SUFFICIENCY ARGUMENT SURVIVES, WHICH IS WHY THIS IS A REDUCTION
+   > AND NOT A DEAD END.** *"The clause is `φ_p`'s surjectivity"* is exact and untouched;
+   > what failed is the third, unstated premise — that properness of the **necessary**
+   > `dim ≥ 2` locus is available. **The bar this leaves:** `Γ`-properness is **struck as a
+   > closure route**; a *further* properness attempt on this population is **NOT
+   > authorized**, because (BE-186)(i) shows the population cannot exhibit the
+   > discriminating case. **(BE-187)(iii)'s rank statement is the live successor** and is
+   > the pass's own next rank-1 candidate; ranks 2–4 stand as written.
 2. **(BE-E4′) — the repaired two-sided clause.** Owner: `(K-bare)` row, (BE-153)/(BE-155)
    as amended by (BE-162)/(BE-177). It survives BSTEER's draw, is **tight at `δ₂ = 1`**, and
    delivers **14 → 12 on the both-flexible zone** with the rigid-side remainder carried by
@@ -1755,7 +1797,12 @@ gluing arm** (unpriced, untouched); **(ZH-2) stratified**; **route σ obligation
 **came back down** at BFOUR's landing and this pass does **not** lift it: (E4) as stated is
 refuted, so no further single-clause repair of *it* is authorized; **(BE-E4′)** is a
 different statement and is rank 2 on its own merits. `Γ`-properness is **lifted and now
-rank 1**.
+rank 1**. *(**AMENDED 2026-09-08 at BGPROP's landing:** rank 1 is **SPENT** and
+`Γ`-properness is **struck as a closure route** — the lemma is refuted at 10 of 99 by a
+proof, its bridge confirmed, and 53 of 99 closed class-uniformly. The bar now reads: no
+further **properness** attempt on this population is authorized; the live successor is the
+**rank** statement (BE-187)(iii), `dim Γ_Π ≥ 2 ⟹ ρ̄_i = V`. See the entry's own SPENT
+block.)*
 
 **SUPERSEDED AS A RANKING by the 2026-09-08 tenth pass above; its per-entry content stays
 authoritative for the four spent ranks.**

@@ -561,6 +561,47 @@ which several do.)*
 > *unclassified*, because all nine presuppose a verdict that needed fixing. **A taxonomy
 > earns a kind for an unrepresented axis, not for a new point on a represented one.**
 
+**KIND 10's SECOND INSTANCE, at the twenty-eighth (2026-09-08, direction BGPROP) — and a
+tenth kind was NOT minted again, on the same axis test.** Reconciled from the baseline of
+**twenty-seven instances and ten kinds** recorded at `b7b3eed8`. The spec predicted the
+proper → generic bridge **TRANSPORTS**, named its evidence stratum as the weakest on the
+board (*"I read (BE-122)/(BE-123)'s shape from the gap-map row and (BE-113)'s prose, NOT
+from their proofs"*), and gave its mechanism: *"the content is constructibility plus
+irreducibility, neither of which mentions `A`."* **The verdict is right.** The mechanism is
+**incomplete in three ways the direction had to correct**: the bridge has **five** inputs,
+not two, and the *fibrewise* step lives in a clause the spec never cited
+((BE-136)(iii)'s rational completion); the spec's stated **tell** — *"the bridge's proof
+needing `A`'s `p_x`-freeness to get the fibrewise statement"* — does **not** fire, while a
+step it did not name (**(BE-125)(ii)**'s pointwise collapse) is genuinely `A`-specific and
+**drops out**, making the transported bridge *shorter*; and, most usefully, **the question
+had already been answered by a landed clause** — (BE-139)(iv) states the architecture and
+records inputs 1 and 2 as available at `k ≥ 2` — while the spec called the check
+*"explicitly NOT an assumption"* and *"the entry's stated first check"*.
+
+**Why kind 10 and not an eleventh.** The direction considered minting *"the corpus had
+already answered it"* as a new kind and **declined**, applying the coordinator's own upheld
+axis test: **does the proposal describe a prediction the existing kinds would classify
+correctly?** Kind 10 does — verdict right, correction living entirely in the mechanism —
+and *where the correction was found* is not a new axis but a new **location** on the axis
+kind 10 already runs on. The BINSERT precedent governs: a new point on a represented axis
+is a sub-shape, not a kind. **The transferable instruction, which is new and is why this
+instance is worth recording at all:** §7 tells a spec to name its evidence stratum, and
+this spec did — *"NOT from their proofs"* — which is exactly what should have triggered a
+**corpus grep for the architecture's own summary clause** before declaring the check open.
+So the stratum clause has a second job beyond honesty: **when a spec names a surface it did
+NOT read, the cheapest next move is to ask whether some landed clause reads it already**,
+and (BE-139)(iv) was one `grep` away. That is GELIM's *cheapest possible outcome* arrived
+at from the other side — GELIM's named stratum told the dispatch which section to open and
+the prediction died there; here it should have told the coordinator the question was
+already closed.
+
+**Corrections ran both ways here too.** Against the spec's one mechanism defect the
+direction self-caught **two** of its own: a sanity-`assert` floor that **refuted the
+direction's own target** (had it been omitted, 46 of 99 configurations would have been
+reported *open* rather than *decided the other way*), and a control assert whose **failure
+was the finding** — a landed driver's `BAD` omitting the `ρ_i ≤ 5` conjunct its own reading
+convention states. **One and two**, and the pairing is again what worked.
+
 **RECONCILED 2026-09-03 AFTER THE CONCURRENT ROUND OF FOUR: the tally runs to
 TWENTY-THREE instances and NINE kinds.** The five new ones are one round's worth, which is
 itself the finding — a four-direction round primed by one coordinator produced a
