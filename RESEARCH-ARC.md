@@ -678,6 +678,54 @@ left **stale by one** at the previous landing — the **seventh** instance of th
 the **second** in that file, and one more confirmation of its own generalization that *a
 document's own header is precisely the part a section-scoped edit does not re-read.*
 
+**THE THIRTY-FIRST INSTANCE (2026-09-08, direction BGTWOA) — kind 1, plain *refuted*, and
+it is recorded because THE SPEC'S TELL COULD NOT HAVE FIRED.** Baseline: **thirty instances
+and ten kinds**, above, cited rather than re-derived. The spec predicted the BSTEER lift
+**goes through**, with *"the two hypotheses as the real content rather than bookkeeping"*,
+and named its stratum honestly (*"BEFOURP's return message. I have not opened (BE-175)'s
+steps"*). The verdict is **wrong**: the lift fails, and `(BE-G_2a)` is refuted three ways —
+unsatisfiable at `ρ_j ≥ 5` by the ambient, false at four fully-gated in-regime peels, and
+false *by (BE-175)(i) itself* applied to the side the target is about.
+
+**The tell is the finding.** The spec named as its refutation-tell *"one of those two
+hypotheses turning out to BE the flag-regime dependence BEFOURP just made load-bearing"* —
+but **(BE-209)(ii) had already said the flag regime is one of the two**, in the very text
+the spec cited as its stratum. So the tell was **already satisfied at dispatch**: it could
+not discriminate, and a direction that checked only the tell would have reported the
+condition met and the prediction unrefuted. What actually kills the lift is a **side-indexing
+error** the tell does not describe: (BE-175)(ii)'s `rnode_shaped` exclusion and the
+flag-regime hypothesis are both indexed to **side 2**, while `(BE-G_g)`'s subject is the
+**non-firing** side — side 1 whenever the firing side is the skeleton.
+
+**No new kind, and the axis test is why.** The verdict is plainly refuted, which kind 1
+classifies correctly; the novelty sits on the **escape-clause axis** §7 already runs on
+(kind 5's *tell vindicated*, BEFOURP's and BGPROP's *tell did not fire*), as a third point on
+it — *the tell was uninformative* — and by the BINSERT precedent a new point on a represented
+axis is a sub-shape, not a kind. **But the transferable instruction is new, and it is a
+cheap pre-dispatch check: a tell must name a condition NOT already recorded in the
+predecessor's own return.** §7 promotes the escape clause as the highest-yield sentence in a
+spec; this instance shows it can be written so as to be **vacuously true on arrival**, which
+is worse than omitting it, because it manufactures false confidence. The check costs one
+grep of the predecessor's text for the tell's condition before the tell is written. Paired
+with the thirtieth instance's rule — *state the reason separately from the verdict* — the
+pair now reads: **state the reason separately, and make the tell falsifiable against the
+corpus you already have.**
+
+**Corrections ran both ways, and the direction's own share was two plus a status surface.**
+The direction self-caught **two**: its first derivation of the central bound `e_j ≥ ρ_j − 2`
+went through **(BE-206)'s asserted grading**, which it then found is **false off the firing
+branch** — so the bound had to be re-derived from `dim Π_x = 2` directly, and had the first
+route stood, the whole verdict would have rested on a lemma the same direction refutes
+(caught by reading `befourp.run_peel`'s **control flow**, not its assertion text — *docstrings
+are not evidence* applied to an `assert`); and a first-draft reading of the kill condition as
+*"any `c_j(Π_x) ≥ 1` mechanism"*, which is **forced and harmless** at `ρ_j ≥ 5`, corrected to
+`e_j ≤ 1`. It also caught a **coordinator-side status surface**: `notes/Phase39.md`'s *DOC
+DEBT* paragraph still read *"2,483 / 2,514 words … the cap was NOT bumped … 31 words of
+headroom"* one commit **after** `a5b071ce` bumped that cap to **2,856** — the **eighth**
+instance of the shape and the first inside the phase note's *Hand-off* rather than a header,
+which extends the generalization: **it is not only a document's header that a section-scoped
+edit does not re-read, but any paragraph whose numbers are owned by a different file.**
+
 **RECONCILED 2026-09-03 AFTER THE CONCURRENT ROUND OF FOUR: the tally runs to
 TWENTY-THREE instances and NINE kinds.** The five new ones are one round's worth, which is
 itself the finding — a four-direction round primed by one coordinator produced a

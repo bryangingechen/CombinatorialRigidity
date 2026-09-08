@@ -4658,8 +4658,8 @@ unusable. Per (L1)'s remedy the pieces are **section-tag prefixed**, matching
 
 | token | owner | what it is | status |
 |---|---|---|---|
-| **`(BE-F_f)`** | §(K-bare-ext) (BE-205)(iii) | the *floor* piece family, `c_i(Π_x) = 2 ⟹ ρ_i ≥ f` | family; `(BE-F_5)`/`(BE-F_6)` **REFUTED**, `(BE-F_4)` **OPEN** |
-| **`(BE-G_g)`** | §(K-bare-ext) (BE-205)(iii) | the *other-side* piece family, `c_i(Π_x) = 2 ⟹ e_j ≥ g` | family; `(BE-G_1)` PROVED at `ρ_j = 1` (BSTEER), `(BE-G_2)` **OPEN** |
+| **`(BE-F_f)`** | §(K-bare-ext) (BE-205)(iii) | the *floor* piece family, `c_i(Π_x) = 2 ⟹ ρ_i ≥ f` | family; `(BE-F_5)`/`(BE-F_6)` **REFUTED**, `(BE-F_4)` **OPEN** — and **IS the floor `ρ_i ≥ 4`**, `q̂` adding nothing ((BE-212), BGTWOA) |
+| **`(BE-G_g)`** | §(K-bare-ext) (BE-205)(iii) | the *other-side* piece family, `c_i(Π_x) = 2 ⟹ e_j ≥ g` | family; `(BE-G_1)` PROVED at `ρ_j = 1` (BSTEER); **`(BE-G_2)` and `(BE-G_2a)` REFUTED in the regime, so every `g ≥ 2` member is DEAD** ((BE-214)/(BE-215), BGTWOA) |
 
 Both were verified **0-hit as raw substrings** (`BE-F_`, `BE-G_`,
 `(BE-F_f)`, `(BE-G_g)` and every member token) before the rename landed, and
@@ -4690,3 +4690,63 @@ consumed unchanged**: `(X<digit>)` in, bare single-letter call parentheses out.
 ((BE-110)(i)'s projection `ω ↦ ω ∧ p_x`), `Σ_x`, `α_x`, `f` and `g` — are
 objects and parameters, written as mathematics; `f` and `g` in particular are
 **bare lowercase parameters of the two families**, never parenthesized alone.
+
+## Reserved namespace — direction BGTWOA (2026-09-08, **CONSUMED IN FULL: eight labels and eight steps**)
+
+| direction | section | labels | steps | driver |
+|---|---|---|---|---|
+| **BGTWOA** | §(K-bare-ext) — **extends**, no new section | **(BE-210)–(BE-217)** consumed | **BE209–BE216** consumed | `w4/bgtwoa.py` (three modes + `validate`) |
+
+**It opens at exactly the tail BEFOURP declared** (*"THE LIVE TAIL IS NOW
+(BE-210) / Step BE209"*) — i.e. **at the RETURNED pair**, not past it. That
+matters: a scan of the *consumed* range alone would have opened at
+`(BE-212)`/*Step BE211* and silently stranded BEFOURP's two returned tokens
+forever, which is the off-by-N shape behind two of the five coordinator
+reservation defects of the 2026-09-03 round. **The registry's own tail
+declaration is what prevents it**, and this is the first landing where the
+declaration and the consumed range *disagree* — so it is the first real test
+of that sentence. **THE LIVE TAIL IS NOW (BE-218) / *Step BE217***, 0-hit
+verified at this landing. **The three earlier strays stay available and
+unused**: **(BE-163)** / ***Step BE162*** (BFOUR's), **(BE-179)** /
+***Step BE178*** (BSTEER's), and ***Step INS8*** (BINSERT's) — BEFOURP's
+returned pair is now **consumed**, so the stray list shortens by one for the
+first time in the thread.
+
+**0-hit verification, re-run by the direction as its FIRST action** (clause
+(L7): **every** token in the range, enumerated rather than sampled, **hits and
+files reported separately**), across the whole tree **at `HEAD`**:
+
+| token | `(BE-n)` hits / files | bare `BE-n` hits / files | step `BEn` hits / files |
+|---|---|---|---|
+| `BE-210` / `BE209` | **4 / 2** | **4 / 2** | **4 / 2** |
+| `BE-211` / `BE210` | **4 / 2** | **5 / 2** | **5 / 2** |
+| `BE-212`–`BE-217` | 0 / 0 | 0 / 0 | 0 / 0 (`BE211`–`BE216`) |
+
+`BGTWOA` and `bgtwoa` both **0 / 0** as raw substrings, (L5)'s check
+included. **Every non-zero cell was OPENED, not counted**: all of them are
+BEFOURP's reservation-and-return record (`notes/Pencil-fanout.md` ×2,
+this file ×2) plus the tail declaration above — **no consumption anywhere**.
+The enumeration **reproduced the coordinator's prep token-for-token in both
+metrics**, the **sixth consecutive** reservation to do so, and the first where
+the opening tokens were non-zero *by design* rather than by the predecessor's
+tail sentence alone.
+
+**(L6) landing-time bare-token grep, RUN over the whole repository, CLEAN.**
+`grep -oE '\([A-Z][0-9]\)'` over the added prose returns **zero** tokens — the
+first landing in the thread with a genuinely empty result, because the
+direction cites `§(K-bare-ext) (E4)` **only** through its successor
+`(BE-E4′)` and never needs the bare form. The driver's locals were named to
+stay off the shape from the first draft (`side_near`/`side_far`,
+`node_x`/`node_y`, `part_a`/`part_b`, `raw_side`, `inner`/`outer`,
+`star_plane`) — BRANKV's `E1`/`E2` and BLONGARC's `P1`/`P2`/`U1` renames
+applied **pre-emptively**, the second consecutive landing to pay that cost up
+front rather than at the grep. **BEFOURP's/BLONGARC's scope statement is
+consumed unchanged**: `(X<digit>)` in, bare single-letter call parentheses out.
+
+**NO NEW LABEL FAMILY IS MINTED.** The direction *refutes* BEFOURP's
+`(BE-G_2)`/`(BE-G_2a)` and demotes `(BE-F_4)`, so it consumes those tokens
+rather than adding to the family; the two registry rows above them are updated
+in place, per (L4) (no rename — the tokens now name **refuted** claims, which
+is exactly the disposition `§(K-bare-ext) (E4)` was given). The section's *notation*
+additions — `dim(ρ̄_j ∩ Σ_x)` and the profile length — are objects and
+parameters, written as mathematics, never parenthesized alone.

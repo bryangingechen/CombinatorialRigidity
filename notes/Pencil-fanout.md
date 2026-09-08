@@ -1,13 +1,14 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
-**Status: EIGHT fan-outs, FIFTY-THREE single directions, ONE draft-only parallel direction,
+**Status: EIGHT fan-outs, FIFTY-FOUR single directions, ONE draft-only parallel direction,
 FOUR concurrent pairs, ONE concurrent round of four and ONE concurrent round of three
-dispatched; 96 LANDED, **NONE IN FLIGHT, NONE DRAFTED** — the round of three is COMPLETE
-(BFOUR 81, BINSERT 82, BSERIES 83) and **BSTEER 84, BGPROP 85, BRANKV 86, BLONGARC 87 then
-BEFOURP 88 landed as single dispatches after it**, a chain of **five** in which each
-answered the very task its predecessor handed over — the third **refuted its predecessor's
-own successor**, the fourth **exhausted its own method class**, and the fifth
-**decomposed the survivor** ((BE-204)–(BE-209)).
+dispatched; 97 LANDED, **NONE IN FLIGHT, NONE DRAFTED** — the round of three is COMPLETE
+(BFOUR 81, BINSERT 82, BSERIES 83) and **BSTEER 84, BGPROP 85, BRANKV 86, BLONGARC 87,
+BEFOURP 88 then BGTWOA 89 landed as single dispatches after it**, a chain of **six** in
+which each answered the very task its predecessor handed over — the third **refuted its
+predecessor's own successor**, the fourth **exhausted its own method class**, the fifth
+**decomposed the survivor** and the sixth **EXHAUSTED that decomposition's frontier, by
+turning the fourth-from-last's own theorem against it** ((BE-204)–(BE-217)).
 
 *(**THIS HEADER WAS STALE BY ONE, caught at BEFOURP's landing (2026-09-08).** It read
 *"94 LANDED"* with the chain ending at BRANKV 86: **BLONGARC's landing (`19f5d8b5`)
@@ -15983,3 +15984,182 @@ coordinator's third-bump trigger is one direction away. Figure-invariance gate
 discharged by *No tracked driver modified*: the landing **adds**
 `w4/befourp.py` and edits no `*.py`/`*.m2`. **Two labels and two steps
 RETURNED** ((BE-210)/(BE-211), *Steps BE209*/*BE210*).
+
+## Direction BGTWOA (arc ordinal 89, direction 97) — **THE LIFT DOES *NOT* GO THROUGH: `(BE-G_2a)` is REFUTED THREE WAYS, the third being (BE-175)(i) ITSELF on the other side — so BEFOURP's five-member frontier is EXHAUSTED, and what replaces it is a hypothesis-free SUM condition**
+
+**The spec.** Settle `(BE-G_2a)`: lift BSTEER's degree count off its `ρ₂ = 1`
+hypothesis to `c_j(Π_x) = 0` on the non-firing side, carrying (BE-175)(iii)'s
+residual cap and adding the generic-flag-regime hypothesis. BEFOURP recorded
+that **neither (BE-175) step mentions `dim ρ̄_j`**, so on that reading the
+slice is *a re-statement plus two hypotheses, not new mathematics*
+((BE-209)(ii)). Hunt the kill condition — a third `c_j(Π_x) ≥ 1` mechanism at
+an R-node-shaped side 2 inside the regime — *as seriously as the lift*. **One
+commit, nothing else in flight; driver `notes/scripts/w4/bgtwoa.py`; labels
+(BE-210)–(BE-217), Steps BE209–BE216.**
+
+**THE VERDICT: NO. And the kill condition FIRED — twice, by two different
+mechanisms.** The obstruction is the deliverable, and it is not the one the
+spec's own refutation-tell named.
+
+**FIRST, THE ARITHMETIC SHRINKS THE SLICE TO ALMOST NOTHING — for free.**
+`c_j(Π_x) = dim(ρ̄_j ∩ Π_x) ≤ dim Π_x = 2`, a fact `bimage.pencil_space`
+asserts of its own output, so **`e_j ≥ ρ_j − 2` at every row** with no
+hypothesis of any kind. Consequently `(BE-G_2)` is a **theorem at `ρ_j ≥ 4`**
+(2 124 firing tuples) and **false at `ρ_j ≤ 1`** (250) — so `(BE-G_2b)`'s
+`ρ_j ≥ 2` is *necessary*, not a convenience — and the clause's entire content
+is the two rungs `ρ_j ∈ {2,3}`. The repair *"`ρ_j ≥ 2` and `c_j ≤ ρ_j − 2`
+when `ρ_j ≤ 3`"* is asserted **equivalent** to `(BE-G_2)` at all 3 375 firing
+tuples, where `(BE-G_2a) ∧ (BE-G_2b)` is merely sufficient. **And BSTEER's
+habitat is `ρ_j = 1` — exactly the rung where `(BE-G_2)` cannot hold** — so
+the theorem's habitat and the target's content habitat are **DISJOINT**: the
+lift is not *"carry a theorem to a larger habitat"* but *"prove it on two
+rungs it never touched"* ((BE-210)).
+
+**SECOND, `(BE-G_2a)` AS STATED IS UNSATISFIABLE ON PART OF ITS OWN HABITAT.**
+Grassmann in `Λ²K⁴`, sharpened through the totally singular 3-space `Σ_x` in
+two elementary steps (`dim(ρ̄_j ∩ Σ_x) ≥ ρ_j − 3`, then `c_j ≥ dim(ρ̄_j ∩ Σ_x)
+− 1` because `Π_x` has **codimension 1** in `Σ_x`), gives the realizable range
+**exactly `max(0, ρ_j − 4) ≤ c_j(Π_x) ≤ min(2, ρ_j)`** — **CONSTRUCTED** over
+23 shapes in exact ℚ, every subspace of `Σ_x` up to `(dim, dim ∩ Π_x)`
+extended by complement basis vectors, and nothing sampled. So `c_j(Π_x) = 0`
+is **impossible at `ρ_j ≥ 5`** and `c_j = 2` is **forced at `ρ_j = 6`**. **This
+IS a third `c_j(Π_x) ≥ 1` mechanism at an R-node-shaped side 2 in the
+regime** — the ambient one — and **no hypothesis can exclude it**. But it does
+**not** kill the frontier, because `e_j ≥ 3` there: **so the spec's kill
+condition is MIS-SPECIFIED.** `c_j(Π_x) ≥ 1` is neither necessary nor
+sufficient; the operative condition is `e_j ≤ 1`, i.e. `c_j ≥ ρ_j − 1`, which
+with `c_j ≤ 2` **requires `ρ_j ≤ 3`** ((BE-211)).
+
+**THIRD — THE KILL, AND IT IS (BE-175)(i) TURNED AROUND.** `bproper.plant_peel`
+re-run with **exactly one axis moved** — the skeleton profile length, which
+`PEELJOBS` and `bline.legal_peel` both hardcode at 3 — gives, at profile 4 and
+5 with side 1 the bucket-A piece `2 pendants + theta(3,3,3)`:
+
+> **`ρ = (2, 6)`, `c(Π_x) = (1, 2)`, `e = (1, 4)`, `δ = (2, 6)`, `a = (0, 0)`
+> at 4 of 4** — `K33 (A,B)`, `prism (A,E)`, `K33 (D,E)` at profile 4, `K33
+> (A,B)` at profile 5 — with **`hcard_ok`, min degree 2, girth 6, `x ≁ y`,
+> `deg_H(x) = deg_H(y) = 4`, side 2 `rnode_shaped`, the sides partitioning
+> `H`, `verify_pencil_witness`, `flag_frame` NON-None and `δ₁, δ₂ ≥ 1` all
+> ASSERTED** — the `bline.legal_peel` gate set, which BEFOURP's own 21
+> in-regime rows do not all carry.
+
+The firing side is **side 2**, so the *other* side is side 1 at `ρ₁ = 2`,
+`c₁(Π_x) = 1`, hence **`e_j = 1 < 2`: `(BE-G_2)` is FALSE inside the generic
+flag regime.** And the mechanism is measured, not guessed: `deg_1(x) = 1` — a
+**series end at `x` on side 1** — and `ℓ = p_x ∧ p_c` is asserted to lie in
+`ρ̄₁` **and** in `Π_x`. That is **(BE-175)(i) verbatim** ((BE-45)(i)'s leaf
+collapse plus (CH-1)'s coplanar closed star). **The mechanism that refutes the
+lift is the mechanism (BE-175)(i) PROVES** ((BE-214)).
+
+**THE DIAGNOSIS, and it is a side-indexing error rather than a missing
+hypothesis.** (BE-175)(ii)'s `rnode_shaped` exclusion and (BE-209)(ii)'s
+flag-regime hypothesis are both indexed to **side 2**. `(BE-G_g)`'s subject is
+the **non-firing** side. The two coincide only when the firing side is the
+*non*-R-node one — which is exactly BEFOURP's 21 rows (firing on side 1,
+`ρ₁ = 4`, side 2 the skeleton) and is **not** the general peel. Here the firing
+side **is** the skeleton side, and `deg₂(x) ≥ 2` says nothing whatever about
+side 1. **So the two added hypotheses cannot save the lift, because they
+constrain the wrong side** — and *"side `j` is R-node-shaped too"* is not
+available: `rnode_shaped(side 1)` is asserted **False** at 4/4, and a peel
+needs a series end somewhere to be a peel.
+
+**SO THE FRONTIER IS EXHAUSTED, NOT THINNED.** `(6,0)` needs `(BE-F_6)` =
+(PENCIL-SATURATES), refuted; `(5,1)` needs `(BE-F_5)`, refuted in the regime
+((BE-207)(i)); and `(4,2)`, `(3,3)`, `(2,4)` each carry `g ≥ 2`, asserted to
+**imply** `(BE-G_2)`. **BEFOURP's `f + g ≥ 6` has no surviving member**
+((BE-215)(i)). Its kill condition's *consequence* was stated correctly; only
+its trigger was wrong. **Scope, stated before the next reader over-reads it:
+this kills the ROUTE, not the clause.** `(BE-F_f)`/`(BE-G_g)` are *sufficient*
+conditions, so a row where `(BE-G_2)` fails while (BE-E4′) holds is no
+contradiction — and **(BE-E4′) does hold at all four witnesses, margin `+1`**,
+and at **0 failures over 90** in-regime R-node rows ((BE-215)(ii)/(BE-216)(iii)).
+
+**THE ONE POSITIVE, AND IT IS PROVED AND HYPOTHESIS-FREE.** At a firing side
+`c_i(Π_x) = 2`, so `e_i = ρ_i − 2` *exactly*; with the same ambient cap on the
+other side, `e₁ + e₂ ≥ ρ₁ + ρ₂ − 4`, hence
+
+> **(BE-E4′) ⟸ `ρ₁ + ρ₂ ≥ 8`**, asserted at all 1 575 firing both-flexible
+> tuples satisfying it, and the 245 escapes' `ρ₁ + ρ₂` census is
+> `{3: 8, 4: 32, 5: 76, 6: 85, 7: 44}` — **maximum 7**.
+
+**So the residue is EXACTLY `ρ₁ + ρ₂ ≤ 7`**, and the condition is a **SUM over
+the pair** — (BE-204)(iii)'s own two-sidedness arriving at `ρ` instead of at
+`dist`. It is also why the four kill witnesses survive: `ρ₁ + ρ₂ = 8` at every
+one. **The same elementary bound that makes `(BE-G_2)` free at `ρ_j ≥ 4` is
+what saves the clause where `(BE-G_2)` dies** ((BE-216)).
+
+**TWO AUDIT FINDINGS ON THE PREDECESSOR, both recorded rather than repaired.**
+*(a)* **(BE-206)'s four-rung grading is a tautology where it is verified and
+false where it is not.** `befourp.run_peel` asserts `e_i = dim(ρ̄_i ∧ p_x) +
+[Σ_x ⊆ ρ̄_i]` **only** inside `if row['cX'][i] != 2: continue`, and asserts
+`dsig ≥ 2` in the same block — so `dim(ρ̄_i ∩ Σ_x) ∈ {2,3}` is forced and the
+identity reduces to `e_i = ρ_i − 2`, i.e. to the firing hypothesis restated.
+Off that branch it **FAILS at 8 of the 23 constructed shapes**, every failure
+having `c < 2`. Consequently **`(BE-F_4)` IS the floor `ρ_i ≥ 4`** — what
+`barch.ps_floor` already implements — and (BE-209)(iii)'s *"the radical method
+has an object here"* is **weaker than recorded**: `q̂` is a change of variables
+on the firing side, not a new handle. (BE-206)(i) (`α_x = Σ_x`) and (BE-206)(ii)
+are **untouched** and re-asserted ((BE-212)). *(b)* **`barch.all_tuples`
+omits the Grassmann floor.** Its docstring and body enforce `c_i ≤ min(dim Π_x,
+ρ_i)` — the upper cap only — so **only 3 600 of the 6 400 tuples are
+geometrically realizable**; 2 800 are not. **But the defect is inert:** every
+one of the 245 escapes is floor-legal, and the 25-cell grid is asserted
+**identical** cell by cell under both spaces, with the same five minimal
+members. **(BE-205)(iii) is PROTECTED by this check, not corrected by it**
+((BE-213)). Repairing `all_tuples` would edit a tracked driver ~30 landed
+figures cite, so it is a **debt item**, not this landing's move.
+
+**THE SUCCESSOR, one item, costed.** **(BE-E4′) on the `ρ₁ + ρ₂ ≤ 7` firing
+zone**, which (BE-216) makes the exact residue. Its cheapest live sub-slice is
+the shape this direction could **not** realize: a firing side at
+`ρ_i ∈ {4,5}` (so `e_i ∈ {2,3}`) against a non-firing side at `e_j ≤ 6 − ρ_i`.
+The sweep's nine cells never pair them, because `ρ₂ ∈ {0,3,6}` is **quantized
+by the uniform profile length** (2/3/≥4) while `ρ₁ ∈ {2,3,4}` is set by the
+side-1 piece — so the sub-slice needs a **non-uniform** profile or a side-2
+family outside `bpeel.subdivided`. **If that shape exists in the regime,
+(BE-E4′) itself is refuted; if it provably does not, (BE-E4′) is a theorem.**
+Either way it is a *decision*, which is more than rank 2 has had.
+
+**THE COORDINATOR'S HYPOTHESIS — REFUTED, and not by the tell it named.** The
+spec predicted the lift *goes through* with the two hypotheses as the real
+content, and named as its refutation-tell *"one of those two hypotheses turning
+out to BE the flag-regime dependence BEFOURP just made load-bearing"*. That
+half was **already stated** in (BE-209)(ii) — the flag regime *is* one of the
+two — so the tell could not discriminate. What actually fires is different and
+sharper: **the hypotheses are attached to the wrong side**, and the lift dies
+on a side-indexing error that neither hypothesis addresses. Standing record on
+this thread: **3 verdicts right of 14**.
+
+**Price, itemized.** *(a)* Every geometric row is at `k = 2`,
+`deg_2(x) = 3`, on the two non-adjacent-hub skeletons `K33`/`prism`, over ℚ,
+one seed per cell. *(b)* The kill is **CONSTRUCTED and disclosed as such** —
+`plant_peel` at a profile length the predecessors hardcode — not drawn from a
+habitat census; it is a *counterexample*, which is the one thing a single
+construction suffices for. *(c)* The five sweep rows where `(BE-G_2)` fails
+are **one tuple in five embeddings**, same side-1 piece — not five independent
+shapes. *(d)* A firing in-regime R-node row pairing `ρ_i ∈ {4,5}` with
+`e_j ≤ 6 − ρ_i` is **not found under** the cap *"90 in-regime R-node rows, 5
+hub pairs × 3 uniform profile lengths × 6 bucket-A pieces, one seed each"* —
+and is **not excluded**. *(e)* A **fourth** containment mechanism beyond the
+ambient and (BE-175)(i)'s series end is **not found under** the same cap and
+is **not excluded** — but no longer matters, the frontier being already
+retired. *(f)* (BE-216)(i) is **proved**; (BE-216)(iii)'s *"(BE-E4′) holds"* is
+**measured over 90 rows** and upgrades nothing.
+
+**Landing bookkeeping.** `(K-bare)` **APPENDED, NOT recomputed — and it did
+not need to pay**: 2,483 → **2,707** words at **278** labels (**9.74** each)
+against the **1428/1428 combined 2,856** cap the coordinator set at
+`a5b071ce`, leaving **149 words of headroom**; `gapdiff.py K-bare HEAD`
+reports **0 DROPPED** and 9 added. **No fourth cap bump, no compression, no
+relocation** — the third bump's headroom absorbed this landing whole, which is
+the first time in six landings on this row that nothing had to be paid.
+**Recorded against the coordinator's own diagnosis:** the density floor moved
+9.23 → **9.74**, so the row is still *densifying*, and RELOCATION rather than
+compression remains the next lever — untouched here only because it was not
+needed. **The row split stays PROPOSED, NOT EXECUTED** (adjudicated
+`424f93dc`). Phase-note gate: **579 → 578** lines (net **−1**), **509 → 513** status
+words (caps 580/525). Figure-invariance gate discharged by *No tracked driver
+modified*: the landing **adds** `w4/bgtwoa.py` and edits no `*.py`/`*.m2`.
+**Eight labels and eight steps consumed IN FULL**; the live tail is now
+**(BE-218) / *Step BE217***, and BEFOURP's returned pair is consumed, so the
+stray list **shortens for the first time** in the thread.

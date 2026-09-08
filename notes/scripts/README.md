@@ -1176,6 +1176,10 @@ are a recorded *Harness debt* item (see below).
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/befourp.py gated` | 10 s | ibid. *Step BE207* (**(BE-208)**: SIDE 2 measured for the FIRST time at BRANKV's (BE-192) gated arc-3 family and BLONGARC's (BE-200)(iv) gated arc-4 family -- both constructions re-issued VERBATIM (`bline.legal_peel` + `binduc.flat_config`, 3 peels x 8 draws each, 24 + 24 points), with a SCOPE CHECK side 1 never needed: the two side edge sets asserted to PARTITION `H` and `bpeel.delta_pair`'s own split asserted to REPRODUCE them. Result `rho = (3,3)`, `c(Pi_x) = (2,2)`, `e = (1,1)`, (BE-E4') margin **-2** at 24/24 and 24/24, with `(delta_1,delta_2)` in `{(1,3),(2,3),(3,3),(4,3)}` so BOTH sides flexible at every one -- **and `flag_frame` None at 48/48**, so the rows are REPORTED and NOT a refutation, the disposition (BE-110)(iv) gave its own `rho_i = 4` hit) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/befourp.py peel` | 47 s | ibid. *Steps BE205-BE206* (**(BE-206)**, **(BE-207)**: (BE-118)(ii)'s `bproper.plant_peel` construction re-run verbatim, 21 rows, `flag_frame` non-None ASSERTED at every one; `alpha_x` built BLONGARC's way and asserted EQUAL to `bsatur.sigma_at(p_x)` -- two names, ONE space; (BE-110)(i)'s corank identity re-asserted at every firing side (`dim(rho_bar_1 cap Sigma_x) = 3` at 21/21) together with the new exact grading `e_i = dim(rho_bar_i ^ p_x) + [Sigma_x <= rho_bar_i]` (grading `1` at 21/21, so `e_1 = 2`); hence `(BE-F_5)` and `(BE-F_6)` FALSE in the regime at a LANDED witness; and side 2 measured for the first time -- `rho_2 = 3`, `c_2(Pi_x) = 0`, `e_2 = 3` at 21/21, so (BE-E4') HOLDS at 21/21 with margin `+1`) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/befourp.py validate` | 58 s | ibid. all three in one process -- the landing gate. **FITS the 600 s foreground ceiling**, so this driver adds NO over-ceiling case to section 0 |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/bgtwoa.py arith` | <1 s | `notes/Pencil-informal.md` section (K-bare-ext) *Steps BE209/BE212/BE214/BE215* (direction BGTWOA; **(BE-210)**, **(BE-213)**, **(BE-215)**, **(BE-216)**: EXHAUSTIVE over all 6 400 tuples, no sampling and the seed printed UNUSED -- the ambient cap `c_j(Pi_x) <= dim Pi_x = 2` asserted, hence `e_j >= rho_j - 2` at 6 400/6 400, `(BE-G_2)` asserted TRUE at the **2 124** firing tuples with `rho_j >= 4` and FALSE at all **250** with `rho_j <= 1`, and the restricted repair asserted **EQUIVALENT** (not merely sufficient) to `(BE-G_2)` at all **3 375** firing tuples; then the missing Grassmann floor `c_i >= rho_i - 4` -- only **3 600** of the 6 400 tuples realizable, **2 800** not -- with all **245** escapes asserted floor-legal and the 25-cell frontier grid asserted IDENTICAL cell by cell under both spaces, minimal members `(2,4)/(3,3)/(4,2)/(5,1)/(6,0)` asserted unmoved; each `g >= 2` frontier member asserted to IMPLY `(BE-G_2)`; `e_j <= 1` asserted to occur at NO tuple with `rho_j >= 4`; and the replacement `e_i = rho_i - 2` at every firing side with (BE-E4') asserted at all **1 575** firing both-flexible tuples having `rho_1 + rho_2 >= 8`, the escapes' own sum census `{3:8, 4:32, 5:76, 6:85, 7:44}` asserted to MAXIMUM 7. Every headline an `assert`) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/bgtwoa.py rungs` | <1 s | ibid. *Steps BE210-BE211* (**(BE-211)**, **(BE-212)**: the realizable range and the grading, **CONSTRUCTED in exact Q from the named basis `e_1..e_4` -- nothing sampled**, which is the point: a random 2-space is never isotropic, the vacuous-assert trap of `RESEARCH-ARC.md` section 4 that fired at BRANKV and at one of BEFOURP's own drafts. `Sigma_x = p_x ^ K^4` asserted dim 3 and **TOTALLY SINGULAR** (Klein form asserted `0` on its basis AND every pairwise sum, one distinct value), `Pi_x` asserted dim 2 and inside it at codimension 1; the six subspaces of `Sigma_x` up to `(dim, dim cap Pi_x)` each BUILT and extended by complement basis vectors to **23** shapes, every one asserted to be the intended shape, with rank-nullity for `q_hat` re-asserted at 23/23; the realizable range asserted to be EXACTLY `[max(0, rho-4), min(2, rho)]` rung by rung, so `c_j = 0` is asserted **0-realizable** at `rho_j >= 5` and `c_j = 2` **forced** at `rho_j = 6`; and (BE-206)'s grading asserted to FAIL at **8 of 23** shapes, every failure asserted to have `c < 2`) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/bgtwoa.py hunt` | 191 s | ibid. *Step BE213* (**(BE-214)**: THE KILL. `bproper.plant_peel` re-run with **exactly one axis moved** -- the skeleton profile length, which `PEELJOBS` and `bline.legal_peel` both hardcode at 3 -- at profile 4 and 5, side 1 the bucket-A piece `2 pendants + theta(3,3,3)`, giving `rho = (2,6)`, `c(Pi_x) = (1,2)`, `e = (1,4)`, `delta = (2,6)` at **4 of 4** peels on TWO skeletons and THREE hub pairs, with the whole `bline.legal_peel` gate set asserted at every one -- `hcard_ok`, min degree `>= 2`, girth `>= 4`, `x !~ y`, both terminals hubs of `H`, side 2 `rnode_shaped`, the two sides asserted to PARTITION `H`, `verify_pencil_witness`, **`flag_frame` asserted NON-None**, and `delta_1, delta_2 >= 1` -- so `(BE-G_2)` is asserted FALSE **inside** the generic flag regime; the mechanism asserted to be **(BE-175)(i) itself**, `deg_1(x) = 1` and `ell = p_x ^ p_c` asserted in `rho_bar_1` AND in `Pi_x` separately; the firing side asserted to be side **2** (a side-1-firing witness would exhibit BEFOURP's configuration, not the asymmetry) and `rnode_shaped(side 1)` asserted **False**; then the **90-row** in-regime census (2 skeletons x 5 hub pairs x 3 profile lengths x 6 bucket-A pieces, one seed each) with `(BE-G_2)` failing at **5** firing both-flexible rows and **(BE-E4') failing at 0**, the latter asserted as a GUARD because a failure there would be a strictly bigger claim than this direction makes) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/bgtwoa.py validate` | 191 s | ibid. all three in one process -- the landing gate. **FITS the 600 s foreground ceiling**, so this driver adds NO over-ceiling case to section 0 |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/bfour.py --arith` | 0 s | `notes/Pencil-informal.md` §(K-bare-ext) *Step BE155* (direction BFOUR; **(BE-156)**: the CONTAINMENT THEOREM by EXHAUSTION over all 6 400 tuples — every one of the **535** (E4)-violating tuples is a (PENCIL-SATURATES-CHART) counterexample, **535/535 ASSERTED**, so the (BE-154)(iv) hunt is a STRICT SUB-HUNT of one already run at 0/772; the `Pi_x` margin histogram `{0: 150, 1: 234, 2: 151}` making **385 of 535** also [MARGIN] shortfalls and only 150 clean, 50 attaining; exactly **3** tuples reachable at the sweep's own side-2 signature, all forcing `rho_bar_1 = Pi_x` at `rho_1 = 2`; plus BARCH's 970 / 0 / 0 / 287 REPRODUCED as the divergence guard) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/bfour.py --charta` | 505 s | ibid. *Steps BE156–BE157* (**(BE-157)**/**(BE-158)**, half A: 204 composite chart points over 34 peels, both sides measured, the lean per-side row CROSS-ASSERTED against `bsatur.row_of` plus the three margin controls at 34/34 peels; side 2's signature the single value `(delta_2, a_2, rho_2, c_2) = (3,0,3,0)` at 204/204; `c_1(Pi_x) <= dim Gamma_Pi` ASSERTED 204/204 and the exact (BE-149)(i) identity 204/204; 0 (E4) falsifiers) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/bfour.py --chartb` | 504 s | ibid., half B: 207 points over 36 peels reaching the **three fibre shapes** the long-core library cannot (plane `pi_{c1}` 18, plane `pi_x` at `k >= 3` 10, the line 6); same single side-2 signature at 207/207, the bound 207/207, the identity 147/147 at its `k = 2` points, 0 falsifiers. **Union with half A is exactly (BE-136)'s 411/411 over 70 peels**, hypothesis met 72x, certificate firing 375/411, identity 351/351 |
@@ -3331,6 +3335,48 @@ three can be called from it. Every subspace it builds goes through
 dimension assert, and its acceptance gate is `dominance.base_seed`'s composite
 `repin.star_generic`, re-asserted in-file at every accepted seed. **No new
 guard wrapper is minted.**
+
+### New item (2026-09-08, direction BGTWOA) — the chain reaches SEVENTEEN deep, and a REAL DEFECT is recorded in `barch.all_tuples`; **UNPAID, NO MOVE MADE**
+
+`w4/bgtwoa.py` (the `(BE-G_2a)` verdict, workbook §(K-bare-ext)
+*Steps BE209–BE216*) imports **`bfour`**, **`barch`**, **`bproper`**,
+**`bpeel`**, **`bline`**, **`bsatur`**, **`bsigma`**, **`bunif`**, **`bimage`**
+and **`kbare_common`**, and sits **seventeen deep** on the standing
+sibling-import chain — `bgtwoa → bfour → barch → bdegtwo → bline → bopen →
+bproper → bsigma → bsatur → … → kbare_common`. It is a **second** consumer of
+`bfour.e_row`, a **fourth** of `bproper.plant_peel`/`side_named`, a **fifth**
+of `bsigma.wedge3` (its own **OVERDUE** item), a **second** of
+`bline.hcard_ok_piece` outside `bline`, and the **first** `w4/` consumer of
+`bpeel.girth`. **All folded into the standing sibling-import item, NO MOVE
+MADE**, by the rule that a dispatch does not move a landed name. It opens
+**no new hazard item** of its own.
+
+**AND IT RECORDS A DEFECT RATHER THAN AN OBSERVATION, which is new for this
+series.** `barch.all_tuples` enumerates the 6 400-tuple space every
+`(BE-F_f)`/`(BE-G_g)` figure from (BE-153) onward is stated over, and its
+docstring and body enforce `c_i <= min(dim Pi_x, rho_i)` — **the upper cap
+only**. The matching **lower** bound is forced by Grassmann in `Lambda^2 K^4`:
+`c_i >= dim rho_bar_i + dim Pi_x - 6 = rho_i - 4`. Without it **2 800 of the
+6 400 tuples are geometrically unrealizable** (`(0,0,0,0,6,6,0,0)` among
+them), so the space is exhaustive over a **strict superset** of the arithmetic
+it is cited as enumerating — workbook (BE-213)(i).
+
+**Why NO MOVE IS MADE, and it is the strongest case in this section for that
+answer.** *(a)* The defect is **inert on every landed figure**: (BE-213)(ii)
+asserts all **245** (BE-E4') escapes are floor-legal and the 25-cell frontier
+grid **identical** cell by cell under both spaces, same five minimal members.
+*(b)* `all_tuples` is a **tracked driver** cited by ~30 recorded reproduce
+commands; editing it fires the *figure-invariance* gate's full obligation
+(baseline, re-run, byte-identical, for it **and every driver that imports
+it**, which by §2's layering map is most of `w4/`) for a change that provably
+moves no figure. *(c)* A dispatch does not edit a landed driver. **The
+compliant repair, priced for whoever wants it:** add the one conjunct
+`c1 >= max(0, r1 - 4) and c2 >= max(0, r2 - 4)` as a guard in `all_tuples`,
+then re-baseline `barch` and its import closure — a deliberate coordinator
+round, and it would **change** the printed tuple count 6 400 → 3 600 in every
+driver that prints it, which is exactly the kind of figure the gate exists to
+protect. Until then the floor is applied as a **FILTER** at the point of use
+(`bgtwoa.floor_legal`), which is how this landing used it.
 
 ### New item (2026-09-08, direction BEFOURP) — the chain reaches SIXTEEN deep, `bfour` and `blongarc` become imported LIBRARIES; **UNPAID, NO MOVE MADE**
 

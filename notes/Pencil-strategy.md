@@ -1883,6 +1883,41 @@ disproving `PencilPair K 3 G`**), not cheapness.
    > `δ₂ = 1` but **not** for the `(2,2)` corner. *Kill condition, sharpened: `(BE-F_4)`
    > and `(BE-G_2)` both proved in the regime, or a third `c_j(Π_x) ≥ 1` mechanism at an
    > R-node-shaped side 2 **inside** the regime. Decided by: the `(K-bare)` row.*
+   >
+   > **SPENT 2026-09-08 (direction BGTWOA, ordinal 89) — AND THE ENTRY'S OWN KILL
+   > CONDITION FIRED, so rank 2 is no longer *decomposed*: THE FRONTIER IS EXHAUSTED.**
+   > *(i)* The ambient cap `c_j(Π_x) ≤ dim Π_x = 2` gives `e_j ≥ ρ_j − 2` **with no
+   > hypothesis at all**, so `(BE-G_2)` is a THEOREM at `ρ_j ≥ 4`, FALSE at `ρ_j ≤ 1`,
+   > and its entire content is the two rungs `ρ_j ∈ {2,3}` — **disjoint from BSTEER's
+   > `ρ_j = 1`** ((BE-210)). *(ii)* `(BE-G_2a)` is **unsatisfiable at `ρ_j ≥ 5`**, the
+   > realizable range being exactly `max(0, ρ−4) ≤ c ≤ min(2, ρ)` ((BE-211)).
+   > *(iii)* **`(BE-G_2)` is FALSE at 4/4 fully-gated peels INSIDE the regime** —
+   > `ρ = (2,6)`, `c = (1,2)`, `e = (1,4)` — and the mechanism is **(BE-175)(i)
+   > ITSELF** on the non-firing side: both added hypotheses are indexed to **side 2**
+   > while `(BE-G_g)`'s subject is the non-firing side ((BE-214)). *(iv)* Every
+   > surviving member carries `g ≥ 2` and so implies `(BE-G_2)`, `(5,1)`/`(6,0)`
+   > already being refuted — **so all five members are dead** ((BE-215)).
+   > *(v)* (BE-206)'s grading is a **tautology** where asserted and false off it, so
+   > **`(BE-F_4)` IS the floor `ρ_i ≥ 4`** and `q̂` adds nothing ((BE-212)).
+   > **WHAT SURVIVES, and it re-ranks the entry rather than retiring it:** (BE-E4′) is
+   > **UNREFUTED and still OPEN** (0 failures over 90 in-regime rows), and the one
+   > hypothesis-free positive is **`(BE-E4′) ⟸ ρ₁ + ρ₂ ≥ 8`** with the escapes at
+   > **maximum 7**, so **the residue is EXACTLY `ρ₁ + ρ₂ ≤ 7`** ((BE-216)).
+   > *Successor, one item: (BE-E4′) on that zone — cheapest sub-slice a firing side at
+   > `ρ_i ∈ {4,5}` against `e_j ≤ 6 − ρ_i`, which needs a **non-uniform** skeleton
+   > profile or a side-2 family outside `bpeel.subdivided`, `ρ₂ ∈ {0,3,6}` being
+   > quantized by the uniform profile length. If that shape exists in the regime
+   > (BE-E4′) is REFUTED; if it provably does not, (BE-E4′) is a THEOREM — either way a
+   > DECISION, which is more than rank 2 has had. Decided by: the `(K-bare)` row.*
+   >
+   > **THE BAR THIS ADDS, three entries, as this section's own rule requires.**
+   > *(a)* **No further attempt at `(BE-G_2)`, `(BE-G_2a)` or any `(BE-G_g)` with
+   > `g ≥ 2`** — refuted at a landed, fully-gated, in-regime witness. *(b)* **No
+   > further attempt at any member of the `f + g ≥ 6` frontier**, and no re-derivation
+   > of its grid: (BE-213)(ii) already re-ran it under the corrected tuple space and
+   > asserted it identical. *(c)* **No reading of (BE-206)'s grading as a handle on
+   > `(BE-F_4)`** — it is rank-nullity plus a clause that is correct only where it is
+   > empty. BLONGARC's four and BEFOURP's three stand unchanged.
 3. **LEDGER ITEM 1 — habitat (II), the sharpening.** Owner: `(K-bare)` row, (BE-58)(iv) as
    re-scoped by (BE-169)/(BE-170). BSERIES's re-scoping is what promotes this: item 3's
    surviving half **is** item 1, and habitat (II) — clean at **both** ends — admits **no
