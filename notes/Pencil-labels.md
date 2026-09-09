@@ -4177,7 +4177,10 @@ but (INS-8) — the *no genericity to supply* claim — is stated **inside
 *Step INS5***, beside the panel-collapse measurement it depends on, rather
 than being given a step of its own. Labels and steps are separately reserved
 objects under clause (L2), so the two counts need not match. **The next tail
-is (INS-9) / *Step INS8*.**
+was (INS-9) / *Step INS8*, and direction INSJOINT (2026-09-09, ordinal 90)
+consumed it in full — (INS-9)–(INS-16) and *Steps INS8–INS15*, nothing
+returned, so BINSERT's one returned step is now spent. THE LIVE TAIL IS
+(INS-17) / *Step INS16*.**
 
 **(L3) scope declaration, and it is a coordinator call rather than a registry
 deviation.** §(K-ins) is a *new* section, so **every** `(BE-n)`, `(GR-n)`,
@@ -4750,3 +4753,81 @@ in place, per (L4) (no rename — the tokens now name **refuted** claims, which
 is exactly the disposition `§(K-bare-ext) (E4)` was given). The section's *notation*
 additions — `dim(ρ̄_j ∩ Σ_x)` and the profile length — are objects and
 parameters, written as mathematics, never parenthesized alone.
+
+## Reserved namespace — direction INSJOINT (2026-09-09, **CONSUMED IN FULL: eight labels and eight steps**)
+
+Ordinal **90** (direction 98). Answering the `§(K-ins)` row's own close-it cell —
+*(INS-7)'s kill condition: derive `U′` for the two-vertex-deleted shared framework and
+measure `rank⟨U′, Λ²Π̂⟩` at BINSERT's 8 hit seeds* — the design pass
+`notes/Pencil-strategy.md` §8 ranked **4**. One of a **concurrent round of two**; the
+sibling (BNONUNI) works `§(K-bare-ext)`'s tail and edits `w4/bline.py`, so the two ranges
+are disjoint by construction and every check below is against `HEAD` (`4a3d7c36`), never the
+working tree (`RESEARCH-ARC.md` §2's first concurrency hazard; the tree carried the sibling's
+modified `bline.py` and its untracked driver throughout).
+
+| direction | owning § | labels reserved | steps reserved | driver |
+|---|---|---|---|---|
+| **INSJOINT** | **§(K-ins) — continuation** | **(INS-9)–(INS-16)**, all eight consumed | **INS8–INS15**, all eight consumed | `w4/insjoint.py` (five modes) |
+
+**This is the CONVENTION case, not a departure — and it is the disposition BINSERT's own
+block declared in advance.** *Reserved namespaces*' rule is that a direction which
+**extends** a live section reserves the unclaimed tail of that section's family, and a
+direction opening genuinely new territory takes a new section. INSJOINT extends `§(K-ins)`:
+every one of its findings is about (INS-7), the endpoint that section left open. So it opens
+at exactly the tail the registry declared above (*"The next tail is (INS-9) / Step INS8"*),
+takes no `(BE-)` token, and adds no section — it appends *Steps INS8–INS15* inside `§(K-ins)`
+before that section's own *Verification* block, which is extended in the same commit rather
+than duplicated. **BINSERT's one RETURNED step is now spent:** *Step INS8* was returned unused
+because (INS-8) was stated inside *Step INS5*; it is consumed here as the derivation step.
+Consequently the eight later reservation blocks below that record *"**Step INS8** (BINSERT's)"*
+among the free tails are **dated records of a past state** and are left untouched, per this
+file's standing treatment of closed reservation logs.
+
+**(L3) scope declaration: unchanged.** `§(K-ins)`'s own scoping paragraph already governs
+this continuation — unqualified `(BE-n)`/`(E4)` mean §(K-bare-ext), `(GR-n)` §(K-grid),
+`(OC-n)` §(K-out), `(RS-n)` §(K-res), `(L n)` this file's minting rule — and the new steps
+add no citation family of their own.
+
+**0-hit verification, re-run by the direction as its FIRST action** (clause (L7): **every**
+token in the range, enumerated rather than sampled, **hits and files reported separately**),
+across `*.md`, `*.tex`, `*.lean`, `*.py`, `*.m2` **at `HEAD`** by `git grep -I -c -F` —
+**26 tokens**:
+
+| token | hits / files |
+|---|---|
+| `INSJOINT`, `insjoint` (raw substrings, (L5)) | **0 / 0**, **0 / 0** |
+| `(INS-9)` and bare `INS-9` | **1 / 1** each |
+| `(INS-10)`–`(INS-16)` and bare `INS-10`–`INS-16` | 0 / 0 |
+| step `INS8` | **11 / 1** |
+| steps `INS9`–`INS15` | 0 / 0 |
+
+**Both non-zero tokens were OPENED, not counted**, and both are **this file** and nothing
+else: `(INS-9)` is BINSERT's tail declaration (the line above), and the eleven `INS8` hits are
+that same declaration plus BINSERT's own reservation table/return note and the eight later
+blocks re-declaring the step free (lines 4155, 4175, 4182, 4197, 4305, 4380, 4438, 4494, 4557,
+4627, 4711 as they stood at `HEAD`). **Zero hits in any `*.lean`, `*.py`, `*.tex` or `*.m2`,
+and zero outside `notes/Pencil-labels.md`.** This is exactly the case (L7) was written
+against and it fired as predicted — *"the **opening** tokens are exactly the ones the
+predecessor's own tail-declaration had to write down, so a hit there is **guaranteed** and is
+precisely what a sampled check will miss"*: a check that sampled the range's closing tokens
+would have reported a clean 0-hit sweep across all 26 and seen neither.
+
+**(L6) landing-time bare-token grep, RUN over the whole repository, and reported honestly
+rather than as a bare "clean".** The range mints **no** bare `(X<digit>)` token — every label
+is `(INS-n)`, prefixed — so (L6) has no candidate here. Run over this landing's whole added
+diff, `grep -oE '\([A-Z][0-9]\)'` returns **six pre-existing tokens and no new one**: this
+file's own grandfathered clause tokens `(L3)`, `(L4)`, `(L5)`, `(L6)`×2, `(L7)`×2, and one
+`(E4)` inside the quoted `§(K-ins)` scope declaration, where the owning section is named in
+the same sentence — the (L3)-qualified form (L6)'s settled *NO RENAME* disposition requires.
+**Zero** over the new driver. Stating this as a token list rather than a "zero" is the point:
+a landing whose grep is non-empty for grandfathered reasons still has to show which tokens and
+why. The driver's
+locals were named off the shape from the first draft (`nrm_b`/`nrm_c`, `rk_b`/`rk_c`,
+`pr_U`/`pr_Up`, `Lb`/`Lc`, `x_v`/`x_a`, `s0p`/`dUp`/`needp`), the third consecutive landing to
+pay that cost up front rather than at the grep.
+
+**NO NEW LABEL FAMILY IS MINTED, and one existing label is DISCHARGED rather than renamed.**
+(INS-7) now names a **settled-negative** endpoint; per (L4) it is not renamed, and its
+blockquote gains a dated *DISCHARGED* pointer to (INS-12)/(INS-15)/(INS-16) in place of a
+rewrite. The continuation's notation additions — `U′`, `s₀′`, `need′`, `M′` and the chain end
+`c` — are objects and parameters, written as mathematics, never parenthesized alone.

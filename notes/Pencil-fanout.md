@@ -16163,3 +16163,121 @@ modified*: the landing **adds** `w4/bgtwoa.py` and edits no `*.py`/`*.m2`.
 **Eight labels and eight steps consumed IN FULL**; the live tail is now
 **(BE-218) / *Step BE217***, and BEFOURP's returned pair is consumed, so the
 stray list **shortens for the first time** in the thread.
+
+## Direction INSJOINT (arc ordinal 90, direction 98) — **(INS-7) IS EXCLUDED AND OPTION B IS SPENT OUTRIGHT: the measurement landed ON the recorded threshold's value and BELOW the true one, because deleting the second vertex raises the REQUIRED rank by exactly the dimension it adds to `U`**
+
+**The question.** BINSERT (ordinal 82) landed *option B is SPENT, not declined* with exactly
+one endpoint surviving, unpriced: shape 4, §(K-tight) *Step 1*'s un-analyzed joint sweep
+`(pt v, pt a) ∈ Π̂(b) × Π̂(c)` (§(K-ins) (INS-7)). Its escape space lies inside the collapsed
+plane, **but it deletes two vertices**, so its `U′` differs and `rank⟨U′, Λ²Π̂⟩ ≥ 2` was not
+excluded. *Derive `U′` for the two-vertex-deleted shared framework and measure
+`rank⟨U′, Λ²Π̂⟩` at BINSERT's 8 hit seeds.* One of a **concurrent round of two** (the sibling
+BNONUNI works §(K-bare-ext)'s tail); read-only, drafted outside the tree, landed serially.
+Strategy §8 rank **4**, earned on **diversification** (the only live entry off the (BE-14)
+thread) plus **cap-disclosure hygiene** — a named un-run measurement under a "spent" verdict
+is how a route gets silently resurrected.
+
+**THE VERDICT.** `rank⟨U′, Λ²Π̂⟩ = **2**` at **8 of 8** — **and 2 is below the threshold, not
+at it.** The joint sweep's required rank is `need′ = s₀′ + dim U′ − c_G = **3**`, because
+deleting the second vertex also drops one condition from `U`: `dim U = 4 → dim U′ = 5`. So
+**shape 4 is EXCLUDED, option B is SPENT OUTRIGHT, and the `§(K-ins)` row is CLOSED** — no
+un-run measurement remains under the "spent" verdict. Labels **(INS-9)–(INS-16)**,
+*Steps INS8–INS15*, all consumed; driver `notes/scripts/w4/insjoint.py`.
+
+**Scope-pin, discharged before any number was reported.** `binsert.py` mode `combined`
+already measures *the rank of the pairing of `U` against KT's carrier-surviving escape span*
+— but for the **one**-vertex-deleted `U`. Route A moves `pt(v)` only, so its shared framework
+`G − v` still contains `a` and the edge `ac`, and `U` therefore **depends on the seed's own
+`pt(a)`**. The joint sweep moves both, so its shared framework is `G − v − a` and its space
+must be independent of `pt(a)`. **A new derivation, not a re-run of `combined`** — and off
+the row structure of `build_rigidity`, the answer is that `U′` is *the same construction as
+`U`* with the deleted vertex's two **neighbours** `(a, b)` replaced by the deleted path's two
+**ends** `(b, c)`, satisfying its own corank identity with a **3 × dim U′** criterion matrix
+whose middle row is **bilinear** ((INS-9)). Validated against the exact rank of `R(G)` at
+**48/48** joint placements and **117/117** on a second gadget.
+
+**WHY THE ANSWER DOES NOT REST ON THE NUMBER.** `c_G = 5|E(G)| − target(G)` is a function of
+`G` alone, so it cannot move when a vertex is deleted from the *shared* framework; with
+`s₀′ = s₀` that forces `need′ − need = dim U′ − dim U` **exactly**, while `U ⊆ U′` forces
+`rank⟨U′, L⟩ ≤ rank⟨U, L⟩ + (dim U′ − dim U)` for any `L`. Subtracting,
+`rank⟨U′,Λ²Π̂⟩ − need′ ≤ rank⟨U,Λ²Π̂⟩ − need = 1 − 2 = −1` ((INS-10)/(INS-12)): the joint
+sweep buys one extra dimension of escape and pays for it with one extra unit of required
+rank, so **BINSERT's deficit is preserved and cannot be spent**. The bound is a **subspace
+containment**, holding at every point of the two-parameter domain simultaneously, so the
+per-seed verdict is **cap-free** in the same sense (BE-5)/(INS-3) are — and the exclusion is
+**seed-generic**, holding at any seed with a hub far end, the panel collapse, and a strictly
+positive route-A margin ((INS-14)).
+
+**THE PROCESS FINDING, and it is what this direction is worth keeping for.** The recorded
+kill condition read *"`≥ 2` there would give option B an endpoint of its own; `≤ 1` closes
+the route outright"*. **`2` is route A's `need`.** The measurement is exactly 2, so a reader
+applying the recorded threshold to the correct number would have concluded **"option B
+SURVIVES"** and resurrected a dead route. The defect is not in (INS-7)'s mathematics — its
+(ii) says only that `≥ 2` *"is not excluded"*, true as written — but in the **compression** of
+that sentence into a threshold, which silently reused the predecessor's `need`. Generalized
+in (INS-15) and barred in §8: **a kill condition written as `measured ≥ CONSTANT` must derive
+the constant against the object being measured.** Two lesser corrections: (INS-7)(i)'s ground
+for pessimism (the escape space sits inside the collapsed plane) proves nothing alone, since
+`U′` also grows — the real ground is *exact cancellation*; and (INS-7)(iii)'s *"taking shape 4
+re-opens link 2"* is right for a **criterion** and wrong for a **kill**, since a one-sided
+bound needs no bi-affine calculus, so **link 2 stays discharged** ((INS-16)).
+
+**Modes and runtimes.** `uprime` (149–153 s) · `pairing` (159–160 s) · `deficit` (240 s) ·
+`sweep` (277–320 s) · `dz` (424–439 s). The 8 hit seeds are obtained **through
+`binsert.verdict` itself**, so the set is identical by construction rather than by
+reproduction, and `rank⟨U, Λ²Π̂⟩ = 1` is **asserted equal to `breakhunt.pairing_rank`'s own
+return** per seed. `deficit` tests the inequality as its own sentence: valid on 400 random
+triples, **ATTAINED** on 200 constructed ones of the measured shape (the random family is
+*slack* — both pairings saturate at `dim L` — so it tested validity and **not** tightness,
+which the first draft's *"0 tight"* output caught), and **SATISFIED** on 200 constructed
+deficit-**zero** triples, so the bound **does not reject an escape that exists**. `sweep`
+supplies the negative control: at the non-hit target-rank seeds the identical sweep
+**ATTAINS at 20/20**.
+
+**Cap disclosure, including the axes the harness makes it impossible to vary.** The 8 seeds
+are (BE-5)'s battery — `BATTERY` (6 strata) × 10 seeds from `seed0 = 52000` at `q3_gadget()`'s
+hub-end split, all 8 hits in `cycleflat`. **Hardcoded, not sampled:** `q3_gadget()` returns
+the **first** length assignment its own `product((1,2,3), …)` scan accepts, so the gadget is
+**one labelled graph**; `chain_partner` returns the **first** degree-2 neighbour in
+`sorted(key=str)` order, so `b — v — a — c` is **one chain** of several; `v` is the first
+`next(...)` match; `defs=(0,0)` is fixed; `index = 2`/`corank(G′) = 3` is the **only** stratum
+on the Q3 side; `panel_l2` draws from one rng stream; `njoint`/`nplace` are literals. The
+`dz` mode varies the two axes Q3 cannot — **gadget** and **corank** — but only for the
+*proved* claims, since DZ has no route-A hit and its chains have a **degree-2 far end** (a
+real scope boundary: there `pt(a)` is unconstrained and the three hinges need not share one
+`Λ²Π̂`). **What 8 seeds can and cannot establish:** they establish that the derived identity
+matches the exact rank of `R(G)` on a real population and that the two quantities take the
+reported values *on the seeds BINSERT's verdict was measured on* — which is what makes this a
+comparison. They cannot establish that no other `(gadget, chain, corank)` triple has a
+route-A hit whose joint sweep escapes; that is closed, if at all, by (INS-14)'s hypothesis
+list, not by more seeds.
+
+**Harness debt.** **THIRD `w4/` cross-stack consumer of the `kbare/` sibling-import item, so
+that item is OVERDUE by its own rule** (BATTAIN first, BINSERT second; verified at `HEAD` by
+`git grep 'from breakhunt import'`), **no move made** — (BE-83)(iii): what `w4/` borrows here
+are the arc's **oracles**, and moving an oracle re-baselines every landed figure measured
+through it. **NEW ROW: `w4/binsert.py` reaches its FIRST external consumer**
+(`chain_partner`, `panel_l2`, `verdict`), taken rather than cloned precisely so the hit set
+and the panel bases are BINSERT's own objects. **No new hazard item, and it is load-bearing
+here:** `bimage` is **not imported at all**, so `bimage.pt_in`'s silent `Λ²K⁴ → K⁴`
+truncation is **unreachable** rather than merely avoided — and **every draw in this direction
+is a `Λ²` draw**. **NEW *Recorded observation*, not a repair:** `breakhunt.hub_domain` and
+`binsert.panel_l2` both take `nullspace(anchors)[0]` **without checking the nullspace is
+1-dimensional**, so at **3 of 117** DZ draws where a chain end of degree `≥ 3` has closed-star
+rank 2 they silently return *an* arbitrary plane through the line rather than *the* panel.
+It cannot have flipped a recorded verdict, one-directionally: the true domain there is the
+whole chart, an arbitrary sub-plane sits inside it, and every affected population reports
+**zero** uniform failures, so an escape found in the sub-plane is genuine. **None of the 8 Q3
+hit seeds is affected** (both star ranks 3, asserted in `pairing`).
+
+**Losers.** None — rank 4 was the round's diversification slot and nothing was ranked against
+it. **Doc debt:** the `§(K-ins)` row went **424 → 608** status and **97 → 156** close-it
+against `DEFAULT_CAP = 800` each — **no bump, no relocation, nothing compressed away**, 23
+labels at 764 words (33 words/label, far above every density floor the arc has argued);
+`gapdiff K-ins` **0 DROPPED, 8 added**. The close-it cell was **rewritten rather than
+appended to**, because that cell *was* the kill condition this direction discharged. One
+label-preservation trap caught in draft: `(BE-14)` and `(K-bare)` live **only** in the
+close-it cell, and the first rewrite dropped the *"decided by the `(K-bare)/(K-bare-ext)`
+row"* clause — restored verbatim, which is exactly the failure mode `gapdiff` exists to catch.
+`notes/Phase39.md` paid for its own two lines by **merging** the ninth-strategy-pass entry
+(duplicating the header's ordinal list) and folding this landing into BINSERT's row.

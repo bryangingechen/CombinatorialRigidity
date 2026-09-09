@@ -1938,6 +1938,29 @@ disproving `PencilPair K 3 G`**), not cheapness.
    "spent" verdict is how a route gets silently resurrected later. *Kill condition: the
    measurement run, or (BE-14) closing `hbareSplit` without it. Decided by: the `§(K-ins)`
    row.*
+   > *(**SPENT 2026-09-09 at INSJOINT's landing, ordinal 90 — the kill condition fired by
+   > its FIRST disjunct.** The measurement ran and the answer is **NO**:
+   > `rank⟨U′, Λ²Π̂⟩ = 2` at 8/8 — **but the threshold this entry and the row both quoted
+   > (*"≥ 2"*) is route A's `need`**, and the joint sweep's own required rank is `need′ = 3`
+   > at 8/8 ((INS-15)). **Shape 4 is EXCLUDED and option B is SPENT OUTRIGHT** ((INS-12)), by
+   > an identity rather than by a number: `c_G = 5|E(G)| − target(G)` is a function of `G`
+   > alone and `s₀′ = s₀`, so `need′ − need = dim U′ − dim U` **exactly**, while `U ⊆ U′`
+   > gives `rank⟨U′,·⟩ ≤ rank⟨U,·⟩ + (dim U′ − dim U)` — BINSERT's deficit of 1 is
+   > **preserved**, cap-free over the whole two-parameter domain, so the route fails
+   > **structurally** rather than numerically. **Link 2 is NOT re-opened** ((INS-16)): this
+   > entry's own warning was right for a *criterion* and wrong for a *kill*, a one-sided
+   > subspace bound needing no bi-affine calculus — so running the measurement cost less than
+   > the entry priced it. **THE BAR THIS ADDS, two entries, as this section's own rule
+   > requires.** *(a)* **No further attempt at any endpoint of option B's insertion
+   > calculus** — the chain has no un-run link ((INS-6)), both KT-inherited routes are
+   > refuted ((BE-5)/(INS-3)), and the one un-analyzed endpoint is now excluded; re-opening
+   > needs **(INS-3) itself** to fall, not a new shape. *(b)* **A process bar, and it is this
+   > entry's real legacy:** a kill condition written as `measured ≥ CONSTANT` must derive the
+   > constant **against the object being measured** — a threshold inherited from the
+   > predecessor's object is a threshold for the predecessor's object. The rank-4 warrant is
+   > discharged on both halves: diversification (the only entry off the (BE-14) thread) and
+   > cap-disclosure hygiene — the named un-run measurement under a "spent" verdict no longer
+   > exists.)*
 
 **Below the top four, unchanged in relative order and none of them re-derived this pass**
 (they moved in no direction of this round): **U1** (the annihilator retarget — its residual

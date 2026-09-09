@@ -1143,6 +1143,11 @@ are a recorded *Harness debt* item (see below).
 | `python3 notes/scripts/w4/binsert.py routeb` | 330 s | `notes/Pencil-informal.md` §(K-ins) *Step INS4* (direction BINSERT; (INS-2)/(INS-3): **KT's route B fails at ALL 8 of (BE-5)'s hit seeds**, cap-free — all six `2x2` minors of route B's own criterion matrix vanishing IDENTICALLY on `Pihat(c)`, `rank<U, Lambda^2 Pihat(c)> = 1` at 8/8 — with DZ's two splits as corank-2 controls (0 route-A hits there); the `rho` edge-set identity, the pullback's legality as a `G'_B` witness, `rkA == rkB`, the pulled-back seed's target-rank and grid-vs-exact agreement are all ASSERTED, not argued) |
 | `python3 notes/scripts/w4/binsert.py strata` | 65 s | ibid. *Step INS6* ((INS-5): the local-flat (`cycleflat`) stratum per index — target-**INCOMPATIBLE** at `index = 1` (0 of 20 legal witnesses across DZ's two splits reach `target(G')`) and target-**COMPATIBLE** at `index = 2` (8 of 9, every one a uniform failure); this is the row §(K-bare-ext) (BE-8)'s four-stratum table omits, and it is what confines the refutation to `corank(G') = 3`) |
 | `python3 notes/scripts/w4/binsert.py combined` | 80 s | ibid. *Step INS5* ((INS-4): the **panel collapse** — `dim(Lambda^2 Pihat(b) + Lambda^2 Pihat(c)) = 3` and `rank<U, sum> = 1` at 8/8 hits against **5** and **4** at 19/19 non-hit target-rank controls, so `Pihat(b) = Pihat(c)` at every hit; the controls independently reproduce §(K-tight) *Step 2.6*'s *5 of KT's 6* at a different kernel, and every `Lambda^2` panel is asserted 3-dimensional) |
+| `python3 notes/scripts/w4/insjoint.py uprime` | 149-153 s | `notes/Pencil-informal.md` §(K-ins) *Steps INS8/INS9* (direction INSJOINT; (INS-9)/(INS-10): `U'` for the **TWO**-vertex-deleted shared framework `G - v - a` -- the same construction as `binsert`'s `U` with the deleted vertex's two NEIGHBOURS `(a,b)` replaced by the deleted path's two ENDS `(b,c)`, so it is independent of `pt(a)`, which is what the joint sweep needs -- plus its corank identity `corank R(G) = s0' + dim U' - rank M'` with `M'` **3 x dim U'** and its middle row BILINEAR, CHECKED against the exact rank of `R(G)` at 48/48 sampled joint placements; `s0' = s0`, `dim U = 4 -> dim U' = 5`, `need = 2 -> need' = 3` at 8/8, all asserted per seed) |
+| `python3 notes/scripts/w4/insjoint.py pairing` | 159-160 s | ibid. *Step INS10* ((INS-11): **THE MEASUREMENT** the `§(K-ins)` close-it cell asked for -- `rank<U', Lambda^2 Pihat> = 2` at 8/8 against `need' = 3`, so shape 4 is EXCLUDED at 8 of 8; `rank<U, Lambda^2 Pihat> = 1` is reproduced and **asserted equal to `breakhunt.pairing_rank`'s own return** at each seed, and the panel collapse is re-verified on the `pt(a)`-EXCLUDED reading of `Pihat(c)`, which is a sharper check than (INS-4)'s) |
+| `python3 notes/scripts/w4/insjoint.py deficit` | 240 s | ibid. *Step INS11* ((INS-12): the DEFICIT-PRESERVATION inequality tested as its own sentence -- valid on 400 random `(U in U', L)` triples, **ATTAINED** on 200 constructed ones of the measured shape (the random family is *slack*, both pairings saturating at `dim L`, so it tests validity and NOT tightness), and **SATISFIED** on 200 constructed deficit-ZERO triples, so the bound does not reject an escape that exists; deficit `-1` at 8/8 hits against `+2` at 19/19 non-hit target-rank controls) |
+| `python3 notes/scripts/w4/insjoint.py sweep` | 277-320 s | ibid. *Step INS12* ((INS-13): the DIRECT joint sweep -- 160 sampled `(pt v, pt a)` in `Pihat(b) x Pihat(c)` are all LEGAL pencil witnesses of `G` (so the domain is inhabited and the exclusion is not vacuous) and every one has exact rank 137 against `target(G) = 138`, with `rank M' = 2` at 160/160; **negative control**: the identical sweep at the non-hit target-rank seeds ATTAINS at 20/20) |
+| `python3 notes/scripts/w4/insjoint.py dz` | 424-439 s | ibid. *Step INS13* ((INS-14): the *proved* claims (INS-9)/(INS-10) on a SECOND gadget -- 117/117 DZ seeds across 4 chains at `index = 1`, `corank(G') = 2`, varying the two axes the Q3 generator cannot (gadget, corank); both branches of `dim U' - dim U in {0,1}` witnessed. Also prints the **recorded observation** that at 3 of 117 draws a chain end of degree >= 3 has closed-star rank 2, where `hub_domain`/`panel_l2` return an arbitrary plane rather than the panel) |
 | `python3 notes/scripts/w4/bseries.py peel` | 82 s | `notes/Pencil-informal.md` §(K-bare-ext) *Step BE163* (direction BSERIES; **(BE-164)**: the ONE-END peel `rho_1 = <l_u> + W'` with `W' = rho_bar_{w1,v}(H - u)` as an identity of SPACES at 64 guarded configurations, `W'` recomputed DIRECTLY on `H - u`; plus `Z = mu^perpK cap lambda^perpK` and the modular factorization `rho_1 cap Z = <l_u> + (W' cap Z)`, and the peel count `dim(W' cap <l_u>) = t' + 1 - delta_1` — every one ASSERTED, and the two-end Grassmann count of (BE-56)(i) shown to have NO one-end analogue) |
 | `python3 notes/scripts/w4/bseries.py conf` | 42 s | ibid. *Step BE164* (**(BE-165)**: the TWO confinements the one-end geometry forces — `lambda` in `Lambda^2 pi_v`, `mu` in `Sigma_{p_v}`, both codimension 3 — both SELF-CONJUGATE, `Lambda^2 pi_v cap Sigma_{p_v} = Pi_v` exactly, and the sweep's survivor space `W' cap Lambda^2 pi_v cap Sigma_{p_v} = W' cap Pi_v`; asserted at 32 guarded rows and at 39 of 40 synthetic exact-Q flags off any graph) |
 | `python3 notes/scripts/w4/bseries.py sweep` | 355 s | ibid. *Step BE165* (**(BE-166)**: the ONE-END RESWEEP — `W'` is INVARIANT under it, asserted as an identity of spaces at **256** resweep draws over 32 pieces, every draw re-gated after the end is replaced; the drawn `lambda`s span `Lambda^2 pi_v` EXACTLY and the `mu`s `Sigma_{p_v}` EXACTLY at 32/32, and the full two-dimensional kill is realized at 32/32) |
@@ -1615,7 +1620,7 @@ figure-invariant): `rref`, `rank`/`rank_exact`, `nullspace`, `left_nullspace`,
 `neighbors` (`kbare_common`, `n9`); `K4`/`K5_minus_matching` (three copies:
 `localtest`, `probe_zero`, `run_habitats`).
 
-## Harness debt — four rounds PAID (S1–S4 2026-08-06; the move-down round 2026-08-20; the GFLIP balance-layer move-down 2026-08-25; the GCHEAP/GPRICE balance-layer extension 2026-08-25), **twelve items outstanding**, plus THREE *Recorded observations* deliberately unfixed
+## Harness debt — four rounds PAID (S1–S4 2026-08-06; the move-down round 2026-08-20; the GFLIP balance-layer move-down 2026-08-25; the GCHEAP/GPRICE balance-layer extension 2026-08-25), **twelve items outstanding**, plus FOUR *Recorded observations* deliberately unfixed
 
 **Twelve items are outstanding** — the eleventh added 2026-09-03 (direction
 BDEGTWO, the **silent `bimage.span` width defect**, its own section at the
@@ -2328,8 +2333,11 @@ Two witnesses, deliberately of different provenance, plus a negative control.
 
 ### Recorded observations, so a later pass does not trip on them
 
-Neither is a debt item: the first is a reconciliation nobody has done, the
-second a latent defect on an unreachable path. Both are **recorded, not fixed**.
+None is a debt item: the first is a reconciliation nobody has done, the second
+a latent defect on an unreachable path, the third a call-site fix, the fourth a
+missing determinacy check in a shared oracle whose error direction is provably
+safe. All four are **recorded, not fixed**. *(This preamble said "Neither ...
+Both" while the list already carried three; corrected 2026-09-09 at the fourth.)*
 
 1. **`outer.py --patterns` and `--sweep` are not comparable.** The coordinator
    re-ran `--patterns` on 2026-08-05 and confirmed its headline (4 of 8
@@ -2368,6 +2376,40 @@ at its definition. **Deliberately NOT a new debt item**: unlike the two
 silent `bimage` hazards, the fix is at the *call site*, not in the shared
 device, so it costs no re-baselining and no consumer sweep — a module that
 needs hashable points wraps, as `bscond` does.
+
+**Fourth observation (2026-09-09, direction INSJOINT) — `breakhunt.hub_domain`
+and `binsert.panel_l2` do not check that the panel is DETERMINED, so at a
+degenerate draw they silently return AN arbitrary plane rather than THE
+panel.** Both build the anchor list `[hat(pt h)] + [hat(pt w) for w in
+N_G(h) \ {v}]` and take `nullspace(anchors)[0]`, guarding only that the
+result is non-empty and has a nonzero spatial part — never that the nullspace
+is **1-dimensional**. When the anchors have rank **2** (a hub whose closed
+star minus `v` is collinear) the nullspace is 2-dimensional and `ns[0]` is one
+arbitrary plane through that line, so `hub_domain`'s "placement domain" is a
+proper subset of the true one. Measured: **3 of 117** DZ `cycleflat` draws in
+`insjoint dz`, at chain ends of degree `>= 3`. This is the `plane_basis`
+family of §4 convention 1 firing one level up — on the **anchors**, not on the
+in-plane basis — which is why `repin.star_generic` does not catch it either
+(it is a statement about the star of *every* vertex at a *sampled* placement,
+not about the anchor list a panel is built from).
+
+**It cannot have flipped any recorded verdict, and the argument is
+one-directional rather than a hope.** Where the anchors have rank `< 3` the
+*true* placement domain is the **whole chart** (three or fewer collinear fixed
+points plus one free point are coplanar for free), and the arbitrary plane `P`
+the devices return is **contained** in it. Every affected population reports
+**zero** uniform failures, so only the safe direction occurred: an escape
+found inside `P` is a genuine escape, hence "no uniform failure on `P`"
+implies "no uniform failure on the chart". The unsafe direction — reading
+uniform failure on `P` as uniform failure on the chart — never arose.
+**None of the 8 Q3 hit seeds is affected**: both star ranks are 3 there,
+asserted in `insjoint pairing`. `insjoint.panel_of` is the version that
+checks, returning `(None, rank)` and treating the end as unconstrained, and
+`insjoint.domains` derives the constraint from `verify_pencil_witness` rather
+than assuming a panel. **Recorded, NOT fixed** — a dispatch does not edit a
+landed driver another direction may be importing in flight, and unlike the two
+silent `bimage` hazards the honest repair here is an `assert` inside a shared
+oracle, which would re-baseline every figure measured through it.
 
 ### New item (2026-08-19, direction ZNEQ) — `ocon.meet` needs to move down; **PAID 2026-08-20**
 
@@ -2527,7 +2569,7 @@ room for those three modes, or fold it into a commit that has reason to re-run
 them anyway. Recording it here also fixes the list discrepancy: **seven** names,
 six moved 2026-08-20, `ledger` outstanding.
 
-### New item (2026-08-20, probe KBARE-FALSIFY; **EXTENDED 2026-08-26, direction BATTAIN — first cross-stack consumer; RE-DATED 2026-09-08, direction BINSERT — SECOND cross-stack consumer**) — the `kbare/` sibling imports; **UNPAID**
+### New item (2026-08-20, probe KBARE-FALSIFY; **EXTENDED 2026-08-26, direction BATTAIN — first cross-stack consumer; RE-DATED 2026-09-08, direction BINSERT — SECOND; RE-DATED 2026-09-09, direction INSJOINT — THIRD, so this item is OVERDUE by its own rule**) — the `kbare/` sibling imports; **UNPAID**
 
 **BINSERT (2026-09-08, arc ordinal 82) is the second `w4/` consumer of this set, and it
 reaches DEEPER than BATTAIN did.** `w4/binsert.py` imports twelve names from
@@ -2545,6 +2587,24 @@ and rank-3. One defect of its own, caught in the coordinator's verification and 
 before landing: a `... or True` assert that could not fire, replaced by a real assert on
 the `ρ` edge-set identity (§(K-ins) (INS-2)) — §4 convention 1's *a guard that passes
 vacuously is not a guard*, one level down.
+
+**INSJOINT (2026-09-09, arc ordinal 90) is the THIRD `w4/` cross-stack consumer, which
+makes this item OVERDUE by the rule this file applies to its own siblings** (used verbatim
+on the WTRI, BPROPER and GLIST rows: *"the THIRD consumer has now ARRIVED, so this item is
+OVERDUE by its own rule"*). Verified at `HEAD` rather than asserted:
+`git grep 'from breakhunt import'` returns exactly `w4/battain.py`, `w4/binsert.py` and this
+driver. `w4/insjoint.py` imports ten names from `kbare/breakhunt.py` (`split_ctx`,
+`seed_calculus`, `need_rank`, `hub_domain`, `pairing_rank`, `uniform_failure_exact`,
+`observed`, `q3_gadget`, `sample_pencil_bfs`, `BATTERY`), plus `danger.dz_gadget`,
+`repin.lambda2_plane` and eight `kbare_common` primitives. **NO MOVE MADE**, for
+(BE-83)(iii)'s reason and not merely by the standing rule: what this direction borrows are
+the arc's **oracles** — the corank calculus, the hit battery and the panel domain — and
+moving an oracle re-baselines every landed figure measured through it. It opens **no new
+hazard item**, and that is load-bearing here rather than routine: `bimage` is **not imported
+at all**, so `bimage.pt_in`'s silent `Λ²K⁴ → K⁴` truncation and `bimage.span`'s width-6
+special case are **unreachable** rather than merely avoided — and **every draw in this
+direction is a `Λ²` draw**. It does add one *Recorded observation* about two landed panel
+devices (below) and one new consumer row (`w4/binsert`, next).
 
 `kbare/breakhunt.py` imports from four **sibling leaves** of its own layer, which
 is the documented sibling-import pattern and in policy, but trips §2 rule 2's
@@ -2574,6 +2634,7 @@ direction may be importing in flight).
 | `battery_peels`, `battery_rows`, `tier_rows`, `measure_row`, `blocks_of`, `flag_frame`, `profile`, `blockcap`, `blockdeg`, `SUBS`, `CAP` | **`w4/bunif`** | **`w4/bdouble`**, **`w4/bsatur`** (2 — both recorded 2026-09-02, the day `bunif` itself landed, the same shape as the `bdecor`→`bpeel` edge one day earlier. BSATUR is the **second consumer and the first of `flag_frame`/`blocks_of`**, which **trips the §2 rule-2 threshold** — recorded, **no move made**, for the same reason every dispatch since the tenth link has declined ((BE-83)(iii)); noted because the borrowed set is the arc's block frame and profile instrument — an **oracle**, not a helper — so a second consumer would trip the same interface decision (BE-83)(iii) parks, not a cheap move-down. `bdouble` adds no primitive of its own) |
 | `closure_trace` (the aggressive closure with its derivation recorded) | **`w4/bspread`** | **`w4/boneone`**, **`w4/bgenuine`** (2 — the **FIRST external consumer of any `bspread` device** was BONEONE, recorded 2026-09-01, the same day `bspread` itself landed; BGENUINE the second the same day, which **trips the §2 rule-2 threshold** — recorded, no move made. BGENUINE reads the `trace` component, which is what a genuineness question needs and what `binduc.flat_forcing_closure` does not expose) |
 | `k4_rsides`, `free_sides`, `wit11` / `wit16`, `rside`, `side_delta` (the factorized `(1,1)` R-node peel generator) | **`w4/boneone`** | **`w4/bgenuine`** (1 — the **FIRST external consumer of any `boneone` device**, recorded 2026-09-01 at the BGENUINE landing, the same day `boneone` itself landed. Recorded so the next consumer trips the §2 rule-2 threshold rather than rediscovering it; BGENUINE re-runs the generator only to obtain the graphs, and **asserts** BONEONE's 928 / 392 rather than re-reporting them) |
+| `chain_partner`, `panel_l2`, `verdict` | **`w4/binsert`** | **`w4/insjoint`** (1 — the **FIRST external consumer of any `binsert` device**, recorded 2026-09-09 at the INSJOINT landing. Taken rather than cloned, deliberately: `verdict` is BINSERT's own hit predicate, so INSJOINT's 8-seed set is **identical by construction** rather than by reproduction, and `panel_l2` supplies the **same panel bases** (BE-5)'s figures were measured on — which is what lets `rank⟨U, Λ²Π̂⟩ = 1` be *asserted* equal to `breakhunt.pairing_rank`'s return instead of merely agreeing with it. Recorded so the next consumer trips the §2 rule-2 threshold rather than rediscovering it; **no move made**) |
 | `report_graph` | `gate1` | `danger` (1 — pre-existing, unchanged) |
 
 **Where they should go:** `kbare_common`, the layer both `kbare/` leaves and
