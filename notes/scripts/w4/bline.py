@@ -573,11 +573,20 @@ def longcore_library():
     return out
 
 
-def legal_peel(side1, skname='K33', xy=('A', 'B')):
+def legal_peel(side1, skname='K33', xy=('A', 'B'), prof=None):
     """Glue a long-core side into a COMPOSITE peel and check (CH-1)'s three
     hypotheses ON `H`, plus x !~ y, both terminals hubs of `H`, and side 2
-    R-node-shaped.  Returns (E, x, y, report) or None."""
-    pr = [3] * len(SKELETONS[skname])
+    R-node-shaped.  Returns (E, x, y, report) or None.
+
+    `prof` is side 2's branch-length profile, one entry per skeleton edge --
+    `bpeel.subdivided`'s own argument, which `bproper.composite` already
+    takes as a parameter.  It DEFAULTS to the uniform `[3] * n` this
+    function has always hardcoded, so every landed caller's behaviour is
+    unchanged; a caller that needs the NON-UNIFORM axis passes it
+    explicitly (direction BNONUNI, 2026-09-09).  The hardcoded constant it
+    replaces is the one `notes/scripts/README.md` records as *"the `pr`
+    axis"* and the one (BE-214)(i) had to move by hand."""
+    pr = list(prof) if prof is not None else [3] * len(SKELETONS[skname])
     E, E1, E2, x, y, = composite(skname, pr, xy, side1)
     nb = neighbors(E)
     if y in nb[x]:

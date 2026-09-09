@@ -1918,6 +1918,74 @@ disproving `PencilPair K 3 G`**), not cheapness.
    > asserted it identical. *(c)* **No reading of (BE-206)'s grading as a handle on
    > `(BE-F_4)`** — it is rank-nullity plus a clause that is correct only where it is
    > empty. BLONGARC's four and BEFOURP's three stand unchanged.
+   >
+   > **SPENT 2026-09-09 (direction BNONUNI) — AND THE ENTRY'S OWN SHARPENED KILL
+   > CONDITION DID NOT FIRE: RANK 2 IS EXHAUSTED WITH NO SUCCESSOR.** *(Recorded
+   > here, in §8, per this section's own rule. It does not re-rank the entries
+   > below it.)* The sharpened condition BGTWOA left — *"`(BE-F_4)` and
+   > `(BE-G_2)` both proved in the regime, or a third `c_j(Π_x) ≥ 1` mechanism
+   > at an R-node-shaped side 2 inside the regime"* — is **not** what fired.
+   > What fired is a condition the entry never named: **the clause equals its
+   > own target where it is true and is false where it is not.**
+   > *(i)* **Hypothesis-free**: firing gives `e_i = ρ_i − 2` exactly, so
+   > `(BE-E4′)` **is** `c_j(Π_x) ≤ ρ₁+ρ₂ − 6`, hence **FALSE at every firing
+   > configuration with `ρ₁+ρ₂ ≤ 5`** — 297/297 tuples, all floor-legal. That
+   > is (BE-216)(i)'s identity read **downward**, and no landing had taken it
+   > ((BE-219)(i)). *(ii)* **REFUTED** at **14** fully-gated in-regime peels,
+   > **4** inside `barch.all_tuples`' space and none in the non-attainable
+   > zone — `ρ = (4,1)`, `c(Π_x) = (2,0)`, `e = (2,1)`, `δ = (2,1)`,
+   > `a = (2,0)`, `flag_frame` non-None, side 2 `rnode_shaped`, side 1
+   > BEFOURP's own firing piece **byte-unchanged** with only side 2's profile
+   > moved off the hardcoded uniform `[3]*n` ((BE-221)). *(iii)* At
+   > `a₁ = a₂ = 0` — S-mark's own pin, the case (BE-101)(ii) applies the clause
+   > in — and `ρ₁+ρ₂ ≥ 6`, the clause **IS** the `Π_x` obligation
+   > `c₁+c₂ ≤ 2 + slack` **verbatim**, so on the top of its residue it is not a
+   > reduction of its target but the target ((BE-219)(ii)); (BE-153)(i) named
+   > exactly this trap and its `c_i(Π_x) = 2` repair works **off** `a = 0`, not
+   > **on** it. *(iv)* **And the kill is complete rather than zonal**: the
+   > clause's whole *relaxation* content — the **1 270** firing tuples where it
+   > holds and the obligation fails — carries
+   > `min(δ₁+δ₂,6) + a₁ + a₂ > 6 = dim Λ²K⁴`, so by (BE-22)(iii)/(BE-86)(i)
+   > **the composite cannot attain there**; of 3 375 firing tuples the **688**
+   > attainment-compatible ones split **538** clause-equals-obligation and
+   > **150** clause-strictly-stronger-hence-false, and nothing else occurs
+   > ((BE-220)(ii)). **So no repair of the clause can exist** — what fails is
+   > not a hypothesis but the *location* of its content.
+   >
+   > **THE SUCCESSOR IS NOT A CLAUSE, AND THIS ENTRY HAS NONE.** Rank 2 has
+   > **no successor**: what replaces it is the **naked `Π_x` obligation**
+   > itself, which at `a = 0` is what `(BE-E4′)` turns out to be and is
+   > **strictly weaker** than half (B)'s item-0(a) clause — at `a = 0`,
+   > (PENCIL-SATURATES) implies it at 324/324 with the converse failing at 98
+   > ((BE-223)(ii)). It is (NO-DOUBLE-PENCIL) at `slack = 0` ((BE-100)(i)),
+   > unrefuted there ((BE-100)(ii) puts (BE-99)'s family on the **slack**
+   > side). It passes **GLEAF's question** — *is the statement reached
+   > necessary or sufficient for its row?* — where the clause family did not:
+   > it is exactly what the row needs, one rung weaker than what the family was
+   > proving. **The next dispatch therefore starts at rank 3 (ledger item 1,
+   > habitat (II)) or at that obligation**, which enters the board as a rank-1
+   > candidate on the sufficiency test.
+   >
+   > **THE BAR THIS ADDS, three entries.** *(a)* **The (E4)/`(BE-E4′)`
+   > two-sided family is barred AS A FAMILY** — not clause by clause — because
+   > (BE-220)(ii) locates its reductive content outside the attainable regime
+   > by a proof. *(b)* **No further `ρ₁+ρ₂`-zone refinement of `(BE-E4′)`**:
+   > the split at 5/6 is exact and both halves are closed. *(c)* **No reading
+   > of a "0 escapes at `a = 0`" figure as evidence that a clause reduces the
+   > `Π_x` obligation** — at `a = 0` such a figure **is** the equivalence
+   > ((BE-219)(iv)), and this is the generalizable one: *a filter that removes
+   > every counterexample may be removing them because it IS the conclusion.*
+   > BLONGARC's four, BEFOURP's three and BGTWOA's three stand unchanged.
+   >
+   > **THE GENERALIZABLE LESSON, one level above the instance.** The clause
+   > family survived five directions as *"unrefuted"* while never getting
+   > closer, and the reason is now nameable: **nobody had compared the clause's
+   > strength to its target's under the hypothesis the argument actually runs
+   > at.** Before ranking a proposed reduction, evaluate it and the inequality
+   > it is meant to discharge **on the same tuple space under the same
+   > hypotheses**, and ask where it is *strictly weaker*. That is a
+   > one-enumeration check; it would have priced this entire entry — and its
+   > four predecessor directions — in advance.
 3. **LEDGER ITEM 1 — habitat (II), the sharpening.** Owner: `(K-bare)` row, (BE-58)(iv) as
    re-scoped by (BE-169)/(BE-170). BSERIES's re-scoping is what promotes this: item 3's
    surviving half **is** item 1, and habitat (II) — clean at **both** ends — admits **no
@@ -1976,7 +2044,7 @@ gluing arm** (unpriced, untouched); **(ZH-2) stratified**; **route σ obligation
 **stays barred** — (BE-149) makes that a theorem, not a count. The bar's `(E4)` half
 **came back down** at BFOUR's landing and this pass does **not** lift it: (E4) as stated is
 refuted, so no further single-clause repair of *it* is authorized; **(BE-E4′)** is a
-different statement and is rank 2 on its own merits. `Γ`-properness is **lifted and now
+different statement and is rank 2 on its own merits. *(**AMENDED 2026-09-09 at BNONUNI's landing:** the `(E4)` bar now covers the **whole two-sided family**, `(BE-E4′)` included — the family's reductive content is provably outside the attainable regime ((BE-220)(ii)), so no repair of any member can exist. Rank 2 is **SPENT with no successor**; the live object is the **naked `Π_x` obligation**, (BE-223)(ii).)* `Γ`-properness is **lifted and now
 rank 1**. *(**AMENDED 2026-09-08 at BGPROP's landing:** rank 1 is **SPENT** and
 `Γ`-properness is **struck as a closure route** — the lemma is refuted at 10 of 99 by a
 proof, its bridge confirmed, and 53 of 99 closed class-uniformly. The bar now reads: no

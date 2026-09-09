@@ -1185,6 +1185,10 @@ are a recorded *Harness debt* item (see below).
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/bgtwoa.py rungs` | <1 s | ibid. *Steps BE210-BE211* (**(BE-211)**, **(BE-212)**: the realizable range and the grading, **CONSTRUCTED in exact Q from the named basis `e_1..e_4` -- nothing sampled**, which is the point: a random 2-space is never isotropic, the vacuous-assert trap of `RESEARCH-ARC.md` section 4 that fired at BRANKV and at one of BEFOURP's own drafts. `Sigma_x = p_x ^ K^4` asserted dim 3 and **TOTALLY SINGULAR** (Klein form asserted `0` on its basis AND every pairwise sum, one distinct value), `Pi_x` asserted dim 2 and inside it at codimension 1; the six subspaces of `Sigma_x` up to `(dim, dim cap Pi_x)` each BUILT and extended by complement basis vectors to **23** shapes, every one asserted to be the intended shape, with rank-nullity for `q_hat` re-asserted at 23/23; the realizable range asserted to be EXACTLY `[max(0, rho-4), min(2, rho)]` rung by rung, so `c_j = 0` is asserted **0-realizable** at `rho_j >= 5` and `c_j = 2` **forced** at `rho_j = 6`; and (BE-206)'s grading asserted to FAIL at **8 of 23** shapes, every failure asserted to have `c < 2`) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/bgtwoa.py hunt` | 191 s | ibid. *Step BE213* (**(BE-214)**: THE KILL. `bproper.plant_peel` re-run with **exactly one axis moved** -- the skeleton profile length, which `PEELJOBS` and `bline.legal_peel` both hardcode at 3 -- at profile 4 and 5, side 1 the bucket-A piece `2 pendants + theta(3,3,3)`, giving `rho = (2,6)`, `c(Pi_x) = (1,2)`, `e = (1,4)`, `delta = (2,6)` at **4 of 4** peels on TWO skeletons and THREE hub pairs, with the whole `bline.legal_peel` gate set asserted at every one -- `hcard_ok`, min degree `>= 2`, girth `>= 4`, `x !~ y`, both terminals hubs of `H`, side 2 `rnode_shaped`, the two sides asserted to PARTITION `H`, `verify_pencil_witness`, **`flag_frame` asserted NON-None**, and `delta_1, delta_2 >= 1` -- so `(BE-G_2)` is asserted FALSE **inside** the generic flag regime; the mechanism asserted to be **(BE-175)(i) itself**, `deg_1(x) = 1` and `ell = p_x ^ p_c` asserted in `rho_bar_1` AND in `Pi_x` separately; the firing side asserted to be side **2** (a side-1-firing witness would exhibit BEFOURP's configuration, not the asymmetry) and `rnode_shaped(side 1)` asserted **False**; then the **90-row** in-regime census (2 skeletons x 5 hub pairs x 3 profile lengths x 6 bucket-A pieces, one seed each) with `(BE-G_2)` failing at **5** firing both-flexible rows and **(BE-E4') failing at 0**, the latter asserted as a GUARD because a failure there would be a strictly bigger claim than this direction makes) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/bgtwoa.py validate` | 191 s | ibid. all three in one process -- the landing gate. **FITS the 600 s foreground ceiling**, so this driver adds NO over-ceiling case to section 0 |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/bnonuni.py map` | 56 s | `notes/Pencil-informal.md` section (K-bare-ext) *Step BE217* (direction BNONUNI; **(BE-218)**: the PROFILE AXIS. `delta_2` for the subdivided skeleton asserted QUANTIZED to `{0, 3, 6}` along the UNIFORM profile axis every landed driver varies, at `plen` 1..7 on BOTH skeletons and EVERY non-adjacent hub pair -- which is why BGTWOA's 90-row census has `rho_2 in {0,3,6}`; then EXHAUSTIVE over **all 512** profiles with entries in `{2,3}` at each of the 6 (skeleton, pair) cases, `delta_2` asserted to reach EVERY value in `{0,1,2,3}` with census `{0:466, 1:36, 2:9, 3:1}`, and the closed form `delta_2 = max(0, #{length-3 branches} - 6)` asserted at all **3 072** profiles. Plus the length-1 rung MEASURED as a PARTIAL exclusion -- topologically legal at every peel job, placed by `bproper.plant_peel` at **1 of 6** (job, seed) pairs at 40 tries, asserted NEITHER 0 NOR 6, so the claim is *reachable and unreliable*, not *excluded*. **CAP: 3 jobs x 2 seeds x 40 tries** for that last figure) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/bnonuni.py arith` | <1 s | ibid. *Steps BE218/BE219/BE222* (**(BE-219)**, **(BE-220)**, **(BE-223)**: EXHAUSTIVE over all 6 400 tuples, no sampling and the seed unused. The HYPOTHESIS-FREE rewriting `e_1 + e_2 >= 4 <=> c_j(Pi_x) <= rho_1 + rho_2 - 6` (and `<=> rho_1 + rho_2 >= 8` when both sides fire) asserted tuple by tuple against `barch.e4` at all **3 375** firing tuples, hence (BE-E4') asserted **FALSE at all 297** firing tuples with `rho_1 + rho_2 <= 5`, all 297 asserted Grassmann-floor-legal; at `a_1 = a_2 = 0` and `delta_1 + delta_2 >= 6` the clause asserted **IDENTICAL** to the `Pi_x` obligation `barch.violates(c1,c2,2,d1,d2)` at all **120** such firing tuples, and asserted FALSE at all **35** with `delta_1 + delta_2 <= 5` where the obligation HOLDS at 20; the **1 270** relaxation tuples (clause true, obligation false) each asserted to carry `a_1 + a_2 > 0`, to break the `Lambda^2 K^4` inequality, and to have `min(delta_1+delta_2,6) + a_1 + a_2 > 6` so the composite CANNOT attain there, with the **688** attainment-compatible firing tuples asserted to split **538** clause-equals-obligation / **150** clause-strictly-stronger and nothing else; (PENCIL-SATURATES) asserted to imply the obligation at all **324** `a = 0` tuples with the converse failing at 98; plus (BE-216)(ii)'s escape census `{3:8, 4:32, 5:76, 6:85, 7:44}` and (BE-153)(ii)'s `a = 0` figures REPRODUCED, and an F13 negative control asserting the two conditions differ at 1 420 firing tuples, 1 400 at `a > 0` and the other 20 all at `delta_1 + delta_2 <= 5`. Every headline an `assert`) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/bnonuni.py hunt` | 91 s | ibid. *Steps BE220-BE221* (**(BE-221)**, **(BE-222)**: THE KILL. `bproper.plant_peel` re-run with **exactly one axis moved** -- side 2's branch PROFILE, from the hardcoded uniform `[3]*n` (`delta_2 = 3`) to `[2,2,3,3,3,3,3,3,3]` (`delta_2 = 1`) by (BE-218)'s closed form -- side 1 being BEFOURP's own (BE-118)(ii)/(BE-207)(i) firing piece BYTE-UNCHANGED, giving `rho = (4,1)`, `c(Pi_x) = (2,0)`, `e = (2,1)`, `delta = (2,1)`, `a = (2,0)` and `e_1 + e_2 = 3 < 4` at **14** refuting rows of **42** fully-gated firing in-regime rows. The gate set is `bline.legal_peel`'s OWN, CALLED rather than re-implemented, plus `verify_pencil_witness`, `flag_frame` asserted NON-None, `delta_1, delta_2 >= 1`, `deg_1(x) = 1` (a series end, so (BE-175)(i) gives `c_1(Pi_x) >= 1` free), and a SCOPE CHECK asserting the two sides both PARTITION `H` and are DISTINGUISHABLE BY EDGE COUNT so the per-side numbers cannot be swapped. `rho_i = delta_i + a_i` is MEASURED PER ROW and REPORTED, never assumed -- **4 of the 14** carry it at both sides, so they are inside `barch.all_tuples`' space, which is (BE-208)(ii)'s second disqualifier; the other 10 are printed marked False. Then the boundary asserted EXACT IN BOTH DIRECTIONS over the 42 rows: every `rho_1 + rho_2 <= 5` row FAILS and every `rho_1 + rho_2 >= 6` row HOLDS, with the `delta_2 = 3` column reproducing (BE-207)(ii) (`e = (2,3)`, margin `+1`) as the negative control on the construction. **CAPS: 2 skeletons, 7 side-1 pieces, 1 hub pair per job, `delta_2 in {1,2,3}`, 2 seeds, one canonical profile per `delta_2`; and `deg_1(x) >= 2` on the firing side is UNREPRESENTABLE, `plant_peel` returning None unless `deg_1(x) = 1`**) |
+| `PYTHONHASHSEED=0 python3 notes/scripts/w4/bnonuni.py validate` | 147 s | ibid. all three in one process -- the landing gate. **FITS the 600 s foreground ceiling**, so this driver adds NO over-ceiling case to section 0 |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/bfour.py --arith` | 0 s | `notes/Pencil-informal.md` §(K-bare-ext) *Step BE155* (direction BFOUR; **(BE-156)**: the CONTAINMENT THEOREM by EXHAUSTION over all 6 400 tuples — every one of the **535** (E4)-violating tuples is a (PENCIL-SATURATES-CHART) counterexample, **535/535 ASSERTED**, so the (BE-154)(iv) hunt is a STRICT SUB-HUNT of one already run at 0/772; the `Pi_x` margin histogram `{0: 150, 1: 234, 2: 151}` making **385 of 535** also [MARGIN] shortfalls and only 150 clean, 50 attaining; exactly **3** tuples reachable at the sweep's own side-2 signature, all forcing `rho_bar_1 = Pi_x` at `rho_1 = 2`; plus BARCH's 970 / 0 / 0 / 287 REPRODUCED as the divergence guard) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/bfour.py --charta` | 505 s | ibid. *Steps BE156–BE157* (**(BE-157)**/**(BE-158)**, half A: 204 composite chart points over 34 peels, both sides measured, the lean per-side row CROSS-ASSERTED against `bsatur.row_of` plus the three margin controls at 34/34 peels; side 2's signature the single value `(delta_2, a_2, rho_2, c_2) = (3,0,3,0)` at 204/204; `c_1(Pi_x) <= dim Gamma_Pi` ASSERTED 204/204 and the exact (BE-149)(i) identity 204/204; 0 (E4) falsifiers) |
 | `PYTHONHASHSEED=0 python3 notes/scripts/w4/bfour.py --chartb` | 504 s | ibid., half B: 207 points over 36 peels reaching the **three fibre shapes** the long-core library cannot (plane `pi_{c1}` 18, plane `pi_x` at `k >= 3` 10, the line 6); same single side-2 signature at 207/207, the bound 207/207, the identity 147/147 at its `k = 2` points, 0 falsifiers. **Union with half A is exactly (BE-136)'s 411/411 over 70 peels**, hypothesis met 72x, certificate firing 375/411, identity 351/351 |
@@ -1620,7 +1624,7 @@ figure-invariant): `rref`, `rank`/`rank_exact`, `nullspace`, `left_nullspace`,
 `neighbors` (`kbare_common`, `n9`); `K4`/`K5_minus_matching` (three copies:
 `localtest`, `probe_zero`, `run_habitats`).
 
-## Harness debt — four rounds PAID (S1–S4 2026-08-06; the move-down round 2026-08-20; the GFLIP balance-layer move-down 2026-08-25; the GCHEAP/GPRICE balance-layer extension 2026-08-25), **twelve items outstanding**, plus FOUR *Recorded observations* deliberately unfixed
+## Harness debt — four rounds PAID (S1–S4 2026-08-06; the move-down round 2026-08-20; the GFLIP balance-layer move-down 2026-08-25; the GCHEAP/GPRICE balance-layer extension 2026-08-25), **thirteen items outstanding**, plus FOUR *Recorded observations* deliberately unfixed (one of them NARROWED by BNONUNI's `prof=` thread, 2026-09-09)
 
 **Twelve items are outstanding** — the eleventh added 2026-09-03 (direction
 BDEGTWO, the **silent `bimage.span` width defect**, its own section at the
@@ -3493,3 +3497,71 @@ Two things look like defects and are not. Leave them alone.
    live-cited technical archive for the same reason — `notes/Phase29.md`), and
    it is an explicit exception to the `notes/CLAUDE.md` ~1500-line
    design-doc tripwire.
+
+### New item (2026-09-09, direction BNONUNI) — the next `w4/` consumer of the same chain, **and the FIRST SIGNATURE CHANGE to a landed driver in the `w4/` `(BE-14)` sub-arc**; **UNPAID, NO MOVE MADE**
+
+**The sibling-import arrival, folded into the standing item.** `w4/bnonuni.py`
+is the next `w4/` consumer of the standing chain (`bnonuni → barch → bdegtwo →
+bline → bopen → bproper → bsigma → bsatur → … → kbare_common`), a **first**
+consumer of `bproper.NONADJ` and of `bpeel.subdivided` from `w4/`, a **third**
+of `bfour.e_row`, a **fifth** of
+`bproper.plant_peel` / `PEELJOBS` / `side_named`, and a further consumer of
+`bdecor.d3` / `weld_d3`. **All folded into the standing sibling-import item,
+NO MOVE MADE**, by §2 rule 2's clause that *a dispatch may not make the move*.
+It opens **no new hazard item**, and it does **not** repair (BE-213)(i)'s
+`barch.all_tuples` defect.
+
+**What is new in kind: a landed driver's SIGNATURE changed.** Every previous
+`(BE-14)` sub-arc landing either consumed landed names unchanged or
+re-implemented what it could not reach — BGTWOA reached the profile axis by
+copying `bline.legal_peel`'s gate list into its own `_one_peel`, the third such
+copy. BNONUNI instead threads a **defaulted** `prof=None` through
+`bline.legal_peel`:
+
+```python
+def legal_peel(side1, skname='K33', xy=('A', 'B'), prof=None):
+    pr = list(prof) if prof is not None else [3] * len(SKELETONS[skname])
+```
+
+**Why this is the cheaper of the two dispositions, and why it is not a
+*Divergences* row.** It is **additive** — the parameter is defaulted to the
+constant the function has always hardcoded, so no landed caller's behaviour can
+move — and it removes the reason a fourth copy of the gate list would have been
+written. A *Divergences* row is for two names with different semantics; here
+there is one name with one semantics and one more knob.
+
+**THE DISCHARGE, and it is asserted rather than argued.** Convention 5's
+re-baselining clause prices a change to a landed driver at *re-running its whole
+import closure and repointing every moved figure*. Nothing moved, and that is
+**measured at every consumer of the changed function**, not just at the driver
+itself. `bline.legal_peel`'s consumers are `bline` itself, `brankv`, `blongarc`
+and `befourp`; all four re-run byte-identical at `PYTHONHASHSEED=0`:
+
+| invocation | recorded figures reproduced |
+|---|---|
+| `bline.py validate` | 140/140 with 40 failing + 48 constructed; 60/60 and 2 400/2 400; 200/200, 0/200, 16 constructed; **91** rows, `dim A` census `{1:16, 2:34, 3:41}`, 0 hub side-neighbours; **270** rows, census `{1:30, 2:10, 3:60, 4:30, 5:60, 6:80}`, `(*)` failing at **142**, **14/27** generic, **109** of 140, **90** hub rows, the clause **0/270**; 12 constructed |
+| `brankv.py hunt` | the gated arc-3 family at **24/24** with `q_y in pi_x` |
+| `blongarc.py perp` | the gated arc-4 family at **24/24** with `q_z in pi_x`, cone asserted exactly two candidates |
+| `befourp.py gated` | (BE-E4') margin **-2** at 24/24 and 24/24, `flag_frame` None at **24/24**, `a = (3,12)` |
+
+**So no recorded figure moved, and the claim is a MEASUREMENT of four
+invocations rather than an inference from the diff.** That is the discharge
+shape any future defaulted-parameter change to a landed driver should copy:
+enumerate the changed function's consumers from the import graph, re-run each,
+and table the figures.
+
+**One *Recorded observation* is NARROWED, not retired.** The observation this
+file carries about *"the `pr` axis"* — that `bdegtwo.peel_of` and
+`bdegtwo.sweep_points` hardcode `pr = [3] * len(SKELETONS[skname])` while
+`bproper.composite` / `free_peel` and `bsatur.peel_of` take it as a parameter —
+had a third member, `bline.legal_peel`, which hardcoded it **with no parameter
+at all** and was therefore the one consumer of `composite`'s `prof` argument
+that could not reach it. That member is now a parameter-taker. **The two
+`bdegtwo` hardcoders remain**, so the observation stands with its scope reduced
+by one; do not read it as retired. The axis itself is what BGTWOA's kill and
+BNONUNI's both turned on, which is the standing argument for the
+*grep-the-generator-for-hardcoded-constants* clause of convention 8 and of
+`RESEARCH-ARC.md` §4: **`delta_2` for the subdivided skeleton is quantized to
+`{0, 3, 6}` along the uniform axis and reaches every value of `{0,1,2,3}`
+non-uniformly**, so two directions' worth of "exhaustive" sweeps were blind to
+half the rungs of a parameter that was already a legal input one call down.

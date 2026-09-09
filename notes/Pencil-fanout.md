@@ -16281,3 +16281,126 @@ close-it cell, and the first rewrite dropped the *"decided by the `(K-bare)/(K-b
 row"* clause — restored verbatim, which is exactly the failure mode `gapdiff` exists to catch.
 `notes/Phase39.md` paid for its own two lines by **merging** the ninth-strategy-pass entry
 (duplicating the header's ordinal list) and folding this landing into BINSERT's row.
+
+## Direction BNONUNI (arc ordinal 91, direction 99) — **THE QUESTION IS NEITHER, AND THAT IS THE DECISION: `(BE-E4′)`'s residue SPLITS at 5/6, is REFUTED below and IS ITS OWN TARGET above, and its whole relaxation zone is NON-ATTAINABLE — so §8's rank 2 is EXHAUSTED with no successor**
+
+**LANDED 2026-09-09.** The second of a **concurrent round of two** (INSJOINT
+90 landed first, serially, per `RESEARCH-ARC.md` §2). Draft-only during the
+round; the coordinator verified and landed. Workbook:
+`notes/Pencil-informal.md` §(K-bare-ext) *Steps BE217–BE223*, labels
+(BE-218)–(BE-224). Driver `notes/scripts/w4/bnonuni.py`. **One tracked
+driver signature changed** — a defaulted `prof=` on `bline.legal_peel`, with
+its four-consumer figure-invariance discharge in
+`notes/scripts/README.md`.
+
+### The dispatch spec (coordinator-authored, recorded verbatim in substance)
+
+**The question.** Is `(BE-E4′)` REFUTED or a THEOREM on its exact residue zone
+`ρ₁ + ρ₂ ≤ 7`? (BE-216) makes that zone exact. **Cheapest live sub-slice:** a
+firing side at `ρ_i ∈ {4,5}` against a non-firing side at `e_j ≤ 6 − ρ_i`.
+BGTWOA's 90-row sweep never pairs them because `ρ₂ ∈ {0,3,6}` is quantized by
+the **uniform** skeleton profile length while `ρ₁ ∈ {2,3,4}` is set by the
+side-1 piece — so the sub-slice needs a **non-uniform** profile or a side-2
+family outside `bpeel.subdivided`. If that shape exists in the regime,
+`(BE-E4′)` is REFUTED; if it provably does not, it is a THEOREM. **Either way
+a DECISION**, which is more than rank 2 has ever had.
+
+**The scope-pin (coordinator's own slot-trace, verified at source by the
+direction).** No new harness primitive is needed: `bpeel.subdivided` reads
+`lengths[i]` per skeleton edge, `bproper.composite`/`plant_peel` pass `prof`
+straight through, `bproper.run_peel` accepts it — and **`bline.legal_peel`
+hardcodes `pr = [3]*n` with no parameter at all**. The one authorized change
+is a **defaulted** `prof=None` on that function, with `notes/scripts/w4/`'s
+`bline.py` the only tracked file the dispatch may edit, and figure invariance
+to be **asserted** by re-running its decisive mode.
+
+**The prediction, labelled to be tested.** *(Dichotomy: refuted or theorem.)*
+
+### The verdict — NEITHER, and the dichotomy was too narrow
+
+**The residue zone splits at 5/6 and the clause is dead on both halves, by a
+proof on each.**
+
+- **`ρ₁+ρ₂ ≤ 5`: REFUTED, at two independent levels.** *Arithmetically, with
+  no hypothesis at all*: firing gives `e_i = ρ_i − 2` exactly, so the
+  conclusion `e₁+e₂ ≥ 4` **is** `c_j(Π_x) ≤ ρ₁+ρ₂ − 6`, which `c_j ≥ 0` makes
+  **unsatisfiable** — asserted at all **297** such firing tuples, all
+  Grassmann-floor-legal ((BE-219)(i)). *Geometrically*: **14** fully-gated
+  in-regime peels, **4** inside `barch.all_tuples`' space, `ρ = (4,1)`,
+  `c(Π_x) = (2,0)`, `e = (2,1)`, `δ = (2,1)`, `a = (2,0)`, side 1 BEFOURP's
+  own firing piece byte-unchanged with only the profile moved ((BE-221)).
+- **`ρ₁+ρ₂ ∈ {6,7}`: not a theorem to prove but the TARGET restated.** At
+  `a = 0` (S-mark's pin, the case (BE-101)(ii) applies the clause in),
+  `ρ_i = δ_i`, so the condition reads `c_j ≤ slack` — **the `Π_x` obligation
+  verbatim**, asserted at all 120 such firing tuples ((BE-219)(ii)).
+- **And it can never contribute to (BE-14) at all.** Its **1 270**-tuple
+  relaxation zone all has `min(δ₁+δ₂,6)+a₁+a₂ > 6`, so the composite cannot
+  attain there; of 3 375 firing tuples the **688** attainment-compatible ones
+  split **538** equal-to-obligation / **150** strictly-stronger-hence-false,
+  and nothing else occurs ((BE-220)(ii)). **A proof, not a cap.**
+
+**Successor:** the **naked `Π_x` obligation**, strictly weaker than half (B)'s
+item-0(a) clause ((BE-223)(ii)) — so **§8's rank 2 collapses into item 0(a),
+one rung weaker**, and the two-sided family has been a target strictly *above*
+the one it was introduced to reduce since (BE-153) minted (E4).
+
+### The coordinator prediction, classified
+
+**The dichotomy was too narrow — (BE-57)(i)'s own shape**, a spec offering two
+outcomes that look exhaustive because they are each other's negation, when the
+live possibility is that the question **dissolves**. It dissolved in the
+strongest available direction. **The spec's mechanism was right and load-bearing
+in full**: the diagnosis that `ρ₂` is quantized by the uniform profile, the
+slot-trace naming `bline.legal_peel` as the one hardcoder, and the
+one-defaulted-parameter remedy are each exactly correct, and the refutation was
+reached by following them. **One arithmetic defect:** the named sub-slice
+`e_j ≤ 6 − ρ_i` is the **margin-≤-0** set; the refutation set is
+`e_j ≤ 5 − ρ_i`. Harmless as a search hint (a superset) and instructive
+because the extra rung is precisely `hunt`'s `δ₂ = 2` column — `e = (2,2)`,
+margin **0**, clause **holds**. **Corrections ran both ways:** against that
+one, the direction self-caught **four** of its own (below).
+
+### Caps, and the axes the generator CANNOT vary
+
+**Uncapped:** all of `arith` (6 400 tuples enumerated, seed unused;
+(BE-219)(i) and (BE-220)(ii) are proofs) and all of `map` (512 `{2,3}`
+profiles × 6 (skeleton, hub-pair) cases). **Capped:** `hunt`'s 42 rows — 2
+skeletons, 7 side-1 pieces, 1 hub pair per job, `δ₂ ∈ {1,2,3}`, 2 seeds, one
+canonical profile per `δ₂`; and (BE-218)(iii)'s length-1 rate is 1 of 6 at 40
+tries. **Unrepresentable, grepped in the generator rather than recalled:**
+`δ₂ ≥ 4`; any skeleton outside `bpeel.SKELETONS`' three (and `K4`'s six edges
+cap it at `δ₂ = 0`); **`deg₁(x) ≥ 2` on the firing side**, because
+`bproper.plant_peel` returns `None` unless `deg₁(x) = 1` — the whole
+`deg_i(x) = 2` arc geometry BRANKV and BLONGARC work in, and the largest blind
+spot; `a₂ > 0`; `c_j(Π_x) > 0` on the non-firing side (`c = (2,0)` at all 42
+rows); char `≠ 0`; more than 2 seeds per cell. **None of these can touch
+(BE-219) or (BE-220)** — the refutation's *existence* rests on the capped
+`hunt`, its *inevitability* on the uncapped arithmetic.
+
+### Self-caught defects — four, all by in-driver asserts
+
+*(a)* A first-draft route, `e₁+e₂ ≥ dim(ρ̄₁+ρ̄₂) − 2`, priced as a new
+hypothesis-free sufficient condition: it is **exactly (BE-216)(i) rewritten**,
+and `dim(ρ̄₁+ρ̄₂) = 6` at `a = 0` with `δ₁+δ₂ ≥ 6` **is** the general-position
+conclusion, so it was circular as well as redundant. Dropped before it reached
+a label. *(b)* An over-claim that every escape at `ρ₁+ρ₂ ∈ {6,7}` carries
+`a > 0`; the assert fired at `(δ,a,ρ,c) = (1,5 | 0,0 | 1,5 | 1,2)` and the
+**true** statement is stronger. *(c)* A negative control asserted too widely.
+*(d)* (BE-223)(ii)'s strictness asserted over all 6 400 tuples instead of
+`a = 0`, where it fails at `a = (3,0)`, `c = (2,1)`, `ρ = (6,1)`, `δ = (3,1)`.
+**All four are the `RESEARCH-ARC.md` §4 shape and none was caught by
+reasoning** — which is the argument for asserting a rewriting tuple-by-tuple
+instead of deriving it once.
+
+### The landing's doc arithmetic
+
+`(K-bare)` row **2,707 → 2,812 of 2,856** words (+105), `gapdiff` **0
+DROPPED**, **no cap bump** — the fourth bump stays the row-split trigger and
+the split stays declined. `notes/Phase39.md` held at its 580-line cap by
+**relocating** its *DOC DEBT* ledger to `notes/Pencil-structure.md` **block
+15** (its figures are owned by the gap map and by `check-gapmap-cells.py`,
+which makes it reference) and by collapsing BGTWOA's now-superseded entry.
+**`HEAD` moved under the draft** — from `4a3d7c36` to `78e84d2e` when INSJOINT
+landed mid-round — so every doc figure here was **re-taken at landing time**,
+which is `RESEARCH-ARC.md` §2's fourth hazard handled as prescribed rather
+than rediscovered.

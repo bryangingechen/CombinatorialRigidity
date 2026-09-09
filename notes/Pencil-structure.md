@@ -44,8 +44,8 @@ research pick (`notes/Phase39.md` *Hand-off*).**
 
 ## The relocated reference blocks — the index `notes/Phase39.md` points at
 
-**FOURTEEN blocks, relocated verbatim from `notes/Phase39.md` between 2026-08-27 and
-2026-09-03**, each because it is **stable reference, not status** — it changes only
+**FIFTEEN blocks, relocated verbatim from `notes/Phase39.md` between 2026-08-27 and
+2026-09-09**, each because it is **stable reference, not status** — it changes only
 when something is *added* to it, never when a gap's status moves. (Blocks 8 and 9 are the
 two exceptions to the "never when a gap's status moves" reading, and they are
 deliberate ones: each is the *per-landing attribution* of a thread whose status the
@@ -72,6 +72,7 @@ cap was ever bumped and nothing was deleted**; the note keeps a pointer to each.
 | 12 | *The escape route (§(K-out)) — per-landing detail* | 2026-09-02 | OWALL's per-landing detail on the escape route's largest live row: the two-direction-network model, the three confinement certificates, and what (OC-44)(iii) reduced to; relocated at the OWALL landing, so the lane's narrative never entered the note |
 | 13 | *The 2026-09-02 round — per-landing status clauses* | 2026-09-02 | the one-clause-per-direction status paragraph for ordinals 66–71 (GPACK, BSIGMA, GLIST, BPROPER, OWALL, GGLOB), whose *detail* blocks 8/11/12 already own; relocated at the GGLOB landing, when a sixth clause would have pushed the note past its line cap |
 | 14 | *The 2026-09-03 liveness round — what SWEEP C moved out of the note* | 2026-09-03 | the three failed replacement picks that fired the round; the item-0 sub-item **re-lettering hazard**; carried item 1's *why it is carried* rationale; the `hK` item's 2026-07-30 standing adjudication and its two literature-hunt MISSes |
+| 15 | *The `(K-bare)` row's doc-debt ledger* | 2026-09-09 | the budget the `(K-bare)`/`(K-bare-ext)` row runs against — its word count, label count and density, the three cap bumps, the standing **relocation-not-compression** lever and the fourth-bump row-split trigger; relocated at the BNONUNI landing because every number in it is owned by `notes/Pencil-informal.md`'s row and by `notes/check-gapmap-cells.py`, which makes the paragraph **reference, not status** — the eighth instance of the *a paragraph whose numbers another file owns goes stale* shape |
 
 The one line that stays in `notes/Phase39.md` rather than moving here: the **State of
 (K)** gap map in `notes/Pencil-informal.md` is the phase's status object, authoritative
@@ -1654,3 +1655,41 @@ E1/E2/E3 are the **arc's** termination clauses — they ask whether the
 *research arc* has reached its target — so a landing that empties one carried
 item's cost list is not a landing that fires them, and the WGROW landing
 (ordinal 61) is the case where that was worked through explicitly.
+
+## The `(K-bare)` row's doc-debt ledger (RELOCATED from `notes/Phase39.md` 2026-09-09, the BNONUNI landing)
+
+**Relocated because every number in it is owned by another file** — the row
+itself in `notes/Pencil-informal.md`, its cap in `notes/check-gapmap-cells.py`
+— so the paragraph is **reference, not status**, the disposition blocks 1–14
+got. It is also the **eighth** instance of the shape this arc keeps catching:
+*a paragraph whose figures a different file owns is precisely the paragraph a
+section-scoped edit does not re-read.* BGTWOA caught it here at
+`a5b071ce + 1`, where the note still read *"2,483 / 2,514 words … the cap was
+NOT bumped … 31 words of headroom"* one commit **after** the cap moved to
+2,856. Relocating it does not retire the watch item; it moves the watch to a
+file whose own gate is the row's.
+
+**The ledger, current at the BNONUNI landing.** The `(K-bare)`/`(K-bare-ext)`
+row is **2,812 / 2,856** words at **286** label codes (**9.83** each) — **44 words
+of headroom**, `gapdiff` **0 DROPPED**. BNONUNI **appended 105 words without
+compressing, relocating or bumping**, the second landing in seven on this row
+to pay nothing.
+
+**The three bumps, and the standing lever.** The cap has been raised **three**
+times, the last at `a5b071ce`; a **fourth** bump is the coordinator's trigger
+to revisit the **ROW SPLIT, still PROPOSED, NOT EXECUTED** (DECLINED FOR NOW
+at `424f93dc`; costing in `notes/Pencil-fanout.md` §"BRANKV"). **Compression is
+exhausted** — the density floor has climbed **9.23 → 9.74 → 9.83** words per
+label across the last three landings, so a compression pass now buys words a
+later landing cannot spend without dropping a label. **RELOCATION, not
+compression, remains the next lever**, and the row's own close-it cell is the
+first candidate.
+
+**How to measure it, and when.** `python3 notes/gapmap.py --list` for the word
+count, `python3 notes/scripts/gapdiff.py K-bare HEAD` for the label set-diff
+(a word cap cannot see a dropped label), and `python3
+notes/check-gapmap-cells.py` for the gate. **Re-take all three at landing
+time, never at draft time** — `RESEARCH-ARC.md` §2's fourth hazard: a
+serially-landing coordinator moves `HEAD` under a still-running sibling, and
+both landings of the 2026-09-09 round of two measured this row against a
+baseline that had already moved.

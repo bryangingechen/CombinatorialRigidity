@@ -4708,7 +4708,7 @@ forever, which is the off-by-N shape behind two of the five coordinator
 reservation defects of the 2026-09-03 round. **The registry's own tail
 declaration is what prevents it**, and this is the first landing where the
 declaration and the consumed range *disagree* — so it is the first real test
-of that sentence. **THE LIVE TAIL IS NOW (BE-218) / *Step BE217***, 0-hit
+of that sentence. **THE LIVE TAIL WAS THEN (BE-218) / *Step BE217***, 0-hit
 verified at this landing. **The three earlier strays stay available and
 unused**: **(BE-163)** / ***Step BE162*** (BFOUR's), **(BE-179)** /
 ***Step BE178*** (BSTEER's), and ***Step INS8*** (BINSERT's) — BEFOURP's
@@ -4831,3 +4831,59 @@ pay that cost up front rather than at the grep.
 blockquote gains a dated *DISCHARGED* pointer to (INS-12)/(INS-15)/(INS-16) in place of a
 rewrite. The continuation's notation additions — `U′`, `s₀′`, `need′`, `M′` and the chain end
 `c` — are objects and parameters, written as mathematics, never parenthesized alone.
+
+## Reserved namespace — direction BNONUNI (2026-09-09, **CONSUMED IN FULL: seven labels and seven steps**)
+
+| direction | section | labels | steps | driver |
+|---|---|---|---|---|
+| **BNONUNI** | §(K-bare-ext) — **extends**, no new section | **(BE-218)–(BE-224)** consumed | **BE217–BE223** consumed | `w4/bnonuni.py` (three modes + `validate`) |
+
+**It opens at exactly the tail BGTWOA declared** (*"THE LIVE TAIL IS NOW
+(BE-218) / Step BE217"*) — i.e. at the declaration rather than past the
+consumed range, the discipline BGTWOA's own block records as the remedy for
+the off-by-N shape. **THE LIVE TAIL IS NOW (BE-225) / *Step BE224***, 0-hit
+verified at this landing. **The three earlier strays stay available and
+unused**: **(BE-163)** / ***Step BE162*** (BFOUR's), **(BE-179)** /
+***Step BE178*** (BSTEER's), and ***Step INS8*** (BINSERT's) — the stray list
+is unchanged, this direction having reached for nothing outside its range.
+
+**0-hit verification, re-run by the direction as its FIRST action** (clause
+(L7): **every** token in the range, enumerated rather than sampled, **hits and
+files reported separately**), across the whole tree **at the dispatch baseline
+`4a3d7c36`** and re-checked at the landing baseline `78e84d2e`:
+
+| token | `(BE-n)` hits / files | bare `BE-n` hits / files | step `BEn` hits / files |
+|---|---|---|---|
+| `BE-218` / `BE217` | **2 / 2** | **2 / 2** | **2 / 2** |
+| `BE-219`–`BE-224` | 0 / 0 | 0 / 0 | 0 / 0 (`BE218`–`BE223`) |
+
+`BNONUNI` and `bnonuni` both **0 / 0** as raw substrings, (L5)'s check
+included. **Both non-zero cells were OPENED, not counted**: they are BGTWOA's
+tail-declaration sentence in this file and in `notes/Pencil-fanout.md` — **no
+consumption anywhere**. The enumeration **reproduced the coordinator's prep
+token-for-token in both metrics**, and the opening tokens were non-zero *by
+design*, the same way BGTWOA's were.
+
+**(L6) landing-time bare-token grep, RUN over the whole repository:
+NON-EMPTY BY DESIGN, and disclosed rather than silently tolerated.**
+`grep -oE '\([A-Z][0-9]\)'` over the driver returns `(E4)` ×20 and
+`(L3)`/`(L6)` ×3. The first is the direction's **own subject** — the
+grandfathered `§(K-bare-ext) (E4)` token, whose (L3) qualification is stated
+**once for the whole file**, in a *NOTATION AND THE (L3) QUALIFICATION* block
+in the driver's docstring, rather than at 20 call sites; the second is this
+registry's own clause names. **A file-scope (L3) qualification is a new
+disposition and is offered as such**: BGTWOA avoided the bare form entirely by
+citing only `(BE-E4′)`, which was available to it because its subject was
+`(BE-G_2)`; this direction's subject **is** `(E4)`, so 20 citations of it are
+unavoidable and per-site qualification would be noise. **The appearance
+collision BRANKV recorded struck again and was fixed pre-emptively**: a Python
+local `E2` inside `d3(E2)` returned the live `(E2)` family's token, and is
+renamed `esk`. **BEFOURP's/BLONGARC's/BGTWOA's scope statement is consumed
+unchanged**: `(X<digit>)` in, bare single-letter call parentheses out.
+
+**NO NEW LABEL FAMILY IS MINTED.** The direction *refutes* `(BE-E4′)` and so
+**consumes** that token rather than adding to the family; its registry row is
+updated in place, per (L4) — **no rename**, the token now naming a **refuted**
+claim, which is exactly the disposition `§(K-bare-ext) (E4)` itself was given.
+The section's notation additions — `slack`, `a_i`, the branch profile — are
+objects and parameters, written as mathematics, never parenthesized alone.
