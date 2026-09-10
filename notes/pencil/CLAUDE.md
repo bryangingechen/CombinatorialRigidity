@@ -12,7 +12,9 @@ claims — and reports the evidence status the claim's own prose states.
 ```
 --label '(BE-216)'     every clause of one label: status, section, live line, citations
 --brief L1 L2 ...      a briefing block, statements quoted VERBATIM with hypotheses
---frontier             open claims whose every known citation is closed
+--frontier             claims whose every known citation is closed, SPLIT into
+                       KNOWN-OPEN (work) and STATUS-UNKNOWN (tag it first)
+--frontier --known     only the KNOWN-OPEN group
 --cited-by '(BE-210)'  what breaks if this claim falls
 --status PROVED        everything at a status (--section / --file narrow)
 --delta <ref>          the status change-set, for the landing's commit message
@@ -28,6 +30,15 @@ This exists because retrieval by `grep`+`sed` was measured at **~35 probes and
 ~137k tokens of context growth** for ~18 claims in one traced dispatch — the
 cost being *reasoning turns*, not bytes. `--brief` answers the same question
 for 14 labels in **one call, ~7 600 tokens**. Reach for it first.
+
+**`UNTAGGED` means "no machine-readable status", NOT "unproved".** The
+distinction is load-bearing: `--frontier` therefore splits its output, because
+**83% of it is untagged** and an undifferentiated list presents *I don't know*
+as *ready to attack*. A STATUS-UNKNOWN claim may already be settled in prose the
+tag never recorded — `(FR-R1)` is the worked example — so its next action is a
+tagging decision, not an attack on the mathematics. On the citation side the
+tool is conservative the other way: an untagged citation keeps a dependent claim
+OFF the frontier entirely.
 
 **A CONTESTED banner means read every row.** A label-clause can carry a stale
 row and a superseding one — `(FR-R1)` has an early `open` tag and a later

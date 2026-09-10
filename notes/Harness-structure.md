@@ -834,3 +834,29 @@ the gates and visible immediately on use. A green `--selftest` certified a
 tool that was missing a third of its corpus and answering `OPEN` for a proved
 claim. Independent adversarial review of a new tool is not optional, and the
 review must run against the tool's OUTPUT, not its code.
+
+## Follow-up: `--frontier` was presenting "unknown" as "open"
+
+Found by tracing what the tool actually does with an `UNTAGGED` claim, after
+the round closed. `--frontier`'s filter is `if r["status"] in CLOSED:
+continue`, so untagged claims were listed as live leaves — and **289 of its
+347 entries (83%) are untagged**. Since `UNTAGGED` means *no machine-readable
+status* rather than *unproved*, the command was offering claims that may
+already be settled in prose the tag never recorded. `(FR-R1)` is the worked
+example: an exhaustive 1976-site certificate the tag never carried.
+
+Not a wrong verdict — a wrong *presentation*, which wastes a dispatch rather
+than corrupting a record. Fixed by splitting the output into **KNOWN-OPEN**
+(58; status recorded and not closed — these are work) and **STATUS-UNKNOWN**
+(289; the next action is a tagging decision, not mathematics), with
+`--frontier --known` hiding the second group.
+
+The opposite asymmetry was already correct and is left alone: an untagged
+*citation* keeps a dependent claim off the frontier entirely (212 labels are
+untagged-only and count as not-closed), so the tool never says "ready" on the
+strength of an unknown premise.
+
+**This is the same failure family as C2, one notch milder** — the tool
+answering with more confidence than its evidence supports — and it is the
+third time this round that the defect was in what the tool *presented* rather
+than in what it computed.

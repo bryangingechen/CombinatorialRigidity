@@ -918,6 +918,18 @@ def cmd_status(rows, args):
 
 
 def cmd_frontier(rows, args):
+    """Claims whose every known citation is closed -- split by whether this
+    tool actually KNOWS the claim is open.
+
+    The split is not cosmetic. `UNTAGGED` means "no machine-readable status",
+    NOT "unproved" -- and 82% of this frontier was untagged when the split was
+    added, so a single undifferentiated list was presenting *I don't know* as
+    *this is ready to attack*. A reader could be handed a claim that is
+    already proved and merely untagged; `(FR-R1)` is the worked example, where
+    the corpus carries an exhaustive certificate the tag never recorded. The
+    two groups take DIFFERENT next actions: the first is work, the second is a
+    tagging decision that must precede work.
+    """
     by = {}
     for r in rows:
         by.setdefault(r["label"], []).append(r)
@@ -935,18 +947,38 @@ def cmd_frontier(rows, args):
         if known and all(closed(c) for c in known):
             out.append((len(known), r))
     out.sort(key=lambda t: -t[0])
-    print(f"# {len(out)} open claim(s) whose every KNOWN citation is closed "
-          f"-- the cheapest live leaves.\n"
-          f"# 'Closed' means the cited label carries a PROVED/REFUTED/MOOT/"
-          f"RETIRED clause. It is a claim by its author, not a check.\n")
+    live = [t for t in out if t[1]["status"] != "UNTAGGED"]
+    unknown = [t for t in out if t[1]["status"] == "UNTAGGED"]
     con = contested(rows)
-    for n, r in out[:args.head]:
-        if (r["label"], r["clause"]) in con:
-            print(f"!! CONTESTED "
-                  f"({', '.join(sorted(con[(r['label'], r['clause'])]))})")
-        show(r, full=args.full, loc=False)
-    if len(out) > args.head:
-        print(f"... {len(out) - args.head} more (raise --head)")
+
+    def emit(group, cap):
+        for n, r in group[:cap]:
+            if (r["label"], r["clause"]) in con:
+                print(f"!! CONTESTED "
+                      f"({', '.join(sorted(con[(r['label'], r['clause'])]))})")
+            show(r, full=args.full, loc=False)
+        if len(group) > cap:
+            print(f"... {len(group) - cap} more (raise --head)\n")
+
+    print(f"# Frontier: {len(out)} claim(s) whose every KNOWN citation is "
+          f"closed.\n"
+          f"# 'Closed' means the cited label carries a PROVED/REFUTED/MOOT/"
+          f"RETIRED clause -- a claim by its author, not a check.\n")
+    print(f"## KNOWN-OPEN — {len(live)} claim(s), status recorded and not "
+          f"closed.\n## These are work.\n")
+    emit(live, args.head)
+    if args.known:
+        print(f"## STATUS-UNKNOWN — {len(unknown)} further claim(s) hidden by "
+              f"--known.\n##    Run without --known to see them.")
+        return 0
+    print(f"\n## STATUS-UNKNOWN — {len(unknown)} claim(s) carrying NO "
+          f"machine-readable status.\n"
+          f"## These are NOT known to be open: UNTAGGED means this tool cannot "
+          f"tell, and\n## a claim here may already be settled in prose the tag "
+          f"never recorded. The\n## next action is a TAGGING decision (read "
+          f"the clause), not an attack on the\n## mathematics. `--known` "
+          f"hides this group; `--backlog` ranks it.\n")
+    emit(unknown, args.head)
     return 0
 
 
@@ -1219,6 +1251,10 @@ def main(argv):
     p.add_argument("--question", metavar="TEXT", help="--round: the question")
     p.add_argument("--out", action="store_true",
                    help="--round: write notes/pencil/rounds/<N>-<DIR>.md")
+    p.add_argument("--known", action="store_true",
+                   help="--frontier: only claims with a recorded status; hide "
+                        "the UNTAGGED group, which is a tagging decision "
+                        "rather than work")
     p.add_argument("--strict", action="store_true",
                    help="--lint: also fail on a NEW claim left UNTAGGED")
     args = p.parse_args(argv)
