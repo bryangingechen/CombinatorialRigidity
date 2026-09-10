@@ -506,7 +506,11 @@ holds a fortiori, a witness exhibited AGAINST it is weaker — was correct and t
 direction turned on it. But the spec's quoted criterion, *"does the coincidence
 drop `dim(ρ̄₁+ρ̄₂)` below `min(δ₁+δ₂,6)`"*, had inherited a **proviso drop from a
 summary surface** (a gap-map row quoting a lemma without its hypothesis), and
-measured against that denominator a third of the witnesses read as violations.
+measured against that denominator **100 of 392** witnesses read as violations
+(the figure is the dispatch-log's 2026-09-01 BGENUINE row; this paragraph said *"a third"* until
+2026-09-09, which is a quarter — a summary overstating its own body, which is
+the very pathology §6 and F12 exist for, caught while `/coordinate-research`
+was being written against the primary record instead of against this line).
 **The lesson generalizes past this arc:** when a prep quotes a criterion, quote
 it *with its hypotheses* or say which surface it was copied from — a prediction
 can be right in shape and still hand the dispatch the wrong yardstick, and the

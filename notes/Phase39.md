@@ -219,11 +219,11 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
 **The phase stays OPEN** (the 2026-07-24 adjudication — no phase-close; see *Current state*).
 
 **PARALLEL HARNESS TRACK, not blocking this one** — `notes/Harness-structure.md`
-(slices 8–14; **8, 9, 12 LANDED**). `python3 notes/ledger.py --label '(BE-216)' | --brief |
---frontier | --delta` answers "what is proved" in one call (1 308 claims, 51% UNTAGGED); a
-`[STATUS]` vocabulary with a `--lint` gate; and the workbook is now ONE FILE PER SECTION
-under `notes/pencil/workbook/`, whole corpus under `notes/pencil/` with its own
-CLAUDE.md (gap map: `notes/pencil/workbook/gapmap.md`). Next there: slice 14.
+(slices 8–14; **all but slice 10 LANDED**). Use **`/coordinate-research`**, not
+`/coordinate-phase`. `python3 notes/ledger.py --label '(BE-216)' | --brief | --round |
+--frontier | --delta | --lint` answers "what is proved" in one call (1 308 claims, 51%
+UNTAGGED); the corpus is now one file per section under `notes/pencil/` with its own
+CLAUDE.md (gap map: `notes/pencil/workbook/gapmap.md`).
 
 **THE (BE-14) THREAD, settled frame + its last landings — RELOCATED 2026-09-02** to
 `notes/pencil/structure.md` §"The (BE-14) thread — per-landing detail" (**block 8**); the

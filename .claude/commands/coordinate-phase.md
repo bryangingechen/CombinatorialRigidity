@@ -3,6 +3,15 @@ does the next concrete commit per the existing workflow, then sanity-
 check and dispatch the next. Stop when the phase closes or something
 looks off.
 
+**If the phase is RESEARCH-shaped — no Lean landing, no blueprint
+dep-graph (`RESEARCH-ARC.md`'s definition) — use
+`/coordinate-research` instead.** This body is formalization-shaped:
+84% of its paragraph blocks reference Lean or blueprint machinery
+(measured 2026-09-09, `notes/Harness-structure.md` D4) that such a
+phase cannot use, and a dispatch under this command pays for it twice,
+in the coordinator's prefix and again in the build-agent cores. A
+research phase needing one Lean commit comes back here for it.
+
 **Rare / explicit-trigger detail lives in
 `notes/coordinate-phase-rescue.md`, symptom-indexed** (mechanical
 fixups, neither-return / async-mailbox dispatch mechanics,

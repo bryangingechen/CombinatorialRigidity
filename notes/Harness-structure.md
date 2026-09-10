@@ -1,15 +1,16 @@
 # Harness + PENCIL doc-set structural round (work log)
 
-**Status: SLICES 8, 9, 11, 12, 13 LANDED 2026-09-09.** Slice 8 — `notes/ledger.py`, 1 308
+**Status: SLICES 8, 9, 11, 12, 13, 14 LANDED 2026-09-09.** Slice 8 — `notes/ledger.py`, 1 308
 claims across five files, ~0.2 s regeneration, cache gitignored. Slice 9 — the
 bracketed status vocabulary and `--lint`, gating the new form only. Slice 12 —
 `notes/Pencil-informal.md` split into 62 files under `notes/pencil/workbook/`,
 content byte-identical, 1 308 claims before and after. Slice 13 — the rest of
 the corpus moved under `notes/pencil/`, a subtree `CLAUDE.md` added, and
 `notes/CLAUDE.md` trimmed 425 → 321 lines. Slice 11 — `--round` emits a generated
-briefing packet and `--reserve` mechanizes the 0-hit label check. Slices 10 and
-14 remain plan; the next concrete task is **slice 14** (split the coordinator
-command), then 10 (the tag backfill). Opened 2026-09-09 at the user's
+briefing packet and `--reserve` mechanizes the 0-hit label check. Slice 14 — `/coordinate-research`
+and the `research-direction` agent family. **Only slice 10 (the tag backfill)
+remains**, and it is the droppable one: incremental, blocking nothing, and
+`--lint` already stops the untagged share from growing. Opened 2026-09-09 at the user's
 request after Phase 39's dispatch costs were measured. Slices are numbered
 8–14, continuing `notes/pencil/structure.md`'s slice numbering; this is a
 separate file because the round's deliverables are **cross-phase** (a
@@ -613,7 +614,45 @@ Smallest measured win of the round (~4% of a dispatch's ramp-up). It is here
 because it is cheap once slice 12 has moved the bulk, not because it matters
 on its own.
 
-### Slice 14 — split the coordinator command and the agent core
+### Slice 14 — split the coordinator command and the agent core  *(LANDED 2026-09-09)*
+
+**What landed**, drafted by a subagent under the round's own serial-landing
+discipline (it wrote only under `.claude/` while the coordinator held `notes/`,
+and committed nothing):
+
+- `.claude/commands/coordinate-research.md` (293 lines) — the research loop:
+  the ledger as the way to answer *what is proved*, the spec-writing rules,
+  rung guidance, the 7-step loop, session budget and exception log.
+- `.claude/agents-core/research-direction.md` (158 lines) — the shared core,
+  with build-gate and compiler-spike discipline deliberately absent and
+  everything about verifying-rather-than-assuming restated for a corpus.
+- `.claude/agents/research-direction-{opus,fable}.md` — rung-pinned thin
+  shells matching the existing `recon-*` pattern.
+- `coordinate-phase.md` gains a pointer at the top and loses its
+  research-fan-out paragraph, which now says *switch commands*.
+
+**Two things it got right that are worth recording as precedent.** It
+**refused to copy S/P/B**, on the ground that those axes were calibrated on
+~890 *build* dispatches and score commit risk — and a direction commits
+nothing, so two of the three have no referent. And it marked genuinely
+unsettled things as unsettled rather than inventing a calibration (optimal
+fan-out width; whether the compute-licensed/derivation-first tier split tracks
+real risk). Both are the `RESEARCH-ARC.md` three-tier discipline applied to
+the harness itself.
+
+**Every citation was spot-checked against the primary record** — F5, F11, F12,
+F17, F18/F19, F20, F24, F26, F27, the 64k-output kill, the BGTWOA
+already-satisfied tell — and all resolve.
+
+**And checking one of them corrected a drifted figure in `RESEARCH-ARC.md`
+itself.** §7 said BGENUINE's wrong denominator made *"a third of the
+witnesses"* read as violations; the dispatch-log's own BGENUINE row says
+**100 of 392**, which is a quarter. A summary overstating its body — the exact
+pathology §6 and F12 exist for — found only because the draft was written
+against the primary record instead of against the summary. Corrected in this
+commit, with the drift noted in place rather than silently fixed.
+
+### Slice 14 — as originally specified  *(retained for the record)*
 
 `.claude/commands/coordinate-research.md` (~150 lines): rounds and
 reservations, serial coordinator landing, drafts outside the tree, the
