@@ -10,17 +10,17 @@ derives it from exactly **three carried items**: **`hcontract`** (W4 — build p
 
 **The research arc: 99 directions COMPLETE** (2026-08-05 → 09-09, ordinals 1–91 — 94 on
 kernel (K), **WTRI/WELOC/WPAIR/WGROW (58–61) on W4**, **RPOOL (75) on (K-res)**; direction
-= ordinal + 8), plus ten strategy passes, two probes, a scoping recon. **GPACK (66) opened
+= ordinal + 8), plus **eleven** strategy passes (the eleventh scoped to
+**(GR-15)**; board at §8's head), two probes, a scoping recon. **GPACK (66) opened
 the `hK` lane**; the ninth pass's ranks 1–4 SPENT and **the tenth's ranks 1, 2 and 4 ALL SPENT**
 — 1 thrice (85–87), 2 with **NO SUCCESSOR** (88–89, 91), 4 at 90; rounds of four and
-three COMPLETE (78–83), 84–89 SINGLE, **90–91 a CONCURRENT PAIR**. Per-direction verdicts, specs and write-ups live at
-`notes/Pencil-fanout.md` §"<CODE>" — **not restated here**. **Standing result,
+three COMPLETE (78–83), 84–89 SINGLE, **90–91 a CONCURRENT PAIR**. Per-direction verdicts and write-ups:
+`notes/Pencil-fanout.md` §"<CODE>", **not here**. **Standing result,
 unchanged: `hK` is not closer.** **(GR-15)** is **untouched**; **class uniformity
-untouched**; no g-flank found; **E3 ARMED (by GBAL), NEVER fired, NOT one landing away** —
-why: **block 14**.
+untouched**; no g-flank found; **E3 ARMED (GBAL), NEVER fired, NOT one landing away** — **block 14**.
 
 **`hK` LANE (66, 68, 71, 80): (GR-18)(iii)'s split half a THEOREM, residual CSP-FREE and
-IS (GR-10) at `D = 0`; successor 4 SPENT. ESCAPE (OWALL
+IS (GR-10) at `D = 0`. ESCAPE (OWALL
 70): (OC-44)(iii) REDUCED to (OW)**; **U3, C2 STRUCK**.
 **(GR-10)/(GR-15)/(OC-8) unchanged**. Blocks **11–13**.
 

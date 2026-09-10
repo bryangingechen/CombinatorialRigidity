@@ -1665,6 +1665,188 @@ struck — decided by §9.3.*
   saturation. *Neither filter has a kill condition: they are negatives. Their
   status is decided by the `(K-out)` and `(K-grid)` gap-map rows.*
 
+**RE-RANKED 2026-09-09 — THE ELEVENTH STRATEGY-ONLY PASS, SCOPED TO
+(GR-15). THE TENTH PASS'S LIST IS EXHAUSTED** — ranks 1–4 all SPENT (BGPROP 85 /
+BRANKV 86 / BLONGARC 87; BEFOURP 88 / BGTWOA 89 / BNONUNI 91; rank 3 untouched;
+INSJOINT 90) — **and its rank 2 has NO SUCCESSOR**, so the board owed a list on the
+other carried item. Coordinator-commissioned, read-only, no dispatch spent, no
+label minted. Every entry below was re-derived from its **owning** §(K-grid) step or
+gap-map cell and never quoted from a hand-off (the F22 discipline); both filters
+above were applied to each, **and so was GLEAF's third question**.
+
+**THE FRAMING THAT DECIDES THIS LIST, and it is why four otherwise-attractive
+entries are killed rather than ranked.** (GR-15) is **one-point-decidable per
+shape** ((GR-7) remark (i)): an exact rational draw with both blocks at rank **is**
+a proof, so the census's exact hits are per-shape proofs and *"what was missing was
+uniformity, not rigor"*. **No amount of further per-shape evidence can close it**,
+and the evidence base is smaller than the headline: (OC-34) re-keys §(K-grid)'s
+**907 labelled shapes to 75 isomorphism classes**. So an entry qualifies only if it
+**quantifies over the class**, and a search is admissible only as an adversarial
+control.
+
+1. **THE NO-EVEN-BRANCH BINDING-CIRCUIT ISLAND AT `Λ ≠ ∅`.** Owner: §(K-grid)
+   *Steps G20, G26–G28*; (GR-17)(b)/(c)/(d), (GR-26). **1 608** of (GR-26)'s 40 742
+   shapes carry a binding circuit with **no even branch** (profiles `(1,1,5)`,
+   `(1,3,3)`), where **both** landed repair instruments are unavailable — (GR-23)'s
+   flip set is *even* branches, (GR-24) needs a *private even* branch — so
+   *"only the exhaustive scan carries the shape"*. On the same stratum off-circuit
+   merges bite live: **7 450** of 1 158 344 circuit×colouring instances have
+   `D_A < runs`, every one with an off-circuit `Λ`-edge of the failing colour.
+   **Decisive both ways, and the two ways differ in kind:** by **(GR-17)(c)** a
+   shape whose every admissible colouring leaves `D_A(γ) < 3` **refutes (GR-15) by
+   a proof** (`dim Z ≥ 3 − D_A > 0`, no genericity, no measurement) — likewise a
+   forced merge, by **(GR-16)(iv)** (*"the unknowns strictly outnumber the equations
+   and `dim W₊ > 0` outright"*); while a repair theorem covering the island reaches
+   only a **NECESSARY** condition and so does **not** close (GR-15) — what it buys
+   is the `Λ`-shaped conjunct three hand-offs say *"nobody has written"*, closing
+   route-ledger **entry 3** and letting the whole `Λ = ∅` machinery from
+   (GR-16)(iv) through (GR-143) apply to the class. **First slice, cheap:** report
+   per shape the count of colourings that are NC1-clean **and** merge-free in both
+   blocks over the 1 608 and every `Λ ≠ ∅` census shape (reading `D_A`, `D_B` off
+   `grid.block_data`, never off the run count), and test whether **(GR-86)**'s
+   landed repair-chain theorem — built for the (b′) ledger and never applied here —
+   preserves NC1-cleanliness. **Derived, so the direction need not re-derive it:**
+   merging needs an **odd** branch of length 3 or 5 (an even branch carries one A
+   and one B end, so by (GR-16)(i) it can never merge) whose endpoints are joined
+   by a monochromatic `Λ`-path in **both** colours — hence **`|Λ| ≥ 2`**, which is
+   exactly where `--lam6` stops (117 894 of 142 740 tuples unswept). *Kill
+   condition: a repair theorem covering every binding circuit with no private even
+   branch at `Λ ≠ ∅`, or a shape whose every admissible colouring leaves
+   `D_A(γ) < 3` or forces a merge. Decided by: the `(K-grid)` row, status u12/u77.*
+2. **WHICH `r`-CO-INDEPENDENT GROUPINGS CERTIFY BEYOND `r = 3`.** Owner: §(K-grid)
+   *Step G22*, (GR-19)(iii)/(v); gap-map `(K-grid)` close-it u6 **target (iii)**.
+   **The best proof candidate, and the only live gap-map target with no direction
+   ever spent on it** (untouched since 2026-08-07; re-checked 2026-09-03 and again
+   2026-09-09). *Step G18*'s door (iv) asked for a hierarchical certificate at the
+   18 separators and **(GR-19)(v) delivered it, 18/18 at `r = 4`** — and it did not
+   restore a combinatorial route, because at `r ≥ 4` *"the vanishing is a
+   **determinant**, not a direct sum"* and *Step G22*'s limit (b) proves the
+   combinatorial reading **at one separator only**. So the successor is *Step G22*'s
+   own *"natural successor question"*, **not a corollary of anything there**: *at a
+   balanced block, `r` co-independent groups certify **iff** <combinatorial
+   condition>*. **GLEAF's question, answered:** the criterion is an **equivalence**
+   for the certificate, so it is a **reduction** — sufficient for (GR-15) only with a
+   colouring-existence argument — but the reduction is to a statement the record
+   itself prices as *"far more slack than (GR-10)'s"*, which is the distinction from
+   GLEAF's rank 3 (a condition its row **implies**). Both filters pass: index set the
+   class set and `E(H₊)`, and (GR-13) forbids a counting characterization of the
+   `r = 3` **existence** problem, not a per-partition criterion at `r = 4`. **First
+   slice, cheap and named:** at the pinned exemplar `V6m10(3¹⁰)`, `packmm.py --hier`
+   already finds **257** co-independent 4-partitions of 20 967; compute
+   `dim W_coll` for all 257 and hunt the invariant separating the certifying ones —
+   finite, exact ℚ, and known combinatorial there (value-independence over 840
+   integer 4-tuples). *Kill condition: a combinatorial criterion for `r`-certifying
+   proved, or a **value-dependent** `r = 4` certificate exhibited at any separator
+   (which kills the line, `Step G22` limit (b) becoming a negative). Decided by: the
+   `(K-grid)` row, close-it u6 target (iii). **Note on the number 4:** it is `κ` as
+   MEASURED on the census pool, not a proved cap — nothing bounds `κ` in general.*
+3. **AN EXPANSION THEOREM IN THE `G°` DIRECTION.** Owner: §(K-ind) (I2)/(I4) and
+   its u5 gate; §(K-grid) (GR-21)/(GR-22), (SD-6). §(K-ind) says the class's
+   infinitude *"is entirely in the `G°` direction, **which no move reaches**"* — but
+   its gate is about **`pencil_reduction`'s arms**, i.e. moves on the class member
+   `G`, and after (GR-16)–(GR-20) (GR-15) is a purely **combinatorial** statement
+   about `(G°, ℓ, bits)`, so an induction internal to that combinatorics needs no
+   chart morphism and is untouched by *Step I6*, (I0) and (I3). **The only entry
+   whose success CLOSES (GR-15) on the stratum rather than reducing it**, and the
+   only one outside both other families (diversification). **Half-killed in
+   advance, which is the point:** zero-net-excess (from `Σ(ℓ−2) = 6`) forces the
+   classical **H-operation** to a new branch of length `c = 6`, out of range by
+   (SD-6) `ℓ ≤ 5`; and **Y→Δ** to a circuit with `L = 6 < 7`, out of habitat by the
+   girth bound (GR-21)(ii) uses. A four-branch move **does** preserve the stratum
+   (two splits `−4`, four new branches `(5,2,3,2)` `+4`; `n += 4`, `M += 6`,
+   `Σℓ += 12`), so growth **trades the fixed budget of 6** rather than adding
+   freely. **First slice:** enumerate the zero-net-excess moves preserving
+   tightness, cubicity, `Λ = ∅`, `ℓ ∈ [2,5]`, `L ≥ 7` and (GR-25); then test
+   inheritance on the **landed** `n_hub = 4 → 6` data (GGLOB decided all 312
+   `n_hub = 4` shapes; GLEAF all 4 598 at `n_hub = 6`). *Kill condition: no move set
+   preserves the stratum from a finite base — which would close §(K-ind)'s (I4) gate
+   by mathematics and is itself a result — or inheritance fails at an exhibited
+   parent/child pair. Decided by: the `(K-ind)` row (u2/u5) and `(K-grid)` close-it
+   u7.*
+4. **THE (GR-16)(a)/(b) FORCING HANDLES.** Owner: §(K-grid) *Step G19*, whose own
+   closing sentence is the entry: *"Neither is used below; **both are the natural
+   handles for a future uniform argument**."* Verified never used — *"forces an
+   extra root"* occurs once in the tree. (a) makes any nonzero `Q ∈ W₊` supported on
+   a **bridgeless** subgraph of `G°`; (b) forces a root on the unique B-end branch
+   at every `2A/1B` hub, and a branch accumulating `3 − |K_A(β)|` roots has
+   `p_β ≡ 0`. **The deliverable is a propagation scheme whose termination hypothesis
+   is combinatorial**, which — like (GR-9) — is **SUFFICIENT** for `dim Z = 0` with
+   **no (GR-4′), no min-max, no certificate**. **INTERLOCK, flagged as §4.6's
+   U1/U2/U3 precedent requires: this and rank 2 are one object seen twice** (the
+   combinatorial full-rank criterion for the (GR-16)(iv) hub system, propagation
+   side and partition side) — a negative on either lowers the other, so do **not**
+   count them as two independent bets. **First slice:** run the (b)-propagation to
+   fixpoint at the **18 separators**, where no tree-triple exists so (GR-9) is
+   unavailable and any success is strictly stronger than (GR-9). *Kill condition: the
+   fixpoint leaves a nonzero residual at a separator, or its hypothesis is shown to
+   imply the tree-triple (in which case it is (GR-9) restated). Decided by: the
+   `(K-grid)` row, close-it u6 targets (ii)/(iii).*
+5. **CAN THE HABITAT CARRY `4T + 3Q ≥ 12`?** Owner: §(K-grid) *Steps G26–G28*,
+   *G33*, *G37*; (GR-22)(iv)/(v), (GR-23), (GR-24). (GR-23)'s criterion
+   `4T + 3Q < 12` is a **union bound over a linearly-growing event set**:
+   (GR-22)(v) bounds triangles by a constant `2D + 6`, but (GR-22)(iv) bounds
+   4-circuits only by `¾ n_hub`, so the bound carries no information from `Q ≥ 4`
+   (proven density) — permitted by the caps from `n_hub = 6`. The sweep's measured
+   maximum is `8`, at `n_hub ≤ 6` and `|Λ| ≤ 1`; off that stratum the **entire**
+   class-uniform cover is (GR-24)'s **measured** hypothesis, whose own unclosed case
+   is named (*"not exhaustively for the mixed triangle-meets-4-circuit case"*). And
+   the mechanism for the other unswept stratum is recorded: at a degree-`k` hub the
+   two-darts-agree event goes to `1/2` rather than `1/3`, *"so (GR-23)'s constants
+   degrade"* — `D > 0`, named unswept in three successive hand-offs and route-ledger
+   **entry 4**. **GLEAF's question:** a proved cap upgrades (GR-26)(ii) from 4 920
+   shapes to the class but reaches only a **NECESSARY** condition; the flank it
+   enables is **SUFFICIENT** for a (GR-15) disproof by (GR-17)(c). Ranked below rank
+   1 because there (GR-24) still covers everything measured, whereas rank 1's island
+   has no cover at all. **First slice:** construct rather than enumerate — maximise
+   the 4-cycle count of `H` subject to `Σ(ℓ−2) = 6` using (GR-22)(iv)'s sharing
+   structure, at `n_hub = 8, 10`. *Kill condition: `4T + 3Q < 12` proved class-wide,
+   or a habitat shape with `4T + 3Q ≥ 12` exhibited. Decided by: the `(K-grid)` row,
+   status u12/u77, close-it u26. **Derivation of 12:** it is `T/3 + Q/4 < 1`, the
+   union bound over (GR-23)'s two PROVEN per-circuit kill fractions — a derived
+   threshold; the measured maximum `8` is a separate, cap-bearing figure and is not
+   a substitute for it.*
+6. **THE `P¹` / SPLITTING-TYPE READING OF (GR-7)(ii).** Owner: §(K-grid) *Steps
+   G8–G9*. The section's one un-taken reading — *"**Nothing below uses this
+   language**; it locates the problem"*, verified never used. At a tight balanced
+   block `χ(E) = 0`, so **(GR-15) at a block is exactly "the Hecke modification `E`
+   is the balanced bundle `O(−1)^h`"**, and (GR-4′)'s live gap is *Step G9*'s own
+   sentence: *constant-coefficient witnesses (the (GR-8) family) versus **moving**
+   ones*. Filters pass (modification points are the ruling classes, derived from
+   `E(G)`; a splitting type is not count-expressible), and it is **not** a third
+   literature hunt — the identification is in-tree. **GLEAF's question:** proving
+   (GR-4′) is **neither** necessary nor sufficient for (GR-15) — it is an
+   **enabler**, and a weaker one than in 2026-08-06, since its consumer's cap+repair
+   method is **dead** ((GR-30)) and the (GR-79)–(GR-82) redo is **barred**. Ranked
+   last for that reason. **Recorded risk:** *Step G1* already assessed the adjacent
+   literature and found *"the matroid theory of **repeated** moduli … appears not to
+   be off the shelf"* — and repeated moduli **are** the class structure. **First
+   slice:** verify the identification at one block (build `E`'s data from
+   `(H₊, K_A, t_X)`, compute the splitting type in exact ℚ, assert
+   `h⁰(E) = dim W₊` against `gridwit.dim_W`) before any theory. *Kill condition: the
+   identification fails at one block, or the classical generic-splitting statement is
+   shown to reproduce the (GR-8) bound and no more. Decided by: the `(K-grid)` row,
+   status u54/u55, close-it u3/u6 target (i).*
+
+**THE BAR THIS PASS ADDS, as §8's own rule requires — three entries, all
+mathematical or recorded, none a priority call.** *(a)* **No further per-shape
+evidence may be offered as progress on (GR-15)** — (GR-7) remark (i) makes each hit
+a proof, so the gap is uniformity by construction; the record is 907 labelled
+shapes (**75 isomorphism classes**, (OC-34)), 40 742 exhaustive, and (GR-15)'s
+status word has never moved. A sweep is admissible only as a named adversarial
+control inside an argument-shaped entry. *(b)* **No first-moment, union-bound or
+Lovász-local-lemma existence scheme** on the (GR-15) chain — (GR-34)(i) refutes the
+whole per-event family by construction (constant-probability events, unboundedly
+overlapping supports); any proof must correlate the per-branch choices. *(c)* **No
+re-opening of certificate 3's cap+repair method** — its `g ≤ 1` cap is false from
+`n_hub = 8` ((GR-30)) and the (GR-79)–(GR-82) redo is already barred by the
+do-not-do as an (a′)/(b′) ledger direction. **And the generalizable lesson, one
+level above the entries:** door 4 of *Step G18*'s list was **delivered** — the
+hierarchical certificate succeeds 18/18 — and the door was still wrong about what
+it would buy, because it priced the certificate by *reaching* the object and never
+asked whether the object was **combinatorial**. Before ranking a route that
+"re-combinatorialises" a criterion, check that the criterion it reaches is decided
+by combinatorial data, not by a determinant.
+
 **RE-RANKED 2026-09-08 — THE TENTH STRATEGY-ONLY PASS, AND THE RANKING A SESSION READS.
 THE NINTH PASS'S LIST IS EXHAUSTED: ranks 1–4 ALL SPENT** (BSCOND 76, BARCH 77, GLEAF 80,
 BINSERT 82), **and the one cheap item outside it is spent too** (BSTEER 84, at BFOUR's own
@@ -2486,9 +2668,9 @@ own top two were spent. **The two filters were applied to every entry.**
 | # | item | owner | status, re-derived |
 |---|---|---|---|
 | ~~**1**~~ | ~~**(GR-18)(iii)**, the grouping problem~~ | §(K-grid) *Steps G149–G164* | **SPLIT IN TWO 2026-09-02 (GPACK)**: the packing-and-split half is an **unconditional theorem** ((GR-130)) off `def(G) = 0` alone, and the residual is a **hub list-colouring** ((GR-132)) at `Λ = ∅`. **SPENT at the `ℓ = 2`-rich shapes 2026-09-02 (GLIST)**: that residual is now a 9-valued hub CSP in `(α, γ)` with clause (a) **free** ((GR-134)) and an exact local criterion — a cubic pure hub fails **iff** its three `D_β` are a perfect matching of the six trees ((GR-135)) — but **82 % of the infeasible pairs are locally feasible at every hub** ((GR-136)), so the open half is not hub-local. **RE-LOCATED and made CSP-FREE 2026-09-02 (GGLOB)**: the packing quantifier is **eliminable** and the residual is an orientation-plus-two-colourings criterion on the length-2 subgraph which, on the `D = 0`, `Λ = ∅` stratum, **IS (GR-10)** ((GR-140)); both named handles are dead — counting by saturation ((GR-141)), matroid union by an exhibited exchange failure ((GR-142)) — and the obstruction has **three tiers**, all of the 82 % being propagation-visible and the genuinely global tier first realized at `n_hub = 6` ((GR-143)). The successors are (GR-144)'s; `Λ ≠ ∅` still needs a merging conjunct nobody has written |
-| 2 | collapse-order bound `κ ≤ 4/5` + the `r = 4` certifying criterion | §(K-grid) *Step G22* ((GR-19)); TCOL (i)/(ii) | measured `κ ≤ 4` at **18/18** separators, unproven, untouched since 2026-08-07 — **re-checked 2026-09-03, unchanged**. *Kill condition: `κ ≤ 4` (or `≤ 5`) proved, or a census-pool `dim Z = 0` block with `κ ≥ 5` — decided by `(K-grid)` **close-it u6, targets (ii) and (iii)**. Item (iv) of that same list is already settled by (GR-130); (ii)/(iii) are the two that survive* |
+| 2 | collapse-order bound `κ ≤ 4/5` + the `r = 4` certifying criterion | §(K-grid) *Step G22* ((GR-19)); TCOL (i)/(ii) | measured `κ ≤ 4` at **18/18** separators, unproven, untouched since 2026-08-07 — **re-checked 2026-09-03, unchanged**. *Kill condition: `κ ≤ 4` (or `≤ 5`) proved, or a `dim Z = 0` block with `κ ≥ 5` **off the census pool** — decided by `(K-grid)` **close-it u6, targets (ii) and (iii)**. **Threshold derivation (§8's third amendment), because the bare number misleads:** `4` is a **measurement on the census pool**, not a derived cap — (GR-19)(v) measured `κ ≤ 4` at *every* `dim Z = 0` block of that pool, which is why the second disjunct must be stated against a stratum the pool does **not** cover or it is already excluded by the row's own evidence; nothing bounds `κ` in general (*Step G22*'s honest limit (a)). Item (iv) of that same list is already settled by (GR-130); (ii)/(iii) are the two that survive* |
 | 3 | **(OC-44)(iii)** wall-avoiding certificate-colouring existence | §(K-out) *Steps O41, O47–O51* | **RE-SCOPED 2026-09-02 (OWALL), row was stale until 2026-09-03**: (OC-44)(iii) is **REDUCED to (OW)**, geometry-free, and *Step O41*'s own named route is **REFUTED BY LOGIC** ((OC-50)–(OC-55)) — the conjunct it attacked is implied by the one it did not. Still open at (OW); a HIT still buys a **quantifier**, not a gap-map row |
-| 4 | the (a′)/(b′) ledger residuals | §(K-grid) *Steps G98–G148*; the route ledger, `Pencil-informal-grid.md` L8374 | **route-ledger entry 1** (uniform fully-good existence at `Λ = ∅`, `D = 0`); **entries 2–4 are (GR-4′), `Λ ≠ ∅`, `D > 0`** — recorded *unchanged/unswept* at every landing since 2026-08-13; **entry 5 is PROVEN** ((GR-54)). *(The row used to say "entry 1 of 4" and name none of the others, which is why it was uncheckable.)* Its one live successor moved 2026-08-26: the **(L)** reading — *is the ledger gap ever `≥ 3`?* ((GR-127); spectrum `{0,1,2}` at 4 935 shapes) — **not** (P) (FALSE, (GR-122)) or (m) (PROVEN, (GR-126)). **BARRED by the do-not-do note below.** *Kill condition: any of entries 1–4 moves status — decided by `(K-grid)` close-it u14–u26* |
+| 4 | the (a′)/(b′) ledger residuals | §(K-grid) *Steps G98–G148*; the route ledger, `Pencil-informal-grid.md` L8374 | **route-ledger entry 1** (uniform fully-good existence at `Λ = ∅`, `D = 0`); **entries 2–4 are (GR-4′), `Λ ≠ ∅`, `D > 0`** — recorded *unchanged/unswept* as of **BOBLIG (ordinal 92)** — §8's second amendment: name the last ordinal, never a date plus *"every landing"*, which decays invisibly (the arc landed ~50 directions under the old marker); **entry 5 is PROVEN** ((GR-54)). *(The row used to say "entry 1 of 4" and name none of the others, which is why it was uncheckable.)* Its one live successor moved 2026-08-26: the **(L)** reading — *is the ledger gap ever `≥ 3`?* ((GR-127); spectrum `{0,1,2}` at 4 935 shapes) — **not** (P) (FALSE, (GR-122)) or (m) (PROVEN, (GR-126)). **BARRED by the do-not-do note below.** *Kill condition: any of entries 1–4 moves status — decided by `(K-grid)` close-it u14–u26* |
 | 5 | (OC-19) input (c) | §(K-out) *Step O18* | **the ZNEQ pool re-key is STRUCK — it was DONE 2026-08-19**, by **(OC-34)**, §(K-out) *Step O30*, direction OSCHU: the (a₂)/`s₀` re-keying landed (`907 → 75` classes covering 19 of 174, the other **155 certified DIRECTLY**), so the `s₀` half is free at **all 174 and *without* (GR-10)**. It was already done fourteen days before this "corrected" table listed it as cheap and unrun — recorded, not silently removed, because that is the exact defect this round exists to catch. What survives is a **different** job, *Step O30* hand-off item 2 — the **uncapped** re-keying that would turn 174 into a class statement — and it is **not** *"a combinatorial cross-pool job, no new mathematics"*. Input (c) stays open and is (GR-15)-flavoured. *Kill condition: input (c) class-uniform — decided by the `(K-out)` row, u9* |
 | 6 | route σ obligations 2–4 | §8.4; §(K-σ) *Step σ5* | eligible (obligation 1 only is Lean-held), but the branch obligation 4 closes *"has never been observed nonempty"* — insurance, not progress. **Route σ faces exactly one crux** (`(K-σ)` close-it u2): the workbook's two kills of `M₁` (§(K-tight) *Step 1* and *Step 2.6*) rest on the **same** reason, the `hinge(vb) := q(ab)` pinning. *Kill condition: an obligation discharged, or the obligation-4 branch observed nonempty — decided by the `(K-σ)` row, status u8* |
 | 7 | OGEOM's successors | §(K-out) *Steps O42–O46* | disproof-risk reduction, which **(OC-24)** says can never be the binding obstruction. The successor is **one shape-free sentence**: *at every live core the Kirchhoff map `⊕_Q S_Q^⊥ → (K⁶)^nodes` is injective at the generic chart point.* Unsearched: `n(F°) ∈ {4,5}` at `\|E°\| ≥ 9`, and **every** `n(F°) ≥ 6`. *Kill condition: that sentence proved, or a `σ > 0`-everywhere shape exhibited (a PENCIL event) — decided by the `(K-out)` row's disproof paragraph, u26* |

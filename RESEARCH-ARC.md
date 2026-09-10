@@ -391,6 +391,20 @@ general and the cost of the rule is one clause per entry.
   of one sentence reading *"sixteen"* and *"fifteen"*. Applies to any monotone count in a
   recommendation surface.
 
+**A FOURTH AMENDMENT, 2026-09-09 — the item's SCOPE was too narrow: a workbook's own
+hand-off list is a recommendation surface.** Everything above is written about *strategy*
+surfaces — ranked lists, option boards, candidate menus. The (GR-15) strategy pass found the
+same rot in a **workbook**: a §(K-grid) hand-off item reading *"this is the cheapest gap to
+close — it is one longer run, not new mathematics"* (a sweep stopping at `|Λ| ≤ 1`, leaving
+117 894 of 142 740 length tuples unswept) had been carried **verbatim in substance through
+three successive hand-offs over 33 days** and never run. Nothing gated it, because §6 caps
+*status* cells and this is a *recommendation* sitting inside a status document. So the rule
+extends: **every forward-looking item carries its kill condition and deciding row wherever it
+lives** — a workbook's *What would change this*, a step's hand-off items, a design doc's
+"next" list, not only the strategy board. The corollary is sharper than the rule: an item
+self-described as **cheap** is the most likely to rot, because nobody re-reads a list to find
+the easy thing on it.
+
 **A THIRD AMENDMENT, 2026-09-09 — and it is §8's own failure mode with the sign flipped:
 a kill condition that names a NUMBER must carry the number's DERIVATION.** §8 asks each
 forward-looking entry for its kill condition and the status row that decides it. Both were
