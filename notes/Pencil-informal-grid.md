@@ -2243,7 +2243,7 @@ over 4920 shapes) and the number of binding circuits grows only **linearly**
 (`Q ≤ ¾ n_hub`, `T ≤ 6` at `D = 0`), each killing at most a `1/4` — measured
 `1/7` — fraction. The two named places to look are the two places the budget
 is tightest, and the budget is exactly what stops them from being rich
-enough. TCOL's item (v) is therefore **closed as a route**, not merely
+enough. TCOL's item (v) is therefore **closed as a route ON `n_hub ≤ 6`**, not merely
 searched.
 
 **Where a flank could still live — the honest residual, in decreasing

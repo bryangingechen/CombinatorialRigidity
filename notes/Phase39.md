@@ -8,13 +8,13 @@ derives it from exactly **three carried items**: **`hcontract`** (W4 — build p
 **`hbareSplit`** (kernel (K-bare)). Everything else is closed — W0–W3, all of W5
 (L0–L7), `hsplit` and `hfresh` (2026-07-30, unchanged since).
 
-**The research arc: 99 directions COMPLETE** (2026-08-05 → 09-09, ordinals 1–91 — 94 on
+**The research arc: 100 directions COMPLETE** (2026-08-05 → 09-09, ordinals 1–92 — 95 on
 kernel (K), **WTRI/WELOC/WPAIR/WGROW (58–61) on W4**, **RPOOL (75) on (K-res)**; direction
 = ordinal + 8), plus **eleven** strategy passes (the eleventh scoped to
 **(GR-15)**; board at §8's head), two probes, a scoping recon. **GPACK (66) opened
 the `hK` lane**; the ninth pass's ranks 1–4 SPENT and **the tenth's ranks 1, 2 and 4 ALL SPENT**
 — 1 thrice (85–87), 2 with **NO SUCCESSOR** (88–89, 91), 4 at 90; rounds of four and
-three COMPLETE (78–83), 84–89 SINGLE, **90–91 a CONCURRENT PAIR**. Per-direction verdicts and write-ups:
+three COMPLETE (78–83), 84–89 SINGLE, **90–91 a CONCURRENT PAIR**, 92 SINGLE. Per-direction verdicts and write-ups:
 `notes/Pencil-fanout.md` §"<CODE>", **not here**. **Standing result,
 unchanged: `hK` is not closer.** **(GR-15)** is **untouched**; **class uniformity
 untouched**; no g-flank found; **E3 ARMED (GBAL), NEVER fired, NOT one landing away** — **block 14**.

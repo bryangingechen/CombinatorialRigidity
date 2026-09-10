@@ -2,13 +2,17 @@
 
 **Status: EIGHT fan-outs, FIFTY-FOUR single directions, ONE draft-only parallel direction,
 FIVE concurrent pairs, ONE concurrent round of four and ONE concurrent round of three
-dispatched; 99 LANDED, **NONE IN FLIGHT, NONE DRAFTED**. The round of three (BFOUR 81,
+dispatched; 100 LANDED, **NONE IN FLIGHT, NONE DRAFTED**. The round of three (BFOUR 81,
 BINSERT 82, BSERIES 83) and the **chain of six** single dispatches that answered each
 other in turn (BSTEER 84 → BGTWOA 89, (BE-204)–(BE-217); per-landing detail in the
 sections and in blocks 8/11–13, **not restated here**) are both CLOSED — and
 **INSJOINT 90 + BNONUNI 91 then landed as a CONCURRENT PAIR that decided BOTH of the
 board's remaining live entries in one round**: option B's last endpoint EXCLUDED
-((INS-9)–(INS-16)) and `(BE-E4′)` **DEAD BOTH WAYS** ((BE-218)–(BE-224)).
+((INS-9)–(INS-16)) and `(BE-E4′)` **DEAD BOTH WAYS** ((BE-218)–(BE-224)). **BOBLIG 92** then
+landed single on the successor that kill left, DECOMPOSING the naked `Π_x` obligation into a
+three-rung ladder in `Σδ` with a hypothesis-free top rung, a **circular** cheapest route and a
+30-tuple residue, and reaching **the first population in the (BE-14) thread inside the
+target's own quantifier** ((BE-225)–(BE-230), `(BE-OBL)`).
 
 *(**THIS HEADER WAS STALE BY ONE, caught at BEFOURP's landing (2026-09-08).** It read
 *"94 LANDED"* with the chain ending at BRANKV 86: **BLONGARC's landing (`19f5d8b5`)
