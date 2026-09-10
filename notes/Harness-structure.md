@@ -770,13 +770,13 @@ and D6.6's reorder, together in both coordinator commands; D6.1
 which the `cellcensus.py` measurement chose over the split this file had been
 recommending.
 
-**D6.1 `notes/phasenote.py` is SHIPPED** (D7.8's rule discharged: a script, not
-another section) — and it found the active note's next-task sentence stale on its
-first run. **Next concrete commit: D6.3(a)
-`ledger.py --reserve-range`** (two of this round's coordinator defects are its
-written acceptance tests), then D6.4 `blindaxes.py`, D6.5 `check-driver-refs.py`.
-**Rank by D7.2, not by size:** a reader that cuts a *pre-dispatch* read is worth
-~20× the same reader used afterwards.
+**D6.1 `notes/phasenote.py` and D6.3(a) `ledger.py --reserve-range` are
+SHIPPED** (D7.8's rule discharged twice: scripts, not sections) — the first found
+the active note's next-task sentence stale on its first run, the second passes
+both of the round's dropped-row defects as acceptance tests. **Next: D6.4
+`blindaxes.py`, then D6.5 `check-driver-refs.py`.** **Rank by D7.2, not by size:**
+a reader that cuts a *pre-dispatch* read is worth ~20× the same reader used
+afterwards.
 
 **The split question is CLOSED, and by measurement rather than by choosing.**
 `notes/scripts/cellcensus.py` found the three "bloated" cells are the three most
@@ -1099,7 +1099,11 @@ tier headers.*
 
 ### D6.3 — three pre-dispatch checks are mechanical and were done by hand
 
-- **(a) The (L7) per-token range enumeration.** `ledger.py --reserve` checks
+- **(a) The (L7) per-token range enumeration.** *(SHIPPED 2026-09-10:*
+  `ledger.py --reserve-range`; *both dropped rows are its acceptance tests and
+  both pass — see the function's docstring. It classifies each hit
+  declaration-vs-review by PARAGRAPH, and deliberately refuses to claim
+  consumption it cannot prove.)* `ledger.py --reserve` checks
   *tokens*, not *ranges*, so the range check was an ad-hoc shell loop written
   twice, once per label family. **Suggestion:** `--reserve-range 'BE-231..BE-238'
   --steps 'BE230..BE237'`, emitting the (L7) table in the shape `labels.md`

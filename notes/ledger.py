@@ -31,6 +31,10 @@ So the cost is TURNS, not bytes, and the fix is not "read less" -- it is
                           worklist; --decisive narrows to those whose own
                           clause already states a status (transcription)
   --reserve TOK ...       0-hit check a proposed label prefix, corpus-wide
+  --reserve-range A..B    (L7) the same over an ENUMERATED range: one row and
+                          one grep per token, hits and files reported
+                          separately, each hit sorted declaration-vs-review
+                          (--steps for raw step tokens, --ref for a baseline)
                           (RESEARCH-ARC section 1, mechanized)
   --lint                  GATE: the status vocabulary, on claims this commit
                           adds or changes (--all for the corpus, --strict to
@@ -786,6 +790,247 @@ def cmd_reserve(rows, args):
     return 0
 
 
+# --- (L7) range reservation ------------------------------------------------
+
+RANGE_RE = re.compile(r"^\s*([A-Za-z][A-Za-z-]*?)-?(\d+)\s*\.\.\s*(?:[A-Za-z][A-Za-z-]*?-?)?(\d+)\s*$")
+
+# A hit is BOOKKEEPING when its own LINE says so -- not because of the file it
+# sits in. The first cut of this classifier keyed on `labels.md` and reported
+# `(GR-153)` CONSUMED at a baseline where it was free: ten hits, every one a
+# *"RETURNED UNUSED"* / *"the tail declared for the next reservation is"*
+# record, spread across `labels.md`, `fanout.md` AND a driver docstring.
+# Location is the wrong signal; the sentence is the right one.
+#
+# The vocabulary is taken from the records those files actually carry, and it
+# stays conservative in the one direction that matters: a line it cannot place
+# is REVIEW, printed in full for a human, never waved through. This script
+# deliberately does NOT claim to detect CONSUMPTION -- it cannot tell a
+# substantive use from an unusually worded record, and a tool that guessed
+# would be the over-confident summary surface this corpus keeps catching. Its
+# contribution is ENUMERATION (L7) and SORTING; the residue is named, not
+# judged.
+DECL = re.compile(
+    r"LIVE TAIL|tail is now|tail declared|declared? (?:the )?tail"
+    r"|\breturned\b|\bunused\b|stays? available|\breserv(?:ed|ation)\b"
+    r"|\bdeclare[sd]?\b|0-?hit|\bconsumed\b|\boffered\b|\bskipped\b",
+    re.I,
+)
+DECL_L7ROW = re.compile(r"^\s*\|.*\b0\s*/\s*0\b")
+DECL_RESROW = re.compile(r"^\s*\|\s*\*\*[A-Za-z][A-Za-z0-9]+\*\*\s*\|")
+PARA_MAX = 12   # lines either side; a record longer than this is not one
+
+
+def _expand(spec, parens):
+    """'BE-231..BE-238' -> ['(BE-231)', ...]; 'BE230..BE237' -> ['BE230', ...].
+    (L7): a reservation check ENUMERATES the range, it does not sample it, so
+    this is the only place a range is ever turned into tokens."""
+    m = RANGE_RE.match(spec)
+    if not m:
+        tok = spec.strip()
+        return [f"({tok})" if parens and not tok.startswith("(") else tok]
+    stem, lo, hi = m.group(1), int(m.group(2)), int(m.group(3))
+    if hi < lo:
+        raise SystemExit(f"--reserve-range {spec!r}: end {hi} precedes start {lo}")
+    if hi - lo > 400:
+        raise SystemExit(f"--reserve-range {spec!r}: {hi - lo + 1} tokens; "
+                         f"that is not a reservation, check the spec")
+    sep = "-" if parens else ""
+    return [f"({stem}{sep}{n})" if parens else f"{stem}{sep}{n}"
+            for n in range(lo, hi + 1)]
+
+
+def _git_grep(token, ref, word):
+    """Every matching line for one token, at one ref, one invocation PER TOKEN.
+
+    That last part is the whole point and it is D6.3(a)'s acceptance test. The
+    2026-09-10 ad-hoc check ran `grep -e "BE-$n" -e "BE$((n-1))"`, collapsing
+    the label token and the step token into ONE invocation, so a hit could not
+    be attributed to the token carrying it -- the spec reported three non-zero
+    tokens and the direction's own (L7) pass found a fourth (`BE237`).
+    """
+    cmd = ["git", "grep", "-n", "--no-color"]
+    cmd += ["-w", "-e", token] if word else ["-F", "-e", token]
+    if ref:
+        cmd.append(ref)
+    cmd += ["--", ":(exclude)notes/.ledger-cache"]
+    r = subprocess.run(cmd, capture_output=True, text=True, cwd=ROOT)
+    if r.returncode not in (0, 1):
+        raise SystemExit(f"git grep failed for {token!r}: {r.stderr.strip()}")
+    out = []
+    for line in r.stdout.split("\n"):
+        if not line.strip():
+            continue
+        body = line.split(f"{ref}:", 1)[1] if ref and line.startswith(f"{ref}:") else line
+        parts = body.split(":", 2)
+        if len(parts) < 3:
+            continue
+        out.append((parts[0], parts[1], parts[2]))
+    return out
+
+
+_FILE_CACHE = {}
+
+
+def _lines_at(path, ref):
+    key = (path, ref)
+    if key not in _FILE_CACHE:
+        spec = f"{ref}:{path}" if ref else path
+        try:
+            if ref:
+                r = subprocess.run(["git", "show", spec], capture_output=True,
+                                   text=True, cwd=ROOT, check=True)
+                body = r.stdout
+            else:
+                body = open(os.path.join(ROOT, path), encoding="utf-8").read()
+        except Exception:
+            body = ""
+        _FILE_CACHE[key] = body.split("\n")
+    return _FILE_CACHE[key]
+
+
+def _classify(path, text, lineno=None, ref=None):
+    """Class of the RECORD a hit belongs to, not of its physical line.
+
+    Prose wraps, so a RECORD is a paragraph: two of `(GR-153)`'s ten
+    bookkeeping hits classified REVIEW on their own line alone, purely as
+    continuation lines, and one of them sat FOUR lines below its record's
+    `**0-hit verification, re-run by the direction ...**` opener. The scan
+    therefore takes the whole paragraph -- blank line to blank line, capped --
+    rather than a fixed look-back.
+    """
+    if DECL_RESROW.match(text) or DECL_L7ROW.match(text) or DECL.search(text):
+        return "DECL"
+    if lineno:
+        lines = _lines_at(path, ref)
+        i = int(lineno) - 1
+        lo = hi = i
+        while lo - 1 >= 0 and lines[lo - 1].strip() and i - lo < PARA_MAX:
+            lo -= 1
+        while hi + 1 < len(lines) and lines[hi + 1].strip() and hi - i < PARA_MAX:
+            hi += 1
+        for j in range(lo, hi + 1):
+            if (DECL_RESROW.match(lines[j]) or DECL_L7ROW.match(lines[j])
+                    or DECL.search(lines[j])):
+                return "DECL"
+    return "REVIEW"
+
+
+def cmd_reserve_range(args):
+    """(L7) reservation check over an enumerated range, one row per token.
+
+    `notes/pencil/labels.md` (L7): *check EVERY token in the reserved range --
+    both label forms and every raw step token -- and report HITS and FILES
+    separately. Sampling the range's endpoints is not a check, and sampling
+    its CLOSING endpoints is the worst case: the opening tokens are exactly
+    the ones the predecessor's tail-declaration had to write down, so a hit
+    there is guaranteed and is precisely what a sampled check will miss.*
+
+    Beyond enumerating, it does the part that actually took judgement:
+    sorting each hit into DECL (a previous reservation's own bookkeeping) or
+    REVIEW (read it yourself). *"0-hit except the declaration"* is the only
+    true form of the claim on a range that opens at the declared tail, and a
+    script can say that much. It does NOT claim to detect consumption -- see
+    the note above `DECL`.
+
+    Acceptance tests, both from the 2026-09-10 round whose hand-run checks
+    each dropped a row (`notes/dispatch-log.md`; the cause was one `grep`
+    invocation carrying two tokens, so a hit could not be attributed):
+
+        python3 notes/ledger.py --reserve-range 'BE-231..BE-238' \
+            --steps 'BE230..BE237' --also BCORNER bcorner --ref c8efb227
+        -> exit 0, FOUR non-zero tokens all DECL: (BE-231), (BE-238),
+           BE230 and BE237 -- BE237 being the row the hand check missed.
+
+        python3 notes/ledger.py --reserve-range 'GR-153..GR-160' \
+            --steps 'G173..G180' --also GISLAND gisland --ref c8efb227
+        -> exit 0, (GR-153)/(GR-154)/G173 all DECL -- (GR-154) being the row
+           the hand check missed there.
+
+    And the two controls that keep it from being vacuous:
+
+        --reserve-range 'GR-140..GR-142' --ref c8efb227   -> exit 1 (REVIEW)
+        --reserve-range 'GR-400..GR-403'                  -> exit 0 (CLEAN)
+    """
+    # Each token carries its SOURCE GROUP so the zero-run collapser can only
+    # merge tokens that came from one enumerated range. Collapsing across
+    # groups would print `BCORNER`-`bcorner` as if it were a range, which is
+    # the same attribution error at display level that D6.3(a) is about.
+    toks, g = [], 0
+    for spec in args.reserve_range:
+        g += 1
+        toks += [(t, False, g) for t in _expand(spec, True)]
+    for spec in (args.steps or []):
+        g += 1
+        toks += [(t, True, g) for t in _expand(spec, False)]
+    for t in (args.also or []):
+        g += 1
+        toks.append((t, False, g))
+    if not toks:
+        raise SystemExit("--reserve-range wants at least one range")
+
+    ref = args.ref
+    rowlist, worst = [], "CLEAN"
+    for tok, word, grp in toks:
+        hits = _git_grep(tok, ref, word)
+        files = sorted({h[0] for h in hits})
+        classes = {_classify(h[0], h[2], h[1], ref) for h in hits}
+        cls = ("CLEAN" if not hits else
+               "REVIEW" if "REVIEW" in classes else "DECL")
+        rank = {"CLEAN": 0, "DECL": 1, "REVIEW": 2}
+        if rank[cls] > rank[worst]:
+            worst = cls
+        rowlist.append((tok, hits, files, cls, grp))
+
+    print(f"(L7) reservation check — {len(toks)} tokens enumerated, one "
+          f"`git grep` each, at {ref or 'the working tree'}\n")
+    print("| token | hits | files | class | where |")
+    print("|---|---|---|---|---|")
+    i = 0
+    while i < len(rowlist):
+        tok, hits, files, cls, grp = rowlist[i]
+        if not hits and not args.every_row:
+            j = i
+            while (j + 1 < len(rowlist) and not rowlist[j + 1][1]
+                   and rowlist[j + 1][4] == grp):
+                j += 1
+            span = (f"`{tok}`" if j == i
+                    else f"`{tok}`–`{rowlist[j][0]}`")
+            print(f"| {span} | 0 | 0 | CLEAN | — |")
+            i = j + 1
+            continue
+        where = ", ".join(f"`{f}`" for f in files[:3]) + (" …" if len(files) > 3 else "")
+        print(f"| `{tok}` | {len(hits)} | {len(files)} | {cls} | {where or '—'} |")
+        i += 1
+
+    shown = [r for r in rowlist if r[1]]
+    if shown:
+        print("\nEvery hit line, so the classification can be checked rather "
+              "than trusted:")
+        for tok, hits, _f, cls, _g in shown:
+            for path, ln, text in hits:
+                print(f"  [{_classify(path, text, ln, ref)}] {tok:<12} "
+                      f"{path}:{ln}")
+                print(f"          {text.strip()[:150]}")
+    print()
+    if worst == "CLEAN":
+        print("CLEAN — 0 hits on every token. Record the reservation in "
+              "notes/pencil/labels.md in the SAME commit that mints the first "
+              "label.")
+        return 0
+    if worst == "DECL":
+        print("CLEAN EXCEPT THE DECLARATION — every hit is a previous "
+              "reservation's own bookkeeping in labels.md. That is the only "
+              "true form of the claim on a range opening at the declared "
+              "tail; say it that way in the spec, not '0-hit'.")
+        return 0
+    print("REVIEW — some hit line is not a recognised bookkeeping record. "
+          "Read the [REVIEW] lines above and decide whether the token is "
+          "CONSUMED — pick another range, per labels.md's minting rule — or "
+          "the record is merely worded unusually. This script does not guess: "
+          "do not report '0-hit' until you have looked.")
+    return 1
+
+
 def cmd_round(rows, args):
     """Emit a dispatch briefing packet with the claim statements GENERATED.
 
@@ -1392,6 +1637,8 @@ def main(argv):
                       help="emit a dispatch briefing packet (with --brief)")
     mode.add_argument("--backlog", action="store_true",
                       help="UNTAGGED claims ranked by citations (slice 10's worklist)")
+    mode.add_argument("--reserve-range", nargs="+", metavar="A..B", default=[],
+                      help="(L7) enumerate a label range and check every token")
     mode.add_argument("--reserve", nargs="+", metavar="TOK",
                       help="0-hit check a proposed label prefix / section name")
     mode.add_argument("--lint", action="store_true",
@@ -1418,6 +1665,14 @@ def main(argv):
                    help="--frontier: only claims with a recorded status; hide "
                         "the UNTAGGED group, which is a tagging decision "
                         "rather than work")
+    p.add_argument("--steps", nargs="+", metavar="A..B", default=[],
+                   help="--reserve-range: raw step-token range(s), e.g. BE230..BE237")
+    p.add_argument("--also", nargs="+", metavar="TOK", default=[],
+                   help="--reserve-range: extra bare tokens (direction codenames)")
+    p.add_argument("--ref", metavar="SHA",
+                   help="--reserve-range: check at a git ref (the dispatch baseline)")
+    p.add_argument("--every-row", action="store_true",
+                   help="--reserve-range: one row per token, no zero-run collapsing")
     p.add_argument("--strict", action="store_true",
                    help="--lint: also fail on a NEW claim left UNTAGGED")
     args = p.parse_args(argv)
@@ -1438,6 +1693,8 @@ def main(argv):
         return cmd_delta(rows, args)
     if args.backlog:
         return cmd_backlog(rows, args)
+    if args.reserve_range:
+        return cmd_reserve_range(args)
     if args.reserve:
         return cmd_reserve(rows, args)
     if args.round:

@@ -139,7 +139,15 @@ Beyond the generated block, a spec carries:
     this tell samples?**
 - **The reserved label prefix and section name**, verified **0-hit**
   across the tree (§1) — a reservation protects a dispatch from its
-  siblings, not from the corpus.
+  siblings, not from the corpus. Run the range check with
+  `ledger.py --reserve-range 'BE-231..BE-238' --steps 'BE230..BE237'
+  --also CODE code --ref <baseline>`, never an ad-hoc shell loop:
+  (L7) requires **every** token enumerated with hits and files reported
+  **separately**, and a loop that puts two tokens in one `grep` cannot
+  attribute a hit — that is precisely how two 2026-09-10 reservations
+  each dropped a row from their spec's table (`BE237`, `GR-154`). Its
+  verdict is *"clean except the declaration"*, not *"0-hit"*, whenever a
+  range opens at the declared tail; copy that wording.
 - **The blind-axis list** — the axes the harness makes it *impossible*
   to vary (§4; grep the generator for hardcoded constants). Not merely a
   disclosure: un-fencing one at BNONUNI cost **one defaulted parameter,
