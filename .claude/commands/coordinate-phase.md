@@ -119,7 +119,11 @@ first). Three calibrations that repeatedly bit:
 - **Read-only recon / research dispatches fall outside the axes**
   (they measure question stakes, not commit risk): default opus;
   top rung when the verdict re-routes a phase, adjudicates a carried-
-  hypothesis / motive change, or settles new mirror math.
+  hypothesis / motive change, or settles new mirror math. This bullet
+  stays because THIS command still dispatches recons inside a Lean
+  phase; for a phase with **no Lean at all**, `/coordinate-research`
+  *Picking the rung* carries the fuller treatment, including why S/P/B
+  has no referent there.
 - **Post-recon downgrade.** Once a top-rung recon has settled exact
   signatures, the transcription leaves rate as written (usually
   sonnet) — the faithfulness risk lives in the recon, not the
