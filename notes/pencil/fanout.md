@@ -17476,3 +17476,90 @@ draft's own prose gets the disclosure right.
 **Reservation.** (GR-193)–(GR-200) / *Steps G213–G220*, all consumed; (L7) clean
 except the declaration at `b742ec2d`, re-checked by the direction at `e03995d8`.
 Live tail **(GR-209) / *Step G229***.
+
+---
+
+## BSIXRUNG — ordinal 101, concurrent round of three, `research-direction-opus`, LANDED 2026-09-11
+
+**The question, and it is NOT §8's stated item.** §8's cross-lane note sends the
+(BE-14)/`hbareSplit` lane at `(BE-OBL7)` ∧ `(BE-OBLK)`, *"worth 4 residue
+tuples"*. The coordinator opened the consumer before dispatching and re-aimed:
+**(BE-235)(ii)**, a landed clause of that very item, says the successor *"equals
+its target on 87% of the residue"* and **"is not a reduction"**, the other **26**
+of the 30 residue tuples sitting at `Σδ ≤ 6` where **the obligation IS
+(NO-DOUBLE-PENCIL) verbatim** ((BE-225)(iii)). So the dispatch went at the bottom
+rung itself. **The direction was asked to say whether it agreed, and it does** —
+*"§8's entry lags its own consumer by one landing"* — so no correction is owed to
+the re-aiming.
+
+**Verdict: the bottom rung is NOT PROVED and NOT REFUTED — but the two halves of
+a refutation now sit at very different confidences, and the FIRING half is
+EXHIBITED.**
+
+**The firing half, exhibited.** A **cycle side** with both arcs of length `≥ 4`
+reaches `c_i(Π_x) = 2` at **`ρ_i = δ_i = 2`**, `a_i = 0`, `deg_i(x) = 2`, with
+all three of `bunif.flag_frame`'s exclusions passing — and at arcs (4,4),
+`ρ̄_i = Π_x` exactly. This is precisely the half **(BE-232)(iii) records as
+reached at 0 rows** on the landed population. On a cycle side the closed star of
+`x` forces `π_x = ⟨p_x, p_{P,1}, p_{Q,1}⟩`, so there is no plane left to steer —
+the opposite of (BE-104)(i)'s series-end habitat ((BE-242)).
+
+**Two exclusions proved.** An x–y path of length `≤ 3` can **never** carry the
+pencil in-regime (`m = 2` needs collinearity, which drops the span instead;
+`m = 3` forces `p_y ∈ π_x`, one of the flag exclusions — 55/55, with an **F13
+negative control at 58/58**). By (BE-30)(iv) that is a statement about **every**
+x–y path of a firing side, so a firing side has **`d_min_i ≥ 4`** ((BE-241)).
+
+**The non-firing half is where it stops, and the cheapest route is closed.**
+Whether `c_j(Π_x) ≥ 1` is co-realizable at the same flag is open. **(BE-244)**
+closes the named cheapest route on the landed family: **0 of 236 196**
+R-node-shaped sides are path-saturated, smallest `d_min_j − δ_j` = 2, with `K4`
+contributing 0 because every hub pair is skeleton-adjacent.
+
+**A rung-3 certificate would be a SHORTFALL, not a free kill.** Every rung-3
+violation forces `dim(ρ̄₁ ∩ ρ̄₂) ≥ 1` and hence non-attainment — asserted 26/26 —
+unlike (BE-231)(i)'s rung-1 kill, which (BE-232)(i) shows costs the target
+nothing ((BE-239)).
+
+**Three landed clauses corrected.** **(BE-234)**'s closing *"together they are
+the whole of it"* is **REFUTED**: (BE-45)(ii) **path saturation** is a third free
+mechanism for `c_j(Π_x) ≥ 1`, degree-free, and the **only** one surviving this
+dispatch's quantifier — Grassmann needs `ρ_j ≥ 5`, impossible at rung 3, and the
+series end needs `deg_j(x) = 1`. **(BE-44)(ii)**'s *"equivalent"* is generic, not
+universal. **(BE-45)(iv)**'s conclusion `c = 0` must read `c_i = max(0, ρ_i − 4)`.
+
+### Coordinator verification at landing
+
+`arith` re-run cap-free (141 rung-3 tuples, 26 violations, corners
+`{(1,2):10, (2,1):10, (2,2):6}` — summing to 26, and to (BE-227)(ii)'s 30 once
+rung 2's 4 are added); `sat` re-run (236 196 / 0, 87.6 s); `validate`
+(`arith`+`path`+`cycle`, 5.1 s) green; `census` re-run.
+
+**The two landed-clause refutations were checked independently of the driver.**
+(BE-234)'s falls out of **two landed clauses alone**: (BE-99)(ii) already states
+*"by (BE-45)(ii) so does path saturation `δ_j = d_min`… Both are unconditional
+identities"*, so the counterexample was in the corpus before (BE-234) was
+written. (BE-44)(ii)'s was re-derived **from scratch in exact rationals**, not
+through any project primitive: on the exhibited five points,
+`dim⟨P⟩ = 4`, `dim Π_x = 2`, `dim(⟨P⟩ ∩ Π_x) = 2` — so `Π_x ⊆ ⟨P⟩` while
+`dim⟨P⟩ ≤ 5`, which is exactly what (BE-44)(ii)'s *"iff"* forbids — and
+`π_x = ⟨p₀,p₁,p₃⟩` is a genuine plane with `p₂`, `p₄` outside it.
+
+**One driver defect found and fixed at landing.** `bsixrung.py` `main()`
+dispatches a **`sat`** mode — the one carrying (BE-244)'s 236 196/0 headline —
+while the module docstring's own `MODES` block omitted it. A driver naming a mode
+in code and not in its own documentation is D7.9's shape; `check-driver-refs.py`
+cannot catch it, because this driver takes bare positional modes rather than long
+flags and is therefore UNDECIDABLE to that gate. `MODES` now lists it.
+
+**Scope, disclosed by the direction itself and worth repeating.** `cycle` builds
+**points, not graphs** — no `H`, no side 2, no `verify_pencil_witness`, no
+`rnode_shaped` — so the firing certificate is at the **side layer**, not the peel
+layer. Every (BE-242) sentence carries that, and it is why the verdict is OPEN
+rather than a refutation. `census` is **1 seed per job**, inherited un-un-fenced
+from `boblig.run_degtwo`'s `nseed=1`; `sat` is capped by `bpeel.SKELETONS`, three
+skeletons with branch lengths in `{1,2,3}` — *"not found under that family"*,
+never *"does not exist"*.
+
+**Reservation.** (BE-239)–(BE-245) / *Steps BE238–BE244* consumed; **(BE-246) /
+*Step BE245* returned unused**. Live tail **(BE-247) / *Step BE246***.

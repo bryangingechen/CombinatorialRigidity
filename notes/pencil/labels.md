@@ -5322,3 +5322,36 @@ advanced under it.
 > general. The gap-map row had propagated the unqualified reading. Same
 > summary-vs-body shape as the twelfth strategy pass's (K-ind) miss recorded
 > above — **twice on the same section, two landings apart.**
+
+## Reserved namespace — direction BSIXRUNG (2026-09-11, **SEVEN of eight labels and steps consumed**)
+
+| direction | section | labels | steps | driver |
+|---|---|---|---|---|
+| **BSIXRUNG** | §(K-bare-ext) — **new file** `workbook/bare-ext/BSIXRUNG.md` | **(BE-239)–(BE-245)** | ***Steps BE238–BE244*** | `w4/bsixrung.py` (five modes + `validate`) |
+
+**0-hit verification, emitted PER TOKEN** (`ledger.py --reserve-range`). At
+`b742ec2d`: **CLEAN EXCEPT THE DECLARATION** — `(BE-239)` and `BE238` hit only
+BCORNER's own live-tail declarations in `labels.md` and `fanout.md`;
+`(BE-240)`–`(BE-246)`, `BE239`–`BE245`, `BSIXRUNG` / `bsixrung` **0 hits / 0
+files each**. Re-run by the direction at `e03995d8`, reproducing the
+coordinator's spec exactly.
+
+**(BE-246) / *Step BE245* RETURNED UNUSED** and available.
+
+**THE LIVE TAIL IS NOW (BE-247) / *Step BE246***.
+
+> ***THE LANDED CLAUSE THIS ONE REFUTED IS THE ONE THAT FIXED THE PREVIOUS
+> OMISSION, WHICH IS THE POINT.*** (BE-234) closes with *"(BE-228)(iii) names
+> only the series-end one, and together they are the whole of it"* — asserting
+> that series-end and the Grassmann floor exhaust the free mechanisms for
+> `c_j(Π_x) ≥ 1`. They do not: **(BE-45)(ii) path saturation is a third**, and
+> **(BE-99)(ii) had already said so in landed prose** — *"by (BE-45)(ii) so does
+> path saturation `δ_j = d_min`… Both are unconditional identities"*. So the
+> counterexample was **inside the corpus** when the clause was written, and the
+> clause was itself the repair of (BE-228)(iii)'s omission of the *second*
+> mechanism. **An exhaustiveness claim — *"together they are the whole of it"* —
+> is `RESEARCH-ARC.md` §4's own named claim class** (*exhaustive / forced / the
+> only* need their own driver), and this one had none; `bcorner.py arith`
+> asserts the Grassmann implication, not the exhaustion. Third member of the
+> (BE-228)(iii) / (BE-233)(i) family, and the first caught by the ledger rather
+> than by a sweep.

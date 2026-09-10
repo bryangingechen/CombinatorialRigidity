@@ -78,8 +78,11 @@ replaced a *lines* column at the 2026-09-09 split, for the reason above. The
 (`notes/pencil/labels.md` clause L1); statuses are one-word pointers to the
 section's own verdict block and the gap-map row, which stay authoritative.
 
-**The 36 `§(K-bare-ext)` direction continuations are one file each under
+**The `§(K-bare-ext)` direction continuations are one file each under
 `bare-ext/`**, named by direction code, alongside the base `K-bare-ext.md`.
+The count is deliberately not written here — it moved on every landing and
+went stale at BCORNER; `ls notes/pencil/workbook/bare-ext/ | wc -l` is the answer,
+and RESEARCH-ARC.md §8's *name the last ordinal, not an integer* is the rule.
 They are not listed individually — `python3 notes/ledger.py --label` resolves
 any of their claims to its file.
 
