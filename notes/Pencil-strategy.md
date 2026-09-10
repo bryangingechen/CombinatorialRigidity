@@ -1986,6 +1986,64 @@ disproving `PencilPair K 3 G`**), not cheapness.
    > hypotheses**, and ask where it is *strictly weaker*. That is a
    > one-enumeration check; it would have priced this entire entry — and its
    > four predecessor directions — in advance.
+   >
+   > **AND THE SUCCESSOR ENTERED THE BOARD AND WAS *DECOMPOSED* ON ITS FIRST
+   > DISPATCH — 2026-09-09, direction BOBLIG (ordinal 92).** *(Recorded here,
+   > in §8, per this section's own rule. It does not re-rank the entries
+   > below it.)* BNONUNI's closing sentence put the **naked `Π_x`
+   > obligation** on the board as a rank-1 candidate on the sufficiency
+   > test. It **passes** that test and is now the arc's best-specified open
+   > statement rather than a candidate:
+   > *(i)* **It is a three-rung ladder in `Σδ := δ₁+δ₂`, which is constant
+   > on the chart** — `c₁+c₂ ≤ 4` always, so **`Σδ ≥ 8` ⟹ TRUE with no
+   > hypothesis**, `Σδ = 7` ⟹ *not both sides fire*, `Σδ ≤ 6` ⟹
+   > **(NO-DOUBLE-PENCIL) verbatim**; residue **exactly `Σδ ≤ 7`**
+   > ((BE-225)). *(ii)* At `a = 0` that residue is **exactly 30 tuples**,
+   > all floor-legal, all attainment-compatible and **all at
+   > `max(ρ₁,ρ₂) ≤ 5`** — the Grassmann floor closes `ρ_i = 6` for free
+   > ((BE-227)(ii)). *(iii)* **Two routes are CLOSED, not open:** the modular
+   > law (BE-95)(i) derives the obligation from **its own conclusion**
+   > ((BE-227)(i)), and **no per-side floor below `f = 6` implies it**
+   > ((BE-226)(ii)). *(iv)* **The smallest first slice, which the entry did
+   > not have:** **`(BE-OBL)`** = item 0(a)'s clause **plus the single
+   > hypothesis `c_j(Π_x) ≥ 1`**, with **neither half relaxable** — the
+   > conclusion cannot drop to `ρ_i ≥ 5`, the hypothesis cannot strengthen to
+   > `c_j = 2` ((BE-228)) — and it is **vacuous at a series end at `x`** by
+   > (BE-175)(i), so it has content exactly at side-degree `≥ 2` on **both**
+   > sides. *(v)* **The un-fenced `deg₁(x) = 2` population is the first ever
+   > to reach the target's quantifier** (`a = (0,0)`, generic flag regime,
+   > `deg₁(x) = 2` at 135/135) with **0 violations** — and **cannot present
+   > the discriminating shape**, reached at 0 rows ((BE-229)(ii)).
+   > *Kill condition: `(BE-OBL)` proved, or a generic in-regime `a = 0`
+   > chart point with `c_i(Π_x) = 2` at `ρ_i ≤ 5` and `c_j(Π_x) ≥ 1` —
+   > by (BE-227)(ii) the ONLY shape that can refute it. Decided by: the
+   > `(K-bare)` row.*
+   >
+   > **THE BAR THIS ADDS, three entries.** *(a)* **No further per-side-floor
+   > attempt on the obligation at `a = 0`**: `(PS-f)` for `f ≤ 5` is refuted
+   > as *sufficient* by exhaustion, and the two-piece frontier's two cheapest
+   > minimal members `(0,4)`/`(4,3)` are **REFUTED at a fully-gated in-regime
+   > `a = 0` peel** by (BE-175)(i) on the non-firing side — BGTWOA's own kill
+   > mechanism, one rung down ((BE-226)(iii)). *(b)* **No modular-law
+   > derivation of the obligation** — circular by an identity. *(c)* **No
+   > reading of the arc-3/arc-4 families as a refutation of the
+   > obligation** — they fail it 48/48 and are off its quantifier on two
+   > independent counts, one of them structural ((BE-229)(iii)). BLONGARC's
+   > four, BEFOURP's three, BGTWOA's three and BNONUNI's three stand
+   > unchanged.
+   >
+   > **THE GENERALIZABLE LESSON, and it is BNONUNI's own sequel read in the
+   > opposite direction.** BNONUNI's lesson was *compare a proposed
+   > reduction's strength to its target's on the same tuple space*. Its
+   > successor shows the other half: **"strictly weaker as a set of tuples"
+   > does not mean "weaker as a proof obligation."** The obligation is
+   > strictly weaker than item 0(a) at 98 tuples and yet no weaker member of
+   > item 0(a)'s clause family implies it, because the weakening lives in a
+   > **corner of the hypothesis space** (`c = (2,1)`) rather than along the
+   > **conclusion**. So when a target is demoted to a weaker successor,
+   > **locate the weakening**: a corner means the successor's proof is the
+   > predecessor's proof plus a hypothesis, and the honest first slice is the
+   > *restricted* clause, not a smaller number.
 3. **LEDGER ITEM 1 — habitat (II), the sharpening.** Owner: `(K-bare)` row, (BE-58)(iv) as
    re-scoped by (BE-169)/(BE-170). BSERIES's re-scoping is what promotes this: item 3's
    surviving half **is** item 1, and habitat (II) — clean at **both** ends — admits **no

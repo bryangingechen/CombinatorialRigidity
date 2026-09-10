@@ -16451,3 +16451,131 @@ which makes it reference) and by collapsing BGTWOA's now-superseded entry.
 landed mid-round — so every doc figure here was **re-taken at landing time**,
 which is `RESEARCH-ARC.md` §2's fourth hazard handled as prescribed rather
 than rediscovered.
+
+## Direction BOBLIG (arc ordinal 92, direction 100) — **THE OBLIGATION IS NEITHER PROVED NOR REFUTED — IT IS *DECOMPOSED*, AND ITS TOP RUNG IS FREE: a three-rung ladder in `δ₁+δ₂`, residue EXACTLY 30 `a = 0` tuples, the modular-law route CIRCULAR, and the FIRST population ever to reach the target's own quantifier — 0 violations at 135/135**
+
+**Question as dispatched.** Prove or refute the naked `Π_x` obligation
+`c₁(Π_x) + c₂(Π_x) ≤ 2 + slack` at a generic chart point with `a₁ = a₂ = 0`,
+at side-degree `≥ 2` — (BE-223)'s successor and §8's new rank-1 candidate.
+
+**Verdict: REDUCED, exactly, in both directions at once.** *(a)* The
+obligation is a **three-rung ladder in the single combinatorial number
+`Σδ := δ₁+δ₂`**, constant on the chart: `c₁+c₂ ≤ 2 dim Π_x / 2 = 4` always, so
+**`Σδ ≥ 8` makes it TRUE with no hypothesis at all**; `Σδ = 7` makes it *not
+both sides fire*; `Σδ ≤ 6` makes it **(NO-DOUBLE-PENCIL) verbatim**. Residue
+**exactly `Σδ ≤ 7`** — the same zone (BE-216)(i) left for `(BE-E4′)`, reached
+by a different identity ((BE-225)). *(b)* At `a = 0` the residue is **exactly
+30 tuples**, all Grassmann-floor-legal, all attainment-compatible, and **all
+with `max(ρ₁,ρ₂) ≤ 5`** — because `ρ_i = 6` forces `c_i = 2` by Grassmann and
+then `slack = δ_j = ρ_j ≥ c_j` closes the obligation for free ((BE-227)(ii)).
+*(c)* The successor is **`(BE-OBL)`** — item 0(a)'s own clause with the single
+added hypothesis `c_j(Π_x) ≥ 1` — and **neither half can be relaxed**: the
+conclusion cannot drop to `ρ_i ≥ 5` (2 counterexamples) and the hypothesis
+cannot strengthen to `c_j = 2` (20) ((BE-228)). *(d)* **Two routes are closed
+rather than open**: the modular law derives the obligation from **its own
+conclusion** ((BE-227)(i)), and **no per-side floor below `f = 6` implies it**
+((BE-226)(ii)). *(e)* The **un-fenced `deg₁(x) = 2` population is the first in
+the whole (BE-14) thread to reach the target's quantifier** — `a = (0,0)`,
+generic flag regime and `deg₁(x) = 2` at **135/135** rows — with **0
+violations**; and it **cannot present the discriminating shape**, reached at
+**0** rows ((BE-229)(ii)). **No gap-map status word moves; not a PENCIL
+event.**
+
+**The three relayed claims the spec asked to be distrusted — all three
+CHECKED, one CORRECTED.** *(i)* **324/98 REPRODUCES** exactly, and the
+implication has a **two-line proof** rather than 324 passes ((BE-226)(i)).
+*(ii)* **The `slack = 0` identification is EXACT and the relay had dropped its
+hypothesis**, which is what the spec suspected: `slack := max(0, δ₁+δ₂−6)`
+read at `barch.slack_of`'s definition site **is a function of the `δ`s**, so
+*"the obligation IS (NO-DOUBLE-PENCIL) at `slack = 0`"* is a statement about
+the **locus `Σδ ≤ 6`** and not about a settable parameter — the two conditions
+**differ at 320 of 6 400 tuples**, every one at `Σδ ≥ 7` with the obligation
+the **weaker**, which is precisely why (BE-99)'s refutation of
+(NO-DOUBLE-PENCIL) (at `Σδ = 8`, margin `−1`) does not reach it ((BE-225)(iv)).
+*(iii)* **The relayed *"strictly weaker"* is true and MISLEADING, and the
+correction is the round's generalizable lesson**: the obligation is strictly
+weaker than item 0(a) at 98 tuples and yet **no weaker member of item 0(a)'s
+own clause family implies it**, because the weakening lives in a **corner**
+(`c = (2,1)`) rather than along the **conclusion** ((BE-226)(ii)/(BE-230)(iv)).
+
+**Reachability, answered FIRST as the spec required.** `bproper.plant_peel`
+returns `None` unless side 1's neighbour count at `x` is 1 (read at source),
+so BNONUNI's population is at `deg₁(x) = 1`; over 64 fully-gated in-regime
+rows it reaches `a = (0,0)` at **8** and the residue at **0**, and its
+`c(Π_x)` is `(2,0)` at 56 and `(1,2)` at 8 — so it **cannot** refute the
+obligation ((BE-229)(i)). **The un-fencing cost a different landed call and
+zero tracked edits**: `bproper.free_peel`, the F13 negative control of the
+same peel, carries **no degree gate**, and `bline.longcore_library()` puts `x`
+on a short cycle — 135 rows, all three quantifier conditions asserted
+((BE-229)(ii)). Priced against BNONUNI's own precedent (one defaulted
+parameter), this is **cheaper still**, and it is the second consecutive
+landing to pay off `RESEARCH-ARC.md` §4's blind-axis clause read **forward**.
+
+**Two by-products worth more than a figure.** *(a)* The `plant_peel`
+population delivers the **first geometric witness of the 98-tuple
+strictness**: at **56** fully-gated in-regime rows item 0(a)'s clause FAILS
+(a planted side firing at `ρ₁ = 4 < 6`) while the obligation HOLDS at margin
+`0`, so the gap is inhabited by configurations and not only by tuples
+((BE-229)(i)). *(b)* The two landed pointwise-refutation families are the
+**sharpest test the obligation has and are disqualified STRUCTURALLY**: they
+fail it at **48/48**, and `flag_frame` is None at 48/48 with `a ≠ 0` at
+48/48 — the first because (BE-191)/(BE-200) *force* `q_y ∈ π_x` / `q_z ∈ π_x`,
+which is one of the three exclusions `bunif.flag_frame`'s rank-4 test applies
+((BE-229)(iii)).
+
+**The bars this adds, three.** *(a)* **No further per-side-floor attempt on
+the obligation at `a = 0`** — `(PS-f)` for `f ≤ 5` refuted as sufficient by
+exhaustion, and the two-piece frontier's two cheapest minimal members
+`(0,4)`/`(4,3)` **REFUTED at a fully-gated in-regime `a = 0` peel** by
+(BE-175)(i) on the non-firing side, the same mechanism that killed
+`(BE-G_2)`. *(b)* **No modular-law / (BE-95)(i) derivation** — circular by an
+identity. *(c)* **No reading of the arc-3/arc-4 families as a refutation of
+the obligation.** BLONGARC's four, BEFOURP's three, BGTWOA's three and
+BNONUNI's three stand unchanged.
+
+**Driver.** `notes/scripts/w4/boblig.py`, four modes plus `validate`, exact ℚ,
+`PYTHONHASHSEED=0`, seed `20260902`: `arith` **0.0s** (cap-free over the 6 400
+tuples, no sampling), `regime` **~140s**, `degtwo` **~255s**, `gated`
+**~12s**, `validate` **~405s**. **No tracked script was modified**, so the
+figure-invariance obligation is discharged by the diff itself.
+
+### Caps and blind axes, disclosed
+
+`degtwo` runs **27 library shapes × 5 profiles × 1 seed** — one seed traded
+for `δ₂` coverage `{0,1,2,3,6}`. **Axes this generator cannot vary:** side 2's
+topology (`SKELETONS` has exactly two members, so `deg₂(x) = 3` at all 199
+measured rows); the side-1 library (`longcore_library`'s cycle lengths
+`(4,5,6)` and tails `1…6` are hardcoded, as is `side_library`'s bucket-A
+list); and — the one that matters — **nothing in the harness produces a
+*generic* chart point with `c_i(Π_x) = 2` at `ρ_i ≤ 5`**: `plant_peel` gets
+there by *planting* (hence `a ≠ 0`) and `flat_config` gets there *off the flag
+regime*. That both available constructions land outside the obligation's
+quantifier is **measured**, and it is **exactly item 0(a) being unrefuted** —
+so this axis is not a keyword argument away, it is the open mathematics. Every
+geometric figure here therefore reads **"not found under this cap"**, never
+*"does not exist"*.
+
+### One defect in the dispatch spec
+
+The spec called the label range **"verified 0-hit ... across
+`*.md`/`*.tex`/`*.lean`/`*.py`/`*.m2`"**. The opening token is **not** 0-hit:
+`(BE-225)` / *Step BE224* returns **2 hits / 2 files**, both BNONUNI's
+tail-declaration sentence (registry + untracked draft), both **declarations
+and not consumptions**. The range is available; the *sentence* is wrong, and
+it is wrong for a structural reason — a range that opens at the previously
+declared live tail can never be 0-hit, so *"0-hit except the declaration"* is
+the only true form. Recorded in `notes/Pencil-labels.md`; it is the third
+consecutive reservation on this section with a non-zero opening cell, so the
+fix belongs in the prep sentence, not in the check.
+
+### The landing's doc arithmetic
+
+`(K-bare)` row **2,812 → 2,828 of 2,856** words (**+16** for **8** new label
+codes, `gapdiff` **0 DROPPED**, **no cap bump**, **28** words of headroom, up
+from 44 → 28 rather than down to 4 because the landing **compressed the row's
+close-it cell** — a restatement of the status cell whose only irreplaceable
+content is its citation tokens — instead of appending). The fourth bump stays
+the row-split trigger and the split stays **DECLINED**. `notes/Phase39.md` held
+at its caps by **relocating** BNONUNI's per-landing clauses to
+`notes/Pencil-structure.md` **block 8**, which already owns that thread's
+detail.

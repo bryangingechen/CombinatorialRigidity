@@ -20,27 +20,29 @@ untouched**; no g-flank found; **E3 ARMED (by GBAL), NEVER fired, NOT one landin
 why: **block 14**.
 
 **`hK` LANE (66, 68, 71, 80): (GR-18)(iii)'s split half a THEOREM, residual CSP-FREE and
-IS (GR-10) at `D = 0`; successor 4 SPENT (GLEAF). ESCAPE (OWALL
-70): (OC-44)(iii) REDUCED to (OW)**; **U3 (OBAR), C2 (DSAT) STRUCK**.
-**(GR-10)/(GR-15)/(OC-8) unchanged**. Detail: **blocks 11–13**.
+IS (GR-10) at `D = 0`; successor 4 SPENT. ESCAPE (OWALL
+70): (OC-44)(iii) REDUCED to (OW)**; **U3, C2 STRUCK**.
+**(GR-10)/(GR-15)/(OC-8) unchanged**. Blocks **11–13**.
 
 **W4's INFORMAL SIDE IS CLOSED** (58–61): **(T)/(E-pair)/(V) THEOREMS**, **(E) open, TIGHT,
-off every W4 path**, list **EMPTY** — leaving the USER call **(K-res)** (DEARER since
-RPOOL) and the held build. Detail: **block 9**.
+off every path**, list **EMPTY** — leaving the USER call **(K-res)** (DEARER)
+and the held build. Block **9**.
 
-**THE (BE-14) THREAD** — S-mark its **only open step**; the `deg ≥ 2` route's per-landing detail
-is **REFERENCE** in **block 8**. Status only: (β) at the window **UNCONDITIONAL**
-((BE-142)–(BE-148)); OUTSIDE it **TWO items + a corner**, one-end half **CONDITIONAL on
-(PENCIL-SATURATES) at `deg ≥ 2`** ((BE-164)–(BE-171)); cross-cut forcing **empty**; flag base
-**DISCHARGED**; the 14 **REDUNDANT**, a **THEOREM at `deg 1`** ((BE-127)). At `deg ≥ 2` the item
+**THE (BE-14) THREAD** — S-mark its **only open step**; per-landing detail **block 8**.
+Status: (β) **UNCONDITIONAL** at the window ((BE-142)–(BE-148)); OUTSIDE it **TWO items +
+a corner**, one-end half **CONDITIONAL on (PENCIL-SATURATES) at `deg ≥ 2`**
+((BE-164)–(BE-171)); cross-cut forcing **empty**; flag base **DISCHARGED**; the 14
+**REDUNDANT**, a **THEOREM at `deg 1`** ((BE-127)). At `deg ≥ 2` the item
 is **OPEN**: **(E4) and its repair (BE-E4′) BOTH REFUTED**, `δ₂ = 1` **CLOSED**
 ((BE-156)–(BE-178)); **`Γ`-PROPERNESS FALSE** ((BE-180)–(BE-187)); **ITEM 0(a) CLOSED
-GENERICALLY AT ARC `≤ 5`** — 48/99, by **radical** + **α-space**, POINTWISE **REFUTED** 24/24 at
-arc 3 AND 4, **ARC CLASS EXHAUSTED** at `|arc| = 6` = (BE-189)(iii)'s threshold
-((BE-188)–(BE-203)); **AND (BE-E4′) IS DEAD BOTH WAYS** — the `f+g ≥ 6`
-frontier EXHAUSTED, then the clause **REFUTED at `ρ₁+ρ₂ ≤ 5`** and **EQUAL to the
-`Π_x` OBLIGATION** above it, relaxation zone **NON-ATTAINABLE** ((BE-204)–(BE-224)). So
-**BOTH halves hang on that OBLIGATION**, one rung WEAKER, open on the 51 long-arc rest. **OPEN** at 0/772 + 0/411; uniformity, the 12
+GENERICALLY AT ARC `≤ 5`** (48/99, **radical** + **α-space**), POINTWISE **REFUTED** 24/24,
+**ARC CLASS EXHAUSTED** at (BE-189)(iii)'s threshold ((BE-188)–(BE-203)); **AND (BE-E4′)
+IS DEAD BOTH WAYS** — frontier EXHAUSTED, clause **REFUTED at `ρ₁+ρ₂ ≤ 5`**, **EQUAL to
+the `Π_x` OBLIGATION** above it, relaxation zone **NON-ATTAINABLE** ((BE-204)–(BE-224)).
+**THAT OBLIGATION IS NOW *DECOMPOSED*, TOP RUNG FREE** — a three-rung `Σδ` ladder,
+residue EXACTLY **30** `a = 0` tuples at `max ρ ≤ 5`, modular law **CIRCULAR**, successor
+**`(BE-OBL)`** = item 0(a) ∧ `c_j(Π_x) ≥ 1`, **0 violations at 135/135 IN-QUANTIFIER
+rows**, residue **0** ((BE-225)–(BE-230)). **BOTH halves hang on it**. **OPEN** at 0/772 + 0/411; uniformity, the 12
 (**unwitnessed, NOT excluded**, (BE-97)(iv), `⟨M⟩` empty at 93), cross-pair welding
 **untouched**.
 
@@ -192,7 +194,7 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
 
 - **Doc debt — the gate is MECHANICAL** (`notes/check-phase-note.py`: **580 lines / 525
   status-header words**, plus a fail if *Decisions made* outgrows the forward sections),
-  and the standing remedy is **relocation or merger, never a fold** — **FOURTEEN** reference
+  and the standing remedy is **relocation or merger, never a fold** — **FIFTEEN** reference
   blocks now sit verbatim in `notes/Pencil-structure.md`, indexed by its own table, with no
   cap ever bumped and nothing deleted; **which relocation bought what is that file's record,
   not this one's**. **The rule that keeps working:** ask *"what here is reference rather than
@@ -240,7 +242,7 @@ carries the standing **do-not-do** — no more (a′)/(b′) ledger directions),
 3 are spent.
 
 **THE TENTH STRATEGY-ONLY PASS'S RANKING LIVES AT `notes/Pencil-strategy.md` §8** and is **not restated here** (it supersedes the ninth pass, the 2026-08-25 list and the 2026-09-02 `hK` table *as rankings*). **The ninth's ranks 1–4 ALL SPENT**: BSCOND 76 ((S1)/(S2)), BARCH 77 (the method class **changes ambient**, 14 → 12 reduced to (E4), (BE-149)–(BE-155)), GLEAF 80 (the reach question SPLIT, no proof there moves (GR-10), (GR-145)–(GR-152)), BINSERT 82. **AND THE TENTH'S RANK 1 IS SPENT THREE TIMES OVER** (BGPROP 85, BRANKV 86, BLONGARC 87), **AND ITS RANK 2 IS SPENT WITH ITS FRONTIER EXHAUSTED** (BEFOURP 88, BGTWOA 89), **AND ITS RANK 4 IS SPENT** (INSJOINT 90 — option B's last endpoint EXCLUDED, so option B is **SPENT OUTRIGHT** and its row is CLOSED). **§8's bar now reads: `A_sharp` properness BARRED, (E4) REVERSED, `Γ`-properness STRUCK AS A CLOSURE ROUTE, and the whole ARC / PATH-BOUND METHOD CLASS SPENT** — recorded in §8, as §8's own rule requires; **no further properness attempt on that population is authorized**.
-**THE NEXT CONCRETE TASK is the NAKED `Π_x` OBLIGATION** — `c₁(Π_x) + c₂(Π_x) ≤ 2 + slack` at a generic chart point with `a₁ = a₂ = 0`, at side-degree `≥ 2`. It is **strictly weaker** than half (B)'s item-0(a) clause (at `a = 0`, (PENCIL-SATURATES) implies it 324/324 and the converse fails at 98), it **IS** (NO-DOUBLE-PENCIL) at `slack = 0` ((BE-100)(i)) and unrefuted there ((BE-100)(ii) puts (BE-99)'s family on the **slack** side), and it is what `(BE-E4′)` turns out to *be* — so §8's rank 2 **collapses into item 0(a), one rung weaker** ((BE-223)). **WHY: `(BE-E4′)` IS DECIDED, DEAD BOTH WAYS, and rank 2 has NO successor** ((BE-218)–(BE-224)). Firing gives `e_i = ρ_i − 2` exactly, so the clause **IS** `c_j(Π_x) ≤ ρ₁+ρ₂ − 6` — hypothesis-free, hence **FALSE at EVERY firing configuration with `ρ₁+ρ₂ ≤ 5`** (297/297 tuples, all floor-legal), which is (BE-216)(i)'s identity read **downward** and had not been taken ((BE-219)(i)); **REFUTED** at **14** fully-gated in-regime peels, **4** of them inside `barch.all_tuples` and none in the non-attainable zone — `ρ = (4,1)`, `c(Π_x) = (2,0)`, `e = (2,1)`, `δ = (2,1)`, `a = (2,0)`, `flag_frame` non-None, side 2 `rnode_shaped`, side 1 BEFOURP's own firing piece **byte-unchanged** with only side 2's profile moved ((BE-221)); and at `a = 0` on `ρ₁+ρ₂ ≥ 6` it **IS** the `Π_x` obligation **verbatim**, so it is not a reduction of its target but the target ((BE-219)(ii)) — (BE-153)(i) named that trap and its `c_i(Π_x) = 2` repair works **off** `a = 0`, not **on** it, which is where (BE-101)(ii) applies the clause ((BE-220)(i)). **AND THE KILL IS COMPLETE, not zonal:** the clause's whole *relaxation* content — the **1 270** firing tuples where it holds and the obligation fails — has `min(δ₁+δ₂,6) + a₁ + a₂ > 6 = dim Λ²K⁴`, so by (BE-22)(iii)/(BE-86)(i) the composite **cannot attain** there; of 3 375 firing tuples the **688** attainment-compatible ones split **538** clause-equals-obligation and **150** clause-strictly-stronger-hence-false, and nothing else occurs — **so `(BE-E4′)` can never contribute to (BE-14)**, by a proof rather than a cap ((BE-220)(ii)). The boundary is **EXACT and measured on geometry**: over 42 gated rows every `ρ₁+ρ₂ ≤ 5` row FAILS and every `ρ₁+ρ₂ ≥ 6` row HOLDS, with the `δ₂ = 3` column reproducing (BE-207)(ii) as the negative control ((BE-222)). The enabling move was **parameterizing the `pr` axis**: `δ₂` is quantized to `{0,3,6}` along the uniform profile every driver varied and reaches every value of `{0,1,2,3}` non-uniformly, `δ₂ = max(0, #{length-3 branches} − 6)` asserted at 3 072 profiles ((BE-218)). **TWO PREDECESSOR AUDIT FINDINGS STAND, recorded not repaired:** (BE-206)'s grading is a **TAUTOLOGY** where asserted and false off it, so **`(BE-F_4)` IS the floor `ρ_i ≥ 4`** ((BE-212)); and `barch.all_tuples` omits the Grassmann floor, 2 800 of 6 400 tuples unrealizable, the frontier grid IDENTICAL anyway so (BE-205)(iii) is **PROTECTED** ((BE-213)) — the priced repair is a coordinator round. **BARS, cumulative:** BLONGARC's four, BEFOURP's three, BGTWOA's three, **plus three new** — the (E4)/`(BE-E4′)` two-sided family is barred **as a family** (a repair cannot exist, (BE-220)(ii)), no further `ρ₁+ρ₂`-zone refinement, and **no reading of a "0 escapes at `a = 0`" figure as evidence that a clause reduces the `Π_x` obligation** — at `a = 0` such a figure is the equivalence ((BE-224)(iii)). **Alternatives after it, in order:** §8's rank 3 (ledger item 1, habitat (II)); a *less degenerate* (BE-192)/(BE-200) witness; then the `V^k` graph at `k ≥ 3`. **DOC DEBT — the row DID NOT NEED TO PAY, and the ledger is now REFERENCE:** `(K-bare)` is **2,812 / 2,856** words, `gapdiff` **0 DROPPED**, no bump — and the paragraph that tracked it is **RELOCATED** to `notes/Pencil-structure.md` **block 15**, because every number in it is owned by the gap map and by `check-gapmap-cells.py`, which is what made it go stale under BGTWOA. **(BE-14) needs both halves of S-mark and both now hang on that OBLIGATION** — one rung weaker than the clause they hung on ((BE-177)(iii)/(BE-223)(iii)).
+**THE NEXT CONCRETE TASK is `(BE-OBL)`** — *at an internal R-node peel in the generic flag regime, `c_i(Π_x) = 2` **and** `c_j(Π_x) ≥ 1` ⟹ `ρ_i = 6`* — which is **item 0(a)'s own clause with ONE ADDED HYPOTHESIS** and is **sufficient for the naked `Π_x` obligation at `a = 0`** ((BE-228)). **WHY IT, and not the obligation directly:** BOBLIG **decomposed** the obligation exactly. It is a **three-rung ladder in `Σδ = δ₁+δ₂`**, which is *constant on the chart* — `c₁+c₂ ≤ 4` always, so **`Σδ ≥ 8` ⟹ TRUE with no hypothesis at all**, `Σδ = 7` ⟹ *not both sides fire*, `Σδ ≤ 6` ⟹ **(NO-DOUBLE-PENCIL) verbatim** — residue **exactly `Σδ ≤ 7`**, and at `a = 0` **exactly 30 tuples**, all Grassmann-floor-legal, all attainment-compatible and **all at `max(ρ₁,ρ₂) ≤ 5`**, because `ρ_i = 6` forces `c_i = 2` and then `slack = δ_j = ρ_j ≥ c_j` closes it for free ((BE-225)/(BE-227)(ii)). **TWO ROUTES ARE CLOSED, NOT OPEN:** the modular law (BE-95)(i) derives the obligation from **its own conclusion** ((BE-227)(i)), and **no per-side floor below `f = 6` implies it** — the two cheapest members of the two-piece frontier, `(0,4)` and `(4,3)`, are **REFUTED at a fully-gated in-regime `a = 0` peel** by (BE-175)(i) on the non-firing side, BGTWOA's own kill mechanism one rung down ((BE-226)). **`(BE-OBL)`'s two halves are each tight:** the conclusion cannot drop to `ρ_i ≥ 5` and the hypothesis cannot strengthen to `c_j = 2` ((BE-228)(ii)); and it is **vacuous at a series end at `x`** by (BE-175)(i), so it has content **exactly at side-degree `≥ 2` on BOTH sides** ((BE-228)(iii)). **AND THE UN-FENCING PAID:** `plant_peel`'s `deg₁(x) = 1` gate was BNONUNI's largest blind axis, and `bproper.free_peel` — the same peel's F13 negative control, **no degree gate** — opened it at **zero tracked edits**, giving the **first population in the thread to reach the target's own quantifier** (`a = (0,0)`, generic flag regime, `deg₁(x) = 2` at **135/135**) with **0 violations** ((BE-229)(ii)). **THE CAP, and it is the other half of the finding:** that population reaches the **residue at 0 rows** — every firing it produces is at `ρ_i = 6`, where the obligation is free — and the only landed population that violates the obligation, the arc-3/arc-4 families, **fails it 48/48 but is off the quantifier on two independent counts, one of them structural** ((BE-229)(iii)). So the geometry reads *not found under this cap*, and **the discriminating shape IS item 0(a)'s bad locus** — which is why the successor is a restricted clause and not a smaller number. **BARS, cumulative:** BLONGARC's four, BEFOURP's three, BGTWOA's three, BNONUNI's three, **plus three new** — no further per-side-floor attempt on the obligation at `a = 0`, no modular-law derivation of it, and no reading of the arc-3/arc-4 families as a refutation of it ((BE-230)(iii)). **BNONUNI's OWN per-landing detail (the `(BE-E4′)` kill, its census and its two predecessor audit findings) is RELOCATED 2026-09-09** to `notes/Pencil-structure.md` **block 8**, which already owns this thread's detail. **Alternatives after it, in order:** §8's rank 3 (ledger item 1, habitat (II)); a *less degenerate* (BE-192)/(BE-200) witness; then the `V^k` graph at `k ≥ 3`. **DOC DEBT:** `(K-bare)` is **2,828 / 2,856** words at **28** of headroom, `gapdiff` **0 DROPPED**, **no bump** — paid by **compressing the row's close-it cell**, a restatement whose only irreplaceable content is its citation tokens; the ledger is `notes/Pencil-structure.md` **block 15**. **(BE-14) needs both halves of S-mark and both hang on that obligation** ((BE-177)(iii)/(BE-223)(iii)).
 (GR-144)'s successor **1 is DEMOTED** (it **IS** (GR-10) here, (GR-140)(v)),
 **2** is engineering (150/150 decided, 2 473 of 2 623 left), **3** is a search (does *path*
 consistency decide where arc does not), and **4 is SPENT** (GLEAF 80: reached, and
@@ -447,27 +449,18 @@ paragraphs.**
 - **DSAT** (79, recon-opus, ninth pass **C2 trace**) — **C2's KILL CONDITION FIRED: UNSAT off
   the class (PROVED), SAT on it** — struck as a *uniform* carry ((DM-5)–(DM-11), *D8–D14*). `w4/dsat.py`.
 - **OBAR** (78, recon-opus, ninth pass **U3 gate**) — **U3 NEGATIVE THREE WAYS, STRUCK, U1 ALONE**; the unrun ledger was **(T3) pointwise** ((OC-56)–(OC-61), *O52–O57*). `w4/obar.py`.
-- **BNONUNI** (91, recon-opus, §8's rank-2 successor) — **`(BE-E4′)` IS DECIDED, DEAD BOTH WAYS,
-  and rank 2 has NO SUCCESSOR.** Firing makes the clause `c_j(Π_x) ≤ ρ₁+ρ₂ − 6`, so it is **FALSE
-  at every firing row with `ρ₁+ρ₂ ≤ 5`** and **REFUTED** at 14 gated in-regime peels on a
-  **non-uniform** profile ((BE-219)(i)/(BE-221)); at `a = 0` above that it **IS** the `Π_x`
-  obligation ((BE-219)(ii)); and its relaxation zone is **NON-ATTAINABLE**, so it can never reach
-  (BE-14) ((BE-220)). Successor: the **naked obligation** ((BE-223)). `w4/bnonuni.py`.
+- **BOBLIG** (92, recon-opus, §8's rank-1 successor) — **THE NAKED OBLIGATION IS *DECOMPOSED*,
+  TOP RUNG FREE**: a three-rung `Σδ` ladder (`≥ 8` TRUE hypothesis-free, `= 7` *not both fire*, `≤ 6` **IS** (NO-DOUBLE-PENCIL)), residue EXACTLY **30** `a = 0` tuples at `max ρ ≤ 5`, the modular-law route **CIRCULAR**, successor **`(BE-OBL)`** = item 0(a) ∧ `c_j(Π_x) ≥ 1`; and the **UN-FENCED `deg₁(x) = 2` population is the FIRST to reach the quantifier** — 0 violations at 135/135, residue reached 0 ((BE-225)–(BE-230)). `w4/boblig.py`.
+- **BNONUNI** (91, recon-opus, §8's rank-2 successor) — **`(BE-E4′)` IS DECIDED, DEAD BOTH
+  WAYS, and rank 2 has NO SUCCESSOR**: FALSE below `ρ₁+ρ₂ = 6` (REFUTED at 14 gated in-regime peels on a **non-uniform** profile), **IS** the `Π_x` obligation above it at `a = 0`, relaxation zone **NON-ATTAINABLE** ((BE-219)–(BE-221)). Successor: the **naked obligation** ((BE-223)). `w4/bnonuni.py`.
 - **BGTWOA** (89, recon-opus, §8's rank 2) — **THE BSTEER LIFT FAILS AND THE FRONTIER IS EXHAUSTED**: `e_j ≥ ρ_j − 2` is free, so `(BE-G_2)`'s content is only `ρ_j ∈ {2,3}`, DISJOINT from BSTEER's `ρ_j = 1`, and it is FALSE at 4/4 fully-gated IN-REGIME peels by **(BE-175)(i) ITSELF** on the non-firing side — both added hypotheses index **side 2** — so all five members die; **`(BE-F_4)` IS `ρ_i ≥ 4`** ((BE-210)–(BE-216)). Its *"(BE-E4′) UNREFUTED"* verdict is **SUPERSEDED at BNONUNI**. `w4/bgtwoa.py`.
 - **BEFOURP** (88, recon-opus, **frontier since EXHAUSTED at BGTWOA**) — **(BE-E4′) DECOMPOSED**: coverage a **SUM** ((BE-204)); the 245 die exactly on `f+g ≥ 6` ((BE-205)); **`α_x` IS `Σ_x`** ((BE-206)); `(BE-F_5)` REFUTED, **FLAG REGIME LOAD-BEARING** ((BE-207)–(BE-209)). `w4/befourp.py`.
-- **BLONGARC** (87, recon-opus) — **THE SPEC'S QUESTION IS NO, THE LADDER EXTENDS ANYWAY.**
-  `rank(B|_U) = 4` at arc 4 with the arc supplying its own hyperbolic splitting, so
-  (BE-193)(iv) goes **unconditional**; the containment is ONE membership in the **α-space** and
-  **ONE COUNT** `dim(U ∩ α_x) = max(1, min(|arc|,6) − 3)` closes item 0(a) at arc `≤ 5`
-  (**48/99**), stopping at (BE-189)(iii)'s own threshold: **path-bound CLASS SPENT**
-  ((BE-196)–(BE-203)). `w4/blongarc.py`.
+- **BLONGARC** (87, recon-opus) — **THE SPEC'S QUESTION IS NO, THE LADDER EXTENDS ANYWAY**: one **α-space** count closes item 0(a) at arc `≤ 5` (**48/99**) and the **path-bound CLASS is SPENT** at (BE-189)(iii)'s own threshold ((BE-196)–(BE-203)). `w4/blongarc.py`.
 - **BRANKV** (86, recon-opus) — **THE POINTWISE CLAUSE IS FALSE** at 24/24 gated arc-3 points;
   the same radical closed item 0(a) at arc `≤ 3`, **15/99**, subsumed by BLONGARC ((BE-188)–(BE-195)). `w4/brankv.py`.
 - **BGPROP** (85, recon-opus, the tenth pass's **rank 1**) — **BRIDGE TRANSPORTS, LEMMA FALSE**
   at 10/99 by a codim-6 floor; 53/99 class-uniformly proper ((BE-180)–(BE-187)). `w4/bgprop.py`.
-- **BSTEER** (84, recon-opus, (BE-162)(iii)) — **NO: `ρ̄₂` cannot be steered into `Π_x`**, so
-  **(BE-E4′) SURVIVES** its tight `δ₂ = 1` boundary by a **degree count at `x`** — the family's
-  **first POSITIVE** fact ((BE-172)–(BE-177)). `w4/bsteer.py`.
+- **BSTEER** (84, recon-opus, (BE-162)(iii)) — **NO: `ρ̄₂` cannot be steered into `Π_x`**; `(BE-E4′)` SURVIVED its `δ₂ = 1` boundary by a **degree count at `x`** ((BE-172)–(BE-177)), since SUPERSEDED at BNONUNI. `w4/bsteer.py`.
 - **BFOUR** (81, recon-opus, (BE-154)(iv)) — **(E4) IS FALSE** at `K4(5,2,2,2,2,2)` reflagged,
   ATTAINING, every gate green; the named population could not have found it ((BE-156)–(BE-163)). Detail: **block 8**. `w4/bfour.py`.
 - **BARCH** (77, recon-opus, rank 2) — **THE METHOD CLASS CHANGES AMBIENT**; 14 → 12 reduced to (E4) ((BE-149)–(BE-155)). Detail: **block 8**. `w4/barch.py`.

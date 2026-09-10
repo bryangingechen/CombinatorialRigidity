@@ -4887,3 +4887,78 @@ updated in place, per (L4) — **no rename**, the token now naming a **refuted**
 claim, which is exactly the disposition `§(K-bare-ext) (E4)` itself was given.
 The section's notation additions — `slack`, `a_i`, the branch profile — are
 objects and parameters, written as mathematics, never parenthesized alone.
+
+## Reserved namespace — direction BOBLIG (2026-09-09, **CONSUMED IN PART: six numbered labels, one named label, six steps; eight labels and eight steps RETURNED UNUSED**)
+
+| direction | section | labels | steps | driver |
+|---|---|---|---|---|
+| **BOBLIG** | §(K-bare-ext) — **extends**, no new section | **(BE-225)–(BE-230)** consumed; **(BE-231)–(BE-238)** returned | **BE224–BE229** consumed; **BE230–BE237** returned | `w4/boblig.py` (four modes + `validate`) |
+
+**It opens at exactly the tail BNONUNI declared** (*"THE LIVE TAIL IS NOW
+(BE-225) / Step BE224"*) — at the declaration, not past it, the discipline
+BGTWOA's block records. **THE LIVE TAIL IS NOW (BE-231) / *Step BE230***,
+0-hit verified at this landing. **The three earlier strays stay available and
+unused**: **(BE-163)** / ***Step BE162*** (BFOUR's), **(BE-179)** /
+***Step BE178*** (BSTEER's), and ***Step INS8*** (BINSERT's).
+
+**0-hit verification, run by the direction as its FIRST action** (clause (L7):
+**every** token in the range, enumerated rather than sampled, hits and files
+reported separately), across `*.md`/`*.tex`/`*.lean`/`*.py`/`*.m2` at the
+dispatch baseline `483f9787`:
+
+| token | `(BE-n)` hits / files | bare `BE-n` hits / files | step `BEn` hits / files |
+|---|---|---|---|
+| `BE-225` / `BE224` | **2 / 2** | **2 / 2** | **2 / 2** |
+| `BE-226`–`BE-238` | 0 / 0 | 0 / 0 | 0 / 0 (`BE225`–`BE237`) |
+
+`BOBLIG` and `boblig` both **0 / 0** as raw substrings, (L5)'s check included.
+
+> **A CORRECTION TO THE DISPATCH SPEC, and it is exactly the shape clause (L7)
+> exists for.** The spec stated the range *"verified 0-hit by me across
+> `*.md`/`*.tex`/`*.lean`/`*.py`/`*.m2`"*. The **opening token is not 0-hit**:
+> `(BE-225)` / *Step BE224* returns **2 hits / 2 files** — BNONUNI's own
+> tail-declaration sentence in this file (line 4844) and the same sentence in
+> the untracked `notes/Pencil-draft-BNONUNI.md`. Both are **DECLARATIONS, never
+> consumptions**, so the range is available and nothing is re-used; and the
+> non-zero opening cell is **by design**, the third consecutive reservation on
+> this section to carry one (BGTWOA's, BNONUNI's, this one). The correction is
+> to the *sentence*, not to the reservation: a range whose first token is the
+> previously-declared live tail can never be 0-hit, so *"0-hit except the
+> declaration"* is the only true form of that claim — and (L7)'s
+> **hits-and-files-reported-separately** rule is what makes the difference
+> visible in one line rather than hiding it behind a summary word.
+
+**ONE NAMED LABEL MINTED INSIDE THE RESERVATION, disclosed under (L6) rather
+than assumed covered by the numeric range.** **`(BE-OBL)`** — the successor
+clause of (BE-228)(i), *"`c_i(Π_x) = 2` and `c_j(Π_x) ≥ 1` ⟹ `ρ_i = 6`"*.
+Verified **0-hit at `483f9787`** as a raw substring across the same five
+extensions before minting. It follows the established `BE-`-prefixed
+non-numeric pattern of `(BE-E4′)`, `(BE-F_f)` and `(BE-G_g)`, so it is
+compliant on mint rather than grandfathered, and it is registered here in the
+commit that mints it, per (L1).
+
+**(L6) landing-time bare-token grep, RUN over the whole repository.** Over the
+driver, `grep -oE '\([A-Z][0-9]\)'` returns exactly **`(L3)`, `(L6)`** (this
+registry's own clause names) and **one `(E4)`**, which is (L3)-qualified as
+`section (K-bare-ext) (E4)` in a *NOTATION AND THE (L3) QUALIFICATION* block
+stated once for the whole file — BNONUNI's file-scope disposition, consumed
+unchanged and needed only once here rather than twenty times. **The appearance
+collision BRANKV recorded was AVOIDED BY REWORDING rather than tolerated**: a
+quotation of `bproper.plant_peel`'s own gate expression would have returned the
+bare first token of the live `§(K-grid) (E1)`/`(E2)`/`(E3)` termination-ledger
+family from inside a back-ticked Python fragment, so the driver paraphrases the gate in words
+instead of quoting it. That is a *third* disposition for this collision class,
+beside BNONUNI's rename-the-local and its file-scope qualification, and it is
+the cheapest of the three when the token sits inside a **quotation**.
+
+> ***Recorded observation*, not a mint and not a rename: `(PS-f)` is a
+> pre-existing UNREGISTERED token.** `barch.ps_floor`'s clause family is
+> written `(PS-f)` in `w4/barch.py`, `notes/Pencil-informal.md` and
+> `notes/Pencil-fanout.md`, and it has **no row in this registry** — so by
+> (L1)'s own sentence (*"a label that is not in this registry does not
+> exist"*) it is invisible to a reservation check. This direction did **not**
+> mint it, does not rename it (L4), and deliberately **kept it out of the
+> gap-map row** so the token gains no new surface; `notes/scripts/gapdiff.py`
+> picked it up as a would-be new label on the first draft of that row, which
+> is how it was noticed. Registering or qualifying it is a coordinator round,
+> not a dispatch's job.

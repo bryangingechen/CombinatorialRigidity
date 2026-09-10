@@ -3565,3 +3565,59 @@ BNONUNI's both turned on, which is the standing argument for the
 `{0, 3, 6}` along the uniform axis and reaches every value of `{0,1,2,3}`
 non-uniformly**, so two directions' worth of "exhaustive" sweeps were blind to
 half the rungs of a parameter that was already a legal input one call down.
+
+### New item (2026-09-09, direction BOBLIG) — the next `w4/` consumer of the same chain, and **the first landing on this thread that modifies NO tracked script**; **UNPAID, NO MOVE MADE**
+
+**The sibling-import arrival, folded into the standing item.** `w4/boblig.py`
+is the next `w4/` consumer of the standing chain (`boblig → barch → bdegtwo →
+bline → bopen → bproper → bsigma → bsatur → … → kbare_common`), a **first**
+consumer of `bproper.free_peel` from `w4/` and of `bgtwoa.KILLJOBS`, a
+**second** of `bline.longcore_library` from outside `bline`, a **fourth** of
+`bfour.e_row`, a **sixth** of `bproper.plant_peel`/`PEELJOBS`/`side_named`,
+and a further consumer of `brankv.short_library`/`arc_through`,
+`blongarc.arc4_library`, `binduc.flat_config` and `bunif.flag_frame`. **All
+folded into the standing sibling-import item, NO MOVE MADE**, by §2 rule 2's
+clause that *a dispatch may not make the move*. **The outstanding-item count
+does not move** — thirteen, unchanged: this landing opens no new item and no
+new hazard.
+
+**What is new in kind: no tracked script changed.** BNONUNI's entry above
+records the thread's first **signature change** to a landed driver. This
+landing is the complementary case and it is worth recording as such: it
+reaches the axis BNONUNI disclosed as its **largest blind spot** —
+`deg₁(x) ≥ 2` on the firing side, fenced by `bproper.plant_peel`'s
+`len(neighbors(<side 1>)[x]) != 1` early return — **by calling a different
+landed function**, `bproper.free_peel`, which is the F13 negative control of
+the same peel and carries no degree gate at all. So the un-fencing cost
+**zero** tracked edits, against BNONUNI's one defaulted parameter and
+BGTWOA's third copy of `legal_peel`'s gate list.
+
+**THE DISCHARGE, and it is the diff.** Convention 5's re-baselining clause
+prices a change to a landed driver at re-running its whole import closure.
+Nothing was changed: `git diff --name-only -- '*.py' '*.m2'` names only the
+**new** file `notes/scripts/w4/boblig.py`, so no landed figure can move, and
+that check **is** the discharge (the disposition `notes/Pencil-structure.md`
+*Gates for any continuation* states for exactly this case). The driver's own
+four modes were re-run to a clean `validate` at `PYTHONHASHSEED=0` after the
+last edit.
+
+**The ordering lesson this pair leaves, stated once because it is a ranking
+rule and not a debt item.** Two consecutive landings opened a fenced axis, and
+the two costs were **one defaulted parameter** and **zero**. The cheaper one
+was available because the harness already contained a *second builder for the
+same object with a different gate set* — `free_peel` beside `plant_peel`,
+written as an F13 negative control and never used as an axis. So the
+blind-axis list should be searched **twice**: once for a hardcoded constant
+that a keyword argument would open (BGTWOA/BNONUNI's form), and once for a
+**sibling builder whose gate set differs in exactly the fenced predicate**.
+The second search is cheaper and leaves no debt.
+
+**The two recorded observations this direction navigated, unchanged.**
+`bimage.pt_in` is never called, so its silent `K⁴` truncation is unreachable
+rather than merely avoided; no width-12 object is built, every
+`span`/`isect`/`dim` going through `bfour.e_row`/`side_nums`, whose rows are
+width 6, so `bimage.span`'s `d == 6` special case is the only branch reached;
+`bwin` is not imported. The *"`pr` axis"* observation stands exactly as
+BNONUNI narrowed it: `bdegtwo.peel_of` and `bdegtwo.sweep_points` still
+hardcode the profile, and this direction reaches the axis through
+`bline.legal_peel`'s now-defaulted `prof=` rather than around it.
