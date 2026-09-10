@@ -1708,11 +1708,59 @@ control.
    preserves NC1-cleanliness. **Derived, so the direction need not re-derive it:**
    merging needs an **odd** branch of length 3 or 5 (an even branch carries one A
    and one B end, so by (GR-16)(i) it can never merge) whose endpoints are joined
-   by a monochromatic `Λ`-path in **both** colours — hence **`|Λ| ≥ 2`**, which is
-   exactly where `--lam6` stops (117 894 of 142 740 tuples unswept). *Kill
+   by a monochromatic `Λ`-path — *(**CORRECTED 2026-09-10, GISLAND (GR-159): this
+   entry said "in **both** colours — hence `|Λ| ≥ 2`", and that is TOO STRONG.**
+   (NC1) fails as soon as `min(D_A, D_B) < 3`, so **one** colour suffices and one
+   off-circuit `Λ`-edge with both ends on `γ` already merges two A-runs: the
+   condition is **`|Λ| ≥ 1`**. This entry's own 7 450 measured shortfalls sit
+   inside the **already swept** `|Λ| ≤ 1` stratum, which contradicts the "both
+   colours" reading on the entry's own numbers. The `|Λ| ≥ 2` sweep was still the
+   right move — 82.6% of the tuple space was unswept and is now closed — but the
+   argument that a refutation **had** to live there was not sound, and the
+   coordinator relayed the clause into the dispatch spec under "derived for you,
+   so you need not re-derive it".)* — which is where `--lam6` stops (117 894 of
+   142 740 tuples unswept). *Kill
    condition: a repair theorem covering every binding circuit with no private even
    branch at `Λ ≠ ∅`, or a shape whose every admissible colouring leaves
    `D_A(γ) < 3` or forces a merge. Decided by: the `(K-grid)` row, status u12/u77.*
+   > **SPENT 2026-09-10 (direction GISLAND, ordinal 94) — the FIRST branch fired,
+   > the second did not, and the sweep behind it is now COMPLETE.** *(Recorded here
+   > per §8's own rule.)* **No refutation exists under the un-fenced cap:** the
+   > `|Λ| ≥ 2` stratum at `n_hub = 6` is swept **complete** — 6 008 isomorphism
+   > classes = **125 346** further labelled shapes, **324 218** further admissible
+   > colourings, exhaustive over all `2^M` bits — with **0 NC1 misses and 0 rank
+   > misses**, every shape rank-certified at an exact rational point, orbit control
+   > 40/40 ((GR-157)). Total population **166 088**. ***Step G28* residual item 4 is
+   > CLOSED** and **E1 does not fire**.
+   > **The repair branch fired instead, and the island turns out to own a PROVEN
+   > instrument.** At an all-odd binding circuit `h_≠` is even, so a violated one is
+   > monochromatic-ended and — by (GR-86)(i) — **no** branch of it is blocked;
+   > balance being the odd half-count law, `≥ 3` opposite-ended partners always
+   > exist **off** the circuit ((GR-153), a four-clause proof, asserted 7 476/7 476
+   > and 2 492/2 492). The **odd-pair flip** repairs **2 492/2 492** violated island
+   > circuits, with the forest and `D_A`/`D_B`-invariance conjuncts **free** off `Λ`
+   > ((GR-154)); adding privacy gives a genuine **(GR-24)-analogue** whose hypothesis
+   > holds at **1 344/2 492** ((GR-155)). **(GR-86)'s chains are even-only hence
+   > balance-neutral**, so they cannot repair an all-odd circuit alone — which is
+   > exactly why they **compose** as a third stage; needed **0/2 492** ((GR-156)).
+   > **THE ENTRY'S STATED MECHANISM WAS WRONG IN KIND:** (GR-24) does not "cover"
+   > the island — the island is *defined* as where its hypothesis cannot hold.
+   > **AND (GR-26)(iii) IS REFUTED** ((GR-158)): its island profile list names two
+   > profiles; over (GR-26)'s **own** population there are **four**, two of them
+   > (`(1,1,1,5)`, `(1,1,3,3)`) at `n_hub = 4` and therefore already swept when the
+   > sentence was written, and over the extended population **eight**. The island
+   > grows **1 608 → 3 571** labelled shapes. The 1 608 count itself is **not**
+   > refuted — `--island` reproduces it exactly — only the attribution, which was
+   > **never driver-tested** (F11: *Step G28*'s mode table has no row for it).
+   > **ROUTE-LEDGER ENTRY 3 READS *ADVANCED*, NOT *CLOSED*** (coordinator call, the
+   > direction's own recommendation): NC1-satisfiability on the island stays
+   > **MEASURED**, (GR-155)'s hypothesis covers 54%, the simultaneous multi-circuit
+   > repair is the open half, 46/2 492 repairs route through a `Λ`-edge, and
+   > **`n_hub ≥ 8` is untouched** — (GR-153)(d)'s corollary is `n_hub ≤ 6`-*conditional*,
+   > not merely capped there.
+   > *Kill condition for the successor: the simultaneous multi-circuit repair proved,
+   > or the instrument shown to fail at `n_hub ≥ 8`. Decided by: the `(K-grid)` row,
+   > status u12/u77.*
 2. **WHICH `r`-CO-INDEPENDENT GROUPINGS CERTIFY BEYOND `r = 3`.** Owner: §(K-grid)
    *Step G22*, (GR-19)(iii)/(v); gap-map `(K-grid)` close-it u6 **target (iii)**.
    **The best proof candidate, and the only live gap-map target with no direction

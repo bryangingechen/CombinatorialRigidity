@@ -17757,3 +17757,273 @@ finding one would be a real result (it would make the collapse hierarchy
 value-dependent above its proved rung).
 
 ---
+
+---
+
+## §(K-grid) — continuation (direction GISLAND, ordinal 94, 2026-09-10): the no-even-branch binding-circuit island does NOT refute (GR-15) — the `|Λ| ≥ 2` stratum at `n_hub = 6` that `cflank.LAM6_PLAN`'s `lamcap = 1` fenced off is now SWEPT COMPLETE (+125 346 labelled shapes, **166 088** in all, **0** NC1 misses and **0** rank misses, each rank-certified at an exact rational point), closing *Step G28* residual item 4 — and the island turns out to have its own PROVEN repair instrument, the odd-pair flip, resting on a parity law ((GR-153)–(GR-155)); (GR-26)(iii)'s two-profile island list is REFUTED (there are eight) and **E1 does not fire**
+
+Driver: `notes/scripts/w4/gisland.py` (five modes + `--validate`). Full write-up: `notes/pencil/fanout.md` §"GISLAND".
+
+### Step G173 — (GR-153): the all-odd circuit law — the obstruction is a parity fact
+
+> **(GR-153)** `[PROVED]` *(four clauses; each also asserted in-driver over
+> the whole island, `notes/scripts/w4/gisland.py --island` / `--pair`)* Let `γ` be a circuit of
+> `G°` all of whose branches have odd length, `r = |γ|`, and let `col` be
+> admissible.
+>
+> **(a) End colours and the parity of `h_≠`.** An odd branch's two end edges
+> carry the same colour `c_β`, so
+> `h_≠(γ) = #{i : c_{β_i} ≠ c_{β_{i+1}}}` is **even**. At `r = 3`,
+> `h_≠(γ) ∈ {0, 2}`, and `h_≠(γ) = 0` **iff** all three end colours agree.
+> Hence at an island profile (`Σ_γ(ℓ−1) = 4`) the (NC1)-violating admissible
+> colourings are **exactly the monochromatic-ended ones**.
+>
+> **(b) Balance is a half-count.** `|E_A| = |E_B|` **iff**
+> `#{odd branches with c_β = A} = #{odd branches}/2`; in particular the
+> number of odd branches is even. (This is (GR-16)(i)'s A-count law solved
+> for the bits.)
+>
+> **(c) Partners exist, at least three of them, off `γ`.** If `γ` is violated
+> at `col` with `c ≡ A` on its three branches, then by (b) there are
+> `#{odd}/2 ≥ 3` B-ended odd branches, **all of them off `γ`**.
+>
+> **(d) No branch of a violated `γ` is blocked.** At each hub of a violated
+> `γ` the two `γ`-darts agree, so neither is the lone dart of its colour; by
+> (GR-86)(i) neither end of any `β ∈ γ` is a blocked end, and flipping `β`
+> alone creates no monochromatic hub.
+>
+> A corollary used below: at `n_hub ≤ 6` an all-odd binding circuit carries a
+> branch of length `≥ 3`, since all-length-1 would give `Σℓ = r ≤ n_hub < 7`,
+> below girth. At `n_hub ≥ 7` that is not excluded by (GR-25)(ii).
+
+*Proof.* (a) alternation makes the two end edges of an odd branch agree, and
+sign changes around a cycle are even in number; at `r = 3` the only even
+values available are 0 and 2. (b) write `ℓ_β = 2a_β + 1` on the odd
+branches; `A(β) = a_β + [c_β = A]`, and `Σℓ/2 = Σ_{even} ℓ/2 + Σ_{odd} a_β +
+#{odd}/2`. (c) is (b) plus `γ`'s three branches being A-ended. (d) is the
+observation that a hub of a violated `γ` sees two equal `γ`-darts. ∎
+
+**Measured (`--pair`).** (b) asserted at **108 866** admissible colourings of
+the island stratum, (c) at **2 492/2 492** violated island circuits, (a) at
+**6 496** (`--island`) further ones through `nc1_law`, which also asserts the
+end-colour model agrees with `cflank.h_neq` edge by edge. (d) asserted at
+**7 476/7 476** odd flips in `--chain`, together with (GR-86)(i)'s
+localization `mono_hubs(col + 1_β) = blocked_ends(col, β)`.
+
+---
+
+### Step G174 — (GR-154): the odd-pair flip, and the two conjuncts that are free off `Λ`
+
+> **(GR-154)** `[PROVED]` *(clauses (i)–(iv) asserted per repair at 2 446
+> tier-1 repairs, `notes/scripts/w4/gisland.py --pair`)* Let `γ` be an all-odd binding circuit
+> violated at admissible `col`, let `β ∈ γ`, and let `δ ∉ γ` be odd with
+> `c_δ ≠ c_β` ((GR-153)(c) supplies at least three). Write
+> `col′ = col + 1_β + 1_δ`. Then
+>
+> **(i)** `col′` is **balanced** — by (GR-153)(b), one A-ended odd branch
+> becomes B-ended and one B-ended becomes A-ended;
+>
+> **(ii)** `h_≠(γ) = 2` in `col′`, hence `runs(γ) = 3`;
+>
+> **(iii)** if `ℓ_β, ℓ_δ ≥ 3` then both **ruling classes stay forests**: a
+> monochromatic cycle of `G` cannot cross a degree-2 body, so it is a
+> monochromatic `Λ`-cycle, and no `Λ`-edge changed colour;
+>
+> **(iv)** if `ℓ_β, ℓ_δ ≥ 3` then `D_A(γ′)` and `D_B(γ′)` are **exactly
+> unchanged** at every circuit `γ′` containing neither `β` nor `δ` — by
+> (GR-16)(iii) only hub-hub edges propagate a ruling component, the
+> `Γ`-components of `Λ` are untouched, and no edge of `γ′` changed colour.
+>
+> The **only** conjunct of admissibility that can fail is therefore
+> *no monochromatic hub*, and by (GR-153)(d) it can fail only at `δ`'s ends.
+
+**Measured (`--pair`).** Over the whole island at `n_hub ≤ 6` with `lamcap`
+un-fenced: **2 446 of 2 492** violated circuits are repaired by a tier-1 pair
+(`ℓ_β, ℓ_δ ≥ 3`), with (i)–(iv) **asserted at each** — including (iv)
+compared circuit by circuit against `circuit_report`'s `grid.block_data`
+classes. 46 need a `Λ`-edge flip, where (iii)/(iv) do not apply.
+
+---
+
+### Step G175 — (GR-155): the private odd-pair repair theorem — the island's (GR-24)
+
+> **(GR-155)** `[PROVED]` *(the conditional; its hypothesis's coverage
+> MEASURED at `notes/scripts/w4/gisland.py --pair`)* Let `γ` be an all-odd binding circuit
+> violated at admissible `col`, and suppose there are `β ∈ γ` and an odd
+> `δ ∉ γ` with
+>
+> **(i)** `ℓ_β ≥ 3` and `ℓ_δ ≥ 3`; **(ii)** `c_δ ≠ c_β`; **(iii)** `δ` has no
+> blocked end; **(iv)** `β` lies in no **other** binding circuit and `δ` lies
+> in **no** binding circuit.
+>
+> Then `col′ = col + 1_β + 1_δ` is admissible, has `h_≠(γ) = 2`, and violates
+> **no binding circuit that `col` did not already violate**.
+>
+> *Proof.* Balance by (GR-154)(i); forests by (GR-154)(iii); no monochromatic
+> hub because `β` is unblocked by (GR-153)(d) and `δ` by hypothesis (iii);
+> `γ` repaired by (GR-154)(ii); and by (iv) every other binding circuit
+> contains neither `β` nor `δ`, so (GR-154)(iv) leaves its `D_A`, `D_B`
+> exactly as they were. ∎
+
+**Coverage, `[MEASURED]` at `notes/scripts/w4/gisland.py --pair`:** the hypothesis holds at
+**1 344 of 2 492** violated island circuits (53.9 %), and at every one of
+those the conclusion — including the set inclusion `violated(col′) ⊆
+violated(col)` — is asserted in-driver rather than argued.
+
+**What it does not give, stated so no later pass over-reads it.** It is a
+**per-circuit** theorem. Repairing several violated island circuits at once
+needs distinct opposite-ended partners for each, which is not proved here; so
+this **does not** make island NC1-satisfiability a theorem, and (GR-26)(i)
+stays MEASURED. It is the `Λ`-shaped conjunct route-ledger entry 3 asks for,
+in its single-circuit instance.
+
+---
+
+### Step G176 — (GR-156): (GR-86) on the island — balance-neutral, so it composes rather than acts
+
+> **(GR-156)** `[PROVED]` *(both halves; the composition rate MEASURED at
+> `notes/scripts/w4/gisland.py --chain` / `--pair`)*
+>
+> **(i)** Flipping an odd branch moves `|E_A| − |E_B|` by exactly `±2`;
+> flipping an even branch moves it by `0` ((GR-16)(i): `A(β) = ℓ/2` is
+> bit-independent). Hence **no chain of even-branch flips can restore the
+> balance an island repair must break**, and (GR-86)(ii)'s repair chains,
+> which add **even** branches by construction, cannot repair an all-odd
+> circuit on their own.
+>
+> **(ii)** For the same reason they compose cleanly as a **third stage**
+> behind (GR-154)'s odd pair: an even chain changes neither the balance the
+> pair restored nor — since an island circuit has no even branch, so no chain
+> branch can lie on it — `h_≠(γ)`. Even branches are never `Λ`-edges, so
+> (GR-154)(iii)/(iv) survive a chain too.
+
+**Measured.** (i): 7 476/7 476 odd flips move the balance by exactly 2;
+15 816/15 816 even flips move it by 0 (`--chain`). (ii): the chain was
+**needed 0 of 2 492 times** (`--pair`) — at every violated island circuit
+some opposite-ended partner was already unblocked, so the odd pair alone
+sufficed. So (GR-86) is **available and sound here, and idle** on this
+population; it is the named fallback if a larger stratum ever produces a
+circuit whose every partner is blocked.
+
+---
+
+### Step G177 — (GR-157): (GR-26) extended — the `|Λ| ≥ 2` stratum at `n_hub = 6`, swept complete
+
+> **(GR-157)** `[MEASURED]` *(driver `notes/scripts/w4/gisland.py --deep`;
+> exhaustive over isomorphism classes and over all `2^M` bits; caps in the
+> driver docstring)* Over the
+> `D = 0` stratum at `n_hub = 6`, `M = 9`, with `cflank.length_tuples`'
+> `lamcap` **un-fenced** (99, i.e. unbounded — `Σℓ = 24` forces `|Λ| ≤ 5`) and
+> `|Λ| ≥ 2`, every hub multigraph and every length tuple:
+>
+> **(i)** **6 008** isomorphism classes = **125 346** labelled class shapes
+> pass (GR-25)'s cut criterion and are class shapes, carrying **324 218**
+> admissible colourings — the stratum `cflank.LAM6_PLAN = ((6, 9, 1),)`
+> fenced off, 117 894 of 142 740 length tuples, 82.6 % of the tuple space;
+>
+> **(ii)** **not one** has all its admissible colourings NC1-violating —
+> **0** misses under the landed binding-circuit detector **and 0** under the
+> strictly stronger every-circuit one of (GR-159);
+>
+> **(iii)** **every one** carries an admissible colouring at generic
+> `dim Z₊ = dim Z₋ = 0`, exhibited by an exact rational point and re-checked
+> through both `gridcol.dim_W_branch` and `grid.dim_Z` — by (GR-7) remark (i)
+> a **per-shape proof of (GR-15)** there. **0** rank misses.
+>
+> With (GR-26) this makes the swept population **166 088** labelled class
+> shapes, and `Λ ≠ ∅` **complete at every `n_hub ≤ 6`**. *Step G28*'s
+> residual item **4** is **CLOSED**; residuals 1, 2 and 3 are untouched.
+
+---
+
+### Step G178 — (GR-158): (GR-26)(iii)'s island profile list is incomplete
+
+> **(GR-158)** `[REFUTED]` *(witness: the no-even-branch profiles
+> `(1,1,1,5)` and `(1,1,3,3)`, at `n_hub = 4`, inside (GR-26)'s own swept
+> population; driver `notes/scripts/w4/gisland.py --island`)* (GR-26)(iii) records the 1 608 no-even-branch
+> island shapes as carrying *"the profiles `(1,1,5)` and `(1,3,3)`"*. Over
+> (GR-26)'s **own** population the no-even-branch binding-circuit profiles
+> are **four** — `(1,3,3)` 1 476, `(1,1,5)` 168, `(1,1,3,3)` 22,
+> `(1,1,1,5)` 12 labelled shapes — the last two at `n_hub = 4`, which
+> `cflank.py --lam` sweeps at `lamcap = 99` and which therefore were already
+> in the corpus when the two-profile sentence was written. Over the extended
+> population of (GR-157) there are **eight**: additionally `(1,1,1,3,3)`,
+> `(1,1,1,1,5)`, `(1,1,1,1,3,3)` and `(1,1,1,1,1,5)`. The island itself grows
+> from **1 608** to **3 571** labelled shapes (**2 100** isomorphism classes
+> at `n_hub ≤ 6`).
+>
+> The 1 608 count is **not** refuted — `--island` reproduces it exactly
+> (1 430 + 166 + 12 by `|Λ|`) — only the profile attribution. The
+> attribution was never driver-tested: *Step G28*'s own mode table has no row
+> for it (F11).
+
+---
+
+### Step G179 — (GR-159): the landed NC1 detector's binding-circuit restriction is sound in fact
+
+> **(GR-159)** `[MEASURED]` *(driver `notes/scripts/w4/gisland.py --wide`,
+> with a `Λ = ∅` negative control where the claim is provable, so the mode is
+> not observed only passing — F13)* `cflank.nc1_violations` inspects only `hm['binding']`, the
+> circuits with `Σ_γ(ℓ−1) ≤ 4`; (GR-17)(d) licenses that restriction **only
+> at `Λ = ∅`**, and at `Λ ≠ ∅` an off-circuit merge could in principle push
+> `D_A` below 3 at a circuit the detector never looks at. Running the **same
+> landed gate** against a hub model whose `binding` field is widened to
+> **every** circuit:
+>
+> **(i)** landed violations ⊆ widened violations, asserted at every
+> admissible colouring tested;
+>
+> **(ii)** the restriction lets **0** violating colourings through — at the
+> 907-shape census pool (604 shapes with `Λ ≠ ∅`, 8 654 admissible
+> colourings), at the whole `n_hub ≤ 6` `Λ ≠ ∅` stratum with `lamcap`
+> un-fenced (7 685 isomorphism classes, 417 090 admissible colourings) —
+> **425 744** in all. (GR-157)'s 324 218 are a **sub**-population of the
+> second, re-checked independently inside `--deep`, not a third summand;
+>
+> **(iii)** negative control: at the `Λ = ∅` stratum, where (GR-17)(d) is
+> *proven*, widening changes nothing at 16 226 admissible colourings, as it
+> must.
+>
+> So every `Λ ≠ ∅` NC1 figure in (GR-26) and (GR-157) is safe as stated — but
+> it is **measured** safety, not a consequence of anything landed, and a
+> stratum reaching `Σ_γ(ℓ−1) ≥ 5` with richer `Λ` would need it re-taken.
+
+---
+
+### Step G180 — (GR-160): the labelled pool is a 20.9× redundant cover, and quotienting it is what made the sweep affordable
+
+> **(GR-160)** `[MEASURED]` *(driver `notes/scripts/w4/gisland.py --island`,
+> with an orbit control at `--deep` and a pin to the landed
+> `cflank.hunt_shape`)* *Step G28*'s pool
+> caveat records that length profiles are enumerated on a **labelled** edge
+> list, so a graph automorphism permuting branches produces duplicates.
+> Quantified: at `n_hub = 6` the **164 794** habitat-passing labelled shapes
+> are **7 892** isomorphism classes — a **20.9×** redundant cover — computed
+> by acting with `Aut(G°)` on branch indices.
+>
+> **(i)** The quotient reproduces (GR-26)'s population **exactly**: summing
+> orbit sizes over the same three `n_hub` and the same `lamcap` fence gives
+> **40 742** labelled class shapes, and the island **1 608**.
+>
+> **(ii)** It is sound because every quantity measured here — class-shapehood,
+> the admissible-colouring count, the NC1 count at either detector, the
+> merge-free count, the island predicate — is an isomorphism invariant; and
+> it is **tested** as such rather than asserted: at 40 seeded nontrivial
+> orbits `--deep` re-scans a **second** member and asserts the five counts
+> identical (**40/40**), and at the same 40 asserts this driver's own loop
+> agrees with the landed `cflank.hunt_shape` on `(adm, nc1)`.
+>
+> **(iii)** Consequence: (GR-157)'s sweep costs **369 s**, not the ~90 min a
+> labelled sweep of the same stratum would. The `--lam6` over-ceiling
+> invocation recorded at F15 (1 288–1 340 s for 39 448 labelled shapes) is
+> **21× redundant**, and re-running it through the quotient would put it well
+> inside the 600 s budget.
+>
+> **First-slice figures the board asked for** (`--island`, `D_A`/`D_B` off
+> `grid.block_data`, never off the run count): over the island at `|Λ| = 1`,
+> 6 350 admissible colourings, 6 006 NC1-clean at **every** circuit, **3 858**
+> of those also merge-free in **both** blocks; at `|Λ| = 2`, 134 / 130 /
+> **64**; at `|Λ| = 3`, 12 / 12 / **4**. Over (GR-157)'s `|Λ| ≥ 2` stratum,
+> 324 218 / 298 222 / **114 850**. So roughly a **third** of NC1-clean island
+> colourings carry a merge somewhere — merges are common, and the run count
+> is genuinely not a substitute for the class count.

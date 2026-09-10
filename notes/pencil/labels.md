@@ -5090,3 +5090,36 @@ the first reservation in the arc to do it.
 > before the `(`, or run the `.py` half against a comment/docstring-only
 > pattern. Deliberately left for a coordinator round rather than done inside a
 > landing, since it changes a gate every future direction runs.
+
+## Reserved namespace — direction GISLAND (2026-09-10, **CONSUMED IN FULL: eight labels and eight steps**)
+
+| direction | section | labels | steps | driver |
+|---|---|---|---|---|
+| **GISLAND** | §(K-grid) — **extends**, no new section | **(GR-153)–(GR-160)** | ***Steps G173–G180*** | `w4/gisland.py` (five modes + `--validate`) |
+
+**It opens at exactly the tail GLEAF declared** ((GR-153) / *Step G173*) — at the
+declaration, not past it. With the concurrent sibling GCOIND taking
+(GR-161)–(GR-168) / G181–G188, **THE LIVE TAIL IS NOW (GR-169) / *Step G189***.
+
+**0-hit verification** (clause (L7): every token enumerated, not sampled; hits
+and files reported separately), at the dispatch baseline `c8efb227`: `GISLAND`
+and `gisland` **0/0**; `(GR-155)`–`(GR-160)` and `G174`–`G180` **0/0**;
+`(GR-153)` / `G173` **3 files each** — GLEAF's tail declaration in
+`w4/gleaf.py`, `fanout.md` and this registry. **Declarations, never
+consumptions.**
+
+> **A SECOND CORRECTION TO THE DISPATCH SPEC, from the same coordinator defect
+> as BCORNER's — and that is what makes it worth recording.** The spec asserted
+> *"every token is 0 files except `GR-153` and `G173` (3 files each)"*.
+> **`GR-154` is 1 hit / 1 file** (`notes/pencil/labels.md:3804` — GLEAF's own
+> tail-declaration sentence *"and **not** at (GR-154)"*, a declaration, so the
+> reservation is clean). The coordinator's own enumeration **had produced this
+> cell correctly** and the prose written from it dropped the row. Together with
+> BCORNER's `BE237`, that is **two instances in one round** of the same failure:
+> a hand-run range check whose result is summarized in prose rather than
+> emitted as a table. The standing fix is `notes/Harness-structure.md`
+> **D6.3(a)** (`--reserve-range`), and these two are its acceptance tests.
+
+**(L6) landing-time bare-token grep, whole repository:** over
+`w4/gisland.py`, `grep -oE '\([A-Z][0-9]\)'` returns **no matches**. Nothing of
+that shape is minted by this direction.

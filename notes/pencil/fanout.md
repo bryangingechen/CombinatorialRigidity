@@ -2,8 +2,8 @@
 
 **Status: EIGHT fan-outs, FIFTY-FOUR single directions, ONE draft-only parallel direction,
 FIVE concurrent pairs, ONE concurrent round of four and TWO concurrent rounds of three
-dispatched; 102 LANDED, **ONE IN FLIGHT (GISLAND 94, the 2026-09-10 round of three's
-last member), NONE DRAFTED**. The round of three (BFOUR 81,
+dispatched; 103 LANDED, **NONE IN FLIGHT, NONE DRAFTED** — the 2026-09-10 round of three
+(BCORNER 93, GISLAND 94, GCOIND 95) is COMPLETE. The round of three (BFOUR 81,
 BINSERT 82, BSERIES 83) and the **chain of six** single dispatches that answered each
 other in turn (BSTEER 84 → BGTWOA 89, (BE-204)–(BE-217); per-landing detail in the
 sections and in blocks 8/11–13, **not restated here**) are both CLOSED — and
@@ -16789,3 +16789,127 @@ produced literal `(S0)`/`(S1)`/`(S2)` in the driver, and `(S1)` is a **live**
 corpus token; renamed to lowercase, figures byte-identical. It also reports a
 **systematic false-positive class in the (L6) gate over `*.py`** — verified at
 this landing — recorded in `labels.md` as a debt item for a coordinator round.
+
+---
+
+## GISLAND — ordinal 94, concurrent round of three, `research-direction-opus`, LANDED 2026-09-10
+
+**The question.** §8's (GR-15)-scoped **rank 1**: on the no-even-branch
+binding-circuit island at `Λ ≠ ∅` — where **both** landed repair instruments are
+unavailable, since (GR-23)'s flip set is *even* branches and (GR-24) needs a
+*private even* branch — does a shape refute `(GR-15)` **by a proof**, or does a
+repair theorem cover the island?
+
+**Verdict: the island does NOT refute (GR-15) — and the decisive result is
+bigger than the question asked.**
+
+**The sweep, complete.** The `|Λ| ≥ 2` stratum at `n_hub = 6` that
+`cflank.LAM6_PLAN`'s `lamcap = 1` fenced off is now swept **complete**: 6 008
+isomorphism classes = **125 346** further labelled class shapes, **324 218**
+further admissible colourings, exhaustive over all `2^M` bits, **0 NC1 misses /
+0 rank misses**, every shape rank-certified at an exact rational point, orbit
+control **40/40**. Total population **166 088** ((GR-157)). ***Step G28*
+residual item 4 is CLOSED. E1 does not fire.**
+
+**The island owns a PROVEN instrument, which is the part nobody expected.** At
+an all-odd binding circuit `h_≠` is **even** — an odd branch's two end edges
+carry the same colour — so a violated circuit is **monochromatic-ended**, and by
+(GR-86)(i) **no branch of it is blocked**; balance being the odd half-count law,
+`≥ 3` opposite-ended partners always exist **off** the circuit ((GR-153): a
+four-clause proof, each clause also asserted in-driver, 7 476/7 476 and
+2 492/2 492). The **odd-pair flip** then repairs **2 492/2 492** violated island
+circuits, the forest and `D_A`/`D_B`-invariance conjuncts **free** off `Λ`
+((GR-154)); with privacy it becomes a genuine **(GR-24)-analogue**, hypothesis
+holding at **1 344/2 492** ((GR-155)). **(GR-86) answered:** its chains are
+even-only hence balance-neutral, so they cannot repair an all-odd circuit
+*alone* — which is exactly why they **compose** as a third stage. Needed
+**0/2 492** ((GR-156)).
+
+**(GR-26)(iii) REFUTED** ((GR-158)). Its island profile list names *"the profiles
+`(1,1,5)` and `(1,3,3)`"*; over (GR-26)'s **own** population there are **four** —
+`(1,3,3)` 1 476, `(1,1,5)` 168, `(1,1,3,3)` 22, `(1,1,1,5)` 12 — the last two at
+`n_hub = 4`, already swept when the sentence was written; over the extended
+population there are **eight**. The island grows **1 608 → 3 571** labelled
+shapes. The **1 608 count is not refuted** — `--island` reproduces it exactly
+(1 430 + 166 + 12 by `|Λ|`) — only the attribution, which was **never
+driver-tested** (F11).
+
+Two scope facts land with it: the landed NC1 detector's binding-circuit
+restriction, which (GR-17)(d) licenses only at `Λ = ∅`, is sound **in fact** — 0
+misses over **425 744** admissible colourings, with a `Λ = ∅` negative control
+where the claim is provable ((GR-159)) — and the labelled pool is a **20.9×**
+redundant cover of its isomorphism classes, reproducing 40 742 **exactly**, which
+is what made the sweep affordable at 322 s instead of ~90 min ((GR-160)).
+
+**Route-ledger entry 3: ADVANCED, not CLOSED** (coordinator call, taking the
+direction's own recommendation). NC1-satisfiability on the island stays
+**MEASURED**: (GR-155)'s hypothesis covers 54%, the simultaneous multi-circuit
+repair is the open half, 46/2 492 repairs route through a `Λ`-edge, and
+**`n_hub ≥ 8` is untouched** — (GR-153)(d)'s corollary is `n_hub ≤ 6`-*conditional*,
+not merely capped there.
+
+**The coordinator's prediction: verdict CONFIRMED, mechanism WRONG IN KIND, and
+the *"where I expect to be wrong"* clause REFUTED — its first miss this round.**
+The spec predicted no refutation and gave as its reason that *(GR-24)'s measured
+cover has never failed*; but **(GR-24) does not "cover" the island — the island
+is *defined* as where its hypothesis cannot hold.** The spec's stated
+expectation-of-being-wrong (that the refutation branch was live at `|Λ| ≥ 2`) is
+**refuted**: the tell never fired at `lamcap = 99`.
+
+**AND THE SPEC HANDED DOWN A WRONG DERIVED CONDITION AS SETTLED — the
+coordinator's defect, relayed from §8 rank 1's own text under the heading
+*"Derived for you, so you need not re-derive it."*** The clause read *"merging
+needs a monochromatic `Λ`-path in **both** colours — hence `|Λ| ≥ 2`"*. **One
+colour suffices:** (NC1) fails as soon as `min(D_A, D_B) < 3`, and one
+off-circuit `Λ`-edge with both ends on `γ` already merges two A-runs, so the
+condition is **`|Λ| ≥ 1`**. The board's **own** 7 450 measured shortfalls sit
+inside the *already swept* `|Λ| ≤ 1` stratum and contradict the "both colours"
+reading on its own numbers. The sweep was still the right move — 82.6% of the
+tuple space was unswept and is now closed — but the argument that a refutation
+*had* to live there was unsound. This is the BGENUINE shape one level up: a
+criterion quoted from a summary surface instead of re-derived. Corrected in §8.
+
+**Coordinator verification at landing** (not on attestation): `--island` and
+`--deep` re-run at full cap. `--deep` reproduces **6 008 / 125 346 / 324 218**,
+**0** NC1 misses (landed *and* every-circuit), **0** rank misses, **0** colourings
+the binding-circuit restriction lets through, orbit control 40/40, and the
+**eight** profiles, in 322 s. `--island` reproduces 40 742, the 1 608 breakdown
+and the four-profile census. (GR-153)'s four clauses read at source and sound.
+`gapdiff K-grid`: **0 dropped, 10 added**, row 3 670 → 3 582 words.
+
+**Two coordinator merges this landing had to make, both from `RESEARCH-ARC.md`
+§2's fourth hazard.** *(i)* The draft's proposed `(K-grid)` cells were a **full
+replacement computed before GCOIND landed**, and its close-it text still carried
+the pre-GCOIND *"(iii) which `r`-co-independent groupings certify beyond
+`r = 3`"* — applying it wholesale would have **silently reverted** GCOIND's
+(GR-163)/(GR-164)/(GR-167) settlement. The **status** cell was verified
+byte-unchanged since `c8efb227`, so that half applied wholesale safely; close-it
+was merged clause by clause instead, with the entry-3 status attached as its own
+clause rather than to the now-settled target (iii). The direction flagged the
+risk itself. *(ii)* The proposed status text wrote `` `|Λ| ≥ 2` `` with
+**unescaped pipes**, which silently flipped the row from `split` to `combined` —
+and **`check-gapmap-cells.py` still reported OK**, because its combined fallback
+caps the sum. Caught by `gapmap.py --list`, not by the gate; escaped to `\|`.
+That is *"a gate that reports zero is not a gate that passes"* in a new
+direction, and it is worth a debt item.
+
+**Reservation.** (GR-153)–(GR-160) / *Steps G173–G180*, all consumed; with
+GCOIND's range, the live tail is **(GR-169) / *Step G189***. The direction's
+(L7) pass **corrected the coordinator's spec a second time this round**:
+`GR-154` is a fourth non-zero token (GLEAF's own *"and not at (GR-154)"*
+declaration), which the coordinator's enumeration had produced correctly and
+whose prose summary dropped — the same defect as BCORNER's `BE237`, and the two
+are now D6.3(a)'s acceptance tests.
+
+**Self-caught, four.** A printed assertion the driver was not making
+(`nc1_law` never called); **three overlapping populations summed** — 741 308
+quoted for (GR-159) where `--deep` is a *subset* of `--wide`'s stratum, correct
+figure **425 744**, fixed in the draft *and* in the proposed cell; a `--chain`
+verdict wrong in sign; and a repair search under-performing its own theorem
+until reordered (2 274 → 2 452 → 2 468), *"a reminder that a coverage rate is a
+property of the search"*.
+
+**Cost.** `--island` 110 s, `--wide` 414 s, `--chain` 351 s, `--pair` 260 s,
+`--deep` 369 s; `--validate` ≈ 1 500 s, an **F15 over-ceiling** invocation
+alongside `cflank.py --lam6`. The quotient is why `--deep` cost 369 s rather than
+~90 min — and it shows the landed `--lam6` (1 288–1 340 s) is **21× redundant**.
