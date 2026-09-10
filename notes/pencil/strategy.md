@@ -1731,8 +1731,11 @@ control.
    GLEAF's rank 3 (a condition its row **implies**). Both filters pass: index set the
    class set and `E(H₊)`, and (GR-13) forbids a counting characterization of the
    `r = 3` **existence** problem, not a per-partition criterion at `r = 4`. **First
-   slice, cheap and named:** at the pinned exemplar `V6m10(3¹⁰)`, `packmm.py --hier`
-   already finds **257** co-independent 4-partitions of 20 967; compute
+   slice, cheap and named:** at the pinned exemplar `V6m10(3¹⁰)`, **`gridcol.py --hier`**
+   *(this entry said `packmm.py`; there is no `--hier` there — corrected 2026-09-10)*
+   finds **3 128** co-independent 4-partitions of **175 275**
+   *(the entry said `257 of 20 967`: those were **prefix counts**, `collapse_search`'s
+   `want=1` returning at the first certificate — un-fenced, **1 536 certify**)*; compute
    `dim W_coll` for all 257 and hunt the invariant separating the certifying ones —
    finite, exact ℚ, and known combinatorial there (value-independence over 840
    integer 4-tuples). *Kill condition: a combinatorial criterion for `r`-certifying
@@ -1740,6 +1743,40 @@ control.
    (which kills the line, `Step G22` limit (b) becoming a negative). Decided by: the
    `(K-grid)` row, close-it u6 target (iii). **Note on the number 4:** it is `κ` as
    MEASURED on the census pool, not a proved cap — nothing bounds `κ` in general.*
+   > **SPENT 2026-09-10 (direction GCOIND, ordinal 95) — the kill condition FIRED on its
+   > FIRST branch, and the SECOND is now provably unreachable.** *(Recorded here per §8's
+   > own rule.)* **The criterion exists and is proved:** at a balanced block four
+   > co-independent groups certify **iff** `C(H₊) = ⊕_j C(H₊ − E_j)` — an *internal*
+   > direct-sum decomposition of the block's cycle space, **parameter-free** and poly-time
+   > ((GR-163)). Asserted over the **complete** 3 128-partition population × 4 value
+   > tuples with 0 disagreements, the 1 536/1 592 split reproducing the un-fenced `cert`
+   > count by a wholly different route. **The second branch cannot fire:** value-
+   > independence at `r = 4` is now a **THEOREM**, not a measurement ((GR-164)), so no
+   > value-dependent `r = 4` certificate exists to exhibit — and *Step G22* limit (b) is
+   > **discharged at `r = 4`**. A side effect worth its own line: at `r = 4` **a negative
+   > is a proof**, because the criterion names no values, so the `draws = 3` sign
+   > asymmetry this board worried about **dissolves**.
+   > **BUT THE ENTRY'S OWN FRAMING IS HALF REFUTED, and that is the finding.** The
+   > criterion is **NOT** in the counting-and-closure class the first slice was hunting:
+   > a two-clause rule (`Σ_{i<j} [comp(H₊ − E_i − E_j) − 1] = 3h` ∧ no edge a bridge of
+   > all three other deletions) is **necessary — both halves proved** — and separates the
+   > pinned exemplar's 3 128 **perfectly**, yet **fails at 4 of the 9 distinct separator
+   > blocks**, false positives only, with **four exhibited witness pairs**: two
+   > co-independent 4-partitions of *one* block, identical on the whole statistic
+   > battery, opposite labels ((GR-167)). **`(GR-164)` is what makes that negative a
+   > proof rather than a cap.**
+   > **AND A NECESSARY CONDITION UNIFORM IN `r` ARRIVES WITH IT:** any certificate at any
+   > `r` forces an **unconstrained** tree-triple, by Laplace over cobases ((GR-165)) —
+   > the first `r`-uniform bound on `κ` this row has ever carried, now on target (ii).
+   > This **corrects a natural misreading of (GR-19)(v)**, whose *"no tree-triple
+   > exists"* is about the **class-respecting** triple; all 18 separators carry the
+   > unconstrained one. Negative control: a bridged balance-shaped block has **0
+   > certificates at every `r`, exhaustively**.
+   > *Kill condition for the successor: is the unconstrained tree-triple SUFFICIENT for
+   > `κ < ∞`? — or, cheaper, does an ordered/matrix-valued corank statistic survive the
+   > four deviating blocks? Decided by: the `(K-grid)` row, close-it u6 targets (ii)/(iii).*
+   > **INTERLOCK:** this is a **positive** on rank 4's partition side, so nothing here
+   > lowers rank 4; GCOIND did **not** derive the propagation scheme.
 3. **AN EXPANSION THEOREM IN THE `G°` DIRECTION.** Owner: §(K-ind) (I2)/(I4) and
    its u5 gate; §(K-grid) (GR-21)/(GR-22), (SD-6). §(K-ind) says the class's
    infinitude *"is entirely in the `G°` direction, **which no move reaches**"* — but

@@ -2,8 +2,8 @@
 
 **Status: EIGHT fan-outs, FIFTY-FOUR single directions, ONE draft-only parallel direction,
 FIVE concurrent pairs, ONE concurrent round of four and TWO concurrent rounds of three
-dispatched; 101 LANDED, **TWO IN FLIGHT (GISLAND 94, GCOIND 95, the 2026-09-10 round of
-three's other two members), NONE DRAFTED**. The round of three (BFOUR 81,
+dispatched; 102 LANDED, **ONE IN FLIGHT (GISLAND 94, the 2026-09-10 round of three's
+last member), NONE DRAFTED**. The round of three (BFOUR 81,
 BINSERT 82, BSERIES 83) and the **chain of six** single dispatches that answered each
 other in turn (BSTEER 84 → BGTWOA 89, (BE-204)–(BE-217); per-landing detail in the
 sections and in blocks 8/11–13, **not restated here**) are both CLOSED — and
@@ -16683,3 +16683,109 @@ coordinator's spec**: `BE237` is a fourth non-zero token (BOBLIG's own
 declaration), missed because the coordinator's ad-hoc range check collapsed the
 label and step tokens into one grep — the worked example for
 `notes/Harness-structure.md` **D6.3(a)**.
+
+---
+
+## GCOIND — ordinal 95, concurrent round of three, `research-direction-opus`, LANDED 2026-09-10
+
+**The question.** §8's (GR-15)-scoped **rank 2**: at a balanced block, is there
+a **combinatorial** criterion characterizing which `r`-co-independent groupings
+certify `dim W_coll = 0` beyond `r = 3`? *Step G18*'s door (iv) had been
+delivered — the hierarchical certificate succeeds 18/18 at `r = 4` — without
+restoring a combinatorial route, because at `r ≥ 4` *"the vanishing is a
+determinant, not a direct sum"*.
+
+**Verdict: SPLIT, and the split is the finding.**
+
+**(A) YES at `r = 4`, proved, and stronger than the question asked.** Four
+co-independent groups certify **iff** `C(H₊) = ⊕_j C(H₊ − E_j)` — an *internal*
+direct-sum decomposition of the block's cycle space into those of the four
+deleted subgraphs. **Parameter-free** and poly-time ((GR-163)). The hinge is a
+reformulation ((GR-162)): with `B` the fundamental-cycle matrix, `D = diag(a)`
+and `M(a) = [B | DB | D²B]`, one has `W_coll = ker M(a)` verbatim, and
+`det B[S] ≠ 0` iff `S` is a **cobase**. At `r = 4`, `V^⊥` is a single
+divided-difference row with all entries nonzero, so `W_coll = ker(⊕_j C_j → C)`
+and the counts are square. Consequences: **value-independence at `r = 4` is a
+THEOREM** ((GR-164)), *Step G22*'s limit (b) is **discharged there**, and — the
+practically important corollary — **a negative becomes a proof**, so the
+`draws = 3` sign asymmetry dissolves at `r = 4`.
+
+**(B) NO in the class the first slice was hunting** ((GR-167), **REFUTED**). A
+two-clause rule — `Σ_{i<j}[comp(H₊ − E_i − E_j) − 1] = 3h`, and no edge a bridge
+of all three other deletions — is **necessary, both halves proved** (the second
+because `e ∈ cl_{M*}(E_j)` puts `0 ≠ B_e ∈ ⋂_j span(E_j)`), and it separates the
+pinned exemplar's 3 128 partitions **perfectly**. It **fails at 4 of the 9
+distinct separator blocks**, **false positives only** — exactly as the necessity
+proofs require — with **four exhibited witness pairs**: two co-independent
+4-partitions of *one* block, identical on the whole battery, opposite labels.
+
+**(GR-165), and it is the `r`-uniform half.** Any certificate at any `r` forces
+an **unconstrained** tree-triple (Laplace over cobases) — the first `r`-uniform
+necessary condition on `κ` the row has carried. It **corrects a natural
+misreading of (GR-19)(v)**: the 18 separators lack the **class-respecting**
+triple; all 18 carry the unconstrained one (864 cobases at the exemplar;
+constructive search and Edmonds' `|A| ≤ 3r*(A)` agree). **Negative control:** a
+bridged balance-shaped block has **0 certificates at every `r` up to #classes,
+exhaustively**. (GR-166) expands `det M(a)` as a signed sum over ordered
+tree-triples, and at `r = 4` it **is** `c·∏(a_i − a_j)^{comp(H₊−E_i−E_j)−1}`,
+120/120.
+
+**Blind axes.** Opened **1** (`want=1`), **3** (`r = 5` run for the first time;
+`r = 3..6` exhaustive on the control), **4** (moot at `r = 4`); partially **2**
+(all 9 distinct separator blocks — exhaustive at the two `V6m10`, seeded
+800-sample at the seven `V6m11` from `S(13,≤4) = 2 798 251`) and **5**. Still
+closed: one eigen-block, two carrier shapes, balance assumed throughout. The
+deviation **counts** are seed-dependent; **the witness pairs' existence is not**.
+`--r5` **refuted the direction's own prediction**: 0 value-dependent
+5-partitions under its cap, and every generically-certifying 5-partition has
+residual degree 0, so value-independence is a theorem at `r = 5` too on this
+block — reported as *not found under cap*, never *does not exist*.
+
+**The coordinator's prediction: verdict VINDICATED, mechanism REFUTED.** The
+spec predicted a criterion would exist and be visible in the 1 536/1 592 split,
+and it is. Its *reason* — value-independence plus refinement-monotonicity as
+"the signature of a matroidal condition" — is wrong: value-independence at
+`r = 4` is a **Vandermonde dimension count**, not matroidality. And the spec's
+*"where I expect to be wrong"* clause, quoting the board's own closing lesson
+(*check that the criterion reached is decided by combinatorial data, not by a
+determinant*), fires **in refined form**: "determinant" and "combinatorial" are
+not opposites — what matters is whether the signed count **cancels**.
+
+**Coordinator verification at landing** (not on attestation): `--unfence`,
+`--r4`, `--tt`, `--comb` re-run at full cap and `--validate` green; 3 128 × 4
+tuples with 0 disagreements and 67 200 evaluations with 0 deviations
+reproduced; the negative control and the witness pairs reproduced. Both
+necessity proofs read at source and sound. `gapdiff K-grid`: **0 dropped, 4
+added**, whole row **+2 words** net after compression.
+
+**Surface corrections this landing carries** (F12 — a correction to a summary is
+presumptively a correction to body prose). The mis-named driver and the fenced
+figures reached **four** surfaces, **two of them body prose**, which the
+coordinator's own D6.5 entry had not found: `strategy.md` §8 rank 2 (both
+defects), **`grid.md` (GR-19)(v)** and **`grid.md` *Step G23* item (ii)** — the
+very door (GR-163) walks through — with `Harness-structure.md` D6/D6.5 already
+correct. All corrected here, together with (GR-19)(v)'s unqualified *"no
+tree-triple exists"* and a third defect the direction reported: *Step G22*'s
+proof reads squareness as an `r ≥ 4` phenomenon when at balance the system is
+square at **every** `r`.
+
+**One coordinator correction to the draft.** Its §12 proposed adding a clause to
+the `(K-grid)` **status** cell's *"driver/label inventory sentence"* and costed
+~92 words of duplicated glosses there. **No such inventory exists** — the whole
+gap-map table carries 7 `.py` mentions, 0 `packmm`, 0 `modes` — so that half of
+the recompute plan describes a structure that is not in the row. It is also
+unnecessary: the direction moved **no (K-grid) status word**, and its results
+are close-it content by construction. The landing therefore edits **close-it
+only** (u6 targets (ii) and (iii)), paying for the additions by compressing the
+`(c)` AA-glue chronology and two `(a′)`-route narratives — all barred-route
+history, verdicts and labels preserved.
+
+**Reservation.** (GR-161)–(GR-168) / *Steps G181–G188*, all consumed; live tail
+**(GR-169) / *Step G189***. The (L7) check was run **twice**, at `c8efb227` and
+at `b2b10041` after a sibling landing moved `HEAD` mid-run — the first
+reservation in the arc to do so, and the right response to §2's fourth hazard.
+The **(L6) grep fired on the direction itself**: `sorted(S0)`/`dets[S1]`
+produced literal `(S0)`/`(S1)`/`(S2)` in the driver, and `(S1)` is a **live**
+corpus token; renamed to lowercase, figures byte-identical. It also reports a
+**systematic false-positive class in the (L6) gate over `*.py`** — verified at
+this landing — recorded in `labels.md` as a debt item for a coordinator round.

@@ -5029,3 +5029,64 @@ minted.** *(Self-caught by the direction: an earlier revision of its own §8
 claimed "none", which the grep contradicts — the claim class is "minted", not
 "appears", and the honest form reports the appearances and then says why they
 are not mints.)*
+
+## Reserved namespace — direction GCOIND (2026-09-10, **CONSUMED IN FULL: eight labels and eight steps**)
+
+| direction | section | labels | steps | driver |
+|---|---|---|---|---|
+| **GCOIND** | §(K-grid) — **extends**, no new section | **(GR-161)–(GR-168)** | ***Steps G181–G188*** | `w4/gcoind.py` (seven modes + `--validate`) |
+
+**It opens at the tail GLEAF declared** ((GR-153) / *Step G173*), leaving
+**(GR-153)–(GR-160) / G173–G180** to the concurrent sibling GISLAND. **THE LIVE
+TAIL IS NOW (GR-169) / *Step G189***.
+
+**0-hit verification, run by the direction as its FIRST action** (clause (L7):
+every token enumerated, not sampled; hits and files separately), `git grep`
+over the tracked tree, **run twice** — at the dispatch baseline `c8efb227` and
+again at `b2b10041` after a sibling landing advanced `HEAD` mid-run:
+
+| token | hits @ `c8efb227` | files | hits @ `b2b10041` | files |
+|---|---|---|---|---|
+| `GCOIND` | 0 | 0 | **1** | **1** |
+| `gcoind` | 0 | 0 | 0 | 0 |
+| `(GR-161)`–`(GR-168)` (each) | 0 | 0 | 0 | 0 |
+| `G181`–`G188` (each) | 0 | 0 | 0 | 0 |
+
+The single non-zero is **benign and recorded rather than passed over**: the
+sibling landing wrote the coordinator's own dispatch record naming this
+direction in `notes/Harness-structure.md`. No label or step token collides.
+**Running the check twice, at both shas, is the right response to a `HEAD` that
+moves under a dispatch** — `RESEARCH-ARC.md` §2's fourth hazard — and this is
+the first reservation in the arc to do it.
+
+> **THE (L6) GREP FIRED ON THE DIRECTION ITSELF, and the incident is worth the
+> registry's space because the token was LIVE.** `grep -oE '\([A-Z][0-9]\)'`
+> over the draft and driver initially returned **eight hits in the driver** —
+> `(S0)`, `(S1)`, `(S2)` — which were **not minted labels** but the *substring*
+> produced by the Python calls `sorted(S0)` / `dets[S1]` / `sorted(S2)` in the
+> tree-triple enumerator. That is (L5)'s substring clause firing inside a
+> driver, and it was **not harmless**: `(S1)` is a **live** corpus token
+> (258 occurrences across 40 files, including the §-verdict-block labels in
+> `notes/Prospect.md`, `notes/Phase23-design.md` and `notes/Phase39-design.md`
+> — the very example `notes/pencil/CLAUDE.md` gives for a status the ledger
+> does not index). **Fixed before return:** the locals are lowercase
+> `s0`/`s1`/`s2`, every mode re-run, **figures byte-identical**, and the grep
+> now returns nothing from the driver. This is a **fourth** disposition for
+> this collision class, beside BNONUNI's rename-the-local, its file-scope
+> (L3) qualification and BOBLIG's paraphrase-the-quotation: *rename the local
+> because the token is live elsewhere*.
+
+> ***A reportable property of the (L6) gate itself, and it is a real defect
+> rather than a complaint.*** Run over `*.py`, `grep -oE '\([A-Z][0-9]\)'` has
+> a **systematic false-positive class**: any single-argument call
+> `f(<Capital><digit>)` matches, so `sorted(S0)` reads as a minted label.
+> Verified by the coordinator at this landing — `printf 'x = sorted(S0)' |
+> grep -oE '\([A-Z][0-9]\)'` returns `(S0)`, and of the files carrying `(S1)`,
+> **9 are `.py`**. The hazard is not the noise itself but that **a landing
+> agent who sees a wall of `.py` hits learns to skim the gate** — which is the
+> failure the gate exists to prevent, and the *"a gate that reports zero is not
+> a gate that passes"* corollary in its other direction. **Cheap repair,
+> recorded as a debt item, not done here:** require a non-identifier character
+> before the `(`, or run the `.py` half against a comment/docstring-only
+> pattern. Deliberately left for a coordinator round rather than done inside a
+> landing, since it changes a gate every future direction runs.

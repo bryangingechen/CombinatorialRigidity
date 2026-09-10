@@ -1573,12 +1573,19 @@ successor should attack.
 >
 > **(v) Measured.** At **all 18 habitat separators** of *Step G16* — where
 > every counting obstruction vanishes, generic `dim Z = 0` is proven at exact
-> rational points, and **no tree-triple exists** — a **4-group collapse
+> rational points, and **no CLASS-RESPECTING tree-triple exists** *(qualifier added
+> 2026-09-10, GCOIND (GR-165): unqualified, this read as "no tree-triple at all",
+> which is FALSE — all 18 carry an **unconstrained** tree-triple, and by (GR-165)
+> any certificate at any `r` FORCES one)* — a **4-group collapse
 > certifies**: `κ = 4`, 18/18. At the pinned exemplar (`V6m10(3¹⁰)`,
 > `m = 15`, `n_c = 11`, `h = 5`, 11 classes) the `r = 3` search is
 > **exhausted** over all 29 525 canonical partitions with **0**
-> co-independent triples, while 257 of the 20 967 canonical 4-partitions are
-> co-independent and the first of them certifies, at the partition
+> co-independent triples, while **3 128 of the 175 275** canonical 4-partitions
+> are co-independent and **1 536** of those certify *(corrected 2026-09-10, GCOIND
+> (GR-161): `257 of 20 967` were **prefix counts** — `collapse_search`'s `want=1`
+> returns at the first certificate. The `r = 3` clause above is unaffected: with 0
+> certificates the fence never fires, so that search was genuinely exhaustive)*.
+> The first certificate is at the partition
 > `{0,1,4} | {2,3,7,8} | {5,6,9} | {10}`. That certificate is
 > **value-independent**: `dim W_coll = 0` at every one of the 840 distinct
 > integer 4-tuples from `{1..7}`.
@@ -1593,7 +1600,14 @@ quadratic curve is free (Lagrange), so `W_coll = ⊕_j C(H₊ ∖ F_j)`; that is
 is *both* necessary and sufficient there. With `r ≥ 4` the values
 `Ψ(a_1), Ψ(a_2), Ψ(a_3)` determine `Ψ(a_4), …`, so extra conditions land on
 an already-determined vector: the system is square when all complements are
-connected, and its vanishing is a genuine determinant condition. (iv):
+connected, and its vanishing is a genuine determinant condition.
+*(**CORRECTED 2026-09-10, GCOIND (GR-162)(iii): squareness is NOT an `r ≥ 4`
+phenomenon.** At balance the system is square at **every** `r`. What
+co-independence buys at `r = 4` is that the four `C_j` have the dimensions
+making the count work out — not squareness. The sentence is the one a reader
+uses to conclude `r = 4` differs in kind, and that conclusion does not follow
+from here; what does differ is that `V^⊥` is a single divided-difference row,
+which is (GR-163)'s actual hinge.)* (iv):
 setting two of the finer partition's values equal specializes the finer point
 to the coarser one, and `dim W` is upper semicontinuous. ∎
 
@@ -1852,6 +1866,13 @@ necessary and the residue is a determinant; 257 of the exemplar's
 4-partitions are co-independent and at least one certifies. A combinatorial
 criterion separating the certifying ones would make the whole hierarchy
 combinatorial. Not a corollary of anything above.
+*(**ANSWERED 2026-09-10, GCOIND (GR-163)/(GR-167), and this is the door it walked
+through.** The criterion exists and is combinatorial — `C(H₊) = ⊕_j C(H₊ − E_j)`,
+parameter-free and poly-time — so *"the residue is a determinant"* is discharged at
+`r = 4` and value-independence there is a THEOREM ((GR-164)). It does **not** make
+the hierarchy combinatorial in the counting-and-closure sense: that class is
+**REFUTED** at four separator blocks by exhibited witness pairs ((GR-167)). The
+figures here are prefix counts; read **3 128 of 175 275, 1 536 certifying**.)*
 
 *(iii)* **The grouping half of (GR-18).** An exchange argument showing that
 some 6-tree decomposition of `Ĝ` admits a length-compatible 3+3 split and a
@@ -17452,3 +17473,287 @@ too and put the whole grid route on (K-res) in question. (ii) A proof of the
 repair, which is the wave's actual target, now a strictly smaller statement
 than (RS-5) was. (iii) A route for the excluded members: today they have
 none, and *Step RS9*'s "reduction is free" no longer covers them.
+
+---
+
+## §(K-grid) — continuation (direction GCOIND, ordinal 95, 2026-09-10): the `r = 4` collapse criterion IS COMBINATORIAL and is `C(H₊) = ⊕_j C(H₊ − E_j)` — so *Step G22*'s *"a determinant, not a direct sum"* is discharged at `r = 4` and value-independence there is a THEOREM — but the criterion is **NOT** in the counting-and-closure class ((GR-167) REFUTED at four separator blocks by exhibited witness pairs); and any certificate at any `r` forces an **unconstrained** tree-triple ((GR-165)), which the 18 separators all have — what they lack is the **class-respecting** one
+
+Driver: `notes/scripts/w4/gcoind.py` (seven modes + `--validate`). Full write-up: `notes/pencil/fanout.md` §"GCOIND".
+
+### Step G181 — (GR-161): the fence, and the population behind it
+
+> **(GR-161)** `[MEASURED]` `notes/scripts/w4/gcoind.py --unfence`
+> *(the figures *Step G22*(v) quotes at `r = 4` are prefix counts)*
+> `gridcol.collapse_search(bd, r, rng, draws, budget, want)` opens its
+> recursion with `if res['cert'] >= want: return`, and `leg_hier` calls it at
+> the default `want = 1`. At the pinned exemplar `V6m10(3¹⁰)` the same
+> landed function, **parameterized** to `want = 10⁹, budget = 600`, reports
+> `r = 4`: **175 275 canonical partitions tried, 3 128 co-independent,
+> 1 536 certifying**, against the fenced **20 967 / 257 / 1**. `175 275 =
+> S(11,≤4)` and `29 525 = S(11,≤3)` (both re-derived independently from the
+> Stirling recurrence in-driver), so the un-fenced run **is** the complete
+> space. The `r = 3` figure is unaffected: the fence never fires there,
+> because no certificate is ever found.
+
+**Provenance, stated plainly: this is not new to this direction.** Both the
+`want=1` fence and the un-fenced figures are **already landed** at
+`notes/Harness-structure.md` **D6**, which states *"3 128 of 175 275, with
+1 536 certifying"* and gives the same re-derivation recipe. My contribution
+here is the independent re-derivation (byte-identical counts, from the
+Stirling side as well), and the observation D6 does not make: **the `r = 3`
+half of *Step G22*(v) is genuinely exhaustive** and needs no correction,
+because the fence is conditioned on a certificate that never appears. A
+correction pass must therefore touch the `r = 4` clause and leave the `r = 3`
+clause alone.
+
+### Step G182 — (GR-162): the reformulation everything else runs on
+
+> **(GR-162)** `[PROVED]` *(three routes to one number; asserted by
+> `gcoind.py --reform`)* Let `B` be the `m × h` fundamental-cycle matrix of
+> the block's contracted multigraph (`grid.fundamental_cycles`), `D =
+> diag(a_{j(e)})`, and `M(a) = [B | DB | D²B]`. Then, verbatim,
+> `W_coll(F, a) = ker M(a)` — this is the matrix `gridwit.dim_W` already
+> builds. Row `e` of `M` is `B_e ⊗ (1, a_{j(e)}, a_{j(e)}²)`. Writing
+> `V ⊆ K^r` for the 3-dimensional evaluation space
+> `{(p(a_1), …, p(a_r)) : deg p ≤ 2}` and `C_j := C(H₊ − E_j) ⊆ C(H₊)`,
+>
+> **(i)** `W_coll(F, a) ≅ (V ⊗ C(H₊)) ∩ (C_1 ⊕ ⋯ ⊕ C_r)` inside `C(H₊)^r`.
+> **(ii)** For an `h`-subset `S ⊆ E`, `det B[S] ≠ 0` **iff** `E ∖ S` is a
+> spanning tree of `H₊`, i.e. iff `S` is a **cobase**. (A dependence among
+> `{B_e}_{e∈S}` is a cut-space vector supported in `S`, i.e. a bond inside
+> `S`.)
+> **(iii)** At balance the system is **square at every `r`**: `m = 3h`
+> equations in `3h` unknowns. *Step G22*'s "the count is square" is a
+> property of balance, not of `r ≥ 4`.
+
+Asserted: `gridwit.dim_W` (the landed route) `== 3h − rank M(a)` (the matrix
+route) `== dim((V ⊗ C) ∩ ⊕_j C_j)` (the subspace route, built from the four
+deleted cycle spaces and the divided-difference row) at **400** co-independent
+4-partitions × one seeded value tuple each, 0 disagreements; and (ii) is
+asserted **exhaustively** over all `C(15,5) = 3 003` subsets (864 cobases).
+
+### Step G183 — (GR-163): the `r = 4` criterion
+
+> **(GR-163)** `[PROVED]` *(the criterion mentions no parameter; asserted by
+> `gcoind.py --r4` over the complete population)* At a balanced block, let
+> `E_1, …, E_4` be a partition of the classes into four **co-independent**
+> groups and `a_1, …, a_4` distinct. Then
+>
+> `dim W_coll(F, a) = 0` ⟺ `C(H₊) = C_1 ⊕ C_2 ⊕ C_3 ⊕ C_4`
+> ⟺ `⋂_{j=1}^{4} span_{M*(H₊)}(E_j) = 0`,
+>
+> where `C_j = C(H₊ − E_j)` and `span_{M*}(E_j)` is the span of `E_j` in the
+> cographic representation. **Neither right-hand side mentions `a`.**
+
+*Proof.* Co-independence makes `res_j : C(H₊) → K^{E_j}` surjective with
+kernel `C_j`, so `dim C_j = h − |E_j|` and `Σ_j dim C_j = 4h − m = h`. At
+`r = 4`, `V^⊥ ⊆ K^4` is one-dimensional, spanned by the third divided
+difference `λ_j = ∏_{k≠j}(a_j − a_k)^{-1}`, and **every `λ_j ≠ 0`** because
+the values are distinct. By (GR-162)(i), `W_coll ≅ {(v_j) ∈ ⊕_j C_j :
+Σ_j λ_j v_j = 0} = ker(⊕_j C_j → C(H₊))` for the sum map, whose source and
+target both have dimension `h`. So the kernel vanishes iff the map is onto,
+iff `Σ_j C_j = C(H₊)`, iff (dimensions already agreeing) the sum is direct.
+Rescaling each summand by `λ_j ≠ 0` does not change the subspace `C_j`, which
+is why `a` drops out. The third form is the annihilator statement
+`C_j^0 = span(E_j)` and `(Σ_j C_j)^0 = ⋂_j C_j^0`. ∎
+
+**Measured, over the complete population:** all **3 128** co-independent
+4-partitions of the pinned exemplar × **4** seeded distinct-value tuples from
+`randint(1, 10⁴)`; the sum form and the annihilator form asserted equal at
+every one; **1 536 certify, 1 592 do not, 0 disagreements** — and 1 536 is
+exactly (GR-161)'s un-fenced `cert` count, computed by a completely different
+route (the landed `dim_W` at random draws vs. a parameter-free rank).
+
+**Two readings worth separating.** (a) The criterion is a **matroid
+invariant**: `M*(H₊)` is regular, hence uniquely representable up to signed
+permutation, so `Σ_j C(H₊ − E_j) = C(H₊)` depends only on the cographic
+matroid and the partition — not on the drawing of the graph. (b) It is
+nevertheless **not** a counting or closure condition; that is (GR-167).
+
+### Step G184 — (GR-164): value-independence at `r = 4` is a theorem
+
+> **(GR-164)** `[PROVED]` *(and therefore the sign asymmetry dissolves at
+> `r = 4`; asserted by `gcoind.py --r4`)* At `r = 4`, whether a
+> co-independent 4-partition certifies is **independent of the values**:
+> either `dim W_coll(F, a) = 0` at every tuple of distinct `a`, or at none.
+> Consequently, at `r = 4` a **negative is a proof too**: *"not certified
+> under a `draws = 3` cap"* and *"does not certify"* coincide, and
+> *Step G22* limit (b) — *"value-independence was verified at the pinned
+> exemplar's exhibited partition over 840 tuples … not proven in general"* —
+> is **discharged at `r = 4`**, at every block, with no cap.
+
+Immediate from (GR-163): the criterion has no `a` in it. Measured beyond the
+proof anyway, because (GR-19)(v)'s own 840-tuple check was at **one**
+partition of **one** block: the same 840 distinct integer 4-tuples from
+`{1..7}` were re-run at **80** partitions of **both** labels — 67 200
+evaluations, **0** deviations.
+
+This is the clause that makes (GR-167)'s witness pair a **refutation** rather
+than a cap artifact: the "does not certify" half of the pair is a proof, not
+a shortfall at three draws.
+
+### Step G185 — (GR-165): a necessary condition uniform in `r`
+
+> **(GR-165)** `[PROVED]` *(and it corrects a natural misreading of
+> (GR-19)(v); asserted by `gcoind.py --tt`, with a constructed negative
+> control)* If **any** `r`-group collapse certifies at **any** `r` and **any**
+> values, then the edge set of `H₊` admits an **unconstrained** partition
+> into three cobases — three parts whose pairwise unions are spanning trees,
+> **ignoring the class boundaries**. Equivalently `M*(H₊)` has three disjoint
+> bases covering `E`, equivalently (Edmonds) `comp(H₊ − A) ≤ 1 + 2|A|/3` for
+> every `A ⊆ E`.
+
+*Proof.* Generalized Laplace along the three column blocks of
+`M(a) = [B|DB|D²B]` expresses `det M` as a sum over ordered partitions of the
+rows into three `h`-sets, with term `± det B[S_0]·det(DB)[S_1]·det(D²B)[S_2]`.
+By (GR-162)(ii) a term is nonzero only if each `S_i` is a cobase. If no
+unconstrained tree-triple exists, every term vanishes, `det M ≡ 0`, and
+`W_coll ≠ 0` at every `(F, a)` and every `r`. ∎
+
+**The correction this forces.** *Step G22*(v) says the 18 separators are
+blocks *"where … **no tree-triple exists**"* and a 4-group collapse
+nevertheless certifies. That is true of the **class-respecting** tree-triple
+of (GR-9), and it is easy to read as *the `r = 4` certificate escapes the
+tree-triple condition entirely*. It does not. Measured: the pinned exemplar
+has **864 cobases** and an explicit unconstrained tree-triple
+`{1,4,8,10,13} | {3,5,7,9,12} | {0,2,6,11,14}`; and **all 18 separators** of
+*Step G16* carry one (the constructive search and Edmonds' condition, run
+independently, agree at every block). What `r = 4` buys is freedom from the
+**class boundaries**, not from the tree-triple.
+
+**Constructed negative control** (`BRIDGE_CTRL` in-driver): a balance-shaped
+block `m = 6, n_c = 5, h = 2` carrying a bridge, so Edmonds is violated at
+`A = {bridge}` and no unconstrained tree-triple exists. `collapse_search`
+un-fenced at `r = 3, 4, 5, 6` (`r` up to `#classes`), exhaustive, no timeout:
+**0 certificates at every `r`**. A balanced block with a bridge is certified
+by nothing, at any collapse order.
+
+### Step G186 — (GR-166): the determinant, combinatorially
+
+> **(GR-166)(i)** `[PROVED]` *(the block-Laplace expansion; asserted by
+> `gcoind.py --vand`)* With `B` totally unimodular (a fundamental-cycle
+> matrix), for every `r` and every `(F, a)`
+>
+> `det M(a) = Σ ε(S_0,S_1,S_2) · det B[S_0] det B[S_1] det B[S_2] ·
+> ∏_{e∈S_1} a_{j(e)} · ∏_{e∈S_2} a_{j(e)}²`
+>
+> summed over **ordered partitions of `E` into three cobases**, with
+> `ε` the sign of the row rearrangement. `det M` is **homogeneous of degree
+> `3h`**, and each coefficient is a **signed count** of ordered unconstrained
+> tree-triples with a prescribed degree profile. *So certification is decided
+> by combinatorial data — but by a SIGNED count.*
+>
+> **(ii)** `[PROVED]` `∏_{i<j} (a_i − a_j)^{m_ij}` divides `det M`, where
+> `m_ij := comp(H₊ − E_i − E_j) − 1` is exactly the corank of the **merged**
+> `(r−1)`-group collapse (an exact direct sum by (GR-19)(iii)), and the order
+> of vanishing of a determinant is at least the corank. Hence *certifies* ⟹
+> `Σ_{i<j} m_ij ≤ 3h`.
+>
+> **(iii)** `[MEASURED]` `gcoind.py --vand` / `--comb`. At the pinned
+> exemplar, `Σ_{i<j} m_ij ≥ 3h` at **every** one of the 3 128 co-independent
+> 4-partitions, so with (ii) *certifies* ⟹ `Σ m_ij = 3h` exactly; and at
+> **120** sampled certifying 4-partitions × 4 seeded tuples the quotient
+> `det M(a) / ∏_{i<j}(a_i − a_j)^{m_ij}` is a nonzero **constant**, with
+> `Σ_{i<j} m_ij = 3h = 15` at 120/120. So at `r = 4` the determinant *is* the
+> difference product, which is a second, independent proof-shaped route to
+> (GR-164).
+
+Cap: `ordered_tree_triples` enumerates **18 432** ordered (3 072 unordered)
+tree-triples at the exemplar, exhaustively; the expansion was asserted
+against the direct `det M(a)` at 120 partitions.
+
+### Step G187 — (GR-167): which class the criterion is NOT in
+
+> **(GR-167)** `[REFUTED]` *witness: two co-independent 4-partitions of one
+> `V6m11(3⁸,4³)` separator block, identical on the whole statistic battery,
+> with opposite certification labels — `gcoind.py --comb`.* The `r = 4`
+> criterion is **not** decided by the counting-and-closure statistics of
+> `(H₊, {E_j})`. Two clauses are **necessary** and both are proved:
+>
+> **(a)** `Σ_{i<j} [comp(H₊ − E_i − E_j) − 1] = 3h` ((GR-166)(ii)+(iii));
+> **(b)** **no edge `e` is a bridge of all three graphs `H₊ − E_j`,
+> `j ≠ j(e)`** — i.e. `⋂_j cl_{M*}(E_j) = ∅`, since `e ∈ cl_{M*}(E_j)` puts
+> `B_e ∈ span(E_j)` and hence `0 ≠ B_e ∈ ⋂_j span(E_j)`.
+>
+> Their conjunction is **exactly right at the pinned exemplar and wrong at
+> the class level.** At `V6m10(3¹⁰)` it separates the 3 128-partition
+> population **perfectly** (cross-tab below). At **4 of the 9 distinct
+> separator blocks** it produces **false positives only** — 61, 67, 24 and
+> 16 of 800 sampled co-independent 4-partitions — and never a false
+> negative, exactly as the necessity proofs require.
+
+**The cross-tab at the pinned exemplar** (complete population, 3 128):
+
+| `Σ m_ij` | an edge is a bridge of all three other deletions | not-cert | cert |
+|---|---|---|---|
+| 15 (= 3h) | no | 0 | **1 536** |
+| 15 | yes | 288 | 0 |
+| 16 | no | 168 | 0 |
+| 16 | yes | 1 088 | 0 |
+| 17 | yes | 48 | 0 |
+
+**The battery, and what each statistic does alone** (exemplar, 3 128):
+group edge-sizes (3 mixed values / 2 888 partitions), the pairwise-corank
+multiset (2 / 1 536), its sum (1 / 1 824), the triple-corank multiset
+(3 / 2 888), the per-group bridge counts (9 / 1 464), the flat-meet flag
+(1 / 1 704). No single statistic separates. The **composite of all six** is
+a perfect split at the exemplar — 55 distinct values, none mixed — and the
+minimal separating sub-batteries are all of size 2.
+
+**And that perfect split is exemplar-local.** At the `V6m11(3⁸,4³)`
+separators the composite has mixed buckets (18/87, 17/85, 6/51, 4/32
+partitions at the four deviating blocks). One exhibited pair, in class-index
+notation on the block's own class ids:
+
+```
+certifies:      {0,2,4,7} | {1,10,12} | {3,5,8,9} | {6,11}
+does NOT:       {0,4,12}  | {1,5,10,11} | {2,6,9}  | {3,7,8}
+shared stats:   sizes (4,4,5,5) · pairwise coranks (2,3,3,3,3,4) · sum 18 = 3h
+                · triple coranks (7,7,8,8) · bridge counts (3,6,7,8)
+                · flat-meet false
+```
+
+Both are co-independent 4-partitions of the **same** block; both satisfy
+clauses (a) and (b); one certifies and the other does not — and by (GR-164)
+the negative is a **proof**, not a shortfall at three draws. Three further
+pairs of the same shape are printed by the driver at the other deviating
+blocks.
+
+**What this settles, and what it does not.** It settles that no criterion
+built from these statistics can be correct for the class, which retires the
+board's first slice as stated (*"hunt the invariant separating the certifying
+ones"* — the invariant is not in that class). It does **not** show the
+criterion is non-combinatorial: (GR-163) is a criterion, and by (GR-166) it
+is a condition on signed tree-triple counts. The open question changes shape,
+sharply, and is stated in *Step G188*'s hand-off.
+
+### Step G188 — (GR-168): `r = 5`, the never-run axis
+
+> **(GR-168)** `[MEASURED]` `gcoind.py --r5` *(blind axis 3, opened; the
+> prediction it was opened to test came back negative)* `leg_hier` calls
+> `collapse_search` at `r ∈ {3, 4}` and nowhere else. At the pinned exemplar
+> there are **22 036** co-independent 5-partitions among `S(11,≤5) =
+> 422 005` canonical ones. Over the first **1 200**, at **6** seeded
+> distinct-value tuples each: **220 certify at all six, 980 at none, 0
+> value-dependent.** The `r = 4` argument does **not** extend — at `r ≥ 5`,
+> `V^⊥` has dimension `r − 3 ≥ 2` and moves with `a`, and `Σ_j C_j = C(H₊)`
+> is no longer the criterion (it holds at 200/200 of the first 200
+> 5-partitions, certifying or not: the counts are no longer square).
+> Nevertheless, on **60** generically-certifying 5-partitions whose predicted
+> residual-factor degree `3h − Σ_{i<j} m_ij` is **positive** (degrees 1, 2
+> and 3 occur: 128, 55 and 5 partitions of the 220), an exact univariate
+> interpolation of `det M` in each of the 5 slices, deflated by the fixed
+> values, leaves **degree 0 in every case** — `det M` **is** a product of
+> powers of the differences anyway. **0 of 60** have a zero off the diagonal.
+> So `m_ij` is a strict lower bound on the vanishing order from `r = 5`, and
+> value-independence **survives at `r = 5` on this block, measured, not
+> proved**.
+
+Caps, plainly: one block; 1 200 of 22 036 co-independent 5-partitions; 6
+generic tuples; the slice test on 60 of the 220 generic certifiers; base
+values `(1,…,5)` in the slice test. **"Not found under cap C"**, never *does
+not exist* — a value-dependent `r ≥ 5` certificate remains possible, and
+finding one would be a real result (it would make the collapse hierarchy
+value-dependent above its proved rung).
+
+---
