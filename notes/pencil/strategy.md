@@ -1665,6 +1665,127 @@ struck — decided by §9.3.*
   saturation. *Neither filter has a kill condition: they are negatives. Their
   status is decided by the `(K-out)` and `(K-grid)` gap-map rows.*
 
+**RE-RANKED 2026-09-10 — THE TWELFTH STRATEGY-ONLY PASS. THE ELEVENTH'S RANKS 1 AND 2
+ARE BOTH SPENT** (GISLAND 94, GCOIND 95), **ranks 3–6 untouched**, and the round returned
+**two named successors** that did not exist when the eleventh pass was written.
+Coordinator-authored at a round close, **no dispatch spent, no label minted**. Every entry
+below was re-derived from its **owning** §(K-grid)/§(K-ind) step or gap-map cell and never
+quoted from a hand-off (the F22 discipline); both standing filters were applied to each,
+**and so was GLEAF's third question** — *is the statement reached NECESSARY or SUFFICIENT
+for the row it sits on?*
+
+**WHAT THE ROUND CHANGED, and it is why this pass is a re-order rather than a new list.**
+*(i)* **The interlock flipped sign.** The eleventh pass flagged its ranks 2 and 4 as *one
+object seen twice* — the combinatorial full-rank criterion for the (GR-16)(iv) hub system,
+partition side and propagation side — and warned that *"a negative on either lowers the
+other"*. GCOIND returned a **positive** on the partition side ((GR-163)/(GR-164)), so the
+propagation side is **raised**, not lowered. That is the single largest ranking move here.
+*(ii)* **Rank 3's base data went from partial to complete.** Its first slice tests
+inheritance on the landed `n_hub = 4 → 6` data; GISLAND's (GR-157) makes that base
+**exhaustive at `n_hub ≤ 6` including `Λ ≠ ∅`** — 166 088 shapes, 0 misses — which is
+exactly the population an inheritance test needs and did not have. *(iii)* **A new
+`r`-uniform necessary condition exists** ((GR-165)) and constrains every collapse-side
+entry.
+
+1. **AN EXPANSION THEOREM IN THE `G°` DIRECTION** *(the eleventh pass's rank 3, promoted on
+   its own merits plus (ii) above)*. Owner: §(K-ind) (I2)/(I4) and its u5 gate; §(K-grid)
+   (GR-21)/(GR-22), (SD-6). Re-derived from the `(K-ind)` row: u2 records **(I4)** *"inside
+   one `G°` the class is a finite antichain, and the class's infinitude is entirely in the
+   `G°` direction, which no move reaches"*, and u5's gate demands that any
+   strengthen-the-invariant proposal *"first exhibit a move relating two class members"*.
+   **The gate does not bind this entry, and that is the entry's whole point:** u5 is about
+   `pencil_reduction`'s arms — moves on the class member `G` — while after (GR-16)–(GR-20)
+   (GR-15) is a purely **combinatorial** statement about `(G°, ℓ, bits)`, so an induction
+   internal to that combinatorics needs no chart morphism and is untouched by *Step I6*,
+   (I0) and (I3). **GLEAF's question: SUFFICIENT — the only entry on this board whose
+   success CLOSES (GR-15) on the stratum rather than reducing it**, and the only one outside
+   both other families (diversification). **Half-killed in advance, which is the point:**
+   zero-net-excess (`Σ(ℓ−2) = 6`) forces the classical **H-operation** to a new branch of
+   length `c = 6`, out of range by (SD-6) `ℓ ≤ 5`; and **Y→Δ** to a circuit with `L = 6 < 7`,
+   out of habitat by the girth bound (GR-21)(ii) uses. A four-branch move **does** preserve
+   the stratum, so growth **trades the fixed budget of 6** rather than adding freely.
+   **First slice, and it is cheaper than it was yesterday:** enumerate the zero-net-excess
+   moves preserving tightness, cubicity, `ℓ ∈ [2,5]`, `L ≥ 7` and (GR-25), then test
+   inheritance against **(GR-157)'s complete `n_hub ≤ 6` base** — no longer only the
+   `Λ = ∅` part, since GISLAND swept `Λ ≠ ∅` complete. *Kill condition: no move set
+   preserves the stratum from a finite base — which would close §(K-ind)'s (I4) gate by
+   mathematics and is itself a result — or inheritance fails at an exhibited parent/child
+   pair. Decided by: the `(K-ind)` row (u2/u5) and `(K-grid)` close-it u7.*
+2. **THE (GR-16)(a)/(b) FORCING HANDLES** *(the eleventh pass's rank 4, RAISED by GCOIND's
+   positive)*. Owner: §(K-grid) *Step G19*, re-read at source: **(a)** `Q_β ≡ 0` whenever
+   `|K_A(β)| = 3`, so the support of any nonzero `Q ∈ W₊` is a **bridgeless** subgraph of
+   `G°`; **(b)** at a hub with exactly one B-end branch the hub relation evaluated at
+   `t_{star_A(v)}` **forces an extra root** on that branch. The step's own closing sentence
+   is the entry: *"Neither is used below; both are the natural handles for a future uniform
+   argument"* — verified still true. **GLEAF's question: SUFFICIENT** — the deliverable is a
+   propagation scheme whose termination hypothesis is combinatorial, which like (GR-9) gives
+   `dim Z = 0` with **no (GR-4′), no min-max and no certificate**. **Why it is rank 2 now
+   and not rank 4:** the interlock that used to be a risk is now an asset — GCOIND proved
+   the partition side's criterion is combinatorial and parameter-free at `r = 4`, and
+   (GR-165) hands the propagation side a **necessary** condition it did not have (an
+   unconstrained tree-triple, Edmonds-checkable). **First slice:** run the (b)-propagation to
+   fixpoint at the **18 separators**, where no tree-triple exists in the class-respecting
+   sense so (GR-9) is unavailable and any success is strictly stronger — now with (GR-165)
+   as a pre-filter, since a shape failing Edmonds' `comp(H₊ − A) ≤ 1 + 2|A|/3` admits **no**
+   certificate at any `r` and needs no propagation run. *Kill condition: the fixpoint leaves
+   a nonzero residual at a separator, or its hypothesis is shown to imply the tree-triple
+   (in which case it is (GR-9) restated). Decided by: the `(K-grid)` row, close-it u6 target
+   (ii) — **note (iii) is no longer a deciding surface for this entry, GCOIND having settled
+   it**.*
+3. **IS THE UNCONSTRAINED TREE-TRIPLE *SUFFICIENT* FOR `κ < ∞`?** *(new — GCOIND's own
+   highest-ranked successor)*. Owner: §(K-grid) *Step G185*, (GR-165). That clause proves
+   **necessity** at every `r`; the converse would make the collapse order finite and
+   **Edmonds-decidable**, turning target (ii) from *measured `≤ 4`* into a theorem.
+   **INTERLOCK, flagged as the eleventh pass's own precedent requires: this and rank 2 are
+   the same object seen twice** — partition side here, propagation side there — so do
+   **not** count them as two independent bets, and do not dispatch both in one round.
+   **GLEAF's question: a REDUCTION, not a closure** — a bound on `κ` is one of the four
+   targets and an enabler for the others, not (GR-15) itself. Ranked below rank 2 for that
+   reason, and above ranks 4–6 because it is cheap and its instrument is landed.
+   *Kill condition: sufficiency proved, or a block with an unconstrained tree-triple and no
+   certificate at any `r ≤ #classes` exhibited — GCOIND's bridged control is the shape to
+   perturb. Decided by: the `(K-grid)` row, close-it u6 target (ii).*
+4. **THE ISLAND'S SIMULTANEOUS REPAIR, AND THE INSTRUMENT AT `n_hub ≥ 8`** *(new —
+   GISLAND's own successor, and the round's falsification pick)*. Owner: §(K-grid)
+   *Steps G173–G176*, (GR-153)–(GR-156). The odd-pair flip repairs **2 492/2 492** violated
+   island circuits and its (GR-24)-analogue hypothesis holds at **1 344/2 492**; what is
+   open is the **simultaneous multi-circuit** form, the 46/2 492 repairs routing through a
+   `Λ`-edge, and — the one that bounds everything — **`n_hub ≥ 8`**, where (GR-153)(d)'s
+   corollary is `n_hub ≤ 6`-**conditional** rather than merely capped. **GLEAF's question:
+   NECESSARY only** — a repair theorem buys the `Λ`-shaped conjunct and closes route-ledger
+   **entry 3**, which is *advanced* today; it does not close (GR-15). **Why it is on the
+   board at all, and it is criterion 2 rather than criterion 1:** the instrument is **one
+   landing old**, and `RESEARCH-ARC.md` §4's standing rule is that the corrective mechanism
+   in an informal arc is the **next pass**, not coordinator scrutiny — so a direction aimed
+   at the newest instrument is the arc's cheapest architecture test.
+   *Kill condition: the simultaneous form proved, or the instrument shown to fail at
+   `n_hub ≥ 8`. Decided by: the `(K-grid)` row, status u12/u77.*
+5.–6. **UNCHANGED FROM THE ELEVENTH PASS AND NOT RE-DERIVED HERE**, since nothing this round
+   touched either: the `4T + 3Q ≥ 12` habitat question and the `P¹`/splitting-type reading of
+   (GR-7)(ii), with their kill conditions and deciding rows as written below. One note on
+   rank 5's *relative* position: it was ranked below the eleventh pass's rank 1 because
+   *"there (GR-24) still covers everything measured, whereas rank 1's island has no cover at
+   all"* — **that comparison is now moot**, the island having acquired its own cover
+   ((GR-155)), so rank 5 is ranked on its own merits and stays here.
+
+**THE BARS THIS PASS ADDS, on top of the eleventh's (a)/(b)/(c) — all mathematical, none a
+priority call.** *(d)* **No further attempt on the `Λ ≠ ∅` sweep at `n_hub ≤ 6`** — it is
+complete, 166 088 shapes, 0 misses ((GR-157)); a re-run is not evidence. *(e)* **No reading
+of (GR-24) as covering the no-even-branch island** — the island is *defined* as where its
+hypothesis cannot hold, and the eleventh pass's own rank-1 entry made that mistake.
+*(f)* **No counting-and-closure criterion for `r`-certification** — refuted at four
+separator blocks by exhibited witness pairs ((GR-167)), and (GR-164) makes that negative a
+proof rather than a cap.
+
+**AND THE GENERALIZABLE LESSON, one level above the entries — it is about the board, not
+the mathematics.** Both spent entries carried a *stated mechanism* that turned out wrong
+while their *verdict* held: rank 1 predicted (GR-24) would cover the island (it cannot, by
+definition) and rank 2 predicted matroidality (it is a Vandermonde count). A board entry's
+**reason** is the part that rots first, because it is written before the work and never
+re-checked when the entry is picked. So: **when picking an entry off this board, re-derive
+its stated mechanism before its stated cost** — the cost estimate survives a wrong
+mechanism, the first slice usually does not.
+
 **RE-RANKED 2026-09-09 — THE ELEVENTH STRATEGY-ONLY PASS, SCOPED TO
 (GR-15). THE TENTH PASS'S LIST IS EXHAUSTED** — ranks 1–4 all SPENT (BGPROP 85 /
 BRANKV 86 / BLONGARC 87; BEFOURP 88 / BGTWOA 89 / BNONUNI 91; rank 3 untouched;
