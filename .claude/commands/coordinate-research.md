@@ -149,7 +149,14 @@ Beyond the generated block, a spec carries:
   verdict is *"clean except the declaration"*, not *"0-hit"*, whenever a
   range opens at the declared tail; copy that wording.
 - **The blind-axis list** — the axes the harness makes it *impossible*
-  to vary (§4; grep the generator for hardcoded constants). Not merely a
+  to vary (§4). Generate it, don't grep it:
+  `python3 notes/scripts/blindaxes.py w4/<driver>.py --imports` lists
+  module constants with their read sites, keyword defaults, and — top
+  section — **LIMITERS**, a literal default that also gates an early
+  exit. Both of the 2026-09-09 session's decisive prep findings are in
+  that section (`collapse_search(want=1)`, `length_tuples(lamcap=99)`)
+  and cost ~12 source-reading calls to find by hand. It is a lister,
+  not a judge: read the value, then re-derive with the axis opened. Not merely a
   disclosure: un-fencing one at BNONUNI cost **one defaulted parameter,
   12 insertions** and refuted a clause that had survived an exhaustive
   6 400-tuple sweep of the fenced population, against **five**
