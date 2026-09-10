@@ -1014,3 +1014,59 @@ belongs in the landing checklist rather than in a new gate: **after applying any
 re-run `gapmap.py --list` and confirm the row is still `split` and its two cells are still
 counted separately** — one command, and it is the only thing that sees the shape. Recorded
 as a **Candidate**, not promoted: one wave of evidence, per this file's own tier rule.
+
+**THE THIRTY-FIFTH, -SIXTH AND -SEVENTH INSTANCES (2026-09-10, the second round of three:
+GEXPAND / GFORCE / GSIMUL) — three for three AGAIN, no new kind, and the round's real
+lesson is about the TELL rather than the prediction.** Baseline: **thirty-four instances
+and ten kinds**, above, cited rather than re-derived. **New total: thirty-seven instances
+and ten kinds.** Six for six across the day's two rounds.
+
+- **GFORCE** — **kind 1**, plain *refuted*, with the mechanism wrong at its load-bearing
+  step. The spec predicted zero residual at all 18 separators, reasoning that *at a
+  separator the counting slack that normally absorbs roots is gone*. That is what makes a
+  separator `dim Z = 0`; it is **not** what makes handle (b) fire, which needs a hub with
+  **exactly one** B-end branch. Verdict and reason both wrong.
+- **GSIMUL** — **kind 10** (*confirmed, for the wrong reason*), twice in one dispatch.
+  Both halves of the verdict held; both mechanisms were refuted. The predicted
+  disjoint-composition mechanism is a **real theorem that fires 0 of 26 times**, and the
+  predicted `n_hub = 8` failure mode was the wrong one — the corollary extends verbatim,
+  and a hypothesis nobody had written down fails instead.
+- **GEXPAND** — **kind 10 again, vacuous-premise sub-case**, which the direction
+  self-classified and the coordinator confirms as a sub-case rather than an eleventh kind.
+  The verdict is right; the mechanism (*"the fixed budget forces growth to trade"*) is a
+  **tautology** — zero-net-excess is an identity, so it excludes nothing.
+
+**AND THE ROUND'S OWN FINDING IS A SHARPENING OF §7's TELL CLAUSE — the mirror of the
+failure that clause was written for.** §7 currently says: *make the tell falsifiable
+against the corpus you already have*, because BGTWOA's tell was **already satisfied at
+dispatch** and so could not discriminate; the check it prescribes is one grep of the
+predecessor's text. **Two tells this session failed the opposite way — they were
+UNSATISFIABLE**, and no grep of the corpus would have caught either:
+
+- **BCORNER's** was *one row in the residue inside the quantifier*. The refutation lived
+  in the **over-strength region**, which a residue-built tell cannot reach by construction.
+- **GEXPAND's** was *a parent/child pair at `n_hub 6 → 8`*. That is `Δn = 2`, which needs
+  `k = 1`, which is empty on lengths alone — and no `Δn` works at all. **Doubly**
+  unsatisfiable.
+
+Neither was already satisfied, so both passed §7's existing check; both were nonetheless
+incapable of firing. **The missing check is one question, and it is not a grep:** *does the
+region the tell samples contain the phenomenon the prediction is about?* A tell drawn from
+the same region as the prediction's evidence inherits that region's blind spots — which is
+why both failures came from coordinator tells built out of the predecessor's own
+population. State the tell's **region** alongside the tell, and ask whether the verdict
+could differ inside it. Recorded as a **Candidate** on two instances, per this file's tier
+rule — but note the two are independent (different lanes, different mechanisms) and the
+diagnosis is structural rather than empirical.
+
+**A POSITIVE CROSS-RETURN FINDING, and F20 clears it as convergence rather than
+duplication.** Two directions of this round independently discovered that **(GR-25) applied
+at a CHOSEN hub set is a general obstruction generator**, and both times it produced a
+**proof** where the surrounding work had been producing measurements: GEXPAND read it at a
+hub set's **complement** to get the excess-boundary cap `exc_B ≤ 2∂(B) − 1` ((GR-170)),
+and GSIMUL read it at a circuit's **own** hub set to get `r − s ≥ 7` ((GR-190)). Different
+instances, no shared derivation, no wasted work — but the *technique* is now the arc's,
+and it is worth reaching for before a sweep. The generalizable form: **when a landed
+criterion is stated as a gate over a whole object, ask what it says at a distinguished
+SUBSET and at that subset's complement** — the corpus had held (GR-25) for weeks as a
+`2^{n_hub}` habitat oracle and neither reading had been taken.
