@@ -2,7 +2,7 @@
 
 **Status: ALL SEVEN SLICES (8–14) LANDED 2026-09-09, plus a defect-fix pass an
 adversarial review forced — three CRITICAL bugs in the shipped ledger, all
-reproduced and fixed (see *The review pass* at the end). The round is COMPLETE.** Slice 8 — `notes/ledger.py`, 1 308
+reproduced and fixed (see *The review pass* at the end). The round is COMPLETE, and its forward part is now **D6 + D7** — D7 re-measures the first `/coordinate-research` session from the recorded transcripts after it closed, confirms D2 is fixed, re-prices the coordinator's prep by ~20x, and retires the cap proposal D7.5 was about to add.** Slice 8 — `notes/ledger.py`, 1 308
 claims across five files, ~0.2 s regeneration, cache gitignored. Slice 9 — the
 bracketed status vocabulary and `--lint`, gating the new form only. Slice 12 —
 `notes/Pencil-informal.md` split into 62 files under `notes/pencil/workbook/`,
@@ -760,11 +760,18 @@ Round-close obligation, per `CLAUDE.md` *Lift on promotion*:
 
 ## Hand-off / next phase
 
-Slice 8 is LANDED. Next concrete commit: **slice 9** — the status vocabulary
-and `notes/ledger.py --lint`, which turns the 666 UNTAGGED claims from a census
-into a gate on new ones. Slice 12 (the split) is the alternative next step and
-now carries the stronger argument; it needs slice 9 first only so the backfill
-is not done twice.
+All fourteen slices are LANDED, and the round's forward part is now **D6 + D7**
+— the two diagnosis sections, not the slice list. **Next concrete commit: escape
+the five gap-map rows' unescaped inline-code pipes** (D7.4(c)) — `(K-bare)`,
+`(K-out)`, `(K-wit)`, `(K-chord)`, `(K-ind)`, all currently in
+`check-gapmap-cells.py`'s combined fallback, which is a prerequisite for judging
+whether `(K-out)` and `(K-bare)` are genuinely near their caps at all. Then, in
+order: the D7.3 loop clause (two lines, no new tool), D6.6's reorder (one line),
+and then the shipped scripts D7.8 says must come before any further section —
+D6.3(a) `--reserve-range`, D6.1 `phasenote.py`, D6.4 `blindaxes.py`, D6.5
+`check-driver-refs.py`. **Read D7.2 before ranking any of them**: a reader that
+cuts a *pre-dispatch* read is worth ~20× the same reader used after the first
+dispatch, which is what makes D6.1 the highest-value script on the list.
 
 *(Slice 8's original spec, for the record: `notes/ledger.py`, with `--label`,
 `--status`, `--frontier`, `--cited-by`, `--brief` and `--delta`, generating
@@ -1222,3 +1229,263 @@ and the landing checklist should call the reader, not only the gate.
 *Kill condition: a round in which the gap-map cell proposals land clean, or a gate
 that checks row shape. Decided by: `notes/dispatch-log.md`'s Findings and this
 section.*
+
+## D7 — the same session, INSTRUMENTED after it closed: what slices 8–14 bought, and the residues
+
+**Why this section exists beside D6, and the difference is provenance.** D6 was
+written *inside* the session it measures, by the coordinator running it, from
+its own recollection of its own calls ("~55 tool calls preceded the first
+dispatch — my own count, not an instrumented figure"). D7 re-measures the same
+session — the first `/coordinate-research` run, `c8efb227` → `d8a9e74f`,
+2026-09-10 — from the recorded transcripts of the coordinator **and all six
+direction subtranscripts**, after it closed. Most of D6 survives. Two items are
+**re-priced by an order of magnitude** (D7.2), one **corrects a prescription D6
+does not make but a reviewer would** (D7.3), and one **retires a fix that looked
+obvious** (D7.4). Where D6 and the instrument disagree, the instrument is here
+and the disagreement is named.
+
+Per D6.8, every count below is a **dated historical measurement** of one session,
+correct forever and maintained never. Live figures cite their command.
+
+### D7.1 — D2 IS FIXED, and this is the round's payoff
+
+D2 measured direction agents starting at ~36k and reaching their first file
+write at 147k–358k (median ≈ 210k) across eleven sampled dispatches, after
+~35 `grep`→`sed` probes. The six dispatches of 2026-09-10:
+
+| direction | calls | wall | ctx start → peak | first write |
+|---|---|---|---|---|
+| GEXPAND | 120 | 94 m | 38.1k → 333k | call 12 @ **88.6k** |
+| GISLAND | 105 | 65 m | 38.9k → 351k | call 16 @ **90.0k** |
+| GSIMUL | 67 | 51 m | 38.2k → 257k | call 17 @ **102.8k** |
+| GFORCE | 81 | 42 m | 37.8k → 276k | call 17 @ **118.6k** |
+| GCOIND | 59 | 40 m | 39.0k → 267k | call 19 @ **127.9k** |
+| BCORNER | 65 | 30 m | 37.8k → 281k | call 18 @ **132.8k** |
+
+**Median first-write context ≈ 110k against D2's ≈ 210k, and 12–19 calls against
+~35 probes.** The mechanism is visible call-by-call and is exactly what slices
+8–14 specified: every direction's **call 1** is
+`.claude/agents-core/research-direction.md` (169 lines) — the **end-to-end
+`RESEARCH-ARC.md` read that was D2's single largest block is gone**; the
+generated briefing packet is read whole at calls 6–7; per-label statements come
+from `ledger.py --label` instead of archaeology.
+
+Nothing below should be read as the round having failed. It bought the thing it
+was built to buy, on the side that had eleven dispatches' worth of evidence
+against it.
+*Kill condition: a later round whose median first-write context exceeds ~150k, or
+an agent core regrown past ~250 lines. Decided by: re-running this table over the
+subagent transcripts.*
+
+### D7.2 — prep is a token·TURN integral, and D1/D6 underprice it by ~20×
+
+The coordinator went **54 198 → 197 642 tokens over 67 tool calls** before its
+first dispatch. Two corrections to D6 in that sentence: its "~55 calls" is **67**
+instrumented, and the D1 baseline floor did drop (61k → 54k, slices 13/14's
+trim) while **the prep itself did not move at all** — D1's pre-round range was
+120–190k and this is 143k.
+
+**But the framing is the error, not the number.** D1 and D6 both price prep as a
+one-time charge — 143k of a 1M window, ~14%, tolerable. It is not one-time: it
+is resident, and every later turn re-reads it.
+
+```
+143k prep  ×  356 subsequent API requests  =  51.1M cache-read tokens
+                                           =  27% of the session's context-turns
+```
+
+(Denominator: the deduplicated sum of context over the session's 409 assistant
+requests, 188M. The raw transcript scan reports 373M because retried requests are
+logged twice; the *ratio* is stable under either count.) For comparison the
+entire 54k system + `CLAUDE.md` + command floor is **12%**. Against the session's
+recorded cost of **$236.81**, roughly **$64 is pre-dispatch orientation, re-read
+356 times**.
+
+**This inverts the prescription.** D6.1–D6.4 all read as *make the pre-dispatch
+reading cheaper*. The dominant term is not what a read costs once but **how many
+turns it then sits through**, so the lever is *where* and *when*, not *how much*:
+anything a subagent can read instead should be, and anything readable after the
+first dispatch should be. A reader that halves a pre-dispatch read is worth ~20×
+the same reader used post-dispatch — which is also why D6.1's `phasenote.py` is
+correctly ranked first and why its payoff is larger than D6.1 claims.
+*Kill condition: a coordinator session reaching its first dispatch under ~90k, or
+a re-measurement putting prep's token·turn share below 10%. Decided by: this
+computation re-run on a later transcript.*
+
+### D7.3 — the loop YIELDS after a landing while a returned direction sits unverified
+
+**First, what is NOT the problem, because the obvious reading is wrong.** The
+session's two long idle blocks — **21.1 min** (22.7 → 43.8) and **43.5 min**
+(108.0 → 151.5) — are both *first-return* waits of a fan-out, where nothing had
+come back and there was nothing to verify. They are not fillable by rescheduling
+verification, and the one deferred task available in the second block, the
+`(K-grid)` relocation pass, was **correctly** barred: GEXPAND held anchors
+against that cell, and D6.9 names the whole-cell gap-map edit as the least-gated
+artifact a direction produces, so dispatching it to a subagent would have
+compounded the hazard rather than isolated it. That judgement, made in-session,
+was right and is not revisited here.
+
+**The actual defect is that the loop ends its turn after each landing.** Three
+times the coordinator posted a landing report and yielded with the next unit of
+work already in its queue:
+
+- **GCOIND returned at 55.3 min.** BCORNER committed at call 135 / 58.1 min;
+  yield. The self-armed keepalive cron fired at 58.9 and *was answered*, which
+  proves the loop was idle rather than working. User: *"Go ahead and verify
+  GCOIND while we're waiting"* at 60.4.
+- **GSIMUL returned at 158.8 min**, and the coordinator knew — at 159.3 it wrote
+  *"GSIMUL caught a defect in my spec that affects the still-running GEXPAND."*
+  It verified that one defect, committed GFORCE at call 309 / 160.5 min, and
+  yielded; **no tool call until 162.5**, after the user's 162.2 nudge.
+- The third nudge (174.1, the relocation pass) is a **legitimate** stop — GEXPAND
+  was still in flight and nothing had returned.
+
+Each stall is short in wall clock (1.7–2.8 min) and costs a **user turn**; three
+in one session. Suspected cause, and it is a rule being obeyed too literally:
+`CLAUDE.md` *"State the handoff state in one sentence after each commit"* +
+*"every commit is a potential handoff point"*, read as **stop** rather than **say
+where you are**.
+
+**Suggestion, two lines and no new tool.** (a) A loop-body clause: *after landing
+a direction, check for other completed dispatches and verify the next one before
+yielding; the handoff sentence is a sentence, not a yield.* (b) The self-armed
+keepalive cron currently says *"Do NOT read files, run commands, or dispatch."*
+Make it conditional — *"if a direction has returned, verify it; otherwise reply
+keepalive"* — and all three stalls self-heal with no user in the loop.
+*Kill condition: a round of three landed with zero user turns between the first
+dispatch and the last landing. Decided by: the user-message count in the session
+transcript.*
+
+### D7.4 — the caps bind exactly where the work is, and five rows are silently uncapped per-cell
+
+Opened at the user's instruction to check the existing caps **before** adding
+another (this section is why the RESEARCH-ARC line cap proposed alongside it was
+withdrawn — see D7.5).
+
+**The toll, measured.** **88 of the coordinator's 413 calls (21%) invoke a docs
+gate**, and 26 more do ad-hoc word counting. Six cap failures fired, and every
+margin is at the noise level: `Phase39.md` header **+9**, `(K-grid)` close-it
+**+27 / +25 / +8**, `(K-grid)` status **+4**. Two whole commits — `f2905c86` and
+`ee0f54eb` — change no mathematics and exist only to move prose out of a full
+cell.
+
+**(a) The gate is inert on 26 rows and at the wall on the three the arc is
+attacking.** At `d8a9e74f` (recompute with `python3 notes/gapmap.py --list` and
+`check-gapmap-cells.py`; these move every landing and are not maintained here):
+`(K-out)` **13** words free, `(K-bare)` **76**, `(K-grid)` status 130 and close-it
+**55** — while `(K-move)` uses 17 of 800 and `(escape criterion)` 14 of 800, and
+26 of 29 rows sit at or under 76% of cap. `notes/Phase39.md` is the same shape:
+579 / 580 lines, header 507 / 525 words.
+
+**(b) The bump protocol has a duty-cycle problem.** *"Recompute twice, then set at
+the recompute's own size + ~15%"* assumes recompute is occasional. `(K-grid)` has
+gone 1137 → 1730 → 2715 (status) and 619 → 873 → 935 → 985 (close-it) — **four
+bumps in ten days** — because one round of three directions consumes about 15%.
+The expensive repair is now running at ~100% duty cycle: the cap is catching
+*arrival*, not bloat.
+
+**(c) Five rows are in the `combined (ambiguous split)` fallback, and it is an
+escaping bug.** `(K-bare)` (2 780 w), `(K-out)` (1 810 w), `(K-wit)`, `(K-chord)`,
+`(K-ind)` all carry an **unescaped `|` inside inline code** — `` `|V|` ``,
+`` `|E°| ≥ 9` ``, `` `|arc| = 6` ``, `` `rank Q|_S = 4` ``, `` `rank(B|_U) ≤ 2` ``,
+`` `(|V|,|E|) = (5c+1, 6c)` ``. For those rows the gate caps the **sum**, so the
+effective cap is ~2× looser and per-cell discipline is unenforced; `gapmap.py
+--row … --cell status` cannot isolate a cell either, printing
+`[status+close-it, combined]`. D6.9 recorded this as a one-off caught during the
+round; it is the **standing state of the two largest rows in the table**. The
+reader already says so — `gapmap.py --list` marks them `*` and `(combined)` — and
+nobody has acted on it, which is D6.9's own lesson from the other side: shipping
+a reader is not the same as reading it.
+
+**Order of work, and (c) is a prerequisite for judging (a).** Escape the pipes
+first: until the split is real you cannot tell whether `(K-out)`'s 1 810 words are
+1 000 / 810 (inside 950 / 873) or 1 400 / 410 (well over). Then re-measure. Then,
+for `(K-grid)` — 23 451 characters on one physical line — **stop bumping and
+split**: no cap number fixes a cell that stopped being a cell, and the move that
+demonstrably worked on this corpus is slice 12's, a live verdict in the row plus a
+pointer into `workbook/grid.md`. That retires the relocation pass as a recurring
+cost instead of re-scheduling it.
+
+**What must be preserved, because the caps are not wrong in purpose.**
+`check-gapmap-cells.py`'s docstring states it plainly: the caps exist because
+every landing on a live gap *appended* a "since direction X, …" clause instead of
+recomputing, and `(K-grid)` grew 1274 → 2328 words across four such landings
+before two prose-only repairs were abandoned. That pathology is real and the cap
+does stop it. It is the **calibration** that turned a periodic recompute into a
+per-landing toll — so re-aim it at the *shape* (split the rows that outgrew a
+cell), not at the *number*.
+*Kill condition: zero `(combined)` rows in `gapmap.py --list`, and a round of
+three landing into a hot gap with no relocation pass. Decided by: that command
+and the commit log.*
+
+### D7.5 — the loop's own documentation grew 19% in the session that diagnosed its size
+
+`RESEARCH-ARC.md` went **957 lines (`c8efb227`) → 1 137 (`d8a9e74f`)** in the same
+session whose D6.2 sets a **under-500** target for it;
+`.claude/commands/coordinate-research.md` 293 (`fe4df230`) → 308;
+`notes/Harness-structure.md` +206 (D6 itself), and this section makes it worse
+again. Every increment is individually well-argued — `d8a9e74f`'s prediction
+re-pricing is a genuine finding and belongs somewhere. The aggregate is precisely
+what D1 measured.
+
+**The generalizable form, and it corrects the reviewer's own first instinct.** The
+obvious response is a mechanical line cap on `RESEARCH-ARC.md`, the way
+`check-phase-note.py` caps a phase note. **D7.4 is the argument against it**: a cap
+on an actively growing surface buys compression thrash, not a smaller read, and
+`RESEARCH-ARC.md` is growing. The move that reduces read cost on this corpus is a
+**split** (slice 12), not a cap — so the fix is D6.2's binding-head / provenance-tail
+split, and the cap proposal is withdrawn rather than deferred.
+*Kill condition: D6.2's. Decided by: `wc -l RESEARCH-ARC.md` and the file's tier
+headers.*
+
+### D7.6 — grep is still the retrieval path, and one direction in six used the ledger zero times
+
+Coordinator: **191 `grep` calls and 84 `sed -n` calls against 53 `ledger.py`
+calls.** Per direction: GISLAND 10, GFORCE 8, BCORNER 5, GSIMUL 4, GEXPAND 4 —
+and **GCOIND 0**, against 23 greps and 9 `sed`s. The ledger is an *option* the
+agent core offers, not the path it names. That is an instruction gap, not a tool
+gap: nothing in `.claude/agents-core/research-direction.md` says *if you are about
+to grep the workbook for a label, use `ledger.py --label`*. D7.1's win is real and
+is being left partly on the table one dispatch in six.
+*Kill condition: no direction in a round with zero ledger calls. Decided by: the
+subagent transcripts.*
+
+### D7.7 — D6.1's unreadable paragraph got worse during the session that named it
+
+D6.1 measured the `notes/Phase39.md` next-task paragraph at ~580 words / ~3 700
+characters at `c8efb227`. At `d8a9e74f` the file's longest physical line is
+**5 878 characters / 879 words** (no line number recorded, per the ledger's own
+NO-LINE-COLUMN finding; recompute with
+`awk '{print NR, length($0)}' notes/Phase39.md | sort -k2 -rn | head -1`). One
+`grep` in the session returned a **24 178-character** result because of it. This
+sharpens D6.1 rather than replacing it, and it raises that item's priority under
+D7.2: the phase note is read *before* the first dispatch, so its cost is paid 356
+times.
+
+### D7.8 — the session converted diagnosis into diagnosis; nothing was shipped
+
+**None of D6.1, D6.3, D6.4, D6.5 or D6.6 shipped.** D6.6 is a *one-line reorder*
+and `.claude/commands/coordinate-research.md` at `d8a9e74f` still puts the setup
+reads ahead of the blocking check-in. Meanwhile the round paid **three coordinator
+spec defects, twice** (`notes/dispatch-log.md`, 2026-09-10), and two of them — the
+(L7) prose summary dropping `BE237` and `GR-154` — are exactly what D6.3(a)'s
+`--reserve-range` exists to prevent, recorded in that entry as its acceptance
+tests.
+
+The failure mode now has a name: **diagnosis begets diagnosis.** A section costs
+one commit and reads as progress; a script costs a session and is the only thing
+that changes a later measurement. **The next harness session's first commit should
+be a shipped script, not a section** — and this one, D7, is itself the pattern it
+names.
+*Kill condition: D6.3(a), D6.4 and D6.5's scripts present in the tree and used by
+one round. Decided by: their existence and `--help`.*
+
+### D7.9 — one documentation/reality divergence found while measuring
+
+*Target layout* names `notes/pencil/rounds/NNN-<DIRECTION>.md` for the generated
+briefing packets, and the slice-11 entry repeats it. In practice `--round` wrote
+the packets to the session scratchpad and **`notes/pencil/rounds/` does not
+exist**. Harmless — an untracked generated artifact belongs in a scratch
+directory, and that is arguably the better call — but two places in this file
+assert a path that was never created. Fix the plan text to match, or create the
+directory and gitignore it; do not leave the assertion standing.

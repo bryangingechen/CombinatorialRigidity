@@ -216,7 +216,7 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
 **The phase stays OPEN** (the 2026-07-24 adjudication — no phase-close; see *Current state*).
 
 **PARALLEL HARNESS TRACK, not blocking this one** — `notes/Harness-structure.md`
-(slices 8–14 + the review/tagging/taxonomy passes LANDED; **§D6 = the NEXT round's diagnosis**, 8 suggestions with kill conditions). Use **`/coordinate-research`**, not
+(slices 8–14 + the review/tagging/taxonomy passes LANDED; **§D6 + §D7 = the NEXT round's diagnosis**, D7 instrumented post-hoc; kill conditions on each). Use **`/coordinate-research`**, not
 `/coordinate-phase`. `python3 notes/ledger.py --label '(BE-216)' | --brief | --round |
 --frontier | --delta | --lint` answers "what is proved" in one call (`--stats` for the live claim census — never quoted here, D6.8; `--backlog` ranks the tagging worklist, `--label` flags CONTESTED
 claims where a later row supersedes an earlier); the corpus is now one file per section under `notes/pencil/` with its own
