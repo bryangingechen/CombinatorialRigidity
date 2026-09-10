@@ -2,8 +2,9 @@
 
 **Status: EIGHT fan-outs, FIFTY-FOUR single directions, ONE draft-only parallel direction,
 FIVE concurrent pairs, ONE concurrent round of four and TWO concurrent rounds of three
-dispatched; 103 LANDED, **NONE IN FLIGHT, NONE DRAFTED** — the 2026-09-10 round of three
-(BCORNER 93, GISLAND 94, GCOIND 95) is COMPLETE. The round of three (BFOUR 81,
+dispatched; 104 LANDED, **TWO IN FLIGHT (GEXPAND 96, GSIMUL 98)** — the 2026-09-10 round of
+three (BCORNER 93, GISLAND 94, GCOIND 95) is COMPLETE, and a SECOND round of three
+(GEXPAND 96, GFORCE 97, GSIMUL 98) is in progress with GFORCE landed. The round of three (BFOUR 81,
 BINSERT 82, BSERIES 83) and the **chain of six** single dispatches that answered each
 other in turn (BSTEER 84 → BGTWOA 89, (BE-204)–(BE-217); per-landing detail in the
 sections and in blocks 8/11–13, **not restated here**) are both CLOSED — and
@@ -16913,3 +16914,120 @@ property of the search"*.
 `--deep` 369 s; `--validate` ≈ 1 500 s, an **F15 over-ceiling** invocation
 alongside `cflank.py --lam6`. The quotient is why `--deep` cost 369 s rather than
 ~90 min — and it shows the landed `--lam6` (1 288–1 340 s) is **21× redundant**.
+
+---
+
+## GFORCE — ordinal 97, concurrent round of three, `research-direction-opus`, LANDED 2026-09-10
+
+**The question.** §8's **rank 2** (twelfth pass): do the (GR-16)(a)/(b) forcing
+handles yield a propagation scheme whose termination hypothesis is combinatorial
+and **sufficient** for `dim Z = 0` — no (GR-4′), no min-max, no certificate?
+
+**Verdict: NO, refuted at the first slice — and the entry's second kill branch
+resolved a third way that neither branch anticipated.**
+
+**What is confirmed.** The handles *do* close. (a)/(b) generate a monotone,
+parameter-free closure whose termination hypothesis — *survivors carry no cycle*
+— is combinatorial and **sound**: **0** unsound certificates over **7 224**
+balanced blocks, with the suppressed model asserted identical to the landed
+`gridwit.dim_W` at **14 448/14 448** exact-ℚ draws ((GR-177)).
+
+**What refutes it.** The fixpoint certifies **4 of the 18 separators**, not 18,
+and the `leaf`/`cut`/`full` variants give the **same** 4 ((GR-178)). The tell the
+dispatch was written with — *a nonzero residual at at least one separator* —
+**fired at 14 of them**.
+
+**The second kill branch, and it is the finding.** It asked whether success would
+turn out to be *(GR-9) restated*. It is **not**: 1 181 unconstrained-triple blocks
+fail to certify ((GR-181)). But it is **not stronger either** — over 10 828
+balanced pool blocks the scheme certifies **7 767** where (GR-9) certifies
+**10 203**, so the two are **INCOMPARABLE**, with **2 436** witnesses one way and
+**4** the other ((GR-180)). *Scope, disclosed by the driver itself: those 4 are
+the separators, which sit outside the pool's `per_shape` cut; on the pool sample
+alone the scheme never certifies where (GR-9) fails.*
+
+**Two unpredicted positives.** **(GR-179)**: no support case-split strengthens
+the fixpoint — a **proof**, not a measurement. **(GR-183)**: a **third handle,
+not in *Step G19*** — local rank at a hub with three surviving branches each
+carrying two known roots — is a **theorem**, by exhausting the four patterns of
+three distinct 2-element root-sets with a determinant that is exhibited nonzero
+at an exact-ℚ draw (which *is* the proof it is not the zero polynomial) and
+vanishes identically on the fourth. It lifts the separators **4/18 → 14/18** and
+the pool **71.7% → 88.6%**, still below (GR-9), after which the local hub
+relations are **exhausted** by a counting argument. **(GR-184)**: every residual
+block fails for exactly one of two local reasons, 567 + 41 = **608/608**.
+
+**§8's RANK-3 TWIN, ANSWERED WITHOUT A DISPATCH BEING SPENT ON IT — NO.** The
+spec told GFORCE that rank 3 was deliberately held as its interlocked twin and
+that answering it would be a genuine finding to state explicitly rather than fold
+in. It did. Of the **625** swept blocks whose generic `dim Z` is not `0`, **every
+one** carries a **proven (GR-8) bound `g(P) ≥ 1`** — so `dim W₊ > 0` at *every*
+parameter point, hence no certificate at any `r` and `κ = ∞` by (GR-19)(iv) — and
+**621** of them nevertheless carry an unconstrained tree-triple. Witness
+`K4(1,2,2,5,5,3)`, block `A`, `m = 9`, `h = 3`, `g(P) = 1` at `P = {β₀,β₁,β₃}`
+((GR-182)). **(GR-165) is necessary and very far from sufficient.** Rank 3 is
+**STRUCK**; rank 2 is **DEMOTED**, with the (c)-strengthened closure as a
+different successor object.
+
+**Note what carries that positivity**, because it is the methodological point:
+a **proven** (GR-8) bound, not a measurement. `dim_Z_generic` can only certify
+`= 0`, so a measured non-zero would have proved nothing and rank 3 would have
+survived on a weaker instrument.
+
+**The coordinator's prediction: verdict REFUTED, mechanism refuted at its
+load-bearing clause.** The spec predicted zero residual at all 18 separators, and
+its reason was that *at a separator the counting slack that normally absorbs
+roots is gone*. Wrong at the load-bearing step: vanishing counting slack is what
+makes a separator `dim Z = 0`, **not** what makes (b) fire — (b) needs a hub with
+**exactly one** B-end branch, and the residual hubs have 3–4 survivors all sharing
+a class. The spec's *"where I expect to be wrong"* clause named the restatement
+branch, which is the branch that did **not** fire.
+
+**Coordinator verification at landing** (not on attestation): `--sep`, `--pool`,
+`--kappa` and `--sound` re-run at full cap, reproducing **4/18** and `gen` at
+**14/18**, the `7 767 / 10 203 / 2 436` comparison and its four-way cross-tab,
+**625 / 625 / 621** with the pinned witness, and **14 448/14 448** with 0 unsound
+certificates. (GR-183)'s four-pattern exhaustion and (GR-182)'s (GR-8) argument
+read at source. The draft's `608` and its self-catch's `567` were checked against
+each other and are consistent: 567 Type A + 41 Type B.
+
+**The gap-map proposal was exemplary, and it is the answer to last round's
+finding.** Clause-level anchors with explicit word budgets and a stated
+trim-first fallback if a sibling landed first — no full-cell replacement, no
+unescaped pipes. Applied as proposed: **close-it word-neutral 27 → 27** (the 3
+free words deliberately untouched, since two siblings are landing into the same
+row), **status +35** to 2 635 / 2 715. `gapdiff`: **0 DROPPED, 7 added**; and the
+row was re-checked as still **`split`** by `gapmap.py --list`, the check no gate
+performs.
+
+**Reservation.** (GR-177)–(GR-184) / *Steps G197–G204*, all consumed. **The (L7)
+table was emitted per token, not summarized** — the D6.3(a) form, clean with no
+declaration exception — and the direction additionally checked its own driver's
+leg tags `[GF-1]`–`[GF-8]` and seed name, a check no clause requires and worth
+copying. **(L6)**: 0 matches in the driver; 9 disclosed appearances in the draft,
+none a mint, the three handles written lower-case (a)/(b)/(c) exactly as
+*Step G19* writes its own two.
+
+**A vocabulary defect self-caught, and no gate could have seen it.** The
+direction first wrote `` `[MEASURED gforce.py --sound]` `` — the natural reading
+of *"`[MEASURED]` names a driver"*. `ledger.py`'s bracket regex is
+`^\s*`` `\[([A-Z][A-Z-]*)\]` ``, so a bracket containing anything else **does not
+match** and the claim parses **`UNTAGGED`** — and `--lint` cannot fire, because it
+binds the *bracketed* form and an unparsed bracket is not bracketed. The author's
+opt-in silently becomes an opt-out. Verified at landing. Recorded in
+`notes/pencil/labels.md` as a debt item; the cheap repair is for `--lint` to warn
+when a raw tag begins with `` `[ `` and failed to parse.
+
+**Five further self-catches**, all pre-return: two accidental bare-token mints
+`(A)`/`(B)`; five accidental UNTAGGED sub-clauses; an over-claimed residual
+signature (567/608, corrected to the gated dichotomy above); a positivity claim a
+min-over-draws cannot support; and an `argv` trap in its own scratch sweep that
+made 60 and 907 shapes return identical figures.
+
+**Caps.** 18 separators = **two** carrier shapes; the pool sweep is a
+non-random sample (907 shapes, `col_cap 4096`, `per_shape 6`) of ~18 320 blocks;
+`dim_Z_generic` can only prove `= 0`; (GR-8) maximised over whole-branch `P`
+only; `--sat` capped at 14 branches; `--tt`/`--kappa` skip `m > 18` (48 blocks);
+**`Λ ≠ ∅` not measured at all — the sharpest blind axis**, and the one a
+successor should open first. `fast_triple`'s node cap fired **0** times.
+Runtime: `--validate` ≈ 4 min; the full-cap modes ≈ 7 min.

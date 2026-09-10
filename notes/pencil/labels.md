@@ -5123,3 +5123,45 @@ consumptions.**
 **(L6) landing-time bare-token grep, whole repository:** over
 `w4/gisland.py`, `grep -oE '\([A-Z][0-9]\)'` returns **no matches**. Nothing of
 that shape is minted by this direction.
+
+## Reserved namespace — direction GFORCE (2026-09-10, **CONSUMED IN FULL: eight labels and eight steps**)
+
+| direction | section | labels | steps | driver |
+|---|---|---|---|---|
+| **GFORCE** | §(K-grid) — **extends**, no new section | **(GR-177)–(GR-184)** | ***Steps G197–G204*** | `w4/gforce.py` (eight modes + `--validate`) |
+
+**0-hit verification, emitted PER TOKEN rather than summarized** — the form
+`notes/Harness-structure.md` **D6.3(a)** prescribes, adopted by the coordinator
+this round after prose summaries dropped a row twice in the previous one. At
+`732087e2`: `(GR-177)`–`(GR-184)` **0 hits / 0 files each**; `G197`–`G204`
+**0 / 0 each**; `GFORCE` / `gforce` **0 / 0**. **Clean, with no declaration
+exception.** The direction additionally checked its own driver's eight internal
+leg tags `[GF-1]`–`[GF-8]` and its seed name `GF_SEED`, all **0-hit** — a check
+no clause requires and which is worth copying: a leg tag is not a label, but it
+is a token minted into the tree.
+
+**(L6) landing-time bare-token grep, whole repository.** Over `w4/gforce.py`:
+**0 matches**. Over the draft: **9 appearances of 7 distinct tokens**, every one
+disclosed and none a mint — `(E1)`/`(E2)`/`(E3)` named as §(K-grid)'s **existing
+live** termination-ledger family (i.e. the tokens the direction is avoiding),
+`(L1)`/`(L2)`/`(L5)`/`(L6)`/`(L7)` as clauses of this registry's minting rule,
+and one `(S0)` inside the sentence quoting the gate's own documented
+Python-call-syntax false positive. **The direction wrote its three handles as
+lower-case (a)/(b)/(c)**, exactly as *Step G19* writes its own two, which is why
+nothing of the `(X<digit>)` shape was minted at all.
+
+> ***A DEFECT IN THE BRACKETED VOCABULARY'S SURFACE, self-caught and worth the
+> registry's space because no gate can see it.*** The direction first wrote its
+> obligations **inside** the bracket — `` `[MEASURED gforce.py --sound]` `` —
+> which is the natural reading of *"`[MEASURED]` names a driver"*. `ledger.py`'s
+> bracket regex is `^\s*`` `\[([A-Z][A-Z-]*)\]` ``, so a bracket containing
+> anything but the vocabulary word **does not match at all** and the claim parses
+> **`UNTAGGED`**. **`--lint` cannot fire on it**, because `--lint` binds the
+> *bracketed* form and an unparsed bracket is not bracketed — so the author's
+> opt-in silently becomes an opt-out. Verified by the coordinator at this
+> landing: `` `[MEASURED]` `driver.py` `` → `MEASURED`;
+> `` `[MEASURED gforce.py --sound]` `` → `None`. **The correct form puts the
+> obligation OUTSIDE the bracket**, which is what the landed rows do. Recorded as
+> a debt item for a coordinator round — the cheap repair is for `--lint` to warn
+> when a claim's raw tag *begins* with `` `[ `` and failed to parse — and as
+> another instance of *a gate that reports nothing is not a gate that passes*.

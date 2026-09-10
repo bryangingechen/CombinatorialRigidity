@@ -1732,6 +1732,35 @@ entry.
    (in which case it is (GR-9) restated). Decided by: the `(K-grid)` row, close-it u6 target
    (ii) — **note (iii) is no longer a deciding surface for this entry, GCOIND having settled
    it**.*
+   > **SPENT 2026-09-10 (direction GFORCE, ordinal 97) — the kill condition FIRED on its
+   > FIRST branch, and the second came out a THIRD way neither branch anticipated.**
+   > **The handles do close**: (a)/(b) generate a monotone, parameter-free closure whose
+   > termination hypothesis (*survivors carry no cycle*) is combinatorial and **sound** — 0
+   > unsound certificates over 7 224 blocks, model identity **14 448/14 448** against the
+   > landed `gridwit.dim_W` ((GR-177)). **But the first slice refutes the entry:** the
+   > fixpoint certifies **4 of the 18 separators**, not 18, and `leaf`/`cut`/`full` all give
+   > the **same** 4 ((GR-178)). The tell this entry was dispatched with — a nonzero residual
+   > at at least one separator — **fired at 14 of them**.
+   > **THE SECOND KILL BRANCH RESOLVED NEITHER WAY, AND THAT IS THE FINDING.** It asked
+   > whether success would be *(GR-9) restated*. It is **not** — 1 181 unconstrained-triple
+   > blocks fail to certify ((GR-181)) — but it is **not stronger either**: over 10 828
+   > balanced pool blocks the scheme certifies **7 767** where (GR-9) certifies **10 203**,
+   > so the two are **INCOMPARABLE**, **2 436** witnesses one way and **4** the other
+   > ((GR-180)). *(Honest scope: those 4 are the separators, outside the pool's `per_shape`
+   > cut — the driver discloses it, and on the pool sample alone the scheme never certifies
+   > where (GR-9) fails.)*
+   > **TWO UNPREDICTED POSITIVES.** *(GR-179)*: no support case-split strengthens the
+   > fixpoint — a **proof**, not a measurement. *(GR-183)*: a **THIRD handle, not in
+   > *Step G19*** — local rank at a hub with three surviving branches each carrying two
+   > known roots — is a **theorem** by four-pattern determinant exhaustion, lifting the
+   > separators **4/18 → 14/18** and the pool **71.7% → 88.6%**, still below (GR-9), after
+   > which the local hub relations are **exhausted** by a counting argument. *(GR-184)*:
+   > every residual block splits two ways, 567 + 41 = **608/608**, none left over.
+   > **DEMOTED, NOT CLOSED**, with a successor that is a different object: the
+   > **(c)-strengthened closure at its own 14/18 residual**, whose failure set is
+   > structurally characterized. *Kill condition for the successor: the (GR-184) dichotomy
+   > shown unavoidable — which closes the propagation line by mathematics — or a fifth
+   > handle exhibited. Decided by: the `(K-grid)` row, close-it u6 target (ii).*
 3. **IS THE UNCONSTRAINED TREE-TRIPLE *SUFFICIENT* FOR `κ < ∞`?** *(new — GCOIND's own
    highest-ranked successor)*. Owner: §(K-grid) *Step G185*, (GR-165). That clause proves
    **necessity** at every `r`; the converse would make the collapse order finite and
@@ -1745,6 +1774,19 @@ entry.
    *Kill condition: sufficiency proved, or a block with an unconstrained tree-triple and no
    certificate at any `r ≤ #classes` exhibited — GCOIND's bridged control is the shape to
    perturb. Decided by: the `(K-grid)` row, close-it u6 target (ii).*
+   > **STRUCK 2026-09-10 (direction GFORCE, ordinal 97) — WITHOUT A DISPATCH BEING SPENT ON
+   > IT. The answer is NO, and this entry's own second kill branch fired 621 times.**
+   > GFORCE was dispatched on rank 2 and told **not** to fold this twin in silently; it
+   > answered explicitly instead. Of the **625** swept blocks whose generic `dim Z` is not
+   > `0`, **every one** carries a **proven (GR-8) bound `g(P) ≥ 1`** — so `dim W₊ > 0` at
+   > *every* parameter point, hence no collapse certificate at any `r`, hence `κ = ∞` by
+   > (GR-19)(iv) — and **621 of them nevertheless carry an unconstrained tree-triple**.
+   > Pinned witness: `K4(1, 2, 2, 5, 5, 3)`, block `A`, `m = 9`, `h = 3`, `g(P) = 1` at
+   > `P = {β₀, β₁, β₃}` ((GR-182)). **(GR-165)'s condition is necessary and very far from
+   > sufficient.** **Note what carries the positivity:** a *proven* (GR-8) bound, not a
+   > measurement — `dim_Z_generic` can only certify `= 0`, so a measured non-zero would have
+   > proved nothing and this entry would have survived on a weaker instrument.
+   > **CLOSED; do not re-rank it.**
 4. **THE ISLAND'S SIMULTANEOUS REPAIR, AND THE INSTRUMENT AT `n_hub ≥ 8`** *(new —
    GISLAND's own successor, and the round's falsification pick)*. Owner: §(K-grid)
    *Steps G173–G176*, (GR-153)–(GR-156). The odd-pair flip repairs **2 492/2 492** violated

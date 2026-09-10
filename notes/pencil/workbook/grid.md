@@ -18027,3 +18027,240 @@ circuit whose every partner is blocked.
 > 324 218 / 298 222 / **114 850**. So roughly a **third** of NC1-clean island
 > colourings carry a merge somewhere — merges are common, and the run count
 > is genuinely not a substitute for the class count.
+
+---
+
+## §(K-grid) — continuation (direction GFORCE, ordinal 97, 2026-09-10): the (GR-16)(a)/(b) forcing handles DO close into a sound, monotone, parameter-free closure — and it certifies **4 of the 18 separators**, not 18, so §8's rank 2 is REFUTED at its first slice; the scheme and (GR-9) are **INCOMPARABLE** rather than one containing the other, a **third** handle not in *Step G19* is a theorem lifting 4/18 → 14/18 ((GR-183)), and **§8's rank-3 twin is answered NO in passing** — the unconstrained tree-triple is necessary and very far from sufficient for `κ < ∞` ((GR-182))
+
+Driver: `notes/scripts/w4/gforce.py` (eight modes + `--validate`). Full write-up: `notes/pencil/fanout.md` §"GFORCE".
+
+### *Step G197* — (GR-177): the reduction, and that the closure is sound
+
+> **(GR-177)** `[MEASURED]` `notes/scripts/w4/gforce.py --sound`
+> *(the reduction is derived from `bd` alone, so no separator needs its
+> uncontracted colouring re-found)* The
+> degree-2-suppressed model of `H₊` — suppress every node of `H₊` of degree
+> `≠ 2` and give each surviving super-edge the **union** of the classes met
+> along it — has cycle rank `h`, and its interpolation space is the landed
+> one: `gridcol.dim_W_branch` on the suppressed model equals `gridwit.dim_W`
+> at every seeded exact-ℚ draw, over the whole swept population. At
+> `Λ = ∅` the suppressed model **is** the hub multigraph `G°` and a
+> super-edge **is** a branch, so `branch_classes` agrees with it edge for
+> edge; that identity is asserted per block rather than assumed. Every
+> deduction of the closure above is sound: `residual = 0` implies the landed
+> generic `dim Z` is `0`, with **0** counterexamples over the swept
+> population, for the (a)/(b) closure and for the (c)-strengthened one alike.
+> Measured at **7 224** balanced filter-passing blocks (all 907 shapes,
+> `col_cap = 4096`, `per_shape = 4`, 2 draws each): model identity
+> **14 448/14 448**, unsound certificates **0** and **0**.
+
+*Why the local device.* `gcoind.separator_blocks()` returns `(label, bd)` and
+not the uncontracted `edges`/`col`, and `gridcol.branch_decomp` needs those.
+Rather than re-implement the separator finder — which would duplicate a
+landed gate — the model is rebuilt inside `H₊`, where cycle vectors are
+constant along maximal degree-2 paths so the suppression loses nothing. The
+agreement with `branch_classes` is then an **assertion**, not an assumption,
+wherever both are available (README rule 3, the `branch_decomp` precedent).
+
+### *Step G198* — (GR-178): the first slice, and the tell that fired
+
+> **(GR-178)** `[REFUTED]` witness `residual > 0 at 14 of 18 separators`,
+> exhibited by `notes/scripts/w4/gforce.py --sep`. Run to a fixpoint at the 18 habitat separators of *Step G16* —
+> where no **class-respecting** tree-triple exists, so (GR-9) is unavailable
+> and any success is strictly stronger than it — the (GR-16)(a)/(b) closure
+> **certifies 4 of 18**. The three strengths `leaf` / `cut` / `full` give the
+> **same** 4: the cut completion and the series rule buy nothing at these
+> blocks. Residual cycle ranks at the 14 failures are `2` (eight blocks), `5`
+> (four) and `6` (two); at the two `residual = 6` blocks the closure deduces
+> **nothing at all** — its first round is its last. Every one of the 18 has
+> exact `dim_W = 0`, so all 14 failures are failures of the *scheme*, not of
+> the blocks.
+
+At the pinned exemplar shape `V6m10(3¹⁰)` the reason is visible by hand and
+was derived before the run: with all branch lengths `ℓ_β = 3`, every branch is
+`A,B,A` or `B,A,B`, so `A(β) ∈ {1,2}` and — at `Λ = ∅`, where
+`|K_A(β)| = A(β)` by (GR-16)(iii) — **handle (a) never fires at all**, its
+`|K_A(β)| = 3` needing `ℓ_β = 5`. The whole scheme starts from an empty dead
+set and has to bootstrap from (b) alone. It gets from cycle rank 5 to cycle
+rank 2 and stops.
+
+**Balance-side check that the model is the right one:** the driver's
+suppressed model reports exactly five branches with `|K_A(β)| = 1` and five
+with `|K_A(β)| = 2` at every `V6m10(3¹⁰)` separator, which is the hand
+derivation (`Σ_β A(β) = 3c = 15` over ten branches with `A(β) ∈ {1,2}`)
+independently reproduced.
+
+### *Step G199* — (GR-179): no support case-split strengthens the fixpoint
+
+> **(GR-179)** `[PROVED]` *(and asserted independently by
+> `notes/scripts/w4/gforce.py --sat`)* Let `Σ` be a candidate for `supp(Q)` of a nonzero
+> `Q ∈ W₊`, and call `Σ` **feasible** when running the same closure with
+> everything outside `Σ` declared dead kills no member of `Σ`. Then a
+> nonempty feasible `Σ` exists **iff** the plain fixpoint's residual is
+> nonzero. *Proof.* If the residual is `0` the survivor set is empty (at the
+> fixpoint the survivors have no coloop, so a nonempty survivor set has cycle
+> rank `≥ 1`), and every `Σ` is killed. Conversely the survivor set at the
+> fixpoint is itself feasible: running the closure inside it re-runs the same
+> rules with the same dead set and reaches the same fixpoint by definition. ∎
+> So the exponential case split over supports — the natural first
+> strengthening, and the one a reader will propose — **cannot** move the
+> verdict of *Step G198*. Asserted at the 18 separators plus the pool blocks
+> under `shape_cap = 60`, `per_shape = 4`, `≤ 14` branches: **498** blocks
+> compared, **0 disagreements**.
+
+This matters because it converts "the scheme certifies 4/18" from a statement
+about *one* algorithm into a statement about the whole family of arguments
+that reason from `supp(Q)`.
+
+### *Step G200* — (GR-180): coverage, and the signed comparison with (GR-9)
+
+> **(GR-180)** `[MEASURED]` `notes/scripts/w4/gforce.py --pool`. Over the **10 828** balanced,
+> filter-passing colouring-blocks reached under the caps (all 907 census
+> shapes, `col_cap = 4096`, `per_shape = 6` filter-passing colourings, both
+> blocks, balance `2m = 3(n_c − 1)` required):
+> the (GR-16)(a)/(b) fixpoint certifies **7 767** (71.7 %); (GR-9)'s
+> class-respecting tree-triple certifies **10 203** (94.2 %); (GR-9)
+> certifies **2 436** blocks the fixpoint does **not**; the fixpoint
+> certifies **4** blocks (GR-9) cannot — the four separators of *Step G198*,
+> which lie outside this `per_shape` cut and are counted separately; and
+> **0** blocks are certified by the fixpoint with generic `dim Z > 0`.
+> Hence the (GR-16)(a)/(b) scheme and (GR-9) are **INCOMPARABLE**: neither
+> condition contains the other, in both directions with exhibited witnesses.
+
+The `4` is exact rather than sampled, and does not need a bigger sweep: by
+soundness a certifying block has generic `dim Z = 0`, and *Step G16*'s own
+classification of the pool's 1 720 triple-less blocks is *1 702
+counting-visible (`dim Z > 0`) + the 18 separators*, so a block certified by
+the scheme without a class-respecting triple can only be one of the 18.
+
+### *Step G201* — (GR-181)/(GR-182): the kill branch, and §8's rank-3 twin
+
+> **(GR-181)** `[REFUTED]` witness `1 181 unconstrained-triple blocks that
+> do not certify` (`notes/scripts/w4/gforce.py --tt`). The dispatch's stated
+> second kill branch was
+> that the termination hypothesis might **imply** the tree-triple, making the
+> scheme a restatement with extra steps. It does imply it, and that is not a
+> restatement. *Implication:* a fixpoint with residual `0` proves
+> `dim W₊ = 0` at the actual (distinct) class parameters, which is exactly
+> §(K-grid) (GR-19)'s `W_coll` for the **singleton** partition at
+> `r = #classes`, so (GR-165) applies and forces an unconstrained tree-triple
+> — measured at **9 595/9 595** of the certifying blocks below the
+> `m ≤ 18` cobase-enumeration cap (48 blocks above it were not enumerated).
+> *Non-restatement:* the converse fails wholesale — **1 181** blocks carry an
+> unconstrained tree-triple where the closure does not certify, under the same
+> caps. Combined with (GR-180), the scheme is
+> strictly stronger than the unconstrained-triple condition and incomparable
+> with (GR-9): it is a third condition, not either of them re-said.
+
+> **(GR-182)** `[PROVED]` *(at the pinned witness, by (GR-8); the population
+> count is measured by `notes/scripts/w4/gforce.py --kappa`)* **The
+> unconstrained tree-triple is NOT sufficient for
+> `κ < ∞`.** Of the **625** swept blocks whose generic `dim Z` was not
+> attained at `0`, **every one** carries a **proven** (GR-8) lower bound
+> `g(P) ≥ 1` — so `dim W₊ > 0` at *every* parameter point, hence no collapse
+> certificate at any `r` and `κ = ∞` by (GR-19)(iv) — and **621** of them
+> nevertheless carry an unconstrained tree-triple. Pinned witness:
+> `K4(1, 2, 2, 5, 5, 3)`, block `A`, `m = 9`, `h = 3`, with an unconstrained
+> tree-triple and `g(P) = 1` at the whole-branch sub-multigraph
+> `P = {β₀, β₁, β₃}`. So (GR-165)'s condition is necessary and very far from
+> sufficient.
+
+**This answers §8's rank-3 entry, which was deliberately not dispatched this
+round, and is recorded here as an explicit cross-finding rather than folded
+in.** Rank 3 asks *is the unconstrained tree-triple SUFFICIENT for
+`κ < ∞`?* — the answer is **no**, with a proof-grade witness. The witness's
+positivity does not rest on a sampled `dim_Z_generic`: `dim_Z_generic` is a
+minimum over draws and so can only *prove* `= 0`, never `> 0`, which is why
+the whole population was re-checked against (GR-8) and why the witness is
+quoted with its `g(P)` and its `P`.
+
+### *Step G202* — (GR-183): the third handle, which is a theorem
+
+> **(GR-183)** `[PROVED]` *(the four patterns exhausted by
+> `notes/scripts/w4/gforce.py --rank3`)*
+> **Handle (c), local rank at a hub — not in *Step G19*.** Let `v` be a node
+> of the surviving subgraph with exactly three surviving incident branches,
+> and suppose all three already carry two known roots, `|S[β_i]| = 2`. Then
+> `Q_{β_i} = c_i R_i` with `R_i` monic quadratic, and the hub identity
+> `Σ_i ε_i c_i R_i(t) ≡ 0` is three equations in three unknowns. `R_1, R_2,
+> R_3` are linearly independent in `K[t]_{≤2}` — hence `c_1 = c_2 = c_3 = 0`
+> and all three branches die — **iff** the three root-**pairs** are pairwise
+> distinct and `S[β_1] ∩ S[β_2] ∩ S[β_3] = ∅`. *Proof.* Three distinct
+> 2-element sets have pairwise intersections of size 0 or 1, so there are
+> exactly four patterns: three disjoint pairs; one shared class; pairwise
+> shared with no common class (`{a,b},{b,c},{c,a}`); and a class common to all
+> three. The determinant `det[ e₂(S_i), −e₁(S_i), 1 ]` is a nonzero
+> polynomial in the class parameters on the first three — exhibited nonzero
+> at an exact-ℚ draw, which **is** the proof that it is not the zero
+> polynomial — and vanishes identically on the fourth, where all three `R_i`
+> lie in the 2-dimensional space `(t − t_X)·K[t]_{≤1}`. ∎ *What it buys, measured:* **4/18 → 14/18**
+> at the separators, and **7 767 → 9 595** (71.7 % → 88.6 %) on the pool
+> sample, with **0** unsound certificates. *What it does not buy:* 18/18, or
+> parity with (GR-9), which still certifies **608** blocks that the
+> (c)-strengthened closure does not.
+
+Handle (c) is a **generic** rule — it concludes `c_i = 0` off a proper closed
+subvariety of parameter space — which is the right register, since (GR-15)
+asks for generic `dim Z₊ = dim Z₋ = 0`. It is nonetheless *combinatorial* in
+the sense the question demands: its hypothesis is a statement about the
+class-incidence table alone, with no parameter and no rank oracle.
+
+The exhaustiveness of the local case analysis is worth stating separately,
+because it bounds how much any *local* handle can ever add: at a surviving
+node `v` with surviving incident branches `β_1 … β_d`, the local unknown count
+is `Σ_i (3 − |S[β_i]|)` against 3 equations, so a local rule can force zero
+only when that sum is `≤ 3`. `d = 1` is (b·leaf); `d = 2` is the series rule
+and never kills; `d = 3` kills exactly when all three carry two roots, which
+is handle (c); `d ≥ 4` is never locally injective. **Handles (a), (b),
+(series) and (c) together therefore exhaust the local hub relations.**
+Anything further must be non-local.
+
+### *Step G203* — (GR-184): where it stops, and why that is structural
+
+> **(GR-184)** `[MEASURED]` `notes/scripts/w4/gforce.py --strat`. The residual splits **two** ways
+> and no third — exactly the two ways (GR-183)'s local exhaustion predicts.
+> Of the **608** pool blocks with generic `dim Z = 0` that the
+> (c)-strengthened closure does not certify (residual cycle-rank histogram
+> `3:474, 4:34, 5:61, 6:21, 7:18`):
+> **Type A, 567 blocks** — a hub at which **every** surviving incident branch
+> carries one common class — necessarily that hub's own `star_A(v)` — which
+> is exactly where both handles are vacuous: (b) evaluated at
+> `t = t_{star_A(v)}` reads `0 = 0` because *every* incident branch is killed
+> by the evaluation, not all but one, and (c)'s determinant vanishes
+> identically, by (GR-183)'s excluded fourth pattern;
+> **Type B, 41 blocks** — no such hub, but no surviving node with local unknown count
+> `Σ_i (3 − |S[β_i]|) ≤ 3` either, so (c) fails them by counting rather than
+> by degeneracy (all 41 still carry a survivor with a single known root).
+> Blocks in **neither** class: **0**. All **4** residual separators are
+> Type A. Worked instance, separator 6 of `V6m11(3⁸, 4³)`: the three
+> survivors at the residual hub have `S = {0,6}`, `{3,6}`, `{6,7}` — pairwise
+> distinct, common class `6`.
+
+So the obstruction is not a missing trick in the propagation. In Type A it
+is the all-A-ended hub, where *Step G19*(b) is silent **by construction** —
+its premise is *"a hub with exactly one B-end branch"*; in Type B it is a
+plain shortage of deduced roots. Both are failures of *locality*, and by
+(GR-183)'s count the local hub relations are exhausted, so closing these
+blocks needs information no single hub relation carries — which is precisely
+the certificate / min-max content the entry was trying to avoid.
+
+### *Step G204* — the verdict for §8's board
+
+> **The entry should be DEMOTED, and not re-run in this form.** Its own
+> falsifiable tell fired at 14 of the 18 blocks it was aimed at; the natural
+> completions (cut, series, support case-split) are provably exhausted
+> ((GR-179)) or measurably empty ((GR-178)); the one genuinely new handle the
+> residual asks for is a theorem, adds 10 separators and still leaves the
+> scheme **below (GR-9)** on the pool ((GR-183)); and the residual's
+> signature is a configuration at which the handles are vacuous by
+> construction ((GR-184)). The interlock the eleventh strategy pass flagged
+> — *"a negative on either lowers the other"* — resolves the other way from
+> the twelfth pass's reading: GCOIND's positive on the partition side does
+> **not** transfer, because (GR-163)'s criterion is a statement about four
+> *deleted cycle spaces* and the propagation is a statement about *vanishing
+> patterns*, and (GR-182) shows the two are separated by 621 witnesses.
+> **What is worth keeping** is (GR-183)'s handle (c) as a cheap
+> pre-certification filter (88.6 % of blocks at graph cost, before any
+> `collapse_search` runs) and (GR-182) as the answer to §8's rank 3.
+
+---
