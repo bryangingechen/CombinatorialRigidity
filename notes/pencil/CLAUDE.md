@@ -6,8 +6,9 @@ generally, and `RESEARCH-ARC.md` carries the research-phase discipline.
 
 ## Ask the ledger; do not grep the workbook
 
-`python3 notes/ledger.py` indexes **every label-clause in this corpus** — 1 783
-claims — and reports the evidence status the claim's own prose states.
+`python3 notes/ledger.py` indexes **every label-clause in this corpus** (`--stats`
+for the live count; it is not quoted here, and it moves on parser fixes as well
+as on landings) and reports the evidence status the claim's own prose states.
 
 ```
 --label '(BE-216)'     every clause of one label: status, section, live line, citations

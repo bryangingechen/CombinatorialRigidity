@@ -972,3 +972,209 @@ stem-headed clauses, which are not independent tagging decisions.
 **Worklist effect:** `--backlog` 1 155 → **784**, `--decisive` 356 → **298**,
 with nothing deleted from the index — every filter narrows the WORKLIST, and
 `--label` still returns every row.
+
+## D6 — the next round's diagnosis, measured at the first `/coordinate-research` session after slices 8–14 (2026-09-09)
+
+This section is a **second wave of evidence on D1** (*the coordinator spends
+120–190k tokens before its first dispatch*), taken from the first coordinator
+session to run the finished harness end to end: three concurrent directions
+(BCORNER / GISLAND / GCOIND, ordinals 93–95) dispatched from baseline
+`c8efb227`. It is written for a **future harness-adjusting session**, so every
+forward-looking item below carries its **kill condition** and the surface that
+decides it, per `RESEARCH-ARC.md` §8.
+
+**The measurement, and its honest provenance.** ~55 tool calls preceded the
+first dispatch — my own count from the session transcript, not an instrumented
+figure. Roughly: **14** orientation reads of manuals, **12** driver-source reads
+hunting blind axes, **10** label-reservation mechanics, **8** ledger/gap-map
+queries, **6** caps/gates/budget, **5** miscellaneous. The three big blocks are
+the first, second and third; the ledger queries — the thing slices 8–11 built —
+were the *cheapest* line in the table and are not the problem.
+
+**What is already working, and should not be "improved".** `--brief`/`--round`
+produced three dispatch packets with statements quoted verbatim, **one call
+each** (BCORNER's 17 labels, ~9 800 words); `--reserve` cleared three direction
+codes in one call; `gapmap.py` kept a 23 876-character row readable at a few
+percent of its cost. That is why the prep was ~55 calls rather than the
+~35-probes-per-18-claims the ledger docstring measures for the grep era. **The
+residue is exactly two shapes: a surface that got a GATE but no READER (D6.1),
+and a reading a RULE asks for but no script performs (D6.4).**
+
+### D6.1 — the phase note has a gate and no reader; the gap map has both
+
+§6's promoted lesson is *cap the cell, **but also ship a READER for it***. It was
+applied to the gap map (`check-gapmap-cells.py` + `gapmap.py`) and **not** to the
+phase note, which has `check-phase-note.py` and nothing to read it with.
+Measured at `c8efb227` (`wc`, and `awk` over the paragraph): `notes/Phase39.md`
+is ~579 lines / ~7 167 words, and the one sentence a coordinator needs — the next
+concrete task — is the *Hand-off* section's next-task paragraph, **a single
+physical line of ~580 words / ~3 700 characters**. No line number is recorded
+here on purpose: the ledger's own *NO LINE COLUMN* finding is that a stored line
+number shifts for every edit above it. That is the same one-physical-line-per-object
+shape `gapmap.py` exists for, and reading it cost a full-file pass because
+nothing points at it.
+
+**Suggestion:** `notes/phasenote.py`, `gapmap.py` retargeted — `--next` (the
+next-task paragraph, sentence-windowed), `--status` (the header block),
+`--handoff`, and `--surfaces` (print every status surface an F17 sweep must
+touch: the `**Status:**` header, the *Hand-off* next-task slot, *Current state*,
+the ROADMAP Status cell, the dispatch-scoping file's header). The last mode is
+the one that pays twice — F17 is three consecutive landings each leaving a
+*different* surface stale.
+*Kill condition: `notes/phasenote.py --next` shipped and used by one coordinator
+session, or a measurement showing the full-file read is cheaper than the reader.
+Decided by: the file's existence and this section.*
+
+### D6.2 — `RESEARCH-ARC.md` §7 is 48% of the file, and the loop says to cite it, never re-derive it
+
+Measured at `c8efb227` (`awk '/^### 7\. A coordinator prediction/,/^## /'`):
+§7 (the prediction-kind tally) is **414 of 957 lines / 5 111 of 10 674 words** —
+**~48% of the file**. The ratio is the durable half of that; re-take the
+absolutes rather than trusting them. The command's own instruction is *"§7 keeps the running tally … **cite
+it, never re-derive it**"* — so what a coordinator needs in the loop is §7's
+**rule** (three clauses: state the reason separately from the verdict; write down
+where you expect to be wrong; make the tell falsifiable against the corpus you
+already have) plus a pointer. The twenty-seven-instance / ten-kind provenance is
+real and worth keeping, but it is below the read-line. §4 has the same shape: the
+rule is four sentences, the evidence is ~90 lines.
+
+**Suggestion:** split each Ready item into a short **binding head** and a
+**provenance tail**, and move the tails to `notes/dispatch-log.md` *Findings* or a
+`RESEARCH-ARC-provenance.md` behind one-line pointers. This is the file's own
+*lift on promotion* rule turned on itself, and the CLAUDE.md suite's stated
+policy — *extract to read-on-demand references rather than deleting content*.
+*Kill condition: `RESEARCH-ARC.md` under ~500 lines with every Ready item's rule
+stated in its first paragraph. Decided by: `wc -l RESEARCH-ARC.md` and the file's
+tier headers.*
+
+### D6.3 — three pre-dispatch checks are mechanical and were done by hand
+
+- **(a) The (L7) per-token range enumeration.** `ledger.py --reserve` checks
+  *tokens*, not *ranges*, so the range check was an ad-hoc shell loop written
+  twice, once per label family. **Suggestion:** `--reserve-range 'BE-231..BE-238'
+  --steps 'BE230..BE237'`, emitting the (L7) table in the shape `labels.md`
+  blocks already use — and, the part that actually took judgement,
+  **classifying each hit as declaration-vs-consumption** by testing whether the
+  hit line is a previous reservation's tail declaration. Every non-zero cell in
+  this round's three reservations was a declaration; *"0-hit except the
+  declaration"* is the only true form of the claim and a script can say it.
+- **(b) Live-tail discovery.** Learning that the (GR-) family's declared tail is
+  `(GR-153) / Step G173` took a grep plus two `labels.md` blocks.
+  **Suggestion:** `--tail GR` printing the declared tail and the line declaring it.
+- **(c) Doc-cap headroom.** Learning that `(K-bare)` had **28** words free and
+  `(K-grid)` **23 / 9** (at `c8efb227` — these move at every landing and are not
+  maintained here) required reading `SPECIAL_CAPS` out of the gate's source.
+  **Suggestion:** `check-gapmap-cells.py --headroom` (used / cap / free per row),
+  and a free-words column on `gapmap.py --list`. Headroom decides whether a
+  landing is an append or a recompute, so it belongs in the dispatch spec.
+*Kill condition for all three: each shipped, or one coordinator session that does
+the check in a single call. Decided by: the flags' presence in `--help`.*
+
+### D6.4 — the blind-axis grep is the loop's highest-yield prep step and has no tool
+
+`RESEARCH-ARC.md` §4 instructs *grep the generator for hardcoded constants*. That
+instruction produced **both** of this session's decisive prep findings, at a cost
+of ~12 source-reading calls:
+
+- `cflank.LAM6_PLAN = ((6, 9, 1),)` fences the `Λ ≠ ∅` sweep at `|Λ| ≤ 1` —
+  **24 846 of 142 740** length tuples, **82.6% unswept** — while
+  `length_tuples(M, tgt, lamcap=99)` already takes the parameter, and the unswept
+  stratum is exactly where the derived merge condition lives. Re-derive, do not
+  trust: `len(cflank.length_tuples(9, 24, lamcap=c))` for `c` in `1, 99`.
+- `gridcol.collapse_search(…, want=1)` returns at the first certificate, so
+  `strategy.md` §8 rank 2's quoted *"257 co-independent 4-partitions of 20 967"*
+  is a truncation artifact. Un-fenced (`want=∞`, **9 s**, no harness edit): **3 128
+  of 175 275, with 1 536 certifying** — turning that entry's first slice from one
+  labelled partition into a near-balanced 1 536/1 592 dataset. Re-derive, do not
+  trust: `gridcol.collapse_search(bd, 4, rng, want=10**9, budget=600.0)` at
+  `EXEMPLAR`.
+
+Both are the BNONUNI shape — *a hardcoded constant reads like harness
+architecture and is usually a keyword argument away from being an axis* — and
+neither is visible to any gate. **Suggestion:** `notes/scripts/blindaxes.py
+<driver>`, an AST pass listing, for a named driver and its read-only imports:
+module-level constants, keyword parameters with literal defaults, and
+early-return guards on a counter. Even a dumb lister surfaces `want=1` and
+`lamcap=1` in one call instead of twelve. Note the asymmetry that makes this
+worth automating: the *rule* is promoted and the *reading* is manual, so the rule
+is obeyed exactly as often as a coordinator remembers to spend twelve calls.
+*Kill condition: the script shipped and one spec's blind-axis list generated by
+it; or two consecutive rounds where the hand grep finds nothing the spec did not
+already name. Decided by: this section plus `notes/dispatch-log.md` Findings.*
+
+### D6.5 — the recommendation surface cites driver modes in prose, and one was wrong
+
+`strategy.md` §8 rank 2 names `packmm.py --hier`; the mode lives in
+`gridcol.py`. §8 is *the* surface a fresh session reads to choose a direction —
+RESEARCH-ARC §8's whole thesis — and a prose driver-mode citation is a
+**mechanically checkable** class of error that no gate covers.
+**Suggestion:** `notes/check-driver-refs.py` — extract every `<name>.py --<flag>`
+string from `notes/pencil/**` and `notes/*.md`, resolve against each driver's own
+argparse flags, fail on a mismatch. This is §8's *gate a surface and it stays
+correct* applied to the one part of a recommendation that is machine-decidable.
+*Kill condition: the gate shipped and green, or a measured hit count low enough
+not to matter. Decided by: the gate's presence and its first run.*
+
+### D6.6 — the blocking check-in is serialized behind reads it does not need
+
+`.claude/commands/coordinate-research.md` puts the setup reads first and the
+**blocking** user check-in after them. The check-in asks two questions — does this
+run modify the instructions, and which rungs are dispatchable — and **neither
+depends on any of the reading**. Moving it to the session's first action removes
+a serialization point at zero cost, and the rung answer can change what the
+reading is for.
+*Kill condition: the command body reordered. Decided by: that file's setup
+paragraph.*
+
+### D6.7 — `check-phase-note.py --all` is RED at baseline, so the documented fallback does not exist for it
+
+The loop says the three docs gates inspect files changed vs `HEAD`, so *"run them
+BEFORE committing, or with `--all`"*. Measured at `c8efb227`:
+`check-phase-note.py --all` exits **1**, every failing note a closed one
+predating the caps (count omitted deliberately — run it). So `--all` is **not** a usable fallback for that
+gate — only the changed-vs-`HEAD` mode is, and a post-commit run certifies
+nothing with no alternative. **Suggestion:** default to `ACTIVE` notes and make
+the archive an opt-in scope, or amend the loop's sentence to name the exception.
+This is the promoted corollary's sibling: *a gate that reports zero is not a gate
+that passes*, and **a gate that is red at baseline cannot be a fallback**.
+*Kill condition: `--all` green, or the loop's sentence amended. Decided by:
+`python3 notes/check-phase-note.py --all; echo $?`.*
+
+### D6.8 — a derived count written into prose is a summary surface; cite the command, not the number
+
+Found while auditing this section, and it is the round's own thesis turned on
+the round's own documentation. **The claim count drifted `1 783` → `1 764`
+*without the corpus changing*** — the taxonomy pass's four parser fixes
+(`LABELISH` gating, the possessive guard, `flush()` not clearing `pending`,
+the sub-clause `locate()`) re-partitioned what counts as a claim. Two live
+surfaces were left asserting the old figure: `notes/Phase39.md`'s *Hand-off*
+and `notes/pencil/CLAUDE.md`'s opening sentence. Neither is *wrong about
+anything mathematical*; both are a number that no gate maintains, in a document
+whose whole purpose is to be trusted on first read.
+
+**The obvious repair is the wrong one.** Updating `1 783` to `1 764` buys one
+correct day and re-arms the same trap — this is exactly slice 8's own recorded
+reason for **not checking the ledger in**: *"a stored ledger would be one more
+SUMMARY SURFACE, and this corpus's documented pathology is a summary disagreeing
+with the body prose it summarizes"*. A count in prose is a stored ledger of size
+one. So the repair is to **delete the number and name the command**:
+`python3 notes/ledger.py --stats` costs one call and cannot drift.
+
+**The distinction to hold, because it is not "never write a number down".**
+
+- A **historical measurement** — *"~55 tool calls before the first dispatch in the
+  2026-09-09 session"*, *"generation over the 2.8 MB workbook measures ~0.2 s"* —
+  is dated, describes an event, and is correct forever. Write it, date it, keep it.
+- A **live figure** — a corpus count, a row's free words, a gate's failure count,
+  a backlog size — describes the tree *now*. It is a summary surface. Do not write
+  it into prose that will be read later as current; write the command that
+  produces it, or anchor it to a baseline sha **and say it is not maintained**.
+
+The tell that separates them in one question: *if this number changes tomorrow,
+is the sentence wrong, or merely old?* Wrong ⇒ it is a live figure, cite the
+command. Merely old ⇒ it is history, date it and leave it.
+
+*Kill condition: a grep for live counts across the status surfaces
+(`notes/Phase39.md`, `notes/pencil/CLAUDE.md`, `ROADMAP.md` §39) returning only
+dated or command-cited figures. Decided by: this section and the next liveness
+sweep.*
