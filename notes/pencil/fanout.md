@@ -2,9 +2,8 @@
 
 **Status: EIGHT fan-outs, FIFTY-FOUR single directions, ONE draft-only parallel direction,
 FIVE concurrent pairs, ONE concurrent round of four and TWO concurrent rounds of three
-dispatched; 105 LANDED, **ONE IN FLIGHT (GEXPAND 96)** — the 2026-09-10 round of three
-(BCORNER 93, GISLAND 94, GCOIND 95) is COMPLETE, and a SECOND round of three (GEXPAND 96,
-GFORCE 97, GSIMUL 98) has GFORCE and GSIMUL landed. The round of three (BFOUR 81,
+dispatched; 106 LANDED, **NONE IN FLIGHT, NONE DRAFTED** — BOTH 2026-09-10 rounds of three
+are COMPLETE (BCORNER 93 / GISLAND 94 / GCOIND 95, then GEXPAND 96 / GFORCE 97 / GSIMUL 98). The round of three (BFOUR 81,
 BINSERT 82, BSERIES 83) and the **chain of six** single dispatches that answered each
 other in turn (BSTEER 84 → BGTWOA 89, (BE-204)–(BE-217); per-landing detail in the
 sections and in blocks 8/11–13, **not restated here**) are both CLOSED — and
@@ -17148,3 +17147,119 @@ rather than *feasible*.
 stops at first witness, so a 0 is exhaustive and a hit is one witness.
 `--validate` ≈ 625 s, **above the 600 s ceiling** — an F15 case, disclosed
 in-driver.
+
+---
+
+## GEXPAND — ordinal 96, concurrent round of three, `research-direction-opus`, LANDED 2026-09-10
+
+**The question.** §8's **rank 1** (twelfth pass), and the board's only entry
+whose success would **close** `(GR-15)` on the stratum rather than reduce it: is
+there an expansion theorem in the `G°` direction — a finite move set generating
+the tight class from a finite base — giving an induction internal to
+`(G°, ℓ, bits)`?
+
+**Verdict: NO — and by a PROOF rather than a search. There is no move.** The
+`D = 0` tight class stratum admits **no additive zero-net-excess expansion move
+at all**, at any gadget size, at `Λ = ∅` or not. Not *the generator is narrow*:
+**empty**. §8 rank 1 is closed as a route; `(GR-15)` keeps its uniformity gap and
+`hK` its carry.
+
+**The proof, four lines and cap-free.** (GR-25)(i) read at the **complement** of
+a hub set is an **excess-boundary cap** `exc_B ≤ 2∂(B) − 1` — derived from the
+cut criterion plus (GR-21)'s total budget of 6, and **tight at slack 0** over
+80 + 7 892 + 39 689 landed shapes ((GR-170)). Applied at the **brand-new** hubs
+it forces `Σ_{E_ss} ℓ ≥ 6|E_ss| + 1`, which **(SD-6)'s `ℓ ≤ 5` refutes for every
+`|E_ss| ≥ 0`** ((GR-171)). The exhaustive `k ≤ 3` enumeration — 0 survivors at
+every `(s, topology)`, complement slack exactly `−1` — is the **independent
+check** of that proof, not the proof. This is layer 3, *"the instance no
+gadget-internal filter can see"*.
+
+**THE ENTRY'S OWN MECHANISM — AND MY SPEC'S — IS REFUTED AS A TAUTOLOGY.** Both
+argued that zero-net-excess *"forces growth to TRADE the fixed budget of 6 rather
+than add freely"*, and read that narrowness as what makes the generator small.
+**Zero-net-excess is an IDENTITY:** cubicity plus tightness give
+`Δ(excess) = 3Δn − 3Δn = 0` at every `Δn` ((GR-169), asserted to `Δn ≤ 40`). It
+constrains nothing and excludes no move.
+
+**The negative has teeth, and the control is what earns that.** The ladder family
+`CL_m` is proven in-habitat for all `m ≥ 4` ((GR-175)), so the stratum is
+**infinite** and every member irreducible. And the **F13 control** is decisive:
+relax **(SD-6) alone** to `ℓ ≤ 6` and the H-operation reappears — the reduction
+search recovers a parent at **1 314/1 314**. So the instrument **fires when a
+move exists**, and its empty answer over `aglu._pool8()`'s 39 689 shapes is a
+measurement rather than a silent failure.
+
+**§(K-ind) *(I4)* is STRENGTHENED, not merely confirmed** ((GR-176)): its body
+scoped the claim to *"no **split** move"*; the `G°` direction is now closed to
+**every** additive move at `D = 0`.
+
+**The coordinator's prediction: verdict CONFIRMED, mechanism REFUTED, and the
+TELL COULD NEVER HAVE FIRED.** The spec predicted NO and named the four-branch
+move as where it expected to be wrong. The verdict is right and the reason is a
+tautology (above). Worse, the spec's falsifiable tell — *an exhibited parent/child
+pair at `n_hub 6 → 8`* — is **doubly unsatisfiable**: `Δn = 2` needs `k = 1`,
+which is empty on lengths alone, and no `Δn` works at all. That is the second
+tell this coordinator has written that could not fire (after BCORNER's
+residue-built one), and the check both needed is the same: **ask which region the
+tell samples before asking whether it is falsifiable.** The spec's relayed
+four-branch tuple `(5,2,3,2)` was also wrong on its naive digon reading, which
+violates (GR-25)(i); its H-op and `Y→Δ` clauses were correct.
+
+**A COORDINATOR SOURCING DEFECT, and it needs one correction of its own.** The
+twelfth pass claimed every entry was *"re-derived from its **owning** section …
+never quoted from a hand-off (the F22 discipline)"* — and then quoted **§(K-ind)
+u5**, which is a **gap-map row unit**, a summary surface. GEXPAND read the
+357-line section and found the body clause, whose scope is *"no **split** move"*
+— so a `G°`-direction move was never excluded and the entry was correctly
+un-blocked. **The correction back, verified at source:** GEXPAND says the
+unqualified wording *"is not §(K-ind)'s"*, and that is slightly too strong —
+`K-ind.md:36–37`'s own summary bullet does read *"no move **touches** `G°`"*. So
+§(K-ind) **carries both forms**, its summary bullet over-stating its own body,
+and the gap-map unit propagated the summary. **F12's pathology inside a single
+file**, inherited two surfaces downstream. The sharpened lesson: *a section's own
+summary bullet is a summary surface too.*
+
+**Coordinator verification at landing:** `--law` and `--moves` re-run — the
+identity `Δ(excess) = 0` at every `Δn ≤ 40`, and 0 surviving gadget families at
+`k ≤ 3` with complement slack exactly `−1` at every `(k, s)`. `--cap`'s
+derivation read at source and its tightness reproduced at `n_hub = 4` (80 shapes)
+and `n_hub = 6` (7 892), min slack 0 at both. `--reach`'s **F13 control
+reproduced at 1 314/1 314**, and its cap disclosure — `Λ ≠ ∅` at `n_hub = 8` not
+swept, `kmin = 1` so the measurement does not presuppose the `k = 1` kill — read
+and confirmed in the driver's own output.
+
+**Gap-map: the most disciplined proposal of the round.** It tracked the cell
+budget through **all three** of the coordinator's landings — `bba48e0e`,
+`2c0bdae5`, and the relocation pass `f2905c86` — re-took both figures against the
+last, and noted its substantive edit had been *unlandable* at 1 free word and was
+made landable again by the relocation. Its close-it edit is designed to fit the
+single free word by **trimming first** (`do not re-derive, do not re-run` →
+`do not re-derive or re-run`, `−1`, then `+2`). Each edit carries its own
+fallback, and it declined to solve its problem at a sibling's expense: *"do not
+trim sibling prose to make room for mine; that is a coordinator call, not a
+direction's."* Applied exactly as proposed — status **2 523 → 2 585** (130 free),
+close-it **984 → 985** (cap exactly), `gapdiff` **0 DROPPED / 2 added**, row
+re-checked **`split`**.
+
+**Reservation.** (GR-169)–(GR-176) / *Steps G189–G196* reserved; **(GR-172) /
+*Step G196* RETURNED UNUSED**. The (L7) check was emitted per token and **run
+twice against the COMMITTED OBJECT** rather than the working tree — which was
+dirty with two siblings mid-landing for most of the dispatch. That refinement is
+this direction's and belongs in the rule: **`git grep … <sha>`, not
+`git grep …`.** Every non-zero cell is a declaration or the coordinator's own
+spec, never a consumption. Live tail is now **(GR-193) / *Step G213***.
+
+**Self-caught, five**, the sharpest being that its **first `--moves` verdict was
+wrong** — the digon "unique minimal family" — and that building the expansion
+direction is what refuted it and found the complement cut. Also: it read the gap
+map off a **sibling-dirty working tree**; its reduction search first presupposed
+the `k = 1` kill (fixed and re-run twice); θ(3,3,6) is not an (SD-6)
+counterexample (it fails `hnoRigid`); and the `n_hub = 2` hub-sum of 12 is
+(GR-25)(i)'s hypothesis boundary, so stating (GR-173) without `n ≥ 4` would have
+been false with its own refutation printed beneath it.
+
+**The one real gap, and it is the successor:** **non-additive** moves — those
+deleting a parent hub — are untouched, as is `D > 0`. Caps: `--lam8` at
+`lamcap = 1` only; `cubic_habitat` is `2^n`, so the ladder is checked to
+`n_hub ≤ 22` and **proven** beyond; everything rests on (GR-25) as a **theorem**,
+not on its `n_hub ≤ 6` equivalence measurement.

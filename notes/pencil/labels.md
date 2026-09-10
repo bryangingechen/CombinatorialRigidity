@@ -5202,3 +5202,53 @@ this landing) and therefore **not** available. A future reservation opens at
 > here because the defect's shape is the one this arc keeps repeating: **a
 > coordinator naming a landed call by what it is called rather than by what it
 > ranges over.**
+
+## Reserved namespace — direction GEXPAND (2026-09-10, **CONSUMED: seven labels and seven steps; (GR-172) / *Step G196* RETURNED**)
+
+| direction | section | labels | steps | driver |
+|---|---|---|---|---|
+| **GEXPAND** | §(K-grid) — **extends** (cites §(K-ind) (L3)-qualified) | **(GR-169)–(GR-176)** reserved; **(GR-172)** returned | ***Steps G189–G196*** reserved | `w4/gexpand.py` (six modes + `--validate`) |
+
+**0-hit verification, emitted PER TOKEN and RUN TWICE — against the COMMITTED
+OBJECT, never the working tree**, which was dirty with two siblings mid-landing
+for most of the dispatch. That refinement is this direction's, and it belongs in
+the rule: `git grep … <sha>` rather than `git grep …`. Hits at `732087e2` →
+`2c0bdae5`: `(GR-169)`/`G189` **4 → 6** (2 files); `(GR-176)`/`G196` **0 → 2**;
+`(GR-170)`–`(GR-175)` and `G190`–`G195` **0 → 0** throughout; `GEXPAND`
+**0 → 14** across three files, `gexpand` **0 → 0**.
+
+**Every non-zero cell is a DECLARATION or a SPEC, never a consumption.** The
+`(GR-169)`/`G189` hits are the live-tail sentences in this registry and
+`fanout.md`; the growth to 6, and the new `(GR-176)`/`G196` hits, are the GFORCE
+and GSIMUL landings recording *"(GR-169)–(GR-176) / G189–G196 still RESERVED to
+GEXPAND (in flight)"*; the `GEXPAND` hits are the coordinator's own roster row
+and dispatch record. **No claim and no step is stated under any of the eight
+labels.** The reservation was clean at both shas.
+
+**THE LIVE TAIL IS NOW (GR-193) / *Step G213***, and **(GR-172) / *Step G196*
+are RETURNED UNUSED** and available.
+
+**(L6) landing-time bare-token grep, whole repository:** reported by the
+direction in its *Landing notes*; no `(X<digit>)` token is minted, the corpus's
+live `(E1)`/`(E2)`/`(E3)` family untouched.
+
+> ***A COORDINATOR SOURCING DEFECT THIS DIRECTION CAUGHT, and the correction
+> needs one correction of its own.*** The twelfth strategy pass claimed each
+> entry was *"re-derived from its **owning** §(K-grid)/§(K-ind) step or gap-map
+> cell and never quoted from a hand-off (the F22 discipline)"*, and then quoted
+> **§(K-ind) u5** — which is a **gap-map row unit**, i.e. a summary surface, not
+> §(K-ind) prose. GEXPAND read the 357-line section and found the body clause it
+> summarises (*What would change this* **(i)**, `K-ind.md:337–339`).
+> **Its reading of the scope is right and it cuts in the entry's favour:** *Step
+> I4*'s body says the infinitude *"which by **(I2) no split move** reaches"* —
+> **no split move**, not *no move* — so a `G°`-direction move was never excluded
+> and the entry was correctly un-blocked. **The one correction back
+> (coordinator, verified at source):** the direction says the unqualified wording
+> *"is not §(K-ind)'s"*, and that is slightly too strong — `K-ind.md:36–37`'s own
+> summary bullet does read *"no move **touches** `G°`"*, unqualified. So the
+> accurate statement is that **§(K-ind) carries both forms**, its summary bullet
+> over-stating its own body, and the gap-map unit propagated the summary. That is
+> the F12 summary-vs-body pathology **inside a single file**, and the twelfth
+> pass inherited it two surfaces downstream. The lesson for the next strategy
+> pass is sharper than "read the owning section": **a section's own summary
+> bullet is a summary surface too.**

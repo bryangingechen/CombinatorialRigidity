@@ -1711,6 +1711,36 @@ entry.
    preserves the stratum from a finite base — which would close §(K-ind)'s (I4) gate by
    mathematics and is itself a result — or inheritance fails at an exhibited parent/child
    pair. Decided by: the `(K-ind)` row (u2/u5) and `(K-grid)` close-it u7.*
+   > **SPENT 2026-09-10 (direction GEXPAND, ordinal 96) — the FIRST kill branch fired, BY A
+   > PROOF rather than a search, and this entry's own stated mechanism was VACUOUS.**
+   > **There is no move.** The `D = 0` tight class stratum admits **no additive
+   > zero-net-excess expansion move at all** — any gadget size, `Λ = ∅` or not. Not *the
+   > generator is narrow*: **empty**.
+   > **The proof is four lines and cap-free.** (GR-25)(i) read at the **complement** of the
+   > brand-new hubs is an **excess-boundary cap** `exc_B ≤ 2∂(B) − 1` ((GR-170), tight at
+   > slack 0 over 80 + 7 892 + 39 689 landed shapes); at the new hubs it forces
+   > `Σ_{E_ss} ℓ ≥ 6|E_ss| + 1`, which **(SD-6)'s `ℓ ≤ 5` refutes for every `|E_ss| ≥ 0`**
+   > ((GR-171)). The exhaustive `k ≤ 3` enumeration — 0 survivors, complement slack exactly
+   > `−1` — is the **independent check** of that proof, not the proof.
+   > **THE STATED MECHANISM IS REFUTED AS A TAUTOLOGY.** This entry argued that
+   > zero-net-excess *"forces growth to TRADE the fixed budget of 6 rather than add freely"*.
+   > **Zero-net-excess is an IDENTITY** — cubicity plus tightness give
+   > `Δ(excess) = 3Δn − 3Δn = 0` at every `Δn` ((GR-169)) — so it constrains nothing and
+   > excludes no move. The real obstruction is the complement cut, which **no
+   > gadget-internal filter can see**.
+   > **THE NEGATIVE HAS TEETH.** The ladder family `CL_m` is proven in-habitat for all
+   > `m ≥ 4` ((GR-175)), so the stratum is **infinite** and irreducible; and the F13 control
+   > is decisive — relax **(SD-6) alone** to `ℓ ≤ 6` and the H-operation reappears, the
+   > reduction search recovering a parent at **1 314/1 314**. The empty answer is a
+   > **measurement**, not a silent failure.
+   > **§(K-ind) *(I4)* IS STRENGTHENED** ((GR-176)): its body scoped the claim to *"no
+   > **split** move"*; the `G°` direction is now closed to **every** additive move at
+   > `D = 0`.
+   > **THE ONE REAL GAP IS THE SUCCESSOR:** **non-additive** moves — those deleting a parent
+   > hub — are untouched, as is `D > 0`. *Kill condition for the successor: a non-additive
+   > stratum-preserving move exhibited, or the complement cut extended to cover deletions.
+   > Decided by: the `(K-ind)` row and `(K-grid)` close-it u9's dead-routes list, where
+   > `G°`-induction now appears.*
 2. **THE (GR-16)(a)/(b) FORCING HANDLES** *(the eleventh pass's rank 4, RAISED by GCOIND's
    positive)*. Owner: §(K-grid) *Step G19*, re-read at source: **(a)** `Q_β ≡ 0` whenever
    `|K_A(β)| = 3`, so the support of any nonzero `Q ∈ W₊` is a **bridgeless** subgraph of

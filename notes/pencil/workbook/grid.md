@@ -18536,3 +18536,224 @@ every time — the same phenomenon seen from the other side.
 > one (GR-187)/(GR-188) above carry explicitly.
 
 ---
+
+---
+
+## §(K-grid) — continuation (direction GEXPAND, ordinal 96, 2026-09-10): §8's rank 1 is REFUTED, and by a PROOF rather than a search — the `D = 0` tight class stratum admits **NO** additive zero-net-excess expansion move **at any gadget size**, at `Λ = ∅` or not, because (GR-25)(i) read at the COMPLEMENT of the brand-new hubs forces `Σ_{E_ss} ℓ ≥ 6|E_ss| + 1` against (SD-6)'s `ℓ ≤ 5` ((GR-171)); zero-net-excess turns out to be an **IDENTITY**, not a constraint ((GR-169)), so the entry's own stated mechanism was vacuous — and the stratum is **infinite** ((GR-175)), so the negative has teeth
+
+Driver: `notes/scripts/w4/gexpand.py` (six modes + `--validate`). Full write-up: `notes/pencil/fanout.md` §"GEXPAND".
+
+### Step G189 — what a move IS, and why the definition is forced
+
+A **zero-net-excess additive expansion move** takes a `D = 0` class shape (the
+*parent*) to another (the *child*) by: choosing `s` interior split points on
+parent branches, each becoming a new degree-3 hub; adding `b` **brand-new** hubs;
+and adding new branches on the `2k := s + b` new hubs so that each split hub gains
+exactly one new dart and each brand-new hub has degree 3. Nothing else about the
+parent changes. Write `S` for the split hubs, `B` for the brand-new hubs,
+`W' := S ∪ B`.
+
+This covers every *additive* classical generator — Henneberg I/II, the
+**H-operation** (edge insertion), vertex splitting. It does **not** cover a move
+that deletes a parent hub (`Y→Δ`) or one that re-lengths parent branches outside
+the changed region; those are blind axes 1 and 2 (§5).
+
+> **(GR-169)** `[PROVED]` *(the accounting is forced, not designed)* For any move
+> between two `D = 0` class shapes: `Δn` is even, `ΔM = 3Δn/2`, `ΔΣℓ = 6Δc = 3Δn`,
+> and therefore `Δ(Σ_β(ℓ_β − 2)) = ΔΣℓ − 2ΔM = 0` **identically**. Writing
+> `k := Δn/2`, the move adds `3k − s` genuinely-new branches of total length `6k`,
+> whose excess is therefore exactly
+>
+> > `Σ_{new}(ℓ_β − 2) = 6k − 2(3k − s) = 2s`,
+>
+> and the parent-derived branches of the child carry the remaining `6 − 2s`.
+
+*Proof.* Cubicity `2M = 3n` gives `ΔM = 3Δn/2`, so `Δn` is even. Tightness with
+`Σℓ = 6c = 6(M − n + 1)` gives `ΔΣℓ = 6(ΔM − Δn) = 3Δn = 6k`. Splitting a branch
+preserves its total length, so all `6k` of the added length sits on the
+genuinely-new branches; `ΔM = 3k` counts `s` split-created branches plus `3k − s`
+genuinely-new ones. Subtract `2` per new branch. ∎ (`--law`.)
+
+**This is the first correction to the spec's derived block.** *"Zero-net-excess"*
+is presented there as a **constraint the move must satisfy**. It is not: given
+cubicity and tightness it is an **identity**. The real content is `Σ_{new} = 2s` —
+the gadget's excess is pinned by its **attachment count alone**, independent of
+`k`, of the topology, and of the lengths.
+
+### Step G190 — (GR-170): the excess-boundary cap
+
+> **(GR-170)** `[PROVED]` *(and `[MEASURED]` `notes/scripts/w4/gexpand.py --cap`
+> — tight, min slack 0, at 80 + 7 892 + 39 689 landed shapes)* Let `G` be a
+> `D = 0` class shape and `B` a nonempty hub set whose complement `V ∖ B` is
+> proper, induces a connected subgraph, and carries at least one branch. Write
+> `∂(B)` for the branch cut and `exc_B := Σ{ℓ_β − 2 : β meets B}`. Then
+>
+> > **`exc_B ≤ 2·∂(B) − 1`.**
+
+*Proof.* §(K-grid) (GR-25)(i) at `W' = V ∖ B` reads `2∂(W') + exc(E(W')) ≥ 7`.
+Here `∂(W') = ∂(B)`, and by §(K-grid) (GR-21) at `D = 0` the total excess is `6`,
+so `exc(E(V ∖ B)) = 6 − exc_B`. Substituting and rearranging gives the cap. ∎
+
+The cap is **tight**: `--cap` finds slack exactly `0` at `n_hub = 4, 6, 8`. It is
+the (GR-25) cut criterion **read from the other side**, and reading it that way is
+the whole of this direction: (GR-25)(i) is normally used to *admit* a shape, and
+what a move needs is for it to *admit a shape with a specified new region* — which
+is a statement about the region's complement.
+
+### Step G191 — (GR-171): NO move exists
+
+> **(GR-171)** `[PROVED]` *(the enumeration `--moves` at `k ≤ 3` is the
+> independent check, not the evidence)* There is **no** zero-net-excess additive
+> expansion move between two `D = 0` class shapes, at any `k ≥ 1`, at `Λ = ∅` or
+> `Λ ≠ ∅`.
+
+*Proof.* Let `E_ss` be the new branches joining two split hubs and `e_mix` the
+number joining a split hub to a brand-new hub. Each split hub carries **exactly
+one** new dart, so
+> `s = e_mix + 2|E_ss|`.
+
+**Case `B = ∅`.** Then `s = 2k`, the new branches number `3k − s = k` and their
+total length is `6k`; (SD-6) `ℓ ≤ 5` caps that total at `5k < 6k`. Empty.
+
+**Case `B ≠ ∅`.** Apply (GR-170) at `B`. Its hypotheses hold: `V ∖ B ⊇ V_parent ∪ S`
+is proper (as `B ≠ ∅`), has `≥ 2` hubs (the parent is a class shape, so
+`n_parent ≥ 2`), carries the parent-derived branches, and is **connected** — the
+parent is connected and every split hub is joined to a parent hub along its own
+split branch. Now
+> `∂(B) = e_mix` (only the `S`–`B` branches cross), and
+> `exc_B = 2s − Σ_{E_ss}(ℓ_β − 2)` (by (GR-169): the new branches carry `2s`, and
+> the ones **not** meeting `B` are exactly `E_ss`).
+
+(GR-170) therefore reads `2s − Σ_{E_ss}(ℓ_β − 2) ≤ 2e_mix − 1`; substituting
+`e_mix = s − 2|E_ss|` gives
+> `Σ_{β∈E_ss}(ℓ_β − 2) ≥ 4|E_ss| + 1`, i.e. **`Σ_{β∈E_ss} ℓ_β ≥ 6|E_ss| + 1`**,
+
+which (SD-6) `ℓ ≤ 5` refutes for **every** `|E_ss| ≥ 0`: at `E_ss = ∅` the left
+side is an empty sum and the demand reads `0 ≥ 1`; at `|E_ss| = e ≥ 1` (SD-6)
+caps the left side at `5e`, so the demand would need `5e ≥ 6e + 1`. ∎
+
+Two things to notice about this proof. It **never mentions `Λ`**, `k`, the gadget
+topology, or the parent's structure. And the failure margin is **exactly one unit**
+of excess at every gadget the enumeration reaches — `--moves` prints
+`max complement slack = -1` at every surviving `(k, s)`. The stratum misses having
+an expansion theorem by one.
+
+> **(GR-172)** `[PROVED]` *(the `k = 1` sub-case, given its own row because it
+> alone kills the spec's falsifiable tell, and because it needs LESS than
+> (GR-171))* **`Δn = 2` is impossible.** `k = 1` forces `3 − s` genuinely-new
+> branches of total length `6` with each `ℓ ≤ 5`, so `3 − s ≥ 2`, i.e. `s ≤ 1`.
+> Then `s = e_mix + 2|E_ss| ≤ 1` gives `E_ss = ∅`, and (GR-170) at `B` reads
+> `0 ≥ 1` (the `B = ∅` branch is `s = 2`, excluded). In particular the classical
+> **H-operation** — `s = 2`, one new branch, which would need length `c = 6` — is
+> out of range by (SD-6) before any cut argument is needed.
+
+`--moves` confirms `k = 1` is empty by exhaustive enumeration of topologies and
+length assignments, independently of the arithmetic.
+
+### Step G192 — (GR-173): the one-hub case, and the `Y`-kill
+
+> **(GR-173)** `[PROVED]` *(and `[MEASURED]` `gexpand.py --hub`: max `= 11` at
+> 80 + 7 892 + 39 689 shapes; `= 12` at the three `n_hub = 2` shapes)* At every
+> `D = 0` class shape with `n_hub ≥ 4`, every hub satisfies
+> `Σ_{β ∋ v} ℓ_β ≤ 11`. At `n_hub = 2` the bound is `12` and is attained
+> (θ(2,5,5), θ(3,4,5), θ(4,4,4)).
+
+*Proof.* (GR-170) at `B = {v}`: `∂(v) = 3`, so `exc_v ≤ 5`, i.e.
+`Σ_{β∋v} ℓ_β ≤ 11`. At `n_hub = 2` the complement of a hub is a single hub, so
+`|V ∖ B| = 1 < 2` and (GR-25)(i)'s hypothesis does not apply. ∎
+
+This is the special case that shows the mechanism in one line, and it kills the
+`Y`-gadget (`s = 3, k = 2`, a fresh hub with three spokes summing to `12`) on its
+own. The `n_hub = 2` exception is **not** a defect of the bound — it is the exact
+place where (GR-25)(i)'s `|W'| ≥ 2` hypothesis bites, and the measurement finds it.
+
+### Step G193 — (GR-174): the inheritance test, and its adversarial control
+
+> **(GR-174)** `[MEASURED]` `notes/scripts/w4/gexpand.py --reach` / `--lam8`
+> **(i)** Of `aglu._pool8()`'s exact **39 689** `Λ = ∅` `D = 0` class shapes at
+> `n_hub = 8`, **0** admit any reduction to a smaller class shape (search over
+> `k = 1, 2, 3`, i.e. parents at `n_hub = 6, 4, 2`; `kmin = 1`, so the measurement
+> does **not** presuppose (GR-172)). **(ii)** The same at `|Λ| = 1`, `n_hub = 8`:
+> **54 329** isomorphism-class shapes pass the (GR-25) gate, built over
+> `gridcol.cubic_iso_classes(8)` (20 classes) × `cflank.length_tuples(12, 30,
+> lamcap=1)` (195 624 labelled tuples with `|Λ| ≥ 1`) quotiented by
+> `gisland.edge_auts` — **0** reducible. `lamcap = 1`: this says **nothing**
+> about `|Λ| ≥ 2` at `n_hub = 8`. **(iii)** The **F13
+> adversarial control**: relax (SD-6) alone to `ℓ ≤ 6`, so that the H-operation
+> exists; **1 314** H-operation children built from the 80 `n_hub = 4` class
+> shapes, and the search recovers a parent at **1 314 of 1 314 (100 %)**.
+
+Clause (iii) is the load-bearing one. A search that only ever returns empty is
+untested, and (GR-171) proves the true answer is empty — so the control has to be
+run against a world in which a move **does** exist, and the cheapest such world is
+the one with exactly one hypothesis relaxed. **The instrument fires.** Its empty
+answer in (i)/(ii) is a measurement, not a silent failure.
+
+### Step G194 — (GR-175): the stratum is infinite, so the negative has teeth
+
+A "no move exists" verdict is worthless if the stratum is finite. It is not.
+
+> **(GR-175)** `[PROVED]` *(and `[MEASURED]` `gexpand.py --irred` at
+> `m = 6..11`, i.e. `n_hub = 12..22`)* For every `m ≥ 4`, the circular ladder
+> `CL_m = C_m × K₂` on `n_hub = 2m` hubs and `M = 3m` branches, with six rungs of
+> length `3` (pairwise non-adjacent) and every other branch of length `2`, is a
+> `D = 0` tight class shape: `Σℓ = 6m + 6 = 6(M − n + 1)` and `Σ(ℓ − 2) = 6`.
+
+*Proof.* `Λ = ∅` gives (GR-25)(ii). For (GR-25)(i), let `W` be proper with `a`
+top-rail and `b` bottom-rail hubs forming `c_top`, `c_bot` rail arcs. Rail edges
+inside `W` number `a − c_top` and `b − c_bot`, rungs at most `min(a, b)`, so
+> `∂(W) = 3|W| − 2|E(W)| ≥ |a − b| + 2(c_top + c_bot)`.
+
+If `0 < a, b < m` then `c_top, c_bot ≥ 1` and `∂ ≥ 4`. If `b = 0` and `2 ≤ a < m`
+then `∂ ≥ a + 2 ≥ 4`; if `a = m, b = 0` then `∂ = m ≥ 4`. The only remaining
+family is `a = m`, `1 ≤ b < m`, where `∂ = (m − b) + 2c_bot ≥ 3`, with equality
+exactly at `W = V ∖ {one hub}` — and there (GR-173)'s instance needs
+`exc_v ≤ 5`, satisfied since each hub meets at most one length-3 rung
+(`exc_v ≤ 1`). In every case `2∂ + exc ≥ 8 > 7` or the `∂ = 3` instance holds. ∎
+(The inequality is spot-checked at 3 600 random hub sets over `m = 4..12`,
+`--law`; the family is gate-checked through `cflank.cubic_habitat` at
+`m = 6..11`, the `2^n` cap.)
+
+**So `(GR-15)`'s uniformity gap is a gap over a population with a member at every
+even `n_hub ≥ 12`, and by (GR-171) not one of them is the image of any move.**
+
+### Step G195 — what the enumeration adds that the proof does not
+
+`--moves` enumerates, at `k = 1, 2, 3`, every connected loopless gadget multigraph
+on `s` degree-1 split hubs and `2k − s` degree-3 brand-new hubs, one per
+isomorphism class, with every length assignment in `[2,5]^{3k−s}` summing to `6k`,
+and filters by three named layers. Layer 1 is the **gadget-internal** (GR-25)(i)
+(complete and placement-independent, because in the child every gadget hub has
+degree 3, so `∂(S) = 3|S| − 2|E_in(S)|` for `S ⊆ W'` whatever the placement) plus
+(SD-6); layer 2 is the global budget `2s ≤ 6`; layer 3 is (GR-170) at `B`.
+
+| `k` | survive layer 1 | `s` | topologies / lengths | survive |
+|---|---|---|---|---|
+| 1 | **0** | — | — | **0** (empty already at layer 1) |
+| 2 | 21 | 2 | 1 / 11 | 0 (layer 3, slack `−1`) |
+| 2 | | 3 | 1 / 10 | 0 (layer 3, slack `−1`) |
+| 3 | 736 | 2 | 2 / 136 | 0 (layer 3, slack `−1`) |
+| 3 | | 3 | 2 / 445 | 0 (layer 3, slack `−1`) |
+| 3 | | 4 | 1 / 155 | 0 (layer 2, `exc = 8 > 6`) |
+
+What the enumeration buys over the proof: it shows the kill is **not** an artefact
+of one bookkeeping convention (three independent filters, none of which is the
+proof's inequality except layer 3), it shows layer 1 **alone** empties `k = 1`, and
+it exhibits the *near-misses* — the unique `k = 2, s = 2` topology is the
+coordinator's four-branch digon move, and it fails by exactly one unit.
+
+### Step G196 — (GR-176): §(K-ind) *(I4)* strengthened
+
+> **(GR-176)** `[PROVED]` §(K-ind) *(I4)* establishes that the class over a fixed
+> hub multigraph `G°` is a finite antichain and that **no arm of
+> `pencil_reduction`** changes `G°`. Its own *What would change this* **(i)** keeps
+> open *"a generating move, not on `pencil_reduction`'s list, relating two class
+> members"*. On the `D = 0` stratum, (GR-171) closes that clause: **no such move
+> exists at all** — not "none is on the list", but "none exists", by (GR-25)(i) and
+> (SD-6). Combining: the class's move relation is empty **within** one `G°`
+> (§(K-ind) (I4)) and **between** hub multigraphs ((GR-171)). There is nothing to
+> induct along.
+
+*Scope, stated so it is not over-read.* (GR-171) is proven at `D = 0`. §(K-ind)
+(I4) is general. So the combination is a theorem on the `D = 0` stratum and a
+strong indication elsewhere; blind axis 4 (§5).
