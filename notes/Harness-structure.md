@@ -1,14 +1,15 @@
 # Harness + PENCIL doc-set structural round (work log)
 
-**Status: SLICES 8, 9, 12, 13 LANDED 2026-09-09.** Slice 8 — `notes/ledger.py`, 1 308
+**Status: SLICES 8, 9, 11, 12, 13 LANDED 2026-09-09.** Slice 8 — `notes/ledger.py`, 1 308
 claims across five files, ~0.2 s regeneration, cache gitignored. Slice 9 — the
 bracketed status vocabulary and `--lint`, gating the new form only. Slice 12 —
 `notes/Pencil-informal.md` split into 62 files under `notes/pencil/workbook/`,
 content byte-identical, 1 308 claims before and after. Slice 13 — the rest of
 the corpus moved under `notes/pencil/`, a subtree `CLAUDE.md` added, and
-`notes/CLAUDE.md` trimmed 425 → 321 lines. Slices 10, 11, 14 remain plan; the
-next concrete task is **slice 14** (split the coordinator command), then 11
-(generated round packets), then 10 (the tag backfill). Opened 2026-09-09 at the user's
+`notes/CLAUDE.md` trimmed 425 → 321 lines. Slice 11 — `--round` emits a generated
+briefing packet and `--reserve` mechanizes the 0-hit label check. Slices 10 and
+14 remain plan; the next concrete task is **slice 14** (split the coordinator
+command), then 10 (the tag backfill). Opened 2026-09-09 at the user's
 request after Phase 39's dispatch costs were measured. Slices are numbered
 8–14, continuing `notes/pencil/structure.md`'s slice numbering; this is a
 separate file because the round's deliverables are **cross-phase** (a
@@ -373,7 +374,37 @@ across several sessions; it blocks nothing.
 Not a dispatch target for a research direction — a direction backfilling
 tags is a direction not doing mathematics.
 
-### Slice 11 — generated briefing packets  *(replaces "go read the docs")*
+### Slice 11 — generated briefing packets  *(LANDED 2026-09-09)*
+
+**What landed.** `ledger.py --round N --direction D --labels …` emits a packet
+whose IN SCOPE claims are quoted **in full, from the claims' own prose**, with
+their tags, citations and live line numbers; everything the coordinator must
+supply is an ALL-CAPS placeholder (the question, the reservation, the harness
+entry points, the prediction, the deliverable). A two-label packet measures
+**5 683 characters (~1 420 tokens)** against the ~36k of orientation prose a
+dispatch reads today.
+
+The generated-not-retyped property is the point, not the formatting: §7's
+BGENUINE incident was a criterion quoted **without its hypotheses** from a
+summary surface, which handed the dispatch the wrong yardstick. Quoting from
+the ledger makes that failure unavailable by construction. The packet also
+carries §7's requirement that the coordinator's prediction be labelled *to be
+tested, not inherited*, with the stratum of its evidence named, and lists all
+seven outcome kinds §7 has recorded.
+
+**`--reserve` mechanizes a discipline that was manual.** `RESEARCH-ARC.md` §1
+requires a proposed label prefix be verified 0-hit as a raw substring across
+the **whole corpus** — not just against the siblings in flight, because a
+reservation protects a dispatch from its siblings and not from what is already
+written. `--reserve 'QZX-'` checks 495 files and reports clean or names the
+colliding files with counts.
+
+**A side effect of slice 12 shows up here.** The packet's line pointers now
+land in small files — `bare-ext/BEFOURP.md:703` where the same claim was
+`Pencil-informal.md:40323` — so a reader who does open the source opens 900
+lines, not 41 343.
+
+### Slice 11 — as originally specified  *(retained for the record)*
 
 `notes/ledger.py --brief` emits `notes/pencil/rounds/NNN-<DIR>.md`, ≤5k
 tokens: the question; **the in-scope claims' statements pasted verbatim from

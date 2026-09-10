@@ -16,6 +16,9 @@ claims — and reports the evidence status the claim's own prose states.
 --cited-by '(BE-210)'  what breaks if this claim falls
 --status PROVED        everything at a status (--section / --file narrow)
 --delta <ref>          the status change-set, for the landing's commit message
+--round N --direction D --labels L1 L2 ... --out
+                       a dispatch briefing packet, statements GENERATED not retyped
+--reserve 'PFX-'       0-hit check a label prefix corpus-wide before minting
 --lint                 GATE: the status vocabulary on what this commit changes
 --list / --stats / --selftest
 ```
