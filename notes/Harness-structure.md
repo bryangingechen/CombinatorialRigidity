@@ -1,6 +1,8 @@
 # Harness + PENCIL doc-set structural round (work log)
 
-**Status: ALL SEVEN SLICES (8–14) LANDED 2026-09-09; the round is COMPLETE.** Slice 8 — `notes/ledger.py`, 1 308
+**Status: ALL SEVEN SLICES (8–14) LANDED 2026-09-09, plus a defect-fix pass an
+adversarial review forced — three CRITICAL bugs in the shipped ledger, all
+reproduced and fixed (see *The review pass* at the end). The round is COMPLETE.** Slice 8 — `notes/ledger.py`, 1 308
 claims across five files, ~0.2 s regeneration, cache gitignored. Slice 9 — the
 bracketed status vocabulary and `--lint`, gating the new form only. Slice 12 —
 `notes/Pencil-informal.md` split into 62 files under `notes/pencil/workbook/`,
@@ -773,3 +775,62 @@ commit adds the cache path to `.gitignore` and records the three measurements
 that decided the no-check-in call (0.2 s generation; 165% vs 36% row churn per
 twenty landings; 35.9 KiB per twenty revisions had it been stored). Slice 12
 retargets its paths.)*
+
+## The review pass — three critical defects, found by a read-only reviewer
+
+Slices 8–14 shipped with `--selftest` green throughout. A read-only adversarial
+review, dispatched in parallel with slices 12–13, found **three critical
+defects** the gate could not see. All were reproduced before being fixed.
+
+**C1 — `--delta` fabricated status transitions, including *into* `PROVED`.**
+`--delta HEAD` on a byte-identical tree reported `(OC-40) PROVED → UNTAGGED`
+plus three phantom new claims. Cause: slice 9 added an occurrence ordinal to
+the identity key and fixed `cmd_lint`'s before-side but **not `cmd_delta`'s**,
+which called `parse()` directly and defaulted every old row to `occ="1"`,
+collapsing the five duplicate label-clauses. `--delta`'s stated purpose is
+pasting into a landing's commit message, so this wrote invented verdicts into
+permanent history. Fixed at the root: `parse()` now assigns the ordinal, so
+every caller gets it.
+
+**C2 — the ledger served a STALE verdict while a superseding one existed.**
+`--label '(FR-R1)'` answered a flat `[OPEN]` for a claim the corpus declares
+`**(FR-R1) — PROVEN.**` with an exhaustive 1976-site certificate; `(E-loc)`
+answered `UNTAGGED`, its `**(E-loc) is REFUTED … witness T32**` line absent.
+An agent picking work from `--frontier` or `--status OPEN` would have taken a
+solved problem as an open research target — the exact failure the tool exists
+to prevent, inverted. Two-part fix: index the shape, **and** flag the
+disagreement, because the corpus genuinely holds both and picking a side
+silently is the wrong behaviour. A `CONTESTED` banner now leads `--label`, and
+`--status`/`--frontier` mark such rows; 21 label-clauses are flagged.
+
+**C3 — 87 claim lines, and ~490 titled sub-clauses, had no row at all.**
+`(BE-E4′)` (193 corpus mentions), `(PENCIL-SATURATES)` (128) and `(E4)` had
+**zero** rows. The opener regex required the bold to close immediately after
+the label, so titled openers (`**(OC-8) what (OUT) now reduces to, exactly.**`),
+assertions (`**(ANH-R1) is discharged …**`), list-prefixed openers and every
+titled sub-clause (`**(iii) A twin-plane pair forces a 3-cycle.**`) were
+invisible. Corpus count 1 287 → **1 783**, and **no new row received a status
+the tool inferred** — every one is `UNTAGGED` unless its own prose carries a
+tag, so the count of `PROVED` did not move.
+
+**The gate was checking a circular invariant.** `--selftest` asked *did every
+line the regex matched become a row?* — self-consistent, and green while a
+third of the corpus was unindexed. It now also asks the independent question:
+*which heavily-cited labels have no row?* That check reports 11 labels
+mentioned 20+ times without one, and reports rather than fails, because a
+status stated in a section's verdict block (`(S1)`) is out of scope by design.
+
+**Three further defects surfaced while fixing these**, each caught by testing
+rather than reasoning: the fragment filter from slice 10 ate legitimate wide
+openers beginning `is …` — discarding the very `(E-loc)` refutation the fix
+targeted; `locate()`'s fixed needle returned the wrong line for wide openers
+(both `(FR-R1)` rows reported `:253`); and `contested()` keyed on the label
+rather than the label-clause, reporting 39 phantom conflicts where different
+clauses legitimately hold different statuses.
+
+**The lesson for the round.** Every defect found this session — three by the
+coordinator, three by the reviewer, three more while fixing — was invisible to
+the gates and visible immediately on use. A green `--selftest` certified a
+tool that was missing a third of its corpus and answering `OPEN` for a proved
+claim. Independent adversarial review of a new tool is not optional, and the
+review must run against the tool's OUTPUT, not its code.

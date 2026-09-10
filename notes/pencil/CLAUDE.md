@@ -6,7 +6,7 @@ generally, and `RESEARCH-ARC.md` carries the research-phase discipline.
 
 ## Ask the ledger; do not grep the workbook
 
-`python3 notes/ledger.py` indexes **every label-clause in this corpus** — 1 287
+`python3 notes/ledger.py` indexes **every label-clause in this corpus** — 1 783
 claims — and reports the evidence status the claim's own prose states.
 
 ```
@@ -28,6 +28,19 @@ This exists because retrieval by `grep`+`sed` was measured at **~35 probes and
 ~137k tokens of context growth** for ~18 claims in one traced dispatch — the
 cost being *reasoning turns*, not bytes. `--brief` answers the same question
 for 14 labels in **one call, ~7 600 tokens**. Reach for it first.
+
+**A CONTESTED banner means read every row.** A label-clause can carry a stale
+row and a superseding one — `(FR-R1)` has an early `open` tag and a later
+`**(FR-R1) — PROVEN.**`; `(E-loc)` has a positive statement with its refutation
+three lines below. The ledger surfaces the disagreement and refuses to pick a
+side. A verdict word found inside a bold is reported as a HINT, never assigned
+as a status: `**(BE-44)(ii)** is **PROVED in the `dim⟨P⟩ = 6` direction only**`
+is why — reading `PROVED` off it would drop the scope that makes it true.
+
+**Not everything is indexed.** A status stated in a section's own VERDICT BLOCK
+rather than a `> **(LABEL)**` blockquote has no row — `(S1)` is the example.
+`--selftest` lists labels mentioned 20+ times with no row so the boundary stays
+visible.
 
 **It is an INDEX, not an authority.** Regeneration guarantees it matches the
 prose; it guarantees nothing about whether the prose is right. A `PROVED` row

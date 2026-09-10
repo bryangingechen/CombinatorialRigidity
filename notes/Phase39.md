@@ -221,8 +221,8 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
 **PARALLEL HARNESS TRACK, not blocking this one** — `notes/Harness-structure.md`
 (slices 8–14, **ALL LANDED — round complete**). Use **`/coordinate-research`**, not
 `/coordinate-phase`. `python3 notes/ledger.py --label '(BE-216)' | --brief | --round |
---frontier | --delta | --lint` answers "what is proved" in one call (1 287 claims, 50%
-UNTAGGED; `--backlog` ranks the tagging worklist); the corpus is now one file per section under `notes/pencil/` with its own
+--frontier | --delta | --lint` answers "what is proved" in one call (1 783 claims; `--backlog` ranks the tagging worklist, `--label` flags CONTESTED
+claims where a later row supersedes an earlier); the corpus is now one file per section under `notes/pencil/` with its own
 CLAUDE.md (gap map: `notes/pencil/workbook/gapmap.md`).
 
 **THE (BE-14) THREAD, settled frame + its last landings — RELOCATED 2026-09-02** to

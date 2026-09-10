@@ -136,6 +136,7 @@ run BEFORE committing, or with `--all`.
 """
 
 import argparse
+import collections
 import glob
 import hashlib
 import json
@@ -227,7 +228,30 @@ NEEDS_PATTERN = {
 }
 
 # `> **(LABEL)(clause)**` with the bold closing right after -- see PARSING (1).
-OPENER = re.compile(r"^>\s*\*\*\(([^)]{1,60})\)((?:\([^)]{1,12}\))?)\*\*")
+# A leading `- ` / `* ` list marker is allowed: seven real openers use one.
+OPENER = re.compile(r"^>\s*(?:[-*]\s+)?\*\*\(([^)]{1,60})\)"
+                    r"((?:\([^)]{1,12}\))?)\*\*")
+# The SAME shape but with more text inside the bold -- a titled opener
+# (`**(OC-8) what (OUT) now reduces to, exactly.**`), an assertion
+# (`**(ANH-R1) is discharged at the generic point ...**`), or a superseding
+# verdict (`**(FR-R1) - PROVEN.**`). 87 such lines exist and were invisible
+# until 2026-09-09; missing them is how `--label '(FR-R1)'` answered OPEN for
+# a claim the corpus declares PROVEN with a 1976-site certificate. A
+# POSSESSIVE after the label (`**(CH-1)'s girth ...**`) is ordinary prose and
+# stays excluded, as does any bold whose label is not at its start.
+# The inner text is TEMPERED (`(?:(?!\*\*).)`) rather than `[^*]`: these bolds
+# routinely contain italics, and `[^*]` cannot span them -- which silently
+# excluded the exact line this pattern was written for,
+# `**(E-loc) is REFUTED - 2026-09-02, direction WELOC, *Steps EL1-EL6* below.**`
+OPENER_WIDE = re.compile(r"^>\s*(?:[-*]\s+)?\*\*\(([^)]{1,60})\)"
+                         r"((?:\([^)]{1,12}\))?)(?![\u2019']s\b)"
+                         r"((?:(?!\*\*).){1,300}?)\*\*")
+# Verdict words the corpus writes in CAPS inside such a bold. They are a HINT
+# surfaced to the reader, never a status the tool assigns: `**(BE-44)(ii)** is
+# **PROVED in the `dim<P> = 6` direction only**` is exactly why -- reading
+# PROVED off it would drop the scope restriction that makes it true.
+VERDICT_HINT = re.compile(r"\b(PROVEN|PROVED|REFUTED|SUPERSEDED|FIRED|MOOT|"
+                          r"RETIRED|DISCHARGED|FALSE|CLOSED|OPEN)\b")
 # A bare sub-clause token: roman numeral, single letter, optional sub/digit.
 SUBITEM = re.compile(r"^(?:[ivx]{1,4}|[a-z][₀-₉\d]?|\d{1,2})$")
 # A label-shaped citation inside prose.
@@ -314,7 +338,7 @@ def parse(path, text, keep_fragments=False):
     def flush():
         if pending is None:
             return
-        label, clause, sec, stp, body = pending
+        label, clause, sec, stp, body, hint, wideflag = pending
         block = " ".join(body).strip()
         # Slice 9's form is `[STATUS]` then the usual gloss. Strip the bracket
         # first so the gloss is still captured as the tag and the bracket does
@@ -334,7 +358,7 @@ def parse(path, text, keep_fragments=False):
             "file": path, "section": sec, "seckey": section_key(sec), "step": stp,
             "label": label, "clause": clause,
             "status": status, "evidence": evidence or "",
-            "tag": raw, "bracket": bracket,
+            "tag": raw, "bracket": bracket, "hint": hint, "wide": wideflag,
             "claim": re.sub(r"\s+", " ", rest),
             "cites": ";".join(cites),
         })
@@ -349,6 +373,10 @@ def parse(path, text, keep_fragments=False):
             step = line[4:].strip()
             continue
         m = OPENER.match(line)
+        wide = None
+        if not m:
+            wide = OPENER_WIDE.match(line)
+            m = wide
         if m:
             flush()
             tok, clause = m.group(1), m.group(2).strip("()")
@@ -358,7 +386,16 @@ def parse(path, text, keep_fragments=False):
             else:
                 label = tok
                 cur_label = tok
-            pending = (label, clause, section, step, [line[m.end():]])
+            hint = ""
+            if wide is not None:
+                inner = wide.group(3)
+                hint = " ".join(sorted(set(VERDICT_HINT.findall(inner))))
+                # keep the bold's own text as the head of the claim
+                body0 = inner.strip() + " " + line[m.end():]
+            else:
+                body0 = line[m.end():]
+            pending = (label, clause, section, step, [body0], hint,
+                       "1" if wide is not None else "")
             continue
         if pending is not None:
             if line.startswith(">"):
@@ -367,7 +404,18 @@ def parse(path, text, keep_fragments=False):
                 flush(); pending = None
     flush()
     kept = [r for r in rows if r["label"]]
-    return kept if keep_fragments else [r for r in kept if not _list_fragment(r)]
+    if not keep_fragments:
+        kept = [r for r in kept if not _list_fragment(r)]
+    # Occurrence ordinal, assigned HERE rather than in build(): five
+    # label-clauses are stated twice inside one section, and any caller that
+    # parses directly -- cmd_delta did -- otherwise collapses them and reports
+    # fabricated status transitions on unchanged prose.
+    seen = {}
+    for r in kept:
+        k = (r["seckey"], r["label"], r["clause"])
+        seen[k] = seen.get(k, 0) + 1
+        r["occ"] = str(seen[k])
+    return kept
 
 
 # A bolded label can open a PROSE LIST rather than a claim:
@@ -384,7 +432,12 @@ _FRAGMENT = re.compile(r"^[,;:)]|^(?:and|or|is|are|was|were|which|that|plus|"
 
 
 def _list_fragment(r):
-    return (not r["tag"] and not r.get("bracket")
+    # STRICT openers only. A WIDE opener's text is the continuation of its own
+    # bold phrase, so it legitimately begins with `is` / `and`:
+    # `**(E-loc) is REFUTED - 2026-09-02, direction WELOC ...**` was being
+    # discarded as prose by this filter -- the very refutation the wide
+    # pattern had just been written to catch.
+    return (not r["tag"] and not r.get("bracket") and not r.get("wide")
             and bool(_FRAGMENT.match(r["claim"].lstrip())))
 
 
@@ -401,16 +454,6 @@ def build():
             continue
         with open(p, encoding="utf-8") as f:
             rows.extend(parse(rel, f.read()))
-    # Five label-clauses are stated TWICE inside one section (a claim restated
-    # in the section's own Verification block, mostly). Without an ordinal the
-    # identity key collides, and a colliding key silently drops one row from
-    # --delta and reports the other as changed-every-run in --lint. Ordinals
-    # are assigned in document order, so they are stable under appends.
-    seen = {}
-    for r in rows:
-        k = (r["file"], r["seckey"], r["label"], r["clause"])
-        seen[k] = seen.get(k, 0) + 1
-        r["occ"] = str(seen[k])
     return rows
 
 
@@ -419,7 +462,8 @@ def build():
 # --------------------------------------------------------------------------
 
 FIELDS = ["file", "section", "seckey", "step", "label", "clause", "occ",
-          "status", "evidence", "bracket", "tag", "claim", "cites"]
+          "status", "evidence", "bracket", "hint", "wide", "tag", "claim",
+          "cites"]
 
 
 def fingerprint():
@@ -465,21 +509,31 @@ def locate(row):
     reported the same line before this was scoped.
     """
     p = os.path.join(ROOT, row["file"])
-    needle = f"**({row['label']})"
-    if row["clause"]:
-        needle += f"({row['clause']})"
-    needle += "**"
+    # Match the opener SHAPES rather than a fixed `**(L)**` needle: a wide
+    # opener (`**(FR-R1) - PROVEN.**`) has text before the closing `**`, and a
+    # needle-based search silently returned the first OTHER row's line for it.
     first = 0
+    want_occ = int(row.get("occ", "1"))
+    seen = 0
     try:
         with open(p, encoding="utf-8") as f:
             section = ""
             for i, line in enumerate(f, 1):
                 if line.startswith("## "):
                     section = section_key(line[3:].strip())
-                elif line.startswith(">") and needle in line:
-                    if section == row["seckey"]:
-                        return i
+                    continue
+                m = OPENER.match(line) or OPENER_WIDE.match(line)
+                if not m:
+                    continue
+                if m.group(1) != row["label"] or m.group(2).strip("()") != row["clause"]:
+                    continue
+                if section != row["seckey"]:
                     first = first or i
+                    continue
+                seen += 1
+                if seen == want_occ:
+                    return i
+                first = first or i
     except OSError:
         pass
     return first
@@ -513,15 +567,13 @@ def cmd_lint(rows, args):
         for rel in SOURCES:
             r = sh(["git", "show", f"HEAD:{rel}"])
             if r.returncode == 0:
-                seen = {}
                 for row in parse(rel, r.stdout):
-                    kk = (rel, row["seckey"], row["label"], row["clause"])
-                    seen[kk] = seen.get(kk, 0) + 1
-                    before[kk + (str(seen[kk]),)] = row
+                    before[(rel, row["seckey"], row["label"],
+                            row["clause"], row["occ"])] = row
 
     bad, untagged, checked = [], [], 0
     for r in rows:
-        k = (r["file"], r["seckey"], r["label"], r["clause"], r.get("occ", "1"))
+        k = (r["file"], r["seckey"], r["label"], r["clause"], r["occ"])
         if not args.all:
             old = before.get(k)
             if old is not None and old["tag"] == r["tag"] and old["claim"] == r["claim"]:
@@ -727,6 +779,49 @@ def cmd_round(rows, args):
     return 1 if miss else 0
 
 
+# A verdict HINT normalizes onto the vocabulary only for the purpose of
+# spotting disagreement. It never becomes a row's status.
+_HINT_NORM = {"PROVEN": "PROVED", "PROVED": "PROVED", "FALSE": "REFUTED",
+              "REFUTED": "REFUTED", "SUPERSEDED": "RETIRED",
+              "RETIRED": "RETIRED", "MOOT": "MOOT", "DISCHARGED": "PROVED",
+              "CLOSED": "PROVED", "FIRED": "", "OPEN": "OPEN"}
+
+
+def contested(rows):
+    """label -> the disagreeing verdict signals carried by its rows.
+
+    THE failure this exists for: `(FR-R1)` carries an early row tagged `open`
+    and a later line reading `**(FR-R1) - PROVEN.**` with a 1976-site
+    certificate. Before 2026-09-09 the later line was not indexed at all and
+    `--label` answered a flat `[OPEN]` -- so an agent picking work from
+    `--frontier` or `--status OPEN` would take a SOLVED problem as an open
+    research target. Indexing it is only half the fix; the corpus genuinely
+    holds both, and the honest behaviour is to SURFACE the disagreement rather
+    than silently serve either one.
+    """
+    sig = {}
+    for r in rows:
+        sigs = sig.setdefault((r["label"], r["clause"]), set())
+        if r["status"] != "UNTAGGED":
+            sigs.add(r["status"])
+        for h in (r.get("hint") or "").split():
+            n = _HINT_NORM.get(h, "")
+            if n:
+                sigs.add(n)
+    # Flag on EITHER of two shapes. (a) Genuinely disagreeing signals --
+    # `(FR-R1)` OPEN vs PROVED. (b) A verdict word appearing on ONE row of a
+    # multi-row label-clause while the others record none -- `(E-loc)`, whose
+    # positive statement carries no status signal at all and whose refutation
+    # sits three lines below it. Shape (b) is the more dangerous of the two,
+    # because nothing about the positive row looks stale.
+    nrows = collections.Counter((r["label"], r["clause"]) for r in rows)
+    out = {}
+    for k, v in sig.items():
+        if len(v) > 1 or (v and nrows[k] > 1):
+            out[k] = v
+    return out
+
+
 def name(r):
     return f"({r['label']})" + (f"({r['clause']})" if r["clause"] else "")
 
@@ -748,6 +843,9 @@ def show(r, full=False, loc=True):
     print(f"{head}\n    {where(r)}{ln}")
     if r["tag"]:
         print(f"    tag: {re.sub(chr(10), ' ', r['tag'])[:160]}")
+    if r.get("hint"):
+        print(f"    VERDICT WORD IN THE BOLD: {r['hint']}  "
+              f"(a hint from the prose, NOT a status this tool assigns)")
     body = r["claim"] if full else trunc(r["claim"], 220)
     if body:
         print(f"    {body}")
@@ -769,8 +867,23 @@ def select(rows, label):
 def cmd_label(rows, args):
     hits = select(rows, args.label)
     if not hits:
-        print(f"no such label: {args.label}", file=sys.stderr)
+        print(f"no claim opener found for {args.label}.\n"
+              f"That is not the same as 'no such label': a status stated in a "
+              f"section's VERDICT BLOCK rather than in a `> **(LABEL)**` "
+              f"blockquote is not indexed (e.g. `(S1)`). Read the owning "
+              f"section, or `grep -rn '{args.label.strip('()')}' "
+              f"notes/pencil/`.", file=sys.stderr)
         return 1
+    allcon = contested(rows)
+    con = set()
+    for h in hits:
+        con |= allcon.get((h["label"], h["clause"]), set())
+    con = con or None
+    if con:
+        print(f"# !! CONTESTED: this label carries a verdict signal on some "
+              f"rows and not others: {', '.join(sorted(con))}.\n"
+              f"#    Read every row below before using any one of them — a "
+              f"later row may supersede an earlier.\n")
     homes = {(h["file"], h["seckey"]) for h in hits}
     if len(homes) > 1:
         print(f"# NOTE: ({args.label.strip('()')}) is claimed in {len(homes)} "
@@ -788,10 +901,16 @@ def cmd_status(rows, args):
         hits = [r for r in hits if args.section.lower() in r["section"].lower()]
     if args.file:
         hits = [r for r in hits if args.file in r["file"]]
+    con = contested(rows)
+    ncon = sum(1 for r in hits if (r["label"], r["clause"]) in con)
     print(f"# {len(hits)} claim(s) at [{want}]"
           + (f" in sections matching {args.section!r}" if args.section else "")
-          + "\n")
+          + (f" -- {ncon} of them CONTESTED (another row disagrees; "
+             f"marked !!)" if ncon else "") + "\n")
     for r in hits[:args.head]:
+        if (r["label"], r["clause"]) in con:
+            print(f"!! CONTESTED "
+                  f"({', '.join(sorted(con[(r['label'], r['clause'])]))})")
         show(r, full=args.full, loc=False)
     if len(hits) > args.head:
         print(f"... {len(hits) - args.head} more (raise --head)")
@@ -820,7 +939,11 @@ def cmd_frontier(rows, args):
           f"-- the cheapest live leaves.\n"
           f"# 'Closed' means the cited label carries a PROVED/REFUTED/MOOT/"
           f"RETIRED clause. It is a claim by its author, not a check.\n")
+    con = contested(rows)
     for n, r in out[:args.head]:
+        if (r["label"], r["clause"]) in con:
+            print(f"!! CONTESTED "
+                  f"({', '.join(sorted(con[(r['label'], r['clause'])]))})")
         show(r, full=args.full, loc=False)
     if len(out) > args.head:
         print(f"... {len(out) - args.head} more (raise --head)")
@@ -877,8 +1000,7 @@ def cmd_delta(rows, args):
     # one file, and a (file, label, clause) key collapses them -- which
     # reported three spurious `X -> UNTAGGED` transitions before this was
     # fixed, one of them on a label whose real status never moved.
-    key = lambda r: (r["file"], r["seckey"], r["label"], r["clause"],
-                     r.get("occ", "1"))
+    key = lambda r: (r["file"], r["seckey"], r["label"], r["clause"], r["occ"])
     before = {key(r): r for r in old}
     after = {key(r): r for r in rows}
     changed, added = [], []
@@ -893,7 +1015,7 @@ def cmd_delta(rows, args):
     # RELOCATION, not a deletion -- direction RESGRID moved §(K-res)'s six
     # (RS-.) claims into the grid workbook, which a file-keyed diff would
     # otherwise report as six removals with no corresponding arrivals.
-    ident = lambda r: (r["label"], r["clause"], r.get("occ", "1"))
+    ident = lambda r: (r["label"], r["clause"], r["occ"])
     arrived = {ident(r): r for r in added}
     relocated = []
     for r in list(gone):
@@ -977,7 +1099,7 @@ def cmd_selftest(rows, args):
         for l in text.split("\n"):
             if l.startswith("## "):
                 cur = ""
-            m = OPENER.match(l)
+            m = OPENER.match(l) or OPENER_WIDE.match(l)
             if not m:
                 continue
             opened += 1
@@ -1020,6 +1142,40 @@ def cmd_selftest(rows, args):
           f"(the registry's collision case; --label shows all homes):")
     for k, v in sorted(coll.items())[:12]:
         print(f"   ({k}) in {len(v)} sections")
+    # COVERAGE, checked against a signal independent of the opener regexes.
+    # The old selftest only asked "did every line the regex matched become a
+    # row?" -- circular, and it certified OK while `(BE-E4')` (193 corpus
+    # mentions) and `(PENCIL-SATURATES)` (128) had NO row at all. This asks
+    # the other question: which heavily-cited labels does the ledger not
+    # index? A nonzero answer is not automatically a bug -- a status stated
+    # in a section VERDICT BLOCK rather than a blockquote opener is out of
+    # scope by design (e.g. `(S1)`) -- so it reports rather than fails.
+    have = {r["label"] for r in rows}
+    mentions = collections.Counter()
+    for rel in SOURCES:
+        try:
+            t = open(os.path.join(ROOT, rel), encoding="utf-8").read()
+        except OSError:
+            continue
+        secnames = set(re.findall(r"§\(([^)]+)\)", t))
+        for lab in CITE.findall(t):
+            if "-" in lab and lab not in secnames:
+                mentions[lab] += 1
+    gaps = [(n, l) for l, n in mentions.items() if l not in have and n >= 20]
+    gaps.sort(reverse=True)
+    print(f"\ncoverage: {len(have)} labels indexed; "
+          f"{len(gaps)} label(s) mentioned 20+ times with NO row"
+          + (" -- read each; a section-verdict-block status is out of scope"
+             if gaps else ""))
+    for n, l in gaps[:12]:
+        print(f"   {n:4d} mentions  ({l})")
+
+    con = contested(rows)
+    print(f"\n{len(con)} label(s) CONTESTED (rows carrying disagreeing verdict "
+          f"signals) -- --label flags each:")
+    for (l, cl), v in sorted(con.items())[:10]:
+        nm = f"({l})" + (f"({cl})" if cl else "")
+        print(f"   {nm}: {', '.join(sorted(v))}")
     print("\nselftest:", "OK" if ok else "FAILED")
     return 0 if ok else 1
 
