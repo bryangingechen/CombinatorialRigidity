@@ -260,8 +260,13 @@ LABELISH = re.compile(r"^(?:[A-ZΛ][A-Za-zΛ0-9]*(?:[-–][A-Za-z0-9_₀-₉'′
                       r"|[ivx]{1,4}|[a-z][₀-₉\d]?|\d{1,2}|[A-Z]\d?|Λ\d[a-z]?)$")
 # A bare sub-clause token: roman numeral, single letter, optional sub/digit.
 SUBITEM = re.compile(r"^(?:[ivx]{1,4}|[a-z][₀-₉\d]?|\d{1,2})$")
-# A label-shaped citation inside prose.
-CITE = re.compile(r"\(([A-ZΛ][A-Za-zΛ0-9]*(?:-[A-Za-z0-9_₀-₉']+)?)\)")
+# A label-shaped citation inside prose, with its CLAUSE when the corpus
+# qualifies one -- `(BE-45)(ii)`. The corpus writes thousands of these, so
+# citation counts can be computed at clause granularity; ranking by the
+# LABEL's total instead put almost a different worklist at the top (only 6 of
+# a top-40 survive re-ranking).
+CITE = re.compile(r"\(([A-ZΛ][A-Za-zΛ0-9]*(?:-[A-Za-z0-9_₀-₉']+)?)\)"
+                  r"(\((?:[ivx]{1,4}|[a-z]\d?|\d{1,2})\))?")
 CODE = re.compile(r"`[^`]*`")
 BRACKET = re.compile(r"^\s*`\[([A-Z][A-Z-]*)\]`")
 GAP = re.compile(r"§\(([^)]+)\)")
@@ -358,8 +363,12 @@ def parse(path, text, keep_fragments=False):
         status, evidence = classify(raw, block)
         if bracket:
             status = bracket if bracket in BRACKET_OK else "UNTAGGED"
-        cites = sorted({c for c in CITE.findall(CODE.sub(" ", rest))
+        found = CITE.findall(CODE.sub(" ", rest))
+        cites = sorted({c for c, _cl in found
                         if c != label and (("-" in c) or c in ALLCAPS_BARE)})
+        # `label:clause` for the qualified ones, so --cited-by can be exact
+        qual = sorted({f"{c}:{_cl.strip('()')}" for c, _cl in found
+                       if _cl and c != label and "-" in c})
         rows.append({
             "file": path, "section": sec, "seckey": section_key(sec), "step": stp,
             "label": label, "clause": clause,
@@ -367,7 +376,7 @@ def parse(path, text, keep_fragments=False):
             "tag": raw, "bracket": bracket, "hint": hint, "wide": wideflag,
             "cite": contflag,
             "claim": re.sub(r"\s+", " ", rest),
-            "cites": ";".join(cites),
+            "cites": ";".join(cites), "citesq": ";".join(qual),
         })
 
     prev = ""
@@ -493,7 +502,7 @@ def build():
 
 FIELDS = ["file", "section", "seckey", "step", "label", "clause", "occ",
           "status", "evidence", "bracket", "hint", "wide", "cite", "tag",
-          "claim", "cites"]
+          "claim", "cites", "citesq"]
 
 
 def fingerprint():
@@ -681,10 +690,22 @@ def cmd_backlog(rows, args):
     available here.
     """
     import collections as _c
-    cited = _c.Counter()
+    cited, cited_cl = _c.Counter(), _c.Counter()
     for r in rows:
         for c in (r["cites"].split(";") if r["cites"] else []):
             cited[c] += 1
+        for q in (r["citesq"].split(";") if r.get("citesq") else []):
+            cited_cl[q] += 1
+
+    def weight(r):
+        """Own-clause citations where the corpus qualifies them, else the
+        label's. Ranking every clause by its LABEL's total printed the same
+        number against six different rows and put the most-revisited claims --
+        the hardest, not the cheapest -- at the head of a worklist meant for
+        transcription."""
+        if r["clause"]:
+            return cited_cl.get(f"{r['label']}:{r['clause']}", 0)
+        return cited.get(r["label"], 0)
     stem = stem_headed(rows)
     un = [r for r in rows if r["status"] == "UNTAGGED" and not r.get("cite")
           and not (r["clause"] and (r["file"], r["seckey"], r["label"]) in stem)]
@@ -694,14 +715,17 @@ def cmd_backlog(rows, args):
         # rest are judgement, where `UNTAGGED` is usually the right answer and
         # a pass that forces them is how verdicts get invented.
         un = [r for r in un if _DECISIVE.search(r["tag"] + " " + r["claim"])]
-    un.sort(key=lambda r: (-cited.get(r["label"], 0), r["label"]))
+    un.sort(key=lambda r: (-weight(r), -cited.get(r["label"], 0), r["label"]))
     withg = sum(1 for r in un if r["tag"])
     print(f"# {len(un)} UNTAGGED claims -- {withg} carry a gloss whose leading "
           f"token is not a status word, {len(un)-withg} carry none.\n"
           f"# Ranked by citations TO the label. Tag only where the prose is "
           f"decisive; UNTAGGED is a legitimate terminal state.\n")
     for r in un[:args.head]:
-        print(f"{cited.get(r['label'],0):4d} cites  {name(r):<20} {where(r)}")
+        w, lw = weight(r), cited.get(r["label"], 0)
+        mark = "  UNCITED" if lw == 0 else ""
+        print(f"{w:4d} cites  {name(r):<20} {where(r)}"
+              + (f"   [label total {lw}]" if w != lw else "") + mark)
         if r["tag"]:
             print(f"            gloss: {r['tag'][:100]}")
     if len(un) > args.head:
@@ -709,9 +733,15 @@ def cmd_backlog(rows, args):
     return 0
 
 
+# The corpus states evidence in more words than the vocabulary's own tokens:
+# "exact; 47/47 seeds", "exhibited, per shape", "a per-pair proof, not a rate",
+# "three verified witnesses + EXHAUSTIVE sweeps". Those are transcription too,
+# and without them they sat in the judgement pile.
 _DECISIVE = re.compile(r"\b(PROVED|PROVEN|REFUTED|MEASURED|ASSERTED|"
                        r"CONSTRUCTED|MOOT|RETIRED|SUPERSEDED|proved|proven|"
-                       r"refuted|measured|asserted|constructed)\b")
+                       r"refuted|measured|asserted|constructed|verified|"
+                       r"exhaustive|exhaustively|exhibited|proof)\b"
+                       r"|\bexact[;,]")
 
 
 def cmd_reserve(rows, args):
@@ -917,7 +947,12 @@ _HEADS = {}
 
 
 def name(r):
-    return f"({r['label']})" + (f"({r['clause']})" if r["clause"] else "")
+    """Display name. The ordinal is shown when >1 because five label-clauses
+    are stated TWICE in one section: without it a reader sees two rows with
+    the same name and different text and cannot tell which is which."""
+    occ = r.get("occ", "1")
+    return (f"({r['label']})" + (f"({r['clause']})" if r["clause"] else "")
+            + (f"#{occ}" if occ not in ("", "1") else ""))
 
 
 def where(r):
@@ -1082,10 +1117,31 @@ def cmd_frontier(rows, args):
 
 
 def cmd_cited_by(rows, args):
-    want = args.cited_by.strip().strip("()").split(")(")[0]
-    hits = [r for r in rows if want in r["cites"].split(";")]
-    print(f"# {len(hits)} claim(s) cite ({want}) -- what a change to it "
-          f"reaches.\n")
+    """What cites this claim. Accepts a CLAUSE: `--cited-by '(BE-45)(ii)'`.
+
+    The corpus qualifies thousands of its citations by clause, so a
+    label-granular answer to "what breaks if this falls" is over-broad -- it
+    returns everything citing any clause of the label.
+    """
+    q = args.cited_by.strip().strip("()")
+    parts = q.split(")(")
+    want, wclause = parts[0], (parts[1] if len(parts) > 1 else "")
+    if wclause:
+        key = f"{want}:{wclause}"
+        hits = [r for r in rows if key in (r.get("citesq") or "").split(";")]
+        print(f"# {len(hits)} claim(s) cite ({want})({wclause}) SPECIFICALLY "
+              f"-- clause-granular, so this is what a change to THAT CLAUSE "
+              f"reaches.\n")
+    else:
+        hits = [r for r in rows if want in r["cites"].split(";")]
+        nq = len({c for r in rows
+                  for c in (r.get("citesq") or "").split(";")
+                  if c.startswith(want + ":")})
+        print(f"# {len(hits)} claim(s) cite ({want}) -- what a change to it "
+              f"reaches.\n"
+              + (f"# {nq} of its clauses are cited BY NAME elsewhere; "
+                 f"`--cited-by '({want})(ii)'` narrows to one.\n"
+                 if nq else ""))
     for r in hits[:args.head]:
         show(r, full=args.full, loc=False)
     return 0
