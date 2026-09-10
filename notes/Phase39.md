@@ -218,6 +218,12 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
 
 **The phase stays OPEN** (the 2026-07-24 adjudication — no phase-close; see *Current state*).
 
+**A PARALLEL HARNESS TRACK IS PLANNED, NOT BLOCKING THIS ONE** — `notes/Harness-structure.md`
+(slices 8–14, opened 2026-09-09, PLAN ONLY): a claim ledger + query CLI, a gated status
+vocabulary, generated briefing packets, the workbook split, and a `/coordinate-research`
+command. Its next commit is slice 8 (additive, no moves). The phase's own next concrete task
+is unchanged and stated below.
+
 **THE (BE-14) THREAD, settled frame + its last landings — RELOCATED 2026-09-02** to
 `notes/Pencil-structure.md` §"The (BE-14) thread — per-landing detail" (**block 8**); the
 write-ups and the `(K-bare)` gap-map row stay authoritative. **Reference, not status.** The

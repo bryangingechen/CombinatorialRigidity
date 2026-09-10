@@ -5,8 +5,15 @@ second round slices 4–5 LANDED (slice 4 2026-08-19, slice 5 2026-08-20); third
 round, the phase-note compression pass, **slice 6 LANDED 2026-08-26**; fourth
 round, **slice 7 LANDED 2026-09-02** — `ROADMAP.md`'s Phase-39 Status cell
 re-thinned 10 109 → 623 characters, the last accreting session-start surface.
-Nothing structural is queued; the phase's next concrete task is the kernel-(K)
-research pick (`notes/Phase39.md` *Hand-off*).** **Slice 1** —
+**A FIFTH ROUND IS PLANNED, IN ITS OWN FILE — `notes/Harness-structure.md`
+(slices 8–14, opened 2026-09-09, PLAN ONLY, nothing landed).** It continues
+this file's slice numbering but is separate because its deliverables are
+*cross-phase* — a derived claim ledger, a status vocabulary with a gate, a
+split `/coordinate-research` command, a research-direction agent core — rather
+than PENCIL file layout alone, which is what slices 1–7 were. Slice 12 of that
+round splits `notes/Pencil-informal.md` and slice 13 moves this file to
+`notes/pencil/structure.md`. The phase's own next concrete task is unchanged:
+the kernel-(K) research pick (`notes/Phase39.md` *Hand-off*).** **Slice 1** —
 §(K-grid) split out of `notes/Pencil-informal.md` into its own file,
 `notes/Pencil-informal-grid.md`. **Slice 2** — `notes/Pencil-fanout.md`'s
 ordinals-1–19 landed direction history archived to
