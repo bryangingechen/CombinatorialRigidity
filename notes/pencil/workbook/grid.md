@@ -18264,3 +18264,275 @@ the certificate / min-max content the entry was trying to avoid.
 > `collapse_search` runs) and (GR-182) as the answer to §8's rank 3.
 
 ---
+
+---
+
+## §(K-grid) — continuation (direction GSIMUL, ordinal 98, 2026-09-10): the simultaneous form of the island's odd-pair repair is a **26-colouring** event that ONE flip settles, the greedy repair — not the instrument — is what interferes (2 492/2 492 once the pair is searched rather than taken), and (GR-153)(d)'s corollary **EXTENDS to `n_hub = 8`** by (GR-25)'s cut criterion while a *different*, unflagged hypothesis (`Σ_γ(ℓ−1) = 4`) fails there
+
+Driver: `notes/scripts/w4/gsimul.py` (four modes + `--validate`). Full
+write-up: `notes/pencil/fanout.md` §"GSIMUL".
+
+### Step G205 — (GR-185): how many binding circuits are violated AT ONCE
+
+> **(GR-185)** `[MEASURED]` *(driver `notes/scripts/w4/gsimul.py --pop`;
+> exhaustive over the whole no-even-branch island at `n_hub ≤ 6` with
+> `cflank.length_tuples`' `lamcap` un-fenced and over all `2^M` bits; caps in
+> the driver docstring)* Over the island stratum — **2 100** isomorphism
+> classes, **108 866** admissible colourings, **8 032** of them violating some
+> binding circuit:
+>
+> **(i)** the number of binding circuits violated at one admissible colouring
+> is **1** at 8 006 colourings and **2** at **26**; it is never `≥ 3`. So
+> §(K-grid) (GR-153)'s **2 492** violated island circuits are `2 440·1 +
+> 26·2` — a count of (colouring, circuit) **incidences**, not of colourings,
+> and this driver reproduces it exactly through its own walk;
+>
+> **(ii)** **0** colourings violate an island circuit and a non-island one
+> together. The two landed repair instruments — (GR-23)/(GR-24)'s even flip
+> and (GR-154)'s odd pair — are therefore **never both needed at one
+> colouring** on this population, and the mixed simultaneous problem does not
+> arise here;
+>
+> **(iii)** every one of the **2 467** (shape, island binding circuit) pairs
+> has `Σ_γ(ℓ−1) = 4`, over the eight profiles (GR-158) lists — reproduced
+> here independently, by a cut-criterion enumeration over cycles rather than
+> by a colouring sweep. This is the tacit hypothesis of (GR-154)(ii), and it
+> is a **fact about `n_hub ≤ 6`**, not part of "all-odd binding circuit"
+> ((GR-192)).
+
+### Step G206 — (GR-186): the tell fires, and what fires it is the GREEDY CHOICE
+
+> **(GR-186)** `[MEASURED]` *(driver `notes/scripts/w4/gsimul.py --tell`;
+> the landed `gisland.island_repair` run at every instance, then an
+> exhaustive search over ALL `(β, δ)` pairs at each hit)* Running the landed
+> instrument at all **2 492** (admissible colouring, violated island
+> circuit) instances and comparing `violated(col′)` with `violated(col)` **as
+> sets**:
+>
+> **(i)** at **24** of them `violated(col′) ⊄ violated(col)` — the pair
+> violates a binding circuit that was **clean**. This is exactly the residual
+> behind (GR-154)'s measured `2 468/2 492`, and Step G174's prose names it
+> correctly; what is new is that it is now tested as a **set inclusion at
+> every tier**, where `gisland.island_repair` asserts `now <= was` only
+> inside its **tier P** (A5);
+>
+> **(ii)** at **all 24** some *other* `(β, δ)` pair repairs `γ` and violates
+> nothing new — indeed leaves **no** binding circuit violated. So the
+> interference is a property of the **greedy tier ordering**, not of the
+> instrument;
+>
+> **(iii)** consequently, **searched rather than taken, the odd pair carries
+> 2 492/2 492 violated island colourings to a fully NC1-clean admissible
+> colouring** — strictly stronger than the landed 2 468/2 492. The witness
+> shape at the first hit is `n_hub = 6`,
+> `[(0,3,1),(0,4,1),(0,5,2),(1,2,3),(1,4,3),(1,5,2),(2,3,5),(2,5,2),(3,4,5)]`,
+> circuit `(0,1,8)`: the greedy pair `(8, 3)` violates `(3,5,7)` because
+> `δ = 3` lies **in** that binding circuit, while the pair `(0, 6)` is clean.
+> (GR-155)(iv)'s privacy clause is precisely the hypothesis the greedy tier-3
+> branch drops.
+
+### Step G207 — (GR-187): two violated island circuits, ONE flip — and `δ`'s unblockedness comes free
+
+> **(GR-187)** `[PROVED]` *(the conditional; its hypothesis's coverage and
+> its whole conclusion asserted per instance at
+> `notes/scripts/w4/gsimul.py --simul`)* Let `col` be admissible and let
+> `γ_1`, `γ_2` be **two** all-odd binding circuits, both violated at `col`,
+> with `Σ_{γ_i}(ℓ−1) = 4`, **no branch in common**, and **opposite** end
+> colours (`c_{γ_1} ≠ c_{γ_2}`, well defined by (GR-153)(a)). Suppose
+> `β ∈ γ_1` and `δ ∈ γ_2` have `ℓ_β, ℓ_δ ≥ 3`. Then
+> `col′ = col + 1_β + 1_δ` is admissible, has `h_≠(γ_1) = h_≠(γ_2) = 2`, and
+> violates **no binding circuit that `col` did not already violate** — so a
+> **single** odd pair repairs **both**.
+>
+> *Proof.* Balance by (GR-153)(b): `β` is `c_{γ_1}`-ended and `δ` is
+> `c_{γ_2}`-ended, and the two differ, so one A-ended odd branch becomes
+> B-ended and one B-ended becomes A-ended — this is (GR-154)(i) verbatim,
+> with (ii) applied at each circuit separately since exactly one branch of
+> each is flipped. Forests by (GR-154)(iii): `ℓ_β, ℓ_δ ≥ 3`, so no `Λ`-edge
+> changed colour and a monochromatic cycle of `G` would have to be a
+> monochromatic `Λ`-cycle. **No monochromatic hub needs no hypothesis at
+> all**: `β` is unblocked by (GR-153)(d) applied to `γ_1`, and `δ` is
+> unblocked by (GR-153)(d) applied to `γ_2` — *because `γ_2` is itself
+> violated*. Every other binding circuit contains neither `β` nor `δ` unless
+> it meets `γ_1` or `γ_2`; at those that do not, (GR-154)(iv) leaves `D_A`,
+> `D_B` exactly as they were. `runs(γ_i) = 3` by (GR-17)(a) at
+> `Σ_{γ_i}(ℓ−1) = 4`, and `D = runs` there is the measured step (GR-189). ∎
+>
+> **This is where (GR-155)'s three privacy hypotheses go.** (GR-155) needs
+> `δ` in **no** binding circuit and **unblocked** because its `δ` is an
+> arbitrary partner; here `δ` is chosen **inside a second violated circuit**,
+> and (GR-153)(d) hands both properties over for free. The instrument is
+> *stronger*, not weaker, in the multi-circuit case.
+
+**Coverage, `[MEASURED]` at `notes/scripts/w4/gsimul.py --simul`:** the
+hypothesis is checked at each of the **26** two-circuit colourings of
+(GR-185)(i) and its whole conclusion — admissibility, `h_≠ = 2` at **both**
+circuits, and `violated(col′) ⊆ violated(col) ∖ {γ_1, γ_2}` — is asserted
+in-driver rather than argued: it fires at **26/26** (`outcomes {'fires': 26}` — no instance
+fails a hypothesis). Independently, the **iterated**
+repair (one circuit at a time, `gisland.island_repair`, capped at 8 rounds)
+reaches an NC1-clean admissible colouring at **26/26** and uses **one** round
+every time — the same phenomenon seen from the other side.
+
+### Step G208 — (GR-188): the DISJOINT simultaneous theorem, and why it is the wrong hypothesis for this population
+
+> **(GR-188)** `[PROVED]` *(the conditional; coverage MEASURED at
+> `notes/scripts/w4/gsimul.py --simul`, where its whole conclusion is
+> asserted at every instance where the hypothesis holds)* Let `col` be
+> admissible, let `γ_1, …, γ_m` be **all** the binding circuits violated at
+> `col`, and suppose each is all-odd with `Σ_{γ_i}(ℓ−1) = 4`. Suppose there
+> are branches `β_i ∈ γ_i` and `δ_i` such that for every `i`
+>
+> **(i)** `ℓ_{β_i} ≥ 3` and `ℓ_{δ_i} ≥ 3`; **(ii)** `c_{δ_i} ≠ c_{β_i}`;
+> **(iii)** `δ_i` lies in **no** binding circuit and has no blocked end, and
+> `β_i` lies in no binding circuit other than `γ_i`; **(iv)** the `2m`
+> branches are pairwise **hub-disjoint**.
+>
+> Then `col′ = col + Σ_i (1_{β_i} + 1_{δ_i})` is admissible, has
+> `h_≠(γ_i) = 2` for every `i`, and violates **no** binding circuit — so NC1
+> is satisfiable at that shape. This is (GR-24) for the island: at `m = 1` it
+> **is** (GR-155), with (iv) added.
+>
+> *Proof.* Balance: each pair is one A→B and one B→A swap among the odd
+> branches, and the pairs are disjoint, so (GR-153)(b)'s half-count is
+> preserved however many there are. Forests: **(GR-154)(iii)'s argument is
+> cardinality-free** — a monochromatic cycle of `G` cannot cross a degree-2
+> body, so it is a monochromatic `Λ`-cycle, and no `Λ`-edge changed colour
+> because every flipped branch has `ℓ ≥ 3`. No monochromatic hub: by (iv)
+> every hub carries at most one flipped branch, so (GR-86)(i) localizes, and
+> a `β_i`-end is unblocked by (GR-153)(d) while a `δ_i`-end is unblocked by
+> hypothesis. `h_≠(γ_i) = 2`: by (iii) no `β_j` (`j ≠ i`) and no `δ_j` lies
+> on `γ_i`, so exactly one branch of `γ_i` flips, and (GR-153)(a) gives
+> `h_≠(γ_i) = 2`, hence `runs = 3` at `Σ_{γ_i}(ℓ−1) = 4`. Any other binding
+> circuit contains no `β_i` and no `δ_i` by (iii), so (GR-154)(iv) leaves its
+> `D_A`, `D_B` unchanged and it was not violated. ∎
+>
+> **Coverage, and the negative result that matters.** The hypothesis holds at
+> **1 344** admissible colourings — **all of them `m = 1`**, i.e. exactly
+> (GR-155)'s 1 344/2 492, which is an independent reproduction of that figure
+> and shows clause (iv) costs nothing at `m = 1`. It holds at **0 of the 26**
+> genuinely multi-circuit colourings. **The disjoint hypothesis is the wrong
+> one for the simultaneous case**: what actually settles those 26 is
+> (GR-187), where the two circuits are *coupled* through a shared pair rather
+> than repaired independently. Recorded so no later pass reaches for
+> (GR-188) as the island's simultaneous instrument — it is the right shape
+> for `m` circuits that are far apart, and this population has none.
+
+### Step G209 — (GR-189): the merge never bites at an island circuit — the step (GR-153)(a)'s "hence" needs
+
+> **(GR-189)** `[MEASURED]` *(driver `notes/scripts/w4/gsimul.py --pop`;
+> `D_A`, `D_B` read off `grid.block_data`, `runs` off (GR-17)(a), never off
+> each other; exhaustive over the island stratum at `n_hub ≤ 6` with
+> `lamcap` un-fenced)* At `Λ ≠ ∅` an off-circuit `Γ`-path can merge two runs
+> into one class, so (GR-17)(b) gives `D_A, D_B ≤ runs` and nothing more —
+> and §(K-grid) (GR-160) records that roughly a **third** of NC1-clean island
+> colourings carry a merge somewhere. At an **island binding circuit** it
+> never does: over all **127 116** (island binding circuit, admissible
+> colouring) pairs, `D_A = D_B = runs(γ)` at **every one** — 0 with
+> `D_A < runs` or `D_B < runs`, hence 0 whose NC1 violation is caused by a
+> merge rather than by the run count.
+>
+> This is the step (GR-153)(a)'s closing *"hence … exactly the
+> monochromatic-ended ones"* uses and does not prove, and the step
+> (GR-155)'s proof line *"`γ` repaired by (GR-154)(ii)"* uses and does not
+> prove (A2). It is **measured**, in the same sense and for the same reason
+> as (GR-159): a stratum with richer `Λ` at the circuit would need it
+> re-taken. It is **not** a consequence of anything landed.
+
+### Step G210 — (GR-190): no all-`Λ` binding circuit below `n_hub = 10` — (GR-153)(d)'s corollary EXTENDS to `n_hub = 8`
+
+> **(GR-190)** `[PROVED]` *(the arithmetic checked as exact integers, and
+> the `n_hub = 8` conclusion cross-checked EXHAUSTIVELY and UNPRUNED against
+> the landed `cflank.cubic_habitat` over all 20 hub-multigraph classes,
+> every simple cycle and every length assignment, at
+> `notes/scripts/w4/gsimul.py --n8`)* Let `γ` be a circuit of `G°` with all
+> branches of length 1 (equivalently: an all-odd binding circuit with **no**
+> branch of length `≥ 3`), `r = |γ|`, `W′` its hub set, and `s` the number of
+> branches with both ends in `W′` that are not branches of `γ`. Then
+>
+> **(i)** `∂(W′) = r − 2s` and `exc(E(W′)) ≤ −r + 3s`, so
+> `2∂(W′) + exc(E(W′)) ≤ r − s`; since `W′` is connected and (for `r < n_hub`)
+> proper, (GR-25)'s cut criterion forces **`r − s ≥ 7`**;
+>
+> **(ii)** the excess law (GR-21) at `D = 0` (`Σ exc = 6`) with `ℓ ≤ 5`
+> forces `3(M − r) ≥ 6 + r`, i.e. `r ≤ (9·n_hub − 12)/8`; and the dart count
+> `∂(W′) ≤ 3(n_hub − r)` forces `s ≥ ⌈(4r − 3·n_hub)/2⌉`;
+>
+> **(iii)** hence: at `n_hub ≤ 6` **no `r ≥ 7` survives (ii) at all**
+> (`r ≤ 5` at `n_hub = 6`) — a proof of (GR-153)(d)'s corollary that does not
+> use girth; at `n_hub = 8` the only surviving `r` is **7**, which forces
+> `s ≥ 2` and so `r − s ≤ 5 < 7` — **impossible**; at `n_hub = 10` the bound
+> expires (`r = 7`, `s ≥ 0`, `r − s ≤ 7`).
+>
+> **Corollary. (GR-153)(d)'s corollary extends verbatim to `n_hub = 8`: an
+> all-odd binding circuit there still carries a branch of length `≥ 3`.** The
+> caveat *"At `n_hub ≥ 7` that is not excluded by (GR-25)(ii)"* is true of
+> the **girth** conjunct alone and false of (GR-25) as a whole (A4). The
+> first `n_hub` at which the question is genuinely open is **10**, and
+> nothing here says a witness exists there.
+>
+> **Cross-check.** `--n8` enumerates, with the prune **off**, every all-`Λ`
+> profile (`r = 7`, `r = 8`) over all 20 classes of
+> `gridcol.cubic_iso_classes(8)`, every simple cycle and every completion:
+> **900** length assignments reach the landed `cflank.cubic_habitat` and
+> **all 900 are rejected** — which is also the soundness check on (i)'s
+> bound, since every one of them sits under a `< 7` bound.
+
+### Step G211 — (GR-191): the all-odd binding-circuit profiles at `n_hub = 8`, and the `Σ_γ(ℓ−1) = 2` family that appears there
+
+> **(GR-191)** `[MEASURED]` *(driver `notes/scripts/w4/gsimul.py --n8`;
+> exhaustive over `gridcol.cubic_iso_classes(8)`'s 20 classes, every simple
+> cycle and every all-odd length assignment, gated by the landed
+> `cflank.cubic_habitat`, with the `n_hub = 6` sweep as a NEGATIVE CONTROL —
+> F13)* Habitat-feasibility of the all-odd binding-circuit profiles (entries
+> in `{1,3,5}`, `Σ_γ(ℓ−1) ≤ 4`, `Σ_γ ℓ ≥ 7`):
+>
+> **(i)** at `n_hub = 6` the feasible profiles are **exactly the eight**
+> (GR-158) reports as occurring — `(1,3,3)`, `(1,1,5)`, `(1,1,3,3)`,
+> `(1,1,1,5)`, `(1,1,1,3,3)`, `(1,1,1,1,5)`, `(1,1,1,1,3,3)`,
+> `(1,1,1,1,1,5)`. An independent reproduction of (GR-158) by a *different
+> route* (cut-criterion feasibility over cycles, not a colouring sweep), and
+> the control that says the mode is not observed only passing;
+>
+> **(ii)** at `n_hub = 8` there are **sixteen**, the eight above plus
+> `(1^6,3,3)`, `(1^5,3,3)`, `(1^7,5)`, `(1^6,5)`, `(1^7,3)`, `(1^6,3)`,
+> `(1^5,3)`, `(1^4,3)`;
+>
+> **(iii)** **four of the eight new ones have `Σ_γ(ℓ−1) = 2`** — `(1^4,3)`,
+> `(1^5,3)`, `(1^6,3)`, `(1^7,3)` — and *none* of that family is feasible at
+> `n_hub ≤ 6` (at `n_hub = 6`, `W′` of a `(1,1,1,1,3)` circuit forces
+> `s ≥ 1`, giving `2∂ + exc ≤ 6 < 7`). At such a circuit
+> `runs = (2 + h_≠)/2`, so `h_≠ = 2` gives `runs = 2` and the circuit stays
+> **violated**: (GR-153)(a)'s *"violated iff monochromatic-ended"* and
+> (GR-154)(ii)'s *"hence `runs = 3`"* **both fail**, and the odd-pair flip
+> would have to target `h_≠ = 4`.
+>
+> **Cap, stated with the figure.** These are **cut-criterion feasible** — the
+> landed `cflank.cubic_habitat` gate, which `aglu._pool8` also uses as the
+> `n_hub = 8` habitat oracle and which `cflank --law` asserts agrees with
+> `gridcol.class_shape` over the whole `n_hub ≤ 6` pool. This direction did
+> **not** sweep colourings at `n_hub = 8`: whether such a circuit is violated
+> at an admissible colouring, and whether the shape carries a
+> `gridcol.class_shape` certificate at `M = 12`, are **unmeasured**. Report
+> this as *feasible*, never as *occurs*.
+
+### Step G212 — (GR-192): (GR-154)(ii) is false as stated — the hypothesis is `Σ_γ(ℓ−1) = 4`, not "binding"
+
+> **(GR-192)** `[REFUTED]` *(witness: (GR-17)(a)'s run law at
+> `Σ_γ(ℓ−1) = 2`, an arithmetic identity and not a search; the profile family
+> that realizes it is (GR-191)(iii))* §(K-grid) (GR-154) is stated for *"an
+> all-odd binding circuit"*, i.e. `Σ_γ(ℓ−1) ≤ 4`, and its clause (ii) reads
+> *"`h_≠(γ) = 2` in `col′`, hence `runs(γ) = 3`"*. By (GR-17)(a)
+> `runs(γ) = (Σ_γ(ℓ−1) + h_≠(γ))/2`, so at `Σ_γ(ℓ−1) = 2` the conclusion is
+> `runs = 2` and the circuit is **still violated**. The clause needs
+> `Σ_γ(ℓ−1) = 4` in its preamble — which (GR-153)(a) already carries in its
+> own last sentence and (GR-154) does not.
+>
+> It is **harmless at `n_hub ≤ 6`**: all **2 467** (shape, island binding
+> circuit) pairs there have `Σ_γ(ℓ−1) = 4` ((GR-185)(iii)), so every landed
+> figure stands. It stops being harmless at `n_hub = 8`, where the
+> `Σ_γ(ℓ−1) = 2` family is habitat-feasible ((GR-191)(iii)). The same
+> hypothesis is the one (GR-155)'s proof needs for *"`γ` repaired"*, and the
+> one (GR-187)/(GR-188) above carry explicitly.
+
+---

@@ -1802,6 +1802,43 @@ entry.
    at the newest instrument is the arc's cheapest architecture test.
    *Kill condition: the simultaneous form proved, or the instrument shown to fail at
    `n_hub ≥ 8`. Decided by: the `(K-grid)` row, status u12/u77.*
+   > **SPENT 2026-09-10 (direction GSIMUL, ordinal 98) — SPLIT: the first branch fired, the
+   > second was REFUTED, and the falsification purpose paid in four corrections to a
+   > one-day-old instrument.** *(Recorded here per §8's own rule.)*
+   > **The simultaneous form goes through — and the population is tiny.** Over the whole
+   > un-fenced island at `n_hub ≤ 6`, 108 866 admissible colourings, the number of binding
+   > circuits violated **at once** is never `≥ 3`: the histogram is `{1: 8006, 2: 26}`, and
+   > **0** colourings mix an island with a non-island violation ((GR-185)). GISLAND's 2 492
+   > is reproduced exactly, by an independent walk, as `2440·1 + 26·2`. All **26** are
+   > settled by **one** flip, in one round ((GR-187)).
+   > **THE MECHANISM THIS ENTRY AND ITS SPEC BOTH PREDICTED IS A REAL THEOREM THAT FIRES
+   > ZERO TIMES.** The disjoint-branch composition was proved ((GR-188)) and settles **0 of
+   > the 26**. What settles all 26 is the opposite shape — a **shared** pair, `β ∈ γ₁`,
+   > `δ ∈ γ₂` — where `δ`'s unblockedness comes **free** from (GR-153)(d) applied to `γ₂`
+   > *because `γ₂` is itself violated*. **(GR-155)'s three privacy hypotheses are exactly
+   > what the multi-circuit case does not need**: the instrument is *stronger* there, not
+   > weaker ((GR-187)).
+   > **THE TELL FIRED AND THEN INVERTED — and the defect is the search, not the
+   > mathematics.** 24 of 2 492 repairs violate a previously-clean circuit; at **all 24**
+   > another `(β, δ)` pair is interference-free. So the odd pair **searched rather than
+   > taken** is **2 492/2 492** fully NC1-clean, *better* than the landed 2 468, and the
+   > 2 468 residual is `island_repair`'s **tier ordering** ((GR-186)).
+   > **`n_hub = 8`: THE PREDICTED FAILURE IS REFUTED AND A DIFFERENT ONE FOUND.**
+   > (GR-153)(d)'s corollary **extends verbatim to `n_hub = 8`** — proved by (GR-25)'s **cut**
+   > criterion (the caveat in the corollary cites the **girth** conjunct alone), and
+   > cross-checked unpruned over all 20 `cubic_iso_classes(8)` classes; the excess-law half
+   > even re-proves the `n_hub ≤ 6` case **without girth**. It first becomes open at **10**
+   > ((GR-190)). What *does* fail at 8 is unflagged: **(GR-154)(ii)'s tacit
+   > `Σ_γ(ℓ−1) = 4`** — four `Σ_γ(ℓ−1) = 2` profiles turn habitat-feasible exactly there,
+   > where `h_≠ = 2` leaves `runs = 2 < 3` ((GR-191)/(GR-192)), with the `n_hub = 6` sweep as
+   > a negative control reproducing (GR-158)'s eight profiles **by a different route**.
+   > **ROUTE-LEDGER ENTRY 3 STAYS *ADVANCED*.** The simultaneous half is closed, but
+   > `n_hub ≥ 10` is untouched, (GR-191) is *feasible* and never *occurs* (no colouring
+   > sweep at `n = 8`, ≈9.55e6 tuples per class), and NC1-satisfiability on the island
+   > remains MEASURED.
+   > *Kill condition for the successor: an all-`Λ` binding circuit exhibited at
+   > `n_hub = 10`, or a `Σ_γ(ℓ−1) = 2` island circuit shown to OCCUR at `n_hub = 8` rather
+   > than merely be feasible. Decided by: the `(K-grid)` row, status u12/u77.*
 5.–6. **UNCHANGED FROM THE ELEVENTH PASS AND NOT RE-DERIVED HERE**, since nothing this round
    touched either: the `4T + 3Q ≥ 12` habitat question and the `P¹`/splitting-type reading of
    (GR-7)(ii), with their kill conditions and deciding rows as written below. One note on

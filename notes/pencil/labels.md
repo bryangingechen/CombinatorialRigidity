@@ -5165,3 +5165,40 @@ nothing of the `(X<digit>)` shape was minted at all.
 > a debt item for a coordinator round — the cheap repair is for `--lint` to warn
 > when a claim's raw tag *begins* with `` `[ `` and failed to parse — and as
 > another instance of *a gate that reports nothing is not a gate that passes*.
+
+## Reserved namespace — direction GSIMUL (2026-09-10, **CONSUMED IN FULL: eight labels and eight steps**)
+
+| direction | section | labels | steps | driver |
+|---|---|---|---|---|
+| **GSIMUL** | §(K-grid) — **extends**, no new section | **(GR-185)–(GR-192)** | ***Steps G205–G212*** | `w4/gsimul.py` (four modes + `--validate`) |
+
+**0-hit verification, emitted PER TOKEN** (the D6.3(a) form). At `732087e2`:
+`(GR-185)`–`(GR-192)` **0 hits / 0 files each**; `G205`–`G212` **0 / 0 each**;
+`GSIMUL` / `gsimul` **0 / 0**. **Clean, no declaration exception.**
+
+**(L6) landing-time bare-token grep, whole repository.** Driver: only
+(L3)-qualified `(GR-…)` citations, **no mints**. Draft: `(E1)` — GISLAND's
+existing token, cited — and `(L1)`/`(L3)`/`(L7)`, this registry's own clause
+names. **Nothing of the `(X<digit>)` shape is minted.**
+
+**The live tail after this round's three landings is (GR-193) / *Step G213***,
+with **(GR-169)–(GR-176) / G189–G196 still RESERVED to GEXPAND** (in flight at
+this landing) and therefore **not** available. A future reservation opens at
+(GR-193) unless GEXPAND returns its range.
+
+> ***A COORDINATOR SPEC DEFECT THIS DIRECTION CAUGHT, AND IT HAD BEEN WRITTEN
+> INTO TWO SPECS.*** Both the GSIMUL and GEXPAND dispatch specs named
+> `aglu._pool8()` as *"a landed exhaustive `n_hub = 8` pool (39 689 shapes,
+> asserted)"* and pointed each direction at it as the cheap way to reach the
+> stratum their own harness fences off. **It is the `Λ = ∅` stratum.**
+> `_pool8()` builds `lens = [2 + e for e in exc]` over `excess_profiles(12, 6)`,
+> so **no branch has length 1** — verified at source by the coordinator at this
+> landing. For GSIMUL the pool cannot answer the question **at all**, since no
+> all-odd binding circuit exists at `Λ = ∅`; for GEXPAND it would have made one
+> side of an inheritance test silently `Λ ≠ ∅`-blind while looking clean. **The
+> correct shared call is `gridcol.cubic_iso_classes(8)`**, one level below, which
+> `_pool8()` itself uses. GSIMUL found this, said *"tell GEXPAND"*, and the
+> coordinator verified it and sent the correction to GEXPAND mid-run. Recorded
+> here because the defect's shape is the one this arc keeps repeating: **a
+> coordinator naming a landed call by what it is called rather than by what it
+> ranges over.**

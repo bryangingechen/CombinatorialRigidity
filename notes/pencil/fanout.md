@@ -2,9 +2,9 @@
 
 **Status: EIGHT fan-outs, FIFTY-FOUR single directions, ONE draft-only parallel direction,
 FIVE concurrent pairs, ONE concurrent round of four and TWO concurrent rounds of three
-dispatched; 104 LANDED, **TWO IN FLIGHT (GEXPAND 96, GSIMUL 98)** — the 2026-09-10 round of
-three (BCORNER 93, GISLAND 94, GCOIND 95) is COMPLETE, and a SECOND round of three
-(GEXPAND 96, GFORCE 97, GSIMUL 98) is in progress with GFORCE landed. The round of three (BFOUR 81,
+dispatched; 105 LANDED, **ONE IN FLIGHT (GEXPAND 96)** — the 2026-09-10 round of three
+(BCORNER 93, GISLAND 94, GCOIND 95) is COMPLETE, and a SECOND round of three (GEXPAND 96,
+GFORCE 97, GSIMUL 98) has GFORCE and GSIMUL landed. The round of three (BFOUR 81,
 BINSERT 82, BSERIES 83) and the **chain of six** single dispatches that answered each
 other in turn (BSTEER 84 → BGTWOA 89, (BE-204)–(BE-217); per-landing detail in the
 sections and in blocks 8/11–13, **not restated here**) are both CLOSED — and
@@ -17031,3 +17031,120 @@ only; `--sat` capped at 14 branches; `--tt`/`--kappa` skip `m > 18` (48 blocks);
 **`Λ ≠ ∅` not measured at all — the sharpest blind axis**, and the one a
 successor should open first. `fast_triple`'s node cap fired **0** times.
 Runtime: `--validate` ≈ 4 min; the full-cap modes ≈ 7 min.
+
+---
+
+## GSIMUL — ordinal 98, concurrent round of three, `research-direction-opus`, LANDED 2026-09-10
+
+**The question.** §8's **rank 4** (twelfth pass), and the round's **falsification
+pick**: does the island's odd-pair repair extend to the **simultaneous
+multi-circuit** form, and does the instrument survive at `n_hub ≥ 8`, where
+(GR-153)(d)'s corollary is `n_hub ≤ 6`-*conditional* rather than merely capped?
+Dispatched partly to **audit GISLAND's instrument, one landing old**, on §4's
+standing rule that the corrective mechanism is the next pass.
+
+**Verdict: SPLIT — verdict confirmed on both halves, mechanism REFUTED on both.**
+
+**The simultaneous form goes through, and the population is tiny.** Over the
+whole un-fenced island at `n_hub ≤ 6` — 2 100 isomorphism classes, **108 866**
+admissible colourings — the number of binding circuits violated **at once** is
+never `≥ 3`: the histogram is `{1: 8006, 2: 26}`, and **0** colourings mix an
+island with a non-island violation ((GR-185)). GISLAND's **2 492** is reproduced
+exactly by an independent walk as `2440·1 + 26·2`. All **26** are settled by
+**one** flip, in one round ((GR-187)).
+
+**The mechanism the spec predicted is a real theorem that fires zero times.**
+The disjoint-branch composition — the spec's stated reason — was **proved**
+((GR-188)) and settles **0 of the 26**. What settles all 26 is the opposite
+shape: a **shared** pair, `β ∈ γ₁`, `δ ∈ γ₂`, where `δ`'s unblockedness comes
+**free** from (GR-153)(d) applied to `γ₂` *because `γ₂` is itself violated*.
+**(GR-155)'s three privacy hypotheses are exactly what the multi-circuit case
+does not need** — the instrument is *stronger* there, not weaker.
+
+**The tell fired and then inverted, and the defect is the search.** 24 of 2 492
+repairs violate a previously-clean circuit; at **all 24** another `(β, δ)` pair
+is interference-free. So the odd pair **searched rather than taken** is
+**2 492/2 492** fully NC1-clean — *better* than the landed 2 468 — and the
+residual is `island_repair`'s **tier ordering**, not the mathematics ((GR-186)).
+
+**`n_hub = 8`: the spec's expected failure is REFUTED, and a different one
+found.** (GR-153)(d)'s corollary **extends verbatim to `n_hub = 8`**, proved by
+(GR-25)'s **cut** criterion — the corollary's own caveat cites the **girth**
+conjunct alone — and cross-checked **exhaustively and unpruned** over all 20
+`cubic_iso_classes(8)` classes, every simple cycle and every length assignment,
+900 assignments through the landed `cflank.cubic_habitat`, **0 feasible**, with a
+prune-soundness control re-testing every pruned assignment against the landed
+gate. The excess-law half even **re-proves the `n_hub ≤ 6` case without girth**.
+It first becomes genuinely open at **10** ((GR-190)). What *does* fail at 8 is
+unflagged: **(GR-154)(ii)'s tacit `Σ_γ(ℓ−1) = 4`** — four `Σ_γ(ℓ−1) = 2` profiles
+turn habitat-feasible exactly there, where `h_≠ = 2` leaves `runs = 2 < 3`
+((GR-191)/(GR-192)) — with the `n_hub = 6` sweep as a negative control
+reproducing **(GR-158)'s eight profiles by a different route**.
+
+**THE AUDIT OF GISLAND, and this is what the falsification pick bought.** All
+four of GISLAND's verdicts **survive** and every figure reproduces. Four
+corrections to prose one day old:
+
+- **(GR-154)(ii) is false as stated** — arithmetic, not search: *"h_≠ = 2 hence
+  runs = 3"* silently needs `Σ_γ(ℓ−1) = 4` ((GR-192)).
+- **(GR-153)(a)'s "hence" has a merge gap at `Λ ≠ ∅`**, closed only by
+  measurement — **0 of 127 116** (circuit, colouring) pairs ((GR-189)).
+- **(GR-153)(d)'s caveat cites the wrong conjunct** — (GR-25)(ii) is girth; the
+  cut criterion decides, and it extends the corollary to 8.
+- **Step G174's *Measured* block overstates its own checking.** Its tag reads
+  *"clauses (i)–(iv) asserted per repair at 2 446 tier-1 repairs"*; clause (iv)
+  is asserted at **1 102**, not 2 446. The **tier P** branch (1 344 of the
+  2 446) returns before the `if tier == 3` comparison. The driver's printed
+  output is accurate — the write-up merged two lines.
+
+**Coordinator verification at landing** (not on attestation): `--pop` and `--n8`
+re-run at full cap. `--pop` reproduces 108 866, the `{1: 8006, 2: 26}` histogram,
+zero mixing, 2 492 and (GR-189)'s 0/127 116. `--n8` reproduces the 20 classes,
+900 assignments, 0 feasible, and the `n_hub = 6` control's eight profiles.
+**(GR-190)'s arithmetic was re-derived independently in a separate script and
+matches at every `n_hub`** — 6: no `r ≥ 7` survives; 8: `r = 7` forces `s ≥ 2`
+so `r − s ≤ 5 < 7`; 10: the bound expires. **A5 was verified structurally at
+source**: `gisland.py:648` returns on tier P before the `for tier in (3, 1)`
+loop, and clause (iv)'s assertions sit under `if tier == 3`; 1 344 + 1 102 =
+2 446.
+
+**A COORDINATOR SPEC DEFECT THIS DIRECTION CAUGHT, WRITTEN INTO TWO SPECS.**
+Both the GSIMUL and GEXPAND specs named `aglu._pool8()` as *"a landed exhaustive
+`n_hub = 8` pool"*. **It is the `Λ = ∅` stratum** — `lens = [2 + e]`, so no
+branch has length 1 — verified at source. For GSIMUL it cannot answer the
+question at all (no all-odd binding circuit exists at `Λ = ∅`); for GEXPAND it
+would have made one side of an inheritance test silently `Λ ≠ ∅`-blind while
+looking clean. The correct call is **`gridcol.cubic_iso_classes(8)`**, which
+`_pool8()` itself uses. GSIMUL said *"tell GEXPAND"*; the coordinator verified
+and **sent the correction to GEXPAND mid-run**. The defect's shape is one this
+arc repeats: **naming a landed call by what it is called rather than by what it
+ranges over.**
+
+**Gap-map.** Four clause-level anchor→replacement edits, no full-cell
+replacement, no pipes — and the budget arithmetic needed **both authors'
+fallbacks**, which is itself the round's lesson about three directions sharing
+one row. GFORCE's +35 had already taken the headroom GSIMUL costed against, so
+the landing applied **GSIMUL's own stated fallback** (drop the (GR-188) clause)
+**and GFORCE's own** (its third-handle clause, which its proposal named as
+first-to-drop), plus five words of trimming. Result: status **2 714 / 2 715**,
+close-it **984 / 985**, `gapdiff` **0 DROPPED / 10 added**, row re-checked
+**`split`**. **The row is now one word from its cap and must have the relocation
+pass its own gate names before anything else lands in it.**
+
+**Reservation.** (GR-185)–(GR-192) / *Steps G205–G212*, all consumed; (L7)
+emitted per token, clean. Live tail is **(GR-193) / *Step G213***, with
+(GR-169)–(GR-176) / G189–G196 **still reserved to GEXPAND**, in flight.
+
+**Self-caught, six**, the sharpest being the `_pool8()` finding above. Also: it
+conflated the 2 468 residual with the 26 multi-circuit colourings before
+checking `2492 − 2468 = 24`; it **proved (GR-188) before measuring** and it is
+the wrong theorem for this population; and it nearly wrote (GR-191) as *occurs*
+rather than *feasible*.
+
+**Caps.** `n_hub ∈ {2,4,6}` for all colouring figures; **no colouring sweep at
+`n = 8`** (≈9.55e6 tuples per class), so (GR-191) is *feasible*, never *occurs*;
+`class_shape` uncertified at `M = 12`; `ℓ ≤ 5` is an explicit hypothesis of
+(GR-190); (GR-160)'s 40-orbit control inherited, not extended; the profile scan
+stops at first witness, so a 0 is exhaustive and a hit is one witness.
+`--validate` ≈ 625 s, **above the 600 s ceiling** — an F15 case, disclosed
+in-driver.
