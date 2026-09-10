@@ -860,3 +860,54 @@ strength of an unknown premise.
 answering with more confidence than its evidence supports — and it is the
 third time this round that the defect was in what the tool *presented* rather
 than in what it computed.
+
+## The tagging pass, and the three defects it found by DOING the work
+
+Dispatched over `--backlog --decisive`'s 356 "transcription" claims. It read
+**122** and tagged **21** — leaving **83% alone**. That is the headline, and it
+**refutes the scoping hypothesis** the dispatch was built on.
+
+**`--decisive` does not mean transcription at the top of the ranking.** The
+premise was that a clause containing a status word merely failed to record it
+in its tag. False where it matters most: the corpus's most-cited claims are
+exactly the ones that have been corrected, split or re-quantified in place, so
+a status word in the body is as often a *neighbour's* verdict or a superseded
+half. Four recurring shapes — superseded-in-place, split stratum (`(BE-45)(iv)`
+is "a theorem on 8 of 11 and a measurement on 3"), an obligation the clause
+cannot meet, and prose citations that were never claims. The ranking put the
+hardest cases first precisely because citation count tracks how much a claim
+has been revisited.
+
+**Three defects in the tool, all found by using it, none visible to a gate:**
+
+1. **`--lint` skipped the exact operation the pass performs.** Its
+   changed-vs-`HEAD` test compared `tag` and `claim` — and adding `[MEASURED]`
+   changes neither. Of the first 15 tags the default gate checked **one**. So
+   the obligations (`[MEASURED]` names a driver, `[REFUTED]` a witness) went
+   unchecked on the commits that introduced them. Fixed by including the
+   bracket in the change test; verified by injecting a `[MEASURED]` with no
+   driver and confirming the default gate now fails it.
+2. **A WIDE opener could not be tagged at all** — 93 of the 356. Its bold's
+   inner text is prepended to the claim, so `BRACKET.match` never fired: a
+   bracket after the bold parsed as `UNTAGGED`, and before it destroyed the
+   row. The bracket is now read off the post-bold remainder too.
+3. **40 rows are mid-sentence prose citations**, where a bold happens to start
+   a WRAPPED line — `"…and by\n> **(BE-22)(vi)** a rigid side collapses…"`.
+   `(BE-22)(vi)` was the worklist's **#1 entry by citations**. They are flagged
+   and dropped from `--backlog`, but **kept in the index**: the class is not
+   cleanly separable (`> **(A)** v* is a hub` after "So exactly one of" is a
+   genuine enumerated alternative), so the fix filters the WORKLIST, not the
+   ledger.
+
+**Verification of the landing** (not taken on attestation): the diff is 21
+insertions / 21 deletions across 14 files, every added line an opener gaining a
+bracket; `--delta` over both commits shows **21 transitions, every one
+`UNTAGGED → X`**, so no existing status was rewritten; `--lint --all` and
+`--selftest` green; and a spot-check of `(BE-41)(ii)` `[RETIRED]` found its
+prose saying *"this clause is RETIRED, not repaired"* and naming successor
+`(BE-74)` — tag and obligation both correct.
+
+**Three CONTESTED cases were reported and deliberately not resolved**, all the
+F12 shape (the correction landed at the citing surface, never at the claim):
+`(GR-108)`, `(BE-139)(iv)`, `(BE-187)(iii)`, plus a weaker fourth at
+`(BE-134)(i)`. Adjudicating them is research, not tagging.

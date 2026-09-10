@@ -339,7 +339,7 @@ def parse(path, text, keep_fragments=False):
     def flush():
         if pending is None:
             return
-        label, clause, sec, stp, body, hint, wideflag = pending
+        label, clause, sec, stp, body, hint, wideflag, contflag = pending
         block = " ".join(body).strip()
         # Slice 9's form is `[STATUS]` then the usual gloss. Strip the bracket
         # first so the gloss is still captured as the tag and the bracket does
@@ -360,10 +360,12 @@ def parse(path, text, keep_fragments=False):
             "label": label, "clause": clause,
             "status": status, "evidence": evidence or "",
             "tag": raw, "bracket": bracket, "hint": hint, "wide": wideflag,
+            "cite": contflag,
             "claim": re.sub(r"\s+", " ", rest),
             "cites": ";".join(cites),
         })
 
+    prev = ""
     for line in text.split("\n"):
         if line.startswith("## "):
             flush(); pending = None
@@ -373,6 +375,16 @@ def parse(path, text, keep_fragments=False):
             flush(); pending = None
             step = line[4:].strip()
             continue
+        # A bold that starts a WRAPPED line is a mid-sentence prose citation,
+        # not a claim opener: "...and by\n> **(BE-22)(vi)** a rigid side
+        # collapses...". 40 such rows exist. They are kept in the index (so
+        # --label still shows them) but flagged, because the class is not
+        # cleanly separable -- `> **(A)** v* is a hub` after "So exactly one
+        # of" is a genuine enumerated alternative. --backlog drops them.
+        pp = prev.lstrip(">").strip()
+        is_cont = bool(pp) and not prev.startswith(("#", "|")) \
+            and not _TERMINAL.search(pp)
+        prev = line
         m = OPENER.match(line)
         wide = None
         if not m:
@@ -391,12 +403,20 @@ def parse(path, text, keep_fragments=False):
             if wide is not None:
                 inner = wide.group(3)
                 hint = " ".join(sorted(set(VERDICT_HINT.findall(inner))))
-                # keep the bold's own text as the head of the claim
-                body0 = inner.strip() + " " + line[m.end():]
+                # A bracket written AFTER the bold has to be found before the
+                # bold's own text is prepended, or `BRACKET.match` never fires
+                # and the shape is untaggable -- which is what 93 claims were.
+                tail = line[m.end():]
+                bm2 = BRACKET.match(tail)
+                if bm2:
+                    body0 = (f"`[{bm2.group(1)}]` " + inner.strip() + " "
+                             + tail[bm2.end():])
+                else:
+                    body0 = inner.strip() + " " + tail
             else:
                 body0 = line[m.end():]
             pending = (label, clause, section, step, [body0], hint,
-                       "1" if wide is not None else "")
+                       "1" if wide is not None else "", "1" if is_cont else "")
             continue
         if pending is not None:
             if line.startswith(">"):
@@ -428,6 +448,7 @@ def parse(path, text, keep_fragments=False):
 # under `--label '(BE-14)'` beside the real one. A genuine claim never opens
 # with list punctuation or a lowercase continuation; a TAGGED opener is a claim
 # whatever follows, so the filter only applies when there is no tag at all.
+_TERMINAL = re.compile(r"([.!?:;]|\*\*|\)\*|\*|`|\)|\]|>)\s*$")
 _FRAGMENT = re.compile(r"^[,;:)]|^(?:and|or|is|are|was|were|which|that|plus|"
                        r"together|with|not)\b")
 
@@ -463,8 +484,8 @@ def build():
 # --------------------------------------------------------------------------
 
 FIELDS = ["file", "section", "seckey", "step", "label", "clause", "occ",
-          "status", "evidence", "bracket", "hint", "wide", "tag", "claim",
-          "cites"]
+          "status", "evidence", "bracket", "hint", "wide", "cite", "tag",
+          "claim", "cites"]
 
 
 def fingerprint():
@@ -577,7 +598,9 @@ def cmd_lint(rows, args):
         k = (r["file"], r["seckey"], r["label"], r["clause"], r["occ"])
         if not args.all:
             old = before.get(k)
-            if old is not None and old["tag"] == r["tag"] and old["claim"] == r["claim"]:
+            if (old is not None and old["tag"] == r["tag"]
+                    and old["claim"] == r["claim"]
+                    and old.get("bracket", "") == r.get("bracket", "")):
                 continue  # untouched by this commit
         checked += 1
         bracket = r.get("bracket", "")
@@ -640,7 +663,7 @@ def cmd_backlog(rows, args):
     for r in rows:
         for c in (r["cites"].split(";") if r["cites"] else []):
             cited[c] += 1
-    un = [r for r in rows if r["status"] == "UNTAGGED"]
+    un = [r for r in rows if r["status"] == "UNTAGGED" and not r.get("cite")]
     if args.decisive:
         # The subset whose OWN clause already contains a status word somewhere
         # -- the tag simply never recorded it. These are transcription. The
