@@ -761,17 +761,28 @@ Round-close obligation, per `CLAUDE.md` *Lift on promotion*:
 ## Hand-off / next phase
 
 All fourteen slices are LANDED, and the round's forward part is now **D6 + D7**
-— the two diagnosis sections, not the slice list. D7.4(c)'s pipe escaping is **DONE**, and it
-found `(K-bare)` and `(K-out)` 87% and 32% over cap rather than near it; both now
-join `(K-grid)` as split candidates, which is a **user decision, not a side
-errand** — it moves mathematical prose out of a table cell. **Next concrete
-commit: the D7.3 loop clause** (two lines, no new tool) and D6.6's reorder (one
-line),
-and then the shipped scripts D7.8 says must come before any further section —
-D6.3(a) `--reserve-range`, D6.1 `phasenote.py`, D6.4 `blindaxes.py`, D6.5
-`check-driver-refs.py`. **Read D7.2 before ranking any of them**: a reader that
+— the two diagnosis sections, not the slice list.
+
+**Done 2026-09-10, in order:** D7.4(c)'s pipe escaping (`e689d959`) — which found
+`(K-bare)` and `(K-out)` **87% and 32% over cap**, not near it, and re-apportioned
+both rows' caps without loosening either total; then D7.3's loop clause and
+D6.6's reorder, landed together in both coordinator commands.
+
+**Next concrete commit: a shipped script** — D7.8's rule, that the next harness
+commit must be a script and not another section, and this file has now added two
+sections against zero scripts. **Rank them by D7.2, not by size:** a reader that
 cuts a *pre-dispatch* read is worth ~20× the same reader used after the first
-dispatch, which is what makes D6.1 the highest-value script on the list.
+dispatch, which puts **D6.1 `notes/phasenote.py`** first (`--next`, `--status`,
+`--handoff`, `--surfaces`; the phase note is read before the first dispatch and
+its next-task paragraph is a single 5 878-character line, D7.7). Then D6.3(a)
+`ledger.py --reserve-range` (two of this round's coordinator defects are its
+written acceptance tests), D6.4 `blindaxes.py`, D6.5 `check-driver-refs.py`.
+
+**One open user decision, deliberately not taken here:** `(K-grid)`, `(K-bare)`
+and `(K-out)` are all past the point where a table cell is the right container
+(2 585 / 2 666 / 1 254 words of status). D7.4 argues for the slice-12 move — live
+verdict in the row, bulk behind a pointer into the owning workbook file — rather
+than a fifth cap bump. That relocates mathematical prose and is a user call.
 
 *(Slice 8's original spec, for the record: `notes/ledger.py`, with `--label`,
 `--status`, `--frontier`, `--cited-by`, `--brief` and `--delta`, generating
@@ -1131,7 +1142,7 @@ correct* applied to the one part of a recommendation that is machine-decidable.
 *Kill condition: the gate shipped and green, or a measured hit count low enough
 not to matter. Decided by: the gate's presence and its first run.*
 
-### D6.6 — the blocking check-in is serialized behind reads it does not need
+### D6.6 — the blocking check-in is serialized behind reads it does not need  *(FIXED 2026-09-10)*
 
 `.claude/commands/coordinate-research.md` puts the setup reads first and the
 **blocking** user check-in after them. The check-in asks two questions — does this
@@ -1140,7 +1151,8 @@ depends on any of the reading**. Moving it to the session's first action removes
 a serialization point at zero cost, and the rung answer can change what the
 reading is for.
 *Kill condition: the command body reordered. Decided by: that file's setup
-paragraph.*
+paragraph.* **Done** — the check-in is now the session's first action, with the
+zero-dependency argument stated inline.
 
 ### D6.7 — `check-phase-note.py --all` is RED at baseline, so the documented fallback does not exist for it
 
@@ -1312,7 +1324,7 @@ correctly ranked first and why its payoff is larger than D6.1 claims.
 a re-measurement putting prep's token·turn share below 10%. Decided by: this
 computation re-run on a later transcript.*
 
-### D7.3 — the loop YIELDS after a landing while a returned direction sits unverified
+### D7.3 — the loop YIELDS after a landing while a returned direction sits unverified  *(FIXED 2026-09-10)*
 
 **First, what is NOT the problem, because the obvious reading is wrong.** The
 session's two long idle blocks — **21.1 min** (22.7 → 43.8) and **43.5 min**
@@ -1352,6 +1364,14 @@ yielding; the handoff sentence is a sentence, not a yield.* (b) The self-armed
 keepalive cron currently says *"Do NOT read files, run commands, or dispatch."*
 Make it conditional — *"if a direction has returned, verify it; otherwise reply
 keepalive"* — and all three stalls self-heal with no user in the loop.
+**Both landed 2026-09-10.** Step 6 of `/coordinate-research` now says the
+handoff sentence **is a sentence, not a yield** and names the check; the
+keepalive cron's prompt carries the conditional, which turns it from a ping into
+a **loop restart** — it fires precisely when the REPL is idle, which is the state
+a step-6 yield leaves it in. Both were synced into `/coordinate-phase`, whose
+keepalive and step 6 are the same machinery; the *measurement* is from the
+research loop and is labelled as such there.
+
 *Kill condition: a round of three landed with zero user turns between the first
 dispatch and the last landing. Decided by: the user-message count in the session
 transcript.*

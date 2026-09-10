@@ -21,6 +21,20 @@ items (§8), and §7's prediction-labelling rule live there in full. Read
 it once at session start; this body carries only what a coordinator
 needs *in the loop*, and points rather than restates.
 
+**FIRST ACTION OF THE SESSION, before any reading**, ask the user once
+whether this run modifies these instructions, and fold the
+**rung-availability confirmation** into the same check-in (which rungs
+are dispatchable; fix each unavailable rung's substitute up front — do NOT spend dispatches probing). **This
+check BLOCKS the loop:** wait for an actual user response — a timed-out
+question is not an answer (a 60 s timeout once had a coordinator carry
+over a prior session's config, which the user's late answer partly
+reversed, 2026-07-02).
+
+It goes first because **neither question depends on any of the setup
+below**, so asking after the reads inserts a serialization point at zero
+benefit — and the rung answer can change what the reading is *for*
+(`notes/Harness-structure.md` D6.6).
+
 Setup: follow CLAUDE.md reading order, but read **only ROADMAP.md's
 *Status* table plus the active phase's §N** — closed phases' roadmap
 prose is archival detail no coordinator needs pre-dispatch. Read
@@ -32,15 +46,6 @@ Status row (unread, §39 drifted a week and ~20 directions stale,
 22 000-character line, up to 20% of a coordinator session's peak
 context. Confirm `git status` is clean, and run the loop in the
 **foreground of this session only** — never backgrounded or forked.
-
-Before the first dispatch, ask the user once whether this run modifies
-these instructions, and fold the **rung-availability confirmation** into
-the same check-in (which rungs are dispatchable; fix each unavailable
-rung's substitute up front — do NOT spend dispatches probing). **This
-check BLOCKS the loop:** wait for an actual user response — a timed-out
-question is not an answer (a 60 s timeout once had a coordinator carry
-over a prior session's config, which the user's late answer partly
-reversed, 2026-07-02).
 
 ## The claim ledger — how to answer "what is already proved"
 
@@ -202,9 +207,16 @@ one, fixed once at the check-in.
    carry the discipline; the prompt carries the spec and nothing else.
 
    **Cache keepalive.** In the SAME turn as the dispatch, arm
-   `CronCreate({cron: "17,47 * * * *", prompt: "KEEPALIVE — cache
-   warm-up only. Do NOT read files, run commands, or dispatch. Reply
-   with exactly: keepalive"})`; `CronDelete` its id at step 4. A dispatch
+   `CronCreate({cron: "17,47 * * * *", prompt: "KEEPALIVE — if a
+   dispatched direction has RETURNED and is not yet verified, start
+   verifying it (loop step 4). Otherwise this is cache warm-up only: do
+   NOT read files, run commands, or dispatch — reply with exactly:
+   keepalive"})`; `CronDelete` its id at step 4. The conditional clause
+   is what makes the cron a **loop restart** and not only a ping: it
+   fires while the REPL is idle, which is exactly the state a
+   step-6 yield leaves it in, so it self-heals the stall D7.3 records
+   without a user turn. The cheap path is unchanged — nothing returned,
+   one word out. A dispatch
    past ~1 h expires the session's prompt cache and the next turn
    rewrites the whole prefix at 2× base input, where a ping is a 0.1×
    cache read that refreshes the timer. Cron fires only while the REPL
@@ -270,7 +282,16 @@ one, fixed once at the check-in.
    - Run the three docs gates **before** committing, and paste
      `--delta <noted-sha>` into the commit message.
 6. **One sentence to the user** after each commit: clean handoff and the
-   next direction, or the specific concern. Surface phase-boundary
+   next direction, or the specific concern. **It is a sentence, not a
+   yield** — before ending the turn, check whether any other dispatch
+   has already returned, and if one has, go straight to step 4 for it.
+   In the first `/coordinate-research` session this was missed three
+   times: a landing report was posted with a returned direction sitting
+   unverified (GCOIND 2.8 min, GSIMUL 1.7 min — and the coordinator had
+   already *written* that it knew GSIMUL was back), and each stall cost
+   a user turn to clear (D7.3). Yielding is correct only when nothing
+   has returned; waiting for the *first* return of a fan-out is not
+   fillable work and should not be filled. Surface phase-boundary
    decisions with a concrete estimate rather than deciding unilaterally.
 7. **Stop and surface** on: a verdict that re-routes the phase or
    demands user adjudication (present options with estimates; don't pick

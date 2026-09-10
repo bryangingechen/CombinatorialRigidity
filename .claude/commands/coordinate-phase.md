@@ -409,9 +409,15 @@ CLAUDE.md at phase close.
    duplication invites drift.
 
    **Cache keepalive.** In the SAME turn as the dispatch, arm
-   `CronCreate({cron: "17,47 * * * *", prompt: "KEEPALIVE — cache
-   warm-up only. Do NOT read files, run commands, or dispatch. Reply
-   with exactly: keepalive"})`; `CronDelete` its id at step 4. A
+   `CronCreate({cron: "17,47 * * * *", prompt: "KEEPALIVE — if a
+   dispatched agent has RETURNED and is not yet verified, start
+   verifying it (loop step 4). Otherwise this is cache warm-up only: do
+   NOT read files, run commands, or dispatch — reply with exactly:
+   keepalive"})`; `CronDelete` its id at step 4. The conditional clause
+   makes the cron a **loop restart** and not only a ping — it fires
+   while the REPL is idle, which is the state a step-6 yield leaves it
+   in (`notes/Harness-structure.md` D7.3, measured on the research
+   loop; the machinery here is identical). A
    dispatch running past ~1h expires the session's 1-hour prompt
    cache and the next turn re-writes the whole prefix at 2× base
    input, where a ping is a 0.1× cache read that refreshes the timer.
@@ -608,6 +614,9 @@ CLAUDE.md at phase close.
    **wait for its completion notification**; re-reading an unchanged
    background-output file is a wasted call.)
 6. One sentence to the user: clean handoff, or the specific concern.
+   **It is a sentence, not a yield** — before ending the turn, check
+   whether another dispatch has already returned, and if one has, go
+   straight to step 4 for it (D7.3).
    Surface **phase-boundary decisions** — early close, sub-phase
    split, a change to what "phase close" means — with a concrete
    commit-count estimate rather than deciding unilaterally.
