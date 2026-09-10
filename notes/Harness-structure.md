@@ -1,6 +1,6 @@
 # Harness + PENCIL doc-set structural round (work log)
 
-**Status: SLICES 8, 9, 11, 12, 13, 14 LANDED 2026-09-09.** Slice 8 — `notes/ledger.py`, 1 308
+**Status: ALL SEVEN SLICES (8–14) LANDED 2026-09-09; the round is COMPLETE.** Slice 8 — `notes/ledger.py`, 1 308
 claims across five files, ~0.2 s regeneration, cache gitignored. Slice 9 — the
 bracketed status vocabulary and `--lint`, gating the new form only. Slice 12 —
 `notes/Pencil-informal.md` split into 62 files under `notes/pencil/workbook/`,
@@ -8,9 +8,11 @@ content byte-identical, 1 308 claims before and after. Slice 13 — the rest of
 the corpus moved under `notes/pencil/`, a subtree `CLAUDE.md` added, and
 `notes/CLAUDE.md` trimmed 425 → 321 lines. Slice 11 — `--round` emits a generated
 briefing packet and `--reserve` mechanizes the 0-hit label check. Slice 14 — `/coordinate-research`
-and the `research-direction` agent family. **Only slice 10 (the tag backfill)
-remains**, and it is the droppable one: incremental, blocking nothing, and
-`--lint` already stops the untagged share from growing. Opened 2026-09-09 at the user's
+and the `research-direction` agent family. Slice 10 — **re-scoped by
+measurement** from a batch conversion to a ranked reading worklist
+(`--backlog`), which is the honest shape; see its entry. Promotion to
+`RESEARCH-ARC.md` is the remaining work and waits on a second research-shaped
+phase, per that file's own three-tier rule. Opened 2026-09-09 at the user's
 request after Phase 39's dispatch costs were measured. Slices are numbered
 8–14, continuing `notes/pencil/structure.md`'s slice numbering; this is a
 separate file because the round's deliverables are **cross-phase** (a
@@ -364,7 +366,42 @@ inspects changed-vs-`HEAD` files by default and so must be **run before
 committing, or with `--all`** (`pencil/structure.md` *Gates for any
 continuation*, blind spot 1).
 
-### Slice 10 — backfill the 476 untagged openers  *(N commits, incremental)*
+### Slice 10 — the tagging backlog  *(RE-SCOPED, then LANDED 2026-09-09)*
+
+**The original plan was to convert the legacy tags in bulk. A measurement
+retired that.** **642 claims already classify correctly from their legacy
+freeform tag** (`*(proven)*`, `*(measured)*`, `*(PROVED by exhaustion)*`),
+because the leading-token rule reads them — 453 of those at obligation-free
+statuses. Converting them to the bracketed form would have edited hundreds of
+mathematical claims and changed **no tool output whatsoever**: same status,
+same `--brief`, same `--frontier`. The entire value sits in the **645 claims
+with no recognizable status**, and those need *reading*, not rewriting.
+
+So slice 10 ships as a **worklist, not a batch**: `ledger.py --backlog` ranks
+the untagged claims by how many other claims cite their label, so the reading
+starts where the corpus leans hardest — `(BE-22)(v)` at 45 citations,
+`(BE-101)(ii)` at 44, `(CH-1)` at 37. Tagging happens **per landing, by the
+direction that touches the claim**, with the standing rule that a claim is
+tagged only when its own prose is decisive and `UNTAGGED` is a legitimate
+terminal state. `--lint` already stops the untagged share from growing, which
+is what made the batch unnecessary.
+
+**A parser defect surfaced while assessing this slice, and is fixed here.**
+`(BE-14)` — the corpus's most-cited label — showed **two** rows under
+`--label`, one of them a fragment beginning mid-sentence with a comma. The
+source is a bolded label opening a **prose list**
+(`> **(BE-14)**, \`hbareSplit\`, the 2-cut composition lemma … are untouched`),
+which passes the opener test because the bold does close right after the
+label. **21 rows across the corpus were this shape.** They were harmless in
+the way that matters — every one came out `UNTAGGED`, because the
+leading-token rule refuses to guess a status — but they inflated the count and
+put a phantom row beside a real claim. A genuine claim never opens with list
+punctuation or a lowercase continuation, and a *tagged* opener is a claim
+whatever follows, so the filter applies only to untagged ones. `--selftest`
+now reconciles them per file, as it already did for unattached sub-items.
+Corpus count: 1 308 → **1 287**.
+
+### Slice 10 — as originally specified  *(retained for the record)*
 
 Mechanical where the prose is decisive (`**PROVED**` → `[PROVED]`,
 `proven-informally` → `[INFORMAL]`), by reading where it is not. **Any

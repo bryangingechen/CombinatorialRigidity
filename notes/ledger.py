@@ -27,6 +27,8 @@ So the cost is TURNS, not bytes, and the fix is not "read less" -- it is
   --round N --direction D --labels L1 L2 ... [--question T] [--out]
                           a dispatch briefing packet with the claim statements
                           GENERATED, so a spec never retypes one
+  --backlog               UNTAGGED claims ranked by citations -- the tagging
+                          worklist, heaviest-leaned-on first
   --reserve TOK ...       0-hit check a proposed label prefix, corpus-wide
                           (RESEARCH-ARC section 1, mechanized)
   --lint                  GATE: the status vocabulary, on claims this commit
@@ -302,7 +304,7 @@ def classify(raw, block):
     return "UNTAGGED", None
 
 
-def parse(path, text):
+def parse(path, text, keep_fragments=False):
     """Yield ledger rows for one source file."""
     section = step = ""
     cur_label = ""
@@ -364,7 +366,26 @@ def parse(path, text):
             else:
                 flush(); pending = None
     flush()
-    return [r for r in rows if r["label"]]
+    kept = [r for r in rows if r["label"]]
+    return kept if keep_fragments else [r for r in kept if not _list_fragment(r)]
+
+
+# A bolded label can open a PROSE LIST rather than a claim:
+#   > **(BE-14)**, `hbareSplit`, the 2-cut composition lemma ... are untouched.
+# The bold closes right after the label, so the opener test passes, and 17 such
+# lines were being indexed as claims. They were harmless in the sense that
+# matters -- every one came out UNTAGGED, because the leading-token status rule
+# refuses to guess -- but they inflated the count and put a phantom second row
+# under `--label '(BE-14)'` beside the real one. A genuine claim never opens
+# with list punctuation or a lowercase continuation; a TAGGED opener is a claim
+# whatever follows, so the filter only applies when there is no tag at all.
+_FRAGMENT = re.compile(r"^[,;:)]|^(?:and|or|is|are|was|were|which|that|plus|"
+                       r"together|with|not)\b")
+
+
+def _list_fragment(r):
+    return (not r["tag"] and not r.get("bracket")
+            and bool(_FRAGMENT.match(r["claim"].lstrip())))
 
 
 # Bare (dashless) label families that really are labels, not prose: the
@@ -542,6 +563,43 @@ def cmd_lint(rows, args):
         return 1
     print("\nOK: no vocabulary violations."
           + ("" if args.all else " (Run before committing; --all for the corpus.)"))
+    return 0
+
+
+def cmd_backlog(rows, args):
+    """UNTAGGED claims, ranked by how much of the corpus leans on them.
+
+    This is slice 10's worklist, and its shape follows a measurement that
+    retired the slice's original plan. 642 claims already classify correctly
+    from a legacy freeform tag (`*(proven)*`, `*(measured)*`), because the
+    leading-token rule reads them -- so mass-converting those to the bracketed
+    form would edit hundreds of mathematical claims and change NO tool output.
+    The value is entirely in the 666 that carry no recognizable status, and
+    those need reading, not rewriting. Ranked by citation count so the reading
+    starts where the corpus leans hardest.
+
+    Tag a claim only when its OWN PROSE is decisive. `UNTAGGED` is a terminal
+    state, not a defect: inventing a verdict is the one unrecoverable error
+    available here.
+    """
+    import collections as _c
+    cited = _c.Counter()
+    for r in rows:
+        for c in (r["cites"].split(";") if r["cites"] else []):
+            cited[c] += 1
+    un = [r for r in rows if r["status"] == "UNTAGGED"]
+    un.sort(key=lambda r: (-cited.get(r["label"], 0), r["label"]))
+    withg = sum(1 for r in un if r["tag"])
+    print(f"# {len(un)} UNTAGGED claims -- {withg} carry a gloss whose leading "
+          f"token is not a status word, {len(un)-withg} carry none.\n"
+          f"# Ranked by citations TO the label. Tag only where the prose is "
+          f"decisive; UNTAGGED is a legitimate terminal state.\n")
+    for r in un[:args.head]:
+        print(f"{cited.get(r['label'],0):4d} cites  {name(r):<20} {where(r)}")
+        if r["tag"]:
+            print(f"            gloss: {r['tag'][:100]}")
+    if len(un) > args.head:
+        print(f"\n... {len(un)-args.head} more (raise --head)")
     return 0
 
 
@@ -934,12 +992,16 @@ def cmd_selftest(rows, args):
             else:
                 cur = tok
         got = len([r for r in rows if r["file"] == rel])
+        frag = len([r for r in parse(rel, text, keep_fragments=True)
+                    if _list_fragment(r)])
         print(f"{rel}\n   {cand:5d} blockquote lines containing '**('\n"
               f"   {opened:5d} match the opener shape (bold closes after the "
               f"label)\n   {loose:5d} unattached sub-item bullets (no parent "
-              f"label in section; dropped)\n   {got:5d} ledger rows")
-        if got != opened - loose:
-            print(f"   !! {opened - loose - got} opener(s) unaccounted for")
+              f"label in section; dropped)\n   {frag:5d} prose-list fragments "
+              f"(bolded label opening a list, not a claim; dropped)\n"
+              f"   {got:5d} ledger rows")
+        if got != opened - loose - frag:
+            print(f"   !! {opened - loose - frag - got} opener(s) unaccounted for")
             ok = False
     orphan = [r for r in rows if not r["label"]]
     if orphan:
@@ -981,6 +1043,8 @@ def main(argv):
     mode.add_argument("--stats", action="store_true", help="status census")
     mode.add_argument("--round", metavar="N",
                       help="emit a dispatch briefing packet (with --brief)")
+    mode.add_argument("--backlog", action="store_true",
+                      help="UNTAGGED claims ranked by citations (slice 10's worklist)")
     mode.add_argument("--reserve", nargs="+", metavar="TOK",
                       help="0-hit check a proposed label prefix / section name")
     mode.add_argument("--lint", action="store_true",
@@ -1016,6 +1080,8 @@ def main(argv):
         return cmd_brief(rows, args)
     if args.delta:
         return cmd_delta(rows, args)
+    if args.backlog:
+        return cmd_backlog(rows, args)
     if args.reserve:
         return cmd_reserve(rows, args)
     if args.round:

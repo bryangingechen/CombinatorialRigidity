@@ -6,7 +6,7 @@ generally, and `RESEARCH-ARC.md` carries the research-phase discipline.
 
 ## Ask the ledger; do not grep the workbook
 
-`python3 notes/ledger.py` indexes **every label-clause in this corpus** — 1 308
+`python3 notes/ledger.py` indexes **every label-clause in this corpus** — 1 287
 claims — and reports the evidence status the claim's own prose states.
 
 ```
@@ -18,6 +18,7 @@ claims — and reports the evidence status the claim's own prose states.
 --delta <ref>          the status change-set, for the landing's commit message
 --round N --direction D --labels L1 L2 ... --out
                        a dispatch briefing packet, statements GENERATED not retyped
+--backlog              UNTAGGED claims ranked by citations -- the tagging worklist
 --reserve 'PFX-'       0-hit check a label prefix corpus-wide before minting
 --lint                 GATE: the status vocabulary on what this commit changes
 --list / --stats / --selftest
@@ -67,8 +68,12 @@ survives:
 `REFUTED <witness>` · `MOOT`/`RETIRED <successor>` · `OPEN`
 
 The trailing obligations are checked by `ledger.py --lint`, which binds the
-**bracketed form only** — legacy freeform tags are grandfathered as `UNTAGGED`
-until slice 10 converts them. Like the other docs gates it inspects
+**bracketed form only**. Legacy freeform tags are NOT converted in bulk and do
+not need to be: 642 of them already classify correctly from their leading token,
+so rewriting them would change no tool output. Tagging happens **per landing,
+by the direction that touches the claim** — `--backlog` ranks what is left by
+how much of the corpus cites it. Tag only where the claim's own prose is
+decisive; `UNTAGGED` is a terminal state, not a defect. Like the other docs gates it inspects
 changed-vs-`HEAD` files, so **run it before committing**, or with `--all`.
 
 Three sharp rules this corpus paid for:
