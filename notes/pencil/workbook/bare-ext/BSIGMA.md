@@ -21,7 +21,7 @@ One name is minted, and like BSATUR's it is a **condition**, not an object:
 
 ### Step BE108 — (BE-109): the residual is REALIZED, and the witness is BSATUR's own peel
 
-> **(BE-109)(i)** *(**THE HIT**, exhibited at the peel BSATUR pinned)* Take the
+> **(BE-109)(i)** `[CONSTRUCTED]` *(**THE HIT**, exhibited at the peel BSATUR pinned)* Take the
 > subdivided `K₄` skeleton with profile `(5,3,3,3,3,3)`, peeled at the skeleton
 > edge `{A,B}` carrying the 5-branch — **`K4(5,3,3,3,3,3)`, (BE-104)(i)'s own
 > witness peel, unchanged**. Side 1 is that branch,
@@ -114,7 +114,7 @@ One name is minted, and like BSATUR's it is a **condition**, not an object:
 > quotient plane, so the whole question is *what the side looks like seen from
 > `p_x`*.
 
-> **(BE-110)(ii)** *(**THE FLOOR**, proved for a path side — `ρ_i ≥ 5`)* Let
+> **(BE-110)(ii)** `[PROVED]` *(**THE FLOOR**, for a path side — `ρ_i ≥ 5`)* Let
 > `x` be a `deg_i(x) = 1` terminal whose side is the path
 > `x = v₀, v₁, …, v_L = y`. Then `ρ̄_i = ⟨ℓ₁, …, ℓ_L⟩` (a path is a tree, so
 > the multipliers are free — (BE-30)), and `ℓ_j ∧ p_x = L_j`, the projected
@@ -136,7 +136,7 @@ One name is minted, and like BSATUR's it is a **condition**, not an object:
 > original failure at exactly one** — and (BE-107)(iii)'s *"impossible below
 > `ρ_i = 3`"* is improved from `3` to `5` on that class.
 
-> **(BE-110)(iii)** *(the same identity **proves** (BE-105)(ii)'s measured half
+> **(BE-110)(iii)** `[PROVED]` *(the same identity **proves** (BE-105)(ii)'s measured half
 > at a generic path configuration)* At a path side with `L ≥ 4` and the
 > projected points `\bar p₁, …, \bar p_L` in general position, `L₂, L₃, L₄` are
 > three lines with `L₂ ∩ L₃ = \bar p₂` and `\bar p₂ ∉ L₄`, hence

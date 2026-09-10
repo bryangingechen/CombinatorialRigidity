@@ -252,7 +252,7 @@ is a marker, not a label** — nothing is minted for it here either.
 > deletes exactly the constraints that make `x`'s cycle rigid, so `ρ_i` runs
 > 1 to 3 **below** `dim A`.
 
-> **(BE-133)(v)** *(**the cap, disclosed with its denominator**)* The
+> **(BE-133)(v)** `[MEASURED]` *(**the cap, disclosed with its denominator**)* The
 > **clause itself** — `Π_x ⊆ ρ̄_i` with `ρ_i ≤ 5`, evaluated exactly as
 > `bopen.py degx` evaluates it — is **0 of 270**: *not found under this
 > cap*, never *"cannot happen"*. **What is refuted here is the ROUTE, not

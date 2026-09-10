@@ -242,7 +242,7 @@ flag regime, `c_i(Π) = 2 ⟹ ρ_i = 6`, at `Π = Π_x` and at `Π = Π_y`.* Sin
 > ever meets it*, which is (BE-105)(iii) firing again and is why the middle
 > case is built rather than drawn.
 
-> **(BE-125)(iii)** *(**the control that makes (ii) load-bearing** — a
+> **(BE-125)(iii)** `[CONSTRUCTED]` *(**the control that makes (ii) load-bearing** — a
 > CONSTRUCTED witness, `RESEARCH-ARC.md` §4 / README §4 convention 6)* A
 > reader may ask why the flag rotation is needed when BPROPER already sweeps
 > `p_x`. Because **at a FIXED flag the bad locus can be dense in the

@@ -16,7 +16,7 @@ One name is minted: **(PENCIL-SATURATES-GEN)**, the repaired clause.
 
 ### Step BE103 — (BE-104): (PENCIL-SATURATES) is FALSE, and the witness is a real peel
 
-> **(BE-104)(i)** *(**THE REFUTATION**, exhibited at an internal R-node peel)*
+> **(BE-104)(i)** `[CONSTRUCTED]` *(**THE REFUTATION**, exhibited at an internal R-node peel)*
 > Take the subdivided `K₄` skeleton with branch-length profile
 > `(5,3,3,3,3,3)`, peeled at the skeleton edge `{A, B}` carrying the
 > **5-branch**. Then `{x, y} = {A, B}` is a 2-cut, the peel is

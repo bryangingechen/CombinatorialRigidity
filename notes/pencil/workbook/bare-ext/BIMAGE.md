@@ -274,7 +274,7 @@ configuration, no genericity, no constructor. One inequality does all the work.
 > (BE-22)(vi) makes the composition free.** The obstruction and the deficiency
 > are in tension, which is the same shape (BE-15) found on the disproof side.
 
-> **(BE-32)(iv)** *(the arc's cheapest falsification test, swept)* By (BE-30)(iv),
+> **(BE-32)(iv)** `[MEASURED]` *(the arc's cheapest falsification test, swept)* By (BE-30)(iv),
 > **`δ_{uv} ≤ dist_H(u,v)` is NECESSARY** for the strengthened statement at
 > `{u,v}` — so a single `(H,u,v)` with `δ > dist` would refute **S-all** and
 > **S-mark** outright, with no geometry and no configuration.

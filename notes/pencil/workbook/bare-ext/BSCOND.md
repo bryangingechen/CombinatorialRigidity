@@ -425,7 +425,7 @@ binds.**
 > and `dim ρ̄₁ = 5` puts them **outside** the window, where (BE-56)(iv)
 > requires failure.
 
-> **(BE-147)(iii)** *(the law, and its corollary)* **At a coincident middle
+> **(BE-147)(iii)** `[PROVED]` *(the law, and its corollary)* **At a coincident middle
 > `excess ≤ 1` whenever `dim ρ̄₁ ≤ 4`** — by (i) when `W ⊆ Σ_p` and by (ii)
 > otherwise — so the rank-one budget of (BE-55)(iv) is met and the window
 > identity follows by (BE-144)'s kill step. **Corollary:** case (a) forces

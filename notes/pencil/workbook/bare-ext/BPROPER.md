@@ -280,7 +280,7 @@ and `deg_i(y) ≥ 2`.
 
 ### Step BE117 — (BE-118): the `ρ_i = 4` witness, in the generic flag regime
 
-> **(BE-118)(i)** *(**the peel**, constructed and disclosed as such)* Glue a
+> **(BE-118)(i)** `[CONSTRUCTED]` *(**the peel**, constructed and disclosed as such)* Glue a
 > non-path bucket-A side to a subdivided 3-connected skeleton at two
 > **non-adjacent** hubs `x, y`. Non-adjacency is required and is the one
 > structural constraint: with `x ~ y` in the skeleton, `side_2 + (x,y)`
@@ -293,7 +293,7 @@ and `deg_i(y) ≥ 2`.
 > graph, for the record: `K33(3,3,3,3,3,3,3,3,3)` + `2 pendants + cycle(8)
 > at distance 4`, `|V| = 32`, `|E| = 37`, `def₃ = 1`.
 
-> **(BE-118)(ii)** *(**THE WITNESS**, and it refutes (BE-110)(iv)'s hunt
+> **(BE-118)(ii)** `[CONSTRUCTED]` *(**THE WITNESS**, and it refutes (BE-110)(iv)'s hunt
 > verdict)* Over **7** constructed composites × **3** seeds, **21** rows,
 > **every one** carries, all asserted:
 >

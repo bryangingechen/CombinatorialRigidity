@@ -302,7 +302,7 @@ BGPROP's, verbatim — `V`, `M°`, `s`, `r`, `Γ`, `Γ_Π(p)`, `Ω`, `Ω^⊥`, `
 > sufficient — which is why (BE-192)'s witness needed the full planar
 > plant.)*
 
-> **(BE-193)(ii)** *(**THE THEOREM**)* Let `H` be an internal R-node peel at
+> **(BE-193)(ii)** `[PROVED]` *(**THE THEOREM**)* Let `H` be an internal R-node peel at
 > `{x, y}` with `x ≁ y` satisfying (CH-1)'s hypotheses, and let `side_i` have
 > `deg_i(x) = 2` with **some** `x`–`y` arc through a side-neighbour of `x` of
 > length `≤ 3`. Then

@@ -275,7 +275,7 @@ closed star is coplanar** — and that reading is what (BE-43)(iii) rests on.
 > **proved with no measurement at all**; the exhaustive `n = 3…6` tier is
 > **100 %** proved and every unproved pair is at `n ≥ 7`.
 
-> **(BE-41)(ii)** *(the residue, stated exactly, and it is geometry-free)*
+> **(BE-41)(ii)** `[RETIRED]` *(the residue, stated exactly, and it is geometry-free)*
 >
 > > **CORRECTION, 2026-09-01 (direction BSPREAD, *Steps BE73/BE75* /
 > > (BE-74)/(BE-76)) — read this clause with its carve-out, and then read
@@ -309,7 +309,7 @@ closed star is coplanar** — and that reading is what (BE-43)(iii) rests on.
 > at `n ≤ 7`, where `δ` is affordable directly, **144 539** forced pairs with
 > **`0`** having `δ ≠ 0`.
 
-> **(BE-41)(iii)** *(the boundary, LOCATED — and it is exactly where the merge
+> **(BE-41)(iii)** `[CONSTRUCTED]` *(the boundary, LOCATED — and it is exactly where the merge
 > inequality runs out of slack)* A 6-cycle of `Q` is tight and a 7-cycle is
 > not: `5·7 = 35 < 36 = 6·6`. So (BE-40) **cannot** be pushed past 6, and the
 > question is whether the aggressive closure can. It can. Let `t₀ … t_k` be a

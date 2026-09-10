@@ -130,7 +130,7 @@ body confirms.
 > the direct derivation above is given because it costs one extra inequality and
 > keeps the base case independent of that corollary.
 
-> **(BE-20)(ii)** *(the flat cone law on the POINT side — measured here for the
+> **(BE-20)(ii)** `[INFORMAL]` *(the flat cone law on the POINT side — measured here for the
 > first time; proven-informally, inheriting (BE-13))* At the **flat**
 > configuration — all points distinct in one plane — every closed star is
 > coplanar, so it is a **legal (BE-14) configuration at every graph**, and its

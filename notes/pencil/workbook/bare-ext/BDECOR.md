@@ -411,7 +411,7 @@ BE29–BE62*. **No `.lean` was opened; the standing 2026-08-05 Lean hold binds.*
 > `min(δ₁+δ₂,6) − dim(ρ̄₁+ρ̄₂)` **= 0 at 28/28**. The pieces reach
 > `θ(6,6,6)` children and `|V| = 28`.
 
-> **(BE-67)(ii)** *(job 3's question, answered: **theorem, per piece**;
+> **(BE-67)(ii)** `[PROVED]` *(job 3's question, answered: **theorem, per piece**;
 > **artifact only as to the class**)* BRNODE asked whether the criterion
 > holding outright at 24/24 was *"a theorem or a constructor artifact"*. It is
 > a **theorem for each piece measured**, and the reason needs no
