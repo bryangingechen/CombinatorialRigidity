@@ -24,6 +24,9 @@ So the cost is TURNS, not bytes, and the fix is not "read less" -- it is
                           quoted verbatim so a dispatch spec never retypes one
   --delta <ref>           status change-set against a git ref, for pasting
                           into a landing's commit message
+  --lint                  GATE: the status vocabulary, on claims this commit
+                          adds or changes (--all for the corpus, --strict to
+                          also fail a new claim left untagged)
   --list / --stats        per-file counts; the tag-vocabulary census
   --selftest              parser audit (coverage, unattached sub-items)
 
@@ -100,9 +103,29 @@ the corpus's openers genuinely carry no status marker, and saying so is the
 point -- it tells a direction exactly which claims it must read prose for.
 The raw tag is preserved verbatim in every row, so nothing is lost.
 
-Slice 9's bracketed form (`> **(BE-216)(i)** `[PROVED]` *(gloss)*`) is already
-recognized here and takes precedence over the leading-token reading, so the
-migration needs no parser change.
+THE VOCABULARY (slice 9). The bracketed form goes before the gloss, so the
+editorial voice survives:
+
+    > **(BE-216)(i)** `[PROVED]` *(the sum is hypothesis-free)* At a firing ...
+
+  PROVED . PROVED-MOD <label> . INFORMAL <gap> . ASSERTED <driver>
+  MEASURED <driver> . CONSTRUCTED <driver> . CONJECTURED . REFUTED <witness>
+  MOOT/RETIRED <successor> . OPEN
+
+It takes precedence over the leading-token reading. The trailing obligations
+are what `--lint` checks, and they mechanize three rules the phase already
+promoted: RESEARCH-ARC section 4 (a driver per headline sentence), section 7
+(name the evidence stratum), and the 2026-09-09 sharpening that a kill
+condition naming a number must carry its derivation.
+
+`--lint` BINDS THE BRACKETED FORM ONLY, and that is deliberate. Only 42% of
+the corpus's existing MEASURED claims name a driver anywhere in their clause,
+so a retroactive rule would fail correct prose and be switched off rather than
+obeyed. An author who writes `[MEASURED]` opts into naming the driver; legacy
+freeform tags stay ungated until slice 10 converts them, and conversion is
+where the naming gets added. `--lint` compares against HEAD and checks only
+what a commit ADDS or CHANGES, so -- like the other two docs gates -- it must
+run BEFORE committing, or with `--all`.
 """
 
 import argparse
@@ -153,9 +176,35 @@ VOCAB = {
 }
 # Statuses that count as "this claim is closed" for --frontier.
 CLOSED = {"PROVED", "REFUTED", "MOOT", "RETIRED"}
+# The bracketed form's obligations (`notes/Harness-structure.md` slice 9).
+# Value is what the clause must NAME, or None. These are enforced by --lint on
+# the BRACKETED form only -- deliberately, because only 42% of the corpus's
+# existing MEASURED claims name a driver anywhere in their clause, so a
+# retroactive rule would fail correct prose and be disabled rather than obeyed
+# (`CLAUDE.md`: a gate that fails the tree on day one gets turned off). An
+# author who opts into `[MEASURED]` opts into naming the driver; legacy
+# freeform tags stay ungated until slice 10 converts them, and conversion is
+# where the naming gets added.
 BRACKET_OK = {
-    "PROVED", "PROVED-MOD", "INFORMAL", "ASSERTED", "MEASURED", "CONSTRUCTED",
-    "CONJECTURED", "REFUTED", "MOOT", "RETIRED", "OPEN",
+    "PROVED": None,
+    "PROVED-MOD": "label",     # which claim it is modulo
+    "INFORMAL": "gap",         # what is not argued
+    "ASSERTED": "driver",      # RESEARCH-ARC section 4: a driver per claim
+    "MEASURED": "driver",
+    "CONSTRUCTED": "driver",
+    "CONJECTURED": None,
+    "REFUTED": "witness",
+    "MOOT": "successor",
+    "RETIRED": "successor",
+    "OPEN": None,
+}
+NEEDS_PATTERN = {
+    "label": re.compile(r"\([A-ZΛ][A-Za-zΛ0-9]*[-–][A-Za-z0-9_₀-₉\']+\)"),
+    "driver": re.compile(r"--[a-z][a-z0-9-]{2,}|\b[a-z][a-z0-9_]{2,}\.py\b"
+                         r"|\b[a-z][a-z0-9_]{2,}\.[a-z_]+\(|`[a-z][a-z0-9_]*\.[a-z_]+`"),
+    "witness": re.compile(r"\([A-ZΛ][A-Za-zΛ0-9]*[-–][A-Za-z0-9_₀-₉\']+\)|`[^`]+`"),
+    "successor": re.compile(r"\([A-ZΛ][A-Za-zΛ0-9]*[-–][A-Za-z0-9_₀-₉\']+\)"),
+    "gap": re.compile(r"\S"),
 }
 
 # `> **(LABEL)(clause)**` with the bold closing right after -- see PARSING (1).
@@ -248,15 +297,26 @@ def parse(path, text):
             return
         label, clause, sec, stp, body = pending
         block = " ".join(body).strip()
-        raw, rest = read_tag(block)
+        # Slice 9's form is `[STATUS]` then the usual gloss. Strip the bracket
+        # first so the gloss is still captured as the tag and the bracket does
+        # not leak into `claim` -- where its own backticks once satisfied the
+        # `[REFUTED] must name a witness` check, passing a clause that named
+        # nothing.
+        bm = BRACKET.match(block)
+        bracket = bm.group(1) if bm else ""
+        rest0 = block[bm.end():].lstrip() if bm else block
+        raw, rest = read_tag(rest0)
         status, evidence = classify(raw, block)
+        if bracket:
+            status = bracket if bracket in BRACKET_OK else "UNTAGGED"
         cites = sorted({c for c in CITE.findall(CODE.sub(" ", rest))
                         if c != label and (("-" in c) or c in ALLCAPS_BARE)})
         rows.append({
             "file": path, "section": sec, "seckey": section_key(sec), "step": stp,
             "label": label, "clause": clause,
             "status": status, "evidence": evidence or "",
-            "tag": raw, "claim": re.sub(r"\s+", " ", rest)[:400],
+            "tag": raw, "bracket": bracket,
+            "claim": re.sub(r"\s+", " ", rest),
             "cites": ";".join(cites),
         })
 
@@ -303,6 +363,16 @@ def build():
             continue
         with open(p, encoding="utf-8") as f:
             rows.extend(parse(rel, f.read()))
+    # Five label-clauses are stated TWICE inside one section (a claim restated
+    # in the section's own Verification block, mostly). Without an ordinal the
+    # identity key collides, and a colliding key silently drops one row from
+    # --delta and reports the other as changed-every-run in --lint. Ordinals
+    # are assigned in document order, so they are stable under appends.
+    seen = {}
+    for r in rows:
+        k = (r["file"], r["seckey"], r["label"], r["clause"])
+        seen[k] = seen.get(k, 0) + 1
+        r["occ"] = str(seen[k])
     return rows
 
 
@@ -310,8 +380,8 @@ def build():
 # cache
 # --------------------------------------------------------------------------
 
-FIELDS = ["file", "section", "seckey", "step", "label", "clause", "status",
-          "evidence", "tag", "claim", "cites"]
+FIELDS = ["file", "section", "seckey", "step", "label", "clause", "occ",
+          "status", "evidence", "bracket", "tag", "claim", "cites"]
 
 
 def fingerprint():
@@ -381,6 +451,83 @@ def locate(row):
 # output
 # --------------------------------------------------------------------------
 
+def trunc(t, n):
+    """Truncate for a scanning view, and SAY SO -- a silently cut claim can
+    drop the proviso that makes it true, which is the BGENUINE failure this
+    tool exists to prevent. `--brief` and `--full` never call this."""
+    return t if len(t) <= n else t[:n].rstrip() + f" …[+{len(t)-n} chars; --full]"
+
+
+def cmd_lint(rows, args):
+    """Gate the status vocabulary on NEW or EDITED openers.
+
+    Grandfathering is the whole design. Slice 8 measured 666 UNTAGGED claims
+    (51% of the corpus); a gate that failed on those would be switched off in
+    a week. So: legacy openers pass untouched, and what is checked is what
+    this commit ADDS or CHANGES, compared against HEAD.
+
+    Like the other two docs gates it inspects changed-vs-HEAD files, so it
+    must be run BEFORE committing, or with --all (`notes/Pencil-structure.md`
+    *Gates for any continuation*, blind spot 1).
+    """
+    before = {}
+    if not args.all:
+        for rel in SOURCES:
+            r = sh(["git", "show", f"HEAD:{rel}"])
+            if r.returncode == 0:
+                seen = {}
+                for row in parse(rel, r.stdout):
+                    kk = (rel, row["seckey"], row["label"], row["clause"])
+                    seen[kk] = seen.get(kk, 0) + 1
+                    before[kk + (str(seen[kk]),)] = row
+
+    bad, untagged, checked = [], [], 0
+    for r in rows:
+        k = (r["file"], r["seckey"], r["label"], r["clause"], r.get("occ", "1"))
+        if not args.all:
+            old = before.get(k)
+            if old is not None and old["tag"] == r["tag"] and old["claim"] == r["claim"]:
+                continue  # untouched by this commit
+        checked += 1
+        bracket = r.get("bracket", "")
+        if bracket and bracket not in BRACKET_OK:
+            bad.append((r, f"`[{bracket}]` is not in the vocabulary "
+                           f"({', '.join(sorted(BRACKET_OK))})"))
+            continue
+        if bracket:
+            needs = BRACKET_OK[bracket]
+            if needs:
+                pat = NEEDS_PATTERN[needs]
+                if not pat.search(r["tag"] + " " + r["claim"]):
+                    bad.append((r, f"[{r['status']}] must name a {needs}; "
+                                   f"none found in the tag or clause"))
+        elif r["status"] == "UNTAGGED":
+            untagged.append(r)
+
+    scope = "whole corpus" if args.all else "claims added or changed vs HEAD"
+    print(f"# ledger lint -- {checked} claim(s) checked ({scope})")
+    for r, why in bad:
+        print(f"FAIL {name(r):<18} {where(r)}\n     {why}")
+    if untagged:
+        head = untagged[:12]
+        print(f"\n{len(untagged)} UNTAGGED "
+              f"{'(pre-existing; slice 10 backfills these)' if args.all else 'in this change'}:")
+        for r in head:
+            print(f"  {name(r):<18} {where(r)}")
+        if len(untagged) > len(head):
+            print(f"  ... {len(untagged) - len(head)} more")
+        if args.strict and not args.all:
+            print("\n--strict: a new claim must carry a bracketed status.")
+    if bad:
+        print(f"\nFAILED: {len(bad)} vocabulary violation(s).")
+        return 1
+    if args.strict and untagged and not args.all:
+        return 1
+    print("\nOK: no vocabulary violations."
+          + ("" if args.all else " (Run before committing; --all for the corpus.)"))
+    return 0
+
+
 def name(r):
     return f"({r['label']})" + (f"({r['clause']})" if r["clause"] else "")
 
@@ -402,7 +549,7 @@ def show(r, full=False, loc=True):
     print(f"{head}\n    {where(r)}{ln}")
     if r["tag"]:
         print(f"    tag: {re.sub(chr(10), ' ', r['tag'])[:160]}")
-    body = r["claim"] if full else r["claim"][:220]
+    body = r["claim"] if full else trunc(r["claim"], 220)
     if body:
         print(f"    {body}")
     if r["cites"]:
@@ -509,7 +656,7 @@ def cmd_brief(rows, args):
             print(f"    {where(r)}:{locate(r)}")
             if r["tag"]:
                 print(f"    tag: {r['tag']}")
-            print(f"\n    {r['claim']}\n")
+            print(f"\n    {r['claim']}\n")  # never truncated -- see cmd_brief
             if r["cites"]:
                 print("    cites: "
                       + " ".join("(" + c + ")" for c in r["cites"].split(";")))
@@ -531,7 +678,8 @@ def cmd_delta(rows, args):
     # one file, and a (file, label, clause) key collapses them -- which
     # reported three spurious `X -> UNTAGGED` transitions before this was
     # fixed, one of them on a label whose real status never moved.
-    key = lambda r: (r["file"], r["seckey"], r["label"], r["clause"])
+    key = lambda r: (r["file"], r["seckey"], r["label"], r["clause"],
+                     r.get("occ", "1"))
     before = {key(r): r for r in old}
     after = {key(r): r for r in rows}
     changed, added = [], []
@@ -546,7 +694,7 @@ def cmd_delta(rows, args):
     # RELOCATION, not a deletion -- direction RESGRID moved §(K-res)'s six
     # (RS-.) claims into the grid workbook, which a file-keyed diff would
     # otherwise report as six removals with no corresponding arrivals.
-    ident = lambda r: (r["label"], r["clause"])
+    ident = lambda r: (r["label"], r["clause"], r.get("occ", "1"))
     arrived = {ident(r): r for r in added}
     relocated = []
     for r in list(gone):
@@ -690,12 +838,18 @@ def main(argv):
                       help="status change-set vs a git ref")
     mode.add_argument("--list", action="store_true", help="per-file counts")
     mode.add_argument("--stats", action="store_true", help="status census")
+    mode.add_argument("--lint", action="store_true",
+                      help="gate the status vocabulary on new/edited claims")
     mode.add_argument("--selftest", action="store_true", help="parser audit")
     p.add_argument("--section", metavar="S", help="narrow by section substring")
     p.add_argument("--file", metavar="F", help="narrow by file substring")
     p.add_argument("--head", type=int, default=40, help="max rows (default 40)")
     p.add_argument("--full", action="store_true", help="untruncated claim text")
     p.add_argument("--rebuild", action="store_true", help="force cache rebuild")
+    p.add_argument("--all", action="store_true",
+                   help="--lint: check the whole corpus, not just this change")
+    p.add_argument("--strict", action="store_true",
+                   help="--lint: also fail on a NEW claim left UNTAGGED")
     args = p.parse_args(argv)
 
     rows = load(rebuild=args.rebuild)
@@ -711,6 +865,8 @@ def main(argv):
         return cmd_brief(rows, args)
     if args.delta:
         return cmd_delta(rows, args)
+    if args.lint:
+        return cmd_lint(rows, args)
     if args.list:
         return cmd_list(rows, args)
     if args.stats:

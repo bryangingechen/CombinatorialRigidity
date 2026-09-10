@@ -221,7 +221,8 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
 **PARALLEL HARNESS TRACK, not blocking this one** — `notes/Harness-structure.md`
 (slices 8–14, opened 2026-09-09). **Slice 8 LANDED:** `python3 notes/ledger.py --label
 '(BE-216)' | --brief | --frontier | --delta <ref>` answers "what is proved" in one call
-(1 308 claims, 51% UNTAGGED). Next there: slice 9, the status vocabulary + `--lint`. The phase's own next concrete task
+(1 308 claims, 51% UNTAGGED). **Slice 9 LANDED:** bracketed status vocabulary +
+`--lint` gate. Next there: slice 12, the workbook split. The phase's own next concrete task
 is unchanged and stated below.
 
 **THE (BE-14) THREAD, settled frame + its last landings — RELOCATED 2026-09-02** to

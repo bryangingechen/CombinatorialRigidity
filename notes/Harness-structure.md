@@ -1,10 +1,11 @@
 # Harness + PENCIL doc-set structural round (work log)
 
-**Status: SLICE 8 LANDED 2026-09-09** (`notes/ledger.py`, 1 308 claims indexed
-across five files, selftest green, ~0.2 s regeneration, cache gitignored).
-Slices 9–14 remain plan. The next concrete task is **slice 9** — the status
-vocabulary and its `--lint` — or, at the user's option, slice 12's split, for
-which slice 8 turned up a new argument recorded there. Opened 2026-09-09 at the user's
+**Status: SLICES 8–9 LANDED 2026-09-09.** Slice 8 — `notes/ledger.py`, 1 308
+claims across five files, ~0.2 s regeneration, cache gitignored. Slice 9 — the
+bracketed status vocabulary and `--lint`, gating the new form only. Slices
+10–14 remain plan; the next concrete task is **slice 12** (the split), for which
+slice 8 turned up a claim-identity argument stronger than the token one, with
+slice 11 (generated round packets) and slice 10 (the backfill) after it. Opened 2026-09-09 at the user's
 request after Phase 39's dispatch costs were measured. Slices are numbered
 8–14, continuing `notes/Pencil-structure.md`'s slice numbering; this is a
 separate file because the round's deliverables are **cross-phase** (a
@@ -283,7 +284,45 @@ one it drops was self-inflicted.
 **Why first.** It is additive, reversible, unblocks slices 9/11/12, and pays
 on the very next dispatch with nothing else in place.
 
-### Slice 9 — the status vocabulary  *(convention + gate; no backfill yet)*
+### Slice 9 — the status vocabulary  *(LANDED 2026-09-09)*
+
+**What landed.** The bracketed form, parsed ahead of the gloss so editorial
+voice survives (`> **(BE-216)(i)** `[PROVED]` *(the sum is hypothesis-free)*`),
+plus `notes/ledger.py --lint`. Verified against seven fixtures: a well-formed
+`[PROVED]` passes; `[MEASURED]` without a driver fails; `[MEASURED]` naming one
+passes; `[PROVEN]` fails as out-of-vocabulary with the legal set printed;
+`[REFUTED]` without a witness fails; `[REFUTED]` naming one passes; a legacy
+freeform tag is reported UNTAGGED and does not fail.
+
+**The gate binds the BRACKETED FORM ONLY**, decided by measurement rather than
+taste: only **42%** of the corpus's existing MEASURED claims name a driver
+anywhere in their clause (15% name one in the tag). A retroactive rule would
+fail correct prose and be switched off rather than obeyed — the failure mode
+the original spec below already warned about. An author who opts into
+`[MEASURED]` opts into naming the driver; legacy tags stay ungated until
+slice 10 converts them, and conversion is where the naming gets added.
+
+**Two defects in slice 8 were found and fixed here**, both by building the
+gate rather than by review:
+
+- **`--brief` was truncating at 400 characters** while the median clause is
+  785, so **970 of 1 141 clauses** were quoted mid-sentence. A briefing packet
+  that silently drops the tail of a claim drops exactly the provisos it exists
+  to preserve — the BGENUINE failure, reintroduced by the tool built to
+  prevent it. The full clause is now stored; truncation is a display concern,
+  applies only to scanning views, and says `…[+N chars; --full]` when it fires.
+- **The identity key was not unique.** Five label-clauses are stated twice
+  inside one section (mostly a claim restated in the section's own
+  *Verification* block), so a colliding key silently dropped one row from
+  `--delta` and reported the other as changed on every run. Rows now carry an
+  occurrence ordinal, assigned in document order and stable under appends.
+
+A third, subtler one was caught by the fixtures: the `[REFUTED] must name a
+witness` check was satisfied by the **status bracket's own backticks**, so a
+clause naming nothing passed. The bracket is now stripped before the
+obligation is checked.
+
+### Slice 9 — as originally specified  *(retained for the record)*
 
 A closed vocabulary, written as a bracketed tag **before** the existing
 parenthetical, so editorial voice survives:
