@@ -1495,6 +1495,59 @@ decision this section hands forward rather than a fifth bump.
 `|` that the combined fallback had been counting as a token; 2 666 + 113 = 2 779.
 No content moved.)*
 
+**MEASURED 2026-09-10 before choosing a split design, and the measurement
+REFUTES the split** — including the version this section itself recommended.
+Driver: `notes/scripts/cellcensus.py` (`--density`, `--units`), which
+reimplements nothing (the cap gate's row parser, `gapmap.py`'s splitter,
+`gapdiff.py`'s label regex, all imported).
+
+**(i) `gapdiff`'s in-row label rule protects almost nothing.** Of the three hot
+cells' **519** distinct label tokens, **518 are findable elsewhere under
+`workbook/`** at label granularity — 293/294, 164/164, 61/61. Exactly one
+(`BE-163`) is unique to a cell. So the rule that makes a relocation pointer
+expensive is, for 99.8% of tokens, duplicating a protection the corpus already
+provides.
+
+**(ii) But there is nothing to relocate, because the cells are not second
+copies.** Textual duplication against the owning section, measured by 8-word
+shingles: **3% / 4% / 5%**, and **zero** units in `(K-bare)` or `(K-out)` are
+≥50% duplicated. `f2905c86` worked because it targeted a chronology whose
+verdict sat in *the row's own close-it cell* — an in-row duplication. There is
+no comparable mass against the workbook. Relocating status prose would move
+**unique text**, not deduplicate it.
+
+**(iii) And the three "bloated" rows are the three most COMPRESSED in the
+table.** Words per labelled result:
+
+| | w/label | | | w/label |
+|---|---|---|---|---|
+| `(K-bare)` | **9.1** | | `(K-ind)` | 166.0 |
+| `(K-grid)` | **15.8** | | `(K-wit)` | 138.5 |
+| `(K-out)` | **20.6** | | `(K-σ)` | 76.2 |
+
+Whole table: 12 705 status words / 694 tokens = **18.3**. And the gate's own
+2026-08-19 bump note states the floor: 2 360 words carrying 96 labelled results
+is *"~25 words each, at which point further compression deletes status rather
+than redundancy."* **All three hot cells are already below that floor.** They
+are not padded; they are the rows where the arc has landed the most results,
+written more tersely per result than anything else in the table. The cap has
+been punishing the most productive cells and leaving `(K-ind)` at 166 w/label
+untouched at 21% of its cap.
+
+**So the fix is neither a split nor a relocation: cap DENSITY, not length.** A
+per-label cap at the docstring's own ~25 w/result implements the standard the
+gate already claims, passes all three hot rows, and fires on exactly the rows
+that are genuinely verbose. It needs an absolute ceiling beside it — a density
+cap alone would license `(K-bare)` at 7 350 words — but that ceiling can then be
+generous and trigger a *reader* review rather than a per-landing recompute,
+which is D7.4(b)'s duty-cycle problem dissolved rather than rescheduled. One
+guard to write down: a density cap rewards minting labels, so it is safe only
+because `(L7)` reservations make a label costly; say so where the cap is set.
+
+*Kill condition (superseding the split proposal): the density cap in
+`check-gapmap-cells.py`, and a round of three landing into a hot gap with no
+relocation pass. Decided by: the gate's source and the commit log.*
+
 *Kill condition: zero `(combined)` rows in `gapmap.py --list`, and a round of
 three landing into a hot gap with no relocation pass. Decided by: that command
 and the commit log.*
