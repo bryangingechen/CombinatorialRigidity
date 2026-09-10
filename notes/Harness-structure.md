@@ -768,15 +768,13 @@ All fourteen slices are LANDED, and the round's forward part is now **D6 + D7**
 both rows' caps without loosening either total; then D7.3's loop clause and
 D6.6's reorder, landed together in both coordinator commands.
 
-**Next concrete commit: a shipped script** — D7.8's rule, that the next harness
-commit must be a script and not another section, and this file has now added two
-sections against zero scripts. **Rank them by D7.2, not by size:** a reader that
-cuts a *pre-dispatch* read is worth ~20× the same reader used after the first
-dispatch, which puts **D6.1 `notes/phasenote.py`** first (`--next`, `--status`,
-`--handoff`, `--surfaces`; the phase note is read before the first dispatch and
-its next-task paragraph is a single 5 878-character line, D7.7). Then D6.3(a)
-`ledger.py --reserve-range` (two of this round's coordinator defects are its
-written acceptance tests), D6.4 `blindaxes.py`, D6.5 `check-driver-refs.py`.
+**D6.1 `notes/phasenote.py` is SHIPPED** (D7.8's rule discharged: a script, not
+another section) — and it found the active note's next-task sentence stale on its
+first run. **Next concrete commit: D6.3(a)
+`ledger.py --reserve-range`** (two of this round's coordinator defects are its
+written acceptance tests), then D6.4 `blindaxes.py`, D6.5 `check-driver-refs.py`.
+**Rank by D7.2, not by size:** a reader that cuts a *pre-dispatch* read is worth
+~20× the same reader used afterwards.
 
 **One open user decision, deliberately not taken here:** `(K-grid)`, `(K-bare)`
 and `(K-out)` are all past the point where a table cell is the right container
@@ -1018,7 +1016,7 @@ percent of its cost. That is why the prep was ~55 calls rather than the
 residue is exactly two shapes: a surface that got a GATE but no READER (D6.1),
 and a reading a RULE asks for but no script performs (D6.4).**
 
-### D6.1 — the phase note has a gate and no reader; the gap map has both
+### D6.1 — the phase note has a gate and no reader; the gap map has both  *(SHIPPED 2026-09-10)*
 
 §6's promoted lesson is *cap the cell, **but also ship a READER for it***. It was
 applied to the gap map (`check-gapmap-cells.py` + `gapmap.py`) and **not** to the
@@ -1039,9 +1037,38 @@ touch: the `**Status:**` header, the *Hand-off* next-task slot, *Current state*,
 the ROADMAP Status cell, the dispatch-scoping file's header). The last mode is
 the one that pays twice — F17 is three consecutive landings each leaving a
 *different* surface stale.
-*Kill condition: `notes/phasenote.py --next` shipped and used by one coordinator
-session, or a measurement showing the full-file read is cheaper than the reader.
-Decided by: the file's existence and this section.*
+**SHIPPED 2026-09-10.** `notes/phasenote.py` — `--next`, `--status`, `--handoff`,
+`--section`, `--list`, `--selftest` and `--surfaces`, windowed with
+`--head/--tail/--sentences/--full`. It reimplements nothing: `check-phase-note.py`'s
+`parse()` is the one phase-note parser and `gapmap.py`'s `units()` the one sentence
+splitter, both imported by path, so a fix to either reaches the reader. Lossless
+split verified on every `notes/Phase*.md`; `--list`/`--surfaces` crash-free across
+the same sweep.
+
+**It found a live defect on its first run against the active note, which is the
+argument for it.** `notes/Phase39.md` carried *no* current next-task sentence: the
+only self-naming phrase was **stale** — *"a RE-RANK is the next coordinator act"* —
+and the **same paragraph** twelve units later records that the re-rank happened
+twice. The clause was lost inside a whole-line rewrite at `2c0bdae5`, on a 5 770-character
+physical line, and had been wrong for five commits with every gate green. Repaired
+in the same commit as the script; `--next` now answers in 2 units where the
+containing paragraph is 1 286 words.
+
+Two calibration notes for a later reader. (i) D6.1 measured the next-task paragraph
+at ~580 words; the paragraph *containing* the phrase is 1 286 — D6.1 was measuring
+the longest physical line, which is a different object. (ii) The regex needed the
+corpus's whole vocabulary, not one spelling: `next concrete commit` 13,
+`… step` 3, `… task` 2, `… unit` 1, plus *"the next coordinator act"*. A reader
+that knows one spelling reports a present sentence as missing, which is worse than
+no reader — the list is in the script beside the counts.
+
+*Kill condition (original): `notes/phasenote.py --next` shipped and used by one
+coordinator session, or a measurement showing the full-file read is cheaper than
+the reader. Decided by: the file's existence and this section.* **Half discharged
+— shipped; the "used by one coordinator session" half stands.** Routing landed
+with it: `/coordinate-research`'s setup and `notes/CLAUDE.md`'s phase-note bullet
+now name the reader, because D6.9's lesson cuts both ways and an unrouted reader
+is the `(combined)` row all over again.
 
 ### D6.2 — `RESEARCH-ARC.md` §7 is 48% of the file, and the loop says to cite it, never re-derive it
 

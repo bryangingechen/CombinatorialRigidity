@@ -26,6 +26,12 @@ for *organizing* this directory is here.
   before any commit that edits a phase note — it checks only what
   changed, so legacy entries never block an unrelated commit. Caps,
   calibration and the recompute-before-bump rule are in its docstring.
+  **To READ one, use `python3 notes/phasenote.py N --next`** (also
+  `--status`, `--handoff`, `--section`, `--list`, `--surfaces`): the gate
+  bounds the note's size, the reader gets you one slice of it, and the pair
+  is not redundant — a gate bounds a *measure*, a reader exposes *shape*.
+  `--next` is the one a coordinator wants pre-dispatch; `--surfaces` prints
+  every status surface an F17 sweep must touch, side by side.
 - **`FRICTION.md`** — active friction log: open items, anti-patterns,
   mirrored upstream-eligible lemmas. File format and filing rule
   in the file's own header.

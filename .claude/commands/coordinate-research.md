@@ -38,8 +38,13 @@ benefit — and the rung answer can change what the reading is *for*
 Setup: follow CLAUDE.md reading order, but read **only ROADMAP.md's
 *Status* table plus the active phase's §N** — closed phases' roadmap
 prose is archival detail no coordinator needs pre-dispatch. Read
-`notes/Phase$ARGUMENTS.md`; fix §N in passing if it contradicts the
-Status row (unread, §39 drifted a week and ~20 directions stale,
+`notes/Phase$ARGUMENTS.md` **with its own reader** — `python3
+notes/phasenote.py $ARGUMENTS --next` (the next concrete task, in ~2
+units instead of a 1 300-word paragraph), then `--surfaces` before any
+landing sweep and `--status`/`--handoff` as needed; a full-file pass is
+the fallback, not the default, because the note is read BEFORE the first
+dispatch and therefore costs ~20x (D7.2). Fix §N in passing if it
+contradicts the Status row (unread, §39 drifted a week and ~20 directions stale,
 2026-08-26). Read the phase's **status object** with its own reader —
 `python3 notes/gapmap.py` (`--list` / `--row … --cell status` /
 `--label '(GR-15)'`), never `sed`/`grep`: one row is one
