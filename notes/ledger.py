@@ -253,6 +253,11 @@ OPENER_WIDE = re.compile(r"^>\s*(?:[-*]\s+)?\*\*\(([^)]{1,60})\)"
 # PROVED off it would drop the scope restriction that makes it true.
 VERDICT_HINT = re.compile(r"\b(PROVEN|PROVED|REFUTED|SUPERSEDED|FIRED|MOOT|"
                           r"RETIRED|DISCHARGED|FALSE|CLOSED|OPEN)\b")
+# A label token. `OPENER`'s `([^)]{1,60})` accepts ANY parenthetical, which
+# indexed prose asides as claims with labels like `'legality, placement-free'`
+# and `'2,3'`. A real label is a registry token or a bare sub-item.
+LABELISH = re.compile(r"^(?:[A-ZΛ][A-Za-zΛ0-9]*(?:[-–][A-Za-z0-9_₀-₉'′]+)?"
+                      r"|[ivx]{1,4}|[a-z][₀-₉\d]?|\d{1,2}|[A-Z]\d?|Λ\d[a-z]?)$")
 # A bare sub-clause token: roman numeral, single letter, optional sub/digit.
 SUBITEM = re.compile(r"^(?:[ivx]{1,4}|[a-z][₀-₉\d]?|\d{1,2})$")
 # A label-shaped citation inside prose.
@@ -393,6 +398,9 @@ def parse(path, text, keep_fragments=False):
         if m:
             flush()
             tok, clause = m.group(1), m.group(2).strip("()")
+            if not LABELISH.match(tok):
+                pending = None   # flush() above does NOT clear it
+                continue         # a parenthesised phrase, not a label
             if SUBITEM.match(tok):
                 # a sub-clause of the enclosing label -- see PARSING (2)
                 label, clause = cur_label, tok
@@ -449,8 +457,8 @@ def parse(path, text, keep_fragments=False):
 # with list punctuation or a lowercase continuation; a TAGGED opener is a claim
 # whatever follows, so the filter only applies when there is no tag at all.
 _TERMINAL = re.compile(r"([.!?:;]|\*\*|\)\*|\*|`|\)|\]|>)\s*$")
-_FRAGMENT = re.compile(r"^[,;:)]|^(?:and|or|is|are|was|were|which|that|plus|"
-                       r"together|with|not)\b")
+_FRAGMENT = re.compile(r"^['\u2019]s\b|^[,;:)]|^(?:and|or|is|are|was|were|"
+                       r"which|that|plus|together|with|not)\b")
 
 
 def _list_fragment(r):
@@ -540,14 +548,28 @@ def locate(row):
     try:
         with open(p, encoding="utf-8") as f:
             section = ""
+            cur = ""
             for i, line in enumerate(f, 1):
                 if line.startswith("## "):
                     section = section_key(line[3:].strip())
+                    cur = ""
                     continue
                 m = OPENER.match(line) or OPENER_WIDE.match(line)
                 if not m:
                     continue
-                if m.group(1) != row["label"] or m.group(2).strip("()") != row["clause"]:
+                tok, cl = m.group(1), m.group(2).strip("()")
+                if not LABELISH.match(tok):
+                    continue
+                # Track the inherited label exactly as parse() does. A
+                # sub-clause's source line reads `> **(i)** ...`, so matching
+                # on the row's LABEL alone found nothing -- 34% of rows had no
+                # line pointer at all, every one a sub-clause, which gutted
+                # `--brief`'s whole job of pointing at the source.
+                if SUBITEM.match(tok):
+                    lab, cl = cur, tok
+                else:
+                    lab, cur = tok, tok
+                if lab != row["label"] or cl != row["clause"]:
                     continue
                 if section != row["seckey"]:
                     first = first or i
@@ -663,7 +685,9 @@ def cmd_backlog(rows, args):
     for r in rows:
         for c in (r["cites"].split(";") if r["cites"] else []):
             cited[c] += 1
-    un = [r for r in rows if r["status"] == "UNTAGGED" and not r.get("cite")]
+    stem = stem_headed(rows)
+    un = [r for r in rows if r["status"] == "UNTAGGED" and not r.get("cite")
+          and not (r["clause"] and (r["file"], r["seckey"], r["label"]) in stem)]
     if args.decisive:
         # The subset whose OWN clause already contains a status word somewhere
         # -- the tag simply never recorded it. These are transcription. The
@@ -822,6 +846,38 @@ _HINT_NORM = {"PROVEN": "PROVED", "PROVED": "PROVED", "FALSE": "REFUTED",
               "CLOSED": "PROVED", "FIRED": "", "OPEN": "OPEN"}
 
 
+def head_status(rows):
+    """(file, seckey, label) -> the group head's status, when the head has one.
+
+    A very common shape here is one theorem written as a stem plus numbered
+    conclusions: `(GR-61)`'s head is `[PROVED]` with body "Let `z` be
+    admissible and `S` a chunk. Then", its tag saying "EVERY CLAUSE machine-
+    asserted at 31 047 708 pairs", and its five clauses each carrying no tag.
+    295 untagged rows are that shape -- they are not 295 unknowns, they are
+    the conclusions of theorems whose status is stated one line above.
+
+    This SURFACES the head's status; it never assigns it. Auto-inheritance
+    would invent verdicts: `(BE-43)` has (i) and (ii) PROVED and (iii) reading
+    "GAP (i) is NOT soft".
+    """
+    g = {}
+    for r in rows:
+        if not r["clause"] and r["status"] != "UNTAGGED":
+            k = (r["file"], r["seckey"], r["label"])
+            g.setdefault(k, (r["status"], r["claim"].strip()))
+    return g
+
+
+def stem_headed(rows):
+    """Group keys whose tagged head is a bare HYPOTHESIS STEM, not its own
+    claim -- so the clauses under it are that theorem's conclusions."""
+    out = set()
+    for k, (st, body) in head_status(rows).items():
+        if len(body) < 80 or body.rstrip().endswith(("Then", "Then:", ":")):
+            out.add(k)
+    return out
+
+
 def contested(rows):
     """label -> the disagreeing verdict signals carried by its rows.
 
@@ -857,6 +913,9 @@ def contested(rows):
     return out
 
 
+_HEADS = {}
+
+
 def name(r):
     return f"({r['label']})" + (f"({r['clause']})" if r["clause"] else "")
 
@@ -881,6 +940,11 @@ def show(r, full=False, loc=True):
     if r.get("hint"):
         print(f"    VERDICT WORD IN THE BOLD: {r['hint']}  "
               f"(a hint from the prose, NOT a status this tool assigns)")
+    if r["status"] == "UNTAGGED" and r["clause"]:
+        h = _HEADS.get((r["file"], r["seckey"], r["label"]))
+        if h:
+            print(f"    GROUP HEAD ({r['label']}) is [{h[0]}] — this clause may "
+                  f"be covered by it; read the head, do not assume")
     body = r["claim"] if full else trunc(r["claim"], 220)
     if body:
         print(f"    {body}")
@@ -1161,13 +1225,16 @@ def cmd_selftest(rows, args):
         text = open(p, encoding="utf-8").read()
         cand = sum(1 for l in text.split("\n")
                    if l.startswith(">") and "**(" in l)
-        opened = loose = 0
+        opened = loose = nonlabel = 0
         cur = ""
         for l in text.split("\n"):
             if l.startswith("## "):
                 cur = ""
             m = OPENER.match(l) or OPENER_WIDE.match(l)
             if not m:
+                continue
+            if not LABELISH.match(m.group(1)):
+                nonlabel += 1      # a parenthesised phrase, not a label
                 continue
             opened += 1
             tok = m.group(1)
@@ -1187,8 +1254,9 @@ def cmd_selftest(rows, args):
               f"   {opened:5d} match the opener shape (bold closes after the "
               f"label)\n   {loose:5d} unattached sub-item bullets (no parent "
               f"label in section; dropped)\n   {frag:5d} prose-list fragments "
-              f"(bolded label opening a list, not a claim; dropped)\n"
-              f"   {got:5d} ledger rows")
+              f"/ possessives (bolded label in prose; dropped)\n"
+              f"   {nonlabel:5d} parenthesised phrases that are not labels "
+              f"(dropped)\n   {got:5d} ledger rows")
         if got != opened - loose - frag:
             print(f"   !! {opened - loose - frag - got} opener(s) unaccounted for")
             ok = False
@@ -1299,6 +1367,7 @@ def main(argv):
     args = p.parse_args(argv)
 
     rows = load(rebuild=args.rebuild)
+    _HEADS.update(head_status(rows))
     if args.label:
         return cmd_label(rows, args)
     if args.status:

@@ -911,3 +911,64 @@ prose saying *"this clause is RETIRED, not repaired"* and naming successor
 F12 shape (the correction landed at the citing surface, never at the claim):
 `(GR-108)`, `(BE-139)(iv)`, `(BE-187)(iii)`, plus a weaker fourth at
 `(BE-134)(i)`. Adjudicating them is research, not tagging.
+
+## The taxonomy pass — the 799 are mostly not independent unknowns
+
+A read-only analysis of the judgement-untagged population, dispatched in
+parallel with the tagging pass against a pinned baseline. Its headline finding
+is structural and was not on the plan's map.
+
+**The coordinator's hypothesis was half right, and the labelled half is what
+made that legible.** The spec stated it as a hypothesis *to be tested*, named
+its evidence stratum (the 200 glossed rows, a quarter of the population), and
+named where it expected to be wrong (the 599 no-gloss rows). Both halves
+resolved: **confirmed** on the glossed 200 — 58% are *role* glosses (cap
+disclosure, dispatch verdict, editorial reading, board/price) rather than
+evidence glosses — and **refuted** on the no-gloss 599, where 95% carry maths
+notation and a seeded draw came out ~30 of 34 ordinary mathematical
+assertions. Those need reading; there is no shortcut. Running the cheap
+refutation first is what §7 asks for and it paid.
+
+**The finding that matters is orthogonal to the tag question.** A large
+majority of the 799 are **non-head clauses of a label group whose head is
+already tagged**, and for a big share of those the head is a bare hypothesis
+STEM. `(GR-61)`'s head is `[PROVED]`, its claim body is *"Let `z` be
+admissible and `S` a chunk. Then"*, and its tag reads *"proven; EVERY CLAUSE
+machine-asserted at 31 047 708 pairs"* — while its five clauses each sat in
+the backlog as separate unknowns. That is one theorem counted as six
+unknowns. Measured here at **295 untagged clauses under a tagged stem head**.
+
+**And the tool was already inheriting in one direction only.** `closed()`
+treats a *cited* label as closed if ANY of its clauses is closed, while the
+subject side keeps every clause independently unknown. That asymmetry
+generates much of the 799 — and it was the coordinator's, not the corpus's.
+
+Resolved by **surfacing, never asserting**, the same rule the CONTESTED banner
+and the verdict hints follow. Auto-inheritance would invent verdicts:
+`(BE-43)` has (i) and (ii) `PROVED` and (iii) reading *"GAP (i) is NOT soft"*.
+So: an untagged clause now prints `GROUP HEAD (L) is [PROVED] — this clause
+may be covered by it; read the head, do not assume`, and `--backlog` drops
+stem-headed clauses, which are not independent tagging decisions.
+
+**Four further parser defects, found by the taxonomy's sampling:**
+
+1. **`OPENER` accepted any parenthetical as a label** — `'legality,
+   placement-free'`, `'plane, point-on-plane'`, `'2,3'` were indexed as
+   claims. A `LABELISH` shape test now gates it.
+2. **A possessive after a STRICT opener was parsed as a claim** — `(AV-7)`'s
+   entire claim text was `'s open arm`. The wide opener had a possessive
+   guard; the strict one did not.
+3. **`flush()` does not clear `pending`**, an invariant the original code held
+   only because it always reassigned immediately after. The new `LABELISH`
+   `continue` broke it and emitted the previous claim **twice** — caught by
+   the selftest reporting *more rows than openers*, which is exactly the
+   independent check added after C3.
+4. **34% of rows had NO line pointer** — every one a sub-clause, because
+   `locate()` matched on the row's label while the source line reads
+   `> **(i)**`. `--brief`'s whole job is pointing at the source, so a third of
+   its output was unusable. `locate()` now tracks the inherited label as
+   `parse()` does; the sampled failure rate is 0.
+
+**Worklist effect:** `--backlog` 1 155 → **784**, `--decisive` 356 → **298**,
+with nothing deleted from the index — every filter narrows the WORKLIST, and
+`--label` still returns every row.
