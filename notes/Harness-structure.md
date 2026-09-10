@@ -1058,6 +1058,14 @@ tier headers.*
   hit line is a previous reservation's tail declaration. Every non-zero cell in
   this round's three reservations was a declaration; *"0-hit except the
   declaration"* is the only true form of the claim and a script can say it.
+  **The gap is not hypothetical — it fired on this very round.** The
+  coordinator's ad-hoc loop ran `grep -e "BE-$n" -e "BE$((n-1))"`, **collapsing
+  the label token and the step token into one invocation**, so a hit could not be
+  attributed to the token carrying it; the spec reported three non-zero tokens
+  and direction BCORNER's own (L7) pass found a **fourth** (`BE237`). Nothing was
+  consumed, so the reservation stood — but (L7) says report hits and files
+  *separately*, and **a combined grep structurally cannot**. That is the concrete
+  acceptance test for `--reserve-range`: one row per token, never per range.
 - **(b) Live-tail discovery.** Learning that the (GR-) family's declared tail is
   `(GR-153) / Step G173` took a grep plus two `labels.md` blocks.
   **Suggestion:** `--tail GR` printing the declared tail and the line declaring it.

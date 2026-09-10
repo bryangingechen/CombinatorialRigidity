@@ -4964,3 +4964,68 @@ the cheapest of the three when the token sits inside a **quotation**.
 > picked it up as a would-be new label on the first draft of that row, which
 > is how it was noticed. Registering or qualifying it is a coordinator round,
 > not a dispatch's job.
+
+## Reserved namespace — direction BCORNER (2026-09-10, **CONSUMED IN FULL: eight labels and eight steps, plus two named labels**)
+
+| direction | section | labels | steps | driver |
+|---|---|---|---|---|
+| **BCORNER** | §(K-bare-ext) — **extends**, no new section | **(BE-231)–(BE-238)** | **BE230–BE237** | `w4/bcorner.py` (four modes + `validate`) |
+
+**It opens at exactly the tail BOBLIG declared** (*"THE LIVE TAIL IS NOW
+(BE-231) / Step BE230"*) — at the declaration, not past it. **THE LIVE TAIL IS
+NOW (BE-239) / *Step BE238***, 0-hit verified at this landing. **The three
+earlier strays stay available and unused**: **(BE-163)** / ***Step BE162***
+(BFOUR's), **(BE-179)** / ***Step BE178*** (BSTEER's), and ***Step INS8***
+(BINSERT's).
+
+**0-hit verification, run by the direction as its FIRST action** (clause (L7):
+**every** token enumerated rather than sampled, hits and files reported
+separately), across the tracked tree at the dispatch baseline `c8efb227`:
+
+| token | hits | files | where |
+|---|---|---|---|
+| `BCORNER` / `bcorner` | 0 | 0 | — |
+| `(BE-231)` | 2 | 1 | `notes/pencil/labels.md` |
+| `(BE-232)`–`(BE-237)` | 0 | 0 | — |
+| `(BE-238)` | 1 | 1 | `notes/pencil/labels.md` |
+| `BE230` | 2 | 1 | `notes/pencil/labels.md` |
+| `BE231`–`BE236` | 0 | 0 | — |
+| `BE237` | 2 | 1 | `notes/pencil/labels.md` |
+
+All **four** non-zero tokens sit in BOBLIG's own returned-range declaration
+block. **Declarations, never consumptions** — the fourth consecutive reservation
+on this section to carry a non-zero opening by design.
+
+> **A CORRECTION TO THE DISPATCH SPEC, and it is the (L7) clause firing on the
+> coordinator rather than on a predecessor.** The spec asserted *"every token is
+> 0 files except `BE-231`/`BE230` (1 file) and `BE-238` (1 file)"*. **`BE237` is
+> also 1 file / 2 hits** — the right-hand end of BOBLIG's own (L7) table row.
+> Four non-zero tokens, not three. Nothing is consumed either way, so the
+> reservation stands; the defect is in the **enumeration**, and its cause is
+> mechanical and worth naming because it will recur: the coordinator's ad-hoc
+> range check ran `grep -e "BE-$n" -e "BE$((n-1))"`, **collapsing the label token
+> and the step token into one invocation**, so a hit could not be attributed to
+> the one that carried it. (L7) says report hits and files *separately*; a
+> combined grep cannot. Recorded as the worked example for
+> `notes/Harness-structure.md` **D6.3(a)** (a `--reserve-range` flag), which is
+> the standing fix.
+
+**ONE NAMED LABEL PAIR MINTED INSIDE THE RESERVATION, disclosed under (L6)
+rather than assumed covered by the numeric range.** **`(BE-OBL7)`** =
+`(BE-OBL)` ∧ `Σδ ≤ 7` (the rung-restricted successor, still sufficient for the
+obligation and UNREFUTED) and **`(BE-OBLK)`** = `(BE-OBL)` ∧ side-degree `≥ 2`
+on both sides (the habitat-restricted successor, *not found under cap C*). Both
+verified **0-hit at `c8efb227`** as raw substrings before minting. They follow
+the established `BE-`-prefixed non-numeric pattern of `(BE-E4′)`, `(BE-F_f)`,
+`(BE-G_g)` and `(BE-OBL)`, so they are compliant on mint rather than
+grandfathered, and they are registered here in the commit that mints them, per
+(L1).
+
+**(L6) landing-time bare-token grep, RUN over the whole repository.** Over
+`w4/bcorner.py`, `grep -oE '\([A-Z][0-9]\)'` returns **no matches at all**. Over
+the direction's draft it returns **`(L6)` ×2 and `(L7)` ×4**, every one a
+citation of this registry's own clause names. **Nothing of that shape is
+minted.** *(Self-caught by the direction: an earlier revision of its own §8
+claimed "none", which the grep contradicts — the claim class is "minted", not
+"appears", and the honest form reports the appearances and then says why they
+are not mints.)*

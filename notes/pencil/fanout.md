@@ -1,8 +1,9 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
 **Status: EIGHT fan-outs, FIFTY-FOUR single directions, ONE draft-only parallel direction,
-FIVE concurrent pairs, ONE concurrent round of four and ONE concurrent round of three
-dispatched; 100 LANDED, **NONE IN FLIGHT, NONE DRAFTED**. The round of three (BFOUR 81,
+FIVE concurrent pairs, ONE concurrent round of four and TWO concurrent rounds of three
+dispatched; 101 LANDED, **TWO IN FLIGHT (GISLAND 94, GCOIND 95, the 2026-09-10 round of
+three's other two members), NONE DRAFTED**. The round of three (BFOUR 81,
 BINSERT 82, BSERIES 83) and the **chain of six** single dispatches that answered each
 other in turn (BSTEER 84 → BGTWOA 89, (BE-204)–(BE-217); per-landing detail in the
 sections and in blocks 8/11–13, **not restated here**) are both CLOSED — and
@@ -12,7 +13,12 @@ board's remaining live entries in one round**: option B's last endpoint EXCLUDED
 landed single on the successor that kill left, DECOMPOSING the naked `Π_x` obligation into a
 three-rung ladder in `Σδ` with a hypothesis-free top rung, a **circular** cheapest route and a
 30-tuple residue, and reaching **the first population in the (BE-14) thread inside the
-target's own quantifier** ((BE-225)–(BE-230), `(BE-OBL)`).
+target's own quantifier** ((BE-225)–(BE-230), `(BE-OBL)`). **BCORNER 93 then REFUTED
+`(BE-OBL)` outright** — 62 exhibited certificates on BSIGMA's own landed
+`degenerate_peel`, a population nobody had re-read against the predicate — **without
+touching the obligation**, every refuting row sitting on rung 1 where (BE-225)(i) had
+already made it free; the successor is the demoted `(BE-OBL7)` ∧ `(BE-OBLK)`, worth 4
+residue tuples ((BE-231)–(BE-238), §"BCORNER").
 
 *(**THIS HEADER WAS STALE BY ONE, caught at BEFOURP's landing (2026-09-08).** It read
 *"94 LANDED"* with the chain ending at BRANKV 86: **BLONGARC's landing (`19f5d8b5`)
@@ -16583,3 +16589,97 @@ the row-split trigger and the split stays **DECLINED**. `notes/Phase39.md` held
 at its caps by **relocating** BNONUNI's per-landing clauses to
 `notes/pencil/structure.md` **block 8**, which already owns that thread's
 detail.
+
+---
+
+## BCORNER — ordinal 93, single, `research-direction-opus`, LANDED 2026-09-10
+
+**The question.** Prove or refute **`(BE-OBL)`** (§(K-bare-ext) (BE-228)(i)):
+*at an internal R-node peel in the generic flag regime, `c_i(Π_x) = 2` **and**
+`c_j(Π_x) ≥ 1` ⟹ `ρ_i = 6`* — BOBLIG's named smallest first slice at the naked
+`Π_x` obligation, on which **both halves of S-mark hang** ((BE-177)(iii),
+(BE-223)(iii)).
+
+**Verdict: REFUTED**, by 62 exhibited certificates — a proof, not a cap.
+
+**The witness, and why it was invisible for three directions.** The population
+is **`bsigma.degenerate_peel` over `bsigma.price_jobs()`** — (BE-109)'s own
+construction, **tracked and landed since BSIGMA**, run with **no harness edit
+and no new builder**. What is new is the *quantity read off each row*:
+`(BE-OBL)`'s predicate rather than the obligation's margin. 78 fully-gated rows,
+`(BE-OBL)` failing at **62**; lexicographically first is `K4(5,3,4,3,3,4)` peeled
+at skeleton edge 0, `ρ = (5,5)`, `c(Π_x) = (2,1)`, `δ = (5,5)`, `a = (0,0)`, with
+`ρ₁ = 5`, `c₁(Π_x) = 2`, `Σ_x ⊆ ρ̄₁`, `flag_frame` non-`None`,
+`verify_pencil_witness` and the R-node gate **all asserted**. BSIGMA's own
+`run_price` has printed the deciding `(c₁,c₂)` census `{(2,0): 16, (2,1): 8,
+(2,2): 54}` since that landing, read there against the obligation's margin only.
+**The refutation was already on screen in a committed driver's output; what was
+missing was the re-read** ((BE-231)).
+
+**What the kill costs the target: nothing.** Every refuting row sits at
+`Σδ ∈ {10,11}` — **rung 1**, where (BE-225)(i) had already made the obligation a
+hypothesis-free theorem — and the **obligation itself holds at 62/62**
+((BE-232)). Cap-free arithmetic locates this exactly: `(BE-OBL)` fails at **72**
+of the 324 `a = 0` tuples against the obligation's 30, and at **42** of those the
+obligation holds; 34 of the 72 sit on rung 1 ((BE-236)). So the successor was
+**strictly stronger than its target**, and it was refuted in the surplus.
+
+**The mechanism, and the landed sentence that hid it.** At **62/62** the added
+hypothesis `c_j(Π_x) ≥ 1` is supplied by the **Grassmann floor**
+`c_j ≥ max(0, ρ_j − 4)` — hypothesis-free, no series end, no degree condition
+((BE-234)). (BE-228)(iii) named only the series-end mechanism and concluded the
+restriction has content *"exactly when neither side is a series end at `x`"*;
+that **"exactly" is false in two directions** — it is the **non-firing** side
+that matters, and the Grassmann floor is a second free mechanism — and it is
+**what narrowed the dispatch's quantifier past the refutation** ((BE-233)).
+(BE-227)(i)'s *"equivalent to `dim(ρ̄₁ ∩ ρ̄₂) ≤ slack`"* is likewise
+one-directional; its bar (b) stands *a fortiori* ((BE-237)(iii)).
+
+**The successor, a demotion.** **`(BE-OBL7)`** = `(BE-OBL)` ∧ `Σδ ≤ 7` is still
+sufficient for the obligation and **survives** the witness by construction
+((BE-237)(i)); **`(BE-OBLK)`** (side-degree `≥ 2` on both sides) is **not found
+under cap C**, never *"does not exist"* — `deg₁(x) = 1` is structurally forced by
+`degenerate_peel`, so the witness cannot speak to it ((BE-232)(iii)/(BE-237)(ii)).
+Together worth **4 residue tuples**. Three new bars at (BE-238)(iii).
+
+**Blind axes.** Opened **#2 only** — the branch profile, via the landed
+*parameter* `degenerate_peel(skname, prof, ei, …)`, no harness edit; the 62 kills
+sit at `δ₂ ∈ {5,6}`, unreachable at a uniform-3 profile. **Not** opened: #1
+(`PEELJOBS` skeletons), #3 (`s`/`tries`), #4 (seed count), #5 (the `deg₁(x) = 1`
+fence) — **#5 bounds the result**, and is exactly why `(BE-OBLK)` survives.
+`arith` and `cell` are cap-free.
+
+**The coordinator's prediction: verdict REFUTED, mechanism REFUTED.** The spec
+predicted `(BE-OBL)` **true**, with the obstacle *population, not truth*. All
+three of its sub-claims reproduce and all three are framed wrongly: they price
+`(BE-OBL)` against the *obligation's residue* when it is strictly stronger. **The
+spec's stated tell did not fire and was the wrong tell** — a residue-built tell
+cannot find a refutation living in the over-strength region. **The spec's own
+*"where I expect to be wrong"* clause was vindicated**: it predicted the added
+hypothesis would be *less protective than (BE-228)(ii)'s tuple-space negative
+controls suggest*, and that is precisely what the Grassmann floor turned out to
+mean.
+
+**Coordinator verification at landing** (not taken on attestation): all four
+driver modes re-run — `arith` 0.0 s, `kill` 100.7 s, `degfree` 81.4 s, `cell`
+0.0 s — reproducing 78/62, `Σδ ∈ [10,11]`, the 62/62 Grassmann attribution and
+the 72/42/34 census. The **planted-vs-generic** objection was raised and
+answered by precedent: (BE-109) is a landed `[CONSTRUCTED]` refutation from this
+same construction whose own text says *"no genericity, no draw; the seeds supply
+only the realizability"*, and (BE-104)(i) — the ancestor witness — is called *"an
+internal R-node peel"* with `deg₁(x) = 1` on side 1, which is the shape class
+here. `gapdiff K-bare`: **2 828 → 2 780 words, 0 dropped, 11 added**.
+
+**One prose defect corrected at landing.** `bcorner.py arith` printed
+*"Grassmann-floor-legal: 34 of 42"* and then *"**So** 34 of … 72 sit on rung 1"* —
+two numerically equal but logically distinct 34s joined by a false "So". The
+rung-1 count is not derived from the Grassmann-legal count; the connective is
+fixed in the driver. (The draft's own prose did not carry the error.)
+
+**Reservation.** (BE-231)–(BE-238) / *Steps BE230–BE237*, all consumed, plus the
+named pair `(BE-OBL7)` / `(BE-OBLK)` disclosed under (L6). Live tail is now
+**(BE-239) / *Step BE238***. The direction's (L7) check **corrected the
+coordinator's spec**: `BE237` is a fourth non-zero token (BOBLIG's own
+declaration), missed because the coordinator's ad-hoc range check collapsed the
+label and step tokens into one grep — the worked example for
+`notes/Harness-structure.md` **D6.3(a)**.

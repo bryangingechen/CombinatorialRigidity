@@ -2201,6 +2201,38 @@ disproving `PencilPair K 3 G`**), not cheapness.
    > by (BE-227)(ii) the ONLY shape that can refute it. Decided by: the
    > `(K-bare)` row.*
    >
+   > **SPENT 2026-09-10 (direction BCORNER, ordinal 93) — this entry's kill
+   > condition FIRED on its SECOND branch, verbatim.** *(Recorded here, in §8,
+   > per this section's own rule.)* The shape (BE-227)(ii) called *the only one
+   > that can refute it* was exhibited **62 times**: `ρ = (5,5)`,
+   > `c(Π_x) = (2,1)`, `a = (0,0)`, generic flag regime, R-node peel — on
+   > **`bsigma.degenerate_peel` over `bsigma.price_jobs()`**, a **landed,
+   > tracked** population that no direction had re-read against this predicate
+   > ((BE-231)). **The kill costs the obligation nothing:** every refuting row
+   > sits at `Σδ ∈ {10,11}` — rung 1, where (BE-225)(i) already made the
+   > obligation hypothesis-free — so it lands entirely inside the over-strength
+   > region, and the obligation **holds at 62/62** ((BE-232)/(BE-236)).
+   > **Two clauses of (iv) above are refuted with it:** *"neither half
+   > relaxable"* survives, but *"content exactly at side-degree `≥ 2` on both
+   > sides"* is **FALSE** — it is the **non-firing** side that matters, and the
+   > **Grassmann floor** `c_j ≥ max(0, ρ_j − 4)` supplies the added hypothesis
+   > hypothesis-free at 62/62, a mechanism (BE-228)(iii) never named
+   > ((BE-233)/(BE-234)). **The successor, and it is a DEMOTION:**
+   > **`(BE-OBL7)`** = `(BE-OBL)` ∧ `Σδ ≤ 7` — still sufficient for the
+   > obligation, and it **survives** this witness by construction ((BE-237)(i))
+   > — conjoined with **`(BE-OBLK)`** (side-degree `≥ 2` both sides), *not
+   > found under cap C* rather than refuted, since `deg₁(x) = 1` is structurally
+   > forced by `degenerate_peel` ((BE-232)(iii)/(BE-237)(ii)). Together they are
+   > worth **4 residue tuples**, against the 30 the entry opened with.
+   > *Kill condition for the successor: `(BE-OBL7)` ∧ `(BE-OBLK)` proved, or a
+   > refuting chart point at `Σδ ≤ 7` with side-degree `≥ 2` on both sides —
+   > which needs a builder whose side 1 is not a single branch, and no landed
+   > one produces it. Decided by: the `(K-bare)` row.*
+   > **THREE NEW BARS ((BE-238)(iii)):** no further attempt on `(BE-OBL)` as
+   > stated; no per-side-floor or series-end reading of the added hypothesis
+   > that ignores the Grassmann floor; and no citation of (BE-227)(i)'s
+   > *"equivalent to"* as a biconditional — only `⟸` holds ((BE-237)(iii)).
+   >
    > **THE BAR THIS ADDS, three entries.** *(a)* **No further per-side-floor
    > attempt on the obligation at `a = 0`**: `(PS-f)` for `f ≤ 5` is refuted
    > as *sufficient* by exhaustion, and the two-piece frontier's two cheapest

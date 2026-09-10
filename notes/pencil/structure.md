@@ -1174,7 +1174,8 @@ buy the lines the round's own records needed. Settled history; nothing here is s
 
 **Relocated at the BOBLIG landing** (ordinal 92), because BNONUNI's clause is now
 **one landing back** and its detail is what block 8 exists to hold: the phase note
-keeps the *status* (the next concrete task is `(BE-OBL)`) and points here for the
+keeps the *status* (the next concrete task was `(BE-OBL)`, **REFUTED at BCORNER 93,
+2026-09-10** — the live successor is `(BE-OBL7)` ∧ `(BE-OBLK)`) and points here for the
 `(BE-E4′)` kill's mechanism, census and predecessor audit findings. **Verbatim, no
 re-wording and no re-verdicting** — the disposition blocks 8–15 all got. The one
 clause that is *status* and stayed in the note: **(BE-14) needs both halves of
