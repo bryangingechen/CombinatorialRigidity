@@ -1665,6 +1665,110 @@ struck — decided by §9.3.*
   saturation. *Neither filter has a kill condition: they are negatives. Their
   status is decided by the `(K-out)` and `(K-grid)` gap-map rows.*
 
+**RE-RANKED 2026-09-10 (second) — THE THIRTEENTH STRATEGY-ONLY PASS. THE TWELFTH'S RANKS
+1–4 ARE ALL SPENT IN ONE DAY** — GEXPAND 96 (rank 1, refuted by a proof), GFORCE 97 (rank 2,
+refuted at its first slice **and** striking rank 3 in passing), GSIMUL 98 (rank 4, split) —
+**leaving ranks 5–6 and four named successors.** Coordinator-authored at a round close, **no
+dispatch spent, no label minted.** Every entry re-derived from its **owning** step; and this
+pass adds the correction the last one earned: *a section's own summary bullet is a summary
+surface too* — the twelfth pass quoted a **gap-map row unit** while claiming to have read
+§(K-ind), and §(K-ind)'s own bullet over-states its own body.
+
+**THE ROUND HANDED THE BOARD A TECHNIQUE, AND IT SHOULD DRIVE THE RANKING.** Both of the
+round's *proofs* came from one move, found independently by two directions: **(GR-25)
+applied at a CHOSEN hub set** — GEXPAND at a hub set's **complement** (the excess-boundary
+cap `exc_B ≤ 2∂(B) − 1`, (GR-170)), GSIMUL at a circuit's **own** hub set (`r − s ≥ 7`,
+(GR-190)). The corpus had held (GR-25) for weeks as a `2^{n_hub}` habitat oracle and
+**neither reading had been taken.** So the standing instruction for this board: **before
+ranking a sweep, ask what (GR-25) says at the entry's distinguished subset and at its
+complement.** Entries where that move is available are ranked up accordingly.
+
+1. **NON-ADDITIVE MOVES — DOES THE `G°` INDUCTION DIE COMPLETELY?** *(new — GEXPAND's own
+   successor, and the round's highest-impact item.)* Owner: §(K-grid) *Steps G189–G196*,
+   (GR-171)/(GR-176); §(K-ind) (I2)/(I4). GEXPAND proved the `D = 0` stratum admits **no
+   ADDITIVE zero-net-excess expansion move at any gadget size**. The gap it names is moves
+   that are not purely additive — those **deleting a parent hub** while adding others — and
+   `D > 0`. **GLEAF's question: decisive BOTH ways, and that is why it is rank 1.** A
+   negative closes §(K-ind)'s **(I4)** gate *by mathematics* and retires the induction route
+   outright — itself a result, and the strongest form of the phase's standing
+   disproof-risk-reduction. A positive **revives an induction internal to `(G°, ℓ, bits)`**,
+   which is the only route on this board whose success CLOSES (GR-15) on the stratum.
+   **And the technique above is aimed straight at it:** the additive case died to (GR-25)
+   at the new hubs' complement, so the first question is what that same cut says when the
+   hub set **shrinks**. *First slice:* extend `move_complement_slack` to moves with
+   `Δn < 0` at some hubs, and re-run the `k ≤ 3` enumeration with deletions enabled.
+   *Kill condition: a non-additive stratum-preserving move exhibited, or the complement cut
+   extended to cover deletions. Decided by: the `(K-ind)` row (u2/u5) and `(K-grid)`
+   close-it u9, where `G°`-induction now sits in the dead-routes list.*
+2. **THE PROPAGATION AT `Λ ≠ ∅` — GFORCE's OWN SHARPEST BLIND AXIS.** *(new.)* Owner:
+   §(K-grid) *Steps G197–G204*. GFORCE's closure is sound and certifies 4/18 separators,
+   14/18 with handle (c) — and it names its sharpest cap itself: **`Λ ≠ ∅` is not measured
+   at all.** **The data now exists**: GISLAND swept that stratum **complete** at
+   `n_hub ≤ 6` ((GR-157), 166 088 shapes, 0 misses) two landings earlier, so this is a
+   **cheap decisive move of the BNONUNI kind** — an un-fencing against a landed population,
+   not a new sweep. **GLEAF's question: SUFFICIENT** where it certifies, since the closure
+   is a `dim Z = 0` proof needing no certificate. **Criterion 2 (falsification) also
+   selects it:** the instrument is one landing old, and §4's standing rule is that the
+   corrective mechanism is the next pass. *Kill condition: the closure's coverage at
+   `Λ ≠ ∅` measured — any answer settles it — or the closure shown unsound there, which
+   would retract (GR-177). Decided by: the `(K-grid)` row, close-it u6 target (ii).*
+3. **THE (c)-STRENGTHENED CLOSURE'S 14/18 RESIDUAL.** *(new — GFORCE's successor.)* Owner:
+   §(K-grid) *Steps G202–G203*, (GR-183)/(GR-184). The residual is **structurally
+   characterized** — 567 + 41 = 608/608, none left over — which is what makes it attackable
+   rather than merely open. **Ranked below rank 2 for a reason the round supplied:** the
+   closure is **INCOMPARABLE** with (GR-9) and *below* it on the pool (7 767 vs 10 203), so
+   even closing the residual does not obviously beat the tool the arc already has. **GLEAF's
+   question: SUFFICIENT, but its value is capped by that incomparability** — say so in any
+   spec. *Kill condition: the (GR-184) dichotomy shown unavoidable — which closes the
+   propagation line by mathematics — or a fifth handle exhibited. Decided by: the
+   `(K-grid)` row, close-it u6 target (ii).*
+4. **GCOIND's MATRIX-VALUED CORANK STATISTIC.** *(new — GCOIND's cheapest successor; its
+   other one, the tree-triple's sufficiency for `κ < ∞`, is **STRUCK** by GFORCE.)* Owner:
+   §(K-grid) *Steps G181–G188*, (GR-167). The counting/closure class is refuted at four
+   separator blocks by exhibited witness pairs; the open question is whether an
+   **ordered or matrix-valued** corank statistic survives them. **GLEAF's question: a
+   REDUCTION, not a closure.** Cheap, and its instrument is landed. *Kill condition: such a
+   statistic exhibited and shown to separate all nine blocks, or the four witness pairs
+   shown to defeat every ordered refinement. Decided by: the `(K-grid)` row, close-it u6
+   target (iii).*
+5. **THE ISLAND AT `n_hub = 10`, WHERE (GR-190)'s BOUND EXPIRES.** *(new — GSIMUL's
+   successor.)* Owner: §(K-grid) *Steps G210–G212*. Two sub-questions: an all-`Λ` binding
+   circuit at `n_hub = 10` (the bound expires exactly there), and whether the four
+   `Σ_γ(ℓ−1) = 2` profiles that turn *feasible* at `n = 8` ever **occur**. **GLEAF's
+   question: NECESSARY only** — it advances route-ledger entry 3, it does not close
+   (GR-15). Ranked here because it is genuinely open and cheaply framed, not because it
+   moves the target. *Kill condition: an all-`Λ` circuit exhibited at `n_hub = 10`, or a
+   `Σ_γ(ℓ−1) = 2` island circuit shown to OCCUR at `n_hub = 8`. Decided by: the `(K-grid)`
+   row, status u12/u77.*
+6.–7. **THE TWELFTH PASS'S RANKS 5 AND 6, UNCHANGED AND NOT RE-DERIVED** — the
+   `4T + 3Q ≥ 12` habitat question and the `P¹`/splitting-type reading of (GR-7)(ii), with
+   their kill conditions and deciding rows as written below. Nothing this round touched
+   either. **Both are now candidates for the rank-1 technique**: ask what (GR-25) says at
+   the distinguished subset each names.
+
+**THE CROSS-LANE NOTE, because this board is not the phase.** §8 ranks the **(GR-15)/`hK`**
+lane. The **(BE-14)/`hbareSplit`** lane's own next item is **`(BE-OBL7)` ∧ `(BE-OBLK)`** —
+still sufficient for the `Π_x` obligation and unrefuted, worth **4 residue tuples**, and
+needing **a builder whose side 1 is not a single branch** (a new builder, not a parameter).
+By the standing *distance to the phase target* criterion `hbareSplit` outranks `hK`, so a
+coordinator picking across lanes should weigh it against ranks 1–2 here, not below rank 5.
+
+**THE BARS THIS PASS ADDS — three, all mathematical.** *(g)* **No further additive
+zero-net-excess expansion move** at `D = 0`: proven impossible at every gadget size
+((GR-171)), and the `k ≤ 3` enumeration is a check of that proof, not its basis.
+*(h)* **No treatment of the (GR-16)(a)/(b) propagation as stronger than (GR-9)** — they are
+**incomparable**, 2 436 witnesses one way and 4 the other ((GR-180)). *(i)* **No use of
+(GR-165)'s unconstrained tree-triple as sufficient for `κ < ∞`** — necessary only, and
+refuted as sufficient at 621 of 625 blocks ((GR-182)).
+
+**AND THE LESSON, one level above the entries — it is the twelfth pass's own, now with a
+second confirmation.** That pass warned: *re-derive an entry's stated mechanism before its
+stated cost.* All three entries spent this round had a **wrong stated mechanism under a
+verdict that was sometimes right** — rank 1's was a **tautology**, rank 2's mislocated why
+handle (b) fires, rank 4's named a real theorem that fires zero times. **Six for six across
+the day.** An entry's *reason* is written before the work and never re-checked when the
+entry is picked; on this board, treat it as the least reliable field.
+
 **RE-RANKED 2026-09-10 — THE TWELFTH STRATEGY-ONLY PASS. THE ELEVENTH'S RANKS 1 AND 2
 ARE BOTH SPENT** (GISLAND 94, GCOIND 95), **ranks 3–6 untouched**, and the round returned
 **two named successors** that did not exist when the eleventh pass was written.
