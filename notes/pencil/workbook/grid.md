@@ -8168,7 +8168,7 @@ interiors whose **minority dart is the exit**; (GR-65)(ii) will say
 dart. Where a chunk's exit and the matching coincide, the two demands
 collide — and that is the *only* place they interact.
 
-> **(GR-64)** *(clauses (i)–(v) proven; (i) asserted at **209 432 030**
+> **(GR-64)** `[PROVED]` *(clauses (i)–(v) proven; (i) asserted at **209 432 030**
 > (shape, admissible `z`, matching, proper chunk) instances with
 > **3 449 374** at equality, the (iv) ceiling **attained** (per-chunk max
 > exactly **2**) over the whole inventory, and every one of the **1250**

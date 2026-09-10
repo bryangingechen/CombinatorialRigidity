@@ -182,7 +182,7 @@ BGPROP's, verbatim — `V`, `M°`, `s`, `r`, `Γ`, `Γ_Π(p)`, `Ω`, `Ω^⊥`, `
 > Asserted on the landed population: **9 of 99** configurations have
 > `c_j ∼ y`, and the containment holds at **0** of their points.
 
-> **(BE-190)(iii)** *(the ingredient, checked off the graphs)* The collapse is
+> **(BE-190)(iii)** `[ASSERTED]` *(the ingredient, checked off the graphs)* The collapse is
 > the elementary fact that three collinear points give **one** Plücker line:
 > asserted at **60/60** draws with `q_c` planted on `q_a ∨ q_b`
 > (`dim span = 1`), against a non-collinear control at **60/60**

@@ -172,7 +172,7 @@ of `L`. It is BE-22(v)'s regime **(β)**. The complement is *Step BE96*.
 > **degeneration bound is not sharp there** and the row is settled by the
 > measurement, not by the law.
 
-> **(BE-96)(iii)** *(the abstract half — **the cap is ATTAINED**, 400/400)*
+> **(BE-96)(iii)** `[ASSERTED]` *(the abstract half — **the cap is ATTAINED**, 400/400)*
 > The peel population can only report the pairs pieces happen to realize, so
 > the law's own question is asked off the graphs (`bunif.py abst`): for random
 > `V₁, V₂ ⊆ Λ²K⁴` in the standard flag frame — generic, block-adapted, or

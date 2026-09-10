@@ -601,7 +601,7 @@ BLONGARC did not.
 
 ### Step BE212 — (BE-213): the 6 400-tuple space omits the Grassmann floor — 2 800 unrealizable tuples — and the frontier does NOT move
 
-> **(BE-213)(i)** *(**VERIFIED AT SOURCE**, then **MEASURED**)
+> **(BE-213)(i)** `[MEASURED]` *(**VERIFIED AT SOURCE**, then **MEASURED**)
 > `barch.all_tuples`'s own docstring says it enforces `c_i ≤ min(dim Π_x,
 > ρ_i)`, and its body does exactly that — the **upper** cap only. It does
 > **not** enforce (BE-211)(i)'s floor `c_i ≥ ρ_i − 4`. Consequence:

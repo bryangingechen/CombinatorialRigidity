@@ -415,7 +415,7 @@ on.
 > `≤ 2`, (a)–(e) are exhaustive. **So (BE-14) is equivalent to the strengthened
 > 2-cut composition lemma (e)**, everything else being in hand.
 
-> **(BE-23)(i)** *(a named construction; 5 824 measured theorems)* The
+> **(BE-23)(i)** `[MEASURED]` *(a named construction; 5 824 measured theorems)* The
 > **hub-plane construction**: choose a plane `π_v` per hub and solve, per vertex
 > `w`, the system `{p_w ∈ π_v : v a hub of closedNbhd(w)}`. With **generic**
 > planes it is feasible exactly when the **hub load** `h(G) ≤ 3` (four generic

@@ -326,7 +326,7 @@ binds.**
 > mechanism, so no independent witness is claimed for it. Exactly **three of
 > four** cells force, and the two mechanisms are all there are.
 
-> **(BE-145)(iii)** *(the consequence for (S2)'s first half)* **PROVED.**
+> **(BE-145)(iii)** `[PROVED]` *(the consequence for (S2)'s first half)* **PROVED.**
 > (BE-57)(iv)'s hedge — *"handled by (BE-55)(iii) only when the forced
 > equality is of the boundary planes"* — is answered in both directions:
 > the regime has exactly two forcing mechanisms ((ii)), and (BE-144) covers
