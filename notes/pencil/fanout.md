@@ -17380,3 +17380,99 @@ clean at `b742ec2d` **and re-checked at `e03995d8`** when `HEAD` advanced under
 the run — `RESEARCH-ARC.md` §2's fourth hazard, firing as designed on the first
 landing of a live round, and answered by the direction reporting its baseline
 sha unprompted. Live tail is now **(GR-209) / *Step G229***.
+
+---
+
+## GNONADD — ordinal 100, concurrent round of three, `research-direction-opus`, LANDED 2026-09-11
+
+**The question.** §8's **rank 1** (thirteenth pass), the round's decisive-both-ways
+entry: does a **non-additive** move — one deleting a parent hub while adding
+others — relate two `D = 0` class shapes, or does (GR-170)'s complement cut
+extend to deletions so the `G°` induction dies completely?
+
+**Verdict: POSITIVE. The move EXISTS, and the coordinator prediction (negative)
+is refuted — as is a landed `[PROVED]` clause.** The move is the **Y→Δ**:
+`θ(4,4,4) → K₄(3⁶)`, one parent hub deleted and three added, `Δn = +2`,
+`ΔM = +3`, `ΔΣℓ = +6`, excess 6 at both ends — **both endpoints certified by the
+canonical oracle `gridcol.class_shape`** ((GR-195)). A second witness, the prism
+`C₃×K₂ → n_hub 4`, has **four** untouched hubs, so the move is local in the
+induction's sense rather than an `n_hub = 2` degeneracy. An unbroken **six-step
+chain** runs `K₄(3⁶) → n_hub = 16` ((GR-197)).
+
+**The complement cut does not extend — a PROOF, not a failed search.** At the
+changed region, (GR-170) reads exactly `Σ_{β∋v} ℓ_β ≤ 11`, which **is**
+§(K-grid) (GR-173) — an inequality the parent already satisfies. So the cut is
+*automatically satisfied* at every Y→Δ, never violated: 194 325 instances where
+its hypotheses hold, **0 violations, min slack 0** ((GR-196)). The asymmetry is
+that an additive move must *buy* boundary (one dart per split, costing 2 excess)
+while a deletion gets `∂ = 3` free.
+
+**The regularity, which is the successor.** Every class shape at `n_hub = 4` and
+`n_hub = 6` is Y-reducible — **80/80** and **7 892/7 892**, `Λ` unrestricted,
+parent-gated by the canonical oracle; at `n_hub = 8`, **16 969 of 16 969** of the
+shapes carrying a cut-3 hub set at all ((GR-198)).
+
+**Three landed clauses fell, all rescoped IN PLACE (L4).**
+
+- **(GR-176)** — a `[PROVED]` clause — is **FALSE as stated in both halves**.
+  *Between hub multigraphs:* it rests on (GR-171), which is **additive-scoped in
+  its own statement**. *Within one `G°`:* it rests on §(K-ind) (I4), which by its
+  own text is an antichain for the **componentwise (refinement) order**, *"since
+  all its members have the same coordinate sum"* — a statement about the split
+  move (I2), not about moves in general.
+- **(GR-172)**'s bolded *"`Δn = 2` is impossible"* is false read standalone: the
+  witness is a `Δn = 2` move. Its proof runs through (GR-169) sentence 2 and
+  (GR-170), both additive-scoped. Qualifier inserted.
+- **(GR-174)(i)/(ii)**'s *"0 admit any reduction"* needed the word **additively**;
+  the figure stands, the search (`gexpand.reductions`) cannot express a deletion.
+- Plus **(GR-175)**'s *"for every `m ≥ 4`"* → **`m ≥ 6`** (six pairwise
+  non-adjacent length-3 branches need ≥ 12 hubs), and `gexpand.py`'s **module
+  docstring**, which carried the originating error — *"its new triangle is a
+  circuit of total length 6 < 7"*, wrong because a hub-deleting move **re-lengths
+  the branches at the deleted hub**, so the triangle can take 7–9 (the witness's
+  is 9).
+
+**AND YET THE INDUCTION IS STILL NOT REVIVED — the entry's promise is withdrawn.**
+(GR-175)'s infinite `CL_m = C_m × K₂` family is **triangle-free for every `m ≥ 6`**
+(proof: three mutually adjacent vertices force `m = 3` or a contradiction) and
+carries no cut-3 hub set at `|A| ∈ {3,5}` for `m = 6..11` (measured), so it
+reduces under **neither** family. Separately — and this is the obligation the
+board never named — even a move family reducing *every* shape would still have to
+**transport an admissible colouring with generic `dim Z₊ = dim Z₋ = 0`**, and a
+move between *shapes* does not. Two gates; the positive clears part of the first
+((GR-200)). **`(GR-15)` is untouched.**
+
+**The architectural blind axis, exhibited rather than asserted** ((GR-199)):
+`gexpand.reduction_frames` rejects Y-reductions by **two independent structural
+guards** — it iterates `combinations(range(n), 2*k)` so `|W'|` is even while a
+contracted triangle has `|A| = 3`, and it rejects any hub of `W'` whose outward-dart
+count is not 0 or 2 while each triangle hub has exactly 1. The fence was in the
+**move model**, not in a parameter, so un-fencing cost a new driver — the shape
+the spec named in advance, and the price it warned might be higher than BNONUNI's.
+
+### Coordinator verification at landing — not taken on attestation
+
+The central claim is a witness, so it was checked **independently of the driver
+first**: `gridcol.class_shape` called directly on `θ(4,4,4)` and `K₄(3⁶)` — both
+**PASS**, with `Δn = +2`, `ΔM = +3`, `ΔΣℓ = +6` and excess 6 both ends, matching
+(GR-169)'s identity. Then every mode re-run at full cap: `--wit`, `--cut`
+(194 325 / 0 violations / min slack 0, and the 3 200 `n_hub = 4` instances where
+`|V∖B| = 1` correctly excluded as (GR-173)'s own `n_hub = 2` exception),
+`--blind`, `--chain`, `--ladder` (0 cut-3 sets at every `CL_m`, `m = 6..11`), and
+`--contract` (80/80, 7 892/7 892, 16 969/16 969, 420 s). The `(I4)` half of the
+(GR-176) refutation was checked at **§(K-ind)'s own text**, not at the gap-map
+row that had propagated the unqualified reading.
+
+**One coordinator suspicion raised and DISMISSED on evidence.** `--chain` prints
+`class_shape: n/a (M = 15)` above `n_hub = 8` while `--ladder` calls the same
+oracle successfully at `CL_11` (`n_hub = 22`, `M = 33`), which looked like an
+arbitrary cutoff under-selling the result. It is not: `class_shape` on the
+chain's `n_hub = 10` member did not return within ~15 minutes, against 34 s for
+all six `CL_m`. The cutoff is **runtime-justified** — `no_rigid_branch_union` is
+exponential in the branch-union structure and `CL_m`'s short-circuits early. The
+`n/a (M = …)` label attributes it to `M`, which is not the operative cause; the
+draft's own prose gets the disclosure right.
+
+**Reservation.** (GR-193)–(GR-200) / *Steps G213–G220*, all consumed; (L7) clean
+except the declaration at `b742ec2d`, re-checked by the direction at `e03995d8`.
+Live tail **(GR-209) / *Step G229***.

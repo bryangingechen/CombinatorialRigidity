@@ -1683,23 +1683,40 @@ cap `exc_B ≤ 2∂(B) − 1`, (GR-170)), GSIMUL at a circuit's **own** hub set 
 ranking a sweep, ask what (GR-25) says at the entry's distinguished subset and at its
 complement.** Entries where that move is available are ranked up accordingly.
 
-1. **NON-ADDITIVE MOVES — DOES THE `G°` INDUCTION DIE COMPLETELY?** *(new — GEXPAND's own
-   successor, and the round's highest-impact item.)* Owner: §(K-grid) *Steps G189–G196*,
-   (GR-171)/(GR-176); §(K-ind) (I2)/(I4). GEXPAND proved the `D = 0` stratum admits **no
-   ADDITIVE zero-net-excess expansion move at any gadget size**. The gap it names is moves
-   that are not purely additive — those **deleting a parent hub** while adding others — and
-   `D > 0`. **GLEAF's question: decisive BOTH ways, and that is why it is rank 1.** A
-   negative closes §(K-ind)'s **(I4)** gate *by mathematics* and retires the induction route
-   outright — itself a result, and the strongest form of the phase's standing
-   disproof-risk-reduction. A positive **revives an induction internal to `(G°, ℓ, bits)`**,
-   which is the only route on this board whose success CLOSES (GR-15) on the stratum.
-   **And the technique above is aimed straight at it:** the additive case died to (GR-25)
-   at the new hubs' complement, so the first question is what that same cut says when the
-   hub set **shrinks**. *First slice:* extend `move_complement_slack` to moves with
-   `Δn < 0` at some hubs, and re-run the `k ≤ 3` enumeration with deletions enabled.
-   *Kill condition: a non-additive stratum-preserving move exhibited, or the complement cut
-   extended to cover deletions. Decided by: the `(K-ind)` row (u2/u5) and `(K-grid)`
-   close-it u9, where `G°`-induction now sits in the dead-routes list.*
+1. **NON-ADDITIVE MOVES — ANSWERED **POSITIVE** (GNONADD 100, 2026-09-11), AND THE
+   ENTRY'S KILL CONDITION IS MET.** Owner: §(K-grid) *Steps G213–G220*,
+   (GR-193)–(GR-200). A non-additive stratum-preserving move **exists** at `D = 0`: the
+   **Y→Δ**, exhibited at `θ(4,4,4) → K₄(3⁶)` and at the prism `6 → 4` (both ends through
+   the canonical `gridcol.class_shape`), and along an unbroken **six-step chain** to
+   `n_hub = 16`. **Every** class shape at `n_hub ∈ {4, 6}` is Y-reducible (80/80 and
+   7 892/7 892, `Λ` unrestricted), and **16 969/16 969** of the cut-3-triangle-carrying
+   shapes at `n_hub = 8`. The complement cut does **NOT** extend to deletions — a
+   **proof**, not a failed search: at the changed region (GR-170) reads exactly
+   `Σ_{β∋v} ℓ_β ≤ 11`, which **is** (GR-173), an inequality the parent already satisfies
+   ((GR-196)). **Three landed clauses fell with it** — (GR-176) FALSE as stated in both
+   halves, (GR-172)'s bold false read standalone, (GR-174)'s "0 admit any reduction"
+   needing *additively* — all rescoped in place.
+   **BUT THE POSITIVE DOES NOT REVIVE THE INDUCTION, and this entry's promise that it
+   would is withdrawn.** (GR-175)'s infinite `CL_m` family is **triangle-free for every
+   `m ≥ 6`** (proof) with no cut-3 hub set at `|A| ∈ {3,5}` for `m = 6..11` (measured), so
+   it reduces under **neither** family ((GR-200)); and even total reducibility would still
+   have to **transport an admissible colouring**, which a move between *shapes* does not
+   do. So `(GR-15)` is **untouched**.
+   *Kill condition: SPENT — the move is exhibited. The successor is (GR-198)'s
+   regularity: is EVERY cut-3-triangle-carrying class shape Y-reducible (100 % at three
+   levels), and does any move family reach `CL_m`? Decided by: the `(K-grid)` row,
+   close-it u9, where `G°`-induction is now BLOCKED rather than dead.*
+
+   > **THE BAR THIS ADDS.** *(j)* **No further reading of `G°`-induction as dead for want
+   > of a move** — it is blocked by (GR-200), and the two obligations (a move family
+   > reaching every shape; a colouring transport) are **separate gates**. And the process
+   > lesson, which is §7's mechanism rule arriving from the other side: this entry's
+   > stated first slice — *"extend `move_complement_slack` to moves with `Δn < 0`"* — was
+   > aimed at the wrong region **twice over**, since the witness has `Δn = +2` and
+   > `move_complement_slack` turns out to be *satisfied* there, not violated. The move
+   > model itself was the fence: `reduction_frames` rejects Y-reductions by **two**
+   > independent structural guards (`|W'|` even; outward-dart count 0 or 2), so un-fencing
+   > cost a new driver rather than a parameter ((GR-199)).
 2. **THE PROPAGATION AT `Λ ≠ ∅` — SPENT (GLAMPROP 99, 2026-09-11), AND THIS ENTRY'S
    PREMISE WAS FALSE.** Owner: §(K-grid) *Steps G221–G228*, (GR-201)–(GR-208). The entry
    was written on GFORCE's disclosure that *"`Λ ≠ ∅` is not measured at all"*, and that

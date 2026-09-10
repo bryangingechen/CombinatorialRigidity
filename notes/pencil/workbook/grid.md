@@ -18640,7 +18640,7 @@ an expansion theorem by one.
 
 > **(GR-172)** `[PROVED]` *(the `k = 1` sub-case, given its own row because it
 > alone kills the spec's falsifiable tell, and because it needs LESS than
-> (GR-171))* **`Δn = 2` is impossible.** `k = 1` forces `3 − s` genuinely-new
+> (GR-171))* **`Δn = 2` is impossible FOR AN ADDITIVE EXPANSION MOVE.** *(Qualifier inserted 2026-09-11, GNONADD: read standalone the sentence is FALSE — (GR-195)(i)'s Y→Δ witness is a `Δn = 2` move. The proof below runs through (GR-169) sentence 2 and (GR-170), both additive-scoped.)* `k = 1` forces `3 − s` genuinely-new
 > branches of total length `6` with each `ℓ ≤ 5`, so `3 − s ≥ 2`, i.e. `s ≤ 1`.
 > Then `s = e_mix + 2|E_ss| ≤ 1` gives `E_ss = ∅`, and (GR-170) at `B` reads
 > `0 ≥ 1` (the `B = ∅` branch is `s = 2`, excluded). In particular the classical
@@ -18671,9 +18671,9 @@ place where (GR-25)(i)'s `|W'| ≥ 2` hypothesis bites, and the measurement find
 
 > **(GR-174)** `[MEASURED]` `notes/scripts/w4/gexpand.py --reach` / `--lam8`
 > **(i)** Of `aglu._pool8()`'s exact **39 689** `Λ = ∅` `D = 0` class shapes at
-> `n_hub = 8`, **0** admit any reduction to a smaller class shape (search over
+> `n_hub = 8`, **0** admit any **ADDITIVE** reduction to a smaller class shape *(qualifier added 2026-09-11, GNONADD: the search is `gexpand.reductions`, which (GR-199) shows cannot express a deletion; (GR-198) re-measures the same population with deletions and finds 16 969 of the 16 969 cut-3-triangle-carrying shapes reducible)* (search over
 > `k = 1, 2, 3`, i.e. parents at `n_hub = 6, 4, 2`; `kmin = 1`, so the measurement
-> does **not** presuppose (GR-172)). **(ii)** The same at `|Λ| = 1`, `n_hub = 8`:
+> does **not** presuppose (GR-172)). **(ii)** The same (additively) at `|Λ| = 1`, `n_hub = 8`:
 > **54 329** isomorphism-class shapes pass the (GR-25) gate, built over
 > `gridcol.cubic_iso_classes(8)` (20 classes) × `cflank.length_tuples(12, 30,
 > lamcap=1)` (195 624 labelled tuples with `|Λ| ≥ 1`) quotiented by
@@ -18694,7 +18694,7 @@ answer in (i)/(ii) is a measurement, not a silent failure.
 A "no move exists" verdict is worthless if the stratum is finite. It is not.
 
 > **(GR-175)** `[PROVED]` *(and `[MEASURED]` `gexpand.py --irred` at
-> `m = 6..11`, i.e. `n_hub = 12..22`)* For every `m ≥ 4`, the circular ladder
+> `m = 6..11`, i.e. `n_hub = 12..22`)* For every `m ≥ 6` *(corrected from `m ≥ 4` on 2026-09-11, GNONADD: six pairwise non-adjacent length-3 branches need `≥ 12` hubs, so the construction is EMPTY at `m = 4, 5`; the infinitude claim is unaffected)*, the circular ladder
 > `CL_m = C_m × K₂` on `n_hub = 2m` hubs and `M = 3m` branches, with six rungs of
 > length `3` (pairwise non-adjacent) and every other branch of length `2`, is a
 > `D = 0` tight class shape: `Σℓ = 6m + 6 = 6(M − n + 1)` and `Σ(ℓ − 2) = 6`.
@@ -18748,15 +18748,20 @@ coordinator's four-branch digon move, and it fails by exactly one unit.
 > hub multigraph `G°` is a finite antichain and that **no arm of
 > `pencil_reduction`** changes `G°`. Its own *What would change this* **(i)** keeps
 > open *"a generating move, not on `pencil_reduction`'s list, relating two class
-> members"*. On the `D = 0` stratum, (GR-171) closes that clause: **no such move
-> exists at all** — not "none is on the list", but "none exists", by (GR-25)(i) and
-> (SD-6). Combining: the class's move relation is empty **within** one `G°`
-> (§(K-ind) (I4)) and **between** hub multigraphs ((GR-171)). There is nothing to
-> induct along.
+> members"*. On the `D = 0` stratum (GR-171) closes that clause **for ADDITIVE
+> EXPANSION MOVES**: none exists at all, by (GR-25)(i) and (SD-6). It does **NOT**
+> close it for hub-DELETING moves — **CORRECTED 2026-09-11 by GNONADD, this clause
+> was FALSE as stated in both halves.** *Between hub multigraphs:* (GR-171) is
+> additive-scoped in its own statement, and (GR-195)/(GR-197) exhibit non-additive
+> moves (Y→Δ), with (GR-196) proving the complement cut cannot be extended to reach
+> them. *Within one `G°`:* §(K-ind) (I4) proves an antichain for the **componentwise
+> (refinement) order** — its own text says *"since all its members have the same
+> coordinate sum"*, which is the split move (I2) — not that no move whatever relates
+> two members over one `G°`. What still blocks the induction is therefore **not the
+> absence of a move** but (GR-200): (GR-175)'s infinite `CL_m` family is triangle-free
+> and irreducible under both move families.
 
-*Scope, stated so it is not over-read.* (GR-171) is proven at `D = 0`. §(K-ind)
-(I4) is general. So the combination is a theorem on the `D = 0` stratum and a
-strong indication elsewhere; blind axis 4 (§5).
+*Scope — REWRITTEN 2026-09-11 (GNONADD).* (GR-171) is proven at `D = 0` and is **additive-only**. §(K-ind) (I4) is general but is an antichain for the refinement order only. So the combination is a theorem about **additive** moves on the `D = 0` stratum and says nothing about hub-deleting ones; blind axis 4 (§5).
 
 ## §(K-grid) — continuation (direction GLAMPROP, ordinal 99, 2026-09-11): §8's rank 2 answered, and its PREMISE was false — `Λ ≠ ∅` was never an unmeasured stratum but an unREPORTED one (**604 of 907** census shapes, **7 248 of 10 828** swept blocks), so the coverage question is a partition of GFORCE's own landed run and needs no new population; (GR-177) is **EXTENDED, not retracted** — **0** unsound certificates and **9 664/9 664** exact-ℚ model identities on the `Λ ≠ ∅` half ((GR-204)); and coverage there is **HIGHER**, not lower — `full` 65.2 % → 81.4 %, `gen` 84.2 % → 98.8 %, surviving an `n_hub = 4` control at +12.3 / +9.3 points ((GR-205)) — with **all 18 separators** now measured `Λ = ∅` ((GR-202)) and hub merging proven to happen **iff** an other-coloured `Λ`-edge exists ((GR-203))
 
@@ -19129,3 +19134,282 @@ other layers, all under the seeded-draw cap: `n_hub = 5` — `Λ = ∅` 0/60,
 >    The **10 203 / 625 partition is therefore exact**. The draft's own
 >    conservative reading is left visible here because the correction is the
 >    kind §4 says the next pass supplies.
+
+## §(K-grid) — continuation (direction GNONADD, ordinal 100, 2026-09-11): §8's rank 1 is answered **POSITIVE** — a NON-ADDITIVE move DOES relate two `D = 0` class shapes, exhibited at `n_hub = 2 → 4`, at `6 → 4`, and along an unbroken six-step chain to `n_hub = 16`; (GR-170)'s complement cut does **NOT** extend to deletions, because at the changed region it *is* (GR-173), an inequality the parent already satisfies; **every one of the 7 972 class shapes at `n_hub ∈ {4, 6}` is Y-reducible** (80/80 and 7 892/7 892, `Λ` unrestricted); and therefore §(K-grid) **(GR-176)** is FALSE as stated — but the induction is still not revived, because (GR-175)'s infinite `CL_m` family is triangle-free and stays irreducible
+
+Driver: `notes/scripts/w4/gnonadd.py`. Full write-up: `notes/pencil/fanout.md` §"GNONADD".
+
+### Step G213 — what a NON-ADDITIVE move is, and the one line of GEXPAND's that is wrong
+
+§(K-grid) *Step G189* defines an **additive** move and excludes, as its blind
+axis 1, "a move that deletes a parent hub (`Y→Δ`)". `gexpand.py`'s own module
+docstring goes further and dismisses that case outright:
+
+> "`Y->Delta` is the example; the coordinator's spec kills that one
+> separately, **at girth: its new triangle is a circuit of total length
+> 6 < 7**."
+
+**That sentence is the error, and everything below follows from it.** The
+dismissal assumes the new triangle must absorb the whole of
+`ΔΣℓ = 3Δn = 6`. It need not. A hub-deleting move necessarily re-lengths the
+three branches **at the deleted hub** — those branches are *inside* the
+changed region, not outside it (blind axis 2 is about branches away from the
+changed region) — so the triangle may take `7, 8, 9` and give the surplus back
+by **shortening the boundary**. A triangle of total length `≥ 7` is exactly
+what (GR-25)(i) demands, and the budget permits it.
+
+> **(GR-193)** `[PROVED]` *(the move family, stated once so every mode tests
+> the same object; it is DISJOINT from §(K-grid) (GR-169)'s additive class,
+> where every parent hub survives)* A **Y-reduction** takes a `D = 0` class
+> shape (the *child* `C`) to another (the *parent* `P`) by choosing a hub set
+> `A ⊆ V_C` that induces a connected subgraph, has branch cut `∂(A) = 3` and
+> odd `|A| ≥ 3`; deleting `A` and every branch inside it; and replacing it by
+> **one** new hub `v` carrying the three boundary branches, whose lengths are
+> re-chosen. Then `Δn = |A| − 1` is even, and cubicity plus tightness FORCE
+> the boundary budget
+>
+> > `Σ_∂ ℓ' = Σ_∂ ℓ + Σ_{E(A)} ℓ − 3(|A| − 1)`,
+>
+> so the only freedom the move has is the three-way split of one forced
+> number. `|A| = 3` in a simple hub multigraph is `Δ→Y`; its inverse is
+> `Y→Δ`.
+
+*The budget formula is CHECKED, not assumed.* It is not fed to the gate as a
+constraint the gate then re-derives: the driver builds a candidate parent with
+that total and hands it to `gridcol.class_shape`, which independently
+recomputes tightness and `Σ(ℓ−2) = 6`. A wrong budget would make **every**
+candidate fail; instead `--wit` recovers `θ(4,4,4)` exactly.
+
+*Proof.* `n_P = n_C − (|A| − 1)`; cubicity `2M = 3n` and tightness
+`Σℓ = 6(M − n + 1)` give `ΔΣℓ = 3Δn` ((GR-169) sentence 1, which holds for any
+move — see (GR-194)). Subtracting the branches of `E(A)` and re-lengthing the
+three boundary branches is the only change, so
+`Σ_∂ℓ' = Σ_∂ℓ + Σ_{E(A)}ℓ − 3(|A|−1)`. `Δn` even is `2M = 3n`. ∎
+(`gnonadd.py --law`, `--wit`.)
+
+### Step G214 — (GR-194): (GR-169) sentence 1 survives, sentence 2 does not
+
+> **(GR-194)** `[PROVED]` *(and `[MEASURED]` `gnonadd.py --law`, 0 misses over
+> `n_P = 2..38`, `Δn = 2..10`)* §(K-grid) **(GR-169) sentence 1** — `Δn` even,
+> `ΔM = 3Δn/2`, `ΔΣℓ = 3Δn`, `Δ(Σ_β(ℓ_β − 2)) = 0` — holds for **any** move
+> between two `D = 0` class shapes, hub-deleting included: its derivation uses
+> only `2M = 3n` and `Σℓ = 6(M − n + 1)` and never how the hubs correspond.
+> **(GR-169) sentence 2** — *"the move adds `3k − s` genuinely-new branches of
+> total length `6k`, whose excess is therefore exactly `2s`"* — is **false**
+> for a hub-deleting move: it presupposes that every parent hub survives, so
+> that no parent-derived branch changes length. At the witness (GR-195) the
+> new branches are a triangle of total length **9**, not `6k = 6`, and the
+> three parent-derived branches **shorten** `4 → 3`.
+
+This is the accounting caveat the dispatch spec flagged, confirmed: the cut
+argument of (GR-171) cannot even be *stated* for a deletion until sentence 2
+is redone, and when it is redone the argument does not survive (G216).
+
+### Step G215 — (GR-195): the witnesses
+
+> **(GR-195)** `[CONSTRUCTED]` `notes/scripts/w4/gnonadd.py --wit`
+> **(i)** `θ(4,4,4)` (`n_hub = 2`, `M = 3`, `Σℓ = 12`) and `K₄` with all six
+> branches of length `3` (`n_hub = 4`, `M = 6`, `Σℓ = 18`) are **both** `D = 0`
+> class shapes under the CANONICAL oracle `gridcol.class_shape`, and the second
+> is obtained from the first by a `Y→Δ` move: delete the hub, put a triangle
+> `(3,3,3)` in its place, shorten the three branches `4 → 3`. `Δn = +2`,
+> `ΔM = +3`, `ΔΣℓ = +6`, excess `6` at both ends. **One parent hub is deleted
+> and three are added: NON-ADDITIVE.**
+> **(ii)** A second witness where the untouched part is not a single hub: the
+> **prism** `C₃ × K₂` with both triangles at `(3,3,3)` and all three rungs at
+> `2` is a class shape (`gridcol.class_shape`: PASS) with **38** Y-reductions
+> to `n_hub = 4` class shapes, e.g. contract `{0,1,2}` to reach `K₄` with lens
+> `(3,3,3 | 1,3,5)`. Here four hubs and three branches are untouched, so the
+> move is local in the induction's sense.
+
+**§8 rank 1's kill condition — *"a non-additive stratum-preserving move
+exhibited"* — is MET.**
+
+**The witness does NOT contradict (GR-171), and this was checked rather than
+assumed.** (GR-171) forbids an *additive* move, in which every parent hub
+survives and parent branches are only **split** — and a split preserves a
+branch's total length. Read `θ(4,4,4) → K₄(3^6)` additively: `k = 1`, so
+`s + b = 2` new hubs, and each of the three parent branches of length `4`
+must appear in `K₄` either whole (a branch of length `4`: there is none, all
+six are `3`) or split at one hub into two child branches summing to `4`
+(the only two-branch paths in `K₄(3^6)` sum to `6`). Hence `s = 0`, hence all
+three parent branches survive whole — which they do not. **No additive
+reading exists**, so (GR-171) stands untouched and the witness lives exactly
+in the region (GR-171) never claimed. Likewise every step of (GR-197)'s chain
+*shortens* parent-derived branches, which a split cannot do.
+
+### Step G216 — (GR-196): the complement cut does NOT extend, and this is a PROOF, not a failure to find one
+
+> **(GR-196)** `[PROVED]` *(and `[MEASURED]` `gnonadd.py --cut`: **194 325**
+> instances where (GR-170) applies — every (child, contracted triangle,
+> boundary re-length) triple the search certifies at `|A| = 3` over the
+> exhaustive `n_hub = 4` and `n_hub = 6` strata at `lamcap = 99`; **0**
+> violations, min slack **0** — TIGHT)* Let `A` be the contracted region of a Y-reduction at `|A| = 3`,
+> `v` the contracted hub of the parent, and
+> `exc_A := Σ{ℓ_β − 2 : β meets A}` in the child. Then
+>
+> > **`Σ_{β ∋ v} ℓ_β = exc_A + 6`**,
+>
+> so §(K-grid) **(GR-170) at `B = A` reads exactly `Σ_{β ∋ v} ℓ_β ≤ 11`,
+> which is §(K-grid) (GR-173)** — a property the parent has anyway. The
+> complement cut is therefore a condition the move **satisfies**, never a
+> contradiction it fails: **it does not extend to deletions.**
+
+*Proof.* Write `ℓ` for the **child's** lengths and `ℓ'` for the parent's, as
+in (GR-193). The branches meeting `A` are exactly `E(A)` (three of them) and
+`∂` (three of them), so
+`exc_A = (Σ_{E(A)}ℓ − 6) + (Σ_∂ℓ − 6)`. And `Σ_{β∋v}ℓ'_β = Σ_∂ℓ'`, which
+(GR-193) at `|A| = 3` gives as `Σ_∂ℓ + Σ_{E(A)}ℓ − 6`. Substituting,
+`Σ_∂ℓ' = exc_A + 6`. (GR-170) at `B = A` gives `exc_A ≤ 2·3 − 1 = 5`. ∎
+
+*Checked numerically on both witnesses.* At (GR-195)(i): the contracted hub of
+`θ(4,4,4)` has branch-sum `12`, and in `K₄(3^6)` all six branches meet the
+triangle, so `exc_A = 6` — and `6 + 6 = 12`. At (GR-195)(ii): the prism's top
+triangle has `exc_A = 3 + 0 = 3`, and the parent's contracted hub carries
+`(1,3,5)`, sum `9 = 3 + 6`.
+
+**Why the cut kills additions and not deletions — the asymmetry stated
+positively.** In (GR-171) the new region's boundary has to be **bought**: each
+split hub contributes one dart to `∂(B)` and costs the preserved region **two**
+units of excess, so `2∂(B) − exc_B` falls by `1` per split against a `+1`
+requirement, and the move dies by exactly one unit at every gadget. In a
+Y-reduction the boundary is `∂(A) = 3` **for free** — it is the deleted hub's
+own three darts — and the excess the triangle needs is drawn from the global
+budget of `6` with no splitting tax. The two moves are not variants of one
+mechanism; they price boundary differently, and that is the whole of it.
+
+**The `n_hub = 4` exception, and why the first witness sits in it.**
+`--cut` also finds **3 200** instances at `n_hub = 4` where `V_C ∖ A` is a
+**single hub**, so (GR-170)'s `|W'| ≥ 2` hypothesis fails outright; these have
+`exc_A = 6`, slack `−1`, and are perfectly legal. They are (GR-173)'s own
+`n_hub = 2` exception (`θ(2,5,5)`, `θ(3,4,5)`, `θ(4,4,4)`, branch-sum `12`)
+seen from the child's side. (GR-195)(i) is one of them — but (GR-195)(ii) and
+the whole of G217 are not, so the positive does not rest on the exception.
+
+### Step G217 — (GR-197): the move is not a small-`n` artefact — a six-step chain to `n_hub = 16`
+
+> **(GR-197)** `[CONSTRUCTED]` `notes/scripts/w4/gnonadd.py --chain` There is
+> an unbroken chain of **six consecutive** `Y→Δ` moves
+>
+> > `K₄(3^6)` → `n_hub = 6` → `8` → `10` → `12` → `14` → `16`,
+>
+> every member a `D = 0` class shape with excess exactly `6` and
+> **`Λ = ∅`** (every length `≥ 2`). Each step deletes one hub, inserts a
+> triangle `(2,2,3)`, and re-lengths the three boundary branches to
+> `(2,2,4)`, `(2,2,3)`, `(2,2,2)`, `(2,2,3)`, `(2,2,2)`, `(2,2,2)`
+> respectively. The `n_hub = 6` and `n_hub = 8` members are certified by the
+> CANONICAL `gridcol.class_shape`; `n_hub = 10..16` by `cflank.cubic_habitat`
+> (the (GR-25) cut criterion), whose equivalence to `class_shape` is asserted
+> only at `n_hub ≤ 6`. Disclosed.
+
+*Cap.* Greedy — the first hit at each level — and `top = 16`. A construction
+needs only one witness per level, so each level is a **proof at that level**;
+it is **not** a proof that the chain continues forever.
+
+*The canonical-oracle sub-chain.* Dropping every member the canonical oracle
+cannot reach still leaves **three consecutive non-additive moves** —
+`θ(4,4,4) → K₄(3^6) → n_hub = 6 → n_hub = 8` — each end certified by
+`gridcol.class_shape`. So the positive survives in full even if
+`cubic_habitat` were to diverge from `class_shape` somewhere above
+`n_hub = 6`, which is exactly the un-measured axis (GEXPAND discloses the same
+one).
+
+**Consequence for (GR-174)(i).** The chain's `n_hub = 8` member is a
+`Λ = ∅`, `D = 0`, `n_hub = 8` class shape — i.e. a member of `aglu._pool8()`'s
+exact 39 689 — and it **does** admit a reduction. (GR-174)(i)'s "**0** admit
+any reduction to a smaller class shape" is a measurement made with
+`gexpand.reductions`, which is additive-only (G219); the figure is correct and
+its wording is not.
+
+### Step G218 — (GR-198): the census — EVERY class shape that carries a cut-3 triangle at all is Y-reducible, at `n_hub = 4`, `6` and `8`
+
+> **(GR-198)** `[MEASURED]` `notes/scripts/w4/gnonadd.py --contract`
+> **(i)** `n_hub = 4`: **80 of 80** class shapes admit a Y-reduction to a
+> smaller class shape (**3 200** (hub set, re-length) triples). **(ii)**
+> `n_hub = 6`: **7 892 of 7 892** (**667 845** triples). Population
+> `gisland.stratum(n, lamcap=99)` — EXHAUSTIVE, `Λ` unrestricted; `|A| ∈ {3}`
+> at `n = 4` and `{3, 5}` at `n = 6`; parent gate `gridcol.class_shape`
+> (CANONICAL). **(iii)** `n_hub = 8`: **16 969 of 39 689** (**419 939**
+> triples), over `aglu._pool8()`, which is the **`Λ = ∅`** stratum and NOT a
+> general `n_hub = 8` pool; `|A| = 3` only; parent gate
+> `cflank.cubic_habitat` at `n_hub = 6`.
+> **(iv) The shape of the numbers.** Of the 39 689, exactly **16 969** carry a
+> connected cut-3 hub set at `|A| = 3` at all (**9** of the **11** inhabited
+> hub-multigraph classes), and **16 969 of 16 969 of those reduce**. Together
+> with (i) and (ii) — where every shape carries one — the census is
+> **100 % at all three levels**: *every `D = 0` class shape with a cut-3
+> triangle that the search reaches is Y-reducible.*
+
+Set (iii) beside §(K-grid) **(GR-174)(i)**'s *"**0** of `aglu._pool8()`'s
+exact **39 689** … admit any reduction to a smaller class shape"*. **Same
+population, same verdict word, 16 969 against 0** — and the entire difference
+is the move model.
+
+And the `43 %` at `n_hub = 8` is **not** a weakening of the positive: it is
+exactly the point at which triangle-free hub multigraphs become common
+(2 of the 11 inhabited classes carry no cut-3 triangle, and they hold
+22 720 of the 39 689 shapes). Among the shapes that have the move available,
+it always works. That is the same phenomenon (GR-200) turns into the
+obstruction — the block is **absence of a triangle**, never failure of the
+contraction.
+
+### Step G219 — (GR-199): the architectural blind axis, exhibited rather than asserted
+
+> **(GR-199)** `[PROVED]` *(and `[MEASURED]` `gnonadd.py --blind`: 0
+> reductions found at the witness's own child, `kmin = 1`, `kmax = 3`)*
+> `gexpand.reduction_frames` **cannot express** a Y-reduction, by two
+> independent structural fences read at source: it iterates
+> `itertools.combinations(range(n), 2*k)`, so `|W'|` is **even** while a
+> contracted region has `|A|` **odd**; and it rejects any hub of `W'` whose
+> outward-dart count is not `0` or `2`, while each hub of a contracted
+> triangle has exactly **1**. Correspondingly `gexpand.apply_move` never
+> removes a parent hub, and `move_complement_slack` is (GR-25)(i) at the
+> complement of the **brand-new** hubs — a set that only exists in an additive
+> move. The blindness is in the **move model**, not in a parameter; it cannot
+> be un-fenced by varying a default.
+
+*Price paid, for the RESEARCH-ARC §4 record.* Un-fencing cost a **new**
+driver (`gnonadd.py`, 7 modes) rather than a parameter, because the landed
+function has no parameter to open — the BNONUNI precedent's cheap un-fencing
+was not available. It did **not** cost a new population: every figure above
+runs over `gisland.stratum` and `aglu._pool8` exactly as GEXPAND's do.
+
+### Step G220 — (GR-200): what this DOES NOT buy — the induction is still not revived
+
+A positive on §8's rank 1 was supposed to *"revive an induction internal to
+`(G°, ℓ, bits)`"*. It does not, and the obstruction is the family GEXPAND
+itself supplied.
+
+> **(GR-200)** `[PROVED]` *(the triangle-free half; and `[MEASURED]`
+> `gnonadd.py --ladder` for `|A| = 5` at `m = 6..11`)* §(K-grid) (GR-175)'s
+> circular ladder `CL_m = C_m × K₂` is **triangle-free for every `m ≥ 4`**, and
+> it is simple, so it carries **no** connected hub set with `|A| = 3` and
+> `∂(A) = 3`; at `|A| = 5` the measured count of such sets is **0** at
+> `m = 6..11`. So `CL_m` admits **no Y-reduction** — and by (GR-171) no
+> additive reduction either. **The stratum still contains an infinite family
+> irreducible under every move family the arc has, so (GR-15) is not closed by
+> this positive.**
+
+**A second obligation the positive does not discharge, named so it is not
+forgotten.** Even a move family that reduced *every* class shape would not by
+itself close (GR-15): the induction would still have to **transport an
+admissible colouring with generic `dim Z₊ = dim Z₋ = 0`** from parent to
+child. Nothing here does that — a Y-reduction relates two *shapes*, and the
+colouring obligation is untouched. So the honest reading of §8 rank 1's
+promise (*"a positive revives an induction internal to `(G°, ℓ, bits)`, which
+is the only route on this board whose success CLOSES (GR-15)"*) is that the
+positive clears the **first** of two gates and (GR-200) closes it again at the
+second step of the first gate.
+
+*Proof of the triangle-free half.* In `C_m × K₂` write `(i, ε)`. Edges are
+`(i,ε)–(i+1,ε)` and `(i,0)–(i,1)`. Three mutually adjacent vertices either lie
+in one rail — forcing `i, i+2` adjacent, i.e. `m = 3` — or split `2 + 1`, and
+then the lone vertex `(j, 1)` must be adjacent to both `(i,0)` and `(i+1,0)`,
+forcing `j = i` and `j = i+1`. ∎ *Cap for the `|A| = 5` half:* `m = 6..11`,
+`|A| ∈ {3,5}` — "not found under cap", never "does not exist".
+
+*Scope correction to (GR-175) in passing.* (GR-175) says *"for every
+`m ≥ 4`"*, but six **pairwise non-adjacent** length-3 branches need `≥ 12`
+hubs, so the construction is **empty at `m = 4` and `m = 5`**. `--irred`
+measured `m = 6..11`, which is exactly its realizable range; the infinitude
+claim is unaffected. Read (GR-175) as `m ≥ 6`.

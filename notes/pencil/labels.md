@@ -5288,3 +5288,37 @@ therefore **not** available.
 > `.claude/commands/coordinate-research.md`, `notes/Harness-structure.md` and
 > `notes/gapmap.py`, none of which is a driver, a workbook section or a
 > ledger row.
+
+## Reserved namespace — direction GNONADD (2026-09-11, **CONSUMED IN FULL: eight labels and eight steps**)
+
+| direction | section | labels | steps | driver |
+|---|---|---|---|---|
+| **GNONADD** | §(K-grid) — **extends**, no new section | **(GR-193)–(GR-200)** | ***Steps G213–G220*** | `w4/gnonadd.py` (seven modes + `--validate`) |
+
+**0-hit verification, emitted PER TOKEN** (the D6.3(a) form, via
+`ledger.py --reserve-range`). At `b742ec2d`: **CLEAN EXCEPT THE DECLARATION** —
+`(GR-193)` and `G213` hit only previous reservations' own live-tail bookkeeping
+in `labels.md` and `fanout.md` (five and four lines respectively, every one a
+declaration); `(GR-194)`–`(GR-200)`, `G214`–`G220`, `GNONADD` / `gnonadd` **0
+hits / 0 files each**. Re-checked by the direction at `e03995d8` after `HEAD`
+advanced under it.
+
+**(L2)** respected. **(L3)**: every label from outside §(K-grid) is qualified.
+**(L6)**: no `(X<digit>)` token minted.
+
+**THE LIVE TAIL IS NOW (GR-209) / *Step G229*** (GLAMPROP took
+(GR-201)–(GR-208) / G221–G228 in the same round), with **(GR-172)–(GR-176) /
+*G196*** still RETURNED UNUSED.
+
+> ***THIS RESERVATION'S LANDING REFUTED THREE CLAUSES INSIDE ITS OWN SECTION,
+> WHICH IS WHY (L4)'s "NEVER RENAME" RULE EARNED ITS KEEP HERE.*** (GR-176),
+> (GR-172) and (GR-174) were all rescoped in place rather than renumbered, so
+> every prior citation still resolves and the correction is visible **at** the
+> cited label instead of at a new one. (GR-176) is the sharp case: a landed
+> `[PROVED]` clause, false in **both** halves, whose "within one `G°`" half
+> rested on §(K-ind) (I4) — an antichain for the **componentwise refinement
+> order** by its own text (*"since all its members have the same coordinate
+> sum"*), which is a statement about the split move (I2) and not about moves in
+> general. The gap-map row had propagated the unqualified reading. Same
+> summary-vs-body shape as the twelfth strategy pass's (K-ind) miss recorded
+> above — **twice on the same section, two landings apart.**

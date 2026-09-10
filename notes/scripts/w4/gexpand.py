@@ -32,8 +32,12 @@ split hub gains exactly one new dart and every brand-new hub has degree 3.
 Nothing else about the parent changes.  This covers every classical
 generator that is additive -- Henneberg I/II, the H-operation (= edge
 insertion), vertex splitting.  It does NOT cover a move that DELETES a
-parent hub (`Y->Delta` is the example; the coordinator's spec kills that one
-separately, at girth: its new triangle is a circuit of total length 6 < 7),
+parent hub (`Y->Delta` is the example.  NOTE, CORRECTED 2026-09-11 by GNONADD:
+this docstring used to add "the coordinator's spec kills that one separately, at
+girth: its new triangle is a circuit of total length 6 < 7".  That is WRONG and is
+the originating error -- a hub-deleting move RE-LENGTHS the branches at the deleted
+hub, so the new triangle can take total length 7-9.  `w4/gnonadd.py --wit` exhibits
+theta(4,4,4) -> K4(3^6), both ends PASSing `gridcol.class_shape`, triangle total 9),
 nor a move that re-lengths parent branches away from the changed region.
 Those two exclusions are the draft's blind axes 1 and 2.
 
