@@ -61,6 +61,17 @@ Never `sed`/`grep` the gap map: one row is one 22 000-character line.
    load-bearing, and whether the spec's stated tell actually fired.
    *Neither, or moot, or right-for-the-wrong-reason are all real
    outcomes* (`RESEARCH-ARC.md` §7's taxonomy) — say which you got.
+   **Two clauses from §7's 2026-09-10 amendment, because they change
+   what you do rather than only what you report.** *(a)* The spec's
+   **mechanism is a candidate to ELIMINATE, not the reason its verdict
+   holds** — coordinator mechanisms ran 0 of 6 over the arc's first
+   unselected sample — so **try to refute it cheaply, first**, before
+   building anything on it, and never let your first slice rest on it.
+   *(b)* Report not only whether the tell **fired** but whether it
+   **could have**: name the region it samples and say whether the
+   verdict could differ inside that region. Two tells in one session
+   were structurally unable to fire, and both descended from the
+   spec's mechanism — a dead tell looks identical to a passing one.
 3. **Trace evidence to ground, not to its own assertion.** Every
    headline sentence needs a **driver that tests that exact sentence**;
    *"forced" / "exhaustive" / "the only"* are their own claim class and

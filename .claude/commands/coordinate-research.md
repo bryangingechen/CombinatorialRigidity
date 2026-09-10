@@ -98,20 +98,35 @@ pathology one level up.
 Beyond the generated block, a spec carries:
 
 - **The question** in one sentence, and what a decision either way buys.
-- **The prediction, labelled a HYPOTHESIS — *to be tested, not
-  inherited* — with its evidence stratum named** ("read from the gap-map
-  row and the return message; I have NOT opened the proof"). §7 keeps
-  the running tally of predictions the primed direction had to correct:
-  **cite it, never re-derive it** (three concurrent directions once each
-  read a different baseline). Three of its clauses earn their keep:
-  **state the reason separately from the verdict**, so a direction can
-  refute one without the other; **write down where you expect to be
-  wrong** — three of five consecutive instances were decided by that
-  clause rather than by the prediction, making it the spec's
-  highest-yield sentence; and **make the tell falsifiable against the
-  corpus you already have** — BGTWOA's was *already satisfied at
-  dispatch*, so it could not discriminate, which is worse than omitting
-  it (one grep of the predecessor's text is the check).
+- **The prediction — but PRICE ITS PARTS SEPARATELY, because they have
+  very different records** (§7's 2026-09-10 amendment, measured over the
+  arc's first *unselected* sample of six). §7's tally is **selected on
+  failure by construction**, so it is a catalogue of failure modes and
+  **never** evidence about a base rate: **cite it, never re-derive it**
+  (three concurrent directions once each read a different baseline).
+  - **Verdict** (4 of 6) and **evidence stratum** — always. Label it a
+    HYPOTHESIS, *to be tested, not inherited*, and name the stratum
+    ("read from the gap-map row and the return message; I have NOT
+    opened the proof"). Keep the reason **separate from the verdict** so
+    a direction can refute one without the other.
+  - **Where you expect to be wrong** — the spec's **highest-yield
+    sentence**, deciding three of five consecutive instances. Never omit it.
+  - **The MECHANISM — state it as a candidate to ELIMINATE, not as the
+    reason the verdict holds.** 0 of 6, failing as *tautology* and as
+    *inapplicable-by-definition*, and it is not inert: it steers the first
+    slice and the tell. Write *"here is the mechanism I could not rule
+    out; refute it cheaply first"*, and let **nothing** in the ranking or
+    the first slice rest on it. `strategy.md` §8's board entries carry the
+    same defect at the same rate, so re-derive an entry's stated mechanism
+    before its cost.
+  - **The TELL — derive it from the QUESTION's region, never from your
+    predicted mechanism, and state that region.** Checking that it is not
+    *already satisfied* (one grep, BGTWOA) catches only half: two tells in
+    one session were **unsatisfiable** and passed that check — one built
+    from the residue when the refutation lived in the over-strength
+    region, one at `Δn = 2` which is empty on lengths alone. The check is
+    a question, not a grep: **could the verdict differ inside the region
+    this tell samples?**
 - **The reserved label prefix and section name**, verified **0-hit**
   across the tree (§1) — a reservation protects a dispatch from its
   siblings, not from the corpus.

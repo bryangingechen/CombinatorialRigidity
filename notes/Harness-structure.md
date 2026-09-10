@@ -1032,9 +1032,10 @@ Measured at `c8efb227` (`awk '/^### 7\. A coordinator prediction/,/^## /'`):
 **~48% of the file**. The ratio is the durable half of that; re-take the
 absolutes rather than trusting them. The command's own instruction is *"§7 keeps the running tally … **cite
 it, never re-derive it**"* — so what a coordinator needs in the loop is §7's
-**rule** (three clauses: state the reason separately from the verdict; write down
-where you expect to be wrong; make the tell falsifiable against the corpus you
-already have) plus a pointer. The twenty-seven-instance / ten-kind provenance is
+**rule** — since the 2026-09-10 amendment, four *separately priced* parts: verdict +
+evidence stratum; where you expect to be wrong; the mechanism **demoted to a candidate to
+eliminate** (0 of 6, and it steers the first slice); and the tell derived from the
+**question's** region, not the predicted mechanism — plus a pointer. The twenty-seven-instance / ten-kind provenance is
 real and worth keeping, but it is below the read-line. §4 has the same shape: the
 rule is four sentences, the evidence is ~90 lines.
 

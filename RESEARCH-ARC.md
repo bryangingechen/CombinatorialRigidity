@@ -471,6 +471,67 @@ here in §4 applies with full force — the corrective mechanism is the **next
 pass**, not coordinator scrutiny — so the cheap move is to write the prediction
 down *with its provenance* and let the dispatch kill it.
 
+**AMENDED 2026-09-10 — PRICE THE PREDICTION'S PARTS SEPARATELY; THEY HAVE VERY
+DIFFERENT RECORDS, AND ONE OF THEM IS NET NEGATIVE.** The rule above treats "a
+prediction" as one object. Two rounds of three on one day, with **all six**
+dispatches recorded regardless of outcome, show it is four objects with four
+track records — and the case for writing predictions down survives, but not in
+the shape it had.
+
+**First, a caveat that cuts against this section's own tally.** §7's entry
+criterion is *"predictions the primed direction had to correct."* It is
+**selected on failure by construction**: a prediction that was simply right
+generates no entry. So the instance count is a catalogue of failure modes, **not
+evidence about the base rate**, and it must never be cited as though it were.
+The 2026-09-10 rounds are the arc's first unselected sample.
+
+| part | record over those six | cost when wrong |
+|---|---|---|
+| **verdict** | **4 of 6** right | low — the direction tests it |
+| **evidence stratum** | no failure mode observed, ever | — |
+| **"where I expect to be wrong"** | the spec's highest-yield sentence, on this section's own count | — |
+| **stated mechanism** | **0 of 6** | **high — it steers the first slice AND the tell** |
+| **tell** | 2 of 6 **structurally unable to fire** | high — a dead tell cannot discriminate |
+
+**Why the rule survives at all, and it is not the accuracy.** The alternative to
+an explicit prediction is not neutrality — it is **implicit framing**, which the
+direction inherits anyway through the question asked, the claims selected into
+the briefing block, and the axes named blind. Written down it is falsifiable;
+unwritten it is a contaminant with no handle. That is the original argument and
+it is undamaged.
+
+**What changes: the MECHANISM is demoted, because it is not inert.** Six for six
+wrong, and failing in kinds worse than *inaccurate* — GEXPAND's was a
+**tautology** (zero-net-excess is an identity, so it excluded nothing), GISLAND's
+was **inapplicable by definition** ((GR-24) cannot cover a region *defined* as
+where its hypothesis fails). It steers what the direction builds first: *the cost
+estimate survives a wrong mechanism; the first slice usually does not.* **So
+state the mechanism as a candidate to ELIMINATE, not as the reason the verdict
+holds** — "here is the mechanism I could not rule out; refute it cheaply first"
+— and never let the ranking or the first slice rest on it. Note the same defect
+in **board entries**: `strategy.md` §8's spent entries were also six for six on
+wrong mechanisms, so this is a property of pre-work reasoning about unexplored
+mathematics, not of any one author.
+
+**The honest counterweight, recorded because it cuts the other way.** A wrong
+mechanism is sometimes *productive by being refuted*: GSIMUL **proved** the
+coordinator's disjoint-composition mechanism, and it is now the landed theorem
+(GR-188) — which fires 0 of 26, so its value is small, but it exists only because
+the wrong mechanism was written down. Demote the mechanism; do not delete it.
+
+**And the TELL rule is sharpened, because its current check misses half the
+failure.** The standing clause asks whether a tell is *already satisfied at
+dispatch* (BGTWOA's was) — one grep of the predecessor's text. **Two tells in one
+session failed the OPPOSITE way: they were UNSATISFIABLE**, and passed that check
+cleanly. BCORNER's was built from the residue while the refutation lived in the
+**over-strength region**; GEXPAND's was a parent/child pair at `n_hub 6 → 8`,
+i.e. `Δn = 2`, empty on lengths alone. **Both descended from the wrong
+mechanism** — the coordinator reasoned *the phenomenon lives here*, and built the
+tell there. So: **derive the tell from the QUESTION's region, never from the
+predicted mechanism**, and state that region explicitly. The check is no longer a
+grep but a question: *could the verdict differ inside the region this tell
+samples?* If not, the tell is dead however falsifiable it looks.
+
 **A FOURTH KIND of outcome, at the fifth instance: MOOT (2026-09-01,
 direction BSPREAD).** The four instances above are three kinds — *refuted*,
 *split*, *reframed*. BSPREAD's returned a fourth: the coordinator's route hypothesis
@@ -783,8 +844,11 @@ spec; this instance shows it can be written so as to be **vacuously true on arri
 is worse than omitting it, because it manufactures false confidence. The check costs one
 grep of the predecessor's text for the tell's condition before the tell is written. Paired
 with the thirtieth instance's rule — *state the reason separately from the verdict* — the
-pair now reads: **state the reason separately, and make the tell falsifiable against the
-corpus you already have.**
+pair read: **state the reason separately, and make the tell falsifiable against the
+corpus you already have.** ***SUPERSEDED 2026-09-10 by this section's head amendment:***
+that check catches only the *already-satisfied* half. Two later tells were
+**unsatisfiable** and passed it cleanly, so the tell must be derived from the **question's
+region** rather than from the predicted mechanism — see the amendment's TELL clause.
 
 **Corrections ran both ways, and the direction's own share was two plus a status surface.**
 The direction self-caught **two**: its first derivation of the central bound `e_j ≥ ρ_j − 2`
@@ -1037,10 +1101,11 @@ and ten kinds.** Six for six across the day's two rounds.
   **tautology** — zero-net-excess is an identity, so it excludes nothing.
 
 **AND THE ROUND'S OWN FINDING IS A SHARPENING OF §7's TELL CLAUSE — the mirror of the
-failure that clause was written for.** §7 currently says: *make the tell falsifiable
-against the corpus you already have*, because BGTWOA's tell was **already satisfied at
-dispatch** and so could not discriminate; the check it prescribes is one grep of the
-predecessor's text. **Two tells this session failed the opposite way — they were
+failure that clause was written for. It is the finding that produced this section's head
+amendment (2026-09-10), and the amendment, not this paragraph, is the rule.** The clause
+*as it then stood* said: *make the tell falsifiable against the corpus you already have*,
+because BGTWOA's tell was **already satisfied at dispatch** and so could not discriminate;
+the check it prescribed was one grep of the predecessor's text. **Two tells this session failed the opposite way — they were
 UNSATISFIABLE**, and no grep of the corpus would have caught either:
 
 - **BCORNER's** was *one row in the residue inside the quantifier*. The refutation lived
