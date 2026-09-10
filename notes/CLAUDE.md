@@ -24,7 +24,10 @@ for *organizing* this directory is here.
   forward-vs-finished ratio, a `**Status:**`-header word cap and the
   ≤ 8-line *Decisions made* entry. Run it (default mode; no flags)
   before any commit that edits a phase note — it checks only what
-  changed, so legacy entries never block an unrelated commit. Caps,
+  changed, so legacy entries never block an unrelated commit; `--all` lists
+  every note and gates the ACTIVE ones (green at baseline, so it is a usable
+  post-commit fallback), and `--archive` gates the closed ones too and is red
+  by design. Caps,
   calibration and the recompute-before-bump rule are in its docstring.
   **To READ one, use `python3 notes/phasenote.py N --next`** (also
   `--status`, `--handoff`, `--section`, `--list`, `--surfaces`): the gate

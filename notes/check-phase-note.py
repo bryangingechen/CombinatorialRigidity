@@ -60,13 +60,32 @@ What is checked, and against which stated rule:
   4. **Each *Decisions made* entry <= 8 lines** -- the explicit backstop. An
      "entry" is a top-level list item of that section.
 
-Modes (the same three as `check-gapmap-cells.py` / `check-log-rows.py`):
+Modes:
   (default)  check only the phase notes this commit touched (working tree vs
              HEAD, untracked notes included).
-  --all      check every phase note AND print each one's measurements. This is
-             the mode the caps below were read off, so a recalibration is
-             reproducible without a throwaway script.
+  --all      LIST every phase note with its measurements, and GATE the ACTIVE
+             ones. Green at baseline, so it is a usable fallback for a
+             post-commit run; the closed notes' pre-existing debt is reported
+             as a count, not as a wall of red. This is also the mode the caps
+             below were read off, so a recalibration stays reproducible.
+  --archive  gate every note, closed ones included. RED at baseline by
+             design (40 of 57 closed notes, 176 over-long entries and 3
+             over-cap headers as of 2026-09-10) -- this is the cleanup-round
+             scope, not a check to run before a commit.
   --last     check the notes changed in HEAD vs HEAD~1 (post-commit audit).
+  --selftest assert that --all is green at baseline and --archive is not.
+
+Why --all does not gate the archive (2026-09-10, `notes/Harness-structure.md`
+D6.7). The loop tells a coordinator to run the docs gates before committing
+"or with `--all`" -- but `--all` exited 1 on this tree, so for THIS gate the
+documented fallback did not exist, and a gate that is red at baseline is one
+that gets switched off rather than obeyed. Checks 1 and 2 had already carved
+closed notes out for the right reason (a closed note is "the compressed
+archive ROADMAP section N points at"); checks 3 and 4 had not, only because
+they leaned on a base to grandfather against and `--all` supplies none. The
+rule that unifies them: **no base and a closed note means this commit did not
+touch the surface**, so the check has nothing to say. `--archive` is where it
+says it.
 
 Grandfathering, and why it is per-surface rather than per-file. Checks 1 and 2
 are properties of the whole note, so they fire on any note this commit
@@ -75,8 +94,8 @@ full of pre-rule breaches (`--all` today reports ~30 notes with a *Decisions
 made* entry over 8 lines, and Phase22b's header at 1666 words) -- so in the
 two diff modes they fire only on a header or an entry whose text this commit
 actually CHANGED. That is `check-gapmap-cells.py`'s rule ("any row you DO
-touch must pass") at the granularity this file needs; `--all` still reports
-the legacy debt for an audit pass.
+touch must pass") at the granularity this file needs; `--archive` still
+reports the legacy debt for an audit pass, and `--all` reports its SIZE.
 
 Exit 1, listing offenders, if any checked note breaks any of the four. There
 is no pre-commit hook: run it by hand (`python3 notes/check-phase-note.py`)
@@ -239,14 +258,27 @@ def parse(text):
     }
 
 
-def offenders(name, m, base=None):
+def offenders(name, m, base=None, archive=False):
     """Rule breaches for one note. `base` = its measurements in the commit
     being compared against; when given, the two *surface-local* checks (status
     header, per-entry length) fire only on a surface this commit CHANGED --
     the `check-gapmap-cells.py` grandfathering rule at the granularity that
     matters here. The two whole-file checks (line cap, ratio) always fire on a
-    touched note: they are properties of the note, not of one surface."""
+    touched note: they are properties of the note, not of one surface.
+
+    `archive` gates a CLOSED note's surface-local checks with no base to
+    grandfather against -- the `--archive` cleanup-round scope. Without it the
+    rule is: **no base and a closed note means this commit did not touch the
+    surface**, so the check has nothing to say (2026-09-10, D6.7). The two
+    whole-file checks already carved closed notes out for the same reason --
+    a closed note is "the compressed archive ROADMAP section N points at" --
+    and this extends that carve-out to the mode, which is where it was
+    missing: `--all` was RED at baseline on 40 of 57 closed notes (176
+    over-long *Decisions made* entries, 3 over-cap headers), so the fallback
+    the loop documents did not exist, and a gate red at baseline is one that
+    gets switched off rather than obeyed."""
     bad = []
+    surface = base is not None or m["active"] or archive
     line_cap = LINE_CAPS.get(name, LINE_CAP_DEFAULT)
     status_cap = STATUS_CAPS.get(name, STATUS_CAP_DEFAULT)
     if m["active"] and m["lines"] > line_cap:
@@ -259,15 +291,14 @@ def offenders(name, m, base=None):
             f"not forward-weighted: finished {m['finished']} lines "
             f">= forward {m['forward']} (notes/CLAUDE.md *Forward-weighted note*)"
         )
-    if (base is None or m["status_text"] != base["status_text"]) and m[
-        "status_words"
-    ] > status_cap:
+    if surface and (base is None or m["status_text"] != base["status_text"]) \
+            and m["status_words"] > status_cap:
         bad.append(
             f"**Status:** header {m['status_words']} words "
             f"(+{m['status_words'] - status_cap} over cap {status_cap})"
         )
     old_entries = None if base is None else {t for _, _, _, t in base["entries"]}
-    for lineno, n, label, textblock in m["entries"]:
+    for lineno, n, label, textblock in (m["entries"] if surface else []):
         if old_entries is not None and textblock in old_entries:
             continue  # untouched entry: grandfathered, per the modes above
         if n > ENTRY_LINE_CAP:
@@ -318,10 +349,44 @@ def changed(ref_new, ref_old):
     return out
 
 
+def selftest():
+    """Pin D6.7's property, which is the reason this scope exists: `--all` is
+    GREEN at baseline and `--archive` is not. A gate whose documented fallback
+    is red certifies nothing, and the only way that stays fixed is a test that
+    fails when it regresses."""
+    fails = []
+    notes = all_notes()
+    parsed = [(n, parse(read_note(n))) for n in notes]
+    active = [n for n, m in parsed if m["active"]]
+    if not active:
+        fails.append("  no ACTIVE note found; the active/closed split is broken")
+    bad_all = [n for n, m in parsed if offenders(n, m, None, archive=False)]
+    if bad_all:
+        fails.append(f"  --all scope is RED at baseline on {bad_all} — the "
+                     f"documented fallback does not exist (D6.7)")
+    bad_arch = [n for n, m in parsed if offenders(n, m, None, archive=True)]
+    if not bad_arch:
+        fails.append("  --archive found nothing; either the archive debt was "
+                     "paid (update this test) or the scope is a no-op")
+    if fails:
+        print("FAIL: check-phase-note selftest", file=sys.stderr)
+        print("\n".join(fails), file=sys.stderr)
+        return 1
+    print(f"OK: selftest — {len(notes)} notes, {len(active)} ACTIVE; --all "
+          f"green at baseline, --archive red on {len(bad_arch)} closed note(s) "
+          f"as expected.")
+    return 0
+
+
 def main(argv):
-    full = "--all" in argv
+    if "--selftest" in argv:
+        return selftest()
+    archive = "--archive" in argv
+    full = "--all" in argv or archive
     if full:
-        names, label = all_notes(), "all phase notes"
+        names, label = all_notes(), (
+            "every phase note, archive INCLUDED" if archive
+            else "all phase notes listed; ACTIVE gated")
         pairs = [(n, read_note(n), None) for n in names]
     elif "--last" in argv:
         names, label = changed("HEAD", "HEAD~1"), "changed HEAD~1..HEAD"
@@ -342,12 +407,20 @@ def main(argv):
                 f"max-entry {max([n for _, n, _, _ in m['entries']] or [0]):>2}  "
                 f"{'ACTIVE' if m['active'] else ''}"
             )
-        bad = offenders(name, m, base)
+        bad = offenders(name, m, base, archive=archive)
         if bad:
             failed = True
             print(f"FAIL: {DIRNAME}/{name}", file=sys.stderr)
             for b in bad:
                 print(f"  - {b}", file=sys.stderr)
+
+    if full and not archive:
+        skipped = [(n, parse(read_note(n))) for n in names]
+        debt = [n for n, m in skipped
+                if not m["active"] and offenders(n, m, None, archive=True)]
+        if debt:
+            print(f"  ({len(debt)} closed note(s) listed but NOT gated — "
+                  f"pre-existing archive debt; `--archive` gates them.)")
 
     if failed:
         print(

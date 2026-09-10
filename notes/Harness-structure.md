@@ -774,7 +774,12 @@ recommending.
 `notes/scripts/blindaxes.py` and D6.5 `notes/check-driver-refs.py` are all
 SHIPPED** (D7.8's rule discharged four times: scripts, not sections) — the first found
 the active note's next-task sentence stale on its first run, the second passes
-both of the round's dropped-row defects as acceptance tests. **All four D6 scripts are shipped.** **Rank by D7.2, not by size:**
+both of the round's dropped-row defects as acceptance tests. **All four D6 scripts are shipped, and D6.7's scope fix with them — every D6
+and D7 item is now closed.** What remains is not a build item: the kill
+conditions that read *"used by one coordinator session"* (D6.1, D6.4) can only
+be discharged by the next `/coordinate-research` run, and D7.3's — *a round of
+three landed with zero user turns between the first dispatch and the last
+landing* — is the single measurement that says whether this round paid. **Rank by D7.2, not by size:**
 a reader that cuts a *pre-dispatch* read is worth ~20× the same reader used
 afterwards.
 
@@ -1234,7 +1239,7 @@ reading is for.
 paragraph.* **Done** — the check-in is now the session's first action, with the
 zero-dependency argument stated inline.
 
-### D6.7 — `check-phase-note.py --all` is RED at baseline, so the documented fallback does not exist for it
+### D6.7 — `check-phase-note.py --all` is RED at baseline, so the documented fallback does not exist for it  *(FIXED 2026-09-10)*
 
 The loop says the three docs gates inspect files changed vs `HEAD`, so *"run them
 BEFORE committing, or with `--all`"*. Measured at `c8efb227`:
@@ -1245,8 +1250,32 @@ nothing with no alternative. **Suggestion:** default to `ACTIVE` notes and make
 the archive an opt-in scope, or amend the loop's sentence to name the exception.
 This is the promoted corollary's sibling: *a gate that reports zero is not a gate
 that passes*, and **a gate that is red at baseline cannot be a fallback**.
+**FIXED 2026-09-10, and the carve-out it needed was already half-written in the
+gate.** Checks 1 and 2 (line cap, forward-weighting) had *always* skipped closed
+notes, with exactly the right reason stated in the docstring — a closed note is
+*"the compressed archive `ROADMAP` §N points at"*. Checks 3 and 4 (status
+header, per-entry length) had not, only because they lean on a **base** to
+grandfather against and `--all` supplies none. The rule that unifies all four:
+**no base and a closed note means this commit did not touch that surface**, so
+the check has nothing to say.
+
+So `--all` now lists every note, **gates the ACTIVE ones**, and reports the rest
+as a count — *"40 closed note(s) listed but NOT gated — pre-existing archive
+debt"* — and `--archive` is the cleanup-round scope that gates them, red by
+design. The debt it names, measured here: **40 of 57 closed notes, 176
+over-long *Decisions made* entries and 3 over-cap headers.**
+
+`--selftest` pins the property rather than the wording: `--all` green at
+baseline **and** `--archive` not green, so a future change that quietly re-reds
+the fallback fails a test. Two regression checks were run by hand and are worth
+restating because one of them is where a scope change would have opened a hole:
+the default mode still fires on an active note's breached header, **and still
+fires on a CLOSED note whose header the commit touches** — touching it supplies
+the base, which is the whole point.
+
 *Kill condition: `--all` green, or the loop's sentence amended. Decided by:
-`python3 notes/check-phase-note.py --all; echo $?`.*
+`python3 notes/check-phase-note.py --all; echo $?`.* **Discharged — both, in
+fact: the gate is green and the loop's sentence now says what `--all` covers.**
 
 ### D6.8 — a derived count written into prose is a summary surface; cite the command, not the number
 

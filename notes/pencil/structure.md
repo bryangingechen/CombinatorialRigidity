@@ -675,9 +675,12 @@ violation through; both mean a *green* run can certify **nothing**.
 
 1. **They inspect only files CHANGED VS `HEAD`.** So a run *after* the commit reports
    `0 checked` and is a silent no-op — which is what a coordinator's post-landing
-   verification does by default. **Run them before committing**, or run `--all` (which
-   also surfaces long-standing FAILs on *closed* phase notes; those are pre-existing and
-   out of scope for an active-phase commit).
+   verification does by default. **Run them before committing**, or run `--all`.
+   *(Amended 2026-09-10: `check-phase-note.py --all` used to exit 1 on this tree —
+   40 of 57 CLOSED notes carry pre-rule breaches — so for that gate the `--all`
+   fallback did not exist. It now lists every note, gates the ACTIVE ones, and
+   reports the archive debt as a count; `--archive` is the cleanup-round scope
+   and stays red by design. `notes/Harness-structure.md` D6.7.)*
 2. **`check-gapmap-cells.py` detects a changed row by comparing WORD COUNTS, not text.** A
    recompute that lands at *exactly* its pre-edit count is invisible to the default mode
    (observed at 1 499 → 1 499). Use `--all`, and rely on `notes/scripts/gapdiff.py`, which

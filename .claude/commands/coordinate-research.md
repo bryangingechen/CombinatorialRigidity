@@ -83,11 +83,16 @@ What binds the loop:
 - **`--delta <ref>`'s output goes in the landing's commit message.** The
   ledger is deliberately not checked in, so git history is the progress
   record, and a generated change-set cannot overstate what moved.
-- **`--lint` and the other two docs gates (`notes/check-phase-note.py`,
-  `notes/check-gapmap-cells.py`) inspect files changed vs `HEAD`**, so a
-  run *after* the commit reports `0 checked` and certifies **nothing** —
+- **`--lint` and the other docs gates (`notes/check-phase-note.py`,
+  `notes/check-gapmap-cells.py`, `notes/check-driver-refs.py`) inspect
+  files changed vs `HEAD`**, so a run *after* the commit reports
+  `0 checked` and certifies **nothing** —
   which is what a post-landing verification does by default. **Run them
-  BEFORE committing, or with `--all`.** Second recorded blind spot:
+  BEFORE committing, or with `--all`** — which is now a real fallback for
+  all of them: `check-phase-note.py --all` gates the ACTIVE notes and
+  reports the closed ones' pre-existing debt as a count (it used to exit
+  1 on this tree, so that gate had no fallback at all; `--archive` is the
+  cleanup-round scope and is red by design). Second recorded blind spot:
   `check-gapmap-cells.py` detects a changed row by **word count**, so a
   recompute landing at its pre-edit count is invisible — there,
   `notes/scripts/gapdiff.py` is the gate that sees content.
