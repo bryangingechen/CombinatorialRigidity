@@ -218,10 +218,10 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
 
 **The phase stays OPEN** (the 2026-07-24 adjudication — no phase-close; see *Current state*).
 
-**A PARALLEL HARNESS TRACK IS PLANNED, NOT BLOCKING THIS ONE** — `notes/Harness-structure.md`
-(slices 8–14, opened 2026-09-09, PLAN ONLY): a claim ledger + query CLI, a gated status
-vocabulary, generated briefing packets, the workbook split, and a `/coordinate-research`
-command. Its next commit is slice 8 (additive, no moves). The phase's own next concrete task
+**PARALLEL HARNESS TRACK, not blocking this one** — `notes/Harness-structure.md`
+(slices 8–14, opened 2026-09-09). **Slice 8 LANDED:** `python3 notes/ledger.py --label
+'(BE-216)' | --brief | --frontier | --delta <ref>` answers "what is proved" in one call
+(1 308 claims, 51% UNTAGGED). Next there: slice 9, the status vocabulary + `--lint`. The phase's own next concrete task
 is unchanged and stated below.
 
 **THE (BE-14) THREAD, settled frame + its last landings — RELOCATED 2026-09-02** to

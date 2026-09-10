@@ -46,3 +46,7 @@ blueprint/web/
 # artefacts of running a gate; the scripts themselves are tracked).
 __pycache__/
 *.pyc
+
+# Regenerated claim ledger (notes/ledger.py) -- derived, never checked in;
+# see notes/Harness-structure.md slice 8 for why.
+notes/.ledger-cache/

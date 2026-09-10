@@ -1,14 +1,16 @@
 # Harness + PENCIL doc-set structural round (work log)
 
-**Status: PLAN ONLY — nothing landed. Opened 2026-09-09 at the user's
+**Status: SLICE 8 LANDED 2026-09-09** (`notes/ledger.py`, 1 308 claims indexed
+across five files, selftest green, ~0.2 s regeneration, cache gitignored).
+Slices 9–14 remain plan. The next concrete task is **slice 9** — the status
+vocabulary and its `--lint` — or, at the user's option, slice 12's split, for
+which slice 8 turned up a new argument recorded there. Opened 2026-09-09 at the user's
 request after Phase 39's dispatch costs were measured. Slices are numbered
 8–14, continuing `notes/Pencil-structure.md`'s slice numbering; this is a
 separate file because the round's deliverables are **cross-phase** (a
 derived-ledger layer, a split coordinator command, a new agent core, a
 status vocabulary with a gate) rather than PENCIL file layout alone, which
-is what slices 1–7 were. `notes/Pencil-structure.md` gets a pointer at
-slice 8. The next concrete task is slice 8 (the ledger), which is
-additive and unblocks every later slice.**
+is what slices 1–7 were. `notes/Pencil-structure.md` carries the pointer.**
 
 Round discipline is `CLEANUP.md`'s, per the slice-3 precedent: a
 *structural* round (layout / navigability / cross-phase promotion), not a
@@ -165,7 +167,49 @@ Each slice is one commit unless stated. Every slice runs the standing
 per-commit checklists (`CLAUDE.md` *Before each commit*) plus the gates in
 `notes/Pencil-structure.md` *Gates for any continuation*.
 
-### Slice 8 — the claim ledger and its query CLI  *(additive, no moves)*
+### Slice 8 — the claim ledger and its query CLI  *(LANDED 2026-09-09)*
+
+**What landed.** `notes/ledger.py` — 1 308 claims across the five source
+files (`Pencil-informal` 1 038, `-grid` 232, `W4` 22, `strategy` 7, `fanout`
+9), regenerating in ~0.2 s into a gitignored `notes/.ledger-cache/`. Measured
+against the traced BNONUNI dispatch it replaces: **14 labels briefed in one
+call for ~7 600 tokens**, against the ~137k that dispatch spent on ~35 probes
+for ~18 labels.
+
+The status census it produced is the slice-10 backfill's worklist:
+**UNTAGGED 666 (50.9%)**, PROVED 447, MEASURED 109, INFORMAL 56, CONSTRUCTED
+12, REFUTED 11, OPEN 5, ASSERTED 1, CONJECTURED 1. Of the 666 untagged, 441
+*do* carry a parenthetical whose leading token simply is not a status word
+(`the board`, `the price`, `classification`, `the E-rider`); the other 225
+carry no parenthetical at all.
+
+**Four corpus shapes the implementation found, each of which would have
+produced a wrong ledger** — recorded because three of them bear on later
+slices:
+
+1. **Bolded prose is not an opener.** `> **(CH-1)'s girth ≥ 4 excludes**`
+   looks like a label opener; 158 lines do. Requiring the bold to close
+   immediately after the label cuts 1 177 candidates to 942 real openers.
+2. **Bare `(i)`/`(ii)`/`(c)` openers are sub-clauses**, not labels (96
+   occurrences). A parser that takes them at face value invents an `ii`
+   family. Five in the fan-out write-ups have no parent label at all — those
+   are narrative bullets and are correctly dropped; `--selftest` counts them
+   so the arithmetic still closes.
+3. **41% of tag parentheticals do not close on their opening line** (378 of
+   921). The tag needs a balanced-paren scan with inline code masked; the
+   throwaway prototype used in the plan's diagnosis truncated all 378, which
+   is why that census over-reported freeform tag-heads.
+4. **Section headings are themselves status surfaces** — see slice 12, where
+   this changes the argument.
+
+**Status is read from the tag's LEADING TOKEN only.** `*(proven; and
+enumerated …)*` is PROVED; `*(two NEGATIVE CONTROLS, both asserted)*` is
+UNTAGGED, because a claim's status is not to be guessed from a word appearing
+somewhere inside its editorial gloss. This is the plan's *no invented verdict*
+rule made mechanical, and it is why the UNTAGGED share (51%) is slightly
+higher than the plan's estimate (47%).
+
+### Slice 8 — as originally specified  *(retained for the record)*
 
 **Deliverable.** `notes/ledger.py` — a generator + query CLI. **The ledger
 itself is NOT checked in**; it is regenerated into a gitignored cache
@@ -307,6 +351,35 @@ that §7 already requires be labelled *to be tested, not inherited*.
 
 ### Slice 12 — split the workbook  *(the move; needs slices 8–9 landed)*
 
+**Slice 8 turned up a new and stronger argument for this slice, from an
+unexpected direction: claim IDENTITY.** Building `--delta` forced the question
+*what makes two claims the same claim across two revisions?*, and the
+single-file layout makes that genuinely hard in three compounding ways.
+
+- A section's identity cannot be its heading, because **headings are rewritten
+  in place as directions land** — `§(K-dom)`'s grew an entire new clause when
+  DSAT landed, and `§(K-ins)`'s was rewritten when INSJOINT landed. Keying on
+  heading text produced **500+ phantom add/removes**.
+- It cannot be the label alone either: **20 labels are claimed in more than
+  one section** (`(BE-41)` in four, `(CH-1)` in three), so a label-keyed diff
+  collapses them and **invented three status transitions on claims whose
+  status never moved**.
+- What works is a synthetic key — the gap token plus the direction code,
+  `§(K-bare-ext)/BEFOURP` — reconstructed by regex from prose on every run,
+  plus a relocation pass to stop a section move (RESGRID's six `(RS-·)`
+  claims) reading as six deletions.
+
+**Every line of that machinery exists to reconstruct what a file path would
+have given for free.** If each direction continuation and each topical gap
+were its own file, the path *is* the stable identity: no synthetic key, no
+heading-rewrite fragility, no collision ambiguity, and `locate()` collapses to
+a grep of one small file. The split does not merely make retrieval cheaper —
+**it removes a class of identity bug the single-file layout creates.**
+
+This is now the second independent argument for slice 12 (the first being
+D2/D5's retrieval cost), and it is the better one, because it is about
+correctness rather than tokens.
+
 Per D5: 37 direction sections to `workbook/bare-ext/<DIR>.md`, 33 topical
 sections to `workbook/<gap>.md`, the gap map to `workbook/gapmap.md`.
 Content moves **verbatim** — a slice that edits prose while moving it cannot
@@ -426,7 +499,13 @@ Round-close obligation, per `CLAUDE.md` *Lift on promotion*:
 
 ## Hand-off / next phase
 
-Next concrete commit: **slice 8** — `notes/ledger.py`, with `--label`,
+Slice 8 is LANDED. Next concrete commit: **slice 9** — the status vocabulary
+and `notes/ledger.py --lint`, which turns the 666 UNTAGGED claims from a census
+into a gate on new ones. Slice 12 (the split) is the alternative next step and
+now carries the stronger argument; it needs slice 9 first only so the backfill
+is not done twice.
+
+*(Slice 8's original spec, for the record: `notes/ledger.py`, with `--label`,
 `--status`, `--frontier`, `--cited-by`, `--brief` and `--delta`, generating
 into a gitignored `notes/.ledger-cache/` and run against the corpus in its
 *current* location (`notes/Pencil-*.md`). No `line` column, no checked-in
@@ -434,4 +513,4 @@ artifact, no `--verify`. Additive; no file moves; no mathematics touched. The
 commit adds the cache path to `.gitignore` and records the three measurements
 that decided the no-check-in call (0.2 s generation; 165% vs 36% row churn per
 twenty landings; 35.9 KiB per twenty revisions had it been stored). Slice 12
-retargets its paths.
+retargets its paths.)*
