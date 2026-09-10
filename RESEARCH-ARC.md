@@ -892,6 +892,39 @@ Recording them here as *questions*, not as guesses dressed up as
 guidance — inventing an answer would read as settled the moment it is
 written down, which is worse than leaving the gap visible.
 
+- **A KIND axis for the claim ledger, orthogonal to evidence status —
+  DEFERRED 2026-09-09, with a revisit trigger.** The status vocabulary
+  (`PROVED`/`MEASURED`/`REFUTED`/…) records an evidence *stratum* and has no
+  way to say *this row is not an evidence claim at all*. A taxonomy pass over
+  PENCIL's 799 judgement-untagged rows found that **58% of the 200 that carry
+  a gloss are ROLE glosses** — cap disclosure, dispatch verdict, editorial
+  reading, board/price/successor — and proposed a second axis in the same
+  bracketed slot: `[PLAN]`, `[NOTE]`, `[TARGET]`, `[CORRECTS <label>]`, plus a
+  *derived* `INHERITED <head-status>` that no author writes. Rows carrying a
+  kind would leave the claim denominator, moving PENCIL's untagged share from
+  ~63% to ~56%, and `--lint` would have to accept kind tokens without
+  demanding a driver of them.
+
+  **Why it is deferred rather than adopted.** It is a second axis on a
+  vocabulary one day old, proposed from one wave of evidence, and this file's
+  own three-tier rule says one wave is a Candidate at best. Worse, the cheap
+  version may make it unnecessary: the same pass observed — **speculatively,
+  and it did not test this** — that PENCIL's landing write-ups appear to follow
+  a fixed slot template (*the reading* / *the price* / *the successor* /
+  *what did not move* / *status*), and those slots are precisely the families
+  a kind marker would name. If that holds, the kind is **derivable from the
+  slot** and costs an author nothing; if it does not, the axis is a real
+  authoring burden on every future claim.
+
+  **The revisit trigger, concretely:** after a few `/coordinate-research`
+  rounds have landed under the bracketed vocabulary, ask (a) whether the
+  slot-template hypothesis holds against the landings actually written — that
+  is the cheap test and it decides the cost — and (b) whether the untagged
+  share is still dominated by role rows once per-landing tagging has been
+  running. If the template holds, derive the kind and skip the authoring cost
+  entirely. Do not adopt the axis on the strength of the single pass that
+  proposed it.
+
 - **Optimal fan-out width.** PENCIL ran fan-outs of three and of five
   concurrent directions, both successfully, but never systematically
   varied the width against a fixed research budget. Is five near a

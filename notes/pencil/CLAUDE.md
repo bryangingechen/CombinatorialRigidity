@@ -100,6 +100,13 @@ how much of the corpus cites it. Tag only where the claim's own prose is
 decisive; `UNTAGGED` is a terminal state, not a defect. Like the other docs gates it inspects
 changed-vs-`HEAD` files, so **run it before committing**, or with `--all`.
 
+**If a row is not an evidence claim at all** — a board, a price, a scope note,
+a "what did not move" report — there is currently **no tag for that**, and
+`UNTAGGED` is the right answer. A *kind* axis (`[PLAN]`/`[NOTE]`/`[TARGET]`)
+was proposed and **deliberately deferred**: see `RESEARCH-ARC.md` *Genuinely
+unsettled*, which states the revisit trigger. Do not invent a kind token in the
+meantime.
+
 Three sharp rules this corpus paid for:
 
 - **A driver per headline sentence**, and *exhaustive* / *forced* / *the only*
