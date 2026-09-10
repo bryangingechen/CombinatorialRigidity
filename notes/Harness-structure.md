@@ -1725,3 +1725,86 @@ exist**. Harmless — an untracked generated artifact belongs in a scratch
 directory, and that is arguably the better call — but two places in this file
 assert a path that was never created. Fix the plan text to match, or create the
 directory and gitignore it; do not leave the assertion standing.
+
+## D8 — the SECOND `/coordinate-research` session, measured at the same point: prep did not move
+
+**The measurement.** 2026-09-10, second `/coordinate-research` session, opening
+a round of three at `b742ec2d`. Floor (system + `CLAUDE.md` suite + command)
+**~56k**; first dispatch at **~197k**. So **prep ≈ 141k**, against D7.2's
+**143k**. Basis: the session's own budget counter at the dispatch tool call, so
+the absolute is good to a few k; the call count below is a **hand count (~55)
+and D7.2's precedent says hand counts undercount** — its "~55" instrumented to
+67. Re-take both from the transcript rather than trusting them.
+
+**Everything D6 shipped, shipped — and the number did not move.** `phasenote.py`
+(D6.1), `--reserve-range` (D6.3a), `blindaxes.py` (D6.4), `check-driver-refs.py`
+(D6.5), the check-in reorder (D6.6), `check-phase-note.py --all` (D6.7) were all
+used in this session, all worked as specified, and between them cut the call
+count ~18% (67 → ~55) and the token count **~1%** (143k → 141k).
+
+**Why — and it is not that the tools failed. The savings were SPENT, not
+banked.** This session's prep did strictly more than the last one's: an F26
+consumer check that re-aimed one direction off §8's stated item entirely, a
+population check that overturned a landed cap disclosure, and a scope check on a
+landed `[PROVED]` clause. All three specs are materially different because of
+work the previous session did not do. The honest reading is **prep got better at
+constant cost, not cheaper** — so *"make prep cheaper"* is the wrong target, and
+D7.2's kill condition (first dispatch under ~90k) will not be reached by
+shipping more readers.
+
+**The composition, which D7.2 prices as residency and not as production.** ~141k
+over ~55 calls is ~2.6k/call, while the *displayed* tool output across the whole
+prep was only ~55–60k. **Roughly half of prep is the coordinator's own reasoning
+output, one turn per call.** That is `ledger.py`'s original finding — *"the cost
+is TURNS, not bytes"* — arriving one layer up, at the coordinator. D7.2's lever
+(*where and when to read*) is real but secondary; **the first-order lever is CALL
+COUNT**, and the only thing that reduces it is a mode that answers a whole
+question in one call.
+
+**Where the ~55 calls went, classified by whether they changed a dispatch:**
+
+| class | calls | changed a dispatch? |
+|---|---|---|
+| findings work — F26 consumer check, population check, `(GR-176)` scope, `blindaxes` | ~26 | **yes**, all three specs |
+| loop-mandated mechanics — reservations, `--brief`, git, budget | ~14 | no, but required |
+| orientation that changed no decision | ~13 | **no** |
+
+The ~13: `RESEARCH-ARC.md` (**6 calls**), `notes/pencil/CLAUDE.md` (1),
+`ledger.py`'s module docstring (1), `phasenote.py` `--help`/`--surfaces`/
+`--status`/*Current state* (4), `gapmap.py --list` (1). Every one is *"re-read
+rules I was already given."*
+
+**Shipped with this entry — two, because D7.8's lesson is that a section is not
+a fix:**
+
+- **(a) `RESEARCH-ARC.md` is read BY SECTION WHEN ITS SITUATION FIRES, not at
+  session start** (`.claude/commands/coordinate-research.md`). Justification is a
+  measurement, not taste: all **13 of 13** distinctive binding-rule phrases
+  (`0-hit`, `diff against`, `monotone counter`, `not found under cap`, `0 of 6`,
+  `expect to be wrong`, `deciding row`, `blind-axis`, `driver per headline`,
+  `evidence stratum`, …) already appear in the 356-line command body, so the
+  1 137-line read delivers provenance. This is **D6.2's split achieved by
+  relocating the READ instead of the text** — cheaper than the binding-head /
+  provenance-tail rewrite, and it leaves that rewrite available.
+  *Kill condition: a session that skipped the read and missed a rule the manual
+  alone carried. Decided by: that session's dispatch-log entry.*
+- **(b) `gapmap.py` accepts `--cell close-it`.** The reader **prints** the cell as
+  `close-it` (its `Row.name`, and the `--list` header) while its CLI accepted only
+  `close` — so the tool names an object and then rejects that name. D7.9's shape,
+  inside one script, hit on this session's first gap-map read.
+
+**Unshipped, and this session's trace is its second instance —
+`blindaxes.py` has a POPULATION blind spot.** D6.4's tool lists *parameter*
+fences: keyword defaults, module constants, limiters. This session's decisive
+prep finding is not of that shape. `gforce.py`'s Λ-blindness — its own disclosed
+*"sharpest blind axis"* — is a property of **where its shapes come from**
+(`sweep()` → `gridcol.pool_shapes` → `grid.census_shapes`), which `blindaxes.py`
+reports nothing about; recovering it by hand cost **~14 calls** and overturned
+the disclosure (**604 of the 907** census shapes carry `Λ ≠ ∅`). The same defect
+class is already recorded once: `notes/pencil/labels.md` has two dispatch specs
+mis-describing `aglu._pool8()`'s Λ status, caught by a direction. Two instances,
+different drivers, same shape. A `--population` mode that walks a driver's <!--driver-refs:exempt-->
+shape-source call chain to its generator and prints that generator's docstring
+and hardcoded ranges answers it in one call.
+*Kill condition: `blindaxes.py --population` present and naming a driver's shape <!--driver-refs:exempt-->
+generator. Decided by: its `--help`.*

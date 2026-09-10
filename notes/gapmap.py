@@ -272,7 +272,7 @@ class Row:
             return self.cells  # no guessed split point; one cell either way
         if which == "status":
             return [self.cells[0]]
-        if which == "close":
+        if which in ("close", "close-it"):
             return [self.cells[1]]
         return self.cells
 
@@ -632,8 +632,10 @@ def main(argv):
     mode.add_argument("--grep", metavar="PATTERN", help="sentence-scoped regex search")
     mode.add_argument("--selftest", action="store_true",
                       help="audit the sentence split (lossless) and sizes")
-    p.add_argument("--cell", default="all", choices=["status", "close", "all"],
-                   help="which cell of the row (default all)")
+    p.add_argument("--cell", default="all",
+                   choices=["status", "close", "close-it", "all"],
+                   help="which cell of the row (default all); `close-it` is "
+                        "the name this reader PRINTS, so it is accepted too")
     p.add_argument("--head", type=int, metavar="N",
                    help="first N units (--row) / N matched units (--label, --grep)")
     p.add_argument("--tail", type=int, metavar="N", help="last N units (--row)")

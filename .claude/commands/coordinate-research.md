@@ -17,9 +17,17 @@ commit, dispatch it with `/coordinate-phase`'s machinery and come back.
 reservations (§1), serial landing and the concurrent-read hazards (§2),
 the gap-map-as-status-object pattern (§3), a driver per headline
 sentence (§4), cap disclosure (§5), kill conditions on forward-looking
-items (§8), and §7's prediction-labelling rule live there in full. Read
-it once at session start; this body carries only what a coordinator
-needs *in the loop*, and points rather than restates.
+items (§8), and §7's prediction-labelling rule live there in full.
+**Read a section WHEN ITS SITUATION FIRES — not at session start.** That is
+the TACTICS-QUIRKS model this project already uses for
+`notes/coordinate-phase-rescue.md` and `REFS.md`, and the reason here is
+measured rather than stylistic: **every binding rule of the manual is already
+restated in this body** (13 of 13 distinctive rule-phrases, checked
+2026-09-10, `notes/Harness-structure.md` D8), so reading 1 137 lines at
+session start buys **provenance, not rules** — and provenance is exactly what
+D6.2 puts below the read-line. What the manual still owns, and what you should
+go to it by section for: the *evidence* behind a rule you are about to deviate
+from, and any situation this body does not cover.
 
 **FIRST ACTION OF THE SESSION, before any reading**, ask the user once
 whether this run modifies these instructions, and fold the
