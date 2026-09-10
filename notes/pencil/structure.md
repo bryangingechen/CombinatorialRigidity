@@ -1726,3 +1726,18 @@ baseline that had already moved.
 **What the row now says instead**, label-for-label:
 
 > (GR-73)/(GR-79)/(GR-80)/(GR-81)/(GR-82)/(GR-83): the **AA-glue chronology** — the configuration pinned to one template at `n_hub = 8`, no interior-interior `T`-branch ((GR-74)(i)), and NOT realizable there ((GR-75)(i)); the corner charge a factor-3 strengthening of (GR-74)(iii) and a third proof of it; the dart identity with (GR-76)(i) its `≥ 0` instance, and (GR-36)(iii)'s J-charge extending to any branch set — chaining to the `n`-free `n_hub ≥ 16`, with the EXACT boundary WITNESS at 16 where the (GR-38) kill FAILS. **Settled; the verdict is this row's close-it `(c)`, the chronology is `notes/pencil/structure.md`** *"The AA-glue chronology"*.
+
+## The (b′) three-readings chronology (RELOCATED from the `(K-grid)` gap-map row, 2026-09-10 — the close-it half of the relocation pass)
+
+**Why it moved, and why this half waited.** The status half of this pass ran at `f2905c86`; the close-it half was **deliberately deferred** because `(K-grid)` close-it **u9** was direction GEXPAND's named deciding surface and GEXPAND was in flight with clause-level anchors against it. GEXPAND landed at `8b103990` (its anchor confirmed to be u9's dead-routes list, a different unit from this one), taking close-it to **985 of 985** — cap exactly, zero free. This is the deferred half, run now that the anchors are visible.
+
+**The test, the same one the status half used.** (b′)'s three readings are **settled** — (P) false, (m) proven, (L) untouched — and the route is **barred** by the standing do-not-do (*no more (a′)/(b′) ledger directions*). A barred route's chronology is reference; its verdicts and its **live successor** are status. The successor — *is the ledger gap ever `≥ 3`?* — **stays in the row**, and every label token is retained in the pointer.
+
+**Verbatim, as it stood in the close-it cell at `8b103990`** (95 words):
+
+> **(b′) has three readings, the ledger consuming the third** ((GR-127), *Steps G140–G148*): **(P)** `∀M`; **(m)** `min_M (d_adm − d_par)`; **(L)** `min_M d_adm − min_M d_par`, the **difference of minima** `gdev.min_dev` computes. **(P) FALSE** at `2k = 2` ((GR-122), an `n_hub = 20` gap-4 pair — (GR-104)(i) refuted, (GR-86)'s cap attained); **(m) PROVEN** at every habitat ((GR-126)); **(L) untouched by both** — W3's ledger gap is **1**, which (GR-67)'s parity law forbids per-matching, and **0** at (GR-122)'s shape. (GR-108) FALSE from `n = 12`, exactly ((GR-123)). **Standing:** the calculus ((GR-110)–(GR-112)), the surgery ((GR-117)(ii)), (GR-120), constant **4**.
+
+**What the row now says instead**, label-for-label:
+
+> **(b′)'s three readings (P)/(m)/(L) — SETTLED, and the route is BARRED by the standing do-not-do**: (P) FALSE, (m) PROVEN, (L) untouched ((GR-127)/(GR-122)/(GR-104)(i)/(GR-86)/(GR-126)/(GR-67)), (GR-108) false from `n = 12` ((GR-123)); standing calculus/surgery ((GR-110)–(GR-112)/(GR-117)(ii)/(GR-120)), constant 4. Chronology: `notes/pencil/structure.md` *"The (b′) three-readings chronology"*.
+
