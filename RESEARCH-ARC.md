@@ -955,3 +955,62 @@ a handful of times per phase, not per commit. Not a substitute for reading
 the active phase's own notes (`notes/PhaseN.md` *Hand-off*) for what to do
 *next* — this file is about *how* to run the dispatches, not *which*
 mathematics to attack.
+
+**THE THIRTY-SECOND, -THIRD AND -FOURTH INSTANCES (2026-09-10, the round of three:
+BCORNER / GISLAND / GCOIND) — three for three again, NO new kind, and the tally is
+repaired because it had drifted by three landings.** Baseline: **thirty-one instances and
+ten kinds** (BGTWOA, above), cited rather than re-derived — **and that baseline is where
+§7 stopped being maintained.** INSJOINT (90), BNONUNI (91) and BOBLIG (92) all landed with
+coordinator predictions corrected (`notes/dispatch-log.md`, 2026-09-09) and **none was
+written into this tally**. They are named here as a known gap rather than silently folded
+into the count, so the recorded total below is what §7 actually contains, not an estimate.
+
+- **BCORNER** — **kind 5** (*refuted, with its own named escape clause vindicated*). The
+  spec predicted `(BE-OBL)` TRUE with the obstacle *"population, not truth"*; it is
+  **false**, at 62 exhibited certificates. Its *"where I expect to be wrong"* item —
+  *the added hypothesis will be less protective than the tuple-space negative controls
+  suggest* — is exactly what the Grassmann floor turned out to mean. **The new wrinkle
+  worth recording is the TELL, not the verdict:** the spec's tell was *"one row in the
+  residue inside the quantifier"*, and a **residue-built tell cannot detect a refutation
+  living in the over-strength region**, which is where this one lived. BGTWOA's instance
+  recorded a tell that *could not have fired*; this one is a tell **aimed at the wrong
+  region**, and the check that would have caught it is the same one BGTWOA earns: ask
+  which region the tell samples before asking whether it is falsifiable.
+- **GCOIND** — **kind 10** (*confirmed, for the wrong reason*). Verdict vindicated: a
+  combinatorial criterion exists at `r = 4` and is visible in the split. Reason
+  **measurably false**: the spec offered value-independence plus refinement-monotonicity
+  as *"the signature of a matroidal condition"*; it is a **Vandermonde dimension count**.
+- **GISLAND** — **kind 10 again, with kind 7's mechanism** (*inapplicable*), and **the
+  first refuted *where-I-expect-to-be-wrong* clause of the round**. Verdict confirmed (no
+  refutation). The stated reason — *(GR-24)'s measured cover has never failed* — is
+  **wrong in kind**: (GR-24) does not *cover* the island, because the island is **defined**
+  as where its hypothesis cannot hold. That is BBASE's shape exactly: the cited instrument
+  is true, real, and about a neighbouring object. And the spec's expectation-of-being-wrong
+  (that the refutation branch was live at `|Λ| ≥ 2`) is **refuted** — the tell never fired.
+
+**Declining an eleventh kind is again the decision.** All three classify inside the
+existing ten, and the closing lesson of the last reconciliation binds: *the taxonomy is a
+diagnosis of one habit, not a checklist*. **New total: thirty-four recorded instances and
+ten kinds.**
+
+**THE ROUND'S REAL CROSS-RETURN FINDING IS NOT IN THE PREDICTIONS — IT IS THAT THE
+GAP-MAP CELL PROPOSAL IS THE LEAST-GATED ARTIFACT A DIRECTION PRODUCES.** Two of the three
+proposed cells were defective, and **both passed every gate**:
+
+- **GCOIND's** recompute plan costed ~92 words out of the `(K-grid)` **status** cell's
+  *"driver/label inventory sentence"*, itemising three duplicated glosses. **No such
+  inventory exists** — the whole table carries 7 `.py` mentions, 0 `packmm`, 0 `modes`.
+  Nothing failed, because a plan for an edit that is never made cannot fail a gate.
+- **GISLAND's** proposed status text wrote `` `|Λ| ≥ 2` `` with **unescaped pipes**, which
+  flipped the row from `split` to `combined` — `check-gapmap-cells.py` **reported OK**,
+  because its ambiguous-split fallback caps the *sum* of the two cells, and the sum was
+  under. The shape regression was caught by `gapmap.py --list`, a **reader**, not a gate.
+
+The three gates cover disjoint, incomplete properties: `check-gapmap-cells.py` checks word
+caps, `gapdiff.py` checks label preservation, `--lint` checks status vocabulary. **None
+checks that the row still parses into its columns, that the proposal was computed against
+the current baseline, or that the structure it describes exists.** The remedy is cheap and
+belongs in the landing checklist rather than in a new gate: **after applying any cell edit,
+re-run `gapmap.py --list` and confirm the row is still `split` and its two cells are still
+counted separately** — one command, and it is the only thing that sees the shape. Recorded
+as a **Candidate**, not promoted: one wave of evidence, per this file's own tier rule.

@@ -1186,3 +1186,38 @@ command. Merely old ⇒ it is history, date it and leave it.
 (`notes/Phase39.md`, `notes/pencil/CLAUDE.md`, `ROADMAP.md` §39) returning only
 dated or command-cited figures. Decided by: this section and the next liveness
 sweep.*
+
+### D6.9 — the round's own answer to D6: what the harness gated, and the one artifact it did not
+
+Recorded after the 2026-09-10 round of three landed (`f34759e1`, `1faf7cee`,
+`32e9b0f3`), because a diagnosis section that never reports its own follow-up is
+the rot §8 names.
+
+**What the built harness did well, measured on a real round.** `--brief`/`--round`
+produced three dispatch packets at one call each; `--reserve` cleared three
+direction codes in one call; `gapmap.py` kept two 20 000+-character rows readable
+at a few percent of their cost; and `--lint` **caught a real defect before the
+commit** — a direction had written `[UNTAGGED]` as a bracketed tag on three
+clauses, where `UNTAGGED` means *no bracket*. That last one is D6.7 vindicated
+from the other side: the gate fired only because it was run **before** the commit;
+run after, it certifies nothing.
+
+**What no gate covered, and it is the same artifact twice.** Two of the three
+directions proposed a defective **gap-map cell**, and both proposals passed every
+gate — one costing words out of a status-cell structure that does not exist, one
+writing unescaped pipes that silently flipped the row from `split` to `combined`
+while `check-gapmap-cells.py` reported OK (its ambiguous-split fallback caps the
+*sum*). The shape regression was caught by `gapmap.py --list` — **a reader, not a
+gate**. Full record: `notes/dispatch-log.md`, 2026-09-10.
+
+**The generalizable form, and it sharpens D6.1 rather than adding to it.** D6.1
+says the phase note has a gate and no reader. This round says the converse also
+bites: **the gap-map row has both, and the reader is what caught the defect the
+gate could not.** So the pairing is not redundancy — the gate bounds a *measure*
+(words, labels, vocabulary) and the reader exposes *shape*, and only the second
+notices when a row stops being a row. Any object worth gating is worth a reader,
+and the landing checklist should call the reader, not only the gate.
+
+*Kill condition: a round in which the gap-map cell proposals land clean, or a gate
+that checks row shape. Decided by: `notes/dispatch-log.md`'s Findings and this
+section.*
