@@ -4918,7 +4918,9 @@ dispatch baseline `483f9787`:
 > `*.md`/`*.tex`/`*.lean`/`*.py`/`*.m2`"*. The **opening token is not 0-hit**:
 > `(BE-225)` / *Step BE224* returns **2 hits / 2 files** — BNONUNI's own
 > tail-declaration sentence in this file (line 4844) and the same sentence in
-> the untracked `notes/Pencil-draft-BNONUNI.md`. Both are **DECLARATIONS, never
+> the direction's untracked draft (`notes/Pencil-draft-BNONUNI.md`, **deleted
+> 2026-09-09 once spent**; its content landed at `46dff158`). Both are
+> **DECLARATIONS, never
 > consumptions**, so the range is available and nothing is re-used; and the
 > non-zero opening cell is **by design**, the third consecutive reservation on
 > this section to carry one (BGTWOA's, BNONUNI's, this one). The correction is

@@ -28,12 +28,13 @@ Run from the repo root:
     PYTHONHASHSEED=0 python3 notes/scripts/w4/gtmpl.py --lam     # (GR-84): the residual and laminarity census AT THE WITNESS COLOURING -- what else breaks at n_hub = 16
     PYTHONHASHSEED=0 python3 notes/scripts/w4/gtmpl.py --val     # every local device cross-certified against the canonical layer
 
-Argument state: session draft `notes/Pencil-draft-GTMPL.md` (to be merged into
-`notes/pencil/workbook/grid.md` §(K-grid) as Steps G98-G103; labels
-(GR-79)-(GR-84) per the 2026-08-19 GTMPL reservation in
-`notes/pencil/labels.md`).
+Argument state: LANDED in `notes/pencil/workbook/grid.md` §(K-grid),
+*Steps G98-G103*, labels (GR-79)-(GR-84) (the 2026-08-19 GTMPL reservation in
+`notes/pencil/labels.md`). This line used to point at the in-flight session
+draft `notes/Pencil-draft-GTMPL.md`, which was spent at that landing and is
+gone; read the section.
 
-THE DERIVED STRUCTURE THE MODES REST ON (proofs in the draft; ASSERTED here,
+THE DERIVED STRUCTURE THE MODES REST ON (proofs in that section; ASSERTED here,
 never trusted).  Throughout `Lambda = empty`, `D = 0`: `G°` cubic loopless,
 lengths in [2, 5] ((SD-6)), total excess 6 ((GR-21)); chunk / interior /
 corner / defect exactly as in `gexist.py`'s header; binding in A iff

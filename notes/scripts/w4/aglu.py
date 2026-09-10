@@ -18,11 +18,13 @@ READ-ONLY (README §2).  Run from the repo root:
     PYTHONHASHSEED=0 python3 notes/scripts/w4/aglu.py --adv     # (GR-77): the falsification controls -- the detector must FIRE somewhere
     PYTHONHASHSEED=0 python3 notes/scripts/w4/aglu.py --val      # every fast device cross-certified against the canonical layer
 
-Argument state: session draft `notes/Pencil-draft-AGLU.md` (to be merged into
-`notes/pencil/workbook/grid.md` §(K-grid) as Steps G92+; labels (GR-73)-(GR-78) per
-the 2026-08-19 AGLU reservation in `notes/pencil/labels.md`).
+Argument state: LANDED in `notes/pencil/workbook/grid.md` §(K-grid),
+*Steps G92-G97*, labels (GR-73)-(GR-78) (the 2026-08-19 AGLU reservation in
+`notes/pencil/labels.md`). This line used to point at the in-flight session
+draft `notes/Pencil-draft-AGLU.md`, which was spent at that landing and is
+gone; read the section.
 
-THE DERIVED STRUCTURE THE MODES REST ON (proofs in the draft; ASSERTED here,
+THE DERIVED STRUCTURE THE MODES REST ON (proofs in that section; ASSERTED here,
 never trusted).  Throughout `Lambda = empty`, `D = 0`: `G°` cubic loopless,
 lengths in [2, 5] ((SD-6)), total excess 6 ((GR-21)); chunk / interior /
 corner / exit / defect exactly as in `gexist.py`'s header; binding in A iff
