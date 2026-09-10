@@ -1,14 +1,14 @@
 # PENCIL kernel-(K) research fan-out — dispatch specs
 
 **Status: EIGHT fan-outs, FIFTY-FOUR single directions, ONE draft-only parallel direction,
-FOUR concurrent pairs, ONE concurrent round of four and ONE concurrent round of three
-dispatched; 97 LANDED, **NONE IN FLIGHT, NONE DRAFTED** — the round of three is COMPLETE
-(BFOUR 81, BINSERT 82, BSERIES 83) and **BSTEER 84, BGPROP 85, BRANKV 86, BLONGARC 87,
-BEFOURP 88 then BGTWOA 89 landed as single dispatches after it**, a chain of **six** in
-which each answered the very task its predecessor handed over — the third **refuted its
-predecessor's own successor**, the fourth **exhausted its own method class**, the fifth
-**decomposed the survivor** and the sixth **EXHAUSTED that decomposition's frontier, by
-turning the fourth-from-last's own theorem against it** ((BE-204)–(BE-217)).
+FIVE concurrent pairs, ONE concurrent round of four and ONE concurrent round of three
+dispatched; 99 LANDED, **NONE IN FLIGHT, NONE DRAFTED**. The round of three (BFOUR 81,
+BINSERT 82, BSERIES 83) and the **chain of six** single dispatches that answered each
+other in turn (BSTEER 84 → BGTWOA 89, (BE-204)–(BE-217); per-landing detail in the
+sections and in blocks 8/11–13, **not restated here**) are both CLOSED — and
+**INSJOINT 90 + BNONUNI 91 then landed as a CONCURRENT PAIR that decided BOTH of the
+board's remaining live entries in one round**: option B's last endpoint EXCLUDED
+((INS-9)–(INS-16)) and `(BE-E4′)` **DEAD BOTH WAYS** ((BE-218)–(BE-224)).
 
 *(**THIS HEADER WAS STALE BY ONE, caught at BEFOURP's landing (2026-09-08).** It read
 *"94 LANDED"* with the chain ending at BRANKV 86: **BLONGARC's landing (`19f5d8b5`)
@@ -19,6 +19,53 @@ status-surface list — *"this file's own top `**Status:**` header"* — firing 
 prediction holding once more: **a document's own header is precisely the part a
 section-scoped edit does not re-read.** Repaired here together with this landing's own
 increment, so the count above is `94 + BLONGARC + BEFOURP = 96`.)*
+
+*(Round state, coordinator, 2026-09-09 — the **concurrent pair**, CLOSED at BNONUNI's
+landing. Two dispatched read-only, two landed serially, **zero label collisions and zero
+document contention** — reservations again read from the registry's **declared tails**
+rather than derived by scanning, the fix that retired the five-defect root cause, now
+holding a **third** round. Every driver's decisive mode was re-run by the coordinator
+(`uprime deficit`, `arith`, `validate`, and `bline.py validate` for figure invariance).*
+
+**THE ROUND DECIDED BOTH LIVE ENTRIES, AND ONE VERDICT INVERTED ON A COORDINATOR
+DEFECT.** INSJOINT (90) measured `rank⟨U′, Λ²Π̂⟩ = 2` — **exactly the value the recorded
+kill condition named as survival** — and then derived that the threshold itself moves with
+the object: deleting the second vertex grows `dim U` by 1, and `need` is a *function* of
+`dim U`, so `need′ = 3` and the deficit is **preserved**, not spent. Read against the
+recorded constant this direction resurrects a dead route; read against the derived one
+option B is **SPENT OUTRIGHT**. BNONUNI (91) then decided `(BE-E4′)` **both ways** —
+refuted below `ρ₁+ρ₂ = 6`, its own target above it, relaxation zone non-attainable — so
+§8's ranks 1, 2 and 4 are all spent and the live board is rank 3 plus the naked `Π_x`
+obligation.
+
+**CORRECTIONS RAN BOTH WAYS, AGAIN, AND THE COORDINATOR'S SHARE WAS BOTH OF THEM.** Each
+direction caught one defect of mine: the **undated kill-threshold relay** above (I passed
+`≥ 2` from the gap-map cell without re-deriving the constant for the two-vertex object —
+the same family as BGTWOA's catch, third instance, promoted to `RESEARCH-ARC.md` §8), and
+an **arithmetic slip in a named sub-slice** (`e_j ≤ 6 − ρ_i` is the margin-≤-0 set; the
+refutation set is `e_j ≤ 5 − ρ_i`, the extra rung being exactly the `δ₂ = 2` column where
+the clause holds at margin 0). Against that, landing-time verification caught **no**
+under-qualified summary in either return — the species that hit 3/3 last round. Two and
+zero, one round; `RESEARCH-ARC.md` §7's *neither party is the reliable one* now cuts the
+other way.
+
+**THE MOVED-`HEAD` HAZARD FIRED, AND WAS ANTICIPATED RATHER THAN DISCOVERED** — the first
+time, §2's fourth hazard having been written from BSERIES's round. INSJOINT landed while
+BNONUNI's draft figures were still baselined at `4a3d7c36`; both landing messages
+instructed a re-take, and **it mattered twice**: INSJOINT's own re-take moved its proposed
+cells 607/154 → **608/156** (a citation added after drafting), and BNONUNI re-took
+`gapdiff K-bare` against the new `HEAD`. **Both self-caught further defects by their own
+asserts** — BNONUNI four (a tautological-and-circular first route among them), INSJOINT a
+label-preservation trap that would have failed `gapdiff` — so read each section's disclosed
+self-catches before trusting a figure.
+
+**AND THE BLIND-AXIS INSTRUCTION PAID FOR ITSELF ON ITS FIRST USE.** `4a3d7c36` promoted
+*grep the generator for hardcoded constants and name them in the cap disclosure*; BNONUNI
+acted on it and refuted, on the un-fenced axis, a clause that had survived an
+**exhaustive 6,400-tuple** sweep. Un-fencing cost **one defaulted parameter** on
+`bline.legal_peel` (12 insertions, figure invariance asserted at four consumers) against
+the five directions spent on the fenced population — recorded in `RESEARCH-ARC.md` §4 as
+that item's first positive instance.)*
 
 *(Round state, coordinator, 2026-09-08 — the **round of three**, CLOSED at BFOUR's landing.
 Three dispatched read-only, three landed serially, **zero label collisions and zero

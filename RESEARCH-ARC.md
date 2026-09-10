@@ -250,6 +250,23 @@ be false.** The practical instruction: when a claim is priced as exhaustive, gre
 generator for hardcoded constants and name them in the cap disclosure alongside the
 sampled ranges.
 
+**AND THE THIRD INSTANCE'S INSTRUCTION PAID ON ITS FIRST USE — 2026-09-09, direction
+BNONUNI, this item's first POSITIVE entry.** Everything above is a post-mortem; this is
+the same rule run forward. The blind axis BGTWOA named — the peel profile length,
+hardcoded at 3 — was un-fenced and swept, and it immediately **refuted** a clause that had
+survived the exhaustive 6,400-tuple sweep the fenced population supported. Two things
+generalize. **(a) Price the un-fencing when you write the blind-axis list.** It cost **one
+defaulted parameter** (`bline.legal_peel(…, prof=None)`, 12 insertions,
+behaviour-preserving, figure invariance asserted at four consumers) against the **five**
+directions spent on the fenced population. A hardcoded constant *reads* like harness
+architecture and is usually a keyword argument away from being an axis — so the blind-axis
+list is not merely a disclosure, it is a **candidate list of cheap decisive moves**, and it
+belongs in the dispatch ranking and not only in the caps. **(b) Un-fence by parameterizing
+the landed function, not by copying it.** Re-implementing the gate list inside the new
+driver would have made a third copy and bought a debt item; calling the landed gate with a
+new argument keeps the **figure-invariance test** available, which is what makes the change
+auditable in one command.
+
 This is the single most load-bearing item in this file — it recurred
 across three consecutive corrective passes in PENCIL's arc (a degenerate
 sampler contamination, an acyclic-vs-proper colouring conflation, and a
@@ -373,6 +390,26 @@ general and the cost of the rule is one clause per entry.
   positioned to bump it. PENCIL had four such counters drift simultaneously, and two copies
   of one sentence reading *"sixteen"* and *"fifteen"*. Applies to any monotone count in a
   recommendation surface.
+
+**A THIRD AMENDMENT, 2026-09-09 — and it is §8's own failure mode with the sign flipped:
+a kill condition that names a NUMBER must carry the number's DERIVATION.** §8 asks each
+forward-looking entry for its kill condition and the status row that decides it. Both were
+present and correct on PENCIL's `§(K-ins)` row, and the entry was **still** misleading: its
+kill condition read *"derive `U′` … and measure `rank⟨U′, Λ²Π̂⟩` at these 8 seeds"* against a
+status clause saying *"`rank ≥ 2` is **not excluded**"* — and `2` is the **predecessor
+object's** threshold. It is not a constant. `need = s₀ + dim U − c_G`, so it moves with
+`dim U`, and the two-vertex-deleted object the entry is *about* has `dim U′ = dim U + 1`,
+hence `need′ = 3`. The measurement came back **exactly 2**, so the recorded condition
+returns *survives* — resurrecting a route already recorded SPENT — while the derived one
+returns *excluded*. **No liveness sweep catches this**, because nothing went stale: the
+threshold was never valid for the object its own sentence names, from the day it was
+written. Hence the rule: **when a kill condition names a numeric threshold, record how the
+threshold was DERIVED, not just its value** — a threshold derived for object `X` is not a
+threshold for `X′`, and the compression that drops the derivation is exactly where the
+error hides. Note what makes it hard to see: the prose was a *faithful* compression of a
+**correct** predecessor claim ((INS-7)(ii) said only that `≥ 2` "is not excluded", true of
+the object *it* had measured), and a coordinator then relayed the constant into a dispatch
+spec without re-deriving it. Cheap at write time, invisible afterwards — §8's own thesis.
 
 **The load-bearing evidence, and it is the round's real finding: the STATUS objects were
 clean throughout.** Three sweeps flagged two suspected gap-map defects between them and
