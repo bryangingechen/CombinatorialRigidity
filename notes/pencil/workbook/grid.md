@@ -18757,3 +18757,375 @@ coordinator's four-branch digon move, and it fails by exactly one unit.
 *Scope, stated so it is not over-read.* (GR-171) is proven at `D = 0`. §(K-ind)
 (I4) is general. So the combination is a theorem on the `D = 0` stratum and a
 strong indication elsewhere; blind axis 4 (§5).
+
+## §(K-grid) — continuation (direction GLAMPROP, ordinal 99, 2026-09-11): §8's rank 2 answered, and its PREMISE was false — `Λ ≠ ∅` was never an unmeasured stratum but an unREPORTED one (**604 of 907** census shapes, **7 248 of 10 828** swept blocks), so the coverage question is a partition of GFORCE's own landed run and needs no new population; (GR-177) is **EXTENDED, not retracted** — **0** unsound certificates and **9 664/9 664** exact-ℚ model identities on the `Λ ≠ ∅` half ((GR-204)); and coverage there is **HIGHER**, not lower — `full` 65.2 % → 81.4 %, `gen` 84.2 % → 98.8 %, surviving an `n_hub = 4` control at +12.3 / +9.3 points ((GR-205)) — with **all 18 separators** now measured `Λ = ∅` ((GR-202)) and hub merging proven to happen **iff** an other-coloured `Λ`-edge exists ((GR-203))
+
+### *Step G221* — (GR-201): the swept population's `Λ` content
+
+> **(GR-201)** `[MEASURED]` `notes/scripts/w4/glamprop.py --pop`
+> Of the **907** shapes of `gridcol.pool_shapes` (= `grid.census_shapes`),
+> **604 (66.6 %)** carry at least one length-1 branch, i.e. `Λ ≠ ∅` in the
+> sense of `cflank.length_tuples`' own docstring (*"at most `lamcap` entries
+> equal to 1 — the `Λ ≠ ∅` companion of `excess_profiles`, which only reaches
+> `ℓ ≥ 2`"*) and of §(K-grid) (GR-25)(ii)'s *"the length-1 branches"*. The
+> reason is visible in one line of `grid.census_shapes`: its K4 stratum is
+> `itertools.product((1, 2, 3, 4, 5), repeat=6)` filtered to `sum == 18`, and
+> **length 1 is in range**. By `n_hub`: **2 → 0/3**, **4 → 601/879**,
+> **5 → 1/6**, **6 → 2/19**. The `|Λ|` distribution is
+> `0: 303, 1: 476, 2: 126, 3: 2` — the census reaches `|Λ| ≤ 3` only.
+> Hence GFORCE's blended figures were always majority-`Λ ≠ ∅`: (GR-177)'s
+> **7 224** blocks split **4 832 / 2 392** and (GR-180)'s **10 828** split
+> **7 248 / 3 580**.
+
+**Reading.** The disclosure *"not measured at all"* is correct only as a
+statement about the **reporting**, and every use of it as a statement about
+the **population** — including §8's rank-2 proposal to reach the stratum via
+GISLAND's separately-swept 166 088 shapes ((GR-157)) — is misdirected. Nothing
+had to be re-swept. Everything below is a **stratified re-report of landed
+runs**, which is why it costs minutes rather than hours.
+
+**Cap, disclosed and load-bearing.** `n_hub = 4` (879 shapes, `sum == 18`
+exhaustive) is a real population; `n_hub = 6` is **19 seeded draws**
+(`grid.census_shapes`' own docstring, *"`|V°| = 6` seeded draws"*), of which
+**2** are `Λ ≠ ∅`. Every `n_hub ≥ 5` figure below is a statement under a
+seeded cap and is reported split from `n_hub = 4`, never blended into one
+percentage.
+
+---
+
+### *Step G222* — (GR-202): the 18 habitat separators are ALL `Λ = ∅`
+
+> **(GR-202)** `[MEASURED]` `notes/scripts/w4/glamprop.py --sep`
+> The 18 habitat separators of *Step G16* live on the two carrier shapes
+> `gridcol.SEP_SHAPES` = `V6m10(3¹⁰)` and `V6m11(3⁸, 4³)`, whose length
+> tuples contain **no entry equal to 1**: both have `|Λ| = 0`. Their
+> suppressed models carry **0 loops and 0 parallel super-edges** at all 18
+> blocks. Consequently (GR-178)'s **4/18** and (GR-183)'s **14/18** are
+> figures about the `Λ = ∅` stratum **exclusively**, and say nothing whatever
+> about `Λ ≠ ∅`.
+
+**Why this is a step and not a footnote.** The dispatch spec explicitly
+forbade building the tell out of the separators and asked for their `Λ` split
+before using them for anything. The split is **degenerate**: a separator-based
+tell samples a region in which the verdict is *constant by construction*, so
+it could not have fired either way. This is §7's "a dead tell looks identical
+to a passing one" firing a third time on this arc, and it is now closed by
+measurement rather than by suspicion.
+
+---
+
+### *Step G223* — (GR-203): what `Λ ≠ ∅` does to the degree-2-suppressed model
+
+> **(GR-203)** `[PROVED]`; each clause also asserted **per block** over the
+> whole pool by `notes/scripts/w4/glamprop.py --multi` (10 828 blocks,
+> `col_cap 4096`, `per_shape 6`).
+>
+> **(i) Colours alternate along any branch of length `≥ 2`.** By (GR-16)(i)
+> every degree-2 body carries exactly one A- and one B-edge, and the interior
+> vertices of a branch are exactly its degree-2 bodies; so consecutive edges
+> along a branch have opposite colours and **no branch of length `≥ 2` is
+> monochromatic**. A `Λ`-edge has no interior vertex and its colour is free.
+>
+> **(ii) Hub merging happens iff an other-coloured `Λ`-edge exists.**
+> `H₊ = G / E_other`, and two hubs fall into one `Γ_other`-component iff some
+> all-other-coloured path joins them; such a path lies inside one branch, so
+> by (i) it has length 1. Hence `|hnodes| < n_hub` **⟺** the block has an
+> other-coloured `Λ`-edge, and at `Λ = ∅` the suppressed model **is** `G°` on
+> the nose — which is exactly the scope of (GR-177)'s own `Λ = ∅` remark,
+> now supplied with its converse. Asserted per block; **0 violations**.
+>
+> **(iii) Loops need a contracted `Λ`-edge; parallels do not.** A loop of the
+> suppressed model requires both ends of one branch to be merged, hence (ii)
+> an other-coloured `Λ`-edge: **144** blocks of the 10 828 carry a loop,
+> **all** at `Λ ≠ ∅`, **0** at `Λ = ∅` (asserted). *(In (GR-204)'s narrower
+> `per_shape = 4` cut of 7 224 blocks the same count is **96** — the two
+> figures are different cuts, not a discrepancy.)* Parallel super-edges, by contrast,
+> occur at `Λ = ∅` too — **28** blocks, all on the three `n_hub = 2` theta
+> shapes, whose `G°` is *already* three parallel edges. Census:
+> `Λ = ∅` 3 552 plain / 28 parallel; `Λ ≠ ∅` 3 179 plain / 3 925 parallel /
+> 144 parallel-with-loop. **4 069** `Λ ≠ ∅` blocks vs **28** `Λ = ∅` blocks
+> carry a loop or a parallel.
+
+**The coordinator's mechanism, eliminated — premise TRUE, consequence FALSE.**
+The spec's candidate was: *at `Λ ≠ ∅` the suppressed model can carry parallel
+super-edges and loops the `Λ = ∅` model cannot, and the hub identity
+`Σ_i ε_i c_i R_i(t) ≡ 0` was derived for three distinct surviving branches.*
+
+- The **premise is structurally true and is now a theorem**, (iii): loops are
+  *exactly* the `Λ ≠ ∅` phenomenon (96 vs 0, biconditional through (ii)).
+  Restricted to `n_hub = 4` the parallel half is true as well — a simple K4
+  cannot have parallels, so every one of the 3 925 + 144 parallel blocks has
+  merged hubs.
+- The **consequence is false**, and one look at the source settles it, as the
+  spec predicted it might. `gforce.hub_model` has an explicit `if a == b:
+  # a loop at h` branch; `gforce.coloops` opens with *"A loop is never a
+  coloop"* and `continue`s on `u == w`; `gforce.leaves` comments *"a loop
+  contributes 2 at its node"*; the series rule (s) is guarded
+  `if len(ks) == 2 and ks[0] != ks[1]` — which is precisely the guard that
+  excludes a lone loop while **admitting** two parallels, where the hub
+  relation `ε_a Q_a + ε_b Q_b = 0` genuinely does force a shared root set;
+  and handle (c) is guarded `if len(ks) != 3 or len(set(ks)) != 3: continue`,
+  which is exactly the *"three distinct surviving branches"* hypothesis the
+  spec worried was missing. It is not missing; it is a `continue`. The
+  identity `Σ_i ε_i c_i R_i ≡ 0` itself never needed the three branches to
+  join *distinct* far endpoints — only to be three distinct **darts-pairs at
+  `v`** — so the parallel case is inside (GR-183)'s proof as stated.
+- The empirical half is (GR-204): 0 unsound certificates over the 96 loop
+  blocks and 2 707 parallel blocks of the soundness cut.
+
+**Cost of the elimination: one source read.** The spec asked for it to be
+refuted cheaply and first, and it was — before any sweep was launched.
+
+---
+
+### *Step G224* — (GR-204): soundness at `Λ ≠ ∅`; (GR-177) is EXTENDED, not retracted
+
+> **(GR-204)** `[MEASURED]` `notes/scripts/w4/glamprop.py --sound`
+> (GR-177)'s run, re-reported by stratum at the identical caps (all 907
+> shapes, `col_cap = 4096`, `per_shape = 4`, 2 exact-ℚ draws, landed seed
+> `GF_SEED + 1`):
+>
+> | stratum | blocks | model identity | unsound `full` | unsound `gen` | loop blocks | parallel blocks |
+> |---|---|---|---|---|---|---|
+> | `Λ = ∅` | 2 392 | 4 784/4 784 | **0** | **0** | 0 | 24 |
+> | `Λ ≠ ∅` | **4 832** | **9 664/9 664** | **0** | **0** | **96** | **2 707** |
+> | (blended, = (GR-177)) | 7 224 | 14 448/14 448 | 0 | 0 | — | — |
+>
+> The two rows sum to (GR-177)'s published 7 224 and 14 448 exactly, which is
+> the check that the stratification is measuring the same population.
+
+**Verdict on the retraction branch: it does not fire.** The degree-2-suppressed
+model's identity with `gridwit.dim_W` — the sentence (GR-177) states *with* an
+`Λ = ∅` remark attached — holds at `Λ ≠ ∅` at every one of 9 664 seeded
+exact-ℚ points, and `residual = 0 ⟹ dim Z = 0` has **0** counterexamples on
+either stratum. **(GR-177) stands.** The one repair its *prose* needs is a
+scope clarification, not a retraction: its sentence *"At `Λ = ∅` the
+suppressed model **is** the hub multigraph `G°` and a super-edge **is** a
+branch"* reads, to a fast reader, as though the identity were `Λ = ∅`-only. It
+is not — the identity is asserted per block over the whole population, of
+which two thirds is `Λ ≠ ∅`, and (GR-203)(ii) now supplies the converse that
+makes the remark's `Λ = ∅` hypothesis *sharp* rather than *cautious*.
+
+**Blind axis, named.** The soundness figure is a **check at seeded points**,
+not a proof: 2 exact-ℚ draws per block. A disagreement would be a
+counterexample; agreement at 9 664 points is agreement at 9 664 points.
+`--cited-by '(GR-177)'` returns **0 claims**, so no landed statement is
+formally downstream of it — but (GR-180)/(GR-183)/(GR-184)'s coverage counts
+are only meaningful *because* the certificates are sound, so the informal
+blast radius is the whole GFORCE arc, and the right description of this step
+is that it **doubled the evidence base for the arc's load-bearing hypothesis
+at the cost of one re-report**.
+
+---
+
+### *Step G225* — (GR-205): coverage at `Λ ≠ ∅` is HIGHER
+
+> **(GR-205)** `[MEASURED]` `notes/scripts/w4/glamprop.py --cover`; the
+> landed `--pool` (seed `GF_SEED + 4`) and `--strat` (seed `GF_SEED + 8`)
+> random streams consumed in the landed order, all 907 shapes,
+> `col_cap = 4096`, `per_shape = 6`, balanced filter-passing blocks only.
+>
+> **(o) Invariance, asserted in-driver.** The summed strata reproduce
+> **(GR-180)** (`blocks 10 828`, `(GR-9) 10 203`, `full 7 767`) and
+> **(GR-183)** (`gen 9 595`) and **(GR-184)** (`residual 608`,
+> `Type A 567`, `Type B 41`) **exactly**; `assert tot == LANDED_POOL` and
+> `assert strat == LANDED_STRAT` fail the run otherwise. Same population,
+> same caps, same stream — so every split below is a partition of the landed
+> figures and not a new measurement of a different thing.
+>
+> **(i) The marginal comparison.** Over the blocks whose generic `dim Z` was
+> attained at 0 under 4 draws — the only blocks a sound scheme may certify:
+>
+> | stratum | blocks | `dim Z = 0` | `full` | `gen` | (GR-9) |
+> |---|---|---|---|---|---|
+> | `Λ = ∅` | 3 580 | 3 323 | 2 165 (**65.2 %**) | 2 798 (**84.2 %**) | 3 323 (100 %) |
+> | `Λ ≠ ∅` | 7 248 | 6 880 | 5 602 (**81.4 %**) | 6 797 (**98.8 %**) | 6 880 (100 %) |
+>
+> The blended 71.7 % / 88.6 % of (GR-180)/(GR-183) are computed against the
+> **10 828** denominator; against the `dim Z = 0` denominator they are
+> 7 767/10 203 = 76.1 % and 9 595/10 203 = 94.0 %.
+>
+> **(ii) Monotone in `|Λ|` up to the census's reach.** `full`: `|Λ| = 0`
+> 65.2 %, `= 1` 79.9 %, `= 2` 86.8 %, `= 3` 79.2 % (24 blocks). `gen`:
+> 84.2 %, 98.5 %, **100.0 %** (1 503/1 503), 95.8 %.
+>
+> **(iii) Cap-invariant in `per_shape`.** Re-run at `per_shape = 3` (5 418
+> blocks instead of 10 828): `Λ = ∅` `full` **66.8 %** / `gen` **83.9 %**;
+> `Λ ≠ ∅` `full` **81.4 %** / `gen` **98.5 %**. The gap is the same to
+> within a point on all four figures, so it is not an artefact of the cut
+> that GFORCE's own disclosure flagged as changing which blocks are visible.
+>
+> **(iv) The residual is a `Λ = ∅` phenomenon.** Of (GR-184)'s **608**
+> residual blocks, **525 (86.3 %) sit at `Λ = ∅`** — a stratum that is only
+> **33.1 %** of the population.
+
+**THE CONFOUND, and the controlled comparison.** `Λ ≠ ∅` is 601/879 at
+`n_hub = 4` but only 1/6 and 2/19 at `n_hub = 5, 6`, and the high-`n_hub`
+blocks are by far the hardest (`gen` certifies 96.0 % at `n_hub = 4`, 16.7 %
+at 5, 12.6 % at 6). So the marginal `Λ` comparison in (i) is **confounded**:
+the `Λ = ∅` column carries nearly all of the hard `n_hub ≥ 5` blocks. The
+comparison must be made **inside `n_hub = 4`** — K4, six branches, an
+exhaustive `sum == 18` population where the two strata differ only in the
+length tuple:
+
+| `n_hub = 4` | blocks | `dim Z = 0` | `full` | `gen` |
+|---|---|---|---|---|
+| `Λ = ∅` | 3 336 | 3 083 | 2 133 (**69.2 %**) | 2 763 (**89.6 %**) |
+| `Λ ≠ ∅` | 7 212 | 6 846 | 5 581 (**81.5 %**) | 6 770 (**98.9 %**) |
+
+**The direction survives the control; the magnitude shrinks.** `full`
++16.2 pts marginal → **+12.3 pts** controlled; `gen` +14.6 → **+9.3**. The
+marginal gap is inflated by the confound by roughly a quarter to a third and
+**must never be quoted without the controlled row.** For completeness the
+other layers, all under the seeded-draw cap: `n_hub = 5` — `Λ = ∅` 0/60,
+`Λ ≠ ∅` 12/12 (**one** shape); `n_hub = 6` — `Λ = ∅` `gen` 7/152 (4.6 %),
+`Λ ≠ ∅` `gen` 15/22 (68.2 %) (**two** shapes). Same direction, no weight.
+
+---
+
+### *Step G226* — (GR-206): the mechanism — MEASURED for one half of `Λ`, OPEN for the other, and the natural reading REFUTED
+
+> **(GR-206)** `[MEASURED]` `notes/scripts/w4/glamprop.py --cover` and
+> `--mech`; same caps and same landed streams as (GR-205). Write a block's
+> `Λ` data as `(own, other)`: `Λ`-edges carrying the block's **own** colour
+> (which survive into `H₊` as length-1 super-edges) and the **other** colour
+> (contracted, merging hubs by (GR-203)(ii)).
+>
+> **(i) (GR-184)'s residual dichotomy splits along `(own, other)`, and at
+> `n_hub = 4` the split is PERFECT.** Marginal, then controlled:
+>
+> | `(own, other)` | residual | Type A | Type B | | at `n_hub = 4`: residual | Type A | Type B |
+> |---|---|---|---|---|---|---|---|
+> | `(0, 0)` = `Λ = ∅` | 525 | 522 | 3 | | 320 | **320 (100 %)** | **0** |
+> | `(0, 1)` contraction only | 41 | 3 | 38 | | 38 | **0** | **38 (100 %)** |
+> | `(1, 0)` own-colour only | 41 | 41 | 0 | | 38 | **38 (100 %)** | **0** |
+> | `(2, 1)` | 1 | 1 | 0 | | — | — | — |
+>
+> At `n_hub = 4` the implication runs both ways with no exceptions:
+> **a contracted `Λ`-edge and no own-coloured one ⟹ Type B (38/38); an
+> own-coloured one and no contracted one ⟹ Type A (38/38); `Λ = ∅` ⟹ Type A
+> (320/320)**. And **38 of (GR-184)'s 41 Type B blocks in the whole census**
+> are `(0, 1)`; the other 3 are `Λ = ∅` at `n_hub = 6`.
+>
+> **(ii) THE NATURAL READING IS REFUTED, and the refutation is pinned.** The
+> obvious explanation of the `(1, 0)` column is (GR-16)(iii): an own-coloured
+> `Λ`-edge `uw` makes `star_own(u) ∪ star_own(w)` a **single** class
+> (*"every A-class is `star_A(u₁) ∪ … ∪ star_A(u_p)` over the hubs of a
+> `Γ_A`-path of `Λ`"*), which is exactly the shared-class configuration Type
+> A names. `--mech` tests it directly — is the common class at each residual
+> star-blocked hub a **fused** class, i.e. does its own-colour edge set touch
+> two or more hubs of `G°`? — and the answer is **2 of 1 104 (0.18 %)**: one
+> hub among the 80 of the `(1, 0)` blocks, and the single `(1, 1)` hub. At
+> the other 1 102 the common class is a **plain `star_own(v)` touching
+> exactly one hub**, precisely as (GR-184)'s own prose says
+> (*"necessarily that hub's own `star_A(v)`"*). **An own-coloured `Λ`-edge
+> does not manufacture Type A.** Two exact facts *are* asserted per block
+> alongside the measurement: a fused class requires an own-coloured `Λ`-edge
+> ((GR-16)(iii); 0 violations), and a merged node exists **iff** the block
+> has an other-coloured one ((GR-203)(ii); all-or-nothing within every
+> stratum, 0 violations).
+>
+> **(iii) The `other` half's mechanism, MEASURED.** `Σ_β |K_own(β)| = 3h` is
+> pinned by (GR-207)(i) (`rowdef ≡ 0`) and `h` is unchanged by contraction,
+> so contracting a `Λ`-edge removes a super-edge **without removing any class
+> incidence**: the same 9 incidences ride on fewer branches. At `n_hub = 4`:
+>
+> | `(own, other)` | blocks | super-edges/blk | `\|K\|≥3` /blk | round-0 kills | `gen` |
+> |---|---|---|---|---|---|
+> | `(0, 0)` | 3 336 | 6.00 | 0.28 | 28.1 % | 82.8 % |
+> | `(0, 1)` | 3 165 | **4.90** | **0.64** | **55.7 %** | **94.8 %** |
+> | `(1, 0)` | 3 165 | 6.00 | 0.25 | 24.8 % | 91.2 % |
+> | `(1, 1)` | 882 | 5.00 | 0.70 | 63.6 % | 100.0 % |
+>
+> Rule (a) kills a super-edge at round 0 **iff** `|K_own(β)| ≥ 3`, and that
+> is the closure's only parameter-free head start. Contraction doubles how
+> often it fires, and `gen` rises with it.
+>
+> **(iv) The `own` half's mechanism is OPEN.** The `(1, 0)` row's
+> initialisation profile is **indistinguishable** from `Λ = ∅` — same 6.00
+> super-edges, `|K| ≥ 3` per block 0.25 against 0.28, round-0 kill rate
+> **24.8 % against 28.1 %, i.e. slightly LOWER** — and its suppressed graph
+> is the *same simple K4* (no merging, (GR-203)(ii)). Yet `gen` is 91.2 %
+> against 82.8 % and the Type A failure rate falls from 320/3 083 (10.4 %) to
+> 38/2 620 (1.45 %), a **7× reduction**. So the entire `own`-half gain is
+> produced **during** the propagation — by rules (b), (s) and (c) on a graph
+> and an initial table that look the same — and no mechanism here explains
+> it. **This is the sharpest open question this direction leaves.**
+
+### *Step G227* — (GR-207): two negatives worth landing
+
+> **(GR-207)** `[MEASURED]` `notes/scripts/w4/glamprop.py --cover` — the same run as (GR-205), same caps and same seeded stream.
+>
+> **(i) (GR-16)(iv)'s squareness survives `Λ ≠ ∅` everywhere in the census.**
+> Define `rowdef := 3h − Σ_β |K_A(β)|`, the row deficit of (GR-16)(iv)'s
+> `Θ₊` (rows one per (branch, class-on-it), columns `3c = 3h`). `rowdef > 0`
+> would be a **proof** that `dim W₊ ≥ rowdef > 0`, i.e. a block no sound
+> scheme may certify. (GR-16)(iv) says *"At balance with no merging the
+> system is square"*, and (GR-16)(iii) says `|K_A(β)| = A(β)` *"whenever
+> `Λ = ∅`"* — leaving open that at `Λ ≠ ∅` two A-edges of one branch could be
+> `Γ_A`-linked through hubs outside it and collapse a row. Measured:
+> `rowdef = 0` at **all 10 828** blocks, on every stratum. So the
+> within-branch class collision (GR-16)(iii) guards against **never fires in
+> this census**, and `Θ₊` is square throughout. *This was my own leading
+> mechanism candidate before the sweep, and it is dead.* Cap: the census
+> reaches `|Λ| ≤ 3` and `n_hub ≤ 6` only; "not found under cap C".
+>
+> **(ii) On this population, (GR-9) and `generic dim Z = 0` coincide
+> exactly.** The class-respecting tree-triple certifies **10 203** and the
+> blocks with generic `dim Z` attained at 0 under 4 draws number **10 203**,
+> stratum by stratum (3 323 and 3 323; 6 880 and 6 880), with `10 828 −
+> 10 203 = 625` — which is exactly (GR-182)'s *"**625** swept blocks whose
+> generic `dim Z` was not attained at `0`"*. So inside the `--pool` cut
+> (GR-9) is not merely stronger than the closure, it is **coextensive with
+> the target predicate**, and the closure's shortfall is measured against a
+> condition that is already exact here. This does **not** contradict
+> (GR-180)'s INCOMPARABLE verdict: that rests on the **4 separator blocks**
+> the fixpoint certifies and (GR-9) cannot, and (GR-202) now records that
+> those 4 lie at `Λ = ∅`, outside this cut in two independent ways.
+
+---
+
+### *Step G228* — (GR-208): the disclosure repair, and what is still blind
+
+> **(GR-208)** `[MEASURED]` / process. The GFORCE disclosure line
+> *"`Λ ≠ ∅` not measured at all — the sharpest blind axis, and the one a
+> successor should open first"* (`notes/pencil/fanout.md` §GFORCE *Caps*;
+> `notes/scripts/README.md:1406` carries the same sentence as the driver's
+> *standing blind axis*) is **REFUTED as written** by (GR-201) and should be
+> restated as **"`Λ ≠ ∅` is 604/907 of the census and 7 248/10 828 of the
+> swept blocks, and was never BROKEN OUT"**. §8's rank-2 plan to reach the
+> stratum through GISLAND's separately-swept 166 088 shapes ((GR-157)) was
+> therefore unnecessary for the coverage question; GISLAND's population
+> remains a **cross-check at `n_hub = 6`**, where this census has only 19
+> seeded shapes, and is the right instrument for that and only that.
+>
+> **What is still blind after this direction**, in priority order:
+> 1. **`n_hub ≥ 5` at `Λ ≠ ∅`.** The census supplies **1** such shape at
+>    `n_hub = 5` and **2** at `n_hub = 6`, both from *seeded draws*, giving
+>    72 and 180 blocks in total across both strata. The `Λ` effect is
+>    therefore measured **only at `n_hub = 4`** in any controlled sense, and
+>    `n_hub = 4` is where 9 929 of the 10 203 certifiable blocks live. This
+>    is the successor question, and GISLAND's 166 088-shape `n_hub ≤ 6`
+>    population ((GR-157)) is the population to run it on.
+> 2. **`|Λ| ≥ 4`.** Not reached by the census at all (`|Λ| ≤ 3`, and only 2
+>    shapes at 3). (GR-205)(ii)'s monotonicity in `|Λ|` is a 4-point trend
+>    whose last point is 24 blocks.
+> 3. **`per_shape`.** Invariance is checked at 3 vs 6 ((GR-205)(iii)); the
+>    ~18 320-block universe under `col_cap = 4096` is not enumerated, and the
+>    4 separator blocks GFORCE flagged as lying outside the `per_shape` cut
+>    are still outside it here.
+> 4. **`dim_Z_generic(draws=4)`** is a minimum over 4 seeded draws
+>    throughout. **CORRECTED AT LANDING (coordinator; re-run, not reasoned):
+>    this is not a cap on the denominator, and the percentages above are
+>    measurements rather than upper bounds.** Observing `dim Z = 0` at a draw
+>    *proves* generic `dim Z = 0`, because 0 is the floor of an upper
+>    semicontinuous statistic; and the complementary 625 are not merely *"not
+>    attained"* — §(K-grid) **(GR-182)** reports every one of them carrying a
+>    **proven** (GR-8) lower bound `g(P) ≥ 1`, hence `dim W₊ > 0` at *every*
+>    parameter point, so they can never move into the denominator. Re-run at
+>    landing: `gforce.py --kappa` prints **625 / 625 / 621**, and
+>    `gforce.leg_kappa`'s `m_cap = 18` gates only the *tree-triple* tally
+>    (the 621), **not** the (GR-8) count (the 625) — so no cap touches this.
+>    The **10 203 / 625 partition is therefore exact**. The draft's own
+>    conservative reading is left visible here because the correction is the
+>    kind §4 says the next pass supplies.

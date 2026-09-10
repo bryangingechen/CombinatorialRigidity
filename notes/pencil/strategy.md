@@ -1700,18 +1700,34 @@ complement.** Entries where that move is available are ranked up accordingly.
    *Kill condition: a non-additive stratum-preserving move exhibited, or the complement cut
    extended to cover deletions. Decided by: the `(K-ind)` row (u2/u5) and `(K-grid)`
    close-it u9, where `G°`-induction now sits in the dead-routes list.*
-2. **THE PROPAGATION AT `Λ ≠ ∅` — GFORCE's OWN SHARPEST BLIND AXIS.** *(new.)* Owner:
-   §(K-grid) *Steps G197–G204*. GFORCE's closure is sound and certifies 4/18 separators,
-   14/18 with handle (c) — and it names its sharpest cap itself: **`Λ ≠ ∅` is not measured
-   at all.** **The data now exists**: GISLAND swept that stratum **complete** at
-   `n_hub ≤ 6` ((GR-157), 166 088 shapes, 0 misses) two landings earlier, so this is a
-   **cheap decisive move of the BNONUNI kind** — an un-fencing against a landed population,
-   not a new sweep. **GLEAF's question: SUFFICIENT** where it certifies, since the closure
-   is a `dim Z = 0` proof needing no certificate. **Criterion 2 (falsification) also
-   selects it:** the instrument is one landing old, and §4's standing rule is that the
-   corrective mechanism is the next pass. *Kill condition: the closure's coverage at
-   `Λ ≠ ∅` measured — any answer settles it — or the closure shown unsound there, which
-   would retract (GR-177). Decided by: the `(K-grid)` row, close-it u6 target (ii).*
+2. **THE PROPAGATION AT `Λ ≠ ∅` — SPENT (GLAMPROP 99, 2026-09-11), AND THIS ENTRY'S
+   PREMISE WAS FALSE.** Owner: §(K-grid) *Steps G221–G228*, (GR-201)–(GR-208). The entry
+   was written on GFORCE's disclosure that *"`Λ ≠ ∅` is not measured at all"*, and that
+   disclosure is **wrong**: the swept population is **majority** `Λ ≠ ∅` — 604 of 907
+   census shapes, 7 248 of 10 828 pool blocks — so the axis was never *unreached*, only
+   never **reported** ((GR-201)). The answer was therefore a **partition of GFORCE's own
+   landed run**, and this entry's proposed route to the stratum — GISLAND's
+   separately-swept 166 088 shapes — was **not needed**. **Results:** soundness
+   **EXTENDS** to the stratum ((GR-204)), so (GR-177) is not retracted; coverage there is
+   **HIGHER**, `gen` 84.2 % → 98.8 %, +9.3 pts under an `n_hub = 4` control ((GR-205));
+   all 18 separators are `Λ = ∅` ((GR-202)); hub merging is a **biconditional** on an
+   other-coloured `Λ`-edge ((GR-203)). **The successor is (GR-206)(iv)** — the `own`-half
+   mechanism, which changes the initialisation profile not at all yet cuts Type A failures
+   7×, so the whole gain happens inside the propagation; cheapest probe is a
+   `propagate(trace=True)` rule histogram at `(1, 0)` against `(0, 0)`.
+   *Kill condition: the `own`-half gain attributed to a named rule, or shown not to be
+   rule-attributable. Decided by: the `(K-grid)` row, close-it u6 target (ii).*
+
+   > **THE BAR THIS ADDS, and it is about disclosures rather than mathematics.** A
+   > driver's own *"not measured"* line is a **claim about a population**, and it can be
+   > false in the direction that makes an entry look expensive: this one sent two strategy
+   > passes hunting a second population for a stratum the first population already
+   > carried. **Before ranking an entry on a blind axis, check the axis at the
+   > generator** — `blindaxes.py` lists *parameter* fences and cannot catch this one,
+   > because the fence was the population's provenance (`gforce.sweep` →
+   > `gridcol.pool_shapes` → `grid.census_shapes`), not a keyword default. Same shape as
+   > the `aglu._pool8()` incident recorded in `labels.md`, which makes this the second
+   > instance.
 3. **THE (c)-STRENGTHENED CLOSURE'S 14/18 RESIDUAL.** *(new — GFORCE's successor.)* Owner:
    §(K-grid) *Steps G202–G203*, (GR-183)/(GR-184). The residual is **structurally
    characterized** — 567 + 41 = 608/608, none left over — which is what makes it attackable

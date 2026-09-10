@@ -17027,8 +17027,13 @@ made 60 and 907 shapes return identical figures.
 non-random sample (907 shapes, `col_cap 4096`, `per_shape 6`) of ~18 320 blocks;
 `dim_Z_generic` can only prove `= 0`; (GR-8) maximised over whole-branch `P`
 only; `--sat` capped at 14 branches; `--tt`/`--kappa` skip `m > 18` (48 blocks);
-**`Λ ≠ ∅` not measured at all — the sharpest blind axis**, and the one a
-successor should open first. `fast_triple`'s node cap fired **0** times.
+**`Λ ≠ ∅` was never BROKEN OUT — CORRECTED 2026-09-11 by GLAMPROP ((GR-201)):**
+the original wording here was *"not measured at all — the sharpest blind axis"*, and
+it is **wrong as written**. The swept population is **majority** `Λ ≠ ∅` — 604 of
+the 907 census shapes, 7 248 of the 10 828 pool blocks, 4 832 of the 7 224 soundness
+blocks — so the axis was never *unreached*, only never *reported*. The real blind
+axis is `Λ ≠ ∅` **at `n_hub ≥ 5`**, where the census supplies 1 shape at 5 and 2 at
+6, all from seeded draws ((GR-208)). `fast_triple`'s node cap fired **0** times.
 Runtime: `--validate` ≈ 4 min; the full-cap modes ≈ 7 min.
 
 ---
@@ -17263,3 +17268,115 @@ deleting a parent hub — are untouched, as is `D > 0`. Caps: `--lam8` at
 `lamcap = 1` only; `cubic_habitat` is `2^n`, so the ladder is checked to
 `n_hub ≤ 22` and **proven** beyond; everything rests on (GR-25) as a **theorem**,
 not on its `n_hub ≤ 6` equivalence measurement.
+
+---
+
+## GLAMPROP — ordinal 99, concurrent round of three, `research-direction-opus`, LANDED 2026-09-11
+
+**The question.** §8's **rank 2** (thirteenth pass): what is the (GR-16)(a)/(b)
+forcing closure's coverage on the `Λ ≠ ∅` stratum — GFORCE's own disclosed
+"sharpest blind axis" — and is the closure still **sound** there?
+
+**Verdict: ANSWERED, and the entry's PREMISE was false.** `Λ ≠ ∅` was never an
+unmeasured stratum. **604 of the 907** census shapes carry a length-1 branch;
+GFORCE's own runs were **7 248 of 10 828** pool blocks and **4 832 of 7 224**
+soundness blocks at `Λ ≠ ∅`. The axis was never *unreached* — only never
+**reported** ((GR-201)). §8's plan to reach the stratum through GISLAND's
+separately-swept 166 088 shapes was therefore unnecessary: the answer is a
+**partition of GFORCE's own landed run**, and the driver refuses to run unless
+the strata sum back to the landed `{10 828, 10 203, 7 767, 9 595}` and
+`{608, 567, 41}`.
+
+**Soundness: (GR-177) is EXTENDED, not retracted** — the live retraction branch
+did not fire. On the `Λ ≠ ∅` half alone: model identity **9 664/9 664** exact-ℚ,
+**0** unsound `full`, **0** unsound `gen`, including all **96** blocks whose
+suppressed model carries a loop and all **2 707** with a parallel super-edge
+((GR-204)).
+
+**Coverage is HIGHER, not lower — the coordinator prediction is refuted.** On
+the blocks any sound scheme may certify: `full` **65.2 % → 81.4 %**, `gen`
+**84.2 % → 98.8 %**. The direction survives an `n_hub = 4` control at
+**+12.3 / +9.3** points and is cap-invariant at `per_shape` 3 vs 6; of
+(GR-184)'s 608 residual blocks **525 (86.3 %)** sit at `Λ = ∅`, a stratum that
+is only 33.1 % of the population ((GR-205)).
+
+**Two structural results.** All **18** habitat separators are `Λ = ∅`, both
+carriers being all-3s and 3⁸4³ ((GR-202)) — so the 4/18 and 14/18 figures say
+nothing about `Λ ≠ ∅`, and the tell the spec forbade was **structurally dead**,
+now measured rather than suspected. And hub merging happens **iff** the block
+has an other-coloured `Λ`-edge, because colours alternate along any branch of
+length ≥ 2 ((GR-203)) — a biconditional, asserted at 10 828/10 828.
+
+**Both mechanisms died, and the split that survived is half open.** The
+*coordinator's* mechanism (parallels and loops breaking the hub identity) has a
+**TRUE premise and a FALSE consequence**, killed by one source read before any
+sweep: `gforce.hub_model` has an explicit loop branch, `coloops` opens *"A loop
+is never a coloop"*, rule (s) is guarded `ks[0] != ks[1]`, and handle (c) is
+guarded `len(set(ks)) != 3` — which is exactly the "three distinct branches"
+hypothesis the spec feared was missing. The *direction's own* replacement —
+star fusion manufactures Type A — it then **refuted with its own driver**, at
+**2 of 1 104** residual star-blocked hubs (0.18 %). What survives is a split:
+the `other` half is measured (contraction rides the same `Σ|K| = 3h` incidences
+on 4.90 super-edges instead of 6.00, doubling rule (a)'s round-0 kills), the
+`own` half is **OPEN** ((GR-206)(iv)) — identical initialisation profile, 7×
+fewer Type A failures, all of it inside the propagation.
+
+**Two negatives worth having.** `rowdef ≡ 0` at all 10 828 blocks, so
+(GR-16)(iv)'s square system survives `Λ ≠ ∅` and (GR-16)(iii)'s within-branch
+class collision never fires ((GR-207)(i)) — *this was the direction's own
+leading mechanism candidate, and it is dead*. And on this population (GR-9) is
+**coextensive** with generic `dim Z = 0` (10 203 = 10 203, stratum by stratum),
+which does not touch (GR-180)'s INCOMPARABLE verdict since that rests on the 4
+separator blocks, now known to lie at `Λ = ∅` ((GR-207)(ii)).
+
+### Coordinator verification at landing — not taken on attestation
+
+Every mode re-run at **full cap**, not just `--validate`: `--pop` reproduces
+604/907 and the by-hub split `2→0/3, 4→601/879, 5→1/6, 6→2/19` to the digit;
+`--sep` all 18 separators `Λ = ∅`; `--multi` the census `3 552 / 28 / 3 179 /
+3 925 / 144` with the biconditional asserted per block; `--cover` the invariance
+asserts (`{10 828, 10 203, 7 767, 9 595}` and `{608, 567, 41}`) plus every
+percentage above; `--sound` **2 392 + 4 832 = 7 224** and **4 784 + 9 664 =
+14 448**, exactly GFORCE's landed totals; `--mech` `522+3+3+38+41+1 = 608`
+splitting 567/41. All four `gforce.py` guards cited in the mechanism
+elimination were checked verbatim at their line numbers.
+`ledger.py --cited-by '(GR-177)'` returns **0** claims, so the retraction branch
+had no downstream. The driver **imports** `gforce` rather than copying it, as
+the spec required, so the figure-invariance check stays one command away.
+
+**One clause corrected at landing, in the STRENGTHENING direction.** The draft's
+(GR-208)(4) called the coverage percentages *upper bounds*, on the ground that
+the 625 non-`dim Z = 0` blocks were only *"not attained under 4 draws"*. They
+are not: §(K-grid) (GR-182) reports every one carrying a **proven** (GR-8) bound
+`g(P) ≥ 1`. Re-run at landing, `gforce.py --kappa` prints **625 / 625 / 621**,
+and `leg_kappa`'s `m_cap = 18` gates only the tree-triple tally, **not** the
+(GR-8) count — so no cap touches it and the **10 203 / 625 partition is exact**.
+The percentages are measurements.
+
+**One process claim in the return message, checked and NOT actioned (F24).** The
+return states the coordinator *"did not flag"* the `n_hub` confound. The spec
+did: it named the 19-shape seeded `n_hub = 6` layer and said *"disclose that
+split rather than quoting one blended percentage."* The **draft itself does not
+repeat the claim**, so there was nothing to correct in tree — which is the whole
+point of checking a dispatch's criticism of coordinator work at the same tier as
+its mathematics.
+
+**Three self-caught defects, all pre-return**, recorded because two of them are
+cap lessons: the direction's own mechanism refuted by its own driver; a
+reduced-cap "clean refutation" (0/16 fused) that the full-cap run broke at
+2/1 104, so the small-cap result was itself a **cap artefact** and the `assert`
+built on it had to go; and a recalled figure ("96 loop blocks") that is the
+`per_shape = 4` cut, against **144** at `per_shape = 6` — fixed with both cuts
+named rather than one.
+
+**Disclosure repaired at both sites (F12).** `fanout.md` §GFORCE *Caps* and
+`notes/scripts/README.md`'s driver row both carried *"`Λ ≠ ∅` is not measured at
+all"*; both now say **never broken out**, with the real blind axis named as
+`Λ ≠ ∅` at **`n_hub ≥ 5`** (1 shape at 5, 2 at 6, all seeded). The stale claim
+was also live in `notes/Phase39.md`'s hand-off, and is corrected there.
+
+**Reservation.** (GR-201)–(GR-208) / *Steps G221–G228*, all consumed. (L7)
+clean at `b742ec2d` **and re-checked at `e03995d8`** when `HEAD` advanced under
+the run — `RESEARCH-ARC.md` §2's fourth hazard, firing as designed on the first
+landing of a live round, and answered by the direction reporting its baseline
+sha unprompted. Live tail is now **(GR-209) / *Step G229***.

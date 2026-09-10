@@ -5252,3 +5252,39 @@ live `(E1)`/`(E2)`/`(E3)` family untouched.
 > pass inherited it two surfaces downstream. The lesson for the next strategy
 > pass is sharper than "read the owning section": **a section's own summary
 > bullet is a summary surface too.**
+
+## Reserved namespace — direction GLAMPROP (2026-09-11, **CONSUMED IN FULL: eight labels and eight steps**)
+
+| direction | section | labels | steps | driver |
+|---|---|---|---|---|
+| **GLAMPROP** | §(K-grid) — **extends**, no new section | **(GR-201)–(GR-208)** | ***Steps G221–G228*** | `w4/glamprop.py` (six modes + `--validate`) |
+
+**0-hit verification, emitted PER TOKEN** (the D6.3(a) form, via
+`ledger.py --reserve-range`). At `b742ec2d` and re-checked at `e03995d8` after
+`HEAD` advanced mid-run: `(GR-201)`–`(GR-208)` **0 hits / 0 files each**;
+`G221`–`G228` **0 / 0 each**; `GLAMPROP` / `glamprop` **0 / 0**. **CLEAN, no
+declaration exception** — the range opens one past the declared tail
+`(GR-193)`, which GEXPAND's returned `(GR-172)`–`(GR-176)` block does not
+touch.
+
+**(L2)** respected: *Steps G221–G228* never appear as bare parenthesized
+tokens. **(L3)**: every label from outside §(K-grid) is qualified in prose.
+**(L6) landing-time bare-token grep:** no `(X<digit>)` token is minted; every
+mint is `(GR-2xx)`.
+
+**THE LIVE TAIL IS NOW (GR-209) / *Step G229***, with **(GR-172)–(GR-176) /
+*G196* still RETURNED UNUSED** and available, and **(GR-193)–(GR-200) /
+`G213`–`G220` RESERVED to GNONADD** and **(BE-239)–(BE-246) /
+`BE238`–`BE245` RESERVED to BSIXRUNG** — both in flight at this landing and
+therefore **not** available.
+
+> ***THE RESERVATION MECHANICS HELD; THE THING THAT MOVED WAS `HEAD`.*** This
+> was the first landing of a live round under `/coordinate-research`, so
+> `RESEARCH-ARC.md` §2's fourth hazard fired as designed: the coordinator's
+> harness commit `e03995d8` landed while GLAMPROP was running. The direction
+> reported its baseline sha unprompted and re-ran the (L7) check at the new
+> `HEAD` — which is exactly the remedy §2 prescribes, and it cost one command.
+> Nothing it measured was invalidated: `e03995d8` touches only
+> `.claude/commands/coordinate-research.md`, `notes/Harness-structure.md` and
+> `notes/gapmap.py`, none of which is a driver, a workbook section or a
+> ledger row.
