@@ -19412,4 +19412,11 @@ forcing `j = i` and `j = i+1`. ∎ *Cap for the `|A| = 5` half:* `m = 6..11`,
 `m ≥ 4`"*, but six **pairwise non-adjacent** length-3 branches need `≥ 12`
 hubs, so the construction is **empty at `m = 4` and `m = 5`**. `--irred`
 measured `m = 6..11`, which is exactly its realizable range; the infinitude
-claim is unaffected. Read (GR-175) as `m ≥ 6`.
+claim is unaffected. Read (GR-175) as `m ≥ 6`. *Open, and recorded so it does not
+rot: whether `CL_4` or `CL_5` is a `D = 0` class shape under some length
+assignment OTHER than the six-rung one is **unmeasured** — a probe through
+`cflank.length_tuples` into `cubic_habitat` was started and killed at ~2 min,
+so **measured nothing, script not retained** (`notes/scripts/README.md`'s
+standing rule). It is a curiosity, not a dependency: the correction fixes a
+quantifier on a **construction**, and (GR-200)'s obstruction only ever uses
+`m ≥ 6`.*
