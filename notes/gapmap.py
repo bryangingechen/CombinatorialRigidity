@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Read-only slice reader for `notes/Pencil-informal.md`'s *State of (K)* gap
+"""Read-only slice reader for `notes/pencil/workbook/gapmap.md`'s *State of (K)* gap
 map: get one gap's status, or just the sentences mentioning one label, without
 loading a 22 000-character table row.
 
@@ -596,9 +596,22 @@ def cmd_selftest(args, path, disp, text):
 
 
 def resolve(name):
-    for cand in (name, os.path.join(_HERE, name), os.path.join(_HERE, os.path.basename(name))):
+    """Locate a workbook by path, or by bare filename under the split tree.
+
+    Since the 2026-09-09 split (`notes/Harness-structure.md` slice 12) the gap
+    map is `notes/pencil/workbook/gapmap.md` rather than a table buried in a
+    41 000-line file, so a bare `--file gapmap.md` has to resolve there too.
+    """
+    _ROOT = os.path.dirname(_HERE)
+    base = os.path.basename(name)
+    for cand in (name,
+                 os.path.join(_HERE, name),
+                 os.path.join(_ROOT, name),
+                 os.path.join(_ROOT, "notes/pencil/workbook", base),
+                 os.path.join(_ROOT, "notes/pencil/workbook/bare-ext", base),
+                 os.path.join(_HERE, base)):
         if os.path.isfile(cand):
-            disp = name if os.path.isfile(name) else os.path.join("notes", os.path.basename(name))
+            disp = name if os.path.isfile(name) else os.path.relpath(cand, _ROOT)
             return cand, disp
     raise SystemExit(f"no such file: {name}")
 
@@ -610,7 +623,7 @@ def main(argv):
                     "(a row is one 22 000-character line; see the docstring).",
     )
     p.add_argument("--file", default=os.path.basename(GATE.PATH),
-                   help="workbook to read (default notes/Pencil-informal.md)")
+                   help="workbook to read (default notes/pencil/workbook/gapmap.md)")
     mode = p.add_mutually_exclusive_group(required=True)
     mode.add_argument("--list", action="store_true", help="row index with sizes")
     mode.add_argument("--row", metavar="GAP", help="one row, e.g. '(K-grid)'")

@@ -129,6 +129,7 @@ run BEFORE committing, or with `--all`.
 """
 
 import argparse
+import glob
 import hashlib
 import json
 import os
@@ -142,13 +143,25 @@ CACHE = os.path.join(HERE, ".ledger-cache")
 
 # The corpus, in reading order. `notes/Harness-structure.md` slice 12 splits
 # these; this list is the single place that then changes.
-SOURCES = [
-    "notes/Pencil-informal.md",
-    "notes/Pencil-informal-grid.md",
-    "notes/Pencil-W4-informal.md",
-    "notes/Pencil-strategy.md",
-    "notes/Pencil-fanout.md",
-]
+# The workbook is one file per section since the 2026-09-09 split
+# (`notes/Harness-structure.md` slice 12), so the source list is a glob rather
+# than a hand-maintained enumeration -- a new direction's file is picked up
+# with no edit here, which is the point of the split.
+def _sources():
+    pat = os.path.join(ROOT, "notes/pencil/workbook")
+    found = sorted(glob.glob(os.path.join(pat, "*.md"))
+                   + glob.glob(os.path.join(pat, "bare-ext", "*.md")))
+    rel = [os.path.relpath(f, ROOT) for f in found
+           if not os.path.basename(f).startswith(("README", "_"))]
+    return rel + [
+        "notes/Pencil-informal-grid.md",
+        "notes/Pencil-W4-informal.md",
+        "notes/Pencil-strategy.md",
+        "notes/Pencil-fanout.md",
+    ]
+
+
+SOURCES = _sources()
 
 # --- the closed vocabulary (`notes/Harness-structure.md` slice 9) -----------
 # Maps a leading tag token to its status. Keys are matched case-insensitively

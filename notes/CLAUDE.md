@@ -51,7 +51,7 @@ for *organizing* this directory is here.
   `scripts/sweep-deprecations.py` (build-log-driven rename sweep). Read it
   before attempting a bump; it is maintenance, not a phase, so it outlives
   whatever phase is active.
-- **`Pencil-informal.md`** — the Phase-39 (PENCIL) **informal-mathematics
+- **`pencil/workbook/`** — the Phase-39 (PENCIL) **informal-mathematics
   workbook**: proofs under development for the kernels and branch arms the
   phase carries as hypotheses, staged *before* blueprint transcription
   (nothing in it is formalization-committed). Same editing discipline as a
@@ -92,11 +92,11 @@ for *organizing* this directory is here.
   2026-08-19 (`notes/Pencil-structure.md` slice 1) because the section alone
   had grown to 9883 lines (39% of the parent file, six times the
   next-largest section). Verbatim relocation — same editing discipline as
-  the sections that stayed behind; `Pencil-informal.md`'s *Section index*
+  the sections that stayed behind; `pencil/workbook/README.md`'s *Section index*
   points here, and its *State of (K)* gap map (incl. §(K-grid)'s own row)
   did **not** move. Since 2026-08-28 (direction RESGRID) it also carries
   **§(K-res)** — the residual-habitat transport audit, at the end of the
-  file — whose gap-map row likewise stays in `Pencil-informal.md`.
+  file — whose gap-map row likewise stays in `pencil/workbook/gapmap.md`.
 - **`Pencil-labels.md`** — the Phase-39 **label registry and minting rule**: one
   index of every label token in use across the pencil doc set, the measured
   diagnosis of why bare single-letter families collide while topic-tagged ones
@@ -114,7 +114,7 @@ for *organizing* this directory is here.
   **parallel** read-only research dispatches (own new script, draft to the
   scratchpad, commit nothing, coordinator lands serially), and the per-return
   landing checklist. Read it when dispatching or landing that fan-out;
-  `Pencil-informal.md`'s *State of (K)* map is the mathematical entry point, and
+  `pencil/workbook/gapmap.md` is the mathematical entry point, and
   its *Section index* is the navigation table (per-section line ranges + status,
   so a dispatch loads only the sections it needs).
   **The fan-out is COMPLETE** (all three landed 2026-08-05); its strategic
@@ -153,7 +153,7 @@ for *organizing* this directory is here.
   what the KT formalization did and did not yield as extractable technique,
   **three candidate stronger inductive invariants** — of which C1 (dominance of
   the `V_bc` map) was adjudicated, run and struck on 2026-08-05, its verdict in
-  `Pencil-informal.md` §(K-dom) — and the **symbolic-computation assessment**
+  `pencil/workbook/K-dom.md` — and the **symbolic-computation assessment**
   (the Python harness is exact-pointwise with hand-rolled univariate
   interpolation only; its §5.4 **Macaulay2 layer is now LANDED** —
   `notes/scripts/m2/`, opened 2026-08-05 with `lambda1.m2`, which turned

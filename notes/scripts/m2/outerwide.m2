@@ -4,7 +4,7 @@
 -- END, AT THE GENERIC POINT OF THE LOCAL FRAME -- and a CLOSED FORM for its
 -- bad locus.
 --
--- WHY THIS DRIVER EXISTS.  `notes/Pencil-informal.md` section (K-out) *What
+-- WHY THIS DRIVER EXISTS.  `notes/pencil/workbook/K-out.md` section (K-out) *What
 -- would change this* item 6 says: `R_1` is a FAR object, so `m2/lambda0.m2`'s
 -- gauge slice does not reach it, but `dim(R_1 cap L_b) = 1` "would follow from
 -- `L_b subseteq.not R_1` as a polynomial non-vanishing", and that is the one

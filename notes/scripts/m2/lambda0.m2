@@ -1,6 +1,6 @@
 -- notes/scripts/m2/lambda0.m2 -- Phase 39 (PENCIL), kernel-(K) arc.
 --
--- (Lambda0) and the a-line SPANS of notes/Pencil-informal.md S(K-Lambda)
+-- (Lambda0) and the a-line SPANS of notes/pencil/workbook/K-Lambda.md S(K-Lambda)
 -- (Standing notation + Step 3; the driver mode it upgrades is
 -- `python3 notes/scripts/w4/lambda.py --span`, 164 sampled frames over 38
 -- strata).  Established here at the GENERIC POINT of the local frame, i.e.

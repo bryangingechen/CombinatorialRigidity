@@ -23,7 +23,7 @@ by this round.
 
 ## Scope
 
-The Phase-39 pencil doc set: `notes/Pencil-informal.md`,
+The Phase-39 pencil doc set: `notes/pencil/workbook/`,
 `notes/Pencil-W4-informal.md`, `notes/Pencil-labels.md`,
 `notes/Pencil-fanout.md`, `notes/Pencil-strategy.md`,
 `notes/scripts/README.md`, plus `notes/Phase39.md` itself (length/balance)
@@ -35,7 +35,7 @@ coordinator alongside this round).
 ### D-1 — `Pencil-informal.md` *Section index* line-range drift — DONE
 
 **Coordinator-seeded, extended and corrected here.** Ground truth:
-`grep -n '^## ' notes/Pencil-informal.md` (durable anchor); the corrected
+`grep -n '^## ' notes/pencil/workbook/` (durable anchor); the corrected
 table below was computed programmatically (walk forward from each heading
 match for the start, and back from the next heading over any run of blank
 lines for the end) — not by hand arithmetic, and not by assuming a uniform
@@ -105,7 +105,7 @@ intervening commits (`dc4ecc7b`, `97c9661c`) each touched only the single
 physical line 248, as their own diffs attest (`git diff --stat` on both:
 1 file changed, 1 insertion(+), 1 deletion(-)), so no `## §(…)` heading moved.
 File confirmed still 14750 lines (`wc -l`). All 20 non-zero-drift rows in
-`notes/Pencil-informal.md`'s *Section index* table (line 83, §(K-grid), is
+`notes/pencil/workbook/`'s *Section index* table (line 83, §(K-grid), is
 the one row already exact) updated to the *actual* values above; no other
 column (label, status, tag) touched. `git diff --stat` on the file: 1 file
 changed, 20 insertions(+), 20 deletions(-) — confirms no line added/removed,
@@ -113,7 +113,7 @@ matching the file's unchanged 14750-line total.
 
 ### D-2 — §(K-grid) *State of (K)* gap-map cell is a changelog, not a status statement — DONE
 
-**Coordinator-verified.** `notes/Pencil-informal.md:248` — the *State of (K)*
+**Coordinator-verified.** `notes/pencil/workbook/gapmap.md:248` — the *State of (K)*
 gap map's single row for gap `(K-grid)` (table starts at line 227) — is one
 markdown table cell carrying **eight** directions' narrative in sequence:
 the original T material, then one "Since Steps Gxx–Gyy (direction …)" block
@@ -337,7 +337,7 @@ check per `scope-pin` constraint 1: every substantive clause in the old
 (GR-10)'s refuted min-max, (GR-16)–(GR-19), (GR-21)–(GR-26), (GR-27)/(GR-28),
 the (GR-29)/(GR-30)/(GR-31) exact-boundary refutation, (GR-32)–(GR-35))
 already appears, under the same label, in the §(K-grid) gap-map cell
-(`notes/Pencil-informal.md:248`, current post-D-2 form) — confirmed by a
+(`notes/pencil/workbook/:248`, current post-D-2 form) — confirmed by a
 label-by-label read of both cells side by side. **Nothing was unique to the
 index cell; everything cut was already duplicated in the gap map, so nothing
 moved — the cell was pure deletion**, per `scope-pin`'s own license ("you

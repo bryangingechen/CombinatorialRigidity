@@ -50,7 +50,7 @@ rows**, residue **0** ((BE-225)–(BE-230)). **BOTH halves hang on it**. **OPEN*
 `PHASE-BOUNDARIES.md` event against the 2026-07-24 no-split adjudication, surfaced with a commit-count estimate, never unilateral; the 2026-08-05 Lean hold binds regardless.
 
 **FIFTEEN reference blocks in `notes/Pencil-structure.md`**, indexed there — **read once
-per session**. The **State of (K)** gap map (`notes/Pencil-informal.md`) is this phase's
+per session**. The **State of (K)** gap map (`notes/pencil/workbook/`) is this phase's
 status object, **authoritative for every status word**; read with `python3 notes/gapmap.py`,
 never `sed`/`grep`.
 
@@ -219,11 +219,10 @@ refuted for any purely combinatorial (`≤3`-closedHubNbhd) criterion
 **The phase stays OPEN** (the 2026-07-24 adjudication — no phase-close; see *Current state*).
 
 **PARALLEL HARNESS TRACK, not blocking this one** — `notes/Harness-structure.md`
-(slices 8–14, opened 2026-09-09). **Slice 8 LANDED:** `python3 notes/ledger.py --label
-'(BE-216)' | --brief | --frontier | --delta <ref>` answers "what is proved" in one call
-(1 308 claims, 51% UNTAGGED). **Slice 9 LANDED:** bracketed status vocabulary +
-`--lint` gate. Next there: slice 12, the workbook split. The phase's own next concrete task
-is unchanged and stated below.
+(slices 8–14; **8, 9, 12 LANDED**). `python3 notes/ledger.py --label '(BE-216)' | --brief |
+--frontier | --delta` answers "what is proved" in one call (1 308 claims, 51% UNTAGGED); a
+`[STATUS]` vocabulary with a `--lint` gate; and the workbook is now ONE FILE PER SECTION
+under `notes/pencil/workbook/` (gap map: `.../gapmap.md`). Next there: slice 13.
 
 **THE (BE-14) THREAD, settled frame + its last landings — RELOCATED 2026-09-02** to
 `notes/Pencil-structure.md` §"The (BE-14) thread — per-landing detail" (**block 8**); the
@@ -379,7 +378,7 @@ its cost are `notes/dispatch-log.md`'s and `notes/Pencil-fanout.md`'s). **The ta
    2026-07-30 STANDING ADJUDICATION and the two literature-hunt MISSes are RELOCATED
    2026-09-03** to **block 14**; its live consequence stays: carry `hK` pinned, option B NOT
    authorized, and since 2026-08-02 it also carries **(K-res)**. **The mathematics is NOT
-   restated here** — canonical home is `notes/Pencil-informal.md`'s **State of (K)** gap map.
+   restated here** — canonical home is `notes/pencil/workbook/gapmap.md`'s **State of (K)** gap map.
    Read that map, not this item, before any (K) work.
 
 **Below the carried items — support work, explicitly ranked lower now.** OGEOM's successors

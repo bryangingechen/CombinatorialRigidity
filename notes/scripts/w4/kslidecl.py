@@ -3,7 +3,7 @@ Phase 39 (K-slide-cl) -- the tetrahedral collapse: a class-level witness
 scheme for the slide-in limit system.
 
 Attacks the class-uniform residue (K-slide-cl) named in
-`notes/Pencil-informal.md` section (K-slide) Step 5.  The mechanism
+`notes/pencil/workbook/` section (K-slide) Step 5.  The mechanism
 (workbook section (K-slide-cl)) is the White--Whiteley 1987 Theorem-2.18
 specialization technique run INSIDE the decoration variety of the slide-in
 limit system:

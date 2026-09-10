@@ -17,7 +17,7 @@ middle brackets but not the three Gram factors.  Two of the three are
 is asserted NOWHERE in the harness.  Its failure is not vacuous: the M2
 driver's block (P5) degenerates `C4`'s direction onto `C1`'s and drops both
 spans while (Lambda-0a,b,c,e) and all four middle brackets survive.
-`notes/Pencil-informal.md` section (K-Lambda) *What would change this* item
+`notes/pencil/workbook/` section (K-Lambda) *What would change this* item
 (vi) therefore asks the one question the 164 sampled frames could not answer,
 BECAUSE the clause is generically satisfied:
 

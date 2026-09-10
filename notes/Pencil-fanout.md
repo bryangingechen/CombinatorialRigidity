@@ -825,7 +825,7 @@ the worked exemplar a future wave copies from.
 **What this file is:** dispatch scoping only — the specs, bars, riders, tier splits and
 label reservations a direction is dispatched against, plus the per-direction landing
 write-ups. It remains the **template for any future fan-out or single direction**. The
-mathematics lives in `notes/Pencil-informal.md` (the (K) workbook — start from its *State
+mathematics lives in `notes/pencil/workbook/gapmap.md` (the (K) workbook — start from its *State
 of (K)* gap map, which is authoritative for every status word). Label reservations and the
 minting rule live in `notes/Pencil-labels.md`.
 
@@ -881,7 +881,7 @@ research passes committed to the same files. So:
   (proven-informally / true-modulo-named-gap / open / refuted) and a "what
   would change this" line. Keep the **return message** to a tight verdict —
   the coordinator's context is the binding constraint this session, not tokens.
-- **No agent edits** `notes/Pencil-informal.md`, `notes/Pencil-W4-informal.md`,
+- **No agent edits** `notes/pencil/workbook/`, `notes/Pencil-W4-informal.md`,
   `notes/Phase39.md`, `notes/Phase39-design.md` (frozen), or any existing
   script. The coordinator verifies each return and lands them **serially**,
   one commit per direction, merging the draft into the workbook and updating
@@ -927,7 +927,7 @@ their own claim class. General statement and rationale: **`RESEARCH-ARC.md`**
 2. Ask of each "proven piece": **which driver tests this sentence?** (F11.)
 3. Check the draft against the sections it touches for the
    claims-stronger-than-its-own-named-gaps defect.
-4. Merge the draft into `notes/Pencil-informal.md`, update the matching **State
+4. Merge the draft into `notes/pencil/workbook/gapmap.md`, update the matching **State
    of (K)** gap-map row(s), add a one-line *Decisions made* entry to
    `notes/Phase39.md`, and commit the new script in the same commit.
 5. Keep `notes/Phase39.md` forward-weighted and under its line cap — **now
@@ -1298,7 +1298,7 @@ own section.** (GR-69) proves `|δ| ≤ 2` is forced on the whole
 `n_hub ≤ 6` stratum, so GDESC *Step G66*'s `{0: 92, 2: 2}` and this pass's
 own exhaustive `{0: 4641, 2: 139}` carry **no evidential weight for
 `n_hub ≥ 8`** — the figures stand, only the *reading* is downgraded, and
-the annotation is recorded at *Step G66* itself in `Pencil-informal.md`,
+the annotation is recorded at *Step G66* itself in `Pencil-informal-grid.md`,
 not only here.
 
 **The cap disclosed, with its reason.** The necklace leg stops at `m = 6`
@@ -3036,7 +3036,7 @@ moot the second), C3-AVOID 2026-08-24 (the gate decided at threshold
 **LANDED 2026-08-20 (KBARE-FALSIFY, opus, one commit).** Outcome: a **HIT at
 tier T1** — **(K-bare-ext) is REFUTED as stated**, `hbareSplit` **untouched**
 and still carried as pinned. Verdict, mathematics and every figure:
-`notes/Pencil-informal.md` §(K-bare-ext) *Steps BE1–BE8*; driver
+`notes/pencil/workbook/K-bare-ext.md` §(K-bare-ext) *Steps BE1–BE8*; driver
 `notes/scripts/kbare/breakhunt.py`. It does **not** moot C3-AVOID: the hit is a
 statement about route A's *seed* quantifier, not about the reduction, so
 C3-AVOID's purely combinatorial question stands exactly as specced. Four
@@ -3604,7 +3604,7 @@ confinement's mechanism**. **Bars honoured:** landed chains consumed, not
 re-derived; no pool re-run (the new pool is POOL-OQ2, the landed 570/174
 figures cited); (OC-7) witness-not-rate discipline; no `.lean`. **E1/E2/E3
 all NO — E3 stays ARMED by GBAL, not fired.** Canonical home §(K-out)
-*Steps O37–O41* (`notes/Pencil-informal.md`); driver `w4/oqrank.py`
+*Steps O37–O41* (`notes/pencil/workbook/`); driver `w4/oqrank.py`
 (controls + nine-chunk census); labels (OC-40)–(OC-44) all claimed.
 
 **Two process exceptions at this dispatch, recorded (dispatch-log rows
@@ -5238,7 +5238,7 @@ adversarial pre-test is a measured claim and needs one. Read-only imports;
 untracked, for the coordinator to gate and commit.
 
 **Reservation** (`notes/Pencil-labels.md` §"Reserved namespace — direction
-ZSHEAR"): **new section §(K-shear)** in `notes/Pencil-informal.md`, tag
+ZSHEAR"): **new section §(K-shear)** in `notes/pencil/workbook/`, tag
 **`SH-`** (globally 0-hit, cleaner than `BE-`); labels **(SH-1)–(SH-6)**,
 **Steps SH1–SH5**; return any unconsumed remainder to the tail. If (ZH-1) dies,
 the section is still minted — a recorded death is the deliverable.
@@ -5730,7 +5730,7 @@ needed none and said so). A purely derivational result needs no new driver —
 state that disposition explicitly. Read-only imports, untracked.
 
 **Reservation** (`notes/Pencil-labels.md` §"Reserved namespace — direction
-ZJACOB"): **new section §(K-jac)** in `notes/Pencil-informal.md`, tag **`JC-`**
+ZJACOB"): **new section §(K-jac)** in `notes/pencil/workbook/K-jac.md`, tag **`JC-`**
 (globally 0-hit); labels **(JC-1)–(JC-6)**, **Steps JC1–JC5**; return any
 unconsumed remainder. Mint the section even if the route dies — ZSHEAR's
 precedent: a recorded death with its exact reason is the deliverable.
@@ -6983,7 +6983,7 @@ wrong, say so — that is a finding, not a detour.
    records `W19` as *"rigid but **not count-tight**"*.
 3. **The gap map already ASSERTS the transport, without a proof, and that
    sentence is what is under test.** The *State of (K)* map's own arc paragraph
-   (`notes/Pencil-informal.md`) says (K-tight) *"since the W4 route-3(b)
+   (`notes/pencil/workbook/`) says (K-tight) *"since the W4 route-3(b)
    adjudication also carries the whole **(K-res)** residual habitat … same
    difficulty class, same stratum, **so one uniform gap serves both**"*. But the
    chain then reduced (K-tight)'s residual to a gap **quantified over tight
@@ -7450,7 +7450,7 @@ than the question).
 question, and the answer is a DICHOTOMY rather than a theorem.**
 `PencilPair K 3 G`, `hbareSplit`, (BE-14)-for-all-`G`, the 2-cut step, S-mark
 and (BE-32)(+) untouched; **not a PENCIL event**; **E3 stays ARMED (by GBAL),
-not fired**. Canonical home: **§(K-bare-ext)**, `notes/Pencil-informal.md`,
+not fired**. Canonical home: **§(K-bare-ext)**, `notes/pencil/workbook/bare-ext/BSHARP.md`,
 *Steps BE43–BE47*; driver `notes/scripts/w4/bsharp.py`
 (`red|split|gen|hyp|adj|validate`). Reservation **fully consumed** —
 (BE-44)–(BE-48) and *Steps BE43–BE47*, nothing returned.
@@ -7754,7 +7754,7 @@ shape three landings in a row have had to undo.
 
 **(b3) is DECIDED: proved on its honest domain, by a SEPARATION THEOREM that makes it disjoint from BSHARP's window.**
 
-**HIT shape 1** (with shape 2 attached), `notes/Pencil-informal.md`
+**HIT shape 1** (with shape 2 attached), `notes/pencil/workbook/bare-ext/BRULE.md`
 §(K-bare-ext) *Steps BE48–BE52*, driver `notes/scripts/w4/brule.py`
 (`dom|sep|domin|wit|hunt|validate`).
 
@@ -8012,7 +8012,7 @@ BTWOCUT/BIMAGE) — already flagged in the row as the workbook's, not the cell's
 **THE WINDOW IS CLOSED, BY A CLASS THEOREM — the deliverable is the spec's
 first shape: the class statement PROVED by a uniform argument.**
 
-**HIT shape 1**, `notes/Pencil-informal.md` §(K-bare-ext) *Steps BE53–BE57*,
+**HIT shape 1**, `notes/pencil/workbook/bare-ext/BWIN.md` §(K-bare-ext) *Steps BE53–BE57*,
 driver `notes/scripts/w4/bwin.py` (`dec|sweep|exc|cls|wide|validate`).
 
 - **Job 1: the class statement, PROVED** — for **every** piece that is a
@@ -8308,7 +8308,7 @@ compression fold of *Decisions made*.
 **THE INTERNAL R-NODE IS DESCRIBED, AND THE DESCRIPTION WAS NEVER THE HARD
 PART — HIT shapes 1 and 3.**
 
-`notes/Pencil-informal.md` §(K-bare-ext) *Steps BE58–BE62*, driver
+`notes/pencil/workbook/bare-ext/BRNODE.md` §(K-bare-ext) *Steps BE58–BE62*, driver
 `notes/scripts/w4/brnode.py` (`law|rec|carve [named|full]|route|validate`).
 
 - **Job 1, the sharp form FIRST, as the spec ordered — and the answer is
@@ -8570,7 +8570,7 @@ direction that verifies a new source adds it THERE, in its landing commit.**
 ### BDECOR — landing write-up (LANDED 2026-09-01, recon-opus, single design-pass commit)
 
 **HIT shapes 1 and 2, together, and in a stronger form than either was
-stated.** Mathematics: `notes/Pencil-informal.md` §(K-bare-ext) continuation
+stated.** Mathematics: `notes/pencil/workbook/bare-ext/BDECOR.md` §(K-bare-ext) continuation
 (direction BDECOR), **(BE-64)–(BE-68)** / *Steps BE63–BE67*. Driver
 `notes/scripts/w4/bdecor.py` (`prod|theta|small|chart|attain|validate`).
 
@@ -8853,7 +8853,7 @@ named in the note's own *Doc debt* bullet.
 
 **HIT shapes 2, 4 and 5. NOT shape 1 and NOT shape 3.** The class statement is
 **not proved**; **no third failure mechanism is exhibited**, and none is claimed
-to be absent. Mathematics `notes/Pencil-informal.md` §(K-bare-ext) *Steps
+to be absent. Mathematics `notes/pencil/workbook/bare-ext/BPEEL.md` §(K-bare-ext) *Steps
 BE68–BE72* ((BE-69)–(BE-73)); driver `notes/scripts/w4/bpeel.py`
 (`open|indep|law|force|gate|validate`).
 
@@ -9253,7 +9253,7 @@ lines each. Lines are the tighter of the two: **20 spare**.
 
 ### LANDING — BSPREAD, 2026-09-01, `recon-opus`
 
-**Mathematics:** `notes/Pencil-informal.md` §(K-bare-ext) continuation
+**Mathematics:** `notes/pencil/workbook/bare-ext/BSPREAD.md` §(K-bare-ext) continuation
 (direction BSPREAD), ***Steps BE73–BE77***, labels **(BE-74)–(BE-78)**.
 **Driver:** `notes/scripts/w4/bspread.py` (`lemma|chain|peel|validate`).
 **Reservation CONSUMED IN FULL; nothing returned.** **No `.lean`** — the
@@ -9666,7 +9666,7 @@ the transversality count, (S1)/(S2) and cross-pair welding all untouched.
 BPEEL's 3 497 and 408 stand. **Not a PENCIL event**; the phase-boundary
 consequence is **reported, not acted on**.
 
-**Deliverable.** `notes/Pencil-informal.md` §(K-bare-ext) *Steps BE78–BE82* /
+**Deliverable.** `notes/pencil/workbook/bare-ext/BONEONE.md` §(K-bare-ext) *Steps BE78–BE82* /
 **(BE-79)–(BE-83)**; driver `notes/scripts/w4/boneone.py`
 (`side|bound|force|validate`, 54 s, `VALIDATE: OK`); the `(K-bare)` gap-map
 row recomputed (1 474 words, label set-diff scripted); reservation **consumed
@@ -9974,7 +9974,7 @@ cross-pair welding are all untouched. BPEEL's 3 497 and 408 stand; BONEONE's
 phase-boundary consequence is **reported, not acted on**, and the 2026-08-05
 Lean hold binds regardless.
 
-**Deliverable.** `notes/Pencil-informal.md` §(K-bare-ext) *Steps BE83–BE87* /
+**Deliverable.** `notes/pencil/workbook/bare-ext/BGENUINE.md` §(K-bare-ext) *Steps BE83–BE87* /
 **(BE-84)–(BE-88)**; driver `notes/scripts/w4/bgenuine.py`
 (`cert|chart|bite|wider|validate`, 145 s, `VALIDATE: OK`); the `(K-bare)`
 gap-map row recomputed (1 475 → **1 545** words, label set-diff scripted at
@@ -11118,7 +11118,7 @@ cited none of it — `partitionDef` occurs 0 times in the whole W4 arc**, which 
 argued about deficiency only through the edge-count face. (GROW-2)–(GROW-4) are
 that face applied to this arc's own class. **The standing verdict is therefore
 sharpened, not merely re-confirmed:** the sibling arc **had** read the object
-(`notes/Pencil-informal.md`: 16 `partitionDef` citations, direction BINDUC), so the
+(`notes/pencil/workbook/`: 16 `partitionDef` citations, direction BINDUC), so the
 gap is **per-arc**, and the new one-line rule is *grep the SIBLING WORKBOOK for the
 Lean file you are about to cite; if the other arc reads more of it than you do,
 the difference is your inventory gap.* Asked whether the fix has been applied
@@ -11375,7 +11375,7 @@ instances and six kinds.
 ### Reservation
 
 (`notes/Pencil-labels.md` §"Reserved namespace — direction BBASE".) Labels
-**(BE-89)–(BE-93)**, ***Steps BE88–BE92***, owning file `notes/Pencil-informal.md`
+**(BE-89)–(BE-93)**, ***Steps BE88–BE92***, owning file `notes/pencil/workbook/`
 §(K-bare-ext) — **extends, no new section**, per the thread's standing convention — driver
 `w4/bbase.py`. The reservation opens exactly at the tail BGENUINE's registry row declared.
 **Return any unconsumed remainder.** **`BFLAG` was checked and NOT chosen**: it is no longer
@@ -11688,7 +11688,7 @@ row**.
 ### Reservation
 
 (`notes/Pencil-labels.md` §"Reserved namespace — direction BUNIF".) Labels
-**(BE-94)–(BE-98)**, ***Steps BE93–BE97***, owning file `notes/Pencil-informal.md`
+**(BE-94)–(BE-98)**, ***Steps BE93–BE97***, owning file `notes/pencil/workbook/`
 §(K-bare-ext) — **extends, no new section** — driver `w4/bunif.py`. The reservation opens at
 the tail BBASE consumed to. **Return any unconsumed remainder.** **`BREACH` stays
 rejected** — BGENUINE's prep already struck it on the (L5) substring rule (`breach` hits 5
@@ -11709,7 +11709,7 @@ comfortable by comparison.
 ### BUNIF — LANDING WRITE-UP (2026-09-02)
 
 > **LANDED 2026-09-02 — HIT shape 2 (the reduction), plus jobs 2 and 3.** Verdict in
-> `notes/Pencil-informal.md` §(K-bare-ext) *Steps BE93–BE97*, labels **(BE-94)–(BE-98)**;
+> `notes/pencil/workbook/bare-ext/BUNIF.md` §(K-bare-ext) *Steps BE93–BE97*, labels **(BE-94)–(BE-98)**;
 > driver `notes/scripts/w4/bunif.py` (five modes: `equiv`, `law`, `bind`, `coin`, `abst`).
 
 **Job 1 (PRIMARY) — settled as a REDUCTION, not a proof and not a refutation.**
@@ -11992,7 +11992,7 @@ named, and (2)'s weak link is named inside it. Kill either without ceremony.
 ### Reservation
 
 (`notes/Pencil-labels.md` §"Reserved namespace — direction BDOUBLE".) Labels
-**(BE-99)–(BE-103)**, ***Steps BE98–BE102***, owning file `notes/Pencil-informal.md`
+**(BE-99)–(BE-103)**, ***Steps BE98–BE102***, owning file `notes/pencil/workbook/`
 §(K-bare-ext) — **extends, no new section** — driver `w4/bdouble.py`. Opens exactly at the
 tail **BUNIF declared**. **Return any unconsumed remainder.** **Do not mint a label for
 `Π_x`, `c_i(U)`, `margin`, `blockcap`/`blockdeg` or the double pencil itself** — all are
@@ -12013,7 +12013,7 @@ landing MUST relocate or merge, not append**, and the note's own rule names the 
 ### LANDING WRITE-UP — BDOUBLE, 2026-09-02: **(NO-DOUBLE-PENCIL) is REFUTED by (BE-45)(ii)'s own vacuous corner, and the tight block is REDUNDANT — `Π_x` and `Π_y` drop out of the fourteen**
 
 > **LANDED 2026-09-02 — HIT shapes 2 AND 3, plus jobs 2 and 3.** Verdict in
-> `notes/Pencil-informal.md` §(K-bare-ext) *Steps BE98–BE102*, labels
+> `notes/pencil/workbook/bare-ext/BDOUBLE.md` §(K-bare-ext) *Steps BE98–BE102*, labels
 > **(BE-99)–(BE-103)**; driver `notes/scripts/w4/bdouble.py` (four modes: `arith`,
 > `witness`, `hunt`, `price`).
 
@@ -12329,7 +12329,7 @@ named. Kill it without ceremony.
 ### Reservation
 
 (`notes/Pencil-labels.md` §"Reserved namespace — direction BSATUR".) Labels
-**(BE-104)–(BE-108)**, ***Steps BE103–BE107***, owning file `notes/Pencil-informal.md`
+**(BE-104)–(BE-108)**, ***Steps BE103–BE107***, owning file `notes/pencil/workbook/`
 §(K-bare-ext) — **extends, no new section** — driver `w4/bsatur.py`. Opens exactly at the
 tail **BDOUBLE declared** (its two tokens' hits are that declaration, in the registry and
 the fan-out, opened and confirmed). **Return any unconsumed remainder.** **Mint nothing**
@@ -13035,7 +13035,7 @@ not be satisfiable alongside an all-`ℓ = 2` orientation at a degree-2 hub.
 6. **TERMINATION riders E1/E2/E3 read at source**, E1 live in its **literal** reading
    because a g-flank is a §(K-grid) object.
 
-**Bars.** No (a′)/(b′) ledger direction; no `notes/Pencil-informal.md` §(K-bare-ext) or
+**Bars.** No (a′)/(b′) ledger direction; no `notes/pencil/workbook/` §(K-bare-ext) or
 `(BE-…)` label (the sibling is there); no re-derivation of the packing/split half; **(K-res)
 is a user call and the 2026-08-05 Lean hold binds — no `.lean`.**
 
@@ -13323,7 +13323,7 @@ any scratch input against `HEAD` before consuming it**.
 **Selection provenance.** Rank 3 of `notes/Pencil-strategy.md` §8's corrected
 `hK` ranking, dispatched as the **third** member of a concurrent round: one
 committing dispatch live in `notes/Pencil-informal-grid.md` §(K-grid), a second
-draft-only one in `notes/Pencil-informal.md` §(K-bare-ext), and this one. Three
+draft-only one in `notes/pencil/workbook/` §(K-bare-ext), and this one. Three
 concurrent directions on one working tree is the widest exercise of
 `RESEARCH-ARC.md` §2 outside a prepared fan-out; it landed with zero collisions.
 
@@ -14031,7 +14031,7 @@ lemma ((BE-134)(i)) — is a named, dispatchable attack.
 
 **Driver** `notes/scripts/w4/bline.py`, six modes
 (`classify | five | low | pop | reach | fibre`, plus `validate`), exact ℚ,
-seed `20260902`, `validate` ≈ 59 s. **Mathematics** `notes/Pencil-informal.md`
+seed `20260902`, `validate` ≈ 59 s. **Mathematics** `notes/pencil/workbook/bare-ext/BLINE.md`
 §(K-bare-ext) *Steps BE128–BE134*, labels **(BE-129)–(BE-135)**.
 
 ## BDEGTWO — seventy-fourth ordinal (concurrent pair with a **(K-res)** sibling, prepped 2026-09-03, **LANDED 2026-09-03**) — BLINE's own residue: **both** of (BE-134)'s gaps
@@ -14316,7 +14316,7 @@ configuration has `p_{w₁} ≠ p_{w₂}`* — and **(S2)** — *the meeting-lin
 regime is handled by (BE-55)(iii) only when the forced equality is of the
 boundary planes; a middle forcing some other algebraic relation between its
 boundary flags that pins `λ` onto `W^{⊥K}` would need its own argument* —
-both to be **read at source in `notes/Pencil-informal.md` §(K-bare-ext)
+both to be **read at source in `notes/pencil/workbook/` §(K-bare-ext)
 before anything else**. *"A refutation is worth as much as a proof — it costs
 the window's class theorem its carrier and re-routes (β), the first hard
 information on that half since BWIN."*
@@ -14495,7 +14495,7 @@ and *Step BE148*.
 
 ## BARCH — seventy-seventh ordinal (concurrent round of four, prepped 2026-09-03, **LANDED 2026-09-03**) — the ninth strategy pass's **rank 2**: does ANY `p_x`-free-subspace method survive at side-degree `≥ 2`, and is the 12-block residue reachable without the clause?
 
-Workbook home: `notes/Pencil-informal.md` §(K-bare-ext) *Steps BE148–BE154*, labels (BE-149)–(BE-155). Driver `notes/scripts/w4/barch.py` (five modes).
+Workbook home: `notes/pencil/workbook/bare-ext/BARCH.md` §(K-bare-ext) *Steps BE148–BE154*, labels (BE-149)–(BE-155). Driver `notes/scripts/w4/barch.py` (five modes).
 
 ### The spec, as dispatched
 
@@ -15102,7 +15102,7 @@ file's *Coordinator reservation defects* block (**shape 4**), **not duplicated h
 ## BINSERT — eighty-second ordinal (drafted read-only 2026-09-08, **LANDED 2026-09-08**) — the ninth strategy pass's **rank 4**: option B for `hbareSplit`, the insertion calculus — does it still have an endpoint at all?
 
 Priced deliberately at **one design pass**, the pass itself being what prices the rest.
-Mathematics, claims and every figure: `notes/Pencil-informal.md` **§(K-ins)** *Steps
+Mathematics, claims and every figure: `notes/pencil/workbook/K-ins--INSJOINT.md` **§(K-ins)** *Steps
 INS1–INS7*, (INS-1)–(INS-8), and the new `§(K-ins)` gap-map row. Driver
 `notes/scripts/w4/binsert.py` (`routeb|strata|combined`).
 
@@ -15190,7 +15190,7 @@ All five repaired here. §8's own *back-link* amendment would have caught the de
 pair.
 
 **One further defect found and deliberately NOT fixed here, because fixing it is a doc round
-rather than a side errand.** `notes/Pencil-informal.md`'s *Section index* line ranges were
+rather than a side errand.** `notes/pencil/workbook/`'s *Section index* line ranges were
 **already stale by +9 on every row** before this commit (a landing added lines without
 re-indexing), and `§(K-mech)`'s row is off by ~1 800 lines at its end. This commit sets its
 own three rows (`§(K-ins)`, `§(K-frame)`, `§(K-chart)`) **exactly** and leaves the other
@@ -16338,7 +16338,7 @@ row"* clause — restored verbatim, which is exactly the failure mode `gapdiff` 
 **LANDED 2026-09-09.** The second of a **concurrent round of two** (INSJOINT
 90 landed first, serially, per `RESEARCH-ARC.md` §2). Draft-only during the
 round; the coordinator verified and landed. Workbook:
-`notes/Pencil-informal.md` §(K-bare-ext) *Steps BE217–BE223*, labels
+`notes/pencil/workbook/bare-ext/BNONUNI.md` §(K-bare-ext) *Steps BE217–BE223*, labels
 (BE-218)–(BE-224). Driver `notes/scripts/w4/bnonuni.py`. **One tracked
 driver signature changed** — a defaulted `prof=` on `bline.legal_peel`, with
 its four-consumer figure-invariance discharge in

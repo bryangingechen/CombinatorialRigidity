@@ -1,7 +1,7 @@
 """
 Phase 39, section (K-out) -- THE OUTER-LINE CRITERION (OUT), MEASURED.
 
-WHY THIS DRIVER EXISTS.  `notes/Pencil-informal.md` section (K-Lambda)
+WHY THIS DRIVER EXISTS.  `notes/pencil/workbook/` section (K-Lambda)
 *Step 5a* states **(OUT)**: at a hard-stratum, target-rank, length-4-companion
 split, if EITHER outer companion line fails to be a relative twist --
 `C1 = C(b x1) notin V_bc` or `C4 = C(x3 c) notin V_bc` -- then the far

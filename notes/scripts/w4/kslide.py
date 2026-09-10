@@ -1,7 +1,7 @@
 """
 Phase 39 (K-slide) -- the slide-in transfer theorem: per-habitat witnesses.
 
-Attacks the (K-slide) gap named in `notes/Pencil-informal.md` section
+Attacks the (K-slide) gap named in `notes/pencil/workbook/` section
 (K-pitch) Step 6.  The mathematical upgrade validated here (workbook
 section (K-slide), step (S1)): for fixed eps != 0 the slide
 x -> pt(u) + eps*(x0 - pt(u)) is an AUTOMORPHISM of the pencil chart (each

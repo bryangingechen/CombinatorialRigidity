@@ -3,7 +3,7 @@ Phase 39 PENCIL, kernel (K), direction SIGZ (29th, eighth fan-out) -- the
 `sigma > 0`-everywhere hunt at class shapes, and the degeneracy budget that
 prices it.
 
-Section: workbook `notes/Pencil-informal.md` section (K-out), labels
+Section: workbook `notes/pencil/workbook/` section (K-out), labels
 (OC-35)-(OC-40), Steps O31-O36.
 
 WHAT IS NEW HERE (everything else is cited, not re-derived):

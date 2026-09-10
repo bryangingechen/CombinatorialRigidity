@@ -1,7 +1,7 @@
 """
 Phase 39 (K-pitch) -- the null-wrench test: motion-side transfer + the
 pt(a)-sweep quartic.  Exact-Q validation of the derivations in
-`notes/Pencil-informal.md` section (K-pitch).
+`notes/pencil/workbook/` section (K-pitch).
 
 Setting (as in `repin.py`): chain b - v - a - c (v, a degree 2; the
 (K-tight)/(K-res) hard stratum has both ends b, c hubs), G' = G - v + ab,

@@ -1,7 +1,7 @@
 # PENCIL — §(K-grid) informal-mathematics workbook (the tight-stratum grid residual)
 
 **Purpose.** §(K-grid) of the kernel-(K) research arc (Phase 39, PENCIL), split
-out of `notes/Pencil-informal.md` (2026-08-19, the doc-split structural round,
+out of `notes/pencil/workbook/` (2026-08-19, the doc-split structural round,
 `notes/Pencil-structure.md`) **verbatim** — heading, standing notation, and every
 one of *Steps G0–G97* with their Verification / Confidence / What-would-change-this
 blocks, byte-for-byte as they stood in the parent file. Nothing below is
@@ -15,9 +15,9 @@ audit's every citation lands in §(K-grid).
 
 **What stayed behind, and why.** The **State of (K)** gap map — the phase's single
 status object, including §(K-grid)'s own gap-map row — stays whole in
-`notes/Pencil-informal.md`; splitting it across files would defeat its purpose. The
+`notes/pencil/workbook/dictionary.md`; splitting it across files would defeat its purpose. The
 *Shared dictionary*, the *Section index*, and every other §(K-*) section stay there
-too. This file carries only the section body; `notes/Pencil-informal.md`'s *Section
+too. This file carries only the section body; `notes/pencil/workbook/`'s *Section
 index* points here, and `notes/check-gapmap-cells.py` needs no change (it reads only
 the gap map, which did not move).
 
@@ -26,11 +26,11 @@ the gap map, which did not move).
 file the label's home section lives in; nothing about that registry changed. A
 citation that names a **location** in the old sense ("§(K-grid) *Step Gnn*") now
 means "*Step Gnn* below, in this file" rather than a spot inside
-`notes/Pencil-informal.md`. The *State of (K)* gap map, `notes/Pencil-fanout.md`,
+`notes/pencil/workbook/gapmap.md`. The *State of (K)* gap map, `notes/Pencil-fanout.md`,
 `notes/Pencil-labels.md`, `notes/Pencil-strategy.md`, `notes/Phase39.md`,
 `notes/Phase39-design.md` and `notes/scripts/README.md` all cite this section by
 name or by label; none of those citations needed to change except the small number
-that named `notes/Pencil-informal.md` (the *workbook*) explicitly as this section's
+that named `notes/pencil/workbook/` (the *workbook*) explicitly as this section's
 location, which now name this file instead.
 
 ---

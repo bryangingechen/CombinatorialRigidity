@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Gate: `notes/Pencil-informal.md`'s *State of (K)* gap-map table must stay
+"""Gate: `notes/pencil/workbook/gapmap.md`'s *State of (K)* gap-map table must stay
 within a per-cell word cap (adapted from `check-log-rows.py`'s Notes-cell
 cap, same shape).
 
@@ -13,7 +13,7 @@ until a coordinator recompute resets it -- and then grows again. The
 07f6f9b6 1729 -> 0e2bd9b7 2066 -> 2ab3c630 2328 words) before two prose-only
 repairs were abandoned in favour of this mechanical cap. See
 `notes/Phase39.md` *Decisions made* for the incident and `notes/CLAUDE.md`'s
-`Pencil-informal.md` bullet for where this script is documented.
+`pencil/workbook/README.md` bullet for where this script is documented.
 
 Table shape. One row per gap, four columns: `| gap | § + steps | status |
 what would close it |`. Columns 1-2 (gap name, step range) are always short
@@ -140,7 +140,7 @@ import re
 import subprocess
 import sys
 
-PATH = "notes/Pencil-informal.md"
+PATH = "notes/pencil/workbook/gapmap.md"
 SECTION_RE = re.compile(r"^## State of \(K\)")
 HEADER_RE = re.compile(r"^\|\s*gap\s*\|")
 SEP_RE = re.compile(r"^\|[\s:|-]+\|\s*$")
@@ -349,7 +349,7 @@ def main(argv):
     if bad:
         print(
             "FAIL: gap-map cell(s) exceed their word cap "
-            "(notes/Pencil-informal.md *State of (K)*):",
+            "(notes/pencil/workbook/gapmap.md *State of (K)*):",
             file=sys.stderr,
         )
         for key, cell, n, cap in bad:

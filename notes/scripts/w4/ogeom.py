@@ -2,7 +2,7 @@
 Phase 39 PENCIL, kernel (K), direction OGEOM (38th ordinal, 46th direction) --
 the GEOMETRIC route to a disproof of `hK`.
 
-Section: workbook `notes/Pencil-informal.md` section (K-out), labels
+Section: workbook `notes/pencil/workbook/` section (K-out), labels
 (OC-45)-(OC-49), Steps O42-O46.
 
 THE QUESTION.  Is there a class (shape, split) with `{sigma = 0} = empty` --

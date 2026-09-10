@@ -28,7 +28,7 @@ about that registry changed. A citation that names a fan-out or ordinal
 **section** by heading (e.g. `` `notes/Pencil-fanout.md` §"Ninth direction" ``)
 now means the identically-headed section below, in this file, for every
 ordinal 1–19; ordinals 20–24 stay addressed at the parent. The mathematics
-itself lives in `notes/Pencil-informal.md` / `notes/Pencil-informal-grid.md`
+itself lives in `notes/pencil/workbook/` / `notes/Pencil-informal-grid.md`
 (the (K) workbook) and `notes/Pencil-strategy.md`; this file was always dispatch
 scoping, never mathematics, and that does not change with the move.
 

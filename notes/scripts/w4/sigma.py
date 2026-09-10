@@ -1,7 +1,7 @@
 """Phase 39 kernel-(K): the projective polarity `sigma` as a symmetry of the
 split, and **route sigma** -- route A run at the dual seed `sigma u`.
 
-Workbook: `notes/Pencil-informal.md` §(K-sigma).  Exact Q throughout; every
+Workbook: `notes/pencil/workbook/` §(K-sigma).  Exact Q throughout; every
 sampled placement is star-rank guarded and every span's dimension asserted.
 `sigma` is `screwComplementIso` (`Molecular/Molecule/Duality.lean:69`), which
 `Meet.lean`'s header records as the Hodge star of the standard dot product;

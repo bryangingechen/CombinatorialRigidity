@@ -1,11 +1,12 @@
 # Harness + PENCIL doc-set structural round (work log)
 
-**Status: SLICES 8–9 LANDED 2026-09-09.** Slice 8 — `notes/ledger.py`, 1 308
+**Status: SLICES 8, 9, 12 LANDED 2026-09-09.** Slice 8 — `notes/ledger.py`, 1 308
 claims across five files, ~0.2 s regeneration, cache gitignored. Slice 9 — the
-bracketed status vocabulary and `--lint`, gating the new form only. Slices
-10–14 remain plan; the next concrete task is **slice 12** (the split), for which
-slice 8 turned up a claim-identity argument stronger than the token one, with
-slice 11 (generated round packets) and slice 10 (the backfill) after it. Opened 2026-09-09 at the user's
+bracketed status vocabulary and `--lint`, gating the new form only. Slice 12 —
+`notes/Pencil-informal.md` split into 62 files under `notes/pencil/workbook/`,
+content byte-identical, 1 308 claims before and after. Slices 10, 11, 13, 14
+remain plan; the next concrete task is **slice 13** (move the remaining PENCIL
+assets in, add `notes/pencil/CLAUDE.md`), then 14, 11, 10. Opened 2026-09-09 at the user's
 request after Phase 39's dispatch costs were measured. Slices are numbered
 8–14, continuing `notes/Pencil-structure.md`'s slice numbering; this is a
 separate file because the round's deliverables are **cross-phase** (a
@@ -388,7 +389,80 @@ a coordinator, that failure mode is unavailable by construction, and the
 coordinator's freeform prose shrinks to the question plus a prediction block
 that §7 already requires be labelled *to be tested, not inherited*.
 
-### Slice 12 — split the workbook  *(the move; needs slices 8–9 landed)*
+### Slice 12 — split the workbook  *(LANDED 2026-09-09)*
+
+**What landed.** `notes/Pencil-informal.md` (41 343 lines, 2.8 MB) is now 62
+files under `notes/pencil/workbook/`: 20 topical gap sections, the base
+`K-bare-ext.md`, **36** direction continuations under `bare-ext/` named by
+direction code, plus `gapmap.md`, `dictionary.md` and a generated `README.md`.
+
+*(Correction to D5, which this slice's own measurement fixes: the file has
+**36** `§(K-bare-ext)` direction continuations plus **one base section**, not
+37 continuations. The 37 was a count of headings, not of continuations.)*
+
+**Content integrity, checked three ways and all three green:**
+
+- **Byte-identical reconstruction.** Concatenating the 62 parts in document
+  order reproduces the source exactly (verified before any rewriting).
+- **Byte-identical after the intended rewrites.** Applying the same path
+  rewrites to the pre-split original and comparing against the concatenated
+  split gives an exact match at **2 749 129 characters** — so the ONLY textual
+  change is the path repointing.
+- **1 308 claims before, 1 308 after**, and `notes/scripts/gapdiff.py` reports
+  **294 gap-map labels in, 294 out, 0 dropped** across the move.
+
+**A structural finding that changed the split.** Nine `##` headings are not
+sections at all — six `TERMINATION check (E1/E2/E3)` plus `Riders`,
+`Shelf effect` and `Secondary deliverable` are sub-parts of the direction
+write-up they sit inside, written as `##` instead of `###`. A first pass split
+on every `##` and produced 71 parts including six files with colliding names
+and three orphans torn from their context. The splitter now breaks only at
+`## §(…)` (plus the three head sections), which is why it is 62 and not 71.
+
+**The stale index, which is a fourth argument for this slice.** The file
+carried a hand-maintained *Section index* with line ranges, and **19 of its 20
+rows had a wrong start line** — drifting +10 on sixteen rows and +200, +200,
++493 on the last three. The index's own header conceded the problem (*"Line
+ranges are as of this commit — if one looks wrong, grep the `## §(…)`
+heading"*). `README.md` replaces that column with file paths, which cannot
+drift, and the status and tag columns move over verbatim.
+
+**Reference repair: 230 rewrites across 42 files.** Resolution was not
+guessed — a step→file and section→file map built from the split itself
+resolved **166 (72%)** to an exact file (78 via a `*Step X*` citation, 88 via
+a `§(…)` qualifier); the remaining 64 generic mentions and 17 ambiguous
+`§(K-bare-ext)` references point at the workbook directory, which is honest
+rather than precise.
+
+**A live tool was broken by the move and is fixed here.**
+`notes/scripts/gapdiff.py` — the gate `notes/Pencil-structure.md` names as
+*"the one that actually looks at content"* — hard-coded the workbook path and
+died with a traceback. It now falls back to the pre-split path when a ref
+predates the move, so the one gate that compares gap-map content still works
+*across* the boundary rather than failing exactly when asked to span it.
+`check-gapmap-cells.py`, `gapmap.py` and `ledger.py` were retargeted too;
+`ledger.py`'s source list is now a glob, so a new direction's file is indexed
+with no edit.
+
+**40 references used a bare `Pencil-informal.md` without the `notes/` prefix**
+and so were missed by the path rewriter. They were sorted by hand: the live
+ones (in `notes/CLAUDE.md`, `notes/scripts/README.md`, `Pencil-labels.md`,
+four drivers and three Macaulay2 files) are repointed; the ones in
+`Pencil-cleanup.md`, `Pencil-structure.md` and this file's own measurement
+tables are **retirement history** and correctly keep the old name.
+
+**The discipline that genuinely changed, repaired in the same commit.**
+`RESEARCH-ARC.md` §3's corollary and `notes/dispatch-log.md` F12 both said
+*"grep the whole file for the same stale claim"*. After the split that is a
+TREE, and both now say so — with the cheaper form named
+(`ledger.py --cited-by`, one call, corpus-wide). A rule that silently becomes
+weaker at a file move is worse than one that is deleted.
+
+**Figure invariance discharged**: the 27 touched `.py`/`.m2` files are
+docstring/comment-only path repairs, verified line by line — no driver's
+computation changed and no recorded figure moved.
+
+### Slice 12 — as originally specified  *(retained for the record)*
 
 **Slice 8 turned up a new and stronger argument for this slice, from an
 unexpected direction: claim IDENTITY.** Building `--delta` forced the question

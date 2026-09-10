@@ -166,7 +166,7 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
 
 - `repin.py [--control | --theta | --witness | --stratum | --pointwise | --hinge]` —
   the **carrier-aware KT pp. 684–691 boundary-load re-pin** (2026-08-02):
-  validates the corrected escape criterion of `notes/Pencil-informal.md`
+  validates the corrected escape criterion of `notes/pencil/workbook/K-tight.md`
   §(K-tight) (attainment ⟺ two functionals independent on the obstruction
   space `U`; `dim U = dim R_a + 1` forced; route-A/B uniform failure ⟺
   `r ⊥ Λ²Π̂(b)` / `r ⊥ Λ²Π̂(c)`; combined failure ⟺ `★r ∥ C(meet line)`).
@@ -199,7 +199,7 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
     subject, not its evidence, is the guard: F13's rule is that a guard
     observed only passing is untested.
 
-  Argument state: `notes/Pencil-informal.md` §(K-tight); for `--hinge`, the
+  Argument state: `notes/pencil/workbook/K-tight.md` §(K-tight); for `--hinge`, the
   guard's own record is `notes/scripts/README.md` *Harness debt* item 4 and
   workbook §(K-out) **(OC-7)**.
 
@@ -245,7 +245,7 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
     **null** at θ(3,4,5) (parallel-edge `G°`, 2/2 — the order-0
     evaluation fails exactly where the companion forms take over).
 
-  Argument state: `notes/Pencil-informal.md` §(K-pitch).
+  Argument state: `notes/pencil/workbook/K-pitch.md` §(K-pitch).
 
 - `kslide.py [--k4 | --battery [0-3] | --mixed | --flanks]` — the
   **(K-slide)** attack (2026-08-04, third pass): the slide-transfer
@@ -270,7 +270,7 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
     and line rank exhibited (full support: the parallel pair, 6 edges
     rank 5; reduced: the theta sub-multigraph, 12 edges rank 6).
 
-  Argument state: `notes/Pencil-informal.md` §(K-slide).
+  Argument state: `notes/pencil/workbook/K-slide.md` §(K-slide).
 
 - `kslidecl.py [--k4 | --battery [0-3] | --mixed | --hubhub | --scope]` — the
   **tetrahedral collapse** (2026-08-04, fourth pass): the WW87 Thm-2.18
@@ -282,7 +282,7 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
   structure and Gram identities. `--scope` validates both
   dictionary-completeness lemmas (the `def = ℓ − 6` exemplar; the exhaustive
   length-6 sweep, 5848/5848). Exact-ℚ, on top of `repin.py`/`pitch.py`/
-  `kslide.py`. Per-mode assertion list: `notes/Pencil-informal.md`
+  `kslide.py`. Per-mode assertion list: `notes/pencil/workbook/K-slide-cl.md`
   §(K-slide-cl) *Verification*.
 
 - `kslidecomb.py [--battery | --pack | --k5 | --acyclic | --flanks | --dict4 |
@@ -294,7 +294,7 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
   and `--dict4` proves **(C7)** ((C2)'s length-4 "forced" entry is wrong,
   12/12 exact witnesses). Every shape is re-certified by `shape_ok` = tight
   count + `def = 0` + `hnoRigid`. Exact ℚ/ℤ, on top of the whole chain.
-  Per-mode assertion table: `notes/Pencil-informal.md` §(K-slide-comb)
+  Per-mode assertion table: `notes/pencil/workbook/K-slide-comb.md` §(K-slide-comb)
   *Verification*.
 
 - `flanks.py [--conj | --degen | --strata | --split | --allsplits | --pitch |
@@ -337,7 +337,7 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
     menu-blocked `K4` (seed 101), **none** at any of the four structural
     flanks.
 
-  Argument state and per-mode assertion table: `notes/Pencil-informal.md`
+  Argument state and per-mode assertion table: `notes/pencil/workbook/K-flank.md`
   §(K-flank).
 
 - `pure.py [--chord | --flanks | --support | --pure | --parallel]` — the
@@ -382,7 +382,7 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
     `ℓ₁ + ℓ₂ ≥ 7` on a parallel pair (which puts the (S5) `(3,3)` mechanism
     outside the tight class).
 
-  Argument state and per-mode assertion table: `notes/Pencil-informal.md`
+  Argument state and per-mode assertion table: `notes/pencil/workbook/K-pure.md`
   §(K-pure).
 
 - `lambda.py [--witt | --span | --dichot | --habitat | --l56 | --adv]` — the
@@ -442,7 +442,7 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
     `span ω⁻` collapsing `3 → 1`) and the two **constructed** (Λ0f) necessity
     witnesses (`p⁺₃ = 0 ⟹ span ω⁺ = 2`, `q₃ = 0 ⟹ span ω⁻ = 2`, 4/4 each).
 
-  Argument state and per-mode assertion list: `notes/Pencil-informal.md`
+  Argument state and per-mode assertion list: `notes/pencil/workbook/K-Λ.md`
   §(K-Λ).
 
 - `dominance.py [--cap | --jac | --far | --validate]` — the **C1 dominance
@@ -492,7 +492,7 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
     **differentials agree entry by entry**; and an exact secant quotient on a
     chart-exact ray converges to the computed differential.
 
-  Argument state and per-mode assertion list: `notes/Pencil-informal.md`
+  Argument state and per-mode assertion list: `notes/pencil/workbook/K-dom.md`
   §(K-dom).
 
 - `outer.py [--geom | --habitat | --sweep | --tangent | --patterns]` — the
@@ -545,7 +545,7 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
     are not comparable — expected, but **unreconciled**
     (`notes/scripts/README.md` *Recorded observations* 1).
 
-  Argument state and per-mode assertion list: `notes/Pencil-informal.md`
+  Argument state and per-mode assertion list: `notes/pencil/workbook/K-Λ.md`
   §(K-Λ) *Step 3a*.
 
 - `sigma.py [--transport | --adv | --nondeg | --fixed | --hunt]` — the **projective
@@ -622,7 +622,7 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
     on every hand-degenerated placement.
 
   Argument state, the four obligations and the per-mode assertion list:
-  `notes/Pencil-informal.md` §(K-σ). **Route σ is a CANDIDATE offered for
+  `notes/pencil/workbook/K-σ.md` §(K-σ). **Route σ is a CANDIDATE offered for
   adjudication — it moves no gap-map row.**
 
 - `closure.py [--fixed | --sweep | --shapes | --flanks | --pool | --parity |
@@ -679,7 +679,7 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
     char-`p` question — it is a statement about one seed, not about the minor.
   - `--validate` (~43 s): all eight legs.
 
-  Argument state and per-leg assertion list: `notes/Pencil-informal.md`
+  Argument state and per-leg assertion list: `notes/pencil/workbook/K-clos.md`
   §(K-clos). **(AC-6) is REFUTED as a class statement** (`C11`, a bare odd cycle
   in `hK`'s habitat) **and open only on the tight stratum** — do not read the
   15/15 as a class result.
@@ -733,7 +733,7 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
     off `P`, and `V_bc` reconstructed from `Z` in the `C`-basis, at 4 habitats.
 
   Argument state, the F11 claim→mode table and the confidence verdict:
-  `notes/Pencil-informal.md` §(K-ann). **The recipe's kernel is class-uniform;
+  `notes/pencil/workbook/K-ann.md` §(K-ann). **The recipe's kernel is class-uniform;
   its two inputs are not** — quote (ANH-7) only with **(ANH-R1)** (`τ_β ≠ 0` at
   the pencil placement, **open**, relocation #4) attached.
 
@@ -786,7 +786,7 @@ Reproduce: `python3 notes/scripts/w4/hybrid_gates.py 6` (seed fixed,
   know when the degenerate basis fires.
 
   Argument state, the pool definitions and the per-mode assertion list:
-  `notes/Pencil-informal.md` §(K-out). **The headline is the NEGATIVE (OC-3) —
+  `notes/pencil/workbook/K-out.md` §(K-out). **The headline is the NEGATIVE (OC-3) —
   the bad locus is nonempty on every class shape's chart, so no counting
   argument can ever deliver (OUT)'s hypothesis; what the pools establish is
   availability, MEASURED, not proven.**

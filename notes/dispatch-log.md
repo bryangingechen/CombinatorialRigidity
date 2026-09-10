@@ -360,7 +360,12 @@ At phase close, promote stable entries into the coordinator command's
   current pass's optimistic residue.
 - **F12 — when a return flags a stale claim in a named cell, grep the
   whole file: the same claim usually also sits in the body prose that
-  the cell summarizes (Phase 39 fan-out landing).** Direction B's return
+  the cell summarizes (Phase 39 fan-out landing).** *(SCOPE UPDATED
+  2026-09-09: PENCIL's workbook is now one file per section, so "the whole
+  file" is `grep -r notes/pencil/workbook/`; `python3 notes/ledger.py
+  --cited-by '(LABEL)'` answers the same question corpus-wide in one call.
+  A rule that silently becomes weaker at a file move is worse than one that
+  is deleted — `notes/Harness-structure.md` slice 12.)* Direction B's return
   explicitly flagged that directions A/C left a `(T5) frame at
   ℓ = 5,6` route standing in the gap map's `P21` row, which its Step 7
   refutes. The coordinator's landing spec pinned *that row*, and the

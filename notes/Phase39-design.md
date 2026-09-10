@@ -60,7 +60,7 @@ is load-bearing.
 | W4-L4 identification recon (2026-07-30) | 3991–4171 | **live** with the above | — |
 | Higher-`d` note / Citations | 4172–4212 | orientation; citation record | — |
 
-The kernel-(K) *mathematics* is **not** here — it is `notes/Pencil-informal.md`
+The kernel-(K) *mathematics* is **not** here — it is `notes/pencil/workbook/`
 (the workbook) and `notes/Pencil-strategy.md`. This file is the dated recon
 record and the W5/W4 leaf decompositions.
 
@@ -3331,7 +3331,7 @@ carrier-corrected criterion (KT pp. 684–691 re-derived against the carrier) pu
 failure at `r ∥ ★C(Π(b) ∩ Π(c))` — the meet line's starred extensor, local-block data —
 and the `E = r ⬝ (b̂∧ĉ)` M₁ test used by this gate's scripts certifies only the
 *panel-model* escape, which the carrier cannot realize. The gate's verdicts (locality
-refuted, non-constancy as the lever) are unaffected. `notes/Pencil-informal.md`
+refuted, non-constancy as the lever) are unaffected. `notes/pencil/workbook/K-tight.md`
 §(K-tight).
 
 ### (K) non-constancy recon (2026-07-30): corank stratification — PARTIAL, kernel narrowed to (K-tight)
@@ -3453,7 +3453,7 @@ the corank identity `dim R_a = 5 + def(G′) − def(G−v)`, the reduction of i
 criterion: `notes/Pencil-W4-informal.md` §"widened kernels (routes 1/3)".
 
 **(K-tight) re-pin pointer (2026-08-02, later).** Item 2's owed KT pp. 684–691 re-pin is
-**done, against the carrier** — `notes/Pencil-informal.md` §(K-tight). The §2 criterion is
+**done, against the carrier** — `notes/pencil/workbook/K-tight.md` §(K-tight). The §2 criterion is
 corrected there (three panel leaks: M₁'s `Λ²Π̂(a)` is carrier-unrealizable; M₂/M₃'s spans
 are the *full* `Λ²Π̂(b)`/`Λ²Π̂(c)`, not the pencils; the obstruction space is
 `U = R_a ⊕ ⟨w⟩`, not `R_a`), item 4's "non-hub ends: `r ≠ 0` suffices" is corrected (a
@@ -3476,7 +3476,7 @@ multigraphs and goes null exactly on parallel-edge ones (where the companion for
 over); and the companion mechanism extends to length-4 companions via the **Λ-compression**
 (all far data through one covector; `Q(z) = Φ_loc(λ)`). The uniform gaps are now
 **(K-Λ)/(K-slide)**, both `G°`-level and strictly more local than (K-wit).
-`notes/Pencil-informal.md` §(K-pitch) Steps 5b/6; exact-ℚ `notes/scripts/w4/pitch.py`.
+`notes/pencil/workbook/K-pitch.md` §(K-pitch) Steps 5b/6; exact-ℚ `notes/scripts/w4/pitch.py`.
 
 **(K-slide) transfer-theorem pointer (2026-08-04, third dispatch).** The slide-in is now a
 **proof device**, not a heuristic: the slide-transfer theorem (S1) — slide = chart automorphism
@@ -3489,7 +3489,7 @@ habitats at **every** split, `K5−2e`, prism+diagonal, mixed-lengths, and hub-h
 the full support; hub-concentrated circuit exhibited for the reduced one) — the sharpest
 uncovered shape is `P21` (non-`bc`-parallel, no short `bc`-companion, reachable by neither
 mechanism). Residue renamed **(K-slide-cl)** (class-uniform, parallel-free shapes).
-`notes/Pencil-informal.md` §(K-slide); exact-ℚ `notes/scripts/w4/kslide.py`.
+`notes/pencil/workbook/K-slide.md` §(K-slide); exact-ℚ `notes/scripts/w4/kslide.py`.
 
 **(K-slide-cl) class-reduction pointer (2026-08-04, fourth dispatch).** The class residue is
 now **true-modulo-(K-slide-comb)**: the *tetrahedral collapse* (the WW87 Theorem-2.18
@@ -3500,7 +3500,7 @@ dictionary is proven complete (`def ≥ ℓ − 6` excludes `ℓ ≥ 7` from tig
 path forces a rigid complement branch union, so `hnoRigid` fails — 5848/5848 sweep); the
 length-2 alignment's panel pincer is proven fatal at the mixed member and repaired by the
 meet-plane extension. All 7 battery members witnessed; 4-colorability proven for
-all-length-3 shapes. `notes/Pencil-informal.md` §(K-slide-cl); exact-ℚ
+all-length-3 shapes. `notes/pencil/workbook/K-slide-cl.md` §(K-slide-cl); exact-ℚ
 `notes/scripts/w4/kslidecl.py`.
 
 One more scope note for the eventual discharge, recorded while fresh: `hK`'s class also
@@ -3585,7 +3585,7 @@ No coordinator/user escalation needed (expected NO-HIT confirmed).
 **(K-pitch) pointer (2026-08-04).** The pure-condition calculus WAS since engaged, informally
 and without commissioning option B: at companion-length-3-chain splits the pitch certificate
 factors into a product of five 4-point brackets — the White–Whiteley factoring mechanism in
-miniature, on the motion side. `notes/Pencil-informal.md` §(K-pitch).
+miniature, on the motion side. `notes/pencil/workbook/K-pitch.md` §(K-pitch).
 
 ### (K-bare) extension-route recon (2026-07-30): NO-GO on landed machinery — the kernel is real, corank-stratified, and its stressed stratum is nonempty
 
@@ -3707,7 +3707,7 @@ block below); option B (the insertion-calculus research) is NOT commissioned now
   (stress control at non-generic seeds) with (K)'s option B without being identical to it.
   **Outcome: links 1 and 2 both LANDED (2026-08-02; 2026-08-20, as (BE-2)) and link 3 was
   REFUTED BY LINK 2's OWN DEVICE — then BINSERT refuted KT's route B at the same seeds, leaving
-  only the un-analyzed joint sweep, which re-opens link 2. `notes/Pencil-informal.md` §(K-ins),
+  only the un-analyzed joint sweep, which re-opens link 2. `notes/pencil/workbook/K-ins--INSJOINT.md` §(K-ins),
   (INS-1)–(INS-8).**
 - **C — cheap numerics extensions alongside A** (evidence-only, cannot close the leaf):
   adversarial seed hunts at DZ (deeper-degenerate `G′` seeds, à la `stress_extra.py`), an
@@ -3755,13 +3755,13 @@ dichotomy and (K-bare-ext) stand exactly as pinned. `notes/Pencil-W4-informal.md
 §"widened kernels (routes 1/3)" *Step 0*.
 
 **(K-tight) re-pin pointer (2026-08-02, later).** (K-bare-ext)'s named prerequisite —
-the KT pp. 684–691 re-pin — is **done** (`notes/Pencil-informal.md` §(K-tight); exact at
+the KT pp. 684–691 re-pin — is **done** (`notes/pencil/workbook/K-tight.md` §(K-tight); exact at
 arbitrary target-rank seeds, so item (iii)'s chart-genericity worry narrows to
 `dim R_a ≥ 1`). One correction to C3's gloss: the failure set is *not* exactly the line —
 on the `dim U = 2` stratum it is `line(a,b) ∪ P′`, a second line invisible to C3's
 sampling and exhibited at the control (`repin.py --control`); (K-bare-ext)'s `∃`-form
 side condition is unaffected. Implications for the statement:
-`notes/Pencil-informal.md` §(K-bare-ext).
+`notes/pencil/workbook/` §(K-bare-ext).
 
 **Probe KBARE-FALSIFY pointer (2026-08-20) — this recon's central open statement is
 REFUTED as stated, and three of its figures are corrected.** The commissioned
@@ -3770,7 +3770,7 @@ falsification hunt (`notes/Pencil-fanout.md` §"Two probes SPECCED and AUTHORIZE
 at tier **T1** — a *route* finding, not a refutation of `hbareSplit`, whose consequent is
 an `∃` over frameworks and which is therefore **untouched and still carried as pinned**
 (the standing option-A adjudication is unchanged). Mathematics, verdict and all figures:
-`notes/Pencil-informal.md` §(K-bare-ext) *Steps BE1–BE8*. Three corrections **to this
+`notes/pencil/workbook/K-bare-ext.md` §(K-bare-ext) *Steps BE1–BE8*. Three corrections **to this
 block**, recorded here because the claims are this block's own:
 
 - **Item 5 / option-C C3's "the observed failure set is exactly the line" and its

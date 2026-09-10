@@ -63,7 +63,7 @@ drivers here nevertheless **write nothing**: they print and assert.
 **1. Status of its output — evidence, never a substitute for Lean.** An M2
 verdict is evidence for the workbook, at exactly the same standing as the
 exact-ℚ numerics: it supports an *informal* confidence verdict in
-`notes/Pencil-informal.md`, nothing more. The project **formalizes everything
+`notes/pencil/workbook/`, nothing more. The project **formalizes everything
 its argument uses** (`DESIGN.md` *Formalize everything the argument uses*);
 "cite as external" / "axiomatize" is not a planning option, and **"verified in
 Macaulay2" is not a proof this project may cite in place of a formalization**.
@@ -143,7 +143,7 @@ output unchanged.
 
 ## Drivers
 
-- **`lambda1.m2`** — **(Λ1)**, `notes/Pencil-informal.md` §(K-Λ) *Step 2*:
+- **`lambda1.m2`** — **(Λ1)**, `notes/pencil/workbook/K-Λ.md` §(K-Λ) *Step 2*:
 
   > `(q·ω⁺)² · Φ_loc(λ) = −2 · B(ω⁺, ω⁻) · (λ·ω⁺) · (λ·ω⁻)`
 
@@ -209,7 +209,7 @@ output unchanged.
   `OK` line per assertion and a final `PASSED` line; a failing `assert` exits
   non-zero.
 
-- **`lambda0.m2`** — **(Λ0)** and the **`a`-line spans**, `notes/Pencil-informal.md`
+- **`lambda0.m2`** — **(Λ0)** and the **`a`-line spans**, `notes/pencil/workbook/K-Λ.md`
   §(K-Λ) *Standing notation* + *Step 3*, established at the **generic point of
   the local frame**. This is `notes/Pencil-strategy.md` §5.3's *first* item: the
   one argument in the arc whose logical form is *generic-point computation ⟹

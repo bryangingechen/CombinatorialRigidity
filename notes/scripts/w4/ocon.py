@@ -2,7 +2,7 @@
 Phase 39, section (K-out) CONTINUATION (direction OCON) -- the containment
 residue (OC-8), and why its `hard-stratum target-rank` qualifier is FREE.
 
-WHY THIS DRIVER EXISTS.  `notes/Pencil-informal.md` section (K-out) records
+WHY THIS DRIVER EXISTS.  `notes/pencil/workbook/` section (K-out) records
 (OC-8) as *at every class shape, the whole-graph pencil chart carries a
 HARD-STRATUM TARGET-RANK point with `L_b subseteq/ R_1` or `L_c subseteq/
 R_4`*, and section (K-frame) (FR-7) names the residual ingredient as the

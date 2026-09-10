@@ -23,7 +23,7 @@ kernel, run as **66 docs+script-only dispatches** across roughly four weeks
 written), including **three** multidispatch fan-outs of five concurrent
 directions each and a long tail of single directions and coordinator-picked
 pairs. `notes/Phase39.md`, `notes/Pencil-fanout.md`,
-`notes/Pencil-labels.md`, `notes/Pencil-informal.md` and
+`notes/Pencil-labels.md`, `notes/pencil/workbook/` and
 `notes/dispatch-log.md` are the canonical homes for that phase's own
 detail; this file distills the **general** lesson and points back at them
 for the worked example, rather than duplicating it. It is written to
@@ -180,7 +180,7 @@ below) as the check that catches them — it is what caught all three here.
 With no blueprint dep-graph, a research-shaped phase needs **one table
 that is the authoritative current state** — the thing a blueprint's
 red/green node coloring would otherwise be. PENCIL's is
-`notes/Pencil-informal.md`'s **State of (K)** map: one row per named gap, each row
+`notes/pencil/workbook/gapmap.md`'s **State of (K)** map: one row per named gap, each row
 derived from that gap's own section's confidence-verdict block, and
 **the artifact a new pass updates in place** rather than a changelog a new
 pass appends to. Its own header states the discipline precisely: *"This
@@ -189,8 +189,13 @@ writing a fresh summary of the arc beside it."*
 
 The corollary that matters for landing checklists: a correction to the map
 is presumptively a correction to at least one paragraph of body prose too,
-since the map is a *summary* of that prose (dispatch-log F12) — grep the
-whole file for the same stale claim, don't just fix the row.
+since the map is a *summary* of that prose (dispatch-log F12) — grep for the
+same stale claim wherever the prose lives, don't just fix the row. **In PENCIL
+that is now a TREE, not a file:** the workbook was split one-section-per-file
+on 2026-09-09 (`notes/Harness-structure.md` slice 12), so the check is
+`grep -r notes/pencil/workbook/` — and the cheaper form is
+`python3 notes/ledger.py --cited-by '(LABEL)'`, which lists every claim that
+cites the one you are correcting, across the whole corpus and in one call.
 
 ### 4. A driver per headline sentence (dispatch-log F11)
 

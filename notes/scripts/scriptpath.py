@@ -16,7 +16,7 @@ Every harness file sits at `notes/scripts/<layer>/<name>.py`, so the double
 can be uniform.  Put the three lines directly above the harness imports and
 below the stdlib ones.
 
-Deliberately NOT a package: the drivers are cited in `notes/Pencil-informal.md`
+Deliberately NOT a package: the drivers are cited in `notes/pencil/workbook/`
 and `notes/Phase39-design.md` as `python3 notes/scripts/<dir>/<name>.py <flags>`,
 and those exact command lines must keep working.  A package would require
 `python3 -m`, which would invalidate every recorded reproduce command.

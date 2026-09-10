@@ -18,7 +18,7 @@ for ideals of minors, all of which are UPPER bounds; Krull's height theorem)
 and (b) this project's own harness and definition bodies.
 
 WHAT THIS DRIVER IS FOR.  The direction's verdict is DERIVATIONAL -- the route
-dies to an equivalence, not to a measurement (`notes/Pencil-informal.md`
+dies to an equivalence, not to a measurement (`notes/pencil/workbook/K-jac.md`
 §(K-jac) *Steps JC2/JC3*).  Three things in it are nevertheless MEASURED,
 because F11 forbids stating a structural claim more strongly than what was run:
 

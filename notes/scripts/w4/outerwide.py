@@ -2,7 +2,7 @@
 Phase 39, section (K-out) CONTINUATION -- the widened combinatorial sweep, and
 the hyperplane form of (OC-8).
 
-WHY THIS DRIVER EXISTS.  `notes/Pencil-informal.md` section (K-out) *What would
+WHY THIS DRIVER EXISTS.  `notes/pencil/workbook/` section (K-out) *What would
 change this* items 1-2 ask for a class shape with `dim R = 6` (which would kill
 (OUT) there) or with `dim R <= 4` / `mu >= 2` (which would close (OUT)
 unconditionally there), and say the first thing to do is to widen `--comb` past

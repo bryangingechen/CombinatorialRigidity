@@ -1,6 +1,6 @@
 -- notes/scripts/m2/lambda1.m2 -- Phase 39 (PENCIL), kernel-(K) arc.
 --
--- (L1) = the workbook's (Lambda1), notes/Pencil-informal.md S(K-Lambda) Step 2:
+-- (L1) = the workbook's (Lambda1), notes/pencil/workbook/K-Lambda.md S(K-Lambda) Step 2:
 --
 --     (q . w+)^2 * Phi_loc(lam) = -2 * B(w+, w-) * (lam . w+) * (lam . w-)
 --
@@ -256,5 +256,5 @@ ok("hence rank Phi_loc = 2 generically, and {Phi_loc = 0} is two rational hyperp
 
 print "";
 print "PASSED -- (Lambda1) holds identically over the function field of the local frame.";
-print "  Confidence upgrade for notes/Pencil-informal.md S(K-Lambda) Step 2:";
+print "  Confidence upgrade for notes/pencil/workbook/K-Lambda.md S(K-Lambda) Step 2:";
 print "  per-frame evidence (23 rational frames) -> symbolic identity.";

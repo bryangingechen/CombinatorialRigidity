@@ -148,7 +148,7 @@ is dispatch-*selection* provenance only, never mathematics.
 
 - **2026-08-20, probe KBARE-FALSIFY landed — a T1 hit, and no standing constraint
   moves.** The commissioned falsification hunt for `hbareSplit` returned a **HIT at
-  tier T1**: **(K-bare-ext) is REFUTED as stated** (`notes/Pencil-informal.md`
+  tier T1**: **(K-bare-ext) is REFUTED as stated** (`notes/pencil/workbook/K-bare-ext.md`
   §(K-bare-ext) *Steps BE1–BE8*; driver `notes/scripts/kbare/breakhunt.py`). What
   that does and does not mean, stated here because the distinction is the whole
   point of the tiering: `hbareSplit`'s consequent `HasPencilRealization K 3 G` is an

@@ -6,7 +6,7 @@ The question this driver settles (workbook draft section (K-pure)): can the
 class-uniform escape be settled by showing the pure condition of the limit
 carrier is not identically zero on the decoration variety, instead of
 exhibiting a decoration where it survives (the tetrahedral collapse of
-`notes/Pencil-informal.md` section (K-slide-cl), whose four hub positions cap
+`notes/pencil/workbook/` section (K-slide-cl), whose four hub positions cap
 chi(G*) at 4)?
 
 Answer: NO -- and the obstruction is not a hardness, it is a MISMATCH of

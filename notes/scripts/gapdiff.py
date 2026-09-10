@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Scripted label set-diff for a `notes/Pencil-informal.md` gap-map row.
+"""Scripted label set-diff for a `notes/pencil/workbook/gapmap.md` gap-map row.
 
 Why this exists.  F21 requires that a gap-map row recomputed during a landing
 **preserve every label it already cited** -- a recompute compresses prose, and
@@ -39,7 +39,7 @@ import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 GATE = os.path.join(ROOT, 'notes', 'check-gapmap-cells.py')
-DOC = os.path.join('notes', 'Pencil-informal.md')
+DOC = os.path.join('notes', 'pencil', 'workbook', 'gapmap.md')
 
 CODE = re.compile(r"\(([A-Z][A-Za-z0-9′+]*(?:-[A-Za-z0-9′+]+)+)\)"
                   r"(\((?:[ivx]+|\+|[a-z]\d?|[A-Z]\d?)\))?")
@@ -70,8 +70,23 @@ def main(argv):
     key = argv[1] if len(argv) > 1 else 'K-bare'
     ref = argv[2] if len(argv) > 2 else 'HEAD'
     gate = _gate()
-    old_text = subprocess.run(['git', 'show', f'{ref}:{DOC}'], cwd=ROOT,
-                              capture_output=True, text=True, check=True).stdout
+    # The gap map moved to its own file at the 2026-09-09 split
+    # (`notes/Harness-structure.md` slice 12). Comparing against any ref from
+    # BEFORE the split has to read the pre-split path, or this tool -- the one
+    # gate that actually compares gap-map CONTENT -- dies with a traceback
+    # exactly when it is asked to span the move.
+    LEGACY = os.path.join('notes', 'Pencil-informal.md')
+    old_text = None
+    for cand in (DOC, LEGACY):
+        r = subprocess.run(['git', 'show', f'{ref}:{cand}'], cwd=ROOT,
+                           capture_output=True, text=True)
+        if r.returncode == 0:
+            old_text = r.stdout
+            break
+    if old_text is None:
+        print(f'FAIL: neither `{DOC}` nor the pre-split `{LEGACY}` exists at '
+              f'`{ref}` -- check the ref.')
+        return 1
     new_text = open(os.path.join(ROOT, DOC)).read()
     old, oldw = labels_of(old_text, key, gate)
     new, neww = labels_of(new_text, key, gate)

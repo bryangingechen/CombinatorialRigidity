@@ -1,6 +1,6 @@
 """Phase 39 (K-chart) — CIRR: the pencil chart's irreducibility, written down once.
 
-Workbook §(K-chart) (`notes/Pencil-informal.md`), labels (CH-1)–(CH-8),
+Workbook §(K-chart) (`notes/pencil/workbook/K-chart.md`), labels (CH-1)–(CH-8),
 *Steps CH1–CH8*.  The section's headline is a THEOREM (the chart of
 `G' = G - v + ab` is an irreducible, Q-rational variety, presented as a tower
 of affine-linear fibres), and a theorem is not driver-testable.  What IS

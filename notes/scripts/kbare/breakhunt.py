@@ -4,7 +4,7 @@ Probe KBARE-FALSIFY — the falsification hunt for `hbareSplit` / (K-bare-ext).
 Commissioned 2026-08-20 (`notes/Pencil-fanout.md` §"Two probes SPECCED and
 AUTHORIZED 2026-08-20"); labels/paths reserved in `notes/Pencil-labels.md`
 §"Reserved namespace — probe KBARE-FALSIFY".  Backs
-`notes/Pencil-informal.md` §(K-bare-ext) *Steps BE1–BE8*.
+`notes/pencil/workbook/K-bare-ext.md` §(K-bare-ext) *Steps BE1–BE8*.
 
 WHAT IS BEING BROKEN, AND WHAT THIS DRIVER CAN AND CANNOT SHOW.
 `hbareSplit` (`Molecule/Pencil/Escape.lean:351`) concludes

@@ -12,7 +12,7 @@ table).  Read against section (K-frame) *Steps FR0-FR6*, section (K-grid)
 *Step G12* (admissible colourings = one free bit per branch), section
 (K-ann) *Steps A14/A15* ((ANH-13)(iv): `c' = 1 <=> c(G) = 3`; (ANH-14)(a):
 the 7-point open chain), and the standing combinatorics of
-`Pencil-informal.md`'s *Shared dictionary* -- (R4) `hcard` (the hub-hub
+`pencil/workbook/dictionary.md` -- (R4) `hcard` (the hub-hub
 subgraph has max degree <= 2), (SD-6) (branches have length <= 5), and
 girth 6 from 5/6-sparsity.
 

@@ -167,7 +167,7 @@ def star_span_ranks(edges, placed):
     otherwise until 2026-08-06: at a hub whose in-plane sampler degenerated it
     still returns 3 whenever a THIRD neighbour spans the panel, so it misses
     the coincident-hinge / free-rotor configuration entirely.  Measured at
-    32 of 357 POOL-G frames -- `Pencil-informal.md` §(K-out) (OC-7), and
+    32 of 357 POOL-G frames -- `pencil/workbook/K-out.md` (OC-7), and
     `notes/scripts/README.md` *Harness debt* item 4.  Pair it with
     `hinge_coincidences`, or just call `star_generic`."""
     nb = neighbors(edges)

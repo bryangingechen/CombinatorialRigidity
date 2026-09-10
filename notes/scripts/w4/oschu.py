@@ -3,7 +3,7 @@ Phase 39, section (K-out) CONTINUATION (direction OSCHU) -- (OC-19) input
 (a)'s TARGET-RANK half (a_1) attacked class-uniformly, and the (a_2)
 cross-pool re-keying leg.
 
-WHY THIS DRIVER EXISTS.  `notes/Pencil-informal.md` section (K-out)
+WHY THIS DRIVER EXISTS.  `notes/pencil/workbook/` section (K-out)
 *Where this leaves input (a)* (direction ZNEQ, (OC-23)-(OC-28)) factors
 input (a) into
 

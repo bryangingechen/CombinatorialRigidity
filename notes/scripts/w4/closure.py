@@ -17,7 +17,7 @@ the repo root:
 exactly the union of the `--shapes` and `--flanks` rows and tallies them into
 three DISJOINT groups (tight; rigid-but-not-count-tight; not rigid).  Note
 `def = 0` and count-tightness `5|E| = 6(|V|−1)` are different predicates.
-Argument state: `notes/Pencil-informal.md` §(K-clos).
+Argument state: `notes/pencil/workbook/K-clos.md` §(K-clos).
 
 WHY A NEW FIELD.  Every other driver in the harness is exact ℚ, and over ℚ (as
 over ℝ) the project's polarity `σ = screwComplementIso` is built on the

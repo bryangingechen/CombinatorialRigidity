@@ -9,7 +9,7 @@ re-deriving the diagnosis from three workbook arcs and eight dispatch days.
 
 Reading order for a fresh session: `notes/Phase39.md` *Current state* (status +
 the standing adjudications), then this file (why the wall is where it is, and the
-candidate routes), then `notes/Pencil-informal.md`'s **State of (K)** gap map
+candidate routes), then `notes/pencil/workbook/gapmap.md`'s **State of (K)** gap map
 (the canonical per-gap status). The mathematics is **not** restated here; every
 claim below points at the workbook section that owns it.
 
@@ -50,7 +50,7 @@ a recon or a spike before it can be priced.
    and the un-specialized pure condition. That is a recurring wall one level
    above any single route, so the question is whether the wall is intrinsic.
    (§4-C1, the candidate this doc rated best, has since been run and is a
-   **sixth** — `notes/Pencil-informal.md` §(K-dom) *Step D6*: it relocates the
+   **sixth** — `notes/pencil/workbook/K-dom.md` §(K-dom) *Step D6*: it relocates the
    crux from `Q(z) ≢ 0` to `rank dV = 9`, a strictly stronger and equally
    per-shape determinantal condition, so §2.2's diagnosis survives it intact.
    That is one prediction of this doc's own analysis confirmed by a driver.)
@@ -104,7 +104,7 @@ combinatorics".
 > ingredient 2**: its subset-indexed family `S ↦ Pf(A_S)` is indexed by the
 > *ambient* `[n]`, never by the graph. So the sharper statement of this
 > subsection is: **the missing ingredient is the ground set, not the min-max.**
-> Verdict, hypotheses and sources: `notes/Pencil-informal.md` §(K-Δ).
+> Verdict, hypotheses and sources: `notes/pencil/workbook/K-Δ.md` §(K-Δ).
 
 **The recipe-vs-search framing, which is what §2.3's asymmetry costs in
 practice.** KT discharges its per-case seed obligation with **recipes** —
@@ -201,7 +201,7 @@ graph, hence lies in the image of
 and **we have no description of that image.** If it were Zariski-dense we would
 be done uniformly in one line.
 
-> **Partly answered, 2026-08-05** (`notes/Pencil-informal.md` §(K-dom); the
+> **Partly answered, 2026-08-05** (`notes/pencil/workbook/K-dom.md` §(K-dom); the
 > mathematics is not restated here). The image is Zariski-dense — the map is
 > dominant — at every *class* habitat probed, but its dimension is capped by
 > `min(9, 6k − 14)` in the **companion length** `k`, so at `k = 3` it is a
@@ -225,7 +225,7 @@ be done uniformly in one line.
 
 > **Four objects, and the conversation kept conflating them** (coordinator
 > scrutiny, 2026-08-05; the mathematics and the connection it makes are
-> `notes/Pencil-informal.md` §(K-ind) *Step I0*, which is the canonical home).
+> `notes/pencil/workbook/K-ind.md` §(K-ind) *Step I0*, which is the canonical home).
 > **(1)** `V_bc(p)` is a **point** of `Gr(3,6)`, not a locus. **(2)** The
 > graph-dependent object is the **map** `φ_G : chart(G) → Gr(3,6)` and its
 > **image** — the thing this subsection says we have no description of.
@@ -259,7 +259,7 @@ computing.* §(K-pure)'s two unexplained residuals (`K222` and
 sharpest available data on the map's image.
 
 > **That wall now has a proof, in the one case where a symmetry looked like an
-> escape from it** (2026-08-05; `notes/Pencil-informal.md` §(K-σ) *Step σ6*).
+> escape from it** (2026-08-05; `notes/pencil/workbook/K-σ.md` §(K-σ) *Step σ6*).
 > A **σ-equivariant seed recipe** — build the seed as a fixed point of the
 > polarity, so uniformity comes free — is dead: over `ℝ` with the project's
 > *definite* polarity there is **no σ-fixed pencil configuration at all**
@@ -397,7 +397,7 @@ first three did not force what the induction needed.
 > reach class uniformity.** The mathematics — the cap
 > `rank ≤ min(9, 6k − 14)` in the companion length `k`, the far block
 > `3(k−3)`, `hnoRigid ⟹ k ≥ 4`, the rank table, and the assessment of the two
-> claims — is `notes/Pencil-informal.md` **§(K-dom)**, which is the canonical
+> claims — is `notes/pencil/workbook/K-dom.md` **§(K-dom)**, which is the canonical
 > home; the *State of (K)* map carries the one-row status. The text below is
 > kept as the pre-spike derivation it was, so the two paragraphs of "reasons
 > this is attractive" can be read against their refutation.
@@ -796,7 +796,7 @@ workbook.* Because `p⁺` and `q` have their outer entries vanishing
 escape holds by pitch as soon as **one outer companion line is not a relative
 twist**. Statement, derivation, the hinge-rate and contracted-graph readings,
 the conditionality on (Λ0d) + the widened (Λ0f′), and the confidence verdict:
-**`notes/Pencil-informal.md` §(K-Λ) *Step 5a*** — migrated there 2026-08-05 and
+**`notes/pencil/workbook/K-Λ.md` §(K-Λ) *Step 5a*** — migrated there 2026-08-05 and
 **not restated here**, per this file's charter (strategy, not mathematics). The
 *State of (K)* map's **(K-wit)** row carries it in its *what would close it*
 cell. Two things to keep in view when quoting it in one line: it is
@@ -1334,7 +1334,7 @@ as **164 sampled rational frames**. `M2 --script notes/scripts/m2/lambda0.m2`
 executes it instead: every (Λ0) clause is now a nonzero polynomial on one
 irreducible variety, the containments and `t`-degrees are identities, and the
 38 strata are shown *irrelevant at the generic point* (each maps onto a dense
-subset of that variety). Mathematics in `notes/Pencil-informal.md` §(K-Λ).
+subset of that variety). Mathematics in `notes/pencil/workbook/K-Λ.md` §(K-Λ).
 
 Three things to carry forward from it:
 
@@ -1384,7 +1384,7 @@ and vacuous on the one it was proposed for. ~~(ii) Verify
 **DONE 2026-08-05**, and it was the layer's deliberate first consumer precisely
 because its answer was already known, so a mis-configured M2 layer would show
 up immediately (`M2 --script notes/scripts/m2/lambda1.m2`; mathematics in
-`notes/Pencil-informal.md` §(K-Λ) *Step 2*). It verified, and it came with two
+`notes/pencil/workbook/K-Λ.md` §(K-Λ) *Step 2*). It verified, and it came with two
 things the per-frame battery could not give: (Λ1) needs **none** of (Λ0) and
 none of the panel data, and `rank Φ_loc = 2` is now generic rather than
 observed.
@@ -1489,7 +1489,7 @@ direction is set:
 
 - ~~**If the direction is C1 (dominance):** the §4-C1 Jacobian spike~~ —
   **DONE 2026-08-05** (adjudicated, dispatched, landed; driver
-  `notes/scripts/w4/dominance.py`, mathematics in `notes/Pencil-informal.md`
+  `notes/scripts/w4/dominance.py`, mathematics in `notes/pencil/workbook/K-dom.md`
   §(K-dom)). Rank **9** at every class habitat probed, **4** (a proven cap) at
   the `k = 3` (K-res) family; C1's inductive and locality-reframing claims both
   refuted, so C1 is **not** a route to uniformity and is not a live direction.
@@ -1507,7 +1507,7 @@ direction is set:
   (K-chord)/`R_3` for parameterized families.
 - **NEW, 2026-08-05 — if the direction is to verify route σ:** the single
   concrete commit is **σ-nondegeneracy of the transported seed**
-  (`notes/Pencil-informal.md` §(K-σ) *Step σ5* obligation 1) — the one crux the
+  (`notes/pencil/workbook/K-σ.md` §(K-σ) *Step σ5* obligation 1) — the one crux the
   candidate rests on, with a named repair against landed machinery
   (`exists_common_seed_pencilRow_and_polynomials`, `Engine.lean:476`, whose own
   docstring already names this consumer shape). **Its numerics half landed the
@@ -1537,7 +1537,7 @@ direction is set:
   `supp(λ)` at every recorded length-4-companion habitat. **U1** carries the
   pass's one new derivation, **(OUT)** — the escape holds as soon as one *outer*
   companion line is not a relative twist — whose canonical home is
-  `notes/Pencil-informal.md` §(K-Λ) *Step 5a*; §4.6 keeps only the strategic
+  `notes/pencil/workbook/K-Λ.md` §(K-Λ) *Step 5a*; §4.6 keeps only the strategic
   readings.
 - **If the direction is C3 (mixed stratum):** first question is combinatorial and
   needs no geometry — can KT's reduction always avoid a prescribed vertex
@@ -1556,7 +1556,7 @@ direction is set:
 ## 7. Provenance
 
 **Four classical references entered use 2026-08-26 (direction ZJACOB), and their
-canonical home is `notes/Pencil-informal.md` §(K-jac)'s own reference block, not
+canonical home is `notes/pencil/workbook/K-jac.md` §(K-jac)'s own reference block, not
 this section** — Eagon–Northcott 1962, Bruns 1981, Eisenbud–Huneke–Ulrich 2004
 and Hochster–Eagon 1971, on heights of ideals of minors and generic perfection of
 determinantal loci. All four were verified against primary/publisher metadata at
@@ -1575,7 +1575,7 @@ the Scott citation below; (R3) on the Vandermonde bracket and §(K-pitch)
 White–Whiteley's pure condition; (R6) on the `K4` double subdivision's `k = 6`
 in §(K-dom) *D4* and on `hK`'s `∀`-quantified split data (`Escape.lean:555`).
 Its one *new* derivation, **(OUT)**, was migrated the same day to its canonical
-home `notes/Pencil-informal.md` §(K-Λ) *Step 5a* (statement, derivation,
+home `notes/pencil/workbook/K-Λ.md` §(K-Λ) *Step 5a* (statement, derivation,
 conditionality, confidence verdict, and a *what would change this* item), so
 this file states no mathematics of its own — attack (OUT) there, do not assume
 it here.
@@ -1617,7 +1617,7 @@ subspaces and `V_bc` never is (an `O(6)`-invariant, not a frame choice), and its
 ground set is `[3]`, fixed by `dim Λ²K⁴ = 6`, never growing with the graph.
 Full verdict, dictionary, the two readings it does buy ((N1)/(N2)), the
 corroborating negative from the current rigidity survey, and a fully verified
-bibliography: `notes/Pencil-informal.md` **§(K-Δ)**. Two consequences for this
+bibliography: `notes/pencil/workbook/K-Δ.md` **§(K-Δ)**. Two consequences for this
 document: §2.2 is sharpened (*the missing ingredient is the ground set, not the
 min-max*), and the right pointer for a successor is **"Coxeter matroids, and the
 reason they don't apply"** — a theorem (Witt: `SO₆` has four orbits on
@@ -1635,7 +1635,7 @@ across §4 (candidate invariants), §4.6 (refutations + `U1`–`U3`), the phase
 note's carried items, and two workbooks. This section is the **single board** a
 fresh session reads to choose a direction. It adds no mathematics: every entry
 points at the section that owns it. **Status words here are pointers**; the
-owning section and `notes/Pencil-informal.md`'s *State of (K)* map remain
+owning section and `notes/pencil/workbook/gapmap.md`'s *State of (K)* map remain
 authoritative.
 
 **Not on this board: §9's Zheng shelf** (a project-new external source read
@@ -3033,7 +3033,7 @@ ours. *Kill condition: the two forms differ. Deciding surface: §(K-pitch)
 
 **(ZH-1) The Witt shear as a uniformity device. — STRUCK 2026-08-26, direction
 ZSHEAR: REFUTED, and the reason is that the shear is a GAUGE transformation.**
-Canonical home for the refutation is `notes/Pencil-informal.md` §(K-shear)
+Canonical home for the refutation is `notes/pencil/workbook/K-shear.md` §(K-shear)
 *Steps SH1–SH5* — not restated here. *(Kill condition as this entry itself
 named it — "if that failure locus turns out shear-invariant, (ZH-1) dies
 immediately" — **FIRED**. Deciding surface: §(K-shear), driver
@@ -3152,7 +3152,7 @@ open question, and §2.5's filter is owed here too.
 
 **(ZH-4) Escape failure as a singular locus — the Jacobian route. — STRUCK
 2026-08-26, direction ZJACOB: REFUTED, and by an EQUIVALENCE rather than an
-obstruction.** Canonical home `notes/Pencil-informal.md` §(K-jac) *Steps
+obstruction.** Canonical home `notes/pencil/workbook/K-jac.md` §(K-jac) *Steps
 JC1–JC5* — not restated here. *(Kill condition: the Jacobian criterion's
 hypothesis unfolds to the phase target — **FIRED**. Deciding surface:
 §(K-jac), driver `notes/scripts/w4/zjacob.py`; **no gap-map row**. Struck, not

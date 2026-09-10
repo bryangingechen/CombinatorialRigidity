@@ -11,10 +11,10 @@ this file's slice numbering but is separate because its deliverables are
 *cross-phase* — a derived claim ledger, a status vocabulary with a gate, a
 split `/coordinate-research` command, a research-direction agent core — rather
 than PENCIL file layout alone, which is what slices 1–7 were. Slice 12 of that
-round splits `notes/Pencil-informal.md` and slice 13 moves this file to
+round splits `notes/pencil/workbook/` and slice 13 moves this file to
 `notes/pencil/structure.md`. The phase's own next concrete task is unchanged:
 the kernel-(K) research pick (`notes/Phase39.md` *Hand-off*).** **Slice 1** —
-§(K-grid) split out of `notes/Pencil-informal.md` into its own file,
+§(K-grid) split out of `notes/pencil/workbook/` into its own file,
 `notes/Pencil-informal-grid.md`. **Slice 2** — `notes/Pencil-fanout.md`'s
 ordinals-1–19 landed direction history archived to
 `notes/Pencil-fanout-archive.md`. **Slice 3** — the phase's research-arc
@@ -79,17 +79,17 @@ cap was ever bumped and nothing was deleted**; the note keeps a pointer to each.
 | 12 | *The escape route (§(K-out)) — per-landing detail* | 2026-09-02 | OWALL's per-landing detail on the escape route's largest live row: the two-direction-network model, the three confinement certificates, and what (OC-44)(iii) reduced to; relocated at the OWALL landing, so the lane's narrative never entered the note |
 | 13 | *The 2026-09-02 round — per-landing status clauses* | 2026-09-02 | the one-clause-per-direction status paragraph for ordinals 66–71 (GPACK, BSIGMA, GLIST, BPROPER, OWALL, GGLOB), whose *detail* blocks 8/11/12 already own; relocated at the GGLOB landing, when a sixth clause would have pushed the note past its line cap |
 | 14 | *The 2026-09-03 liveness round — what SWEEP C moved out of the note* | 2026-09-03 | the three failed replacement picks that fired the round; the item-0 sub-item **re-lettering hazard**; carried item 1's *why it is carried* rationale; the `hK` item's 2026-07-30 standing adjudication and its two literature-hunt MISSes |
-| 15 | *The `(K-bare)` row's doc-debt ledger* | 2026-09-09 | the budget the `(K-bare)`/`(K-bare-ext)` row runs against — its word count, label count and density, the three cap bumps, the standing **relocation-not-compression** lever and the fourth-bump row-split trigger; relocated at the BNONUNI landing because every number in it is owned by `notes/Pencil-informal.md`'s row and by `notes/check-gapmap-cells.py`, which makes the paragraph **reference, not status** — the eighth instance of the *a paragraph whose numbers another file owns goes stale* shape |
+| 15 | *The `(K-bare)` row's doc-debt ledger* | 2026-09-09 | the budget the `(K-bare)`/`(K-bare-ext)` row runs against — its word count, label count and density, the three cap bumps, the standing **relocation-not-compression** lever and the fourth-bump row-split trigger; relocated at the BNONUNI landing because every number in it is owned by `notes/pencil/workbook/`'s row and by `notes/check-gapmap-cells.py`, which makes the paragraph **reference, not status** — the eighth instance of the *a paragraph whose numbers another file owns goes stale* shape |
 
 The one line that stays in `notes/Phase39.md` rather than moving here: the **State of
-(K)** gap map in `notes/Pencil-informal.md` is the phase's status object, authoritative
+(K)** gap map in `notes/pencil/workbook/` is the phase's status object, authoritative
 for every status word — and it is read with `python3 notes/gapmap.py`, never
 `sed`/`grep` (one row is one 22 000-character line).
 
 ## Why this round
 
 Phase 39 (PENCIL) stays open (`notes/Phase39.md` *Current state*); the
-kernel-(K) research arc's workbook, `notes/Pencil-informal.md`, had grown to
+kernel-(K) research arc's workbook, `notes/pencil/workbook/`, had grown to
 **21 851 lines** by the seventh fan-out's close, of which **§(K-grid) alone
 was 8 553 — 39%**, six times the next-largest section (§(K-out), 1 827 lines)
 — the coordinator's own measurement motivating the round, taken from a stale
@@ -193,13 +193,13 @@ that cost permanently for it.
     `§(K-grid)`; audited every hit against the label/location distinction
     (a label — `(GR-nn)` — resolves via `Pencil-labels.md` regardless of
     file; a location claim — the word "workbook" adjacent to `§(K-grid)`, or
-    an explicit `` `notes/Pencil-informal.md` `` pointer next to it, or a raw
+    an explicit `` `notes/pencil/workbook/` `` pointer next to it, or a raw
     line range — asserts a specific file and had to be repointed). Found and
     fixed **41** genuine location claims, verified by diffing (not
     eyeballing) each pattern's count: **25** instances of the literal string
     `workbook §(K-grid)` (`notes/Pencil-fanout.md` ×5, `notes/scripts/
     README.md` ×18, `notes/scripts/w4/{grid,yloc}.py` ×1 each); **12**
-    instances of an explicit `` `notes/Pencil-informal.md` §(K-grid) ``
+    instances of an explicit `` `notes/pencil/workbook/` §(K-grid) ``
     pairing (11 in driver docstrings —
     `notes/scripts/w4/{aglu,cflank,gexist,gcap,gorient,gdev,gridwit,gridcol,
     gunif,packmm}.py` ×1 each plus a second occurrence in `grid.py` — and 1
@@ -207,8 +207,8 @@ that cost permanently for it.
     ASCII-typo variant `workbook S(K-grid)` in `glaw.py` (kept the pre-existing
     typo, fixed only the file pointer); **1** more in `notes/Pencil-fanout.md`
     naming the file in the opposite word order — "§(K-grid) Steps G29–G33,
-    `notes/Pencil-informal.md`)" — before the section name; and **2** inside
-    `notes/Phase39.md` itself (one `` (`notes/Pencil-informal.md`) ``
+    `notes/pencil/workbook/`)" — before the section name; and **2** inside
+    `notes/Phase39.md` itself (one `` (`notes/pencil/workbook/`) ``
     parenthetical in *Current state*, one "the workbook sections" generic
     claim in *Decisions made*).
     Every fix repointed to `` `notes/Pencil-informal-grid.md` ``, keeping the
@@ -348,7 +348,7 @@ that cost permanently for it.
   duplicate exactly what this round exists to stop.
 - **Lift-on-promotion applied to the six referencing files**, per the
   adjudication's canonical-detail-stays-put rule: `notes/Pencil-labels.md`
-  and `notes/Pencil-informal.md`'s gap-map header and
+  and `notes/pencil/workbook/gapmap.md`'s gap-map header and
   `notes/scripts/README.md` convention 8 are each the **canonical detail**
   for one promoted item (label reservations; the gap map; cap disclosure
   respectively) — each gained a one-line pointer to `RESEARCH-ARC.md` for the
@@ -549,7 +549,7 @@ landings stop appending to it. The rule that binds: a landing updates the cell's
 ## Follow-up items (not this round's job)
 
 - Recompute the *Section index*'s §(K-frame)/§(K-chart)/§(K-mech) line
-  ranges in `notes/Pencil-informal.md` (shifted −9 883 by slice 1). **Not**
+  ranges in `notes/pencil/workbook/` (shifted −9 883 by slice 1). **Not**
   folded into slice 2 — that file's line ranges are unrelated to
   `Pencil-fanout.md`'s split — so it remains a standing, cheap, dedicated
   one-line follow-up commit whenever someone next reads that table.
@@ -634,7 +634,7 @@ discipline-distillation rounds are both COMPLETE (`notes/Pencil-structure.md`;
 Pair2,Escape,Base}.lean`; per-leaf history `notes/Phase39-design.md`.
 
 **Canonical homes — read these, not a summary of them.** The **State of (K)**
-gap map in `notes/Pencil-informal.md` is the phase's status object and is
+gap map in `notes/pencil/workbook/` is the phase's status object and is
 authoritative for every status word; `notes/Pencil-informal-grid.md` owns
 §(K-grid); `notes/Pencil-W4-informal.md` owns the W4 (`hcontract`) residual arc;
 `notes/Pencil-strategy.md` owns the option board (§8) and the unpriced
@@ -801,7 +801,7 @@ lines each. Caps were not bumped and nothing was deleted; the note keeps a point
 canonical home for the phase's verified attributions, and **a direction that verifies
 a new source adds it to this section in its landing commit**. The two fuller
 bibliographies this section deliberately does not duplicate keep their own homes —
-`notes/Phase39-design.md` §"(K) literature hunt" and `notes/Pencil-informal.md`
+`notes/Phase39-design.md` §"(K) literature hunt" and `notes/pencil/workbook/K-Δ.md`
 §(K-Δ) *Sources*.
 
 - Katoh–Tanigawa, *A proof of the molecular conjecture*, Discrete Comput. Geom. **45** (2011) —
@@ -849,7 +849,7 @@ bibliographies this section deliberately does not duplicate keep their own homes
   Jin–Kim, Baker–Jin, Geelen–Iwata–Murota, Bouchet–Cunningham, Koana–Wahlström, Moffatt, Chun et
   al., Kung, and Cruickshank–Jackson–Jordán–Tanigawa (arXiv:2508.11636, the corroborating
   negative). **The full verified bibliography, with its two caught hallucinated attributions and
-  one deliberately omitted volume number, is `notes/Pencil-informal.md` §(K-Δ) *Sources* — the
+  one deliberately omitted volume number, is `notes/pencil/workbook/K-Δ.md` §(K-Δ) *Sources* — the
   canonical home; it is not duplicated here.**
 
 ## The (BE-14) thread — per-landing detail
@@ -896,7 +896,7 @@ obligation is the **SPREAD step** — now the last gap in half (B)'s discharge. 
 SIDE:** cross-pair welding ((BE-28)(i)), untouched. **The phase-boundary consequence is
 reported, NOT acted on** (next block).
 
-**Reading it later.** Every label in it resolves in `notes/Pencil-informal.md`
+**Reading it later.** Every label in it resolves in `notes/pencil/workbook/`
 §(K-bare-ext); the direction codes resolve in `notes/Pencil-fanout.md`. Treat the paragraph
 as a snapshot dated 2026-09-01, **not** as a live status surface — if it disagrees with the
 gap map, the gap map wins.
@@ -1105,7 +1105,7 @@ names (*"a `PhaseN.md` reads as the current state of the argument, not its
 changelog"*), and the reason block 8 exists at all. Rotated at the BSTEER
 landing, which is also what paid for that landing's header words. **The header
 keeps the status; this keeps the route.** Authoritative for the mathematics:
-`notes/Pencil-informal.md` §(K-bare-ext) *Steps BE148–BE177* and the
+`notes/pencil/workbook/bare-ext/BARCH.md` §(K-bare-ext) *Steps BE148–BE177* and the
 `(K-bare)` gap-map row.
 
 **The side-degree-`≥ 2` route, in landing order.**
@@ -1366,7 +1366,7 @@ Also ranked — **all four LIVE, none moved in status; two had a stale claim, co
 group supplies general position — *the gauge group was never the right place to look*.
 
 **Reading it later.** Same caution as blocks 8 and 9': a snapshot dated 2026-09-02, not a
-live surface. Every label resolves in `notes/Pencil-informal.md` §(K-bare-ext); the direction
+live surface. Every label resolves in `notes/pencil/workbook/` §(K-bare-ext); the direction
 codes resolve in `notes/Pencil-fanout.md`. If it disagrees with the `(K-bare)` gap-map row,
 the row wins.
 
@@ -1449,7 +1449,7 @@ this block carries the attribution. Same rule as blocks 8, 9 and 11 (`notes/Phas
 *Blockers*, the doc-debt bullet: *"ask what here is reference rather than status"*), applied
 one landing earlier than usual because the note stood at **577/580 lines** when OWALL
 returned. The mathematics is **not** here — it is §(K-out) *Steps O47–O51*
-(`notes/Pencil-informal.md`) and the `(K-out)` gap-map row, which stay authoritative; the
+(`notes/pencil/workbook/gapmap.md`) and the `(K-out)` gap-map row, which stay authoritative; the
 spec and landing write-up are `notes/Pencil-fanout.md` §"OWALL".
 
 **OWALL (70, 2026-09-02, draft-only) — the route *Step O41* named is refuted by LOGIC.**
@@ -1679,7 +1679,7 @@ item's cost list is not a landing that fires them, and the WGROW landing
 ## The `(K-bare)` row's doc-debt ledger (RELOCATED from `notes/Phase39.md` 2026-09-09, the BNONUNI landing)
 
 **Relocated because every number in it is owned by another file** — the row
-itself in `notes/Pencil-informal.md`, its cap in `notes/check-gapmap-cells.py`
+itself in `notes/pencil/workbook/`, its cap in `notes/check-gapmap-cells.py`
 — so the paragraph is **reference, not status**, the disposition blocks 1–14
 got. It is also the **eighth** instance of the shape this arc keeps catching:
 *a paragraph whose figures a different file owns is precisely the paragraph a

@@ -1,7 +1,7 @@
 # PENCIL — W4 residual-arc informal mathematics workbook
 
 **Purpose.** The **W4 (`hcontract`) residual arc** of Phase 39 (PENCIL), split
-out of `notes/Pencil-informal.md` (2026-08-05) so that a kernel-(K) research
+out of `notes/pencil/workbook/` (2026-08-05) so that a kernel-(K) research
 pass reads only live (K) material. Its three sections are closed **as
 arguments** — `hnoGood'` vacuity REFUTED, (SAFE-RES) REFUTED with the successor
 (SAFE-RES′) open, the routes-1/3 kernel widening PRICED — and all three are
@@ -22,7 +22,7 @@ kernel and the pinned `hK` share their crux). Nothing here is commissioned;
 when the W4 build is, this file is its mathematical input, and
 `notes/Phase39.md` *Hand-off* carries the leaf sequence (first commit W4-L4b).
 
-**Discipline** — the same as `notes/Pencil-informal.md`'s, i.e. `notes/CLAUDE.md`'s
+**Discipline** — the same as `notes/pencil/workbook/`'s, i.e. `notes/CLAUDE.md`'s
 workbook rules. Each section reads as the **current state of its argument**,
 revised in place (git is the changelog; superseded reasoning does not stay
 inline). Each carries an explicit **confidence verdict** — *proven-informally*
@@ -37,13 +37,13 @@ recon history lives in `notes/Phase39-design.md` and the one-line decisions in
 §(K-slide), §(K-slide-cl), §(K-slide-comb), §(K-bare-ext) — and the **Shared
 dictionary** every section here depends on (the deficiency/rigidity vocabulary,
 the consequences **(R1)**–**(R5)** cited throughout below, and the canonical
-definitions of the test shapes `W19` and `S29`) are in **`notes/Pencil-informal.md`**; its
+definitions of the test shapes `W19` and `S29`) are in **`notes/pencil/workbook/gapmap.md`**; its
 *State of (K)* map is the entry point to that arc. Section references below
 name the file whenever they leave this one; a bare `§…` is a section of this
 file.
 
 **Labels.** This file's `(C1)`–`(C6)` (§`hnoGood'` vacuity), `(C7)`/`(C8)` and
-`(TF-1)`–`(TF-6)` (§(SAFE-RES)) are a **different family** from `notes/Pencil-informal.md`
+`(TF-1)`–`(TF-6)` (§(SAFE-RES)) are a **different family** from `notes/pencil/workbook/K-slide-cl.md`
 §(K-slide-cl)/§(K-slide-comb)'s same-numbered labels, and from
 `notes/Pencil-strategy.md` §4's C1/C2/C3. The registry that records all three,
 and the minting rule that prevents the next such clash, is
@@ -135,7 +135,7 @@ the middle zone rather than in a landed verdict).
 Mechanism (a) of Step 2, realized with branches long enough for the Ear Lemma
 to protect maximality. `W19` — a `C₄` core, three degree-3 poles, three
 4-interior paths; `|V| = 19`, `|E| = 22`, hubs `{c0, c2, z0, z1, z2}` — is
-defined in `notes/Pencil-informal.md` *Shared dictionary* → *Test shapes `W19`
+defined in `notes/pencil/workbook/dictionary.md` *Shared dictionary* → *Test shapes `W19`
 and `S29`*, its canonical home; vertex names below are that definition's.
 
 - **`G` is simple, 2-edge-connected, `3 ≤ |V|`.** ✓
@@ -403,7 +403,7 @@ points, and those boundary hubs are pairwise at `G[T]`-distance `≥ 5`.
 
 `S29` — a `C₄` core with three hub-edge poles, a 2-subdivided hub ring on the
 poles, and three 2-subdivided spokes to a centre — is defined in
-`notes/Pencil-informal.md` *Shared dictionary* → *Test shapes `W19` and `S29`*,
+`notes/pencil/workbook/dictionary.md` *Shared dictionary* → *Test shapes `W19` and `S29`*,
 its canonical home; vertex names below are that definition's.
 
 `|V| = 29`, `|E| = 34`, `f(V(G)) = 2`, `def(G) = 0`. Hubs (9):
@@ -803,7 +803,7 @@ must widen. Three findings price that:
    pool sample against 11/12 for the *pinned* kernel's own tight control
    (Step 5). **Corrected 2026-08-02 by the (K-tight) re-pin: the non-escaping
    seeds in both figures were placement-sampler artifacts; with the sampler
-   fixed, every target-rank seed probed escapes** (`notes/Pencil-informal.md`
+   fixed, every target-rank seed probed escapes** (`notes/pencil/workbook/K-tight.md`
    §(K-tight) Step 3). A
    failure here would have killed routes 1/3 outright; none exists.
 
@@ -853,7 +853,7 @@ Read from the landed producer `pencilPair_of_splitOff_of_habitat`
 So at a residual the infeasible branch is discharged by `absurd`, and
 **`hbareSplit` is never instantiated**. Its `hnoRigid` and its corank
 stratification stand exactly as pinned — the latter now **complete**
-(`index ∈ {1, 2}`, `corank(G′) ≤ 3`, `notes/Pencil-informal.md`
+(`index ∈ {1, 2}`, `corank(G′) ≤ 3`, `notes/pencil/workbook/`
 §(K-bare-ext) (BE-6)) — while **(K-bare-ext) itself is REFUTED as stated**
 (ibid., (BE-5), 2026-08-20; a *route* finding, `hbareSplit` untouched). (For the record,
 what *would* break if it were reached: the (K-bare) count dichotomy
@@ -1059,7 +1059,7 @@ counterexample; a *split* with no escaping seed would be.
 
 † As measured by `widened.py`'s sampler; **all three non-escaping seeds are
 sampler artifacts** (degenerate in-plane placements freezing `hinge(vb)`) and
-escape with the corrected sampler — `notes/Pencil-informal.md` §(K-tight)
+escape with the corrected sampler — `notes/pencil/workbook/K-tight.md` §(K-tight)
 *Step 3* (`notes/scripts/w4/repin.py`).
 
 - The pencil rank target itself is attained at `W19` (108/108) and `S29`
@@ -1079,12 +1079,12 @@ escape with the corrected sampler — `notes/Pencil-informal.md` §(K-tight)
   14/14 at `S29`, reproducing (K-bare)'s C3 gloss. **That gloss is corrected
   (2026-08-20, probe KBARE-FALSIFY):** on-line failure is *structural*
   (`C(va) ∥ C(vb)` there), but the failure set is **larger** than the line —
-  see `notes/Pencil-informal.md` §(K-bare-ext) *Step BE5*, where an off-line
+  see `notes/pencil/workbook/K-bare-ext.md` §(K-bare-ext) *Step BE5*, where an off-line
   failure is constructed at DZ itself. The 16/16 and 14/14 figures are
   unaffected (they are on-line failures, the half that is structural).
 
 **The seed-442 caveat is RESOLVED (2026-08-02).** The re-pin this step's
-caveat asked for has been done — `notes/Pencil-informal.md` §(K-tight) — and
+caveat asked for has been done — `notes/pencil/workbook/K-tight.md` §(K-tight) — and
 it dissolved the caveat in
 both directions: (i) seed 442's observed uniform failure was a **sampler
 artifact** (degenerate in-plane placements on a line through `pt(b)`,
@@ -1092,7 +1092,7 @@ freezing `hinge(vb)`; the seed escapes on both routes with a correct
 sampler), and (ii) the "observed predictor M2 = `R_a ⊄ pencil(b)^⊥`" scored
 against those artifact observations and is **refuted as the criterion** —
 two control seeds have `r ⊥ pencil(b)` yet escape. The carrier-correct
-criterion (proven and validated, `notes/Pencil-informal.md` §(K-tight)
+criterion (proven and validated, `notes/pencil/workbook/K-tight.md` §(K-tight)
 Steps 2–3) is per route the
 **full panel span** (`r ̸⊥ Λ²Π̂(b)` for the `pt(v)`-sweep; `r ̸⊥ Λ²Π̂(c)`
 for the iso-relabeled `pt(a)`-sweep), with combined failure ⟺ `★r ∥ C(M)`,
@@ -1790,7 +1790,7 @@ settle (PAIR-5).
 
 **The standing verdict, sharpened.** WPAIR's diagnosis (*conclusions
 inventoried, hypotheses in prose*) is correct but not the whole shape. The
-sibling arc **had** read this object: `notes/Pencil-informal.md` cites
+sibling arc **had** read this object: `notes/pencil/workbook/` cites
 `Graph.partitionDef`/`Graph.deficiency` 16 times (direction BINDUC read the
 bodies, and §(K-bare-ext) argues with `partitionDef₃` directly). So the gap is
 **per-arc**, not per-project: *an object already read and used on one side of
@@ -2180,11 +2180,11 @@ Reproduce: `python3 notes/scripts/w4/wgrow.py --validate | --dich | --k23 |
 - **(K-res)** — **open, no counterexample; same difficulty class as `hK`.**
   Truth: supported by direct rank attainment at `W19`/`S29` and an escape
   rate that is **100% after the sampler correction**
-  (`notes/Pencil-informal.md` §(K-tight) Step 3; first recorded as 94/96).
+  (`notes/pencil/workbook/K-tight.md` §(K-tight) Step 3; first recorded as 94/96).
   Provability: strictly *harder to route* than the
   pinned `hK`, because the whole residual habitat sits in the `dim R_a = 1`
   stratum — but that stratum's escape criterion is now settled and identical
-  across the pinned and residual habitats (`notes/Pencil-informal.md`
+  across the pinned and residual habitats (`notes/pencil/workbook/K-tight.md`
   §(K-tight) Steps 2/5), so the two
   kernels share one uniform gap ((K-move)/(K-pitch)). **Scope note
   (2026-08-28, direction RESGRID): that kinship is the *escape*-side one.**
@@ -2212,5 +2212,5 @@ Reproduce: `python3 notes/scripts/w4/wgrow.py --validate | --dich | --k23 |
 - **`hbareSplit`** — **unchanged.** Not on routes 1/3's path (Step 0); its
   adjudicated carry stands verbatim. **(K-bare-ext)**, its route-A discharge
   statement, is **REFUTED as stated** since 2026-08-20
-  (`notes/Pencil-informal.md` §(K-bare-ext)); that does not reach this arm,
+  (`notes/pencil/workbook/` §(K-bare-ext)); that does not reach this arm,
   precisely because Step 0 keeps the branch unreachable here.

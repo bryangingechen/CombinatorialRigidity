@@ -2,7 +2,7 @@
 Phase 39, section (K-out) CONTINUATION (direction ZNEQ) -- (OC-19) INPUT (a),
 `Z != empty`, as a statement in its own right.
 
-WHY THIS DRIVER EXISTS.  `notes/Pencil-informal.md` section (K-out) *Step O15*
+WHY THIS DRIVER EXISTS.  `notes/pencil/workbook/K-out.md` section (K-out) *Step O15*
 factors (OC-8) at a (shape, split) into three inputs, of which **(a) `Z !=
 empty`** -- the chart carries a hard-stratum target-rank point -- is *"a
 prerequisite of the whole (K-tight) criterion, not of (OUT)"*, and *Step O18*
