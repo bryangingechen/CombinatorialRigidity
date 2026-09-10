@@ -24,6 +24,35 @@ delimiters -- when a row's pipe count doesn't cleanly resolve to 4 columns,
 this script falls back to capping columns 3+4 COMBINED for that row rather
 than guessing a split point (see `_row_cells`).
 
+**2026-09-10 re-apportionment (NOT a bump), `(K-bare)` 1428/1428 -> 2666/190 and
+`(K-out)` 950/873 -> 1254/569.** Neither row grew. Both had been sitting in the
+combined-remainder fallback described above -- five rows carried an UNESCAPED `|`
+inside inline code (`` `|V|` ``, `` `|E°| >= 9` ``, `` `|arc| = 6` ``,
+`` `rank Q|_S = 4` ``, `` `rank(B|_U) <= 2` ``, `` `(|V|,|E|) = (5c+1, 6c)` ``), so
+this gate could not resolve their columns and capped columns 3+4 COMBINED. The
+escapes landed in this commit; the split became visible; and both rows turn out to
+be radically LOPSIDED -- `(K-bare)` status 2666 words against a close-it of 113,
+`(K-out)` 1254 against 555. The combined cap had been letting the empty close-it
+budget subsidise a status cell at nearly double its own cap.
+
+The new numbers **preserve each row's previously-ENFORCED combined total exactly**
+(2856 and 1823) and merely apportion it at the measured split, so this is zero net
+loosening; what changes is that the gate now constrains the cell that is actually
+growing. Headroom is deliberately **nil on both status cells** -- they are a HOLD
+LINE, not a budget grant. `(K-bare)` status at 2666 words is larger than `(K-grid)`
+status at 2585, which already forced two relocation commits (`f2905c86`,
+`ee0f54eb`), so the next landing into either row must recompute or split, not
+append. Both rows join `(K-grid)` as split candidates; see
+`notes/Harness-structure.md` D7.4.
+
+The `closeit` figures carry headroom proportionate to their size (113 -> 190,
+555 -> 569): these cells are label-dense chronologies where one new label chain
+costs ~20 words, and a nil-headroom cap on a 113-word cell would fail on arrival
+rather than on growth.
+
+`(K-wit)`, `(K-chord)` and `(K-ind)` were in the same fallback and need no entry --
+split, all four cells sit under `DEFAULT_CAP`.
+
 Modes (same three as `check-log-rows.py`):
   (default)  check only rows whose col-3/col-4 content changed vs HEAD --
              the rows this commit touches. Grandfathered rows don't block
@@ -205,11 +234,11 @@ DEFAULT_CAP = 800  # per cell (status / close-it); largest ungrandfathered
 # density rather than re-price it. **Do not bump a fourth time without doing
 # the relocation pass first.**
 SPECIAL_CAPS = {
-    "K-bare": {"status": 1428, "closeit": 1428},
+    "K-bare": {"status": 2666, "closeit": 190},
     # gap-key -> {"status": cap, "closeit": cap}. Combined-remainder fallback
     # (ambiguous pipe split) uses the sum of the two.
     "K-grid": {"status": 2715, "closeit": 985},
-    "K-out": {"status": 950, "closeit": 873},
+    "K-out": {"status": 1254, "closeit": 569},
 }
 
 

@@ -761,12 +761,12 @@ Round-close obligation, per `CLAUDE.md` *Lift on promotion*:
 ## Hand-off / next phase
 
 All fourteen slices are LANDED, and the round's forward part is now **D6 + D7**
-— the two diagnosis sections, not the slice list. **Next concrete commit: escape
-the five gap-map rows' unescaped inline-code pipes** (D7.4(c)) — `(K-bare)`,
-`(K-out)`, `(K-wit)`, `(K-chord)`, `(K-ind)`, all currently in
-`check-gapmap-cells.py`'s combined fallback, which is a prerequisite for judging
-whether `(K-out)` and `(K-bare)` are genuinely near their caps at all. Then, in
-order: the D7.3 loop clause (two lines, no new tool), D6.6's reorder (one line),
+— the two diagnosis sections, not the slice list. D7.4(c)'s pipe escaping is **DONE**, and it
+found `(K-bare)` and `(K-out)` 87% and 32% over cap rather than near it; both now
+join `(K-grid)` as split candidates, which is a **user decision, not a side
+errand** — it moves mathematical prose out of a table cell. **Next concrete
+commit: the D7.3 loop clause** (two lines, no new tool) and D6.6's reorder (one
+line),
 and then the shipped scripts D7.8 says must come before any further section —
 D6.3(a) `--reserve-range`, D6.1 `phasenote.py`, D6.4 `blindaxes.py`, D6.5
 `check-driver-refs.py`. **Read D7.2 before ranking any of them**: a reader that
@@ -1414,6 +1414,40 @@ before two prose-only repairs were abandoned. That pathology is real and the cap
 does stop it. It is the **calibration** that turned a periodic recompute into a
 per-landing toll — so re-aim it at the *shape* (split the rows that outgrew a
 cell), not at the *number*.
+**EXECUTED 2026-09-10 (`802816a1` → this commit), and the answer is worse than
+the paragraph above guessed.** Eighteen pipes escaped across the five rows,
+content-neutral by construction (the file is byte-identical after un-escaping;
+19 221 words before and after; every `(BE-)`/`(GR-)`/`(OC-)` label token
+preserved; `gapdiff` reports 305 labels in, 305 out, 0 dropped). All 29 rows now
+parse as `split`. What the combined fallback had been hiding:
+
+| row | status | vs cap | close-it | vs cap |
+|---|---|---|---|---|
+| `(K-bare)` | **2 666** | +1 238 over 1 428 | 113 | far under 1 428 |
+| `(K-out)` | **1 254** | +304 over 950 | 555 | under 873 |
+| `(K-wit)` / `(K-chord)` / `(K-ind)` | 554 / 138 / 166 | fine at `DEFAULT_CAP` | 327 / 68 / 26 | fine |
+
+So the two largest rows were not *near* their caps, as the headroom table above
+reports them — they were **32% and 87% over**, and had been for an unknown
+number of landings, because the combined cap let a nearly-empty close-it budget
+subsidise a runaway status cell. This is the sharpest available instance of
+D6.9's lesson: the reader printed `(combined)` on every run and the gate printed
+`OK`, and *both* were telling the truth.
+
+Caps re-apportioned rather than bumped — each row's **previously-enforced
+combined total is preserved exactly** (2 856 and 1 823) and merely split at the
+measured shape, so there is zero net loosening; the status cells get **nil
+headroom on purpose**, as a hold line. Reasoning and the dated entry are in
+`check-gapmap-cells.py`'s own docstring. `(K-bare)` status at 2 666 words is now
+**larger than `(K-grid)` at 2 585**, which already cost two relocation commits —
+so `(K-bare)` and `(K-out)` join `(K-grid)` as split candidates, and that is the
+decision this section hands forward rather than a fifth bump.
+
+*(One measurement artifact, recorded so a later reader does not chase it:
+`gapdiff` reports `(K-bare)` 2 780 → 2 779 words. The lost word is the literal
+`|` that the combined fallback had been counting as a token; 2 666 + 113 = 2 779.
+No content moved.)*
+
 *Kill condition: zero `(combined)` rows in `gapmap.py --list`, and a round of
 three landing into a hot gap with no relocation pass. Decided by: that command
 and the commit log.*
