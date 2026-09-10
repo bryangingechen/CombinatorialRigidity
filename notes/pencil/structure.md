@@ -659,7 +659,15 @@ not move*; a **symbolic** dispatch adds `notes/scripts/m2/README.md`;
 **`notes/check-gapmap-cells.py` before any gap-map edit** — the cap-exhaustion hazard this
 guards against is now a standing, harness-wide rule (`notes/scripts/README.md` §4 convention
 8, promoted 2026-08-19 after a second instance; not restated here); bump a row's cap only
-with a dated one-line reason, never a silent regrowth.
+with a dated one-line reason, never a silent regrowth — and since the
+2026-09-10 re-aim a cell earns its room at 25 words per **labelled result**, so a
+cell over cap is VERBOSE, not merely full: check
+`notes/scripts/cellcensus.py --density` before touching a word;
+**`notes/check-driver-refs.py` when prose cites a driver mode** — every
+`<driver>.py --<flag>` in the tree resolved against that driver's own declared
+flags. That is the class of error that put `packmm.py --hier` on four <!--driver-refs:exempt-->
+surfaces when the mode lives in `gridcol.py`; prose *about* a flag carries
+`<!--driver-refs:exempt-->`, which is greppable on purpose.
 
 **Two blind spots in the two `check-*.py` gates, both found 2026-09-02 — read these before
 quoting a gate result as evidence.** Neither is a bug and neither has ever let a cap

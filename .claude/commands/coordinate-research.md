@@ -299,7 +299,9 @@ one, fixed once at the check-in.
      body prose too** — grep the tree for the same stale claim, and use
      `git show --unified=0` to answer *did the correction reach the
      originating prose?* in one call (F12).
-   - Run the three docs gates **before** committing, and paste
+   - Run the docs gates **before** committing — `check-phase-note.py`,
+     `check-gapmap-cells.py`, `gapdiff.py`, and `check-driver-refs.py`
+     whenever the landing's prose names a driver mode — and paste
      `--delta <noted-sha>` into the commit message.
 6. **One sentence to the user** after each commit: clean handoff and the
    next direction, or the specific concern. **It is a sentence, not a

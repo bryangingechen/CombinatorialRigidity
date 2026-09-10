@@ -770,11 +770,11 @@ and D6.6's reorder, together in both coordinator commands; D6.1
 which the `cellcensus.py` measurement chose over the split this file had been
 recommending.
 
-**D6.1 `notes/phasenote.py`, D6.3(a) `ledger.py --reserve-range` and D6.4
-`notes/scripts/blindaxes.py` are SHIPPED** (D7.8's rule discharged three times:
-scripts, not sections) — the first found
+**D6.1 `notes/phasenote.py`, D6.3(a) `ledger.py --reserve-range`, D6.4
+`notes/scripts/blindaxes.py` and D6.5 `notes/check-driver-refs.py` are all
+SHIPPED** (D7.8's rule discharged four times: scripts, not sections) — the first found
 the active note's next-task sentence stale on its first run, the second passes
-both of the round's dropped-row defects as acceptance tests. **Next: D6.5 `check-driver-refs.py`**, the last of the four. **Rank by D7.2, not by size:**
+both of the round's dropped-row defects as acceptance tests. **All four D6 scripts are shipped.** **Rank by D7.2, not by size:**
 a reader that cuts a *pre-dispatch* read is worth ~20× the same reader used
 afterwards.
 
@@ -1126,7 +1126,7 @@ tier headers.*
 - **(c) Doc-cap headroom.** Learning that `(K-bare)` had **28** words free and
   `(K-grid)` **23 / 9** (at `c8efb227` — these move at every landing and are not
   maintained here) required reading `SPECIAL_CAPS` out of the gate's source.
-  **Suggestion:** `check-gapmap-cells.py --headroom` (used / cap / free per row),
+  **Suggestion:** `check-gapmap-cells.py --headroom` (used / cap / free per row), <!--driver-refs:exempt-->
   and a free-words column on `gapmap.py --list`. Headroom decides whether a
   landing is an append or a recompute, so it belongs in the dispatch spec.
 *Kill condition for all three: each shipped, or one coordinator session that does
@@ -1184,9 +1184,9 @@ spec did not already name. Decided by: this section plus `notes/dispatch-log.md`
 Findings.* **Half discharged — shipped and routed into the loop's spec
 checklist; the "used by one spec" half stands.**
 
-### D6.5 — the recommendation surface cites driver modes in prose, and one was wrong
+### D6.5 — the recommendation surface cites driver modes in prose, and one was wrong  *(SHIPPED 2026-09-10)*
 
-`strategy.md` §8 rank 2 names `packmm.py --hier`; the mode lives in
+`strategy.md` §8 rank 2 names `packmm.py --hier`; the mode lives in <!--driver-refs:exempt-->
 `gridcol.py`. §8 is *the* surface a fresh session reads to choose a direction —
 RESEARCH-ARC §8's whole thesis — and a prose driver-mode citation is a
 **mechanically checkable** class of error that no gate covers.
@@ -1194,8 +1194,33 @@ RESEARCH-ARC §8's whole thesis — and a prose driver-mode citation is a
 string from `notes/pencil/**` and `notes/*.md`, resolve against each driver's own
 argparse flags, fail on a mismatch. This is §8's *gate a surface and it stays
 correct* applied to the one part of a recommendation that is machine-decidable.
-*Kill condition: the gate shipped and green, or a measured hit count low enough
-not to matter. Decided by: the gate's presence and its first run.*
+**SHIPPED 2026-09-10.** `notes/check-driver-refs.py` — **1 075 citations across
+209 prose files, green**, with `--selftest` reproducing the original defect at
+its own baseline (`packmm.py --hier` at `c8efb227`). Zero unresolved: every <!--driver-refs:exempt-->
+`<driver>.py` cited in the tree resolves and yields readable flags.
+
+**Flag extraction was the whole job, and a naive version would have been worse
+than nothing.** Five shapes, four of them discovered by the gate going red:
+argparse literals; `for f in (…): add_argument('--' + f)`; the **f-string**
+spelling `f'--{mode}'` (which `gcoind.py` and `gbal.py` use for *every* mode, so
+reading only `+` left them declaring `--validate` and nothing else); a
+module-level `MODES` tuple the loop ranges over; and `MODES + ('validate',)`,
+without which `gforce.py` yielded **no readable flags at all**. Underneath all
+of it, the majority shape: **only 38 of 143 drivers use argparse**, the rest
+testing `'--conj' in sys.argv`, so bare flag literals count too. A checker that
+knew argparse alone would have failed most of the tree's *correct* citations —
+red at baseline, therefore switched off rather than obeyed, which is D6.7 exactly.
+
+Two deliberate restraints. A driver from which no flag can be read is
+**undecidable**: its citations are reported, never failed. And prose *about* a
+flag — proposing one, or reporting a past mis-citation, both of which this very
+file does — carries `<!--driver-refs:exempt-->`, chosen ugly and greppable so
+exemptions cannot quietly accumulate (`grep -rn 'driver-refs:exempt' notes/`
+returns exactly two today, both in this section and D6.3(c)).
+
+*Kill condition (original): the gate shipped and green, or a measured hit count
+low enough not to matter. Decided by: the gate's presence and its first run.*
+**Discharged.**
 
 ### D6.6 — the blocking check-in is serialized behind reads it does not need  *(FIXED 2026-09-10)*
 
