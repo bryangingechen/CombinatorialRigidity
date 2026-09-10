@@ -27,8 +27,9 @@ So the cost is TURNS, not bytes, and the fix is not "read less" -- it is
   --round N --direction D --labels L1 L2 ... [--question T] [--out]
                           a dispatch briefing packet with the claim statements
                           GENERATED, so a spec never retypes one
-  --backlog               UNTAGGED claims ranked by citations -- the tagging
-                          worklist, heaviest-leaned-on first
+  --backlog [--decisive]  UNTAGGED claims ranked by citations -- the tagging
+                          worklist; --decisive narrows to those whose own
+                          clause already states a status (transcription)
   --reserve TOK ...       0-hit check a proposed label prefix, corpus-wide
                           (RESEARCH-ARC section 1, mechanized)
   --lint                  GATE: the status vocabulary, on claims this commit
@@ -640,6 +641,12 @@ def cmd_backlog(rows, args):
         for c in (r["cites"].split(";") if r["cites"] else []):
             cited[c] += 1
     un = [r for r in rows if r["status"] == "UNTAGGED"]
+    if args.decisive:
+        # The subset whose OWN clause already contains a status word somewhere
+        # -- the tag simply never recorded it. These are transcription. The
+        # rest are judgement, where `UNTAGGED` is usually the right answer and
+        # a pass that forces them is how verdicts get invented.
+        un = [r for r in un if _DECISIVE.search(r["tag"] + " " + r["claim"])]
     un.sort(key=lambda r: (-cited.get(r["label"], 0), r["label"]))
     withg = sum(1 for r in un if r["tag"])
     print(f"# {len(un)} UNTAGGED claims -- {withg} carry a gloss whose leading "
@@ -653,6 +660,11 @@ def cmd_backlog(rows, args):
     if len(un) > args.head:
         print(f"\n... {len(un)-args.head} more (raise --head)")
     return 0
+
+
+_DECISIVE = re.compile(r"\b(PROVED|PROVEN|REFUTED|MEASURED|ASSERTED|"
+                       r"CONSTRUCTED|MOOT|RETIRED|SUPERSEDED|proved|proven|"
+                       r"refuted|measured|asserted|constructed)\b")
 
 
 def cmd_reserve(rows, args):
@@ -1251,6 +1263,10 @@ def main(argv):
     p.add_argument("--question", metavar="TEXT", help="--round: the question")
     p.add_argument("--out", action="store_true",
                    help="--round: write notes/pencil/rounds/<N>-<DIR>.md")
+    p.add_argument("--decisive", action="store_true",
+                   help="--backlog: only untagged claims whose own clause "
+                        "already contains a status word (transcription, not "
+                        "judgement)")
     p.add_argument("--known", action="store_true",
                    help="--frontier: only claims with a recorded status; hide "
                         "the UNTAGGED group, which is a tagging decision "
