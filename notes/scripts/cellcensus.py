@@ -223,7 +223,7 @@ def census(key, which, show_units):
     in_corp_c = sorted(t for t in all_toks if t.split("(")[0] in corp_coarse)
     nowhere = sorted(t for t in all_toks if t.split("(")[0] not in corp_coarse)
 
-    cap = GATE.caps_for(key)[0 if which == "status" else 1]
+    cap = GATE.caps_for(key, status, closeit)[0 if which == "status" else 1]
     print(f"=== ({key}) {which} — {len(us)} units, {total_w} words, cap {cap}"
           f"{'  [OVER by ' + str(total_w - cap) + ']' if total_w > cap else ''}")
     print(f"  owning section: {', '.join(own_files) if own_files else 'UNMAPPED'}")
@@ -283,7 +283,8 @@ def density_table(which):
         n = len(tokens_of(cell))
         w = len(cell.split())
         rows.append((k, w, n, (w / n) if n else None,
-                     GATE.caps_for(k)[0 if which == "status" else 1]))
+                     GATE.caps_for(k, cells[0], cells[1])[
+                         0 if which == "status" else 1]))
     print(f"{'row':<16}{'words':>7}{'labels':>8}{'w/label':>9}{'cap':>7}")
     for k, w, n, r, c in sorted(rows, key=lambda x: -(x[3] or 0)):
         print(f"{k:<16}{w:>7}{n:>8}{(f'{r:.1f}' if r else '—'):>9}{c:>7}")

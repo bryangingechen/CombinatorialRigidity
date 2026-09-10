@@ -42,8 +42,8 @@ growing. Headroom is deliberately **nil on both status cells** -- they are a HOL
 LINE, not a budget grant. `(K-bare)` status at 2666 words is larger than `(K-grid)`
 status at 2585, which already forced two relocation commits (`f2905c86`,
 `ee0f54eb`), so the next landing into either row must recompute or split, not
-append. Both rows join `(K-grid)` as split candidates; see
-`notes/Harness-structure.md` D7.4.
+append. Both rows were then proposed as split candidates -- **and the measurement
+taken before designing that split REFUTED it; see the re-aim below.**
 
 The `closeit` figures carry headroom proportionate to their size (113 -> 190,
 555 -> 569): these cells are label-dense chronologies where one new label chain
@@ -59,14 +59,33 @@ Modes (same three as `check-log-rows.py`):
              unrelated commits; any row you DO touch must pass.
   --all      check every row (full-table audit / a cleanup pass).
   --last     check rows changed in HEAD vs HEAD~1 (post-commit audit).
+  --selftest assert the cap rule on fixtures (no file read).
 
 Exit 1 (and list offenders) if any checked row/cell exceeds its cap.
 Run before committing a change to the gap map -- see the docstring note
 above for where this is documented; there is no automated pre-commit hook,
 so run it by hand (`python3 notes/check-gapmap-cells.py`).
 
-Caps. `DEFAULT_CAP` applies per cell (status, close-it) to every gap not
-listed in `SPECIAL_CAPS`. `(K-grid)` is the one row that has actually needed
+Caps (RE-AIMED 2026-09-10 -- read `caps_for` for the rule and the guards).
+A cell's cap is `min(CEILING, max(DEFAULT_CAP, DENSITY * labelled results))`:
+a flat floor every cell gets, plus room EARNED at 25 words per labelled
+result, stopped at an absolute review trigger. **The measurement that forced
+this** (`notes/scripts/cellcensus.py`, `notes/Harness-structure.md` D7.4):
+the three cells then sitting at their caps were the three most COMPRESSED in
+the table -- `(K-bare)` 9.1 words per labelled result, `(K-grid)` 15.8,
+`(K-out)` 20.6, against `(K-ind)` at 166.0 and 21% of its cap, and a
+whole-table 18.3 -- all three already below the ~25 this docstring's own
+2026-08-19 note calls the floor "at which point further compression deletes
+status rather than redundancy". A flat word cap was taxing the rows doing the
+most work per word and ignoring the verbose ones. The relocation route was
+measured too and does not exist: textual duplication against the owning
+workbook section is 3-5%, so these cells are original compression, not second
+copies. `--selftest` asserts both halves of the new rule, including that an
+append landing NO new results still fails.
+
+The historical bumps below are retained as the record of how the flat caps
+moved; they no longer set anything. `SPECIAL_CAPS` survives as an override
+and is empty. `(K-grid)` is the one row that has actually needed
 more room every time it has been honestly recomputed (it carries the whole
 GORIENT/GDEV/GADM theorem chain, GR-32 through GR-43) -- its caps are set at
 the 2026-08-18 recompute's own size (1137 / 619 words) plus ~15% headroom,
@@ -174,6 +193,9 @@ SECTION_RE = re.compile(r"^## State of \(K\)")
 HEADER_RE = re.compile(r"^\|\s*gap\s*\|")
 SEP_RE = re.compile(r"^\|[\s:|-]+\|\s*$")
 PIPE = re.compile(r"(?<!\\)\|")  # a column delimiter is an UNescaped pipe
+# A labelled result, same shape as `notes/scripts/gapdiff.py`'s CODE.
+LABEL_RE = re.compile(r"\(([A-Z][A-Za-z0-9′+]*(?:-[A-Za-z0-9′+]+)+)\)"
+                      r"(\((?:[ivx]+|\+|[a-z]\d?|[A-Z]\d?)\))?")
 KEY_RE = re.compile(r"\(([A-Za-z0-9\-∞Δσ′]+)\)")
 
 DEFAULT_CAP = 800  # per cell (status / close-it); largest ungrandfathered
@@ -233,13 +255,29 @@ DEFAULT_CAP = 800  # per cell (status / close-it); largest ungrandfathered
 # out of the cell, pointers in -- is a cleanup-round item and would reset that
 # density rather than re-price it. **Do not bump a fourth time without doing
 # the relocation pass first.**
-SPECIAL_CAPS = {
-    "K-bare": {"status": 2666, "closeit": 190},
-    # gap-key -> {"status": cap, "closeit": cap}. Combined-remainder fallback
-    # (ambiguous pipe split) uses the sum of the two.
-    "K-grid": {"status": 2715, "closeit": 985},
-    "K-out": {"status": 1254, "closeit": 569},
-}
+# Words a cell earns per LABELLED RESULT it carries, above the flat floor.
+# The number is the gate's OWN, from the 2026-08-19 bump note above: 2 360
+# words carrying 96 labelled results is "~25 words each, at which point
+# further compression deletes status rather than redundancy". Using it as the
+# rule rather than as a remark is the 2026-09-10 re-aim; see the docstring.
+DENSITY = 25
+
+# The absolute review trigger. Density alone would license `(K-bare)` at
+# 7 350 words, so a cell's earned room is capped here. Set at ~50% above the
+# largest cell measured at the re-aim (`(K-bare)` 2 666) -- three to four
+# heavy round-days of headroom for the hottest row, at the measured rate of
+# ~25 new labels and ~400 new words per day of two rounds of three. Hitting
+# it means READ THE ROW (`gapmap.py --row … --cell status`) and decide
+# whether it is still a summary -- not "recompute to fit", which is the
+# per-landing toll this re-aim exists to end.
+CEILING = 4000
+
+# Genuine per-row exceptions, and it is EMPTY on purpose. The three entries
+# it carried until 2026-09-10 -- `K-bare` 2666/190, `K-grid` 2715/985,
+# `K-out` 1254/569 -- are all subsumed by the formula, which gives them
+# 4000/800, 4000/800 and 1525/800. Keep the mechanism: a row that genuinely
+# needs to depart from the formula should say so here, dated, with a reason.
+SPECIAL_CAPS = {}
 
 
 def _key_of(col1):
@@ -301,22 +339,66 @@ def iter_row_cells(text):
 
 
 def table_rows(text):
-    """{key: ("split", status_words, closeit_words) | ("combined", words)}
-    for every data row of the *State of (K)* gap-map table."""
+    """{key: ("split", status_words, closeit_words, status_text, closeit_text)
+    | ("combined", words, text)} for every data row of the *State of (K)*
+    gap-map table. The cell TEXT rides along because `caps_for` needs it --
+    a cap that scales with labelled results cannot be computed from a word
+    count (2026-09-10 re-aim)."""
     out = {}
     for _lineno, key, _col1, _col2, kind, cells in iter_row_cells(text):
         if kind == "split":
-            out[key] = ("split", len(cells[0].split()), len(cells[1].split()))
+            out[key] = ("split", len(cells[0].split()), len(cells[1].split()),
+                        cells[0], cells[1])
         else:
-            out[key] = ("combined", len(cells[0].split()))
+            out[key] = ("combined", len(cells[0].split()), cells[0])
     return out
 
 
-def caps_for(key):
+def _labels(text):
+    """Distinct labelled results a cell carries. Same token shape as
+    `notes/scripts/gapdiff.py` -- a parenthesised `(XX-yyy)` code, with an
+    immediately following sub-part counted as its own finer token -- so the
+    two gates agree on what a labelled result is."""
+    return {m.group(1) + (m.group(2) or "") for m in LABEL_RE.finditer(text)}
+
+
+def caps_for(key, status_text=None, closeit_text=None):
+    """Per-cell cap: a flat floor every cell gets, plus room EARNED at
+    `DENSITY` words per labelled result, capped at `CEILING`.
+
+        cap(cell) = min(CEILING, max(DEFAULT_CAP, DENSITY * labels(cell)))
+
+    Why this shape rather than a word budget (2026-09-10 re-aim, measured;
+    `notes/Harness-structure.md` D7.4 and `notes/scripts/cellcensus.py`).
+    A flat cap bounds a cell's LENGTH, but a status cell's length is driven
+    by how many results the arc has landed in that gap -- so the flat cap
+    fired hardest on the rows doing the most work. Measured at the re-aim,
+    the three cells at their caps were the three most COMPRESSED in the
+    table (`(K-bare)` 9.1 words per labelled result, `(K-grid)` 15.8,
+    `(K-out)` 20.6) while `(K-ind)` sat at 166.0 and 21% of its cap. A
+    density cap inverts that: a landing that adds results earns its room, and
+    a landing that appends narrative WITHOUT adding results does not -- which
+    is the pathology this gate was built for (see *Why this exists*).
+
+    Two guards. (i) The floor: density is meaningless on a small cell, so
+    every cell keeps at least `DEFAULT_CAP` and a 72-word one-label row is
+    governed by that, not by 25. (ii) A density cap rewards MINTING labels;
+    it is safe only because `RESEARCH-ARC.md` (L7) makes a label costly to
+    mint -- reserved, range-checked and declared. If label minting ever gets
+    cheap, this cap gets gamed, and that is the trigger to revisit it.
+
+    Passing no text returns the floor, for callers that only want the shape.
+    """
     special = SPECIAL_CAPS.get(key)
     if special:
         return special["status"], special["closeit"]
-    return DEFAULT_CAP, DEFAULT_CAP
+
+    def one(text):
+        if text is None:
+            return DEFAULT_CAP
+        return min(CEILING, max(DEFAULT_CAP, DENSITY * len(_labels(text))))
+
+    return one(status_text), one(closeit_text)
 
 
 def offenders(rows, keys):
@@ -325,16 +407,20 @@ def offenders(rows, keys):
         row = rows.get(key)
         if row is None:
             continue
-        status_cap, closeit_cap = caps_for(key)
         if row[0] == "split":
-            _, status_n, closeit_n = row
+            _, status_n, closeit_n, status_t, closeit_t = row
+            status_cap, closeit_cap = caps_for(key, status_t, closeit_t)
             if status_n > status_cap:
                 bad.append((key, "status", status_n, status_cap))
             if closeit_n > closeit_cap:
                 bad.append((key, "close-it", closeit_n, closeit_cap))
         else:
-            _, combined_n = row
-            combined_cap = status_cap + closeit_cap
+            # Ambiguous split: the cell texts cannot be separated, so the
+            # combined text earns the combined room, once.
+            _, combined_n, combined_t = row
+            combined_cap = min(2 * CEILING,
+                               max(2 * DEFAULT_CAP,
+                                   DENSITY * len(_labels(combined_t))))
             if combined_n > combined_cap:
                 bad.append((key, "combined (ambiguous split)", combined_n, combined_cap))
     return bad
@@ -350,7 +436,62 @@ def git_show(ref):
         return None
 
 
+def selftest():
+    """Fixtures for the 2026-09-10 density re-aim. A gate whose rule changed
+    and that cannot demonstrate the change is D6.7's lesson waiting to
+    happen -- these assert both that the new cap earns room for results and
+    that it still catches the append pathology the gate was built for."""
+    def cell(labels, words, prefix="X"):
+        toks = " ".join(f"({prefix}-{i})" for i in range(1, labels + 1))
+        pad = " ".join(["word"] * max(0, words - len(toks.split())))
+        return (toks + " " + pad).strip()
+
+    fails = []
+
+    def check(name, got, want):
+        if got != want:
+            fails.append(f"  {name}: got {got}, want {want}")
+
+    # 1. the flat floor governs a small cell -- density is meaningless there
+    check("floor: 1 label", caps_for("z", cell(1, 100))[0], DEFAULT_CAP)
+    check("floor: 0 labels", caps_for("z", cell(0, 100))[0], DEFAULT_CAP)
+    # 2. results earn room above the floor
+    check("earned: 61 labels", caps_for("z", cell(61, 10))[0], 25 * 61)
+    # 3. the ceiling caps density
+    check("ceiling: 294 labels", caps_for("z", cell(294, 10))[0], CEILING)
+    # 4. THE PATHOLOGY: appending narrative with no new labels earns nothing,
+    #    so a cell that keeps appending eventually breaks its cap.
+    grew = cell(40, 1600)                      # 40 results, 1600 words: cap 1000
+    check("append w/o results FAILS",
+          bool(offenders({"z": ("split", len(grew.split()), 0, grew, "")}, {"z"})),
+          True)
+    # 5. ...while the same growth WITH results landed does not.
+    earned = cell(70, 1600)                    # 70 results: cap 1750
+    check("same words WITH results passes",
+          bool(offenders({"z": ("split", len(earned.split()), 0, earned, "")}, {"z"})),
+          False)
+    # 6. sub-clause tokens count as their own result, as `gapdiff` counts them
+    check("sub-clause counted",
+          len(_labels("(BE-45) (BE-45)(ii) (BE-46)")), 3)
+    # 7. the ambiguous-split fallback is still capped, and generously
+    comb = cell(10, 5000)
+    check("combined fallback FAILS when huge",
+          bool(offenders({"z": ("combined", len(comb.split()), comb)}, {"z"})),
+          True)
+
+    if fails:
+        print("FAIL: check-gapmap-cells selftest", file=sys.stderr)
+        print("\n".join(fails), file=sys.stderr)
+        return 1
+    print(f"OK: selftest — floor {DEFAULT_CAP}, {DENSITY} words per labelled "
+          f"result, ceiling {CEILING}; append-without-results still fails.")
+    return 0
+
+
 def main(argv):
+    if "--selftest" in argv:
+        return selftest()
+
     with open(PATH, encoding="utf-8") as f:
         cur = table_rows(f.read())
 
@@ -384,11 +525,17 @@ def main(argv):
         for key, cell, n, cap in bad:
             print(f"  ({key}) {cell}: {n} words (+{n - cap} over cap {cap})", file=sys.stderr)
         print(
-            "Recompute the row as a current-state statement (no then/now or "
-            "correction narrative -- those belong at the owning Step) rather "
-            "than appending another 'since direction X' clause. If the row "
-            "has genuinely grown (more theorems land), bump its entry in "
-            "SPECIAL_CAPS in this script, in the same commit, with a reason.",
+            "A cell earns room at 25 words per labelled result, so a cell "
+            "over its cap is VERBOSE, not merely full: recompute it as a "
+            "current-state statement (no then/now or correction narrative -- "
+            "those belong at the owning Step) rather than appending another "
+            "'since direction X' clause. If the cap shown is CEILING (4000), "
+            "the row has hit the review trigger instead: READ it with "
+            "`python3 notes/gapmap.py --row '(KEY)' --cell status` and decide "
+            "whether it is still a summary. Check the density first -- "
+            "`python3 notes/scripts/cellcensus.py --density` -- because a row "
+            "below ~25 words per labelled result is already past the point "
+            "where compression deletes status.",
             file=sys.stderr,
         )
         return 1

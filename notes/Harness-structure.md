@@ -764,9 +764,11 @@ All fourteen slices are LANDED, and the round's forward part is now **D6 + D7**
 — the two diagnosis sections, not the slice list.
 
 **Done 2026-09-10, in order:** D7.4(c)'s pipe escaping (`e689d959`) — which found
-`(K-bare)` and `(K-out)` **87% and 32% over cap**, not near it, and re-apportioned
-both rows' caps without loosening either total; then D7.3's loop clause and
-D6.6's reorder, landed together in both coordinator commands.
+`(K-bare)` and `(K-out)` **87% and 32% over cap**, not near it; D7.3's loop clause
+and D6.6's reorder, together in both coordinator commands; D6.1
+`notes/phasenote.py`; and D7.4's **density re-aim** of `check-gapmap-cells.py`,
+which the `cellcensus.py` measurement chose over the split this file had been
+recommending.
 
 **D6.1 `notes/phasenote.py` is SHIPPED** (D7.8's rule discharged: a script, not
 another section) — and it found the active note's next-task sentence stale on its
@@ -776,11 +778,13 @@ written acceptance tests), then D6.4 `blindaxes.py`, D6.5 `check-driver-refs.py`
 **Rank by D7.2, not by size:** a reader that cuts a *pre-dispatch* read is worth
 ~20× the same reader used afterwards.
 
-**One open user decision, deliberately not taken here:** `(K-grid)`, `(K-bare)`
-and `(K-out)` are all past the point where a table cell is the right container
-(2 585 / 2 666 / 1 254 words of status). D7.4 argues for the slice-12 move — live
-verdict in the row, bulk behind a pointer into the owning workbook file — rather
-than a fifth cap bump. That relocates mathematical prose and is a user call.
+**The split question is CLOSED, and by measurement rather than by choosing.**
+`notes/scripts/cellcensus.py` found the three "bloated" cells are the three most
+compressed rows in the table, already below this gate's own ~25-words-per-result
+floor, with 3–5% textual duplication against the owning sections — so there was
+nothing to relocate and nothing padded. The cap was re-aimed at **density**
+instead (D7.4), which ends the per-landing recompute toll without moving a word
+of mathematics.
 
 *(Slice 8's original spec, for the record: `notes/ledger.py`, with `--label`,
 `--status`, `--frontier`, `--cited-by`, `--brief` and `--delta`, generating
@@ -1544,9 +1548,29 @@ which is D7.4(b)'s duty-cycle problem dissolved rather than rescheduled. One
 guard to write down: a density cap rewards minting labels, so it is safe only
 because `(L7)` reservations make a label costly; say so where the cap is set.
 
-*Kill condition (superseding the split proposal): the density cap in
-`check-gapmap-cells.py`, and a round of three landing into a hot gap with no
-relocation pass. Decided by: the gate's source and the commit log.*
+**SHIPPED 2026-09-10.** `caps_for` is now
+`min(CEILING, max(DEFAULT_CAP, DENSITY x labelled results))` — floor 800,
+25 words earned per labelled result, ceiling 4 000. `SPECIAL_CAPS` is emptied
+(the formula subsumes its three entries) and survives as a documented override.
+`--selftest` asserts the rule on fixtures, including the half that matters most:
+**an append landing no new results still fails**, so the pathology the gate was
+built for is intact while arrival is no longer taxed.
+
+Effect across the table, at the re-aim: no cell above **82%** of cap (was three
+at 94–99%, two of them *over*), the hot rows hold 1 415 / 1 334 / 271 free words,
+and every other row is unchanged at the flat 800. The ceiling's job is different
+from the floor's — hitting it means **read the row** (`gapmap.py --row … --cell
+status`) and decide whether it is still a summary, not "recompute to fit", and
+the gate's failure message now says so and points at `cellcensus.py --density`
+first. Constants are measured, not chosen: 25 is this gate's own docstring
+figure; 4 000 is ~50% above the largest cell at the re-aim, three to four heavy
+round-days at the observed rate (`(K-grid)` took **+25 labels in one day** of two
+rounds of three).
+
+*Kill condition (superseding the split proposal): a round of three landing into a
+hot gap with no relocation pass, and no cap bump. Decided by: the commit log.*
+**Half discharged — the cap is in; the round that exercises it is the other
+half.**
 
 *Kill condition: zero `(combined)` rows in `gapmap.py --list`, and a round of
 three landing into a hot gap with no relocation pass. Decided by: that command
