@@ -37,6 +37,29 @@ What it reports, most suspicious first:
   FENCED CALLS  a call passing a literal to a keyword whose default differs.
                 This is `lamcap` exactly: default 99, fenced to 1 elsewhere.
 
+  POPULATION    (`--population`) a different KIND of fence, and the one the
+                four classes above structurally cannot see: not a parameter
+                at all, but WHERE THE SHAPES COME FROM. It walks the driver's
+                iterated calls to the generators that produce them and prints
+                each one's docstring and literal ranges.
+
+Why `--population` exists, and it is the second instance that earned it. The
+four classes above are all PARAMETERS -- something a call could have passed
+differently. Twice now, a dispatch spec has mis-described a population's
+STRATUM, and neither time was a parameter involved:
+
+  * `gforce.py` disclosed `Λ != ∅ not measured at all -- the sharpest blind
+    axis`, and two strategy passes were written on it. False: the population
+    is `sweep` -> `gridcol.pool_shapes` -> `grid.census_shapes`, whose length
+    range is `(1, 2, 3, 4, 5)`, so `Λ != ∅` was 604 of its 907 shapes all
+    along -- never unreached, only never REPORTED.
+  * `aglu._pool8()` was called `a landed exhaustive n_hub = 8 pool` in two
+    specs. It is the `Λ = ∅` stratum, because its other source is
+    `cflank.excess_profiles`, which distributes length ABOVE 2.
+
+Both are provenance, not configuration, so no keyword expresses them and the
+lists above are silent. Recovering the first by hand cost ~12 calls.
+
 It is a LISTER, not a judge. Nothing here knows which axis matters; it knows
 which ones exist and puts the ones that stop a search at the top. A driver's
 docstring is not evidence either way (top-level `CLAUDE.md`, *Docstrings are
@@ -46,7 +69,8 @@ Usage (from the repo root):
 
     python3 notes/scripts/blindaxes.py notes/scripts/w4/gridcol.py
     python3 notes/scripts/blindaxes.py w4/cflank.py --imports   # + siblings
-    python3 notes/scripts/blindaxes.py w4/cflank.py --selftest
+    python3 notes/scripts/blindaxes.py w4/gforce.py --population
+    python3 notes/scripts/blindaxes.py --selftest
 
 `--imports` also scans same-package modules the driver imports (depth 1),
 which is the "and its read-only imports" half of D6.4's spec.
@@ -283,6 +307,276 @@ def selftest():
     return 0
 
 
+POP_DEPTH = 5
+
+
+def _defs(path):
+    """{name: FunctionDef} for a module's top-level defs."""
+    try:
+        tree = ast.parse(open(path, encoding="utf-8").read())
+    except Exception:
+        return {}
+    return {n.name: n for n in tree.body if isinstance(n, ast.FunctionDef)}
+
+
+def _callee(call):
+    f = call.func
+    if isinstance(f, ast.Name):
+        return f.id
+    if isinstance(f, ast.Attribute):
+        return f.attr
+    return None
+
+
+# Pass-through iterables: `for i, x in enumerate(census_shapes())` must not
+# stop the walk at `enumerate`. Generators of their own (product, combinations)
+# are deliberately NOT here -- their literal ranges ARE the population.
+_WRAPPERS = {"enumerate", "sorted", "list", "tuple", "set", "reversed",
+             "iter", "zip", "chain", "filter", "map", "islice"}
+
+
+def _unwrap(call):
+    """Peel pass-through wrappers, yielding the calls that really produce."""
+    if _callee(call) in _WRAPPERS:
+        out = []
+        for arg in call.args:
+            if isinstance(arg, ast.Call):
+                out.extend(_unwrap(arg))
+        return out
+    return [call]
+
+
+def _iterated_calls(fn):
+    """Calls in `fn` whose RESULT IS ITERATED -- directly as a `for` /
+    comprehension iterable, or through a local the loop then walks. That is
+    what a population IS, and it is why a plain call list would miss
+    `aglu._pool8`'s: it assigns `ep = excess_profiles(12, 6)` first and
+    iterates `ep`."""
+    assigns = {}
+    for node in ast.walk(fn):
+        if isinstance(node, ast.Assign) and isinstance(node.value, ast.Call):
+            for t in node.targets:
+                if isinstance(t, ast.Name):
+                    assigns.setdefault(t.id, node.value)
+    out, seen = [], set()
+    for node in ast.walk(fn):
+        it = getattr(node, "iter", None)
+        if it is None:
+            continue
+        call = None
+        if isinstance(it, ast.Call):
+            call = it
+        elif isinstance(it, ast.Name) and it.id in assigns:
+            call = assigns[it.id]
+        if call is None:
+            continue
+        for inner in _unwrap(call):
+            if id(inner) not in seen:
+                seen.add(id(inner))
+                out.append(inner)
+    return out
+
+
+def _fmt(call):
+    parts = []
+    for a in call.args:
+        v = _literal(a, strings=True)
+        parts.append(v if v is not None else "…")
+    for kw in call.keywords:
+        v = _literal(kw.value, strings=True)
+        parts.append(kw.arg + "=" + (v if v is not None else "…"))
+    return _callee(call) + "(" + ", ".join(parts) + ")"
+
+
+def _table(path):
+    """name -> (module, FunctionDef) over the driver and its imports to depth
+    2. Depth 2 because the provenance that mattered ran three modules deep:
+    `gforce.sweep` -> `gridcol.pool_shapes` -> `grid.census_shapes`."""
+    tab = {}
+    mods = [path]
+    for sib in sibling_imports(path):
+        if sib not in mods:
+            mods.append(sib)
+        for sib2 in sibling_imports(sib):
+            if sib2 not in mods:
+                mods.append(sib2)
+    for p in reversed(mods):          # driver last, so same-file defs win
+        for nm, node in _defs(p).items():
+            tab[nm] = (p, node)
+    return tab
+
+
+def _body_literals(fn):
+    """Literal ranges in a generator's body -- what it CAN produce.
+
+    ONE per line, keeping the widest: a list literal contributes itself and
+    every element, and the six sub-tuples of a `K4` edge list would otherwise
+    crowd out the length range on the next line, which is the whole point."""
+    byline = {}
+    for node in ast.walk(fn):
+        if isinstance(node, ast.Constant) and isinstance(node.value, str):
+            continue
+        if not isinstance(node, (ast.Tuple, ast.List, ast.Constant)):
+            continue
+        v = _literal(node)
+        # empty containers and all-None tuples are accumulators, not ranges
+        if v is None or v in ("0", "1", "2", "[]", "()", "{}", "set()"):
+            continue
+        if set(v) <= set("(),None "):
+            continue
+        cur = byline.get(node.lineno)
+        if cur is None or len(v) > len(cur):
+            byline[node.lineno] = v
+    return sorted(byline.items())[:8]
+
+
+def _isgen(fn):
+    return any(isinstance(x, (ast.Yield, ast.YieldFrom)) for x in ast.walk(fn))
+
+
+def _sources(path, fn, tab, seen, depth=0):
+    """EVERY population source out of `fn`, as a tree. Not the longest chain:
+    `aglu._pool8` draws from `cubic_iso_classes` AND `excess_profiles`, and it
+    is the second that fixes the stratum -- a longest-chain walk reports one
+    of them and hides the fence."""
+    if depth >= POP_DEPTH:
+        return []
+    out = []
+    for call in _iterated_calls(fn):
+        nm = _callee(call)
+        if not nm or nm in seen or nm not in tab:
+            continue
+        p2, fn2 = tab[nm]
+        out.append((_fmt(call), p2, fn2,
+                    _sources(p2, fn2, tab, seen | {nm}, depth + 1)))
+    return out
+
+
+def _emit(nodes, pad, shown):
+    for txt, p2, f2, kids in nodes:
+        mod = os.path.basename(p2)[:-3]
+        key = (p2, f2.name)
+        mark = " [generator]" if _isgen(f2) else ""
+        if key in shown:
+            print(pad + "→ " + mod + "." + txt + mark + "   (shown above)")
+            continue
+        shown.add(key)
+        print(pad + "→ " + mod + "." + txt + mark
+              + ("" if kids else "   <- TERMINAL"))
+        doc = ast.get_docstring(f2)
+        if doc:
+            print(pad + "     \"" + " ".join(doc.strip().split())[:150] + "\"")
+        lits = _body_literals(f2)
+        if lits:
+            print(pad + "     ranges: "
+                  + ", ".join(v + "@L" + str(ln) for ln, v in lits))
+        _emit(kids, pad + "  ", shown)
+
+
+def population(path, top=4):
+    """Name WHERE a driver's shapes come from: every population source, with
+    each one's own docstring and literal ranges."""
+    tab = _table(path)
+    rel = os.path.relpath(path, ROOT)
+    roots = []
+    for nm, fn in sorted(_defs(path).items()):
+        kids = _sources(path, fn, tab, {nm})
+        if kids:
+            roots.append((nm, kids))
+    if not roots:
+        print("=== " + rel + " — POPULATION PROVENANCE: no iterated call "
+              "resolves\n    to a def in this module or its imports.")
+        return 0
+
+    def _size(kv):
+        n = [0]
+
+        def rec(ns, d):
+            for _t, _p, f, k in ns:
+                n[0] += (10 if _isgen(f) else 1) + d
+                rec(k, d + 1)
+        rec(kv[1], 0)
+        return -n[0]
+
+    roots.sort(key=_size)
+    print("=== " + rel + " — POPULATION PROVENANCE ("
+          + str(len(roots)) + " entry point(s), showing "
+          + str(min(top, len(roots))) + ")")
+    print("  Where the shapes COME FROM. `blindaxes` proper lists PARAMETER")
+    print("  fences; a population's provenance is the fence no keyword can")
+    print("  express, and it is the one that cost two dispatch specs their")
+    print("  stratum (Harness-structure D8).")
+    shown = set()
+    for nm, kids in roots[:top]:
+        print("")
+        print("  " + nm + "()")
+        _emit(kids, "    ", shown)
+    print("")
+    print("  A LISTER, NOT A JUDGE, and a docstring is not evidence: it says")
+    print("  which generators produce the population and what literals bound")
+    print("  them. Read those ranges, then re-derive with them opened.")
+    return 0
+
+
+def _flatten(nodes, out):
+    for txt, p2, f2, kids in nodes:
+        out.append((txt, p2, f2))
+        _flatten(kids, out)
+    return out
+
+
+def _pop_sources(driver, entry):
+    """Flat list of (call text, module, def) reachable from one entry point."""
+    path = resolve(driver)
+    tab = _table(path)
+    fn = _defs(path).get(entry)
+    if fn is None:
+        return []
+    return _flatten(_sources(path, fn, tab, {entry}), [])
+
+
+def population_selftest():
+    """The TWO population findings, asserted — the mirror of `selftest()`'s
+    two parameter findings. Both are landed and both were recovered by hand
+    at real cost; a mode that stopped surfacing them would be worse than
+    none, because the loop would keep citing it."""
+    bad = []
+
+    # (1) GFORCE's disclosed "sharpest blind axis" was `Λ ≠ ∅ not measured at
+    # all". Its population reaches `grid.census_shapes`, whose length range
+    # INCLUDES 1 -- so `Λ ≠ ∅` was in the population all along (604/907).
+    src = _pop_sources("w4/gforce.py", "leg_kappa")
+    cs = [(t, p, f) for t, p, f in src if f.name == "census_shapes"]
+    if not cs:
+        bad.append("  gforce: population does not reach grid.census_shapes")
+    else:
+        lits = [v for _ln, v in _body_literals(cs[0][2])]
+        if not any(v.startswith("(1, 2, 3, 4, 5") for v in lits):
+            bad.append("  gforce: census_shapes' length range (1,...,5) not "
+                       "listed -- the `Λ != ∅` finding would be invisible")
+
+    # (2) `aglu._pool8` is the `Λ = ∅` stratum, and the reason is its OTHER
+    # source: `cflank.excess_profiles`, whose lengths are `2 + e`. Two dispatch
+    # specs described `_pool8` as a general n_hub = 8 pool.
+    src8 = _pop_sources("w4/aglu.py", "_pool8")
+    names = {f.name for _t, _p, f in src8}
+    if "excess_profiles" not in names:
+        bad.append("  aglu: _pool8's population omits cflank.excess_profiles "
+                   "-- the `Λ = ∅` fence would be invisible")
+    if "cubic_iso_classes" not in names:
+        bad.append("  aglu: _pool8's population omits cubic_iso_classes "
+                   "-- a single-chain walk is reporting one source of two")
+
+    if bad:
+        print("FAIL: blindaxes --population selftest", file=sys.stderr)
+        print("\n".join(bad), file=sys.stderr)
+        return 1
+    print("OK: population selftest — gforce reaches grid.census_shapes with "
+          "its\n    (1,...,5) length range listed, and aglu._pool8 shows BOTH "
+          "sources\n    including cflank.excess_profiles (the `Λ = ∅` fence).")
+    return 0
+
+
 def main(argv):
     p = argparse.ArgumentParser(prog="blindaxes.py",
                                 description=__doc__.split("\n")[0])
@@ -291,14 +585,20 @@ def main(argv):
                    help="also scan same-package modules it imports (depth 1)")
     p.add_argument("--strings", action="store_true",
                    help="include string-valued defaults and constants")
+    p.add_argument("--population", action="store_true",
+                   help="where the driver's shapes COME FROM: every "
+                        "population source, with its ranges")
     p.add_argument("--selftest", action="store_true",
-                   help="assert the two landed findings are still surfaced")
+                   help="assert all four landed findings are still surfaced "
+                        "(two parameter, two population)")
     a = p.parse_args(argv)
     if a.selftest:
-        return selftest()
+        return selftest() | population_selftest()
     if not a.driver:
         p.error("a driver path is required (or --selftest)")
     path = resolve(a.driver)
+    if a.population:
+        return population(path)
     report(path, a.strings)
     if a.imports:
         for sib in sibling_imports(path):

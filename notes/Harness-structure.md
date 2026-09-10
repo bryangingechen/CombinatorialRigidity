@@ -1793,18 +1793,30 @@ a fix:**
   `close` — so the tool names an object and then rejects that name. D7.9's shape,
   inside one script, hit on this session's first gap-map read.
 
-**Unshipped, and this session's trace is its second instance —
-`blindaxes.py` has a POPULATION blind spot.** D6.4's tool lists *parameter*
+**SHIPPED 2026-09-11, at the user's call, and this session's trace is its
+second instance — `blindaxes.py` had a POPULATION blind spot.** D6.4's tool lists *parameter*
 fences: keyword defaults, module constants, limiters. This session's decisive
 prep finding is not of that shape. `gforce.py`'s Λ-blindness — its own disclosed
 *"sharpest blind axis"* — is a property of **where its shapes come from**
 (`sweep()` → `gridcol.pool_shapes` → `grid.census_shapes`), which `blindaxes.py`
-reports nothing about; recovering it by hand cost **~14 calls** and overturned
+reported nothing about; recovering it by hand cost **~14 calls** and overturned
 the disclosure (**604 of the 907** census shapes carry `Λ ≠ ∅`). The same defect
 class is already recorded once: `notes/pencil/labels.md` has two dispatch specs
 mis-describing `aglu._pool8()`'s Λ status, caught by a direction. Two instances,
-different drivers, same shape. A `--population` mode that walks a driver's <!--driver-refs:exempt-->
-shape-source call chain to its generator and prints that generator's docstring
-and hardcoded ranges answers it in one call.
-*Kill condition: `blindaxes.py --population` present and naming a driver's shape <!--driver-refs:exempt-->
-generator. Decided by: its `--help`.*
+different drivers, same shape. **`blindaxes.py --population`** now walks a
+driver's iterated calls to the generators that produce its shapes and prints
+each one's docstring and literal ranges. **Both instances are pinned by its own
+selftest**, beside the two parameter findings the mode proper already pinned:
+`gforce.py` must reach `grid.census_shapes` *with its `(1, 2, 3, 4, 5)` length
+range listed* — which is what makes `Λ ≠ ∅` visible — and `aglu._pool8` must
+show **both** its sources, including `cflank.excess_profiles`. That second
+assertion is load-bearing in a way worth recording: the first implementation
+walked the **longest** chain and so reported one of `_pool8`'s two sources,
+hiding the very fence the mode exists for. A single-chain walk is the natural
+design and it is the wrong one here. The selftest was **falsified before
+landing** — shortening the walk to depth 1 makes it exit 1 — per this file's own
+*a gate that reports zero is not a gate that passes*.
+*Kill condition: DISCHARGED. The live successor is whether a THIRD provenance
+instance appears that a call-chain walk still cannot see; if one does, the fence
+is not the call chain. Decided by: the next dispatch-log row citing a
+mis-described population.*
